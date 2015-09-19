@@ -749,9 +749,9 @@ US_FinishTextScreen(void)
 		IN_ClearKeysDown();
 		IN_Ack();
 	}
-	IN_ClearKeysDown();
+    //IN_ClearKeysDown();
 
-	USL_ClearTextScreen();
+    //USL_ClearTextScreen();
 }
 
 //	Window/Printing routines

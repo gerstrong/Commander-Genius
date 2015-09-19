@@ -964,7 +964,7 @@ IN_AckBack(void)
 
 	id0_word_t	i;
 
-	while (!LastScan)
+    /*while (!LastScan)
 	{
 		if (MousePresent)
 		{
@@ -1001,7 +1001,7 @@ IN_AckBack(void)
 	BE_ST_AltControlScheme_Pop();
 
 	IN_ClearKey(LastScan);
-	LastScan = sc_None;
+    LastScan = sc_None;*/
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -1028,7 +1028,7 @@ IN_Ack(void)
 			{
                 BE_ST_ShortSleep();
 			}
-	IN_AckBack();
+    //IN_AckBack();
 }
 
 ///////////////////////////////////////////////////////////////////////////

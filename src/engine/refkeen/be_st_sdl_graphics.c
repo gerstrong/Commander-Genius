@@ -1299,14 +1299,111 @@ static void BEL_ST_FinishHostDisplayUpdate(void)
 		}
 	}
 
-        SDL_RenderPresent(g_sdlRenderer);
+        //SDL_RenderPresent(g_sdlRenderer);
 }
 
 
-void BEL_ST_UpdateHostDisplay(void)
+/*
+    if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
+
+    // This makes the white pixel transparent
+    Uint8 *pixel = (Uint8*)sfc->pixels;
+
+    for( Uint16 y=0 ; y<sfc->h ; y++ )
+    {
+        for( Uint16 x=0 ; x<sfc->w ; x++ )
+        {
+            memcpy( &color, pixel, sfc->format->BytesPerPixel );
+
+            SDL_GetRGBA( color, sfc->format, &r, &g, &b, &a );
+
+            if( a>0 )
+            {
+                memcpy( pixel, &fgColor, sfc->format->BytesPerPixel );
+            }
+
+            pixel += sfc->format->BytesPerPixel;
+        }
+    }
+    if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
+ */
+
+
+Uint32 getpixel(SDL_Surface *surface, int x, int y)
 {
-    #define VGA_TXT_CHAR_PIX_WIDTH  ((VGA_TXT_TEX_WIDTH)/TXT_COLS_NUM)
-    #define VGA_TXT_CHAR_PIX_HEIGHT ((VGA_TXT_TEX_HEIGHT)/TXT_ROWS_NUM)
+    int bpp = surface->format->BytesPerPixel;
+    /* Here p is the address to the pixel we want to retrieve */
+    Uint8 *p = (Uint8 *)surface->pixels + y * surface->pitch + x * bpp;
+
+    switch(bpp) {
+    case 1:
+        return *p;
+        break;
+
+    case 2:
+        return *(Uint16 *)p;
+        break;
+
+    case 3:
+        if(SDL_BYTEORDER == SDL_BIG_ENDIAN)
+            return p[0] << 16 | p[1] << 8 | p[2];
+        else
+            return p[0] | p[1] << 8 | p[2] << 16;
+        break;
+
+    case 4:
+        return *(Uint32 *)p;
+        break;
+
+    default:
+        return 0;       /* shouldn't happen, but avoids warnings */
+    }
+}
+
+void putpixel(SDL_Surface *surface, int x, int y, Uint32 pixel)
+{
+    int bpp = surface->format->BytesPerPixel;
+    /* Here p is the address to the pixel we want to set */
+    Uint8 *p = (Uint8 *)surface->pixels + y * surface->pitch + x * bpp;
+
+    switch(bpp) {
+    case 1:
+        *p = pixel;
+        break;
+
+    case 2:
+        *(Uint16 *)p = pixel;
+        break;
+
+    case 3:
+        if(SDL_BYTEORDER == SDL_BIG_ENDIAN) {
+            p[0] = (pixel >> 16) & 0xff;
+            p[1] = (pixel >> 8) & 0xff;
+            p[2] = pixel & 0xff;
+        } else {
+            p[0] = pixel & 0xff;
+            p[1] = (pixel >> 8) & 0xff;
+            p[2] = (pixel >> 16) & 0xff;
+        }
+        break;
+
+    case 4:
+        *(Uint32 *)p = pixel;
+        break;
+    }
+}
+
+
+
+
+void BEL_ST_UpdateHostDisplay(SDL_Surface *sfc)
+{
+    SDL_LockSurface(sfc);
+
+    //#define VGA_TXT_CHAR_PIX_WIDTH  ((VGA_TXT_TEX_WIDTH)/TXT_COLS_NUM)
+    //#define VGA_TXT_CHAR_PIX_HEIGHT ((VGA_TXT_TEX_HEIGHT)/TXT_ROWS_NUM)
+    #define VGA_TXT_CHAR_PIX_WIDTH  ((sfc->w)/TXT_COLS_NUM)
+    #define VGA_TXT_CHAR_PIX_HEIGHT ((sfc->h)/TXT_ROWS_NUM)
 
 	if (g_sdlScreenMode == 3) // Text mode
 	{
@@ -1325,26 +1422,32 @@ void BEL_ST_UpdateHostDisplay(void)
 		/****** Do update ******/
 		wereBlinkingCharsShown = areBlinkingCharsShown;
 		wasBlinkingCursorShown = isBlinkingCursorShown;
-		void *pixels;
-		int pitch;
-		SDL_LockTexture(g_sdlTexture, NULL, &pixels, &pitch);
-        uint32_t *screenPixelPtr = (uint32_t *)pixels;
+        void *pixels = sfc->pixels;
+        //int pitch;
+        //SDL_LockTexture(g_sdlTexture, NULL, &pixels, &pitch);
+
+        //uint32_t *screenPixelPtr = (uint32_t *)pixels;
+        void *screenPixelPtrYOffset = pixels;
+        int bpp = sfc->format->BytesPerPixel;
+        // Uint8 *p = (Uint8 *)surface->pixels + y * surface->pitch + x * bpp;
 		uint8_t currChar;
-		const uint8_t *currCharFontPtr;
-		uint32_t *currScrPixelPtr, currBackgroundColor, currCharColor;
+        const uint8_t *currCharFontPtrVBase;
+        uint32_t currBackgroundColor, currCharColor;
+        void *currScrPixelPtrY;
 		int txtByteCounter = 0;
         int currCharPixX, currCharPixY;
 		for (int currCharY = 0, currCharX; currCharY < TXT_ROWS_NUM; ++currCharY)
 		{
-			// Draw striped lines
-            //uint32_t *screenPixelPtr = screenPixelPtrLine;
-			for (currCharX = 0; currCharX < TXT_COLS_NUM; ++currCharX)
+			// Draw striped lines                        
+            void *screenPixelPtrXOffset = screenPixelPtrYOffset;
+
+            for (currCharX = 0; currCharX < TXT_COLS_NUM; ++currCharX)
 			{
-				currChar = g_sdlVidMem.text[txtByteCounter];
+                currChar = g_sdlVidMem.text[txtByteCounter];
 				// Luckily, the width*height product is always divisible by 8...
 				// Note that the actual width is always 8,
 				// even in VGA mode. We convert to 9 while drawing.
-				currCharFontPtr = g_vga_8x16TextFont + currChar*16*8;
+                currCharFontPtrVBase = g_vga_8x16TextFont + currChar*16*8;
 				++txtByteCounter;
 				currBackgroundColor = g_sdlEGABGRAScreenColors[(g_sdlVidMem.text[txtByteCounter] >> 4) & 7];
 				// Should the character blink?
@@ -1352,29 +1455,49 @@ void BEL_ST_UpdateHostDisplay(void)
 					currCharColor = g_sdlEGABGRAScreenColors[g_sdlVidMem.text[txtByteCounter] & 15];
 				else
 					currCharColor = currBackgroundColor;
-				++txtByteCounter;                
-				currScrPixelPtr = screenPixelPtr;
-                for (currCharPixY = 0; currCharPixY < VGA_TXT_CHAR_PIX_HEIGHT; ++currCharPixY)
+                ++txtByteCounter;
+
+                currScrPixelPtrY = screenPixelPtrXOffset;
+
+                const uint8_t *currCharFontPtrV;
+
+                const int vgaTxtCharPixH = VGA_TXT_CHAR_PIX_HEIGHT;
+
+                for (currCharPixY = 0 ; currCharPixY < vgaTxtCharPixH ; ++currCharPixY)
 				{
-					/* NOTE: The char width is actually 8
-					in both of the EGA and VGA fonts. On the
-					VGA case, the 9th pixel is determined
-					according to the 8th and char number. */
-                    for (currCharPixX = 0; currCharPixX < 8; ++currCharPixX, ++currCharFontPtr, ++currScrPixelPtr)
-					{
-						*currScrPixelPtr = (*currCharFontPtr) ? currCharColor : currBackgroundColor;
+                    // NOTE: The char width is actually 8
+                    // in both of the EGA and VGA fonts. On the
+                    // VGA case, the 9th pixel is determined
+                    // according to the 8th and char number.
+                    void *currScrPixelPtrX = currScrPixelPtrY;
+
+                    currCharFontPtrV = currCharFontPtrVBase + ((currCharPixY*16)/vgaTxtCharPixH)*8;
+
+                    Uint32 *pColor;
+
+                    //for (currCharPixX = 0; currCharPixX < 8; ++currCharPixX, ++currCharFontPtr)
+                    for (currCharPixX = 0; currCharPixX < VGA_TXT_CHAR_PIX_WIDTH; ++currCharPixX)
+					{                        
+                        const uint8_t *currCharFontPtrH = currCharFontPtrV + (currCharPixX*8)/VGA_TXT_CHAR_PIX_WIDTH;
+                        pColor = currScrPixelPtrX;
+                        *pColor = (*currCharFontPtrH) ? currCharColor : currBackgroundColor;
+                        currScrPixelPtrX += bpp;
 					}
+
 					// Add an extra 9th column on VGA
-					*currScrPixelPtr = ((currChar < 192) || (currChar > 223)) ? currBackgroundColor : *(currScrPixelPtr-1);
-					currScrPixelPtr += (g_sdlTexWidth-VGA_TXT_CHAR_PIX_WIDTH+1);
+                    pColor = currScrPixelPtrX;
+                    *pColor = ((currChar < 192) || (currChar > 223)) ? currBackgroundColor : *(pColor-1);
+
+                    currScrPixelPtrY += sfc->pitch;
 				}
-				screenPixelPtr += VGA_TXT_CHAR_PIX_WIDTH;                
-			}
+
+                screenPixelPtrXOffset += bpp*VGA_TXT_CHAR_PIX_WIDTH;
+            }
 			// Go to the character right below current one
-            screenPixelPtr += g_sdlTexWidth*(VGA_TXT_CHAR_PIX_HEIGHT-1);
+            screenPixelPtrYOffset += sfc->pitch*VGA_TXT_CHAR_PIX_HEIGHT;
 		}
 		// Finish with outputting the cursor if required
-		currCharColor = g_sdlEGABGRAScreenColors[g_sdlVidMem.text[1+((TXT_COLS_NUM*g_sdlTxtCursorPosY+g_sdlTxtCursorPosX)<<1)] & 15];
+        /*currCharColor = g_sdlEGABGRAScreenColors[g_sdlVidMem.text[1+((TXT_COLS_NUM*g_sdlTxtCursorPosY+g_sdlTxtCursorPosX)<<1)] & 15];
 		if (isBlinkingCursorShown)
 		{
 			screenPixelPtr = (uint32_t *)pixels+g_sdlTexWidth;
@@ -1388,7 +1511,7 @@ void BEL_ST_UpdateHostDisplay(void)
 					*screenPixelPtr = currCharColor;
 				screenPixelPtr += g_sdlTexWidth - VGA_TXT_CHAR_PIX_WIDTH;
 			}
-		}
+        }*/
 	}
 	else if (g_sdlScreenMode == 4) // CGA graphics
 	{
@@ -1521,6 +1644,8 @@ void BEL_ST_UpdateHostDisplay(void)
         //SDL_RenderCopy(g_sdlRenderer, g_sdlTexture, NULL, &g_sdlAspectCorrectionRect);
         SDL_RenderCopy(g_sdlRenderer, g_sdlTexture, NULL, NULL);
 	}
+
+    SDL_UnlockSurface(sfc);
 
 	BEL_ST_FinishHostDisplayUpdate();
 }

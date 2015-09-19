@@ -42,6 +42,12 @@ public:
      */
     void ponder(const float deltaT);
 
+
+    /**
+     * @brief updateHostDisplay Will update the display of all the possible states the game runs into
+     */
+    void updateHostDisplay();
+
     /**
      * @brief render    Everything to ne drawn here!
      */

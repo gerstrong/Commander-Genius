@@ -8,6 +8,7 @@
 #include <fileio/CExeFile.h>
 #include <fileio/KeenFiles.h>
 #include <fileio/CPatcher.h>
+#include <base/video/CVideoDriver.h>
 
 #define REFKEEN_VER_KDREAMS_ANYEGA_ALL
 
@@ -122,6 +123,9 @@ extern	uint8_t	*audiodict;
 
 // (REFKEEN) Used for patching version-specific stuff
 extern char *gametext, *context, *story;
+
+
+void BEL_ST_UpdateHostDisplay(SDL_Surface *sfc);
 
 }
 
@@ -510,8 +514,8 @@ void DreamsEngine::InitGame()
 
     US_FinishTextScreen();
 
-    VW_SetScreenMode (GRMODE);
-    VW_ClearVideo (BLACK);
+    //VW_SetScreenMode (GRMODE);
+    //VW_ClearVideo (BLACK);
 }
 
 
@@ -531,19 +535,60 @@ void DreamsEngine::start()
 
     // TODO: This seems to be the exe with main cycle. We need to break it into draw and logic routines.
     InitGame();
-    DemoLoop();
+    //DemoLoop();
     //kdreams_exe_main();
 }
 
 
 void DreamsEngine::ponder(const float deltaT)
 {
+    {
+        /*if (MousePresent)
+        {
+            if (INL_GetMouseButtons())
+            {
+                while (INL_GetMouseButtons())
+                {
+                    BE_ST_ShortSleep();
+                }
+                return;
+            }
+        }
 
+        for (i = 0;i < MaxJoys;i++)
+        {
+            if (JoysPresent[i])
+            {
+                if (IN_GetJoyButtonsDB(i))
+                {
+                    while (IN_GetJoyButtonsDB(i))
+                    {
+                        BE_ST_ShortSleep();
+                    }
+                    return;
+                }
+            }
+        }*/
+    }
+
+    BE_ST_PollEvents();
 }
+
+
+
+
+void DreamsEngine::updateHostDisplay()
+{
+    SDL_Surface *sfc = gVideoDriver.getBlitSurface();
+
+    BEL_ST_UpdateHostDisplay(sfc);
+}
+
+
 
 void DreamsEngine::render()
 {
-
+    updateHostDisplay();
 }
 
 }

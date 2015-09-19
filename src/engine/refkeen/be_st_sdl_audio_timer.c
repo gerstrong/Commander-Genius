@@ -708,8 +708,8 @@ void BE_ST_ShortSleep(void)
 {
 	SDL_Delay(1);
 	// TODO: Make this more efficient
-	BEL_ST_UpdateHostDisplay();
-	BE_ST_PollEvents();
+    //BEL_ST_UpdateHostDisplay();
+    BE_ST_PollEvents();
 }
 
 #if 0
