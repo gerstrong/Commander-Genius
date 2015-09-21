@@ -1568,7 +1568,7 @@ void BEL_ST_UpdateHostDisplay(SDL_Surface *sfc)
         {
             uint32_t *currPixPtr = currPixPtrBase + pixY*sfc->w;
 
-            for(uint32_t pixX=0 ; pixX < sfc->w ; pixX++ )
+            for(uint32_t pixX=0 ; pixX < ratioW*GFX_TEX_WIDTH ; pixX++ )
             {
                 //uint32_t *currPixPtr = currPixPtrBase + pix;
                 currPalPixPtr = currPalPixPtrBase + (pixY/ratioH)*GFX_TEX_WIDTH + pixX/ratioW;

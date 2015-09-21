@@ -128,6 +128,8 @@ extern char *gametext, *context, *story;
 
 void BEL_ST_UpdateHostDisplay(SDL_Surface *sfc);
 
+void BE_ST_PollEvents(SDL_Event event);
+
 }
 
 
@@ -469,8 +471,13 @@ void DreamsEngine::ponder(const float deltaT)
         }*/
     }
 
-    //BE_ST_PollEvents();
+    std::vector<SDL_Event> evVec;
+    gInput.readSDLEventVec(evVec);
 
+    for(SDL_Event event : evVec)
+    {
+        BE_ST_PollEvents(event);
+    }
 
     if(mGameState == INTRO_TEXT) // Where the shareware test is shown
     {

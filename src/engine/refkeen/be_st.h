@@ -44,7 +44,7 @@ void BE_ST_AltControlScheme_PrepareInputWaitControls(void); // When there's a si
 void BE_ST_AltControlScheme_PrepareTextInput(void);
 
 
-void BE_ST_PollEvents(void);
+//void BE_ST_PollEvents(SDL_Event event);
 
 // Returns an offset that should be added to the 16-bit segments of 32-bit
 // far pointers present in The Catacomb Armageddon/Apocalypse saved games

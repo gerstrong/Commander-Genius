@@ -1570,10 +1570,11 @@ void BE_ST_AltControlScheme_PrepareTextInput(void)
 }
 
 
-void BE_ST_PollEvents(void)
+//void BE_ST_PollEvents(void)
+void BE_ST_PollEvents(SDL_Event event)
 {
-	SDL_Event event;
-	while (SDL_PollEvent(&event))
+    //SDL_Event event;
+    //while (SDL_PollEvent(&event))
 	{
 		switch (event.type)
 		{
@@ -1585,10 +1586,10 @@ void BE_ST_PollEvents(void)
 		//	BEL_ST_toggleCursorConditionally(true);
 		//	break;
 
-		/* Don't use SDL_CONTROLLERDEVICEADDED with alternative controller schemes, and for the sake of consistency avoid SDL_CONTROLLERDEVICEREMOVED as well.
-		 * Reason is that on init, there is a problem handling controller mappings loaded from the database using SDL_CONTROLLERDEVICEADDED
-		 * (if loaded before init, the mappings seem to be deleted, otherwise SDL_CONTROLLERDEVICEADDED are just not spawned for these).
-		 */
+        // Don't use SDL_CONTROLLERDEVICEADDED with alternative controller schemes, and for the sake of consistency avoid SDL_CONTROLLERDEVICEREMOVED as well.
+        // Reason is that on init, there is a problem handling controller mappings loaded from the database using SDL_CONTROLLERDEVICEADDED
+        // (if loaded before init, the mappings seem to be deleted, otherwise SDL_CONTROLLERDEVICEADDED are just not spawned for these).
+        //
 		case SDL_JOYDEVICEADDED:
 			if (event.jdevice.which < BE_ST_MAXJOYSTICKS)
 			{
