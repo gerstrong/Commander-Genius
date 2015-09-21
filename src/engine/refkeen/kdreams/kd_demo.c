@@ -727,7 +727,7 @@ DemoLoop (void)
 	}
 }
 #elif defined REFKEEN_VER_KDREAMS_ANYEGA_ALL
-/*void
+void
 DemoLoop (void)
 {
 	//id0_char_t		*s;
@@ -852,5 +852,5 @@ DemoLoop (void)
 #endif
 		GameLoop();
 	}
-}*/
+}
 #endif // VERSION

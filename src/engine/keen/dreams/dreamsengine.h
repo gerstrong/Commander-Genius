@@ -3,6 +3,8 @@
 
 #include <base/GsEngine.h>
 #include <engine/core/GameEngine.h>
+#include <base/utils/ThreadPool.h>
+#include <memory>
 
 namespace dreams
 {
@@ -22,7 +24,7 @@ public:
     bool loadResources();
 
 
-    void DemoLoop();
+    void GameLoop();
 
 
     /**
@@ -53,6 +55,21 @@ public:
      */
     void render();
 
+
+private:
+
+    enum GameState
+    {
+        INTRO_TEXT,     // The famous screen where hardware is detected and some notes about the versions are told
+        INTRO_SCREEN    // Within the gameloop it will show the intro screen of the dreams game
+    } mGameState = INTRO_TEXT;
+
+
+    std::unique_ptr<Action> mpPlayLoopAction;
+    std::unique_ptr<ThreadPoolItem> mpPlayLoopThread;
+
+    // Because some routines have loops in Refkeen we pass the main game to a separate thread and catch the apropiate signals
+    //ThreadPoolItem *mpThread = nullptr;
 
 };
 

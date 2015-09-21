@@ -9,6 +9,7 @@
 #include <fileio/KeenFiles.h>
 #include <fileio/CPatcher.h>
 #include <base/video/CVideoDriver.h>
+#include <base/CInput.h>
 
 #define REFKEEN_VER_KDREAMS_ANYEGA_ALL
 
@@ -293,131 +294,31 @@ bool DreamsEngine::loadResources()
 }
 
 
-void DreamsEngine::DemoLoop()
+void DreamsEngine::GameLoop()
 {
-    //id0_char_t		*s;
-    //id0_word_t		move;
-    //id0_longword_t	lasttime;
-    const id0_char_t *FileName1;
-    struct Shape FileShape1;
-#if CREDITS
-    const id0_char_t *FileName2;
-    struct Shape FileShape2;
-#endif
-    //struct ffblk ffblk;
-    //WindowRec	mywin;
-    id0_int_t bufsave	= bufferofs;
-    id0_int_t dissave	= displayofs;
+    // TODO: We should pipe this function to another thread,
+    // so the main thread is kept free for
+    // all the other lower functions defined through the GsKit.
 
-
-#if FRILLS
-//
-// check for launch from ted
-//
-    if (tedlevel)
+    // TODO: Create Thread Object here!
+    //mpThread = DemoLoop();
+    struct GameLoopAction : public Action
     {
-        NewGame();
-        gamestate.mapon = tedlevelnum;
-        GameLoop();
-        TEDDeath();
-    }
-#endif
-
-//
-// demo loop
-//
-    US_SetLoadSaveHooks(LoadGame,SaveGame,ResetGame);
-    restartgame = gd_Continue;
-
-    BE_FILE_T handle = BE_Cross_open_for_reading("KDREAMS.CMP");
-    //int handle = open("KDREAMS.CMP" ,O_BINARY | O_RDONLY);
-    if (!BE_Cross_IsFileValid(handle))
-    //if (handle == -1)
-        Quit("Couldn't find KDREAMS.CMP");
-    BE_Cross_close(handle);
-#if 0
-    if (findfirst("KDREAMS.CMP", &ffblk, 0) == -1)
-        Quit("Couldn't find KDREAMS.CMP");
-#endif
-
-    while (true)
-    {
-
-        loadedgame = false;
-
-        FileName1 = "TITLESCR.LBM";
-        if (LoadLIBShape("KDREAMS.CMP", FileName1, &FileShape1))
-            Quit("Can't load TITLE SCREEN");
-#if CREDITS
-        FileName2 = "CREDITS.LBM";
-        if (LoadLIBShape("KDREAMS.CMP", FileName2, &FileShape2))
-            Quit("Can't load CREDITS SCREEN");
-#endif
-
-        while (!restartgame && !loadedgame)
+        int handle()
         {
+            DemoLoop();
+            /*if(!mGameLauncher.setupMenu())
+                {
+                    gLogging.textOut(RED,"No game can be launched, because game data files are missing.<br>");
+                    return 0;
+                }
 
-            VW_InitDoubleBuffer();
-            IN_ClearKeysDown();
-
-            while (true)
-            {
-
-                VW_SetScreen(0, 0);
-                MoveGfxDst(0, 200);
-                UnpackEGAShapeToScreen(&FileShape1, 0, 0);
-                VW_ScreenToScreen (64*200,0,40,200);
-
-#if CREDITS
-                if (IN_UserInput(TickBase * 8, false))
-                    break;
-#else
-                if (IN_UserInput(TickBase * 4, false))
-                    break;
-#endif
-
-#if CREDITS
-                MoveGfxDst(0, 200);
-                UnpackEGAShapeToScreen(&FileShape2, 0, 0);
-                VW_ScreenToScreen (64*200,0,40,200);
-
-                if (IN_UserInput(TickBase * 7, false))
-                    break;
-#else
-                MoveGfxDst(0, 200);
-                UnpackEGAShapeToScreen(&FileShape1, 0, 0);
-                VW_ScreenToScreen (64*200,0,40,200);
-
-                if (IN_UserInput(TickBase * 3, false))
-                    break;
-#endif
-
-                displayofs = 0;
-                VWB_Bar(0,0,320,200,FIRSTCOLOR);
-                US_DisplayHighScores(-1);
-
-                if (IN_UserInput(TickBase * 6, false))
-                    break;
-
-            }
-
-            bufferofs = bufsave;
-            displayofs = dissave;
-
-            VW_FixRefreshBuffer();
-            US_ControlPanel ();
+                return 1;*/
         }
+    };
 
-        if (!loadedgame)
-            NewGame();
-
-        FreeShape(&FileShape1);
-#if CREDITS
-        FreeShape(&FileShape2);
-#endif
-        GameLoop();
-    }
-
+    mpPlayLoopAction.reset( new GameLoopAction );
+    mpPlayLoopThread.reset(threadPool->start(mpPlayLoopAction.get(), "Dreams Gameloop"));
 }
 
 
@@ -513,9 +414,6 @@ void DreamsEngine::InitGame()
     fontcolor = WHITE;
 
     US_FinishTextScreen();
-
-    //VW_SetScreenMode (GRMODE);
-    //VW_ClearVideo (BLACK);
 }
 
 
@@ -571,7 +469,28 @@ void DreamsEngine::ponder(const float deltaT)
         }*/
     }
 
-    BE_ST_PollEvents();
+    //BE_ST_PollEvents();
+
+
+    if(mGameState == INTRO_TEXT) // Where the shareware test is shown
+    {
+        // If we press any switch to the next section -> where Dreams is really loaded into CGA/EGA mode and show the intro screen
+        if( gInput.getPressedAnyCommand() || gInput.mouseClicked() )
+        {
+            mGameState = INTRO_SCREEN;
+            VW_SetScreenMode (GRMODE);
+            VW_ClearVideo (BLACK);
+            GameLoop();
+        }
+    }
+    /*else if(mGameState == INTRO_SCREEN)
+    {
+
+    }*/
+
+
+
+    //if(mGameState)
 }
 
 

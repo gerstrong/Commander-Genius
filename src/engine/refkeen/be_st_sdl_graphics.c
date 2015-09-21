@@ -1431,8 +1431,9 @@ void BEL_ST_UpdateHostDisplay(SDL_Surface *sfc)
             screenPixelPtrYOffset += sfc->pitch*VGA_TXT_CHAR_PIX_HEIGHT;
 		}
 		// Finish with outputting the cursor if required
-        /*currCharColor = g_sdlEGABGRAScreenColors[g_sdlVidMem.text[1+((TXT_COLS_NUM*g_sdlTxtCursorPosY+g_sdlTxtCursorPosX)<<1)] & 15];
-		if (isBlinkingCursorShown)
+        currCharColor = g_sdlEGABGRAScreenColors[g_sdlVidMem.text[1+((TXT_COLS_NUM*g_sdlTxtCursorPosY+g_sdlTxtCursorPosX)<<1)] & 15];
+        // TODO: Blinking cursor
+        /*if (isBlinkingCursorShown)
 		{
 			screenPixelPtr = (uint32_t *)pixels+g_sdlTexWidth;
             screenPixelPtr += g_sdlTxtCursorPosY*VGA_TXT_CHAR_PIX_HEIGHT*g_sdlTexWidth;
@@ -1476,22 +1477,22 @@ void BEL_ST_UpdateHostDisplay(SDL_Surface *sfc)
 		}
 		uint16_t currLineFirstByte = (g_sdlScreenStartAddress + g_sdlPelPanning/8) % 0x10000;
 		uint8_t panningWithinInByte = g_sdlPelPanning%8;
-		uint8_t *currPalPixPtr, *currPalPixCachePtr;
+        uint8_t *currPalPixPtrBase, *currPalPixCachePtr;
 		bool doUpdate = false;
 		for (int line = 0, col; line < GFX_TEX_HEIGHT; ++line)
 		{
 			uint8_t currBitNum = 7-panningWithinInByte, currBitMask = 1<<currBitNum;
 			uint16_t currByte = currLineFirstByte;
-			currPalPixPtr = g_sdlHostScrMem.egaGfx + line*g_sdlTexWidth;
+            currPalPixPtrBase = g_sdlHostScrMem.egaGfx + line*g_sdlTexWidth;
 			currPalPixCachePtr = g_sdlHostScrMemCache.egaGfx + line*g_sdlTexWidth;
-			for (col = 0; col < g_sdlTexWidth; ++col, ++currPalPixPtr)
+            for (col = 0; col < g_sdlTexWidth; ++col, ++currPalPixPtrBase)
 			{
-				*currPalPixPtr = ((g_sdlVidMem.egaGfx[0][currByte]&currBitMask)>>currBitNum) |
+                *currPalPixPtrBase = ((g_sdlVidMem.egaGfx[0][currByte]&currBitMask)>>currBitNum) |
 				                 (((g_sdlVidMem.egaGfx[1][currByte]&currBitMask)>>currBitNum)<<1) |
 				                 (((g_sdlVidMem.egaGfx[2][currByte]&currBitMask)>>currBitNum)<<2) |
 				                 (((g_sdlVidMem.egaGfx[3][currByte]&currBitMask)>>currBitNum)<<3);
-				doUpdate |= (*currPalPixPtr != *currPalPixCachePtr);
-				*currPalPixCachePtr = *currPalPixPtr;
+                doUpdate |= (*currPalPixPtrBase != *currPalPixCachePtr);
+                *currPalPixCachePtr = *currPalPixPtrBase;
 				if (currBitNum == 0)
 				{
 					++currByte;
@@ -1507,16 +1508,16 @@ void BEL_ST_UpdateHostDisplay(SDL_Surface *sfc)
 				if (col == 8*g_sdlLineWidth)
 				{
 					++col;
-					++currPalPixPtr;
+                    ++currPalPixPtrBase;
 					++currPalPixCachePtr;
 					break;
 				}
 			}
 			// Just if this makes sense... (FIXME: Check!)
-			for (; col < g_sdlTexWidth; ++col, ++currPalPixPtr, ++currPalPixCachePtr)
+            for (; col < g_sdlTexWidth; ++col, ++currPalPixPtrBase, ++currPalPixCachePtr)
 			{
 				doUpdate |= (*currPalPixCachePtr);
-				*currPalPixPtr = 0;
+                *currPalPixPtrBase = 0;
 				*currPalPixCachePtr = 0;
 			}
 			if (g_sdlSplitScreenLine == line)
@@ -1544,23 +1545,41 @@ void BEL_ST_UpdateHostDisplay(SDL_Surface *sfc)
 			{
 				g_sdlDoRefreshGfxOutput = false;
 				if (g_sdlForceGfxControlUiRefresh)
-					BEL_ST_FinishHostDisplayUpdate();
+                       BEL_ST_FinishHostDisplayUpdate();
 				return;
 			}
 		}
-		void *pixels;
-		int pitch;
-		SDL_LockTexture(g_sdlTexture, NULL, &pixels, &pitch);
-		uint32_t *currPixPtr = (uint32_t *)pixels;
-		currPalPixPtr = g_sdlHostScrMem.egaGfx;
-		for (int pixnum = 0; pixnum < g_sdlTexWidth*GFX_TEX_HEIGHT; ++pixnum, ++currPixPtr, ++currPalPixPtr)
+        void *pixels = sfc->pixels;
+        //int pitch;
+        //SDL_LockTexture(g_sdlTexture, NULL, &pixels, &pitch);
+        uint32_t *currPixPtrBase = (uint32_t *)pixels;
+        currPalPixPtrBase = g_sdlHostScrMem.egaGfx;
+        /*for (int pixnum = 0; pixnum < GFX_TEX_WIDTH*GFX_TEX_HEIGHT; ++pixnum, ++currPixPtr, ++currPalPixPtr)
 		{
 			*currPixPtr = g_sdlEGACurrBGRAPaletteAndBorder[*currPalPixPtr];
-		}
+        }*/
+
+        uint32_t ratioW = (sfc->w)/(GFX_TEX_WIDTH);
+        uint32_t ratioH = (sfc->h)/(GFX_TEX_HEIGHT);
+        //uint32_t bpp = sfc->format->BytesPerPixel;
+        uint8_t *currPalPixPtr = currPalPixPtrBase;
+        //for(uint32_t pix=0 ; pix < sfc->w*sfc->h ; pix++ )
+        for(uint32_t pixY=0 ; pixY < sfc->h ; pixY++ )
+        {
+            uint32_t *currPixPtr = currPixPtrBase + pixY*sfc->w;
+
+            for(uint32_t pixX=0 ; pixX < sfc->w ; pixX++ )
+            {
+                //uint32_t *currPixPtr = currPixPtrBase + pix;
+                currPalPixPtr = currPalPixPtrBase + (pixY/ratioH)*GFX_TEX_WIDTH + pixX/ratioW;
+                *currPixPtr = g_sdlEGACurrBGRAPaletteAndBorder[*currPalPixPtr];
+                currPixPtr++;
+            }
+        }
 	}
 
 	g_sdlDoRefreshGfxOutput = false;
-	SDL_UnlockTexture(g_sdlTexture);
+    /*SDL_UnlockTexture(g_sdlTexture);
 
     SDL_SetRenderDrawColor(g_sdlRenderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
 	SDL_RenderClear(g_sdlRenderer);
@@ -1577,9 +1596,9 @@ void BEL_ST_UpdateHostDisplay(SDL_Surface *sfc)
 	{
         //SDL_RenderCopy(g_sdlRenderer, g_sdlTexture, NULL, &g_sdlAspectCorrectionRect);
         SDL_RenderCopy(g_sdlRenderer, g_sdlTexture, NULL, NULL);
-	}
+    }*/
 
     SDL_UnlockSurface(sfc);
 
-	BEL_ST_FinishHostDisplayUpdate();
+    //BEL_ST_FinishHostDisplayUpdate();
 }
