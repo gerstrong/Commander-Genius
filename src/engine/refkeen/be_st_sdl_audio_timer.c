@@ -1,15 +1,26 @@
 // TODO: Big TODO: Rework this routine so it better fits to CG.
 // A lot of stuff, especially audio is already defined at other parts
 
-#if 0
+
 
 #include "SDL.h"
 
+static uint32_t g_sdlTicksOffset = 0;
+
+#define PC_PIT_RATE 1193182
+
+static uint32_t g_sdlTimeCount = 0;
+
+// A variable used for timing measurements
+static uint32_t g_sdlLastTicks;
+
+
+#if 0
 #include "be_cross.h"
 #include "be_st.h"
 #include "opl/dbopl.h"
 
-#define PC_PIT_RATE 1193182
+
 
 static SDL_mutex* g_sdlCallbackMutex = NULL;
 static SDL_AudioSpec g_sdlAudioSpec;
@@ -53,8 +64,6 @@ static uint32_t g_sdlBeepHalfCycleCounter, g_sdlBeepHalfCycleCounterUpperBound;
 // PIT timer divisor
 static uint32_t g_sdlScaledTimerDivisor;
 
-// A variable used for timing measurements
-static uint32_t g_sdlLastTicks;
 
 
 // A PRIVATE TimeCount variable we store
@@ -612,24 +621,12 @@ void BE_ST_SetTimer(uint16_t speed, bool isALMusicOn)
 	g_sdlScaledTimerDivisor = isALMusicOn ? (speed*8) : (speed*2);
 }
 
-static uint32_t g_sdlTicksOffset = 0;
+
 void BEL_ST_UpdateHostDisplay(void);
 void BEL_ST_TicksDelayWithOffset(int sdltickstowait);
 void BEL_ST_TimeCountWaitByPeriod(int16_t timetowait);
 
-uint32_t BE_ST_GetTimeCount(void)
-{
-	// FIXME: What happens when SDL_GetTicks() reaches the upper bound?
-	// May be challenging to fix... A proper solution should
-	// only work with *differences between SDL_GetTicks values*.
 
-	// WARNING: This must have offset subtracted! (So the game "thinks" it gets the correct (but actually delayed) TimeCount value)
-	uint32_t currOffsettedSdlTicks = SDL_GetTicks() - g_sdlTicksOffset;
-	uint32_t ticksToAdd = (uint64_t)currOffsettedSdlTicks * (uint64_t)PC_PIT_RATE / (1000*g_sdlScaledTimerDivisor) - (uint64_t)g_sdlLastTicks * (uint64_t)PC_PIT_RATE / (1000*g_sdlScaledTimerDivisor);
-	g_sdlTimeCount += ticksToAdd;
-	g_sdlLastTicks = currOffsettedSdlTicks;
-	return g_sdlTimeCount;
-}
 
 void BE_ST_SetTimeCount(uint32_t newcount)
 {
@@ -744,3 +741,18 @@ void BEL_ST_TicksDelayWithOffset(int sdltickstowait)
 	g_sdlTicksOffset = (currSdlTicks - nextSdlTicks);
 }
 #endif
+
+uint32_t BE_ST_GetTimeCount(void)
+{
+    // FIXME: What happens when SDL_GetTicks() reaches the upper bound?
+    // May be challenging to fix... A proper solution should
+    // only work with *differences between SDL_GetTicks values*.
+
+    // WARNING: This must have offset subtracted! (So the game "thinks" it gets the correct (but actually delayed) TimeCount value)
+    uint32_t currOffsettedSdlTicks = SDL_GetTicks() - g_sdlTicksOffset;
+    //uint32_t ticksToAdd = (uint64_t)currOffsettedSdlTicks * (uint64_t)PC_PIT_RATE / (1000*g_sdlScaledTimerDivisor) - (uint64_t)g_sdlLastTicks * (uint64_t)PC_PIT_RATE / (1000*g_sdlScaledTimerDivisor);
+    uint32_t ticksToAdd = currOffsettedSdlTicks;
+    g_sdlTimeCount += ticksToAdd;
+    g_sdlLastTicks = currOffsettedSdlTicks;
+    return g_sdlTimeCount;
+}
