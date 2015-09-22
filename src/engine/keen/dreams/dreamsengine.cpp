@@ -126,12 +126,14 @@ extern	uint8_t	*audiodict;
 extern char *gametext, *context, *story;
 
 
+extern SDL_Surface *gpBlitSfc;
+
+
 void BEL_ST_UpdateHostDisplay(SDL_Surface *sfc);
 
 void BE_ST_PollEvents(SDL_Event event);
 
 }
-
 
 
 void setupObjOffset()
@@ -422,6 +424,7 @@ void DreamsEngine::InitGame()
 
 void DreamsEngine::start()
 {
+    gpBlitSfc = gVideoDriver.getBlitSurface();
     dreamsengine_datapath = const_cast<char*>(mDataPath.c_str());
 
     // This function extracts the embedded files. TODO: We should integrate that to our existing system

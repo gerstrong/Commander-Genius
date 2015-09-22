@@ -70,6 +70,8 @@ static int g_sdlTxtCursorPosX, g_sdlTxtCursorPosY;
 static bool g_sdlTxtCursorEnabled = true;
 static int g_sdlTxtColor = 7, g_sdlTxtBackground = 0;
 
+SDL_Surface *gpBlitSfc;
+
 /*** Game controller UI resource definitions ***/
 
 //#include "../rsrc/pad_font_mono.xpm"
@@ -193,7 +195,7 @@ void BE_ST_InitGfx(void)
 		//Destroy window?
 		exit(0);
     }*/
-	BE_ST_SetScreenMode(3); // Includes SDL_Texture handling and output rects preparation
+	BE_ST_SetScreenMode(3); // Includes SDL_Texture handling and output rects preparation    
 }
 
 void BE_ST_ShutdownGfx(void)
@@ -1103,8 +1105,8 @@ void BE_ST_SetScreenMode(int mode)
 		break;
 	}
 	g_sdlScreenMode = mode;
-	BE_ST_SetGfxOutputRects();
-    BEL_ST_RecreateTexture();
+
+    SDL_FillRect(gpBlitSfc, NULL, SDL_MapRGB( gpBlitSfc->format, 0, 0, 0 ));
 }
 
 void BE_ST_textcolor(int color)
