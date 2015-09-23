@@ -936,7 +936,7 @@ void CA_LoadAllSounds (void)
 	for (i=0;i<NUMSOUNDS;i++,start++)
 		if (audiosegs[start])
 			MM_SetPurge((memptr *)&audiosegs[start],3);		// make purgable
-/*
+
 cachein:
 
     switch (SoundMode)
@@ -958,7 +958,7 @@ cachein:
 	for (i=0;i<NUMSOUNDS;i++,start++)
 		CA_CacheAudioChunk (start);
 
-    oldsoundmode = SoundMode;*/
+    oldsoundmode = SoundMode;
 }
 
 //===========================================================================
