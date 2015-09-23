@@ -15,6 +15,10 @@ static uint32_t g_sdlTimeCount = 0;
 static uint32_t g_sdlLastTicks;
 
 
+// PIT timer divisor
+static uint32_t g_sdlScaledTimerDivisor;
+
+
 #if 0
 #include "be_cross.h"
 #include "be_st.h"
@@ -61,8 +65,6 @@ static bool g_sdlPCSpeakerOn = false;
 static int16_t g_sdlCurrentBeepSample;
 static uint32_t g_sdlBeepHalfCycleCounter, g_sdlBeepHalfCycleCounterUpperBound;
 
-// PIT timer divisor
-static uint32_t g_sdlScaledTimerDivisor;
 
 
 
@@ -742,6 +744,19 @@ void BEL_ST_TicksDelayWithOffset(int sdltickstowait)
 }
 #endif
 
+// Here, the actual rate is about 1193182Hz/speed
+// NOTE: isALMusicOn is irrelevant for Keen Dreams (even with its music code)
+void BE_ST_SetTimer(uint16_t speed, int isALMusicOn)
+{
+    //g_sdlSamplePerPart = (int32_t)speed * g_sdlAudioSpec.freq / PC_PIT_RATE;
+    // In the original code, the id_sd.c:SDL_t0Service callback
+    // is responsible for incrementing TimeCount at a given rate
+    // (~70Hz), although the rate in which the service itself is
+    // 560Hz with music on and 140Hz otherwise.
+    g_sdlScaledTimerDivisor = isALMusicOn ? (speed*8) : (speed*2);
+}
+
+
 uint32_t BE_ST_GetTimeCount(void)
 {
     // FIXME: What happens when SDL_GetTicks() reaches the upper bound?
@@ -750,8 +765,7 @@ uint32_t BE_ST_GetTimeCount(void)
 
     // WARNING: This must have offset subtracted! (So the game "thinks" it gets the correct (but actually delayed) TimeCount value)
     uint32_t currOffsettedSdlTicks = SDL_GetTicks() - g_sdlTicksOffset;
-    //uint32_t ticksToAdd = (uint64_t)currOffsettedSdlTicks * (uint64_t)PC_PIT_RATE / (1000*g_sdlScaledTimerDivisor) - (uint64_t)g_sdlLastTicks * (uint64_t)PC_PIT_RATE / (1000*g_sdlScaledTimerDivisor);
-    uint32_t ticksToAdd = currOffsettedSdlTicks;
+    uint32_t ticksToAdd = (uint64_t)currOffsettedSdlTicks * (uint64_t)PC_PIT_RATE / (1000*g_sdlScaledTimerDivisor) - (uint64_t)g_sdlLastTicks * (uint64_t)PC_PIT_RATE / (1000*g_sdlScaledTimerDivisor);
     g_sdlTimeCount += ticksToAdd;
     g_sdlLastTicks = currOffsettedSdlTicks;
     return g_sdlTimeCount;
