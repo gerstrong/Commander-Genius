@@ -624,7 +624,7 @@ void BE_ST_SetTimer(uint16_t speed, bool isALMusicOn)
 }
 
 
-void BEL_ST_UpdateHostDisplay(void);
+//void BEL_ST_UpdateHostDisplay(void);
 void BEL_ST_TicksDelayWithOffset(int sdltickstowait);
 void BEL_ST_TimeCountWaitByPeriod(int16_t timetowait);
 
@@ -675,6 +675,7 @@ void BEL_ST_TimeCountWaitByPeriod(int16_t timetowait)
 	BEL_ST_TicksDelayWithOffset(nextSdlTicks-SDL_GetTicks());
 }
 
+#endif
 
 void BE_ST_WaitVBL(int16_t number)
 {
@@ -700,7 +701,7 @@ void BE_ST_WaitVBL(int16_t number)
 	BEL_ST_TicksDelayWithOffset(nextSdlTicks-currSdlTicks);
 }
 
-#endif
+
 
 // Call during a busy loop of some unknown duration (e.g., waiting for key press/release)
 void BE_ST_ShortSleep(void)
@@ -711,12 +712,15 @@ void BE_ST_ShortSleep(void)
     BE_ST_PollEvents();
 }
 
-#if 0
+
 
 void BE_ST_Delay(uint16_t msec) // Replacement for delay from dos.h
 {
 	BEL_ST_TicksDelayWithOffset(msec);
 }
+
+
+extern SDL_Surface *gpBlitSfc;
 
 void BEL_ST_TicksDelayWithOffset(int sdltickstowait)
 {
@@ -731,7 +735,7 @@ void BEL_ST_TicksDelayWithOffset(int sdltickstowait)
 		return;
 	}
 	uint32_t nextSdlTicks = SDL_GetTicks() + sdltickstowait - g_sdlTicksOffset;
-	BEL_ST_UpdateHostDisplay();
+    BEL_ST_UpdateHostDisplay(gpBlitSfc);
 	BE_ST_PollEvents();
 	uint32_t currSdlTicks = SDL_GetTicks();
 	while ((int32_t)(currSdlTicks - nextSdlTicks) < 0)
@@ -742,7 +746,7 @@ void BEL_ST_TicksDelayWithOffset(int sdltickstowait)
 	} 
 	g_sdlTicksOffset = (currSdlTicks - nextSdlTicks);
 }
-#endif
+
 
 // Here, the actual rate is about 1193182Hz/speed
 // NOTE: isALMusicOn is irrelevant for Keen Dreams (even with its music code)

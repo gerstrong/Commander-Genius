@@ -400,7 +400,7 @@ void Quit (const id0_char_t *error)
 #ifndef REFKEEN_VER_KDREAMS_CGA_ALL
 	if (refkeen_current_gamever == BE_GAMEVER_KDREAMSE113)
 #endif
-	{
+    /*{
 		id0_argc = 2;
 		id0_argv[1] = "LAST.SHL";
 		id0_argv[2] = "ENDSCN.SCN";
@@ -410,7 +410,7 @@ void Quit (const id0_char_t *error)
 		//	Quit("Couldn't find executable LOADSCN.EXE.\n");
 		void loadscn2_main(int argc, const char **argv);
 		loadscn2_main(id0_argc+1, id0_argv);
-	}
+    }*/
 #endif
 
 #if (defined REFKEEN_VER_KDREAMS_CGA_ALL) && (defined CATALOG)
