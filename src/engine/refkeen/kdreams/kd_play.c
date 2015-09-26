@@ -152,6 +152,8 @@ id0_int_t			fadecount;
 
 id0_boolean_t		bombspresent;
 
+id0_boolean_t		openedStatusWindow;
+
 id0_boolean_t		lumpneeded[NUMLUMPS];
 id0_int_t			lumpstart[NUMLUMPS] =
 {
@@ -238,9 +240,9 @@ void CheckKeys (void)
 //
 // space for status screen
 //
-	if (Keyboard[sc_Space])
+    if (Keyboard[sc_Space])
 	{
-		StatusWindow ();
+        openedStatusWindow = true;
 		IN_ClearKeysDown();
 		RF_ForceRefresh();
 		lasttimecount = SD_GetTimeCount();
@@ -1549,13 +1551,36 @@ void PlayLoop (void)
 	FixScoreBox ();					// draw bomb/flower
 
 	do
-	{
+    {
 		CalcSingleGravity ();
 		IN_ReadControl(0,&c);		// get player input
 		if (!c.button0)
 			button0held = 0;
 		if (!c.button1)
 			button1held = 0;
+
+
+        // Status screen code in which you have to press a key to close.
+        // Also it will render correctly
+        if(openedStatusWindow)
+        {
+           StatusWindow();
+
+           if(c.button0 || c.button1 || Keyboard[sc_Space])
+           {
+               openedStatusWindow = false;
+               RF_ForceRefresh();
+
+               lasttimecount = SD_GetTimeCount();
+               IN_ClearKeysDown();
+           }
+
+           RF_Refresh(false);
+
+           continue;
+        }
+
+
 
 //
 // go through state changes and propose movements
@@ -1653,7 +1678,8 @@ void PlayLoop (void)
 // update the screen and calculate the number of tics it took to execute
 // this cycle of events (for adaptive timing of next cycle)
 //
-		RF_Refresh();
+        RF_Refresh(true);
+
 
 //
 // single step debug mode
@@ -1665,6 +1691,7 @@ void PlayLoop (void)
 		}
 
 		CheckKeys();
+
 	} while (!loadedgame && !playstate);
 
 	ingame = false;
@@ -1870,6 +1897,8 @@ void GameLoop (void)
 
 	gamestate.difficulty = restartgame;
 	restartgame = gd_Continue;
+
+    openedStatusWindow = false;
 
 	do
 	{

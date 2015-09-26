@@ -186,7 +186,7 @@ INL_KeyService(id0_byte_t k)
 
 // DEBUG - handle special keys: ctl-alt-delete, print scrn
 
-			Keyboard[k] = false;
+            Keyboard[k] = false;
 		}
 		else			// Make code
 		{

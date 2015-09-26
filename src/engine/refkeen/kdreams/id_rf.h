@@ -136,7 +136,7 @@ void RF_PlaceSprite (void **user,id0_unsigned_t globalx,id0_unsigned_t globaly,
 	id0_unsigned_t spritenumber, drawtype draw, id0_int_t priority);
 void RF_RemoveSprite (void **user);
 
-void RF_Refresh (void);
+void RF_Refresh (int updateGraphics);
 void RF_ForceRefresh (void);
 void RF_SetRefreshHook (void (*func) (void) );
 

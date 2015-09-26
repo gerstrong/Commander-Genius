@@ -957,8 +957,8 @@ void	RFL_NewRow (id0_int_t dir)
 void RF_ForceRefresh (void)
 {
 	RF_NewPosition (originxglobal,originyglobal);
-	RF_Refresh ();
-	RF_Refresh ();
+    RF_Refresh (true);
+    RF_Refresh (true);
 }
 
 
@@ -1641,31 +1641,34 @@ redraw:
 =====================
 */
 
-void RF_Refresh (void)
+void RF_Refresh (int updateGraphics)
 {
 	id0_byte_t	*newupdate;
 	id0_long_t	newtime;
 
 	updateptr = updatestart[otherpage];
 
-	RFL_AnimateTiles ();		// DEBUG
+    if(updateGraphics)
+    {
+        RFL_AnimateTiles ();		// DEBUG
 
-//
-// update newly scrolled on tiles and animated tiles from the master screen
-//
-	EGAWRITEMODE(1);
-	EGAMAPMASK(15);
-	RFL_UpdateTiles ();
-	RFL_EraseBlocks ();
+        //
+        // update newly scrolled on tiles and animated tiles from the master screen
+        //
+        EGAWRITEMODE(1);
+        EGAMAPMASK(15);
+        RFL_UpdateTiles ();
+        RFL_EraseBlocks ();
 
-//
-// Update is all 0 except where sprites have changed or new area has
-// been scrolled on.  Go through all sprites and update the ones that cover
-// a non 0 update tile
-//
-	EGAWRITEMODE(0);
-	RFL_UpdateSprites ();
+        //
+        // Update is all 0 except where sprites have changed or new area has
+        // been scrolled on.  Go through all sprites and update the ones that cover
+        // a non 0 update tile
+        //
+        EGAWRITEMODE(0);
+        RFL_UpdateSprites ();
 
+    }
 //
 // if the main program has a refresh hook set, call their function before
 // displaying the new page
