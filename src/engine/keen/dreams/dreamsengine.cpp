@@ -106,7 +106,7 @@ static const BE_GameVerDetails_T g_be_gamever_kdreamse113 = {
     BE_GAMEVER_KDREAMSE113
 };
 
-extern void BEL_Cross_ConditionallyAddGameInstallation(const BE_GameVerDetails_T *details, const char *searchdir, const char *descStr);
+//extern void BEL_Cross_ConditionallyAddGameInstallation(const BE_GameVerDetails_T *details, const char *searchdir, const char *descStr);
 
 
 

@@ -675,7 +675,7 @@ static bool BEL_Cross_CheckGameFileDetails(const BE_GameFileDetails_T *details, 
 
 
 // ***ASSUMPTION: descStr points to a C string literal which is never modified nor deleted!!!***
-void BEL_Cross_ConditionallyAddGameInstallation(const BE_GameVerDetails_T *details, const char *searchdir, const char *descStr)
+/*void BEL_Cross_ConditionallyAddGameInstallation(const BE_GameVerDetails_T *details, const char *searchdir, const char *descStr)
 {
 	for (const BE_GameFileDetails_T *fileDetailsBuffer = details->reqFiles; fileDetailsBuffer->filename; ++fileDetailsBuffer)
 		if (!BEL_Cross_CheckGameFileDetails(fileDetailsBuffer, searchdir))
@@ -764,7 +764,7 @@ void BEL_Cross_ConditionallyAddGameInstallation(const BE_GameVerDetails_T *detai
 
     free(decompexebuffer);
 }
-
+*/
 
 // Opens file for reading from a "search path" in a case-insensitive manner
 BE_FILE_T BE_Cross_open_for_reading(const char *filename)
