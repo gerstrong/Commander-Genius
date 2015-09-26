@@ -20,11 +20,9 @@
 extern "C"
 {
 
-//void kdreams_exe_main(void);
 
 #include "../../refkeen/kdreams/kd_def.h"
 
-//void MM_Startup (void);
 
 char *dreamsengine_datapath = nullptr;
 

@@ -34,9 +34,9 @@ static void show_command_line_help()
 }
 
 //int main(int argc, char **argv)
-int refkeen_main(int argc, char **argv)
+/*int refkeen_main(int argc, char **argv)
 {
-	BE_ST_InitAll();
+    //BE_ST_InitAll();
 	// Parse arguments
 	bool showHelp = false;
 #ifdef REFKEEN_VER_CATADVENTURES
@@ -149,3 +149,4 @@ int refkeen_main(int argc, char **argv)
 	BE_ST_ShutdownAll();
 	return 0;
 }
+*/

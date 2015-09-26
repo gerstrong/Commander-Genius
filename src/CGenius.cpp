@@ -44,10 +44,6 @@
 #include "sdl/audio/Audio.h"
 
 
-extern "C"
-{
-int refkeen_main(int argc, char **argv);
-}
 
 /**
  * \brief  This is the function where CG beings

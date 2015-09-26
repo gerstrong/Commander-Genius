@@ -3,7 +3,10 @@ include_directories(${SDL_INCLUDE_DIR})
 
 add_subdirectory(galaxy)
 add_subdirectory(vorticon)
+
+if(REFKEEN)
 add_subdirectory(dreams)
+endif()
 
 add_library(engine_keen OBJECT KeenEngine.cpp KeenEngine.h)
 

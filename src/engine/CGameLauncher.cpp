@@ -729,10 +729,12 @@ void CGameLauncher::ponderPatchDialog()
                     {
                         gEventManager.add( new StartGalaxyEngine(false, episode, DataDirectory) );
                     }
+#ifdef REFKEEN
                     else if(episode == 7)
                     {
                         gEventManager.add( new StartDreamsEngine(false, DataDirectory) );
                     }
+#endif
 
                 }
 

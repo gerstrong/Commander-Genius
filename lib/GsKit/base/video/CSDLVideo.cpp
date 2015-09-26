@@ -12,10 +12,12 @@
 #include "graphics/GsGraphics.h"
 
 // For RefKeen
+#if SDL_VERSION_ATLEAST(2, 0, 0)
 extern "C"
 {
     extern SDL_Renderer *g_sdlRenderer;
 }
+#endif
 
 CSDLVideo::CSDLVideo(const CVidConfig& VidConfig) :
 CVideoEngine(VidConfig)

@@ -16,7 +16,10 @@
 static void (*g_sdlKeyboardInterruptFuncPtr)(uint8_t) = 0;
 
 static SDL_Joystick *g_sdlJoysticks[BE_ST_MAXJOYSTICKS];
+
+#if SDL_VERSION_ATLEAST(2, 0, 0)
 static SDL_GameController *g_sdlControllers[BE_ST_MAXJOYSTICKS];
+#endif
 
 typedef enum { CONTROLSCHEMEMAP_TYPE_KEYVAL = 0, CONTROLSCHEMEMAP_TYPE_HELPER } SchemeMapTypeEnumT;
 enum { CONTROLSCHEMEMAP_HELPER_FUNCKEYS, CONTROLSCHEMEMAP_HELPER_SCROLLS };
@@ -29,13 +32,17 @@ typedef struct {
 typedef enum { CONTROLSCHEME_DEFAULT, CONTROLSCHEME_FACE, CONTROLSCHEME_PAGE, CONTROLSCHEME_MENU, CONTROLSCHEME_GAME, CONTROLSCHEME_INPUTWAIT, CONTROLSCHEME_TEXTINPUT } SchemeTypeEnumT;
 
 typedef struct {
+
+#if SDL_VERSION_ATLEAST(2, 0, 0)
 	BESDLControllerMapEntry buttonsMap[SDL_CONTROLLER_BUTTON_MAX];
 	BESDLControllerMapEntry axesMap[SDL_CONTROLLER_AXIS_MAX][2];
+#endif
 	SchemeTypeEnumT schemeType;
 	// Misc. buffer that may be useful in case of calling pop function
 	char miscBuffer[9];
 } BESDLControllerMap;
 
+#if SDL_VERSION_ATLEAST(2, 0, 0)
 /*** These represent button states (pressed/released), although a call to BEL_ST_AltControlScheme_CleanUp zeros these out ***/
 static bool g_sdlControllersButtonsStates[BE_ST_MAXJOYSTICKS][SDL_CONTROLLER_BUTTON_MAX];
 // We may optionally use analog axes as buttons (e.g., using stick as arrow keys, triggers as buttons)
@@ -45,6 +52,8 @@ static bool g_sdlControllersAxesStates[BE_ST_MAXJOYSTICKS][SDL_CONTROLLER_AXIS_M
 static bool g_sdlControllersActualButtonsStates[BE_ST_MAXJOYSTICKS][SDL_CONTROLLER_BUTTON_MAX];
 // We may optionally use analog axes as buttons (e.g., using stick as arrow keys, triggers as buttons)
 static bool g_sdlControllersActualAxesStates[BE_ST_MAXJOYSTICKS][SDL_CONTROLLER_AXIS_MAX][2];
+
+#endif
 
 #define NUM_OF_CONTROLLER_MAPS_IN_STACK 8
 
@@ -177,7 +186,7 @@ extern SDL_Window *g_sdlWindow;
 
 uint8_t g_sdlLastKeyScanCode;
 
-void BE_ST_InitGfx(void);
+//void BE_ST_InitGfx(void);
 void BE_ST_InitAudio(void);
 void BE_ST_ShutdownAudio(void);
 void BE_ST_ShutdownGfx(void);
@@ -198,7 +207,7 @@ void BE_ST_InitAll(void)
 	}
 
 	BEL_ST_ParseConfig();
-	BE_ST_InitGfx();
+//	BE_ST_InitGfx();
 //	BE_ST_InitAudio();
 	if (g_refKeenCfg.autolockCursor || (SDL_GetWindowFlags(g_sdlWindow) & SDL_WINDOW_FULLSCREEN))
 	{

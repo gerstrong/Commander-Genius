@@ -4,9 +4,12 @@
 #include "be_cross.h"
 #include "be_st.h"
 
+#if SDL_VERSION_ATLEAST(2, 0, 0)
 /*static*/ SDL_Window *g_sdlWindow;
 /*static*/ SDL_Renderer *g_sdlRenderer;
 /*static*/ SDL_Texture *g_sdlTexture, *g_sdlTargetTexture;
+#endif
+
 static SDL_Rect g_sdlAspectCorrectionRect, g_sdlAspectCorrectionBorderedRect;
 
 static bool g_sdlDoRefreshGfxOutput;
@@ -16,10 +19,6 @@ void BE_ST_MarkGfxForUpdate(void)
 {
 	g_sdlDoRefreshGfxOutput = true;
 }
-
-#if !SDL_VERSION_ATLEAST(2,0,0)
-#error "SDL <2.0 support is unimplemented!"
-#endif
 
 #define GFX_TEX_WIDTH 320
 #define GFX_TEX_HEIGHT 200
@@ -104,7 +103,11 @@ SDL_Surface *gpBlitSfc;
 static const int g_sdlControllerFaceButtonsTextLocs[] = {15, 34, 28, 21, 2, 21, 15, 8};
 
 static SDL_Rect g_sdlControllerFaceButtonsRect, g_sdlControllerDpadRect, g_sdlControllerTextInputRect;
+
+#if SDL_VERSION_ATLEAST(2, 0, 0)
 static SDL_Texture *g_sdlFaceButtonsTexture, *g_sdlDpadTexture, *g_sdlTextInputTexture;
+#endif
+
 static bool g_sdlFaceButtonsAreShown, g_sdlDpadIsShown, g_sdlTextInputUIIsShown;
 // With alternative game controllers scheme, all UI is hidden if no controller is connected
 bool g_sdlShowControllerUI;
@@ -115,6 +118,7 @@ static bool g_sdlTextInputIsKeyPressed, g_sdlTextInputIsShifted;
 
 void BE_ST_SetGfxOutputRects(void);
 
+/*
 void BE_ST_InitGfx(void)
 {
 #ifdef REFKEEN_VER_KDREAMS
@@ -182,7 +186,7 @@ void BE_ST_InitGfx(void)
 	{
 		BE_Cross_LogMessage(BE_LOG_MSG_ERROR, "Failed to create SDL2 window,\n%s\n", SDL_GetError());
 		exit(0);
-	}
+    }*/
 #ifdef REFKEEN_VER_ANY_CGA
 	// Vanilla Keen Dreams and Keen 4-6 have no VSync in the CGA builds
     //g_sdlRenderer = SDL_CreateRenderer(g_sdlWindow, g_refKeenCfg.sdlRendererDriver, SDL_RENDERER_ACCELERATED | ((g_refKeenCfg.vSync == VSYNC_ON) ? SDL_RENDERER_PRESENTVSYNC : 0));
@@ -195,11 +199,12 @@ void BE_ST_InitGfx(void)
 		//Destroy window?
 		exit(0);
     }*/
-	BE_ST_SetScreenMode(3); // Includes SDL_Texture handling and output rects preparation    
-}
+/*	BE_ST_SetScreenMode(3); // Includes SDL_Texture handling and output rects preparation
+}*/
 
 void BE_ST_ShutdownGfx(void)
 {
+#if SDL_VERSION_ATLEAST(2, 0, 0)
 	SDL_DestroyTexture(g_sdlFaceButtonsTexture);
 	g_sdlFaceButtonsTexture = NULL;
 	SDL_DestroyTexture(g_sdlDpadTexture);
@@ -214,6 +219,7 @@ void BE_ST_ShutdownGfx(void)
 	g_sdlRenderer = NULL;
 	SDL_DestroyWindow(g_sdlWindow);
 	g_sdlWindow = NULL;
+#endif
 }
 
 static void BEL_ST_RecreateTexture(void)

@@ -80,7 +80,7 @@ void BE_ST_TimeCountWaitFromSrc(uint32_t srctimecount, int16_t timetowait);
 void BE_ST_TimeCountWaitForDest(uint32_t dsttimecount);
 
 /*** Graphics ***/
-void BE_ST_InitGfx(void);
+//void BE_ST_InitGfx(void);
 void BE_ST_ShutdownGfx(void);
 void BE_ST_SetScreenStartAddress(uint16_t crtc);
 
