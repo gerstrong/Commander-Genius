@@ -5,8 +5,6 @@
  *      Author: gerstrong
  */
 
-//#include "engine/CEvent.h"
-//#include "engine/infoscenes/CInfoScene.h"
 #include "mode/CGameMode.h"
 #include "CResourceLoader.h"
 

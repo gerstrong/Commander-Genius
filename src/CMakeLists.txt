@@ -3,9 +3,9 @@
 # http://www.cmake.org/Wiki/CMake_Useful_Variables
 
 OPTION(TOUCHCONTROLS "Touchcontrols support" No)
- 
+
 if(SDL2)
-    OPTION(OPENGL "OpenGL support" No)    
+    OPTION(OPENGL "OpenGL support" No)
 else()
     OPTION(OPENGL "OpenGL support" Yes)
 endif()
@@ -26,7 +26,7 @@ IF(NOT DEFINED BUILD_TARGET)
 IF(WIN32)
 	SET(BUILD_TARGET WIN32)
 		ADD_DEFINITIONS(-DWIN32)
-		ADD_DEFINITIONS(-DTARGET_WIN32)	
+		ADD_DEFINITIONS(-DTARGET_WIN32)
 ELSE(WIN32)
 	SET(BUILD_TARGET LINUX)
 ENDIF(WIN32)
@@ -45,7 +45,9 @@ include(oldArch.cmake)
 ADD_DEFINITIONS(-std=c++11)
 
 
-# Directory creation of all the chosen build 
+
+
+# Directory creation of all the chosen build
 #set(BUILD_BASE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Build")
 #set(BUILD_DIR "${BUILD_BASE_DIR}/${BUILD_TARGET}")
 #execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory ${BUILD_BASE_DIR})
@@ -66,10 +68,10 @@ IF (OGG)
     IF(BUILD_TARGET STREQUAL WIN32)
 	set(VORBIS_INCLUDE_DIR ${CMAKE_INCLUDE_PATH})
     ELSE(BUILD_TARGET STREQUAL WIN32)
-	FIND_PATH(VORBIS_INCLUDE_DIR vorbis/vorbisfile.h DOC "Include for Ogg Vorbis")	
+	FIND_PATH(VORBIS_INCLUDE_DIR vorbis/vorbisfile.h DOC "Include for Ogg Vorbis")
     ENDIF()
-    
-    SET(VORBIS_INCLUDE_PATH "${VORBIS_INCLUDE_DIR}/vorbis")	   
+
+    SET(VORBIS_INCLUDE_PATH "${VORBIS_INCLUDE_DIR}/vorbis")
     ADD_DEFINITIONS(-DOGG)
     INCLUDE_DIRECTORIES(${VORBIS_INCLUDE_PATH})
     INCLUDE_DIRECTORIES(${VORBIS_INCLUDE_DIR})
@@ -114,12 +116,12 @@ FIND_PACKAGE(Boost)
 IF (Boost_FOUND)
 	INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIR})
 	ADD_DEFINITIONS( "-DHAS_BOOST" )
-ENDIF()	
+ENDIF()
 
 if(USE_SDL2)
-   
+
     IF(WIN32)
-      include(FindSDL2 OPTIONAL)	
+      include(FindSDL2 OPTIONAL)
     else()
       INCLUDE(FindPkgConfig)
       PKG_SEARCH_MODULE(SDL2 REQUIRED sdl2)
@@ -129,10 +131,10 @@ if(USE_SDL2)
     if(SDL2_FOUND)
         message(STATUS "Using shared SDL Version 2 for Commander Genius")
         include_directories(${SDL2_INCLUDE_DIRS})
-        include_directories(${SDL2IMAGE_INCLUDE_DIRS})        
-        
+        include_directories(${SDL2IMAGE_INCLUDE_DIRS})
+
         #include_directories(${SDL2_NET_INCLUDE_DIRS})
-               
+
         include_directories(/usr/include/SDL2/)
     endif(SDL2_FOUND)
 
@@ -169,7 +171,8 @@ IF (TOUCHCONTROLS)
 ENDIF (TOUCHCONTROLS)
 
 
-MESSAGE( STATUS "DOSBox-Fusion: ${DBFUSION}" )	
+MESSAGE( STATUS "DOSBox-Fusion: ${DBFUSION}" )
+MESSAGE( STATUS "Refkeen for Keen Dreams: ${REFKEEN}" )
 
 if(DBFUSION)
 	if(WIN32)
@@ -191,16 +194,20 @@ get_property(cg_obj_libs GLOBAL PROPERTY CG_OBJ_LIBS)
 # Add executable Commander Genius
 add_executable (CGeniusExe CGenius.cpp fileio.cpp misc.cpp ${cg_obj_libs})
 
+# Since some RefKeen is used, we also need C99 Standard
+set_property(TARGET CGeniusExe PROPERTY C_STANDARD 99)
+
+
 # Link GsKit
-target_link_libraries (CGeniusExe GsKit) 
+target_link_libraries (CGeniusExe GsKit)
 
 
 if(USE_SDL2)
         target_link_libraries(CGeniusExe ${SDL2_LIBRARIES})
         target_link_libraries(CGeniusExe ${SDL2IMAGE_LIBRARIES})
-        
+
 else(USE_SDL2)
-        # SDL stuff to link        
+        # SDL stuff to link
         target_link_libraries(CGeniusExe ${SDL_NET_LIBRARIES})
         target_link_libraries(CGeniusExe ${SDL_LIBRARY})
         target_link_libraries(CGeniusExe ${SDL_IMAGE_LIBRARY})
@@ -223,7 +230,7 @@ IF(OGG)
 		TARGET_LINK_LIBRARIES(CGeniusExe vorbisfile vorbis ogg)
 	else(WIN32)
 		TARGET_LINK_LIBRARIES(CGeniusExe vorbis vorbisfile)
-	endif(WIN32)		
+	endif(WIN32)
 ENDIF(OGG)
 
 IF(TREMOR)
@@ -239,18 +246,18 @@ IF(WIN32)
 #	ADD_CUSTOM_COMMAND(TARGET CGeniusExe PRE_LINK COMMAND cp ${CMAKE_CURRENT_SOURCE_DIR}/src/CGLogo.rc ${CMAKE_CURRENT_SOURCE_DIR}/CGLogo.rc )
 #	ADD_CUSTOM_COMMAND(TARGET CGeniusExe PRE_LINK COMMAND ${mingw64dir}bin/icotool -c -o ${CMAKE_CURRENT_SOURCE_DIR}/CGLogo.ico ${CMAKE_CURRENT_SOURCE_DIR}/vfsroot/cglogo512.png )
 	ADD_CUSTOM_COMMAND(TARGET CGeniusExe PRE_LINK COMMAND windres ${CMAKE_CURRENT_SOURCE_DIR}/CGLogo.rc ${CMAKE_CURRENT_SOURCE_DIR}/CGLogo.o)
-	SET_TARGET_PROPERTIES(CGeniusExe PROPERTIES LINK_FLAGS "-mwindows ${CMAKE_CURRENT_SOURCE_DIR}/CGLogo.o")	
+	SET_TARGET_PROPERTIES(CGeniusExe PROPERTIES LINK_FLAGS "-mwindows ${CMAKE_CURRENT_SOURCE_DIR}/CGLogo.o")
 #	LINK_DIRECTORIES(/opt/mingw32/lib)
 	MESSAGE(STATUS "Will build with the CG-Icon for Windows." )
 ENDIF(WIN32)
 
-		
+
 
 # Only for SDL2 and Win32 since it is updated for that platform. SDL 1.2 must be tested in case someone wants to use it on windows
-if(WIN32)	
+if(WIN32)
 	target_link_libraries(CGeniusExe mingw32)
 	target_link_libraries(CGeniusExe user32)
-	target_link_libraries(CGeniusExe gdi32)		
+	target_link_libraries(CGeniusExe gdi32)
 	target_link_libraries(CGeniusExe SDL2Main SDL2)
 	target_link_libraries(CGeniusExe SDL2_image)
 	target_link_libraries(CGeniusExe winmm)
@@ -266,22 +273,21 @@ ENDIF(OPENGL)
 # Only if you want to use Dosfusion
 if(DBFUSION)
     #target_link_libraries(CGeniusExe SDL_sound)
-	
+
     target_link_libraries(CGeniusExe m)
     target_link_libraries(CGeniusExe png)
     target_link_libraries(CGeniusExe z)
-	
+
 	if(WIN32)
-		target_link_libraries(CGeniusExe SDL2_net)		
+		target_link_libraries(CGeniusExe SDL2_net)
 	else()
 		target_link_libraries(CGeniusExe asound)
-		target_link_libraries(CGeniusExe X11)	
+		target_link_libraries(CGeniusExe X11)
 		target_link_libraries(CGeniusExe pthread)
-		target_link_libraries(CGeniusExe dl)		
+		target_link_libraries(CGeniusExe dl)
 	endif(WIN32)
-	
+
 endif(DBFUSION)
 
 # Stuff definitions in case we want to install it
 INCLUDE(install.cmake)
-

@@ -17,10 +17,12 @@
 
 #include <base/CInput.h>
 #include <base/GsTimer.h>
-#include <base/utils/CVec.h>
+//#include <base/utils/CVec.h>
 #include <base/GsLogging.h>
 
 #include "../dialog/CMessageBoxBitmapGalaxy.h"
+
+#include "graphics/effects/CDimDark.h"
 
 namespace galaxy {
 
@@ -1421,7 +1423,7 @@ void CPlayerLevel::processLookingUp()
 
 
 
-// Processes the exiting of the player. Here all cases are held
+// Processes the exiting of the player. Here all default cases are held
 void CPlayerLevel::processExiting()
 {
 	Uint32 x = getXMidPos();
@@ -1429,6 +1431,8 @@ void CPlayerLevel::processExiting()
 	{
 		g_pSound->playSound( SOUND_LEVEL_DONE );
 		g_pMusicPlayer->stop();
+
+        gEffectController.setupEffect(new CDimDark(8));
 
         gEventManager.add( new EventExitLevel(mp_Map->getLevel(), true, false, mSprVar) );
         m_Inventory.Item.m_gem.clear();
@@ -1737,6 +1741,8 @@ void CPlayerLevel::processEnterDoor()
 		g_pMusicPlayer->stop();
 		g_pSound->playSound( SOUND_LEVEL_DONE );
 
+        gEffectController.setupEffect(new CDimDark(8));
+
         gEventManager.add( new EventExitLevel(mp_Map->getLevel(), true, mustTeleportOnMap, mSprVar) );
 				
 		dontdraw = true;
@@ -1748,6 +1754,7 @@ void CPlayerLevel::processEnterDoor()
 	{
 		//level_state = 2;
 		//o->action = ACTION_KEENENTEREDDOOR;
+        gEffectController.setupEffect(new CDimDark(8));
 		g_pMusicPlayer->stop();
 		g_pSound->playSound( SOUND_LEVEL_DONE );		
         gEventManager.add( new EventExitLevel(mp_Map->getLevel(), true, false, mSprVar) );
@@ -2617,6 +2624,8 @@ void CPlayerLevel::process()
         const std::string fuse_msg = g_pBehaviorEngine->getString( (specialLevel) ? "FUSE_WONDER" : "FUSE_CASUAL");
 
         g_pSound->playSound( SOUND_LEVEL_DONE );
+
+        gEffectController.setupEffect(new CDimDark(8));
 
         msgs.push_back( new CMessageBoxBitmapGalaxy(
                             fuse_msg,

@@ -403,7 +403,7 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
         m_LevelPlay.reloadLevel();
     }
     else if( const EventExitLevel *ev = dynamic_cast<const EventExitLevel*>(evPtr) )
-    {
+    {                
         m_LevelPlay.setActive(false);
         m_WorldMap.setActive(true);
         m_WorldMap.loadAndPlayMusic();
@@ -424,7 +424,7 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
 
     }
     else if( const EventExitLevelWithFoot *ev = dynamic_cast<const EventExitLevelWithFoot*>(evPtr) )
-    {
+    {        
         g_pMusicPlayer->stop();
         m_LevelPlay.setActive(false);
         m_WorldMap.setActive(true);

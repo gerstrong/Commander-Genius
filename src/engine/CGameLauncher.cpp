@@ -34,6 +34,7 @@
 
 #include "keen/vorticon/VorticonEngine.h"
 #include "keen/galaxy/GalaxyEngine.h"
+#include "keen/dreams/dreamsengine.h"
 #include "dbfusion/dbFusionNgine.h"
 
 bool disallowDBFusion = false;
@@ -76,9 +77,8 @@ CGameLauncher::~CGameLauncher()
 ////
 // Initialization Routine
 ////
-bool CGameLauncher::loadResources()
+bool CGameLauncher::setupMenu()
 {
-    //g_pBehaviorEngine->setEpisode(0);
     m_mustquit      = false;
     mDonePatchSelection = false;
     m_chosenGame    = -1;
@@ -86,8 +86,9 @@ bool CGameLauncher::loadResources()
     mLauncherDialog.initEmptyBackground();
     mSelection      = -1;
 
-    bool gamedetected = false;
+    bool gamesDetected = false;
 
+    // TODO: Put that scanning into a separate so we can show a loading menu
     // Scan for games...
     m_DirList.clear();
     m_Entries.clear();
@@ -98,13 +99,11 @@ bool CGameLauncher::loadResources()
     getLabels();
 
     // Scan VFS DIR_ROOT for exe's
-    if (scanExecutables(DIR_ROOT))
-        gamedetected = true;
+    gamesDetected |= scanExecutables(DIR_ROOT);
     mGameScanner.setPermilage(100);
 
     // Recursivly scan into DIR_GAMES subdir's for exe's
-    if (scanSubDirectories(DIR_GAMES, DEPTH_MAX_GAMES, 200, 900))
-        gamedetected = true;
+    gamesDetected |= scanSubDirectories(DIR_GAMES, DEPTH_MAX_GAMES, 200, 900);
 
     mpSelList = new CGUITextSelectionList();
 
@@ -187,7 +186,7 @@ bool CGameLauncher::loadResources()
 					"and the CG Contributors\n");
     mLauncherDialog.addControl( banner, GsRect<float>(0.0f, 0.95f, 1.0f, 0.05f) );
 
-    if(!gamedetected)
+    if(!gamesDetected)
         return false;
 
     const std::string gameDir = gArgs.getValue("dir");
@@ -234,7 +233,7 @@ bool CGameLauncher::scanSubDirectories(const std::string& path,
                                        const size_t startPermil,
                                        const size_t endPermil)
 {
-    bool gamedetected = false;
+    bool gamesDetected = false;
 
 	std::set<std::string> dirs;
 	FileListAdder fileListAdder;
@@ -257,15 +256,14 @@ bool CGameLauncher::scanSubDirectories(const std::string& path,
 	{
 		std::string newpath = path + '/' +  *i;
 
-		if(scanExecutables(newpath))
-			gamedetected = true;
+        gamesDetected |= scanExecutables(newpath);
 
         size_t lastPermil = permil + deltaPerMil;
         if(lastPermil>endPermil)
             lastPermil = endPermil;
 
         if(maxdepth > 1 && scanSubDirectories(newpath, maxdepth - 1, permil, lastPermil))
-			gamedetected = true;
+            gamesDetected = true;
 
         permil = lastPermil;
         mGameScanner.setPermilage(permil);
@@ -273,7 +271,7 @@ bool CGameLauncher::scanSubDirectories(const std::string& path,
 
     mGameScanner.setPermilage(endPermil);
 
-    return gamedetected;
+    return gamesDetected;
 }
 
 std::string CGameLauncher::filterGameName(const std::string &path)
@@ -304,7 +302,8 @@ bool CGameLauncher::scanExecutables(const std::string& path)
 
     gLogging.ftextOut("Search: %s<br>", path.c_str() );
 
-    for(int i = 1; i <= 6; ++i)
+    // Episode 1-6 and 7 stands for Keen Dreams
+    for(int i = 1; i <= 7; ++i)
     {
 		CExeFile executable;
 		// Load the exe into memory
@@ -394,7 +393,7 @@ void CGameLauncher::start()
 
         int handle()
         {
-            if(!mGameLauncher.loadResources())
+            if(!mGameLauncher.setupMenu())
             {
                 gLogging.textOut(RED,"No game can be launched, because game data files are missing.<br>");
                 return 0;
@@ -726,10 +725,16 @@ void CGameLauncher::ponderPatchDialog()
                     {
                         gEventManager.add( new StartVorticonEngine(false, episode, DataDirectory) );
                     }
-                    else if(episode >= 4 && episode <= 7)
+                    else if(episode >= 4 && episode <= 6)
                     {
                         gEventManager.add( new StartGalaxyEngine(false, episode, DataDirectory) );
                     }
+#ifdef REFKEEN
+                    else if(episode == 7)
+                    {
+                        gEventManager.add( new StartDreamsEngine(false, DataDirectory) );
+                    }
+#endif
 
                 }
 
@@ -902,14 +907,3 @@ void CGameLauncher::putLabels()
         gamescfg.close();
     }
 }
-
-
-////
-// Cleanup Routine
-////
-void CGameLauncher::cleanup()
-{
-    // destroy the menu
-
-}
-

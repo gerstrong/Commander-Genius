@@ -52,9 +52,9 @@ void CLogFile::CreateLogfile(const char *LogName,
     SDL_VERSION(&compiled);
     SDL_GetVersion(&linked);
 
-    ftextOut("We compiled against SDL version %d.%d.%d ...",
+    ftextOut("Compiled against SDL version %d.%d.%d ...",
            compiled.major, compiled.minor, compiled.patch);
-    ftextOut("But we are linking against SDL version %d.%d.%d.",
+    ftextOut("and linked against SDL version %d.%d.%d.",
            linked.major, linked.minor, linked.patch);
 #else
     ftextOut("Using SDL 1.2...");

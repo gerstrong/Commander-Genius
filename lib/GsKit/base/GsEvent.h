@@ -54,7 +54,7 @@ public:
 
     void unregSink(GsEventSink *pSink)
     {
-        // TODO: Code for unregistering the Sink
+        mSinkPtrList.remove(pSink);
     }
 
     void processSinks()

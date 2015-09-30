@@ -20,6 +20,7 @@ string(REGEX REPLACE "[\r\n]" "" CG_VERSION "${CG_VERSION}")
 # Generate the README file with the correct version string
 configure_file(README.in README)
 
+set(CMAKE_C_FLAGS "-std=c99")
 
 # Pass correct definition for SYSTEM_DATA_DIR so packager or distributors can decide where the app should land in
 if(UNIX)
