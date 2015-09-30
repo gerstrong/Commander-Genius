@@ -10,7 +10,7 @@
  */
 
 #include "CMessages.h"
-//#include "StringUtils.h"
+#include "base/utils/StringUtils.h"
 #include <base/GsLogging.h>
 #include "engine/core/CBehaviorEngine.h"
 
@@ -182,7 +182,7 @@ bool CMessages::extractEp5Strings(std::map<std::string, std::string>& StringMap)
             {
                 levelOffset += 0x30;
                 setDecodeOffset(levelOffset);
-                const std::string levelKey = "LEVEL" + std::to_string(i) + "_LOAD_TEXT";
+                const std::string levelKey = "LEVEL" + to_string(i) + "_LOAD_TEXT";
                 StringMap.insert( extractNextString( levelKey ) );
             }
 
