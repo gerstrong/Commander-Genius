@@ -74,7 +74,7 @@ void CExeFile::dumpFile(const std::string& filename)
 	ofile.write( reinterpret_cast<char*>(m_headerdata), m_datasize );
 }
 
-bool CExeFile::readData(const uint episode, const std::string& datadirectory)
+bool CExeFile::readData(const unsigned int episode, const std::string& datadirectory)
 {
     // TODO: It would be nice to gather a list of executables and by scanning it decide which episode will be played.
 
