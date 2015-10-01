@@ -176,9 +176,9 @@ bool CMessages::extractEp5Strings(std::map<std::string, std::string>& StringMap)
 			setDecodeOffset(0x201F0);
 			StringMap.insert( extractNextString( "WORLDMAP_LOAD_TEXT" ) );
 
-            uint levelOffset = 0x201F0;
+            unsigned int levelOffset = 0x201F0;
 
-            for(uint i=1 ; i<=18 ; i++)
+            for(unsigned int i=1 ; i<=18 ; i++)
             {
                 levelOffset += 0x30;
                 setDecodeOffset(levelOffset);

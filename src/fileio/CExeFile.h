@@ -47,7 +47,7 @@ public:
      * @param datadirectory path where the data is located
      * @return if everything went well true, otherwise false
      */
-    bool readData(const uint episode, const std::string& datadirectory);
+    bool readData(const unsigned int episode, const std::string& datadirectory);
 
 	/**
 	 * \brief Tells whether The Exe-File is supported by CG or not.
