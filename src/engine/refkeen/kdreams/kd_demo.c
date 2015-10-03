@@ -25,6 +25,9 @@
 
 //#pragma hdrstop
 
+// Set by the calle and changed, when a event forces to close the app.
+extern int gDreamsForceClose;
+
 #define RLETAG  0xABCD
 
 /*
@@ -851,6 +854,9 @@ DemoLoop (void)
 		FreeShape(&FileShape2);
 #endif
 		GameLoop();
+
+        if(gDreamsForceClose)
+            return;
 	}
 }
 #endif // VERSION

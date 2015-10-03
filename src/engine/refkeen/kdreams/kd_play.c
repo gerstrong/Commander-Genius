@@ -74,6 +74,9 @@ ControlInfo	c;
 
 objtype dummyobj;
 
+// Set by the calle and changed, when a event forces to close the app.
+extern int gDreamsForceClose;
+
 #ifdef REFKEEN_VER_KDREAMS_CGA_ALL
 const id0_char_t		*levelnames[21] =
 {
@@ -1681,6 +1684,9 @@ void PlayLoop (void)
         RF_Refresh(true);
 
 
+        if(gDreamsForceClose)
+            break;
+
 //
 // single step debug mode
 //
@@ -1934,6 +1940,9 @@ startlevel:
 
 
 		PlayLoop ();
+
+        if(gDreamsForceClose)
+            return;
 
 #if FRILLS
 		if (tedlevel)
