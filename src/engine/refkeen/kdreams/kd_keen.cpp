@@ -16,6 +16,10 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+extern "C"
+{
+
+
 // KD_KEEN.C
 
 #include "kd_def.h"
@@ -2508,3 +2512,4 @@ void	KeenSlideReact (objtype *ob)
 	PLACESPRITE;
 }
 
+}

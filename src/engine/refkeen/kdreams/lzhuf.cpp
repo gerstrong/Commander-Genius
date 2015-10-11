@@ -16,6 +16,10 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+extern "C"
+{
+
+
 //===========================================================================
 //
 //								 LZHUFF COMPRESSION ROUTINES
@@ -1077,3 +1081,5 @@ id0_long_t lzhCompress(void id0_far *infile, void id0_far *outfile,id0_unsigned_
 
 
 #endif
+
+}

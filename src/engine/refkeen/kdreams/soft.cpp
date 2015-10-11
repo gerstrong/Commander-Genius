@@ -16,6 +16,10 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+extern "C"
+{
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -540,6 +544,4 @@ memptr LoadLIBFile(const id0_char_t *LibName,const id0_char_t *FileName,memptr *
 	return(*MemPtr);
 }
 
-
-
-
+}

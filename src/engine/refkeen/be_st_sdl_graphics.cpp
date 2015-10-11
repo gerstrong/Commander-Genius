@@ -1,3 +1,7 @@
+extern "C"
+{
+
+
 #include <string.h>
 #include "SDL.h"
 
@@ -1609,4 +1613,6 @@ void BEL_ST_UpdateHostDisplay(SDL_Surface *sfc)
     SDL_UnlockSurface(sfc);
 
     //BEL_ST_FinishHostDisplayUpdate();
+}
+
 }

@@ -1,3 +1,7 @@
+
+extern "C"
+{
+
 #include <stdio.h>
 #include <string.h>
 #include "SDL.h"
@@ -41,6 +45,9 @@ typedef struct {
 	// Misc. buffer that may be useful in case of calling pop function
 	char miscBuffer[9];
 } BESDLControllerMap;
+
+
+void BE_ST_PollEvents() {}
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 /*** These represent button states (pressed/released), although a call to BEL_ST_AltControlScheme_CleanUp zeros these out ***/
@@ -1897,3 +1904,5 @@ uint16_t BE_ST_Compat_GetFarPtrRelocationSegOffset(void)
 	return g_refKeenCfg.farPtrSegOffset;
 }
 #endif
+
+}

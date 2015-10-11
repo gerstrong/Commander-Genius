@@ -16,6 +16,10 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+extern "C"
+{
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -129,4 +133,4 @@ id0_int_t ReadPtr(void **infile, id0_unsigned_t PtrType)
 }
 
 
-
+}

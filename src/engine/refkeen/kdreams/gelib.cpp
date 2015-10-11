@@ -16,6 +16,9 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+extern "C"
+{
+
 #include "kd_def.h"
 
 #define BIO_BUFFER_LEN	(512)
@@ -245,4 +248,6 @@ void MoveGfxDst(id0_short_t x, id0_short_t y)
 
 	address = (y*linewidth)+(x/8);
 	bufferofs = displayofs = address;
+}
+
 }

@@ -16,6 +16,10 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+extern "C"
+{
+
+
 // ID_CA.C
 
 /*
@@ -1893,4 +1897,6 @@ void RefKeen_Patch_id_ca(void)
 		tinfasmapfile->headeroffsets[i] = BE_Cross_Swap32LE(tinfasmapfile->headeroffsets[i]);
 	}
 #endif
+}
+
 }

@@ -16,6 +16,10 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+
+extern "C"
+{
+
 // KD_MAIN.C
 /*
 =============================================================================
@@ -734,3 +738,5 @@ void kdreams_exe_main (void)
     //Quit("Demo loop exited???");
 }
 
+
+}

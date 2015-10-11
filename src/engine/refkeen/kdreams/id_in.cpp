@@ -16,6 +16,10 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+extern "C"
+{
+
+
 //
 //	ID Engine
 //	ID_IN.c - Input Manager
@@ -1082,4 +1086,6 @@ IN_UserInput(id0_longword_t delay,id0_boolean_t clear)
 		}
 	} while (SD_GetTimeCount() - lasttime < delay);
 	return(false);
+}
+
 }

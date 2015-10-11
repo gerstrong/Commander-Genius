@@ -16,6 +16,10 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+extern "C"
+{
+
+
 //
 //	ID Engine
 //	ID_US.c - User Manager
@@ -589,13 +593,13 @@ US_TextScreen(void)
 	switch (refkeen_current_gamever)
 	{
 	case BE_GAMEVER_KDREAMSE113:
-#include "id_us_s_kdreams113.c"
+#include "id_us_s_kdreams113.cpp"
 		break;
 	case BE_GAMEVER_KDREAMSE193:
-#include "id_us_s_kdreams192andlater.c"
+#include "id_us_s_kdreams192andlater.cpp"
 		break;
 	case BE_GAMEVER_KDREAMSE120:
-#include "id_us_s_kdreams120.c"
+#include "id_us_s_kdreams120.cpp"
 		break;
 	}
 #endif // EGA/CGA
@@ -3966,4 +3970,6 @@ void RefKeen_Patch_id_us(void)
 	)
 		// Similarly we don't use Quit
 		BE_ST_ExitWithErrorMsg("RefKeen_Patch_id_us - Failed to load at least one file.");
+}
+
 }

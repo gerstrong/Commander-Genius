@@ -1,6 +1,8 @@
 // TODO: Big TODO: Rework this routine so it better fits to CG.
 // A lot of stuff, especially audio is already defined at other parts
 
+extern "C"
+{
 
 
 #include "SDL.h"
@@ -623,6 +625,7 @@ void BE_ST_SetTimer(uint16_t speed, bool isALMusicOn)
 	g_sdlScaledTimerDivisor = isALMusicOn ? (speed*8) : (speed*2);
 }
 
+#endif
 
 //void BEL_ST_UpdateHostDisplay(void);
 void BEL_ST_TicksDelayWithOffset(int sdltickstowait);
@@ -675,7 +678,7 @@ void BEL_ST_TimeCountWaitByPeriod(int16_t timetowait)
 	BEL_ST_TicksDelayWithOffset(nextSdlTicks-SDL_GetTicks());
 }
 
-#endif
+
 
 void BE_ST_WaitVBL(int16_t number)
 {
@@ -701,6 +704,8 @@ void BE_ST_WaitVBL(int16_t number)
 	BEL_ST_TicksDelayWithOffset(nextSdlTicks-currSdlTicks);
 }
 
+
+void BE_ST_PollEvents() {}
 
 
 // Call during a busy loop of some unknown duration (e.g., waiting for key press/release)
@@ -773,4 +778,6 @@ uint32_t BE_ST_GetTimeCount(void)
     g_sdlTimeCount += ticksToAdd;
     g_sdlLastTicks = currOffsettedSdlTicks;
     return g_sdlTimeCount;
+}
+
 }

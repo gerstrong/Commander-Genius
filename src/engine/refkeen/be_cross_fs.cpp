@@ -1,3 +1,7 @@
+extern "C"
+{
+
+
 #include <stdio.h>
 #include <stdint.h>
 #include <stdbool.h>
@@ -1271,4 +1275,6 @@ size_t BE_Cross_write_booleans_To16LEBuffer(BE_FILE_T fp, const bool *ptr, size_
 		}
 	}
 	return totalbyteswritten;
+}
+
 }

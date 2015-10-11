@@ -18,6 +18,10 @@
 
 // KD_PLAY.C
 
+extern "C"
+{
+
+
 #include "kd_def.h"
 //#pragma	hdrstop
 
@@ -1996,3 +2000,4 @@ done:
 	VW_ClearVideo (FIRSTCOLOR);
 }
 
+}

@@ -16,6 +16,10 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+extern "C"
+{
+
+
 // KD_ACT1.C
 #include "kd_def.h"
 //#pragma hdrstop
@@ -1506,4 +1510,6 @@ void BoobusAirReact (objtype *ob)
 		ChangeState (ob,&s_boobuswalk1);
 
 	PLACESPRITE;
+}
+
 }

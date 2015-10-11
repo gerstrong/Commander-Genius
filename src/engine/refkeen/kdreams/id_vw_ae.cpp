@@ -16,6 +16,10 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+extern "C"
+{
+
+
 #include "id_heads.h"
 
 //=================================
@@ -1814,3 +1818,5 @@ ENDP
 #endif // VW_DrawMPropString
 
 #endif // if fonts
+
+}

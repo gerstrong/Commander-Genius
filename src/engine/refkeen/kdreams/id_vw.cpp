@@ -18,6 +18,10 @@
 
 // ID_VW.C
 
+extern "C"
+{
+
+
 #include "id_heads.h"
 
 /*
@@ -1354,5 +1358,5 @@ void VWB_Vlin (id0_int_t y1, id0_int_t y2, id0_int_t x, id0_int_t color)
 		VW_Vlin(y1,y2,x,color);
 }
 
-
+}
 //===========================================================================

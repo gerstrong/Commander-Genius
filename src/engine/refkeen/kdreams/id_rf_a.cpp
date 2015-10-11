@@ -20,6 +20,10 @@
 
 // Ported from ASM
 
+extern "C"
+{
+
+
 #include "id_heads.h"
 
 //============================================================================
@@ -556,4 +560,6 @@ void RFL_MaskForegroundTiles (void)
 
 		iterationsToDo = 0xFFFF; // definitely scan the entire thing
 	} while (true);
+}
+
 }

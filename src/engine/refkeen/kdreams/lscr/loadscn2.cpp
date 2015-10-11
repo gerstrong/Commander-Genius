@@ -16,6 +16,10 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+extern "C"
+{
+
+
 #include <stdio.h>
 //#include <dos.h>
 //#include <mem.h>
@@ -578,3 +582,4 @@ static void TrashProg(const id0_char_t *OutMsg)
 	BE_ST_HandleExit(error);
 }
 
+}

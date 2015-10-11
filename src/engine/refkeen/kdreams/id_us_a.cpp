@@ -16,6 +16,10 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+extern "C"
+{
+
+
 #include <time.h>
 #include "id_heads.h"
 
@@ -100,4 +104,6 @@ id0_int_t US_RndT(void)
 {
 	rndindex = (rndindex+1)&0xFF;
 	return rndtable[rndindex];
+}
+
 }

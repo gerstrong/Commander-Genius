@@ -16,9 +16,15 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+extern "C"
+{
+
+
 // KD_ACT1.C
 #include "kd_def.h"
 //#pragma hdrstop
+
+
 
 
 /*
@@ -1133,3 +1139,4 @@ void GrapeFallReact (objtype *ob)
 	PLACESPRITE;
 }
 
+}

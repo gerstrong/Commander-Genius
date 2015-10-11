@@ -16,6 +16,10 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+extern "C"
+{
+
+
 //
 //	ID Engine
 //	ID_SD.c - Sound Manager
@@ -1933,3 +1937,4 @@ SD_MusicPlaying(void)
 id0_longword_t SD_GetTimeCount(void);
 void SD_SetTimeCount(id0_longword_t newcount);
 
+}

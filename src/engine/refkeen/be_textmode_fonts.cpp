@@ -1,3 +1,7 @@
+extern "C"
+{
+
+
 #include <stdint.h>
 
 // In C++, const implies static, so we need to specify extern
@@ -10528,3 +10532,5 @@ BUFFLINKAGE const uint8_t g_vga_8x16TextFont[256*8*16] = {
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,
 };
+
+}

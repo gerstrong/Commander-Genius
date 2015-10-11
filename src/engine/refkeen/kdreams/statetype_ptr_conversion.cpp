@@ -16,6 +16,10 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+extern "C"
+{
+
+
 // New file used for preparing and converting statetype objects offset
 
 #include "kd_def.h"
@@ -2019,3 +2023,5 @@ statetype* RefKeen_GetObjStatePtrFromDOSPointer_KDreamsE120(uint_fast32_t dosptr
 }
 
 #endif // EGA/CGA
+
+}

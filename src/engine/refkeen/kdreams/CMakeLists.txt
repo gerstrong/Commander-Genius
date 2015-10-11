@@ -9,29 +9,29 @@ add_definitions(-DGRMODE=EGAGR)
 
 
 add_library(refkeen_kdreams OBJECT 
-        id_ca.c
-        id_in.c
-        id_mm.c
-        id_rf_a.c
-        id_rf.c
-        id_sd.c
-        id_us_a.c
-        id_us.c
-        id_vw_a.c
-        id_vw_ae.c
-        id_vw.c
-        kd_act1.c
-        kd_act2.c
-        kd_demo.c
-        kd_keen.c
-        kd_main.c
-        kd_play.c
-        statetype_ptr_conversion.c
-        soft.c
-        gelib.c
-        jam_io.c
-        lscr/loadscn2.c
-        lzhuf.c
+        id_ca.cpp
+        id_in.cpp
+        id_mm.cpp
+        id_rf_a.cpp
+        id_rf.cpp
+        id_sd.cpp
+        id_us_a.cpp
+        id_us.cpp
+        id_vw_a.cpp
+        id_vw_ae.cpp
+        id_vw.cpp
+        kd_act1.cpp
+        kd_act2.cpp
+        kd_demo.cpp
+        kd_keen.cpp
+        kd_main.cpp
+        kd_play.cpp
+        statetype_ptr_conversion.cpp
+        soft.cpp
+        gelib.cpp
+        jam_io.cpp
+        lscr/loadscn2.cpp
+        lzhuf.cpp
         ${INCLUDES}
         )
 

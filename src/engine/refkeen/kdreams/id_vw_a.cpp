@@ -16,6 +16,10 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+extern "C"
+{
+
+
 // ID_VW_A.C
 // PORTED FROM ASM
 
@@ -297,4 +301,6 @@ endif
 cardtype VW_VideoID (void)
 {
 	return VGAcard;
+}
+
 }
