@@ -570,16 +570,16 @@ void kdreams_exe_main (void)
 	BE_ST_textcolor(7);
 	BE_ST_textbackground(0);
 
-	if (BE_Cross_strcasecmp(id0_argv[1], "/VER") == 0)
+    /*if (BE_Cross_strcasecmp(id0_argv[1], "/VER") == 0)
 	{
 		BE_ST_printf("KEEN DREAMS\n");
 		BE_ST_printf("CGA Version\n");
 		BE_ST_printf("Copyright 1991-93 Softdisk Publishing\n");
 		BE_ST_printf("Version 1.05 (rev 1)\n");
 		BE_ST_HandleExit(0);
-	}
+    }*/
 
-	if (BE_Cross_strcasecmp(id0_argv[1], "/?") == 0)
+    /*if (BE_Cross_strcasecmp(id0_argv[1], "/?") == 0)
 	{
 		BE_ST_printf("\nKeen Dreams CGA version 1.05\n");
 		BE_ST_printf("Copyright 1991-1993 Softdisk Publishing.\n\n");
@@ -595,7 +595,7 @@ void kdreams_exe_main (void)
 		BE_ST_printf("KDREAMS /VER  for version and compatibility information\n");
 		BE_ST_printf("KDREAMS /? for this help information\n");
 		BE_ST_HandleExit(0);
-	}
+    }*/
 #endif // VERSION
 
 
@@ -605,7 +605,7 @@ void kdreams_exe_main (void)
 	if (refkeen_current_gamever == BE_GAMEVER_KDREAMSE113)
 #endif
 	{
-		for (i = 1;i < id0_argc;i++)
+        /*for (i = 1;i < id0_argc;i++)
 		{
 			switch (US_CheckParm(id0_argv[i],EntryParmStrings))
 			{
@@ -613,7 +613,7 @@ void kdreams_exe_main (void)
 				LaunchedFromShell = true;
 				break;
 			}
-		}
+        }*/
 	}
 #endif
 
@@ -622,7 +622,7 @@ void kdreams_exe_main (void)
 #ifndef REFKEEN_VER_KDREAMS_CGA_ALL
 	if (refkeen_current_gamever == BE_GAMEVER_KDREAMSE193)
 	{
-		if (BE_Cross_strcasecmp(id0_argv[1], "/VER") == 0)
+        /*if (BE_Cross_strcasecmp(id0_argv[1], "/VER") == 0)
 		{
 			BE_ST_printf("\nKeen Dreams version 1.93  (Rev 1)\n");
 			BE_ST_printf("developed for use with 100%% IBM compatibles\n");
@@ -649,7 +649,7 @@ void kdreams_exe_main (void)
 			BE_ST_printf("KDREAMS /VER  for version and compatibility information\n");
 			BE_ST_printf("KDREAMS /? for this help information\n");
 			BE_ST_HandleExit(0);
-		}
+        }*/
 	}
 #endif // VERSION
 
@@ -657,7 +657,7 @@ void kdreams_exe_main (void)
 #ifndef REFKEEN_VER_KDREAMS_CGA_ALL
 	if (refkeen_current_gamever == BE_GAMEVER_KDREAMSE120)
 	{
-		for (i = 1;i < id0_argc;i++)
+        /*for (i = 1;i < id0_argc;i++)
 		{
 			switch (US_CheckParm(id0_argv[i],EntryParmStrings))
 			{
@@ -693,7 +693,7 @@ void kdreams_exe_main (void)
 				BE_ST_printf("KDREAMS /? for this help information\n");
 				BE_ST_HandleExit(0);
 			}
-		}
+        }*/
 	}
 #endif
 

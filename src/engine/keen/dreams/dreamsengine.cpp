@@ -13,8 +13,6 @@
 
 #define REFKEEN_VER_KDREAMS_ANYEGA_ALL
 
-//#include "../../refkeen/kdreams/id_mm.h"
-
 
 // TODO: Ugly wrapper for the refkeen variables used. It serves as interface to C. Might be inmproved in future.
 extern "C"

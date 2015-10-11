@@ -119,13 +119,14 @@ void	VW_Startup (void)
 
 	videocard = NOcard/*0*/;
 
+    /*
 	for (i = 1;i < id0_argc;i++)
 		if (US_CheckParm(id0_argv[i],ParmStrings) == 0)
 		{
 			videocard = EGAcard;
 			break;
 		}
-
+*/
 	if (!videocard)
 		videocard = VW_VideoID ();
 

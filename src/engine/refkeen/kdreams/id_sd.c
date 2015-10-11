@@ -1534,7 +1534,7 @@ SD_Startup(void)
 	LeaveDriveOn = false;
 #endif
 #ifndef	_MUSE_
-	for (i = 1;i < id0_argc;i++)
+    /*for (i = 1;i < id0_argc;i++)
 	{
 		switch (US_CheckParm(id0_argv[i],ParmStrings))
 		{
@@ -1570,7 +1570,7 @@ SD_Startup(void)
 			break;
 #endif // REFKEEN_SD_ENABLE_SOUNDSOURCE
 		}
-	}
+    }*/
 #endif
 
 	SoundUserHook = 0;

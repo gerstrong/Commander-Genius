@@ -263,13 +263,17 @@ void RF_Startup (void)
 	id0_int_t i,x,y;
 	id0_unsigned_t	*blockstart;
 
-	if (grmode == EGAGR)
+    /*if (grmode == EGAGR)
+    {
 		for (i = 1;i < id0_argc;i++)
+        {
 			if (US_CheckParm(id0_argv[i],ParmStrings) == 0)
 			{
 				compatability = true;
 				break;
 			}
+        }
+    }*/
 
 	for (i=0;i<PORTTILESHIGH;i++)
 		uwidthtable[i] = UPDATEWIDE*i;

@@ -603,7 +603,7 @@ US_TextScreen(void)
 #undef	scr_aputs
 
 	// Check for TED launching here
-	for (i = 1;i < id0_argc;i++)
+    /*for (i = 1;i < id0_argc;i++)
 	{
 		if (US_CheckParm(id0_argv[i],ParmStrings) == 0)
 		{
@@ -616,7 +616,7 @@ US_TextScreen(void)
 			else
 				break;
 		}
-	}
+    }*/
 }
 
 // REFKEEN - Looks like these are used in version 1.0 only

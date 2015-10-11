@@ -546,7 +546,7 @@ IN_Startup(void)
 
 	checkjoys = true;
 	checkmouse = true;
-	for (i = 1;i < id0_argc;i++)
+    /*for (i = 1;i < id0_argc;i++)
 	{
 		switch (US_CheckParm(id0_argv[i],ParmStrings))
 		{
@@ -557,7 +557,7 @@ IN_Startup(void)
 			checkmouse = false;
 			break;
 		}
-	}
+    }*/
 
 	INL_StartKbd();
 	MousePresent = checkmouse? INL_StartMouse() : false;
