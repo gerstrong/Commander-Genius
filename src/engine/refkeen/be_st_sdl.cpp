@@ -47,7 +47,7 @@ typedef struct {
 } BESDLControllerMap;
 
 
-void BE_ST_PollEvents() {}
+//void BE_ST_PollEvents() {}
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 /*** These represent button states (pressed/released), although a call to BEL_ST_AltControlScheme_CleanUp zeros these out ***/
@@ -265,7 +265,7 @@ void BE_ST_InitAll(void)
 
 	g_sdlControllerSchemeNeedsCleanUp = true;
 
-	BE_ST_PollEvents(); // e.g., to "reset" some states, and detect joysticks
+    //BE_ST_PollEvents(); // e.g., to "reset" some states, and detect joysticks
 	SDL_GetRelativeMouseState(NULL, NULL); // Reset
 }
 
