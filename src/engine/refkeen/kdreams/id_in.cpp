@@ -691,6 +691,8 @@ IN_ReadCursor(CursorInfo *info)
 	}
 }
 
+}
+
 ///////////////////////////////////////////////////////////////////////////
 //
 //	IN_ReadControl() - Reads the device associated with the specified
@@ -1088,4 +1090,3 @@ IN_UserInput(id0_longword_t delay,id0_boolean_t clear)
 	return(false);
 }
 
-}

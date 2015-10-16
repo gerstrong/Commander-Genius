@@ -15,13 +15,17 @@
  * with this program; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
+
+
+// KD_DEMO.CPP
+
 extern "C"
 {
 
 
-// KD_DEMO.C
-
 #ifndef REFKEEN_VER_KDREAMS_CGA_ALL
+
+
 //#include <dir.h>
 #endif
 #include "kd_def.h"
@@ -606,6 +610,8 @@ ShowText(id0_int_t offset,WindowRec *wr,const id0_char_t *s)
 }
 #endif // REFKEEN game versions
 
+}
+
 /*
 =====================
 =
@@ -733,8 +739,7 @@ DemoLoop (void)
 	}
 }
 #elif defined REFKEEN_VER_KDREAMS_ANYEGA_ALL
-void
-DemoLoop (void)
+void DemoLoop()
 {
 	//id0_char_t		*s;
 	//id0_word_t		move;
@@ -863,6 +868,7 @@ DemoLoop (void)
             return;
 	}
 }
+
 #endif // VERSION
 
-}
+

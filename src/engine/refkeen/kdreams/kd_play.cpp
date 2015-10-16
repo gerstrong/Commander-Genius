@@ -226,7 +226,7 @@ void 	ClipToSprite (objtype *push, objtype *solid, id0_boolean_t squish);
 id0_int_t 	DoActor (objtype *ob,id0_int_t tics);
 void 	StateMachine (objtype *ob);
 void 	NewState (objtype *ob,statetype *state);
-void 	PlayLoop (void);
+void 	PlayLoop ();
 void 	GameLoop (void);
 
 //===========================================================================
@@ -1532,6 +1532,8 @@ void NewState (objtype *ob,statetype *state)
 
 //==========================================================================
 
+}
+
 /*
 ============================
 =
@@ -1540,7 +1542,7 @@ void NewState (objtype *ob,statetype *state)
 ============================
 */
 
-void PlayLoop (void)
+void PlayLoop()
 {
 	// REFKEEN - Alternative controllers support	
 	BE_ST_AltControlScheme_Push();
@@ -1890,6 +1892,8 @@ void HandleDeath (void)
 
 //==========================================================================
 
+
+
 /*
 ============================
 =
@@ -2000,4 +2004,4 @@ done:
 	VW_ClearVideo (FIRSTCOLOR);
 }
 
-}
+
