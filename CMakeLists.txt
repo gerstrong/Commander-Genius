@@ -18,7 +18,7 @@ execute_process(COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/get_version.sh OUTPUT_VARIAB
 string(REGEX REPLACE "[\r\n]" "" CG_VERSION "${CG_VERSION}")
 
 # Generate the README file with the correct version string
-configure_file(README.in README)
+configure_file(README.in ./README)
 
 set(CMAKE_C_FLAGS "-std=c99")
 

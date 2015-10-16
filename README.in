@@ -12,7 +12,7 @@ Ports:
            Released under GNU/GPL           
                                             
            Release v${CG_VERSION} 
-           Build: ${BUILD_TARGET}                                       
+           Build: ${CMAKE_BUILD_TYPE}                                       
 **************************************************************
 
 Welcome to Commander Genius!
