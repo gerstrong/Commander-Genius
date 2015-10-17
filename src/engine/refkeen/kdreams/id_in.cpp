@@ -16,6 +16,8 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#include <base/CInput.h>
+
 extern "C"
 {
 
@@ -708,12 +710,18 @@ IN_ReadControl(id0_int_t player,ControlInfo *info)
 			id0_int_t			dx,dy;
 			Motion		mx,my;
 			ControlType	type;
-register	KeyboardDef	*def;
+//register	KeyboardDef	*def;
+
 
 	realdelta = false; // REFKEEN - Originally it can be used uninitialized (even though there's no demo playback in vanilla Keen Dreams...)
 	dx = dy = 0;
 	mx = my = motion_None;
 	buttons = 0;
+
+    CInput &input = gInput;
+
+    // Only one player supported for this...
+    const uint playerNum = 0;
 
 	if (DemoMode == demo_Playback)
 	{
@@ -737,9 +745,25 @@ register	KeyboardDef	*def;
 		{
 		case ctrl_Keyboard1:
 		case ctrl_Keyboard2:
-			def = &KbdDefs[type - ctrl_Keyboard];
+            //def = &KbdDefs[type - ctrl_Keyboard];
 
-			if (Keyboard[def->upleft])
+
+            if(input.getHoldedCommand(playerNum, IC_LEFT))
+                mx = motion_Left;
+            else if(input.getHoldedCommand(playerNum, IC_RIGHT))
+                mx = motion_Right;
+
+            if(input.getHoldedCommand(playerNum, IC_DOWN))
+                my = motion_Down;
+            else if(input.getHoldedCommand(playerNum, IC_UP))
+                my = motion_Up;
+
+            if(input.getHoldedCommand(playerNum, IC_JUMP))
+                buttons += 1 << 0;
+            if (input.getHoldedCommand(playerNum, IC_POGO))
+                buttons += 1 << 1;
+
+            /*if (Keyboard[def->upleft])
 				mx = motion_Left,my = motion_Up;
 			else if (Keyboard[def->upright])
 				mx = motion_Right,my = motion_Up;
@@ -756,12 +780,12 @@ register	KeyboardDef	*def;
 			if (Keyboard[def->left])
 				mx = motion_Left;
 			else if (Keyboard[def->right])
-				mx = motion_Right;
+                mx = motion_Right;
 
 			if (Keyboard[def->button0])
 				buttons += 1 << 0;
 			if (Keyboard[def->button1])
-				buttons += 1 << 1;
+                buttons += 1 << 1;*/
 			realdelta = false;
 			break;
 		case ctrl_Joystick1:
