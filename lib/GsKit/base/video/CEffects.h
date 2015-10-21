@@ -26,7 +26,7 @@ public:
     virtual void render() = 0;
 
 	bool finished() { return mFinished; }
-    void setFinished(const bool value) { mFinished = true; }
+    void setFinished(const bool value) { mFinished = value; }
 
 	virtual ~CEffects() {}
 
