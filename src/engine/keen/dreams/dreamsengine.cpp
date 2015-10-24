@@ -15,8 +15,6 @@
 
 #define REFKEEN_VER_KDREAMS_ANYEGA_ALL
 
-//#include "../../refkeen/kdreams/id_mm.h"
-
 
 // TODO: Ugly wrapper for the refkeen variables used. It serves as interface to C. Might be inmproved in future.
 extern "C"
@@ -106,14 +104,10 @@ static const BE_GameVerDetails_T g_be_gamever_kdreamse113 = {
     BE_GAMEVER_KDREAMSE113
 };
 
-//extern void BEL_Cross_ConditionallyAddGameInstallation(const BE_GameVerDetails_T *details, const char *searchdir, const char *descStr);
-
 
 
 // (REFKEEN) Used for patching version-specific stuff
 uint16_t refkeen_compat_kd_play_objoffset;
-
-//extern BE_GameVer_T refkeen_current_gamever;
 
 extern	uint8_t	*EGAhead;
 extern	uint8_t	*EGAdict;
@@ -127,6 +121,10 @@ extern char *gametext, *context, *story;
 
 
 extern SDL_Surface *gpBlitSfc;
+
+// if an external event like closing the window is send, this variable
+// will force refkeen to close everything.
+int gDreamsForceClose;
 
 
 void BEL_ST_UpdateHostDisplay(SDL_Surface *sfc);
@@ -326,14 +324,8 @@ void DreamsEngine::GameLoop()
     {
         int handle()
         {
+            gDreamsForceClose = 0;
             DemoLoop();
-            /*if(!mGameLauncher.setupMenu())
-                {
-                    gLogging.textOut(RED,"No game can be launched, because game data files are missing.<br>");
-                    return 0;
-                }
-
-                return 1;*/
         }
     };
 
@@ -491,6 +483,9 @@ void DreamsEngine::ponder(const float deltaT)
         }*/
     }
 
+
+
+
     std::vector<SDL_Event> evVec;
     gInput.readSDLEventVec(evVec);
 
@@ -500,6 +495,7 @@ void DreamsEngine::ponder(const float deltaT)
     }
 
 
+    // Change that mGameState stuff to have more depth in the code
     if(mGameState == INTRO_TEXT) // Where the shareware test is shown
     {
         // If we press any switch to the next section -> where Dreams is really loaded into CGA/EGA mode and show the intro screen
@@ -511,11 +507,6 @@ void DreamsEngine::ponder(const float deltaT)
             GameLoop();
         }
     }
-    /*else if(mGameState == INTRO_SCREEN)
-    {
-
-    }*/
-
 
 
     //if(mGameState)

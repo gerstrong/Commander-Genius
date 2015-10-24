@@ -145,7 +145,7 @@ void GsAppEventSink::pumpEvent(const CEvent *evPtr)
 void GsApp::pollEvents()
 {
     if( gInput.getExitEvent() )
-    {
+    {        
       mpCurEngine.release();
       return;
     }
