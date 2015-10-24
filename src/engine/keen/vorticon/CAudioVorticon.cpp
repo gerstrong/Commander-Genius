@@ -102,7 +102,6 @@ bool CAudioVorticon::loadPCSpeakerSound(std::vector<T> &waveform, const std::str
 		offset = READWORD(buf_ptr);
 		Priority = *buf_ptr++;
 		buf_ptr++;
-		//garbage = *buf_ptr++;
 
         for(int i=0;i<12;i++)
             name[i] = *buf_ptr++;
@@ -112,9 +111,22 @@ bool CAudioVorticon::loadPCSpeakerSound(std::vector<T> &waveform, const std::str
         if (searchname == nameStr)
 		{
 			buf_ptr = buffer+offset;
+            auto *beekseekPtr = buf_ptr;
+
+            // Discover how many beeps exist
+            uint numBeeps = 0;
+            while(1)
+            {
+                const int test = READWORD(beekseekPtr);
+
+                if(test == 0xffff)
+                    break;
+
+                numBeeps++;
+            }
 
 			const int AMP = ((IsSigned ? ((1<<(sizeof(T)*8))>>2)-1 : (1<<(sizeof(T)*8)>>1)-1)*PC_Speaker_Volume)/100;
-            generateWave(waveform, buf_ptr, 0, true, AMP, g_pSound->getAudioSpec());
+            generateWave(waveform, buf_ptr, numBeeps, true, AMP, g_pSound->getAudioSpec());
 			gLogging.ftextOut("CAudioVorticon::loadSound : loaded sound %s into the waveform.<br>", searchname.c_str());
 
 			return true;

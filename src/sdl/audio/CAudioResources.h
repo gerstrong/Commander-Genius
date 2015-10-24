@@ -184,7 +184,7 @@ public:
 		{
             const unsigned int wavetime = audioSpec.freq*1000/145575;
 
-            while(1)
+            for(unsigned pos=0 ; pos<numOfBeeps ; pos++)
             {
                 sample = READWORD(inBuffer);
 
@@ -202,8 +202,6 @@ public:
 
                 generateBeep(waveform, sample, wave, freqtimer, AMP, wavetime, (audioSpec.freq>>1)*Uint64(sample),audioSpec);
                 prevsample = sample;
-
-
             }
         }
 		/** Effective number of samples is actually size-1, so we enumerate from 1.
