@@ -16,6 +16,10 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+
+extern "C"
+{
+
 // ID_CA.C
 
 /*
@@ -270,6 +274,7 @@ id0_boolean_t CA_LoadFile (const id0_char_t *filename, memptr *ptr)
 ===============
 */
 
+// TODO: We should remove that and use our implementation
 void CAL_OptimizeNodes (huffnode *table)
 {
   /*** COMMENTED OUT - Not really useful in modern platforms as-is ***/
@@ -818,10 +823,10 @@ void CA_Shutdown (void)
 =
 ======================
 */
-
-void CA_CacheAudioChunk (id0_int_t chunk)
+}
+/*void CA_CacheAudioChunk (id0_int_t chunk)
 {
-	id0_long_t	pos,compressed,expanded;
+    id0_long_t	pos,compressed,expanded;
 	memptr	bigbufferseg;
 	id0_byte_t	id0_far *source;
 
@@ -887,7 +892,7 @@ void CA_CacheAudioChunk (id0_int_t chunk)
 		SoundCommon *sndCommonPtr = (SoundCommon *)audiosegs[chunk];
 		sndCommonPtr->length = BE_Cross_Swap32LE(sndCommonPtr->length);
 		sndCommonPtr->priority = BE_Cross_Swap16LE(sndCommonPtr->priority);
-		if ((chunk >= STARTDIGISOUNDS) /*&& (chunk < STARTMUSIC)*/) // Digitized sounds
+        if ((chunk >= STARTDIGISOUNDS) ) // Digitized sounds
 		{
 			SampledSound *sampledSndPtr = (SampledSound *)audiosegs[chunk];
 			sampledSndPtr->hertz = BE_Cross_Swap16LE(sampledSndPtr->hertz);
@@ -900,7 +905,7 @@ void CA_CacheAudioChunk (id0_int_t chunk)
 	}
 #endif
 }
-
+*/
 //===========================================================================
 
 /*
@@ -955,8 +960,10 @@ cachein:
 		break;
 	}
 
-	for (i=0;i<NUMSOUNDS;i++,start++)
-		CA_CacheAudioChunk (start);
+
+
+    /*for (i=0;i<NUMSOUNDS;i++,start++)
+        CA_CacheAudioChunk (start);*/
 
     oldsoundmode = SoundMode;
 }
@@ -1894,3 +1901,4 @@ void RefKeen_Patch_id_ca(void)
 	}
 #endif
 }
+

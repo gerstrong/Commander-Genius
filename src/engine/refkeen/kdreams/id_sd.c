@@ -16,6 +16,11 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#include <sdl/audio/Audio.h>
+
+extern "C"
+{
+
 //
 //	ID Engine
 //	ID_SD.c - Sound Manager
@@ -1729,6 +1734,8 @@ SD_SetUserHook(void (* hook)(void))
 	SoundUserHook = hook;
 }
 
+}
+
 ///////////////////////////////////////////////////////////////////////////
 //
 //	SD_PlaySound() - plays the specified sound on the appropriate hardware
@@ -1736,8 +1743,12 @@ SD_SetUserHook(void (* hook)(void))
 ///////////////////////////////////////////////////////////////////////////
 void
 SD_PlaySound(id0_word_t sound)
-{
-	SoundCommon	id0_far *s;
+{        
+    // NOTE: GameSound names do not match here yet!
+    GameSound gameSnd = GameSound(sound);
+    g_pSound->playSound(gameSnd);
+
+    /*SoundCommon	id0_far *s;
 
 	if (SoundMode == sdm_Off)
 		return;
@@ -1774,7 +1785,7 @@ SD_PlaySound(id0_word_t sound)
 	}
 
 	SoundNumber = sound;
-	SoundPriority = s->priority;
+    SoundPriority = s->priority;*/
 }
 
 ///////////////////////////////////////////////////////////////////////////

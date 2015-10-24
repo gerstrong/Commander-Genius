@@ -15,15 +15,15 @@
 #include "fileio/KeenFiles.h"
 #include "engine/core/CBehaviorEngine.h"
 
-CAudioGalaxy::CAudioGalaxy(const CExeFile &ExeFile) :
-m_ExeFile(ExeFile)
-{}
+
+
+
 
 /**
  * Caution: This is Galaxy only and will be replaced some time
  * This function loads the PC Speaker sounds to CG (Galaxy Version, similar to Vorticon Version but not equal.)
  */
-bool CAudioGalaxy::readPCSpeakerSoundintoWaveForm(CSoundSlot &soundslot, const byte *pcsdata, const unsigned int bytesize, const Uint8 formatsize)
+bool CAudioGalaxy::readPCSpeakerSoundintoWaveForm(CSoundSlot &soundslot, const byte *pcsdata, const Uint8 formatsize)
 {
 	byte *pcsdata_ptr = (byte*)pcsdata;
 	const longword size = READLONGWORD(pcsdata_ptr);
@@ -276,8 +276,10 @@ void CAudioGalaxy::setupAudioMap()
  * 			AUDIOHED and AUDIODICT to get the sounds.
  * 			Caution: CMusic Class has a function which is similar but only loads the music from one level.
  */
-bool CAudioGalaxy::LoadFromAudioCK(const CExeFile& ExeFile)
+bool CAudioGalaxy::LoadFromAudioCK()
 {
+    const CExeFile &ExeFile = gKeenFiles.exeFile;
+
     setupAudioMap();
 
     const SDL_AudioSpec &audioSpec = g_pSound->getAudioSpec();
@@ -421,7 +423,7 @@ bool CAudioGalaxy::LoadFromAudioCK(const CExeFile& ExeFile)
 				if(snd>=al_snd_start)
                     readISFintoWaveForm( m_soundslot[snd], imfdata, outsize, (audioSpec.format == AUDIO_S16) ? 2 : 1 );
 				else
-                    readPCSpeakerSoundintoWaveForm( m_soundslot[snd], imfdata, outsize, (audioSpec.format == AUDIO_S16) ? 2 : 1 );
+                    readPCSpeakerSoundintoWaveForm( m_soundslot[snd], imfdata, (audioSpec.format == AUDIO_S16) ? 2 : 1 );
 			}
 		}
 
@@ -443,7 +445,7 @@ bool CAudioGalaxy::loadSoundData()
     OPLEmulator.shutdown();
     OPLEmulator.init();
 
-	const bool ok = LoadFromAudioCK(m_ExeFile);
+    const bool ok = LoadFromAudioCK();
 
 	if(!ok)
 	{

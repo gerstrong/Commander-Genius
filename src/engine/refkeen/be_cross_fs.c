@@ -1017,8 +1017,8 @@ void BE_Cross_SelectGameInstallation(int gameVerVal)
 	refkeen_current_gamever = g_be_selectedGameInstallation->verId;
 
 
-	extern void RefKeen_Patch_id_ca(void);
-	RefKeen_Patch_id_ca();
+    //extern void RefKeen_Patch_id_ca(void);
+    //RefKeen_Patch_id_ca();
 	extern void RefKeen_Patch_id_us(void);
 	RefKeen_Patch_id_us();
 #ifdef REFKEEN_VER_KDREAMS

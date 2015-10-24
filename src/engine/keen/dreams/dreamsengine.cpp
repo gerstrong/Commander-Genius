@@ -11,6 +11,8 @@
 #include <base/video/CVideoDriver.h>
 #include <base/CInput.h>
 
+#include "res/audiodreams.h"
+
 #define REFKEEN_VER_KDREAMS_ANYEGA_ALL
 
 //#include "../../refkeen/kdreams/id_mm.h"
@@ -158,6 +160,22 @@ namespace dreams
 {
 
 
+
+bool setupAudio()
+{
+    const CExeFile &ExeFile = gKeenFiles.exeFile;
+    const unsigned int ep = ExeFile.getEpisode();
+
+    AudioDreams *audio = new AudioDreams();
+
+    if(audio->loadSoundData())
+    {
+        g_pSound->setupSoundData(audio->sndSlotMapDreams, audio);
+        return true;
+    }
+
+    return false;
+}
 
 bool extractEmbeddedFilesIntoMemory(const BE_GameVerDetails_T &gameVerDetails)
 {
@@ -411,7 +429,8 @@ void DreamsEngine::InitGame()
     for (i=KEEN_LUMP_START;i<=KEEN_LUMP_END;i++)
         MM_SetLock (&grsegs[i],true);
 
-    CA_LoadAllSounds ();
+    //CA_LoadAllSounds ();
+    setupAudio();
 
     fontcolor = WHITE;
 
