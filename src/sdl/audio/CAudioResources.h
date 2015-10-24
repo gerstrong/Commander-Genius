@@ -249,27 +249,29 @@ private:
 	template <typename T>
     void generateBeep(std::vector<T> &waveform, word sample, T &wave, Uint64 &freqtimer, const int& AMP, const unsigned int& wavetime, const Uint64& changerate, const SDL_AudioSpec &audioSpec)
 	{        
-		if (sample != 0)
-			for (unsigned int j=0; j<wavetime; j++)
-			{
-				if (freqtimer > changerate)
-				{
-					freqtimer %= changerate;
+        for (unsigned int j=0; j<wavetime; j++)
+        {
+            if (sample != 0)
+            {
+
+                if (freqtimer > changerate)
+                {
+                    freqtimer %= changerate;
 
                     if (wave == audioSpec.silence - AMP)
                         wave = audioSpec.silence + AMP;
-					else
+                    else
                         wave = audioSpec.silence - AMP;
-				}
-				freqtimer += PCSpeakerTime;
+                }
+                freqtimer += PCSpeakerTime;
+            }
 
-                for(Uint8 chnl=0 ; chnl<audioSpec.channels ; chnl++ )
-					waveform.push_back(wave);
-			}
-		else
-            for (unsigned int j=0; j<wavetime*audioSpec.channels; j++)
-				waveform.push_back(wave);
-	}
+            for(Uint8 chnl=0 ; chnl<audioSpec.channels ; chnl++ )
+            {
+                waveform.push_back(wave);
+            }
+        }
+    }
 };
 
 #endif /* CAUDIORESOURCES_H_ */
