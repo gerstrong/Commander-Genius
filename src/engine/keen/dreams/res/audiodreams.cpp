@@ -10,7 +10,7 @@ extern "C"
 extern	uint8_t	*audiohead;
 extern FILE*			audiohandle;	// handle to AUDIOT / AUDIO
 
-extern	uint8_t	*audiosegs[NUMSNDCHUNKS];
+extern	uint8_t *audiosegs[NUMSNDCHUNKS];
 
 extern void MM_GetPtr (memptr *baseptr, unsigned long size);
 
@@ -168,6 +168,8 @@ bool AudioDreams::LoadAudioFiles()
 {
     //CResource &keenFiles = gKeenFiles;
     //CExeFile &exeFile = keenFiles.exeFile;
+
+    m_soundslot.assign(NUMSNDCHUNKS, CSoundSlot());
 
     for (int i=0 ; i<NUMSNDCHUNKS ; i++)
     {
