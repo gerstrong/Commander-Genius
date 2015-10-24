@@ -182,7 +182,11 @@ public:
         T wave = audioSpec.silence - AMP;
 		if (isVorticons)
 		{
-            const unsigned int wavetime = audioSpec.freq*1000/145575;
+            unsigned int offset = 0;
+            const unsigned int wavetime = (audioSpec.freq*1000)/145575;
+
+            // Allocate the required memory for the Wave
+            waveform.assign(audioSpec.channels*wavetime*numOfBeeps, wave);
 
             for(unsigned pos=0 ; pos<numOfBeeps ; pos++)
             {
@@ -200,8 +204,10 @@ public:
                     freqtimer = 0;
                 #endif
 
-                generateBeep(waveform, sample, wave, freqtimer, AMP, wavetime, (audioSpec.freq>>1)*Uint64(sample),audioSpec);
+                generateBeep(&(waveform[offset]), sample, wave, freqtimer, AMP, wavetime, (audioSpec.freq>>1)*Uint64(sample),audioSpec);
                 prevsample = sample;
+
+                offset += audioSpec.channels*wavetime;
             }
         }
 		/** Effective number of samples is actually size-1, so we enumerate from 1.
@@ -210,7 +216,12 @@ public:
 		 */
 		else
 		{
-            const unsigned int wavetime = audioSpec.freq*1000/140026;
+            unsigned int offset = 0;
+            const unsigned int wavetime = (audioSpec.freq*1000)/140026;
+
+            // Allocate the required memory for the Wave
+            waveform.assign(audioSpec.channels*wavetime*numOfBeeps, wave);
+
 			for(unsigned pos=1 ; pos<numOfBeeps ; pos++)
 			{
 				// Multiplying by some constant (60 in our case) seems to reproduces the right sound.
@@ -228,8 +239,11 @@ public:
 					freqtimer = 0;
 				}
 				#endif
-                generateBeep(waveform, sample, wave, freqtimer, AMP, wavetime, (audioSpec.freq>>1)*Uint64(sample),audioSpec);
+
+                generateBeep(&(waveform[offset]), sample, wave, freqtimer, AMP, wavetime, (audioSpec.freq>>1)*Uint64(sample),audioSpec);
 				prevsample = sample;
+
+                offset += audioSpec.channels*wavetime;
 			}
 		}
 	}
@@ -245,8 +259,10 @@ protected:
 
 private:
 	template <typename T>
-    void generateBeep(std::vector<T> &waveform, word sample, T &wave, Uint64 &freqtimer, const int& AMP, const unsigned int& wavetime, const Uint64& changerate, const SDL_AudioSpec &audioSpec)
+    void generateBeep(T *waveform, word sample, T &wave, Uint64 &freqtimer, const int& AMP, const unsigned int& wavetime, const Uint64& changerate, const SDL_AudioSpec &audioSpec)
 	{        
+        unsigned int offset = 0;
+
         for (unsigned int j=0; j<wavetime; j++)
         {
             if (sample != 0)
@@ -266,7 +282,8 @@ private:
 
             for(Uint8 chnl=0 ; chnl<audioSpec.channels ; chnl++ )
             {
-                waveform.push_back(wave);
+                waveform[offset] = wave;
+                offset++;
             }
         }
     }
