@@ -111,3 +111,44 @@ bool CAudioResources::readISFintoWaveForm( CSoundSlot &soundslot, const byte *im
 
 	return true;
 }
+
+
+
+
+void CAudioResources::generateBeep(byte *waveform,
+                                   word sample,
+                                   word sampleSize,
+                                   int wavesample,
+                                   Uint64 &freqtimer,
+                                   const int AMP,
+                                   const unsigned int wavetime,
+                                   const Uint64 changerate,
+                                   const SDL_AudioSpec &audioSpec)
+{
+    unsigned int offset = 0;
+
+    const int low  = audioSpec.silence - AMP;
+    const int high = audioSpec.silence + AMP;
+
+    for (unsigned int j=0; j<wavetime; j++)
+    {
+        if (sample != 0)
+        {
+            if (freqtimer > changerate)
+            {
+                freqtimer %= changerate;
+
+                wavesample = (wavesample == low) ? high : low;
+            }
+            freqtimer += PCSpeakerTime;
+        }
+
+        // For all the channel set this value
+        for(int i=0 ; i<audioSpec.channels ; i++)
+        {
+            memcpy(&waveform[offset], &wavesample, sampleSize);
+            offset += sampleSize;
+        }
+    }
+
+}

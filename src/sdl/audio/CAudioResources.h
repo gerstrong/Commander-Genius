@@ -204,10 +204,11 @@ public:
                     freqtimer = 0;
                 #endif
 
-                generateBeep(&(waveform[offset]), sample, wave, freqtimer, AMP, wavetime, (audioSpec.freq>>1)*Uint64(sample),audioSpec);
+                generateBeep((byte*)&(waveform[offset]), sample, sizeof(T), wave, freqtimer, AMP, wavetime, (audioSpec.freq>>1)*Uint64(sample),audioSpec);
                 prevsample = sample;
 
                 offset += audioSpec.channels*wavetime;
+                wave = waveform[offset-1];
             }
         }
 		/** Effective number of samples is actually size-1, so we enumerate from 1.
@@ -240,10 +241,11 @@ public:
 				}
 				#endif
 
-                generateBeep(&(waveform[offset]), sample, wave, freqtimer, AMP, wavetime, (audioSpec.freq>>1)*Uint64(sample),audioSpec);
+                generateBeep((byte*)&(waveform[offset]), sample, sizeof(T), wave, freqtimer, AMP, wavetime, (audioSpec.freq>>1)*Uint64(sample),audioSpec);
 				prevsample = sample;
 
                 offset += audioSpec.channels*wavetime;
+                wave = waveform[offset-1];
 			}
 		}
 	}
@@ -258,35 +260,29 @@ protected:
     std::vector<CSoundSlot> m_soundslot;
 
 private:
-	template <typename T>
-    void generateBeep(T *waveform, word sample, T &wave, Uint64 &freqtimer, const int& AMP, const unsigned int& wavetime, const Uint64& changerate, const SDL_AudioSpec &audioSpec)
-	{        
-        unsigned int offset = 0;
 
-        for (unsigned int j=0; j<wavetime; j++)
-        {
-            if (sample != 0)
-            {
+    /**
+     * @brief generateBeep      Converts a classical PC Speaker Beep into a waveform
+     * @param waveform          address of the waveform where in which to generate the beep
+     * @param sample            non-waveform sample
+     * @param sampleSize        size of the wavesample (16-bit sound has two bytes, 8-bit only one)
+     * @param wavesample        current wavesample state
+     * @param freqtimer         Timer of the PC Speaker
+     * @param AMP               Amplitude
+     * @param wavetime          time in frame the beep has to run
+     * @param changerate        Frequency of the PC Speaker
+     * @param audioSpec         SDL_AudioSpec structure. Only number of channel and wave frequency are taken
+     */
+    void generateBeep(byte *waveform,
+                      word sample,
+                      word sampleSize,
+                      int wavesample,
+                      Uint64 &freqtimer,
+                      const int AMP,
+                      const unsigned int wavetime,
+                      const Uint64 changerate,
+                      const SDL_AudioSpec &audioSpec);
 
-                if (freqtimer > changerate)
-                {
-                    freqtimer %= changerate;
-
-                    if (wave == audioSpec.silence - AMP)
-                        wave = audioSpec.silence + AMP;
-                    else
-                        wave = audioSpec.silence - AMP;
-                }
-                freqtimer += PCSpeakerTime;
-            }
-
-            for(Uint8 chnl=0 ; chnl<audioSpec.channels ; chnl++ )
-            {
-                waveform[offset] = wave;
-                offset++;
-            }
-        }
-    }
 };
 
 #endif /* CAUDIORESOURCES_H_ */
