@@ -46,7 +46,7 @@ bool CAudioGalaxy::readPCSpeakerSoundintoWaveForm(CSoundSlot &soundslot, const b
     // Allocate the required memory for the Wave
     const int numBeeps = size-1;
 
-    if(size > 2)
+    if(numBeeps >= 1)
     {
         waveform.assign(audioSpec.channels*wavetime*numBeeps, audioSpec.silence);
 
@@ -442,7 +442,7 @@ bool CAudioGalaxy::LoadFromAudioCK()
             Huffman.expand( (byte*)(AudioCompFileData+audio_comp_data_start), imfdata, audio_end-audio_comp_data_start, outsize);
 
             if(snd>=al_snd_start)
-                readISFintoWaveForm( m_soundslot[snd], imfdata, outsize, (audioSpec.format == AUDIO_S16) ? 2 : 1 );
+                readISFintoWaveForm( m_soundslot[snd], imfdata, (audioSpec.format == AUDIO_S16) ? 2 : 1 );
             else
                 readPCSpeakerSoundintoWaveForm( m_soundslot[snd], imfdata, (audioSpec.format == AUDIO_S16) ? 2 : 1 );
         }

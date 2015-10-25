@@ -170,7 +170,7 @@ public:
 	virtual bool loadSoundData() = 0;
 	virtual void unloadSound() = 0;
 
-	bool readISFintoWaveForm( CSoundSlot &soundslot, const byte *imfdata, const unsigned int bytesize, const Uint8 formatsize );
+    bool readISFintoWaveForm(CSoundSlot &soundslot, const byte *imfdata, const Uint8 formatsize );
 	
 	CSoundSlot *getSlotPtr(){	return &m_soundslot[0];	}
 	CSoundSlot *getSlotPtrAt(const unsigned int idx){	return &m_soundslot[idx];	}

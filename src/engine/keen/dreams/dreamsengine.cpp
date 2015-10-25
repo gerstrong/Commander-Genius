@@ -161,8 +161,8 @@ namespace dreams
 
 bool setupAudio()
 {
-    const CExeFile &ExeFile = gKeenFiles.exeFile;
-    const unsigned int ep = ExeFile.getEpisode();
+    //const CExeFile &ExeFile = gKeenFiles.exeFile;
+    //const unsigned int ep = ExeFile.getEpisode();
 
     CAudioGalaxy *audio = new CAudioGalaxy();
     //AudioDreams *audio = new AudioDreams();
@@ -242,9 +242,9 @@ bool DreamsEngine::loadResources()
         int handle()
         {
             CExeFile &ExeFile = gKeenFiles.exeFile;
-            int version = ExeFile.getEXEVersion();
-            unsigned char *p_exedata = ExeFile.getRawData();
-            const int Episode = ExeFile.getEpisode();
+            //int version = ExeFile.getEXEVersion();
+            //unsigned char *p_exedata = ExeFile.getRawData();
+            //const int Episode = ExeFile.getEpisode();
 
             mLoader.setPermilage(10);
 
@@ -327,6 +327,7 @@ void DreamsEngine::GameLoop()
         {
             gDreamsForceClose = 0;
             DemoLoop();
+            return 0;
         }
     };
 

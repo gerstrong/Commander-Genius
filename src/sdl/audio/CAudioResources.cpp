@@ -15,7 +15,7 @@
 CAudioResources::CAudioResources()
 {}
 
-bool CAudioResources::readISFintoWaveForm( CSoundSlot &soundslot, const byte *imfdata, const unsigned int bytesize, const Uint8 formatsize )
+bool CAudioResources::readISFintoWaveForm( CSoundSlot &soundslot, const byte *imfdata, const Uint8 formatsize )
 {
 	byte *imfdata_ptr = (byte*)imfdata;
 	const longword size = READLONGWORD(imfdata_ptr);
