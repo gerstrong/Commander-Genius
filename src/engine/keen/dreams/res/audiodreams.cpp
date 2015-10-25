@@ -5,8 +5,12 @@
 
 const uint NUMSNDCHUNKS	= 84;
 
+
 extern "C"
 {
+
+#include "engine/refkeen/be_cross.h"
+
 extern	uint8_t	*audiohead;
 extern FILE*			audiohandle;	// handle to AUDIOT / AUDIO
 
@@ -15,6 +19,21 @@ extern	uint8_t *audiosegs[NUMSNDCHUNKS];
 extern void MM_GetPtr (memptr *baseptr, unsigned long size);
 
 extern bool CA_FarRead(FILE* handle, uint8_t *dest, int32_t length);
+
+extern	memptr		bufferseg;
+
+
+
+typedef struct
+{
+  uint16_t bit0,bit1;	// 0-255 is a character, > is a pointer to a node
+} __attribute__((__packed__)) huffnode;
+
+
+extern huffnode	*audiohuffman;
+
+extern void CAL_HuffExpand (uint8_t  *source, uint8_t  *dest, int32_t length, huffnode *hufftable);
+
 
 }
 
@@ -77,11 +96,14 @@ typedef	struct
 
 
 
+
+const int BUFFERSIZE = 0x1000;		// misc, always available buffer
+
 void AudioDreams::CacheAudioChunk(int32_t chunk)
 {
-    //id0_long_t	pos,compressed,expanded;
-    //memptr	bigbufferseg;
-    //id0_byte_t	id0_far *source;
+    int32_t	pos, compressedSize,expanded;
+    memptr	bigbufferseg;
+    uint8_t	*source;
 
     /*if (audiosegs[chunk])
     {
@@ -96,40 +118,33 @@ void AudioDreams::CacheAudioChunk(int32_t chunk)
 // load the chunk into a buffer, either the miscbuffer if it fits, or allocate
 // a larger buffer
 //
-    uint8_t pos = audiostarts[chunk];
-    uint8_t compressed = audiostarts[chunk+1]-pos;
+    pos = audiostarts[chunk];
+    compressedSize = audiostarts[chunk+1]-pos;
 
     fseek(audiohandle,pos,SEEK_SET);
 
-#ifndef AUDIOHEADERLINKED
-
-    MM_GetPtr ((memptr *)&audiosegs[chunk], compressed);
-    CA_FarRead(audiohandle, audiosegs[chunk], compressed);
-
-#else
-
-    if (compressed<=BUFFERSIZE)
+    if (compressedSize<=BUFFERSIZE)
     {
-        CA_FarRead(audiohandle,(id0_byte_t *)bufferseg,compressed);
-        source = (id0_byte_t *)bufferseg;
+        CA_FarRead(audiohandle,(uint8_t *)bufferseg,compressedSize);
+        source = (uint8_t *)bufferseg;
     }
     else
     {
-        MM_GetPtr(&bigbufferseg,compressed);
-        CA_FarRead(audiohandle,(id0_byte_t *)bigbufferseg,compressed);
-        source = (id0_byte_t *)bigbufferseg;
+        MM_GetPtr(&bigbufferseg,compressedSize);
+        CA_FarRead(audiohandle,(uint8_t *)bigbufferseg,compressedSize);
+        source = (uint8_t *)bigbufferseg;
     }
 
     // REFKEEN - Big Endian support
-    expanded = BE_Cross_Swap32LE(*(id0_long_t id0_far *)source);
+    expanded = BE_Cross_Swap32LE(*(int32_t *)source);
     //expanded = *(id0_long_t id0_far *)source;
     source += 4;			// skip over length
     MM_GetPtr ((memptr *)&audiosegs[chunk],expanded);
-    CAL_HuffExpand (source,audiosegs[chunk],expanded,audiohuffman);
+    CAL_HuffExpand (source,audiosegs[chunk], expanded, audiohuffman);
 
-    if (compressed>BUFFERSIZE)
-        MM_FreePtr(&bigbufferseg);
-#endif
+    /*if (compressedSize>BUFFERSIZE)
+        MM_FreePtr(&bigbufferseg);*/
+
     // REFKEEN - Big Endian support, possibly the most complicated case,
     // since we need to know the exact type of each chunk.
     //
@@ -176,7 +191,7 @@ void AudioDreams::CacheAudioChunk(int32_t chunk)
 
     // TODO: PC Speaker sounds are still garbage. I'm yet finding out why...
     //if(chunk < 28)
-    if(chunk < 9)
+    if(chunk < 26)
     {
         readPCSpeakerSoundintoWaveForm( m_soundslot[chunk], (const byte *)audiosegs[chunk], (audioSpec.format == AUDIO_S16) ? 2 : 1 );
     }

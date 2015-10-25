@@ -307,8 +307,8 @@ void CAL_OptimizeNodes (huffnode *table)
 ======================
 */
 
-void CAL_HuffExpand (id0_byte_t id0_huge *source, id0_byte_t id0_huge *dest,
-  id0_long_t length,huffnode *hufftable)
+void CAL_HuffExpand (uint8_t *source, uint8_t *dest,
+  int32_t length, huffnode *hufftable)
 {
 	id0_unsigned_t code;
 	huffnode *headptr = hufftable+254; // head node is always node 254
