@@ -121,14 +121,15 @@ void CAudioResources::generateBeep(byte *waveform,
                                    int wavesample,
                                    Uint64 &freqtimer,
                                    const int AMP,
+                                   const int silence,
+                                   const int channels,
                                    const unsigned int wavetime,
-                                   const Uint64 changerate,
-                                   const SDL_AudioSpec &audioSpec)
+                                   const Uint64 changerate)
 {
     unsigned int offset = 0;
 
-    const int low  = audioSpec.silence - AMP;
-    const int high = audioSpec.silence + AMP;
+    const int low  = silence - AMP;
+    const int high = silence + AMP;
 
     for (unsigned int j=0; j<wavetime; j++)
     {
@@ -144,7 +145,7 @@ void CAudioResources::generateBeep(byte *waveform,
         }
 
         // For all the channel set this value
-        for(int i=0 ; i<audioSpec.channels ; i++)
+        for(int i=0 ; i<channels ; i++)
         {
             memcpy(&waveform[offset], &wavesample, sampleSize);
             offset += sampleSize;

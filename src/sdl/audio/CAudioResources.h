@@ -184,14 +184,17 @@ public:
 		 * Might be useful for some Commander Keen packs with alternate sounds effects.
 		 */
 		Uint64 freqtimer = 0;
-		word prevsample = 0, sample;                
-        T wave = audioSpec.silence - AMP;
+        word prevsample = 0, sample;
+        const int silence = audioSpec.silence;
+        const int channels = audioSpec.channels;
+        T wave = silence - AMP;
+
 		if (isVorticons)
 		{
             unsigned int offset = 0;
 
             // Allocate the required memory for the Wave
-            waveform.assign(audioSpec.channels*wavetime*numOfBeeps, wave);
+            waveform.assign(channels*wavetime*numOfBeeps, wave);
 
             for(unsigned pos=0 ; pos<numOfBeeps ; pos++)
             {
@@ -205,14 +208,18 @@ public:
                         freqtimer %= audioSpec.freq*prevsample;
                 #else
                     // On Keen 1-3, separated consecutive samples are always separated.
-                    wave = audioSpec.silence - AMP;
+                    wave = silence - AMP;
                     freqtimer = 0;
                 #endif
 
-                generateBeep((byte*)&(waveform[offset]), sample, sizeof(T), wave, freqtimer, AMP, wavetime, (audioSpec.freq>>1)*Uint64(sample),audioSpec);
+                generateBeep((byte*)&(waveform[offset]),
+                             sample, sizeof(T), wave,
+                             freqtimer, AMP,
+                             silence, channels,
+                             wavetime, (audioSpec.freq>>1)*Uint64(sample));
                 prevsample = sample;
 
-                offset += audioSpec.channels*wavetime;
+                offset += channels*wavetime;
                 wave = waveform[offset-1];
             }
         }
@@ -225,7 +232,7 @@ public:
             unsigned int offset = 0;
 
             // Allocate the required memory for the Wave
-            waveform.assign(audioSpec.channels*wavetime*numOfBeeps, wave);
+            waveform.assign(channels*wavetime*numOfBeeps, wave);
 
 			for(unsigned pos=1 ; pos<numOfBeeps ; pos++)
 			{
@@ -240,15 +247,19 @@ public:
 				 */
 				if (prevsample != sample)
 				{
-                    wave = audioSpec.silence - AMP;
+                    wave = silence - AMP;
 					freqtimer = 0;
 				}
 				#endif
 
-                generateBeep((byte*)&(waveform[offset]), sample, sizeof(T), wave, freqtimer, AMP, wavetime, (audioSpec.freq>>1)*Uint64(sample),audioSpec);
+                generateBeep((byte*)&(waveform[offset]),
+                             sample, sizeof(T),
+                             wave, freqtimer, AMP,
+                             silence, channels,
+                             wavetime, (audioSpec.freq>>1)*Uint64(sample));
 				prevsample = sample;
 
-                offset += audioSpec.channels*wavetime;
+                offset += channels*wavetime;
                 wave = waveform[offset-1];
 			}
 		}
@@ -273,9 +284,10 @@ private:
      * @param wavesample        current wavesample state
      * @param freqtimer         Timer of the PC Speaker
      * @param AMP               Amplitude
+     * @param silence           Silence level
+     * @param channels          Number of channels the waveform has...
      * @param wavetime          time in frame the beep has to run
      * @param changerate        Frequency of the PC Speaker
-     * @param audioSpec         SDL_AudioSpec structure. Only number of channel and wave frequency are taken
      */
     void generateBeep(byte *waveform,
                       word sample,
@@ -283,9 +295,10 @@ private:
                       int wavesample,
                       Uint64 &freqtimer,
                       const int AMP,
+                      const int silence,
+                      const int channels,
                       const unsigned int wavetime,
-                      const Uint64 changerate,
-                      const SDL_AudioSpec &audioSpec);
+                      const Uint64 changerate);
 
 };
 
