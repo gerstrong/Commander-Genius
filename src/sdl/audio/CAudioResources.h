@@ -216,7 +216,7 @@ public:
                              sample, sizeof(T), wave,
                              freqtimer, AMP,
                              silence, channels,
-                             wavetime, (audioSpec.freq>>1)*Uint64(sample));
+                             wavetime, audioSpec.freq);
                 prevsample = sample;
 
                 offset += channels*wavetime;
@@ -256,7 +256,7 @@ public:
                              sample, sizeof(T),
                              wave, freqtimer, AMP,
                              silence, channels,
-                             wavetime, (audioSpec.freq>>1)*Uint64(sample));
+                             wavetime, audioSpec.freq);
 				prevsample = sample;
 
                 offset += channels*wavetime;
@@ -287,7 +287,7 @@ private:
      * @param silence           Silence level
      * @param channels          Number of channels the waveform has...
      * @param wavetime          time in frame the beep has to run
-     * @param changerate        Frequency of the PC Speaker
+     * @param frequency         Frequency of the waveform
      */
     void generateBeep(byte *waveform,
                       word sample,
@@ -298,7 +298,7 @@ private:
                       const int silence,
                       const int channels,
                       const unsigned int wavetime,
-                      const Uint64 changerate);
+                      const int frequency);
 
 };
 

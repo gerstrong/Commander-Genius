@@ -124,12 +124,14 @@ void CAudioResources::generateBeep(byte *waveform,
                                    const int silence,
                                    const int channels,
                                    const unsigned int wavetime,
-                                   const Uint64 changerate)
+                                   const int frequency)
 {
     unsigned int offset = 0;
 
     const int low  = silence - AMP;
     const int high = silence + AMP;
+
+    const Uint64 changerate = (frequency>>1)*Uint64(sample);
 
     for (unsigned int j=0; j<wavetime; j++)
     {
