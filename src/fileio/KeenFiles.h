@@ -50,6 +50,9 @@ struct CResource : public GsSingleton<CResource>
 	    else // Keen Dreams
 	    {
             egadictFilename = "KDREAMSDICT.EGA";
+            audioFilename = "KDREAMS.AUD";
+            audioDictFilename = "AUDIODCT.KDR";
+            audioHedFilename = "AUDIOHHD.KDR";
 	    }
 	}
 };

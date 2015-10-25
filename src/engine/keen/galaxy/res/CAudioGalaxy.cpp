@@ -17,8 +17,6 @@
 
 
 
-
-
 /**
  * Caution: This is Galaxy only and will be replaced some time
  * This function loads the PC Speaker sounds to CG (Galaxy Version, similar to Vorticon Version but not equal.)
@@ -46,23 +44,28 @@ bool CAudioGalaxy::readPCSpeakerSoundintoWaveForm(CSoundSlot &soundslot, const b
      * it's stopped. (That should be validated in some way...)
      */
     // Allocate the required memory for the Wave
-    waveform.assign(audioSpec.channels*wavetime*(size-1), audioSpec.silence);
+    const int numBeeps = size-1;
 
-    generateWave((byte*)waveform.data(), sizeof(Sint16), wavetime, pcsdata_ptr, size-1, false, AMP, audioSpec);
+    if(size > 2)
+    {
+        waveform.assign(audioSpec.channels*wavetime*numBeeps, audioSpec.silence);
 
-	if(formatsize == 1)
-	{
-		std::vector<Uint8> wave8;
-		std::vector<Sint16>::iterator it = waveform.begin();
-		for( ; it != waveform.end(); it++ )
-			wave8.push_back(*it);
-		soundslot.setupWaveForm((Uint8*)&wave8[0], wave8.size()*sizeof(Uint8));
-	}
-	else
-		soundslot.setupWaveForm((Uint8*)&waveform[0], waveform.size()*sizeof(Sint16));
+        generateWave((byte*)waveform.data(), sizeof(Sint16), wavetime, pcsdata_ptr, numBeeps, false, AMP, audioSpec);
 
+        if(formatsize == 1)
+        {
+            std::vector<Uint8> wave8;
+            std::vector<Sint16>::iterator it = waveform.begin();
+            for( ; it != waveform.end(); it++ )
+                wave8.push_back(*it);
+            soundslot.setupWaveForm((Uint8*)&wave8[0], wave8.size()*sizeof(Uint8));
+        }
+        else
+            soundslot.setupWaveForm((Uint8*)&waveform[0], waveform.size()*sizeof(Sint16));
 
-	return true;
+    }
+
+    return true;
 }
 
 
@@ -275,6 +278,11 @@ void CAudioGalaxy::setupAudioMap()
     sndSlotMapGalaxy[6][SOUND_BLOOGGUARD_STUB] = 58;
     sndSlotMapGalaxy[6][SOUND_BABOBBA_CINDER] = 59;
     
+    // Keen Dreams. Refkeen has predefined placeholder, so we just set counter for now...
+    for(int i=0 ; i<28 ; i++)
+    {
+        sndSlotMapGalaxy[7][GameSound(i)] = i;
+    }
 
 }
 
@@ -293,155 +301,158 @@ bool CAudioGalaxy::LoadFromAudioCK()
 
     const SDL_AudioSpec &audioSpec = g_pSound->getAudioSpec();
 
-    if(audioSpec.format != 0)
-	{
-		// Open the Huffman dictionary and get AUDIODICT
-		CHuffman Huffman;
+    if(audioSpec.format == 0)
+    {
+        gLogging.textOut("CAudioGalaxy::LoadFromAudioCK(): Wrong format of the audio device. Cannot load the audio!");
+        return false;
+    }
 
-        std::string audioDictfilename = getResourceFilename( gKeenFiles.audioDictFilename, gKeenFiles.gameDir, false, false);
+    // Open the Huffman dictionary and get AUDIODICT
+    CHuffman Huffman;
 
-		if(audioDictfilename.empty())
-		    Huffman.readDictionaryNumber( ExeFile, 0 );
-		else
-		    Huffman.readDictionaryFromFile( audioDictfilename );
+    std::string audioDictfilename = getResourceFilename( gKeenFiles.audioDictFilename, gKeenFiles.gameDir, false, false);
 
-		/// First get the size of the AUDIO.CK? File.
-		uint32_t audiofilecompsize;
-        std::string init_audiofilename = gKeenFiles.audioFilename;
+    if(audioDictfilename.empty())
+        Huffman.readDictionaryNumber( ExeFile, 0 );
+    else
+        Huffman.readDictionaryFromFile( audioDictfilename );
 
-        std::string audiofilename = getResourceFilename( init_audiofilename, gKeenFiles.gameDir, true, false);
+    /// First get the size of the AUDIO.CK? File.
+    uint32_t audiofilecompsize;
+    std::string init_audiofilename = gKeenFiles.audioFilename;
 
-		if( audiofilename == "" )
-		{
-			gLogging.textOut("CAudioGalaxy::LoadFromAudioCK(): Audio File not found!");
-			return false;
-		}
+    std::string audiofilename = getResourceFilename( init_audiofilename, gKeenFiles.gameDir, true, false);
 
-		std::ifstream AudioFile;
-		OpenGameFileR(AudioFile, audiofilename);
+    if( audiofilename == "" )
+    {
+        gLogging.textOut("CAudioGalaxy::LoadFromAudioCK(): Audio File not found!");
+        return false;
+    }
 
-		// Read File Size and allocate memory so we can read it
-		AudioFile.seekg( 0, std::ios::end );
-		audiofilecompsize = AudioFile.tellg();
-		AudioFile.seekg( 0, std::ios::beg );
+    std::ifstream AudioFile;
+    OpenGameFileR(AudioFile, audiofilename);
 
-		// create memory so we can store the Audio.ck there and use it later for extraction
-		uint8_t *AudioCompFileData = new uint8_t[audiofilecompsize];
-		AudioFile.read((char*)AudioCompFileData, audiofilecompsize);
-		AudioFile.close();
+    // Read File Size and allocate memory so we can read it
+    AudioFile.seekg( 0, std::ios::end );
+    audiofilecompsize = AudioFile.tellg();
+    AudioFile.seekg( 0, std::ios::beg );
 
-		// Open the AUDIOHED so we know where to decompress the audio
+    // create memory so we can store the Audio.ck there and use it later for extraction
+    uint8_t *AudioCompFileData = new uint8_t[audiofilecompsize];
+    AudioFile.read((char*)AudioCompFileData, audiofilecompsize);
+    AudioFile.close();
 
-        std::string audiohedfilename = gKeenFiles.audioHedFilename;
-        audiohedfilename = getResourceFilename( audiohedfilename, gKeenFiles.gameDir, false, false);
+    // Open the AUDIOHED so we know where to decompress the audio
 
-		uint32_t *audiostarthedptr;
-		uint32_t *audioendhedptr;
+    std::string audiohedfilename = gKeenFiles.audioHedFilename;
+    audiohedfilename = getResourceFilename( audiohedfilename, gKeenFiles.gameDir, false, false);
 
-		std::vector<uint32_t> audiohed;
+    uint32_t *audiostarthedptr;
+    uint32_t *audioendhedptr;
 
-		if(audiohedfilename != "")
-		{
-		    std::ifstream File;
-		    OpenGameFileR(File, audiohedfilename, std::ios::binary);
+    std::vector<uint32_t> audiohed;
 
-		    File.seekg (0, std::ios::end);
-		    size_t length = File.tellg();
-		    File.seekg (0, std::ios::beg);
+    if(audiohedfilename != "")
+    {
+        std::ifstream File;
+        OpenGameFileR(File, audiohedfilename, std::ios::binary);
 
-		    audiohed.resize(length/sizeof(u_int));
+        File.seekg (0, std::ios::end);
+        size_t length = File.tellg();
+        File.seekg (0, std::ios::beg);
 
-		    File.read( (char*) &(audiohed.front()), length);
-		}
-		else // no file found? Use the embedded one!
-		{
-		    audiostarthedptr = reinterpret_cast<uint32_t*>(ExeFile.getHeaderData());
-		    audioendhedptr = audiostarthedptr + ExeFile.getExeDataSize()/sizeof(uint32_t);
+        audiohed.resize(length/sizeof(u_int));
 
-		    uint32_t *audiohedptr = audiostarthedptr;
-		    uint32_t number_of_audiorecs = 0;
-		    for( ; audiohedptr < audioendhedptr ; audiohedptr++ )
-		    {
-			if(*audiohedptr == audiofilecompsize)
-			{
-				for( const uint32_t *startptr = (uint32_t*) (void*) ExeFile.getHeaderData() ;
-						audiohedptr > startptr ; audiohedptr-- )
-				{
-					// Get the number of Audio files we have
-					number_of_audiorecs++;
-					if(*audiohedptr == 0x0)
-						break;
-				}
-				break;
-			}
-		    }
+        File.read( (char*) &(audiohed.front()), length);
+    }
+    else // no file found? Use the embedded one!
+    {
+        audiostarthedptr = reinterpret_cast<uint32_t*>(ExeFile.getHeaderData());
+        audioendhedptr = audiostarthedptr + ExeFile.getExeDataSize()/sizeof(uint32_t);
 
-		    for(size_t i=0 ; i<number_of_audiorecs ; i++)
-		    {
-			audiohed.push_back(*audiohedptr);
-			audiohedptr++;
-		    }
-		}
+        uint32_t *audiohedptr = audiostarthedptr;
+        uint32_t number_of_audiorecs = 0;
+        for( ; audiohedptr < audioendhedptr ; audiohedptr++ )
+        {
+            if(*audiohedptr == audiofilecompsize)
+            {
+                for( const uint32_t *startptr = (uint32_t*) (void*) ExeFile.getHeaderData() ;
+                     audiohedptr > startptr ; audiohedptr-- )
+                {
+                    // Get the number of Audio files we have
+                    number_of_audiorecs++;
+                    if(*audiohedptr == 0x0)
+                        break;
+                }
+                break;
+            }
+        }
 
-
-		if(audiohed.empty())
-		{
-			gLogging.textOut("CAudioGalaxy::LoadFromAudioCK(): No audio was found in that file! It seems to be empty.");
-			delete [] AudioCompFileData;
-			return false;
-		}
+        for(size_t i=0 ; i<number_of_audiorecs ; i++)
+        {
+            audiohed.push_back(*audiohedptr);
+            audiohedptr++;
+        }
+    }
 
 
-		// Find the start of the embedded IMF files
-		uint32_t outsize = 0;
-		uint32_t al_snd_start = 0;
-		uint32_t number_of_total_sounds = 0;
+    if(audiohed.empty())
+    {
+        gLogging.textOut("CAudioGalaxy::LoadFromAudioCK(): No audio was found in that file! It seems to be empty.");
+        delete [] AudioCompFileData;
+        return false;
+    }
 
-		for(  ; number_of_total_sounds<audiohed.size() ; number_of_total_sounds++ )
-		{
-			const uint32_t audio_start = audiohed[number_of_total_sounds];
-			const uint32_t audio_end = audiohed[number_of_total_sounds+1];
 
-			if(audio_start == audio_end)
-			{
-				al_snd_start = number_of_total_sounds/2;
-				break;
-			}
-		}
+    // Find the start of the embedded IMF files
+    uint32_t outsize = 0;
+    uint32_t al_snd_start = 0;
+    uint32_t number_of_total_sounds = 0;
 
-		m_soundslot.assign(number_of_total_sounds, CSoundSlot());
+    for(  ; number_of_total_sounds<audiohed.size() ; number_of_total_sounds++ )
+    {
+        const uint32_t audio_start = audiohed[number_of_total_sounds];
+        const uint32_t audio_end = audiohed[number_of_total_sounds+1];
 
-		for( unsigned int snd=0 ; snd<number_of_total_sounds ; snd++ )
-		{
-			/// Now we have all the data we need.
-			// decompress every file of AUDIO.CK? using huffman decompression algorithm
-			const uint32_t audio_start = audiohed[snd];
-			const uint32_t audio_end = audiohed[snd+1];
+        if(audio_start == audio_end)
+        {
+            al_snd_start = number_of_total_sounds/2;
+            break;
+        }
+    }
 
-			const uint32_t audio_comp_data_start = audio_start+sizeof(uint32_t); // Why this strange offset by 4 bytes?
-			if( audio_comp_data_start < audio_end )
-			{
-				const uint32_t *AudioCompFileData32 = reinterpret_cast<uint32_t*>(
-								reinterpret_cast<void*>(AudioCompFileData + audio_start));
+    m_soundslot.assign(number_of_total_sounds, CSoundSlot());
 
-				outsize = *AudioCompFileData32;
-				byte imfdata[outsize];
+    for( unsigned int snd=0 ; snd<number_of_total_sounds ; snd++ )
+    {
+        /// Now we have all the data we need.
+        // decompress every file of AUDIO.CK? using huffman decompression algorithm
+        const uint32_t audio_start = audiohed[snd];
+        const uint32_t audio_end = audiohed[snd+1];
 
-				Huffman.expand( (byte*)(AudioCompFileData+audio_comp_data_start), imfdata, audio_end-audio_comp_data_start, outsize);
+        const uint32_t audio_comp_data_start = audio_start+sizeof(uint32_t); // Why this strange offset by 4 bytes?
+        if( audio_comp_data_start < audio_end )
+        {
+            const uint32_t *AudioCompFileData32 = reinterpret_cast<uint32_t*>(
+                        reinterpret_cast<void*>(AudioCompFileData + audio_start));
 
-				if(snd>=al_snd_start)
-                    readISFintoWaveForm( m_soundslot[snd], imfdata, outsize, (audioSpec.format == AUDIO_S16) ? 2 : 1 );
-				else
-                    readPCSpeakerSoundintoWaveForm( m_soundslot[snd], imfdata, (audioSpec.format == AUDIO_S16) ? 2 : 1 );
-			}
-		}
+            outsize = *AudioCompFileData32;
+            byte imfdata[outsize];
 
-		delete [] AudioCompFileData;
-	}
-	else
-		gLogging.textOut("CAudioGalaxy::LoadFromAudioCK(): Wrong Audio Format");
+            Huffman.expand( (byte*)(AudioCompFileData+audio_comp_data_start), imfdata, audio_end-audio_comp_data_start, outsize);
 
-	return true;
+            if(snd>=al_snd_start)
+                readISFintoWaveForm( m_soundslot[snd], imfdata, outsize, (audioSpec.format == AUDIO_S16) ? 2 : 1 );
+            else
+                readPCSpeakerSoundintoWaveForm( m_soundslot[snd], imfdata, (audioSpec.format == AUDIO_S16) ? 2 : 1 );
+        }
+    }
+
+    delete [] AudioCompFileData;
+
+
+
+    return true;
 }
 
 /**

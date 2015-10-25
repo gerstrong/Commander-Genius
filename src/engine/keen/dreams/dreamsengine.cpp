@@ -11,7 +11,7 @@
 #include <base/video/CVideoDriver.h>
 #include <base/CInput.h>
 
-#include "res/audiodreams.h"
+#include "../galaxy/res/CAudioGalaxy.h"
 
 #define REFKEEN_VER_KDREAMS_ANYEGA_ALL
 
@@ -164,11 +164,12 @@ bool setupAudio()
     const CExeFile &ExeFile = gKeenFiles.exeFile;
     const unsigned int ep = ExeFile.getEpisode();
 
-    AudioDreams *audio = new AudioDreams();
+    CAudioGalaxy *audio = new CAudioGalaxy();
+    //AudioDreams *audio = new AudioDreams();
 
     if(audio->loadSoundData())
     {
-        g_pSound->setupSoundData(audio->sndSlotMapDreams, audio);
+        g_pSound->setupSoundData(audio->sndSlotMapGalaxy[7], audio);
         return true;
     }
 
@@ -433,6 +434,8 @@ void DreamsEngine::InitGame()
 
 void DreamsEngine::start()
 {
+    gKeenFiles.setupFilenames(7);
+
     gpBlitSfc = gVideoDriver.getBlitSurface();
     dreamsengine_datapath = const_cast<char*>(mDataPath.c_str());
 
