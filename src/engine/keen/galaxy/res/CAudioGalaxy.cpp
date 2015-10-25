@@ -39,7 +39,9 @@ bool CAudioGalaxy::readPCSpeakerSoundintoWaveForm(CSoundSlot &soundslot, const b
 	else
 		AMP = ((((1<<(formatsize*8))>>1)-1)*PC_Speaker_Volume)/100;
 
-    generateWave(waveform, pcsdata_ptr, size, false, AMP, audioSpec);
+    const unsigned int wavetime = (audioSpec.freq*1000)/140026;
+
+    generateWave(waveform, wavetime, pcsdata_ptr, size, false, AMP, audioSpec);
 
 	if(formatsize == 1)
 	{

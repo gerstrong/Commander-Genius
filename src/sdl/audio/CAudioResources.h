@@ -171,7 +171,13 @@ public:
 	virtual void unloadSound() = 0;
 
 	template <typename T>
-    void generateWave(std::vector<T> &waveform, byte *inBuffer, unsigned int numOfBeeps, bool isVorticons, const int& AMP, const SDL_AudioSpec &audioSpec)
+    void generateWave(std::vector<T> &waveform,
+                      const unsigned int wavetime,
+                      byte *inBuffer,
+                      unsigned int numOfBeeps,
+                      bool isVorticons,
+                      const int& AMP,
+                      const SDL_AudioSpec &audioSpec)
 	{
 		/** If PC_SPEAKER_WORKS_LIKE_DOSBOX_V0_74 is defined, we attempt
 		 * to simulate the way vanilla DOSBox v0.74 emulates the PC Speaker.
@@ -183,7 +189,6 @@ public:
 		if (isVorticons)
 		{
             unsigned int offset = 0;
-            const unsigned int wavetime = (audioSpec.freq*1000)/145575;
 
             // Allocate the required memory for the Wave
             waveform.assign(audioSpec.channels*wavetime*numOfBeeps, wave);
@@ -218,7 +223,6 @@ public:
 		else
 		{
             unsigned int offset = 0;
-            const unsigned int wavetime = (audioSpec.freq*1000)/140026;
 
             // Allocate the required memory for the Wave
             waveform.assign(audioSpec.channels*wavetime*numOfBeeps, wave);

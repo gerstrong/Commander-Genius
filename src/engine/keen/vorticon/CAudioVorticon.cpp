@@ -126,7 +126,8 @@ bool CAudioVorticon::loadPCSpeakerSound(std::vector<T> &waveform, const std::str
             }
 
 			const int AMP = ((IsSigned ? ((1<<(sizeof(T)*8))>>2)-1 : (1<<(sizeof(T)*8)>>1)-1)*PC_Speaker_Volume)/100;
-            generateWave(waveform, buf_ptr, numBeeps, true, AMP, g_pSound->getAudioSpec());
+            const unsigned int wavetime = (g_pSound->getAudioSpec().freq*1000)/145575;
+            generateWave(waveform, wavetime, buf_ptr, numBeeps, true, AMP, g_pSound->getAudioSpec());
 			gLogging.ftextOut("CAudioVorticon::loadSound : loaded sound %s into the waveform.<br>", searchname.c_str());
 
 			return true;
