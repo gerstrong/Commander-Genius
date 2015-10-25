@@ -170,101 +170,6 @@ public:
 	virtual bool loadSoundData() = 0;
 	virtual void unloadSound() = 0;
 
-	template <typename T>
-    void generateWave(std::vector<T> &waveform,
-                      const unsigned int wavetime,
-                      byte *inBuffer,
-                      unsigned int numOfBeeps,
-                      bool isVorticons,
-                      const int& AMP,
-                      const SDL_AudioSpec &audioSpec)
-	{
-		/** If PC_SPEAKER_WORKS_LIKE_DOSBOX_V0_74 is defined, we attempt
-		 * to simulate the way vanilla DOSBox v0.74 emulates the PC Speaker.
-		 * Might be useful for some Commander Keen packs with alternate sounds effects.
-		 */
-		Uint64 freqtimer = 0;
-        word prevsample = 0, sample;
-        const int silence = audioSpec.silence;
-        const int channels = audioSpec.channels;
-        T wave = silence - AMP;
-
-		if (isVorticons)
-		{
-            unsigned int offset = 0;
-
-            // Allocate the required memory for the Wave
-            waveform.assign(channels*wavetime*numOfBeeps, wave);
-
-            for(unsigned pos=0 ; pos<numOfBeeps ; pos++)
-            {
-                sample = READWORD(inBuffer);
-
-                if(sample == 0xffff)
-                    break;
-
-                #ifdef PC_SPEAKER_WORKS_LIKE_DOSBOX_V0_74
-                    if (prevsample != 0)
-                        freqtimer %= audioSpec.freq*prevsample;
-                #else
-                    // On Keen 1-3, separated consecutive samples are always separated.
-                    wave = silence - AMP;
-                    freqtimer = 0;
-                #endif
-
-                generateBeep((byte*)&(waveform[offset]),
-                             sample, sizeof(T), wave,
-                             freqtimer, AMP,
-                             silence, channels,
-                             wavetime, audioSpec.freq);
-                prevsample = sample;
-
-                offset += channels*wavetime;
-                wave = waveform[offset-1];
-            }
-        }
-		/** Effective number of samples is actually size-1, so we enumerate from 1.
-		 * Reason: The vanilla way, right after beginning the very last sample output,
-		 * it's stopped. (That should be validated in some way...)
-		 */
-		else
-		{
-            unsigned int offset = 0;
-
-            // Allocate the required memory for the Wave
-            waveform.assign(channels*wavetime*numOfBeeps, wave);
-
-			for(unsigned pos=1 ; pos<numOfBeeps ; pos++)
-			{
-				// Multiplying by some constant (60 in our case) seems to reproduces the right sound.
-				sample = *(inBuffer++) * 60;
-				#ifdef PC_SPEAKER_WORKS_LIKE_DOSBOX_V0_74
-				if (prevsample != 0)
-                    freqtimer %= audioSpec.freq*prevsample;
-				#else
-				/** On Keen 4-6, consecutive samples of the exact
-				 * same frequency are merged into a single tone.
-				 */
-				if (prevsample != sample)
-				{
-                    wave = silence - AMP;
-					freqtimer = 0;
-				}
-				#endif
-
-                generateBeep((byte*)&(waveform[offset]),
-                             sample, sizeof(T),
-                             wave, freqtimer, AMP,
-                             silence, channels,
-                             wavetime, audioSpec.freq);
-				prevsample = sample;
-
-                offset += channels*wavetime;
-                wave = waveform[offset-1];
-			}
-		}
-	}
-
 	bool readISFintoWaveForm( CSoundSlot &soundslot, const byte *imfdata, const unsigned int bytesize, const Uint8 formatsize );
 	
 	CSoundSlot *getSlotPtr(){	return &m_soundslot[0];	}
@@ -272,7 +177,28 @@ public:
 	unsigned int getNumberofSounds() {	return m_soundslot.size();	}
 
 protected:
+
     std::vector<CSoundSlot> m_soundslot;
+
+    /**
+     * @brief generateWave      Generates a wave from the PC Speaker emulation engine
+     * @param waveform          waveform where to write that data for the soundcard
+     * @param waveSampleSize    size of the wavesample (16-bit sound has two bytes, 8-bit only one)
+     * @param wavetime          total time in frame the beep has to run
+     * @param inBuffer          Input data which is to convert
+     * @param numOfBeeps        number of Beeps to produce
+     * @param isVorticons       Is it vorticon or Galaxy Keen PC Speaker format?
+     * @param AMP               Amplitude
+     * @param audioSpec         SDL_Structure used for the waveform
+     */
+    void generateWave(byte* waveform,
+                      const int waveSampleSize,
+                      const unsigned int wavetime,
+                      byte *inBuffer,
+                      unsigned int numOfBeeps,
+                      bool isVorticons,
+                      const int& AMP,
+                      const SDL_AudioSpec &audioSpec);
 
 private:
 
@@ -286,7 +212,7 @@ private:
      * @param AMP               Amplitude
      * @param silence           Silence level
      * @param channels          Number of channels the waveform has...
-     * @param wavetime          time in frame the beep has to run
+     * @param wavetime          time in frames the beep has to run
      * @param frequency         Frequency of the waveform
      */
     void generateBeep(byte *waveform,
@@ -299,6 +225,10 @@ private:
                       const int channels,
                       const unsigned int wavetime,
                       const int frequency);
+
+
+
+
 
 };
 

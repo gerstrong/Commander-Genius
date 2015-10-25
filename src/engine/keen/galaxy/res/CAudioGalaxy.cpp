@@ -41,7 +41,14 @@ bool CAudioGalaxy::readPCSpeakerSoundintoWaveForm(CSoundSlot &soundslot, const b
 
     const unsigned int wavetime = (audioSpec.freq*1000)/140026;
 
-    generateWave(waveform, wavetime, pcsdata_ptr, size, false, AMP, audioSpec);
+    /** Effective number of samples is actually size-1.
+     * Reason: The vanilla way, right after beginning the very last sample output,
+     * it's stopped. (That should be validated in some way...)
+     */
+    // Allocate the required memory for the Wave
+    waveform.assign(audioSpec.channels*wavetime*(size-1), audioSpec.silence);
+
+    generateWave((byte*)waveform.data(), sizeof(Sint16), wavetime, pcsdata_ptr, size-1, false, AMP, audioSpec);
 
 	if(formatsize == 1)
 	{

@@ -23,6 +23,22 @@ extern bool CA_FarRead(FILE* handle, uint8_t *dest, int32_t length);
 
 bool AudioDreams::readPCSpeakerSoundintoWaveForm(CSoundSlot &soundslot, const byte *pcsdata, const Uint8 formatsize)
 {
+
+    /*
+typedef	struct
+        {
+            id0_longword_t	length;
+            id0_word_t		priority;
+        } __attribute((__packed__)) SoundCommon;
+    */
+    /*
+    typedef	struct
+            {
+                SoundCommon	common;
+                id0_byte_t		data[1];
+            } __attribute((__packed__)) PCSound;
+*/
+
     byte *pcsdata_ptr = (byte*)pcsdata;
     const longword size = READLONGWORD(pcsdata_ptr);
     soundslot.priority = READWORD(pcsdata_ptr);
@@ -38,7 +54,11 @@ bool AudioDreams::readPCSpeakerSoundintoWaveForm(CSoundSlot &soundslot, const by
         AMP = ((((1<<(formatsize*8))>>1)-1)*PC_Speaker_Volume)/100;
 
     const unsigned int wavetime = (audioSpec.freq*1000)/140026;
-    generateWave(waveform, wavetime, pcsdata_ptr, size, false, AMP, audioSpec);
+
+    // Allocate the required memory for the wave
+    waveform.assign(audioSpec.channels*wavetime*(size-1), audioSpec.silence);
+
+    generateWave((byte*)waveform.data(), sizeof(Sint16), wavetime, pcsdata_ptr, size-1, false, AMP, audioSpec);
 
     if(formatsize == 1)
     {
@@ -154,7 +174,9 @@ void AudioDreams::CacheAudioChunk(int32_t chunk)
 
     auto &audioSpec = g_pSound->getAudioSpec();
 
-    if(chunk < 28)
+    // TODO: PC Speaker sounds are still garbage. I'm yet finding out why...
+    //if(chunk < 28)
+    if(chunk < 9)
     {
         readPCSpeakerSoundintoWaveForm( m_soundslot[chunk], (const byte *)audiosegs[chunk], (audioSpec.format == AUDIO_S16) ? 2 : 1 );
     }
