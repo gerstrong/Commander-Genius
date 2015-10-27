@@ -718,12 +718,12 @@ void BE_ST_ShortSleep(void)
 }
 
 
-
+/*
 void BE_ST_Delay(uint16_t msec) // Replacement for delay from dos.h
 {
-	BEL_ST_TicksDelayWithOffset(msec);
+    //BEL_ST_TicksDelayWithOffset(msec);
 }
-
+*/
 
 extern SDL_Surface *gpBlitSfc;
 

@@ -1346,8 +1346,6 @@ void BEL_ST_UpdateHostDisplay(SDL_Surface *sfc)
 {
     SDL_LockSurface(sfc);
 
-    //#define VGA_TXT_CHAR_PIX_WIDTH  ((VGA_TXT_TEX_WIDTH)/TXT_COLS_NUM)
-    //#define VGA_TXT_CHAR_PIX_HEIGHT ((VGA_TXT_TEX_HEIGHT)/TXT_ROWS_NUM)
     #define VGA_TXT_CHAR_PIX_WIDTH  ((sfc->w)/TXT_COLS_NUM)
     #define VGA_TXT_CHAR_PIX_HEIGHT ((sfc->h)/TXT_ROWS_NUM)
 
@@ -1562,27 +1560,22 @@ void BEL_ST_UpdateHostDisplay(SDL_Surface *sfc)
 			}
 		}
         void *pixels = sfc->pixels;
-        //int pitch;
-        //SDL_LockTexture(g_sdlTexture, NULL, &pixels, &pitch);
+
         uint32_t *currPixPtrBase = (uint32_t *)pixels;
         currPalPixPtrBase = g_sdlHostScrMem.egaGfx;
-        /*for (int pixnum = 0; pixnum < GFX_TEX_WIDTH*GFX_TEX_HEIGHT; ++pixnum, ++currPixPtr, ++currPalPixPtr)
-		{
-			*currPixPtr = g_sdlEGACurrBGRAPaletteAndBorder[*currPalPixPtr];
-        }*/
+
 
         uint32_t ratioW = (sfc->w)/(GFX_TEX_WIDTH);
         uint32_t ratioH = (sfc->h)/(GFX_TEX_HEIGHT);
-        //uint32_t bpp = sfc->format->BytesPerPixel;
+
         uint8_t *currPalPixPtr = currPalPixPtrBase;
-        //for(uint32_t pix=0 ; pix < sfc->w*sfc->h ; pix++ )
+
         for(uint32_t pixY=0 ; pixY < sfc->h ; pixY++ )
         {
             uint32_t *currPixPtr = currPixPtrBase + pixY*sfc->w;
 
             for(uint32_t pixX=0 ; pixX < ratioW*GFX_TEX_WIDTH ; pixX++ )
             {
-                //uint32_t *currPixPtr = currPixPtrBase + pix;
                 currPalPixPtr = currPalPixPtrBase + (pixY/ratioH)*GFX_TEX_WIDTH + pixX/ratioW;
                 *currPixPtr = g_sdlEGACurrBGRAPaletteAndBorder[*currPalPixPtr];
                 currPixPtr++;
@@ -1590,29 +1583,11 @@ void BEL_ST_UpdateHostDisplay(SDL_Surface *sfc)
         }
 	}
 
-	g_sdlDoRefreshGfxOutput = false;
-    /*SDL_UnlockTexture(g_sdlTexture);
-
-    SDL_SetRenderDrawColor(g_sdlRenderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
-	SDL_RenderClear(g_sdlRenderer);
-	SDL_SetRenderDrawColor(g_sdlRenderer, (g_sdlEGACurrBGRAPaletteAndBorder[16]>>16)&0xFF, (g_sdlEGACurrBGRAPaletteAndBorder[16]>>8)&0xFF, g_sdlEGACurrBGRAPaletteAndBorder[16]&0xFF, SDL_ALPHA_OPAQUE);
-	SDL_RenderFillRect(g_sdlRenderer, &g_sdlAspectCorrectionBorderedRect);
-	if (g_sdlTargetTexture)
-	{
-		SDL_SetRenderTarget(g_sdlRenderer, g_sdlTargetTexture);
-		SDL_RenderCopy(g_sdlRenderer, g_sdlTexture, NULL, NULL);
-		SDL_SetRenderTarget(g_sdlRenderer, NULL);
-		SDL_RenderCopy(g_sdlRenderer, g_sdlTargetTexture, NULL, &g_sdlAspectCorrectionRect);
-	}
-	else
-	{
-        //SDL_RenderCopy(g_sdlRenderer, g_sdlTexture, NULL, &g_sdlAspectCorrectionRect);
-        SDL_RenderCopy(g_sdlRenderer, g_sdlTexture, NULL, NULL);
-    }*/
-
+    g_sdlDoRefreshGfxOutput = false;
     SDL_UnlockSurface(sfc);
-
-    //BEL_ST_FinishHostDisplayUpdate();
 }
+
+
+
 
 }

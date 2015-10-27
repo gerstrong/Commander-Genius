@@ -16,13 +16,11 @@
 #include <base/PointDevice.h>
 #include <fileio/CConfiguration.h>
 
-#if defined(REFKEEN)
 // Workaround for RefKeen. If if it transferred to a more C++ structure we have to be able removing that.
 extern "C"
 {
 extern int gDreamsForceClose;
 }
-#endif
 
 // Input Events
 
@@ -80,10 +78,9 @@ void CInput::resetControls(int player)
 	// At least this warning will tell the people, that something is not right here!
 
 	m_exit = false;
-#if defined(REFKEEN)
     gDreamsForceClose = 0;
-#endif
-	m_cmdpulse = 0;
+
+    m_cmdpulse = 0;
 	m_joydeadzone = 1024;
 
 	memset(immediate_keytable,false,KEYTABLE_SIZE);
@@ -606,9 +603,7 @@ void CInput::pollEvents()
 		case SDL_QUIT:
 			gLogging.textOut("SDL: Got quit event!");
 			m_exit = true;
-#if defined(REFKEEN)
             gDreamsForceClose = 1;
-#endif
 
 			break;
         case SDL_KEYDOWN:
@@ -774,9 +769,7 @@ void CInput::pollEvents()
 	{
 		gLogging.textOut("User exit request!");
 		m_exit = true;
-#if defined(REFKEEN)
         gDreamsForceClose = 1;
-#endif
 	}
 #endif
 

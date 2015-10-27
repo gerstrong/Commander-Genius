@@ -71,6 +71,7 @@ private:
     // Because some routines have loops in Refkeen we pass the main game to a separate thread and catch the apropiate signals
     //ThreadPoolItem *mpThread = nullptr;
 
+    std::shared_ptr<SDL_Surface> mpDreamsSurface;
 };
 
 }

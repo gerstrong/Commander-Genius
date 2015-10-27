@@ -10,6 +10,7 @@
 #include <fileio/CPatcher.h>
 #include <base/video/CVideoDriver.h>
 #include <base/CInput.h>
+#include <SDL.h>
 
 #include "../galaxy/res/CAudioGalaxy.h"
 
@@ -437,7 +438,20 @@ void DreamsEngine::start()
 {
     gKeenFiles.setupFilenames(7);
 
+
+#define GFX_TEX_WIDTH 320
+#define GFX_TEX_HEIGHT 200
+
+    /*mpDreamsSurface.reset(  SDL_CreateRGBSurface(0,
+                                                 GFX_TEX_WIDTH,
+                                                 GFX_TEX_HEIGHT,
+                                                 32, 0, 0, 0, 0), &SDL_FreeSurface);*/
+
+
+
     gpBlitSfc = gVideoDriver.getBlitSurface();
+    //gpBlitSfc = mpDreamsSurface.get();
+
     dreamsengine_datapath = const_cast<char*>(mDataPath.c_str());
 
     // This function extracts the embedded files. TODO: We should integrate that to our existing system
@@ -521,9 +535,34 @@ void DreamsEngine::ponder(const float deltaT)
 
 void DreamsEngine::updateHostDisplay()
 {
+    // TODO: I will two separate surfaces, one for text mode and the other one for the actual VGA Graphics
+    //SDL_Surface *sfc = gVideoDriver.getBlitSurface();
+
+    //BEL_ST_UpdateHostDisplay(sfc);
+
+    //SDL_Surface *sfc = mpDreamsSurface.get();
+    //SDL_Surface *blitSfc = gVideoDriver.getBlitSurface();
     SDL_Surface *sfc = gVideoDriver.getBlitSurface();
 
     BEL_ST_UpdateHostDisplay(sfc);
+
+    /*SDL_Rect dstRect, srGsRect;
+    srGsRect.x = srGsRect.y = 0;
+    dstRect.x = dstRect.y = 0;
+
+    srGsRect.w = sfc->w;
+    srGsRect.h = sfc->h;
+    dstRect.w = blitSfc->w;
+
+    GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
+    SDL_Rect gameResSDL = gameRes.SDLRect();
+
+
+    SDL_FillRect( blitSfc, &gameResSDL, SDL_MapRGB(blitSfc->format, 0, 0, 0) );
+
+    CVidConfig &vidConf = gVideoDriver.getVidConfig();
+
+    blitScaled( sfc, srGsRect, blitSfc, dstRect, vidConf.m_ScaleXFilter );*/
 }
 
 

@@ -168,10 +168,10 @@ void scaleNormal( SDL_Surface *srcSfc,
 
 
 void blitScaled(SDL_Surface *srcSfc,
-                      SDL_Rect &srGsRect,
-                      SDL_Surface *dstSfc,
-                      SDL_Rect &dstRect,
-                      filterOptionType filter)
+                SDL_Rect &srGsRect,
+                SDL_Surface *dstSfc,
+                SDL_Rect &dstRect,
+                filterOptionType filter)
 {            
 
     assert(filter>=NONE && filter<=SCALE_4X);
