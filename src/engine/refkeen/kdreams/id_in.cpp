@@ -763,6 +763,12 @@ IN_ReadControl(id0_int_t player,ControlInfo *info)
             if (input.getHoldedCommand(playerNum, IC_POGO))
                 buttons += 1 << 1;
 
+
+            if (input.getPressedCommand(playerNum, IC_STATUS))
+            {
+                Keyboard[sc_Space] = true;
+            }
+
             /*if (Keyboard[def->upleft])
 				mx = motion_Left,my = motion_Up;
 			else if (Keyboard[def->upright])
