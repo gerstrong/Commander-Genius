@@ -447,7 +447,9 @@ void DreamsEngine::setScreenMode(const int mode)
 {
     uint sdlTexWidth, sdlTexHeight;
 
-    switch (mode)
+    // Chaning the resolution still breaks the system so we leave at GFX_TEX_WIDTHxGFX_TEX_HEIGHT for now...
+
+    /*switch (mode)
     {
     case 3:
         sdlTexWidth = VGA_TXT_TEX_WIDTH;
@@ -465,7 +467,10 @@ void DreamsEngine::setScreenMode(const int mode)
         sdlTexWidth = 2*GFX_TEX_WIDTH;
         sdlTexHeight = GFX_TEX_HEIGHT;
         break;
-    }
+    }*/
+
+    sdlTexWidth = GFX_TEX_WIDTH;
+    sdlTexHeight = GFX_TEX_HEIGHT;
 
     mDreamsSurface.create(0, sdlTexWidth, sdlTexHeight, RES_BPP, 0, 0, 0, 0);
 }
