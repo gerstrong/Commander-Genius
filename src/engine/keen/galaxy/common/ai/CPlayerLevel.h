@@ -129,6 +129,12 @@ public:
 	void makeHimStand();
 
 
+    /**
+     * @brief evalVertPogoInertia   Calculates the inertia required for a pogo jump. yinertia is set in that process
+     * @return
+     */
+    int evalVertPogoInertia();
+
 	/**
 	 * \description Simple process called while Keen is running
 	 */

@@ -34,6 +34,7 @@ const int MAX_POGOHEIGHT = 20;
 const int MIN_POGOHEIGHT = 5;
 const int POGO_SLOWDOWN = 4;
 
+const int POGO_START_INERTIA = -125; // 48 In K5 Disassemble
 const int POGO_START_INERTIA_VERT = -100;
 const int POGO_START_INERTIA_MAX_VERT = -168;
 const int POGO_START_INERTIA_IMPOSSIBLE_VERT = -180;
@@ -177,14 +178,32 @@ bool CPlayerLevel::verifyforPole()
 }
 
 
-const int POGO_START_INERTIA = 125; // 48 In K5 Disassemble
-
 void CPlayerLevel::makeHimStand()
 {	
 	if(pSupportedbyobject && g_pBehaviorEngine->getEpisode() == 5)
 		setAction(A_KEEN_ON_PLAT);
 	else
 		setAction(A_KEEN_STAND);
+}
+
+
+int CPlayerLevel::evalVertPogoInertia()
+{
+    // If Super Pogo is enabled
+    if( gInput.SuperPogo(mPlayerNum) )
+    {
+        return POGO_START_INERTIA_IMPOSSIBLE_VERT;
+    }
+    if( gInput.ImpossiblePogo(mPlayerNum) )
+    {
+        // Or if the player triggered the impossible pogo trick
+        if(state.jumpIsPressed && state.pogoIsPressed)
+        {
+            return POGO_START_INERTIA_IMPOSSIBLE_VERT;
+        }
+    }
+
+    return POGO_START_INERTIA;
 }
 
 
@@ -251,7 +270,7 @@ void CPlayerLevel::processRunning()
 	{
 		state.pogoWasPressed = true;
 		xinertia = xDirection * 16;
-		yinertia = -POGO_START_INERTIA;
+        yinertia = evalVertPogoInertia();
 		nextX = 0;
 		state.jumpTimer = 24;
 		playSound( SOUND_KEEN_POGO );
@@ -354,8 +373,8 @@ void CPlayerLevel::handleInputOnGround()
 	if( state.pogoIsPressed && !state.pogoWasPressed)
 	{
 		state.pogoWasPressed = true;
-		xinertia = 0;
-		yinertia = -POGO_START_INERTIA;
+		xinertia = 0;        
+        yinertia = evalVertPogoInertia();
 		setAction(A_KEEN_POGO_START);
 		playSound( SOUND_KEEN_POGO );
 		nextY = 0;
@@ -1031,7 +1050,7 @@ void CPlayerLevel::processPogoCommon()
 		//yinertia = 0; // Not sure if that's correct
 		if (state.jumpTimer == 0)
 		{
-			yinertia = -POGO_START_INERTIA;
+            yinertia = evalVertPogoInertia();
 			playSound( SOUND_KEEN_POGO );
 			state.jumpTimer = 24;
 			setAction(A_KEEN_POGO_UP);
@@ -1064,7 +1083,7 @@ void CPlayerLevel::processPogoBounce()
 {
 	processPogoCommon();
 
-	yinertia = -POGO_START_INERTIA;
+    yinertia = evalVertPogoInertia();
 	//nextY = 6 * yinertia;
 	state.jumpTimer = 24;
 
@@ -2920,12 +2939,12 @@ int CPlayerLevel::checkSolidD( int x1, int x2, int y2, const bool push_mode )
 			    
 			    if ( action >= A_KEEN_POGO_START && action <= A_KEEN_POGO_HIGH && state.jumpTimer == 0)
 			    {
-				yinertia = -POGO_START_INERTIA;
-				playSound( SOUND_KEEN_POGO );
-				state.jumpTimer = 24;
-				setAction(A_KEEN_POGO_UP);
-				return 1;
-			    }		    
+                    yinertia = evalVertPogoInertia();
+                    playSound( SOUND_KEEN_POGO );
+                    state.jumpTimer = 24;
+                    setAction(A_KEEN_POGO_UP);
+                    return 1;
+                }
 			}						
 			
 			if( blockedu == 17 && m_climbing)

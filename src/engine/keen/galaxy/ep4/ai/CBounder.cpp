@@ -141,13 +141,15 @@ void CBounder::processOnFloor()
     playSound( SOUND_BOUNCE_LOW );
 
 	// Decide whether go left, right or just bounce up.
-	switch( rand() % 3 )
+    switch( rand() % 5 )
 	{
 	case 1:
+    case 2:
 		xDirection = LEFT;
 		break;
-	case 2:
-		xDirection = RIGHT;
+    case 3:
+    case 4:
+        xDirection = RIGHT;
 		break;
 	default:
 		xDirection = 0;
