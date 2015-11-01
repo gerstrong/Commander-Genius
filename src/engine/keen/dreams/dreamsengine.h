@@ -4,6 +4,7 @@
 #include <base/GsEngine.h>
 #include <engine/core/GameEngine.h>
 #include <base/utils/ThreadPool.h>
+#include <graphics/GsSurface.h>
 #include <memory>
 
 namespace dreams
@@ -32,6 +33,12 @@ public:
      */
     void InitGame();
 
+
+    /**
+     * @brief setScreenMode     Set the screen mode for refkeen which will change the DreamsSurface for different graphics card mode emulations
+     * @param mode              Mode to be set as supplied by refkeen
+     */
+    void setScreenMode(const int mode);
 
     /**
      * @brief start Starts the Dreams engine which refers to accessing RefKeen code
@@ -71,7 +78,8 @@ private:
     // Because some routines have loops in Refkeen we pass the main game to a separate thread and catch the apropiate signals
     //ThreadPoolItem *mpThread = nullptr;
 
-    std::shared_ptr<SDL_Surface> mpDreamsSurface;
+    //std::shared_ptr<SDL_Surface> mpDreamsSurface;
+    GsSurface    mDreamsSurface;
 };
 
 }

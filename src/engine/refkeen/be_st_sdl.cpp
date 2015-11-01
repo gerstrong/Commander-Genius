@@ -349,8 +349,6 @@ void BE_ST_HandleExit(int status)
 		}
         //SDL_Delay(1);
 		// TODO: Make this more efficient
-        //void BEL_ST_UpdateHostDisplay(void);
-        //BEL_ST_UpdateHostDisplay();
 	}
 	BE_ST_ShutdownAll();
 	exit(0);

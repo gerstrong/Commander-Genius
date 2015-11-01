@@ -627,7 +627,6 @@ void BE_ST_SetTimer(uint16_t speed, bool isALMusicOn)
 
 #endif
 
-//void BEL_ST_UpdateHostDisplay(void);
 void BEL_ST_TicksDelayWithOffset(int sdltickstowait);
 void BEL_ST_TimeCountWaitByPeriod(int16_t timetowait);
 
@@ -638,10 +637,10 @@ void BE_ST_SetTimeCount(uint32_t newcount)
 	g_sdlTimeCount = newcount;
 }
 
-void BE_ST_TimeCountWaitForDest(uint32_t dsttimecount)
+/*void BE_ST_TimeCountWaitForDest(uint32_t dsttimecount)
 {
 	BEL_ST_TimeCountWaitByPeriod((int32_t)dsttimecount-(int32_t)g_sdlTimeCount);
-}
+}*/
 
 void BE_ST_TimeCountWaitFromSrc(uint32_t srctimecount, int16_t timetowait)
 {
@@ -713,7 +712,6 @@ void BE_ST_ShortSleep(void)
 {
 	SDL_Delay(1);
 	// TODO: Make this more efficient
-    //BEL_ST_UpdateHostDisplay();
     //BE_ST_PollEvents();
 }
 
@@ -725,9 +723,6 @@ void BE_ST_Delay(uint16_t msec) // Replacement for delay from dos.h
 }
 */
 
-extern SDL_Surface *gpBlitSfc;
-
-void BEL_ST_UpdateHostDisplay(SDL_Surface *sfc);
 
 void BEL_ST_TicksDelayWithOffset(int sdltickstowait)
 {
@@ -743,7 +738,6 @@ void BEL_ST_TicksDelayWithOffset(int sdltickstowait)
 	}
 	uint32_t nextSdlTicks = SDL_GetTicks() + sdltickstowait - g_sdlTicksOffset;
 
-    BEL_ST_UpdateHostDisplay(gpBlitSfc);
     //BE_ST_PollEvents();
 	uint32_t currSdlTicks = SDL_GetTicks();
 	while ((int32_t)(currSdlTicks - nextSdlTicks) < 0)

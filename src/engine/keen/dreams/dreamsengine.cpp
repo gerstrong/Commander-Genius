@@ -17,6 +17,9 @@
 #define REFKEEN_VER_KDREAMS_ANYEGA_ALL
 
 
+dreams::DreamsEngine *gDreamsEngine;
+
+
 // TODO: Ugly wrapper for the refkeen variables used. It serves as interface to C. Might be inmproved in future.
 extern "C"
 {
@@ -433,24 +436,51 @@ void DreamsEngine::InitGame()
 }
 
 
+#define GFX_TEX_WIDTH 320
+#define GFX_TEX_HEIGHT 200
+#define VGA_TXT_TEX_WIDTH 720
+#define VGA_TXT_TEX_HEIGHT 400
+//#define EGACGA_TXT_TEX_WIDTH 640
+//#define EGACGA_TXT_TEX_HEIGHT 200
+
+void DreamsEngine::setScreenMode(const int mode)
+{
+    uint sdlTexWidth, sdlTexHeight;
+
+    switch (mode)
+    {
+    case 3:
+        sdlTexWidth = VGA_TXT_TEX_WIDTH;
+        sdlTexHeight = VGA_TXT_TEX_HEIGHT;
+        break;
+    case 4:
+        sdlTexWidth = GFX_TEX_WIDTH;
+        sdlTexHeight = GFX_TEX_HEIGHT;
+        break;
+    case 0xD:
+        sdlTexWidth = GFX_TEX_WIDTH;
+        sdlTexHeight = GFX_TEX_HEIGHT;
+        break;
+    case 0xE:
+        sdlTexWidth = 2*GFX_TEX_WIDTH;
+        sdlTexHeight = GFX_TEX_HEIGHT;
+        break;
+    }
+
+    mDreamsSurface.create(0, sdlTexWidth, sdlTexHeight, RES_BPP, 0, 0, 0, 0);
+}
+
+
+
 
 void DreamsEngine::start()
 {
+    // Global for the legacy refkeen code.
+    gDreamsEngine = this;
+
     gKeenFiles.setupFilenames(7);
 
-
-#define GFX_TEX_WIDTH 320
-#define GFX_TEX_HEIGHT 200
-
-    /*mpDreamsSurface.reset(  SDL_CreateRGBSurface(0,
-                                                 GFX_TEX_WIDTH,
-                                                 GFX_TEX_HEIGHT,
-                                                 32, 0, 0, 0, 0), &SDL_FreeSurface);*/
-
-
-
-    gpBlitSfc = gVideoDriver.getBlitSurface();
-    //gpBlitSfc = mpDreamsSurface.get();
+    setScreenMode(3);
 
     dreamsengine_datapath = const_cast<char*>(mDataPath.c_str());
 
@@ -535,34 +565,23 @@ void DreamsEngine::ponder(const float deltaT)
 
 void DreamsEngine::updateHostDisplay()
 {
-    // TODO: I will two separate surfaces, one for text mode and the other one for the actual VGA Graphics
-    //SDL_Surface *sfc = gVideoDriver.getBlitSurface();
-
-    //BEL_ST_UpdateHostDisplay(sfc);
-
-    //SDL_Surface *sfc = mpDreamsSurface.get();
-    //SDL_Surface *blitSfc = gVideoDriver.getBlitSurface();
-    SDL_Surface *sfc = gVideoDriver.getBlitSurface();
+    SDL_Surface *sfc = mDreamsSurface.getSDLSurface();
+    SDL_Surface *blitSfc = gVideoDriver.getBlitSurface();
 
     BEL_ST_UpdateHostDisplay(sfc);
 
-    /*SDL_Rect dstRect, srGsRect;
+    SDL_Rect dstRect, srGsRect;
     srGsRect.x = srGsRect.y = 0;
     dstRect.x = dstRect.y = 0;
 
     srGsRect.w = sfc->w;
     srGsRect.h = sfc->h;
     dstRect.w = blitSfc->w;
-
-    GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
-    SDL_Rect gameResSDL = gameRes.SDLRect();
-
-
-    SDL_FillRect( blitSfc, &gameResSDL, SDL_MapRGB(blitSfc->format, 0, 0, 0) );
+    dstRect.h = blitSfc->h;
 
     CVidConfig &vidConf = gVideoDriver.getVidConfig();
 
-    blitScaled( sfc, srGsRect, blitSfc, dstRect, vidConf.m_ScaleXFilter );*/
+    blitScaled( sfc, srGsRect, blitSfc, dstRect, vidConf.m_ScaleXFilter );
 }
 
 

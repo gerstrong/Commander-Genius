@@ -1,3 +1,8 @@
+
+#include "engine/keen/dreams/dreamsengine.h"
+
+extern dreams::DreamsEngine *gDreamsEngine;
+
 extern "C"
 {
 
@@ -13,6 +18,8 @@ extern "C"
 /*static*/ SDL_Renderer *g_sdlRenderer;
 /*static*/ SDL_Texture *g_sdlTexture, *g_sdlTargetTexture;
 #endif
+
+
 
 static SDL_Rect g_sdlAspectCorrectionRect, g_sdlAspectCorrectionBorderedRect;
 
@@ -73,7 +80,6 @@ static int g_sdlTxtCursorPosX, g_sdlTxtCursorPosY;
 static bool g_sdlTxtCursorEnabled = true;
 static int g_sdlTxtColor = 7, g_sdlTxtBackground = 0;
 
-SDL_Surface *gpBlitSfc;
 
 /*** Game controller UI resource definitions ***/
 
@@ -1116,7 +1122,7 @@ void BE_ST_SetScreenMode(int mode)
 	}
 	g_sdlScreenMode = mode;
 
-    SDL_FillRect(gpBlitSfc, NULL, SDL_MapRGB( gpBlitSfc->format, 0, 0, 0 ));
+    gDreamsEngine->setScreenMode(mode);
 }
 
 void BE_ST_textcolor(int color)
@@ -1288,9 +1294,9 @@ static void BEL_ST_vprintf_impl(const char *format, va_list args, bool iscolored
 		}
 		++format;
 	}
-	g_sdlDoRefreshGfxOutput = true;
 }
 
+/*
 static void BEL_ST_FinishHostDisplayUpdate(void)
 {
 	g_sdlForceGfxControlUiRefresh = false;
@@ -1313,7 +1319,7 @@ static void BEL_ST_FinishHostDisplayUpdate(void)
 
         //SDL_RenderPresent(g_sdlRenderer);
 }
-
+*/
 
 /*
     if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
@@ -1344,33 +1350,32 @@ static void BEL_ST_FinishHostDisplayUpdate(void)
 
 void BEL_ST_UpdateHostDisplay(SDL_Surface *sfc)
 {
+
     SDL_LockSurface(sfc);
 
     #define VGA_TXT_CHAR_PIX_WIDTH  ((sfc->w)/TXT_COLS_NUM)
     #define VGA_TXT_CHAR_PIX_HEIGHT ((sfc->h)/TXT_ROWS_NUM)
 
+
 	if (g_sdlScreenMode == 3) // Text mode
 	{
-		// For graphics modes we don't have to refresh if g_sdlDoRefreshGfxOutput is set to false,
-		// but in textual mode we have blinking characters and cursor to take care of
 		static bool wereBlinkingCharsShown;
 		static bool wasBlinkingCursorShown;
 		bool areBlinkingCharsShown = (((uint64_t)(70086*SDL_GetTicks()/1000)/(1000*VGA_TXT_BLINK_VERT_FRAME_RATE)) % 2);
 		bool isBlinkingCursorShown = g_sdlTxtCursorEnabled && (((uint64_t)(70086*SDL_GetTicks()/1000)/(1000*VGA_TXT_CURSOR_BLINK_VERT_FRAME_RATE)) % 2);
-		if (!g_sdlDoRefreshGfxOutput && (wereBlinkingCharsShown == areBlinkingCharsShown) && (wasBlinkingCursorShown == isBlinkingCursorShown))
+        /*if (!g_sdlDoRefreshGfxOutput && (wereBlinkingCharsShown == areBlinkingCharsShown) && (wasBlinkingCursorShown == isBlinkingCursorShown))
 		{
 			if (g_sdlForceGfxControlUiRefresh)
 				BEL_ST_FinishHostDisplayUpdate();
 			return;
-		}
-		/****** Do update ******/
-		wereBlinkingCharsShown = areBlinkingCharsShown;
+        }*/
+        /// Do update
+        wereBlinkingCharsShown = areBlinkingCharsShown;
 		wasBlinkingCursorShown = isBlinkingCursorShown;
         void *pixels = sfc->pixels;
         //int pitch;
         //SDL_LockTexture(g_sdlTexture, NULL, &pixels, &pitch);
 
-        //uint32_t *screenPixelPtr = (uint32_t *)pixels;
         void *screenPixelPtrYOffset = pixels;
         int bpp = sfc->format->BytesPerPixel;
         // Uint8 *p = (Uint8 *)surface->pixels + y * surface->pitch + x * bpp;
@@ -1442,10 +1447,11 @@ void BEL_ST_UpdateHostDisplay(SDL_Surface *sfc)
 		}
 		// Finish with outputting the cursor if required
         currCharColor = g_sdlEGABGRAScreenColors[g_sdlVidMem.text[1+((TXT_COLS_NUM*g_sdlTxtCursorPosY+g_sdlTxtCursorPosX)<<1)] & 15];
-        // TODO: Blinking cursor
-        /*if (isBlinkingCursorShown)
+
+        // Blinking cursor
+        if (isBlinkingCursorShown)
 		{
-			screenPixelPtr = (uint32_t *)pixels+g_sdlTexWidth;
+            uint32_t *screenPixelPtr = (uint32_t *)pixels+g_sdlTexWidth;
             screenPixelPtr += g_sdlTxtCursorPosY*VGA_TXT_CHAR_PIX_HEIGHT*g_sdlTexWidth;
 			screenPixelPtr += g_sdlTxtCursorPosX*VGA_TXT_CHAR_PIX_WIDTH;
 			// Out of 3 last scanlines of char, draw to the first 2.
@@ -1456,16 +1462,17 @@ void BEL_ST_UpdateHostDisplay(SDL_Surface *sfc)
 					*screenPixelPtr = currCharColor;
 				screenPixelPtr += g_sdlTexWidth - VGA_TXT_CHAR_PIX_WIDTH;
 			}
-        }*/
+        }
+
 	}
-	else if (g_sdlScreenMode == 4) // CGA graphics
+    else if (g_sdlScreenMode == 4) // CGA graphics
 	{
-		if (!g_sdlDoRefreshGfxOutput)
+        /*if (!g_sdlDoRefreshGfxOutput)
 		{
 			if (g_sdlForceGfxControlUiRefresh)
 				BEL_ST_FinishHostDisplayUpdate();
 			return;
-		}
+        }*/
 		// That's easy now since there isn't a lot that can be done...
 		void *pixels;
 		int pitch;
@@ -1479,12 +1486,12 @@ void BEL_ST_UpdateHostDisplay(SDL_Surface *sfc)
 	}
 	else // EGA graphics mode 0xD or 0xE
 	{
-		if (!g_sdlDoRefreshGfxOutput)
+        /*if (!g_sdlDoRefreshGfxOutput)
 		{
 			if (g_sdlForceGfxControlUiRefresh)
 				BEL_ST_FinishHostDisplayUpdate();
 			return;
-		}
+        }*/
 		uint16_t currLineFirstByte = (g_sdlScreenStartAddress + g_sdlPelPanning/8) % 0x10000;
 		uint8_t panningWithinInByte = g_sdlPelPanning%8;
         uint8_t *currPalPixPtrBase, *currPalPixCachePtr;
@@ -1554,12 +1561,12 @@ void BEL_ST_UpdateHostDisplay(SDL_Surface *sfc)
 			if (!doUpdate)
 			{
 				g_sdlDoRefreshGfxOutput = false;
-				if (g_sdlForceGfxControlUiRefresh)
-                       BEL_ST_FinishHostDisplayUpdate();
+                /*if (g_sdlForceGfxControlUiRefresh)
+                       BEL_ST_FinishHostDisplayUpdate();*/
 				return;
 			}
 		}
-        void *pixels = sfc->pixels;
+        void *pixels = sfc->pixels;       
 
         uint32_t *currPixPtrBase = (uint32_t *)pixels;
         currPalPixPtrBase = g_sdlHostScrMem.egaGfx;
@@ -1581,7 +1588,7 @@ void BEL_ST_UpdateHostDisplay(SDL_Surface *sfc)
                 currPixPtr++;
             }
         }
-	}
+    }
 
     g_sdlDoRefreshGfxOutput = false;
     SDL_UnlockSurface(sfc);
