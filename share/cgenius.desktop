@@ -2,8 +2,8 @@
 Name=Commander Genius
 Comment=Play natively Commander Keen Games
 Exec=CGeniusExe
-Icon=CGLogo.png
+Icon=/usr/share/icons/hicolor/512x512/apps/CGLogo.png
 Terminal=false
 Type=Application
-Categories=Game;ArcadeGame;
-
+StartupNotify=true
+Categories=Application;Game;ArcadeGame;
