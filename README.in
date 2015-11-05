@@ -1,17 +1,16 @@
 **************************************************************
              Commander Genius                
                                             
-    (c)2008-2015            Gerstrong
+    (c)2008-2016            Gerstrong
     (c)2013-2014            Hagel
     (c)2014                 Mancus
 
 Ports:
-    (c)2010-2014            Pelya (Android-Distro)
+    (c)2010-2016           Pelya (Android-Distro)
 
            Released under GNU/GPL           
                                             
-           Release v${CG_VERSION} 
-           Build: ${CMAKE_BUILD_TYPE}                                       
+           Build: ${CG_VERSION} 
 **************************************************************
 
 Welcome to Commander Genius!
