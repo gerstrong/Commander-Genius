@@ -19,6 +19,7 @@ string(REGEX REPLACE "[\r\n]" "" CG_VERSION "${CG_VERSION}")
 
 # Generate the README file with the correct version string
 configure_file(README.in README)
+configure_file(README.in ${CMAKE_BINARY_DIR}/README)
 
 set(CMAKE_C_FLAGS "-std=c99")
 
