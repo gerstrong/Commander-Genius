@@ -16,6 +16,8 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#include <SDL.h>
+
 extern "C"
 {
 
@@ -3573,7 +3575,7 @@ USL_TearDownCtlPanel(void)
 ///////////////////////////////////////////////////////////////////////////
 void
 US_ControlPanel(void)
-{
+{        
 	// REFKEEN - Alternative controllers support	
 	BE_ST_AltControlScheme_Push();
 	BE_ST_AltControlScheme_PrepareMenuControls();
@@ -3643,6 +3645,9 @@ US_ControlPanel(void)
 	done = false;
 	FlushHelp = true;
 	lastx = lasty = -1;
+
+    SDL_Delay(100);
+
 	while
 	(
 		(restartgame == gd_Continue)
@@ -3748,7 +3753,7 @@ US_ControlPanel(void)
 					USL_DrawItem(hiti,hitn);
 					VW_UpdateScreen();
 
-//					BE_ST_TimeCountWaitFromSrc(lasttime, TickBase / 4);
+                    BE_ST_TimeCountWaitFromSrc(lasttime, TickBase / 4);
 #if 0
 					while (TimeCount - lasttime < TickBase / 4)
 						;
@@ -3759,7 +3764,7 @@ US_ControlPanel(void)
 					USL_DrawItem(hiti,hitn);
 					VW_UpdateScreen();
 
-//					BE_ST_TimeCountWaitFromSrc(lasttime, TickBase / 4);
+                    BE_ST_TimeCountWaitFromSrc(lasttime, TickBase / 4);
 #if 0
 					while (TimeCount - lasttime < TickBase / 4)
 						;

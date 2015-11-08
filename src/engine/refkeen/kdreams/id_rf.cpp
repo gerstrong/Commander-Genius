@@ -1649,8 +1649,14 @@ redraw:
 =====================
 */
 
+extern int gRenderToken;
+
 void RF_Refresh (int updateGraphics)
 {
+
+    // Wait for the main thread to finish passing the data on screen
+    while(gRenderToken == 0);
+
 	id0_byte_t	*newupdate;
 	id0_long_t	newtime;
 
@@ -1747,6 +1753,10 @@ asm	mov	[WORD PTR es:di],UPDATETERMINATE
 		SD_SetTimeCount(SD_GetTimeCount() - (tics-MAXTICS));
 		tics = MAXTICS;
 	}
+
+
+    // Unlock the Rendering Thread for main
+    gRenderToken = 0;
 }
 
 #endif		// GRMODE == EGAGR

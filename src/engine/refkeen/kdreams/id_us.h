@@ -47,7 +47,7 @@ typedef	struct
 
 typedef	enum
 		{
-			gd_Continue,
+            gd_Continue = 0,
 			gd_Easy,
 			gd_Normal,
 			gd_Hard

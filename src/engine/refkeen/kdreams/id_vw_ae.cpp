@@ -613,14 +613,19 @@ ENDP
 //
 //============================================================================
 
+extern int gRenderToken;
+
 void VW_ScreenToScreen(id0_unsigned_t source, id0_unsigned_t dest,
 	id0_unsigned_t wide, id0_unsigned_t height)
 {
+    while(gRenderToken == 0);
+
 	for (id0_unsigned_t lineCounter = height; lineCounter; --lineCounter, source += linewidth, dest += linewidth)
 	{
 		BE_ST_EGAUpdateGFXBufferScrToScr(dest, source, wide);
 	}
 
+    gRenderToken = 0;
 }
 #if 0
 PROC	VW_ScreenToScreen	source:WORD, dest:WORD, wide:WORD, height:WORD
@@ -1210,6 +1215,9 @@ ENDP
 
 void 	VW_SetScreen (id0_unsigned_t CRTC, id0_unsigned_t pelpan)
 {
+
+    while(gRenderToken == 0);
+
 #if WAITFORVBL
 #if 0
 	mov	dx,STATUS_REGISTER_1
@@ -1253,6 +1261,8 @@ void 	VW_SetScreen (id0_unsigned_t CRTC, id0_unsigned_t pelpan)
 	// very scrolling glitches, so call here instead
 	VW_WaitVBL(1);
 #endif
+
+    gRenderToken = 0;
 }
 
 #if NUMFONT+NUMFONTM

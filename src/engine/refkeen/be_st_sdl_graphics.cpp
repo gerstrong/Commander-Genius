@@ -1465,7 +1465,7 @@ void BEL_ST_UpdateHostDisplay(SDL_Surface *sfc)
         }
 
 	}
-    else if (g_sdlScreenMode == 4) // CGA graphics
+    else if (g_sdlScreenMode == 4) // CGA graphics TODO: revisit when in CGA Mode
 	{
         /*if (!g_sdlDoRefreshGfxOutput)
 		{

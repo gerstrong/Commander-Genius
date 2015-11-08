@@ -135,6 +135,8 @@ void BEL_ST_UpdateHostDisplay(SDL_Surface *sfc);
 
 void BE_ST_PollEvents(SDL_Event event);
 
+int gRenderToken = 0; // 0 mean only main thread, 1 refkeen prepares data for rendering
+
 }
 
 
@@ -586,6 +588,9 @@ void DreamsEngine::updateHostDisplay()
 
     CVidConfig &vidConf = gVideoDriver.getVidConfig();
 
+    // TODO: We need some render control here!
+    //SDL_FillRect(sfc, NULL, SDL_MapRGB(sfc->format, 255, 0, 0));
+
     blitScaled( sfc, srGsRect, blitSfc, dstRect, vidConf.m_ScaleXFilter );
 }
 
@@ -593,7 +598,13 @@ void DreamsEngine::updateHostDisplay()
 
 void DreamsEngine::render()
 {
+    // Wait for Refkeen threads to finish
+    while(gRenderToken != 0);
+
     updateHostDisplay();
+
+    // Unblock so Refkeen can write for rendering
+    gRenderToken = 1;
 }
 
 }

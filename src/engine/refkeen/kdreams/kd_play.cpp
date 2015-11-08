@@ -18,6 +18,8 @@
 
 // KD_PLAY.C
 
+#include <base/CInput.h>
+
 extern "C"
 {
 
@@ -96,7 +98,7 @@ const id0_char_t		*levelnames[21] =
 "Apple Acres",
 "Grape Grove",
 "Cheat Level 3",
-"Brussels Sprout Bay",
+"Brussels Sprout Bay",LastScan
 "Cheat Level 4",
 "Squash Swamp",
 "Boobus' Chamber",
@@ -244,6 +246,9 @@ void CheckKeys (void)
 	if (screenfaded)			// don't do anything with a faded screen
 		return;
 
+    CInput &input = gInput;
+
+
 //
 // space for status screen
 //
@@ -271,8 +276,8 @@ void CheckKeys (void)
 
 //
 // F1-F7/ESC to enter control panel
-//
-	if ( (LastScan >= sc_F1 && LastScan <= sc_F7) || LastScan == sc_Escape)
+//    
+    if ( (LastScan >= sc_F1 && LastScan <= sc_F7) || input.getPressedCommand(IC_BACK) )
 	{
 		VW_FixRefreshBuffer ();
 		US_CenterWindow (20,8);
@@ -1560,7 +1565,7 @@ void PlayLoop()
 	FixScoreBox ();					// draw bomb/flower
 
 	do
-    {
+    {                
 		CalcSingleGravity ();
 		IN_ReadControl(0,&c);		// get player input
 		if (!c.button0)
@@ -1685,10 +1690,9 @@ void PlayLoop()
 
 //
 // update the screen and calculate the number of tics it took to execute
-// this cycle of events (for adaptive timing of next cycle)
-//
+// this cycle of events (for adaptive timing of next cycle)                        
+//                
         RF_Refresh(true);
-
 
         if(gDreamsForceClose)
             break;
@@ -1701,6 +1705,7 @@ void PlayLoop()
 			VW_WaitVBL(14);
 			lasttimecount = SD_GetTimeCount();
 		}
+
 
 		CheckKeys();
 
