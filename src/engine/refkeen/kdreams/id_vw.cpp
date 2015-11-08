@@ -1156,8 +1156,12 @@ id0_int_t VW_MarkUpdateBlock (id0_int_t x1, id0_int_t y1, id0_int_t x2, id0_int_
 ===========================
 */
 
+extern int gRenderToken;
+
 void VW_UpdateScreen (void)
 {
+    while(gRenderToken == 0);
+
 	if (cursorvisible>0)
 		VWL_DrawCursor();
 
@@ -1172,6 +1176,8 @@ void VW_UpdateScreen (void)
 
 	if (cursorvisible>0)
 		VWL_EraseCursor();
+
+    gRenderToken = 0;
 }
 
 

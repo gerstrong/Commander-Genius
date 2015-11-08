@@ -3653,7 +3653,7 @@ US_ControlPanel(void)
 		(restartgame == gd_Continue)
 	&&	!(done || loadedgame || ResumeGame)
 	)
-	{
+    {
 		VW_UpdateScreen();
         BE_ST_ShortSleep(); // TODO (REFKEEN): Correct place?
 

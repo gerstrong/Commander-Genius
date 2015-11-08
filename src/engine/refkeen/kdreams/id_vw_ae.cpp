@@ -1214,9 +1214,7 @@ ENDP
 //==============
 
 void 	VW_SetScreen (id0_unsigned_t CRTC, id0_unsigned_t pelpan)
-{
-
-    while(gRenderToken == 0);
+{    
 
 #if WAITFORVBL
 #if 0
@@ -1261,8 +1259,6 @@ void 	VW_SetScreen (id0_unsigned_t CRTC, id0_unsigned_t pelpan)
 	// very scrolling glitches, so call here instead
 	VW_WaitVBL(1);
 #endif
-
-    gRenderToken = 0;
 }
 
 #if NUMFONT+NUMFONTM
