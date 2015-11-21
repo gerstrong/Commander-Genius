@@ -1654,74 +1654,82 @@ extern int gRenderToken;
 void RF_Refresh (int updateGraphics)
 {
 
+
+    id0_byte_t	*newupdate;
+    id0_long_t	newtime;
+
     // Wait for the main thread to finish passing the data on screen
-    while(gRenderToken == 0);
-
-	id0_byte_t	*newupdate;
-	id0_long_t	newtime;
-
-	updateptr = updatestart[otherpage];
-
-    if(updateGraphics)
+    if(gRenderToken != 0)
     {
-        RFL_AnimateTiles ();		// DEBUG
+        updateptr = updatestart[otherpage];
+
+        if(updateGraphics)
+        {
+            RFL_AnimateTiles ();		// DEBUG
+
+            //
+            // update newly scrolled on tiles and animated tiles from the master screen
+            //
+            EGAWRITEMODE(1);
+            EGAMAPMASK(15);
+            RFL_UpdateTiles ();
+            RFL_EraseBlocks ();
+
+            //
+            // Update is all 0 except where sprites have changed or new area has
+            // been scrolled on.  Go through all sprites and update the ones that cover
+            // a non 0 update tile
+            //
+            EGAWRITEMODE(0);
+            RFL_UpdateSprites ();
+
+        }
+        //
+        // if the main program has a refresh hook set, call their function before
+        // displaying the new page
+        //
+        if (refreshvector)
+            refreshvector();
+
+
 
         //
-        // update newly scrolled on tiles and animated tiles from the master screen
+        // display the changed screen
         //
-        EGAWRITEMODE(1);
-        EGAMAPMASK(15);
-        RFL_UpdateTiles ();
-        RFL_EraseBlocks ();
+        VW_SetScreen(bufferofs+panadjust,panx & xpanmask);
 
         //
-        // Update is all 0 except where sprites have changed or new area has
-        // been scrolled on.  Go through all sprites and update the ones that cover
-        // a non 0 update tile
+        // prepare for next refresh
         //
-        EGAWRITEMODE(0);
-        RFL_UpdateSprites ();
+        // Set the update array to the middle position and clear it out to all "0"s
+        // with an UPDATETERMINATE at the end
+        //
+        updatestart[otherpage] = newupdate = baseupdatestart[otherpage];
+#if 0
+        asm	mov	ax,ds
+                asm	mov	es,ax
+                asm	xor	ax,ax
+                asm	mov	cx,(UPDATESCREENSIZE-2)/2
+                asm	mov	di,[newupdate]
+                asm	rep	stosw
+                asm	mov	[WORD PTR es:di],UPDATETERMINATE
+        #endif
+                // Ported from ASM
+                memset(newupdate, 0, 2*((UPDATESCREENSIZE-2)/2));
+        *(id0_unsigned_t *)(newupdate + 2*((UPDATESCREENSIZE-2)/2)) = UPDATETERMINATE;
+        //
+
+        screenpage ^= 1;
+        otherpage ^= 1;
+        bufferofs = screenstart[otherpage];
+        displayofs = screenstart[screenpage];
+
+        // Main thread -> update graphics!
+        gRenderToken = 0;
 
     }
-//
-// if the main program has a refresh hook set, call their function before
-// displaying the new page
-//
-	if (refreshvector)
-		refreshvector();
 
-//
-// display the changed screen
-//
-	VW_SetScreen(bufferofs+panadjust,panx & xpanmask);
-
-//
-// prepare for next refresh
-//
-// Set the update array to the middle position and clear it out to all "0"s
-// with an UPDATETERMINATE at the end
-//
-	updatestart[otherpage] = newupdate = baseupdatestart[otherpage];
-#if 0
-asm	mov	ax,ds
-asm	mov	es,ax
-asm	xor	ax,ax
-asm	mov	cx,(UPDATESCREENSIZE-2)/2
-asm	mov	di,[newupdate]
-asm	rep	stosw
-asm	mov	[WORD PTR es:di],UPDATETERMINATE
-#endif
-	// Ported from ASM
-	memset(newupdate, 0, 2*((UPDATESCREENSIZE-2)/2));
-	*(id0_unsigned_t *)(newupdate + 2*((UPDATESCREENSIZE-2)/2)) = UPDATETERMINATE;
-	//
-
-	screenpage ^= 1;
-	otherpage ^= 1;
-	bufferofs = screenstart[otherpage];
-	displayofs = screenstart[screenpage];
-
-//
+    //
 // calculate tics since last refresh for adaptive timing
 //
 	// REFKEEN - Looks like this is an unsigned comparison in original EXE
@@ -1753,10 +1761,6 @@ asm	mov	[WORD PTR es:di],UPDATETERMINATE
 		SD_SetTimeCount(SD_GetTimeCount() - (tics-MAXTICS));
 		tics = MAXTICS;
 	}
-
-
-    // Unlock the Rendering Thread for main
-    gRenderToken = 0;
 }
 
 #endif		// GRMODE == EGAGR

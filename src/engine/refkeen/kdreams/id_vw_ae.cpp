@@ -618,7 +618,8 @@ extern int gRenderToken;
 void VW_ScreenToScreen(id0_unsigned_t source, id0_unsigned_t dest,
 	id0_unsigned_t wide, id0_unsigned_t height)
 {
-    while(gRenderToken == 0);
+    if(gRenderToken == 0)
+        return;
 
 	for (id0_unsigned_t lineCounter = height; lineCounter; --lineCounter, source += linewidth, dest += linewidth)
 	{

@@ -135,7 +135,7 @@ void BEL_ST_UpdateHostDisplay(SDL_Surface *sfc);
 
 void BE_ST_PollEvents(SDL_Event event);
 
-int gRenderToken = 0; // 0 mean only main thread, 1 refkeen prepares data for rendering
+int gRenderToken = 0; // 0 means only main thread, 1 refkeen prepares data for rendering
 
 }
 

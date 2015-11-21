@@ -1357,7 +1357,7 @@ void BEL_ST_UpdateHostDisplay(SDL_Surface *sfc)
     #define VGA_TXT_CHAR_PIX_HEIGHT ((sfc->h)/TXT_ROWS_NUM)
 
 
-	if (g_sdlScreenMode == 3) // Text mode
+    if (g_sdlScreenMode == 3) // Text mode TODO: Broken for some reason, check!
 	{
 		static bool wereBlinkingCharsShown;
 		static bool wasBlinkingCursorShown;

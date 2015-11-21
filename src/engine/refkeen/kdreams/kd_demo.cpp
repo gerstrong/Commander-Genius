@@ -741,8 +741,6 @@ DemoLoop (void)
 #elif defined REFKEEN_VER_KDREAMS_ANYEGA_ALL
 
 
-extern int gRenderToken;
-
 void DemoLoop()
 {
 	//id0_char_t		*s;
@@ -813,14 +811,11 @@ void DemoLoop()
 
 			while (true)
 			{
-                while(gRenderToken == 0);
-
 				VW_SetScreen(0, 0);
 				MoveGfxDst(0, 200);
 				UnpackEGAShapeToScreen(&FileShape1, 0, 0);
 				VW_ScreenToScreen (64*200,0,40,200);
 
-                gRenderToken = 0;
 #if CREDITS
 				if (IN_UserInput(TickBase * 8, false))
 					break;
