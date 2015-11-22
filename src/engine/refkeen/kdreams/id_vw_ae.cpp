@@ -618,15 +618,15 @@ extern int gRenderToken;
 void VW_ScreenToScreen(id0_unsigned_t source, id0_unsigned_t dest,
 	id0_unsigned_t wide, id0_unsigned_t height)
 {
-    if(gRenderToken == 0)
-        return;
+    //if(gRenderToken == 0)
+      //  return;
 
 	for (id0_unsigned_t lineCounter = height; lineCounter; --lineCounter, source += linewidth, dest += linewidth)
 	{
 		BE_ST_EGAUpdateGFXBufferScrToScr(dest, source, wide);
 	}
 
-    gRenderToken = 0;
+    //gRenderToken = 0;
 }
 #if 0
 PROC	VW_ScreenToScreen	source:WORD, dest:WORD, wide:WORD, height:WORD

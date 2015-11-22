@@ -1160,8 +1160,8 @@ extern int gRenderToken;
 
 void VW_UpdateScreen (void)
 {
-    if(gRenderToken == 0)
-        return;
+    //if(gRenderToken == 0)
+      //  return;
 
 	if (cursorvisible>0)
 		VWL_DrawCursor();
@@ -1179,7 +1179,7 @@ void VW_UpdateScreen (void)
 		VWL_EraseCursor();
 
     // Main thread -> update graphics!
-    gRenderToken = 0;
+    //gRenderToken = 0;
 }
 
 

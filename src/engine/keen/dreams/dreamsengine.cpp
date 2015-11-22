@@ -572,7 +572,7 @@ void DreamsEngine::ponder(const float deltaT)
 
 void DreamsEngine::updateHostDisplay()
 {
-    SDL_Surface *sfc = mDreamsSurface.getSDLSurface();
+    /*SDL_Surface *sfc = mDreamsSurface.getSDLSurface();
     SDL_Surface *blitSfc = gVideoDriver.getBlitSurface();
 
     BEL_ST_UpdateHostDisplay(sfc);
@@ -591,7 +591,12 @@ void DreamsEngine::updateHostDisplay()
     // TODO: We need some render control here!
     //SDL_FillRect(sfc, NULL, SDL_MapRGB(sfc->format, 255, 0, 0));
 
-    blitScaled( sfc, srGsRect, blitSfc, dstRect, vidConf.m_ScaleXFilter );
+    blitScaled( sfc, srGsRect, blitSfc, dstRect, vidConf.m_ScaleXFilter );*/
+
+
+    SDL_Surface *sfc = gVideoDriver.getBlitSurface();
+
+    BEL_ST_UpdateHostDisplay(sfc);
 }
 
 
@@ -599,12 +604,12 @@ void DreamsEngine::updateHostDisplay()
 void DreamsEngine::render()
 {
     // Wait for Refkeen threads to finish
-    while(gRenderToken != 0);
+    //while(gRenderToken != 0);
 
     updateHostDisplay();
 
     // Unblock so Refkeen can write for rendering
-    gRenderToken = 1;
+    //gRenderToken = 1;
 }
 
 }

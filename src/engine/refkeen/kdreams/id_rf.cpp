@@ -1659,7 +1659,7 @@ void RF_Refresh (int updateGraphics)
     id0_long_t	newtime;
 
     // Wait for the main thread to finish passing the data on screen
-    if(gRenderToken != 0)
+    //if(gRenderToken != 0)
     {
         updateptr = updatestart[otherpage];
 
@@ -1725,7 +1725,7 @@ void RF_Refresh (int updateGraphics)
         displayofs = screenstart[screenpage];
 
         // Main thread -> update graphics!
-        gRenderToken = 0;
+        //gRenderToken = 0;
 
     }
 
