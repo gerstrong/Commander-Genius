@@ -228,6 +228,8 @@ public:
 	
 	std::string getNewMappedEvent(int &rPos, unsigned char &rInp);
 	void readNewEvent();
+
+    void waitForAnyInput();
 	
 	void setupNewEvent(Uint8 device, int position);
 

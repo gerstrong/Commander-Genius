@@ -13,7 +13,6 @@
 #include <base/utils/StringUtils.h>
 #include <cassert>
 
-
 CResourceLoader::CResourceLoader() :
 m_permil(0),
 m_permiltarget(0),

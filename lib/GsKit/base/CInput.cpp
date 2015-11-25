@@ -14,7 +14,9 @@
 #include <base/GsLogging.h>
 #include <base/utils/FindFile.h>
 #include <base/PointDevice.h>
+#include <base/GsTimer.h>
 #include <fileio/CConfiguration.h>
+
 
 // Workaround for RefKeen. If if it transferred to a more C++ structure we have to be able removing that.
 extern "C"
@@ -456,7 +458,6 @@ void CInput::setupNewEvent(Uint8 device, int position)
  */
 void CInput::readNewEvent()
 {
-
 	stInputCommand &lokalInput = InputCommand[remapper.mapDevice][remapper.mapPosition];
 
 	// This function is used to configure new input keys.
@@ -528,6 +529,23 @@ void CInput::readNewEvent()
         flushAll();
     }
 }
+
+
+void CInput::waitForAnyInput()
+{
+    while(1)
+    {
+        pollEvents();
+
+        timerDelay(16);
+
+        if(getPressedAnyCommand())
+        {
+            break;
+        }
+    }
+}
+
 
 bool CInput::getTwoButtonFiring(int player) { return TwoButtonFiring[player]; }
 void CInput::setTwoButtonFiring(int player, bool value) { TwoButtonFiring[player]=value; }

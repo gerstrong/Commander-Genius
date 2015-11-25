@@ -1350,8 +1350,7 @@ static void BEL_ST_FinishHostDisplayUpdate(void)
 
 void BEL_ST_UpdateHostDisplay(SDL_Surface *sfc)
 {
-
-    SDL_LockSurface(sfc);
+    if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
 
     #define VGA_TXT_CHAR_PIX_WIDTH  ((sfc->w)/TXT_COLS_NUM)
     #define VGA_TXT_CHAR_PIX_HEIGHT ((sfc->h)/TXT_ROWS_NUM)
@@ -1540,7 +1539,7 @@ void BEL_ST_UpdateHostDisplay(SDL_Surface *sfc)
 			if (g_sdlSplitScreenLine == line)
 			{
 				currLineFirstByte = 0; // NEXT line begins split screen, NOT g_sdlSplitScreenLine
-			}
+            }
 			else
 			{
 				currLineFirstByte += g_sdlLineWidth;
@@ -1591,7 +1590,7 @@ void BEL_ST_UpdateHostDisplay(SDL_Surface *sfc)
     }
 
     g_sdlDoRefreshGfxOutput = false;
-    SDL_UnlockSurface(sfc);
+    if(SDL_MUSTLOCK(sfc)) SDL_UnlockSurface(sfc);
 }
 
 

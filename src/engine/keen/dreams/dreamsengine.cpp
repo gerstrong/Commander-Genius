@@ -572,7 +572,7 @@ void DreamsEngine::ponder(const float deltaT)
 
 void DreamsEngine::updateHostDisplay()
 {
-    /*SDL_Surface *sfc = mDreamsSurface.getSDLSurface();
+    SDL_Surface *sfc = mDreamsSurface.getSDLSurface();
     SDL_Surface *blitSfc = gVideoDriver.getBlitSurface();
 
     BEL_ST_UpdateHostDisplay(sfc);
@@ -586,17 +586,24 @@ void DreamsEngine::updateHostDisplay()
     dstRect.w = blitSfc->w;
     dstRect.h = blitSfc->h;
 
+    // Watermark because I'm still testing the rendering. Sometimes it does not work...
+    /*SDL_Rect waterRect;
+    waterRect.x = 0;
+    waterRect.y = 0;
+    waterRect.w = 20;
+    waterRect.h = 20;*/
+
     CVidConfig &vidConf = gVideoDriver.getVidConfig();
 
     // TODO: We need some render control here!
     //SDL_FillRect(sfc, NULL, SDL_MapRGB(sfc->format, 255, 0, 0));
+    //SDL_FillRect(sfc, &waterRect, SDL_MapRGB(sfc->format, 255, 0, 0));
 
-    blitScaled( sfc, srGsRect, blitSfc, dstRect, vidConf.m_ScaleXFilter );*/
+    blitScaled( sfc, srGsRect, blitSfc, dstRect, vidConf.m_ScaleXFilter );
 
+    /*SDL_Surface *sfc = gVideoDriver.getBlitSurface();
 
-    SDL_Surface *sfc = gVideoDriver.getBlitSurface();
-
-    BEL_ST_UpdateHostDisplay(sfc);
+    BEL_ST_UpdateHostDisplay(sfc);*/
 }
 
 
