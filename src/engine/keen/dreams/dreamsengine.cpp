@@ -27,7 +27,7 @@ extern "C"
 
 #include "../../refkeen/kdreams/kd_def.h"
 
-
+ //Lock SDL_SemWait( gDataLock );
 char *dreamsengine_datapath = nullptr;
 
 extern void RefKeen_Patch_id_ca(void);
@@ -135,7 +135,9 @@ void BEL_ST_UpdateHostDisplay(SDL_Surface *sfc);
 
 void BE_ST_PollEvents(SDL_Event event);
 
-int gRenderToken = 0; // 0 means only main thread, 1 refkeen prepares data for rendering
+void BE_ST_ApplyScreenMode(int mode);
+
+SDL_sem* gpRenderLock = nullptr;
 
 }
 
@@ -224,6 +226,12 @@ bool extractEmbeddedFilesIntoMemory(const BE_GameVerDetails_T &gameVerDetails)
     return true;
 }
 
+
+DreamsEngine::~DreamsEngine()
+{
+     SDL_DestroySemaphore( gpRenderLock );
+     gpRenderLock = nullptr;
+}
 
 ///
 // This is used for loading all the resources of the game the use has chosen.
@@ -319,30 +327,7 @@ bool DreamsEngine::loadResources()
 }
 
 
-void DreamsEngine::GameLoop()
-{
-    // TODO: We should pipe this function to another thread,
-    // so the main thread is kept free for
-    // all the other lower functions defined through the GsKit.
-
-    // TODO: Create Thread Object here!
-    //mpThread = DemoLoop();
-    struct GameLoopAction : public Action
-    {
-        int handle()
-        {
-            gDreamsForceClose = 0;
-            DemoLoop();
-            return 0;
-        }
-    };
-
-    mpPlayLoopAction.reset( new GameLoopAction );
-    mpPlayLoopThread.reset(threadPool->start(mpPlayLoopAction.get(), "Dreams Gameloop"));
-}
-
-
-void DreamsEngine::InitGame()
+void InitGame()
 {
     id0_int_t i;
 
@@ -438,6 +423,35 @@ void DreamsEngine::InitGame()
 }
 
 
+void DreamsEngine::GameLoop()
+{
+    // TODO: We should pipe this function to another thread,
+    // so the main thread is kept free for
+    // all the other lower functions defined through the GsKit.
+
+    // TODO: Create Thread Object here!
+    //mpThread = DemoLoop();
+    struct GameLoopAction : public Action
+    {
+        int handle()
+        {
+            gDreamsForceClose = 0;
+
+            InitGame();
+
+            VW_SetScreenMode (GRMODE);
+            VW_ClearVideo (BLACK);
+            DemoLoop();
+            return 0;
+        }
+    };
+
+    mpPlayLoopAction.reset( new GameLoopAction );
+    mpPlayLoopThread.reset(threadPool->start(mpPlayLoopAction.get(), "Dreams Gameloop"));
+}
+
+
+
 #define GFX_TEX_WIDTH 320
 #define GFX_TEX_HEIGHT 200
 #define VGA_TXT_TEX_WIDTH 720
@@ -445,13 +459,13 @@ void DreamsEngine::InitGame()
 //#define EGACGA_TXT_TEX_WIDTH 640
 //#define EGACGA_TXT_TEX_HEIGHT 200
 
-void DreamsEngine::setScreenMode(const int mode)
+void DreamsEngine::applyScreenMode()
 {
     uint sdlTexWidth, sdlTexHeight;
 
     // Chaning the resolution still breaks the system so we leave at GFX_TEX_WIDTHxGFX_TEX_HEIGHT for now...
 
-    /*switch (mode)
+    switch (mChangeMode)
     {
     case 3:
         sdlTexWidth = VGA_TXT_TEX_WIDTH;
@@ -469,12 +483,12 @@ void DreamsEngine::setScreenMode(const int mode)
         sdlTexWidth = 2*GFX_TEX_WIDTH;
         sdlTexHeight = GFX_TEX_HEIGHT;
         break;
-    }*/
-
-    sdlTexWidth = GFX_TEX_WIDTH;
-    sdlTexHeight = GFX_TEX_HEIGHT;
+    }
 
     mDreamsSurface.create(0, sdlTexWidth, sdlTexHeight, RES_BPP, 0, 0, 0, 0);
+
+    // Mode changed, set it to zero
+    mChangeMode = 0;
 }
 
 
@@ -483,7 +497,8 @@ void DreamsEngine::setScreenMode(const int mode)
 void DreamsEngine::start()
 {
     // Global for the legacy refkeen code.
-    gDreamsEngine = this;
+    gDreamsEngine = this;    
+    gpRenderLock = SDL_CreateSemaphore(1);
 
     gKeenFiles.setupFilenames(7);
 
@@ -501,7 +516,7 @@ void DreamsEngine::start()
     setupObjOffset();
 
     // TODO: This seems to be the exe with main cycle. We need to break it into draw and logic routines.
-    InitGame();
+    //InitGame();
     //DemoLoop();
     //kdreams_exe_main();
 }
@@ -557,8 +572,6 @@ void DreamsEngine::ponder(const float deltaT)
         if( gInput.getPressedAnyCommand() || gInput.mouseClicked() )
         {
             mGameState = INTRO_SCREEN;
-            VW_SetScreenMode (GRMODE);
-            VW_ClearVideo (BLACK);
             GameLoop();
         }
     }
@@ -610,13 +623,18 @@ void DreamsEngine::updateHostDisplay()
 
 void DreamsEngine::render()
 {
-    // Wait for Refkeen threads to finish
-    //while(gRenderToken != 0);
+    // Lock Rendering
+    SDL_SemWait( gpRenderLock );
+
+    if(mChangeMode)
+    {
+        applyScreenMode();
+    }
 
     updateHostDisplay();
 
-    // Unblock so Refkeen can write for rendering
-    //gRenderToken = 1;
+    // Unlock
+    SDL_SemPost( gpRenderLock );
 }
 
 }

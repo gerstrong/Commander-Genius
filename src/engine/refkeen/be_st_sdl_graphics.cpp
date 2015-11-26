@@ -1065,64 +1065,71 @@ void BE_ST_CGAFullUpdateFromWrappedMem(const uint8_t *segPtr, const uint8_t *off
 	}
 }
 
+extern SDL_sem* gpRenderLock;
 
 void BE_ST_SetScreenMode(int mode)
 {
-	g_sdlDoRefreshGfxOutput = true;
-	switch (mode)
-	{
-	case 3:
-		g_sdlTexWidth = VGA_TXT_TEX_WIDTH;
-		g_sdlTexHeight = VGA_TXT_TEX_HEIGHT;
-		g_sdlTxtColor = 7;
-		g_sdlTxtBackground = 0;
-		g_sdlTxtCursorPosX = g_sdlTxtCursorPosY = 0;
-		BE_ST_clrscr();
-		g_sdlEGACurrBGRAPaletteAndBorder[16] = g_sdlEGABGRAScreenColors[0];
-		break;
-	case 4:
-		g_sdlTexWidth = GFX_TEX_WIDTH;
-		g_sdlTexHeight = GFX_TEX_HEIGHT;
-		memset(g_sdlHostScrMem.cgaGfx, 0, sizeof(g_sdlHostScrMem.cgaGfx));
-		g_sdlEGACurrBGRAPaletteAndBorder[16] = g_sdlEGABGRAScreenColors[0];
-		g_sdlHostScrMemCache.cgaGfx[0] = g_sdlHostScrMem.cgaGfx[0]^0xFF; // Force refresh
-		break;
-	case 0xD:
-		g_sdlTexWidth = GFX_TEX_WIDTH;
-		g_sdlTexHeight = GFX_TEX_HEIGHT;
-		memcpy(g_sdlEGACurrBGRAPaletteAndBorder, g_sdlEGABGRAScreenColors, sizeof(g_sdlEGABGRAScreenColors));
-		g_sdlEGACurrBGRAPaletteAndBorder[16] = g_sdlEGABGRAScreenColors[0];
-		g_sdlPelPanning = 0;
-		g_sdlLineWidth = 40;
-		g_sdlSplitScreenLine = -1;
-		// HACK: Looks like this shouldn't be done if changing gfx->gfx
-		if (g_sdlScreenMode != 0xE)
-		{
-			memset(g_sdlVidMem.egaGfx, 0, sizeof(g_sdlVidMem.egaGfx));
-		}
-		memset(g_sdlHostScrMem.egaGfx, 0, sizeof(g_sdlHostScrMem.egaGfx));
-		g_sdlHostScrMemCache.egaGfx[0] = g_sdlHostScrMem.egaGfx[0]^0xFF; // Force refresh
-		break;
-	case 0xE:
-		g_sdlTexWidth = 2*GFX_TEX_WIDTH;
-		g_sdlTexHeight = GFX_TEX_HEIGHT;
-		memcpy(g_sdlEGACurrBGRAPaletteAndBorder, g_sdlEGABGRAScreenColors, sizeof(g_sdlEGABGRAScreenColors));
-		g_sdlEGACurrBGRAPaletteAndBorder[16] = g_sdlEGABGRAScreenColors[0];
-		g_sdlPelPanning = 0;
-		g_sdlLineWidth = 80;
-		g_sdlSplitScreenLine = -1;
-		// HACK: Looks like this shouldn't be done if changing gfx->gfx
-		if (g_sdlScreenMode != 0xD)
-		{
-			memset(g_sdlVidMem.egaGfx,  0, sizeof(g_sdlVidMem.egaGfx));
-		}
-		memset(g_sdlHostScrMem.egaGfx,  0, sizeof(g_sdlHostScrMem.egaGfx));
-		g_sdlHostScrMemCache.egaGfx[0] = g_sdlHostScrMem.egaGfx[0]^0xFF; // Force refresh
-		break;
-	}
-	g_sdlScreenMode = mode;
+    // Lock Rendering
+    SDL_SemWait( gpRenderLock );
+
+    g_sdlDoRefreshGfxOutput = true;
+    switch (mode)
+    {
+    case 3:
+        g_sdlTexWidth = VGA_TXT_TEX_WIDTH;
+        g_sdlTexHeight = VGA_TXT_TEX_HEIGHT;
+        g_sdlTxtColor = 7;
+        g_sdlTxtBackground = 0;
+        g_sdlTxtCursorPosX = g_sdlTxtCursorPosY = 0;
+        BE_ST_clrscr();
+        g_sdlEGACurrBGRAPaletteAndBorder[16] = g_sdlEGABGRAScreenColors[0];
+        break;
+    case 4:
+        g_sdlTexWidth = GFX_TEX_WIDTH;
+        g_sdlTexHeight = GFX_TEX_HEIGHT;
+        memset(g_sdlHostScrMem.cgaGfx, 0, sizeof(g_sdlHostScrMem.cgaGfx));
+        g_sdlEGACurrBGRAPaletteAndBorder[16] = g_sdlEGABGRAScreenColors[0];
+        g_sdlHostScrMemCache.cgaGfx[0] = g_sdlHostScrMem.cgaGfx[0]^0xFF; // Force refresh
+        break;
+    case 0xD:
+        g_sdlTexWidth = GFX_TEX_WIDTH;
+        g_sdlTexHeight = GFX_TEX_HEIGHT;
+        memcpy(g_sdlEGACurrBGRAPaletteAndBorder, g_sdlEGABGRAScreenColors, sizeof(g_sdlEGABGRAScreenColors));
+        g_sdlEGACurrBGRAPaletteAndBorder[16] = g_sdlEGABGRAScreenColors[0];
+        g_sdlPelPanning = 0;
+        g_sdlLineWidth = 40;
+        g_sdlSplitScreenLine = -1;
+        // HACK: Looks like this shouldn't be done if changing gfx->gfx
+        if (g_sdlScreenMode != 0xE)
+        {
+            memset(g_sdlVidMem.egaGfx, 0, sizeof(g_sdlVidMem.egaGfx));
+        }
+        memset(g_sdlHostScrMem.egaGfx, 0, sizeof(g_sdlHostScrMem.egaGfx));
+        g_sdlHostScrMemCache.egaGfx[0] = g_sdlHostScrMem.egaGfx[0]^0xFF; // Force refresh
+        break;
+    case 0xE:
+        g_sdlTexWidth = 2*GFX_TEX_WIDTH;
+        g_sdlTexHeight = GFX_TEX_HEIGHT;
+        memcpy(g_sdlEGACurrBGRAPaletteAndBorder, g_sdlEGABGRAScreenColors, sizeof(g_sdlEGABGRAScreenColors));
+        g_sdlEGACurrBGRAPaletteAndBorder[16] = g_sdlEGABGRAScreenColors[0];
+        g_sdlPelPanning = 0;
+        g_sdlLineWidth = 80;
+        g_sdlSplitScreenLine = -1;
+        // HACK: Looks like this shouldn't be done if changing gfx->gfx
+        if (g_sdlScreenMode != 0xD)
+        {
+            memset(g_sdlVidMem.egaGfx,  0, sizeof(g_sdlVidMem.egaGfx));
+        }
+        memset(g_sdlHostScrMem.egaGfx,  0, sizeof(g_sdlHostScrMem.egaGfx));
+        g_sdlHostScrMemCache.egaGfx[0] = g_sdlHostScrMem.egaGfx[0]^0xFF; // Force refresh
+        break;
+    }
+    g_sdlScreenMode = mode;
 
     gDreamsEngine->setScreenMode(mode);
+
+    // Unlock
+    SDL_SemPost( gpRenderLock );
 }
 
 void BE_ST_textcolor(int color)

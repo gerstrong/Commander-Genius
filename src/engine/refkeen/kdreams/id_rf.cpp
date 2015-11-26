@@ -1649,8 +1649,6 @@ redraw:
 =====================
 */
 
-extern int gRenderToken;
-
 void RF_Refresh (int updateGraphics)
 {
 
@@ -1659,7 +1657,6 @@ void RF_Refresh (int updateGraphics)
     id0_long_t	newtime;
 
     // Wait for the main thread to finish passing the data on screen
-    //if(gRenderToken != 0)
     {
         updateptr = updatestart[otherpage];
 
@@ -1723,9 +1720,6 @@ void RF_Refresh (int updateGraphics)
         otherpage ^= 1;
         bufferofs = screenstart[otherpage];
         displayofs = screenstart[screenpage];
-
-        // Main thread -> update graphics!
-        //gRenderToken = 0;
 
     }
 
