@@ -1663,21 +1663,6 @@ void BE_ST_PollEvents(SDL_Event event)
 				}
 			}
 			break;
-		case SDL_WINDOWEVENT:
-			switch (event.window.event)
-			case  SDL_WINDOWEVENT_RESIZED:
-			{
-				void BE_ST_SetGfxOutputRects(void);
-				BE_ST_SetGfxOutputRects();
-				//BE_ST_MarkGfxForPendingUpdate();
-				BE_ST_MarkGfxForUpdate();
-				break;
-			}
-			case SDL_WINDOWEVENT_EXPOSED:
-				//BE_ST_MarkGfxForPendingUpdate();
-				BE_ST_MarkGfxForUpdate();
-				break;
-			break;
 		case SDL_QUIT:
 			BE_ST_ShutdownAll();
 			exit(0);

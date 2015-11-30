@@ -377,8 +377,13 @@ void ShutdownId (void)
 ==========================
 */
 
+// Set by the calle and changed, when a event forces to close the app.
+extern int gDreamsForceClose;
+
+
 void Quit (const id0_char_t *error)
 {
+  gDreamsForceClose = true;
   ShutdownId ();
   if (error && *error)
   {
@@ -428,8 +433,7 @@ void Quit (const id0_char_t *error)
 	{
 		BE_ST_HandleExit(0);
 	}
-#endif
-
+#endif    
 }
 
 //===========================================================================
@@ -556,16 +560,16 @@ void InitGame (void)
 ==========================
 */
 
-#if (!defined REFKEEN_VER_KDREAMS_CGA_ALL) || (!defined CATALOG)
+/*#if (!defined REFKEEN_VER_KDREAMS_CGA_ALL) || (!defined CATALOG)
 static const id0_char_t *EntryParmStrings[] = {"detour",id0_nil_t};
-#endif
+#endif*/
 
 // The original starting point of the game EXE
 void kdreams_exe_main (void)
 {
 #if (!defined REFKEEN_VER_KDREAMS_CGA_ALL) || (!defined CATALOG)
 	id0_boolean_t LaunchedFromShell = false;
-	id0_short_t i;
+    //id0_short_t i;
 #endif
 
 

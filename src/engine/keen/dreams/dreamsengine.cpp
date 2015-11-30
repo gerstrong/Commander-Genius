@@ -5,6 +5,7 @@
 #include "engine/keen/KeenEngine.h"
 #include <base/GsLogging.h>
 #include <base/GsTimer.h>
+#include <base/GsApp.h>
 #include <fileio/CExeFile.h>
 #include <fileio/KeenFiles.h>
 #include <fileio/CPatcher.h>
@@ -442,7 +443,10 @@ void DreamsEngine::GameLoop()
             VW_SetScreenMode (GRMODE);
             VW_ClearVideo (BLACK);
             DemoLoop();
-            return 0;
+
+            // If thread has finished, we can quit CG
+            gEventManager.add( new GMQuit() );
+            return 0;            
         }
     };
 

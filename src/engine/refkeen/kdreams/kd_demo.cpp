@@ -854,6 +854,9 @@ void DemoLoop()
 
 			VW_FixRefreshBuffer();
 			US_ControlPanel ();
+
+            if(gDreamsForceClose)
+                return;
 		}
 
 		if (!loadedgame)
@@ -863,6 +866,9 @@ void DemoLoop()
 #if CREDITS
 		FreeShape(&FileShape2);
 #endif
+        if(gDreamsForceClose)
+            return;
+
 		GameLoop();
 
         if(gDreamsForceClose)

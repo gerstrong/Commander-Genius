@@ -284,6 +284,10 @@ void CheckKeys (void)
 		US_CPrint ("Loading");
 		VW_UpdateScreen ();
 		US_ControlPanel();
+
+        if(gDreamsForceClose)
+            return;
+
 		// REFKEEN - Alternative controllers support (maybe user has changed some keys which may currently have an effect)
 		BE_ST_AltControlScheme_PrepareInGameControls(KbdDefs[0].button0, KbdDefs[0].button1, KbdDefs[0].up, KbdDefs[0].down, KbdDefs[0].left, KbdDefs[0].right);
 		//
@@ -1708,6 +1712,10 @@ void PlayLoop()
 
 
 		CheckKeys();
+
+
+        if(gDreamsForceClose)
+            return;
 
 	} while (!loadedgame && !playstate);
 
