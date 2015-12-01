@@ -16,6 +16,7 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#include <base/CInput.h>
 
 // KD_DEMO.CPP
 
@@ -846,7 +847,6 @@ void DemoLoop()
 
 				if (IN_UserInput(TickBase * 6, false))
 					break;
-
 			}
 
 			bufferofs = bufsave;

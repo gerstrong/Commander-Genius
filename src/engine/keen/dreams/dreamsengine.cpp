@@ -566,7 +566,7 @@ void DreamsEngine::ponder(const float deltaT)
     for(SDL_Event event : evVec)
     {
         BE_ST_PollEvents(event);
-    }
+    }        
 
 
     // Change that mGameState stuff to have more depth in the code

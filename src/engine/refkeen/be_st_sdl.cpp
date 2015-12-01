@@ -1,4 +1,6 @@
 
+#include <base/CInput.h>
+
 extern "C"
 {
 
@@ -1678,7 +1680,7 @@ void BE_ST_PollEvents(SDL_Event event)
 		{
 			if (g_sdlControllers[i])
 			{
-				for (int but = 0; but < SDL_CONTROLLER_BUTTON_MAX; ++but)
+                for (int but = 0; but < SDL_CONTROLLER_BUTTON_MAX; ++but)
 				{
 					bool isPressed = SDL_GameControllerGetButton(g_sdlControllers[i], (SDL_GameControllerButton)but);
 					if (isPressed != g_sdlControllersActualButtonsStates[i][but])
@@ -1874,11 +1876,11 @@ void BE_ST_PollEvents(SDL_Event event)
 	// HACK - If audio subsystem is disabled we still want to at least
 	// make the sound callback run (so e.g., no loop gets stuck waiting
 	// for sound playback to complete)
-	extern bool g_sdlAudioSubsystemUp;
+    //extern bool g_sdlAudioSubsystemUp;
 //	if (! g_sdlAudioSubsystemUp)
-	{
+//	{
 //		BE_ST_PrepareForManualAudioSDServiceCall();
-	}
+//	}
 }
 
 #ifdef BE_ST_ENABLE_FARPTR_CFG

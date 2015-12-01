@@ -18,6 +18,8 @@
 
 #include <SDL.h>
 
+#include <base/CInput.h>
+
 extern "C"
 {
 
@@ -1456,9 +1458,9 @@ static	UserItem	CtlPanels[] =
 {CtlPanelR(0),uii_RadioButton,CTL_STARTUPPIC,CTL_STARTDNPIC,"Start or Resume a Game",sc_None,ui_Normal,USL_CtlButtonCustom},
 {CtlPanelR(1),uii_RadioButton,CTL_HELPUPPIC,CTL_HELPDNPIC,"Get Help With Commander Keen",sc_None,ui_Normal,USL_CtlButtonCustom},
 {CtlPanelR(2),uii_RadioButton,CTL_DISKUPPIC,CTL_DISKDNPIC,"Load / Save / Quit",sc_None,ui_Normal,USL_CtlButtonCustom},
-{CtlPanelR(3),uii_RadioButton,CTL_CONTROLSUPPIC,CTL_CONTROLSDNPIC,"Choose Controls",sc_C,ui_Normal,USL_CtlButtonCustom},
+/*{CtlPanelR(3),uii_RadioButton,CTL_CONTROLSUPPIC,CTL_CONTROLSDNPIC,"Choose Controls",sc_C,ui_Normal,USL_CtlButtonCustom},
 {CtlPanelR(4),uii_RadioButton,CTL_SOUNDUPPIC,CTL_SOUNDDNPIC,"Select Sound Device",sc_F2,ui_Normal,USL_CtlButtonCustom},
-{CtlPanelR(5),uii_RadioButton,CTL_MUSICUPPIC,CTL_MUSICDNPIC,"Turn Music On / Off",sc_F7,ui_Normal,USL_CtlButtonCustom},
+{CtlPanelR(5),uii_RadioButton,CTL_MUSICUPPIC,CTL_MUSICDNPIC,"Turn Music On / Off",sc_F7,ui_Normal,USL_CtlButtonCustom},*/
 {-1,-1,-1,-1,uii_Bad}
 					},
 					CtlPPanels[] =
@@ -3709,25 +3711,25 @@ US_ControlPanel(void)
 			userect.lr = userect.ul;
 		}
 
-		if (IN_KeyDown(sc_UpArrow))
+        if (IN_KeyDown(sc_UpArrow) || gInput.getPressedCommand(IC_UP))
 		{
 			USL_FindRect(userect,motion_None,motion_Up);
 			buttondown = false;
 			IN_ClearKey(sc_UpArrow);
 		}
-		else if (IN_KeyDown(sc_DownArrow))
+        else if (IN_KeyDown(sc_DownArrow) || gInput.getPressedCommand(IC_DOWN))
 		{
 			USL_FindRect(userect,motion_None,motion_Down);
 			buttondown = false;
 			IN_ClearKey(sc_DownArrow);
 		}
-		else if (IN_KeyDown(sc_LeftArrow))
+        else if (IN_KeyDown(sc_LeftArrow) || gInput.getPressedCommand(IC_LEFT))
 		{
 			USL_FindRect(userect,motion_Left,motion_None);
 			buttondown = false;
 			IN_ClearKey(sc_LeftArrow);
 		}
-		else if (IN_KeyDown(sc_RightArrow))
+        else if (IN_KeyDown(sc_RightArrow) || gInput.getPressedCommand(IC_RIGHT))
 		{
 			USL_FindRect(userect,motion_Right,motion_None);
 			buttondown = false;
@@ -3738,6 +3740,10 @@ US_ControlPanel(void)
 			IN_KeyDown(c = sc_Return)
 		|| 	IN_KeyDown(c = KbdDefs[0].button0)
 		|| 	IN_KeyDown(c = KbdDefs[0].button1)
+        || gInput.getPressedCommand(IC_JUMP)
+        || gInput.getPressedCommand(IC_POGO)
+        || gInput.getPressedCommand(IC_FIRE)
+        || gInput.getPressedCommand(IC_STATUS)
 		)
 		{
 			IN_ClearKey(c);
@@ -3779,7 +3785,7 @@ US_ControlPanel(void)
 		else if (buttondown && inrect && USL_TrackItem(hiti,hitn))
 			USL_DoHit(hiti,hitn);
 
-		if (LastScan == sc_Escape)
+        if (LastScan == sc_Escape || gInput.getPressedCommand(IC_BACK))
 		{
 			IN_ClearKey(sc_Escape);
 			done = true;

@@ -1120,6 +1120,10 @@ IN_UserInput(id0_longword_t delay,id0_boolean_t clear)
 				IN_AckBack();
 			return(true);
 		}
+
+        if(gInput.getPressedAnyCommand())
+            return true;
+
 	} while (SD_GetTimeCount() - lasttime < delay);
 	return(false);
 }
