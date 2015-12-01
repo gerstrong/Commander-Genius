@@ -537,7 +537,8 @@ void CInput::waitForAnyInput()
     {
         pollEvents();
 
-        timerDelay(16);
+        // TODO: We might introduce a nice timer here, but really required, because if we get here,
+        // everything is halted anyways. It only might reduce the amount of CPU cycles to reduce...
 
         if(getPressedAnyCommand())
         {
