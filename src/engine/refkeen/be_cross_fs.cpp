@@ -1049,8 +1049,8 @@ void BE_Cross_SelectGameInstallation(int gameVerVal)
 	extern void RefKeen_Patch_intro(void);
 	RefKeen_Patch_intro();
 #endif
-	extern void RefKeen_FillObjStatesWithDOSPointers(void);
-	RefKeen_FillObjStatesWithDOSPointers(); // Saved games compatibility
+    /*extern void RefKeen_FillObjStatesWithDOSPointers(void);
+    RefKeen_FillObjStatesWithDOSPointers(); // Saved games compatibility*/
 
 
 }

@@ -283,7 +283,9 @@ void BE_ST_ShutdownAll(void)
 	}
 //	BE_ST_ShutdownAudio();
 	BE_ST_ShutdownGfx();
-	SDL_Quit();
+
+    // TODO: Throw an exit event for CG.
+    //SDL_Quit();
 }
 
 void BE_ST_HandleExit(int status)

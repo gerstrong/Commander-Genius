@@ -140,6 +140,8 @@ void BE_ST_ApplyScreenMode(int mode);
 
 SDL_sem* gpRenderLock = nullptr;
 
+extern void RefKeen_FillObjStatesWithDOSPointers(void);
+
 }
 
 
@@ -158,6 +160,9 @@ void setupObjOffset()
         break;
     case BE_GAMEVER_KDREAMSE120:
         refkeen_compat_kd_play_objoffset = 0x734C;
+        break;
+    case BE_GAMEVER_LAST:
+        // ** This case must never happen. We might want to catch that exception?
         break;
     }
 }
@@ -421,6 +426,8 @@ void InitGame()
     fontcolor = WHITE;
 
     US_FinishTextScreen();
+
+    RefKeen_FillObjStatesWithDOSPointers(); // Saved games compatibility
 }
 
 
