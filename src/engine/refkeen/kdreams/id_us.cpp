@@ -1332,6 +1332,33 @@ US_LineInput(id0_int_t x,id0_int_t y,id0_char_t *buf,const id0_char_t *def,id0_b
 			}
 		}
 
+
+        if(gInput.getPressedCommand(IC_JUMP))
+        {
+            // Let the system set a name;
+            done = true;
+            result = true;
+
+            time_t rawtime;
+            struct tm * timeinfo;
+
+            time ( &rawtime );
+            timeinfo = localtime ( &rawtime );
+
+            std::string slotStr = asctime(timeinfo);
+            strcpy(s,slotStr.c_str());
+
+            redraw = true;
+            strcpy(buf,s);
+        }
+        if(gInput.getPressedCommand(IC_BACK))
+        {
+            // Let the system set a name;
+            done = true;
+            result = false;
+            break;
+        }
+
 		if (redraw)
 		{
 			px = x;
@@ -1363,7 +1390,10 @@ US_LineInput(id0_int_t x,id0_int_t y,id0_char_t *buf,const id0_char_t *def,id0_b
 			USL_XORICursor(x,y,s,cursor);
 
 		VW_UpdateScreen();
+
 	}
+
+    gInput.flushAll();
 
 	// REFKEEN - Alternative controllers support
 	BE_ST_AltControlScheme_Pop();
@@ -2721,6 +2751,33 @@ USL_DoHelp(memptr text,id0_long_t len)
 				break;
 			}
 		}
+
+        // CG Input events
+        if(gInput.getPressedCommand(IC_UP))
+        {
+            if (cur > 0)
+            {
+                scroll = -1;
+                cur--;
+                moved = true;
+            }
+
+        }
+        else if(gInput.getPressedCommand(IC_DOWN))
+        {
+            if (cur + page < lines)
+            {
+                scroll = +1;
+                cur++;
+                moved = true;
+            }
+
+        }
+        else if(gInput.getPressedCommand(IC_BACK))
+        {
+            done = true;
+        }
+
         BE_ST_ShortSleep();
 	}
 	IN_ClearKeysDown();
@@ -3037,7 +3094,7 @@ USL_CtlDSButtonCustom(UserCall call,id0_word_t i,id0_word_t n)
 
 	r = USL_DLSRect(ip - 1);
 	ok = US_LineInput(px,py,game->name,game->present? game->name : id0_nil_t,true,
-						MaxGameName,r.lr.x - r.ul.x - 8);
+                        MaxGameName,r.lr.x - r.ul.x - 8);
 	if (!strlen(game->name))
 		strcpy(game->name,"Untitled");
 	if (ok)
@@ -3912,7 +3969,7 @@ US_DisplayHighScores(id0_int_t which)
 		US_Print(" ");
 		strcpy(Scores[which].name,"");
 		US_LineInput(PrintX,PrintY,Scores[which].name,id0_nil_t,true,MaxHighName,
-						(WindowW / 2) - 8);
+                        (WindowW / 2) - 8);
 	}
 	fontcolor = F_BLACK;
 
