@@ -25,9 +25,11 @@ INSTALL(TARGETS CGeniusExe
 INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/CGLogo.png 
 	DESTINATION "${ICONDIR}/512x512/apps")
 
-
+IF(WIN32)
+ELSE(WIN32)
 INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/../share/cgenius.desktop
 	DESTINATION "${DESKTOPFILESDIR}")
+ENDIF(WIN32)
 
 	
 # This will copy the resources files to the proper directory
