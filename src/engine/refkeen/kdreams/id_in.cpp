@@ -721,7 +721,7 @@ IN_ReadControl(id0_int_t player,ControlInfo *info)
     CInput &input = gInput;
 
     // Only one player supported for this...
-    const uint playerNum = 0;
+    const int playerNum = 0;
 
 	if (DemoMode == demo_Playback)
 	{
