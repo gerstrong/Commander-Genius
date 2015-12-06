@@ -1,3 +1,5 @@
+#include <base/utils/FindFile.h>
+
 extern "C"
 {
 
@@ -596,17 +598,14 @@ static void BEL_Cross_mkdir(const char *path)
 // Opens *existing* file from given directory in a case-insensitive manner
 /*static*/ BE_FILE_T BEL_Cross_open_from_dir(const char *filename, bool isOverwriteRequest, const char *searchdir)
 {
-    char fullpath[256];
+    std::string filePath = searchdir;
 
-    // TODO: Must be improved, bad workaround!
-    strcpy(fullpath, "/home/gerstrong/.CommanderGenius/");
-    strcat(fullpath, searchdir);
-    strcat(fullpath, "/");
-    strcat(fullpath, filename);
+    filePath += "/";
+    filePath += filename;
 
-    return fopen(fullpath, isOverwriteRequest ? "wb" : "rb");
+    return OpenGameFile(filePath, isOverwriteRequest ? "wb" : "rb");
 
-	/*** TODO - Any reason to save (cache) DIR handles? ***/
+    /*** TODO - Any reason to save (cache) DIR handles? ***/
     /*
 	DIR *dir;
 	struct dirent *direntry;
