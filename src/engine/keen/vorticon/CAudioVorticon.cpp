@@ -116,7 +116,7 @@ bool CAudioVorticon::loadPCSpeakerSound(std::vector<T> &waveform, const std::str
             auto *beekseekPtr = buf_ptr;
 
             // Discover how many beeps exist
-            uint numBeeps = 0;
+            int numBeeps = 0;
             while(1)
             {
                 const int test = READWORD(beekseekPtr);
