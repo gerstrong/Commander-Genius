@@ -1,4 +1,9 @@
 
+v1.9 Beta:
+----------
+- Integrated RefKeen to CG so Keen Dreams runs as the last planned game. It's fully playable now
+- Minor fixes
+
 v1.8.2.1 Release:
 -----------------
 - Message Box is shown in Keen 5 when fuses are broken
