@@ -446,6 +446,8 @@ extern	statetype s_bombexplode6;
 extern	statetype s_powerblink1;
 extern	statetype s_powerblink2;
 
+extern id0_int_t  bombsleftinlevel;
+
 statetype s_flowerpower1	= {FLOWERPOWER1SPR,FLOWERPOWER1SPR,stepthink,false,
 	false,10, 0,0, ProjectileThink, PowerContact, PowerReact, &s_flowerpower2};
 statetype s_flowerpower2	= {FLOWERPOWER2SPR,FLOWERPOWER2SPR,stepthink,false,
@@ -2228,6 +2230,7 @@ void	KeenContact (objtype *ob, objtype *hit)
 			hit->shapenum = BONUSBOMBSPR;
 			gamestate.boobusbombs++;
 			gamestate.bombsthislevel++;
+            bombsleftinlevel = 0;
 			ChangeState (hit,&s_bonusrise);
 			break;
 		case 11:

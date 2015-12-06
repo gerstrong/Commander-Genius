@@ -160,6 +160,7 @@ id0_int_t			inactivateleft,inactivateright,inactivatetop,inactivatebottom;
 id0_int_t			fadecount;
 
 id0_boolean_t		bombspresent;
+id0_int_t           bombsleftinlevel = 0;
 
 id0_boolean_t		openedStatusWindow;
 
@@ -505,6 +506,7 @@ void /*near*/ HandleInfo (void)
 		break;
 
 	case 31:
+        bombsleftinlevel = 3;
 		bombspresent = true;
 	case 21:
 	case 22:
@@ -667,20 +669,26 @@ void PatchWorldMap (void)
 		// finished a city here?
 		if (info>=3 && info<=18 && gamestate.leveldone[info-2])
 		{
-			*(mapsegs[2] + spot) = 0;
-			foreground = *(mapsegs[1] + spot);
-			if (foreground == 130)
-				*(mapsegs[1]+spot) = 0;	// not blocking now
-			else if (foreground == 90)
-			{
-			// plant done flag
-				*(mapsegs[1]+spot) = 133;
-				*(mapsegs[1]+(spot-mapwidth-1)) = 131;
-				*(mapsegs[1]+(spot-mapwidth)) = 132;
-			}
-		}
+            if(bombsleftinlevel <= 0)
+            {
+                *(mapsegs[2] + spot) = 0;
+
+                foreground = *(mapsegs[1] + spot);
+                if (foreground == 130)
+                    *(mapsegs[1]+spot) = 0;	// not blocking now
+                else if (foreground == 90)
+                {
+                    // plant done flag
+                    *(mapsegs[1]+spot) = 133;
+                    *(mapsegs[1]+(spot-mapwidth-1)) = 131;
+                    *(mapsegs[1]+(spot-mapwidth)) = 132;
+                }
+            }
+        }
 		spot++;
 	} while (spot<size);
+
+    bombsleftinlevel = 0;
 }
 
 //===========================================================================
@@ -727,7 +735,7 @@ void 	SetupGameLevel (id0_boolean_t loadnow)
 {
 	id0_long_t	orgx,orgy;
 
-	bombspresent = false;
+	bombspresent = false;    
 //
 // load the level header and three map planes
 //
@@ -1584,13 +1592,15 @@ void PlayLoop()
         {
            StatusWindow();
 
-           if(c.button0 || c.button1 || Keyboard[sc_Space])
+           if(c.button0 || c.button1 ||
+                   Keyboard[sc_Space] || gInput.getPressedAnyButtonCommand(0))
            {
                openedStatusWindow = false;
                RF_ForceRefresh();
 
                lasttimecount = SD_GetTimeCount();
                IN_ClearKeysDown();
+               gInput.flushAll();
            }
 
            RF_Refresh(false);
