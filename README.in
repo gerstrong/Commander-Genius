@@ -1,11 +1,13 @@
 **************************************************************
              Commander Genius                
                                             
-    (c)2008-2016            Gerstrong
-    (c)2013-2014            Hagel
-    (c)2014                 Mancus
+    (c)2008-2016           Gerstrong
 
-Ports:
+Testing:
+    (c)2013-2015           Hagel
+    (c)2014-2015           Mancus
+
+Porting and Support:
     (c)2010-2016           Pelya (Android-Distro)
 
            Released under GNU/GPL           
@@ -20,13 +22,14 @@ Commander Keen which allows you to play
 the games, and a majority of the mods
 made for it.  All of the original data files
 are required to do so, however, we convienently
-include Episode 1 and 4 for your enjoyment in case you downloaded a bundle. 
-We also include the unofficial mod Keen 7, so more to enjoy here :-)
+include Episode 1, 4 and Dreams for your enjoyment 
+in case you have downloaded a bundle. 
+We also include the unofficial mod Keen 7, so more is to enjoy!
 
-So far Commander Keen 1-6 are fully supported.
-Keen Dreams is starting to work but still has a lot of issues.
-So far it is playable, but it has the same issues as the original and the main menu
-is broken. So this is only recommended for testers.
+So far Commander Keen 1-6 are fully supported. Keen Dreams is starting to work 
+but still might have most of the issues. So far you can play all the games through.
+Also the menu lacks of a lot of features. Please configure input and 
+sounds using the other games.
 
 There is an alternative called Reflection Keen which supports Keen Dreams on which
 the code is based. The merge of that code into CG is what we have been working on.
@@ -331,7 +334,7 @@ KEY        	ACTION             DESCRIPTION
 G+O+D	   	godmode		   In god mode you are invincible!
 C+T+SPACE  	All Items      Gives all items, similar to the original.
 
-Galaxy Keen (4-6):
+Galaxy Keen (4-6 and Dreams):
 KEY        	ACTION             DESCRIPTION
 F10+G	   	Godmode        In god mode you are invincible!
 F10+I	  	All Items      Gives all items, similar to the original.
@@ -359,9 +362,9 @@ A: You can decrease the fps under settings->video. OpenGL may also help on some 
    the program. Also HQP requires more resources.
    
 Q: When can I play Keen Dreams?
-A: You can actually starting version 1.8.4 it is supported but still has issues. 
-   In my opinion it is very broken, especially the game menu, but try it out and let me know what you think.
-   Future version will fix a lot of bugs so support is going to be as strong as with the other games. 
+A: Yes you can. Not all versions are supported but the supported version has some little enhancements as well.
+   If you forget to collect some of the bombs in a level you can replay that level making the game better to play
+   in my opinion.
   
   
 - BUG! -
