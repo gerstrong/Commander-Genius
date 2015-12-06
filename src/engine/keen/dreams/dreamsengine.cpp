@@ -222,7 +222,7 @@ bool extractEmbeddedFilesIntoMemory(const BE_GameVerDetails_T &gameVerDetails)
 
         uint8_t **data = it->second;
 
-        const uint dataSize = embeddedfileDetailsBuffer->fileDetails.filesize;
+        const unsigned int dataSize = embeddedfileDetailsBuffer->fileDetails.filesize;
 
         *data = (uint8_t*) malloc(dataSize);
 
@@ -472,7 +472,7 @@ void DreamsEngine::GameLoop()
 
 void DreamsEngine::applyScreenMode()
 {
-    uint sdlTexWidth, sdlTexHeight;
+    unsigned int sdlTexWidth, sdlTexHeight;
 
     // Chaning the resolution still breaks the system so we leave at GFX_TEX_WIDTHxGFX_TEX_HEIGHT for now...
 
