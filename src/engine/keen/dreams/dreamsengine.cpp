@@ -327,7 +327,7 @@ bool DreamsEngine::loadResources()
     };
 
     mEngineLoader.RunLoadActionBackground(new DreamsDataLoad(mEngineLoader));
-    mEngineLoader.start();
+    mEngineLoader.start();    
 
     return true;
 }
@@ -532,40 +532,23 @@ void DreamsEngine::start()
     //kdreams_exe_main();
 }
 
+bool mResourcesLoaded = false;
+
+void DreamsEngine::pumpEvent(const CEvent *evPtr)
+{
+    GameEngine::pumpEvent(evPtr);
+
+    if( dynamic_cast<const FinishedLoadingResources*>(evPtr) )
+    {
+        mResourcesLoaded = true;
+    }
+}
 
 void DreamsEngine::ponder(const float deltaT)
 {
-    {
-        /*if (MousePresent)
-        {
-            if (INL_GetMouseButtons())
-            {
-                while (INL_GetMouseButtons())
-                {
-                    BE_ST_ShortSleep();
-                }
-                return;
-            }
-        }
 
-        for (i = 0;i < MaxJoys;i++)
-        {
-            if (JoysPresent[i])
-            {
-                if (IN_GetJoyButtonsDB(i))
-                {
-                    while (IN_GetJoyButtonsDB(i))
-                    {
-                        BE_ST_ShortSleep();
-                    }
-                    return;
-                }
-            }
-        }*/
-    }
-
-
-
+    if(!mResourcesLoaded)
+        return;
 
     std::vector<SDL_Event> evVec;
     gInput.readSDLEventVec(evVec);

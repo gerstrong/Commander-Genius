@@ -60,6 +60,8 @@ public:
      */
     void ponder(const float deltaT);
 
+    void pumpEvent(const CEvent *evPtr);
+
 
     /**
      * @brief updateHostDisplay Will update the display of all the possible states the game runs into
