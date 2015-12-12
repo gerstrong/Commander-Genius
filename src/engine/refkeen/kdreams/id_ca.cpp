@@ -16,6 +16,19 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#include <vector>
+
+struct mapfiletype_modern
+{
+    int                            RLEWtag;
+    long int                       headeroffsets[100];
+    unsigned char                  headersize[100];		// headers are very small
+    std::vector<unsigned char>     tileinfo;
+};
+
+
+#include "id_heads.h"
+
 extern "C"
 {
 
@@ -34,7 +47,7 @@ loaded into the data segment
 =============================================================================
 */
 
-#include "id_heads.h"
+
 //#pragma hdrstop
 
 /*
@@ -675,6 +688,10 @@ void CAL_SetupMapFile (void)
 	maphuffman = (huffnode *)mapdict;
 	CAL_OptimizeNodes (maphuffman);
 	tinf = maphead;
+
+    mapfiletype *testPtr = ((mapfiletype	id0_seg *)tinf);
+
+
 
 #endif
 

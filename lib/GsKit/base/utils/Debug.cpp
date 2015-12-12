@@ -18,12 +18,12 @@
 #ifdef WIN32
 
 void RaiseDebugger() {
-#ifdef DEBUG
+/*#ifdef DEBUG
 	// HINT: ignored when not in debugger
 	// If it just does nothing then, remove the surrounding #ifdef DEBUG
 	// I read about a Win32's IsDebuggerPresent() function, perhaps you should use that one here.
-	__asm  { int 3 };
-#endif
+    __asm  { int 3 };
+#endif*/
 }
 
 #else
