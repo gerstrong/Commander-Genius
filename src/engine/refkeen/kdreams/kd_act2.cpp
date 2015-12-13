@@ -16,6 +16,10 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#include "engine/keen/dreams/dreamsengine.h"
+
+extern mapfiletype_modern  mapFile;
+
 extern "C"
 {
 
@@ -241,7 +245,7 @@ void CartReact (objtype *ob)
 	else
 		map += ob->tileleft;
 
-	if ( !tinf[NORTHWALL + *map] )
+    if ( !mapFile.tileinfo[NORTHWALL + *map] )
 		ob->xdir = -ob->xdir;
 
 	PLACESPRITE;
@@ -940,7 +944,7 @@ void ApelThink (objtype *ob)
 		map = (id0_unsigned_t id0_seg *)mapsegs[1]+
 			mapbwidthtable[y]/2 + ob->tilemidx;
 
-		if ((tinf[INTILE+*map]&0x7f) == 1)
+        if ((mapFile.tileinfo[INTILE+*map]&0x7f) == 1)
 		{
 			ob->xmove = (ob->tilemidx<<G_T_SHIFT) - ob->x;
 			ob->ymove = 0;
@@ -980,7 +984,7 @@ void ApelClimbThink (objtype *ob)
 	map = (id0_unsigned_t id0_seg *)mapsegs[1]+
 		mapbwidthtable[ob->tiletop]/2 + ob->temp4;
 
-	if ((tinf[INTILE+*map]&0x7f) != 1)
+    if ((mapFile.tileinfo[INTILE+*map]&0x7f) != 1)
 	{
 		ob->needtoclip = true;
 		ob->state = &s_apelfall;
@@ -1003,7 +1007,7 @@ void ApelSlideThink (objtype *ob)
 	map = (id0_unsigned_t id0_seg *)mapsegs[1]+
 		mapbwidthtable[ob->tilebottom]/2 + ob->temp4;
 
-	if ((tinf[INTILE+*map]&0x7f) != 1)
+    if ((mapFile.tileinfo[INTILE+*map]&0x7f) != 1)
 	{
 		ob->needtoclip = true;
 		ob->state = &s_apelfall;

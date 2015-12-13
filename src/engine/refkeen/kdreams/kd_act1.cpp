@@ -16,6 +16,10 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#include "engine/keen/dreams/dreamsengine.h"
+
+extern mapfiletype_modern  mapFile;
+
 extern "C"
 {
 
@@ -1094,7 +1098,7 @@ void GrapeThink (objtype *ob)
 
 	map = mapsegs[1] + mapbwidthtable[starty]/2 + ob->tilemidx;
 	for (y = starty ; y<endy ; y++,map+=mapwidth)
-		if (tinf[NORTHWALL+*map])
+        if (mapFile.tileinfo[NORTHWALL+*map])
 			return;
 
 	ob->state = &s_grapefall;

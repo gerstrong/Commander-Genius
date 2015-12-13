@@ -1,4 +1,4 @@
-/* Keen Dreams Source Code
+﻿/* Keen Dreams Source Code
  * Copyright (C) 2014 Javier M. Chavez
  *
  * This program is free software; you can redistribute it and/or modify
@@ -18,16 +18,11 @@
 
 #include <vector>
 
-struct mapfiletype_modern
-{
-    int                            RLEWtag;
-    long int                       headeroffsets[100];
-    unsigned char                  headersize[100];		// headers are very small
-    std::vector<unsigned char>     tileinfo;
-};
-
+#include "engine/keen/dreams/dreamsengine.h"
 
 #include "id_heads.h"
+
+extern mapfiletype_modern  mapFile;
 
 extern "C"
 {
@@ -691,6 +686,7 @@ void CAL_SetupMapFile (void)
 
     mapfiletype *testPtr = ((mapfiletype	id0_seg *)tinf);
 
+    //mapfiletype_modern
 
 
 #endif
@@ -1394,6 +1390,7 @@ void CA_CacheGrChunk (id0_int_t chunk)
 ======================
 */
 
+
 void CA_CacheMap (id0_int_t mapnum)
 {
 	id0_long_t	pos,compressed,expanded;
@@ -1421,7 +1418,7 @@ void CA_CacheMap (id0_int_t mapnum)
 //
 	if (!mapheaderseg[mapnum])
 	{
-		pos = ((mapfiletype	id0_seg *)tinf)->headeroffsets[mapnum];
+        pos = mapFile.headeroffsets[mapnum];
 		if (pos<0)						// $FFFFFFFF start is a sparse map
 		  Quit ("CA_CacheMap: Tried to load a non existant map!");
 
@@ -1438,8 +1435,9 @@ The general buffer size is too small!
 #endif
 		//
 		// load in, then unhuffman to the destination
-		//
-		CA_FarRead (maphandle,(id0_byte_t *)bufferseg,((mapfiletype	id0_seg *)tinf)->headersize[mapnum]);
+		//        
+        CA_FarRead (maphandle,(id0_byte_t *)bufferseg, mapFile.headersize[mapnum]);
+        //CA_FarRead (maphandle,(id0_byte_t *)bufferseg,((mapfiletype	id0_seg *)tinf)->headersize[mapnum]);
 		CAL_HuffExpand ((id0_byte_t id0_huge *)bufferseg,
 			(id0_byte_t id0_huge *)mapheaderseg[mapnum],sizeof(maptype),maphuffman);
 #else
@@ -1506,9 +1504,8 @@ The general buffer size is too small!
 			*rlewunsignedptr = BE_Cross_Swap16LE(*rlewunsignedptr);
 		}
 #endif
-		CA_RLEWexpand (((id0_unsigned_t id0_far *)buffer2seg)+1,(id0_unsigned_t *)(*dest),size,
-		((mapfiletype id0_seg *)tinf)->RLEWtag);
-		MM_FreePtr (&buffer2seg);
+        CA_RLEWexpand (((id0_unsigned_t id0_far *)buffer2seg)+1,(id0_unsigned_t *)(*dest),size,mapFile.RLEWtag);
+        MM_FreePtr (&buffer2seg);
 
 #else
 		// REFKEEN - Big Endian support
@@ -1852,6 +1849,7 @@ void CA_CacheMarks (const id0_char_t *title, id0_boolean_t cachedownlevel)
 		}
 }
 
+
 // (REFKEEN) Used for patching version-specific stuff
 #ifdef REFKEEN_VER_KDREAMS_CGA_ALL
 id0_long_t	*CGAhead;
@@ -1869,54 +1867,58 @@ void RefKeen_Patch_id_ca(void)
 {
 	int audiodictsize, audioheadsize, GFXdictsize, GFXheadsize, mapdictsize, mapheadsize;
 #ifdef REFKEEN_VER_KDREAMS_CGA_ALL
-	id0_byte_t **GFXdictptr = &CGAdict;
-	id0_long_t **GFXheadptr = &CGAhead;
+    id0_byte_t **GFXdictptr = &CGAdict;
+    id0_long_t **GFXheadptr = &CGAhead;
 #else
-	id0_byte_t **GFXdictptr = &EGAdict;
-	id0_long_t **GFXheadptr = &EGAhead;
+    id0_byte_t **GFXdictptr = &EGAdict;
+    id0_long_t **GFXheadptr = &EGAhead;
 #endif
-	// Just in case these may ever be reloaded
-	BE_Cross_free_mem_loaded_embedded_rsrc(audiodict);
-	BE_Cross_free_mem_loaded_embedded_rsrc(audiohead);
-	BE_Cross_free_mem_loaded_embedded_rsrc(*GFXdictptr);
-	BE_Cross_free_mem_loaded_embedded_rsrc(*GFXheadptr);
-	BE_Cross_free_mem_loaded_embedded_rsrc(mapdict);
-	BE_Cross_free_mem_loaded_embedded_rsrc(maphead);
-	// Don't use CA_LoadFile for (sort-of) compatibility; It also doesn't work!
-	if (((audiodictsize = BE_Cross_load_embedded_rsrc_to_mem("AUDIODCT."EXTENSION, (memptr *)&audiodict)) < 0) ||
-	    ((audioheadsize = BE_Cross_load_embedded_rsrc_to_mem("AUDIOHHD."EXTENSION, (memptr *)&audiohead)) < 0) ||
-#ifdef REFKEEN_VER_KDREAMS_CGA_ALL
-	    ((GFXdictsize = BE_Cross_load_embedded_rsrc_to_mem("CGADICT."EXTENSION, (memptr *)GFXdictptr)) < 0) ||
-	    ((GFXheadsize = BE_Cross_load_embedded_rsrc_to_mem("CGAHEAD."EXTENSION, (memptr *)GFXheadptr)) < 0) ||
-#else
-	    ((GFXdictsize = BE_Cross_load_embedded_rsrc_to_mem("EGADICT."EXTENSION, (memptr *)GFXdictptr)) < 0) ||
-	    ((GFXheadsize = BE_Cross_load_embedded_rsrc_to_mem("EGAHEAD."EXTENSION, (memptr *)GFXheadptr)) < 0) ||
-#endif
-	    ((mapdictsize = BE_Cross_load_embedded_rsrc_to_mem("MAPDICT."EXTENSION, (memptr *)&mapdict)) < 0) ||
-	    ((mapheadsize = BE_Cross_load_embedded_rsrc_to_mem("MAPHEAD."EXTENSION, (memptr *)&maphead)) < 0)
-	)
-		// Similarly we don't use Quit
-		BE_ST_ExitWithErrorMsg("RefKeen_Patch_id_ca - Failed to load at least one file.");
+    // Just in case these may ever be reloaded
+    BE_Cross_free_mem_loaded_embedded_rsrc(audiodict);
+    BE_Cross_free_mem_loaded_embedded_rsrc(audiohead);
+    BE_Cross_free_mem_loaded_embedded_rsrc(*GFXdictptr);
+    BE_Cross_free_mem_loaded_embedded_rsrc(*GFXheadptr);
+    BE_Cross_free_mem_loaded_embedded_rsrc(mapdict);
+    BE_Cross_free_mem_loaded_embedded_rsrc(maphead);
+    // Don't use CA_LoadFile for (sort-of) compatibility; It also doesn't work!
+    if (((audiodictsize = BE_Cross_load_embedded_rsrc_to_mem("AUDIODCT."EXTENSION, (memptr *)&audiodict)) < 0) ||
+            ((audioheadsize = BE_Cross_load_embedded_rsrc_to_mem("AUDIOHHD."EXTENSION, (memptr *)&audiohead)) < 0) ||
+        #ifdef REFKEEN_VER_KDREAMS_CGA_ALL
+            ((GFXdictsize = BE_Cross_load_embedded_rsrc_to_mem("CGADICT."EXTENSION, (memptr *)GFXdictptr)) < 0) ||
+            ((GFXheadsize = BE_Cross_load_embedded_rsrc_to_mem("CGAHEAD."EXTENSION, (memptr *)GFXheadptr)) < 0) ||
+        #else
+            ((GFXdictsize = BE_Cross_load_embedded_rsrc_to_mem("EGADICT."EXTENSION, (memptr *)GFXdictptr)) < 0) ||
+            ((GFXheadsize = BE_Cross_load_embedded_rsrc_to_mem("EGAHEAD."EXTENSION, (memptr *)GFXheadptr)) < 0) ||
+        #endif
+            ((mapdictsize = BE_Cross_load_embedded_rsrc_to_mem("MAPDICT."EXTENSION, (memptr *)&mapdict)) < 0) ||
+            ((mapheadsize = BE_Cross_load_embedded_rsrc_to_mem("MAPHEAD."EXTENSION, (memptr *)&maphead)) < 0)
+            )
+    {
+        // Similarly we don't use Quit
+        BE_ST_ExitWithErrorMsg("RefKeen_Patch_id_ca - Failed to load at least one file.");
 
+    }
 #ifdef REFKEEN_ARCH_BIG_ENDIAN
-	for (uint16_t *dictptr = (uint16_t *)audiodict; audiodictsize >= 2; ++dictptr, audiodictsize -= 2)
-		*dictptr = BE_Cross_Swap16LE(*dictptr);
-	for (uint32_t *headptr = (uint32_t *)audiohead; audioheadsize >= 4; ++headptr, audioheadsize -= 4)
-		*headptr = BE_Cross_Swap32LE(*headptr);
-	for (uint16_t *dictptr = (uint16_t *)(*GFXdictptr); GFXdictsize >= 2; ++dictptr, GFXdictsize -= 2)
-		*dictptr = BE_Cross_Swap16LE(*dictptr);
-	for (uint32_t *headptr = (uint32_t *)(*GFXheadptr); GFXheadsize >= 4; ++headptr, GFXheadsize -= 4)
-		*headptr = BE_Cross_Swap32LE(*headptr);
-	for (uint16_t *dictptr = (uint16_t *)mapdict; mapdictsize >= 2; ++dictptr, mapdictsize -= 2)
-		*dictptr = BE_Cross_Swap16LE(*dictptr);
+    for (uint16_t *dictptr = (uint16_t *)audiodict; audiodictsize >= 2; ++dictptr, audiodictsize -= 2)
+        *dictptr = BE_Cross_Swap16LE(*dictptr);
+    for (uint32_t *headptr = (uint32_t *)audiohead; audioheadsize >= 4; ++headptr, audioheadsize -= 4)
+        *headptr = BE_Cross_Swap32LE(*headptr);
+    for (uint16_t *dictptr = (uint16_t *)(*GFXdictptr); GFXdictsize >= 2; ++dictptr, GFXdictsize -= 2)
+        *dictptr = BE_Cross_Swap16LE(*dictptr);
+    for (uint32_t *headptr = (uint32_t *)(*GFXheadptr); GFXheadsize >= 4; ++headptr, GFXheadsize -= 4)
+        *headptr = BE_Cross_Swap32LE(*headptr);
+    for (uint16_t *dictptr = (uint16_t *)mapdict; mapdictsize >= 2; ++dictptr, mapdictsize -= 2)
+        *dictptr = BE_Cross_Swap16LE(*dictptr);
 
-	mapfiletype *tinfasmapfile = (mapfiletype *)mapdict;
-	tinfasmapfile->RLEWtag = BE_Cross_Swap16LE(tinfasmapfile->RLEWtag);
-	for (int i = 0; i < sizeof(tinfasmapfile->headeroffsets)/sizeof(*(tinfasmapfile->headeroffsets)); ++i)
-	{
-		tinfasmapfile->headeroffsets[i] = BE_Cross_Swap32LE(tinfasmapfile->headeroffsets[i]);
-	}
+    mapfiletype *tinfasmapfile = (mapfiletype *)mapdict;
+    tinfasmapfile->RLEWtag = BE_Cross_Swap16LE(tinfasmapfile->RLEWtag);
+    for (int i = 0; i < sizeof(tinfasmapfile->headeroffsets)/sizeof(*(tinfasmapfile->headeroffsets)); ++i)
+    {
+        tinfasmapfile->headeroffsets[i] = BE_Cross_Swap32LE(tinfasmapfile->headeroffsets[i]);
+    }
 #endif
+
+
 }
 
 

@@ -20,6 +20,10 @@
 
 #include <base/CInput.h>
 
+#include "engine/keen/dreams/dreamsengine.h"
+
+extern mapfiletype_modern  mapFile;
+
 extern "C"
 {
 
@@ -979,7 +983,7 @@ void ClipToEnds (objtype *ob)
 	// (REFKEEN) Comparison is unsigned in vanilla Keen (has an effect on the explosion of King Boobus Tuber)
 	for (y=oldtilebottom-1 ; (id0_unsigned_t)y<=ob->tilebottom ; y++,map+=mapwidth)
 	{
-		if (wall = tinf[NORTHWALL+*map])
+        if (wall = mapFile.tileinfo[NORTHWALL+*map])
 		{
 			clip = wallclip[wall&7][midxpix];
 			move = ( (y<<G_T_SHIFT)+clip - 1) - ob->bottom;
@@ -998,7 +1002,7 @@ void ClipToEnds (objtype *ob)
 	// (REFKEEN) Again comparison should be unsigned
 	for (y=oldtiletop+1 ; (id0_unsigned_t)y>=ob->tiletop ; y--,map-=mapwidth)
 	{
-		if (wall = tinf[SOUTHWALL+*map])
+        if (wall = mapFile.tileinfo[SOUTHWALL+*map])
 		{
 			clip = wallclip[wall&7][midxpix];
 			move = ( ((y+1)<<G_T_SHIFT)-clip ) - ob->top;
@@ -1043,7 +1047,7 @@ void ClipToEastWalls (objtype *ob)
 		map = (id0_unsigned_t id0_far *)mapsegs[1] +
 			mapbwidthtable[y]/2 + ob->tileleft;
 
-		if (ob->hiteast = tinf[EASTWALL+*map])
+        if (ob->hiteast = mapFile.tileinfo[EASTWALL+*map])
 		{
 			move = ( (ob->tileleft+1)<<G_T_SHIFT ) - ob->left;
 			MoveObjHoriz (ob,move);
@@ -1072,7 +1076,7 @@ void ClipToWestWalls (objtype *ob)
 		map = (id0_unsigned_t id0_far *)mapsegs[1] +
 			mapbwidthtable[y]/2 + ob->tileright;
 
-		if (ob->hitwest = tinf[WESTWALL+*map])
+        if (ob->hitwest = mapFile.tileinfo[WESTWALL+*map])
 		{
 			move = ( (ob->tileright<<G_T_SHIFT ) -1) - ob->right;
 			MoveObjHoriz (ob,move);

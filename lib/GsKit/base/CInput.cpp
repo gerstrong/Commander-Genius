@@ -1456,7 +1456,7 @@ static TouchButton* getPhoneButton(int x, int y, TouchButton phoneButtons[]) {
 	return NULL;
 }
 
-
+#ifdef MOUSEWRAPPER
 static bool checkMousewrapperKey(int& key) {
 	switch(key) {
 		case KLEFT: case KRIGHT: case KUP: case KDOWN:
@@ -1472,6 +1472,7 @@ static bool checkMousewrapperKey(int& key) {
 	// just too many keys ...
 	return true;
 }
+#endif
 
 void CInput::processMouse()
 {

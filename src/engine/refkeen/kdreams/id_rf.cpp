@@ -18,6 +18,8 @@
 
 // ID_RF.C
 
+#include "engine/keen/dreams/dreamsengine.h"
+
 extern "C"
 {
 
@@ -426,6 +428,8 @@ void RF_NewMap (void)
 ==========================
 */
 
+extern mapfiletype_modern  mapFile;
+
 void RF_MarkTileGraphics (void)
 {
 	id0_unsigned_t	size;
@@ -450,7 +454,7 @@ void RF_MarkTileGraphics (void)
 		if (tile>=0)			// <0 is a tile that is never drawn
 		{
 			CA_MarkGrChunk(STARTTILE16+tile);
-			if (tinf[ANIM+tile])
+            if (mapFile.tileinfo[ANIM+tile])
 			{
 				// this tile will animated
 
@@ -467,18 +471,18 @@ void RF_MarkTileGraphics (void)
 				if (i>=MAXANIMTYPES)
 					Quit ("RF_MarkTileGraphics: Too many unique animated tiles!");
 				allanims[i].current = tile;
-				allanims[i].count = tinf[SPEED+tile];
+                allanims[i].count = mapFile.tileinfo[tile];
 
 				*info = COMPAT_ALLANIMS_CONVERT_INDEX_TO_DOS_PTR(i);
 				//*info = (id0_unsigned_t)&allanims[i];
 				numanimchains++;
 
 				anims = 0;
-				next = tile+(id0_signed_char_t)(tinf[ANIM+tile]);
+                next = tile+(id0_signed_char_t)(mapFile.tileinfo[ANIM+tile]);
 				while (next != tile)
 				{
 					CA_MarkGrChunk(STARTTILE16+next);
-					next += (id0_signed_char_t)(tinf[ANIM+next]);
+                    next += (id0_signed_char_t)(mapFile.tileinfo[ANIM+next]);
 					if (++anims > 20)
 						Quit ("MarkTileGraphics: Unending animation!");
 				}
@@ -501,7 +505,7 @@ nextback:
 		if (tile>=0)			// <0 is a tile that is never drawn
 		{
 			CA_MarkGrChunk(STARTTILE16M+tile);
-			if (tinf[MANIM+tile])
+            if (mapFile.tileinfo[MANIM+tile])
 			{
 				// this tile will animated
 
@@ -519,18 +523,18 @@ nextback:
 				if (i>=MAXANIMTYPES)
 					Quit ("RF_MarkTileGraphics: Too many unique animated tiles!");
 				allanims[i].current = tilehigh;
-				allanims[i].count = tinf[MSPEED+tile];
+                allanims[i].count = mapFile.tileinfo[MSPEED+tile];
 
 				*info = COMPAT_ALLANIMS_CONVERT_INDEX_TO_DOS_PTR(i);
 				//*info = (id0_unsigned_t)&allanims[i];
 				numanimchains++;
 
 				anims = 0;
-				next = tile+(id0_signed_char_t)(tinf[MANIM+tile]);
+                next = tile+(id0_signed_char_t)(mapFile.tileinfo[MANIM+tile]);
 				while (next != tile)
 				{
 					CA_MarkGrChunk(STARTTILE16M+next);
-					next += (id0_signed_char_t)(tinf[MANIM+next]);
+                    next += (id0_signed_char_t)(mapFile.tileinfo[MANIM+next]);
 					if (++anims > 20)
 						Quit ("MarkTileGraphics: Unending animation!");
 				}
@@ -596,7 +600,7 @@ void RFL_CheckForAnimTile (id0_unsigned_t x, id0_unsigned_t y)
 //
 	map = mapsegs[0]+offset;
 	tile = *map;
-	if (tinf[ANIM+tile])
+    if (mapFile.tileinfo[ANIM+tile])
 	{
 		if (!animfreeptr)
 			Quit ("RF_CheckForAnimTile: No free spots in tilearray!");
@@ -622,7 +626,7 @@ void RFL_CheckForAnimTile (id0_unsigned_t x, id0_unsigned_t y)
 //
 	map = mapsegs[1]+offset;
 	tile = *map;
-	if (tinf[MANIM+tile])
+    if (mapFile.tileinfo[MANIM+tile])
 	{
 		if (!animfreeptr)
 			Quit ("RF_CheckForAnimTile: No free spots in tilearray!");
@@ -734,15 +738,15 @@ void RFL_AnimateTiles (void)
 			if (anim->current & 0x8000)
 			{
 				tile = anim->current & 0x7fff;
-				tile += (id0_signed_char_t)tinf[MANIM+tile];
-				anim->count += tinf[MSPEED+tile];
+                tile += (id0_signed_char_t)mapFile.tileinfo[MANIM+tile];
+                anim->count += mapFile.tileinfo[MSPEED+tile];
 				tile |= 0x8000;
 			}
 			else
 			{
 				tile = anim->current;
-				tile += (id0_signed_char_t)tinf[ANIM+tile];
-				anim->count += tinf[SPEED+tile];
+                tile += (id0_signed_char_t)mapFile.tileinfo[ANIM+tile];
+                anim->count += mapFile.tileinfo[tile];
 			}
 			anim->current = tile;
 		}

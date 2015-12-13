@@ -111,4 +111,14 @@ struct StartDreamsEngine : public SwitchEngineEvent
 };
 
 
+struct mapfiletype_modern
+{
+    uint16_t                       RLEWtag;
+    uint32_t                       headeroffsets[100];
+    uint8_t                        headersize[100];		// headers are very small
+    std::vector<uint8_t>           tileinfo;
+};
+
+
+
 #endif // DREAMSENGINE_H

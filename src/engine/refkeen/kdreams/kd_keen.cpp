@@ -16,6 +16,10 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#include "engine/keen/dreams/dreamsengine.h"
+
+extern mapfiletype_modern  mapFile;
+
 extern "C"
 {
 
@@ -1422,7 +1426,7 @@ id0_boolean_t	CheckGrabPole (objtype *ob)
 
 	map += x;
 
-	if ((tinf[INTILE+*map]&0x7f) == 1)
+    if ((mapFile.tileinfo[INTILE+*map]&0x7f) == 1)
 	{
 		ob->xmove = ((x<<G_T_SHIFT)-8*PIXGLOBAL) - ob->x;
 		ob->ymove = c.yaxis*32;
@@ -1685,14 +1689,14 @@ void KeenDuckThink (objtype *ob)
 		map = (id0_unsigned_t id0_far *)mapsegs[1] + mapbwidthtable[bottomtile]/2
 			+ midtile;
 		tile = *map;
-		if (tinf[WESTWALL+tile] || tinf[EASTWALL+tile]
-			|| tinf[SOUTHWALL+tile])
+        if (mapFile.tileinfo[WESTWALL+tile] || mapFile.tileinfo[EASTWALL+tile]
+            || mapFile.tileinfo[SOUTHWALL+tile])
 			return;				// wall prevents drop down
 
 		map += mapwidth;
 		tile = *map;
-		if (tinf[WESTWALL+tile] || tinf[EASTWALL+tile]
-			|| tinf[SOUTHWALL+tile])
+        if (mapFile.tileinfo[WESTWALL+tile] || mapFile.tileinfo[EASTWALL+tile]
+            || mapFile.tileinfo[SOUTHWALL+tile])
 			return;				// wall prevents drop down
 
 		move = PIXGLOBAL*(tics<4 ? 4: tics);
@@ -1949,7 +1953,7 @@ void	KeenPoleThink		(objtype *ob)
 	//
 		map = mapsegs[1] + (mapbwidthtable[ob->tilebottom+1]/2 + ob->tilemidx);
 		tile = *map;
-		if (tinf[NORTHWALL+tile])
+        if (mapFile.tileinfo[NORTHWALL+tile])
 		{
 			ob->xspeed = 0;
 			ob->yspeed = 0;
@@ -1980,7 +1984,7 @@ void	KeenClimbThink		(objtype *ob)
 
 	map = (id0_unsigned_t id0_seg *)mapsegs[1]+mapbwidthtable[ob->tiletop]/2+ob->temp4;
 
-	if ((tinf[INTILE+*map]&0x7f) != 1)
+    if ((mapFile.tileinfo[INTILE+*map]&0x7f) != 1)
 	{
 		ob->ymove=0;
 		ob->state = &s_keenpole;		// ran out of pole
@@ -2019,7 +2023,7 @@ void	KeenDropThink		(objtype *ob)
 
 	map = (id0_unsigned_t id0_seg *)mapsegs[1]+mapbwidthtable[ob->tilebottom]/2+ob->temp4;
 
-	if ((tinf[INTILE+*map]&0x7f) != 1)
+    if ((mapFile.tileinfo[INTILE+*map]&0x7f) != 1)
 	{
 		SD_PlaySound (PLUMMETSND);
 		ob->state = &s_keenjump3;		// ran out of pole
@@ -2443,7 +2447,7 @@ void	KeenAirReact (objtype *ob)
 	mapextra = mapwidth - (ob->tileright - ob->tileleft+1);
 	for (y=ob->tiletop;y<=ob->tilebottom;y++,map+=mapextra)
 		for (x=ob->tileleft;x<=ob->tileright;x++,map++)
-			if (tinf[SOUTHWALL+*map] == 17)	// jumping up through a pole hole
+            if (mapFile.tileinfo[SOUTHWALL+*map] == 17)	// jumping up through a pole hole
 			{
 				ob->xspeed = 0;
 				ob->x = ob->tilemidx*TILEGLOBAL - 2*PIXGLOBAL;
@@ -2504,7 +2508,7 @@ void	KeenSlideReact (objtype *ob)
 	if (ob->hitnorth)			// friction slow down
 	{
 		map = mapsegs[2] + (mapbwidthtable[ob->tiletop]/2 + ob->tileleft);
-		if (!tinf[SOUTHWALL+*map] && !tinf[SOUTHWALL+*(map+1)])
+        if (!mapFile.tileinfo[SOUTHWALL+*map] && !mapFile.tileinfo[SOUTHWALL+*(map+1)])
 			FrictionX(ob);
 	}
 

@@ -76,6 +76,8 @@ typedef struct {
     BE_GameVer_T verId;
 } BE_GameVerDetails_T;
 
+
+
 static const BE_GameFileDetails_T g_be_reqgameverfiles_kdreamse113[] = {
     {"KDREAMS.AUD", 3498, 0x80ac85e5},
     {"KDREAMS.CMP", 14189, 0x97628ca0},
@@ -124,6 +126,7 @@ extern	uint8_t	*audiodict;
 // (REFKEEN) Used for patching version-specific stuff
 extern char *gametext, *context, *story;
 
+mapfiletype_modern  mapFile;
 
 extern SDL_Surface *gpBlitSfc;
 
@@ -190,10 +193,13 @@ bool setupAudio()
     return false;
 }
 
+
 bool extractEmbeddedFilesIntoMemory(const BE_GameVerDetails_T &gameVerDetails)
 {
     // Mapping the strings of the filenames to the pointers where we store the embedded data
     std::map< std::string, uint8_t **> dataMap;
+
+    std::map< std::string, uint32_t> dataSizes;
 
     // CA
     dataMap.insert ( std::pair<std::string, uint8_t **>("EGAHEAD.KDR", &EGAhead) );
@@ -227,7 +233,44 @@ bool extractEmbeddedFilesIntoMemory(const BE_GameVerDetails_T &gameVerDetails)
         *data = (uint8_t*) malloc(dataSize);
 
         memcpy(*data, headerData+embeddedfileDetailsBuffer->offset, dataSize);
+
+        dataSizes[it->first] = dataSize;
     }
+
+    /*
+    typedef struct
+    {
+        id0_unsigned_t	RLEWtag;    // 2 bytes
+        id0_long_t		headeroffsets[100]; // 400 bytes
+        id0_byte_t		headersize[100];	// 100 bytes	// headers are very small
+        id0_byte_t		tileinfo[];         // start at 502 bytes ->
+    } __attribute__((__packed__)) mapfiletype;
+
+
+      */
+
+    mapFile.RLEWtag = 0;
+    unsigned char	*mapheadPtr = maphead;
+    memcpy(&mapFile.RLEWtag, mapheadPtr, 2 );
+
+    mapheadPtr += 2;
+    memcpy(&mapFile.headeroffsets, mapheadPtr, 400 );
+
+    mapheadPtr += 400;
+    memcpy(&mapFile.headersize, mapheadPtr, 100 );
+
+    mapheadPtr += 100;
+
+    // The first entry seems to describe "SPEED"
+    const unsigned int tileinfoStart = SPEEDOFFSET;
+    mapFile.tileinfo.resize(dataSizes["MAPHEAD.KDR"]-tileinfoStart);
+
+    memcpy(mapFile.tileinfo.data(), mapheadPtr, mapFile.tileinfo.size() );
+
+
+
+
+
 
     return true;
 }

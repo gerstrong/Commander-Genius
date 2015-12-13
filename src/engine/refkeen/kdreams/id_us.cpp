@@ -252,7 +252,7 @@ static	id0_char_t	filename[32];
 	for (s = "SAVEGM",t = filename;*s;)
 		*t++ = *s++;
 	*t++ = game + '0';
-	for (s = "."EXTENSION;*s;)
+    for (s = "." EXTENSION ; *s ; )
 		*t++ = *s++;
 	*t = '\0';
 
