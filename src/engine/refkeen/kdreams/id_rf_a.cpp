@@ -20,6 +20,10 @@
 
 // Ported from ASM
 
+#include "engine/keen/dreams/dreamsengine.h"
+
+extern mapfiletype_modern  mapFile;
+
 extern "C"
 {
 
@@ -35,7 +39,7 @@ extern "C"
 
 extern id0_unsigned_t screenstart[3]; // starts of three screens (0/1/master) in EGA mem
 extern id0_unsigned_t originmap;
-extern id0_byte_t id0_seg *tinf;
+//extern id0_byte_t id0_seg *tinf;
 
 extern id0_byte_t planemask;
 extern id0_byte_t planenum;
@@ -476,7 +480,7 @@ void RFL_MaskForegroundTiles (void)
 		{
 			continue;
 		}
-		if (!(tinf[foretilenum+INTILE] & 0x80)) // high bit = masked tile
+        if (!(mapFile.tileinfo[foretilenum+INTILE] & 0x80)) // high bit = masked tile
 		{
 			continue;
 		}

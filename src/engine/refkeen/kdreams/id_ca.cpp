@@ -76,7 +76,7 @@ typedef struct
 =============================================================================
 */
 
-id0_byte_t 		id0_seg	*tinf;
+//id0_byte_t 		id0_seg	*tinf;
 id0_int_t			mapon;
 
 id0_unsigned_t	id0_seg	*mapsegs[3];
@@ -682,9 +682,9 @@ void CAL_SetupMapFile (void)
 
 	maphuffman = (huffnode *)mapdict;
 	CAL_OptimizeNodes (maphuffman);
-	tinf = maphead;
+    //tinf = maphead;
 
-    mapfiletype *testPtr = ((mapfiletype	id0_seg *)tinf);
+    //mapfiletype *testPtr = ((mapfiletype	id0_seg *)tinf);
 
     //mapfiletype_modern
 

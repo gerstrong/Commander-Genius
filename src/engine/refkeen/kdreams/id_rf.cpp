@@ -459,12 +459,14 @@ void RF_MarkTileGraphics (void)
 				// this tile will animated
 
 				for (i=0;i<numanimchains;i++)
+                {
 					if (allanims[i].current == tile)
 					{
 						*info = COMPAT_ALLANIMS_CONVERT_INDEX_TO_DOS_PTR(i);
 						//*info = (id0_unsigned_t)&allanims[i];
 						goto nextback;
 					}
+                }
 
 				// new chain of animating tiles
 
@@ -511,12 +513,14 @@ nextback:
 
 				tilehigh = tile | 0x8000;	// foreground tiles have high bit
 				for (i=0;i<numanimchains;i++)
+                {
 					if (allanims[i].current == tilehigh)
 					{
 						*info = COMPAT_ALLANIMS_CONVERT_INDEX_TO_DOS_PTR(i);
 						//*info = (id0_unsigned_t)&allanims[i];
 						goto nextfront;
 					}
+                }
 
 				// new chain of animating tiles
 
