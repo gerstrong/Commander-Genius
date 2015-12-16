@@ -533,18 +533,61 @@ void CInput::readNewEvent()
 
 void CInput::waitForAnyInput()
 {
+    float acc = 0.0f;
+    float start = timerTicks();
+    float elapsed = 0.0f;
+    float curr = 0.0f;
+
+    bool done = false;
+
     while(1)
     {
-        pollEvents();
+        const float logicLatency = gTimer.LogicLatency();
 
-        // TODO: We might introduce a nice timer here, but really required, because if we get here,
-        // everything is halted anyways. It only might reduce the amount of CPU cycles to reduce...
+        curr = timerTicks();
 
-        if(getPressedAnyCommand())
+        if(gTimer.resetLogicSignal())
+            start = curr;
+
+        elapsed = curr - start;
+
+        start = timerTicks();
+
+        acc += elapsed;
+
+        // Perform the game cycle
+        while( acc > logicLatency )
         {
-            break;
+            // Poll Inputs
+            //gInput.pollEvents();
+
+            pollEvents();
+
+            // TODO: We might introduce a nice timer here, but really required, because if we get here,
+            // everything is halted anyways. It only might reduce the amount of CPU cycles to reduce...
+
+            if(getPressedAnyCommand())
+            {
+                done = true;
+            }
+
+            acc -= logicLatency;
         }
+
+        if(done)
+            break;
+
+
+        elapsed = timerTicks() - start;
+
+        int waitTime = logicLatency - elapsed;
+
+        // wait time remaining in current loop
+        if( waitTime > 0 )
+            timerDelay(waitTime);
+
     }
+
 }
 
 

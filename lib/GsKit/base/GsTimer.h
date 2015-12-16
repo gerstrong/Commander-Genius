@@ -62,14 +62,14 @@ public:
 
     float RenderLatency() { return mRenderLatency; }
     
-    inline bool resetLogicSingal()
-    { 
-	if(resetLogic) 
-	{
-	    resetLogic = false;
-	    return true;
-	}
-	return false;
+    inline bool resetLogicSignal()
+    {
+        if(resetLogic)
+        {
+            resetLogic = false;
+            return true;
+        }
+        return false;
     }
     
     void setLogicReset(const bool value)

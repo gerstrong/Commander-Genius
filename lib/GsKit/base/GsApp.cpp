@@ -241,7 +241,7 @@ void GsApp::runMainCycle()
 
         curr = timerTicks();
 
-        if(gTimer.resetLogicSingal())
+        if(gTimer.resetLogicSignal())
             start = curr;
 
         elapsed = curr - start;        

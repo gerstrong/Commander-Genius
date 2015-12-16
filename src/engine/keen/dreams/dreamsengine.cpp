@@ -21,7 +21,7 @@
 dreams::DreamsEngine *gDreamsEngine;
 
 
-// TODO: Ugly wrapper for the refkeen variables used. It serves as interface to C. Might be inmproved in future.
+// TODO: Ugly wrapper for the refkeen variables used. It serves as interface to C. Might be improved in future.
 extern "C"
 {
 
@@ -237,18 +237,6 @@ bool extractEmbeddedFilesIntoMemory(const BE_GameVerDetails_T &gameVerDetails)
         dataSizes[it->first] = dataSize;
     }
 
-    /*
-    typedef struct
-    {
-        id0_unsigned_t	RLEWtag;    // 2 bytes
-        id0_long_t		headeroffsets[100]; // 400 bytes
-        id0_byte_t		headersize[100];	// 100 bytes	// headers are very small
-        id0_byte_t		tileinfo[];         // start at 502 bytes ->
-    } __attribute__((__packed__)) mapfiletype;
-
-
-      */
-
     mapFile.RLEWtag = 0;
     unsigned char	*mapheadPtr = maphead;
     memcpy(&mapFile.RLEWtag, mapheadPtr, 2 );
@@ -305,9 +293,6 @@ bool DreamsEngine::loadResources()
         int handle()
         {
             CExeFile &ExeFile = gKeenFiles.exeFile;
-            //int version = ExeFile.getEXEVersion();
-            //unsigned char *p_exedata = ExeFile.getRawData();
-            //const int Episode = ExeFile.getEpisode();
 
             mLoader.setPermilage(10);
 
@@ -318,50 +303,6 @@ bool DreamsEngine::loadResources()
             mLoader.setPermilage(50);
 
             extractEmbeddedFilesIntoMemory(g_be_gamever_kdreamse113);
-
-            /*if( (mFlags & LOADGFX) == LOADGFX )
-            {
-                // Decode the entire graphics for the game (Only EGAGRAPH.CK?)
-                CEGAGraphicsDreams graphics(ExeFile);
-                if( !graphics.loadData() )
-                {
-                    return 0;
-                }
-
-                mLoader.setPermilage(400);
-            }
-
-            if( (mFlags & LOADSTR) == LOADSTR )
-            {
-                // load the strings.
-                CMessages Messages(p_exedata, Episode, version);
-                Messages.extractGlobalStrings();
-                mLoader.setPermilage(450);
-            }
-
-
-            if( (mFlags & LOADSND) == LOADSND )
-            {
-                gLogging.ftextOut("Loading audio... <br>");
-                // Load the sound data
-                setupAudio();
-
-                mLoader.setPermilage(900);
-                gLogging.ftextOut("Done loading audio.<br>");
-            }
-
-            gLogging.ftextOut("Loading game constants...<br>");
-
-            g_pBehaviorEngine->getPhysicsSettings().loadGameConstants(Episode, p_exedata);
-
-            gLogging.ftextOut("Looking for patches...<br>");
-
-            // If there are patches left that must be applied later, do it here!
-            Patcher.postProcess();
-
-            gLogging.ftextOut("Done loading the resources...<br>");
-
-            mLoader.setPermilage(1000);*/
 
             gEventManager.add(new FinishedLoadingResources());
 
@@ -612,9 +553,6 @@ void DreamsEngine::ponder(const float deltaT)
             GameLoop();
         }
     }
-
-
-    //if(mGameState)
 }
 
 
@@ -636,24 +574,9 @@ void DreamsEngine::updateHostDisplay()
     dstRect.w = blitSfc->w;
     dstRect.h = blitSfc->h;
 
-    // Watermark because I'm still testing the rendering. Sometimes it does not work...
-    /*SDL_Rect waterRect;
-    waterRect.x = 0;
-    waterRect.y = 0;
-    waterRect.w = 20;
-    waterRect.h = 20;*/
-
     CVidConfig &vidConf = gVideoDriver.getVidConfig();
 
-    // TODO: We need some render control here!
-    //SDL_FillRect(sfc, NULL, SDL_MapRGB(sfc->format, 255, 0, 0));
-    //SDL_FillRect(sfc, &waterRect, SDL_MapRGB(sfc->format, 255, 0, 0));
-
     blitScaled( sfc, srGsRect, blitSfc, dstRect, vidConf.m_ScaleXFilter );
-
-    /*SDL_Surface *sfc = gVideoDriver.getBlitSurface();
-
-    BEL_ST_UpdateHostDisplay(sfc);*/
 }
 
 
