@@ -597,13 +597,13 @@ US_TextScreen(void)
 	switch (refkeen_current_gamever)
 	{
 	case BE_GAMEVER_KDREAMSE113:
-#include "id_us_s_kdreams113.cpp"
+#include "id_us_s_kdreams113.hpp"
 		break;
 	case BE_GAMEVER_KDREAMSE193:
-#include "id_us_s_kdreams192andlater.cpp"
+#include "id_us_s_kdreams192andlater.hpp"
 		break;
 	case BE_GAMEVER_KDREAMSE120:
-#include "id_us_s_kdreams120.cpp"
+#include "id_us_s_kdreams120.hpp"
 		break;
 	}
 #endif // EGA/CGA
