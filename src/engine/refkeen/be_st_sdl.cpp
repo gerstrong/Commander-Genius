@@ -67,13 +67,13 @@ static bool g_sdlControllersActualAxesStates[BE_ST_MAXJOYSTICKS][SDL_CONTROLLER_
 #define NUM_OF_CONTROLLER_MAPS_IN_STACK 8
 
 static bool g_sdlControllerSchemeNeedsCleanUp;
-
+/*
 static struct {
 	BESDLControllerMap stack[SDL_CONTROLLER_BUTTON_MAX];
 	BESDLControllerMap *currPtr;
 	BESDLControllerMap *endPtr;
 } g_sdlControllertoScanCodeMaps;
-
+*/
 // Used e.g., when a few choices should be temporarily shown during gameplay,
 // but otherwise the "current mapping" is a different one for the game itself
 static BESDLControllerMap g_sdlControllerLowPriorityMap;
@@ -188,10 +188,12 @@ static const char *g_sdlControlSchemeKeyMapCfgKeyPrefixes[] = {
 	0,
 };
 
+/*
 static SDL_GameControllerAxis g_sdlXAxisForMenuMouse, g_sdlYAxisForMenuMouse;
 
 
 extern SDL_Window *g_sdlWindow;
+*/
 
 uint8_t g_sdlLastKeyScanCode;
 
@@ -201,7 +203,7 @@ void BE_ST_ShutdownAudio(void);
 void BE_ST_ShutdownGfx(void);
 static void BEL_ST_ParseConfig(void);
 static BESDLControllerMapEntry * BEL_ST_GetKeyMapPtrFromCfgVal(BESDLControllerMap *controllerMapPtr, int mappingCfgVal);
-
+/*
 void BE_ST_InitAll(void)
 {
 	if (SDL_Init(SDL_INIT_VIDEO|SDL_INIT_EVENTS|SDL_INIT_TIMER) < 0)
@@ -287,7 +289,7 @@ void BE_ST_ShutdownAll(void)
     // TODO: Throw an exit event for CG.
     //SDL_Quit();
 }
-
+*/
 void BE_ST_HandleExit(int status)
 {
 	SDL_Event event;
@@ -298,13 +300,13 @@ void BE_ST_HandleExit(int status)
 		{
 			switch (event.type)
 			{
-			case SDL_WINDOWEVENT:
+            /*case SDL_WINDOWEVENT:
 				if (event.window.event == SDL_WINDOWEVENT_RESIZED)
 				{
-					void BE_ST_SetGfxOutputRects(void);
-					BE_ST_SetGfxOutputRects();
+                    //void BE_ST_SetGfxOutputRects(void);
+                    //BE_ST_SetGfxOutputRects();
 				}
-				break;
+                break;*/
 			case SDL_KEYDOWN:
 			case SDL_MOUSEBUTTONDOWN:
 			case SDL_QUIT:
@@ -314,7 +316,7 @@ void BE_ST_HandleExit(int status)
 			}
 		}
 		// Events are not sent for SDL joysticks/game controllers
-		if (g_refKeenCfg.altControlScheme.isEnabled)
+        /*if (g_refKeenCfg.altControlScheme.isEnabled)
 		{
 			for (int i = 0; i < BE_ST_MAXJOYSTICKS; ++i)
 			{
@@ -350,11 +352,11 @@ void BE_ST_HandleExit(int status)
 					}
 				}
 			}
-		}
+        }*/
         //SDL_Delay(1);
 		// TODO: Make this more efficient
 	}
-	BE_ST_ShutdownAll();
+    //BE_ST_ShutdownAll();
 	exit(0);
 }
 
@@ -1014,8 +1016,8 @@ const emulatedDOSKeyEvent sdlKeyMappings[SDL_NUM_SCANCODES] = {
 
     // More SDL 2.0 scancodes follow, but are ignored
 };
-#else
-#error "SDL <2.0 support is unimplemented!"
+//#else
+//#error "SDL <2.0 support is unimplemented!"
 #endif
 
 
@@ -1035,7 +1037,7 @@ void BE_ST_GetMouseDelta(int16_t *x, int16_t *y)
 	SDL_GetRelativeMouseState(&ourx, &oury);
 
 	// FIXME: Use enum for menuMouseMapping
-	if (g_refKeenCfg.altControlScheme.isEnabled && g_refKeenCfg.altControlScheme.menuMouseMapping && (g_sdlControllerActualCurrPtr->schemeType == CONTROLSCHEME_MENU))
+    /*if (g_refKeenCfg.altControlScheme.isEnabled && g_refKeenCfg.altControlScheme.menuMouseMapping && (g_sdlControllerActualCurrPtr->schemeType == CONTROLSCHEME_MENU))
 	{
 		for (int i = 0; i < BE_ST_MAXJOYSTICKS; ++i)
 		{
@@ -1057,7 +1059,7 @@ void BE_ST_GetMouseDelta(int16_t *x, int16_t *y)
 				}
 			}
 		}
-	}
+    }*/
 
 	if (x)
 	{
@@ -1355,7 +1357,7 @@ static void BEL_ST_AltControlScheme_CleanUp(void)
 	g_sdlControllerSchemeNeedsCleanUp = false;
 }
 
-
+/*
 void BE_ST_AltControlScheme_Push(void)
 {
 	if (!g_refKeenCfg.altControlScheme.isEnabled)
@@ -1402,7 +1404,7 @@ void BE_ST_AltControlScheme_Pop(void)
 
 	BEL_ST_AltControlScheme_CleanUp();
 
-	if (g_sdlControllertoScanCodeMaps.currPtr == &g_sdlControllertoScanCodeMaps.stack[0])
+    if (g_sdlControllertoScanCodeMaps.currPtr == &g_sdlControllertoScanCodeMaps.stack[0])
 	{
 		BE_ST_ExitWithErrorMsg("BE_ST_AltControlScheme_Pop: Popped more than necessary!\n");
 	}
@@ -1414,7 +1416,7 @@ void BE_ST_AltControlScheme_Pop(void)
 
 	g_sdlControllerSchemeNeedsCleanUp = true;
 }
-
+*/
 
 
 void BEL_ST_AltControlScheme_PrepareFaceButtonsDOSScancodes_Low(const char *scanCodes, BESDLControllerMap *controllerMapPtr, bool clearAll)
@@ -1473,7 +1475,7 @@ void BEL_ST_AltControlScheme_PrepareFaceButtonsDOSScancodes_Low(const char *scan
 	g_sdlControllerSchemeNeedsCleanUp = true;
 }
 
-
+/*
 void BE_ST_AltControlScheme_PrepareFaceButtonsDOSScancodes(const char *scanCodes)
 {
 	if (!g_refKeenCfg.altControlScheme.isEnabled)
@@ -1497,7 +1499,8 @@ void BE_ST_AltControlScheme_PreparePageScrollingControls(int prevPageScan, int n
 
 	g_sdlControllerSchemeNeedsCleanUp = true;
 }
-
+*/
+/*
 void BE_ST_AltControlScheme_PrepareMenuControls(void)
 {
 	if (!g_refKeenCfg.altControlScheme.isEnabled)
@@ -1586,7 +1589,7 @@ void BE_ST_AltControlScheme_PrepareTextInput(void)
 
 	g_sdlControllerSchemeNeedsCleanUp = true;
 }
-
+*/
 
 //void BE_ST_PollEvents(void)
 void BE_ST_PollEvents(SDL_Event event)
@@ -1608,7 +1611,7 @@ void BE_ST_PollEvents(SDL_Event event)
         // Reason is that on init, there is a problem handling controller mappings loaded from the database using SDL_CONTROLLERDEVICEADDED
         // (if loaded before init, the mappings seem to be deleted, otherwise SDL_CONTROLLERDEVICEADDED are just not spawned for these).
         //
-		case SDL_JOYDEVICEADDED:
+        /*case SDL_JOYDEVICEADDED:
 			if (event.jdevice.which < BE_ST_MAXJOYSTICKS)
 			{
 				if (!g_refKeenCfg.altControlScheme.isEnabled)
@@ -1666,14 +1669,17 @@ void BE_ST_PollEvents(SDL_Event event)
 					g_sdlForceGfxControlUiRefresh = true;
 				}
 			}
-			break;
+            break;*/
 		case SDL_QUIT:
-			BE_ST_ShutdownAll();
+            //BE_ST_ShutdownAll();
 			exit(0);
 			break;
 		default: ;
 		}
 	}
+
+    /*
+
 	// If SDL_GameController is used, we don't poll for its events.
 	// Furthermore, we emulate keyboard/mouse events from DOS.
 	if (g_refKeenCfg.altControlScheme.isEnabled)
@@ -1753,6 +1759,7 @@ void BE_ST_PollEvents(SDL_Event event)
 								}
 							}
 							// Try the usual otherwise (similar handling done with analog axes, triggers included)
+
 							else if (!BEL_ST_AltControlScheme_HandleEntry(g_sdlControllerActualCurrPtr->buttonsMap[but], isPressed))
 							{
 								// If there's no mapping *and* we have the following set...
@@ -1765,9 +1772,12 @@ void BE_ST_PollEvents(SDL_Event event)
 									g_sdlControllerSchemeNeedsCleanUp = true;
 								}
 							}
+
 						}
 					}
 				}
+
+                /*
 				// Repeat with analog axes (ignored with text input scheme in use)
 				if (g_sdlControllerActualCurrPtr->schemeType == CONTROLSCHEME_TEXTINPUT)
 					continue;
@@ -1872,9 +1882,11 @@ void BE_ST_PollEvents(SDL_Event event)
 					}
 #endif
 				}
-			}
+            }
 		}
 	}
+
+    */
 	// HACK - If audio subsystem is disabled we still want to at least
 	// make the sound callback run (so e.g., no loop gets stuck waiting
 	// for sound playback to complete)
@@ -1884,6 +1896,8 @@ void BE_ST_PollEvents(SDL_Event event)
 //		BE_ST_PrepareForManualAudioSDServiceCall();
 //	}
 }
+
+
 
 #ifdef BE_ST_ENABLE_FARPTR_CFG
 uint16_t BE_ST_Compat_GetFarPtrRelocationSegOffset(void)

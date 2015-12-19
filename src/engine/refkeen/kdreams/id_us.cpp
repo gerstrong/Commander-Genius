@@ -1223,8 +1223,8 @@ US_LineInput(id0_int_t x,id0_int_t y,id0_char_t *buf,const id0_char_t *def,id0_b
 	LastScan = sc_None;
 
 	// REFKEEN - Alternative controllers support
-	BE_ST_AltControlScheme_Push();
-	BE_ST_AltControlScheme_PrepareTextInput();
+    /*BE_ST_AltControlScheme_Push();
+    BE_ST_AltControlScheme_PrepareTextInput();*/
 
 	while (!done)
 	{
@@ -1396,7 +1396,7 @@ US_LineInput(id0_int_t x,id0_int_t y,id0_char_t *buf,const id0_char_t *def,id0_b
     gInput.flushAll();
 
 	// REFKEEN - Alternative controllers support
-	BE_ST_AltControlScheme_Pop();
+    //BE_ST_AltControlScheme_Pop();
 
 	if (cursorvis)
 		USL_XORICursor(x,y,s,cursor);
@@ -2547,8 +2547,8 @@ static void
 USL_DoHelp(memptr text,id0_long_t len)
 {
 	// REFKEEN - Alternative controllers support	
-	BE_ST_AltControlScheme_Push();
-	BE_ST_AltControlScheme_PreparePageScrollingControls(sc_PgUp, sc_PgDn);
+    /*BE_ST_AltControlScheme_Push();
+    BE_ST_AltControlScheme_PreparePageScrollingControls(sc_PgUp, sc_PgDn);*/
 
 	id0_boolean_t		done,
 				moved;
@@ -2792,7 +2792,7 @@ USL_DoHelp(memptr text,id0_long_t len)
 	VW_UpdateScreen();
 	US_RestoreWindow(&wr);
 
-	BE_ST_AltControlScheme_Pop(); // REFKEEN - Alternative controllers support
+    //BE_ST_AltControlScheme_Pop(); // REFKEEN - Alternative controllers support
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -3636,8 +3636,8 @@ void
 US_ControlPanel(void)
 {        
 	// REFKEEN - Alternative controllers support	
-	BE_ST_AltControlScheme_Push();
-	BE_ST_AltControlScheme_PrepareMenuControls();
+    /*BE_ST_AltControlScheme_Push();
+    BE_ST_AltControlScheme_PrepareMenuControls();*/
 
 	id0_char_t		gamename[MaxGameName + 10 + 1];
 	ScanCode	c;
@@ -3889,7 +3889,7 @@ US_ControlPanel(void)
 
 	CA_DownLevel();
 
-	BE_ST_AltControlScheme_Pop(); // REFKEEN - Alternative controllers support
+    //BE_ST_AltControlScheme_Pop(); // REFKEEN - Alternative controllers support
 }
 
 //	High score routines
