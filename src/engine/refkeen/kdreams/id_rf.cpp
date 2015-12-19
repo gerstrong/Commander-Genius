@@ -998,6 +998,14 @@ void RF_ForceRefresh (void)
 =====================
 */
 
+// REFKEEN - Big Endian support
+#ifdef REFKEEN_ARCH_BIG_ENDIAN
+static id0_unsigned_t	UPDATETERMINATE =	0x0103;
+#else
+static id0_unsigned_t	UPDATETERMINATE =	0x0301;
+#endif
+
+
 void RF_NewPosition (id0_unsigned_t x, id0_unsigned_t y)
 {
 	id0_int_t mx,my;
