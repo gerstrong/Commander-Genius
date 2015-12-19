@@ -45,8 +45,8 @@
 //
 
 
-#define	SPEED	502
-#define ANIM	(SPEED+NUMTILE16)
+#define	SPEEDOFFSET	502
+#define ANIM	(NUMTILE16)
 
 #define NORTHWALL	(ANIM+NUMTILE16)
 #define EASTWALL	(NORTHWALL+NUMTILE16M)
@@ -68,7 +68,7 @@ typedef	struct
 
 //===========================================================================
 
-extern	id0_byte_t 		id0_seg	*tinf;
+//extern	id0_byte_t 		id0_seg	*tinf;
 extern	id0_int_t			mapon;
 
 extern	id0_unsigned_t	id0_seg	*mapsegs[3];

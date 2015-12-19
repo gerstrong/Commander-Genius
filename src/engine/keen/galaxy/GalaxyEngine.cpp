@@ -32,7 +32,7 @@ bool setupAudio()
     const CExeFile &ExeFile = gKeenFiles.exeFile;
     const unsigned int ep = ExeFile.getEpisode();
 
-    CAudioGalaxy *audio = new CAudioGalaxy(ExeFile);
+    CAudioGalaxy *audio = new CAudioGalaxy();
 
     if(audio->loadSoundData())
     {

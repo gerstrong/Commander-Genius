@@ -15,7 +15,7 @@
 CAudioResources::CAudioResources()
 {}
 
-bool CAudioResources::readISFintoWaveForm( CSoundSlot &soundslot, const byte *imfdata, const unsigned int bytesize, const Uint8 formatsize )
+bool CAudioResources::readISFintoWaveForm( CSoundSlot &soundslot, const byte *imfdata, const Uint8 formatsize )
 {
 	byte *imfdata_ptr = (byte*)imfdata;
 	const longword size = READLONGWORD(imfdata_ptr);
@@ -111,3 +111,121 @@ bool CAudioResources::readISFintoWaveForm( CSoundSlot &soundslot, const byte *im
 
 	return true;
 }
+
+
+
+
+void CAudioResources::generateBeep(byte *waveform,
+                                   word sample,
+                                   word sampleSize,
+                                   int wavesample,
+                                   Uint64 &freqtimer,
+                                   const int AMP,
+                                   const int silence,
+                                   const int channels,
+                                   const unsigned int wavetime,
+                                   const int frequency)
+{
+    unsigned int offset = 0;
+
+    const int low  = silence - AMP;
+    const int high = silence + AMP;
+
+    const Uint64 changerate = (frequency>>1)*Uint64(sample);
+
+    for (unsigned int j=0; j<wavetime; j++)
+    {
+        if (sample != 0)
+        {
+            if (freqtimer > changerate)
+            {
+                freqtimer %= changerate;
+
+                wavesample = (wavesample == low) ? high : low;
+            }
+            freqtimer += PCSpeakerTime;
+        }
+
+        // For all the channel set this value
+        for(int i=0 ; i<channels ; i++)
+        {
+            memcpy(&waveform[offset], &wavesample, sampleSize);
+            offset += sampleSize;
+        }
+    }
+
+}
+
+
+void CAudioResources::generateWave(byte* waveform,
+                                   const int waveSampleSize,
+                                   const unsigned int wavetime,
+                                   byte *inBuffer,
+                                   unsigned int numOfBeeps,
+                                   bool isVorticons,
+                                   const int& AMP,
+                                   const SDL_AudioSpec &audioSpec)
+{
+    /** If PC_SPEAKER_WORKS_LIKE_DOSBOX_V0_74 is defined, we attempt
+     * to simulate the way vanilla DOSBox v0.74 emulates the PC Speaker.
+     * Might be useful for some Commander Keen packs with alternate sounds effects.
+     */
+    Uint64 freqtimer = 0;
+    word prevsample = 0, sample;
+    const int silence = audioSpec.silence;
+    const int channels = audioSpec.channels;
+    int wave = silence - AMP;
+
+    unsigned int offset = 0;
+
+    for(unsigned pos=0 ; pos<numOfBeeps ; pos++)
+    {
+        if (isVorticons)
+        {
+            sample = READWORD(inBuffer);
+
+            if(sample == 0xffff)
+                break;
+
+
+#ifdef PC_SPEAKER_WORKS_LIKE_DOSBOX_V0_74
+            if (prevsample != 0)
+                freqtimer %= audioSpec.freq*prevsample;
+#else
+            // On Keen 1-3, separated consecutive samples are always separated.
+            wave = silence - AMP;
+            freqtimer = 0;
+#endif
+        }
+        else
+        {
+            // Multiplying by some constant (60 in our case) seems to reproduces the right sound.
+            sample = *(inBuffer++) * 60;
+#ifdef PC_SPEAKER_WORKS_LIKE_DOSBOX_V0_74
+            if (prevsample != 0)
+                freqtimer %= audioSpec.freq*prevsample;
+#else
+            /** On Keen 4-6, consecutive samples of the exact
+                 * same frequency are merged into a single tone.
+                 */
+            if (prevsample != sample)
+            {
+                wave = silence - AMP;
+                freqtimer = 0;
+            }
+#endif
+
+        }
+
+        generateBeep(&waveform[offset],
+                     sample, waveSampleSize, wave,
+                     freqtimer, AMP,
+                     silence, channels,
+                     wavetime, audioSpec.freq);
+        prevsample = sample;
+
+        offset += (channels*wavetime*waveSampleSize);
+        memcpy(&wave, &waveform[offset-waveSampleSize], waveSampleSize);
+    }
+}
+

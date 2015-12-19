@@ -14,7 +14,15 @@
 #include <base/GsLogging.h>
 #include <base/utils/FindFile.h>
 #include <base/PointDevice.h>
+#include <base/GsTimer.h>
 #include <fileio/CConfiguration.h>
+
+
+// Workaround for RefKeen. If if it transferred to a more C++ structure we have to be able removing that.
+extern "C"
+{
+extern int gDreamsForceClose;
+}
 
 // Input Events
 
@@ -72,7 +80,9 @@ void CInput::resetControls(int player)
 	// At least this warning will tell the people, that something is not right here!
 
 	m_exit = false;
-	m_cmdpulse = 0;
+    gDreamsForceClose = 0;
+
+    m_cmdpulse = 0;
 	m_joydeadzone = 1024;
 
 	memset(immediate_keytable,false,KEYTABLE_SIZE);
@@ -448,7 +458,6 @@ void CInput::setupNewEvent(Uint8 device, int position)
  */
 void CInput::readNewEvent()
 {
-
 	stInputCommand &lokalInput = InputCommand[remapper.mapDevice][remapper.mapPosition];
 
 	// This function is used to configure new input keys.
@@ -520,6 +529,67 @@ void CInput::readNewEvent()
         flushAll();
     }
 }
+
+
+void CInput::waitForAnyInput()
+{
+    float acc = 0.0f;
+    float start = timerTicks();
+    float elapsed = 0.0f;
+    float curr = 0.0f;
+
+    bool done = false;
+
+    while(1)
+    {
+        const float logicLatency = gTimer.LogicLatency();
+
+        curr = timerTicks();
+
+        if(gTimer.resetLogicSignal())
+            start = curr;
+
+        elapsed = curr - start;
+
+        start = timerTicks();
+
+        acc += elapsed;
+
+        // Perform the game cycle
+        while( acc > logicLatency )
+        {
+            // Poll Inputs
+            //gInput.pollEvents();
+
+            //pollEvents();
+
+            // TODO: We might introduce a nice timer here, but really required, because if we get here,
+            // everything is halted anyways. It only might reduce the amount of CPU cycles to reduce...
+
+            if(getPressedAnyCommand())
+            {
+                done = true;
+            }
+
+            acc -= logicLatency;
+        }
+
+        if(done)
+            break;
+
+
+        elapsed = timerTicks() - start;
+
+        int waitTime = logicLatency - elapsed;
+
+        // wait time remaining in current loop
+        if( waitTime > 0 )
+            timerDelay(waitTime);
+
+    }
+
+}
+
 
 bool CInput::getTwoButtonFiring(int player) { return TwoButtonFiring[player]; }
 void CInput::setTwoButtonFiring(int player, bool value) { TwoButtonFiring[player]=value; }
@@ -595,6 +665,8 @@ void CInput::pollEvents()
 		case SDL_QUIT:
 			gLogging.textOut("SDL: Got quit event!");
 			m_exit = true;
+            gDreamsForceClose = 1;
+
 			break;
         case SDL_KEYDOWN:
             passSDLEventVec = processKeys(1);
@@ -759,6 +831,7 @@ void CInput::pollEvents()
 	{
 		gLogging.textOut("User exit request!");
 		m_exit = true;
+        gDreamsForceClose = 1;
 	}
 #endif
 
@@ -1426,7 +1499,7 @@ static TouchButton* getPhoneButton(int x, int y, TouchButton phoneButtons[]) {
 	return NULL;
 }
 
-
+#ifdef MOUSEWRAPPER
 static bool checkMousewrapperKey(int& key) {
 	switch(key) {
 		case KLEFT: case KRIGHT: case KUP: case KDOWN:
@@ -1442,6 +1515,7 @@ static bool checkMousewrapperKey(int& key) {
 	// just too many keys ...
 	return true;
 }
+#endif
 
 void CInput::processMouse()
 {

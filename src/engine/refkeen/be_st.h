@@ -127,7 +127,7 @@ void BE_ST_SetBorderColor(uint8_t color);
 void BE_ST_SetScreenMode(int mode);
 void BE_ST_WaitVBL(int16_t number);
 void BE_ST_ShortSleep(void);
-void BE_ST_Delay(uint16_t msec); // Replacement for delay from dos.h
+//void BE_ST_Delay(uint16_t msec); // Replacement for delay from dos.h
 void BE_ST_textcolor(int color);
 void BE_ST_textbackground(int color);
 void BE_ST_clrscr(void);

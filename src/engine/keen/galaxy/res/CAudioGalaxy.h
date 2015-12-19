@@ -8,7 +8,7 @@
 #ifndef CAUDIOGALAXY_H_
 #define CAUDIOGALAXY_H_
 
-#include "sdl/audio/CAudioResources.h"
+#include <sdl/audio/CAudioResources.h>
 #include "fileio/CExeFile.h"
 
 const Uint32 GalaxySongAssignments[] =
@@ -19,13 +19,19 @@ const Uint32 GalaxySongAssignments[] =
 };
 
 
-class CAudioGalaxy : public CAudioResources {
+class CAudioGalaxy : public CAudioResources
+{
 public:
-    CAudioGalaxy(const CExeFile &ExeFile);
 
-	bool readPCSpeakerSoundintoWaveForm(CSoundSlot &soundslot, const byte *pcsdata, const unsigned int bytesize, const Uint8 formatsize );
 
-	bool LoadFromAudioCK(const CExeFile& ExeFile);
+    bool readPCSpeakerSoundintoWaveForm(CSoundSlot &soundslot, const byte *pcsdata, const Uint8 formatsize );
+
+    /**
+     * @brief LoadFromAudioCK   Load audio from the CK files
+     * @return true if everything went finde otherwise false
+     */
+    bool LoadFromAudioCK();
+
 	bool loadSoundData();
 	void unloadSound();
 	
@@ -34,7 +40,7 @@ public:
 private:
 	void setupAudioMap();
     
-	const CExeFile &m_ExeFile;
+    //const CExeFile &m_ExeFile;
 };
 
 #endif /* CAUDIOGALAXY_H_ */

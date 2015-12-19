@@ -145,7 +145,7 @@ void GsAppEventSink::pumpEvent(const CEvent *evPtr)
 void GsApp::pollEvents()
 {
     if( gInput.getExitEvent() )
-    {
+    {        
       mpCurEngine.release();
       return;
     }
@@ -241,7 +241,7 @@ void GsApp::runMainCycle()
 
         curr = timerTicks();
 
-        if(gTimer.resetLogicSingal())
+        if(gTimer.resetLogicSignal())
             start = curr;
 
         elapsed = curr - start;        

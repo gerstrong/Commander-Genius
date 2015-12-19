@@ -243,7 +243,7 @@ void	InitGame (void);
 
 void	Finale (void);
 void	GameOver (void);
-void	DemoLoop (void);
+void	DemoLoop ();
 void	StatusWindow (void);
 void	NewGame (void);
 void	TEDDeath (void);

@@ -15,7 +15,6 @@
 
 #define g_pSound Audio::Get()
 
-#include <string>
 #include <SDL.h>
 #include <map>
 #include <vector>

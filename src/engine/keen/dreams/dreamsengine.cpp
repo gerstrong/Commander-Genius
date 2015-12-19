@@ -5,25 +5,30 @@
 #include "engine/keen/KeenEngine.h"
 #include <base/GsLogging.h>
 #include <base/GsTimer.h>
+#include <base/GsApp.h>
 #include <fileio/CExeFile.h>
 #include <fileio/KeenFiles.h>
 #include <fileio/CPatcher.h>
 #include <base/video/CVideoDriver.h>
 #include <base/CInput.h>
+#include <SDL.h>
+
+#include "../galaxy/res/CAudioGalaxy.h"
 
 #define REFKEEN_VER_KDREAMS_ANYEGA_ALL
 
-//#include "../../refkeen/kdreams/id_mm.h"
+
+dreams::DreamsEngine *gDreamsEngine;
 
 
-// TODO: Ugly wrapper for the refkeen variables used. It serves as interface to C. Might be inmproved in future.
+// TODO: Ugly wrapper for the refkeen variables used. It serves as interface to C. Might be improved in future.
 extern "C"
 {
 
 
 #include "../../refkeen/kdreams/kd_def.h"
 
-
+ //Lock SDL_SemWait( gDataLock );
 char *dreamsengine_datapath = nullptr;
 
 extern void RefKeen_Patch_id_ca(void);
@@ -71,6 +76,8 @@ typedef struct {
     BE_GameVer_T verId;
 } BE_GameVerDetails_T;
 
+
+
 static const BE_GameFileDetails_T g_be_reqgameverfiles_kdreamse113[] = {
     {"KDREAMS.AUD", 3498, 0x80ac85e5},
     {"KDREAMS.CMP", 14189, 0x97628ca0},
@@ -104,14 +111,10 @@ static const BE_GameVerDetails_T g_be_gamever_kdreamse113 = {
     BE_GAMEVER_KDREAMSE113
 };
 
-//extern void BEL_Cross_ConditionallyAddGameInstallation(const BE_GameVerDetails_T *details, const char *searchdir, const char *descStr);
-
 
 
 // (REFKEEN) Used for patching version-specific stuff
 uint16_t refkeen_compat_kd_play_objoffset;
-
-//extern BE_GameVer_T refkeen_current_gamever;
 
 extern	uint8_t	*EGAhead;
 extern	uint8_t	*EGAdict;
@@ -123,13 +126,24 @@ extern	uint8_t	*audiodict;
 // (REFKEEN) Used for patching version-specific stuff
 extern char *gametext, *context, *story;
 
+mapfiletype_modern  mapFile;
 
 extern SDL_Surface *gpBlitSfc;
+
+// if an external event like closing the window is send, this variable
+// will force refkeen to close everything.
+int gDreamsForceClose;
 
 
 void BEL_ST_UpdateHostDisplay(SDL_Surface *sfc);
 
 void BE_ST_PollEvents(SDL_Event event);
+
+void BE_ST_ApplyScreenMode(int mode);
+
+SDL_sem* gpRenderLock = nullptr;
+
+extern void RefKeen_FillObjStatesWithDOSPointers(void);
 
 }
 
@@ -150,6 +164,9 @@ void setupObjOffset()
     case BE_GAMEVER_KDREAMSE120:
         refkeen_compat_kd_play_objoffset = 0x734C;
         break;
+    case BE_GAMEVER_LAST:
+        // ** This case must never happen. We might want to catch that exception?
+        break;
     }
 }
 
@@ -159,10 +176,30 @@ namespace dreams
 
 
 
+bool setupAudio()
+{
+    //const CExeFile &ExeFile = gKeenFiles.exeFile;
+    //const unsigned int ep = ExeFile.getEpisode();
+
+    CAudioGalaxy *audio = new CAudioGalaxy();
+    //AudioDreams *audio = new AudioDreams();
+
+    if(audio->loadSoundData())
+    {
+        g_pSound->setupSoundData(audio->sndSlotMapGalaxy[7], audio);
+        return true;
+    }
+
+    return false;
+}
+
+
 bool extractEmbeddedFilesIntoMemory(const BE_GameVerDetails_T &gameVerDetails)
 {
     // Mapping the strings of the filenames to the pointers where we store the embedded data
     std::map< std::string, uint8_t **> dataMap;
+
+    std::map< std::string, uint32_t> dataSizes;
 
     // CA
     dataMap.insert ( std::pair<std::string, uint8_t **>("EGAHEAD.KDR", &EGAhead) );
@@ -191,16 +228,47 @@ bool extractEmbeddedFilesIntoMemory(const BE_GameVerDetails_T &gameVerDetails)
 
         uint8_t **data = it->second;
 
-        const uint dataSize = embeddedfileDetailsBuffer->fileDetails.filesize;
+        const unsigned int dataSize = embeddedfileDetailsBuffer->fileDetails.filesize;
 
         *data = (uint8_t*) malloc(dataSize);
 
         memcpy(*data, headerData+embeddedfileDetailsBuffer->offset, dataSize);
+
+        dataSizes[it->first] = dataSize;
     }
+
+    mapFile.RLEWtag = 0;
+    unsigned char	*mapheadPtr = maphead;
+    memcpy(&mapFile.RLEWtag, mapheadPtr, 2 );
+
+    mapheadPtr += 2;
+    memcpy(&mapFile.headeroffsets, mapheadPtr, 400 );
+
+    mapheadPtr += 400;
+    memcpy(&mapFile.headersize, mapheadPtr, 100 );
+
+    mapheadPtr += 100;
+
+    // The first entry seems to describe "SPEED"
+    const unsigned int tileinfoStart = SPEEDOFFSET;
+    mapFile.tileinfo.resize(dataSizes["MAPHEAD.KDR"]-tileinfoStart);
+
+    memcpy(mapFile.tileinfo.data(), mapheadPtr, mapFile.tileinfo.size() );
+
+
+
+
+
 
     return true;
 }
 
+
+DreamsEngine::~DreamsEngine()
+{
+     SDL_DestroySemaphore( gpRenderLock );
+     gpRenderLock = nullptr;
+}
 
 ///
 // This is used for loading all the resources of the game the use has chosen.
@@ -225,9 +293,6 @@ bool DreamsEngine::loadResources()
         int handle()
         {
             CExeFile &ExeFile = gKeenFiles.exeFile;
-            int version = ExeFile.getEXEVersion();
-            unsigned char *p_exedata = ExeFile.getRawData();
-            const int Episode = ExeFile.getEpisode();
 
             mLoader.setPermilage(10);
 
@@ -239,50 +304,6 @@ bool DreamsEngine::loadResources()
 
             extractEmbeddedFilesIntoMemory(g_be_gamever_kdreamse113);
 
-            /*if( (mFlags & LOADGFX) == LOADGFX )
-            {
-                // Decode the entire graphics for the game (Only EGAGRAPH.CK?)
-                CEGAGraphicsDreams graphics(ExeFile);
-                if( !graphics.loadData() )
-                {
-                    return 0;
-                }
-
-                mLoader.setPermilage(400);
-            }
-
-            if( (mFlags & LOADSTR) == LOADSTR )
-            {
-                // load the strings.
-                CMessages Messages(p_exedata, Episode, version);
-                Messages.extractGlobalStrings();
-                mLoader.setPermilage(450);
-            }
-
-
-            if( (mFlags & LOADSND) == LOADSND )
-            {
-                gLogging.ftextOut("Loading audio... <br>");
-                // Load the sound data
-                setupAudio();
-
-                mLoader.setPermilage(900);
-                gLogging.ftextOut("Done loading audio.<br>");
-            }
-
-            gLogging.ftextOut("Loading game constants...<br>");
-
-            g_pBehaviorEngine->getPhysicsSettings().loadGameConstants(Episode, p_exedata);
-
-            gLogging.ftextOut("Looking for patches...<br>");
-
-            // If there are patches left that must be applied later, do it here!
-            Patcher.postProcess();
-
-            gLogging.ftextOut("Done loading the resources...<br>");
-
-            mLoader.setPermilage(1000);*/
-
             gEventManager.add(new FinishedLoadingResources());
 
             return 1;
@@ -290,41 +311,13 @@ bool DreamsEngine::loadResources()
     };
 
     mEngineLoader.RunLoadActionBackground(new DreamsDataLoad(mEngineLoader));
-    mEngineLoader.start();
+    mEngineLoader.start();    
 
     return true;
 }
 
 
-void DreamsEngine::GameLoop()
-{
-    // TODO: We should pipe this function to another thread,
-    // so the main thread is kept free for
-    // all the other lower functions defined through the GsKit.
-
-    // TODO: Create Thread Object here!
-    //mpThread = DemoLoop();
-    struct GameLoopAction : public Action
-    {
-        int handle()
-        {
-            DemoLoop();
-            /*if(!mGameLauncher.setupMenu())
-                {
-                    gLogging.textOut(RED,"No game can be launched, because game data files are missing.<br>");
-                    return 0;
-                }
-
-                return 1;*/
-        }
-    };
-
-    mpPlayLoopAction.reset( new GameLoopAction );
-    mpPlayLoopThread.reset(threadPool->start(mpPlayLoopAction.get(), "Dreams Gameloop"));
-}
-
-
-void DreamsEngine::InitGame()
+void InitGame()
 {
     id0_int_t i;
 
@@ -411,18 +404,101 @@ void DreamsEngine::InitGame()
     for (i=KEEN_LUMP_START;i<=KEEN_LUMP_END;i++)
         MM_SetLock (&grsegs[i],true);
 
-    CA_LoadAllSounds ();
+    //CA_LoadAllSounds ();
+    setupAudio();
 
     fontcolor = WHITE;
 
     US_FinishTextScreen();
+
+    RefKeen_FillObjStatesWithDOSPointers(); // Saved games compatibility
 }
+
+
+void DreamsEngine::GameLoop()
+{
+    // TODO: We should pipe this function to another thread,
+    // so the main thread is kept free for
+    // all the other lower functions defined through the GsKit.
+
+    // TODO: Create Thread Object here!
+    //mpThread = DemoLoop();
+    struct GameLoopAction : public Action
+    {
+        int handle()
+        {
+            gDreamsForceClose = 0;
+
+            InitGame();
+
+            VW_SetScreenMode (GRMODE);
+            VW_ClearVideo (BLACK);
+            DemoLoop();
+
+            // If thread has finished, we can quit CG
+            gEventManager.add( new GMQuit() );
+            return 0;            
+        }
+    };
+
+    mpPlayLoopAction.reset( new GameLoopAction );
+    mpPlayLoopThread.reset(threadPool->start(mpPlayLoopAction.get(), "Dreams Gameloop"));
+}
+
+
+
+#define GFX_TEX_WIDTH 320
+#define GFX_TEX_HEIGHT 200
+#define VGA_TXT_TEX_WIDTH 720
+#define VGA_TXT_TEX_HEIGHT 400
+//#define EGACGA_TXT_TEX_WIDTH 640
+//#define EGACGA_TXT_TEX_HEIGHT 200
+
+void DreamsEngine::applyScreenMode()
+{
+    unsigned int sdlTexWidth, sdlTexHeight;
+
+    // Chaning the resolution still breaks the system so we leave at GFX_TEX_WIDTHxGFX_TEX_HEIGHT for now...
+
+    switch (mChangeMode)
+    {
+    case 3:
+        sdlTexWidth = VGA_TXT_TEX_WIDTH;
+        sdlTexHeight = VGA_TXT_TEX_HEIGHT;
+        break;
+    case 4:
+        sdlTexWidth = GFX_TEX_WIDTH;
+        sdlTexHeight = GFX_TEX_HEIGHT;
+        break;
+    case 0xD:
+        sdlTexWidth = GFX_TEX_WIDTH;
+        sdlTexHeight = GFX_TEX_HEIGHT;
+        break;
+    case 0xE:
+        sdlTexWidth = 2*GFX_TEX_WIDTH;
+        sdlTexHeight = GFX_TEX_HEIGHT;
+        break;
+    }
+
+    mDreamsSurface.create(0, sdlTexWidth, sdlTexHeight, RES_BPP, 0, 0, 0, 0);
+
+    // Mode changed, set it to zero
+    mChangeMode = 0;
+}
+
 
 
 
 void DreamsEngine::start()
 {
-    gpBlitSfc = gVideoDriver.getBlitSurface();
+    // Global for the legacy refkeen code.
+    gDreamsEngine = this;    
+    gpRenderLock = SDL_CreateSemaphore(1);
+
+    gKeenFiles.setupFilenames(7);
+
+    setScreenMode(3);
+
     dreamsengine_datapath = const_cast<char*>(mDataPath.c_str());
 
     // This function extracts the embedded files. TODO: We should integrate that to our existing system
@@ -435,42 +511,28 @@ void DreamsEngine::start()
     setupObjOffset();
 
     // TODO: This seems to be the exe with main cycle. We need to break it into draw and logic routines.
-    InitGame();
+    //InitGame();
     //DemoLoop();
     //kdreams_exe_main();
 }
 
+bool mResourcesLoaded = false;
+
+void DreamsEngine::pumpEvent(const CEvent *evPtr)
+{
+    GameEngine::pumpEvent(evPtr);
+
+    if( dynamic_cast<const FinishedLoadingResources*>(evPtr) )
+    {
+        mResourcesLoaded = true;
+    }
+}
 
 void DreamsEngine::ponder(const float deltaT)
 {
-    {
-        /*if (MousePresent)
-        {
-            if (INL_GetMouseButtons())
-            {
-                while (INL_GetMouseButtons())
-                {
-                    BE_ST_ShortSleep();
-                }
-                return;
-            }
-        }
 
-        for (i = 0;i < MaxJoys;i++)
-        {
-            if (JoysPresent[i])
-            {
-                if (IN_GetJoyButtonsDB(i))
-                {
-                    while (IN_GetJoyButtonsDB(i))
-                    {
-                        BE_ST_ShortSleep();
-                    }
-                    return;
-                }
-            }
-        }*/
-    }
+    if(!mResourcesLoaded)
+        return;
 
     std::vector<SDL_Event> evVec;
     gInput.readSDLEventVec(evVec);
@@ -478,28 +540,19 @@ void DreamsEngine::ponder(const float deltaT)
     for(SDL_Event event : evVec)
     {
         BE_ST_PollEvents(event);
-    }
+    }        
 
 
+    // Change that mGameState stuff to have more depth in the code
     if(mGameState == INTRO_TEXT) // Where the shareware test is shown
     {
         // If we press any switch to the next section -> where Dreams is really loaded into CGA/EGA mode and show the intro screen
         if( gInput.getPressedAnyCommand() || gInput.mouseClicked() )
         {
             mGameState = INTRO_SCREEN;
-            VW_SetScreenMode (GRMODE);
-            VW_ClearVideo (BLACK);
             GameLoop();
         }
     }
-    /*else if(mGameState == INTRO_SCREEN)
-    {
-
-    }*/
-
-
-
-    //if(mGameState)
 }
 
 
@@ -507,16 +560,41 @@ void DreamsEngine::ponder(const float deltaT)
 
 void DreamsEngine::updateHostDisplay()
 {
-    SDL_Surface *sfc = gVideoDriver.getBlitSurface();
+    SDL_Surface *sfc = mDreamsSurface.getSDLSurface();
+    SDL_Surface *blitSfc = gVideoDriver.getBlitSurface();
 
     BEL_ST_UpdateHostDisplay(sfc);
+
+    SDL_Rect dstRect, srGsRect;
+    srGsRect.x = srGsRect.y = 0;
+    dstRect.x = dstRect.y = 0;
+
+    srGsRect.w = sfc->w;
+    srGsRect.h = sfc->h;
+    dstRect.w = blitSfc->w;
+    dstRect.h = blitSfc->h;
+
+    CVidConfig &vidConf = gVideoDriver.getVidConfig();
+
+    blitScaled( sfc, srGsRect, blitSfc, dstRect, vidConf.m_ScaleXFilter );
 }
 
 
 
 void DreamsEngine::render()
 {
+    // Lock Rendering
+    SDL_SemWait( gpRenderLock );
+
+    if(mChangeMode)
+    {
+        applyScreenMode();
+    }
+
     updateHostDisplay();
+
+    // Unlock
+    SDL_SemPost( gpRenderLock );
 }
 
 }

@@ -1,6 +1,6 @@
 
 OPTION(DBFUSION "Dosbox Fusion" No)
-OPTION(REFKEEN "RefKeen for Keen Dreams" No)
+OPTION(REFKEEN "RefKeen for Keen Dreams" YES)
 
 include_directories(${SDL_INCLUDE_DIR})
 

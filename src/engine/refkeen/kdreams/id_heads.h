@@ -16,6 +16,11 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+
+
+extern "C"
+{
+
 // ID_GLOB.H
 
 
@@ -140,3 +145,5 @@ extern const char **id0_argv;
 #include "id_in.h"
 #include "id_sd.h"
 #include "id_us.h"
+
+}

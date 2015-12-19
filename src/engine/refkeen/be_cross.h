@@ -47,19 +47,19 @@ typedef enum BE_Log_Message_Class_T
 
 inline char *BE_Cross_ultoa_dec(uint32_t n, char *buffer)
 {
-    sprintf(buffer, "%" PRIu32, n);
+    sprintf(buffer, "%u", n);
 	return buffer;
 }
 
 inline char *BE_Cross_ltoa_dec(int32_t n, char *buffer)
 {
-    sprintf(buffer, "%" PRId32, n);
+    sprintf(buffer, "%d", n);
 	return buffer;
 }
 
 inline char *BE_Cross_itoa_dec(int16_t n, char *buffer)
 {
-    sprintf(buffer, "%" PRId16, n);
+    sprintf(buffer, "%d", n);
 	return buffer;
 }
 

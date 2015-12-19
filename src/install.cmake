@@ -7,20 +7,30 @@ SET(APPDIR CGenius)
 SET(GAMES_SHAREDIR "${APPDIR}" CACHE PATH "Game data root dir")
 SET(DOCDIR ${DATADIR} CACHE PATH "Docs destination")
 ELSE(WIN32)
-SET(SHAREDIR share CACHE PATH "System share dir location")
-# seperate SHAREDIR and GAMES_SHAREDIR
-# for cases where we want /usr/share/games for the data
-# and /usr/share for desktop-files/pixmaps and such
-#SET(GAMES_SHAREDIR "${SHAREDIR}" CACHE PATH "Game data root dir")
-SET(GAMES_SHAREDIR "share/games/" CACHE PATH "Game data root dir")
+SET(SHAREDIR "/usr/share" CACHE PATH "System share dir location")
+SET(GAMES_SHAREDIR "${SHAREDIR}/games/" CACHE PATH "Game data root dir")
 SET(DATADIR "${GAMES_SHAREDIR}/commandergenius")
 SET(APPDIR games CACHE PATH "Binary destination")
 SET(DOCDIR ${DATADIR} CACHE PATH "Docs destination")
+SET(ICONDIR "${SHAREDIR}/icons/hicolor" CACHE PATH "Standard icon installation dir")
+SET(DESKTOPFILESDIR "${SHAREDIR}/applications" CACHE PATH "Application installation dir")
 ENDIF(WIN32)
 
 # This will install the application itself
 INSTALL(TARGETS CGeniusExe 
 	DESTINATION ${APPDIR})
+
+
+IF(WIN32)
+ELSE(WIN32)
+# Install desktop icon and file
+INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/CGLogo.png 
+	DESTINATION "${ICONDIR}/512x512/apps")
+
+INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/../share/cgenius.desktop
+	DESTINATION "${DESKTOPFILESDIR}")
+ENDIF(WIN32)
+
 	
 # This will copy the resources files to the proper directory
 IF(IS_DIRECTORY "${CMAKE_SOURCE_DIR}/vfsroot")

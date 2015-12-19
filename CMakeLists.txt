@@ -12,6 +12,15 @@ OPTION(USE_SDL2 "SDL2 support" Yes)
 
 Project(CommanderGenius)
 
+#------------------------------------------------------------------------------
+# Set a default build type if none was specified
+if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
+  message(STATUS "Setting build type to 'Release' as none was specified.")
+  set(CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build." FORCE)
+  # Set the possible values of build type for cmake-gui
+  set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release"
+    "MinSizeRel" "RelWithDebInfo")
+endif()
 
 MESSAGE(STATUS "Preparing the Build-System for Commander Genius" )
 execute_process(COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/get_version.sh OUTPUT_VARIABLE CG_VERSION)
@@ -19,6 +28,9 @@ string(REGEX REPLACE "[\r\n]" "" CG_VERSION "${CG_VERSION}")
 
 # Generate the README file with the correct version string
 configure_file(README.in README)
+configure_file(README.in ${CMAKE_BINARY_DIR}/README)
+configure_file(README.in ${CMAKE_CURRENT_SOURCE_DIR}/README)
+configure_file(README.in ${CMAKE_CURRENT_SOURCE_DIR}/debian/README)
 
 set(CMAKE_C_FLAGS "-std=c99")
 
