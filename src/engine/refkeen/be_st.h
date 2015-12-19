@@ -33,13 +33,13 @@ void BE_ST_ExitWithErrorMsg(const char *msg);
 //
 // Note: Do push a new scheme before the first time picking a new scheme
 // (an internal default as filled for the very first one before the push).
-void BE_ST_AltControlScheme_Push(void);
-void BE_ST_AltControlScheme_Pop(void);
+//void BE_ST_AltControlScheme_Push(void);
+//void BE_ST_AltControlScheme_Pop(void);
 // Replace current controller scheme using any of these
 void BE_ST_AltControlScheme_PrepareFaceButtonsDOSScancodes(const char *scanCodes);
 void BE_ST_AltControlScheme_PreparePageScrollingControls(int prevPageScan, int nextPageScan);
 void BE_ST_AltControlScheme_PrepareMenuControls(void);
-void BE_ST_AltControlScheme_PrepareInGameControls(int primaryScanCode, int secondaryScanCode, int upScanCode, int downScanCode, int leftScanCode, int rightScanCode);
+//void BE_ST_AltControlScheme_PrepareInGameControls(int primaryScanCode, int secondaryScanCode, int upScanCode, int downScanCode, int leftScanCode, int rightScanCode);
 void BE_ST_AltControlScheme_PrepareInputWaitControls(void); // When there's a simple wait for user input, not anything specific...
 void BE_ST_AltControlScheme_PrepareTextInput(void);
 

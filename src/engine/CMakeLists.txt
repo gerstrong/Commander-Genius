@@ -12,10 +12,7 @@ if(DBFUSION)
     add_definitions(-DDBFUSION)
 endif()
 
-if(REFKEEN)
-  add_subdirectory(refkeen)
-  add_definitions(-DREFKEEN)
-endif()
+add_subdirectory(refkeen)
 
 add_library(engine OBJECT CGameLauncher.cpp CGameLauncher.h)
 

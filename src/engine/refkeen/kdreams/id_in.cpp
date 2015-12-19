@@ -995,8 +995,8 @@ void
 IN_AckBack(void)
 {
 	// REFKEEN - Alternative controllers support
-	BE_ST_AltControlScheme_Push();
-	BE_ST_AltControlScheme_PrepareInputWaitControls();
+    /*BE_ST_AltControlScheme_Push();
+    BE_ST_AltControlScheme_PrepareInputWaitControls();*/
 
 	id0_word_t	i;
 

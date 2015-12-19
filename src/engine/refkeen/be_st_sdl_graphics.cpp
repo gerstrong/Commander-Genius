@@ -126,7 +126,7 @@ static int g_sdlTextInputSelectedKeyX, g_sdlTextInputSelectedKeyY;
 static bool g_sdlTextInputIsKeyPressed, g_sdlTextInputIsShifted;
 
 
-void BE_ST_SetGfxOutputRects(void);
+//void BE_ST_SetGfxOutputRects(void);
 
 /*
 void BE_ST_InitGfx(void)
@@ -233,7 +233,8 @@ void BE_ST_ShutdownGfx(void)
 }
 
 static void BEL_ST_RecreateTexture(void)
-{
+{    
+#if SDL_VERSION_ATLEAST(2, 0, 0)
 	if (g_sdlTexture)
 	{
 		SDL_DestroyTexture(g_sdlTexture);
@@ -269,6 +270,7 @@ static void BEL_ST_RecreateTexture(void)
 			exit(0);
 		}
 	}
+#endif
 }
 
 // Scancode names for controller face buttons UI and similar
@@ -343,7 +345,7 @@ static const uint32_t g_sdlEGABGRAScreenColors[] = {
 	0xff555555/*gray*/, 0xff5555ff/*light blue*/, 0xff55ff55/*light green*/, 0xff55ffff/*light cyan*/,
 	0xffff5555/*light red*/, 0xffff55ff/*light magenta*/, 0xffffff55/*yellow*/, 0xffffffff/*white*/
 };
-
+/*
 static void BEL_ST_CreatePadTextureIfNeeded(SDL_Texture **padTexturePtrPtr)
 {
 	if (*padTexturePtrPtr)
@@ -360,7 +362,7 @@ static void BEL_ST_CreatePadTextureIfNeeded(SDL_Texture **padTexturePtrPtr)
 	}
 	SDL_SetTextureBlendMode(*padTexturePtrPtr, SDL_BLENDMODE_BLEND); // Yes there's some Alpha
 }
-
+*/
 static void BEL_ST_RedrawTextToBuffer(uint32_t *picPtr, int picWidth, const char *text)
 {
     /*for (int currRow = 0, fontXpmIndex = 3; currRow < ALTCONTROLLER_CHAR_PIX_HEIGHT; ++currRow, picPtr += picWidth, ++fontXpmIndex)
@@ -380,7 +382,7 @@ static void BEL_ST_RedrawTextToBuffer(uint32_t *picPtr, int picWidth, const char
 		}
     }*/
 }
-
+/*
 static const char * BEL_ST_PrepareToShowOnePad(const char *scanCodes, const char **padXpm, SDL_Texture **padTexturePtrPtr, bool *areButtonsShownPtr)
 {
 	BEL_ST_CreatePadTextureIfNeeded(padTexturePtrPtr);
@@ -428,14 +430,14 @@ static const char * BEL_ST_PrepareToShowOnePad(const char *scanCodes, const char
 
 	return scanCodes; // Check if there's something left
 }
-
+*/
 /*static*/ void BEL_ST_PrepareToShowFaceButtonsAndDpad(const char *scanCodes)
 {
 /*	scanCodes =  BEL_ST_PrepareToShowOnePad(scanCodes, pad_thumb_buttons_xpm, &g_sdlFaceButtonsTexture, &g_sdlFaceButtonsAreShown);
 	if (*scanCodes)
         BEL_ST_PrepareToShowOnePad(scanCodes, pad_dpad_xpm, &g_sdlDpadTexture, &g_sdlDpadIsShown);*/
 }
-
+/*
 static void BEL_ST_CreateTextInputTextureIfNeeded(void)
 {
 	if (g_sdlTextInputTexture)
@@ -452,7 +454,7 @@ static void BEL_ST_CreateTextInputTextureIfNeeded(void)
 	}
 	SDL_SetTextureBlendMode(g_sdlTextInputTexture, SDL_BLENDMODE_BLEND); // Yes there's some Alpha
 }
-
+*/
 static void BEL_ST_RedrawKeyToBuffer(uint32_t *picPtr, int picWidth, const char *text, bool isSelected)
 {
 #if 0
@@ -502,7 +504,7 @@ static void BEL_ST_RedrawKeyToBuffer(uint32_t *picPtr, int picWidth, const char 
 		}
 	}
 }
-
+/*
 static void BEL_ST_RedrawWholeTextInputUI(void)
 {
 	uint32_t pixels[ALTCONTROLLER_KEYBOARD_PIX_WIDTH*ALTCONTROLLER_KEYBOARD_PIX_HEIGHT];
@@ -520,8 +522,8 @@ static void BEL_ST_RedrawWholeTextInputUI(void)
 
 	SDL_UpdateTexture(g_sdlTextInputTexture, NULL, pixels, 4*ALTCONTROLLER_KEYBOARD_PIX_WIDTH);
 }
-
-/*static*/ void BEL_ST_PrepareToShowTextInputUI(void)
+*/
+/*static*//* void BEL_ST_PrepareToShowTextInputUI(void)
 {
 	BEL_ST_CreateTextInputTextureIfNeeded();
 
@@ -547,7 +549,8 @@ static void BEL_ST_ToggleTextInputUIKey(int x, int y, bool toggle)
 
 	SDL_UpdateTexture(g_sdlTextInputTexture, &outRect, pixels, 4*ALTCONTROLLER_KEYBOARD_KEY_PIXWIDTH);
 }
-
+*/
+/*
 int BEL_ST_MoveUpInTextInputUI(void)
 {
 	int origScanCode = g_sdlTextInputIsKeyPressed ? (int)g_sdlDOSScanCodeKeyboardLayout[g_sdlTextInputSelectedKeyY][g_sdlTextInputSelectedKeyX] : 0;
@@ -632,7 +635,7 @@ int BEL_ST_ToggleKeyPressInTextInputUI(bool *pToggle)
 
 	return (int)g_sdlDOSScanCodeKeyboardLayout[g_sdlTextInputSelectedKeyY][g_sdlTextInputSelectedKeyX];
 }
-
+*/
 // Note: IGNORES shift status
 int BEL_ST_GetPressedKeyScanCodeFromTextInputUI(void)
 {
@@ -653,7 +656,7 @@ bool BEL_ST_IsTextInputUIShifted(void)
 
 	g_sdlForceGfxControlUiRefresh = true;
 }
-
+/*
 void BE_ST_SetGfxOutputRects(void)
 {
 	int srcWidth = g_sdlTexWidth;
@@ -739,7 +742,7 @@ void BE_ST_SetGfxOutputRects(void)
 	g_sdlControllerTextInputRect.x = (winWidth-g_sdlControllerTextInputRect.w)/2;
 	g_sdlControllerTextInputRect.y = winHeight-g_sdlControllerTextInputRect.h;
 }
-
+*/
 void BE_ST_SetScreenStartAddress(uint16_t crtc)
 {
 	g_sdlScreenStartAddress = crtc;
@@ -1480,15 +1483,15 @@ void BEL_ST_UpdateHostDisplay(SDL_Surface *sfc)
 			return;
         }*/
 		// That's easy now since there isn't a lot that can be done...
-		void *pixels;
+        /*void *pixels;
 		int pitch;
-		SDL_LockTexture(g_sdlTexture, NULL, &pixels, &pitch);
+        SDL_LockTexture(g_sdlTexture, NULL, &pixels, &pitch);
 		uint32_t *currPixPtr = (uint32_t *)pixels;
 		uint8_t *currPalPixPtr = g_sdlHostScrMem.cgaGfx;
 		for (int pixnum = 0; pixnum < GFX_TEX_WIDTH*GFX_TEX_HEIGHT; ++pixnum, ++currPixPtr, ++currPalPixPtr)
 		{
 			*currPixPtr = g_sdlCGAGfxBGRAScreenColors[*currPalPixPtr];
-		}
+        }*/
 	}
 	else // EGA graphics mode 0xD or 0xE
 	{

@@ -294,7 +294,7 @@ void CheckKeys (void)
             return;
 
 		// REFKEEN - Alternative controllers support (maybe user has changed some keys which may currently have an effect)
-		BE_ST_AltControlScheme_PrepareInGameControls(KbdDefs[0].button0, KbdDefs[0].button1, KbdDefs[0].up, KbdDefs[0].down, KbdDefs[0].left, KbdDefs[0].right);
+        //BE_ST_AltControlScheme_PrepareInGameControls(KbdDefs[0].button0, KbdDefs[0].button1, KbdDefs[0].up, KbdDefs[0].down, KbdDefs[0].left, KbdDefs[0].right);
 		//
 		IN_ClearKeysDown();
 		if (restartgame)
@@ -1566,8 +1566,8 @@ void NewState (objtype *ob,statetype *state)
 void PlayLoop()
 {
 	// REFKEEN - Alternative controllers support	
-	BE_ST_AltControlScheme_Push();
-	BE_ST_AltControlScheme_PrepareInGameControls(KbdDefs[0].button0, KbdDefs[0].button1, KbdDefs[0].up, KbdDefs[0].down, KbdDefs[0].left, KbdDefs[0].right);
+    /*BE_ST_AltControlScheme_Push();
+    BE_ST_AltControlScheme_PrepareInGameControls(KbdDefs[0].button0, KbdDefs[0].button1, KbdDefs[0].up, KbdDefs[0].down, KbdDefs[0].left, KbdDefs[0].right);*/
 
 	objtype	*obj, *check;
 	//id0_long_t	newtime;
@@ -1735,7 +1735,7 @@ void PlayLoop()
 
 	ingame = false;
 
-	BE_ST_AltControlScheme_Pop(); // REFKEEN - Alternative controllers support
+    //BE_ST_AltControlScheme_Pop(); // REFKEEN - Alternative controllers support
 }
 
 
