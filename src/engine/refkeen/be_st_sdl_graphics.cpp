@@ -1385,19 +1385,19 @@ void BEL_ST_UpdateHostDisplay(SDL_Surface *sfc)
         //int pitch;
         //SDL_LockTexture(g_sdlTexture, NULL, &pixels, &pitch);
 
-        void *screenPixelPtrYOffset = pixels;
+        uint8_t *screenPixelPtrYOffset = pixels;
         int bpp = sfc->format->BytesPerPixel;
         // Uint8 *p = (Uint8 *)surface->pixels + y * surface->pitch + x * bpp;
 		uint8_t currChar;
         const uint8_t *currCharFontPtrVBase;
         uint32_t currBackgroundColor, currCharColor;
-        void *currScrPixelPtrY;
+        uint8_t *currScrPixelPtrY;
 		int txtByteCounter = 0;
         int currCharPixX, currCharPixY;
 		for (int currCharY = 0, currCharX; currCharY < TXT_ROWS_NUM; ++currCharY)
 		{
 			// Draw striped lines                        
-            void *screenPixelPtrXOffset = screenPixelPtrYOffset;
+            uint8_t *screenPixelPtrXOffset = screenPixelPtrYOffset;
 
             for (currCharX = 0; currCharX < TXT_COLS_NUM; ++currCharX)
 			{
@@ -1427,7 +1427,7 @@ void BEL_ST_UpdateHostDisplay(SDL_Surface *sfc)
                     // in both of the EGA and VGA fonts. On the
                     // VGA case, the 9th pixel is determined
                     // according to the 8th and char number.
-                    void *currScrPixelPtrX = currScrPixelPtrY;
+                    uint8_t *currScrPixelPtrX = currScrPixelPtrY;
 
                     currCharFontPtrV = currCharFontPtrVBase + ((currCharPixY*16)/vgaTxtCharPixH)*8;
 
