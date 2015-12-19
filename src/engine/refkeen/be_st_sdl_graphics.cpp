@@ -1385,7 +1385,7 @@ void BEL_ST_UpdateHostDisplay(SDL_Surface *sfc)
         //int pitch;
         //SDL_LockTexture(g_sdlTexture, NULL, &pixels, &pitch);
 
-        uint8_t *screenPixelPtrYOffset = pixels;
+        uint8_t *screenPixelPtrYOffset = static_cast<uint8_t*>(pixels);
         int bpp = sfc->format->BytesPerPixel;
         // Uint8 *p = (Uint8 *)surface->pixels + y * surface->pitch + x * bpp;
 		uint8_t currChar;
