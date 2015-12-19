@@ -34,7 +34,7 @@ extern "C"
 #endif
 
 //#include "be_cross.h"
-#include "crc32/crc32.h"
+//#include "crc32/crc32.h"
 //#include "unlzexe/unlzexe.h"
 
 #define BE_CROSS_PATH_LEN_BOUND 256
