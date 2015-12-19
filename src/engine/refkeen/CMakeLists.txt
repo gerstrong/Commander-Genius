@@ -25,7 +25,7 @@ add_definitions(-DREFKEEN_VER_KDREAMS_ANYEGA_ALL)
 add_definitions(-DGRMODE=EGAGR)
 
 
-add_definitions(-DREFKEEN_VER_KDREAMS)
+ADD_DEFINITIONS(-Werror=cast-align)
 
 add_library(refkeen OBJECT ${SOURCES} ${INCLUDES}
                            ${SOURCES_UNLZEXE} ${INCLUDES_UNLZEXE})

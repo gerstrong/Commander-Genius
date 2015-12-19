@@ -11,7 +11,6 @@ else()
 endif()
 
 
-
 IF(NOT DEFINED BUILD_TARGET)
 IF(WIN32)
 	SET(BUILD_TARGET WIN32)
@@ -34,6 +33,8 @@ include(oldArch.cmake)
 # Make this C++11. We need that in Commander Genius
 ADD_DEFINITIONS(-std=c++11)
 
+#Alignment error report is important for android builds
+ADD_DEFINITIONS(-Werror=cast-align)
 
 
 

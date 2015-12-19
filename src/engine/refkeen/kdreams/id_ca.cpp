@@ -748,8 +748,10 @@ void CAL_SetupAudioFile (void)
 	BE_Cross_close(handle);
 #else
 	audiohuffman = (huffnode *)audiodict;
-	CAL_OptimizeNodes (audiohuffman);
-	audiostarts = (id0_long_t *)audiohead;
+    CAL_OptimizeNodes (audiohuffman);
+
+    memcpy(&audiostarts, &audiohead, sizeof(id0_long_t *));
+    //audiostarts = (id0_long_t *)audiohead;
 #endif
 
 //
@@ -1239,7 +1241,8 @@ void CAL_ExpandGrChunk (id0_int_t chunk, id0_byte_t id0_far *source)
 	// everything else has an explicit size longword
 	//
 		// REFKEEN - Big Endian support
-		expanded = BE_Cross_Swap32LE(*(id0_long_t id0_far *)source);
+        memcpy(&expanded, source, sizeof(id0_long_t));
+        expanded = BE_Cross_Swap32LE(expanded);
 		//expanded = *(id0_long_t id0_far *)source;
 		source += 4;			// skip over length
 	}
