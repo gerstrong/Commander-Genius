@@ -771,6 +771,15 @@ void	VW_MeasureMPropString  (const id0_char_t id0_far *string, const id0_char_t 
 
 #if GRMODE == CGAGR
 
+// REFKEEN - Big Endian support
+#ifdef REFKEEN_ARCH_BIG_ENDIAN
+static id0_unsigned_t	UPDATETERMINATE =	0x0103;
+#else
+static id0_unsigned_t	UPDATETERMINATE =	0x0301;
+#endif
+
+
+
 #define CGACRTCWIDTH	40
 
 /*
