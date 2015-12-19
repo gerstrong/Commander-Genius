@@ -1058,21 +1058,32 @@ void RF_NewPosition (id0_unsigned_t x, id0_unsigned_t y)
 
 void	RFL_OldRow (id0_unsigned_t updatespot,id0_unsigned_t count,id0_unsigned_t step)
 {
-	// Ported from ASM
-
 	// updatespot and step are measured in BYTES, should both be even
-	id0_byte_t *backPtr = (id0_byte_t *)mapsegs[0]+updatespot;  // pointer inside background plane
-	id0_byte_t *forePtr = (id0_byte_t *)mapsegs[1]+updatespot; // pointer inside foreground plane
-	// clearing 'count' tiles
-	for (id0_unsigned_t loopVar = count; loopVar; --loopVar, forePtr += step, backPtr += step)
-	{
-		// if a foreground tile, block wasn't cached so we don't clear
-		if (!(*(id0_unsigned_t *)forePtr))
-		{
-			// tile is no longer in master screen cache
-			tilecache[*(id0_unsigned_t *)backPtr] = 0;
-		}
-	}
+    id0_unsigned_t backVal;
+    id0_unsigned_t foreVal;
+
+    id0_byte_t *backPtr, *forePtr;
+
+    memcpy(&backPtr, &(mapsegs[0]), sizeof(id0_byte_t *));
+    memcpy(&forePtr, &(mapsegs[1]), sizeof(id0_byte_t *));
+
+    backPtr += updatespot;  // pointer inside background plane
+    forePtr += updatespot; // pointer inside foreground plane
+    // clearing 'count' tiles
+    for (id0_unsigned_t loopVar = count; loopVar; --loopVar, forePtr += step, backPtr += step)
+    {
+        memcpy( &foreVal, forePtr, sizeof(id0_unsigned_t) );
+
+        // if a foreground tile, block wasn't cached so we don't clear
+        if (!foreVal)
+        {
+            // tile is no longer in master screen cache
+            memcpy( &backVal, backPtr, sizeof(id0_unsigned_t) );
+            tilecache[backVal] = 0;
+        }
+    }
+
+
 }
 
 
@@ -1229,7 +1240,9 @@ void RF_Scroll (id0_int_t x, id0_int_t y)
 	update0 = updatestart[0]+UPDATEWIDE*PORTTILESHIGH-1;
 	update1 = updatestart[1]+UPDATEWIDE*PORTTILESHIGH-1;
 	*update0++ = *update1++ = 0;
-	*(id0_unsigned_t *)update0 = *(id0_unsigned_t *)update1 = UPDATETERMINATE;
+
+    memcpy(update0, &UPDATETERMINATE, sizeof(id0_unsigned_t));
+    memcpy(update1, &UPDATETERMINATE, sizeof(id0_unsigned_t));
 }
 
 //===========================================================================
@@ -1721,7 +1734,10 @@ void RF_Refresh (int updateGraphics)
         #endif
                 // Ported from ASM
                 memset(newupdate, 0, 2*((UPDATESCREENSIZE-2)/2));
-        *(id0_unsigned_t *)(newupdate + 2*((UPDATESCREENSIZE-2)/2)) = UPDATETERMINATE;
+
+        auto terminatePtr = (newupdate + 2*((UPDATESCREENSIZE-2)/2));
+
+        memcpy(terminatePtr, &UPDATETERMINATE, sizeof(id0_unsigned_t));
         //
 
         screenpage ^= 1;

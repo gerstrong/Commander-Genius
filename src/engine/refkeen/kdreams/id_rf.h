@@ -110,9 +110,9 @@ extern id0_unsigned_t	uwidthtable[UPDATEHIGH];		// lookup instead of multiple
 
 // REFKEEN - Big Endian support
 #ifdef REFKEEN_ARCH_BIG_ENDIAN
-#define	UPDATETERMINATE	0x0103
+static id0_unsigned_t	UPDATETERMINATE =	0x0103;
 #else
-#define	UPDATETERMINATE	0x0301
+static id0_unsigned_t	UPDATETERMINATE =	0x0301;
 #endif
 
 

@@ -4032,9 +4032,9 @@ void RefKeen_Patch_id_us(void)
 	BE_Cross_free_mem_loaded_embedded_rsrc(context);
 	BE_Cross_free_mem_loaded_embedded_rsrc(story);
 	// Don't use CA_LoadFile for (sort-of) compatibility; It also doesn't work!
-	if (!BE_Cross_load_embedded_rsrc_to_mem("GAMETEXT."EXTENSION, (memptr *)&gametext) ||
-	    !BE_Cross_load_embedded_rsrc_to_mem("CONTEXT."EXTENSION, (memptr *)&context) ||
-	    !BE_Cross_load_embedded_rsrc_to_mem("STORY."EXTENSION, (memptr *)&story)
+    if (!BE_Cross_load_embedded_rsrc_to_mem("GAMETEXT." EXTENSION, (memptr *)&gametext) ||
+        !BE_Cross_load_embedded_rsrc_to_mem("CONTEXT." EXTENSION, (memptr *)&context) ||
+        !BE_Cross_load_embedded_rsrc_to_mem("STORY." EXTENSION, (memptr *)&story)
 	)
 		// Similarly we don't use Quit
 		BE_ST_ExitWithErrorMsg("RefKeen_Patch_id_us - Failed to load at least one file.");
