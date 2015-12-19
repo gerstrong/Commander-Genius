@@ -1,3 +1,0 @@
-VERDIRNAME=cat3d122
-
-include Makefile.common
