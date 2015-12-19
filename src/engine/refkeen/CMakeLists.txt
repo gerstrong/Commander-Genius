@@ -8,12 +8,6 @@ FILE(GLOB SOURCES_COMPAT compat/*.c)
 FILE(GLOB INCLUDES_CRC32 crc32/*.h)
 FILE(GLOB SOURCES_CRC32 crc32/*.c)
 
-#FILE(GLOB INCLUDES_ID91_11 id91_11/*.h)
-#FILE(GLOB SOURCES_ID91_11 id91_11/*.c)
-#add_subdirectory(id91_11)
-
-#FILE(GLOB INCLUDES_KDREAMS kdreams/*.h)
-#FILE(GLOB SOURCES_KDREAMS kdreams/*.c)
 add_subdirectory(kdreams)
 
 FILE(GLOB INCLUDES_OPL *.h)

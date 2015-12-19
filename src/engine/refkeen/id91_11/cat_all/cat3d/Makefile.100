@@ -1,3 +1,0 @@
-VERDIRNAME=cat3d100
-
-include Makefile.common
