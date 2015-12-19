@@ -1040,8 +1040,9 @@ void RF_NewPosition (id0_unsigned_t x, id0_unsigned_t y)
 		page0ptr+=(PORTTILESWIDE+1);
 		page1ptr+=(PORTTILESWIDE+1);
 	}
-	*(id0_word_t *)(page0ptr-PORTTILESWIDE)
-		= *(id0_word_t *)(page1ptr-PORTTILESWIDE) = UPDATETERMINATE;
+
+    memcpy((page0ptr-PORTTILESWIDE), &UPDATETERMINATE, sizeof(id0_word_t));
+    memcpy((page1ptr-PORTTILESWIDE), &UPDATETERMINATE, sizeof(id0_word_t));
 }
 
 //===========================================================================
