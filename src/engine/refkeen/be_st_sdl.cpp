@@ -80,7 +80,7 @@ static BESDLControllerMap g_sdlControllerLowPriorityMap;
 
 // Either g_sdlControllertoScanCodeMaps.currPtr, or &g_sdlControllertoScanCodeMaps
 static BESDLControllerMap *g_sdlControllerActualCurrPtr;
-
+/*
 static const BESDLControllerMap g_sdlControllerToScanCodeMap_default = {
 	CONTROLSCHEMEMAP_TYPE_KEYVAL, BE_ST_SC_ENTER, // SDL_CONTROLLER_BUTTON_A
 	CONTROLSCHEMEMAP_TYPE_KEYVAL, BE_ST_SC_ESC, // SDL_CONTROLLER_BUTTON_B
@@ -137,7 +137,7 @@ static BESDLControllerMap g_sdlControllerToScanCodeMap_inGameTemplate = {
 	CONTROLSCHEME_DEFAULT
 };
 
-
+*/
 
 
 enum {
@@ -426,7 +426,7 @@ static void BEL_ST_ParseSetting_DisplayNum(const char *keyprefix, const char *bu
 {
 	sscanf(buffer, "%d", &g_refKeenCfg.displayNum);
 }
-
+/*
 static void BEL_ST_ParseSetting_SDLRendererDriver(const char *keyprefix, const char *buffer)
 {
 	SDL_RendererInfo info;
@@ -502,7 +502,7 @@ static void BEL_ST_ParseSetting_SndSampleRate(const char *keyprefix, const char 
 {
 	g_refKeenCfg.sndSampleRate = atoi(buffer);
 }
-
+*/
 static void BEL_ST_ParseSetting_DisableSoundSubSystem(const char *keyprefix, const char *buffer)
 {
 	if (!strcmp(buffer, "true"))
@@ -593,7 +593,7 @@ typedef struct {
 	const char *cfgPrefix; // Includes '=' sign
 	void (*handlerPtr)(const char *, const char *);
 } BESDLCfgEntry;
-
+/*
 static BESDLCfgEntry g_sdlCfgEntries[] = {
 	{"fullscreen=", &BEL_ST_ParseSetting_FullScreen},
 	{"fullres=", &BEL_ST_ParseSetting_FullRes},
@@ -636,7 +636,8 @@ static BESDLCfgEntry g_sdlCfgEntries[] = {
 	{"farptrsegoffset=", &BEL_ST_ParseSetting_FarPtrSegOffset},
 #endif
 };
-
+*/
+/*
 static void BEL_ST_ParseConfig(void)
 {
 	// Defaults
@@ -754,7 +755,7 @@ static void BEL_ST_ParseConfig(void)
 #endif
 	fclose(fp);
 }
-
+*/
 
 
 
@@ -765,8 +766,8 @@ typedef struct {
 
 #define emptyDOSKeyEvent {false, 0}
 
-#if SDL_VERSION_ATLEAST(2,0,0)
-const emulatedDOSKeyEvent sdlKeyMappings[SDL_NUM_SCANCODES] = {
+//#if SDL_VERSION_ATLEAST(2,0,0)
+const emulatedDOSKeyEvent sdlKeyMappings[] = {
     emptyDOSKeyEvent,
     emptyDOSKeyEvent,
     emptyDOSKeyEvent,
@@ -1018,7 +1019,7 @@ const emulatedDOSKeyEvent sdlKeyMappings[SDL_NUM_SCANCODES] = {
 };
 //#else
 //#error "SDL <2.0 support is unimplemented!"
-#endif
+//#endif
 
 
 void BE_ST_StartKeyboardService(void (*funcPtr)(uint8_t))
@@ -1200,7 +1201,7 @@ static void BEL_ST_HandleEmuKeyboardEvent(bool isPressed, emulatedDOSKeyEvent ke
 	}
 }
 
-
+/*
 // Some arbitrary choices
 static const BESDLControllerMap g_sdlControllerToScanCodeMap_inputWait = {
 	CONTROLSCHEMEMAP_TYPE_KEYVAL, BE_ST_SC_ENTER, // SDL_CONTROLLER_BUTTON_A
@@ -1236,9 +1237,10 @@ static BESDLControllerMapEntry * BEL_ST_GetKeyMapPtrFromCfgVal(BESDLControllerMa
 	// Special handling for triggers
 	return &(controllerMapPtr->axesMap[mappingCfgVal-SDL_CONTROLLER_BUTTON_MAX+SDL_CONTROLLER_AXIS_TRIGGERLEFT][1]);
 }
+*/
+//void BEL_ST_AltControlScheme_PrepareFaceButtonsDOSScancodes_Low(const char *scanCodes, BESDLControllerMap *controllerMapPtr, bool clearAll);
 
-void BEL_ST_AltControlScheme_PrepareFaceButtonsDOSScancodes_Low(const char *scanCodes, BESDLControllerMap *controllerMapPtr, bool clearAll);
-
+/*
 static bool BEL_ST_AltControlScheme_HandleEntry(BESDLControllerMapEntry entry, bool isPressed)
 {
 	switch (entry.type)
@@ -1280,7 +1282,7 @@ static bool BEL_ST_AltControlScheme_HandleEntry(BESDLControllerMapEntry entry, b
 	}
 	return true;
 }
-
+*/
 
 static void BEL_ST_AltControlScheme_CleanUp(void)
 {
@@ -1308,7 +1310,7 @@ static void BEL_ST_AltControlScheme_CleanUp(void)
 		}
 	}
 	// Otherwise simulate key releases based on the mapping
-	else
+/*	else
 	{
 		for (int i = 0; i < BE_ST_MAXJOYSTICKS; ++i)
 		{
@@ -1347,7 +1349,6 @@ static void BEL_ST_AltControlScheme_CleanUp(void)
 			}
 		}
 	}
-
 	memset(g_sdlControllersButtonsStates, 0, sizeof(g_sdlControllersButtonsStates));
 	memset(g_sdlControllersAxesStates, 0, sizeof(g_sdlControllersAxesStates));
 
@@ -1355,6 +1356,8 @@ static void BEL_ST_AltControlScheme_CleanUp(void)
 	BEL_ST_HideAltInputUI();
 
 	g_sdlControllerSchemeNeedsCleanUp = false;
+*/
+
 }
 
 /*
@@ -1419,11 +1422,11 @@ void BE_ST_AltControlScheme_Pop(void)
 */
 
 
-void BEL_ST_AltControlScheme_PrepareFaceButtonsDOSScancodes_Low(const char *scanCodes, BESDLControllerMap *controllerMapPtr, bool clearAll)
+/*void BEL_ST_AltControlScheme_PrepareFaceButtonsDOSScancodes_Low(const char *scanCodes, BESDLControllerMap *controllerMapPtr, bool clearAll)
 {
 	BEL_ST_AltControlScheme_CleanUp();
-	g_sdlControllerActualCurrPtr = controllerMapPtr;
-
+    g_sdlControllerActualCurrPtr = controllerMapPtr;*/
+/*
 	if (clearAll)
 	{
 		memset(controllerMapPtr, 0, sizeof(g_sdlControllerToScanCodeMap_default));
@@ -1432,8 +1435,8 @@ void BEL_ST_AltControlScheme_PrepareFaceButtonsDOSScancodes_Low(const char *scan
 	{
 		memcpy(controllerMapPtr, &g_sdlControllerToScanCodeMap_default, sizeof(g_sdlControllerToScanCodeMap_default));
 	}
-	controllerMapPtr->schemeType = CONTROLSCHEME_FACE;
-
+    controllerMapPtr->schemeType = CONTROLSCHEME_FACE;*/
+/*
 	int counter = 0, sdlButtonNum = SDL_CONTROLLER_BUTTON_A; // A->B->X->Y (same order as SDL button numbers), then D-pad Down->Right->Left->Up (NOT the same order)
 	char *actualScanCodePtr = controllerMapPtr->miscBuffer;
 	for (const char *chPtr = scanCodes; *chPtr; ++chPtr)
@@ -1474,7 +1477,7 @@ void BEL_ST_AltControlScheme_PrepareFaceButtonsDOSScancodes_Low(const char *scan
 
 	g_sdlControllerSchemeNeedsCleanUp = true;
 }
-
+*/
 /*
 void BE_ST_AltControlScheme_PrepareFaceButtonsDOSScancodes(const char *scanCodes)
 {
@@ -1601,7 +1604,7 @@ void BE_ST_PollEvents(SDL_Event event)
 		{
 		case SDL_KEYDOWN:
 		case SDL_KEYUP:
-			BEL_ST_HandleEmuKeyboardEvent(event.type == SDL_KEYDOWN, sdlKeyMappings[event.key.keysym.scancode]);
+            BEL_ST_HandleEmuKeyboardEvent(event.type == SDL_KEYDOWN, sdlKeyMappings[event.key.keysym.scancode]);
 			break;
 		//case SDL_MOUSEBUTTONUP:
 		//	BEL_ST_toggleCursorConditionally(true);
