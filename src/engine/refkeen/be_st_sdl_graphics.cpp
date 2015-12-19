@@ -1431,20 +1431,24 @@ void BEL_ST_UpdateHostDisplay(SDL_Surface *sfc)
 
                     currCharFontPtrV = currCharFontPtrVBase + ((currCharPixY*16)/vgaTxtCharPixH)*8;
 
-                    Uint32 *pColor;
+                    Uint32 color;
 
                     //for (currCharPixX = 0; currCharPixX < 8; ++currCharPixX, ++currCharFontPtr)
                     for (currCharPixX = 0; currCharPixX < VGA_TXT_CHAR_PIX_WIDTH; ++currCharPixX)
 					{                        
                         const uint8_t *currCharFontPtrH = currCharFontPtrV + (currCharPixX*8)/VGA_TXT_CHAR_PIX_WIDTH;
-                        pColor = (Uint32*) currScrPixelPtrX;
-                        *pColor = (*currCharFontPtrH) ? currCharColor : currBackgroundColor;
+
+                        color = (*currCharFontPtrH) ? currCharColor : currBackgroundColor;
+
+                        memcpy(currScrPixelPtrX, &color, sizeof(Uint32));
+
                         currScrPixelPtrX += bpp;
 					}
 
 					// Add an extra 9th column on VGA
-                    pColor = (Uint32*) currScrPixelPtrX;
-                    *pColor = ((currChar < 192) || (currChar > 223)) ? currBackgroundColor : *(pColor-1);
+                    color = ((currChar < 192) || (currChar > 223)) ? currBackgroundColor : (color-1);
+
+                    memcpy(currScrPixelPtrX, &color, sizeof(Uint32));
 
                     currScrPixelPtrY += sfc->pitch;
 				}
