@@ -1,3 +1,5 @@
+#if 0
+
 /* Keen Dreams Source Code
  * Copyright (C) 2014 Javier M. Chavez
  *
@@ -803,3 +805,5 @@ ENDP
 #endif // VW_DrawMPropString
 
 #endif // if fonts
+
+#endif
