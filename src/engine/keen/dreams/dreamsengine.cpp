@@ -178,11 +178,7 @@ namespace dreams
 
 bool setupAudio()
 {
-    //const CExeFile &ExeFile = gKeenFiles.exeFile;
-    //const unsigned int ep = ExeFile.getEpisode();
-
     CAudioGalaxy *audio = new CAudioGalaxy();
-    //AudioDreams *audio = new AudioDreams();
 
     if(audio->loadSoundData())
     {
@@ -404,7 +400,6 @@ void InitGame()
     for (i=KEEN_LUMP_START;i<=KEEN_LUMP_END;i++)
         MM_SetLock (&grsegs[i],true);
 
-    //CA_LoadAllSounds ();
     setupAudio();
 
     fontcolor = WHITE;

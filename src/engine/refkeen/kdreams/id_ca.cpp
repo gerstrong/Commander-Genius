@@ -933,15 +933,15 @@ void CA_Shutdown (void)
 ======================
 */
 
-void CA_LoadAllSounds (void)
+/*void CA_LoadAllSounds (void)
 {
 	id0_unsigned_t	start,i;
 
-	switch (oldsoundmode)
-	{
+    switch (oldsoundmode)
+    {*/
     /*case sdm_Off:
         goto cachein;*/
-	case sdm_PC:
+    /*case sdm_PC:
 		start = STARTPCSOUNDS;
 		break;
 	case sdm_AdLib:
@@ -954,10 +954,15 @@ void CA_LoadAllSounds (void)
 	}
 
 	for (i=0;i<NUMSOUNDS;i++,start++)
+    {
 		if (audiosegs[start])
+        {
 			MM_SetPurge((memptr *)&audiosegs[start],3);		// make purgable
+        }
+    }
 
-cachein:
+
+//cachein:
 
     switch (SoundMode)
 	{
@@ -977,12 +982,12 @@ cachein:
 
 
 
-    /*for (i=0;i<NUMSOUNDS;i++,start++)
-        CA_CacheAudioChunk (start);*/
+    //for (i=0;i<NUMSOUNDS;i++,start++)
+     //   CA_CacheAudioChunk (start);
 
     oldsoundmode = SoundMode;
 }
-
+*/
 //===========================================================================
 
 #if GRMODE == EGAGR

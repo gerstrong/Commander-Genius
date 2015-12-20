@@ -108,7 +108,7 @@ void CA_Startup (void);
 void CA_Shutdown (void);
 
 void CA_CacheAudioChunk (id0_int_t chunk);
-void CA_LoadAllSounds (void);
+//void CA_LoadAllSounds (void);
 
 void CA_UpLevel (void);
 void CA_DownLevel (void);
