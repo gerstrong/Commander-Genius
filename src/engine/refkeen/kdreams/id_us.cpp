@@ -3622,7 +3622,7 @@ USL_TearDownCtlPanel(void)
 			VW_UpdateScreen();
 #endif
 
-			CA_LoadAllSounds();
+            //CA_LoadAllSounds();
 		}
 	}
 }
