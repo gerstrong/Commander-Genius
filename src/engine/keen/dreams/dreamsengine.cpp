@@ -542,11 +542,9 @@ void DreamsEngine::ponder(const float deltaT)
     if(mGameState == INTRO_TEXT) // Where the shareware test is shown
     {
         // If we press any switch to the next section -> where Dreams is really loaded into CGA/EGA mode and show the intro screen
-        if( gInput.getPressedAnyCommand() || gInput.mouseClicked() )
-        {
-            mGameState = INTRO_SCREEN;
-            GameLoop();
-        }
+        gInput.flushAll();
+        mGameState = INTRO_SCREEN;
+        GameLoop();
     }
 }
 

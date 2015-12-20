@@ -760,7 +760,8 @@ IN_ReadControl(id0_int_t player,ControlInfo *info)
 
             if(input.getHoldedCommand(playerNum, IC_JUMP))
                 buttons += 1 << 0;
-            if (input.getHoldedCommand(playerNum, IC_POGO))
+            if (input.getHoldedCommand(playerNum, IC_POGO) ||
+                input.getHoldedCommand(playerNum, IC_FIRE))
                 buttons += 1 << 1;
 
 
