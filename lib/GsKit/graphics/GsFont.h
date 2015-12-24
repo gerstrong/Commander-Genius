@@ -19,21 +19,44 @@
 
 #include <string>
 #include <vector>
+#include <array>
 #include <memory>
 
 class GsFont
 {
 public:
 	GsFont();
-	
-	/*GsFont operator=(const GsFont &font) // TODO: Copying Font does not yet work
-	{
-	    mFontSurface.reset(font.getSDLSurface());
-	    return *this;
-	}*/
+
+    /*
+    GsFont(const GsFont& that)
+    {
+        operator=(that);
+    }
+    GsFont& operator=(const GsFont& that)
+    {
+        mFontSurface = that.mFontSurface;
+
+        // NOTE: Unique pointer cannot be copied. So nothing with them is done here.
+        // CreateSurface still must be called. if you want to use that object.
+        // So surface can only copied if there is no data pointing towards
+        assert(!mFontSurfaceUnique);
+
+        //std::unique_ptr<SDL_Surface> mFontSurfaceUnique;
+
+        mWidthtable = that.mWidthtable;
+
+        return *this;
+    }*/
 
 	bool CreateSurface(SDL_Color *Palette, Uint32 Flags, Uint16 width = 128, Uint16 height = 128);
-	SDL_Surface *getSDLSurface() const { return mFontSurface.get(); }
+
+    //SDL_Surface *getSDLSurface() const { return mFontSurface.get(); }
+    std::shared_ptr<SDL_Surface> &SDLSurfacePtr() { return mFontSurface; }
+
+    /*GsSurface &FontSurface()
+    {
+        return mFontSurface;
+    }*/
 
 	bool loadAlternateFont();
 
@@ -119,8 +142,13 @@ public:
     void drawMap(SDL_Surface* dst);
 
 private:
-	std::shared_ptr<SDL_Surface> mFontSurface;
-	Uint8 mWidthtable[256];
+    std::shared_ptr<SDL_Surface> mFontSurface;
+
+    //std::unique_ptr<SDL_Surface> mFontSurfaceUnique;
+
+    //GsSurface mFontSurface;
+
+    std::array<Uint8, 256> mWidthtable;
 };
 
 #endif /* GsFont_H_ */

@@ -18,7 +18,10 @@
 
 GsFont::GsFont()
 {
-	memset(&mWidthtable, 8, 256);
+    for(auto &width : mWidthtable)
+    {
+        width = 8;
+    }
 }
 
 
@@ -152,7 +155,7 @@ SDL_Surface *loadfromXPMData(const char **data, const SDL_PixelFormat *format, c
 
 bool GsFont::loadAlternateFont()
 {
-	// Has the Surface to the entire font been loaded?
+    // Has the Surface of the entire font been loaded?
 
 	SDL_Surface *blit = gVideoDriver.getBlitSurface();
 	mFontSurface.reset( loadfromXPMData( alternatefont_xpm, blit->format, blit->flags ), &SDL_FreeSurface );

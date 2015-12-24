@@ -189,7 +189,9 @@ bool CEGALatch::loadData( const std::string &path,
 
 	GsFont &Font = gGraphics.getFont(1);
 	Font.CreateSurface( gGraphics.Palette.m_Palette, SDL_SWSURFACE );
-	sfc = Font.getSDLSurface();
+
+    auto &srcsfc = Font.SDLSurfacePtr();
+    sfc = srcsfc.get();
 
 	gGraphics.getFont(2).loadAlternateFont();
 
