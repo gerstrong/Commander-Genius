@@ -43,13 +43,11 @@ bool GsFont::CreateSurface(SDL_Color *Palette, Uint32 Flags,
 {
 	mFontSurface.reset(SDL_CreateRGBSurface(Flags, width,
 			height, 8, 0, 0, 0, 0), &SDL_FreeSurface );
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-    SDL_SetPaletteColors(mFontSurface->format->palette, Palette, 0, 255);
-    SDL_SetColorKey(mFontSurface.get(), SDL_TRUE, COLORKEY_4BIT);
-#else
-    SDL_SetColors(mFontSurface.get(), Palette, 0, 255);
-    SDL_SetColorKey(mFontSurface.get(), SDL_SRCCOLORKEY, COLORKEY_4BIT);
-#endif
+
+    GsWeakSurface fontSfc(mFontSurface.get());
+
+    fontSfc.setPaletteColors(Palette);
+    fontSfc.setColorKey(COLORKEY_4BIT);
 
 	if( mFontSurface )
 	  return true;

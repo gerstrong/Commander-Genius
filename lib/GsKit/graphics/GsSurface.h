@@ -198,6 +198,24 @@ public:
 #endif
 
 
+    void setPaletteColors(const SDL_Color *Palette)
+    {
+        #if SDL_VERSION_ATLEAST(2, 0, 0)
+            SDL_SetPaletteColors(mpSurface->format->palette, Palette, 0, 255);
+        #else
+            SDL_SetColors(mpSurface, Palette, 0, 255);
+        #endif
+    }
+
+    void setColorKey(unsigned int key)
+    {
+        #if SDL_VERSION_ATLEAST(2, 0, 0)
+            SDL_SetColorKey(mpSurface, SDL_TRUE, key);
+        #else
+            SDL_SetColorKey(mpSurface, SDL_SRCCOLORKEY, key);
+        #endif
+    }
+
 
     Uint8 getAlpha()
     {
