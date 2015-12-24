@@ -168,8 +168,11 @@ void GsFont::loadinternalFont()
 
     mFontSurface.reset( loadfromXPMData( GsFont_xpm, blit->format, blit->flags ), &SDL_FreeSurface );
 
+    GsWeakSurface fontSfc(mFontSurface.get());
+
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    SDL_SetSurfaceBlendMode(mFontSurface.get(), SDL_BLENDMODE_BLEND);
+    //SDL_SetSurfaceBlendMode(mFontSurface.get(), SDL_BLENDMODE_BLEND);
+    fontSfc.setBlendMode(SDL_BLENDMODE_BLEND);
 #endif
 }
 
@@ -216,22 +219,27 @@ void GsFont::tintColor( const Uint32 fgColor )
 
 void GsFont::setupColor( const Uint32 fgColor )
 {
+    GsWeakSurface fontSfc(mFontSurface.get());
+
 	// Here comes the main part. We have to manipulate the Surface the way it gets
 	// the given color
 	SDL_Color color[16];
-	memcpy( color, mFontSurface->format->palette->colors, 16*sizeof(SDL_Color) );
+    memcpy( color, fontSfc.getSDLSurface()->format->palette->colors, 16*sizeof(SDL_Color) );
 
     SDL_PixelFormat *pPixelformat = gVideoDriver.getBlitSurface()->format;
 
     SDL_GetRGB(fgColor, pPixelformat, &color[15].r, &color[15].g, &color[15].b);
 
-	// Change palette colors to the desired one
-#if SDL_VERSION_ATLEAST(2, 0, 0)
+    // Change palette colors to the one requested
+    fontSfc.setPaletteColors(color);
+    fontSfc.setColorKey(COLORKEY_4BIT);
+
+/*#if SDL_VERSION_ATLEAST(2, 0, 0)
     SDL_SetPaletteColors(mFontSurface->format->palette, color, 0, 255);
     SDL_SetColorKey( mFontSurface.get(), SDL_TRUE, 16);
 #else
 	SDL_SetColors( mFontSurface.get(), color, 0, 16);
-#endif
+#endif*/
 }
 
 Uint32 GsFont::getFGColor()
@@ -410,11 +418,9 @@ void GsFont::drawFontAlpha(SDL_Surface* dst, const std::string& text, Uint16 xof
 {
 	unsigned int i,x=xoff,y=yoff;
 
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-    SDL_SetSurfaceAlphaMod(mFontSurface.get(), alpha);
-#else
-    SDL_SetAlpha(mFontSurface.get(), SDL_SRCALPHA, alpha);
-#endif
+    GsWeakSurface fontSfc(mFontSurface.get());
+
+    fontSfc.setAlpha(alpha);
 
 	if(text.size() != 0)
 	{
@@ -436,11 +442,7 @@ void GsFont::drawFontAlpha(SDL_Surface* dst, const std::string& text, Uint16 xof
 		}
 	}
 
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-    SDL_SetSurfaceAlphaMod(mFontSurface.get(), SDL_ALPHA_OPAQUE);
-#else
-    SDL_SetAlpha(mFontSurface.get(), SDL_SRCALPHA, SDL_ALPHA_OPAQUE);
-#endif
+    fontSfc.setAlpha(SDL_ALPHA_OPAQUE);
 }
 
 
