@@ -91,7 +91,7 @@ public:
 
     GsRect<Uint16> calcBlitRect(const GsRect<float> &rect);
 
-    int blitTo(GsWeakSurface &sfc)
+    int blitTo(GsWeakSurface &sfc) const
     {
         assert(sfc.mpSurface);
         return BlitSurface( mpSurface, nullptr, sfc.mpSurface, nullptr );
@@ -250,7 +250,7 @@ public:
         return (mpSurface!=nullptr);
     }
 
-    SDL_Surface *getSDLSurface()
+    SDL_Surface *getSDLSurface() const
     {
         return mpSurface;
     }
@@ -353,13 +353,30 @@ public:
                                          Rmask, Gmask, Bmask, Amask);
     }
 
+    /**
+     * @brief createFromSDLSfc      Call this if you want to use another SDL_Surface creation function which returns
+     *                              to be managed by this class
+     * @param sfc   pointer to the surface created.
+     */
+    bool createFromSDLSfc(SDL_Surface *sfc)
+    {
+        if(mpSurface)
+            SDL_FreeSurface(mpSurface);
+
+        mpSurface = sfc;
+
+        if(mpSurface)
+            return true;
+        else
+            return false;
+    }
 
 
     /**
      * @brief createCopy will create a copy of another surface
      * @param orig Orignal surface to copy
      */
-    void createCopy(GsWeakSurface &orig)
+    void createCopy(const GsWeakSurface &orig)
     {
         SDL_Surface *sdlSfc = orig.getSDLSurface();
         SDL_PixelFormat *format = sdlSfc->format;

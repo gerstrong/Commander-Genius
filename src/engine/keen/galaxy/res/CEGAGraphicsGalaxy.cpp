@@ -747,8 +747,8 @@ bool CEGAGraphicsGalaxy::readfonts()
 
 			Font.CreateSurface(Palette, gVideoDriver.getScrollSurface()->flags, maxwidth*16, FontHead->Height * 16);
 
-            auto &srcsfc = Font.SDLSurfacePtr();
-            SDL_Surface* sfc = srcsfc.get();
+            auto sfc = Font.SDLSurfacePtr();
+            //SDL_Surface* sfc = srcsfc.get();
 
 			SDL_FillRect(sfc, NULL, 0x8);
 

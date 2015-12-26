@@ -33,14 +33,14 @@ void GsCursor::generateTwirls(GsFont &Font)
 	// Copy the some inverted twirls and then put the last one at the end.
 	// By that way the font tile will get smoother
 	SDL_Rect twrect, fmrect;    
-    auto &srcsfc = Font.SDLSurfacePtr();
+    auto srcsfc = Font.SDLSurfacePtr();
 
 	// Copy the first 5 tiles
 	twrect.x=9*8;
 	twrect.y = fmrect.x = 0;
 	twrect.w = fmrect.w = 5*8;
 	twrect.h = fmrect.h = 8;	fmrect.y=0;
-    BlitSurface(srcsfc.get(), &twrect, mp_Surface, &fmrect);
+    BlitSurface(srcsfc, &twrect, mp_Surface, &fmrect);
 
 	// now the complex stuff for the extra two tiles
 	// Draw tile 9 and 10 inverted
@@ -75,7 +75,7 @@ void GsCursor::generateTwirls(GsFont &Font)
 	twrect.x=14*8;	twrect.y=0;
 	twrect.w = fmrect.w = twrect.h = fmrect.h = 8;
 	fmrect.x = 7*8;	fmrect.y = 0;
-    BlitSurface(srcsfc.get(), &twrect, mp_Surface, &fmrect);
+    BlitSurface(srcsfc, &twrect, mp_Surface, &fmrect);
 }
 
 void GsCursor::draw(SDL_Surface* dst, Uint8 character, Uint16 x, Uint16 y)
