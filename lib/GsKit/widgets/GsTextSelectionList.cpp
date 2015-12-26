@@ -13,7 +13,6 @@
 
 #include "GsTextSelectionList.h"
 
-const float TEXT_SIZE = 10.0f;
 
 CGUITextSelectionList::CGUITextSelectionList()  :
     mHoverSelection(0),
@@ -110,11 +109,16 @@ void CGUITextSelectionList::processLogic()
 	const float fy = mRect.y;
 	const float fh = mRect.h;
 
-    const float y_innerbound_min = fy + static_cast<float>(TEXT_SIZE)/bh;
-	const float y_innerbound_max = y_innerbound_min +
-            static_cast<float>( mItemList.size()*TEXT_SIZE )/bh;
+    GsFont &Font = gGraphics.getFont(mFontID);
+    const int pixth = Font.getPixelTextHeight();
 
-    const float x_innerbound_min = fx + static_cast<float>(TEXT_SIZE)/bw;
+    const float textHeight = (pixth+2);
+
+    const float y_innerbound_min = fy + static_cast<float>(textHeight)/bh;
+	const float y_innerbound_max = y_innerbound_min +
+            static_cast<float>( mItemList.size()*textHeight )/bh;
+
+    const float x_innerbound_min = fx + static_cast<float>(textHeight)/bw;
 
 
     GsRect<float> rRect(fx, fy, fw, fh);
@@ -132,7 +136,7 @@ void CGUITextSelectionList::processLogic()
 
         if( mousePos.y > fy && mousePos.y < y_innerbound_max )
         {
-            int newselection = ((mousePos.y-fy)*bh/TEXT_SIZE) - 1 + mScrollbar.scrollPos();
+            int newselection = ((mousePos.y-fy)*bh/textHeight) - 1 + mScrollbar.scrollPos();
 
             if( mousePos.x > x_innerbound_min && mousePos.y > y_innerbound_min)
             {
@@ -166,6 +170,7 @@ void CGUITextSelectionList::processRender(const GsRect<float> &RectDispCoordFloa
 
 	// Now lets draw the text of the list control
 	GsFont &Font = gGraphics.getFont(mFontID);
+    const int pixth = Font.getPixelTextHeight();
 
 	// Move 16 Pixel so we have space for the cursor/twirl to show the selection
     const int sepHeight = Font.getPixelTextHeight()+2;
@@ -175,7 +180,7 @@ void CGUITextSelectionList::processRender(const GsRect<float> &RectDispCoordFloa
 
     mScrollbar.mLastToShow = (lRect.h/sepHeight)-1;
 
-	lRect.h = 10;
+    lRect.h = pixth+2;
     lRect.x += 12;
     lRect.w -= 12;
 	std::string trimmedText;
@@ -187,12 +192,12 @@ void CGUITextSelectionList::processRender(const GsRect<float> &RectDispCoordFloa
 	{
         if(mPressedSelection == int(line) + mScrollbar.scrollPos() )
         {
-            lRect.y = ypos+(line*10)-1;
+            lRect.y = ypos+(line*lRect.h)-1;
             SDL_FillRect(Blitsurface, &lRect, 0xFFA5A5F1);
         }
         else if(mReleasedSelection == int(line) + mScrollbar.scrollPos() )
 		{
-            lRect.y = ypos+(line*10)-1;
+            lRect.y = ypos+(line*lRect.h)-1;
 
             if(mSelected)
                 SDL_FillRect(Blitsurface, &lRect, 0xFFB5B5F1);
@@ -210,7 +215,7 @@ void CGUITextSelectionList::processRender(const GsRect<float> &RectDispCoordFloa
 		if(trimmedText.size() > textlimitWidth)
 			trimmedText = trimmedText.substr(0, textlimitWidth);
 
-		Font.drawFont(Blitsurface, trimmedText, xpos, ypos+(line*10), false);
+        Font.drawFont(Blitsurface, trimmedText, xpos, ypos+(line*lRect.h), false);
 	}
 
     mScrollbar.mMaxScrollAmt = mItemList.size()-mScrollbar.lastToShow();

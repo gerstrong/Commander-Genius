@@ -28,10 +28,14 @@ public:
 	GsFont();
 
 
+    void setFillWidthTable(const int width);
+
     GsFont(const GsFont& that)
     {
         operator=(that);
     }
+
+
     GsFont& operator=(const GsFont& that)
     {
         if(that.mFontSurface)
@@ -50,7 +54,17 @@ public:
 
 	bool loadAlternateFont();
 
-    void loadinternalFont();
+    /**
+     * @brief loadinternalFont  Load embeeded Font map into the surface
+     * @param pixmap    Static array of pixel information as XPM
+     */
+    void loadinternalFont(const char *pixmap[]);
+
+    /**
+     * @brief loadinternalFont
+     * @param size  use 1 for normal sized and 2 for doubled, which would load an alternate pixmap into the surface
+     */
+    void loadinternalFont(const int size);
 
 	void setWidthToCharacter(Uint8 width, Uint16 letter);
 	
@@ -129,13 +143,12 @@ public:
                          highlight);
     }
 
-    void drawMap(SDL_Surface* dst);
 
 private:
 
     GsSurface mFontSurface;
 
-    std::array<Uint8, 256> mWidthtable;
+    std::array<Uint8, 256> mWidthtable;    
 };
 
 #endif /* GsFont_H_ */

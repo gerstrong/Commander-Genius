@@ -382,7 +382,14 @@ void CGameLauncher::start()
     gGraphics.createEmptyFontmaps(1);
     GsFont &Font = gGraphics.getFont(0);
 
-    Font.loadinternalFont();
+    const int height = gVideoDriver.getHeight();
+
+    // Height is larger than 480, use the scaled up fonts in the menu,
+    // so readability is better on higher resolutions.
+    if(height > 480)
+        Font.loadinternalFont(2);
+    else
+        Font.loadinternalFont(1);
 
     struct GamesScan : public Action
     {
