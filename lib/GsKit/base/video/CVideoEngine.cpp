@@ -202,8 +202,6 @@ bool CVideoEngine::createSurfaces(const GsRect<Uint16> &gamerect)
     SDL_SetSurfaceBlendMode(mGameSfc.getSDLSurface(), SDL_BLENDMODE_NONE);
 #endif
 
-
-
     const int squareSize = getPowerOfTwo( gamerect.h > gamerect.w ? gamerect.h : gamerect.w );
 
     gLogging.ftextOut("ScrollSurface creation of %dx%d!\n<br>",

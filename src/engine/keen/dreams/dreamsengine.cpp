@@ -475,7 +475,8 @@ void DreamsEngine::applyScreenMode()
         break;
     }
 
-    mDreamsSurface.create(0, sdlTexWidth, sdlTexHeight, RES_BPP, 0, 0, 0, 0);
+    const GsRect<Uint16> gameRect(sdlTexWidth, sdlTexHeight);
+    gVideoDriver.setNativeResolution(gameRect);
 
     // Mode changed, set it to zero
     mChangeMode = 0;
@@ -549,31 +550,6 @@ void DreamsEngine::ponder(const float deltaT)
 }
 
 
-
-
-void DreamsEngine::updateHostDisplay()
-{
-    SDL_Surface *sfc = mDreamsSurface.getSDLSurface();
-    SDL_Surface *blitSfc = gVideoDriver.getBlitSurface();
-
-    BEL_ST_UpdateHostDisplay(sfc);
-
-    SDL_Rect dstRect, srGsRect;
-    srGsRect.x = srGsRect.y = 0;
-    dstRect.x = dstRect.y = 0;
-
-    srGsRect.w = sfc->w;
-    srGsRect.h = sfc->h;
-    dstRect.w = blitSfc->w;
-    dstRect.h = blitSfc->h;
-
-    CVidConfig &vidConf = gVideoDriver.getVidConfig();
-
-    blitScaled( sfc, srGsRect, blitSfc, dstRect, vidConf.m_ScaleXFilter );
-}
-
-
-
 void DreamsEngine::render()
 {
     // Lock Rendering
@@ -584,7 +560,8 @@ void DreamsEngine::render()
         applyScreenMode();
     }
 
-    updateHostDisplay();
+    SDL_Surface *blitSfc = gVideoDriver.getBlitSurface();
+    BEL_ST_UpdateHostDisplay(blitSfc);
 
     // Unlock
     SDL_SemPost( gpRenderLock );
