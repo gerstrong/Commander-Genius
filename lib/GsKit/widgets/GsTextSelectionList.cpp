@@ -171,12 +171,13 @@ void CGUITextSelectionList::processRender(const GsRect<float> &RectDispCoordFloa
 	// Now lets draw the text of the list control
 	GsFont &Font = gGraphics.getFont(mFontID);
     const int pixth = Font.getPixelTextHeight();
+    const int pixtw = pixth; // NOTE: We assume here, that the height and width are the same. Invalid to galaxy fonts!
 
 	// Move 16 Pixel so we have space for the cursor/twirl to show the selection
     const int sepHeight = Font.getPixelTextHeight()+2;
 	const int xpos = lRect.x+16+1;
 	const int ypos = lRect.y+10;
-	unsigned int textlimitWidth = (lRect.w-16)/8;
+    unsigned int textlimitWidth = (lRect.w-16)/pixtw;
 
     mScrollbar.mLastToShow = (lRect.h/sepHeight)-1;
 
@@ -190,12 +191,15 @@ void CGUITextSelectionList::processRender(const GsRect<float> &RectDispCoordFloa
 
     for ( int line = 0;  it != mItemList.end() && line<mScrollbar.mLastToShow ; it++, line++ )
 	{
-        if(mPressedSelection == int(line) + mScrollbar.scrollPos() )
+        // Current line to be rendered
+        const int curLinePos = static_cast<int>(line) + mScrollbar.scrollPos();
+
+        if(mPressedSelection == curLinePos )
         {
             lRect.y = ypos+(line*lRect.h)-1;
             SDL_FillRect(Blitsurface, &lRect, 0xFFA5A5F1);
         }
-        else if(mReleasedSelection == int(line) + mScrollbar.scrollPos() )
+        else if(mReleasedSelection == curLinePos )
 		{
             lRect.y = ypos+(line*lRect.h)-1;
 
@@ -204,7 +208,7 @@ void CGUITextSelectionList::processRender(const GsRect<float> &RectDispCoordFloa
             else
                 SDL_FillRect(Blitsurface, &lRect, 0xFFC5C5C5);
 		}
-        else if(mHoverSelection == int(line) + mScrollbar.scrollPos() )
+        else if(mHoverSelection == curLinePos )
         {
             lRect.y = ypos+(line*sepHeight)-1;
             SDL_FillRect(Blitsurface, &lRect, 0xFFE5E5F1);
@@ -212,8 +216,12 @@ void CGUITextSelectionList::processRender(const GsRect<float> &RectDispCoordFloa
 
 
 		trimmedText = *it;
+
+        // If the text is too large to show, show a part of it. (by trimming)
 		if(trimmedText.size() > textlimitWidth)
+        {
 			trimmedText = trimmedText.substr(0, textlimitWidth);
+        }
 
         Font.drawFont(Blitsurface, trimmedText, xpos, ypos+(line*lRect.h), false);
 	}
