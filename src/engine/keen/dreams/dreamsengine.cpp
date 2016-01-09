@@ -262,6 +262,9 @@ bool extractEmbeddedFilesIntoMemory(const BE_GameVerDetails_T &gameVerDetails)
 
     memcpy(mapFile.tileinfo.data(), mapheadPtr, mapFile.tileinfo.size() );
 
+
+    // If we have a defined EGAHEAD, get it.
+
     return true;
 }
 

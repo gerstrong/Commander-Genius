@@ -162,7 +162,6 @@ void CAL_GetGrChunkLength (id0_int_t chunk)
 {
 	BE_Cross_seek(grhandle,grstarts[chunk],SEEK_SET);
 	BE_Cross_readInt32LE(grhandle, &chunkexplen);
-	//read(grhandle,&chunkexplen,sizeof(chunkexplen));
 	chunkcomplen = grstarts[chunk+1]-grstarts[chunk]-4;
 }
 
@@ -486,7 +485,7 @@ void CAL_SetupGrFile (void)
 #endif
 #if (NUMPICS>0) || (NUMPICM>0) || (NUMSPRITES>0)
 	memptr compseg;
-#endif
+#endif   
 
 
 #ifdef GRHEADERLINKED
@@ -549,6 +548,15 @@ void CAL_SetupGrFile (void)
 
 #endif
 
+
+    // Try to read the egahead, only if there is a file to be read
+/*
+    if(gKeenFiles.egheadName)
+    {
+        read contents to EGAhead but free() first.
+    }
+*/
+
 //
 // Open the graphics file, leaving it open until the game is finished
 //
@@ -560,7 +568,6 @@ void CAL_SetupGrFile (void)
 		Quit ("Cannot open "GREXT"GRAPH."EXTENSION"!");
 #elif defined REFKEEN_VER_KDREAMS_ANYEGA_ALL
 	grhandle = BE_Cross_open_for_reading("KDREAMS.EGA");
-	//grhandle = open("KDREAMS.EGA", O_RDONLY | O_BINARY);
 	if (!BE_Cross_IsFileValid(grhandle))
  	//if (grhandle == -1)
 		Quit ("Cannot open KDREAMS.EGA!");
@@ -574,7 +581,9 @@ void CAL_SetupGrFile (void)
 	MM_GetPtr((memptr *)&pictable,NUMPICS*sizeof(pictabletype));
 	CAL_GetGrChunkLength(STRUCTPIC);		// position file pointer
 	MM_GetPtr(&compseg,chunkcomplen);
+
 	CA_FarRead (grhandle,(id0_byte_t *)compseg,chunkcomplen);
+
 	CAL_HuffExpand ((id0_byte_t *)compseg, (id0_byte_t id0_huge *)pictable,NUMPICS*sizeof(pictabletype),grhuffman);
 	MM_FreePtr(&compseg);
 	// REFKEEN - Big Endian support
