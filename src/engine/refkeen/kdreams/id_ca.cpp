@@ -17,8 +17,13 @@
  */
 
 #include <vector>
+#include <fstream>
+#include <base/utils/FindFile.h>
+#include <base/GsLogging.h>
 
 #include "engine/keen/dreams/dreamsengine.h"
+#include "fileio/KeenFiles.h"
+
 
 #include "id_heads.h"
 
@@ -66,7 +71,6 @@ typedef struct
 	id0_byte_t		headersize[100];		// headers are very small
 	id0_byte_t		tileinfo[];
 } __attribute__((__packed__)) mapfiletype;
-
 
 /*
 =============================================================================
@@ -550,12 +554,33 @@ void CAL_SetupGrFile (void)
 
 
     // Try to read the egahead, only if there is a file to be read
-/*
-    if(gKeenFiles.egheadName)
+
+    if(!gKeenFiles.egaheadFilename.empty())
     {
-        read contents to EGAhead but free() first.
+        //read contents to EGAhead but free() first.
+        free(EGAhead);
+
+        const std::string egaHeadPath =  JoinPaths(gKeenFiles.gameDir, gKeenFiles.egaheadFilename);
+
+        std::ifstream file; OpenGameFileR(file, egaHeadPath, std::ios::binary);
+
+        if(!file)
+        {
+            gLogging.textOut(RED,"Error the file \"" + egaHeadPath + "\" is missing or can't be read!");
+        }
+        else
+        {
+            file.seekg (0, file.end);
+            const int egaHeadSize = file.tellg();
+            file.seekg (0, file.beg);
+
+            auto *ptr = (char*)malloc(egaHeadSize);
+
+            file.read(ptr, egaHeadSize);
+            grstarts = EGAhead = (id0_long_t*)(ptr);
+        }
     }
-*/
+
 
 //
 // Open the graphics file, leaving it open until the game is finished
@@ -581,9 +606,7 @@ void CAL_SetupGrFile (void)
 	MM_GetPtr((memptr *)&pictable,NUMPICS*sizeof(pictabletype));
 	CAL_GetGrChunkLength(STRUCTPIC);		// position file pointer
 	MM_GetPtr(&compseg,chunkcomplen);
-
 	CA_FarRead (grhandle,(id0_byte_t *)compseg,chunkcomplen);
-
 	CAL_HuffExpand ((id0_byte_t *)compseg, (id0_byte_t id0_huge *)pictable,NUMPICS*sizeof(pictabletype),grhuffman);
 	MM_FreePtr(&compseg);
 	// REFKEEN - Big Endian support
