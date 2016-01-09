@@ -29,6 +29,9 @@
 
 extern mapfiletype_modern  mapFile;
 
+extern std::map< std::string, std::vector<uint8_t> > gDataMapVector;
+
+
 extern "C"
 {
 
@@ -104,7 +107,7 @@ BE_FILE_T			profilehandle;
 */
 
 extern	id0_long_t	*CGAhead;
-extern	id0_long_t	*EGAhead;
+//extern	id0_long_t	*EGAhead;
 extern	id0_byte_t	*CGAdict;
 extern	id0_byte_t	*EGAdict;
 extern	id0_byte_t	*maphead;
@@ -463,7 +466,7 @@ void CA_RLEWexpand (id0_unsigned_t id0_huge *source, id0_unsigned_t id0_huge *de
 }
 
 
-
+}
 /*
 =============================================================================
 
@@ -496,7 +499,7 @@ void CAL_SetupGrFile (void)
 
 #if GRMODE == EGAGR
 	grhuffman = (huffnode *)EGAdict;
-	grstarts = EGAhead;
+    grstarts = (id0_long_t*)(gDataMapVector["EGAHEAD.KDR"].data());
 #endif
 #if GRMODE == CGAGR
 	grhuffman = (huffnode *)CGAdict;
@@ -558,7 +561,7 @@ void CAL_SetupGrFile (void)
     if(!gKeenFiles.egaheadFilename.empty())
     {
         //read contents to EGAhead but free() first.
-        free(EGAhead);
+        //free(EGAhead);
 
         const std::string egaHeadPath =  JoinPaths(gKeenFiles.gameDir, gKeenFiles.egaheadFilename);
 
@@ -570,14 +573,18 @@ void CAL_SetupGrFile (void)
         }
         else
         {
+            auto &localVec = gDataMapVector["EGAHEAD.KDR"];
+
             file.seekg (0, file.end);
             const int egaHeadSize = file.tellg();
             file.seekg (0, file.beg);
 
-            auto *ptr = (char*)malloc(egaHeadSize);
+            localVec.resize(egaHeadSize);
 
-            file.read(ptr, egaHeadSize);
-            grstarts = EGAhead = (id0_long_t*)(ptr);
+            char *egaHeadPtr = (char*)(localVec.data());
+
+            file.read(egaHeadPtr, egaHeadSize);
+            grstarts = (id0_long_t*)(egaHeadPtr);
         }
     }
 
@@ -664,6 +671,9 @@ void CAL_SetupGrFile (void)
 
 //==========================================================================
 
+
+extern "C"
+{
 
 /*
 ======================
@@ -1895,7 +1905,7 @@ void CA_CacheMarks (const id0_char_t *title, id0_boolean_t cachedownlevel)
 id0_long_t	*CGAhead;
 id0_byte_t	*CGAdict;
 #else
-id0_long_t	*EGAhead;
+//id0_long_t	*EGAhead;
 id0_byte_t	*EGAdict;
 #endif
 id0_byte_t	*maphead;
@@ -1903,7 +1913,7 @@ id0_byte_t	*mapdict;
 id0_byte_t	*audiohead;
 id0_byte_t	*audiodict;
 
-void RefKeen_Patch_id_ca(void)
+/*void RefKeen_Patch_id_ca(void)
 {
 	int audiodictsize, audioheadsize, GFXdictsize, GFXheadsize, mapdictsize, mapheadsize;
 #ifdef REFKEEN_VER_KDREAMS_CGA_ALL
@@ -1960,5 +1970,5 @@ void RefKeen_Patch_id_ca(void)
 
 
 }
-
+*/
 

@@ -31,7 +31,7 @@ extern "C"
  //Lock SDL_SemWait( gDataLock );
 char *dreamsengine_datapath = nullptr;
 
-extern void RefKeen_Patch_id_ca(void);
+//extern void RefKeen_Patch_id_ca(void);
 extern void RefKeen_Patch_id_us(void);
 extern void RefKeen_Patch_id_rf(void);
 extern void RefKeen_Patch_kd_play(void);
@@ -116,7 +116,7 @@ static const BE_GameVerDetails_T g_be_gamever_kdreamse113 = {
 // (REFKEEN) Used for patching version-specific stuff
 uint16_t refkeen_compat_kd_play_objoffset;
 
-extern	uint8_t	*EGAhead;
+//extern	uint8_t	*EGAhead;
 extern	uint8_t	*EGAdict;
 extern	uint8_t	*maphead;
 extern	uint8_t	*mapdict;
@@ -170,6 +170,7 @@ void setupObjOffset()
     }
 }
 
+std::map< std::string, std::vector<uint8_t> > gDataMapVector;
 
 namespace dreams
 {
@@ -177,7 +178,6 @@ namespace dreams
 
 // Mapping the strings of the filenames to the pointers where we store the embedded data
 std::map< std::string, uint > gOffsetMap;
-
 
 
 bool setupAudio()
@@ -199,12 +199,12 @@ bool setupAudio()
 bool extractEmbeddedFilesIntoMemory(const BE_GameVerDetails_T &gameVerDetails)
 {
 
-    std::map< std::string, uint8_t **> dataMap;
+    std::map< std::string, uint8_t **> dataMap;    
 
     std::map< std::string, uint32_t> dataSizes;
 
     // CA
-    dataMap.insert ( std::pair<std::string, uint8_t **>("EGAHEAD.KDR", &EGAhead) );
+//    dataMap.insert ( std::pair<std::string, uint8_t **>("EGAHEAD.KDR", &EGAhead) );
     dataMap.insert ( std::pair<std::string, uint8_t **>("EGADICT.KDR", &EGAdict) );
     dataMap.insert ( std::pair<std::string, uint8_t **>("MAPHEAD.KDR", &maphead) );
     dataMap.insert ( std::pair<std::string, uint8_t **>("MAPDICT.KDR", &mapdict) );
@@ -226,22 +226,33 @@ bool extractEmbeddedFilesIntoMemory(const BE_GameVerDetails_T &gameVerDetails)
         auto it = dataMap.find(embeddedfileDetailsBuffer->fileDetails.filename);
 
         if(it == dataMap.end())
+        {
             continue;
+        }
+        else // Legacy C implementation
+        {
+            uint8_t **data = it->second;
+            const std::string fName = it->first;
 
-        uint8_t **data = it->second;
+            const unsigned int dataSize = embeddedfileDetailsBuffer->fileDetails.filesize;
 
-        const unsigned int dataSize = embeddedfileDetailsBuffer->fileDetails.filesize;
+            *data = (uint8_t*) malloc(dataSize);
 
-        *data = (uint8_t*) malloc(dataSize);
+            uint offset = embeddedfileDetailsBuffer->offset;
+            gOffsetMap[fName] = offset;
 
-        uint offset = embeddedfileDetailsBuffer->offset;
-        gOffsetMap[it->first] = offset;
+            auto offsetPtr = headerData+offset;
 
-        auto offsetPtr = headerData+offset;
+            memcpy(*data, offsetPtr, dataSize);
 
-        memcpy(*data, offsetPtr, dataSize);
+            auto &localVector = gDataMapVector[fName];
 
-        dataSizes[it->first] = dataSize;
+            localVector.resize(dataSize);
+
+            memcpy(localVector.data(), offsetPtr, dataSize);
+
+            dataSizes[it->first] = dataSize;
+        }
     }
 
     mapFile.RLEWtag = 0;
