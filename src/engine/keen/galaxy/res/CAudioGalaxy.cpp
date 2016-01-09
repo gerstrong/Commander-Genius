@@ -293,7 +293,7 @@ void CAudioGalaxy::setupAudioMap()
  * 			AUDIOHED and AUDIODICT to get the sounds.
  * 			Caution: CMusic Class has a function which is similar but only loads the music from one level.
  */
-bool CAudioGalaxy::LoadFromAudioCK()
+bool CAudioGalaxy::LoadFromAudioCK(const uint dictOffset)
 {
     const CExeFile &ExeFile = gKeenFiles.exeFile;
 
@@ -313,7 +313,7 @@ bool CAudioGalaxy::LoadFromAudioCK()
     std::string audioDictfilename = getResourceFilename( gKeenFiles.audioDictFilename, gKeenFiles.gameDir, false, false);
 
     if(audioDictfilename.empty())
-        Huffman.readDictionaryNumber( ExeFile, 0 );
+        Huffman.readDictionaryNumber( ExeFile, 0, dictOffset );
     else
         Huffman.readDictionaryFromFile( audioDictfilename );
 
@@ -458,14 +458,14 @@ bool CAudioGalaxy::LoadFromAudioCK()
 /**
  * Main load function for the galaxy audio
  */
-bool CAudioGalaxy::loadSoundData()
+bool CAudioGalaxy::loadSoundData(const uint dictOffset)
 {
     COPLEmulator &OPLEmulator = g_pSound->getOPLEmulatorRef();
 
     OPLEmulator.shutdown();
     OPLEmulator.init();
 
-    const bool ok = LoadFromAudioCK();
+    const bool ok = LoadFromAudioCK(dictOffset);
 
 	if(!ok)
 	{

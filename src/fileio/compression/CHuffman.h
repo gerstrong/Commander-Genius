@@ -30,7 +30,9 @@ struct compstruct{
 class CHuffman
 {
 public:
-	bool readDictionaryNumber( const CExeFile& ExeFile, const int dictnum );
+    bool readDictionaryNumber(const CExeFile& ExeFile,
+                              const int dictnum ,
+                              const uint dictOffset);
 	bool readDictionaryNumberfromEnd( const CExeFile& ExeFile );
 	bool readDictionaryFromFile( const std::string &filename );
 	void readDictionaryAt( byte *p_exedata, unsigned long offset);

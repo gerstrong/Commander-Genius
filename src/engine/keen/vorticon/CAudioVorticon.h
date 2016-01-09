@@ -16,7 +16,7 @@ class CAudioVorticon : public CAudioResources
 {
 public:
 
-	bool loadSoundData();
+    bool loadSoundData(const uint dictOffset);
 	void unloadSound();
 	
 	std::map<GameSound, int> sndSlotMap;

@@ -175,12 +175,18 @@ namespace dreams
 {
 
 
+// Mapping the strings of the filenames to the pointers where we store the embedded data
+std::map< std::string, uint > gOffsetMap;
+
+
 
 bool setupAudio()
 {
-    CAudioGalaxy *audio = new CAudioGalaxy();
+    CAudioGalaxy *audio = new CAudioGalaxy();       
 
-    if(audio->loadSoundData())
+    const auto audioOffset = gOffsetMap["AUDIODCT.KDR"];
+
+    if(audio->loadSoundData(audioOffset))
     {
         g_pSound->setupSoundData(audio->sndSlotMapGalaxy[7], audio);
         return true;
@@ -192,7 +198,7 @@ bool setupAudio()
 
 bool extractEmbeddedFilesIntoMemory(const BE_GameVerDetails_T &gameVerDetails)
 {
-    // Mapping the strings of the filenames to the pointers where we store the embedded data
+
     std::map< std::string, uint8_t **> dataMap;
 
     std::map< std::string, uint32_t> dataSizes;
@@ -228,7 +234,12 @@ bool extractEmbeddedFilesIntoMemory(const BE_GameVerDetails_T &gameVerDetails)
 
         *data = (uint8_t*) malloc(dataSize);
 
-        memcpy(*data, headerData+embeddedfileDetailsBuffer->offset, dataSize);
+        uint offset = embeddedfileDetailsBuffer->offset;
+        gOffsetMap[it->first] = offset;
+
+        auto offsetPtr = headerData+offset;
+
+        memcpy(*data, offsetPtr, dataSize);
 
         dataSizes[it->first] = dataSize;
     }
@@ -250,11 +261,6 @@ bool extractEmbeddedFilesIntoMemory(const BE_GameVerDetails_T &gameVerDetails)
     mapFile.tileinfo.resize(dataSizes["MAPHEAD.KDR"]-tileinfoStart);
 
     memcpy(mapFile.tileinfo.data(), mapheadPtr, mapFile.tileinfo.size() );
-
-
-
-
-
 
     return true;
 }
@@ -278,6 +284,8 @@ bool DreamsEngine::loadResources()
 
     mEngineLoader.setStyle(PROGRESS_STYLE_BAR);
     const std::string threadname = "Loading Keen Dreams";
+
+
 
     struct DreamsDataLoad : public Action
     {
