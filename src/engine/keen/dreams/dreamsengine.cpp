@@ -204,7 +204,7 @@ bool extractEmbeddedFilesIntoMemory(const BE_GameVerDetails_T &gameVerDetails)
     std::map< std::string, uint32_t> dataSizes;
 
     // CA
-//    dataMap.insert ( std::pair<std::string, uint8_t **>("EGAHEAD.KDR", &EGAhead) );
+    //dataMap.insert ( std::pair<std::string, uint8_t **>("EGAHEAD.KDR", &EGAhead) );
     dataMap.insert ( std::pair<std::string, uint8_t **>("EGADICT.KDR", &EGAdict) );
     dataMap.insert ( std::pair<std::string, uint8_t **>("MAPHEAD.KDR", &maphead) );
     dataMap.insert ( std::pair<std::string, uint8_t **>("MAPDICT.KDR", &mapdict) );
@@ -223,33 +223,33 @@ bool extractEmbeddedFilesIntoMemory(const BE_GameVerDetails_T &gameVerDetails)
 
     for (const BE_EmbeddedGameFileDetails_T *embeddedfileDetailsBuffer = gameVerDetails.embeddedFiles; embeddedfileDetailsBuffer->fileDetails.filename; ++embeddedfileDetailsBuffer)
     {
-        auto it = dataMap.find(embeddedfileDetailsBuffer->fileDetails.filename);
+        const std::string fName = embeddedfileDetailsBuffer->fileDetails.filename;
+        auto it = dataMap.find(fName);
+
+        const unsigned int dataSize = embeddedfileDetailsBuffer->fileDetails.filesize;
+
+        uint offset = embeddedfileDetailsBuffer->offset;
+        gOffsetMap[fName] = offset;
+
+        auto offsetPtr = headerData+offset;
+
+        auto &localVector = gDataMapVector[fName];
+
+        localVector.resize(dataSize);
+
+        memcpy(localVector.data(), offsetPtr, dataSize);
+
 
         if(it == dataMap.end())
-        {
             continue;
-        }
-        else // Legacy C implementation
-        {
-            uint8_t **data = it->second;
-            const std::string fName = it->first;
 
-            const unsigned int dataSize = embeddedfileDetailsBuffer->fileDetails.filesize;
+        // Legacy C implementation
+        {
+            uint8_t **data = it->second;            
 
             *data = (uint8_t*) malloc(dataSize);
 
-            uint offset = embeddedfileDetailsBuffer->offset;
-            gOffsetMap[fName] = offset;
-
-            auto offsetPtr = headerData+offset;
-
             memcpy(*data, offsetPtr, dataSize);
-
-            auto &localVector = gDataMapVector[fName];
-
-            localVector.resize(dataSize);
-
-            memcpy(localVector.data(), offsetPtr, dataSize);
 
             dataSizes[it->first] = dataSize;
         }
