@@ -445,20 +445,29 @@ bool CAudioGalaxy::LoadFromAudioCK(const uint dictOffset)
         const uint32_t audio_end = audiohed[snd+1];
 
         const uint32_t audio_comp_data_start = audio_start+sizeof(uint32_t); // Why this strange offset by 4 bytes?
+
+        std::vector<byte> imfdata;
+
         if( audio_comp_data_start < audio_end )
         {
             const uint32_t *AudioCompFileData32 = reinterpret_cast<uint32_t*>(
                         reinterpret_cast<void*>(AudioCompFileData + audio_start));
 
             outsize = *AudioCompFileData32;
-            byte imfdata[outsize];
+            imfdata.resize(outsize);
 
-            Huffman.expand( (byte*)(AudioCompFileData+audio_comp_data_start), imfdata, audio_end-audio_comp_data_start, outsize);
+            Huffman.expand( (byte*)(AudioCompFileData+audio_comp_data_start), imfdata.data(), audio_end-audio_comp_data_start, outsize);
 
             if(snd>=al_snd_start)
-                readISFintoWaveForm( m_soundslot[snd], imfdata, (audioSpec.format == AUDIO_S16) ? 2 : 1 );
+            {
+                const bool ok = readISFintoWaveForm( m_soundslot[snd], imfdata.data(), (audioSpec.format == AUDIO_S16) ? 2 : 1 );
+                if(!ok)
+                {
+                    gLogging.textOut("Sound " + itoa(snd) + "could not be read!");
+                }
+            }
             else
-                readPCSpeakerSoundintoWaveForm( m_soundslot[snd], imfdata, (audioSpec.format == AUDIO_S16) ? 2 : 1 );
+                readPCSpeakerSoundintoWaveForm( m_soundslot[snd], imfdata.data(), (audioSpec.format == AUDIO_S16) ? 2 : 1 );
         }
     }
 
