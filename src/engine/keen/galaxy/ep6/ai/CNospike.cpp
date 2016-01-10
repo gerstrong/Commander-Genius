@@ -258,7 +258,7 @@ void CNospike::getTouchedBy(CSpriteObject& theObject)
         }
         else
         {
-            player->kill();
+            player->kill(false);
         }
     }
 }

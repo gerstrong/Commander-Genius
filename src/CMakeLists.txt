@@ -29,9 +29,13 @@ SET(USRDIR /usr)
 include(oldArch.cmake)
 
 
-
-# Make this C++11. We need that in Commander Genius
-ADD_DEFINITIONS(-std=c++11)
+if (CMAKE_VERSION VERSION_LESS "3.1")
+  if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    set (CMAKE_CXX_FLAGS "--std=gnu++11 ${CMAKE_CXX_FLAGS}")
+  endif ()
+else ()
+  set (CMAKE_CXX_STANDARD 11)
+endif ()
 
 #Alignment error report is important for android builds
 ADD_DEFINITIONS(-Werror=cast-align)
@@ -279,6 +283,8 @@ if(DBFUSION)
 	endif(WIN32)
 
 endif(DBFUSION)
+
+cotire(CGeniusExe)
 
 # Stuff definitions in case we want to install it
 INCLUDE(install.cmake)

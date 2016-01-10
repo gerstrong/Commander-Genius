@@ -499,7 +499,8 @@ void CAL_SetupGrFile (void)
 
 #if GRMODE == EGAGR
 	grhuffman = (huffnode *)EGAdict;
-    grstarts = (id0_long_t*)(gDataMapVector["EGAHEAD.KDR"].data());
+    auto *grdataStart = gDataMapVector["EGAHEAD.KDR"].data();
+    memcpy(&grstarts, &grdataStart, sizeof(id0_long_t*));
 #endif
 #if GRMODE == CGAGR
 	grhuffman = (huffnode *)CGAdict;
@@ -584,7 +585,9 @@ void CAL_SetupGrFile (void)
             char *egaHeadPtr = (char*)(localVec.data());
 
             file.read(egaHeadPtr, egaHeadSize);
-            grstarts = (id0_long_t*)(egaHeadPtr);
+
+            auto *grdataStart = gDataMapVector["EGAHEAD.KDR"].data();
+            memcpy(&egaHeadPtr, &grdataStart, sizeof(id0_long_t*));
         }
     }
 

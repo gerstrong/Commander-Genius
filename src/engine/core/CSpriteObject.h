@@ -264,30 +264,39 @@ public:
 	// getters for positions
     Vector2D<Uint32> &getPosition()
     { return m_Pos; }
-    Uint32 getXPosition() const
-	{ return m_Pos.x; }
-	Uint32 getYPosition() const
-	{ return m_Pos.y; }
-	Uint32 getXLeftPos()
-	{ return m_Pos.x+m_BBox.x1; }
-	Uint32 getXRightPos()
-	{ return m_Pos.x+m_BBox.x2; }
-	Uint32 getXMidPos()
-	{ return m_Pos.x+(m_BBox.x2-m_BBox.x1)/2; }
-	Uint32 getYUpPos()
-	{ return m_Pos.y+m_BBox.y1; }
-	Uint32 getYDownPos()
-	{ return m_Pos.y+m_BBox.y2; }
-	Uint32 getYMidPos()
-	{ return m_Pos.y+(m_BBox.y2-m_BBox.y1)/2; }	
-    Vector2D<Uint32> getMidPos()
-    { return Vector2D<Uint32>(getXMidPos(), getYMidPos()); }
+
+    auto getXPosition() const -> int
+    { return int(m_Pos.x); }
+
+    auto getYPosition() const -> int
+    { return int(m_Pos.y); }
+
+    auto getXLeftPos() const -> int
+    { return int(m_Pos.x)+m_BBox.x1; }
+
+    auto getXRightPos()  const -> int
+    { return int(m_Pos.x)+m_BBox.x2; }
+
+    auto getXMidPos()  const -> int
+    { return int(m_Pos.x)+(m_BBox.x2-m_BBox.x1)/2; }
+
+    auto getYUpPos() const -> int
+    { return int(m_Pos.y)+m_BBox.y1; }
+
+    auto getYDownPos() const -> int
+    { return int(m_Pos.y)+m_BBox.y2; }
+
+    auto getYMidPos() const -> int
+    { return int(m_Pos.y)+(m_BBox.y2-m_BBox.y1)/2; }
+
+    auto getMidPos() const -> Vector2D<int>
+    { return Vector2D<int>(getXMidPos(), getYMidPos()); }
 	
 	void processFallPhysics(const int boost);
 	void processFallPhysics();
 	virtual void processFalling();
-    virtual void getTouchedBy(CSpriteObject &theObject) {}
-    virtual bool isNearby(CSpriteObject &theObject) { return true; }
+    virtual void getTouchedBy(CSpriteObject&) {}
+    virtual bool isNearby(CSpriteObject&) { return true; }
 	virtual void getShotByRay(object_t &obj_type);
     void kill_intersecting_tile(int mpx, int mpy, CSpriteObject &theObject);
 	CMap *getMapPtr() { return mp_Map; }

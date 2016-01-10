@@ -72,7 +72,7 @@ void CRedShot::getTouchedBy(CSpriteObject &theObject)
 
 	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
 	{
-	  player->kill();
+      player->kill(false);
 	  setAction(A_REDSHOT_SMASH);
 	}
 }

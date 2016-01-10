@@ -67,7 +67,6 @@ public:
 private:
 
     std::unique_ptr<GsEngine> mpCurEngine;
-	bool m_firsttime;    
     GsAppEventSink mSink;
 };
 
