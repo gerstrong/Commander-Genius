@@ -884,7 +884,7 @@ static id0_int_t DecodePosition(void **infile_ptr,id0_unsigned_long_t *CompressL
 		i = (i << 1) + GetBit(infile_ptr, CompressLength, PtrTypes);
 	}
 
-	return c | i & 0x3f;
+    return c | (i & 0x3f);
 }
 
 #endif

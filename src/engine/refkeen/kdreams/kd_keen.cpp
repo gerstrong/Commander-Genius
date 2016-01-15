@@ -155,7 +155,7 @@ void	FixScoreBox (void)
 	spritetype	id0_seg	*block;
 	id0_byte_t	id0_far	*dest;
 
-// draw boobus bomb if on level 15, else flower power
+    // draw boobus bomb if on level 15, else flower power
 	block = (spritetype id0_seg *)grsegs[SCOREBOXSPR];
 	width = block->width[0];
 	planesize = block->planesize[0];
@@ -175,7 +175,6 @@ void	FixScoreBox (void)
 		MemDrawChar (30,dest+width*8,width,planesize);
 		MemDrawChar (31,dest+width*8+CHARWIDTH,width,planesize);
 	}
-
 }
 
 

@@ -11,7 +11,6 @@ else()
 endif()
 
 
-
 IF(NOT DEFINED BUILD_TARGET)
 IF(WIN32)
 	SET(BUILD_TARGET WIN32)
@@ -30,10 +29,16 @@ SET(USRDIR /usr)
 include(oldArch.cmake)
 
 
+if (CMAKE_VERSION VERSION_LESS "3.1")
+  if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    set (CMAKE_CXX_FLAGS "--std=gnu++11 ${CMAKE_CXX_FLAGS}")
+  endif ()
+else ()
+  set (CMAKE_CXX_STANDARD 11)
+endif ()
 
-# Make this C++11. We need that in Commander Genius
-ADD_DEFINITIONS(-std=c++11)
-
+#Alignment error report is important for android builds
+ADD_DEFINITIONS(-Werror=cast-align)
 
 
 
@@ -278,6 +283,8 @@ if(DBFUSION)
 	endif(WIN32)
 
 endif(DBFUSION)
+
+cotire(CGeniusExe)
 
 # Stuff definitions in case we want to install it
 INCLUDE(install.cmake)

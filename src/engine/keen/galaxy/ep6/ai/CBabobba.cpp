@@ -192,7 +192,7 @@ void CBabobba::getTouchedBy(CSpriteObject& theObject)
 
 	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
 	{
-		player->kill();
+        player->kill(false);
 	}
 }
 
@@ -297,7 +297,7 @@ void CCinder::getTouchedBy(CSpriteObject& theObject)
 {
     if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
     {
-	player->kill();
+        player->kill(false);
     }
 }
 

@@ -62,7 +62,11 @@ void MainMenu::createGalaxyMenu( const bool openedGamePlay )
     mpMenuDialog->addControl( infoButton );
     infoButton->mEnabled = false;*/
 
-    mpMenuDialog->addControl(new GalaxyButton( "End Game", new EventEndGamePlay() ) );
+
+    const std::string endGamePlayTest =
+            openedGamePlay ? "End Game" : "Quit to Launcher";
+
+    mpMenuDialog->addControl(new GalaxyButton( endGamePlayTest, new EventEndGamePlay() ) );
 
     mpMenuDialog->addControl(new GalaxyButton( "Quit", new GMQuit() ) );
 

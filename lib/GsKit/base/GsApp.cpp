@@ -52,7 +52,6 @@ bool getBooleanArgument( int argc, char *argv[], const std::string& text )
 
 
 GsApp::GsApp() :
-m_firsttime(false),
 mSink(this)
 {
     gEventManager.regSink(&mSink);

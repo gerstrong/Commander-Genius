@@ -760,7 +760,8 @@ IN_ReadControl(id0_int_t player,ControlInfo *info)
 
             if(input.getHoldedCommand(playerNum, IC_JUMP))
                 buttons += 1 << 0;
-            if (input.getHoldedCommand(playerNum, IC_POGO))
+            if (input.getHoldedCommand(playerNum, IC_POGO) ||
+                input.getHoldedCommand(playerNum, IC_FIRE))
                 buttons += 1 << 1;
 
 
@@ -995,8 +996,8 @@ void
 IN_AckBack(void)
 {
 	// REFKEEN - Alternative controllers support
-	BE_ST_AltControlScheme_Push();
-	BE_ST_AltControlScheme_PrepareInputWaitControls();
+    /*BE_ST_AltControlScheme_Push();
+    BE_ST_AltControlScheme_PrepareInputWaitControls();*/
 
 	id0_word_t	i;
 

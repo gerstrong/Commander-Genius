@@ -19,25 +19,52 @@
 
 #include <string>
 #include <vector>
+#include <array>
 #include <memory>
 
 class GsFont
 {
 public:
 	GsFont();
-	
-	/*GsFont operator=(const GsFont &font) // TODO: Copying Font does not yet work
-	{
-	    mFontSurface.reset(font.getSDLSurface());
-	    return *this;
-	}*/
+
+
+    void setFillWidthTable(const int width);
+
+    GsFont(const GsFont& that)
+    {
+        operator=(that);
+    }
+
+
+    GsFont& operator=(const GsFont& that)
+    {
+        if(that.mFontSurface)
+        {
+            mFontSurface.createCopy(that.mFontSurface);
+        }
+
+        mWidthtable = that.mWidthtable;
+
+        return *this;
+    }
 
 	bool CreateSurface(SDL_Color *Palette, Uint32 Flags, Uint16 width = 128, Uint16 height = 128);
-	SDL_Surface *getSDLSurface() const { return mFontSurface.get(); }
+
+    SDL_Surface *SDLSurfacePtr() const { return mFontSurface.getSDLSurface(); }
 
 	bool loadAlternateFont();
 
-    void loadinternalFont();
+    /**
+     * @brief loadinternalFont  Load embeeded Font map into the surface
+     * @param pixmap    Static array of pixel information as XPM
+     */
+    void loadinternalFont(const char *pixmap[]);
+
+    /**
+     * @brief loadinternalFont
+     * @param size  use 1 for normal sized and 2 for doubled, which would load an alternate pixmap into the surface
+     */
+    void loadinternalFont(const int size);
 
 	void setWidthToCharacter(Uint8 width, Uint16 letter);
 	
@@ -116,11 +143,12 @@ public:
                          highlight);
     }
 
-    void drawMap(SDL_Surface* dst);
 
 private:
-	std::shared_ptr<SDL_Surface> mFontSurface;
-	Uint8 mWidthtable[256];
+
+    GsSurface mFontSurface;
+
+    std::array<Uint8, 256> mWidthtable;    
 };
 
 #endif /* GsFont_H_ */

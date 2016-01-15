@@ -293,7 +293,7 @@ void CAudioGalaxy::setupAudioMap()
  * 			AUDIOHED and AUDIODICT to get the sounds.
  * 			Caution: CMusic Class has a function which is similar but only loads the music from one level.
  */
-bool CAudioGalaxy::LoadFromAudioCK()
+bool CAudioGalaxy::LoadFromAudioCK(const uint dictOffset)
 {
     const CExeFile &ExeFile = gKeenFiles.exeFile;
 
@@ -313,7 +313,7 @@ bool CAudioGalaxy::LoadFromAudioCK()
     std::string audioDictfilename = getResourceFilename( gKeenFiles.audioDictFilename, gKeenFiles.gameDir, false, false);
 
     if(audioDictfilename.empty())
-        Huffman.readDictionaryNumber( ExeFile, 0 );
+        Huffman.readDictionaryNumber( ExeFile, 0, dictOffset );
     else
         Huffman.readDictionaryFromFile( audioDictfilename );
 
@@ -393,6 +393,20 @@ bool CAudioGalaxy::LoadFromAudioCK()
             audiohed.push_back(*audiohedptr);
             audiohedptr++;
         }
+
+        // PATCH: Keen Dreams Plus. For some reason the second slot has an invalid offset
+        if(audiohed[1] == 0xFF)
+        {
+            for(uint i=1 ; i<number_of_audiorecs ; i++)
+            {
+                audiohed[i] = audiohed[i+1];
+            }
+
+            // And since we have one slot less, reduce the total amount
+            number_of_audiorecs--;
+            audiohed.resize(number_of_audiorecs);
+        }
+
     }
 
 
@@ -431,20 +445,29 @@ bool CAudioGalaxy::LoadFromAudioCK()
         const uint32_t audio_end = audiohed[snd+1];
 
         const uint32_t audio_comp_data_start = audio_start+sizeof(uint32_t); // Why this strange offset by 4 bytes?
+
+        std::vector<byte> imfdata;
+
         if( audio_comp_data_start < audio_end )
         {
             const uint32_t *AudioCompFileData32 = reinterpret_cast<uint32_t*>(
                         reinterpret_cast<void*>(AudioCompFileData + audio_start));
 
             outsize = *AudioCompFileData32;
-            byte imfdata[outsize];
+            imfdata.resize(outsize);
 
-            Huffman.expand( (byte*)(AudioCompFileData+audio_comp_data_start), imfdata, audio_end-audio_comp_data_start, outsize);
+            Huffman.expand( (byte*)(AudioCompFileData+audio_comp_data_start), imfdata.data(), audio_end-audio_comp_data_start, outsize);
 
             if(snd>=al_snd_start)
-                readISFintoWaveForm( m_soundslot[snd], imfdata, (audioSpec.format == AUDIO_S16) ? 2 : 1 );
+            {
+                const bool ok = readISFintoWaveForm( m_soundslot[snd], imfdata.data(), (audioSpec.format == AUDIO_S16) ? 2 : 1 );
+                if(!ok)
+                {
+                    gLogging.textOut("Sound " + itoa(snd) + "could not be read!");
+                }
+            }
             else
-                readPCSpeakerSoundintoWaveForm( m_soundslot[snd], imfdata, (audioSpec.format == AUDIO_S16) ? 2 : 1 );
+                readPCSpeakerSoundintoWaveForm( m_soundslot[snd], imfdata.data(), (audioSpec.format == AUDIO_S16) ? 2 : 1 );
         }
     }
 
@@ -458,14 +481,14 @@ bool CAudioGalaxy::LoadFromAudioCK()
 /**
  * Main load function for the galaxy audio
  */
-bool CAudioGalaxy::loadSoundData()
+bool CAudioGalaxy::loadSoundData(const uint dictOffset)
 {
     COPLEmulator &OPLEmulator = g_pSound->getOPLEmulatorRef();
 
     OPLEmulator.shutdown();
     OPLEmulator.init();
 
-    const bool ok = LoadFromAudioCK();
+    const bool ok = LoadFromAudioCK(dictOffset);
 
 	if(!ok)
 	{

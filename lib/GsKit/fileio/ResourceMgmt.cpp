@@ -31,7 +31,7 @@ const std::string GLOBAL_DIR = "global";
  *  \param	essential		essential means whether the file is really needed or the game can live without it.
  * 	\param	can_be_global	This means, that the file can be read from the global directory. In some cases it must not.
  */
-std::string getResourceFilename(const std::string& filename, const std::string& gamepath,
+std::string getResourceFilename(const std::string &filename, const std::string &gamepath,
                                 bool essential, bool can_be_global)
 {
     std::string text;

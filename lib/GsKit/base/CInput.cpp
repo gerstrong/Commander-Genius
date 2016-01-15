@@ -600,10 +600,10 @@ void CInput::enableAnalog(const int player, const bool value) { mAnalogAxesMovem
 
 void CInput::transMouseRelCoord(Vector2D<float> &Pos,
 								const SDL_MouseMotionEvent motion,
-								const GsRect<Uint16> &transformRect)
+                                const GsRect<Uint16> &activeArea)
 {
-    Pos.x = ( static_cast<float>(motion.x-transformRect.x)/static_cast<float>(transformRect.w) );
-    Pos.y = ( static_cast<float>(motion.y-transformRect.y)/static_cast<float>(transformRect.h) );
+    Pos.x = ( static_cast<float>(motion.x-activeArea.x)/static_cast<float>(activeArea.w) );
+    Pos.y = ( static_cast<float>(motion.y-activeArea.y)/static_cast<float>(activeArea.h) );
 }
 
 
@@ -639,19 +639,19 @@ void CInput::pollEvents()
 			InputCommand[j][i].lastactive = InputCommand[j][i].active;
 
 
-    GsRect<Uint16> clickGameArea = gVideoDriver.mpVideoEngine->getAspectCorrRect();
+    GsRect<Uint16> activeArea = gVideoDriver.mpVideoEngine->getAspectCorrRect();
 
     auto &dispRect = gVideoDriver.getVidConfig().m_DisplayRect;
 
 
-/*#if SDL_VERSION_ATLEAST(2, 0, 0)
+#if SDL_VERSION_ATLEAST(2, 0, 0)
 #else
     //if( !gVideoDriver.isOpenGL() )
-#endif*/
     {
-        clickGameArea.x = 0;
-        clickGameArea.y = 0;
+        activeArea.x = 0;
+        activeArea.y = 0;
     }
+#endif
 
 
 
@@ -725,7 +725,7 @@ void CInput::pollEvents()
             {                                                
                 if(Event.button.button <= 3)
                 {
-                    transMouseRelCoord(Pos, Event.motion, clickGameArea);
+                    transMouseRelCoord(Pos, Event.motion, activeArea);
                     mpVirtPad->mouseDown(Pos);
                 }
             }
@@ -733,7 +733,7 @@ void CInput::pollEvents()
             {
                 if(Event.button.button <= 3)
                 {
-                    transMouseRelCoord(Pos, Event.motion, clickGameArea);
+                    transMouseRelCoord(Pos, Event.motion, activeArea);
                     m_EventList.add( new PointingDevEvent( Pos, PDE_BUTTONDOWN ) );
                     gPointDevice.mPointingState.mActionButton = 1;
                     gPointDevice.mPointingState.mPos = Pos;
@@ -753,13 +753,13 @@ void CInput::pollEvents()
 		case SDL_MOUSEBUTTONUP:
             if(mpVirtPad && mpVirtPad->active())
             {
-                transMouseRelCoord(Pos, Event.motion, clickGameArea);
+                transMouseRelCoord(Pos, Event.motion, activeArea);
                 mpVirtPad->mouseUp(Pos);
             }
             else
             {
                 passSDLEventVec = true;
-                transMouseRelCoord(Pos, Event.motion, clickGameArea);
+                transMouseRelCoord(Pos, Event.motion, activeArea);
                 m_EventList.add( new PointingDevEvent( Pos, PDE_BUTTONUP ) );
                 gPointDevice.mPointingState.mActionButton = 0;
                 gPointDevice.mPointingState.mPos = Pos;
@@ -768,7 +768,7 @@ void CInput::pollEvents()
 			break;
 
 		case SDL_MOUSEMOTION:
-            transMouseRelCoord(Pos, Event.motion, clickGameArea);
+            transMouseRelCoord(Pos, Event.motion, activeArea);
             m_EventList.add( new PointingDevEvent( Pos, PDE_MOVED ) );
             gPointDevice.mPointingState.mPos = Pos;
 			break;

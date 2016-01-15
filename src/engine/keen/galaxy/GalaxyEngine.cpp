@@ -34,7 +34,7 @@ bool setupAudio()
 
     CAudioGalaxy *audio = new CAudioGalaxy();
 
-    if(audio->loadSoundData())
+    if(audio->loadSoundData(0))
     {
         g_pSound->setupSoundData(audio->sndSlotMapGalaxy[ep], audio);
         return true;

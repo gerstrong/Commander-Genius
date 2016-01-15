@@ -123,7 +123,7 @@ void CVolteface::getTouchedBy(CSpriteObject &theObject)
 
 	if( CPlayerLevel *player = dynamic_cast<CPlayerLevel*>(&theObject) )
 	{
-	  player->kill();
+      player->kill(false);
 	}
 }
 

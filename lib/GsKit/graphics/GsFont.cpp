@@ -10,6 +10,7 @@
 #include <base/utils/FindFile.h>
 #include <base/video/CVideoDriver.h>
 #include "GsFont.xpm"
+#include "GsFont2x.xpm"
 #include "AlternateFont.xpm"
 #include <string.h>
 #include <cstdlib>
@@ -18,9 +19,14 @@
 
 GsFont::GsFont()
 {
-	memset(&mWidthtable, 8, 256);
+    setFillWidthTable(8);
 }
 
+
+void GsFont::setFillWidthTable(const int width)
+{
+    mWidthtable.fill(width);
+}
 
 
 
@@ -38,15 +44,16 @@ const unsigned int COLORKEY_4BIT = 16;
 bool GsFont::CreateSurface(SDL_Color *Palette, Uint32 Flags,
 							Uint16 width, Uint16 height)
 {
-	mFontSurface.reset(SDL_CreateRGBSurface(Flags, width,
-			height, 8, 0, 0, 0, 0), &SDL_FreeSurface );
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-    SDL_SetPaletteColors(mFontSurface->format->palette, Palette, 0, 255);
-    SDL_SetColorKey(mFontSurface.get(), SDL_TRUE, COLORKEY_4BIT);
-#else
-    SDL_SetColors(mFontSurface.get(), Palette, 0, 255);
-    SDL_SetColorKey(mFontSurface.get(), SDL_SRCCOLORKEY, COLORKEY_4BIT);
-#endif
+    mFontSurface.create(Flags, width,
+                        height, 8, 0, 0, 0, 0);
+
+    /*mFontSurface.reset(SDL_CreateRGBSurface(Flags, width,
+            height, 8, 0, 0, 0, 0), &SDL_FreeSurface );*/
+
+    //GsWeakSurface fontSfc(mFontSurface.get());
+
+    mFontSurface.setPaletteColors(Palette);
+    mFontSurface.setColorKey(COLORKEY_4BIT);
 
 	if( mFontSurface )
 	  return true;
@@ -103,8 +110,6 @@ SDL_Surface *loadfromXPMData(const char **data, const SDL_PixelFormat *format, c
 	}
 
 
-	std::string textbuf;
-
 	Uint32 *pixel = static_cast<Uint32*>(sfc->pixels);
 	for( int y = 0 ; y < height ; y++)
 	{
@@ -152,24 +157,47 @@ SDL_Surface *loadfromXPMData(const char **data, const SDL_PixelFormat *format, c
 
 bool GsFont::loadAlternateFont()
 {
-	// Has the Surface to the entire font been loaded?
+    // Has the Surface of the entire font been loaded?
 
 	SDL_Surface *blit = gVideoDriver.getBlitSurface();
-	mFontSurface.reset( loadfromXPMData( alternatefont_xpm, blit->format, blit->flags ), &SDL_FreeSurface );
+    //mFontSurface.reset( loadfromXPMData( alternatefont_xpm, blit->format, blit->flags ), &SDL_FreeSurface );
+    mFontSurface.createFromSDLSfc( loadfromXPMData( alternatefont_xpm, blit->format, blit->flags ) );
 	return true;
 }
 
 
 
-void GsFont::loadinternalFont()
+void GsFont::loadinternalFont(const char *pixmap[])
 {
 	SDL_Surface *blit = gVideoDriver.getBlitSurface();
 
-    mFontSurface.reset( loadfromXPMData( GsFont_xpm, blit->format, blit->flags ), &SDL_FreeSurface );
+    mFontSurface.createFromSDLSfc( loadfromXPMData( pixmap, blit->format, blit->flags ) );
+
+    auto &fontSfc = mFontSurface;
+    //GsWeakSurface fontSfc(mFontSurface.get());
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    SDL_SetSurfaceBlendMode(mFontSurface.get(), SDL_BLENDMODE_BLEND);
+    //SDL_SetSurfaceBlendMode(mFontSurface.get(), SDL_BLENDMODE_BLEND);
+    fontSfc.setBlendMode(SDL_BLENDMODE_BLEND);
 #endif
+}
+
+void GsFont::loadinternalFont(const int size)
+{
+    if(size == 1)
+    {
+        setFillWidthTable(8);
+        loadinternalFont(GsFont_xpm);
+    }
+    else if(size == 2)
+    {
+        setFillWidthTable(16);
+        loadinternalFont(GsFont2x_xpm);
+    }
+    else
+    {
+        throw(0);
+    }
 }
 
 // This sets the width of the characters so the text is printed nicely.
@@ -184,7 +212,7 @@ void GsFont::setWidthToCharacter(Uint8 width, Uint16 letter)
 
 void GsFont::tintColor( const Uint32 fgColor )
 {
-    SDL_Surface *sfc = mFontSurface.get();
+    SDL_Surface *sfc = mFontSurface.getSDLSurface();
     Uint32 color = 0;
     Uint8 r, g, b, a;
 
@@ -218,19 +246,15 @@ void GsFont::setupColor( const Uint32 fgColor )
 	// Here comes the main part. We have to manipulate the Surface the way it gets
 	// the given color
 	SDL_Color color[16];
-	memcpy( color, mFontSurface->format->palette->colors, 16*sizeof(SDL_Color) );
+    memcpy( color, mFontSurface.getSDLSurface()->format->palette->colors, 16*sizeof(SDL_Color) );
 
     SDL_PixelFormat *pPixelformat = gVideoDriver.getBlitSurface()->format;
 
     SDL_GetRGB(fgColor, pPixelformat, &color[15].r, &color[15].g, &color[15].b);
 
-	// Change palette colors to the desired one
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-    SDL_SetPaletteColors(mFontSurface->format->palette, color, 0, 255);
-    SDL_SetColorKey( mFontSurface.get(), SDL_TRUE, 16);
-#else
-	SDL_SetColors( mFontSurface.get(), color, 0, 16);
-#endif
+    // Change palette colors to the one requested
+    mFontSurface.setPaletteColors(color);
+    mFontSurface.setColorKey(COLORKEY_4BIT);
 }
 
 Uint32 GsFont::getFGColor()
@@ -238,7 +262,8 @@ Uint32 GsFont::getFGColor()
 	// Here comes the main part. We have to manipulate the Surface the way it gets
 	// the given color
 	SDL_Color color[16];
-	memcpy( color, mFontSurface->format->palette->colors, 16*sizeof(SDL_Color) );
+    //memcpy( color, mFontSurface->format->palette->colors, 16*sizeof(SDL_Color) );
+    memcpy( color, mFontSurface.getSDLSurface()->format->palette->colors, 16*sizeof(SDL_Color) );
 
     SDL_PixelFormat *pPixelformat = gVideoDriver.getBlitSurface()->format;
 
@@ -313,7 +338,7 @@ unsigned int GsFont::getPixelTextWidth( const std::string& text )
 
 unsigned int GsFont::getPixelTextHeight()
 {
-	return mFontSurface->h/16;
+    return mFontSurface.getSDLSurface()->h/16;
 }
 
 
@@ -343,7 +368,8 @@ Uint32 GsFont::getBGColour(SDL_PixelFormat *format, const bool highlight)
 void  GsFont::getBGColour(Uint8 *r, Uint8 *g, Uint8 *b, const bool highlight)
 {
 
-    GsWeakSurface fontSfc(mFontSurface.get());
+    //GsWeakSurface fontSfc(mFontSurface.get());
+    auto &fontSfc = mFontSurface;
 
     const Uint32 color = fontSfc.getPixel(0, highlight ? 80 : 16 );
 
@@ -361,17 +387,13 @@ void GsFont::drawCharacter(SDL_Surface* dst, Uint16 character, Uint16 xoff, Uint
 {
 	SDL_Rect scrrect, dstrect;
 
-//#if SDL_VERSION_ATLEAST(2, 0, 0)
-
-//#else
-    scrrect.x = (mFontSurface->w/16)*(character%16);
-	scrrect.y = (mFontSurface->h/16)*(character/16);
+    scrrect.x = (mFontSurface.width()/16)*(character%16);
+    scrrect.y = (mFontSurface.height()/16)*(character/16);
 	scrrect.w = dstrect.w = (mWidthtable[character]);
-	scrrect.h = dstrect.h = (mFontSurface->h/16);
+    scrrect.h = dstrect.h = (mFontSurface.height()/16);
 	dstrect.x = xoff;	dstrect.y = yoff;
-//#endif
 
-	BlitSurface(mFontSurface.get(), &scrrect, dst, &dstrect);
+    BlitSurface(mFontSurface.getSDLSurface(), &scrrect, dst, &dstrect);
 }
 
 void GsFont::drawFont(SDL_Surface* dst,
@@ -380,66 +402,53 @@ void GsFont::drawFont(SDL_Surface* dst,
                       const Uint16 yoff,
                       const bool highlight)
 {
-	unsigned int i,x=xoff,y=yoff;
+    unsigned int x=xoff,y=yoff;
 
-	if(text.size() != 0)
-	{
-		for(i=0;i<text.size();i++)
-		{
-			unsigned char c = text[i];
+    for( unsigned int i=0 ; i<text.size() ; i++)
+    {
+        unsigned char c = text[i];
 
-			if ( !endofText( text.substr(i) ) )
-			{
-				if(highlight) c |= 128;
+        if ( !endofText( text.substr(i) ) )
+        {
+            if(highlight) c |= 128;
 
-				drawCharacter(dst, c, x, y);
+            drawCharacter(dst, c, x, y);
 
-				x+=mWidthtable[c];
-			}
-			else
-			{
-				x=xoff;
-				y+=8;
-			}
-		}
-	}
+            x+=mWidthtable[c];
+        }
+        else
+        {
+            x=xoff;
+            y+=8;
+        }
+    }
+
 }
 
 void GsFont::drawFontAlpha(SDL_Surface* dst, const std::string& text, Uint16 xoff, Uint16 yoff, const Uint8 alpha)
 {
 	unsigned int i,x=xoff,y=yoff;
 
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-    SDL_SetSurfaceAlphaMod(mFontSurface.get(), alpha);
-#else
-    SDL_SetAlpha(mFontSurface.get(), SDL_SRCALPHA, alpha);
-#endif
+    mFontSurface.setAlpha(alpha);
 
-	if(text.size() != 0)
-	{
-		for(i=0;i<text.size();i++)
-		{
-			unsigned char c = text[i];
+    for(i=0;i<text.size();i++)
+    {
+        unsigned char c = text[i];
 
-			if ( !endofText( text.substr(i) ) )
-			{
-				drawCharacter(dst, c, x, y);
+        if ( !endofText( text.substr(i) ) )
+        {
+            drawCharacter(dst, c, x, y);
 
-				x+=mWidthtable[c];
-			}
-			else
-			{
-				x=xoff;
-				y+=8;
-			}
-		}
-	}
+            x+=mWidthtable[c];
+        }
+        else
+        {
+            x=xoff;
+            y+=8;
+        }
+    }
 
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-    SDL_SetSurfaceAlphaMod(mFontSurface.get(), SDL_ALPHA_OPAQUE);
-#else
-    SDL_SetAlpha(mFontSurface.get(), SDL_SRCALPHA, SDL_ALPHA_OPAQUE);
-#endif
+    mFontSurface.setAlpha(SDL_ALPHA_OPAQUE);
 }
 
 
@@ -522,10 +531,4 @@ void GsFont::drawFontCentered(SDL_Surface* dst,
 	ymidpos = ylineoff + (height - 8)/2;
 
 	drawFont(dst, text, xmidpos, ymidpos, highlight);
-}
-
-
-void GsFont::drawMap(SDL_Surface* dst)
-{
-	BlitSurface(mFontSurface.get(), NULL, dst, NULL);
 }

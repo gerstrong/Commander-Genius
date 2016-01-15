@@ -43,11 +43,11 @@ public:
 	
 	
 	// For saving and loading...
-	virtual void deserialize(CSaveGameController &savedGame) {}
-	virtual void serialize(CSaveGameController &savedGame) {}
+    virtual void deserialize(CSaveGameController &) {}
+    virtual void serialize(CSaveGameController &) {}
 
-    virtual void serialize(boost::property_tree::ptree &node) {}
-    virtual void deserialize(boost::property_tree::ptree &node) {}
+    virtual void serialize(boost::property_tree::ptree &) {}
+    virtual void deserialize(boost::property_tree::ptree &) {}
 
 	// This is used for action format only
 	uint16_t mFoeID;

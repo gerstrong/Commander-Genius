@@ -31,7 +31,7 @@ extern "C"
  //Lock SDL_SemWait( gDataLock );
 char *dreamsengine_datapath = nullptr;
 
-extern void RefKeen_Patch_id_ca(void);
+//extern void RefKeen_Patch_id_ca(void);
 extern void RefKeen_Patch_id_us(void);
 extern void RefKeen_Patch_id_rf(void);
 extern void RefKeen_Patch_kd_play(void);
@@ -116,7 +116,7 @@ static const BE_GameVerDetails_T g_be_gamever_kdreamse113 = {
 // (REFKEEN) Used for patching version-specific stuff
 uint16_t refkeen_compat_kd_play_objoffset;
 
-extern	uint8_t	*EGAhead;
+//extern	uint8_t	*EGAhead;
 extern	uint8_t	*EGAdict;
 extern	uint8_t	*maphead;
 extern	uint8_t	*mapdict;
@@ -170,21 +170,23 @@ void setupObjOffset()
     }
 }
 
+std::map< std::string, std::vector<uint8_t> > gDataMapVector;
 
 namespace dreams
 {
 
 
+// Mapping the strings of the filenames to the pointers where we store the embedded data
+std::map< std::string, uint > gOffsetMap;
+
 
 bool setupAudio()
 {
-    //const CExeFile &ExeFile = gKeenFiles.exeFile;
-    //const unsigned int ep = ExeFile.getEpisode();
+    CAudioGalaxy *audio = new CAudioGalaxy();       
 
-    CAudioGalaxy *audio = new CAudioGalaxy();
-    //AudioDreams *audio = new AudioDreams();
+    const auto audioOffset = gOffsetMap["AUDIODCT.KDR"];
 
-    if(audio->loadSoundData())
+    if(audio->loadSoundData(audioOffset))
     {
         g_pSound->setupSoundData(audio->sndSlotMapGalaxy[7], audio);
         return true;
@@ -196,13 +198,13 @@ bool setupAudio()
 
 bool extractEmbeddedFilesIntoMemory(const BE_GameVerDetails_T &gameVerDetails)
 {
-    // Mapping the strings of the filenames to the pointers where we store the embedded data
-    std::map< std::string, uint8_t **> dataMap;
+
+    std::map< std::string, uint8_t **> dataMap;    
 
     std::map< std::string, uint32_t> dataSizes;
 
     // CA
-    dataMap.insert ( std::pair<std::string, uint8_t **>("EGAHEAD.KDR", &EGAhead) );
+    //dataMap.insert ( std::pair<std::string, uint8_t **>("EGAHEAD.KDR", &EGAhead) );
     dataMap.insert ( std::pair<std::string, uint8_t **>("EGADICT.KDR", &EGAdict) );
     dataMap.insert ( std::pair<std::string, uint8_t **>("MAPHEAD.KDR", &maphead) );
     dataMap.insert ( std::pair<std::string, uint8_t **>("MAPDICT.KDR", &mapdict) );
@@ -221,20 +223,36 @@ bool extractEmbeddedFilesIntoMemory(const BE_GameVerDetails_T &gameVerDetails)
 
     for (const BE_EmbeddedGameFileDetails_T *embeddedfileDetailsBuffer = gameVerDetails.embeddedFiles; embeddedfileDetailsBuffer->fileDetails.filename; ++embeddedfileDetailsBuffer)
     {
-        auto it = dataMap.find(embeddedfileDetailsBuffer->fileDetails.filename);
+        const std::string fName = embeddedfileDetailsBuffer->fileDetails.filename;
+        auto it = dataMap.find(fName);
+
+        const unsigned int dataSize = embeddedfileDetailsBuffer->fileDetails.filesize;
+
+        uint offset = embeddedfileDetailsBuffer->offset;
+        gOffsetMap[fName] = offset;
+
+        auto offsetPtr = headerData+offset;
+
+        auto &localVector = gDataMapVector[fName];
+
+        localVector.resize(dataSize);
+
+        memcpy(localVector.data(), offsetPtr, dataSize);
+
 
         if(it == dataMap.end())
             continue;
 
-        uint8_t **data = it->second;
+        // Legacy C implementation
+        {
+            uint8_t **data = it->second;            
 
-        const unsigned int dataSize = embeddedfileDetailsBuffer->fileDetails.filesize;
+            *data = (uint8_t*) malloc(dataSize);
 
-        *data = (uint8_t*) malloc(dataSize);
+            memcpy(*data, offsetPtr, dataSize);
 
-        memcpy(*data, headerData+embeddedfileDetailsBuffer->offset, dataSize);
-
-        dataSizes[it->first] = dataSize;
+            dataSizes[it->first] = dataSize;
+        }
     }
 
     mapFile.RLEWtag = 0;
@@ -256,9 +274,7 @@ bool extractEmbeddedFilesIntoMemory(const BE_GameVerDetails_T &gameVerDetails)
     memcpy(mapFile.tileinfo.data(), mapheadPtr, mapFile.tileinfo.size() );
 
 
-
-
-
+    // If we have a defined EGAHEAD, get it.
 
     return true;
 }
@@ -282,6 +298,8 @@ bool DreamsEngine::loadResources()
 
     mEngineLoader.setStyle(PROGRESS_STYLE_BAR);
     const std::string threadname = "Loading Keen Dreams";
+
+
 
     struct DreamsDataLoad : public Action
     {
@@ -404,7 +422,6 @@ void InitGame()
     for (i=KEEN_LUMP_START;i<=KEEN_LUMP_END;i++)
         MM_SetLock (&grsegs[i],true);
 
-    //CA_LoadAllSounds ();
     setupAudio();
 
     fontcolor = WHITE;
@@ -480,7 +497,8 @@ void DreamsEngine::applyScreenMode()
         break;
     }
 
-    mDreamsSurface.create(0, sdlTexWidth, sdlTexHeight, RES_BPP, 0, 0, 0, 0);
+    const GsRect<Uint16> gameRect(sdlTexWidth, sdlTexHeight);
+    gVideoDriver.setNativeResolution(gameRect);
 
     // Mode changed, set it to zero
     mChangeMode = 0;
@@ -547,38 +565,11 @@ void DreamsEngine::ponder(const float deltaT)
     if(mGameState == INTRO_TEXT) // Where the shareware test is shown
     {
         // If we press any switch to the next section -> where Dreams is really loaded into CGA/EGA mode and show the intro screen
-        if( gInput.getPressedAnyCommand() || gInput.mouseClicked() )
-        {
-            mGameState = INTRO_SCREEN;
-            GameLoop();
-        }
+        gInput.flushAll();
+        mGameState = INTRO_SCREEN;
+        GameLoop();
     }
 }
-
-
-
-
-void DreamsEngine::updateHostDisplay()
-{
-    SDL_Surface *sfc = mDreamsSurface.getSDLSurface();
-    SDL_Surface *blitSfc = gVideoDriver.getBlitSurface();
-
-    BEL_ST_UpdateHostDisplay(sfc);
-
-    SDL_Rect dstRect, srGsRect;
-    srGsRect.x = srGsRect.y = 0;
-    dstRect.x = dstRect.y = 0;
-
-    srGsRect.w = sfc->w;
-    srGsRect.h = sfc->h;
-    dstRect.w = blitSfc->w;
-    dstRect.h = blitSfc->h;
-
-    CVidConfig &vidConf = gVideoDriver.getVidConfig();
-
-    blitScaled( sfc, srGsRect, blitSfc, dstRect, vidConf.m_ScaleXFilter );
-}
-
 
 
 void DreamsEngine::render()
@@ -591,7 +582,8 @@ void DreamsEngine::render()
         applyScreenMode();
     }
 
-    updateHostDisplay();
+    SDL_Surface *blitSfc = gVideoDriver.getBlitSurface();
+    BEL_ST_UpdateHostDisplay(blitSfc);
 
     // Unlock
     SDL_SemPost( gpRenderLock );

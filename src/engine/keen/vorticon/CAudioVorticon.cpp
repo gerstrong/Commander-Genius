@@ -250,7 +250,7 @@ void CAudioVorticon::setupAudioMap()
 }
 
 
-bool CAudioVorticon::loadSoundData()
+bool CAudioVorticon::loadSoundData(const uint dictOffset)
 {
     setupAudioMap();
 

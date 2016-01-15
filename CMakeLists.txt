@@ -3,14 +3,27 @@
 
 #TODO: Search SDL_image 2.0 still fails
 
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.1)
+
 
 OPTION(OGG "Ogg/Vorbis support" Yes)
 OPTION(TREMOR "Tremor support" No)
 OPTION(DBFUSION "Dosbox fusion" No)
 OPTION(USE_SDL2 "SDL2 support" Yes)
 
+
 Project(CommanderGenius)
+
+set (CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/CMake")
+include(cotire)
+
+if (CMAKE_VERSION VERSION_LESS "3.1")
+  if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    set (CMAKE_CXX_FLAGS "--std=gnu++11 ${CMAKE_CXX_FLAGS}")
+  endif ()
+else ()
+  set (CMAKE_CXX_STANDARD 11)
+endif ()
 
 #------------------------------------------------------------------------------
 # Set a default build type if none was specified

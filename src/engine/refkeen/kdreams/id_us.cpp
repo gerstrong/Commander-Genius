@@ -597,13 +597,13 @@ US_TextScreen(void)
 	switch (refkeen_current_gamever)
 	{
 	case BE_GAMEVER_KDREAMSE113:
-#include "id_us_s_kdreams113.cpp"
+#include "id_us_s_kdreams113.hpp"
 		break;
 	case BE_GAMEVER_KDREAMSE193:
-#include "id_us_s_kdreams192andlater.cpp"
+#include "id_us_s_kdreams192andlater.hpp"
 		break;
 	case BE_GAMEVER_KDREAMSE120:
-#include "id_us_s_kdreams120.cpp"
+#include "id_us_s_kdreams120.hpp"
 		break;
 	}
 #endif // EGA/CGA
@@ -1223,8 +1223,8 @@ US_LineInput(id0_int_t x,id0_int_t y,id0_char_t *buf,const id0_char_t *def,id0_b
 	LastScan = sc_None;
 
 	// REFKEEN - Alternative controllers support
-	BE_ST_AltControlScheme_Push();
-	BE_ST_AltControlScheme_PrepareTextInput();
+    /*BE_ST_AltControlScheme_Push();
+    BE_ST_AltControlScheme_PrepareTextInput();*/
 
 	while (!done)
 	{
@@ -1396,7 +1396,7 @@ US_LineInput(id0_int_t x,id0_int_t y,id0_char_t *buf,const id0_char_t *def,id0_b
     gInput.flushAll();
 
 	// REFKEEN - Alternative controllers support
-	BE_ST_AltControlScheme_Pop();
+    //BE_ST_AltControlScheme_Pop();
 
 	if (cursorvis)
 		USL_XORICursor(x,y,s,cursor);
@@ -2547,8 +2547,8 @@ static void
 USL_DoHelp(memptr text,id0_long_t len)
 {
 	// REFKEEN - Alternative controllers support	
-	BE_ST_AltControlScheme_Push();
-	BE_ST_AltControlScheme_PreparePageScrollingControls(sc_PgUp, sc_PgDn);
+    /*BE_ST_AltControlScheme_Push();
+    BE_ST_AltControlScheme_PreparePageScrollingControls(sc_PgUp, sc_PgDn);*/
 
 	id0_boolean_t		done,
 				moved;
@@ -2792,7 +2792,7 @@ USL_DoHelp(memptr text,id0_long_t len)
 	VW_UpdateScreen();
 	US_RestoreWindow(&wr);
 
-	BE_ST_AltControlScheme_Pop(); // REFKEEN - Alternative controllers support
+    //BE_ST_AltControlScheme_Pop(); // REFKEEN - Alternative controllers support
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -3622,7 +3622,7 @@ USL_TearDownCtlPanel(void)
 			VW_UpdateScreen();
 #endif
 
-			CA_LoadAllSounds();
+            //CA_LoadAllSounds();
 		}
 	}
 }
@@ -3636,8 +3636,8 @@ void
 US_ControlPanel(void)
 {        
 	// REFKEEN - Alternative controllers support	
-	BE_ST_AltControlScheme_Push();
-	BE_ST_AltControlScheme_PrepareMenuControls();
+    /*BE_ST_AltControlScheme_Push();
+    BE_ST_AltControlScheme_PrepareMenuControls();*/
 
 	id0_char_t		gamename[MaxGameName + 10 + 1];
 	ScanCode	c;
@@ -3889,7 +3889,7 @@ US_ControlPanel(void)
 
 	CA_DownLevel();
 
-	BE_ST_AltControlScheme_Pop(); // REFKEEN - Alternative controllers support
+    //BE_ST_AltControlScheme_Pop(); // REFKEEN - Alternative controllers support
 }
 
 //	High score routines
@@ -4032,9 +4032,9 @@ void RefKeen_Patch_id_us(void)
 	BE_Cross_free_mem_loaded_embedded_rsrc(context);
 	BE_Cross_free_mem_loaded_embedded_rsrc(story);
 	// Don't use CA_LoadFile for (sort-of) compatibility; It also doesn't work!
-	if (!BE_Cross_load_embedded_rsrc_to_mem("GAMETEXT."EXTENSION, (memptr *)&gametext) ||
-	    !BE_Cross_load_embedded_rsrc_to_mem("CONTEXT."EXTENSION, (memptr *)&context) ||
-	    !BE_Cross_load_embedded_rsrc_to_mem("STORY."EXTENSION, (memptr *)&story)
+    if (!BE_Cross_load_embedded_rsrc_to_mem("GAMETEXT." EXTENSION, (memptr *)&gametext) ||
+        !BE_Cross_load_embedded_rsrc_to_mem("CONTEXT." EXTENSION, (memptr *)&context) ||
+        !BE_Cross_load_embedded_rsrc_to_mem("STORY." EXTENSION, (memptr *)&story)
 	)
 		// Similarly we don't use Quit
 		BE_ST_ExitWithErrorMsg("RefKeen_Patch_id_us - Failed to load at least one file.");
