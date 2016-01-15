@@ -30,9 +30,9 @@ public:
      * @brief LoadFromAudioCK   Load audio from the CK files
      * @return true if everything went finde otherwise false
      */
-    bool LoadFromAudioCK(const uint dictOffset);
+    bool LoadFromAudioCK(const unsigned int dictOffset);
 
-    bool loadSoundData(const uint dictOffset);
+    bool loadSoundData(const unsigned int dictOffset);
 	void unloadSound();
 	
 	std::map< unsigned int, std::map<GameSound, int> > sndSlotMapGalaxy;

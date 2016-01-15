@@ -32,7 +32,7 @@ class CHuffman
 public:
     bool readDictionaryNumber(const CExeFile& ExeFile,
                               const int dictnum ,
-                              const uint dictOffset);
+                              const unsigned int dictOffset);
 	bool readDictionaryNumberfromEnd( const CExeFile& ExeFile );
 	bool readDictionaryFromFile( const std::string &filename );
 	void readDictionaryAt( byte *p_exedata, unsigned long offset);

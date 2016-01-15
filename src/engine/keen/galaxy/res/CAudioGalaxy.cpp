@@ -293,7 +293,7 @@ void CAudioGalaxy::setupAudioMap()
  * 			AUDIOHED and AUDIODICT to get the sounds.
  * 			Caution: CMusic Class has a function which is similar but only loads the music from one level.
  */
-bool CAudioGalaxy::LoadFromAudioCK(const uint dictOffset)
+bool CAudioGalaxy::LoadFromAudioCK(const unsigned int dictOffset)
 {
     const CExeFile &ExeFile = gKeenFiles.exeFile;
 
@@ -397,7 +397,7 @@ bool CAudioGalaxy::LoadFromAudioCK(const uint dictOffset)
         // PATCH: Keen Dreams Plus. For some reason the second slot has an invalid offset
         if(audiohed[1] == 0xFF)
         {
-            for(uint i=1 ; i<number_of_audiorecs ; i++)
+            for(unsigned int i=1 ; i<number_of_audiorecs ; i++)
             {
                 audiohed[i] = audiohed[i+1];
             }
@@ -481,7 +481,7 @@ bool CAudioGalaxy::LoadFromAudioCK(const uint dictOffset)
 /**
  * Main load function for the galaxy audio
  */
-bool CAudioGalaxy::loadSoundData(const uint dictOffset)
+bool CAudioGalaxy::loadSoundData(const unsigned int dictOffset)
 {
     COPLEmulator &OPLEmulator = g_pSound->getOPLEmulatorRef();
 

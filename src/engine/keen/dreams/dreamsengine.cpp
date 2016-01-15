@@ -177,7 +177,7 @@ namespace dreams
 
 
 // Mapping the strings of the filenames to the pointers where we store the embedded data
-std::map< std::string, uint > gOffsetMap;
+std::map< std::string, unsigned int > gOffsetMap;
 
 
 bool setupAudio()
@@ -228,7 +228,7 @@ bool extractEmbeddedFilesIntoMemory(const BE_GameVerDetails_T &gameVerDetails)
 
         const unsigned int dataSize = embeddedfileDetailsBuffer->fileDetails.filesize;
 
-        uint offset = embeddedfileDetailsBuffer->offset;
+        unsigned int offset = embeddedfileDetailsBuffer->offset;
         gOffsetMap[fName] = offset;
 
         auto offsetPtr = headerData+offset;

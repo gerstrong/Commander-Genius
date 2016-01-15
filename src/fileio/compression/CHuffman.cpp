@@ -14,7 +14,7 @@ const uint8_t DICTSIG[DICT_SIG_BYTES] = { 0xFD, 0x01, 0x00, 0x00, 0x00, 0x00 };
 
 bool CHuffman::readDictionaryNumber( const CExeFile& ExeFile,
                                      const int dictnum,
-                                     const uint dictOffset )
+                                     const unsigned int dictOffset )
 {
     uint8_t dictnumleft = dictnum;
 

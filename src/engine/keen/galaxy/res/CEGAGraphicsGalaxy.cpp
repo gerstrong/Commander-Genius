@@ -469,7 +469,7 @@ bool CEGAGraphicsGalaxy::readEGAHead()
 
 
 
-/*void dumpData(const std::string &dumpfile, byte *in, const uint inlen)
+/*void dumpData(const std::string &dumpfile, byte *in, const unsigned int inlen)
 {
     std::ofstream ofile( dumpfile.c_str() );
     ofile.write( reinterpret_cast<char*>(in), inlen );
