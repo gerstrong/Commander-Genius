@@ -643,6 +643,16 @@ void CInput::pollEvents()
 
     auto &dispRect = gVideoDriver.getVidConfig().m_DisplayRect;
 
+    // TODO: It seems that Win32 Build get different coordinates. I still don't know why...
+    // Maybe I'm doing something wrong here!
+#ifdef WIN32
+    //if( !gVideoDriver.isOpenGL() )
+    {
+        activeArea.x = 0;
+        activeArea.y = 0;
+    }
+#endif
+
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 #else
