@@ -284,13 +284,15 @@ void GsApp::runMainCycle()
         if( mustShutdown() )
             break;
 
-        int waitTime = renderLatency - elapsed;
+        const auto fWaitTime = renderLatency - elapsed;
 
         // wait time remaining in current loop
-        if( waitTime > 0 )
-            timerDelay(waitTime);
-
-        total_elapsed += static_cast<float>(waitTime);
+        if( fWaitTime > 0.0 )
+        {
+            const auto waitTime = static_cast<Uint32>(fWaitTime);
+            timerDelay( waitTime );
+            total_elapsed += static_cast<float>(waitTime);
+        }
 
         // This will refresh the fps display, so it stays readable and calculates an average value.
         counter++;
