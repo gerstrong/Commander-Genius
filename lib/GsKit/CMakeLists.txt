@@ -1,7 +1,8 @@
 # CMake file for development of Commander Genius (taken from OLX)
 # This CMake file is used under Linux normally. 
 
-cmake_minimum_required(VERSION 3.1)
+#cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 2.8.12)
 
 if (CMAKE_VERSION VERSION_LESS "3.1")
   if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")

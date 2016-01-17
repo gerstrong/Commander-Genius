@@ -3,7 +3,8 @@
 
 #TODO: Search SDL_image 2.0 still fails
 
-cmake_minimum_required(VERSION 3.1)
+#cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 2.8.12)
 
 
 OPTION(OGG "Ogg/Vorbis support" Yes)
@@ -13,6 +14,10 @@ OPTION(USE_SDL2 "SDL2 support" Yes)
 
 
 Project(CommanderGenius)
+
+if(POLICY CMP0058)
+    cmake_policy(SET CMP0058 NEW)
+endif()
 
 set (CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/CMake")
 include(cotire)
