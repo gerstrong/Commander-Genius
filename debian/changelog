@@ -1,3 +1,23 @@
+commandergenius (1.9.1ppa2) trusty; urgency=low
+
+  *  Cmake version 2.8.12 compatible
+
+ -- Gerhard Stein <gerstrong@gmail.com>  Tue, 19 Jan 2016 19:13:56 +0100
+
+commandergenius (1.9.1ppa1) trusty; urgency=low
+
+  *  Support for Keen Dreams Mods
+  *  A lot of bug fixes especially for Keen Dreams
+
+ -- Gerhard Stein <gerstrong@gmail.com>  Sat, 16 Jan 2016 20:10:54 +0100
+
+commandergenius (1.9.0ppa1) trusty; urgency=low
+
+  *  Support for Keen Dreams
+
+ -- Gerhard Stein <gerstrong@gmail.com>  Sun, 06 Dec 2015 14:02:29 +0100
+
+
 commandergenius (1.8.4ppa3) trusty; urgency=low
 
   *  Update of Commander Genius
