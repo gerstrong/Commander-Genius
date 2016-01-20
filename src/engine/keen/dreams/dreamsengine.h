@@ -7,6 +7,7 @@
 #include <graphics/GsSurface.h>
 #include <memory>
 
+
 namespace dreams
 {
 
@@ -64,11 +65,6 @@ public:
 
 
     /**
-     * @brief updateHostDisplay Will update the display of all the possible states the game runs into
-     */
-    void updateHostDisplay();
-
-    /**
      * @brief render    Everything to ne drawn here!
      */
     void render();
@@ -82,16 +78,8 @@ private:
         INTRO_SCREEN    // Within the gameloop it will show the intro screen of the dreams game
     } mGameState = INTRO_TEXT;
 
-
     std::unique_ptr<Action> mpPlayLoopAction;
     std::unique_ptr<ThreadPoolItem> mpPlayLoopThread;
-
-    // Because some routines have loops in Refkeen we pass the main game to a separate thread and catch the apropiate signals
-    //ThreadPoolItem *mpThread = nullptr;
-
-    //std::shared_ptr<SDL_Surface> mpDreamsSurface;
-    GsSurface    mDreamsSurface;
-
 
     /**
      * @brief mChangeMode   An integer that triggers internal resolution change

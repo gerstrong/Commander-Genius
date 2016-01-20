@@ -24,7 +24,7 @@ public:
 
 	void process();
 	void postProcess();
-	void patchMemfromFile(const std::string& patch_file_name, long offset);
+    bool patchMemfromFile(const std::string& patch_file_name, long offset);
 	void PatchLevelhint(const int level, std::list<std::string> &input);
 	void PatchLevelentry(const int level, std::list<std::string> &input);
 

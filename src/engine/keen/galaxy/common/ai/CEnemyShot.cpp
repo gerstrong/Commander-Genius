@@ -29,7 +29,7 @@ void CEnemyShot::getTouchedBy(CSpriteObject &theObject)
 {
 	if(CPlayerBase *Player = dynamic_cast<CPlayerBase*>(&theObject))
 	{
-		Player->kill();
+        Player->kill(false);
 	}
 }
 

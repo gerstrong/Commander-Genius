@@ -32,7 +32,7 @@ unsigned int fgeti(FILE *fp) {
 	return (msb<<8) | lsb;
 }
 
-void fputi(uint word, FILE *fp)
+void fputi(unsigned int word, FILE *fp)
 {
 	fputc(word&255, fp);
 	fputc(word/256, fp);

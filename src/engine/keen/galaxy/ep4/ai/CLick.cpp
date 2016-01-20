@@ -113,39 +113,40 @@ void CLick::getTouchedBy(CSpriteObject &theObject)
 bool CLick::isNearby(CSpriteObject &theObject)
 {    
     const bool odd = getProbability(80);
-    
-    
+        
     if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
     {
-	const int dy = abs(player->getYMidPos() - getYMidPos());
-	const int dx = player->getXMidPos() - getXMidPos();
-	
-	if( dy > CSF_MIN_DISTANCE_TO_BREATHE )
-	    return false;
-	
-	if( dx<-CSF_DISTANCE_TO_FOLLOW_TOLERANCE && odd )
-	    xDirection = LEFT;
-	else if( dx>+CSF_DISTANCE_TO_FOLLOW_TOLERANCE && odd )
-	    xDirection = RIGHT;
-	
-	if(getActionNumber(A_LICK_LAND))
-	{
-	    int absdx = (dx<0) ? -dx : dx;
-	    
-	    if( absdx < CSF_DISTANCE_TO_FOLLOW_TOLERANCE )
-		keenNear = true;
-	    else
-		keenNear = false;
-	    
-	    
-	    if( absdx < CSF_MIN_DISTANCE_TO_BREATHE && odd )
-	    {
-		setAction(A_LICK_BREATHE);
-		playSound(SOUND_LICK_FIREBREATH);
-		m_timer = LICK_BREATHE_TIMER;
-	    }
-	}
-	
+        const int pymid = static_cast<int>(player->getYMidPos());
+        const int ymid = static_cast<int>(getYMidPos());
+        const int dy = abs(pymid - ymid);
+        const int dx = static_cast<int>(player->getXMidPos()) - static_cast<int>(getXMidPos());
+
+        if( dy > CSF_MIN_DISTANCE_TO_BREATHE )
+            return false;
+
+        if( dx<-CSF_DISTANCE_TO_FOLLOW_TOLERANCE && odd )
+            xDirection = LEFT;
+        else if( dx>+CSF_DISTANCE_TO_FOLLOW_TOLERANCE && odd )
+            xDirection = RIGHT;
+
+        if(getActionNumber(A_LICK_LAND))
+        {
+            int absdx = (dx<0) ? -dx : dx;
+
+            if( absdx < CSF_DISTANCE_TO_FOLLOW_TOLERANCE )
+                keenNear = true;
+            else
+                keenNear = false;
+
+
+            if( absdx < CSF_MIN_DISTANCE_TO_BREATHE && odd )
+            {
+                setAction(A_LICK_BREATHE);
+                playSound(SOUND_LICK_FIREBREATH);
+                m_timer = LICK_BREATHE_TIMER;
+            }
+        }
+
     }
     
     return true;

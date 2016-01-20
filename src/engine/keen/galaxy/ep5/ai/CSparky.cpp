@@ -225,7 +225,7 @@ void CSparky::getTouchedBy(CSpriteObject &theObject)
 
 	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
 	{
-		player->kill();
+        player->kill(false);
 	}
 }
 

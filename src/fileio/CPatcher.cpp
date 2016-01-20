@@ -285,7 +285,7 @@ bool CPatcher::loadPatchfile(const std::string &patchFname)
 	return true;
 }
 
-void CPatcher::patchMemfromFile(const std::string& patch_file_name, long offset)
+bool CPatcher::patchMemfromFile(const std::string& patch_file_name, long offset)
 {
 	unsigned char *buf_to_patch;
 	unsigned char byte;
@@ -293,12 +293,16 @@ void CPatcher::patchMemfromFile(const std::string& patch_file_name, long offset)
     std::ifstream patchfile;
     OpenGameFileR(patchfile, patch_file_name, std::ios::binary);
 
-    if(!patchfile) return;
+    if(!patchfile)
+    {
+        gLogging.textOut("Error opening \"" + patch_file_name + "\".");
+        return false;
+    }
 
 	if(!m_data)
 	{
 		gLogging.textOut(PURPLE,"Warning: The patchfile was wrongly read!<br>");
-		return;
+        return false;
 	}
 
 	buf_to_patch = m_data + offset;
@@ -310,8 +314,7 @@ void CPatcher::patchMemfromFile(const std::string& patch_file_name, long offset)
 		memcpy(buf_to_patch+counter,&byte,1); // one byte every time ;-)
 		counter++;
 	}
-
-    patchfile.close();
+    return true;
 }
 
 void CPatcher::PatchLevelhint(const int level, std::list<std::string> &input)

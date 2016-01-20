@@ -55,7 +55,7 @@ void CBullet::getTouchedBy(CSpriteObject& theObject)
 
         if( player->getSpriteVariantId() != getSpriteVariantId() )
         {
-            player->kill();
+            player->kill(false);
         }
     }
 }

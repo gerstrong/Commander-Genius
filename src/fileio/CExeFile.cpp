@@ -396,7 +396,7 @@ bool CExeFile::unpackAudioInterval( RingBuffer<IMFChunkType> &imfData,
     CHuffman Huffman;
 
     if(audioDictfilename.empty())
-        Huffman.readDictionaryNumber( *this, 0 );
+        Huffman.readDictionaryNumber( *this, 0, 0 );
     else
         Huffman.readDictionaryFromFile( audioDictfilename );
 

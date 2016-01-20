@@ -469,7 +469,7 @@ bool CEGAGraphicsGalaxy::readEGAHead()
 
 
 
-/*void dumpData(const std::string &dumpfile, byte *in, const uint inlen)
+/*void dumpData(const std::string &dumpfile, byte *in, const unsigned int inlen)
 {
     std::ofstream ofile( dumpfile.c_str() );
     ofile.write( reinterpret_cast<char*>(in), inlen );
@@ -747,7 +747,8 @@ bool CEGAGraphicsGalaxy::readfonts()
 
 			Font.CreateSurface(Palette, gVideoDriver.getScrollSurface()->flags, maxwidth*16, FontHead->Height * 16);
 
-			SDL_Surface* sfc = Font.getSDLSurface();
+            auto sfc = Font.SDLSurfacePtr();
+            //SDL_Surface* sfc = srcsfc.get();
 
 			SDL_FillRect(sfc, NULL, 0x8);
 

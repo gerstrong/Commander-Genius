@@ -12,27 +12,39 @@
 const unsigned int DICT_SIG_BYTES = 6;
 const uint8_t DICTSIG[DICT_SIG_BYTES] = { 0xFD, 0x01, 0x00, 0x00, 0x00, 0x00 };
 
-bool CHuffman::readDictionaryNumber( const CExeFile& ExeFile, const int dictnum )
+bool CHuffman::readDictionaryNumber( const CExeFile& ExeFile,
+                                     const int dictnum,
+                                     const unsigned int dictOffset )
 {
     uint8_t dictnumleft = dictnum;
-    uint8_t *data_ptr = ExeFile.getRawData();
 
-    for( Uint32 i=0; i<ExeFile.getExeDataSize() ; i++ )
+    if( dictOffset == 0) // don't seek to offset
     {
-        if( memcmp(data_ptr, DICTSIG, DICT_SIG_BYTES) == 0 )
+        uint8_t *data_ptr = ExeFile.getRawData();
+
+        for( Uint32 i=0; i<ExeFile.getExeDataSize() ; i++ )
         {
-        	if(dictnumleft == 0)
-        	{
-        		uint8_t *dictdata = data_ptr-(DICT_SIZE*sizeof(nodestruct))+DICT_SIG_BYTES;
-        		const Uint32 size = DICT_SIZE*sizeof(nodestruct);
-        		memcpy(m_nodes, dictdata, size);
-        		return true;
-        	}
-        	dictnumleft--;
+            if( memcmp(data_ptr, DICTSIG, DICT_SIG_BYTES) == 0 )
+            {
+                if(dictnumleft == 0)
+                {
+                    uint8_t *dictdata = data_ptr-(DICT_SIZE*sizeof(nodestruct))+DICT_SIG_BYTES;
+                    const Uint32 size = DICT_SIZE*sizeof(nodestruct);
+                    memcpy(m_nodes, dictdata, size);
+                    return true;
+                }
+                dictnumleft--;
+            }
+            data_ptr++;
         }
-        data_ptr++;
+        return false;
     }
-    return false;
+    else // Otherwise copy the dictionary normally
+    {
+        uint8_t *dictdata = (byte*)(ExeFile.getHeaderData())+dictOffset;
+        memcpy(reinterpret_cast<char*>(m_nodes), dictdata, DICT_SIZE*sizeof(nodestruct));
+        return true;
+    }
 }
 
 bool CHuffman::readDictionaryNumberfromEnd(const CExeFile& ExeFile)

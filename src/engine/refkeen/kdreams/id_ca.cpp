@@ -17,12 +17,20 @@
  */
 
 #include <vector>
+#include <fstream>
+#include <base/utils/FindFile.h>
+#include <base/GsLogging.h>
 
 #include "engine/keen/dreams/dreamsengine.h"
+#include "fileio/KeenFiles.h"
+
 
 #include "id_heads.h"
 
 extern mapfiletype_modern  mapFile;
+
+extern std::map< std::string, std::vector<uint8_t> > gDataMapVector;
+
 
 extern "C"
 {
@@ -67,7 +75,6 @@ typedef struct
 	id0_byte_t		tileinfo[];
 } __attribute__((__packed__)) mapfiletype;
 
-
 /*
 =============================================================================
 
@@ -100,7 +107,7 @@ BE_FILE_T			profilehandle;
 */
 
 extern	id0_long_t	*CGAhead;
-extern	id0_long_t	*EGAhead;
+//extern	id0_long_t	*EGAhead;
 extern	id0_byte_t	*CGAdict;
 extern	id0_byte_t	*EGAdict;
 extern	id0_byte_t	*maphead;
@@ -162,7 +169,6 @@ void CAL_GetGrChunkLength (id0_int_t chunk)
 {
 	BE_Cross_seek(grhandle,grstarts[chunk],SEEK_SET);
 	BE_Cross_readInt32LE(grhandle, &chunkexplen);
-	//read(grhandle,&chunkexplen,sizeof(chunkexplen));
 	chunkcomplen = grstarts[chunk+1]-grstarts[chunk]-4;
 }
 
@@ -460,7 +466,7 @@ void CA_RLEWexpand (id0_unsigned_t id0_huge *source, id0_unsigned_t id0_huge *de
 }
 
 
-
+}
 /*
 =============================================================================
 
@@ -486,14 +492,15 @@ void CAL_SetupGrFile (void)
 #endif
 #if (NUMPICS>0) || (NUMPICM>0) || (NUMSPRITES>0)
 	memptr compseg;
-#endif
+#endif   
 
 
 #ifdef GRHEADERLINKED
 
 #if GRMODE == EGAGR
 	grhuffman = (huffnode *)EGAdict;
-	grstarts = EGAhead;
+    auto *grdataStart = gDataMapVector["EGAHEAD.KDR"].data();
+    memcpy(&grstarts, &grdataStart, sizeof(id0_long_t*));
 #endif
 #if GRMODE == CGAGR
 	grhuffman = (huffnode *)CGAdict;
@@ -549,6 +556,42 @@ void CAL_SetupGrFile (void)
 
 #endif
 
+
+    // Try to read the egahead, only if there is a file to be read
+
+    if(!gKeenFiles.egaheadFilename.empty())
+    {
+        //read contents to EGAhead but free() first.
+        //free(EGAhead);
+
+        const std::string egaHeadPath =  JoinPaths(gKeenFiles.gameDir, gKeenFiles.egaheadFilename);
+
+        std::ifstream file; OpenGameFileR(file, egaHeadPath, std::ios::binary);
+
+        if(!file)
+        {
+            gLogging.textOut(RED,"Error the file \"" + egaHeadPath + "\" is missing or can't be read!");
+        }
+        else
+        {
+            auto &localVec = gDataMapVector["EGAHEAD.KDR"];
+
+            file.seekg (0, file.end);
+            const int egaHeadSize = file.tellg();
+            file.seekg (0, file.beg);
+
+            localVec.resize(egaHeadSize);
+
+            char *egaHeadPtr = (char*)(localVec.data());
+
+            file.read(egaHeadPtr, egaHeadSize);
+
+            auto *grdataStart = gDataMapVector["EGAHEAD.KDR"].data();
+            memcpy(&egaHeadPtr, &grdataStart, sizeof(id0_long_t*));
+        }
+    }
+
+
 //
 // Open the graphics file, leaving it open until the game is finished
 //
@@ -560,7 +603,6 @@ void CAL_SetupGrFile (void)
 		Quit ("Cannot open "GREXT"GRAPH."EXTENSION"!");
 #elif defined REFKEEN_VER_KDREAMS_ANYEGA_ALL
 	grhandle = BE_Cross_open_for_reading("KDREAMS.EGA");
-	//grhandle = open("KDREAMS.EGA", O_RDONLY | O_BINARY);
 	if (!BE_Cross_IsFileValid(grhandle))
  	//if (grhandle == -1)
 		Quit ("Cannot open KDREAMS.EGA!");
@@ -632,6 +674,9 @@ void CAL_SetupGrFile (void)
 
 //==========================================================================
 
+
+extern "C"
+{
 
 /*
 ======================
@@ -1863,7 +1908,7 @@ void CA_CacheMarks (const id0_char_t *title, id0_boolean_t cachedownlevel)
 id0_long_t	*CGAhead;
 id0_byte_t	*CGAdict;
 #else
-id0_long_t	*EGAhead;
+//id0_long_t	*EGAhead;
 id0_byte_t	*EGAdict;
 #endif
 id0_byte_t	*maphead;
@@ -1871,7 +1916,7 @@ id0_byte_t	*mapdict;
 id0_byte_t	*audiohead;
 id0_byte_t	*audiodict;
 
-void RefKeen_Patch_id_ca(void)
+/*void RefKeen_Patch_id_ca(void)
 {
 	int audiodictsize, audioheadsize, GFXdictsize, GFXheadsize, mapdictsize, mapheadsize;
 #ifdef REFKEEN_VER_KDREAMS_CGA_ALL
@@ -1928,5 +1973,5 @@ void RefKeen_Patch_id_ca(void)
 
 
 }
-
+*/
 

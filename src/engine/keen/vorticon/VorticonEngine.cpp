@@ -34,7 +34,7 @@ bool setupAudio()
 {
     CAudioVorticon *audio = new CAudioVorticon;
 
-    if(audio->loadSoundData())
+    if(audio->loadSoundData(0))
     {
         g_pSound->setupSoundData(audio->sndSlotMap, audio);
         return true;

@@ -159,12 +159,15 @@ class CInput : public GsSingleton<CInput>
 public:
     CInput();
 
-	/**
-	 * \brief transforms a mouse click from the screen coordinates to the relative coordinates
-	 */
+    /**
+     * @brief transMouseRelCoord    transforms a mouse click from the screen coordinates to the relative coordinates
+     * @param Pos       Resulting relative coordinate to handle
+     * @param motion    SDL Motion Event in which the raw pointer position is requested
+     * @param activeArea    Area which is seen and interacted.
+     */
     void transMouseRelCoord(Vector2D<float> &Pos,
-							const SDL_MouseMotionEvent motion,
-							const GsRect<Uint16> &transformRect);
+                            const SDL_MouseMotionEvent motion,
+                            const GsRect<Uint16> &activeArea);
 
 	void pollEvents();
 

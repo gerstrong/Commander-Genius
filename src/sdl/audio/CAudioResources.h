@@ -167,7 +167,7 @@ public:
     CAudioResources();
 	virtual ~CAudioResources() {}
 
-	virtual bool loadSoundData() = 0;
+    virtual bool loadSoundData(const unsigned int dictOffset) = 0;
 	virtual void unloadSound() = 0;
 
     bool readISFintoWaveForm(CSoundSlot &soundslot, const byte *imfdata, const Uint8 formatsize );

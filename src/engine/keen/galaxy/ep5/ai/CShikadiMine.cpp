@@ -350,7 +350,7 @@ void CShikadiMine::getTouchedBy(CSpriteObject &theObject)
 	{
 	    playSound(SOUND_MINEEXPLODE);
 	    setAction(A_MINE_DETONATE);
-	    player->kill();
+        player->kill(false);
 	}
 
 }
@@ -437,7 +437,7 @@ void CMineShards::getTouchedBy(CSpriteObject& theObject)
 
 	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
 	{
-		player->kill();
+        player->kill(false);
 	}
 }
 

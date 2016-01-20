@@ -197,8 +197,8 @@ public:
     bool touchedBottomOfMap();
 
 	void processDead();
-	virtual void processDying();
-	virtual void kill(const bool force = false);
+	virtual void processDying();        
+    virtual void kill(const bool force = false);
 
 	/**
 	 * Happens when usually the Dopefish eats Keen

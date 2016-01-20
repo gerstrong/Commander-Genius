@@ -303,7 +303,7 @@ void CPlayerBase::processLevelMiscFlagsCheck()
 	// Deadly hazards! Here Keen dying routine will be triggered
 	if(hitdetectWithTilePropertyRect(3, l_x, l_y, l_w, l_h, 2<<STC))
 	{
-		kill();
+        kill(false);
         return;
 	}
 
