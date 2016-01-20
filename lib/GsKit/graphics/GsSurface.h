@@ -198,7 +198,7 @@ public:
 #endif
 
 
-    void setPaletteColors(const SDL_Color *Palette)
+    void setPaletteColors(SDL_Color *Palette)
     {
         #if SDL_VERSION_ATLEAST(2, 0, 0)
             SDL_SetPaletteColors(mpSurface->format->palette, Palette, 0, 255);
