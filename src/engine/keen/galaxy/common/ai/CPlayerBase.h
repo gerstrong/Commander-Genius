@@ -188,9 +188,9 @@ public:
 
 
 	/**
-	 * Same here but with swimming
+     * Same here but with swimming. If moving set to true player is moving keen actually
 	 */
-	void playSwimSound();
+    void playSwimSound(const bool moving);
 
     void respawnImportantItem(const int itemId);
 

@@ -205,7 +205,7 @@ void CSpriteObject::moveYDir(const int amount)
 		moveDown(amount);
 }
 
-void CSpriteObject::moveLeft(const int amnt, const bool force)
+void CSpriteObject::moveLeft(const int amnt, const bool)
 {
 	if(amnt <= 0)
 		return;
@@ -213,7 +213,7 @@ void CSpriteObject::moveLeft(const int amnt, const bool force)
     mMoveTasks.push_back(new ObjMove(-amnt, 0));
 }
 
-void CSpriteObject::moveRight(const int amnt, const bool force)
+void CSpriteObject::moveRight(const int amnt, const bool)
 {
 	if(amnt <= 0)
 		return;

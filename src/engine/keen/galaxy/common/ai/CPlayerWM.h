@@ -103,7 +103,7 @@ public:
 	void checkforSwimming(bool &bleft, bool &bright, bool &bup, bool &bdown);
 
 	void performWalkingAnimation(bool walking);
-	void performSwimmingAnimation();
+    void performSwimmingAnimation(const bool moving);
 	
 	void setMounted(const bool value);
 

@@ -292,7 +292,7 @@ void CPlayerWM::processMoving()
     else
         movespeed = 0;
     
-    bool walking=false;
+    bool moving = false;
     
     bool bleft, bright, bup, bdown;
     
@@ -358,7 +358,7 @@ void CPlayerWM::processMoving()
             yDirection = 0;
 	
         moveLeft(movespeed);
-        walking = true;
+        moving = true;
         xDirection = LEFT;
         waveTimer = 0;
     }
@@ -368,7 +368,7 @@ void CPlayerWM::processMoving()
             yDirection = 0;
 	
         moveRight(movespeed);
-        walking = true;
+        moving = true;
         xDirection = RIGHT;
         waveTimer = 0;
     }
@@ -379,7 +379,7 @@ void CPlayerWM::processMoving()
             xDirection = 0;
 
         moveUp(movespeed);
-        walking = true;
+        moving = true;
         yDirection = UP;
         waveTimer = 0;
     }
@@ -389,7 +389,7 @@ void CPlayerWM::processMoving()
             xDirection = 0;
 
         moveDown(movespeed);
-        walking = true;
+        moving = true;
         yDirection = DOWN;
         waveTimer = 0;
     }
@@ -445,7 +445,7 @@ void CPlayerWM::processMoving()
     // If keen is just walking on the map or swimming in the sea. Do the proper animation for it.
     if(m_basesprite == walkBaseFrame)
     {
-        performWalkingAnimation(walking);
+        performWalkingAnimation(moving);
         m_cantswim = false;
 
         waveTimer++;
@@ -461,7 +461,7 @@ void CPlayerWM::processMoving()
     {
         if(m_Inventory.Item.m_special.ep4.swimsuit)
         {
-            performSwimmingAnimation();
+            performSwimmingAnimation(moving);
         }
         else
         {
@@ -1203,7 +1203,7 @@ void CPlayerWM::performWalkingAnimation(bool walking)
 /**
  * This performs the animation when player is swimming in water on the map
  */
-void CPlayerWM::performSwimmingAnimation()
+void CPlayerWM::performSwimmingAnimation(const bool moving)
 {
 	if(xDirection == RIGHT && yDirection == 0)
 		sprite = m_basesprite + 2;
@@ -1231,7 +1231,7 @@ void CPlayerWM::performSwimmingAnimation()
 	m_animation_time = 5;
 	sprite +=  m_animation%2;
 
-	playSwimSound();
+    playSwimSound(moving);
 }
 
 void CPlayerWM::setMounted(const bool value)
