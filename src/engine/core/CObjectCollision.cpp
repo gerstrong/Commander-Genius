@@ -819,37 +819,6 @@ void CSpriteObject::processMove(const int move_x, const int move_y)
             ++xoff;
         }
     }
-
-    /*
-    // Let's check if we have to move left or right
-    if(xoff > 0)
-    {
-    // move right
-    for(int c = 0 ; c<xoff ; c++ )
-        processMoveBitRight();
-    }
-    else if(xoff < 0)
-    {
-    // move left
-    for(int c = 0 ; c<-xoff ; c++ )
-        processMoveBitLeft();
-    }
-
-    // Let's check if we have to move up or down
-    if(yoff > 0)
-    {
-    // move down
-    for(int c = 0 ; c<yoff ; c++ )
-        processMoveBitDown();
-    }
-    else if(yoff < 0)
-    {
-    // move up
-    for(int c = 0 ; c<-yoff ; c++ )
-        processMoveBitUp();
-    }
-
-    */
 }
 
 void CSpriteObject::processPushOutCollision()

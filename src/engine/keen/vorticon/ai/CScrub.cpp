@@ -169,14 +169,26 @@ void CScrub::walkDown()
 	else
 	{
 		moveCarrierDown(SCRUB_WALK_SPEED);
+        processMove((2<<STC),0);
 
-		if(!blockedr) // upper-right, if yes, go right! (ceiling)
+        if(!blockedr) // upper-right, he might be able to stick onto ceiling
 		{	// Move right
 			yDirection = 0;
 			xDirection = 1;
 			sprite = SCRUB_WALK_RIGHT + walkframe;
-			processMove(2<<STC,0);
-			processMove(0,-(2<<STC));
+
+            processMove(0,(16<<STC));
+            performCollisions();
+
+            // Still unblocked, than put him to the ceiling
+            if(!blockedr)
+            {
+                processMove( (8<<STC), 0 );
+
+                    processMove( 0,-(16<<STC) );
+                    performCollisions();
+            }
+
 		}
 
 	}
@@ -205,13 +217,13 @@ void CScrub::walkRight(int mx, int my)
 			// First check, if he can walk over the tile
 			std::vector<CTileProperties> &TileProperties = g_pBehaviorEngine->getTileProperties();
 			if(!TileProperties[mp_Map->at(mx+1, my-1)].bdown &&
-				!TileProperties[mp_Map->at(mx+1, my)].bright)
+               !TileProperties[mp_Map->at(mx+1, my)].bright)
 			{
 				// There is no gap the upper-side
-				processMove(4<<STC,0);
-				processMove(0,-(4<<STC));
-				processMove(-(6<<STC),0);
-				performCollisions();
+                processMove(8<<STC,0);
+                processMove(0,-(8<<STC));
+                processMove(-(8<<STC),0);
+                performCollisions();
 
 				if(blockedl)
 				{
@@ -219,7 +231,9 @@ void CScrub::walkRight(int mx, int my)
 					yDirection = -1;
 				}
 				else
+                {
 					preparetoFall();
+                }
 			}
 		}
 	}
@@ -240,6 +254,7 @@ void CScrub::walkUp()
 	else
 	{
 		moveCarrierUp(SCRUB_WALK_SPEED);
+        processMove(-(2<<STC), 0);
 
 		if( !blockedl )
 		{	// Move Left!
@@ -249,7 +264,7 @@ void CScrub::walkUp()
 			performCollisions();
 			processMove(0,-(1<<STC));
 			processMove(-(4<<STC),0);
-			processMove(0,4<<STC);
+            processMove(0,(4<<STC));
 		}
 
 	}
