@@ -120,7 +120,6 @@ private:
 	Uint16 climbBaseFrame;
 	Uint16 wavingBaseFrame;
 	Uint16 swimBaseFrame;
-	direction_t m_looking_dir;
 
 	Uint8 m_animation;
 	Uint8 m_animation_time;

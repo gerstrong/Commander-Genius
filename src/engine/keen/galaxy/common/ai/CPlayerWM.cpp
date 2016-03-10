@@ -42,7 +42,6 @@ m_basesprite(0),
 m_teleportanibasetile(0),
   m_teleportoldtile(0),
 walkBaseFrame(0),
-m_looking_dir(LEFT),
 m_animation(0),
 m_animation_time(1),
 m_animation_ticker(0),
@@ -987,10 +986,19 @@ void CPlayerWM::startLevel(Uint16 object)
     int level = object - 0xC000;
     Uint16 flag_dest = level + 0xF000;
 
-    const int ep = g_pBehaviorEngine->getEpisode();
-    const int shipLevel = (ep < 6) ? 18 : 17;
+    const auto ep = g_pBehaviorEngine->getEpisode();
+    int shipLevel;
 
-    if(mp_Map->findTile(flag_dest, &x, &y, 2) || g_pBehaviorEngine->m_option[OPT_LVLREPLAYABILITY].value || level >= shipLevel)
+    switch(ep)
+    {
+        case 4 : shipLevel = 18; break;
+        case 5 : shipLevel = 15; break;
+        case 6 : shipLevel = 17; break;
+        default : shipLevel = 0;
+    };
+
+    // Check if there already exists a flag. If that's not the case enter the level
+    if( mp_Map->findTile(flag_dest, &x, &y, 2) || g_pBehaviorEngine->m_option[OPT_LVLREPLAYABILITY].value || level >= shipLevel)
     {
         gEventManager.add(new EventEnterLevel(object));
 
