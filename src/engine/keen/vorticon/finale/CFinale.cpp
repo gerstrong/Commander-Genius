@@ -32,9 +32,10 @@ void CFinale::showEndingText()
 {
 	if(!mpTextViewer)
 	{
-		std::string text;
 		mpTextViewer.reset(new CTextViewer(0, 0, 320, 120));
-		mpTextViewer->loadTextfromFile(mpMap->m_gamepath + "endtext.ck" + itoa(m_Episode));
+        const std::string filename = "endtext.ck" + itoa(m_Episode);
+        auto filepath = JoinPaths(mpMap->m_gamepath, filename);
+        mpTextViewer->loadTextfromFile(filepath);
 	}
 
     mpTextViewer->ponder(0);
