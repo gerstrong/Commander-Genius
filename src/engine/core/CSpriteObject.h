@@ -157,6 +157,11 @@ public:
      */
 	void calcBoundingBoxes();
 
+    /**
+     * @brief setupCollisionModel Should be called when an object is created. It will setup the collision model for ingame as required.
+     */
+    void setupCollisionModel();
+
 	void performCollisionsSameBox();
 	void performCollisions();
 	void alignToTile();
