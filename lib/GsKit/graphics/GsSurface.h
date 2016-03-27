@@ -1,6 +1,6 @@
 
-#ifndef __GS_SURFACE__
-#define __GS_SURFACE__
+#ifndef GS_SURFACE
+#define GS_SURFACE
 
 //#include <base/video/scaler/CScaler.h>
 #include <base/utils/Geometry.h>
@@ -433,4 +433,4 @@ public:
 
 };
 
-#endif // __GS_SURFACE__
+#endif // GS_SURFACE

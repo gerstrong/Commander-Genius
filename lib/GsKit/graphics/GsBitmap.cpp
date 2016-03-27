@@ -215,7 +215,6 @@ bool GsBitmap::scaleTo(const GsRect<Uint16> &destRes)
 
     CVidConfig &vidConf = gVideoDriver.getVidConfig();
 
-
     blitScaled(bmpSfc,
                bmpSfc->clip_rect,
                newSfc.get(),
