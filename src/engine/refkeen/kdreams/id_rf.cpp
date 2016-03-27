@@ -973,8 +973,8 @@ void	RFL_NewRow (id0_int_t dir)
 void RF_ForceRefresh (void)
 {
 	RF_NewPosition (originxglobal,originyglobal);
-    RF_Refresh (true);
-    RF_Refresh (true);
+    RF_Refresh (true, false);
+    RF_Refresh (true, false);
 }
 
 
@@ -1679,12 +1679,15 @@ redraw:
 =====================
 */
 
-void RF_Refresh (int updateGraphics)
-{
+extern SDL_sem* gpRenderLock;
 
+
+void RF_Refresh (int updateGraphics, int semaphore)
+{
 
     id0_byte_t	*newupdate;
     id0_long_t	newtime;
+
 
     // Wait for the main thread to finish passing the data on screen
     {
@@ -1719,11 +1722,19 @@ void RF_Refresh (int updateGraphics)
             refreshvector();
 
 
+        // Lock Rendering
+        if(semaphore)
+            SDL_SemWait( gpRenderLock );
+
 
         //
         // display the changed screen
         //
         VW_SetScreen(bufferofs+panadjust,panx & xpanmask);
+
+        if(semaphore)
+            SDL_SemPost( gpRenderLock );
+
 
         //
         // prepare for next refresh
@@ -1756,6 +1767,9 @@ void RF_Refresh (int updateGraphics)
 
     }
 
+
+
+
     //
 // calculate tics since last refresh for adaptive timing
 //
@@ -1787,7 +1801,8 @@ void RF_Refresh (int updateGraphics)
 	{
 		SD_SetTimeCount(SD_GetTimeCount() - (tics-MAXTICS));
 		tics = MAXTICS;
-	}
+	}    
+
 }
 
 #endif		// GRMODE == EGAGR
