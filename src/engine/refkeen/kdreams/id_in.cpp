@@ -62,14 +62,14 @@ extern "C"
 
 // 	Global variables
 		id0_boolean_t		Keyboard[NumCodes],
-					JoysPresent[MaxJoys],
+                    //JoysPresent[MaxJoys],
 					MousePresent;
 		Demo		DemoMode = demo_Off;
 		id0_boolean_t		Paused;
 		id0_char_t		LastASCII;
 		ScanCode	LastScan;
 		KeyboardDef	KbdDefs[MaxKbds] = {{0x1d,0x38,0x47,0x48,0x49,0x4b,0x4d,0x4f,0x50,0x51}};
-		JoystickDef	JoyDefs[MaxJoys];
+        //JoystickDef	JoyDefs[MaxJoys];
 		ControlType	Controls[MaxPlayers];
 
 //	Internal variables
@@ -279,7 +279,7 @@ IN_GetJoyAbs(id0_word_t joy,id0_word_t *xp,id0_word_t *yp)
 //		joystick (from +/-127, scaled adaptively)
 //
 ///////////////////////////////////////////////////////////////////////////
-static void
+/*static void
 INL_GetJoyDelta(id0_word_t joy,id0_int_t *dx,id0_int_t *dy,id0_boolean_t adaptive)
 {
 	id0_word_t		x,y;
@@ -388,7 +388,7 @@ IN_GetJoyButtonsDB(id0_word_t joy)
 	} while (result1 != result2);
 	return(result1);
 }
-
+*/
 ///////////////////////////////////////////////////////////////////////////
 //
 //	INL_StartKbd() - Sets up my keyboard stuff for use
@@ -454,7 +454,7 @@ INL_ShutMouse(void)
 //
 //	INL_SetJoyScale() - Sets up scaling values for the specified joystick
 //
-static void
+/*static void
 INL_SetJoyScale(id0_word_t joy)
 {
 	JoystickDef	*def;
@@ -465,14 +465,14 @@ INL_SetJoyScale(id0_word_t joy)
 	def->joyMultYL = JoyScaleMax / (def->threshMinY - def->joyMinY);
 	def->joyMultYH = JoyScaleMax / (def->joyMaxY - def->threshMaxY);
 }
-
+*/
 ///////////////////////////////////////////////////////////////////////////
 //
 //	IN_SetupJoy() - Sets up thresholding values and calls INL_SetJoyScale()
 //		to set up scaling values
 //
 ///////////////////////////////////////////////////////////////////////////
-void
+/*void
 IN_SetupJoy(id0_word_t joy,id0_word_t minx,id0_word_t maxx,id0_word_t miny,id0_word_t maxy)
 {
 	id0_word_t		d,r;
@@ -496,14 +496,14 @@ IN_SetupJoy(id0_word_t joy,id0_word_t minx,id0_word_t maxx,id0_word_t miny,id0_w
 
 	INL_SetJoyScale(joy);
 }
-
+*/
 ///////////////////////////////////////////////////////////////////////////
 //
 //	INL_StartJoy() - Detects & auto-configures the specified joystick
 //					The auto-config assumes the joystick is centered
 //
 ///////////////////////////////////////////////////////////////////////////
-static id0_boolean_t
+/*static id0_boolean_t
 INL_StartJoy(id0_word_t joy)
 {
 	id0_word_t x,y;
@@ -519,7 +519,7 @@ INL_StartJoy(id0_word_t joy)
 		return(true);
 	}
 }
-
+*/
 // (REFKEEN) UNUSED FUNCTION
 #if 0
 ///////////////////////////////////////////////////////////////////////////
@@ -568,8 +568,8 @@ IN_Startup(void)
 	INL_StartKbd();
 	MousePresent = checkmouse? INL_StartMouse() : false;
 
-	for (i = 0;i < MaxJoys;i++)
-		JoysPresent[i] = checkjoys? INL_StartJoy(i) : false;
+    /*for (i = 0;i < MaxJoys;i++)
+        JoysPresent[i] = checkjoys? INL_StartJoy(i) : false;*/
 
 	IN_Started = true;
 }
@@ -585,8 +585,8 @@ IN_Default(id0_boolean_t gotit,ControlType in)
 	if
 	(
 		(!gotit)
-	|| 	((in == ctrl_Joystick1) && !JoysPresent[0])
-	|| 	((in == ctrl_Joystick2) && !JoysPresent[1])
+    /*|| 	((in == ctrl_Joystick1) && !JoysPresent[0])
+    || 	((in == ctrl_Joystick2) && !JoysPresent[1])*/
 	|| 	((in == ctrl_Mouse) && !MousePresent)
 	)
 		in = ctrl_Keyboard1;
@@ -680,7 +680,7 @@ IN_ReadCursor(CursorInfo *info)
 		INL_AdjustCursor(info,buttons,dx,dy);
 	}
 
-	for (i = 0;i < MaxJoys;i++)
+    /*for (i = 0;i < MaxJoys;i++)
 	{
 		if (!JoysPresent[i])
 			continue;
@@ -690,7 +690,7 @@ IN_ReadCursor(CursorInfo *info)
 		dx /= 64;
 		dy /= 64;
 		INL_AdjustCursor(info,buttons,dx,dy);
-	}
+    }*/
 }
 
 }
@@ -795,12 +795,12 @@ IN_ReadControl(id0_int_t player,ControlInfo *info)
                 buttons += 1 << 1;*/
 			realdelta = false;
 			break;
-		case ctrl_Joystick1:
+        /*case ctrl_Joystick1:
 		case ctrl_Joystick2:
 			INL_GetJoyDelta(type - ctrl_Joystick,&dx,&dy,false);
 			buttons = INL_GetJoyButtons(type - ctrl_Joystick);
 			realdelta = true;
-			break;
+            break;*/
 		case ctrl_Mouse:
 			INL_GetMouseDelta(&dx,&dy);
 			buttons = INL_GetMouseButtons();
@@ -1059,14 +1059,14 @@ IN_Ack(void)
 		{
             BE_ST_ShortSleep();
 		}
-	for (i = 0;i < MaxJoys;i++)
+    /*for (i = 0;i < MaxJoys;i++)
 		if (JoysPresent[i])
 			while (IN_GetJoyButtonsDB(i))
 			{
                 BE_ST_ShortSleep();
 			}
 
-
+*/
     gInput.waitForAnyInput();
 
     //IN_AckBack();
@@ -1090,10 +1090,10 @@ IN_IsUserInput(void)
 		if (INL_GetMouseButtons())
 			result = true;
 
-	for (i = 0;i < MaxJoys;i++)
+    /*for (i = 0;i < MaxJoys;i++)
 		if (JoysPresent[i])
 			if (INL_GetJoyButtons(i))
-				result = true;
+                result = true;*/
 
 	return(result);
 }

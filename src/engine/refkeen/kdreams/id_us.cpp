@@ -1441,8 +1441,8 @@ static	id0_boolean_t		USL_CtlButtonCustom(UserCall,id0_word_t,id0_word_t),
 					USL_CtlDSButtonCustom(UserCall,id0_word_t,id0_word_t),
 					USL_CtlSButtonCustom(UserCall,id0_word_t,id0_word_t),
 					USL_CtlCButtonCustom(UserCall,id0_word_t,id0_word_t),
-					USL_CtlCKbdButtonCustom(UserCall,id0_word_t,id0_word_t),
-					USL_CtlCJoyButtonCustom(UserCall,id0_word_t,id0_word_t);
+                    USL_CtlCKbdButtonCustom(UserCall,id0_word_t,id0_word_t)/*,
+                    USL_CtlCJoyButtonCustom(UserCall,id0_word_t,id0_word_t)*/;
 
 					// The structure of a user interaction item
 typedef	struct	{
@@ -1488,8 +1488,8 @@ static	UserItem	CtlPanels[] =
 {CtlPanelR(0),uii_RadioButton,CTL_STARTUPPIC,CTL_STARTDNPIC,"Start or Resume a Game",sc_None,ui_Normal,USL_CtlButtonCustom},
 {CtlPanelR(1),uii_RadioButton,CTL_HELPUPPIC,CTL_HELPDNPIC,"Get Help With Commander Keen",sc_None,ui_Normal,USL_CtlButtonCustom},
 {CtlPanelR(2),uii_RadioButton,CTL_DISKUPPIC,CTL_DISKDNPIC,"Load / Save / Quit",sc_None,ui_Normal,USL_CtlButtonCustom},
-/*{CtlPanelR(3),uii_RadioButton,CTL_CONTROLSUPPIC,CTL_CONTROLSDNPIC,"Choose Controls",sc_C,ui_Normal,USL_CtlButtonCustom},
-{CtlPanelR(4),uii_RadioButton,CTL_SOUNDUPPIC,CTL_SOUNDDNPIC,"Select Sound Device",sc_F2,ui_Normal,USL_CtlButtonCustom},
+{CtlPanelR(3),uii_RadioButton,CTL_CONTROLSUPPIC,CTL_CONTROLSDNPIC,"Choose Controls",sc_C,ui_Normal,USL_CtlButtonCustom},
+/*{CtlPanelR(4),uii_RadioButton,CTL_SOUNDUPPIC,CTL_SOUNDDNPIC,"Select Sound Device",sc_F2,ui_Normal,USL_CtlButtonCustom},
 {CtlPanelR(5),uii_RadioButton,CTL_MUSICUPPIC,CTL_MUSICDNPIC,"Turn Music On / Off",sc_F7,ui_Normal,USL_CtlButtonCustom},*/
 {-1,-1,-1,-1,uii_Bad}
 					},
@@ -1554,8 +1554,8 @@ static	UserItem	CtlPanels[] =
 					CtlCPanels[] =
 					{
 {CtlPanel2R(8,0),uii_RadioButton,CTL_C_KBDUPPIC,CTL_C_KBDDNPIC,"Use / Configure Keyboard",sc_F3,ui_Normal,USL_CtlCButtonCustom},
-{CtlPanel2R(13,0),uii_RadioButton,CTL_C_JOY1UPPIC,CTL_C_JOY1DNPIC,"Use / Configure Joystick 1",sc_None,ui_Normal,USL_CtlCButtonCustom},
-{CtlPanel2R(18,0),uii_RadioButton,CTL_C_JOY2UPPIC,CTL_C_JOY2DNPIC,"Use / Configure Joystick 2",sc_None,ui_Normal,USL_CtlCButtonCustom},
+//{CtlPanel2R(13,0),uii_RadioButton,CTL_C_JOY1UPPIC,CTL_C_JOY1DNPIC,"Use / Configure Joystick 1",sc_None,ui_Normal,USL_CtlCButtonCustom},
+//{CtlPanel2R(18,0),uii_RadioButton,CTL_C_JOY2UPPIC,CTL_C_JOY2DNPIC,"Use / Configure Joystick 2",sc_None,ui_Normal,USL_CtlCButtonCustom},
 {-1,-1,-1,-1,uii_Bad}
 					},
 #define	CtlPanelKC3R(x,y)	{	CtlPanel3X+(x)*8,CtlPanel3Y+(y)*8,\
@@ -1574,11 +1574,11 @@ static	UserItem	CtlPanels[] =
 {CtlPanelKC3R(22,8),uii_KeyCap,CTL_KEYCAPPIC,CTL_KEYCAPCURPIC,"Define Key to move Down & Right",sc_None,ui_Normal,USL_CtlCKbdButtonCustom},
 {-1,-1,-1,-1,uii_Bad}
 					},
-					CtlCJoyPanels[] =
+/*					CtlCJoyPanels[] =
 					{
 {CtlPanel3R(13,5),uii_Button,CTL_C_CALIBRATEUPPIC,CTL_C_CALIBRATEDNPIC,"Configure Joystick",sc_None,ui_Normal,USL_CtlCJoyButtonCustom},
 {-1,-1,-1,-1,uii_Bad}
-					},
+                    },*/
 					CtlSPanels[] =
 					{
 {CtlPanel2R(3,0),uii_RadioButton,CTL_S_NOSNDUPPIC,CTL_S_NOSNDDNPIC,"Turn Sound Off",sc_None,ui_Normal,USL_CtlSButtonCustom},
@@ -2357,7 +2357,7 @@ USL_CtlCKbdButtonCustom(UserCall call,id0_word_t i,id0_word_t n)
 //		calibration
 //
 ///////////////////////////////////////////////////////////////////////////
-static id0_boolean_t
+/*static id0_boolean_t
 USL_CtlCJoyButtonCustom(UserCall call,id0_word_t i,id0_word_t n)
 {
 	id0_boolean_t Done = false;
@@ -2437,7 +2437,7 @@ USL_CtlCJoyButtonCustom(UserCall call,id0_word_t i,id0_word_t n)
 
 	return(false);
 }
-
+*/
 ///////////////////////////////////////////////////////////////////////////
 //
 //	USL_ClearBottom() - Clears the bottom part of the window
@@ -3374,8 +3374,8 @@ USL_CtlCButtonCustom(UserCall call,id0_word_t i,id0_word_t n)
 		p = CtlCKbdPanels[2].r.lr;
 		VWB_DrawPic(p.x,p.y,CTL_DIRSPIC);
 	}
-	else
-		TheItems[i + 1] = ip = CtlCJoyPanels;
+    /*else
+        TheItems[i + 1] = ip = CtlCJoyPanels;*/
 
 	j = 0;
 	while (ip && (ip->type != uii_Bad))
@@ -3526,16 +3526,16 @@ USL_SetUpCtlPanel(void)
 
 	// Set up Controls
 	USL_TurnOff(CtlCPanels);
-	CtlCPanels[1].sel = JoysPresent[0]? ui_Normal : ui_Disabled;
-	CtlCPanels[2].sel = JoysPresent[1]? ui_Normal : ui_Disabled;
+    //CtlCPanels[1].sel = JoysPresent[0]? ui_Normal : ui_Disabled;
+    //CtlCPanels[2].sel = JoysPresent[1]? ui_Normal : ui_Disabled;
 	if (Controls[0] == ctrl_Keyboard)
 		i = 0;
 	else
 		i = (Controls[0] == ctrl_Joystick1)? 1 : 2;
 	CtlCPanels[i].sel |= ui_Selected;
-	if (JoysPresent[1] && !JoysPresent[0])
+/*	if (JoysPresent[1] && !JoysPresent[0])
 		CtlCPanels[2].key = sc_F4;
-	else
+    else*/
 		CtlCPanels[1].key = sc_F4;
 
 	// Set up Keyboard
@@ -3588,7 +3588,7 @@ USL_TearDownCtlPanel(void)
 		IN_SetControlType(0,(ControlType)i);
 	}
 
-	CtlCPanels[1].key = CtlCPanels[2].key = sc_None;
+    CtlCPanels[1].key /*= CtlCPanels[2].key*/ = sc_None;
 
 	i = USL_FindDown(CtlSPanels);
 	if (i != -1)

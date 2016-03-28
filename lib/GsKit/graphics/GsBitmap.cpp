@@ -178,6 +178,8 @@ void GsBitmap::setColorKey(const Uint8 r, const Uint8 g, const Uint8 b)
 bool GsBitmap::scaleTo(const GsRect<Uint16> &destRes)
 {
     SDL_Rect newRect = destRes.SDLRect();
+    CVidConfig &vidConf = gVideoDriver.getVidConfig();
+
 
     // Need to do that, otherwise it won't work.
     optimizeSurface();
@@ -187,7 +189,7 @@ bool GsBitmap::scaleTo(const GsRect<Uint16> &destRes)
         return true;
 
 
-    std::shared_ptr<SDL_Surface> newSfc;
+    std::shared_ptr<SDL_Surface> newSfc, filteredSfc;
 
     auto bmpSfc = mpBitmapSurface.get();
     auto bmpFormat = bmpSfc->format;
@@ -202,26 +204,72 @@ bool GsBitmap::scaleTo(const GsRect<Uint16> &destRes)
                     &SDL_FreeSurface );
 
     if(!newSfc)
-      return false;
+        return false;
+
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 
-    SDL_BlendMode blendMode;
+        SDL_BlendMode blendMode;
 
-    SDL_GetSurfaceBlendMode(bmpSfc, &blendMode);
-    SDL_SetSurfaceBlendMode(newSfc.get(), blendMode);
-
+        SDL_GetSurfaceBlendMode(bmpSfc, &blendMode);
+        SDL_SetSurfaceBlendMode(newSfc.get(), blendMode);
 #endif
 
-    CVidConfig &vidConf = gVideoDriver.getVidConfig();
 
-    blitScaled(bmpSfc,
-               bmpSfc->clip_rect,
-               newSfc.get(),
-               newRect,
-               vidConf.m_ScaleXFilter);
 
-    mpBitmapSurface = newSfc;
+    // If we filter and postscale we need another buffer for holding the data
+    if(vidConf.m_ScaleXFilter > 1)
+    {
+
+        SDL_Rect filterRect = bmpSfc->clip_rect;
+
+        filterRect.w *= vidConf.m_ScaleXFilter;
+        filterRect.h *= vidConf.m_ScaleXFilter;
+
+        filteredSfc.reset( SDL_CreateRGBSurface(bmpSfc->flags,
+                                           filterRect.w, filterRect.h,
+                                           bmpFormat->BitsPerPixel,
+                                           bmpFormat->Rmask,
+                                           bmpFormat->Gmask,
+                                           bmpFormat->Bmask,
+                                           bmpFormat->Amask ),
+                                        &SDL_FreeSurface );
+
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+        SDL_SetSurfaceBlendMode(filteredSfc.get(), blendMode);
+#endif
+
+        CVidConfig &vidConf = gVideoDriver.getVidConfig();
+
+        // Scale through given filter
+        blitScaled(bmpSfc,
+                   bmpSfc->clip_rect,
+                   filteredSfc.get(),
+                   filterRect,
+                   vidConf.m_ScaleXFilter);
+
+
+        // Scale to the bitmap size whatever remains to scale
+        blitScaled(filteredSfc.get(),
+                   filteredSfc->clip_rect,
+                   newSfc.get(),
+                   newRect,
+                   NONE);
+
+
+        mpBitmapSurface = newSfc;
+    }
+    else
+    {
+
+        blitScaled(bmpSfc,
+                   bmpSfc->clip_rect,
+                   newSfc.get(),
+                   newRect,
+                   vidConf.m_ScaleXFilter);
+
+        mpBitmapSurface = newSfc;
+    }
 
     return true;
 }

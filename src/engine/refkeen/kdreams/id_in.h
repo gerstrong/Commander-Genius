@@ -36,7 +36,7 @@
 
 #define	MaxPlayers	4
 #define	MaxKbds		2
-#define	MaxJoys		2
+//#define	MaxJoys		2
 #define	NumCodes	128
 
 typedef	id0_byte_t		ScanCode;
@@ -155,8 +155,8 @@ typedef	struct		{
 					} __attribute__((__packed__)) JoystickDef;
 // Global variables
 extern	id0_boolean_t		Keyboard[],
-					MousePresent,
-					JoysPresent[];
+                    MousePresent/*,
+                    JoysPresent[]*/;
 extern	Demo		DemoMode;
 extern	id0_boolean_t		Paused;
 extern	id0_char_t		LastASCII;
