@@ -35,7 +35,9 @@
 #include "keen/vorticon/VorticonEngine.h"
 #include "keen/galaxy/GalaxyEngine.h"
 #include "keen/dreams/dreamsengine.h"
+#ifdef DBFUSION
 #include "dbfusion/dbFusionNgine.h"
+#endif // DBFUSION
 
 bool disallowDBFusion = false;
 
