@@ -103,7 +103,7 @@ public:
 	void checkforSwimming(bool &bleft, bool &bright, bool &bup, bool &bdown);
 
 	void performWalkingAnimation(bool walking);
-	void performSwimmingAnimation();
+    void performSwimmingAnimation(const bool moving);
 	
 	void setMounted(const bool value);
 
@@ -120,7 +120,6 @@ private:
 	Uint16 climbBaseFrame;
 	Uint16 wavingBaseFrame;
 	Uint16 swimBaseFrame;
-	direction_t m_looking_dir;
 
 	Uint8 m_animation;
 	Uint8 m_animation_time;

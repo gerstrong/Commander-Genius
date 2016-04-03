@@ -39,6 +39,8 @@ struct GMSwitchToPlayGameMode : CEvent
 				{}
 };
 
+// Event for opening the download Dialog
+struct GMDownloadDlgOpen : CEvent {};
 
 // It's a simple start event which will force CG launch a game
 struct GMStart : CEvent {};

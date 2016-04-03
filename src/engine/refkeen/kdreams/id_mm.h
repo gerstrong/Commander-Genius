@@ -36,7 +36,9 @@ void Quit (const id0_char_t *error);
 
 #define	BUFFERSIZE		0x1000		// miscelanious, allways available buffer
 
-#define MAXBLOCKS		1300
+//#define MAXBLOCKS		1300
+#define MAXBLOCKS		2600        // More blocks available we have more memory
+                                    // And it works better with mods.
 
 //==========================================================================
 

@@ -51,6 +51,8 @@ mSprVar(spriteVar)
 	blockedu = false;
 	blockedl = false;
 	blockedr = false;
+
+    setupCollisionModel();
 }
 
 
@@ -98,9 +100,9 @@ bool CSpriteObject::verifyForFalling()
 	if( !blockedd )
 	{
 		// This will check three points and avoid that keen falls on sloped tiles
-		const int &fall1 = mp_Map->getPlaneDataAt(1, getXMidPos(), getYDownPos());
-		const int &fall2 = mp_Map->getPlaneDataAt(1, getXMidPos(), getYDownPos()+(1<<(CSF)));
-		const int &fall3 = mp_Map->getPlaneDataAt(1, getXMidPos(), getYDownPos()+(2<<(CSF)));
+        const auto fall1 = mp_Map->getPlaneDataAt(1, getXMidPos(), getYDownPos());
+        const auto fall2 = mp_Map->getPlaneDataAt(1, getXMidPos(), getYDownPos()+(1<<(CSF)));
+        const auto fall3 = mp_Map->getPlaneDataAt(1, getXMidPos(), getYDownPos()+(2<<(CSF)));
 		const CTileProperties &TileProp1 = g_pBehaviorEngine->getTileProperties(1)[fall1];
 		const CTileProperties &TileProp2 = g_pBehaviorEngine->getTileProperties(1)[fall2];
 		const CTileProperties &TileProp3 = g_pBehaviorEngine->getTileProperties(1)[fall3];
@@ -205,7 +207,7 @@ void CSpriteObject::moveYDir(const int amount)
 		moveDown(amount);
 }
 
-void CSpriteObject::moveLeft(const int amnt, const bool force)
+void CSpriteObject::moveLeft(const int amnt, const bool)
 {
 	if(amnt <= 0)
 		return;
@@ -213,7 +215,7 @@ void CSpriteObject::moveLeft(const int amnt, const bool force)
     mMoveTasks.push_back(new ObjMove(-amnt, 0));
 }
 
-void CSpriteObject::moveRight(const int amnt, const bool force)
+void CSpriteObject::moveRight(const int amnt, const bool)
 {
 	if(amnt <= 0)
 		return;

@@ -1563,6 +1563,8 @@ void NewState (objtype *ob,statetype *state)
 ============================
 */
 
+
+
 void PlayLoop()
 {
 	// REFKEEN - Alternative controllers support	
@@ -1607,7 +1609,7 @@ void PlayLoop()
                gInput.flushAll();
            }
 
-           RF_Refresh(false);
+           RF_Refresh(false, true);
 
            continue;
         }
@@ -1709,8 +1711,10 @@ void PlayLoop()
 //
 // update the screen and calculate the number of tics it took to execute
 // this cycle of events (for adaptive timing of next cycle)                        
-//                
-        RF_Refresh(true);
+//
+
+        RF_Refresh(true, true);
+
 
         if(gDreamsForceClose)
             break;

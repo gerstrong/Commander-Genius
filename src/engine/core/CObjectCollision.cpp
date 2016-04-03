@@ -12,6 +12,31 @@
 #include "engine/core/spritedefines.h"
 #include <base/GsTimer.h>
 
+int episode = 0;
+int gBlockTolerance = 0;
+
+// The potential narrow case describes sprites which are trying to get through
+// narrow cases. This is pretty selddom (Only found in one level of Keen5) but mods
+// might take advantage of that.
+const int BLOCK_TOLERANCE_GALAXY = (8<<STC);
+const int BLOCK_TOLERANCE_VORTICON = (2<<STC);
+
+
+void CSpriteObject::setupCollisionModel()
+{
+    // In future we might more stuff here. For now only the episode number so certain are considered or ignored.
+    episode = g_pBehaviorEngine->getEpisode();
+
+    if(episode >= 4)
+    {
+        gBlockTolerance = BLOCK_TOLERANCE_GALAXY;
+    }
+    else
+    {
+        gBlockTolerance = BLOCK_TOLERANCE_VORTICON;
+    }
+}
+
 /*
  * \brief Performs collision without bouncing box recalculation
  */
@@ -513,10 +538,6 @@ bool CSpriteObject::checkMapBoundaryU(const int y1)
 }
 
 
-// The potential narrow case describes sprites which are trying to get through
-// narrow cases. This is pretty selddom (Only found in one level of Keen5) but mods
-// might take advantage of that.
-const int BLOCK_TOLERANCE = (8<<STC);
 
 int CSpriteObject::checkSolidR( int x1, int x2, int y1, int y2)
 {
@@ -535,8 +556,8 @@ int CSpriteObject::checkSolidR( int x1, int x2, int y1, int y2)
 		{
 			blocker = TileProperty[mp_Map->at(x2>>CSF, c>>CSF)].bleft;
 
-            // Start to really test if we blow up the BLOCK_TOLERANCE
-            if(c-y1 > BLOCK_TOLERANCE)
+            // Start to really test if we blow up the gBlockTolerance
+            if(c-y1 > gBlockTolerance)
             {
                 if(blocker)
                     return blocker;
@@ -566,8 +587,8 @@ int CSpriteObject::checkSolidL( int x1, int x2, int y1, int y2)
 			blocker = TileProperty[mp_Map->at(x1>>CSF, c>>CSF)].bright;
 			const bool slope = (TileProperty[mp_Map->at(x1>>CSF, c>>CSF)].bup > 1);
 
-            // Start to really test if we blow up the BLOCK_TOLERANCE
-            if(c-y1 > BLOCK_TOLERANCE)
+            // Start to really test if we blow up the gBlockTolerance
+            if(c-y1 > gBlockTolerance)
             {
                 if(blocker && !slope)
                     return blocker;
@@ -776,8 +797,8 @@ void CSpriteObject::processMove(const Vector2D<int>& dir)
 
 void CSpriteObject::processMove(const int move_x, const int move_y)
 {
-    const float fxoff = static_cast<float>(move_x);
-    const float fyoff = static_cast<float>(move_y);
+    const auto fxoff = static_cast<float>(move_x);
+    const auto fyoff = static_cast<float>(move_y);
     
     int xoff = static_cast<int>(fxoff);
     int yoff = static_cast<int>(fyoff);
@@ -819,37 +840,6 @@ void CSpriteObject::processMove(const int move_x, const int move_y)
             ++xoff;
         }
     }
-
-    /*
-    // Let's check if we have to move left or right
-    if(xoff > 0)
-    {
-    // move right
-    for(int c = 0 ; c<xoff ; c++ )
-        processMoveBitRight();
-    }
-    else if(xoff < 0)
-    {
-    // move left
-    for(int c = 0 ; c<-xoff ; c++ )
-        processMoveBitLeft();
-    }
-
-    // Let's check if we have to move up or down
-    if(yoff > 0)
-    {
-    // move down
-    for(int c = 0 ; c<yoff ; c++ )
-        processMoveBitDown();
-    }
-    else if(yoff < 0)
-    {
-    // move up
-    for(int c = 0 ; c<-yoff ; c++ )
-        processMoveBitUp();
-    }
-
-    */
 }
 
 void CSpriteObject::processPushOutCollision()

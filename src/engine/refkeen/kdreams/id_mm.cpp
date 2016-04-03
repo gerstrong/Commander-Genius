@@ -77,8 +77,8 @@ typedef struct mmblockstruct
 } mmblocktype;
 
 
-#define GETNEWBLOCK {if(!(mmnew=mmfree))Quit("MM_GETNEWBLOCK: No free blocks!")\
-	;mmfree=mmfree->next;}
+/*#define GETNEWBLOCK {if(!(mmnew=mmfree))Quit("MM_GETNEWBLOCK: No free blocks!")\
+    ;mmfree=mmfree->next;}*/
 
 #define FREEBLOCK(x) {*x->useptr=NULL;x->next=mmfree;mmfree=x;}
 
@@ -327,8 +327,15 @@ void MM_Startup (void)
 
 	// locked block of unusable low memory
 	// from 0 to start of near heap
-	GETNEWBLOCK;
-	mmhead = mmnew;				// this will always be the first node
+
+    // Formerly known as GETNEWBLOCK
+    if( !(mmnew=mmfree) )
+    {
+        Quit("MM_GETNEWBLOCK: No free blocks!");
+    }
+    mmfree=mmfree->next;  // fill in start and next after a spot is found
+
+    mmhead = mmnew;				// this will always be the first node
 	mmnew->start = 0;
 	mmnew->length = segstart;
 	mmnew->attributes = LOCKBIT;
@@ -357,8 +364,15 @@ void MM_Startup (void)
 
 	// locked block of unusable near heap memory (usually just the stack)
 	// from end of near heap to start of far heap
-	GETNEWBLOCK;
-	mmnew->start = endfree;
+
+    // Formerly known as GETNEWBLOCK
+    if( !(mmnew=mmfree) )
+    {
+        Quit("MM_GETNEWBLOCK: No free blocks!");
+    }
+    mmfree=mmfree->next;  // fill in start and next after a spot is found
+
+    mmnew->start = endfree;
 	mmnew->length = segstart-endfree;
 	mmnew->attributes = LOCKBIT;
 	mmrover->next = mmnew;
@@ -403,8 +417,14 @@ void MM_Startup (void)
 //
 	// locked block of high memory (video, rom, etc)
 	// from end of far heap or EMS/XMS to 0xffff
-	GETNEWBLOCK;
-	mmnew->start = endfree;
+    // Formerly known as GETNEWBLOCK
+    if( !(mmnew=mmfree) )
+    {
+        Quit("MM_GETNEWBLOCK: No free blocks!");
+    }
+    mmfree=mmfree->next;  // fill in start and next after a spot is found
+
+    mmnew->start = endfree;
 	mmnew->length = 0xffff-endfree;
 	mmnew->attributes = LOCKBIT;
 	mmnew->next = NULL;
@@ -464,7 +484,13 @@ void MM_GetPtr (memptr *baseptr,id0_unsigned_long_t size)
 
 	needed = (size+15)/16;		// convert size from bytes to paragraphs
 
-	GETNEWBLOCK;				// fill in start and next after a spot is found
+    // Formerly known as GETNEWBLOCK
+    if( !(mmnew=mmfree) )
+    {
+        Quit("MM_GETNEWBLOCK: No free blocks!");
+    }
+    mmfree=mmfree->next;  // fill in start and next after a spot is found
+
 	mmnew->length = needed;
 	mmnew->useptr = baseptr;
 	mmnew->attributes = BASEATTRIBUTES;

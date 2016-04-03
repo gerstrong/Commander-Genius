@@ -72,14 +72,19 @@ public:
 
     void start();
 
-
     void showMessageBox(const std::string &text);
+
+    void setupDownloadDialog();
+
     void setupModsDialog();
 
     void setupDosExecDialog();
 
     void pumpEvent(const CEvent *evPtr);
     void ponderGameSelDialog(const float deltaT);
+
+    void ponderDownloadDialog();
+
     void ponderPatchDialog();
     void ponder(const float deltaT);
     void render();
@@ -104,6 +109,8 @@ private:
 	bool m_mustquit;
 	int m_chosenGame;
 
+    bool mFinishedDownload = true;
+
     bool mDonePatchSelection; // Tells if the Patch file has been selected if any
     std::string mPatchFilename;
 
@@ -119,6 +126,7 @@ private:
     CGUIDialog mLauncherDialog;
 
     std::unique_ptr<CGUIDialog> mpPatchDialog;
+    std::unique_ptr<CGUIDialog> mpDownloadDialog;
     std::unique_ptr<CGUIDialog> mpDosExecDialog;
 
 

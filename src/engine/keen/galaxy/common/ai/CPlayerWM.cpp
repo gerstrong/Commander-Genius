@@ -42,7 +42,6 @@ m_basesprite(0),
 m_teleportanibasetile(0),
   m_teleportoldtile(0),
 walkBaseFrame(0),
-m_looking_dir(LEFT),
 m_animation(0),
 m_animation_time(1),
 m_animation_ticker(0),
@@ -292,7 +291,7 @@ void CPlayerWM::processMoving()
     else
         movespeed = 0;
     
-    bool walking=false;
+    bool moving = false;
     
     bool bleft, bright, bup, bdown;
     
@@ -358,7 +357,7 @@ void CPlayerWM::processMoving()
             yDirection = 0;
 	
         moveLeft(movespeed);
-        walking = true;
+        moving = true;
         xDirection = LEFT;
         waveTimer = 0;
     }
@@ -368,7 +367,7 @@ void CPlayerWM::processMoving()
             yDirection = 0;
 	
         moveRight(movespeed);
-        walking = true;
+        moving = true;
         xDirection = RIGHT;
         waveTimer = 0;
     }
@@ -379,7 +378,7 @@ void CPlayerWM::processMoving()
             xDirection = 0;
 
         moveUp(movespeed);
-        walking = true;
+        moving = true;
         yDirection = UP;
         waveTimer = 0;
     }
@@ -389,7 +388,7 @@ void CPlayerWM::processMoving()
             xDirection = 0;
 
         moveDown(movespeed);
-        walking = true;
+        moving = true;
         yDirection = DOWN;
         waveTimer = 0;
     }
@@ -445,7 +444,7 @@ void CPlayerWM::processMoving()
     // If keen is just walking on the map or swimming in the sea. Do the proper animation for it.
     if(m_basesprite == walkBaseFrame)
     {
-        performWalkingAnimation(walking);
+        performWalkingAnimation(moving);
         m_cantswim = false;
 
         waveTimer++;
@@ -461,7 +460,7 @@ void CPlayerWM::processMoving()
     {
         if(m_Inventory.Item.m_special.ep4.swimsuit)
         {
-            performSwimmingAnimation();
+            performSwimmingAnimation(moving);
         }
         else
         {
@@ -987,10 +986,19 @@ void CPlayerWM::startLevel(Uint16 object)
     int level = object - 0xC000;
     Uint16 flag_dest = level + 0xF000;
 
-    const int ep = g_pBehaviorEngine->getEpisode();
-    const int shipLevel = (ep < 6) ? 18 : 17;
+    const auto ep = g_pBehaviorEngine->getEpisode();
+    int shipLevel;
 
-    if(mp_Map->findTile(flag_dest, &x, &y, 2) || g_pBehaviorEngine->m_option[OPT_LVLREPLAYABILITY].value || level >= shipLevel)
+    switch(ep)
+    {
+        case 4 : shipLevel = 18; break;
+        case 5 : shipLevel = 15; break;
+        case 6 : shipLevel = 17; break;
+        default : shipLevel = 0;
+    };
+
+    // Check if there already exists a flag. If that's not the case enter the level
+    if( mp_Map->findTile(flag_dest, &x, &y, 2) || g_pBehaviorEngine->m_option[OPT_LVLREPLAYABILITY].value || level >= shipLevel)
     {
         gEventManager.add(new EventEnterLevel(object));
 
@@ -1203,7 +1211,7 @@ void CPlayerWM::performWalkingAnimation(bool walking)
 /**
  * This performs the animation when player is swimming in water on the map
  */
-void CPlayerWM::performSwimmingAnimation()
+void CPlayerWM::performSwimmingAnimation(const bool moving)
 {
 	if(xDirection == RIGHT && yDirection == 0)
 		sprite = m_basesprite + 2;
@@ -1231,7 +1239,7 @@ void CPlayerWM::performSwimmingAnimation()
 	m_animation_time = 5;
 	sprite +=  m_animation%2;
 
-	playSwimSound();
+    playSwimSound(moving);
 }
 
 void CPlayerWM::setMounted(const bool value)

@@ -1381,7 +1381,7 @@ void CAL_ReadGrChunk (id0_int_t chunk)
 =
 = CA_CacheGrChunk
 =
-= Makes sure a given chunk is in memory, loadiing it if needed
+= Makes sure a given chunk is in memory, loading it if needed
 =
 ======================
 */
@@ -1745,7 +1745,7 @@ void CA_CacheMarks (const id0_char_t *title, id0_boolean_t cachedownlevel)
 	for (i=0;i<NUMCHUNKS;i++)
 		if (grneeded[i]&ca_levelbit)
 		{
-			if (grsegs[i])					// its allready in memory, make
+            if (grsegs[i])					// its already in memory, make
 				MM_SetPurge(&grsegs[i],0);	// sure it stays there!
 			else
 				numcache++;

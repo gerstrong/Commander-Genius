@@ -1,4 +1,11 @@
 
+v1.9.2 Beta:
+----------
+- Graphical bug fixes
+- Improved physics, especially collision detection
+- More and improved sounds effects, especial when keen on the map is 
+using the swim suit
+
 v1.9 Beta:
 ----------
 - Integrated RefKeen to CG so Keen Dreams runs as the last planned game. It's fully playable now

@@ -157,6 +157,11 @@ public:
      */
 	void calcBoundingBoxes();
 
+    /**
+     * @brief setupCollisionModel Should be called when an object is created. It will setup the collision model for ingame as required.
+     */
+    void setupCollisionModel();
+
 	void performCollisionsSameBox();
 	void performCollisions();
 	void alignToTile();
@@ -193,8 +198,8 @@ public:
 	void moveTo(const int new_x, const int new_y);
 	void moveXDir(const int amount, const bool force = false);
 	void moveYDir(const int amount);
-	virtual void moveLeft(const int amnt, const bool force = false);
-	virtual void moveRight(const int amnt, const bool force = false);
+    virtual void moveLeft(const int amnt, const bool = false);
+    virtual void moveRight(const int amnt, const bool = false);
 	virtual void moveUp(const int amnt);
 	virtual void moveDown(const int amnt);
 

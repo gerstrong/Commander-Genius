@@ -167,6 +167,7 @@ void scaleNormal( SDL_Surface *srcSfc,
 }
 
 
+// TODO: Two Step scaling so it can be combined a more efficient way.
 void blitScaled(SDL_Surface *srcSfc,
                 SDL_Rect &srGsRect,
                 SDL_Surface *dstSfc,
@@ -180,7 +181,7 @@ void blitScaled(SDL_Surface *srcSfc,
     SDL_Rect lSrGsRect = srGsRect;
     SDL_Rect lDstRect = dstRect;
 
-    // Check for filter and reduce if the surface to be scaled is way too small
+    // Find the best filter for current resolution
     while( filter>NONE )
     {
         // Does it fit?
@@ -193,6 +194,7 @@ void blitScaled(SDL_Surface *srcSfc,
         filter = (filterOptionType)((int)(filter)-1);
     }
 
+    // If there is a chance to scale through filter, do so.
     if( filter>NONE )
     {
         SDL_LockSurface( srcSfc );
@@ -213,6 +215,8 @@ void blitScaled(SDL_Surface *srcSfc,
         lSrGsRect.w = lSrGsRect.w*filter;
         lSrGsRect.h = lSrGsRect.h*filter;
     }
+    else
+    {
 
     // Second phase: Scale it normally
 #if SDL_VERSION_ATLEAST(2, 0, 0)
@@ -225,5 +229,6 @@ void blitScaled(SDL_Surface *srcSfc,
     //scaleNormal(srcSfc, dstSfc, (Uint32)SCALE_4X );
 
 #endif
+    }
 
 }

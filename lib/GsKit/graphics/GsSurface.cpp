@@ -135,7 +135,7 @@ bool GsSurface::scaleTo(const GsRect<Uint16> &scaledRect, const filterOptionType
         return true;
 
 
-    // Need to do that, otherwise it won't work.
+    // Need to do that, otherwise it won't work ???
     //optimizeSurface();
 
     auto sfcFormat = mpSurface->format;

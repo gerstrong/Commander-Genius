@@ -35,7 +35,9 @@
 #include "keen/vorticon/VorticonEngine.h"
 #include "keen/galaxy/GalaxyEngine.h"
 #include "keen/dreams/dreamsengine.h"
+#ifdef DBFUSION
 #include "dbfusion/dbFusionNgine.h"
+#endif // DBFUSION
 
 bool disallowDBFusion = false;
 
@@ -163,6 +165,13 @@ bool CGameLauncher::setupMenu()
 
     mLauncherDialog.addControl( fusionShellBtn, GsRect<float>(0.01f, 0.865f, 0.3f, 0.07f) );
     mLauncherDialog.addControl( fusionBtn, GsRect<float>(0.35f, 0.865f, 0.3f, 0.07f) );
+#endif
+
+
+
+#ifdef DOWNLOADER
+    GsButton *downloadBtn = new GsButton( "New Stuff", new GMDownloadDlgOpen() );
+    mLauncherDialog.addControl( downloadBtn, GsRect<float>(0.35f, 0.865f, 0.3f, 0.07f) );
 #endif
 
     mpEpisodeText = new CGUIText("Game");
@@ -382,7 +391,7 @@ void CGameLauncher::start()
     gGraphics.createEmptyFontmaps(1);
     GsFont &Font = gGraphics.getFont(0);
 
-    const int height = gVideoDriver.getHeight();
+    const auto height = gVideoDriver.getHeight();
 
     // Height is larger than 480, use the scaled up fonts in the menu,
     // so readability is better on higher resolutions.
@@ -457,6 +466,22 @@ void CGameLauncher::showMessageBox(const std::string &text)
 
     mpMsgDialog->addControl(new GsButton("Ok", new CloseBoxEvent()), GsRect<float>(0.4f, 0.85f, 0.2f, 0.05f) );
 
+}
+
+void CGameLauncher::setupDownloadDialog()
+{
+    //mpDownloadDialog
+
+    mpDownloadDialog.reset(new CGUIDialog(GsRect<float>(0.1f, 0.1f, 0.8f, 0.85f), CGUIDialog::EXPAND));
+    mpDownloadDialog->initEmptyBackground();
+
+    //mpPatchSelList->setConfirmButtonEvent(new GMPatchSelected());
+    //mpPatchSelList->setBackButtonEvent(new GMQuit());
+
+    mpDownloadDialog->addControl(new CGUIText("Downloading..."), GsRect<float>(0.0f, 0.0f, 1.0f, 0.05f));
+
+    mpDownloadDialog->addControl(new GsButton( "< Back", new CloseBoxEvent() ), GsRect<float>(0.4f, 0.85f, 0.2f, 0.05f) );
+    //mpDownloadDialog->addControl(new GsButton( "< Back", new GMQuit() ), GsRect<float>(0.65f, 0.865f, 0.3f, 0.07f) );
 }
 
 void CGameLauncher::setupModsDialog()
@@ -611,6 +636,14 @@ void CGameLauncher::pumpEvent(const CEvent *evPtr)
     }
     else
 #endif
+
+
+    if( dynamic_cast<const GMDownloadDlgOpen*>(evPtr) )
+    {
+        setupDownloadDialog();
+    }
+
+
     if( dynamic_cast<const GMStart*>(evPtr) )
     {
         setChosenGame(mpSelList->getSelection());
@@ -627,7 +660,10 @@ void CGameLauncher::pumpEvent(const CEvent *evPtr)
     }
     else if( dynamic_cast<const CloseBoxEvent*>(evPtr) )
     {
-        mpMsgDialog = nullptr;
+        if(mpMsgDialog)
+            mpMsgDialog = nullptr;
+        if(mpDownloadDialog)
+            mpDownloadDialog = nullptr;
     }
 
 
@@ -689,6 +725,15 @@ void CGameLauncher::ponderGameSelDialog(const float deltaT)
     }
 
     mLauncherDialog.processLogic();
+}
+
+
+void CGameLauncher::ponderDownloadDialog()
+{
+    if( mFinishedDownload )
+    {
+        mpDownloadDialog = nullptr;
+    }
 }
 
 
@@ -782,6 +827,12 @@ void CGameLauncher::ponder(const float deltaT)
         return;
     }
 
+    if(mpDownloadDialog)
+    {
+        mpDownloadDialog->processLogic();
+        return;
+    }
+
 
     if(!mDonePatchSelection && m_chosenGame < 0)
     {
@@ -826,6 +877,9 @@ void CGameLauncher::render()
 
     if(mpDosExecDialog)
         mpDosExecDialog->processRendering();
+
+    if(mpDownloadDialog)
+        mpDownloadDialog->processRendering();
 
 }
 
