@@ -1055,10 +1055,12 @@ IN_Ack(void)
 	LastScan = sc_None;
 
 	if (MousePresent)
+    {
 		while (INL_GetMouseButtons())
 		{
             BE_ST_ShortSleep();
 		}
+    }
     /*for (i = 0;i < MaxJoys;i++)
 		if (JoysPresent[i])
 			while (IN_GetJoyButtonsDB(i))

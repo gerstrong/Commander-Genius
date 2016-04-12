@@ -14,6 +14,7 @@
 #include <widgets/GsBanner.h>
 #include <widgets/GsButton.h>
 #include <widgets/GsText.h>
+#include <widgets/GsProgressbar.h>
 #include <graphics/GsGraphics.h>
 #include <base/utils/FindFile.h>
 #include <base/utils/StringUtils.h>
@@ -477,6 +478,8 @@ void CGameLauncher::setupDownloadDialog()
     //mpPatchSelList->setBackButtonEvent(new GMQuit());
 
     mpDownloadDialog->addControl(new CGUIText("Downloading..."), GsRect<float>(0.0f, 0.0f, 1.0f, 0.05f));
+
+    mpDownloadDialog->addControl(new GsProgressBar, GsRect<float>(0.1f, 0.2f, 0.8f, 0.1f));
 
     mpDownloadDialog->addControl(new GsButton( "< Back", new CloseBoxEvent() ), GsRect<float>(0.4f, 0.85f, 0.2f, 0.05f) );
     //mpDownloadDialog->addControl(new GsButton( "< Back", new GMQuit() ), GsRect<float>(0.65f, 0.865f, 0.3f, 0.07f) );

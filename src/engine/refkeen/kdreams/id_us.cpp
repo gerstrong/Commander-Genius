@@ -750,13 +750,13 @@ US_FinishTextScreen(void)
 {
 	// Change Loading... to Press a Key
 //	USL_ScreenDraw(29,22," Ready - Press a Key     ",0x9a);
-	USL_ScreenDraw(30, 18, "Ready - Press a Key",0xCE);
+    USL_ScreenDraw(30, 18, "Ready - Press a Key",0xCE);
 
-	if (!tedlevel)
+    /*if (!tedlevel)
 	{
 		IN_ClearKeysDown();
 		IN_Ack();
-	}
+    }*/
     //IN_ClearKeysDown();
 
     //USL_ClearTextScreen();

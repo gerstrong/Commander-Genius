@@ -21,6 +21,13 @@
 dreams::DreamsEngine *gDreamsEngine;
 
 
+enum GameState
+{
+    INTRO_TEXT,     // The famous screen where hardware is detected and some notes about the versions are told
+    INTRO_SCREEN    // Within the gameloop it will show the intro screen of the dreams game
+} gGameState = INTRO_TEXT;
+
+
 // TODO: Ugly wrapper for the refkeen variables used. It serves as interface to C. Might be improved in future.
 extern "C"
 {
@@ -176,6 +183,15 @@ namespace dreams
 {
 
 
+struct SwitchSceneEvent : CEvent
+{
+    SwitchSceneEvent(GsEngine *ptr) :
+        mpEnginePtr( std::unique_ptr<GsEngine>(ptr) ) {}
+
+    std::unique_ptr<GsEngine> mpEnginePtr;
+};
+
+
 // Mapping the strings of the filenames to the pointers where we store the embedded data
 std::map< std::string, unsigned int > gOffsetMap;
 
@@ -280,6 +296,10 @@ bool extractEmbeddedFilesIntoMemory(const BE_GameVerDetails_T &gameVerDetails)
 }
 
 
+
+
+
+
 DreamsEngine::~DreamsEngine()
 {
      SDL_DestroySemaphore( gpRenderLock );
@@ -337,17 +357,17 @@ bool DreamsEngine::loadResources()
 
 void InitGame()
 {
-    id0_int_t i;
-
     MM_Startup();
 
-#if 0
+    id0_int_t i;
+
+/*#if 0
     // Handle piracy screen...
     //
     movedata(FP_SEG(PIRACY),(id0_unsigned_t)PIRACY,0xb800,displayofs,4000);
     while (BE_ST_BiosScanCode(0) != sc_Return);
     //while ((bioskey(0)>>8) != sc_Return);
-#endif
+#endif*/
 
 #if GRMODE == EGAGR
     if (mminfo.mainmem < 335l*1024)
@@ -406,8 +426,10 @@ void InitGame()
     CA_MarkGrChunk(STARTFONTM);
     CA_MarkGrChunk(STARTTILE8);
     CA_MarkGrChunk(STARTTILE8M);
-    for (i=KEEN_LUMP_START;i<=KEEN_LUMP_END;i++)
-        CA_MarkGrChunk(i);
+    for ( id0_int_t j=KEEN_LUMP_START ; j<=KEEN_LUMP_END ; j++)
+    {
+        CA_MarkGrChunk(j);
+    }
 
 #ifdef REFKEEN_VER_KDREAMS_CGA_ALL
     CA_CacheMarks (NULL);
@@ -419,35 +441,55 @@ void InitGame()
     MM_SetLock (&grsegs[STARTFONTM],true);
     MM_SetLock (&grsegs[STARTTILE8],true);
     MM_SetLock (&grsegs[STARTTILE8M],true);
-    for (i=KEEN_LUMP_START;i<=KEEN_LUMP_END;i++)
-        MM_SetLock (&grsegs[i],true);
+    for ( id0_int_t j=KEEN_LUMP_START ; j<=KEEN_LUMP_END ; j++)
+    {
+        MM_SetLock (&grsegs[j],true);
+    }
 
     setupAudio();
 
     fontcolor = WHITE;
 
-    US_FinishTextScreen();
-
     RefKeen_FillObjStatesWithDOSPointers(); // Saved games compatibility
+
+    US_FinishTextScreen();
 }
+
+
+void DreamsDosIntro::start()
+{
+    InitGame();
+}
+
+void DreamsDosIntro::pumpEvent(const CEvent *evPtr)
+{
+
+}
+
+void DreamsDosIntro::ponder(const float deltaT)
+{
+    if( gInput.getPressedAnyCommand() )
+    {
+        //gEventManager.add( new SwitchSceneEvent(new ) );
+        // If we press any switch to the next section -> where Dreams is really loaded into CGA/EGA mode and show the intro screen
+        gInput.flushAll();
+        gGameState = INTRO_SCREEN;
+    }
+}
+
+void DreamsDosIntro::render()
+{
+
+}
+
 
 
 void DreamsEngine::GameLoop()
 {
-    // TODO: We should pipe this function to another thread,
-    // so the main thread is kept free for
-    // all the other lower functions defined through the GsKit.
-
-    // TODO: Create Thread Object here!
-    //mpThread = DemoLoop();
     struct GameLoopAction : public Action
     {
         int handle()
-        {
-            gDreamsForceClose = 0;
-
-            InitGame();
-
+        {            
             VW_SetScreenMode (GRMODE);
             VW_ClearVideo (BLACK);
             DemoLoop();
@@ -459,7 +501,7 @@ void DreamsEngine::GameLoop()
     };
 
     mpPlayLoopAction.reset( new GameLoopAction );
-    mpPlayLoopThread.reset(threadPool->start(mpPlayLoopAction.get(), "Dreams Gameloop"));
+    mpPlayLoopThread.reset( threadPool->start(mpPlayLoopAction.get(), "Dreams Gameloop"));
 }
 
 
@@ -505,8 +547,6 @@ void DreamsEngine::applyScreenMode()
 }
 
 
-
-
 void DreamsEngine::start()
 {
     // Global for the legacy refkeen code.
@@ -532,6 +572,12 @@ void DreamsEngine::start()
     //InitGame();
     //DemoLoop();
     //kdreams_exe_main();
+
+    mpScene.reset( new DreamsDosIntro );
+
+    gGameState = INTRO_TEXT;
+
+    mpScene->start();
 }
 
 bool mResourcesLoaded = false;
@@ -544,6 +590,8 @@ void DreamsEngine::pumpEvent(const CEvent *evPtr)
     {
         mResourcesLoaded = true;
     }
+
+    mpScene->pumpEvent(evPtr);
 }
 
 void DreamsEngine::ponder(const float deltaT)
@@ -561,13 +609,17 @@ void DreamsEngine::ponder(const float deltaT)
     }        
 
 
-    // Change that mGameState stuff to have more depth in the code
-    if(mGameState == INTRO_TEXT) // Where the shareware test is shown
+    // Change that gGameState stuff to have more depth in the code
+    if(gGameState == INTRO_TEXT) // Where the shareware test is shown
     {
-        // If we press any switch to the next section -> where Dreams is really loaded into CGA/EGA mode and show the intro screen
-        gInput.flushAll();
-        mGameState = INTRO_SCREEN;
-        GameLoop();
+        mpScene->ponder(deltaT);
+    }
+    else
+    {
+        if(!mpPlayLoopThread)
+        {
+            GameLoop();
+        }
     }
 }
 
@@ -576,6 +628,8 @@ void DreamsEngine::render()
 {
     // Lock Rendering
     SDL_SemWait( gpRenderLock );
+
+    mpScene->render();
 
     if(mChangeMode)
     {
