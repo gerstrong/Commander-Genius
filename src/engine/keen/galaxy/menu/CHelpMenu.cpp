@@ -41,8 +41,8 @@ GalaxyMenu( GsRect<float>(0.25f, 0.24f, 0.5f, 0.5f) )
 						new StartInfoSceneEvent( new CCredits() ) ) );
 	
 	std::string filename = "previews.ck";
-	filename += itoa(g_pBehaviorEngine->getEpisode());	
-	filename = getResourceFilename( filename, g_pBehaviorEngine->m_ExeFile.getDataDirectory(), false, false);
+	filename += itoa(gpBehaviorEngine->getEpisode());	
+	filename = getResourceFilename( filename, gpBehaviorEngine->m_ExeFile.getDataDirectory(), false, false);
 
 	if( filename != "" )
 	{

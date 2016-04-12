@@ -147,9 +147,9 @@ void CMap::collectBlockersCoordiantes()
     scrollBlockY.push_back(2<<CSF);
     scrollBlockX.push_back(2<<CSF);
 
-    int ep = g_pBehaviorEngine->getEpisode();
+    int ep = gpBehaviorEngine->getEpisode();
 
-    if(g_pBehaviorEngine->getEngine() == ENGINE_GALAXY)
+    if(gpBehaviorEngine->getEngine() == ENGINE_GALAXY)
     {
         const word* map_ptr = m_Plane[2].getMapDataPtr();
 
@@ -203,7 +203,7 @@ void CMap::fetchNearestVertBlockers(const int x, int &leftCoord, int &rightCoord
         {
             leftCoord = blockXleft;
 
-            if(leftCoord > (2<<CSF) &&  g_pBehaviorEngine->getEngine() == ENGINE_GALAXY)
+            if(leftCoord > (2<<CSF) &&  gpBehaviorEngine->getEngine() == ENGINE_GALAXY)
             {
                 // This will hide even more level blockers in Galaxy. In Vorticon
                 // this is not needed
@@ -251,7 +251,7 @@ void CMap::fetchNearestHorBlockers(const int y, int &upCoord, int &downCoord)
         {
             upCoord = blockYup;
 
-            if(g_pBehaviorEngine->getEngine() == ENGINE_GALAXY)
+            if(gpBehaviorEngine->getEngine() == ENGINE_GALAXY)
             {
                 // This will hide even more level blockers in Galaxy. In Vorticon
                 // this is not needed
@@ -803,7 +803,7 @@ void CMap::_drawForegroundTiles()
     Uint16 y2 = (m_scrolly+num_h_tiles)>>TILE_S;
 
 	std::vector<CTileProperties> &TileProperties =
-			g_pBehaviorEngine->getTileProperties(1);
+			gpBehaviorEngine->getTileProperties(1);
 
     auto visGA = gVideoDriver.mpVideoEngine->mRelativeVisGameArea;
 
@@ -900,11 +900,11 @@ void CMap::animateAllTiles()
         num_h_tiles = m_height-m_mapy;
 
     std::vector<CTileProperties> &frontTileProperties =
-            g_pBehaviorEngine->getTileProperties(1);
+            gpBehaviorEngine->getTileProperties(1);
     word *p_front_tile = m_Plane[1].getMapDataPtr();
 
     std::vector<CTileProperties> &backTileProperties =
-            g_pBehaviorEngine->getTileProperties(0);
+            gpBehaviorEngine->getTileProperties(0);
     word *p_back_tile = m_Plane[0].getMapDataPtr();
 
     std::vector<Uint8> &timersBack = m_Plane[0].getTimers();

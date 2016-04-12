@@ -32,7 +32,7 @@ void CSpecialItem::getTouchedBy(CSpriteObject& theObject)
 		g_pSound->playSound(SOUND_GET_SPECIAL_ITEM, PLAY_PAUSEALL);
 
 		// Show got item message
-        showMsgWithBmp( g_pBehaviorEngine->getString(answermap[mFoeID-0x63]), 30, LEFT );
+        showMsgWithBmp( gpBehaviorEngine->getString(answermap[mFoeID-0x63]), 30, LEFT );
 
 		switch(mFoeID)
 		{

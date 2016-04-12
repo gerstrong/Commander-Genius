@@ -124,7 +124,7 @@ CEGAGraphics(ExeFile.getEpisode(), gKeenFiles.gameDir),
 m_Exefile(ExeFile)
 {
 	createBitmapsIDs();
-	g_pBehaviorEngine->setEpisodeInfoStructPtr(EpisodeInfo);
+	gpBehaviorEngine->setEpisodeInfoStructPtr(EpisodeInfo);
 }
 
 
@@ -1084,7 +1084,7 @@ bool CEGAGraphicsGalaxy::readSprites( size_t NumSprites, size_t IndexSprite )
  */
 bool CEGAGraphicsGalaxy::readTexts()
 {
-	// g_pBehaviorEngine->addMessage(name, message);
+	// gpBehaviorEngine->addMessage(name, message);
 	 /*char filename[PATH_MAX];
 	FILE *f;
 	int i;

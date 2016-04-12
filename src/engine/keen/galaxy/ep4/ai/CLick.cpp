@@ -42,7 +42,7 @@ keenNear(false)
 	mActionMap[A_LICK_STUNNED] = (GASOFctr) &CStunnable::processGettingStunned;
 
 
-    const Difficulty diff = g_pBehaviorEngine->mDifficulty;
+    const Difficulty diff = gpBehaviorEngine->mDifficulty;
 
     if(foeID == 0x0E && diff > HARD)
     {
@@ -154,7 +154,7 @@ bool CLick::isNearby(CSpriteObject &theObject)
 
 void CLick::processHop()
 {
-    const Difficulty diff = g_pBehaviorEngine->mDifficulty;
+    const Difficulty diff = gpBehaviorEngine->mDifficulty;
 
     int realHopXSpeed = LICK_HOP_X_SPEED_LOW;    
     

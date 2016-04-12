@@ -54,9 +54,9 @@ const int STUN_TIME = 30;
 
 CPlayerLevel::CPlayerLevel(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y,
                         std::vector< std::shared_ptr<CGalaxySpriteObject> > &ObjectPtrs, direction_t facedir,
-                        CInventory &l_Inventory, stCheat &Cheatmode,
+                        CInventory &l_Inventory,
                         const size_t offset, const int playerID) :
-CPlayerBase(pmap, foeID, x, y, facedir, l_Inventory, Cheatmode, playerID),
+CPlayerBase(pmap, foeID, x, y, facedir, l_Inventory, playerID),
 mPlacingGem(false),
 mPoleGrabTime(0),
 mExitDoorTimer(0),
@@ -180,7 +180,7 @@ bool CPlayerLevel::verifyforPole()
 
 void CPlayerLevel::makeHimStand()
 {	
-	if(pSupportedbyobject && g_pBehaviorEngine->getEpisode() == 5)
+	if(pSupportedbyobject && gpBehaviorEngine->getEpisode() == 5)
 		setAction(A_KEEN_ON_PLAT);
 	else
 		setAction(A_KEEN_STAND);
@@ -406,7 +406,7 @@ void CPlayerLevel::handleInputOnGround()
 
 bool CPlayerLevel::moonTiledetected()
 {
-    if( g_pBehaviorEngine->getEpisode() != 4 )
+    if( gpBehaviorEngine->getEpisode() != 4 )
 	return false;
     
     int lx = getXLeftPos()-(1<<STC);
@@ -715,7 +715,7 @@ bool CPlayerLevel::checkandtriggerforCliffHanging()
     if(mp_processState == (void (CPlayerBase::*)()) &CPlayerLevel::processPogo)
 	return false;
     
-    std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
+    std::vector<CTileProperties> &TileProperty = gpBehaviorEngine->getTileProperties();
             
     const bool floorNearBy = TileProperty[mp_Map->at((getXMidPos()>>CSF), (getYDownPos()>>CSF)+1)].bup;
     
@@ -797,7 +797,7 @@ void CPlayerLevel::processCliffHanging()
 	const int xLeft = getXLeftPos()>>CSF;
 	const int xRight = getXRightPos()>>CSF;
 
-	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
+	std::vector<CTileProperties> &TileProperty = gpBehaviorEngine->getTileProperties();
 
 	if( xDirection == LEFT )
 	{	    
@@ -873,7 +873,7 @@ void CPlayerLevel::processCliffClimbingUp()
 {
 	if(mTarget.x < 0 || mTarget.y < 0)
 	{
-		std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
+		std::vector<CTileProperties> &TileProperty = gpBehaviorEngine->getTileProperties();
 		const int spriteID = getSpriteIDFromAction(A_KEEN_STAND);
         GsSprite &standSpr = gGraphics.getSprite(mSprVar,spriteID);
 
@@ -1100,7 +1100,7 @@ void CPlayerLevel::processPogo()
 
 	if (!state.jumpTimer)
 	{
-		if (g_pBehaviorEngine->mDifficulty == EASY)
+		if (gpBehaviorEngine->mDifficulty == EASY)
 		{
 			performGravityMid();
 		}
@@ -1149,7 +1149,7 @@ void CPlayerLevel::processPogo()
 	
 	
 	
-	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
+	std::vector<CTileProperties> &TileProperty = gpBehaviorEngine->getTileProperties();
             
 	const bool ceilNearBy = TileProperty[mp_Map->at((getXMidPos()>>CSF), (getYUpPos()>>CSF)-1)].bup;
     
@@ -1213,7 +1213,7 @@ void CPlayerLevel::verifyJumpAndFall()
 			xinertia = 0;
 			//obj->posX = (obj->clipRects.tileXmid << 8) - 32;
 		}
-		else if(!m_Cheatmode.jump)
+        else if(!gpBehaviorEngine->mCheatmode.jump)
 		{
 			playSound( SOUND_KEEN_BUMPHEAD );						
 			
@@ -1330,7 +1330,7 @@ void CPlayerLevel::processJumping()
 	verifyJumpAndFall();
 	if (state.jumpTimer)
 	{
-		if(state.jumpTimer > 0 && !m_Cheatmode.jump)
+        if(state.jumpTimer > 0 && !gpBehaviorEngine->mCheatmode.jump)
 			state.jumpTimer--;
 
 		// Stop moving up if we've let go of control.
@@ -1342,7 +1342,7 @@ void CPlayerLevel::processJumping()
 	}
 	else
 	{
-		if(g_pBehaviorEngine->mDifficulty == EASY)
+		if(gpBehaviorEngine->mDifficulty == EASY)
 		{
 			performGravityMid();
 		}
@@ -1383,7 +1383,7 @@ void CPlayerLevel::processJumping()
 	}
 
 
-	if( m_Cheatmode.jump && (state.jumpIsPressed && !state.jumpWasPressed) )
+    if( gpBehaviorEngine->mCheatmode.jump && (state.jumpIsPressed && !state.jumpWasPressed) )
 	{
 		state.jumpWasPressed = true;
 		yinertia = -90;
@@ -1405,7 +1405,7 @@ void CPlayerLevel::processJumping()
 bool CPlayerLevel::canFallThroughTile()
 {
 	const int tile = mp_Map->getPlaneDataAt(1, getXMidPos(), getYDownPos()+(5<<STC));
-	const CTileProperties &TileProp = g_pBehaviorEngine->getTileProperties(1)[tile];
+	const CTileProperties &TileProp = gpBehaviorEngine->getTileProperties(1)[tile];
 	return ( TileProp.bdown == 0 && TileProp.bup != 0 );
 }
 
@@ -1474,7 +1474,7 @@ void CPlayerLevel::processExiting()
 
 void CPlayerLevel::processPressUp() {
 
-	std::vector<CTileProperties> &Tile = g_pBehaviorEngine->getTileProperties(1);
+	std::vector<CTileProperties> &Tile = gpBehaviorEngine->getTileProperties(1);
 	const int x_left = getXLeftPos();
 	const int x_right = getXRightPos();
 	const int x_mid = (x_left+x_right)/2;
@@ -1732,7 +1732,7 @@ void CPlayerLevel::processEnterDoor()
 	  bool mustTeleportOnMap = false;
 	  
 	  // Check if there is a teleporter. In Keen 5 there might be one!
-	  if(g_pBehaviorEngine->getEpisode() == 5)
+	  if(gpBehaviorEngine->getEpisode() == 5)
 	  {
 	    Uint32 teletile = mp_Map->getPlaneDataAt(1, xmid, y1);
 	
@@ -1815,8 +1815,8 @@ void CPlayerLevel::toggleBridge(const Uint32 newX, const Uint32 newY)
 	const int start_tile = mp_Map->getPlaneDataAt(1, newX<<CSF, newY<<CSF)-1;
 	int end_tile = start_tile+3;
 	
-	const int ep = g_pBehaviorEngine->getEpisode();
-	std::vector<CTileProperties> &tileProp = g_pBehaviorEngine->getTileProperties(1); 
+	const int ep = gpBehaviorEngine->getEpisode();
+	std::vector<CTileProperties> &tileProp = gpBehaviorEngine->getTileProperties(1); 
 	
 	int x = newX;
 
@@ -2049,7 +2049,7 @@ void CPlayerLevel::openDoorsTile()
 	Uint32 tileno, next_tileno;
 
     // Get the tile position of the last tile to change. on the right of
-    //std::vector<CTileProperties> &tilePropVec = g_pBehaviorEngine->getTileProperties(1);
+    //std::vector<CTileProperties> &tilePropVec = gpBehaviorEngine->getTileProperties(1);
 
     while(1)
 	{
@@ -2262,7 +2262,7 @@ void CPlayerLevel::processPoleClimbingSit()
 	{
 		// This will check three points and avoid that keen falls on sloped tiles
 		const int fall1 = mp_Map->getPlaneDataAt(1, l_x, l_y_down+(1<<CSF));
-		const CTileProperties &TileProp1 = g_pBehaviorEngine->getTileProperties(1)[fall1];
+		const CTileProperties &TileProp1 = gpBehaviorEngine->getTileProperties(1)[fall1];
 		const bool leavePole = (TileProp1.bup != 0);
 
 		if ( leavePole )
@@ -2467,7 +2467,7 @@ void CPlayerLevel::processFalling()
 
 	// If Jump mode is enabled he can jump again
 	// This will cancel the pole process and make Keen jump
-	if( m_Cheatmode.jump && m_playcontrol[PA_JUMP] > 0 )
+    if( gpBehaviorEngine->mCheatmode.jump && m_playcontrol[PA_JUMP] > 0 )
 	{
 		setAction(A_KEEN_JUMP);
 		m_climbing = false;
@@ -2540,7 +2540,7 @@ void CPlayerLevel::push(CGalaxySpriteObject& theObject)
 
 bool CPlayerLevel::checkConveyorBelt()
 {
-    if(g_pBehaviorEngine->getEpisode() == 6)
+    if(gpBehaviorEngine->getEpisode() == 6)
     {
 	Uint32 l_x_l = getXLeftPos();
 	Uint32 l_x = getXMidPos();
@@ -2596,10 +2596,10 @@ void CPlayerLevel::process()
 		processInput();
 
 		// If no clipping was triggered change solid state of keen
-		if(m_Cheatmode.noclipping)
+        if(gpBehaviorEngine->mCheatmode.noclipping)
 		{
 			solid = !solid;
-			m_Cheatmode.noclipping = false;
+            gpBehaviorEngine->mCheatmode.noclipping = false;
 		}
 
 		if(pSupportedbyobject)
@@ -2640,7 +2640,7 @@ void CPlayerLevel::process()
 
         bool specialLevel = false;
 
-        const std::string fuse_msg = g_pBehaviorEngine->getString( (specialLevel) ? "FUSE_WONDER" : "FUSE_CASUAL");
+        const std::string fuse_msg = gpBehaviorEngine->getString( (specialLevel) ? "FUSE_WONDER" : "FUSE_CASUAL");
 
         g_pSound->playSound( SOUND_LEVEL_DONE );
 
@@ -2735,7 +2735,7 @@ bool CPlayerLevel::verifyAndToggleBridge(const int lx, const int ly)
     Uint32 newX = targetXY >> 8;
     Uint32 newY = targetXY & 0xFF;
   
-    auto &Tile = g_pBehaviorEngine->getTileProperties(1);
+    auto &Tile = gpBehaviorEngine->getTileProperties(1);
     const int zapperTile = mp_Map->getPlaneDataAt(1, newX<<CSF, newY<<CSF);        
     const int flag = Tile[zapperTile].behaviour;
   
@@ -2769,7 +2769,7 @@ void CPlayerLevel::TurnGiantSwitchOff(const int x, const int y)
 	}
     }    
     
-    std::vector<CTileProperties> &Tile = g_pBehaviorEngine->getTileProperties(1);
+    std::vector<CTileProperties> &Tile = gpBehaviorEngine->getTileProperties(1);
     const int x_csf = x<<CSF;
     const int y_csf = y<<CSF;
     
@@ -2813,7 +2813,7 @@ void CPlayerLevel::TurnGiantSwitchOn(const int x, const int y)
 	}
     }
     
-    std::vector<CTileProperties> &Tile = g_pBehaviorEngine->getTileProperties(1);
+    std::vector<CTileProperties> &Tile = gpBehaviorEngine->getTileProperties(1);
     const int x_csf = x<<CSF;
     const int y_csf = y<<CSF;
     
@@ -2846,7 +2846,7 @@ int CPlayerLevel::checkSolidU(int x1, int x2, int y1, const bool push_mode )
 	if(hitdetectWithTilePropertyHor(1, x1, x2, y1-COLISION_RES, 1<<CSF))
 	    return 0;
     
-	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
+	std::vector<CTileProperties> &TileProperty = gpBehaviorEngine->getTileProperties();
 
 	y1 -= COLISION_RES;
 
@@ -2865,31 +2865,31 @@ int CPlayerLevel::checkSolidU(int x1, int x2, int y1, const bool push_mode )
 		{
 			blocked = TileProperty[mp_Map->at(c>>CSF, y1>>CSF)].bdown;
 
-			if(blocked == 33)
-			{
-			    TurnGiantSwitchOff(c>>CSF, y1>>CSF);
-			    
-			    if(!m_Cheatmode.jump)
-			    {
-				playSound( SOUND_KEEN_BUMPHEAD );
-				
-				if (blockedu > 1)
-				{
-				    yinertia += 16;
-				    if (yinertia < 0)
-					yinertia = 0;
-				}
-				else
-				{
-				    if( yinertia<0 )
-					yinertia = 0;
-				}
-				state.jumpTimer = 0;
-			    }		    
-			    
-			    return 1;
-			}			
-			
+            if(blocked == 33)
+            {
+                TurnGiantSwitchOff(c>>CSF, y1>>CSF);
+
+                if(!gpBehaviorEngine->mCheatmode.jump)
+                {
+                    playSound( SOUND_KEEN_BUMPHEAD );
+
+                    if (blockedu > 1)
+                    {
+                        yinertia += 16;
+                        if (yinertia < 0)
+                            yinertia = 0;
+                    }
+                    else
+                    {
+                        if( yinertia<0 )
+                            yinertia = 0;
+                    }
+                    state.jumpTimer = 0;
+                }
+
+                return 1;
+            }
+
 			if(blocked == 17 && m_climbing)
 				return 0;
 
@@ -2912,7 +2912,7 @@ int CPlayerLevel::checkSolidU(int x1, int x2, int y1, const bool push_mode )
 
 int CPlayerLevel::checkSolidD( int x1, int x2, int y2, const bool push_mode )
 {
-	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
+	std::vector<CTileProperties> &TileProperty = gpBehaviorEngine->getTileProperties();
 
 	y2 += COLISION_RES;
 

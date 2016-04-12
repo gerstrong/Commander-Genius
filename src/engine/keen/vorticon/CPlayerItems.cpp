@@ -44,7 +44,7 @@ void CPlayer::getgoodies()
 // have keen pick up the goodie at screen pixel position (px, py)
 bool CPlayer::getGoodie(int px, int py)
 {
-	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
+	std::vector<CTileProperties> &TileProperty = gpBehaviorEngine->getTileProperties();
 	Uint16 tile = mp_Map->at(px, py);
 	auto behaviour = TileProperty[tile].behaviour;
 	
@@ -73,7 +73,7 @@ bool CPlayer::getGoodie(int px, int py)
 
 void CPlayer::procGoodie(int tile, int mpx, int mpy)
 {
-	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
+	std::vector<CTileProperties> &TileProperty = gpBehaviorEngine->getTileProperties();
 	Uint8 behaviour = TileProperty[tile].behaviour;
 	if ( (behaviour > 5 && behaviour < 11) || (behaviour > 17 && behaviour < 22) )
 	{
@@ -140,13 +140,13 @@ void CPlayer::procGoodie(int tile, int mpx, int mpy)
 			break;
 		case 15:           // raygun
 			riseBonus(GUNUP_SPRITE, mpx, mpy);
-			if (g_pBehaviorEngine->mDifficulty <= EASY)
+			if (gpBehaviorEngine->mDifficulty <= EASY)
 			{
 				inventory.charges += 8;
 			}
 			else 
 			{			
-			    if( g_pBehaviorEngine->getEpisode() == 2) // Keen Null
+			    if( gpBehaviorEngine->getEpisode() == 2) // Keen Null
 				memcpy(&shotInc, exeptr+0x728C, 1 );
 			    
 			    inventory.charges += shotInc;
@@ -272,7 +272,7 @@ bool CPlayer::showGameHint(int mpx, int mpy)
 {
 	if(hintused) return false;
 
-    const int ep = g_pBehaviorEngine->getEpisode();
+    const int ep = gpBehaviorEngine->getEpisode();
     const int level = mp_Map->getLevel();
 
     if(ep == 1)
@@ -280,7 +280,7 @@ bool CPlayer::showGameHint(int mpx, int mpy)
 		if(mp_Map->at(mpx, mpy) >= 435 && mp_Map->at(mpx, mpy) <= 438)
 		{
 			// it's a garg statue
-			int tile = g_pBehaviorEngine->getPhysicsSettings().misc.one_eyed_tile;
+			int tile = gpBehaviorEngine->getPhysicsSettings().misc.one_eyed_tile;
 			mp_Map->setTile(mpx, mpy, tile, true);
 		}
 		else // It's a yorp statue.. or something else
@@ -376,12 +376,12 @@ void CPlayer::openDoor(int doortile, int doorsprite, int mpx, int mpy)
 {
 	int chgtotile;
 	short tilefix=0;
-	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
+	std::vector<CTileProperties> &TileProperty = gpBehaviorEngine->getTileProperties();
 
 	playSound(SOUND_DOOR_OPEN);
 	take_keycard(doortile);
 
-    const int ep = g_pBehaviorEngine->getEpisode();
+    const int ep = gpBehaviorEngine->getEpisode();
 
 	// erase door from map
     if (ep==3)	chgtotile = mp_Map->at(mpx-1, mpy);

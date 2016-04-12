@@ -156,7 +156,7 @@ void CShikadiMaster::processTeleporting()
 	    const int testBoxY1 = (ty - 1)<<CSF;
 	    const int testBoxY2 = (ty + 4)<<CSF;
 	    
-	    std::vector<CTileProperties> &Tile = g_pBehaviorEngine->getTileProperties(1);
+	    std::vector<CTileProperties> &Tile = gpBehaviorEngine->getTileProperties(1);
 	    
 	    bool allow_teleport = true;
 	    

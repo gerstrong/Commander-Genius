@@ -24,9 +24,8 @@
 
 namespace galaxy {
 
-CLevelPlay::CLevelPlay(std::vector<CInventory> &inventory,
-		stCheat &Cheatmode) :
-CMapPlayGalaxy(inventory, Cheatmode)
+CLevelPlay::CLevelPlay(std::vector<CInventory> &inventory) :
+CMapPlayGalaxy(inventory)
 { }
 
 
@@ -35,14 +34,14 @@ void CLevelPlay::loadMap(const int level)
 	// Load the World map level.
 	std::unique_ptr<CMapLoaderGalaxy> MapLoader;
 
-    const int episode = g_pBehaviorEngine->getEpisode();
+    const int episode = gpBehaviorEngine->getEpisode();
 
     if(episode == 4)
-        MapLoader.reset(new CMapLoaderGalaxyEp4(mObjectPtr, mInventoryVec, mCheatmode));
+        MapLoader.reset(new CMapLoaderGalaxyEp4(mObjectPtr, mInventoryVec));
     else if(episode == 5)
-        MapLoader.reset(new CMapLoaderGalaxyEp5(mObjectPtr, mInventoryVec, mCheatmode));
+        MapLoader.reset(new CMapLoaderGalaxyEp5(mObjectPtr, mInventoryVec));
     else if(episode == 6)
-        MapLoader.reset(new CMapLoaderGalaxyEp6(mObjectPtr, mInventoryVec, mCheatmode));
+        MapLoader.reset(new CMapLoaderGalaxyEp6(mObjectPtr, mInventoryVec));
 
 	MapLoader->loadMap( mMap, level );
 
@@ -70,7 +69,7 @@ bool CLevelPlay::loadLevel(const Uint16 level)
 		
 	// Add the load message
 	const std::string level_text = "LEVEL" + itoa(level) + "_LOAD_TEXT";
-    const std::string loading_text = g_pBehaviorEngine->getString(level_text);
+    const std::string loading_text = gpBehaviorEngine->getString(level_text);
 
     showMsgWithBmp( loading_text, "KEENTHUMBSUP", LEFT );
 

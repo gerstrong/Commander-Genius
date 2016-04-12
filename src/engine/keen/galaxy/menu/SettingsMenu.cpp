@@ -20,12 +20,13 @@
 #include "ControlSettings.h"
 #include "CProfilesMenu.h"
 #include "SelectionMenu.h"
+#include "cheatsmenu.h"
 
 namespace galaxy
 {
 
 SettingsMenu::SettingsMenu() :
-GalaxyMenu( GsRect<float>(0.25f, 0.24f, 0.5f, 0.32f) )
+GalaxyMenu( GsRect<float>(0.25f, 0.24f, 0.5f, 0.40f) )
 {
     mpMenuDialog->addControl(new GalaxyButton( "Video",
                                     new OpenMenuEvent( new CVideoSettings() ) ) );
@@ -49,6 +50,9 @@ GalaxyMenu( GsRect<float>(0.25f, 0.24f, 0.5f, 0.32f) )
     mpMenuDialog->addControl( new GalaxyButton( "Camera",
                                     new OpenMenuEvent( new CCameraSettings() ) ) );
 #endif
+
+    mpMenuDialog->addControl(new GalaxyButton( "Cheats",
+                                    new OpenMenuEvent( new CheatsMenu() ) ) );
 
     /*mpMenuDialog->addControl(new GalaxyButton( "Profile",
                                     new OpenMenuEvent( new CProfilesMenu() ) ) );*/

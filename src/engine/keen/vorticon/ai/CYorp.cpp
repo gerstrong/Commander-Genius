@@ -16,7 +16,7 @@ static signed char numlooks;
 
 CYorp::CYorp( CMap *p_map, Uint32 x, Uint32 y ) :
 CVorticonSpriteObject(p_map,x,y, OBJ_YORP),
-m_hardmode(g_pBehaviorEngine->mDifficulty > NORMAL),
+m_hardmode(gpBehaviorEngine->mDifficulty > NORMAL),
 state(YORP_LOOK),
 looktimes(YORP_NUM_LOOKS+1),
 lookposition(0),
@@ -31,7 +31,7 @@ movedir(LEFT)
 	canbezapped = true;
     deadly = false;
 
-    const Difficulty diff = g_pBehaviorEngine->mDifficulty;
+    const Difficulty diff = gpBehaviorEngine->mDifficulty;
 
     if(diff > NORMAL)
     {
@@ -236,7 +236,7 @@ void CYorp::getTouchedBy(CVorticonSpriteObject &theObject)
 		// code for the yorps to push keen, and code for them to get stunned
 		if (state != YORP_STUNNED && state != YORP_DYING  && !player->pdie)
 		{            
-            const Difficulty diff = g_pBehaviorEngine->mDifficulty;
+            const Difficulty diff = gpBehaviorEngine->mDifficulty;
 
 			if ( player->getYDownPos() < getYDownPos()-(1<<CSF) )
 			{

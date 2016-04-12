@@ -17,7 +17,7 @@ class CMapLoaderGalaxyEp5 : public CMapLoaderGalaxy
 {
 public:
     CMapLoaderGalaxyEp5(std::vector< std::shared_ptr<CGalaxySpriteObject> > &ObjectPtr,
-            std::vector<CInventory> &inventoryVec, stCheat &Cheatmode);
+            std::vector<CInventory> &inventoryVec);
 
     bool isKeenPlayer(const int foeID);
 

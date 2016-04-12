@@ -60,7 +60,7 @@ CVorticon(p_map, x, y, 4, OBJ_VORTELITE)
 	canbezapped = true;
 	m_speed = 0;
 
-    const auto diff = g_pBehaviorEngine->mDifficulty;
+    const auto diff = gpBehaviorEngine->mDifficulty;
 
 
     switch(diff)

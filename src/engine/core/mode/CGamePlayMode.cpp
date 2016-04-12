@@ -47,7 +47,7 @@ void CGamePlayMode::ponder(const float deltaT)
 	}
 	else if( mp_PlayGame->getStartGame() )
 	{ // Start another new game
-        EventContainer.add( new GMSwitchToPlayGameMode(m_Episode, g_pBehaviorEngine->mPlayers, m_DataDirectory) );
+        EventContainer.add( new GMSwitchToPlayGameMode(m_Episode, gpBehaviorEngine->mPlayers, m_DataDirectory) );
 	}
 	else if( mp_PlayGame->getExitEvent() )
 	{
@@ -60,7 +60,7 @@ void CGamePlayMode::render()
 {
     mp_PlayGame->render();
 
-    if(g_pBehaviorEngine->m_option[OPT_SHOWFPS].value)
+    if(gpBehaviorEngine->m_option[OPT_SHOWFPS].value)
     {
         SDL_Rect rect;
         rect.x = 5;

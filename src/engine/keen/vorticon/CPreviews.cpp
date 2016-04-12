@@ -55,7 +55,7 @@ int CPreviews::openNextScene()
 	else
 	{
         std::string filename = JoinPaths(gKeenFiles.gameDir, "previews.ck");
-		filename += itoa(g_pBehaviorEngine->getEpisode());
+		filename += itoa(gpBehaviorEngine->getEpisode());
 
 		mp_TextViewer.reset( new CTextViewer(0, 8, 320, 160) );
 

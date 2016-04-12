@@ -35,10 +35,9 @@ namespace galaxy
 
 
 CMapLoaderGalaxy::CMapLoaderGalaxy(std::vector< std::shared_ptr<CGalaxySpriteObject> > &ObjectPtr,
-        std::vector<CInventory> &inventoryVec, stCheat &Cheatmode):
+        std::vector<CInventory> &inventoryVec):
 m_ObjectPtr(ObjectPtr),
 mInventoryVec(inventoryVec),
-m_Cheatmode(Cheatmode),
 mNumLoadedPlayers(0)
 {}
 
@@ -359,7 +358,7 @@ void CMapLoaderGalaxy::spawnFoes(CMap &Map)
 	if(!m_ObjectPtr.empty())
 		m_ObjectPtr.clear();
 
-    const int numPlayers = g_pBehaviorEngine->mPlayers;
+    const int numPlayers = gpBehaviorEngine->mPlayers;
 
 	// he we go to the adding objects
 	Map.mNumFuses = 0;

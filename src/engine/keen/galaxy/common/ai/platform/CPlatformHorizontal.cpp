@@ -28,7 +28,7 @@ m_fireTimer(0)
 	xDirection = xDir;
 	yDirection = 0;
 	
-	const int episode = g_pBehaviorEngine->getEpisode();	
+	const int episode = gpBehaviorEngine->getEpisode();	
 
 	if(episode == 4)
 	    drawFire = true;
@@ -37,7 +37,7 @@ m_fireTimer(0)
 
     moveHorizSpeed = 20;
 
-    auto diff = g_pBehaviorEngine->mDifficulty;
+    auto diff = gpBehaviorEngine->mDifficulty;
 
     if(diff > NINJA)
     {

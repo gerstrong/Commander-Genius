@@ -100,7 +100,7 @@ void CIceChunk::getTouchedBy(CVorticonSpriteObject &theObject)
     if( CPlayer *player = dynamic_cast<CPlayer*>(&theObject) )
     {
         // freeze the player if it touches him
-        CPhysicsSettings &Physics = g_pBehaviorEngine->getPhysicsSettings();
+        CPhysicsSettings &Physics = gpBehaviorEngine->getPhysicsSettings();
         // make him start sliding in the direction of the impact
 
         const int iceInertia = Physics.player.max_x_speed;

@@ -65,18 +65,18 @@ void CLindsey::getTouchedBy(CSpriteObject &theObject)
 
         std::string lindsey_text[3];
 
-        lindsey_text[0] = g_pBehaviorEngine->getString(answermap[0]);
+        lindsey_text[0] = gpBehaviorEngine->getString(answermap[0]);
 
         Uint16 cur_level = mp_Map->getLevel();
         if(cur_level > 5)
         {
-            lindsey_text[1] = g_pBehaviorEngine->getString(answermap[1]);
-            lindsey_text[2] = g_pBehaviorEngine->getString(answermap[3]);
+            lindsey_text[1] = gpBehaviorEngine->getString(answermap[1]);
+            lindsey_text[2] = gpBehaviorEngine->getString(answermap[3]);
         }
         else
         {
-            lindsey_text[1] = g_pBehaviorEngine->getString(answermap[2]);
-            lindsey_text[2] = g_pBehaviorEngine->getString(answermap[4]);
+            lindsey_text[1] = gpBehaviorEngine->getString(answermap[2]);
+            lindsey_text[2] = gpBehaviorEngine->getString(answermap[4]);
         }
 
 

@@ -15,13 +15,12 @@ namespace galaxy {
 class CPlayerDive : public CPlayerBase
 {
 public:
-	CPlayerDive(CMap *pmap,
-			const Uint16 foeID,
-			Uint32 x,
-			Uint32 y,
-			direction_t facedir,
-			CInventory &l_Inventory,
-            stCheat &Cheatmode,
+    CPlayerDive(CMap *pmap,
+            const Uint16 foeID,
+            Uint32 x,
+            Uint32 y,
+            direction_t facedir,
+            CInventory &l_Inventory,
             const int playerID);
 
 	void kill(const bool force = false);

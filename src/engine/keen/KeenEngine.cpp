@@ -16,9 +16,9 @@
 
 void KeenEngine::switchToGamePlayMode()
 {
-    const int episode = g_pBehaviorEngine->getEpisode();
+    const int episode = gpBehaviorEngine->getEpisode();
 
-    auto &numPlayers = g_pBehaviorEngine->mPlayers;
+    auto &numPlayers = gpBehaviorEngine->mPlayers;
 
     // If you get here, you always have at least one player
     if(numPlayers <= 0)
@@ -49,7 +49,7 @@ void KeenEngine::start()
 
     gKeenFiles.setupFilenames(mEp);
 
-    g_pBehaviorEngine->setEpisode(mEp);
+    gpBehaviorEngine->setEpisode(mEp);
 
     // Load the Resources
     loadResources( LOADALL );
@@ -61,7 +61,7 @@ void KeenEngine::pumpEvent(const CEvent *evPtr)
 
     if( const StartNewGameEvent* pStart = dynamic_cast<const StartNewGameEvent*>(evPtr) )
     {
-        g_pBehaviorEngine->mDifficulty = pStart->mDifficulty;
+        gpBehaviorEngine->mDifficulty = pStart->mDifficulty;
         switchToGamePlayMode();
         return;
     }       

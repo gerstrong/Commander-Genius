@@ -32,7 +32,7 @@ mpInteractPlayer(NULL)
 	mActionMap[A_BOUNDER_ONFLOOR] = (GASOFctr) &CBounder::processOnFloor;
 	mActionMap[A_BOUNDER_STUNNED] = (GASOFctr) &CStunnable::processGettingStunned;
 
-    const Difficulty diff = g_pBehaviorEngine->mDifficulty;
+    const Difficulty diff = gpBehaviorEngine->mDifficulty;
 
     if(diff > HARD)
     {
@@ -84,7 +84,7 @@ void CBounder::getTouchedBy(CSpriteObject &theObject)
 
 void CBounder::processBounce()
 {
-    std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
+    std::vector<CTileProperties> &TileProperty = gpBehaviorEngine->getTileProperties();
 	
 	int xMid = getXMidPos();
 	int y2 = getYDownPos();
@@ -111,7 +111,7 @@ void CBounder::processBounce()
 		}
 	}
 
-    const Difficulty diff = g_pBehaviorEngine->mDifficulty;
+    const Difficulty diff = gpBehaviorEngine->mDifficulty;
 
     const int horSpeed = (diff > HARD) ? (HOR_SPEED*3)/2 : HOR_SPEED;
 
@@ -127,7 +127,7 @@ void CBounder::processBounce()
 
 void CBounder::processOnFloor()
 {
-    const Difficulty diff = g_pBehaviorEngine->mDifficulty;
+    const Difficulty diff = gpBehaviorEngine->mDifficulty;
 
     if(diff > HARD)
     {
@@ -264,7 +264,7 @@ void CBounder::moveDown(const int amnt)
 
 void CBounder::process()
 {
-    const Difficulty diff = g_pBehaviorEngine->mDifficulty;
+    const Difficulty diff = gpBehaviorEngine->mDifficulty;
 
 	// Bounce
 	performCollisions();

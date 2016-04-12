@@ -23,7 +23,7 @@ m_Object(Object)
 
 void CFinale::addMsgBoxString(const std::string &text)
 {
-    std::unique_ptr<CMessageBoxVort> msg( new CMessageBoxVort(g_pBehaviorEngine->getString(text), true) );
+    std::unique_ptr<CMessageBoxVort> msg( new CMessageBoxVort(gpBehaviorEngine->getString(text), true) );
     mMessageBoxes.push_back( move(msg) );
 }
 

@@ -60,7 +60,7 @@ void CScrub::process()
 		}
 	}
 
-	CPhysicsSettings &Physics = g_pBehaviorEngine->getPhysicsSettings();
+	CPhysicsSettings &Physics = gpBehaviorEngine->getPhysicsSettings();
 
 	switch(state)
 	{
@@ -133,7 +133,7 @@ void CScrub::walkLeft(int mx, int my)
 		if(!blockedd)
 		{
 			// First check, if he can walk over the tile
-			std::vector<CTileProperties> &TileProperties = g_pBehaviorEngine->getTileProperties();
+			std::vector<CTileProperties> &TileProperties = gpBehaviorEngine->getTileProperties();
 			if(!TileProperties[mp_Map->at(mx-1, my+1)].bup &&
 				!TileProperties[mp_Map->at(mx-1, my)].bleft)
 			{
@@ -215,7 +215,7 @@ void CScrub::walkRight(int mx, int my)
 		if(!blockedu)
 		{
 			// First check, if he can walk over the tile
-			std::vector<CTileProperties> &TileProperties = g_pBehaviorEngine->getTileProperties();
+			std::vector<CTileProperties> &TileProperties = gpBehaviorEngine->getTileProperties();
 			if(!TileProperties[mp_Map->at(mx+1, my-1)].bdown &&
                !TileProperties[mp_Map->at(mx+1, my)].bright)
 			{
@@ -293,7 +293,7 @@ void CScrub::fall()
 	}
 	else
 	{
-		CPhysicsSettings &Physics = g_pBehaviorEngine->getPhysicsSettings();
+		CPhysicsSettings &Physics = gpBehaviorEngine->getPhysicsSettings();
 
 		if (fallspeed < Physics.max_fallspeed)
 			fallspeed += Physics.fallspeed_increase;

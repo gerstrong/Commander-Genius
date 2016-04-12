@@ -106,7 +106,7 @@ bool CMessie::tryToUnmount()
             if(infotile == NESSIE_LAND)
             {
                 // Look for the Nessie object
-                std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
+                std::vector<CTileProperties> &TileProperty = gpBehaviorEngine->getTileProperties();
                 CTileProperties &Tile = TileProperty[mp_Map->at(x+dx, y+dy)];
                 if( !Tile.bdown and !Tile.bup and
                         !Tile.bleft and !Tile.bright )

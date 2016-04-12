@@ -133,7 +133,7 @@ void CPlayGameVorticon::goBacktoMap()
 		if(width > 0)
 		{
 			int frame = player->playerbaseframe;
-			if(g_pBehaviorEngine->getEpisode() == 3) frame++;
+			if(gpBehaviorEngine->getEpisode() == 3) frame++;
 
             gGraphics.getSprite(varId,frame+0).setWidth(width);
             gGraphics.getSprite(varId,frame+1).setWidth(width);
@@ -152,7 +152,7 @@ void CPlayGameVorticon::goBacktoMap()
 
 void CPlayGameVorticon::YourShipNeedsTheseParts()
 {
-	std::unique_ptr<CMessageBoxVort> MessageBox( new CMessageBoxVort(g_pBehaviorEngine->getString("EP1_SHIP")) );
+	std::unique_ptr<CMessageBoxVort> MessageBox( new CMessageBoxVort(gpBehaviorEngine->getString("EP1_SHIP")) );
 
 	bool joy, bat, vac, wis;
 	joy = bat = vac = wis = false;
@@ -178,7 +178,7 @@ void CPlayGameVorticon::ShipEp3()
 {
 	// get one of four random strings and display it!!
 	std::string strname = "EP3_SHIP"+ itoa((rand()%4)+1);
-	std::unique_ptr<CMessageBoxVort> msg( new CMessageBoxVort(g_pBehaviorEngine->getString(strname)) );
+	std::unique_ptr<CMessageBoxVort> msg( new CMessageBoxVort(gpBehaviorEngine->getString(strname)) );
 	mMessageBoxes.push_back( move(msg) );
 }
 
@@ -222,7 +222,7 @@ void CPlayGameVorticon::showKeensLeft()
 		SDL_FillRect(boxsurface, &rect, color );
 		Font.getBGColour(&r, &g, &b, false);
 		SDL_FillRect(boxsurface, &rect, SDL_MapRGB( boxsurface->format, r, g, b) );
-		Font.drawFont( boxsurface, g_pBehaviorEngine->getString("LIVES_LEFT"), 36, 8, true);
+		Font.drawFont( boxsurface, gpBehaviorEngine->getString("LIVES_LEFT"), 36, 8, true);
 
 
 		y = 20;
@@ -304,9 +304,9 @@ void CPlayGameVorticon::readTeleportDestCoordinatesEP1(int objectID, int &destx,
 	destx = desty = 0;
 
 	std::vector<stTeleporterTable>::iterator TTable =
-			g_pBehaviorEngine->getTeleporterTable().begin();
+			gpBehaviorEngine->getTeleporterTable().begin();
 	size_t i = 0;
-	for( ; TTable != g_pBehaviorEngine->getTeleporterTable().end() ; TTable++, i++ )
+	for( ; TTable != gpBehaviorEngine->getTeleporterTable().end() ; TTable++, i++ )
 	{
 		if(TTable->objectnumber2 == objectID || TTable->objectnumber1 == objectID)
 		{

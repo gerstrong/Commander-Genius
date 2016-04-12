@@ -52,7 +52,7 @@ CPlayGame(startlevel)
 	if(!m_Player.empty())
 		m_Player.clear();
 
-    const int numPlayers = g_pBehaviorEngine->mPlayers;
+    const int numPlayers = gpBehaviorEngine->mPlayers;
 
     m_Player.assign( numPlayers, CPlayer(mpLevelCompleted, *mMap.get(), 0) );
 
@@ -73,9 +73,9 @@ CPlayGame(startlevel)
 
 	m_showPauseDialog = false;
 
-	if(g_pBehaviorEngine->mDifficulty==EASY)
+	if(gpBehaviorEngine->mDifficulty==EASY)
 		gGraphics.Palette.setdarkness(FADE_DARKNESS_EASY);
-	else if(g_pBehaviorEngine->mDifficulty==NORMAL)
+	else if(gpBehaviorEngine->mDifficulty==NORMAL)
 		gGraphics.Palette.setdarkness(FADE_DARKNESS);
 	else
 		gGraphics.Palette.setdarkness(FADE_DARKNESS_HARD);
@@ -90,7 +90,7 @@ void CPlayGameVorticon::setupPlayers()
     if(!mpHUDVec.empty())
         mpHUDVec.clear();
 
-    const int numPlayers = g_pBehaviorEngine->mPlayers;
+    const int numPlayers = gpBehaviorEngine->mPlayers;
 
     for (int i=0 ; i<numPlayers ; i++)
 	{
@@ -143,7 +143,7 @@ bool CPlayGameVorticon::init()
 
 	CVorticonMapLoaderWithPlayer MapLoader( mMap, m_Player, mSpriteObjectContainer );
 	MapLoader.m_checkpointset = m_checkpointset;
-    const int numPlayers = g_pBehaviorEngine->mPlayers;
+    const int numPlayers = gpBehaviorEngine->mPlayers;
 
 	// load level map
     if( !MapLoader.load( m_Episode, m_Level, m_Gamepath ) )
@@ -191,12 +191,12 @@ bool CPlayGameVorticon::init()
 	// In the case that we are in Episode 3 last Level, show Mortimer Messages
 	if( m_Episode == 3 && m_Level == 16 )
 	{
-	    std::unique_ptr<CMessageBoxVort> msg1(new CMessageBoxVort(g_pBehaviorEngine->getString("EP3_MORTIMER"),false, true));
-	    std::unique_ptr<CMessageBoxVort> msg2(new CMessageBoxVort(g_pBehaviorEngine->getString("EP3_MORTIMER2"),false, true));
-	    std::unique_ptr<CMessageBoxVort> msg3(new CMessageBoxVort(g_pBehaviorEngine->getString("EP3_MORTIMER3"),false, true));
-	    std::unique_ptr<CMessageBoxVort> msg4(new CMessageBoxVort(g_pBehaviorEngine->getString("EP3_MORTIMER4"),false, true));
-	    std::unique_ptr<CMessageBoxVort> msg5(new CMessageBoxVort(g_pBehaviorEngine->getString("EP3_MORTIMER5"),false, true));
-	    std::unique_ptr<CMessageBoxVort> msg6(new CMessageBoxVort(g_pBehaviorEngine->getString("EP3_MORTIMER6"),false, true));
+	    std::unique_ptr<CMessageBoxVort> msg1(new CMessageBoxVort(gpBehaviorEngine->getString("EP3_MORTIMER"),false, true));
+	    std::unique_ptr<CMessageBoxVort> msg2(new CMessageBoxVort(gpBehaviorEngine->getString("EP3_MORTIMER2"),false, true));
+	    std::unique_ptr<CMessageBoxVort> msg3(new CMessageBoxVort(gpBehaviorEngine->getString("EP3_MORTIMER3"),false, true));
+	    std::unique_ptr<CMessageBoxVort> msg4(new CMessageBoxVort(gpBehaviorEngine->getString("EP3_MORTIMER4"),false, true));
+	    std::unique_ptr<CMessageBoxVort> msg5(new CMessageBoxVort(gpBehaviorEngine->getString("EP3_MORTIMER5"),false, true));
+	    std::unique_ptr<CMessageBoxVort> msg6(new CMessageBoxVort(gpBehaviorEngine->getString("EP3_MORTIMER6"),false, true));
 	    mMessageBoxes.push_back(move(msg1));
 	    mMessageBoxes.push_back(move(msg2));
 	    mMessageBoxes.push_back(move(msg3));
@@ -211,7 +211,7 @@ bool CPlayGameVorticon::init()
 
 bool CPlayGameVorticon::StatusScreenOpen()
 {
-    const int numPlayers = g_pBehaviorEngine->mPlayers;
+    const int numPlayers = gpBehaviorEngine->mPlayers;
     for( unsigned short i=0 ; i<numPlayers ; i++ )
 	{
         if(m_Player[i].m_showStatusScreen)
@@ -245,7 +245,7 @@ void CPlayGameVorticon::pumpEvent(const CEvent *evPtr)
     else if( dynamic_cast<const EventEndGamePlay*>(evPtr) )
     {
         // The last menu has been removed. Restore back the game status
-        g_pBehaviorEngine->setPause(false);
+        gpBehaviorEngine->setPause(false);
         gMenuController.clearMenuStack();
         gEventManager.add<GMSwitchToPassiveMode>();
     }
@@ -270,7 +270,7 @@ void CPlayGameVorticon::ponder(const float deltaT)
 			// Perform AIs
 			mpObjectAI->process();
 
-			if( !g_pBehaviorEngine->paused() )
+			if( !gpBehaviorEngine->paused() )
 			{
 			  // The following functions must be worldmap dependent
 			  if( m_Level == WORLD_MAP_LEVEL_VORTICON )
@@ -289,7 +289,7 @@ void CPlayGameVorticon::ponder(const float deltaT)
 
                   if(m_Player[mCamLead].pdie)
                   {
-                      const int numPlayers = g_pBehaviorEngine->mPlayers;
+                      const int numPlayers = gpBehaviorEngine->mPlayers;
                       for( int i=0 ; i<numPlayers ; i++ )
                       {
                           if(m_Player[i].pdie)
@@ -404,7 +404,7 @@ void CPlayGameVorticon::cycleCamLead()
 {
 	mCamLead++;
 
-    const int numPlayers = g_pBehaviorEngine->mPlayers;
+    const int numPlayers = gpBehaviorEngine->mPlayers;
     if( mCamLead >= numPlayers  )
 		mCamLead = 0;
 }
@@ -420,13 +420,13 @@ void CPlayGameVorticon::handleFKeys()
         gInput.getHoldedKey(KSPACE))
 	{
 		gInput.flushAll();
-        const int numPlayers = g_pBehaviorEngine->mPlayers;
+        const int numPlayers = gpBehaviorEngine->mPlayers;
         for(i=0;i<numPlayers;i++)
 		{
 			m_Player[i].pfiring = false;
 			if (m_Player[i].m_playingmode)
 			{
-				CPhysicsSettings &Phy = g_pBehaviorEngine->getPhysicsSettings();
+				CPhysicsSettings &Phy = gpBehaviorEngine->getPhysicsSettings();
 
 				if(Phy.misc.ctspace_keys)
 				{
@@ -447,7 +447,7 @@ void CPlayGameVorticon::handleFKeys()
 				m_Player[i].inventory.HasPogo = true;
 				m_Player[i].inventory.lives += 5;
 
-				std::string Text = g_pBehaviorEngine->getString("CTSPACECHEAT");
+				std::string Text = gpBehaviorEngine->getString("CTSPACECHEAT");
 
 				std::unique_ptr<CMessageBoxVort> msg(new CMessageBoxVort(Text));
 				
@@ -479,7 +479,7 @@ void CPlayGameVorticon::handleFKeys()
 		g_pSound->playSound(SOUND_GUN_CLICK, PLAY_FORCE);
 
 		// Show a message like in the original game
-		std::unique_ptr<CMessageBoxVort> msg(new CMessageBoxVort(m_Player[0].godmode ? g_pBehaviorEngine->getString("GODMODEON") : g_pBehaviorEngine->getString("GODMODEOFF")));
+		std::unique_ptr<CMessageBoxVort> msg(new CMessageBoxVort(m_Player[0].godmode ? gpBehaviorEngine->getString("GODMODEON") : gpBehaviorEngine->getString("GODMODEOFF")));
 		mMessageBoxes.push_back(move(msg));
 		gInput.flushKeys();
 	}
@@ -531,7 +531,7 @@ void CPlayGameVorticon::verifyFinales()
 		hasBattery = hasWiskey = hasJoystick = hasVaccum = false;
 
 		// Check if one of the Players has the items
-        const unsigned int numPlayers = g_pBehaviorEngine->mPlayers;
+        const unsigned int numPlayers = gpBehaviorEngine->mPlayers;
         for( size_t i=0 ;i < numPlayers ; i++)
 		{
 			hasBattery |= m_Player[i].inventory.HasBattery;
@@ -589,8 +589,8 @@ void CPlayGameVorticon::teleportPlayerFromLevel(CPlayer &player, int origx, int 
 	std::unique_ptr<CTeleporter> teleporter( new CTeleporter(mMap.get(), m_Player, origx, origy) );
 	player.beingteleported = true;
 	player.solid = false;
-	destx = g_pBehaviorEngine->getTeleporterTableAt(5).x;
-	desty = g_pBehaviorEngine->getTeleporterTableAt(5).y;
+	destx = gpBehaviorEngine->getTeleporterTableAt(5).x;
+	desty = gpBehaviorEngine->getTeleporterTableAt(5).y;
 	teleporter->solid = false;
 	teleporter->direction = TELEPORTING_SCROLL;
 	teleporter->destx = destx>>TILE_S;
@@ -672,7 +672,7 @@ void CPlayGameVorticon::drawAllElements()
     mMap->_drawForegroundTiles();
 
 
-    const unsigned int numPlayers = g_pBehaviorEngine->mPlayers;
+    const unsigned int numPlayers = gpBehaviorEngine->mPlayers;
     for( size_t i=0 ; i<numPlayers ; i++ )
     {
         m_Player[i].drawStatusScreen();

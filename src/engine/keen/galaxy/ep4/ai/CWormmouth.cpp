@@ -32,7 +32,7 @@ mTimer(0)
 	mActionMap[A_WORMMOUTH_STUNNED] = (GASOFctr) &CStunnable::processGettingStunned;
 
 
-    const Difficulty diff = g_pBehaviorEngine->mDifficulty;
+    const Difficulty diff = gpBehaviorEngine->mDifficulty;
 
     mHealthPoints = 1;
 
@@ -153,7 +153,7 @@ void CWormmouth::processMoving()
 
     int lookTimer = LOOK_TIMER;
 
-    const Difficulty diff = g_pBehaviorEngine->mDifficulty;
+    const Difficulty diff = gpBehaviorEngine->mDifficulty;
 
     if(diff > HARD)
     {

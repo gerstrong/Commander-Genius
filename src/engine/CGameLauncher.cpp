@@ -57,7 +57,7 @@ m_start_level(start_level)
 {	
     g_pSound->unloadSoundData();
     // The last menu has been removed. Restore back the game status
-    g_pBehaviorEngine->setPause(false);
+    gpBehaviorEngine->setPause(false);
 
     gMenuController.clearMenuStack();
     letchooseagain();
@@ -758,7 +758,7 @@ void CGameLauncher::ponderPatchDialog()
         // We have to check which Episode will be used
         const int episode = getEpisode( m_chosenGame );
 
-        g_pBehaviorEngine->mPatchFname = mPatchFilename;
+        gpBehaviorEngine->mPatchFname = mPatchFilename;
 
         if( episode > 0 ) // The game has to have a valid episode!
         {

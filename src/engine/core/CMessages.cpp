@@ -382,7 +382,7 @@ bool CMessages::extractGlobalStrings()
 		std::map<std::string, std::string>::iterator i;
 		for( i = StringMap.begin() ; i != StringMap.end() ; i++ )
 		{
-			g_pBehaviorEngine->setMessage(i->first, i->second);
+			gpBehaviorEngine->setMessage(i->first, i->second);
 		}
 		gLogging.ftextOut("Loaded %d strings from the exe-file.<br>", StringMap.size());
 		return true;

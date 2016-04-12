@@ -107,7 +107,7 @@ bool GalaxyEngine::loadResources( const Uint8 flags )
             mLoader.setPermilage(10);
 
             // Patch the EXE-File-Data directly in the memory.
-            CPatcher Patcher(ExeFile, g_pBehaviorEngine->mPatchFname);
+            CPatcher Patcher(ExeFile, gpBehaviorEngine->mPatchFname);
             Patcher.process();
 
             mLoader.setPermilage(50);
@@ -145,7 +145,7 @@ bool GalaxyEngine::loadResources( const Uint8 flags )
 
             gLogging.ftextOut("Loading game constants...<br>");
 
-            g_pBehaviorEngine->getPhysicsSettings().loadGameConstants(Episode, p_exedata);
+            gpBehaviorEngine->getPhysicsSettings().loadGameConstants(Episode, p_exedata);
 
             gLogging.ftextOut("Looking for patches...<br>");
 
@@ -207,7 +207,7 @@ void GalaxyEngine::pumpEvent(const CEvent *evPtr)
     }
     else if( const NewGamePlayersEvent* pNewGame = dynamic_cast<const NewGamePlayersEvent*>(evPtr) )
     {
-        g_pBehaviorEngine->mPlayers = pNewGame->mSelection;
+        gpBehaviorEngine->mPlayers = pNewGame->mSelection;
         gEventManager.add( new OpenMenuEvent(new CDifficultySelection) );
         return;
     }    
@@ -236,7 +236,7 @@ void GalaxyEngine::pumpEvent(const CEvent *evPtr)
         mpGameMode.reset( new CPlayGameGalaxy(playGame.m_startlevel) );
         mpGameMode->init();
         mOpenedGamePlay = true;        
-        g_pBehaviorEngine->setPause(false);
+        gpBehaviorEngine->setPause(false);
         gEventManager.add( new CloseAllMenusEvent() );
     }    
     else if( dynamic_cast<const LoadGameEvent*>(evPtr) ) // If GamePlayMode is not running but loading is requested...
@@ -246,7 +246,7 @@ void GalaxyEngine::pumpEvent(const CEvent *evPtr)
         pgGalaxy->loadGame();
         mpGameMode = std::move(pgGalaxy);
         mOpenedGamePlay = true;
-        g_pBehaviorEngine->setPause(false);
+        gpBehaviorEngine->setPause(false);
         gEventManager.add( new CloseAllMenusEvent() );
     }
     else if( dynamic_cast<const OpenMainMenuEvent*>(evPtr) )

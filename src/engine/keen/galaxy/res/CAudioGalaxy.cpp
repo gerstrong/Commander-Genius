@@ -76,7 +76,7 @@ void CAudioGalaxy::setupAudioMap()
 {
     // Preparation which might help wehn some patches are applied    
     byte *ptr = gKeenFiles.exeFile.getRawData();
-    auto episode = g_pBehaviorEngine->getEpisode();
+    auto episode = gpBehaviorEngine->getEpisode();
     size_t holder = 0;
 
     // Episode 4

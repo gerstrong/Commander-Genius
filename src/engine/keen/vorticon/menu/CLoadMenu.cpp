@@ -24,7 +24,7 @@ struct LoadGameSlotFunctorEvent : public InvokeFunctorEvent
 
     void operator()() const
 	{
-        g_pBehaviorEngine->setPause(false);
+        gpBehaviorEngine->setPause(false);
 		gEventManager.add( new CloseAllMenusEvent() );
 		gpSaveGameController->prepareLoadGame(mSlot);
 	}

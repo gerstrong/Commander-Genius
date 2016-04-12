@@ -37,7 +37,7 @@ starTimer(TIME_STAR_SHOWN)
 	
 	starSprite = STARRING_SPRITE;
 	
-	if(g_pBehaviorEngine->getEpisode() == 5)
+	if(gpBehaviorEngine->getEpisode() == 5)
 	  starSprite = STARRING_SPRITE_EP5;
 	
 	starSpriteBase = starSprite;

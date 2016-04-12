@@ -128,7 +128,7 @@ void CSaveMenu::sendEvent(std::shared_ptr<CEvent> &command)
                     const std::string saveText = pInput->getText();
 #endif
                     gpSaveGameController->prepareSaveGame( sel, saveText );
-                    g_pBehaviorEngine->setPause(false);
+                    gpBehaviorEngine->setPause(false);
 					gEventManager.add( new CloseAllMenusEvent() );
 #ifndef NOTYPESAVE
 				}          

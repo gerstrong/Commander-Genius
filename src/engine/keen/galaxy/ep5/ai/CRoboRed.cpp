@@ -49,7 +49,7 @@ mKeenNearby(false)
 	mActionMap[A_RED_SHOOT] = (GASOFctr) &CRoboRed::processShoot;
   
 
-    auto diff = g_pBehaviorEngine->mDifficulty;
+    auto diff = gpBehaviorEngine->mDifficulty;
 
     moveHorizSpeed = 15;
 

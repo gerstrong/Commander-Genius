@@ -41,8 +41,8 @@ namespace galaxy
 
 
 CMapLoaderGalaxyEp6::CMapLoaderGalaxyEp6(std::vector< std::shared_ptr<CGalaxySpriteObject> > &ObjectPtr,
-        std::vector<CInventory> &inventoryVec, stCheat &Cheatmode) :
-CMapLoaderGalaxy(ObjectPtr, inventoryVec, Cheatmode)
+        std::vector<CInventory> &inventoryVec) :
+CMapLoaderGalaxy(ObjectPtr, inventoryVec)
 {}
 
 bool CMapLoaderGalaxyEp6::isKeenPlayer(const int foeID)
@@ -101,7 +101,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp6::addFoe(CMap &Map, word foe, size_t x, 
 	if( p_newfoe )
 		return p_newfoe;
 
-	const Difficulty difficulty = g_pBehaviorEngine->mDifficulty;
+	const Difficulty difficulty = gpBehaviorEngine->mDifficulty;
 
 	// otherwise look for special foe.
 	Vector2D<Uint32> loc(x,y);	
@@ -119,7 +119,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp6::addFoe(CMap &Map, word foe, size_t x, 
 			// This is the player on the map in one level
             inventory.Item.mLevelName = Map.getLevelName();
 			p_newfoe = new galaxy::CPlayerLevel(&Map, foe, x, y, m_ObjectPtr,
-                    (foe==1) ? RIGHT : LEFT, inventory, m_Cheatmode, 0x89A, mNumLoadedPlayers);
+                    (foe==1) ? RIGHT : LEFT, inventory, 0x89A, mNumLoadedPlayers);
         }
         mNumLoadedPlayers++;
         break;
@@ -132,7 +132,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp6::addFoe(CMap &Map, word foe, size_t x, 
 			// This is the player on the world map
 			// Add the Camera into the game scene and attach it to this player
             inventory.Item.mLevelName = Map.getLevelName();
-            p_newfoe = new galaxy::CPlayerWM(&Map,foe, x, y, inventory, m_Cheatmode, 0x13E0, mNumLoadedPlayers );
+            p_newfoe = new galaxy::CPlayerWM(&Map,foe, x, y, inventory, 0x13E0, mNumLoadedPlayers );
         }
         mNumLoadedPlayers++;
         break;

@@ -30,7 +30,7 @@ CPoisonSlug::CPoisonSlug(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
 CStunnable(pmap, foeID, x, y),
 m_timer(0)
 {
-    const Difficulty diff = g_pBehaviorEngine->mDifficulty;
+    const Difficulty diff = gpBehaviorEngine->mDifficulty;
 
     mHealthPoints = 1;
 

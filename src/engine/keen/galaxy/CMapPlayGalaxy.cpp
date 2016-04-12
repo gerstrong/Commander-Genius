@@ -24,11 +24,10 @@
 
 #include "GalaxyEngine.h"
 
-CMapPlayGalaxy::CMapPlayGalaxy(std::vector<CInventory> &inventoryVec, stCheat &Cheatmode) :
+CMapPlayGalaxy::CMapPlayGalaxy(std::vector<CInventory> &inventoryVec) :
 mActive(false),
 mInventoryVec(inventoryVec),
-mpOption(g_pBehaviorEngine->m_option),
-mCheatmode(Cheatmode),
+mpOption(gpBehaviorEngine->m_option),
 mMsgBoxOpen(false)
 {}
 
@@ -311,19 +310,19 @@ bool CMapPlayGalaxy::operator<<(CSaveGameController &savedGame)
 	savedGame.decodeData( level );
 
 	std::unique_ptr<galaxy::CMapLoaderGalaxy> mapLoader;
-	const unsigned int episode = g_pBehaviorEngine->getEpisode();
+	const unsigned int episode = gpBehaviorEngine->getEpisode();
 
 	if(episode == 4)
 	{
-        mapLoader.reset( new galaxy::CMapLoaderGalaxyEp4( mObjectPtr, mInventoryVec, mCheatmode) );
+        mapLoader.reset( new galaxy::CMapLoaderGalaxyEp4( mObjectPtr, mInventoryVec) );
 	}
 	else if(episode == 5)
 	{
-        mapLoader.reset( new galaxy::CMapLoaderGalaxyEp5( mObjectPtr, mInventoryVec, mCheatmode) );
+        mapLoader.reset( new galaxy::CMapLoaderGalaxyEp5( mObjectPtr, mInventoryVec) );
 	}
 	else if(episode == 6)
 	{
-        mapLoader.reset( new galaxy::CMapLoaderGalaxyEp6( mObjectPtr, mInventoryVec, mCheatmode) );
+        mapLoader.reset( new galaxy::CMapLoaderGalaxyEp6( mObjectPtr, mInventoryVec) );
 	}
 	else
 	{
@@ -497,19 +496,19 @@ void CMapPlayGalaxy::operator<<(boost::property_tree::ptree &levelNode)
     int level = levelNode.get<int>("level", 0);
 
     std::unique_ptr<galaxy::CMapLoaderGalaxy> mapLoader;
-    const unsigned int episode = g_pBehaviorEngine->getEpisode();
+    const unsigned int episode = gpBehaviorEngine->getEpisode();
 
     if(episode == 4)
     {
-        mapLoader.reset( new galaxy::CMapLoaderGalaxyEp4( mObjectPtr, mInventoryVec, mCheatmode) );
+        mapLoader.reset( new galaxy::CMapLoaderGalaxyEp4( mObjectPtr, mInventoryVec) );
     }
     else if(episode == 5)
     {
-        mapLoader.reset( new galaxy::CMapLoaderGalaxyEp5( mObjectPtr, mInventoryVec, mCheatmode) );
+        mapLoader.reset( new galaxy::CMapLoaderGalaxyEp5( mObjectPtr, mInventoryVec) );
     }
     else if(episode == 6)
     {
-        mapLoader.reset( new galaxy::CMapLoaderGalaxyEp6( mObjectPtr, mInventoryVec, mCheatmode) );
+        mapLoader.reset( new galaxy::CMapLoaderGalaxyEp6( mObjectPtr, mInventoryVec) );
     }
     else
     {

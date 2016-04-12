@@ -335,7 +335,7 @@ bool DreamsEngine::loadResources()
             mLoader.setPermilage(10);
 
             // Patch the EXE-File-Data directly in the memory.
-            CPatcher Patcher(ExeFile, g_pBehaviorEngine->mPatchFname);
+            CPatcher Patcher(ExeFile, gpBehaviorEngine->mPatchFname);
             Patcher.process();
 
             mLoader.setPermilage(50);

@@ -56,7 +56,7 @@ void CHighScores::fetchScoreTable()
 	// Which process function will be cycled trough? Yeah, just showing. But some
 	mp_process = &CHighScores::processShowing;
 	
-	m_Episode = g_pBehaviorEngine->getEpisode();
+	m_Episode = gpBehaviorEngine->getEpisode();
     m_DataDirectory = gKeenFiles.gameDir;
 	
 	loadHighScoreTable();
@@ -118,7 +118,7 @@ void CHighScores::init()
 		bmp.rect.h = bmp.p_Bitmap->getHeight();
 		m_Bitmaps.push_back(bmp);
 		
-		CPhysicsSettings &Phy = g_pBehaviorEngine->getPhysicsSettings();
+		CPhysicsSettings &Phy = gpBehaviorEngine->getPhysicsSettings();
 		int joy_tile = Phy.misc.joy_tile;
 		int bat_tile = Phy.misc.bat_tile;
 		int vac_tile = Phy.misc.vac_tile;
