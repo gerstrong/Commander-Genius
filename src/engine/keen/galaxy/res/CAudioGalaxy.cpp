@@ -262,7 +262,6 @@ void CAudioGalaxy::setupAudioMap()
     sndSlotMapGalaxy[6][SOUND_FLAG_APPEAR] = 43;
     sndSlotMapGalaxy[6][SOUND_FLAG_LAND] = 44;
     sndSlotMapGalaxy[6][SOUND_GET_SPECIAL_ITEM] = 45;
-    //sndSlotMapGalaxy[6][?] = 46;
     sndSlotMapGalaxy[6][SOUND_PLAYER_PADDLE] = 46;
     sndSlotMapGalaxy[6][SOUND_COMPUTER_PADDLE] = 47;
     sndSlotMapGalaxy[6][SOUND_HIT_SIDEWALL] = 48;
