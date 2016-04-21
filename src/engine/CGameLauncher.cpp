@@ -199,6 +199,8 @@ bool CGameLauncher::setupMenu()
     if(!gamesDetected)
         return false;
 
+    mLauncherDialog.setSelection(4);
+
     const std::string gameDir = gArgs.getValue("dir");
     if(!gameDir.empty())
     {
