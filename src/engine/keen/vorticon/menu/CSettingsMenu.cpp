@@ -15,6 +15,7 @@
 #include "CCameraSettings.h"
 #include "CAudioSettings.h"
 #include "COptions.h"
+#include "cheatsmenu.h"
 #include "CControlsettings.h"
 #include "CProfilesMenu.h"
 #include "CSelectionMenu.h"
@@ -59,6 +60,9 @@ VorticonMenu( GsRect<float>(0.25f, 0.24f, 0.5f, 0.32f) )
     mpMenuDialog->addControl( new Button( "Camera",
 									new OpenMenuEvent( new CCameraSettings() ) ) );
 #endif
+
+    mpMenuDialog->addControl(new Button( "Cheats",
+                                    new OpenMenuEvent( new CheatsMenu() ) ) );
 
     /*mpMenuDialog->addControl(new Button( "Profile",
                                     new OpenMenuEvent( new CProfilesMenu() ) ) );*/

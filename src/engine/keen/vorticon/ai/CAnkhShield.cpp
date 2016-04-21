@@ -30,7 +30,7 @@ ankhtime(attachedPlayer.ankhtime)
 
 void CAnkhShield::process()
 {
-	if(m_attachedPlayer.godmode)
+    if(m_attachedPlayer.ankhmode)
 		ankhtime=PLAY_ANKH_TIME;
 
 	if (!ankhtime)

@@ -111,8 +111,8 @@ bool CMessie::tryToUnmount()
                 if( !Tile.bdown and !Tile.bup and
                         !Tile.bleft and !Tile.bright )
                 {
-                    // unmount Messie!
-                    mounted->solid = !mounted->godmode;
+                    // unmount Messie!                    
+                    mounted->solid = !gpBehaviorEngine->mCheatmode.god;
                     mounted->beingteleported = false;
 
                     mounted->moveToForce((x+dx)<<CSF, (y+dy)<<CSF);

@@ -261,7 +261,7 @@ void CVorticonMapLoaderWithPlayer::addWorldMapObject(unsigned int t, Uint16 x, U
         for( auto &player : mPlayerContainer )
         {
             player.setupforLevelPlay();
-            player.solid = player.godmode;
+            player.solid = !gpBehaviorEngine->mCheatmode.noclipping;
         }
 
         break;

@@ -177,7 +177,7 @@ void CPlayer::setDefaultStartValues()
 {
 	CPhysicsSettings &PhysicsSettings = gpBehaviorEngine->getPhysicsSettings();
     pdie = PDIE_DEAD; // At first time he is revived when map is started
-	godmode  = false;
+    ankhmode  = false;
     inventory.extralifeat = 20000;
     inventory.lives = 4;
 
@@ -874,8 +874,9 @@ void CPlayer::StatusBox()
 }
 
 void CPlayer::freeze()
-{
-	if ( godmode ) return;
+{    
+    if ( gpBehaviorEngine->mCheatmode.god ) return;
+    if ( ankhmode ) return;
 	if ( ankhtime ) return;
 	// give the player a little "kick"
 

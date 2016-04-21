@@ -146,12 +146,13 @@ void CPlayer::kill(bool force)
 {
 	if(!force) // force can happens for example, when player leaves the map to the most lower-side
 	{
-		if (godmode || ankhtime || level_done) return;
+        if ( gpBehaviorEngine->mCheatmode.god ) return;
+		if (ankhmode || ankhtime || level_done) return;
 	}
 
 	if (!pdie)
 	{
-		godmode = false;
+		ankhmode = false;
 		solid = false;
 		pdie = PDIE_DYING;
 		pdieframe = 0;
@@ -579,8 +580,8 @@ void CPlayer::JumpAndPogo()
         boostInertia(1);
 	}
 	
-    // If we are in Godmode, use the Pogo, and pressing the jump button, make the player fly
-    if( godmode && ppogostick )
+    // If we are in Godmode, use the Pogo, and holding the jump button will make the player fly
+    if( ppogostick && gpBehaviorEngine->mCheatmode.jump )
     {
     	if(playcontrol[PA_X] < 0) xinertia-=3;
     	if(playcontrol[PA_X] > 0) xinertia+=3;
@@ -684,8 +685,8 @@ void CPlayer::Playerfalling()
 		else if (pfallspeed<PhysicsSettings.max_fallspeed)
 			pfallspeed += PhysicsSettings.fallspeed_increase;
 
-		// add current fall speed to player Y or make him fly in godmode with pogo
-		if( !godmode || !ppogostick || !gInput.getHoldedCommand(IC_JUMP) )
+		// add current fall speed to player Y or make him fly in godmode with pogo        
+        if( !gpBehaviorEngine->mCheatmode.jump || !ppogostick || !gInput.getHoldedCommand(IC_JUMP) )
 			moveDown(pfallspeed);
 	}
 	else

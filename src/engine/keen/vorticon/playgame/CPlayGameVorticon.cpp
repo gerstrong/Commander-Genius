@@ -100,7 +100,7 @@ void CPlayGameVorticon::setupPlayers()
 		{
             player.m_playingmode = CPlayer::WORLDMAP;
             m_showKeensLeft |= ( player.pdie == PDIE_DEAD );
-            if(player.godmode) player.solid = false;
+            //if(player.godmode) player.solid = false;
 		}
 		else
 		{
@@ -121,7 +121,8 @@ void CPlayGameVorticon::setupPlayers()
 		// Set the pointers to the map and object data
         player.setMapData(mMap.get());
         player.exists = true;
-        if(player.m_playingmode == CPlayer::WORLDMAP) player.solid = !(player.godmode);
+        player.solid = true;
+        //if(player.m_playingmode == CPlayer::WORLDMAP) player.solid = !(player.godmode);
 
         stInventory &inventory = m_Player.at(i).inventory;
 
@@ -415,10 +416,12 @@ void CPlayGameVorticon::handleFKeys()
 	int i;
 
 	// CTSpace Cheat
-	if (gInput.getHoldedKey(KC) &&
+    if ((gInput.getHoldedKey(KC) &&
         gInput.getHoldedKey(KT) &&
-        gInput.getHoldedKey(KSPACE))
+        gInput.getHoldedKey(KSPACE)) ||
+        gpBehaviorEngine->mCheatmode.items)
 	{
+        gpBehaviorEngine->mCheatmode.items = false;
 		gInput.flushAll();
         const int numPlayers = gpBehaviorEngine->mPlayers;
         for(i=0;i<numPlayers;i++)
@@ -469,17 +472,21 @@ void CPlayGameVorticon::handleFKeys()
 		std::vector<CPlayer>::iterator it_player = m_Player.begin();
 		for( ; it_player != m_Player.end() ; it_player++)
 		{
-			it_player->godmode ^= 1;
+            gpBehaviorEngine->mCheatmode.god = true;
+            gpBehaviorEngine->mCheatmode.jump = true;
+            gpBehaviorEngine->mCheatmode.noclipping = true;
+            //it_player->godmode ^= 1;
             // If player on map, disable the solid property of the players
-			if(m_Level == 80)
-				it_player->solid = !it_player->godmode;
+            if(m_Level == 80)
+                //it_player->solid = !it_player->godmode;
+                it_player->solid = true;
 			it_player->performCollisions();
 		}
 
 		g_pSound->playSound(SOUND_GUN_CLICK, PLAY_FORCE);
 
 		// Show a message like in the original game
-		std::unique_ptr<CMessageBoxVort> msg(new CMessageBoxVort(m_Player[0].godmode ? gpBehaviorEngine->getString("GODMODEON") : gpBehaviorEngine->getString("GODMODEOFF")));
+        std::unique_ptr<CMessageBoxVort> msg(new CMessageBoxVort(gpBehaviorEngine->mCheatmode.god ? gpBehaviorEngine->getString("GODMODEON") : gpBehaviorEngine->getString("GODMODEOFF")));
 		mMessageBoxes.push_back(move(msg));
 		gInput.flushKeys();
 	}
@@ -495,8 +502,8 @@ void CPlayGameVorticon::handleFKeys()
         return;
 
 	// Menus will only open if Keen is solid or in god mode. This means neither dying nor teleporting
-	if( m_Player[0].solid || ( m_Player[0].godmode && !m_Player[0].dying ) )
-	{
+    /*if( m_Player[0].solid || ( gpBehaviorEngine->mCheatmode.god && !m_Player[0].dying ) )
+	{        
 		// F2 - Sound Menu
 		if ( gInput.getPressedKey(KF2) )
 		{
@@ -517,8 +524,8 @@ void CPlayGameVorticon::handleFKeys()
 			//mp_Menu = new CMenuVorticon( ACTIVE, m_Map,
 				//	m_SavedGame,  m_restartVideo, m_hideobjects );
 			//mp_Menu->init(SAVE);
-		}
-	}
+        }
+    }*/
 }
 
 // The Ending and mortimer cutscenes for example

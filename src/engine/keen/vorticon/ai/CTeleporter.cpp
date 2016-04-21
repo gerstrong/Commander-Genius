@@ -175,7 +175,8 @@ void CTeleporter::process()
 
 					exists=false;
 					m_Player[player].beingteleported = false;
-					m_Player[player].solid = !m_Player[player].godmode;
+                    //m_Player[player].solid = !m_Player[player].godmode;
+                    m_Player[player].solid = true;
 				}
 				else
 				{ // teleport animation is not done. show the next frame
