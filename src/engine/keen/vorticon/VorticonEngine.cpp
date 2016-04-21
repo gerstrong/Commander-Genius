@@ -136,14 +136,14 @@ bool VorticonEngine::loadResources( const Uint8 flags )
             }
 
             // Patch the EXE-File-Data directly in the memory.
-            CPatcher Patcher(ExeFile, g_pBehaviorEngine->mPatchFname);
+            CPatcher Patcher(ExeFile, gpBehaviorEngine->mPatchFname);
             Patcher.process();
 
             mLoader.setPermilage(100);
 
             gTimer.setLPS(DEFAULT_LPS_VORTICON);
 
-            g_pBehaviorEngine->readTeleporterTable(p_exedata);
+            gpBehaviorEngine->readTeleporterTable(p_exedata);
 
             if( (mFlags & LOADGFX) == LOADGFX )
             {
@@ -170,7 +170,7 @@ bool VorticonEngine::loadResources( const Uint8 flags )
                 mLoader.setPermilage(800);
             }
 
-            g_pBehaviorEngine->getPhysicsSettings().loadGameConstants(mEp, p_exedata);
+            gpBehaviorEngine->getPhysicsSettings().loadGameConstants(mEp, p_exedata);
             mLoader.setPermilage(900);
 
             // If there are patches left that must be apllied later, do it here!
@@ -221,7 +221,7 @@ void VorticonEngine::pumpEvent(const CEvent *evPtr)
     }
     else if( const NewGamePlayersEvent* pNewGame = dynamic_cast<const NewGamePlayersEvent*>(evPtr) )
     {
-        g_pBehaviorEngine->mPlayers = pNewGame->mSelection;
+        gpBehaviorEngine->mPlayers = pNewGame->mSelection;
         gEventManager.add( new OpenMenuEvent(new CDifficultySelection) );
         return;
     }
@@ -254,7 +254,7 @@ void VorticonEngine::pumpEvent(const CEvent *evPtr)
 
         mpGameMode->init();
         mOpenedGamePlay = true;
-        g_pBehaviorEngine->setPause(false);
+        gpBehaviorEngine->setPause(false);
         gEventManager.add( new CloseAllMenusEvent() );        
     }
     else if( dynamic_cast<const GMSwitchToPassiveMode*>(evPtr) )
@@ -269,7 +269,7 @@ void VorticonEngine::pumpEvent(const CEvent *evPtr)
         pgVort->loadGame();
         mpGameMode = std::move(pgVort);
         mOpenedGamePlay = true;
-        g_pBehaviorEngine->setPause(false);
+        gpBehaviorEngine->setPause(false);
         gEventManager.add( new CloseAllMenusEvent() );
     }
     else if( dynamic_cast<const OpenMainMenuEvent*>(evPtr) )

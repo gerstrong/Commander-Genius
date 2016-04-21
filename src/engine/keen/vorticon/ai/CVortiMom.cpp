@@ -17,7 +17,7 @@ CVorticonSpriteObject(p_map, x, y, OBJ_MOTHER)
 
 	blockedr = blockedl = 0;
 
-    const auto diff = g_pBehaviorEngine->mDifficulty;
+    const auto diff = gpBehaviorEngine->mDifficulty;
 
     if(diff>NORMAL)
 		mHealthPoints++;
@@ -93,7 +93,7 @@ void CVortiMom::process()
 	{
 	case MOTHER_WALK:
 
-		prob = (g_pBehaviorEngine->mDifficulty>NORMAL) ? MOTHER_SPIT_PROB_HARD : MOTHER_SPIT_PROB;
+		prob = (gpBehaviorEngine->mDifficulty>NORMAL) ? MOTHER_SPIT_PROB_HARD : MOTHER_SPIT_PROB;
 		if (getProbability(prob))
 		{
 			if (onscreen)

@@ -78,7 +78,7 @@ bool CSpriteObject::PoleCollision()
 // This used for objects that only can trigger, when it's really worth to do so.
 bool CSpriteObject::calcVisibility()
 {
-	int visibility = g_pBehaviorEngine->getPhysicsSettings().misc.visibility;
+	int visibility = gpBehaviorEngine->getPhysicsSettings().misc.visibility;
 
 	SDL_Rect gameres = gVideoDriver.getGameResolution().SDLRect();
 
@@ -103,9 +103,9 @@ bool CSpriteObject::verifyForFalling()
         const auto fall1 = mp_Map->getPlaneDataAt(1, getXMidPos(), getYDownPos());
         const auto fall2 = mp_Map->getPlaneDataAt(1, getXMidPos(), getYDownPos()+(1<<(CSF)));
         const auto fall3 = mp_Map->getPlaneDataAt(1, getXMidPos(), getYDownPos()+(2<<(CSF)));
-		const CTileProperties &TileProp1 = g_pBehaviorEngine->getTileProperties(1)[fall1];
-		const CTileProperties &TileProp2 = g_pBehaviorEngine->getTileProperties(1)[fall2];
-		const CTileProperties &TileProp3 = g_pBehaviorEngine->getTileProperties(1)[fall3];
+		const CTileProperties &TileProp1 = gpBehaviorEngine->getTileProperties(1)[fall1];
+		const CTileProperties &TileProp2 = gpBehaviorEngine->getTileProperties(1)[fall2];
+		const CTileProperties &TileProp3 = gpBehaviorEngine->getTileProperties(1)[fall3];
 		const bool nothing_on_feet = (TileProp1.bup == 0);
 		const bool nothing_below_feet = (TileProp2.bup == 0) && (TileProp3.bup == 0);
 		const bool can_fall = (nothing_on_feet && nothing_below_feet);
@@ -275,7 +275,7 @@ void CSpriteObject::InertiaAndFriction_X(const int friction_rate)
 
 void CSpriteObject::processFallPhysics(const int boost)
 {
-	CPhysicsSettings &Physics = g_pBehaviorEngine->getPhysicsSettings();
+	CPhysicsSettings &Physics = gpBehaviorEngine->getPhysicsSettings();
 
 	// In this case foe is jumping?
 	// Not sure here. We should use another variable...
@@ -302,7 +302,7 @@ void CSpriteObject::processFallPhysics(const int boost)
 
 void CSpriteObject::processFallPhysics()
 {
-	CPhysicsSettings &Physics = g_pBehaviorEngine->getPhysicsSettings();
+	CPhysicsSettings &Physics = gpBehaviorEngine->getPhysicsSettings();
 	processFallPhysics(Physics.fallspeed_increase);
 }
 

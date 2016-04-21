@@ -33,7 +33,7 @@ m_offset(0)
     CResource &keenFiles = gKeenFiles;
 
     setGameDirectory(keenFiles.gameDir);
-	setEpisode(g_pBehaviorEngine->getEpisode());
+	setEpisode(gpBehaviorEngine->getEpisode());
 }
 
 void CSaveGameController::setGameDirectory(const std::string& game_directory)

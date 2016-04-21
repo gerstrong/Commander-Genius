@@ -17,7 +17,7 @@ class CMapLoaderGalaxyEp4 : public CMapLoaderGalaxy
 {
 public:
     CMapLoaderGalaxyEp4(std::vector< std::shared_ptr<CGalaxySpriteObject> > &ObjectPtr,
-            std::vector<CInventory> &inventoryVec, stCheat &Cheatmode);
+            std::vector<CInventory> &inventoryVec);
 
 	//------------------------------------------------//
 	// The following part covers the load of the foes

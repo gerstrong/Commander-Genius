@@ -52,7 +52,7 @@ void CSpriteItem::getTouchedBy(CSpriteObject &theObject)
 {
 	if( CPlayerBase* pPlayer = dynamic_cast<CPlayerBase*>(&theObject) )
 	{
-		const int ep = g_pBehaviorEngine->getEpisode();
+		const int ep = gpBehaviorEngine->getEpisode();
 		stItemGalaxy &Item = pPlayer->m_Inventory.Item;
 		
 		int epOff = 0;

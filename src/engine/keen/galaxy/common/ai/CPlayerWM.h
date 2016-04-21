@@ -35,12 +35,11 @@ namespace galaxy {
 class CPlayerWM : public CPlayerBase
 {
 public:
-	CPlayerWM(CMap *pmap,
-			const Uint16 foeID,
-			Uint32 x,
-			Uint32 y,
-			CInventory &l_Inventory,
-			stCheat &Cheatmode,
+    CPlayerWM(CMap *pmap,
+            const Uint16 foeID,
+            Uint32 x,
+            Uint32 y,
+            CInventory &l_Inventory,
             const unsigned int actionoffset,
             const int playerID);
 

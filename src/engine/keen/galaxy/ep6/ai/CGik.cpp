@@ -61,7 +61,7 @@ void CGik::processWalk()
 
 void CGik::processJump()
 {
-    std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
+    std::vector<CTileProperties> &TileProperty = gpBehaviorEngine->getTileProperties();
 
     int xMid = getXMidPos();
     int y2 = getYDownPos();

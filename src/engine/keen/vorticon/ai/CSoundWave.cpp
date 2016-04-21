@@ -21,7 +21,7 @@ offscreentime(0)
 
 {
 	m_type = OBJ_SNDWAVE;
-	setupObjectType(g_pBehaviorEngine->getEpisode());
+	setupObjectType(gpBehaviorEngine->getEpisode());
     GsSprite &rSprite = gGraphics.getSprite(mSprVar,sprite);
 	m_BBox.x1 = rSprite.m_bboxX1;		m_BBox.x2 = rSprite.m_bboxX2;
 	m_BBox.y1 = rSprite.m_bboxY1;		m_BBox.y2 = rSprite.m_bboxY2;
@@ -56,7 +56,7 @@ void CSoundWave::process()
 			exists=false;
 		else
 		{
-			if(g_pBehaviorEngine->mDifficulty>=NORMAL)
+			if(gpBehaviorEngine->mDifficulty>=NORMAL)
 				moveRight(SNDWAVE_SPEED_FAST);
 			else
 				moveRight(SNDWAVE_SPEED);
@@ -70,7 +70,7 @@ void CSoundWave::process()
 			exists = false;
 		else
 		{
-			if (g_pBehaviorEngine->mDifficulty>=NORMAL)
+			if (gpBehaviorEngine->mDifficulty>=NORMAL)
 				moveLeft(SNDWAVE_SPEED_FAST);
 			else
 				moveLeft(SNDWAVE_SPEED);

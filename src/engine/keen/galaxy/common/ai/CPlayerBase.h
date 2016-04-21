@@ -123,7 +123,6 @@ public:
                 Uint32 y,
                 direction_t facedir,
                 CInventory &l_Inventory,
-                stCheat &Cheatmode,
                 int playerID);
 
 
@@ -227,8 +226,6 @@ protected:
 	Sint16 m_playcontrol[PA_MAX_ACTIONS];
 	int m_timer;
 	
-
-	stCheat& m_Cheatmode;
 
 
 	void (CPlayerBase::*mp_processState)();

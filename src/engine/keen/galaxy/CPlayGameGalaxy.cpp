@@ -36,11 +36,11 @@ namespace galaxy
 
 CPlayGameGalaxy::CPlayGameGalaxy(const int startlevel) :
 CPlayGame(startlevel),
-m_WorldMap( mInventoryVec, m_Cheatmode),
-m_LevelPlay( mInventoryVec, m_Cheatmode),
+m_WorldMap( mInventoryVec),
+m_LevelPlay( mInventoryVec),
 m_SavedGame(*gpSaveGameController)
 {
-    const int numPlayers = g_pBehaviorEngine->mPlayers;
+    const int numPlayers = gpBehaviorEngine->mPlayers;
     mDead.assign(numPlayers, false);
     mGameOver.assign(numPlayers, false);
 
@@ -80,10 +80,10 @@ bool CPlayGameGalaxy::loadGameState()
 	/// Save the Game in the CSavedGame object
 	// store the episode, level and difficulty
 	savedGame.decodeData(m_Episode);
-	savedGame.decodeData(g_pBehaviorEngine->mDifficulty);
+    savedGame.decodeData(gpBehaviorEngine->mDifficulty);
 
 	// Load number of Players
-    savedGame.decodeData(g_pBehaviorEngine->mPlayers);
+    savedGame.decodeData(gpBehaviorEngine->mPlayers);
 
 	// We need to load both Levels first, before we do the writing from the saved state.
 
@@ -124,11 +124,11 @@ bool CPlayGameGalaxy::loadXMLGameState()
     /// Load the Game in the CSavedGame object
     // Get the episode, and difficulty
     m_Episode = stateNode.get<int>("episode");
-    g_pBehaviorEngine->mDifficulty = static_cast<Difficulty>(stateNode.get<int>("difficulty", 1));
+    gpBehaviorEngine->mDifficulty = static_cast<Difficulty>(stateNode.get<int>("difficulty", 1));
 
     // Get number of Players
     const unsigned int numPlayers = stateNode.get<int>("NumPlayer");
-    g_pBehaviorEngine->mPlayers = numPlayers;
+    gpBehaviorEngine->mPlayers = numPlayers;
 
     if(!mInventoryVec.empty())
         mInventoryVec.clear();
@@ -193,10 +193,10 @@ bool CPlayGameGalaxy::saveXMLGameState()
 
     /// Save the Game in the CSavedGame object
     // store the episode, level and difficulty
-    stateNode.put("difficulty", g_pBehaviorEngine->mDifficulty);
+    stateNode.put("difficulty", gpBehaviorEngine->mDifficulty);
 
     // Save number of Players
-    const unsigned int numPlayers = g_pBehaviorEngine->mPlayers;
+    const unsigned int numPlayers = gpBehaviorEngine->mPlayers;
     stateNode.put("NumPlayer", numPlayers);
 
     ptree &deadNode = pt.add("death", "");
@@ -329,7 +329,7 @@ void CPlayGameGalaxy::looseManagement( const int playerID,
         EventSendSelectionDialogMsg *pdialogevent = new EventSendSelectionDialogMsg(loosemsg);
         pdialogevent->addOption("Try Again", new EventRestartLevel() );
 
-        std::string exitMsg = "Exit to " + g_pBehaviorEngine->mapLevelName;
+        std::string exitMsg = "Exit to " + gpBehaviorEngine->mapLevelName;
         pdialogevent->addOption(exitMsg, new EventExitLevel( levelObj, false, false, playerID) );
         eventContainer.add( pdialogevent );
 
@@ -379,7 +379,7 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
     {
         m_endgame = true;
         // The last menu has been removed. Restore back the game status
-        g_pBehaviorEngine->setPause(false);
+        gpBehaviorEngine->setPause(false);
         gMenuController.clearMenuStack();
     }
     else if( const EventEnterLevel *ev = dynamic_cast<const EventEnterLevel*>(evPtr) )
@@ -408,7 +408,7 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
         m_WorldMap.setActive(true);
         m_WorldMap.loadAndPlayMusic();
 
-        const std::string loading_text = g_pBehaviorEngine->getString("WORLDMAP_LOAD_TEXT");
+        const std::string loading_text = gpBehaviorEngine->getString("WORLDMAP_LOAD_TEXT");
         showMsgWithBmp( loading_text, "KEENTHUMBSUP", LEFT);
 
         const EventExitLevel &evCopy = *ev;
@@ -517,34 +517,30 @@ void CPlayGameGalaxy::ponder(const float deltaT)
 
     //// Special Keyboard Input
     /// Cheat Codes
+    auto &cheat = gpBehaviorEngine->mCheatmode;
     if( gInput.getHoldedKey(KF10) )
     {
         if(gInput.getHoldedKey(KJ))
         {
-            m_Cheatmode.jump = !m_Cheatmode.jump;
+            cheat.jump = !cheat.jump;
             std::string jumpstring = "Jump-Cheat has been ";
-            jumpstring += ((m_Cheatmode.jump) ? "enabled" : "disabled");
+            jumpstring += ((cheat.jump) ? "enabled" : "disabled");
             showMsg(jumpstring);
         }
         else if(gInput.getHoldedKey(KG))
         {
-            m_Cheatmode.god = !m_Cheatmode.god;
+            cheat.god = !cheat.god;
             std::string godstring = "God-Mode has been ";
-            godstring += ((m_Cheatmode.god) ? "enabled" : "disabled");
+            godstring += ((cheat.god) ? "enabled" : "disabled");
             showMsg(godstring);
         }
         else if(gInput.getHoldedKey(KI))
         {
-            showMsg("Get all Items!");
-
-            for( auto &inv : mInventoryVec )
-                inv.Item.triggerAllItemsCheat();
-
-            m_Cheatmode.items = true;
+            cheat.items = true;
         }
         else if(gInput.getHoldedKey(KN))
         {
-            m_Cheatmode.noclipping = true;
+            cheat.noclipping = true;
             showMsg("No clipping toggle!");
         }
         else if(gInput.getHoldedKey(KS))
@@ -552,11 +548,22 @@ void CPlayGameGalaxy::ponder(const float deltaT)
             for( auto &inv : mInventoryVec )
                 inv.Item.triggerAllItemsCheat();
 
-            m_Cheatmode.items = true;
-            m_Cheatmode.god = true;
-            m_Cheatmode.jump = true;
+            cheat.items = true;
+            cheat.god = true;
+            cheat.jump = true;
             showMsg("Super Cheat!");
         }
+    }
+
+
+    if(cheat.items)
+    {
+        showMsg("Free items!");
+
+        for( auto &inv : mInventoryVec )
+            inv.Item.triggerAllItemsCheat();
+
+       cheat.items = false;
     }
 
 }

@@ -15,7 +15,7 @@ onsamelevel(false)
 	canbezapped = 1;
 	dead = 0;
 
-	if(g_pBehaviorEngine->mDifficulty==HARD)
+	if(gpBehaviorEngine->mDifficulty==HARD)
 		mHealthPoints++;
 }
 
@@ -114,7 +114,7 @@ void CFoob::process()
 				xinertia = FOOB_FLEE_SPEED;
 				blockedtime = 0;
 			}
-			else if(g_pBehaviorEngine->mDifficulty==HARD)
+			else if(gpBehaviorEngine->mDifficulty==HARD)
 			{
 				if (++blockedtime >= FOOB_HARDMODE_BLOCK_TIME)
 				{
@@ -131,7 +131,7 @@ void CFoob::process()
 				xinertia = -FOOB_FLEE_SPEED;
 				blockedtime = 0;
 			}
-			else if(g_pBehaviorEngine->mDifficulty==HARD)
+			else if(gpBehaviorEngine->mDifficulty==HARD)
 			{
 				if (++blockedtime >= FOOB_HARDMODE_BLOCK_TIME)
 				{
@@ -199,7 +199,7 @@ bool CFoob::isNearby(CVorticonSpriteObject &theObject)
 				dir = LEFT;
 			
 			// in hard mode run TOWARDS the player (he's deadly in hard mode)
-			if (g_pBehaviorEngine->mDifficulty==HARD)
+			if (gpBehaviorEngine->mDifficulty==HARD)
 				dir = LEFT ? RIGHT : LEFT;
 
 		}
@@ -214,7 +214,7 @@ void CFoob::getTouchedBy(CVorticonSpriteObject &theObject)
 {
 	if(CPlayer *player = dynamic_cast<CPlayer*>(&theObject))
 	{
-		if(g_pBehaviorEngine->mDifficulty==HARD)
+		if(gpBehaviorEngine->mDifficulty==HARD)
 			player->kill();
 	}
 }

@@ -16,9 +16,8 @@
 
 namespace galaxy {
 
-CWorldMap::CWorldMap(std::vector<CInventory> &inventoryVec,
-					stCheat &Cheatmode):
-CMapPlayGalaxy(inventoryVec, Cheatmode)
+CWorldMap::CWorldMap(std::vector<CInventory> &inventoryVec):
+CMapPlayGalaxy(inventoryVec)
 {}
 
 void CWorldMap::init()
@@ -26,17 +25,17 @@ void CWorldMap::init()
 	// Load the World map level.
 	std::unique_ptr<CMapLoaderGalaxy> MapLoader;
 
-	if(g_pBehaviorEngine->getEpisode() == 4)
-        MapLoader.reset( new CMapLoaderGalaxyEp4( mObjectPtr, mInventoryVec, mCheatmode) );
-	else if(g_pBehaviorEngine->getEpisode() == 5)
-        MapLoader.reset( new CMapLoaderGalaxyEp5( mObjectPtr, mInventoryVec, mCheatmode) );
-	else if(g_pBehaviorEngine->getEpisode() == 6)
-        MapLoader.reset( new CMapLoaderGalaxyEp6( mObjectPtr, mInventoryVec, mCheatmode) );
+	if(gpBehaviorEngine->getEpisode() == 4)
+        MapLoader.reset( new CMapLoaderGalaxyEp4( mObjectPtr, mInventoryVec) );
+	else if(gpBehaviorEngine->getEpisode() == 5)
+        MapLoader.reset( new CMapLoaderGalaxyEp5( mObjectPtr, mInventoryVec) );
+	else if(gpBehaviorEngine->getEpisode() == 6)
+        MapLoader.reset( new CMapLoaderGalaxyEp6( mObjectPtr, mInventoryVec) );
 
 	MapLoader->loadMap( mMap, 0 );
-	g_pBehaviorEngine->mapLevelName = MapLoader->getLevelName();
+	gpBehaviorEngine->mapLevelName = MapLoader->getLevelName();
 
-	const std::string loading_text = g_pBehaviorEngine->getString("WORLDMAP_LOAD_TEXT");
+	const std::string loading_text = gpBehaviorEngine->getString("WORLDMAP_LOAD_TEXT");
 
     gEffectController.setupEffect(new CColorMerge(8));
 	

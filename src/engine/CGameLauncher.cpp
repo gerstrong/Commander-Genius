@@ -14,6 +14,7 @@
 #include <widgets/GsBanner.h>
 #include <widgets/GsButton.h>
 #include <widgets/GsText.h>
+#include <widgets/GsProgressbar.h>
 #include <graphics/GsGraphics.h>
 #include <base/utils/FindFile.h>
 #include <base/utils/StringUtils.h>
@@ -58,7 +59,7 @@ m_start_level(start_level)
 {	
     g_pSound->unloadSoundData();
     // The last menu has been removed. Restore back the game status
-    g_pBehaviorEngine->setPause(false);
+    gpBehaviorEngine->setPause(false);
 
     gMenuController.clearMenuStack();
     letchooseagain();
@@ -197,6 +198,8 @@ bool CGameLauncher::setupMenu()
 
     if(!gamesDetected)
         return false;
+
+    mLauncherDialog.setSelection(4);
 
     const std::string gameDir = gArgs.getValue("dir");
     if(!gameDir.empty())
@@ -480,6 +483,8 @@ void CGameLauncher::setupDownloadDialog()
 
     mpDownloadDialog->addControl(new CGUIText("Downloading..."), GsRect<float>(0.0f, 0.0f, 1.0f, 0.05f));
 
+    mpDownloadDialog->addControl(new GsProgressBar, GsRect<float>(0.1f, 0.2f, 0.8f, 0.1f));
+
     mpDownloadDialog->addControl(new GsButton( "< Back", new CloseBoxEvent() ), GsRect<float>(0.4f, 0.85f, 0.2f, 0.05f) );
     //mpDownloadDialog->addControl(new GsButton( "< Back", new GMQuit() ), GsRect<float>(0.65f, 0.865f, 0.3f, 0.07f) );
 }
@@ -757,7 +762,7 @@ void CGameLauncher::ponderPatchDialog()
         // We have to check which Episode will be used
         const int episode = getEpisode( m_chosenGame );
 
-        g_pBehaviorEngine->mPatchFname = mPatchFilename;
+        gpBehaviorEngine->mPatchFname = mPatchFilename;
 
         if( episode > 0 ) // The game has to have a valid episode!
         {

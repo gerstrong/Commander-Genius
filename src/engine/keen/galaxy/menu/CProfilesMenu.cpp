@@ -27,7 +27,7 @@ class SetDefaultClassic : public InvokeFunctorEvent
 public:
     void operator()() const
 	{
-		stOption *p_option = g_pBehaviorEngine->m_option;
+		stOption *p_option = gpBehaviorEngine->m_option;
 		g_pSettings->loadDrvCfg();
 		gVideoDriver.setSpecialFXMode(false);
 		st_camera_bounds &CameraBounds = gVideoDriver.getCameraBounds();
@@ -56,7 +56,7 @@ class SetDefaultEnhanced : public InvokeFunctorEvent
 public:
     void operator()() const
 	{
-		stOption *p_option = g_pBehaviorEngine->m_option;
+		stOption *p_option = gpBehaviorEngine->m_option;
 		g_pSettings->loadDrvCfg();
 		gVideoDriver.setSpecialFXMode(true);
 		st_camera_bounds &CameraBounds = gVideoDriver.getCameraBounds();

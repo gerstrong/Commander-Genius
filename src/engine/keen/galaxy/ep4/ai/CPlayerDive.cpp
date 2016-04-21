@@ -20,13 +20,11 @@ CPlayerDive::CPlayerDive(CMap *pmap,
 		Uint32 x,
 		Uint32 y,
 		direction_t facedir,
-		CInventory &l_Inventory,
-        stCheat &Cheatmode,
+        CInventory &l_Inventory,
         const int playerID) :
 CPlayerBase(pmap, foeID, x, y,
 		facedir,
-		l_Inventory,
-        Cheatmode,
+		l_Inventory,        
         playerID),
 m_swimupspeed(0),
 m_breathtimer(0),
@@ -42,7 +40,7 @@ const int DIE_FALL_MAX_INERTIA = 150;
 void CPlayerDive::kill(const bool force)
 {
 	// Here were prepare Keen to die, setting the action to die
-	if(!m_Cheatmode.god || force)
+    if(!gpBehaviorEngine->mCheatmode.god || force)
 	{
 		if(mp_processState == &CPlayerBase::processDying && yinertia < 0)
 			return;
@@ -70,10 +68,10 @@ const int BREATH_TIME = 60;
 void CPlayerDive::processDiving()
 {
 	// In case no-clipping was triggered, make it solid, or remove it...
-	if(m_Cheatmode.noclipping)
+    if(gpBehaviorEngine->mCheatmode.noclipping)
 	{
 		solid = !solid;
-		m_Cheatmode.noclipping = false;
+        gpBehaviorEngine->mCheatmode.noclipping = false;
 	}
 
 

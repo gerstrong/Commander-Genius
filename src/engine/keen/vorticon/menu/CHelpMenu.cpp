@@ -46,7 +46,7 @@ VorticonMenu( GsRect<float>(0.25f, 0.24f, 0.5f, 0.5f) )
 						new StartInfoSceneEvent( new CCredits() ) ) );
 	
 	std::string filename = "previews.ck";
-	filename += itoa(g_pBehaviorEngine->getEpisode());	
+	filename += itoa(gpBehaviorEngine->getEpisode());	
     filename = getResourceFilename( filename, gKeenFiles.gameDir, false, false);
 
 	if( filename != "" )

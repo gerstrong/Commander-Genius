@@ -21,7 +21,7 @@ public:
     virtual ~GsEngine() {}
 
     /**
-     * @brief start Usually this is started before anything else but still after construction.
+     * @brief start Usually this is started before anything else but still after the construction.
      */
     virtual void start() = 0;
 

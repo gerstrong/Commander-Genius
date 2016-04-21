@@ -39,7 +39,7 @@ mSkipSection(false)
     const GsRect<Uint16> gameRect = gVideoDriver.getVidConfig().m_GameRect;
     gVideoDriver.setNativeResolution(gameRect);
 
-    const int episode = g_pBehaviorEngine->getEpisode();
+    const int episode = gpBehaviorEngine->getEpisode();
 
     if(episode == 4)
         mCreditsBmpID = 98;

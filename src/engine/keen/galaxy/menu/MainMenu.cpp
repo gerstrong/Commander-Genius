@@ -27,7 +27,7 @@ void MainMenu::createGalaxyMenu( const bool openedGamePlay )
 {
 
 #if defined (SINGLEPLAYER)
-    g_pBehaviorEngine->mPlayers = 1;
+    gpBehaviorEngine->mPlayers = 1;
     GsButton *button = new GalaxyButton( "New Game",
                                         new OpenMenuEvent(new CDifficultySelection) );
 #else

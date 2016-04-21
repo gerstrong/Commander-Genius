@@ -52,7 +52,7 @@ mTimer(0)
 	// Adapt this AI
 	setupGalaxyObjectOnMap(0x21DC, A_AMPTON_WALK);
 
-    auto diff = g_pBehaviorEngine->mDifficulty;
+    auto diff = gpBehaviorEngine->mDifficulty;
 
     if(diff > NINJA && foeID == 0x2C)
     {
@@ -204,7 +204,7 @@ void CAmpton::processPoleSlide()
   // Check for Floor here!        
   const int fall1 = mp_Map->getPlaneDataAt(1, l_x, l_y_down+(1<<CSF));
   //const int fall1 = mp_Map->getPlaneDataAt(1, l_x, l_y_down);
-  const CTileProperties &TileProp1 = g_pBehaviorEngine->getTileProperties(1)[fall1];
+  const CTileProperties &TileProp1 = gpBehaviorEngine->getTileProperties(1)[fall1];
   const bool leavePole = (TileProp1.bup != 0);
   
   if(leavePole)

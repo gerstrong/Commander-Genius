@@ -27,6 +27,7 @@
 #include <base/TypeDefinitions.h>
 #include <base/GsEvent.h>
 #include "engine/core/options.h"
+#include "Cheat.h"
 
 #include <base/GsEvent.h>
 
@@ -38,7 +39,7 @@ const unsigned int MAX_PLAYERS = 1;
 const unsigned int MAX_PLAYERS = 4;
 #endif
 
-#define g_pBehaviorEngine CBehaviorEngine::Get()
+#define gpBehaviorEngine CBehaviorEngine::Get()
 
 /*
  * This enumerator will hold and tell what engine we are using.
@@ -125,6 +126,8 @@ public:
 	
 	std::string mapLevelName;
 
+    stCheat mCheatmode;
+
 private:
 	std::vector<CTileProperties> m_TileProperties[2];
     CPhysicsSettings m_PhysicsSettings;
@@ -137,8 +140,7 @@ private:
 
 	bool mPausedGamePlay;
 
-    EpisodeInfoStruct *pEpisodeInfo;
-		
+    EpisodeInfoStruct *pEpisodeInfo;		    
 };
 
 #endif /* CBEHAVIORENGINE_H_ */

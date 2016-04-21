@@ -323,8 +323,6 @@ void Audio::playStereofromCoord( const GameSound snd,
 }
 
 
-
-
 void Audio::playStereosound(const GameSound snd, const char mode, const short balance)
 {
     if( mSndChnlVec.empty() ) return;
@@ -333,7 +331,8 @@ void Audio::playStereosound(const GameSound snd, const char mode, const short ba
         return;
 
 	CSoundSlot *mp_Slots = mpAudioRessources->getSlotPtr();
-	int slotplay = sndSlotMap[snd];
+    int slotplay = sndSlotMap[snd];
+
 	const int speaker_snds_end_off = mpAudioRessources->getNumberofSounds()/2;
 
 	if(slotplay >= speaker_snds_end_off)
@@ -352,7 +351,7 @@ void Audio::playStereosound(const GameSound snd, const char mode, const short ba
 void Audio::playStereosoundSlot(unsigned char slotplay, const char mode, const short balance)
 {
 	CSoundSlot *mp_Slots = mpAudioRessources->getSlotPtr();
-	CSoundSlot &new_slot = mp_Slots[slotplay];
+    CSoundSlot &new_slot = mp_Slots[slotplay];
 
 	if(mode==PLAY_PAUSEALL)
 		m_pause_gameplay = true;

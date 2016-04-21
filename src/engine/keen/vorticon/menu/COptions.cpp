@@ -15,7 +15,7 @@ namespace vorticon
 
 COptions::COptions() :
 VorticonMenu( GsRect<float>(0.1f, 0.14f, 0.8f, NUM_OPTIONS*0.07f) ),
-mpOption(g_pBehaviorEngine->m_option)
+mpOption(gpBehaviorEngine->m_option)
 {
 
 	for( int i = 0 ; i < NUM_OPTIONS ; i++ )

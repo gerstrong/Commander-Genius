@@ -112,7 +112,7 @@ void CPlayer::walkbehindexitdoor()
 {
 	int xb, diff, width;
 
-    const int ep = g_pBehaviorEngine->getEpisode();
+    const int ep = gpBehaviorEngine->getEpisode();
 
 	
     // don't draw keen as he walks through the door (past exitXpos)
@@ -146,12 +146,13 @@ void CPlayer::kill(bool force)
 {
 	if(!force) // force can happens for example, when player leaves the map to the most lower-side
 	{
-		if (godmode || ankhtime || level_done) return;
+        if ( gpBehaviorEngine->mCheatmode.god ) return;
+		if (ankhmode || ankhtime || level_done) return;
 	}
 
 	if (!pdie)
 	{
-		godmode = false;
+		ankhmode = false;
 		solid = false;
 		pdie = PDIE_DYING;
 		pdieframe = 0;
@@ -237,7 +238,7 @@ void CPlayer::keencicle()
 		else
 		{ // thawing out, show the thaw frame
 
-            const int ep = g_pBehaviorEngine->getEpisode();
+            const int ep = gpBehaviorEngine->getEpisode();
 
             if (ep==3)
 				pfrozenframe = 2;
@@ -303,7 +304,7 @@ void CPlayer::TogglePogo_and_Switches()
 	unsigned int mx, my;
 	Uint16 t;
 	
-	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties(1);
+	std::vector<CTileProperties> &TileProperty = gpBehaviorEngine->getTileProperties(1);
 
 	// detect if KPOGO key only pressed
 	if ( playcontrol[PA_POGO] && !pfrozentime && !lastpogo )
@@ -374,7 +375,7 @@ void CPlayer::TogglePogo_and_Switches()
 
 void CPlayer::JumpAndPogo()
 {
-	CPhysicsSettings &PhysicsSettings = g_pBehaviorEngine->getPhysicsSettings();
+	CPhysicsSettings &PhysicsSettings = gpBehaviorEngine->getPhysicsSettings();
 
 	// handle the JUMP key, both for normal jumps and (high) pogo jumps
 	if (!pjumping && !pfalling && !pfiring)
@@ -421,7 +422,7 @@ void CPlayer::JumpAndPogo()
 								if(!pogofirsttime)
 								{
 									const int jump = PhysicsSettings.player.maxjumpspeed;
-                                    const int pogo = (g_pBehaviorEngine->mDifficulty >= NORMAL) ?
+                                    const int pogo = (gpBehaviorEngine->mDifficulty >= NORMAL) ?
 													(11*PhysicsSettings.player.maxpogospeed)/10
                                     				: PhysicsSettings.player.maxpogospeed;
                                    	pjumpupspeed = 3*(pogo-jump)*playcontrol[PA_JUMP] / 50 + jump;
@@ -579,8 +580,8 @@ void CPlayer::JumpAndPogo()
         boostInertia(1);
 	}
 	
-    // If we are in Godmode, use the Pogo, and pressing the jump button, make the player fly
-    if( godmode && ppogostick )
+    // If we are in Godmode, use the Pogo, and holding the jump button will make the player fly
+    if( ppogostick && gpBehaviorEngine->mCheatmode.jump )
     {
     	if(playcontrol[PA_X] < 0) xinertia-=3;
     	if(playcontrol[PA_X] > 0) xinertia+=3;
@@ -591,7 +592,7 @@ void CPlayer::JumpAndPogo()
 
 void CPlayer::boostInertia(const int amt)
 {
-	CPhysicsSettings &PhysicsSettings = g_pBehaviorEngine->getPhysicsSettings();
+	CPhysicsSettings &PhysicsSettings = gpBehaviorEngine->getPhysicsSettings();
 	const int pinitspeed = PhysicsSettings.player.max_x_speed/2;
 
 	if (playcontrol[PA_X] < 0)
@@ -613,8 +614,8 @@ void CPlayer::boostInertia(const int amt)
 
 void CPlayer::Playerfalling()
 {
-	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
-	CPhysicsSettings &PhysicsSettings = g_pBehaviorEngine->getPhysicsSettings();
+	std::vector<CTileProperties> &TileProperty = gpBehaviorEngine->getTileProperties();
+	CPhysicsSettings &PhysicsSettings = gpBehaviorEngine->getPhysicsSettings();
 
 	if (pfalling)
 	{
@@ -684,8 +685,8 @@ void CPlayer::Playerfalling()
 		else if (pfallspeed<PhysicsSettings.max_fallspeed)
 			pfallspeed += PhysicsSettings.fallspeed_increase;
 
-		// add current fall speed to player Y or make him fly in godmode with pogo
-		if( !godmode || !ppogostick || !gInput.getHoldedCommand(IC_JUMP) )
+		// add current fall speed to player Y or make him fly in godmode with pogo        
+        if( !gpBehaviorEngine->mCheatmode.jump || !ppogostick || !gInput.getHoldedCommand(IC_JUMP) )
 			moveDown(pfallspeed);
 	}
 	else
@@ -802,7 +803,7 @@ void CPlayer::SelectFrame()
 {
     sprite = playerbaseframe;      // basic standing
 	
-    const int ep = g_pBehaviorEngine->getEpisode();
+    const int ep = gpBehaviorEngine->getEpisode();
 
     if (ep==3) sprite++;
 
@@ -927,7 +928,7 @@ void CPlayer::checkSolidDoors()
 	int mx2 = getXRightPos();
 	int my1 = getYUpPos();
 	int my2 = getYDownPos();
-	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
+	std::vector<CTileProperties> &TileProperty = gpBehaviorEngine->getTileProperties();
 
 	for( int my=my1 ; my<my2 ; my+=(1<<STC) )
 	{
@@ -980,7 +981,7 @@ void CPlayer::getShotByRay(object_t &obj_type)
 		if( pfrozentime > PFROZEN_THAW )
 			pfrozentime = PFROZEN_THAW;
 
-		if(g_pBehaviorEngine->getEpisode() == 1)
+		if(gpBehaviorEngine->getEpisode() == 1)
 			return;
 	}
 	else
@@ -996,7 +997,7 @@ void CPlayer::processStatusScreen()
 
     if(!mpStatusScr)
     {
-        const int ep = g_pBehaviorEngine->getEpisode();
+        const int ep = gpBehaviorEngine->getEpisode();
 
         mpStatusScr.reset(new CStatusScreen(ep, &inventory, mp_levels_completed, ankhtime, playerbaseframe, mSprVar));
     }

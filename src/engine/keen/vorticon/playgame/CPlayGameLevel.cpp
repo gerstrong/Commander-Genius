@@ -16,7 +16,7 @@ void CPlayGameVorticon::processInLevel()
 	if(m_gameover)
 		return;
 
-    const int numPlayers = g_pBehaviorEngine->mPlayers;
+    const int numPlayers = gpBehaviorEngine->mPlayers;
 
 	// Perform player Objects...
     for( int i=0 ; i<numPlayers ; i++ )
@@ -32,7 +32,7 @@ void CPlayGameVorticon::processInLevel()
 		std::string hinttext;
 		if( (hinttext=m_Player[i].pollHintMessage()) != "")
 		{
-		    std::unique_ptr<CMessageBoxVort> msg( new CMessageBoxVort(g_pBehaviorEngine->getString(hinttext), false, true) );
+		    std::unique_ptr<CMessageBoxVort> msg( new CMessageBoxVort(gpBehaviorEngine->getString(hinttext), false, true) );
 		    mMessageBoxes.push_back( move(msg) );
 		}
 

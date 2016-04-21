@@ -45,7 +45,7 @@ bool CPlayGameVorticon::loadGameState()
 	bool loadmusic = ( m_Level != newLevel || m_Level == 80 );
 	m_Level = newLevel;
 	
-	ok &= savedGame.decodeData(g_pBehaviorEngine->mDifficulty);
+	ok &= savedGame.decodeData(gpBehaviorEngine->mDifficulty);
 	
 	bool dark, checkpointset;
 	int checkx, checky;
@@ -59,7 +59,7 @@ bool CPlayGameVorticon::loadGameState()
     unsigned int numPlayers;
     ok &= savedGame.decodeData(numPlayers);
 
-    g_pBehaviorEngine->mPlayers = numPlayers;
+    gpBehaviorEngine->mPlayers = numPlayers;
 	        
 	if(!m_Player.empty())
 	  m_Player.clear();
@@ -208,7 +208,7 @@ bool CPlayGameVorticon::loadXMLGameState()
     // get the episode, level and difficulty
     m_Episode = stateNode.get<int>("episode", 1); // Default value = 1. Bit strange not?
     int newLevel = stateNode.get<int>("level", 1);
-    g_pBehaviorEngine->mDifficulty =
+    gpBehaviorEngine->mDifficulty =
             static_cast<Difficulty>(stateNode.get<int>("difficulty", int(NORMAL) ));
 
     for( auto &stateTree : pt.get_child("GameState") )
@@ -372,7 +372,7 @@ bool CPlayGameVorticon::loadXMLGameState()
 
 
     mpObjectAI.reset( new CVorticonSpriteObjectAI(mMap.get(), mSpriteObjectContainer, m_Player,
-                              g_pBehaviorEngine->mPlayers, m_Episode, m_Level,
+                              gpBehaviorEngine->mPlayers, m_Episode, m_Level,
                            mMap->m_Dark) );
     setupPlayers();
 
@@ -381,7 +381,7 @@ bool CPlayGameVorticon::loadXMLGameState()
 
     m_Player[0].mpCamera->reAdjust();
 
-    g_pBehaviorEngine->mPlayers = m_Player.size();
+    gpBehaviorEngine->mPlayers = m_Player.size();
 
     return true;
 }
@@ -399,7 +399,7 @@ bool CPlayGameVorticon::saveXMLGameState()
     // store the episode, level and difficulty
     stateNode.put("episode", int(m_Episode));
     stateNode.put("level", m_Level);
-    stateNode.put("difficulty", g_pBehaviorEngine->mDifficulty);    
+    stateNode.put("difficulty", gpBehaviorEngine->mDifficulty);    
 
     // Also the last checkpoint is stored. This is the level entered from map
     // in Commander Keen games
@@ -412,7 +412,7 @@ bool CPlayGameVorticon::saveXMLGameState()
 
     stateNode.put("dark", mMap->m_Dark);
 
-    const unsigned int numPlayers = g_pBehaviorEngine->mPlayers;
+    const unsigned int numPlayers = gpBehaviorEngine->mPlayers;
 
     // Now save the inventory of every player
     for( size_t i=0 ; i<numPlayers ; i++ )
@@ -494,7 +494,7 @@ bool CPlayGameVorticon::saveGameState()
 	// store the episode, level and difficulty
 	savedGame.encodeData(m_Episode);
 	savedGame.encodeData(m_Level);
-	savedGame.encodeData(g_pBehaviorEngine->mDifficulty);
+	savedGame.encodeData(gpBehaviorEngine->mDifficulty);
 
 	// Also the last checkpoint is stored. This is the level entered from map
 	// in Commander Keen games
@@ -504,7 +504,7 @@ bool CPlayGameVorticon::saveGameState()
 	savedGame.encodeData(mMap->m_Dark);
 
 	// Save number of Players
-    const unsigned int numPlayers = g_pBehaviorEngine->mPlayers;
+    const unsigned int numPlayers = gpBehaviorEngine->mPlayers;
     savedGame.encodeData(numPlayers);
 
 	// Now save the inventory of every player    

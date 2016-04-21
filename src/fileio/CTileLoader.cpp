@@ -65,7 +65,7 @@ bool CTileLoader::load(size_t NumUnMaskedTiles, size_t NumMaskedTiles)
 			
 			for(int i=0 ; i<2 ; i++)
 			{
-			  std::vector<CTileProperties> &tileProperties = g_pBehaviorEngine->getTileProperties(i);			
+			  std::vector<CTileProperties> &tileProperties = gpBehaviorEngine->getTileProperties(i);			
 			  tileProperties.assign(NumMaskedTiles, emptyTileProperties);						  
 			  readVorticonTileinfo(tileProperties);
 			}
@@ -73,8 +73,8 @@ bool CTileLoader::load(size_t NumUnMaskedTiles, size_t NumMaskedTiles)
 		if(m_episode == 4 || m_episode == 5 || m_episode == 6 || m_episode == 7 )
 		{
 			CTileProperties TileProperties;
-			g_pBehaviorEngine->getTileProperties(0).assign(NumUnMaskedTiles, TileProperties);
-			g_pBehaviorEngine->getTileProperties(1).assign(NumMaskedTiles, TileProperties);
+			gpBehaviorEngine->getTileProperties(0).assign(NumUnMaskedTiles, TileProperties);
+			gpBehaviorEngine->getTileProperties(1).assign(NumMaskedTiles, TileProperties);
 			readGalaxyTileinfo(NumUnMaskedTiles, NumMaskedTiles);
 		}
 	}
@@ -149,14 +149,14 @@ void CTileLoader::readVorticonTileinfo(std::vector<CTileProperties> &TilePropert
 void CTileLoader::readGalaxyTileinfo(size_t NumUnMaskedTiles, size_t NumMaskedTiles)
 {
 	byte *data = m_data + m_offsetMap[m_episode][m_version];
-	std::vector<CTileProperties> &TileUnmaskedProperties = g_pBehaviorEngine->getTileProperties(0);
+	std::vector<CTileProperties> &TileUnmaskedProperties = gpBehaviorEngine->getTileProperties(0);
 	for(size_t j=0 ; j < NumUnMaskedTiles ; j++)
 	{
 		TileUnmaskedProperties[j].animationtime = data[j];
 		TileUnmaskedProperties[j].nextTile = static_cast<Sint8>(data[NumUnMaskedTiles+j]);
 	}
 
-	std::vector<CTileProperties> &TileMaskedProperties = g_pBehaviorEngine->getTileProperties(1);
+	std::vector<CTileProperties> &TileMaskedProperties = gpBehaviorEngine->getTileProperties(1);
 	for(size_t j=0 ; j < NumMaskedTiles ; j++)
 	{
 		TileMaskedProperties[j].bup 			= data[j+2*NumUnMaskedTiles];

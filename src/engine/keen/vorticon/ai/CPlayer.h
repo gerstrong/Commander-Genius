@@ -144,7 +144,7 @@ public:
 
 	e_playingmodes m_playingmode;
 
-	bool godmode;
+    bool ankhmode;
 
 	// used on world map only
 	bool hideplayer;

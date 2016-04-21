@@ -26,7 +26,7 @@ mReversed(false)
 	xDirection = xDir;
 	yDirection = yDir;
 
-	const size_t ep = g_pBehaviorEngine->getEpisode();
+	const size_t ep = gpBehaviorEngine->getEpisode();
 
 	setupGalaxyObjectOnMap(bulletActionMap[ep-4], A_KEENSHOT_MOVING);
 	setActionSprite();
@@ -50,7 +50,7 @@ void CBullet::getTouchedBy(CSpriteObject& theObject)
         }
 
         // Friendly fire?
-        if(!g_pBehaviorEngine->m_option[OPT_ALLOWPKING].value)
+        if(!gpBehaviorEngine->m_option[OPT_ALLOWPKING].value)
             return;
 
         if( player->getSpriteVariantId() != getSpriteVariantId() )

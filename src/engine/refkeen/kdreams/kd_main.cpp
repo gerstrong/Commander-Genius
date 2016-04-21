@@ -383,7 +383,7 @@ extern int gDreamsForceClose;
 
 void Quit (const id0_char_t *error)
 {
-  gDreamsForceClose = true;
+  gDreamsForceClose = 1;
   ShutdownId ();
   if (error && *error)
   {

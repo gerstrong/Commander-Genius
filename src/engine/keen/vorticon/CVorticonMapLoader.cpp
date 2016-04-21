@@ -261,7 +261,7 @@ void CVorticonMapLoaderWithPlayer::addWorldMapObject(unsigned int t, Uint16 x, U
         for( auto &player : mPlayerContainer )
         {
             player.setupforLevelPlay();
-            player.solid = player.godmode;
+            player.solid = !gpBehaviorEngine->mCheatmode.noclipping;
         }
 
         break;
@@ -279,7 +279,7 @@ void CVorticonMapLoaderWithPlayer::addWorldMapObject(unsigned int t, Uint16 x, U
     default:             // level marker
 
         // Taken from the original CloneKeen. If hard-mode chosen, swap levels 5 and 9 Episode 1
-        if(episode == 1 && g_pBehaviorEngine->mDifficulty >= HARD)
+        if(episode == 1 && gpBehaviorEngine->mDifficulty >= HARD)
         {
             if(t == 5)
                 t = 9;
@@ -293,7 +293,7 @@ void CVorticonMapLoaderWithPlayer::addWorldMapObject(unsigned int t, Uint16 x, U
             if ((t&0x7fff) <= MAX_LEVELS_VORTICON && mPlayerContainer.front().mp_levels_completed[t&0x00ff])
             {
                 // Change the level tile to a done sign
-                int newtile = g_pBehaviorEngine->getTileProperties()[mpMap->at(x,y)].chgtile;
+                int newtile = gpBehaviorEngine->getTileProperties()[mpMap->at(x,y)].chgtile;
 
                 // Consistency check! Some Mods have issues with that.
                 if(episode == 1 || episode == 2)
@@ -385,7 +385,7 @@ void CVorticonMapLoaderWithPlayer::addSpriteObject(unsigned int t, Uint16 x, Uin
 			case 3:    // vorticon (ep1) Vorticon Commander (ep2)
 				if (episode==1)
 				{
-					CPhysicsSettings &Phy = g_pBehaviorEngine->getPhysicsSettings();
+					CPhysicsSettings &Phy = gpBehaviorEngine->getPhysicsSettings();
 
 					size_t health = (level==16) ? Phy.vorticon.commander_hp : Phy.vorticon.default_hp;
 					enemyobject = new CVorticon( mpMap.get(), x<<CSF, y<<CSF, health );

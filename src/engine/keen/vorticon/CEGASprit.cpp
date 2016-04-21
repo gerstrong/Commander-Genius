@@ -378,7 +378,7 @@ void CEGASprit::DerivePlayerSprites( const int id, std::vector<GsSprite> &sprite
 // collected
 void CEGASprit::DeriveSpecialSprites( GsTilemap &tilemap, std::vector<GsSprite> &sprites )
 {
-	std::vector<CTileProperties>& TileProperties = g_pBehaviorEngine->getTileProperties();
+	std::vector<CTileProperties>& TileProperties = gpBehaviorEngine->getTileProperties();
 	// Yellow sprites a special effect when items are collected
 	for( Uint16 t=0 ; t<TileProperties.size() ; t++)
 	{

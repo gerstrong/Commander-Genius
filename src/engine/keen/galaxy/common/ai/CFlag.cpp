@@ -37,7 +37,7 @@ m_baseframe(0)
 	mActionMap[A_FLAG_WAVE] = &CFlag::processWaving;
 	mActionMap[A_FLAG_FLIP] = &CFlag::processFlipping;
 	
-	const auto episode = g_pBehaviorEngine->getEpisode();
+	const auto episode = gpBehaviorEngine->getEpisode();
 
     if(canLock)
         mp_Map->lock();
@@ -123,7 +123,7 @@ void CFlag::processFlipping()
 	    setActionSprite();
 	    g_pSound->playSound( SOUND_FLAG_LAND );
 	    
-	    const auto episode = g_pBehaviorEngine->getEpisode();
+	    const auto episode = gpBehaviorEngine->getEpisode();
         if(episode == 6)
         {
             Vector2D<int> tilePos = m_Pos;

@@ -12,6 +12,34 @@ namespace dreams
 {
 
 
+class DreamsDosIntro : public GsEngine
+{
+    virtual ~DreamsDosIntro() {}
+
+    /**
+     * @brief start Usually this is started before anything else but still after the construction.
+     */
+    void start();
+
+    /**
+     * @brief pumpEvent Events like user closes windows or mouse presses are processed here.
+     * @param evPtr
+     */
+    void pumpEvent(const CEvent *evPtr);
+
+    /**
+     * @brief ponder    Logic cycle run usually at 120 LPS
+     * @param deltaT    how much time of logic to do
+     */
+    void ponder(const float deltaT);
+
+    /**
+     * @brief render Everything that needs to be rendered representing the current state of the object
+     */
+    void render();
+};
+
+
 class DreamsEngine : public GameEngine
 {
 public:
@@ -72,12 +100,6 @@ public:
 
 private:
 
-    enum GameState
-    {
-        INTRO_TEXT,     // The famous screen where hardware is detected and some notes about the versions are told
-        INTRO_SCREEN    // Within the gameloop it will show the intro screen of the dreams game
-    } mGameState = INTRO_TEXT;
-
     std::unique_ptr<Action> mpPlayLoopAction;
     std::unique_ptr<ThreadPoolItem> mpPlayLoopThread;
 
@@ -85,6 +107,12 @@ private:
      * @brief mChangeMode   An integer that triggers internal resolution change
      */
     int mChangeMode = 0; // 0 means nothing, any other value sets the mode before
+
+
+    /**
+     * @brief mpScene   A flexible pointer to a class instance in which different functionalities can projected
+     */
+    std::unique_ptr<GsEngine> mpScene;
 };
 
 }
