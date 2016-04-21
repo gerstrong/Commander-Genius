@@ -54,7 +54,9 @@ m_fireTimer(0)
 
 	
 	m_ActionBaseOffset = actionOffset;
+
     solid = false;
+
 	setActionForce(A_PLATFORM_MOVE);
 	setActionSprite();
 	calcBoundingBoxes();	
@@ -62,39 +64,52 @@ m_fireTimer(0)
 
 void CPlatformVertical::process()
 {
-    Uint16 object = 0;
-
     Vector2D<Uint32> pos = getPosition();
 
-    if( yDirection == DOWN )
-        pos.y += 1<<CSF;
-    else if(yDirection == UP)
-        pos.y -= 1<<CSF;
+    auto lowerPos = pos;
+    auto upperPos = pos;
 
-    object = mp_Map->getPlaneDataAt(2, pos);
+    upperPos.y -= (1<<CSF);
+    lowerPos.y += (1<<CSF);
+
+    const auto objectUpper = mp_Map->getPlaneDataAt(2, upperPos);
+    const auto objectLower = mp_Map->getPlaneDataAt(2, lowerPos);
 
 	performCollisions();
 
-	// If there is a blocker, change the direction
-    if( object == 31 )
-	{
-	    yDirection = (yDirection == UP) ? DOWN : UP;
-	}
-	
+    bool dontmove = false;
+
+    // If plat is between two blockers, do not move
+    if(objectUpper == 31 && objectLower == 31)
+    {
+        dontmove = true;
+    }
+    else if( objectLower == 31 ) // If there is only one blocker, change the direction
+    {
+        yDirection = UP;
+    }
+    else if( objectUpper == 31 )
+    {
+        yDirection = DOWN;
+    }
+
     // If fire under the plats needs to be drawn dim it in case the platform goes down
 	if( yDirection == DOWN )
 	    dimFire = !dimFire;
 	else
 	    dimFire = true; 
 
-	if(yDirection == UP)
-	{
-        movePlatUp(moveVertSpeed);
-	}
-	else
-	{
-        movePlatDown(moveVertSpeed);
-	}
+    if(!dontmove)
+    {
+        if(yDirection == UP)
+        {
+            movePlatUp(moveVertSpeed);
+        }
+        else
+        {
+            movePlatDown(moveVertSpeed);
+        }
+    }
 	
 	// If any Plat is stuck, because it is in some wall and can't move properly, try to pull it!
 	if(blockedl)
