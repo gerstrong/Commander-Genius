@@ -55,7 +55,7 @@ void GsButton::processLogic()
         // For some nice special effects
         if(mHovered || mSelected)
         {
-            int maxBlend = 200;
+            int maxBlend = 224;
 
             if(mHovered && mSelected)
             {

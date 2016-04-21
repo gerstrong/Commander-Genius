@@ -655,6 +655,10 @@ void CInput::pollEvents()
 
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
+    {
+        activeArea.x = 0;
+        activeArea.y = 0;
+    }
 #else
     //if( !gVideoDriver.isOpenGL() )
     /*{
