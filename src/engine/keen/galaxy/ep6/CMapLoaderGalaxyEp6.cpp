@@ -168,13 +168,13 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp6::addFoe(CMap &Map, word foe, size_t x, 
 
 		
 	case 0x1B: 
-            p_newfoe = new galaxy::CPlatformVertical( &Map, foe, x, y, UP, 0x1DD8, 0 );
+            p_newfoe = new galaxy::CPlatformVertical( &Map, foe, x, y+(UP<<STC), UP, 0x1DD8, 0 );
 			break;
 	case 0x1C: 
             p_newfoe = new galaxy::CPlatformHorizontal( &Map, foe, RIGHT, x, y, 0x1DD8, 0 );
 			break;
 	case 0x1D: 
-            p_newfoe = new galaxy::CPlatformVertical( &Map, foe, x, y, DOWN, 0x1DD8, 0 );
+            p_newfoe = new galaxy::CPlatformVertical( &Map, foe, x, y+(DOWN<<STC), DOWN, 0x1DD8, 0 );
 			break;
 	case 0x1E: 
             p_newfoe = new galaxy::CPlatformHorizontal( &Map, foe, LEFT, x, y, 0x1DD8, 0 );
