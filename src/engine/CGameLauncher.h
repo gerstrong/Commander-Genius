@@ -153,6 +153,8 @@ private:
     int m_start_game_no;
     int m_start_level;
 
+    int mDownloadProgress = 0;
+
     bool scanSubDirectories(const std::string& path,
                             const size_t maxdepth,
                             const size_t startPermil,

@@ -483,10 +483,13 @@ void CGameLauncher::setupDownloadDialog()
 
     mpDownloadDialog->addControl(new CGUIText("Downloading..."), GsRect<float>(0.0f, 0.0f, 1.0f, 0.05f));
 
-    mpDownloadDialog->addControl(new GsProgressBar, GsRect<float>(0.1f, 0.2f, 0.8f, 0.1f));
+    mpDownloadDialog->addControl(new GsProgressBar(mDownloadProgress), GsRect<float>(0.1f, 0.2f, 0.8f, 0.1f));
 
     mpDownloadDialog->addControl(new GsButton( "< Back", new CloseBoxEvent() ), GsRect<float>(0.4f, 0.85f, 0.2f, 0.05f) );
     //mpDownloadDialog->addControl(new GsButton( "< Back", new GMQuit() ), GsRect<float>(0.65f, 0.865f, 0.3f, 0.07f) );
+
+    mFinishedDownload = 0;
+    mDownloadProgress = 0;
 }
 
 void CGameLauncher::setupModsDialog()
@@ -660,7 +663,8 @@ void CGameLauncher::pumpEvent(const CEvent *evPtr)
     }
     else if( dynamic_cast<const GMPatchSelected*>(evPtr) )
     {
-        mPatchFilename = mPatchStrVec[mpPatchSelList->getSelection()];
+        const auto sel = mpPatchSelList->getSelection();
+        mPatchFilename = mPatchStrVec[sel];
         mDonePatchSelection = true;
     }
     else if( dynamic_cast<const CloseBoxEvent*>(evPtr) )
@@ -735,6 +739,19 @@ void CGameLauncher::ponderGameSelDialog(const float deltaT)
 
 void CGameLauncher::ponderDownloadDialog()
 {
+    mDownloadProgress++;
+
+    if(mDownloadProgress >= 1000)
+    {
+        mFinishedDownload = true;
+    }
+
+    // TODO: Create and push a Thread that with curl downloads one file.
+
+    // TODO: The files are downloaded into a "Downloads" folder. Secondly they need to be extracted, if the directory does not exist yet.
+
+    // When everything is done, The launcher should be restarted, for searching new games.
+
     if( mFinishedDownload )
     {
         mpDownloadDialog = nullptr;
@@ -835,6 +852,7 @@ void CGameLauncher::ponder(const float deltaT)
     if(mpDownloadDialog)
     {
         mpDownloadDialog->processLogic();
+        ponderDownloadDialog();
         return;
     }
 
