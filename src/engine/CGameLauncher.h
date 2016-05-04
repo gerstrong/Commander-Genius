@@ -10,6 +10,7 @@
 
 #include <base/GsEngine.h>
 #include <base/GsVirtualinput.h>
+#include <base/utils/ThreadPool.h>
 
 #include <widgets/GsDialog.h>
 #include <widgets/GsText.h>
@@ -154,6 +155,8 @@ private:
     int m_start_level;
 
     int mDownloadProgress = 0;
+
+    ThreadPoolItem* mpGameDownloader;
 
     bool scanSubDirectories(const std::string& path,
                             const size_t maxdepth,

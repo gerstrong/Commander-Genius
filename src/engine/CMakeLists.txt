@@ -20,6 +20,7 @@ endif()
 
 add_subdirectory(refkeen)
 
-add_library(engine OBJECT CGameLauncher.cpp CGameLauncher.h)
+add_library(engine OBJECT CGameLauncher.cpp CGameLauncher.h
+                          gamedownloader.cpp gamedownloader.h)
 
 set_property(GLOBAL APPEND PROPERTY CG_OBJ_LIBS $<TARGET_OBJECTS:engine>)

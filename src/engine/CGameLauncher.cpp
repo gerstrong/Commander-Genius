@@ -33,6 +33,8 @@
 #include <fstream>
 #include <SDL_image.h>
 
+#include "gamedownloader.h"
+
 #include "keen/vorticon/VorticonEngine.h"
 #include "keen/galaxy/GalaxyEngine.h"
 #include "keen/dreams/dreamsengine.h"
@@ -490,6 +492,8 @@ void CGameLauncher::setupDownloadDialog()
 
     mFinishedDownload = 0;
     mDownloadProgress = 0;
+
+    mpGameDownloader = threadPool->start(new GameDownloader(mDownloadProgress), "Game Downloader started!");
 }
 
 void CGameLauncher::setupModsDialog()
@@ -746,13 +750,11 @@ void CGameLauncher::ponderDownloadDialog()
         mFinishedDownload = true;
     }
 
-    // TODO: Create and push a Thread that with curl downloads one file.
-
     // TODO: The files are downloaded into a "Downloads" folder. Secondly they need to be extracted, if the directory does not exist yet.
 
     // When everything is done, The launcher should be restarted, for searching new games.
 
-    if( mFinishedDownload )
+    if( mFinishedDownload && mpGameDownloader->finished )
     {
         mpDownloadDialog = nullptr;
     }

@@ -113,6 +113,16 @@ IF (Boost_FOUND)
 	ADD_DEFINITIONS( "-DHAS_BOOST" )
 ENDIF()
 
+
+if(DOWNLOADER)
+    FIND_PACKAGE(CURL)
+    IF(CURL_FOUND)
+      INCLUDE_DIRECTORIES(${CURL_INCLUDE_DIR})
+    ELSE(CURL_FOUND)
+      MESSAGE(FATAL_ERROR "Could not find the CURL library and development files.")
+    ENDIF(CURL_FOUND)
+endif()
+
 if(USE_SDL2)
 
     IF(WIN32)
@@ -232,6 +242,10 @@ ENDIF(OGG)
 IF(TREMOR)
 	TARGET_LINK_LIBRARIES(CGeniusExe vorbisidec)
 ENDIF(TREMOR)
+
+IF(CURL_FOUND)
+  TARGET_LINK_LIBRARIES(CGeniusExe ${CURL_LIBRARIES})
+ENDIF(CURL_FOUND)
 
 # Set binary(executable) file name. In Windows this filename needs the exe extension
 # The Windows Version has an icon in the executable
