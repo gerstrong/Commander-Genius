@@ -743,8 +743,6 @@ void CGameLauncher::ponderGameSelDialog(const float deltaT)
 
 void CGameLauncher::ponderDownloadDialog()
 {
-    mDownloadProgress++;
-
     if(mDownloadProgress >= 1000)
     {
         mFinishedDownload = true;
@@ -757,6 +755,7 @@ void CGameLauncher::ponderDownloadDialog()
     if( mFinishedDownload && mpGameDownloader->finished )
     {
         mpDownloadDialog = nullptr;
+        gEventManager.add(new GMSwitchToGameLauncher() );
     }
 }
 

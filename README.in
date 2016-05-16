@@ -237,7 +237,8 @@ How to compile it under Ubuntu:
         - libogg-dev
         - libgl1-mesa-dev               
         - libboost
-	-libcurl
+        - libcurl
+        - zlib
  
    For SDL 1.2:
  	- libsdl1.2-dev

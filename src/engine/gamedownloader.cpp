@@ -1,7 +1,15 @@
 #include "gamedownloader.h"
 
+#include <base/utils/FindFile.h>
+#include <base/GsLogging.h>
 #include <cstdio>
 #include <curl/curl.h>
+
+extern "C"
+{
+int unzipFile(const char *input,
+              const char *outputDir);
+}
 
 // Limit to max 1 GB
 const curl_off_t  STOP_DOWNLOAD_AFTER_THIS_MANY_BYTES = 1024 * 1024 * 1024;
@@ -13,6 +21,8 @@ struct myprogress {
 };
 
 int *progressPtr;
+
+int gDlto, gDlfrom;
 
 /* this is how the CURLOPT_XFERINFOFUNCTION callback works */
 static int xferinfo(void *p,
@@ -28,19 +38,14 @@ static int xferinfo(void *p,
   /* under certain circumstances it may be desirable for certain functionality
      to only run every N seconds, in order to do this the transaction time can
      be used */
-  if((curtime - myp->lastruntime) >= MINIMAL_PROGRESS_FUNCTIONALITY_INTERVAL) {
+  if((curtime - myp->lastruntime) >= MINIMAL_PROGRESS_FUNCTIONALITY_INTERVAL)
+  {
     myp->lastruntime = curtime;
-    //fprintf(stderr, "TOTAL TIME: %f \r\n", curtime);
   }
-
-  /*fprintf(stderr, "UP: %" CURL_FORMAT_CURL_OFF_T " of %" CURL_FORMAT_CURL_OFF_T
-          "  DOWN: %" CURL_FORMAT_CURL_OFF_T " of %" CURL_FORMAT_CURL_OFF_T
-          "\r\n",
-          ulnow, ultotal, dlnow, dltotal);*/
 
   if(dltotal > 0)
   {
-    const int newProgress = (1000*dlnow)/dltotal;
+    const int newProgress = gDlfrom + ((gDlto-gDlfrom)*dlnow)/dltotal;
     *progressPtr = newProgress;
   }
 
@@ -72,17 +77,18 @@ size_t write_data(void *ptr, size_t size, size_t nmemb, FILE *stream)
 
 
 
-int downloadFile(const std::string &filename, int &progress)
+int downloadFile(const std::string &filename, int &progress,
+                 const std::string &downloadDirPath)
 {
 
     progressPtr = &progress;
 
     const std::string urlString = "http://downloads.sourceforge.net/project/clonekeenplus/Downloads/" + filename;
-
+    const std::string outputPath = JoinPaths(downloadDirPath, filename);
 
     CURL *curl;
     CURLcode res = CURLE_OK;
-    struct myprogress prog;
+    struct myprogress prog;        
 
     curl = curl_easy_init();
     if(curl)
@@ -99,7 +105,8 @@ int downloadFile(const std::string &filename, int &progress)
       /* pass the struct pointer into the progress function */
       curl_easy_setopt(curl, CURLOPT_PROGRESSDATA, &prog);
 
-      FILE *fp = fopen("test.zip","wb");
+
+      FILE *fp = fopen(outputPath.c_str(),"wb");
 
       curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_data);
       curl_easy_setopt(curl, CURLOPT_WRITEDATA, fp);
@@ -124,6 +131,7 @@ int downloadFile(const std::string &filename, int &progress)
       curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 0L);
       res = curl_easy_perform(curl);
 
+      // TODO: Put into central log
       if(res != CURLE_OK)
         fprintf(stderr, "%s\n", curl_easy_strerror(res));
 
@@ -140,9 +148,69 @@ int downloadFile(const std::string &filename, int &progress)
 
 int GameDownloader::handle()
 {
-    int res;
+    int res = 0;
 
-    res = downloadFile("KEEN4Special.zip", mProgress);
+    // Get the first path. We assume that one is writable
+    std::string searchPaths;
+    GetExactFileName(GetFirstSearchPath(), searchPaths);
+
+    const auto downloadPath = JoinPaths(searchPaths, "downloads");
+    const auto gamesPath = JoinPaths(searchPaths, "games");
+
+
+    // Create Download directory if it does not exist yet
+    CreateRecDir(downloadPath);
+
+    // Keeping the count
+    const int numGames = 1;
+    const int numSteps = 2;
+
+    int game = 0;
+
+    const int ratio = (1000/(numGames*numSteps));
+
+    // TODO: Need to check for a list of downloaded stuff and what we still need
+    const std::string gameName = "KEEN4Special";
+    {
+        int step = 0;
+
+        gDlfrom = mProgress = (game*numSteps+step)*ratio;
+        gDlto = (game*numSteps+step+1)*ratio;
+
+        const std::string gameFile = gameName + ".zip";
+
+        const auto downloadGamePath = JoinPaths(downloadPath, gameFile);
+
+        if( !IsFileAvailable(downloadGamePath) )
+        {
+            // TODO: We also must pass the gamepath and a downloads folder we all the file packages can be set.
+            res = downloadFile(gameFile, mProgress, downloadPath);
+        }
+
+        step++;
+        mProgress = (game*numSteps+step)*ratio;
+
+        // TODO: Now the downloaded stuff must be extracted to the games directory
+        // At this point the file should be available
+        const std::string destDir = JoinPaths(gamesPath,gameName);
+        if( IsFileAvailable(downloadGamePath) )
+        {
+            // Create subdirectory
+            CreateRecDir( destDir );
+
+            unzipFile(downloadGamePath.c_str(), destDir.c_str());
+        }
+        else
+        {
+            const std::string errStr = "Something went wrong with downloading \"" + gameFile + "\"!";
+            gLogging.ftextOut(PURPLE, errStr.c_str() );
+        }
+
+        mProgress = (game*numSteps+step)*ratio;
+    }
+
+
+    mProgress = 1000;
 
     return res;
 }

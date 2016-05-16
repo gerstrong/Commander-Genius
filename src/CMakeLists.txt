@@ -114,6 +114,11 @@ IF (Boost_FOUND)
 ENDIF()
 
 
+find_package( ZLIB REQUIRED )
+if ( ZLIB_FOUND )
+    include_directories( ${ZLIB_INCLUDE_DIRS} )
+endif( ZLIB_FOUND )
+
 if(DOWNLOADER)
     FIND_PACKAGE(CURL)
     IF(CURL_FOUND)
@@ -208,6 +213,9 @@ set_property(TARGET CGeniusExe PROPERTY C_STANDARD 99)
 target_link_libraries (CGeniusExe GsKit)
 
 
+# Link zlib
+target_link_libraries( CGeniusExe ${ZLIB_LIBRARIES} )
+
 if(USE_SDL2)
         target_link_libraries(CGeniusExe ${SDL2_LIBRARIES})
         target_link_libraries(CGeniusExe ${SDL2IMAGE_LIBRARIES})
@@ -286,7 +294,6 @@ if(DBFUSION)
 
     target_link_libraries(CGeniusExe m)
     target_link_libraries(CGeniusExe png)
-    target_link_libraries(CGeniusExe z)
 
 	if(WIN32)
 		target_link_libraries(CGeniusExe SDL2_net)
@@ -298,6 +305,8 @@ if(DBFUSION)
 	endif(WIN32)
 
 endif(DBFUSION)
+
+
 
 cotire(CGeniusExe)
 

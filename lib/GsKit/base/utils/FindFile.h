@@ -197,6 +197,8 @@ std::string GetScriptInterpreterCommandForFile(const std::string& filename);
 
 bool IsFileAvailable(const std::string& f, bool absolute = false);
 
+std::string GetFirstSearchPath();
+
 // the dir will be created recursivly
 // IMPORTANT: filename is absolute; no game-path!
 void	CreateRecDir(const std::string& abs_filename, bool last_is_dir = true);
