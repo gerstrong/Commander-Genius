@@ -5,6 +5,10 @@
 #include <cstdio>
 #include <curl/curl.h>
 
+
+const std::vector< std::string > gameList = { "KEEN4Special" };
+
+
 extern "C"
 {
 int unzipFile(const char *input,
@@ -146,8 +150,38 @@ int downloadFile(const std::string &filename, int &progress,
 }
 
 
+bool GameDownloader::checkForMissingGames( std::vector< std::string > &missingList )
+{
+    // Get the first path. We assume that one is writable
+    std::string searchPaths;
+    GetExactFileName(GetFirstSearchPath(), searchPaths);
+
+    const auto downloadPath = JoinPaths(searchPaths, "downloads");
+
+    // Need to check for a list of downloaded stuff and what we still need
+    for( const auto &gameName : gameList )
+    {
+        const std::string gameFile = gameName + ".zip";
+
+        const auto downloadGamePath = JoinPaths(downloadPath, gameFile);
+
+        if( !IsFileAvailable(downloadGamePath) )
+        {
+            missingList.push_back(gameName);
+            continue;
+        }
+    }
+
+    return true;
+}
+
+
 int GameDownloader::handle()
 {
+    std::vector< std::string > missingList;
+
+    checkForMissingGames(missingList);
+
     int res = 0;
 
     // Get the first path. We assume that one is writable
@@ -162,15 +196,15 @@ int GameDownloader::handle()
     CreateRecDir(downloadPath);
 
     // Keeping the count
-    const int numGames = 1;
+    const auto numGames = missingList.size();
     const int numSteps = 2;
 
     int game = 0;
 
     const int ratio = (1000/(numGames*numSteps));
 
-    // TODO: Need to check for a list of downloaded stuff and what we still need
-    const std::string gameName = "KEEN4Special";
+    // Go through the missing pieces
+    for(const auto &gameName : missingList)
     {
         int step = 0;
 

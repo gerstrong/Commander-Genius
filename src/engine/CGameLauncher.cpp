@@ -173,8 +173,17 @@ bool CGameLauncher::setupMenu()
 
 
 #ifdef DOWNLOADER
-    GsButton *downloadBtn = new GsButton( "New Stuff", new GMDownloadDlgOpen() );
-    mLauncherDialog.addControl( downloadBtn, GsRect<float>(0.35f, 0.865f, 0.3f, 0.07f) );
+    int progress = 0;
+    GameDownloader gameDownloader(progress);
+
+    std::vector< std::string > missingList;
+    gameDownloader.checkForMissingGames( missingList );
+
+    if(!missingList.empty())
+    {
+        GsButton *downloadBtn = new GsButton( "New Stuff", new GMDownloadDlgOpen() );
+        mLauncherDialog.addControl( downloadBtn, GsRect<float>(0.35f, 0.865f, 0.3f, 0.07f) );
+    }
 #endif
 
     mpEpisodeText = new CGUIText("Game");
