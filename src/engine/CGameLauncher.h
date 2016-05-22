@@ -84,6 +84,7 @@ public:
     void pumpEvent(const CEvent *evPtr);
     void ponderGameSelDialog(const float deltaT);
 
+    void verifyGameStore();
     void ponderDownloadDialog();
 
     void ponderPatchDialog();
@@ -181,5 +182,9 @@ struct GMSwitchToGameLauncher : SwitchEngineEvent
         SwitchEngineEvent( new CGameLauncher(false, ChosenGame, ChosenGame) )
         { }
 };
+
+struct CloseBoxEvent : CEvent
+{};
+
 
 #endif /* CGAMELAUNCHER_H_ */
