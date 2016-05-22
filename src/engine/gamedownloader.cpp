@@ -6,7 +6,8 @@
 #include <curl/curl.h>
 
 
-const std::vector< std::string > gameList = { "KEEN4Special" };
+const std::vector< std::string > gameList = { "KEEN4-Special",
+                                              "KEEN1-Special" };
 
 
 extern "C"
@@ -178,10 +179,6 @@ bool GameDownloader::checkForMissingGames( std::vector< std::string > &missingLi
 
 int GameDownloader::handle()
 {
-    std::vector< std::string > missingList;
-
-    checkForMissingGames(missingList);
-
     int res = 0;
 
     // Get the first path. We assume that one is writable
@@ -196,7 +193,7 @@ int GameDownloader::handle()
     CreateRecDir(downloadPath);
 
     // Keeping the count
-    const auto numGames = missingList.size();
+    const auto numGames = 1;
     const int numSteps = 2;
 
     int game = 0;
@@ -204,7 +201,8 @@ int GameDownloader::handle()
     const int ratio = (1000/(numGames*numSteps));
 
     // Go through the missing pieces
-    for(const auto &gameName : missingList)
+    const auto &gameName = mGameName;
+    //for(const auto &gameName : missingList)
     {
         int step = 0;
 
@@ -233,6 +231,8 @@ int GameDownloader::handle()
             CreateRecDir( destDir );
 
             unzipFile(downloadGamePath.c_str(), destDir.c_str());
+
+            // TODO: if unpacking files fails, we should delete it.
         }
         else
         {

@@ -75,6 +75,7 @@ public:
 
     void showMessageBox(const std::string &text);
 
+    void pullGame(const int selection);
     void setupDownloadDialog();
 
     void setupModsDialog();
@@ -128,7 +129,7 @@ private:
     CGUIDialog mLauncherDialog;
 
     std::unique_ptr<CGUIDialog> mpPatchDialog;
-    std::unique_ptr<CGUIDialog> mpDownloadDialog;
+    std::unique_ptr<CGUIDialog> mpGameStoreDialog;
     std::unique_ptr<CGUIDialog> mpDosExecDialog;
 
 
@@ -140,6 +141,8 @@ private:
     std::vector< std::shared_ptr<GsBitmap> > mpPrevievBmpVec;
 	CGUIText *mpEpisodeText;
 	CGUIText *mpVersionText;
+
+    CGUITextSelectionList *mpGSSelList;
 
     CGUITextSelectionList *mpSelList;
     CGUITextSelectionList *mpPatchSelList;

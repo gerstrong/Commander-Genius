@@ -641,12 +641,20 @@ void CGameLauncher::pumpEvent(const CEvent *evPtr)
         mPatchFilename = mPatchStrVec[sel];
         mDonePatchSelection = true;
     }
+    else if( dynamic_cast<const GameStorePullGame*>(evPtr) )
+    {
+        pullGame(mpGSSelList->getSelection());
+    }
     else if( dynamic_cast<const CloseBoxEvent*>(evPtr) )
     {
         if(mpMsgDialog)
+        {
             mpMsgDialog = nullptr;
-        if(mpDownloadDialog)
-            mpDownloadDialog = nullptr;
+        }
+        if(mpGameStoreDialog)
+        {
+            mpGameStoreDialog = nullptr;
+        }
     }
 
 
@@ -710,24 +718,6 @@ void CGameLauncher::ponderGameSelDialog(const float deltaT)
     mLauncherDialog.processLogic();
 }
 
-
-void CGameLauncher::ponderDownloadDialog()
-{
-    if(mDownloadProgress >= 1000)
-    {
-        mFinishedDownload = true;
-    }
-
-    // TODO: The files are downloaded into a "Downloads" folder. Secondly they need to be extracted, if the directory does not exist yet.
-
-    // When everything is done, The launcher should be restarted, for searching new games.
-
-    if( mFinishedDownload && mpGameDownloader->finished )
-    {
-        mpDownloadDialog = nullptr;
-        gEventManager.add(new GMSwitchToGameLauncher() );
-    }
-}
 
 
 void CGameLauncher::ponderPatchDialog()
@@ -820,9 +810,9 @@ void CGameLauncher::ponder(const float deltaT)
         return;
     }
 
-    if(mpDownloadDialog)
+    if(mpGameStoreDialog)
     {
-        mpDownloadDialog->processLogic();
+        mpGameStoreDialog->processLogic();
         ponderDownloadDialog();
         return;
     }
@@ -872,8 +862,8 @@ void CGameLauncher::render()
     if(mpDosExecDialog)
         mpDosExecDialog->processRendering();
 
-    if(mpDownloadDialog)
-        mpDownloadDialog->processRendering();
+    if(mpGameStoreDialog)
+        mpGameStoreDialog->processRendering();
 
 }
 

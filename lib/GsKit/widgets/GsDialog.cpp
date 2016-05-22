@@ -72,7 +72,8 @@ void CGUIDialog::addControl( std::unique_ptr<CGUIControl> &newControl,
 void CGUIDialog::addControl( std::unique_ptr<CGUIControl> &newControl )
 {
 	mControlList.push_back( move(newControl) );
-	fit();
+
+    fit();
 
 	if(mControlList.size() == 1)
 	{
@@ -99,7 +100,9 @@ void CGUIDialog::addControl( CGUIControl *newControl )
 void CGUIDialog::selectPrevItem()
 {
     if(mpCurrentCtrl->isSelected())
+    {
         mpCurrentCtrl->select(false);
+    }
 
 	mSelection--;
 
@@ -136,7 +139,9 @@ void CGUIDialog::selectPrevItem()
 void CGUIDialog::selectNextItem()
 {
     if(mpCurrentCtrl->isSelected())
+    {
         mpCurrentCtrl->select(false);
+    }
 
 	mSelection++;
 

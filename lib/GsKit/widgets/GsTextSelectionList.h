@@ -31,15 +31,28 @@ public:
 	void processLogic();
     void processRender(const GsRect<float> &RectDispCoordFloat);
 
+    /**
+     * @brief getSelection  return position of currently selected item, or -1 if nothing is selected at al
+     * @return position or -1
+     */
     int getSelection() const
-    { return mReleasedSelection; }
+    {
+        return mReleasedSelection;
+    }
 
     void setSelection(const int sel)
-    { mReleasedSelection = sel; }
+    {
+        mReleasedSelection = sel;
+    }
 
-	std::list<std::string> mItemList;
-	
+    const std::string &getItemString(const int sel) const
+    {
+        return mItemList[sel];
+    }
+
 private:
+
+    std::vector<std::string> mItemList;
 
     int mHoverSelection;
     int mPressedSelection;

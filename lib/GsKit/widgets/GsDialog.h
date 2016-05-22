@@ -67,12 +67,12 @@ public:
 	void addControl( std::unique_ptr<CGUIControl> &newControl,
 			 	 	 const GsRect<float>& RelRect );
 
-	void addControl( std::unique_ptr<CGUIControl> &newControl );
+    void addControl(std::unique_ptr<CGUIControl> &newControl);
 
 	void addControl( CGUIControl *newControl,
 			 	 const GsRect<float>& RelRect );
 
-	void addControl( CGUIControl *newControl );
+    void addControl(CGUIControl *newControl );
 
 
     bool sendEvent( const std::shared_ptr<CEvent> &event );

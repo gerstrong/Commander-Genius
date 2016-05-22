@@ -185,7 +185,7 @@ void CGUITextSelectionList::processRender(const GsRect<float> &RectDispCoordFloa
     lRect.x += 12;
     lRect.w -= 12;
 	std::string trimmedText;
-	std::list<std::string> :: iterator it = mItemList.begin();
+    auto it = mItemList.begin();
 
     for(int i=0 ; i<mScrollbar.scrollPos() ; it++, i++);
 

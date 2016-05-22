@@ -54,7 +54,9 @@ void CPlayGameVorticon::processInLevel()
 		if(m_Player[i].level_done == LEVEL_COMPLETE)
 		{	
 		    if(!mSpriteObjectContainer.empty())
-			mSpriteObjectContainer.clear();
+            {
+                mSpriteObjectContainer.clear();
+            }
 			mpLevelCompleted[m_Level] = true;
 			goBacktoMap();
 			break;

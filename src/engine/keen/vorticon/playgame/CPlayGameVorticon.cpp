@@ -44,7 +44,9 @@ CPlayGame(startlevel)
 {
     // If no level has been set or is out of bound, set it to map.
     if(m_Level > 100 || m_Level <= 0 )
+    {
         m_Level = WORLD_MAP_LEVEL_VORTICON;
+    }
 
 	mMap.reset(new CMap());
     m_level_command = (m_Level==WORLD_MAP_LEVEL_VORTICON) ? GOTO_WORLD_MAP : START_LEVEL;
