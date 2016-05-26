@@ -7,7 +7,8 @@
 
 
 const std::vector< std::string > gameList = { "KEEN4-Special",
-                                              "KEEN1-Special" };
+                                              "KEEN1-Special",
+                                              "Eight-Accumulators"};
 
 
 extern "C"
