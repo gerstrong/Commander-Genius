@@ -112,7 +112,7 @@ void CGameLauncher::setupDownloadDialog()
             mpGameStoreDialog->addControl(mpGSSelList, GsRect<float>(0.01f, 0.07f, 0.98f, 0.72f)) );
 
     // Progress Bar
-    mpGameStoreDialog->addControl(new GsProgressBar(mDownloadProgress), GsRect<float>(0.1f, 0.8f, 0.8f, 0.1f));
+    mpGameStoreDialog->addControl(new GsProgressBar(mDownloadProgress), GsRect<float>(0.1f, 0.8f, 0.8f, 0.05f));
 
     // Bottom Controls
     mpDloadBack = std::dynamic_pointer_cast<GsButton>(

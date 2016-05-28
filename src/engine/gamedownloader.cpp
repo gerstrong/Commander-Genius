@@ -193,22 +193,11 @@ int GameDownloader::handle()
     // Create Download directory if it does not exist yet
     CreateRecDir(downloadPath);
 
-    // Keeping the count
-    const auto numGames = 1;
-    const int numSteps = 2;
-
-    int game = 0;
-
-    const int ratio = (1000/(numGames*numSteps));
-
     // Go through the missing pieces
     const auto &gameName = mGameName;
-    //for(const auto &gameName : missingList)
     {
-        int step = 0;
-
-        gDlfrom = mProgress = (game*numSteps+step)*ratio;
-        gDlto = (game*numSteps+step+1)*ratio;
+        gDlfrom = mProgress = 0;
+        gDlto = 900;
 
         const std::string gameFile = gameName + ".zip";
 
@@ -220,8 +209,7 @@ int GameDownloader::handle()
             res = downloadFile(gameFile, mProgress, downloadPath);
         }
 
-        step++;
-        mProgress = (game*numSteps+step)*ratio;
+        mProgress = gDlto;
 
         // TODO: Now the downloaded stuff must be extracted to the games directory
         // At this point the file should be available
@@ -240,8 +228,6 @@ int GameDownloader::handle()
             const std::string errStr = "Something went wrong with downloading \"" + gameFile + "\"!";
             gLogging.ftextOut(PURPLE, errStr.c_str() );
         }
-
-        mProgress = (game*numSteps+step)*ratio;
     }
 
 
