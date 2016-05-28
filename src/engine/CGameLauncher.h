@@ -114,6 +114,7 @@ private:
 	int m_chosenGame;
 
     bool mFinishedDownload = true;
+    bool mDownloading = false;
 
     bool mDonePatchSelection; // Tells if the Patch file has been selected if any
     std::string mPatchFilename;
@@ -133,7 +134,15 @@ private:
     std::shared_ptr<GsButton> mpStartButton;
 
     std::unique_ptr<CGUIDialog> mpPatchDialog;
+
+    // Download Dialog Section. TODO: Make it external
     std::unique_ptr<CGUIDialog> mpGameStoreDialog;
+    std::shared_ptr<CGUIText> mpDloadTitleText;
+    std::shared_ptr<CGUITextSelectionList> mpDloadSelectionList;
+    std::shared_ptr<GsButton> mpDloadBack;
+    std::shared_ptr<GsButton> mpDloadDownload;
+
+
     std::unique_ptr<CGUIDialog> mpDosExecDialog;
 
 

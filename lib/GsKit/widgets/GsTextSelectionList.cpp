@@ -99,6 +99,9 @@ void CGUITextSelectionList::addText(const std::string &text)
 
 void CGUITextSelectionList::processLogic()
 {
+    if(!mEnabled)
+        return;
+
 	// Here we check if the mouse-cursor/Touch entry clicked on something!!
 
     const float bw = gVideoDriver.getGameResolution().w;
@@ -166,10 +169,19 @@ void CGUITextSelectionList::processRender(const GsRect<float> &RectDispCoordFloa
 	displayRect.transform(RectDispCoordFloat);
 
 	SDL_Rect lRect = displayRect.SDLRect();
-	SDL_FillRect(Blitsurface, &lRect, 0xFFFFFFFF);
+
+
+    if(!mEnabled)
+    {
+        SDL_FillRect(Blitsurface, &lRect, 0xFFDFDFDF);
+    }
+    else
+    {
+        SDL_FillRect(Blitsurface, &lRect, 0xFFFFFFFF);
+    }
 
 	// Now lets draw the text of the list control
-	GsFont &Font = gGraphics.getFont(mFontID);
+    auto &Font = gGraphics.getFont(mFontID);
     const int pixth = Font.getPixelTextHeight();
     const int pixtw = pixth; // NOTE: We assume here, that the height and width are the same. Invalid to galaxy fonts!
 

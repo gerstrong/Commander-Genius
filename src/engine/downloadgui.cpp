@@ -34,14 +34,27 @@ void CGameLauncher::pullGame(const int selection)
     if(selection < 0)
         return;
 
+    // Start downloading the game
     const auto gameName = mpGSSelList->getItemString(selection);
+
+    mDownloading = true;
+    mpDloadTitleText->setText("Downloading Game...");
 
     mpGameDownloader = threadPool->start(new GameDownloader(mDownloadProgress, gameName), "Game Downloader started!");
 }
 
 void CGameLauncher::ponderDownloadDialog()
 {
-    // TODO: We should be able too grey out the download button.
+    // TODO: This is yet no way to cancel the download progress
+
+    // Disable Some Elements while downloading
+    if(mDownloading)
+    {
+        mpDloadSelectionList->enable(false);
+        mpDloadBack->enable(false);
+        mpDloadDownload->enable(false);
+    }
+
 
     if(mDownloadProgress >= 1000)
     {
@@ -53,7 +66,7 @@ void CGameLauncher::ponderDownloadDialog()
     // When everything is done, The launcher should be restarted, for searching new games.
 
     if( mFinishedDownload && mpGameDownloader->finished )
-    {
+    {        
         mpGameStoreDialog = nullptr;
         gEventManager.add(new GMSwitchToGameLauncher() );
     }
@@ -62,11 +75,12 @@ void CGameLauncher::ponderDownloadDialog()
 
 void CGameLauncher::setupDownloadDialog()
 {
-    mpGameStoreDialog.reset(new CGUIDialog(GsRect<float>(0.1f, 0.1f, 0.8f, 0.85f), CGUIDialog::EXPAND));
+    mpGameStoreDialog.reset(  new CGUIDialog( GsRect<float>(0.1f, 0.1f, 0.8f, 0.85f), CGUIDialog::EXPAND )  );
     mpGameStoreDialog->initEmptyBackground();
 
     mFinishedDownload = 0;
     mDownloadProgress = 0;
+    mDownloading = false;
 
     int progress = 0;
     GameDownloader gameDownloader(progress);
@@ -90,15 +104,20 @@ void CGameLauncher::setupDownloadDialog()
     mpGSSelList->setBackButtonEvent(new GMQuit());
 
     // Title
-    mpGameStoreDialog->addControl(new CGUIText("Games Store"), GsRect<float>(0.0f, 0.0f, 1.0f, 0.05f));
+    mpDloadTitleText = std::dynamic_pointer_cast<CGUIText>(
+            mpGameStoreDialog->addControl(new CGUIText("Select your Game for Download"), GsRect<float>(0.0f, 0.0f, 1.0f, 0.05f)) );
 
     // Selection List
-    mpGameStoreDialog->addControl(mpGSSelList, GsRect<float>(0.01f, 0.07f, 0.98f, 0.72f));
+    mpDloadSelectionList = std::dynamic_pointer_cast<CGUITextSelectionList>(
+            mpGameStoreDialog->addControl(mpGSSelList, GsRect<float>(0.01f, 0.07f, 0.98f, 0.72f)) );
 
     // Progress Bar
     mpGameStoreDialog->addControl(new GsProgressBar(mDownloadProgress), GsRect<float>(0.1f, 0.8f, 0.8f, 0.1f));
 
     // Bottom Controls
-    mpGameStoreDialog->addControl( new GsButton( "< Back", new CloseBoxEvent() ), GsRect<float>(0.065f, 0.865f, 0.3f, 0.07f) );
-    mpGameStoreDialog->addControl( new GsButton( "Download", new GameStorePullGame() ), GsRect<float>(0.635f, 0.865f, 0.3f, 0.07f) );
+    mpDloadBack = std::dynamic_pointer_cast<GsButton>(
+            mpGameStoreDialog->addControl( new GsButton( "< Back", new CloseBoxEvent() ), GsRect<float>(0.065f, 0.865f, 0.3f, 0.07f) ) );
+
+    mpDloadDownload = std::dynamic_pointer_cast<GsButton>(
+            mpGameStoreDialog->addControl( new GsButton( "Download", new GameStorePullGame() ), GsRect<float>(0.635f, 0.865f, 0.3f, 0.07f) ) );
 }
