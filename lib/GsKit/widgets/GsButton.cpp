@@ -101,7 +101,7 @@ void GsButton::drawNoStyle(SDL_Rect& lRect)
         lComp = 0xFF;
     }
 
-    const Uint32 fillColor = blitsfc.mapRGBA( lComp, lComp, lComp, 0xFF);
+    const auto fillColor = blitsfc.mapRGBA( (7*lComp)/8, (7*lComp)/8, lComp, 0xFF);
 
     GsRect<Uint16> rect(lRect);
 
@@ -109,7 +109,7 @@ void GsButton::drawNoStyle(SDL_Rect& lRect)
 
 
     // Now lets draw the text of the list control
-    GsFont &Font = gGraphics.getFont(mFontID);
+    auto &Font = gGraphics.getFont(mFontID);
 
     if(mEnabled) // If the button is enabled use the normal text, otherwise the highlighted color
         Font.drawFontCentered( blitsfc.getSDLSurface(), mText, lRect.x, lRect.w, lRect.y, lRect.h, false );
@@ -120,10 +120,10 @@ void GsButton::drawNoStyle(SDL_Rect& lRect)
 void GsButton::processRender(const GsRect<float> &RectDispCoordFloat)
 {
     // Transform to the display coordinates
-    GsRect<float> displayRect = mRect;
+    auto displayRect = mRect;
 
     displayRect.transform(RectDispCoordFloat);
-    SDL_Rect lRect = displayRect.SDLRect();
+    auto lRect = displayRect.SDLRect();
 
     drawNoStyle(lRect);
 }

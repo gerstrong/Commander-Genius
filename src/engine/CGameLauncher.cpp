@@ -151,7 +151,15 @@ bool CGameLauncher::setupMenu()
     mLauncherDialog.addControl(mpSelList, GsRect<float>(0.01f, 0.07f, 0.49f, 0.79f));
 
 
-    mLauncherDialog.addControl(new GsButton( "Start >", new GMStart() ), GsRect<float>(0.65f, 0.865f, 0.3f, 0.07f) );
+    mpStartButton = std::dynamic_pointer_cast<GsButton>
+                (
+                mLauncherDialog.addControl
+                   (
+                       new GsButton( "Start >", new GMStart() ),
+                                     GsRect<float>(0.65f, 0.865f, 0.3f, 0.07f)
+                   )
+                ) ;
+    //mLauncherDialog.addControl(new GsButton( "Start >", new GMStart() ), GsRect<float>(0.65f, 0.865f, 0.3f, 0.07f) );
 
 #ifdef DBFUSION
 
@@ -815,6 +823,19 @@ void CGameLauncher::ponder(const float deltaT)
         mpGameStoreDialog->processLogic();
         ponderDownloadDialog();
         return;
+    }
+
+    // Button should disabled unless a game was selected
+    if(mpStartButton)
+    {
+        if(mpSelList->getSelection() >= 0)
+        {
+            mpStartButton->enable(true);
+        }
+        else
+        {
+            mpStartButton->enable(false);
+        }
     }
 
 

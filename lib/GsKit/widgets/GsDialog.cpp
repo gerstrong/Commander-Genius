@@ -53,25 +53,32 @@ void CGUIDialog::updateGraphics()
 
 
 
-void CGUIDialog::addControl( std::unique_ptr<CGUIControl> &newControl,
-                                const GsRect<float>& RelRect )
+std::shared_ptr<CGUIControl> CGUIDialog::addControl( std::unique_ptr<CGUIControl> &newControl,
+                              const GsRect<float>& RelRect )
 {
     GsRect<float> AbsRect = RelRect;
 	AbsRect.transform(mRect);
 	newControl->mRect = AbsRect;
-	mControlList.push_back( move(newControl) );
+
+    auto ctrlPtr = std::shared_ptr<CGUIControl>( move(newControl) );
+
+    mControlList.push_back( ctrlPtr );
 
 	if(mControlList.size() == 1)
 	{
 	    mpCurrentCtrl = mControlList.front().get();
 	}
+
+    return ctrlPtr;
 }
 
 
 
-void CGUIDialog::addControl( std::unique_ptr<CGUIControl> &newControl )
-{
-	mControlList.push_back( move(newControl) );
+std::shared_ptr<CGUIControl> CGUIDialog::addControl( std::unique_ptr<CGUIControl> &newControl )
+{    
+    auto ctrlPtr = std::shared_ptr<CGUIControl>( move(newControl) );
+
+    mControlList.push_back( ctrlPtr );
 
     fit();
 
@@ -80,19 +87,20 @@ void CGUIDialog::addControl( std::unique_ptr<CGUIControl> &newControl )
 	    mpCurrentCtrl = mControlList.front().get();
 	}
 
+    return ctrlPtr;
 }
 
-void CGUIDialog::addControl( CGUIControl *newControl,
-             const GsRect<float>& RelRect )
+std::shared_ptr<CGUIControl> CGUIDialog::addControl( CGUIControl *newControl,
+                                                     const GsRect<float>& RelRect )
 {
     std::unique_ptr<CGUIControl> ctrl(newControl);
-    addControl( ctrl, RelRect );
+    return addControl( ctrl, RelRect );
 }
 
-void CGUIDialog::addControl( CGUIControl *newControl )
+std::shared_ptr<CGUIControl> CGUIDialog::addControl( CGUIControl *newControl )
 {
     std::unique_ptr<CGUIControl> ctrl(newControl);
-    addControl(ctrl);
+    return addControl(ctrl);
 }
 
 

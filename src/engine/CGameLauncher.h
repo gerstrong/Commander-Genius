@@ -14,6 +14,7 @@
 
 #include <widgets/GsDialog.h>
 #include <widgets/GsText.h>
+#include <widgets/GsButton.h>
 #include <widgets/GsTextSelectionList.h>
 
 #include <string>
@@ -127,6 +128,9 @@ private:
 	std::vector<std::string> m_Paths;
 	std::vector<std::string> m_Names;
     CGUIDialog mLauncherDialog;
+
+    // The Start-Button should change depending on the taken actions
+    std::shared_ptr<GsButton> mpStartButton;
 
     std::unique_ptr<CGUIDialog> mpPatchDialog;
     std::unique_ptr<CGUIDialog> mpGameStoreDialog;
