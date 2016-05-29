@@ -20,11 +20,18 @@ const int BLEND_SPEED = 16;
 
 GsButton::GsButton(const std::string& text,
             CEvent *ev,
-            const Style style) :
+            const Style style,
+            const float red,
+            const float green,
+            const float blue) :
 mText(text),
 mLightRatio(128),
-mEvent(ev)
+mEvent(ev),
+mRed(red),
+mGreen(green),
+mBlue(blue)
 {}
+
 
 bool GsButton::sendEvent(const InputCommands command)
 {
@@ -101,7 +108,13 @@ void GsButton::drawNoStyle(SDL_Rect& lRect)
         lComp = 0xFF;
     }
 
-    const auto fillColor = blitsfc.mapRGBA( (7*lComp)/8, (7*lComp)/8, lComp, 0xFF);
+
+    auto lcompf = float(lComp);
+    auto red   = Uint32(lcompf*mRed);
+    auto green = Uint32(lcompf*mGreen);
+    auto blue  = Uint32(lcompf*mBlue);
+
+    const auto fillColor = blitsfc.mapRGBA( red, green, blue, 0xFF);
 
     GsRect<Uint16> rect(lRect);
 

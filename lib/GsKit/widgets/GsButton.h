@@ -25,7 +25,10 @@ public:
 
     GsButton(const std::string& text,
 			CEvent *ev,
-			const Style style=UNSET);
+            const Style style = UNSET,
+            const float red = 0.875f,
+            const float green = 0.875f,
+            const float blue = 1.0f);
 
 	bool sendEvent(const InputCommands command);
 
@@ -67,6 +70,11 @@ protected:
 private:        
 
 	std::shared_ptr<CEvent> mEvent;
+
+    // Default-> Blue. This will colorize the buttons a bit. Effects continue working.
+    const float mRed = 0.875f;
+    const float mGreen = 0.875f;
+    const float mBlue = 1.0f;
 };
 
 #endif /* GsButton_H_ */

@@ -11,7 +11,11 @@ class VorticonMenu : public CBaseMenu
 {
 public:
     VorticonMenu( const GsRect<float>& rect ):
-        CBaseMenu( rect, new GsButton( "x", new CloseMenuEvent()) )
+        CBaseMenu( rect, new GsButton( "x", new CloseMenuEvent(),
+                                       CGUIControl::Style::UNSET,
+                                       1.0f,
+                                       0.75f,
+                                       0.75f) )
     {
         mpMenuDialog->addControl( mpReturnButton, GsRect<float>(0.0f,
                                                                 0.0f,

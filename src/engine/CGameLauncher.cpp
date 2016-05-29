@@ -147,7 +147,11 @@ bool CGameLauncher::setupMenu()
     mpSelList->setBackButtonEvent(new GMQuit());
 
     mLauncherDialog.addControl(new CGUIText("Pick a Game"), GsRect<float>(0.0f, 0.0f, 1.0f, 0.05f));
-    mLauncherDialog.addControl(new GsButton( "x", new GMQuit() ), GsRect<float>(0.0f, 0.0f, 0.07f, 0.07f) );
+    mLauncherDialog.addControl(new GsButton( "x", new GMQuit(),
+                                             CGUIControl::Style::UNSET,
+                                             1.0f,
+                                             0.75f,
+                                             0.75f ), GsRect<float>(0.0f, 0.0f, 0.07f, 0.07f) );
     mLauncherDialog.addControl(mpSelList, GsRect<float>(0.01f, 0.07f, 0.49f, 0.79f));
 
 
