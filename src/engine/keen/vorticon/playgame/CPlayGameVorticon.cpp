@@ -262,7 +262,7 @@ void CPlayGameVorticon::pumpEvent(const CEvent *evPtr)
 
 
 // Menu-Button
-const SDL_Rect menuButtonRect = {0, 36, 10, 10};
+const SDL_Rect menuButtonRect = {310, 0, 10, 10};
 
 
 ////
