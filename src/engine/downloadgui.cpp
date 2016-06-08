@@ -1,4 +1,4 @@
-
+#ifdef DOWNLOADER
 #include <widgets/GsProgressbar.h>
 #include <widgets/GsButton.h>
 #include <base/GsApp.h>
@@ -121,3 +121,5 @@ void CGameLauncher::setupDownloadDialog()
     mpDloadDownload = std::dynamic_pointer_cast<GsButton>(
             mpGameStoreDialog->addControl( new GsButton( "Download", new GameStorePullGame() ), GsRect<float>(0.635f, 0.865f, 0.3f, 0.07f) ) );
 }
+
+#endif DOWNLOADER

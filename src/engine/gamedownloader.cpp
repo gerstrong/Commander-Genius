@@ -1,3 +1,5 @@
+#ifdef DOWNLOADER
+
 #include "gamedownloader.h"
 
 #include <base/utils/FindFile.h>
@@ -235,3 +237,4 @@ int GameDownloader::handle()
 
     return res;
 }
+#endif // DOWNLOADER

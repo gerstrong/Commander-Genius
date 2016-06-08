@@ -163,7 +163,6 @@ bool CGameLauncher::setupMenu()
                                      GsRect<float>(0.65f, 0.865f, 0.3f, 0.07f)
                    )
                 ) ;
-    //mLauncherDialog.addControl(new GsButton( "Start >", new GMStart() ), GsRect<float>(0.65f, 0.865f, 0.3f, 0.07f) );
 
 #ifdef DBFUSION
 
@@ -181,7 +180,9 @@ bool CGameLauncher::setupMenu()
 #endif
 
 
+    #ifdef DOWNLOADER
     verifyGameStore();
+    #endif
 
     mpEpisodeText = new CGUIText("Game");
     mpVersionText = new CGUIText("Version");
@@ -632,10 +633,12 @@ void CGameLauncher::pumpEvent(const CEvent *evPtr)
 #endif
 
 
+    #ifdef DOWNLOADER
     if( dynamic_cast<const GMDownloadDlgOpen*>(evPtr) )
     {
         setupDownloadDialog();
     }
+    #endif
 
 
     if( dynamic_cast<const GMStart*>(evPtr) )
@@ -653,10 +656,12 @@ void CGameLauncher::pumpEvent(const CEvent *evPtr)
         mPatchFilename = mPatchStrVec[sel];
         mDonePatchSelection = true;
     }
+    #ifdef DOWNLOADER
     else if( dynamic_cast<const GameStorePullGame*>(evPtr) )
     {
         pullGame(mpGSSelList->getSelection());
     }
+    #endif
     else if( dynamic_cast<const CloseBoxEvent*>(evPtr) )
     {
         if(mpMsgDialog)
@@ -822,12 +827,14 @@ void CGameLauncher::ponder(const float deltaT)
         return;
     }
 
+    #ifdef DOWNLOADER
     if(mpGameStoreDialog)
     {
         mpGameStoreDialog->processLogic();
         ponderDownloadDialog();
         return;
     }
+    #endif
 
     // Button should disabled unless a game was selected
     if(mpStartButton)
