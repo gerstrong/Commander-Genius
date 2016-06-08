@@ -231,23 +231,22 @@ How to compile it under Ubuntu:
  * This is based on the source code that we provide on our website
  * As we know which packages are needed, because we use Ubuntu, here is an extra guide. 
  * Install through Synaptic or "sudo apt-get install" following packages:
-   For SDL 1.2:
+   Common dependencies:
  	- build-essential
  	- libvorbis-dev
         - libogg-dev
- 	- libsdl1.2-dev
- 	- libsdl-image1.2-dev
         - libgl1-mesa-dev               
         - libboost
+        - libcurl
+        - zlib
+ 
+   For SDL 1.2:
+ 	- libsdl1.2-dev
+ 	- libsdl-image1.2-dev
 
     For SDL2:
-        - build-essential
-        - libvorbis-dev
-        - libogg-dev
         - libsdl2-dev
         - libsdl-image2-dev
-        - libgl1-mesa-dev
-        - libboost
 
  * extract my source code into "CGenius".
  * cd into the source directory "CGenius"

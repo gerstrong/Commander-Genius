@@ -14,7 +14,7 @@
 #include <widgets/GsBanner.h>
 #include <widgets/GsButton.h>
 #include <widgets/GsText.h>
-#include <widgets/GsProgressbar.h>
+
 #include <graphics/GsGraphics.h>
 #include <base/utils/FindFile.h>
 #include <base/utils/StringUtils.h>
@@ -147,11 +147,22 @@ bool CGameLauncher::setupMenu()
     mpSelList->setBackButtonEvent(new GMQuit());
 
     mLauncherDialog.addControl(new CGUIText("Pick a Game"), GsRect<float>(0.0f, 0.0f, 1.0f, 0.05f));
-    mLauncherDialog.addControl(new GsButton( "x", new GMQuit() ), GsRect<float>(0.0f, 0.0f, 0.07f, 0.07f) );
+    mLauncherDialog.addControl(new GsButton( "x", new GMQuit(),
+                                             CGUIControl::Style::UNSET,
+                                             1.0f,
+                                             0.75f,
+                                             0.75f ), GsRect<float>(0.0f, 0.0f, 0.07f, 0.07f) );
     mLauncherDialog.addControl(mpSelList, GsRect<float>(0.01f, 0.07f, 0.49f, 0.79f));
 
 
-    mLauncherDialog.addControl(new GsButton( "Start >", new GMStart() ), GsRect<float>(0.65f, 0.865f, 0.3f, 0.07f) );
+    mpStartButton = std::dynamic_pointer_cast<GsButton>
+                (
+                mLauncherDialog.addControl
+                   (
+                       new GsButton( "Start >", new GMStart() ),
+                                     GsRect<float>(0.65f, 0.865f, 0.3f, 0.07f)
+                   )
+                ) ;
 
 #ifdef DBFUSION
 
@@ -169,11 +180,9 @@ bool CGameLauncher::setupMenu()
 #endif
 
 
-
-#ifdef DOWNLOADER
-    GsButton *downloadBtn = new GsButton( "New Stuff", new GMDownloadDlgOpen() );
-    mLauncherDialog.addControl( downloadBtn, GsRect<float>(0.35f, 0.865f, 0.3f, 0.07f) );
-#endif
+    #ifdef DOWNLOADER
+    verifyGameStore();
+    #endif
 
     mpEpisodeText = new CGUIText("Game");
     mpVersionText = new CGUIText("Version");
@@ -445,8 +454,6 @@ struct PatchListFiller
 };
 
 
-struct CloseBoxEvent : CEvent
-{};
 
 
 
@@ -471,23 +478,6 @@ void CGameLauncher::showMessageBox(const std::string &text)
 
 }
 
-void CGameLauncher::setupDownloadDialog()
-{
-    //mpDownloadDialog
-
-    mpDownloadDialog.reset(new CGUIDialog(GsRect<float>(0.1f, 0.1f, 0.8f, 0.85f), CGUIDialog::EXPAND));
-    mpDownloadDialog->initEmptyBackground();
-
-    //mpPatchSelList->setConfirmButtonEvent(new GMPatchSelected());
-    //mpPatchSelList->setBackButtonEvent(new GMQuit());
-
-    mpDownloadDialog->addControl(new CGUIText("Downloading..."), GsRect<float>(0.0f, 0.0f, 1.0f, 0.05f));
-
-    mpDownloadDialog->addControl(new GsProgressBar, GsRect<float>(0.1f, 0.2f, 0.8f, 0.1f));
-
-    mpDownloadDialog->addControl(new GsButton( "< Back", new CloseBoxEvent() ), GsRect<float>(0.4f, 0.85f, 0.2f, 0.05f) );
-    //mpDownloadDialog->addControl(new GsButton( "< Back", new GMQuit() ), GsRect<float>(0.65f, 0.865f, 0.3f, 0.07f) );
-}
 
 void CGameLauncher::setupModsDialog()
 {
@@ -643,10 +633,12 @@ void CGameLauncher::pumpEvent(const CEvent *evPtr)
 #endif
 
 
+    #ifdef DOWNLOADER
     if( dynamic_cast<const GMDownloadDlgOpen*>(evPtr) )
     {
         setupDownloadDialog();
     }
+    #endif
 
 
     if( dynamic_cast<const GMStart*>(evPtr) )
@@ -660,15 +652,26 @@ void CGameLauncher::pumpEvent(const CEvent *evPtr)
     }
     else if( dynamic_cast<const GMPatchSelected*>(evPtr) )
     {
-        mPatchFilename = mPatchStrVec[mpPatchSelList->getSelection()];
+        const auto sel = mpPatchSelList->getSelection();
+        mPatchFilename = mPatchStrVec[sel];
         mDonePatchSelection = true;
     }
+    #ifdef DOWNLOADER
+    else if( dynamic_cast<const GameStorePullGame*>(evPtr) )
+    {
+        pullGame(mpGSSelList->getSelection());
+    }
+    #endif
     else if( dynamic_cast<const CloseBoxEvent*>(evPtr) )
     {
         if(mpMsgDialog)
+        {
             mpMsgDialog = nullptr;
-        if(mpDownloadDialog)
-            mpDownloadDialog = nullptr;
+        }
+        if(mpGameStoreDialog)
+        {
+            mpGameStoreDialog = nullptr;
+        }
     }
 
 
@@ -732,14 +735,6 @@ void CGameLauncher::ponderGameSelDialog(const float deltaT)
     mLauncherDialog.processLogic();
 }
 
-
-void CGameLauncher::ponderDownloadDialog()
-{
-    if( mFinishedDownload )
-    {
-        mpDownloadDialog = nullptr;
-    }
-}
 
 
 void CGameLauncher::ponderPatchDialog()
@@ -832,10 +827,26 @@ void CGameLauncher::ponder(const float deltaT)
         return;
     }
 
-    if(mpDownloadDialog)
+    #ifdef DOWNLOADER
+    if(mpGameStoreDialog)
     {
-        mpDownloadDialog->processLogic();
+        mpGameStoreDialog->processLogic();
+        ponderDownloadDialog();
         return;
+    }
+    #endif
+
+    // Button should disabled unless a game was selected
+    if(mpStartButton)
+    {
+        if(mpSelList->getSelection() >= 0)
+        {
+            mpStartButton->enable(true);
+        }
+        else
+        {
+            mpStartButton->enable(false);
+        }
     }
 
 
@@ -883,8 +894,8 @@ void CGameLauncher::render()
     if(mpDosExecDialog)
         mpDosExecDialog->processRendering();
 
-    if(mpDownloadDialog)
-        mpDownloadDialog->processRendering();
+    if(mpGameStoreDialog)
+        mpGameStoreDialog->processRendering();
 
 }
 

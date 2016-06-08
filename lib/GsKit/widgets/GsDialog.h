@@ -64,15 +64,15 @@ public:
     void updateGraphics();
 
 	// Adds a control instance to the list of controls to be processed.
-	void addControl( std::unique_ptr<CGUIControl> &newControl,
-			 	 	 const GsRect<float>& RelRect );
+    std::shared_ptr<CGUIControl> addControl( std::unique_ptr<CGUIControl> &newControl,
+                                             const GsRect<float>& RelRect );
 
-	void addControl( std::unique_ptr<CGUIControl> &newControl );
+    std::shared_ptr<CGUIControl> addControl(std::unique_ptr<CGUIControl> &newControl);
 
-	void addControl( CGUIControl *newControl,
+    std::shared_ptr<CGUIControl> addControl( CGUIControl *newControl,
 			 	 const GsRect<float>& RelRect );
 
-	void addControl( CGUIControl *newControl );
+    std::shared_ptr<CGUIControl> addControl( CGUIControl *newControl );
 
 
     bool sendEvent( const std::shared_ptr<CEvent> &event );

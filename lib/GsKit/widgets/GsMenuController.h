@@ -19,6 +19,17 @@
 
 
 /**
+ * @brief drawMenuInGameButton  Draws a sandwich that is visible while in gameplay
+ * @param buttonRect    where and how large to draw that menu...
+ */
+void drawMenuInGameButton(const SDL_Rect &buttonRect);
+
+/**
+ * @brief checkSandwichMenuClicked  Return true if sandwich menu was clicked
+ */
+bool checkSandwichMenuClicked(GsRect<float> &rRect);
+
+/**
  * Events
  */
 

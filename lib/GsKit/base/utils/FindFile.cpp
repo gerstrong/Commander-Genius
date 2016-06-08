@@ -233,9 +233,10 @@ drive_list GetDrives()
 #ifndef WIN32
 
 // checks, if path is statable (that means, it's existing)
-// HINT: absolute path and there is not case fixing
+// HINT: absolute path and there is no case fixing
 // (used by GetExactFileName)
-bool IsPathStatable(const std::string& f) {
+bool IsPathStatable(const std::string& f)
+{
 	std::string abs_f = f;
 
 	// remove trailing slashes
@@ -501,7 +502,8 @@ void InitBaseSearchPaths() {
 #endif
 }
 
-void CreateRecDir(const std::string& abs_filename, bool last_is_dir) {
+void CreateRecDir(const std::string& abs_filename, bool last_is_dir)
+{
 	std::string tmp;
 	std::string::const_iterator f = abs_filename.begin();
 	for(tmp = ""; f != abs_filename.end(); f++) {
@@ -510,10 +512,13 @@ void CreateRecDir(const std::string& abs_filename, bool last_is_dir) {
 		tmp += *f;
 	}
 	if(last_is_dir)
+    {
 		mkdir(tmp.c_str(), 0777);
+    }
 }
 
-std::string GetFirstSearchPath() {
+std::string GetFirstSearchPath()
+{
 	if(tSearchPaths.size() > 0)
 		return tSearchPaths.front();
 	else if(basesearchpaths.size() > 0)

@@ -53,45 +53,54 @@ void CGUIDialog::updateGraphics()
 
 
 
-void CGUIDialog::addControl( std::unique_ptr<CGUIControl> &newControl,
-                                const GsRect<float>& RelRect )
+std::shared_ptr<CGUIControl> CGUIDialog::addControl( std::unique_ptr<CGUIControl> &newControl,
+                              const GsRect<float>& RelRect )
 {
     GsRect<float> AbsRect = RelRect;
 	AbsRect.transform(mRect);
 	newControl->mRect = AbsRect;
-	mControlList.push_back( move(newControl) );
 
-	if(mControlList.size() == 1)
-	{
-	    mpCurrentCtrl = mControlList.front().get();
-	}
-}
+    auto ctrlPtr = std::shared_ptr<CGUIControl>( move(newControl) );
 
-
-
-void CGUIDialog::addControl( std::unique_ptr<CGUIControl> &newControl )
-{
-	mControlList.push_back( move(newControl) );
-	fit();
+    mControlList.push_back( ctrlPtr );
 
 	if(mControlList.size() == 1)
 	{
 	    mpCurrentCtrl = mControlList.front().get();
 	}
 
+    return ctrlPtr;
 }
 
-void CGUIDialog::addControl( CGUIControl *newControl,
-             const GsRect<float>& RelRect )
-{
-    std::unique_ptr<CGUIControl> ctrl(newControl);
-    addControl( ctrl, RelRect );
+
+
+std::shared_ptr<CGUIControl> CGUIDialog::addControl( std::unique_ptr<CGUIControl> &newControl )
+{    
+    auto ctrlPtr = std::shared_ptr<CGUIControl>( move(newControl) );
+
+    mControlList.push_back( ctrlPtr );
+
+    fit();
+
+	if(mControlList.size() == 1)
+	{
+	    mpCurrentCtrl = mControlList.front().get();
+	}
+
+    return ctrlPtr;
 }
 
-void CGUIDialog::addControl( CGUIControl *newControl )
+std::shared_ptr<CGUIControl> CGUIDialog::addControl( CGUIControl *newControl,
+                                                     const GsRect<float>& RelRect )
 {
     std::unique_ptr<CGUIControl> ctrl(newControl);
-    addControl(ctrl);
+    return addControl( ctrl, RelRect );
+}
+
+std::shared_ptr<CGUIControl> CGUIDialog::addControl( CGUIControl *newControl )
+{
+    std::unique_ptr<CGUIControl> ctrl(newControl);
+    return addControl(ctrl);
 }
 
 
@@ -99,7 +108,9 @@ void CGUIDialog::addControl( CGUIControl *newControl )
 void CGUIDialog::selectPrevItem()
 {
     if(mpCurrentCtrl->isSelected())
+    {
         mpCurrentCtrl->select(false);
+    }
 
 	mSelection--;
 
@@ -136,7 +147,9 @@ void CGUIDialog::selectPrevItem()
 void CGUIDialog::selectNextItem()
 {
     if(mpCurrentCtrl->isSelected())
+    {
         mpCurrentCtrl->select(false);
+    }
 
 	mSelection++;
 

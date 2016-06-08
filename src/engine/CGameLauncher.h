@@ -10,9 +10,11 @@
 
 #include <base/GsEngine.h>
 #include <base/GsVirtualinput.h>
+#include <base/utils/ThreadPool.h>
 
 #include <widgets/GsDialog.h>
 #include <widgets/GsText.h>
+#include <widgets/GsButton.h>
 #include <widgets/GsTextSelectionList.h>
 
 #include <string>
@@ -74,6 +76,7 @@ public:
 
     void showMessageBox(const std::string &text);
 
+    void pullGame(const int selection);
     void setupDownloadDialog();
 
     void setupModsDialog();
@@ -83,6 +86,7 @@ public:
     void pumpEvent(const CEvent *evPtr);
     void ponderGameSelDialog(const float deltaT);
 
+    void verifyGameStore();
     void ponderDownloadDialog();
 
     void ponderPatchDialog();
@@ -110,6 +114,7 @@ private:
 	int m_chosenGame;
 
     bool mFinishedDownload = true;
+    bool mDownloading = false;
 
     bool mDonePatchSelection; // Tells if the Patch file has been selected if any
     std::string mPatchFilename;
@@ -125,8 +130,19 @@ private:
 	std::vector<std::string> m_Names;
     CGUIDialog mLauncherDialog;
 
+    // The Start-Button should change depending on the taken actions
+    std::shared_ptr<GsButton> mpStartButton;
+
     std::unique_ptr<CGUIDialog> mpPatchDialog;
-    std::unique_ptr<CGUIDialog> mpDownloadDialog;
+
+    // Download Dialog Section. TODO: Make it external
+    std::unique_ptr<CGUIDialog> mpGameStoreDialog;
+    std::shared_ptr<CGUIText> mpDloadTitleText;
+    std::shared_ptr<CGUITextSelectionList> mpDloadSelectionList;
+    std::shared_ptr<GsButton> mpDloadBack;
+    std::shared_ptr<GsButton> mpDloadDownload;
+
+
     std::unique_ptr<CGUIDialog> mpDosExecDialog;
 
 
@@ -138,6 +154,8 @@ private:
     std::vector< std::shared_ptr<GsBitmap> > mpPrevievBmpVec;
 	CGUIText *mpEpisodeText;
 	CGUIText *mpVersionText;
+
+    CGUITextSelectionList *mpGSSelList;
 
     CGUITextSelectionList *mpSelList;
     CGUITextSelectionList *mpPatchSelList;
@@ -152,6 +170,10 @@ private:
     bool m_firsttime;
     int m_start_game_no;
     int m_start_level;
+
+    int mDownloadProgress = 0;
+
+    ThreadPoolItem* mpGameDownloader;
 
     bool scanSubDirectories(const std::string& path,
                             const size_t maxdepth,
@@ -176,5 +198,9 @@ struct GMSwitchToGameLauncher : SwitchEngineEvent
         SwitchEngineEvent( new CGameLauncher(false, ChosenGame, ChosenGame) )
         { }
 };
+
+struct CloseBoxEvent : CEvent
+{};
+
 
 #endif /* CGAMELAUNCHER_H_ */

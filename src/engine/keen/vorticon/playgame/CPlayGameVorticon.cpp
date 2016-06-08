@@ -16,9 +16,9 @@
 #include "CPlayGameVorticon.h"
 #include "sdl/audio/Audio.h"
 #include "engine/core/mode/CGameMode.h"
+#include "engine/keen/vorticon/menu/CMainMenu.h"
 #include "../CVorticonMapLoader.h"
 #include "graphics/GsGraphics.h"
-//#include "StringUtils.h"
 #include "../ai/CTeleporter.h"
 #include "sdl/extensions.h"
 #include "../finale/CEndingEp1.h"
@@ -44,7 +44,9 @@ CPlayGame(startlevel)
 {
     // If no level has been set or is out of bound, set it to map.
     if(m_Level > 100 || m_Level <= 0 )
+    {
         m_Level = WORLD_MAP_LEVEL_VORTICON;
+    }
 
 	mMap.reset(new CMap());
     m_level_command = (m_Level==WORLD_MAP_LEVEL_VORTICON) ? GOTO_WORLD_MAP : START_LEVEL;
@@ -259,6 +261,10 @@ void CPlayGameVorticon::pumpEvent(const CEvent *evPtr)
 }
 
 
+// Menu-Button
+const SDL_Rect menuButtonRect = {310, 0, 10, 10};
+
+
 ////
 // Process Routine
 ////
@@ -345,6 +351,22 @@ void CPlayGameVorticon::ponder(const float deltaT)
     }
 
 
+    // Check if Sandwhich-Menu was clicked
+    GsRect<float> rRect(menuButtonRect);
+    const float w = gVideoDriver.getBlitSurface()->w;
+    const float h = gVideoDriver.getBlitSurface()->h;
+    rRect.x /= w;       rRect.y /= h;
+    rRect.w /= w;       rRect.h /= h;
+
+    if( checkSandwichMenuClicked(rRect) )
+    {
+        if( gMenuController.empty() ) // If no menu is open, open the main menu
+        {
+            gEventManager.add(new vorticon::OpenMainMenuEvent());
+        }
+    }
+
+
 	// Check if we are in gameover mode. If yes, than show the bitmaps and block the FKeys().
     // Only confirmation button is allowed
 	if(m_gameover && !mpFinale) // game over mode
@@ -398,6 +420,9 @@ void CPlayGameVorticon::render()
             mpGameoverBmp->draw();
         }
     }
+
+    // Draw the Ingame button for mouse/finger control
+    drawMenuInGameButton(menuButtonRect);
 
 }
 

@@ -113,6 +113,21 @@ IF (Boost_FOUND)
 	ADD_DEFINITIONS( "-DHAS_BOOST" )
 ENDIF()
 
+
+find_package( ZLIB REQUIRED )
+if ( ZLIB_FOUND )
+    include_directories( ${ZLIB_INCLUDE_DIRS} )
+endif( ZLIB_FOUND )
+
+if(DOWNLOADER)
+    FIND_PACKAGE(CURL)
+    IF(CURL_FOUND)
+      INCLUDE_DIRECTORIES(${CURL_INCLUDE_DIR})
+    ELSE(CURL_FOUND)
+      MESSAGE(FATAL_ERROR "Could not find the CURL library and development files.")
+    ENDIF(CURL_FOUND)
+endif()
+
 if(USE_SDL2)
 
     IF(WIN32)
@@ -198,6 +213,9 @@ set_property(TARGET CGeniusExe PROPERTY C_STANDARD 99)
 target_link_libraries (CGeniusExe GsKit)
 
 
+# Link zlib
+target_link_libraries( CGeniusExe ${ZLIB_LIBRARIES} )
+
 if(USE_SDL2)
         target_link_libraries(CGeniusExe ${SDL2_LIBRARIES})
         target_link_libraries(CGeniusExe ${SDL2IMAGE_LIBRARIES})
@@ -232,6 +250,10 @@ ENDIF(OGG)
 IF(TREMOR)
 	TARGET_LINK_LIBRARIES(CGeniusExe vorbisidec)
 ENDIF(TREMOR)
+
+IF(CURL_FOUND)
+  TARGET_LINK_LIBRARIES(CGeniusExe ${CURL_LIBRARIES})
+ENDIF(CURL_FOUND)
 
 # Set binary(executable) file name. In Windows this filename needs the exe extension
 # The Windows Version has an icon in the executable
@@ -272,7 +294,6 @@ if(DBFUSION)
 
     target_link_libraries(CGeniusExe m)
     target_link_libraries(CGeniusExe png)
-    target_link_libraries(CGeniusExe z)
 
 	if(WIN32)
 		target_link_libraries(CGeniusExe SDL2_net)
@@ -284,6 +305,8 @@ if(DBFUSION)
 	endif(WIN32)
 
 endif(DBFUSION)
+
+
 
 cotire(CGeniusExe)
 

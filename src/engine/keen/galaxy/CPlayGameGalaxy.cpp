@@ -7,6 +7,7 @@
 
 #include <base/CInput.h>
 #include <base/utils/StringUtils.h>
+#include <base/video/CVideoDriver.h>
 #include <widgets/GsMenuController.h>
 #include <iostream>
 #include <boost/property_tree/ptree.hpp>
@@ -25,6 +26,7 @@
 #include "common/ai/CPlayerLevel.h"
 #include "common/ai/CPlayerWM.h"
 #include "engine/core/VGamepads/vgamepadsimple.h"
+#include "menu/MainMenu.h"
 
 #include <fileio/KeenFiles.h>
 
@@ -447,18 +449,37 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
     }
 }
 
+// Menu-Button
+const SDL_Rect menuButtonRect = {310, 0, 10, 10};
+
+
 /**
  *  The main ingame process cycle when keen galaxy is up and running
  */
 void CPlayGameGalaxy::ponder(const float deltaT)
 {
-    if(g_pSound->pauseGamePlay() )
+    if( g_pSound->pauseGamePlay() )
         return;
 
     if( gMenuController.active() )
         return;
 
     processInput();
+
+    // Check if Sandwhich-Menu was clicked
+    GsRect<float> rRect(menuButtonRect);
+    const float w = gVideoDriver.getBlitSurface()->w;
+    const float h = gVideoDriver.getBlitSurface()->h;
+    rRect.x /= w;       rRect.y /= h;
+    rRect.w /= w;       rRect.h /= h;
+
+    if( checkSandwichMenuClicked(rRect) )
+    {
+        if( gMenuController.empty() ) // If no menu is open, open the main menu
+        {
+            gEventManager.add(new OpenMainMenuEvent());
+        }
+    }
 
     const bool msgboxactive = !mMessageBoxes.empty();
 
@@ -566,6 +587,9 @@ void CPlayGameGalaxy::ponder(const float deltaT)
        cheat.items = false;
     }
 
+    // menuButtonRect
+
+
 }
 
 void CPlayGameGalaxy::render()
@@ -593,6 +617,9 @@ void CPlayGameGalaxy::render()
     }
 
     const bool msgboxactive = !mMessageBoxes.empty();
+
+    // Draw a menu button where the mouse/finger might tap on
+    drawMenuInGameButton(menuButtonRect);
 
     // Draw some Textboxes with Messages only if one of those is open and needs to be drawn
     if(msgboxactive)

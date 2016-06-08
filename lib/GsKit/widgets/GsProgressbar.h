@@ -6,12 +6,19 @@
 class GsProgressBar : public CGUIControl
 {
 public:
-    GsProgressBar();
+
+    GsProgressBar(const int &progress) :
+        mProgress(progress) {}
+
 
 
     void processLogic();
 
     void processRender(const GsRect<float> &RectDispCoordFloat);
+
+private:
+
+    const int &mProgress;
 
 };
 
