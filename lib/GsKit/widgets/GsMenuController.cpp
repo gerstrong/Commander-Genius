@@ -7,7 +7,50 @@
 
 #include "GsMenuController.h"
 #include <base/CInput.h>
+#include <base/PointDevice.h>
+#include <base/video/CVideoDriver.h>
 #include <cassert>
+
+void drawMenuInGameButton(const SDL_Rect &buttonRect)
+{
+    SDL_Surface *dst = gVideoDriver.getBlitSurface();
+
+    SDL_FillRect(dst, &buttonRect, SDL_MapRGB(dst->format, 255, 0, 0) );
+
+    SDL_Rect line = buttonRect;
+    line.x += 2;    line.y += 2;
+    line.w -= 4;    line.h  = 1;
+
+    // This draws the classical sandwich icon
+    SDL_FillRect(dst, &line, SDL_MapRGB(dst->format, 255, 255, 255) );
+
+    line.y += 2;
+
+    SDL_FillRect(dst, &line, SDL_MapRGB(dst->format, 255, 255, 255) );
+
+    line.y += 2;
+
+    SDL_FillRect(dst, &line, SDL_MapRGB(dst->format, 255, 255, 255) );
+}
+
+
+bool checkSandwichMenuClicked(GsRect<float> &rRect)
+{
+    GsPointingState &pointingState = gPointDevice.mPointingState;
+
+    const bool hasPoint = rRect.HasPoint(pointingState.mPos);
+    const bool bDown = (pointingState.mActionButton > 0);
+
+    if(bDown && hasPoint)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
 
 void CMenuController::clearMenuStack()
 {
