@@ -86,6 +86,9 @@ void VorticonEngine::render()
 
 void VorticonEngine::openMainMenu()
 {
+    if( !gMenuController.empty() )
+        return;
+
     // Check if music is playing and pause if it is
     if(g_pMusicPlayer->active())
     {
