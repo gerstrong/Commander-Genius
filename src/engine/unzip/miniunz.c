@@ -1,3 +1,4 @@
+#ifdef DOWNLOADER
 /*
    miniunz.c
    Version 1.1, February 14h, 2010
@@ -595,4 +596,4 @@ int unzipFile(const char *input,
 
     return ret_value;
 }
-
+#endif // DOWNLOADER
