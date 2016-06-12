@@ -7,10 +7,9 @@
 #include <cstdio>
 #include <curl/curl.h>
 
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/xml_parser.hpp>
 
-const std::vector< std::string > gameList = { "KEEN4-Special",
-                                              "KEEN1-Special",
-                                              "Eight-Accumulators"};
 
 
 extern "C"
@@ -154,30 +153,80 @@ int downloadFile(const std::string &filename, int &progress,
 }
 
 
+bool GameDownloader::loadCatalogue(const std::string &catalogueFile)
+{
+    // Create an empty property tree object
+    using boost::property_tree::ptree;
+    ptree pt;
+
+
+    try
+    {
+
+        // Load the XML file into the property tree. If reading fails
+        // (cannot open file, parse error), an exception is thrown.
+        read_xml(catalogueFile, pt);
+
+        for( auto &gameNode : pt.get_child("Catalogue") )
+        {
+            // No comments ...
+            if(gameNode.first == "<xmlcomment>")
+                continue;
+
+            GameCatalogueEntry gce;
+
+            gce.mName = gameNode.second.get<std::string>("<xmlattr>.name");
+            gce.mLink = gameNode.second.get<std::string>("<xmlattr>.link");
+            gce.mDescription = gameNode.second.get<std::string>("<xmlattr>.description");
+            gce.mPictureFile = gameNode.second.get<std::string>("<xmlattr>.picture");
+
+            mGameCatalogue.push_back(gce);
+        }
+
+    }
+    catch(...)
+    {
+        return false;
+    }
+
+    return true;
+}
+
+
+
 bool GameDownloader::checkForMissingGames( std::vector< std::string > &missingList )
 {
+
     // Get the first path. We assume that one is writable
     std::string searchPaths;
     GetExactFileName(GetFirstSearchPath(), searchPaths);
 
+    // Load game catalogue
+    if( !loadCatalogue(JoinPaths( searchPaths, "gameCatalogue.xml") ) )
+    {
+        return -1;
+    }
+
     const auto downloadPath = JoinPaths(searchPaths, "downloads");
 
     // Need to check for a list of downloaded stuff and what we still need
-    for( const auto &gameName : gameList )
+    for( const auto &gameEntry : mGameCatalogue )
     {
-        const std::string gameFile = gameName + ".zip";
+        const std::string gameFile = gameEntry.mLink;
 
         const auto downloadGamePath = JoinPaths(downloadPath, gameFile);
 
         if( !IsFileAvailable(downloadGamePath) )
         {
-            missingList.push_back(gameName);
+            missingList.push_back(gameEntry.mName);
             continue;
         }
     }
 
     return true;
 }
+
+
 
 
 int GameDownloader::handle()

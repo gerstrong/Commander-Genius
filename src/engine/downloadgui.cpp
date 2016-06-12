@@ -16,6 +16,7 @@ void CGameLauncher::verifyGameStore()
     int progress = 0;
     GameDownloader gameDownloader(progress);
 
+
     std::vector< std::string > missingList;
     gameDownloader.checkForMissingGames( missingList );
 
