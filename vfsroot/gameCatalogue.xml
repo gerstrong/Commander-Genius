@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Catalogue>
+	<Game name="Commader Keen 1 Special" 
+              link="KEEN1-Special.zip" 
+              description="Rescue the elders" 
+              picture=""/>
+	<Game name="Commader Keen 4 Special" 
+              link="KEEN4-Special.zip" 
+              description="get your parts back" 
+              picture=""/>
+	<Game name="Eight-Accumulators" 
+              link="Eight-Accumulators.zip" 
+              description="Not sure" 
+              picture=""/>
+</Catalogue>
+
