@@ -2,9 +2,11 @@
 #define GAMEDOWNLOADER_H
 
 #include <base/utils/ThreadPool.h>
+#include <graphics/GsBitmap.h>
+
 #include <vector>
 #include <string>
-
+#include <memory>
 
 struct GameCatalogueEntry
 {
@@ -12,6 +14,9 @@ struct GameCatalogueEntry
     std::string mLink;
     std::string mDescription;
     std::string mPictureFile;
+
+    // Pointer to the bitmap
+    std::shared_ptr<GsBitmap> pBmp;
 };
 
 
@@ -43,6 +48,15 @@ public:
      */
     bool checkForMissingGames( std::vector< std::string > &missingList );
 
+
+    /**
+     * @brief getGameCatalogue  Access to the game catalogue
+     * @return
+     */
+    const std::vector<GameCatalogueEntry> &getGameCatalogue() const
+    {
+        return mGameCatalogue;
+    }
 
     int handle();
 

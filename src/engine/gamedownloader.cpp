@@ -180,6 +180,13 @@ bool GameDownloader::loadCatalogue(const std::string &catalogueFile)
             gce.mDescription = gameNode.second.get<std::string>("<xmlattr>.description");
             gce.mPictureFile = gameNode.second.get<std::string>("<xmlattr>.picture");
 
+            const auto filePath = JoinPaths("cache", gce.mPictureFile);
+
+            const auto fullfname = GetFullFileName(filePath);
+            SDL_Surface *pPrimBmp = SDL_LoadBMP( fullfname.c_str() );
+            std::shared_ptr<SDL_Surface> bmpSfcPtr( pPrimBmp );
+            gce.pBmp.reset( new GsBitmap(bmpSfcPtr) );
+
             mGameCatalogue.push_back(gce);
         }
 

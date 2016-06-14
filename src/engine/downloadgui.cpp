@@ -25,6 +25,9 @@ void CGameLauncher::verifyGameStore()
         GsButton *downloadBtn = new GsButton( "New Stuff", new GMDownloadDlgOpen() );
         mLauncherDialog.addControl( downloadBtn, GsRect<float>(0.35f, 0.865f, 0.3f, 0.07f) );
     }
+
+    mGameCatalogue = gameDownloader.getGameCatalogue();
+
 #endif
 }
 
@@ -44,9 +47,32 @@ void CGameLauncher::pullGame(const int selection)
     mpGameDownloader = threadPool->start(new GameDownloader(mDownloadProgress, gameName), "Game Downloader started!");
 }
 
+#include <base/utils/FindFile.h>
+
 void CGameLauncher::ponderDownloadDialog()
 {
     // TODO: This is yet no way to cancel the download progress
+
+
+    {
+        // Update the description
+        uint sel = mpGSSelList->getSelection();
+
+        // mpDDescriptionText
+
+        auto &gameEntry = mGameCatalogue[sel];
+
+        mpDDescriptionText->setText(gameEntry.mDescription);
+
+        /*const std::string fname = "cache/keen1special.bmp";
+        SDL_Surface *pPrimBmp = nullptr;
+        pPrimBmp = SDL_LoadBMP(GetFullFileName(fname).c_str());
+        std::shared_ptr<SDL_Surface> bmpSfcPtr( pPrimBmp );
+        std::shared_ptr<GsBitmap> pBmp(new GsBitmap(bmpSfcPtr));*/
+
+        mpCurrentDownloadBmp->setBitmapPtr(gameEntry.pBmp);
+        //mpCurrentDownloadBmp->setBitmapPtr(pBmp);
+    }
 
     // Disable Some Elements while downloading
     if(mDownloading)
@@ -110,7 +136,19 @@ void CGameLauncher::setupDownloadDialog()
 
     // Selection List
     mpDloadSelectionList = std::dynamic_pointer_cast<CGUITextSelectionList>(
-            mpGameStoreDialog->addControl(mpGSSelList, GsRect<float>(0.01f, 0.07f, 0.98f, 0.72f)) );
+            mpGameStoreDialog->addControl(mpGSSelList, GsRect<float>(0.01f, 0.04f, 0.50f, 0.55f)) );
+
+    // Create an empty Bitmap control for the preview
+    mpCurrentDownloadBmp = std::dynamic_pointer_cast<CGUIBitmap>(
+            mpGameStoreDialog->addControl( new CGUIBitmap(),
+                                               GsRect<float>(0.51f, 0.07f, 0.48f, 0.48f)) );
+
+
+    // Description Text Box
+    mpDDescriptionText = std::dynamic_pointer_cast<CGUIText>(
+            mpGameStoreDialog->addControl(new CGUIText("Description"), GsRect<float>(0.01f, 0.60f, 0.98f, 0.23f)) );
+
+
 
     // Progress Bar
     mpGameStoreDialog->addControl(new GsProgressBar(mDownloadProgress), GsRect<float>(0.1f, 0.8f, 0.8f, 0.05f));

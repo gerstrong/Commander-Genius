@@ -22,6 +22,7 @@
 #include <ostream>
 
 #include "core/CResourceLoader.h"
+#include "gamedownloader.h"
 
 // The directory/path to start the search at
 #define DIR_ROOT        "."
@@ -136,11 +137,14 @@ private:
     std::unique_ptr<CGUIDialog> mpPatchDialog;
 
     // Download Dialog Section. TODO: Make it external
+    std::vector<GameCatalogueEntry> mGameCatalogue;
     std::unique_ptr<CGUIDialog> mpGameStoreDialog;
     std::shared_ptr<CGUIText> mpDloadTitleText;
+    std::shared_ptr<CGUIText> mpDDescriptionText;
     std::shared_ptr<CGUITextSelectionList> mpDloadSelectionList;
     std::shared_ptr<GsButton> mpDloadBack;
     std::shared_ptr<GsButton> mpDloadDownload;
+    std::shared_ptr<CGUIBitmap> mpCurrentDownloadBmp;
 
 
     std::unique_ptr<CGUIDialog> mpDosExecDialog;
