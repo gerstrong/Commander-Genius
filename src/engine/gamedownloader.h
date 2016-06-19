@@ -49,14 +49,11 @@ public:
     bool checkForMissingGames( std::vector< std::string > &missingList );
 
 
-    /**
-     * @brief getGameCatalogue  Access to the game catalogue
-     * @return
-     */
     const std::vector<GameCatalogueEntry> &getGameCatalogue() const
     {
         return mGameCatalogue;
     }
+
 
     int handle();
 

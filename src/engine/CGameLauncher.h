@@ -136,8 +136,8 @@ private:
 
     std::unique_ptr<CGUIDialog> mpPatchDialog;
 
-    // Download Dialog Section. TODO: Make it external
-    std::vector<GameCatalogueEntry> mGameCatalogue;
+    //// Download Dialog Section. TODO: Make it external
+    int mLastStoreSelection = -1;
     std::unique_ptr<CGUIDialog> mpGameStoreDialog;
     std::shared_ptr<CGUIText> mpDloadTitleText;
     std::shared_ptr<CGUIText> mpDDescriptionText;
@@ -145,6 +145,10 @@ private:
     std::shared_ptr<GsButton> mpDloadBack;
     std::shared_ptr<GsButton> mpDloadDownload;
     std::shared_ptr<CGUIBitmap> mpCurrentDownloadBmp;
+    std::vector< std::shared_ptr<GsBitmap> > mpDownloadPrevievBmpVec;
+    std::vector<GameCatalogueEntry> mGameCatalogue;
+
+    ////
 
 
     std::unique_ptr<CGUIDialog> mpDosExecDialog;
@@ -156,7 +160,7 @@ private:
 
     std::shared_ptr<CGUIBitmap> mCurrentBmp;
     std::vector< std::shared_ptr<GsBitmap> > mpPrevievBmpVec;
-	CGUIText *mpEpisodeText;
+    CGUIText *mpEpisodeText;
 	CGUIText *mpVersionText;
 
     CGUITextSelectionList *mpGSSelList;

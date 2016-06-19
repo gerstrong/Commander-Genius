@@ -6,11 +6,13 @@
 #include <base/GsLogging.h>
 #include <cstdio>
 #include <curl/curl.h>
+#include <SDL/SDL_image.h>
 
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
 
 
+//std::vector<GameCatalogueEntry> geGameCatalogue;
 
 extern "C"
 {
@@ -183,7 +185,7 @@ bool GameDownloader::loadCatalogue(const std::string &catalogueFile)
             const auto filePath = JoinPaths("cache", gce.mPictureFile);
 
             const auto fullfname = GetFullFileName(filePath);
-            SDL_Surface *pPrimBmp = SDL_LoadBMP( fullfname.c_str() );
+            SDL_Surface *pPrimBmp = IMG_Load( fullfname.c_str() );
             std::shared_ptr<SDL_Surface> bmpSfcPtr( pPrimBmp );
             gce.pBmp.reset( new GsBitmap(bmpSfcPtr) );
 
