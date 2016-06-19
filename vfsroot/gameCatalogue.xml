@@ -2,15 +2,15 @@
 <Catalogue>
 	<Game name="Commader Keen 1 Special" 
               link="KEEN1-Special.zip" 
-              description="Rescue the elders" 
-              picture=""/>
+              description="Get your ship parts back!" 
+              picture="keen1special.png"/>
 	<Game name="Commader Keen 4 Special" 
               link="KEEN4-Special.zip" 
-              description="get your parts back" 
-              picture=""/>
-	<Game name="Eight-Accumulators" 
+              description="Rescue the members of the High Council of Gnosticus IV!" 
+              picture="keen4special.png"/>
+	<Game name="The Eight Accumulators" 
               link="Eight-Accumulators.zip" 
-              description="Not sure" 
-              picture=""/>
+              description="The story continues on from the Battle of the Brains ending." 
+              picture="eightacc.png"/>
 </Catalogue>
 

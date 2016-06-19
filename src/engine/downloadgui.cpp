@@ -28,6 +28,8 @@ void CGameLauncher::verifyGameStore()
         GsButton *downloadBtn = new GsButton( "New Stuff", new GMDownloadDlgOpen() );
         mLauncherDialog.addControl( downloadBtn, GsRect<float>(0.35f, 0.865f, 0.3f, 0.07f) );
     }
+
+    mGameCatalogue = gameDownloader.getGameCatalogue();
 }
 
 
@@ -41,12 +43,15 @@ void CGameLauncher::pullGame(const int selection)
         return;
 
     // Start downloading the game
-    const auto gameName = mpGSSelList->getItemString(selection);
+    const auto gameFileName = mGameCatalogue[selection].mLink;
+    const auto gameName = mGameCatalogue[selection].mName;
 
     mDownloading = true;
     mpDloadTitleText->setText("Downloading Game...");
 
-    mpGameDownloader = threadPool->start(new GameDownloader(mDownloadProgress, gameName), "Game Downloader started!");
+    mpGameDownloader = threadPool->start(new GameDownloader(mDownloadProgress,
+                                                            gameFileName,
+                                                            gameName), "Game Downloader started!");
 
 }
 
@@ -134,7 +139,7 @@ void CGameLauncher::setupDownloadDialog()
     // Create an empty Bitmap control for the preview
     mpCurrentDownloadBmp = std::dynamic_pointer_cast<CGUIBitmap>(
             mpGameStoreDialog->addControl( new CGUIBitmap(),
-                                               GsRect<float>(0.51f, 0.07f, 0.48f, 0.58f)) );
+                                               GsRect<float>(0.51f, 0.04f, 0.48f, 0.38f)) );
 
 
     // Description Text Box

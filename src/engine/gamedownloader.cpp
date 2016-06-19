@@ -218,6 +218,8 @@ bool GameDownloader::checkForMissingGames( std::vector< std::string > &missingLi
 
     const auto downloadPath = JoinPaths(searchPaths, "downloads");
 
+    std::vector<GameCatalogueEntry> reducedCatalogue;
+
     // Need to check for a list of downloaded stuff and what we still need
     for( const auto &gameEntry : mGameCatalogue )
     {
@@ -228,9 +230,12 @@ bool GameDownloader::checkForMissingGames( std::vector< std::string > &missingLi
         if( !IsFileAvailable(downloadGamePath) )
         {
             missingList.push_back(gameEntry.mName);
+            reducedCatalogue.push_back(gameEntry);
             continue;
         }
     }
+
+    mGameCatalogue = reducedCatalogue;
 
     return true;
 }
@@ -254,19 +259,18 @@ int GameDownloader::handle()
     CreateRecDir(downloadPath);
 
     // Go through the missing pieces
+    const auto &gameFileName = mGameFileName;
     const auto &gameName = mGameName;
     {
         gDlfrom = mProgress = 0;
         gDlto = 900;
 
-        const std::string gameFile = gameName + ".zip";
-
-        const auto downloadGamePath = JoinPaths(downloadPath, gameFile);
+        const auto downloadGamePath = JoinPaths(downloadPath, gameFileName);
 
         if( !IsFileAvailable(downloadGamePath) )
         {
             // TODO: We also must pass the gamepath and a downloads folder we all the file packages can be set.
-            res = downloadFile(gameFile, mProgress, downloadPath);
+            res = downloadFile(gameFileName, mProgress, downloadPath);
         }
 
         mProgress = gDlto;
@@ -285,7 +289,7 @@ int GameDownloader::handle()
         }
         else
         {
-            const std::string errStr = "Something went wrong with downloading \"" + gameFile + "\"!";
+            const std::string errStr = "Something went wrong with downloading \"" + gameFileName + "\"!";
             gLogging.ftextOut(PURPLE, errStr.c_str() );
         }
     }

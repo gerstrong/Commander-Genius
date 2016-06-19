@@ -30,8 +30,10 @@ public:
 
 
     GameDownloader(int &progress,
+                   const std::string &gameFileName,
                    const std::string &gameName) :
         mProgress(progress),
+        mGameFileName(gameFileName),
         mGameName(gameName) {}
 
     /**
@@ -60,6 +62,7 @@ public:
 private:
     int &mProgress;
 
+    const std::string mGameFileName;
     const std::string mGameName;
 
     std::vector<GameCatalogueEntry> mGameCatalogue;
