@@ -9,15 +9,14 @@
 #include "core/mode/CGameMode.h"
 
 
-//extern std::vector<GameCatalogueEntry> geGameCatalogue;
-
 // Here we take a look at the game the user still does not
 // have and decide if the "New Stuff" will become selectable.
 // If he has all the games, the button won't be shown.
 void CGameLauncher::verifyGameStore()
 {
     int progress = 0;
-    GameDownloader gameDownloader(progress);
+    bool cancel = false;
+    GameDownloader gameDownloader(progress, cancel);
 
 
     std::vector< std::string > missingList;
@@ -36,7 +35,6 @@ void CGameLauncher::verifyGameStore()
 
 void CGameLauncher::pullGame(const int selection)
 {
-
     assert(selection >= 0);
 
     if(selection < 0)
@@ -49,7 +47,10 @@ void CGameLauncher::pullGame(const int selection)
     mDownloading = true;
     mpDloadTitleText->setText("Downloading Game...");
 
+    mCancelDownload = false;
+
     mpGameDownloader = threadPool->start(new GameDownloader(mDownloadProgress,
+                                                            mCancelDownload,
                                                             gameFileName,
                                                             gameName), "Game Downloader started!");
 
@@ -76,6 +77,7 @@ void CGameLauncher::ponderDownloadDialog()
     if(mDownloading)
     {
         mpDloadSelectionList->enable(false);
+        mpDloadCancel->enable(true);
         mpDloadBack->enable(false);
         mpDloadDownload->enable(false);
     }
@@ -108,7 +110,8 @@ void CGameLauncher::setupDownloadDialog()
     mDownloading = false;
 
     int progress = 0;
-    GameDownloader gameDownloader(progress);
+    bool cancel = false;
+    GameDownloader gameDownloader(progress, cancel);
 
     std::vector< std::string > missingList;
     gameDownloader.checkForMissingGames( missingList );
@@ -153,10 +156,14 @@ void CGameLauncher::setupDownloadDialog()
 
     // Bottom Controls
     mpDloadBack = std::dynamic_pointer_cast<GsButton>(
-            mpGameStoreDialog->addControl( new GsButton( "< Back", new CloseBoxEvent() ), GsRect<float>(0.065f, 0.865f, 0.3f, 0.07f) ) );
+            mpGameStoreDialog->addControl( new GsButton( "< Back", new CloseBoxEvent() ), GsRect<float>(0.065f, 0.865f, 0.2f, 0.07f) ) );
+
+    mpDloadCancel = std::dynamic_pointer_cast<GsButton>(
+            mpGameStoreDialog->addControl( new GsButton( "Cancel", new CancelDownloadEvent() ), GsRect<float>(0.400f, 0.865f, 0.2f, 0.07f) ) );
+    mpDloadCancel->enable(false);
 
     mpDloadDownload = std::dynamic_pointer_cast<GsButton>(
-            mpGameStoreDialog->addControl( new GsButton( "Download", new GameStorePullGame() ), GsRect<float>(0.635f, 0.865f, 0.3f, 0.07f) ) );
+            mpGameStoreDialog->addControl( new GsButton( "Download", new GameStorePullGame() ), GsRect<float>(0.735f, 0.865f, 0.2f, 0.07f) ) );
 
 
     mGameCatalogue = gameDownloader.getGameCatalogue();

@@ -30,6 +30,7 @@ struct myprogress {
 };
 
 int *progressPtr;
+bool *pCancelDownload;
 
 int gDlto, gDlfrom;
 
@@ -38,6 +39,9 @@ static int xferinfo(void *p,
                     curl_off_t dltotal, curl_off_t dlnow,
                     curl_off_t ultotal, curl_off_t ulnow)
 {
+    if(*pCancelDownload)
+        return 2;
+
   struct myprogress *myp = (struct myprogress *)p;
   CURL *curl = myp->curl;
   double curtime = 0;
@@ -141,7 +145,7 @@ int downloadFile(const std::string &filename, int &progress,
       res = curl_easy_perform(curl);
 
       // TODO: Put into central log
-      if(res != CURLE_OK)
+      if(res != CURLE_OK)          
         fprintf(stderr, "%s\n", curl_easy_strerror(res));
 
       /* always cleanup */
@@ -247,6 +251,8 @@ int GameDownloader::handle()
 {
     int res = 0;
 
+    pCancelDownload = &mCancelDownload;
+
     // Get the first path. We assume that one is writable
     std::string searchPaths;
     GetExactFileName(GetFirstSearchPath(), searchPaths);
@@ -292,7 +298,14 @@ int GameDownloader::handle()
             const std::string errStr = "Something went wrong with downloading \"" + gameFileName + "\"!";
             gLogging.ftextOut(PURPLE, errStr.c_str() );
         }
+
+        if(res != CURLE_OK)
+        {
+            remove(downloadGamePath.c_str());
+        }
+
     }
+
 
 
     mProgress = 1000;

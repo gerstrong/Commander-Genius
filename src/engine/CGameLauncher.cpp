@@ -673,6 +673,10 @@ void CGameLauncher::pumpEvent(const CEvent *evPtr)
             mpGameStoreDialog = nullptr;
         }
     }
+    else if( dynamic_cast<const CancelDownloadEvent*>(evPtr))
+    {
+        mCancelDownload = true;
+    }
 
 
     // Check Scroll events happening on this Launcher

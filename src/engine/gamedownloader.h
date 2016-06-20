@@ -25,14 +25,18 @@ class GameDownloader : public Action
 {
 public:
 
-    GameDownloader(int &progress) :
-        mProgress(progress) {}
+    GameDownloader(int &progress,
+                   bool &cancelDownload) :
+        mProgress(progress),
+        mCancelDownload(cancelDownload){}
 
 
     GameDownloader(int &progress,
+                   bool &cancelDownload,
                    const std::string &gameFileName,
                    const std::string &gameName) :
         mProgress(progress),
+        mCancelDownload(cancelDownload),
         mGameFileName(gameFileName),
         mGameName(gameName) {}
 
@@ -61,9 +65,11 @@ public:
 
 private:
     int &mProgress;
+    bool &mCancelDownload;
 
     const std::string mGameFileName;
     const std::string mGameName;
+
 
     std::vector<GameCatalogueEntry> mGameCatalogue;
 };

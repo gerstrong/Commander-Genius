@@ -143,6 +143,7 @@ private:
     std::shared_ptr<CGUIText> mpDDescriptionText;
     std::shared_ptr<CGUITextSelectionList> mpDloadSelectionList;
     std::shared_ptr<GsButton> mpDloadBack;
+    std::shared_ptr<GsButton> mpDloadCancel;
     std::shared_ptr<GsButton> mpDloadDownload;
     std::shared_ptr<CGUIBitmap> mpCurrentDownloadBmp;
     std::vector< std::shared_ptr<GsBitmap> > mpDownloadPrevievBmpVec;
@@ -180,6 +181,7 @@ private:
     int m_start_level;
 
     int mDownloadProgress = 0;
+    bool mCancelDownload = false;
 
     ThreadPoolItem* mpGameDownloader;
 
@@ -208,6 +210,9 @@ struct GMSwitchToGameLauncher : SwitchEngineEvent
 };
 
 struct CloseBoxEvent : CEvent
+{};
+
+struct CancelDownloadEvent : CEvent
 {};
 
 
