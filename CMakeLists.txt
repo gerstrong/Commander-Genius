@@ -10,7 +10,7 @@ cmake_minimum_required(VERSION 2.8.12)
 OPTION(OGG "Ogg/Vorbis support" Yes)
 OPTION(TREMOR "Tremor support" No)
 OPTION(DBFUSION "Dosbox fusion" No)
-OPTION(DOWNLOADER "Internal Downloader" No)
+OPTION(DOWNLOADER "Internal Downloader" Yes)
 OPTION(USE_SDL2 "SDL2 support" Yes)
 
 
