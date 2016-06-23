@@ -205,20 +205,48 @@ bool GameDownloader::loadCatalogue(const std::string &catalogueFile)
     return true;
 }
 
-
+#include <fileio/KeenFiles.h>
 
 bool GameDownloader::checkForMissingGames( std::vector< std::string > &missingList )
 {
+    std::string gameCatalogueStr = "gameCatalogue.xml";
+
+    bool cataFound = false;
+
+    // Load game catalogue
+    if( !loadCatalogue(gameCatalogueStr) )
+    {
+        // If not found search within for subdirectories
+        std::set<std::string> dirs;
+        FileListAdder fileListAdder;
+        GetFileList(dirs, fileListAdder, ".", false, FM_DIR);
+
+        for(std::set<std::string>::iterator i = dirs.begin(); i != dirs.end(); ++i)
+        {
+            const std::string newPath = JoinPaths(*i, gameCatalogueStr);
+
+            if(loadCatalogue(newPath))
+            {
+                cataFound = true;
+                break;
+            }
+        }
+
+    }
+    else
+    {
+        cataFound = true;
+    }
+
+    if(!cataFound)
+    {
+        gLogging.ftextOut("Sorry, catalogue file was not found: %s<br>", gameCatalogueStr.c_str() );
+        return -1;
+    }
 
     // Get the first path. We assume that one is writable
     std::string searchPaths;
     GetExactFileName(GetFirstSearchPath(), searchPaths);
-
-    // Load game catalogue
-    if( !loadCatalogue(JoinPaths( searchPaths, "gameCatalogue.xml") ) )
-    {
-        return -1;
-    }
 
     const auto downloadPath = JoinPaths(searchPaths, "downloads");
 
