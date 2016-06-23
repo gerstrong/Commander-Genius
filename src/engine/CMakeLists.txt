@@ -20,10 +20,16 @@ endif()
 
 add_subdirectory(refkeen)
 
-add_library(engine OBJECT CGameLauncher.cpp CGameLauncher.h
-                          downloadgui.cpp
-                          gamedownloader.cpp gamedownloader.h
-                          unzip/miniunz.c unzip/ioapi.c 
-                          unzip/iowin32.c unzip/unzip.c)
+set(EngineSources CGameLauncher.cpp CGameLauncher.h
+                   downloadgui.cpp
+                   gamedownloader.cpp gamedownloader.h
+                   unzip/miniunz.c unzip/ioapi.c
+                   unzip/unzip.c)
+
+IF(WIN32)
+set(EngineSources ${EngineSources} unzip/iowin32.c)
+ENDIF(WIN32)
+
+add_library(engine OBJECT ${EngineSources})
 
 set_property(GLOBAL APPEND PROPERTY CG_OBJ_LIBS $<TARGET_OBJECTS:engine>)
