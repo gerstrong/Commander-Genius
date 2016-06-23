@@ -64,7 +64,7 @@
 #define MAXFILENAME (256)
 
 #ifdef _WIN32
-#define USEWIN32IOAPI
+//#define USEWIN32IOAPI // Disabled: For some reason this does is broken. Without it, it works well enough
 #include "iowin32.h"
 #endif
 /*

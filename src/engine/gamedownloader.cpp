@@ -287,7 +287,7 @@ int GameDownloader::handle()
         if( IsFileAvailable(downloadGamePath) )
         {
             // Create subdirectory
-            CreateRecDir( destDir );
+            CreateRecDir( destDir );            
 
             unzipFile(downloadGamePath.c_str(), destDir.c_str());
 
