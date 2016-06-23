@@ -1,6 +1,12 @@
+v1.9.5 Beta:
+------------
+- Game Center added
+- Sandwich Menu that a lot of android users will make happy
+- Now there is a cheat menu made mobile devices that can not use keyboard shortcuts
+- Updated Readme
 
 v1.9.2 Beta:
-----------
+------------
 - Graphical bug fixes
 - Improved physics, especially collision detection
 - More and improved sounds effects, especial when keen on the map is 
