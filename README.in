@@ -244,21 +244,21 @@ Getting the most recent Source Code:
 How to compile it under Ubuntu:
  * This is based on the source code that we provide on our website
  * As we know which packages are needed, because we use Ubuntu, here is an extra guide. 
- * Install through Synaptic or "sudo apt-get install" following packages:
+ * Install through Synaptic or "sudo apt install" following packages:
    Common dependencies:
  	- build-essential
  	- libvorbis-dev
         - libogg-dev
         - libgl1-mesa-dev               
         - libboost
-        - libcurl
+        - libcurl4-openssl-dev
         - zlib
  
    For SDL 1.2:
  	- libsdl1.2-dev
  	- libsdl-image1.2-dev
 
-    For SDL2:
+   For SDL2:
         - libsdl2-dev
         - libsdl-image2-dev
 
