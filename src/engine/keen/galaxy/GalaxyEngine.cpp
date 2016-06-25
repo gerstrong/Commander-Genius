@@ -66,6 +66,9 @@ bool loadLevelMusic(const int level)
 
 void GalaxyEngine::openMainMenu()
 {    
+    if( !gMenuController.empty() )
+        return;
+
     // Check if music is playing and pause if it is
     if(g_pMusicPlayer->active())
     {

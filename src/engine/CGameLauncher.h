@@ -22,6 +22,7 @@
 #include <ostream>
 
 #include "core/CResourceLoader.h"
+#include "gamedownloader.h"
 
 // The directory/path to start the search at
 #define DIR_ROOT        "."
@@ -135,12 +136,20 @@ private:
 
     std::unique_ptr<CGUIDialog> mpPatchDialog;
 
-    // Download Dialog Section. TODO: Make it external
+    //// Download Dialog Section. TODO: Make it external
+    int mLastStoreSelection = -1;
     std::unique_ptr<CGUIDialog> mpGameStoreDialog;
     std::shared_ptr<CGUIText> mpDloadTitleText;
+    std::shared_ptr<CGUIText> mpDDescriptionText;
     std::shared_ptr<CGUITextSelectionList> mpDloadSelectionList;
     std::shared_ptr<GsButton> mpDloadBack;
+    std::shared_ptr<GsButton> mpDloadCancel;
     std::shared_ptr<GsButton> mpDloadDownload;
+    std::shared_ptr<CGUIBitmap> mpCurrentDownloadBmp;
+    std::vector< std::shared_ptr<GsBitmap> > mpDownloadPrevievBmpVec;
+    std::vector<GameCatalogueEntry> mGameCatalogue;
+
+    ////
 
 
     std::unique_ptr<CGUIDialog> mpDosExecDialog;
@@ -152,7 +161,7 @@ private:
 
     std::shared_ptr<CGUIBitmap> mCurrentBmp;
     std::vector< std::shared_ptr<GsBitmap> > mpPrevievBmpVec;
-	CGUIText *mpEpisodeText;
+    CGUIText *mpEpisodeText;
 	CGUIText *mpVersionText;
 
     CGUITextSelectionList *mpGSSelList;
@@ -172,6 +181,7 @@ private:
     int m_start_level;
 
     int mDownloadProgress = 0;
+    bool mCancelDownload = false;
 
     ThreadPoolItem* mpGameDownloader;
 
@@ -200,6 +210,9 @@ struct GMSwitchToGameLauncher : SwitchEngineEvent
 };
 
 struct CloseBoxEvent : CEvent
+{};
+
+struct CancelDownloadEvent : CEvent
 {};
 
 

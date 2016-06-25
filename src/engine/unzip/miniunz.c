@@ -1,3 +1,4 @@
+#ifdef DOWNLOADER
 /*
    miniunz.c
    Version 1.1, February 14h, 2010
@@ -63,7 +64,7 @@
 #define MAXFILENAME (256)
 
 #ifdef _WIN32
-#define USEWIN32IOAPI
+//#define USEWIN32IOAPI // Disabled: For some reason this does is broken. Without it, it works well enough
 #include "iowin32.h"
 #endif
 /*
@@ -595,4 +596,4 @@ int unzipFile(const char *input,
 
     return ret_value;
 }
-
+#endif // DOWNLOADER

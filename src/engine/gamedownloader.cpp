@@ -6,12 +6,13 @@
 #include <base/GsLogging.h>
 #include <cstdio>
 #include <curl/curl.h>
+#include <SDL/SDL_image.h>
+
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/xml_parser.hpp>
 
 
-const std::vector< std::string > gameList = { "KEEN4-Special",
-                                              "KEEN1-Special",
-                                              "Eight-Accumulators"};
-
+//std::vector<GameCatalogueEntry> geGameCatalogue;
 
 extern "C"
 {
@@ -29,6 +30,7 @@ struct myprogress {
 };
 
 int *progressPtr;
+bool *pCancelDownload;
 
 int gDlto, gDlfrom;
 
@@ -37,6 +39,9 @@ static int xferinfo(void *p,
                     curl_off_t dltotal, curl_off_t dlnow,
                     curl_off_t ultotal, curl_off_t ulnow)
 {
+    if(*pCancelDownload)
+        return 2;
+
   struct myprogress *myp = (struct myprogress *)p;
   CURL *curl = myp->curl;
   double curtime = 0;
@@ -140,7 +145,7 @@ int downloadFile(const std::string &filename, int &progress,
       res = curl_easy_perform(curl);
 
       // TODO: Put into central log
-      if(res != CURLE_OK)
+      if(res != CURLE_OK)          
         fprintf(stderr, "%s\n", curl_easy_strerror(res));
 
       /* always cleanup */
@@ -154,35 +159,127 @@ int downloadFile(const std::string &filename, int &progress,
 }
 
 
+bool GameDownloader::loadCatalogue(const std::string &catalogueFile)
+{
+    // Create an empty property tree object
+    using boost::property_tree::ptree;
+    ptree pt;
+
+
+    try
+    {
+
+        // Load the XML file into the property tree. If reading fails
+        // (cannot open file, parse error), an exception is thrown.
+        read_xml(catalogueFile, pt);
+
+        for( auto &gameNode : pt.get_child("Catalogue") )
+        {
+            // No comments ...
+            if(gameNode.first == "<xmlcomment>")
+                continue;
+
+            GameCatalogueEntry gce;
+
+            gce.mName = gameNode.second.get<std::string>("<xmlattr>.name");
+            gce.mLink = gameNode.second.get<std::string>("<xmlattr>.link");
+            gce.mDescription = gameNode.second.get<std::string>("<xmlattr>.description");
+            gce.mPictureFile = gameNode.second.get<std::string>("<xmlattr>.picture");
+
+            const auto filePath = JoinPaths("cache", gce.mPictureFile);
+
+            const auto fullfname = GetFullFileName(filePath);
+            SDL_Surface *pPrimBmp = IMG_Load( fullfname.c_str() );
+            std::shared_ptr<SDL_Surface> bmpSfcPtr( pPrimBmp );
+            gce.pBmp.reset( new GsBitmap(bmpSfcPtr) );
+
+            mGameCatalogue.push_back(gce);
+        }
+
+    }
+    catch(...)
+    {
+        return false;
+    }
+
+    return true;
+}
+
+#include <fileio/KeenFiles.h>
+
 bool GameDownloader::checkForMissingGames( std::vector< std::string > &missingList )
 {
+    std::string gameCatalogueStr = "gameCatalogue.xml";
+
+    bool cataFound = false;
+
+    // Load game catalogue
+    if( !loadCatalogue(gameCatalogueStr) )
+    {
+        // If not found search within for subdirectories
+        std::set<std::string> dirs;
+        FileListAdder fileListAdder;
+        GetFileList(dirs, fileListAdder, ".", false, FM_DIR);
+
+        for(std::set<std::string>::iterator i = dirs.begin(); i != dirs.end(); ++i)
+        {
+            const std::string newPath = JoinPaths(*i, gameCatalogueStr);
+
+            if(loadCatalogue(newPath))
+            {
+                cataFound = true;
+                break;
+            }
+        }
+
+    }
+    else
+    {
+        cataFound = true;
+    }
+
+    if(!cataFound)
+    {
+        gLogging.ftextOut("Sorry, catalogue file was not found: %s<br>", gameCatalogueStr.c_str() );
+        return -1;
+    }
+
     // Get the first path. We assume that one is writable
     std::string searchPaths;
     GetExactFileName(GetFirstSearchPath(), searchPaths);
 
     const auto downloadPath = JoinPaths(searchPaths, "downloads");
 
+    std::vector<GameCatalogueEntry> reducedCatalogue;
+
     // Need to check for a list of downloaded stuff and what we still need
-    for( const auto &gameName : gameList )
+    for( const auto &gameEntry : mGameCatalogue )
     {
-        const std::string gameFile = gameName + ".zip";
+        const std::string gameFile = gameEntry.mLink;
 
         const auto downloadGamePath = JoinPaths(downloadPath, gameFile);
 
         if( !IsFileAvailable(downloadGamePath) )
         {
-            missingList.push_back(gameName);
+            missingList.push_back(gameEntry.mName);
+            reducedCatalogue.push_back(gameEntry);
             continue;
         }
     }
+
+    mGameCatalogue = reducedCatalogue;
 
     return true;
 }
 
 
+
+
 int GameDownloader::handle()
 {
     int res = 0;
+
+    pCancelDownload = &mCancelDownload;
 
     // Get the first path. We assume that one is writable
     std::string searchPaths;
@@ -196,19 +293,18 @@ int GameDownloader::handle()
     CreateRecDir(downloadPath);
 
     // Go through the missing pieces
+    const auto &gameFileName = mGameFileName;
     const auto &gameName = mGameName;
     {
         gDlfrom = mProgress = 0;
         gDlto = 900;
 
-        const std::string gameFile = gameName + ".zip";
-
-        const auto downloadGamePath = JoinPaths(downloadPath, gameFile);
+        const auto downloadGamePath = JoinPaths(downloadPath, gameFileName);
 
         if( !IsFileAvailable(downloadGamePath) )
         {
             // TODO: We also must pass the gamepath and a downloads folder we all the file packages can be set.
-            res = downloadFile(gameFile, mProgress, downloadPath);
+            res = downloadFile(gameFileName, mProgress, downloadPath);
         }
 
         mProgress = gDlto;
@@ -219,7 +315,7 @@ int GameDownloader::handle()
         if( IsFileAvailable(downloadGamePath) )
         {
             // Create subdirectory
-            CreateRecDir( destDir );
+            CreateRecDir( destDir );            
 
             unzipFile(downloadGamePath.c_str(), destDir.c_str());
 
@@ -227,10 +323,17 @@ int GameDownloader::handle()
         }
         else
         {
-            const std::string errStr = "Something went wrong with downloading \"" + gameFile + "\"!";
+            const std::string errStr = "Something went wrong with downloading \"" + gameFileName + "\"!";
             gLogging.ftextOut(PURPLE, errStr.c_str() );
         }
+
+        if(res != CURLE_OK)
+        {
+            remove(downloadGamePath.c_str());
+        }
+
     }
+
 
 
     mProgress = 1000;
