@@ -6,7 +6,7 @@
 #include <base/GsLogging.h>
 #include <cstdio>
 #include <curl/curl.h>
-//#include <SDL/SDL_image.h>
+#include <SDL_image.h>
 
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>

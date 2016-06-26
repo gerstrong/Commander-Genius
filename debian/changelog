@@ -1,3 +1,13 @@
+commandergenius (1.9.5ppa1) trusty; urgency=low
+
+  *  New Downloader which automatically downloads your games
+  *  Sandwich menu for touchpad devices
+  *  Cheats menu for those who lack of inputting shortcuts
+  *  Lots of bugs this time in the audio department
+
+ -- Gerhard Stein <gerstrong@gmail.com>  Sat, 25 Jun 2016 19:05:39 +0200
+
+
 commandergenius (1.9.1ppa2) trusty; urgency=low
 
   *  Cmake version 2.8.12 compatible
