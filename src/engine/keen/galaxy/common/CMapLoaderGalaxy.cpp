@@ -353,7 +353,7 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
         gLogging.textOut("Loading the foes ...<br>" );
         spawnFoes(Map);
 
-        if(ok)
+        if(!ok)
         {
             gLogging.textOut("Something went wrong while loading the map!" );
             return false;
@@ -368,6 +368,8 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
     // Set Scrollbuffer
     Map.drawAll();
     gVideoDriver.updateScrollBuffer(Map.m_scrollx, Map.m_scrolly);
+
+    gLogging.textOut("Map got loaded succesfully!");
 
     return true;
 }

@@ -54,7 +54,7 @@ bool CMusic::loadTrack(const int track)
 
 
 bool CMusic::load(const std::string &musicfile)
-{
+{        
 	mpPlayer.reset();
 
 	if(musicfile == "")
@@ -65,6 +65,8 @@ bool CMusic::load(const std::string &musicfile)
 	if(audioSpec.format != 0)
 	{
 		std::string extension = GetFileExtension(musicfile);
+
+        g_pSound->pauseAudio();
 
 		stringlwr(extension);
 
@@ -90,8 +92,12 @@ bool CMusic::load(const std::string &musicfile)
 		{
 		    mpPlayer.reset();
 		    gLogging.textOut(PURPLE,"Music Manager: File could not be opened: \"%s\". File is damaged or something is wrong with your soundcard!<br>", musicfile.c_str());
+
+            g_pSound->resumeAudio();
 		    return false;
 		}
+
+        g_pSound->resumeAudio();
 		return true;
 
 	}
@@ -99,6 +105,7 @@ bool CMusic::load(const std::string &musicfile)
 	{
 		gLogging.textOut(PURPLE,"Music Manager: I would like to open the music for you. But your Soundcard seems to be disabled!!<br>");
 	}
+
 
 	return false;
 }
@@ -137,25 +144,34 @@ void CMusic::stop()
 		return;
 
 	// wait until the last chunk has been played, and only shutdown then.
-	while(m_busy);
+    while(mBlocked);
+
+    g_pSound->pauseAudio();
+
+    mBlocked = true;
 
 	mpPlayer->close();
 	mpPlayer.reset();
+
+    mBlocked = false;
+
+    g_pSound->resumeAudio();
 }
 
 // length only refers to the part(buffer) that has to be played
 void CMusic::readWaveform(Uint8* buffer, size_t length)
 {
-	m_busy = false;
+    if(mBlocked)
+        return;
 
 	if( !mpPlayer )
 		return;
 
-	m_busy = true;
+    mBlocked = true;
 
 	mpPlayer->readBuffer(buffer, length);
 
-	m_busy = false;
+    mBlocked = false;
 }
 
 bool CMusic::LoadfromSonglist(const std::string &gamepath, const int &level)

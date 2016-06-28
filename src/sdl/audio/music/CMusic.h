@@ -26,15 +26,16 @@
 class CMusic : public CSingleton<CMusic>
 {
 public:
-    CMusic() : m_busy(false) {}
 
-	virtual ~CMusic();
+    virtual ~CMusic();
 
 	/**
-	 * Loads certain track of the Keen Music
+     * Loads given track of the Keen Music
 	 */
     bool loadTrack(const int track);
+
     bool load(const std::string &musicfile);
+
 	void reload();
 	void play();
 	void pause();
@@ -59,8 +60,11 @@ public:
             return false;
     }
 
+
+private:
+
 	std::unique_ptr<CMusicPlayer> mpPlayer;
-	bool m_busy;
+    bool mBlocked = false;
 };
 
 struct EventPlayTrack : CEvent {
