@@ -52,7 +52,6 @@ Audio::Audio() :
 m_MusicVolume(SDL_MIX_MAXVOLUME),
 m_SoundVolume(SDL_MIX_MAXVOLUME),
 mUseSoundBlaster(false),
-//m_OPL_Player(mAudioSpec),
 m_pause_gameplay(false)
 {
 	mAudioSpec.channels = 2; // Stereo Sound
@@ -192,13 +191,13 @@ void Audio::stopAllSounds()
 }
 
 // pauses any currently playing sounds
-void Audio::pauseSound()
+void Audio::pauseAudio()
 {
 	SDL_PauseAudio(1);
 }
 
 // resumes playing a previously paused sound
-void Audio::resumeSounds()
+void Audio::resumeAudio()
 {
 	SDL_PauseAudio(0);
 }

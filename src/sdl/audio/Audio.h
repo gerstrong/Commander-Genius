@@ -36,8 +36,8 @@ public:
 	void stopAllSounds();
     bool forcedisPlaying();
 	void callback(void *unused, Uint8 *stream, int len);
-	void pauseSound(void);
-	void resumeSounds(void);
+	void pauseAudio(void);
+	void resumeAudio(void);
 	void playSound(	const GameSound snd,
 					const SoundPlayMode mode = PLAY_NOW );
     void playStereofromCoord(const GameSound snd,
