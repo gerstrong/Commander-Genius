@@ -78,48 +78,48 @@ void CRLE::expandSwapped( std::vector<word>& dst, std::vector<byte>& src, word k
     }
 }
 
-void CRLE::expand( std::vector<word>& dst, std::vector<byte>& src, word key )
+void CRLE::expand( std::vector<word> &dst, std::vector<byte> &src, word key )
 {
     uint16_t word, count, inc;
 
     std::size_t finsize;
-	byte high_byte, low_byte;
+    byte high_byte, low_byte;
 
-	low_byte = src.at(1);
-	high_byte = src.at(0);
-	finsize = (high_byte<<8) | low_byte;
-	finsize /= 2;
+    low_byte = src.at(1);
+    high_byte = src.at(0);
+    finsize = (high_byte<<8) | low_byte;
+    finsize /= 2;
 
     for(std::size_t i=WORDSIZE ; dst.size() < finsize ; i+=inc)
     {
-      if(i+1 >= src.size())
-      {
-	word = 0;
-      }
-      else
-      {	
-        // Read datum (word)
-        word = (src.at(i)<<8)+src.at(i+1);
-      }
-      
+        if(i+1 >= src.size())
+        {
+            word = 0;
+        }
+        else
+        {
+            // Read datum (word)
+            word = (src.at(i)<<8)+src.at(i+1);
+        }
+
         // If datum is 0xFEFE/0xABCD Then
         if( word == key )
         {
             // Read count (word)
             count = (src.at(i+2)<<8)+src.at(i+3);
-			word = (src.at(i+4)<<8)+src.at(i+5);
+            word = (src.at(i+4)<<8)+src.at(i+5);
 
             // Do count times
             for(std::size_t j=0;j<count;j++)
-				dst.push_back(word);
+                dst.push_back(word);
 
             inc = 3*WORDSIZE;
         }
         else
         {
             // Write datum (word)
-			dst.push_back(word);
-			inc = WORDSIZE;
+            dst.push_back(word);
+            inc = WORDSIZE;
         }
     }
 }

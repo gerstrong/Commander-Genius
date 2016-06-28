@@ -49,11 +49,10 @@ inline static void CCallback(void *unused, Uint8 *stream, int len)
 }
 
 Audio::Audio() :
-m_callback_running(false),
 m_MusicVolume(SDL_MIX_MAXVOLUME),
 m_SoundVolume(SDL_MIX_MAXVOLUME),
 mUseSoundBlaster(false),
-m_OPL_Player(mAudioSpec),
+//m_OPL_Player(mAudioSpec),
 m_pause_gameplay(false)
 {
 	mAudioSpec.channels = 2; // Stereo Sound
@@ -156,9 +155,13 @@ void mixAudioSigned16(Uint8 *dst, const Uint8 *src, Uint32 len, Uint32 volume);
 void Audio::updateFuncPtrs()
 {
     if(mAudioSpec.format == AUDIO_S16)
+    {
         mixAudio = mixAudioSigned16;
+    }
     else if(mAudioSpec.format == AUDIO_U8)
+    {
         mixAudio = mixAudioUnsigned8;
+    }
 }
 
 

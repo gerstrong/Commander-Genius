@@ -46,7 +46,7 @@ typedef struct
 class COPLEmulator
 {
 public:
-	COPLEmulator(const SDL_AudioSpec &AudioSpec);
+    COPLEmulator();
 
 	~COPLEmulator();
 
@@ -111,7 +111,7 @@ public:
 
 private:
 
-	const SDL_AudioSpec &m_AudioDevSpec;
+    //const SDL_AudioSpec &m_AudioDevSpec;
 	Chip m_opl_chip;
 	Instrument	m_alZeroInst;
 	unsigned int m_imf_clock_rate;

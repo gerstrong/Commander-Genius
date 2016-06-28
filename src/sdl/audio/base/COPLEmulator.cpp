@@ -11,15 +11,15 @@
  */
 
 #include "COPLEmulator.h"
-#include <fstream>
+#include <sdl/audio/Audio.h>
 
+#include <fstream>
 #include <cstring>
 #include <cstdio>
 
 const int KEEN_IMF_CLOCK_RATE = 560;
 
-COPLEmulator::COPLEmulator(const SDL_AudioSpec &AudioSpec) :
-m_AudioDevSpec(AudioSpec),
+COPLEmulator::COPLEmulator() :
 m_imf_clock_rate(KEEN_IMF_CLOCK_RATE)
 {}
 
@@ -54,7 +54,9 @@ void COPLEmulator::AlSetFXInst(Instrument &inst)
 void COPLEmulator::StartOPLforAdlibSound()
 {
     for (int i = 1; i <= 0xf5; i++)       // Zero all the registers
-    	Chip__WriteReg( i, 0);
+    {
+        Chip__WriteReg( i, 0 );
+    }
 
     Chip__WriteReg( 1, 0x20);             // Set WSE=1
 //    alOut(8, 0);                // Set CSM=0 & SEL=0
@@ -73,7 +75,10 @@ void COPLEmulator::setup()
 {
     m_opl_chip.clear();
     Chip__Chip(&m_opl_chip);
-    Chip__Setup(&m_opl_chip, m_AudioDevSpec.freq);
+
+    const SDL_AudioSpec &audioSpec = g_pSound->getAudioSpec();
+    Chip__Setup(&m_opl_chip, audioSpec.freq);
+
     StartOPLforAdlibSound();
 }
 
@@ -113,9 +118,12 @@ void COPLEmulator::ShutAL()
 
 void COPLEmulator::shutdown()
 {
-    Chip__WriteReg( alEffects,0 );
-    for (int i = 1; i < 0xf5; i++)
-    	Chip__WriteReg( i, 0);
+    Chip__WriteReg( alEffects, 0 );
+
+    for (int i = 1 ; i < 0xf5 ; i++)
+    {
+        Chip__WriteReg( i, 0 );
+    }
 }
 
 void COPLEmulator::clear()

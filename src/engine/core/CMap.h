@@ -44,7 +44,15 @@ public:
 	void setLevelName( const std::string& name );
 	std::string getLevelName();
 
-	bool createEmptyDataPlane(size_t plane, Uint32 width, Uint32 height);
+
+    /**
+     * @brief setupEmptyDataPlanes  Allocates data for the the planes to be loaded
+     * @param numPlanes
+     * @param width
+     * @param height
+     * @return
+     */
+    bool setupEmptyDataPlanes(size_t numPlanes, Uint32 width, Uint32 height);
 
 	bool gotoPos( int x, int y );
 

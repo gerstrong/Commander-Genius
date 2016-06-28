@@ -184,9 +184,13 @@ bool CSoundSlot::HQSndLoad(const std::string& gamepath, const std::string& sound
 
 	// We can delete to original WAV data now
     if(oggdata)
+    {
         free(oggdata);
+    }
     else
+    {
         SDL_FreeWAV(wavdata);
+    }
 
 
 	// And now we're ready to convert

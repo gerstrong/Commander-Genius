@@ -64,11 +64,15 @@ std::string CMap::getLevelName()
  * \brief	Create an empty data plane used for the map data
  * \param	blocksize	size in bytes of the datablock that has to be created
  */
-bool CMap::createEmptyDataPlane(size_t plane, Uint32 width, Uint32 height)
+bool CMap::setupEmptyDataPlanes(size_t numPlanes, Uint32 width, Uint32 height)
 {
 	m_width = width;
 	m_height = height;
-	m_Plane[plane].createDataMap(m_width, m_height);
+
+    for(int i=0 ; i<numPlanes ; i++)
+    {
+        m_Plane[i].createDataMap(m_width, m_height);
+    }
 
 	return true;
 }
@@ -162,7 +166,8 @@ void CMap::collectBlockersCoordiantes()
                 {
                     scrollBlockY.push_back(y<<(CSF));
                 }
-                // In Keen 5 it is only used on the map and stands for the teleporter from some in level
+
+                // In Keen 5 it is only used on the map and stands for an in level teleporter
                 if(*map_ptr == 0x1A && ep != 5)
                     scrollBlockX.push_back(x<<(CSF));
 
@@ -205,8 +210,8 @@ void CMap::fetchNearestVertBlockers(const int x, int &leftCoord, int &rightCoord
 
             if(leftCoord > (2<<CSF) &&  gpBehaviorEngine->getEngine() == ENGINE_GALAXY)
             {
-                // This will hide even more level blockers in Galaxy. In Vorticon
-                // this is not needed
+                // This will hide even more level blockers in Galaxy.
+                // In the vorticon games not required
                 leftCoord += (1<<CSF);
             }
 

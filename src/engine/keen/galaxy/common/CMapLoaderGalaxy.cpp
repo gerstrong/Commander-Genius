@@ -102,55 +102,69 @@ bool CMapLoaderGalaxy::gotoNextSignature(std::ifstream &MapFile)
 	  return true;
 
 	gLogging.textOut("Warning! Your are opening a map which is not correctly signed. Some Mods, using different Editors, have that issue!!");
-	gLogging.textOut("If you are playing a mod it might okay though. If it's an original game, it is tainted. Continuing...");
+    gLogging.textOut("If you are playing a mod it might okay though. If it's an original game, it is tainted and you should get a better copy. Continuing...");
 	
 	return false;	
 }
 
-void CMapLoaderGalaxy::unpackPlaneData(std::ifstream &MapFile,
-                    CMap &Map, const size_t planeNumber,
-					longword offset, longword length,
-					word magic_word)
+// never allow more than 100 bytes of uncompressed data. Anything larger is assumed to de too large
+const size_t fileSizeLimit = 100 * 1024 * 1024;
+
+bool CMapLoaderGalaxy::unpackPlaneData( std::ifstream &mapFile,
+                                        CMap &Map,
+                                        const size_t planeNumber,
+                                        longword offset,
+                                        longword length,
+                                        word magic_word)
 {
-	size_t initial_pos = MapFile.tellg();
+    size_t initial_pos = mapFile.tellg();
 
-	std::vector<word> Plane;
+    std::vector<word> plane;
 
-	MapFile.seekg(offset);
-	std::vector<byte> Carmack_Plane;
-	std::vector<byte> RLE_Plane;
+    mapFile.seekg(offset);
+
+	std::vector<byte> Carmack_Plane;	
+
 	for(size_t i=0 ; i<length ; i++)
-		Carmack_Plane.push_back(MapFile.get());
+    {
+        Carmack_Plane.push_back( mapFile.get() );
+    }
 
 	size_t decarmacksize = (Carmack_Plane.at(1)<<8)+Carmack_Plane.at(0);
 
 	
-
+    if(decarmacksize > fileSizeLimit)
+    {
+        gLogging.textOut( "\nERROR: Plane is too large at " + itoa(decarmacksize) + ".<br>";
+        return false;
+    }
 
       
 	// Now use the Carmack Decompression
 	CCarmack Carmack;
+    std::vector<byte> RLE_Plane;
+
 	Carmack.expand(RLE_Plane, Carmack_Plane);
-	Carmack_Plane.clear();      
 	
-      if( decarmacksize > RLE_Plane.size() )
-      {
-	  gLogging.textOut( "\nWARNING Plane Uncompress Carmack Size differs to the one of the headers: Actual " + itoa(RLE_Plane.size()) + 
-			      " bytes Expected " + itoa(decarmacksize) + " bytes. Trying to reconstruct level anyway!<br>");	  
+    if( decarmacksize > RLE_Plane.size() )
+    {
+        gLogging.textOut( "\nWARNING Plane Uncompress Carmack Size differs to the one of the headers: Actual " + itoa(RLE_Plane.size()) +
+                     " bytes Expected " + itoa(decarmacksize) + " bytes. Trying to reconstruct level anyway!<br>");
 	  
-	  while( decarmacksize > RLE_Plane.size() )
-	    RLE_Plane.push_back(0);
-      }	
+        // Fill it up with zeroes...
+        while( decarmacksize > RLE_Plane.size() )
+        {
+          RLE_Plane.push_back(0);
+        }
+    }
 		
 	
     if( decarmacksize >= RLE_Plane.size() )
-    {
-                  
+    {                  
     	// Now use the RLE Decompression
     	CRLE RLE;
-        size_t derlesize = (RLE_Plane[0]<<8)+RLE_Plane[1];           // Bytes already swapped
-    	RLE.expand(Plane, RLE_Plane, magic_word);
-    	RLE_Plane.clear();
+        size_t derlesize = (RLE_Plane[0]<<8) + RLE_Plane[1];           // Bytes already swapped
+        RLE.expand(plane, RLE_Plane, magic_word);
 
         word *ptr = Map.getData(planeNumber);
         for(size_t y=0; y<Map.m_height ; ++y)
@@ -160,24 +174,28 @@ void CMapLoaderGalaxy::unpackPlaneData(std::ifstream &MapFile,
             for(size_t x=0; x<Map.m_width ; ++x)
     		{
                 const int offset = stride+x;
-                word tile = Plane.at(offset);
+                word tile = plane.at(offset);
 
                 *ptr = tile;
     			ptr++;
     		}
     	}
 
-        if( derlesize/2 != Plane.size() )
+        if( derlesize/2 != plane.size() )
         {
-            gLogging.textOut( "\nERROR Plane Uncompress RLE Size Failed: Actual "+ itoa(2*Plane.size()) +" bytes Expected " + itoa(derlesize) + " bytes<br>");
+            gLogging.textOut( "\nERROR Plane Uncompress RLE Size Failed: Actual "+ itoa(2*plane.size()) +" bytes Expected " + itoa(derlesize) + " bytes<br>");
+            return false;
         }
     }
     else
     {
     	gLogging.textOut( "\nERROR Plane Uncompress Carmack Size Failed: Actual " + itoa(RLE_Plane.size()) + " bytes Expected " + itoa(decarmacksize) + " bytes<br>");
+        return false;
     }
 
-    MapFile.seekg(initial_pos);
+    mapFile.seekg(initial_pos);
+
+    return true;
 }
 
 
@@ -200,7 +218,7 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
   const std::string mapHeadFilename = gKeenFiles.mapheadFilename;
   std::ifstream MapHeadFile;
 
-  if(OpenGameFileR(MapHeadFile, getResourceFilename(mapHeadFilename,path,true,false), std::ios::binary))
+  if( OpenGameFileR(MapHeadFile, getResourceFilename(mapHeadFilename,path,false,false), std::ios::binary) )
   {
       // get length of file:
       MapHeadFile.seekg (0, std::ios::end);
@@ -307,26 +325,35 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
 
     mLevelName = name;
 
-    // Then decompress the level data using rlew and carmack
-    gLogging.textOut("Decompressing the Map...<br>" );
+    // Then decompress the level data using rlew and carmack decompression
+    gLogging.textOut("Allocating plange memory for the level planes ...<br>" );
 
     // Start with the Background
-    Map.createEmptyDataPlane(0, Width, Height);
-    Map.createEmptyDataPlane(1, Width, Height);
-    Map.createEmptyDataPlane(2, Width, Height);
+    Map.setupEmptyDataPlanes(3, Width, Height);
 
-    unpackPlaneData(MapFile, Map, 0, Plane_Offset[0], Plane_Length[0], magic_word);
-    unpackPlaneData(MapFile, Map, 1, Plane_Offset[1], Plane_Length[1], magic_word);
-    unpackPlaneData(MapFile, Map, 2, Plane_Offset[2], Plane_Length[2], magic_word);
+    gLogging.textOut("Decompressing the Map... plane 0<br>" );
+    ok &= unpackPlaneData(MapFile, Map, 0, Plane_Offset[0], Plane_Length[0], magic_word);
+
+    gLogging.textOut("Decompressing the Map... plane 1<br>" );
+    ok &= unpackPlaneData(MapFile, Map, 1, Plane_Offset[1], Plane_Length[1], magic_word);
+
+    gLogging.textOut("Decompressing the Map... plane 2<br>" );
+    ok &= unpackPlaneData(MapFile, Map, 2, Plane_Offset[2], Plane_Length[2], magic_word);
 
 
     Map.collectBlockersCoordiantes();
-    MapFile.close();
 
     // Now that we have all the 3 planes (Background, Foreground, Foes) unpacked...
     // We only will show the first two of them in the screen, because the Foes one
     // is the one which will be used for spawning the foes (Keen, platforms, enemies, etc.)
+    gLogging.textOut("Loading the foes ...<br>" );
     spawnFoes(Map);
+
+    if(ok)
+    {
+        gLogging.textOut("Something went wrong while loading the map!" );
+        return false;
+    }
   }
   else
   {

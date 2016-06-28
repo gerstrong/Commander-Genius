@@ -597,19 +597,19 @@ void CPlayGameGalaxy::render()
     if( gMenuController.active() )
         return;
 
-    // process World Map if active. At the start it's enabled
+    // Render World Map
     if(m_WorldMap.isActive())
     {
         m_WorldMap.render();
     }
 
-    // process World Map if active. At the start it's disabled, m_WorldMap turns it on.
+    // Render the Level Scene
     if(m_LevelPlay.isActive())
     {
         m_LevelPlay.render();
     }
 
-    // We have to show the status screen, do so...
+    // Show Status screen
     for( auto &inv : mInventoryVec )
     {
         if( inv.showStatus() )

@@ -53,7 +53,18 @@ public:
     }
 
 protected:
-    void unpackPlaneData(std::ifstream &MapFile,
+
+    /**
+     * @brief unpackPlaneData       Unpackes the plane data using carmack decompression routine
+     * @param MapFile
+     * @param Map
+     * @param planeNumber
+     * @param offset
+     * @param length
+     * @param magic_word
+     * @return  true, if everything went fine, otherwise false.
+     */
+    bool unpackPlaneData(std::ifstream &MapFile,
             CMap &Map, const size_t planeNumber,
             longword offset, longword length,
             word magic_word);

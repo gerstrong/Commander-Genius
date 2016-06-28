@@ -21,20 +21,22 @@ public:
 
     word *getMapDataPtr()
     {
-        return mp_data;
+        return mDataVec.data();
     }
 
     word getMapDataAt(Uint16 x, Uint16 y)
     {
         if( x < m_width && y < m_height )
-            return mp_data[y*m_width+x];
+        {
+            return mDataVec[y*m_width+x];
+        }
         return 0;
     }
 
 
     void setMapDataAt(Uint16 t, Uint16 x, Uint16 y)
     {
-        mp_data[y*m_width+x] = t;
+        mDataVec[y*m_width+x] = t;
     }
 
     std::vector<Uint8> &getTimers()
@@ -42,12 +44,14 @@ public:
         return mTimers;
     }
 
-	bool empty();
+    bool empty() const
+    {
+        return mDataVec.empty();
+    }
 
-	virtual ~CPlane();
 
 private:
-	word *mp_data;       		// the map foreground data
+    std::vector<word> mDataVec; // the map data of one plane
 
     // In animation cycles the time when something needs to be changed
     std::vector<Uint8> mTimers;

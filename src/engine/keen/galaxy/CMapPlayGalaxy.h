@@ -32,7 +32,12 @@ class CMapPlayGalaxy
 public:
     CMapPlayGalaxy(std::vector<CInventory> &inventoryVec);
 
-	bool isActive();
+    bool isActive() const
+    {
+        return mActive;
+    }
+
+
 	void setActive(const bool value);
 
 	/*

@@ -69,7 +69,7 @@ void CBerkeloid::getTouchedBy(CSpriteObject &theObject)
 
 bool CBerkeloid::isNearby(CSpriteObject &theObject)
 {
-	if( !getProbability(30) )
+    if( !getProbability(15) )
 		return false;
 
 	if( CPlayerLevel *player = dynamic_cast<CPlayerLevel*>(&theObject) )
@@ -100,7 +100,7 @@ void CBerkeloid::processMoving()
 	}
 
 	// Chance to throw a flame
-	if( getProbability(20) )
+    if( getProbability(15) )
 	{
 		setAction( A_BERKELOID_THROW );
 		playSound( SOUND_BERKELOID_WINDUP );
