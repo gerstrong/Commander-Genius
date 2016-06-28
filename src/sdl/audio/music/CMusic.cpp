@@ -22,11 +22,14 @@
 bool CMusic::loadTrack(const int track)
 {
 
+    g_pSound->pauseAudio();
+
 #if defined(OGG) || defined(TREMOR)
     std::unique_ptr<COGGPlayer> oggPlayer( new COGGPlayer(g_pSound->getAudioSpec()) );
     if(oggPlayer->loadMusicTrack(track))
     {
         mpPlayer = move(oggPlayer);
+        g_pSound->resumeAudio();
         return true;
     }
 #endif
@@ -37,6 +40,7 @@ bool CMusic::loadTrack(const int track)
 
     if(!gKeenFiles.exeFile.loadMusicTrack(imfData, track))
     {
+        g_pSound->resumeAudio();
         return false;
     }
 
@@ -44,11 +48,13 @@ bool CMusic::loadTrack(const int track)
 
 	if(!imfPlayer->open())
 	{
+        g_pSound->resumeAudio();
 	    return false;
 	}
 
 	mpPlayer = move(imfPlayer);
 
+    g_pSound->resumeAudio();
 	return true;
 }
 
@@ -112,12 +118,16 @@ bool CMusic::load(const std::string &musicfile)
 
 void CMusic::reload()
 {
+    g_pSound->pauseAudio();
+
 	if(!mpPlayer)
 	{
 		return;
 	}
 
 	mpPlayer->reload();
+
+    g_pSound->resumeAudio();
 }
 
 void CMusic::play()
@@ -143,17 +153,10 @@ void CMusic::stop()
 	if(!mpPlayer)
 		return;
 
-	// wait until the last chunk has been played, and only shutdown then.
-    while(mBlocked);
-
     g_pSound->pauseAudio();
-
-    mBlocked = true;
 
 	mpPlayer->close();
 	mpPlayer.reset();
-
-    mBlocked = false;
 
     g_pSound->resumeAudio();
 }
@@ -161,17 +164,10 @@ void CMusic::stop()
 // length only refers to the part(buffer) that has to be played
 void CMusic::readWaveform(Uint8* buffer, size_t length)
 {
-    if(mBlocked)
-        return;
-
 	if( !mpPlayer )
 		return;
 
-    mBlocked = true;
-
 	mpPlayer->readBuffer(buffer, length);
-
-    mBlocked = false;
 }
 
 bool CMusic::LoadfromSonglist(const std::string &gamepath, const int &level)

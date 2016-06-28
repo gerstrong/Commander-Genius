@@ -64,7 +64,7 @@ public:
 private:
 
 	std::unique_ptr<CMusicPlayer> mpPlayer;
-    bool mBlocked = false;
+
 };
 
 struct EventPlayTrack : CEvent {

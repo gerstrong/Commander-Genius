@@ -56,7 +56,7 @@ void CLevelPlay::loadMap(const int level)
 
 	MapLoader->loadMap( mMap, level );
 
-    // Load the Background Music
+    // Load some new background Music
 	g_pMusicPlayer->stop();
 
     if( loadLevelMusic(level) )
