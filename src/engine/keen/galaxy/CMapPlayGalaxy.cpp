@@ -32,12 +32,6 @@ mMsgBoxOpen(false)
 {}
 
 
-bool CMapPlayGalaxy::isActive()
-{	return mActive;	}
-
-
-
-
 void CMapPlayGalaxy::setActive(bool value)
 {
 	mActive = value;
@@ -49,8 +43,6 @@ void CMapPlayGalaxy::setActive(bool value)
         gVideoDriver.setRefreshSignal(true);
 	}
 }
-
-
 
 
 /**

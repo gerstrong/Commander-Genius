@@ -195,7 +195,9 @@ void GsApp::ponder(const float deltaT)
 void GsApp::render()
 {
     if(mpCurEngine)
+    {
         mpCurEngine->render();
+    }
 
     gMenuController.render();
 

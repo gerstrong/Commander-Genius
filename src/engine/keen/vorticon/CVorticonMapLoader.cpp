@@ -158,9 +158,7 @@ bool CVorticonMapLoaderBase::loadBase(  Uint8 episode,
 	// Here goes the memory allocation function
 	const Uint16 w =  planeitems.at(1);
 	const Uint16 h =  planeitems.at(2);
-	mpMap->createEmptyDataPlane(0, w, h);
-	mpMap->createEmptyDataPlane(1, w, h);
-	mpMap->createEmptyDataPlane(2, w, h);
+    mpMap->setupEmptyDataPlanes(3, w, h);
 
 	unsigned int planesize = 0;
 	planesize = planeitems.at(8);

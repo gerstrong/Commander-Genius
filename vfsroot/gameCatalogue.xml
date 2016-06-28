@@ -36,5 +36,9 @@
               link="Perilous.zip" 
               description="Goodbye Galaxy meets Vorticon Keen Engine" 
               picture="perilous.png"/>
+	<Game name="Silcar 1" 
+              link="silcar1.zip" 
+              description="Nightmare Before Teatime" 
+              picture="silcar1.png"/>
 </Catalogue>
 

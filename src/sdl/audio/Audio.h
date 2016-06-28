@@ -92,7 +92,7 @@ public:
     }
 
 protected:
-	bool m_callback_running;
+    bool m_callback_running = false;
 	SDL_AudioSpec mAudioSpec;
 
     std::vector< void (SDLCALL *)(void *, Uint8 *, int) > mSubCallbackVec;

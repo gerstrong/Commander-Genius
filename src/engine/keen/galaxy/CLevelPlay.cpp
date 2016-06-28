@@ -37,11 +37,22 @@ void CLevelPlay::loadMap(const int level)
     const int episode = gpBehaviorEngine->getEpisode();
 
     if(episode == 4)
+    {
         MapLoader.reset(new CMapLoaderGalaxyEp4(mObjectPtr, mInventoryVec));
+    }
     else if(episode == 5)
+    {
         MapLoader.reset(new CMapLoaderGalaxyEp5(mObjectPtr, mInventoryVec));
+    }
     else if(episode == 6)
+    {
         MapLoader.reset(new CMapLoaderGalaxyEp6(mObjectPtr, mInventoryVec));
+    }
+    else
+    {
+        gLogging.textOut("Warning: Episode number does not make sense");
+    }
+
 
 	MapLoader->loadMap( mMap, level );
 
@@ -49,9 +60,13 @@ void CLevelPlay::loadMap(const int level)
 	g_pMusicPlayer->stop();
 
     if( loadLevelMusic(level) )
+    {
         g_pMusicPlayer->play();
+    }
     else
+    {
         gLogging.textOut("Warning: The music cannot be played. Check that all the files have been correctly copied!");
+    }
 }
 
 
