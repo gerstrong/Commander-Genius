@@ -13,23 +13,26 @@
 #define CMUSICPLAYER_H_
 
 #include <SDL.h>
+#include <string>
 
 class CMusicPlayer
 {
 public:
-	CMusicPlayer();
-	virtual ~CMusicPlayer();
+    virtual ~CMusicPlayer() {}
 
+    virtual bool loadMusicTrack(const int track) = 0;
+
+    virtual bool loadMusicFromFile(const std::string& filename) = 0;
 	virtual bool open() = 0;
 	void reload();
 	virtual void readBuffer(Uint8* buffer, Uint32 length) = 0;
 	void play(const bool value);
-	virtual void close() = 0;
+    virtual void close() = 0;
 
 	bool playing() const { return m_playing; }
 
 protected:
-	bool m_playing;
+    bool m_playing = false;
 };
 
 #endif /* CMUSICPLAYER_H_ */

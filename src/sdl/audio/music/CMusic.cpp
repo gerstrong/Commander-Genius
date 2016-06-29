@@ -25,34 +25,20 @@ bool CMusic::loadTrack(const int track)
     g_pSound->pauseAudio();
 
 #if defined(OGG) || defined(TREMOR)
-    std::unique_ptr<COGGPlayer> oggPlayer( new COGGPlayer(g_pSound->getAudioSpec()) );
-    if(oggPlayer->loadMusicTrack(track))
+    mpPlayer.reset( new COGGPlayer );
+
+    if(mpPlayer->loadMusicTrack(track))
     {
-        mpPlayer = move(oggPlayer);
         g_pSound->resumeAudio();
         return true;
     }
 #endif
 
-	std::unique_ptr<CIMFPlayer> imfPlayer( new CIMFPlayer(g_pSound->getAudioSpec()) );
-
-    RingBuffer<IMFChunkType> imfData;
-
-    if(!gKeenFiles.exeFile.loadMusicTrack(imfData, track))
+    mpPlayer.reset( new CIMFPlayer );
+    if(!mpPlayer->loadMusicTrack(track))
     {
-        g_pSound->resumeAudio();
-        return false;
+        gLogging.textOut("No music to be loaded for Track" + itoa(track) + ".");
     }
-
-    imfPlayer->swapRing(std::move(imfData));
-
-	if(!imfPlayer->open())
-	{
-        g_pSound->resumeAudio();
-	    return false;
-	}
-
-	mpPlayer = move(imfPlayer);
 
     g_pSound->resumeAudio();
 	return true;
@@ -78,16 +64,18 @@ bool CMusic::load(const std::string &musicfile)
 
 		if( extension == "imf" )
 		{
-		    std::unique_ptr<CIMFPlayer> imfPlayer( new CIMFPlayer(audioSpec) );
-		    if(!imfPlayer->loadMusicFromFile(musicfile))
-		      return false;
-		    mpPlayer = move(imfPlayer);
+            mpPlayer.reset( new CIMFPlayer );
+
+            if(!mpPlayer->loadMusicFromFile(musicfile))
+            {
+                return false;
+            }
 		}
 		else if( extension == "ogg" )
 		{
 #if defined(OGG) || defined(TREMOR)
-		    std::unique_ptr<COGGPlayer> oggPlayer( new COGGPlayer(musicfile, audioSpec) );
-		    mpPlayer = move( oggPlayer );
+            mpPlayer.reset( new COGGPlayer );
+            mpPlayer->loadMusicFromFile(musicfile);
 #else
 		    gLogging.ftextOut("Music Manager: Neither OGG bor TREMOR-Support are enabled! Please use another build<br>");
 		    return false;

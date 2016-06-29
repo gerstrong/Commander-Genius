@@ -30,11 +30,12 @@
 class COGGPlayer : public CMusicPlayer
 {
 public:
-	COGGPlayer(const std::string& filename, const SDL_AudioSpec& AudioSpec);
-	COGGPlayer(const SDL_AudioSpec& AudioSpec);
+    COGGPlayer();
+    COGGPlayer(const std::string& filename);
 	virtual ~COGGPlayer();
 
     bool loadMusicTrack(const int track);
+    bool loadMusicFromFile(const std::string& filename);
 	bool open();
 	void readBuffer(Uint8* buffer, Uint32 length);
 	void close();
@@ -45,7 +46,6 @@ private:
 
 	OggVorbis_File  m_oggStream;
 	std::string m_filename;
-	const SDL_AudioSpec &m_AudioSpec;
 	SDL_AudioSpec m_AudioFileSpec;
 	SDL_AudioCVT m_Audio_cvt;
 	Uint32 m_pcm_size;

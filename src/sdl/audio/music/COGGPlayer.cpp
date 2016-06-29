@@ -17,8 +17,7 @@
 #include "fileio/KeenFiles.h"
 
 
-COGGPlayer::COGGPlayer(const SDL_AudioSpec& AudioSpec) :
-m_AudioSpec(AudioSpec),
+COGGPlayer::COGGPlayer() :
 m_pcm_size(0),
 m_music_pos(0),
 m_reading_stream(false),
@@ -28,9 +27,8 @@ m_bitStream(0)
 }
 
 
-COGGPlayer::COGGPlayer(const std::string& filename, const SDL_AudioSpec& AudioSpec) :
+COGGPlayer::COGGPlayer(const std::string& filename) :
 m_filename(filename),
-m_AudioSpec(AudioSpec),
 m_pcm_size(0),
 m_music_pos(0),
 m_reading_stream(false),
@@ -43,7 +41,9 @@ m_bitStream(0)
 COGGPlayer::~COGGPlayer()
 {
     if(!m_filename.empty())
-	close();
+    {
+        close();
+    }
 }
 
 #if defined(TREMOR)
@@ -57,8 +57,20 @@ int ov_fopen(char *path,OggVorbis_File *vf)
 }
 #endif
 
+bool COGGPlayer::loadMusicFromFile(const std::string& filename)
+{
+    m_filename = getResourceFilename(JoinPaths("music", filename), gKeenFiles.gameDir, false, false);
+
+    if(m_filename.empty())
+       return false;
+
+    return open();
+}
+
 bool COGGPlayer::open()
 {
+    auto &audioSpec = g_pSound->getAudioSpec();
+
 	// If Ogg detected, decode it into the stream psound->sound_buffer.
 	// It must fit into the Audio_cvt structure, so that it can be converted
     mHasCommonFreqBase = true;
@@ -78,8 +90,8 @@ bool COGGPlayer::open()
     // we set m_AudioFileSpec frequency to the same as the one of the SDL initialized AudioSpec
     // scale just the buffer using readOGGStreamAndResample.
     // This is base problem, but we have workarounds for that...
-    if( (m_AudioFileSpec.freq%m_AudioSpec.freq != 0) &&
-        (m_AudioSpec.freq%m_AudioFileSpec.freq != 0) )
+    if( (m_AudioFileSpec.freq%audioSpec.freq != 0) &&
+        (audioSpec.freq%m_AudioFileSpec.freq != 0) )
     {
       #if SDL_VERSION_ATLEAST(2, 0, 0)
         m_AudioFileSpec.freq = m_AudioSpec.freq;
@@ -95,11 +107,11 @@ bool COGGPlayer::open()
     gLogging.ftextOut("OGG-Player: File \"%s\" has been opened successfully!<br>", m_filename.c_str());
 	int ret = SDL_BuildAudioCVT(&m_Audio_cvt,
 			m_AudioFileSpec.format, m_AudioFileSpec.channels, m_AudioFileSpec.freq,
-			m_AudioSpec.format, m_AudioSpec.channels, m_AudioSpec.freq);
+            audioSpec.format, audioSpec.channels, audioSpec.freq);
 	if(ret == -1)
 		return false;
 
-    const size_t length = m_AudioSpec.size;
+    const size_t length = audioSpec.size;
     #if SDL_VERSION_ATLEAST(2, 0, 0)
     #else
         m_Audio_cvt.len_cvt = 0;
@@ -184,12 +196,15 @@ void COGGPlayer::readBuffer(Uint8* buffer, Uint32 length)
 	if(!m_playing || !m_Audio_cvt.buf)
 		return;
 
+    auto &audioSpec = g_pSound->getAudioSpec();
+    auto freq = audioSpec.freq;
+
 	bool rewind = false;
 
 	// read the ogg stream
     if( !mHasCommonFreqBase )
 	{
-        Uint64 insize = (m_Audio_cvt.len*mVorbisInfo->rate)/m_AudioSpec.freq;
+        Uint64 insize = (m_Audio_cvt.len*mVorbisInfo->rate)/freq;
 		Uint8 mult = m_AudioFileSpec.channels;
 
 		if(m_AudioFileSpec.format == AUDIO_S16)
@@ -240,13 +255,19 @@ void COGGPlayer::readBuffer(Uint8* buffer, Uint32 length)
 void COGGPlayer::close()
 {
  	if(m_Audio_cvt.buf)
+    {
 		delete [] m_Audio_cvt.buf;
+    }
+
     m_Audio_cvt.buf = nullptr;
 	
 	m_playing = false;
+
 	while(m_reading_stream);
+
 	m_music_pos = 0;
 	m_pcm_size = 0;		
+
 	ov_clear(&m_oggStream);
 }
 

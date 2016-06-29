@@ -7,12 +7,6 @@
 
 #include "CMusicPlayer.h"
 
-CMusicPlayer::CMusicPlayer() :
-m_playing(false)
-{}
-
-CMusicPlayer::~CMusicPlayer()
-{}
 
 void CMusicPlayer::reload()
 {
