@@ -173,7 +173,9 @@ bool CPlayGameGalaxy::loadXMLGameState()
     active = levelPlayNode.get<bool>("<xmlattr>.active");
     m_LevelPlay.setActive(active);
     if( active )
+    {
         m_LevelPlay << levelPlayNode;
+    }
 
     return true;
 }

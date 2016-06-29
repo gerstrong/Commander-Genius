@@ -330,9 +330,13 @@ bool CMapPlayGalaxy::operator<<(CSaveGameController &savedGame)
 
 
     if( !galaxy::loadLevelMusic(level) )
+    {
     	gLogging.textOut("Warning: The music cannot be played. Check that all the files have been correctly copied!");
+    }
     else
+    {
     	g_pMusicPlayer->play();
+    }
 
 
 	// load the number of objects on screen
@@ -511,13 +515,17 @@ void CMapPlayGalaxy::operator<<(boost::property_tree::ptree &levelNode)
     // Load the World map level.
     mapLoader->loadMap( mMap, level );
 
-    // Load the Background Music
     g_pMusicPlayer->stop();
 
+    // Prepare to load the Background Music
     if( !galaxy::loadLevelMusic(level) )
+    {
         gLogging.textOut("Warning: The music cannot be played. Check that all the files have been correctly copied!");
+    }
     else
+    {
         g_pMusicPlayer->play();
+    }
 
 
     // load the number of objects on screen
