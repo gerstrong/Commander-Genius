@@ -51,14 +51,19 @@ bool CIMFPlayer::loadMusicFromFile(const std::string& filename)
     
     
     if(!m_IMF_Data.empty())
-	m_IMF_Data.clear();
+        m_IMF_Data.clear();
+
     const word imf_chunks = (data_size/sizeof(IMFChunkType));
     m_IMF_Data.reserve(imf_chunks);
     
     if( imf_chunks != fread( m_IMF_Data.getStartPtr(), sizeof(IMFChunkType), imf_chunks, fp ) )
-	gLogging.textOut("The IMF-File seems to be corrupt.");
+    {
+        gLogging.textOut("The IMF-File seems to be corrupt.");
+    }
     else
-	ok = true;
+    {
+        ok = true;
+    }
     
     fclose(fp);
     
