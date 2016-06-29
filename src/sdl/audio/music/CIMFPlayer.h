@@ -25,7 +25,7 @@ struct IMFChunkType
 class CIMFPlayer : public CMusicPlayer
 {
 public:
-    CIMFPlayer( const SDL_AudioSpec &AudioSpec, COPLEmulator& opl_emulator = g_pSound->getOPLEmulatorRef());
+    CIMFPlayer( COPLEmulator& opl_emulator = g_pSound->getOPLEmulatorRef());
 
 
 	/**
@@ -33,7 +33,6 @@ public:
 	 * 			Only galaxy supports that feature, and the original games will read two files form the EXE-file
 	 * 			AUDIOHED and AUDIODICT to get the right tune for the music player.
 	 */
-//	bool loadMusicTrack(const CExeFile& ExeFile, const int track);
     bool loadMusicFromFile(const std::string& filename);
 
 	void OPLUpdate(byte *buffer, const unsigned int length);
@@ -42,11 +41,8 @@ public:
 	void close();
 	void readBuffer(Uint8* buffer, Uint32 length);
 
-    /**
-      * \brief If any other entity already created a ring of data suitable for the player,
-      *        use this method and pass the data.
-      */
-    void swapRing(RingBuffer<IMFChunkType> &&ring);
+
+    bool loadMusicTrack(const int track);
 
 private:
 
@@ -57,7 +53,6 @@ private:
                 const int end);
 
 	RingBuffer<IMFChunkType> m_IMF_Data;
-    const SDL_AudioSpec& m_AudioDevSpec;
     COPLEmulator &m_opl_emulator;
 
 	Uint32 m_numreadysamples;

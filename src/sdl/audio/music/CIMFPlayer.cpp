@@ -18,14 +18,13 @@
 #include <cassert>
 
 
-CIMFPlayer::CIMFPlayer( const SDL_AudioSpec& AudioSpec, COPLEmulator& opl_emulator ) :
-m_AudioDevSpec(AudioSpec),
+CIMFPlayer::CIMFPlayer( COPLEmulator& opl_emulator ) :
 m_opl_emulator(opl_emulator),
 m_numreadysamples(0),
-m_samplesPerMusicTick(m_AudioDevSpec.freq / m_opl_emulator.getIMFClockRate()),
-m_IMFDelay(0),
-mMixBuffer(m_AudioDevSpec.samples, 0)
-{}
+m_IMFDelay(0)
+{
+    m_samplesPerMusicTick = g_pSound->getAudioSpec().freq / m_opl_emulator.getIMFClockRate();
+}
 
 
 bool CIMFPlayer::loadMusicFromFile(const std::string& filename)
@@ -66,19 +65,26 @@ bool CIMFPlayer::loadMusicFromFile(const std::string& filename)
     return ok;
 }
 
-void CIMFPlayer::swapRing(RingBuffer<IMFChunkType> &&ring)
+
+bool CIMFPlayer::loadMusicTrack(const int track)
 {
-    m_IMF_Data = std::move(ring);
+    if( m_IMF_Data.empty() )
+        m_IMF_Data.clear();
+
+    if(!gKeenFiles.exeFile.loadMusicTrack(m_IMF_Data, track))
+    {
+        return false;
+    }
+
+    return true;
 }
-
-
 
 
 
 bool CIMFPlayer::open()
 {
 	m_numreadysamples = m_IMFDelay = 0;
-	m_samplesPerMusicTick = m_AudioDevSpec.freq / m_opl_emulator.getIMFClockRate();
+    m_samplesPerMusicTick = g_pSound->getAudioSpec().freq / m_opl_emulator.getIMFClockRate();
 	
 	m_opl_emulator.setup();
 	
@@ -101,17 +107,19 @@ void CIMFPlayer::close()
 
 
 void CIMFPlayer::OPLUpdate(byte *buffer, const unsigned int length)
-{
+{    
+    auto &audioSpec = g_pSound->getAudioSpec();
+
     if(mMixBuffer.empty())
     {
-        gLogging.textOut("Warning OPL Buffer is empty!");
-        return;
+        gLogging.textOut("Creating enough Audio Buffer for the IMF-Player");
+        mMixBuffer.assign(audioSpec.samples, 0);
     }
 
     m_opl_emulator.Chip__GenerateBlock2( length, mMixBuffer.data() );
 
     // Mix into the destination buffer, doubling up into stereo.
-	if(m_AudioDevSpec.format == AUDIO_S16)
+    if(audioSpec.format == AUDIO_S16)
 	{
 		Sint16 *buf16 = (Sint16*) (void*) buffer;
 		for (unsigned int i=0; i<length; ++i)
@@ -123,14 +131,14 @@ void CIMFPlayer::OPLUpdate(byte *buffer, const unsigned int length)
 		    else if(mix < -32768)
 			    mix = -32768;
 		    
-			for (unsigned int j=0; j<m_AudioDevSpec.channels; j++)
+            for (unsigned int j=0; j<audioSpec.channels; j++)
 			{
-				*buf16 = mix + m_AudioDevSpec.silence;
+                *buf16 = mix + audioSpec.silence;
 				buf16++;
 			}
 		}
 	}
-	else if(m_AudioDevSpec.format == AUDIO_U8)
+    else if(audioSpec.format == AUDIO_U8)
 	{
 		for (unsigned int i=0; i<length; ++i)
 		{
@@ -141,9 +149,9 @@ void CIMFPlayer::OPLUpdate(byte *buffer, const unsigned int length)
 		    else if(mix < 0)
 			    mix = 0;
 		    
-			for (unsigned int j=0; j<m_AudioDevSpec.channels; j++)
+            for (unsigned int j=0; j<audioSpec.channels; j++)
 			{
-				*buffer = mix + m_AudioDevSpec.silence;
+                *buffer = mix + audioSpec.silence;
 				buffer++;
 			}
 		}
@@ -154,11 +162,14 @@ void CIMFPlayer::readBuffer(Uint8* buffer, Uint32 length)
 {
     if(!m_playing)
         return;
+
+    auto &audioSpec = g_pSound->getAudioSpec();
+
     
     /// if a delay of the instruments is pending, play it
-	Uint32 sampleslen = m_AudioDevSpec.samples;
-	Uint32 sample_mult = m_AudioDevSpec.channels;
-	sample_mult = (m_AudioDevSpec.format == AUDIO_S16) ? sample_mult*sizeof(Sint16) : sample_mult*sizeof(Uint8) ;
+    Uint32 sampleslen = audioSpec.samples;
+    Uint32 sample_mult = audioSpec.channels;
+    sample_mult = (audioSpec.format == AUDIO_S16) ? sample_mult*sizeof(Sint16) : sample_mult*sizeof(Uint8) ;
 	
 	// while the waveform is not filled
     while(1)

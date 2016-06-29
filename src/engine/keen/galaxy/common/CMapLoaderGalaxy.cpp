@@ -330,7 +330,7 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
         mLevelName = name;
 
         // Then decompress the level data using rlew and carmack decompression
-        gLogging.textOut("Allocating plange memory for the level planes ...<br>" );
+        gLogging.textOut("Allocating memory for the level planes ...<br>" );
 
         // Start with the Background
         Map.setupEmptyDataPlanes(3, Width, Height);
