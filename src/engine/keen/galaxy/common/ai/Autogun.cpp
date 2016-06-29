@@ -82,54 +82,54 @@ void AutoShot::waiting()
         return;
     }
 
-  if(m_Pos != origin)
-  {
-    moveToForce(origin);  
-    onslope = ( blockedd = ( blockedl = ( blockedr = (blockedu = false) ) ) );
-  }
-  
-  dontdraw = false;
-  sprite = mBaseSprite;
-  mTimer = 0;
-  processState = &AutoShot::flying;
-  
-  if(ep == 4)
-  {
-      playSound(SOUND_DARTGUN_SHOOT);
-  }
-  else if(ep == 5)
-  {
-      playSound(SOUND_ROBORED_SHOOT); // Yeah, it is the same sound!
-  }
-  else // keen 6
-  {
-      playSound(SOUND_AUTOGUN);
-  }  
-  
-  dontdraw = false;
+    if(m_Pos != origin)
+    {
+        moveToForce(origin);
+        onslope = ( blockedd = ( blockedl = ( blockedr = (blockedu = false) ) ) );
+    }
+
+    dontdraw = false;
+    sprite = mBaseSprite;
+    mTimer = 0;
+    processState = &AutoShot::flying;
+
+    if(ep == 4)
+    {
+        playSound(SOUND_DARTGUN_SHOOT);
+    }
+    else if(ep == 5)
+    {
+        playSound(SOUND_ROBORED_SHOOT); // Yeah, it is the same sound!
+    }
+    else // keen 6
+    {
+        playSound(SOUND_AUTOGUN);
+    }
+
+    dontdraw = false;
 }
 
 
 void AutoShot::getTouchedBy(CSpriteObject &theObject)
 {
-  if(processState != &AutoShot::flying)
-    return;
+    if(processState != &AutoShot::flying)
+        return;
     
-  if(CPlayerBase *Player = dynamic_cast<CPlayerBase*>(&theObject))
-  {
-    Player->kill(false);
-  }
+    if(CPlayerBase *Player = dynamic_cast<CPlayerBase*>(&theObject))
+    {
+        Player->kill(false);
+    }
 }
 
 
 
 void AutoShot::setWaitStatus()
 {        
-    // wait! in keen 4 it has to return        
+    // wait! in keen 4 it has to return
     processState = &AutoShot::waiting;
     if(gpBehaviorEngine->getEpisode() > 4)
     {
-	sprite = mBaseSprite + mNumAnimSprites;
+        sprite = mBaseSprite + mNumAnimSprites;
     }
     
     dontdraw = true;
