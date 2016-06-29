@@ -55,7 +55,9 @@ void CWorldMap::loadAndPlayMusic()
 {
 	g_pMusicPlayer->stop();
     if(loadLevelMusic(0))
+    {
 		g_pMusicPlayer->play();
+    }
 }
 
 void CWorldMap::ponder(const float deltaT)

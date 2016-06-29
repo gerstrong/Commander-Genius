@@ -20,7 +20,6 @@
 COGGPlayer::COGGPlayer() :
 m_pcm_size(0),
 m_music_pos(0),
-m_reading_stream(false),
 m_bitStream(0)
 {
     m_Audio_cvt.buf = nullptr;
@@ -31,7 +30,6 @@ COGGPlayer::COGGPlayer(const std::string& filename) :
 m_filename(filename),
 m_pcm_size(0),
 m_music_pos(0),
-m_reading_stream(false),
 m_bitStream(0)
 {
     m_Audio_cvt.buf = nullptr;
@@ -64,11 +62,17 @@ bool COGGPlayer::loadMusicFromFile(const std::string& filename)
     if(m_filename.empty())
        return false;
 
-    return open();
+    return true;
 }
 
 bool COGGPlayer::open()
-{
+{       
+    if(m_Audio_cvt.buf)
+    {
+        close();
+    }
+
+
     auto &audioSpec = g_pSound->getAudioSpec();
 
 	// If Ogg detected, decode it into the stream psound->sound_buffer.
@@ -94,7 +98,7 @@ bool COGGPlayer::open()
         (audioSpec.freq%m_AudioFileSpec.freq != 0) )
     {
       #if SDL_VERSION_ATLEAST(2, 0, 0)
-        m_AudioFileSpec.freq = m_AudioSpec.freq;
+        m_AudioFileSpec.freq = audioSpec.freq;
       #endif
         mHasCommonFreqBase = false;
     }
@@ -123,6 +127,7 @@ bool COGGPlayer::open()
 
     m_Audio_cvt.buf = new Uint8[m_Audio_cvt.len*m_Audio_cvt.len_mult];
 
+
     return true;
 }
 
@@ -144,8 +149,6 @@ bool COGGPlayer::readOGGStream( OggVorbis_File  &oggStream, char *buffer, const 
 	long bytes = 0;
 	unsigned long pos = 0;
 
-	m_reading_stream = true;
-
 	while( pos<size )
 	{
 		if(m_pcm_size<=0)
@@ -164,11 +167,9 @@ bool COGGPlayer::readOGGStream( OggVorbis_File  &oggStream, char *buffer, const 
 			pos = size;
 			m_bitStream = 0;
 			m_music_pos = 0;
-			m_reading_stream = false;
 			return true;
 		}
 	}
-	m_reading_stream = false;
 	return false;
 }
 
@@ -263,7 +264,7 @@ void COGGPlayer::close()
 	
 	m_playing = false;
 
-	while(m_reading_stream);
+    while(SDL_GetAudioStatus() == SDL_AUDIO_PLAYING);
 
 	m_music_pos = 0;
 	m_pcm_size = 0;		
