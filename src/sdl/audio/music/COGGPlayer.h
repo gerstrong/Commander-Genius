@@ -41,8 +41,8 @@ public:
 	void close();
 
 private:
-	bool readOGGStream( OggVorbis_File  &oggStream, char *buffer, const size_t &size, const SDL_AudioSpec &OGGAudioSpec );
-    bool readOGGStreamAndResample(OggVorbis_File  &oggStream, Uint8 *buffer, const int output_size, const size_t input_size, const SDL_AudioSpec &OGGAudioSpec );
+    bool readOGGStream(char *buffer, const size_t &size, const SDL_AudioSpec &OGGAudioSpec );
+    bool readOGGStreamAndResample(Uint8 *buffer, const int output_size, const size_t input_size, const SDL_AudioSpec &OGGAudioSpec );
 
 	OggVorbis_File  m_oggStream;
 	std::string m_filename;
