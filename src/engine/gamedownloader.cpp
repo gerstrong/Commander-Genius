@@ -216,19 +216,41 @@ bool GameDownloader::checkForMissingGames( std::vector< std::string > &missingLi
     // Load game catalogue
     if( !loadCatalogue(gameCatalogueStr) )
     {
-        // If not found search within for subdirectories
-        std::set<std::string> dirs;
-        FileListAdder fileListAdder;
-        GetFileList(dirs, fileListAdder, ".", false, FM_DIR);
-
-        for(std::set<std::string>::iterator i = dirs.begin(); i != dirs.end(); ++i)
+        // try with search paths
+        for(searchpathlist::const_iterator p = tSearchPaths.begin(); p != tSearchPaths.end(); p++)
         {
-            const std::string newPath = JoinPaths(*i, gameCatalogueStr);
+            std::string newPath  = *p;
+            ReplaceFileVariables(newPath);
+            newPath = JoinPaths(newPath, gameCatalogueStr);
+
+            gLogging.ftextOut("Looking at: %s<br>", newPath.c_str() );
 
             if(loadCatalogue(newPath))
             {
                 cataFound = true;
                 break;
+            }
+
+        }
+
+        if(!cataFound)
+        {
+            // If not found search within for subdirectories
+            std::set<std::string> dirs;
+            FileListAdder fileListAdder;
+            GetFileList(dirs, fileListAdder, ".", false, FM_DIR);
+
+            for(std::set<std::string>::iterator i = dirs.begin(); i != dirs.end(); ++i)
+            {
+                const std::string newPath = JoinPaths(*i, gameCatalogueStr);
+
+                gLogging.ftextOut("Looking at: %s<br>", newPath.c_str() );
+
+                if(loadCatalogue(newPath))
+                {
+                    cataFound = true;
+                    break;
+                }
             }
         }
 

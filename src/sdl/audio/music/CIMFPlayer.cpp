@@ -86,7 +86,7 @@ bool CIMFPlayer::loadMusicTrack(const int track)
 
 
 
-bool CIMFPlayer::open()
+bool CIMFPlayer::open(const bool lock)
 {
 	m_numreadysamples = m_IMFDelay = 0;
     m_samplesPerMusicTick = g_pSound->getAudioSpec().freq / m_opl_emulator.getIMFClockRate();
@@ -96,7 +96,7 @@ bool CIMFPlayer::open()
 	return !m_IMF_Data.empty();
 }
 
-void CIMFPlayer::close()
+void CIMFPlayer::close(const bool lock)
 {
 	play(false);
 	m_IMF_Data.gotoStart();	

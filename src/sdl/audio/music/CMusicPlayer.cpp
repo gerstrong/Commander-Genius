@@ -10,8 +10,8 @@
 
 void CMusicPlayer::reload()
 {
-	close();
-	open();
+    close(true);
+    open(true);
 }
 
 void CMusicPlayer::play(const bool value)

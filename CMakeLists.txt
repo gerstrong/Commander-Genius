@@ -71,7 +71,7 @@ endif(UNIX)
 IF(WIN32)
 
     include(FindSDL2.cmake)	
-	include(FindSDL2_net.cmake)	
+    include(FindSDL2_net.cmake)	
 
     if(SDL2_FOUND)
         message(STATUS "Using shared SDL Version 2 for Commander Genius")

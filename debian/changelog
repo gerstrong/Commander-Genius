@@ -1,3 +1,29 @@
+commandergenius (1.9.5ppa5) xenial; urgency=low
+
+  *  Deadlock fixes
+
+ -- Gerhard Stein <gerstrong@gmail.com>  Wed, 29 Jun 2016 19:35:41 +0200
+
+commandergenius (1.9.5ppa4) xenial; urgency=low
+
+  *  Search path fixes
+
+ -- Gerhard Stein <gerstrong@gmail.com>  Wed, 29 Jun 2016 16:06:38 +0200
+
+commandergenius (1.9.5ppa3) xenial; urgency=low
+
+  *  Crash fixes
+  *  Improved Game Center
+
+ -- Gerhard Stein <gerstrong@gmail.com>  Wed, 29 Jun 2016 15:12:27 +0200
+
+
+commandergenius (1.9.5ppa2) xenial; urgency=low
+
+  *  Xenial build set
+
+ -- Gerhard Stein <gerstrong@gmail.com>  Sun, 26 Jun 2016 19:00:44 +0200
+
 commandergenius (1.9.5ppa1) trusty; urgency=low
 
   *  New Downloader which automatically downloads your games
@@ -5,7 +31,7 @@ commandergenius (1.9.5ppa1) trusty; urgency=low
   *  Cheats menu for those who lack of inputting shortcuts
   *  Lots of bugs this time in the audio department
 
- -- Gerhard Stein <gerstrong@gmail.com>  Sat, 25 Jun 2016 19:05:39 +0200
+ -- Gerhard Stein <gerstrong@gmail.com>  Sun, 26 Jun 2016 18:38:25 +0200
 
 
 commandergenius (1.9.1ppa2) trusty; urgency=low
@@ -76,7 +102,7 @@ commandergenius (1.8.2.1ppa1) trusty; urgency=low
 
  -- Gerhard Stein <gerstrong@gmail.com>  Thu, 02 Jul 2015 14:07:37 +0200
 
- commandergenius (1.8.2ppa3) trusty; urgency=low
+commandergenius (1.8.2ppa3) trusty; urgency=low
 
   * Rebuild
 

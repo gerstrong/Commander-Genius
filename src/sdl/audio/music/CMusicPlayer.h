@@ -23,11 +23,11 @@ public:
     virtual bool loadMusicTrack(const int track) = 0;
 
     virtual bool loadMusicFromFile(const std::string& filename) = 0;
-	virtual bool open() = 0;
+    virtual bool open(const bool lock) = 0;
 	void reload();
 	virtual void readBuffer(Uint8* buffer, Uint32 length) = 0;
 	void play(const bool value);
-    virtual void close() = 0;
+    virtual void close(const bool lock) = 0;
 
 	bool playing() const { return m_playing; }
 

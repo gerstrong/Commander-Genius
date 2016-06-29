@@ -40,7 +40,7 @@ COGGPlayer::~COGGPlayer()
 {
     if(!m_filename.empty())
     {
-        close();
+        close(true);
     }
 }
 
@@ -65,16 +65,16 @@ bool COGGPlayer::loadMusicFromFile(const std::string& filename)
     return true;
 }
 
-bool COGGPlayer::open()
+bool COGGPlayer::open(const bool lock)
 {       
-    while(SDL_GetAudioStatus() == SDL_AUDIO_PLAYING);
+    //while(SDL_GetAudioStatus() == SDL_AUDIO_PLAYING);
 
     if(m_Audio_cvt.buf)
     {
-        close();
+        close(lock);
     }
 
-    SDL_LockAudio();
+    if(lock) SDL_LockAudio();
 
 
     auto &audioSpec = g_pSound->getAudioSpec();
@@ -85,7 +85,7 @@ bool COGGPlayer::open()
 
     if(ov_fopen((char*)GetFullFileName(m_filename).c_str(), &m_oggStream) != 0)
     {
-        SDL_UnlockAudio();
+        if(lock) SDL_UnlockAudio();
         return false;
     }
 
@@ -122,7 +122,7 @@ bool COGGPlayer::open()
 
 	if(ret == -1)
     {
-        SDL_UnlockAudio();
+        if(lock) SDL_UnlockAudio();
 		return false;
     }
 
@@ -138,7 +138,7 @@ bool COGGPlayer::open()
 
     m_Audio_cvt.buf = new Uint8[m_Audio_cvt.len*m_Audio_cvt.len_mult];
 
-    SDL_UnlockAudio();
+    if(lock) SDL_UnlockAudio();
 
     return true;
 }
@@ -152,7 +152,7 @@ bool COGGPlayer::loadMusicTrack(const int track)
 	if(m_filename.empty())	
 	   return false;
 	    
-    return open();
+    return open(true);
 }
 
 
@@ -241,8 +241,8 @@ void COGGPlayer::readBuffer(Uint8* buffer, Uint32 length)
 
     if(m_Audio_cvt.buf == nullptr)
     {
-        close();
-        open();
+        close(false);
+        open(false);
         play(true);
         return;
     }    
@@ -255,18 +255,18 @@ void COGGPlayer::readBuffer(Uint8* buffer, Uint32 length)
 
 	if(rewind)
 	{
-		close();
-		open();
+        close(false);
+        open(false);
 		play(true);
 	}
 
 }
 
-void COGGPlayer::close()
+void COGGPlayer::close(const bool lock)
 {
-    while(SDL_GetAudioStatus() == SDL_AUDIO_PLAYING);
+    //while(SDL_GetAudioStatus() == SDL_AUDIO_PLAYING);
 
-    SDL_LockAudio();
+    if(lock)  SDL_LockAudio();
 
  	if(m_Audio_cvt.buf)
     {
@@ -282,7 +282,7 @@ void COGGPlayer::close()
 
 	ov_clear(&m_oggStream);
 
-    SDL_UnlockAudio();
+    if(lock) SDL_UnlockAudio();
 }
 
 #endif

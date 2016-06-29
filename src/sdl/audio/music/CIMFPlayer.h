@@ -37,8 +37,8 @@ public:
 
 	void OPLUpdate(byte *buffer, const unsigned int length);
 
-	bool open();
-	void close();
+    bool open(const bool lock);
+    void close(const bool lock);
 	void readBuffer(Uint8* buffer, Uint32 length);
 
 

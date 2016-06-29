@@ -62,8 +62,10 @@ bool CSettings::saveDrvCfg()
         Configuration.Parse();
 
         int i = 1;
+
         for(searchpathlist::const_iterator p = tSearchPaths.begin(); p != tSearchPaths.end(); p++, i++)
             Configuration.WriteString("FileHandling", "SearchPath" + itoa(i), *p);
+
         CVidConfig &VidConf = gVideoDriver.getVidConfig();
         Configuration.SetKeyword("Video", "fullscreen", VidConf.Fullscreen);
         Configuration.SetKeyword("Video", "OpenGL", VidConf.m_opengl);
