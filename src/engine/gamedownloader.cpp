@@ -225,6 +225,8 @@ bool GameDownloader::checkForMissingGames( std::vector< std::string > &missingLi
         {
             const std::string newPath = JoinPaths(*i, gameCatalogueStr);
 
+	    gLogging.ftextOut("Looking at: %s<br>", newPath.c_str() );
+
             if(loadCatalogue(newPath))
             {
                 cataFound = true;
