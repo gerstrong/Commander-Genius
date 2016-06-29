@@ -1,3 +1,15 @@
+commandergenius (1.9.5ppa5) xenial; urgency=low
+
+  *  Deadlock fixes
+
+ -- Gerhard Stein <gerstrong@gmail.com>  Wed, 29 Jun 2016 19:35:41 +0200
+
+commandergenius (1.9.5ppa4) xenial; urgency=low
+
+  *  Search path fixes
+
+ -- Gerhard Stein <gerstrong@gmail.com>  Wed, 29 Jun 2016 16:06:38 +0200
+
 commandergenius (1.9.5ppa3) xenial; urgency=low
 
   *  Crash fixes
@@ -90,7 +102,7 @@ commandergenius (1.8.2.1ppa1) trusty; urgency=low
 
  -- Gerhard Stein <gerstrong@gmail.com>  Thu, 02 Jul 2015 14:07:37 +0200
 
- commandergenius (1.8.2ppa3) trusty; urgency=low
+commandergenius (1.8.2ppa3) trusty; urgency=low
 
   * Rebuild
 
