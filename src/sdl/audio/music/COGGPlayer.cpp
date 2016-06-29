@@ -67,6 +67,8 @@ bool COGGPlayer::loadMusicFromFile(const std::string& filename)
 
 bool COGGPlayer::open()
 {       
+    while(SDL_GetAudioStatus() == SDL_AUDIO_PLAYING);
+
     if(m_Audio_cvt.buf)
     {
         close();
@@ -133,7 +135,7 @@ bool COGGPlayer::open()
 
 
 bool COGGPlayer::loadMusicTrack(const int track)
-{	
+{	       
     m_filename = "slot" + itoa(track) + ".ogg";
     m_filename = getResourceFilename(JoinPaths("music", m_filename), gKeenFiles.gameDir, false, false);
 
@@ -255,6 +257,8 @@ void COGGPlayer::readBuffer(Uint8* buffer, Uint32 length)
 
 void COGGPlayer::close()
 {
+    while(SDL_GetAudioStatus() == SDL_AUDIO_PLAYING);
+
  	if(m_Audio_cvt.buf)
     {
 		delete [] m_Audio_cvt.buf;
@@ -263,8 +267,6 @@ void COGGPlayer::close()
     m_Audio_cvt.buf = nullptr;
 	
 	m_playing = false;
-
-    while(SDL_GetAudioStatus() == SDL_AUDIO_PLAYING);
 
 	m_music_pos = 0;
 	m_pcm_size = 0;		
