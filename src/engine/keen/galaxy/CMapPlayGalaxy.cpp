@@ -545,6 +545,8 @@ void CMapPlayGalaxy::operator<<(boost::property_tree::ptree &levelNode)
     mMap.mNumFuses = 0;
     mMap.mFuseInLevel = false;
 
+    gLogging.textOut("Restoring enemies status");
+
     for( auto &levelItem : levelNode )
     {
         if(levelItem.first == "Sprite")
@@ -592,6 +594,7 @@ void CMapPlayGalaxy::operator<<(boost::property_tree::ptree &levelNode)
         }
     }
 
+    gLogging.textOut("Restoring map status");
 
     // Save the map_data as it is left
     {
