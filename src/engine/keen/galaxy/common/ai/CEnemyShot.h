@@ -5,7 +5,7 @@
  *      Author: gerstrong
  *
  * This class will process all the enemy shots which kill Keen and go straight one direction
- * Those can Sprite shots and darts in Keen 4 for example.
+ * Those can be sprite shots in Keen 4 for example.
  */
 
 #ifndef CENEMYSHOT_H_

@@ -83,7 +83,7 @@ bool CMusic::load(const std::string &musicfile)
 #endif
 		}
 
-        if(!mpPlayer->open())
+        if(!mpPlayer->open(true))
 		{
 		    mpPlayer.reset();
 		    gLogging.textOut(PURPLE,"Music Manager: File could not be opened: \"%s\". File is damaged or something is wrong with your soundcard!<br>", musicfile.c_str());
@@ -145,8 +145,8 @@ void CMusic::stop()
 
     g_pSound->pauseAudio();
 
-	mpPlayer->close();
-	mpPlayer.reset();
+    mpPlayer->close(true);
+    mpPlayer.reset();
 
     g_pSound->resumeAudio();
 }

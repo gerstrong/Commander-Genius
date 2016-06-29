@@ -25,17 +25,17 @@ mTimer(0)
     {
         if(xDirection == LEFT && yDirection == CENTER)
         {
-            m_Pos.x += (1<<CSF);
+            m_Pos.x += (7<<STC);
             m_Pos.y += (7<<STC);
         }
         else if(xDirection == CENTER && yDirection == UP)
         {
-            m_Pos.y -= (1<<CSF);
+            m_Pos.y -= (7<<STC);
             m_Pos.x += (7<<STC);
         }
         else if(xDirection == RIGHT && yDirection == CENTER)
         {
-            m_Pos.x -= (1<<CSF);
+            m_Pos.x -= (7<<STC);
             m_Pos.y += (7<<STC);
         }
         else if(xDirection == CENTER && yDirection == DOWN)

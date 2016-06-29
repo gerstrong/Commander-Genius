@@ -36,9 +36,9 @@ public:
 
     bool loadMusicTrack(const int track);
     bool loadMusicFromFile(const std::string& filename);
-	bool open();
+    bool open(const bool lock);
 	void readBuffer(Uint8* buffer, Uint32 length);
-	void close();
+    void close(const bool lock);
 
 private:
     bool readOGGStream(char *buffer, const size_t &size, const SDL_AudioSpec &OGGAudioSpec );
