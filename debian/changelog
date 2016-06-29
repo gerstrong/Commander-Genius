@@ -1,4 +1,18 @@
-commandergenius (1.9.5ppa1) xenial; urgency=low
+commandergenius (1.9.5ppa3) xenial; urgency=low
+
+  *  Crash fixes
+  *  Improved Game Center
+
+ -- Gerhard Stein <gerstrong@gmail.com>  Sun, 26 Jun 2016 19:00:44 +0200
+
+
+commandergenius (1.9.5ppa2) xenial; urgency=low
+
+  *  Xenial build set
+
+ -- Gerhard Stein <gerstrong@gmail.com>  Sun, 26 Jun 2016 19:00:44 +0200
+
+commandergenius (1.9.5ppa1) trusty; urgency=low
 
   *  New Downloader which automatically downloads your games
   *  Sandwich menu for touchpad devices
