@@ -833,6 +833,16 @@ void CGameLauncher::ponder(const float deltaT)
     #ifdef DOWNLOADER
     if(mpGameStoreDialog)
     {
+        // Command (Keyboard/Joystick) events for the game center dialog
+        for( int cmd = IC_LEFT ; cmd < MAX_COMMANDS ; cmd++ )
+        {
+            if( gInput.getPressedCommand(cmd) )
+            {
+                mpGameStoreDialog->sendEvent(new CommandEvent( static_cast<InputCommands>(cmd) ));
+                break;
+            }
+        }
+
         mpGameStoreDialog->processLogic();
         ponderDownloadDialog();
         return;
