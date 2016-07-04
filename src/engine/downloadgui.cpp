@@ -24,8 +24,8 @@ void CGameLauncher::verifyGameStore()
 
     if(!missingList.empty())
     {
-        GsButton *downloadBtn = new GsButton( "New Stuff", new GMDownloadDlgOpen() );
-        mLauncherDialog.addControl( downloadBtn, GsRect<float>(0.35f, 0.865f, 0.3f, 0.07f) );
+        GsButton *downloadBtn = new GsButton( "Game Center", new GMDownloadDlgOpen() );
+        mLauncherDialog.addControl( downloadBtn, GsRect<float>(0.35f, 0.865f, 0.25f, 0.07f) );
     }
 
     mGameCatalogue = gameDownloader.getGameCatalogue();
