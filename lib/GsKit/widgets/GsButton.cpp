@@ -96,12 +96,35 @@ void GsButton::drawNoStyle(SDL_Rect& lRect)
 
     int lComp;
 
+    // Set as default a grey border
+    Uint32 borderColor = blitsfc.mapRGBA( 0xBB, 0xBB, 0xBB, 0xFF);
+
     if(mEnabled)
     {
         if( mPressed || mSelected )
+        {
+            // Try to highlight the border color a bit more by determing which one dominates the most
+            auto red   = Uint8(mRed*127.0f);
+            auto green = Uint8(mGreen*127.0f);
+            auto blue  = Uint8(mBlue*127.0f);
+
+            if(red > green && red > blue)
+                red <<= 1;
+            else if(green > red  && green > blue)
+                green <<= 1;
+            else if(blue > green && blue > red )
+                blue <<= 1;
+
+
+            // If want to highlight the button set the color
+            borderColor = blitsfc.mapRGBA( red, green, blue, 0xFF);
+
             lComp = 0xFF - (mLightRatio*(0xFF-0xCF)/255);
+        }
         else
+        {
             lComp = 0xFF - (mLightRatio*(0xFF-0xDF)/255);
+        }
     }
     else
     {
@@ -110,15 +133,16 @@ void GsButton::drawNoStyle(SDL_Rect& lRect)
 
 
     auto lcompf = float(lComp);
-    auto red   = Uint32(lcompf*mRed);
-    auto green = Uint32(lcompf*mGreen);
-    auto blue  = Uint32(lcompf*mBlue);
 
-    const auto fillColor = blitsfc.mapRGBA( red, green, blue, 0xFF);
+    auto redC   = Uint8(lcompf*mRed);
+    auto greenC = Uint8(lcompf*mGreen);
+    auto blueC  = Uint8(lcompf*mBlue);
+
+    const auto fillColor = blitsfc.mapRGBA( redC, greenC, blueC, 0xFF);
 
     GsRect<Uint16> rect(lRect);
 
-    blitsfc.drawRect( rect, 1, 0xFFBBBBBB, fillColor );
+    blitsfc.drawRect( rect, 2, borderColor, fillColor );
 
 
     // Now lets draw the text of the list control

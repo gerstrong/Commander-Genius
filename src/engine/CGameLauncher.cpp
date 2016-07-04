@@ -155,15 +155,6 @@ bool CGameLauncher::setupMenu()
     mLauncherDialog.addControl(mpSelList, GsRect<float>(0.01f, 0.07f, 0.49f, 0.79f));
 
 
-    mpStartButton = std::dynamic_pointer_cast<GsButton>
-                (
-                mLauncherDialog.addControl
-                   (
-                       new GsButton( "Start >", new GMStart() ),
-                                     GsRect<float>(0.65f, 0.865f, 0.3f, 0.07f)
-                   )
-                ) ;
-
 #ifdef DBFUSION
 
     GsButton *fusionShellBtn = new GsButton( "DosFusion Shell >", new GMDBFusionStart() );
@@ -184,6 +175,16 @@ bool CGameLauncher::setupMenu()
     verifyGameStore();
     #endif
 
+    mpStartButton = std::dynamic_pointer_cast<GsButton>
+                (
+                mLauncherDialog.addControl
+                   (
+                       new GsButton( "Start >", new GMStart() ),
+                                     GsRect<float>(0.65f, 0.865f, 0.25f, 0.07f)
+                   )
+                ) ;
+
+
     mpEpisodeText = new CGUIText("Game");
     mpVersionText = new CGUIText("Version");
     mLauncherDialog.addControl(mpEpisodeText, GsRect<float>(0.5f, 0.75f, 0.5f, 0.05f));
@@ -198,10 +199,8 @@ bool CGameLauncher::setupMenu()
     // Banner. TODO: Create a class for that...
     CGUIBanner *banner = new CGUIBanner("Commander Genius " CGVERSION "\n"
                     "By Gerstrong,\n"
-                    "Hagel,\n"
-                    "Tulip,\n"
-                    "NY00123,\n"
                     "Pelya,\n"
+                    "Hagel,\n"
 					"and the CG Contributors\n");
     mLauncherDialog.addControl( banner, GsRect<float>(0.0f, 0.95f, 1.0f, 0.05f) );
 
@@ -834,6 +833,16 @@ void CGameLauncher::ponder(const float deltaT)
     #ifdef DOWNLOADER
     if(mpGameStoreDialog)
     {
+        // Command (Keyboard/Joystick) events for the game center dialog
+        for( int cmd = IC_LEFT ; cmd < MAX_COMMANDS ; cmd++ )
+        {
+            if( gInput.getPressedCommand(cmd) )
+            {
+                mpGameStoreDialog->sendEvent(new CommandEvent( static_cast<InputCommands>(cmd) ));
+                break;
+            }
+        }
+
         mpGameStoreDialog->processLogic();
         ponderDownloadDialog();
         return;
