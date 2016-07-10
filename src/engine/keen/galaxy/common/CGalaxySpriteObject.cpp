@@ -356,6 +356,15 @@ bool CGalaxySpriteObject::processActionRoutine()
 	 *	4 is used for sprites that must hit or land on the ground.
 	 */
 
+
+    /*
+    Movement Parm       Behaviour Called...    Action Movements Applied...        Delay field is used?
+    0                   Once                   Once                               Yes
+    1                   Once                   Every frame                        Yes
+    2                   Every frame            Not applied                        No
+    3                   Every frame            Once                               Yes
+    4                   Every frame            Every frame                        Yes
+    */
 	if( m_Action.type > 0 )
 	{
 		if(xDirection == LEFT )
@@ -372,9 +381,10 @@ bool CGalaxySpriteObject::processActionRoutine()
 	if(mEndOfAction)
 		return false;
 
-    m_ActionTicker ++;
+    m_ActionTicker++;
 
-	if( m_ActionTicker > m_Action.timer )
+    // TODO: Calculate this timer correctly to the applied LPS value
+    if( m_ActionTicker > m_Action.timer )
 	{
 		if( m_Action.timer != 0 )
 		{
