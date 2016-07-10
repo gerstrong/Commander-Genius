@@ -65,7 +65,9 @@ void CGUIBitmap::processLogic()
 void CGUIBitmap::processRender(const GsRect<float> &RectDispCoordFloat)
 {    
     if(mScaledBitmap.empty())
+    {
         return;
+    }
 
 	// Transform to the display coordinates
 	GsRect<float> displayRect = mRect;

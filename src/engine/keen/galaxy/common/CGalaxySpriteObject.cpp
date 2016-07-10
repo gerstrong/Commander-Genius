@@ -372,6 +372,8 @@ bool CGalaxySpriteObject::processActionRoutine()
 	if(mEndOfAction)
 		return false;
 
+    m_ActionTicker ++;
+
 	if( m_ActionTicker > m_Action.timer )
 	{
 		if( m_Action.timer != 0 )
@@ -382,10 +384,6 @@ bool CGalaxySpriteObject::processActionRoutine()
 				mEndOfAction = true;
 		}
 		m_ActionTicker = 0;
-	}
-	else
-	{
-		m_ActionTicker += 2;
 	}
 
 	return !mEndOfAction;
