@@ -75,22 +75,28 @@ void scaleDynamic( SDL_Surface *srcSfc,
 
 
     if(pitch >= 0)
+    {
         dstPixel += pitch;
+    }
 
     if(dstRect.x >= 0)
+    {
         dstPixel += dstRect.x;
+    }
 
     if(dstRect.w > dstSfc->w)
+    {
         dstRect.w = dstSfc->w;
+    }
 
     if(dstRect.h > dstSfc->h)
+    {
         dstRect.h = dstSfc->h;
+    }
 
 	float xSrc, ySrc;
 
     ySrc = 0.0f;
-
-    //SDL_PixelFormat *format = srcSfc->format;
 
 
     if(equalWidth)

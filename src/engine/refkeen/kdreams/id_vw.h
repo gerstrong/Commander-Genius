@@ -144,7 +144,7 @@
 // setting to 0 causes setscreen and waitvbl
 // to skip waiting for VBL (for timing things)
 
-#define WAITFORVBL 1
+//#define WAITFORVBL 1
 
 typedef enum {NOcard,MDAcard,CGAcard,EGAcard,MCGAcard,VGAcard,
 		  HGCcard=0x80,HGCPcard,HICcard} cardtype;
@@ -204,9 +204,9 @@ extern	id0_unsigned_t	ylookup[VIRTUALHEIGHT];
 
 extern	id0_boolean_t		screenfaded;
 
-extern	pictabletype	id0_seg *pictable;
-extern	pictabletype	id0_seg *picmtable;
-extern	spritetabletype id0_seg *spritetable;
+extern	pictabletype	*pictable;
+extern	pictabletype	*picmtable;
+extern	spritetabletype *spritetable;
 
 extern	id0_int_t			px,py;
 extern	id0_byte_t		pdrawmode,fontcolor;

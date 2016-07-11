@@ -1724,16 +1724,19 @@ void RF_Refresh (int updateGraphics, int semaphore)
 
         // Lock Rendering
         if(semaphore)
+        {
             SDL_SemWait( gpRenderLock );
-
+        }
 
         //
         // display the changed screen
         //
-        VW_SetScreen(bufferofs+panadjust,panx & xpanmask);
+        BE_ST_SetScreenStartAddress(bufferofs+panadjust);
 
         if(semaphore)
+        {
             SDL_SemPost( gpRenderLock );
+        }
 
 
         //
