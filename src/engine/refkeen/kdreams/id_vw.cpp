@@ -73,9 +73,9 @@ id0_unsigned_t	ylookup[VIRTUALHEIGHT];
 
 id0_boolean_t		screenfaded;
 
-pictabletype	id0_seg *pictable;
-pictabletype	id0_seg *picmtable;
-spritetabletype id0_seg *spritetable;
+pictabletype	*pictable = nullptr;
+pictabletype	*picmtable = nullptr;
+spritetabletype *spritetable = nullptr;
 
 /*
 =============================================================================
@@ -112,11 +112,11 @@ extern	id0_unsigned_t	bufferwidth,bufferheight;	// used by font drawing stuff
 =======================
 */
 
-static const id0_char_t *ParmStrings[] = {"HIDDENCARD",""};
+//static const id0_char_t *ParmStrings[] = {"HIDDENCARD",""};
 
 void	VW_Startup (void)
 {
-	id0_int_t i;
+    //id0_int_t i;
 
 	// Originally used for certain ASM code loops (clears direction flag)
 	//asm	cld;

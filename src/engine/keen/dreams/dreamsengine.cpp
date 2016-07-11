@@ -330,18 +330,6 @@ bool DreamsEngine::loadResources()
 
         int handle()
         {
-            CExeFile &ExeFile = gKeenFiles.exeFile;
-
-            mLoader.setPermilage(10);
-
-            // Patch the EXE-File-Data directly in the memory.
-            CPatcher Patcher(ExeFile, gpBehaviorEngine->mPatchFname);
-            Patcher.process();
-
-            mLoader.setPermilage(50);
-
-            extractEmbeddedFilesIntoMemory(g_be_gamever_kdreamse113);
-
             gEventManager.add(new FinishedLoadingResources());
 
             return 1;
@@ -549,6 +537,18 @@ void DreamsEngine::applyScreenMode()
 
 void DreamsEngine::start()
 {
+    CExeFile &ExeFile = gKeenFiles.exeFile;
+
+    //mLoader.setPermilage(10);
+
+    // Patch the EXE-File-Data directly in the memory.
+    CPatcher Patcher(ExeFile, gpBehaviorEngine->mPatchFname);
+    Patcher.process();
+
+    //mLoader.setPermilage(50);
+
+    extractEmbeddedFilesIntoMemory(g_be_gamever_kdreamse113);
+
     // Global for the legacy refkeen code.
     gDreamsEngine = this;    
     gpRenderLock = SDL_CreateSemaphore(1);
@@ -628,6 +628,8 @@ void DreamsEngine::render()
 {
     // Lock Rendering
     SDL_SemWait( gpRenderLock );
+
+    BE_ST_EGASetPelPanning(panx & 6);
 
     mpScene->render();
 

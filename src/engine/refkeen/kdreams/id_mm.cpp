@@ -477,9 +477,8 @@ void MM_Shutdown (void)
 
 void MM_GetPtr (memptr *baseptr,id0_unsigned_long_t size)
 {
-	mmblocktype id0_far *scan,id0_far *lastscan,id0_far *endscan
-				,id0_far *purge,id0_far *next;
-	id0_int_t			search;
+    mmblocktype     *scan, *lastscan, *endscan, *purge, *next;
+    id0_int_t		search;
 	id0_unsigned_t	needed,startseg;
 
 	needed = (size+15)/16;		// convert size from bytes to paragraphs
@@ -497,10 +496,10 @@ void MM_GetPtr (memptr *baseptr,id0_unsigned_long_t size)
 
 	for (search = 0; search<3; search++)
 	{
-	//
-	// first search:	try to allocate right after the rover, then on up
-	// second search: 	search from the head pointer up to the rover
-	// third search:	compress memory, then scan from start
+        //
+        // first search:	try to allocate right after the rover, then on up
+        // second search: 	search from the head pointer up to the rover
+        // third search:	compress memory, then scan from start
 		if (search == 1 && mmrover == mmhead)
 			search++;
 
@@ -509,7 +508,7 @@ void MM_GetPtr (memptr *baseptr,id0_unsigned_long_t size)
 		case 0:
 			lastscan = mmrover;
 			scan = mmrover->next;
-			endscan = NULL;
+            endscan = nullptr;
 			break;
 		case 1:
 			lastscan = mmhead;
@@ -520,7 +519,7 @@ void MM_GetPtr (memptr *baseptr,id0_unsigned_long_t size)
 			MM_SortMem ();
 			lastscan = mmhead;
 			scan = mmhead->next;
-			endscan = NULL;
+            endscan = nullptr;
 			break;
 		}
 
@@ -537,7 +536,7 @@ void MM_GetPtr (memptr *baseptr,id0_unsigned_long_t size)
 			//
 				purge = lastscan->next;
 				lastscan->next = mmnew;
-				mmnew->start /*= *(id0_unsigned_t *)baseptr*/ = startseg;
+                mmnew->start = startseg;
 				*baseptr = EMULATED_SEG_TO_PTR(startseg);
 				mmnew->next = scan;
 				while ( purge != scan)

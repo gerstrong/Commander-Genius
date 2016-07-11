@@ -116,8 +116,8 @@ extern	id0_byte_t	*audiohead;
 extern	id0_byte_t	*audiodict;
 
 
-id0_long_t		id0_seg *grstarts;	// array of offsets in egagraph, -1 for sparse
-id0_long_t		id0_seg *audiostarts;	// array of offsets in audio / audiot
+id0_long_t		*grstarts = nullptr;	// array of offsets in egagraph, -1 for sparse
+id0_long_t		*audiostarts = nullptr;	// array of offsets in audio / audiot
 
 #ifdef GRHEADERLINKED
 huffnode	*grhuffman;

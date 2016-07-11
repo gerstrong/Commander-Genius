@@ -1207,10 +1207,10 @@ ENDP
 //
 //==============
 
-void 	VW_SetScreen (id0_unsigned_t CRTC, id0_unsigned_t pelpan)
+void 	VW_SetScreen(id0_unsigned_t CRTC, id0_unsigned_t pelpan)
 {    
 
-#if WAITFORVBL
+/*#if WAITFORVBL
 #if 0
 	mov	dx,STATUS_REGISTER_1
 
@@ -1229,9 +1229,9 @@ void 	VW_SetScreen (id0_unsigned_t CRTC, id0_unsigned_t pelpan)
 	test	al,01b
 	jnz	@@waitdisplay
 #endif
-#endif
+#endif*/
 	BE_ST_SetScreenStartAddress(CRTC);
-#if WAITFORVBL
+/*#if WAITFORVBL
 #if 0
 ;
 ; wait for a vertical retrace to set pel panning
@@ -1246,13 +1246,13 @@ void 	VW_SetScreen (id0_unsigned_t CRTC, id0_unsigned_t pelpan)
 	jz	@@waitvbl
 
 #endif
-#endif
+#endif*/
 	BE_ST_EGASetPelPanning(pelpan);
-#if WAITFORVBL
+/*#if WAITFORVBL
 	// (REFKEEN) Doing this before BE_ST_EGASetPelPanning leads to
 	// very scrolling glitches, so call here instead
 	VW_WaitVBL(1);
-#endif
+#endif*/
 }
 
 #if NUMFONT+NUMFONTM
