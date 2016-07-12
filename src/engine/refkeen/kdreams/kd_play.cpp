@@ -1564,176 +1564,188 @@ void NewState (objtype *ob,statetype *state)
 */
 
 
-
-void PlayLoop()
+void PlayLoopInit()
 {
-	// REFKEEN - Alternative controllers support	
+    // REFKEEN - Alternative controllers support
     /*BE_ST_AltControlScheme_Push();
     BE_ST_AltControlScheme_PrepareInGameControls(KbdDefs[0].button0, KbdDefs[0].button1, KbdDefs[0].up, KbdDefs[0].down, KbdDefs[0].left, KbdDefs[0].right);*/
 
-	objtype	*obj, *check;
-	//id0_long_t	newtime;
+    objtype	*obj, *check;
+    //id0_long_t	newtime;
 
-	button0held = button1held = false;
+    button0held = button1held = false;
 
-	ingame = true;
-	playstate = notdone/*0*/;
-	plummet = 0;
+    ingame = true;
+    playstate = notdone/*0*/;
+    plummet = 0;
 
-	FixScoreBox ();					// draw bomb/flower
-
-	do
-    {                
-		CalcSingleGravity ();
-		IN_ReadControl(0,&c);		// get player input
-		if (!c.button0)
-			button0held = 0;
-		if (!c.button1)
-			button1held = 0;
+    FixScoreBox ();					// draw bomb/flower
+}
 
 
-        // Status screen code in which you have to press a key to close.
-        // Also it will render correctly
-        if(openedStatusWindow)
-        {
-           StatusWindow();
+void PlayLoopRun()
+{
+    CalcSingleGravity ();
+    IN_ReadControl(0,&c);		// get player input
+    if (!c.button0)
+        button0held = 0;
+    if (!c.button1)
+        button1held = 0;
 
-           if(c.button0 || c.button1 ||
-                   Keyboard[sc_Space] || gInput.getPressedAnyButtonCommand(0))
-           {
-               openedStatusWindow = false;
-               RF_ForceRefresh();
 
-               lasttimecount = SD_GetTimeCount();
-               IN_ClearKeysDown();
-               gInput.flushAll();
-           }
+    // Status screen code in which you have to press a key to close.
+    // Also it will render correctly
+    if(openedStatusWindow)
+    {
+       StatusWindow();
 
-           RF_Refresh(false, true);
+       if(c.button0 || c.button1 ||
+               Keyboard[sc_Space] || gInput.getPressedAnyButtonCommand(0))
+       {
+           openedStatusWindow = false;
+           RF_ForceRefresh();
 
-           continue;
-        }
+           lasttimecount = SD_GetTimeCount();
+           IN_ClearKeysDown();
+           gInput.flushAll();
+       }
+
+       RF_Refresh(false, true);
+
+       return;
+    }
 
 
 
 //
 // go through state changes and propose movements
 //
-		obj = player;
-		do
-		{
-			if (!obj->active
-			&& obj->tileright >= originxtile
-			&& obj->tileleft <= originxtilemax
-			&& obj->tiletop <= originytilemax
-			&& obj->tilebottom >= originytile)
-			{
-				obj->needtoreact = true;
-				obj->active = yes;
-			}
+    objtype	*obj = player;
+    do
+    {
+        if (!obj->active
+        && obj->tileright >= originxtile
+        && obj->tileleft <= originxtilemax
+        && obj->tiletop <= originytilemax
+        && obj->tilebottom >= originytile)
+        {
+            obj->needtoreact = true;
+            obj->active = yes;
+        }
 
-			if (obj->active)
-				StateMachine(obj);
+        if (obj->active)
+            StateMachine(obj);
 
-			if ( (obj->active == true || obj->active == removable) &&
-			(  obj->tileright < inactivateleft
-			|| obj->tileleft > inactivateright
-			|| obj->tiletop > inactivatebottom
-			|| obj->tilebottom < inactivatetop) )
-			{
-				if (obj->active == removable)
-					RemoveObj (obj);				// temp thing (shots, etc)
-				else
-				{
-					if (US_RndT()<tics)				// let them get a random dist
-					{
-						RF_RemoveSprite (&obj->sprite);
-						obj->active = no;
-					}
-				}
-			}
+        if ( (obj->active == true || obj->active == removable) &&
+        (  obj->tileright < inactivateleft
+        || obj->tileleft > inactivateright
+        || obj->tiletop > inactivatebottom
+        || obj->tilebottom < inactivatetop) )
+        {
+            if (obj->active == removable)
+                RemoveObj (obj);				// temp thing (shots, etc)
+            else
+            {
+                if (US_RndT()<tics)				// let them get a random dist
+                {
+                    RF_RemoveSprite (&obj->sprite);
+                    obj->active = no;
+                }
+            }
+        }
 
-			obj = (objtype *)obj->next;
-		} while (obj);
+        obj = (objtype *)obj->next;
+    } while (obj);
 
 //
 // check for and handle collisions between objects
 //
-		obj = player;
-		do
-		{
-			if (obj->active)
-			{
-				check = (objtype *)obj->next;
-				while (check)
-				{
-					if ( check->active
-					&& obj->right > check->left
-					&& obj->left < check->right
-					&& obj->top < check->bottom
-					&& obj->bottom > check->top)
-					{
+    obj = player;
+    do
+    {
+        if (obj->active)
+        {
+            check = (objtype *)obj->next;
+            while (check)
+            {
+                if ( check->active
+                && obj->right > check->left
+                && obj->left < check->right
+                && obj->top < check->bottom
+                && obj->bottom > check->top)
+                {
 //#pragma warn -pro
-						if (obj->state->contactptr)
-							obj->state->contactptr(obj,check);
-						if (check->state->contactptr)
-							check->state->contactptr(check,obj);
+                    if (obj->state->contactptr)
+                        obj->state->contactptr(obj,check);
+                    if (check->state->contactptr)
+                        check->state->contactptr(check,obj);
 //#pragma warn +pro
-						if (!obj->obclass)
-							break;				// contact removed object
-					}
-					check = (objtype *)check->next;
-				}
-			}
-			obj = (objtype *)obj->next;
-		} while (obj);
+                    if (!obj->obclass)
+                        break;				// contact removed object
+                }
+                check = (objtype *)check->next;
+            }
+        }
+        obj = (objtype *)obj->next;
+    } while (obj);
 
 
-		ScrollScreen();
+    ScrollScreen();
 
 //
 // react to whatever happened, and post sprites to the refresh manager
 //
-		obj = player;
-		do
-		{
-			if (obj->needtoreact && obj->state->reactptr)
-			{
-				obj->needtoreact = false;
+    obj = player;
+    do
+    {
+        if (obj->needtoreact && obj->state->reactptr)
+        {
+            obj->needtoreact = false;
 //#pragma warn -pro
-				obj->state->reactptr(obj);
+            obj->state->reactptr(obj);
 //#pragma warn +pro
-			}
-			obj = (objtype *)obj->next;
-		} while (obj);
+        }
+        obj = (objtype *)obj->next;
+    } while (obj);
 
 
 //
 // update the screen and calculate the number of tics it took to execute
-// this cycle of events (for adaptive timing of next cycle)                        
+// this cycle of events (for adaptive timing of next cycle)
 //
 
-        RF_Refresh(true, true);
+    RF_Refresh(true, true);
 
 
-        if(gDreamsForceClose)
-            break;
+    if(gDreamsForceClose)
+        return;
 
 //
 // single step debug mode
 //
-		if (singlestep)
-		{
-			VW_WaitVBL(14);
-			lasttimecount = SD_GetTimeCount();
-		}
+    if (singlestep)
+    {
+        VW_WaitVBL(14);
+        lasttimecount = SD_GetTimeCount();
+    }
 
 
-		CheckKeys();
+    CheckKeys();
 
 
-        if(gDreamsForceClose)
-            return;
+    if(gDreamsForceClose)
+        return;
+
+}
+
+void PlayLoop()
+{
+
+    PlayLoopInit();
+
+	do
+    {                
+        PlayLoopRun();
 
 	} while (!loadedgame && !playstate);
 
