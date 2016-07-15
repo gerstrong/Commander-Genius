@@ -620,10 +620,14 @@ bool CSaveGameController::load()
     StateFile.get(); // Skip the version info
     size = StateFile.get(); // get the size of the slotname and...
     for(Uint32 i=0 ; i<size ; i++)	// skip that name string
+    {
     	StateFile.get();
+    }
 
-    while(!StateFile.eof()) // read it everything in
+    while(!StateFile.eof())
+    {   // read it everything in
     	m_datablock.push_back(StateFile.get());
+    }
 
 	// TODO: Decompression has still to be done!
 

@@ -34,6 +34,49 @@ ELSEIF(CMAKE_BUILD_TYPE STREQUAL "Release")
 ENDIF(CMAKE_BUILD_TYPE STREQUAL "Debug")
 
 
+if(USE_SDL2)
+
+    IF(WIN32)
+      include(FindSDL2 OPTIONAL)
+    else()
+      INCLUDE(FindPkgConfig)
+      PKG_SEARCH_MODULE(SDL2 REQUIRED sdl2)
+      PKG_SEARCH_MODULE(SDL2IMAGE REQUIRED SDL2_image>=2.0.0)
+    endif()
+
+    if(SDL2_FOUND)
+        message(STATUS "Using shared SDL Version 2 for Commander Genius")
+        include_directories(${SDL2_INCLUDE_DIRS})
+        include_directories(${SDL2IMAGE_INCLUDE_DIRS})
+
+        #include_directories(${SDL2_NET_INCLUDE_DIRS})
+
+        include_directories(/usr/include/SDL2/)
+    endif(SDL2_FOUND)
+
+else(USE_SDL2)
+        INCLUDE(FindPkgConfig)
+        # SDL2 not found, try to use SDL1.2
+        FIND_PACKAGE( SDL REQUIRED )
+        FIND_PACKAGE( SDL_image REQUIRED )
+        #PKG_SEARCH_MODULE(SDLIMAGE REQUIRED SDL_image)
+
+        if(NOT ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+                include(FindSDL OPTIONAL)
+        endif()
+        if(SDL_FOUND)
+                message(STATUS "Using shared SDL Version 1.2")
+                include_directories(${SDL_INCLUDE_DIR})
+                INCLUDE_DIRECTORIES(${SDL_INCLUDE_DIRS})
+        else(SDL_FOUND)
+                # TODO: Use the prebuilt one on Windows
+                message("Using static SDL from Externals")
+                include_directories(Externals/SDL Externals/SDL/include)
+                add_subdirectory(Externals/SDL)
+        endif(SDL_FOUND)
+
+endif(USE_SDL2)
+
 Project(GsKit)
 
 # From this point files are globbed for compilation and project setup
