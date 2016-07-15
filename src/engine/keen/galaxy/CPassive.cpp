@@ -256,7 +256,7 @@ void CPassiveGalaxy::processIntroZoom()
 
     if(mZoomSfcZoom.x > maxWidth)
     {
-       mZoomSfcZoom.x -= mScaleFactor*8;
+        mZoomSfcZoom.x -= mScaleFactor*36;
     }
     else
     {
@@ -266,8 +266,8 @@ void CPassiveGalaxy::processIntroZoom()
 
     if(mZoomSfcPos.y > topEdge)
     {
-        mZoomSfcPos.y -= 20;
-        mZoomSfcZoom.y -= 4;
+        mZoomSfcPos.y -= 5;
+        mZoomSfcZoom.y -= 2;
     }
     else
     {
@@ -276,7 +276,7 @@ void CPassiveGalaxy::processIntroZoom()
 
     if(mZoomSfcZoom.y > mScaleFactor*32)
     {
-       mZoomSfcZoom.y -= mScaleFactor*2;
+        mZoomSfcZoom.y -= mScaleFactor*4;
     }
 
 

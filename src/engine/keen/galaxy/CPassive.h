@@ -23,8 +23,19 @@ public:
     void ponder(const float deltaT);
     void render();
 
+    /**
+     * @brief processIntro  Terminator text scrolling
+     */
     void processIntro();
+
+    /**
+     * @brief processIntroZoom  Commander Keen Text zooming in...
+     */
     void processIntroZoom();
+
+    /**
+     * @brief processTitle  Shows the title
+     */
     void processTitle();
 
     void renderIntro();
