@@ -2589,7 +2589,9 @@ void CPlayerLevel::process()
     }
 
     if(mExitTouched)
+    {
         return;
+    }
     
 	if(!m_dying)
 	{

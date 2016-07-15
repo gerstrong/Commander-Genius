@@ -438,9 +438,13 @@ void CPlayerBase::playSwimSound(const bool moving)
 
     // More frequency of swim sound when Keen is moving to somewhere
     if(moving)
+    {
         time %= (MAX_WALKSOUNDTIMER/3);
+    }
     else
+    {
         time %= (MAX_WALKSOUNDTIMER/2);
+    }
 
 	// Process walk timer. This is only for the walking sound
 	if( time == 0 )

@@ -108,6 +108,9 @@ class CSpriteObject
 {
 public:
     CSpriteObject(CMap *pmap, Uint32 x, Uint32 y, const int spriteVar);
+
+    unsigned int m_index;        	// Like an ID for some objects that need this implementation
+
 	
     unsigned int mHealthPoints;              // episode 1 style four-shots-to-kill
 	bool exists;

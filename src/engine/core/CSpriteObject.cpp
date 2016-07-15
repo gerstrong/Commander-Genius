@@ -18,6 +18,7 @@ int CSpriteObject::m_number_of_objects = 0; // The current number of total objec
 CSpriteObject::CSpriteObject(CMap *pmap,
                              Uint32 x, Uint32 y,
                              const int spriteVar) :
+m_index(m_number_of_objects),
 mHealthPoints(1),
 sprite(BLANKSPRITE),
 m_jumpdownfromobject(false),

@@ -77,22 +77,32 @@ void CCamera::setPosition(const Vector2D<int>& newpos)
     const int maxHeight = (mp_Map->m_height<<CSF)-1;
 
     if(cam_x<minimumEdgeDist)
+    {
         cam_x = minimumEdgeDist;
+    }
 
     if(cam_y<minimumEdgeDist)
+    {
         cam_y = minimumEdgeDist;
+    }
 
     if(cam_x>maxWidth)
+    {
         cam_x = maxWidth;
+    }
 
     if(cam_y>maxHeight)
+    {
         cam_y = maxHeight;
+    }
 
 	moveToForce(newpos);
 
     // Only the lead camera may change the scroll position
     if(mCamlead != mp_AttachedObject->getSpriteVariantId())
+    {
         return;
+    }
 
 	mp_Map->gotoPos(cam_x>>STC, cam_y>>STC);
 
