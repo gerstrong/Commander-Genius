@@ -53,8 +53,7 @@ bool CIMFPlayer::loadMusicFromFile(const std::string& filename)
         fseek(fp, 0, SEEK_SET);
     }
     
-    if(lock)  SDL_LockAudio();
-
+    SDL_LockAudio();
     
     if(!m_IMF_Data.empty())
         m_IMF_Data.clear();
@@ -73,7 +72,7 @@ bool CIMFPlayer::loadMusicFromFile(const std::string& filename)
     
     fclose(fp);
 
-    if(lock) SDL_UnlockAudio();
+    SDL_UnlockAudio();
     
     return ok;
 }
@@ -81,19 +80,18 @@ bool CIMFPlayer::loadMusicFromFile(const std::string& filename)
 
 bool CIMFPlayer::loadMusicTrack(const int track)
 {
-    if(lock)  SDL_LockAudio();
+    SDL_LockAudio();
 
     if( m_IMF_Data.empty() )
         m_IMF_Data.clear();
 
     if(!gKeenFiles.exeFile.loadMusicTrack(m_IMF_Data, track))
     {
-        if(lock) SDL_UnlockAudio();
-
+        SDL_UnlockAudio();
         return false;
     }
 
-    if(lock) SDL_UnlockAudio();
+    SDL_UnlockAudio();
 
     return true;
 }
