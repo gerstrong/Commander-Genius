@@ -19,7 +19,9 @@ mTaken(false)
 void CSpecialItem::getTouchedBy(CSpriteObject& theObject)
 {
     if(mTaken)
-	return;
+    {
+        return;
+    }
     
 	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
 	{

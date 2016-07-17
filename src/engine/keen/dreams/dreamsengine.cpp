@@ -15,17 +15,20 @@
 
 #include "../galaxy/res/CAudioGalaxy.h"
 
+#include "dreamsintro.h"
+
 #define REFKEEN_VER_KDREAMS_ANYEGA_ALL
 
 
 dreams::DreamsEngine *gDreamsEngine;
 
 
-enum GameState
+enum GameStateSwitch
 {
-    INTRO_TEXT,     // The famous screen where hardware is detected and some notes about the versions are told
-    INTRO_SCREEN    // Within the gameloop it will show the intro screen of the dreams game
-} gGameState = INTRO_TEXT;
+    GSS_INTRO_TEXT,     // The famous screen where hardware is detected and some notes about the versions are told
+    GSS_INTRO_SCREEN,    // Within the gameloop it will show the intro screen of the dreams game
+    GSS_NONE
+} gGameStateChange = GSS_INTRO_TEXT;
 
 
 // TODO: Ugly wrapper for the refkeen variables used. It serves as interface to C. Might be improved in future.
@@ -461,7 +464,7 @@ void DreamsDosIntro::ponder(const float deltaT)
         //gEventManager.add( new SwitchSceneEvent(new ) );
         // If we press any switch to the next section -> where Dreams is really loaded into CGA/EGA mode and show the intro screen
         gInput.flushAll();
-        gGameState = INTRO_SCREEN;
+        gGameStateChange = GSS_INTRO_SCREEN;
     }
 }
 
@@ -575,7 +578,7 @@ void DreamsEngine::start()
 
     mpScene.reset( new DreamsDosIntro );
 
-    gGameState = INTRO_TEXT;
+    gGameStateChange = GSS_INTRO_TEXT;
 
     mpScene->start();
 }
@@ -609,10 +612,15 @@ void DreamsEngine::ponder(const float deltaT)
     }        
 
 
-    // Change that gGameState stuff to have more depth in the code
-    if(gGameState == INTRO_TEXT) // Where the shareware test is shown
+    if(mpScene)
     {
         mpScene->ponder(deltaT);
+
+        // Change that gGameState stuff to have more depth in the code
+        if(gGameStateChange == GSS_INTRO_SCREEN)
+        {
+            mpScene.reset( new DreamsIntro );
+        }
     }
     else
     {
