@@ -28,19 +28,23 @@ m_IMFDelay(0)
 
 
 bool CIMFPlayer::loadMusicFromFile(const std::string& filename)
-{
+{    
     // Open the IMF File
     FILE *fp;
     word data_size;
     bool ok = false;
     
     if( ( fp = OpenGameFile(filename, "rb") ) == NULL )
+    {
         return false;
+    }
     
     int read_first = fread( &data_size, sizeof(word), 1, fp);
     
     if( read_first == 0)
+    {
         return false;
+    }
 
     if (data_size == 0) // Is the IMF file of Type-0?
     {
@@ -49,6 +53,8 @@ bool CIMFPlayer::loadMusicFromFile(const std::string& filename)
         fseek(fp, 0, SEEK_SET);
     }
     
+    if(lock)  SDL_LockAudio();
+
     
     if(!m_IMF_Data.empty())
         m_IMF_Data.clear();
@@ -66,6 +72,8 @@ bool CIMFPlayer::loadMusicFromFile(const std::string& filename)
     }
     
     fclose(fp);
+
+    if(lock) SDL_UnlockAudio();
     
     return ok;
 }
@@ -73,13 +81,19 @@ bool CIMFPlayer::loadMusicFromFile(const std::string& filename)
 
 bool CIMFPlayer::loadMusicTrack(const int track)
 {
+    if(lock)  SDL_LockAudio();
+
     if( m_IMF_Data.empty() )
         m_IMF_Data.clear();
 
     if(!gKeenFiles.exeFile.loadMusicTrack(m_IMF_Data, track))
     {
+        if(lock) SDL_UnlockAudio();
+
         return false;
     }
+
+    if(lock) SDL_UnlockAudio();
 
     return true;
 }
@@ -88,21 +102,29 @@ bool CIMFPlayer::loadMusicTrack(const int track)
 
 bool CIMFPlayer::open(const bool lock)
 {
+    if(lock)  SDL_LockAudio();
+
 	m_numreadysamples = m_IMFDelay = 0;
     m_samplesPerMusicTick = g_pSound->getAudioSpec().freq / m_opl_emulator.getIMFClockRate();
 	
 	m_opl_emulator.setup();
-	
+
+    if(lock) SDL_UnlockAudio();
+
 	return !m_IMF_Data.empty();
 }
 
 void CIMFPlayer::close(const bool lock)
 {
+    if(lock)  SDL_LockAudio();
+
 	play(false);
 	m_IMF_Data.gotoStart();	
 	m_numreadysamples = m_IMFDelay = 0;	
 	m_opl_emulator.ShutAL();
 	m_opl_emulator.shutdown();
+
+    if(lock) SDL_UnlockAudio();
 
 	return;
 }
