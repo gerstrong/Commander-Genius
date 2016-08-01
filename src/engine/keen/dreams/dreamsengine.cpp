@@ -620,6 +620,7 @@ void DreamsEngine::ponder(const float deltaT)
         if(gGameStateChange == GSS_INTRO_SCREEN)
         {
             mpScene.reset( new DreamsIntro );
+            gGameStateChange = GSS_NONE;
         }
     }
     else

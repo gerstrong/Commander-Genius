@@ -26,6 +26,9 @@ DreamsIntro::DreamsIntro()
     mStep = 1;
     mTimer = TickBase * 4;
 
+    VW_SetScreenMode (GRMODE);
+    VW_ClearVideo (BLACK);
+
     US_SetLoadSaveHooks(LoadGame,SaveGame,ResetGame);
     restartgame = gd_Continue;
 
@@ -46,6 +49,10 @@ DreamsIntro::DreamsIntro()
     VW_InitDoubleBuffer();
     IN_ClearKeysDown();
 
+    VW_SetScreen(0, 0);
+    MoveGfxDst(0, 200);
+    UnpackEGAShapeToScreen(&mFileShape1, 0, 0);
+    mTimer = TickBase * 4;
 
 }
 
@@ -93,7 +100,7 @@ void DreamsIntro::ponder(const float deltaT)
     {
         displayofs = 0;
         mTimer = TickBase * 6;
-        mStep = 0;
+        mStep = 1;
     }
 }
 
