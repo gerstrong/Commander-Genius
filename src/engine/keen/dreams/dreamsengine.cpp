@@ -598,6 +598,7 @@ void DreamsEngine::pumpEvent(const CEvent *evPtr)
     if( dynamic_cast<const LaunchControlPanel*>(evPtr) )
     {
         mpScene.reset( new DreamsControlPanel );
+        mpScene->start();
         gGameStateChange = GSS_NONE;
     }
 
