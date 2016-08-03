@@ -184,7 +184,9 @@ void GsApp::ponder(const float deltaT)
 
     // Process the game control object if no effects are being processed
     if(mpCurEngine)
+    {
         mpCurEngine->ponder(deltaT);
+    }
 
     // Apply graphical effects if any. It does not render, it only prepares for the rendering task.
     gEffectController.run(deltaT);

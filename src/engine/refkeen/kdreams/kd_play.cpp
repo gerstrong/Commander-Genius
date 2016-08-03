@@ -288,7 +288,8 @@ void CheckKeys (void)
 		US_CenterWindow (20,8);
 		US_CPrint ("Loading");
 		VW_UpdateScreen ();
-		US_ControlPanel();
+        US_ControlPanel_Init();
+        US_ControlPanel_Ponder();
 
         if(gDreamsForceClose)
             return;

@@ -31,13 +31,20 @@ DreamsControlPanel::DreamsControlPanel()
 }
 
 
-void DreamsControlPanel::ponder()
+void DreamsControlPanel::start()
+{
+    US_ControlPanel_Init();
+}
+
+
+void DreamsControlPanel::ponder(const float deltaT)
 {
     //bufferofs = bufsave;
     //displayofs = dissave;
 
     VW_FixRefreshBuffer();
-    US_ControlPanel ();
+    //US_ControlPanel ();
+    US_ControlPanel_Ponder();
 
     //if(gDreamsForceClose)
 //        return;
@@ -46,7 +53,7 @@ void DreamsControlPanel::ponder()
 
 void DreamsControlPanel::render()
 {
-
+    VW_UpdateScreen();
 }
 
 }

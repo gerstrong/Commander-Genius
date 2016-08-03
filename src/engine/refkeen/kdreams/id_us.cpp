@@ -3627,97 +3627,119 @@ USL_TearDownCtlPanel(void)
 	}
 }
 
+
+id0_word_t		hiti,hitn,
+            i,n,
+            lasti,lastn,
+            lastx,lasty;
+
+id0_longword_t	lasttime;
+
+id0_char_t		gamename[MaxGameName + 10 + 1];
+
+
+Rect		userect;
+
+
+
+//Point		p;
+UserItem	*ip;
+
+
+id0_boolean_t		done;
+
+void
+US_ControlPanel_Init(void)
+{
+    ScanCode	c;
+
+    // REFKEEN - Alternative controllers support
+    /*BE_ST_AltControlScheme_Push();
+    BE_ST_AltControlScheme_PrepareMenuControls();*/
+
+    id0_boolean_t		done,
+                buttondown,inrect;
+
+
+    c = LastScan;
+    if (c == sc_Escape)	// Map escape from game to Exit to DOS
+        c = sc_Q;
+
+    /* REFKEEN - Originally may have been accessed uninitialized - undefined behaviors... */
+    lasttime = 0;
+    lastn = 0;
+    lasti = 0;
+    /* End  of "uninitialized vars" list */
+
+    CA_UpLevel();
+    for (i = CONTROLS_LUMP_START;i <= CONTROLS_LUMP_END;i++)
+        CA_MarkGrChunk(i);
+    CA_MarkGrChunk(CTL_LITTLEMASKPICM);
+    CA_MarkGrChunk(CTL_LSMASKPICM);
+#ifdef REFKEEN_VER_KDREAMS_CGA_ALL
+    CA_CacheMarks("Options Screen");
+#elif defined REFKEEN_VER_KDREAMS_ANYEGA_ALL
+    CA_CacheMarks("Options Screen", 0);
+#endif
+
+    USL_SetUpCtlPanel();
+
+    US_SetPrintRoutines(VW_MeasurePropString,VWB_DrawPropString);
+    fontcolor = F_BLACK;
+
+    VW_InitDoubleBuffer();
+
+    VWB_Bar(0,0,MaxX,MaxY,FIRSTCOLOR);
+    US_DrawWindow(8,22,30,2);
+    US_SaveWindow(&HelpWindow);
+    US_DrawWindow(8,7,30,14);
+    US_SaveWindow(&BottomWindow);
+    US_DrawWindow(8,1,30,20);
+
+    for (ip = CtlPanels;ip->type != uii_Bad;ip++)
+    {
+        VWB_DrawPic(ip->r.ul.x,ip->r.ul.y,ip->picup);
+    }
+
+    US_StartCursor();
+    CursorX = (8 * 8) + ((MaxX - (8 * 8)) / 2);
+    CursorBad = true;
+
+    CtlPanelButton = -1;
+    LastScan = c;
+    USL_CheckScan(&i,&n);
+    if (CtlPanelButton == -1)
+        USL_DoHit(0,0);
+
+    ResumeGame = false;
+    done = false;
+    FlushHelp = true;
+    lastx = lasty = -1;
+}
+
+
 ///////////////////////////////////////////////////////////////////////////
 //
 //	US_ControlPanel() - This is the main routine for the control panel
 //
 ///////////////////////////////////////////////////////////////////////////
 void
-US_ControlPanel(void)
+US_ControlPanel_Ponder(void)
 {        
-	// REFKEEN - Alternative controllers support	
-    /*BE_ST_AltControlScheme_Push();
-    BE_ST_AltControlScheme_PrepareMenuControls();*/
 
-	id0_char_t		gamename[MaxGameName + 10 + 1];
-	ScanCode	c;
-	id0_boolean_t		done,
-				buttondown,inrect;
-	id0_word_t		hiti,hitn,
-				i,n,
-				lasti,lastn,
-				lastx,lasty;
-	id0_longword_t	lasttime;
-	//Point		p;
-	Rect		userect;
-	UserItem	*ip;
+    ScanCode	c;
 
-	c = LastScan;
-	if (c == sc_Escape)	// Map escape from game to Exit to DOS
-		c = sc_Q;
-
-	/* REFKEEN - Originally may have been accessed uninitialized - undefined behaviors... */
-	lasttime = 0;
-	lastn = 0;
-	lasti = 0;
-	/* End  of "uninitialized vars" list */
-
-	CA_UpLevel();
-	for (i = CONTROLS_LUMP_START;i <= CONTROLS_LUMP_END;i++)
-		CA_MarkGrChunk(i);
-	CA_MarkGrChunk(CTL_LITTLEMASKPICM);
-	CA_MarkGrChunk(CTL_LSMASKPICM);
-#ifdef REFKEEN_VER_KDREAMS_CGA_ALL
-	CA_CacheMarks("Options Screen");
-#elif defined REFKEEN_VER_KDREAMS_ANYEGA_ALL
-	CA_CacheMarks("Options Screen", 0);
-#endif
-
-	USL_SetUpCtlPanel();
-
-	US_SetPrintRoutines(VW_MeasurePropString,VWB_DrawPropString);
-	fontcolor = F_BLACK;
-
-	VW_InitDoubleBuffer();
-
-	VWB_Bar(0,0,MaxX,MaxY,FIRSTCOLOR);
-	US_DrawWindow(8,22,30,2);
-	US_SaveWindow(&HelpWindow);
-	US_DrawWindow(8,7,30,14);
-	US_SaveWindow(&BottomWindow);
-	US_DrawWindow(8,1,30,20);
-
-	for (ip = CtlPanels;ip->type != uii_Bad;ip++)
-		VWB_DrawPic(ip->r.ul.x,ip->r.ul.y,ip->picup);
-
-	US_StartCursor();
-	CursorX = (8 * 8) + ((MaxX - (8 * 8)) / 2);
-	CursorBad = true;
-
-	CtlPanelButton = -1;
-	LastScan = c;
-	USL_CheckScan(&i,&n);
-	if (CtlPanelButton == -1)
-		USL_DoHit(0,0);
-
-	ResumeGame = false;
-	done = false;
-	FlushHelp = true;
-	lastx = lasty = -1;
-
-    SDL_Delay(100);
-
-	while
+    /*while
 	(
 		(restartgame == gd_Continue)
 	&&	!(done || loadedgame || ResumeGame)
-	)
+    )*/
     {
-		VW_UpdateScreen();
-        BE_ST_ShortSleep(); // TODO (REFKEEN): Correct place?
+        //VW_UpdateScreen();
+        //BE_ST_ShortSleep(); // TODO (REFKEEN): Correct place?
 
-		buttondown = US_UpdateCursor();
-		inrect = USL_IsInRect(CursorX,CursorY,&i,&n);
+        id0_boolean_t buttondown = US_UpdateCursor();
+        id0_boolean_t inrect = USL_IsInRect(CursorX,CursorY,&i,&n);
 
 		if (FlushHelp)
 		{
@@ -3745,7 +3767,9 @@ US_ControlPanel(void)
 					USL_ShowHelp(gamename);
 				}
 				else
+                {
 					USL_ShowHelp(TheItems[i][n].help);
+                }
 				lasti = i;
 				lastn = n;
 			}
@@ -3760,7 +3784,9 @@ US_ControlPanel(void)
 		hitn = n;
 
 		if (inrect)
+        {
 			userect = TheItems[i][n].r;
+        }
 		else
 		{
 			userect.ul.x = CursorX;
@@ -3849,7 +3875,9 @@ US_ControlPanel(void)
 		}
 
 		if (QuitToDos)
+        {
 			done = true;
+        }
 
 		if ((lastx != CursorX) || (lasty != CursorY))
 		{
@@ -3866,7 +3894,7 @@ US_ControlPanel(void)
 		}
 	}
 
-	US_ShutCursor();
+    /*US_ShutCursor();
 
 	USL_TearDownCtlPanel();
 
@@ -3887,7 +3915,7 @@ US_ControlPanel(void)
 		}
 	}
 
-	CA_DownLevel();
+    CA_DownLevel();*/
 
     //BE_ST_AltControlScheme_Pop(); // REFKEEN - Alternative controllers support
 }

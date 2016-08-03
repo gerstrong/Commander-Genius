@@ -15,6 +15,7 @@
 
 #include "../galaxy/res/CAudioGalaxy.h"
 
+#include "dreamscontrolpanel.h"
 #include "dreamsintro.h"
 
 #define REFKEEN_VER_KDREAMS_ANYEGA_ALL
@@ -593,6 +594,13 @@ void DreamsEngine::pumpEvent(const CEvent *evPtr)
     {
         mResourcesLoaded = true;
     }
+
+    if( dynamic_cast<const LaunchControlPanel*>(evPtr) )
+    {
+        mpScene.reset( new DreamsControlPanel );
+        gGameStateChange = GSS_NONE;
+    }
+
 
     mpScene->pumpEvent(evPtr);
 }

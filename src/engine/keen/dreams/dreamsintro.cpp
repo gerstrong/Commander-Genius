@@ -1,6 +1,7 @@
 #include "dreamsintro.h"
 
 #include <base/CInput.h>
+#include "dreamscontrolpanel.h"
 
 #define REFKEEN_VER_KDREAMS_ANYEGA_ALL
 
@@ -75,6 +76,7 @@ void DreamsIntro::ponder(const float deltaT)
 
         if(gInput.getPressedAnyCommand())
         {
+            gEventManager.add( new LaunchControlPanel );
             mTimer = 0;
         }
 
