@@ -3720,6 +3720,9 @@ US_ControlPanel_Init(void)
     lastx = lasty = -1;
 }
 
+void 	VWL_DrawCursor (void);
+void 	VWL_EraseCursor (void);
+
 
 ///////////////////////////////////////////////////////////////////////////
 //
@@ -3738,6 +3741,10 @@ US_ControlPanel_Ponder(void)
 	&&	!(done || loadedgame || ResumeGame)
     )*/
     {        
+
+        VWL_EraseCursor();
+
+
         id0_boolean_t buttondown = US_UpdateCursor();
         id0_boolean_t inrect = USL_IsInRect(CursorX,CursorY,&i,&n);
 
@@ -3894,7 +3901,10 @@ US_ControlPanel_Ponder(void)
 			USL_ShowHelp("Press F1 for Help");
 			fontcolor = F_BLACK;
         }
-	}
+
+        // Draw the cursor
+        VWL_DrawCursor();
+    }
 
     /*US_ShutCursor();
 

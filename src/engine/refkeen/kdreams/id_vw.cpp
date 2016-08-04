@@ -1168,11 +1168,11 @@ id0_int_t VW_MarkUpdateBlock (id0_int_t x1, id0_int_t y1, id0_int_t x2, id0_int_
 void VW_UpdateScreen (void)
 {
 
-    if (cursorvisible>0)
+    /*if (cursorvisible>0)
         VWL_EraseCursor();
 
 	if (cursorvisible>0)
-		VWL_DrawCursor();
+        VWL_DrawCursor();*/
 
 #if GRMODE == EGAGR
 	VWL_UpdateScreenBlocks();
@@ -1182,6 +1182,8 @@ void VW_UpdateScreen (void)
 #if GRMODE == CGAGR
 	VW_CGAFullUpdate();
 #endif
+
+
 
 }
 
