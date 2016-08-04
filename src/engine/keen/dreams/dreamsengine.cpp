@@ -600,6 +600,8 @@ void DreamsEngine::pumpEvent(const CEvent *evPtr)
         mpScene.reset( new DreamsControlPanel );
         mpScene->start();
         gGameStateChange = GSS_NONE;
+        gInput.flushAll();
+        IN_ClearKeysDown();
     }
 
 

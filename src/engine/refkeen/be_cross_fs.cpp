@@ -582,7 +582,7 @@ BE_FILE_T BE_Cross_IsFileValid(BE_FILE_T fp);
 int BE_Cross_seek(BE_FILE_T fp, long int offset, int origin);
 int BE_Cross_putc(int character, BE_FILE_T fp);
 int BE_Cross_getc(BE_FILE_T fp);
-void BE_Cross_close(BE_FILE_T fp);
+void BE_Cross_close(BE_FILE_T &fp);
 
 // WARNING: Do *not* assume this is recursive!!
 static void BEL_Cross_mkdir(const char *path)

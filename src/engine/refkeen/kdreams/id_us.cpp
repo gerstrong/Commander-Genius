@@ -3735,11 +3735,9 @@ US_ControlPanel_Ponder(void)
 
     ScanCode	c;
 
-    /*while
-	(
-		(restartgame == gd_Continue)
-	&&	!(done || loadedgame || ResumeGame)
-    )*/
+
+    if ( (restartgame == gd_Continue) &&
+        !(done || loadedgame || ResumeGame) )
     {        
 
         VWL_EraseCursor();
@@ -3905,29 +3903,33 @@ US_ControlPanel_Ponder(void)
         // Draw the cursor
         VWL_DrawCursor();
     }
+    else
+    {
 
-    /*US_ShutCursor();
+        // TODO: Push event which closes the menu and opens something else
+         US_ShutCursor();
 
-	USL_TearDownCtlPanel();
+         USL_TearDownCtlPanel();
 
-	if (QuitToDos)
-	{
+         if (QuitToDos)
+         {
 #if FRILLS
-		if (tedlevel)
-			TEDDeath();
-		else
+             if (tedlevel)
+                 TEDDeath();
+             else
 #endif
-		{
-			US_CenterWindow(20,3);
-			fontcolor = F_SECONDCOLOR;
-			US_PrintCentered("Now Exiting to DOS...");
-			fontcolor = F_BLACK;
-			VW_UpdateScreen();
-			Quit(id0_nil_t);
-		}
-	}
+             {
+                 US_CenterWindow(20,3);
+                 fontcolor = F_SECONDCOLOR;
+                 US_PrintCentered("Now Exiting to DOS...");
+                 fontcolor = F_BLACK;
+                 VW_UpdateScreen();
+                 Quit(id0_nil_t);
+             }
+         }
 
-    CA_DownLevel();*/
+         CA_DownLevel();
+    }
 
     //BE_ST_AltControlScheme_Pop(); // REFKEEN - Alternative controllers support
 }
