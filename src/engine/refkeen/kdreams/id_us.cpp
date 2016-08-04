@@ -3735,7 +3735,7 @@ US_ControlPanel_Ponder(void)
 	&&	!(done || loadedgame || ResumeGame)
     )*/
     {
-        //VW_UpdateScreen();
+        VW_UpdateScreen();
         //BE_ST_ShortSleep(); // TODO (REFKEEN): Correct place?
 
         id0_boolean_t buttondown = US_UpdateCursor();
