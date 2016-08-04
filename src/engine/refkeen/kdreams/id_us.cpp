@@ -1936,7 +1936,7 @@ USL_TrackItem(id0_word_t hiti,id0_word_t hitn)
 	}
 
 	last = false;
-	do
+    //do
 	{
 		USL_IsInRect(CursorX,CursorY,&ini,&inn);
 		inside = (ini == hiti) && (inn == hitn);
@@ -1971,7 +1971,9 @@ USL_TrackItem(id0_word_t hiti,id0_word_t hitn)
 		}
 		VW_UpdateScreen();
         BE_ST_ShortSleep();
-	} while (US_UpdateCursor());
+    } //while (US_UpdateCursor());
+
+    US_UpdateCursor();
 
 	if (op)
 		op->sel = othersel;
@@ -3648,6 +3650,7 @@ UserItem	*ip;
 
 id0_boolean_t		done;
 
+
 void
 US_ControlPanel_Init(void)
 {
@@ -3734,10 +3737,7 @@ US_ControlPanel_Ponder(void)
 		(restartgame == gd_Continue)
 	&&	!(done || loadedgame || ResumeGame)
     )*/
-    {
-        VW_UpdateScreen();
-        //BE_ST_ShortSleep(); // TODO (REFKEEN): Correct place?
-
+    {        
         id0_boolean_t buttondown = US_UpdateCursor();
         id0_boolean_t inrect = USL_IsInRect(CursorX,CursorY,&i,&n);
 
@@ -3866,7 +3866,9 @@ US_ControlPanel_Ponder(void)
 		else if (USL_CheckScan(&i,&n))
 			;
 		else if (buttondown && inrect && USL_TrackItem(hiti,hitn))
+        {
 			USL_DoHit(hiti,hitn);
+        }
 
         if (LastScan == sc_Escape || gInput.getPressedCommand(IC_BACK))
 		{
@@ -3879,7 +3881,7 @@ US_ControlPanel_Ponder(void)
 			done = true;
         }
 
-		if ((lastx != CursorX) || (lasty != CursorY))
+        if ((lastx != CursorX) || (lasty != CursorY))
 		{
 			lastx = CursorX;
 			lasty = CursorY;
@@ -3891,7 +3893,7 @@ US_ControlPanel_Ponder(void)
 				fontcolor = F_SECONDCOLOR;
 			USL_ShowHelp("Press F1 for Help");
 			fontcolor = F_BLACK;
-		}
+        }
 	}
 
     /*US_ShutCursor();

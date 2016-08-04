@@ -1167,6 +1167,10 @@ id0_int_t VW_MarkUpdateBlock (id0_int_t x1, id0_int_t y1, id0_int_t x2, id0_int_
 
 void VW_UpdateScreen (void)
 {
+
+    if (cursorvisible>0)
+        VWL_EraseCursor();
+
 	if (cursorvisible>0)
 		VWL_DrawCursor();
 
@@ -1179,8 +1183,6 @@ void VW_UpdateScreen (void)
 	VW_CGAFullUpdate();
 #endif
 
-	if (cursorvisible>0)
-		VWL_EraseCursor();
 }
 
 
