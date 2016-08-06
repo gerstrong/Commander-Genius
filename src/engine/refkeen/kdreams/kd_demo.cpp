@@ -813,7 +813,7 @@ void DemoLoop()
 		if (!loadedgame)
 			NewGame();
 
-		FreeShape(&FileShape1);
+        //FreeShape(&FileShape1);
 
         if(gDreamsForceClose)
             return;

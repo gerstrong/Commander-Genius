@@ -20,6 +20,10 @@
 
 #include <base/CInput.h>
 
+#include "engine/keen/dreams/dreamscontrolpanel.h"
+
+
+
 extern "C"
 {
 
@@ -3907,12 +3911,12 @@ US_ControlPanel_Ponder(void)
     {
 
         // TODO: Push event which closes the menu and opens something else
-         US_ShutCursor();
+        US_ShutCursor();
 
-         USL_TearDownCtlPanel();
+        USL_TearDownCtlPanel();
 
-         if (QuitToDos)
-         {
+        if (QuitToDos)
+        {
 #if FRILLS
              if (tedlevel)
                  TEDDeath();
@@ -3926,9 +3930,12 @@ US_ControlPanel_Ponder(void)
                  VW_UpdateScreen();
                  Quit(id0_nil_t);
              }
-         }
+        }
 
-         CA_DownLevel();
+
+        gEventManager.add( new dreams::NullifyScene );
+
+        //CA_DownLevel();
     }
 
     //BE_ST_AltControlScheme_Pop(); // REFKEEN - Alternative controllers support

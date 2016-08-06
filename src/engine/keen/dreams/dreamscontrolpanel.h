@@ -10,6 +10,8 @@ namespace dreams
 
 struct LaunchControlPanel : CEvent {};
 
+struct NullifyScene : CEvent {};
+
 
 class DreamsControlPanel : public GsEngine
 {

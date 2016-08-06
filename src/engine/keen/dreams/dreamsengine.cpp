@@ -602,10 +602,19 @@ void DreamsEngine::pumpEvent(const CEvent *evPtr)
         gGameStateChange = GSS_NONE;
         gInput.flushAll();
         IN_ClearKeysDown();
+    }   
+    if( dynamic_cast<const NullifyScene*>(evPtr) )
+    {
+        mpScene = nullptr;
+        gGameStateChange = GSS_NONE;
+        gInput.flushAll();
+        IN_ClearKeysDown();
     }
 
-
-    mpScene->pumpEvent(evPtr);
+    if(mpScene)
+    {
+        mpScene->pumpEvent(evPtr);
+    }
 }
 
 void DreamsEngine::ponder(const float deltaT)
@@ -651,7 +660,10 @@ void DreamsEngine::render()
 
     BE_ST_EGASetPelPanning(panx & 6);
 
-    mpScene->render();
+    if(mpScene)
+    {
+        mpScene->render();
+    }
 
     if(mChangeMode)
     {
