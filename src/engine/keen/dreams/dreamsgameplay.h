@@ -1,26 +1,20 @@
-#ifndef DREAMSCONTROLPANEL_H
-#define DREAMSCONTROLPANEL_H
+#ifndef DREAMSGAMEPLAY_H
+#define DREAMSGAMEPLAY_H
 
 #include <base/GsEngine.h>
-
-#include "dreamsgameplay.h"
 
 
 namespace dreams
 {
 
-struct LaunchControlPanel : CEvent {};
+struct LaunchGamePlay : CEvent {};
 
+struct GoIntoPlayLoop : CEvent {};
 
-// TODO: Should become deprecated later on
-//struct NullifyScene : CEvent {};
-
-
-class DreamsControlPanel : public GsEngine
+class DreamsGamePlay  : public GsEngine
 {
 public:
-
-    DreamsControlPanel();
+    DreamsGamePlay();
 
     /**
      * @brief start called the first time usually when the instance was created
@@ -32,7 +26,7 @@ public:
      *                  If there are underlying objects using events, they are passed
      * @param evPtr
      */
-    void pumpEvent(const CEvent *evPtr) {};
+    void pumpEvent(const CEvent *evPtr);
 
     /**
      * @brief ponder
@@ -44,8 +38,13 @@ public:
      */
     void render();
 
+private:
+
+    void (*mPlayloopPtr)() = nullptr; /** Small hack so we do not get another loop getting stuck */
+    void (*mPlayloopRenderPtr)() = nullptr; /** Small hack so we do not get another loop getting stuck (Rendering) */
+
 };
 
 }
 
-#endif // DREAMSCONTROLPANEL_H
+#endif // DREAMSGAMEPLAY_H

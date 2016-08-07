@@ -100,8 +100,8 @@ public:
 
 private:
 
-    std::unique_ptr<Action> mpPlayLoopAction;
-    std::unique_ptr<ThreadPoolItem> mpPlayLoopThread;
+    //std::unique_ptr<Action> mpPlayLoopAction;
+    //std::unique_ptr<ThreadPoolItem> mpPlayLoopThread;
 
     /**
      * @brief mChangeMode   An integer that triggers internal resolution change

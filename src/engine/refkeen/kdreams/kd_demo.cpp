@@ -205,7 +205,7 @@ void StatusWindow (void)
 	// DEBUG - add flower powers (#36)
 
 	VW_UpdateScreen();
-	IN_Ack();
+    //IN_Ack();
 }
 
 // REFKEEN - New cross-platform methods for reading/writing objects from/to saved games
@@ -744,74 +744,21 @@ DemoLoop (void)
 
 void DemoLoop()
 {
-	const id0_char_t *FileName1;
-	struct Shape FileShape1;
+//	const id0_char_t *FileName1;
+//	struct Shape FileShape1;
 
-	id0_int_t bufsave	= bufferofs;
-	id0_int_t dissave	= displayofs;
+//	id0_int_t bufsave	= bufferofs;
+//	id0_int_t dissave	= displayofs;
 
 //
 // demo loop
 //
-	US_SetLoadSaveHooks(LoadGame,SaveGame,ResetGame);
+    /*US_SetLoadSaveHooks(LoadGame,SaveGame,ResetGame);
 	restartgame = gd_Continue;
 
 
 	while (true)
 	{
-
-        /*loadedgame = false;
-
-		FileName1 = "TITLESCR.LBM";
-		if (LoadLIBShape("KDREAMS.CMP", FileName1, &FileShape1))
-			Quit("Can't load TITLE SCREEN");
-
-		while (!restartgame && !loadedgame)
-		{
-
-			VW_InitDoubleBuffer();
-			IN_ClearKeysDown();
-
-            // Intro Cycle
-			while (true)
-			{
-				VW_SetScreen(0, 0);
-				MoveGfxDst(0, 200);
-				UnpackEGAShapeToScreen(&FileShape1, 0, 0);
-				VW_ScreenToScreen (64*200,0,40,200);
-
-				if (IN_UserInput(TickBase * 4, false))
-					break;
-
-				MoveGfxDst(0, 200);
-				UnpackEGAShapeToScreen(&FileShape1, 0, 0);
-				VW_ScreenToScreen (64*200,0,40,200);
-
-				if (IN_UserInput(TickBase * 3, false))
-					break;
-
-
-				displayofs = 0;
-				VWB_Bar(0,0,320,200,FIRSTCOLOR);
-				US_DisplayHighScores(-1);
-
-				if (IN_UserInput(TickBase * 6, false))
-					break;
-			}
-
-			bufferofs = bufsave;
-			displayofs = dissave;
-
-			VW_FixRefreshBuffer();
-			US_ControlPanel ();
-
-            if(gDreamsForceClose)
-                return;
-        }*/
-
-        // Here is the new game section
-		if (!loadedgame)
-			NewGame();
 
         //FreeShape(&FileShape1);
 
@@ -822,7 +769,7 @@ void DemoLoop()
 
         if(gDreamsForceClose)
             return;
-	}
+    }*/
 }
 
 #endif // VERSION

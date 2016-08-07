@@ -21,6 +21,7 @@
 #include <base/CInput.h>
 
 #include "engine/keen/dreams/dreamsengine.h"
+#include "engine/keen/dreams/dreamsgameplay.h"
 
 extern mapfiletype_modern  mapFile;
 
@@ -1601,7 +1602,7 @@ void PlayLoopRun()
        StatusWindow();
 
        if(c.button0 || c.button1 ||
-               Keyboard[sc_Space] || gInput.getPressedAnyButtonCommand(0))
+          Keyboard[sc_Space] || gInput.getPressedAnyButtonCommand(0))
        {
            openedStatusWindow = false;
            RF_ForceRefresh();
@@ -1611,7 +1612,7 @@ void PlayLoopRun()
            gInput.flushAll();
        }
 
-       RF_Refresh(false, true);
+       RF_Refresh(false);
 
        return;
     }
@@ -1715,7 +1716,7 @@ void PlayLoopRun()
 // this cycle of events (for adaptive timing of next cycle)
 //
 
-    RF_Refresh(true, true);
+    //RF_Refresh(true, true);
 
 
     if(gDreamsForceClose)
@@ -1724,11 +1725,11 @@ void PlayLoopRun()
 //
 // single step debug mode
 //
-    if (singlestep)
+    /*if (singlestep)
     {
         VW_WaitVBL(14);
         lasttimecount = SD_GetTimeCount();
-    }
+    }*/
 
 
     CheckKeys();
@@ -1739,22 +1740,30 @@ void PlayLoopRun()
 
 }
 
+void startLevel();
+
 void PlayLoop()
 {
 
-    PlayLoopInit();
-
-	do
+    if(!loadedgame && !playstate)
     {                
         PlayLoopRun();
+    }
+    else
+    {
+        ingame = false;
 
-	} while (!loadedgame && !playstate);
-
-	ingame = false;
+        startLevel();
+    }
 
     //BE_ST_AltControlScheme_Pop(); // REFKEEN - Alternative controllers support
 }
 
+
+void PlayLoopRender()
+{
+    RF_Refresh(true);
+}
 
 //==========================================================================
 
@@ -1948,104 +1957,142 @@ void HandleDeath (void)
 ============================
 */
 
-void GameLoop (void)
+void GamePlayStart()
 {
-	id0_unsigned_t	cities,i;
-	id0_long_t	orgx,orgy;
+    VW_SetScreenMode (GRMODE);
+    VW_ClearVideo (BLACK);
 
-	gamestate.difficulty = restartgame;
-	restartgame = gd_Continue;
+    US_SetLoadSaveHooks(LoadGame,SaveGame,ResetGame);
+    restartgame = gd_Continue;
+
+    // Set variables for set up a new game in case
+    // no game was loaded expilicitely by the user
+    if (!loadedgame)
+        NewGame();
+}
+
+
+void startLevel()
+{
+    id0_long_t	orgx,orgy;
+
+    if (loadedgame)
+    {
+        loadedgame = false;
+        //
+        // start the initial view position to center the player
+        //
+        orgx = (id0_long_t)player->x - (150<<G_P_SHIFT);
+        orgy = (id0_long_t)player->y - (84<<G_P_SHIFT);
+        if (orgx<0)
+            orgx=0;
+        if (orgy<0)
+            orgy=0;
+
+        VW_FadeOut ();
+        fadecount = 0;
+        RF_SetRefreshHook (&FadeAndUnhook);
+        RF_NewPosition (orgx,orgy);
+        CalcInactivate ();
+    }
+    else
+    {
+        VW_FixRefreshBuffer ();
+        US_CenterWindow (20,8);
+        US_CPrint ("Loading");
+        VW_UpdateScreen ();
+        gamestate.bombsthislevel = 0;
+        SetupGameLevel (true);
+        gEventManager.add( new dreams::GoIntoPlayLoop );
+    }
+
+}
+
+void GameLoopOpen()
+{
+    id0_unsigned_t	cities,i;
+    id0_long_t	orgx,orgy;
+
+    gamestate.difficulty = restartgame;
+    restartgame = gd_Continue;
 
     openedStatusWindow = false;
 
-	do
-	{
+
+    if( gamestate.lives>-1 && playstate!=victorious )
+    {
 startlevel:
-		if (loadedgame)
-		{
-			loadedgame = false;
-			//
-			// start the initial view position to center the player
-			//
-			orgx = (id0_long_t)player->x - (150<<G_P_SHIFT);
-			orgy = (id0_long_t)player->y-(84<<G_P_SHIFT);
-			if (orgx<0)
-				orgx=0;
-			if (orgy<0)
-				orgy=0;
+        startLevel();
 
-			VW_FadeOut ();
-			fadecount = 0;
-			RF_SetRefreshHook (&FadeAndUnhook);
-			RF_NewPosition (orgx,orgy);
-			CalcInactivate ();
-		}
-		else
-		{
-			VW_FixRefreshBuffer ();
-			US_CenterWindow (20,8);
-			US_CPrint ("Loading");
-			VW_UpdateScreen ();
-			gamestate.bombsthislevel = 0;
-			SetupGameLevel (true);
-		}
+        gEventManager.add( new dreams::GoIntoPlayLoop );
 
+        return;
 
-		PlayLoop ();
+        // TODO: Code must set somewhere else and be called through another event.
+        //PlayLoop ();
 
         if(gDreamsForceClose)
             return;
 
 #if FRILLS
-		if (tedlevel)
-		{
-			if (playstate == died)
-				goto startlevel;
-			else
-				TEDDeath ();
-		}
+        if (tedlevel)
+        {
+            if (playstate == died)
+                goto startlevel;
+            else
+                TEDDeath ();
+        }
 #endif
 
-		if (loadedgame)
-			goto startlevel;
+        if (loadedgame)
+        {
+            startLevel();
+        }
 
-		switch (playstate)
-		{
-		case warptolevel:
-			goto startlevel;
+        switch (playstate)
+        {
+        case warptolevel:
+            startLevel();
 
-		case died:
-			HandleDeath ();
-			break;
+        case died:
+            HandleDeath ();
+            break;
 
-		case levelcomplete:
-			if (mapon)
-				SD_PlaySound (LEVELDONESND);
-			gamestate.leveldone[mapon] = true;	// finished the level
-			if (mapon != 0)
-				gamestate.mapon = 0;
-			break;
+        case levelcomplete:
+            if (mapon)
+                SD_PlaySound (LEVELDONESND);
+            gamestate.leveldone[mapon] = true;	// finished the level
+            if (mapon != 0)
+                gamestate.mapon = 0;
+            break;
 
-		case resetgame:
-			return;
+        case resetgame:
+            return;
 
-		case victorious:
-			GameFinale ();
-			goto done;
-		}
+        case victorious:
+            GameFinale ();
+            goto done;
+        }
 
 
-	} while (gamestate.lives>-1 && playstate!=victorious);
+    }
+    else
+    {
 
-	GameOver ();
+    GameOver ();
 
-done:
-	cities = 0;
-	for (i= 1; i<=16; i++)
-		if (gamestate.leveldone[i])
-			cities++;
-	US_CheckHighScore (gamestate.score,cities);
-	VW_ClearVideo (FIRSTCOLOR);
+done: // !!
+    cities = 0;
+    for (i= 1; i<=16; i++)
+        if (gamestate.leveldone[i])
+            cities++;
+    US_CheckHighScore (gamestate.score,cities);
+    VW_ClearVideo (FIRSTCOLOR);
+    }
+}
+
+void GameLoop (void)
+{
 }
 
 

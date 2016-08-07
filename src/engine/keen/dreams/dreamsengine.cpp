@@ -17,6 +17,7 @@
 
 #include "dreamscontrolpanel.h"
 #include "dreamsintro.h"
+#include "dreamsgameplay.h"
 
 #define REFKEEN_VER_KDREAMS_ANYEGA_ALL
 
@@ -152,7 +153,7 @@ void BE_ST_PollEvents(SDL_Event event);
 
 void BE_ST_ApplyScreenMode(int mode);
 
-SDL_sem* gpRenderLock = nullptr;
+//SDL_sem* gpRenderLock = nullptr;
 
 extern void RefKeen_FillObjStatesWithDOSPointers(void);
 
@@ -306,8 +307,8 @@ bool extractEmbeddedFilesIntoMemory(const BE_GameVerDetails_T &gameVerDetails)
 
 DreamsEngine::~DreamsEngine()
 {
-     SDL_DestroySemaphore( gpRenderLock );
-     gpRenderLock = nullptr;
+     //SDL_DestroySemaphore( gpRenderLock );
+     //gpRenderLock = nullptr;
 }
 
 ///
@@ -478,22 +479,6 @@ void DreamsDosIntro::render()
 
 void DreamsEngine::GameLoop()
 {
-    struct GameLoopAction : public Action
-    {
-        int handle()
-        {            
-            VW_SetScreenMode (GRMODE);
-            VW_ClearVideo (BLACK);
-            DemoLoop();
-
-            // If thread has finished, we can quit CG
-            gEventManager.add( new GMQuit() );
-            return 0;            
-        }
-    };
-
-    mpPlayLoopAction.reset( new GameLoopAction );
-    mpPlayLoopThread.reset( threadPool->start(mpPlayLoopAction.get(), "Dreams Gameloop"));
 }
 
 
@@ -555,7 +540,7 @@ void DreamsEngine::start()
 
     // Global for the legacy refkeen code.
     gDreamsEngine = this;    
-    gpRenderLock = SDL_CreateSemaphore(1);
+    //gpRenderLock = SDL_CreateSemaphore(1);
 
     gKeenFiles.setupFilenames(7);
 
@@ -603,13 +588,21 @@ void DreamsEngine::pumpEvent(const CEvent *evPtr)
         gInput.flushAll();
         IN_ClearKeysDown();
     }   
-    if( dynamic_cast<const NullifyScene*>(evPtr) )
+    if( dynamic_cast<const LaunchGamePlay*>(evPtr) )
+    {
+        mpScene.reset( new DreamsGamePlay );
+        mpScene->start();
+        gGameStateChange = GSS_NONE;
+        gInput.flushAll();
+        IN_ClearKeysDown();
+    }
+    /*if( dynamic_cast<const NullifyScene*>(evPtr) )
     {
         mpScene = nullptr;
         gGameStateChange = GSS_NONE;
         gInput.flushAll();
         IN_ClearKeysDown();
-    }
+    }*/
 
     if(mpScene)
     {
@@ -643,21 +636,11 @@ void DreamsEngine::ponder(const float deltaT)
             gGameStateChange = GSS_NONE;
         }
     }
-    else
-    {
-        if(!mpPlayLoopThread)
-        {
-            GameLoop();
-        }
-    }
 }
 
 
 void DreamsEngine::render()
 {
-    // Lock Rendering
-    SDL_SemWait( gpRenderLock );
-
     BE_ST_EGASetPelPanning(panx & 6);
 
     if(mpScene)
@@ -672,9 +655,6 @@ void DreamsEngine::render()
 
     SDL_Surface *blitSfc = gVideoDriver.getBlitSurface();
     BEL_ST_UpdateHostDisplay(blitSfc);
-
-    // Unlock
-    SDL_SemPost( gpRenderLock );
 }
 
 }

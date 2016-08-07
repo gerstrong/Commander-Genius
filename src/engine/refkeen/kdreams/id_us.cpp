@@ -3933,7 +3933,7 @@ US_ControlPanel_Ponder(void)
         }
 
 
-        gEventManager.add( new dreams::NullifyScene );
+        gEventManager.add( new dreams::LaunchGamePlay );
 
         //CA_DownLevel();
     }

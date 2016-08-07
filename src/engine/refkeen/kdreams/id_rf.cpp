@@ -973,8 +973,8 @@ void	RFL_NewRow (id0_int_t dir)
 void RF_ForceRefresh (void)
 {
 	RF_NewPosition (originxglobal,originyglobal);
-    RF_Refresh (true, false);
-    RF_Refresh (true, false);
+    RF_Refresh (true);
+    RF_Refresh (true);
 }
 
 
@@ -1679,10 +1679,10 @@ redraw:
 =====================
 */
 
-extern SDL_sem* gpRenderLock;
+//extern SDL_sem* gpRenderLock;
 
 
-void RF_Refresh (int updateGraphics, int semaphore)
+void RF_Refresh (int updateGraphics)
 {
 
     id0_byte_t	*newupdate;
@@ -1723,20 +1723,20 @@ void RF_Refresh (int updateGraphics, int semaphore)
 
 
         // Lock Rendering
-        if(semaphore)
+        /*if(semaphore)
         {
             SDL_SemWait( gpRenderLock );
-        }
+        }*/
 
         //
         // display the changed screen
         //
         BE_ST_SetScreenStartAddress(bufferofs+panadjust);
 
-        if(semaphore)
+        /*if(semaphore)
         {
             SDL_SemPost( gpRenderLock );
-        }
+        }*/
 
 
         //

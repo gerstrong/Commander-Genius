@@ -1068,12 +1068,12 @@ void BE_ST_CGAFullUpdateFromWrappedMem(const uint8_t *segPtr, const uint8_t *off
 	}
 }
 
-extern SDL_sem* gpRenderLock;
+//extern SDL_sem* gpRenderLock;
 
 void BE_ST_SetScreenMode(int mode)
 {
     // Lock Rendering
-    SDL_SemWait( gpRenderLock );
+    //SDL_SemWait( gpRenderLock );
 
     g_sdlDoRefreshGfxOutput = true;
     switch (mode)
@@ -1132,7 +1132,7 @@ void BE_ST_SetScreenMode(int mode)
     gDreamsEngine->setScreenMode(mode);
 
     // Unlock
-    SDL_SemPost( gpRenderLock );
+    //SDL_SemPost( gpRenderLock );
 }
 
 void BE_ST_textcolor(int color)

@@ -584,7 +584,9 @@ void CInput::waitForAnyInput()
 
         // wait time remaining in current loop
         if( waitTime > 0 )
+        {
             timerDelay(waitTime);
+        }
 
     }
 
