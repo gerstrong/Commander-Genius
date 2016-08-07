@@ -842,6 +842,7 @@ void ScrollScreen (void)
 	|| player->right > originxmax+20*TILEGLOBAL)
 	{
 		playstate = levelcomplete;
+        gEventManager.add( new dreams::CompleteLevel );
 		return;
 	}
 
@@ -2008,6 +2009,23 @@ void startLevel()
 
 }
 
+void processLevelcomplete()
+{
+    if (mapon)
+    {
+        SD_PlaySound (LEVELDONESND);
+    }
+
+    gamestate.leveldone[mapon] = true;	// finished the level
+
+    if (mapon != 0)
+    {
+        gamestate.mapon = 0;
+    }
+
+}
+
+
 void GameLoopOpen()
 {
     id0_unsigned_t	cities,i;
@@ -2058,13 +2076,8 @@ startlevel:
             HandleDeath ();
             break;
 
-        case levelcomplete:
-            if (mapon)
-                SD_PlaySound (LEVELDONESND);
-            gamestate.leveldone[mapon] = true;	// finished the level
-            if (mapon != 0)
-                gamestate.mapon = 0;
-            break;
+/*        case levelcomplete:
+            break;*/
 
         case resetgame:
             return;

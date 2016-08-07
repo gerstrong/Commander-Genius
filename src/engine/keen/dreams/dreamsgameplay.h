@@ -11,6 +11,10 @@ struct LaunchGamePlay : CEvent {};
 
 struct GoIntoPlayLoop : CEvent {};
 
+struct CompleteLevel : CEvent {};
+
+
+
 class DreamsGamePlay  : public GsEngine
 {
 public:

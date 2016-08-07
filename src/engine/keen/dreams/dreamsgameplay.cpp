@@ -1,8 +1,11 @@
 #include "dreamsgameplay.h"
 
+#include <base/CInput.h>
 
 void GameLoopOpen();
 void GamePlayStart();
+
+void processLevelcomplete();
 
 extern "C"
 {
@@ -37,6 +40,12 @@ void DreamsGamePlay::pumpEvent(const CEvent *evPtr)
         mPlayloopPtr = &PlayLoop;
         mPlayloopRenderPtr = &PlayLoopRender;
     }
+    if( dynamic_cast<const CompleteLevel*>(evPtr) )
+    {
+        processLevelcomplete();
+        mPlayloopPtr = nullptr;
+        mPlayloopRenderPtr = nullptr;
+    }
 }
 
 void DreamsGamePlay::ponder(const float deltaT)
@@ -47,6 +56,7 @@ void DreamsGamePlay::ponder(const float deltaT)
     }
     else
     {
+        gInput.flushAll();
         GameLoopOpen();
     }
 }
