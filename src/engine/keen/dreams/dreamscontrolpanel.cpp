@@ -33,7 +33,7 @@ DreamsControlPanel::DreamsControlPanel()
 
 void DreamsControlPanel::start()
 {
-    US_ControlPanel_Init();
+    US_ControlPanel_Init();    
 }
 
 

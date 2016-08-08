@@ -22,6 +22,7 @@
 
 #include "engine/keen/dreams/dreamsengine.h"
 #include "engine/keen/dreams/dreamsgameplay.h"
+#include "engine/keen/dreams/dreamscontrolpanel.h"
 
 extern mapfiletype_modern  mapFile;
 
@@ -289,8 +290,11 @@ void CheckKeys (void)
 		US_CenterWindow (20,8);
 		US_CPrint ("Loading");
 		VW_UpdateScreen ();
-        US_ControlPanel_Init();
-        US_ControlPanel_Ponder();
+
+        gEventManager.add( new dreams::LaunchControlPanel );
+        /*US_ControlPanel_Init();
+        US_ControlPanel_Ponder();*/
+        return;
 
         if(gDreamsForceClose)
             return;

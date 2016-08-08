@@ -1004,13 +1004,23 @@ US_DrawWindow(id0_word_t x,id0_word_t y,id0_word_t w,id0_word_t h)
 
 	US_ClearWindow();
 
-	VWB_DrawTile8M(sx,sy,0),VWB_DrawTile8M(sx,sy + sh,6);
+    VWB_DrawTile8M(sx,sy,0);
+    VWB_DrawTile8M(sx,sy + sh,6);
+
 	for (i = sx + 8;i <= sx + sw - 8;i += 8)
-		VWB_DrawTile8M(i,sy,1),VWB_DrawTile8M(i,sy + sh,7);
-	VWB_DrawTile8M(i,sy,2),VWB_DrawTile8M(i,sy + sh,8);
+    {
+        VWB_DrawTile8M(i,sy,1);
+        VWB_DrawTile8M(i,sy + sh,7);
+    }
+
+    VWB_DrawTile8M(i,sy,2);
+    VWB_DrawTile8M(i,sy + sh,8);
 
 	for (i = sy + 8;i <= sy + sh - 8;i += 8)
-		VWB_DrawTile8M(sx,i,3),VWB_DrawTile8M(sx + sw,i,5);
+    {
+        VWB_DrawTile8M(sx,i,3);
+        VWB_DrawTile8M(sx + sw,i,5);
+    }
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -3722,6 +3732,8 @@ US_ControlPanel_Init(void)
     done = false;
     FlushHelp = true;
     lastx = lasty = -1;
+
+    VW_UpdateScreen();
 }
 
 void 	VWL_DrawCursor (void);
