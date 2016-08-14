@@ -22,6 +22,9 @@ public:
 
     DreamsControlPanel();
 
+
+    ~DreamsControlPanel();
+
     /**
      * @brief start called the first time usually when the instance was created
      */

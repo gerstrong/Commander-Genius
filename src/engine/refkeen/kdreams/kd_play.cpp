@@ -1587,6 +1587,11 @@ void PlayLoopInit()
     plummet = 0;
 
     FixScoreBox ();					// draw bomb/flower
+
+    // This redraws the whole playloop scene after closing the control panel
+    RF_ForceRefresh();
+
+    VW_UpdateScreen();
 }
 
 
@@ -1951,6 +1956,10 @@ void HandleDeath (void)
 //==========================================================================
 
 
+void GamePlayStartLevel()
+{
+    startLevel();
+}
 
 /*
 ============================
@@ -1962,6 +1971,8 @@ void HandleDeath (void)
 ============================
 */
 
+bool mGamePlayRunning = false;
+
 void GamePlayStart()
 {
     VW_SetScreenMode (GRMODE);
@@ -1970,10 +1981,14 @@ void GamePlayStart()
     US_SetLoadSaveHooks(LoadGame,SaveGame,ResetGame);
     restartgame = gd_Continue;
 
+    mGamePlayRunning = true;
+
     // Set variables for set up a new game in case
     // no game was loaded expilicitely by the user
     if (!loadedgame)
+    {
         NewGame();
+    }
 }
 
 
@@ -2043,18 +2058,18 @@ void GameLoopOpen()
 
     if( gamestate.lives>-1 && playstate!=victorious )
     {
-startlevel:
-        startLevel();
+
+        /*VW_FixRefreshBuffer ();
+        VW_UpdateScreen ();
+        CA_ClearMarks ();
+        RF_MarkTileGraphics();
+
+        CA_CacheMarks (levelnames[mapon], 0);*/
 
         gEventManager.add( new dreams::GoIntoPlayLoop );
 
         return;
 
-        // TODO: Code must set somewhere else and be called through another event.
-        //PlayLoop ();
-
-        if(gDreamsForceClose)
-            return;
 
 #if FRILLS
         if (tedlevel)
@@ -2066,10 +2081,10 @@ startlevel:
         }
 #endif
 
-        if (loadedgame)
-        {
-            startLevel();
-        }
+        //if (loadedgame)
+        //{
+        //    startLevel();
+        //}
 
         switch (playstate)
         {

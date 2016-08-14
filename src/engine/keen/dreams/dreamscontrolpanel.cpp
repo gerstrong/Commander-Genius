@@ -17,11 +17,11 @@ namespace dreams
 
 DreamsControlPanel::DreamsControlPanel()
 {
-    const id0_char_t *FileName1;
+    /*const id0_char_t *FileName1;
     struct Shape FileShape1;
 
     id0_int_t bufsave	= bufferofs;
-    id0_int_t dissave	= displayofs;
+    id0_int_t dissave	= displayofs;*/
 
 //
 // demo loop
@@ -29,6 +29,13 @@ DreamsControlPanel::DreamsControlPanel()
     US_SetLoadSaveHooks(LoadGame,SaveGame,ResetGame);
     restartgame = gd_Continue;
 }
+
+
+DreamsControlPanel::~DreamsControlPanel()
+{
+    //USL_TearDownCtlPanel();
+}
+
 
 
 void DreamsControlPanel::start()
@@ -39,15 +46,8 @@ void DreamsControlPanel::start()
 
 void DreamsControlPanel::ponder(const float deltaT)
 {
-    //bufferofs = bufsave;
-    //displayofs = dissave;
-
     VW_FixRefreshBuffer();
-    //US_ControlPanel ();
     US_ControlPanel_Ponder();
-
-    //if(gDreamsForceClose)
-//        return;
 }
 
 

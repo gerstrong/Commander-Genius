@@ -588,7 +588,7 @@ void DreamsEngine::pumpEvent(const CEvent *evPtr)
         gInput.flushAll();
         IN_ClearKeysDown();
     }   
-    if( dynamic_cast<const LaunchGamePlay*>(evPtr) )
+    if( dynamic_cast<const SwitchToGamePlay*>(evPtr) )
     {
         mpScene.reset( new DreamsGamePlay );
         mpScene->start();

@@ -1700,8 +1700,8 @@ void RF_Refresh (int updateGraphics)
             //
             // update newly scrolled on tiles and animated tiles from the master screen
             //
-            EGAWRITEMODE(1);
-            EGAMAPMASK(15);
+            /*EGAWRITEMODE(1);
+            EGAMAPMASK(15);*/
             RFL_UpdateTiles ();
             RFL_EraseBlocks ();
 
@@ -1721,23 +1721,10 @@ void RF_Refresh (int updateGraphics)
         if (refreshvector)
             refreshvector();
 
-
-        // Lock Rendering
-        /*if(semaphore)
-        {
-            SDL_SemWait( gpRenderLock );
-        }*/
-
         //
         // display the changed screen
         //
         BE_ST_SetScreenStartAddress(bufferofs+panadjust);
-
-        /*if(semaphore)
-        {
-            SDL_SemPost( gpRenderLock );
-        }*/
-
 
         //
         // prepare for next refresh

@@ -105,10 +105,10 @@ static	const id0_char_t		*ParmStrings[] = {"TEDLEVEL",""};
 
 //	Internal variables
 static	id0_boolean_t		US_Started;
-static	id0_boolean_t		GameIsDirty,
-					HighScoresDirty,
-					QuitToDos,
-					ResumeGame;
+bool		GameIsDirty,
+            HighScoresDirty,
+            QuitToDos;
+bool ResumeGame = false;
 
 static	memptr		LineOffsets;
 
@@ -3065,7 +3065,9 @@ USL_CtlDLButtonCustom(UserCall call,id0_word_t i,id0_word_t n)
 		game->present = true;
 
 		if (loadedgame)
+        {
 			Paused = true;
+        }
 
 		VW_ShowCursor();
 		US_RestoreWindow(&wr);
@@ -3740,6 +3742,8 @@ void 	VWL_DrawCursor (void);
 void 	VWL_EraseCursor (void);
 
 
+extern bool mGamePlayRunning;
+
 ///////////////////////////////////////////////////////////////////////////
 //
 //	US_ControlPanel() - This is the main routine for the control panel
@@ -3891,11 +3895,14 @@ US_ControlPanel_Ponder(void)
 			USL_DoHit(hiti,hitn);
         }
 
-        if (LastScan == sc_Escape || gInput.getPressedCommand(IC_BACK))
-		{
-			IN_ClearKey(sc_Escape);
-			done = true;
-		}
+        if(mGamePlayRunning)
+        {
+            if (LastScan == sc_Escape || gInput.getPressedCommand(IC_BACK))
+            {
+                IN_ClearKey(sc_Escape);
+                ResumeGame = true;
+            }
+        }
 
 		if (QuitToDos)
         {
@@ -3945,9 +3952,9 @@ US_ControlPanel_Ponder(void)
         }
 
 
-        gEventManager.add( new dreams::LaunchGamePlay );
+        gEventManager.add( new dreams::SwitchToGamePlay );
 
-        //CA_DownLevel();
+        CA_DownLevel();
     }
 
     //BE_ST_AltControlScheme_Pop(); // REFKEEN - Alternative controllers support

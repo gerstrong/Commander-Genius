@@ -87,7 +87,9 @@ void NewGame (void)
 	gamestate.lives = 3;
 	gamestate.flowerpowers = gamestate.boobusbombs = 0;
 	for (i = 0;i < GAMELEVELS;i++)
+    {
 		gamestate.leveldone[i] = false;
+    }
 }
 
 //===========================================================================

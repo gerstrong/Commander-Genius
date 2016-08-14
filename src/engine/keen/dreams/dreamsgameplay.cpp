@@ -4,6 +4,7 @@
 
 void GameLoopOpen();
 void GamePlayStart();
+void GamePlayStartLevel();
 
 void processLevelcomplete();
 
@@ -11,6 +12,10 @@ extern "C"
 {
 void 	PlayLoop();
 void 	PlayLoopRender();
+
+
+extern bool ResumeGame;
+
 }
 
 void PlayLoopInit();
@@ -25,11 +30,20 @@ DreamsGamePlay::DreamsGamePlay()
 
 }
 
+void startLevel();
+
+
 
 void DreamsGamePlay::start()
 {
-    GamePlayStart();
+    if(!ResumeGame)
+    {
+        GamePlayStart();
+        GamePlayStartLevel();                
+    }    
 }
+
+
 
 void DreamsGamePlay::pumpEvent(const CEvent *evPtr)
 {
@@ -38,13 +52,14 @@ void DreamsGamePlay::pumpEvent(const CEvent *evPtr)
         PlayLoopInit();
 
         mPlayloopPtr = &PlayLoop;
-        mPlayloopRenderPtr = &PlayLoopRender;
+        mPlayloopRenderPtr = &PlayLoopRender;        
     }
     if( dynamic_cast<const CompleteLevel*>(evPtr) )
     {
         processLevelcomplete();
         mPlayloopPtr = nullptr;
-        mPlayloopRenderPtr = nullptr;
+        mPlayloopRenderPtr = nullptr;        
+        GamePlayStartLevel();
     }
 }
 
