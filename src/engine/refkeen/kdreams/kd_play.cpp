@@ -1752,12 +1752,43 @@ void PlayLoopRun()
 
 void startLevel();
 
+
+void HandleDeath_Init (void);
+
+void HandleDeath_Loop (void);
+
+
+//==========================================================================
+
+
+void GamePlayStartLevel()
+{
+    startLevel();
+}
+
+
+
 void PlayLoop()
 {
 
     if(!loadedgame && !playstate)
     {                
         PlayLoopRun();
+
+        if(playstate == died)
+        {
+            HandleDeath_Init();
+        }
+
+    }
+    else if(playstate == died)
+    {
+        HandleDeath_Loop();
+
+        if(playstate == notdone)
+        {
+            GamePlayStartLevel();
+        }
     }
     else
     {
@@ -1772,7 +1803,10 @@ void PlayLoop()
 
 void PlayLoopRender()
 {
-    RF_Refresh(true);
+    if(!playstate)
+    {
+        RF_Refresh(true);
+    }
 }
 
 //==========================================================================
@@ -1872,35 +1906,43 @@ void GameFinale (void)
 ==========================
 */
 
-void HandleDeath (void)
+int mSelection = 0;
+int mTop, mBottom;
+
+void HandleDeath_Init (void)
 {
-	id0_unsigned_t	top,bottom,selection,y,color;
+    gamestate.keys = 0;
+    gamestate.boobusbombs -= gamestate.bombsthislevel;
+    gamestate.lives--;
+    if (gamestate.lives < 0)
+        return;
 
-	gamestate.keys = 0;
-	gamestate.boobusbombs -= gamestate.bombsthislevel;
-	gamestate.lives--;
-	if (gamestate.lives < 0)
-		return;
+    VW_FixRefreshBuffer ();
+    US_CenterWindow (20,8);
+    PrintY += 4;
+    US_CPrint ("You didn't make it past");
+    US_CPrint (levelnames[mapon]);
+    PrintY += 8;
+    mTop = PrintY-2;
+    US_CPrint ("Try Again");
+    PrintY += 4;
+    mBottom = PrintY-2;
+    US_CPrint ("Exit to Tuberia");
 
-	VW_FixRefreshBuffer ();
-	US_CenterWindow (20,8);
-	PrintY += 4;
-	US_CPrint ("You didn't make it past");
-	US_CPrint (levelnames[mapon]);
-	PrintY += 8;
-	top = PrintY-2;
-	US_CPrint ("Try Again");
-	PrintY += 4;
-	bottom = PrintY-2;
-	US_CPrint ("Exit to Tuberia");
 
-	selection = 0;
-	do
+    mSelection = 0;
+}
+
+void HandleDeath_Loop (void)
+{
+
+    id0_unsigned_t y, color;
+
 	{
-		if (selection)
-			y = bottom;
+        if (mSelection)
+            y = mBottom;
 		else
-			y = top;
+            y = mTop;
 
 // draw select bar
 		if ( (SD_GetTimeCount() / 16)&1 )
@@ -1940,26 +1982,26 @@ void HandleDeath (void)
 		if (c.button0 || c.button1 || LastScan == sc_Return
 		|| LastScan == sc_Space)
 		{
-			if (selection)
+            if (mSelection == 1)
+            {
 				gamestate.mapon = 0;		// exit to tuberia
+            }
+            else
+            {
+                playstate = notdone;
+            }
+
 			return;
 		}
+
 		if (c.yaxis == -1 || LastScan == sc_UpArrow)
-			selection = 0;
+            mSelection = 0;
 		else if (c.yaxis == 1 || LastScan == sc_DownArrow)
-			selection = 1;
-        BE_ST_ShortSleep();
-	} while (1);
+            mSelection = 1;
 
+    }
 }
 
-//==========================================================================
-
-
-void GamePlayStartLevel()
-{
-    startLevel();
-}
 
 /*
 ============================
@@ -2091,9 +2133,9 @@ void GameLoopOpen()
         case warptolevel:
             startLevel();
 
-        case died:
+        /*case died:
             HandleDeath ();
-            break;
+            break;*/
 
 /*        case levelcomplete:
             break;*/
