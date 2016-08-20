@@ -23,6 +23,7 @@
 #include "engine/keen/dreams/dreamsengine.h"
 #include "engine/keen/dreams/dreamsgameplay.h"
 #include "engine/keen/dreams/dreamscontrolpanel.h"
+#include "engine/keen/dreams/dreamsintro.h"
 
 extern mapfiletype_modern  mapFile;
 
@@ -1796,8 +1797,6 @@ void PlayLoop()
 
         startLevel();
     }
-
-    //BE_ST_AltControlScheme_Pop(); // REFKEEN - Alternative controllers support
 }
 
 
@@ -1915,7 +1914,12 @@ void HandleDeath_Init (void)
     gamestate.boobusbombs -= gamestate.bombsthislevel;
     gamestate.lives--;
     if (gamestate.lives < 0)
+    {
+        // Make it to be gameover
+        gEventManager.add( new dreams::SwitchToIntro );
+        gInput.flushAll();
         return;
+    }
 
     VW_FixRefreshBuffer ();
     US_CenterWindow (20,8);
@@ -1929,6 +1933,7 @@ void HandleDeath_Init (void)
     mBottom = PrintY-2;
     US_CPrint ("Exit to Tuberia");
 
+    VW_UpdateScreen ();
 
     mSelection = 0;
 }
@@ -1975,21 +1980,24 @@ void HandleDeath_Loop (void)
 		{
 			gamestate.mapon = 0;		// exit to tuberia
 			IN_ClearKeysDown ();
+            playstate = notdone;
 			return;
 		}
 
 		IN_ReadControl(0,&c);		// get player input
-		if (c.button0 || c.button1 || LastScan == sc_Return
-		|| LastScan == sc_Space)
+        if (c.button0 || c.button1
+            || LastScan == sc_Return
+            || LastScan == sc_Space)
 		{
             if (mSelection == 1)
             {
 				gamestate.mapon = 0;		// exit to tuberia
             }
-            else
-            {
-                playstate = notdone;
-            }
+
+            playstate = notdone;
+            IN_ClearKeysDown ();
+            c.button0 = c.button1 = 0;
+            gInput.flushAll();
 
 			return;
 		}

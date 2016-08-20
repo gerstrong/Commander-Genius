@@ -61,6 +61,10 @@ void DreamsGamePlay::pumpEvent(const CEvent *evPtr)
         mPlayloopRenderPtr = nullptr;        
         GamePlayStartLevel();
     }
+    /*if( dynamic_cast<const RestartGame*>(evPtr) )
+    {
+
+    }*/
 }
 
 

@@ -1,24 +1,18 @@
-#ifndef DREAMSINTRO_H
-#define DREAMSINTRO_H
+#ifndef DREAMSDOSINTRO_H
+#define DREAMSDOSINTRO_H
 
 #include <base/GsEngine.h>
-
-#include <string>
 
 namespace dreams
 {
 
-struct SwitchToIntro : CEvent {};
-
 /**
- * @brief The DreamsIntro class     Class of the graphical after the text based intro was shown.
- *                                  At this stage graphics and audio are already loaded.
- *                                  The main intro screen and high scores are actually shown here.
+ * @brief The DreamsDosIntro class  Portion of the text dialog where a lot of main game data loading is executed as well.
+ *
  */
-class DreamsIntro : public GsEngine
+class DreamsDosIntro : public GsEngine
 {
-public:
-    DreamsIntro();
+    virtual ~DreamsDosIntro() {}
 
     /**
      * @brief start Usually this is started before anything else but still after the construction.
@@ -35,19 +29,14 @@ public:
      * @brief ponder    Logic cycle run usually at 120 LPS
      * @param deltaT    how much time of logic to do
      */
-    void ponder(const float deltaT) ;
+    void ponder(const float deltaT);
 
     /**
      * @brief render Everything that needs to be rendered representing the current state of the object
      */
     void render();
-
-private:
-
-    int mStep = 1;
-    int mTimer = 0;
 };
 
 }
 
-#endif // DREAMSINTRO_H
+#endif // DREAMSDOSINTRO_H

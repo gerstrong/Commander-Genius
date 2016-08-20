@@ -22,6 +22,7 @@ namespace dreams
 {
 
 
+
 DreamsIntro::DreamsIntro()
 {
     mStep = 1;
@@ -59,7 +60,7 @@ DreamsIntro::DreamsIntro()
 
 void DreamsIntro::start()
 {
-
+    ingame = false;
 }
 
 void DreamsIntro::pumpEvent(const CEvent *evPtr)
