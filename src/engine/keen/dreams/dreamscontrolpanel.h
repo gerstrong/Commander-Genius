@@ -12,8 +12,24 @@ namespace dreams
 struct LaunchControlPanel : CEvent {};
 
 
-// TODO: Should become deprecated later on
-//struct NullifyScene : CEvent {};
+struct OpenLineInput : CEvent {};
+
+
+/**
+ * @brief The LineInput class   processes the input of text when saving a game as open loops
+ *                              for pondering and rendering.
+ */
+class LineInput
+{
+public:
+
+    void start();
+
+    void ponder();
+
+    void render();
+
+};
 
 
 class DreamsControlPanel : public GsEngine
@@ -35,7 +51,7 @@ public:
      *                  If there are underlying objects using events, they are passed
      * @param evPtr
      */
-    void pumpEvent(const CEvent *evPtr) {};
+    void pumpEvent(const CEvent *evPtr);
 
     /**
      * @brief ponder
@@ -46,6 +62,10 @@ public:
      * @brief render
      */
     void render();
+
+private:
+
+    std::unique_ptr<LineInput> mpLineInput;
 
 };
 
