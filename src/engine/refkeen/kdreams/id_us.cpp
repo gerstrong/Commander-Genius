@@ -1180,7 +1180,7 @@ US_UpdateCursor(void)
 //	USL_XORICursor() - XORs the I-bar text cursor. Used by US_LineInput()
 //
 ///////////////////////////////////////////////////////////////////////////
-static void
+void
 USL_XORICursor(id0_int_t x,id0_int_t y,const id0_char_t *s,id0_word_t cursor)
 {
 	id0_char_t	buf[MaxString];
@@ -1209,6 +1209,10 @@ id0_boolean_t
 US_LineInput(id0_int_t x,id0_int_t y,id0_char_t *buf,const id0_char_t *def,id0_boolean_t escok,
 				id0_int_t maxchars,id0_int_t maxwidth)
 {
+/*
+
+
+
 	id0_boolean_t		redraw,
 				cursorvis,cursormoved,
 				done,result;
@@ -1236,9 +1240,6 @@ US_LineInput(id0_int_t x,id0_int_t y,id0_char_t *buf,const id0_char_t *def,id0_b
 	LastASCII = key_None;
 	LastScan = sc_None;
 
-	// REFKEEN - Alternative controllers support
-    /*BE_ST_AltControlScheme_Push();
-    BE_ST_AltControlScheme_PrepareTextInput();*/
 
 	while (!done)
 	{
@@ -1424,7 +1425,7 @@ US_LineInput(id0_int_t x,id0_int_t y,id0_char_t *buf,const id0_char_t *def,id0_b
 	VW_UpdateScreen();
 
 	IN_ClearKeysDown();
-	return(result);
+    return(result);*/
 }
 
 //	Control panel routines
@@ -3111,8 +3112,23 @@ USL_CtlDSButtonCustom(UserCall call,id0_word_t i,id0_word_t n)
 	fontcolor = F_BLACK;
 
 	r = USL_DLSRect(ip - 1);
-	ok = US_LineInput(px,py,game->name,game->present? game->name : id0_nil_t,true,
-                        MaxGameName,r.lr.x - r.ul.x - 8);
+
+    auto oli = new dreams::OpenLineInput(px,py,game->name,game->present? game->name : id0_nil_t,true,
+                                 MaxGameName,r.lr.x - r.ul.x - 8);
+    gEventManager.add(oli);
+
+
+
+
+
+    /*ok = US_LineInput(px,py,game->name,game->present? game->name : id0_nil_t,true,
+                        MaxGameName,r.lr.x - r.ul.x - 8);*/
+
+    return false;
+
+
+    // TODO: Code below must be passed to a function object so the line input functionality triggers it!
+
 	if (!strlen(game->name))
 		strcpy(game->name,"Untitled");
 	if (ok)

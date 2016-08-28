@@ -8,6 +8,10 @@
 extern "C"
 {
 #include "../../refkeen/kdreams/kd_def.h"
+
+extern void
+USL_XORICursor(id0_int_t x,id0_int_t y,const id0_char_t *s,id0_word_t cursor);
+
 }
 
 
@@ -48,8 +52,11 @@ void DreamsControlPanel::pumpEvent(const CEvent *evPtr)
 {
     if( const OpenLineInput* openLineInput = dynamic_cast<const OpenLineInput*>(evPtr) )
     {
-        mpLineInput.reset(new LineInput);
-        mpLineInput->start();
+        mpLineInput.reset(new LineInput);                
+        mpLineInput->start(openLineInput->x, openLineInput->y,
+                           openLineInput->buf, openLineInput->def,
+                           openLineInput->escok,
+                           openLineInput->maxchars, openLineInput->maxwidth);
     }
 }
 
@@ -80,117 +87,120 @@ void DreamsControlPanel::render()
 
 /// Line Input implementations
 
-void LineInput::start()
+void LineInput::start(int x, int y,
+                      char *buf, const char *def,
+                      bool escok,
+                      int maxchars, int maxwidth)
 {
-    /*
+
     id0_boolean_t		redraw,
                 cursorvis,cursormoved,
                 done,result;
-    ScanCode	sc;
-    id0_char_t		c,
-                s[MaxString],olds[MaxString];
+    id0_char_t		c,olds[MaxString];
     id0_word_t		i,
                 cursor,
                 w,h,
                 len;
     id0_longword_t	lasttime;
 
+    mx = x;
+    my = y;
+
     VW_HideCursor();
 
-    if (def)
-        strcpy(s,def);
-    else
-        *s = '\0';
-    *olds = '\0';
-    cursor = strlen(s);
-    cursormoved = redraw = true;
+    mStr = def;
+    mBuf = buf;
 
-    cursorvis = done = false;
-    lasttime = SD_GetTimeCount();
-    LastASCII = key_None;
-    LastScan = sc_None;
-*/
+    *olds = '\0';
+    mCursor = mStr.size();
+
+    //mLasttime = SD_GetTimeCount();
+    //mLastASCII = key_None;
+    //mLastScan = sc_None;
+
 }
 
 void LineInput::ponder()
 {
 
-/*
-
-    while (!done)
+    if(mDone)
     {
-        if (cursorvis)
-            USL_XORICursor(x,y,s,cursor);
+        if (mCursorvis)
+        {
+            USL_XORICursor(mx,my,mStr.c_str(),mCursor);
+        }
 
 //	asm	pushf
 //	asm	cli
         BE_ST_ShortSleep();
 
-        sc = LastScan;
+        mSc = LastScan;
         LastScan = sc_None;
-        c = LastASCII;
+        mC = LastASCII;
         LastASCII = key_None;
 
 //	asm	popf
-
-        switch (sc)
+/*
+        switch (mSc)
         {
         case sc_LeftArrow:
-            if (cursor)
-                cursor--;
-            c = key_None;
-            cursormoved = true;
+            if (mCursor)
+                mCursor--;
+            mC = key_None;
+            mCursorMoved = true;
             break;
         case sc_RightArrow:
-            if (s[cursor])
-                cursor++;
-            c = key_None;
-            cursormoved = true;
+            if (mStr[mCursor])
+                mCursor++;
+            mC = key_None;
+            mCursorMoved = true;
             break;
         case sc_Home:
-            cursor = 0;
-            c = key_None;
-            cursormoved = true;
+            mCursor = 0;
+            mC = key_None;
+            mCuescokrsorMoved = true;
             break;
         case sc_End:
-            cursor = strlen(s);
-            c = key_None;
-            cursormoved = true;
+            mCursor = mStr.size();
+            mC = key_None;
+            mCursorMoved = true;
             break;
 
         case sc_Return:
-            strcpy(buf,s);
-            done = true;
-            result = true;
-            c = key_None;
+            strcpy(mBuf,mStr.c_str());
+            mDone = true;
+            mResult = true;
+            mC = key_None;
             break;
         case sc_Escape:
             if (escok)
             {
-                done = true;
-                result = false;
+                mDone = true;
+                mResult = false;
             }
-            c = key_None;
+            mC = key_None;
             break;
 
         case sc_BackSpace:
             if (cursor)
             {
-                strcpy(s + cursor - 1,s + cursor);
-                cursor--;
-                redraw = true;
+                auto sCur = mStr.substr(mCursor);
+                mStr.replace (cursor - 1,  sCur.size(),  sCur);
+                mCursor--;
+                mRedraw = true;
             }
-            c = key_None;
-            cursormoved = true;
+            mC = key_None;
+            mCursorMoved = true;
             break;
         case sc_Delete:
             if (s[cursor])
-            {
-                strcpy(s + cursor,s + cursor + 1);
-                redraw = true;
+            {                
+                auto sCur = mStr.substr(mCursor+1);
+                mStr.replace (cursor,  sCur.size(),  sCur);
+                mRedraw = true;
             }
-            c = key_None;
-            cursormoved = true;
+            mC = key_None;
+            mCursorMoved = true;
             break;
 
         case 0x4c:	// Keypad 5
@@ -199,14 +209,14 @@ void LineInput::ponder()
         case sc_PgUp:
         case sc_PgDn:
         case sc_Insert:
-            c = key_None;
+            mC = key_None;
             break;
         }
 
         if (c)
         {
-            len = strlen(s);
-            USL_MeasureString(s,NULL,&w,&h);
+            len = mStr.size();
+            USL_MeasureString(mStr.c_str(),NULL,&w,&h);
 
             if
             (
@@ -250,7 +260,7 @@ void LineInput::ponder()
             break;
         }
 
-        if (redraw)
+        if (mRedraw)
         {
             px = x;
             py = y;
@@ -282,29 +292,31 @@ void LineInput::ponder()
 
         VW_UpdateScreen();
 
+
+        */
+
     }
-
-    gInput.flushAll();
-
-    // REFKEEN - Alternative controllers support
-    //BE_ST_AltControlScheme_Pop();
-
-    if (cursorvis)
-        USL_XORICursor(x,y,s,cursor);
-    if (!result)
+    else
     {
-        px = x;
-        py = y;
-        USL_DrawString(olds,NULL);
+        /*
+        gInput.flushAll();
+
+        if (cursorvis)
+            USL_XORICursor(x,y,s,cursor);
+        if (!result)
+        {
+            px = x;
+            py = y;
+            USL_DrawString(olds,NULL);
+        }
+        VW_ShowCursor();
+        VW_UpdateScreen();
+
+        IN_ClearKeysDown();
+        */
+
     }
-    VW_ShowCursor();
-    VW_UpdateScreen();
-
-    IN_ClearKeysDown();
-    return(result);
-
-
-*/
+    //return(result);
 }
 
 void LineInput::render()

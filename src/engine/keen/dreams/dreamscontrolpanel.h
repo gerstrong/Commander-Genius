@@ -12,7 +12,30 @@ namespace dreams
 struct LaunchControlPanel : CEvent {};
 
 
-struct OpenLineInput : CEvent {};
+
+struct OpenLineInput : CEvent
+{
+    OpenLineInput(int x, int y,
+    char *buf,
+    const char *def,
+    bool escok,
+    int maxchars,
+    int maxwidth) :
+        x(x),
+        y(y),
+        buf(buf),
+        def(def),
+        escok(escok),
+        maxchars(maxchars),
+        maxwidth(maxwidth) {}
+
+    int x, y;
+    char *buf;
+    const char *def;
+    bool escok;
+    int maxchars;
+    int maxwidth;
+};
 
 
 /**
@@ -23,11 +46,32 @@ class LineInput
 {
 public:
 
-    void start();
+    void start(int x, int y,
+               char *buf, const char *def,
+               bool escok, int maxchars,
+               int maxwidth);
 
     void ponder();
 
     void render();
+
+private:
+
+    bool mCursorvis = false;
+    bool mDone = false;
+    bool mRedraw = true;
+    bool mResult;
+    bool mCursorMoved = true;
+    int mCursor;
+
+    std::string mStr;
+
+    int mx, my;
+
+    uint8_t mSc;
+
+    char mC;
+    char *mBuf;
 
 };
 
