@@ -64,6 +64,10 @@ private:
     bool mCursorMoved = true;
     int mCursor;
 
+    int mMaxchars, mMaxwidth;
+
+    bool mEscok;
+
     std::string mStr;
 
     int mx, my;

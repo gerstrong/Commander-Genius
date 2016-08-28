@@ -1,5 +1,6 @@
 #include "dreamscontrolpanel.h"
 
+#include <base/CInput.h>
 
 #define REFKEEN_VER_KDREAMS_ANYEGA_ALL
 
@@ -12,6 +13,7 @@ extern "C"
 extern void
 USL_XORICursor(id0_int_t x,id0_int_t y,const id0_char_t *s,id0_word_t cursor);
 
+extern void (*USL_MeasureString)(const id0_char_t *,const id0_char_t *,id0_word_t *,id0_word_t *);
 }
 
 
@@ -103,6 +105,10 @@ void LineInput::start(int x, int y,
                 len;
     id0_longword_t	lasttime;
 
+
+    mMaxchars = maxchars;
+    mMaxwidth = maxwidth;
+
     mx = x;
     my = y;
 
@@ -113,6 +119,8 @@ void LineInput::start(int x, int y,
 
     *olds = '\0';
     mCursor = mStr.size();
+
+    mEscok = escok;
 
     //mLasttime = SD_GetTimeCount();
     //mLastASCII = key_None;
@@ -140,7 +148,7 @@ void LineInput::ponder()
         LastASCII = key_None;
 
 //	asm	popf
-/*
+
         switch (mSc)
         {
         case sc_LeftArrow:
@@ -158,7 +166,7 @@ void LineInput::ponder()
         case sc_Home:
             mCursor = 0;
             mC = key_None;
-            mCuescokrsorMoved = true;
+            mCursorMoved = true;
             break;
         case sc_End:
             mCursor = mStr.size();
@@ -173,7 +181,7 @@ void LineInput::ponder()
             mC = key_None;
             break;
         case sc_Escape:
-            if (escok)
+            if (mEscok)
             {
                 mDone = true;
                 mResult = false;
@@ -182,10 +190,10 @@ void LineInput::ponder()
             break;
 
         case sc_BackSpace:
-            if (cursor)
+            if (mCursor)
             {
                 auto sCur = mStr.substr(mCursor);
-                mStr.replace (cursor - 1,  sCur.size(),  sCur);
+                mStr.replace(mCursor - 1,  sCur.size(),  sCur);
                 mCursor--;
                 mRedraw = true;
             }
@@ -193,10 +201,10 @@ void LineInput::ponder()
             mCursorMoved = true;
             break;
         case sc_Delete:
-            if (s[cursor])
+            if (mStr[mCursor])
             {                
                 auto sCur = mStr.substr(mCursor+1);
-                mStr.replace (cursor,  sCur.size(),  sCur);
+                mStr.replace (mCursor,  sCur.size(),  sCur);
                 mRedraw = true;
             }
             mC = key_None;
@@ -213,23 +221,26 @@ void LineInput::ponder()
             break;
         }
 
-        if (c)
+        if (mC)
         {
-            len = mStr.size();
+            uint16_t w,h;
+            const auto len = mStr.size();
             USL_MeasureString(mStr.c_str(),NULL,&w,&h);
 
             if
             (
-                isprint(c)
+                isprint(mC)
             &&	(len < MaxString - 1)
-            &&	((!maxchars) || (len < maxchars))
-            &&	((!maxwidth) || (w < maxwidth))
+            &&	((!mMaxchars) || (len < mMaxchars))
+            &&	((!mMaxwidth) || (w < mMaxwidth))
             )
             {
-                for (i = len + 1;i > cursor;i--)
-                    s[i] = s[i - 1];
-                s[cursor++] = c;
-                redraw = true;
+                for (int i = len + 1 ; i > mCursor ; i--)
+                {
+                    mStr[i] = mStr[i - 1];
+                }
+                mStr[mCursor++] = mC;
+                mRedraw = true;
             }
         }
 
@@ -237,8 +248,8 @@ void LineInput::ponder()
         if(gInput.getPressedCommand(IC_JUMP))
         {
             // Let the system set a name;
-            done = true;
-            result = true;
+            mDone = true;
+            mResult = true;
 
             time_t rawtime;
             struct tm * timeinfo;
@@ -247,20 +258,20 @@ void LineInput::ponder()
             timeinfo = localtime ( &rawtime );
 
             std::string slotStr = asctime(timeinfo);
-            strcpy(s,slotStr.c_str());
+            mStr = slotStr;
 
-            redraw = true;
-            strcpy(buf,s);
+            mRedraw = true;
+            strcpy(mBuf,mStr.c_str());
         }
         if(gInput.getPressedCommand(IC_BACK))
         {
             // Let the system set a name;
-            done = true;
-            result = false;
-            break;
+            mDone = true;
+            mResult = false;
+            return;
         }
 
-        if (mRedraw)
+        /*if (mRedraw)
         {
             px = x;
             py = y;
@@ -290,16 +301,12 @@ void LineInput::ponder()
         if (cursorvis)
             USL_XORICursor(x,y,s,cursor);
 
-        VW_UpdateScreen();
-
-
-        */
+        VW_UpdateScreen();*/
 
     }
     else
     {
-        /*
-        gInput.flushAll();
+        /*gInput.flushAll();
 
         if (cursorvis)
             USL_XORICursor(x,y,s,cursor);
@@ -312,9 +319,7 @@ void LineInput::ponder()
         VW_ShowCursor();
         VW_UpdateScreen();
 
-        IN_ClearKeysDown();
-        */
-
+        IN_ClearKeysDown();*/
     }
     //return(result);
 }
