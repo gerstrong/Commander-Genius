@@ -1527,7 +1527,7 @@ The general buffer size is too small!
 
 		pos = mapheaderseg[mapnum]->planestart[plane];
 		compressed = mapheaderseg[mapnum]->planelength[plane];
-		BE_Cross_seek(maphandle,pos,SEEK_SET);
+        BE_Cross_seek(maphandle, pos, SEEK_SET);
 		if (compressed<=BUFFERSIZE)
 			source = (id0_unsigned_t *)bufferseg;
 		else

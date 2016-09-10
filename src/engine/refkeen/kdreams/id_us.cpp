@@ -19,6 +19,7 @@
 #include <SDL.h>
 
 #include <base/CInput.h>
+#include <base/GsApp.h>
 
 #include "engine/keen/dreams/dreamscontrolpanel.h"
 
@@ -116,8 +117,8 @@ static	id0_boolean_t		Button0,Button1,
 					CursorBad;
 static	id0_int_t			CursorX,CursorY;
 
-void		(*USL_MeasureString)(const id0_char_t id0_far *,const id0_char_t id0_far *,id0_word_t *,id0_word_t *) = VW_MeasurePropString,
-            (*USL_DrawString)(const id0_char_t id0_far *,const id0_char_t id0_far *) = VWB_DrawPropString;
+void		(*USL_MeasureString)(const id0_char_t id0_far *,const id0_char_t id0_far *,id0_word_t *,id0_word_t *) = VW_MeasurePropString;
+void        (*USL_DrawString)(const id0_char_t id0_far *,const id0_char_t id0_far *) = VWB_DrawPropString;
 
 static	id0_boolean_t		(*USL_SaveGame)(BE_FILE_T),(*USL_LoadGame)(BE_FILE_T);
 static	void		(*USL_ResetGame)(void);
@@ -1150,6 +1151,7 @@ US_UpdateCursor(void)
 {
 	CursorInfo	info;
 
+
 	IN_ReadCursor(&info);
 	if (info.x || info.y || CursorBad)
 	{
@@ -1940,10 +1942,13 @@ USL_TrackItem(id0_word_t hiti,id0_word_t hitn)
 		USL_ShowHelp("This item is disabled");
 		fontcolor = F_BLACK;
 
-		while (US_UpdateCursor())
+        US_UpdateCursor();
+        //while (US_UpdateCursor())
 		{
 			VW_UpdateScreen();
             BE_ST_ShortSleep();
+
+            //BE_ST_PollEvents();
 		}
 
 		FlushHelp = true;
@@ -1951,6 +1956,7 @@ USL_TrackItem(id0_word_t hiti,id0_word_t hitn)
 	}
 
 	last = false;
+
     //do
 	{
 		USL_IsInRect(CursorX,CursorY,&ini,&inn);
@@ -3113,7 +3119,7 @@ USL_CtlDSButtonCustom(UserCall call,id0_word_t i,id0_word_t n)
 
 	r = USL_DLSRect(ip - 1);
 
-    auto oli = new dreams::OpenLineInput(px,py,game->name,game->present? game->name : id0_nil_t,true,
+    auto oli = new dreams::OpenLineInput(px,py,game->name,game->present? game->name : nullptr,true,
                                  MaxGameName,r.lr.x - r.ul.x - 8);
     gEventManager.add(oli);
 
@@ -3957,20 +3963,22 @@ US_ControlPanel_Ponder(void)
                  TEDDeath();
              else
 #endif
-             {
-                 US_CenterWindow(20,3);
-                 fontcolor = F_SECONDCOLOR;
-                 US_PrintCentered("Now Exiting to DOS...");
-                 fontcolor = F_BLACK;
-                 VW_UpdateScreen();
-                 Quit(id0_nil_t);
-             }
+             US_CenterWindow(20,3);
+             fontcolor = F_SECONDCOLOR;
+             US_PrintCentered("Now Exiting to DOS...");
+             fontcolor = F_BLACK;
+             VW_UpdateScreen();
+             Quit(id0_nil_t);
+
+             // User chose "exit". So make CG quit...
+             gEventManager.add( new GMQuit() );
         }
+        else
+        {
+            gEventManager.add( new dreams::SwitchToGamePlay );
 
-
-        gEventManager.add( new dreams::SwitchToGamePlay );
-
-        CA_DownLevel();
+            CA_DownLevel();
+        }
     }
 
     //BE_ST_AltControlScheme_Pop(); // REFKEEN - Alternative controllers support

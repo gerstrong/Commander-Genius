@@ -14,6 +14,8 @@ extern void
 USL_XORICursor(id0_int_t x,id0_int_t y,const id0_char_t *s,id0_word_t cursor);
 
 extern void (*USL_MeasureString)(const id0_char_t *,const id0_char_t *,id0_word_t *,id0_word_t *);
+
+extern void (*USL_DrawString)(const id0_char_t id0_far *,const id0_char_t id0_far *);
 }
 
 
@@ -60,6 +62,10 @@ void DreamsControlPanel::pumpEvent(const CEvent *evPtr)
                            openLineInput->escok,
                            openLineInput->maxchars, openLineInput->maxwidth);
     }
+    else if( dynamic_cast<const CloseLineInput*>(evPtr) )
+    {
+        mpLineInput = nullptr;
+    }
 }
 
 void DreamsControlPanel::ponder(const float deltaT)
@@ -98,12 +104,11 @@ void LineInput::start(int x, int y,
     id0_boolean_t		redraw,
                 cursorvis,cursormoved,
                 done,result;
-    id0_char_t		c,olds[MaxString];
+    id0_char_t		c;
     id0_word_t		i,
                 cursor,
                 w,h,
                 len;
-    id0_longword_t	lasttime;
 
 
     mMaxchars = maxchars;
@@ -114,15 +119,18 @@ void LineInput::start(int x, int y,
 
     VW_HideCursor();
 
-    mStr = def;
+    if(def)
+    {
+        mStr = def;
+    }
+
     mBuf = buf;
 
-    *olds = '\0';
     mCursor = mStr.size();
 
     mEscok = escok;
 
-    //mLasttime = SD_GetTimeCount();
+    mLasttime = SD_GetTimeCount();
     //mLastASCII = key_None;
     //mLastScan = sc_None;
 
@@ -131,7 +139,9 @@ void LineInput::start(int x, int y,
 void LineInput::ponder()
 {
 
-    if(mDone)
+    std::string oldStr;
+
+    if(!mDone)
     {
         if (mCursorvis)
         {
@@ -271,62 +281,64 @@ void LineInput::ponder()
             return;
         }
 
-        /*if (mRedraw)
+        if (mRedraw)
         {
-            px = x;
-            py = y;
-            USL_DrawString(olds,NULL);
-            strcpy(olds,s);
+            px = mx;
+            py = my;
+            USL_DrawString(oldStr.c_str(), NULL);
+            oldStr = mStr;
 
-            px = x;
-            py = y;
-            USL_DrawString(s,NULL);
+            px = mx;
+            py = my;
+            USL_DrawString(oldStr.c_str(),NULL);
 
-            redraw = false;
+            mRedraw = false;
         }
 
-        if (cursormoved)
+
+        if (mCursorMoved)
         {
-            cursorvis = false;
-            lasttime = SD_GetTimeCount() - TickBase;
+            mCursorvis = false;
+            mLasttime = SD_GetTimeCount() - TickBase;
 
-            cursormoved = false;
+            mCursorMoved = false;
         }
-        if (SD_GetTimeCount() - lasttime > TickBase / 2)
-        {
-            lasttime = SD_GetTimeCount();
+        if (SD_GetTimeCount() - mLasttime > TickBase / 2)
+        {            
+            mLasttime = SD_GetTimeCount();
 
-            cursorvis ^= true;
+            mCursorvis ^= true;
         }
-        if (cursorvis)
-            USL_XORICursor(x,y,s,cursor);
-
-        VW_UpdateScreen();*/
 
     }
     else
     {
-        /*gInput.flushAll();
+        gInput.flushAll();
 
-        if (cursorvis)
-            USL_XORICursor(x,y,s,cursor);
-        if (!result)
+        if (!mResult)
         {
-            px = x;
-            py = y;
-            USL_DrawString(olds,NULL);
+            px = mx;
+            py = my;
+            USL_DrawString(oldStr.c_str(),NULL);
         }
         VW_ShowCursor();
         VW_UpdateScreen();
 
-        IN_ClearKeysDown();*/
+        IN_ClearKeysDown();
+
+        gEventManager.add(new CloseLineInput);
     }
     //return(result);
 }
 
 void LineInput::render()
 {
+    if (mCursorvis)
+    {
+        USL_XORICursor(mx,my,mStr.c_str(),mCursor);
+    }
 
+    VW_UpdateScreen();
 }
 
 }

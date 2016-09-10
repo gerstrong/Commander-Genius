@@ -672,7 +672,7 @@ IN_ReadCursor(CursorInfo *info)
 	info->button0 = info->button1 = false;
 
 	if (MousePresent)
-	{
+	{        
 		buttons = INL_GetMouseButtons();
 		dx /= 2;
 		dy /= 2;

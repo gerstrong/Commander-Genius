@@ -7,6 +7,8 @@
 namespace dreams
 {
 
+//struct QuitApp : CEvent {};
+
 struct SwitchToGamePlay : CEvent {};
 
 struct GoIntoPlayLoop : CEvent {};

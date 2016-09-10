@@ -38,6 +38,9 @@ struct OpenLineInput : CEvent
 };
 
 
+struct CloseLineInput : CEvent {};
+
+
 /**
  * @brief The LineInput class   processes the input of text when saving a game as open loops
  *                              for pondering and rendering.
@@ -77,6 +80,7 @@ private:
     char mC;
     char *mBuf;
 
+    int	mLasttime;
 };
 
 
