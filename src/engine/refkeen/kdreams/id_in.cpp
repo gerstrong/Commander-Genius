@@ -1054,7 +1054,7 @@ IN_Ack(void)
 	IN_ClearKey(LastScan);
 	LastScan = sc_None;
 
-	if (MousePresent)
+    if (MousePresent)
     {
 		while (INL_GetMouseButtons())
 		{

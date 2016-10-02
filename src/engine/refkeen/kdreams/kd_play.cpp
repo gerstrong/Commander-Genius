@@ -277,7 +277,7 @@ void CheckKeys (void)
 		US_CenterWindow (8,3);
 		US_PrintCentered ("PAUSED");
 		VW_UpdateScreen ();
-		IN_Ack();
+        //IN_Ack();
 		RF_ForceRefresh ();
 		Paused = false;
 	}

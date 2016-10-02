@@ -122,7 +122,7 @@ void        (*USL_DrawString)(const id0_char_t id0_far *,const id0_char_t id0_fa
 
 id0_boolean_t		(*USL_SaveGame)(BE_FILE_T),(*USL_LoadGame)(BE_FILE_T);
 static	void		(*USL_ResetGame)(void);
-static	SaveGame	Games[MaxSaveGames];
+SaveGame	Games[MaxSaveGames];
 static	HighScore	Scores[MaxScores] =
 					{
 						{"",10000},
@@ -402,7 +402,7 @@ static void
 USL_CheckSavedGames(void)
 {
 	id0_boolean_t		ok;
-	id0_char_t		*filename;
+    char		*filename;
 	id0_word_t		i;
 	BE_FILE_T			file;
 	SaveGame	*game;
@@ -415,7 +415,6 @@ USL_CheckSavedGames(void)
 		filename = USL_GiveSaveName(i);
 		ok = false;
 		if (BE_Cross_IsFileValid(file = BE_Cross_open_for_reading(filename)))
-		//if ((file = open(filename,O_BINARY | O_RDONLY)) != -1)
 		{
 			// REFKEEN Cross Platform file I/O
 			id0_byte_t padding; // Apparently one byte of struct padding
@@ -425,11 +424,11 @@ USL_CheckSavedGames(void)
 			&&	(BE_Cross_read_boolean_From16LE(file, &(game->present)) == 2)
 			&&	(BE_Cross_readInt8LEBuffer(file, game->name, sizeof(game->name)) == sizeof(game->name))
 			&&	(BE_Cross_readInt8LE(file, &padding) == 1)
-
-				//(read(file,game,sizeof(*game)) == sizeof(*game))
 			&&	(!strcmp(game->signature,EXTENSION))
 			)
+            {
 				ok = true;
+            }
 
 			BE_Cross_close(file);
 		}
@@ -3102,7 +3101,6 @@ USL_CtlDSButtonCustom(UserCall call,id0_word_t i, id0_word_t n)
 	Rect		r;
 	UserItem	*ip;
 	SaveGame	*game;
-	WindowRec	wr;
 
 	if (call != uic_Hit)
 		return(false);
@@ -3136,78 +3134,86 @@ USL_CtlDSButtonCustom(UserCall call,id0_word_t i, id0_word_t n)
 
     return false;
 
+}
 
-    // TODO: Code below must be passed to a function object so the line input functionality triggers it!
-/*
-	if (!strlen(game->name))
-		strcpy(game->name,"Untitled");
-	if (ok)
-	{
-		US_SaveWindow(&wr);
-		US_CenterWindow(10,3);
-		US_PrintCentered("Saving");
-		VW_HideCursor();
-		VW_UpdateScreen();
 
+bool USL_saveTheGame(int i, int n)
+{
+    WindowRec	wr;
+    auto ip = &TheItems[i][n];
+
+    bool ok = true;
+
+    auto game = &Games[n / 2];
+
+    if (!strlen(game->name))
+    {
+        strcpy(game->name,"Untitled");
+    }
+    if (ok)
+    {
+        US_SaveWindow(&wr);
+        US_CenterWindow(10,3);
+        US_PrintCentered("Saving");
+        VW_HideCursor();
+        VW_UpdateScreen();
+
+        auto filename = USL_GiveSaveName(n / 2);
+        int err = 0;
+        auto file = BE_Cross_open_for_overwriting(filename);
+        //file = open(filename,O_CREAT | O_BINARY | O_WRONLY,
+        //			S_IREAD | S_IWRITE | S_IFREG);
+        if (BE_Cross_IsFileValid(file))
+        //if (file != -1)
+        {
+            // REFKEEN Cross Platform file I/O
+            id0_byte_t padding = 0; // Apparently one byte of struct padding
+            if ((BE_Cross_writeInt8LEBuffer(file, game->signature, sizeof(game->signature)) == sizeof(game->signature))
+                && (BE_Cross_write_boolean_To16LE(file, &(game->present)) == 2)
+                && (BE_Cross_writeInt8LEBuffer(file, game->name, sizeof(game->name)) == sizeof(game->name))
+                && (BE_Cross_writeInt8LE(file, &padding) == 1)
+            )
+            //if (write(file,game,sizeof(*game)) == sizeof(*game))
+            {
+                if (USL_SaveGame)
+                    ok = USL_SaveGame(file);
+                if (!ok)
+                    USL_HandleError(err = errno);
+            }
+            else
+                USL_HandleError(err = ((errno == ENOENT)? ENOMEM : errno));
+            BE_Cross_close(file);
+        }
+        else
+            USL_HandleError(err = ((errno == ENOENT)? ENOMEM : errno));
+        if (err)
+        {
+            remove(filename);
+            ok = false;
+        }
 #if 0
-		LeaveDriveOn++;
-#endif
-		filename = USL_GiveSaveName(n / 2);
-		err = 0;
-		file = BE_Cross_open_for_overwriting(filename);
-		//file = open(filename,O_CREAT | O_BINARY | O_WRONLY,
-		//			S_IREAD | S_IWRITE | S_IFREG);
-		if (BE_Cross_IsFileValid(file))
-		//if (file != -1)
-		{
-			// REFKEEN Cross Platform file I/O
-			id0_byte_t padding = 0; // Apparently one byte of struct padding
-			if ((BE_Cross_writeInt8LEBuffer(file, game->signature, sizeof(game->signature)) == sizeof(game->signature))
-			    && (BE_Cross_write_boolean_To16LE(file, &(game->present)) == 2)
-			    && (BE_Cross_writeInt8LEBuffer(file, game->name, sizeof(game->name)) == sizeof(game->name))
-			    && (BE_Cross_writeInt8LE(file, &padding) == 1)
-			)
-			//if (write(file,game,sizeof(*game)) == sizeof(*game))
-			{
-				if (USL_SaveGame)
-					ok = USL_SaveGame(file);
-				if (!ok)
-					USL_HandleError(err = errno);
-			}
-			else
-				USL_HandleError(err = ((errno == ENOENT)? ENOMEM : errno));
-			BE_Cross_close(file);
-		}
-		else
-			USL_HandleError(err = ((errno == ENOENT)? ENOMEM : errno));
-		if (err)
-		{
-			remove(filename);
-			ok = false;
-		}
-#if 0
-		LeaveDriveOn--;
+        LeaveDriveOn--;
 #endif
 
-		VW_ShowCursor();
-		US_RestoreWindow(&wr);
-		USL_DoHit(i - 1,0);
-		VW_UpdateScreen();
-	}
+        VW_ShowCursor();
+        US_RestoreWindow(&wr);
+        USL_DoHit(i - 1,0);
+        VW_UpdateScreen();
+    }
 
-	if (!game->present)
-		game->present = ok;
+    if (!game->present)
+        game->present = ok;
 
-	if (ok)
-	{
-		GameIsDirty = false;
-		(ip - 1)->sel &= ~ui_Disabled;
-	}
+    if (ok)
+    {
+        GameIsDirty = false;
+        (ip - 1)->sel &= ~ui_Disabled;
+    }
 
-	USL_DrawItem(i,n - 1);
+    USL_DrawItem(i,n - 1);
 //	USL_CtlDLButtonCustom(uic_Draw,i,n - 1);
 
-    return(true);*/
+    return(true);
 }
 
 ///////////////////////////////////////////////////////////////////////////
