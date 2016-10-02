@@ -1,4 +1,6 @@
 #include "dreamscontrolpanel.h"
+#include "dreamsengine.h"
+
 
 #include <base/CInput.h>
 
@@ -66,6 +68,13 @@ void DreamsControlPanel::pumpEvent(const CEvent *evPtr)
     {
         mpLineInput = nullptr;
     }
+    else if( auto savegame = dynamic_cast<const SaveGameEvent*>(evPtr) )
+    {
+        savegame->save();
+    }
+
+
+
 }
 
 void DreamsControlPanel::ponder(const float deltaT)
@@ -237,19 +246,12 @@ void LineInput::ponder()
             const auto len = mStr.size();
             USL_MeasureString(mStr.c_str(),NULL,&w,&h);
 
-            if
-            (
-                isprint(mC)
-            &&	(len < MaxString - 1)
-            &&	((!mMaxchars) || (len < mMaxchars))
-            &&	((!mMaxwidth) || (w < mMaxwidth))
-            )
+            if(isprint(mC)
+                    &&	(len < MaxString - 1)
+                    &&	((!mMaxchars) || (len < mMaxchars))
+                    &&	((!mMaxwidth) || (w < mMaxwidth)) )
             {
-                for (int i = len + 1 ; i > mCursor ; i--)
-                {
-                    mStr[i] = mStr[i - 1];
-                }
-                mStr[mCursor++] = mC;
+                mStr.insert(mCursor,1,mC);
                 mRedraw = true;
             }
         }
@@ -326,7 +328,11 @@ void LineInput::ponder()
 
         IN_ClearKeysDown();
 
-        gEventManager.add(new CloseLineInput);
+
+        gEventManager.add(new CloseLineInput);        
+
+        gEventManager.add(new SaveGameEvent("", "", true, true, 0) );
+
     }
     //return(result);
 }

@@ -150,6 +150,12 @@ void BE_ST_PollEvents(SDL_Event event);
 
 void BE_ST_ApplyScreenMode(int mode);
 
+id0_char_t *USL_GiveSaveName(id0_word_t game);
+
+extern id0_boolean_t (*USL_SaveGame)(BE_FILE_T), (*USL_LoadGame)(BE_FILE_T);
+
+void USL_HandleError(id0_int_t num);
+
 }
 
 
@@ -179,6 +185,95 @@ std::map< std::string, std::vector<uint8_t> > gDataMapVector;
 
 namespace dreams
 {
+
+
+
+
+
+
+bool SaveGameEvent::save() const
+{
+    WindowRec wr;
+
+    bool ok = false;
+
+
+    auto name = mName;
+
+    if( mName.empty() )
+    {
+        name = "Untitled";
+    }
+
+    if (mOk)
+    {
+        US_SaveWindow(&wr);
+        US_CenterWindow(10,3);
+        US_PrintCentered("Saving");
+        VW_HideCursor();
+        VW_UpdateScreen();
+
+#if 0
+        LeaveDriveOn++;
+#endif
+        const std::string filename = USL_GiveSaveName(mN / 2);
+        int err = 0;
+        auto file = BE_Cross_open_for_overwriting(filename.c_str());
+        //file = open(filename,O_CREAT | O_BINARY | O_WRONLY,
+        //			S_IREAD | S_IWRITE | S_IFREG);
+        if (BE_Cross_IsFileValid(file))
+        //if (file != -1)
+        {
+            // REFKEEN Cross Platform file I/O
+            id0_byte_t padding = 0; // Apparently one byte of struct padding
+            if (( BE_Cross_writeInt8LEBuffer(file, mSignature.c_str(), mSignature.size() ) == mSignature.size() )
+                && (BE_Cross_write_boolean_To16LE(file, &(mPresent)) == 2)
+                && (BE_Cross_writeInt8LEBuffer(file, name.c_str(), name.size()) == name.size() )
+                && (BE_Cross_writeInt8LE(file, &padding) == 1)  )
+            {
+                if (USL_SaveGame)
+                    ok = USL_SaveGame(file);
+
+                if (!ok)
+                    USL_HandleError(err = errno);
+            }
+            else
+                USL_HandleError(err = ((errno == ENOENT)? ENOMEM : errno));
+            BE_Cross_close(file);
+        }
+        else
+            USL_HandleError(err = ((errno == ENOENT)? ENOMEM : errno));
+        if (err)
+        {
+            remove(filename.c_str());
+            ok = false;
+        }
+#if 0
+        LeaveDriveOn--;
+#endif
+
+        VW_ShowCursor();
+        US_RestoreWindow(&wr);
+        //USL_DoHit(i - 1,0);
+        VW_UpdateScreen();
+    }
+
+    /*if (!mPresent)
+        mPresent = ok;*/
+
+/*    if (mOk)
+    {
+        GameIsDirty = false;
+        (ip - 1)->sel &= ~ui_Disabled;
+    }
+
+    USL_DrawItem(i,n - 1);*/
+//	USL_CtlDLButtonCustom(uic_Draw,i,n - 1);
+
+    return(true);
+}
+
+
 
 
 struct SwitchSceneEvent : CEvent

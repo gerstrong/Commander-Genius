@@ -9,9 +9,34 @@
 
 #include "dreamsdosintro.h"
 
+
 namespace dreams
 {
 
+
+
+struct SaveGameEvent : CEvent
+{
+    SaveGameEvent(const std::string &name,
+                  const std::string &sig,
+                  const bool ok,
+                  const bool present,
+                  const int n) :
+        mName(name),
+        mSignature(sig),
+        mPresent(present),
+        mOk(ok),
+        mN(n)
+    {}
+
+    bool save() const;
+
+    std::string mName;
+    std::string mSignature;
+    bool mPresent;
+    bool mOk;
+    int mN; // number of save slot
+};
 
 
 

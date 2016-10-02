@@ -18,6 +18,7 @@ struct OpenLineInput : CEvent
     OpenLineInput(int x, int y,
     char *buf,
     const char *def,
+    const char *sig,
     bool escok,
     int maxchars,
     int maxwidth) :
@@ -25,16 +26,19 @@ struct OpenLineInput : CEvent
         y(y),
         buf(buf),
         def(def),
+        signature(sig),
         escok(escok),
         maxchars(maxchars),
-        maxwidth(maxwidth) {}
+        maxwidth(maxwidth)
+        {}
 
     int x, y;
     char *buf;
     const char *def;
+    std::string signature;
     bool escok;
     int maxchars;
-    int maxwidth;
+    int maxwidth;    
 };
 
 

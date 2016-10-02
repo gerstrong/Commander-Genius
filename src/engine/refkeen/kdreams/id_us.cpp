@@ -120,7 +120,7 @@ static	id0_int_t			CursorX,CursorY;
 void		(*USL_MeasureString)(const id0_char_t id0_far *,const id0_char_t id0_far *,id0_word_t *,id0_word_t *) = VW_MeasurePropString;
 void        (*USL_DrawString)(const id0_char_t id0_far *,const id0_char_t id0_far *) = VWB_DrawPropString;
 
-static	id0_boolean_t		(*USL_SaveGame)(BE_FILE_T),(*USL_LoadGame)(BE_FILE_T);
+id0_boolean_t		(*USL_SaveGame)(BE_FILE_T),(*USL_LoadGame)(BE_FILE_T);
 static	void		(*USL_ResetGame)(void);
 static	SaveGame	Games[MaxSaveGames];
 static	HighScore	Scores[MaxScores] =
@@ -247,7 +247,7 @@ oh_kill_me:
 //		the filename to use for the specified save game
 //
 ///////////////////////////////////////////////////////////////////////////
-static id0_char_t *
+id0_char_t *
 USL_GiveSaveName(id0_word_t game)
 {
 static	id0_char_t	filename[32];
@@ -1689,7 +1689,7 @@ USL_ShowHelp(const id0_char_t *s)
 //	USL_HandleError() - Handles telling the user that there's been an error
 //
 ///////////////////////////////////////////////////////////////////////////
-static void
+void
 USL_HandleError(id0_int_t num)
 {
 	id0_char_t	buf[64];
@@ -3093,7 +3093,7 @@ USL_CtlDLButtonCustom(UserCall call,id0_word_t i,id0_word_t n)
 //
 ///////////////////////////////////////////////////////////////////////////
 static id0_boolean_t
-USL_CtlDSButtonCustom(UserCall call,id0_word_t i,id0_word_t n)
+USL_CtlDSButtonCustom(UserCall call,id0_word_t i, id0_word_t n)
 {
 	id0_boolean_t		ok;
 	id0_char_t		*filename;
@@ -3119,8 +3119,12 @@ USL_CtlDSButtonCustom(UserCall call,id0_word_t i,id0_word_t n)
 
 	r = USL_DLSRect(ip - 1);
 
-    auto oli = new dreams::OpenLineInput(px,py,game->name,game->present? game->name : nullptr,true,
-                                 MaxGameName,r.lr.x - r.ul.x - 8);
+    auto oli = new dreams::OpenLineInput(px,py,
+                                         game->name,
+                                         game->present ? game->name : nullptr,
+                                         game->signature,
+                                         true,
+                                         MaxGameName, r.lr.x - r.ul.x - 8);
     gEventManager.add(oli);
 
 
@@ -3134,7 +3138,7 @@ USL_CtlDSButtonCustom(UserCall call,id0_word_t i,id0_word_t n)
 
 
     // TODO: Code below must be passed to a function object so the line input functionality triggers it!
-
+/*
 	if (!strlen(game->name))
 		strcpy(game->name,"Untitled");
 	if (ok)
@@ -3203,7 +3207,7 @@ USL_CtlDSButtonCustom(UserCall call,id0_word_t i,id0_word_t n)
 	USL_DrawItem(i,n - 1);
 //	USL_CtlDLButtonCustom(uic_Draw,i,n - 1);
 
-	return(true);
+    return(true);*/
 }
 
 ///////////////////////////////////////////////////////////////////////////
