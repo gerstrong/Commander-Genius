@@ -25,9 +25,8 @@ CVideoDriver::CVideoDriver() :
 m_mustrefresh(false),
 mSDLImageInUse(false)
 {
-	resetSettings();
+    init();
 
-    mpPollSem = SDL_CreateSemaphore(1);
 }
 
 CVideoDriver::~CVideoDriver()
@@ -41,9 +40,8 @@ CVideoDriver::~CVideoDriver()
 
 
 // TODO: This should return something!
-void CVideoDriver::resetSettings()
+void CVideoDriver::init()
 {
-
 	m_VidConfig.reset();
 
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_AUDIO) < 0)
@@ -330,12 +328,8 @@ void CVideoDriver::clearSurfaces()
 
 void CVideoDriver::updateDisplay()
 {
-    SDL_SemWait( mpPollSem );
-
     mpVideoEngine->filterUp();
     mpVideoEngine->transformScreenToDisplay();
-
-    SDL_SemPost( mpPollSem );
 }
 
 void CVideoDriver::saveCameraBounds(st_camera_bounds &CameraBounds)

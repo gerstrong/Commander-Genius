@@ -558,14 +558,6 @@ void CInput::waitForAnyInput()
         // Perform the game cycle
         while( acc > logicLatency )
         {
-            // Poll Inputs
-            //gInput.pollEvents();
-
-            //pollEvents();
-
-            // TODO: We might introduce a nice timer here, but really required, because if we get here,
-            // everything is halted anyways. It only might reduce the amount of CPU cycles to reduce...
-
             if(getPressedAnyCommand())
             {
                 done = true;

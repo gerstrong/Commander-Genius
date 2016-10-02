@@ -159,10 +159,7 @@ void CTextViewer::formatText(const std::string &text)
 		}
 	}
 }
-/**
- * \brief This will load for you a text from a file into memory and of course automatically format it for you :-)
- * \parm	filename	filename to open
- */
+
 bool CTextViewer::loadTextfromFile(const std::string &filename)
 {
 	std::string text;

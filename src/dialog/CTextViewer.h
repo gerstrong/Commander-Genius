@@ -24,7 +24,15 @@ public:
     void render();
 
 	void formatText(const std::string &text);
+
+
+    /**
+     * \brief This will load for you a text from a file into memory and of course automatically format it for you :-)
+     * \parm	filename	filename to open
+     * \return true if everything went fine, otherwise false
+     */
 	bool loadTextfromFile(const std::string &filename);
+
 	bool hasClosed() { return m_mustclose; }
 
 	void setNextPos();

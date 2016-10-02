@@ -6,9 +6,10 @@
  */
 
 #include "CFinale.h"
-//#include "sdl/CVideoDriver.h"
 #include <base/GsLogging.h>
 #include <base/utils/FindFile.h>
+#include <fileio/ResourceMgmt.h>
+
 #include <fstream>
 
 
@@ -34,8 +35,9 @@ void CFinale::showEndingText()
 	{
 		mpTextViewer.reset(new CTextViewer(0, 0, 320, 120));
         const std::string filename = "endtext.ck" + itoa(m_Episode);
-        auto filepath = JoinPaths(mpMap->m_gamepath, filename);
-        mpTextViewer->loadTextfromFile(filepath);
+
+        std::string fullFname = getResourceFilename( filename, mpMap->m_gamepath, true, false);
+        mpTextViewer->loadTextfromFile(fullFname);
 	}
 
     mpTextViewer->ponder(0);

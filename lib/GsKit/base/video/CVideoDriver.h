@@ -36,7 +36,7 @@ class CVideoDriver : public GsSingleton<CVideoDriver>
 public:
 	CVideoDriver();
 	~CVideoDriver();
-	void resetSettings();
+    void init();
 	
 	bool applyMode();
 	SDL_Surface* createSurface( std::string name, bool alpha, int width, int height, int bpp, int mode, SDL_PixelFormat* format );
@@ -189,7 +189,6 @@ public:
 	std::list< GsRect<Uint16> > m_Resolutionlist;
 	std::list< GsRect<Uint16> > :: iterator m_Resolution_pos;
 
-    SDL_sem *mpPollSem;
 
 private:
 
