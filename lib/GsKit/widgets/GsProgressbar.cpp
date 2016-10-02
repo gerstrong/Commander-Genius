@@ -10,12 +10,11 @@
 
 void GsProgressBar::processLogic()
 {
-    // TODO: Logic of the progress bar
+    // Note: So far no logic required. Usually the a reference to mProgress the variable sets the progress
 }
 
 void GsProgressBar::processRender(const GsRect<float> &RectDispCoordFloat)
 {
-    // TODO: Rendering of the progress bar
     // Transform to the display coordinates
     GsRect<float> displayRect = mRect;
     GsRect<float> progressRect = mRect;

@@ -77,11 +77,10 @@ void GsPalette::setupPatchedPalette(byte *p_exedata, int m_episode)
 
 void GsPalette::setupColorPalettes(byte *p_exedata, int m_episode)
 {
-	// TODO: Try to add patching code for palette patches of mods here!
-
-	// TODO: Here it will check, if the exe was patched with that code.
+    // Here it will check, if the exe was patched with that code.
 	if(patchedPalette(p_exedata, m_episode))
 	{
+        // If that's the case, use the patched palette
 		setupPatchedPalette(p_exedata, m_episode);
 	}
 	else

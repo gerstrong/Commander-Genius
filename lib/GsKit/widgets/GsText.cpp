@@ -25,6 +25,7 @@ void CGUIText::setText(const std::string& text)
 
 	// Split up the text in lines
 	mTextDim.w = 0;
+
 	// TODO: I think there is a more elegant way to achieve this!
 	std::string buf = "";
 	for( size_t i=0 ; i<text.size() ; i++ )
@@ -38,7 +39,9 @@ void CGUIText::setText(const std::string& text)
 			buf.clear();
 		}
 		else
+        {
 			buf += text[i];
+        }
 	}
 
 	size_t pos = 0;

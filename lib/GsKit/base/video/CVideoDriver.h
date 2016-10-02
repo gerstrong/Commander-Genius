@@ -36,7 +36,8 @@ class CVideoDriver : public GsSingleton<CVideoDriver>
 public:
 	CVideoDriver();
 	~CVideoDriver();
-    void init();
+
+    bool init();
 	
 	bool applyMode();
 	SDL_Surface* createSurface( std::string name, bool alpha, int width, int height, int bpp, int mode, SDL_PixelFormat* format );

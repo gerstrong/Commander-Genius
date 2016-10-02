@@ -30,7 +30,7 @@ using namespace std;
 CSaveGameController::CSaveGameController() :
 m_offset(0)
 {
-    CResource &keenFiles = gKeenFiles;
+    auto &keenFiles = gKeenFiles;
 
     setGameDirectory(keenFiles.gameDir);
 	setEpisode(gpBehaviorEngine->getEpisode());

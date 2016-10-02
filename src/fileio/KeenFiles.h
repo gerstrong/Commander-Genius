@@ -14,10 +14,10 @@
 #include <base/Singleton.h>
 #include "CExeFile.h"
 
-#define gKeenFiles CResource::get()
+#define gKeenFiles KeenFiles::get()
 
-// TODO: We should rename that class...
-struct CResource : public GsSingleton<CResource>
+
+struct KeenFiles : public GsSingleton<KeenFiles>
 {
 	std::string egagraphFilename;
 	std::string egaheadFilename;
@@ -59,10 +59,13 @@ struct CResource : public GsSingleton<CResource>
 
 
 
-struct FileListAdder {
-    void operator()(std::set<std::string>& dirs, const std::string& path) {
+struct FileListAdder
+{
+    void operator()(std::set<std::string>& dirs, const std::string& path)
+    {
         std::string basepath = GetBaseFilename(path);
-        if(basepath != "" && basepath[0] != '.') {
+        if(basepath != "" && basepath[0] != '.')
+        {
             dirs.insert(basepath);
         }
     }

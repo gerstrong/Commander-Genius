@@ -317,7 +317,9 @@ bool CAudioVorticon::loadSoundData(const unsigned int dictOffset)
 	}
 
     if(!mFileBuffer.empty())
+    {
         mFileBuffer.clear();
+    }
 
 	return ok;
 }

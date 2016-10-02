@@ -173,7 +173,6 @@ void scaleNormal( SDL_Surface *srcSfc,
 }
 
 
-// TODO: Two Step scaling so it can be combined a more efficient way.
 void blitScaled(SDL_Surface *srcSfc,
                 SDL_Rect &srGsRect,
                 SDL_Surface *dstSfc,

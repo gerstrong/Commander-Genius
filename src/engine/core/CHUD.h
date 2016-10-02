@@ -28,8 +28,7 @@ public:
     CHUD(unsigned long &score,
          signed char &lives,
          unsigned int &charges,
-         const int id,
-         int *camlead = NULL); // TODO: Must be removed later and replaced by a reference
+         const int id); // TODO: Must be removed later and replaced by a reference
 
 
 	//CHUD(const CHUD &orig);
@@ -72,7 +71,6 @@ private:
 
 	std::shared_ptr<SDL_Surface> mpBackground;
 	std::shared_ptr<SDL_Surface> mpHUDBlit;
-	int *mpCamlead;
     int mId;
 
 	int timer;

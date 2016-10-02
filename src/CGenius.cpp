@@ -30,6 +30,7 @@
 
 #include "../version.h"
 #include "engine/core/CSettings.h"
+#include "base/video/CVideoDriver.h"
 
 #ifdef ANDROID
 	#include <SDL_main.h>
@@ -96,6 +97,13 @@ int main(int argc, char *argv[])
 
     gLogging.CreateLogfile("CGLog.html", APP_NAME, CGVERSION);
 
+
+    // Init Video Driver with SDL all together
+    if(!gVideoDriver.init())
+    {
+        return 1;
+    }
+
     // Check if there are settings on the PC, otherwise use defaults.
     if(!g_pSettings->loadDrvCfg())
     {
@@ -108,7 +116,7 @@ int main(int argc, char *argv[])
     gLogging.textOut(GREEN,"Loading game options...\n");
     if(!g_pSettings->loadGameOptions())
     {
-        gLogging.textOut(RED,"Cannot do loading defaults...\n");
+        gLogging.textOut(RED,"Cannot load defaults...\n");
         g_pSettings->loadDefaultGameCfg();
     }
 

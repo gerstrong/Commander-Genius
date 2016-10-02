@@ -129,7 +129,7 @@ void CPlayGameVorticon::setupPlayers()
         stInventory &inventory = m_Player.at(i).inventory;
 
         mpHUDVec.push_back( move(std::unique_ptr<CHUD>(new CHUD(inventory.score, inventory.lives,
-                                                                inventory.charges, i, &mCamLead))) );
+                                                                inventory.charges, i))) );
 	}
 
 }

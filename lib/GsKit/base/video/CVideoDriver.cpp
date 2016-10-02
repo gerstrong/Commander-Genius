@@ -24,10 +24,7 @@
 CVideoDriver::CVideoDriver() :
 m_mustrefresh(false),
 mSDLImageInUse(false)
-{
-    init();
-
-}
+{}
 
 CVideoDriver::~CVideoDriver()
 {
@@ -39,16 +36,19 @@ CVideoDriver::~CVideoDriver()
 }
 
 
-// TODO: This should return something!
-void CVideoDriver::init()
+bool CVideoDriver::init()
 {
 	m_VidConfig.reset();
 
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_AUDIO) < 0)
-		gLogging.textOut(RED, "Could not initialize SDL: %s<br>",
-				SDL_GetError());
+    {
+        gLogging.textOut(RED, "Could not initialize SDL: %s<br>", SDL_GetError());
+        return false;
+    }
 	else
+    {
 		gLogging.textOut(GREEN, "SDL was successfully initialized!<br>");
+    }
 
 	initResolutionList();
 
@@ -73,6 +73,8 @@ void CVideoDriver::init()
 	// take the first default resolution. It might be changed if there is a config file already created
 	// If there are at least two possible resolutions choose the second one, as this is normally one basic small resolution
 	setMode(m_Resolutionlist.front());
+
+    return true;
 }
 
 // initResolutionList() reads the local list of available resolution.

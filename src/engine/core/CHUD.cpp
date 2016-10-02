@@ -17,14 +17,12 @@ const int EFFECT_TIME = 10;
 const int EFFECT_SPEED = 10;
 
 CHUD::CHUD(unsigned long &score, signed char &lives,
-           unsigned int &charges, const int id,
-           int *camlead) :
+           unsigned int &charges, const int id) :
 m_score(score),
 m_lives(lives),
 m_charges(charges),
 m_oldScore(score),
 m_oldCharges(charges),
-mpCamlead(camlead),
 timer(0)
 {
     setup(id);
