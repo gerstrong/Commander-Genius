@@ -118,7 +118,7 @@ const int CPlayerBase::mEpisodeActionNumMap[3][NUM_KEEN_ACTIONS] =
 				30, // A_KEEN_SHOOT_UP
 				32, // A_KEEN_SLIDE_INTO_DOOR
 				34, // A_KEEN_SLIDE
-				35, // A_KEEN_ENTER_DOOR
+                36, // A_KEEN_ENTER_DOOR
 				41, // A_KEEN_POLE
 				42, // A_KEEN_POLE_CLIMB
 				45, // A_KEEN_POLE_SLIDE
