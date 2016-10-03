@@ -3122,7 +3122,8 @@ USL_CtlDSButtonCustom(UserCall call,id0_word_t i, id0_word_t n)
                                          game->present ? game->name : nullptr,
                                          game->signature,
                                          true,
-                                         MaxGameName, r.lr.x - r.ul.x - 8);
+                                         MaxGameName, r.lr.x - r.ul.x - 8,
+                                         n);
     gEventManager.add(oli);
 
 
@@ -3210,8 +3211,10 @@ bool USL_saveTheGame(int i, int n)
         (ip - 1)->sel &= ~ui_Disabled;
     }
 
-    USL_DrawItem(i,n - 1);
+    //USL_DrawItem(i,n - 1);
 //	USL_CtlDLButtonCustom(uic_Draw,i,n - 1);
+
+    loadedgame = true;
 
     return(true);
 }

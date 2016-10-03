@@ -62,7 +62,8 @@ void DreamsControlPanel::pumpEvent(const CEvent *evPtr)
         mpLineInput->start(openLineInput->x, openLineInput->y,
                            openLineInput->buf, openLineInput->def,
                            openLineInput->escok,
-                           openLineInput->maxchars, openLineInput->maxwidth);
+                           openLineInput->maxchars, openLineInput->maxwidth,
+                           openLineInput->mN);
     }
     else if( dynamic_cast<const CloseLineInput*>(evPtr) )
     {
@@ -107,7 +108,7 @@ void DreamsControlPanel::render()
 void LineInput::start(int x, int y,
                       char *buf, const char *def,
                       bool escok,
-                      int maxchars, int maxwidth)
+                      int maxchars, int maxwidth, int n)
 {
 
     id0_boolean_t		redraw,
@@ -125,6 +126,7 @@ void LineInput::start(int x, int y,
 
     mx = x;
     my = y;
+    mN = n;
 
     VW_HideCursor();
 
@@ -152,7 +154,7 @@ void LineInput::ponder()
 
     if(!mDone)
     {
-        if (mCursorvis)
+        /*if (mCursorvis)
         {
             USL_XORICursor(mx,my,mStr.c_str(),mCursor);
         }
@@ -254,10 +256,10 @@ void LineInput::ponder()
                 mStr.insert(mCursor,1,mC);
                 mRedraw = true;
             }
-        }
+        }*/
 
 
-        if(gInput.getPressedCommand(IC_JUMP))
+        //if(gInput.getPressedCommand(IC_JUMP))
         {
             // Let the system set a name;
             mDone = true;
@@ -275,13 +277,13 @@ void LineInput::ponder()
             mRedraw = true;
             strcpy(mBuf,mStr.c_str());
         }
-        if(gInput.getPressedCommand(IC_BACK))
+        /*if(gInput.getPressedCommand(IC_BACK))
         {
             // Let the system set a name;
             mDone = true;
             mResult = false;
             return;
-        }
+        }*/
 
         if (mRedraw)
         {
@@ -331,7 +333,7 @@ void LineInput::ponder()
 
         gEventManager.add(new CloseLineInput);        
 
-        gEventManager.add(new SaveGameEvent("", "", true, true, 0) );
+        gEventManager.add(new SaveGameEvent(mStr, true, true, mN) );
 
     }
     //return(result);

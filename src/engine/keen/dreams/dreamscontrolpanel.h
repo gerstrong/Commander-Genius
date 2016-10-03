@@ -21,7 +21,8 @@ struct OpenLineInput : CEvent
     const char *sig,
     bool escok,
     int maxchars,
-    int maxwidth) :
+    int maxwidth,
+    int n) :
         x(x),
         y(y),
         buf(buf),
@@ -29,7 +30,8 @@ struct OpenLineInput : CEvent
         signature(sig),
         escok(escok),
         maxchars(maxchars),
-        maxwidth(maxwidth)
+        maxwidth(maxwidth),
+        mN(n)
         {}
 
     int x, y;
@@ -38,7 +40,8 @@ struct OpenLineInput : CEvent
     std::string signature;
     bool escok;
     int maxchars;
-    int maxwidth;    
+    int maxwidth;
+    int mN;
 };
 
 
@@ -56,7 +59,7 @@ public:
     void start(int x, int y,
                char *buf, const char *def,
                bool escok, int maxchars,
-               int maxwidth);
+               int maxwidth, int n);
 
     void ponder();
 
@@ -78,6 +81,7 @@ private:
     std::string mStr;
 
     int mx, my;
+    int mN;
 
     uint8_t mSc;
 

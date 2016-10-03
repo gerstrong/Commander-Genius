@@ -198,7 +198,7 @@ namespace dreams
 
 bool SaveGameEvent::save() const
 {
-    auto ok = USL_saveTheGame(1, 0);
+    auto ok = USL_saveTheGame(1, mN);
 
     return ok;
 }
