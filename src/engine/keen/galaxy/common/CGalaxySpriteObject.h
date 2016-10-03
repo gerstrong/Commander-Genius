@@ -51,9 +51,8 @@ public:
 
 	// This is used for action format only
 	uint16_t mFoeID;
-	uint16_t m_ActionTicker;
+    uint16_t m_ActionTicker = 0;
 	uint16_t m_ActionNumber;
-	//Vector2D<int> next;
 	size_t m_ActionBaseOffset;
 
 	int nextX;

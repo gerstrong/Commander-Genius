@@ -30,13 +30,13 @@ void CMolly::processMoving()
 	performGravityLow();
 
 	// Check if there is a cliff and move him back in case
-	performCliffStop(m_Action.velX<<1);
+	performCliffStop(m_Action.h_anim_move<<1);
 
 	// Move normally in the direction
 	if( xDirection == RIGHT )
-		moveRight( m_Action.velX<<1 );
+		moveRight( m_Action.h_anim_move<<1 );
 	else
-		moveLeft( m_Action.velX<<1 );
+		moveLeft( m_Action.h_anim_move<<1 );
 }
 
 void CMolly::getTouchedBy(CSpriteObject& theObject)

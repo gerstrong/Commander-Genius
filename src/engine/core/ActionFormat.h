@@ -33,12 +33,12 @@ struct ActionFormatType
 {
 	int16_t spriteLeft;          // 124-400
 	int16_t spriteRight;         // 124-400
-	int16_t type; 				 // 0-4
-	int16_t protectAnimation;    // 0/1
-	int16_t stickToGround;       // 0/1
-	int16_t timer;				 // (Anim speed)  0-8000
-	int16_t velX;				 // +- any value
-	int16_t velY;  				 // +- any value
+    int16_t movement_param;		 // 0-4
+    int16_t change_h;            // 0/1
+    int16_t change_v;            // 0/1
+    int16_t delay;				 // (Anim speed)  0-8000
+    int16_t h_anim_move;				 // +- any value
+    int16_t v_anim_move;  				 // +- any value
 	int16_t Behavior;            // [Start of behavior codes only]
 	int16_t Behavior_segment;    // [Segment values only]
 	int16_t Check_sprites;       // [Start of check sprite codes only]
