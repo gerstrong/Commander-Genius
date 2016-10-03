@@ -16,7 +16,6 @@ CGalaxySpriteObject::CGalaxySpriteObject(CMap *pmap, const Uint16 foeID,
                                          Uint32 x, Uint32 y, const int sprVar) :
 CSpriteObject(pmap, x, y, sprVar),
 mFoeID(foeID),
-m_ActionTicker(0),
 m_ActionNumber(0),
 m_ActionBaseOffset(0x0),
 nextX(0),
@@ -365,36 +364,49 @@ bool CGalaxySpriteObject::processActionRoutine()
     3                   Every frame            Once                               Yes
     4                   Every frame            Every frame                        Yes
     */
-	if( m_Action.type > 0 )
+	if( m_Action.movement_param > 0 )
 	{
 		if(xDirection == LEFT )
-			moveLeft( m_Action.velX<<1 );
+			moveLeft( m_Action.h_anim_move<<1 );
 		else if(xDirection == RIGHT )
-			moveRight( m_Action.velX<<1 );
+			moveRight( m_Action.h_anim_move<<1 );
 
 		if(yDirection == UP)
-			moveUp( m_Action.velY<<1 );
+			moveUp( m_Action.v_anim_move<<1 );
 		else if(yDirection == DOWN)
-			moveDown( m_Action.velY<<1 );
+			moveDown( m_Action.v_anim_move<<1 );
 	}
 
 	if(mEndOfAction)
 		return false;
 
-    m_ActionTicker++;
 
-    // TODO: Calculate this timer correctly to the applied LPS value
-    if( m_ActionTicker > m_Action.timer )
-	{
-		if( m_Action.timer != 0 )
-		{
-			if(m_Action.Next_action != 0)
-				m_Action.setNextActionFormat();
-			else
-				mEndOfAction = true;
-		}
-		m_ActionTicker = 0;
-	}
+    // Calculate this timer correctly to the applied LPS value
+    if(m_Action.delay)
+    {
+        if( m_ActionTicker > m_Action.delay )
+        {
+            if(m_Action.Next_action)
+            {
+                m_Action.setNextActionFormat();
+            }
+            else
+            {
+                mEndOfAction = true;
+            }
+
+            m_ActionTicker = 0;
+
+            // In order to enable this, the AI Code of all the implementations must be changed first
+            /*const int moveX = (m_Action.h_anim_move<<STC);
+            const int moveY = (m_Action.v_anim_move<<STC);
+
+            moveXDir(moveX);
+            moveYDir(moveY);*/
+        }
+
+        m_ActionTicker++;
+    }
 
 	return !mEndOfAction;
 }

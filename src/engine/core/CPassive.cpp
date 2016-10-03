@@ -16,7 +16,7 @@
 
 CPassive::CPassive()
 {
-    CResource &keenFiles = gKeenFiles;
+    auto &keenFiles = gKeenFiles;
     CExeFile &ExeFile = keenFiles.exeFile;
     mEndEpisode = false;
 	m_mode = INTRO;

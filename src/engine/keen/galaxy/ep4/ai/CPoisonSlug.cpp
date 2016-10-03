@@ -94,11 +94,11 @@ void CPoisonSlug::processCrawling()
     // Move normally in the direction
     if( xDirection == RIGHT )
     {
-        moveRight( 2*m_Action.velX );
+        moveRight( 2*m_Action.h_anim_move );
     }
     else
     {
-        moveLeft( 2*m_Action.velX );
+        moveLeft( 2*m_Action.h_anim_move );
     }
 }
 

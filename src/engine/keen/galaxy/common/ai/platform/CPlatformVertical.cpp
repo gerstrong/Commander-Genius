@@ -25,6 +25,11 @@ dimFire(false),
 m_FireSprite(FIRE_SPRITE),
 m_fireTimer(0)
 {
+    Vector2D<Uint32> pos = getPosition();
+
+    pos.y = (pos.y>>CSF);   pos.x = (pos.x>>CSF);
+
+
 	xDirection = 0;
 	yDirection = vertdir;	
 	
@@ -66,29 +71,32 @@ void CPlatformVertical::process()
 {
     Vector2D<Uint32> pos = getPosition();
 
+    pos.y = (pos.y>>CSF);   pos.x = (pos.x>>CSF);
+
     auto lowerPos = pos;
     auto upperPos = pos;
 
-    upperPos.y -= (1<<CSF);
-    lowerPos.y += (1<<CSF);
-
-    const auto objectUpper = mp_Map->getPlaneDataAt(2, upperPos);
-    const auto objectLower = mp_Map->getPlaneDataAt(2, lowerPos);
-
-	performCollisions();
+    upperPos.y -= 1;
+    lowerPos.y += 1;
 
     bool dontmove = false;
 
+    performCollisions();
+
+    // Scan for blockers nearby
+    const auto objectUpper = mp_Map->getPlaneDataAt(2, upperPos<<CSF);
+    const auto objectLower = mp_Map->getPlaneDataAt(2, lowerPos<<CSF);
+
     // If plat is between two blockers, do not move
-    if(objectUpper == 31 && objectLower == 31)
+    if(objectUpper == 0x1F && objectLower == 0x1F)
     {
         dontmove = true;
     }
-    else if( objectLower == 31 ) // If there is only one blocker, change the direction
+    else if( objectLower == 0x1F ) // If there is only one blocker, change the direction
     {
         yDirection = UP;
     }
-    else if( objectUpper == 31 )
+    else if( objectUpper == 0x1F )
     {
         yDirection = DOWN;
     }

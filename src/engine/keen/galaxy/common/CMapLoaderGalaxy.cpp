@@ -117,8 +117,6 @@ bool CMapLoaderGalaxy::unpackPlaneData( std::ifstream &mapFile,
                                         longword length,
                                         word magic_word)
 {
-    bool ok = true;
-
     size_t initial_pos = mapFile.tellg();
 
     std::vector<word> plane;

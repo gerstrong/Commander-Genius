@@ -13,13 +13,6 @@ extern "C"
 #include "be_cross.h"
 #include "be_st.h"
 
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-/*static*/ SDL_Window *g_sdlWindow;
-/*static*/ SDL_Renderer *g_sdlRenderer;
-/*static*/ SDL_Texture *g_sdlTexture, *g_sdlTargetTexture;
-#endif
-
-
 
 static SDL_Rect g_sdlAspectCorrectionRect, g_sdlAspectCorrectionBorderedRect;
 
@@ -114,9 +107,6 @@ static const int g_sdlControllerFaceButtonsTextLocs[] = {15, 34, 28, 21, 2, 21, 
 
 static SDL_Rect g_sdlControllerFaceButtonsRect, g_sdlControllerDpadRect, g_sdlControllerTextInputRect;
 
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-static SDL_Texture *g_sdlFaceButtonsTexture, *g_sdlDpadTexture, *g_sdlTextInputTexture;
-#endif
 
 static bool g_sdlFaceButtonsAreShown, g_sdlDpadIsShown, g_sdlTextInputUIIsShown;
 // With alternative game controllers scheme, all UI is hidden if no controller is connected
@@ -125,153 +115,6 @@ bool g_sdlShowControllerUI;
 static int g_sdlTextInputSelectedKeyX, g_sdlTextInputSelectedKeyY;
 static bool g_sdlTextInputIsKeyPressed, g_sdlTextInputIsShifted;
 
-
-//void BE_ST_SetGfxOutputRects(void);
-
-/*
-void BE_ST_InitGfx(void)
-{
-#ifdef REFKEEN_VER_KDREAMS
-	const char *windowTitle = "Reflection Keen";
-#elif (defined REFKEEN_VER_CAT3D) || (defined REFKEEN_VER_CATADVENTURES)
-	const char *windowTitle = "Reflection Catacomb 3-D";
-#else
-#error "FATAL ERROR: No Ref port game macro is defined!"
-#endif
-	if (g_refKeenCfg.isFullscreen)
-	{
-		if (g_refKeenCfg.fullWidth && g_refKeenCfg.fullHeight)
-		{
-			g_sdlWindow = SDL_CreateWindow(windowTitle, SDL_WINDOWPOS_UNDEFINED_DISPLAY(g_refKeenCfg.displayNum), SDL_WINDOWPOS_UNDEFINED_DISPLAY(g_refKeenCfg.displayNum), g_refKeenCfg.fullWidth, g_refKeenCfg.fullHeight, SDL_WINDOW_FULLSCREEN);
-		}
-		else
-		{
-			g_sdlWindow = SDL_CreateWindow(windowTitle, SDL_WINDOWPOS_UNDEFINED_DISPLAY(g_refKeenCfg.displayNum), SDL_WINDOWPOS_UNDEFINED_DISPLAY(g_refKeenCfg.displayNum), 0, 0, SDL_WINDOW_FULLSCREEN_DESKTOP);
-		}
-	}
-	else
-	{
-		int actualWinWidth = g_refKeenCfg.winWidth, actualWinHeight = g_refKeenCfg.winHeight;
-		if (!actualWinWidth || !actualWinHeight)
-		{
-			bool doSoftwareRendering;
-			if (g_refKeenCfg.sdlRendererDriver >= 0)
-			{
-				SDL_RendererInfo info;
-				SDL_GetRenderDriverInfo(g_refKeenCfg.sdlRendererDriver, &info);
-				doSoftwareRendering = (info.flags & SDL_RENDERER_SOFTWARE);
-			}
-			else
-			{
-				doSoftwareRendering = false;
-			}
-			if (doSoftwareRendering)
-			{
-				actualWinWidth = 640;
-				actualWinHeight = 480;
-			}
-			else
-			{
-				SDL_DisplayMode mode;
-				SDL_GetDesktopDisplayMode(g_refKeenCfg.displayNum, &mode);
-				// In the 200-lines modes on the VGA, where line doubling is in effect,
-				// and after adding the overscan borders, the aspect ratio for the whole output
-				// (after aspect correction i.e., multiplying height by 1.2) is 280:207.
-				if (207*mode.w < 280*mode.h) // Thinner than 280:207
-				{
-					mode.h = mode.w*207/280;
-				}
-				else  // As wide as 280:207 at the least
-				{
-					mode.w = mode.h*280/207;
-				}
-				// Just for the sake of it, using the golden ratio...
-				actualWinWidth = mode.w*500/809;
-				actualWinHeight = mode.h*500/809;
-			}
-		}
-		g_sdlWindow = SDL_CreateWindow(windowTitle, SDL_WINDOWPOS_UNDEFINED_DISPLAY(g_refKeenCfg.displayNum), SDL_WINDOWPOS_UNDEFINED_DISPLAY(g_refKeenCfg.displayNum), actualWinWidth, actualWinHeight, SDL_WINDOW_RESIZABLE);
-	}
-	if (!g_sdlWindow)
-	{
-		BE_Cross_LogMessage(BE_LOG_MSG_ERROR, "Failed to create SDL2 window,\n%s\n", SDL_GetError());
-		exit(0);
-    }*/
-#ifdef REFKEEN_VER_ANY_CGA
-	// Vanilla Keen Dreams and Keen 4-6 have no VSync in the CGA builds
-    //g_sdlRenderer = SDL_CreateRenderer(g_sdlWindow, g_refKeenCfg.sdlRendererDriver, SDL_RENDERER_ACCELERATED | ((g_refKeenCfg.vSync == VSYNC_ON) ? SDL_RENDERER_PRESENTVSYNC : 0));
-#else
-    //g_sdlRenderer = SDL_CreateRenderer(g_sdlWindow, g_refKeenCfg.sdlRendererDriver, SDL_RENDERER_ACCELERATED | ((g_refKeenCfg.vSync == VSYNC_OFF) ? 0 : SDL_RENDERER_PRESENTVSYNC));
-#endif
-    /*if (!g_sdlRenderer)
-	{
-		BE_Cross_LogMessage(BE_LOG_MSG_ERROR, "Failed to create SDL2 renderer,\n%s\n", SDL_GetError());
-		//Destroy window?
-		exit(0);
-    }*/
-/*	BE_ST_SetScreenMode(3); // Includes SDL_Texture handling and output rects preparation
-}*/
-
-void BE_ST_ShutdownGfx(void)
-{
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-	SDL_DestroyTexture(g_sdlFaceButtonsTexture);
-	g_sdlFaceButtonsTexture = NULL;
-	SDL_DestroyTexture(g_sdlDpadTexture);
-	g_sdlDpadTexture = NULL;
-	SDL_DestroyTexture(g_sdlTextInputTexture);
-	g_sdlTextInputTexture = NULL;
-	SDL_DestroyTexture(g_sdlTexture);
-	g_sdlTexture = NULL;
-	SDL_DestroyTexture(g_sdlTargetTexture);
-	g_sdlTargetTexture = NULL;
-	SDL_DestroyRenderer(g_sdlRenderer);
-	g_sdlRenderer = NULL;
-	SDL_DestroyWindow(g_sdlWindow);
-	g_sdlWindow = NULL;
-#endif
-}
-
-static void BEL_ST_RecreateTexture(void)
-{    
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-	if (g_sdlTexture)
-	{
-		SDL_DestroyTexture(g_sdlTexture);
-	}
-	if (g_sdlTargetTexture)
-	{
-		SDL_DestroyTexture(g_sdlTargetTexture);
-	}
-	// Try using render target
-	if ((g_refKeenCfg.scaleFactor > 1) && g_refKeenCfg.isBilinear)
-	{
-		SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "nearest");
-		g_sdlTexture = SDL_CreateTexture(g_sdlRenderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, g_sdlTexWidth, g_sdlTexHeight);
-		if (!g_sdlTexture)
-		{
-			BE_Cross_LogMessage(BE_LOG_MSG_ERROR, "Failed to (re)create SDL2 texture,\n%s\n", SDL_GetError());
-			//Destroy window and renderer?
-			exit(0);
-		}
-		// Try, if we fail then simply don't use this
-		SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
-		g_sdlTargetTexture = SDL_CreateTexture(g_sdlRenderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_TARGET, g_sdlTexWidth*g_refKeenCfg.scaleFactor, g_sdlTexHeight*g_refKeenCfg.scaleFactor);
-	}
-	else
-	{
-		// Use just a single texture
-		SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, g_refKeenCfg.isBilinear ? "linear" : "nearest");
-		g_sdlTexture = SDL_CreateTexture(g_sdlRenderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, g_sdlTexWidth, g_sdlTexHeight);
-		if (!g_sdlTexture)
-		{
-			BE_Cross_LogMessage(BE_LOG_MSG_ERROR, "Failed to (re)create SDL2 texture,\n%s\n", SDL_GetError());
-			//Destroy window and renderer?
-			exit(0);
-		}
-	}
-#endif
-}
 
 // Scancode names for controller face buttons UI and similar
 // (but not a whole on-screen keyboard), based on DOS scancodes
@@ -1068,12 +911,12 @@ void BE_ST_CGAFullUpdateFromWrappedMem(const uint8_t *segPtr, const uint8_t *off
 	}
 }
 
-extern SDL_sem* gpRenderLock;
+//extern SDL_sem* gpRenderLock;
 
 void BE_ST_SetScreenMode(int mode)
 {
     // Lock Rendering
-    SDL_SemWait( gpRenderLock );
+    //SDL_SemWait( gpRenderLock );
 
     g_sdlDoRefreshGfxOutput = true;
     switch (mode)
@@ -1132,7 +975,7 @@ void BE_ST_SetScreenMode(int mode)
     gDreamsEngine->setScreenMode(mode);
 
     // Unlock
-    SDL_SemPost( gpRenderLock );
+    //SDL_SemPost( gpRenderLock );
 }
 
 void BE_ST_textcolor(int color)

@@ -19,6 +19,11 @@
 #include <SDL.h>
 
 #include <base/CInput.h>
+#include <base/GsApp.h>
+
+#include "engine/keen/dreams/dreamscontrolpanel.h"
+
+
 
 extern "C"
 {
@@ -101,10 +106,10 @@ static	const id0_char_t		*ParmStrings[] = {"TEDLEVEL",""};
 
 //	Internal variables
 static	id0_boolean_t		US_Started;
-static	id0_boolean_t		GameIsDirty,
-					HighScoresDirty,
-					QuitToDos,
-					ResumeGame;
+bool		GameIsDirty,
+            HighScoresDirty,
+            QuitToDos;
+bool ResumeGame = false;
 
 static	memptr		LineOffsets;
 
@@ -112,12 +117,12 @@ static	id0_boolean_t		Button0,Button1,
 					CursorBad;
 static	id0_int_t			CursorX,CursorY;
 
-static	void		(*USL_MeasureString)(const id0_char_t id0_far *,const id0_char_t id0_far *,id0_word_t *,id0_word_t *) = VW_MeasurePropString,
-					(*USL_DrawString)(const id0_char_t id0_far *,const id0_char_t id0_far *) = VWB_DrawPropString;
+void		(*USL_MeasureString)(const id0_char_t id0_far *,const id0_char_t id0_far *,id0_word_t *,id0_word_t *) = VW_MeasurePropString;
+void        (*USL_DrawString)(const id0_char_t id0_far *,const id0_char_t id0_far *) = VWB_DrawPropString;
 
-static	id0_boolean_t		(*USL_SaveGame)(BE_FILE_T),(*USL_LoadGame)(BE_FILE_T);
+id0_boolean_t		(*USL_SaveGame)(BE_FILE_T),(*USL_LoadGame)(BE_FILE_T);
 static	void		(*USL_ResetGame)(void);
-static	SaveGame	Games[MaxSaveGames];
+SaveGame	Games[MaxSaveGames];
 static	HighScore	Scores[MaxScores] =
 					{
 						{"",10000},
@@ -242,7 +247,7 @@ oh_kill_me:
 //		the filename to use for the specified save game
 //
 ///////////////////////////////////////////////////////////////////////////
-static id0_char_t *
+id0_char_t *
 USL_GiveSaveName(id0_word_t game)
 {
 static	id0_char_t	filename[32];
@@ -397,7 +402,7 @@ static void
 USL_CheckSavedGames(void)
 {
 	id0_boolean_t		ok;
-	id0_char_t		*filename;
+    char		*filename;
 	id0_word_t		i;
 	BE_FILE_T			file;
 	SaveGame	*game;
@@ -410,7 +415,6 @@ USL_CheckSavedGames(void)
 		filename = USL_GiveSaveName(i);
 		ok = false;
 		if (BE_Cross_IsFileValid(file = BE_Cross_open_for_reading(filename)))
-		//if ((file = open(filename,O_BINARY | O_RDONLY)) != -1)
 		{
 			// REFKEEN Cross Platform file I/O
 			id0_byte_t padding; // Apparently one byte of struct padding
@@ -420,11 +424,11 @@ USL_CheckSavedGames(void)
 			&&	(BE_Cross_read_boolean_From16LE(file, &(game->present)) == 2)
 			&&	(BE_Cross_readInt8LEBuffer(file, game->name, sizeof(game->name)) == sizeof(game->name))
 			&&	(BE_Cross_readInt8LE(file, &padding) == 1)
-
-				//(read(file,game,sizeof(*game)) == sizeof(*game))
 			&&	(!strcmp(game->signature,EXTENSION))
 			)
+            {
 				ok = true;
+            }
 
 			BE_Cross_close(file);
 		}
@@ -1000,13 +1004,23 @@ US_DrawWindow(id0_word_t x,id0_word_t y,id0_word_t w,id0_word_t h)
 
 	US_ClearWindow();
 
-	VWB_DrawTile8M(sx,sy,0),VWB_DrawTile8M(sx,sy + sh,6);
+    VWB_DrawTile8M(sx,sy,0);
+    VWB_DrawTile8M(sx,sy + sh,6);
+
 	for (i = sx + 8;i <= sx + sw - 8;i += 8)
-		VWB_DrawTile8M(i,sy,1),VWB_DrawTile8M(i,sy + sh,7);
-	VWB_DrawTile8M(i,sy,2),VWB_DrawTile8M(i,sy + sh,8);
+    {
+        VWB_DrawTile8M(i,sy,1);
+        VWB_DrawTile8M(i,sy + sh,7);
+    }
+
+    VWB_DrawTile8M(i,sy,2);
+    VWB_DrawTile8M(i,sy + sh,8);
 
 	for (i = sy + 8;i <= sy + sh - 8;i += 8)
-		VWB_DrawTile8M(sx,i,3),VWB_DrawTile8M(sx + sw,i,5);
+    {
+        VWB_DrawTile8M(sx,i,3);
+        VWB_DrawTile8M(sx + sw,i,5);
+    }
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -1136,6 +1150,7 @@ US_UpdateCursor(void)
 {
 	CursorInfo	info;
 
+
 	IN_ReadCursor(&info);
 	if (info.x || info.y || CursorBad)
 	{
@@ -1166,7 +1181,7 @@ US_UpdateCursor(void)
 //	USL_XORICursor() - XORs the I-bar text cursor. Used by US_LineInput()
 //
 ///////////////////////////////////////////////////////////////////////////
-static void
+void
 USL_XORICursor(id0_int_t x,id0_int_t y,const id0_char_t *s,id0_word_t cursor)
 {
 	id0_char_t	buf[MaxString];
@@ -1195,6 +1210,10 @@ id0_boolean_t
 US_LineInput(id0_int_t x,id0_int_t y,id0_char_t *buf,const id0_char_t *def,id0_boolean_t escok,
 				id0_int_t maxchars,id0_int_t maxwidth)
 {
+/*
+
+
+
 	id0_boolean_t		redraw,
 				cursorvis,cursormoved,
 				done,result;
@@ -1222,9 +1241,6 @@ US_LineInput(id0_int_t x,id0_int_t y,id0_char_t *buf,const id0_char_t *def,id0_b
 	LastASCII = key_None;
 	LastScan = sc_None;
 
-	// REFKEEN - Alternative controllers support
-    /*BE_ST_AltControlScheme_Push();
-    BE_ST_AltControlScheme_PrepareTextInput();*/
 
 	while (!done)
 	{
@@ -1410,7 +1426,7 @@ US_LineInput(id0_int_t x,id0_int_t y,id0_char_t *buf,const id0_char_t *def,id0_b
 	VW_UpdateScreen();
 
 	IN_ClearKeysDown();
-	return(result);
+    return(result);*/
 }
 
 //	Control panel routines
@@ -1672,7 +1688,7 @@ USL_ShowHelp(const id0_char_t *s)
 //	USL_HandleError() - Handles telling the user that there's been an error
 //
 ///////////////////////////////////////////////////////////////////////////
-static void
+void
 USL_HandleError(id0_int_t num)
 {
 	id0_char_t	buf[64];
@@ -1925,10 +1941,13 @@ USL_TrackItem(id0_word_t hiti,id0_word_t hitn)
 		USL_ShowHelp("This item is disabled");
 		fontcolor = F_BLACK;
 
-		while (US_UpdateCursor())
+        US_UpdateCursor();
+        //while (US_UpdateCursor())
 		{
 			VW_UpdateScreen();
             BE_ST_ShortSleep();
+
+            //BE_ST_PollEvents();
 		}
 
 		FlushHelp = true;
@@ -1936,7 +1955,8 @@ USL_TrackItem(id0_word_t hiti,id0_word_t hitn)
 	}
 
 	last = false;
-	do
+
+    //do
 	{
 		USL_IsInRect(CursorX,CursorY,&ini,&inn);
 		inside = (ini == hiti) && (inn == hitn);
@@ -1971,7 +1991,9 @@ USL_TrackItem(id0_word_t hiti,id0_word_t hitn)
 		}
 		VW_UpdateScreen();
         BE_ST_ShortSleep();
-	} while (US_UpdateCursor());
+    } //while (US_UpdateCursor());
+
+    US_UpdateCursor();
 
 	if (op)
 		op->sel = othersel;
@@ -3049,7 +3071,9 @@ USL_CtlDLButtonCustom(UserCall call,id0_word_t i,id0_word_t n)
 		game->present = true;
 
 		if (loadedgame)
+        {
 			Paused = true;
+        }
 
 		VW_ShowCursor();
 		US_RestoreWindow(&wr);
@@ -3068,7 +3092,7 @@ USL_CtlDLButtonCustom(UserCall call,id0_word_t i,id0_word_t n)
 //
 ///////////////////////////////////////////////////////////////////////////
 static id0_boolean_t
-USL_CtlDSButtonCustom(UserCall call,id0_word_t i,id0_word_t n)
+USL_CtlDSButtonCustom(UserCall call,id0_word_t i, id0_word_t n)
 {
 	id0_boolean_t		ok;
 	id0_char_t		*filename;
@@ -3077,7 +3101,6 @@ USL_CtlDSButtonCustom(UserCall call,id0_word_t i,id0_word_t n)
 	Rect		r;
 	UserItem	*ip;
 	SaveGame	*game;
-	WindowRec	wr;
 
 	if (call != uic_Hit)
 		return(false);
@@ -3093,77 +3116,107 @@ USL_CtlDSButtonCustom(UserCall call,id0_word_t i,id0_word_t n)
 	fontcolor = F_BLACK;
 
 	r = USL_DLSRect(ip - 1);
-	ok = US_LineInput(px,py,game->name,game->present? game->name : id0_nil_t,true,
-                        MaxGameName,r.lr.x - r.ul.x - 8);
-	if (!strlen(game->name))
-		strcpy(game->name,"Untitled");
-	if (ok)
-	{
-		US_SaveWindow(&wr);
-		US_CenterWindow(10,3);
-		US_PrintCentered("Saving");
-		VW_HideCursor();
-		VW_UpdateScreen();
 
+    auto oli = new dreams::OpenLineInput(px,py,
+                                         game->name,
+                                         game->present ? game->name : nullptr,
+                                         game->signature,
+                                         true,
+                                         MaxGameName, r.lr.x - r.ul.x - 8,
+                                         n);
+    gEventManager.add(oli);
+
+
+
+
+
+    /*ok = US_LineInput(px,py,game->name,game->present? game->name : id0_nil_t,true,
+                        MaxGameName,r.lr.x - r.ul.x - 8);*/
+
+    return false;
+
+}
+
+
+bool USL_saveTheGame(int i, int n)
+{
+    WindowRec	wr;
+    auto ip = &TheItems[i][n];
+
+    bool ok = true;
+
+    auto game = &Games[n / 2];
+
+    if (!strlen(game->name))
+    {
+        strcpy(game->name,"Untitled");
+    }
+    if (ok)
+    {
+        US_SaveWindow(&wr);
+        US_CenterWindow(10,3);
+        US_PrintCentered("Saving");
+        VW_HideCursor();
+        VW_UpdateScreen();
+
+        auto filename = USL_GiveSaveName(n / 2);
+        int err = 0;
+        auto file = BE_Cross_open_for_overwriting(filename);
+        //file = open(filename,O_CREAT | O_BINARY | O_WRONLY,
+        //			S_IREAD | S_IWRITE | S_IFREG);
+        if (BE_Cross_IsFileValid(file))
+        //if (file != -1)
+        {
+            // REFKEEN Cross Platform file I/O
+            id0_byte_t padding = 0; // Apparently one byte of struct padding
+            if ((BE_Cross_writeInt8LEBuffer(file, game->signature, sizeof(game->signature)) == sizeof(game->signature))
+                && (BE_Cross_write_boolean_To16LE(file, &(game->present)) == 2)
+                && (BE_Cross_writeInt8LEBuffer(file, game->name, sizeof(game->name)) == sizeof(game->name))
+                && (BE_Cross_writeInt8LE(file, &padding) == 1)
+            )
+            //if (write(file,game,sizeof(*game)) == sizeof(*game))
+            {
+                if (USL_SaveGame)
+                    ok = USL_SaveGame(file);
+                if (!ok)
+                    USL_HandleError(err = errno);
+            }
+            else
+                USL_HandleError(err = ((errno == ENOENT)? ENOMEM : errno));
+            BE_Cross_close(file);
+        }
+        else
+            USL_HandleError(err = ((errno == ENOENT)? ENOMEM : errno));
+        if (err)
+        {
+            remove(filename);
+            ok = false;
+        }
 #if 0
-		LeaveDriveOn++;
-#endif
-		filename = USL_GiveSaveName(n / 2);
-		err = 0;
-		file = BE_Cross_open_for_overwriting(filename);
-		//file = open(filename,O_CREAT | O_BINARY | O_WRONLY,
-		//			S_IREAD | S_IWRITE | S_IFREG);
-		if (BE_Cross_IsFileValid(file))
-		//if (file != -1)
-		{
-			// REFKEEN Cross Platform file I/O
-			id0_byte_t padding = 0; // Apparently one byte of struct padding
-			if ((BE_Cross_writeInt8LEBuffer(file, game->signature, sizeof(game->signature)) == sizeof(game->signature))
-			    && (BE_Cross_write_boolean_To16LE(file, &(game->present)) == 2)
-			    && (BE_Cross_writeInt8LEBuffer(file, game->name, sizeof(game->name)) == sizeof(game->name))
-			    && (BE_Cross_writeInt8LE(file, &padding) == 1)
-			)
-			//if (write(file,game,sizeof(*game)) == sizeof(*game))
-			{
-				if (USL_SaveGame)
-					ok = USL_SaveGame(file);
-				if (!ok)
-					USL_HandleError(err = errno);
-			}
-			else
-				USL_HandleError(err = ((errno == ENOENT)? ENOMEM : errno));
-			BE_Cross_close(file);
-		}
-		else
-			USL_HandleError(err = ((errno == ENOENT)? ENOMEM : errno));
-		if (err)
-		{
-			remove(filename);
-			ok = false;
-		}
-#if 0
-		LeaveDriveOn--;
+        LeaveDriveOn--;
 #endif
 
-		VW_ShowCursor();
-		US_RestoreWindow(&wr);
-		USL_DoHit(i - 1,0);
-		VW_UpdateScreen();
-	}
+        VW_ShowCursor();
+        US_RestoreWindow(&wr);
+        USL_DoHit(i - 1,0);
+        VW_UpdateScreen();
+    }
 
-	if (!game->present)
-		game->present = ok;
+    if (!game->present)
+        game->present = ok;
 
-	if (ok)
-	{
-		GameIsDirty = false;
-		(ip - 1)->sel &= ~ui_Disabled;
-	}
+    if (ok)
+    {
+        GameIsDirty = false;
+        (ip - 1)->sel &= ~ui_Disabled;
+    }
 
-	USL_DrawItem(i,n - 1);
+    //USL_DrawItem(i,n - 1);
 //	USL_CtlDLButtonCustom(uic_Draw,i,n - 1);
 
-	return(true);
+    loadedgame = true;
+
+    return(true);
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -3627,97 +3680,126 @@ USL_TearDownCtlPanel(void)
 	}
 }
 
+
+id0_word_t		hiti,hitn,
+            i,n,
+            lasti,lastn,
+            lastx,lasty;
+
+id0_longword_t	lasttime;
+
+id0_char_t		gamename[MaxGameName + 10 + 1];
+
+
+Rect		userect;
+
+
+
+//Point		p;
+UserItem	*ip;
+
+
+id0_boolean_t		done;
+
+
+void
+US_ControlPanel_Init(void)
+{
+    ScanCode	c;
+
+    // REFKEEN - Alternative controllers support
+    /*BE_ST_AltControlScheme_Push();
+    BE_ST_AltControlScheme_PrepareMenuControls();*/
+
+    id0_boolean_t		done,
+                buttondown,inrect;
+
+
+    c = LastScan;
+    if (c == sc_Escape)	// Map escape from game to Exit to DOS
+        c = sc_Q;
+
+    /* REFKEEN - Originally may have been accessed uninitialized - undefined behaviors... */
+    lasttime = 0;
+    lastn = 0;
+    lasti = 0;
+    /* End  of "uninitialized vars" list */
+
+    CA_UpLevel();
+    for (i = CONTROLS_LUMP_START;i <= CONTROLS_LUMP_END;i++)
+        CA_MarkGrChunk(i);
+    CA_MarkGrChunk(CTL_LITTLEMASKPICM);
+    CA_MarkGrChunk(CTL_LSMASKPICM);
+#ifdef REFKEEN_VER_KDREAMS_CGA_ALL
+    CA_CacheMarks("Options Screen");
+#elif defined REFKEEN_VER_KDREAMS_ANYEGA_ALL
+    CA_CacheMarks("Options Screen", 0);
+#endif
+
+    USL_SetUpCtlPanel();
+
+    US_SetPrintRoutines(VW_MeasurePropString,VWB_DrawPropString);
+    fontcolor = F_BLACK;
+
+    VW_InitDoubleBuffer();
+
+    VWB_Bar(0,0,MaxX,MaxY,FIRSTCOLOR);
+    US_DrawWindow(8,22,30,2);
+    US_SaveWindow(&HelpWindow);
+    US_DrawWindow(8,7,30,14);
+    US_SaveWindow(&BottomWindow);
+    US_DrawWindow(8,1,30,20);
+
+    for (ip = CtlPanels;ip->type != uii_Bad;ip++)
+    {
+        VWB_DrawPic(ip->r.ul.x,ip->r.ul.y,ip->picup);
+    }
+
+    US_StartCursor();
+    CursorX = (8 * 8) + ((MaxX - (8 * 8)) / 2);
+    CursorBad = true;
+
+    CtlPanelButton = -1;
+    LastScan = c;
+    USL_CheckScan(&i,&n);
+    if (CtlPanelButton == -1)
+        USL_DoHit(0,0);
+
+    ResumeGame = false;
+    done = false;
+    FlushHelp = true;
+    lastx = lasty = -1;
+
+    VW_UpdateScreen();
+}
+
+void 	VWL_DrawCursor (void);
+void 	VWL_EraseCursor (void);
+
+
+extern bool mGamePlayRunning;
+
 ///////////////////////////////////////////////////////////////////////////
 //
 //	US_ControlPanel() - This is the main routine for the control panel
 //
 ///////////////////////////////////////////////////////////////////////////
 void
-US_ControlPanel(void)
+US_ControlPanel_Ponder(void)
 {        
-	// REFKEEN - Alternative controllers support	
-    /*BE_ST_AltControlScheme_Push();
-    BE_ST_AltControlScheme_PrepareMenuControls();*/
 
-	id0_char_t		gamename[MaxGameName + 10 + 1];
-	ScanCode	c;
-	id0_boolean_t		done,
-				buttondown,inrect;
-	id0_word_t		hiti,hitn,
-				i,n,
-				lasti,lastn,
-				lastx,lasty;
-	id0_longword_t	lasttime;
-	//Point		p;
-	Rect		userect;
-	UserItem	*ip;
+    ScanCode	c;
 
-	c = LastScan;
-	if (c == sc_Escape)	// Map escape from game to Exit to DOS
-		c = sc_Q;
 
-	/* REFKEEN - Originally may have been accessed uninitialized - undefined behaviors... */
-	lasttime = 0;
-	lastn = 0;
-	lasti = 0;
-	/* End  of "uninitialized vars" list */
+    if ( (restartgame == gd_Continue) &&
+        !(done || loadedgame || ResumeGame) )
+    {        
 
-	CA_UpLevel();
-	for (i = CONTROLS_LUMP_START;i <= CONTROLS_LUMP_END;i++)
-		CA_MarkGrChunk(i);
-	CA_MarkGrChunk(CTL_LITTLEMASKPICM);
-	CA_MarkGrChunk(CTL_LSMASKPICM);
-#ifdef REFKEEN_VER_KDREAMS_CGA_ALL
-	CA_CacheMarks("Options Screen");
-#elif defined REFKEEN_VER_KDREAMS_ANYEGA_ALL
-	CA_CacheMarks("Options Screen", 0);
-#endif
+        VWL_EraseCursor();
 
-	USL_SetUpCtlPanel();
 
-	US_SetPrintRoutines(VW_MeasurePropString,VWB_DrawPropString);
-	fontcolor = F_BLACK;
-
-	VW_InitDoubleBuffer();
-
-	VWB_Bar(0,0,MaxX,MaxY,FIRSTCOLOR);
-	US_DrawWindow(8,22,30,2);
-	US_SaveWindow(&HelpWindow);
-	US_DrawWindow(8,7,30,14);
-	US_SaveWindow(&BottomWindow);
-	US_DrawWindow(8,1,30,20);
-
-	for (ip = CtlPanels;ip->type != uii_Bad;ip++)
-		VWB_DrawPic(ip->r.ul.x,ip->r.ul.y,ip->picup);
-
-	US_StartCursor();
-	CursorX = (8 * 8) + ((MaxX - (8 * 8)) / 2);
-	CursorBad = true;
-
-	CtlPanelButton = -1;
-	LastScan = c;
-	USL_CheckScan(&i,&n);
-	if (CtlPanelButton == -1)
-		USL_DoHit(0,0);
-
-	ResumeGame = false;
-	done = false;
-	FlushHelp = true;
-	lastx = lasty = -1;
-
-    SDL_Delay(100);
-
-	while
-	(
-		(restartgame == gd_Continue)
-	&&	!(done || loadedgame || ResumeGame)
-	)
-    {
-		VW_UpdateScreen();
-        BE_ST_ShortSleep(); // TODO (REFKEEN): Correct place?
-
-		buttondown = US_UpdateCursor();
-		inrect = USL_IsInRect(CursorX,CursorY,&i,&n);
+        id0_boolean_t buttondown = US_UpdateCursor();
+        id0_boolean_t inrect = USL_IsInRect(CursorX,CursorY,&i,&n);
 
 		if (FlushHelp)
 		{
@@ -3745,7 +3827,9 @@ US_ControlPanel(void)
 					USL_ShowHelp(gamename);
 				}
 				else
+                {
 					USL_ShowHelp(TheItems[i][n].help);
+                }
 				lasti = i;
 				lastn = n;
 			}
@@ -3760,7 +3844,9 @@ US_ControlPanel(void)
 		hitn = n;
 
 		if (inrect)
+        {
 			userect = TheItems[i][n].r;
+        }
 		else
 		{
 			userect.ul.x = CursorX;
@@ -3840,18 +3926,25 @@ US_ControlPanel(void)
 		else if (USL_CheckScan(&i,&n))
 			;
 		else if (buttondown && inrect && USL_TrackItem(hiti,hitn))
+        {
 			USL_DoHit(hiti,hitn);
+        }
 
-        if (LastScan == sc_Escape || gInput.getPressedCommand(IC_BACK))
-		{
-			IN_ClearKey(sc_Escape);
-			done = true;
-		}
+        if(mGamePlayRunning)
+        {
+            if (LastScan == sc_Escape || gInput.getPressedCommand(IC_BACK))
+            {
+                IN_ClearKey(sc_Escape);
+                ResumeGame = true;
+            }
+        }
 
 		if (QuitToDos)
+        {
 			done = true;
+        }
 
-		if ((lastx != CursorX) || (lasty != CursorY))
+        if ((lastx != CursorX) || (lasty != CursorY))
 		{
 			lastx = CursorX;
 			lasty = CursorY;
@@ -3863,31 +3956,43 @@ US_ControlPanel(void)
 				fontcolor = F_SECONDCOLOR;
 			USL_ShowHelp("Press F1 for Help");
 			fontcolor = F_BLACK;
-		}
-	}
+        }
 
-	US_ShutCursor();
+        // Draw the cursor
+        VWL_DrawCursor();
+    }
+    else
+    {
 
-	USL_TearDownCtlPanel();
+        // TODO: Push event which closes the menu and opens something else
+        US_ShutCursor();
 
-	if (QuitToDos)
-	{
+        USL_TearDownCtlPanel();
+
+        if (QuitToDos)
+        {
 #if FRILLS
-		if (tedlevel)
-			TEDDeath();
-		else
+             if (tedlevel)
+                 TEDDeath();
+             else
 #endif
-		{
-			US_CenterWindow(20,3);
-			fontcolor = F_SECONDCOLOR;
-			US_PrintCentered("Now Exiting to DOS...");
-			fontcolor = F_BLACK;
-			VW_UpdateScreen();
-			Quit(id0_nil_t);
-		}
-	}
+             US_CenterWindow(20,3);
+             fontcolor = F_SECONDCOLOR;
+             US_PrintCentered("Now Exiting to DOS...");
+             fontcolor = F_BLACK;
+             VW_UpdateScreen();
+             Quit(id0_nil_t);
 
-	CA_DownLevel();
+             // User chose "exit". So make CG quit...
+             gEventManager.add( new GMQuit() );
+        }
+        else
+        {
+            gEventManager.add( new dreams::SwitchToGamePlay );
+
+            CA_DownLevel();
+        }
+    }
 
     //BE_ST_AltControlScheme_Pop(); // REFKEEN - Alternative controllers support
 }

@@ -245,6 +245,10 @@ void ChangeState (objtype *ob, statetype *state)
 {
 	ob->state = state;
 	ob->ticcount = 0;
+
+    if(!state)
+        return;
+
 	if (state->rightshapenum)
 	{
 		if (ob->xdir>0)

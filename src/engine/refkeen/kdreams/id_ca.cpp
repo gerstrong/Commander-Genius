@@ -138,9 +138,9 @@ huffnode	audiohuffman[255];
 #endif
 
 
-BE_FILE_T			grhandle;		// handle to EGAGRAPH
-BE_FILE_T			maphandle;		// handle to MAPTEMP / GAMEMAPS
-BE_FILE_T			audiohandle;	// handle to AUDIOT / AUDIO
+BE_FILE_T			grhandle = nullptr;		// handle to EGAGRAPH
+BE_FILE_T			maphandle = nullptr;		// handle to MAPTEMP / GAMEMAPS
+BE_FILE_T			audiohandle = nullptr;	// handle to AUDIOT / AUDIO
 
 id0_long_t		chunkcomplen,chunkexplen;
 
@@ -1527,7 +1527,7 @@ The general buffer size is too small!
 
 		pos = mapheaderseg[mapnum]->planestart[plane];
 		compressed = mapheaderseg[mapnum]->planelength[plane];
-		BE_Cross_seek(maphandle,pos,SEEK_SET);
+        BE_Cross_seek(maphandle, pos, SEEK_SET);
 		if (compressed<=BUFFERSIZE)
 			source = (id0_unsigned_t *)bufferseg;
 		else

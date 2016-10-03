@@ -99,9 +99,9 @@ void CInchWorm::process()
 
 	// Move normally in the direction
 	if( xDirection == RIGHT )
-		moveRight( (m_Action.velX>>3)*((rand()%2)+1) );
+		moveRight( (m_Action.h_anim_move>>3)*((rand()%2)+1) );
 	else
-		moveLeft( (m_Action.velX>>3)*((rand()%2)+1) );
+		moveLeft( (m_Action.h_anim_move>>3)*((rand()%2)+1) );
 }
 
 

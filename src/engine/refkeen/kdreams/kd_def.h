@@ -297,6 +297,7 @@ id0_int_t 	DoActor (objtype *ob,id0_int_t tics);
 void 	StateMachine (objtype *ob);
 void 	NewState (objtype *ob,statetype *state);
 void 	PlayLoop (void);
+void    PlayLoopRender();
 void 	GameLoop (void);
 
 /*

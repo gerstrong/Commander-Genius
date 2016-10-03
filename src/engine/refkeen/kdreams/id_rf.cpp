@@ -973,8 +973,8 @@ void	RFL_NewRow (id0_int_t dir)
 void RF_ForceRefresh (void)
 {
 	RF_NewPosition (originxglobal,originyglobal);
-    RF_Refresh (true, false);
-    RF_Refresh (true, false);
+    RF_Refresh (true);
+    RF_Refresh (true);
 }
 
 
@@ -1679,10 +1679,10 @@ redraw:
 =====================
 */
 
-extern SDL_sem* gpRenderLock;
+//extern SDL_sem* gpRenderLock;
 
 
-void RF_Refresh (int updateGraphics, int semaphore)
+void RF_Refresh (int updateGraphics)
 {
 
     id0_byte_t	*newupdate;
@@ -1700,8 +1700,8 @@ void RF_Refresh (int updateGraphics, int semaphore)
             //
             // update newly scrolled on tiles and animated tiles from the master screen
             //
-            EGAWRITEMODE(1);
-            EGAMAPMASK(15);
+            /*EGAWRITEMODE(1);
+            EGAMAPMASK(15);*/
             RFL_UpdateTiles ();
             RFL_EraseBlocks ();
 
@@ -1721,23 +1721,10 @@ void RF_Refresh (int updateGraphics, int semaphore)
         if (refreshvector)
             refreshvector();
 
-
-        // Lock Rendering
-        if(semaphore)
-        {
-            SDL_SemWait( gpRenderLock );
-        }
-
         //
         // display the changed screen
         //
         BE_ST_SetScreenStartAddress(bufferofs+panadjust);
-
-        if(semaphore)
-        {
-            SDL_SemPost( gpRenderLock );
-        }
-
 
         //
         // prepare for next refresh

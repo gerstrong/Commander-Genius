@@ -66,7 +66,7 @@ void CSpriteObject::calcBoundingBoxes()
     m_BBox.x1 = rSprite.m_bboxX1;
     m_BBox.x2 = rSprite.m_bboxX2;
     m_BBox.y1 = rSprite.m_bboxY1;
-    m_BBox.y2 = rSprite.m_bboxY2 ;
+    m_BBox.y2 = rSprite.m_bboxY2;
 }
 
 /**
@@ -719,8 +719,8 @@ void CSpriteObject::processMoveBitLeft()
 		return;
 
 	// if we are here, the tiles aren't blocking us.
-	// TODO: Here we need the Object collision part
-	m_Pos.x-=MOVE_RES;
+	// TODO: Here we need the Object collision part    
+    m_Pos.x -= MOVE_RES;
 	adjustSlopedTiles(x1-(1<<STC), y1, y2, -MOVE_RES);
 }
 
@@ -737,7 +737,7 @@ void CSpriteObject::processMoveBitRight()
 
 	// if we are here, the tiles aren't blocking us.
 	// TODO: Here we need the Object collision part
-	m_Pos.x+=MOVE_RES;
+    m_Pos.x += MOVE_RES;
 	adjustSlopedTiles(x2+(1<<STC), y1, y2, MOVE_RES);
 }
 
@@ -768,7 +768,7 @@ void CSpriteObject::processMoveBitUp()
     }
 
     // If we are here, the tiles aren't blocking us.
-    m_Pos.y -= MOVE_RES;
+    m_Pos.y -= MOVE_RES;        
 }
 
 void CSpriteObject::processMoveBitDown()

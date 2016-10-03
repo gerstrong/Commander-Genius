@@ -151,7 +151,7 @@ void GsSprite::generateSprite( const int points )
 	GsFont &smallFont = gGraphics.getFont(2);
 
 	// Create Text Borders TODO: Make this code to draw better looking fonts
-    smallFont.drawFont( mpSurface.get(), pointStr,  0,  1 );
+    smallFont.drawFont( mpSurface.get(), pointStr,  0, 1 );
     smallFont.drawFont( mpSurface.get(), pointStr,  1, 0 );
     smallFont.drawFont( mpSurface.get(), pointStr,  2, 1 );
     smallFont.drawFont( mpSurface.get(), pointStr,  1, 2 );
@@ -161,7 +161,7 @@ void GsSprite::generateSprite( const int points )
 
 	if(SDL_MUSTLOCK(mpSurface.get())) SDL_LockSurface(mpSurface.get());
 
-	// This makes the white pixel transparent TODO: This and other must get more elegant
+    // This makes the white pixel transparent
 	Uint8 *pixel = (Uint8*)mpSurface->pixels;
 
 	for( Uint8 y=0 ; y<mpSurface->h ; y++ )

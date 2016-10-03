@@ -354,7 +354,7 @@ void CPlayerLevel::handleInputOnGround()
 		setAction(A_KEEN_RUN);
 		processRunning();
 
-		nextX = (xDirection * m_Action.velX)/4;
+		nextX = (xDirection * m_Action.h_anim_move)/4;
 		return;
 	}
 
@@ -642,7 +642,9 @@ void CPlayerLevel::processInput()
 	CPlayerBase::processInput();
 
 	if(m_playcontrol[PA_Y] >= 0)
+    {
 		m_EnterDoorAttempt = false;
+    }
 
 	state.jumpWasPressed = state.jumpIsPressed;
 	state.pogoWasPressed = state.pogoIsPressed;
@@ -1597,7 +1599,7 @@ void CPlayerLevel::processPressUp() {
 			{
 				mTarget = getPosition();
 								
-				// Illusion for going into the backgroung does not apply on teleporters
+                // Illusion for going into the background does not apply on teleporters
 				if(info || tile_no != 0x401)
 				{
 				  mTarget.y -= (1<<CSF);
@@ -1611,7 +1613,7 @@ void CPlayerLevel::processPressUp() {
 				setActionSprite();
                 GsSprite &rSprite = gGraphics.getSprite(mSprVar,sprite);
 
-				// Here the Player will be snapped to the center
+                // Here the Player will be snapped to the center of the door
 
 				const int x_l = (x_left>>CSF);
 				const int x_r = x_l+1;
@@ -1694,8 +1696,8 @@ void CPlayerLevel::processEnterDoor()
     // This happens in Keen 5 when Keen enters the exit door and it still has to open.        
     if(mExitDoorTimer > 0)
     {
-	mExitDoorTimer--;
-	return;    
+        mExitDoorTimer--;
+        return;
     }
     
 	moveUp(16);
@@ -2589,7 +2591,9 @@ void CPlayerLevel::process()
     }
 
     if(mExitTouched)
+    {
         return;
+    }
     
 	if(!m_dying)
 	{

@@ -21,6 +21,9 @@
 #include <base/CInput.h>
 
 #include "engine/keen/dreams/dreamsengine.h"
+#include "engine/keen/dreams/dreamsgameplay.h"
+#include "engine/keen/dreams/dreamscontrolpanel.h"
+#include "engine/keen/dreams/dreamsintro.h"
 
 extern mapfiletype_modern  mapFile;
 
@@ -274,7 +277,7 @@ void CheckKeys (void)
 		US_CenterWindow (8,3);
 		US_PrintCentered ("PAUSED");
 		VW_UpdateScreen ();
-		IN_Ack();
+        //IN_Ack();
 		RF_ForceRefresh ();
 		Paused = false;
 	}
@@ -288,7 +291,11 @@ void CheckKeys (void)
 		US_CenterWindow (20,8);
 		US_CPrint ("Loading");
 		VW_UpdateScreen ();
-		US_ControlPanel();
+
+        gEventManager.add( new dreams::LaunchControlPanel );
+        /*US_ControlPanel_Init();
+        US_ControlPanel_Ponder();*/
+        return;
 
         if(gDreamsForceClose)
             return;
@@ -840,6 +847,7 @@ void ScrollScreen (void)
 	|| player->right > originxmax+20*TILEGLOBAL)
 	{
 		playstate = levelcomplete;
+        gEventManager.add( new dreams::CompleteLevel );
 		return;
 	}
 
@@ -1564,184 +1572,241 @@ void NewState (objtype *ob,statetype *state)
 */
 
 
-
-void PlayLoop()
+void PlayLoopInit()
 {
-	// REFKEEN - Alternative controllers support	
+    // REFKEEN - Alternative controllers support
     /*BE_ST_AltControlScheme_Push();
     BE_ST_AltControlScheme_PrepareInGameControls(KbdDefs[0].button0, KbdDefs[0].button1, KbdDefs[0].up, KbdDefs[0].down, KbdDefs[0].left, KbdDefs[0].right);*/
 
-	objtype	*obj, *check;
-	//id0_long_t	newtime;
+    objtype	*obj, *check;
+    //id0_long_t	newtime;
 
-	button0held = button1held = false;
+    button0held = button1held = false;
 
-	ingame = true;
-	playstate = notdone/*0*/;
-	plummet = 0;
+    ingame = true;
+    playstate = notdone/*0*/;
+    plummet = 0;
 
-	FixScoreBox ();					// draw bomb/flower
+    FixScoreBox ();					// draw bomb/flower
 
-	do
-    {                
-		CalcSingleGravity ();
-		IN_ReadControl(0,&c);		// get player input
-		if (!c.button0)
-			button0held = 0;
-		if (!c.button1)
-			button1held = 0;
+    // This redraws the whole playloop scene after closing the control panel
+    RF_ForceRefresh();
+
+    VW_UpdateScreen();
+}
 
 
-        // Status screen code in which you have to press a key to close.
-        // Also it will render correctly
-        if(openedStatusWindow)
-        {
-           StatusWindow();
+void PlayLoopRun()
+{
+    CalcSingleGravity ();
+    IN_ReadControl(0,&c);		// get player input
+    if (!c.button0)
+        button0held = 0;
+    if (!c.button1)
+        button1held = 0;
 
-           if(c.button0 || c.button1 ||
-                   Keyboard[sc_Space] || gInput.getPressedAnyButtonCommand(0))
-           {
-               openedStatusWindow = false;
-               RF_ForceRefresh();
 
-               lasttimecount = SD_GetTimeCount();
-               IN_ClearKeysDown();
-               gInput.flushAll();
-           }
+    // Status screen code in which you have to press a key to close.
+    // Also it will render correctly
+    if(openedStatusWindow)
+    {
+       StatusWindow();
 
-           RF_Refresh(false, true);
+       if(c.button0 || c.button1 ||
+          Keyboard[sc_Space] || gInput.getPressedAnyButtonCommand(0))
+       {
+           openedStatusWindow = false;
+           RF_ForceRefresh();
 
-           continue;
-        }
+           lasttimecount = SD_GetTimeCount();
+           IN_ClearKeysDown();
+           gInput.flushAll();
+       }
+
+       RF_Refresh(false);
+
+       return;
+    }
 
 
 
 //
 // go through state changes and propose movements
 //
-		obj = player;
-		do
-		{
-			if (!obj->active
-			&& obj->tileright >= originxtile
-			&& obj->tileleft <= originxtilemax
-			&& obj->tiletop <= originytilemax
-			&& obj->tilebottom >= originytile)
-			{
-				obj->needtoreact = true;
-				obj->active = yes;
-			}
+    objtype	*obj = player;
+    do
+    {
+        if (!obj->active
+        && obj->tileright >= originxtile
+        && obj->tileleft <= originxtilemax
+        && obj->tiletop <= originytilemax
+        && obj->tilebottom >= originytile)
+        {
+            obj->needtoreact = true;
+            obj->active = yes;
+        }
 
-			if (obj->active)
-				StateMachine(obj);
+        if (obj->active)
+            StateMachine(obj);
 
-			if ( (obj->active == true || obj->active == removable) &&
-			(  obj->tileright < inactivateleft
-			|| obj->tileleft > inactivateright
-			|| obj->tiletop > inactivatebottom
-			|| obj->tilebottom < inactivatetop) )
-			{
-				if (obj->active == removable)
-					RemoveObj (obj);				// temp thing (shots, etc)
-				else
-				{
-					if (US_RndT()<tics)				// let them get a random dist
-					{
-						RF_RemoveSprite (&obj->sprite);
-						obj->active = no;
-					}
-				}
-			}
+        if ( (obj->active == true || obj->active == removable) &&
+        (  obj->tileright < inactivateleft
+        || obj->tileleft > inactivateright
+        || obj->tiletop > inactivatebottom
+        || obj->tilebottom < inactivatetop) )
+        {
+            if (obj->active == removable)
+                RemoveObj (obj);				// temp thing (shots, etc)
+            else
+            {
+                if (US_RndT()<tics)				// let them get a random dist
+                {
+                    RF_RemoveSprite (&obj->sprite);
+                    obj->active = no;
+                }
+            }
+        }
 
-			obj = (objtype *)obj->next;
-		} while (obj);
+        obj = (objtype *)obj->next;
+    } while (obj);
 
 //
 // check for and handle collisions between objects
 //
-		obj = player;
-		do
-		{
-			if (obj->active)
-			{
-				check = (objtype *)obj->next;
-				while (check)
-				{
-					if ( check->active
-					&& obj->right > check->left
-					&& obj->left < check->right
-					&& obj->top < check->bottom
-					&& obj->bottom > check->top)
-					{
+    obj = player;
+    do
+    {
+        if (obj->active)
+        {
+            check = (objtype *)obj->next;
+            while (check)
+            {
+                if ( check->active
+                && obj->right > check->left
+                && obj->left < check->right
+                && obj->top < check->bottom
+                && obj->bottom > check->top)
+                {
 //#pragma warn -pro
-						if (obj->state->contactptr)
-							obj->state->contactptr(obj,check);
-						if (check->state->contactptr)
-							check->state->contactptr(check,obj);
+                    if (obj->state->contactptr)
+                        obj->state->contactptr(obj,check);
+                    if (check->state->contactptr)
+                        check->state->contactptr(check,obj);
 //#pragma warn +pro
-						if (!obj->obclass)
-							break;				// contact removed object
-					}
-					check = (objtype *)check->next;
-				}
-			}
-			obj = (objtype *)obj->next;
-		} while (obj);
+                    if (!obj->obclass)
+                        break;				// contact removed object
+                }
+                check = (objtype *)check->next;
+            }
+        }
+        obj = (objtype *)obj->next;
+    } while (obj);
 
 
-		ScrollScreen();
+    ScrollScreen();
 
 //
 // react to whatever happened, and post sprites to the refresh manager
 //
-		obj = player;
-		do
-		{
-			if (obj->needtoreact && obj->state->reactptr)
-			{
-				obj->needtoreact = false;
+    obj = player;
+    do
+    {
+        if (obj->needtoreact && obj->state->reactptr)
+        {
+            obj->needtoreact = false;
 //#pragma warn -pro
-				obj->state->reactptr(obj);
+            obj->state->reactptr(obj);
 //#pragma warn +pro
-			}
-			obj = (objtype *)obj->next;
-		} while (obj);
+        }
+        obj = (objtype *)obj->next;
+    } while (obj);
 
 
 //
 // update the screen and calculate the number of tics it took to execute
-// this cycle of events (for adaptive timing of next cycle)                        
+// this cycle of events (for adaptive timing of next cycle)
 //
 
-        RF_Refresh(true, true);
+    //RF_Refresh(true, true);
 
 
-        if(gDreamsForceClose)
-            break;
+    if(gDreamsForceClose)
+        return;
 
 //
 // single step debug mode
 //
-		if (singlestep)
-		{
-			VW_WaitVBL(14);
-			lasttimecount = SD_GetTimeCount();
-		}
+    /*if (singlestep)
+    {
+        VW_WaitVBL(14);
+        lasttimecount = SD_GetTimeCount();
+    }*/
 
 
-		CheckKeys();
+    CheckKeys();
 
 
-        if(gDreamsForceClose)
-            return;
+    if(gDreamsForceClose)
+        return;
 
-	} while (!loadedgame && !playstate);
-
-	ingame = false;
-
-    //BE_ST_AltControlScheme_Pop(); // REFKEEN - Alternative controllers support
 }
 
+void startLevel();
+
+
+void HandleDeath_Init (void);
+
+void HandleDeath_Loop (void);
+
+
+//==========================================================================
+
+
+void GamePlayStartLevel()
+{
+    startLevel();
+}
+
+
+
+void PlayLoop()
+{
+
+    if(!loadedgame && !playstate)
+    {                
+        PlayLoopRun();
+
+        if(playstate == died)
+        {
+            HandleDeath_Init();
+        }
+
+    }
+    else if(playstate == died)
+    {
+        HandleDeath_Loop();
+
+        if(playstate == notdone)
+        {
+            GamePlayStartLevel();
+        }
+    }
+    else
+    {
+        ingame = false;
+
+        startLevel();
+    }
+}
+
+
+void PlayLoopRender()
+{
+    if(!playstate)
+    {
+        RF_Refresh(true);
+    }
+}
 
 //==========================================================================
 
@@ -1840,35 +1905,49 @@ void GameFinale (void)
 ==========================
 */
 
-void HandleDeath (void)
+int mSelection = 0;
+int mTop, mBottom;
+
+void HandleDeath_Init (void)
 {
-	id0_unsigned_t	top,bottom,selection,y,color;
+    gamestate.keys = 0;
+    gamestate.boobusbombs -= gamestate.bombsthislevel;
+    gamestate.lives--;
+    if (gamestate.lives < 0)
+    {
+        // Make it to be gameover
+        gEventManager.add( new dreams::SwitchToIntro );
+        gInput.flushAll();
+        return;
+    }
 
-	gamestate.keys = 0;
-	gamestate.boobusbombs -= gamestate.bombsthislevel;
-	gamestate.lives--;
-	if (gamestate.lives < 0)
-		return;
+    VW_FixRefreshBuffer ();
+    US_CenterWindow (20,8);
+    PrintY += 4;
+    US_CPrint ("You didn't make it past");
+    US_CPrint (levelnames[mapon]);
+    PrintY += 8;
+    mTop = PrintY-2;
+    US_CPrint ("Try Again");
+    PrintY += 4;
+    mBottom = PrintY-2;
+    US_CPrint ("Exit to Tuberia");
 
-	VW_FixRefreshBuffer ();
-	US_CenterWindow (20,8);
-	PrintY += 4;
-	US_CPrint ("You didn't make it past");
-	US_CPrint (levelnames[mapon]);
-	PrintY += 8;
-	top = PrintY-2;
-	US_CPrint ("Try Again");
-	PrintY += 4;
-	bottom = PrintY-2;
-	US_CPrint ("Exit to Tuberia");
+    VW_UpdateScreen ();
 
-	selection = 0;
-	do
+    mSelection = 0;
+}
+
+void HandleDeath_Loop (void)
+{
+
+    id0_unsigned_t y, color;
+
 	{
-		if (selection)
-			y = bottom;
+        if (mSelection)
+            y = mBottom;
 		else
-			y = top;
+            y = mTop;
 
 // draw select bar
 		if ( (SD_GetTimeCount() / 16)&1 )
@@ -1901,28 +1980,35 @@ void HandleDeath (void)
 		{
 			gamestate.mapon = 0;		// exit to tuberia
 			IN_ClearKeysDown ();
+            playstate = notdone;
 			return;
 		}
 
 		IN_ReadControl(0,&c);		// get player input
-		if (c.button0 || c.button1 || LastScan == sc_Return
-		|| LastScan == sc_Space)
+        if (c.button0 || c.button1
+            || LastScan == sc_Return
+            || LastScan == sc_Space)
 		{
-			if (selection)
+            if (mSelection == 1)
+            {
 				gamestate.mapon = 0;		// exit to tuberia
+            }
+
+            playstate = notdone;
+            IN_ClearKeysDown ();
+            c.button0 = c.button1 = 0;
+            gInput.flushAll();
+
 			return;
 		}
+
 		if (c.yaxis == -1 || LastScan == sc_UpArrow)
-			selection = 0;
+            mSelection = 0;
 		else if (c.yaxis == 1 || LastScan == sc_DownArrow)
-			selection = 1;
-        BE_ST_ShortSleep();
-	} while (1);
+            mSelection = 1;
 
+    }
 }
-
-//==========================================================================
-
 
 
 /*
@@ -1935,104 +2021,160 @@ void HandleDeath (void)
 ============================
 */
 
-void GameLoop (void)
-{
-	id0_unsigned_t	cities,i;
-	id0_long_t	orgx,orgy;
+bool mGamePlayRunning = false;
 
-	gamestate.difficulty = restartgame;
-	restartgame = gd_Continue;
+void GamePlayStart()
+{
+    VW_SetScreenMode (GRMODE);
+    VW_ClearVideo (BLACK);
+
+    US_SetLoadSaveHooks(LoadGame,SaveGame,ResetGame);
+    restartgame = gd_Continue;
+
+    mGamePlayRunning = true;
+
+    // Set variables for set up a new game in case
+    // no game was loaded expilicitely by the user
+    if (!loadedgame)
+    {
+        NewGame();
+    }
+}
+
+
+void startLevel()
+{
+    id0_long_t	orgx,orgy;
+
+    if (loadedgame)
+    {
+        loadedgame = false;
+        //
+        // start the initial view position to center the player
+        //
+        orgx = (id0_long_t)player->x - (150<<G_P_SHIFT);
+        orgy = (id0_long_t)player->y - (84<<G_P_SHIFT);
+        if (orgx<0)
+            orgx=0;
+        if (orgy<0)
+            orgy=0;
+
+        VW_FadeOut ();
+        fadecount = 0;
+        RF_SetRefreshHook (&FadeAndUnhook);
+        RF_NewPosition (orgx,orgy);
+        CalcInactivate ();
+    }
+    else
+    {
+        VW_FixRefreshBuffer ();
+        US_CenterWindow (20,8);
+        US_CPrint ("Loading");
+        VW_UpdateScreen ();
+        gamestate.bombsthislevel = 0;
+        SetupGameLevel (true);
+        gEventManager.add( new dreams::GoIntoPlayLoop );
+    }
+
+}
+
+void processLevelcomplete()
+{
+    if (mapon)
+    {
+        SD_PlaySound (LEVELDONESND);
+    }
+
+    gamestate.leveldone[mapon] = true;	// finished the level
+
+    if (mapon != 0)
+    {
+        gamestate.mapon = 0;
+    }
+
+}
+
+
+void GameLoopOpen()
+{
+    id0_unsigned_t	cities,i;
+    id0_long_t	orgx,orgy;
+
+    gamestate.difficulty = restartgame;
+    restartgame = gd_Continue;
 
     openedStatusWindow = false;
 
-	do
-	{
-startlevel:
-		if (loadedgame)
-		{
-			loadedgame = false;
-			//
-			// start the initial view position to center the player
-			//
-			orgx = (id0_long_t)player->x - (150<<G_P_SHIFT);
-			orgy = (id0_long_t)player->y-(84<<G_P_SHIFT);
-			if (orgx<0)
-				orgx=0;
-			if (orgy<0)
-				orgy=0;
 
-			VW_FadeOut ();
-			fadecount = 0;
-			RF_SetRefreshHook (&FadeAndUnhook);
-			RF_NewPosition (orgx,orgy);
-			CalcInactivate ();
-		}
-		else
-		{
-			VW_FixRefreshBuffer ();
-			US_CenterWindow (20,8);
-			US_CPrint ("Loading");
-			VW_UpdateScreen ();
-			gamestate.bombsthislevel = 0;
-			SetupGameLevel (true);
-		}
+    if( gamestate.lives>-1 && playstate!=victorious )
+    {
 
+        /*VW_FixRefreshBuffer ();
+        VW_UpdateScreen ();
+        CA_ClearMarks ();
+        RF_MarkTileGraphics();
 
-		PlayLoop ();
+        CA_CacheMarks (levelnames[mapon], 0);*/
 
-        if(gDreamsForceClose)
-            return;
+        gEventManager.add( new dreams::GoIntoPlayLoop );
+
+        return;
+
 
 #if FRILLS
-		if (tedlevel)
-		{
-			if (playstate == died)
-				goto startlevel;
-			else
-				TEDDeath ();
-		}
+        if (tedlevel)
+        {
+            if (playstate == died)
+                goto startlevel;
+            else
+                TEDDeath ();
+        }
 #endif
 
-		if (loadedgame)
-			goto startlevel;
+        //if (loadedgame)
+        //{
+        //    startLevel();
+        //}
 
-		switch (playstate)
-		{
-		case warptolevel:
-			goto startlevel;
+        switch (playstate)
+        {
+        case warptolevel:
+            startLevel();
 
-		case died:
-			HandleDeath ();
-			break;
+        /*case died:
+            HandleDeath ();
+            break;*/
 
-		case levelcomplete:
-			if (mapon)
-				SD_PlaySound (LEVELDONESND);
-			gamestate.leveldone[mapon] = true;	// finished the level
-			if (mapon != 0)
-				gamestate.mapon = 0;
-			break;
+/*        case levelcomplete:
+            break;*/
 
-		case resetgame:
-			return;
+        case resetgame:
+            return;
 
-		case victorious:
-			GameFinale ();
-			goto done;
-		}
+        case victorious:
+            GameFinale ();
+            goto done;
+        }
 
 
-	} while (gamestate.lives>-1 && playstate!=victorious);
+    }
+    else
+    {
 
-	GameOver ();
+    GameOver ();
 
-done:
-	cities = 0;
-	for (i= 1; i<=16; i++)
-		if (gamestate.leveldone[i])
-			cities++;
-	US_CheckHighScore (gamestate.score,cities);
-	VW_ClearVideo (FIRSTCOLOR);
+done: // !!
+    cities = 0;
+    for (i= 1; i<=16; i++)
+        if (gamestate.leveldone[i])
+            cities++;
+    US_CheckHighScore (gamestate.score,cities);
+    VW_ClearVideo (FIRSTCOLOR);
+    }
+}
+
+void GameLoop (void)
+{
 }
 
 

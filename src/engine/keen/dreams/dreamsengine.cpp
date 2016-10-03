@@ -1,6 +1,5 @@
 #include "dreamsengine.h"
 
-#include "../../refkeen/be_cross.h"
 #include "engine/core/CBehaviorEngine.h"
 #include "engine/keen/KeenEngine.h"
 #include <base/GsLogging.h>
@@ -13,7 +12,10 @@
 #include <base/CInput.h>
 #include <SDL.h>
 
-#include "../galaxy/res/CAudioGalaxy.h"
+
+#include "dreamscontrolpanel.h"
+#include "dreamsintro.h"
+#include "dreamsgameplay.h"
 
 #define REFKEEN_VER_KDREAMS_ANYEGA_ALL
 
@@ -21,11 +23,11 @@
 dreams::DreamsEngine *gDreamsEngine;
 
 
-enum GameState
+enum GameStateSwitch
 {
-    INTRO_TEXT,     // The famous screen where hardware is detected and some notes about the versions are told
-    INTRO_SCREEN    // Within the gameloop it will show the intro screen of the dreams game
-} gGameState = INTRO_TEXT;
+    GSS_INTRO_TEXT,     // The famous screen where hardware is detected and some notes about the versions are told
+    GSS_NONE
+} gGameStateChange = GSS_INTRO_TEXT;
 
 
 // TODO: Ugly wrapper for the refkeen variables used. It serves as interface to C. Might be improved in future.
@@ -148,9 +150,11 @@ void BE_ST_PollEvents(SDL_Event event);
 
 void BE_ST_ApplyScreenMode(int mode);
 
-SDL_sem* gpRenderLock = nullptr;
+id0_char_t *USL_GiveSaveName(id0_word_t game);
 
-extern void RefKeen_FillObjStatesWithDOSPointers(void);
+extern id0_boolean_t (*USL_SaveGame)(BE_FILE_T), (*USL_LoadGame)(BE_FILE_T);
+
+void USL_HandleError(id0_int_t num);
 
 }
 
@@ -179,8 +183,27 @@ void setupObjOffset()
 
 std::map< std::string, std::vector<uint8_t> > gDataMapVector;
 
+extern "C"
+{
+bool USL_saveTheGame(int i, int n);
+}
+
 namespace dreams
 {
+
+
+
+
+
+
+bool SaveGameEvent::save() const
+{
+    auto ok = USL_saveTheGame(1, mN);
+
+    return ok;
+}
+
+
 
 
 struct SwitchSceneEvent : CEvent
@@ -195,21 +218,6 @@ struct SwitchSceneEvent : CEvent
 // Mapping the strings of the filenames to the pointers where we store the embedded data
 std::map< std::string, unsigned int > gOffsetMap;
 
-
-bool setupAudio()
-{
-    CAudioGalaxy *audio = new CAudioGalaxy();       
-
-    const auto audioOffset = gOffsetMap["AUDIODCT.KDR"];
-
-    if(audio->loadSoundData(audioOffset))
-    {
-        g_pSound->setupSoundData(audio->sndSlotMapGalaxy[7], audio);
-        return true;
-    }
-
-    return false;
-}
 
 
 bool extractEmbeddedFilesIntoMemory(const BE_GameVerDetails_T &gameVerDetails)
@@ -301,10 +309,7 @@ bool extractEmbeddedFilesIntoMemory(const BE_GameVerDetails_T &gameVerDetails)
 
 
 DreamsEngine::~DreamsEngine()
-{
-     SDL_DestroySemaphore( gpRenderLock );
-     gpRenderLock = nullptr;
-}
+{}
 
 ///
 // This is used for loading all the resources of the game the use has chosen.
@@ -343,153 +348,11 @@ bool DreamsEngine::loadResources()
 }
 
 
-void InitGame()
-{
-    MM_Startup();
-
-    id0_int_t i;
-
-/*#if 0
-    // Handle piracy screen...
-    //
-    movedata(FP_SEG(PIRACY),(id0_unsigned_t)PIRACY,0xb800,displayofs,4000);
-    while (BE_ST_BiosScanCode(0) != sc_Return);
-    //while ((bioskey(0)>>8) != sc_Return);
-#endif*/
-
-#if GRMODE == EGAGR
-    if (mminfo.mainmem < 335l*1024)
-    {
-//#pragma warn    -pro
-//#pragma warn    -nod
-#ifdef REFKEEN_VER_KDREAMS_CGA_ALL
-        BE_ST_textcolor(7);
-#endif
-#ifndef REFKEEN_VER_KDREAMS_CGA_ALL
-        if (refkeen_current_gamever == BE_GAMEVER_KDREAMSE113)
-#endif
-        {
-            BE_ST_textbackground(0);
-        }
-//#pragma warn    +nod
-//#pragma warn    +pro
-        BE_ST_clrscr();                       // we can't include CONIO because of a name conflict
-//#pragma warn    +nod
-//#pragma warn    +pro
-        BE_ST_puts ("There is not enough memory available to play the game reliably.  You can");
-        BE_ST_puts ("play anyway, but an out of memory condition will eventually pop up.  The");
-        BE_ST_puts ("correct solution is to unload some TSRs or rename your CONFIG.SYS and");
-        BE_ST_puts ("AUTOEXEC.BAT to free up more memory.\n");
-        BE_ST_puts ("Do you want to (Q)uit, or (C)ontinue?");
-        //i = bioskey (0);
-        //if ( (i>>8) != sc_C)
-        i = BE_ST_BiosScanCode (0);
-        if (i != sc_C)
-            Quit ("");
-    }
-#endif
-
-    US_TextScreen();
-
-    VW_Startup ();
-    RF_Startup ();
-    IN_Startup ();
-    SD_Startup ();
-    US_Startup ();
-
-#ifdef REFKEEN_VER_KDREAMS_CGA_ALL
-    US_UpdateTextScreen();
-#endif
-
-    CA_Startup ();
-    US_Setup ();
-
-//
-// load in and lock down some basic chunks
-//
-
-    CA_ClearMarks ();
-
-    CA_MarkGrChunk(STARTFONT);
-    CA_MarkGrChunk(STARTFONTM);
-    CA_MarkGrChunk(STARTTILE8);
-    CA_MarkGrChunk(STARTTILE8M);
-    for ( id0_int_t j=KEEN_LUMP_START ; j<=KEEN_LUMP_END ; j++)
-    {
-        CA_MarkGrChunk(j);
-    }
-
-#ifdef REFKEEN_VER_KDREAMS_CGA_ALL
-    CA_CacheMarks (NULL);
-#elif defined REFKEEN_VER_KDREAMS_ANYEGA_ALL
-    CA_CacheMarks (NULL, 0);
-#endif
-
-    MM_SetLock (&grsegs[STARTFONT],true);
-    MM_SetLock (&grsegs[STARTFONTM],true);
-    MM_SetLock (&grsegs[STARTTILE8],true);
-    MM_SetLock (&grsegs[STARTTILE8M],true);
-    for ( id0_int_t j=KEEN_LUMP_START ; j<=KEEN_LUMP_END ; j++)
-    {
-        MM_SetLock (&grsegs[j],true);
-    }
-
-    setupAudio();
-
-    fontcolor = WHITE;
-
-    RefKeen_FillObjStatesWithDOSPointers(); // Saved games compatibility
-
-    US_FinishTextScreen();
-}
-
-
-void DreamsDosIntro::start()
-{
-    InitGame();
-}
-
-void DreamsDosIntro::pumpEvent(const CEvent *evPtr)
-{
-
-}
-
-void DreamsDosIntro::ponder(const float deltaT)
-{
-    if( gInput.getPressedAnyCommand() )
-    {
-        //gEventManager.add( new SwitchSceneEvent(new ) );
-        // If we press any switch to the next section -> where Dreams is really loaded into CGA/EGA mode and show the intro screen
-        gInput.flushAll();
-        gGameState = INTRO_SCREEN;
-    }
-}
-
-void DreamsDosIntro::render()
-{
-
-}
 
 
 
 void DreamsEngine::GameLoop()
 {
-    struct GameLoopAction : public Action
-    {
-        int handle()
-        {            
-            VW_SetScreenMode (GRMODE);
-            VW_ClearVideo (BLACK);
-            DemoLoop();
-
-            // If thread has finished, we can quit CG
-            gEventManager.add( new GMQuit() );
-            return 0;            
-        }
-    };
-
-    mpPlayLoopAction.reset( new GameLoopAction );
-    mpPlayLoopThread.reset( threadPool->start(mpPlayLoopAction.get(), "Dreams Gameloop"));
 }
 
 
@@ -551,7 +414,7 @@ void DreamsEngine::start()
 
     // Global for the legacy refkeen code.
     gDreamsEngine = this;    
-    gpRenderLock = SDL_CreateSemaphore(1);
+    //gpRenderLock = SDL_CreateSemaphore(1);
 
     gKeenFiles.setupFilenames(7);
 
@@ -568,14 +431,9 @@ void DreamsEngine::start()
     RefKeen_Patch_id_rf();
     setupObjOffset();
 
-    // TODO: This seems to be the exe with main cycle. We need to break it into draw and logic routines.
-    //InitGame();
-    //DemoLoop();
-    //kdreams_exe_main();
-
     mpScene.reset( new DreamsDosIntro );
 
-    gGameState = INTRO_TEXT;
+    gGameStateChange = GSS_INTRO_TEXT;
 
     mpScene->start();
 }
@@ -591,7 +449,41 @@ void DreamsEngine::pumpEvent(const CEvent *evPtr)
         mResourcesLoaded = true;
     }
 
-    mpScene->pumpEvent(evPtr);
+    if( dynamic_cast<const SwitchToIntro*>(evPtr) )
+    {
+        mpScene.reset( new DreamsIntro );
+        gGameStateChange = GSS_NONE;
+    }
+
+
+    if( dynamic_cast<const LaunchControlPanel*>(evPtr) )
+    {
+        mpScene.reset( new DreamsControlPanel );
+        mpScene->start();
+        gGameStateChange = GSS_NONE;
+        gInput.flushAll();
+        IN_ClearKeysDown();
+    }   
+    if( dynamic_cast<const SwitchToGamePlay*>(evPtr) )
+    {
+        mpScene.reset( new DreamsGamePlay );
+        mpScene->start();
+        gGameStateChange = GSS_NONE;
+        gInput.flushAll();
+        IN_ClearKeysDown();
+    }
+    /*if( dynamic_cast<const NullifyScene*>(evPtr) )
+    {
+        mpScene = nullptr;
+        gGameStateChange = GSS_NONE;
+        gInput.flushAll();
+        IN_ClearKeysDown();
+    }*/
+
+    if(mpScene)
+    {
+        mpScene->pumpEvent(evPtr);
+    }
 }
 
 void DreamsEngine::ponder(const float deltaT)
@@ -609,29 +501,21 @@ void DreamsEngine::ponder(const float deltaT)
     }        
 
 
-    // Change that gGameState stuff to have more depth in the code
-    if(gGameState == INTRO_TEXT) // Where the shareware test is shown
+    if(mpScene)
     {
         mpScene->ponder(deltaT);
-    }
-    else
-    {
-        if(!mpPlayLoopThread)
-        {
-            GameLoop();
-        }
     }
 }
 
 
 void DreamsEngine::render()
 {
-    // Lock Rendering
-    SDL_SemWait( gpRenderLock );
-
     BE_ST_EGASetPelPanning(panx & 6);
 
-    mpScene->render();
+    if(mpScene)
+    {
+        mpScene->render();
+    }
 
     if(mChangeMode)
     {
@@ -640,9 +524,6 @@ void DreamsEngine::render()
 
     SDL_Surface *blitSfc = gVideoDriver.getBlitSurface();
     BEL_ST_UpdateHostDisplay(blitSfc);
-
-    // Unlock
-    SDL_SemPost( gpRenderLock );
 }
 
 }

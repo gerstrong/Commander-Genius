@@ -243,12 +243,6 @@ bool CVideoEngine::createSurfaces(const GsRect<Uint16> &gamerect)
                                    gamerect.w*m_VidConfig.m_ScaleXFilter,
                                    gamerect.h*m_VidConfig.m_ScaleXFilter) );
 
-
-//#if defined(REFKEEN) // TODO: Doesn't get defined for some reason
-// For Ref-Keen passing this pointer
-    //g_sdlTexture = mpSDLScreenTexture.get();
-//#endif
-
 #endif
 
 

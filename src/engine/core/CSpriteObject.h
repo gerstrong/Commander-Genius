@@ -108,6 +108,9 @@ class CSpriteObject
 {
 public:
     CSpriteObject(CMap *pmap, Uint32 x, Uint32 y, const int spriteVar);
+
+    unsigned int m_index;        	// Like an ID for some objects that need this implementation
+
 	
     unsigned int mHealthPoints;              // episode 1 style four-shots-to-kill
 	bool exists;
@@ -209,10 +212,10 @@ public:
 	 * \param	dir	The direction where the object has to go to...
 	 */
     void processMove(const Vector2D<int>& dir);
-	void processMoveBitLeft();
-	void processMoveBitRight();
+    void processMoveBitLeft();
+    void processMoveBitRight();
 	virtual void processMoveBitDown();
-	void processMoveBitUp();
+    void processMoveBitUp();
 	void processMove(const int move_x, const int move_y);
 
 	/*

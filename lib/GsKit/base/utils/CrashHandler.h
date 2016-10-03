@@ -10,6 +10,7 @@
 #ifndef __CRASHHANDLER_H__
 #define __CRASHHANDLER_H__
 
+/*
 class CrashHandler {
 public:
 	virtual ~CrashHandler() {}
@@ -21,5 +22,6 @@ public:
 	virtual void disable() {}
 	virtual void enable() {}
 };
+*/
 
 #endif

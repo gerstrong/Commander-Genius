@@ -61,7 +61,7 @@ void CCouncilMember::processWalking()
 	performGravityLow();
 
 	// Check if there is a cliff and move him back in case
-	performCliffStop(m_Action.velX<<1);
+	performCliffStop(m_Action.h_anim_move<<1);
 
 
 	if( m_timer < ELDER_MOVE_TIMER )
@@ -85,9 +85,9 @@ void CCouncilMember::processWalking()
 
 	// Move normally in the direction
 	if( xDirection == RIGHT )
-		moveRight( m_Action.velX<<1 );
+		moveRight( m_Action.h_anim_move<<1 );
 	else
-		moveLeft( m_Action.velX<<1 );
+		moveLeft( m_Action.h_anim_move<<1 );
 
 }
 

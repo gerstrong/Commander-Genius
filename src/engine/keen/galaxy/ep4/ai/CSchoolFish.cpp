@@ -90,14 +90,22 @@ void CSchoolFish::process()
 
     // Blocking should make these fishs change the direction
     if( blockedl )
+    {
         xDirection = RIGHT;
+    }
     else if(blockedr)
+    {
         xDirection = LEFT;
+    }
 
     if( blockedd )
+    {
         yDirection = UP;
+    }
     else if(blockedu)
+    {
         yDirection = DOWN;
+    }
 
 	processActionRoutine();
 }

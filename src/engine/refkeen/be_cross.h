@@ -131,7 +131,7 @@ int32_t BE_Cross_FileLengthFromHandle(BE_FILE_T fp);
 // Semi cross-platform file opening wrappers, hiding search paths
 BE_FILE_T BE_Cross_open_for_reading(const char *filename);
 BE_FILE_T BE_Cross_open_for_overwriting(const char *filename);
-inline void BE_Cross_close(BE_FILE_T fp) { fclose(fp); }
+inline void BE_Cross_close(BE_FILE_T &fp) { if(fp) { fclose(fp); fp = nullptr; } }
 
 // Loads a file originally embedded in the EXE (for DOS) to a newly allocated
 // chunk of memory. Should be freed using BE_Cross_free_mem_loaded_file.

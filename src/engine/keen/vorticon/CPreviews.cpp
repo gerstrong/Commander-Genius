@@ -9,13 +9,12 @@
 
 #include "engine/core/CBehaviorEngine.h"
 #include <base/utils/FindFile.h>
-//#include "sdl/CVideoDriver.h"
 #include <base/CInput.h>
-//#include "StringUtils.h"
 #include "CVorticonMapLoader.h"
 #include "sdl/extensions.h"
 
 #include "fileio/KeenFiles.h"
+#include "fileio/ResourceMgmt.h"
 
 void CPreviews::init()
 {
@@ -54,12 +53,16 @@ int CPreviews::openNextScene()
 	}
 	else
 	{
-        std::string filename = JoinPaths(gKeenFiles.gameDir, "previews.ck");
+
+
+        std::string filename = "previews.ck";
 		filename += itoa(gpBehaviorEngine->getEpisode());
+
+        const std::string fullFname = getResourceFilename( filename, gKeenFiles.gameDir, true, false);
 
 		mp_TextViewer.reset( new CTextViewer(0, 8, 320, 160) );
 
-		if(!mp_TextViewer->loadTextfromFile(filename))
+        if(!mp_TextViewer->loadTextfromFile(fullFname) )
 			m_destroy_me = true;
 
         this->render_ptr = &CPreviews::showText;

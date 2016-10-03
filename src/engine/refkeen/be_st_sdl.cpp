@@ -357,7 +357,7 @@ void BE_ST_HandleExit(int status)
 		// TODO: Make this more efficient
 	}
     //BE_ST_ShutdownAll();
-	exit(0);
+    //exit(0);
 }
 
 void BE_ST_ExitWithErrorMsg(const char *msg)

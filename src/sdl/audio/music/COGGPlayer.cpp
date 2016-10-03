@@ -264,8 +264,6 @@ void COGGPlayer::readBuffer(Uint8* buffer, Uint32 length)
 
 void COGGPlayer::close(const bool lock)
 {
-    //while(SDL_GetAudioStatus() == SDL_AUDIO_PLAYING);
-
     if(lock)  SDL_LockAudio();
 
  	if(m_Audio_cvt.buf)

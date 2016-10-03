@@ -7,37 +7,34 @@
 #include <graphics/GsSurface.h>
 #include <memory>
 
+#include "dreamsdosintro.h"
+
 
 namespace dreams
 {
 
 
-class DreamsDosIntro : public GsEngine
+
+struct SaveGameEvent : CEvent
 {
-    virtual ~DreamsDosIntro() {}
+    SaveGameEvent(const std::string &name,
+                  const bool ok,
+                  const bool present,
+                  const int n) :
+        mName(name),
+        mPresent(present),
+        mOk(ok),
+        mN(n)
+    {}
 
-    /**
-     * @brief start Usually this is started before anything else but still after the construction.
-     */
-    void start();
+    bool save() const;
 
-    /**
-     * @brief pumpEvent Events like user closes windows or mouse presses are processed here.
-     * @param evPtr
-     */
-    void pumpEvent(const CEvent *evPtr);
-
-    /**
-     * @brief ponder    Logic cycle run usually at 120 LPS
-     * @param deltaT    how much time of logic to do
-     */
-    void ponder(const float deltaT);
-
-    /**
-     * @brief render Everything that needs to be rendered representing the current state of the object
-     */
-    void render();
+    std::string mName;
+    bool mPresent;
+    bool mOk;
+    int mN; // number of save slot
 };
+
 
 
 class DreamsEngine : public GameEngine
@@ -100,8 +97,8 @@ public:
 
 private:
 
-    std::unique_ptr<Action> mpPlayLoopAction;
-    std::unique_ptr<ThreadPoolItem> mpPlayLoopThread;
+    //std::unique_ptr<Action> mpPlayLoopAction;
+    //std::unique_ptr<ThreadPoolItem> mpPlayLoopThread;
 
     /**
      * @brief mChangeMode   An integer that triggers internal resolution change

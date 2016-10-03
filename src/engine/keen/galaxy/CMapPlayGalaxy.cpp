@@ -181,24 +181,25 @@ void CMapPlayGalaxy::render()
 {
     gVideoDriver.blitScrollSurface();
 
-    auto obj = mObjectPtr.rbegin();
-
     // Draw all the sprites without player
-    // The player sprites are drawn at the end
+    // The player sprites are drawn at the end. Reverse order of drawing
     galaxy::CPlayerBase* player[] = {nullptr, nullptr, nullptr, nullptr};
 
     int pIt = 0;
-    for( ; obj!=mObjectPtr.rend() ; obj++ )
+    auto objVecSize = mObjectPtr.size();
+    for( auto ctr = 0 ; ctr < mObjectPtr.size() ; ctr++)
     {
-        if( galaxy::CPlayerBase* curplayer = dynamic_cast<galaxy::CPlayerBase*>(obj->get()) )
+        auto &obj = mObjectPtr[objVecSize-ctr-1];
+
+        if( galaxy::CPlayerBase* curplayer = dynamic_cast<galaxy::CPlayerBase*>(obj.get()) )
         {
             player[pIt] = curplayer;
             pIt++;
             continue;
         }
 
-        if((*obj)->honorPriority )
-            (*obj)->draw();
+        if(obj->honorPriority )
+            obj->draw();
     }
 
     for(int i=0 ; i<pIt ; i++)
@@ -212,8 +213,8 @@ void CMapPlayGalaxy::render()
     // Draw foregroundtiles here!
     mMap._drawForegroundTiles();
 
-    for( obj=mObjectPtr.rbegin() ;
-            obj!=mObjectPtr.rend() ; obj++ )
+    for( auto obj=mObjectPtr.rbegin() ;
+         obj!=mObjectPtr.rend() ; obj++ )
     {
         if(!(*obj)->honorPriority)
             (*obj)->draw();
@@ -244,7 +245,7 @@ void CMapPlayGalaxy::operator>>(CSaveGameController &savedGame)
 	{
 	    if( it->mFoeID != 0 )
 	    {
-		filteredObjects.push_back( it );
+            filteredObjects.push_back( it );
 	    }
 	}
 

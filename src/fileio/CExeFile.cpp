@@ -128,7 +128,7 @@ bool CExeFile::readData(const unsigned int episode, const std::string& datadirec
             localDataDir += "/";
     }
 
-    CResource &keenFiles = gKeenFiles;
+    auto &keenFiles = gKeenFiles;
     keenFiles.gameDir = localDataDir;
 		
 	File.seekg(0,std::ios::end);
