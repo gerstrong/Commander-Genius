@@ -93,13 +93,13 @@ bool CPatcher::readIntValueAndWidth(const std::string &input, unsigned long int 
 		}
 		else
 		{
-		    if(line.find("w"))
+            if(line.find("w")) // "w" stands for word
 		    {
-			width = 2;
+                width = 2;
 		    }
 		    else
 		    {
-			width = 4;
+                width = 4;
 		    }
 		}
 
