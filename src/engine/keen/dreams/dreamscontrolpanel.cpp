@@ -24,7 +24,9 @@ extern void USL_DoHelpInit(memptr text,id0_long_t len, int &lines);
 extern bool USL_DoHelpPonder(memptr text,id0_long_t len,
                              bool &released,
                              int &lines,
-                             bool &done);
+                             bool &done,
+                             int &scroll,
+                             int &cur);
 
 }
 
@@ -44,7 +46,9 @@ bool DoHelp::init()
 
 bool DoHelp::ponder()
 {
-    return USL_DoHelpPonder( memptr(mText.c_str()), mLen, mReleased, mLines, mDone);
+    return USL_DoHelpPonder( memptr(mText.c_str()), mLen,
+                             mReleased, mLines, mDone,
+                             mScroll, mCur);
 }
 
 DreamsControlPanel::DreamsControlPanel()

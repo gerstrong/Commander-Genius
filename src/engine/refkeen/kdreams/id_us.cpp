@@ -2619,17 +2619,16 @@ USL_DoHelpInit(memptr text, id0_long_t len, int &lines)
 }
 
 
-bool
-USL_DoHelpPonder(memptr text,id0_long_t len,
+bool USL_DoHelpPonder(memptr text,id0_long_t len,
                  bool &released, int &lines,
-                 bool &done)
+                 bool &done, int &scroll,
+                 int &cur)
 {
 
     id0_boolean_t		moved;
-    id0_int_t			scroll;
     id0_word_t		i,
             pixdiv,
-            w,h, cur,page,
+            w,h, page,
             top,num,loc,
             id0_far *lp,
             base,srcbase,destbase;
@@ -2667,13 +2666,11 @@ USL_DoHelpPonder(memptr text,id0_long_t len,
 
     USL_MeasureString("",NULL,&w,&h);
     page = WindowH / h;
-    cur = 0;
     lp = (id0_word_t *)LineOffsets;
 
     IN_ClearKeysDown();
     moved = true;
     lasttime = 0;
-    scroll = 0;
     waitkey = sc_None;
 
 
@@ -2868,8 +2865,6 @@ USL_DoHelpPonder(memptr text,id0_long_t len,
         {
             done = true;
         }
-
-        //BE_ST_ShortSleep();
     }
     else
     {

@@ -109,6 +109,8 @@ struct DoHelp : CEvent
     int mLines;
     bool mReleased = false;
     bool mDone = false;
+    int mScroll = 0;
+    int mCur = 0;
 };
 
 
