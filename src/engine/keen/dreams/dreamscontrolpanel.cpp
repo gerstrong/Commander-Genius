@@ -19,9 +19,12 @@ extern void (*USL_MeasureString)(const id0_char_t *,const id0_char_t *,id0_word_
 
 extern void (*USL_DrawString)(const id0_char_t id0_far *,const id0_char_t id0_far *);
 
-extern void USL_DoHelpInit(memptr text,id0_long_t len);
+extern void USL_DoHelpInit(memptr text,id0_long_t len, int &lines);
 
-extern bool USL_DoHelpPonder(memptr text,id0_long_t len, bool &released);
+extern bool USL_DoHelpPonder(memptr text,id0_long_t len,
+                             bool &released,
+                             int &lines,
+                             bool &done);
 
 }
 
@@ -34,14 +37,14 @@ namespace dreams
 
 bool DoHelp::init()
 {
-    USL_DoHelpInit( memptr(mText.c_str()), mLen);
+    USL_DoHelpInit( memptr(mText.c_str()), mLen, mLines);
 
     return true;
 }
 
 bool DoHelp::ponder()
 {
-    return USL_DoHelpPonder( memptr(mText.c_str()), mLen, mReleased);
+    return USL_DoHelpPonder( memptr(mText.c_str()), mLen, mReleased, mLines, mDone);
 }
 
 DreamsControlPanel::DreamsControlPanel()
@@ -89,7 +92,7 @@ void DreamsControlPanel::pumpEvent(const CEvent *evPtr)
         DoHelp *pDoHelpNoConst = new DoHelp(pDoHelp->mText.c_str(), pDoHelp->mLen);
 
         mpDoHelpEvent.reset( pDoHelpNoConst );
-        //mpDoHelpEvent->init();
+        mpDoHelpEvent->init();
     }
     else if( dynamic_cast<const CloseLineInput*>(evPtr) )
     {
@@ -108,7 +111,7 @@ void DreamsControlPanel::ponder(const float deltaT)
 {
     if(mpDoHelpEvent)
     {
-        //if(mpDoHelpEvent->ponder())
+        if(mpDoHelpEvent->ponder())
         {
             mpDoHelpEvent = nullptr;
         }

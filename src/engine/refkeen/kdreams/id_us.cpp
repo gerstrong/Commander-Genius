@@ -2571,11 +2571,11 @@ USL_DrawHelp(id0_char_t id0_far *text,id0_word_t start,id0_word_t end,id0_word_t
 static void
 USL_DoHelp(memptr text,id0_long_t len)
 {
-    //gEventManager.add( new dreams::DoHelp(text, len) );
+    gEventManager.add( new dreams::DoHelp(text, len) );
 }
 
 void
-USL_DoHelpInit(memptr text,id0_long_t len)
+USL_DoHelpInit(memptr text, id0_long_t len, int &lines)
 {
     CursorInfo	info;
     id0_boolean_t		done,
@@ -2584,13 +2584,15 @@ USL_DoHelpInit(memptr text,id0_long_t len)
     id0_word_t		i,
             pixdiv,
             w,h,
-            lines,cur,page,
+            cur,page,
             top,num,loc,
             id0_far *lp,
             base,srcbase,destbase;
     ScanCode	waitkey;
     id0_longword_t	lasttime;
     WindowRec	wr;
+
+    lines = USL_FormatHelp((id0_char_t id0_far *)text,len);
 
     USL_ShowHelp("Arrow Keys Move / Escape Exits");
     fontcolor = F_BLACK;
@@ -2618,22 +2620,24 @@ USL_DoHelpInit(memptr text,id0_long_t len)
 
 
 bool
-USL_DoHelpPonder(memptr text,id0_long_t len, bool &released)
+USL_DoHelpPonder(memptr text,id0_long_t len,
+                 bool &released, int &lines,
+                 bool &done)
 {
-    CursorInfo	info;
-    id0_boolean_t		done,
-            moved;
+
+    id0_boolean_t		moved;
     id0_int_t			scroll;
     id0_word_t		i,
             pixdiv,
-            w,h,
-            lines,cur,page,
+            w,h, cur,page,
             top,num,loc,
             id0_far *lp,
             base,srcbase,destbase;
     ScanCode	waitkey;
     id0_longword_t	lasttime;
     WindowRec	wr;
+
+    CursorInfo info;
 
 
     IN_ReadCursor(&info);
@@ -2659,9 +2663,8 @@ USL_DoHelpPonder(memptr text,id0_long_t len, bool &released)
     US_ClearWindow();
 
     VW_HideCursor();
-    VW_UpdateScreen();
+    VW_UpdateScreen();   
 
-    lines = USL_FormatHelp((id0_char_t id0_far *)text,len);
     USL_MeasureString("",NULL,&w,&h);
     page = WindowH / h;
     cur = 0;
@@ -2671,12 +2674,12 @@ USL_DoHelpPonder(memptr text,id0_long_t len, bool &released)
     moved = true;
     lasttime = 0;
     scroll = 0;
-    done = false;
     waitkey = sc_None;
 
 
     if(!done)
     {
+
         if (moved)
         {
             //lasttime = SD_GetTimeCount();
@@ -2762,6 +2765,7 @@ USL_DoHelpPonder(memptr text,id0_long_t len, bool &released)
             moved = false;
             scroll = 0;
         }
+
 
         if (waitkey)
         {
@@ -2867,9 +2871,13 @@ USL_DoHelpPonder(memptr text,id0_long_t len, bool &released)
 
         //BE_ST_ShortSleep();
     }
-
-    if(done)
+    else
     {
+        if(info.button0 || info.button1)
+        {
+            return false;
+        }
+
         IN_ClearKeysDown();
 
         VW_ShowCursor();
@@ -2879,6 +2887,8 @@ USL_DoHelpPonder(memptr text,id0_long_t len, bool &released)
 
         return true;
     }
+
+    return false;
 }
 
 

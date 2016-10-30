@@ -106,7 +106,9 @@ struct DoHelp : CEvent
 
     std::string mText;
     int mLen;
+    int mLines;
     bool mReleased = false;
+    bool mDone = false;
 };
 
 
