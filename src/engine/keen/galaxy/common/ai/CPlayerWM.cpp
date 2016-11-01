@@ -13,9 +13,7 @@
 
 #include "CPlayerWM.h"
 #include "CFlag.h"
-//#include "engine/core/CBehaviorEngine.h"
 #include "sdl/audio/Audio.h"
-//#include <base/utils/CVec.h>
 #include "../dialog/CMessageBoxBitmapGalaxy.h"
 #include "graphics/effects/CDimDark.h"
 #include "fileio/KeenFiles.h"
@@ -288,6 +286,13 @@ void CPlayerWM::processMoving()
         movespeed = 50;
     else
         movespeed = 0;
+
+    // Running a bist faster on the world map
+    if(m_playcontrol[PA_RUN])
+    {
+        movespeed = (movespeed*6)/5;
+    }
+
     
     bool moving = false;
     

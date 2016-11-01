@@ -105,7 +105,9 @@ void CInput::resetControls(int player)
 
 	InputCommand[i][IC_JUMP].keysym = SDLK_LCTRL;
 	InputCommand[i][IC_POGO].keysym = SDLK_LALT;
-	InputCommand[i][IC_FIRE].keysym = SDLK_SPACE;
+    InputCommand[i][IC_FIRE].keysym = SDLK_SPACE;
+    InputCommand[i][IC_RUN].keysym = SDLK_LSHIFT;
+
 	InputCommand[i][IC_STATUS].keysym = SDLK_RETURN;
 
 	InputCommand[i][IC_CAMLEAD].keysym = SDLK_c;
@@ -136,20 +138,23 @@ void CInput::resetControls(int player)
 	InputCommand[i][IC_POGO].joyeventtype = ETYPE_KEYBOARD;
 	InputCommand[i][IC_POGO].joybutton = 1;
 	InputCommand[i][IC_POGO].which = 0;
-	InputCommand[i][IC_FIRE].joyeventtype = ETYPE_KEYBOARD;
-	InputCommand[i][IC_FIRE].joybutton = 2;
-	InputCommand[i][IC_FIRE].which = 0;
-	InputCommand[i][IC_STATUS].joyeventtype = ETYPE_KEYBOARD;
-	InputCommand[i][IC_STATUS].joybutton = 3;
+    InputCommand[i][IC_FIRE].joyeventtype = ETYPE_KEYBOARD;
+    InputCommand[i][IC_FIRE].joybutton = 2;
+    InputCommand[i][IC_FIRE].which = 0;
+    InputCommand[i][IC_RUN].joyeventtype = ETYPE_KEYBOARD;
+    InputCommand[i][IC_RUN].joybutton = 3;
+    InputCommand[i][IC_RUN].which = 0;
+    InputCommand[i][IC_STATUS].joyeventtype = ETYPE_KEYBOARD;
+    InputCommand[i][IC_STATUS].joybutton = 4;
 	InputCommand[i][IC_STATUS].which = 0;
 	InputCommand[i][IC_CAMLEAD].joyeventtype = ETYPE_KEYBOARD;
-	InputCommand[i][IC_CAMLEAD].joybutton = 4;
+    InputCommand[i][IC_CAMLEAD].joybutton = 5;
 	InputCommand[i][IC_CAMLEAD].which = 0;
 	InputCommand[i][IC_HELP].joyeventtype = ETYPE_KEYBOARD;
-	InputCommand[i][IC_HELP].joybutton = 5;
+    InputCommand[i][IC_HELP].joybutton = 6;
 	InputCommand[i][IC_HELP].which = 0;
 	InputCommand[i][IC_BACK].joyeventtype = ETYPE_KEYBOARD;
-	InputCommand[i][IC_BACK].joybutton = 6;
+    InputCommand[i][IC_BACK].joybutton = 7;
 	InputCommand[i][IC_BACK].which = 0;
 
 	setTwoButtonFiring(i, false);
@@ -242,7 +247,9 @@ void CInput::loadControlconfig(void)
             Configuration.ReadString( section, "Pogo", value, "Left alt");
 			setupInputCommand( InputCommand[i], IC_POGO, value );
             Configuration.ReadString( section, "Fire", value, "Space");
-			setupInputCommand( InputCommand[i], IC_FIRE, value );
+            setupInputCommand( InputCommand[i], IC_FIRE, value );
+            Configuration.ReadString( section, "Run", value, "Shift");
+            setupInputCommand( InputCommand[i], IC_RUN, value );
             Configuration.ReadString( section, "Status", value, "Return");
 			setupInputCommand( InputCommand[i], IC_STATUS, value );
             Configuration.ReadString( section, "Camlead", value, "c");
@@ -286,8 +293,9 @@ void CInput::saveControlconfig()
 		Configuration.WriteString(section, "Lower-Right", getEventName(IC_LOWERRIGHT, i));
 		Configuration.WriteString(section, "Jump", getEventName(IC_JUMP, i));
 		Configuration.WriteString(section, "Pogo", getEventName(IC_POGO, i));
-		Configuration.WriteString(section, "Fire", getEventName(IC_FIRE, i));
-		Configuration.WriteString(section, "Status", getEventName(IC_STATUS, i));
+        Configuration.WriteString(section, "Fire", getEventName(IC_FIRE, i));
+        Configuration.WriteString(section, "Run", getEventName(IC_RUN, i));
+        Configuration.WriteString(section, "Status", getEventName(IC_STATUS, i));
 		Configuration.WriteString(section, "Camlead", getEventName(IC_CAMLEAD, i));
 		Configuration.WriteString(section, "Help", getEventName(IC_HELP, i));
 		Configuration.WriteString(section, "Back", getEventName(IC_BACK, i));
@@ -1480,7 +1488,8 @@ static TouchButton* getPhoneButtons(stInputCommand InputCommand[NUM_INPUTS][MAX_
 
 		{ &InputCommand[0][IC_JUMP],        KCTRL,	w / 2,  h*2/3,  w / 6,  h / 3},
 		{ &InputCommand[0][IC_POGO],        KALT,	w*2/3,  h*2/3,  w / 6,  h / 3},
-		{ &InputCommand[0][IC_FIRE],        KSPACE,	w*5/6,  h*2/3,  w / 6,  h / 3},
+        { &InputCommand[0][IC_FIRE],        KSPACE,	w*5/6,  h*2/3,  w / 6,  h / 3},
+        { &InputCommand[0][IC_RUN],         KSHIFT,	w*5/6,  h*2/3,  w / 6,  h / 3},
 
 		{ &InputCommand[0][IC_BACK],        KQUIT,	0,      0,      w / 6,  h / 6},
 		{ &InputCommand[0][IC_STATUS],      KENTER, 5*w/6,  h / 6,  w / 6,  h / 6},

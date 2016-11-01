@@ -48,12 +48,12 @@ private:
 	unsigned int tiletrailhead;
 
 	char animframe, animtimer;
-	unsigned int destx, desty;
+    int destx, desty;
 
-	unsigned int pausetimer;
-	unsigned int pausex, pausey;
+    int pausetimer;
+    int pausex, pausey;
 
-	unsigned int mortimer_swim_amt;
+    int mortimer_swim_amt;
 	
 	CPlayer *mounted;
 };

@@ -257,9 +257,19 @@ void CPlayerLevel::processRunning()
 	if (state.jumpIsPressed && !state.jumpWasPressed)
 	{
 		state.jumpWasPressed = true;
-		xinertia = xDirection * 16;
+
+        // If you pressed run, perform a long jump
+        if(m_playcontrol[PA_RUN])
+        {
+            xinertia = xDirection * 32;
+        }
+        else
+        {
+            xinertia = xDirection * 16;
+        }
+
 		yinertia = -90;
-		nextX = nextY = 0;
+        /*nextX = */nextY = 0;
 		state.jumpTimer = 18;
 		setAction(A_KEEN_JUMP);
 		playSound( SOUND_KEEN_JUMP );
@@ -269,9 +279,19 @@ void CPlayerLevel::processRunning()
 	if (state.pogoIsPressed && !state.pogoWasPressed)
 	{
 		state.pogoWasPressed = true;
-		xinertia = xDirection * 16;
+
+        // If you pressed run, perform a long jump
+        if(m_playcontrol[PA_RUN])
+        {
+            xinertia = xDirection * 32;
+        }
+        else
+        {
+            xinertia = xDirection * 16;
+        }
+
         yinertia = evalVertPogoInertia();
-		nextX = 0;
+//		nextX = 0;
 		state.jumpTimer = 24;
 		playSound( SOUND_KEEN_POGO );
 		setAction(A_KEEN_POGO_START);
@@ -354,7 +374,7 @@ void CPlayerLevel::handleInputOnGround()
 		setAction(A_KEEN_RUN);
 		processRunning();
 
-		nextX = (xDirection * m_Action.h_anim_move)/4;
+        //nextX = (xDirection * m_Action.h_anim_move)/4;
 		return;
 	}
 
@@ -1363,9 +1383,16 @@ void CPlayerLevel::processJumping()
 	if ( m_playcontrol[PA_X] != 0 )
 	{
 		xDirection = (m_playcontrol[PA_X] < 0) ? -1 : 1;
-		//performPhysAccelHor(xDirection*4, 48); 
-		// This was taken from the omnispeak and recalculated. Check if the new 56 is more appropriate. It seems to be.
-		performPhysAccelHor(xDirection*4, 56);
+
+        // Jump further if run is pressed
+        if(m_playcontrol[PA_RUN])
+        {
+            performPhysAccelHor(xDirection*5, 75);
+        }
+        else
+        {
+            performPhysAccelHor(xDirection*4, 56);
+        }
 	}
 	else performPhysDampHorz();
 
@@ -1396,7 +1423,9 @@ void CPlayerLevel::processJumping()
 
 	// process Shooting in air
 	if( m_playcontrol[PA_FIRE] && !m_fire_recharge_time )
+    {
 		shootInAir();
+    }
 }
 
 
@@ -2149,7 +2178,9 @@ void CPlayerLevel::performPoleHandleInput()
 	const int py = m_playcontrol[PA_Y];
 	
 	if ( px )
+    {
 		xDirection = (px>0) ? 1 : -1;
+    }
 
 	// Shooting things. *ZAP!*
 	if( py < 0 )
@@ -2671,10 +2702,22 @@ void CPlayerLevel::process()
 	processLevelMiscFlagsCheck();
 
     if(m_dying)
+    {
         return;
+    }
 
 	if(!mExitDoorTimer)
 	{
+        // Run very fast
+        if(m_playcontrol[PA_RUN])
+        {
+            if(xDirection == LEFT )
+                moveLeft( m_Action.h_anim_move<<1 );
+            else if(xDirection == RIGHT )
+                moveRight( m_Action.h_anim_move<<1 );
+        }
+
+
 	    if(!processActionRoutine())
 		exists = false;
 	}

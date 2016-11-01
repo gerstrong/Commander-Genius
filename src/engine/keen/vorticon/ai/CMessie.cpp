@@ -186,7 +186,7 @@ void CMessie::process()
 		    getXPosition() < (destx+NESSIE_SPEED/2) )
 		{
 		    if ( getYPosition() > (desty-NESSIE_SPEED/2)  &&
-			getYPosition() < (desty+NESSIE_SPEED/2) )
+                getYPosition() < (desty+NESSIE_SPEED/2) )
 		    {
 			nessie_find_next_checkpoint();
 			

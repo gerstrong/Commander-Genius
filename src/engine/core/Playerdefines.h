@@ -12,7 +12,8 @@ enum player_actions{
 PA_X = 0,
 PA_Y,
 PA_JUMP, PA_POGO,
-PA_FIRE, PA_STATUS,
+PA_FIRE, PA_RUN,
+PA_STATUS,
 PA_MAX_ACTIONS
 };
 

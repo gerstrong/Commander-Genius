@@ -75,7 +75,7 @@ bool CGUITextSelectionList::sendEvent(const InputCommands command)
 		return true;
 	}
 	else if(command == IC_STATUS || command == IC_JUMP ||
-			 command == IC_POGO || command == IC_FIRE)
+             command == IC_POGO || command == IC_FIRE || command == IC_RUN)
 	{
 		if(mConfirmEvent)
 			gEventManager.add(mConfirmEvent);

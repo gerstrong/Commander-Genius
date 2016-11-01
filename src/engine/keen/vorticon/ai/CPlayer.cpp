@@ -818,13 +818,16 @@ void CPlayer::ProcessInput()
 			playcontrol[PA_JUMP] = 0;
 			playcontrol[PA_POGO] = 0;
 			gInput.flushCommand(IC_JUMP);
-			gInput.flushCommand(IC_FIRE);
-			gInput.flushCommand(IC_POGO);
+            gInput.flushCommand(IC_FIRE);
+            gInput.flushCommand(IC_RUN);
+            gInput.flushCommand(IC_POGO);
 		}
 
 	}
 	else
+    {
 		playcontrol[PA_FIRE]   = gInput.getHoldedCommand(m_index, IC_FIRE)   ? 1 : 0;
+    }
 }
 
 /**
