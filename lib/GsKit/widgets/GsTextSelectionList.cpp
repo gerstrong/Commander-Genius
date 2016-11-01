@@ -115,9 +115,12 @@ void CGUITextSelectionList::processLogic()
     GsFont &Font = gGraphics.getFont(mFontID);
     const int pixth = Font.getPixelTextHeight();
 
-    const float textHeight = (pixth+2);
 
-    const float y_innerbound_min = fy + static_cast<float>(textHeight)/bh;
+    const auto halfBorderHeight = (mBorderHeight/2);
+
+    const float textHeight = (pixth+mBorderHeight);
+
+    const float y_innerbound_min = fy /*+ static_cast<float>(textHeight)/bh*/;
 	const float y_innerbound_max = y_innerbound_min +
             static_cast<float>( mItemList.size()*textHeight )/bh;
 
@@ -130,7 +133,7 @@ void CGUITextSelectionList::processLogic()
 
     processPointingState();        
 
-    Vector2D<float> mousePos = pointingState.mPos;
+    const Vector2D<float> mousePos = pointingState.mPos;
 
     if( rRect.HasPoint(mousePos) )
     {
@@ -139,7 +142,7 @@ void CGUITextSelectionList::processLogic()
 
         if( mousePos.y > fy && mousePos.y < y_innerbound_max )
         {
-            int newselection = ((mousePos.y-fy)*bh/textHeight) - 1 + mScrollbar.scrollPos();
+            int newselection = ((mousePos.y-fy)*bh/textHeight) /*- halfBorderHeight*/ + mScrollbar.scrollPos();
 
             if( mousePos.x > x_innerbound_min && mousePos.y > y_innerbound_min)
             {
@@ -186,14 +189,16 @@ void CGUITextSelectionList::processRender(const GsRect<float> &RectDispCoordFloa
     const int pixtw = pixth; // NOTE: We assume here, that the height and width are the same. Invalid to galaxy fonts!
 
 	// Move 16 Pixel so we have space for the cursor/twirl to show the selection
-    const int sepHeight = Font.getPixelTextHeight()+2;
+    const auto halfBorderHeight = (mBorderHeight/2);
+    const int sepHeight = Font.getPixelTextHeight()+mBorderHeight;
     const int xpos = rect.x+16+1;
     const int ypos = rect.y+10;
     unsigned int textlimitWidth = (rect.w-16)/pixtw;
 
     mScrollbar.mLastToShow = (rect.h/sepHeight)-1;
 
-    rect.h = pixth+2;
+    rect.h = pixth+mBorderHeight;
+
     rect.x += 12;
     rect.w -= 12;
 
@@ -206,14 +211,14 @@ void CGUITextSelectionList::processRender(const GsRect<float> &RectDispCoordFloa
         // Current line to be rendered
         const int curLinePos = static_cast<int>(line) + mScrollbar.scrollPos();
 
-        if(mPressedSelection == curLinePos )
+        if( mPressedSelection == curLinePos )
         {
-            rect.y = ypos+(line*rect.h)-1;
+            rect.y = ypos+(line*rect.h)-halfBorderHeight;
             blitsfc.fillRGBA(rect, 0xA5, 0xA5, 0xF1, 0xFF);
         }
-        else if(mReleasedSelection == curLinePos )
+        else if( mReleasedSelection == curLinePos )
 		{
-            rect.y = ypos+(line*rect.h)-1;
+            rect.y = ypos + (line*rect.h) - halfBorderHeight;
 
             if(mSelected)
             {
@@ -224,9 +229,9 @@ void CGUITextSelectionList::processRender(const GsRect<float> &RectDispCoordFloa
                 blitsfc.fillRGBA(rect, 0xC5, 0xC5, 0xC5, 0xFF);
             }
 		}
-        else if(mHoverSelection == curLinePos )
+        else if( mHoverSelection == curLinePos )
         {
-            rect.y = ypos+(line*sepHeight)-1;
+            rect.y = ypos+(line*sepHeight) - halfBorderHeight;
             blitsfc.fillRGBA(rect, 0xC5, 0xC5, 0xC5, 0xFF);
         }
 
