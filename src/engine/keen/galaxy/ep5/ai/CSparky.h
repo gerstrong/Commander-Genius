@@ -46,6 +46,7 @@ private:
 	
 	direction_t mKeenAlignment;
 	bool mGoodChargeChance;
+
 };
 
 }

@@ -40,7 +40,9 @@ m_baseframe(0)
 	const auto episode = gpBehaviorEngine->getEpisode();
 
     if(canLock)
+    {
         mp_Map->lock();
+    }
 
 	if(episode == 6)
 	{

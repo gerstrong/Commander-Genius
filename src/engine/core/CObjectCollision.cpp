@@ -129,7 +129,9 @@ void getSlopePointsUpperTile(signed  char slope, int &yb1, int &yb2)
 void CSpriteObject::alignToTile()
 {
     if(sprite == BLANKSPRITE)
+    {
         return;
+    }
     
 	// Center the sprites on the map
 	int moveup = (1<<CSF)-1;

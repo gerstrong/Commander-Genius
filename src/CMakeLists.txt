@@ -51,6 +51,12 @@ ADD_DEFINITIONS(-Werror=cast-align)
 #SET(EXECUTABLE_OUTPUT_PATH ${BUILD_DIR})
 
 
+FIND_PACKAGE(PythonLibs)
+
+INCLUDE_DIRECTORIES(${PYTHON_INCLUDE_DIRS})
+LINK_LIBRARIES(${PYTHON_LIBRARIES})
+
+
 # main includes
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
 INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/lib/GsKit)
@@ -282,6 +288,8 @@ if(WIN32)
 	target_link_libraries(CGeniusExe Imm32)
 	target_link_libraries(CGeniusExe Version)
 endif(WIN32)
+
+target_link_libraries(CGeniusExe ${PYTHON_LIBRARIES})
 
 IF(OPENGL)
     # OpenGL stuff to link

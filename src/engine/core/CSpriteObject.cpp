@@ -10,6 +10,13 @@
 #include <base/GsLogging.h>
 #include <base/video/CVideoDriver.h>
 
+#include <base/utils/FindFile.h>
+
+#include <Python.h>
+
+#include "fileio/KeenFiles.h"
+
+
 int CSpriteObject::m_number_of_objects = 0; // The current number of total objects we have within the game!
 
 ///
@@ -24,7 +31,6 @@ sprite(BLANKSPRITE),
 m_jumpdownfromobject(false),
 mp_Map(pmap),
 m_blinktime(0),
-m_invincible(false),
 m_Pos(x,y),
 transluceny(0),
 mSprVar(spriteVar)
@@ -54,6 +60,100 @@ mSprVar(spriteVar)
 	blockedr = false;
 
     setupCollisionModel();
+}
+
+bool loadAiGetterBool(PyObject * pModule, const std::string &pyMethodStr, bool &value)
+{
+    // pFunc is a new reference
+    PyObject *pFunc = PyObject_GetAttrString(pModule, pyMethodStr.c_str());
+
+    if (pFunc && PyCallable_Check(pFunc))
+    {
+        PyObject *pValue = PyObject_CallObject(pFunc, nullptr);
+
+        if (pValue != nullptr)
+        {
+            if( PyObject_IsTrue(pValue) )
+            {
+                value = true;
+            }
+            else
+            {
+                value = false;
+            }
+            Py_DECREF(pValue);
+        }
+        else
+        {
+            Py_DECREF(pFunc);
+            PyErr_Print();
+            gLogging.ftextOut("Call failed\n");
+            return false;
+        }
+    }
+    else
+    {
+        if (PyErr_Occurred())
+        {
+            PyErr_Print();
+        }
+
+        gLogging.ftextOut("Cannot find function \"init\"\n");
+        return false;
+    }
+
+    Py_XDECREF(pFunc);
+
+
+    return true;
+}
+
+
+bool CSpriteObject::loadPythonScripts(const std::string &scriptBaseName)
+{
+    // Extra Python script for this AI defined?
+    std::string aiscript = JoinPaths(gKeenFiles.gameDir ,"ai");
+    aiscript = JoinPaths(aiscript,scriptBaseName);
+    aiscript += ".py";
+    aiscript = GetFullFileName(aiscript);
+
+    std::string aidir = ExtractDirectory(aiscript);
+
+    Py_Initialize();
+
+    PyObject* programName = PyUnicode_FromString(scriptBaseName.c_str());
+
+    PyRun_SimpleString("import sys");
+
+    const std::string sysPathCommand = "sys.path.append(\"" + aidir + "\")";
+
+    PyRun_SimpleString(sysPathCommand.c_str());
+
+    auto pModule = PyImport_Import(programName);
+    Py_DECREF(programName);
+
+
+
+    if (pModule != nullptr)
+    {
+        loadAiGetterBool(pModule, "canRecoverFromStun", mRecoverFromStun);
+
+        loadAiGetterBool(pModule, "isInvincible", mInvincible);
+        loadAiGetterBool(pModule, "willNeverStop", mNeverStop);
+
+        Py_DECREF(pModule);
+    }
+    else
+    {
+        PyErr_Print();
+        gLogging.ftextOut("Failed to load \"%s\"\n", aiscript.c_str());
+        return false;
+    }
+
+    Py_Finalize();
+
+    return true;
+
 }
 
 
@@ -330,7 +430,7 @@ void CSpriteObject::processFalling()
 
 void CSpriteObject::getShotByRay(object_t &obj_type)
 {
-	if( !m_invincible && mHealthPoints>0)
+    if( !mInvincible && mHealthPoints>0)
 	{
 		if(mHealthPoints>1 && gVideoDriver.getSpecialFXConfig())
 			blink(10);
@@ -405,7 +505,9 @@ void CSpriteObject::draw()
     GsSprite &Sprite = gGraphics.getSprite(mSprVar, sprite);
 
     if(!Sprite.valid())
+    {
         return;
+    }
 
 	scrx = (m_Pos.x>>STC)-mp_Map->m_scrollx;
 	scry = (m_Pos.y>>STC)-mp_Map->m_scrolly;

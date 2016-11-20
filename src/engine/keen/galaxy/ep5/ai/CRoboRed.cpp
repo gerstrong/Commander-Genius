@@ -68,9 +68,13 @@ mKeenNearby(false)
 
 
 	// Adapt this AI
-	setupGalaxyObjectOnMap(0x2734, A_RED_MOVE);
+    setupGalaxyObjectOnMap(0x2734, A_RED_MOVE);
 	
 	xDirection = LEFT;
+
+    loadPythonScripts("robored");
+
+
 }
 
 
@@ -86,17 +90,29 @@ void CRoboRed::processMoving()
   {
     moveLeft( moveHorizSpeed );
   }
-  
-  if(getProbability(60) && mKeenNearby)
+
+  if(!mNeverStop)
   {
-    setAction(A_RED_PAUSE);
+      if(getProbability(60) && mKeenNearby)
+      {
+        setAction(A_RED_PAUSE);
+      }
   }
+  else if(mKeenNearby)
+  {
+      mTimer++;
+      if(mTimer < TIME_UNTIL_SHOOT)
+          return;
+
+      processShoot();
+  }
+  
 }
 
 
 void CRoboRed::processPauseBeforeShoot()
 {
-  // just wait 
+  // wait a little bit
   mTimer++;
   if(mTimer < TIME_UNTIL_SHOOT)
     return;
@@ -134,7 +150,10 @@ void CRoboRed::processShoot()
   
   mTimer = 0;
   
-  setAction(A_RED_PAUSE);
+  if(!mNeverStop)
+  {
+    setAction(A_RED_PAUSE);
+  }
 }
 
 
@@ -182,10 +201,13 @@ void CRoboRed::getTouchedBy(CSpriteObject &theObject)
 
     CStunnable::getTouchedBy(theObject);
 
-    // Was it a bullet?
-    if( dynamic_cast<CBullet*>(&theObject) && !getActionNumber(A_RED_SHOOT) )
+    // Was it a bullet? If foe must move on, do not stop it.
+    if(!mNeverStop)
     {
-        setAction(A_RED_PAUSE);
+        if( dynamic_cast<CBullet*>(&theObject) && !getActionNumber(A_RED_SHOOT) )
+        {
+            setAction(A_RED_PAUSE);
+        }
     }
 
     if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
@@ -201,7 +223,6 @@ int CRoboRed::checkSolidD( int x1, int x2, int y2, const bool push_mode )
 
 	return CGalaxySpriteObject::checkSolidD(x1, x2, y2, push_mode);
 }
-
 
 void CRoboRed::process()
 {
@@ -219,7 +240,9 @@ void CRoboRed::process()
 	}
 
 	if(!processActionRoutine())
+    {
 	    exists = false;
+    }
 	
 	(this->*mp_processState)();
 }

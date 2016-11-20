@@ -40,7 +40,6 @@ CStunnable(pmap, foeID, x, y),
 mTimer(0),
 mLookTimer(0),
 mGoodChargeChance(false)
-
 {
   
   //std::function<void()> do_walk = processWalking;
@@ -72,11 +71,20 @@ mGoodChargeChance(false)
         mHealthPoints = 2;
     }
 
+    // Harder than hard makes the sparky wake up after being stunned
+    if(diff > HARD)
+    {
+        mRecoverFromStun = true;
+    }
 
-    // Adapt this AI
+
+
+    // Set into walking status
     setupGalaxyObjectOnMap(0x1F0C, A_SPARKY_WALK);
 
     xDirection = LEFT;
+
+    loadPythonScripts("sparky");
 }
 
 
@@ -206,22 +214,36 @@ void CSparky::getTouchedBy(CSpriteObject &theObject)
 
 	CStunnable::getTouchedBy(theObject);
 
+
+
+
     // Was it a bullet? Than make it stunned when health goes to zero.
 	if( dynamic_cast<CBullet*>(&theObject) )
-	{        
-        mHealthPoints--;
+    {
         theObject.dead = true;
 
-        if(mHealthPoints == 0)
+        if(mRecoverFromStun)
         {
             setAction(A_SPARKY_STUNNED);
-            dead = true;
         }
         else
         {
-            blink(10);
+            if(mHealthPoints == 0)
+            {
+                setAction(A_SPARKY_STUNNED);
+                dead = true;
+            }
+            else
+            {
+                blink(10);
+            }
+
+            mHealthPoints--;
         }
 	}
+
+    if( mRecoverFromStun && getActionNumber(A_SPARKY_STUNNED) )
+        return;
 
 	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
 	{
@@ -243,25 +265,46 @@ void CSparky::process()
 {
 	performCollisions();
 	
-    performGravityMid();
+    // Keen 9 Garg
+    if(mRecoverFromStun)
+    {
+        if(!getActionNumber(A_SPARKY_STUNNED))
+        {
+            performGravityMid();
+        }
+        else
+        {
+            mLookTimer++;
 
-	if(!dead) // If we is dead, there is no way to continue moving or turning
-	{
-	  if( blockedl )
-	  {
-	    if(xDirection == LEFT)
-	      setAction(A_SPARKY_TURN);
-	    
-	    xDirection = RIGHT;
-	  }
-	  else if(blockedr)
-	  {
-	    if(xDirection == RIGHT)
-	      setAction(A_SPARKY_TURN);
-	    
-	    xDirection = LEFT;
-	  }
-	}
+            if(mLookTimer >= CHARGE_TIME)
+            {
+              setAction(A_SPARKY_WALK);
+              mLookTimer = 0;
+            }
+        }
+    }
+    else
+    {
+        performGravityMid();
+    }
+
+    if(!dead) // If foe is dead, there is no way to continue moving or turning
+    {
+      if( blockedl )
+      {
+        if(xDirection == LEFT)
+          setAction(A_SPARKY_TURN);
+
+        xDirection = RIGHT;
+      }
+      else if(blockedr)
+      {
+        if(xDirection == RIGHT)
+          setAction(A_SPARKY_TURN);
+
+        xDirection = LEFT;
+      }
+    }
 
 	if(!processActionRoutine())
 	    exists = false;

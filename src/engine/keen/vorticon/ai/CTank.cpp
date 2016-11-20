@@ -19,7 +19,7 @@ CVorticonSpriteObject(p_map, x, y, objtype, 0)
 	alreadyfiredcauseonsamelevel = 0;
 	dist_to_travel = TANK_MAXTRAVELDIST;
 	canbezapped = true;  // will stop bullets but are not harmed
-	m_invincible = true;
+	mInvincible = true;
 	
 	// Read this from the Exe-File. Patchwork Mod 1 uses different one!
 	shotHeight = 0; 

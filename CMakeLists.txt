@@ -79,6 +79,8 @@ IF(WIN32)
         include_directories(${SDL2_NET_INCLUDE_DIRS})
         include_directories(/usr/include/SDL2/)
     endif(SDL2_FOUND)	
+
+
 	
 else(WIN32)
         if(USE_SDL2)

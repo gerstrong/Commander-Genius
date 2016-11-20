@@ -111,6 +111,7 @@ public:
 
     unsigned int m_index;        	// Like an ID for some objects that need this implementation
 
+
 	
     unsigned int mHealthPoints;              // episode 1 style four-shots-to-kill
 	bool exists;
@@ -326,10 +327,22 @@ public:
     {   mSprVar = i;    }
 
 protected:
+
+    /**
+     * @brief loadPythonScripts     Load an external script file which might modify the behaviour of the sprite object
+     * @param scriptBaseName        Basename is the filename with any extension or path. Recommendation: Use the name of the foe
+     * @return if load was successful true, otherwise false.
+     */
+    bool loadPythonScripts(const std::string &scriptBaseName);
+
+
 	CMap *mp_Map;
 
 	Uint16 m_blinktime;
-	bool m_invincible;
+    bool mInvincible = false;   /** Shot might hit the object but it has no effect at all */
+    bool mRecoverFromStun = false; /** If foe get shot they might be able to recover at later time */
+    bool mNeverStop = false;        /** This will make foe continue walking and never change actions (Keen 9 - Cybloog) */
+
     Vector2D<Uint32> m_Pos; 	// x,y location in map coords, CSFed, represent as 2D Vector
 
 	static int m_number_of_objects;
