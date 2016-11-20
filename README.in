@@ -253,6 +253,7 @@ How to compile it under Ubuntu:
         - libboost
         - libcurl4-openssl-dev
         - zlib
+        - python3
  
    For SDL 1.2:
  	- libsdl1.2-dev
