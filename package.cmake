@@ -38,7 +38,7 @@ INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/vfsroot/gameCatalogue.xml DESTINATION 
 
 IF(WIN32)
   # There is a bug in NSI that does not handle full unix paths properly. Make
-  # sure there is at least one set of four (4) backlasshes.    
+  # sure there is at least one set of four (4) backslashes.    
   SET(CPACK_NSIS_INSTALLED_ICON_NAME "CGenius.exe")
   SET(CPACK_NSIS_DISPLAY_NAME "Commander-Genius")
   SET(CPACK_NSIS_HELP_LINK "http:\\\\\\\\clonekeenplus.sourceforge.net")
