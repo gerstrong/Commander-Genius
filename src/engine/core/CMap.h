@@ -47,12 +47,12 @@ public:
 
     /**
      * @brief setupEmptyDataPlanes  Allocates data for the the planes to be loaded
-     * @param numPlanes
+     * @param numPlanes     Number of planes to setup for the whole map
      * @param width
      * @param height
-     * @return
+     * @return  true if everything went allright, otherwise false
      */
-    bool setupEmptyDataPlanes(size_t numPlanes, Uint32 width, Uint32 height);
+    bool setupEmptyDataPlanes(int numPlanes, Uint32 width, Uint32 height);
 
 	bool gotoPos( int x, int y );
 
@@ -128,8 +128,15 @@ public:
 	word *getForegroundData();
 	word *getBackgroundData();
 
+
+    /**
+     * @brief setupAnimationTimer   Set the animation timer to the coordinates instead of starting the first time with zero.
+     *                              This fixes some tile animation issues seen in the Keen 9 especially
+     */
+    void setupAnimationTimer();
+
 	/**
-	 * This awesome method collects the coordinates in where the blockers are, so the checking routine obtains them at a faster way
+     * This method collects the coordinates in where the blockers are, so the checking routine obtains them at a faster way
 	 */
 	void collectBlockersCoordiantes();
 

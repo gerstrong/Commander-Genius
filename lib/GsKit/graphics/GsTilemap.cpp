@@ -16,31 +16,25 @@
 #include <SDL_image.h>
 
 GsTilemap::GsTilemap() :
-m_Tilesurface(NULL),
 m_EmptyBackgroundTile(143),
 m_numtiles(0),
 m_pbasesize(0),
 m_column(0)
 { }
 
-bool GsTilemap::CreateSurface(SDL_Color *Palette, Uint32 Flags,
+bool GsTilemap::CreateSurface(SDL_Color *sdlPalette, Uint32 Flags,
 				Uint16 numtiles, Uint16 pbasesize, Uint16 column)
 {
 	m_numtiles = numtiles;
 	m_pbasesize = pbasesize;
 	m_column = column;
-    m_Tilesurface = SDL_CreateRGBSurface(Flags, m_column<<m_pbasesize,
-                                        (m_numtiles/m_column)<<m_pbasesize, 8, 0, 0, 0, 0);
+    mTileSurface.create(Flags, m_column<<m_pbasesize,
+                        (m_numtiles/m_column)<<m_pbasesize, 8, 0, 0, 0, 0);
 
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-    SDL_SetPaletteColors(m_Tilesurface->format->palette, Palette, 0, 255);
-    SDL_SetColorKey(m_Tilesurface, SDL_TRUE, COLORKEY);
-#else
-    SDL_SetColors(m_Tilesurface, Palette, 0, 255);
-	SDL_SetColorKey(m_Tilesurface, SDL_SRCCOLORKEY, COLORKEY);
-#endif
-	
-	return ( m_Tilesurface != NULL );
+    mTileSurface.setPaletteColors(sdlPalette);
+    mTileSurface.setColorKey(COLORKEY);
+
+    return !mTileSurface.empty();
 }
 
 std::string exts[] = { "png", "bmp", "tif", "jpg" };
@@ -60,13 +54,12 @@ bool GsTilemap::loadHiresTile( const std::string& filename, const std::string& p
 	if(!IsFileAvailable(fullfilename))
 		return false;
 
-    if(m_Tilesurface)
+    if(!mTileSurface.empty())
 	{	  	  
         SDL_Surface *temp_surface = IMG_Load(GetFullFileName(fullfilename).c_str());
 		if(temp_surface)
 		{
-			SDL_FreeSurface(m_Tilesurface);
-			m_Tilesurface = temp_surface;
+            mTileSurface.createFromSDLSfc(temp_surface);
 			return true;
 		}
 		else
@@ -81,20 +74,17 @@ bool GsTilemap::loadHiresTile( const std::string& filename, const std::string& p
 
 bool GsTilemap::optimizeSurface()
 {
-	if(m_Tilesurface)
+    if(!mTileSurface.empty())
 	{
-		SDL_Surface *temp_surface;
-//#if SDL_VERSION_ATLEAST(2, 0, 0)
-        
-//#else
-        temp_surface = gVideoDriver.convertThroughBlitSfc(m_Tilesurface);
-//#endif
-		SDL_FreeSurface(m_Tilesurface);
-		m_Tilesurface = temp_surface;
+        SDL_Surface *temp_surface = gVideoDriver.convertThroughBlitSfc(mTileSurface.getSDLSurface());
+        mTileSurface.createFromSDLSfc(temp_surface);
+
 		return true;
 	}
 	else
+    {
 		return false;
+    }
 }
 
 ///////////////////////////////////
@@ -102,7 +92,7 @@ bool GsTilemap::optimizeSurface()
 ///////////////////////////////////
 SDL_Surface *GsTilemap::getSDLSurface()
 {
-	return m_Tilesurface;
+    return mTileSurface.getSDLSurface();
 }
 
 
@@ -203,7 +193,8 @@ void GsTilemap::drawTile(SDL_Surface *dst, int x, int y, Uint16 t)
         src_rect.w = dst->w - dst_rect.x;
     }
 
-    BlitSurface(m_Tilesurface, &src_rect, dst, &dst_rect);
+    auto rawSDLSfc = mTileSurface.getSDLSurface();
+    BlitSurface(rawSDLSfc, &src_rect, dst, &dst_rect);
 
 #ifdef DEBUG_COLLISION
 	//std::vector<CTileProperties> &TileProp = gpBehaviorEngine->getTileProperties(1);
@@ -212,41 +203,71 @@ void GsTilemap::drawTile(SDL_Surface *dst, int x, int y, Uint16 t)
 
 }
 
+
+void GsTilemap::drawTileBlended(SDL_Surface *dst, int x, int y, Uint16 t, Uint8 amount)
+{
+    SDL_Rect src_rect, dst_rect;
+    src_rect.x = (t%m_column)<<m_pbasesize;
+    src_rect.y = (t/m_column)<<m_pbasesize;
+    const int size = 1<<m_pbasesize;
+    src_rect.w = src_rect.h = dst_rect.w = dst_rect.h = size;
+
+    dst_rect.x = x;		dst_rect.y = y;
+
+    if( dst_rect.y + src_rect.h > dst->h )
+    {
+        src_rect.h = dst->h - dst_rect.y;
+    }
+
+    if( dst_rect.x + src_rect.w > dst->w )
+    {
+        src_rect.w = dst->w - dst_rect.x;
+    }
+
+    const auto oldAlpha = mTileSurface.getAlpha();
+
+    mTileSurface.setAlpha(amount);
+
+    auto rawSDLSfc = mTileSurface.getSDLSurface();
+    BlitSurface(rawSDLSfc, &src_rect, dst, &dst_rect);
+
+    mTileSurface.setAlpha(oldAlpha);
+}
+
+
 void GsTilemap::applyGalaxyHiColourMask()
 {
 
+    auto rawSDLSfc = mTileSurface.getSDLSurface();
+
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     SDL_Surface *newSfc =
-            SDL_ConvertSurfaceFormat(m_Tilesurface, SDL_PIXELFORMAT_RGBA8888, 0);
+            SDL_ConvertSurfaceFormat(rawSDLSfc, SDL_PIXELFORMAT_RGBA8888, 0);
 #else
     SDL_Surface *blit = gVideoDriver.getBlitSurface();
-    SDL_Surface *newSfc = SDL_ConvertSurface(m_Tilesurface, blit->format, 0 );
+    SDL_Surface *newSfc = SDL_ConvertSurface(rawSDLSfc, blit->format, 0 );
 #endif
 
 
-    SDL_FreeSurface(m_Tilesurface);
+    mTileSurface.createFromSDLSfc(newSfc);
 
-    m_Tilesurface = newSfc;
+    const auto format = mTileSurface.getSDLSurface()->format;
 
-    const SDL_PixelFormat *format = m_Tilesurface->format;
+    mTileSurface.setBlendMode(SDL_BLENDMODE_BLEND);
 
-    // TODO: We might define that as a GsSurface
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-        SDL_SetSurfaceBlendMode(m_Tilesurface, SDL_BLENDMODE_BLEND);
-#endif
-
-    SDL_LockSurface(m_Tilesurface);
+    mTileSurface.lock();
 
     // Pointer of start pixel
-    Uint8 *pxStart = static_cast<Uint8*>(m_Tilesurface->pixels);
+    Uint8 *pxStart = static_cast<Uint8*>(mTileSurface.getSDLSurface()->pixels);
 
     // From 0 to half width for every row ...
-    int midRow = m_Tilesurface->w/2;
+    int midRow = mTileSurface.width()/2;
 
+    const auto pitch = mTileSurface.getSDLSurface()->pitch;
 
-    for( int y=0 ; y<m_Tilesurface->h ; y++ )
+    for( int y=0 ; y<mTileSurface.height() ; y++ )
     {
-        Uint8 *pxRow = pxStart + y*m_Tilesurface->pitch;
+        Uint8 *pxRow = pxStart + y*pitch;
         for( int x=0 ; x<midRow ; x++ )
         {
             Uint8 *px = pxRow + x*format->BytesPerPixel;
@@ -275,11 +296,6 @@ void GsTilemap::applyGalaxyHiColourMask()
         }
     }
 
-    SDL_UnlockSurface(m_Tilesurface);
+    mTileSurface.unlock();
 }
 
-GsTilemap::~GsTilemap() 
-{
-	if(m_Tilesurface) 
-	    SDL_FreeSurface(m_Tilesurface);
-}

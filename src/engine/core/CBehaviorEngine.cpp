@@ -73,7 +73,9 @@ bool CBehaviorEngine::readTeleporterTable(byte *p_exedata)
 }
 
 std::vector<CTileProperties> &CBehaviorEngine::getTileProperties(size_t tmnum)
-{	return m_TileProperties[tmnum];	}
+{
+    return m_TileProperties[tmnum];
+}
 
 // returns a pointer to the string with name 'name'
 std::string CBehaviorEngine::getString(const std::string& name)

@@ -26,7 +26,9 @@ m_timer(0)
 void CSlugSlime::getTouchedBy(CSpriteObject &theObject)
 {
     if(!getActionStatus(A_SLUGPOISON_NORMAL))
+    {
         return;
+    }
 
 	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
 	{
