@@ -99,7 +99,17 @@ public:
 	bool findTile(unsigned int tile, int *xout, int *yout, int plane=1);
 
 	bool setTile(Uint16 x, Uint16 y, Uint16 t, Uint16 plane=1);
-	bool setTile(Uint16 x, Uint16 y, Uint16 t, bool update, Uint16 plane=1);
+
+    /**
+     * @brief setTile   Sets the tile index t
+     * @param x         position x
+     * @param y         position y
+     * @param t         tile index
+     * @param redraw    redraw the tile. This is required if you want to see the results immediately.  (For example bridges)
+     * @param plane     Plane on which the tile is set.
+     * @return
+     */
+    bool setTile(Uint16 x, Uint16 y, Uint16 t, bool redraw, Uint16 plane=1);
 	bool changeTile(Uint16 x, Uint16 y, Uint16 t);
 	void changeTileArrayY(Uint16 x, Uint16 y, Uint16 h, Uint16 tile);
 

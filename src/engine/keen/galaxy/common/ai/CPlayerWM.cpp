@@ -1257,7 +1257,9 @@ void CPlayerWM::processMoveBitDown()
     const unsigned int x2 = getXPosition()+m_BBox.x2;
     const unsigned int y2 = getYPosition()+m_BBox.y2;
 
-    if( ( blockedd = checkSolidD(x1, x2, y2) ) == true )
+    blockedd = checkSolidD(x1, x2, y2);
+
+    if( blockedd )
     {
         // additionally if there is a narrow space and the object might fit in, try to move it into that space
         const int xMid = (x1+x2)/2;

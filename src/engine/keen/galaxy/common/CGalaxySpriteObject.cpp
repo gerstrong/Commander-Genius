@@ -209,7 +209,9 @@ int CGalaxySpriteObject::checkSolidD( int x1, int x2, int y2, const bool push_mo
 				return 0;
 
 			if( blockedu >= 2 && blockedu <= 7 && checkslopedD(c, y2, blockedu) )
+            {
 				return blockedu;
+            }
 		}
 
 		blockedu = TileProperty[mp_Map->at(x2>>CSF, y2>>CSF)].bup;
@@ -218,7 +220,9 @@ int CGalaxySpriteObject::checkSolidD( int x1, int x2, int y2, const bool push_mo
 			return 0;
 
 		if( blockedu >= 2 && blockedu <= 7 && checkslopedD(x2, y2, blockedu)  )
+        {
 			return blockedu;
+        }
 	}
 
     const int y2CSFed = (y2>>CSF);

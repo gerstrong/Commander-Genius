@@ -281,6 +281,10 @@ public:
 	void PressBridgeSwitch(const Uint32 lx, const Uint32 ly);
 
 	void PressPlatformSwitch(const Uint32 lx, const Uint32 ly);
+
+    /**
+     * @brief openDoorsTile     Replace the tiles which open a side door, usually connected with a slot where to insert a gem
+     */
 	void openDoorsTile();
 		
 	void exchangeZapper(const int mapx, const int mapy, const int offset, const int stopZapperTile);
@@ -289,6 +293,12 @@ public:
 	
 	bool verifyAndToggleZapper(const int lx, const int ly);
 	bool verifyAndToggleBridge(const int lx, const int ly);
+
+    /**
+     * @brief TurnGiantSwitchOff    Giant switches only appear in Keen 6
+     * @param x
+     * @param y
+     */
 	void TurnGiantSwitchOff(const int x, const int y);
 	void TurnGiantSwitchOn(const int x, const int y);
 
