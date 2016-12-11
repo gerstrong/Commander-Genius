@@ -57,6 +57,14 @@ mTimer(0)
 
 void CSphereful::processMoving()
 {
+    // Keen 9: If this foe is stunnable. Make it possible to fall and don't make anything else
+    if(dead)
+    {
+        performCollisions();
+
+        return;
+    }
+
   // Move normally in the direction
   moveXDir( xDirection*MOVE_SPEED );
   moveYDir( yDirection*MOVE_SPEED );

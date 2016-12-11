@@ -1877,7 +1877,7 @@ void CPlayerLevel::toggleBridge(const Uint32 newX, const Uint32 newY)
             break;
 
         // We have two rows
-        for(int y = newY ; y<newY+2 ; y++)
+        for(int y = newY ; y<int(newY+2) ; y++)
         {
             t = mp_Map->getPlaneDataAt(1, x<<CSF, y<<CSF);
             const auto NewTile = t+tileProp[t].nextTile;
@@ -2637,15 +2637,18 @@ void CPlayerLevel::process()
 
         const std::string fuse_msg = gpBehaviorEngine->getString( (specialLevel) ? "FUSE_WONDER" : "FUSE_CASUAL");
 
-        g_pSound->playSound( SOUND_LEVEL_DONE );
+        g_pSound->playSound( SOUND_FUSE_BREAK, PLAY_PAUSEALL );
 
         gEffectController.setupEffect(new CDimDark(8));
+
+        auto evExit = new EventExitLevel(mp_Map->getLevel(), true, false, mSprVar);
+        evExit->playSound = true;
 
         msgs.push_back( new CMessageBoxBitmapGalaxy(
                             fuse_msg,
                             *gGraphics.getBitmapFromStr("KEENTHUMBSUP"),
                             RIGHT,
-                            new EventExitLevel(mp_Map->getLevel(), true, false, mSprVar)) );
+                            evExit) );
 
         showMsgVec( msgs );
 

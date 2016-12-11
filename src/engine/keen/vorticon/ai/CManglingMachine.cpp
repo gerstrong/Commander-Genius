@@ -490,7 +490,9 @@ void CManglingMachine::se_mortimer_heart(CVorticonSpriteObject *obj)
 void CManglingMachine::se_mortimer_zapsup_nearby(CPlayer *player)
 {
     if(player == nullptr)
-	return;
+    {
+        return;
+    }
 
 	if (!timer)
 	{

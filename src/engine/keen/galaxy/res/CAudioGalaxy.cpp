@@ -162,18 +162,18 @@ void CAudioGalaxy::setupAudioMap()
       sndSlotMapGalaxy[5][SOUND_GET_GEM] = 19;
       sndSlotMapGalaxy[5][SOUND_KEEN_FALL] = 20;
       sndSlotMapGalaxy[5][SOUND_GUN_CLICK] = 21;
-      //sndSlotMapGalaxy[5][?] = 22;
+      sndSlotMapGalaxy[5][SOUND_SCREAM_LOUD] = 22;
       sndSlotMapGalaxy[5][SOUND_KEEN_DIE] = 23;
-      //sndSlotMapGalaxy[5][?] = 24;
+      sndSlotMapGalaxy[5][SOUND_SCREAM_LESS] = 24;
       sndSlotMapGalaxy[5][SOUND_SHOT_HIT] = 25;
-      //sndSlotMapGalaxy[5][?] = 26;
+      sndSlotMapGalaxy[5][SOUND_SCRAMBLE] = 26;
       sndSlotMapGalaxy[5][SOUND_SPIROGRIP] = 27;
 
       memcpy(&holder, ptr + 0x129FC, 1 );
       sndSlotMapGalaxy[5][SOUND_SPINDREDSLAM] = 28;
 
       sndSlotMapGalaxy[5][SOUND_ROBORED_SHOOT] = 29;
-      //sndSlotMapGalaxy[5][SOUND_ROBOSHOTHIT] = 30;
+      sndSlotMapGalaxy[5][SOUND_ROBORED_SHOOT2] = 30;
       sndSlotMapGalaxy[5][SOUND_AMPTONWALK0] = 31;
       sndSlotMapGalaxy[5][SOUND_AMPTONWALK1] = 32;
       sndSlotMapGalaxy[5][SOUND_ROBO_STUN] = 33;
@@ -198,8 +198,8 @@ void CAudioGalaxy::setupAudioMap()
       sndSlotMapGalaxy[5][SOUND_COMPUTER_POINT] = 49;
       sndSlotMapGalaxy[5][SOUND_PLAYER_POINT] = 50;
       //sndSlotMapGalaxy[5][?] = 51;
-      //sndSlotMapGalaxy[5][?] = 52;
-      //sndSlotMapGalaxy[5][?] = 53;
+      sndSlotMapGalaxy[5][SOUND_FUSE_BREAK] = 52;
+      sndSlotMapGalaxy[5][SOUND_BIG_GAMEOVER] = 53;
       //sndSlotMapGalaxy[5][?] = 54;
       sndSlotMapGalaxy[5][SOUND_GET_CARD] = 55;
 

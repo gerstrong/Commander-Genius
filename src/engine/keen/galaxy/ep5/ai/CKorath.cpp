@@ -101,7 +101,7 @@ void CKorath::getTouchedBy(CSpriteObject &theObject)
 	{
 		dead = true;
 		theObject.dead = true;
-		setAction(A_KORATH_STUNNED);
+		setAction(A_KORATH_STUNNED);        
 	}
 
 	if( CPlayerLevel *player = dynamic_cast<CPlayerLevel*>(&theObject) )
@@ -116,6 +116,7 @@ void CKorath::getTouchedBy(CSpriteObject &theObject)
         {
             dead = true;
             setAction(A_KORATH_STUNNED);
+            g_pSound->playSound(SOUND_FUSE_BREAK);
         }
         else
         {

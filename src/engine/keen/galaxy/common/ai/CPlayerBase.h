@@ -37,6 +37,7 @@ struct EventExitLevel : CEvent {
     const bool sucess;
     const bool teleport;
     const int who;
+    bool playSound = false;
     EventExitLevel(const uint16_t l, const bool s, const bool t, const bool lWho) :
         levelObject(l), sucess(s), teleport(t), who(lWho) {}
 };
