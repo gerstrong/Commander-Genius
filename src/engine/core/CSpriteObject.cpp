@@ -16,6 +16,7 @@
 
 #include "fileio/KeenFiles.h"
 
+#define PYTHON_VERBOSE 0
 
 int CSpriteObject::m_number_of_objects = 0; // The current number of total objects we have within the game!
 
@@ -139,14 +140,20 @@ bool CSpriteObject::loadPythonScripts(const std::string &scriptBaseName)
         loadAiGetterBool(pModule, "canRecoverFromStun", mRecoverFromStun);
 
         loadAiGetterBool(pModule, "isInvincible", mInvincible);
-        loadAiGetterBool(pModule, "willNeverStop", mNeverStop);
+
+        loadAiGetterBool(pModule, "willNeverStop", mNeverStop);        
+
+        loadAiGetterBool(pModule, "isStunnableWithPogo", mPogoStunnable);
 
         Py_DECREF(pModule);
     }
     else
     {
-        PyErr_Print();
+#if PYTHON_VERBOSE
+        PyErr_Print();        
         gLogging.ftextOut("Failed to load \"%s\"\n", aiscript.c_str());
+#endif
+
         return false;
     }
 

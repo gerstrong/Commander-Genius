@@ -44,6 +44,8 @@ mTimer(0)
 	setupGalaxyObjectOnMap(0x30D2, A_KORATH_WALK);
 	
 	xDirection = LEFT;
+
+    loadPythonScripts("korath");
 }
 
 
@@ -104,7 +106,21 @@ void CKorath::getTouchedBy(CSpriteObject &theObject)
 
 	if( CPlayerLevel *player = dynamic_cast<CPlayerLevel*>(&theObject) )
 	{
-	  player->push(*this);
+        const bool pogoActive =
+            player->getActionStatus(A_KEEN_POGO_START) ||
+            player->getActionStatus(A_KEEN_POGO_HIGH)  ||
+            player->getActionStatus(A_KEEN_POGO_UP);
+
+        // Usually this is only possible with Keen 9 and my own speciality
+        if(mPogoStunnable && pogoActive)
+        {
+            dead = true;
+            setAction(A_KORATH_STUNNED);
+        }
+        else
+        {
+            player->push(*this);
+        }
 	}
 }
 

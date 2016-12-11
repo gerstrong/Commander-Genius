@@ -10,7 +10,7 @@
 #include "../../common/ai/CPlayerLevel.h"
 #include <base/utils/misc.h>
 
-/*
+/* Actions addresses
 $303AW #Sphereful
 $3058W #Sphereful
 $3076W #Sphereful
@@ -21,15 +21,14 @@ $30B2W #Sphereful
 
 namespace galaxy {  
   
-enum SPARKYACTIONS
+
+enum SPHEREFULACTIONS
 {
-A_AMPTON_WALK = 0,
-A_AMPTON_TURN = 4,
-A_AMPTON_START_POLE = 5,
-A_AMPTON_POLE_SLIDE = 6,
-A_AMPTON_STOP_POLE = 7,
-A_AMPTON_FLIP_SWITCH = 8,
-A_AMPTON_STUNNED = 12
+    A_SPHEREFUL_FLY = 0,
+    A_SPHEREFUL_STUN = 1,
+    A_SPHEREFUL_STATE3 = 2,
+    A_SPHEREFUL_STATE4 = 4,
+    A_SPHEREFUL_STATE5 = 5,
 };
 
 const int MOVE_SPEED = 10;
@@ -50,6 +49,8 @@ mTimer(0)
 	
 	yDirection = UP;
 	xDirection = LEFT;
+
+    loadPythonScripts("sphereful");
 }
 
 
@@ -88,32 +89,44 @@ void CSphereful::processMoving()
 
 bool CSphereful::isNearby(CSpriteObject &theObject)
 {
+
+    if(!mInvincible)
+    {
+        // Was it a bullet? Than make it stunned.
+        if( dynamic_cast<CBullet*>(&theObject) )
+        {
+            dead = true;
+            theObject.dead = true;
+            setAction(A_SPHEREFUL_STUN);
+        }
+    }
+
     
     if( CPlayerLevel *player = dynamic_cast<CPlayerLevel*>(&theObject) )
     {
-	
-	mTimer++;
-	if(mTimer < FLY_TIME)
-	    return true;
-	
-	mTimer = 0;
-	
-	if( getProbability(600) )
-	{
-	    
-	    if( player->getXMidPos() < getXMidPos() )
-		xDirection = LEFT;
-	    else
-		xDirection = RIGHT;
-	    
-	    if(getProbability(700))
-	    {
-		yDirection = DOWN;
-	    }
-	    
-	}		
+
+        mTimer++;
+        if(mTimer < FLY_TIME)
+            return true;
+
+        mTimer = 0;
+
+        if( getProbability(600) )
+        {
+
+            if( player->getXMidPos() < getXMidPos() )
+                xDirection = LEFT;
+            else
+                xDirection = RIGHT;
+
+            if(getProbability(700))
+            {
+                yDirection = DOWN;
+            }
+
+        }
     }
-	
+
 	
     return true;
 }

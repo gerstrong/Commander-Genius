@@ -342,6 +342,7 @@ protected:
     bool mInvincible = false;   /** Shot might hit the object but it has no effect at all */
     bool mRecoverFromStun = false; /** If foe get shot they might be able to recover at later time */
     bool mNeverStop = false;        /** This will make foe continue walking and never change actions (Keen 9 - Cybloog) */
+    bool mPogoStunnable = false;        /** This will make foe continue walking and never change actions (Keen 9 - Cybloog) */
 
     Vector2D<Uint32> m_Pos; 	// x,y location in map coords, CSFed, represent as 2D Vector
 
