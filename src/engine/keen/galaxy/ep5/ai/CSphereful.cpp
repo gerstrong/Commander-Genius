@@ -25,7 +25,7 @@ namespace galaxy {
 enum SPHEREFULACTIONS
 {
     A_SPHEREFUL_FLY = 0,
-    A_SPHEREFUL_STUN = 1,
+    A_SPHEREFUL_STATE2 = 1,
     A_SPHEREFUL_STATE3 = 2,
     A_SPHEREFUL_STATE4 = 4,
     A_SPHEREFUL_STATE5 = 5,
@@ -42,6 +42,13 @@ CStunnable(pmap, foeID, x, y),
 mTimer(0)
 {
 	m_ActionBaseOffset = 0x303A;
+
+    mActionMap[A_SPHEREFUL_FLY] = (GASOFctr) &CSphereful::processMoving;
+    mActionMap[A_SPHEREFUL_STATE2] = (GASOFctr) &CSphereful::processMoving;
+    mActionMap[A_SPHEREFUL_STATE3] = (GASOFctr) &CSphereful::processMoving;
+    mActionMap[A_SPHEREFUL_STATE4] = (GASOFctr) &CSphereful::processMoving;
+    mActionMap[A_SPHEREFUL_STATE5] = (GASOFctr) &CSphereful::processMoving;
+
 	
 	setActionForce(0);
 	setActionSprite();
@@ -51,20 +58,26 @@ mTimer(0)
 	xDirection = LEFT;
 
     loadPythonScripts("sphereful");
+
+    if(!mInvincible)
+    {
+        mActionMap[A_SPHEREFUL_STATE2] = (GASOFctr) &CSphereful::processStun;
+        mActionMap[A_SPHEREFUL_STATE3] = (GASOFctr) &CSphereful::processStun;
+        mActionMap[A_SPHEREFUL_STATE4] = (GASOFctr) &CSphereful::processStun;
+        mActionMap[A_SPHEREFUL_STATE5] = (GASOFctr) &CSphereful::processStun;
+    }
 }
 
 
 
+void CSphereful::processStun()
+{
+    performCollisions();
+    performGravityMid();
+}
+
 void CSphereful::processMoving()
 {
-    // Keen 9: If this foe is stunnable. Make it possible to fall and don't make anything else
-    if(dead)
-    {
-        performCollisions();
-
-        return;
-    }
-
   // Move normally in the direction
   moveXDir( xDirection*MOVE_SPEED );
   moveYDir( yDirection*MOVE_SPEED );
@@ -98,21 +111,9 @@ void CSphereful::processMoving()
 bool CSphereful::isNearby(CSpriteObject &theObject)
 {
 
-    if(!mInvincible)
-    {
-        // Was it a bullet? Than make it stunned.
-        if( dynamic_cast<CBullet*>(&theObject) )
-        {
-            dead = true;
-            theObject.dead = true;
-            setAction(A_SPHEREFUL_STUN);
-        }
-    }
-
     
     if( CPlayerLevel *player = dynamic_cast<CPlayerLevel*>(&theObject) )
     {
-
         mTimer++;
         if(mTimer < FLY_TIME)
             return true;
@@ -150,6 +151,13 @@ void CSphereful::getTouchedBy(CSpriteObject &theObject)
 	if( dynamic_cast<CBullet*>(&theObject) )
 	{
 		theObject.dead = true;
+
+        if(!mInvincible)
+        {
+            dead = true;
+
+            setAction(A_SPHEREFUL_STATE3);
+        }
 	}
 
 	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
@@ -164,10 +172,15 @@ void CSphereful::process()
 {
 	performCollisions();
 	
-	if(!processActionRoutine())
-	    exists = false;
+    if(!dead)
+    {
+        if(!processActionRoutine())
+        {
+            exists = false;
+        }
+    }
 	
-	processMoving();
+    (this->*mp_processState)();
 }
 
 }
