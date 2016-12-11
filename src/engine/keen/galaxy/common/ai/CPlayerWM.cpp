@@ -1051,34 +1051,30 @@ bool CPlayerWM::finishLevel(const int object)
 		const auto episode = gpBehaviorEngine->getEpisode();
         Vector2D<Uint32> src(getXPosition(), getYPosition());
 
-		// Here we move the coordinates in order get it positioned correctly in the pole
-        GsSprite &FlagSprite = gGraphics.getSprite(mSprVar,WAVING_BASEFRAME);
+        // Here we move the coordinates for the correction position of the done flag/sign
+        GsSprite &FlagSprite = gGraphics.getSprite(mSprVar, WAVING_BASEFRAME);
 
 		unsigned int csfX = (x<<CSF);
 		unsigned int csfY = (y<<CSF);
 
-		csfX += (6<<STC);
-		if(episode != 5)
-		    csfY -= FlagSprite.m_bboxY2;
+        csfX += (7<<STC);
+        csfY += (2<<STC);
 
-		csfY += (2<<STC);
-
-		if(episode == 5)
-		{
-		    csfX -= (14<<STC);
+        // Different placement spots
+        if(episode == 4)
+        {
+            csfY -= FlagSprite.m_bboxY2;
+        }
+        else if(episode == 5)
+        {
+            csfX -= (15<<STC);
             csfY -= (2<<CSF);
-		}
-		else
-		{
-		    g_pSound->playSound( SOUND_FLAG_APPEAR );
-		}
-		
-		if(episode == 6)
-		{
-		    csfX += (1<<STC);
-		    csfY += (2<<STC);
-		}
-		
+        }
+        else if(episode == 6)
+        {
+            csfY -= (FlagSprite.m_bboxY2-FlagSprite.m_bboxY1+32);
+            csfY += (2<<STC);
+        }
 
         Vector2D<Uint32> dst(csfX, csfY);
 
@@ -1086,7 +1082,9 @@ bool CPlayerWM::finishLevel(const int object)
 		spawnObj(pFlag);
 
 
-		// Mark the tileinfo on the map as level finished!! So player cannot just re-enter. Exception is if replayability is on.
+        // Mark the tileinfo on the map as level finished,
+        // so player cannot just re-enter. Exception: If option "replayability" is enabled,
+        // or any special level like the bwb rocket, which can be accessed always
 		mp_Map->setTile( x, y, 0, true, 2);
 
         return true;
