@@ -289,7 +289,7 @@ void CAudioGalaxy::setupAudioMap()
 /**
  * \brief 	This function will load the sounds using other dictionaries which are embedded in the Exe File.
  * 			Only galaxy supports that feature, and the original games will read two files from the EXE-file
- * 			AUDIOHED and AUDIODICT to get the sounds.
+ * 			AUDIOHED and AUDIODICT to get the sounds addresses from there.
  * 			Caution: CMusic Class has a function which is similar but only loads the music from one level.
  */
 bool CAudioGalaxy::LoadFromAudioCK(const unsigned int dictOffset)
@@ -498,10 +498,3 @@ bool CAudioGalaxy::loadSoundData(const unsigned int dictOffset)
 	return true;
 }
 
-/**
- * Will free the resources of the audio
- */
-void CAudioGalaxy::unloadSound()
-{
-
-}

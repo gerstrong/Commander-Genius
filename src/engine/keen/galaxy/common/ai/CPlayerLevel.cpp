@@ -2787,23 +2787,23 @@ void CPlayerLevel::TurnGiantSwitchOff(const int x, const int y)
     playSound( SOUND_GUN_CLICK );
 	
     if(flag == 18)
-    {	    
-	PressBridgeSwitch(x_csf, y_csf);	      
+    {
+        PressBridgeSwitch(x_csf, y_csf);
     }
     else
     {
-      if( verifyAndToggleZapper(x_csf, y_csf) )
-      {
-        return;
-      }
-      
-      if( verifyAndToggleBridge(x_csf, y_csf) )
-      {
-        return;
-      }
+        if( verifyAndToggleZapper(x_csf, y_csf) )
+        {
+            return;
+        }
 
-      PressPlatformSwitch(x_csf, y_csf);
-    }    
+        if( verifyAndToggleBridge(x_csf, y_csf) )
+        {
+            return;
+        }
+
+        PressPlatformSwitch(x_csf, y_csf);
+    }
 }
 
 void CPlayerLevel::TurnGiantSwitchOn(const int x, const int y)

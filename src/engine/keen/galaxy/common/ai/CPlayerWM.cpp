@@ -19,6 +19,8 @@
 #include "fileio/KeenFiles.h"
 #include "engine/core/VGamepads/vgamepadsimple.h"
 
+#include <array>
+
 const int TIME_TO_WAVE = 400;
 
 namespace galaxy {
@@ -156,14 +158,14 @@ void CPlayerWM::pumpEvent(const CEvent *evPtr)
                         {
                             const int t_ul = tileID+10;
                             const int t_ur = mp_Map->getPlaneDataAt(1, x+(1<<CSF), y) + 10;
-                            const int t_ll = mp_Map->getPlaneDataAt(1, x, y+(1<<CSF)) + 10;
+                            const int t_ll = mp_Map->getPlaneDataAt(1, x,          y+(1<<CSF)) + 10;
                             const int t_lr = mp_Map->getPlaneDataAt(1, x+(1<<CSF), y+(1<<CSF)) + 10;
 
                             x >>= CSF; y >>= CSF;
 
-                            mp_Map->setTile(x, y, t_ul, true);
+                            mp_Map->setTile(x,   y, t_ul, true);
                             mp_Map->setTile(x+1, y, t_ur, true);
-                            mp_Map->setTile(x, y+1, t_ll, true);
+                            mp_Map->setTile(x,   y+1, t_ll, true);
                             mp_Map->setTile(x+1, y+1, t_lr, true);
                         }
                     }
@@ -731,21 +733,31 @@ void CPlayerWM::processOpeningElevator()
 	// Open until it's wide open
 	const int x = getXMidPos() >> CSF;
 	const int y = getYMidPos() >> CSF;
-	const Uint16 tile1 = mp_Map->getPlaneDataAt( 1, x<<CSF, y<<CSF );
-	const Uint16 tile2 = mp_Map->getPlaneDataAt( 1, (x-1)<<CSF, y<<CSF );
-	const Uint16 tile3 = mp_Map->getPlaneDataAt( 1, (x-1)<<CSF, (y-1)<<CSF );
-	const Uint16 tile4 = mp_Map->getPlaneDataAt( 1, x<<CSF, (y-1)<<CSF );
 
-	elevator_close_timer++;
+    std::array<Uint16,4> curTile;
+
+    curTile[0] = mp_Map->getPlaneDataAt( 1, x<<CSF,     y<<CSF );
+    curTile[1] = mp_Map->getPlaneDataAt( 1, (x-1)<<CSF, y<<CSF );
+    curTile[2] = mp_Map->getPlaneDataAt( 1, (x-1)<<CSF, (y-1)<<CSF );
+    curTile[3] = mp_Map->getPlaneDataAt( 1, x<<CSF,     (y-1)<<CSF );
+
+    std::vector<CTileProperties> &tileProp = gpBehaviorEngine->getTileProperties(1);
+
+    const auto &prop0 = tileProp[ curTile[0] ];
+    const auto &prop1 = tileProp[ curTile[1] ];
+    const auto &prop2 = tileProp[ curTile[2] ];
+    const auto &prop3 = tileProp[ curTile[3] ];
+
+    elevator_close_timer++;
 	if(elevator_close_timer >= ELEVATOR_CLOSE_TIME)
 	{
 		elevator_close_timer = 0;
 
 		// Make the player close the elevator
-		mp_Map->setTile(x, y, tile1+2, true);
-		mp_Map->setTile(x-1, y, tile2+2, true);
-		mp_Map->setTile(x-1, y-1, tile3+2, true);
-		mp_Map->setTile(x, y-1, tile4+2, true);
+        mp_Map->setTile(x,   y,   curTile[0] + prop0.nextTile, true);
+        mp_Map->setTile(x-1, y,   curTile[1] + prop1.nextTile, true);
+        mp_Map->setTile(x-1, y-1, curTile[2] + prop2.nextTile, true);
+        mp_Map->setTile(x,   y-1, curTile[3] + prop3.nextTile, true);
 
 		playSound(SOUND_ELEVATOR_OPEN);
 
@@ -776,16 +788,20 @@ void CPlayerWM::processLeavingElevator()
 	const int dist_y = abs(vec.y);
 
 	if(dist_x != 0)
+    {
 		vec_norm.x = vec.x/dist_x;
+    }
 	if(dist_y != 0)
+    {
 		vec_norm.y = vec.y/dist_y;
+    }
 
 	yDirection = vec_norm.y;
 
 	if( dist_x < SLOW_TELEPORT_WALK_SPEED &&
 		dist_y < SLOW_TELEPORT_WALK_SPEED)
 	{
-		// When done set him solid
+        // When done set player to solid state
 		solid = true;
 		moveDir(vec);
 		mProcessPtr = &CPlayerWM::processMoving;

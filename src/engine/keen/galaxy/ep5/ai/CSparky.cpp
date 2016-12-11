@@ -227,6 +227,8 @@ void CSparky::getTouchedBy(CSpriteObject &theObject)
         }
         else
         {
+            mHealthPoints--;
+
             if(mHealthPoints == 0)
             {
                 setAction(A_SPARKY_STUNNED);
@@ -236,8 +238,6 @@ void CSparky::getTouchedBy(CSpriteObject &theObject)
             {
                 blink(10);
             }
-
-            mHealthPoints--;
         }
 	}
 
