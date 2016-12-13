@@ -69,6 +69,7 @@ void CStunnable::processGettingStunned()
   }
 }
 
+
 void CStunnable::processStunned()
 { }
 
@@ -137,4 +138,4 @@ void CStunnable::draw()
 }
 
 
-};
+}

@@ -343,6 +343,9 @@ protected:
     bool mRecoverFromStun = false; /** If foe get shot they might be able to recover at later time */
     bool mNeverStop = false;        /** This will make foe continue walking and never change actions (Keen 9 - Cybloog) */
     bool mPogoStunnable = false;        /** This will make foe continue walking and never change actions (Keen 9 - Cybloog) */
+    bool mMayShoot = false;         /** If enemy if allowed to shoot. Not all of them are able to do that.*/
+
+    GameSound mWalkSound;
 
     Vector2D<Uint32> m_Pos; 	// x,y location in map coords, CSFed, represent as 2D Vector
 
