@@ -21,8 +21,11 @@ class CAmpton : public CStunnable
 public:
 	CAmpton(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y);
 
+
+    bool loadPythonScripts(const std::string &scriptBaseName);
+
 	/**
-	 * Action functions
+     * Action methods
 	 */
 	void processWalking();	
 	void processTurn();
@@ -50,6 +53,7 @@ public:
 private:
     int mTimer = 0;
 
+    bool mScreamAfterShoot = true;
 };
 
 }

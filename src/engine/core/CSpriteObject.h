@@ -15,7 +15,6 @@
 #include <base/GsEvent.h>
 
 #include "ActionFormat.h"
-//#include <base/utils/CVec.h>
 #include "direction.h"
 #include "CBehaviorEngine.h"
 
@@ -27,6 +26,12 @@
 
 // Enumerations are here
 #include "objenums.h"
+
+#include <base/utils/FindFile.h>
+
+#include "fileio/KeenFiles.h"
+
+#include <Python.h>
 
 
 const int COLISION_RES = (1<<STC);
@@ -329,11 +334,31 @@ public:
 protected:
 
     /**
+     * @brief loadAiGetterInteger
+     * @param pModule
+     * @param pyMethodStr
+     * @param value
+     * @return
+     */
+    bool loadAiGetterInteger(PyObject * pModule, const std::string &pyMethodStr, int &value);
+
+    /**
+     * @brief loadAiGetterBool
+     * @param pModule
+     * @param pyMethodStr
+     * @param value
+     * @return
+     */
+    bool loadAiGetterBool(PyObject * pModule, const std::string &pyMethodStr, bool &value);
+
+
+
+    /**
      * @brief loadPythonScripts     Load an external script file which might modify the behaviour of the sprite object
      * @param scriptBaseName        Basename is the filename with any extension or path. Recommendation: Use the name of the foe
      * @return if load was successful true, otherwise false.
      */
-    bool loadPythonScripts(const std::string &scriptBaseName);
+    virtual bool loadPythonScripts(const std::string &scriptBaseName);
 
 
 	CMap *mp_Map;
