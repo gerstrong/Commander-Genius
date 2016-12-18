@@ -83,8 +83,9 @@ IF(WIN32)
 else(WIN32)
         if(USE_SDL2)
  
-		INCLUDE(FindPkgConfig)    
-		PKG_SEARCH_MODULE(SDL2 REQUIRED sdl2)
+		INCLUDE(FindPkgConfig)
+		FIND_PACKAGE( SDL2 REQUIRED )    
+		#PKG_SEARCH_MODULE(SDL2 REQUIRED sdl2)
                 #FIND_PACKAGE( SDL2_net REQUIRED )
    
 		if(SDL2_FOUND)

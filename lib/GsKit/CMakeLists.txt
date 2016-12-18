@@ -42,6 +42,8 @@ if(USE_SDL2)
       INCLUDE(FindPkgConfig)
       PKG_SEARCH_MODULE(SDL2 REQUIRED sdl2)
       PKG_SEARCH_MODULE(SDL2IMAGE REQUIRED SDL2_image>=2.0.0)
+
+	find_package(SDL2 REQUIRED)
     endif()
 
     if(SDL2_FOUND)
@@ -59,7 +61,7 @@ else(USE_SDL2)
         # SDL2 not found, try to use SDL1.2
         FIND_PACKAGE( SDL REQUIRED )
         FIND_PACKAGE( SDL_image REQUIRED )
-        #PKG_SEARCH_MODULE(SDLIMAGE REQUIRED SDL_image)
+        #PKG_SEARCH_MODULE(SDL_IMAGE REQUIRED SDL_image)
 
         if(NOT ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
                 include(FindSDL OPTIONAL)
