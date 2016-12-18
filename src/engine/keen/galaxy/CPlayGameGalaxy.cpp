@@ -408,6 +408,11 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
     }
     else if( const EventExitLevel *ev = dynamic_cast<const EventExitLevel*>(evPtr) )
     {                
+        if( ev->playSound )
+        {
+            g_pSound->playSound( SOUND_LEVEL_DONE );
+        }
+
         m_LevelPlay.setActive(false);
         m_WorldMap.setActive(true);
         m_WorldMap.loadAndPlayMusic();

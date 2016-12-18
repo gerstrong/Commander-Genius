@@ -129,7 +129,9 @@ void getSlopePointsUpperTile(signed  char slope, int &yb1, int &yb2)
 void CSpriteObject::alignToTile()
 {
     if(sprite == BLANKSPRITE)
+    {
         return;
+    }
     
 	// Center the sprites on the map
 	int moveup = (1<<CSF)-1;
@@ -591,9 +593,13 @@ int CSpriteObject::checkSolidL( int x1, int x2, int y1, int y2)
             if(c-y1 > gBlockTolerance)
             {
                 if(blocker && !slope)
+                {
                     return blocker;
+                }
                 else if(slope)
+                {
                     return 0;
+                }
             }
 		}
 
@@ -651,12 +657,13 @@ int CSpriteObject::checkSolidD( int x1, int x2, int y2, const bool push_mode )
 		{
 			blocked = TileProperty[mp_Map->at(c>>CSF, y2>>CSF)].bup;
 
-			if( blocked && (blocked < 2 || blocked > 7) )
+            if( blocked && (blocked < 2 || blocked > 7) )
 				return blocked;
 		}
 
 		blocked = TileProperty[mp_Map->at((x2-(1<<STC))>>CSF, y2>>CSF)].bup;
-		if( blocked && (blocked < 2 || blocked > 7) )
+
+        if( blocked && (blocked < 2 || blocked > 7) )
 			return blocked;
 	}
 
@@ -748,7 +755,9 @@ void CSpriteObject::processMoveBitUp()
 	const unsigned int x2 = getXPosition()+m_BBox.x2;
 	const unsigned int y1 = getYPosition()+m_BBox.y1;
 
-	if( (blockedu = checkSolidU(x1, x2, y1)) == true)
+    blockedu = checkSolidU(x1, x2, y1);
+
+    if(blockedu)
     {
         if(gpBehaviorEngine->getEpisode()<=3) // Galaxy only!
             return;

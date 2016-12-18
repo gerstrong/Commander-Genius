@@ -65,7 +65,7 @@ void CShikadi::processStanding()
 {
     if(getActionStatus(A_SHIKADI_WALK))
     {
-	setAction(A_SHIKADI_WALK);
+        setAction(A_SHIKADI_WALK);
     }
 }
 
@@ -124,7 +124,7 @@ void CShikadi::processPoleZaps()
 {    
     if(getActionStatus(A_SHIKADI_WALK))
     {
-	setAction(A_SHIKADI_WALK);
+        setAction(A_SHIKADI_WALK);
     }
 }
 

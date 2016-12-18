@@ -35,6 +35,11 @@ public:
 
 	int checkSolidD( int x1, int x2, int y2, const bool push_mode );
 
+    /**
+     * @brief processShooting   Throwing (Keen 9)
+     */
+    void processShooting();
+
 	void process();
 
 	/**
@@ -43,7 +48,8 @@ public:
 	void getTouchedBy(CSpriteObject &theObject);
 	
 private:
-	int mTimer;
+    int mTimer = 0;
+
 };
 
 }

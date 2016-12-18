@@ -602,7 +602,8 @@ class CheckSearchpathForFile
 		}
 };
 
-std::string GetFullFileName(const std::string& path, std::string* searchpath) {
+std::string GetFullFileName(const std::string& path, std::string* searchpath)
+{
 	if(searchpath) *searchpath = "";
 	if(path == "") return GetFirstSearchPath();
 

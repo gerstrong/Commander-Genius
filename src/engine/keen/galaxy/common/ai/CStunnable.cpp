@@ -33,7 +33,7 @@ m_stunned(false),
 m_animation_timer(0),
 starTimer(TIME_STAR_SHOWN)
 {
-	m_invincible = false;
+	mInvincible = false;
 	
 	starSprite = STARRING_SPRITE;
 	
@@ -57,7 +57,7 @@ void CStunnable::processGettingStunned()
 {
   if(blockedd)
   {
-    if( !m_invincible )
+    if( !mInvincible )
     {      
       yinertia = -30; // It gets a small impulse
       
@@ -68,6 +68,7 @@ void CStunnable::processGettingStunned()
     }
   }
 }
+
 
 void CStunnable::processStunned()
 { }
@@ -137,4 +138,4 @@ void CStunnable::draw()
 }
 
 
-};
+}

@@ -45,7 +45,7 @@ CVorticonSpriteObject(p_map, x, y, OBJ_GUARDROBOT, 0)
 	turnaroundtimer = 0;
 
 	canbezapped = true;   // will stop bullets but is not harmed
-	m_invincible = true;
+	mInvincible = true;
 	inhibitfall = true;
 }
 

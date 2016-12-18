@@ -16,8 +16,7 @@
 void GsGraphics::createEmptyTilemaps(size_t num)
 {
 	freeTilemap();
-    GsTilemap oneTilemap;
-	Tilemap.assign(num, oneTilemap);
+    Tilemap.resize(num);
 }
 
 void GsGraphics::createEmptySprites(const int numVar, const int num_sprites)

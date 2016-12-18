@@ -43,8 +43,13 @@ void CSpecialItem::getTouchedBy(CSpriteObject& theObject)
 		    case 0x65: item.rocketKeycard++; break;
 		    default: break;
 		}
+
+        auto exitEvent = new EventExitLevel(mp_Map->getLevel(), true, false, mSprVar);
+
+        // Play it but afterwards
+        exitEvent->playSound = true;
 		
-        EventContainer.add( new EventExitLevel(mp_Map->getLevel(), true, false, mSprVar) );
+        EventContainer.add( exitEvent );
 		
         player->m_Inventory.Item.m_gem.clear();
 	}    

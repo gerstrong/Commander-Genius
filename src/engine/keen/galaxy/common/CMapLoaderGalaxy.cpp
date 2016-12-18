@@ -344,6 +344,7 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
 
 
         Map.collectBlockersCoordiantes();
+        Map.setupAnimationTimer();
 
         // Now that we have all the 3 planes (Background, Foreground, Foes) unpacked...
         // We only will show the first two of them in the screen, because the Foes one

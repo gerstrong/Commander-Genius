@@ -121,24 +121,37 @@ void CTileLoader::readVorticonTileinfo(std::vector<CTileProperties> &TilePropert
 	}
 
 	// This is a special case, because vorticon engine handles animation different
-	// to our new structure. For individual patches it can be adapted
+    // to the galaxy approach. For individual patches it can be adapted
 	for(size_t j=0 ; j < NumTiles ;  )
 	{
 		size_t value = GETWORD( data+(2*j) );
-		if(value == 0 || value == 1) {
-			j++; continue;
+        if(value == 0 || value == 1)
+        {
+            j++;
+            continue;
 		}
 
 		// stuff for animated tiles
 		for( size_t i=0 ; i<value ; i++ )
 		{
+            int nxTile;
+
 			if(i == value-1)
-				TileProperties[j+i].nextTile = -(value-1);
+            {
+                nxTile = -(value-1);
+            }
 			else
-				TileProperties[j+i].nextTile = 1;
-			TileProperties[j+i].animationtime = 6; // Time that has to pass in game cycles until
+            {
+                nxTile = 1;
+            }
+
+            TileProperties[j+i].nextTile = nxTile;
+            TileProperties[j+i+nxTile].prevTile = j+1;
+
+            TileProperties[j+i].animationTime = 6; // Time that has to pass in game cycles until
 												   // animation is performed.
 		}
+
 		j += value;
 	}
 
@@ -150,10 +163,15 @@ void CTileLoader::readGalaxyTileinfo(size_t NumUnMaskedTiles, size_t NumMaskedTi
 {
 	byte *data = m_data + m_offsetMap[m_episode][m_version];
 	std::vector<CTileProperties> &TileUnmaskedProperties = gpBehaviorEngine->getTileProperties(0);
+
 	for(size_t j=0 ; j < NumUnMaskedTiles ; j++)
 	{
-		TileUnmaskedProperties[j].animationtime = data[j];
-		TileUnmaskedProperties[j].nextTile = static_cast<Sint8>(data[NumUnMaskedTiles+j]);
+        TileUnmaskedProperties[j].animationTime = data[j];
+
+        auto nxTile = static_cast<Sint8>(data[NumUnMaskedTiles+j]);
+
+        TileUnmaskedProperties[j].nextTile = nxTile;
+        TileUnmaskedProperties[nxTile+j].prevTile   = j;
 	}
 
 	std::vector<CTileProperties> &TileMaskedProperties = gpBehaviorEngine->getTileProperties(1);
@@ -164,9 +182,12 @@ void CTileLoader::readGalaxyTileinfo(size_t NumUnMaskedTiles, size_t NumMaskedTi
 		TileMaskedProperties[j].bdown 			= data[j+2*NumUnMaskedTiles+2*NumMaskedTiles];
 		TileMaskedProperties[j].bleft 			= data[j+2*NumUnMaskedTiles+3*NumMaskedTiles];
 
-		TileMaskedProperties[j].nextTile 		= static_cast<Sint8>(data[j+2*NumUnMaskedTiles+4*NumMaskedTiles]);
+        auto nxTile = static_cast<Sint8>(data[j+2*NumUnMaskedTiles+4*NumMaskedTiles]);
+
+        TileMaskedProperties[j].nextTile 		= nxTile;
+        TileMaskedProperties[nxTile+j].prevTile   = j;
 		TileMaskedProperties[j].behaviour 		= data[j+2*NumUnMaskedTiles+5*NumMaskedTiles];
-		TileMaskedProperties[j].animationtime 	= data[j+2*NumUnMaskedTiles+6*NumMaskedTiles];		
+        TileMaskedProperties[j].animationTime 	= data[j+2*NumUnMaskedTiles+6*NumMaskedTiles];
 	}
 }
 
