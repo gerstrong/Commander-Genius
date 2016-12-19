@@ -23,6 +23,8 @@ public:
 
 	void process();
 
+    bool loadPythonScripts(const std::string &scriptBaseName);
+
 	/**
 	 * What happens if the slug gets touched by another object
 	 */

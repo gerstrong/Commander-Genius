@@ -63,7 +63,7 @@ mSprVar(spriteVar)
     setupCollisionModel();
 }
 
-bool loadAiGetterBool(PyObject * pModule, const std::string &pyMethodStr, bool &value)
+bool CSpriteObject::loadAiGetterBool(PyObject * pModule, const std::string &pyMethodStr, bool &value)
 {
     // pFunc is a new reference
     PyObject *pFunc = PyObject_GetAttrString(pModule, pyMethodStr.c_str());
@@ -99,7 +99,7 @@ bool loadAiGetterBool(PyObject * pModule, const std::string &pyMethodStr, bool &
             PyErr_Print();
         }
 
-        gLogging.ftextOut("Cannot find function \"init\"\n");
+        gLogging.ftextOut("Cannot find function \"pyMethodStr\"\n");
         return false;
     }
 
@@ -109,7 +109,7 @@ bool loadAiGetterBool(PyObject * pModule, const std::string &pyMethodStr, bool &
     return true;
 }
 
-bool loadAiGetterInteger(PyObject * pModule, const std::string &pyMethodStr, int &value)
+bool CSpriteObject::loadAiGetterInteger(PyObject * pModule, const std::string &pyMethodStr, int &value)
 {
     // pFunc is a new reference
     PyObject *pFunc = PyObject_GetAttrString(pModule, pyMethodStr.c_str());

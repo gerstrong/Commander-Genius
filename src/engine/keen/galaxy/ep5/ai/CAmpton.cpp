@@ -88,6 +88,64 @@ CAmpton::CAmpton(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y)
     }
 }
 
+bool CAmpton::loadPythonScripts(const std::string &scriptBaseName)
+{
+    // Extra Python script for this AI defined?
+    std::string aiscript = JoinPaths(gKeenFiles.gameDir ,"ai");
+    aiscript = JoinPaths(aiscript,scriptBaseName);
+    aiscript += ".py";
+    aiscript = GetFullFileName(aiscript);
+
+    std::string aidir = ExtractDirectory(aiscript);
+
+    Py_Initialize();
+
+    PyObject* programName = PyUnicode_FromString(scriptBaseName.c_str());
+
+    PyRun_SimpleString("import sys");
+
+    const std::string sysPathCommand = "sys.path.append(\"" + aidir + "\")";
+
+    PyRun_SimpleString(sysPathCommand.c_str());
+
+    auto pModule = PyImport_Import(programName);
+    Py_DECREF(programName);
+
+
+
+    if (pModule != nullptr)
+    {
+        loadAiGetterBool(pModule, "screamAfterShoot", mScreamAfterShoot);
+
+        loadAiGetterBool(pModule, "mayShoot", mMayShoot);
+
+        int health = mHealthPoints;
+        loadAiGetterInteger(pModule, "healthPoints", health);
+        mHealthPoints = health;
+
+        int walksound = mWalkSound;
+        loadAiGetterInteger(pModule, "walkSound", walksound);
+        mWalkSound = GameSound(walksound);
+
+
+        Py_DECREF(pModule);
+    }
+    else
+    {
+#if PYTHON_VERBOSE
+        PyErr_Print();
+        gLogging.ftextOut("Failed to load \"%s\"\n", aiscript.c_str());
+#endif
+
+        return false;
+    }
+
+    Py_Finalize();
+
+    return true;
+}
+
+
 
 void CAmpton::processWalking()
 {
@@ -299,10 +357,13 @@ void CAmpton::getTouchedBy(CSpriteObject &theObject)
         mHealthPoints--;
         theObject.dead = true;
 
-        playSound(SOUND_ROBO_STUN);
-
         if(mHealthPoints == 0)
         {
+            if(mScreamAfterShoot)
+            {
+                playSound(SOUND_ROBO_STUN);
+            }
+
             setAction(A_AMPTON_STUNNED);
             dead = true;
             solid = true;
