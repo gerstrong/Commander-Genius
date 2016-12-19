@@ -7,6 +7,7 @@
 
 
 #include "CRoboRed.h"
+#include "../../common/ai/CEnemyShot.h"
 #include "CRedShot.h"
 #include "../../common/ai/CPlayerBase.h"
 #include "../../common/ai/CPlayerLevel.h"
@@ -199,11 +200,18 @@ void CRoboRed::processShoot()
 
       }
 
-      /*if(mAlternateShot)
+      if(mAlternateShot)
       {
-        TODO: ...
+          playSound(SOUND_POLEZAP);
+
+          spawnObj( new CEnemyShot(getMapPtr(), 0,
+                                   newX, getYUpPos(),
+                                   0x2E5A, newXDir, 0,  0.001, mSprVar) );
+
+          setAction(A_RED_MOVE);
+          mTimer = 0;
       }
-      else*/
+      else
       {
           playSound(SOUND_ROBORED_SHOOT);
 
@@ -211,6 +219,7 @@ void CRoboRed::processShoot()
                                   0,
                                   newX, newY,
                                   newXDir, newYDir ) );
+
       }
 
   }
@@ -272,13 +281,16 @@ void CRoboRed::getTouchedBy(CSpriteObject &theObject)
 
     CStunnable::getTouchedBy(theObject);
 
-    // Was it a bullet? If foe must move on, do not stop it.
-    if(!mNeverStop)
+    // Was it a bullet? If foe must move on, do not stop it.    
+    if( dynamic_cast<CBullet*>(&theObject) && !getActionNumber(A_RED_SHOOT) )
     {
-        if( dynamic_cast<CBullet*>(&theObject) && !getActionNumber(A_RED_SHOOT) )
+        if(!mNeverStop)
         {
             setAction(A_RED_PAUSE);
         }
+
+
+        theObject.dead = true;
     }
 
     if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )

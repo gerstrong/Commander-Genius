@@ -99,7 +99,7 @@ bool CSpriteObject::loadAiGetterBool(PyObject * pModule, const std::string &pyMe
             PyErr_Print();
         }
 
-        gLogging.ftextOut("Cannot find function \"init\"\n");
+        gLogging.ftextOut("Cannot find function \"pyMethodStr\"\n");
         return false;
     }
 
