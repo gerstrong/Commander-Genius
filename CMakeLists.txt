@@ -67,6 +67,8 @@ if(UNIX)
 endif(UNIX)
 
 
+
+
 # Force SDL2 on windows systems
 IF(WIN32)
 
@@ -87,6 +89,8 @@ else(WIN32)
  
 		INCLUDE(FindPkgConfig)
 		FIND_PACKAGE( SDL2 REQUIRED )    
+                find_package(SDL2 REQUIRED)
+                find_package(SDL2_image REQUIRED >=2.0.0)
 		#PKG_SEARCH_MODULE(SDL2 REQUIRED sdl2)
                 #FIND_PACKAGE( SDL2_net REQUIRED )
    
@@ -96,6 +100,9 @@ else(WIN32)
 			include_directories(${SDL2_NET_INCLUDE_DIRS})
 			include_directories(/usr/include/SDL2/)
 		endif(SDL2_FOUND)
+
+        	set(SDL2_INCLUDE_DIRS /Library/Frameworks/SDL2.framework/Headers)
+        	set(SDL2_IMAGE_INCLUDE_DIRS /Library/Frameworks/SDL2_image.framework/Headers)   
 
         else(USE_SDL2)
             # SDL2 not defined, try SDL1.2

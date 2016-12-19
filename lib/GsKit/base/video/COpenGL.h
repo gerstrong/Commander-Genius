@@ -16,12 +16,12 @@
 
 #include <SDL.h>
 
-#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
-#include <OpenGLES/ES1/gl.h>
-#include <OpenGLES/ES1/glext.h>
-#else
+//#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
+//#include <OpenGLES/ES1/gl.h>
+//#include <OpenGLES/ES1/glext.h>
+//#else
 #include <SDL_opengl.h>
-#endif
+//#endif
 
 #include <base/video/CVideoEngine.h>
 

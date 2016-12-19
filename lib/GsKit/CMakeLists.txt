@@ -40,20 +40,27 @@ if(USE_SDL2)
       include(FindSDL2 OPTIONAL)
     else()
       INCLUDE(FindPkgConfig)
-      PKG_SEARCH_MODULE(SDL2 REQUIRED sdl2)
-      PKG_SEARCH_MODULE(SDL2IMAGE REQUIRED SDL2_image>=2.0.0)
+      find_package(SDL2 REQUIRED)
+      find_package(SDL2_image REQUIRED >=2.0.0)
+      #PKG_SEARCH_MODULE(SDL2 REQUIRED sdl2)
+      #PKG_SEARCH_MODULE(SDL2IMAGE REQUIRED SDL2_image>=2.0.0)
 
-	find_package(SDL2 REQUIRED)
+	
     endif()
 
     if(SDL2_FOUND)
         message(STATUS "Using shared SDL Version 2 for Commander Genius")
         include_directories(${SDL2_INCLUDE_DIRS})
-        include_directories(${SDL2IMAGE_INCLUDE_DIRS})
 
+
+
+        set(SDL2_INCLUDE_DIRS /Library/Frameworks/SDL2.framework/Headers)
+        set(SDL2_IMAGE_INCLUDE_DIRS /Library/Frameworks/SDL2_image.framework/Headers)   
+
+        include_directories(${SDL2_IMAGE_INCLUDE_DIRS})
         #include_directories(${SDL2_NET_INCLUDE_DIRS})
 
-        include_directories(/usr/include/SDL2/)
+        #include_directories(/usr/include/SDL2/)
     endif(SDL2_FOUND)
 
 else(USE_SDL2)
