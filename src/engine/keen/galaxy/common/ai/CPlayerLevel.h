@@ -75,8 +75,12 @@ public:
 	
 	void push( CGalaxySpriteObject &theObject );
 	
-	// Checks if Keen is standing or walking on a conveyor belt
-	bool checkConveyorBelt();
+    //
+    /**
+     * @brief checkConveyorBelt Checks if Keen is standing or walking on a conveyor belt and returns the transport direction
+     * @return 1 for right, -1 for left, 0 for nothing
+     */
+    int checkConveyorBelt();
 	
 
 	/**

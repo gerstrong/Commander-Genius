@@ -2531,10 +2531,8 @@ void CPlayerLevel::push(CGalaxySpriteObject& theObject)
 }
 
 
-bool CPlayerLevel::checkConveyorBelt()
+int CPlayerLevel::checkConveyorBelt()
 {
-    if(gpBehaviorEngine->getEpisode() == 6)
-    {
 	Uint32 l_x_l = getXLeftPos();
 	Uint32 l_x = getXMidPos();
 	Uint32 l_x_r = getXRightPos();
@@ -2543,20 +2541,24 @@ bool CPlayerLevel::checkConveyorBelt()
 	int tileID1 = mp_Map->getPlaneDataAt(1, l_x_l, l_y_down);
 	int tileID2 = mp_Map->getPlaneDataAt(1, l_x, l_y_down);
 	int tileID3 = mp_Map->getPlaneDataAt(1, l_x_r, l_y_down);
-	
-	for(int j=0 ; j<4 ; j++) // This will take all the conveyor belts
-	{
-	    if( (tileID1>=0x83A && tileID1<=0x843) ||
-		(tileID2>=0x83A && tileID2<=0x843) ||
-		(tileID3>=0x83A && tileID3<=0x843) )
-	    {
-		return true;
-	    }
-	    
-	    tileID1 -= 36;	tileID2 -= 36;	tileID3 -= 36;
-	}
-    }	
-    return false;
+
+    std::vector<CTileProperties> &tileProp = gpBehaviorEngine->getTileProperties(1);
+
+    const CTileProperties &TileProp1 = gpBehaviorEngine->getTileProperties(1)[tileID1];
+    const CTileProperties &TileProp2 = gpBehaviorEngine->getTileProperties(1)[tileID2];
+    const CTileProperties &TileProp3 = gpBehaviorEngine->getTileProperties(1)[tileID3];
+
+
+    if( TileProp1.bup == 0x29 || TileProp2.bup == 0x29 || TileProp3.bup == 0x29)
+    {
+        return RIGHT;
+    }
+    else if( TileProp1.bup == 0x31 || TileProp2.bup == 0x31 || TileProp3.bup == 0x31)
+    {
+        return LEFT;
+    }
+
+    return 0;
 }
 
 
@@ -2706,10 +2708,11 @@ void CPlayerLevel::process()
 	}
 	
 	
-	// Conveyor Belt in Keen 6
-	if(checkConveyorBelt())
+    // Conveyor Belt in Keen 6 (but can work in 4 and 5)
+    const auto conveyorBeltDir = checkConveyorBelt();
+    if(conveyorBeltDir)
 	{
-	    moveRight(BELT_SPEED);
+        moveXDir(conveyorBeltDir*BELT_SPEED);
 	}
 }
 
