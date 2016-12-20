@@ -35,7 +35,11 @@
 
 #include "keen/vorticon/VorticonEngine.h"
 #include "keen/galaxy/GalaxyEngine.h"
+
+#ifdef REFKEEN
 #include "keen/dreams/dreamsengine.h"
+#endif
+
 #ifdef DBFUSION
 #include "dbfusion/dbFusionNgine.h"
 #endif // DBFUSION
@@ -785,10 +789,12 @@ void CGameLauncher::ponderPatchDialog()
                         gEventManager.add( new StartGalaxyEngine(false, episode, DataDirectory) );
                     }
 
+#ifdef REFKEEN
                     else if(episode == 7)
                     {
                         gEventManager.add( new StartDreamsEngine(false, DataDirectory) );
                     }
+#endif
 
 
                 }
