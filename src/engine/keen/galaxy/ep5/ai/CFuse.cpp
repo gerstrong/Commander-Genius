@@ -63,30 +63,41 @@ bool CFuse::loadPythonScripts(const std::string &scriptBaseName)
     Py_DECREF(programName);
 
 
+    const int level = mp_Map->getLevel();
+
 
     if (pModule != nullptr)
     {
-        /*{
-            //gpBehaviorEngine->setMessage("LEVEL_TEXT5", "Lindsay Stuff");
+        {
+
 
             // pFunc is a new reference
             PyObject *pFunc = PyObject_GetAttrString(pModule, "getLevelText");
 
             if (pFunc && PyCallable_Check(pFunc))
             {
-                PyObject *pValue = PyObject_CallObject(pFunc, nullptr);
+                PyObject *arglist = Py_BuildValue("(i)", level);
+
+
+                PyObject *pValue = PyObject_CallObject(pFunc, arglist);
+
 
                 if (pValue != nullptr)
-                {
-                    if( PyObject_IsTrue(pValue) )
+                {                    
+                    PyObject *objectsRepresentation = PyObject_Repr(pValue);
+
+                    char *str = PyUnicode_AsUTF8(objectsRepresentation) ;
+
+                    if(str)
                     {
-                        value = true;
+                        std::string message = str;
+                        std::string levelText = "LEVEL_TEXT";
+                        levelText += itoa(level);
+                        gpBehaviorEngine->setMessage(levelText, message);
                     }
-                    else
-                    {
-                        value = false;
-                    }
+
                     Py_DECREF(pValue);
+                    Py_DECREF(objectsRepresentation);
                 }
                 else
                 {
@@ -95,6 +106,8 @@ bool CFuse::loadPythonScripts(const std::string &scriptBaseName)
                     gLogging.ftextOut("Call failed\n");
                     return false;
                 }
+
+                Py_DECREF(arglist);
             }
             else
             {
@@ -110,9 +123,7 @@ bool CFuse::loadPythonScripts(const std::string &scriptBaseName)
             Py_XDECREF(pFunc);
 
 
-            return true;
-
-        }*/
+        }
 
         Py_DECREF(pModule);
     }
@@ -139,38 +150,35 @@ void CFuse::getTouchedBy(CSpriteObject &theObject)
 	if(dead || theObject.dead)
 		return;
 
-    /*
+
     if( auto *thePlayer = dynamic_cast<CPlayerLevel*>(&theObject) )
     {
-        g_pMusicPlayer->stop();
+        const auto level = mp_Map->getLevel();
+        std::string levelText = "LEVEL_TEXT";
+        levelText += itoa(level);
 
-        thePlayer->m_Inventory.Item.m_gem.clear();
-        thePlayer->m_Inventory.Item.fuse_levels_completed++;
-        mp_Map->mFuseInLevel = false;
+        const auto msg = gpBehaviorEngine->getString(levelText);
 
-        std::vector<CMessageBoxGalaxy*> msgs;
+        if(!msg.empty())
+        {
+            thePlayer->m_Inventory.Item.m_gem.clear();
+            thePlayer->m_Inventory.Item.fuse_levels_completed++;
+            mp_Map->mFuseInLevel = false;
 
-        bool specialLevel = false;
+            std::vector<CMessageBoxGalaxy*> msgs;
 
-        const std::string fuse_msg = gpBehaviorEngine->getString( (specialLevel) ? "FUSE_WONDER" : "FUSE_CASUAL");
+            bool specialLevel = false;
 
-        g_pSound->playSound( SOUND_FUSE_BREAK, PLAY_PAUSEALL );
+            msgs.push_back( new CMessageBoxBitmapGalaxy(
+                                msg,
+                                *gGraphics.getBitmapFromStr("KEENTHUMBSUP"),
+                                RIGHT) );
 
-        //gEffectController.setupEffect(new CDimDark(8));
-
-        auto evExit = new EventExitLevel(mp_Map->getLevel(), true, false, mSprVar);
-        evExit->playSound = true;
-
-        msgs.push_back( new CMessageBoxBitmapGalaxy(
-                            fuse_msg,
-                            *gGraphics.getBitmapFromStr("KEENTHUMBSUP"),
-                            RIGHT,
-                            evExit) );
-
-        showMsgVec( msgs );
-        dead = false;
+            showMsgVec( msgs );
+            dead = true;
+        }
     }
-*/
+
 }
 
 
