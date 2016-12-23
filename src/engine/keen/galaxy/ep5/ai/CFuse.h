@@ -32,6 +32,8 @@ public:
 	
 private:
 	int mTimer;
+
+    int mLevelTestBmp = 84; /** Index to use for the hint message (Keen 9 and other mods) */
 };
 
 }

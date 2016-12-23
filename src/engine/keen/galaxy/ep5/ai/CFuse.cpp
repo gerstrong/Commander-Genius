@@ -38,6 +38,18 @@ mTimer(0)
 }
 
 
+void fixNewLine(std::string& str)
+{
+    for(size_t i=0 ; i<str.size()-1 ; i++)
+    {
+        if(str[i] == '\\' && str[i+1] == 'n')
+        {
+            str[i] = ' ';
+            str[i+1] = '\n';
+        }
+    }
+}
+
 
 bool CFuse::loadPythonScripts(const std::string &scriptBaseName)
 {
@@ -68,9 +80,9 @@ bool CFuse::loadPythonScripts(const std::string &scriptBaseName)
 
     if (pModule != nullptr)
     {
-        {
 
-
+        // Level Text
+        {            
             // pFunc is a new reference
             PyObject *pFunc = PyObject_GetAttrString(pModule, "getLevelText");
 
@@ -91,6 +103,10 @@ bool CFuse::loadPythonScripts(const std::string &scriptBaseName)
                     if(str)
                     {
                         std::string message = str;
+
+                        // Because line breaks are not formatted correctly
+                        fixNewLine(message);
+
                         std::string levelText = "LEVEL_TEXT";
                         levelText += itoa(level);
                         gpBehaviorEngine->setMessage(levelText, message);
@@ -101,12 +117,57 @@ bool CFuse::loadPythonScripts(const std::string &scriptBaseName)
                 }
                 else
                 {
-                    Py_DECREF(pFunc);
+
                     PyErr_Print();
                     gLogging.ftextOut("Call failed\n");
                     return false;
                 }
 
+                Py_DECREF(pFunc);
+                Py_DECREF(arglist);
+            }
+            else
+            {
+                if (PyErr_Occurred())
+                {
+                    PyErr_Print();
+                }
+
+                gLogging.ftextOut("Cannot find function \"pyMethodStr\"\n");
+                return false;
+            }
+
+            Py_XDECREF(pFunc);
+
+
+        }
+
+        // The bitmap of the hint message
+        {
+            // pFunc is a new reference
+            PyObject *pFunc = PyObject_GetAttrString(pModule, "getLevelTextBmp");
+
+            if (pFunc && PyCallable_Check(pFunc))
+            {
+                PyObject *arglist = Py_BuildValue("(i)", level);
+
+
+                PyObject *pValue = PyObject_CallObject(pFunc, arglist);
+
+
+                if (pValue != nullptr)
+                {
+                    mLevelTestBmp = PyLong_AsLong(pValue);
+                    Py_DECREF(pValue);
+                }
+                else
+                {
+                    PyErr_Print();
+                    gLogging.ftextOut("Call failed\n");
+                    return false;
+                }
+
+                Py_DECREF(pFunc);
                 Py_DECREF(arglist);
             }
             else
@@ -171,7 +232,7 @@ void CFuse::getTouchedBy(CSpriteObject &theObject)
 
             msgs.push_back( new CMessageBoxBitmapGalaxy(
                                 msg,
-                                *gGraphics.getBitmapFromStr("KEENTHUMBSUP"),
+                                gGraphics.getBitmapFromId(mLevelTestBmp),
                                 RIGHT) );
 
             showMsgVec( msgs );
@@ -184,7 +245,7 @@ void CFuse::getTouchedBy(CSpriteObject &theObject)
 
 void CFuse::process()
 {
-    // TODO: We might need a scatter effect here
+    // TODO: We might need a scattermLevelTestBmp effect here
 	//if(!processActionRoutine())
 	  //  exists = false;
 }

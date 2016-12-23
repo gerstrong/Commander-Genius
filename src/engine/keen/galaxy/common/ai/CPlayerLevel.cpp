@@ -1633,7 +1633,7 @@ void CPlayerLevel::processPressUp() {
 				  mTarget.y -= (1<<CSF);
 				}
 				
-				solid=false;
+                solid = false;
 				
 				
 				setAction(A_KEEN_ENTER_DOOR);
@@ -1760,6 +1760,8 @@ void CPlayerLevel::processEnterDoor()
 	{	  
 	  
 	  bool mustTeleportOnMap = false;
+
+      auto &frontTileProperties = gpBehaviorEngine->getTileProperties(1);
 	  
 	  // Check if there is a teleporter. In Keen 5 there might be one!
 	  if(gpBehaviorEngine->getEpisode() == 5)
@@ -1776,7 +1778,11 @@ void CPlayerLevel::processEnterDoor()
 	      teletile = mp_Map->getPlaneDataAt(1, xmid, y1-(3<<CSF));
 	    
 	    // Code for the teleport tile
-	    if(teletile == 0x0401)
+        //if(teletile == 0x0401)
+        const auto &tile = frontTileProperties[teletile];
+
+        // Teleport to the secret level
+        if(tile.behaviour == 0x02)
 	    {
 	      // There is one!
 	      mustTeleportOnMap = true;
@@ -2544,9 +2550,9 @@ int CPlayerLevel::checkConveyorBelt()
 
     std::vector<CTileProperties> &tileProp = gpBehaviorEngine->getTileProperties(1);
 
-    const CTileProperties &TileProp1 = gpBehaviorEngine->getTileProperties(1)[tileID1];
-    const CTileProperties &TileProp2 = gpBehaviorEngine->getTileProperties(1)[tileID2];
-    const CTileProperties &TileProp3 = gpBehaviorEngine->getTileProperties(1)[tileID3];
+    const CTileProperties &TileProp1 = tileProp[tileID1];
+    const CTileProperties &TileProp2 = tileProp[tileID2];
+    const CTileProperties &TileProp3 = tileProp[tileID3];
 
 
     if( TileProp1.bup == 0x29 || TileProp2.bup == 0x29 || TileProp3.bup == 0x29)
