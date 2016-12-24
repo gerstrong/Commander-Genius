@@ -59,6 +59,8 @@ bool CAudioResources::readISFintoWaveForm( CSoundSlot &soundslot, const byte *im
 
 	OPLEmulator.ALStopSound();
 
+    unsigned long offset = 0;
+
 	for(byte *AL_Sounddata_ptr = (byte*) AL_Sounddata_start ;
 			  AL_Sounddata_ptr < AL_Sounddata_end ;
 			  AL_Sounddata_ptr++ )
@@ -69,9 +71,9 @@ bool CAudioResources::readISFintoWaveForm( CSoundSlot &soundslot, const byte *im
 			OPLEmulator.Chip__WriteReg( alFreqH, alBlock );
 		}
 		else
+        {
 			OPLEmulator.Chip__WriteReg( alFreqH, 0 );
-
-        unsigned long offset = 0;
+        }
 
    		if(formatsize == 2) // 16-Bit Sound
    		{
