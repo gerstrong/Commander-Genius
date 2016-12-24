@@ -16,7 +16,7 @@
 
 #include <SDL.h>
 
-//#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
+//#if (TARGET_OS_IPHONE) || (TARGET_IPHONE_SIMULATOR)
 //#include <OpenGLES/ES1/gl.h>
 //#include <OpenGLES/ES1/glext.h>
 //#else

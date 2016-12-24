@@ -28,7 +28,7 @@ SDL_sem *pollSem = nullptr;
 #include "sys/wizgp2x.h"
 #endif
 
-#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
+#if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
 #define MOUSEWRAPPER 1
 #endif
 
@@ -45,7 +45,7 @@ CInput::CInput()
 	for(size_t c=1 ; c<= NUM_INPUTS ; c++)
 		resetControls(c);
 	memset(&Event,0,sizeof(Event));
-#if !defined(TARGET_OS_IPHONE) && !defined(TARGET_IPHONE_SIMULATOR)
+#if !TARGET_OS_IPHONE && !TARGET_IPHONE_SIMULATOR
 	loadControlconfig(); // we want to have the default settings in all cases
 	startJoyDriver(); // not for iPhone for now, could cause trouble (unwanted input events)
 #endif
@@ -464,10 +464,11 @@ void CInput::readNewEvent()
 	// This function is used to configure new input keys.
 	// For iPhone, we have emulation via touchpad and we don't want to have custom keys.
 	// We should fix the menu for iPhone so that this function doesn't get called.
-#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
+#if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
 	printf("WARNING: called readNewEvent on iphone\n");
 	return;
 #endif
+
 
 	memset(&lokalInput, 0, sizeof(stInputCommand));
 	if(!m_EventList.empty())
@@ -479,7 +480,7 @@ void CInput::readNewEvent()
 		{
 			case SDL_QUIT:
 				gLogging.textOut("SDL: Got quit event in readNewEvent!");
-#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
+#if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
 				// on iPhone, we just want to quit in this case
 				exit(0);
 #endif

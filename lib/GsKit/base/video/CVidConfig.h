@@ -20,7 +20,7 @@ const unsigned int RES_BPP = 32;
 
 #ifdef USE_OPENGL
 	#include <SDL_opengl.h>
-//#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
+//#if (TARGET_OS_IPHONE) || (TARGET_IPHONE_SIMULATOR)
 //    #include <SDL_opengles.h>
 //#endif
 #endif

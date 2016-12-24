@@ -147,7 +147,7 @@ bool COpenGL::init()
 	glMatrixMode( GL_PROJECTION );
 	glLoadIdentity();
     
-#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)	// TODO: dont check for iphone but for opengles
+#if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR	// TODO: dont check for iphone but for opengles
 #define glOrtho glOrthof
 #endif
 	glOrtho( 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f );
@@ -157,7 +157,7 @@ bool COpenGL::init()
 	glLoadIdentity();
 
     // Setup the view port for the first time
-#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
+#if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
 	glViewport(0, 0, 480, 320);
 #else
     setUpViewPort(mAspectCorrectionRect);
@@ -197,7 +197,7 @@ bool COpenGL::init()
 	glMatrixMode( GL_PROJECTION );
 	glLoadIdentity();
 
-	#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)	// TODO: dont check for iphone but for opengles
+    #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR	// TODO: dont check for iphone but for opengles
 	#define glOrtho glOrthof
 	#endif
 	glOrtho( 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f );
@@ -284,7 +284,7 @@ void COpenGL::loadSurface(GLuint texture, SDL_Surface* surface)
 	glBindTexture (m_texparam, texture);
 	GLint internalFormat, externalFormat;
 
-#if !defined(TARGET_OS_IPHONE) && !defined(TARGET_IPHONE_SIMULATOR) // iPhone always used 32 bits; also GL_BGR is not defined
+#if !TARGET_OS_IPHONE && !TARGET_IPHONE_SIMULATOR // iPhone always used 32 bits; also GL_BGR is not defined
 	if(surface->format->BitsPerPixel == 24)
 	{
 		internalFormat = GL_RGB;
