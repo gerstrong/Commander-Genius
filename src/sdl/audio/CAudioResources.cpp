@@ -20,9 +20,11 @@ bool CAudioResources::readISFintoWaveForm( CSoundSlot &soundslot, const byte *im
 	byte *imfdata_ptr = (byte*)imfdata;
 	const longword size = READLONGWORD(imfdata_ptr);
 
-    // If the size is at largest. The sound is invalid.
+    // If the size is at largest, the sound is invalid.
     if(size == 0xFFFFFFFF)
+    {
         return false;
+    }
 
 	soundslot.priority = READWORD(imfdata_ptr);
     COPLEmulator &OPLEmulator = g_pSound->getOPLEmulatorRef();

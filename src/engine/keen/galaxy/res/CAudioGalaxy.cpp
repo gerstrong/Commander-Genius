@@ -337,8 +337,12 @@ bool CAudioGalaxy::LoadFromAudioCK(const unsigned int dictOffset)
     AudioFile.seekg( 0, std::ios::beg );
 
     // create memory so we can store the Audio.ck there and use it later for extraction
-    uint8_t *AudioCompFileData = new uint8_t[audiofilecompsize];
-    AudioFile.read((char*)AudioCompFileData, audiofilecompsize);
+    //uint8_t *AudioCompFileData = new uint8_t[audiofilecompsize];
+
+    std::vector<uint8_t> AudioCompFileData;
+    AudioCompFileData.resize(audiofilecompsize, 0);
+
+    AudioFile.read((char*)AudioCompFileData.data(), audiofilecompsize);
     AudioFile.close();
 
     // Open the AUDIOHED so we know where to decompress the audio
@@ -412,7 +416,6 @@ bool CAudioGalaxy::LoadFromAudioCK(const unsigned int dictOffset)
     if(audiohed.empty())
     {
         gLogging.textOut("CAudioGalaxy::LoadFromAudioCK(): No audio was found in that file! It seems to be empty.");
-        delete [] AudioCompFileData;
         return false;
     }
 
@@ -450,12 +453,12 @@ bool CAudioGalaxy::LoadFromAudioCK(const unsigned int dictOffset)
         if( audio_comp_data_start < audio_end )
         {
             const uint32_t *AudioCompFileData32 = reinterpret_cast<uint32_t*>(
-                        reinterpret_cast<void*>(AudioCompFileData + audio_start));
+                        reinterpret_cast<void*>(AudioCompFileData.data() + audio_start));
 
             outsize = *AudioCompFileData32;
             imfdata.resize(outsize);
 
-            Huffman.expand( (byte*)(AudioCompFileData+audio_comp_data_start), imfdata.data(), audio_end-audio_comp_data_start, outsize);
+            Huffman.expand( (byte*)(&AudioCompFileData[audio_comp_data_start]), imfdata.data(), audio_end-audio_comp_data_start, outsize);
 
             if(snd>=al_snd_start)
             {
@@ -466,13 +469,11 @@ bool CAudioGalaxy::LoadFromAudioCK(const unsigned int dictOffset)
                 }
             }
             else
+            {
                 readPCSpeakerSoundintoWaveForm( m_soundslot[snd], imfdata.data(), (audioSpec.format == AUDIO_S16) ? 2 : 1 );
+            }
         }
     }
-
-    delete [] AudioCompFileData;
-
-
 
     return true;
 }
