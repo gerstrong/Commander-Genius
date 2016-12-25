@@ -42,7 +42,6 @@ public:
 	void getTouchedBy(CSpriteObject &theObject);
 	
 private:
-	int mHealth;
 	int mTimer;
 	direction_t mKeenAlignmentX;
 	direction_t mKeenAlignmentY;	

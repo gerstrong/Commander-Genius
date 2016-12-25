@@ -51,9 +51,10 @@ const int TIME_WALKING = 50;
   
 CShockshound::CShockshound(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
 CStunnable(pmap, foeID, x, y),
-mHealth(2),
 mTimer(0)
 {
+    mHealthPoints = 2;
+    mTurnAroundOnCliff = true;
 	
 	mActionMap[A_HOUND_SIT] = (GASOFctr) &CShockshound::processSit;
 	mActionMap[A_HOUND_BARK] = (GASOFctr) &CShockshound::processBark;
@@ -68,6 +69,8 @@ mTimer(0)
 	
 	xDirection = LEFT;
 	yDirection = CENTER;
+
+    loadPythonScripts("shockshound");
 }
 
 
@@ -89,7 +92,9 @@ void CShockshound::processBark()
 {
     mTimer++;
     if( mTimer < TIME_TO_BARK )
+    {
       return;
+    }
   
     mTimer = 0;
     
@@ -97,24 +102,24 @@ void CShockshound::processBark()
     
     if(getProbability(200))
     {
-	setAction(A_HOUND_SIT);    
+        setAction(A_HOUND_SIT);
     }
 
     if(mKeenAlignmentY != CENTER)
     {
-	yinertia = -120;
-	setAction(A_HOUND_JUMP);
-    }    
+        yinertia = -80;
+        setAction(A_HOUND_JUMP);
+    }
     
     if(getProbability(500))
-    {	    
-	// Spawn a Enemyshot in form electrostatic
-	const int newX = (xDirection == LEFT) ? getXLeftPos()+(4<<STC) : getXRightPos()-(4<<STC);
-	spawnObj( new CEnemyShot(mp_Map, 0, 
-							newX, getYUpPos()-(8<<STC),
-                            0x2FC2, xDirection, CENTER,  150, mSprVar) );
-	
-	// SD_PlaySound(SOUND_BARKSHOTDIE); This must be used in the Enemyshot class, but can't because it's too general
+    {
+        // Spawn a Enemyshot in form electrostatic
+        const int newX = (xDirection == LEFT) ? getXLeftPos()+(4<<STC) : getXRightPos()-(4<<STC);
+        spawnObj( new CEnemyShot(mp_Map, 0,
+                                 newX, getYUpPos()-(8<<STC),
+                                 0x2FC2, xDirection, CENTER,  150, mSprVar) );
+
+        // SD_PlaySound(SOUND_BARKSHOTDIE); This must be used in the Enemyshot class, but can't because it's too general
     }
 
 }
@@ -127,7 +132,9 @@ void CShockshound::processWalking()
   
   mTimer++;
   if( mTimer < TIME_WALKING )
+  {
     return;
+  }
   
   mTimer = 0;
     
@@ -140,7 +147,7 @@ void CShockshound::processWalking()
 void CShockshound::processJump()
 {
   // Move normally in the direction
-  moveXDir(xDirection*WALK_SPEED);  
+  moveXDir(xDirection*WALK_SPEED);
 
   if( yinertia >= 0 && blockedd)
   {
@@ -156,15 +163,24 @@ bool CShockshound::isNearby(CSpriteObject &theObject)
 	if( CPlayerLevel *player = dynamic_cast<CPlayerLevel*>(&theObject) )
 	{	    	    
 		if( player->getXMidPos() < getXMidPos() )
+        {
 			mKeenAlignmentX = LEFT;
+        }
 		else
+        {
 			mKeenAlignmentX = RIGHT;
+        }
 		
 		mKeenAlignmentY = CENTER;
+
 		if( player->getYDownPos()-(1<<STC) < getYUpPos() )
+        {
 		    mKeenAlignmentY = UP;
+        }
 		else if( player->getYDownPos()+(1<<STC) > getYDownPos() )
+        {
 		    mKeenAlignmentY = DOWN;
+        }
 	}
 
 	return true;
@@ -180,20 +196,28 @@ void CShockshound::getTouchedBy(CSpriteObject &theObject)
 	// Was it a bullet? Than make it stunned.
 	if( dynamic_cast<CBullet*>(&theObject) )
 	{
-	    mHealth--;
+        mHealthPoints--;
+
 	    theObject.dead = true;
 	    
-	    // TODO: Flash effect must be added here!
-	    if(mHealth == 0)
-	    {
-	      setAction(A_HOUND_STUNNED);
-	      dead = true;
-	    }		
+        if(mHealthPoints == 0)
+        {
+            setAction(A_HOUND_STUNNED);
+            if(mRecoverFromStun)
+            {
+                mHealthPoints = 30;
+            }
+            else
+            {
+                dead = true;
+            }
+
+        }
 	    else
 	    {
 	      blink(10);
 	    }
-	}
+    }
 
 	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
 	{
@@ -204,7 +228,15 @@ void CShockshound::getTouchedBy(CSpriteObject &theObject)
 
 int CShockshound::checkSolidD( int x1, int x2, int y2, const bool push_mode )
 {
-	turnAroundOnCliff( x1, x2, y2 );
+    if(mTurnAroundOnCliff)
+    {
+        turnAroundOnCliff( x1, x2, y2 );
+    }
+    else    // if he is not allowed to turn around, make him jump instead
+    {
+        yinertia = -80;
+        setAction(A_HOUND_JUMP);
+    }
 
 	return CGalaxySpriteObject::checkSolidD(x1, x2, y2, push_mode);
 }
@@ -214,7 +246,7 @@ void CShockshound::process()
 {
 	performCollisions();
 	
-	performGravityMid();
+    performGravityMid();
 
 	if( blockedl )
 	{
@@ -225,8 +257,15 @@ void CShockshound::process()
 	  xDirection = LEFT;
 	}
 
+    if(getActionNumber(A_HOUND_STUNNED) && !dead)
+    {
+        setAction(A_HOUND_WALK);
+    }
+
 	if(!processActionRoutine())
+    {
 	    exists = false;
+    }
 	
 	(this->*mp_processState)();
 }

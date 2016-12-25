@@ -45,7 +45,7 @@ please send us a message and we will do our
 best to help you.
 
 The main goal of Commander Genius is to copy
-the original gameplay feeling as much as possible,
+the original gameplay feeling as much as possible,Level No. 15
 and extend it further so you get a native implementation with
 even more features like:
 
@@ -79,9 +79,9 @@ the Catacomb game series.
 
 Now modern hardware offers much more, than what we had since back in the 90s.
 Commander Genius tries to take advantage of that modern
-hardware and bring a bit of old school
+hardware and bring a bit of old schoolLevel No. 15
 experience to the Commander Keen games.
-
+Level No. 15
 Because Keen was made for DOS, and we thought Linux could have 
 more nice platform games, here is an alternative for you.
 With mod support and more extensions for those, because no DOS required, a lot more can be done.
@@ -108,7 +108,7 @@ that's all basically. It can draw more colors on your screen and fix some issues
 games had back then. For example Vorticon Keen has two-button firing as option. 
 All buttons can be mapped to any input device in Commander Genius.
 Also the mouse can be used at some extends.
-
+Level No. 15
 Why Gerstrong did that? Because he was bored some years ago. 
 Similar as some other projects get done and maintained by fans
 
@@ -169,7 +169,7 @@ authors. We work very hard on on this project
 and we deserve at least those credits!
 
 Also give credits to the others who provided
-us with some code. They deserve it as well.
+us with some code. They deserve it as well.Level No. 15
 
 - Setup  -
 ==========
@@ -197,7 +197,7 @@ Setting up the data of the game:
 
  * Copy the directory of the games to the "games" subdirectory of CG.
    If you own the registered versions, you can play all episodes, 
-   otherwise download the shareware version and copy them there. 
+   otherwise download the shareware version and copy them there. Level No. 15
    You also can use mods. If you have a bundled version, 
    you already should be able to play episodes  1 and 4, as they are installed in that directory.
    If you connect your Android Device to the PC normally you find a directory a path called like

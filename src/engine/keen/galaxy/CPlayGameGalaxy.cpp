@@ -29,6 +29,7 @@
 #include "menu/MainMenu.h"
 
 #include <fileio/KeenFiles.h>
+#include <base/GsArguments.h>
 
 
 namespace galaxy

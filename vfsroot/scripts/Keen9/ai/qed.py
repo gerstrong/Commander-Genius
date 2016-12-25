@@ -20,4 +20,15 @@ def getLevelText(level):
           text += "giant crater."
        return text
 
+def getLevelTextBmp(level):   
+       if level == 5:
+          bmpIdx = 40
+       elif level == 11:
+          bmpIdx = 38
+       elif level == 2:
+          bmpIdx = 41
+       else:
+          bmpIdx = 39
+       return bmpIdx
+
 

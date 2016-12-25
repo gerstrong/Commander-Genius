@@ -178,6 +178,8 @@ bool CSpriteObject::loadPythonScripts(const std::string &scriptBaseName)
     {
         loadAiGetterBool(pModule, "canRecoverFromStun", mRecoverFromStun);
 
+        loadAiGetterBool(pModule, "turnAroundOnCliff", mTurnAroundOnCliff);
+
         loadAiGetterBool(pModule, "isInvincible", mInvincible);
 
         loadAiGetterBool(pModule, "willNeverStop", mNeverStop);        

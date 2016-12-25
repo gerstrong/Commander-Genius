@@ -75,7 +75,7 @@ typedef struct
 class CBehaviorEngine : public CSingleton<CBehaviorEngine>
 {
 public:
-	CBehaviorEngine() : 	mPlayers(0),
+    CBehaviorEngine() : 	mPlayers(0),
 				mDifficulty(EASY),
                 mPausedGamePlay(false) {}
 

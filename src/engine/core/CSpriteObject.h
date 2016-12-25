@@ -119,6 +119,7 @@ public:
 
 	
     unsigned int mHealthPoints;              // episode 1 style four-shots-to-kill
+    bool mTurnAroundOnCliff = false;    // Can enemy turn around if there is a cliff
 	bool exists;
 	bool onscreen;    				// true=(scrx,scry) position is visible onscreen
 	bool hasbeenonscreen;

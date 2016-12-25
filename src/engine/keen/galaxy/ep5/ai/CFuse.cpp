@@ -11,6 +11,7 @@
 #include "../../common/dialog/CMessageBoxBitmapGalaxy.h"
 #include <base/utils/misc.h>
 #include <sdl/audio/music/CMusic.h>
+#include "../../common/ai/CEnemyShot.h"
 
 /*
 $3186W #QED?
@@ -80,6 +81,12 @@ bool CFuse::loadPythonScripts(const std::string &scriptBaseName)
 
     if (pModule != nullptr)
     {
+
+        // Change the bounding box, so object are easier to touch
+        m_BBox.x1 = -(1<<CSF);
+        m_BBox.y1 = -(1<<CSF);
+        m_BBox.x2 = (2<<CSF);
+        m_BBox.y2 = (2<<CSF);
 
         // Level Text
         {            
@@ -238,6 +245,23 @@ void CFuse::getTouchedBy(CSpriteObject &theObject)
             showMsgVec( msgs );
             dead = true;
         }
+    }
+    else if( auto *theEnemyShot = dynamic_cast<CEnemyShot*>(&theObject) ) // happens when Keen 9 - Fight against Mortimer
+    {
+        // Now replace those tiles
+        for(int x=m_BBox.x1 ; x<m_BBox.x2 ; x+=(1<<CSF))
+        {
+            for(int y=m_BBox.y1 ; y<m_BBox.y2 ; y+=(1<<CSF))
+            {
+                const Uint16 where_x = (getXPosition()+x)>>CSF;
+                const Uint16 where_y = (getYPosition()+y)>>CSF;
+
+                mp_Map->setTile(where_x, where_y, 0, true, 1);
+            }
+        }
+
+        dead = true;
+        theEnemyShot->dead = true;
     }
 
 }

@@ -66,7 +66,7 @@ void CStunnable::processGettingStunned()
       
       moveUp(8<<STC);
     }
-  }
+  }  
 }
 
 

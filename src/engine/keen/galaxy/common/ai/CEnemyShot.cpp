@@ -53,7 +53,8 @@ void CEnemyShot::process()
     if( (blockedd && yDirection == DOWN) ||
             (blockedl && xDirection == LEFT) ||
             (blockedu && yDirection == UP) ||
-            (blockedr && xDirection == RIGHT) )
+            (blockedr && xDirection == RIGHT) ||
+            onslope )
     {
         exists = false;
     }

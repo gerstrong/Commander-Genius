@@ -21,7 +21,8 @@
 #include "menu/ControlSettings.h"
 #include "res/CAudioGalaxy.h"
 #include <base/video/CVideoDriver.h>
-#include "fileio/KeenFiles.h"
+#include <fileio/KeenFiles.h>
+#include <base/GsArguments.h>
 
 namespace galaxy
 {
@@ -174,7 +175,7 @@ bool GalaxyEngine::loadResources( const Uint8 flags )
 
 void GalaxyEngine::switchToPassive()
 {
-    // Now look if there are any old savegames that need to be converted
+    // set the appropiate  Episode and GamePath for save games
     CSaveGameController &savedgames = *gpSaveGameController;
     savedgames.setGameDirectory(mDataPath);
     savedgames.setEpisode(mEp);
@@ -187,6 +188,15 @@ void GalaxyEngine::switchToPassive()
     mOpenedGamePlay = false;
 }
 
+void GalaxyEngine::switchToGameplay(const int startLevel)
+{
+    mpGameMode.reset( new CPlayGameGalaxy(startLevel) );
+    mpGameMode->init();
+    mOpenedGamePlay = true;
+    gpBehaviorEngine->setPause(false);
+    gEventManager.add( new CloseAllMenusEvent() );
+}
+
 
 void GalaxyEngine::pumpEvent(const CEvent *evPtr)
 {
@@ -194,7 +204,19 @@ void GalaxyEngine::pumpEvent(const CEvent *evPtr)
 
     if( dynamic_cast<const FinishedLoadingResources*>(evPtr) )
     {
-        switchToPassive();
+        const auto argLevel = gArgs.getValue("level");
+
+        // Level as parameter given?
+        if(!argLevel.empty())
+        {
+            const int startLevel = atoi(argLevel.c_str());
+            switchToGameplay(startLevel);
+            gEventManager.add(new StartNewGameEvent(EASY, startLevel));
+        }
+        else
+        {
+            switchToPassive();
+        }
         gpSaveGameController->convertAllOldFormats();
     }
     else if( dynamic_cast<const EventEndGamePlay*>(evPtr) )
@@ -236,11 +258,7 @@ void GalaxyEngine::pumpEvent(const CEvent *evPtr)
     else if( const GMSwitchToPlayGameMode* pPlayGame = dynamic_cast<const GMSwitchToPlayGameMode*>(evPtr) )
     {
         const GMSwitchToPlayGameMode &playGame = const_cast<GMSwitchToPlayGameMode&>(*pPlayGame);
-        mpGameMode.reset( new CPlayGameGalaxy(playGame.m_startlevel) );
-        mpGameMode->init();
-        mOpenedGamePlay = true;        
-        gpBehaviorEngine->setPause(false);
-        gEventManager.add( new CloseAllMenusEvent() );
+        switchToGameplay(playGame.m_startlevel);
     }    
     else if( dynamic_cast<const LoadGameEvent*>(evPtr) ) // If GamePlayMode is not running but loading is requested...
     {
