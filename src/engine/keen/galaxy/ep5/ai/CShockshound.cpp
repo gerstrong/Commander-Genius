@@ -107,7 +107,7 @@ void CShockshound::processBark()
 
     if(mKeenAlignmentY != CENTER)
     {
-        yinertia = -80;
+        yinertia = -120;
         setAction(A_HOUND_JUMP);
     }
     
@@ -228,17 +228,21 @@ void CShockshound::getTouchedBy(CSpriteObject &theObject)
 
 int CShockshound::checkSolidD( int x1, int x2, int y2, const bool push_mode )
 {
-    if(mTurnAroundOnCliff)
+    const auto isThereSolid = CGalaxySpriteObject::checkSolidD(x1, x2, y2, push_mode);
+
+    if(isThereSolid)
     {
-        turnAroundOnCliff( x1, x2, y2 );
-    }
-    else    // if he is not allowed to turn around, make him jump instead
-    {
-        yinertia = -80;
-        setAction(A_HOUND_JUMP);
+        const auto cliff = turnAroundOnCliff( x1, x2, y2 );
+
+        if(cliff && !mTurnAroundOnCliff) // if he is not allowed to turn around, make him jump instead
+        {
+            blockedr = blockedl = false;
+            yinertia = -120;
+            setAction(A_HOUND_JUMP);
+        }
     }
 
-	return CGalaxySpriteObject::checkSolidD(x1, x2, y2, push_mode);
+    return isThereSolid;
 }
 
 

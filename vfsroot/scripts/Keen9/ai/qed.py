@@ -13,6 +13,8 @@ def getLevelText(level):
           text += "The Shikadi are\n"
           text += "invincible while\n"
           text += "climbing poles!" 
+       elif level == 15:
+          text =  ""
        else:
           text =  "Oracle Janitor says:\n"
           text += "There's something\n"
