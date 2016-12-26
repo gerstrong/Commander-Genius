@@ -120,6 +120,7 @@ public:
 	
     unsigned int mHealthPoints;              // episode 1 style four-shots-to-kill
     bool mTurnAroundOnCliff = false;    // Can enemy turn around if there is a cliff
+    bool mEndGameOnDefeat = false;    // End game if enemy is defeated. Useful for the last boss in some mods
 	bool exists;
 	bool onscreen;    				// true=(scrx,scry) position is visible onscreen
 	bool hasbeenonscreen;
@@ -267,6 +268,7 @@ public:
 	virtual bool checkMapBoundaryL(const int x1);
 	virtual bool checkMapBoundaryR(const int x2);
 	virtual bool checkMapBoundaryU(const int y1);
+    virtual bool checkMapBoundaryD(const int y2);
 
 
 	// special functions for sloped tiles

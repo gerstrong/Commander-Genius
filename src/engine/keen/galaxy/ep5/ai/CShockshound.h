@@ -34,6 +34,13 @@ public:
 
 	int checkSolidD( int x1, int x2, int y2, const bool push_mode );
 
+    /**
+     * @brief checkMapBoundaryD If the foes leaves the lower part of the map, let's kill him
+     * @param y2    lower koordinates
+     * @return true if it left the lower map boundary
+     */
+    bool checkMapBoundaryD(const int y2);
+
 	void process();
 
 	/**

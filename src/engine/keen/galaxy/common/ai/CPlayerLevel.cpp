@@ -3025,7 +3025,9 @@ int CPlayerLevel::checkSolidD( int x1, int x2, int y2, const bool push_mode )
 	}
 
 	if( (Uint32)y2 > ((mp_Map->m_height)<<CSF) )
-		exists=false; // Out of map?
+    {
+        kill(true, true);
+    }
 
 	return 0;
 }

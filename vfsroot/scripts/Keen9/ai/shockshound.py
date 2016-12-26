@@ -11,3 +11,7 @@ def healthPoints():
 
 def turnAroundOnCliff():
     return False
+
+def endGameOnDefeat():
+    # Mortimer can only be defeated if he falls. With that the game ends
+    return True

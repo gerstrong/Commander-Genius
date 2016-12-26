@@ -10,6 +10,8 @@
 #include "../../common/ai/CPlayerBase.h"
 #include "../../common/ai/CPlayerLevel.h"
 #include "../../common/ai/CEnemyShot.h"
+#include "../../common/dialog/CMessageBoxBitmapGalaxy.h"
+#include "engine/core/mode/CGameMode.h"
 #include <base/utils/misc.h>
 
 /*
@@ -48,6 +50,8 @@ const int TIME_TO_BARK = 64;
 const int TIME_TO_SIT = 32;
 const int TIME_WALKING = 50;
 
+const int JUMP_INERTIA = -120;
+
   
 CShockshound::CShockshound(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
 CStunnable(pmap, foeID, x, y),
@@ -83,7 +87,8 @@ void CShockshound::processSit()
   
     mTimer = 0;
     
-    setAction(A_HOUND_BARK);  
+    // If Mortimer do not bark.
+    setAction(A_HOUND_BARK);
     playSound(SOUND_SHOCKSUNDBARK);
 }
 
@@ -107,7 +112,7 @@ void CShockshound::processBark()
 
     if(mKeenAlignmentY != CENTER)
     {
-        yinertia = -120;
+        yinertia = JUMP_INERTIA;
         setAction(A_HOUND_JUMP);
     }
     
@@ -142,6 +147,7 @@ void CShockshound::processWalking()
   {
     setAction(A_HOUND_SIT);    
   }    
+
 }
 
 void CShockshound::processJump()
@@ -217,6 +223,12 @@ void CShockshound::getTouchedBy(CSpriteObject &theObject)
 	    {
 	      blink(10);
 	    }
+
+        if(mRecoverFromStun)
+        {
+            setAction(A_HOUND_BARK);
+        }
+
     }
 
 	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
@@ -237,7 +249,7 @@ int CShockshound::checkSolidD( int x1, int x2, int y2, const bool push_mode )
         if(cliff && !mTurnAroundOnCliff) // if he is not allowed to turn around, make him jump instead
         {
             blockedr = blockedl = false;
-            yinertia = -120;
+            yinertia = (JUMP_INERTIA);
             setAction(A_HOUND_JUMP);
         }
     }
@@ -245,6 +257,24 @@ int CShockshound::checkSolidD( int x1, int x2, int y2, const bool push_mode )
     return isThereSolid;
 }
 
+
+bool CShockshound::checkMapBoundaryD(const int y2)
+{
+    if( (Uint32)y2 > ((mp_Map->m_height)<<CSF) )
+    {
+        dead = true;
+
+        // If that not mortimer (Keen 9) make the object non existent
+        if(!mEndGameOnDefeat)
+        {
+            exists = false;
+        }
+
+        return true;
+    }
+
+    return false;
+}
 
 void CShockshound::process()
 {
@@ -264,6 +294,23 @@ void CShockshound::process()
     if(getActionNumber(A_HOUND_STUNNED) && !dead)
     {
         setAction(A_HOUND_WALK);
+    }
+
+    // keen 9 - Mortimer, if he dies you win that episode
+    if(mEndGameOnDefeat && dead)
+    {
+        std::vector<CMessageBoxGalaxy*> msg;
+
+        const std::string end_text("End of Episode.\n"
+                                   "The game will be restarted.\n"
+                                   "You can replay it again or\n"
+                                   "try another Episode for more fun!\n"
+                                   "The original epilog is under construction.");
+
+        msg.push_back( new CMessageBoxGalaxy(end_text, new EventEndGamePlay()) );
+
+        showMsgVec(msg);
+        exists = false;
     }
 
 	if(!processActionRoutine())

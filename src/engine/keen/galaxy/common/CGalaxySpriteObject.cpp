@@ -55,7 +55,9 @@ void CGalaxySpriteObject::setupGalaxyObjectOnMap(const size_t ActionBaseOffset,
 	performCollisions();
 	
 	if(!processActionRoutine())
+    {
 			exists = false;
+    }
 }
 
 
@@ -263,8 +265,7 @@ int CGalaxySpriteObject::checkSolidD( int x1, int x2, int y2, const bool push_mo
 		}
 	}
 
-	if( (Uint32)y2 > ((mp_Map->m_height)<<CSF) )
-		exists=false; // Out of map?
+    checkMapBoundaryD(y2);
 
 	return 0;
 }

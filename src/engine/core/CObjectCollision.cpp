@@ -540,7 +540,6 @@ bool CSpriteObject::checkMapBoundaryU(const int y1)
 }
 
 
-
 int CSpriteObject::checkSolidR( int x1, int x2, int y1, int y2)
 {
 	std::vector<CTileProperties> &TileProperty = gpBehaviorEngine->getTileProperties();
@@ -640,6 +639,17 @@ int CSpriteObject::checkSolidU(int x1, int x2, int y1, const bool push_mode )
 	return checkMapBoundaryU(y1) ? 1 : 0;
 }
 
+bool CSpriteObject::checkMapBoundaryD(const int y2)
+{
+    if( (Uint32)y2 > ((mp_Map->m_height)<<CSF) )
+    {
+        exists=false; // Out of map?
+        return true;
+    }
+
+    return false;
+}
+
 int CSpriteObject::checkSolidD( int x1, int x2, int y2, const bool push_mode )
 {
 	std::vector<CTileProperties> &TileProperty = gpBehaviorEngine->getTileProperties();
@@ -667,8 +677,7 @@ int CSpriteObject::checkSolidD( int x1, int x2, int y2, const bool push_mode )
 			return blocked;
 	}
 
-	if( (Uint32)y2 > ((mp_Map->m_height)<<CSF) )
-		exists=false; // Out of map?
+    checkMapBoundaryD(y2);
 
 	return 0;
 }

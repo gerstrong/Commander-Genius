@@ -41,6 +41,13 @@ mTimer(0)
 
 void fixNewLine(std::string& str)
 {
+    // Check for empty string.
+    if(str.size() <= 2)
+    {
+       str.clear();
+       return;
+    }
+
     for(size_t i=0 ; i<str.size()-1 ; i++)
     {
         if(str[i] == '\\' && str[i+1] == 'n')
@@ -114,9 +121,12 @@ bool CFuse::loadPythonScripts(const std::string &scriptBaseName)
                         // Because line breaks are not formatted correctly
                         fixNewLine(message);
 
-                        std::string levelText = "LEVEL_TEXT";
-                        levelText += itoa(level);
-                        gpBehaviorEngine->setMessage(levelText, message);
+                        if(!message.empty())
+                        {
+                            std::string levelText = "LEVEL_TEXT";
+                            levelText += itoa(level);
+                            gpBehaviorEngine->setMessage(levelText, message);
+                        }
                     }
 
                     Py_DECREF(pValue);
@@ -234,8 +244,6 @@ void CFuse::getTouchedBy(CSpriteObject &theObject)
             mp_Map->mFuseInLevel = false;
 
             std::vector<CMessageBoxGalaxy*> msgs;
-
-            bool specialLevel = false;
 
             msgs.push_back( new CMessageBoxBitmapGalaxy(
                                 msg,
