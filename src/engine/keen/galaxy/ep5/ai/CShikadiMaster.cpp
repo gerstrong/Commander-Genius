@@ -45,15 +45,81 @@ mTimer(0),
 mTeleport(false),
 mpPlayer(nullptr)
 {  
-      	mActionMap[A_MASTER_STAND] = (GASOFctr) &CShikadiMaster::processStanding;
-      	mActionMap[A_MASTER_SHOOT] = (GASOFctr) &CShikadiMaster::processShooting;
-      	mActionMap[A_MASTER_TELEPORT] = (GASOFctr) &CShikadiMaster::processTeleporting;    
+    mActionMap[A_MASTER_STAND] = (GASOFctr) &CShikadiMaster::processStanding;
+    mActionMap[A_MASTER_SHOOT] = (GASOFctr) &CShikadiMaster::processShooting;
+    mActionMap[A_MASTER_TELEPORT] = (GASOFctr) &CShikadiMaster::processTeleporting;
+
+    if(Difficulty > HARD)
+    {
+        mMoreAgressive = true;
+    }
     
-	// Adapt this AI
-	setupGalaxyObjectOnMap(0x2AF4, A_MASTER_STAND);
-	
-	xDirection = LEFT;
-	mKeenAlignment = LEFT;
+    // Adapt this AI
+    setupGalaxyObjectOnMap(0x2AF4, A_MASTER_STAND);
+
+    xDirection = LEFT;
+    mKeenAlignment = LEFT;
+
+    loadPythonScripts("shikadimaster");
+}
+
+bool CShikadiMaster::loadPythonScripts(const std::string &scriptBaseName)
+{
+    // Extra Python script for this AI defined?
+    std::string aiscript = JoinPaths(gKeenFiles.gameDir ,"ai");
+    aiscript = JoinPaths(aiscript,scriptBaseName);
+    aiscript += ".py";
+    aiscript = GetFullFileName(aiscript);
+
+    std::string aidir = ExtractDirectory(aiscript);
+
+    Py_Initialize();
+
+    PyObject* programName = PyUnicode_FromString(scriptBaseName.c_str());
+
+    PyRun_SimpleString("import sys");
+
+    const std::string sysPathCommand = "sys.path.append(\"" + aidir + "\")";
+
+    PyRun_SimpleString(sysPathCommand.c_str());
+
+    auto pModule = PyImport_Import(programName);
+    Py_DECREF(programName);
+
+
+
+    if (pModule != nullptr)
+    {
+        loadAiGetterBool(pModule, "screamAfterShoot", mScreamAfterShoot);
+
+        loadAiGetterBool(pModule, "mayShoot", mMayShoot);
+
+        loadAiGetterBool(pModule, "allowClimbing", mAllowClimbing);
+
+        int health = mHealthPoints;
+        loadAiGetterInteger(pModule, "healthPoints", health);
+        mHealthPoints = health;
+
+        int walksound = mWalkSound;
+        loadAiGetterInteger(pModule, "walkSound", walksound);
+        mWalkSound = GameSound(walksound);
+
+
+        Py_DECREF(pModule);
+    }
+    else
+    {
+#if PYTHON_VERBOSE
+        PyErr_Print();
+        gLogging.ftextOut("Failed to load \"%s\"\n", aiscript.c_str());
+#endif
+
+        return false;
+    }
+
+    Py_Finalize();
+
+    return true;
 }
 
 
@@ -77,14 +143,23 @@ void CShikadiMaster::processStanding()
     {
         mTeleport = true;
         xDirection = mKeenAlignment;
-        setAction(A_MASTER_SHOOT);
 
-        // ... and spawn a shot that might hurt Keen
-        const int newX = (xDirection == LEFT) ? getXLeftPos()+(4<<STC) : getXRightPos()-(4<<STC);
-        spawnObj( new CEnemyShot(mp_Map, 0,
-                                    newX, getYUpPos()+(8<<STC),
-                                    0x2C3E, xDirection, CENTER,  150, mSprVar) );
 
+        if(mMoreAgressive)
+        {
+            mp_processState = &CShikadiMaster::processStanding;
+        }
+        else
+        {
+            setAction(A_MASTER_SHOOT);
+
+            // ... and spawn a shot that might hurt Keen
+            const int newX = (xDirection == LEFT) ? getXLeftPos()+(4<<STC) : getXRightPos()-(4<<STC);
+            spawnObj( new CEnemyShot(mp_Map, 0,
+                                        newX, getYUpPos()+(8<<STC),
+                                        0x2C3E, xDirection, CENTER,  150, mSprVar) );
+
+        }
     }
 }
 

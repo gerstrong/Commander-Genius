@@ -53,6 +53,8 @@ public:
 private:
     int mTimer = 0;
 
+    bool mAllowClimbing = true;
+
     bool mScreamAfterShoot = true;
 };
 

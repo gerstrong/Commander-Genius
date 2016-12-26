@@ -119,6 +119,8 @@ bool CAmpton::loadPythonScripts(const std::string &scriptBaseName)
 
         loadAiGetterBool(pModule, "mayShoot", mMayShoot);
 
+        loadAiGetterBool(pModule, "allowClimbing", mAllowClimbing);
+
         int health = mHealthPoints;
         loadAiGetterInteger(pModule, "healthPoints", health);
         mHealthPoints = health;
@@ -181,29 +183,34 @@ void CAmpton::processWalking()
         if(hitdetectWithTilePropertyRectRO(1, l_x_mid, l_y, l_w, l_h, 1<<CSF))
         {
             if( getProbability(600) )
-                //if (rand() < 0xC4)
             {
                 bool polebelow = hitdetectWithTilePropertyHor(1, l_x_l, l_x_r, getYDownPos(), 1<<CSF);
                 bool poleabove = hitdetectWithTilePropertyHor(1, l_x_l, l_x_r, getYUpPos(), 1<<CSF);
 
-                if( getProbability(400) )
-                    //if (rand() < 0x80)
+                if( getProbability(400) )                    
+                {
                     poleabove = false;
-                else
-                    polebelow = false;
-
-                //climb up
-                if (poleabove)
-                {
-                    setAction(A_AMPTON_START_POLE);
-                    yDirection = UP;
-                    return;
                 }
-                else if (polebelow)
+                else
                 {
-                    setAction(A_AMPTON_START_POLE);
-                    yDirection = DOWN;
-                    return;
+                    polebelow = false;
+                }
+
+                if(mAllowClimbing)
+                {
+                    // Climb up
+                    if (poleabove)
+                    {
+                        setAction(A_AMPTON_START_POLE);
+                        yDirection = UP;
+                        return;
+                    }
+                    else if (polebelow) // Or down
+                    {
+                        setAction(A_AMPTON_START_POLE);
+                        yDirection = DOWN;
+                        return;
+                    }
                 }
             }
         }

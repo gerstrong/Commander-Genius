@@ -44,6 +44,11 @@ private:
 	bool mTeleport;
 	
 	CPlayerLevel *mpPlayer;
+
+    /**
+     * @brief mMoreAgressive    In Keen 9 they are more agressive, in hard they also can be
+     */
+    bool mMoreAgressive = false;
 };
 
 }
