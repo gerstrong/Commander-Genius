@@ -10,6 +10,9 @@ def screamAfterShoot():
     # Number of hit points before enemy is stunned
     return False
 
+def allowClimbing():
+    # Yeties cannot climp poles
+    return False
 
 def walkSound():
     return 0

@@ -22,10 +22,16 @@ class CShikadiMaster : public CStunnable
 public:
 	CShikadiMaster(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y);
 
+
+    bool loadPythonScripts(const std::string &scriptBaseName);
+
 	/**
 	 * Action functions
 	 */
 	void processStanding();	
+
+    void processShootingAgressive();
+
 	void processShooting();	
 	void processTeleporting();	
 	
@@ -39,11 +45,12 @@ public:
 	void getTouchedBy(CSpriteObject &theObject);
 	
 private:
-	int mTimer;
+    int mTimer = 0;
 	direction_t mKeenAlignment;
-	bool mTeleport;
+    bool mTeleport = false;
 	
-	CPlayerLevel *mpPlayer;
+    CPlayerLevel *mpPlayer = nullptr;
+    bool swapYDir = false;
 
     /**
      * @brief mMoreAgressive    In Keen 9 they are more agressive, in hard they also can be

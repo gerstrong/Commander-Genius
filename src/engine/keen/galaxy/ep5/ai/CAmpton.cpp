@@ -153,7 +153,7 @@ void CAmpton::processWalking()
 {
     int walkSound = int(mWalkSound);
 
-    //play tic toc sound
+    // Play tic toc sound
     if(getActionStatus(A_AMPTON_WALK+1))
     {
         playSound(GameSound(walkSound));
@@ -180,24 +180,25 @@ void CAmpton::processWalking()
             setAction(A_AMPTON_FLIP_SWITCH);
         }
 
-        if(hitdetectWithTilePropertyRectRO(1, l_x_mid, l_y, l_w, l_h, 1<<CSF))
+        if(mAllowClimbing)
         {
-            if( getProbability(600) )
+            if(hitdetectWithTilePropertyRectRO(1, l_x_mid, l_y, l_w, l_h, 1<<CSF))
             {
-                bool polebelow = hitdetectWithTilePropertyHor(1, l_x_l, l_x_r, getYDownPos(), 1<<CSF);
-                bool poleabove = hitdetectWithTilePropertyHor(1, l_x_l, l_x_r, getYUpPos(), 1<<CSF);
+                if( getProbability(600) )
+                {
+                    bool polebelow = hitdetectWithTilePropertyHor(1, l_x_l, l_x_r, getYDownPos(), 1<<CSF);
+                    bool poleabove = hitdetectWithTilePropertyHor(1, l_x_l, l_x_r, getYUpPos(), 1<<CSF);
 
-                if( getProbability(400) )                    
-                {
-                    poleabove = false;
-                }
-                else
-                {
-                    polebelow = false;
-                }
+                    if( getProbability(400) )
+                    {
+                        poleabove = false;
+                    }
+                    else
+                    {
+                        polebelow = false;
+                    }
 
-                if(mAllowClimbing)
-                {
+
                     // Climb up
                     if (poleabove)
                     {
@@ -211,6 +212,7 @@ void CAmpton::processWalking()
                         yDirection = DOWN;
                         return;
                     }
+
                 }
             }
         }
