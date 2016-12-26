@@ -414,8 +414,6 @@ void CEGASprit::DeriveSpecialSprites( GsTilemap &tilemap, std::vector<GsSprite> 
 		if(TileProperties.at(i).behaviour == DOOR_BLUE)
             gGraphics.copyTileToSprite(0,i-1, DOOR_BLUE_SPRITE, 2);
 	 }
-
-    // TODO: Demo-Sprite must be added. This time loaded from one TGA File! The TGA is already there!
 }
 
 void CEGASprit::CreateYellowSpriteofTile( GsTilemap &tilemap, Uint16 tile, GsSprite& sprite )

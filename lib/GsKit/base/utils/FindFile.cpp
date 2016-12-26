@@ -477,7 +477,7 @@ bool GetExactFileName(const std::string& abs_searchname, std::string& filename) 
 searchpathlist	basesearchpaths;
 void InitBaseSearchPaths() {
 	basesearchpaths.clear();
-#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
+#if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
 	AddToFileList(&basesearchpaths, "${HOME}/Library/Application Support/Commander Genius");
 	AddToFileList(&basesearchpaths, ".");
 	AddToFileList(&basesearchpaths, "${BIN}");
@@ -863,9 +863,14 @@ bool FileCopy(const std::string& src, const std::string& dest) {
 	unsigned short count = 0;
 	notes << "FileCopy: |" << flush;
 	size_t len = 0;
-	while((len = fread(tmp, 1, sizeof(tmp), src_f)) > 0) {
-		if(count == 0) notes << "." << flush; count++; count %= 20;
-		if(len != fwrite(tmp, 1, len, dest_f)) {
+    while((len = fread(tmp, 1, sizeof(tmp), src_f)) > 0)
+    {
+        if(count == 0)
+        {
+            notes << "." << flush; count++; count %= 20;
+        }
+        if(len != fwrite(tmp, 1, len, dest_f))
+        {
 			errors << "FileCopy: problem while writing" << endl;
 			success = false;
 			break;

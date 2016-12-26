@@ -37,6 +37,7 @@ struct EventExitLevel : CEvent {
     const bool sucess;
     const bool teleport;
     const int who;
+    bool playSound = false;
     EventExitLevel(const uint16_t l, const bool s, const bool t, const bool lWho) :
         levelObject(l), sucess(s), teleport(t), who(lWho) {}
 };
@@ -197,7 +198,14 @@ public:
 
 	void processDead();
 	virtual void processDying();        
-    virtual void kill(const bool force = false);
+
+    /**
+     * @brief kill          Kill Keen.
+     * @param force         If true Keen may die even in god mode
+     * @param noDieProcess  Do not show the dying progress, kill huim directly if this flag is true
+     */
+    virtual void kill(const bool force = false,
+                      const bool noDieProcess = false);
 
 	/**
 	 * Happens when usually the Dopefish eats Keen

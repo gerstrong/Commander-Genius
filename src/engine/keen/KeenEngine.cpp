@@ -14,7 +14,7 @@
 
 
 
-void KeenEngine::switchToGamePlayMode()
+void KeenEngine::switchToGamePlayMode(const int startLevel)
 {
     const int episode = gpBehaviorEngine->getEpisode();
 
@@ -25,7 +25,7 @@ void KeenEngine::switchToGamePlayMode()
         numPlayers = 1;
 
     std::string DataDirectory = gKeenFiles.gameDir;
-    gEventManager.add( new GMSwitchToPlayGameMode( episode, numPlayers, DataDirectory ) );
+    gEventManager.add( new GMSwitchToPlayGameMode( episode, numPlayers, DataDirectory, startLevel ) );
 }
 
 
@@ -62,7 +62,7 @@ void KeenEngine::pumpEvent(const CEvent *evPtr)
     if( const StartNewGameEvent* pStart = dynamic_cast<const StartNewGameEvent*>(evPtr) )
     {
         gpBehaviorEngine->mDifficulty = pStart->mDifficulty;
-        switchToGamePlayMode();
+        switchToGamePlayMode(pStart->mStartLevel);
         return;
     }       
 }

@@ -25,6 +25,6 @@ protected:
 	std::map< size_t, GASOFctr > mActionMap;	
 };
 
-};
+}
 
 #endif // CGALAXYACTIONSPRITEOBJECT_H

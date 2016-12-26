@@ -621,6 +621,7 @@ void CPlayerBase::processGetEaten()
 {
 	if(m_timer >= DIE_GETEATEN_TIME)
 	{
+        dead = true;
 		exists = false;
 		solid = true;
 		honorPriority = true;
@@ -634,7 +635,8 @@ void CPlayerBase::processGetEaten()
 
 
 
-void CPlayerBase::kill(const bool force)
+void CPlayerBase::kill(const bool force,
+                       const bool noDieProcess)
 {
     if(getActionNumber(A_KEEN_ENTER_DOOR))
         return;
@@ -647,12 +649,23 @@ void CPlayerBase::kill(const bool force)
 
     m_dying = true;    
 
-    // Here were prepare Keen to die, setting the action to die
-    if(mp_processState == &CPlayerBase::processDying && yinertia < 0)
-        return;
-	    
-    yinertia = -DIE_FALL_MAX_INERTIA;
     setAction( A_KEEN_DIE );
+
+    if(!noDieProcess)
+    {
+        // Here were prepare Keen to die, setting the action to die
+        if(mp_processState == &CPlayerBase::processDying && yinertia < 0)
+            return;
+
+        yinertia = -DIE_FALL_MAX_INERTIA;
+
+    }
+    else
+    {
+        dead = true;
+        honorPriority = true;
+    }
+
     solid = false;
     honorPriority = false;
     g_pSound->playSound( SOUND_KEEN_DIE, PLAY_NORESTART );

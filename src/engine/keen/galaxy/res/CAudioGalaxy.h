@@ -33,14 +33,15 @@ public:
     bool LoadFromAudioCK(const unsigned int dictOffset);
 
     bool loadSoundData(const unsigned int dictOffset);
-	void unloadSound();
+
+
+    void unloadSound() {}
 	
 	std::map< unsigned int, std::map<GameSound, int> > sndSlotMapGalaxy;
 	
 private:
 	void setupAudioMap();
-    
-    //const CExeFile &m_ExeFile;
+
 };
 
 #endif /* CAUDIOGALAXY_H_ */

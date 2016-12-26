@@ -32,6 +32,7 @@
 #include "engine/core/CSettings.h"
 #include "base/video/CVideoDriver.h"
 
+
 #ifdef ANDROID
 	#include <SDL_main.h>
 #endif

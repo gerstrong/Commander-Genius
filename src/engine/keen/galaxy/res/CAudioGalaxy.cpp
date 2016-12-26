@@ -162,18 +162,18 @@ void CAudioGalaxy::setupAudioMap()
       sndSlotMapGalaxy[5][SOUND_GET_GEM] = 19;
       sndSlotMapGalaxy[5][SOUND_KEEN_FALL] = 20;
       sndSlotMapGalaxy[5][SOUND_GUN_CLICK] = 21;
-      //sndSlotMapGalaxy[5][?] = 22;
+      sndSlotMapGalaxy[5][SOUND_SCREAM_LOUD] = 22;
       sndSlotMapGalaxy[5][SOUND_KEEN_DIE] = 23;
-      //sndSlotMapGalaxy[5][?] = 24;
+      sndSlotMapGalaxy[5][SOUND_SCREAM_LESS] = 24;
       sndSlotMapGalaxy[5][SOUND_SHOT_HIT] = 25;
-      //sndSlotMapGalaxy[5][?] = 26;
+      sndSlotMapGalaxy[5][SOUND_SCRAMBLE] = 26;
       sndSlotMapGalaxy[5][SOUND_SPIROGRIP] = 27;
 
       memcpy(&holder, ptr + 0x129FC, 1 );
       sndSlotMapGalaxy[5][SOUND_SPINDREDSLAM] = 28;
 
       sndSlotMapGalaxy[5][SOUND_ROBORED_SHOOT] = 29;
-      //sndSlotMapGalaxy[5][SOUND_ROBOSHOTHIT] = 30;
+      sndSlotMapGalaxy[5][SOUND_ROBORED_SHOOT2] = 30;
       sndSlotMapGalaxy[5][SOUND_AMPTONWALK0] = 31;
       sndSlotMapGalaxy[5][SOUND_AMPTONWALK1] = 32;
       sndSlotMapGalaxy[5][SOUND_ROBO_STUN] = 33;
@@ -198,8 +198,8 @@ void CAudioGalaxy::setupAudioMap()
       sndSlotMapGalaxy[5][SOUND_COMPUTER_POINT] = 49;
       sndSlotMapGalaxy[5][SOUND_PLAYER_POINT] = 50;
       //sndSlotMapGalaxy[5][?] = 51;
-      //sndSlotMapGalaxy[5][?] = 52;
-      //sndSlotMapGalaxy[5][?] = 53;
+      sndSlotMapGalaxy[5][SOUND_FUSE_BREAK] = 52;
+      sndSlotMapGalaxy[5][SOUND_BIG_GAMEOVER] = 53;
       //sndSlotMapGalaxy[5][?] = 54;
       sndSlotMapGalaxy[5][SOUND_GET_CARD] = 55;
 
@@ -289,7 +289,7 @@ void CAudioGalaxy::setupAudioMap()
 /**
  * \brief 	This function will load the sounds using other dictionaries which are embedded in the Exe File.
  * 			Only galaxy supports that feature, and the original games will read two files from the EXE-file
- * 			AUDIOHED and AUDIODICT to get the sounds.
+ * 			AUDIOHED and AUDIODICT to get the sounds addresses from there.
  * 			Caution: CMusic Class has a function which is similar but only loads the music from one level.
  */
 bool CAudioGalaxy::LoadFromAudioCK(const unsigned int dictOffset)
@@ -337,8 +337,12 @@ bool CAudioGalaxy::LoadFromAudioCK(const unsigned int dictOffset)
     AudioFile.seekg( 0, std::ios::beg );
 
     // create memory so we can store the Audio.ck there and use it later for extraction
-    uint8_t *AudioCompFileData = new uint8_t[audiofilecompsize];
-    AudioFile.read((char*)AudioCompFileData, audiofilecompsize);
+    //uint8_t *AudioCompFileData = new uint8_t[audiofilecompsize];
+
+    std::vector<uint8_t> AudioCompFileData;
+    AudioCompFileData.resize(audiofilecompsize, 0);
+
+    AudioFile.read((char*)AudioCompFileData.data(), audiofilecompsize);
     AudioFile.close();
 
     // Open the AUDIOHED so we know where to decompress the audio
@@ -412,7 +416,6 @@ bool CAudioGalaxy::LoadFromAudioCK(const unsigned int dictOffset)
     if(audiohed.empty())
     {
         gLogging.textOut("CAudioGalaxy::LoadFromAudioCK(): No audio was found in that file! It seems to be empty.");
-        delete [] AudioCompFileData;
         return false;
     }
 
@@ -450,12 +453,12 @@ bool CAudioGalaxy::LoadFromAudioCK(const unsigned int dictOffset)
         if( audio_comp_data_start < audio_end )
         {
             const uint32_t *AudioCompFileData32 = reinterpret_cast<uint32_t*>(
-                        reinterpret_cast<void*>(AudioCompFileData + audio_start));
+                        reinterpret_cast<void*>(AudioCompFileData.data() + audio_start));
 
             outsize = *AudioCompFileData32;
             imfdata.resize(outsize);
 
-            Huffman.expand( (byte*)(AudioCompFileData+audio_comp_data_start), imfdata.data(), audio_end-audio_comp_data_start, outsize);
+            Huffman.expand( (byte*)(&AudioCompFileData[audio_comp_data_start]), imfdata.data(), audio_end-audio_comp_data_start, outsize);
 
             if(snd>=al_snd_start)
             {
@@ -466,13 +469,11 @@ bool CAudioGalaxy::LoadFromAudioCK(const unsigned int dictOffset)
                 }
             }
             else
+            {
                 readPCSpeakerSoundintoWaveForm( m_soundslot[snd], imfdata.data(), (audioSpec.format == AUDIO_S16) ? 2 : 1 );
+            }
         }
     }
-
-    delete [] AudioCompFileData;
-
-
 
     return true;
 }
@@ -498,10 +499,3 @@ bool CAudioGalaxy::loadSoundData(const unsigned int dictOffset)
 	return true;
 }
 
-/**
- * Will free the resources of the audio
- */
-void CAudioGalaxy::unloadSound()
-{
-
-}

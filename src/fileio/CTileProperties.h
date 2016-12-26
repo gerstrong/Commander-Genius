@@ -15,27 +15,18 @@
 class CTileProperties
 {
 public:
-    CTileProperties() :
-    chgtile(0),
-    nextTile(0),
-    animationtime(0),
-    behaviour(0),
-    bup(0),
-    bright(0),
-    bdown(0),
-    bleft(0),
-    slippery(0) {}
 
-	int chgtile;         // tile to change to when level completed (for wm)
-	// or tile to change to when picked up (in-level)
-	int nextTile;
+    int chgtile = 0;         // tile to change to when level completed (for wm)
+                             // or tile to change to when picked up (in-level)
+    int nextTile = 0;
+    int prevTile = 0;
 
 	// Tile Properties start here!
-	unsigned char animationtime;
-	signed char behaviour;
-	signed char bup,bright,bdown,bleft;
-	signed char slippery;
-private:
+    unsigned char animationTime = 0;
+    signed char behaviour = 0;
+    signed char bup = 0, bright = 0, bdown = 0, bleft = 0;
+    signed char slippery = 0;
+
 };
 
 #endif /* CTILEPROPERTIES_H_ */

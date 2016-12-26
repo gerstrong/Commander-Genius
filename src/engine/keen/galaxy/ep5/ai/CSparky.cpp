@@ -78,7 +78,6 @@ mGoodChargeChance(false)
     }
 
 
-
     // Set into walking status
     setupGalaxyObjectOnMap(0x1F0C, A_SPARKY_WALK);
 
@@ -228,6 +227,8 @@ void CSparky::getTouchedBy(CSpriteObject &theObject)
         }
         else
         {
+            mHealthPoints--;
+
             if(mHealthPoints == 0)
             {
                 setAction(A_SPARKY_STUNNED);
@@ -237,13 +238,13 @@ void CSparky::getTouchedBy(CSpriteObject &theObject)
             {
                 blink(10);
             }
-
-            mHealthPoints--;
         }
 	}
 
     if( mRecoverFromStun && getActionNumber(A_SPARKY_STUNNED) )
+    {
         return;
+    }
 
 	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
 	{

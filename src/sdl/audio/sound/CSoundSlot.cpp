@@ -31,7 +31,7 @@ CSoundSlot::CSoundSlot() :
 m_soundlength(0)
 {}
 
-#if !defined(TARGET_OS_IPHONE) || !defined(TARGET_IPHONE_SIMULATOR)
+#if !(TARGET_OS_IPHONE) || !(TARGET_IPHONE_SIMULATOR)
 void CSoundSlot::openOGGSound(const std::string& filename, SDL_AudioSpec *pspec, Uint8 *&SoundBuffer, Uint32 &SoundLen)
 {
 

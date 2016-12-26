@@ -15,7 +15,6 @@
 #include <base/GsEvent.h>
 
 #include "ActionFormat.h"
-//#include <base/utils/CVec.h>
 #include "direction.h"
 #include "CBehaviorEngine.h"
 
@@ -27,6 +26,12 @@
 
 // Enumerations are here
 #include "objenums.h"
+
+#include <base/utils/FindFile.h>
+
+#include "fileio/KeenFiles.h"
+
+#include <Python.h>
 
 
 const int COLISION_RES = (1<<STC);
@@ -114,6 +119,8 @@ public:
 
 	
     unsigned int mHealthPoints;              // episode 1 style four-shots-to-kill
+    bool mTurnAroundOnCliff = false;    // Can enemy turn around if there is a cliff
+    bool mEndGameOnDefeat = false;    // End game if enemy is defeated. Useful for the last boss in some mods
 	bool exists;
 	bool onscreen;    				// true=(scrx,scry) position is visible onscreen
 	bool hasbeenonscreen;
@@ -261,6 +268,7 @@ public:
 	virtual bool checkMapBoundaryL(const int x1);
 	virtual bool checkMapBoundaryR(const int x2);
 	virtual bool checkMapBoundaryU(const int y1);
+    virtual bool checkMapBoundaryD(const int y2);
 
 
 	// special functions for sloped tiles
@@ -329,11 +337,31 @@ public:
 protected:
 
     /**
+     * @brief loadAiGetterInteger
+     * @param pModule
+     * @param pyMethodStr
+     * @param value
+     * @return
+     */
+    bool loadAiGetterInteger(PyObject * pModule, const std::string &pyMethodStr, int &value);
+
+    /**
+     * @brief loadAiGetterBool
+     * @param pModule
+     * @param pyMethodStr
+     * @param value
+     * @return
+     */
+    bool loadAiGetterBool(PyObject * pModule, const std::string &pyMethodStr, bool &value);
+
+
+
+    /**
      * @brief loadPythonScripts     Load an external script file which might modify the behaviour of the sprite object
      * @param scriptBaseName        Basename is the filename with any extension or path. Recommendation: Use the name of the foe
      * @return if load was successful true, otherwise false.
      */
-    bool loadPythonScripts(const std::string &scriptBaseName);
+    virtual bool loadPythonScripts(const std::string &scriptBaseName);
 
 
 	CMap *mp_Map;
@@ -342,6 +370,10 @@ protected:
     bool mInvincible = false;   /** Shot might hit the object but it has no effect at all */
     bool mRecoverFromStun = false; /** If foe get shot they might be able to recover at later time */
     bool mNeverStop = false;        /** This will make foe continue walking and never change actions (Keen 9 - Cybloog) */
+    bool mPogoStunnable = false;        /** This will make foe continue walking and never change actions (Keen 9 - Cybloog) */
+    bool mMayShoot = false;         /** If enemy if allowed to shoot. Not all of them are able to do that.*/
+
+    GameSound mWalkSound;
 
     Vector2D<Uint32> m_Pos; 	// x,y location in map coords, CSFed, represent as 2D Vector
 

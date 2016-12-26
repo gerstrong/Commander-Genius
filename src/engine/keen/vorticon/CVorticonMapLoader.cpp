@@ -169,6 +169,7 @@ bool CVorticonMapLoaderBase::loadBase(  Uint8 episode,
 	blitPlaneToMap( planeitems, planesize, 1, 2);
 	
 	mpMap->collectBlockersCoordiantes();
+    mpMap->setupAnimationTimer();
 	return true;
 }
 

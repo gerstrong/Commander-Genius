@@ -8,6 +8,7 @@
 
 #include "CShikadiMaster.h"
 #include "../../common/ai/CEnemyShot.h"
+#include "CRedShot.h"
 #include <base/utils/misc.h>
 
 /*
@@ -38,31 +39,88 @@ const int TIME_UNTIL_REACT = 100;
 const int TIME_UNTIL_SHOOT = 100;
 const int TIME_UNTIL_TELEPORTED = 50;
 
+
   
 CShikadiMaster::CShikadiMaster(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
-CStunnable(pmap, foeID, x, y),
-mTimer(0),
-mTeleport(false),
-mpPlayer(nullptr)
+CStunnable(pmap, foeID, x, y)
 {  
-      	mActionMap[A_MASTER_STAND] = (GASOFctr) &CShikadiMaster::processStanding;
-      	mActionMap[A_MASTER_SHOOT] = (GASOFctr) &CShikadiMaster::processShooting;
-      	mActionMap[A_MASTER_TELEPORT] = (GASOFctr) &CShikadiMaster::processTeleporting;    
+    mActionMap[A_MASTER_STAND] = (GASOFctr) &CShikadiMaster::processStanding;
+    mActionMap[A_MASTER_SHOOT] = (GASOFctr) &CShikadiMaster::processShooting;
+    mActionMap[A_MASTER_TELEPORT] = (GASOFctr) &CShikadiMaster::processTeleporting;
+
+    auto diff = gpBehaviorEngine->mDifficulty;
+
+    if(diff > HARD)
+    {
+        mMoreAgressive = true;
+    }
     
-	// Adapt this AI
-	setupGalaxyObjectOnMap(0x2AF4, A_MASTER_STAND);
-	
-	xDirection = LEFT;
-	mKeenAlignment = LEFT;
+    // Adapt this AI
+    setupGalaxyObjectOnMap(0x2AF4, A_MASTER_STAND);
+
+    xDirection = LEFT;
+    mKeenAlignment = LEFT;
+
+    loadPythonScripts("shikadimaster");
+}
+
+bool CShikadiMaster::loadPythonScripts(const std::string &scriptBaseName)
+{
+    // Extra Python script for this AI defined?
+    std::string aiscript = JoinPaths(gKeenFiles.gameDir ,"ai");
+    aiscript = JoinPaths(aiscript,scriptBaseName);
+    aiscript += ".py";
+    aiscript = GetFullFileName(aiscript);
+
+    std::string aidir = ExtractDirectory(aiscript);
+
+    Py_Initialize();
+
+    PyObject* programName = PyUnicode_FromString(scriptBaseName.c_str());
+
+    PyRun_SimpleString("import sys");
+
+    const std::string sysPathCommand = "sys.path.append(\"" + aidir + "\")";
+
+    PyRun_SimpleString(sysPathCommand.c_str());
+
+    auto pModule = PyImport_Import(programName);
+    Py_DECREF(programName);
+
+
+
+    if (pModule != nullptr)
+    {
+        loadAiGetterBool(pModule, "moreAgressive", mMoreAgressive);
+
+        Py_DECREF(pModule);
+    }
+    else
+    {
+#if PYTHON_VERBOSE
+        PyErr_Print();
+        gLogging.ftextOut("Failed to load \"%s\"\n", aiscript.c_str());
+#endif
+
+        return false;
+    }
+
+    Py_Finalize();
+
+    return true;
 }
 
 
 
 void CShikadiMaster::processStanding()
 {
-    /*mTimer++;
+    mTimer++;
     if(mTimer < TIME_UNTIL_REACT)
-    mTimer = 0;*/
+    {
+        return;
+    }
+
+    mTimer = 0;
     
     if(getProbability(250))
         return;
@@ -77,16 +135,58 @@ void CShikadiMaster::processStanding()
     {
         mTeleport = true;
         xDirection = mKeenAlignment;
-        setAction(A_MASTER_SHOOT);
 
-        // ... and spawn a shot that might hurt Keen
-        const int newX = (xDirection == LEFT) ? getXLeftPos()+(4<<STC) : getXRightPos()-(4<<STC);
-        spawnObj( new CEnemyShot(mp_Map, 0,
-                                    newX, getYUpPos()+(8<<STC),
-                                    0x2C3E, xDirection, CENTER,  150, mSprVar) );
 
+        if(mMoreAgressive)
+        {
+            mp_processState = (GASOFctr) &CShikadiMaster::processShootingAgressive;
+        }
+        else
+        {
+            setAction(A_MASTER_SHOOT);
+
+            // ... and spawn a shot that might hurt Keen
+            const int newX = (xDirection == LEFT) ? getXLeftPos()+(4<<STC) : getXRightPos()-(4<<STC);
+            spawnObj( new CEnemyShot(mp_Map, 0,
+                                        newX, getYUpPos()+(8<<STC),
+                                        0x2C3E, xDirection, CENTER,  150, mSprVar) );
+
+        }
     }
 }
+
+
+void CShikadiMaster::processShootingAgressive()
+{
+  // Shoot many times.
+  if(mTimer%16 == 0)
+  {
+      direction_t newXDir = xDirection<0 ? LEFT : RIGHT;
+      direction_t newYDir = swapYDir ? UP : DOWN;
+      swapYDir = !swapYDir;
+      int newX = 	xDirection == RIGHT ? getXRightPos() : getXLeftPos();
+      int newY = 	getYPosition() + 0x300;
+
+          playSound(SOUND_ROBORED_SHOOT);
+
+          spawnObj( new CRedShot( getMapPtr(),
+                                  0,
+                                  newX, newY,
+                                  newXDir, newYDir ) );
+
+
+  }
+
+  mTimer++;
+  if(mTimer < TIME_UNTIL_SHOOT)
+    return;
+
+  mTimer = 0;
+
+  setAction(A_MASTER_STAND);
+  mp_processState = (GASOFctr) &CShikadiMaster::processStanding;
+}
+
 
 
 void CShikadiMaster::processShooting()
@@ -109,7 +209,7 @@ void CShikadiMaster::processTeleporting()
     
     mTimer++;
     if(mTimer < TIME_UNTIL_TELEPORTED)
-	return;
+        return;
     
     mTimer = 0;
     
@@ -144,12 +244,12 @@ void CShikadiMaster::processTeleporting()
 	    const unsigned int tx = ((rand()%(mp_Map->m_width<<CSF))/8 + mpPlayer->getXMidPos() - (0x10<<STC))>>CSF;
 	    const unsigned int ty = ((rand()%(mp_Map->m_height<<CSF))/8 + mpPlayer->getYUpPos() - (0x10<<STC))>>CSF;
 	    
-	    if (ty < 2 || tx < 2 || mp_Map->m_width-5 < tx || mp_Map->m_height-5 < ty) 
-	    {
-		rand();
-	        triesLeft--;
-		continue;
-	    }
+        if (ty < 2 || tx < 2 || mp_Map->m_width-5 < tx || mp_Map->m_height-5 < ty)
+        {
+            rand();
+            triesLeft--;
+            continue;
+        }
 
 	    const int testBoxX1 = (tx - 1)<<CSF;
 	    const int testBoxX2 = (tx + 4)<<CSF;
@@ -169,9 +269,9 @@ void CShikadiMaster::processTeleporting()
 				
 				if ( (prop.behaviour & 0x80) || 
 				    prop.bup || prop.bright || 
-				    prop.bleft || prop.bdown )
+                    prop.bleft || prop.bdown )
 				{
-				  // don't spawn inside a tile, or behind a hidden tile
+                  // don't spawn inside a tile, or behind a hidden tile
 				  triesLeft--;
 				  allow_teleport = false;
 				  break;			  

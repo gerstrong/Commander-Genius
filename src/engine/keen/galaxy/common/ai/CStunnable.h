@@ -34,6 +34,7 @@ public:
 	 */
 	void processGettingStunned();
 
+
 	/**
 	 * empty cycle which is processed when the object is stunned
 	 */

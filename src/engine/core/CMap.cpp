@@ -64,7 +64,7 @@ std::string CMap::getLevelName()
  * \brief	Create an empty data plane used for the map data
  * \param	blocksize	size in bytes of the datablock that has to be created
  */
-bool CMap::setupEmptyDataPlanes(size_t numPlanes, Uint32 width, Uint32 height)
+bool CMap::setupEmptyDataPlanes(int numPlanes, Uint32 width, Uint32 height)
 {
 	m_width = width;
 	m_height = height;
@@ -180,6 +180,36 @@ void CMap::collectBlockersCoordiantes()
     scrollBlockY.push_back((m_height-2)<<(CSF));
     scrollBlockX.push_back((m_width-2)<<(CSF));
 
+}
+
+void CMap::setupAnimationTimer()
+{
+    auto &frontTileProperties = gpBehaviorEngine->getTileProperties(1);
+    word *p_front_tile = m_Plane[1].getMapDataPtr();
+
+    auto &backTileProperties = gpBehaviorEngine->getTileProperties(0);
+    word *p_back_tile = m_Plane[0].getMapDataPtr();
+
+    std::vector<Uint8> &timersBack = m_Plane[0].getTimers();
+    std::vector<Uint8> &timersFront = m_Plane[1].getTimers();
+
+    for( size_t y=0 ; y<m_height ; y++)
+    {
+        const int stride = m_width*y;
+
+        for( size_t x=0 ; x<m_width ; x++)
+        {
+            bool draw = false;
+
+            const int offset = stride + x;
+
+            timersBack[offset] = backTileProperties[*p_back_tile].animationTime;
+            timersFront[offset] = frontTileProperties[*p_front_tile].animationTime;
+
+            p_back_tile++;
+            p_front_tile++;
+        }
+    }
 }
 
 void CMap::fetchNearestVertBlockers(const int x, int &leftCoord, int &rightCoord)
@@ -372,11 +402,11 @@ bool CMap::setTile(Uint16 x, Uint16 y, Uint16 t, Uint16 plane)
 		return false;
 }
 
-bool CMap::setTile(Uint16 x, Uint16 y, Uint16 t, bool update, Uint16 plane)
+bool CMap::setTile(Uint16 x, Uint16 y, Uint16 t, bool redraw, Uint16 plane)
 {
 	if(setTile( x, y, t, plane))
 	{
-		if( update )
+        if( redraw )
 		{
 			redrawAt(x,y);
 		}
@@ -858,6 +888,7 @@ void CMap::animateAllTiles()
     if(!m_animation_enabled)
         return;
 
+    // Some refreshes need to be forced. In this case everything is redrawn
     if(gVideoDriver.getRefreshSignal())
     {
         refreshStripes();
@@ -873,13 +904,15 @@ void CMap::animateAllTiles()
     const int drawMask = ScrollSurface->w-1;
 
 
-    // Let the animation timer tick!!
+    // Tick, tock!!
     mAnimtileTimer += 1.0f;
     //const Uint8 animtileTimerInt = static_cast<Uint8>(mAnimtileTimer);
 
 
     if( mAnimtileTimer > 256.0f )
+    {
         mAnimtileTimer = 0.0f;
+    }
 
 
     static int animtileTimerInt = 0;
@@ -904,12 +937,10 @@ void CMap::animateAllTiles()
     if(num_h_tiles+m_mapy >= m_height)
         num_h_tiles = m_height-m_mapy;
 
-    std::vector<CTileProperties> &frontTileProperties =
-            gpBehaviorEngine->getTileProperties(1);
+    auto &frontTileProperties = gpBehaviorEngine->getTileProperties(1);
     word *p_front_tile = m_Plane[1].getMapDataPtr();
 
-    std::vector<CTileProperties> &backTileProperties =
-            gpBehaviorEngine->getTileProperties(0);
+    auto &backTileProperties = gpBehaviorEngine->getTileProperties(0);
     word *p_back_tile = m_Plane[0].getMapDataPtr();
 
     std::vector<Uint8> &timersBack = m_Plane[0].getTimers();
@@ -928,40 +959,86 @@ void CMap::animateAllTiles()
             const CTileProperties &back_tile = backTileProperties[*p_back_tile];
             const CTileProperties &front_tile = frontTileProperties[*p_front_tile];
 
-            if( back_tile.animationtime )
+            if( back_tile.animationTime )
             {
+                timersBack[offset]--;
+
                 if(timersBack[offset] == 0)
                 {
                     *p_back_tile += back_tile.nextTile;
-                    timersBack[offset] = backTileProperties[*p_back_tile].animationtime;
+                    timersBack[offset] = backTileProperties[*p_back_tile].animationTime;
                     draw = true;
                 }
-
-                timersBack[offset]--;
+                //else
+                {
+                    //timersBack[offset]--;
+                }
             }
 
-            if( front_tile.animationtime )
+            if( front_tile.animationTime )
             {
+                timersFront[offset]--;
+
                 if(timersFront[offset] == 0)
                 {
                     *p_front_tile += front_tile.nextTile;
-                    timersFront[offset] = frontTileProperties[*p_front_tile].animationtime;
+                    timersFront[offset] = frontTileProperties[*p_front_tile].animationTime;
                     draw = true;
                 }
-
-                timersFront[offset]--;
+                //else
+                {
+                    //timersFront[offset]--;
+                }
             }
 
             if( draw && x >= m_mapx && y >= m_mapy &&
                 x < m_mapx + num_v_tiles && y < m_mapy + num_h_tiles )
             {
-                const Uint16 bg = *p_back_tile;
-                const Uint16 fg = *p_front_tile;
-                const Uint16 loc_x = (((x-m_mapx)<<4)+m_mapxstripepos)&drawMask;
-                const Uint16 loc_y = (((y-m_mapy)<<4)+m_mapystripepos)&drawMask;
-                m_Tilemaps.at(0).drawTile(ScrollSurface, loc_x, loc_y, bg);
-                if(fg)
-                    m_Tilemaps.at(1).drawTile(ScrollSurface, loc_x, loc_y, fg);
+                const Uint16 bgTile = *p_back_tile;
+                const Uint16 fgTile = *p_front_tile;
+                const Uint16 loc_x = (((x-m_mapx)<<4)+m_mapxstripepos) & drawMask;
+                const Uint16 loc_y = (((y-m_mapy)<<4)+m_mapystripepos) & drawMask;
+
+
+
+
+                m_Tilemaps[0].drawTile(ScrollSurface, loc_x, loc_y, bgTile);
+
+                /*if(back_tile.animationTime)
+                {
+                    int alphaBg = 255-(64*(back_tile.animationTime-timersBack[offset]));
+
+                    if(alphaBg < 0)
+                    {
+                        alphaBg = 0;
+                    }
+
+
+                    m_Tilemaps[0].drawTileBlended(ScrollSurface, loc_x, loc_y, backTileProperties[*p_back_tile].prevTile, alphaBg);
+                }*/
+
+
+
+
+                if(fgTile)
+                {
+                    m_Tilemaps[1].drawTile(ScrollSurface, loc_x, loc_y, fgTile);
+
+                    /*if(frontTileProperties[*p_front_tile].animationTime)
+                    {
+                        int alphaFg = 255-(64*(frontTileProperties[*p_front_tile].animationTime-timersFront[offset]));
+
+                        if(alphaFg < 0)
+                        {
+                            alphaFg = 0;
+                        }
+
+
+                        m_Tilemaps[1].drawTileBlended(ScrollSurface, loc_x, loc_y, frontTileProperties[*p_front_tile].prevTile, alphaFg);
+                    }*/
+                }
+
+
             }
 
             p_back_tile++;

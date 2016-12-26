@@ -16,6 +16,7 @@
 
 #include "fileio/KeenFiles.h"
 
+#define PYTHON_VERBOSE 0
 
 int CSpriteObject::m_number_of_objects = 0; // The current number of total objects we have within the game!
 
@@ -62,7 +63,7 @@ mSprVar(spriteVar)
     setupCollisionModel();
 }
 
-bool loadAiGetterBool(PyObject * pModule, const std::string &pyMethodStr, bool &value)
+bool CSpriteObject::loadAiGetterBool(PyObject * pModule, const std::string &pyMethodStr, bool &value)
 {
     // pFunc is a new reference
     PyObject *pFunc = PyObject_GetAttrString(pModule, pyMethodStr.c_str());
@@ -81,6 +82,45 @@ bool loadAiGetterBool(PyObject * pModule, const std::string &pyMethodStr, bool &
             {
                 value = false;
             }
+            Py_DECREF(pValue);
+        }
+        else
+        {
+            Py_DECREF(pFunc);
+            PyErr_Print();
+            gLogging.ftextOut("Call failed\n");
+            return false;
+        }
+    }
+    else
+    {
+        if (PyErr_Occurred())
+        {
+            PyErr_Print();
+        }
+
+        gLogging.ftextOut("Cannot find function \"pyMethodStr\"\n");
+        return false;
+    }
+
+    Py_XDECREF(pFunc);
+
+
+    return true;
+}
+
+bool CSpriteObject::loadAiGetterInteger(PyObject * pModule, const std::string &pyMethodStr, int &value)
+{
+    // pFunc is a new reference
+    PyObject *pFunc = PyObject_GetAttrString(pModule, pyMethodStr.c_str());
+
+    if (pFunc && PyCallable_Check(pFunc))
+    {
+        PyObject *pValue = PyObject_CallObject(pFunc, nullptr);
+
+        if (pValue != nullptr)
+        {
+            value = PyLong_AsLong(pValue);
             Py_DECREF(pValue);
         }
         else
@@ -138,15 +178,36 @@ bool CSpriteObject::loadPythonScripts(const std::string &scriptBaseName)
     {
         loadAiGetterBool(pModule, "canRecoverFromStun", mRecoverFromStun);
 
+        loadAiGetterBool(pModule, "turnAroundOnCliff", mTurnAroundOnCliff);
+
+        loadAiGetterBool(pModule, "endGameOnDefeat", mEndGameOnDefeat);
+
         loadAiGetterBool(pModule, "isInvincible", mInvincible);
-        loadAiGetterBool(pModule, "willNeverStop", mNeverStop);
+
+        loadAiGetterBool(pModule, "willNeverStop", mNeverStop);        
+
+        loadAiGetterBool(pModule, "isStunnableWithPogo", mPogoStunnable);
+
+        loadAiGetterBool(pModule, "mayShoot", mMayShoot);
+
+        int health = mHealthPoints;
+        loadAiGetterInteger(pModule, "healthPoints", health);
+        mHealthPoints = health;
+
+        int walksound = mWalkSound;
+        loadAiGetterInteger(pModule, "walkSound", walksound);
+        mWalkSound = GameSound(walksound);
+
 
         Py_DECREF(pModule);
     }
     else
     {
-        PyErr_Print();
+#if PYTHON_VERBOSE
+        PyErr_Print();        
         gLogging.ftextOut("Failed to load \"%s\"\n", aiscript.c_str());
+#endif
+
         return false;
     }
 

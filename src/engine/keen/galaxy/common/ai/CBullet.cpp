@@ -31,7 +31,7 @@ mReversed(false)
 	setupGalaxyObjectOnMap(bulletActionMap[ep-4], A_KEENSHOT_MOVING);
 	setActionSprite();
 	calcBoundingBoxes();
-	playSound( SOUND_KEEN_FIRE );
+    playSound( SOUND_KEEN_FIRE );
 }
 
 

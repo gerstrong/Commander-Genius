@@ -71,7 +71,7 @@ void CVidConfig::reset()
 	m_GameRect.w = 320;
 	m_GameRect.h = 200;
 
-#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
+#if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
 	m_opengl = true;
 	mAspectCorrection.w=0;
 	mAspectCorrection.h=0;

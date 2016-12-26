@@ -29,19 +29,19 @@ void CSecurityDoor::process()
     
     for(int y = startY ; y<endY ; y++)
     {
-	for(int x = startX ; x<endX ; x++)
-	{
-	    const int newTile = mp_Map->getPlaneDataAt(1, x<<CSF, y<<CSF);
-	    mp_Map->setTile(x, y, newTile-4, true, 1);
-	}
+        for(int x = startX ; x<endX ; x++)
+        {
+            const int newTile = mp_Map->getPlaneDataAt(1, x<<CSF, y<<CSF);
+            mp_Map->setTile(x, y, newTile-4, true, 1);
+        }
     }
     
     mFrameCount++;
     
     if(mFrameCount >= 3)
     {
-	exists = false;
-	dead = true;
+        exists = false;
+        dead = true;
     }
 
     

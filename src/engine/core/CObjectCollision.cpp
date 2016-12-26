@@ -540,7 +540,6 @@ bool CSpriteObject::checkMapBoundaryU(const int y1)
 }
 
 
-
 int CSpriteObject::checkSolidR( int x1, int x2, int y1, int y2)
 {
 	std::vector<CTileProperties> &TileProperty = gpBehaviorEngine->getTileProperties();
@@ -593,9 +592,13 @@ int CSpriteObject::checkSolidL( int x1, int x2, int y1, int y2)
             if(c-y1 > gBlockTolerance)
             {
                 if(blocker && !slope)
+                {
                     return blocker;
+                }
                 else if(slope)
+                {
                     return 0;
+                }
             }
 		}
 
@@ -636,6 +639,17 @@ int CSpriteObject::checkSolidU(int x1, int x2, int y1, const bool push_mode )
 	return checkMapBoundaryU(y1) ? 1 : 0;
 }
 
+bool CSpriteObject::checkMapBoundaryD(const int y2)
+{
+    if( (Uint32)y2 > ((mp_Map->m_height)<<CSF) )
+    {
+        exists=false; // Out of map?
+        return true;
+    }
+
+    return false;
+}
+
 int CSpriteObject::checkSolidD( int x1, int x2, int y2, const bool push_mode )
 {
 	std::vector<CTileProperties> &TileProperty = gpBehaviorEngine->getTileProperties();
@@ -653,17 +667,17 @@ int CSpriteObject::checkSolidD( int x1, int x2, int y2, const bool push_mode )
 		{
 			blocked = TileProperty[mp_Map->at(c>>CSF, y2>>CSF)].bup;
 
-			if( blocked && (blocked < 2 || blocked > 7) )
+            if( blocked && (blocked < 2 || blocked > 7) )
 				return blocked;
 		}
 
 		blocked = TileProperty[mp_Map->at((x2-(1<<STC))>>CSF, y2>>CSF)].bup;
-		if( blocked && (blocked < 2 || blocked > 7) )
+
+        if( blocked && (blocked < 2 || blocked > 7) )
 			return blocked;
 	}
 
-	if( (Uint32)y2 > ((mp_Map->m_height)<<CSF) )
-		exists=false; // Out of map?
+    checkMapBoundaryD(y2);
 
 	return 0;
 }
@@ -750,7 +764,9 @@ void CSpriteObject::processMoveBitUp()
 	const unsigned int x2 = getXPosition()+m_BBox.x2;
 	const unsigned int y1 = getYPosition()+m_BBox.y1;
 
-	if( (blockedu = checkSolidU(x1, x2, y1)) == true)
+    blockedu = checkSolidU(x1, x2, y1);
+
+    if(blockedu)
     {
         if(gpBehaviorEngine->getEpisode()<=3) // Galaxy only!
             return;
