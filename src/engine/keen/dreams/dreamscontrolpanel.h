@@ -92,6 +92,28 @@ private:
 };
 
 
+struct DoHelp : CEvent
+{
+    DoHelp(const void *text, int len) :
+        mLen(len)
+    {
+        mText = std::string( static_cast<const char*>(text) );
+    }
+
+    bool init();
+
+    bool ponder();
+
+    std::string mText;
+    int mLen;
+    int mLines;
+    bool mReleased = false;
+    bool mDone = false;
+    int mScroll = 0;
+    int mCur = 0;
+};
+
+
 class DreamsControlPanel : public GsEngine
 {
 public:
@@ -125,7 +147,10 @@ public:
 
 private:
 
+
     std::unique_ptr<LineInput> mpLineInput;
+
+    std::shared_ptr<DoHelp> mpDoHelpEvent;
 
 };
 

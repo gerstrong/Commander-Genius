@@ -62,6 +62,9 @@ private:
 	
 	std::shared_ptr<CEvent> mConfirmEvent;
 	std::shared_ptr<CEvent> mBackEvent;
+
+    const int mBorderHeight = 8;
+
 };
 
 #endif /* CGUITEXTSELECTIONLIST_H_ */

@@ -1,3 +1,15 @@
+v1.9.7:
+----------
+- More python support
+- Bug Fixes
+
+v1.9.6:
+----------
+- Keen learns to run in the galaxy engine
+- Bug fixes in Dreams and much better timer
+- Basic Python3 support
+- Patcher fixes for better mod compatibility 
+
 v1.9.5 Beta:
 ------------
 - Game Center added

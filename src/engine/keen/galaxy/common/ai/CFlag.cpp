@@ -40,23 +40,28 @@ m_baseframe(0)
 	const auto episode = gpBehaviorEngine->getEpisode();
 
     if(canLock)
+    {
         mp_Map->lock();
+    }
 
 	if(episode == 6)
 	{
-	    setupGalaxyObjectOnMap(0x13F4, A_FLAG_FLIP);        
+        setupGalaxyObjectOnMap(0x13F4, A_FLAG_FLIP);
+        g_pSound->playSound( SOUND_FLAG_APPEAR );
 	}
 	else if(episode == 5)
 	{
-	    // In Episode 5 the sign is not thrown! It just appears in the holder. Move it there!
+        // In Episode 5 the sign is not thrown! It just appears in the holder. Put it there!
 	    moveTo(m_destination);
 	    setupGalaxyObjectOnMap(0x148A, A_FLAG_WAVE);
         mp_Map->unlock();
 	}
-	else
+    else // Episode 4
 	{
-	    setupGalaxyObjectOnMap(0x15EE, A_FLAG_FLIP);        
+	    setupGalaxyObjectOnMap(0x15EE, A_FLAG_FLIP);                
+        g_pSound->playSound( SOUND_FLAG_APPEAR );
 	}
+
 	    
     /*if(!newAction)
         moveTo(m_destination);   */
@@ -105,7 +110,7 @@ void CFlag::processFlipping()
 	if(m_Pos != m_destination)
 	{        
         Vector2D<int> dir = m_destination - m_Pos;
-		float length = dir.GetLength();
+        const float length = dir.GetLength();
         Vector2D<float> base_dir( dir.x/length, dir.y/length );
 
 		if( fabs(length) < SPEED )

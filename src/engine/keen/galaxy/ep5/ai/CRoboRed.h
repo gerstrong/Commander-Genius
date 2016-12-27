@@ -32,6 +32,8 @@ public:
 
 	int checkSolidD( int x1, int x2, int y2, const bool push_mode );
 
+    bool loadPythonScripts(const std::string &scriptBaseName);
+
 	void process();
 
 	/**
@@ -42,10 +44,14 @@ public:
 private:
 	int mTimer;
 	int mLookTimer;
-	bool swapYDir;
+    bool swapYDir = false;
 	bool mKeenNearby;
 
     int moveHorizSpeed;
+
+    bool mAlternateShot = false;
+    bool mJiggle = false;
+    int mJiggleFreq = (2<<STC);
 };
 
 }

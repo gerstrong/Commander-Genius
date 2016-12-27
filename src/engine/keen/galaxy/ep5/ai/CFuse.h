@@ -23,6 +23,8 @@ public:
 
 	void process();
 
+    bool loadPythonScripts(const std::string &scriptBaseName);
+
 	/**
 	 * What happens if the slug gets touched by another object
 	 */
@@ -30,6 +32,8 @@ public:
 	
 private:
 	int mTimer;
+
+    int mLevelTestBmp = 84; /** Index to use for the hint message (Keen 9 and other mods) */
 };
 
 }

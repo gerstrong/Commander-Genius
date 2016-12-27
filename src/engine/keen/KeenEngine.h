@@ -15,7 +15,7 @@ public:
         mEp(ep),
         mLockedMenu(true) {}
 
-    void switchToGamePlayMode();
+    void switchToGamePlayMode(const int startLevel = -1);
 
     virtual void openMainMenu() = 0;
 
@@ -48,10 +48,13 @@ struct FinishedLoadingResources : CEvent {};
 // Invoked when New Game -> Players selected -> Difficulty selected
 struct StartNewGameEvent : CEvent
 {
-    StartNewGameEvent(const Difficulty difficulty) :
-        mDifficulty(difficulty) {}
+    StartNewGameEvent(const Difficulty difficulty,
+                      const int startLevel = -1) :
+        mDifficulty(difficulty),
+        mStartLevel(startLevel) {}
 
-    const Difficulty mDifficulty;
+    const Difficulty mDifficulty = EASY;
+    const int mStartLevel = -1;
 };
 
 

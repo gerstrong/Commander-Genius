@@ -25,6 +25,8 @@ public:
 	 * Action functions
 	 */
 	void processMoving();	
+
+    void processStun();
 	
 	bool isNearby(CSpriteObject &theObject);
 

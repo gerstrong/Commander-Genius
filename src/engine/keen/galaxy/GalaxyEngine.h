@@ -33,7 +33,16 @@ public:
 
     bool loadResources( const Uint8 flags );
 
+    /**
+     * @brief switchToPassive   Switch to passive mode meaning intro, title text will be cycling
+     */
     void switchToPassive();
+
+    /**
+     * @brief switchToGameplay  Switch directly to gameplay and start certain level
+     * @param startLevel    Level which to start
+     */
+    void switchToGameplay(const int startLevel);
 
     void pumpEvent(const CEvent *evPtr);
 };

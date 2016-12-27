@@ -17,7 +17,6 @@
 
 #include <base/CInput.h>
 #include <base/GsTimer.h>
-//#include <base/utils/CVec.h>
 #include <base/GsLogging.h>
 
 #include "../dialog/CMessageBoxBitmapGalaxy.h"
@@ -257,9 +256,19 @@ void CPlayerLevel::processRunning()
 	if (state.jumpIsPressed && !state.jumpWasPressed)
 	{
 		state.jumpWasPressed = true;
-		xinertia = xDirection * 16;
+
+        // If you pressed run, perform a long jump
+        if(m_playcontrol[PA_RUN])
+        {
+            xinertia = xDirection * 32;
+        }
+        else
+        {
+            xinertia = xDirection * 16;
+        }
+
 		yinertia = -90;
-		nextX = nextY = 0;
+        /*nextX = */nextY = 0;
 		state.jumpTimer = 18;
 		setAction(A_KEEN_JUMP);
 		playSound( SOUND_KEEN_JUMP );
@@ -269,9 +278,19 @@ void CPlayerLevel::processRunning()
 	if (state.pogoIsPressed && !state.pogoWasPressed)
 	{
 		state.pogoWasPressed = true;
-		xinertia = xDirection * 16;
+
+        // If you pressed run, perform a long jump
+        if(m_playcontrol[PA_RUN])
+        {
+            xinertia = xDirection * 32;
+        }
+        else
+        {
+            xinertia = xDirection * 16;
+        }
+
         yinertia = evalVertPogoInertia();
-		nextX = 0;
+//		nextX = 0;
 		state.jumpTimer = 24;
 		playSound( SOUND_KEEN_POGO );
 		setAction(A_KEEN_POGO_START);
@@ -354,7 +373,7 @@ void CPlayerLevel::handleInputOnGround()
 		setAction(A_KEEN_RUN);
 		processRunning();
 
-		nextX = (xDirection * m_Action.h_anim_move)/4;
+        //nextX = (xDirection * m_Action.h_anim_move)/4;
 		return;
 	}
 
@@ -1363,9 +1382,16 @@ void CPlayerLevel::processJumping()
 	if ( m_playcontrol[PA_X] != 0 )
 	{
 		xDirection = (m_playcontrol[PA_X] < 0) ? -1 : 1;
-		//performPhysAccelHor(xDirection*4, 48); 
-		// This was taken from the omnispeak and recalculated. Check if the new 56 is more appropriate. It seems to be.
-		performPhysAccelHor(xDirection*4, 56);
+
+        // Jump further if run is pressed
+        if(m_playcontrol[PA_RUN])
+        {
+            performPhysAccelHor(xDirection*5, 75);
+        }
+        else
+        {
+            performPhysAccelHor(xDirection*4, 56);
+        }
 	}
 	else performPhysDampHorz();
 
@@ -1396,7 +1422,9 @@ void CPlayerLevel::processJumping()
 
 	// process Shooting in air
 	if( m_playcontrol[PA_FIRE] && !m_fire_recharge_time )
+    {
 		shootInAir();
+    }
 }
 
 
@@ -1605,7 +1633,7 @@ void CPlayerLevel::processPressUp() {
 				  mTarget.y -= (1<<CSF);
 				}
 				
-				solid=false;
+                solid = false;
 				
 				
 				setAction(A_KEEN_ENTER_DOOR);
@@ -1732,6 +1760,8 @@ void CPlayerLevel::processEnterDoor()
 	{	  
 	  
 	  bool mustTeleportOnMap = false;
+
+      auto &frontTileProperties = gpBehaviorEngine->getTileProperties(1);
 	  
 	  // Check if there is a teleporter. In Keen 5 there might be one!
 	  if(gpBehaviorEngine->getEpisode() == 5)
@@ -1748,7 +1778,11 @@ void CPlayerLevel::processEnterDoor()
 	      teletile = mp_Map->getPlaneDataAt(1, xmid, y1-(3<<CSF));
 	    
 	    // Code for the teleport tile
-	    if(teletile == 0x0401)
+        //if(teletile == 0x0401)
+        const auto &tile = frontTileProperties[teletile];
+
+        // Teleport to the secret level
+        if(tile.behaviour == 0x02)
 	    {
 	      // There is one!
 	      mustTeleportOnMap = true;
@@ -1815,91 +1849,55 @@ void CPlayerLevel::processEnterDoor()
 void CPlayerLevel::toggleBridge(const Uint32 newX, const Uint32 newY)
 {
 	const int start_tile = mp_Map->getPlaneDataAt(1, newX<<CSF, newY<<CSF)-1;
+
+    // This is usual for Keen 4. The last tile comes three tiles later
 	int end_tile = start_tile+3;
 	
-	const int ep = gpBehaviorEngine->getEpisode();
-	std::vector<CTileProperties> &tileProp = gpBehaviorEngine->getTileProperties(1); 
-	
-	int x = newX;
+    const int ep = gpBehaviorEngine->getEpisode();
+    std::vector<CTileProperties> &tileProp = gpBehaviorEngine->getTileProperties(1);
 
-	if(ep > 4) // In keen 5 and 6 if there is no bridge property break
-	{    		    	
-	    for(int t = start_tile+1 ;  ; x++ )
-	    {
-    		t = mp_Map->getPlaneDataAt(1, x<<CSF, newY<<CSF);
+    int x = newX;
 
-		if(tileProp[t].behaviour != 18)
-		{
-		    end_tile = mp_Map->getPlaneDataAt(1, (x-1)<<CSF, newY<<CSF);;
-		    break;
-		}
-	    }
-	}
+    if(ep > 4) // In keen 5 and 6 if there is no bridge property found anymore we found end_tile
+    {
+        for(int t = start_tile+1 ;  ; x++ )
+        {
+            t = mp_Map->getPlaneDataAt(1, x<<CSF, newY<<CSF);
 
-	/// We found the start of the row, that need to be changed.
-	/// Let apply it to the rest of the bridge
-	// Apply to the borders
+            if(tileProp[t].behaviour != 18)
+            {
+                end_tile = mp_Map->getPlaneDataAt(1, (x-1)<<CSF, newY<<CSF);;
+                break;
+            }
+        }
+    }
 
-	// bridge opened or closed?
-	const bool b_opened = ((start_tile%18)%8 < 4) ? true : false;
-	
-	x = newX;
-	
-	bool endReached = false;
-	
-	for(int t = start_tile ;  ; x++ )
-	{
-		// Now decide whether the tile is a piece or borders of the bridge
-		const Uint32 type = t%18;
-		
-		if(t == 0)
-		  break;
 
-		// These the tiles
-		if(type < 16) // not sure here, because I totally don't get how bridges in Keen 5 and 6 works. 
-			      // Nevertheless it gets the job done!
-		{
-			if(b_opened)
-				t += 4;
-			else
-				t -= 4;			
-		}
-		else
-		{
-			// It is just a normal piece to remove
-			t = (t/18)*18;
-			if(b_opened)
-				t+=16;
-			else
-				t+=17;
-		}
-		const Uint32 NewTile = t;
-		t = mp_Map->getPlaneDataAt(1, x<<CSF, newY<<CSF);
+    x = newX-1;
 
-		mp_Map->setTile(x-1, newY, NewTile, true, 1);
-		mp_Map->setTile(x-1, newY+1, NewTile+18, true, 1);
+    for(int t = start_tile ;  ; x++ )
+    {
+        // Now decide whether the tile is a piece or borders of the bridge
 
-		if(t == end_tile || endReached)
-		{
-			if(t%8 < 4)
-				// This bridge is opened, close it!
-				t += 4;
-			else
-				// This bridge is closed, open it!
-				t -= 4;
+        if(t == 0)
+            break;
 
-			Uint32 new_lasttile = end_tile;
-			if(b_opened)
-				new_lasttile += 4;
-			else
-				new_lasttile -= 4;
+        // We have two rows
+        for(int y = newY ; y<int(newY+2) ; y++)
+        {
+            t = mp_Map->getPlaneDataAt(1, x<<CSF, y<<CSF);
+            const auto NewTile = t+tileProp[t].nextTile;
 
-			mp_Map->setTile(x-1, newY+1, new_lasttile+17, true, 1);
-			mp_Map->setTile(x, newY, new_lasttile, true, 1);
-			mp_Map->setTile(x, newY+1, new_lasttile+18, true, 1);
-			break;
-		}
-	}
+            mp_Map->setTile(x, y, NewTile, true, 1);
+        }
+
+
+        if(t == end_tile)
+        {
+            break;
+        }
+    }
+
 }
 
 
@@ -2050,9 +2048,6 @@ void CPlayerLevel::openDoorsTile()
 	Uint32 newY = targetXY & 0xFF;
 	Uint32 tileno, next_tileno;
 
-    // Get the tile position of the last tile to change. on the right of
-    //std::vector<CTileProperties> &tilePropVec = gpBehaviorEngine->getTileProperties(1);
-
     while(1)
 	{
 		tileno = mp_Map->getPlaneDataAt(1, newX<<CSF, newY<<CSF);
@@ -2149,7 +2144,9 @@ void CPlayerLevel::performPoleHandleInput()
 	const int py = m_playcontrol[PA_Y];
 	
 	if ( px )
+    {
 		xDirection = (px>0) ? 1 : -1;
+    }
 
 	// Shooting things. *ZAP!*
 	if( py < 0 )
@@ -2540,10 +2537,8 @@ void CPlayerLevel::push(CGalaxySpriteObject& theObject)
 }
 
 
-bool CPlayerLevel::checkConveyorBelt()
+int CPlayerLevel::checkConveyorBelt()
 {
-    if(gpBehaviorEngine->getEpisode() == 6)
-    {
 	Uint32 l_x_l = getXLeftPos();
 	Uint32 l_x = getXMidPos();
 	Uint32 l_x_r = getXRightPos();
@@ -2552,20 +2547,24 @@ bool CPlayerLevel::checkConveyorBelt()
 	int tileID1 = mp_Map->getPlaneDataAt(1, l_x_l, l_y_down);
 	int tileID2 = mp_Map->getPlaneDataAt(1, l_x, l_y_down);
 	int tileID3 = mp_Map->getPlaneDataAt(1, l_x_r, l_y_down);
-	
-	for(int j=0 ; j<4 ; j++) // This will take all the conveyor belts
-	{
-	    if( (tileID1>=0x83A && tileID1<=0x843) ||
-		(tileID2>=0x83A && tileID2<=0x843) ||
-		(tileID3>=0x83A && tileID3<=0x843) )
-	    {
-		return true;
-	    }
-	    
-	    tileID1 -= 36;	tileID2 -= 36;	tileID3 -= 36;
-	}
-    }	
-    return false;
+
+    std::vector<CTileProperties> &tileProp = gpBehaviorEngine->getTileProperties(1);
+
+    const CTileProperties &TileProp1 = tileProp[tileID1];
+    const CTileProperties &TileProp2 = tileProp[tileID2];
+    const CTileProperties &TileProp3 = tileProp[tileID3];
+
+
+    if( TileProp1.bup == 0x29 || TileProp2.bup == 0x29 || TileProp3.bup == 0x29)
+    {
+        return RIGHT;
+    }
+    else if( TileProp1.bup == 0x31 || TileProp2.bup == 0x31 || TileProp3.bup == 0x31)
+    {
+        return LEFT;
+    }
+
+    return 0;
 }
 
 
@@ -2646,15 +2645,18 @@ void CPlayerLevel::process()
 
         const std::string fuse_msg = gpBehaviorEngine->getString( (specialLevel) ? "FUSE_WONDER" : "FUSE_CASUAL");
 
-        g_pSound->playSound( SOUND_LEVEL_DONE );
+        g_pSound->playSound( SOUND_FUSE_BREAK, PLAY_PAUSEALL );
 
         gEffectController.setupEffect(new CDimDark(8));
+
+        auto evExit = new EventExitLevel(mp_Map->getLevel(), true, false, mSprVar);
+        evExit->playSound = true;
 
         msgs.push_back( new CMessageBoxBitmapGalaxy(
                             fuse_msg,
                             *gGraphics.getBitmapFromStr("KEENTHUMBSUP"),
                             RIGHT,
-                            new EventExitLevel(mp_Map->getLevel(), true, false, mSprVar)) );
+                            evExit) );
 
         showMsgVec( msgs );
 
@@ -2671,10 +2673,22 @@ void CPlayerLevel::process()
 	processLevelMiscFlagsCheck();
 
     if(m_dying)
+    {
         return;
+    }
 
 	if(!mExitDoorTimer)
 	{
+        // Run very fast
+        if(m_playcontrol[PA_RUN])
+        {
+            if(xDirection == LEFT )
+                moveLeft( m_Action.h_anim_move<<1 );
+            else if(xDirection == RIGHT )
+                moveRight( m_Action.h_anim_move<<1 );
+        }
+
+
 	    if(!processActionRoutine())
 		exists = false;
 	}
@@ -2700,10 +2714,11 @@ void CPlayerLevel::process()
 	}
 	
 	
-	// Conveyor Belt in Keen 6
-	if(checkConveyorBelt())
+    // Conveyor Belt in Keen 6 (but can work in 4 and 5)
+    const auto conveyorBeltDir = checkConveyorBelt();
+    if(conveyorBeltDir)
 	{
-	    moveRight(BELT_SPEED);
+        moveXDir(conveyorBeltDir*BELT_SPEED);
 	}
 }
 
@@ -2784,19 +2799,23 @@ void CPlayerLevel::TurnGiantSwitchOff(const int x, const int y)
     playSound( SOUND_GUN_CLICK );
 	
     if(flag == 18)
-    {	    
-	PressBridgeSwitch(x_csf, y_csf);	      
+    {
+        PressBridgeSwitch(x_csf, y_csf);
     }
     else
     {
-      if( verifyAndToggleZapper(x_csf, y_csf) )
-	return;
-      
-      if( verifyAndToggleBridge(x_csf, y_csf) )
-	  return;
+        if( verifyAndToggleZapper(x_csf, y_csf) )
+        {
+            return;
+        }
 
-      PressPlatformSwitch(x_csf, y_csf);
-    }    
+        if( verifyAndToggleBridge(x_csf, y_csf) )
+        {
+            return;
+        }
+
+        PressPlatformSwitch(x_csf, y_csf);
+    }
 }
 
 void CPlayerLevel::TurnGiantSwitchOn(const int x, const int y)
@@ -3006,7 +3025,9 @@ int CPlayerLevel::checkSolidD( int x1, int x2, int y2, const bool push_mode )
 	}
 
 	if( (Uint32)y2 > ((mp_Map->m_height)<<CSF) )
-		exists=false; // Out of map?
+    {
+        kill(true, true);
+    }
 
 	return 0;
 }

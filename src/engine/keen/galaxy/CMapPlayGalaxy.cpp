@@ -187,7 +187,7 @@ void CMapPlayGalaxy::render()
 
     int pIt = 0;
     auto objVecSize = mObjectPtr.size();
-    for( auto ctr = 0 ; ctr < mObjectPtr.size() ; ctr++)
+    for( uint ctr = 0 ; ctr < mObjectPtr.size() ; ctr++)
     {
         auto &obj = mObjectPtr[objVecSize-ctr-1];
 

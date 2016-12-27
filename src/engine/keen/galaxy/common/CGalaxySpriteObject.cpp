@@ -18,7 +18,7 @@ CSpriteObject(pmap, x, y, sprVar),
 mFoeID(foeID),
 m_ActionNumber(0),
 m_ActionBaseOffset(0x0),
-nextX(0),
+//nextX(0),
 nextY(0),
 topTI(0),
 bottomTI(0),
@@ -55,7 +55,9 @@ void CGalaxySpriteObject::setupGalaxyObjectOnMap(const size_t ActionBaseOffset,
 	performCollisions();
 	
 	if(!processActionRoutine())
+    {
 			exists = false;
+    }
 }
 
 
@@ -209,7 +211,9 @@ int CGalaxySpriteObject::checkSolidD( int x1, int x2, int y2, const bool push_mo
 				return 0;
 
 			if( blockedu >= 2 && blockedu <= 7 && checkslopedD(c, y2, blockedu) )
+            {
 				return blockedu;
+            }
 		}
 
 		blockedu = TileProperty[mp_Map->at(x2>>CSF, y2>>CSF)].bup;
@@ -218,7 +222,9 @@ int CGalaxySpriteObject::checkSolidD( int x1, int x2, int y2, const bool push_mo
 			return 0;
 
 		if( blockedu >= 2 && blockedu <= 7 && checkslopedD(x2, y2, blockedu)  )
+        {
 			return blockedu;
+        }
 	}
 
     const int y2CSFed = (y2>>CSF);
@@ -259,8 +265,7 @@ int CGalaxySpriteObject::checkSolidD( int x1, int x2, int y2, const bool push_mo
 		}
 	}
 
-	if( (Uint32)y2 > ((mp_Map->m_height)<<CSF) )
-		exists=false; // Out of map?
+    checkMapBoundaryD(y2);
 
 	return 0;
 }

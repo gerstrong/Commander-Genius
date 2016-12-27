@@ -248,7 +248,8 @@ void CPlayerBase::processInput()
 	}
 
 	m_playcontrol[PA_JUMP]   = gInput.getHoldedCommand(mPlayerNum, IC_JUMP)   ? 1 : 0;
-	m_playcontrol[PA_POGO]   = gInput.getHoldedCommand(mPlayerNum, IC_POGO)   ? 1 : 0;
+	m_playcontrol[PA_POGO]   = gInput.getHoldedCommand(mPlayerNum, IC_POGO)   ? 1 : 0;    
+    m_playcontrol[PA_RUN]  = gInput.getHoldedCommand(mPlayerNum, IC_RUN)   ? 1 : 0;
 
 	// The possibility to charge jumps. This is mainly used for the pogo. it is limited to 50
 	if( m_playcontrol[PA_JUMP] > 50) m_playcontrol[PA_JUMP] = 50;
@@ -268,8 +269,9 @@ void CPlayerBase::processInput()
 			m_playcontrol[PA_JUMP] = 0;
 			m_playcontrol[PA_POGO] = 0;
 			gInput.flushCommand(IC_JUMP);
-			gInput.flushCommand(IC_FIRE);
-			gInput.flushCommand(IC_POGO);
+            gInput.flushCommand(IC_FIRE);
+            gInput.flushCommand(IC_RUN);
+            gInput.flushCommand(IC_POGO);
 		}
 
 	}
@@ -619,6 +621,7 @@ void CPlayerBase::processGetEaten()
 {
 	if(m_timer >= DIE_GETEATEN_TIME)
 	{
+        dead = true;
 		exists = false;
 		solid = true;
 		honorPriority = true;
@@ -632,7 +635,8 @@ void CPlayerBase::processGetEaten()
 
 
 
-void CPlayerBase::kill(const bool force)
+void CPlayerBase::kill(const bool force,
+                       const bool noDieProcess)
 {
     if(getActionNumber(A_KEEN_ENTER_DOOR))
         return;
@@ -645,12 +649,23 @@ void CPlayerBase::kill(const bool force)
 
     m_dying = true;    
 
-    // Here were prepare Keen to die, setting the action to die
-    if(mp_processState == &CPlayerBase::processDying && yinertia < 0)
-        return;
-	    
-    yinertia = -DIE_FALL_MAX_INERTIA;
     setAction( A_KEEN_DIE );
+
+    if(!noDieProcess)
+    {
+        // Here were prepare Keen to die, setting the action to die
+        if(mp_processState == &CPlayerBase::processDying && yinertia < 0)
+            return;
+
+        yinertia = -DIE_FALL_MAX_INERTIA;
+
+    }
+    else
+    {
+        dead = true;
+        honorPriority = true;
+    }
+
     solid = false;
     honorPriority = false;
     g_pSound->playSound( SOUND_KEEN_DIE, PLAY_NORESTART );

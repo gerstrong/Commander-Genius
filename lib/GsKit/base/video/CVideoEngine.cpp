@@ -64,7 +64,7 @@ CVideoEngine::~CVideoEngine()
 bool CVideoEngine::init()
 {
 	// Setup mode depends on some systems.
-#if defined(CAANOO) || defined(WIZ) || defined(DINGOO) || defined(NANONOTE) || defined(ANDROID) || defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
+#if defined(CAANOO) || defined(WIZ) || defined(DINGOO) || defined(NANONOTE) || defined(ANDROID) || (TARGET_OS_IPHONE) || (TARGET_IPHONE_SIMULATOR)
 	m_Mode = SDL_SWSURFACE;
 #elif defined(GP2X)
 	m_Mode = SDL_HWSURFACE;

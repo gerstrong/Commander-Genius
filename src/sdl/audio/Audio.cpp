@@ -324,13 +324,11 @@ void Audio::playStereofromCoord( const GameSound snd,
     }
 }
 
-
 void Audio::playStereosound(const GameSound snd, const char mode, const short balance)
 {
     if( mSndChnlVec.empty() ) return;
 
-    if(!mpAudioRessources)
-        return;
+    if( !mpAudioRessources ) return;
 
 	CSoundSlot *mp_Slots = mpAudioRessources->getSlotPtr();
     int slotplay = sndSlotMap[snd];

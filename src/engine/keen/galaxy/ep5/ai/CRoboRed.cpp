@@ -7,10 +7,14 @@
 
 
 #include "CRoboRed.h"
+#include "../../common/ai/CEnemyShot.h"
 #include "CRedShot.h"
 #include "../../common/ai/CPlayerBase.h"
 #include "../../common/ai/CPlayerLevel.h"
 #include <base/utils/misc.h>
+
+
+
 
 /*
 $2734W #Robo Red move
@@ -68,12 +72,68 @@ mKeenNearby(false)
 
 
 	// Adapt this AI
-	setupGalaxyObjectOnMap(0x2734, A_RED_MOVE);
+    setupGalaxyObjectOnMap(0x2734, A_RED_MOVE);
 	
 	xDirection = LEFT;
+
+    loadPythonScripts("robored");
+
+
 }
 
+bool CRoboRed::loadPythonScripts(const std::string &scriptBaseName)
+{
+    // Extra Python script for this AI defined?
+    std::string aiscript = JoinPaths(gKeenFiles.gameDir ,"ai");
+    aiscript = JoinPaths(aiscript,scriptBaseName);
+    aiscript += ".py";
+    aiscript = GetFullFileName(aiscript);
 
+    std::string aidir = ExtractDirectory(aiscript);
+
+    Py_Initialize();
+
+    PyObject* programName = PyUnicode_FromString(scriptBaseName.c_str());
+
+    PyRun_SimpleString("import sys");
+
+    const std::string sysPathCommand = "sys.path.append(\"" + aidir + "\")";
+
+    PyRun_SimpleString(sysPathCommand.c_str());
+
+    auto pModule = PyImport_Import(programName);
+    Py_DECREF(programName);
+
+
+
+    if (pModule != nullptr)
+    {
+        loadAiGetterBool(pModule, "isInvincible", mInvincible);
+
+        loadAiGetterBool(pModule, "willNeverStop", mNeverStop);
+
+        loadAiGetterBool(pModule, "alternateShoot", mAlternateShot);
+
+        loadAiGetterBool(pModule, "mayJiggle", mJiggle);
+
+
+        Py_DECREF(pModule);
+    }
+    else
+    {
+#if PYTHON_VERBOSE
+        PyErr_Print();
+        gLogging.ftextOut("Failed to load \"%s\"\n", aiscript.c_str());
+#endif
+
+        return false;
+    }
+
+    Py_Finalize();
+
+    return true;
+
+}
 
 void CRoboRed::processMoving()
 {
@@ -86,17 +146,29 @@ void CRoboRed::processMoving()
   {
     moveLeft( moveHorizSpeed );
   }
-  
-  if(getProbability(60) && mKeenNearby)
+
+  if(!mNeverStop)
   {
-    setAction(A_RED_PAUSE);
+      if(getProbability(60) && mKeenNearby)
+      {
+        setAction(A_RED_PAUSE);
+      }
   }
+  else if(mKeenNearby)
+  {
+      mTimer++;
+      if(mTimer < TIME_UNTIL_SHOOT)
+          return;
+
+      processShoot();
+  }
+  
 }
 
 
 void CRoboRed::processPauseBeforeShoot()
 {
-  // just wait 
+  // wait a little bit
   mTimer++;
   if(mTimer < TIME_UNTIL_SHOOT)
     return;
@@ -114,18 +186,42 @@ void CRoboRed::processShoot()
 {
   // Shoot many times.  
   if(mTimer%16 == 0)
-  {
-    playSound(SOUND_ROBORED_SHOOT);
-    
-    direction_t newXDir = xDirection<0 ? LEFT : RIGHT;
-    direction_t newYDir = swapYDir ? UP : DOWN;    
-    swapYDir = !swapYDir;
-    int newX = 	xDirection == RIGHT ? getXRightPos() : getXLeftPos();
-    int newY = 	getYPosition() + 0x300;
-    spawnObj( new CRedShot( getMapPtr(), 
-							     0, 
-							     newX, newY,
-							     newXDir, newYDir ) );
+  {                        
+      direction_t newXDir = xDirection<0 ? LEFT : RIGHT;
+      direction_t newYDir = swapYDir ? UP : DOWN;
+      swapYDir = !swapYDir;
+      int newX = 	xDirection == RIGHT ? getXRightPos() : getXLeftPos();
+      int newY = 	getYPosition() + 0x300;
+
+      if(mJiggle)
+      {
+          moveXDir( mJiggleFreq );
+          mJiggleFreq *= (-1);
+
+      }
+
+      if(mAlternateShot)
+      {
+          playSound(SOUND_POLEZAP);
+
+          spawnObj( new CEnemyShot(getMapPtr(), 0,
+                                   newX, getYUpPos(),
+                                   0x2E5A, newXDir, 0,  0.001, mSprVar) );
+
+          setAction(A_RED_MOVE);
+          mTimer = 0;
+      }
+      else
+      {
+          playSound(SOUND_ROBORED_SHOOT);
+
+          spawnObj( new CRedShot( getMapPtr(),
+                                  0,
+                                  newX, newY,
+                                  newXDir, newYDir ) );
+
+      }
+
   }
 				
   mTimer++;
@@ -134,7 +230,10 @@ void CRoboRed::processShoot()
   
   mTimer = 0;
   
-  setAction(A_RED_PAUSE);
+  if(!mNeverStop)
+  {
+    setAction(A_RED_PAUSE);
+  }
 }
 
 
@@ -182,10 +281,16 @@ void CRoboRed::getTouchedBy(CSpriteObject &theObject)
 
     CStunnable::getTouchedBy(theObject);
 
-    // Was it a bullet?
+    // Was it a bullet? If foe must move on, do not stop it.    
     if( dynamic_cast<CBullet*>(&theObject) && !getActionNumber(A_RED_SHOOT) )
     {
-        setAction(A_RED_PAUSE);
+        if(!mNeverStop)
+        {
+            setAction(A_RED_PAUSE);
+        }
+
+
+        theObject.dead = true;
     }
 
     if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
@@ -201,7 +306,6 @@ int CRoboRed::checkSolidD( int x1, int x2, int y2, const bool push_mode )
 
 	return CGalaxySpriteObject::checkSolidD(x1, x2, y2, push_mode);
 }
-
 
 void CRoboRed::process()
 {
@@ -219,7 +323,9 @@ void CRoboRed::process()
 	}
 
 	if(!processActionRoutine())
+    {
 	    exists = false;
+    }
 	
 	(this->*mp_processState)();
 }

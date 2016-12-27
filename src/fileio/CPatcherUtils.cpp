@@ -71,37 +71,74 @@ std::string CPatcher::readPatchItemsNextValue(std::list<std::string> &input)
  *  \param	width	optionally it can read width
  *  \return	if the number could be read true, otherwise false
  */
-bool CPatcher::readIntValueAndWidth(const std::string &input, unsigned long int &output, size_t &width)
+bool CPatcher::readIntValueAndWidth(const std::string &input, unsigned long int &output, int &width)
 {
     if(strStartsWith(input, "$") || strCaseStartsWith(input, "0x"))
 	{
 		std::string line = input;
-		// it is a hexadecimal number
+        // it is a hexadecimal number. Ensure it uses "0x" so everything is equal
 		if(strStartsWith(line, "$"))
 		{
 			std::string buf;
 			line.erase(0,1);
 			buf = "0x"+line;
-			line = buf;
-		}
+            line = buf;
+        }
 
-		stringlwr(line);
+        // Everything lower case...
+        stringlwr(line);
 
-		if(line.size() <=4 )
-		{
-		    width = 1;
-		}
-		else
-		{
-		    if(line.find("w"))
-		    {
-			width = 2;
-		    }
-		    else
-		    {
-			width = 4;
-		    }
-		}
+        if(line.find("w") != line.npos) // "w" stands for word, 2 bytes
+        {
+            width = 2;
+        }
+        else
+        {
+            // Remove "w", "r" and "l". I will be counting how many numbers were given instead
+            std::string::size_type pos;
+            while(1)
+            {
+                pos = line.find("w");
+
+                if(pos == line.npos)
+                    break;
+
+                line.erase(pos,1);
+            }
+
+            while(1)
+            {
+                pos = line.find("l");
+
+                if(pos == line.npos)
+                    break;
+
+                line.erase(pos,1);
+            }
+
+            while(1)
+            {
+                pos = line.find("r");
+
+                if(pos == line.npos)
+                    break;
+
+
+                line.erase(pos,1);
+            }
+
+            // Calculate width (number of bytes to patch)
+            width = line.size();
+
+            if( strStartsWith(line, "0x") )
+            {
+                width -= 2;
+            }
+
+            width /= 2;
+
+        }
+
 
 		// now everything is hexadecimal with the proper format
 		sscanf( line.c_str(), "%lx", &output );
@@ -124,7 +161,7 @@ bool CPatcher::readIntValueAndWidth(const std::string &input, unsigned long int 
 
 bool CPatcher::readIntValue(const std::string &input, long unsigned int  &output)
 {
-    size_t width;
+    int width;
     return readIntValueAndWidth(input, output, width);
 }
 

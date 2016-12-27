@@ -13,7 +13,7 @@ frame(0)
 	 xDirection = CENTER;
 	 animtimer = 0;
 	 canbezapped = true;  // will stop bullets but are not harmed
-	 m_invincible = true;
+	 mInvincible = true;
 	 inhibitfall = false;
 	 sprite = BUTLER_WALK_LEFT_FRAME;
 	 alignToTile();

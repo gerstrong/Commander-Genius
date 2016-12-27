@@ -18,12 +18,38 @@ USL_XORICursor(id0_int_t x,id0_int_t y,const id0_char_t *s,id0_word_t cursor);
 extern void (*USL_MeasureString)(const id0_char_t *,const id0_char_t *,id0_word_t *,id0_word_t *);
 
 extern void (*USL_DrawString)(const id0_char_t id0_far *,const id0_char_t id0_far *);
+
+extern void USL_DoHelpInit(memptr text,id0_long_t len, int &lines);
+
+extern bool USL_DoHelpPonder(memptr text,id0_long_t len,
+                             bool &released,
+                             int &lines,
+                             bool &done,
+                             int &scroll,
+                             int &cur);
+
 }
 
 
 namespace dreams
 {
 
+
+
+
+bool DoHelp::init()
+{
+    USL_DoHelpInit( memptr(mText.c_str()), mLen, mLines);
+
+    return true;
+}
+
+bool DoHelp::ponder()
+{
+    return USL_DoHelpPonder( memptr(mText.c_str()), mLen,
+                             mReleased, mLines, mDone,
+                             mScroll, mCur);
+}
 
 DreamsControlPanel::DreamsControlPanel()
 {
@@ -64,6 +90,13 @@ void DreamsControlPanel::pumpEvent(const CEvent *evPtr)
                            openLineInput->escok,
                            openLineInput->maxchars, openLineInput->maxwidth,
                            openLineInput->mN);
+    }            
+    else if( auto pDoHelp = dynamic_cast<const DoHelp*>(evPtr) )
+    {
+        DoHelp *pDoHelpNoConst = new DoHelp(pDoHelp->mText.c_str(), pDoHelp->mLen);
+
+        mpDoHelpEvent.reset( pDoHelpNoConst );
+        mpDoHelpEvent->init();
     }
     else if( dynamic_cast<const CloseLineInput*>(evPtr) )
     {
@@ -80,6 +113,17 @@ void DreamsControlPanel::pumpEvent(const CEvent *evPtr)
 
 void DreamsControlPanel::ponder(const float deltaT)
 {
+    if(mpDoHelpEvent)
+    {
+        if(mpDoHelpEvent->ponder())
+        {
+            mpDoHelpEvent = nullptr;
+        }
+
+        return;
+    }
+
+
     if(mpLineInput)
     {
         mpLineInput->ponder();
@@ -332,6 +376,7 @@ void LineInput::ponder()
 
 
         gEventManager.add(new CloseLineInput);        
+
 
         gEventManager.add(new SaveGameEvent(mStr, true, true, mN) );
 

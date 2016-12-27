@@ -1504,8 +1504,8 @@ static	UserItem	CtlPanels[] =
 {CtlPanelR(0),uii_RadioButton,CTL_STARTUPPIC,CTL_STARTDNPIC,"Start or Resume a Game",sc_None,ui_Normal,USL_CtlButtonCustom},
 {CtlPanelR(1),uii_RadioButton,CTL_HELPUPPIC,CTL_HELPDNPIC,"Get Help With Commander Keen",sc_None,ui_Normal,USL_CtlButtonCustom},
 {CtlPanelR(2),uii_RadioButton,CTL_DISKUPPIC,CTL_DISKDNPIC,"Load / Save / Quit",sc_None,ui_Normal,USL_CtlButtonCustom},
-{CtlPanelR(3),uii_RadioButton,CTL_CONTROLSUPPIC,CTL_CONTROLSDNPIC,"Choose Controls",sc_C,ui_Normal,USL_CtlButtonCustom},
-/*{CtlPanelR(4),uii_RadioButton,CTL_SOUNDUPPIC,CTL_SOUNDDNPIC,"Select Sound Device",sc_F2,ui_Normal,USL_CtlButtonCustom},
+/*{CtlPanelR(3),uii_RadioButton,CTL_CONTROLSUPPIC,CTL_CONTROLSDNPIC,"Choose Controls",sc_C,ui_Normal,USL_CtlButtonCustom},
+{CtlPanelR(4),uii_RadioButton,CTL_SOUNDUPPIC,CTL_SOUNDDNPIC,"Select Sound Device",sc_F2,ui_Normal,USL_CtlButtonCustom},
 {CtlPanelR(5),uii_RadioButton,CTL_MUSICUPPIC,CTL_MUSICDNPIC,"Turn Music On / Off",sc_F7,ui_Normal,USL_CtlButtonCustom},*/
 {-1,-1,-1,-1,uii_Bad}
 					},
@@ -2565,214 +2565,280 @@ USL_DrawHelp(id0_char_t id0_far *text,id0_word_t start,id0_word_t end,id0_word_t
 //	USL_DoHelp() - Formats and displays the specified help
 //
 ///////////////////////////////////////////////////////////////////////////
+
+
+
 static void
 USL_DoHelp(memptr text,id0_long_t len)
 {
-	// REFKEEN - Alternative controllers support	
-    /*BE_ST_AltControlScheme_Push();
-    BE_ST_AltControlScheme_PreparePageScrollingControls(sc_PgUp, sc_PgDn);*/
+    gEventManager.add( new dreams::DoHelp(text, len) );
+}
 
-	id0_boolean_t		done,
-				moved;
-	id0_int_t			scroll;
-	id0_word_t		i,
-				pixdiv,
-				w,h,
-				lines,cur,page,
-				top,num,loc,
-				id0_far *lp,
-				base,srcbase,destbase;
-	ScanCode	waitkey;
-	id0_longword_t	lasttime;
-	WindowRec	wr;
-	CursorInfo	info;
+void
+USL_DoHelpInit(memptr text, id0_long_t len, int &lines)
+{
+    CursorInfo	info;
+    id0_boolean_t		done,
+            moved;
+    id0_int_t			scroll;
+    id0_word_t		i,
+            pixdiv,
+            w,h,
+            cur,page,
+            top,num,loc,
+            id0_far *lp,
+            base,srcbase,destbase;
+    ScanCode	waitkey;
+    id0_longword_t	lasttime;
+    WindowRec	wr;
 
-	USL_ShowHelp("Arrow Keys Move / Escape Exits");
-	fontcolor = F_BLACK;
+    lines = USL_FormatHelp((id0_char_t id0_far *)text,len);
 
-	US_SaveWindow(&wr);
-	US_RestoreWindow(&BottomWindow);
-	US_ClearWindow();
+    USL_ShowHelp("Arrow Keys Move / Escape Exits");
+    fontcolor = F_BLACK;
 
-	VW_HideCursor();
-	VW_UpdateScreen();
+    US_SaveWindow(&wr);
+    US_RestoreWindow(&BottomWindow);
+    US_ClearWindow();
 
-	lines = USL_FormatHelp((id0_char_t id0_far *)text,len);
-	USL_MeasureString("",NULL,&w,&h);
-	page = WindowH / h;
-	cur = 0;
-	lp = (id0_word_t *)LineOffsets;
+    VW_HideCursor();
+    VW_UpdateScreen();
 
-	IN_ClearKeysDown();
-	moved = true;
-	lasttime = 0;
-	scroll = 0;
-	done = false;
-	waitkey = sc_None;
-	while (!done)
-	{
-		if (moved)
-		{
-//			BE_ST_TimeCountWaitFromSrc(lasttime, 5);
-#if 0
-			while (TimeCount - lasttime < 5)
-				;
-#endif
-			lasttime = SD_GetTimeCount();
+    USL_MeasureString("",NULL,&w,&h);
+    page = WindowH / h;
+    cur = 0;
+    lp = (id0_word_t *)LineOffsets;
 
-			if (scroll == -1)
-			{
-				top = cur;
-				num = 1;
-				loc = 0;
-			}
-			else if (scroll == +1)
-			{
-				num = 1;
-				loc = page - 1;
-				top = cur + loc;
-			}
-			else
-			{
-				top = cur;
-				num = (page < lines)? page : lines;
-				loc = 0;
-			}
-			if (scroll)
-			{
-				if (grmode == CGAGR)
-				{
-					pixdiv = 4;
-					base = bufferofs + panadjust + (WindowX / pixdiv);
-				}
-				else if (grmode == EGAGR)
-				{
-					VWB_Bar(WindowX,WindowY + (loc * h),WindowW,num * h,WHITE);
-					USL_DrawHelp((id0_char_t id0_far *)text,top,top + num,loc,h,lp);
+    IN_ClearKeysDown();
+    moved = true;
+    lasttime = 0;
+    scroll = 0;
+    done = false;
+    waitkey = sc_None;
 
-					pixdiv = 8;
-					base = displayofs + panadjust + (WindowX / pixdiv);
-				}
-				else if (grmode == VGAGR)
-					pixdiv = 1;
+}
 
-				if (scroll == 1)
-				{
-					srcbase = base + ylookup[WindowY + h];
-					destbase = base + ylookup[WindowY];
-					if (grmode == EGAGR)
-					{
-						EGAWRITEMODE(1);
-						VW_WaitVBL(1);
-					}
-					VW_ScreenToScreen(srcbase,destbase,WindowW / pixdiv,
-										WindowH - h);
-				}
-				else
-				{
-					i = WindowY + (h * (page - 1));
-					srcbase = base + ylookup[i - h];
-					destbase = base + ylookup[i];
-					base = ylookup[h];
-					for (i = page - 1;i;i--,srcbase -= base,destbase -= base)
-						VW_ScreenToScreen(srcbase,destbase,WindowW / pixdiv,h);
-				}
-				if (grmode == CGAGR)
-				{
-					VWB_Bar(WindowX,WindowY + (loc * h),WindowW,num * h,WHITE);
-					USL_DrawHelp((id0_char_t id0_far *)text,top,top + num,loc,h,lp);
-					VW_UpdateScreen();
-				}
-				else if (grmode == EGAGR)
-				{
-					base = panadjust + (WindowX / pixdiv) +
-							ylookup[WindowY + (loc * h)];
-					VW_ScreenToScreen(base + bufferofs,base + displayofs,
-										WindowW / pixdiv,h);
-				}
-			}
-			else
-			{
-				US_ClearWindow();
-				USL_DrawHelp((id0_char_t id0_far *)text,top,top + num,loc,h,lp);
-				VW_UpdateScreen();
-			}
 
-			moved = false;
-			scroll = 0;
-		}
+bool USL_DoHelpPonder(memptr text,id0_long_t len,
+                 bool &released, int &lines,
+                 bool &done, int &scroll,
+                 int &cur)
+{
 
-		if (waitkey)
-			while (IN_KeyDown(waitkey))
-			{
+    id0_boolean_t		moved;
+    id0_word_t		i,
+            pixdiv,
+            w,h, page,
+            top,num,loc,
+            id0_far *lp,
+            base,srcbase,destbase;
+    ScanCode	waitkey;
+    id0_longword_t	lasttime;
+    WindowRec	wr;
+
+    CursorInfo info;
+
+
+    IN_ReadCursor(&info);
+
+
+    // Release all the buttons
+    if(!released)
+    {
+        if(!info.button0 && !info.button1)
+        {
+            released = true;
+        }
+
+        return false;
+    }
+
+
+    USL_ShowHelp("Arrow Keys Move / Escape Exits");
+    fontcolor = F_BLACK;
+
+    US_SaveWindow(&wr);
+    US_RestoreWindow(&BottomWindow);
+    US_ClearWindow();
+
+    VW_HideCursor();
+    VW_UpdateScreen();   
+
+    USL_MeasureString("",NULL,&w,&h);
+    page = WindowH / h;
+    lp = (id0_word_t *)LineOffsets;
+
+    IN_ClearKeysDown();
+    moved = true;
+    lasttime = 0;
+    waitkey = sc_None;
+
+
+    if(!done)
+    {
+
+        if (moved)
+        {
+            //lasttime = SD_GetTimeCount();
+
+            if (scroll == -1)
+            {
+                top = cur;
+                num = 1;
+                loc = 0;
+            }
+            else if (scroll == +1)
+            {
+                num = 1;
+                loc = page - 1;
+                top = cur + loc;
+            }
+            else
+            {
+                top = cur;
+                num = (page < lines)? page : lines;
+                loc = 0;
+            }
+            if (scroll)
+            {
+                if (grmode == CGAGR)
+                {
+                    pixdiv = 4;
+                    base = bufferofs + panadjust + (WindowX / pixdiv);
+                }
+                else if (grmode == EGAGR)
+                {
+                    VWB_Bar(WindowX,WindowY + (loc * h),WindowW,num * h,WHITE);
+                    USL_DrawHelp((id0_char_t id0_far *)text,top,top + num,loc,h,lp);
+
+                    pixdiv = 8;
+                    base = displayofs + panadjust + (WindowX / pixdiv);
+                }
+                else if (grmode == VGAGR)
+                    pixdiv = 1;
+
+                if (scroll == 1)
+                {
+                    srcbase = base + ylookup[WindowY + h];
+                    destbase = base + ylookup[WindowY];
+                    if (grmode == EGAGR)
+                    {
+                        EGAWRITEMODE(1);
+                        VW_WaitVBL(1);
+                    }
+                    VW_ScreenToScreen(srcbase,destbase,WindowW / pixdiv,
+                                      WindowH - h);
+                }
+                else
+                {
+                    i = WindowY + (h * (page - 1));
+                    srcbase = base + ylookup[i - h];
+                    destbase = base + ylookup[i];
+                    base = ylookup[h];
+                    for (i = page - 1;i;i--,srcbase -= base,destbase -= base)
+                        VW_ScreenToScreen(srcbase,destbase,WindowW / pixdiv,h);
+                }
+                if (grmode == CGAGR)
+                {
+                    VWB_Bar(WindowX,WindowY + (loc * h),WindowW,num * h,WHITE);
+                    USL_DrawHelp((id0_char_t id0_far *)text,top,top + num,loc,h,lp);
+                    VW_UpdateScreen();
+                }
+                else if (grmode == EGAGR)
+                {
+                    base = panadjust + (WindowX / pixdiv) +
+                            ylookup[WindowY + (loc * h)];
+                    VW_ScreenToScreen(base + bufferofs,base + displayofs,
+                                      WindowW / pixdiv,h);
+                }
+            }
+            else
+            {
+                US_ClearWindow();
+                USL_DrawHelp((id0_char_t id0_far *)text,top,top + num,loc,h,lp);
+                VW_UpdateScreen();
+            }
+
+            moved = false;
+            scroll = 0;
+        }
+
+
+        if (waitkey)
+        {
+            while (IN_KeyDown(waitkey))
+            {
                 BE_ST_ShortSleep();
-			}
-		waitkey = sc_None;
+            }
+        }
+        waitkey = sc_None;
 
-		IN_ReadCursor(&info);
-		if (info.y < 0)
-		{
-			if (cur > 0)
-			{
-				scroll = -1;
-				cur--;
-				moved = true;
-			}
-		}
-		else if (info.y > 0)
-		{
-			if (cur + page < lines)
-			{
-				scroll = +1;
-				cur++;
-				moved = true;
-			}
-		}
-		else if (info.button0 || info.button1)
-			done = true;
-		else if (IN_KeyDown(LastScan))
-		{
-			switch (LastScan)
-			{
-			case sc_Escape:
-				done = true;
-				break;
-			case sc_UpArrow:
-				if (cur > 0)
-				{
-					scroll = -1;
-					cur--;
-					moved = true;
-				}
-				break;
-			case sc_DownArrow:
-				if (cur + page < lines)
-				{
-					scroll = +1;
-					cur++;
-					moved = true;
-				}
-				break;
-			case sc_PgUp:
-				if (cur > page)
-					cur -= page;
-				else
-					cur = 0;
-				moved = true;
-				waitkey = sc_PgUp;
-				break;
-			case sc_PgDn:
-				if (cur + page < lines)
-				{
-					cur += page;
-					if (cur + page >= lines)
-						cur = lines - page;
-					moved = true;
-				}
-				waitkey = sc_PgDn;
-				break;
-			}
-		}
+        IN_ReadCursor(&info);
+        if (info.y < 0)
+        {
+            if (cur > 0)
+            {
+                scroll = -1;
+                cur--;
+                moved = true;
+            }
+        }
+        else if (info.y > 0)
+        {
+            if (cur + page < lines)
+            {
+                scroll = +1;
+                cur++;
+                moved = true;
+            }
+        }
+        else if (info.button0 || info.button1)
+        {
+            done = true;
+        }
+        else if (IN_KeyDown(LastScan))
+        {
+            switch (LastScan)
+            {
+            case sc_Escape:
+                done = true;
+                break;
+            case sc_UpArrow:
+                if (cur > 0)
+                {
+                    scroll = -1;
+                    cur--;
+                    moved = true;
+                }
+                break;
+            case sc_DownArrow:
+                if (cur + page < lines)
+                {
+                    scroll = +1;
+                    cur++;
+                    moved = true;
+                }
+                break;
+            case sc_PgUp:
+                if (cur > page)
+                    cur -= page;
+                else
+                    cur = 0;
+                moved = true;
+                waitkey = sc_PgUp;
+                break;
+            case sc_PgDn:
+                if (cur + page < lines)
+                {
+                    cur += page;
+                    if (cur + page >= lines)
+                        cur = lines - page;
+                    moved = true;
+                }
+                waitkey = sc_PgDn;
+                break;
+            }
+        }
 
         // CG Input events
         if(gInput.getPressedCommand(IC_UP))
@@ -2799,23 +2865,27 @@ USL_DoHelp(memptr text,id0_long_t len)
         {
             done = true;
         }
+    }
+    else
+    {
+        if(info.button0 || info.button1)
+        {
+            return false;
+        }
 
-        BE_ST_ShortSleep();
-	}
-	IN_ClearKeysDown();
-	do
-	{
-		IN_ReadCursor(&info);
-        BE_ST_ShortSleep();
-	} while (info.button0 || info.button1);
+        IN_ClearKeysDown();
 
-	VW_ShowCursor();
-	US_ClearWindow();
-	VW_UpdateScreen();
-	US_RestoreWindow(&wr);
+        VW_ShowCursor();
+        US_ClearWindow();
+        VW_UpdateScreen();
+        US_RestoreWindow(&wr);
 
-    //BE_ST_AltControlScheme_Pop(); // REFKEEN - Alternative controllers support
+        return true;
+    }
+
+    return false;
 }
+
 
 ///////////////////////////////////////////////////////////////////////////
 //
@@ -3804,7 +3874,7 @@ US_ControlPanel_Ponder(void)
 		if (FlushHelp)
 		{
 			lasti = -2;
-			lasttime = SD_GetTimeCount();
+            lasttime = SD_GetTimeCount();
 			FlushHelp = false;
 		}
 		if (inrect)

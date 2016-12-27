@@ -24,6 +24,8 @@ bool CMusic::loadTrack(const int track)
 
     g_pSound->pauseAudio();
 
+    gLogging.textOut("Load track number " + itoa(track) + "");
+
 #if defined(OGG) || defined(TREMOR)
     mpPlayer.reset( new COGGPlayer );
 

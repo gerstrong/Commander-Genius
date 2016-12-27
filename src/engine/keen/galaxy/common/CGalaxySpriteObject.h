@@ -55,7 +55,7 @@ public:
 	uint16_t m_ActionNumber;
 	size_t m_ActionBaseOffset;
 
-	int nextX;
+    //int nextX;
 	int nextY;
 
 	//TileInfo for surrounding tiles.

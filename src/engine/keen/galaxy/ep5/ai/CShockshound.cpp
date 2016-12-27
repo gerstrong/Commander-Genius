@@ -10,6 +10,8 @@
 #include "../../common/ai/CPlayerBase.h"
 #include "../../common/ai/CPlayerLevel.h"
 #include "../../common/ai/CEnemyShot.h"
+#include "../../common/dialog/CMessageBoxBitmapGalaxy.h"
+#include "engine/core/mode/CGameMode.h"
 #include <base/utils/misc.h>
 
 /*
@@ -48,12 +50,15 @@ const int TIME_TO_BARK = 64;
 const int TIME_TO_SIT = 32;
 const int TIME_WALKING = 50;
 
+const int JUMP_INERTIA = -120;
+
   
 CShockshound::CShockshound(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
 CStunnable(pmap, foeID, x, y),
-mHealth(2),
 mTimer(0)
 {
+    mHealthPoints = 2;
+    mTurnAroundOnCliff = true;
 	
 	mActionMap[A_HOUND_SIT] = (GASOFctr) &CShockshound::processSit;
 	mActionMap[A_HOUND_BARK] = (GASOFctr) &CShockshound::processBark;
@@ -68,6 +73,8 @@ mTimer(0)
 	
 	xDirection = LEFT;
 	yDirection = CENTER;
+
+    loadPythonScripts("shockshound");
 }
 
 
@@ -80,7 +87,8 @@ void CShockshound::processSit()
   
     mTimer = 0;
     
-    setAction(A_HOUND_BARK);  
+    // If Mortimer do not bark.
+    setAction(A_HOUND_BARK);
     playSound(SOUND_SHOCKSUNDBARK);
 }
 
@@ -89,7 +97,9 @@ void CShockshound::processBark()
 {
     mTimer++;
     if( mTimer < TIME_TO_BARK )
+    {
       return;
+    }
   
     mTimer = 0;
     
@@ -97,24 +107,24 @@ void CShockshound::processBark()
     
     if(getProbability(200))
     {
-	setAction(A_HOUND_SIT);    
+        setAction(A_HOUND_SIT);
     }
 
     if(mKeenAlignmentY != CENTER)
     {
-	yinertia = -120;
-	setAction(A_HOUND_JUMP);
-    }    
+        yinertia = JUMP_INERTIA;
+        setAction(A_HOUND_JUMP);
+    }
     
     if(getProbability(500))
-    {	    
-	// Spawn a Enemyshot in form electrostatic
-	const int newX = (xDirection == LEFT) ? getXLeftPos()+(4<<STC) : getXRightPos()-(4<<STC);
-	spawnObj( new CEnemyShot(mp_Map, 0, 
-							newX, getYUpPos()-(8<<STC),
-                            0x2FC2, xDirection, CENTER,  150, mSprVar) );
-	
-	// SD_PlaySound(SOUND_BARKSHOTDIE); This must be used in the Enemyshot class, but can't because it's too general
+    {
+        // Spawn a Enemyshot in form electrostatic
+        const int newX = (xDirection == LEFT) ? getXLeftPos()+(4<<STC) : getXRightPos()-(4<<STC);
+        spawnObj( new CEnemyShot(mp_Map, 0,
+                                 newX, getYUpPos()-(8<<STC),
+                                 0x2FC2, xDirection, CENTER,  150, mSprVar) );
+
+        // SD_PlaySound(SOUND_BARKSHOTDIE); This must be used in the Enemyshot class, but can't because it's too general
     }
 
 }
@@ -127,7 +137,9 @@ void CShockshound::processWalking()
   
   mTimer++;
   if( mTimer < TIME_WALKING )
+  {
     return;
+  }
   
   mTimer = 0;
     
@@ -135,12 +147,13 @@ void CShockshound::processWalking()
   {
     setAction(A_HOUND_SIT);    
   }    
+
 }
 
 void CShockshound::processJump()
 {
   // Move normally in the direction
-  moveXDir(xDirection*WALK_SPEED);  
+  moveXDir(xDirection*WALK_SPEED);
 
   if( yinertia >= 0 && blockedd)
   {
@@ -156,15 +169,24 @@ bool CShockshound::isNearby(CSpriteObject &theObject)
 	if( CPlayerLevel *player = dynamic_cast<CPlayerLevel*>(&theObject) )
 	{	    	    
 		if( player->getXMidPos() < getXMidPos() )
+        {
 			mKeenAlignmentX = LEFT;
+        }
 		else
+        {
 			mKeenAlignmentX = RIGHT;
+        }
 		
 		mKeenAlignmentY = CENTER;
+
 		if( player->getYDownPos()-(1<<STC) < getYUpPos() )
+        {
 		    mKeenAlignmentY = UP;
+        }
 		else if( player->getYDownPos()+(1<<STC) > getYDownPos() )
+        {
 		    mKeenAlignmentY = DOWN;
+        }
 	}
 
 	return true;
@@ -180,20 +202,34 @@ void CShockshound::getTouchedBy(CSpriteObject &theObject)
 	// Was it a bullet? Than make it stunned.
 	if( dynamic_cast<CBullet*>(&theObject) )
 	{
-	    mHealth--;
+        mHealthPoints--;
+
 	    theObject.dead = true;
 	    
-	    // TODO: Flash effect must be added here!
-	    if(mHealth == 0)
-	    {
-	      setAction(A_HOUND_STUNNED);
-	      dead = true;
-	    }		
+        if(mHealthPoints == 0)
+        {
+            setAction(A_HOUND_STUNNED);
+            if(mRecoverFromStun)
+            {
+                mHealthPoints = 30;
+            }
+            else
+            {
+                dead = true;
+            }
+
+        }
 	    else
 	    {
 	      blink(10);
 	    }
-	}
+
+        if(mRecoverFromStun)
+        {
+            setAction(A_HOUND_BARK);
+        }
+
+    }
 
 	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
 	{
@@ -204,17 +240,47 @@ void CShockshound::getTouchedBy(CSpriteObject &theObject)
 
 int CShockshound::checkSolidD( int x1, int x2, int y2, const bool push_mode )
 {
-	turnAroundOnCliff( x1, x2, y2 );
+    const auto isThereSolid = CGalaxySpriteObject::checkSolidD(x1, x2, y2, push_mode);
 
-	return CGalaxySpriteObject::checkSolidD(x1, x2, y2, push_mode);
+    if(isThereSolid)
+    {
+        const auto cliff = turnAroundOnCliff( x1, x2, y2 );
+
+        if(cliff && !mTurnAroundOnCliff) // if he is not allowed to turn around, make him jump instead
+        {
+            blockedr = blockedl = false;
+            yinertia = (JUMP_INERTIA);
+            setAction(A_HOUND_JUMP);
+        }
+    }
+
+    return isThereSolid;
 }
 
+
+bool CShockshound::checkMapBoundaryD(const int y2)
+{
+    if( (Uint32)y2 > ((mp_Map->m_height)<<CSF) )
+    {
+        dead = true;
+
+        // If that not mortimer (Keen 9) make the object non existent
+        if(!mEndGameOnDefeat)
+        {
+            exists = false;
+        }
+
+        return true;
+    }
+
+    return false;
+}
 
 void CShockshound::process()
 {
 	performCollisions();
 	
-	performGravityMid();
+    performGravityMid();
 
 	if( blockedl )
 	{
@@ -225,8 +291,32 @@ void CShockshound::process()
 	  xDirection = LEFT;
 	}
 
+    if(getActionNumber(A_HOUND_STUNNED) && !dead)
+    {
+        setAction(A_HOUND_WALK);
+    }
+
+    // keen 9 - Mortimer, if he dies you win that episode
+    if(mEndGameOnDefeat && dead)
+    {
+        std::vector<CMessageBoxGalaxy*> msg;
+
+        const std::string end_text("End of Episode.\n"
+                                   "The game will be restarted.\n"
+                                   "You can replay it again or\n"
+                                   "try another Episode for more fun!\n"
+                                   "The original epilog is under construction.");
+
+        msg.push_back( new CMessageBoxGalaxy(end_text, new EventEndGamePlay()) );
+
+        showMsgVec(msg);
+        exists = false;
+    }
+
 	if(!processActionRoutine())
+    {
 	    exists = false;
+    }
 	
 	(this->*mp_processState)();
 }

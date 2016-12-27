@@ -18,7 +18,9 @@ if(DBFUSION)
     add_definitions(-DDBFUSION)
 endif()
 
+if(REFKEEN)
 add_subdirectory(refkeen)
+endif()
 
 set(EngineSources CGameLauncher.cpp CGameLauncher.h
                    downloadgui.cpp

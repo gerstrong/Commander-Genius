@@ -1,3 +1,10 @@
+commandergenius (1.9.7ppa1) xenial; urgency=low
+
+  *  Python3 support for AI (Keen 9 better supported with that)
+
+ -- Gerhard Stein <gerstrong@gmail.com>  Mon, 26 Dec 2016 18:33:55 +0100
+
+
 commandergenius (1.9.5ppa5) xenial; urgency=low
 
   *  Deadlock fixes

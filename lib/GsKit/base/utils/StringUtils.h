@@ -55,7 +55,7 @@ dest[len-1] = '\0'; }
 // Strnlen definition for compilers that don't have it
 #if !defined(__USE_GNU) && _MSC_VER <= 1200
 inline size_t strnlen(const char *str, size_t maxlen) {
-	register size_t i;
+    size_t i;
 	for(i = 0; (i < maxlen) && str[i]; ++i) {}
 	return i;
 }

@@ -51,6 +51,12 @@ ADD_DEFINITIONS(-Werror=cast-align)
 #SET(EXECUTABLE_OUTPUT_PATH ${BUILD_DIR})
 
 
+FIND_PACKAGE(PythonLibs)
+
+INCLUDE_DIRECTORIES(${PYTHON_INCLUDE_DIRS})
+LINK_LIBRARIES(${PYTHON_LIBRARIES})
+
+
 # main includes
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
 INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/lib/GsKit)
@@ -107,11 +113,17 @@ link_directories (${CommanderGenius_BINARY_DIR}/lib/GsKit)
 #include_directories (${CommanderGenius_SOURCE_DIR}/src/engine/dbfusion/include)
 
 
+set(Boost_USE_STATIC_LIBS OFF)
+set(Boost_USE_MULTITHREAD ON)
+set(Boost_USE_STATIC OFF)
+
 FIND_PACKAGE(Boost)
 IF (Boost_FOUND)
 	INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIR})
 	ADD_DEFINITIONS( "-DHAS_BOOST" )
-ENDIF()
+ELSE(Boost_FOUND)
+	MESSAGE(FATAL_ERROR "Could not find the Boost libraries")
+ENDIF(Boost_FOUND)
 
 
 find_package( ZLIB REQUIRED )
@@ -124,24 +136,26 @@ if(DOWNLOADER)
     IF(CURL_FOUND)
       INCLUDE_DIRECTORIES(${CURL_INCLUDE_DIR})
     ELSE(CURL_FOUND)
-      MESSAGE(FATAL_ERROR "Could not find the CURL library and development files.")
+      MESSAGE(FATAL_ERROR "Could not find the CURL library and development files." )
     ENDIF(CURL_FOUND)
 endif()
 
 if(USE_SDL2)
 
-    IF(WIN32)
-      include(FindSDL2 OPTIONAL)
-    else()
-      INCLUDE(FindPkgConfig)
-      PKG_SEARCH_MODULE(SDL2 REQUIRED sdl2)
-      PKG_SEARCH_MODULE(SDL2IMAGE REQUIRED SDL2_image>=2.0.0)
-    endif()
+      find_package(SDL2 REQUIRED)
+      find_package(SDL2_image REQUIRED)
+#    IF(WIN32)
+#      include(FindSDL2 OPTIONAL)      
+#    else()
+#      INCLUDE(FindPkgConfig)
+      #PKG_SEARCH_MODULE(SDL2 REQUIRED sdl2)
+      #PKG_SEARCH_MODULE(SDL2IMAGE REQUIRED SDL2_image>=2.0.0)
+#    endif()
 
     if(SDL2_FOUND)
         message(STATUS "Using shared SDL Version 2 for Commander Genius")
         include_directories(${SDL2_INCLUDE_DIRS})
-        include_directories(${SDL2IMAGE_INCLUDE_DIRS})
+        include_directories(${SDL2_IMAGE_INCLUDE_DIRS})
 
         #include_directories(${SDL2_NET_INCLUDE_DIRS})
 
@@ -216,10 +230,12 @@ target_link_libraries (CGeniusExe GsKit)
 # Link zlib
 target_link_libraries( CGeniusExe ${ZLIB_LIBRARIES} )
 
-if(USE_SDL2)
-        target_link_libraries(CGeniusExe ${SDL2_LIBRARIES})
-        target_link_libraries(CGeniusExe ${SDL2IMAGE_LIBRARIES})
 
+if(USE_SDL2)
+        target_link_libraries(CGeniusExe ${SDL2_LIBRARY})
+        target_link_libraries(CGeniusExe ${SDLIMAGE_LIBRARY})
+	message(STATUS "SDL2_LIBRARY = ${SDL2_LIBRARY}")
+	message(STATUS "SDLIMAGE_LIBRARY = ${SDLIMAGE_LIBRARY}")
 else(USE_SDL2)
         # SDL stuff to link
         target_link_libraries(CGeniusExe ${SDL_NET_LIBRARIES})
@@ -239,9 +255,10 @@ IF(OPENGL)
     ENDIF()
 ENDIF(OPENGL)
 
+# TODO: Does not work with MacOS. Where is the pkgconfig or cmake script
 IF(OGG)
 	if(WIN32)
-		TARGET_LINK_LIBRARIES(CGeniusExe vorbisfile vorbis ogg)
+        TARGET_LINK_LIBRARIES(CGeniusExe vorbisfile vorbis ogg)
 	else(WIN32)
 		TARGET_LINK_LIBRARIES(CGeniusExe vorbis vorbisfile)
 	endif(WIN32)
@@ -283,6 +300,8 @@ if(WIN32)
 	target_link_libraries(CGeniusExe Version)
 endif(WIN32)
 
+target_link_libraries(CGeniusExe ${PYTHON_LIBRARIES})
+
 IF(OPENGL)
     # OpenGL stuff to link
     target_link_libraries(CGeniusExe ${OPENGL_LIBRARIES})
@@ -306,7 +325,7 @@ if(DBFUSION)
 
 endif(DBFUSION)
 
-
+LINK_DIRECTORIES(/opt/local/lib)
 
 cotire(CGeniusExe)
 

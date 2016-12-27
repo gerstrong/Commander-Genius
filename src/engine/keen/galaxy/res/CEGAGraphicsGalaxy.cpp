@@ -884,6 +884,9 @@ bool CEGAGraphicsGalaxy::readTilemaps( const size_t NumTiles, size_t pbasetilesi
         Tilemap.loadHiresTile("gfx/4TIL0000", m_path);
     }
 
+    // Optimize surfaces for the screen
+    Tilemap.optimizeSurface();
+
 	return true;
 }
 

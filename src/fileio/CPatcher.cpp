@@ -84,7 +84,7 @@ void CPatcher::process()
 			// Seperate the offset and the filename
 			size_t p = newbuf.find(' ');
 
-			long unsigned int offset;
+            long unsigned int offset;
 			if( readIntValue(newbuf.substr(0,p), offset) )
 			{
 				std::string patch_file_name = newbuf.substr(p);
@@ -140,17 +140,18 @@ void CPatcher::process()
 		else if(PatchItem.keyword == "patch" )
 		{
 			// first we need to get the offset
-			long unsigned int offset = 0;
+            long unsigned int offset = 0;
 			std::string textline = readPatchItemsNextValue(PatchItem.value);						
-			size_t width;
+            int width;
 			if(readIntValue(textline, offset))
 			{
-                // Terror from outer-space workaround to avoid it crash!
+                // Terror from outer-space workaround to avoid its crash!
                 if(offset == 0x3D740 && m_episode == 4)
                 {
                     gLogging.textOut("Appling TFOS mod workaround...");
                     continue;
                 }
+
 
 				while(!PatchItem.value.empty())
 				{
@@ -187,7 +188,7 @@ void CPatcher::process()
 		{
 			// Patch the level hints
 			std::string textline = readPatchItemsNextValue(PatchItem.value);
-			long unsigned int number = 0;
+            long unsigned int number = 0;
 
 			if(readIntValue(textline, number))
 			{
@@ -243,7 +244,7 @@ void CPatcher::postProcess()
 		{
 			// Patch the entry level text
 			std::string textline = readPatchItemsNextValue(it->value);
-			long unsigned int number = 0;
+            long unsigned int number = 0;
 
 			if(readIntValue(textline, number))
 			{

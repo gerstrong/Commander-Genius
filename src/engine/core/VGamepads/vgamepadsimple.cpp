@@ -258,9 +258,9 @@ void VirtualKeenControl::mouseState(const Vector2D<float> &Pos, const bool down)
                 const GsRect<float> pogoButtonRect(1.0f-buttonSize, 1.0f-buttonSize, buttonSize, buttonSize);
                 verifyButtonMatch(pogoButtonRect, IC_POGO);
 
-                // Was the Status button pressed?
+                // Was the Run button pressed?
                 const GsRect<float> statusButtonRect(0.5f, 1.0f-buttonSize, buttonSize, buttonSize);
-                verifyButtonMatch(statusButtonRect, IC_STATUS);
+                verifyButtonMatch(statusButtonRect, IC_RUN);
             }
         }
     }
