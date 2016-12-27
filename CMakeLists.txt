@@ -72,8 +72,11 @@ endif(UNIX)
 # Force SDL2 on windows systems
 IF(WIN32)
 
-    include(FindSDL2.cmake)	
-    include(FindSDL2_net.cmake)	
+    #include(FindSDL2.cmake)
+    #include(FindSDL2_net.cmake)
+                INCLUDE(FindPkgConfig)
+                find_package(SDL2 REQUIRED)
+                find_package(SDL2_image REQUIRED >=2.0.0)
 
     if(SDL2_FOUND)
         message(STATUS "Using shared SDL Version 2 for Commander Genius")
@@ -87,8 +90,7 @@ IF(WIN32)
 else(WIN32)
         if(USE_SDL2)
  
-		INCLUDE(FindPkgConfig)
-		FIND_PACKAGE( SDL2 REQUIRED )    
+		INCLUDE(FindPkgConfig) 
                 find_package(SDL2 REQUIRED)
                 find_package(SDL2_image REQUIRED >=2.0.0)
 		#PKG_SEARCH_MODULE(SDL2 REQUIRED sdl2)
