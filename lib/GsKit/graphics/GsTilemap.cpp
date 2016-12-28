@@ -253,7 +253,9 @@ void GsTilemap::applyGalaxyHiColourMask()
 
     const auto format = mTileSurface.getSDLSurface()->format;
 
+#if SDL_VERSION_ATLEAST(2, 0, 0)
     mTileSurface.setBlendMode(SDL_BLENDMODE_BLEND);
+#endif
 
     mTileSurface.lock();
 

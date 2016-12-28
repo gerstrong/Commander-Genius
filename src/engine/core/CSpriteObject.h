@@ -31,7 +31,7 @@
 
 #include "fileio/KeenFiles.h"
 
-#include <Python.h>
+#include <base/GsPython.h>
 
 
 const int COLISION_RES = (1<<STC);
@@ -161,6 +161,9 @@ public:
     std::vector< ObjMove* > mMoveTasks;
 
     bool m_jumpdownfromobject;
+
+
+
 
 
     /*

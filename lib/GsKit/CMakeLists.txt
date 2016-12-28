@@ -86,6 +86,14 @@ else(USE_SDL2)
 
 endif(USE_SDL2)
 
+
+# Look for Python (Version 3.0 or later is required)
+FIND_PACKAGE(PythonLibs)
+
+INCLUDE_DIRECTORIES(${PYTHON_INCLUDE_DIRS})
+LINK_LIBRARIES(${PYTHON_LIBRARIES})
+
+
 Project(GsKit)
 
 # From this point files are globbed for compilation and project setup
