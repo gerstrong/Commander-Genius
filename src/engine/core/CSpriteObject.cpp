@@ -16,8 +16,6 @@
 
 #include "fileio/KeenFiles.h"
 
-#define PYTHON_VERBOSE 0
-
 int CSpriteObject::m_number_of_objects = 0; // The current number of total objects we have within the game!
 
 ///
@@ -150,7 +148,7 @@ bool CSpriteObject::loadAiGetterInteger(PyObject * pModule, const std::string &p
 
 bool CSpriteObject::loadPythonScripts(const std::string &scriptBaseName)
 {
-    auto pModule = loadPythonModule(scriptBaseName, JoinPaths(gKeenFiles.gameDir ,"ai") );
+    auto pModule = gPython.loadModule( scriptBaseName, JoinPaths(gKeenFiles.gameDir ,"ai") );
 
     if (pModule != nullptr)
     {
@@ -181,11 +179,6 @@ bool CSpriteObject::loadPythonScripts(const std::string &scriptBaseName)
     }
     else
     {
-#if PYTHON_VERBOSE
-        PyErr_Print();        
-        gLogging.ftextOut("Failed to load \"%s\"\n", aiscript.c_str());
-#endif
-
         return false;
     }
 

@@ -92,7 +92,7 @@ CAmpton::CAmpton(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y)
 
 bool CAmpton::loadPythonScripts(const std::string &scriptBaseName)
 {
-    auto pModule = loadPythonModule(scriptBaseName, JoinPaths(gKeenFiles.gameDir ,"ai") );
+    auto pModule = gPython.loadModule( scriptBaseName, JoinPaths(gKeenFiles.gameDir ,"ai") );
 
     if (pModule != nullptr)
     {
@@ -115,11 +115,6 @@ bool CAmpton::loadPythonScripts(const std::string &scriptBaseName)
     }
     else
     {
-#if PYTHON_VERBOSE
-        PyErr_Print();
-        gLogging.ftextOut("Failed to load \"%s\"\n", aiscript.c_str());
-#endif
-
         return false;
     }
 

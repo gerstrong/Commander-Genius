@@ -61,7 +61,7 @@ void fixNewLine(std::string& str)
 
 bool CFuse::loadPythonScripts(const std::string &scriptBaseName)
 {
-    auto pModule = loadPythonModule(scriptBaseName, JoinPaths(gKeenFiles.gameDir ,"ai") );
+    auto pModule = gPython.loadModule( scriptBaseName, JoinPaths(gKeenFiles.gameDir ,"ai") );
 
     const int level = mp_Map->getLevel();
 
@@ -186,11 +186,6 @@ bool CFuse::loadPythonScripts(const std::string &scriptBaseName)
     }
     else
     {
-#if PYTHON_VERBOSE
-        PyErr_Print();
-        gLogging.ftextOut("Failed to load \"%s\"\n", aiscript.c_str());
-#endif
-
         return false;
     }
 
