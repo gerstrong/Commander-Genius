@@ -70,8 +70,8 @@ void CTeleporter::reset()
 void CTeleporter::process()
 {
 	int mx, my;
-	unsigned int x = getXPosition();
-	unsigned int y = getYPosition();
+    int x = getXPosition();
+    int y = getYPosition();
 	int animrate, numframes;
 	int player = whichplayer;
 

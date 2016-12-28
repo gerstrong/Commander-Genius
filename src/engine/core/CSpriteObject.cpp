@@ -16,8 +16,6 @@
 
 #include "fileio/KeenFiles.h"
 
-#define PYTHON_VERBOSE 0
-
 int CSpriteObject::m_number_of_objects = 0; // The current number of total objects we have within the game!
 
 ///
@@ -148,31 +146,9 @@ bool CSpriteObject::loadAiGetterInteger(PyObject * pModule, const std::string &p
     return true;
 }
 
-
 bool CSpriteObject::loadPythonScripts(const std::string &scriptBaseName)
 {
-    // Extra Python script for this AI defined?
-    std::string aiscript = JoinPaths(gKeenFiles.gameDir ,"ai");
-    aiscript = JoinPaths(aiscript,scriptBaseName);
-    aiscript += ".py";
-    aiscript = GetFullFileName(aiscript);
-
-    std::string aidir = ExtractDirectory(aiscript);
-
-    Py_Initialize();
-
-    PyObject* programName = PyUnicode_FromString(scriptBaseName.c_str());
-
-    PyRun_SimpleString("import sys");
-
-    const std::string sysPathCommand = "sys.path.append(\"" + aidir + "\")";
-
-    PyRun_SimpleString(sysPathCommand.c_str());
-
-    auto pModule = PyImport_Import(programName);
-    Py_DECREF(programName);
-
-
+    auto pModule = gPython.loadModule( scriptBaseName, JoinPaths(gKeenFiles.gameDir ,"ai") );
 
     if (pModule != nullptr)
     {
@@ -203,11 +179,6 @@ bool CSpriteObject::loadPythonScripts(const std::string &scriptBaseName)
     }
     else
     {
-#if PYTHON_VERBOSE
-        PyErr_Print();        
-        gLogging.ftextOut("Failed to load \"%s\"\n", aiscript.c_str());
-#endif
-
         return false;
     }
 

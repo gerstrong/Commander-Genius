@@ -188,7 +188,9 @@ CG-Data locations:
 
 a) On Windows you usually find that directory under "Documents\Commander Genius". 
 b) If you use Linux open the directory "~/.CommanderGenius". 
-c) Androids datapath usually is "/Android/data/net.sourceforge.clonekeenplus/files"
+c) Androids datapath usually is "/Android/data/net.sourceforge.clonekeenplus/files". For that you need to connect the device to your PC, 
+   normally through a USB-Cable and in your options you have to enable file transfer. That way you access the that directory. 
+   If you started CG you already should find it and see some games.
 
 If you have registered version Keen 2,3,5 or 6 put them into the directory where you will find your download games. That subdirectory
 is called "games". You can put personalized mods there as well.
@@ -249,11 +251,11 @@ How to compile it under Ubuntu:
  	- build-essential
  	- libvorbis-dev
         - libogg-dev
-        - libgl1-mesa-dev               
+        - libgl1-mesa-dev      
         - libboost
         - libcurl4-openssl-dev
         - zlib
-        - python3
+        - python3 (python 3.5 recommended)         
  
    For SDL 1.2:
  	- libsdl1.2-dev
@@ -303,6 +305,9 @@ dir=<game-directory>	This will launch the game of the given directory, in case i
 
 finale=<on/off>		If you want to directly show the finale of a game pass this parameter:
 			vg.: "CGenius.exe finale=on"
+
+level=<level>		If supply that parameter it will directly open the given level. Useful for testing stuff
+
 
 Example: If you want to start the game of the path "C:\games\keen5" type:
 
