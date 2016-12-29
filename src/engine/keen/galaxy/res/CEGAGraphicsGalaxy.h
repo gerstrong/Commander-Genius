@@ -54,6 +54,11 @@ public:
 	bool readMaskedTilemaps( size_t NumTiles, size_t pbasetilesize,
 			size_t rowlength, size_t IndexOfTiles,
 			GsTilemap &Tilemap, bool tileoff );
+
+    /**
+     * @brief readTexts This reads the Texts used in Computer Wrist and Ending as Beginning Pages. In-Level texts are not handled here
+     * @return true if everything went fine, otherwise false.
+     */
 	bool readTexts();
 
     bool readMiscStuff();

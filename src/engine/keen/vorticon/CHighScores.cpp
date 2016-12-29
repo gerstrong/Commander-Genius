@@ -92,10 +92,10 @@ void CHighScores::init()
 	stBitmap bmp;
 	
     bmp.p_Bitmap = gGraphics.getBitmapFromStr("HIGHSCOR");
-	bmp.rect.x = 160-(bmp.p_Bitmap->getWidth()/2);
+	bmp.rect.x = 160-(bmp.p_Bitmap->width()/2);
 	bmp.rect.y = 6;
-	bmp.rect.w = bmp.p_Bitmap->getWidth();
-	bmp.rect.h = bmp.p_Bitmap->getHeight();
+	bmp.rect.w = bmp.p_Bitmap->width();
+	bmp.rect.h = bmp.p_Bitmap->height();
 	m_Bitmaps.push_back(bmp);
 	
 	if(m_Episode == 2)
@@ -103,8 +103,8 @@ void CHighScores::init()
         bmp.p_Bitmap = gGraphics.getBitmapFromStr("SAVED");
 		bmp.rect.x = 232;
 		bmp.rect.y = 32;
-		bmp.rect.w = bmp.p_Bitmap->getWidth();
-		bmp.rect.h = bmp.p_Bitmap->getHeight();
+		bmp.rect.w = bmp.p_Bitmap->width();
+		bmp.rect.h = bmp.p_Bitmap->height();
 		m_Bitmaps.push_back(bmp);
 		bmp.rect.y = 36;
 	}
@@ -114,8 +114,8 @@ void CHighScores::init()
         bmp.p_Bitmap = gGraphics.getBitmapFromStr("PARTS");
 		bmp.rect.x = 232;
 		bmp.rect.y = 32;
-		bmp.rect.w = bmp.p_Bitmap->getWidth();
-		bmp.rect.h = bmp.p_Bitmap->getHeight();
+		bmp.rect.w = bmp.p_Bitmap->width();
+		bmp.rect.h = bmp.p_Bitmap->height();
 		m_Bitmaps.push_back(bmp);
 		
 		CPhysicsSettings &Phy = gpBehaviorEngine->getPhysicsSettings();
@@ -140,14 +140,14 @@ void CHighScores::init()
 	
     bmp.p_Bitmap = gGraphics.getBitmapFromStr("NAME");
 	bmp.rect.x = (m_Episode == 3) ? 69 : 40;
-	bmp.rect.w = bmp.p_Bitmap->getWidth();
-	bmp.rect.h = bmp.p_Bitmap->getHeight();
+	bmp.rect.w = bmp.p_Bitmap->width();
+	bmp.rect.h = bmp.p_Bitmap->height();
 	m_Bitmaps.push_back(bmp);
 	
     bmp.p_Bitmap = gGraphics.getBitmapFromStr("SCORE");
 	bmp.rect.x = (m_Episode == 3) ? 207 : 154;
-	bmp.rect.w = bmp.p_Bitmap->getWidth();
-	bmp.rect.h = bmp.p_Bitmap->getHeight();
+	bmp.rect.w = bmp.p_Bitmap->width();
+	bmp.rect.h = bmp.p_Bitmap->height();
 	m_Bitmaps.push_back(bmp);
 
 	SDL_Surface *temp = CG_CreateRGBSurface( gVideoDriver.getGameResolution().SDLRect() );

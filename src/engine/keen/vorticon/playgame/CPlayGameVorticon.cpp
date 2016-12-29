@@ -390,7 +390,7 @@ void CPlayGameVorticon::ponder(const float deltaT)
 
             GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
 
-            mpGameoverBmp->setScrPos( (gameRes.w/2) -(pBitmap->getWidth()/2), (gameRes.h/2) -(pBitmap->getHeight()/2) );
+            mpGameoverBmp->setScrPos( (gameRes.w/2) -(pBitmap->width()/2), (gameRes.h/2) -(pBitmap->height()/2) );
 		}
 	}
 	else // No game over

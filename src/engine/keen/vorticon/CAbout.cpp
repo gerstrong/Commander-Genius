@@ -169,7 +169,7 @@ void CAbout::render()
 
     if(m_type == "ID")
     {
-        mp_bmp->draw( 160-mp_bmp->getWidth()/2, 22);
+        mp_bmp->draw( 160-mp_bmp->width()/2, 22);
     }
     else if(m_type == "CG")
     {

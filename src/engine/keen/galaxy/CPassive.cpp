@@ -59,7 +59,7 @@ mSkipSection(false)
 
     GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
 
-    mScaleFactor = gameRes.h/mCommanderTextSfc.getHeight();
+    mScaleFactor = gameRes.h/mCommanderTextSfc.height();
 
     mLogoPosY = gameRes.h;
 
@@ -85,11 +85,11 @@ mSkipSection(false)
     mKeenTextSfc.setColorKey( 0, 0, 0 );
 
     mCommanderTextPos = Vector2D<int>(gameRes.w, (gameRes.h-cmdTextRect.h)/2 );
-    mKeenTextPos = Vector2D<int>(-mKeenTextSfc.getWidth(), (gameRes.h-cmdTextRect.h)/2 );
+    mKeenTextPos = Vector2D<int>(-mKeenTextSfc.width(), (gameRes.h-cmdTextRect.h)/2 );
 
     GsRect<Uint16> logoBmpRect;
-    logoBmpRect.w = mCurrentLogoBmp.getWidth();
-    logoBmpRect.h = mCurrentLogoBmp.getHeight();
+    logoBmpRect.w = mCurrentLogoBmp.width();
+    logoBmpRect.h = mCurrentLogoBmp.height();
     logoBmpRect.x = logoBmpRect.y = 0;
     logoBmpRect.h *= mScaleFactor;
     logoBmpRect.w *= mScaleFactor;
@@ -161,7 +161,7 @@ void CPassiveGalaxy::renderIntro()
     GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
     SDL_Rect gameResSDL = gameRes.SDLRect();
 
-    const int logoPosX = (gameRes.w-mCurrentLogoBmp.getWidth())/2;
+    const int logoPosX = (gameRes.w-mCurrentLogoBmp.width())/2;
 
     SDL_Surface *blitSfc = gVideoDriver.getBlitSurface();
     SDL_FillRect( blitSfc, &gameResSDL, SDL_MapRGB(blitSfc->format, 0, 0, 0) );
@@ -183,7 +183,7 @@ void CPassiveGalaxy::processIntro()
 {	       
     GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
 
-    const int logoMidPosY = mLogoPosY+mCurrentLogoBmp.getHeight()/2;
+    const int logoMidPosY = mLogoPosY+mCurrentLogoBmp.height()/2;
 
     mCommanderTextPos.x -= 2;
     mKeenTextPos.x++;
@@ -199,7 +199,7 @@ void CPassiveGalaxy::processIntro()
             mTerminatorTimer++;
 
         // Change Logo
-        if(mLogoPosY+mCurrentLogoBmp.getHeight() <= 0)
+        if(mLogoPosY+mCurrentLogoBmp.height() <= 0)
         {
             mLogoPosY = gameRes.h;
             mTerminatorLogoNum++;
@@ -209,8 +209,8 @@ void CPassiveGalaxy::processIntro()
             mCurrentLogoBmp.optimizeSurface();
 
             GsRect<Uint16> logoBmpRect;
-            logoBmpRect.w = mCurrentLogoBmp.getWidth();
-            logoBmpRect.h = mCurrentLogoBmp.getHeight();
+            logoBmpRect.w = mCurrentLogoBmp.width();
+            logoBmpRect.h = mCurrentLogoBmp.height();
             logoBmpRect.x = logoBmpRect.y = 0;
             logoBmpRect.h *= mScaleFactor;
             logoBmpRect.w *= mScaleFactor;
@@ -223,7 +223,7 @@ void CPassiveGalaxy::processIntro()
         }
     }
 
-    const int textSeparation = (mCommanderTextPos.x+mCommanderTextSfc.getWidth()) - mKeenTextPos.x;
+    const int textSeparation = (mCommanderTextPos.x+mCommanderTextSfc.width()) - mKeenTextPos.x;
 
     if(textSeparation <= -mMaxSeparationWidth || mSkipSection)
     {        
@@ -236,7 +236,7 @@ void CPassiveGalaxy::processIntro()
         gInput.flushAll();
 
         mCommanderTextSfc._draw(0,0, mpZoomSurface.get() );
-        mKeenTextSfc._draw(mCommanderTextSfc.getWidth()+59*mScaleFactor, 0, mpZoomSurface.get() );
+        mKeenTextSfc._draw(mCommanderTextSfc.width()+59*mScaleFactor, 0, mpZoomSurface.get() );
 
         mTerminatorTimer = 0;
         mSkipSection = false;
