@@ -730,11 +730,13 @@ bool CEGAGraphicsGalaxy::readfonts()
 		GsFont &Font = gGraphics.getFont(i);
 		//Font.setMonochrome(true);
 
-		if(m_egagraph.at(EpisodeInfo[ep].IndexFonts + i).data.at(0))
+        const std::vector<unsigned char> &fontData = m_egagraph.at(EpisodeInfo[ep].IndexFonts + i).data;
+
+        if(fontData.at(0))
 		{
 			// ARM processor requires all ints and structs to be 4-byte aligned, so we're just using memcpy()
 			FontHeadStruct FontHeadData, *FontHead = &FontHeadData;
-			memcpy( FontHead, &(m_egagraph.at(EpisodeInfo[ep].IndexFonts + i).data.at(0)), sizeof(FontHeadStruct) );
+            memcpy( FontHead, &(fontData.at(0)), sizeof(FontHeadStruct) );
 
 			// Find out the maximum character width
 			int maxwidth=0;
