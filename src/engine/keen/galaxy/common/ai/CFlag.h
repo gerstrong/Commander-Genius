@@ -77,6 +77,11 @@ namespace galaxy  {
     Uint16 m_baseframe;
     void (CFlag::*processState)();	
     std::map< size_t, void (CFlag::*)() > mActionMap;
+
+    /**
+     * @brief mPlayMapSound This is asked while Flag is flying around and must be played only once
+     */
+    bool mPlayMapSound = true;
     
   };
   

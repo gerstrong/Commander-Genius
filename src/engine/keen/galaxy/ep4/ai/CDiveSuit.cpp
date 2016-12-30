@@ -36,8 +36,11 @@ void CDiveSuit::getTouchedBy(CSpriteObject &theObject)
 		g_pSound->playSound( SOUND_GET_WETSUIT, PLAY_PAUSEALL );
 		taken = swimsuit = true;
 
-        showMsgWithBmp( gpBehaviorEngine->getString("SWIM_SUIT_TEXT"), "KEENTHUMBSUP", LEFT,
-                       new EventExitLevel(mp_Map->getLevel(), true, false, mSprVar));
+        auto evExit = new EventExitLevel(mp_Map->getLevel(), true, false, mSprVar);
+        evExit->playSound = true;
+
+
+        showMsgWithBmp( gpBehaviorEngine->getString("SWIM_SUIT_TEXT"), "KEENTHUMBSUP", LEFT, evExit);
 
         player->m_Inventory.Item.m_gem.clear();
 	}

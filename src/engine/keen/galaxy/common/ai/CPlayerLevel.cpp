@@ -1478,12 +1478,13 @@ void CPlayerLevel::processExiting()
 	Uint32 x = getXMidPos();
 	if( ((mp_Map->m_width-2)<<CSF) < x || (2<<CSF) > x )
 	{
-		g_pSound->playSound( SOUND_LEVEL_DONE );
 		g_pMusicPlayer->stop();
 
         gEffectController.setupEffect(new CDimDark(8));
 
-        gEventManager.add( new EventExitLevel(mp_Map->getLevel(), true, false, mSprVar) );
+        auto evExit = new EventExitLevel(mp_Map->getLevel(), true, false, mSprVar);
+        evExit->playSound = true;
+        gEventManager.add( evExit );
         m_Inventory.Item.m_gem.clear();
 		mExitTouched = true;
 	}
@@ -1794,11 +1795,12 @@ void CPlayerLevel::processEnterDoor()
 		//o->action = ACTION_KEENENTEREDDOOR;
 		// TODO: Figure out what this does
 		g_pMusicPlayer->stop();
-		g_pSound->playSound( SOUND_LEVEL_DONE );
 
         gEffectController.setupEffect(new CDimDark(8));
 
-        gEventManager.add( new EventExitLevel(mp_Map->getLevel(), true, mustTeleportOnMap, mSprVar) );
+        auto evExit = new EventExitLevel(mp_Map->getLevel(), true, mustTeleportOnMap, mSprVar);
+        evExit->playSound = true;
+        gEventManager.add( evExit );
 				
 		dontdraw = true;
         m_Inventory.Item.m_gem.clear();
@@ -1811,8 +1813,12 @@ void CPlayerLevel::processEnterDoor()
 		//o->action = ACTION_KEENENTEREDDOOR;
         gEffectController.setupEffect(new CDimDark(8));
 		g_pMusicPlayer->stop();
-		g_pSound->playSound( SOUND_LEVEL_DONE );		
-        gEventManager.add( new EventExitLevel(mp_Map->getLevel(), true, false, mSprVar) );
+
+        auto evExit = new EventExitLevel(mp_Map->getLevel(), true, false, mSprVar);
+        evExit->playSound = true;
+        gEventManager.add( evExit );
+
+
 		dontdraw = true;
         m_Inventory.Item.m_gem.clear();
 		return;
