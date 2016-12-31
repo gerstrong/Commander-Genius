@@ -159,7 +159,9 @@ bool CExeFile::readData(const unsigned int episode, const std::string& datadirec
 	m_headerdata = mData.data();
 	m_headersize = UnLZEXE.HeaderSize();
 	if(!m_headersize)
+    {
 		m_headersize = fetchUncompressedHeaderSize(m_headerdata);
+    }
 
 	m_rawdata = mData.data() + m_headersize;
 
