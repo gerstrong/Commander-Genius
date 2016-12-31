@@ -12,6 +12,7 @@ OPTION(TREMOR "Tremor support" No)
 OPTION(DBFUSION "Dosbox fusion" No)
 OPTION(DOWNLOADER "Internal Downloader" Yes)
 OPTION(USE_SDL2 "SDL2 support" Yes)
+OPTION(USE_PYTHON3 "Python3 for scripting" No)
 
 
 Project(CommanderGenius)

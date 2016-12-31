@@ -235,8 +235,8 @@ void CResourceLoader::renderLoadingGraphic()
 	{
         GsBitmap &Bitmap = *gGraphics.getBitmapFromStr("ONEMOMEN");
 		SDL_Rect rect;
-		int width = Bitmap.getWidth();
-		int height = Bitmap.getHeight();
+		int width = Bitmap.width();
+		int height = Bitmap.height();
         Bitmap._draw( (gameWidth-width)/2, (gameHeight-height)/2, sfc);
 		
         rect.x = (gameWidth-width)/2;
@@ -437,8 +437,8 @@ void CResourceLoaderBackground::render()
     {
         GsBitmap &Bitmap = *gGraphics.getBitmapFromStr("ONEMOMEN");
         SDL_Rect rect;
-        int width = Bitmap.getWidth();
-        int height = Bitmap.getHeight();
+        int width = Bitmap.width();
+        int height = Bitmap.height();
         Bitmap._draw( (gameWidth-width)/2, (gameHeight-height)/2, sfc);
 
         rect.x = (gameWidth-width)/2;

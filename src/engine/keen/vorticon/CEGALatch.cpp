@@ -261,7 +261,7 @@ bool CEGALatch::loadData( const std::string &path,
 			Uint8* pixel = (Uint8*) sfc->pixels;
 			if(p==0)
 				SDL_FillRect(sfc, NULL, 0);
-			width = bitmap.getWidth(); height = bitmap.getHeight();
+			width = bitmap.width(); height = bitmap.height();
 			// Now read the raw data
 
 			Planes.readPlane(p, pixel, width, height);

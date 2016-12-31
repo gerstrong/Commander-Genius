@@ -9,7 +9,7 @@ void GalaxyMenu::createGalaxyBackground()
     GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
     backgroundBmp.scaleTo(gameRes);
 
-    GsRect<Uint16> bmpRect(backgroundBmp.getWidth(), backgroundBmp.getHeight());
+    GsRect<Uint16> bmpRect(backgroundBmp.width(), backgroundBmp.height());
 
     GsWeakSurface swatchSfc(backgroundBmp.getSDLSurface());
 

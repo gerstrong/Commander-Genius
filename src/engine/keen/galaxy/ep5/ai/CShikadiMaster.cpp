@@ -66,6 +66,7 @@ CStunnable(pmap, foeID, x, y)
 
 bool CShikadiMaster::loadPythonScripts(const std::string &scriptBaseName)
 {
+#if USE_PYTHON3
     auto pModule = gPython.loadModule( scriptBaseName, JoinPaths(gKeenFiles.gameDir ,"ai") );
 
     if (pModule != nullptr)
@@ -80,7 +81,7 @@ bool CShikadiMaster::loadPythonScripts(const std::string &scriptBaseName)
     }
 
     Py_Finalize();
-
+#endif
     return true;
 }
 

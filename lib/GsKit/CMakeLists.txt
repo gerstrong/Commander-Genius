@@ -87,11 +87,14 @@ else(USE_SDL2)
 endif(USE_SDL2)
 
 
-# Look for Python (Version 3.0 or later is required)
-FIND_PACKAGE(PythonLibs)
-
-INCLUDE_DIRECTORIES(${PYTHON_INCLUDE_DIRS})
-LINK_LIBRARIES(${PYTHON_LIBRARIES})
+# Use python3 for AI scripting and more!
+IF(USE_PYTHON3)
+    # Look for Python (Version 3.0 or later is required)
+    FIND_PACKAGE(PythonLibs)
+    ADD_DEFINITIONS(-DUSE_PYTHON3=1)
+    INCLUDE_DIRECTORIES(${PYTHON_INCLUDE_DIRS})
+    LINK_LIBRARIES(${PYTHON_LIBRARIES})
+ENDIF()
 
 
 Project(GsKit)

@@ -18,8 +18,9 @@ if(DBFUSION)
     add_definitions(-DDBFUSION)
 endif()
 
-if(REFKEEN)
-add_subdirectory(refkeen)
+if(REFKEEN)    
+    add_subdirectory(refkeen)
+    add_definitions(-DREFKEEN=1)
 endif()
 
 set(EngineSources CGameLauncher.cpp CGameLauncher.h

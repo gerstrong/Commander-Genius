@@ -83,7 +83,7 @@ void CMenuController::pumpEvent(const CEvent *evPtr)
     else if( dynamic_cast<const CloseAllMenusEvent*>(evPtr) )
     {
         clearMenuStack();
-    }
+    }          
 }
 
 

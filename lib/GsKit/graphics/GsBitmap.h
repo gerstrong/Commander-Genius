@@ -59,8 +59,8 @@ public:
 		return mpBitmapSurface.get();
 	}
 
-	Uint16 getWidth() const { return mpBitmapSurface->w; }
-	Uint16 getHeight() const { return mpBitmapSurface->h; }
+    Uint16 width() const { return mpBitmapSurface->w; }
+    Uint16 height() const { return mpBitmapSurface->h; }
 
     void setColorKey(const Uint8 r, const Uint8 g, const Uint8 b);
     bool scaleTo(const GsRect<Uint16> &destRes);

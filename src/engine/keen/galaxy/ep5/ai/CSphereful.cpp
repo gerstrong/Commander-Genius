@@ -57,7 +57,9 @@ mTimer(0)
 	yDirection = UP;
 	xDirection = LEFT;
 
+#if USE_PYTHON3
     loadPythonScripts("sphereful");
+#endif
 
     if(!mInvincible)
     {

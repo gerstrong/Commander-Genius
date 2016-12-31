@@ -74,7 +74,9 @@ mTimer(0)
 	xDirection = LEFT;
 	yDirection = CENTER;
 
+#if USE_PYTHON3
     loadPythonScripts("shockshound");
+#endif
 }
 
 

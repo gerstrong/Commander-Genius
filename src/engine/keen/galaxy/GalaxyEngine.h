@@ -3,6 +3,7 @@
 
 #include "engine/keen/KeenEngine.h"
 #include "res/CEGAGraphicsGalaxy.h"
+#include "menu/ComputerWrist.h"
 #include <base/GsEvent.h>
 
 /**
@@ -29,8 +30,31 @@ public:
         KeenEngine(openedGamePlay, ep, dataPath),
         mEp(ep) {}
 
+    /**
+     * @brief ponder    Ponder cycle of the Galaxy Engine
+     * @param deltaT    time to do logics
+     */
+    void ponder(const float deltaT);
+
+    /**
+     * @brief render    Render what ever happens in the engine
+     */
+    void render();
+
+    /**
+     * @brief openMainMenu Open the famous swatch main menu
+     */
     void openMainMenu();
 
+
+
+
+    /**
+     * @brief loadResources This is used for loading all the resources of the game the use has chosen.
+     *                      It loads graphics, sound and text into the memory
+     * @param flags     Tells what type(s) of resources to load
+     * @return  true if everything went fine, otherwise false.
+     */
     bool loadResources( const Uint8 flags );
 
     /**
@@ -45,6 +69,8 @@ public:
     void switchToGameplay(const int startLevel);
 
     void pumpEvent(const CEvent *evPtr);
+
+    std::unique_ptr<ComputerWrist> mpComputerWrist;
 };
 
 }

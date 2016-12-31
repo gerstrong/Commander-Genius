@@ -42,15 +42,15 @@ m_timer(0)
 
 void CFinaleStaticScene::showBitmapAt(const std::string &bitmapname, Uint16 from_count, Uint16 to_count, Uint16 x, Uint16 y)
 {
-    const int scaleFactor = mSceneBmp.getWidth() / 320;
+    const int scaleFactor = mSceneBmp.width() / 320;
 
 	bitmap_structure bmp_struct;
 
     bmp_struct.bitmap = *gGraphics.getBitmapFromStr(bitmapname);
     bmp_struct.dest_rect.x = x*scaleFactor;
     bmp_struct.dest_rect.y = y*scaleFactor;
-    bmp_struct.dest_rect.w = bmp_struct.bitmap.getWidth();
-    bmp_struct.dest_rect.h = bmp_struct.bitmap.getHeight();    
+    bmp_struct.dest_rect.w = bmp_struct.bitmap.width();
+    bmp_struct.dest_rect.h = bmp_struct.bitmap.height();    
 
     GsRect<Uint16> bmpDim;
     bmpDim.w = bmp_struct.dest_rect.w*scaleFactor;
@@ -59,8 +59,8 @@ void CFinaleStaticScene::showBitmapAt(const std::string &bitmapname, Uint16 from
 
     bmp_struct.bitmap.scaleTo(bmpDim);
 
-    bmp_struct.dest_rect.w = bmp_struct.bitmap.getWidth();
-    bmp_struct.dest_rect.h = bmp_struct.bitmap.getHeight();
+    bmp_struct.dest_rect.w = bmp_struct.bitmap.width();
+    bmp_struct.dest_rect.h = bmp_struct.bitmap.height();
 
 
 	bmp_struct.from_count = from_count;

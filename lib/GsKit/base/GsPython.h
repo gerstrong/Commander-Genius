@@ -1,6 +1,8 @@
 #ifndef GSPYTHON_H
 #define GSPYTHON_H
 
+#if USE_PYTHON3
+
 #include <Python.h>
 #include <base/Singleton.h>
 #include <string>
@@ -26,6 +28,6 @@ public:
 };
 
 
-
+#endif
 
 #endif // GSPYTHON_H

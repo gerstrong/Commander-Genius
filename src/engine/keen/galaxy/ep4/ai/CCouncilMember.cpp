@@ -207,11 +207,14 @@ void CCouncilMember::getTouchedBy(CSpriteObject &theObject)
 		}
 		else
 		{
+            auto evExit = new EventExitLevel(mp_Map->getLevel(), true, false, mSprVar);
+            evExit->playSound = true;
+
             msgs.push_back( new CMessageBoxBitmapGalaxy(
                                 elder_text[1],
                                 *gGraphics.getBitmapFromStr("KEENTHUMBSUP"),
                                 RIGHT,
-                                new EventExitLevel(mp_Map->getLevel(), true, false, mSprVar)) );
+                                evExit) );
 		}
 
         showMsgVec( msgs );

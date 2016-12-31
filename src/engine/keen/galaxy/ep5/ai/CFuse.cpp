@@ -61,6 +61,7 @@ void fixNewLine(std::string& str)
 
 bool CFuse::loadPythonScripts(const std::string &scriptBaseName)
 {
+    #if USE_PYTHON3
     auto pModule = gPython.loadModule( scriptBaseName, JoinPaths(gKeenFiles.gameDir ,"ai") );
 
     const int level = mp_Map->getLevel();
@@ -190,6 +191,7 @@ bool CFuse::loadPythonScripts(const std::string &scriptBaseName)
     }
 
     Py_Finalize();
+#endif
 
     return true;
 }

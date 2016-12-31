@@ -419,15 +419,11 @@ SDL_Rect CVideoDriver::toBlitRect(const GsRect<float> &rect)
 	GsRect<float> screenRect(0, 0, GameRes.w, GameRes.h);
 	GsRect<float> RectDispCoordFloat = rect;
 
-    if(RectDispCoordFloat.x < 0.0)
-        RectDispCoordFloat.x = 0.0;
-    if(RectDispCoordFloat.y < 0.0)
-        RectDispCoordFloat.y = 0.0;
-
-    if(RectDispCoordFloat.h > 1.0)
-        RectDispCoordFloat.h = 1.0;
-    if(RectDispCoordFloat.w > 1.0)
-        RectDispCoordFloat.w = 1.0;
+    // Limit the boundaries
+    RectDispCoordFloat.x = std::max(RectDispCoordFloat.x, 0.0f);
+    RectDispCoordFloat.y = std::max(RectDispCoordFloat.y, 0.0f);
+    RectDispCoordFloat.h = std::min(RectDispCoordFloat.h, 1.0f);
+    RectDispCoordFloat.w = std::min(RectDispCoordFloat.w, 1.0f);
 
 	// Transform to the blit coordinates
 	RectDispCoordFloat.transform(screenRect);
