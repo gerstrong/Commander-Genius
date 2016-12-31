@@ -45,7 +45,9 @@ mTimer(0)
 	
 	xDirection = LEFT;
 
+#if USE_PYTHON3
     loadPythonScripts("korath");
+#endif
 }
 
 

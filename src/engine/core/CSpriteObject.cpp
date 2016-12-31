@@ -12,7 +12,7 @@
 
 #include <base/utils/FindFile.h>
 
-#include <Python.h>
+#include <base/GsPython.h>
 
 #include "fileio/KeenFiles.h"
 
@@ -61,6 +61,7 @@ mSprVar(spriteVar)
     setupCollisionModel();
 }
 
+#if USE_PYTHON3
 bool CSpriteObject::loadAiGetterBool(PyObject * pModule, const std::string &pyMethodStr, bool &value)
 {
     // pFunc is a new reference
@@ -187,7 +188,7 @@ bool CSpriteObject::loadPythonScripts(const std::string &scriptBaseName)
     return true;
 
 }
-
+#endif
 
 void CSpriteObject::setScrPos( int px, int py )
 {

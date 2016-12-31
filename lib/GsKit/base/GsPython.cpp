@@ -1,3 +1,6 @@
+// Only bother if python3 is enabled
+#if USE_PYTHON3
+
 #include "GsPython.h"
 #include "utils/FindFile.h"
 
@@ -41,3 +44,5 @@ PyObject *GsPython::loadModule(const std::string &scriptBaseName, const std::str
 
     return pModule;
 }
+
+#endif

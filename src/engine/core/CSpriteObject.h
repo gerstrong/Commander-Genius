@@ -339,6 +339,7 @@ public:
 
 protected:
 
+#if USE_PYTHON3
     /**
      * @brief loadAiGetterInteger
      * @param pModule
@@ -347,6 +348,7 @@ protected:
      * @return
      */
     bool loadAiGetterInteger(PyObject * pModule, const std::string &pyMethodStr, int &value);
+
 
     /**
      * @brief loadAiGetterBool
@@ -365,7 +367,7 @@ protected:
      * @return if load was successful true, otherwise false.
      */
     virtual bool loadPythonScripts(const std::string &scriptBaseName);
-
+#endif
 
 	CMap *mp_Map;
 

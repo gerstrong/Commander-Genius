@@ -93,8 +93,6 @@ void CFlag::setActionForce(const size_t ActionNumber)
  */
 void CFlag::process()
 {
-    const auto episode = gpBehaviorEngine->getEpisode();
-
     if(mPlayMapSound)
     {
         g_pSound->playSound( SOUND_FLAG_APPEAR );
