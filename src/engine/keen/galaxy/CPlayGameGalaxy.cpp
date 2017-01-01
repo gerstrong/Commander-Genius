@@ -595,9 +595,6 @@ void CPlayGameGalaxy::ponder(const float deltaT)
        cheat.items = false;
     }
 
-    // menuButtonRect
-
-
 }
 
 void CPlayGameGalaxy::render()

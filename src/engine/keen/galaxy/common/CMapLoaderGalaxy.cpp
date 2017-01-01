@@ -396,6 +396,7 @@ void CMapLoaderGalaxy::spawnFoes(CMap &Map)
 	Map.mNumFuses = 0;
 	Map.mFuseInLevel = false;		
 	data_ptr = start_data;
+
 	for(size_t y=0 ; y<height ; y++)
 	{
 		for(size_t x=0 ; x<width ; x++)
@@ -418,7 +419,9 @@ void CMapLoaderGalaxy::spawnFoes(CMap &Map)
                 std::shared_ptr<CGalaxySpriteObject> pNewfoe( addFoe(Map, foeID, x<<CSF, y<<CSF) );
 
                 if(pNewfoe)
+                {
                     m_ObjectPtr.push_back(pNewfoe);
+                }
             }
 
             data_ptr++;

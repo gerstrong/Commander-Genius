@@ -1003,9 +1003,9 @@ void CPlayerWM::startLevel(Uint16 object)
 {
     int x, y;
     int level = object - 0xC000;
-    Uint16 flag_dest = level + 0xF000;
 
     const auto ep = gpBehaviorEngine->getEpisode();
+    //int shipLevel = gpBehaviorEngine->;
     int shipLevel;
 
     switch(ep)
@@ -1016,8 +1016,17 @@ void CPlayerWM::startLevel(Uint16 object)
         default : shipLevel = 0;
     };
 
+    /*if(ep == 4)
+    {
+        shipLevel = gKeenFiles.exeFile.getRawData()[0x60FD];
+    }*/
+
+    const Uint16 flag_dest = level + 0xF000;
+
     // Check if there already exists a flag. If that's not the case enter the level
-    if( mp_Map->findTile(flag_dest, &x, &y, 2) || gpBehaviorEngine->m_option[OPT_LVLREPLAYABILITY].value || level >= shipLevel)
+    if( mp_Map->findTile(flag_dest, &x, &y, 2) ||
+        gpBehaviorEngine->m_option[OPT_LVLREPLAYABILITY].value ||
+        level >= shipLevel)
     {
         gEventManager.add(new EventEnterLevel(object));
 
@@ -1084,7 +1093,7 @@ bool CPlayerWM::finishLevel(const int object)
 
         // Mark the tileinfo on the map as level finished,
         // so player cannot just re-enter. Exception: If option "replayability" is enabled,
-        // or any special level like the bwb rocket, which can be accessed always
+        // or any special level like the bwb rocket, which can be accessed at any time
 		mp_Map->setTile( x, y, 0, true, 2);
 
         return true;

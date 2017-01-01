@@ -172,6 +172,11 @@ bool CMessages::extractEp4Strings(std::map<std::string, std::string>& StringMap)
             StringMap.insert( extractString( "KEEN_LAST_ELDER_TEXT", 0x30B6B, 0x30BB2 ) );
             StringMap.insert( extractString( "ELDERS_UNDERWATER_TEXT", 0x30BB3, 0x30C16 ) );
             StringMap.insert( extractString( "ELDERS_TEXT",  0x30C17, 0x30C6A ) );
+            StringMap.insert( extractString( "ELDERS_TEXT",  0x30C17, 0x30C6A ) );
+
+            setDecodeOffset(0x2F41A);
+            StringMap.insert( extractNextString( "WARP_LEVEL_TEXT" ) );
+
 			return true;
 		} break;
 	}

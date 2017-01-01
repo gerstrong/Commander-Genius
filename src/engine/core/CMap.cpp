@@ -199,8 +199,6 @@ void CMap::setupAnimationTimer()
 
         for( size_t x=0 ; x<m_width ; x++)
         {
-            bool draw = false;
-
             const int offset = stride + x;
 
             timersBack[offset] = backTileProperties[*p_back_tile].animationTime;
@@ -379,7 +377,7 @@ bool CMap::findTile(unsigned int tile, int *xout, int *yout, int plane)
 	{
 		for(x=2;x<m_width-2;x++)
 		{
-			if (m_Plane[plane].getMapDataAt(x,y)==tile)
+            if (m_Plane[plane].getMapDataAt(x,y) == tile)
 			{
 				*xout = x;
 				*yout = y;
