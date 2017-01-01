@@ -12,8 +12,6 @@
 #include <boost/property_tree/xml_parser.hpp>
 
 
-//std::vector<GameCatalogueEntry> geGameCatalogue;
-
 extern "C"
 {
 int unzipFile(const char *input,

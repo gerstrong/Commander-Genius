@@ -418,7 +418,7 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
         m_WorldMap.setActive(true);
         m_WorldMap.loadAndPlayMusic();
 
-        const std::string loading_text = gpBehaviorEngine->getString("WORLDMAP_LOAD_TEXT");
+        const std::string loading_text = gpBehaviorEngine->getString("LEVEL0_LOAD_TEXT");
         showMsgWithBmp( loading_text, "KEENTHUMBSUP", LEFT);
 
         const EventExitLevel &evCopy = *ev;

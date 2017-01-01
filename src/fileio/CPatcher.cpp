@@ -375,10 +375,7 @@ void CPatcher::PatchLevelentry(const int level, std::list<std::string> &input)
 	std::string buf;
 	std::string levelStr;
 
-	if(level == 0)
-	  levelStr = "WORLDMAP_LOAD_TEXT";
-	else
-	  levelStr = "LEVEL"+ itoa(level) +"_LOAD_TEXT";
+    levelStr = "LEVEL"+ itoa(level) +"_LOAD_TEXT";
 
 	while( !input.empty() )
 	{
