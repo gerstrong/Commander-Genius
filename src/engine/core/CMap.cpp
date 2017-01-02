@@ -39,16 +39,6 @@ mShakeDir(0)
 // Initialization Routine //
 ////////////////////////////
 
-void CMap::setLevel( const Uint16 level )
-{
-    m_Level = level;
-}
-
-Uint16 CMap::getLevel()
-{
-    return m_Level;
-}
-
 void CMap::setLevelName( const std::string& name )
 {
     m_LevelName = name;

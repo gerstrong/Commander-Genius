@@ -428,6 +428,45 @@ void CMapLoaderGalaxy::spawnFoes(CMap &Map)
 		}
 	}
 
+    // Extra Python spawns
+
+#if USE_PYTHON3
+    auto pModule = gPython.loadModule( "extraSpawn", gKeenFiles.gameDir);
+
+    if (pModule != nullptr)
+    {
+        int forLevel = -1;
+        bool ok = loadIntegerFunc(pModule, "spawnForLevel", forLevel);
+
+        if(ok && forLevel == Map.getLevel())
+        {
+            int numFoes = 0;
+            ok = loadIntegerFunc(pModule, "howMany", numFoes);
+
+            for(int i=0 ; i<numFoes ; i++)
+            {
+                int foeIdx = -1;
+                std::array<int,2> coordArray;
+
+                loadIntegerFunc(pModule, "who", foeIdx, i);
+                loadIntegerFunc(pModule, "where_x", coordArray[0], i);
+                loadIntegerFunc(pModule, "where_y", coordArray[1], i);
+
+                std::shared_ptr<CGalaxySpriteObject> pNewfoe(
+                            addFoe(Map, foeIdx,
+                                   coordArray[0]<<CSF, coordArray[1]<<CSF) );
+
+                if(pNewfoe)
+                {
+                    m_ObjectPtr.push_back(pNewfoe);
+                }
+            }
+        }
+    }
+#endif
+
+
+
     /// Only for testing loaded Objects
 	/*std::ofstream File("objlayer.txt");
 

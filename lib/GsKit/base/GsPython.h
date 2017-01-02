@@ -7,7 +7,7 @@
 #include <base/Singleton.h>
 #include <string>
 
-#define PYTHON_VERBOSE 0
+#define PYTHON_VERBOSE 1
 
 #define gPython	GsPython::get()
 
@@ -27,6 +27,21 @@ public:
 
 };
 
+
+
+/**
+ * @brief loadIntegerGetter for a python function that has no arguments but returns an integer
+ * @param pModule
+ * @param pyMethodStr
+ * @param value
+ * @return
+ */
+bool loadIntegerFunc(PyObject * pModule, const std::string &pyMethodStr, int &value);
+
+bool loadIntegerFunc(PyObject * pModule,
+                     const std::string &pyMethodStr,
+                     int &value,
+                     const int param1);
 
 #endif
 

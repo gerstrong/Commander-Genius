@@ -38,8 +38,8 @@ public:
 
 	void setTileMap( GsTilemap &Tilemap );
 
-    void setLevel( const Uint16 level );
-	Uint16 getLevel();
+    void setLevel( const Uint16 level ) {   m_Level = level;    }
+    Uint16 getLevel() const {    return m_Level;    }
 
 	void setLevelName( const std::string& name );
 	std::string getLevelName();

@@ -45,4 +45,93 @@ PyObject *GsPython::loadModule(const std::string &scriptBaseName, const std::str
     return pModule;
 }
 
+
+
+bool loadIntegerFunc(PyObject * pModule, const std::string &pyMethodStr, int &value)
+{
+    // pFunc is a new reference
+    PyObject *pFunc = PyObject_GetAttrString(pModule, pyMethodStr.c_str());
+
+    if (pFunc && PyCallable_Check(pFunc))
+    {
+        PyObject *pValue = PyObject_CallObject(pFunc, nullptr);
+
+        if (pValue != nullptr)
+        {
+            value = PyLong_AsLong(pValue);
+            Py_DECREF(pValue);
+        }
+        else
+        {
+            Py_DECREF(pFunc);
+            PyErr_Print();
+            gLogging.ftextOut("Call failed\n");
+            return false;
+        }
+    }
+    else
+    {
+        if (PyErr_Occurred())
+        {
+            PyErr_Print();
+        }
+
+        gLogging.ftextOut("Cannot find function \"init\"\n");
+        return false;
+    }
+
+    Py_XDECREF(pFunc);
+
+
+    return true;
+}
+
+
+bool loadIntegerFunc(PyObject * pModule,
+                     const std::string &pyMethodStr,
+                     int &value,
+                     const int param1)
+{
+    // pFunc is a new reference
+    PyObject *pFunc = PyObject_GetAttrString(pModule, pyMethodStr.c_str());
+
+    PyObject *pArgs = PyTuple_New(1);
+    PyTuple_SetItem(pArgs, 0, PyLong_FromLong(param1));
+
+    if (pFunc && PyCallable_Check(pFunc))
+    {
+        PyObject *pValue = PyObject_CallObject(pFunc, pArgs);
+
+        if (pValue != nullptr)
+        {
+            value = PyLong_AsLong(pValue);
+            Py_DECREF(pValue);
+        }
+        else
+        {
+            Py_DECREF(pFunc);
+            PyErr_Print();
+            gLogging.ftextOut("Call failed\n");
+            return false;
+        }
+    }
+    else
+    {
+        if (PyErr_Occurred())
+        {
+            PyErr_Print();
+        }
+
+        gLogging.ftextOut("Cannot find function \"%s\"\n", pyMethodStr.c_str());
+        return false;
+    }
+
+    Py_XDECREF(pArgs);
+    Py_XDECREF(pFunc);
+
+
+    return true;
+}
+
+
 #endif
