@@ -110,40 +110,45 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 	if( p_newfoe )
 		return p_newfoe;
 
-    // Do not bother if there is not inventory
-    if(mInventoryVec.size() <= mNumLoadedPlayers)
-        return p_newfoe;
 
 	// otherwise look for special foe.
 	Vector2D<Uint32> loc(x,y);
-    auto &inventory = mInventoryVec[mNumLoadedPlayers];
 
 	switch(foe)
 	{
 	case 0x01:
     case 0x02:
 
-        if(inventory.Item.m_lifes >= 0)
+        if(mInventoryVec.size() > mNumLoadedPlayers)
         {
-            // This is the player on the map in one level
-            inventory.Item.mLevelName = Map.getLevelName();
-            p_newfoe = new galaxy::CPlayerLevel(&Map, foe, x, y, m_ObjectPtr,
-                    (foe==0x01) ? RIGHT : LEFT, inventory, 0x98C, mNumLoadedPlayers);
+            auto &inventory = mInventoryVec[mNumLoadedPlayers];
+            if(inventory.Item.m_lifes >= 0)
+            {
+                // This is the player on the map in one level
+                inventory.Item.mLevelName = Map.getLevelName();
+                p_newfoe = new galaxy::CPlayerLevel(&Map, foe, x, y, m_ObjectPtr,
+                                                    (foe==0x01) ? RIGHT : LEFT, inventory, 0x98C, mNumLoadedPlayers);
+            }
+            mNumLoadedPlayers++;
         }
-        mNumLoadedPlayers++;
-		break;
+        break;
 
 	case 0x03:
 
-        if(inventory.Item.m_lifes >= 0)
+        if(mInventoryVec.size() > mNumLoadedPlayers)
         {
-            // This is the player on the world map
-            // Add the Camera into the game scene and attach it to this player
-            inventory.Item.mLevelName = Map.getLevelName();
-            p_newfoe = new galaxy::CPlayerWM(&Map, foe, x, y, inventory, 0x15C2, mNumLoadedPlayers);
+            auto &inventory = mInventoryVec[mNumLoadedPlayers];
+
+            if(inventory.Item.m_lifes >= 0)
+            {
+                // This is the player on the world map
+                // Add the Camera into the game scene and attach it to this player
+                inventory.Item.mLevelName = Map.getLevelName();
+                p_newfoe = new galaxy::CPlayerWM(&Map, foe, x, y, inventory, 0x15C2, mNumLoadedPlayers);
+            }
+            mNumLoadedPlayers++;
         }
-        mNumLoadedPlayers++;
-		break;
+        break;
 
 	case 0x04:
 		//This is a council member.
@@ -273,13 +278,17 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 		break;
 
 	case 0x22:
-		// Place a gun in case Keen is missing bullets
-        for( auto &inventory : mInventoryVec)
+
+        if(mInventoryVec.size() > mNumLoadedPlayers)
         {
-            if(inventory.Item.m_bullets < 5)
+            // Place a gun in case Keen is missing bullets
+            for( auto &inventory : mInventoryVec)
             {
-                p_newfoe = new galaxy::CSpriteItem(&Map, foe, x, y, 127, 0);
-                break;
+                if(inventory.Item.m_bullets < 5)
+                {
+                    p_newfoe = new galaxy::CSpriteItem(&Map, foe, x, y, 127, 0);
+                    break;
+                }
             }
         }
 		break;
@@ -298,15 +307,20 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 
 	case 0x2A:
 
-        if(inventory.Item.m_lifes >= 0)
+        if(mInventoryVec.size() > mNumLoadedPlayers)
         {
-            // This is Keen in the diving suit
-            inventory.Item.mLevelName = Map.getLevelName();
-            p_newfoe = new galaxy::CPlayerDive(&Map, foe, x, y,
-                            RIGHT, inventory, mNumLoadedPlayers);
+            auto &inventory = mInventoryVec[mNumLoadedPlayers];
+
+            if(inventory.Item.m_lifes >= 0)
+            {
+                // This is Keen in the diving suit
+                inventory.Item.mLevelName = Map.getLevelName();
+                p_newfoe = new galaxy::CPlayerDive(&Map, foe, x, y,
+                                                   RIGHT, inventory, mNumLoadedPlayers);
+            }
+            mNumLoadedPlayers++;
         }
-        mNumLoadedPlayers++;
-		break;
+        break;
 	
 	case 0x2C: if( difficulty < HARD ) break;
 	case 0x2B: if( difficulty < NORMAL ) break;

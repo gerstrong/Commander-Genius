@@ -11,7 +11,6 @@
 #include "../CGalaxySpriteObject.h"
 #include "../../ep5/ai/CSecurityDoor.h"
 
-#include "sdl/audio/music/CMusic.h"
 #include "sdl/audio/Audio.h"
 #include "graphics/effects/CColorMerge.h"
 
@@ -21,7 +20,6 @@
 
 #include "../dialog/CMessageBoxBitmapGalaxy.h"
 
-#include "graphics/effects/CDimDark.h"
 
 namespace galaxy {
 
@@ -1465,32 +1463,6 @@ void CPlayerLevel::processLookingUp()
 	makeHimStand();
 	yDirection = 0;
 }
-
-
-
-
-
-
-
-// Processes the exiting of the player. Here all default cases are held
-void CPlayerLevel::processExiting()
-{
-	Uint32 x = getXMidPos();
-	if( ((mp_Map->m_width-2)<<CSF) < x || (2<<CSF) > x )
-	{
-		g_pMusicPlayer->stop();
-
-        gEffectController.setupEffect(new CDimDark(8));
-
-        auto evExit = new EventExitLevel(mp_Map->getLevel(), true, false, mSprVar);
-        evExit->playSound = true;
-        gEventManager.add( evExit );
-        m_Inventory.Item.m_gem.clear();
-		mExitTouched = true;
-	}
-}
-
-
 
 
 
