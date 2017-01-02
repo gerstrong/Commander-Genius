@@ -39,17 +39,6 @@ mShakeDir(0)
 // Initialization Routine //
 ////////////////////////////
 
-void CMap::setLevelName( const std::string& name )
-{
-    m_LevelName = name;
-}
-
-std::string CMap::getLevelName()
-{
-    return m_LevelName;
-}
-
-
 /**
  * \brief	Create an empty data plane used for the map data
  * \param	blocksize	size in bytes of the datablock that has to be created

@@ -45,14 +45,6 @@ void CMapPlayGalaxy::setActive(bool value)
 }
 
 
-/**
- * return the name of the opened level
- */
-std::string CMapPlayGalaxy::getLevelName()
-{
-	return mMap.getLevelName();
-}
-
 
 
 void CMapPlayGalaxy::pumpEvent(const CEvent *evPtr)

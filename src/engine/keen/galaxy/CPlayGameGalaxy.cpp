@@ -391,12 +391,12 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
     {
         if(ev->data >= 0xC000)	// Start a new level!
         {
-            const Uint16 NewLevel = ev->data - 0xC000;
-            if(NewLevel < 50)
+            const Uint16 newLevel = ev->data - 0xC000;
+            if(newLevel < 50)
             {
                 g_pMusicPlayer->stop();                
                 m_WorldMap.setActive(false);
-                m_LevelPlay.loadLevel(NewLevel);                
+                m_LevelPlay.loadLevel(newLevel);
                 g_pSound->playSound( SOUND_ENTER_LEVEL );
                 m_LevelPlay.setActive(true);
             }
@@ -414,16 +414,47 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
             g_pSound->playSound( SOUND_LEVEL_DONE );
         }
 
+        const int oldLevel = m_LevelPlay.getLevelIdx();
+        int newLevel = 0;
+
+
+#if USE_PYTHON3
+        auto pModule = gPython.loadModule( "exitToLevel", gKeenFiles.gameDir);
+
+        if (pModule != nullptr)
+        {
+             loadIntegerFunc(pModule, "exitTo", newLevel, oldLevel);
+        }
+#endif
+
+        std::string levelLoadText = "LEVEL";
+        levelLoadText += itoa(newLevel);
+        levelLoadText += "_LOAD_TEXT";
+
+        const std::string loading_text = gpBehaviorEngine->getString(levelLoadText);
+
         m_LevelPlay.setActive(false);
         m_WorldMap.setActive(true);
-        m_WorldMap.loadAndPlayMusic();
 
-        const std::string loading_text = gpBehaviorEngine->getString("LEVEL0_LOAD_TEXT");
+        if(newLevel == 0)
+        {
+            m_WorldMap.loadAndPlayMusic();
+        }
+
         showMsgWithBmp( loading_text, "KEENTHUMBSUP", LEFT);
 
         const EventExitLevel &evCopy = *ev;
 
         gEventManager.add( new EventPlayerEndLevel(evCopy) );
+
+        if(newLevel != 0)
+        {
+            g_pMusicPlayer->stop();
+            m_WorldMap.setActive(false);
+            m_LevelPlay.loadLevel(newLevel);
+            //g_pSound->playSound( SOUND_ENTER_LEVEL );
+            m_LevelPlay.setActive(true);
+        }
     }
     else if( const EventDieKeenPlayer *ev = dynamic_cast<const EventDieKeenPlayer*>(evPtr) )
     {
