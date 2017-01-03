@@ -262,7 +262,6 @@ public:
 
 	void processPoleClimbingDown();
 
-	void processExiting();
 
 	/**
 	 * This function will be process will keen is pressing a switch. Placing gem uses
@@ -319,7 +318,6 @@ public:
 
 
 	bool mPlacingGem;
-	bool mExitTouched;
 
 private:
 

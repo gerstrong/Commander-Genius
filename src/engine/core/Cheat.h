@@ -10,8 +10,10 @@
 
 struct stCheat
 {
-	bool jump, god, noclipping, items;
-	stCheat() : jump(false), god(false), noclipping(false), items(false) {}
+    bool jump = false;
+    bool god = false;
+    bool noclipping = false;
+    bool items = false;
 };
 
 #endif // __CHEAT_STRUCT__

@@ -19,6 +19,7 @@
 #include "menu/MainMenu.h"
 #include "menu/SelectionMenu.h"
 #include "menu/ControlSettings.h"
+#include "menu/ComputerWrist.h"
 #include "res/CAudioGalaxy.h"
 #include <base/video/CVideoDriver.h>
 #include <fileio/KeenFiles.h>
@@ -64,11 +65,56 @@ bool loadLevelMusic(const int level)
     return g_pMusicPlayer->loadTrack(track);
 }
 
+void GalaxyEngine::ponder(const float deltaT)
+{
+    const int ep = gpBehaviorEngine->getEpisode();
+
+    if(mpComputerWrist)
+    {
+        mpComputerWrist->ponder(deltaT);
+        return;
+    }
+
+    KeenEngine::ponder(deltaT);
+
+    if( gInput.getPressedCommand(IC_HELP) )
+    {
+        // Check if music is playing and pause if it is
+        if(g_pMusicPlayer->active())
+        {
+            g_pMusicPlayer->pause();
+        }
+
+
+        // Episode 6 for a strange reason does not have the help screen
+        if(!mpComputerWrist && (ep!=6))
+        {
+            gpBehaviorEngine->setPause(false);
+            gEventManager.add( new CloseAllMenusEvent() );
+
+            mpComputerWrist.reset(new ComputerWrist);
+        }
+    }
+
+}
+
+void GalaxyEngine::render()
+{
+    KeenEngine::render();
+
+    if(mpComputerWrist)
+    {
+        mpComputerWrist->render();
+    }
+}
+
 
 void GalaxyEngine::openMainMenu()
 {    
-    if( !gMenuController.empty() )
-        return;
+    if( mpComputerWrist ) return;
+
+    if( !gMenuController.empty() )  return;
+
 
     // Check if music is playing and pause if it is
     if(g_pMusicPlayer->active())
@@ -79,10 +125,8 @@ void GalaxyEngine::openMainMenu()
     gEventManager.add( new OpenMenuEvent( new MainMenu(mOpenedGamePlay) ) );
 }
 
-///
-// This is used for loading all the resources of the game the use has chosen.
-// It loads graphics, sound and text into the memory
-///
+
+
 bool GalaxyEngine::loadResources( const Uint8 flags )
 {
     gLogging.ftextOut("Loading Galaxy Engine...<br>");
@@ -273,7 +317,12 @@ void GalaxyEngine::pumpEvent(const CEvent *evPtr)
     else if( dynamic_cast<const OpenMainMenuEvent*>(evPtr) )
     {
         openMainMenu();
+    }    
+    else if( dynamic_cast<const CloseComputerWrist*>(evPtr) )
+    {
+        mpComputerWrist = nullptr;
     }
+
 }
 
 

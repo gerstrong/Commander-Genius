@@ -38,14 +38,26 @@ public:
      */
     void processTitle();
 
+    /**
+     * @brief processStarWars   Shows the story in form of starwars text (logic part)
+     */
+    void processStarWars();
+
+
     void renderIntro();
     void renderIntroZoom();
     void renderTitle();
 
+    /**
+     * @brief renderStarWars    Shows the story in form of starwars text (rendering Part)
+     */
+    void renderStarWars();
+
     void (CPassiveGalaxy::*processPonderMode)();
     void (CPassiveGalaxy::*processRenderMode)();
 
-	GsBitmap m_BackgroundBitmap;
+    GsBitmap mBackgroundTitle;
+    GsBitmap mBackgroundStarWars;
     GsBitmap mCommanderTextSfc;
     GsBitmap mKeenTextSfc;
     GsBitmap mCurrentLogoBmp;
@@ -63,9 +75,13 @@ public:
 
 	bool m_restartVideo;
 
-    int mTerminatorTimer;
-    int mTerminatorLogoNum;
+    int mTerminatorTimer = 0;
+    int mTerminatorLogoNum = 0;
     int mCreditsBmpID;
+
+    int mIntroTimer = 0;
+    int mStarWarsTimer = 0;
+    bool mSwapColors = true;
 
     bool mSkipSection;
 };

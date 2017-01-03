@@ -83,7 +83,7 @@ bool CVideoEngine::init()
 		if(m_VidConfig.vsync)
 		{
 			SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
-			SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+            SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 	#if SDL_VERSION_ATLEAST(2, 0, 0)
 	#else
 		SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, 1);
@@ -224,7 +224,9 @@ bool CVideoEngine::createSurfaces(const GsRect<Uint16> &gamerect)
 
     if(m_VidConfig.m_ScaleXFilter > 1)
     {
-        mFilteredSfc.create(m_Mode, blit->w*m_VidConfig.m_ScaleXFilter, blit->h*m_VidConfig.m_ScaleXFilter,
+        mFilteredSfc.create(m_Mode,
+                            blit->w*m_VidConfig.m_ScaleXFilter,
+                            blit->h*m_VidConfig.m_ScaleXFilter,
                             RES_BPP, 0, 0, 0, 0);
 
         mpScreenSfc = &mFilteredSfc;
@@ -279,7 +281,7 @@ void CVideoEngine::blitScrollSurface() // This is only for tiles
 
     SDL_FillRect(blitSurface, nullptr, SDL_MapRGB(blitSurface->format, 0, 0, 0));
 
-    srGsRect.x =	sbufferx;
+    srGsRect.x = sbufferx;
     srGsRect.y = sbuffery;
 
     const bool wraphoz = (sbufferx+Gamerect.w > scrollSfcWidth);

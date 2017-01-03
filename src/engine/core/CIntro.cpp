@@ -39,9 +39,9 @@ void CIntro::init()
 		if(mp_bm[j] == NULL)
 			continue;
 		if (j==0)
-            m_mid[j] = gameRes.w - (320/2)-((mp_bm[j]->getWidth()+4)/2);
+            m_mid[j] = gameRes.w - (320/2)-((mp_bm[j]->width()+4)/2);
 		else
-            m_mid[j] = gameRes.w - (320/2)-(mp_bm[j]->getWidth()/2);
+            m_mid[j] = gameRes.w - (320/2)-(mp_bm[j]->width()/2);
 	}
 	
 	gTimer.ResetSecondsTimer();

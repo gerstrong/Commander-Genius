@@ -105,61 +105,78 @@ bool CMessages::extractEp4Strings(std::map<std::string, std::string>& StringMap)
 	{
 		case 140:
 		{
-			// Level loading Texts (2E00)
-			setDecodeOffset(0x1F1F0);
+            // Level loading Texts (2E00)
 
-            StringMap.insert( extractNextString( "WORLDMAP_LOAD_TEXT" ) );
+                int offset;
+                int lower, higher;
 
-			StringMap.insert( extractNextString( "LEVEL1_LOAD_TEXT" ) );
-			StringMap.insert( extractNextString( "LEVEL2_LOAD_TEXT" ) );
-			StringMap.insert( extractNextString( "LEVEL3_LOAD_TEXT" ) );
-			StringMap.insert( extractNextString( "LEVEL4_LOAD_TEXT" ) );
-			StringMap.insert( extractNextString( "LEVEL5_LOAD_TEXT" ) );
-			StringMap.insert( extractNextString( "LEVEL6_LOAD_TEXT" ) );
-			StringMap.insert( extractNextString( "LEVEL7_LOAD_TEXT" ) );
-			StringMap.insert( extractNextString( "LEVEL8_LOAD_TEXT" ) );
-			StringMap.insert( extractNextString( "LEVEL9_LOAD_TEXT" ) );
-			StringMap.insert( extractNextString( "LEVEL10_LOAD_TEXT") );
-			StringMap.insert( extractNextString( "LEVEL11_LOAD_TEXT") );
-			StringMap.insert( extractNextString( "LEVEL12_LOAD_TEXT") );
-			StringMap.insert( extractNextString( "LEVEL13_LOAD_TEXT") );
-			StringMap.insert( extractNextString( "LEVEL14_LOAD_TEXT") );
-			StringMap.insert( extractNextString( "LEVEL15_LOAD_TEXT") );
-			StringMap.insert( extractNextString( "LEVEL16_LOAD_TEXT") );
-			StringMap.insert( extractNextString( "LEVEL17_LOAD_TEXT") );
-            StringMap.insert( extractNextString( "LEVEL18_LOAD_TEXT") );
+                // Read Level strings
+                // Note: Level 0 is always the world map
+                offset = 0x307C8;
+                for(int i=0 ; i<20 ; i++)
+                {
+                    memcpy( &lower, &mp_exe[offset], 2);
+                    memcpy( &higher, &mp_exe[offset+0x2], 2);
 
-			// Elder Janitor Text. Strangely it is the end of the level load text being to only
-			// in that data segment
-			StringMap.insert( extractNextString( "JANITOR_TEXT1" ) );
-			StringMap.insert( extractNextString( "JANITOR_TEXT2" ) );
-			StringMap.insert( extractNextString( "JANITOR_TEXT3" ) );
-			StringMap.insert( extractNextString( "JANITOR_TEXT4" ) );
+                    int address = lower + (higher << 4);
+
+                    setDecodeOffset(address);
+
+                    const std::string levelLoadKey = "LEVEL" + itoa(i) + "_LOAD_TEXT";
+
+                    const auto strPair = extractNextString( levelLoadKey );
+                    StringMap.insert( strPair );
+
+                    offset += 0x4;
+                }
+
+                // Janitor text
+                auto readJanitorText = [&](const int offset, const int janitorIdx)
+                {
+                    memcpy( &lower, &mp_exe[offset], 2);
+                    int address = lower<<4;
+
+                    setDecodeOffset(address);
+
+                    const std::string janitorKeyText = "JANITOR_TEXT" + itoa(janitorIdx);
+
+                    const auto strPair = extractNextString( janitorKeyText );
+                    StringMap.insert( strPair );
+                };
+
+                readJanitorText(0xF146, 0);
+                readJanitorText(0xF1B7, 1);
+                readJanitorText(0xF22A, 2);
+                readJanitorText(0xF29B, 3);
+
+            // Now the spoken Messages of some Characters like Lindsey and the elders
+            StringMap.insert( extractString( "LINDSEY_TEXT1", 0x3094B, 0x30997 ) );
+            StringMap.insert( extractString( "LINDSEY_TEXT2", 0x30999, 0x309E1 ) );
+
+            StringMap.insert( extractString( "LINDSEY_END_TEXT1", 0x309E3, 0x309F9 ) );
+            StringMap.insert( extractString( "LINDSEY_END_TEXT2", 0x309FA, 0x30A22 ) );
+            StringMap.insert( extractString( "LINDSEY_START_TEXT", 0x30A23, 0x30A3B ) );
+
+            StringMap.insert( extractString( "CANT_SWIM_TEXT", 0x30A3D, 0x30A4A ) );
+            StringMap.insert( extractString( "SWIM_SUIT_TEXT", 0x30A4B, 0x30A72 ) );
 
 
-			// Now the spoken Messages of some Characters like Lindsey and the elders
-			StringMap.insert( extractString( "LINDSEY_TEXT1", 0x3094B, 0x30997 ) );
-			StringMap.insert( extractString( "LINDSEY_TEXT2", 0x30999, 0x309E1 ) );
+            StringMap.insert( extractString( "KEEN_NOSWEAT_TEXT", 0x30A71, 0x30A91 ) );
+            StringMap.insert( extractString( "KEEN_BEARDED_ONE_TEXT", 0x30A92, 0x30AB2 ) );
+            StringMap.insert( extractString( "KEEN_NO_PROBLEMO_TEXT", 0x30AB3, 0x30ABF ) );
+            StringMap.insert( extractString( "KEEN_GREAT_TEXT", 0x30AC0, 0x30AC7 ) );
+            StringMap.insert( extractString( "KEEN_LOOKS_LIKE_SAME_GUY_TEXT", 0x30AC8, 0x30AFF ) );
+            StringMap.insert( extractString( "KEEN_GOOD_IDEA_GRAMPS", 0x30B00, 0x30B12 ) );
+            StringMap.insert( extractString( "KEEN_ROAD_RISE_FEET_TEXT", 0x30B13, 0x30B43 ) );
+            StringMap.insert( extractString( "KEEN_WISE_PLAN_TEXT", 0x30B44, 0x30B6A ) );
+            StringMap.insert( extractString( "KEEN_LAST_ELDER_TEXT", 0x30B6B, 0x30BB2 ) );
+            StringMap.insert( extractString( "ELDERS_UNDERWATER_TEXT", 0x30BB3, 0x30C16 ) );
+            StringMap.insert( extractString( "ELDERS_TEXT",  0x30C17, 0x30C6A ) );
+            StringMap.insert( extractString( "ELDERS_TEXT",  0x30C17, 0x30C6A ) );
 
-			StringMap.insert( extractString( "LINDSEY_END_TEXT1", 0x309E3, 0x309F9 ) );
-			StringMap.insert( extractString( "LINDSEY_END_TEXT2", 0x309FA, 0x30A22 ) );
-			StringMap.insert( extractString( "LINDSEY_START_TEXT", 0x30A23, 0x30A3B ) );
+            setDecodeOffset(0x2F41A);
+            StringMap.insert( extractNextString( "WARP_LEVEL_TEXT" ) );
 
-			StringMap.insert( extractString( "CANT_SWIM_TEXT", 0x30A3D, 0x30A4A ) );
-			StringMap.insert( extractString( "SWIM_SUIT_TEXT", 0x30A4B, 0x30A72 ) );
-
-
-			StringMap.insert( extractString( "KEEN_NOSWEAT_TEXT", 0x30A71, 0x30A91 ) );
-			StringMap.insert( extractString( "KEEN_BEARDED_ONE_TEXT", 0x30A92, 0x30AB2 ) );
-			StringMap.insert( extractString( "KEEN_NO_PROBLEMO_TEXT", 0x30AB3, 0x30ABF ) );
-			StringMap.insert( extractString( "KEEN_GREAT_TEXT", 0x30AC0, 0x30AC7 ) );
-			StringMap.insert( extractString( "KEEN_LOOKS_LIKE_SAME_GUY_TEXT", 0x30AC8, 0x30AFF ) );
-			StringMap.insert( extractString( "KEEN_GOOD_IDEA_GRAMPS", 0x30B00, 0x30B12 ) );
-			StringMap.insert( extractString( "KEEN_ROAD_RISE_FEET_TEXT", 0x30B13, 0x30B43 ) );
-			StringMap.insert( extractString( "KEEN_WISE_PLAN_TEXT", 0x30B44, 0x30B6A ) );
-			StringMap.insert( extractString( "KEEN_LAST_ELDER_TEXT", 0x30B6B, 0x30BB2 ) );
-			StringMap.insert( extractString( "ELDERS_UNDERWATER_TEXT", 0x30BB3, 0x30C16 ) );
-			StringMap.insert( extractString( "ELDERS_TEXT",  0x30C17, 0x30C6A ) );
 			return true;
 		} break;
 	}
@@ -174,7 +191,7 @@ bool CMessages::extractEp5Strings(std::map<std::string, std::string>& StringMap)
 		{
             // Level loading Texts (Base is usually at 0x2C00)
 			setDecodeOffset(0x201F0);
-			StringMap.insert( extractNextString( "WORLDMAP_LOAD_TEXT" ) );
+            StringMap.insert( extractNextString( "LEVEL0_LOAD_TEXT" ) );
 
             unsigned int levelOffset = 0x201F0;
 
@@ -204,7 +221,7 @@ bool CMessages::extractEp6Strings(std::map<std::string, std::string>& StringMap)
     case 140:
     {
       // Level loading Texts
-      StringMap.insert( extractStringOff( "WORLDMAP_LOAD_TEXT", 0x1F110 ) );			
+      StringMap.insert( extractStringOff( "LEVEL0_LOAD_TEXT", 0x1F110 ) );
       StringMap.insert( extractStringOff( "LEVEL1_LOAD_TEXT",  0x1F130 ) );
       StringMap.insert( extractStringOff( "LEVEL2_LOAD_TEXT",  0x1F160 ) );
       StringMap.insert( extractStringOff( "LEVEL3_LOAD_TEXT",  0x1F190 ) );

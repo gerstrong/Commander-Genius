@@ -43,7 +43,7 @@ bool Title::init(int Episode)
 	
     if( (pBitmap = gGraphics.getBitmapFromStr("TITLE")) != NULL )
 	{
-		const int width = 160-(pBitmap->getWidth()/2);
+		const int width = 160-(pBitmap->width()/2);
 		std::unique_ptr<CSpriteObject> obj(new CEGABitmap( &mMap, pSurface, pBitmap ));
 		obj->setScrPos( width, 0 );		
         pBitmap->_draw( width, 0, pSurface );

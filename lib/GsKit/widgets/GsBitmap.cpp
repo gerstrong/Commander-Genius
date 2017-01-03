@@ -48,8 +48,8 @@ void CGUIBitmap::updateGraphics()
 
     sizeForScreen.w /= 320;
     sizeForScreen.h /= 200;
-    sizeForScreen.w *= mpBitmap->getWidth();
-    sizeForScreen.h *= mpBitmap->getHeight();
+    sizeForScreen.w *= mpBitmap->width();
+    sizeForScreen.h *= mpBitmap->height();
 
     mpBitmap->scaleTo(sizeForScreen);
 }
@@ -74,8 +74,8 @@ void CGUIBitmap::processRender(const GsRect<float> &RectDispCoordFloat)
 	displayRect.transform(RectDispCoordFloat);
     GsRect<Uint16> lRect = displayRect.SDLRect();
 
-    if( mScaledBitmap.getWidth() != lRect.w ||
-        mScaledBitmap.getHeight() != lRect.h )
+    if( mScaledBitmap.width() != lRect.w ||
+        mScaledBitmap.height() != lRect.h )
     {
         mScaledBitmap = GsBitmap( *mpBitmap.get() );
         lRect.x = 0;    lRect.y = 0;

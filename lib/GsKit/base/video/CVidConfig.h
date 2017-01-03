@@ -66,7 +66,7 @@ public:
 
 	st_camera_bounds m_CameraBounds;
 
-    std::string mRenderScQuality;
+    std::string mRenderScQuality = "linear";
 	
 };
 

@@ -11,15 +11,6 @@
 
 #include "graphics/GsGraphics.h"
 
-// For RefKeen
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-#if defined(REFKEEN)
-extern "C"
-{
-    extern SDL_Renderer *g_sdlRenderer;
-}
-#endif
-#endif
 
 CSDLVideo::CSDLVideo(const CVidConfig& VidConfig) :
 CVideoEngine(VidConfig)
@@ -33,9 +24,13 @@ bool CSDLVideo::init()
 #if SDL_VERSION_ATLEAST(2, 0, 0)    
 
     if(m_VidConfig.mRenderScQuality == "linear")
-        SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
+    {
+        SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
+    }
     else
+    {
         SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
+    }
 
     const int aspW = m_VidConfig.mAspectCorrection.w;
     const int aspH = m_VidConfig.mAspectCorrection.h;
@@ -48,9 +43,13 @@ bool CSDLVideo::init()
     Uint32 flags = 0;
 
     if(m_VidConfig.Fullscreen)
+    {
         flags |= SDL_WINDOW_FULLSCREEN;
+    }
     else
+    {
         flags |= (SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+    }
 
 
     window = SDL_CreateWindow("Commander Genius",
@@ -65,7 +64,14 @@ bool CSDLVideo::init()
         SDL_DestroyRenderer(renderer);
     }
 
-    renderer = SDL_CreateRenderer(window, -1, 0);
+    Uint32 rendererFlags = 0;
+
+    if(m_VidConfig.vsync)
+    {
+        rendererFlags |= SDL_RENDERER_PRESENTVSYNC;
+    }
+
+    renderer = SDL_CreateRenderer(window, -1, rendererFlags);
 
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);

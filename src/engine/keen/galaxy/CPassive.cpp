@@ -25,13 +25,20 @@
 SDL_Surface *commanderSfc;
 SDL_Surface *keenSfc;
 
+
+// 10 Seconds are for 1200 logic cycles
+const int INTRO_TIME = 1200;
+const int STARWARS_TIME = 1200;
+
+
 namespace galaxy
 {
 
 CPassiveGalaxy::CPassiveGalaxy() :
 processPonderMode(&CPassiveGalaxy::processIntro),
 processRenderMode(&CPassiveGalaxy::renderIntro),
-m_BackgroundBitmap(*gGraphics.getBitmapFromStr("TITLE")),
+mBackgroundTitle(*gGraphics.getBitmapFromStr("TITLE")),
+mBackgroundStarWars(*gGraphics.getBitmapFromStr("STARWARS")),
 mCommanderTextSfc(gGraphics.getMiscGsBitmap(0)),
 mKeenTextSfc(gGraphics.getMiscGsBitmap(1)),
 mSkipSection(false)
@@ -52,10 +59,8 @@ mSkipSection(false)
 
     GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
 
-    mScaleFactor = gameRes.h/mCommanderTextSfc.getHeight();
+    mScaleFactor = gameRes.h/mCommanderTextSfc.height();
 
-    mTerminatorTimer = 0;
-    mTerminatorLogoNum = 0;
     mLogoPosY = gameRes.h;
 
     mMaxSeparationWidth = 60*mScaleFactor;
@@ -80,11 +85,11 @@ mSkipSection(false)
     mKeenTextSfc.setColorKey( 0, 0, 0 );
 
     mCommanderTextPos = Vector2D<int>(gameRes.w, (gameRes.h-cmdTextRect.h)/2 );
-    mKeenTextPos = Vector2D<int>(-mKeenTextSfc.getWidth(), (gameRes.h-cmdTextRect.h)/2 );
+    mKeenTextPos = Vector2D<int>(-mKeenTextSfc.width(), (gameRes.h-cmdTextRect.h)/2 );
 
     GsRect<Uint16> logoBmpRect;
-    logoBmpRect.w = mCurrentLogoBmp.getWidth();
-    logoBmpRect.h = mCurrentLogoBmp.getHeight();
+    logoBmpRect.w = mCurrentLogoBmp.width();
+    logoBmpRect.h = mCurrentLogoBmp.height();
     logoBmpRect.x = logoBmpRect.y = 0;
     logoBmpRect.h *= mScaleFactor;
     logoBmpRect.w *= mScaleFactor;
@@ -156,7 +161,7 @@ void CPassiveGalaxy::renderIntro()
     GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
     SDL_Rect gameResSDL = gameRes.SDLRect();
 
-    const int logoPosX = (gameRes.w-mCurrentLogoBmp.getWidth())/2;
+    const int logoPosX = (gameRes.w-mCurrentLogoBmp.width())/2;
 
     SDL_Surface *blitSfc = gVideoDriver.getBlitSurface();
     SDL_FillRect( blitSfc, &gameResSDL, SDL_MapRGB(blitSfc->format, 0, 0, 0) );
@@ -178,7 +183,7 @@ void CPassiveGalaxy::processIntro()
 {	       
     GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
 
-    const int logoMidPosY = mLogoPosY+mCurrentLogoBmp.getHeight()/2;
+    const int logoMidPosY = mLogoPosY+mCurrentLogoBmp.height()/2;
 
     mCommanderTextPos.x -= 2;
     mKeenTextPos.x++;
@@ -194,7 +199,7 @@ void CPassiveGalaxy::processIntro()
             mTerminatorTimer++;
 
         // Change Logo
-        if(mLogoPosY+mCurrentLogoBmp.getHeight() <= 0)
+        if(mLogoPosY+mCurrentLogoBmp.height() <= 0)
         {
             mLogoPosY = gameRes.h;
             mTerminatorLogoNum++;
@@ -204,8 +209,8 @@ void CPassiveGalaxy::processIntro()
             mCurrentLogoBmp.optimizeSurface();
 
             GsRect<Uint16> logoBmpRect;
-            logoBmpRect.w = mCurrentLogoBmp.getWidth();
-            logoBmpRect.h = mCurrentLogoBmp.getHeight();
+            logoBmpRect.w = mCurrentLogoBmp.width();
+            logoBmpRect.h = mCurrentLogoBmp.height();
             logoBmpRect.x = logoBmpRect.y = 0;
             logoBmpRect.h *= mScaleFactor;
             logoBmpRect.w *= mScaleFactor;
@@ -218,7 +223,7 @@ void CPassiveGalaxy::processIntro()
         }
     }
 
-    const int textSeparation = (mCommanderTextPos.x+mCommanderTextSfc.getWidth()) - mKeenTextPos.x;
+    const int textSeparation = (mCommanderTextPos.x+mCommanderTextSfc.width()) - mKeenTextPos.x;
 
     if(textSeparation <= -mMaxSeparationWidth || mSkipSection)
     {        
@@ -231,7 +236,7 @@ void CPassiveGalaxy::processIntro()
         gInput.flushAll();
 
         mCommanderTextSfc._draw(0,0, mpZoomSurface.get() );
-        mKeenTextSfc._draw(mCommanderTextSfc.getWidth()+59*mScaleFactor, 0, mpZoomSurface.get() );
+        mKeenTextSfc._draw(mCommanderTextSfc.width()+59*mScaleFactor, 0, mpZoomSurface.get() );
 
         mTerminatorTimer = 0;
         mSkipSection = false;
@@ -290,10 +295,12 @@ void CPassiveGalaxy::processIntroZoom()
         gInput.flushAll();
         processPonderMode = &CPassiveGalaxy::processTitle;
         processRenderMode = &CPassiveGalaxy::renderTitle;
-        m_BackgroundBitmap = *gGraphics.getBitmapFromStr("TITLE");
+        mBackgroundTitle = *gGraphics.getBitmapFromStr("TITLE");
+
+        mIntroTimer = INTRO_TIME;
 
         GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
-        m_BackgroundBitmap.scaleTo(gameRes);
+        mBackgroundTitle.scaleTo(gameRes);
         renderIntroZoom();
         gEffectController.setupEffect(new CPixelate(2));
         mSkipSection = false;
@@ -358,7 +365,44 @@ void CPassiveGalaxy::processTitle()
             gEventManager.add(new OpenMainMenuEvent());
             mSkipSection = false;
 		}	    
-	}    
+    }
+
+    mIntroTimer--;
+
+    if(mIntroTimer <= 0)
+    {
+        mIntroTimer = 0;
+
+        processPonderMode = &CPassiveGalaxy::processStarWars;
+        processRenderMode = &CPassiveGalaxy::renderStarWars;
+        mBackgroundStarWars = *gGraphics.getBitmapFromStr("STARWARS");
+
+        GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
+        mBackgroundStarWars.scaleTo(gameRes);
+    }
+}
+
+void CPassiveGalaxy::processStarWars()
+{
+    // If something is pressed at this section, open the menu
+    if( !gEffectController.runningEffect() && !gMenuController.active() )
+    {
+        if( mSkipSection )
+        {
+            gInput.flushAll();
+
+#ifdef TOUCHCONTROLS
+            VirtualKeenControl *vkc = dynamic_cast<VirtualKeenControl*>(gInput.mpVirtPad.get());
+            assert(vkc);
+            vkc->mShowDPad = true;
+#endif
+
+            gEventManager.add(new OpenMainMenuEvent());
+            mSkipSection = false;
+        }
+    }
+
+    // TODO: need to put K1ngDuke code here in C++ translated.
 }
 
 
@@ -366,9 +410,48 @@ void CPassiveGalaxy::processTitle()
 void CPassiveGalaxy::renderTitle()
 {
     // draw the title bitmap here!
-    m_BackgroundBitmap.draw(0, 0);
+    mBackgroundTitle.draw(0, 0);
 }
 
+void CPassiveGalaxy::renderStarWars()
+{
+    // draw the title bitmap here!
+    mBackgroundStarWars.draw(0, 0);
 
+    // TODO: Need to render the transformed text here!
+    SDL_Surface *sfc = gVideoDriver.getBlitSurface();
+
+    SDL_Rect lRect;
+
+    lRect.h = sfc->h;    lRect.w = sfc->w;
+    lRect.x = 0;        lRect.y = lRect.h-20;
+
+    // Draw some text.
+    GsFont &Font = gGraphics.getFont(1);
+
+    if(mSwapColors)
+    {
+        Font.setupColor(0xFFFFFF);
+    }
+    else
+    {
+        Font.setupColor(0xFF0000);
+    }
+
+    if(mStarWarsTimer % 60 == 0)
+    {
+        mSwapColors = !mSwapColors;
+    }
+
+
+    Font.drawFontCentered( sfc, "Press any to start...", lRect.x, lRect.w, lRect.y, false);
+
+    mStarWarsTimer--;
+
+    if(mStarWarsTimer <= 0)
+    {
+        mStarWarsTimer = STARWARS_TIME;
+    }
+}
 
 }

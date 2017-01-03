@@ -161,21 +161,41 @@ void CCouncilMember::getTouchedBy(CSpriteObject &theObject)
 
 
 		g_pSound->playSound(SOUND_RESCUE_COUNCIL_MEMBER, PLAY_PAUSEALL);
-        gEventManager.add( new EventPlayTrack(5) );
+        gEventManager.add( new EventPlayTrack(5) );        
 
 		std::string elder_text[2];
 
-		if( mp_Map->getLevel() == 17 ) // Under water the text is a bit different
-		{
-			elder_text[0] = gpBehaviorEngine->getString("ELDERS_UNDERWATER_TEXT");
-			elder_text[1] = "";
-		}
-		else
-		{
-			elder_text[0] = gpBehaviorEngine->getString("ELDERS_TEXT");
-			elder_text[1] = gpBehaviorEngine->getString(answermap[rescuedelders]);
-		}
+        // TODO: Inject python3 code here for own dialogs
+        bool customDlgs = false;
+        #if USE_PYTHON3
 
+        auto pModule = gPython.loadModule( "messageMap", gKeenFiles.gameDir );
+
+        if (pModule != nullptr)
+        {
+            customDlgs = true;
+
+            int level = mp_Map->getLevel();
+            bool ok = true;
+            ok &= loadStrFunction(pModule, "getMemberDialog", elder_text[0], level);
+            ok &= loadStrFunction(pModule, "getMemberAnswer", elder_text[1], level);
+        }
+
+        #endif
+
+        if(!customDlgs)
+        {
+            if( mp_Map->getLevel() == 17 ) // Under water the text is a bit different
+            {
+                elder_text[0] = gpBehaviorEngine->getString("ELDERS_UNDERWATER_TEXT");
+                elder_text[1] = "";
+            }
+            else
+            {
+                elder_text[0] = gpBehaviorEngine->getString("ELDERS_TEXT");
+                elder_text[1] = gpBehaviorEngine->getString(answermap[rescuedelders]);
+            }
+        }
 
         std::vector<CMessageBoxGalaxy*> msgs;
 
@@ -207,11 +227,14 @@ void CCouncilMember::getTouchedBy(CSpriteObject &theObject)
 		}
 		else
 		{
+            auto evExit = new EventExitLevel(mp_Map->getLevel(), true, false, mSprVar);
+            evExit->playSound = true;
+
             msgs.push_back( new CMessageBoxBitmapGalaxy(
                                 elder_text[1],
                                 *gGraphics.getBitmapFromStr("KEENTHUMBSUP"),
                                 RIGHT,
-                                new EventExitLevel(mp_Map->getLevel(), true, false, mSprVar)) );
+                                evExit) );
 		}
 
         showMsgVec( msgs );

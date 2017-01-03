@@ -36,7 +36,7 @@
 #include "keen/vorticon/VorticonEngine.h"
 #include "keen/galaxy/GalaxyEngine.h"
 
-#ifdef REFKEEN
+#if REFKEEN
 #include "keen/dreams/dreamsengine.h"
 #endif
 
@@ -777,7 +777,11 @@ void CGameLauncher::ponderPatchDialog()
             {
                 gKeenFiles.gameDir = DataDirectory;
 
+#if REFKEEN
                 if(episode >= 1 && episode <= 7)
+#else
+                if(episode >= 1 && episode <= 6)
+#endif
                 {
                     // Now let's decide which engine we have to start.
                     if(episode >= 1 && episode <= 3)
@@ -789,7 +793,7 @@ void CGameLauncher::ponderPatchDialog()
                         gEventManager.add( new StartGalaxyEngine(false, episode, DataDirectory) );
                     }
 
-#ifdef REFKEEN
+#if REFKEEN
                     else if(episode == 7)
                     {
                         gEventManager.add( new StartDreamsEngine(false, DataDirectory) );

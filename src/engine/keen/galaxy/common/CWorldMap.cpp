@@ -35,7 +35,7 @@ void CWorldMap::init()
 	MapLoader->loadMap( mMap, 0 );
 	gpBehaviorEngine->mapLevelName = MapLoader->getLevelName();
 
-	const std::string loading_text = gpBehaviorEngine->getString("WORLDMAP_LOAD_TEXT");
+    const std::string loading_text = gpBehaviorEngine->getString("LEVEL0_LOAD_TEXT");
 
     gEffectController.setupEffect(new CColorMerge(8));
 	

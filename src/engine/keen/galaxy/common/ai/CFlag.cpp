@@ -37,7 +37,7 @@ m_baseframe(0)
 	mActionMap[A_FLAG_WAVE] = &CFlag::processWaving;
 	mActionMap[A_FLAG_FLIP] = &CFlag::processFlipping;
 	
-	const auto episode = gpBehaviorEngine->getEpisode();
+	const auto episode = gpBehaviorEngine->getEpisode();    
 
     if(canLock)
     {
@@ -47,7 +47,6 @@ m_baseframe(0)
 	if(episode == 6)
 	{
         setupGalaxyObjectOnMap(0x13F4, A_FLAG_FLIP);
-        g_pSound->playSound( SOUND_FLAG_APPEAR );
 	}
 	else if(episode == 5)
 	{
@@ -55,16 +54,13 @@ m_baseframe(0)
 	    moveTo(m_destination);
 	    setupGalaxyObjectOnMap(0x148A, A_FLAG_WAVE);
         mp_Map->unlock();
+        mPlayMapSound = false; // There is no waving Flag so no sound fro that.
 	}
     else // Episode 4
 	{
 	    setupGalaxyObjectOnMap(0x15EE, A_FLAG_FLIP);                
-        g_pSound->playSound( SOUND_FLAG_APPEAR );
 	}
 
-	    
-    /*if(!newAction)
-        moveTo(m_destination);   */
 }
 
 void CFlag::getTouchedBy(CSpriteObject &theObject)
@@ -97,6 +93,12 @@ void CFlag::setActionForce(const size_t ActionNumber)
  */
 void CFlag::process()
 {
+    if(mPlayMapSound)
+    {
+        g_pSound->playSound( SOUND_FLAG_APPEAR );
+        mPlayMapSound = false;
+    }
+
     processActionRoutine();
 
     (this->*processState)();

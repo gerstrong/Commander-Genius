@@ -140,7 +140,9 @@ private:
 
 	bool mPausedGamePlay;
 
-    EpisodeInfoStruct *pEpisodeInfo;		    
+    EpisodeInfoStruct *pEpisodeInfo;
+
+    int mBwbLevel = 99;
 };
 
 #endif /* CBEHAVIORENGINE_H_ */

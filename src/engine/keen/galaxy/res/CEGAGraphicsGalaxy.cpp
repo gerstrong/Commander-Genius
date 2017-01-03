@@ -14,6 +14,7 @@
 
 #include "CEGAGraphicsGalaxy.h"
 #include "graphics/GsGraphics.h"
+#include "graphics/GsGametext.h"
 #include "fileio/ResourceMgmt.h"
 #include "engine/core/CBehaviorEngine.h"
 #include "fileio/compression/CHuffman.h"
@@ -730,11 +731,13 @@ bool CEGAGraphicsGalaxy::readfonts()
 		GsFont &Font = gGraphics.getFont(i);
 		//Font.setMonochrome(true);
 
-		if(m_egagraph.at(EpisodeInfo[ep].IndexFonts + i).data.at(0))
+        const std::vector<unsigned char> &fontData = m_egagraph.at(EpisodeInfo[ep].IndexFonts + i).data;
+
+        if(fontData.at(0))
 		{
 			// ARM processor requires all ints and structs to be 4-byte aligned, so we're just using memcpy()
 			FontHeadStruct FontHeadData, *FontHead = &FontHeadData;
-			memcpy( FontHead, &(m_egagraph.at(EpisodeInfo[ep].IndexFonts + i).data.at(0)), sizeof(FontHeadStruct) );
+            memcpy( FontHead, &(fontData.at(0)), sizeof(FontHeadStruct) );
 
 			// Find out the maximum character width
 			int maxwidth=0;
@@ -1082,42 +1085,27 @@ bool CEGAGraphicsGalaxy::readSprites( size_t NumSprites, size_t IndexSprite )
 	return true;
 }
 
-/**
- * This reads the Texts used in Computer Wrist and Ending as Beginning Pages. In-Level texts are not handled here
- */
+
 bool CEGAGraphicsGalaxy::readTexts()
 {
-	// gpBehaviorEngine->addMessage(name, message);
-	 /*char filename[PATH_MAX];
-	FILE *f;
-	int i;
-	int ep = Switches->Episode - 4;
+    int ep = m_episode - 4;
 
-	if(!ExportInitialised)
-		quit("Trying to export texts before initialisation!");
+    gGameText.clear();
 
-	// Export all the texts
-	printf("Exporting texts: ");
-
-	for(i = 0; i < EpisodeInfo[ep].NumTexts; i++)
+    for(unsigned int i = 0; i < EpisodeInfo[ep].NumTexts; i++)
 	{
-		// Show that something is happening
-		showprogress((i * 100) / EpisodeInfo[ep].NumTexts);
+        ChunkStruct &thisChunk = m_egagraph.at(EpisodeInfo[ep].IndexTexts + i);
 
-		if(EgaGraph[EpisodeInfo[ep].IndexTexts + i].data)
-		{
-			// Create the text file
-			sprintf(filename, "%s/%cTXT%04d.txt", Switches->OutputPath, '0' + Switches->Episode, i);
-			f = openfile(filename, "wb", Switches->Backup);
-			if(!f)
-				quit("Can't open text file %s!", filename);
-			fwrite(EgaGraph[EpisodeInfo[ep].IndexTexts + i].data, EgaGraph[EpisodeInfo[ep].IndexTexts + i].len, 1, f);
-			fclose(f);
+        if(thisChunk.data.at(0))
+        {
+            const auto *txtData = (char*)( thisChunk.data.data() );
+            std::string text(txtData);
+
+            gGameText.addLine(text);
 		}
-		//printf("\x8\x8\x8\x8");
 	}
-	completemsg();*/
-	 return true;
+
+    return true;
 }
 
 

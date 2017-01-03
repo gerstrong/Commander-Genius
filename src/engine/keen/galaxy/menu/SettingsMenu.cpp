@@ -28,15 +28,19 @@ namespace galaxy
 SettingsMenu::SettingsMenu() :
 GalaxyMenu( GsRect<float>(0.25f, 0.24f, 0.5f, 0.40f) )
 {
+
+#if !defined(EMBEDDED)
     mpMenuDialog->addControl(new GalaxyButton( "Video",
                                     new OpenMenuEvent( new CVideoSettings() ) ) );
 
     mpMenuDialog->addControl(new GalaxyButton( "Audio",
                                     new OpenMenuEvent( new CAudioSettings() ) ) );
-
+#endif
     mpMenuDialog->addControl(new GalaxyButton( "Options",
                                     new OpenMenuEvent( new COptions() ) ) );
 
+
+#if !defined(EMBEDDED)
 #if defined (SINGLEPLAYER)
     mpMenuDialog->addControl( new GalaxyButton( "Controls",
                                     new OpenMenuEvent(	new CControlsettings(1) ) ) );
@@ -44,7 +48,7 @@ GalaxyMenu( GsRect<float>(0.25f, 0.24f, 0.5f, 0.40f) )
     mpMenuDialog->addControl(new GalaxyButton( "Controls",
                                     new OpenMenuEvent( new CPlayersSelection<OpenControlMenuEvent>() ) ) );
 #endif
-
+#endif
 
 #if !defined(EMBEDDED)
     mpMenuDialog->addControl( new GalaxyButton( "Camera",
@@ -54,8 +58,6 @@ GalaxyMenu( GsRect<float>(0.25f, 0.24f, 0.5f, 0.40f) )
     mpMenuDialog->addControl(new GalaxyButton( "Cheats",
                                     new OpenMenuEvent( new CheatsMenu() ) ) );
 
-    /*mpMenuDialog->addControl(new GalaxyButton( "Profile",
-                                    new OpenMenuEvent( new CProfilesMenu() ) ) );*/
 
     setMenuLabel("CONFIGMENULABEL");
 }

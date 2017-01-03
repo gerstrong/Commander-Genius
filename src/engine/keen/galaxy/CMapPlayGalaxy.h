@@ -43,7 +43,19 @@ public:
 	/*
 	 * \brief Just tells the name of the level. Every Galaxy Level with a name
 	 */
-	std::string getLevelName();
+    std::string getLevelName() const
+    {
+        return mMap.getLevelName();
+    }
+
+    /**
+     * @brief getLevelIdx
+     * @return
+     */
+    Uint16 getLevelIdx() const
+    {
+        return mMap.getLevel();
+    }
 
     void pumpEvent(const CEvent *evPtr);
 

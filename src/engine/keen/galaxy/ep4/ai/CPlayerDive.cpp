@@ -162,6 +162,11 @@ void CPlayerDive::process()
 {    
     processInput();
 
+    if(!m_dying && !mExitTouched)
+    {
+        processExiting();
+    }
+
 	(this->*mp_processState)();
 
 	processLevelMiscFlagsCheck();

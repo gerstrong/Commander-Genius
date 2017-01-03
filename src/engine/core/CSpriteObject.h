@@ -31,7 +31,7 @@
 
 #include "fileio/KeenFiles.h"
 
-#include <Python.h>
+#include <base/GsPython.h>
 
 
 const int COLISION_RES = (1<<STC);
@@ -161,6 +161,9 @@ public:
     std::vector< ObjMove* > mMoveTasks;
 
     bool m_jumpdownfromobject;
+
+
+
 
 
     /*
@@ -336,6 +339,7 @@ public:
 
 protected:
 
+#if USE_PYTHON3
     /**
      * @brief loadAiGetterInteger
      * @param pModule
@@ -344,6 +348,7 @@ protected:
      * @return
      */
     bool loadAiGetterInteger(PyObject * pModule, const std::string &pyMethodStr, int &value);
+
 
     /**
      * @brief loadAiGetterBool
@@ -362,7 +367,7 @@ protected:
      * @return if load was successful true, otherwise false.
      */
     virtual bool loadPythonScripts(const std::string &scriptBaseName);
-
+#endif
 
 	CMap *mp_Map;
 
