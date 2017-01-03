@@ -27,7 +27,24 @@ public:
 
 };
 
+/**
+ * @brief fixNewLine Ensures that newline bytes are threated correctly. Python like to put extra backslashes for these.
+ * @param str
+ */
+void fixNewLine(std::string& str);
 
+/**
+ * @brief loadStrFunction   Function that takes on integer and returns string
+ * @param pModule
+ * @param pyMethodStr
+ * @param value
+ * @param param1
+ * @return
+ */
+bool loadStrFunction(PyObject * pModule,
+                     const std::string &pyMethodStr,
+                     std::string &value,
+                     const int param1);
 
 /**
  * @brief loadIntegerGetter for a python function that has no arguments but returns an integer
