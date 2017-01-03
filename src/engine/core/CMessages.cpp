@@ -110,7 +110,8 @@ bool CMessages::extractEp4Strings(std::map<std::string, std::string>& StringMap)
             // Level loading Texts (2E00)
 
                 int offset;
-                int lower, higher;
+                int lower = 0x0;
+                int higher = 0x0;
 
                 // Read Level strings
                 // Note: Level 0 is always the world map
