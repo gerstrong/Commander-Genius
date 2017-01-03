@@ -39,8 +39,8 @@ const int UMOUNT_TIME = 30;
 
 const int TIME_UNTIL_SHOOT = 500;
 
-const uint mAmptonOffset = 0x21DC;
-const uint mShikadiMasterOffset = 0x2B6C; // For Yeti shoot sprite (Keen 9)
+const int mAmptonOffset = 0x21DC;
+const int mShikadiMasterOffset = 0x2B6C; // For Yeti shoot sprite (Keen 9)
 
 
 
