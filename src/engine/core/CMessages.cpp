@@ -14,6 +14,8 @@
 #include <base/GsLogging.h>
 #include "engine/core/CBehaviorEngine.h"
 
+#include <cstring>
+
 CMessages::CMessages(unsigned char *p_exebuf, char episode, int version) :
 	mp_exe(p_exebuf),
 	mOffset(0)
