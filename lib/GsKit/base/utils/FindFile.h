@@ -88,6 +88,7 @@ struct drive_t {
 
 typedef std::vector<drive_t> drive_list;
 
+
 // Define intptr_t if not defined
 #ifdef _MSC_VER
 #ifndef _INTPTR_T_DEFINED

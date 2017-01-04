@@ -31,6 +31,29 @@ void fixNewLine(std::string& str)
 }
 
 
+void replaceSlashes(std::string &text)
+{
+#ifdef WIN32
+    for (std::string::iterator it = text.begin(); it != text.end(); it++)
+        if (*it == '/') *it = '\\';
+#endif
+}
+
+
+// Windows only. In order to get python work correctly you might need to have doubled amount of backslashes
+void duplicateBackslashes(std::string &text)
+{
+#ifdef WIN32
+    auto npos = text.find("\\");
+    if(npos != std::string::npos)
+    {
+        auto subStr = text.substr(npos+1);
+        duplicateBackslashes(subStr);
+        text = text.substr(0, npos) + "\\\\" + subStr;
+    }
+#endif
+}
+
 PyObject *GsPython::loadModule(const std::string &scriptBaseName, const std::string &baseDir)
 {
     // Extra Python script for this AI defined?
@@ -39,7 +62,11 @@ PyObject *GsPython::loadModule(const std::string &scriptBaseName, const std::str
     aiscriptPath += ".py";
     aiscriptPath = GetFullFileName(aiscriptPath);
 
+    // Ensure the path is correctly formatted even for Windows
     std::string aidir = ExtractDirectory(aiscriptPath);
+
+    replaceSlashes(aidir);
+    duplicateBackslashes(aidir);
 
     Py_Initialize();
 
