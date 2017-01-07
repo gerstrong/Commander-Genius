@@ -21,7 +21,7 @@
 #ifndef __MATHLIB_H__
 #define __MATHLIB_H__
 
-#include <cmath>
+//#include <cmath>
 
 //#include "CVec.h"
 

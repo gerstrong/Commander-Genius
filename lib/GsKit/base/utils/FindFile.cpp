@@ -160,8 +160,8 @@ bool IsFileAvailable(const std::string& f, bool absolute)
 static void ReplaceSlashes(std::string& path)
 {
 #ifdef WIN32
-	for (std::string::iterator it = path.begin(); it != path.end(); it++)
-		if (*it == '\\') *it = '/';
+    for (std::string::iterator it = path.begin(); it != path.end(); it++)
+        if (*it == '\\') *it = '/';
 #endif
 }
 
