@@ -2,6 +2,8 @@
 #include <base/CInput.h>
 #include <graphics/GsGraphics.h>
 
+#include <sstream>
+
 #include "ComputerWrist.h"
 
 #include "graphics/GsGametext.h"
@@ -21,7 +23,7 @@
 namespace galaxy
 {
 
-ComputerWrist::ComputerWrist() :
+ComputerWrist::ComputerWrist(const int ep) :
     mMainMenuBmp(gGraphics.getBitmapFromId(0)), // Zero always seem to be that menu
     mHandBmp(*gGraphics.getBitmapFromStr("HELPHAND"))
 {
@@ -61,6 +63,10 @@ ComputerWrist::ComputerWrist() :
     bottomBorderBmpSize.w = mBottomBorderBmp.width();
     bottomBorderBmpSize.h = mBottomBorderBmp.height();
     mBottomBorderBmp.scaleTo(bottomBorderBmpSize);
+
+
+    // NOTE: The index is always at six
+    mBmpIndex = 6;
 }
 
 
@@ -92,6 +98,12 @@ void ComputerWrist::ponderMainMenu(const float deltaT)
         mSectionPage = mSelection;
         mCurrentTextLines = gGameText.readPage(0, 0);
     }
+
+
+    GsFont &font = gGraphics.getFont(mFontId);
+    GsWeakSurface blitsfc(gVideoDriver.getBlitSurface());
+    const auto numElem = (blitsfc.height()*blitsfc.width());
+    mPageMatrix.resize(numElem, ' ');
 }
 
 void ComputerWrist::ponder(const float deltaT)
@@ -107,6 +119,58 @@ void ComputerWrist::ponder(const float deltaT)
     ponderPage(deltaT);
 }
 
+void ComputerWrist::parseGraphics()
+{
+    std::stringstream ss;
+
+    int x,y,chunk;
+
+    GsWeakSurface blitsfc(gVideoDriver.getBlitSurface());
+
+    SDL_Rect lRect;
+    lRect.h = blitsfc.height();     lRect.w = blitsfc.width();
+
+    for(const auto &line : mCurrentTextLines)
+    {
+        if(line[0] == '^')
+        {
+            if(line[1] == 'G')
+            {
+                std::string param = line.substr(2);
+
+                char comma;
+
+                ss << param;
+                ss >> y;
+                ss >> comma;
+                ss >> x;
+                ss >> comma;
+                ss >> chunk;
+
+                chunk = chunk - mBmpIndex;
+
+                GsBitmap &bmp = gGraphics.getBitmapFromId(chunk);
+                const auto bmpH = bmp.height();
+                const auto bmpW = bmp.width();
+
+                // Got the bitmap, block the matrix at that part
+                for(int i=y ; i<y+bmpH ; i++)
+                {
+                    auto pIdx = i*blitsfc.width() + x;
+                    for(int j=x ; j<x+bmpW ; j++)
+                    {
+                        mPageMatrix[pIdx] = 0;
+                        pIdx++;
+                    }
+                }
+
+                bmp.draw(x+mLeftBorderBmp.width(), y+mUpperBorderBmp.height()-4);
+            }
+        }
+
+    }
+}
+
 void ComputerWrist::renderPage()
 {
     GsWeakSurface blitsfc(gVideoDriver.getBlitSurface());
@@ -116,7 +180,7 @@ void ComputerWrist::renderPage()
     lRect.x = 0;                    lRect.y = lRect.h-20;
 
     // Draw some text.
-    GsFont &Font = gGraphics.getFont(1);
+    GsFont &Font = gGraphics.getFont(mFontId);
 
     Font.setupColor(0xFFFFFF);
 
@@ -125,13 +189,53 @@ void ComputerWrist::renderPage()
     int linePos = 0;
 
     lRect.h = Font.getPixelTextHeight();
-    for(const auto &line : mCurrentTextLines)
+
+    lRect.x = 0;    lRect.y = 0;
+
+    const auto screenW = blitsfc.width() - (mRightBorderBmp.width()+mLeftBorderBmp.width());
+    const auto screenH = blitsfc.height() - (mUpperBorderBmp.height()+mBottomBorderBmp.height());
+
+    const auto height = Font.getPixelTextHeight();
+
+    // Setup detected bitmap graphics
+    parseGraphics();
+
+    for(lRect.y = mUpperBorderBmp.height() ; lRect.y<screenH ; )
+    {
+        auto pixelIdx = lRect.y * blitsfc.width();
+
+        for(lRect.x = mLeftBorderBmp.width() ; lRect.x<screenW ; )
+        {
+            const char c = mPageMatrix[pixelIdx];
+
+
+            int width = 8; // default
+
+            if(c != 0)
+            {
+                Font.drawCharacter(blitsfc.getSDLSurface(), c, lRect.x, lRect.y);
+                width = Font.getWidthofChar(c);
+            }
+            else
+            {
+                width = Font.getWidthofChar(' ');
+            }
+
+            lRect.x += width;
+            pixelIdx += width;
+
+        }
+
+        lRect.y += height;
+    }
+
+    /*for(const auto &line : mCurrentTextLines)
     {
         lRect.x = 0;
         lRect.y = linePos*Font.getPixelTextHeight();
         Font.drawFontCentered( blitsfc.getSDLSurface(), line, lRect.x, lRect.w, lRect.y, false);
         linePos++;
-    }
+    }*/
 }
 
 void ComputerWrist::renderBorders()

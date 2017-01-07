@@ -68,7 +68,13 @@ public:
 	std::string getName() const { return mName; }
 	void setName(const std::string &name) { mName = name; }
 
-    void draw(const int x, const int y);
+    /**
+     * \brief The function that blits the sprite to the main blitSurface
+     * \param x		 		X-Coordinate, indicating the position on dst
+     * \param y				Y-Coordinate, indicating the position on dst
+     */
+    void draw(const int x, const int y) const;
+
     void _draw(const int x, const int y, SDL_Surface *dst) const;
 
 private:

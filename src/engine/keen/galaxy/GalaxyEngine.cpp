@@ -77,7 +77,7 @@ void GalaxyEngine::ponder(const float deltaT)
 
     KeenEngine::ponder(deltaT);
 
-    if( gInput.getPressedCommand(IC_HELP) )
+    if( gInput.getPressedCommand(IC_HELP) && !gMenuController.empty())
     {
         // Check if music is playing and pause if it is
         if(g_pMusicPlayer->active())
@@ -92,7 +92,7 @@ void GalaxyEngine::ponder(const float deltaT)
             gpBehaviorEngine->setPause(false);
             gEventManager.add( new CloseAllMenusEvent() );
 
-            mpComputerWrist.reset(new ComputerWrist);
+            mpComputerWrist.reset(new ComputerWrist(ep));
         }
     }
 

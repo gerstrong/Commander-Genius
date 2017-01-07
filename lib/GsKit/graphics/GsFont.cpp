@@ -200,13 +200,6 @@ void GsFont::loadinternalFont(const int size)
     }
 }
 
-// This sets the width of the characters so the text is printed nicely.
-// This is by default 8 pixels in vorticons and it is normally only used
-// in the galaxy engine.
-void GsFont::setWidthToCharacter(Uint8 width, Uint16 letter)
-{
-	mWidthtable[letter] = width;
-}
 
 
 
@@ -331,7 +324,6 @@ unsigned int GsFont::getPixelTextWidth( const std::string& text )
 
 	return width;
 }
-
 
 
 

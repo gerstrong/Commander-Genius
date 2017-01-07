@@ -26,7 +26,7 @@ public:
     /**
      * @brief ComputerWrist A default constructor
      */
-    ComputerWrist();
+    ComputerWrist(const int ep);
 
 
     // Processes the stuff that the menus have in common
@@ -45,6 +45,11 @@ public:
      */
     void ponderMainMenu(const float deltaT);
 
+
+    /**
+     * @brief parseGraphics parse graphical elements and block the char matrix
+     */
+    void parseGraphics();
 
     /**
      * @brief ponder    Main Process for menus
@@ -91,6 +96,11 @@ private:
     int  mSectionPage = -1;
 
     std::vector<std::string> mCurrentTextLines;
+
+    std::vector< char > mPageMatrix;
+
+    int mBmpIndex = 0;
+    int mFontId = 0;
 };
 
 }
