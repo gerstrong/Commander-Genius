@@ -47,6 +47,11 @@ public:
 
 
     /**
+     * @brief parseText Detect, parser and render the text
+     */
+    void parseText();
+
+    /**
      * @brief parseGraphics parse graphical elements and block the char matrix
      */
     void parseGraphics();
@@ -97,10 +102,11 @@ private:
 
     std::vector<std::string> mCurrentTextLines;
 
-    std::vector< char > mPageMatrix;
-
     int mBmpIndex = 0;
     int mFontId = 0;
+
+    std::vector<int> mMinPos;
+    std::vector<int> mMaxPos;
 };
 
 }
