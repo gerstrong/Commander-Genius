@@ -389,7 +389,10 @@ bool CMap::setTile(Uint16 x, Uint16 y, Uint16 t, bool redraw, Uint16 plane)
 		}
 		return true;
 	}
-	else return false;
+    else
+    {
+        return false;
+    }
 }
 
 // Called in level. This function does the same as setTile, but also draws directly to the scrollsurface

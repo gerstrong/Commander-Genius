@@ -1475,7 +1475,8 @@ void CPlayerLevel::processLookingUp()
 #define		MISCFLAG_DOOR		2
 #define		MISCFLAG_KEYCARDDOOR		32
 
-void CPlayerLevel::processPressUp() {
+void CPlayerLevel::processPressUp()
+{
 
 	std::vector<CTileProperties> &Tile = gpBehaviorEngine->getTileProperties(1);
 	const int x_left = getXLeftPos();
@@ -1488,49 +1489,41 @@ void CPlayerLevel::processPressUp() {
 
 	// pressing a switch
 	if (flag == MISCFLAG_SWITCHPLATON || 
-	  flag == MISCFLAG_SWITCHPLATOFF ||
-	  flag == MISCFLAG_SWITCHBRIDGE)
+        flag == MISCFLAG_SWITCHPLATOFF ||
+        flag == MISCFLAG_SWITCHBRIDGE)
 	{
 	  playSound( SOUND_GUN_CLICK );
-	  
-	  if(flag == MISCFLAG_SWITCHBRIDGE  || flag == 18 )
-	  {	    
-	      Uint32 newtile;
-	      if(Tile[tile_no+1].behaviour == MISCFLAG_SWITCHBRIDGE || 
-		 Tile[tile_no+1].behaviour == 18 )
-		newtile = tile_no+1;
-	      else
-		newtile = tile_no-1;
-	      
-	      mp_Map->setTile( x_mid>>CSF, up_y>>CSF, newtile, true, 1); // Wrong tiles, those are for the info plane
-	      PressBridgeSwitch(x_mid, up_y);	      
-	  }
-	  else
-	  {
-	    const Uint32 newtile = (flag == MISCFLAG_SWITCHPLATON) ? tile_no+1 : tile_no-1 ;
-	    mp_Map->setTile( x_mid>>CSF, up_y>>CSF, newtile, true, 1); // Wrong tiles, those are for the info plane
-	    PressPlatformSwitch(x_mid, up_y);
-	  }
+
+      auto newtile = tile_no-1;
+
+      if(flag == MISCFLAG_SWITCHBRIDGE  || flag == 18 )
+      {
+            PressBridgeSwitch(x_mid, up_y);
+      }
+      else
+      {
+            PressPlatformSwitch(x_mid, up_y);
+      }
+
+
+      if(Tile[tile_no+1].behaviour == flag ||
+         Tile[tile_no+1].behaviour == MISCFLAG_SWITCHPLATON ||
+         Tile[tile_no+1].behaviour == MISCFLAG_SWITCHPLATOFF )
+      {
+            newtile = tile_no+1;
+      }
+
+      mp_Map->setTile( x_mid>>CSF, up_y>>CSF, newtile, true, 1); // Wrong tiles, those are for the info plane
+
 	  
 	  setAction(A_KEEN_SLIDE);
 	  m_timer = 0;
 	  return;
 	}
-	/*		var2 = o->boxTXmid*256-64;
-	 *		if (o->xpos == var2) {
-	 *			setAction(ACTION_KEENENTERSLIDE);
-	 *			setAction(A_KEEN_SLIDE);
-	 } else {
-	   o->time = var2;
-	   //setAction(ACTION_KEENPRESSSWITCH);
-	   setAction(ACTION_KEENENTERSLIDE);
-	 }
-	 EnterDoorAttempt = 1;
-	 return 1;
-	 } */
+
 	
 	
-	// entering a door
+    /// Test if keen may enter a door
 	int flag_left = Tile[mp_Map->getPlaneDataAt(1, x_left, up_y)].behaviour;
 	
 	if ( !m_EnterDoorAttempt && 
@@ -1674,13 +1667,36 @@ void CPlayerLevel::processSliding()
 
 	if(mPlacingGem)
 	{
-		int lx = getXMidPos();
-		int ly = getYDownPos()-(3<<STC);
+        const auto lx1 = getXLeftPos();
+        const auto lx2 = getXRightPos();
+        const auto ly1 = getYUpPos();
+        const auto ly2 = getYDownPos();
 
-		const Uint32 tileno = mp_Map->getPlaneDataAt(1, lx, ly);
-		mp_Map->setTile(lx>>CSF, ly>>CSF, tileno+18, true, 1);
-		mPlacingGem = false;
-		playSound( SOUND_DOOR_OPEN );
+        std::vector<CTileProperties> &Tile = gpBehaviorEngine->getTileProperties(1);
+
+        bool foundHolder = false;
+
+        for(auto x = lx1 ; x<=lx2 ; x += (1<<CSF) )
+        {
+            for(auto y = ly1 ; y<=ly2 ; y += (1<<CSF) )
+            {
+                Uint32 tile_no = mp_Map->getPlaneDataAt(1, x, y);
+                int flag = Tile[tile_no].behaviour;
+
+                if(flag >= 7 && flag <= 10)
+                {
+                    mp_Map->setTile(x>>CSF, y>>CSF, tile_no+18, true, 1);
+                    mPlacingGem = false;
+                    playSound( SOUND_DOOR_OPEN );
+
+                    foundHolder = true;
+                    break;
+                }
+
+            }
+
+            if(foundHolder) break;
+        }
 	}
 
     makeHimStand();

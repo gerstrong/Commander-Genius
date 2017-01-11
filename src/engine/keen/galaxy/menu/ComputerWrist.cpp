@@ -274,7 +274,7 @@ void ComputerWrist::parseGraphics()
                     }
                     else    // Wrap right side text
                     {
-                        for(int j=x ; j<spaceWidthx+bmpW ; j++)
+                        for(int j=x ; j<spaceWidth+bmpW ; j++)
                         {
                             auto curMaxPos = mMaxPos[i/fontHeight];
 

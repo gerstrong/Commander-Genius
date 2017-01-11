@@ -47,11 +47,23 @@ bool setupAudio()
 
 bool loadLevelMusic(const int level)
 {
-    Uint16 track;
-
 
     CExeFile &ExeFile = gKeenFiles.exeFile;
-    const int Idx = ExeFile.getEpisode()-4;
+    const auto episode = ExeFile.getEpisode();
+    const int Idx = episode-4;
+
+    const std::string path = gKeenFiles.gameDir;
+
+    std::string levelname = "level";
+    if(level < 10) levelname += "0";
+    levelname += itoa(level) + ".ck" + itoa(episode);
+
+    if(g_pMusicPlayer->LoadfromMusicTable(path, levelname))
+    {
+        return true;
+    }
+
+    Uint16 track;
 
     byte* musictable_start = ExeFile.getRawData()+GalaxySongAssignments[Idx];
     memcpy( &track, musictable_start+level*sizeof(Uint16), sizeof(Uint16));
