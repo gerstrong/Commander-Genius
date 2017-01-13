@@ -335,6 +335,14 @@ void GalaxyEngine::pumpEvent(const CEvent *evPtr)
         mpComputerWrist = nullptr;
     }
 
+    else if( const auto *ocw = dynamic_cast<const OpenComputerWrist*>(evPtr) )
+    {
+        CExeFile &ExeFile = gKeenFiles.exeFile;
+        const int ep = ExeFile.getEpisode();
+
+        mpComputerWrist.reset(new ComputerWrist(ep, ocw->mSection));
+    }
+
 }
 
 

@@ -24,6 +24,7 @@
 namespace galaxy
 {
 
+
 ComputerWrist::ComputerWrist(const int ep) :
     mMainMenuBmp(gGraphics.getBitmapFromId(0)), // Zero always seem to be that menu
     mHandBmp(*gGraphics.getBitmapFromStr("HELPHAND"))
@@ -68,7 +69,31 @@ ComputerWrist::ComputerWrist(const int ep) :
 
     // NOTE: The index is always at six
     mBmpIndex = 6;
+
+
+    GsFont &font = gGraphics.getFont(mFontId);
+    GsWeakSurface blitsfc(gVideoDriver.getBlitSurface());
+    const auto numElem = (blitsfc.height()*blitsfc.width());
+
+    const auto numLines = (blitsfc.height() - (mUpperBorderBmp.height() + mBottomBorderBmp.height()))/font.getPixelTextHeight();
+
+    for(int i=0 ; i<numLines ; i++)
+    {
+        mMinPos.push_back(mLeftBorderBmp.width());
+        mMaxPos.push_back(blitsfc.width() - (mLeftBorderBmp.width() + mRightBorderBmp.width()) );
+    }
+
 }
+
+ComputerWrist::ComputerWrist(const int ep, const int section) :
+    ComputerWrist(ep)
+{
+    mSection = section;
+
+    mCurrentTextLines = gGameText.readPage(mSection, mSectionPage);
+    mNumPagesOfThisSection = gGameText.getNumPages(mSection);
+}
+
 
 
 void ComputerWrist::ponderPage(const float deltaT)
@@ -124,17 +149,6 @@ void ComputerWrist::ponderMainMenu(const float deltaT)
     }
 
 
-    GsFont &font = gGraphics.getFont(mFontId);
-    GsWeakSurface blitsfc(gVideoDriver.getBlitSurface());
-    const auto numElem = (blitsfc.height()*blitsfc.width());
-
-    const auto numLines = (blitsfc.height() - (mUpperBorderBmp.height() + mBottomBorderBmp.height()))/font.getPixelTextHeight();
-
-    for(int i=0 ; i<numLines ; i++)
-    {
-        mMinPos.push_back(mLeftBorderBmp.width());
-        mMaxPos.push_back(blitsfc.width() - (mLeftBorderBmp.width() + mRightBorderBmp.width()) );
-    }
 }
 
 void ComputerWrist::ponder(const float deltaT)
@@ -330,16 +344,16 @@ void ComputerWrist::renderPage()
 
     Font.drawFontCentered( blitsfc.getSDLSurface(), "Under Construction! Press Back (Esc)...", lRect.x, lRect.w, lRect.y, false);
 
-    int linePos = 0;
+    //int linePos = 0;
 
     lRect.h = Font.getPixelTextHeight();
 
     lRect.x = 0;    lRect.y = 0;
 
-    const auto screenW = blitsfc.width() - (mRightBorderBmp.width()+mLeftBorderBmp.width());
-    const auto screenH = blitsfc.height() - (mUpperBorderBmp.height()+mBottomBorderBmp.height());
+    //const auto screenW = blitsfc.width() - (mRightBorderBmp.width()+mLeftBorderBmp.width());
+    //const auto screenH = blitsfc.height() - (mUpperBorderBmp.height()+mBottomBorderBmp.height());
 
-    const auto height = Font.getPixelTextHeight();
+    //const auto height = Font.getPixelTextHeight();
 
     // Bring borders to the screen
     renderBorders();

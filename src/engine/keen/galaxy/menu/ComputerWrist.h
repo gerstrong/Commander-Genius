@@ -17,6 +17,21 @@ struct CloseComputerWrist : CEvent
 
 
 /**
+ * @brief The OpenComputerWrist struct Open event for Computer Wrist Menu
+ */
+struct OpenComputerWrist : CEvent
+{
+    OpenComputerWrist() {}
+
+    OpenComputerWrist(const int section) :
+        mSection(section) {}
+
+    const int mSection = -1;
+};
+
+
+
+/**
  * @brief The ComputerWrist class   Interpreter class for the game text blocks found in the galaxy games
  */
 class ComputerWrist
@@ -27,6 +42,11 @@ public:
      * @brief ComputerWrist A default constructor
      */
     ComputerWrist(const int ep);
+
+    /**
+     * @brief ComputerWrist A constructor with start section
+     */
+    ComputerWrist(const int ep, const int section);
 
 
     // Processes the stuff that the menus have in common
