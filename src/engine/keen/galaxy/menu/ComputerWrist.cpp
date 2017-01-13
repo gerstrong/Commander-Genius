@@ -75,8 +75,29 @@ void ComputerWrist::ponderPage(const float deltaT)
 {
     if( gInput.getPressedCommand(IC_BACK) )
     {
-        mSectionPage = -1;
+        mSection = -1;
+        mSectionPage = 0;
     }
+
+
+    if( gInput.getPressedCommand(IC_RIGHT) )
+    {
+        if(mSectionPage < mNumPagesOfThisSection)
+        {
+            mSectionPage++;
+            mCurrentTextLines = gGameText.readPage(mSection, mSectionPage);
+        }
+    }
+
+    if( gInput.getPressedCommand(IC_LEFT) )
+    {
+        if(mSectionPage > 0)
+        {
+            mSectionPage--;
+            mCurrentTextLines = gGameText.readPage(mSection, mSectionPage);
+        }
+    }
+
 }
 
 void ComputerWrist::ponderMainMenu(const float deltaT)
@@ -96,8 +117,10 @@ void ComputerWrist::ponderMainMenu(const float deltaT)
 
     if( gInput.getPressedCommand(IC_JUMP) || gInput.getPressedCommand(IC_STATUS) )
     {
-        mSectionPage = mSelection;
-        mCurrentTextLines = gGameText.readPage(0, 0);
+        mSection = mSelection;
+        mSectionPage = 0;
+        mCurrentTextLines = gGameText.readPage(mSection, mSectionPage);
+        mNumPagesOfThisSection = gGameText.getNumPages(mSection);
     }
 
 
@@ -117,7 +140,7 @@ void ComputerWrist::ponderMainMenu(const float deltaT)
 void ComputerWrist::ponder(const float deltaT)
 {
     // Main Page?
-    if(mSectionPage == -1)
+    if(mSection == -1)
     {
         ponderMainMenu(deltaT);
         return;
@@ -368,7 +391,7 @@ void ComputerWrist::render()
 
 
     // Main Page?
-    if(mSectionPage == -1)
+    if(mSection == -1)
     {
         renderMainMenu();
         return;

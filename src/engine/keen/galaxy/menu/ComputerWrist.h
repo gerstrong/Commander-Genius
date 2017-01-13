@@ -97,8 +97,11 @@ private:
     int mSelection = 0; /** @brief mSelection    Currently selected Item in the Help Menu */
     int mNumOptions = 5;    /** Number of existing Help pages */
 
-    ///////// For showing the page ///////////////////////
-    int  mSectionPage = -1;
+    ///////// For showing the pages ///////////////////////
+    int  mSection = -1;
+    int  mSectionPage = 0;
+
+    int mNumPagesOfThisSection = 0;
 
     std::vector<std::string> mCurrentTextLines;
 
