@@ -1,3 +1,9 @@
+v1.9.8.2:
+----------
+- More Python support and fixes
+- Computer Wrist and Ending Story in Episode in early stages but starting to work
+
+
 v1.9.7:
 ----------
 - More python support
