@@ -5,4 +5,4 @@
 	dh $@
 
 override_dh_auto_configure:
-	dh_auto_configure -- -DCMAKE_BUILD_TYPE="Release" -DDOWNLOADER=ON
+	dh_auto_configure -- -DCMAKE_BUILD_TYPE="Release" -DUSE_PYTHON3=ON -DREFKEEN=ON -DDOWNLOADER=ON

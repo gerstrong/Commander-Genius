@@ -18,12 +18,14 @@ cp -r src ${DST}
 cp -r tools ${DST}
 cp -r vfsroot ${DST}
 cp -r share ${DST}
-cp *.* ${DST}
+cp * ${DST}
 
 # Build it the debian way
 cd ${DST}
 
+# Sources Packages signed for PPA
 debuild -S -k${KEY}
+
 
 debuild -us -uc
 #dput ppa:gerstrong/cgenius commandergenius_${VERSION}ppa1_source.changes
