@@ -130,12 +130,12 @@ public:
 		return m_Plane[2].getMapDataAt(x>>TILE_S,y>>TILE_S);
 	}
 
-	Uint16 getPlaneDataAt(int plane, unsigned int x, unsigned int y)
+    Uint16 getPlaneDataAt(int plane, unsigned int x, unsigned int y) const
 	{
 		return m_Plane[plane].getMapDataAt(x>>CSF, y>>CSF);
 	}
 
-    Uint16 getPlaneDataAt(int plane, Vector2D<Uint32> pos)
+    Uint16 getPlaneDataAt(int plane, Vector2D<Uint32> pos) const
 	{
 		return m_Plane[plane].getMapDataAt(pos.x>>CSF, pos.y>>CSF);
 	}

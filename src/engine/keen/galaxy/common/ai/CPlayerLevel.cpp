@@ -1521,114 +1521,125 @@ void CPlayerLevel::processPressUp()
 	  return;
 	}
 
-	
-	
-    /// Test if keen may enter a door
-	int flag_left = Tile[mp_Map->getPlaneDataAt(1, x_left, up_y)].behaviour;
-	
-	if ( !m_EnterDoorAttempt && 
-	  (flag_left == MISCFLAG_DOOR || 
-	   flag_left == MISCFLAG_KEYCARDDOOR) )
-	{
-	  //int var2 = mid_x * 256+96;
-	  
-	  tile_no = mp_Map->getPlaneDataAt(1, x_left+(1<<CSF), up_y);
-	  const int info = mp_Map->getPlaneDataAt(2, x_left+(1<<CSF), up_y);
-	  int flag_right = Tile[tile_no].behaviour;
-	  //if (flag2 == MISCFLAG_DOOR || flag2 == MISCFLAG_KEYCARDDOOR) var2-=256;
-	  //if (getXPosition() == var2) {
-	      
-	      
-	    if(flag_right == MISCFLAG_DOOR || 
-	       flag_right == MISCFLAG_KEYCARDDOOR) 
-	    {
-			if (flag == MISCFLAG_KEYCARDDOOR) 
-			{
-				if (m_Inventory.Item.m_keycards) 
-				{
-				    m_Inventory.Item.m_keycards = 0;
-				    playSound(SOUND_OPEN_EXIT_DOOR);
-				    //GetNewObj(0);
-				    //new_object->xpos = o->boxTXmid-2;
-				    //new_object->ypos = o->boxTY2-4;
-				    //new_object->active = 2;
-				    //new_object->clipping = 0;
-				    //new_object->type = 1;
-				    //new_object->action = ACTION_SECURITYDOOROPEN;
-				    //check_ground(new_object, ACTION_SECURITYDOOROPEN);
-				    //o->action = ACTION_KEENENTERDOOR0;
-				    //o->int16 = 0;
-                    spawnObj( new CSecurityDoor(getMapPtr(), 0, x_left-(1<<CSF), up_y-(3<<CSF) ) );
-				    
-				    mTarget = getPosition();
-				    mTarget.y -= (1<<CSF);
 
-				    setAction(A_KEEN_ENTER_DOOR);
-				    
-				    setActionSprite();
+    if ( !m_EnterDoorAttempt )
+    {
+
+        /// Test if keen may enter a door.
+        /// Note: They are usually larger
+        tile_no = mp_Map->getPlaneDataAt(1, x_left+(1<<CSF), up_y);
+        int flag_left = Tile[mp_Map->getPlaneDataAt(1, x_left, up_y)].behaviour;
+        int flag_right = Tile[tile_no].behaviour;
+
+        const int info = mp_Map->getPlaneDataAt(2, x_left+(1<<CSF), up_y);
+
+        bool checkDoor = true;
+
+        if ( flag_left == MISCFLAG_DOOR || flag_left == MISCFLAG_KEYCARDDOOR )
+        {
+            flag = flag_left;
+            checkDoor &= true;
+        }
+        else
+        {
+            checkDoor &= false;
+        }
+
+        if ( flag_right == MISCFLAG_DOOR || flag_right == MISCFLAG_KEYCARDDOOR )
+        {
+            flag = flag_right;
+            checkDoor &= true;
+        }
+        else
+        {
+            checkDoor &= false;
+        }
+
+        if(checkDoor)
+        {
+            if (flag == MISCFLAG_KEYCARDDOOR)
+            {
+                if (m_Inventory.Item.m_keycards)
+                {
+                    m_Inventory.Item.m_keycards = 0;
+                    playSound(SOUND_OPEN_EXIT_DOOR);
+                    //GetNewObj(0);
+                    //new_object->xpos = o->boxTXmid-2;
+                    //new_object->ypos = o->boxTY2-4;
+                    //new_object->active = 2;
+                    //new_object->clipping = 0;
+                    //new_object->type = 1;
+                    //new_object->action = ACTION_SECURITYDOOROPEN;
+                    //check_ground(new_object, ACTION_SECURITYDOOROPEN);
+                    //o->action = ACTION_KEENENTERDOOR0;
+                    //o->int16 = 0;
+                    spawnObj( new CSecurityDoor(getMapPtr(), 0, x_left-(1<<CSF), up_y-(3<<CSF) ) );
+
+                    mTarget = getPosition();
+                    mTarget.y -= (1<<CSF);
+
+                    setAction(A_KEEN_ENTER_DOOR);
+
+                    setActionSprite();
                     GsSprite &rSprite = gGraphics.getSprite(mSprVar,sprite);
 
-				    // Here the Player will be snapped to the center
+                    // Here the Player will be snapped to the center
 
-				    const int x_l = (x_left>>CSF);
-				    const int x_r = x_l+1;
-				    const int x_mid = ( ((x_l+x_r)<<CSF) - (rSprite.getWidth()<<STC)/2 )/2;
+                    const int x_l = (x_left>>CSF);
+                    const int x_r = x_l+1;
+                    const int x_mid = ( ((x_l+x_r)<<CSF) - (rSprite.getWidth()<<STC)/2 )/2;
 
-				    moveToHorizontal(x_mid);
-				    mExitDoorTimer = 110;
+                    moveToHorizontal(x_mid);
+                    mExitDoorTimer = 110;
 
-				    m_EnterDoorAttempt = true;
-				    return;
-				} 
-				else 
-				{	
-				    playSound(SOUND_CANT_DO);
-				    //SD_PlaySound(SOUND_NOOPENSECURITYDOOR);
-				    setAction(A_KEEN_STAND);
-				    m_EnterDoorAttempt = true;
-				    return;
-				}
-			} 
-			else 
-			{
-				mTarget = getPosition();
-								
+                    m_EnterDoorAttempt = true;
+                    return;
+                }
+                else
+                {
+                    playSound(SOUND_CANT_DO);
+                    //SD_PlaySound(SOUND_NOOPENSECURITYDOOR);
+                    setAction(A_KEEN_STAND);
+                    m_EnterDoorAttempt = true;
+                    return;
+                }
+            }
+            else
+            {
+                mTarget = getPosition();
+
                 // Illusion for going into the background does not apply on teleporters
-				if(info || tile_no != 0x401)
-				{
-				  mTarget.y -= (1<<CSF);
-				}
-				
+                if(info || tile_no != 0x401)
+                {
+                    mTarget.y -= (1<<CSF);
+                }
+
                 solid = false;
-				
-				
-				setAction(A_KEEN_ENTER_DOOR);
-				
-				setActionSprite();
+
+
+                setAction(A_KEEN_ENTER_DOOR);
+
+                setActionSprite();
                 GsSprite &rSprite = gGraphics.getSprite(mSprVar,sprite);
 
                 // Here the Player will be snapped to the center of the door
 
-				const int x_l = (x_left>>CSF);
-				const int x_r = x_l+1;
-				const int x_mid = ( ((x_l+x_r)<<CSF) - (rSprite.getWidth()<<STC)/2 )/2;
+                const int x_l = (x_left>>CSF);
+                const int x_r = x_l+1;
+                const int x_mid = ( ((x_l+x_r)<<CSF) - (rSprite.getWidth()<<STC)/2 )/2;
 
-				moveToHorizontal(x_mid);
+                moveToHorizontal(x_mid);
 
-				m_EnterDoorAttempt = true;				
-				
-				return;				
-				//PlayLoopTimer = 110;
-				//o->action = ACTION_KEENENTERDOOR1
-				//o->int16 = 0;
-				//if (*MAPSPOT(o->boxTXmid, o->boxTY1, INFOPLANE) == 0) sub_1FE94();
-			}
-		}// else {
-			//o->time = var2;
-			//o->action = ACTION_KEENENTERSLIDE;
-		//}
-		//EnterDoorAttempt = 1;
-	}
+                m_EnterDoorAttempt = true;
+
+                return;
+            }
+
+        }
+
+
+    }
+
 
 	// If the above did not happen, then just look up
 	setAction(A_KEEN_LOOKUP);

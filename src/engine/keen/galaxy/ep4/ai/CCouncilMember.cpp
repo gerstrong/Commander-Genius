@@ -13,6 +13,7 @@
 #include "sdl/audio/Audio.h"
 #include "sdl/audio/music/CMusic.h"
 #include "fileio/KeenFiles.h"
+#include "../../menu/ComputerWrist.h"
 #include <typeinfo>
 
 namespace galaxy {
@@ -61,7 +62,7 @@ void CCouncilMember::processWalking()
 	performGravityLow();
 
 	// Check if there is a cliff and move him back in case
-	performCliffStop(m_Action.h_anim_move<<1);
+    performCliffStop(m_Action.h_anim_move<<1);
 
 
 	if( m_timer < ELDER_MOVE_TIMER )
@@ -216,14 +217,17 @@ void CCouncilMember::getTouchedBy(CSpriteObject &theObject)
 
 
 		    
-		    const std::string end_text("End of Episode.\n"
+            /*const std::string end_text("End of Episode.\n"
 					       "The game will be restarted.\n"
 					       "You can replay it again or\n" 
 					       "try another Episode for more fun!\n"
 					       "The original epilog is under construction.");
 
             msgs.push_back( new CMessageBoxGalaxy(end_text, new EventEndGamePlay()) );
+            */
 
+            gEventManager.add(new OpenComputerWrist(4));
+            gEventManager.add(new EventEndGamePlay());
 		}
 		else
 		{
