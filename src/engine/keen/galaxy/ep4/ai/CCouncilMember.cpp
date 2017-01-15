@@ -166,8 +166,9 @@ void CCouncilMember::getTouchedBy(CSpriteObject &theObject)
 
 		std::string elder_text[2];
 
-        // TODO: Inject python3 code here for own dialogs
+        // Python3 own dialogs
         bool customDlgs = false;
+
         #if USE_PYTHON3
 
         auto pModule = gPython.loadModule( "messageMap", gKeenFiles.gameDir );

@@ -2871,6 +2871,8 @@ void CPlayerLevel::TurnGiantSwitchOn(const int x, const int y)
 
 int CPlayerLevel::checkSolidU(int x1, int x2, int y1, const bool push_mode )
 {
+    if(m_dying)  return 0;
+
 	if(hitdetectWithTilePropertyHor(1, x1, x2, y1-COLISION_RES, 1<<CSF))
 	    return 0;
     
@@ -2941,6 +2943,8 @@ int CPlayerLevel::checkSolidU(int x1, int x2, int y1, const bool push_mode )
 int CPlayerLevel::checkSolidD( int x1, int x2, int y2, const bool push_mode )
 {
 	std::vector<CTileProperties> &TileProperty = gpBehaviorEngine->getTileProperties();
+
+    if(m_dying)  return 0;
 
 	y2 += COLISION_RES;
 

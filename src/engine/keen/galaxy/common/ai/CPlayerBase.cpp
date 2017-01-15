@@ -635,7 +635,7 @@ void CPlayerBase::processDying()
 	{
 	    dead = true;
 	    honorPriority = true;	    
-	}
+	}        
 }
 
 

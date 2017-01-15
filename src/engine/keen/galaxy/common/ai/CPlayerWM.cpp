@@ -1016,10 +1016,10 @@ void CPlayerWM::startLevel(Uint16 object)
         default : shipLevel = 0;
     };
 
-    /*if(ep == 4)
+    if(ep == 4)
     {
         shipLevel = gKeenFiles.exeFile.getRawData()[0x60FD];
-    }*/
+    }
 
     const Uint16 flag_dest = level + 0xF000;
 

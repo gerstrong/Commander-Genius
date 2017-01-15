@@ -63,7 +63,7 @@ void CLindsey::getTouchedBy(CSpriteObject &theObject)
     {
         g_pSound->playSound(SOUND_GET_WETSUIT, PLAY_PAUSEALL);
 
-        std::string lindsey_text[3];
+        std::array< std::string, 3> lindsey_text;
 
         lindsey_text[0] = gpBehaviorEngine->getString(answermap[0]);
 
@@ -82,9 +82,39 @@ void CLindsey::getTouchedBy(CSpriteObject &theObject)
 
         std::vector<CMessageBoxGalaxy*> msgs;
 
-        msgs.push_back( new CMessageBoxBitmapGalaxy(lindsey_text[0], gGraphics.getBitmapFromId(108), LEFT) );
-        msgs.push_back( new CMessageBoxBitmapGalaxy(lindsey_text[1], gGraphics.getBitmapFromId(108), LEFT) );
-        msgs.push_back( new CMessageBoxBitmapGalaxy(lindsey_text[2], *gGraphics.getBitmapFromStr("KEENTHUMBSUP"), RIGHT) );
+
+        // Python3 own dialogs
+        bool customDlgs = false;
+
+        #if USE_PYTHON3
+
+        auto pModule = gPython.loadModule( "messageMap", gKeenFiles.gameDir );
+
+        if (pModule != nullptr)
+        {
+            customDlgs = true;
+
+            int level = mp_Map->getLevel();
+            bool ok = true;
+            ok &= loadStrFunction(pModule, "getLindseyDialog", lindsey_text[0], level);
+            ok &= loadStrFunction(pModule, "getLindseyAnswer", lindsey_text[1], level);
+        }
+
+        #endif
+
+
+
+        if(!customDlgs)
+        {
+            msgs.push_back( new CMessageBoxBitmapGalaxy(lindsey_text[0], gGraphics.getBitmapFromId(108), LEFT) );
+            msgs.push_back( new CMessageBoxBitmapGalaxy(lindsey_text[1], gGraphics.getBitmapFromId(108), LEFT) );
+            msgs.push_back( new CMessageBoxBitmapGalaxy(lindsey_text[2], *gGraphics.getBitmapFromStr("KEENTHUMBSUP"), RIGHT) );
+        }
+        else
+        {
+            msgs.push_back( new CMessageBoxBitmapGalaxy(lindsey_text[0], gGraphics.getBitmapFromId(108), LEFT) );
+            msgs.push_back( new CMessageBoxBitmapGalaxy(lindsey_text[1], *gGraphics.getBitmapFromStr("KEENTHUMBSUP"), RIGHT) );
+        }
 
         showMsgVec( msgs );
 

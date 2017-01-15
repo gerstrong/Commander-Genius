@@ -1,3 +1,13 @@
+v1.9.8.3:
+---------
+- Hackable Lindsey Messages through python3
+- Problems with doors and ship levels fixed
+
+v1.9.8.2:
+----------
+- More python support. Oracle Member Texts are fully hackable
+- More Computer Wrist and Page stuff to read within the game
+
 v1.9.7:
 ----------
 - More python support
