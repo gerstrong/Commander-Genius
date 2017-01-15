@@ -1,3 +1,11 @@
+commandergenius (1.9.8ppa1) xenial; urgency=low
+
+  *  More Python support and fixes
+  *  Computer Wrist and Ending Story in Episode in early stages but starting to work
+
+ -- Gerhard Stein <gerstrong@gmail.com>  Sat, 14 Jan 2017 15:27:54 +0100
+
+
 commandergenius (1.9.7ppa1) xenial; urgency=low
 
   *  Python3 support for AI (Keen 9 better supported with that)
