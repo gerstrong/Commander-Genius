@@ -34,7 +34,7 @@ const int INCHWORM_SPEED = 2;
 
 bool CInchWorm::isNearby(CSpriteObject &theObject)
 {
-	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
+    if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
 	{
 		mInchWormContacts = 0;
 		const int dx = player->getXMidPos() - getXMidPos();
@@ -48,9 +48,9 @@ bool CInchWorm::isNearby(CSpriteObject &theObject)
 			xDirection = RIGHT;
 		}
 	}
-	else if( CInchWorm *inchworm = dynamic_cast<CInchWorm*>(&theObject) )
+    else if( CInchWorm *inchworm = dynamic_cast<CInchWorm*>(&theObject) )
 	{
-		const int dx = inchworm->getXMidPos() - getXMidPos();
+        const int dx = inchworm->getXMidPos() - getXMidPos();
 		const int dy = inchworm->getYMidPos() - getYMidPos();
 
 		int absdx = (dx<0) ? -dx : dx;
@@ -65,8 +65,8 @@ bool CInchWorm::isNearby(CSpriteObject &theObject)
 		if(mInchWormContacts >= 11)
 		{
 			gEventManager.add( new EventSpawnFoot(  getXMidPos(), getYUpPos(), 67 ) );
-		}
-	}
+        }
+    }
 
 	return true;
 }
@@ -82,6 +82,8 @@ int CInchWorm::checkSolidD( int x1, int x2, int y2, const bool push_mode )
 
 void CInchWorm::process()
 {
+    mInchWormContacts = 0;
+
 	performCollisions();
 
 	performGravityLow();
@@ -89,19 +91,26 @@ void CInchWorm::process()
 	if(!processActionRoutine())
 		exists = false;
 
-	if( blockedl )
-		xDirection = RIGHT;
-	else if(blockedr)
-		xDirection = LEFT;
+    if( blockedl )  xDirection = RIGHT;
+    else if(blockedr)   xDirection = LEFT;
 
 	if(!getActionStatus(0))
 		return;
 
 	// Move normally in the direction
-	if( xDirection == RIGHT )
-		moveRight( (m_Action.h_anim_move>>3)*((rand()%2)+1) );
+
+    //const auto vel = (m_Action.h_anim_move>>3)*((rand()%2)+1);
+    const auto vel = 10;
+
+    if( xDirection == RIGHT )
+    {
+        moveRight( vel );
+    }
 	else
-		moveLeft( (m_Action.h_anim_move>>3)*((rand()%2)+1) );
+    {
+        moveLeft( vel );
+    }
+
 }
 
 
