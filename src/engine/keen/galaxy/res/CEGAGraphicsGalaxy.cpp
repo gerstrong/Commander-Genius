@@ -807,17 +807,20 @@ bool CEGAGraphicsGalaxy::readfonts()
 bool CEGAGraphicsGalaxy::readBitmaps()
 {
 	int ep = m_episode - 4;
+
+    const EpisodeInfoStruct &epInfo = EpisodeInfo[ep];
+
 	// ARM processor requires all ints and structs to be 4-byte aligned, so we're just using memcpy()
-	BitmapHeadStruct BmpHead[EpisodeInfo[ep].NumBitmaps];
-	memcpy( BmpHead, &(m_egagraph.at(0).data.at(0)), EpisodeInfo[ep].NumBitmaps*sizeof(BitmapHeadStruct));
+    BitmapHeadStruct BmpHead[epInfo.NumBitmaps];
+    memcpy( BmpHead, &(m_egagraph.at(0).data.at(0)), epInfo.NumBitmaps*sizeof(BitmapHeadStruct));
 	SDL_Color *Palette = gGraphics.Palette.m_Palette;
 
-	gGraphics.createEmptyBitmaps(EpisodeInfo[ep].NumBitmaps);
+    gGraphics.createEmptyBitmaps(epInfo.NumBitmaps);
 
 	SDL_Rect bmpRect;
 	bmpRect.x = bmpRect.y = 0;
 
-	for(size_t i = 0; i < EpisodeInfo[ep].NumBitmaps; i++)
+    for(size_t i = 0; i < epInfo.NumBitmaps; i++)
 	{
         GsBitmap &Bitmap = gGraphics.getBitmapFromId(i);
 		bmpRect.w = BmpHead[i].Width*8;
@@ -825,7 +828,7 @@ bool CEGAGraphicsGalaxy::readBitmaps()
 		Bitmap.createSurface(gVideoDriver.getScrollSurface()->flags, bmpRect, Palette);
 
 		extractPicture(Bitmap.getSDLSurface(),
-				m_egagraph.at(EpisodeInfo[ep].IndexBitmaps + i).data,
+                m_egagraph.at(epInfo.IndexBitmaps + i).data,
 				BmpHead[i].Width, BmpHead[i].Height);
 
 

@@ -66,8 +66,25 @@ public:
      */
     void loadinternalFont(const int size);
 
-	void setWidthToCharacter(Uint8 width, Uint16 letter);
-	
+    /**
+     * @brief setWidthToCharacter   This sets the width of the characters so the text is printed nicely.
+     * @param width                 This is by default 8 pixels in vorticons and it is normally only used
+     * @param letter
+     */
+    void setWidthToCharacter(const Uint8 width, const Uint16 letter)
+    {
+        mWidthtable[letter] = width;
+    }
+
+    /**
+     * @brief getWidthofChar    Getter for graphical width of the character
+     * @param letter            Letter of which the width is to be retruned
+     */
+    Uint16 getWidthofChar(const Uint16 letter) const
+    {
+        return mWidthtable[letter];
+    }
+
 	void tintColor( const Uint32 fgColor );
 
 	void setupColor( const Uint32 fgColor );

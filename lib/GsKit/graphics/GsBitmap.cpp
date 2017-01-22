@@ -279,12 +279,8 @@ bool GsBitmap::scaleTo(const GsRect<Uint16> &destRes)
 // Drawing Routines
 ///
 
-/**
- * \brief The function that blits the sprite to the main blitSurface
- * \param x		 		X-Coordinate, indicating the position on dst
- * \param y				Y-Coordinate, indicating the position on dst
- */
-void GsBitmap::draw(const int x, const int y)
+
+void GsBitmap::draw(const int x, const int y) const
 {
     _draw( x, y, gVideoDriver.getBlitSurface() );
 }

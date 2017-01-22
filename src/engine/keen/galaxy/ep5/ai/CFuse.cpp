@@ -39,25 +39,6 @@ mTimer(0)
 }
 
 
-void fixNewLine(std::string& str)
-{
-    // Check for empty string.
-    if(str.size() <= 2)
-    {
-       str.clear();
-       return;
-    }
-
-    for(size_t i=0 ; i<str.size()-1 ; i++)
-    {
-        if(str[i] == '\\' && str[i+1] == 'n')
-        {
-            str[i] = ' ';
-            str[i+1] = '\n';
-        }
-    }
-}
-
 
 bool CFuse::loadPythonScripts(const std::string &scriptBaseName)
 {

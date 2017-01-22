@@ -45,14 +45,6 @@ void CMapPlayGalaxy::setActive(bool value)
 }
 
 
-/**
- * return the name of the opened level
- */
-std::string CMapPlayGalaxy::getLevelName()
-{
-	return mMap.getLevelName();
-}
-
 
 
 void CMapPlayGalaxy::pumpEvent(const CEvent *evPtr)
@@ -187,7 +179,7 @@ void CMapPlayGalaxy::render()
 
     int pIt = 0;
     auto objVecSize = mObjectPtr.size();
-    for( uint ctr = 0 ; ctr < mObjectPtr.size() ; ctr++)
+    for( int ctr = 0 ; ctr < objVecSize  ; ctr++)
     {
         auto &obj = mObjectPtr[objVecSize-ctr-1];
 

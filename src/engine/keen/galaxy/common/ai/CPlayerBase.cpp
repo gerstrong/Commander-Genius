@@ -122,7 +122,7 @@ const int CPlayerBase::mEpisodeActionNumMap[3][NUM_KEEN_ACTIONS] =
 				41, // A_KEEN_POLE
 				42, // A_KEEN_POLE_CLIMB
 				45, // A_KEEN_POLE_SLIDE
-				49, // A_KEEN_POLE_SHOOT
+                49, // A_KEEN_POLE_SHOOT
 				51, // A_KEEN_POLE_SHOOTUP
 				53, // A_KEEN_POLE_SHOOTDOWN
 				55, // A_KEEN_RUN
@@ -174,6 +174,31 @@ mp_processState(NULL)
     mp_Map->calcVisibleArea();
     mp_Map->refreshVisibleArea();
 }
+
+
+
+
+
+// Processes the exiting of the player. Here all default cases are held
+void CPlayerBase::processExiting()
+{
+    Uint32 x = getXMidPos();
+    Uint32 y = getYMidPos();
+    if( (((mp_Map->m_width-2)<<CSF) < x || (2<<CSF) > x)  || ((2<<CSF) > y) )
+      // If player leaves boundary, except for the lower part, which death
+    {
+        g_pMusicPlayer->stop();
+
+        gEffectController.setupEffect(new CDimDark(8));
+
+        auto evExit = new EventExitLevel(mp_Map->getLevel(), true, false, mSprVar);
+        evExit->playSound = true;
+        gEventManager.add( evExit );
+        m_Inventory.Item.m_gem.clear();
+        mExitTouched = true;
+    }
+}
+
 
 
 void CPlayerBase::getAnotherLife(const int lc_x, const int lc_y, const bool display, const bool alt)
@@ -610,7 +635,7 @@ void CPlayerBase::processDying()
 	{
 	    dead = true;
 	    honorPriority = true;	    
-	}
+	}        
 }
 
 
@@ -690,7 +715,7 @@ bool CPlayerBase::checkMapBoundaryL(const int x1)
 
 bool CPlayerBase::checkMapBoundaryU(const int y1)
 {
-	if( y1 <= (2<<CSF) )
+    if( y1 <= (1<<CSF) )
 		return true;
 
 	return false;

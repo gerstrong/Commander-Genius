@@ -38,11 +38,18 @@ public:
 
 	void setTileMap( GsTilemap &Tilemap );
 
-    void setLevel( const Uint16 level );
-	Uint16 getLevel();
+    void setLevel( const Uint16 level ) {   m_Level = level;    }
+    Uint16 getLevel() const {    return m_Level;    }
 
-	void setLevelName( const std::string& name );
-	std::string getLevelName();
+    void setLevelName( const std::string& name )
+    {
+        m_LevelName = name;
+    }
+
+    std::string getLevelName() const
+    {
+        return m_LevelName;
+    }
 
 
     /**
@@ -123,12 +130,12 @@ public:
 		return m_Plane[2].getMapDataAt(x>>TILE_S,y>>TILE_S);
 	}
 
-	Uint16 getPlaneDataAt(int plane, unsigned int x, unsigned int y)
+    Uint16 getPlaneDataAt(int plane, unsigned int x, unsigned int y) const
 	{
 		return m_Plane[plane].getMapDataAt(x>>CSF, y>>CSF);
 	}
 
-    Uint16 getPlaneDataAt(int plane, Vector2D<Uint32> pos)
+    Uint16 getPlaneDataAt(int plane, Vector2D<Uint32> pos) const
 	{
 		return m_Plane[plane].getMapDataAt(pos.x>>CSF, pos.y>>CSF);
 	}

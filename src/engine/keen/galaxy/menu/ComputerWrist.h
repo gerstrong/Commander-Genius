@@ -17,6 +17,21 @@ struct CloseComputerWrist : CEvent
 
 
 /**
+ * @brief The OpenComputerWrist struct Open event for Computer Wrist Menu
+ */
+struct OpenComputerWrist : CEvent
+{
+    OpenComputerWrist() {}
+
+    OpenComputerWrist(const int section) :
+        mSection(section) {}
+
+    const int mSection = -1;
+};
+
+
+
+/**
  * @brief The ComputerWrist class   Interpreter class for the game text blocks found in the galaxy games
  */
 class ComputerWrist
@@ -26,7 +41,12 @@ public:
     /**
      * @brief ComputerWrist A default constructor
      */
-    ComputerWrist();
+    ComputerWrist(const int ep);
+
+    /**
+     * @brief ComputerWrist A constructor with start section
+     */
+    ComputerWrist(const int ep, const int section);
 
 
     // Processes the stuff that the menus have in common
@@ -45,6 +65,16 @@ public:
      */
     void ponderMainMenu(const float deltaT);
 
+
+    /**
+     * @brief parseText Detect, parser and render the text
+     */
+    void parseText();
+
+    /**
+     * @brief parseGraphics parse graphical elements and block the char matrix
+     */
+    void parseGraphics();
 
     /**
      * @brief ponder    Main Process for menus
@@ -87,10 +117,19 @@ private:
     int mSelection = 0; /** @brief mSelection    Currently selected Item in the Help Menu */
     int mNumOptions = 5;    /** Number of existing Help pages */
 
-    ///////// For showing the page ///////////////////////
-    int  mSectionPage = -1;
+    ///////// For showing the pages ///////////////////////
+    int  mSection = -1;
+    int  mSectionPage = 0;
+
+    int mNumPagesOfThisSection = 0;
 
     std::vector<std::string> mCurrentTextLines;
+
+    int mBmpIndex = 0;
+    int mFontId = 0;
+
+    std::vector<int> mMinPos;
+    std::vector<int> mMaxPos;
 };
 
 }

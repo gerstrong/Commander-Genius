@@ -23,6 +23,9 @@
 #include "engine/core/Cheat.h"
 #include "engine/core/CCamera.h"
 
+#include "graphics/effects/CDimDark.h"
+#include "sdl/audio/music/CMusic.h"
+
 
 struct EventEnterLevel : CEvent {
     uint16_t data;
@@ -197,7 +200,10 @@ public:
     bool touchedBottomOfMap();
 
 	void processDead();
-	virtual void processDying();        
+    virtual void processDying();
+
+    void processExiting();
+
 
     /**
      * @brief kill          Kill Keen.
@@ -222,6 +228,7 @@ public:
 	CCamera m_camera;
 	
 	bool m_dying;
+    bool mExitTouched;
 
 protected:
 

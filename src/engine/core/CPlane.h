@@ -24,7 +24,7 @@ public:
         return mDataVec.data();
     }
 
-    word getMapDataAt(Uint16 x, Uint16 y)
+    word getMapDataAt(Uint16 x, Uint16 y) const
     {
         if( x < m_width && y < m_height )
         {

@@ -11,7 +11,6 @@
 #include "../CGalaxySpriteObject.h"
 #include "../../ep5/ai/CSecurityDoor.h"
 
-#include "sdl/audio/music/CMusic.h"
 #include "sdl/audio/Audio.h"
 #include "graphics/effects/CColorMerge.h"
 
@@ -21,7 +20,6 @@
 
 #include "../dialog/CMessageBoxBitmapGalaxy.h"
 
-#include "graphics/effects/CDimDark.h"
 
 namespace galaxy {
 
@@ -1471,39 +1469,14 @@ void CPlayerLevel::processLookingUp()
 
 
 
-
-// Processes the exiting of the player. Here all default cases are held
-void CPlayerLevel::processExiting()
-{
-	Uint32 x = getXMidPos();
-	if( ((mp_Map->m_width-2)<<CSF) < x || (2<<CSF) > x )
-	{
-		g_pMusicPlayer->stop();
-
-        gEffectController.setupEffect(new CDimDark(8));
-
-        auto evExit = new EventExitLevel(mp_Map->getLevel(), true, false, mSprVar);
-        evExit->playSound = true;
-        gEventManager.add( evExit );
-        m_Inventory.Item.m_gem.clear();
-		mExitTouched = true;
-	}
-}
-
-
-
-
-
-
-
-
 #define		MISCFLAG_SWITCHPLATON 5
 #define 	MISCFLAG_SWITCHPLATOFF 6
 #define		MISCFLAG_SWITCHBRIDGE 15
 #define		MISCFLAG_DOOR		2
 #define		MISCFLAG_KEYCARDDOOR		32
 
-void CPlayerLevel::processPressUp() {
+void CPlayerLevel::processPressUp()
+{
 
 	std::vector<CTileProperties> &Tile = gpBehaviorEngine->getTileProperties(1);
 	const int x_left = getXLeftPos();
@@ -1516,154 +1489,157 @@ void CPlayerLevel::processPressUp() {
 
 	// pressing a switch
 	if (flag == MISCFLAG_SWITCHPLATON || 
-	  flag == MISCFLAG_SWITCHPLATOFF ||
-	  flag == MISCFLAG_SWITCHBRIDGE)
+        flag == MISCFLAG_SWITCHPLATOFF ||
+        flag == MISCFLAG_SWITCHBRIDGE)
 	{
 	  playSound( SOUND_GUN_CLICK );
-	  
-	  if(flag == MISCFLAG_SWITCHBRIDGE  || flag == 18 )
-	  {	    
-	      Uint32 newtile;
-	      if(Tile[tile_no+1].behaviour == MISCFLAG_SWITCHBRIDGE || 
-		 Tile[tile_no+1].behaviour == 18 )
-		newtile = tile_no+1;
-	      else
-		newtile = tile_no-1;
-	      
-	      mp_Map->setTile( x_mid>>CSF, up_y>>CSF, newtile, true, 1); // Wrong tiles, those are for the info plane
-	      PressBridgeSwitch(x_mid, up_y);	      
-	  }
-	  else
-	  {
-	    const Uint32 newtile = (flag == MISCFLAG_SWITCHPLATON) ? tile_no+1 : tile_no-1 ;
-	    mp_Map->setTile( x_mid>>CSF, up_y>>CSF, newtile, true, 1); // Wrong tiles, those are for the info plane
-	    PressPlatformSwitch(x_mid, up_y);
-	  }
+
+      auto newtile = tile_no-1;
+
+      if(flag == MISCFLAG_SWITCHBRIDGE  || flag == 18 )
+      {
+            PressBridgeSwitch(x_mid, up_y);
+      }
+      else
+      {
+            PressPlatformSwitch(x_mid, up_y);
+      }
+
+
+      if(Tile[tile_no+1].behaviour == flag ||
+         Tile[tile_no+1].behaviour == MISCFLAG_SWITCHPLATON ||
+         Tile[tile_no+1].behaviour == MISCFLAG_SWITCHPLATOFF )
+      {
+            newtile = tile_no+1;
+      }
+
+      mp_Map->setTile( x_mid>>CSF, up_y>>CSF, newtile, true, 1); // Wrong tiles, those are for the info plane
+
 	  
 	  setAction(A_KEEN_SLIDE);
 	  m_timer = 0;
 	  return;
 	}
-	/*		var2 = o->boxTXmid*256-64;
-	 *		if (o->xpos == var2) {
-	 *			setAction(ACTION_KEENENTERSLIDE);
-	 *			setAction(A_KEEN_SLIDE);
-	 } else {
-	   o->time = var2;
-	   //setAction(ACTION_KEENPRESSSWITCH);
-	   setAction(ACTION_KEENENTERSLIDE);
-	 }
-	 EnterDoorAttempt = 1;
-	 return 1;
-	 } */
-	
-	
-	// entering a door
-	int flag_left = Tile[mp_Map->getPlaneDataAt(1, x_left, up_y)].behaviour;
-	
-	if ( !m_EnterDoorAttempt && 
-	  (flag_left == MISCFLAG_DOOR || 
-	   flag_left == MISCFLAG_KEYCARDDOOR) )
-	{
-	  //int var2 = mid_x * 256+96;
-	  
-	  tile_no = mp_Map->getPlaneDataAt(1, x_left+(1<<CSF), up_y);
-	  const int info = mp_Map->getPlaneDataAt(2, x_left+(1<<CSF), up_y);
-	  int flag_right = Tile[tile_no].behaviour;
-	  //if (flag2 == MISCFLAG_DOOR || flag2 == MISCFLAG_KEYCARDDOOR) var2-=256;
-	  //if (getXPosition() == var2) {
-	      
-	      
-	    if(flag_right == MISCFLAG_DOOR || 
-	       flag_right == MISCFLAG_KEYCARDDOOR) 
-	    {
-			if (flag == MISCFLAG_KEYCARDDOOR) 
-			{
-				if (m_Inventory.Item.m_keycards) 
-				{
-				    m_Inventory.Item.m_keycards = 0;
-				    playSound(SOUND_OPEN_EXIT_DOOR);
-				    //GetNewObj(0);
-				    //new_object->xpos = o->boxTXmid-2;
-				    //new_object->ypos = o->boxTY2-4;
-				    //new_object->active = 2;
-				    //new_object->clipping = 0;
-				    //new_object->type = 1;
-				    //new_object->action = ACTION_SECURITYDOOROPEN;
-				    //check_ground(new_object, ACTION_SECURITYDOOROPEN);
-				    //o->action = ACTION_KEENENTERDOOR0;
-				    //o->int16 = 0;
-                    spawnObj( new CSecurityDoor(getMapPtr(), 0, x_left-(1<<CSF), up_y-(3<<CSF) ) );
-				    
-				    mTarget = getPosition();
-				    mTarget.y -= (1<<CSF);
 
-				    setAction(A_KEEN_ENTER_DOOR);
-				    
-				    setActionSprite();
+
+    if ( !m_EnterDoorAttempt )
+    {
+
+        /// Test if keen may enter a door.
+        /// Note: They are usually larger
+        tile_no = mp_Map->getPlaneDataAt(1, x_left+(1<<CSF), up_y);
+        int flag_left = Tile[mp_Map->getPlaneDataAt(1, x_left, up_y)].behaviour;
+        int flag_right = Tile[tile_no].behaviour;
+
+        const int info = mp_Map->getPlaneDataAt(2, x_left+(1<<CSF), up_y);
+
+        bool checkDoor = true;
+
+        if ( flag_left == MISCFLAG_DOOR || flag_left == MISCFLAG_KEYCARDDOOR )
+        {
+            flag = flag_left;
+            checkDoor &= true;
+        }
+        else
+        {
+            checkDoor &= false;
+        }
+
+        if ( flag_right == MISCFLAG_DOOR || flag_right == MISCFLAG_KEYCARDDOOR )
+        {
+            flag = flag_right;
+            checkDoor &= true;
+        }
+        else
+        {
+            checkDoor &= false;
+        }
+
+        if(checkDoor)
+        {
+            if (flag == MISCFLAG_KEYCARDDOOR)
+            {
+                if (m_Inventory.Item.m_keycards)
+                {
+                    m_Inventory.Item.m_keycards = 0;
+                    playSound(SOUND_OPEN_EXIT_DOOR);
+                    //GetNewObj(0);
+                    //new_object->xpos = o->boxTXmid-2;
+                    //new_object->ypos = o->boxTY2-4;
+                    //new_object->active = 2;
+                    //new_object->clipping = 0;
+                    //new_object->type = 1;
+                    //new_object->action = ACTION_SECURITYDOOROPEN;
+                    //check_ground(new_object, ACTION_SECURITYDOOROPEN);
+                    //o->action = ACTION_KEENENTERDOOR0;
+                    //o->int16 = 0;
+                    spawnObj( new CSecurityDoor(getMapPtr(), 0, x_left-(1<<CSF), up_y-(3<<CSF) ) );
+
+                    mTarget = getPosition();
+                    mTarget.y -= (1<<CSF);
+
+                    setAction(A_KEEN_ENTER_DOOR);
+
+                    setActionSprite();
                     GsSprite &rSprite = gGraphics.getSprite(mSprVar,sprite);
 
-				    // Here the Player will be snapped to the center
+                    // Here the Player will be snapped to the center
 
-				    const int x_l = (x_left>>CSF);
-				    const int x_r = x_l+1;
-				    const int x_mid = ( ((x_l+x_r)<<CSF) - (rSprite.getWidth()<<STC)/2 )/2;
+                    const int x_l = (x_left>>CSF);
+                    const int x_r = x_l+1;
+                    const int x_mid = ( ((x_l+x_r)<<CSF) - (rSprite.getWidth()<<STC)/2 )/2;
 
-				    moveToHorizontal(x_mid);
-				    mExitDoorTimer = 110;
+                    moveToHorizontal(x_mid);
+                    mExitDoorTimer = 110;
 
-				    m_EnterDoorAttempt = true;
-				    return;
-				} 
-				else 
-				{	
-				    playSound(SOUND_CANT_DO);
-				    //SD_PlaySound(SOUND_NOOPENSECURITYDOOR);
-				    setAction(A_KEEN_STAND);
-				    m_EnterDoorAttempt = true;
-				    return;
-				}
-			} 
-			else 
-			{
-				mTarget = getPosition();
-								
+                    m_EnterDoorAttempt = true;
+                    return;
+                }
+                else
+                {
+                    playSound(SOUND_CANT_DO);
+                    //SD_PlaySound(SOUND_NOOPENSECURITYDOOR);
+                    setAction(A_KEEN_STAND);
+                    m_EnterDoorAttempt = true;
+                    return;
+                }
+            }
+            else
+            {
+                mTarget = getPosition();
+
                 // Illusion for going into the background does not apply on teleporters
-				if(info || tile_no != 0x401)
-				{
-				  mTarget.y -= (1<<CSF);
-				}
-				
+                if(info || tile_no != 0x401)
+                {
+                    mTarget.y -= (1<<CSF);
+                }
+
                 solid = false;
-				
-				
-				setAction(A_KEEN_ENTER_DOOR);
-				
-				setActionSprite();
+
+
+                setAction(A_KEEN_ENTER_DOOR);
+
+                setActionSprite();
                 GsSprite &rSprite = gGraphics.getSprite(mSprVar,sprite);
 
                 // Here the Player will be snapped to the center of the door
 
-				const int x_l = (x_left>>CSF);
-				const int x_r = x_l+1;
-				const int x_mid = ( ((x_l+x_r)<<CSF) - (rSprite.getWidth()<<STC)/2 )/2;
+                const int x_l = (x_left>>CSF);
+                const int x_r = x_l+1;
+                const int x_mid = ( ((x_l+x_r)<<CSF) - (rSprite.getWidth()<<STC)/2 )/2;
 
-				moveToHorizontal(x_mid);
+                moveToHorizontal(x_mid);
 
-				m_EnterDoorAttempt = true;				
-				
-				return;				
-				//PlayLoopTimer = 110;
-				//o->action = ACTION_KEENENTERDOOR1
-				//o->int16 = 0;
-				//if (*MAPSPOT(o->boxTXmid, o->boxTY1, INFOPLANE) == 0) sub_1FE94();
-			}
-		}// else {
-			//o->time = var2;
-			//o->action = ACTION_KEENENTERSLIDE;
-		//}
-		//EnterDoorAttempt = 1;
-	}
+                m_EnterDoorAttempt = true;
+
+                return;
+            }
+
+        }
+
+
+    }
+
 
 	// If the above did not happen, then just look up
 	setAction(A_KEEN_LOOKUP);
@@ -1702,13 +1678,36 @@ void CPlayerLevel::processSliding()
 
 	if(mPlacingGem)
 	{
-		int lx = getXMidPos();
-		int ly = getYDownPos()-(3<<STC);
+        const auto lx1 = getXLeftPos();
+        const auto lx2 = getXRightPos();
+        const auto ly1 = getYUpPos();
+        const auto ly2 = getYDownPos();
 
-		const Uint32 tileno = mp_Map->getPlaneDataAt(1, lx, ly);
-		mp_Map->setTile(lx>>CSF, ly>>CSF, tileno+18, true, 1);
-		mPlacingGem = false;
-		playSound( SOUND_DOOR_OPEN );
+        std::vector<CTileProperties> &Tile = gpBehaviorEngine->getTileProperties(1);
+
+        bool foundHolder = false;
+
+        for(auto x = lx1 ; x<=lx2 ; x += (1<<CSF) )
+        {
+            for(auto y = ly1 ; y<=ly2 ; y += (1<<CSF) )
+            {
+                Uint32 tile_no = mp_Map->getPlaneDataAt(1, x, y);
+                int flag = Tile[tile_no].behaviour;
+
+                if(flag >= 7 && flag <= 10)
+                {
+                    mp_Map->setTile(x>>CSF, y>>CSF, tile_no+18, true, 1);
+                    mPlacingGem = false;
+                    playSound( SOUND_DOOR_OPEN );
+
+                    foundHolder = true;
+                    break;
+                }
+
+            }
+
+            if(foundHolder) break;
+        }
 	}
 
     makeHimStand();
@@ -2872,6 +2871,8 @@ void CPlayerLevel::TurnGiantSwitchOn(const int x, const int y)
 
 int CPlayerLevel::checkSolidU(int x1, int x2, int y1, const bool push_mode )
 {
+    if(m_dying)  return 0;
+
 	if(hitdetectWithTilePropertyHor(1, x1, x2, y1-COLISION_RES, 1<<CSF))
 	    return 0;
     
@@ -2942,6 +2943,8 @@ int CPlayerLevel::checkSolidU(int x1, int x2, int y1, const bool push_mode )
 int CPlayerLevel::checkSolidD( int x1, int x2, int y2, const bool push_mode )
 {
 	std::vector<CTileProperties> &TileProperty = gpBehaviorEngine->getTileProperties();
+
+    if(m_dying)  return 0;
 
 	y2 += COLISION_RES;
 

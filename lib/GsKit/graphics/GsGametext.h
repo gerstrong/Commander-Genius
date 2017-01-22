@@ -48,6 +48,14 @@ public:
      */
     std::vector<std::string> readPage(const int blockIdx, const int pageIdx);
 
+
+    /**
+     * @brief getNumPages   Get number of pages of the given section
+     * @param blockIdx
+     * @return
+     */
+    int getNumPages(const int blockIdx);
+
 private:
 
     std::vector<std::string>    mTextBlocks;

@@ -39,27 +39,6 @@ mShakeDir(0)
 // Initialization Routine //
 ////////////////////////////
 
-void CMap::setLevel( const Uint16 level )
-{
-    m_Level = level;
-}
-
-Uint16 CMap::getLevel()
-{
-    return m_Level;
-}
-
-void CMap::setLevelName( const std::string& name )
-{
-    m_LevelName = name;
-}
-
-std::string CMap::getLevelName()
-{
-    return m_LevelName;
-}
-
-
 /**
  * \brief	Create an empty data plane used for the map data
  * \param	blocksize	size in bytes of the datablock that has to be created
@@ -199,8 +178,6 @@ void CMap::setupAnimationTimer()
 
         for( size_t x=0 ; x<m_width ; x++)
         {
-            bool draw = false;
-
             const int offset = stride + x;
 
             timersBack[offset] = backTileProperties[*p_back_tile].animationTime;
@@ -379,7 +356,7 @@ bool CMap::findTile(unsigned int tile, int *xout, int *yout, int plane)
 	{
 		for(x=2;x<m_width-2;x++)
 		{
-			if (m_Plane[plane].getMapDataAt(x,y)==tile)
+            if (m_Plane[plane].getMapDataAt(x,y) == tile)
 			{
 				*xout = x;
 				*yout = y;
@@ -412,7 +389,10 @@ bool CMap::setTile(Uint16 x, Uint16 y, Uint16 t, bool redraw, Uint16 plane)
 		}
 		return true;
 	}
-	else return false;
+    else
+    {
+        return false;
+    }
 }
 
 // Called in level. This function does the same as setTile, but also draws directly to the scrollsurface

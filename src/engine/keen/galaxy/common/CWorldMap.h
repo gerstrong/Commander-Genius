@@ -25,12 +25,6 @@ public:
 
     void ponder(const float deltaT);
 
-    // Saves the inventory using the Savegamecontroller.
-    //void operator>>(boost::property_tree::ptree &invNode);
-
-    // This is for loading the game
-    //void operator<<(boost::property_tree::ptree &invNode);
-
 };
 
 }

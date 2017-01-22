@@ -60,7 +60,14 @@ bool COGGPlayer::loadMusicFromFile(const std::string& filename)
     m_filename = getResourceFilename(JoinPaths("music", filename), gKeenFiles.gameDir, false, false);
 
     if(m_filename.empty())
-       return false;
+    {
+        m_filename = filename;
+
+        if(m_filename.empty())
+        {
+            return false;
+        }
+    }
 
     return true;
 }

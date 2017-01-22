@@ -336,6 +336,9 @@ bool CCamera::outOfSight()
 	else if( playerDown < camY - cam_height )
 		outofsight |= true;
 
+
+    if(mp_Map)
+
 	return outofsight;
 }
 

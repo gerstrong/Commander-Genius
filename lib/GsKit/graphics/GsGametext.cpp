@@ -14,6 +14,29 @@ void GsGameText::dumpLines(const std::string &fname)
 }
 
 
+int GsGameText::getNumPages(const int blockIdx)
+{
+    int numPages = 0;
+
+    std::string block = mTextBlocks.at(blockIdx);
+
+    std::stringstream ss(block);
+
+    while(!ss.eof())
+    {
+        std::string line;
+
+        std::getline(ss, line);
+
+        if( line.find("^P") != std::string::npos )
+        {
+            numPages++;
+        }
+    }
+
+    return numPages;
+}
+
 std::vector<std::string> GsGameText::readPage(const int blockIdx, const int pageIdx)
 {
     std::string block = mTextBlocks.at(blockIdx);

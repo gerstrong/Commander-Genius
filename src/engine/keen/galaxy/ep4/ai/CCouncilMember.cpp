@@ -13,6 +13,7 @@
 #include "sdl/audio/Audio.h"
 #include "sdl/audio/music/CMusic.h"
 #include "fileio/KeenFiles.h"
+#include "../../menu/ComputerWrist.h"
 #include <typeinfo>
 
 namespace galaxy {
@@ -61,7 +62,7 @@ void CCouncilMember::processWalking()
 	performGravityLow();
 
 	// Check if there is a cliff and move him back in case
-	performCliffStop(m_Action.h_anim_move<<1);
+    performCliffStop(m_Action.h_anim_move<<1);
 
 
 	if( m_timer < ELDER_MOVE_TIMER )
@@ -161,21 +162,42 @@ void CCouncilMember::getTouchedBy(CSpriteObject &theObject)
 
 
 		g_pSound->playSound(SOUND_RESCUE_COUNCIL_MEMBER, PLAY_PAUSEALL);
-        gEventManager.add( new EventPlayTrack(5) );
+        gEventManager.add( new EventPlayTrack(5) );        
 
 		std::string elder_text[2];
 
-		if( mp_Map->getLevel() == 17 ) // Under water the text is a bit different
-		{
-			elder_text[0] = gpBehaviorEngine->getString("ELDERS_UNDERWATER_TEXT");
-			elder_text[1] = "";
-		}
-		else
-		{
-			elder_text[0] = gpBehaviorEngine->getString("ELDERS_TEXT");
-			elder_text[1] = gpBehaviorEngine->getString(answermap[rescuedelders]);
-		}
+        // Python3 own dialogs
+        bool customDlgs = false;
 
+        #if USE_PYTHON3
+
+        auto pModule = gPython.loadModule( "messageMap", gKeenFiles.gameDir );
+
+        if (pModule != nullptr)
+        {
+            customDlgs = true;
+
+            int level = mp_Map->getLevel();
+            bool ok = true;
+            ok &= loadStrFunction(pModule, "getMemberDialog", elder_text[0], level);
+            ok &= loadStrFunction(pModule, "getMemberAnswer", elder_text[1], level);
+        }
+
+        #endif
+
+        if(!customDlgs)
+        {
+            if( mp_Map->getLevel() == 17 ) // Under water the text is a bit different
+            {
+                elder_text[0] = gpBehaviorEngine->getString("ELDERS_UNDERWATER_TEXT");
+                elder_text[1] = "";
+            }
+            else
+            {
+                elder_text[0] = gpBehaviorEngine->getString("ELDERS_TEXT");
+                elder_text[1] = gpBehaviorEngine->getString(answermap[rescuedelders]);
+            }
+        }
 
         std::vector<CMessageBoxGalaxy*> msgs;
 
@@ -196,14 +218,17 @@ void CCouncilMember::getTouchedBy(CSpriteObject &theObject)
 
 
 		    
-		    const std::string end_text("End of Episode.\n"
+            /*const std::string end_text("End of Episode.\n"
 					       "The game will be restarted.\n"
 					       "You can replay it again or\n" 
 					       "try another Episode for more fun!\n"
 					       "The original epilog is under construction.");
 
             msgs.push_back( new CMessageBoxGalaxy(end_text, new EventEndGamePlay()) );
+            */
 
+            gEventManager.add(new OpenComputerWrist(4));
+            gEventManager.add(new EventEndGamePlay());
 		}
 		else
 		{
