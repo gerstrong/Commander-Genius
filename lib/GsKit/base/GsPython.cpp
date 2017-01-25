@@ -62,6 +62,11 @@ PyObject *GsPython::loadModule(const std::string &scriptBaseName, const std::str
     aiscriptPath += ".py";
     aiscriptPath = GetFullFileName(aiscriptPath);
 
+    if( !IsFileAvailable(aiscriptPath) )
+    {
+        return nullptr;
+    }
+
     // Ensure the path is correctly formatted even for Windows
     std::string aidir = ExtractDirectory(aiscriptPath);
 
@@ -77,8 +82,11 @@ PyObject *GsPython::loadModule(const std::string &scriptBaseName, const std::str
 
 #ifdef ANDROID
     // Because Android does not provide any search for the python assets we have to set them here!
-    setenv("PYTHONHOME", GetFirstSearchPath().c_str(), 1);
-    setenv("PYTHONPATH", GetFirstSearchPath().c_str(), 1);
+    std::string searchPath;
+    GetExactFileName(GetFirstSearchPath(), searchPath);
+    const std::string pythonHome = JoinPaths(searchPath,"python3.5");
+    setenv("PYTHONHOME", pythonHome.c_str(), 1);
+    setenv("PYTHONPATH", pythonHome.c_str(), 1);
 #endif
 
 
