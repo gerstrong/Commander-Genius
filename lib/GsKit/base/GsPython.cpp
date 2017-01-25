@@ -68,11 +68,22 @@ PyObject *GsPython::loadModule(const std::string &scriptBaseName, const std::str
     replaceSlashes(aidir);
     duplicateBackslashes(aidir);
 
-    Py_Initialize();
+    gLogging.ftextOut("calling Py_Initialize().\n", aiscriptPath.c_str() );
 
 #if PYTHON_VERBOSE
     gLogging.ftextOut("Loading \"%s\" python script file.\n", aiscriptPath.c_str() );
 #endif
+
+
+#ifdef ANDROID
+    // Because Android does not provide any search for the python assets we have to set them here!
+    setenv("PYTHONHOME", GetFirstSearchPath().c_str(), 1);
+    setenv("PYTHONPATH", GetFirstSearchPath().c_str(), 1);
+#endif
+
+
+    Py_Initialize();
+
 
     PyObject* programName = PyUnicode_FromString(scriptBaseName.c_str());
 
