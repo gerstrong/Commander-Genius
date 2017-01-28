@@ -358,7 +358,9 @@ int GameDownloader::handle()
             // Create subdirectory
             CreateRecDir( destDir );            
 
-            const int retVal = unzipFile(downloadGamePath.c_str(), destDir.c_str());
+            const std::string fullZipPath = JoinPaths(fullDownloadPath, gameFileName);
+
+            const int retVal = unzipFile(fullZipPath.c_str(), destDir.c_str());
 
             // If unpacking files fails, we should delete it.
             if(retVal != 0)

@@ -23,7 +23,7 @@ void GsProgressBar::processRender(const GsRect<float> &RectDispCoordFloat)
 
     float progressWidth = 0.0;
 
-    if(mProgress < 0.0 || mProgress > 100.0)
+    if(mProgress < 0.0 || mProgress > 1000.0)
     {
         progressWidth = displayRect.w;
     }
@@ -48,12 +48,19 @@ void GsProgressBar::processRender(const GsRect<float> &RectDispCoordFloat)
 
     std::stringstream ss;
 
-    if(mProgress < 0.0 || mProgress > 100.0)
+    if( mProgress < 0.0 )
     {
         bgColor = SDL_MapRGBA( pBlitsurface->format, 240, 255, 240, 255 );
-        progressColor = SDL_MapRGBA( pBlitsurface->format, 0, 255, 64, 255 );
+        progressColor = SDL_MapRGBA( pBlitsurface->format, 0, 255, 128, 255 );
 
         ss << "Fetching ...";
+    }
+    else if( mProgress > 1000.0 )
+    {
+        bgColor = SDL_MapRGBA( pBlitsurface->format, 240, 255, 240, 255 );
+        progressColor = SDL_MapRGBA( pBlitsurface->format, 0, 255, 128, 255 );
+
+        ss << "Completed!";
     }
     else
     {
