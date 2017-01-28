@@ -99,11 +99,13 @@ int downloadFile(const std::string &filename, int &progress,
     const std::string urlString = "http://downloads.sourceforge.net/project/clonekeenplus/Downloads/" + filename;
     const std::string outputPath = JoinPaths(downloadDirPath, filename);
 
-    CURL *curl;
-    CURLcode res = CURLE_OK;
-    struct myprogress prog;        
+    FILE *fp = OpenGameFile(outputPath, "wb");
 
-    curl = curl_easy_init();
+    CURLcode res = CURLE_OK;
+    struct myprogress prog;                    
+
+    CURL *curl = curl_easy_init();
+
     if(curl)
     {
       prog.lastruntime = 0;
@@ -118,33 +120,43 @@ int downloadFile(const std::string &filename, int &progress,
       /* pass the struct pointer into the progress function */
       curl_easy_setopt(curl, CURLOPT_PROGRESSDATA, &prog);
 
+      if(fp != nullptr)
+      {
+          curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_data);
+          curl_easy_setopt(curl, CURLOPT_WRITEDATA, fp);
 
-      FILE *fp = fopen(outputPath.c_str(),"wb");
+      #if LIBCURL_VERSION_NUM >= 0x072000
+          /* xferinfo was introduced in 7.32.0, no earlier libcurl versions will
+             compile as they won't have the symbols around.
 
-      curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_data);
-      curl_easy_setopt(curl, CURLOPT_WRITEDATA, fp);
+             If built with a newer libcurl, but running with an older libcurl:
+             curl_easy_setopt() will fail in run-time trying to set the new
+             callback, making the older callback get used.
 
-  #if LIBCURL_VERSION_NUM >= 0x072000
-      /* xferinfo was introduced in 7.32.0, no earlier libcurl versions will
-         compile as they won't have the symbols around.
+             New libcurls will prefer the new callback and instead use that one even
+             if both callbacks are set. */
 
-         If built with a newer libcurl, but running with an older libcurl:
-         curl_easy_setopt() will fail in run-time trying to set the new
-         callback, making the older callback get used.
+          curl_easy_setopt(curl, CURLOPT_XFERINFOFUNCTION, xferinfo);
+          /* pass the struct pointer into the xferinfo function, note that this is
+             an alias to CURLOPT_PROGRESSDATA */
+          curl_easy_setopt(curl, CURLOPT_XFERINFODATA, &prog);
+      #endif
 
-         New libcurls will prefer the new callback and instead use that one even
-         if both callbacks are set. */
+          curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 0L);
+          res = curl_easy_perform(curl);
 
-      curl_easy_setopt(curl, CURLOPT_XFERINFOFUNCTION, xferinfo);
-      /* pass the struct pointer into the xferinfo function, note that this is
-         an alias to CURLOPT_PROGRESSDATA */
-      curl_easy_setopt(curl, CURLOPT_XFERINFODATA, &prog);
-  #endif
+          gLogging.ftextOut( GREEN, "Finished downloading from \"%s\", destination: \"%s\"", urlString.c_str(), outputPath.c_str());
+      }
+      else
+      {
+          /* always cleanup */
+          curl_easy_cleanup(curl);
 
-      curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 0L);
-      res = curl_easy_perform(curl);
+          gLogging.ftextOut( GREEN, "Error creating path \"%s\" for writing", outputPath.c_str());
+          return 1;
+      }
 
-      gLogging.ftextOut( GREEN, "Finished downloading from \"%s\", destination: \"%s\"", urlString.c_str(), outputPath.c_str());
+
 
       // output any error to the central CG Log
       if(res != CURLE_OK)          
@@ -299,8 +311,6 @@ bool GameDownloader::checkForMissingGames( std::vector< std::string > &missingLi
 }
 
 
-#include <android/log.h>
-
 int GameDownloader::handle()
 {
     int res = 0;
@@ -311,12 +321,12 @@ int GameDownloader::handle()
     std::string searchPaths;
     GetExactFileName(GetFirstSearchPath(), searchPaths);
 
-    const auto downloadPath = JoinPaths(searchPaths, "downloads");
+    const auto fullDownloadPath = JoinPaths(searchPaths, "downloads");
     const auto gamesPath = JoinPaths(searchPaths, "games");
 
 
     // Create Download directory if it does not exist yet
-    CreateRecDir(downloadPath);
+    CreateRecDir(fullDownloadPath);
 
     // Go through the missing pieces
     const auto &gameFileName = mGameFileName;
@@ -325,14 +335,14 @@ int GameDownloader::handle()
         gDlfrom = mProgress = 0;
         gDlto = 900;
 
-        const auto downloadGamePath = JoinPaths(downloadPath, gameFileName);
+        const auto downloadGamePath = JoinPaths("downloads", gameFileName);
 
         if( !IsFileAvailable(downloadGamePath) )
         {
             gLogging.ftextOut( GREEN, "Downloading file \"%s\"", gameFileName.c_str());
 
             // TODO: We also must pass the gamepath and a downloads folder we all the file packages can be set.
-            res = downloadFile(gameFileName, mProgress, downloadPath);
+            res = downloadFile(gameFileName, mProgress, "downloads");
         }
 
         mProgress = gDlto;
@@ -347,13 +357,11 @@ int GameDownloader::handle()
 
             const int retVal = unzipFile(downloadGamePath.c_str(), destDir.c_str());
 
-            const std::string brokenPath = downloadGamePath + "_broken";
-
             // If unpacking files fails, we should delete it.
             if(retVal != 0)
             {
-                gLogging.ftextOut( RED, "Error: Trying to rename \"%s\" to \"%s\"", downloadGamePath.c_str(), brokenPath.c_str());
-                Rename(downloadGamePath, brokenPath);
+                gLogging.ftextOut( RED, "Error: Trying to remove the broken file \"%s\"", downloadGamePath.c_str());
+                remove( GetFullFileName(downloadGamePath).c_str() );
             }
             else
             {
