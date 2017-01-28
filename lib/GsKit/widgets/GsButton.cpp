@@ -101,6 +101,9 @@ void GsButton::drawNoStyle(SDL_Rect& lRect)
 
     if(mEnabled)
     {
+        auto lightRatio = mLightRatio;
+
+
         if( mPressed || mSelected )
         {
             // Try to highlight the border color a bit more by determing which one dominates the most
@@ -115,15 +118,21 @@ void GsButton::drawNoStyle(SDL_Rect& lRect)
             else if(blue > green && blue > red )
                 blue <<= 1;
 
+            if(mPressed)
+            {
+                red <<= 1;
+                blue >>= 1;
+                lightRatio <<= 1;
+            }
 
             // If want to highlight the button set the color
             borderColor = blitsfc.mapRGBA( red, green, blue, 0xFF);
 
-            lComp = 0xFF - (mLightRatio*(0xFF-0xCF)/255);
+            lComp = 0xFF - (lightRatio*(0xFF-0xCF)/255);
         }
         else
         {
-            lComp = 0xFF - (mLightRatio*(0xFF-0xDF)/255);
+            lComp = 0xFF - (lightRatio*(0xFF-0xDF)/255);
         }
     }
     else

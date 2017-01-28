@@ -146,17 +146,29 @@ void CGUITextSelectionList::processLogic()
 
             if( mousePos.x > x_innerbound_min && mousePos.y > y_innerbound_min)
             {
-                if(mHovered)
+                if(mHoverTriggers)
                 {
-                    mHoverSelection = newselection;
+                    if(mHovered)
+                    {
+                        mHoverSelection = newselection;
+                        mPressedSelection = newselection;
+                        mReleasedSelection = newselection;
+                    }
                 }
-                if(mPressed)
+                else
                 {
-                    mPressedSelection = newselection;
-                }
-                if(mReleased)
-                {
-                    mReleasedSelection = newselection;
+                    if(mHovered)
+                    {
+                        mHoverSelection = newselection;
+                    }
+                    if(mPressed)
+                    {
+                        mPressedSelection = newselection;
+                    }
+                    if(mReleased)
+                    {
+                        mReleasedSelection = newselection;
+                    }
                 }
             }
         }

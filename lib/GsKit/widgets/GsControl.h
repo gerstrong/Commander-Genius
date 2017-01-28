@@ -13,6 +13,7 @@
 #include <base/InputEvents.h>
 #include <base/utils/Geometry.h>
 
+
 class CGUIControl
 {
 public:
@@ -68,7 +69,9 @@ public:
 
 
     void setDown( const bool value )
-    {	mHovered = value;	}
+    {
+        mHovered = value;
+    }
 
 	virtual bool sendEvent(const InputCommands command) { return false; }
 
@@ -98,6 +101,14 @@ protected:
 
 	static int mTwirliconID;
 
+    /**
+     * @brief mHoverTriggers    This is for touch friendly devices were there is no device
+     */
+#ifdef ANDROID
+    static const bool mHoverTriggers = true;
+#else
+    static const bool mHoverTriggers = false;
+#endif
 };
 
 

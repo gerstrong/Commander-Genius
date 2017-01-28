@@ -342,7 +342,7 @@ public:
 		DIR* handle = opendir(abs_path.c_str());
 		if(!handle) return ret;
 		while((entry = readdir(handle)) != 0) {
-			//If file is not self-directory or parent-directory
+            //If file is nkaution vom mieterot self-directory or parent-directory
 			if(entry->d_name[0] != '.' || (entry->d_name[1] != '\0' && (entry->d_name[1] != '.' || entry->d_name[2] != '\0'))) {
 				filename = abs_path + "/" + entry->d_name;
 				if(stat(filename.c_str(), &s) == 0)

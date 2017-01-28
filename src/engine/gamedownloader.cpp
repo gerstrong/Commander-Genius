@@ -23,8 +23,8 @@ const curl_off_t  STOP_DOWNLOAD_AFTER_THIS_MANY_BYTES = 1024 * 1024 * 1024;
 #define MINIMAL_PROGRESS_FUNCTIONALITY_INTERVAL     3
 
 struct myprogress {
-  double lastruntime;
-  CURL *curl;
+    double lastruntime;
+    CURL *curl;
 };
 
 int *progressPtr;
@@ -38,33 +38,35 @@ static int xferinfo(void *p,
                     curl_off_t ultotal, curl_off_t ulnow)
 {
     if(*pCancelDownload)
+    {
         return 2;
+    }
 
-  struct myprogress *myp = (struct myprogress *)p;
-  CURL *curl = myp->curl;
-  double curtime = 0;
+    struct myprogress *myp = (struct myprogress *)p;
+    CURL *curl = myp->curl;
+    double curtime = 0;
 
-  curl_easy_getinfo(curl, CURLINFO_TOTAL_TIME, &curtime);
+    curl_easy_getinfo(curl, CURLINFO_TOTAL_TIME, &curtime);
 
-  /* under certain circumstances it may be desirable for certain functionality
+    /* under certain circumstances it may be desirable for certain functionality
      to only run every N seconds, in order to do this the transaction time can
      be used */
-  if((curtime - myp->lastruntime) >= MINIMAL_PROGRESS_FUNCTIONALITY_INTERVAL)
-  {
-    myp->lastruntime = curtime;
-  }
+    if((curtime - myp->lastruntime) >= MINIMAL_PROGRESS_FUNCTIONALITY_INTERVAL)
+    {
+        myp->lastruntime = curtime;
+    }
 
-  if(dltotal > 0)
-  {
-    const int newProgress = gDlfrom + ((gDlto-gDlfrom)*dlnow)/dltotal;
-    *progressPtr = newProgress;
-  }
+    if(dltotal > 0)
+    {
+        const int newProgress = gDlfrom + ((gDlto-gDlfrom)*dlnow)/dltotal;
+        *progressPtr = newProgress;
+    }
 
-  if(dlnow > STOP_DOWNLOAD_AFTER_THIS_MANY_BYTES)
-  {
-    return 1;
-  }
-  return 0;
+    if(dlnow > STOP_DOWNLOAD_AFTER_THIS_MANY_BYTES)
+    {
+        return 1;
+    }
+    return 0;
 }
 
 /* for libcurl older than 7.32.0 (CURLOPT_PROGRESSFUNCTION) */
@@ -142,9 +144,11 @@ int downloadFile(const std::string &filename, int &progress,
       curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 0L);
       res = curl_easy_perform(curl);
 
-      // TODO: Put into central log
+      // output any error to the central CG Log
       if(res != CURLE_OK)          
-        fprintf(stderr, "%s\n", curl_easy_strerror(res));
+      {
+          gLogging.textOut(RED,"%s<br>", curl_easy_strerror(res));
+      }
 
       /* always cleanup */
       curl_easy_cleanup(curl);
@@ -173,7 +177,7 @@ bool GameDownloader::loadCatalogue(const std::string &catalogueFile)
 
         for( auto &gameNode : pt.get_child("Catalogue") )
         {
-            // No comments ...
+            // Filter the comments ...
             if(gameNode.first == "<xmlcomment>")
                 continue;
 
@@ -331,15 +335,25 @@ int GameDownloader::handle()
 
         // TODO: Now the downloaded stuff must be extracted to the games directory
         // At this point the file should be available
-        const std::string destDir = JoinPaths(gamesPath,gameName);
+        const std::string destDir = JoinPaths(gamesPath, gameName);
         if( IsFileAvailable(downloadGamePath) )
         {
             // Create subdirectory
             CreateRecDir( destDir );            
 
-            unzipFile(downloadGamePath.c_str(), destDir.c_str());
+            const int retVal = unzipFile(downloadGamePath.c_str(), destDir.c_str());
 
-            // TODO: if unpacking files fails, we should delete it.
+            const std::string brokenPath = downloadGamePath + "_broken";
+
+            // If unpacking files fails, we should delete it.
+            if(retVal != 0)
+            {
+                Rename(downloadGamePath, brokenPath);
+            }
+            else
+            {
+                gLogging.ftextOut( GREEN, "File \"%s\" extracted succesfully.\n<br>", downloadGamePath.c_str() );
+            }
         }
         else
         {

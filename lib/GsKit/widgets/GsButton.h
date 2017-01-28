@@ -14,8 +14,6 @@
 #include <string>
 #include <memory>
 #include <map>
-//#include <engine/CEvent.h>
-//#include <common/CBehaviorEngine.h>
 #include <graphics/GsSurface.h>
 
 
