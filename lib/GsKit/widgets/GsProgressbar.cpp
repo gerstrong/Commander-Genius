@@ -21,9 +21,18 @@ void GsProgressBar::processRender(const GsRect<float> &RectDispCoordFloat)
 
     auto pBlitsurface = gVideoDriver.getBlitSurface();
 
-    const auto width = (float(mProgress)*displayRect.w)/1000.0f;
+    float progressWidth = 0.0;
 
-    progressRect.w = width;
+    if(mProgress < 0.0 || mProgress > 100.0)
+    {
+        progressWidth = displayRect.w;
+    }
+    else
+    {
+        progressWidth = (float(mProgress)*displayRect.w)/1000.0f;
+    }
+
+    progressRect.w = progressWidth;
 
 
     displayRect.transform(RectDispCoordFloat);
@@ -32,21 +41,34 @@ void GsProgressBar::processRender(const GsRect<float> &RectDispCoordFloat)
     SDL_Rect bgSDLRect = displayRect.SDLRect();
     SDL_Rect progressSDLRect = progressRect.SDLRect();
 
-    const auto bgColor = SDL_MapRGBA( pBlitsurface->format, 240, 255, 240, 255 );
-    const auto progressColor = SDL_MapRGBA( pBlitsurface->format, 0, 255, 0, 255 );
-
-    SDL_FillRect(pBlitsurface, &bgSDLRect, bgColor);
-    SDL_FillRect(pBlitsurface, &progressSDLRect, progressColor);
+    Uint32 bgColor = 0;
+    Uint32 progressColor = 0;
 
     auto progressFloat = float(mProgress)/10.0f;
 
     std::stringstream ss;
 
-    ss << "Now at ";
-    ss << std::setprecision(1);
-    ss << std::fixed;
-    ss << progressFloat;
-    ss << " %";
+    if(mProgress < 0.0 || mProgress > 100.0)
+    {
+        bgColor = SDL_MapRGBA( pBlitsurface->format, 240, 255, 240, 255 );
+        progressColor = SDL_MapRGBA( pBlitsurface->format, 0, 255, 64, 255 );
+
+        ss << "Fetching ...";
+    }
+    else
+    {
+        bgColor = SDL_MapRGBA( pBlitsurface->format, 240, 255, 240, 255 );
+        progressColor = SDL_MapRGBA( pBlitsurface->format, 0, 255, 0, 255 );
+
+        ss << "Now at ";
+        ss << std::setprecision(1);
+        ss << std::fixed;
+        ss << progressFloat;
+        ss << " %";
+    }
+
+    SDL_FillRect(pBlitsurface, &bgSDLRect, bgColor);
+    SDL_FillRect(pBlitsurface, &progressSDLRect, progressColor);
 
     // Now lets draw the text of the list control
     auto &Font = gGraphics.getFont(mFontID);

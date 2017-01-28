@@ -99,8 +99,6 @@ int downloadFile(const std::string &filename, int &progress,
     const std::string urlString = "http://downloads.sourceforge.net/project/clonekeenplus/Downloads/" + filename;
     const std::string outputPath = JoinPaths(downloadDirPath, filename);
 
-    FILE *fp = OpenGameFile(outputPath, "wb");
-
     CURLcode res = CURLE_OK;
     struct myprogress prog;                    
 
@@ -115,11 +113,16 @@ int downloadFile(const std::string &filename, int &progress,
 
       curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
 
+      curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
+
+      curl_easy_setopt(curl, CURLOPT_USE_SSL, CURLUSESSL_NONE);
+
       curl_easy_setopt(curl, CURLOPT_PROGRESSFUNCTION, older_progress);
 
       /* pass the struct pointer into the progress function */
       curl_easy_setopt(curl, CURLOPT_PROGRESSDATA, &prog);
 
+      FILE *fp = OpenGameFile(outputPath, "wb");
       if(fp != nullptr)
       {
           curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_data);
