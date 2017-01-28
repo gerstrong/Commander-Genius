@@ -213,7 +213,7 @@ bool CGameLauncher::setupMenu()
 
     // Set the first game selected and highlight the start button
     mpGameSelecList->setSelection(0);
-    mLauncherDialog.setSelection(5);
+    mLauncherDialog.setSelection(3);
 
 
     const std::string gameDir = gArgs.getValue("dir");
