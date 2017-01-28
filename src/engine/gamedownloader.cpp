@@ -144,6 +144,8 @@ int downloadFile(const std::string &filename, int &progress,
       curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 0L);
       res = curl_easy_perform(curl);
 
+      gLogging.ftextOut( GREEN, "Finished downloading from \"%s\", destination: \"%s\"", urlString.c_str(), outputPath.c_str());
+
       // output any error to the central CG Log
       if(res != CURLE_OK)          
       {
@@ -297,7 +299,7 @@ bool GameDownloader::checkForMissingGames( std::vector< std::string > &missingLi
 }
 
 
-
+#include <android/log.h>
 
 int GameDownloader::handle()
 {
@@ -327,6 +329,8 @@ int GameDownloader::handle()
 
         if( !IsFileAvailable(downloadGamePath) )
         {
+            gLogging.ftextOut( GREEN, "Downloading file \"%s\"", gameFileName.c_str());
+
             // TODO: We also must pass the gamepath and a downloads folder we all the file packages can be set.
             res = downloadFile(gameFileName, mProgress, downloadPath);
         }
@@ -348,6 +352,7 @@ int GameDownloader::handle()
             // If unpacking files fails, we should delete it.
             if(retVal != 0)
             {
+                gLogging.ftextOut( RED, "Error: Trying to rename \"%s\" to \"%s\"", downloadGamePath.c_str(), brokenPath.c_str());
                 Rename(downloadGamePath, brokenPath);
             }
             else
