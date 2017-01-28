@@ -184,7 +184,7 @@ bool CGameLauncher::setupMenu()
                 mLauncherDialog.addControl
                    (
                        new GsButton( "Start >", new GMStart() ),
-                                     GsRect<float>(0.65f, 0.865f, 0.25f, 0.07f)
+                                     GsRect<float>(0.60f, 0.865f, 0.25f, 0.07f)
                    )
                 ) ;
 

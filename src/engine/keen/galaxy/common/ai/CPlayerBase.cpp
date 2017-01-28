@@ -553,7 +553,7 @@ bool CPlayerBase::touchedBottomOfMap()
     const int ep = gpBehaviorEngine->getEpisode();
 
     // Some tests will force Keen to death!!
-    if(ep == 4)
+    /*if(ep == 4)
     {
         // In Keen 4 most of the levels have that block and normally can only be touched at some time
         // if in godmode. In that case, we force Keen to die.
@@ -566,7 +566,7 @@ bool CPlayerBase::touchedBottomOfMap()
             return true;
         }
     }
-    else if(ep == 6)
+    else*/ if(ep == 6)
     {
         // In Keen 6 some levels have that block and normally can only be touched in case
         // if in godmode. In that case, we force Keen to die.
