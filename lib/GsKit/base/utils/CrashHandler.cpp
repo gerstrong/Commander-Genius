@@ -338,6 +338,7 @@ public:
         /*ucontext_t* uc = (ucontext_t*) secret;
         pnt = (void*) uc->uc_mcontext.gregs[REG_EIP] ;*/
 /*#	else
+>>>>>>> 8d3e9d573a837c9089046b9938e0ef75f45686d0
 #		warning mcontext is not defined for this arch, thus a dumped backtrace could be crippled
 #	endif
 #else
