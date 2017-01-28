@@ -166,7 +166,7 @@ private:
 
     CGUITextSelectionList *mpGSSelList;
 
-    CGUITextSelectionList *mpSelList;
+    CGUITextSelectionList *mpGameSelecList;
     CGUITextSelectionList *mpPatchSelList;
     CGUITextSelectionList *mpDosExecSelList;
 

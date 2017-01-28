@@ -112,7 +112,7 @@ bool CGameLauncher::setupMenu()
     // Recursivly scan into DIR_GAMES subdir's for exe's
     gamesDetected |= scanSubDirectories(DIR_GAMES, DEPTH_MAX_GAMES, 200, 900);
 
-    mpSelList = new CGUITextSelectionList();
+    mpGameSelecList = new CGUITextSelectionList();
 
     // Save any custom labels
     putLabels();
@@ -130,7 +130,7 @@ bool CGameLauncher::setupMenu()
     unsigned int i=0;
     for( ; it != m_Entries.end() ; it++	)
     {
-    	mpSelList->addText(it->name);
+        mpGameSelecList->addText(it->name);
 
         // And try to add a preview bitmap
         std::string fullfilename = "preview.bmp";
@@ -147,8 +147,8 @@ bool CGameLauncher::setupMenu()
         i++;
     }
 
-    mpSelList->setConfirmButtonEvent(new GMStart());
-    mpSelList->setBackButtonEvent(new GMQuit());
+    mpGameSelecList->setConfirmButtonEvent(new GMStart());
+    mpGameSelecList->setBackButtonEvent(new GMQuit());
 
     mLauncherDialog.addControl(new CGUIText("Pick a Game"), GsRect<float>(0.0f, 0.0f, 1.0f, 0.05f));
     mLauncherDialog.addControl(new GsButton( "x", new GMQuit(),
@@ -156,7 +156,7 @@ bool CGameLauncher::setupMenu()
                                              1.0f,
                                              0.75f,
                                              0.75f ), GsRect<float>(0.0f, 0.0f, 0.07f, 0.07f) );
-    mLauncherDialog.addControl(mpSelList, GsRect<float>(0.01f, 0.07f, 0.49f, 0.79f));
+    mLauncherDialog.addControl(mpGameSelecList, GsRect<float>(0.01f, 0.07f, 0.49f, 0.79f));
 
 
 #ifdef DBFUSION
@@ -211,7 +211,10 @@ bool CGameLauncher::setupMenu()
     if(!gamesDetected)
         return false;
 
-    mLauncherDialog.setSelection(4);
+    // Set the first game selected and highlight the start button
+    mpGameSelecList->setSelection(0);
+    mLauncherDialog.setSelection(5);
+
 
     const std::string gameDir = gArgs.getValue("dir");
     if(!gameDir.empty())
@@ -646,7 +649,7 @@ void CGameLauncher::pumpEvent(const CEvent *evPtr)
 
     if( dynamic_cast<const GMStart*>(evPtr) )
     {
-        setChosenGame(mpSelList->getSelection());
+        setChosenGame(mpGameSelecList->getSelection());
 
         if(m_chosenGame >= 0)
         {
@@ -726,9 +729,9 @@ void CGameLauncher::ponderGameSelDialog(const float deltaT)
     }
 
     // Check if the selection changed. Update the right data panel
-    if(mSelection != mpSelList->getSelection())
+    if(mSelection != mpGameSelecList->getSelection())
     {
-        mSelection = mpSelList->getSelection();
+        mSelection = mpGameSelecList->getSelection();
         const std::string nameText = "Episode " + itoa(m_Entries[mSelection].episode);
         mpEpisodeText->setText(nameText);
         float fVer = m_Entries[mSelection].version;
@@ -862,7 +865,7 @@ void CGameLauncher::ponder(const float deltaT)
     // Button should disabled unless a game was selected
     if(mpStartButton)
     {
-        if(mpSelList->getSelection() >= 0)
+        if(mpGameSelecList->getSelection() >= 0)
         {
             mpStartButton->enable(true);
         }

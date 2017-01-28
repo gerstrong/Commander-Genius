@@ -40,8 +40,27 @@ public:
         return mReleasedSelection;
     }
 
+    /**
+     * @brief setSelection  selects item given by index
+     * @param sel   index
+     */
     void setSelection(const int sel)
     {
+        const int last = static_cast<int>(mItemList.size());
+
+        if(sel < 0)
+        {
+            mReleasedSelection = 0;
+            mSelected = false;
+            return;
+        }
+        if(sel >= last)
+        {
+            mReleasedSelection = last-1;
+            mSelected = false;
+            return;
+        }
+
         mReleasedSelection = sel;
     }
 
@@ -63,7 +82,7 @@ private:
 	std::shared_ptr<CEvent> mConfirmEvent;
 	std::shared_ptr<CEvent> mBackEvent;
 
-    const int mBorderHeight = 32;
+    const int mBorderHeight = 24;
 
 };
 

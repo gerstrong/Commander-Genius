@@ -24,7 +24,7 @@ void CGameLauncher::verifyGameStore()
 
     if(!missingList.empty())
     {
-        GsButton *downloadBtn = new GsButton( "Game Center", new GMDownloadDlgOpen() );
+        GsButton *downloadBtn = new GsButton( "+ More", new GMDownloadDlgOpen() );
         mLauncherDialog.addControl( downloadBtn, GsRect<float>(0.125f, 0.865f, 0.25f, 0.07f) );
     }
 

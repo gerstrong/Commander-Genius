@@ -147,11 +147,17 @@ void CGUITextSelectionList::processLogic()
             if( mousePos.x > x_innerbound_min && mousePos.y > y_innerbound_min)
             {
                 if(mHovered)
+                {
                     mHoverSelection = newselection;
+                }
                 if(mPressed)
+                {
                     mPressedSelection = newselection;
+                }
                 if(mReleased)
+                {
                     mReleasedSelection = newselection;
+                }
             }
         }
     }
@@ -214,7 +220,7 @@ void CGUITextSelectionList::processRender(const GsRect<float> &RectDispCoordFloa
         if( mPressedSelection == curLinePos )
         {
             rect.y = ypos+(line*rect.h);
-            blitsfc.fillRGBA(rect, 0xA5, 0xA5, 0xF1, 0xFF);
+            blitsfc.fillRGBA(rect, 0x95, 0xA5, 0xF1, 0xFF);
         }
         else if( mReleasedSelection == curLinePos )
 		{
@@ -222,11 +228,11 @@ void CGUITextSelectionList::processRender(const GsRect<float> &RectDispCoordFloa
 
             if(mSelected)
             {
-                blitsfc.fillRGBA(rect, 0xB5, 0xB5, 0xF1, 0xFF);
+                blitsfc.fillRGBA(rect, 0xC5, 0xC5, 0xF1, 0xFF);
             }
             else
             {
-                blitsfc.fillRGBA(rect, 0xC5, 0xC5, 0xC5, 0xFF);
+                blitsfc.fillRGBA(rect, 0xB5, 0xB5, 0xF1, 0xFF);
             }
 		}
         else if( mHoverSelection == curLinePos )
