@@ -1829,7 +1829,7 @@ void CPlayerLevel::processEnterDoor()
     Vector2D<int> new_pos(xpos, ypos);
 	moveToForce(new_pos);
 	new_pos.x += ((m_BBox.x2-m_BBox.x1)/2);
-	new_pos.y += ((m_BBox.y2-m_BBox.y1)/2);
+    new_pos.y += ((m_BBox.y2/*-m_BBox.y1*/)/2);
 
     mp_Map->mGamePlayPos = new_pos;
 	m_camera.setPosition(new_pos);    

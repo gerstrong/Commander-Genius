@@ -105,13 +105,14 @@ void CStunnable::draw()
       m_animation_timer++;
       
       
-      GsSprite &StarSprite = gGraphics.getSprite(mSprVar,starSprite);
+      GsSprite &StarSprite = gGraphics.getSprite(mSprVar, starSprite);
       
       int yoffset = (StarSprite.getHeight()<<STC);
       int xoffset = (StarSprite.getWidth()<<STC);
       
       scrx = ((getXMidPos()-xoffset/2)>>STC)-mp_Map->m_scrollx;
-      scry = ((m_Pos.y-yoffset)>>STC)-mp_Map->m_scrolly;
+      //scry = ((m_Pos.y-yoffset)>>STC)-mp_Map->m_scrolly;
+      scry = ((m_Pos.y-m_BBox.Height()/2-yoffset)>>STC)-mp_Map->m_scrolly;
       
       SDL_Rect gameres = gVideoDriver.getGameResolution().SDLRect();
       

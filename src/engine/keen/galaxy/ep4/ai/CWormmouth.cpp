@@ -201,11 +201,16 @@ int CWormmouth::checkSolidD( int x1, int x2, int y2, const bool push_mode )
 
 void CWormmouth::process()
 {
-	if( getActionNumber(A_WORMMOUTH_MOVE) || getActionNumber(A_WORMMOUTH_STUNNED) )
+    if( getActionNumber(A_WORMMOUTH_MOVE) )
 	{
 	    performCollisions();
 	    performGravityLow();
 	}
+
+    if(getActionNumber(A_WORMMOUTH_STUNNED))
+    {
+        performGravityHigh();
+    }
 
 
 	(this->*mp_processState)();
