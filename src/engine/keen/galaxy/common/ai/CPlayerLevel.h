@@ -328,7 +328,6 @@ private:
 
 	KeenState state;
 
-	bool m_ptogglingswitch;
 	int m_jumpheight;
 
 	bool m_pogotoggle;

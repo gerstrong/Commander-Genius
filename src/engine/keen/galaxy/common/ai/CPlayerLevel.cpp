@@ -97,7 +97,6 @@ mObjectPtrs(ObjectPtrs)
 
 	m_fire_recharge_time = 0;
 	m_EnterDoorAttempt = false;
-	m_ptogglingswitch = false;
 
 	m_jumpheight = 0;
 	dontdraw = false;
@@ -1883,8 +1882,12 @@ void CPlayerLevel::toggleBridge(const Uint32 newX, const Uint32 newY)
     for(int t = start_tile ;  ; x++ )
     {
         // Now decide whether the tile is a piece or borders of the bridge
+        t = mp_Map->getPlaneDataAt(1, x<<CSF, newY<<CSF);
 
         if(t == 0)
+            break;
+
+        if(t == end_tile)
             break;
 
         // We have two rows
@@ -1896,11 +1899,15 @@ void CPlayerLevel::toggleBridge(const Uint32 newX, const Uint32 newY)
             mp_Map->setTile(x, y, NewTile, true, 1);
         }
 
+    }
 
-        if(t == end_tile)
-        {
-            break;
-        }
+    // Last column
+    for(int y = newY ; y<int(newY+2) ; y++)
+    {
+        int t = mp_Map->getPlaneDataAt(1, x<<CSF, y<<CSF);
+        const auto NewTile = t+tileProp[t].nextTile;
+
+        mp_Map->setTile(x, y, NewTile, true, 1);
     }
 
 }
