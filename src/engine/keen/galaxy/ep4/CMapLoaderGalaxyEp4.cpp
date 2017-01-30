@@ -119,7 +119,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 	case 0x01:
     case 0x02:
 
-        if(mInventoryVec.size() > mNumLoadedPlayers)
+        if(mInventoryVec.size() > uint(mNumLoadedPlayers))
         {
             auto &inventory = mInventoryVec[mNumLoadedPlayers];
             if(inventory.Item.m_lifes >= 0)
@@ -135,7 +135,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 
 	case 0x03:
 
-        if(mInventoryVec.size() > mNumLoadedPlayers)
+        if(mInventoryVec.size() > uint(mNumLoadedPlayers))
         {
             auto &inventory = mInventoryVec[mNumLoadedPlayers];
 
@@ -187,8 +187,8 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 		break;
 		
 	case 0x0B:
-		// This is an inchworm.
-		p_newfoe = new galaxy::CInchWorm(&Map, foe, x, y);
+        // This is one inchworm.
+        p_newfoe = new galaxy::CInchWorm(&Map, foe, x, y);
 		break;
 
 	case 0x0C:
@@ -279,7 +279,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 
 	case 0x22:
 
-        if(mInventoryVec.size() > mNumLoadedPlayers)
+        if(mInventoryVec.size() > uint(mNumLoadedPlayers) )
         {
             // Place a gun in case Keen is missing bullets
             for( auto &inventory : mInventoryVec)
@@ -307,7 +307,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 
 	case 0x2A:
 
-        if(mInventoryVec.size() > mNumLoadedPlayers)
+        if(mInventoryVec.size() > uint(mNumLoadedPlayers) )
         {
             auto &inventory = mInventoryVec[mNumLoadedPlayers];
 

@@ -221,8 +221,10 @@ bool CSpriteObject::moveSlopedTileDown( int x, int y, const int xspeed )
 
 		onslope = true;
 	}
-	else
-		onslope = false;
+    else
+    {
+        onslope = false;
+    }
 
 	return onslope;
 }
@@ -262,7 +264,9 @@ void CSpriteObject::moveSlopedTileUp( int x, int y, const int xspeed )
 		onslope = true;
 	}
 	else
+    {
 		onslope = false;
+    }
 }
 
 // returns nonzero if object1 overlaps object2

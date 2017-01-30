@@ -64,7 +64,7 @@ bool CInchWorm::isNearby(CSpriteObject &theObject)
 
 		if(mInchWormContacts >= 11)
 		{
-			gEventManager.add( new EventSpawnFoot(  getXMidPos(), getYUpPos(), 67 ) );
+            gEventManager.add( new EventSpawnFoot(  getXMidPos(), getYUpPos(), 67 ) );
         }
     }
 
@@ -91,8 +91,14 @@ void CInchWorm::process()
 	if(!processActionRoutine())
 		exists = false;
 
-    if( blockedl )  xDirection = RIGHT;
-    else if(blockedr)   xDirection = LEFT;
+    if( blockedl && !onslope)
+    {
+        xDirection = RIGHT;
+    }
+    else if(blockedr && !onslope)
+    {
+        xDirection = LEFT;
+    }
 
 	if(!getActionStatus(0))
 		return;
