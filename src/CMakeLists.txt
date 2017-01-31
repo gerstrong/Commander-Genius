@@ -200,7 +200,6 @@ ENDIF (TOUCHCONTROLS)
 
 MESSAGE( STATUS "DOSBox-Fusion: ${DBFUSION}" )
 MESSAGE( STATUS "Internal Downloader: ${DOWNLOADER}" )
-MESSAGE( STATUS "Refkeen for Keen Dreams: ${REFKEEN}" )
 
 if(DBFUSION)
 	if(WIN32)

@@ -1,6 +1,5 @@
 
 OPTION(DBFUSION "Dosbox Fusion" No)
-OPTION(REFKEEN "RefKeen for Keen Dreams" YES)
 
 include_directories(${SDL_INCLUDE_DIR})
 
@@ -18,10 +17,7 @@ if(DBFUSION)
     add_definitions(-DDBFUSION)
 endif()
 
-if(REFKEEN)    
-    add_subdirectory(refkeen)
-    add_definitions(-DREFKEEN=1)
-endif()
+add_subdirectory(refkeen)
 
 set(EngineSources CGameLauncher.cpp CGameLauncher.h
                    downloadgui.cpp
