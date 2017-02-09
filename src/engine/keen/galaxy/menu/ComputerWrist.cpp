@@ -80,7 +80,7 @@ ComputerWrist::ComputerWrist(const int ep) :
     for(int i=0 ; i<numLines ; i++)
     {
         mMinPos.push_back(mLeftBorderBmp.width());
-        mMaxPos.push_back(blitsfc.width() - (mLeftBorderBmp.width() + mRightBorderBmp.width()) );
+        mMaxPos.push_back(blitsfc.width() - (mLeftBorderBmp.width() + mRightBorderBmp.width() + 11) );
     }
 
 }
@@ -182,6 +182,18 @@ void ComputerWrist::parseText()
 
     Vector2D<int> cursorPos(mMinPos[0], 0);
 
+
+    static std::map<char, Uint32> wristColorMap =
+    {
+        {'b', 0x0000FF},
+        {'e', 0xFFFF00},
+        {'F', 0xFFFFFF},
+
+    };
+
+
+    Uint32 color = 0xFFFF00;
+
     // Get the text that is actually used
     for(const auto &line : mCurrentTextLines)
     {
@@ -189,7 +201,7 @@ void ComputerWrist::parseText()
 
         if(skipmode && line[0] == '^')
         {
-            Font.setupColor(0xFFFF00);
+            Font.setupColor(color);
             skipmode = false;
         }
 
@@ -210,6 +222,9 @@ void ComputerWrist::parseText()
             else if(line[1] == 'c')
             {
                 // TODO: Color detection
+                const char colorCode = line[2];
+                color = wristColorMap[colorCode];
+                Font.setupColor(color);
                 subPos = 3;
             }
             else
@@ -305,7 +320,7 @@ void ComputerWrist::parseGraphics()
 
                             if(curMinPos < j+spaceWidth)
                             {
-                                mMinPos[i/fontHeight] = j+spaceWidth;
+                                mMinPos[i/fontHeight] = j+spaceWidth+8;
                             }
                         }
                     }

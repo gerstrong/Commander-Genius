@@ -6,7 +6,6 @@
  */
 
 #include "GsFont.h"
-//#include "GsPalette.h"
 #include <base/utils/FindFile.h>
 #include <base/video/CVideoDriver.h>
 #include "GsFont.xpm"
