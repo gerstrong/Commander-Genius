@@ -186,7 +186,7 @@ void ComputerWrist::parseText()
     static std::map<char, Uint32> wristColorMap =
     {
         {'b', 0x0000FF},
-        {'e', 0xFFFF00},
+        {'e', 0xFCFC54},
         {'F', 0xFFFFFF},
 
     };

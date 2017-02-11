@@ -424,6 +424,15 @@ void CPassiveGalaxy::renderStarWars()
     SDL_Rect lRect;
 
     lRect.h = sfc->h;    lRect.w = sfc->w;
+    lRect.x = 0;        lRect.y = 20;
+
+
+    // Draw some text.
+    GsFont &startwarsFont = gGraphics.getFont(2);
+
+    //startwarsFont.drawFontCentered( sfc, "ABCDEFGabcdefg", lRect.x, lRect.w, lRect.y, false);
+
+    lRect.h = sfc->h;    lRect.w = sfc->w;
     lRect.x = 0;        lRect.y = lRect.h-20;
 
     // Draw some text.
@@ -444,7 +453,7 @@ void CPassiveGalaxy::renderStarWars()
     }
 
 
-    Font.drawFontCentered( sfc, "Press any to start...", lRect.x, lRect.w, lRect.y, false);
+    Font.drawFontCentered( sfc, "Press any to start...", lRect.x, lRect.w, lRect.y, false);                    
 
     mStarWarsTimer--;
 

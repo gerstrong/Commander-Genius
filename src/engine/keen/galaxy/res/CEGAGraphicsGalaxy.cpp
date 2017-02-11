@@ -743,7 +743,6 @@ bool CEGAGraphicsGalaxy::readfonts()
 			int maxwidth=0;
 			for(Uint16 j = 0; j < 256; j++)
 			{
-				Font.setWidthToCharacter(FontHead->Width[j],j);
 				if(FontHead->Width[j] > maxwidth)
 					maxwidth = FontHead->Width[j];
 			}
@@ -751,7 +750,6 @@ bool CEGAGraphicsGalaxy::readfonts()
 			Font.CreateSurface(Palette, gVideoDriver.getScrollSurface()->flags, maxwidth*16, FontHead->Height * 16);
 
             auto sfc = Font.SDLSurfacePtr();
-            //SDL_Surface* sfc = srcsfc.get();
 
 			SDL_FillRect(sfc, NULL, 0x8);
 
@@ -760,40 +758,70 @@ bool CEGAGraphicsGalaxy::readfonts()
 
 			unsigned char *pointer = &(m_egagraph[EpisodeInfo[ep].IndexFonts + i].data.at(0));
 
-			if(!m_egagraph.at(EpisodeInfo[ep].IndexFonts + i).data.empty())
-			{
-				// Decode the font data
-				for(int j = 0; j < 256; j++)
-				{
-					// Get the width of the character in bytes
-					bw = (FontHead->Width[j] + 7) / 8;
+            auto createfontMap = [&](const int from, const int numChars, const int startOff)
+            {
+                if(!m_egagraph.at(EpisodeInfo[ep].IndexFonts + i).data.empty())
+                {
+                    // Decode the font data
+                    for(int j = from; j < from+numChars; j++)
+                    {
+                        Font.setWidthToCharacter(FontHead->Width[j], j+startOff);
 
-					Uint8 *pixelpos;
+                        // Get the width of the character in bytes
+                        bw = (FontHead->Width[j] + 7) / 8;
 
-					if(FontHead->Width[j] > 0)
-					{
-						SDL_Rect rect;
+                        Uint8 *pixelpos;
 
-						rect.x = (j%16)*maxwidth;
-						rect.y = (j/16)*FontHead->Height;
-						rect.w = FontHead->Width[j];
-						rect.h = FontHead->Height;
+                        if(FontHead->Width[j] > 0)
+                        {
+                            SDL_Rect rect;
 
-						for( y = 0 ; y < rect.h ; y++ )
-						{
-							pixelpos = pixel + (rect.y+y)*sfc->pitch+rect.x;
-							for( x = 0 ; x < rect.w ; x++ )
-							{
-								Uint8 color = getBit(*(pointer + FontHead->Offset[j] + (y*bw) + x/8 ), 7-(x%8) )*0xF;
-								if(color == 0x0) // Put a mask on black colors in font always
-									color = COLORKEY;
-								pixelpos[x] = color;
-							}
-						}
-					}
-				}
-			}
-			SDL_UnlockSurface(sfc);
+                            rect.x = ((j+startOff)%16)*maxwidth;
+                            rect.y = ((j+startOff)/16)*FontHead->Height;
+                            rect.w = FontHead->Width[j];
+                            rect.h = FontHead->Height;
+
+                            for( y = 0 ; y < rect.h ; y++ )
+                            {
+                                pixelpos = pixel + (rect.y+y)*sfc->pitch+rect.x;
+                                for( x = 0 ; x < rect.w ; x++ )
+                                {
+                                    Uint8 color = getBit(*(pointer + FontHead->Offset[j] + (y*bw) + x/8 ), 7-(x%8) )*0xF;
+                                    if(color == 0x0) // Put a mask on black colors in font always
+                                        color = COLORKEY;
+                                    pixelpos[x] = color;
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+
+            // The first two fonts have an ordered which fits quite well to the ascii tables.
+            // The third one is much different so we just patch it differently
+            if(i < 2)
+            {
+                createfontMap(0, 256, '\0');
+            }
+            else
+            {
+                // Capital letters // 'A' == 65 in ASCII
+                createfontMap(32, 26, 33);
+
+                // Lower case letters
+                createfontMap(58, 26, 39);
+
+                // Special characters
+                createfontMap(84, 1, 46-84);  // '.' == 46 in ASCII 84 in Plane 2
+                createfontMap(85, 1, 44-85);  // ',' == 44 in ASCII
+                createfontMap(86, 1, 45-86);  // '-' == 45 in ASCII
+                createfontMap(87, 1, 34-87);  // '"' == 34 in ASCII
+                createfontMap(88, 1, 32-88);  // ' ' == 32 in ASCII
+                createfontMap(89, 1, 33-89);  // '!' == 33 in ASCII
+                createfontMap(90, 1, 39-90);  // ''' == 39 in ASCII
+            }
+
+			SDL_UnlockSurface(sfc);            
 		}
 	}
 

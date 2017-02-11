@@ -71,8 +71,7 @@ void GsGraphics::createEmptyMisGsBitmaps(Uint16 num_bmps)
 void GsGraphics::createEmptyFontmaps(Uint8 num_fonts)
 {
 	freeFonts();
-	GsFont font;
-	Font.assign(num_fonts, font);
+    Font.assign(num_fonts, GsFont());
 }
 
 /*void GsGraphics::createEmptyCursorMap(SDL_Surface *surface)
