@@ -129,6 +129,9 @@ bool CPassiveGalaxy::init()
 
 #endif
 
+    const auto &storyText = gpBehaviorEngine->getString("STORY_TEXT");
+    mStoryTextVector = explode(storyText, "\n");
+
     return true;
 }
 
@@ -427,10 +430,17 @@ void CPassiveGalaxy::renderStarWars()
     lRect.x = 0;        lRect.y = 20;
 
 
-    // Draw some text.
+
+    // Draw the title of the story text
     GsFont &startwarsFont = gGraphics.getFont(2);
 
-    //startwarsFont.drawFontCentered( sfc, "ABCDEFGabcdefg", lRect.x, lRect.w, lRect.y, false);
+
+    startwarsFont.drawFontCentered( sfc, mStoryTextVector[0], lRect.x, lRect.w, lRect.y, false);
+
+    lRect.y += 20;
+
+    startwarsFont.drawFontCentered( sfc, mStoryTextVector[2], lRect.x, lRect.w, lRect.y, false);
+
 
     lRect.h = sfc->h;    lRect.w = sfc->w;
     lRect.x = 0;        lRect.y = lRect.h-20;

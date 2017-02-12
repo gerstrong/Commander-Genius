@@ -180,6 +180,9 @@ bool CMessages::extractEp4Strings(std::map<std::string, std::string>& StringMap)
             setDecodeOffset(0x2F41A);
             StringMap.insert( extractNextString( "WARP_LEVEL_TEXT" ) );
 
+            setDecodeOffset(0x1EE40);
+            StringMap.insert( extractNextString( "STORY_TEXT" ) );
+
 			return true;
 		} break;
 	}
@@ -210,6 +213,10 @@ bool CMessages::extractEp5Strings(std::map<std::string, std::string>& StringMap)
             setDecodeOffset(0x31BFB);
             StringMap.insert( extractNextString( "FUSE_WONDER" ) );
             StringMap.insert( extractNextString( "FUSE_CASUAL" ) );
+
+            setDecodeOffset(0x1FDE0);
+            StringMap.insert( extractNextString( "STORY_TEXT" ) );
+
 
 			return true;
 		} break;
@@ -256,6 +263,10 @@ bool CMessages::extractEp6Strings(std::map<std::string, std::string>& StringMap)
       StringMap.insert( extractNextString( "KEEN_GRABBITER_SLEEPY" ) );
       StringMap.insert( extractNextString( "KEEN_KEYCARD_REQUIRED" ) );
       StringMap.insert( extractNextString( "KEEN_ROPE_REQUIRED" ) );
+
+      setDecodeOffset(0x1ED50);
+      StringMap.insert( extractNextString( "STORY_TEXT" ) );
+
       
       return true;
     } break;

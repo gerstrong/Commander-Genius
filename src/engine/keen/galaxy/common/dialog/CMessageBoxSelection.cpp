@@ -43,7 +43,7 @@ blendup(true)
 
 	// Create a surface for that
     GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
-	mMBRect.w = Font.getPixelTextWidth(mText)+16;
+	mMBRect.w = Font.calcPixelTextWidth(mText)+16;
 	mMBRect.h = Font.getPixelTextHeight()*(calcNumLines(mText)+1)+16;
     mMBRect.x = (gameRes.w-mMBRect.w)/2;
     mMBRect.y = (gameRes.h-mMBRect.h)/2;
@@ -96,7 +96,7 @@ void CMessageBoxSelection::init()
 	int yoff = 0;
 	for( auto &it : textList  )
 	{	    
-	    int xmid = (rect.w-Font.getPixelTextWidth(it))/2+rect.x;
+	    int xmid = (rect.w-Font.calcPixelTextWidth(it))/2+rect.x;
 	    Font.drawFont( pColoredTextSurface, it, xmid, yoff);
 	    yoff += 12;
 	}	

@@ -84,6 +84,11 @@ public:
     bool mSwapColors = true;
 
     bool mSkipSection;
+
+    /**
+     * @brief mStoryTextVector Vector of story text blocks
+     */
+    std::vector<std::string> mStoryTextVector;
 };
 
 }

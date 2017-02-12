@@ -414,11 +414,10 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
             g_pSound->playSound( SOUND_LEVEL_DONE );
         }
 
-        const int oldLevel = m_LevelPlay.getLevelIdx();
         int newLevel = 0;
 
-
 #if USE_PYTHON3
+        const int oldLevel = m_LevelPlay.getLevelIdx();
         auto pModule = gPython.loadModule( "exitToLevel", gKeenFiles.gameDir);
 
         if (pModule != nullptr)
@@ -488,8 +487,6 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
     }
 }
 
-// Menu-Button
-const SDL_Rect menuButtonRect = {310, 0, 10, 10};
 
 
 /**
@@ -506,7 +503,7 @@ void CPlayGameGalaxy::ponder(const float deltaT)
     processInput();
 
     // Check if Sandwhich-Menu was clicked
-    GsRect<float> rRect(menuButtonRect);
+    GsRect<float> rRect(mMenuButtonRect);
     const float w = gVideoDriver.getBlitSurface()->w;
     const float h = gVideoDriver.getBlitSurface()->h;
     rRect.x /= w;       rRect.y /= h;
@@ -654,8 +651,11 @@ void CPlayGameGalaxy::render()
 
     const bool msgboxactive = !mMessageBoxes.empty();
 
+    // The position of the sandwich menu depends on the configured blit resolution
+    mMenuButtonRect.x = gVideoDriver.getBlitSurface()->w-10;
+
     // Draw a menu button where the mouse/finger might tap on
-    drawMenuInGameButton(menuButtonRect);
+    drawMenuInGameButton(mMenuButtonRect);
 
     // Draw some Textboxes with Messages only if one of those is open and needs to be drawn
     if(msgboxactive)

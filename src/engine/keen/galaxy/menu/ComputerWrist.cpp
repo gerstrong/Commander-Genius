@@ -73,11 +73,10 @@ ComputerWrist::ComputerWrist(const int ep) :
 
     GsFont &font = gGraphics.getFont(mFontId);
     GsWeakSurface blitsfc(gVideoDriver.getBlitSurface());
-    const auto numElem = (blitsfc.height()*blitsfc.width());
 
-    const auto numLines = (blitsfc.height() - (mUpperBorderBmp.height() + mBottomBorderBmp.height()))/font.getPixelTextHeight();
+    const int numLines = (blitsfc.height() - (mUpperBorderBmp.height() + mBottomBorderBmp.height()))/font.getPixelTextHeight();
 
-    for(int i=0 ; i<numLines ; i++)
+    for(int i=0 ; i < numLines ; i++)
     {
         mMinPos.push_back(mLeftBorderBmp.width());
         mMaxPos.push_back(blitsfc.width() - (mLeftBorderBmp.width() + mRightBorderBmp.width() + 11) );
@@ -168,9 +167,9 @@ void ComputerWrist::parseText()
 {
     GsWeakSurface blitsfc(gVideoDriver.getBlitSurface());
 
-    SDL_Rect lRect;
-    lRect.h = blitsfc.height();
-    lRect.w = blitsfc.width()-(mLeftBorderBmp.width()+mRightBorderBmp.width());
+    //SDL_Rect lRect;
+    //lRect.h = blitsfc.height();
+    //lRect.w = blitsfc.width()-(mLeftBorderBmp.width()+mRightBorderBmp.width());
 
     // Draw some text.
     GsFont &Font = gGraphics.getFont(mFontId);

@@ -35,7 +35,7 @@ mCloseEv(closeEv)
     GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
 
 	// Create a surface for that
-	mMBRect.w = Font.getPixelTextWidth(mText)+16;
+	mMBRect.w = Font.calcPixelTextWidth(mText)+16;
 	mMBRect.h = Font.getPixelTextHeight()*(calcNumLines(mText)+1)+16;
     mMBRect.x = (gameRes.w-mMBRect.w)/2;
     mMBRect.y = (gameRes.h-mMBRect.h)/2;

@@ -22,14 +22,23 @@ CAudioSettings::CAudioSettings() :
 GalaxyMenu(GsRect<float>(0.075f, 0.24f, 0.85f, 0.4f) )
 {
 
+#if !defined(EMBEDDED)
+
     mpRate = new ComboSelection( "Rate", g_pSound->getAvailableRateList());
 	mpMenuDialog->addControl( mpRate );
+
+#endif
 
     mpStereo = new Switch( "Stereo" );
 	mpMenuDialog->addControl( mpStereo );
 
+
+#if !defined(EMBEDDED)
+
     mpDepth = new ComboSelection( "Depth", filledStrList( 2, "8-bit", "16-bit" ) );
 	mpMenuDialog->addControl( mpDepth );
+
+#endif
 
     mpSBToggle = new ComboSelection( "Card", filledStrList( 2, "PC Speaker", "Soundblaster" ) );
 	mpMenuDialog->addControl( mpSBToggle );
@@ -55,9 +64,14 @@ void CAudioSettings::refresh()
     mpSoundVolume->setSelection(g_pSound->getSoundVolume());
     mpMusicVolume->setSelection(g_pSound->getMusicVolume());
 
+#if !defined(EMBEDDED)
 	mpRate->setSelection( itoa(mAudioSpec.freq) );
+#endif
 	mpStereo->enable( mAudioSpec.channels == 2 );
+
+#if !defined(EMBEDDED)
 	mpDepth->setSelection( mAudioSpec.format == AUDIO_U8 ? "8-bit" : "16-bit" );
+#endif
 	mpSBToggle->setSelection( mSoundblaster ? "Soundblaster" : "PC Speaker" );
 	g_pMusicPlayer->play();
 }
@@ -79,9 +93,15 @@ void CAudioSettings::ponder(const float deltaT)
 
 void CAudioSettings::release()
 {
+#if !defined(EMBEDDED)
 	mAudioSpec.freq = atoi( mpRate->getSelection().c_str() );
+#endif
+
 	mAudioSpec.channels = mpStereo->isEnabled() ? 2 : 1;
+
+#if !defined(EMBEDDED)
 	mAudioSpec.format = mpDepth->getSelection() == "8-bit" ? AUDIO_U8 : AUDIO_S16;
+#endif
 
 	mSoundblaster = ( mpSBToggle->getSelection() == "Soundblaster" ? true : false );
 

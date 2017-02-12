@@ -28,15 +28,12 @@ namespace vorticon
 CSettingsMenu::CSettingsMenu() :
 VorticonMenu( GsRect<float>(0.25f, 0.24f, 0.5f, 0.32f) )
 {
-#if !defined(EMBEDDED)
 
     mpMenuDialog->addControl(new Button( "Video",
 									new OpenMenuEvent( new CVideoSettings() ) ) );
 
     mpMenuDialog->addControl(new Button( "Audio",
                                     new OpenMenuEvent( new CAudioSettings() ) ) );
-#endif
-
     mpMenuDialog->addControl(new Button( "Options",
 									new OpenMenuEvent( new COptions() ) ) );
 

@@ -25,17 +25,40 @@
 class GsFont
 {
 public:
-	GsFont();
 
+    /**
+     * @brief GsFont    8x8 pixels is the default area used for one character.
+     *                  On modern this might be very small
+     */
+    GsFont()
+    {
+        setFillWidthTable(8);
+    }
 
-    void setFillWidthTable(const int width);
+    /**
+     * @brief setFillWidthTable Sets the width to all the characters
+     * @param width desired width to set
+     */
+    void setFillWidthTable(const int width)
+    {
+        mWidthtable.fill(width);
+    }
 
+    /**
+     * @brief GsFont    Copy constructor
+     * @param that      element to copy
+     */
     GsFont(const GsFont& that)
     {
         operator=(that);
     }
 
 
+    /**
+     * @brief operator =    Basic assignment operator
+     * @param that      element to copy
+     * @return Reference to the newly set GsFont instance
+     */
     GsFont& operator=(const GsFont& that)
     {
         if(that.mFontSurface)
@@ -48,10 +71,22 @@ public:
         return *this;
     }
 
+    /**
+     * @brief CreateSurface Creates a basic font surface
+     * @param Palette
+     * @param Flags
+     * @param width
+     * @param height
+     * @return
+     */
 	bool CreateSurface(SDL_Color *Palette, Uint32 Flags, Uint16 width = 128, Uint16 height = 128);
 
     SDL_Surface *SDLSurfacePtr() const { return mFontSurface.getSDLSurface(); }
 
+    /**
+     * @brief loadAlternateFont This loads the internal font found in Alternatefont.xpm
+     * @return  true if it was sucessfully loaded, otherwise false
+     */
 	bool loadAlternateFont();
 
     /**
@@ -100,29 +135,33 @@ public:
                                    unsigned char g,
                                    unsigned char b);
 
-	/*
-	 * \brief This will retrieve the total width in pixels of the Font.
+    /**
+     * @brief This will retrieve the total width in pixels of the Font.
 	 * 		  In Galaxy it's more difficult to calculate that since every character has it own with
-	 * \param text Text which will be analyzed to get the full width
-	 * \return the width in pixel units
+     * @param text Text which will be analyzed to get the full width
+     * @return the width in pixel units
 	 */
-	unsigned int getPixelTextWidth( const std::string& text );
+    unsigned int calcPixelTextWidth( const std::string& text );
 
-	/*
-	 * \brief This will help to get the right height of some Dialog Boxes
-	 * \return height of the text height in pixel units.
+    /**
+     * @brief This will help to get the right height of some Dialog Boxes
+     * @return height of the text height in pixel units.
 	 */
-	unsigned int getPixelTextHeight();
+    unsigned int getPixelTextHeight()
+    {
+        const auto height = mFontSurface.getSDLSurface()->h;
+        return height / 16;
+    }
 
 	/**
 	 * \brief gets the background color of the font
 	 */
-	Uint32 getBGColour(const bool highlight = false);
+    Uint32 getBGColour(const bool highlight = false);
 
 	/**
 	 * \brief gets the background color of the font
 	 */
-	Uint32 getBGColour(SDL_PixelFormat *format, const bool highlight = false);
+    Uint32 getBGColour(SDL_PixelFormat *format, const bool highlight = false);
 
 	/**
 	 * \brief Components-version
@@ -130,17 +169,31 @@ public:
 	void getBGColour(Uint8 *r, Uint8 *g, Uint8 *b, const bool highlight = false);
 
 	void drawCharacter(SDL_Surface* dst, Uint16 character, Uint16 xoff, Uint16 yoff);
+
     void drawFont(SDL_Surface* dst, const std::string& text, const Uint16 xoff, const Uint16 yoff, const bool highlight = false);
+
     void drawFont(GsWeakSurface &dst, const std::string& text, const Uint16 xoff, const Uint16 yoff, const bool highlight = false)
     {
         drawFont(dst.getSDLSurface(), text, xoff, yoff, highlight);
     }
 
     void drawFontAlpha(SDL_Surface* dst, const std::string& text, Uint16 xoff, Uint16 yoff, const Uint8 alpha);
-	void drawFontCentered(SDL_Surface* dst, const std::string& text, Uint16 width, Uint16 yoff, bool highlight = false);
+
+    void drawFontCentered(SDL_Surface* dst, const std::string& text, Uint16 width, Uint16 yoff, bool highlight = false)
+    {
+        drawFontCentered(dst, text, 0, width, yoff, highlight);
+    }
+
+
 	void drawFontCentered(SDL_Surface* dst, const std::string& text, Uint16 x, Uint16 width, Uint16 yoff, bool highlight = false);
 	void drawFontCenteredAlpha(SDL_Surface* dst, const std::string& text, Uint16 x, Uint16 width, Uint16 yoff, Uint16 height, const Uint8 alpha);
-	void drawFontCenteredAlpha(SDL_Surface* dst, const std::string& text, Uint16 width, Uint16 yoff, const Uint8 alpha);
+
+    void drawFontCenteredAlpha(SDL_Surface* dst, const std::string& text, Uint16 width, Uint16 yoff, const Uint8 alpha)
+    {
+        drawFontCenteredAlpha(dst, text, 0, width, yoff, alpha);
+    }
+
+
 	void drawFontCenteredAlpha(SDL_Surface* dst, const std::string& text, Uint16 x, Uint16 width, Uint16 yoff, const Uint8 alpha);
     void drawFontCentered(SDL_Surface* dst,
                           const std::string& text,
@@ -164,6 +217,7 @@ public:
 private:
 
     GsSurface mFontSurface;
+    //GsSurface mFontSurface2x;   /** FontSurface but scaled up using Scale2X filter  */
 
     std::array<Uint8, 256> mWidthtable;    
 };

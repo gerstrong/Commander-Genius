@@ -29,13 +29,12 @@ SettingsMenu::SettingsMenu() :
 GalaxyMenu( GsRect<float>(0.25f, 0.24f, 0.5f, 0.40f) )
 {
 
-#if !defined(EMBEDDED)
     mpMenuDialog->addControl(new GalaxyButton( "Video",
                                     new OpenMenuEvent( new CVideoSettings() ) ) );
 
     mpMenuDialog->addControl(new GalaxyButton( "Audio",
                                     new OpenMenuEvent( new CAudioSettings() ) ) );
-#endif
+
     mpMenuDialog->addControl(new GalaxyButton( "Options",
                                     new OpenMenuEvent( new COptions() ) ) );
 

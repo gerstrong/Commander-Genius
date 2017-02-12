@@ -15,6 +15,7 @@ void drawMenuInGameButton(const SDL_Rect &buttonRect)
 {
     SDL_Surface *dst = gVideoDriver.getBlitSurface();
 
+
     SDL_Rect tempRect = buttonRect;
 
     SDL_FillRect(dst, &tempRect, SDL_MapRGB(dst->format, 255, 0, 0) );
