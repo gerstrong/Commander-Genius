@@ -2183,7 +2183,7 @@ void KillKeen (void)
 
 id0_unsigned_t bonuspoints[6] = {100,200,500,1000,2000,5000};
 
-void	KeenContact (objtype *ob, objtype *hit)
+void KeenContact (objtype *ob, objtype *hit)
 {
 	switch (hit->obclass)
 	{

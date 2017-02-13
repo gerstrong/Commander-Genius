@@ -728,8 +728,7 @@ bool CEGAGraphicsGalaxy::readfonts()
 
 	for(Uint16 i = 0; i < EpisodeInfo[ep].NumFonts; i++)
 	{
-		GsFont &Font = gGraphics.getFont(i);
-		//Font.setMonochrome(true);
+        GsFont &font = gGraphics.getFont(i);
 
         const std::vector<unsigned char> &fontData = m_egagraph.at(EpisodeInfo[ep].IndexFonts + i).data;
 
@@ -747,9 +746,9 @@ bool CEGAGraphicsGalaxy::readfonts()
 					maxwidth = FontHead->Width[j];
 			}
 
-			Font.CreateSurface(Palette, gVideoDriver.getScrollSurface()->flags, maxwidth*16, FontHead->Height * 16);
+            font.CreateSurface(Palette, gVideoDriver.getScrollSurface()->flags, maxwidth*16, FontHead->Height * 16);
 
-            auto sfc = Font.SDLSurfacePtr();
+            auto sfc = font.SDLSurfacePtr();
 
 			SDL_FillRect(sfc, NULL, 0x8);
 
@@ -765,7 +764,7 @@ bool CEGAGraphicsGalaxy::readfonts()
                     // Decode the font data
                     for(int j = from; j < from+numChars; j++)
                     {
-                        Font.setWidthToCharacter(FontHead->Width[j], j+startOff);
+                        font.setWidthToCharacter(FontHead->Width[j], j+startOff);
 
                         // Get the width of the character in bytes
                         bw = (FontHead->Width[j] + 7) / 8;
@@ -821,8 +820,10 @@ bool CEGAGraphicsGalaxy::readfonts()
                 createfontMap(90, 1, 39-90);  // ''' == 39 in ASCII
             }
 
-			SDL_UnlockSurface(sfc);            
+            SDL_UnlockSurface(sfc);
 		}
+
+        font.deriveHighResSurfaces();
 	}
 
 	return true;

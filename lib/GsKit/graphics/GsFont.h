@@ -59,11 +59,12 @@ public:
      * @param that      element to copy
      * @return Reference to the newly set GsFont instance
      */
+
     GsFont& operator=(const GsFont& that)
     {
-        if(that.mFontSurface)
-        {
-            mFontSurface.createCopy(that.mFontSurface);
+        if(that.mpFontSurface[0])
+        {            
+            mpFontSurface[0]->createCopy(*(that.mpFontSurface[0].get()));
         }
 
         mWidthtable = that.mWidthtable;
@@ -81,7 +82,7 @@ public:
      */
 	bool CreateSurface(SDL_Color *Palette, Uint32 Flags, Uint16 width = 128, Uint16 height = 128);
 
-    SDL_Surface *SDLSurfacePtr() const { return mFontSurface.getSDLSurface(); }
+    SDL_Surface *SDLSurfacePtr() const { return mpFontSurface[0]->getSDLSurface(); }
 
     /**
      * @brief loadAlternateFont This loads the internal font found in Alternatefont.xpm
@@ -135,6 +136,15 @@ public:
                                    unsigned char g,
                                    unsigned char b);
 
+
+
+    /**
+     * @brief deriveHighResSurfaces Derive higher resolution surface of the first loaded fontmap
+     */
+    void deriveHighResSurfaces();
+
+
+
     /**
      * @brief This will retrieve the total width in pixels of the Font.
 	 * 		  In Galaxy it's more difficult to calculate that since every character has it own with
@@ -149,7 +159,7 @@ public:
 	 */
     unsigned int getPixelTextHeight()
     {
-        const auto height = mFontSurface.getSDLSurface()->h;
+        const auto height = mpFontSurface[0]->getSDLSurface()->h;
         return height / 16;
     }
 
@@ -168,9 +178,18 @@ public:
 	 */
 	void getBGColour(Uint8 *r, Uint8 *g, Uint8 *b, const bool highlight = false);
 
-	void drawCharacter(SDL_Surface* dst, Uint16 character, Uint16 xoff, Uint16 yoff);
+    /**
+     * @brief drawCharacter Just draws one character
+     * @param dst   destination surface where to print
+     * @param character which character to print
+     * @param xoff  where x
+     * @param yoff  where y
+     * @param scale How much to scale
+     */
+    void drawCharacter(SDL_Surface* dst, Uint16 character, Uint16 xoff, Uint16 yoff, const int scale = 1);
 
-    void drawFont(SDL_Surface* dst, const std::string& text, const Uint16 xoff, const Uint16 yoff, const bool highlight = false);
+    void drawFont(SDL_Surface* dst, const std::string& text, const Uint16 xoff, const Uint16 yoff,
+                  const bool highlight = false);
 
     void drawFont(GsWeakSurface &dst, const std::string& text, const Uint16 xoff, const Uint16 yoff, const bool highlight = false)
     {
@@ -213,13 +232,30 @@ public:
                          highlight);
     }
 
+    /**
+     * @brief setOptimalFontSize    Will attempt setting a good scaling to the font according
+     *                              the blit surface resolution used
+     */
+    void setOptimalFontSize();
+
+    int getFontSize() const
+    {
+        return mFontSize;
+    }
+
+    void setFontSize(int fontSize)
+    {
+        mFontSize = fontSize;
+    }
+
 
 private:
 
-    GsSurface mFontSurface;
-    //GsSurface mFontSurface2x;   /** FontSurface but scaled up using Scale2X filter  */
+    std::array< std::unique_ptr<GsSurface>, 4> mpFontSurface;
 
     std::array<Uint8, 256> mWidthtable;    
+
+    int mFontSize = 1;
 };
 
 #endif /* GsFont_H_ */

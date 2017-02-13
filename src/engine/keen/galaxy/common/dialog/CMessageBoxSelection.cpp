@@ -97,7 +97,7 @@ void CMessageBoxSelection::init()
 	for( auto &it : textList  )
 	{	    
 	    int xmid = (rect.w-Font.calcPixelTextWidth(it))/2+rect.x;
-	    Font.drawFont( pColoredTextSurface, it, xmid, yoff);
+        Font.drawFont( pColoredTextSurface, it, xmid, yoff, false);
 	    yoff += 12;
 	}	
 

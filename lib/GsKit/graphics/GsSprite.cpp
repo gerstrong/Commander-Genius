@@ -151,10 +151,10 @@ void GsSprite::generateSprite( const int points )
 	GsFont &smallFont = gGraphics.getFont(2);
 
 	// Create Text Borders TODO: Make this code to draw better looking fonts
-    smallFont.drawFont( mpSurface.get(), pointStr,  0, 1 );
-    smallFont.drawFont( mpSurface.get(), pointStr,  1, 0 );
-    smallFont.drawFont( mpSurface.get(), pointStr,  2, 1 );
-    smallFont.drawFont( mpSurface.get(), pointStr,  1, 2 );
+    smallFont.drawFont( mpSurface.get(), pointStr,  0, 1, false );
+    smallFont.drawFont( mpSurface.get(), pointStr,  1, 0, false );
+    smallFont.drawFont( mpSurface.get(), pointStr,  2, 1, false );
+    smallFont.drawFont( mpSurface.get(), pointStr,  1, 2, false );
 
 	// Now draw the alternate font. It just has another color.
     smallFont.drawFont( mpSurface.get(), pointStr, 1,  1, true );

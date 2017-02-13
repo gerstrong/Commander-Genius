@@ -18,10 +18,14 @@ void GalaxyButton::setupButtonSurface()
 {
     GsFont &Font = gGraphics.getFont(mFontID);
 
+    Font.setOptimalFontSize();
+
     Font.createTextSurface(mTextDarkSfc, "  " + mText, 38, 134, 38 );
     Font.createTextSurface(mTextLightSfc, "  " + mText, 84, 234, 84 );
     Font.createTextSurface(mTextDisabledSfc, "  " + mText, 123, 150, 123 );
     Font.createTextSurface(mTextRedSfc, "  " + mText, 180, 50, 23 );
+
+    Font.setFontSize(1);
 }
 
 

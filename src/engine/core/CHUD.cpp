@@ -260,12 +260,12 @@ void CHUD::renderVorticon()
 	GsFont &Font = gGraphics.getFont(1);
 
 	// Draw the lives
-    Font.drawFont(mpHUDBlit.get(), getRightAlignedString(itoa(lives),2), 15, 15);
+    Font.drawFont(mpHUDBlit.get(), getRightAlignedString(itoa(lives),2), 15, 15, false);
 
 	// Draw the charges
-    Font.drawFont(mpHUDBlit.get(), getRightAlignedString(itoa(charges),2), 56, 15);
+    Font.drawFont(mpHUDBlit.get(), getRightAlignedString(itoa(charges),2), 56, 15, false);
 
-    Font.drawFont(mpHUDBlit.get(), getRightAlignedString(itoa(score),8),8, 2);
+    Font.drawFont(mpHUDBlit.get(), getRightAlignedString(itoa(score),8),8, 2, false );
 
     BlitSurface( mpHUDBlit.get(), NULL, gVideoDriver.getBlitSurface(), &m_Rect );   
 }

@@ -44,7 +44,7 @@ void CStatusScreenGalaxyEp5::GenerateStatus()
 	TempRect.x = EditRect.x;
 	TempRect.y = EditRect.y+32;
 	TempRect.w = EditRect.w/2; TempRect.h = 10;
-	Font.drawFont(mpStatusSurface.get(), "SCORE            EXTRA", TempRect.x+16, TempRect.y);
+    Font.drawFont(mpStatusSurface.get(), "SCORE            EXTRA", TempRect.x+16, TempRect.y, false);
 	TempRect.w = (EditRect.w/2)-16; TempRect.h = 11;
 	TempRect.y = EditRect.y+42;
 
@@ -60,7 +60,7 @@ void CStatusScreenGalaxyEp5::GenerateStatus()
 	
 	TempRect.x = EditRect.x;
 	TempRect.y = EditRect.y+56;	
-	Font.drawFont(mpStatusSurface.get(), "KEYCARD", TempRect.x, TempRect.y+4);
+    Font.drawFont(mpStatusSurface.get(), "KEYCARD", TempRect.x, TempRect.y+4, false);
 	
 	// Small Keycard Box
 	TempRect.y = EditRect.y+59;
@@ -77,7 +77,7 @@ void CStatusScreenGalaxyEp5::GenerateStatus()
 	TempRect.w = EditRect.w/2;
 	TempRect.x = EditRect.x+24;
 	TempRect.y = EditRect.y+56;
-	Font.drawFont(mpStatusSurface.get(), "                  LEVEL", TempRect.x, TempRect.y);	
+    Font.drawFont(mpStatusSurface.get(), "                  LEVEL", TempRect.x, TempRect.y, false);
 	TempRect.h = 11;
 	TempRect.y = EditRect.y+66;
 
@@ -96,7 +96,7 @@ void CStatusScreenGalaxyEp5::GenerateStatus()
 	// Keys Box
 	TempRect.x = EditRect.x;
 	TempRect.y = EditRect.y+80;
-	Font.drawFont(mpStatusSurface.get(), "KEYS", TempRect.x, TempRect.y);
+    Font.drawFont(mpStatusSurface.get(), "KEYS", TempRect.x, TempRect.y, false);
 	TempRect.w = 8*4; TempRect.h = 10;
 	TempRect.x = TempRect.x+8*5;
 	SDL_FillRect(mpStatusSurface.get(), &TempRect, 0xFF000000);
@@ -112,7 +112,7 @@ void CStatusScreenGalaxyEp5::GenerateStatus()
 	// Ammo Box
 	TempRect.x = EditRect.x+96;
 	TempRect.y = EditRect.y+80;
-	Font.drawFont(mpStatusSurface.get(), "AMMO", TempRect.x, TempRect.y);
+    Font.drawFont(mpStatusSurface.get(), "AMMO", TempRect.x, TempRect.y, false);
 	TempRect.w = 8*3; TempRect.h = 10;
 	TempRect.x = TempRect.x+8*5;
 	SDL_FillRect(mpStatusSurface.get(), &TempRect, 0xFF000000);
@@ -121,7 +121,7 @@ void CStatusScreenGalaxyEp5::GenerateStatus()
 	// Keens Box
 	TempRect.x = EditRect.x;
 	TempRect.y = EditRect.y+96;
-	Font.drawFont(mpStatusSurface.get(), "KEENS", TempRect.x, TempRect.y);
+    Font.drawFont(mpStatusSurface.get(), "KEENS", TempRect.x, TempRect.y, false);
 	TempRect.w = 8*2; TempRect.h = 10;
 	TempRect.x = TempRect.x+8*5+8;
 	SDL_FillRect(mpStatusSurface.get(), &TempRect, 0xFF000000);
@@ -130,7 +130,7 @@ void CStatusScreenGalaxyEp5::GenerateStatus()
 	// Drops Box
 	TempRect.x = EditRect.x+96;
 	TempRect.y = EditRect.y+96;
-	Font.drawFont(mpStatusSurface.get(), "VITALIN", TempRect.x, TempRect.y);
+    Font.drawFont(mpStatusSurface.get(), "VITALIN", TempRect.x, TempRect.y, false);
 	TempRect.w = 8*2; TempRect.h = 10;
 	TempRect.x = TempRect.x+8*5+8;
 	SDL_FillRect(mpStatusSurface.get(), &TempRect, 0xFF000000);

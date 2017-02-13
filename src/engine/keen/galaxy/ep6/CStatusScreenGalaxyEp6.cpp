@@ -44,7 +44,7 @@ void CStatusScreenGalaxyEp6::GenerateStatus()
 	TempRect.x = EditRect.x;
 	TempRect.y = EditRect.y+32;
 	TempRect.w = EditRect.w/2; TempRect.h = 10;
-	Font.drawFont(mpStatusSurface.get(), "SCORE            EXTRA", TempRect.x+16, TempRect.y);
+    Font.drawFont(mpStatusSurface.get(), "SCORE            EXTRA", TempRect.x+16, TempRect.y, false);
 	TempRect.w = (EditRect.w/2)-16; TempRect.h = 11;
 	TempRect.y = EditRect.y+42;
 
@@ -61,7 +61,7 @@ void CStatusScreenGalaxyEp6::GenerateStatus()
 	// Items Box
 	TempRect.x = EditRect.x;
 	TempRect.y = EditRect.y+66;
-	Font.drawFont(mpStatusSurface.get(), "ITEMS", TempRect.x, TempRect.y+1);
+    Font.drawFont(mpStatusSurface.get(), "ITEMS", TempRect.x, TempRect.y+1, false);
 	
 	TempRect.x = EditRect.x+44;
 	TempRect.w = 30;

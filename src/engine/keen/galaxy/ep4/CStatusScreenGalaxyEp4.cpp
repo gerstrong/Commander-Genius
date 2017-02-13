@@ -45,7 +45,7 @@ void CStatusScreenGalaxyEp4::GenerateStatus()
 	TempRect.x = EditRect.x;
 	TempRect.y = EditRect.y+32;
 	TempRect.w = EditRect.w/2; TempRect.h = 10;
-	Font.drawFont(mpStatusSurface.get(), "SCORE            EXTRA", TempRect.x+16, TempRect.y);
+    Font.drawFont(mpStatusSurface.get(), "SCORE            EXTRA", TempRect.x+16, TempRect.y, false);
 	TempRect.w = (EditRect.w/2)-16; TempRect.h = 11;
 	TempRect.y = EditRect.y+42;
 
@@ -81,7 +81,7 @@ void CStatusScreenGalaxyEp4::GenerateStatus()
 	TempRect.x = EditRect.x;
 	TempRect.y = EditRect.y+56;
 	TempRect.w = EditRect.w/2; TempRect.h = 10;
-	Font.drawFont(mpStatusSurface.get(), rescLine, TempRect.x+8, TempRect.y);
+    Font.drawFont(mpStatusSurface.get(), rescLine, TempRect.x+8, TempRect.y, false);
 	TempRect.w = (EditRect.w/2)-16; TempRect.h = 11;
 	TempRect.y = EditRect.y+66;
 
@@ -104,8 +104,8 @@ void CStatusScreenGalaxyEp4::GenerateStatus()
 	// Keys Box
 	TempRect.x = EditRect.x;
 	TempRect.y = EditRect.y+80;
-	Font.drawFont(mpStatusSurface.get(), "KEYS", TempRect.x, TempRect.y);
-	TempRect.w = 8*4; TempRect.h = 10;
+    Font.drawFont(mpStatusSurface.get(), "KEYS", TempRect.x, TempRect.y, false);
+    TempRect.w = 8*4; TempRect.h = 10;
 	TempRect.x = TempRect.x+8*5;
 	SDL_FillRect(mpStatusSurface.get(), &TempRect, 0xFF000000);
 	if(m_Item.m_gem.red)
@@ -120,7 +120,7 @@ void CStatusScreenGalaxyEp4::GenerateStatus()
 	// Ammo Box
 	TempRect.x = EditRect.x+96;
 	TempRect.y = EditRect.y+80;
-	Font.drawFont(mpStatusSurface.get(), "AMMO", TempRect.x, TempRect.y);
+    Font.drawFont(mpStatusSurface.get(), "AMMO", TempRect.x, TempRect.y, false);
 	TempRect.w = 8*3; TempRect.h = 10;
 	TempRect.x = TempRect.x+8*5;
 	SDL_FillRect(mpStatusSurface.get(), &TempRect, 0xFF000000);
@@ -129,7 +129,7 @@ void CStatusScreenGalaxyEp4::GenerateStatus()
 	// Keens Box
 	TempRect.x = EditRect.x;
 	TempRect.y = EditRect.y+96;
-	Font.drawFont(mpStatusSurface.get(), "KEENS", TempRect.x, TempRect.y);
+    Font.drawFont(mpStatusSurface.get(), "KEENS", TempRect.x, TempRect.y, false);
 	TempRect.w = 8*2; TempRect.h = 10;
 	TempRect.x = TempRect.x+8*5+8;
 	SDL_FillRect(mpStatusSurface.get(), &TempRect, 0xFF000000);
@@ -138,7 +138,7 @@ void CStatusScreenGalaxyEp4::GenerateStatus()
 	// Drops Box
 	TempRect.x = EditRect.x+96;
 	TempRect.y = EditRect.y+96;
-	Font.drawFont(mpStatusSurface.get(), dropsLine, TempRect.x, TempRect.y);
+    Font.drawFont(mpStatusSurface.get(), dropsLine, TempRect.x, TempRect.y, false);
 	TempRect.w = 8*2; TempRect.h = 10;
 	TempRect.x = TempRect.x+8*5+8;
 	SDL_FillRect(mpStatusSurface.get(), &TempRect, 0xFF000000);
