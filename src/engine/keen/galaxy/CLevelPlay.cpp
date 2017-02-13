@@ -72,10 +72,12 @@ void CLevelPlay::loadMap(const int level)
 
 void CLevelPlay::reloadLevel()
 {
-	loadMap( mMap.getLevel() );
+    // Create the special merge effect (Fadeout)
+    auto dimDark = new CDimDark(8);
+    dimDark->getSnapshot();
+    gEffectController.setupEffect(dimDark);
 
-	// Create the special merge effect (Fadeout)
-    gEffectController.setupEffect(new CDimDark(8));
+	loadMap( mMap.getLevel() );
 }
 
 bool CLevelPlay::loadLevel(const Uint16 level)

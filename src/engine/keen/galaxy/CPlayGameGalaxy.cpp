@@ -339,7 +339,9 @@ void CPlayGameGalaxy::looseManagement( const int playerID,
         eventContainer.add( pdialogevent );
 
         for(auto deadIt = mDead.begin() ; deadIt != mDead.end() ; deadIt++ )
+        {
             (*deadIt) = false;
+        }
     }
 
     // Now let's check for important items

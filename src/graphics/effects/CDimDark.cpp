@@ -34,28 +34,8 @@ void CDimDark::getSnapshot()
                        blitFormat->Bmask,
                        0);
 
-    // Surface might have alpha mask. In that case the mColorKey can be zero
-    /*auto format = mOldSurface.getSDLSurface()->format;
-    if(format->Amask != 0)
-    {
-        mColorkey = SDL_MapRGBA( format, 0, 0, 0, 0 );
-    }
-    else
-    {
-        //Map the color key
-        //Set all pixels of color R 0, G 0xFF, B 0xFF to be transparent
-
-        mColorkey = SDL_MapRGB( format, 0, 0xFF, 0xFF );
-    #if SDL_VERSION_ATLEAST(2, 0, 0)
-        SDL_SetColorKey( mOldSurface.getSDLSurface(), SDL_TRUE, mColorkey );
-    #else
-        SDL_SetColorKey( mOldSurface.getSDLSurface(), SDL_SRCCOLORKEY, mColorkey );
-    #endif
-    }*/
 
     blitSfc.blitTo(mOldSurface);    
-
-    //mOldSurface.fillRGB(0, 255, 0);
 
     mDarkSurface.create(SDL_SWSURFACE,
                         blitSfc.width(),
