@@ -43,10 +43,12 @@ public:
     void render();
 	
 private:
-    	std::shared_ptr<SDL_Surface> mpSelSurface1;
+    std::shared_ptr<SDL_Surface> mpSelSurface1;
 	std::shared_ptr<SDL_Surface> mpSelSurface2;
 	int blend;
 	bool blendup;
+
+    int mSmoothCursor = 0; /** Smooth animation of the cursor*/
 };
 
 }

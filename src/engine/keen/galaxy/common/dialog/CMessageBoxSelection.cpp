@@ -153,6 +153,7 @@ void CMessageBoxSelection::init()
 
 	SDL_FillRect( mpSelSurface1.get(), &selRect, SDL_MapRGB( format, 255, 0, 0 ) );
 	SDL_FillRect( mpSelSurface2.get(), &selRect, SDL_MapRGB( format, 0, 0, 255 ) );
+
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     SDL_SetColorKey(mpSelSurface1.get(), SDL_TRUE, SDL_MapRGB( format, 0, 0, 0 ));
     SDL_SetColorKey(mpSelSurface2.get(), SDL_TRUE, SDL_MapRGB( format, 0, 0, 0 ));    
@@ -162,6 +163,7 @@ void CMessageBoxSelection::init()
     SDL_SetColorKey( mpSelSurface1.get(), SDL_SRCCOLORKEY, SDL_MapRGB( format, 0, 0, 0 ) );
     SDL_SetColorKey( mpSelSurface2.get(), SDL_SRCCOLORKEY, SDL_MapRGB( format, 0, 0, 0 ) );
 #endif
+
 	SDL_FillRect( mpSelSurface1.get(), &cutRect, SDL_MapRGB( format, 0, 0, 0 ) );
 	SDL_FillRect( mpSelSurface2.get(), &cutRect, SDL_MapRGB( format, 0, 0, 0 ) );
 }
@@ -195,6 +197,12 @@ void CMessageBoxSelection::ponder()
 		else
 			m_selection--;
 	}
+
+    // Smooth animation of the rectangle
+    if(mSmoothCursor < 12*m_selection)
+        mSmoothCursor++;
+    else if(mSmoothCursor > 12*m_selection)
+        mSmoothCursor--;
 }
 
 void CMessageBoxSelection::render()
@@ -237,11 +245,12 @@ void CMessageBoxSelection::render()
     {
         if(i == m_selection)
         {
-            cursorSel.y = mMBRect.y + 12*i + 44;
+            cursorSel.y = mMBRect.y + mSmoothCursor + 44;
             BlitSurface(mpSelSurface1.get(), nullptr, gVideoDriver.getBlitSurface(), &cursorSel);
             BlitSurface(mpSelSurface2.get(), nullptr, gVideoDriver.getBlitSurface(), &cursorSel);
         }
     }
+
 }
 
 }

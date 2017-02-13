@@ -148,17 +148,20 @@ void CMapPlayGalaxy::ponderBase(const float deltaT)
             // show the death-message or go gameover.
             if( galaxy::CPlayerBase *player = dynamic_cast<galaxy::CPlayerBase*>(obj->get()) )
             {
-                // Special cases, when Keen is god, but still has to die,
-                // kill him anyways.
-                if( player->touchedBottomOfMap() )
+                if(player->exists)
                 {
-                    player->kill(true);
-                }
+                    // Special cases, when Keen is god, but still has to die,
+                    // kill him anyways.
+                    if( player->touchedBottomOfMap() )
+                    {
+                        player->kill(true);
+                    }
 
-                // Is he really dead?
-                if( player->dead || (!visibility && player->m_dying) )
-                {
-                    player->processDead();
+                    // Is he really dead?
+                    if( player->dead || (!visibility && player->m_dying) )
+                    {
+                        player->processDead();
+                    }
                 }
             }
 

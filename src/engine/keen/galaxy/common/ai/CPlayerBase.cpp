@@ -596,9 +596,8 @@ void CPlayerBase::processDead()
     m_camera.cycleCamlead();
 
     gEventManager.add( new EventDieKeenPlayer(mPlayerNum,
-                                                               m_Inventory.Item.m_lifes<0,
-                                                               levelObj,
-                                                               levelName) );
+                                              m_Inventory.Item.m_lifes<0,
+                                              levelObj, levelName) );
 
     dead = false;
 	m_dying = false;
