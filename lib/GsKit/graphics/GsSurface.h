@@ -296,7 +296,7 @@ public:
 
 protected:
 
-    SDL_Surface *mpSurface;
+    SDL_Surface *mpSurface = nullptr;
 };
 
 // Normal Surface
@@ -347,7 +347,9 @@ public:
                 Uint32 Rmask, Uint32 Gmask, Uint32 Bmask, Uint32 Amask)
     {
         if(mpSurface)
+        {
             SDL_FreeSurface(mpSurface);
+        }
 
         mpSurface = SDL_CreateRGBSurface(flags, width, height, depth,
                                          Rmask, Gmask, Bmask, Amask);
@@ -361,7 +363,9 @@ public:
     bool createFromSDLSfc(SDL_Surface *sfc)
     {
         if(mpSurface)
+        {
             SDL_FreeSurface(mpSurface);
+        }
 
         mpSurface = sfc;
 
