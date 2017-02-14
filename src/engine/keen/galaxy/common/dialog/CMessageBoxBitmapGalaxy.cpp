@@ -57,7 +57,7 @@ void CMessageBoxBitmapGalaxy::init()
 
     mBitmap._draw( bmpX, 10, mMBSurface.getSDLSurface() );
 
-    const int scaling = 2;
+    const int scaling = gVideoDriver.getOptimalScaling();
 
     mMBRect.w *= scaling;
     mMBRect.h *= scaling;
