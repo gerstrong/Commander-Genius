@@ -55,17 +55,16 @@ void CMessageBoxSelection::init()
     auto *blit = gVideoDriver.getBlitSurface();
     SDL_PixelFormat *format = blit->format;
 
-    mpMBSurface.reset( SDL_CreateRGBSurface( SDL_SWSURFACE,
-                mMBRect.w,
-                mMBRect.h,
-                RES_BPP,
-                format->Rmask,
-                format->Gmask,
-                format->Bmask,
-                format->Amask ), &SDL_FreeSurface );
+    mMBSurface.create(SDL_SWSURFACE,
+                      mMBRect.w,
+                      mMBRect.h,
+                      RES_BPP,
+                      format->Rmask,
+                      format->Gmask,
+                      format->Bmask,
+                      format->Amask);
 
-
-    mpMBSurface.reset(gVideoDriver.convertThroughBlitSfc( mpMBSurface.get() ), &SDL_FreeSurface);
+    mMBSurface.makeBlitCompatible();
 
 	initGalaxyFrame();
 
@@ -116,7 +115,7 @@ void CMessageBoxSelection::init()
 	Font.setupColor( oldColor );
 
 	std::unique_ptr<SDL_Surface,SDL_Surface_Deleter> pTextSfc(pColoredTextSurface);			
-	BlitSurface(pTextSfc.get(), NULL, mpMBSurface.get(), const_cast<SDL_Rect*>(&rect));
+    BlitSurface(pTextSfc.get(), NULL, mMBSurface.getSDLSurface(), const_cast<SDL_Rect*>(&rect));
 	
 	
 	// Create the Border and with two Surfaces of different colors create the rectangle
@@ -207,7 +206,7 @@ void CMessageBoxSelection::ponder()
 
 void CMessageBoxSelection::render()
 {
-    BlitSurface(mpMBSurface.get(), nullptr, gVideoDriver.getBlitSurface(), &mMBRect);
+    BlitSurface(mMBSurface.getSDLSurface(), nullptr, gVideoDriver.getBlitSurface(), &mMBRect);
 
     // now draw the glowing rectangle. It fades here!
     if(blendup)

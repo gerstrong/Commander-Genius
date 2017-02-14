@@ -14,6 +14,7 @@
 #include <memory>
 
 #include <base/GsEvent.h>
+#include <graphics/GsSurface.h>
 
 namespace galaxy
 {
@@ -34,8 +35,10 @@ public:
     virtual void ponder();
     virtual void render();
 
-	SDL_Surface *getSfc()
-	{ return mpMBSurface.get(); }
+    SDL_Surface *getSfc()
+    {
+        return mMBSurface.getSDLSurface();
+    }
 	
 	SDL_Rect getRect() const
 	{ return mMBRect; }
@@ -56,7 +59,7 @@ protected:
 	bool mMustClose;
 	SDL_Rect mMBRect;
 	std::string mText;
-	std::shared_ptr<SDL_Surface> mpMBSurface;
+    GsSurface mMBSurface;
 	unsigned int mTextHeight;
     std::unique_ptr<CEvent> mCloseEv;
 };

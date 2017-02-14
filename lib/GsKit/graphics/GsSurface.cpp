@@ -1,5 +1,6 @@
 
 #include <base/utils/Geometry.h>
+#include <base/video/CVideoDriver.h>
 
 #include "GsSurface.h"
 #include <cstring>
@@ -124,6 +125,31 @@ void GsWeakSurface::drawRect(const GsRect<Uint16> &rect,
     fill(fillRect, fillColor);
 }
 
+
+void GsSurface::createRGBSurface( const SDL_Rect &rect )
+{
+    auto *blit = gVideoDriver.getBlitSurface();
+    SDL_PixelFormat *format = blit->format;
+
+    create( SDL_SWSURFACE, rect.w, rect.h,
+            RES_BPP,
+            format->Rmask,
+            format->Gmask,
+            format->Bmask,
+            format->Amask);
+}
+
+void GsSurface::makeBlitCompatible()
+{
+    // Do not call this if the surface is invalid
+    assert(mpSurface != nullptr);
+
+    auto compatibleSfc = gVideoDriver.convertThroughBlitSfc( mpSurface );
+
+    SDL_FreeSurface(mpSurface);
+
+    mpSurface = compatibleSfc;
+}
 
 
 

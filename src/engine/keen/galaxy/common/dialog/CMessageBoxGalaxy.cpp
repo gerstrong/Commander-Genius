@@ -42,9 +42,9 @@ mCloseEv(closeEv)
 }
 
 void CMessageBoxGalaxy::init()
-{    
-    mpMBSurface.reset(CG_CreateRGBSurface( mMBRect ), &SDL_FreeSurface);
-    mpMBSurface.reset(gVideoDriver.convertThroughBlitSfc( mpMBSurface.get() ), &SDL_FreeSurface);
+{
+    mMBSurface.createRGBSurface(mMBRect);
+    mMBSurface.makeBlitCompatible();
 
 	initGalaxyFrame();
 
@@ -59,7 +59,7 @@ void CMessageBoxGalaxy::init()
 
 void CMessageBoxGalaxy::initGalaxyFrame()
 {
-	SDL_Surface *dst = mpMBSurface.get();
+    SDL_Surface *dst = mMBSurface.getSDLSurface();
 
 	// first draw a blank rect
 	SDL_Rect rect;
@@ -113,7 +113,7 @@ void CMessageBoxGalaxy::initText(const SDL_Rect &rect)
 	GsFont &Font = gGraphics.getFont(FONT_ID);
 
     GsSurface textSfc;
-    GsWeakSurface mbSurface(mpMBSurface.get());
+    GsWeakSurface mbSurface(mMBSurface.getSDLSurface());
 
     Font.createTextSurface(textSfc, mText, 0, 0, 0 );
 
@@ -136,7 +136,7 @@ void CMessageBoxGalaxy::ponder()
 void CMessageBoxGalaxy::render()
 {
     // Just render the MessageBox
-    BlitSurface(mpMBSurface.get(), nullptr, gVideoDriver.getBlitSurface(), &mMBRect);
+    BlitSurface(mMBSurface.getSDLSurface(), nullptr, gVideoDriver.getBlitSurface(), &mMBRect);
 }
 
 

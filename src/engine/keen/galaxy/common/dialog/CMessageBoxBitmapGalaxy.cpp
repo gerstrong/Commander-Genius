@@ -36,8 +36,8 @@ mAlignment(alignment)
     mMBRect.x = (gameRes.w-mMBRect.w)/2;
     mMBRect.y = (gameRes.h-mMBRect.h)/2;
 
-	mpMBSurface.reset(CG_CreateRGBSurface( mMBRect ), &SDL_FreeSurface);
-    mpMBSurface.reset(gVideoDriver.convertThroughBlitSfc( mpMBSurface.get() ), &SDL_FreeSurface);
+    mMBSurface.createRGBSurface(mMBRect);
+    mMBSurface.makeBlitCompatible();
 }
 
 void CMessageBoxBitmapGalaxy::init()
@@ -60,7 +60,7 @@ void CMessageBoxBitmapGalaxy::init()
 
 	const Uint16 bmpX = ( mAlignment == LEFT ) ? 10 : mMBRect.w-(mBitmap.width()+32);
 
-    mBitmap._draw( bmpX, 10, mpMBSurface.get() );
+    mBitmap._draw( bmpX, 10, mMBSurface.getSDLSurface() );
 }
 
 

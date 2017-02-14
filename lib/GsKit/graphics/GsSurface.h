@@ -356,6 +356,18 @@ public:
     }
 
     /**
+     * @brief createRGBSurface  Just create a simple RGB Surface
+     * @param rect  Rect for the new surface
+     */
+    void createRGBSurface( const SDL_Rect &rect );
+
+
+    /**
+     * @brief makeBlitCompatible    Ensure the given surface will be compatible to what it blitted
+     */
+    void makeBlitCompatible();
+
+    /**
      * @brief createFromSDLSfc      Call this if you want to use another SDL_Surface creation function which returns
      *                              to be managed by this class
      * @param sfc   pointer to the surface created.

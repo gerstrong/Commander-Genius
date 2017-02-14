@@ -34,7 +34,7 @@ public:
 	virtual void init();
 
 private:
-	const GsBitmap &mBitmap;
+    const GsBitmap &mBitmap;
 	const direction_t mAlignment;        
 };
 
