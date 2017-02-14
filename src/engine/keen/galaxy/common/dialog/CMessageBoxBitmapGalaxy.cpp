@@ -23,8 +23,6 @@ CMessageBoxGalaxy(Text, closeEv),
 mBitmap(BitmapRef),
 mAlignment(alignment)
 {
-    GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
-
 	// Looking if the Bitmap is too big for the Message box. In that case enlarge it!
 	if( (mBitmap.height()+26) > mMBRect.h )
 	{
@@ -32,9 +30,6 @@ mAlignment(alignment)
 	}
 
 	mMBRect.w += (mBitmap.width()+32);
-
-    mMBRect.x = (gameRes.w-mMBRect.w)/2;
-    mMBRect.y = (gameRes.h-mMBRect.h)/2;
 
     mMBSurface.createRGBSurface(mMBRect);
     mMBSurface.makeBlitCompatible();
@@ -61,6 +56,17 @@ void CMessageBoxBitmapGalaxy::init()
 	const Uint16 bmpX = ( mAlignment == LEFT ) ? 10 : mMBRect.w-(mBitmap.width()+32);
 
     mBitmap._draw( bmpX, 10, mMBSurface.getSDLSurface() );
+
+    const int scaling = 2;
+
+    mMBRect.w *= scaling;
+    mMBRect.h *= scaling;
+    mMBSurface.scaleTo(mMBRect, filterOptionType(scaling) );
+
+    GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
+
+    mMBRect.x = (gameRes.w-mMBRect.w)/2;
+    mMBRect.y = (gameRes.h-mMBRect.h)/2;
 }
 
 

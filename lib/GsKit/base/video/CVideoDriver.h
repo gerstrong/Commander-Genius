@@ -98,6 +98,12 @@ public:
         return GsRect<Uint16>(getBlitSurface()->clip_rect);
     }
 
+    /**
+     * @brief getOptimalScaling Returns an optimal scaling value depending on the blit resolution given
+     * @return the optimal scaling to use
+     */
+    int getOptimalScaling();
+
     SDL_Surface *getBlitSurface() const { return mpVideoEngine->getBlitSurface(); }
 
     GsSurface &getScreenSurface() const { return mpVideoEngine->getScreenSurface(); }

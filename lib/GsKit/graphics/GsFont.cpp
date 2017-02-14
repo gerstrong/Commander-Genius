@@ -378,15 +378,8 @@ void  GsFont::getBGColour(Uint8 *r, Uint8 *g, Uint8 *b, const bool highlight)
 
 
 void GsFont::setOptimalFontSize()
-{
-    // Calculate a proper font size for the resolution
-    const int desiredScaleW = gVideoDriver.getBlitSurface()->h/200;
-    const int desiredScaleH = gVideoDriver.getBlitSurface()->w/320;
-
-    int desiredScale = std::min(desiredScaleW, desiredScaleH);
-    desiredScale = std::max(desiredScale, 1);
-    desiredScale = std::min(desiredScale, 4);
-
+{    
+    const int desiredScale = gVideoDriver.getOptimalScaling();
     setFontSize(desiredScale);
 }
 

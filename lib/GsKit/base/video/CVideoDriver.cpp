@@ -434,6 +434,20 @@ SDL_Rect CVideoDriver::toBlitRect(const GsRect<float> &rect)
 }
 
 
+int CVideoDriver::getOptimalScaling()
+{
+    // Calculate a proper font size for the resolution
+    const int desiredScaleW = getBlitSurface()->h/200;
+    const int desiredScaleH = getBlitSurface()->w/320;
+
+    int desiredScale = std::min(desiredScaleW, desiredScaleH);
+    desiredScale = std::max(desiredScale, 1);
+    desiredScale = std::min(desiredScale, 4);
+
+    return desiredScale;
+}
+
+
 
 SDL_Surface *CVideoDriver::convertThroughBlitSfc( SDL_Surface *sfc )
 {
