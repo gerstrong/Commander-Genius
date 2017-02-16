@@ -62,7 +62,10 @@ public:
     GsBitmap mKeenTextSfc;
     GsBitmap mCurrentLogoBmp;
 
-    std::shared_ptr<SDL_Surface> mpZoomSurface;
+    //std::shared_ptr<SDL_Surface> mpStarwarsTextSfc;
+
+    //std::shared_ptr<SDL_Surface> mpZoomSurface;
+    GsSurface mZoomSurface;
 
     Vector2D<int> mCommanderTextPos;
     Vector2D<int> mKeenTextPos;

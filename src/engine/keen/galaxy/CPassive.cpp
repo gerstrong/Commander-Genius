@@ -102,13 +102,12 @@ mSkipSection(false)
     mCommanderTextSfc.setPerSurfaceAlpha(128);
     mKeenTextSfc.setPerSurfaceAlpha(128);
 
-    mpZoomSurface.reset( SDL_CreateRGBSurface(0,
-                                              cmdTextRect.w+
-                                              keenTextRect.w+
-                                              mMaxSeparationWidth,
-                                              cmdTextRect.h,
-                                              32, 0, 0, 0, 0), &SDL_FreeSurface );
-
+    mZoomSurface.create(0,
+                        cmdTextRect.w+
+                        keenTextRect.w+
+                        mMaxSeparationWidth,
+                        cmdTextRect.h,
+                        32, 0, 0, 0, 0);
 
     gInput.flushAll();
 }
@@ -230,16 +229,16 @@ void CPassiveGalaxy::processIntro()
 
     if(textSeparation <= -mMaxSeparationWidth || mSkipSection)
     {        
-        mZoomSfcPos.x = (gameRes.w-mpZoomSurface->w)/2;
-        mZoomSfcZoom.x = mpZoomSurface->w;
-        mZoomSfcZoom.y = mpZoomSurface->h;
+        mZoomSfcPos.x = (gameRes.w-mZoomSurface.width())/2;
+        mZoomSfcZoom.x = mZoomSurface.width();
+        mZoomSfcZoom.y = mZoomSurface.height();
         processPonderMode = &CPassiveGalaxy::processIntroZoom;
         processRenderMode = &CPassiveGalaxy::renderIntroZoom;
 
         gInput.flushAll();
 
-        mCommanderTextSfc._draw(0,0, mpZoomSurface.get() );
-        mKeenTextSfc._draw(mCommanderTextSfc.width()+59*mScaleFactor, 0, mpZoomSurface.get() );
+        mCommanderTextSfc._draw(0,0, mZoomSurface.getSDLSurface() );
+        mKeenTextSfc._draw(mCommanderTextSfc.width()+59*mScaleFactor, 0, mZoomSurface.getSDLSurface() );
 
         mTerminatorTimer = 0;
         mSkipSection = false;
@@ -325,7 +324,7 @@ void CPassiveGalaxy::renderIntroZoom()
         srGsRect.y -= mZoomSfcPos.y;
     }
 
-    SDL_Surface *zoomSfc = mpZoomSurface.get();
+    SDL_Surface *zoomSfc = mZoomSurface.getSDLSurface();
 
     // Here we define the Rects to zoom
     srGsRect.w = zoomSfc->w;
