@@ -62,9 +62,10 @@ public:
     GsBitmap mKeenTextSfc;
     GsBitmap mCurrentLogoBmp;
 
-    //std::shared_ptr<SDL_Surface> mpStarwarsTextSfc;
+    GsSurface mStarwarsTextSfc;
+    int mStarwarsScrollPos = 0;
+    int mStarwarsTimer = 0;
 
-    //std::shared_ptr<SDL_Surface> mpZoomSurface;
     GsSurface mZoomSurface;
 
     Vector2D<int> mCommanderTextPos;
@@ -83,7 +84,6 @@ public:
     int mCreditsBmpID;
 
     int mIntroTimer = 0;
-    int mStarWarsTimer = 0;
     bool mSwapColors = true;
 
     bool mSkipSection;

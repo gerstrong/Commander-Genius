@@ -29,6 +29,8 @@ SDL_Surface *keenSfc;
 // 10 Seconds are for 1200 logic cycles
 const int INTRO_TIME = 1200;
 const int STARWARS_TIME = 1200;
+const int STARWARS_SCROLL_TIME = 3;
+
 
 
 namespace galaxy
@@ -102,6 +104,7 @@ mSkipSection(false)
     mCommanderTextSfc.setPerSurfaceAlpha(128);
     mKeenTextSfc.setPerSurfaceAlpha(128);
 
+
     mZoomSurface.create(0,
                         cmdTextRect.w+
                         keenTextRect.w+
@@ -144,6 +147,7 @@ void CPassiveGalaxy::ponder(const float deltaT)
     if( gInput.getPressedAnyCommand() || gInput.mouseClicked() )
     {
         mSkipSection = true;
+        g_pMusicPlayer->stop();
     }
 
     (this->*processPonderMode)();
@@ -381,6 +385,71 @@ void CPassiveGalaxy::processTitle()
 
         GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
         mBackgroundStarWars.scaleTo(gameRes);
+
+
+        GsSurface darkener;
+
+        darkener.create(0, gameRes.w, gameRes.h, 32,
+                        0, 0, 0, 0);
+
+        darkener.setBlendMode(SDL_BLENDMODE_BLEND);
+        darkener.setAlpha(128);
+
+        auto *sfc = mBackgroundStarWars.getSDLSurface();
+
+        SDL_BlitSurface(darkener.getSDLSurface(), nullptr, sfc, nullptr);
+
+        //mBackgroundStarWars
+
+
+        SDL_Rect lRect;
+
+
+        // Draw the title of the story text
+        GsFont &starwarsFont = gGraphics.getFont(2);
+
+        SDL_Rect gameResSDL = gameRes.SDLRect();
+
+        const auto reqHeight = mStoryTextVector.size()*20;
+
+        mStarwarsTextSfc.create(0, 320, reqHeight, 32,
+                                0, 0, 0, 0);
+
+        // Black becomes transparent
+        mStarwarsTextSfc.setColorKey(0, 0, 0);
+
+        // Scroll position of the star wars text.
+        mStarwarsScrollPos = -gameResSDL.h;
+        mStarwarsTimer = 0;
+
+
+        lRect.h = mStarwarsTextSfc.height();    lRect.w = mStarwarsTextSfc.width();
+        lRect.x = 0;                            lRect.y = 0;
+
+        for(int i=0 ; i<mStoryTextVector.size() ; i++)
+        {
+            starwarsFont.drawFontCentered( mStarwarsTextSfc.getSDLSurface(), mStoryTextVector[i], lRect.x, lRect.w, lRect.y, false);
+            lRect.y += 20;
+        }
+
+        const auto ep = gpBehaviorEngine->getEpisode();
+
+        if(ep == 4)
+        {
+            g_pMusicPlayer->loadTrack(2);
+            g_pMusicPlayer->play();
+        }
+        else if(ep == 5)
+        {
+            g_pMusicPlayer->loadTrack(2);
+            g_pMusicPlayer->play();
+        }
+        else if(ep == 6)
+        {
+            g_pMusicPlayer->loadTrack(4);
+            g_pMusicPlayer->play();
+        }
+
     }
 }
 
@@ -404,7 +473,29 @@ void CPassiveGalaxy::processStarWars()
         }
     }
 
-    // TODO: need to put K1ngDuke code here in C++ translated.
+    // TODO: need to put K1ngDuke code here in C++ translated. (maybe...)
+
+    if(mStarwarsTimer > STARWARS_SCROLL_TIME)
+    {
+        mStarwarsTimer = 0;
+        mStarwarsScrollPos++;
+    }
+    else
+    {
+        mStarwarsTimer++;
+    }
+
+    auto *starwarsSfc = mStarwarsTextSfc.getSDLSurface();
+
+    SDL_Rect starwarsRect = starwarsSfc->clip_rect;
+
+    if(mStarwarsScrollPos >= starwarsRect.h)
+    {
+        processPonderMode = &CPassiveGalaxy::processIntro;
+        processRenderMode = &CPassiveGalaxy::renderIntro;
+
+        g_pMusicPlayer->stop();
+    }
 }
 
 
@@ -421,27 +512,47 @@ void CPassiveGalaxy::renderStarWars()
     mBackgroundStarWars.draw(0, 0);
 
     // TODO: Need to render the transformed text here!
-    SDL_Surface *sfc = gVideoDriver.getBlitSurface();
+    GsWeakSurface sfc(gVideoDriver.getBlitSurface());
 
     SDL_Rect lRect;
 
-    lRect.h = sfc->h;    lRect.w = sfc->w;
+    lRect.h = sfc.height();    lRect.w = sfc.width();
     lRect.x = 0;        lRect.y = 20;
 
 
 
-    // Draw the title of the story text
-    GsFont &startwarsFont = gGraphics.getFont(2);
+    GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
+    SDL_Rect gameResSDL = gameRes.SDLRect();
+
+    SDL_Surface *blitSfc = gVideoDriver.getBlitSurface();
+
+    CVidConfig &vidConf = gVideoDriver.getVidConfig();
 
 
-    startwarsFont.drawFontCentered( sfc, mStoryTextVector[0], lRect.x, lRect.w, lRect.y, false);
+    auto *starwarsSfc = mStarwarsTextSfc.getSDLSurface();
 
-    lRect.y += 20;
+    SDL_Rect starwarsRect = starwarsSfc->clip_rect;
 
-    startwarsFont.drawFontCentered( sfc, mStoryTextVector[2], lRect.x, lRect.w, lRect.y, false);
+    if(mStarwarsScrollPos < starwarsRect.h)
+    {
+        SDL_Rect dstRect = gameResSDL;
 
+        starwarsRect.h = dstRect.h;
 
-    lRect.h = sfc->h;    lRect.w = sfc->w;
+        // Blit the scrolling surface
+        if(mStarwarsScrollPos < 0)
+        {
+            dstRect.y = -mStarwarsScrollPos;
+        }
+        else
+        {
+            starwarsRect.y = mStarwarsScrollPos;
+        }
+
+        blitScaled( starwarsSfc, starwarsRect, blitSfc, dstRect, NONE );
+    }
+
+    lRect.h = sfc.height();    lRect.w = sfc.width();
     lRect.x = 0;        lRect.y = lRect.h-20;
 
     // Draw some text.
@@ -456,20 +567,20 @@ void CPassiveGalaxy::renderStarWars()
         Font.setupColor(0xFF0000);
     }
 
-    if(mStarWarsTimer % 60 == 0)
+    /*if(mStarWarsTimer % 60 == 0)
     {
         mSwapColors = !mSwapColors;
     }
 
 
-    Font.drawFontCentered( sfc, "Press any to start...", lRect.x, lRect.w, lRect.y, false);                    
+    Font.drawFontCentered( sfc.getSDLSurface(), "Press any to start...", lRect.x, lRect.w, lRect.y, false);
 
     mStarWarsTimer--;
 
     if(mStarWarsTimer <= 0)
     {
         mStarWarsTimer = STARWARS_TIME;
-    }
+    }*/
 }
 
 }

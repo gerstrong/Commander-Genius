@@ -216,6 +216,17 @@ public:
         #endif
     }
 
+    void setColorKey(const Uint8 r, const Uint8 g, const Uint8 b)
+    {
+        auto colorkey = SDL_MapRGB( mpSurface->format, r, g, b );
+
+        #if SDL_VERSION_ATLEAST(2, 0, 0)
+            SDL_SetColorKey(mpSurface, SDL_TRUE, colorkey);
+        #else
+            SDL_SetColorKey(mpSurface, SDL_SRCCOLORKEY, colorkey);
+        #endif
+    }
+
 
     Uint8 getAlpha()
     {
