@@ -399,11 +399,7 @@ void CPassiveGalaxy::processTitle()
 
         SDL_BlitSurface(darkener.getSDLSurface(), nullptr, sfc, nullptr);
 
-        //mBackgroundStarWars
-
-
         SDL_Rect lRect;
-
 
         // Draw the title of the story text
         GsFont &starwarsFont = gGraphics.getFont(2);
