@@ -392,7 +392,11 @@ void CPassiveGalaxy::processTitle()
         darkener.create(0, gameRes.w, gameRes.h, 32,
                         0, 0, 0, 0);
 
+
+#if SDL_VERSION_ATLEAST(2, 0, 0)
         darkener.setBlendMode(SDL_BLENDMODE_BLEND);
+#endif
+
         darkener.setAlpha(128);
 
         auto *sfc = mBackgroundStarWars.getSDLSurface();
