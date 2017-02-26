@@ -40,7 +40,7 @@ public:
      * @renderer renderer on which the texture will be drawn
      * @return true if it was loaded, otherwise false
      */
-    bool load(const std::string &fname, SDL_Renderer &renderer)
+    bool load(const std::string &fname, SDL_Renderer *renderer)
     {
         // Do we have an old texture? Unload it
         if(mpTexture)
@@ -48,14 +48,14 @@ public:
 
         // Load image at specified path
         SDL_Surface* loadedSurface = IMG_Load( fname.c_str() );
-        if( loadedSurface == NULL )
+        if( loadedSurface == nullptr )
         {
             //printf( "Unable to load image %s! SDL_image Error: %s\n", path.c_str(), IMG_GetError() );
         }
         else
         {
             //Create texture from surface pixels
-            mpTexture = SDL_CreateTextureFromSurface( &renderer, loadedSurface );
+            mpTexture = SDL_CreateTextureFromSurface( renderer, loadedSurface );
             if( mpTexture == NULL )
             {
                 //printf( "Unable to create texture from %s! SDL Error: %s\n", path.c_str(), SDL_GetError() );

@@ -65,10 +65,8 @@ bool CPassiveVort::init()
 		return false;
     }
 
-#ifdef TOUCHCONTROLS
     gInput.mpVirtPad.reset(new VirtualKeenControl);
     gInput.mpVirtPad->init();
-#endif
 
     gInput.flushAll();
 

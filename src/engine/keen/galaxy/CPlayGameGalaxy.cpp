@@ -669,22 +669,17 @@ void CPlayGameGalaxy::render()
 
 void CPlayGameGalaxy::processInput()
 {
+        VirtualKeenControl *vkc = dynamic_cast<VirtualKeenControl*>(gInput.mpVirtPad.get());
 
-#ifdef TOUCHCONTROLS
+        if(!vkc)
+        {
+            gInput.mpVirtPad.reset(new VirtualKeenControl);
+            gInput.mpVirtPad->init();
+            vkc = dynamic_cast<VirtualKeenControl*>(gInput.mpVirtPad.get());
+        }
 
-    VirtualKeenControl *vkc = dynamic_cast<VirtualKeenControl*>(gInput.mpVirtPad.get());
-
-    if(!vkc)
-    {
-        gInput.mpVirtPad.reset(new VirtualKeenControl);
-        gInput.mpVirtPad->init();
-        vkc = dynamic_cast<VirtualKeenControl*>(gInput.mpVirtPad.get());        
-    }        
-
-    assert(vkc);
-    vkc->mShowDPad = true;
-
-#endif
+        assert(vkc);
+        vkc->mShowDPad = true;
 }
 
 

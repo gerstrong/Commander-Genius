@@ -14,6 +14,7 @@
 #include "sdl/audio/music/CMusic.h"
 #include "graphics/effects/CDimDark.h"
 #include <base/GsLogging.h>
+#include <base/video/CVideoDriver.h>
 
 #include "engine/core/VGamepads/vgamepadsimple.h"
 
@@ -95,13 +96,14 @@ bool CLevelPlay::loadLevel(const Uint16 level)
 }
 
 void CLevelPlay::ponder(const float deltaT)
-{
-#ifdef TOUCHCONTROLS
-    VirtualKeenControl *vkc = dynamic_cast<VirtualKeenControl*>(gInput.mpVirtPad.get());
-    assert(vkc);
-    vkc->mButtonMode = VirtualKeenControl::ACTION;
-    vkc->mHideEnterButton = true;
-#endif
+{    
+    if( gVideoDriver.VGamePadEnabled() )
+    {
+        VirtualKeenControl *vkc = dynamic_cast<VirtualKeenControl*>(gInput.mpVirtPad.get());
+        assert(vkc);
+        vkc->mButtonMode = VirtualKeenControl::ACTION;
+        vkc->mHideStartButton = true;
+    }
 
     ponderBase(deltaT);
 }

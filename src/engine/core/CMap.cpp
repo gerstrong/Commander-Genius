@@ -703,8 +703,11 @@ void CMap::drawAll()
             Uint32 fg = m_Plane[1].getMapDataAt(x+m_mapx, y+m_mapy);
 
             m_Tilemaps.at(0).drawTile(ScrollSurface, ((x<<4)+m_mapxstripepos)&drawMask,((y<<4)+m_mapystripepos)&drawMask, bg);
+
             if(fg)
-                m_Tilemaps.at(1).drawTile(ScrollSurface, ((x<<4)+m_mapxstripepos)&drawMask,((y<<4)+m_mapystripepos)&drawMask, fg);
+            {
+               m_Tilemaps.at(1).drawTile(ScrollSurface, ((x<<4)+m_mapxstripepos)&drawMask,((y<<4)+m_mapystripepos)&drawMask, fg);
+            }
         }
     }
 }
@@ -728,8 +731,11 @@ void CMap::drawHstripe(unsigned int y, unsigned int mpy)
 	  Uint32 fg = m_Plane[1].getMapDataAt(x+m_mapx, mpy);
 
       m_Tilemaps.at(0).drawTile(ScrollSurface, ((x<<4)+m_mapxstripepos)&drawMask, y, bg);
+
 	  if(fg)
+      {
         m_Tilemaps.at(1).drawTile(ScrollSurface, ((x<<4)+m_mapxstripepos)&drawMask, y, fg);
+      }
 	}
 }
 
@@ -745,16 +751,21 @@ void CMap::drawVstripe(unsigned int x, unsigned int mpx)
 	Uint32 num_h_tiles= ScrollSurface->h/16;
 
 	if( num_h_tiles+m_mapy >= m_height )
+    {
 		num_h_tiles = m_height-m_mapy;
+    }
 
-	for(Uint32 y=0;y<num_h_tiles;y++)
+    for(Uint32 y=0 ; y<num_h_tiles ; y++)
 	{
 	  Uint32 bg = m_Plane[0].getMapDataAt(mpx, y+m_mapy);
 	  Uint32 fg = m_Plane[1].getMapDataAt(mpx, y+m_mapy);
 
-      m_Tilemaps.at(0).drawTile(ScrollSurface, x, ((y<<4)+m_mapystripepos)&drawMask, bg);
+      m_Tilemaps.at(0).drawTile(ScrollSurface, x, ((y<<4)+m_mapystripepos) & drawMask, bg);
+
 	  if(fg)
-        m_Tilemaps.at(1).drawTile(ScrollSurface, x, ((y<<4)+m_mapystripepos)&drawMask, fg);
+      {
+        m_Tilemaps.at(1).drawTile(ScrollSurface, x, ((y<<4)+m_mapystripepos) & drawMask, fg);
+      }
 	}
 }
 
@@ -802,13 +813,18 @@ void CMap::renderShaking()
 
 
 
+const bool mHideForeground = false;
+
 /**
  * \brief This function draws all the masked and foreground tiles
- * \TODO: I think this function should be splat up into vorticon and galaxy engine function somehow.
+
  */
 void CMap::_drawForegroundTiles()
 {
-    // TODO: This event pushing here is to much information that is pushed to the event list. Please reduce this!
+
+    if(mHideForeground)
+        return;
+
     SDL_Surface *surface = gVideoDriver.getBlitSurface();
 	const Uint16 num_h_tiles = surface->h;
 	const Uint16 num_v_tiles = surface->w;
@@ -820,7 +836,20 @@ void CMap::_drawForegroundTiles()
 	std::vector<CTileProperties> &TileProperties =
 			gpBehaviorEngine->getTileProperties(1);
 
-    auto visGA = gVideoDriver.mpVideoEngine->mRelativeVisGameArea;
+    const auto &visGA = gVideoDriver.mpVideoEngine->mRelativeVisGameArea;
+    const auto &visBlendGA = gVideoDriver.mpVideoEngine->mRelativeBlendVisGameArea;
+
+    const int visX1 = visGA.x;
+    const int visX2 = visGA.x+visGA.w;
+    const int visY1 = visGA.y;
+    const int visY2 = visGA.y+visGA.h;
+
+    const int visBlendX1 = visBlendGA.x;
+    const int visBlendX2 = visBlendGA.x+visBlendGA.w;
+    const int visBlendY1 = visBlendGA.y;
+    const int visBlendY2 = visBlendGA.y+visBlendGA.h;
+
+    bool blend = false;
 
     for( size_t y=y1 ; y<=y2 ; y++)
     {
@@ -831,17 +860,35 @@ void CMap::_drawForegroundTiles()
             const int loc_x = (x<<TILE_S)-m_scrollx;
             const int loc_y = (y<<TILE_S)-m_scrolly;
 
+            if( loc_x+16 < visX1 || loc_x > visX2 )
+                continue;
+
+            if( loc_y+16 < visY1 || loc_y > visY2 )
+                continue;
+
+            if( ( loc_x > visBlendX1 && loc_x < visBlendX2 ) &&
+                ( loc_y > visBlendY1 && loc_y < visBlendY2 ) )
+            {
+                blend = true;
+            }
+            else
+            {
+                blend = false;
+            }
+
             if(fg != 0)
             {
                 if(TileProperties[fg].behaviour < 0)
                 {
-                    if( loc_x+16 < visGA.x || loc_x > visGA.x+visGA.w )
-                        continue;
-
-                    if( loc_y+16 < visGA.y || loc_y > visGA.y+visGA.h )
-                        continue;
-
-                    m_Tilemaps[1].drawTile(surface, loc_x, loc_y, fg );
+                    if(blend)
+                    {
+                        m_Tilemaps[1].drawTileBlended(surface, loc_x, loc_y, fg, 128 );
+                        //m_Tilemaps[1].drawTileBlended(surface, loc_x, loc_y, 0, 128 );
+                    }
+                    else
+                    {
+                        m_Tilemaps[1].drawTile(surface, loc_x, loc_y, fg );
+                    }
                 }
             }
         }

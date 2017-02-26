@@ -2,7 +2,6 @@
 # Compilers and other specific variables can be found here:
 # http://www.cmake.org/Wiki/CMake_Useful_Variables
 
-OPTION(TOUCHCONTROLS "Touchcontrols support" No)
 
 if(SDL2)
     OPTION(OPENGL "OpenGL support" No)
@@ -191,11 +190,6 @@ IF (OPENGL)
         ADD_DEFINITIONS(-DGL)
         ADD_DEFINITIONS(-DUSE_OPENGL)
 ENDIF (OPENGL)
-
-IF (TOUCHCONTROLS)
-        ADD_DEFINITIONS(-DTOUCHCONTROLS)
-ENDIF (TOUCHCONTROLS)
-
 
 
 MESSAGE( STATUS "DOSBox-Fusion: ${DBFUSION}" )

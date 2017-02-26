@@ -86,7 +86,13 @@ public:
 	void saveCameraBounds(st_camera_bounds &CameraBounds);
 
 	CVidConfig &getVidConfig();
-	short getZoomValue();
+
+    short getZoomValue()
+    {
+        return m_VidConfig.Zoom;
+    }
+
+
 	bool getFullscreen();
 	unsigned int getWidth() const;
 	unsigned int getHeight() const;
@@ -110,7 +116,7 @@ public:
 
     SDL_Surface *convertThroughBlitSfc( SDL_Surface *sfc );
 
-	bool isOpenGL(void) { return m_VidConfig.m_opengl; }
+	bool isOpenGL(void) { return m_VidConfig.mOpengl; }
 
 	SDL_Surface *getScrollSurface(void);
 
@@ -122,9 +128,9 @@ public:
 	void setScaleType(bool IsNormal);
 	void setZoom(short vale);
 #ifdef USE_OPENGL
-	void enableOpenGL(bool value) { m_VidConfig.m_opengl = value; }	
+	void enableOpenGL(bool value) { m_VidConfig.mOpengl = value; }	
 #else
-	void enableOpenGL(bool value) { m_VidConfig.m_opengl = false; }
+    void enableOpenGL(bool value) { m_VidConfig.mOpengl = false; }
 #endif
 
     void setRenderQuality(const std::string &value) { m_VidConfig.mRenderScQuality = value; }
@@ -151,6 +157,9 @@ public:
 	}
 
 	bool getSpecialFXConfig(void) { return m_VidConfig.m_special_fx; }
+
+    bool VGamePadEnabled() { return m_VidConfig.mVPad;   }
+
 	bool getRefreshSignal() { return m_mustrefresh; }
 	void setRefreshSignal(const bool value) { m_mustrefresh = value;  }
 
@@ -159,6 +168,12 @@ public:
     {
         return *(mpVideoEngine->renderer);
     }
+
+    SDL_Renderer* Renderer()
+    {
+        return mpVideoEngine->renderer;
+    }
+
 
     /**
      * @brief addTextureToRender add texture ptr to the that will be renderered

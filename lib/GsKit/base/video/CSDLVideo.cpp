@@ -153,7 +153,24 @@ void CSDLVideo::clearSurfaces()
     mGameSfc.fillRGB(0,0,0);
 }
 
+bool mHack = false;
 
+SDL_Texture *hackTex;
+
+void CSDLVideo::hackIt()
+{
+    if(mHack) return;
+
+    mHack = true;
+
+
+     SDL_Surface* loadedSurface = IMG_Load( "global/dpad.png" );
+
+     hackTex = SDL_CreateTextureFromSurface( renderer, loadedSurface );
+
+
+     SDL_FreeSurface( loadedSurface );
+}
 
 void CSDLVideo::transformScreenToDisplay()
 {
@@ -164,7 +181,7 @@ void CSDLVideo::transformScreenToDisplay()
     mpScreenSfc->unlock();
 
     SDL_RenderClear(renderer);
-    SDL_RenderCopy(renderer, mpSDLScreenTexture.get(), NULL, NULL);
+    SDL_RenderCopy(renderer, mpSDLScreenTexture.get(), nullptr, nullptr);
 
     // Now render the textures which additionally sent over...
     while(!mRenderTexturePtrs.empty())

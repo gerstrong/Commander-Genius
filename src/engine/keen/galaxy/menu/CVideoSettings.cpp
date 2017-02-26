@@ -109,6 +109,9 @@ GalaxyMenu(GsRect<float>(0.15f, 0.24f, 0.65f, 0.55f) )
         filledStrList( 3, "nearest", "linear", "best" ) );
 #endif
 
+    mpVPadSwitch  = new Switch( "VirtPad" );
+    mpMenuDialog->addControl( mpVPadSwitch );
+
     mpMenuDialog->addControl( mpRenderScaleQualitySel );
 
 
@@ -126,11 +129,15 @@ void CVideoSettings::refresh()
 
 	// Load the config into the GUI
 	// TODO: Temporary. This must become a float later...
-	mpFPSSelection->setSelection( static_cast<int>( gTimer.FPS() ) );
+	mpFPSSelection->setSelection( static_cast<int>( gTimer.FPS() ) );    
 
 #if defined(USE_OPENGL)    
-	mpOpenGLSwitch->enable( mUserVidConf.m_opengl );
+    mpOpenGLSwitch->enable( mUserVidConf.mOpengl );
 #endif
+
+
+    mpVPadSwitch->enable( mUserVidConf.mVPad );
+
 
     mpRenderScaleQualitySel->setSelection(mUserVidConf.mRenderScQuality);
 
@@ -184,8 +191,10 @@ void CVideoSettings::release()
 	gTimer.setFPS( mpFPSSelection->getSelection() );
 
 #if defined(USE_OPENGL)
-    mUserVidConf.m_opengl = mpOpenGLSwitch->isEnabled();
+    mUserVidConf.mOpengl = mpOpenGLSwitch->isEnabled();
 #endif
+
+    mUserVidConf.mVPad = mpVPadSwitch->isEnabled();
 
     mUserVidConf.mRenderScQuality = mpRenderScaleQualitySel->getSelection();
 	

@@ -68,7 +68,8 @@ bool CSettings::saveDrvCfg()
 
         CVidConfig &VidConf = gVideoDriver.getVidConfig();
         Configuration.SetKeyword("Video", "fullscreen", VidConf.Fullscreen);
-        Configuration.SetKeyword("Video", "OpenGL", VidConf.m_opengl);
+        Configuration.SetKeyword("Video", "OpenGL", VidConf.mOpengl);
+        Configuration.SetKeyword("Video", "VirtPad", VidConf.mVPad);
 
         Configuration.WriteInt("Video", "width", VidConf.m_DisplayRect.w);
         Configuration.WriteInt("Video", "height", VidConf.m_DisplayRect.h);
@@ -184,11 +185,12 @@ bool CSettings::loadDrvCfg()
 
 #if defined(USE_OPENGL)
 
-        Configuration.ReadKeyword("Video", "OpenGL", &VidConf.m_opengl, true);
+        Configuration.ReadKeyword("Video", "OpenGL", &VidConf.mOpengl, true);
         Configuration.ReadString("Video", "OGLfilter",  VidConf.mRenderScQuality, "nearest");
 
 #endif
 
+        Configuration.SetKeyword("Video", "VirtPad", &VidConf.mVPad);
 
 		st_camera_bounds &CameraBounds = VidConf.m_CameraBounds;
 		Configuration.ReadInteger("Bound", "left", &CameraBounds.left, 152);

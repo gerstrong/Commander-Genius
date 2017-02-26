@@ -9,6 +9,7 @@
 #include "CItemEffect.h"
 #include "CSpriteItem.h"
 #include <base/CInput.h>
+#include <base/video/CVideoDriver.h>
 #include "sdl/audio/Audio.h"
 
 namespace galaxy {
@@ -225,6 +226,20 @@ void CPlayerBase::pumpEvent(const CEvent *evPtr)
 
 void CPlayerBase::processCamera()
 {
+
+    auto &relVisBlend = gVideoDriver.mpVideoEngine->mRelativeBlendVisGameArea;
+
+    relVisBlend.x = 0;  relVisBlend.w = 0;
+    relVisBlend.y = 0;  relVisBlend.h = 0;
+
+    if (gpBehaviorEngine->m_option[OPT_MODERN].value)
+    {
+        relVisBlend.x = scrx-16;
+        relVisBlend.y = scry-32;
+        relVisBlend.w = 48;
+        relVisBlend.h = 64;
+    }
+
     m_camera.process();
     m_camera.processEvents();
 }

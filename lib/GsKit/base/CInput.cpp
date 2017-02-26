@@ -340,6 +340,9 @@ std::string CInput::getEventShortName(int command, unsigned char input)
 
 void CInput::render()
 {
+    if(!gVideoDriver.VGamePadEnabled())
+        return;
+
     if(!mpVirtPad)
         return;
 
@@ -731,7 +734,7 @@ void CInput::pollEvents()
 		case SDL_MOUSEBUTTONDOWN:
 
             // If Virtual gamepad takes control...
-            if(mpVirtPad && mpVirtPad->active())
+            if(gVideoDriver.VGamePadEnabled() && mpVirtPad && mpVirtPad->active())
             {                                                
                 if(Event.button.button <= 3)
                 {
@@ -761,7 +764,7 @@ void CInput::pollEvents()
 			break;
 
 		case SDL_MOUSEBUTTONUP:
-            if(mpVirtPad && mpVirtPad->active())
+            if(gVideoDriver.VGamePadEnabled() && mpVirtPad && mpVirtPad->active())
             {
                 transMouseRelCoord(Pos, Event.motion, activeArea);
                 mpVirtPad->mouseUp(Pos);

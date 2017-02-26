@@ -224,7 +224,7 @@ bool CVideoDriver::applyMode()
 
 	// Check if some zoom/filter modes are illogical and roll them back accordingly
 	if ((m_VidConfig.Zoom == 3 && m_VidConfig.m_ScaleXFilter == 1)
-			&& !m_VidConfig.m_opengl)
+			&& !m_VidConfig.mOpengl)
 		m_VidConfig.Zoom = 2;
 
 	if (m_VidConfig.Zoom == 0)
@@ -255,14 +255,14 @@ bool CVideoDriver::start()
 	gLogging.textOut("Starting graphics driver...<br>");
 
 #ifdef USE_OPENGL
-	if (m_VidConfig.m_opengl) // If OpenGL could be set, initialize the
+	if (m_VidConfig.mOpengl) // If OpenGL could be set, initialize the
 	{
 		mpVideoEngine.reset(new COpenGL(m_VidConfig));
 		retval = mpVideoEngine->init();
 
 		if (!retval)
 		{
-			m_VidConfig.m_opengl = false;
+			m_VidConfig.mOpengl = false;
 			applyMode();
 			mpVideoEngine.reset(new CSDLVideo(m_VidConfig));
 			retval = mpVideoEngine->init();
@@ -375,9 +375,6 @@ CVidConfig &CVideoDriver::getVidConfig()
 	return m_VidConfig;
 }
 
-short CVideoDriver::getZoomValue() {
-	return m_VidConfig.Zoom;
-}
 
 void CVideoDriver::isFullscreen(const bool value) {
 	m_VidConfig.Fullscreen = value;

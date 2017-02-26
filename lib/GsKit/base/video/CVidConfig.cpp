@@ -56,9 +56,9 @@ void CVidConfig::reset()
 	Zoom=1;
 
 #ifdef USE_OPENGL
-    m_opengl = true;
+    mOpengl = true;
 #else
-    m_opengl = false; // Must stay optional for better compatibility
+    mOpengl = false; // Must stay optional for better compatibility
 #endif
 
 	mAspectCorrection.w=4;
@@ -72,7 +72,7 @@ void CVidConfig::reset()
 	m_GameRect.h = 200;
 
 #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
-	m_opengl = true;
+    mOpengl = true;
 	mAspectCorrection.w=0;
 	mAspectCorrection.h=0;
 #endif

@@ -142,7 +142,7 @@ void CGUITextSelectionList::processLogic()
 
         if( mousePos.y > fy && mousePos.y < y_innerbound_max )
         {
-            int newselection = ( ((mousePos.y-fy)*bh- halfBorderHeight )/textHeight) /*- halfBorderHeight*/ + mScrollbar.scrollPos();
+            int newselection = ( ((mousePos.y-fy)*bh- halfBorderHeight )/textHeight) + mScrollbar.scrollPos();
 
             if( mousePos.x > x_innerbound_min && mousePos.y > y_innerbound_min)
             {

@@ -59,7 +59,8 @@ public:
     filterOptionType m_ScaleXFilter;
 	bool m_normal_scale;
 	unsigned short Zoom;
-	bool m_opengl;
+    bool mOpengl;
+    bool mVPad = false;
 	GsRect<int> mAspectCorrection;
 	bool m_special_fx;
 	bool vsync;

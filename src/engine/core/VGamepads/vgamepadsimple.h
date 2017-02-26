@@ -22,7 +22,7 @@ public:
      */
     VirtualKeenControl() :
         mShowDPad(true),
-        mHideEnterButton(false),
+        mHideStartButton(false),
         mButtonMode(OK) {}
 
 
@@ -79,7 +79,7 @@ public:
 #endif
 
     bool mShowDPad;
-    bool mHideEnterButton;
+    bool mHideStartButton;
 
     BUTTON_MODE mButtonMode;
 };

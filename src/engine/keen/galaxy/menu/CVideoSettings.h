@@ -41,6 +41,9 @@ private:
 #if defined(USE_OPENGL)
     Switch			*mpOpenGLSwitch;
 #endif
+
+    Switch			*mpVPadSwitch;
+
     ComboSelection	*mpRenderScaleQualitySel;
 
     ComboSelection	*mpFilterSelection;

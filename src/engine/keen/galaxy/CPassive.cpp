@@ -121,15 +121,12 @@ bool CPassiveGalaxy::init()
     SDL_FillRect( blit, NULL, SDL_MapRGB(blit->format,0,0,0));
     gInput.flushAll();
 
-#ifdef TOUCHCONTROLS
     gInput.mpVirtPad.reset(new VirtualKeenControl);
     gInput.mpVirtPad->init();
 
     VirtualKeenControl *vkc = dynamic_cast<VirtualKeenControl*>(gInput.mpVirtPad.get());
     assert(vkc);
     vkc->mShowDPad = false;
-
-#endif
 
     const auto &storyText = gpBehaviorEngine->getString("STORY_TEXT");
     mStoryTextVector = explode(storyText, "\n");
@@ -362,11 +359,9 @@ void CPassiveGalaxy::processTitle()
 		{
             gInput.flushAll();
 
-#ifdef TOUCHCONTROLS
             VirtualKeenControl *vkc = dynamic_cast<VirtualKeenControl*>(gInput.mpVirtPad.get());
             assert(vkc);
             vkc->mShowDPad = true;
-#endif
 
             gEventManager.add(new OpenMainMenuEvent());
             mSkipSection = false;
@@ -426,7 +421,7 @@ void CPassiveGalaxy::processTitle()
         lRect.h = mStarwarsTextSfc.height();    lRect.w = mStarwarsTextSfc.width();
         lRect.x = 0;                            lRect.y = 0;
 
-        for(int i=0 ; i<mStoryTextVector.size() ; i++)
+        for(int i=0 ; i<int(mStoryTextVector.size()) ; i++)
         {
             starwarsFont.drawFontCentered( mStarwarsTextSfc.getSDLSurface(), mStoryTextVector[i], lRect.x, lRect.w, lRect.y, false);
             lRect.y += 20;
@@ -462,11 +457,9 @@ void CPassiveGalaxy::processStarWars()
         {
             gInput.flushAll();
 
-#ifdef TOUCHCONTROLS
             VirtualKeenControl *vkc = dynamic_cast<VirtualKeenControl*>(gInput.mpVirtPad.get());
             assert(vkc);
             vkc->mShowDPad = true;
-#endif
 
             gEventManager.add(new OpenMainMenuEvent());
             mSkipSection = false;
@@ -526,8 +519,6 @@ void CPassiveGalaxy::renderStarWars()
 
     SDL_Surface *blitSfc = gVideoDriver.getBlitSurface();
 
-    CVidConfig &vidConf = gVideoDriver.getVidConfig();
-
 
     auto *starwarsSfc = mStarwarsTextSfc.getSDLSurface();
 
@@ -566,21 +557,6 @@ void CPassiveGalaxy::renderStarWars()
     {
         Font.setupColor(0xFF0000);
     }
-
-    /*if(mStarWarsTimer % 60 == 0)
-    {
-        mSwapColors = !mSwapColors;
-    }
-
-
-    Font.drawFontCentered( sfc.getSDLSurface(), "Press any to start...", lRect.x, lRect.w, lRect.y, false);
-
-    mStarWarsTimer--;
-
-    if(mStarWarsTimer <= 0)
-    {
-        mStarWarsTimer = STARWARS_TIME;
-    }*/
 }
 
 }

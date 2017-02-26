@@ -19,6 +19,8 @@
 #include "fileio/KeenFiles.h"
 #include "engine/core/VGamepads/vgamepadsimple.h"
 
+#include <base/video/CVideoDriver.h>
+
 #include <array>
 
 const int TIME_TO_WAVE = 400;
@@ -405,13 +407,6 @@ void CPlayerWM::processMoving()
         gpBehaviorEngine->mCheatmode.noclipping = false;
     }
 
-#ifdef TOUCHCONTROLS
-    VirtualKeenControl *vkc = dynamic_cast<VirtualKeenControl*>(gInput.mpVirtPad.get());
-    assert(vkc);
-    vkc->mButtonMode = VirtualKeenControl::WMAP;
-    vkc->mHideEnterButton = true;
-#endif
-
 
     /// Check if Keen is able to access a level
     // Get the object
@@ -421,20 +416,24 @@ void CPlayerWM::processMoving()
     if(object) // if we found an object
     {
 
-#ifdef TOUCHCONTROLS
-        int level = object - 0xC000;
-        const Uint16 flag_dest = level + 0xF000;
-
-        const int ep = gpBehaviorEngine->getEpisode();
-        const int shipLevel = (ep < 6) ? 18 : 17;
-
-        if(mp_Map->findTile(flag_dest, &x, &y, 2) ||
-           gpBehaviorEngine->m_option[OPT_LVLREPLAYABILITY].value
-           || level >= shipLevel)
+        if( gVideoDriver.VGamePadEnabled() )
         {
-            vkc->mHideEnterButton = false;
+
+            VirtualKeenControl *vkc = dynamic_cast<VirtualKeenControl*>(gInput.mpVirtPad.get());
+
+            int level = object - 0xC000;
+            const Uint16 flag_dest = level + 0xF000;
+
+            const int ep = gpBehaviorEngine->getEpisode();
+            const int shipLevel = (ep < 6) ? 18 : 17;
+
+            if(mp_Map->findTile(flag_dest, &x, &y, 2) ||
+                    gpBehaviorEngine->m_option[OPT_LVLREPLAYABILITY].value
+                    || level >= shipLevel)
+            {
+                vkc->mHideStartButton = false;
+            }
         }
-#endif
 
         // Try to start a level
         if( m_playcontrol[PA_JUMP] )
@@ -443,6 +442,13 @@ void CPlayerWM::processMoving()
             startLevel(object);
             gInput.flushCommands();
         }
+    }
+    else
+    {
+        VirtualKeenControl *vkc = dynamic_cast<VirtualKeenControl*>(gInput.mpVirtPad.get());
+        assert(vkc);
+        vkc->mButtonMode = VirtualKeenControl::WMAP;
+        vkc->mHideStartButton = true;
     }
 
     

@@ -134,6 +134,7 @@ public:
 #endif
 
     GsRect<int> mRelativeVisGameArea;
+    GsRect<int> mRelativeBlendVisGameArea;
 
 protected:
 

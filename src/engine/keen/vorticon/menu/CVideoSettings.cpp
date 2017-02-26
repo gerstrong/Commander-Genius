@@ -100,6 +100,10 @@ VorticonMenu(GsRect<float>(0.15f, 0.24f, 0.65f, 0.55f) )
     mpMenuDialog->addControl( mpRenderScaleQualitySel );
 #endif
 
+    mpVPadSwitch  = new Switch( "VirtPad" );
+    mpMenuDialog->addControl( mpVPadSwitch );
+
+
 
     mpSFXSwitch = new Switch( "Special FX" );
     mpMenuDialog->addControl( mpSFXSwitch );
@@ -114,8 +118,10 @@ void CVideoSettings::refresh()
 	mpFPSSelection->setSelection( static_cast<int>( gTimer.FPS() ) );
 
 #if defined(USE_OPENGL)
-    mpOpenGLSwitch->enable( mUserVidConf.m_opengl );
+    mpOpenGLSwitch->enable( mUserVidConf.mOpengl );
 #endif
+
+    mpVPadSwitch->enable(mpVPadSwitch->isEnabled());
 
     mpRenderScaleQualitySel->setSelection(mUserVidConf.mRenderScQuality);
 
@@ -169,14 +175,27 @@ void CVideoSettings::release()
 	gTimer.setFPS( mpFPSSelection->getSelection() );
 
 #if defined(USE_OPENGL)
-    mUserVidConf.m_opengl = mpOpenGLSwitch->isEnabled();
-#endif
+    mUserVidConf.mOpengl = mpOpenGLSwitch->isEnabled();
+#endif       
+
+
+    mUserVidConf.mVPad = mpVPadSwitch->isEnabled();
+
 
     mUserVidConf.mRenderScQuality = mpRenderScaleQualitySel->getSelection();
 
 	
 #if !defined(EMBEDDED)	
-	//mUserVidConf.m_aspect_correction = mpAspectSwitch->isEnabled();	
+
+    mUserVidConf.mVPad = mpVPadSwitch->isEnabled();
+
+    // Disable OpenGL when using Virtual GL
+    if(mUserVidConf.mVPad)
+    {
+        mUserVidConf.mOpengl = false;
+    }
+
+
 	mUserVidConf.vsync = mpVSyncSwitch->isEnabled();
     std::string scalerStr = mpFilterSelection->getSelection();
 

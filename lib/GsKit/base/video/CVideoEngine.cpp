@@ -78,7 +78,7 @@ bool CVideoEngine::init()
 
 	// Enable OpenGL
 #ifdef USE_OPENGL
-	if(m_VidConfig.m_opengl)
+    if(m_VidConfig.mOpengl)
 	{
 		if(m_VidConfig.vsync)
 		{
@@ -329,33 +329,6 @@ void CVideoEngine::blitScrollSurface() // This is only for tiles
 
     BlitSurface(ScrollSurface, &srGsRect, blitSurface, &dstrect);
 }
-
-/*void CVideoEngine::stop()
-{
-	gLogging.textOut(GREEN, "Freeing the following graphical surfaces:<br>\n");
-
-    if( BlitSurface )
-    {
-        SDL_FreeSurface(BlitSurface);
-        gLogging.textOut("freed BlitSurface<br>");
-        BlitSurface=NULL;
-    }
-
-    if( FilteredSurface )
-    {
-        SDL_FreeSurface(FilteredSurface);
-        gLogging.textOut("freed FilteredSurface<br>");
-        FilteredSurface = NULL;
-    }
-
-    if( ScrollSurface && (ScrollSurface->map != NULL) )
-    {
-        SDL_FreeSurface(ScrollSurface);
-        gLogging.textOut("freed ScrollSurface<br>");
-        ScrollSurface = NULL;
-    }
-}*/
-
 
 void CVideoEngine::filterUp()
 {

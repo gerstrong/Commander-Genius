@@ -36,7 +36,7 @@ bool VirtualKeenControl::init()
             const std::string buttonFname = getResourceFilename(fname, "", true, true);
             if(buttonFname == "") return false;
 
-            texture.load(GetFullFileName(buttonFname), gVideoDriver.getRendererRef());
+            texture.load(GetFullFileName(buttonFname), gVideoDriver.Renderer());
             if( !texture )
             {
                 gLogging.ftextOut("Failed to load the texture: %s!\n", fname.c_str());
@@ -117,7 +117,7 @@ void VirtualKeenControl::render(GsWeakSurface &sfc)
     }
 
     // On map, show the start button if keen approaches a level
-    if(mButtonMode == WMAP && !mHideEnterButton)
+    if(mButtonMode == WMAP && !mHideStartButton)
     {
         const float buttonSize = 0.1f;
 
@@ -235,7 +235,7 @@ void VirtualKeenControl::mouseState(const Vector2D<float> &Pos, const bool down)
             }
 
             // On map if we can enter a level, let's enter!
-            if(mButtonMode == WMAP && !mHideEnterButton)
+            if(mButtonMode == WMAP && !mHideStartButton)
             {
                 // Was the Ok button pressed?
                 GsRect<float> confirmRect(1.0f-2.0f*buttonSize, 1.0f-2.0f*buttonSize, buttonSize, buttonSize);

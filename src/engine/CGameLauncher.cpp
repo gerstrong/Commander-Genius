@@ -66,10 +66,14 @@ m_start_level(start_level)
     gMenuController.clearMenuStack();
     letchooseagain();
 
-#ifdef TOUCHCONTROLS
     gInput.mpVirtPad.reset(new VirtualKeenControl);
-    gInput.mpVirtPad->init();
-#endif
+
+    if( gInput.mpVirtPad->init() )
+    {
+        const std::string err = "Error loading the Virtual Gamepad!";
+
+        gLogging.textOut(err);
+    }
 
 }
 
