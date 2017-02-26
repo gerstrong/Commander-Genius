@@ -844,7 +844,7 @@ void CMap::_drawForegroundTiles()
     const int visBlendY1 = visBlendGA.y;
     const int visBlendY2 = visBlendGA.y+visBlendGA.h;
 
-
+    auto &tilemap = m_Tilemaps[1];
 
     for( size_t y=y1 ; y<=y2 ; y++)
     {
@@ -865,16 +865,14 @@ void CMap::_drawForegroundTiles()
             {
                 if(TileProperties[fg].behaviour < 0)
                 {
-                    // TODO: If Tilemap gets an alpha value to be set and is set back it sometimes does not work correctly
-                    // Test with Keen 6 (No Special tiles)
-                    /*if( ( loc_x > visBlendX1 && loc_x < visBlendX2 ) &&
+                    if( ( loc_x > visBlendX1 && loc_x < visBlendX2 ) &&
                         ( loc_y > visBlendY1 && loc_y < visBlendY2 ) )
                     {
-                        m_Tilemaps[1].drawTileBlended(surface, loc_x, loc_y, fg, 128 );
+                        tilemap.drawTileBlended(surface, loc_x, loc_y, fg, 192 );
                     }
-                    else*/
+                    else
                     {
-                        m_Tilemaps[1].drawTile(surface, loc_x, loc_y, fg );
+                        tilemap.drawTile(surface, loc_x, loc_y, fg );
                     }
                 }
             }

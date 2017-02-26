@@ -41,6 +41,7 @@ public:
 private:
 
     GsSurface mTileSurface;
+    GsSurface mTileSurfaceAlpha;
 
 	int m_EmptyBackgroundTile;
 	Uint16 m_numtiles;

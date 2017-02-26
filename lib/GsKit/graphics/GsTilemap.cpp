@@ -208,6 +208,11 @@ void GsTilemap::drawTileBlended(SDL_Surface *dst,
                                 const int x, const int y,
                                 const Uint16 t, const Uint8 alpha)
 {
+    if(mTileSurfaceAlpha.empty())
+    {
+        mTileSurfaceAlpha.createCopy(mTileSurface);
+    }
+
     SDL_Rect src_rect, dst_rect;
     src_rect.x = (t%m_column)<<m_pbasesize;
     src_rect.y = (t/m_column)<<m_pbasesize;
@@ -226,14 +231,18 @@ void GsTilemap::drawTileBlended(SDL_Surface *dst,
         src_rect.w = dst->w - dst_rect.x;
     }
 
-    const auto oldAlpha = mTileSurface.getAlpha();
+    const auto oldAlpha = mTileSurfaceAlpha.getAlpha();
+    const auto oldBlend = mTileSurfaceAlpha.getBlendMode();
 
-    mTileSurface.setAlpha(alpha);
 
-    auto rawSDLSfc = mTileSurface.getSDLSurface();
+    //mTileSurfaceAlpha.setBlendMode(1);
+    mTileSurfaceAlpha.setAlpha(alpha);
+
+    auto rawSDLSfc = mTileSurfaceAlpha.getSDLSurface();
     BlitSurface(rawSDLSfc, &src_rect, dst, &dst_rect);
 
-    mTileSurface.setAlpha(oldAlpha);
+    //mTileSurfaceAlpha.setBlendMode(oldBlend);
+    mTileSurfaceAlpha.setAlpha(oldAlpha);
 }
 
 

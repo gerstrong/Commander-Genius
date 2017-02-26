@@ -190,12 +190,6 @@ public:
 #endif
     }
 
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-    void setBlendMode(const SDL_BlendMode mode)
-    {
-        SDL_SetSurfaceBlendMode( mpSurface, mode );
-    }
-#endif
 
 
     void setPaletteColors(SDL_Color *Palette)
@@ -239,13 +233,34 @@ public:
     #endif
     }
 
-    void setAlpha(const unsigned char alpha)
+
+    void setBlendMode(const int mode)
     {
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    SDL_SetSurfaceBlendMode( mpSurface, SDL_BLENDMODE_BLEND );
-    SDL_SetSurfaceAlphaMod( mpSurface, alpha);
+        SDL_SetSurfaceBlendMode( mpSurface, SDL_BlendMode(mode) );
+#endif
+    }
+
+
+    int getBlendMode() const
+    {
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+        SDL_BlendMode blend;
+        SDL_GetSurfaceBlendMode( mpSurface, &blend );
+        return int(blend);
 #else
-    SDL_SetAlpha(mpSurface, SDL_SRCALPHA, alpha);
+        return 0;
+#endif
+    }
+
+
+    void setAlpha(const unsigned char alpha)
+    {
+#if SDL_VERSION_ATLEAST(2, 0, 0)                
+        SDL_SetSurfaceBlendMode( mpSurface, SDL_BLENDMODE_BLEND );
+        SDL_SetSurfaceAlphaMod( mpSurface, alpha);
+#else
+        SDL_SetAlpha(mpSurface, SDL_SRCALPHA, alpha);
 #endif
     }
 
@@ -407,16 +422,10 @@ public:
     {
         SDL_Surface *sdlSfc = orig.getSDLSurface();
         SDL_PixelFormat *format = sdlSfc->format;
-        create(sdlSfc->flags,
-               sdlSfc->w,
-               sdlSfc->h,
-               format->BitsPerPixel,
-               format->Rmask,
-               format->Gmask,
-               format->Bmask,
-               format->Amask);
 
-        orig.blitTo(*this);
+        mpSurface = SDL_ConvertSurface(sdlSfc,
+                                       format,
+                                       sdlSfc->flags);
     }
 
     /// Scale routines
