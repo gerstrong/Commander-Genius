@@ -32,7 +32,9 @@ public:
 
     void drawTile(SDL_Surface *dst, int x, int y, Uint16 t);
 
-    void drawTileBlended(SDL_Surface *dst, int x, int y, Uint16 t, Uint8 amount);
+    void drawTileBlended(SDL_Surface *dst,
+                         const int x, const int y,
+                         const Uint16 t, const Uint8 alpha);
 
     void applyGalaxyHiColourMask();
 

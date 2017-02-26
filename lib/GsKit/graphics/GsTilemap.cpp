@@ -204,7 +204,9 @@ void GsTilemap::drawTile(SDL_Surface *dst, int x, int y, Uint16 t)
 }
 
 
-void GsTilemap::drawTileBlended(SDL_Surface *dst, int x, int y, Uint16 t, Uint8 alpha)
+void GsTilemap::drawTileBlended(SDL_Surface *dst,
+                                const int x, const int y,
+                                const Uint16 t, const Uint8 alpha)
 {
     SDL_Rect src_rect, dst_rect;
     src_rect.x = (t%m_column)<<m_pbasesize;

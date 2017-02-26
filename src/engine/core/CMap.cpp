@@ -813,17 +813,12 @@ void CMap::renderShaking()
 
 
 
-const bool mHideForeground = false;
-
 /**
  * \brief This function draws all the masked and foreground tiles
 
  */
 void CMap::_drawForegroundTiles()
 {
-
-    if(mHideForeground)
-        return;
 
     SDL_Surface *surface = gVideoDriver.getBlitSurface();
 	const Uint16 num_h_tiles = surface->h;
@@ -849,7 +844,7 @@ void CMap::_drawForegroundTiles()
     const int visBlendY1 = visBlendGA.y;
     const int visBlendY2 = visBlendGA.y+visBlendGA.h;
 
-    bool blend = false;
+
 
     for( size_t y=y1 ; y<=y2 ; y++)
     {
@@ -866,26 +861,18 @@ void CMap::_drawForegroundTiles()
             if( loc_y+16 < visY1 || loc_y > visY2 )
                 continue;
 
-            if( ( loc_x > visBlendX1 && loc_x < visBlendX2 ) &&
-                ( loc_y > visBlendY1 && loc_y < visBlendY2 ) )
-            {
-                blend = true;
-            }
-            else
-            {
-                blend = false;
-            }
-
             if(fg != 0)
             {
                 if(TileProperties[fg].behaviour < 0)
                 {
-                    if(blend)
+                    // TODO: If Tilemap gets an alpha value to be set and is set back it sometimes does not work correctly
+                    // Test with Keen 6 (No Special tiles)
+                    /*if( ( loc_x > visBlendX1 && loc_x < visBlendX2 ) &&
+                        ( loc_y > visBlendY1 && loc_y < visBlendY2 ) )
                     {
                         m_Tilemaps[1].drawTileBlended(surface, loc_x, loc_y, fg, 128 );
-                        //m_Tilemaps[1].drawTileBlended(surface, loc_x, loc_y, 0, 128 );
                     }
-                    else
+                    else*/
                     {
                         m_Tilemaps[1].drawTile(surface, loc_x, loc_y, fg );
                     }
@@ -930,10 +917,8 @@ void CMap::animateAllTiles()
 
     const int drawMask = ScrollSurface->w-1;
 
-
     // Tick, tock!!
     mAnimtileTimer += 1.0f;
-    //const Uint8 animtileTimerInt = static_cast<Uint8>(mAnimtileTimer);
 
 
     if( mAnimtileTimer > 256.0f )
@@ -943,15 +928,8 @@ void CMap::animateAllTiles()
 
 
     static int animtileTimerInt = 0;
-    static Uint8 timeIt = 0;
 
-    timeIt++;
-
-    //if(timeIt >= 10)
-    {
-        animtileTimerInt++;
-        timeIt = 0;
-    }
+    animtileTimerInt++;
 
 
     // Go through the list and just draw all the tiles that need to be animated
@@ -996,10 +974,6 @@ void CMap::animateAllTiles()
                     timersBack[offset] = backTileProperties[*p_back_tile].animationTime;
                     draw = true;
                 }
-                //else
-                {
-                    //timersBack[offset]--;
-                }
             }
 
             if( front_tile.animationTime )
@@ -1012,10 +986,6 @@ void CMap::animateAllTiles()
                     timersFront[offset] = frontTileProperties[*p_front_tile].animationTime;
                     draw = true;
                 }
-                //else
-                {
-                    //timersFront[offset]--;
-                }
             }
 
             if( draw && x >= m_mapx && y >= m_mapy &&
@@ -1026,46 +996,12 @@ void CMap::animateAllTiles()
                 const Uint16 loc_x = (((x-m_mapx)<<4)+m_mapxstripepos) & drawMask;
                 const Uint16 loc_y = (((y-m_mapy)<<4)+m_mapystripepos) & drawMask;
 
-
-
-
                 m_Tilemaps[0].drawTile(ScrollSurface, loc_x, loc_y, bgTile);
-
-                /*if(back_tile.animationTime)
-                {
-                    int alphaBg = 255-(64*(back_tile.animationTime-timersBack[offset]));
-
-                    if(alphaBg < 0)
-                    {
-                        alphaBg = 0;
-                    }
-
-
-                    m_Tilemaps[0].drawTileBlended(ScrollSurface, loc_x, loc_y, backTileProperties[*p_back_tile].prevTile, alphaBg);
-                }*/
-
-
-
 
                 if(fgTile)
                 {
                     m_Tilemaps[1].drawTile(ScrollSurface, loc_x, loc_y, fgTile);
-
-                    /*if(frontTileProperties[*p_front_tile].animationTime)
-                    {
-                        int alphaFg = 255-(64*(frontTileProperties[*p_front_tile].animationTime-timersFront[offset]));
-
-                        if(alphaFg < 0)
-                        {
-                            alphaFg = 0;
-                        }
-
-
-                        m_Tilemaps[1].drawTileBlended(ScrollSurface, loc_x, loc_y, frontTileProperties[*p_front_tile].prevTile, alphaFg);
-                    }*/
                 }
-
-
             }
 
             p_back_tile++;
