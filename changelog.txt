@@ -1,3 +1,10 @@
+v1.9.8.7:
+---------
+-  Modern style option finally does something (translucent Keen in hidden areas)
+-  A lot of more and improved error catching
+-  Lots of bug fixes
+-  Improved mods compatibility
+
 v1.9.8.3:
 ---------
 - Hackable Lindsey Messages through python3

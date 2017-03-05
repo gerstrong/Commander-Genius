@@ -26,6 +26,7 @@ cd ${DST}
 # Sources Packages signed for PPA
 debuild -S -k${KEY}
 
+cd ..
 
-debuild -us -uc
-#dput ppa:gerstrong/cgenius commandergenius_${VERSION}ppa1_source.changes
+#debuild -us -uc
+dput ppa:gerstrong/cgenius commandergenius_${VERSION}ppa2_source.changes
