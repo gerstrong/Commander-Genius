@@ -109,14 +109,20 @@ GalaxyMenu(GsRect<float>(0.15f, 0.24f, 0.65f, 0.55f) )
         filledStrList( 3, "nearest", "linear", "best" ) );
 #endif
 
-    mpVPadSwitch  = new Switch( "VirtPad" );
-    mpMenuDialog->addControl( mpVPadSwitch );
-
     mpMenuDialog->addControl( mpRenderScaleQualitySel );
+
+    mpVPadSwitch  = new Switch( "VirtPad" );
+    mpMenuDialog->addControl( mpVPadSwitch );    
 
 
     mpSFXSwitch = new Switch( "Special FX" );
     mpMenuDialog->addControl( mpSFXSwitch );
+
+    mpBorderColorSwitch = new Switch( "Border Color" );
+    mpMenuDialog->addControl( mpBorderColorSwitch );
+
+    mpHorizBordersSwitch = new Switch( "Horizontal Borders");
+    mpMenuDialog->addControl( mpHorizBordersSwitch );
 
 	setMenuLabel("OPTIONSMENULABEL");
 
@@ -142,6 +148,11 @@ void CVideoSettings::refresh()
     mpRenderScaleQualitySel->setSelection(mUserVidConf.mRenderScQuality);
 
 	mpSFXSwitch->enable( mUserVidConf.m_special_fx );	
+
+    // TODO: find a way to indicate a color
+    mpBorderColorSwitch->enable( false );
+
+    mpHorizBordersSwitch->enable( mUserVidConf.mHorizBorders );
 
 #if !defined(EMBEDDED)
 	//mpAspectSwitch->enable( mUserVidConf.m_aspect_correction );
@@ -199,7 +210,6 @@ void CVideoSettings::release()
     mUserVidConf.mRenderScQuality = mpRenderScaleQualitySel->getSelection();
 	
 #if !defined(EMBEDDED)	
-	//mUserVidConf.m_aspect_correction = mpAspectSwitch->isEnabled();	
 	mUserVidConf.vsync = mpVSyncSwitch->isEnabled();
     std::string scalerStr = mpFilterSelection->getSelection();
 
@@ -243,6 +253,18 @@ void CVideoSettings::release()
 
 
 	mUserVidConf.m_special_fx = mpSFXSwitch->isEnabled();
+
+    // TODO: Better way to setup colors in the menu
+    if(mpBorderColorSwitch->isEnabled())
+    {
+        mUserVidConf.mBorderColors.r = 0x00;
+        mUserVidConf.mBorderColors.g = 0xAA;
+        mUserVidConf.mBorderColors.b = 0xAA;
+    }
+
+
+    mUserVidConf.mHorizBorders = mpHorizBordersSwitch->isEnabled();
+
 
 	// In case the user changed something in the camera settings, reload that.
 	mUserVidConf.m_CameraBounds = gVideoDriver.getCameraBounds();

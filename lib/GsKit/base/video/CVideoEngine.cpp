@@ -153,6 +153,9 @@ bool CVideoEngine::init()
     }
 	#endif
 
+
+    mClearColor = m_VidConfig.mBorderColors;
+
 	return true;
 }
 
@@ -359,5 +362,5 @@ void CVideoEngine::filterUp()
 
 void CVideoEngine::shutdown()
 {
-    //stop();
+
 }

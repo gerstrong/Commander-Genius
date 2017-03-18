@@ -180,6 +180,9 @@ void CSDLVideo::transformScreenToDisplay()
     SDL_UpdateTexture(mpSDLScreenTexture.get(), nullptr, mpScreenSfc->getSDLSurface()->pixels, mpScreenSfc->width() * sizeof (Uint32));
     mpScreenSfc->unlock();
 
+
+    SDL_SetRenderDrawColor(renderer, mClearColor.r, mClearColor.g, mClearColor.b, 255);
+
     SDL_RenderClear(renderer);
     SDL_RenderCopy(renderer, mpSDLScreenTexture.get(), nullptr, nullptr);
 
@@ -224,6 +227,8 @@ void CSDLVideo::transformScreenToDisplay()
 
 
     SDL_RenderPresent(renderer);
+
+
 #else
 
     // Blit the stuff

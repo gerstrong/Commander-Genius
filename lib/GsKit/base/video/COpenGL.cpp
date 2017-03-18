@@ -72,8 +72,8 @@ void COpenGL::collectSurfaces()
 }
 
 void COpenGL::clearSurfaces()
-{
-    mpScreenSfc->fillRGB(0,0,0);
+{    
+    mpScreenSfc->fillRGB(mClearColor.r, mClearColor.b, mClearColor.g);
 }
 
 

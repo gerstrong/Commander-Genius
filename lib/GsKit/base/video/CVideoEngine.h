@@ -17,6 +17,7 @@
 #include "CVidConfig.h"
 #include <graphics/GsSurface.h>
 #include <graphics/GsTexture.h>
+#include <base/utils/Color.h>
 #include <memory>
 #include <queue>
 
@@ -177,6 +178,14 @@ protected:
 
 	// A sub-rectangle where an aspect-corrected frame is displayed
     GsRect<Uint16> mAspectCorrectionRect;
+
+
+    /**
+     * @brief mClearColor   Color used for clearing the Screen
+     *                      0 means black, but through a config the use might change this
+     */
+
+    Color mClearColor;
 };
 
 #endif /* CVIDEOENGINE_H_ */

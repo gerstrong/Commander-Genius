@@ -313,7 +313,7 @@ void CVideoDriver::updateScrollBuffer(const Sint16 SBufferX, const Sint16 SBuffe
 }
 
 void CVideoDriver::blitScrollSurface() // This is only for tiles
-// Therefore the name should be changed
+                                       // Therefore the name should be changed
 {
 	mpVideoEngine->blitScrollSurface();
 }
