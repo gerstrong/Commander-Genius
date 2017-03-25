@@ -18,7 +18,6 @@
 #include "engine/core/CBehaviorEngine.h"
 #include "CameraSettings.h"
 #include "CVideoSettings.h"
-//#include "CSettingsMenu.h"
 #include <base/utils/Utils.h>
 
 #include "widgets/NumberControl.h"
@@ -121,8 +120,8 @@ GalaxyMenu(GsRect<float>(0.15f, 0.20f, 0.65f, 0.55f) )
     mpBorderColorSwitch = new Switch( "Border Color" );
     mpMenuDialog->addControl( mpBorderColorSwitch );
 
-    mpHorizBordersSwitch = new Switch( "Horizontal Borders");
-    mpMenuDialog->addControl( mpHorizBordersSwitch );
+    mpHorizBordersSelection = new NumberControl( "H-Borders", 0, 80, 5, 0);
+    mpMenuDialog->addControl( mpHorizBordersSelection );
 
 	setMenuLabel("OPTIONSMENULABEL");
 
@@ -152,14 +151,7 @@ void CVideoSettings::refresh()
     // TODO: find a way to indicate a color
     mpBorderColorSwitch->enable( false );
 
-    if(mUserVidConf.mHorizBorders > 0)
-    {
-        mpHorizBordersSwitch->enable( true );
-    }
-    else
-    {
-        mpHorizBordersSwitch->enable( false );
-    }
+    mpHorizBordersSelection->setSelection( mUserVidConf.mHorizBorders );
 
 #if !defined(EMBEDDED)
 	//mpAspectSwitch->enable( mUserVidConf.m_aspect_correction );
@@ -269,15 +261,7 @@ void CVideoSettings::release()
         mUserVidConf.mBorderColors.b = 0xAA;
     }
 
-
-    mUserVidConf.mHorizBorders = 0;
-    if( mpHorizBordersSwitch->isEnabled() )
-    {
-        mUserVidConf.mHorizBorders = 20;
-    }
-
-
-
+    mUserVidConf.mHorizBorders = mpHorizBordersSelection->getSelection();
 
 	// In case the user changed something in the camera settings, reload that.
 	mUserVidConf.m_CameraBounds = gVideoDriver.getCameraBounds();

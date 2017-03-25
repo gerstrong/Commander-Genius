@@ -51,7 +51,7 @@ private:
     Switch		*mpVSyncSwitch;
     Switch		*mpSFXSwitch;
     Switch		*mpBorderColorSwitch;
-    Switch		*mpHorizBordersSwitch;
+    NumberControl		*mpHorizBordersSelection;
     GalaxyButton		*mpFullScreenSwitch;
     ComboSelection	*mpResolutionSelection;
     ComboSelection	*mpGameResSelection;

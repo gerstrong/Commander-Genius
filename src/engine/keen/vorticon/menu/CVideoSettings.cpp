@@ -12,13 +12,10 @@
 #include <base/utils/StringUtils.h>
 #include <widgets/GsMenuController.h>
 
-
-//#include "hardware/Configurator.h"
 #include "engine/core/CBehaviorEngine.h"
 #include "CCameraSettings.h"
 #include "CVideoSettings.h"
 #include "engine/core/CSettings.h"
-//#include "Utils.h"
 #include "engine/core/videoAspect.h"
 
 
@@ -111,8 +108,8 @@ VorticonMenu(GsRect<float>(0.15f, 0.24f, 0.65f, 0.55f) )
     mpBorderColorSwitch = new Switch( "Border Color" );
     mpMenuDialog->addControl( mpBorderColorSwitch );
 
-    mpHorizBordersSwitch = new Switch( "Horizontal Borders");
-    mpMenuDialog->addControl( mpHorizBordersSwitch );
+    mpHorizBordersSelection = new NumberControl( "H-Borders", 0, 80, 5, 0, false);
+    mpMenuDialog->addControl( mpHorizBordersSelection );
 }
 
 void CVideoSettings::refresh()
@@ -136,7 +133,7 @@ void CVideoSettings::refresh()
     // TODO: find a way to indicate a color
     mpBorderColorSwitch->enable( false );
 
-    mpHorizBordersSwitch->enable( mUserVidConf.mHorizBorders );
+    mpHorizBordersSelection->setSelection( static_cast<int>( mUserVidConf.mHorizBorders ) );
 
 #if !defined(EMBEDDED)
 	//mpAspectSwitch->enable( mUserVidConf.m_aspect_correction );
@@ -204,7 +201,7 @@ void CVideoSettings::release()
     }
 
 
-    mUserVidConf.mHorizBorders = mpHorizBordersSwitch->isEnabled();
+    mUserVidConf.mHorizBorders = mpHorizBordersSelection->getSelection();
 
 	
 #if !defined(EMBEDDED)	

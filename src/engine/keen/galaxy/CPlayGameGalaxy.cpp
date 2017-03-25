@@ -508,6 +508,9 @@ void CPlayGameGalaxy::ponder(const float deltaT)
     GsRect<float> rRect(mMenuButtonRect);
     const float w = gVideoDriver.getBlitSurface()->w;
     const float h = gVideoDriver.getBlitSurface()->h;
+
+    rRect.y += gVideoDriver.getVidConfig().mHorizBorders;
+
     rRect.x /= w;       rRect.y /= h;
     rRect.w /= w;       rRect.h /= h;
 
@@ -656,8 +659,11 @@ void CPlayGameGalaxy::render()
     // The position of the sandwich menu depends on the configured blit resolution
     mMenuButtonRect.x = gVideoDriver.getBlitSurface()->w-10;
 
+    auto menuButtonRectWithBorder = mMenuButtonRect;
+    menuButtonRectWithBorder.y += gVideoDriver.getVidConfig().mHorizBorders;
+
     // Draw a menu button where the mouse/finger might tap on
-    drawMenuInGameButton(mMenuButtonRect);
+    drawMenuInGameButton(menuButtonRectWithBorder);
 
     // Draw some Textboxes with Messages only if one of those is open and needs to be drawn
     if(msgboxactive)

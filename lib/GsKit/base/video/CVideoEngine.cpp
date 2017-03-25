@@ -344,9 +344,9 @@ void CVideoEngine::blitScrollSurface() // This is only for tiles
 
 
 void CVideoEngine::drawHorizBorders()
-{
-    int borderHUpper = 20;
-    int borderHBottom = 20;
+{   
+    int borderHUpper = m_VidConfig.mHorizBorders;
+    int borderHBottom = m_VidConfig.mHorizBorders;
 
     GsRect<Uint16> rect;
 
