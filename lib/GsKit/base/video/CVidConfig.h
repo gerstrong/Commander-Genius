@@ -58,7 +58,8 @@ public:
 
     Color mBorderColors; /** Colors of the border (Clear colors) */
 
-    bool mHorizBorders = false; /** Horizontal border bars for a more CRT feeling */
+    //bool mHorizBorders = false; /** Horizontal border bars for a more CRT feeling */
+    int mHorizBorders = 20; /** Horizontal border bars for a more CRT feeling */
 
 	bool Fullscreen;
     filterOptionType m_ScaleXFilter;

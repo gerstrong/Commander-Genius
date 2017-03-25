@@ -9,6 +9,9 @@
  *  or even another game can use it.
  */
 
+#ifndef CHUD_H_
+#define CHUD_H_
+
 #include <SDL.h>
 #include <string>
 #include <functional>
@@ -17,9 +20,7 @@
 #include "engine/core/spritedefines.h"
 #include "graphics/GsSprite.h"
 #include "sdl/extensions.h"
-
-#ifndef CHUD_H_
-#define CHUD_H_
+#include <graphics/GsSurface.h>
 
 
 class CHUD
@@ -58,7 +59,7 @@ private:
 	void renderVorticon();
 	void DrawCircle(int x, int y, int width);
 
-	SDL_Rect m_Rect;
+    SDL_Rect mRenderRect;
 
 	unsigned long &m_score;
 	signed char &m_lives;
@@ -69,7 +70,8 @@ private:
 
     GsSprite mHUDBox;
 
-	std::shared_ptr<SDL_Surface> mpBackground;
+    GsSurface mBackground;
+
 	std::shared_ptr<SDL_Surface> mpHUDBlit;
     int mId;
 

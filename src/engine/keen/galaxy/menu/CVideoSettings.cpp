@@ -53,9 +53,9 @@ private:
 
 CVideoSettings::CVideoSettings() :
 #if defined(EMBEDDED)
-GalaxyMenu(GsRect<float>(0.15f, 0.24f, 0.65f, 0.25f) )
+GalaxyMenu(GsRect<float>(0.15f, 0.20f, 0.65f, 0.25f) )
 #else
-GalaxyMenu(GsRect<float>(0.15f, 0.24f, 0.65f, 0.55f) )
+GalaxyMenu(GsRect<float>(0.15f, 0.20f, 0.65f, 0.55f) )
 #endif
 {
 	// Create the fps config selection control
@@ -152,7 +152,14 @@ void CVideoSettings::refresh()
     // TODO: find a way to indicate a color
     mpBorderColorSwitch->enable( false );
 
-    mpHorizBordersSwitch->enable( mUserVidConf.mHorizBorders );
+    if(mUserVidConf.mHorizBorders > 0)
+    {
+        mpHorizBordersSwitch->enable( true );
+    }
+    else
+    {
+        mpHorizBordersSwitch->enable( false );
+    }
 
 #if !defined(EMBEDDED)
 	//mpAspectSwitch->enable( mUserVidConf.m_aspect_correction );
@@ -263,7 +270,13 @@ void CVideoSettings::release()
     }
 
 
-    mUserVidConf.mHorizBorders = mpHorizBordersSwitch->isEnabled();
+    mUserVidConf.mHorizBorders = 0;
+    if( mpHorizBordersSwitch->isEnabled() )
+    {
+        mUserVidConf.mHorizBorders = 20;
+    }
+
+
 
 
 	// In case the user changed something in the camera settings, reload that.

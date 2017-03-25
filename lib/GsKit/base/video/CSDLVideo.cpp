@@ -143,12 +143,14 @@ void CSDLVideo::collectSurfaces()
 {
     if( mOverlaySurface.getAlpha() > 0 )
     {
+        // TODO: If horiz borders enabled we need to reposition the cursor
         mOverlaySurface.blitTo(mGameSfc);
     }
 }
 
 void CSDLVideo::clearSurfaces()
 {
+    // TODO: Clear color here!
     mOverlaySurface.fillRGB(0,0,0);
     mGameSfc.fillRGB(0,0,0);
 }

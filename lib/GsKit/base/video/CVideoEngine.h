@@ -109,7 +109,9 @@ public:
 		mSbuffery = 0;
 	}
 
-    void filterUp();
+    void drawHorizBorders();
+
+    void scaleAndFilter();
 
     inline void UpdateScrollBufX(const Sint16 SBufferX, const int drawMask)
     {		mSbufferx = SBufferX&drawMask;	}

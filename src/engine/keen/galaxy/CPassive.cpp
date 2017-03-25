@@ -394,9 +394,9 @@ void CPassiveGalaxy::processTitle()
 
         darkener.setAlpha(128);
 
-        auto *sfc = mBackgroundStarWars.getSDLSurface();
+        GsWeakSurface bgStarwarsSfc(mBackgroundStarWars.getSDLSurface());
 
-        SDL_BlitSurface(darkener.getSDLSurface(), nullptr, sfc, nullptr);
+        darkener.blitTo(bgStarwarsSfc);
 
         SDL_Rect lRect;
 

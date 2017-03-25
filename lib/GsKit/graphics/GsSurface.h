@@ -93,8 +93,10 @@ public:
 
     int blitTo(GsWeakSurface &sfc) const
     {
+        assert(mpSurface);
         assert(sfc.mpSurface);
-        return BlitSurface( mpSurface, nullptr, sfc.mpSurface, nullptr );
+
+        return SDL_BlitSurface(mpSurface, nullptr, sfc.mpSurface, nullptr);
     }
 
     int blitTo(GsWeakSurface &sfc, GsRect<Uint16> &dstRect)
@@ -102,14 +104,21 @@ public:
         assert(mpSurface);
         assert(sfc.mpSurface);
         SDL_Rect sdlRect = dstRect.SDLRect();
-        return BlitSurface( mpSurface, nullptr, sfc.mpSurface, &sdlRect );
+        return SDL_BlitSurface( mpSurface, nullptr, sfc.mpSurface, &sdlRect);
     }
 
     int blitTo(GsWeakSurface &sfc, const SDL_Rect &sdlRect)
     {
         assert(mpSurface);
         assert(sfc.mpSurface);
-        return BlitSurface( mpSurface, nullptr, sfc.mpSurface, const_cast<SDL_Rect*>(&sdlRect) );
+        return SDL_BlitSurface( mpSurface, nullptr, sfc.mpSurface, const_cast<SDL_Rect*>(&sdlRect) );
+    }
+
+    int blitTo(GsWeakSurface &sfc, const SDL_Rect &sdlSrcRect, const SDL_Rect &sdlDstRect)
+    {
+        assert(mpSurface);
+        assert(sfc.mpSurface);
+        return SDL_BlitSurface( mpSurface, const_cast<SDL_Rect*>(&sdlSrcRect), sfc.mpSurface, const_cast<SDL_Rect*>(&sdlDstRect) );
     }
 
 

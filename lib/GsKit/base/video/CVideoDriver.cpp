@@ -102,7 +102,9 @@ void CVideoDriver::initResolutionList()
 
 	// We have a resolution list, clear it and create a new one.
     if(!m_Resolutionlist.empty())
+    {
         m_Resolutionlist.clear();
+    }
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 
@@ -330,7 +332,12 @@ void CVideoDriver::clearSurfaces()
 
 void CVideoDriver::updateDisplay()
 {
-    mpVideoEngine->filterUp();
+    if(m_VidConfig.mHorizBorders > 0)
+    {
+        mpVideoEngine->drawHorizBorders();
+    }
+
+    mpVideoEngine->scaleAndFilter();
     mpVideoEngine->transformScreenToDisplay();
 }
 
