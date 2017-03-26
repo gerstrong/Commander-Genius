@@ -19,31 +19,37 @@ Porting and Support:
 Welcome to Commander Genius!
 
 Commander Genius is an open-source clone of
-Commander Keen which allows you to play
-the games, and some of the mods
-made for it. All of the original data files
+Commander Keen (1-6, Dreams) which allows you
+to play these episodes and some of the mods
+made for them. All of the original data files
 are required to do so, however, we convienently
 provde a store where you can get some of the games
 including Episode 1, 4 and Dreams for your enjoyment. 
 There are also mods that can be downloaded direclty.
 
-So far Commander Keen 1-6 are fully supported. 
-There are some missing features like Story pages in Keen 4-6, but
+
+- About -
+=========
+So far Commander Keen 1-6 are fully supported.
+There are some smaller missing features like PaddleWar, but
 the whole gameplay is there.
 
-Keen Dreams is starting to work but still might have most of the issues. 
-So far you can play it to the end. Also the menu lacks of a lot of features. 
+Keen Dreams is starting to work but still might have most of the issues.
+So far you can play it to the end. Also the menu lacks of a lot of features.
 Please configure input and sounds using the other games.
 
 There is an alternative called Reflection Keen which supports Keen Dreams on which
-the code is based. 
+the code is based.
 
-Commander Genius runs on Linux/X11, Windows, 
-Android, with plans to release on other platforms 
+Commander Genius runs on Linux/X11, Windows,
+Android, with plans to release on other platforms
 in the future. If you think you would like to port it,
 please send us a message and we will do our
 best to help you.
 
+
+- Features -
+============
 The main goal of Commander Genius is to copy
 the original gameplay feeling as much as possible,Level No. 15
 and extend it further so you get a native implementation with
@@ -54,7 +60,7 @@ even more features like:
 - SDL 2.0 Support
 - New graphical effects
 - Multiplayer Support (Up to four players)
-- High Quality Packs which make the game look better, 
+- High Quality Packs which make the game look better,
   provide better sounds and even music you might that never existed in the original games
 - Ingame Menu for vorticons Keen as well as a new HUD
 - Named save slots
@@ -169,7 +175,7 @@ authors. We work very hard on on this project
 and we deserve at least those credits!
 
 Also give credits to the others who provided
-us with some code. They deserve it as well.Level No. 15
+us with some code. They really deserve it.
 
 - Setup  -
 ==========
@@ -183,6 +189,10 @@ If you happen to use ubuntu you might want to use our PPA so you always get upda
 Add it using the command line and typing: sudo add-apt-repository ppa:gerstrong/cgenius
 
 Mageia and Arch Linux also have some packages by third-party maintainers.
+
+Windows 7 up to 10 are supported. About older versions I don't know. On some Windows Systems might need
+to install the "Microsoft Visual Studio Redistributable 2015 (x86)" package in order to get it running.
+
 
 CG-Data locations:
 
