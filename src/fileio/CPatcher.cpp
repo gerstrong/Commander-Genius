@@ -57,7 +57,9 @@ void CPatcher::process()
 
 	std::string dumpfilename = "";
 
-	// TODO: Extend this part further with more commands
+    int numPatchedItems = 0;
+
+	// TODO: Extend this part further with more commands        
 	while(readNextPatchItem(PatchItem, m_TextList) == true)
 	{
 		// Now we really start to process the commands
@@ -226,7 +228,11 @@ void CPatcher::process()
 
 		PatchItem.keyword.clear();
 		PatchItem.value.clear();
+
+        numPatchedItems++;
 	}
+
+    gLogging.ftextOut("Patched %d items.\n", numPatchedItems);
 }
 
 
