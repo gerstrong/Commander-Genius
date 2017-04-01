@@ -1,3 +1,10 @@
+v1.9.8.8:
+---------
+- New Horizontal borders
+- Screen now occupy colors
+- Bug fixes
+
+
 v1.9.8.3:
 ---------
 - Hackable Lindsey Messages through python3

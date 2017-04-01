@@ -16,10 +16,14 @@ CSDLVideo::CSDLVideo(const CVidConfig& VidConfig) :
 CVideoEngine(VidConfig)
 {}
 
+
+
 bool CSDLVideo::init()
 {
-    if(!CVideoEngine::init())
+    if( !CVideoEngine::init() )
+    {
         return false;
+    }
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)    
 

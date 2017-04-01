@@ -32,6 +32,7 @@ const int CPlayerBase::mEpisodeActionNumMap[3][NUM_KEEN_ACTIONS] =
 				27, // A_KEEN_ACTION_2
 				28, // A_KEEN_ACTION_3
 				29, // A_KEEN_DIE
+                30, // A_KEEN_DIE_ALT
 				33, // A_KEEN_SHOOT
 				35, // A_KEEN_SHOOT_UP
 				37, // A_KEEN_ACTION_4
@@ -74,6 +75,7 @@ const int CPlayerBase::mEpisodeActionNumMap[3][NUM_KEEN_ACTIONS] =
 				27, // A_KEEN_ACTION_2
 				28, // A_KEEN_ACTION_3
 				27, // A_KEEN_DIE
+                28, // A_KEEN_DIE_ALT
 				29, // A_KEEN_SHOOT
 				31, // A_KEEN_SHOOT_UP
 				37, // A_KEEN_ACTION_4
@@ -115,6 +117,7 @@ const int CPlayerBase::mEpisodeActionNumMap[3][NUM_KEEN_ACTIONS] =
 				24, // A_KEEN_ACTION_2
 				25, // A_KEEN_ACTION_3
 				26, // A_KEEN_DIE
+                27, // A_KEEN_DIE_ALT
 				28, // A_KEEN_SHOOT
 				30, // A_KEEN_SHOOT_UP
 				32, // A_KEEN_SLIDE_INTO_DOOR
@@ -162,7 +165,8 @@ m_camera(pmap,x,y,this),
 mPlayerNum(playerID),
 mp_processState(NULL)
 {
-	mActionMap[A_KEEN_DIE] = &CPlayerBase::processDying;
+    mActionMap[A_KEEN_DIE] = &CPlayerBase::processDying;
+    mActionMap[A_KEEN_DIE_ALT] = &CPlayerBase::processDying;
 
 	m_walktimer = 0;
 	m_timer = 0;
@@ -602,7 +606,16 @@ bool CPlayerBase::touchedBottomOfMap()
 
 void CPlayerBase::processDead()
 {
-	setActionForce(A_KEEN_DIE);   
+    if(getActionNumber() == A_KEEN_DIE)
+    {
+        setActionForce(A_KEEN_DIE_ALT);
+    }
+    else if(getActionNumber() == A_KEEN_DIE_ALT)
+    {
+        setActionForce(A_KEEN_DIE);
+    }
+
+
 
     const int levelObj = mp_Map->getLevel();
     const std::string &levelName = mp_Map->getLevelName();
@@ -688,7 +701,15 @@ void CPlayerBase::kill(const bool force,
 
     m_dying = true;    
 
-    setAction( A_KEEN_DIE );
+    if(getActionStatus(A_KEEN_DIE))
+    {
+        setActionForce(A_KEEN_DIE_ALT);
+    }
+    else
+    {
+        setActionForce(A_KEEN_DIE);
+    }
+
 
     if(!noDieProcess)
     {

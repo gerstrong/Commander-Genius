@@ -257,7 +257,7 @@ bool CVideoDriver::start()
 	gLogging.textOut("Starting graphics driver...<br>");
 
 #ifdef USE_OPENGL
-	if (m_VidConfig.mOpengl) // If OpenGL could be set, initialize the
+    if (m_VidConfig.mOpengl) // Try to use OpenGL if enabled by the user
 	{
 		mpVideoEngine.reset(new COpenGL(m_VidConfig));
 		retval = mpVideoEngine->init();
