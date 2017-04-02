@@ -354,12 +354,16 @@ void CVideoEngine::drawHorizBorders()
     rect.w = mGameSfc.width();
     rect.h = borderHUpper;
 
+    const auto color = m_VidConfig.mBorderColors;
 
-    mGameSfc.fillRGB( rect, 0,0,0 );
+    // Upper part
+    mGameSfc.fillRGB( rect, color.r, color.g, color.b );
 
 
     rect.y = mGameSfc.height()-borderHBottom;
-    mGameSfc.fillRGB( rect, 0,0,0 );
+
+    // Lower Part
+    mGameSfc.fillRGB( rect, color.r, color.g, color.b );
 
 }
 
