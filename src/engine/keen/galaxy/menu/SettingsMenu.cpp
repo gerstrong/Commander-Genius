@@ -39,14 +39,12 @@ GalaxyMenu( GsRect<float>(0.25f, 0.24f, 0.5f, 0.40f) )
                                     new OpenMenuEvent( new COptions() ) ) );
 
 
-#if !defined(EMBEDDED)
 #if defined (SINGLEPLAYER)
     mpMenuDialog->addControl( new GalaxyButton( "Controls",
                                     new OpenMenuEvent(	new CControlsettings(1) ) ) );
 #else
     mpMenuDialog->addControl(new GalaxyButton( "Controls",
                                     new OpenMenuEvent( new CPlayersSelection<OpenControlMenuEvent>() ) ) );
-#endif
 #endif
 
 #if !defined(EMBEDDED)
