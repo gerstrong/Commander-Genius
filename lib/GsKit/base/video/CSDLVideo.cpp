@@ -159,6 +159,8 @@ void CSDLVideo::clearSurfaces()
     mGameSfc.fillRGB(0,0,0);
 }
 
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+
 bool mHack = false;
 
 SDL_Texture *hackTex;
@@ -177,6 +179,9 @@ void CSDLVideo::hackIt()
 
      SDL_FreeSurface( loadedSurface );
 }
+#else
+void CSDLVideo::hackIt() {} // Empty
+#endif
 
 void CSDLVideo::transformScreenToDisplay()
 {
