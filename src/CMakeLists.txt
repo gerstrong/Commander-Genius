@@ -102,16 +102,8 @@ ELSEIF(CMAKE_BUILD_TYPE STREQUAL "Release")
 ENDIF(CMAKE_BUILD_TYPE STREQUAL "Debug")
 
 
-
-# Make sure the compiler can find include files from our Gskit library.
-#include_directories (${CommanderGenius_SOURCE_DIR}/../lib/GsKit)
-
 # Make sure the linker can find the GsKit library once it is built.
 link_directories (${CommanderGenius_BINARY_DIR}/lib/GsKit)
-
-# We need that so we can compile dosbox fusion
-#include_directories (${CommanderGenius_SOURCE_DIR}/src/engine/dbfusion)
-#include_directories (${CommanderGenius_SOURCE_DIR}/src/engine/dbfusion/include)
 
 
 set(Boost_USE_STATIC_LIBS OFF)
@@ -135,9 +127,17 @@ endif( ZLIB_FOUND )
 if(DOWNLOADER)
     FIND_PACKAGE(CURL)
     IF(CURL_FOUND)
-      INCLUDE_DIRECTORIES(${CURL_INCLUDE_DIR})
+
+ 	if(WIN32)
+ 	   ADD_DEFINITIONS(-DCURL_STATICLIB)    
+        endif()
+	
+	INCLUDE_DIRECTORIES(${CURL_INCLUDE_DIR})
+
     ELSE(CURL_FOUND)
+
       MESSAGE(FATAL_ERROR "Could not find the CURL library and development files." )
+
     ENDIF(CURL_FOUND)
 endif()
 

@@ -255,11 +255,16 @@ bool ThreadPool::waitAll() {
 
 ThreadPool* threadPool = NULL;
 
-void InitThreadPool(unsigned int size) {
+void InitThreadPool(unsigned int size)
+{
 	if(!threadPool)
+    {
 		threadPool = new ThreadPool(size);
+    }
 	else
+    {
 		errors << "ThreadPool inited twice" << endl;
+    }
 }
 
 void UnInitThreadPool() {
