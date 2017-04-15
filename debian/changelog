@@ -1,3 +1,21 @@
+commandergenius (1.9.8ppa3) xenial; urgency=low
+
+  *  Modern style option finally does something (translucent Keen in hidden areas)
+  *  A lot of more and improved error catching
+  *  Lots of bug fixes
+  *  Improved mods compatibility
+
+ -- Gerhard Stein <gerstrong@gmail.com>  Sun, 05 Mar 2017 10:33:29 +0100
+
+commandergenius (1.9.8ppa2) xenial; urgency=low
+
+  *  More Python support (lindsey messages)
+  *  Improved die logic
+  *  More accesable level in certain mods
+
+ -- Gerhard Stein <gerstrong@gmail.com>  Sun, 15 Jan 2017 14:51:39 +0100
+
+
 commandergenius (1.9.8ppa1) xenial; urgency=low
 
   *  More Python support and fixes
