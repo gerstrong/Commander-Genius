@@ -232,16 +232,12 @@ void GsTilemap::drawTileBlended(SDL_Surface *dst,
     }
 
     const auto oldAlpha = mTileSurfaceAlpha.getAlpha();
-    const auto oldBlend = mTileSurfaceAlpha.getBlendMode();
 
-
-    //mTileSurfaceAlpha.setBlendMode(1);
     mTileSurfaceAlpha.setAlpha(alpha);
 
     auto rawSDLSfc = mTileSurfaceAlpha.getSDLSurface();
     BlitSurface(rawSDLSfc, &src_rect, dst, &dst_rect);
 
-    //mTileSurfaceAlpha.setBlendMode(oldBlend);
     mTileSurfaceAlpha.setAlpha(oldAlpha);
 }
 

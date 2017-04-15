@@ -102,7 +102,9 @@ void CVideoDriver::initResolutionList()
 
 	// We have a resolution list, clear it and create a new one.
     if(!m_Resolutionlist.empty())
+    {
         m_Resolutionlist.clear();
+    }
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 
@@ -255,7 +257,7 @@ bool CVideoDriver::start()
 	gLogging.textOut("Starting graphics driver...<br>");
 
 #ifdef USE_OPENGL
-	if (m_VidConfig.mOpengl) // If OpenGL could be set, initialize the
+    if (m_VidConfig.mOpengl) // Try to use OpenGL if enabled by the user
 	{
 		mpVideoEngine.reset(new COpenGL(m_VidConfig));
 		retval = mpVideoEngine->init();
@@ -313,7 +315,7 @@ void CVideoDriver::updateScrollBuffer(const Sint16 SBufferX, const Sint16 SBuffe
 }
 
 void CVideoDriver::blitScrollSurface() // This is only for tiles
-// Therefore the name should be changed
+                                       // Therefore the name should be changed
 {
 	mpVideoEngine->blitScrollSurface();
 }
@@ -330,7 +332,12 @@ void CVideoDriver::clearSurfaces()
 
 void CVideoDriver::updateDisplay()
 {
-    mpVideoEngine->filterUp();
+    if(m_VidConfig.mHorizBorders > 0)
+    {
+        mpVideoEngine->drawHorizBorders();
+    }
+
+    mpVideoEngine->scaleAndFilter();
     mpVideoEngine->transformScreenToDisplay();
 }
 

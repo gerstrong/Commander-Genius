@@ -37,24 +37,12 @@ VorticonMenu( GsRect<float>(0.25f, 0.24f, 0.5f, 0.32f) )
     mpMenuDialog->addControl(new Button( "Options",
 									new OpenMenuEvent( new COptions() ) ) );
 
-
-	/*
-
-			const int players = ctrlMenu->mSelection;
-			EventContainer.pop_Event();
-			EventContainer.add( new OpenMenuEvent(
-									new CControlsettings(players) ) );
-	 *
-	 * */
-
-#if !defined(EMBEDDED)
 #if defined (SINGLEPLAYER)
     mpMenuDialog->addControl( new Button( "Controls",
                                     new OpenMenuEvent(	new vorticon::CControlsettings(1) ) ) );
 #else
     mpMenuDialog->addControl(new Button( "Controls",
                                     new OpenMenuEvent( new vorticon::CPlayersSelection<OpenControlMenuEvent>() ) ) );
-#endif
 #endif
 
 

@@ -153,6 +153,9 @@ bool CVideoEngine::init()
     }
 	#endif
 
+
+    mClearColor = m_VidConfig.mBorderColors;
+
 	return true;
 }
 
@@ -190,7 +193,13 @@ bool CVideoEngine::createSurfaces()
 
 bool CVideoEngine::createSurfaces(const GsRect<Uint16> &gamerect)
 {
-    gLogging.ftextOut("Blitsurface creation of %dx%d!\n<br>",
+    int borderHUpper = 0;
+    int borderHBottom = 0;
+
+    borderHUpper = m_VidConfig.mHorizBorders;
+    borderHBottom = m_VidConfig.mHorizBorders;
+
+    gLogging.ftextOut("Gamesurface creation of %dx%d!\n<br>",
                      gamerect.w, gamerect.h );
 
     mGameSfc.create(m_Mode, gamerect.w, gamerect.h, RES_BPP,
@@ -226,7 +235,7 @@ bool CVideoEngine::createSurfaces(const GsRect<Uint16> &gamerect)
     {
         mFilteredSfc.create(m_Mode,
                             blit->w*m_VidConfig.m_ScaleXFilter,
-                            blit->h*m_VidConfig.m_ScaleXFilter,
+                            (blit->h+borderHUpper+borderHBottom)*m_VidConfig.m_ScaleXFilter,
                             RES_BPP, 0, 0, 0, 0);
 
         mpScreenSfc = &mFilteredSfc;
@@ -291,10 +300,13 @@ void CVideoEngine::blitScrollSurface() // This is only for tiles
     srGsRect.w = wraphoz ? (scrollSfcWidth-sbufferx) : Gamerect.w;
     srGsRect.h = wrapvrt ? (scrollSfcHeight-sbuffery) : Gamerect.h;
 
-    BlitSurface(ScrollSurface, &srGsRect, blitSurface, &dstrect);
+    GsWeakSurface scrollSfc(ScrollSurface);
+    GsWeakSurface blit(blitSurface);
+
+    scrollSfc.blitTo(blit, srGsRect, dstrect);
 
     const Uint16 upperLeftW = srGsRect.w;
-    const Uint16 upperLeftH =  srGsRect.h;
+    const Uint16 upperLeftH = srGsRect.h;
 
     // upper-right part
     if (wraphoz)
@@ -303,7 +315,7 @@ void CVideoEngine::blitScrollSurface() // This is only for tiles
         srGsRect.x = 0;
         dstrect.x = Gamerect.x + upperLeftW;
 
-        BlitSurface(ScrollSurface, &srGsRect, blitSurface, &dstrect);
+        scrollSfc.blitTo(blit, srGsRect, dstrect);
     }
 
     // lower-right part
@@ -313,7 +325,7 @@ void CVideoEngine::blitScrollSurface() // This is only for tiles
         srGsRect.y = 0;
         dstrect.y = Gamerect.y + upperLeftH;
 
-        BlitSurface(ScrollSurface, &srGsRect, blitSurface, &dstrect);
+        scrollSfc.blitTo(blit, srGsRect, dstrect);
 	}
 
     if(!wraphoz || !wrapvrt)
@@ -327,14 +339,41 @@ void CVideoEngine::blitScrollSurface() // This is only for tiles
     dstrect.x = Gamerect.x;
     dstrect.y = Gamerect.y+upperLeftH;
 
-    BlitSurface(ScrollSurface, &srGsRect, blitSurface, &dstrect);
+    scrollSfc.blitTo(blit, srGsRect, dstrect);
 }
 
-void CVideoEngine::filterUp()
+
+void CVideoEngine::drawHorizBorders()
+{   
+    int borderHUpper = m_VidConfig.mHorizBorders;
+    int borderHBottom = m_VidConfig.mHorizBorders;
+
+    GsRect<Uint16> rect;
+
+    rect.x = 0;     rect.y = 0;
+    rect.w = mGameSfc.width();
+    rect.h = borderHUpper;
+
+    const auto color = m_VidConfig.mBorderColors;
+
+    // Upper part
+    mGameSfc.fillRGB( rect, color.r, color.g, color.b );
+
+
+    rect.y = mGameSfc.height()-borderHBottom;
+
+    // Lower Part
+    mGameSfc.fillRGB( rect, color.r, color.g, color.b );
+
+}
+
+void CVideoEngine::scaleAndFilter()
 {
+    const auto scaleXFilter = m_VidConfig.m_ScaleXFilter;
+
     // If ScaleX is enabled scaleup to screensurface
     // Otherwise screensurface point to gameSfc and nothing needs to be done
-    if(m_VidConfig.m_ScaleXFilter > 1)
+    if(scaleXFilter > 1)
     {
         auto srcSfc = mGameSfc.getSDLSurface();
         auto dstSfc = mFilteredSfc.getSDLSurface();
@@ -342,8 +381,10 @@ void CVideoEngine::filterUp()
         SDL_LockSurface( srcSfc );
         SDL_LockSurface( dstSfc );
 
-        scale(m_VidConfig.m_ScaleXFilter,
-              dstSfc->pixels,
+        auto dstPixels = dstSfc->pixels;
+
+        scale(scaleXFilter,
+              dstPixels ,
               dstSfc->pitch,
               srcSfc->pixels,
               srcSfc->pitch,
@@ -354,10 +395,9 @@ void CVideoEngine::filterUp()
         SDL_UnlockSurface( dstSfc );
         SDL_UnlockSurface( srcSfc );
     }
-
 }
 
 void CVideoEngine::shutdown()
 {
-    //stop();
+
 }

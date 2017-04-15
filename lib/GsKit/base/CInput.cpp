@@ -1503,7 +1503,7 @@ typedef std::set<int> MouseIndexSet;
 static Uint32 phoneButtonLasttime[phoneButtonN] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 static MouseIndexSet phoneButton_MouseIndex[phoneButtonN];
 
-
+#if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
 static TouchButton* getPhoneButton(int x, int y, TouchButton phoneButtons[]) {
 	for(int i = 0; i < phoneButtonN; ++i) {
 		TouchButton& b = phoneButtons[i];
@@ -1511,6 +1511,7 @@ static TouchButton* getPhoneButton(int x, int y, TouchButton phoneButtons[]) {
 	}
 	return NULL;
 }
+#endif
 
 #ifdef MOUSEWRAPPER
 static bool checkMousewrapperKey(int& key) {

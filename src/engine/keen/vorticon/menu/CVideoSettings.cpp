@@ -12,13 +12,10 @@
 #include <base/utils/StringUtils.h>
 #include <widgets/GsMenuController.h>
 
-
-//#include "hardware/Configurator.h"
 #include "engine/core/CBehaviorEngine.h"
 #include "CCameraSettings.h"
 #include "CVideoSettings.h"
 #include "engine/core/CSettings.h"
-//#include "Utils.h"
 #include "engine/core/videoAspect.h"
 
 
@@ -107,6 +104,12 @@ VorticonMenu(GsRect<float>(0.15f, 0.24f, 0.65f, 0.55f) )
 
     mpSFXSwitch = new Switch( "Special FX" );
     mpMenuDialog->addControl( mpSFXSwitch );
+
+    mpBorderColorSwitch = new Switch( "Border Color" );
+    mpMenuDialog->addControl( mpBorderColorSwitch );
+
+    mpHorizBordersSelection = new NumberControl( "H-Borders", 0, 80, 5, 0, false);
+    mpMenuDialog->addControl( mpHorizBordersSelection );
 }
 
 void CVideoSettings::refresh()
@@ -126,6 +129,11 @@ void CVideoSettings::refresh()
     mpRenderScaleQualitySel->setSelection(mUserVidConf.mRenderScQuality);
 
 	mpSFXSwitch->enable( mUserVidConf.m_special_fx );	
+
+    // TODO: find a way to indicate a color
+    mpBorderColorSwitch->enable( false );
+
+    mpHorizBordersSelection->setSelection( static_cast<int>( mUserVidConf.mHorizBorders ) );
 
 #if !defined(EMBEDDED)
 	//mpAspectSwitch->enable( mUserVidConf.m_aspect_correction );
@@ -184,6 +192,17 @@ void CVideoSettings::release()
 
     mUserVidConf.mRenderScQuality = mpRenderScaleQualitySel->getSelection();
 
+    // TODO: Better way to setup colors in the menu
+    if(mpBorderColorSwitch->isEnabled())
+    {
+        mUserVidConf.mBorderColors.r = 0x00;
+        mUserVidConf.mBorderColors.g = 0xAA;
+        mUserVidConf.mBorderColors.b = 0xAA;
+    }
+
+
+    mUserVidConf.mHorizBorders = mpHorizBordersSelection->getSelection();
+
 	
 #if !defined(EMBEDDED)	
 
@@ -239,6 +258,14 @@ void CVideoSettings::release()
 
 
 	mUserVidConf.m_special_fx = mpSFXSwitch->isEnabled();
+
+    if(mpBorderColorSwitch->isEnabled())
+    {
+        mUserVidConf.mBorderColors.r = 0x00;
+        mUserVidConf.mBorderColors.g = 0xAA;
+        mUserVidConf.mBorderColors.b = 0xAA;
+    }
+
 
 	// In case the user changed something in the camera settings, reload that.
 	mUserVidConf.m_CameraBounds = gVideoDriver.getCameraBounds();

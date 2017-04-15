@@ -52,7 +52,9 @@ CPlayGame(startlevel)
     m_level_command = (m_Level==WORLD_MAP_LEVEL_VORTICON) ? GOTO_WORLD_MAP : START_LEVEL;
 
 	if(!m_Player.empty())
+    {
 		m_Player.clear();
+    }
 
     const int numPlayers = gpBehaviorEngine->mPlayers;
 
@@ -76,12 +78,17 @@ CPlayGame(startlevel)
 	m_showPauseDialog = false;
 
 	if(gpBehaviorEngine->mDifficulty==EASY)
+    {
 		gGraphics.Palette.setdarkness(FADE_DARKNESS_EASY);
+    }
 	else if(gpBehaviorEngine->mDifficulty==NORMAL)
+    {
 		gGraphics.Palette.setdarkness(FADE_DARKNESS);
+    }
 	else
+    {
 		gGraphics.Palette.setdarkness(FADE_DARKNESS_HARD);
-
+    }
 }
 
 // Setup all the players, when one level is started
@@ -355,6 +362,9 @@ void CPlayGameVorticon::ponder(const float deltaT)
     GsRect<float> rRect(menuButtonRect);
     const float w = gVideoDriver.getBlitSurface()->w;
     const float h = gVideoDriver.getBlitSurface()->h;
+
+    rRect.y += gVideoDriver.getVidConfig().mHorizBorders;
+
     rRect.x /= w;       rRect.y /= h;
     rRect.w /= w;       rRect.h /= h;
 
@@ -421,8 +431,12 @@ void CPlayGameVorticon::render()
         }
     }
 
+
+    auto menuButtonRectWithBorder = menuButtonRect;
+    menuButtonRectWithBorder.y += gVideoDriver.getVidConfig().mHorizBorders;
+
     // Draw the Ingame button for mouse/finger control
-    drawMenuInGameButton(menuButtonRect);
+    drawMenuInGameButton(menuButtonRectWithBorder);
 
 }
 

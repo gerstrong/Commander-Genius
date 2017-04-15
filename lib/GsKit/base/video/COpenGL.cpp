@@ -72,8 +72,8 @@ void COpenGL::collectSurfaces()
 }
 
 void COpenGL::clearSurfaces()
-{
-    mpScreenSfc->fillRGB(0,0,0);
+{    
+    mpScreenSfc->fillRGB(mClearColor.r, mClearColor.b, mClearColor.g);
 }
 
 
@@ -297,27 +297,7 @@ void COpenGL::loadSurface(GLuint texture, SDL_Surface* surface)
 		externalFormat = GL_BGRA;
 	}
 
-//#if SDL_VERSION_ATLEAST(2, 0, 0)
-    
-//#else
-
     mpScreenSfc->lock();
-
-	// First apply the conventional filter if any (GameScreen -> FilteredScreen)
-    /*if(m_VidConfig.m_ScaleXFilter > 1) //ScaleX
-	{
-        SDL_LockSurface(mpScreenSfc.get());
-		SDL_LockSurface(surface);
-		Scaler.scaleUp(FilteredSurface, surface, SCALEX, aspectCorrectionRect);
-        SDL_UnlockSurface(surface);
-    }*/
-    //else // Otherwise, blit to a POT-sized surface
-    /*{
-		// While blitting, no involved surface should be locked.
-        BlitSurface(surface, NULL, FilteredSurface, NULL);
-
-        SDL_LockSurface(FilteredSurface);
-    }*/
 
 	glTexImage2D(m_texparam, 0, internalFormat,
                 mpScreenSfc->width(),
@@ -326,7 +306,6 @@ void COpenGL::loadSurface(GLuint texture, SDL_Surface* surface)
                 GL_UNSIGNED_BYTE, mpScreenSfc->getSDLSurface()->pixels);
 
     mpScreenSfc->unlock();
-//#endif
 }
 
 void COpenGL::transformScreenToDisplay()

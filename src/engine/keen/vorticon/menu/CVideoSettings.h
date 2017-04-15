@@ -50,6 +50,8 @@ private:
     ComboSelection	*mpAspectSelection;
     Switch		*mpVSyncSwitch;
     Switch		*mpSFXSwitch;
+    Switch		*mpBorderColorSwitch;
+    NumberControl		*mpHorizBordersSelection;
     Button		*mpFullScreenSwitch;
     ComboSelection	*mpResolutionSelection;
     ComboSelection	*mpGameResSelection;

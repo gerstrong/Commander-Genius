@@ -96,10 +96,10 @@ struct Color {
 	explicit Color(Uint32 cl)	{ set(getMainPixelFormat(), cl); }
 	Color(const SDL_Color& cl) : r(cl.r), g(cl.g), b(cl.b), a(SDL_ALPHA_OPAQUE) {}
 
-	Uint8 r;
-	Uint8 g;
-	Uint8 b;
-	Uint8 a;
+    Uint8 r = 0;
+    Uint8 g = 0;
+    Uint8 b = 0;
+    Uint8 a = SDL_ALPHA_OPAQUE;
 
 	Uint32 get() const { return get(getMainPixelFormat()); }
 	Uint32 get(SDL_PixelFormat *f) const { return SDL_MapRGBA(f, r, g, b, a); }

@@ -31,7 +31,7 @@ timer(0)
 void CHUD::createHUDBlit()
 {    
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    mpHUDBlit.reset( CG_CreateRGBSurface( m_Rect ), &SDL_FreeSurface );
+    mpHUDBlit.reset( CG_CreateRGBSurface( mRenderRect ), &SDL_FreeSurface );
     mpHUDBlit.reset(gVideoDriver.convertThroughBlitSfc(mpHUDBlit.get()), &SDL_FreeSurface);
 
     SDL_SetSurfaceAlphaMod( mpHUDBlit.get(), 220);
@@ -40,7 +40,7 @@ void CHUD::createHUDBlit()
     SDL_PixelFormat *format = blit->format;
 
     SDL_Surface *sfc = SDL_CreateRGBSurface( SDL_SWSURFACE,
-                m_Rect.w, m_Rect.h, RES_BPP,
+                mRenderRect.w, mRenderRect.h, RES_BPP,
                 format->Rmask,
                 format->Gmask,
                 format->Bmask,
@@ -54,34 +54,34 @@ void CHUD::setup(const int id)
 {
     mId = id;
 
-    m_Rect.x = 8;	m_Rect.y = 4;        
+    mRenderRect.x = 8;	mRenderRect.y = 4;
 
     if(gpBehaviorEngine->mPlayers > 3)
     {
-        m_Rect.x = 0;	m_Rect.y = 0;
+        mRenderRect.x = 0;	mRenderRect.y = 0;
     }
 
     size_t Episode = gpBehaviorEngine->getEpisode();
 
     if( Episode >= 1 && Episode <= 3 )
     {
-        m_Rect.w = 84;	m_Rect.h = 30;
-        m_Rect.x += (m_Rect.w-4)*id;
+        mRenderRect.w = 84;	mRenderRect.h = 30;
+        mRenderRect.x += (mRenderRect.w-4)*id;
         createHUDBlit();
         CreateVorticonBackground();
     }
     else // Galaxy HUD
     {
-        m_Rect.w = 80;	m_Rect.h = 30;
+        mRenderRect.w = 80;	mRenderRect.h = 30;
         mHUDBox = *gGraphics.getSprite(mId,"HUDBACKGROUND");
 
         #if SDL_VERSION_ATLEAST(2, 0, 0)
         #else
             mHUDBox.optimizeSurface();
         #endif
-        m_Rect.h = mHUDBox.getHeight();
-        m_Rect.w = mHUDBox.getWidth()-7;
-        m_Rect.x += (m_Rect.w-2)*id;
+        mRenderRect.h = mHUDBox.getHeight();
+        mRenderRect.w = mHUDBox.getWidth()-7;
+        mRenderRect.x += (mRenderRect.w-2)*id;
 
         #if SDL_VERSION_ATLEAST(2, 0, 0)
             SDL_SetSurfaceBlendMode(mHUDBox.getSDLSurface(), SDL_BLENDMODE_NONE);
@@ -100,12 +100,11 @@ void CHUD::setup(const int id)
 void CHUD::CreateVorticonBackground()
 {
     // Create a surface for the Background
-    mpBackground.reset( SDL_ConvertSurface( mpHUDBlit.get(), mpHUDBlit->format, 0), &SDL_FreeSurface );
+    mBackground.createFromSDLSfc( SDL_ConvertSurface( mpHUDBlit.get(), mpHUDBlit->format, 0) );
 
-    #if SDL_VERSION_ATLEAST(2, 0, 0)
-    #else
-        SDL_SetAlpha(mpBackground.get(), 0, 0);
-    #endif
+    mBackground.setAlpha(255);
+    //mBackground.setAlpha(0);
+
 
 	SDL_Rect headsrGsRect, headdstrect;
 	headsrGsRect.x = 0;
@@ -125,7 +124,7 @@ void CHUD::CreateVorticonBackground()
     SDL_SetAlpha(keenHeadSfc, 0, 0);
 #endif
 
-    BlitSurface( keenHeadSfc, &headsrGsRect, mpBackground.get(), &headdstrect );
+    BlitSurface( keenHeadSfc, &headsrGsRect, mBackground.getSDLSurface(), &headdstrect );
 
 
 	int sprite=0;
@@ -149,8 +148,7 @@ void CHUD::CreateVorticonBackground()
     SDL_SetAlpha(keenGunSfc, 0, 0);
 #endif
 
-
-    BlitSurface( keenGunSfc, &headsrGsRect, mpBackground.get(), &headdstrect );
+    BlitSurface( keenGunSfc, &headsrGsRect, mBackground.getSDLSurface(), &headdstrect );
 
 	// Draw the rounded borders
     DrawCircle(0, 0, 76);
@@ -161,7 +159,10 @@ void CHUD::CreateVorticonBackground()
 // Draw a circle on the surface
 void CHUD::DrawCircle(int x, int y, int width)
 {
-	SDL_Rect text, outline;
+    GsRect<Uint16> text;
+
+    GsRect<Uint16> outline;
+
 
 	Uint8 r,g,b;
 	GsFont &Font = gGraphics.getFont(1);
@@ -171,37 +172,50 @@ void CHUD::DrawCircle(int x, int y, int width)
 	outline.y = y;
 	outline.w = width-8;
 	outline.h = 12;
-	SDL_FillRect(mpBackground.get(), &outline, SDL_MapRGBA(mpBackground->format, 0,0,0,255)); // Black
+
+    mBackground.fillRGB(outline, 0,0,0);  // Black
+
 	outline.x = x+2;
 	outline.y = y+1;
 	outline.w = width-4;
 	outline.h = 10;
-	SDL_FillRect(mpBackground.get(), &outline, SDL_MapRGBA(mpBackground->format, 0,0,0,255)); // Black
+
+    mBackground.fillRGB(outline, 0,0,0);  // Black
+
 	outline.x = x+1;
 	outline.y = y+2;
 	outline.w = width-2;
 	outline.h = 8;
-	SDL_FillRect(mpBackground.get(), &outline, SDL_MapRGBA(mpBackground->format, 0,0,0,255)); // Black
+
+    mBackground.fillRGB(outline, 0,0,0);  // Black
+
 	outline.x = x;
 	outline.y = y+4;
 	outline.w = width;
 	outline.h = 4;
-	SDL_FillRect(mpBackground.get(), &outline, SDL_MapRGBA(mpBackground->format, 0,0,0,255)); // Black
+
+    mBackground.fillRGB(outline, 0,0,0);  // Black
+
 	text.x = x+4;
 	text.y = y+1;
 	text.w = width-8;
 	text.h = 10;
-	SDL_FillRect(mpBackground.get(), &text, SDL_MapRGBA(mpBackground->format, r,g,b,255)); // Background colour
+
+    mBackground.fillRGBA(text, r,g,b, 255);  // Background colour
+
 	text.x = x+2;
 	text.y = y+2;
 	text.w = width-4;
 	text.h = 8;
-	SDL_FillRect(mpBackground.get(), &text, SDL_MapRGBA(mpBackground->format, r,g,b,255)); // Background colour
+
+    mBackground.fillRGBA(text, r,g,b, 255);  // Background colour
+
 	text.x = x+1;
 	text.y = y+4;
 	text.w = width-2;
 	text.h = 4;
-	SDL_FillRect(mpBackground.get(), &text, SDL_MapRGBA(mpBackground->format, r,g,b,255)); // Background colour
+
+    mBackground.fillRGBA(text, r,g,b, 255);  // Background colour
 }
 
 /**
@@ -239,8 +253,10 @@ void CHUD::renderGalaxy()
     }
   }
 
+  auto finalRenderRect = mRenderRect;     // Finally pull it a bit down if there are extra borders.
+  finalRenderRect.y += gVideoDriver.getVidConfig().mHorizBorders;
 
-  BlitSurface( blitsfc, NULL, gVideoDriver.getBlitSurface(), &m_Rect );
+  BlitSurface( blitsfc, NULL, gVideoDriver.getBlitSurface(), &finalRenderRect );
 }
 /**
  * \brief This part of the code will render the entire HUD. Vorticon version
@@ -254,7 +270,7 @@ void CHUD::renderVorticon()
 	charges = (m_oldCharges<99) ? m_oldCharges : 99;
 
 	// Draw the background
-	BlitSurface(mpBackground.get(), NULL, mpHUDBlit.get(), NULL );
+    BlitSurface(mBackground.getSDLSurface(), NULL, mpHUDBlit.get(), NULL );
 
 
 	GsFont &Font = gGraphics.getFont(1);
@@ -267,7 +283,10 @@ void CHUD::renderVorticon()
 
     Font.drawFont(mpHUDBlit.get(), getRightAlignedString(itoa(score),8),8, 2, false );
 
-    BlitSurface( mpHUDBlit.get(), NULL, gVideoDriver.getBlitSurface(), &m_Rect );   
+    auto finalRenderRect = mRenderRect;     // Finally pull it a bit down if there are extra borders.
+    finalRenderRect.y += gVideoDriver.getVidConfig().mHorizBorders;
+
+    BlitSurface( mpHUDBlit.get(), NULL, gVideoDriver.getBlitSurface(), &finalRenderRect );
 }
 
 

@@ -85,6 +85,7 @@ A_KEEN_ACTION_1,
 A_KEEN_ACTION_2,
 A_KEEN_ACTION_3,
 A_KEEN_DIE,
+A_KEEN_DIE_ALT,
 A_KEEN_SHOOT,
 A_KEEN_SHOOT_UP,
 A_KEEN_ACTION_4,
@@ -253,6 +254,6 @@ protected:
     Vector2D<int> mTarget;
 };
 
-};
+}
 
 #endif /* CPLAYERBASE_H_ */

@@ -47,6 +47,9 @@ void scaleDynamic( SDL_Surface *srcSfc,
 	const bool equalWidth  = (dstRect.w == srcSfc->w);
 	const bool equalHeight = (dstRect.h == srcSfc->h);
 
+    GsWeakSurface sfcSfcWeak(srcSfc);
+    GsWeakSurface dstSfcWeak(dstSfc);
+
 	if(equalWidth && equalHeight)
 	{
 		SDL_Rect sdldstrect;
@@ -55,7 +58,8 @@ void scaleDynamic( SDL_Surface *srcSfc,
 
         assert(srcSfc);
         assert(dstSfc);
-        BlitSurface(srcSfc, &srGsRect, dstSfc, &sdldstrect);
+
+        sfcSfcWeak.blitTo(dstSfcWeak, srGsRect, sdldstrect);
 		return;
 	}
 
@@ -143,7 +147,11 @@ void scaleNormal( SDL_Surface *srcSfc,
 	{
         assert(srcSfc);
         assert(dstSfc);
-        BlitSurface(srcSfc, NULL, dstSfc, NULL);
+
+        GsWeakSurface srcSfcWeak(srcSfc);
+        GsWeakSurface dstSfcWeak(dstSfc);
+
+        srcSfcWeak.blitTo(dstSfcWeak);
 		return;
 	}
 

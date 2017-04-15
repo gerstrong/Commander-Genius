@@ -1,10 +1,7 @@
 # CMake file for development of Commander Genius (taken from OLX)
 # This CMake file is used under Linux normally. 
 
-#TODO: Search SDL_image 2.0 still fails
-
-#cmake_minimum_required(VERSION 3.1)
-cmake_minimum_required(VERSION 2.8.12)
+cmake_minimum_required(VERSION 3.1)
 
 
 OPTION(OGG "Ogg/Vorbis support" Yes)
@@ -94,8 +91,6 @@ else(WIN32)
 		INCLUDE(FindPkgConfig) 
                 find_package(SDL2 REQUIRED)
                 find_package(SDL2_image REQUIRED >=2.0.0)
-		#PKG_SEARCH_MODULE(SDL2 REQUIRED sdl2)
-                #FIND_PACKAGE( SDL2_net REQUIRED )
    
 		if(SDL2_FOUND)
 			message(STATUS "Using shared SDL Version 2 for Commander Genius")
