@@ -78,8 +78,8 @@ ComputerWrist::ComputerWrist(const int ep) :
 
     for(int i=0 ; i < numLines ; i++)
     {
-        mMinPos.push_back(mLeftBorderBmp.width());
-        mMaxPos.push_back(blitsfc.width() - (mLeftBorderBmp.width() + mRightBorderBmp.width() + 11) );
+        mMinPos.push_back(mLeftBorderBmp.width()+2);
+        mMaxPos.push_back(blitsfc.width() - (mLeftBorderBmp.width() + mRightBorderBmp.width() + 9) );
     }
 
 }
@@ -184,7 +184,7 @@ void ComputerWrist::parseText()
 
     static std::map<char, Uint32> wristColorMap =
     {
-        {'b', 0x0000FF},
+        {'b', 0x55FFFF},
         {'e', 0xFCFC54},
         {'F', 0xFFFFFF},
 
@@ -259,7 +259,7 @@ void ComputerWrist::parseText()
                     cursorPos.x = mMinPos[cursorPos.y];
                 }
 
-                Font.drawFont(blitsfc.getSDLSurface(), word, cursorPos.x, cursorPos.y*fontHeight+mUpperBorderBmp.height());
+                Font.drawFont(blitsfc.getSDLSurface(), word, cursorPos.x, cursorPos.y*fontHeight+mUpperBorderBmp.height()+2);
 
                 cursorPos.x += (wordWidth+Font.getWidthofChar(' '));
             }
