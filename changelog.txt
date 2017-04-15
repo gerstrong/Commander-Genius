@@ -1,18 +1,15 @@
-<<<<<<< HEAD
-v1.9.8.7:
----------
--  Modern style option finally does something (translucent Keen in hidden areas)
--  A lot of more and improved error catching
--  Lots of bug fixes
--  Improved mods compatibility
-=======
 v1.9.8.8:
 ---------
 - New Horizontal borders
 - Screen now occupy colors
 - Bug fixes
 
->>>>>>> 0f13d9b9b0512222089694a94208d953a49346a3
+v1.9.8.7:
+---------
+-  Modern style option finally does something (translucent Keen in hidden areas)
+-  A lot of more and improved error catching
+-  Lots of bug fixes
+-  Improved mods compatibility
 
 v1.9.8.3:
 ---------
