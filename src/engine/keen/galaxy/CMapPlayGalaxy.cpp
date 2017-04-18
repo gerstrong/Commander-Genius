@@ -80,8 +80,23 @@ void CMapPlayGalaxy::pumpEvent(const CEvent *evPtr)
             }
         }
 
-        std::shared_ptr<CGalaxySpriteObject> foot(new galaxy::CFoot( &mMap, ev->foeID, 0x2EF4, posX, posY));
-        mObjectPtr.push_back( foot );
+        bool alreadySpawned = false;
+
+        // Check if there is already is a spawned foot
+        for ( std::shared_ptr<CGalaxySpriteObject> &ptr : mObjectPtr )
+        {
+            if( std::dynamic_pointer_cast<galaxy::CFoot>(ptr) )
+            {
+                alreadySpawned = true;
+                break;
+            }
+        }
+
+        if(!alreadySpawned)
+        {
+            std::shared_ptr<CGalaxySpriteObject> foot(new galaxy::CFoot( &mMap, ev->foeID, 0x2EF4, posX, posY));
+            mObjectPtr.push_back( foot );
+        }
     }
 
 

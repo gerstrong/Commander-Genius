@@ -338,8 +338,9 @@ private:
 	int mPoleGrabTime;
 	int mClimbSpeedX;
 	int mExitDoorTimer;
-	int mStunTimer;
-	
+    int mStunTimer;
+    bool mReleasedShot = false;
+
 	std::vector< std::shared_ptr<CGalaxySpriteObject> > &mObjectPtrs;
 };
 

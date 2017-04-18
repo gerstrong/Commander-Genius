@@ -346,13 +346,8 @@ void CPlayerLevel::prepareToShoot()
 	// He could shoot
 	if( m_playcontrol[PA_FIRE] && !m_fire_recharge_time )
 	{
-        const int newx = getXPosition();
-		const int newy = getYPosition()+(6<<STC);
-
-        const Vector2D<int> newVec(newx, newy);
-		tryToShoot(newVec, xDirection, yDirection);
-
 		setAction(A_KEEN_SHOOT);
+        mReleasedShot = false;
 		mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processShootWhileStanding;
 		m_fire_recharge_time = FIRE_RECHARGE_TIME;
 		return;
@@ -682,12 +677,14 @@ void CPlayerLevel::tryToShoot( const Vector2D<int> &pos, const int xDir, const i
 	if(m_Inventory.Item.m_bullets > 0)
 	{
         spawnObj(new CBullet(mp_Map, 0, pos.x, pos.y, xDir, yDir, mSprVar));
-		m_Inventory.Item.m_bullets--;
+		m_Inventory.Item.m_bullets--;        
 	}
 	else
 	{
 		playSound( SOUND_GUN_CLICK );
 	}
+
+    mReleasedShot = true;
 }
 
 
@@ -1447,8 +1444,7 @@ void CPlayerLevel::processLookingUp()
 	if( m_playcontrol[PA_FIRE] && !m_fire_recharge_time )
 	{
 		setActionForce(A_KEEN_SHOOT_UP);
-        const Vector2D<int> newVec(getXMidPos()-(3<<STC), getYUpPos()-(16<<STC));
-		tryToShoot(newVec, 0, -1);
+        mReleasedShot = false;
 		m_fire_recharge_time = FIRE_RECHARGE_TIME;
 		return;
 	}
@@ -2423,16 +2419,49 @@ void CPlayerLevel::processPoleClimbingDown()
 
 
 void CPlayerLevel::processShootWhileStanding()
-{
-	// while until player releases the button and get back to stand status
-	if( !m_playcontrol[PA_FIRE] )
-	{
-		yDirection = 0;
-		if(getActionNumber(A_KEEN_SHOOT_UP))
-			setAction(A_KEEN_LOOKUP);
-		else
-			makeHimStand();
-	}
+{       
+    //mShootTimer--;
+
+    /*if(mShootTimer > 0)
+        return;*/
+
+    // May shoot once!
+    //if(mShootTimer == 0)
+
+    //bool mReleasedShot = false;
+
+    if(!mReleasedShot)
+    {
+        if( getActionNumber(A_KEEN_SHOOT) && !getActionStatus(A_KEEN_SHOOT) )
+        {
+            const int newx = getXPosition();
+            const int newy = getYPosition()+(6<<STC);
+            const Vector2D<int> newVec(newx, newy);
+            tryToShoot(newVec, xDirection, yDirection);
+        }
+
+        if( getActionNumber(A_KEEN_SHOOT_UP) && !getActionStatus(A_KEEN_SHOOT_UP) )
+        {
+            const Vector2D<int> newVec(getXMidPos()-(3<<STC), getYUpPos()-(16<<STC));
+            tryToShoot(newVec, 0, -1);
+        }
+    }
+    else
+    {
+        // wait until player releases the button and get back to stand status
+        if( !m_playcontrol[PA_FIRE] )
+        {
+            yDirection = 0;
+            if(getActionNumber(A_KEEN_SHOOT_UP))
+            {
+                setAction(A_KEEN_LOOKUP);
+            }
+            else
+            {
+                makeHimStand();
+            }
+        }
+    }
 }
 
 void CPlayerLevel::verifyFalling()
