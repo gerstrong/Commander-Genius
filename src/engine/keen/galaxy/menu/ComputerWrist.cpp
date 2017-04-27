@@ -283,6 +283,18 @@ void ComputerWrist::parseGraphics()
     const auto fontHeight = gGraphics.getFont(mFontId).getPixelTextHeight();
     const auto spaceWidth = gGraphics.getFont(mFontId).getWidthofChar(' ');
 
+    for(auto &minPos : mMinPos)
+    {
+        minPos = mLeftBorderBmp.width()+2;
+    }
+
+    for(auto &maxPos : mMaxPos)
+    {
+        maxPos = blitsfc.width() - (mLeftBorderBmp.width() + mRightBorderBmp.width() + 9);
+    }
+
+
+
     for(const auto &line : mCurrentTextLines)
     {
         if(line[0] == '^')
