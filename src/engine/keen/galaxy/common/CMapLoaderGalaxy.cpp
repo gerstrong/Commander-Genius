@@ -360,6 +360,7 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
     }
     else
     {
+        gLogging.ftextOut("Error while trying to open the \"%s\" file!", gamemapfile.c_str() );
         return false;
     }
 

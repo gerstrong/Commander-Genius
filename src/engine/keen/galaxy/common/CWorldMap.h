@@ -20,7 +20,7 @@ class CWorldMap : public CMapPlayGalaxy
 public:
     CWorldMap(std::vector<CInventory> &inventoryVec);
 
-	void init();
+    bool init();
 	void loadAndPlayMusic();
 
     void ponder(const float deltaT);

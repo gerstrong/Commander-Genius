@@ -21,7 +21,7 @@ CWorldMap::CWorldMap(std::vector<CInventory> &inventoryVec):
 CMapPlayGalaxy(inventoryVec)
 {}
 
-void CWorldMap::init()
+bool CWorldMap::init()
 {
 	// Load the World map level.
 	std::unique_ptr<CMapLoaderGalaxy> MapLoader;
@@ -33,7 +33,13 @@ void CWorldMap::init()
 	else if(gpBehaviorEngine->getEpisode() == 6)
         MapLoader.reset( new CMapLoaderGalaxyEp6( mObjectPtr, mInventoryVec) );
 
-	MapLoader->loadMap( mMap, 0 );
+    const bool ok = MapLoader->loadMap( mMap, 0 );
+
+    if(!ok)
+    {
+        return false;
+    }
+
 	gpBehaviorEngine->mapLevelName = MapLoader->getLevelName();
 
     const std::string loading_text = gpBehaviorEngine->getString("LEVEL0_LOAD_TEXT");
@@ -46,6 +52,8 @@ void CWorldMap::init()
 	}
 
 	mMap.drawAll();
+
+    return true;
 }
 
 
