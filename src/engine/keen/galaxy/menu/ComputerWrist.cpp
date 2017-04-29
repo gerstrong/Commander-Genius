@@ -319,7 +319,7 @@ void ComputerWrist::parseGraphics()
                 const auto bmpW = bmp.width();
 
                 // Got the bitmap, block the matrix at that part
-                for(int i=y ; i<y+bmpH ; i++)
+                for(int i=y-fontHeight ; i<y+bmpH ; i++)
                 {
                     // Wrap left side text
                     if((x+bmpW)/2 < lRect.w/2)
