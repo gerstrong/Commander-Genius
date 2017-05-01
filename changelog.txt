@@ -1,3 +1,11 @@
+v1.9.9.1:
+---------
+- More improvements on the story and finales texts of the galaxy games.
+
+v1.9.9.0:
+---------
+- Mod and engine fixes
+
 v1.9.8.8:
 ---------
 - New Horizontal borders

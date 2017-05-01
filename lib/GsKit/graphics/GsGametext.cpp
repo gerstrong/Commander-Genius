@@ -28,11 +28,13 @@ int GsGameText::getNumPages(const int blockIdx)
 
         std::getline(ss, line);
 
-        if( line.find("^P") != std::string::npos )
+        if( line.find("^P") != std::string::npos || line.find("^p") != std::string::npos  )
         {
             numPages++;
         }
     }
+
+    numPages--;
 
     return numPages;
 }
@@ -58,7 +60,7 @@ std::vector<std::string> GsGameText::readPage(const int blockIdx, const int page
         // Found the pagebreak
         if(breaksLeft > 0)
         {
-            if( line.find("^P") != std::string::npos )
+            if( line.find("^P") != std::string::npos || line.find("^p") != std::string::npos )
             {
                 breaksLeft--;
 
@@ -73,7 +75,7 @@ std::vector<std::string> GsGameText::readPage(const int blockIdx, const int page
         if(!skipMode)
         {
             // If we get another break, we can quit everything
-            if( line.find("^P") != std::string::npos )
+            if( line.find("^P") != std::string::npos || line.find("^p") != std::string::npos )
             {
                 break;
             }

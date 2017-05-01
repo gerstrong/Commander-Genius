@@ -142,6 +142,16 @@ void ComputerWrist::ponderMainMenu(const float deltaT)
     if( gInput.getPressedCommand(IC_JUMP) || gInput.getPressedCommand(IC_STATUS) )
     {
         mSection = mSelection;
+
+        // Strange cross mapping of the selection against Section to load
+        switch(mSelection)
+        {
+            case 1: mSection = 2; break;
+            case 2: mSection = 1; break;
+            case 4: mSection = 3; break;
+            default: break;
+        }
+
         mSectionPage = 0;
         mCurrentTextLines = gGameText.readPage(mSection, mSectionPage);
         mNumPagesOfThisSection = gGameText.getNumPages(mSection);
@@ -186,12 +196,14 @@ void ComputerWrist::parseText()
     {
         {'b', 0x55FFFF},
         {'e', 0xFCFC54},
+        {'f', 0xFFFFFF},
+        {'B', 0x55FFFF},
+        {'E', 0xFCFC54},
         {'F', 0xFFFFFF},
-
     };
 
 
-    Uint32 color = 0xFFFF00;
+    Uint32 color = 0xFCFC54;
 
     // Get the text that is actually used
     for(const auto &line : mCurrentTextLines)
@@ -201,6 +213,11 @@ void ComputerWrist::parseText()
         if(skipmode && line[0] == '^')
         {
             Font.setupColor(color);
+            skipmode = false;
+        }
+
+        if(skipmode && line[0] != '^')
+        {
             skipmode = false;
         }
 
@@ -220,7 +237,6 @@ void ComputerWrist::parseText()
             }
             else if(line[1] == 'c')
             {
-                // TODO: Color detection
                 const char colorCode = line[2];
                 color = wristColorMap[colorCode];
                 Font.setupColor(color);
@@ -259,9 +275,22 @@ void ComputerWrist::parseText()
                     cursorPos.x = mMinPos[cursorPos.y];
                 }
 
-                Font.drawFont(blitsfc.getSDLSurface(), word, cursorPos.x, cursorPos.y*fontHeight+mUpperBorderBmp.height()+2);
+                // There might be a change of color
+                if(word[0] == '^')
+                {
+                    if(word[1] == 'c')
+                    {
+                        const char colorCode = word[2];
+                        color = wristColorMap[colorCode];
+                        Font.setupColor(color);
+                    }
+                }
+                else
+                {
+                    Font.drawFont(blitsfc.getSDLSurface(), word, cursorPos.x, cursorPos.y*fontHeight+mUpperBorderBmp.height()+2);
 
-                cursorPos.x += (wordWidth+Font.getWidthofChar(' '));
+                    cursorPos.x += (wordWidth+Font.getWidthofChar(' '));
+                }
             }
 
             cursorPos.y++;
@@ -319,7 +348,15 @@ void ComputerWrist::parseGraphics()
                 const auto bmpW = bmp.width();
 
                 // Got the bitmap, block the matrix at that part
-                for(int i=y-fontHeight ; i<y+bmpH ; i++)
+
+                int minHeight = y-fontHeight;
+
+                if(minHeight < 0)
+                {
+                    minHeight = 0;
+                }
+
+                for(int i=minHeight ; i<y+bmpH ; i++)
                 {
                     // Wrap left side text
                     if((x+bmpW)/2 < lRect.w/2)
