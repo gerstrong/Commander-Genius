@@ -215,18 +215,6 @@ void CCouncilMember::getTouchedBy(CSpriteObject &theObject)
             msgs.push_back( new CMessageBoxBitmapGalaxy(gpBehaviorEngine->getString(answermap[8]),
                             *gGraphics.getBitmapFromStr("KEENTHUMBSUP"), RIGHT) );
 
-
-
-		    
-            /*const std::string end_text("End of Episode.\n"
-					       "The game will be restarted.\n"
-					       "You can replay it again or\n" 
-					       "try another Episode for more fun!\n"
-					       "The original epilog is under construction.");
-
-            msgs.push_back( new CMessageBoxGalaxy(end_text, new EventEndGamePlay()) );
-            */
-
             gEventManager.add(new OpenComputerWrist(4));
             gEventManager.add(new EventEndGamePlay());
 		}

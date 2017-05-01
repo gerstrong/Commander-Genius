@@ -2,6 +2,7 @@
 #include "../../common/ai/CPlayerBase.h"
 #include "../../common/dialog/CMessageBoxBitmapGalaxy.h"
 #include "engine/core/mode/CGameMode.h"
+#include "../../menu/ComputerWrist.h"
 
 namespace galaxy 
 {
@@ -45,27 +46,12 @@ void CMolly::getTouchedBy(CSpriteObject& theObject)
 		return;
 
 	// When Keen touches the Council Member exit the level and add one to the council list
-	//if( typeid(theObject) == typeid(CPlayerLevel) )
-	if( /*CPlayerBase *player = */dynamic_cast<CPlayerBase*>(&theObject) )
+    if( dynamic_cast<CPlayerBase*>(&theObject) )
 	{
-        //CEventContainer& EventContainer = gEventManager;
-
-        std::vector<CMessageBoxGalaxy*> msgs;
-
-        msgs.push_back( new CMessageBoxBitmapGalaxy( "Thanks for the rescue", gGraphics.getBitmapFromId(3), LEFT) );
-        msgs.push_back( new CMessageBoxBitmapGalaxy( "Null Problemo", *gGraphics.getBitmapFromStr("KEENTHUMBSUP"), RIGHT ) );
-
-        const std::string end_text("End of Episode.\n"
-                       "The game will be restarted.\n"
-                       "You can replay it again or\n"
-                       "try another Episode for more fun!\n"
-                       "The original epilog is under construction.");
-
-        msgs.push_back( new CMessageBoxGalaxy( end_text, new EventEndGamePlay() ) );
-
-        showMsgVec(msgs);
-
 		rescued = true;
+
+        gEventManager.add(new OpenComputerWrist(0));
+        gEventManager.add(new EventEndGamePlay());
 	}    
 }
 

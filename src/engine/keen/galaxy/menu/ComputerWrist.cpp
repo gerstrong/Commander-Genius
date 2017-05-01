@@ -2,6 +2,7 @@
 #include <base/CInput.h>
 #include <base/utils/StringUtils.h>
 #include <graphics/GsGraphics.h>
+#include <engine/core/CBehaviorEngine.h>
 
 #include <sstream>
 
@@ -42,46 +43,60 @@ ComputerWrist::ComputerWrist(const int ep) :
     mHandBmp.scaleTo(handBmpSize);
 
 
-    GsRect<Uint16> upperBorderBmpSize;
-    mUpperBorderBmp = *gGraphics.getBitmapFromStr("HELP_UPPERBORDER");
-    upperBorderBmpSize.w = mUpperBorderBmp.width();
-    upperBorderBmpSize.h = mUpperBorderBmp.height();
-    mUpperBorderBmp.scaleTo(upperBorderBmpSize);
+    if(ep != 6)
+    {
 
-    GsRect<Uint16> leftBorderBmpSize;
-    mLeftBorderBmp = *gGraphics.getBitmapFromStr("HELP_LEFTBORDER");
-    leftBorderBmpSize.w = mLeftBorderBmp.width();
-    leftBorderBmpSize.h = mLeftBorderBmp.height();
-    mLeftBorderBmp.scaleTo(leftBorderBmpSize);
+        GsRect<Uint16> upperBorderBmpSize;
+        mUpperBorderBmp = *gGraphics.getBitmapFromStr("HELP_UPPERBORDER");
+        upperBorderBmpSize.w = mUpperBorderBmp.width();
+        upperBorderBmpSize.h = mUpperBorderBmp.height();
+        mUpperBorderBmp.scaleTo(upperBorderBmpSize);
 
-    GsRect<Uint16> rightBorderBmpSize;
-    mRightBorderBmp = *gGraphics.getBitmapFromStr("HELP_RIGHTBORDER");
-    rightBorderBmpSize.w = mRightBorderBmp.width();
-    rightBorderBmpSize.h = mRightBorderBmp.height();
-    mRightBorderBmp.scaleTo(rightBorderBmpSize);
+        GsRect<Uint16> leftBorderBmpSize;
+        mLeftBorderBmp = *gGraphics.getBitmapFromStr("HELP_LEFTBORDER");
+        leftBorderBmpSize.w = mLeftBorderBmp.width();
+        leftBorderBmpSize.h = mLeftBorderBmp.height();
+        mLeftBorderBmp.scaleTo(leftBorderBmpSize);
 
-    GsRect<Uint16> bottomBorderBmpSize;
-    mBottomBorderBmp = *gGraphics.getBitmapFromStr("HELP_LOWERBORDER");
-    bottomBorderBmpSize.w = mBottomBorderBmp.width();
-    bottomBorderBmpSize.h = mBottomBorderBmp.height();
-    mBottomBorderBmp.scaleTo(bottomBorderBmpSize);
+        GsRect<Uint16> rightBorderBmpSize;
+        mRightBorderBmp = *gGraphics.getBitmapFromStr("HELP_RIGHTBORDER");
+        rightBorderBmpSize.w = mRightBorderBmp.width();
+        rightBorderBmpSize.h = mRightBorderBmp.height();
+        mRightBorderBmp.scaleTo(rightBorderBmpSize);
 
+        GsRect<Uint16> bottomBorderBmpSize;
+        mBottomBorderBmp = *gGraphics.getBitmapFromStr("HELP_LOWERBORDER");
+        bottomBorderBmpSize.w = mBottomBorderBmp.width();
+        bottomBorderBmpSize.h = mBottomBorderBmp.height();
+        mBottomBorderBmp.scaleTo(bottomBorderBmpSize);
+    }
 
     // NOTE: The index is always at six
     mBmpIndex = 6;
 
-
     GsFont &font = gGraphics.getFont(mFontId);
     GsWeakSurface blitsfc(gVideoDriver.getBlitSurface());
 
-    const int numLines = (blitsfc.height() - (mUpperBorderBmp.height() + mBottomBorderBmp.height()))/font.getPixelTextHeight();
+    int numLines = blitsfc.height();
 
-    for(int i=0 ; i < numLines ; i++)
+    if( ep != 6 )
     {
-        mMinPos.push_back(mLeftBorderBmp.width()+2);
-        mMaxPos.push_back(blitsfc.width() - (mLeftBorderBmp.width() + mRightBorderBmp.width() + 9) );
-    }
+        numLines = (blitsfc.height() - (mUpperBorderBmp.height() + mBottomBorderBmp.height()))/font.getPixelTextHeight();
 
+        for(int i=0 ; i < numLines ; i++)
+        {
+            mMinPos.push_back(mLeftBorderBmp.width()+2);
+            mMaxPos.push_back(blitsfc.width() - (mLeftBorderBmp.width() + mRightBorderBmp.width() + 9) );
+        }
+    }
+    else
+    {
+        for(int i=0 ; i < numLines ; i++)
+        {
+            mMinPos.push_back(2);
+            mMaxPos.push_back(blitsfc.width());
+        }
+    }
 }
 
 ComputerWrist::ComputerWrist(const int ep, const int section) :
@@ -176,6 +191,8 @@ void ComputerWrist::ponder(const float deltaT)
 void ComputerWrist::parseText()
 {
     GsWeakSurface blitsfc(gVideoDriver.getBlitSurface());
+
+    int ep = gpBehaviorEngine->getEpisode();
 
     //SDL_Rect lRect;
     //lRect.h = blitsfc.height();
@@ -287,7 +304,14 @@ void ComputerWrist::parseText()
                 }
                 else
                 {
-                    Font.drawFont(blitsfc.getSDLSurface(), word, cursorPos.x, cursorPos.y*fontHeight+mUpperBorderBmp.height()+2);
+                    if(ep != 6)
+                    {
+                        Font.drawFont(blitsfc.getSDLSurface(), word, cursorPos.x, cursorPos.y*fontHeight+mUpperBorderBmp.height()+2);
+                    }
+                    else
+                    {
+                        Font.drawFont(blitsfc.getSDLSurface(), word, cursorPos.x, cursorPos.y*fontHeight+2);
+                    }
 
                     cursorPos.x += (wordWidth+Font.getWidthofChar(' '));
                 }
@@ -303,6 +327,8 @@ void ComputerWrist::parseGraphics()
 {
     std::stringstream ss;
 
+    int ep = gpBehaviorEngine->getEpisode();
+
     int x,y,chunk;
     GsWeakSurface blitsfc(gVideoDriver.getBlitSurface());
 
@@ -312,17 +338,31 @@ void ComputerWrist::parseGraphics()
     const auto fontHeight = gGraphics.getFont(mFontId).getPixelTextHeight();
     const auto spaceWidth = gGraphics.getFont(mFontId).getWidthofChar(' ');
 
-    for(auto &minPos : mMinPos)
+    if(ep != 6)
     {
-        minPos = mLeftBorderBmp.width()+2;
-    }
+        for(auto &minPos : mMinPos)
+        {
+            minPos = mLeftBorderBmp.width()+2;
+        }
 
-    for(auto &maxPos : mMaxPos)
+        for(auto &maxPos : mMaxPos)
+        {
+            maxPos = blitsfc.width() - (mLeftBorderBmp.width() + mRightBorderBmp.width() + 9);
+        }
+    }
+    else
     {
-        maxPos = blitsfc.width() - (mLeftBorderBmp.width() + mRightBorderBmp.width() + 9);
+        for(auto &minPos : mMinPos)
+        {
+            minPos = 2;
+        }
+
+        for(auto &maxPos : mMaxPos)
+        {
+            maxPos = blitsfc.width();
+        }
+
     }
-
-
 
     for(const auto &line : mCurrentTextLines)
     {
@@ -433,11 +473,16 @@ void ComputerWrist::renderBorders()
 {
     GsWeakSurface blitsfc(gVideoDriver.getBlitSurface());
 
-    mUpperBorderBmp.draw(0, 0);
-    mLeftBorderBmp.draw(0, mUpperBorderBmp.height());
+    int ep = gpBehaviorEngine->getEpisode();
 
-    mRightBorderBmp.draw(blitsfc.width()-mRightBorderBmp.width(), mUpperBorderBmp.height());
-    mBottomBorderBmp.draw(mLeftBorderBmp.width(), mLeftBorderBmp.height());
+    if(ep != 6)
+    {
+        mUpperBorderBmp.draw(0, 0);
+        mLeftBorderBmp.draw(0, mUpperBorderBmp.height());
+
+        mRightBorderBmp.draw(blitsfc.width()-mRightBorderBmp.width(), mUpperBorderBmp.height());
+        mBottomBorderBmp.draw(mLeftBorderBmp.width(), mLeftBorderBmp.height());
+    }
 }
 
 void ComputerWrist::renderMainMenu()

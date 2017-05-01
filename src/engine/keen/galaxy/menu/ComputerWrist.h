@@ -129,7 +129,7 @@ private:
     int mFontId = 0;
 
     std::vector<int> mMinPos;
-    std::vector<int> mMaxPos;
+    std::vector<int> mMaxPos;   
 };
 
 }

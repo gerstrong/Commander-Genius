@@ -14,6 +14,7 @@
 #include "../../common/ai/CPlayerLevel.h"
 #include <base/utils/misc.h>
 #include "../../common/dialog/CMessageBoxGalaxy.h"
+#include "../../menu/ComputerWrist.h"
 #include "engine/core/mode/CGameMode.h"
 
 
@@ -503,18 +504,13 @@ void CMineShards::process()
             mp_Map->setTile(dx+i, dy+1, t2, true, 1);
             mp_Map->setTile(dx+i, dy+2, t3, true, 1);
             mp_Map->setTile(dx+i, dy+3, t4, true, 1);
-        }
+        }                
 
-
-		const std::string end_text("End of Episode.\n"
-					       "The game will be restarted.\n"
-					       "You can replay it again or\n"
-					       "try another Episode for more fun!\n"
-					       "The original epilog is under construction.");
-
-        showMsg(end_text, new EventEndGamePlay());
 		dead = true;
 		exists = false;
+
+        gEventManager.add(new OpenComputerWrist(4));
+        gEventManager.add(new EventEndGamePlay());
 
 		return;
 	}
