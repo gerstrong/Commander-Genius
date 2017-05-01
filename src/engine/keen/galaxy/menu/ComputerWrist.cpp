@@ -399,7 +399,8 @@ void ComputerWrist::parseGraphics()
                 for(int i=minHeight ; i<y+bmpH ; i++)
                 {
                     // Wrap left side text
-                    if((x+bmpW)/2 < lRect.w/2)
+                    //if((x+bmpW)/2 < lRect.w/2)
+                    if((x+bmpW) < lRect.w/2)
                     {
                         // Left hand wrap
                         for(int j=x ; j<x+bmpW ; j++)
@@ -411,10 +412,10 @@ void ComputerWrist::parseGraphics()
                                 mMinPos[i/fontHeight] = j+spaceWidth+8;
                             }
                         }
-                    }
+                    }                                        
                     else    // Wrap right side text
                     {
-                        for(int j=x ; j<spaceWidth+bmpW ; j++)
+                        for(int j=x ; j<x+spaceWidth+bmpW ; j++)
                         {
                             auto curMaxPos = mMaxPos[i/fontHeight];
 
