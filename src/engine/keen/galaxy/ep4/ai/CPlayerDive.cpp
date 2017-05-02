@@ -21,11 +21,12 @@ CPlayerDive::CPlayerDive(CMap *pmap,
 		Uint32 y,
 		direction_t facedir,
         CInventory &l_Inventory,
-        const int playerID) :
+        const int playerID,
+        const int spriteVar) :
 CPlayerBase(pmap, foeID, x, y,
 		facedir,
 		l_Inventory,        
-        playerID),
+        playerID, spriteVar),
 m_swimupspeed(0),
 m_breathtimer(0),
 mDidSwimUp(false)

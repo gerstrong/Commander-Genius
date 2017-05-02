@@ -137,7 +137,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp5::addFoe(CMap &Map, word foe, size_t x, 
             inventory.Item.mLevelName = Map.getLevelName();
 
             p_newfoe = new galaxy::CPlayerLevel(&Map, foe, x, y, m_ObjectPtr,
-               (foe==1) ? RIGHT : LEFT, inventory, 0x0888, mNumLoadedPlayers);
+               (foe==1) ? RIGHT : LEFT, inventory, 0x0888, mNumLoadedPlayers, mNumLoadedPlayers);
         }
         mNumLoadedPlayers++;
         break;
@@ -149,7 +149,8 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp5::addFoe(CMap &Map, word foe, size_t x, 
 			// This is the player on the world map
 			// Add the Camera into the game scene and attach it to this player
             inventory.Item.mLevelName = Map.getLevelName();
-            p_newfoe = new galaxy::CPlayerWM(&Map,foe, x, y, inventory, 0x146E, mNumLoadedPlayers );
+            p_newfoe = new galaxy::CPlayerWM(&Map,foe, x, y, inventory, 0x146E,
+                                             mNumLoadedPlayers, mNumLoadedPlayers );
 			// 0x137A
         }
         mNumLoadedPlayers++;

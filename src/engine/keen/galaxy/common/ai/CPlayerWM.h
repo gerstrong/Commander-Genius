@@ -41,7 +41,8 @@ public:
             Uint32 y,
             CInventory &l_Inventory,
             const unsigned int actionoffset,
-            const int playerID);
+            const int playerIdx,
+            const int spriteTableIdx);
 
     Vector2D<int> fetchFootDestCoord();
 

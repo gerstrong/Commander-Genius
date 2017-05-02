@@ -25,12 +25,25 @@ namespace galaxy
 class CEGAGraphicsGalaxy : public CEGAGraphics
 {
 public:
+
+    /**
+     * \brief	This creates the class for reading the graphical
+     * \param	episode		Episode of the chosen game
+     * \param	path		Path to where the game is found on the media
+     * \param	ExeFile		Object to ExeFile in which the
+     */
 	CEGAGraphicsGalaxy(CExeFile &ExeFile);
 
 	int getNumSprites();
 	short getNumTiles();
 
+    /**
+     * \brief	load the data into the structure
+     * \return 	returns true, if loading was successful
+     */
 	bool loadData();
+
+
 	void extractPicture(SDL_Surface *sfc,
 			std::vector<unsigned char> &data, size_t Width, size_t Height,
 			bool masked=false);

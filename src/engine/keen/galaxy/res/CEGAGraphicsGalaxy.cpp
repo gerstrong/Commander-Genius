@@ -111,15 +111,8 @@ static EpisodeInfoStruct EpisodeInfo[] =
 	}
 };
 
-/////
-// Class members start here!
-/////
-/**
- * \brief	This creates the class for reading the graphical
- * \param	episode		Episode of the chosen game
- * \param	path		Path to where the game is found on the media
- * \param	ExeFile		Object to ExeFile in which the
- */
+
+
 CEGAGraphicsGalaxy::CEGAGraphicsGalaxy(CExeFile &ExeFile) :
 CEGAGraphics(ExeFile.getEpisode(), gKeenFiles.gameDir),
 m_Exefile(ExeFile)
@@ -129,10 +122,7 @@ m_Exefile(ExeFile)
 }
 
 
-/**
- * \brief	load the data into the structure
- * \return 	returns true, if loading was successful
- */
+
 bool CEGAGraphicsGalaxy::loadData()
 {
 	// Set the palette, so the proper colours are loaded
@@ -1059,7 +1049,7 @@ bool CEGAGraphicsGalaxy::readSprites( size_t NumSprites, size_t IndexSprite )
 		Sprite.setName(m_SpriteNameMap[ep][i]);
 	}
 
-    // Now let's copy all the sprites ant tint to the proper colors
+    // Now let's copy all the sprites. After that some of them are tinted tint to the proper colors
 
     auto &SpriteOrigVec = gGraphics.getSpriteVec(0);
 
@@ -1069,8 +1059,11 @@ bool CEGAGraphicsGalaxy::readSprites( size_t NumSprites, size_t IndexSprite )
     }
 
     // For the other variant let's exchange some colors
+
+    // Second Player
     auto &SpriteVecPlayer2 = gGraphics.getSpriteVec(1);
-    for( auto &sprite : SpriteVecPlayer2)
+    int ctr = 0;
+    for( GsSprite &sprite : SpriteVecPlayer2)
     {
         // Red against Purple
         sprite.exchangeSpriteColor( 5, 4, 0 );
@@ -1080,8 +1073,24 @@ bool CEGAGraphicsGalaxy::readSprites( size_t NumSprites, size_t IndexSprite )
         sprite.exchangeSpriteColor( 2, 6, 0 );
         sprite.exchangeSpriteColor( 10, 14, 0 );
         sprite.optimizeSurface();
+
+        std::string filename = "4SPR0000.bmp";
+
+        const std::string numStr = std::to_string(ctr);
+        filename.replace(8-numStr.length(),numStr.length(),numStr);
+
+        std::string kyliePath = JoinPaths(gKeenFiles.gameDir, "gfx/player/kylie/");
+        kyliePath = JoinPaths(kyliePath, filename);
+
+        if( sprite.loadHQSprite(kyliePath) )
+        {
+            sprite.applyTransparency();
+        }
+
+        ctr++;
     }
 
+    // Third Player
     auto &SpriteVecPlayer3 = gGraphics.getSpriteVec(2);
     for( auto &sprite : SpriteVecPlayer3)
     {
@@ -1096,6 +1105,7 @@ bool CEGAGraphicsGalaxy::readSprites( size_t NumSprites, size_t IndexSprite )
     }
 
 
+    // Fourth Player
     auto &SpriteVecPlayer4 = gGraphics.getSpriteVec(3);
     for( auto &sprite : SpriteVecPlayer4)
     {

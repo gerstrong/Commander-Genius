@@ -128,7 +128,8 @@ public:
                 Uint32 y,
                 direction_t facedir,
                 CInventory &l_Inventory,
-                int playerID);
+                int playerID,
+                int spriteVar);
 
 
     /**

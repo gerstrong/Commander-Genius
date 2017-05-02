@@ -52,8 +52,8 @@ const int STUN_TIME = 30;
 CPlayerLevel::CPlayerLevel(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y,
                         std::vector< std::shared_ptr<CGalaxySpriteObject> > &ObjectPtrs, direction_t facedir,
                         CInventory &l_Inventory,
-                        const size_t offset, const int playerID) :
-CPlayerBase(pmap, foeID, x, y, facedir, l_Inventory, playerID),
+                        const size_t offset, const int playerIdx, const int spriteTableIdx) :
+CPlayerBase(pmap, foeID, x, y, facedir, l_Inventory, playerIdx, spriteTableIdx),
 mPlacingGem(false),
 mPoleGrabTime(0),
 mExitDoorTimer(0),

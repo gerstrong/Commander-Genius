@@ -157,9 +157,10 @@ CPlayerBase::CPlayerBase
 		Uint32 y,
 		direction_t facedir,
 		CInventory &l_Inventory,
-        int playerID
+        int playerID,
+        int spriteVar
 ) :
-CGalaxySpriteObject(pmap, foeID, x, y, playerID),
+CGalaxySpriteObject(pmap, foeID, x, y, spriteVar),
 m_Inventory(l_Inventory),
 m_camera(pmap,x,y,this),
 mPlayerNum(playerID),

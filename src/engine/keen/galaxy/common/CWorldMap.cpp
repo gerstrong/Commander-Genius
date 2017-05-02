@@ -27,11 +27,17 @@ bool CWorldMap::init()
 	std::unique_ptr<CMapLoaderGalaxy> MapLoader;
 
 	if(gpBehaviorEngine->getEpisode() == 4)
+    {
         MapLoader.reset( new CMapLoaderGalaxyEp4( mObjectPtr, mInventoryVec) );
+    }
 	else if(gpBehaviorEngine->getEpisode() == 5)
+    {
         MapLoader.reset( new CMapLoaderGalaxyEp5( mObjectPtr, mInventoryVec) );
+    }
 	else if(gpBehaviorEngine->getEpisode() == 6)
+    {
         MapLoader.reset( new CMapLoaderGalaxyEp6( mObjectPtr, mInventoryVec) );
+    }
 
     const bool ok = MapLoader->loadMap( mMap, 0 );
 
