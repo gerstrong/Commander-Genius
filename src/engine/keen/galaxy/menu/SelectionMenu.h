@@ -64,6 +64,21 @@ public:
 };
 
 
+class CPlayerSpriteVarSelection : public GalaxyMenu
+{
+public:
+    CPlayerSpriteVarSelection() :
+        GalaxyMenu( GsRect<float>(0.25f, 0.2f, 0.5f, 0.5f) )
+    {
+        mpMenuDialog->addControl( new GalaxyButton( "Sprite 1", new SelectPlayerSpriteVarEvent(0)) );
+        mpMenuDialog->addControl( new GalaxyButton( "Sprite 2", new SelectPlayerSpriteVarEvent(1)) );
+        mpMenuDialog->addControl( new GalaxyButton( "Sprite 3", new SelectPlayerSpriteVarEvent(2)) );
+        mpMenuDialog->addControl( new GalaxyButton( "Sprite 4", new SelectPlayerSpriteVarEvent(3)) );
+        setMenuLabel("NEWGAMELABEL");
+    }
+};
+
+
 
 
 }

@@ -37,7 +37,8 @@ namespace galaxy
 
 
 
-CPlayGameGalaxy::CPlayGameGalaxy(const int startlevel) :
+CPlayGameGalaxy::CPlayGameGalaxy(const int startlevel,
+                                 const std::vector<int> &spriteVars) :
 CPlayGame(startlevel),
 m_WorldMap( mInventoryVec),
 m_LevelPlay( mInventoryVec),
@@ -51,7 +52,7 @@ m_SavedGame(*gpSaveGameController)
 
     for(int i=0 ; i<numPlayers ; i++)
     {
-        mInventoryVec[i].setup(i);
+        mInventoryVec[i].setup(spriteVars[i]);
     }
 
     m_WorldMap.init();

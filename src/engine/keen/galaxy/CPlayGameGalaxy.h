@@ -28,7 +28,8 @@ class CPlayGameGalaxy : public CPlayGame
 {
 public:
 
-    CPlayGameGalaxy(const int startlevel);
+    CPlayGameGalaxy(const int startlevel,
+                    const std::vector<int> &spriteVars);
 
     bool loadGameState();
     //bool saveGameState();

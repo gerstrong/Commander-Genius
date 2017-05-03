@@ -244,9 +244,10 @@ void GalaxyEngine::switchToPassive()
     mOpenedGamePlay = false;
 }
 
-void GalaxyEngine::switchToGameplay(const int startLevel)
+void GalaxyEngine::switchToGameplay(const int startLevel,
+                                    const std::vector<int> &spriteVars)
 {
-    mpGameMode.reset( new CPlayGameGalaxy(startLevel) );
+    mpGameMode.reset( new CPlayGameGalaxy(startLevel, spriteVars) );
     mpGameMode->init();
     mOpenedGamePlay = true;
     gpBehaviorEngine->setPause(false);
@@ -266,7 +267,7 @@ void GalaxyEngine::pumpEvent(const CEvent *evPtr)
         if(!argLevel.empty())
         {
             const int startLevel = atoi(argLevel.c_str());
-            switchToGameplay(startLevel);
+            switchToGameplay(startLevel, mSpriteVars);
             gEventManager.add(new StartNewGameEvent(EASY, startLevel));
         }
         else
@@ -289,9 +290,30 @@ void GalaxyEngine::pumpEvent(const CEvent *evPtr)
     else if( const NewGamePlayersEvent* pNewGame = dynamic_cast<const NewGamePlayersEvent*>(evPtr) )
     {
         gpBehaviorEngine->mPlayers = pNewGame->mSelection;
+
+        if(gpBehaviorEngine->mPlayers > 1)
+        {
+            mSpriteVars.clear();
+
+            for(uint i=0 ; i<gpBehaviorEngine->mPlayers ; i++ )
+            {
+                mSpriteVars.push_back(i);
+            }
+
+            gEventManager.add( new OpenMenuEvent(new CDifficultySelection) );
+        }
+        else
+        {
+            gEventManager.add( new OpenMenuEvent(new CPlayerSpriteVarSelection) );
+        }
+        return;
+    }        
+    else if( const SelectPlayerSpriteVarEvent* pStart = dynamic_cast<const SelectPlayerSpriteVarEvent*>(evPtr) )
+    {
+        mSpriteVars.assign(1, pStart->mSprite);
         gEventManager.add( new OpenMenuEvent(new CDifficultySelection) );
         return;
-    }    
+    }
     // Control Menu Events
     else if( const OpenMovementControlMenuEvent* ctrlMenu = dynamic_cast<const OpenMovementControlMenuEvent*>(evPtr) )
     {
@@ -314,11 +336,11 @@ void GalaxyEngine::pumpEvent(const CEvent *evPtr)
     else if( const GMSwitchToPlayGameMode* pPlayGame = dynamic_cast<const GMSwitchToPlayGameMode*>(evPtr) )
     {
         const GMSwitchToPlayGameMode &playGame = const_cast<GMSwitchToPlayGameMode&>(*pPlayGame);
-        switchToGameplay(playGame.m_startlevel);
+        switchToGameplay(playGame.m_startlevel, mSpriteVars);
     }    
     else if( dynamic_cast<const LoadGameEvent*>(evPtr) ) // If GamePlayMode is not running but loading is requested...
     {
-        std::unique_ptr<CPlayGameGalaxy> pgGalaxy(new CPlayGameGalaxy(0));
+        std::unique_ptr<CPlayGameGalaxy> pgGalaxy(new CPlayGameGalaxy(0, mSpriteVars));
         pgGalaxy->init();
         pgGalaxy->loadGame();
         mpGameMode = std::move(pgGalaxy);

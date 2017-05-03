@@ -56,6 +56,9 @@ public:
 
 	stItemGalaxy Item;
 
+    // Sprite Variation is different than zero when the player wants to use a different set
+    int mSpriteVar = 0;
+
 	CHUD m_HUD;
 	std::shared_ptr<CStatusScreenGalaxy> mp_StatusScreen;
 	SDL_Surface *mp_StatusBgrnd;

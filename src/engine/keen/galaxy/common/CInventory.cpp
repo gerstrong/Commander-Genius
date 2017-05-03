@@ -122,6 +122,7 @@ void CInventory::drawHUD()
 
 void CInventory::setup(const int sprVar)
 {
+    mSpriteVar = sprVar;
     m_HUD.setup(sprVar);
 }
 

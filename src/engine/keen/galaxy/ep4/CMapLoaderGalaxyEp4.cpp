@@ -76,6 +76,8 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 {
 
 	CGalaxySpriteObject* p_newfoe = nullptr;
+
+    const int totalNumPlayer = mInventoryVec.size();
 			
 	// Point Item Sprites (Candies, etc...)
 	for( Uint32 i=61 ; i<=67 ; i++ )
@@ -119,7 +121,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 	case 0x01:
     case 0x02:
 
-        if(mInventoryVec.size() > (unsigned int)(mNumLoadedPlayers))
+        if(totalNumPlayer > mNumLoadedPlayers)
         {
             auto &inventory = mInventoryVec[mNumLoadedPlayers];
             if(inventory.Item.m_lifes >= 0)
@@ -128,7 +130,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
                 inventory.Item.mLevelName = Map.getLevelName();
                 p_newfoe = new galaxy::CPlayerLevel(&Map, foe, x, y, m_ObjectPtr,
                                                     (foe==0x01) ? RIGHT : LEFT, inventory, 0x98C,
-                                                    mNumLoadedPlayers, mNumLoadedPlayers);
+                                                    mNumLoadedPlayers, inventory.mSpriteVar);
             }
             mNumLoadedPlayers++;
         }
@@ -136,7 +138,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 
 	case 0x03:
 
-        if(mInventoryVec.size() > (unsigned int)(mNumLoadedPlayers))
+        if(totalNumPlayer > mNumLoadedPlayers)
         {
             auto &inventory = mInventoryVec[mNumLoadedPlayers];
 
@@ -281,7 +283,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 
 	case 0x22:
 
-        if(mInventoryVec.size() > (unsigned int)(mNumLoadedPlayers) )
+        if(totalNumPlayer > mNumLoadedPlayers )
         {
             // Place a gun in case Keen is missing bullets
             for( auto &inventory : mInventoryVec)
@@ -309,7 +311,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 
 	case 0x2A:
 
-        if(mInventoryVec.size() > (unsigned int)(mNumLoadedPlayers) )
+        if(totalNumPlayer > mNumLoadedPlayers )
         {
             auto &inventory = mInventoryVec[mNumLoadedPlayers];
 
