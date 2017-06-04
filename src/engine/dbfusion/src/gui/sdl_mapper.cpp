@@ -1798,11 +1798,6 @@ static void SetActiveEvent(CDBSDLEvent * event) {
 
 static void DrawButtons(void)
 {
-
-    SDL_sem *pPollSem = gVideoDriver.mpPollSem;
-
-    SDL_SemWait( pPollSem );
-
     SDL_FillRect(mapper.surface,0,0);
     //SDL_FillRect(mapper.surface,0,0xff00ff00);
 	SDL_LockSurface(mapper.surface);
@@ -1815,8 +1810,6 @@ static void DrawButtons(void)
 #if !SDL_VERSION_ATLEAST(2,0,0)
 	SDL_Flip(mapper.surface);
 #endif
-
-    SDL_SemPost( pPollSem );
 }
 
 static CKeyEvent * AddKeyButtonEvent(Bitu x,Bitu y,Bitu dx,Bitu dy,char const * const title,char const * const entry,KBD_KEYS key) {
