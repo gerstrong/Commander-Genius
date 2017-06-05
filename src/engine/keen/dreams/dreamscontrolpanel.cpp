@@ -154,17 +154,6 @@ void LineInput::start(int x, int y,
                       bool escok,
                       int maxchars, int maxwidth, int n)
 {
-
-    id0_boolean_t		redraw,
-                cursorvis,cursormoved,
-                done,result;
-    id0_char_t		c;
-    id0_word_t		i,
-                cursor,
-                w,h,
-                len;
-
-
     mMaxchars = maxchars;
     mMaxwidth = maxwidth;
 
@@ -186,9 +175,6 @@ void LineInput::start(int x, int y,
     mEscok = escok;
 
     mLasttime = SD_GetTimeCount();
-    //mLastASCII = key_None;
-    //mLastScan = sc_None;
-
 }
 
 void LineInput::ponder()

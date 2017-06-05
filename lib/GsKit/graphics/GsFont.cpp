@@ -307,9 +307,16 @@ void GsFont::createTextSurface(GsSurface &sfc,
 
 void GsFont::deriveHighResSurfaces()
 {        
+    if(!mpFontSurface[0])
+    {
+        return;
+    }
+
+
+    auto *srcSfc = mpFontSurface[0]->getSDLSurface();
+
     for(int i=1 ; i<4 ; i++)
     {
-        auto *srcSfc = mpFontSurface[0]->getSDLSurface();
         auto *dstSfc = mpFontSurface[i]->getSDLSurface();
 
         blitScaled(srcSfc,

@@ -291,7 +291,7 @@ void GalaxyEngine::pumpEvent(const CEvent *evPtr)
     {
         gpBehaviorEngine->mPlayers = pNewGame->mSelection;
 
-        if(gpBehaviorEngine->mPlayers > 1)
+        //if(gpBehaviorEngine->mPlayers > 1)
         {
             mSpriteVars.clear();
 
@@ -302,10 +302,10 @@ void GalaxyEngine::pumpEvent(const CEvent *evPtr)
 
             gEventManager.add( new OpenMenuEvent(new CDifficultySelection) );
         }
-        else
+        /*else
         {
             gEventManager.add( new OpenMenuEvent(new CPlayerSpriteVarSelection) );
-        }
+        }*/
         return;
     }        
     else if( const SelectPlayerSpriteVarEvent* pStart = dynamic_cast<const SelectPlayerSpriteVarEvent*>(evPtr) )
