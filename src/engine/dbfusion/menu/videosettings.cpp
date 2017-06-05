@@ -104,7 +104,7 @@ void VideoSettings::refresh()
     mpFPSSelection->setSelection( static_cast<int>( gTimer.FPS() ) );
 
 #if defined(USE_OPENGL)
-    mpOpenGLSwitch->enable( mUserVidConf.m_opengl );    
+    mpOpenGLSwitch->enable( mUserVidConf.mOpengl );
 #endif
 
     mpRenderScaleQualitySel->setSelection(mUserVidConf.mRenderScQuality);
@@ -147,7 +147,7 @@ void VideoSettings::release()
     gTimer.setFPS( mpFPSSelection->getSelection() );
 
 #if defined(USE_OPENGL)
-    mUserVidConf.m_opengl = mpOpenGLSwitch->isEnabled();
+    mUserVidConf.mOpengl = mpOpenGLSwitch->isEnabled();
 #endif
 
     mUserVidConf.mRenderScQuality = mpRenderScaleQualitySel->getSelection();

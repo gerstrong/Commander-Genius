@@ -629,7 +629,7 @@ void CGameLauncher::pumpEvent(const CEvent *evPtr)
     }
     else if( dynamic_cast<const GMDosGameFusionStart*>(evPtr) )
     {
-        setChosenGame(mpSelList->getSelection());
+        setChosenGame(mpGameSelecList->getSelection());
 
         if(m_chosenGame >= 0)
         {
