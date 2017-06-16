@@ -1,5 +1,4 @@
 
-OPTION(DBFUSION "Dosbox Fusion" No)
 
 include_directories(${SDL_INCLUDE_DIR})
 
@@ -11,11 +10,6 @@ if(DOWNLOADER)
     add_definitions(-DDOWNLOADER)
 endif()
 
-
-if(DBFUSION)
-    add_subdirectory(dbfusion)
-    add_definitions(-DDBFUSION)
-endif()
 
 add_subdirectory(refkeen)
 

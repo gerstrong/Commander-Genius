@@ -1,8 +1,10 @@
 # CMake file for development of Commander Genius (taken from OLX)
 # This CMake file is used under Linux normally. 
 
-#cmake_minimum_required(VERSION 3.1)
-cmake_minimum_required(VERSION 2.8.12)
+cmake_minimum_required(VERSION 3.1)
+
+OPTION(USE_SDL2 "SDL2 support" Yes)
+
 
 if (CMAKE_VERSION VERSION_LESS "3.1")
   if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
@@ -44,7 +46,6 @@ if(USE_SDL2)
       find_package(SDL2_image REQUIRED >=2.0.0)
       #PKG_SEARCH_MODULE(SDL2 REQUIRED sdl2)
       #PKG_SEARCH_MODULE(SDL2IMAGE REQUIRED SDL2_image>=2.0.0)
-
 	
     endif()
 
@@ -52,13 +53,15 @@ if(USE_SDL2)
         message(STATUS "Using shared SDL Version 2 for Commander Genius")
         include_directories(${SDL2_INCLUDE_DIRS})
 
-
-
+        message(STATUS "Using shared SDL Version 2 for Commander Genius")
         set(SDL2_INCLUDE_DIRS /Library/Frameworks/SDL2.framework/Headers)
         set(SDL2_IMAGE_INCLUDE_DIRS /Library/Frameworks/SDL2_image.framework/Headers)   
 
+        include_directories(${SDL2_INCLUDE_DIR})
+        include_directories(${SDL2_NET_INCLUDE_DIRS})
+
         include_directories(${SDL2_IMAGE_INCLUDE_DIRS})
-        #include_directories(${SDL2_NET_INCLUDE_DIRS})
+        #include_directories(${SDL2_NET_INCLUDE_DIRS})        
 
         #include_directories(/usr/include/SDL2/)
     endif(SDL2_FOUND)

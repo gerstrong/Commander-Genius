@@ -38,12 +38,6 @@
 
 #include "keen/dreams/dreamsengine.h"
 
-#ifdef DBFUSION
-#include "dbfusion/dbFusionNgine.h"
-#endif // DBFUSION
-
-bool disallowDBFusion = false;
-
 
 
 
@@ -159,23 +153,6 @@ bool CGameLauncher::setupMenu()
                                              0.75f,
                                              0.75f ), GsRect<float>(0.0f, 0.0f, 0.07f, 0.07f) );
     mLauncherDialog.addControl(mpGameSelecList, GsRect<float>(0.01f, 0.07f, 0.49f, 0.79f));
-
-
-#ifdef DBFUSION
-
-    GsButton *fusionShellBtn = new GsButton( "DosFusion Shell >", new GMDBFusionStart() );
-    GsButton *fusionBtn = new GsButton( "DosFusion! >", new GMDosGameFusionStart() );
-
-    if(disallowDBFusion)
-    {
-        fusionShellBtn->enable(false);
-        fusionBtn->enable(false);
-    }
-
-    mLauncherDialog.addControl( fusionShellBtn, GsRect<float>(0.01f, 0.865f, 0.3f, 0.07f) );
-    mLauncherDialog.addControl( fusionBtn, GsRect<float>(0.35f, 0.865f, 0.3f, 0.07f) );
-#endif
-
 
     #ifdef DOWNLOADER
     verifyGameStore();
@@ -620,31 +597,6 @@ void CGameLauncher::setupDosExecDialog()
 
 void CGameLauncher::pumpEvent(const CEvent *evPtr)
 {
-
-#ifdef DBFUSION
-    if( dynamic_cast<const GMDBFusionStart*>(evPtr) )
-    {
-        gEventManager.add( new StartDBFusionEngine() );
-        disallowDBFusion = true;
-    }
-    else if( dynamic_cast<const GMDosGameFusionStart*>(evPtr) )
-    {
-        setChosenGame(mpGameSelecList->getSelection());
-
-        if(m_chosenGame >= 0)
-        {
-            setupDosExecDialog();
-        }
-    }
-    else if( dynamic_cast<const GMDosExecSelected*>(evPtr) )
-    {
-        mExecFilename = mDosExecStrVec[mpDosExecSelList->getSelection()];
-        mDoneExecSelection = true;
-    }
-    else
-#endif
-
-
     #ifdef DOWNLOADER
     if( dynamic_cast<const GMDownloadDlgOpen*>(evPtr) )
     {
@@ -816,17 +768,6 @@ void CGameLauncher::ponderPatchDialog()
             gLogging.textOut(RED,"No Suitable game was detected in this path! Please check its contents!\n");
         }
     }
-
-
-#ifdef DBFUSION
-    if(mDoneExecSelection)
-    {
-        mpDosExecDialog = nullptr;
-        gEventManager.add( new StartDBFusionEngine(mExecFilename) );
-        disallowDBFusion = true;
-    }
-#endif
-
 }
 
 
