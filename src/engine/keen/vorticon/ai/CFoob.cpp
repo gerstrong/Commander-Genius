@@ -199,8 +199,10 @@ bool CFoob::isNearby(CVorticonSpriteObject &theObject)
 				dir = LEFT;
 			
 			// in hard mode run TOWARDS the player (he's deadly in hard mode)
-			if (gpBehaviorEngine->mDifficulty==HARD)
+            if (gpBehaviorEngine->mDifficulty == HARD)
+            {
 				dir = LEFT ? RIGHT : LEFT;
+            }
 
 		}
 		else spooktimer++;		

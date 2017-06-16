@@ -64,11 +64,21 @@ ComputerWrist::ComputerWrist(const int ep) :
         rightBorderBmpSize.h = mRightBorderBmp.height();
         mRightBorderBmp.scaleTo(rightBorderBmpSize);
 
+
+
+
         GsRect<Uint16> bottomBorderBmpSize;
         mBottomBorderBmp = *gGraphics.getBitmapFromStr("HELP_LOWERBORDER");
         bottomBorderBmpSize.w = mBottomBorderBmp.width();
         bottomBorderBmpSize.h = mBottomBorderBmp.height();
         mBottomBorderBmp.scaleTo(bottomBorderBmpSize);
+
+        GsRect<Uint16> lowerBorderBmpSize;
+        mLowerBorderControlBmp = *gGraphics.getBitmapFromStr("HELP_LOWERBORDERCONTROL");
+        lowerBorderBmpSize.w = mLowerBorderControlBmp.width();
+        lowerBorderBmpSize.h = mLowerBorderControlBmp.height();
+        mLowerBorderControlBmp.scaleTo(lowerBorderBmpSize);
+
     }
 
     // NOTE: The index is always at six
@@ -446,18 +456,9 @@ void ComputerWrist::renderPage()
 
     Font.setupColor(0xFFFFFF);
 
-    Font.drawFontCentered( blitsfc.getSDLSurface(), "Under Construction! Press Back (Esc)...", lRect.x, lRect.w, lRect.y, false);
-
-    //int linePos = 0;
-
     lRect.h = Font.getPixelTextHeight();
 
     lRect.x = 0;    lRect.y = 0;
-
-    //const auto screenW = blitsfc.width() - (mRightBorderBmp.width()+mLeftBorderBmp.width());
-    //const auto screenH = blitsfc.height() - (mUpperBorderBmp.height()+mBottomBorderBmp.height());
-
-    //const auto height = Font.getPixelTextHeight();
 
     // Bring borders to the screen
     renderBorders();
@@ -483,6 +484,11 @@ void ComputerWrist::renderBorders()
 
         mRightBorderBmp.draw(blitsfc.width()-mRightBorderBmp.width(), mUpperBorderBmp.height());
         mBottomBorderBmp.draw(mLeftBorderBmp.width(), mLeftBorderBmp.height());
+
+        if(mSection != -1)
+        {
+            mLowerBorderControlBmp.draw(mLeftBorderBmp.width(), mLeftBorderBmp.height()+mUpperBorderBmp.height()-mLowerBorderControlBmp.height() );
+        }
     }
 }
 

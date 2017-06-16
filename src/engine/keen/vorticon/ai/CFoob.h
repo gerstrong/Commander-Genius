@@ -52,6 +52,7 @@ private:
 		FOOB_EXPLODE,
 		FOOB_DEAD
 	} state;
+
 	direction_t dir;
 
 	int animframe, animtimer;

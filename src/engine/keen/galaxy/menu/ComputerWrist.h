@@ -109,6 +109,7 @@ private:
     GsBitmap mLeftBorderBmp;
     GsBitmap mRightBorderBmp;
     GsBitmap mBottomBorderBmp;
+    GsBitmap mLowerBorderControlBmp;
 
     /////////  For the Main Menu only /////////////////////
     GsBitmap mMainMenuBmp;
