@@ -13,20 +13,14 @@ OPTION(USE_SDL2 "SDL2 support" Yes)
 
 Project(CommanderGenius)
 
-if(POLICY CMP0058)
-    cmake_policy(SET CMP0058 NEW)
-endif()
+#if(POLICY CMP0058)
+#    cmake_policy(SET CMP0058 NEW)
+#endif()
 
 set (CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/CMake")
 #include(cotire)
 
-if (CMAKE_VERSION VERSION_LESS "3.1")
-  if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    set (CMAKE_CXX_FLAGS "--std=gnu++11 ${CMAKE_CXX_FLAGS}")
-  endif ()
-else ()
-  set (CMAKE_CXX_STANDARD 11)
-endif ()
+set (CMAKE_CXX_STANDARD 11)
 
 #------------------------------------------------------------------------------
 # Set a default build type if none was specified
