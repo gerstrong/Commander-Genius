@@ -609,6 +609,8 @@ bool CEGAGraphicsGalaxy::begin()
 
     std::vector<unsigned long> outLenVec = readOutLenVec(ep, CompEgaGraphData);
 
+    auto dataSize = CompEgaGraphData.size();
+    size_t numBadChunks = 0;
 
     // Now lets decompress the graphics
     auto offPtr = m_egahead.begin();
@@ -623,7 +625,7 @@ bool CEGAGraphicsGalaxy::begin()
           continue;*/
 
         // Make sure the chunk is valid
-        if(offset < offset_limit && offset + 4 <= CompEgaGraphData.size())
+        if(offset < offset_limit && offset + 4 <= dataSize)
         {
 
             // Get the expanded length of the chunk
@@ -645,10 +647,6 @@ bool CEGAGraphicsGalaxy::begin()
                 offset += 4;
             }
 
-            // Allocate memory and decompress the chunk
-            m_egagraph[i].len = outlen;
-            m_egagraph[i].data.assign(outlen, 0);
-
             inlen = 0;
             // Find out the input length
             size_t j;
@@ -658,15 +656,39 @@ bool CEGAGraphicsGalaxy::begin()
             for( j = i + 1; secondOffPtr != m_egahead.end() ; secondOffPtr++, j++ )
             {
                 const unsigned long second = *secondOffPtr;
-                if(second != offset_limit)
+                if(second < offset_limit)
                 {
-                    inlen = second - offset;
+                    // Check that the second offset is valid
+                    if(second > dataSize)
+                    {
+                        gLogging.textOut(RED,"Error! The file \"" + filename + "\" contains a second offset that is too large!");
+                    }
+                    else if(second < offset)
+                    {
+                        gLogging.textOut(RED,"Error! The file \"" + filename + "\" contains a second offset that is less than the first offset!");
+                    }
+                    else
+                    {
+                        inlen = second - offset;
+                    }
                     break;
                 }
             }
 
             if( secondOffPtr == m_egahead.end() )
+            {
                 inlen = egagraphlen - offset;
+            }
+            else if(inlen == 0) {
+                m_egagraph[i].len = 0;
+                gLogging.ftextOut("Giving up due to bad chunk at offset=%x", offset);
+                ++numBadChunks;
+                break;
+            }
+
+            // Allocate memory and decompress the chunk
+            m_egagraph[i].len = outlen;
+            m_egagraph[i].data.assign(outlen, 0);
 
             byte *in = &CompEgaGraphData[offset];
             byte *out = &m_egagraph[i].data[0];
@@ -676,11 +698,15 @@ bool CEGAGraphicsGalaxy::begin()
         else
         {
             m_egagraph[i].len = 0;
+            if (offset != offset_limit) {
+                gLogging.ftextOut("Skipping chunk with bad offset=%x", offset);
+                ++numBadChunks;
+            }
         }
     }
 
     File.close();
-    return true;
+    return (numBadChunks == 0);
 }
 
 /**
