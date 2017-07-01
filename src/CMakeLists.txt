@@ -191,7 +191,12 @@ add_subdirectory(graphics)
 get_property(cg_obj_libs GLOBAL PROPERTY CG_OBJ_LIBS)
 
 # Add executable Commander Genius
-add_executable (CGeniusExe CGenius.cpp fileio.cpp misc.cpp ${cg_obj_libs})
+add_executable (CGeniusExe CGenius.cpp
+                fileio.cpp misc.cpp
+                CRingBuffer.h
+                CSingleton.h
+                fileio.h
+                ${cg_obj_libs})
 
 # Since some RefKeen is used, we also need C99 Standard
 set_property(TARGET CGeniusExe PROPERTY C_STANDARD 99)
