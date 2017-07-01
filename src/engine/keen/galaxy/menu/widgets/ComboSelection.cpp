@@ -11,6 +11,7 @@ ComboSelection::ComboSelection( const std::string& text,
 CGUIComboSelection(text, optionsList)
 {
     mFontID = 1;
+    setupButtonSurface(mText);
 }
 
 
@@ -24,12 +25,9 @@ void ComboSelection::cycleOption()
 
 void ComboSelection::setupButtonSurface(const std::string &optionText)
 {
-    GsFont &Font = gGraphics.getFont(mFontID);
-
     const std::string showText = "  " + mText + ": " + optionText;
-    Font.createTextSurface(mTextDarkSfc, showText, 38, 134, 38 );
-    Font.createTextSurface(mTextLightSfc, showText, 84, 234, 84 );
-    Font.createTextSurface(mTextDisabledSfc, showText, 123, 150, 123 );
+
+    GsButton::setupButtonSurface(showText);
 }
 
 void ComboSelection::setSelection( const std::string& selectionText )
@@ -58,22 +56,15 @@ void ComboSelection::processRender(const GsRect<float> &RectDispCoordFloat)
     displayRect.transform(RectDispCoordFloat);
     SDL_Rect lRect = displayRect.SDLRect();
 
-    GsWeakSurface sfc(gVideoDriver.getBlitSurface());
+    GsWeakSurface blitsfc( gVideoDriver.getBlitSurface() );
 
     if(!mEnabled)
     {
-        mTextDisabledSfc.blitTo(sfc, lRect);
+        mTextDisabledSfc.blitTo(blitsfc, lRect);
     }
     else
     {
-        if(mHovered)
-        {
-            mTextLightSfc.blitTo(sfc, lRect);
-        }
-        else // Button is not hovered
-        {
-            mTextDarkSfc.blitTo(sfc, lRect);
-        }
+        drawEnabledButton(blitsfc, lRect, mHovered);
     }
 
     drawBlinker(lRect);

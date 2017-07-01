@@ -12,10 +12,9 @@
 #include <memory>
 #include <graphics/GsSurface.h>
 
-#include "GsControl.h"
+#include "GsButton.h"
 
-
-class CGUIComboSelection : public CGUIControl
+class CGUIComboSelection : public GsButton
 {
 public:
 
@@ -38,7 +37,7 @@ public:
 
 protected:
 
-	std::string mText;
+    //std::string mText;
 	std::list<std::string> mOptionsList;
 	std::list<std::string>::const_iterator mOLCurrent;
 };

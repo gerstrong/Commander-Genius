@@ -15,6 +15,8 @@
 
 #include "GsControl.h"
 
+const int BLEND_SPEED = 16;
+
 int CGUIControl::mTwirliconID;
 
 CGUIControl::CGUIControl() :
@@ -30,6 +32,35 @@ mSelected(false)
 	mTwirliconID = 10;
 }
 
+
+void CGUIControl::processBlendEffects()
+{
+    if(mEnabled)
+    {
+        // For some nice special effects
+        if(mHovered || mSelected)
+        {
+            int maxBlend = 224;
+
+            if(mHovered && mSelected)
+            {
+                maxBlend = 255;
+            }
+
+            if(mLightRatio+BLEND_SPEED < maxBlend)
+               mLightRatio += BLEND_SPEED;
+            else
+               mLightRatio = maxBlend;
+        }
+        else // Button is not hovered
+        {
+            if(mLightRatio-BLEND_SPEED > 0)
+               mLightRatio -= BLEND_SPEED;
+            else
+               mLightRatio = 0;
+        }
+    }
+}
 
 void CGUIControl::processPointingState(const GsRect<float> &rect)
 {

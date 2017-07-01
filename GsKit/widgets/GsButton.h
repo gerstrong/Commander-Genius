@@ -22,7 +22,7 @@ class GsButton : public CGUIControl
 public:
 
     GsButton(const std::string& text,
-			CEvent *ev,
+            CEvent *ev = nullptr,
             const Style style = UNSET,
             const float red = 0.875f,
             const float green = 0.875f,
@@ -32,38 +32,48 @@ public:
 
     void updateGraphics();
 
+    /**
+     * @brief drawEnabledButton Drawing of a button with fading effects.
+     * @param blitsfc sfc where to draw
+     * @param lRect Coordinates
+     * @param alternate Alterante color wanted?
+     */
+    void drawEnabledButton(GsWeakSurface &blitsfc,
+                           const SDL_Rect &lRect,
+                           const bool alternate);
+
     virtual void processLogic();
 
 	void drawNoStyle(SDL_Rect& lRect);
 
 	void drawVorticonStyle(SDL_Rect& lRect);
 
-	void drawGalaxyBorderedStyle(SDL_Rect& lRect);
+    //void drawGalaxyBorderedStyle(SDL_Rect& lRect);
 
-	void drawGalaxyStyle(SDL_Rect& lRect);
+    //void drawGalaxyStyle(SDL_Rect& lRect);
 
     virtual void processRender(const GsRect<float> &RectDispCoordFloat);
 
     void setText(const std::string& text)
 	{
 		mText = text;
-		setupButtonSurface();
+        setupButtonSurface("  " + mText);
     }
 
 	std::string getText()
 	{	return mText;	}
 
-    virtual void setupButtonSurface() {}
+    virtual void setupButtonSurface(const std::string &text);
 
 protected:
 
     std::string mText;
+
     GsSurface mTextDarkSfc;
     GsSurface mTextLightSfc;
     GsSurface mTextRedSfc;
     GsSurface mTextDisabledSfc;
 
-    int mLightRatio; // This will blend between selected and unselected item.
 
 private:        
 

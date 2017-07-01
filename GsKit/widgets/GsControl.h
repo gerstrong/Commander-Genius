@@ -32,6 +32,8 @@ public:
 
 	virtual void processLogic() = 0;
 
+    void processBlendEffects();
+
     void processPointingState()
     {
         processPointingState(mRect);
@@ -100,6 +102,8 @@ protected:
     bool mSelected;
 
 	static int mTwirliconID;
+
+    int mLightRatio = 128; // This will blend between selected and unselected item.
 
     /**
      * @brief mHoverTriggers    This is for touch friendly devices were there is no device

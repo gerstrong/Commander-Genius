@@ -19,12 +19,12 @@ class CGUIText : public CGUIControl
 public:
 	CGUIText(const std::string& text);
 
-	void setupButtonSurface();
+    void setupButtonSurface(const std::string& text);
 
 	virtual void setText(const std::string& text);
 
 	virtual void processLogic();
-	void drawGalaxyStyle(SDL_Rect& lRect);
+    //void drawGalaxyStyle(SDL_Rect& lRect);
     virtual void processRender(const GsRect<float> &RectDispCoordFloat);
 
 	// Defines in character units how tall and wide the entire text is.

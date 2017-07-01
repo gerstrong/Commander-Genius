@@ -8,12 +8,12 @@
 #ifndef CGUINUMBERCONTROL_H_
 #define CGUINUMBERCONTROL_H_
 
-#include "GsControl.h"
+#include "GsButton.h"
 
 #include <string>
 #include <graphics/GsSurface.h>
 
-class CGUINumberControl : public CGUIControl
+class CGUINumberControl : public GsButton
 {
 public:
 
@@ -44,17 +44,12 @@ protected:
     bool mIncSel;
     bool mDecSel;
 
-    GsSurface mTextDarkSfc;
-    GsSurface mTextLightSfc;
     GsSurface mTextLightSfcR;
     GsSurface mTextLightSfcL;
-    GsSurface mTextDisabledSfc;
 
-    std::string	mText;
     int mValue;
     const bool mSlider;
 
-    int mLightRatio; // This will blend between selected and unselected item.
 
     const int mStartValue;
     const int mEndValue;

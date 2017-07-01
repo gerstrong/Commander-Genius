@@ -15,9 +15,6 @@
 #include "GsButton.h"
 
 
-const int BLEND_SPEED = 16;
-
-
 GsButton::GsButton(const std::string& text,
             CEvent *ev,
             const Style style,
@@ -25,7 +22,6 @@ GsButton::GsButton(const std::string& text,
             const float green,
             const float blue) :
 mText(text),
-mLightRatio(128),
 mEvent(ev),
 mRed(red),
 mGreen(green),
@@ -57,31 +53,10 @@ void GsButton::processLogic()
 {
     processPointingState();
 
+    processBlendEffects();
+
     if(mEnabled)
     {
-        // For some nice special effects
-        if(mHovered || mSelected)
-        {
-            int maxBlend = 224;
-
-            if(mHovered && mSelected)
-            {
-                maxBlend = 255;
-            }
-
-            if(mLightRatio+BLEND_SPEED < maxBlend)
-               mLightRatio += BLEND_SPEED;
-            else
-               mLightRatio = maxBlend;
-        }
-        else // Button is not hovered
-        {
-            if(mLightRatio-BLEND_SPEED > 0)
-               mLightRatio -= BLEND_SPEED;
-            else
-               mLightRatio = 0;
-        }
-
         // If button was pushed and gets released, trigger the assigned event.
         if(mReleased)
         {
@@ -102,7 +77,6 @@ void GsButton::drawNoStyle(SDL_Rect& lRect)
     if(mEnabled)
     {
         auto lightRatio = mLightRatio;
-
 
         if( mPressed || mSelected )
         {
@@ -158,10 +132,53 @@ void GsButton::drawNoStyle(SDL_Rect& lRect)
     auto &Font = gGraphics.getFont(mFontID);
 
     if(mEnabled) // If the button is enabled use the normal text, otherwise the highlighted color
+    {
         Font.drawFontCentered( blitsfc.getSDLSurface(), mText, lRect.x, lRect.w, lRect.y, lRect.h, false );
+    }
     else
+    {
         Font.drawFontCentered( blitsfc.getSDLSurface(), mText, lRect.x, lRect.w, lRect.y, lRect.h, true );
+    }
 }
+
+void GsButton::setupButtonSurface(const std::string &text)
+{
+    GsFont &Font = gGraphics.getFont(mFontID);
+
+    Font.setOptimalFontSize();
+
+    Font.createTextSurface(mTextDarkSfc, text, 38, 134, 38 );
+    Font.createTextSurface(mTextLightSfc, text, 84, 234, 84 );
+    Font.createTextSurface(mTextDisabledSfc, text, 123, 150, 123 );
+    Font.createTextSurface(mTextRedSfc, text, 180, 50, 23 );
+
+    Font.setFontSize(1);
+}
+
+
+void GsButton::drawEnabledButton(GsWeakSurface &blitsfc, const SDL_Rect& lRect, const bool alternate)
+{
+    mTextLightSfc.setAlpha(mLightRatio);
+    mTextDarkSfc.setAlpha(255-mLightRatio);
+
+    if(mLightRatio > 0)
+    {
+        if(alternate)
+        {
+            mTextRedSfc.blitTo(blitsfc, lRect);
+        }
+        else
+        {
+            mTextLightSfc.blitTo(blitsfc, lRect);
+        }
+    }
+
+    if(mLightRatio < 255)
+    {
+        mTextDarkSfc.blitTo(blitsfc, lRect);
+    }
+}
+
 
 void GsButton::processRender(const GsRect<float> &RectDispCoordFloat)
 {

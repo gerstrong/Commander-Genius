@@ -22,18 +22,17 @@ CGUINumberControl(text, startValue, endValue,
 
 
 void NumberControl::setupButtonSurface()
-{
+{        
     GsFont &Font = gGraphics.getFont(mFontID);
 
     const std::string showText = "  " + mText + ": " + itoa(mValue);
+    GsButton::setupButtonSurface(showText);
+
     const std::string showTextL = "  " + mText + ":<" + itoa(mValue);
     const std::string showTextR = "  " + mText + ": " + itoa(mValue) + ">";
 
-    Font.createTextSurface(mTextDarkSfc, showText, 38, 134, 38 );
-    Font.createTextSurface(mTextLightSfc, showText, 84, 234, 84 );
     Font.createTextSurface(mTextLightSfcR, showTextR, 84, 234, 84 );
     Font.createTextSurface(mTextLightSfcL, showTextL, 84, 234, 84 );
-    Font.createTextSurface(mTextDisabledSfc, showText, 123, 150, 123 );
 }
 
 
@@ -63,6 +62,8 @@ void NumberControl::processRender(const GsRect<float> &RectDispCoordFloat)
     }
     else
     {
+        drawEnabledButton(blitsfc, lRect, mHovered);
+
         if(mHovered)
         {
             if(mDecSel)
@@ -71,10 +72,6 @@ void NumberControl::processRender(const GsRect<float> &RectDispCoordFloat)
                 mTextLightSfcR.blitTo(blitsfc, lRect);
             else
                 mTextLightSfc.blitTo(blitsfc, lRect);
-        }
-        else // Button is not hovered
-        {
-            mTextDarkSfc.blitTo(blitsfc, lRect);
         }
     }
 

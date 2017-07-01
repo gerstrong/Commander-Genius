@@ -12,6 +12,7 @@
 #include "fileio/CSaveGameController.h"
 #include "engine/core/CMessages.h"
 #include "sdl/audio/Audio.h"
+#include "graphics/effects/CColorMerge.h"
 
 #include "CPassive.h"
 #include "CPlayGameGalaxy.h"
@@ -134,7 +135,10 @@ void GalaxyEngine::openMainMenu()
        g_pMusicPlayer->pause();
     }
 
+
     gEventManager.add( new OpenMenuEvent( new MainMenu(mOpenedGamePlay) ) );
+
+    gEffectController.setupEffect( new CColorMerge(16) );
 }
 
 

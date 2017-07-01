@@ -12,8 +12,8 @@
 #include <base/GsTimer.h>
 
 CGUIComboSelection::CGUIComboSelection( const std::string& text,
-										     const std::list<std::string>& optionsList ) :
-mText(text),
+                                        const std::list<std::string>& optionsList ) :
+GsButton(text),
 mOptionsList( optionsList ),
 mOLCurrent( mOptionsList.begin() )
 {}
@@ -77,6 +77,8 @@ void CGUIComboSelection::processLogic()
 {        
 	if(!mEnabled)
 		return;
+
+    processBlendEffects();
 
     processPointingState();
 

@@ -46,9 +46,13 @@ void BorderedButton::processRender(const GsRect<float> &RectDispCoordFloat)
     else
     {
         if(mHovered)
+        {
             drawEnabledButton(blitsfc, lRect, true);
+        }
         else
+        {
             drawEnabledButton(blitsfc, lRect, false);
+        }
     }
 }
 

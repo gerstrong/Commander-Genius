@@ -29,12 +29,11 @@ CGUINumberControl::CGUINumberControl(	const std::string& text,
 					const int value,
                     const int fontid,
 					const bool slider ) :
+GsButton(text),
 mIncSel(false),
 mDecSel(false),
-mText(text),
 mValue(value),
 mSlider(slider),
-mLightRatio(128),
 mStartValue(startValue),
 mEndValue(endValue),
 mDeltaValue(deltaValue)
