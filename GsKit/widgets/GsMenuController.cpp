@@ -73,7 +73,9 @@ void CMenuController::pumpEvent(const CEvent *evPtr)
         menu.select(1);
 
         if( !mMenuStack.empty() )
+        {
             menu.setProperty( CBaseMenu::CANGOBACK );
+        }
 
         mMenuStack.push_back( openMenu->mMenuDialogPointer );
     }

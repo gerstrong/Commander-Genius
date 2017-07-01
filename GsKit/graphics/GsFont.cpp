@@ -239,18 +239,23 @@ void GsFont::setupColor( const Uint32 fgColor )
 {
 	// Here comes the main part. We have to manipulate the Surface the way it gets
 	// the given color
-	SDL_Color color[16];
+    std::array<SDL_Color, 16> color;
 
     for(auto &pFontSurface : mpFontSurface)
     {
-        memcpy( color, pFontSurface->getSDLSurface()->format->palette->colors, 16*sizeof(SDL_Color) );
+        auto palette = pFontSurface->getSDLSurface()->format->palette;
+
+        if(palette)
+        {
+            memcpy( color.data(), palette->colors, 16*sizeof(SDL_Color) );
+        }
 
         SDL_PixelFormat *pPixelformat = gVideoDriver.getBlitSurface()->format;
 
         SDL_GetRGB(fgColor, pPixelformat, &color[15].r, &color[15].g, &color[15].b);
 
         // Change palette colors to the one requested
-        pFontSurface->setPaletteColors(color);
+        pFontSurface->setPaletteColors(color.data());
         pFontSurface->setColorKey(COLORKEY_4BIT);
     }
 }
@@ -260,7 +265,13 @@ Uint32 GsFont::getFGColor()
 	// Here comes the main part. We have to manipulate the Surface the way it gets
 	// the given color
     std::array<SDL_Color, 16> color;
-    memcpy( color.data(), mpFontSurface[0]->getSDLSurface()->format->palette->colors, color.size()*sizeof(SDL_Color) );
+    auto fontSfc = mpFontSurface[0]->getSDLSurface();
+    auto palette = fontSfc->format->palette;
+
+    if(palette)
+    {
+        memcpy( color.data(), palette->colors, color.size()*sizeof(SDL_Color) );
+    }
 
     SDL_PixelFormat *pPixelformat = gVideoDriver.getBlitSurface()->format;
 
