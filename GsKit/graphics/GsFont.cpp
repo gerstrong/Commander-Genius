@@ -245,10 +245,7 @@ void GsFont::setupColor( const Uint32 fgColor )
     {
         auto palette = pFontSurface->getSDLSurface()->format->palette;
 
-        if(palette)
-        {
-            memcpy( color.data(), palette->colors, 16*sizeof(SDL_Color) );
-        }
+        memcpy( color.data(), palette->colors, 16*sizeof(SDL_Color) );
 
         SDL_PixelFormat *pPixelformat = gVideoDriver.getBlitSurface()->format;
 
@@ -268,10 +265,7 @@ Uint32 GsFont::getFGColor()
     auto fontSfc = mpFontSurface[0]->getSDLSurface();
     auto palette = fontSfc->format->palette;
 
-    if(palette)
-    {
-        memcpy( color.data(), palette->colors, color.size()*sizeof(SDL_Color) );
-    }
+    memcpy( color.data(), palette->colors, color.size()*sizeof(SDL_Color) );
 
     SDL_PixelFormat *pPixelformat = gVideoDriver.getBlitSurface()->format;
 

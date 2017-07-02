@@ -48,10 +48,6 @@ public:
 
 	void drawVorticonStyle(SDL_Rect& lRect);
 
-    //void drawGalaxyBorderedStyle(SDL_Rect& lRect);
-
-    //void drawGalaxyStyle(SDL_Rect& lRect);
-
     virtual void processRender(const GsRect<float> &RectDispCoordFloat);
 
     void setText(const std::string& text)

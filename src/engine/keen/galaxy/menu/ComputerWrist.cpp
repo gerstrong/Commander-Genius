@@ -2,6 +2,7 @@
 #include <base/CInput.h>
 #include <base/utils/StringUtils.h>
 #include <graphics/GsGraphics.h>
+#include <graphics/effects/CColorMerge.h>
 #include <engine/core/CBehaviorEngine.h>
 
 #include <sstream>
@@ -107,6 +108,9 @@ ComputerWrist::ComputerWrist(const int ep) :
             mMaxPos.push_back(blitsfc.width());
         }
     }
+
+    CColorMerge *pColorMergeFX = new CColorMerge(16);
+    gEffectController.setupEffect(pColorMergeFX);
 }
 
 ComputerWrist::ComputerWrist(const int ep, const int section) :

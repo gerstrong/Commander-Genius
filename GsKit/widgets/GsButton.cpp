@@ -145,6 +145,15 @@ void GsButton::setupButtonSurface(const std::string &text)
 {
     GsFont &Font = gGraphics.getFont(mFontID);
 
+    auto fontSfc = Font.SDLSurfacePtr();
+    auto palette = fontSfc->format->palette;
+
+    // If there is no palette defined, we will not bother with cached surfaces
+    if(!palette)
+    {
+        return;
+    }
+
     Font.setOptimalFontSize();
 
     Font.createTextSurface(mTextDarkSfc, text, 38, 134, 38 );
