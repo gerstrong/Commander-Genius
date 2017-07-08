@@ -1,3 +1,9 @@
+v1.9.9.2:
+---------
+- Menu UI Fixes.
+- Removed Dosbox Fusion code
+- Bug fixes 
+
 v1.9.9.1:
 ---------
 - More improvements on the story and finales texts of the galaxy games.
