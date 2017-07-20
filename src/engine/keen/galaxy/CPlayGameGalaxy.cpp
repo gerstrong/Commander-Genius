@@ -61,7 +61,9 @@ m_SavedGame(*gpSaveGameController)
 
     // If no level has been set or is out of bound, set it to map.
     if(m_Level > 100 || m_Level < 0 )
+    {
         m_Level = WORLD_MAP_LEVEL_GALAXY;
+    }
 
     // Create the special merge effect (Fadeout)
     CColorMerge *pColorMergeFX = new CColorMerge(8);

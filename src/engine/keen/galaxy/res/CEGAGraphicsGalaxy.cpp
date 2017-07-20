@@ -28,6 +28,7 @@
 #include "engine/core/CPlanes.h"
 #include <fstream>
 #include <cstring>
+#include <string>
 #include <SDL.h>
 
 
