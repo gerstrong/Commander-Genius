@@ -301,7 +301,7 @@ void GalaxyEngine::pumpEvent(const CEvent *evPtr)
         {
             mSpriteVars.clear();
 
-            for(uint i=0 ; i<gpBehaviorEngine->mPlayers ; i++ )
+            for(unsigned int i=0 ; i<gpBehaviorEngine->mPlayers ; i++ )
             {
                 mSpriteVars.push_back(i);
             }
