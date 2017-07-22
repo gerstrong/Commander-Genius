@@ -28,6 +28,7 @@
 #include "engine/core/CPlanes.h"
 #include <fstream>
 #include <cstring>
+#include <string>
 #include <SDL.h>
 
 
@@ -1093,7 +1094,7 @@ bool CEGAGraphicsGalaxy::readSprites( size_t NumSprites, size_t IndexSprite )
 
         std::string filename = "4SPR0000.bmp";
 
-        const std::string numStr = std::to_string(ctr);
+        const std::string numStr = to_string(ctr);
         filename.replace(8-numStr.length(),numStr.length(),numStr);
 
         std::string kyliePath = JoinPaths(gKeenFiles.gameDir, "gfx/player/kylie/");
