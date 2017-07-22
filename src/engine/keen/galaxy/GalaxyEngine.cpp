@@ -306,6 +306,7 @@ void GalaxyEngine::pumpEvent(const CEvent *evPtr)
                 mSpriteVars.push_back(i);
             }
 
+            //mSpriteVars.assign(1, pStart->mSprite);
             gEventManager.add( new OpenMenuEvent(new CDifficultySelection) );
         }
         /*else
