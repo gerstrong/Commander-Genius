@@ -150,7 +150,7 @@ bool GalaxyEngine::loadResources( const Uint8 flags )
     gTimer.setLPS(DEFAULT_LPS_GALAXY);
 
     mEngineLoader.setStyle(PROGRESS_STYLE_BAR);
-    const std::string threadname = "Loading Keen " + itoa(mEp);
+    //const std::string threadname = "Loading Keen " + itoa(mEp);
 
     struct GalaxyDataLoad : public Action
     {
