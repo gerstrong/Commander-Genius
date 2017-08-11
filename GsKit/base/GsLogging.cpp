@@ -216,7 +216,7 @@ CLogFile & CLogFile::operator << (const char *txt)
 
 CLogFile & CLogFile::operator << (const int val)
 {
-    textOut(std::to_string(val));
+    textOut(to_string(val));
     return *this;
 }
 
