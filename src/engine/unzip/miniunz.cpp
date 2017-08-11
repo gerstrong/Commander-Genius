@@ -590,7 +590,8 @@ int unzipFile(const char *input,
 
     if (uf==nullptr)
     {
-        gLogging << "Error Report : " << errStr << "\n";
+        errStr = "Error Report : " + errStr + "\n";
+        gLogging <<  errStr;
         gLogging.ftextOut(BLACK,"Cannot open %s or %s.zip\n",zipfilename,zipfilename);
         return 1;
     }
