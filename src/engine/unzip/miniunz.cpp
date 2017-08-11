@@ -546,7 +546,7 @@ int unzipFile(const char *input,
     opt_do_extract = 1;
     opt_extractdir = 1;
 
-    errStr = "trying to open ";
+    std::string errStr = "trying to open ";
     errStr += zipfilename;
 
     if (zipfilename != nullptr)
