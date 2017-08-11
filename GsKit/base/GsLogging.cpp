@@ -214,6 +214,12 @@ CLogFile & CLogFile::operator << (const char *txt)
     return *this;
 }
 
+CLogFile & CLogFile::operator << (const std::string &str)
+{
+    textOut(str);
+    return *this;
+}
+
 CLogFile & CLogFile::operator << (const int val)
 {
     textOut(to_string(val));

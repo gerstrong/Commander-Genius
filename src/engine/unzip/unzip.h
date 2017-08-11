@@ -163,8 +163,8 @@ extern int ZEXPORT unzStringFileNameCompare OF ((const char* fileName1,
 */
 
 
-extern unzFile ZEXPORT unzOpen OF((const char *path));
-extern unzFile ZEXPORT unzOpen64 OF((const void *path));
+extern unzFile ZEXPORT unzOpen OF((const char *path, std::string &errStr));
+extern unzFile ZEXPORT unzOpen64 OF((const void *path, std::string &errStr));
 /*
   Open a Zip file. path contain the full pathname (by example,
      on a Windows XP computer "c:\\zlib\\zlib113.zip" or on an Unix computer
@@ -182,14 +182,16 @@ extern unzFile ZEXPORT unzOpen64 OF((const void *path));
 
 
 extern unzFile ZEXPORT unzOpen2 OF((const char *path,
-                                    zlib_filefunc_def* pzlib_filefunc_def));
+                                    zlib_filefunc_def* pzlib_filefunc_def,
+                                    std::string &errStr));
 /*
    Open a Zip file, like unzOpen, but provide a set of file low level API
       for read/write the zip file (see ioapi.h)
 */
 
 extern unzFile ZEXPORT unzOpen2_64 OF((const void *path,
-                                    zlib_filefunc64_def* pzlib_filefunc_def));
+                                       zlib_filefunc64_def* pzlib_filefunc_def,
+                                       std::string &errStr));
 /*
    Open a Zip file, like unz64Open, but provide a set of file low level API
       for read/write the zip file (see ioapi.h)

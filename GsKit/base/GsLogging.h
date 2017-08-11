@@ -57,6 +57,7 @@ public:
 	void FunctionResult	(const char *Name, bool Result);
 
     CLogFile & operator << (const char *txt);
+    CLogFile & operator << (const std::string &str);
     CLogFile & operator << (const int val);
 
 private:

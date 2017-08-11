@@ -18,7 +18,10 @@ set(EngineSources CGameLauncher.cpp CGameLauncher.h
                    gamedownloader.cpp gamedownloader.h
                    unzip/miniunz.cpp
                    unzip/ioapi.c
-                   unzip/unzip.c)
+                   unzip/ioapi.h
+                   unzip/iowin32.h
+                   unzip/unzip.cpp
+                   unzip/unzip.h)
 
 IF(WIN32)
 set(EngineSources ${EngineSources} unzip/iowin32.c)

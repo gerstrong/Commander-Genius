@@ -546,6 +546,8 @@ int unzipFile(const char *input,
     opt_do_extract = 1;
     opt_extractdir = 1;
 
+    std::string errStr;
+
     if (zipfilename != nullptr)
     {
 #        ifdef USEWIN32IOAPI
@@ -558,34 +560,35 @@ int unzipFile(const char *input,
 
 #        ifdef USEWIN32IOAPI
         fill_win32_filefunc64A(&ffunc);
-        uf = unzOpen2_64(zipfilename,&ffunc);
+        uf = unzOpen2_64(zipfilename,&ffunc, errStr);
 #        else
-        uf = unzOpen64(zipfilename);
+        uf = unzOpen64(zipfilename, errStr);
 #        endif
         if (uf==nullptr)
         {
             strcat(filename_try,".zip");
 #            ifdef USEWIN32IOAPI
-            uf = unzOpen2_64(filename_try,&ffunc);
+            uf = unzOpen2_64(filename_try,&ffunc, errStr);
 #            else
-            uf = unzOpen64(filename_try);
+            uf = unzOpen64(filename_try, errStr);
 #            endif
         }
 
         // didn't work? let try 32-bit extraction functions then
         if (uf == nullptr)
         {
-            uf = unzOpen(zipfilename);
+            uf = unzOpen(zipfilename, errStr);
         }
 
         if (uf == nullptr)
         {
-            uf = unzOpen(filename_try);
+            uf = unzOpen(filename_try, errStr);
         }
     }
 
     if (uf==nullptr)
     {
+        gLogging << "Error Report : " << errStr << "\n";
         gLogging.ftextOut(BLACK,"Cannot open %s or %s.zip\n",zipfilename,zipfilename);
         return 1;
     }
