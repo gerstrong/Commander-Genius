@@ -1,7 +1,8 @@
 v1.9.9.X:
 ---------
 - Improved log responsiveness
-- Tidied up code
+- More error messages are now logged in minizip code
+- Tidied up code in general
 - More C++ use
 
 v1.9.9.2:

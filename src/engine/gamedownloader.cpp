@@ -12,11 +12,9 @@
 #include <boost/property_tree/xml_parser.hpp>
 
 
-extern "C"
-{
+// Forward-declaration
 int unzipFile(const char *input,
               const char *outputDir);
-}
 
 // Limit to max 1 GB
 const curl_off_t  STOP_DOWNLOAD_AFTER_THIS_MANY_BYTES = 1024 * 1024 * 1024;
@@ -369,7 +367,7 @@ int GameDownloader::handle()
             // If unpacking files fails, we should delete it.
             if(retVal != 0)
             {
-                gLogging.ftextOut( RED, "Error: Trying to remove the broken file \"%s\"", downloadGamePath.c_str());
+                gLogging.ftextOut( RED, "Error: Trying to remove broken file \"%s\"", downloadGamePath.c_str());
                 remove( GetFullFileName(downloadGamePath).c_str() );
             }
             else
