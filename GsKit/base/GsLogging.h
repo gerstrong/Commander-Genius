@@ -55,7 +55,10 @@ public:
 	void ftextOut		(FONTCOLORS Color, const char *Text, ...);
 	void fltextOut		(FONTCOLORS Color, bool List, const char *Text, ...);
 	void FunctionResult	(const char *Name, bool Result);
-	
+
+    CLogFile & operator << (const char *txt);
+    CLogFile & operator << (const int val);
+
 private:
 
     std::ofstream mLogStream;

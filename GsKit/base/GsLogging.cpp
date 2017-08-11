@@ -208,6 +208,18 @@ void CLogFile::ftextOut(FONTCOLORS Color, const char *Text, ...)
 	va_end(pArgList);
 }
 
+CLogFile & CLogFile::operator << (const char *txt)
+{
+    textOut(std::string(txt));
+    return *this;
+}
+
+CLogFile & CLogFile::operator << (const int val)
+{
+    textOut(std::to_string(val));
+    return *this;
+}
+
 void CLogFile::FunctionResult (const char *Name,bool Result)
 {
 	if (Result == true)
