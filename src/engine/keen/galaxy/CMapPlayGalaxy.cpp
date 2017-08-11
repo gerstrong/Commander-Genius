@@ -61,7 +61,7 @@ void CMapPlayGalaxy::pumpEvent(const CEvent *evPtr)
         for( auto obj=mObjectPtr.rbegin() ; obj!=mObjectPtr.rend() ; obj++ )
         {
             galaxy::CInchWorm *inchworm = dynamic_cast<galaxy::CInchWorm*>(obj->get());
-            if( inchworm != NULL )
+            if( inchworm != nullptr )
             {
                 inchworm->exists = false;
             }

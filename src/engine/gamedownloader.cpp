@@ -362,6 +362,10 @@ int GameDownloader::handle()
 
             const int retVal = unzipFile(fullZipPath.c_str(), destDir.c_str());
 
+            gLogging.ftextOut( BLACK, "Extracting downloaded file \"%s\" to \"%s\".\n<br>",
+                               fullZipPath.c_str(),
+                               destDir.c_str() );
+
             // If unpacking files fails, we should delete it.
             if(retVal != 0)
             {
@@ -370,7 +374,9 @@ int GameDownloader::handle()
             }
             else
             {
-                gLogging.ftextOut( GREEN, "File \"%s\" extracted succesfully.\n<br>", downloadGamePath.c_str() );
+                gLogging.ftextOut( GREEN, "File \"%s\" extracted successfully to \"%s\".\n<br>",
+                                   downloadGamePath.c_str(),
+                                   destDir.c_str());
             }
         }
         else

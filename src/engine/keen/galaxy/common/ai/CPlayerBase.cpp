@@ -174,7 +174,7 @@ mp_processState(NULL)
 	m_dying = false;
 	xDirection = facedir;
 
-	memset(m_playcontrol, 0, PA_MAX_ACTIONS);
+    m_playcontrol.fill(0);
 	m_camera.setPosition(m_Pos);
 
     mp_Map->calcVisibleArea();

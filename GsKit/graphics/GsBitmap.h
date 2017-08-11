@@ -68,6 +68,7 @@ public:
 	std::string getName() const { return mName; }
 	void setName(const std::string &name) { mName = name; }
 
+
     /**
      * \brief The function that blits the sprite to the main blitSurface
      * \param x		 		X-Coordinate, indicating the position on dst

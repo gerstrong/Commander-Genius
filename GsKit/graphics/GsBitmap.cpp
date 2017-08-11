@@ -285,6 +285,8 @@ void GsBitmap::draw(const int x, const int y) const
     _draw( x, y, gVideoDriver.getBlitSurface() );
 }
 
+
+
 /**
  * \brief The function that blits the sprite to dst
  * \param x		 		X-Coordinate, indicating the position on dst

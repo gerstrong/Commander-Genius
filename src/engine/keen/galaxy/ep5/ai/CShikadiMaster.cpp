@@ -258,7 +258,7 @@ void CShikadiMaster::processTeleporting()
 	    
 	    if(!allow_teleport)  continue;
 	    
-	    // make it through previous nested loop == succesful tele
+        // make it through previous nested loop == successful tele
 	    //KeenXVel = KeenYVel = 0;
 	    moveToForce(tx<<CSF, ty<<CSF);
 	    setAction(A_MASTER_STAND);

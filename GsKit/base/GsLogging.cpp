@@ -16,12 +16,15 @@
 
 CLogFile::CLogFile() {}
 
-void CLogFile::CreateLogfile(const char *LogName,
+bool CLogFile::CreateLogfile(const std::string &logFName,
                              const std::string &appName,
                              const std::string &version)
 {
 	// Open and empty the log file
-	m_Logfile = OpenGameFile(LogName, "wt");
+    if( !OpenGameFileW(mLogStream, logFName) )
+    {
+        return false;
+    }
 	
 	// Write the head
 	textOut("<html><head><title>LogFile</title></head>");
@@ -77,19 +80,22 @@ void CLogFile::CreateLogfile(const char *LogName,
 	textOut("<a href='mailto:gerstrong@gmail.com?subject=CG Logfile'>");
 	textOut("Send E-Mail to me</a><br><br>");
 	
-	fclose(m_Logfile);
-	m_Logfile = OpenGameFile(LogName, "at");
+    mLogStream.close();
+
+    // Reopen it in append mode for further wroting.
+    mLogStream = OpenGameFileW(logFName, std::ios_base::app);
+
+    return true;
 }
 
 // Function for writing the topic
 void CLogFile::WriteTopic(const char *Topic, int Size)
-{
+{    
 	textOut("<table cellspacing='0' cellpadding='0' width='100%%' bgcolor='#DFDFE5'>\n");
 	textOut("<tr>\n<tr>\n<td>\n");
 	ftextOut("<font face='arial' size='+%i'>\n", Size);
 	textOut(Topic);
 	textOut("</font>\n</td>\n</tr>\n</table>\n<br>");
-	fflush(m_Logfile);
 }
 
 // The main textOut function
@@ -153,16 +159,16 @@ std::string CLogFile::removeHTML(const std::string& input)
     return output;
 }
 
-void CLogFile::textOut(const std::string& Text)
-{
+void CLogFile::textOut(const std::string& text)
+{    
     std::string output;
 	
-    output = removeHTML(Text);
+    output = removeHTML(text);
     if( output.length() > 0 ) {
         notes << output << endl;
     }
-	fprintf(m_Logfile,"%s",Text.c_str());
-	fflush(m_Logfile);
+
+    mLogStream << text;
 }
 
 void CLogFile::ftextOut(const char *Text, ...)
@@ -224,8 +230,8 @@ void CLogFile::FunctionResult (const char *Name,bool Result)
 	}
 }
 
-CLogFile::~CLogFile() {
+CLogFile::~CLogFile()
+{
 	// Logfile End
 	textOut ("<br><br>End of logfile</font></body></html>");
-	fclose (m_Logfile);
 }

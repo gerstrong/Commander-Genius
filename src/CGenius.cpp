@@ -96,7 +96,11 @@ int main(int argc, char *argv[])
 	InitThreadPool();
     InitSearchPaths(g_pSettings->getConfigFileName());
 
-    gLogging.CreateLogfile("CGLog.html", APP_NAME, CGVERSION);
+    if( !gLogging.CreateLogfile("CGLog.html", APP_NAME, CGVERSION) )
+    {
+        errors << "I'm not even able to create \"CGLog.html\"." << endl;
+        return 1;
+    }
 
 
     // Init Video Driver with SDL all together

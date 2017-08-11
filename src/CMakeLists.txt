@@ -196,6 +196,7 @@ add_executable (CGeniusExe CGenius.cpp
                 CRingBuffer.h
                 CSingleton.h
                 fileio.h
+                ../changelog.txt
                 ${cg_obj_libs})
 
 # Since some RefKeen is used, we also need C99 Standard
@@ -285,10 +286,7 @@ IF(OPENGL)
     target_link_libraries(CGeniusExe ${OPENGL_LIBRARIES})
 ENDIF(OPENGL)
 
-
 LINK_DIRECTORIES(/opt/local/lib)
-
-#cotire(CGeniusExe)
 
 # Stuff definitions in case we want to install it
 INCLUDE(install.cmake)

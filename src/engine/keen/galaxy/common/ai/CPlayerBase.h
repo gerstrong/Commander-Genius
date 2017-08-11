@@ -26,6 +26,7 @@
 #include "graphics/effects/CDimDark.h"
 #include "sdl/audio/music/CMusic.h"
 
+#include <array>
 
 struct EventEnterLevel : CEvent {
     uint16_t data;
@@ -240,7 +241,7 @@ protected:
 
 	unsigned short mPlayerNum;	
 
-	Sint16 m_playcontrol[PA_MAX_ACTIONS];
+    std::array<Sint16, PA_MAX_ACTIONS> m_playcontrol;
 	int m_timer;
 	
 

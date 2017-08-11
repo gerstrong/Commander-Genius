@@ -13,6 +13,7 @@
 
 
 // joins 2 functors
+/*
 template<typename _F1, typename _F2>
 class JoinedFunctors : _F1, _F2 {
 private:
@@ -38,6 +39,6 @@ public:
 	void operator()(_ParamType param) {}
 };
 
-
+*/
 #endif
 

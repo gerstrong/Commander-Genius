@@ -1,3 +1,9 @@
+v1.9.9.X:
+---------
+- Improved log responsiveness
+- Tidied up code
+- More C++ use
+
 v1.9.9.2:
 ---------
 - Menu UI Fixes.
