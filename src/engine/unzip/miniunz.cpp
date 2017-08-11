@@ -546,10 +546,12 @@ int unzipFile(const char *input,
     opt_do_extract = 1;
     opt_extractdir = 1;
 
-    std::string errStr;
+    errStr = "trying to open ";
+    errStr += zipfilename;
 
     if (zipfilename != nullptr)
     {
+
 #        ifdef USEWIN32IOAPI
         zlib_filefunc64_def ffunc;
 #        endif
