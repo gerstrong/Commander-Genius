@@ -16,11 +16,11 @@ add_subdirectory(refkeen)
 set(EngineSources CGameLauncher.cpp CGameLauncher.h
                    downloadgui.cpp
                    gamedownloader.cpp gamedownloader.h
-                   unzip/miniunz.cpp
+                   unzip/miniunz.c
                    unzip/ioapi.c
                    unzip/ioapi.h
                    unzip/iowin32.h
-                   unzip/unzip.cpp
+                   unzip/unzip.c
                    unzip/unzip.h)
 
 IF(WIN32)

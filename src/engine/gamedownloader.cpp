@@ -12,8 +12,11 @@
 #include <boost/property_tree/xml_parser.hpp>
 
 
+extern "C"
+{
 int unzipFile(const char *input,
               const char *outputDir);
+}
 
 // Limit to max 1 GB
 const curl_off_t  STOP_DOWNLOAD_AFTER_THIS_MANY_BYTES = 1024 * 1024 * 1024;

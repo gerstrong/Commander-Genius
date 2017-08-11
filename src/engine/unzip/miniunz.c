@@ -1,6 +1,5 @@
-#ifdef DOWNLOADER
 /*
-   miniunz.cpp
+   miniunz.c
    Version 1.1, February 14h, 2010
    sample part of the MiniZip project - ( http://www.winimage.com/zLibDll/minizip.html )
 
@@ -11,13 +10,7 @@
 
          Modifications for Zip64 support on both zip and unzip
          Copyright (C) 2009-2010 Mathias Svensson ( http://result42.com )
-
-         Ported to C++ by Gerstrong
-         Copyright (C) 2016-2017 Gerhard Stein ( http://www.steinzone.de )
-
 */
-
-#include <base/GsLogging.h>
 
 #if (!defined(_WIN32)) && (!defined(WIN32)) && (!defined(__APPLE__))
         #ifndef __USE_FILE_OFFSET64
@@ -34,7 +27,7 @@
         #endif
 #endif
 
-#if defined(__APPLE__) || defined(IOAPI_NO_64)
+#ifdef __APPLE__
 // In darwin and perhaps other BSD variants off_t is a 64 bit value, hence no need for specific 64 bit functions
 #define FOPEN_FUNC(filename, mode) fopen(filename, mode)
 #define FTELLO_FUNC(stream) ftello(stream)
@@ -53,8 +46,6 @@
 #include <errno.h>
 #include <fcntl.h>
 
-#include <sys/stat.h>
-
 #ifdef _WIN32
 # include <direct.h>
 # include <io.h>
@@ -71,7 +62,7 @@
 #define MAXFILENAME (256)
 
 #ifdef _WIN32
-//#define USEWIN32IOAPI // Disabled: For some reason this does is broken. Without it, it works well enough
+#define USEWIN32IOAPI
 #include "iowin32.h"
 #endif
 /*
@@ -89,9 +80,10 @@
     filename : the filename of the file where date/time must be modified
     dosdate : the new date at the MSDos format (4 bytes)
     tmu_date : the SAME new date at the tm_unz format */
-void change_file_date(const char *filename,
-                      const uLong dosdate,
-                      const tm_unz tmu_date)
+void change_file_date(filename,dosdate,tmu_date)
+    const char *filename;
+    uLong dosdate;
+    tm_unz tmu_date;
 {
 #ifdef _WIN32
   HANDLE hFile;
@@ -105,8 +97,7 @@ void change_file_date(const char *filename,
   SetFileTime(hFile,&ftm,&ftLastAcc,&ftm);
   CloseHandle(hFile);
 #else
-
-#if defined(unix) || defined(__APPLE__)
+#ifdef unix || __APPLE__
   struct utimbuf ut;
   struct tm newdate;
   newdate.tm_sec = tmu_date.tm_sec;
@@ -123,7 +114,6 @@ void change_file_date(const char *filename,
   ut.actime=ut.modtime=mktime(&newdate);
   utime(filename,&ut);
 #endif
-
 #endif
 }
 
@@ -131,20 +121,22 @@ void change_file_date(const char *filename,
 /* mymkdir and change_file_date are not 100 % portable
    As I don't know well Unix, I wait feedback for the unix portion */
 
-int mymkdir(const char* dirname)
+int mymkdir(dirname)
+    const char* dirname;
 {
     int ret=0;
 #ifdef _WIN32
     ret = _mkdir(dirname);
+#elif unix
+    ret = mkdir (dirname,0775);
 #elif __APPLE__
     ret = mkdir (dirname,0775);
-#else
-    ret = ::mkdir (dirname,0775);
 #endif
     return ret;
 }
 
-int makedir (const char *newdir)
+int makedir (newdir)
+    char *newdir;
 {
   char *buffer ;
   char *p;
@@ -154,10 +146,10 @@ int makedir (const char *newdir)
     return 0;
 
   buffer = (char*)malloc(len+1);
-        if (buffer == nullptr)
+        if (buffer==NULL)
         {
-            gLogging << "Error allocating memory\n";
-            return UNZ_INTERNALERROR;
+                printf("Error allocating memory\n");
+                return UNZ_INTERNALERROR;
         }
   strcpy(buffer,newdir);
 
@@ -181,7 +173,7 @@ int makedir (const char *newdir)
       *p = 0;
       if ((mymkdir(buffer) == -1) && (errno == ENOENT))
         {
-          gLogging << "couldn't create directory " << buffer << "\n";
+          printf("couldn't create directory %s\n",buffer);
           free(buffer);
           return 0;
         }
@@ -191,6 +183,24 @@ int makedir (const char *newdir)
     }
   free(buffer);
   return 1;
+}
+
+void do_banner()
+{
+    printf("MiniUnz 1.01b, demo of zLib + Unz package written by Gilles Vollant\n");
+    printf("more info at http://www.winimage.com/zLibDll/unzip.html\n\n");
+}
+
+void do_help()
+{
+    printf("Usage : miniunz [-e] [-x] [-v] [-l] [-o] [-p password] file.zip [file_to_extr.] [-d extractdir]\n\n" \
+           "  -e  Extract without pathname (junk paths)\n" \
+           "  -x  Extract with pathname\n" \
+           "  -v  list files\n" \
+           "  -l  list files\n" \
+           "  -d  directory to extract into\n" \
+           "  -o  overwrite files without prompting\n" \
+           "  -p  extract crypted file using password\n\n");
 }
 
 void Display64BitsSize(ZPOS64_T n, int size_char)
@@ -214,14 +224,15 @@ void Display64BitsSize(ZPOS64_T n, int size_char)
       while (size_char > size_display_string)
       {
           size_char--;
-          gLogging << " ";
+          printf(" ");
       }
   }
 
-  gLogging << &number[pos_string];
+  printf("%s",&number[pos_string]);
 }
 
-int do_list(unzFile uf)
+int do_list(uf)
+    unzFile uf;
 {
     uLong i;
     unz_global_info64 gi;
@@ -229,11 +240,9 @@ int do_list(unzFile uf)
 
     err = unzGetGlobalInfo64(uf,&gi);
     if (err!=UNZ_OK)
-    {
-        gLogging << "error " << err << " with zipfile in unzGetGlobalInfo \n";
-    }
-    gLogging << "  Length  Method     Size Ratio   Date    Time   CRC-32     Name\n";
-    gLogging << "  ------  ------     ---- -----   ----    ----   ------     ----\n";
+        printf("error %d with zipfile in unzGetGlobalInfo \n",err);
+    printf("  Length  Method     Size Ratio   Date    Time   CRC-32     Name\n");
+    printf("  ------  ------     ---- -----   ----    ----   ------     ----\n");
     for (i=0;i<gi.number_entry;i++)
     {
         char filename_inzip[256];
@@ -244,7 +253,7 @@ int do_list(unzFile uf)
         err = unzGetCurrentFileInfo64(uf,&file_info,filename_inzip,sizeof(filename_inzip),NULL,0,NULL,0);
         if (err!=UNZ_OK)
         {
-            gLogging << "error " << err << " with zipfile in unzGetCurrentFileInfo \n";
+            printf("error %d with zipfile in unzGetCurrentFileInfo\n",err);
             break;
         }
         if (file_info.uncompressed_size>0)
@@ -276,9 +285,9 @@ int do_list(unzFile uf)
             string_method="Unkn. ";
 
         Display64BitsSize(file_info.uncompressed_size,7);
-        gLogging.ftextOut(BLACK, "  %6s%c",string_method,charCrypt);
+        printf("  %6s%c",string_method,charCrypt);
         Display64BitsSize(file_info.compressed_size,7);
-        gLogging.ftextOut(BLACK, " %3lu%%  %2.2lu-%2.2lu-%2.2lu  %2.2lu:%2.2lu  %8.8lx   %s\n",
+        printf(" %3lu%%  %2.2lu-%2.2lu-%2.2lu  %2.2lu:%2.2lu  %8.8lx   %s\n",
                 ratio,
                 (uLong)file_info.tmu_date.tm_mon + 1,
                 (uLong)file_info.tmu_date.tm_mday,
@@ -290,7 +299,7 @@ int do_list(unzFile uf)
             err = unzGoToNextFile(uf);
             if (err!=UNZ_OK)
             {
-                gLogging.ftextOut(BLACK,"error %d with zipfile in unzGoToNextFile\n",err);
+                printf("error %d with zipfile in unzGoToNextFile\n",err);
                 break;
             }
         }
@@ -300,14 +309,13 @@ int do_list(unzFile uf)
 }
 
 
-int do_extract_currentfile(unzFile uf,
-                           const int* popt_extract_without_path,
-                           const char *dirname,
-                           const int* popt_overwrite,
-                           const char* password)
+int do_extract_currentfile(uf,popt_extract_without_path,popt_overwrite,password)
+    unzFile uf;
+    const int* popt_extract_without_path;
+    int* popt_overwrite;
+    const char* password;
 {
     char filename_inzip[256];
-    char filename_inzip_full[256];
     char* filename_withoutpath;
     char* p;
     int err=UNZ_OK;
@@ -316,12 +324,12 @@ int do_extract_currentfile(unzFile uf,
     uInt size_buf;
 
     unz_file_info64 file_info;
-    //uLong ratio=0;
+    uLong ratio=0;
     err = unzGetCurrentFileInfo64(uf,&file_info,filename_inzip,sizeof(filename_inzip),NULL,0,NULL,0);
 
     if (err!=UNZ_OK)
     {
-        gLogging.ftextOut(BLACK,"error %d with zipfile in unzGetCurrentFileInfo\n",err);
+        printf("error %d with zipfile in unzGetCurrentFileInfo\n",err);
         return err;
     }
 
@@ -329,24 +337,9 @@ int do_extract_currentfile(unzFile uf,
     buf = (void*)malloc(size_buf);
     if (buf==NULL)
     {
-        gLogging.ftextOut(BLACK,"Error allocating memory\n");
+        printf("Error allocating memory\n");
         return UNZ_INTERNALERROR;
     }
-
-
-    // Since chdir doesn't seems to work, we indicating the full path instead.
-    strcpy(filename_inzip_full, dirname);
-
-#ifdef _WIN32
-    strcat(filename_inzip_full, "\\");
-#else
-    strcat(filename_inzip_full, "/");
-#endif
-
-    strcat(filename_inzip_full, filename_inzip);
-
-    strcpy(filename_inzip, filename_inzip_full);
-
 
     p = filename_withoutpath = filename_inzip;
     while ((*p) != '\0')
@@ -360,7 +353,7 @@ int do_extract_currentfile(unzFile uf,
     {
         if ((*popt_extract_without_path)==0)
         {
-            gLogging.ftextOut(BLACK,"creating directory: %s\n",filename_inzip);
+            printf("creating directory: %s\n",filename_inzip);
             mymkdir(filename_inzip);
         }
     }
@@ -377,19 +370,40 @@ int do_extract_currentfile(unzFile uf,
         err = unzOpenCurrentFilePassword(uf,password);
         if (err!=UNZ_OK)
         {
-            gLogging.ftextOut(BLACK,"error %d with zipfile in unzOpenCurrentFilePassword\n",err);
+            printf("error %d with zipfile in unzOpenCurrentFilePassword\n",err);
         }
 
         if (((*popt_overwrite)==0) && (err==UNZ_OK))
         {
-            //char rep=0;
+            char rep=0;
             FILE* ftestexist;
             ftestexist = FOPEN_FUNC(write_filename,"rb");
             if (ftestexist!=NULL)
             {
                 fclose(ftestexist);
+                do
+                {
+                    char answer[128];
+                    int ret;
+
+                    printf("The file %s exists. Overwrite ? [y]es, [n]o, [A]ll: ",write_filename);
+                    ret = scanf("%1s",answer);
+                    if (ret != 1)
+                    {
+                       exit(EXIT_FAILURE);
+                    }
+                    rep = answer[0] ;
+                    if ((rep>='a') && (rep<='z'))
+                        rep -= 0x20;
+                }
+                while ((rep!='Y') && (rep!='N') && (rep!='A'));
+            }
+
+            if (rep == 'N')
                 skip = 1;
-            }            
+
+            if (rep == 'A')
+                *popt_overwrite=1;
         }
 
         if ((skip==0) && (err==UNZ_OK))
@@ -408,26 +422,26 @@ int do_extract_currentfile(unzFile uf,
 
             if (fout==NULL)
             {
-                gLogging.ftextOut(BLACK,"error opening %s\n",write_filename);
+                printf("error opening %s\n",write_filename);
             }
         }
 
         if (fout!=NULL)
         {
-            gLogging.ftextOut(BLACK," extracting: %s\n",write_filename);
+            printf(" extracting: %s\n",write_filename);
 
             do
             {
                 err = unzReadCurrentFile(uf,buf,size_buf);
                 if (err<0)
                 {
-                    gLogging.ftextOut(BLACK,"error %d with zipfile in unzReadCurrentFile\n",err);
+                    printf("error %d with zipfile in unzReadCurrentFile\n",err);
                     break;
                 }
                 if (err>0)
                     if (fwrite(buf,err,1,fout)!=1)
                     {
-                        gLogging.ftextOut(BLACK,"error in writing extracted file\n");
+                        printf("error in writing extracted file\n");
                         err=UNZ_ERRNO;
                         break;
                     }
@@ -437,10 +451,8 @@ int do_extract_currentfile(unzFile uf,
                     fclose(fout);
 
             if (err==0)
-            {
                 change_file_date(write_filename,file_info.dosDate,
                                  file_info.tmu_date);
-            }
         }
 
         if (err==UNZ_OK)
@@ -448,7 +460,7 @@ int do_extract_currentfile(unzFile uf,
             err = unzCloseCurrentFile (uf);
             if (err!=UNZ_OK)
             {
-                gLogging.ftextOut(BLACK,"error %d with zipfile in unzCloseCurrentFile\n",err);
+                printf("error %d with zipfile in unzCloseCurrentFile\n",err);
             }
         }
         else
@@ -460,25 +472,24 @@ int do_extract_currentfile(unzFile uf,
 }
 
 
-int do_extract(unzFile uf,
-               const int opt_extract_without_path,
-               const char *dirname,
-               const int opt_overwrite,
-               const char* password)
+int do_extract(uf,opt_extract_without_path,opt_overwrite,password)
+    unzFile uf;
+    int opt_extract_without_path;
+    int opt_overwrite;
+    const char* password;
 {
     uLong i;
     unz_global_info64 gi;
     int err;
-    //FILE* fout=NULL;
+    FILE* fout=NULL;
 
     err = unzGetGlobalInfo64(uf,&gi);
     if (err!=UNZ_OK)
-        gLogging.ftextOut(BLACK,"error %d with zipfile in unzGetGlobalInfo \n",err);
+        printf("error %d with zipfile in unzGetGlobalInfo \n",err);
 
     for (i=0;i<gi.number_entry;i++)
     {
         if (do_extract_currentfile(uf,&opt_extract_without_path,
-                                      dirname,
                                       &opt_overwrite,
                                       password) != UNZ_OK)
             break;
@@ -488,7 +499,7 @@ int do_extract(unzFile uf,
             err = unzGoToNextFile(uf);
             if (err!=UNZ_OK)
             {
-                gLogging.ftextOut(BLACK,"error %d with zipfile in unzGoToNextFile\n",err);
+                printf("error %d with zipfile in unzGoToNextFile\n",err);
                 break;
             }
         }
@@ -497,31 +508,26 @@ int do_extract(unzFile uf,
     return 0;
 }
 
-int do_extract_onefile(unzFile uf,
-                       const char* filename,
-                       int opt_extract_without_path,
-                       int opt_overwrite,
-                       const char* password)
+int do_extract_onefile(uf,filename,opt_extract_without_path,opt_overwrite,password)
+    unzFile uf;
+    const char* filename;
+    int opt_extract_without_path;
+    int opt_overwrite;
+    const char* password;
 {
-    //int err = UNZ_OK;
+    int err = UNZ_OK;
     if (unzLocateFile(uf,filename,CASESENSITIVITY)!=UNZ_OK)
     {
-        gLogging.ftextOut(BLACK,"file %s not found in the zipfile\n",filename);
+        printf("file %s not found in the zipfile\n",filename);
         return 2;
     }
 
-    if (do_extract_currentfile(uf,
-                               &opt_extract_without_path,
-                               "",
-                               &opt_overwrite,
-                               password) == UNZ_OK)
-    {
+    if (do_extract_currentfile(uf,&opt_extract_without_path,
+                                      &opt_overwrite,
+                                      password) == UNZ_OK)
         return 0;
-    }
     else
-    {
         return 1;
-    }
 }
 
 
@@ -529,8 +535,8 @@ int unzipFile(const char *input,
               const char *outputDir)
 {
     const char *zipfilename = input;
-    const char *filename_to_extract = nullptr;
-    const char *password = nullptr;
+    const char *filename_to_extract = NULL;
+    const char *password = NULL;
     char filename_try[MAXFILENAME+16] = "";
 
     int ret_value = 0;
@@ -540,16 +546,14 @@ int unzipFile(const char *input,
     int opt_overwrite = 0;
     int opt_extractdir = 0;
     const char *dirname = outputDir;
-    unzFile uf = nullptr;
+    unzFile uf = NULL;
 
     // Default options
     opt_do_extract = 1;
     opt_extractdir = 1;
 
-    std::string errStr = "trying to open ";
-    errStr += zipfilename;
 
-    if (zipfilename != nullptr)
+    if (zipfilename != NULL)
     {
 
 #        ifdef USEWIN32IOAPI
@@ -560,42 +564,42 @@ int unzipFile(const char *input,
         /* strncpy doesnt append the trailing NULL, of the string is too long. */
         filename_try[ MAXFILENAME ] = '\0';
 
+
 #        ifdef USEWIN32IOAPI
         fill_win32_filefunc64A(&ffunc);
-        uf = unzOpen2_64(zipfilename,&ffunc, errStr);
+        uf = unzOpen2_64(zipfilename,&ffunc);
 #        else
-        uf = unzOpen64(zipfilename, errStr);
+        uf = unzOpen64(zipfilename);
 #        endif
-        if (uf==nullptr)
+
+
+        if (uf==NULL)
         {
             strcat(filename_try,".zip");
 #            ifdef USEWIN32IOAPI
-            uf = unzOpen2_64(filename_try,&ffunc, errStr);
+            uf = unzOpen2_64(filename_try,&ffunc);
 #            else
-            uf = unzOpen64(filename_try, errStr);
+            uf = unzOpen64(filename_try);
 #            endif
+
         }
 
         // didn't work? let try 32-bit extraction functions then
-        if (uf == nullptr)
+        if (uf == NULL)
         {
-            uf = unzOpen(zipfilename, errStr);
+            uf = unzOpen(zipfilename);
         }
 
-        if (uf == nullptr)
+        if (uf == NULL)
         {
-            uf = unzOpen(filename_try, errStr);
+            uf = unzOpen(filename_try);
         }
     }
 
-    if (uf==nullptr)
+    if (uf==NULL)
     {
-        errStr = "Error Report : " + errStr + "\n";
-        gLogging <<  errStr;
-        gLogging.ftextOut(BLACK,"Cannot open %s or %s.zip\n",zipfilename,zipfilename);
         return 1;
     }
-    gLogging.ftextOut(BLACK,"%s opened\n",filename_try);
 
     if (opt_do_list==1)
         ret_value = do_list(uf);
@@ -607,7 +611,6 @@ int unzipFile(const char *input,
         if (opt_extractdir && chdir(dirname))
 #endif
         {
-          gLogging.ftextOut(BLACK,"Error changing into %s, aborting\n", dirname);
           exit(-1);
         }
 
@@ -621,5 +624,3 @@ int unzipFile(const char *input,
 
     return ret_value;
 }
-
-#endif // DOWNLOADER

@@ -68,10 +68,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <string>
-
-#include <base/utils/StringUtils.h>
-
 #ifndef NOUNCRYPT
         #define NOUNCRYPT
 #endif
@@ -587,8 +583,7 @@ local ZPOS64_T unz64local_SearchCentralDir64(const zlib_filefunc64_32_def* pzlib
 */
 local unzFile unzOpenInternal (const void *path,
                                zlib_filefunc64_32_def* pzlib_filefunc64_32_def,
-                               const int is64bitOpenFunction,
-                               std::string &errStr)
+                               int is64bitOpenFunction)
 {
     unz64_s us;
     unz64_s *s;
@@ -604,7 +599,6 @@ local unzFile unzOpenInternal (const void *path,
                                    (same than number_entry on nospan) */
 
     int err=UNZ_OK;
-    errStr = "Unzip: Ok\n";
 
     if (unz_copyright[0]!=' ')
         return NULL;
@@ -623,16 +617,8 @@ local unzFile unzOpenInternal (const void *path,
                                                  path,
                                                  ZLIB_FILEFUNC_MODE_READ |
                                                  ZLIB_FILEFUNC_MODE_EXISTING);
-
-
-
     if (us.filestream==NULL)
-    {
-        errStr = "Unzip: unable to open file \"";
-        errStr += (const char*)(path);
-        errStr += "\" ";
         return NULL;
-    }
 
     central_pos = unz64local_SearchCentralDir64(&us.z_filefunc,us.filestream);
     if (central_pos)
@@ -765,10 +751,9 @@ local unzFile unzOpenInternal (const void *path,
     us.pfile_in_zip_read = NULL;
     us.encrypted = 0;
 
-    errStr = "Unzip: Report of err-code is " + to_string(err) + " \n";
 
     s=(unz64_s*)ALLOC(sizeof(unz64_s));
-    if( s != nullptr)
+    if( s != NULL)
     {
         *s=us;
         unzGoToFirstFile((unzFile)s);
@@ -778,22 +763,20 @@ local unzFile unzOpenInternal (const void *path,
 
 
 extern unzFile ZEXPORT unzOpen2 (const char *path,
-                                 zlib_filefunc_def* pzlib_filefunc32_def,
-                                 std::string &errStr)
+                                        zlib_filefunc_def* pzlib_filefunc32_def)
 {
     if (pzlib_filefunc32_def != NULL)
     {
         zlib_filefunc64_32_def zlib_filefunc64_32_def_fill;
         fill_zlib_filefunc64_32_def_from_filefunc32(&zlib_filefunc64_32_def_fill,pzlib_filefunc32_def);
-        return unzOpenInternal(path, &zlib_filefunc64_32_def_fill, 0, errStr);
+        return unzOpenInternal(path, &zlib_filefunc64_32_def_fill, 0);
     }
     else
-        return unzOpenInternal(path, NULL, 0, errStr);
+        return unzOpenInternal(path, NULL, 0);
 }
 
 extern unzFile ZEXPORT unzOpen2_64 (const void *path,
-                                    zlib_filefunc64_def* pzlib_filefunc_def,
-                                    std::string &errStr)
+                                     zlib_filefunc64_def* pzlib_filefunc_def)
 {
     if (pzlib_filefunc_def != NULL)
     {
@@ -801,20 +784,20 @@ extern unzFile ZEXPORT unzOpen2_64 (const void *path,
         zlib_filefunc64_32_def_fill.zfile_func64 = *pzlib_filefunc_def;
         zlib_filefunc64_32_def_fill.ztell32_file = NULL;
         zlib_filefunc64_32_def_fill.zseek32_file = NULL;
-        return unzOpenInternal(path, &zlib_filefunc64_32_def_fill, 1, errStr);
+        return unzOpenInternal(path, &zlib_filefunc64_32_def_fill, 1);
     }
     else
-        return unzOpenInternal(path, NULL, 1, errStr);
+        return unzOpenInternal(path, NULL, 1);
 }
 
-extern unzFile ZEXPORT unzOpen (const char *path, std::string &errStr)
+extern unzFile ZEXPORT unzOpen (const char *path)
 {
-    return unzOpenInternal(path, NULL, 0, errStr);
+    return unzOpenInternal(path, NULL, 0);
 }
 
-extern unzFile ZEXPORT unzOpen64 (const void *path, std::string &errStr)
+extern unzFile ZEXPORT unzOpen64 (const void *path)
 {
-    return unzOpenInternal(path, NULL, 1, errStr);
+    return unzOpenInternal(path, NULL, 1);
 }
 
 /*
