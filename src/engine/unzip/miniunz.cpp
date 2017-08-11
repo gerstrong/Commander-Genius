@@ -571,6 +571,17 @@ int unzipFile(const char *input,
             uf = unzOpen64(filename_try);
 #            endif
         }
+
+        // didn't work? let try 32-bit extraction functions then
+        if (uf == nullptr)
+        {
+            uf = unzOpen(zipfilename);
+        }
+
+        if (uf == nullptr)
+        {
+            uf = unzOpen(filename_try);
+        }
     }
 
     if (uf==nullptr)

@@ -12,7 +12,6 @@
 #include <boost/property_tree/xml_parser.hpp>
 
 
-// Forward-declaration
 int unzipFile(const char *input,
               const char *outputDir);
 
@@ -331,6 +330,7 @@ int GameDownloader::handle()
 
     // Go through the missing pieces
     const auto &gameFileName = mGameFileName;
+    const auto &gameName = mGameName;
     {
         gDlfrom = mProgress = 0;
         gDlto = 900;
@@ -349,10 +349,12 @@ int GameDownloader::handle()
 
         // TODO: Now the downloaded stuff must be extracted to the games directory
         // At this point the file should be available
-        const std::string destDir = gamesPath;
+        const std::string destDir = JoinPaths(gamesPath, gameName);
         if( IsFileAvailable(downloadGamePath) )
         {
-            // Try to unzip the files
+            // Create subdirectory
+            CreateRecDir( destDir );
+
             const std::string fullZipPath = JoinPaths(fullDownloadPath, gameFileName);
 
             const int retVal = unzipFile(fullZipPath.c_str(), destDir.c_str());
