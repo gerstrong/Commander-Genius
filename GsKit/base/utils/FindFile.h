@@ -189,7 +189,7 @@ bool OpenGameFileR(std::ifstream& f, const std::string& path, std::ios_base::ope
 bool OpenGameFileW(std::ofstream& f, const std::string& path, std::ios_base::openmode mode = std::ios_base::out);
 
 // Versions which return the stream directly
-std::ofstream OpenGameFileW(const std::string& path, const std::ios_base::openmode mode);
+std::ofstream && OpenGameFileW(const std::string& path, const std::ios_base::openmode mode);
 
 
 std::string GetFileContents(const std::string& path, bool absolute = false);

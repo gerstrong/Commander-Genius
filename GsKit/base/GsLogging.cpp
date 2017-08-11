@@ -82,8 +82,8 @@ bool CLogFile::CreateLogfile(const std::string &logFName,
 	
     mLogStream.close();
 
-    // Reopen it in append mode for further wroting.
-    mLogStream = OpenGameFileW(logFName, std::ios_base::app);
+    // Reopen it in append mode for further writing.
+    OpenGameFileW(mLogStream, logFName, std::ios_base::app);
 
     return true;
 }
