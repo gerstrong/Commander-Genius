@@ -331,7 +331,6 @@ int GameDownloader::handle()
 
     // Go through the missing pieces
     const auto &gameFileName = mGameFileName;
-    const auto &gameName = mGameName;
     {
         gDlfrom = mProgress = 0;
         gDlto = 900;
@@ -350,12 +349,10 @@ int GameDownloader::handle()
 
         // TODO: Now the downloaded stuff must be extracted to the games directory
         // At this point the file should be available
-        const std::string destDir = JoinPaths(gamesPath, gameName);
+        const std::string destDir = gamesPath;
         if( IsFileAvailable(downloadGamePath) )
         {
-            // Create subdirectory
-            CreateRecDir( destDir );            
-
+            // Try to unzip the files
             const std::string fullZipPath = JoinPaths(fullDownloadPath, gameFileName);
 
             const int retVal = unzipFile(fullZipPath.c_str(), destDir.c_str());

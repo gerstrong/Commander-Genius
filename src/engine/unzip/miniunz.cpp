@@ -546,14 +546,13 @@ int unzipFile(const char *input,
     opt_do_extract = 1;
     opt_extractdir = 1;
 
-    if (zipfilename!=NULL)
+    if (zipfilename != nullptr)
     {
-
 #        ifdef USEWIN32IOAPI
         zlib_filefunc64_def ffunc;
 #        endif
 
-        strncpy(filename_try, zipfilename,MAXFILENAME-1);
+        strncpy(filename_try, zipfilename, MAXFILENAME-1);
         /* strncpy doesnt append the trailing NULL, of the string is too long. */
         filename_try[ MAXFILENAME ] = '\0';
 
@@ -563,7 +562,7 @@ int unzipFile(const char *input,
 #        else
         uf = unzOpen64(zipfilename);
 #        endif
-        if (uf==NULL)
+        if (uf==nullptr)
         {
             strcat(filename_try,".zip");
 #            ifdef USEWIN32IOAPI
