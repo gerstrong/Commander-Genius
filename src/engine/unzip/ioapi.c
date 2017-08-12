@@ -200,8 +200,15 @@ static long ZCALLBACK fseek64_file_func (voidpf  opaque, voidpf stream, ZPOS64_T
     }
     ret = 0;
 
+    // BUG: For some reason the fseek64 version of Android is broken. Using the normal one solves the
+    // problem. Since API around API 25, NDK 15 the problem appeared.
+#ifdef ANDROID
+    if(fseek((FILE *)stream, offset, fseek_origin) != 0)
+                        ret = -1;
+#else
     if(FSEEKO_FUNC((FILE *)stream, offset, fseek_origin) != 0)
                         ret = -1;
+#endif
 
     return ret;
 }
