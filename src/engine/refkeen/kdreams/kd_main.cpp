@@ -546,7 +546,7 @@ void InitGame (void)
 	US_FinishTextScreen();
 
 	VW_SetScreenMode (GRMODE);
-	VW_ClearVideo (BLACK);
+	VW_ClearVideo (FONTCOLORS::BLACK);
 }
 */
 

@@ -570,7 +570,7 @@ void CAL_SetupGrFile (void)
 
         if(!file)
         {
-            gLogging.textOut(RED,"Error the file \"" + egaHeadPath + "\" is missing or can't be read!");
+            gLogging.textOut(FONTCOLORS::RED,"Error the file \"" + egaHeadPath + "\" is missing or can't be read!");
         }
         else
         {

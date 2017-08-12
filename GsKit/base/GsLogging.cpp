@@ -31,7 +31,7 @@ bool CLogFile::CreateLogfile(const std::string &logFName,
 	textOut("<body><font face='courier new'>");
 	WriteTopic("Logfile", 3);
 	
-    textOut(BLUE, appName + " v" + version);
+    textOut(FONTCOLORS::BLUE, appName + " v" + version);
 
 	// Mark the Build and Platform
 #ifdef DEBUG
@@ -99,7 +99,7 @@ void CLogFile::WriteTopic(const char *Topic, int Size)
 }
 
 // The main textOut function
-// Standard textOut (Black color)
+// Standard textOut (FONTCOLORS::BLACK color)
 
 
 // Now with colors
@@ -117,15 +117,15 @@ void CLogFile::textOut(FONTCOLORS Color, bool List, const std::string& Text)
 	// write color tag
 	switch(Color)
 	{
-		case BLACK:
+        case FONTCOLORS::BLACK:
 			textOut("<font color=black>"); break;
-		case RED:
+        case FONTCOLORS::RED:
 			textOut("<font color=red>"); break;
-		case GREEN:
+        case FONTCOLORS::GREEN:
 			textOut("<font color=green>"); break;
-		case BLUE:
+        case FONTCOLORS::BLUE:
 			textOut("<font color=blue>"); break;
-		case PURPLE:
+        case FONTCOLORS::PURPLE:
 			textOut("<font color=purple>"); break;
 	};
 	

@@ -64,8 +64,8 @@ bool GsTilemap::loadHiresTile( const std::string& filename, const std::string& p
 		}
 		else
 		{
-		  gLogging.textOut(RED, "IMG_Load: %s\n", IMG_GetError());
-		  gLogging.textOut(RED, "IMG_Load: CG will ignore those images\n");
+		  gLogging.textOut(FONTCOLORS::RED, "IMG_Load: %s\n", IMG_GetError());
+		  gLogging.textOut(FONTCOLORS::RED, "IMG_Load: CG will ignore those images\n");
 		}
 	}
 

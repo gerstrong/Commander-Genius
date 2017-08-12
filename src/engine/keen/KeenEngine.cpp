@@ -42,7 +42,7 @@ void KeenEngine::start()
 
     if( ExeFile.getHeaderData() == NULL)
     {
-        gLogging.textOut(RED, "KeenEngine::loadResources: Could not load data from the EXE File<br>");
+        gLogging.textOut(FONTCOLORS::RED, "KeenEngine::loadResources: Could not load data from the EXE File<br>");
         gEventManager.add(new GMSwitchToGameLauncher() );
         return;
     }

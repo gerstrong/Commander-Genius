@@ -358,8 +358,8 @@ asm	out	0x61,al
 static void
 SDL_PCService(void)
 {
-	id0_byte_t	s;
-	id0_word_t	t;
+    id0_byte_t	s = 0;
+    id0_word_t	t = 0;
 
 	if (pcSound)
 	{
@@ -1747,7 +1747,7 @@ SD_PlaySound(id0_word_t sound)
 {        
     // NOTE: GameSound names do not match here yet!
     GameSound gameSnd = GameSound(sound);
-    g_pSound->playSound(gameSnd);
+    gSound.playSound(gameSnd);
 
     /*SoundCommon	id0_far *s;
 

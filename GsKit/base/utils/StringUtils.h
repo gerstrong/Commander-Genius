@@ -245,7 +245,8 @@ T from_string(const std::string& s, bool& failed) {
 // Conversion functions from numbers to string
 
 template<typename T>
-std::string to_string(T val) {
+std::string to_string(T val)
+{
 	std::ostringstream oss;
 	oss << val;
 	return oss.str();

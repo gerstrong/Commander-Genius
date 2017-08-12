@@ -20,7 +20,7 @@ resetLogic(false)
 	WIZ_ptimer_init();
 #endif
 	setFPS(DEFAULT_LPS_VORTICON);
-	gLogging.textOut(GREEN, true, "Starting timer driver...\n");
+	gLogging.textOut(FONTCOLORS::GREEN, true, "Starting timer driver...\n");
     ResetSecondsTimer();
 }
 

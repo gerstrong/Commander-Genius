@@ -42,12 +42,12 @@ bool CVideoDriver::init()
 
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_AUDIO) < 0)
     {
-        gLogging.textOut(RED, "Could not initialize SDL: %s<br>", SDL_GetError());
+        gLogging.textOut(FONTCOLORS::RED, "Could not initialize SDL: %s<br>", SDL_GetError());
         return false;
     }
 	else
     {
-		gLogging.textOut(GREEN, "SDL was successfully initialized!<br>");
+		gLogging.textOut(FONTCOLORS::GREEN, "SDL was successfully initialized!<br>");
     }
 
 	initResolutionList();
@@ -60,9 +60,9 @@ bool CVideoDriver::init()
 	  const int initted=IMG_Init(flags);
 	  if( (initted & flags) != flags)
 	  {
-	      gLogging.textOut(RED, "IMG_Init: Failed to init required jpg and png support!\n");
-	      gLogging.textOut(RED, "IMG_Init: %s\n", IMG_GetError());
-	      gLogging.textOut(RED, "IMG_Init: CG will try to continue without that support.\n", IMG_GetError());
+	      gLogging.textOut(FONTCOLORS::RED, "IMG_Init: Failed to init required jpg and png support!\n");
+	      gLogging.textOut(FONTCOLORS::RED, "IMG_Init: %s\n", IMG_GetError());
+	      gLogging.textOut(FONTCOLORS::RED, "IMG_Init: CG will try to continue without that support.\n", IMG_GetError());
 	  }
 	  else
 	  {
@@ -174,7 +174,7 @@ void CVideoDriver::verifyResolution(GsRect<Uint16>& resolution,
 
 		if (i == m_Resolutionlist.end()) {
 #ifdef DEBUG
-			gLogging.ftextOut(BLUE, "Resolution %ix%ix%i %X added\n",
+			gLogging.ftextOut(FONTCOLORS::BLUE, "Resolution %ix%ix%i %X added\n",
 					resolution.w, resolution.h, 32);
 #endif
 			m_Resolutionlist.push_back(resolution);

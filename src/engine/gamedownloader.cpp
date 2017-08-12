@@ -148,14 +148,14 @@ int downloadFile(const std::string &filename, int &progress,
           curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 0L);
           res = curl_easy_perform(curl);
 
-          gLogging.ftextOut( GREEN, "Finished downloading from \"%s\", destination: \"%s\"", urlString.c_str(), outputPath.c_str());
+          gLogging.ftextOut( FONTCOLORS::GREEN, "Finished downloading from \"%s\", destination: \"%s\"", urlString.c_str(), outputPath.c_str());
       }
       else
       {
           /* always cleanup */
           curl_easy_cleanup(curl);
 
-          gLogging.ftextOut( GREEN, "Error creating path \"%s\" for writing", outputPath.c_str());
+          gLogging.ftextOut( FONTCOLORS::GREEN, "Error creating path \"%s\" for writing", outputPath.c_str());
           return 1;
       }
 
@@ -164,7 +164,7 @@ int downloadFile(const std::string &filename, int &progress,
       // output any error to the central CG Log
       if(res != CURLE_OK)          
       {
-          gLogging.textOut(RED,"%s<br>", curl_easy_strerror(res));
+          gLogging.textOut(FONTCOLORS::RED,"%s<br>", curl_easy_strerror(res));
       }
 
       /* always cleanup */
@@ -342,7 +342,7 @@ int GameDownloader::handle()
 
         if( !IsFileAvailable(downloadGamePath) )
         {
-            gLogging.ftextOut( GREEN, "Downloading file \"%s\"", gameFileName.c_str());
+            gLogging.ftextOut( FONTCOLORS::GREEN, "Downloading file \"%s\"", gameFileName.c_str());
 
             // TODO: We also must pass the gamepath and a downloads folder we all the file packages can be set.
             res = downloadFile(gameFileName, mProgress, "downloads");
@@ -362,19 +362,19 @@ int GameDownloader::handle()
 
             const int retVal = unzipFile(fullZipPath.c_str(), destDir.c_str());
 
-            gLogging.ftextOut( BLACK, "Extracting downloaded file \"%s\" to \"%s\".\n<br>",
+            gLogging.ftextOut( FONTCOLORS::BLACK, "Extracting downloaded file \"%s\" to \"%s\".\n<br>",
                                fullZipPath.c_str(),
                                destDir.c_str() );
 
             // If unpacking files fails, we should delete it.
             if(retVal != 0)
             {
-                gLogging.ftextOut( RED, "Error: Trying to remove broken file \"%s\"", downloadGamePath.c_str());
+                gLogging.ftextOut( FONTCOLORS::RED, "Error: Trying to remove broken file \"%s\"", downloadGamePath.c_str());
                 remove( GetFullFileName(downloadGamePath).c_str() );
             }
             else
             {
-                gLogging.ftextOut( GREEN, "File \"%s\" extracted successfully to \"%s\".\n<br>",
+                gLogging.ftextOut( FONTCOLORS::GREEN, "File \"%s\" extracted successfully to \"%s\".\n<br>",
                                    downloadGamePath.c_str(),
                                    destDir.c_str());
             }
@@ -382,7 +382,7 @@ int GameDownloader::handle()
         else
         {
             const std::string errStr = "Something went wrong with downloading \"" + gameFileName + "\"!";
-            gLogging.ftextOut(PURPLE, errStr.c_str() );
+            gLogging.ftextOut(FONTCOLORS::PURPLE, errStr.c_str() );
         }
 
         if(res != CURLE_OK)

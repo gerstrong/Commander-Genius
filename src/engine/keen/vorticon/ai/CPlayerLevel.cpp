@@ -101,7 +101,7 @@ void CPlayer::touchedExit(int mpx)
 		ppogostick = false;
 		
 		g_pMusicPlayer->stop();
-		g_pSound->playSound(SOUND_LEVEL_DONE, PLAY_NOW);
+		gSound.playSound(SOUND_LEVEL_DONE, PLAY_NOW);
 		level_done = LEVEL_DONE_WALK;
 		solid = false;
 		inhibitfall = true;
@@ -162,7 +162,7 @@ void CPlayer::kill(bool force)
 		pdie_xvect -= DIE_MAX_XVECT;
 		inventory.lives--;
 		SelectFrame();
-		g_pSound->playSound(SOUND_KEEN_DIE, PLAY_NOW);
+		gSound.playSound(SOUND_KEEN_DIE, PLAY_NOW);
 		g_pMusicPlayer->stop();
 
 		if(inventory.canlooseitem[0])	inventory.HasJoystick = false;
@@ -182,7 +182,7 @@ void CPlayer::dieanim() // Bad word for that. It's the entire die code
 	if (pdie==PDIE_FELLOFFMAP)
 	{
 		// wait for falling sound to complete, then kill the player
-		if (!g_pSound->isPlaying(SOUND_KEEN_FALL))
+		if (!gSound.isPlaying(SOUND_KEEN_FALL))
 		{
 			pdie = 0;
 			kill();
@@ -700,7 +700,7 @@ void CPlayer::Playerfalling()
 		if (plastfalling)
 		{  // just now stopped falling
 			if (pdie != PDIE_FELLOFFMAP)
-				g_pSound->stopSound(SOUND_KEEN_FALL);  // terminate fall noise
+				gSound.stopSound(SOUND_KEEN_FALL);  // terminate fall noise
 			// thud noise
 			if (!ppogostick)
 				playSound( SOUND_KEEN_LAND );

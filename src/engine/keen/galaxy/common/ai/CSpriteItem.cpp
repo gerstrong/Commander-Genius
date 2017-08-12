@@ -83,7 +83,7 @@ void CSpriteItem::getTouchedBy(CSpriteObject &theObject)
 			case 113: Item.m_points += 5000;	break;
 			default: break;
 			}
-			g_pSound->playSound( SOUND_GET_BONUS );
+			gSound.playSound( SOUND_GET_BONUS );
 		}
 
         if(Item.m_points >= Item.m_lifeAt)
@@ -97,7 +97,7 @@ void CSpriteItem::getTouchedBy(CSpriteObject &theObject)
 		{
 			newanimsprite = got_sprite_item_pics[ep-4][10];
 			Item.m_lifes++;
-			g_pSound->playSound( SOUND_EXTRA_LIFE );
+			gSound.playSound( SOUND_EXTRA_LIFE );
 		}		
 		
 		// keycard (Keen 5 only)
@@ -105,7 +105,7 @@ void CSpriteItem::getTouchedBy(CSpriteObject &theObject)
 		{
 			Item.m_keycards++;
 			newanimsprite = 231;
-			g_pSound->playSound( SOUND_GET_CARD );
+			gSound.playSound( SOUND_GET_CARD );
 		}
 				
 
@@ -126,7 +126,7 @@ void CSpriteItem::getTouchedBy(CSpriteObject &theObject)
 		{
 			Item.m_bullets += 5;
 			newanimsprite = got_sprite_item_pics[ep-4][11];
-			g_pSound->playSound( SOUND_GET_AMMO );
+			gSound.playSound( SOUND_GET_AMMO );
 		}
 		
 
@@ -149,7 +149,7 @@ void CSpriteItem::getTouchedBy(CSpriteObject &theObject)
 			default:
 				break;
 			}
-			g_pSound->playSound( SOUND_GET_GEM );
+			gSound.playSound( SOUND_GET_GEM );
 		}
 		
         spawnObj(new CItemEffect(mp_Map, 0, getXPosition(), getYPosition(), newanimsprite, FADEOUT));

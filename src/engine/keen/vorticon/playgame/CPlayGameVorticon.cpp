@@ -196,7 +196,7 @@ bool CPlayGameVorticon::init()
     }
 
     if(m_showKeensLeft)
-	  g_pSound->playSound(SOUND_KEENSLEFT, PLAY_NOW);
+	  gSound.playSound(SOUND_KEENSLEFT, PLAY_NOW);
 
 	// In the case that we are in Episode 3 last Level, show Mortimer Messages
 	if( m_Episode == 3 && m_Level == 16 )
@@ -213,7 +213,7 @@ bool CPlayGameVorticon::init()
 	    mMessageBoxes.push_back(move(msg4));
 	    mMessageBoxes.push_back(move(msg5));
 	    mMessageBoxes.push_back(move(msg6));
-	    g_pSound->playSound(SOUND_MORTIMER);
+	    gSound.playSound(SOUND_MORTIMER);
 	}
 
     return true;
@@ -395,7 +395,7 @@ void CPlayGameVorticon::ponder(const float deltaT)
 		else // Bitmap must first be created
 		{
             GsBitmap *pBitmap = gGraphics.getBitmapFromStr("GAMEOVER");
-			g_pSound->playSound(SOUND_GAME_OVER, PLAY_NOW);
+			gSound.playSound(SOUND_GAME_OVER, PLAY_NOW);
 			mpGameoverBmp.reset( new CEGABitmap( mMap.get() , gVideoDriver.getBlitSurface(), pBitmap) );
 
             GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
@@ -522,7 +522,7 @@ void CPlayGameVorticon::handleFKeys()
 			it_player->performCollisions();
 		}
 
-		g_pSound->playSound(SOUND_GUN_CLICK, PLAY_FORCE);
+		gSound.playSound(SOUND_GUN_CLICK, PLAY_FORCE);
 
 		// Show a message like in the original game
         std::unique_ptr<CMessageBoxVort> msg(new CMessageBoxVort(gpBehaviorEngine->mCheatmode.god ? gpBehaviorEngine->getString("GODMODEON") : gpBehaviorEngine->getString("GODMODEOFF")));
@@ -532,7 +532,7 @@ void CPlayGameVorticon::handleFKeys()
 
 	if(gInput.getPressedKey(KP) && mMessageBoxes.empty())
 	{
-		g_pSound->playSound(SOUND_GUN_CLICK, PLAY_FORCE);
+		gSound.playSound(SOUND_GUN_CLICK, PLAY_FORCE);
 		std::unique_ptr<CMessageBoxVort> msg( new CMessageBoxVort("Game Paused") );
 		mMessageBoxes.push_back(move(msg));
 	}

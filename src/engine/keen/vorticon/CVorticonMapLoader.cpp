@@ -507,7 +507,7 @@ void CVorticonMapLoaderWithPlayer::addSpriteObject(unsigned int t, Uint16 x, Uin
 				enemyobject->solid = false;
 				break;
 			default:
-				gLogging.ftextOut(PURPLE,"unknown enemy type %d at (%d,%d)<br>", t, x, y);
+				gLogging.ftextOut(FONTCOLORS::PURPLE,"unknown enemy type %d at (%d,%d)<br>", t, x, y);
 				break;
 			}
 

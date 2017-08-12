@@ -402,7 +402,7 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
                 g_pMusicPlayer->stop();                
                 m_WorldMap.setActive(false);
                 m_LevelPlay.loadLevel(newLevel);
-                g_pSound->playSound( SOUND_ENTER_LEVEL );
+                gSound.playSound( SOUND_ENTER_LEVEL );
                 m_LevelPlay.setActive(true);
             }
         }
@@ -416,7 +416,7 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
     {                
         if( ev->playSound )
         {
-            g_pSound->playSound( SOUND_LEVEL_DONE );
+            gSound.playSound( SOUND_LEVEL_DONE );
         }
 
         int newLevel = 0;
@@ -456,7 +456,7 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
             g_pMusicPlayer->stop();
             m_WorldMap.setActive(false);
             m_LevelPlay.loadLevel(newLevel);
-            //g_pSound->playSound( SOUND_ENTER_LEVEL );
+            //gSound.playSound( SOUND_ENTER_LEVEL );
             m_LevelPlay.setActive(true);
         }
     }
@@ -499,7 +499,7 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
  */
 void CPlayGameGalaxy::ponder(const float deltaT)
 {
-    if( g_pSound->pauseGamePlay() )
+    if( gSound.pauseGamePlay() )
         return;
 
     if( gMenuController.active() )
@@ -535,7 +535,7 @@ void CPlayGameGalaxy::ponder(const float deltaT)
         {
             if( gInput.getPressedAnyButtonCommand(playerCount) )
             {
-                g_pSound->playSound(SOUND_STATUS_SLIDE_OUT);
+                gSound.playSound(SOUND_STATUS_SLIDE_OUT);
                 inv.toggleStatusScreen();
             }
         }
@@ -543,7 +543,7 @@ void CPlayGameGalaxy::ponder(const float deltaT)
         {
             if(!msgboxactive && gInput.getPressedCommand(playerCount, IC_STATUS))
             {
-                g_pSound->playSound(SOUND_STATUS_SLIDE_IN);
+                gSound.playSound(SOUND_STATUS_SLIDE_IN);
                 inv.toggleStatusScreen();
             }
         }

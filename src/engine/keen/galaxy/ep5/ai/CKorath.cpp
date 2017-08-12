@@ -118,7 +118,7 @@ void CKorath::getTouchedBy(CSpriteObject &theObject)
         {
             dead = true;
             setAction(A_KORATH_STUNNED);
-            g_pSound->playSound(SOUND_FUSE_BREAK);
+            gSound.playSound(SOUND_FUSE_BREAK);
         }
         else
         {

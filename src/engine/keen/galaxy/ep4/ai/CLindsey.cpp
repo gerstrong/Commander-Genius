@@ -61,7 +61,7 @@ void CLindsey::getTouchedBy(CSpriteObject &theObject)
     // When Keen touches the pincess give that hint
     if( dynamic_cast<CPlayerLevel*>(&theObject) )
     {
-        g_pSound->playSound(SOUND_GET_WETSUIT, PLAY_PAUSEALL);
+        gSound.playSound(SOUND_GET_WETSUIT, PLAY_PAUSEALL);
 
         std::array< std::string, 3> lindsey_text;
 

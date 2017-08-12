@@ -70,7 +70,7 @@ std::string getResourceFilename(const std::string &filename, const std::string &
         text += "found!\n";
 
     if(!text.empty())
-        gLogging.textOut(GREEN, text);
+        gLogging.textOut(FONTCOLORS::GREEN, text);
 
     return vfs_path;
 }

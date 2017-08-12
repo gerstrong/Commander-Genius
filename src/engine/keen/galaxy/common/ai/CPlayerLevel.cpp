@@ -546,7 +546,7 @@ void CPlayerLevel::processLookingDown()
 		posY += deltay;
 		nextX = 0;
 		nextY = 0;
-		g_pSound->play
+		gSound.play
 		setAction(A_KEEN_FALL);
 		xinertia = yinertia = 0;*/
 		//playSound( SOUND_KEEN_FALL );
@@ -2679,7 +2679,7 @@ void CPlayerLevel::process()
 
         const std::string fuse_msg = gpBehaviorEngine->getString( (specialLevel) ? "FUSE_WONDER" : "FUSE_CASUAL");
 
-        g_pSound->playSound( SOUND_FUSE_BREAK, PLAY_PAUSEALL );
+        gSound.playSound( SOUND_FUSE_BREAK, PLAY_PAUSEALL );
 
         gEffectController.setupEffect(new CDimDark(8));
 

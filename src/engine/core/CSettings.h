@@ -9,15 +9,14 @@
 #include "options.h"
 #include "fileio/CConfiguration.h"
 
+#include <base/Singleton.h>
 
 #ifndef CSETTINGS_H_
 #define CSETTINGS_H_
 
-#include "CSingleton.h"
-#define g_pSettings	CSettings::Get()
+#define gSettings	CSettings::get()
 
-
-class CSettings : public CSingleton<CSettings>
+class CSettings : public GsSingleton<CSettings>
 {
 public:
 

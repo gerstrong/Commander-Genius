@@ -383,24 +383,24 @@ bool CMessages::extractGlobalStrings()
 		case 4:
 		{
 			if(!extractEp4Strings(StringMap))
-				gLogging.textOut(RED,"This version of the game is not supported!");
+				gLogging.textOut(FONTCOLORS::RED,"This version of the game is not supported!");
 		} break;
 
 		case 5:
 		{
 			if(!extractEp5Strings(StringMap))
-				gLogging.textOut(RED,"This version of the game is not supported!");
+				gLogging.textOut(FONTCOLORS::RED,"This version of the game is not supported!");
 		} break;
 
 		case 6:
 		{
 			if(!extractEp6Strings(StringMap))
-				gLogging.textOut(RED,"This version of the game is not supported!");
+				gLogging.textOut(FONTCOLORS::RED,"This version of the game is not supported!");
 		} break;
 
 		default:
 		{
-			gLogging.textOut(RED,"This version of the game is not supported!");
+			gLogging.textOut(FONTCOLORS::RED,"This version of the game is not supported!");
 			return false;
 		}
 	}

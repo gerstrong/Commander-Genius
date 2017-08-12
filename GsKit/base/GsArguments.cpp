@@ -19,7 +19,7 @@ void GsArguments::passArgs(int argc, char *argv[])
         else
         {
             const std::string warning = "The argument \"" + arg + "\" wasn't recognized. Continuing without this parameter.\n";
-            gLogging.textOut(warning);
+            gLogging << warning;
         }
     }
 }

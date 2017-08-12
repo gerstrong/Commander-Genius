@@ -109,7 +109,7 @@ void CMeep::process()
 		timer = 0;
 		state = MEEP_DYING;
 		dying = true;
-		g_pSound->playStereofromCoord(SOUND_SHOT_HIT, PLAY_NOW, scrx);
+		gSound.playStereofromCoord(SOUND_SHOT_HIT, PLAY_NOW, scrx);
 	}
 
 	std::vector<CTileProperties> &TileProperties = gpBehaviorEngine->getTileProperties();

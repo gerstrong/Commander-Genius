@@ -45,7 +45,7 @@ inline static void CCallback(void *unused, Uint8 *stream, int len)
     SDL_memset(stream, 0, len);
 
     // let it call a method on my (singleton) sound object
-    Audio::GetNoPtrChk()->callback(unused, stream, len);
+    Audio::get().callback(unused, stream, len);
 }
 
 Audio::Audio() :

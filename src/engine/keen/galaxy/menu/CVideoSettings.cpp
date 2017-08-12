@@ -272,7 +272,7 @@ void CVideoSettings::release()
 	// At this point we also must apply and save the settings
 	if( !gVideoDriver.applyMode() )
 	{
-        g_pSettings->loadDrvCfg(); // If it fails load the old settings
+        gSettings.loadDrvCfg(); // If it fails load the old settings
 		return;
 	}		
 
@@ -282,7 +282,7 @@ void CVideoSettings::release()
 		gVideoDriver.start();
 	}
 	
-	g_pSettings->saveDrvCfg();
+	gSettings.saveDrvCfg();
 
     gMenuController.updateGraphics();
 }

@@ -47,7 +47,7 @@ void COptions::ponder(const float deltaT)
 
 void COptions::release()
 {
-	g_pSettings->saveGameOptions();
+	gSettings.saveGameOptions();
 }
 
 }

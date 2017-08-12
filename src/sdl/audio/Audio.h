@@ -13,7 +13,9 @@
 
 #include "CSingleton.h"
 
-#define g_pSound Audio::Get()
+#include <base/Singleton.h>
+
+#define gSound Audio::get()
 
 #include <SDL.h>
 #include <map>
@@ -24,7 +26,7 @@
 #include "sound/CSoundChannel.h"
 #include "CAudioResources.h"
 
-class Audio : public CSingleton<Audio>
+class Audio : public GsSingleton<Audio>
 {
 public:
     Audio();

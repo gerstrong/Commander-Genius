@@ -100,10 +100,10 @@ bool GsApp::init(int argc, char *argv[])
     gArgs.passArgs(argc, argv);
 
 	// Setup the Hardware using the settings we have loaded
-	gLogging.textOut(GREEN,"Loading hardware settings...<br>");
+	gLogging.textOut(FONTCOLORS::GREEN,"Loading hardware settings...<br>");
     if(!loadDrivers())
 	{
-        gLogging.textOut(RED,"The program cannot start, because you do not meet the hardware requirements.<br>");
+        gLogging.textOut(FONTCOLORS::RED,"The program cannot start, because you do not meet the hardware requirements.<br>");
 		return false;
 	}
 

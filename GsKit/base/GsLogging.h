@@ -19,7 +19,7 @@ const std::string APP_NAME = "Commander Genius";
 
 const int MAX_BUFFER = 1024;
 
-enum FONTCOLORS
+enum class FONTCOLORS
 {
 	BLACK,
 	RED,

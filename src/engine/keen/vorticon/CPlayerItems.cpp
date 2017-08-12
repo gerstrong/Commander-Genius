@@ -362,7 +362,7 @@ void CPlayer::incScore(int numpts)
 	// check if score is > than "extra life at"
 	if (inventory.score >= inventory.extralifeat)
 	{
-		g_pSound->stopSound(SOUND_GET_BONUS);
+		gSound.stopSound(SOUND_GET_BONUS);
 		playSound(SOUND_EXTRA_LIFE);
 		inventory.lives++;
 		inventory.extralifeat += 20000;

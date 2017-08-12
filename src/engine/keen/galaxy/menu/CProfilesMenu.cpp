@@ -28,7 +28,7 @@ public:
     void operator()() const
 	{
 		stOption *p_option = gpBehaviorEngine->m_option;
-		g_pSettings->loadDrvCfg();
+        gSettings.loadDrvCfg();
 		gVideoDriver.setSpecialFXMode(false);
 		st_camera_bounds &CameraBounds = gVideoDriver.getCameraBounds();
 		CameraBounds.left = 140;
@@ -43,7 +43,7 @@ public:
         p_option[OPT_RISEBONUS].value = 0;
         p_option[OPT_MODERN].value = 1;
         p_option[OPT_HUD].value = 0;
-		g_pSettings->saveDrvCfg();
+        gSettings.saveDrvCfg();
 	}
 };
 
@@ -57,7 +57,7 @@ public:
     void operator()() const
 	{
 		stOption *p_option = gpBehaviorEngine->m_option;
-		g_pSettings->loadDrvCfg();
+        gSettings.loadDrvCfg();
 		gVideoDriver.setSpecialFXMode(true);
 		st_camera_bounds &CameraBounds = gVideoDriver.getCameraBounds();
 		CameraBounds.left = 152;
@@ -70,7 +70,7 @@ public:
 		p_option[OPT_RISEBONUS].value = 1;
         p_option[OPT_MODERN].value = 1;
 		p_option[OPT_HUD].value = 1;
-		g_pSettings->saveDrvCfg();
+        gSettings.saveDrvCfg();
 	}
 };
 

@@ -97,7 +97,7 @@ void CVortikid::process()
 		state = BABY_DYING;
 		dying = true;
 		sprite = BABY_FRY_FRAME - ep3;
-		if (onscreen && !g_pSound->isPlaying(SOUND_VORT_DIE))
+		if (onscreen && !gSound.isPlaying(SOUND_VORT_DIE))
 			playSound(SOUND_VORT_DIE);
 
 		if (dir == RIGHT)

@@ -68,7 +68,7 @@ void CInput::resetControls(int player)
 	if(player == 0)
 	{
 		player = 1;
-		gLogging.textOut("Warning when resetting controls. The function has been used incorrectly, please report that the developer!");
+        gLogging << "Warning when resetting controls. The function has been used incorrectly, please report that the developer!";
 	}
 	// not a good idea, beause it would write twice in one array, and forget about the last one. (for example 4)
 	// At least this warning will tell the people, that something is not right here!
@@ -160,7 +160,7 @@ void CInput::resetControls(int player)
  */
 bool CInput::startJoyDriver()
 {
-	gLogging.textOut("JoyDrv_Start() : ");
+    gLogging << "JoyDrv_Start() : ";
 
     if (SDL_Init( SDL_INIT_JOYSTICK ) < 0)
 	{
@@ -174,7 +174,7 @@ bool CInput::startJoyDriver()
 		{
 			SDL_JoystickEventState(SDL_ENABLE);
 			gLogging.ftextOut("Detected %i joystick(s).<br>\n", joyNum );
-			gLogging.textOut("The names of the joysticks are:<br>");
+            gLogging << "The names of the joysticks are:<br>";
 
 			for( size_t i=0; i < joyNum; i++ )
 			{
@@ -482,7 +482,7 @@ void CInput::readNewEvent()
 		switch ( Event.type )
 		{
 			case SDL_QUIT:
-				gLogging.textOut("SDL: Got quit event in readNewEvent!");
+                gLogging << "SDL: Got quit event in readNewEvent!";
 #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
 				// on iPhone, we just want to quit in this case
 				exit(0);
@@ -677,7 +677,7 @@ void CInput::pollEvents()
 		switch( Event.type )
 		{
 		case SDL_QUIT:
-			gLogging.textOut("SDL: Got quit event!");
+            gLogging << "SDL: Got quit event!";
 			m_exit = true;
 
 			break;
@@ -819,19 +819,19 @@ void CInput::pollEvents()
 		bool value;
         value = gVideoDriver.getFullscreen();
 		value = !value;
-		gLogging.textOut(GREEN,"Fullscreen mode triggered by user!<br>");
+		gLogging.textOut(FONTCOLORS::GREEN,"Fullscreen mode triggered by user!<br>");
         gVideoDriver.isFullscreen(value);
 
 		// initialize/activate all drivers
 		gLogging.ftextOut("Restarting graphics driver...<br>");
         if ( gVideoDriver.applyMode() && gVideoDriver.start() )
 		{
-			gLogging.ftextOut(PURPLE, "Toggled Fullscreen quick shortcut...<br>");
+			gLogging.ftextOut(FONTCOLORS::PURPLE, "Toggled Fullscreen quick shortcut...<br>");
 		}
 		else
 		{
 			value = !value;
-			gLogging.ftextOut(PURPLE, "Couldn't change the resolution, Rolling back...<br>");
+			gLogging.ftextOut(FONTCOLORS::PURPLE, "Couldn't change the resolution, Rolling back...<br>");
             gVideoDriver.applyMode();
             gVideoDriver.start();
 		}
@@ -842,7 +842,7 @@ void CInput::pollEvents()
 	// Check, if LALT+Q or LALT+F4 was pressed
 	if(getHoldedKey(KALT) && (getPressedKey(KF4) || getPressedKey(KQ)) )
 	{
-		gLogging.textOut("User exit request!");
+        gLogging << "User exit request!";
 		m_exit = true;
 	}
 #endif

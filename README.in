@@ -350,7 +350,7 @@ Before you play the game, you should take a look at the controls. Normally LAlt,
 are the action keys. You can also assign joystick buttons, axes and hats to those actions or just
 change the keys to your liking. The changes are global to all the Keen games.
 
-For Mobile users, I added Sandwich button which during the gameplay can be seen at the top right corner (red color).
+For Mobile users, I added Sandwich button which during the gameplay can be seen at the top right corner (FONTCOLORS::RED color).
 Click or tap on it and you get opened the Main-Menu
 
 

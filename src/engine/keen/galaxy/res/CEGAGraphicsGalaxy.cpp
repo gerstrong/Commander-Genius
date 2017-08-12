@@ -573,7 +573,7 @@ bool CEGAGraphicsGalaxy::begin()
 
     if(!File)
     {
-        gLogging.textOut(RED,"Error the file \"" + filename + "\" is missing or can't be read!");
+        gLogging.textOut(FONTCOLORS::RED,"Error the file \"" + filename + "\" is missing or can't be read!");
         return false;
     }
 
@@ -582,7 +582,7 @@ bool CEGAGraphicsGalaxy::begin()
     egagraphlen = File.tellg();
     if(egagraphlen == 0)
     {
-        gLogging.textOut(RED,"Error the file \"" + filename + "\" is empty!");
+        gLogging.textOut(FONTCOLORS::RED,"Error the file \"" + filename + "\" is empty!");
         return false;
     }
     egagraphlen--;
@@ -662,11 +662,11 @@ bool CEGAGraphicsGalaxy::begin()
                     // Check that the second offset is valid
                     if(second > dataSize)
                     {
-                        gLogging.textOut(RED,"Error! The file \"" + filename + "\" contains a second offset that is too large!");
+                        gLogging.textOut(FONTCOLORS::RED,"Error! The file \"" + filename + "\" contains a second offset that is too large!");
                     }
                     else if(second < offset)
                     {
-                        gLogging.textOut(RED,"Error! The file \"" + filename + "\" contains a second offset that is less than the first offset!");
+                        gLogging.textOut(FONTCOLORS::RED,"Error! The file \"" + filename + "\" contains a second offset that is less than the first offset!");
                     }
                     else
                     {

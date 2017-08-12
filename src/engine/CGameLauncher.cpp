@@ -53,7 +53,7 @@ m_firsttime(first_time),
 m_start_game_no(start_game_no),
 m_start_level(start_level)
 {	
-    g_pSound->unloadSoundData();
+    gSound.unloadSoundData();
     // The last menu has been removed. Restore back the game status
     gpBehaviorEngine->setPause(false);
 
@@ -412,7 +412,7 @@ void CGameLauncher::start()
         {
             if(!mGameLauncher.setupMenu())
             {
-                gLogging.textOut(RED,"No game can be launched, because game data files are missing.<br>");
+                gLogging.textOut(FONTCOLORS::RED,"No game can be launched, because game data files are missing.<br>");
                 return 0;
             }
 
@@ -765,7 +765,7 @@ void CGameLauncher::ponderPatchDialog()
         else
         {
             letchooseagain();
-            gLogging.textOut(RED,"No Suitable game was detected in this path! Please check its contents!\n");
+            gLogging.textOut(FONTCOLORS::RED,"No Suitable game was detected in this path! Please check its contents!\n");
         }
     }
 }

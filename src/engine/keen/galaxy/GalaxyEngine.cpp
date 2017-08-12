@@ -39,7 +39,7 @@ bool setupAudio()
 
     if(audio->loadSoundData(0))
     {
-        g_pSound->setupSoundData(audio->sndSlotMapGalaxy[ep], audio);
+        gSound.setupSoundData(audio->sndSlotMapGalaxy[ep], audio);
         return true;
     }
 

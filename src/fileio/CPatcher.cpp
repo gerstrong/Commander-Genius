@@ -308,7 +308,7 @@ bool CPatcher::patchMemfromFile(const std::string& patch_file_name, long offset)
 
 	if(!m_data)
 	{
-		gLogging.textOut(PURPLE,"Warning: The patchfile was wrongly read!<br>");
+		gLogging.textOut(FONTCOLORS::PURPLE,"Warning: The patchfile was wrongly read!<br>");
         return false;
 	}
 

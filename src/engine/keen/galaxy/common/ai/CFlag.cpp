@@ -95,7 +95,7 @@ void CFlag::process()
 {
     if(mPlayMapSound)
     {
-        g_pSound->playSound( SOUND_FLAG_APPEAR );
+        gSound.playSound( SOUND_FLAG_APPEAR );
         mPlayMapSound = false;
     }
 
@@ -128,7 +128,7 @@ void CFlag::processFlipping()
 	{
 	    setAction(A_FLAG_WAVE);        
 	    setActionSprite();
-	    g_pSound->playSound( SOUND_FLAG_LAND );
+	    gSound.playSound( SOUND_FLAG_LAND );
 	    
 	    const auto episode = gpBehaviorEngine->getEpisode();
         if(episode == 6)

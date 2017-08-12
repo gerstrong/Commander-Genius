@@ -97,27 +97,27 @@ bool CSettings::saveDrvCfg()
         Configuration.WriteInt("Bound", "down", CameraBounds.down);
         Configuration.WriteInt("Bound", "speed", CameraBounds.speed);
 
-        Configuration.WriteInt("Audio", "channels", (g_pSound->getAudioSpec()).channels);
-        Configuration.WriteInt("Audio", "format", (g_pSound->getAudioSpec()).format);
-        Configuration.WriteInt("Audio", "rate", (g_pSound->getAudioSpec()).freq);
-        Configuration.SetKeyword("Audio", "sndblaster", g_pSound->getSoundBlasterMode());
-        Configuration.WriteInt("Audio", "musicvol", (g_pSound->getMusicVolume()/8));
-        Configuration.WriteInt("Audio", "soundvol", (g_pSound->getSoundVolume()/8));
+        Configuration.WriteInt("Audio", "channels", (gSound.getAudioSpec()).channels);
+        Configuration.WriteInt("Audio", "format", (gSound.getAudioSpec()).format);
+        Configuration.WriteInt("Audio", "rate", (gSound.getAudioSpec()).freq);
+        Configuration.SetKeyword("Audio", "sndblaster", gSound.getSoundBlasterMode());
+        Configuration.WriteInt("Audio", "musicvol", (gSound.getMusicVolume()/8));
+        Configuration.WriteInt("Audio", "soundvol", (gSound.getSoundVolume()/8));
 
     }
     catch(...)
     {
-        gLogging.textOut(RED,"General error writing the configuration file...\n");
+        gLogging.textOut(FONTCOLORS::RED,"General error writing the configuration file...\n");
     }
 
     bool ok = Configuration.saveCfgFile();
 
-    gLogging.textOut(GREEN,"Saving game options...");
+    gLogging.textOut(FONTCOLORS::GREEN,"Saving game options...");
 
     if(ok)
-        gLogging.textOut(GREEN,"ok.");
+        gLogging.textOut(FONTCOLORS::GREEN,"ok.");
     else
-        gLogging.textOut(RED,"error.");
+        gLogging.textOut(FONTCOLORS::RED,"error.");
 
     return ok;
 }
@@ -151,7 +151,7 @@ bool CSettings::loadDrvCfg()
 
 		if(res.w*res.h <= 0)
 		{
-			gLogging.ftextOut(RED,"Error reading the configuration file!<br>");
+			gLogging.ftextOut(FONTCOLORS::RED,"Error reading the configuration file!<br>");
 			return false;
 		}
 
@@ -211,15 +211,15 @@ bool CSettings::loadDrvCfg()
 		Configuration.ReadInteger("Audio", "channels", &audio_channels, 2);
 		Configuration.ReadInteger("Audio", "format", &audio_format, AUDIO_U8);
 		Configuration.ReadKeyword("Audio", "sndblaster", &audio_sndblaster, false);
-        g_pSound->setSettings(audio_rate, audio_channels, audio_format, audio_sndblaster);
+        gSound.setSettings(audio_rate, audio_channels, audio_format, audio_sndblaster);
 
 
 		int sound_vol, music_vol;
 		Configuration.ReadInteger("Audio", "musicvol", &music_vol, SDL_MIX_MAXVOLUME);
 		Configuration.ReadInteger("Audio", "soundvol", &sound_vol, SDL_MIX_MAXVOLUME);
 
-		g_pSound->setMusicVolume(music_vol*8);
-		g_pSound->setSoundVolume(sound_vol*8);
+		gSound.setMusicVolume(music_vol*8);
+		gSound.setSoundVolume(sound_vol*8);
 	}
 	return true;
 }
