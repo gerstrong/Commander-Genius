@@ -322,7 +322,7 @@ void CEGALatch::applyMasks()
 
 	for( Uint16 t=0 ; t<m_num16tiles ; t++ )
 	{
-		if( gpBehaviorEngine->getTileProperties().at(t).behaviour == -2 )  // This is for masked tiles.
+		if( gBehaviorEngine.getTileProperties().at(t).behaviour == -2 )  // This is for masked tiles.
 		{
 			SDL_Rect srGsRect, dstRect;
 			srGsRect.w = srGsRect.h = 16;

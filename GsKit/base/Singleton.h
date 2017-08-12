@@ -1,5 +1,5 @@
 /*
- * CSingleton.h
+ * GsSingleton.h
  *
  *  Created on: 19.04.2009
  *      Author: gerstrong
@@ -10,8 +10,8 @@
  *      with another class you still can make it dynamic of you really want that...
  */
 
-#ifndef SINGLETON_H_
-#define SINGLETON_H_
+#ifndef __SINGLETON_H_
+#define __SINGLETON_H_
 
 
 template <class T>
@@ -33,4 +33,4 @@ T& GsSingleton<T>::get()
     return instance;
 }
 
-#endif /* SINGLETON_H_ */
+#endif /* __SINGLETON_H_ */

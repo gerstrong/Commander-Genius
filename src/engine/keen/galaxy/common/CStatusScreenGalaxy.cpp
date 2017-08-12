@@ -18,7 +18,7 @@ m_Item(Item)
 
 std::string CStatusScreenGalaxy::getDifficultyText()
 {
-    auto diff = gpBehaviorEngine->mDifficulty;
+    auto diff = gBehaviorEngine.mDifficulty;
 
     std::string difftext;
 

@@ -101,7 +101,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp6::addFoe(CMap &Map, word foe, size_t x, 
 	if( p_newfoe )
 		return p_newfoe;
 
-	const Difficulty difficulty = gpBehaviorEngine->mDifficulty;
+	const Difficulty difficulty = gBehaviorEngine.mDifficulty;
 
 	// otherwise look for special foe.
 	Vector2D<Uint32> loc(x,y);	

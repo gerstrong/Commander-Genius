@@ -11,8 +11,6 @@
 #ifndef __AUDIO_H__
 #define __AUDIO_H__
 
-#include "CSingleton.h"
-
 #include <base/Singleton.h>
 
 #define gSound Audio::get()

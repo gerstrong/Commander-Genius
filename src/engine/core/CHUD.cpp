@@ -56,12 +56,12 @@ void CHUD::setup(const int id)
 
     mRenderRect.x = 8;	mRenderRect.y = 4;
 
-    if(gpBehaviorEngine->mPlayers > 3)
+    if(gBehaviorEngine.mPlayers > 3)
     {
         mRenderRect.x = 0;	mRenderRect.y = 0;
     }
 
-    size_t Episode = gpBehaviorEngine->getEpisode();
+    size_t Episode = gBehaviorEngine.getEpisode();
 
     if( Episode >= 1 && Episode <= 3 )
     {
@@ -128,7 +128,7 @@ void CHUD::CreateVorticonBackground()
 
 
 	int sprite=0;
-	const int Episode = gpBehaviorEngine->getEpisode();
+	const int Episode = gBehaviorEngine.getEpisode();
 	if(Episode == 1) sprite = OBJ_RAY_DEFSPRITE_EP1;
 	else if(Episode == 2) sprite = OBJ_RAY_DEFSPRITE_EP2;
 	else if(Episode == 3) sprite = OBJ_RAY_DEFSPRITE_EP3;
@@ -243,7 +243,7 @@ void CHUD::renderGalaxy()
     gGraphics.drawDigits(getRightAlignedString(itoa(charges),2),60, 20, blitsfc );
     gGraphics.drawDigits(getRightAlignedString(itoa(lives),2), 20, 20, blitsfc );
 
-    if(gpBehaviorEngine->mPlayers > 1 && mId == CCamera::getLead())
+    if(gBehaviorEngine.mPlayers > 1 && mId == CCamera::getLead())
     {
         SDL_Rect rect;
         rect.x = 7; rect.y = 29;
@@ -292,7 +292,7 @@ void CHUD::renderVorticon()
 
 void CHUD::render()
 {
-	size_t Episode = gpBehaviorEngine->getEpisode();
+	size_t Episode = gBehaviorEngine.getEpisode();
 
 	timer++;
 

@@ -197,7 +197,7 @@ void GsTilemap::drawTile(SDL_Surface *dst, int x, int y, Uint16 t)
     BlitSurface(rawSDLSfc, &src_rect, dst, &dst_rect);
 
 #ifdef DEBUG_COLLISION
-	//std::vector<CTileProperties> &TileProp = gpBehaviorEngine->getTileProperties(1);
+	//std::vector<CTileProperties> &TileProp = gBehaviorEngine.getTileProperties(1);
 	//FillSlopeRect(dst, dst_rect, 0xFFFFFFFF, TileProp[t].bup);
 #endif
 

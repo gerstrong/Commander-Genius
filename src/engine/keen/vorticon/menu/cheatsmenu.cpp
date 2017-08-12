@@ -27,19 +27,19 @@ VorticonMenu(GsRect<float>(0.075f, 0.24f, 0.85f, 0.4f) )
 void CheatsMenu::refresh()
 {
     // TODO: More Cheats!!
-    mpJumpSwitch->enable( gpBehaviorEngine->mCheatmode.jump );
-    mpGodSwitch->enable( gpBehaviorEngine->mCheatmode.god );
-    mpNoClipSwitch->enable( gpBehaviorEngine->mCheatmode.noclipping );
-    mpItemsSwitch->enable( gpBehaviorEngine->mCheatmode.items );
+    mpJumpSwitch->enable( gBehaviorEngine.mCheatmode.jump );
+    mpGodSwitch->enable( gBehaviorEngine.mCheatmode.god );
+    mpNoClipSwitch->enable( gBehaviorEngine.mCheatmode.noclipping );
+    mpItemsSwitch->enable( gBehaviorEngine.mCheatmode.items );
 }
 
 
 void CheatsMenu::release()
 {
-    gpBehaviorEngine->mCheatmode.jump = mpJumpSwitch->isEnabled();
-    gpBehaviorEngine->mCheatmode.god = mpGodSwitch->isEnabled();
-    gpBehaviorEngine->mCheatmode.noclipping = mpNoClipSwitch->isEnabled();
-    gpBehaviorEngine->mCheatmode.items = mpItemsSwitch->isEnabled();
+    gBehaviorEngine.mCheatmode.jump = mpJumpSwitch->isEnabled();
+    gBehaviorEngine.mCheatmode.god = mpGodSwitch->isEnabled();
+    gBehaviorEngine.mCheatmode.noclipping = mpNoClipSwitch->isEnabled();
+    gBehaviorEngine.mCheatmode.items = mpItemsSwitch->isEnabled();
 }
 
 

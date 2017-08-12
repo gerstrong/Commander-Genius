@@ -31,7 +31,7 @@
 
 #include <base/GsEvent.h>
 
-#include "CSingleton.h"
+#include <base/Singleton.h>
 
 #if defined (SINGLEPLAYER)
 const unsigned int MAX_PLAYERS = 1;
@@ -39,7 +39,7 @@ const unsigned int MAX_PLAYERS = 1;
 const unsigned int MAX_PLAYERS = 4;
 #endif
 
-#define gpBehaviorEngine CBehaviorEngine::Get()
+#define gBehaviorEngine CBehaviorEngine::get()
 
 /*
  * This enumerator will hold and tell what engine we are using.
@@ -72,7 +72,7 @@ typedef struct
 	Uint16 x, y;
 } stTeleporterTable;
 
-class CBehaviorEngine : public CSingleton<CBehaviorEngine>
+class CBehaviorEngine : public GsSingleton<CBehaviorEngine>
 {
 public:
     CBehaviorEngine() : 	mPlayers(0),

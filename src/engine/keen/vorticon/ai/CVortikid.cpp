@@ -36,10 +36,10 @@ CVorticonSpriteObject(p_map, x, y, OBJ_BABY, 0)
 	walktimer = 0;
 	canbezapped = true;
 
-    const auto diff = gpBehaviorEngine->mDifficulty;
+    const auto diff = gBehaviorEngine.mDifficulty;
 
 	// babies are in ep2 & ep3, but frameset starts one index prior in ep3
-	if (gpBehaviorEngine->getEpisode()==3) ep3 = true; else ep3 = false;
+	if (gBehaviorEngine.getEpisode()==3) ep3 = true; else ep3 = false;
 	sprite = BABY_WALK_RIGHT_FRAME - ep3;
 
     if(diff > NORMAL)
@@ -81,7 +81,7 @@ void CVortikid::process()
 	bool ep3;
 
 	// babies are in ep2 & ep3, but frameset starts one index prior in ep3
-	if (gpBehaviorEngine->getEpisode()==3) ep3 = true; else ep3 = false;
+	if (gBehaviorEngine.getEpisode()==3) ep3 = true; else ep3 = false;
 
 	// jumping
 	if(blockedd && state == BABY_RUN)

@@ -48,7 +48,7 @@ mSkipSection(false)
     const GsRect<Uint16> gameRect = gVideoDriver.getVidConfig().m_GameRect;
     gVideoDriver.setNativeResolution(gameRect);
 
-    const int episode = gpBehaviorEngine->getEpisode();
+    const int episode = gBehaviorEngine.getEpisode();
 
     if(episode == 4)
         mCreditsBmpID = 98;
@@ -128,7 +128,7 @@ bool CPassiveGalaxy::init()
     assert(vkc);
     vkc->mShowDPad = false;
 
-    const auto &storyText = gpBehaviorEngine->getString("STORY_TEXT");
+    const auto &storyText = gBehaviorEngine.getString("STORY_TEXT");
     mStoryTextVector = explode(storyText, "\n");
 
     return true;
@@ -144,7 +144,7 @@ void CPassiveGalaxy::ponder(const float deltaT)
     if( gInput.getPressedAnyCommand() || gInput.mouseClicked() )
     {
         mSkipSection = true;
-        g_pMusicPlayer->stop();
+        gMusicPlayer.stop();
     }
 
     (this->*processPonderMode)();
@@ -427,22 +427,22 @@ void CPassiveGalaxy::processTitle()
             lRect.y += 20;
         }
 
-        const auto ep = gpBehaviorEngine->getEpisode();
+        const auto ep = gBehaviorEngine.getEpisode();
 
         if(ep == 4)
         {
-            g_pMusicPlayer->loadTrack(2);
-            g_pMusicPlayer->play();
+            gMusicPlayer.loadTrack(2);
+            gMusicPlayer.play();
         }
         else if(ep == 5)
         {
-            g_pMusicPlayer->loadTrack(2);
-            g_pMusicPlayer->play();
+            gMusicPlayer.loadTrack(2);
+            gMusicPlayer.play();
         }
         else if(ep == 6)
         {
-            g_pMusicPlayer->loadTrack(4);
-            g_pMusicPlayer->play();
+            gMusicPlayer.loadTrack(4);
+            gMusicPlayer.play();
         }
 
     }
@@ -487,7 +487,7 @@ void CPassiveGalaxy::processStarWars()
         processPonderMode = &CPassiveGalaxy::processIntro;
         processRenderMode = &CPassiveGalaxy::renderIntro;
 
-        g_pMusicPlayer->stop();
+        gMusicPlayer.stop();
     }
 }
 

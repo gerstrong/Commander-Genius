@@ -17,8 +17,9 @@
 #include <base/GsEvent.h>
 #include <base/utils/StringUtils.h>
 #include <base/TypeDefinitions.h>
-#include "CSingleton.h"
 #include "Oldsavegamestructs.h"
+
+#include <base/Singleton.h>
 
 
 #define SG_HEADERSIZE			7
@@ -27,10 +28,10 @@
 #define OLDSAVEGAMEVERSION4		'4'
 
 
-#define gpSaveGameController CSaveGameController::Get()
+#define gSaveGameController CSaveGameController::get()
 
 
-class CSaveGameController : public CSingleton<CSaveGameController>
+class CSaveGameController : public GsSingleton<CSaveGameController>
 {
 public:
 

@@ -38,7 +38,7 @@ void CPassive::pumpEvent(const CEvent *evPtr)
     if( dynamic_cast<const EventEndGamePlay*>(evPtr) )
     {
         // The last menu has been removed. Restore back the game status
-        gpBehaviorEngine->setPause(false);
+        gBehaviorEngine.setPause(false);
         gMenuController.clearMenuStack();
         mEndEpisode = true;
     }

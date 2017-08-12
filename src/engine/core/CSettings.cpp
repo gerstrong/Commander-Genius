@@ -259,7 +259,7 @@ void CSettings::loadDefaultGraphicsCfg() //Loads default graphics
  */
 void CSettings::setOption( e_OptionKeyword opt, const std::string &menuname, const std::string &name, char value)
 {
-	stOption &option = gpBehaviorEngine->m_option[opt];
+	stOption &option = gBehaviorEngine.m_option[opt];
 	option.menuname = menuname;
 	option.name = name;
 	option.value = value;
@@ -293,7 +293,7 @@ bool CSettings::loadGameOptions()
 
 	loadDefaultGameCfg();
 
-	stOption *p_option = gpBehaviorEngine->m_option;
+	stOption *p_option = gBehaviorEngine.m_option;
 	for (i = 0; i < NUM_OPTIONS; i++)
 	{
 		bool newvalue;
@@ -314,7 +314,7 @@ bool CSettings::saveGameOptions()
 
 	if(!Configuration.Parse()) return false;
 
-	stOption *p_option = gpBehaviorEngine->m_option;
+	stOption *p_option = gBehaviorEngine.m_option;
 	for (int i = 0; i < NUM_OPTIONS; i++)
 		Configuration.SetKeyword("Game", p_option[i].name, p_option[i].value);
 

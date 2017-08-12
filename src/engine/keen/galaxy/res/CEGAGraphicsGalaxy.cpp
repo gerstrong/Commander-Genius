@@ -119,7 +119,7 @@ CEGAGraphics(ExeFile.getEpisode(), gKeenFiles.gameDir),
 m_Exefile(ExeFile)
 {
     createBitmapsIDs();
-    gpBehaviorEngine->setEpisodeInfoStructPtr(EpisodeInfo);
+    gBehaviorEngine.setEpisodeInfoStructPtr(EpisodeInfo);
 }
 
 

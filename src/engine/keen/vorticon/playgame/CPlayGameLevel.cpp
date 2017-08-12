@@ -16,7 +16,7 @@ void CPlayGameVorticon::processInLevel()
 	if(m_gameover)
 		return;
 
-    const int numPlayers = gpBehaviorEngine->mPlayers;
+    const int numPlayers = gBehaviorEngine.mPlayers;
 
 	// Perform player Objects...
     for( int i=0 ; i<numPlayers ; i++ )
@@ -32,7 +32,7 @@ void CPlayGameVorticon::processInLevel()
 		std::string hinttext;
 		if( (hinttext=m_Player[i].pollHintMessage()) != "")
 		{
-		    std::unique_ptr<CMessageBoxVort> msg( new CMessageBoxVort(gpBehaviorEngine->getString(hinttext), false, true) );
+		    std::unique_ptr<CMessageBoxVort> msg( new CMessageBoxVort(gBehaviorEngine.getString(hinttext), false, true) );
 		    mMessageBoxes.push_back( move(msg) );
 		}
 
@@ -72,7 +72,7 @@ void CPlayGameVorticon::processInLevel()
 	// Check if all players are dead. In that case, go back to map
 	if(m_alldead)
 	{
-		g_pMusicPlayer->stop();
+		gMusicPlayer.stop();
 		m_gameover = true; // proof contrary case
         for( int i=0 ; i<numPlayers ; i++ )
 			m_gameover &= ( m_Player[i].inventory.lives < 0 );
@@ -90,7 +90,7 @@ void CPlayGameVorticon::processLevelTrigger(int trigger)
 	if (trigger == LVLTRIG_TANTALUS_RAY)
 	{
 		mMap->m_Dark = false;
-		g_pMusicPlayer->stop();
+		gMusicPlayer.stop();
 		gGraphics.Palette.setdark(mMap->m_Dark);
 		mpFinale.reset( new CTantalusRay( mMessageBoxes, mMap, mSpriteObjectContainer, mpObjectAI ) );	
 

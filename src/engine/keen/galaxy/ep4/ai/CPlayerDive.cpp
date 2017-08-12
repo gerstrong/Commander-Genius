@@ -41,7 +41,7 @@ const int DIE_FALL_MAX_INERTIA = 150;
 void CPlayerDive::kill(const bool force)
 {
 	// Here were prepare Keen to die, setting the action to die
-    if(!gpBehaviorEngine->mCheatmode.god || force)
+    if(!gBehaviorEngine.mCheatmode.god || force)
 	{
 		if(mp_processState == &CPlayerBase::processDying && yinertia < 0)
 			return;
@@ -69,10 +69,10 @@ const int BREATH_TIME = 60;
 void CPlayerDive::processDiving()
 {
 	// In case no-clipping was triggered, make it solid, or remove it...
-    if(gpBehaviorEngine->mCheatmode.noclipping)
+    if(gBehaviorEngine.mCheatmode.noclipping)
 	{
 		solid = !solid;
-        gpBehaviorEngine->mCheatmode.noclipping = false;
+        gBehaviorEngine.mCheatmode.noclipping = false;
 	}
 
 

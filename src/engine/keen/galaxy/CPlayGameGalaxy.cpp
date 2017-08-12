@@ -41,10 +41,9 @@ CPlayGameGalaxy::CPlayGameGalaxy(const int startlevel,
                                  const std::vector<int> &spriteVars) :
 CPlayGame(startlevel),
 m_WorldMap( mInventoryVec),
-m_LevelPlay( mInventoryVec),
-m_SavedGame(*gpSaveGameController)
+m_LevelPlay( mInventoryVec)
 {
-    const int numPlayers = gpBehaviorEngine->mPlayers;
+    const int numPlayers = gBehaviorEngine.mPlayers;
     mDead.assign(numPlayers, false);
     mGameOver.assign(numPlayers, false);
 
@@ -74,7 +73,7 @@ m_SavedGame(*gpSaveGameController)
 // supporting older versions of Savegame states of CG
 bool CPlayGameGalaxy::loadGameState()
 {
-	CSaveGameController &savedGame = *(gpSaveGameController);
+    CSaveGameController &savedGame = gSaveGameController;
 
 	// This fills the datablock from CSavedGame object
 	if(!savedGame.load())
@@ -86,10 +85,10 @@ bool CPlayGameGalaxy::loadGameState()
 	/// Save the Game in the CSavedGame object
 	// store the episode, level and difficulty
 	savedGame.decodeData(m_Episode);
-    savedGame.decodeData(gpBehaviorEngine->mDifficulty);
+    savedGame.decodeData(gBehaviorEngine.mDifficulty);
 
 	// Load number of Players
-    savedGame.decodeData(gpBehaviorEngine->mPlayers);
+    savedGame.decodeData(gBehaviorEngine.mPlayers);
 
 	// We need to load both Levels first, before we do the writing from the saved state.
 
@@ -119,7 +118,7 @@ bool CPlayGameGalaxy::loadXMLGameState()
     using boost::property_tree::ptree;
     ptree pt;
 
-    CSaveGameController &savedGame = *(gpSaveGameController);
+    CSaveGameController &savedGame = gSaveGameController;
     if(!savedGame.loadXMLTree(pt))
         return false;
 
@@ -130,11 +129,11 @@ bool CPlayGameGalaxy::loadXMLGameState()
     /// Load the Game in the CSavedGame object
     // Get the episode, and difficulty
     m_Episode = stateNode.get<int>("episode");
-    gpBehaviorEngine->mDifficulty = static_cast<Difficulty>(stateNode.get<int>("difficulty", 1));
+    gBehaviorEngine.mDifficulty = static_cast<Difficulty>(stateNode.get<int>("difficulty", 1));
 
     // Get number of Players
     const unsigned int numPlayers = stateNode.get<int>("NumPlayer");
-    gpBehaviorEngine->mPlayers = numPlayers;
+    gBehaviorEngine.mPlayers = numPlayers;
 
     if(!mInventoryVec.empty())
         mInventoryVec.clear();
@@ -201,10 +200,10 @@ bool CPlayGameGalaxy::saveXMLGameState()
 
     /// Save the Game in the CSavedGame object
     // store the episode, level and difficulty
-    stateNode.put("difficulty", gpBehaviorEngine->mDifficulty);
+    stateNode.put("difficulty", gBehaviorEngine.mDifficulty);
 
     // Save number of Players
-    const unsigned int numPlayers = gpBehaviorEngine->mPlayers;
+    const unsigned int numPlayers = gBehaviorEngine.mPlayers;
     stateNode.put("NumPlayer", numPlayers);
 
     ptree &deadNode = pt.add("death", "");
@@ -235,8 +234,7 @@ bool CPlayGameGalaxy::saveXMLGameState()
     if( active )
         m_LevelPlay >> levelPlayNode;
 
-    CSaveGameController &savedGame = *(gpSaveGameController);
-    if(savedGame.saveXMLTree(pt))
+    if( gSaveGameController.saveXMLTree(pt) )
         return true;
 
     return false;
@@ -337,7 +335,7 @@ void CPlayGameGalaxy::looseManagement( const int playerID,
         EventSendSelectionDialogMsg *pdialogevent = new EventSendSelectionDialogMsg(loosemsg);
         pdialogevent->addOption("Try Again", new EventRestartLevel() );
 
-        std::string exitMsg = "Exit to " + gpBehaviorEngine->mapLevelName;
+        std::string exitMsg = "Exit to " + gBehaviorEngine.mapLevelName;
         pdialogevent->addOption(exitMsg, new EventExitLevel( levelObj, false, false, playerID) );
         eventContainer.add( pdialogevent );
 
@@ -379,7 +377,7 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
     }
     else if( const EventSendSelectionDialogMsg* ev = dynamic_cast<const EventSendSelectionDialogMsg*>(evPtr) )
     {
-        g_pMusicPlayer->stop();
+        gMusicPlayer.stop();
         std::unique_ptr<CMessageBoxSelection> pMsgBox( new CMessageBoxSelection( ev->Message, ev->Options ) );
         pMsgBox->init();
 
@@ -389,7 +387,7 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
     {
         m_endgame = true;
         // The last menu has been removed. Restore back the game status
-        gpBehaviorEngine->setPause(false);
+        gBehaviorEngine.setPause(false);
         gMenuController.clearMenuStack();
     }
     else if( const EventEnterLevel *ev = dynamic_cast<const EventEnterLevel*>(evPtr) )
@@ -399,7 +397,7 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
             const Uint16 newLevel = ev->data - 0xC000;
             if(newLevel < 50)
             {
-                g_pMusicPlayer->stop();                
+                gMusicPlayer.stop();                
                 m_WorldMap.setActive(false);
                 m_LevelPlay.loadLevel(newLevel);
                 gSound.playSound( SOUND_ENTER_LEVEL );
@@ -409,7 +407,7 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
     }
     else if( dynamic_cast<const EventRestartLevel*>(evPtr) )
     {
-        g_pMusicPlayer->stop();
+        gMusicPlayer.stop();
         m_LevelPlay.reloadLevel();
     }
     else if( const EventExitLevel *ev = dynamic_cast<const EventExitLevel*>(evPtr) )
@@ -435,7 +433,7 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
         levelLoadText += itoa(newLevel);
         levelLoadText += "_LOAD_TEXT";
 
-        const std::string loading_text = gpBehaviorEngine->getString(levelLoadText);
+        const std::string loading_text = gBehaviorEngine.getString(levelLoadText);
 
         m_LevelPlay.setActive(false);
         m_WorldMap.setActive(true);
@@ -453,7 +451,7 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
 
         if(newLevel != 0)
         {
-            g_pMusicPlayer->stop();
+            gMusicPlayer.stop();
             m_WorldMap.setActive(false);
             m_LevelPlay.loadLevel(newLevel);
             //gSound.playSound( SOUND_ENTER_LEVEL );
@@ -470,7 +468,7 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
     }
     else if( const EventExitLevelWithFoot *ev = dynamic_cast<const EventExitLevelWithFoot*>(evPtr) )
     {        
-        g_pMusicPlayer->stop();
+        gMusicPlayer.stop();
         m_LevelPlay.setActive(false);
         m_WorldMap.setActive(true);
         m_WorldMap.loadAndPlayMusic();
@@ -478,9 +476,9 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
     }
     else if( const EventPlayTrack *ev =  dynamic_cast<const EventPlayTrack*>(evPtr) )
     {
-        g_pMusicPlayer->stop();
-        if( g_pMusicPlayer->loadTrack(ev->track) )
-            g_pMusicPlayer->play();
+        gMusicPlayer.stop();
+        if( gMusicPlayer.loadTrack(ev->track) )
+            gMusicPlayer.play();
     }
     else if(m_WorldMap.isActive())
     {
@@ -582,7 +580,7 @@ void CPlayGameGalaxy::ponder(const float deltaT)
 
     //// Special Keyboard Input
     /// Cheat Codes
-    auto &cheat = gpBehaviorEngine->mCheatmode;
+    auto &cheat = gBehaviorEngine.mCheatmode;
     if( gInput.getHoldedKey(KF10) )
     {
         if(gInput.getHoldedKey(KJ))

@@ -54,7 +54,7 @@ void CGUISwitch::processRender(const GsRect<float> &RectDispCoordFloat)
 	displayRect.transform(RectDispCoordFloat);
 /*	SDL_Rect lRect = displayRect.SDLRect();
 
-    if(gpBehaviorEngine->getEngine() == ENGINE_VORTICON)
+    if(gBehaviorEngine.getEngine() == ENGINE_VORTICON)
 	{
 		drawVorticonStyle(lRect);
 	}

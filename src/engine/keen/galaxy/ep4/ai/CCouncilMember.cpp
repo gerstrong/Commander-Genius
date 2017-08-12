@@ -124,10 +124,10 @@ void CCouncilMember::performJanitorMode()
 {
 	std::string elder_text[4];
 
-	elder_text[0] = gpBehaviorEngine->getString("JANITOR_TEXT1");
-	elder_text[1] = gpBehaviorEngine->getString("JANITOR_TEXT2");
-	elder_text[2] = gpBehaviorEngine->getString("JANITOR_TEXT3");
-	elder_text[3] = gpBehaviorEngine->getString("JANITOR_TEXT4");
+	elder_text[0] = gBehaviorEngine.getString("JANITOR_TEXT1");
+	elder_text[1] = gBehaviorEngine.getString("JANITOR_TEXT2");
+	elder_text[2] = gBehaviorEngine.getString("JANITOR_TEXT3");
+	elder_text[3] = gBehaviorEngine.getString("JANITOR_TEXT4");
 
     std::vector<CMessageBoxGalaxy*> msgs;
 
@@ -189,13 +189,13 @@ void CCouncilMember::getTouchedBy(CSpriteObject &theObject)
         {
             if( mp_Map->getLevel() == 17 ) // Under water the text is a bit different
             {
-                elder_text[0] = gpBehaviorEngine->getString("ELDERS_UNDERWATER_TEXT");
+                elder_text[0] = gBehaviorEngine.getString("ELDERS_UNDERWATER_TEXT");
                 elder_text[1] = "";
             }
             else
             {
-                elder_text[0] = gpBehaviorEngine->getString("ELDERS_TEXT");
-                elder_text[1] = gpBehaviorEngine->getString(answermap[rescuedelders]);
+                elder_text[0] = gBehaviorEngine.getString("ELDERS_TEXT");
+                elder_text[1] = gBehaviorEngine.getString(answermap[rescuedelders]);
             }
         }
 
@@ -212,7 +212,7 @@ void CCouncilMember::getTouchedBy(CSpriteObject &theObject)
                                     RIGHT) );
 
 
-            msgs.push_back( new CMessageBoxBitmapGalaxy(gpBehaviorEngine->getString(answermap[8]),
+            msgs.push_back( new CMessageBoxBitmapGalaxy(gBehaviorEngine.getString(answermap[8]),
                             *gGraphics.getBitmapFromStr("KEENTHUMBSUP"), RIGHT) );
 
             gEventManager.add(new OpenComputerWrist(4));

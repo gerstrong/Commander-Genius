@@ -193,7 +193,7 @@ void CPlayerBase::processExiting()
     if( (((mp_Map->m_width-2)<<CSF) < x || (2<<CSF) > x)  || ((2<<CSF) > y) )
       // If player leaves boundary, except for the lower part, which death
     {
-        g_pMusicPlayer->stop();
+        gMusicPlayer.stop();
 
         gEffectController.setupEffect(new CDimDark(8));
 
@@ -213,7 +213,7 @@ void CPlayerBase::getAnotherLife(const int lc_x, const int lc_y, const bool disp
 	gSound.playSound( SOUND_EXTRA_LIFE );
 	if(display)
 	{
-        const int ep = gpBehaviorEngine->getEpisode();
+        const int ep = gBehaviorEngine.getEpisode();
 	    const int id = alt ? 12 : 10;
 	    CItemEffect *lifeUp = new CItemEffect(mp_Map, 0, lc_x<<CSF, lc_y<<CSF, got_sprite_item_pics[ep-4][id], FADEOUT);
         gEventManager.add( new EventSpawnObject( lifeUp ) );
@@ -237,7 +237,7 @@ void CPlayerBase::processCamera()
     relVisBlend.x = 0;  relVisBlend.w = 0;
     relVisBlend.y = 0;  relVisBlend.h = 0;
 
-    if (gpBehaviorEngine->m_option[OPT_MODERN].value)
+    if (gBehaviorEngine.m_option[OPT_MODERN].value)
     {
         relVisBlend.x = scrx-16;
         relVisBlend.y = scry-32;
@@ -353,13 +353,13 @@ void CPlayerBase::processLevelMiscFlagsCheck()
 	}
 
 	// Another property of the tiles may kill keen, also in god mode
-    std::vector<CTileProperties> &Tile = gpBehaviorEngine->getTileProperties(1);
+    std::vector<CTileProperties> &Tile = gBehaviorEngine.getTileProperties(1);
 	// TODO: Workaround! It seems that the deadly tiles are 17 tiles behind. Not sure, why!
 	const int tileIDl = mp_Map->getPlaneDataAt(1, l_x, (l_y+l_h)+(1<<STC));
 	const int tileIDr = mp_Map->getPlaneDataAt(1, l_x+l_w, (l_y+l_h)+(1<<STC));
 	if(Tile[tileIDl].bup == 9 && Tile[tileIDr].bup == 9 )
 	{        
-        if(!gpBehaviorEngine->mCheatmode.god)
+        if(!gBehaviorEngine.mCheatmode.god)
 	    {
             kill(true);
 	    }
@@ -369,7 +369,7 @@ void CPlayerBase::processLevelMiscFlagsCheck()
 	if(hitdetectWithTilePropertyRect(4, l_x, l_y, l_w, l_h, 2<<STC))
 	{
 	  int dropanimation_sprite = 215;	  
-      const int ep = gpBehaviorEngine->getEpisode();
+      const int ep = gBehaviorEngine.getEpisode();
 	  
 	  if(ep == 5)
 	  {
@@ -404,7 +404,7 @@ void CPlayerBase::processLevelMiscFlagsCheck()
 		{
 			const int lc_x = l_x>>CSF;
 			const int lc_y = l_y>>CSF;
-            const int ep = gpBehaviorEngine->getEpisode();
+            const int ep = gBehaviorEngine.getEpisode();
 			
 			mp_Map->setTile( lc_x, lc_y, 0, true, 1 );
             spawnObj( new CItemEffect(mp_Map, 0, lc_x<<CSF, lc_y<<CSF, got_sprite_item_pics[ep-4][4+i-21], FADEOUT) );
@@ -510,7 +510,7 @@ void CPlayerBase::playSwimSound(const bool moving)
 void CPlayerBase::getEaten()
 {
 	// Here were prepare Keen to die, setting the action to die
-    if(!gpBehaviorEngine->mCheatmode.god && !m_dying)
+    if(!gBehaviorEngine.mCheatmode.god && !m_dying)
 	{
 		m_dying = true;
 		yinertia = 0;
@@ -530,7 +530,7 @@ void CPlayerBase::respawnImportantItem(const int itemId)
     int epOffset = 0;
     int itemOffset = 0;
 
-    int episode = gpBehaviorEngine->getEpisode();
+    int episode = gBehaviorEngine.getEpisode();
 
     if(episode == 4)
     {
@@ -570,7 +570,7 @@ bool CPlayerBase::touchedBottomOfMap()
     int l_w = getXRightPos() - getXLeftPos();
     int l_h = getYDownPos() - getYUpPos();
 
-    const int ep = gpBehaviorEngine->getEpisode();
+    const int ep = gBehaviorEngine.getEpisode();
 
     // Some tests will force Keen to death!!
     /*if(ep == 4)
@@ -694,7 +694,7 @@ void CPlayerBase::kill(const bool force,
     if(getActionNumber(A_KEEN_ENTER_DOOR))
         return;
     
-    if(gpBehaviorEngine->mCheatmode.god && !force)
+    if(gBehaviorEngine.mCheatmode.god && !force)
         return;
     
     if(!m_dying)
@@ -784,7 +784,7 @@ void CPlayerBase::push(CGalaxySpriteObject& theObject)
 
 bool CPlayerBase::getActionStatus(int16_t ActionNumber)
 {
-    const int epID = gpBehaviorEngine->getEpisode()-4;
+    const int epID = gBehaviorEngine.getEpisode()-4;
 	const int relOff = mEpisodeActionNumMap[epID][ActionNumber];
 
 	return (m_Action.getActionFormat(m_ActionBaseOffset + 30*relOff));
@@ -795,7 +795,7 @@ int CPlayerBase::getSpriteIDFromAction(const int16_t ActionNumber)
 {
 	ActionFormatType action;
 
-    const int epID = gpBehaviorEngine->getEpisode()-4;
+    const int epID = gBehaviorEngine.getEpisode()-4;
 	const int relOff = mEpisodeActionNumMap[epID][ActionNumber];
 
 	action.setActionFormat(m_ActionBaseOffset + 30*relOff);
@@ -812,7 +812,7 @@ void CPlayerBase::setActionForce(const size_t ActionNumber)
 {
     CGalaxySpriteObject::setActionForce(ActionNumber);
 
-    const int epID = gpBehaviorEngine->getEpisode()-4;
+    const int epID = gBehaviorEngine.getEpisode()-4;
 	mEndOfAction = false;
 	m_ActionNumber = ActionNumber;
 	m_Action.setActionFormat(m_ActionBaseOffset + 30*mEpisodeActionNumMap[epID][m_ActionNumber]);

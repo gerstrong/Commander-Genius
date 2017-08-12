@@ -392,7 +392,7 @@ void CPatcher::PatchLevelentry(const int level, std::list<std::string> &input)
 	      buf += "\n";
 	}
 
-	gpBehaviorEngine->setMessage(levelStr, buf);
+	gBehaviorEngine.setMessage(levelStr, buf);
 }
 
 

@@ -264,9 +264,9 @@ void Audio::callback(void *unused, Uint8 *stream, int len)
 
 	Uint8* buffer = m_MixedForm.data();        
 
-    if (g_pMusicPlayer->playing())
+    if (gMusicPlayer.playing())
     {
-    	g_pMusicPlayer->readWaveform(buffer, len);
+    	gMusicPlayer.readWaveform(buffer, len);
         mixAudio(stream, buffer, len, m_MusicVolume);
     }
 

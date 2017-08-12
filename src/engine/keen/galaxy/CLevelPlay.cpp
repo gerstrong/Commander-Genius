@@ -35,7 +35,7 @@ void CLevelPlay::loadMap(const int level)
 	// Load the World map level.
 	std::unique_ptr<CMapLoaderGalaxy> MapLoader;
 
-    const int episode = gpBehaviorEngine->getEpisode();
+    const int episode = gBehaviorEngine.getEpisode();
 
     if(episode == 4)
     {
@@ -58,11 +58,11 @@ void CLevelPlay::loadMap(const int level)
 	MapLoader->loadMap( mMap, level );
 
     // Load some new background Music
-	g_pMusicPlayer->stop();
+	gMusicPlayer.stop();
 
     if( loadLevelMusic(level) )
     {
-        g_pMusicPlayer->play();
+        gMusicPlayer.play();
     }
     else
     {
@@ -87,7 +87,7 @@ bool CLevelPlay::loadLevel(const Uint16 level)
 		
 	// Add the load message
 	const std::string level_text = "LEVEL" + itoa(level) + "_LOAD_TEXT";
-    const std::string loading_text = gpBehaviorEngine->getString(level_text);
+    const std::string loading_text = gBehaviorEngine.getString(level_text);
 
     showMsgWithBmp( loading_text, "KEENTHUMBSUP", LEFT );
 

@@ -41,7 +41,7 @@ mp_AttachedObject(p_attacher)
 
 void CCamera::cycleCamlead()
 {
-    const int numPlayers = gpBehaviorEngine->mPlayers;
+    const int numPlayers = gBehaviorEngine.mPlayers;
 
     if( numPlayers == 1 ) // For one player this doesn't make sense to change
         return;

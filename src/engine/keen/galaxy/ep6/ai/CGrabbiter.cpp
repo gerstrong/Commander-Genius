@@ -54,7 +54,7 @@ void CGrabbiter::getTouchedBy(CSpriteObject& theObject)
             player->m_Inventory.Item.m_special.ep6.sandwich--;
 
             // Show grabbiter message
-            showMsg( gpBehaviorEngine->getString("KEEN_GRABBITER_SLEEPY") );
+            showMsg( gBehaviorEngine.getString("KEEN_GRABBITER_SLEEPY") );
 
             setAction(A_GRABBITER_NAPPING);
             playSound(SOUND_GRABBITER_SLEEP);
@@ -65,7 +65,7 @@ void CGrabbiter::getTouchedBy(CSpriteObject& theObject)
             gSound.playSound(SOUND_GRABBITER_HUNGRY, PLAY_PAUSEALL);
 
             // Show grabbiter message
-            showMsg( gpBehaviorEngine->getString("KEEN_GRABBITER_HUNGRY") );
+            showMsg( gBehaviorEngine.getString("KEEN_GRABBITER_HUNGRY") );
         }
     }
 }

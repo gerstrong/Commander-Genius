@@ -21,7 +21,7 @@ m_startgame(false),
 m_exitgame(false),
 m_gameover(false),
 m_restartVideo(false),
-mp_option(gpBehaviorEngine->m_option)
+mp_option(gBehaviorEngine.m_option)
 {
     m_NumSprites = gGraphics.getNumSprites(0);
     m_Gamepath = gKeenFiles.gameDir;
@@ -37,7 +37,7 @@ void CPlayGame::pumpEvent(const CEvent *evPtr)
     if( dynamic_cast<const EventEndGamePlay*>(evPtr) )
     {
         // The last menu has been removed. Restore back the game status
-        gpBehaviorEngine->setPause(false);
+        gBehaviorEngine.setPause(false);
         gMenuController.clearMenuStack();
         m_endgame = true;
     }

@@ -58,7 +58,6 @@ private:
     std::vector<CInventory> mInventoryVec;
     CWorldMap m_WorldMap;
     CLevelPlay m_LevelPlay;
-    CSaveGameController &m_SavedGame;
     GsBitmap m_BackgroundBitmap;
     std::list< std::shared_ptr<CMessageBoxGalaxy> > mMessageBoxes;
 

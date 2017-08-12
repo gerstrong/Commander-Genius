@@ -18,7 +18,7 @@ CDlgFrame::CDlgFrame(int x, int y, int w, int h, int tilewidth, int tileheight)
 	m_y = y;
 	resize(w, h);
 	
-	m_theme = gpBehaviorEngine->getEngine();
+	m_theme = gBehaviorEngine.getEngine();
 }
 
 

@@ -24,11 +24,11 @@ mp_StatusBgrnd(NULL)
 {
 	reset();
 
-	int Episode = gpBehaviorEngine->getEpisode();
+	int Episode = gBehaviorEngine.getEpisode();
 
 	if(Episode >= 4)
 	{
-	    const Difficulty difficulty = gpBehaviorEngine->mDifficulty;
+	    const Difficulty difficulty = gBehaviorEngine.mDifficulty;
 	    
 	    Item.m_bullets = 8;
 	    if( difficulty > EASY )

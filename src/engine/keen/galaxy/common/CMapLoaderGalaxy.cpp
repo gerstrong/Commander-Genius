@@ -391,7 +391,7 @@ void CMapLoaderGalaxy::spawnFoes(CMap &Map)
 	if(!m_ObjectPtr.empty())
 		m_ObjectPtr.clear();
 
-    const int numPlayers = gpBehaviorEngine->mPlayers;
+    const int numPlayers = gBehaviorEngine.mPlayers;
 
 	// he we go to the adding objects
 	Map.mNumFuses = 0;

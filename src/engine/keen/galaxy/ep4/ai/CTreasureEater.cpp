@@ -205,7 +205,7 @@ void CTreasureEater::checkForItem()
 		{
 			const int lc_x = l_x>>CSF;
 			const int lc_y = l_y>>CSF;
-			const int ep = gpBehaviorEngine->getEpisode();
+			const int ep = gBehaviorEngine.getEpisode();
 			
 			mp_Map->setTile( lc_x, lc_y, 0, true, 1 );			
 			spawnObj( new CItemEffect(mp_Map, 0, lc_x<<CSF, lc_y<<CSF, got_sprite_item_pics[ep-4][4+i-21], FADEOUT) );

@@ -14,12 +14,12 @@ about_to_charge(0),
 walkframe(0),
 dist_traveled(0),
 movedir(CENTER),
-m_hardmode(gpBehaviorEngine->mDifficulty==HARD)
+m_hardmode(gBehaviorEngine.mDifficulty==HARD)
 {
-    const auto diff = gpBehaviorEngine->mDifficulty;
+    const auto diff = gBehaviorEngine.mDifficulty;
 
 	canbezapped = true;
-	if(gpBehaviorEngine->mDifficulty==HARD)
+	if(gBehaviorEngine.mDifficulty==HARD)
 		mHealthPoints++;
 
     if(diff == EXPERT)

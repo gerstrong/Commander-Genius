@@ -46,7 +46,6 @@ public:
 
 	char getEpisode();
 	char getNumPlayers();
-	CSaveGameController getSavedGameBlock();
 
 protected:
 	bool m_endgame;

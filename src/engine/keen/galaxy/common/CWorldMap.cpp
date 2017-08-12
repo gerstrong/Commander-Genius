@@ -26,15 +26,15 @@ bool CWorldMap::init()
 	// Load the World map level.
 	std::unique_ptr<CMapLoaderGalaxy> MapLoader;
 
-	if(gpBehaviorEngine->getEpisode() == 4)
+	if(gBehaviorEngine.getEpisode() == 4)
     {
         MapLoader.reset( new CMapLoaderGalaxyEp4( mObjectPtr, mInventoryVec) );
     }
-	else if(gpBehaviorEngine->getEpisode() == 5)
+	else if(gBehaviorEngine.getEpisode() == 5)
     {
         MapLoader.reset( new CMapLoaderGalaxyEp5( mObjectPtr, mInventoryVec) );
     }
-	else if(gpBehaviorEngine->getEpisode() == 6)
+	else if(gBehaviorEngine.getEpisode() == 6)
     {
         MapLoader.reset( new CMapLoaderGalaxyEp6( mObjectPtr, mInventoryVec) );
     }
@@ -46,13 +46,13 @@ bool CWorldMap::init()
         return false;
     }
 
-	gpBehaviorEngine->mapLevelName = MapLoader->getLevelName();
+	gBehaviorEngine.mapLevelName = MapLoader->getLevelName();
 
-    const std::string loading_text = gpBehaviorEngine->getString("LEVEL0_LOAD_TEXT");
+    const std::string loading_text = gBehaviorEngine.getString("LEVEL0_LOAD_TEXT");
 
     gEffectController.setupEffect(new CColorMerge(8));
 	
-	if(!gpSaveGameController->busy())
+	if(!gSaveGameController.busy())
 	{
         showMsgWithBmp(loading_text, "KEENTHUMBSUP", LEFT);
 	}
@@ -68,10 +68,10 @@ bool CWorldMap::init()
  */
 void CWorldMap::loadAndPlayMusic()
 {
-	g_pMusicPlayer->stop();
+	gMusicPlayer.stop();
     if(loadLevelMusic(0))
     {
-		g_pMusicPlayer->play();
+		gMusicPlayer.play();
     }
 }
 

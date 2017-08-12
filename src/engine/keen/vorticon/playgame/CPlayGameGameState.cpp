@@ -16,14 +16,14 @@
 ///////////////////////////
 bool CPlayGameVorticon::loadGameState()
 {
-    g_pMusicPlayer->stop();
+    gMusicPlayer.stop();
 
     if(loadXMLGameState())
     {
         return true;
     }
 
-	CSaveGameController &savedGame = *(gpSaveGameController);
+    CSaveGameController &savedGame = gSaveGameController;
 	
 	bool ok = true;
 
@@ -47,7 +47,7 @@ bool CPlayGameVorticon::loadGameState()
 	bool loadmusic = ( m_Level != newLevel || m_Level == 80 );
 	m_Level = newLevel;
 	
-	ok &= savedGame.decodeData(gpBehaviorEngine->mDifficulty);
+	ok &= savedGame.decodeData(gBehaviorEngine.mDifficulty);
 	
 	bool dark, checkpointset;
 	int checkx, checky;
@@ -61,7 +61,7 @@ bool CPlayGameVorticon::loadGameState()
     unsigned int numPlayers;
     ok &= savedGame.decodeData(numPlayers);
 
-    gpBehaviorEngine->mPlayers = numPlayers;
+    gBehaviorEngine.mPlayers = numPlayers;
 	        
 	if(!m_Player.empty())
 	  m_Player.clear();
@@ -199,7 +199,7 @@ bool CPlayGameVorticon::loadXMLGameState()
     using boost::property_tree::ptree;
     ptree pt;
 
-    CSaveGameController &savedGame = *(gpSaveGameController);
+    CSaveGameController &savedGame = gSaveGameController;
     if(!savedGame.loadXMLTree(pt))
         return false;
 
@@ -210,7 +210,7 @@ bool CPlayGameVorticon::loadXMLGameState()
     // get the episode, level and difficulty
     m_Episode = stateNode.get<int>("episode", 1); // Default value = 1. Bit strange not?
     int newLevel = stateNode.get<int>("level", 1);
-    gpBehaviorEngine->mDifficulty =
+    gBehaviorEngine.mDifficulty =
             static_cast<Difficulty>(stateNode.get<int>("difficulty", int(NORMAL) ));
 
     for( auto &stateTree : pt.get_child("GameState") )
@@ -374,7 +374,7 @@ bool CPlayGameVorticon::loadXMLGameState()
 
 
     mpObjectAI.reset( new CVorticonSpriteObjectAI(mMap.get(), mSpriteObjectContainer, m_Player,
-                              gpBehaviorEngine->mPlayers, m_Episode, m_Level,
+                              gBehaviorEngine.mPlayers, m_Episode, m_Level,
                            mMap->m_Dark) );
     setupPlayers();
 
@@ -383,7 +383,7 @@ bool CPlayGameVorticon::loadXMLGameState()
 
     m_Player[0].mpCamera->reAdjust();
 
-    gpBehaviorEngine->mPlayers = m_Player.size();
+    gBehaviorEngine.mPlayers = m_Player.size();
 
     return true;
 }
@@ -401,7 +401,7 @@ bool CPlayGameVorticon::saveXMLGameState()
     // store the episode, level and difficulty
     stateNode.put("episode", int(m_Episode));
     stateNode.put("level", m_Level);
-    stateNode.put("difficulty", gpBehaviorEngine->mDifficulty);    
+    stateNode.put("difficulty", gBehaviorEngine.mDifficulty);    
 
     // Also the last checkpoint is stored. This is the level entered from map
     // in Commander Keen games
@@ -414,7 +414,7 @@ bool CPlayGameVorticon::saveXMLGameState()
 
     stateNode.put("dark", mMap->m_Dark);
 
-    const unsigned int numPlayers = gpBehaviorEngine->mPlayers;
+    const unsigned int numPlayers = gBehaviorEngine.mPlayers;
 
     // Now save the inventory of every player
     for( size_t i=0 ; i<numPlayers ; i++ )
@@ -476,7 +476,7 @@ bool CPlayGameVorticon::saveXMLGameState()
 
     stateNode.put("complete", base64Encode( (byte*)(mpLevelCompleted), MAX_LEVELS_VORTICON) );    
 
-    CSaveGameController &savedGame = *(gpSaveGameController);
+    CSaveGameController &savedGame = gSaveGameController;
     savedGame.saveXMLTree(pt);
 
     return true;
@@ -490,13 +490,13 @@ bool CPlayGameVorticon::saveGameState()
 
     size_t size;
 
-	CSaveGameController &savedGame = *(gpSaveGameController);
+    CSaveGameController &savedGame = gSaveGameController;
 
 	/// Save the Game in the CSavedGame object
 	// store the episode, level and difficulty
 	savedGame.encodeData(m_Episode);
 	savedGame.encodeData(m_Level);
-	savedGame.encodeData(gpBehaviorEngine->mDifficulty);
+	savedGame.encodeData(gBehaviorEngine.mDifficulty);
 
 	// Also the last checkpoint is stored. This is the level entered from map
 	// in Commander Keen games
@@ -506,7 +506,7 @@ bool CPlayGameVorticon::saveGameState()
 	savedGame.encodeData(mMap->m_Dark);
 
 	// Save number of Players
-    const unsigned int numPlayers = gpBehaviorEngine->mPlayers;
+    const unsigned int numPlayers = gBehaviorEngine.mPlayers;
     savedGame.encodeData(numPlayers);
 
 	// Now save the inventory of every player    

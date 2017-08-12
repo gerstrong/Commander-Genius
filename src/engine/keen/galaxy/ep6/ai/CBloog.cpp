@@ -28,7 +28,7 @@ mTimer(0)
 
     mHealthPoints = 1;
 
-    const Difficulty diff = gpBehaviorEngine->mDifficulty;
+    const Difficulty diff = gBehaviorEngine.mDifficulty;
 
     if(foeID == 0x04 && diff > HARD)
     {

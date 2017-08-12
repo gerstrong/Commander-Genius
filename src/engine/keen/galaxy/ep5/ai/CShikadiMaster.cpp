@@ -48,7 +48,7 @@ CStunnable(pmap, foeID, x, y)
     mActionMap[A_MASTER_SHOOT] = (GASOFctr) &CShikadiMaster::processShooting;
     mActionMap[A_MASTER_TELEPORT] = (GASOFctr) &CShikadiMaster::processTeleporting;
 
-    auto diff = gpBehaviorEngine->mDifficulty;
+    auto diff = gBehaviorEngine.mDifficulty;
 
     if(diff > HARD)
     {
@@ -231,7 +231,7 @@ void CShikadiMaster::processTeleporting()
 	    const int testBoxY1 = (ty - 1)<<CSF;
 	    const int testBoxY2 = (ty + 4)<<CSF;
 	    
-	    std::vector<CTileProperties> &Tile = gpBehaviorEngine->getTileProperties(1);
+	    std::vector<CTileProperties> &Tile = gBehaviorEngine.getTileProperties(1);
 	    
 	    bool allow_teleport = true;
 	    

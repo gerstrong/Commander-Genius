@@ -25,9 +25,9 @@
 CPlayer::CPlayer(bool *mpLevelCompleted,
                  CMap &map, const int sprVar) :
 CVorticonSpriteObject(&map, 0, 0, OBJ_PLAYER, sprVar),
-pjumpupspeed_decrease(gpBehaviorEngine->getPhysicsSettings().player.defaultjumpupdecreasespeed),
+pjumpupspeed_decrease(gBehaviorEngine.getPhysicsSettings().player.defaultjumpupdecreasespeed),
 mp_levels_completed(mpLevelCompleted),
-mp_option(gpBehaviorEngine->m_option)
+mp_option(gBehaviorEngine.m_option)
 {
     canbezapped = true;
     m_index = 0;
@@ -55,7 +55,7 @@ CVorticonSpriteObject(player.mp_Map,
                       OBJ_PLAYER, player.getSpriteVariantId() ),
 pjumpupspeed_decrease(player.pjumpupspeed_decrease),
 mp_levels_completed(player.mp_levels_completed),
-mp_option(gpBehaviorEngine->m_option)
+mp_option(gBehaviorEngine.m_option)
 {
     //mp_object = player.mp_object;
     canbezapped = true;
@@ -83,7 +83,7 @@ CPlayer& CPlayer::operator=(const CPlayer &player)
 {
     pjumpupspeed_decrease = player.pjumpupspeed_decrease;
     mp_levels_completed = player.mp_levels_completed;
-    mp_option = gpBehaviorEngine->m_option;
+    mp_option = gBehaviorEngine.m_option;
     canbezapped = true;
     m_index = 0;
 
@@ -127,7 +127,7 @@ void CPlayer::setDatatoZero()
 	onscreen = true;
 	pfallspeed = 0;
 
-    const int ep = gpBehaviorEngine->getEpisode();
+    const int ep = gBehaviorEngine.getEpisode();
     const int level = mp_Map->getLevel();
 
     if(level==80)
@@ -175,7 +175,7 @@ void CPlayer::setDatatoZero()
 // NOTE: This must only be called once, per new game.
 void CPlayer::setDefaultStartValues()
 {
-	CPhysicsSettings &PhysicsSettings = gpBehaviorEngine->getPhysicsSettings();
+	CPhysicsSettings &PhysicsSettings = gBehaviorEngine.getPhysicsSettings();
     pdie = PDIE_DEAD; // At first time he is revived when map is started
     ankhmode  = false;
     inventory.extralifeat = 20000;
@@ -305,7 +305,7 @@ void CPlayer::Walking()
     	}
     }
 
-	CPhysicsSettings &PhysicsSettings = gpBehaviorEngine->getPhysicsSettings();
+	CPhysicsSettings &PhysicsSettings = gBehaviorEngine.getPhysicsSettings();
 
     int pmaxspeed = PhysicsSettings.player.max_x_speed;
 
@@ -620,7 +620,7 @@ void CPlayer::InertiaAndFriction_X()
 {
 	int friction_rate;
 	treshold = 0;
-	CPhysicsSettings &PhysicsSettings = gpBehaviorEngine->getPhysicsSettings();
+	CPhysicsSettings &PhysicsSettings = gBehaviorEngine.getPhysicsSettings();
 
     int pmaxmovespeed = PhysicsSettings.player.max_x_speed;
 
@@ -659,7 +659,7 @@ void CPlayer::InertiaAndFriction_X()
 			xinertia = -pmaxspeed;
 	}
 
-    const int ep = gpBehaviorEngine->getEpisode();
+    const int ep = gBehaviorEngine.getEpisode();
     const int level = mp_Map->getLevel();
 
     if(level == 80) // We are on World map
@@ -912,12 +912,12 @@ void CPlayer::StatusBox()
 
 void CPlayer::freeze()
 {    
-    if ( gpBehaviorEngine->mCheatmode.god ) return;
+    if ( gBehaviorEngine.mCheatmode.god ) return;
     if ( ankhmode ) return;
 	if ( ankhtime ) return;
 	// give the player a little "kick"
 
-	CPhysicsSettings &PhysicsSettings = gpBehaviorEngine->getPhysicsSettings();
+	CPhysicsSettings &PhysicsSettings = gBehaviorEngine.getPhysicsSettings();
 
 	pjumpupspeed = PhysicsSettings.player.maxjumpspeed;
 

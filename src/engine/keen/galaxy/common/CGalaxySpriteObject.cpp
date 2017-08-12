@@ -32,7 +32,7 @@ mClipped(false),
 m_jumpdown(false),
 mEndOfAction(false)
 {
-    EpisodeInfoStruct* eiStructPtr = gpBehaviorEngine->getEpisodeInfoStructRef(gpBehaviorEngine->getEpisode());
+    EpisodeInfoStruct* eiStructPtr = gBehaviorEngine.getEpisodeInfoStructRef(gBehaviorEngine.getEpisode());
     spriteOffset = eiStructPtr->IndexSprites;
 }
 
@@ -104,25 +104,25 @@ void CGalaxySpriteObject::performPhysDampHorz()
 
 void CGalaxySpriteObject::performGravityLow()
 {
-	CPhysicsSettings &Physics = gpBehaviorEngine->getPhysicsSettings();
+	CPhysicsSettings &Physics = gBehaviorEngine.getPhysicsSettings();
 	processFallPhysics(Physics.fallspeed_increase/4);
 }
 
 void CGalaxySpriteObject::performGravityMid()
 {
-	CPhysicsSettings &Physics = gpBehaviorEngine->getPhysicsSettings();
+	CPhysicsSettings &Physics = gBehaviorEngine.getPhysicsSettings();
 	processFallPhysics(3*Physics.fallspeed_increase/4);
 }
 
 void CGalaxySpriteObject::performGravityHigh()
 {
-	CPhysicsSettings &Physics = gpBehaviorEngine->getPhysicsSettings();
+	CPhysicsSettings &Physics = gBehaviorEngine.getPhysicsSettings();
 	processFallPhysics(Physics.fallspeed_increase);
 }
 
 void CGalaxySpriteObject::performInverseGravityHigh()
 {
-	CPhysicsSettings &Physics = gpBehaviorEngine->getPhysicsSettings();
+	CPhysicsSettings &Physics = gBehaviorEngine.getPhysicsSettings();
 	processFallPhysics(-Physics.fallspeed_increase);
 }
 
@@ -147,7 +147,7 @@ int CGalaxySpriteObject::checkSolidU(int x1, int x2, int y1, const bool push_mod
 	if(hitdetectWithTilePropertyHor(1, x1, x2, y1-COLISION_RES, 1<<CSF))
 	    return 0;
     
-	std::vector<CTileProperties> &TileProperty = gpBehaviorEngine->getTileProperties();
+	std::vector<CTileProperties> &TileProperty = gBehaviorEngine.getTileProperties();
 
 	y1 -= COLISION_RES;
 
@@ -187,7 +187,7 @@ int CGalaxySpriteObject::checkSolidU(int x1, int x2, int y1, const bool push_mod
 
 int CGalaxySpriteObject::checkSolidD( int x1, int x2, int y2, const bool push_mode )
 {
-	std::vector<CTileProperties> &TileProperty = gpBehaviorEngine->getTileProperties();
+	std::vector<CTileProperties> &TileProperty = gBehaviorEngine.getTileProperties();
 
     y2 += COLISION_RES;
 

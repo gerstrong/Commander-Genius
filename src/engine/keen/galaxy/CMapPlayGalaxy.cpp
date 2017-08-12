@@ -27,7 +27,7 @@
 CMapPlayGalaxy::CMapPlayGalaxy(std::vector<CInventory> &inventoryVec) :
 mActive(false),
 mInventoryVec(inventoryVec),
-mpOption(gpBehaviorEngine->m_option),
+mpOption(gBehaviorEngine.m_option),
 mMsgBoxOpen(false)
 {}
 
@@ -313,7 +313,7 @@ bool CMapPlayGalaxy::operator<<(CSaveGameController &savedGame)
 	savedGame.decodeData( level );
 
 	std::unique_ptr<galaxy::CMapLoaderGalaxy> mapLoader;
-	const unsigned int episode = gpBehaviorEngine->getEpisode();
+	const unsigned int episode = gBehaviorEngine.getEpisode();
 
 	if(episode == 4)
 	{
@@ -337,7 +337,7 @@ bool CMapPlayGalaxy::operator<<(CSaveGameController &savedGame)
 	mapLoader->loadMap( mMap, level );
 
     // Load the Background Music
-	g_pMusicPlayer->stop();
+	gMusicPlayer.stop();
 
 
     if( !galaxy::loadLevelMusic(level) )
@@ -346,7 +346,7 @@ bool CMapPlayGalaxy::operator<<(CSaveGameController &savedGame)
     }
     else
     {
-    	g_pMusicPlayer->play();
+    	gMusicPlayer.play();
     }
 
 
@@ -503,7 +503,7 @@ void CMapPlayGalaxy::operator<<(boost::property_tree::ptree &levelNode)
     int level = levelNode.get<int>("level", 0);
 
     std::unique_ptr<galaxy::CMapLoaderGalaxy> mapLoader;
-    const unsigned int episode = gpBehaviorEngine->getEpisode();
+    const unsigned int episode = gBehaviorEngine.getEpisode();
 
     if(episode == 4)
     {
@@ -526,7 +526,7 @@ void CMapPlayGalaxy::operator<<(boost::property_tree::ptree &levelNode)
     // Load the World map level.
     mapLoader->loadMap( mMap, level );
 
-    g_pMusicPlayer->stop();
+    gMusicPlayer.stop();
 
     // Prepare to load the Background Music
     if( !galaxy::loadLevelMusic(level) )
@@ -535,7 +535,7 @@ void CMapPlayGalaxy::operator<<(boost::property_tree::ptree &levelNode)
     }
     else
     {
-        g_pMusicPlayer->play();
+        gMusicPlayer.play();
     }
 
 

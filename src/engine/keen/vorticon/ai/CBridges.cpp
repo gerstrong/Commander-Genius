@@ -76,7 +76,7 @@ m_dir(LEFT)
 	}
 
 	// figure out which direction the bridge is supposed to go
-	CTileProperties &TileProperties = gpBehaviorEngine->getTileProperties(1).at(mp_Map->at(m_platx+1, m_platy));
+	CTileProperties &TileProperties = gBehaviorEngine.getTileProperties(1).at(mp_Map->at(m_platx+1, m_platy));
 	if (!TileProperties.bleft)
 		m_dir = RIGHT;
 	else
@@ -99,7 +99,7 @@ void CBridges::process()
 
 void CBridges::extend()
 {
-	std::vector<CTileProperties> &TileProperties = gpBehaviorEngine->getTileProperties();
+	std::vector<CTileProperties> &TileProperties = gBehaviorEngine.getTileProperties();
 	
 	if (!timer)
 	{

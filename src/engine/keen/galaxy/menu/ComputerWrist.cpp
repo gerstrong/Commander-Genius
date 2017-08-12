@@ -206,7 +206,7 @@ void ComputerWrist::parseText()
 {
     GsWeakSurface blitsfc(gVideoDriver.getBlitSurface());
 
-    int ep = gpBehaviorEngine->getEpisode();
+    int ep = gBehaviorEngine.getEpisode();
 
     //SDL_Rect lRect;
     //lRect.h = blitsfc.height();
@@ -341,7 +341,7 @@ void ComputerWrist::parseGraphics()
 {
     std::stringstream ss;
 
-    int ep = gpBehaviorEngine->getEpisode();
+    int ep = gBehaviorEngine.getEpisode();
 
     int x,y,chunk;
     GsWeakSurface blitsfc(gVideoDriver.getBlitSurface());
@@ -479,7 +479,7 @@ void ComputerWrist::renderBorders()
 {
     GsWeakSurface blitsfc(gVideoDriver.getBlitSurface());
 
-    int ep = gpBehaviorEngine->getEpisode();
+    int ep = gBehaviorEngine.getEpisode();
 
     if(ep != 6)
     {

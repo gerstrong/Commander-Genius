@@ -66,7 +66,7 @@ void CAudioSettings::refresh()
 	mpDepth->setSelection( mAudioSpec.format == AUDIO_U8 ? "8-bit" : "16-bit" );
 #endif
 	mpSBToggle->setSelection( mSoundblaster ? "Soundblaster" : "PC Speaker" );
-    g_pMusicPlayer->play();
+    gMusicPlayer.play();
 }
 
 
@@ -104,7 +104,7 @@ void CAudioSettings::release()
 
     setupAudio();
 
-	g_pMusicPlayer->reload();
+	gMusicPlayer.reload();
 
     gSettings.saveDrvCfg();       
 }

@@ -194,7 +194,6 @@ get_property(cg_obj_libs GLOBAL PROPERTY CG_OBJ_LIBS)
 add_executable (CGeniusExe CGenius.cpp
                 fileio.cpp misc.cpp
                 CRingBuffer.h
-                CSingleton.h
                 fileio.h
                 ../changelog.txt
                 ${cg_obj_libs})

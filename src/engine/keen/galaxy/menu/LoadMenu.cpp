@@ -29,9 +29,9 @@ struct LoadGameSlotFunctorEvent : public InvokeFunctorEvent
 
     void operator()() const
 	{
-        gpBehaviorEngine->setPause(false);
+        gBehaviorEngine.setPause(false);
 		gEventManager.add( new CloseAllMenusEvent() );
-		gpSaveGameController->prepareLoadGame(mSlot);
+		gSaveGameController.prepareLoadGame(mSlot);
 	}
 
 	Uint32 mSlot;
@@ -61,7 +61,7 @@ void CLoadMenu::refresh()
 {
     // Load the state-file list
     std::vector<std::string> StateFileList;
-    gpSaveGameController->readSlotList(StateFileList);
+    gSaveGameController.readSlotList(StateFileList);
 
     std::vector<std::string>::iterator it = StateFileList.begin();
 

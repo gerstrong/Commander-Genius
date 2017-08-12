@@ -68,7 +68,7 @@ void CRope::getShotByRay(object_t &obj_type)
 			moveTo( (stoneX<<CSF), (stoneY<<CSF)+((1<<CSF)/2) );
 
 			// get color of background
-			bgtile = gpBehaviorEngine->getPhysicsSettings().misc.changestoneblock;
+			bgtile = gBehaviorEngine.getPhysicsSettings().misc.changestoneblock;
 
 			// Set BBox so the getTouched Function works on the enemies.
 			m_BBox(0, 0,

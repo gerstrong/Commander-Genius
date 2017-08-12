@@ -130,9 +130,9 @@ void CMap::collectBlockersCoordiantes()
     scrollBlockY.push_back(2<<CSF);
     scrollBlockX.push_back(2<<CSF);
 
-    int ep = gpBehaviorEngine->getEpisode();
+    int ep = gBehaviorEngine.getEpisode();
 
-    if(gpBehaviorEngine->getEngine() == ENGINE_GALAXY)
+    if(gBehaviorEngine.getEngine() == ENGINE_GALAXY)
     {
         const word* map_ptr = m_Plane[2].getMapDataPtr();
 
@@ -163,10 +163,10 @@ void CMap::collectBlockersCoordiantes()
 
 void CMap::setupAnimationTimer()
 {
-    auto &frontTileProperties = gpBehaviorEngine->getTileProperties(1);
+    auto &frontTileProperties = gBehaviorEngine.getTileProperties(1);
     word *p_front_tile = m_Plane[1].getMapDataPtr();
 
-    auto &backTileProperties = gpBehaviorEngine->getTileProperties(0);
+    auto &backTileProperties = gBehaviorEngine.getTileProperties(0);
     word *p_back_tile = m_Plane[0].getMapDataPtr();
 
     std::vector<Uint8> &timersBack = m_Plane[0].getTimers();
@@ -215,7 +215,7 @@ void CMap::fetchNearestVertBlockers(const int x, int &leftCoord, int &rightCoord
         {
             leftCoord = blockXleft;
 
-            if(leftCoord > (2<<CSF) &&  gpBehaviorEngine->getEngine() == ENGINE_GALAXY)
+            if(leftCoord > (2<<CSF) &&  gBehaviorEngine.getEngine() == ENGINE_GALAXY)
             {
                 // This will hide even more level blockers in Galaxy.
                 // In the vorticon games not required
@@ -263,7 +263,7 @@ void CMap::fetchNearestHorBlockers(const int y, int &upCoord, int &downCoord)
         {
             upCoord = blockYup;
 
-            if(gpBehaviorEngine->getEngine() == ENGINE_GALAXY)
+            if(gBehaviorEngine.getEngine() == ENGINE_GALAXY)
             {
                 // This will hide even more level blockers in Galaxy. In Vorticon
                 // this is not needed
@@ -829,7 +829,7 @@ void CMap::_drawForegroundTiles()
     Uint16 y2 = (m_scrolly+num_h_tiles)>>TILE_S;
 
 	std::vector<CTileProperties> &TileProperties =
-			gpBehaviorEngine->getTileProperties(1);
+			gBehaviorEngine.getTileProperties(1);
 
     const auto &visGA = gVideoDriver.mpVideoEngine->mRelativeVisGameArea;
     const auto &visBlendGA = gVideoDriver.mpVideoEngine->mRelativeBlendVisGameArea;
@@ -940,10 +940,10 @@ void CMap::animateAllTiles()
     if(num_h_tiles+m_mapy >= m_height)
         num_h_tiles = m_height-m_mapy;
 
-    auto &frontTileProperties = gpBehaviorEngine->getTileProperties(1);
+    auto &frontTileProperties = gBehaviorEngine.getTileProperties(1);
     word *p_front_tile = m_Plane[1].getMapDataPtr();
 
-    auto &backTileProperties = gpBehaviorEngine->getTileProperties(0);
+    auto &backTileProperties = gBehaviorEngine.getTileProperties(0);
     word *p_back_tile = m_Plane[0].getMapDataPtr();
 
     std::vector<Uint8> &timersBack = m_Plane[0].getTimers();

@@ -59,7 +59,7 @@ bool loadLevelMusic(const int level)
     if(level < 10) levelname += "0";
     levelname += itoa(level) + ".ck" + itoa(episode);
 
-    if(g_pMusicPlayer->LoadfromMusicTable(path, levelname))
+    if(gMusicPlayer.LoadfromMusicTable(path, levelname))
     {
         return true;
     }
@@ -75,12 +75,12 @@ bool loadLevelMusic(const int level)
       return false;
     }
 
-    return g_pMusicPlayer->loadTrack(track);
+    return gMusicPlayer.loadTrack(track);
 }
 
 void GalaxyEngine::ponder(const float deltaT)
 {
-    const int ep = gpBehaviorEngine->getEpisode();
+    const int ep = gBehaviorEngine.getEpisode();
 
     if(mpComputerWrist)
     {
@@ -93,16 +93,16 @@ void GalaxyEngine::ponder(const float deltaT)
     if( gInput.getPressedCommand(IC_HELP) && !gMenuController.empty())
     {
         // Check if music is playing and pause if it is
-        if(g_pMusicPlayer->active())
+        if(gMusicPlayer.active())
         {
-            g_pMusicPlayer->pause();
+            gMusicPlayer.pause();
         }
 
 
         // Episode 6 for a strange reason does not have the help screen
         if(!mpComputerWrist && (ep!=6))
         {
-            gpBehaviorEngine->setPause(false);
+            gBehaviorEngine.setPause(false);
             gEventManager.add( new CloseAllMenusEvent() );
 
             mpComputerWrist.reset(new ComputerWrist(ep));
@@ -130,9 +130,9 @@ void GalaxyEngine::openMainMenu()
 
 
     // Check if music is playing and pause if it is
-    if(g_pMusicPlayer->active())
+    if(gMusicPlayer.active())
     {
-       g_pMusicPlayer->pause();
+       gMusicPlayer.pause();
     }
 
 
@@ -171,7 +171,7 @@ bool GalaxyEngine::loadResources( const Uint8 flags )
             mLoader.setPermilage(10);
 
             // Patch the EXE-File-Data directly in the memory.
-            CPatcher Patcher(ExeFile, gpBehaviorEngine->mPatchFname);
+            CPatcher Patcher(ExeFile, gBehaviorEngine.mPatchFname);
             Patcher.process();
 
             mLoader.setPermilage(50);
@@ -211,7 +211,7 @@ bool GalaxyEngine::loadResources( const Uint8 flags )
 
             gLogging.ftextOut("Loading game constants...<br>");
 
-            gpBehaviorEngine->getPhysicsSettings().loadGameConstants(Episode, p_exedata);
+            gBehaviorEngine.getPhysicsSettings().loadGameConstants(Episode, p_exedata);
 
             gLogging.ftextOut("Looking for patches...<br>");
 
@@ -238,14 +238,14 @@ bool GalaxyEngine::loadResources( const Uint8 flags )
 void GalaxyEngine::switchToPassive()
 {
     // set the appropiate  Episode and GamePath for save games
-    CSaveGameController &savedgames = *gpSaveGameController;
+    CSaveGameController &savedgames = gSaveGameController;
     savedgames.setGameDirectory(mDataPath);
     savedgames.setEpisode(mEp);
 
     mpGameMode.reset( new galaxy::CPassiveGalaxy() );
     mpGameMode->init();
 
-    g_pMusicPlayer->stop();
+    gMusicPlayer.stop();
 
     mOpenedGamePlay = false;
 }
@@ -256,7 +256,7 @@ void GalaxyEngine::switchToGameplay(const int startLevel,
     mpGameMode.reset( new CPlayGameGalaxy(startLevel, spriteVars) );
     mpGameMode->init();
     mOpenedGamePlay = true;
-    gpBehaviorEngine->setPause(false);
+    gBehaviorEngine.setPause(false);
     gEventManager.add( new CloseAllMenusEvent() );
 }
 
@@ -280,7 +280,7 @@ void GalaxyEngine::pumpEvent(const CEvent *evPtr)
         {
             switchToPassive();
         }
-        gpSaveGameController->convertAllOldFormats();
+        gSaveGameController.convertAllOldFormats();
     }
     else if( dynamic_cast<const EventEndGamePlay*>(evPtr) )
     {
@@ -295,13 +295,13 @@ void GalaxyEngine::pumpEvent(const CEvent *evPtr)
     }
     else if( const NewGamePlayersEvent* pNewGame = dynamic_cast<const NewGamePlayersEvent*>(evPtr) )
     {
-        gpBehaviorEngine->mPlayers = pNewGame->mSelection;
+        gBehaviorEngine.mPlayers = pNewGame->mSelection;
 
-        //if(gpBehaviorEngine->mPlayers > 1)
+        //if(gBehaviorEngine.mPlayers > 1)
         {
             mSpriteVars.clear();
 
-            for(unsigned int i=0 ; i<gpBehaviorEngine->mPlayers ; i++ )
+            for(unsigned int i=0 ; i<gBehaviorEngine.mPlayers ; i++ )
             {
                 mSpriteVars.push_back(i);
             }
@@ -352,7 +352,7 @@ void GalaxyEngine::pumpEvent(const CEvent *evPtr)
         pgGalaxy->loadGame();
         mpGameMode = std::move(pgGalaxy);
         mOpenedGamePlay = true;
-        gpBehaviorEngine->setPause(false);
+        gBehaviorEngine.setPause(false);
         gEventManager.add( new CloseAllMenusEvent() );
     }
     else if( dynamic_cast<const OpenMainMenuEvent*>(evPtr) )
