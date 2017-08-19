@@ -143,7 +143,7 @@ void CPlayGameVorticon::setupPlayers()
 
 bool CPlayGameVorticon::init()
 {    
-    const GsRect<Uint16> gameRect = gVideoDriver.getVidConfig().m_GameRect;
+    const GsRect<Uint16> gameRect = gVideoDriver.getVidConfig().mGameRect;
     gVideoDriver.setNativeResolution(gameRect);
 
     // Create the special merge effect (Fadeout)

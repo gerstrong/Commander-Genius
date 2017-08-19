@@ -195,7 +195,8 @@ add_executable (CGeniusExe CGenius.cpp
                 fileio.cpp misc.cpp
                 CRingBuffer.h
                 fileio.h
-                ../changelog.txt
+                ${CMAKE_CURRENT_SOURCE_DIR}/../changelog.txt
+                ${CMAKE_CURRENT_SOURCE_DIR}/../README.in
                 ${cg_obj_libs})
 
 # Since some RefKeen is used, we also need C99 Standard
@@ -252,8 +253,6 @@ IF(CURL_FOUND)
 ENDIF(CURL_FOUND)
 
 # The Windows Version has an icon in the executable
-
-
 IF(WIN32)
 	SET_TARGET_PROPERTIES(CGeniusExe PROPERTIES OUTPUT_NAME "CGenius")
 #	ADD_CUSTOM_COMMAND(TARGET CGeniusExe PRE_LINK COMMAND cp ${CMAKE_CURRENT_SOURCE_DIR}/src/CGLogo.rc ${CMAKE_CURRENT_SOURCE_DIR}/CGLogo.rc )

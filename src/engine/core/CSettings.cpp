@@ -41,8 +41,8 @@ bool CSettings::saveDispCfg()
     Configuration.Parse();
 
     CVidConfig &VidConf = gVideoDriver.getVidConfig();
-    Configuration.WriteInt("Video", "width", VidConf.m_DisplayRect.w);
-    Configuration.WriteInt("Video", "height", VidConf.m_DisplayRect.h);
+    Configuration.WriteInt("Video", "width", VidConf.mDisplayRect.w);
+    Configuration.WriteInt("Video", "height", VidConf.mDisplayRect.h);
 
     return Configuration.saveCfgFile();
 }
@@ -71,11 +71,11 @@ bool CSettings::saveDrvCfg()
         Configuration.SetKeyword("Video", "OpenGL", VidConf.mOpengl);
         Configuration.SetKeyword("Video", "VirtPad", VidConf.mVPad);
 
-        Configuration.WriteInt("Video", "width", VidConf.m_DisplayRect.w);
-        Configuration.WriteInt("Video", "height", VidConf.m_DisplayRect.h);
+        Configuration.WriteInt("Video", "width", VidConf.mDisplayRect.w);
+        Configuration.WriteInt("Video", "height", VidConf.mDisplayRect.h);
 
-        Configuration.WriteInt("Video", "gameWidth", VidConf.m_GameRect.w);
-        Configuration.WriteInt("Video", "gameHeight", VidConf.m_GameRect.h);
+        Configuration.WriteInt("Video", "gameWidth", VidConf.mGameRect.w);
+        Configuration.WriteInt("Video", "gameHeight", VidConf.mGameRect.h);
 
         Configuration.WriteInt("Video", "scale", VidConf.Zoom);
 #if defined(USE_OPENGL)
@@ -136,8 +136,8 @@ bool CSettings::loadDrvCfg()
 	else
 	{
 		CVidConfig VidConf;
-        GsRect<Uint16> &res = VidConf.m_DisplayRect;
-        GsRect<Uint16> &gamesRes = VidConf.m_GameRect;
+        GsRect<Uint16> &res = VidConf.mDisplayRect;
+        GsRect<Uint16> &gamesRes = VidConf.mGameRect;
         int value = 0;
         Configuration.ReadInteger("Video", "width", &value, 320);
         res.w = value;

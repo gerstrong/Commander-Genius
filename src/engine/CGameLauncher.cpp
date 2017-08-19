@@ -375,7 +375,7 @@ void CGameLauncher::start()
     SDL_ShowCursor(SDL_ENABLE);
 
     // Set the native resolution
-    gVideoDriver.setNativeResolution(gVideoDriver.getVidConfig().m_DisplayRect);
+    gVideoDriver.setNativeResolution(gVideoDriver.getVidConfig().mDisplayRect);
 
     // In some cases especially when another game was running, the scene wasn't cleaned up.
     // We do this here

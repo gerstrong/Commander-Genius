@@ -1,4 +1,9 @@
-v1.9.9.X:
+v1.9.9.4:
+---------
+- Standard Resolution is now at 800x600
+- Added instructions for building under Fedora
+
+v1.9.9.3:
 ---------
 - Improved log responsiveness
 - More error messages are now logged in minizip code

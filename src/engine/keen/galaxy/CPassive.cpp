@@ -45,7 +45,7 @@ mCommanderTextSfc(gGraphics.getMiscGsBitmap(0)),
 mKeenTextSfc(gGraphics.getMiscGsBitmap(1)),
 mSkipSection(false)
 {
-    const GsRect<Uint16> gameRect = gVideoDriver.getVidConfig().m_GameRect;
+    const GsRect<Uint16> gameRect = gVideoDriver.getVidConfig().mGameRect;
     gVideoDriver.setNativeResolution(gameRect);
 
     const int episode = gBehaviorEngine.getEpisode();

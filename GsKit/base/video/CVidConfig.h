@@ -53,8 +53,8 @@ public:
 	void setResolution(const int width, const int height, const int depth);
 	void setResolution(const GsRect<Uint16>& res);
 
-	GsRect<Uint16> m_GameRect;	// Also called Screenspace.
-	GsRect<Uint16> m_DisplayRect; // The Fullscreen-Resolution or the Window Size
+    GsRect<Uint16> mGameRect;	// Also called Screenspace.
+    GsRect<Uint16> mDisplayRect; // The Fullscreen-Resolution or the Window Size
 
     Color mBorderColors; /** Colors of the border (Clear colors) */
 

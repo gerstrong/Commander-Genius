@@ -157,17 +157,17 @@ void CVideoSettings::refresh()
 
 	std::string resStr;
 
-	resStr = itoa(mUserVidConf.m_DisplayRect.w);
+	resStr = itoa(mUserVidConf.mDisplayRect.w);
 	resStr += "x";
-	resStr += itoa(mUserVidConf.m_DisplayRect.h);        
+	resStr += itoa(mUserVidConf.mDisplayRect.h);        
 	mpResolutionSelection->setSelection(resStr);        
 
 
     mpGameResSelection->setList( GamesResList, NUM_GAME_RESOLUTIONS );
 
-    resStr = itoa(mUserVidConf.m_GameRect.w);
+    resStr = itoa(mUserVidConf.mGameRect.w);
     resStr += "x";
-    resStr += itoa(mUserVidConf.m_GameRect.h);
+    resStr += itoa(mUserVidConf.mGameRect.h);
     mpGameResSelection->setSelection(resStr);
 
 
@@ -219,10 +219,10 @@ void CVideoSettings::release()
     std::string scalerStr = mpFilterSelection->getSelection();
 
     const std::string res = mpResolutionSelection->getSelection();
-    sscanf( res.c_str(), "%hux%hux", &mUserVidConf.m_DisplayRect.w, &mUserVidConf.m_DisplayRect.h );
+    sscanf( res.c_str(), "%hux%hux", &mUserVidConf.mDisplayRect.w, &mUserVidConf.mDisplayRect.h );
 
     const std::string GameResStr = mpGameResSelection->getSelection();
-    sscanf( GameResStr.c_str(), "%hux%hux", &mUserVidConf.m_GameRect.w, &mUserVidConf.m_GameRect.h );
+    sscanf( GameResStr.c_str(), "%hux%hux", &mUserVidConf.mGameRect.w, &mUserVidConf.mGameRect.h );
 
 	int w, h;
 	const std::string aspect = mpAspectSelection->getSelection();
@@ -252,8 +252,8 @@ void CVideoSettings::release()
 #endif
 
 #if defined(CAANOO) || defined(WIZ) || defined(DINGOO) || defined(NANONOTE) || defined(ANDROID)
-	mUserVidConf.m_DisplayRect.w = 320;
-	mUserVidConf.m_DisplayRect.h = 200;
+	mUserVidConf.mDisplayRect.w = 320;
+	mUserVidConf.mDisplayRect.h = 200;
 #endif
 
 

@@ -38,17 +38,15 @@ CVideoDriver::~CVideoDriver()
 
 bool CVideoDriver::init()
 {
-	m_VidConfig.reset();
+    mVidConfig.reset();
 
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_AUDIO) < 0)
     {
         gLogging.textOut(FONTCOLORS::RED, "Could not initialize SDL: %s<br>", SDL_GetError());
         return false;
     }
-	else
-    {
-		gLogging.textOut(FONTCOLORS::GREEN, "SDL was successfully initialized!<br>");
-    }
+
+    gLogging.textOut(FONTCOLORS::GREEN, "SDL was successfully initialized!<br>");
 
 	initResolutionList();
 
@@ -56,13 +54,13 @@ bool CVideoDriver::init()
 	if(!mSDLImageInUse)
 	{
 	  // load support for the JPG and PNG image formats
-	  int flags=IMG_INIT_JPG|IMG_INIT_PNG;
-	  const int initted=IMG_Init(flags);
-	  if( (initted & flags) != flags)
+      const int flags = IMG_INIT_JPG|IMG_INIT_PNG;
+      const int inittedFlags = IMG_Init(flags);
+      if( (inittedFlags & flags) != flags)
 	  {
 	      gLogging.textOut(FONTCOLORS::RED, "IMG_Init: Failed to init required jpg and png support!\n");
 	      gLogging.textOut(FONTCOLORS::RED, "IMG_Init: %s\n", IMG_GetError());
-	      gLogging.textOut(FONTCOLORS::RED, "IMG_Init: CG will try to continue without that support.\n", IMG_GetError());
+          gLogging.textOut(FONTCOLORS::RED, "IMG_Init: CG will continue without it.\n");
 	  }
 	  else
 	  {
@@ -88,7 +86,7 @@ void CVideoDriver::initResolutionList()
 
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    GsRect<Uint16> resolution(GsRect<Uint16>(320,200));
+    GsRect<Uint16> resolution(GsRect<Uint16>(800, 600));
 #else
     GsRect<Uint16> resolution(SDL_GetVideoInfo());
 #endif
@@ -131,7 +129,7 @@ void CVideoDriver::initResolutionList()
 	}
 
 	// In case there is no fullscreen, we will adapt the resolution it fits best to the window
-	if (!m_VidConfig.Fullscreen) {
+    if (!mVidConfig.Fullscreen) {
 		int e = 1;
 		resolution.w = 320;
 		resolution.h = 200;
@@ -160,7 +158,7 @@ void CVideoDriver::initResolutionList()
 }
 
 void CVideoDriver::verifyResolution(GsRect<Uint16>& resolution,
-		const int flags)
+                                    const int flags)
 {
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 
@@ -184,12 +182,12 @@ void CVideoDriver::verifyResolution(GsRect<Uint16>& resolution,
 }
 
 void CVideoDriver::setVidConfig(const CVidConfig& VidConf) {
-	m_VidConfig = VidConf;
-	setMode(m_VidConfig.m_DisplayRect);
+    mVidConfig = VidConf;
+    setMode(mVidConfig.mDisplayRect);
 }
 
 void CVideoDriver::setSpecialFXMode(bool SpecialFX) {
-	m_VidConfig.m_special_fx = SpecialFX;
+    mVidConfig.m_special_fx = SpecialFX;
 }
 
 void CVideoDriver::setMode(int width, int height, int depth) {
@@ -198,7 +196,7 @@ void CVideoDriver::setMode(int width, int height, int depth) {
 }
 
 void CVideoDriver::setMode(const GsRect<Uint16>& res) {
-	m_VidConfig.setResolution(res);
+    mVidConfig.setResolution(res);
 
 	// TODO: Cycle through the list until the matching resolution is matched. If it doesn't exist
 	// add it;
@@ -215,24 +213,24 @@ void CVideoDriver::setMode(const GsRect<Uint16>& res) {
 
 bool CVideoDriver::applyMode()
 {
-	const GsRect<Uint16> &Res = m_VidConfig.m_DisplayRect;
-	const GsRect<Uint16> &GameRect = m_VidConfig.m_GameRect;
+    const GsRect<Uint16> &Res = mVidConfig.mDisplayRect;
+    const GsRect<Uint16> &GameRect = mVidConfig.mGameRect;
 
 	// Before the resolution is set, check, if the zoom factor is too high!
-	while (((Res.w / GameRect.w) < m_VidConfig.Zoom
-			|| (Res.h / GameRect.h) < m_VidConfig.Zoom)
-			&& (m_VidConfig.Zoom > 1))
-		m_VidConfig.Zoom--;
+    while (((Res.w / GameRect.w) < mVidConfig.Zoom
+            || (Res.h / GameRect.h) < mVidConfig.Zoom)
+            && (mVidConfig.Zoom > 1))
+        mVidConfig.Zoom--;
 
 	// Check if some zoom/filter modes are illogical and roll them back accordingly
-	if ((m_VidConfig.Zoom == 3 && m_VidConfig.m_ScaleXFilter == 1)
-			&& !m_VidConfig.mOpengl)
-		m_VidConfig.Zoom = 2;
+    if ((mVidConfig.Zoom == 3 && mVidConfig.m_ScaleXFilter == 1)
+            && !mVidConfig.mOpengl)
+        mVidConfig.Zoom = 2;
 
-	if (m_VidConfig.Zoom == 0)
-		m_VidConfig.Zoom = 1;
+    if (mVidConfig.Zoom == 0)
+        mVidConfig.Zoom = 1;
 
-	m_VidConfig.m_DisplayRect = *m_Resolution_pos;
+    mVidConfig.mDisplayRect = *m_Resolution_pos;
 
 	return true;
 }
@@ -257,16 +255,16 @@ bool CVideoDriver::start()
 	gLogging.textOut("Starting graphics driver...<br>");
 
 #ifdef USE_OPENGL
-    if (m_VidConfig.mOpengl) // Try to use OpenGL if enabled by the user
+    if (mVidConfig.mOpengl) // Try to use OpenGL if enabled by the user
 	{
-		mpVideoEngine.reset(new COpenGL(m_VidConfig));
+        mpVideoEngine.reset(new COpenGL(mVidConfig));
 		retval = mpVideoEngine->init();
 
 		if (!retval)
 		{
-			m_VidConfig.mOpengl = false;
+            mVidConfig.mOpengl = false;
 			applyMode();
-			mpVideoEngine.reset(new CSDLVideo(m_VidConfig));
+            mpVideoEngine.reset(new CSDLVideo(mVidConfig));
 			retval = mpVideoEngine->init();
             gLogging.textOut("will be using SDL Video<br>");
         }
@@ -278,7 +276,7 @@ bool CVideoDriver::start()
     else
 #endif
     {
-        CSDLVideo *sdlVideoPtr = new CSDLVideo(m_VidConfig);
+        CSDLVideo *sdlVideoPtr = new CSDLVideo(mVidConfig);
         mpVideoEngine.reset(sdlVideoPtr);
 		retval = mpVideoEngine->init();
         gLogging.textOut("will be using SDL Video<br>");
@@ -294,15 +292,15 @@ bool CVideoDriver::start()
 
 void CVideoDriver::setFilter(const filterOptionType value)
 {
-    m_VidConfig.m_ScaleXFilter = value;
+    mVidConfig.m_ScaleXFilter = value;
 } // 1 means no filter
 
 void CVideoDriver::setZoom(short value) {
-	m_VidConfig.Zoom = value;
+    mVidConfig.Zoom = value;
 }
 
 void CVideoDriver::setScaleType(bool IsNormal)
-{ m_VidConfig.m_normal_scale = IsNormal; }
+{ mVidConfig.m_normal_scale = IsNormal; }
 
 // defines the scroll-buffer that is used for blitScrollSurface(). It's normally passed by a CMap Object
 // it might have when a level-map is loaded.
@@ -332,7 +330,7 @@ void CVideoDriver::clearSurfaces()
 
 void CVideoDriver::updateDisplay()
 {
-    if(m_VidConfig.mHorizBorders > 0)
+    if(mVidConfig.mHorizBorders > 0)
     {
         mpVideoEngine->drawHorizBorders();
     }
@@ -369,7 +367,7 @@ void CVideoDriver::saveCameraBounds(st_camera_bounds &CameraBounds)
 			|| (speed < 1) || (left > 270) || (up > 150) || (right > 270)
 			|| (down > 150) || (speed > 50);
 
-	st_camera_bounds &cam = m_VidConfig.m_CameraBounds;
+    st_camera_bounds &cam = mVidConfig.m_CameraBounds;
 
 	if (invalid_value)
 		cam.reset();
@@ -379,24 +377,24 @@ void CVideoDriver::saveCameraBounds(st_camera_bounds &CameraBounds)
 
 CVidConfig &CVideoDriver::getVidConfig()
 {
-	return m_VidConfig;
+    return mVidConfig;
 }
 
 
 void CVideoDriver::isFullscreen(const bool value) {
-	m_VidConfig.Fullscreen = value;
+    mVidConfig.Fullscreen = value;
 }
 
 bool CVideoDriver::getFullscreen() {
-	return m_VidConfig.Fullscreen;
+    return mVidConfig.Fullscreen;
 }
 
 unsigned int CVideoDriver::getWidth() const {
-	return m_VidConfig.m_DisplayRect.w;
+    return mVidConfig.mDisplayRect.w;
 }
 
 unsigned int CVideoDriver::getHeight() const {
-	return m_VidConfig.m_DisplayRect.h;
+    return mVidConfig.mDisplayRect.h;
 }
 
 unsigned short CVideoDriver::getDepth() const
@@ -411,7 +409,7 @@ SDL_Surface *CVideoDriver::getScrollSurface()
 
 st_camera_bounds &CVideoDriver::getCameraBounds()
 {
-	return m_VidConfig.m_CameraBounds;
+    return mVidConfig.m_CameraBounds;
 }
 
 ////

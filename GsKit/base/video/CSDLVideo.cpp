@@ -59,8 +59,8 @@ bool CSDLVideo::init()
     window = SDL_CreateWindow("Commander Genius",
                               SDL_WINDOWPOS_CENTERED,
                               SDL_WINDOWPOS_CENTERED,
-                              m_VidConfig.m_DisplayRect.w,
-                              m_VidConfig.m_DisplayRect.h,
+                              m_VidConfig.mDisplayRect.w,
+                              m_VidConfig.mDisplayRect.h,
                               flags);
 
     if(renderer)
@@ -81,13 +81,13 @@ bool CSDLVideo::init()
     SDL_RenderClear(renderer);
     SDL_RenderPresent(renderer);
 
-    updateAspectRect(m_VidConfig.m_DisplayRect, aspW, aspH);
+    updateAspectRect(m_VidConfig.mDisplayRect, aspW, aspH);
 
-    resizeDisplayScreen(m_VidConfig.m_DisplayRect);
+    resizeDisplayScreen(m_VidConfig.mDisplayRect);
 
 #else
 
-    mDisplaySfc.setPtr(SDL_SetVideoMode( m_VidConfig.m_DisplayRect.w, m_VidConfig.m_DisplayRect.h, 32, m_Mode ));
+    mDisplaySfc.setPtr(SDL_SetVideoMode( m_VidConfig.mDisplayRect.w, m_VidConfig.mDisplayRect.h, 32, m_Mode ));
 
     if (mDisplaySfc.empty())
 	{

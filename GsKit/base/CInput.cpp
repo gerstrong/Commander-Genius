@@ -640,7 +640,7 @@ void CInput::pollEvents()
 
     GsRect<Uint16> activeArea = gVideoDriver.mpVideoEngine->getAspectCorrRect();
 
-    auto &dispRect = gVideoDriver.getVidConfig().m_DisplayRect;
+    auto &dispRect = gVideoDriver.getVidConfig().mDisplayRect;
 
     // TODO: It seems that Win32 Build get different coordinates. I still don't know why...
     // Maybe I'm doing something wrong here!
@@ -1612,6 +1612,7 @@ void CInput::processMouse(int x, int y, bool down, int mouseindex)
 }
 
 #ifdef USE_OPENGL
+/*
 static void drawButton(TouchButton& button, bool down) {
 	// similar mysterious constant as in renderTexture/initGL
 	//glViewport(0,255,w,h);
@@ -1652,6 +1653,7 @@ static void drawButton(TouchButton& button, bool down) {
 	glDisable(GL_BLEND);
 
 }
+*/
 #endif
 
 #endif

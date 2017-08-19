@@ -89,7 +89,7 @@ public:
 
     short getZoomValue()
     {
-        return m_VidConfig.Zoom;
+        return mVidConfig.Zoom;
     }
 
 
@@ -116,7 +116,7 @@ public:
 
     SDL_Surface *convertThroughBlitSfc( SDL_Surface *sfc );
 
-	bool isOpenGL(void) { return m_VidConfig.mOpengl; }
+	bool isOpenGL(void) { return mVidConfig.mOpengl; }
 
 	SDL_Surface *getScrollSurface(void);
 
@@ -128,12 +128,12 @@ public:
 	void setScaleType(bool IsNormal);
 	void setZoom(short vale);
 #ifdef USE_OPENGL
-	void enableOpenGL(bool value) { m_VidConfig.mOpengl = value; }	
+	void enableOpenGL(bool value) { mVidConfig.mOpengl = value; }	
 #else
     void enableOpenGL(bool value) { m_VidConfig.mOpengl = false; }
 #endif
 
-    void setRenderQuality(const std::string &value) { m_VidConfig.mRenderScQuality = value; }
+    void setRenderQuality(const std::string &value) { mVidConfig.mRenderScQuality = value; }
 
 	/*
 	 * \brief Check whether this resolution is okay to be used or needs some adjustments if possible.
@@ -152,13 +152,13 @@ public:
 
 	void setAspectCorrection(const int w, const int h) 
 	{ 
-	  m_VidConfig.mAspectCorrection.w = w; 
-	  m_VidConfig.mAspectCorrection.h = h; 
+	  mVidConfig.mAspectCorrection.w = w; 
+	  mVidConfig.mAspectCorrection.h = h; 
 	}
 
-	bool getSpecialFXConfig(void) { return m_VidConfig.m_special_fx; }
+	bool getSpecialFXConfig(void) { return mVidConfig.m_special_fx; }
 
-    bool VGamePadEnabled() { return m_VidConfig.mVPad;   }
+    bool VGamePadEnabled() { return mVidConfig.mVPad;   }
 
 	bool getRefreshSignal() { return m_mustrefresh; }
 	void setRefreshSignal(const bool value) { m_mustrefresh = value;  }
@@ -214,7 +214,7 @@ public:
 
 private:
 
-	CVidConfig m_VidConfig;
+	CVidConfig mVidConfig;
 	bool m_mustrefresh;
 	bool mSDLImageInUse;    
 

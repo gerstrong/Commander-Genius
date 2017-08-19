@@ -31,14 +31,14 @@ void CVidConfig::reset()
 	// Default values
 	vsync = true;
 
-	m_DisplayRect.x = 0;
-	m_DisplayRect.y = 0;
+    mDisplayRect.x = 0;
+    mDisplayRect.y = 0;
 
 #if defined(CAANOO) || defined(WIZ) || defined(GP2X) || defined(DINGOO) || defined(NANONOTE)
 	//m_Resolution.width=320;
 	//m_Resolution.height=240;
-	m_DisplayRect.w=320;
-	m_DisplayRect.h=240;
+    mDisplayRect.w=320;
+    mDisplayRect.h=240;
 #if defined(GP2X) || defined(NANONOTE)
 	//m_Resolution.depth=32;
 #else
@@ -46,8 +46,8 @@ void CVidConfig::reset()
 #endif
 	Fullscreen=true;
 #else
-	m_DisplayRect.w=320;
-	m_DisplayRect.h=200;
+    mDisplayRect.w = 800;
+    mDisplayRect.h = 600;
 	Fullscreen=false;
 #endif
 
@@ -66,10 +66,10 @@ void CVidConfig::reset()
 	m_CameraBounds.reset();
 	m_special_fx = true;
 
-	m_GameRect.x = 0;
-	m_GameRect.y = 0;
-	m_GameRect.w = 320;
-	m_GameRect.h = 200;
+    mGameRect.x = 0;
+    mGameRect.y = 0;
+    mGameRect.w = 320;
+    mGameRect.h = 200;
 
 #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
     mOpengl = true;
@@ -93,5 +93,5 @@ void CVidConfig::setResolution(const int width, const int height, const int dept
 
 void CVidConfig::setResolution(const GsRect<Uint16>& res)
 {
-	m_DisplayRect = res;
+    mDisplayRect = res;
 }

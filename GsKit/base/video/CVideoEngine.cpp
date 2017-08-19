@@ -121,7 +121,7 @@ bool CVideoEngine::init()
 
 	// And set the proper Display Dimensions
 	// The screen is also setup in this function
-	if( !resizeDisplayScreen(m_VidConfig.m_DisplayRect) )
+	if( !resizeDisplayScreen(m_VidConfig.mDisplayRect) )
 	{
 		return false;
 	}
@@ -187,7 +187,7 @@ void CVideoEngine::updateAspectRect(const GsRect<Uint16>& displayRes, const int 
 
 bool CVideoEngine::createSurfaces()
 {
-    return createSurfaces(m_VidConfig.m_GameRect);
+    return createSurfaces(m_VidConfig.mGameRect);
 }
 
 
@@ -266,7 +266,7 @@ void CVideoEngine::blitScrollSurface() // This is only for tiles
 	SDL_Rect srGsRect, dstrect;
     int sbufferx, sbuffery;
     auto blitSurface = mGameSfc.getSDLSurface();
-    SDL_Rect Gamerect = m_VidConfig.m_GameRect.SDLRect();
+    SDL_Rect Gamerect = m_VidConfig.mGameRect.SDLRect();
 
     const int scrollSfcWidth = ScrollSurface->w;
     const int scrollSfcHeight = ScrollSurface->h;

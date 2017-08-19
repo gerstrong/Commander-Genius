@@ -20,8 +20,8 @@
 COpenGL::COpenGL(const CVidConfig &VidConfig) :
 CVideoEngine(VidConfig),
 m_texparam(GL_TEXTURE_2D),
-m_GameScaleDim(m_VidConfig.m_GameRect.w*m_VidConfig.m_ScaleXFilter,
-				m_VidConfig.m_GameRect.h*m_VidConfig.m_ScaleXFilter),
+m_GameScaleDim(m_VidConfig.mGameRect.w*m_VidConfig.m_ScaleXFilter,
+                m_VidConfig.mGameRect.h*m_VidConfig.m_ScaleXFilter),
 m_GamePOTScaleDim(getPowerOfTwo(m_GameScaleDim.w), getPowerOfTwo(m_GameScaleDim.h))
 {}
 
@@ -130,8 +130,8 @@ bool COpenGL::init()
     window = SDL_CreateWindow("Commander Genius",
                               SDL_WINDOWPOS_CENTERED,
                               SDL_WINDOWPOS_CENTERED,
-                              m_VidConfig.m_DisplayRect.w,
-                              m_VidConfig.m_DisplayRect.h,
+                              m_VidConfig.mDisplayRect.w,
+                              m_VidConfig.mDisplayRect.h,
                               flags);
 
 

@@ -86,7 +86,7 @@ bool VirtualKeenControl::init()
 void VirtualKeenControl::render(GsWeakSurface &sfc)
 {
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    GsRect<Uint16> dispRect = gVideoDriver.getVidConfig().m_DisplayRect;
+    GsRect<Uint16> dispRect = gVideoDriver.getVidConfig().mDisplayRect;
 
     GsRect<Uint16> clickGameArea = gVideoDriver.mpVideoEngine->getAspectCorrRect();
 
