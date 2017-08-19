@@ -173,8 +173,10 @@ void CRay::getTouchedBy(CVorticonSpriteObject &theObject)
             {
                if(theObject.getSpriteVariantId() != getSpriteVariantId())
                {
-                   if(!gBehaviorEngine.m_option[OPT_ALLOWPKING].value)
+                   if (!gBehaviorEngine.mOptions[GameOption::ALLOWPKING].value)
+                   {
                        return;
+                   }
 
                    state = RAY_STATE_SETZAPZOT;
                    canbezapped = false;

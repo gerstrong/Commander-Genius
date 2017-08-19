@@ -13,13 +13,11 @@ namespace galaxy
 {
 
 COptions::COptions() :
-GalaxyMenu( GsRect<float>(0.1f, 0.14f, 0.8f, NUM_OPTIONS*0.07f) ),
-mpOption(gBehaviorEngine.m_option)
+GalaxyMenu( GsRect<float>(0.1f, 0.14f, 0.8f, gBehaviorEngine.mOptions.size()*0.07f) )
 {
-
-	for( int i = 0 ; i < NUM_OPTIONS ; i++ )
+    for( const auto &option :  gBehaviorEngine.mOptions )
 	{
-        mpOptionList.push_back( new Switch(mpOption[i].menuname) );
+        mpOptionList.push_back( new Switch( option.second.menuname ) );
 		mpMenuDialog->addControl( mpOptionList.back() );
 	}    
 
@@ -30,9 +28,9 @@ void COptions::refresh()
 {
     std::list<Switch*>::iterator it = mpOptionList.begin();
 
-	for( int i=0 ; it != mpOptionList.end() ; it++, i++ )
+    for( const auto &option :  gBehaviorEngine.mOptions )
     {
-		(*it)->enable( mpOption[i].value );
+        (*it)->enable( option.second.value );
     }
 }
 
@@ -43,8 +41,10 @@ void COptions::ponder(const float deltaT)
 
     auto it = mpOptionList.begin();
 
-	for( int i=0 ; it != mpOptionList.end() ; it++, i++ )
-		mpOption[i].value = (*it)->isEnabled();
+    for( auto &option :  gBehaviorEngine.mOptions )
+    {
+        option.second.value = (*it)->isEnabled();
+    }
 }
 
 void COptions::release()

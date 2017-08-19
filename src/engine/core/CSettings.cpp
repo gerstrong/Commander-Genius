@@ -257,9 +257,9 @@ void CSettings::loadDefaultGraphicsCfg() //Loads default graphics
  * 						of the applied option
  * \param	value		Value that has to be set.
  */
-void CSettings::setOption( e_OptionKeyword opt, const std::string &menuname, const std::string &name, char value)
+void CSettings::setOption( const GameOption opt, const std::string &menuname, const std::string &name, char value)
 {
-	stOption &option = gBehaviorEngine.m_option[opt];
+    stOption &option = gBehaviorEngine.mOptions[opt];
 	option.menuname = menuname;
 	option.name = name;
 	option.value = value;
@@ -269,14 +269,14 @@ void CSettings::setOption( e_OptionKeyword opt, const std::string &menuname, con
  */
 void CSettings::loadDefaultGameCfg()
 {
-	setOption( OPT_ALLOWPKING,		"Friendly Fire    ", "pking", 1 );
-	setOption( OPT_KEYSTACK,			"Keystacking      ", "keystack", 0 );
-	setOption( OPT_LVLREPLAYABILITY,	"Replay Levels    ", "level_replayability", 0 );
-	setOption( OPT_RISEBONUS,		"Rising Bonus     ", "rise_bonus", 1 );
-    setOption( OPT_MODERN,		"Modern Style     ", "modern_style", 1 );
-    setOption( OPT_HUD,				"HUD Display      ", "hud", 1 );
-    setOption( OPT_SHOWFPS,			"Show FPS         ", "showfps", 0 );
-    setOption( OPT_FLASHEFFECT,		"Flash Effects    ", "flashfx", 1 );
+	setOption( GameOption::ALLOWPKING,		"Friendly Fire    ", "pking", 1 );
+    setOption( GameOption::KEYSTACK,			"Keystacking      ", "keystack", 0 );
+    setOption( GameOption::LVLREPLAYABILITY,	"Replay Levels    ", "level_replayability", 0 );
+    setOption( GameOption::RISEBONUS,		"Rising Bonus     ", "rise_bonus", 1 );
+    setOption( GameOption::MODERN,		"Modern Style     ", "modern_style", 1 );
+    setOption( GameOption::HUD,				"HUD Display      ", "hud", 1 );
+    setOption( GameOption::SHOWFPS,			"Show FPS         ", "showfps", 0 );
+    setOption( GameOption::FLASHEFFECT,		"Flash Effects    ", "flashfx", 1 );
 }
 
 /**
@@ -286,19 +286,18 @@ void CSettings::loadDefaultGameCfg()
  */
 bool CSettings::loadGameOptions()
 {
-	int i;
 	CConfiguration Configuration(CONFIGFILENAME);
 
 	if(!Configuration.Parse()) return false;
 
 	loadDefaultGameCfg();
 
-	stOption *p_option = gBehaviorEngine.m_option;
-	for (i = 0; i < NUM_OPTIONS; i++)
+    for(auto &option : gBehaviorEngine.mOptions)
 	{
+        auto &second = option.second;
 		bool newvalue;
-		Configuration.ReadKeyword("Game", p_option[i].name, &newvalue, false);
-		p_option[i].value = (newvalue) ? 1 : 0;
+        Configuration.ReadKeyword("Game", option.second.name, &newvalue, false);
+        second.value = (newvalue) ? 1 : 0;
 	}
 	
 	gLogging.ftextOut("<br>Your personal settings were loaded successfully...<br>");
@@ -312,11 +311,16 @@ bool CSettings::saveGameOptions()
 {
 	CConfiguration Configuration(CONFIGFILENAME);
 
-	if(!Configuration.Parse()) return false;
+    if ( !Configuration.Parse() )
+    {
+        return false;
+    }
 
-	stOption *p_option = gBehaviorEngine.m_option;
-	for (int i = 0; i < NUM_OPTIONS; i++)
-		Configuration.SetKeyword("Game", p_option[i].name, p_option[i].value);
+
+    for(auto &option : gBehaviorEngine.mOptions)
+    {
+        Configuration.SetKeyword("Game", option.second.name, option.second.value);
+    }
 
 	Configuration.saveCfgFile();
 	return true;

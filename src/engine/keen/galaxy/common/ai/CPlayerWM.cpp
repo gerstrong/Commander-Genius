@@ -430,8 +430,8 @@ void CPlayerWM::processMoving()
             const int shipLevel = (ep < 6) ? 18 : 17;
 
             if(mp_Map->findTile(flag_dest, &x, &y, 2) ||
-                    gBehaviorEngine.m_option[OPT_LVLREPLAYABILITY].value
-                    || level >= shipLevel)
+                    gBehaviorEngine.mOptions[GameOption::LVLREPLAYABILITY].value ||
+                    level >= shipLevel)
             {
                 vkc->mHideStartButton = false;
             }
@@ -1033,7 +1033,7 @@ void CPlayerWM::startLevel(Uint16 object)
 
     // Check if there already exists a flag. If that's not the case enter the level
     if( mp_Map->findTile(flag_dest, &x, &y, 2) ||
-        gBehaviorEngine.m_option[OPT_LVLREPLAYABILITY].value ||
+        gBehaviorEngine.mOptions[GameOption::LVLREPLAYABILITY].value ||
         level >= shipLevel)
     {
         gEventManager.add(new EventEnterLevel(object));

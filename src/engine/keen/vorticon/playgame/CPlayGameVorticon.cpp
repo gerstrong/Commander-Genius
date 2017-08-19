@@ -727,8 +727,8 @@ void CPlayGameVorticon::drawAllElements()
     if(mpFinale) // Finale processing if it is opened
     {
         mpFinale->render();
-    }    
-    else if(mp_option[OPT_HUD].value ) // Draw the HUD
+    }        
+    else if(gBehaviorEngine.mOptions[GameOption::HUD].value ) // Draw the HUD
     {
         for( auto &hud : mpHUDVec )
         {

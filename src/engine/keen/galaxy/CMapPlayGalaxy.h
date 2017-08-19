@@ -93,7 +93,6 @@ protected:
 
 	CMap mMap;
 	std::vector<CInventory> &mInventoryVec;
-	stOption *mpOption;
 
     bool mMsgBoxOpen;
 };

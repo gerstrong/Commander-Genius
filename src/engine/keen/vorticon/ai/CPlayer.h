@@ -128,10 +128,11 @@ public:
 	bool checkObjSolid();
 
 	bool drawStatusScreen();
-	void give_keycard(int doortile);
-	void take_keycard(int doortile);
+    void give_keycard(const int doortile);
+    void take_keycard(const int doortile);
 	void freeze();
-	bool showGameHint(int mpx, int mpy);
+    bool showGameHint(const int mpx,
+                      const int mpy);
 	std::string pollHintMessage();
 
 	///
@@ -211,8 +212,6 @@ public:
 
 	std::string hintstring;
 	bool hintused;
-
-	stOption *mp_option;
 
 	// Every Player has a camera. Not sure if that's okay...
 	// TODO: Think about a more efficient way to perform this.

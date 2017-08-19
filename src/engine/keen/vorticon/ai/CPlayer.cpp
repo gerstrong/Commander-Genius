@@ -26,8 +26,7 @@ CPlayer::CPlayer(bool *mpLevelCompleted,
                  CMap &map, const int sprVar) :
 CVorticonSpriteObject(&map, 0, 0, OBJ_PLAYER, sprVar),
 pjumpupspeed_decrease(gBehaviorEngine.getPhysicsSettings().player.defaultjumpupdecreasespeed),
-mp_levels_completed(mpLevelCompleted),
-mp_option(gBehaviorEngine.m_option)
+mp_levels_completed(mpLevelCompleted)
 {
     canbezapped = true;
     m_index = 0;
@@ -54,8 +53,7 @@ CVorticonSpriteObject(player.mp_Map,
                       player.getXPosition(), player.getYPosition(),
                       OBJ_PLAYER, player.getSpriteVariantId() ),
 pjumpupspeed_decrease(player.pjumpupspeed_decrease),
-mp_levels_completed(player.mp_levels_completed),
-mp_option(gBehaviorEngine.m_option)
+mp_levels_completed(player.mp_levels_completed)
 {
     //mp_object = player.mp_object;
     canbezapped = true;
@@ -83,7 +81,6 @@ CPlayer& CPlayer::operator=(const CPlayer &player)
 {
     pjumpupspeed_decrease = player.pjumpupspeed_decrease;
     mp_levels_completed = player.mp_levels_completed;
-    mp_option = gBehaviorEngine.m_option;
     canbezapped = true;
     m_index = 0;
 

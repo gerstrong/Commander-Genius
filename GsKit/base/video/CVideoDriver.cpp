@@ -186,7 +186,8 @@ void CVideoDriver::setVidConfig(const CVidConfig& VidConf) {
     setMode(mVidConfig.mDisplayRect);
 }
 
-void CVideoDriver::setSpecialFXMode(bool SpecialFX) {
+void CVideoDriver::setSpecialFXMode(bool SpecialFX)
+{
     mVidConfig.m_special_fx = SpecialFX;
 }
 

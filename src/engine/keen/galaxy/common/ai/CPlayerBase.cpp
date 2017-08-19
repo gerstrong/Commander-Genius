@@ -237,7 +237,9 @@ void CPlayerBase::processCamera()
     relVisBlend.x = 0;  relVisBlend.w = 0;
     relVisBlend.y = 0;  relVisBlend.h = 0;
 
-    if (gBehaviorEngine.m_option[OPT_MODERN].value)
+    const auto &optModern = gBehaviorEngine.mOptions[GameOption::MODERN];
+
+    if (optModern.value)
     {
         relVisBlend.x = scrx-16;
         relVisBlend.y = scry-32;

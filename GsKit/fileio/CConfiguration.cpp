@@ -67,12 +67,16 @@ void CConfiguration::WriteString(const std::string& section, const std::string& 
 	item->second = string;
 }
 
-void CConfiguration::SetKeyword(const std::string &section, const std::string &keyword, const bool value)
+void CConfiguration::SetKeyword(const std::string &section,
+                                const std::string &keyword,
+                                const bool value)
 {
 	WriteString(section, keyword, value ? "true" : "false");
 }
 
-void CConfiguration::WriteInt(const std::string &section, const std::string &keyword, const int value)
+void CConfiguration::WriteInt(const std::string &section,
+                              const std::string &keyword,
+                              const int value)
 {
 	WriteString(section, keyword, to_string(value) );
 }

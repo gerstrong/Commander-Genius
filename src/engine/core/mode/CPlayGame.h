@@ -71,8 +71,6 @@ protected:
 	int m_checkpoint_x, m_checkpoint_y;
 	bool m_checkpointset;
 	bool m_restartVideo;
-
-	stOption *mp_option;
 };
 
 #endif /* CPLAYGAME_H_ */

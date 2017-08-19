@@ -33,7 +33,7 @@ void CBehaviorEngine::setMessage(const std::string &name, const std::string &mes
  */
 bool CBehaviorEngine::readTeleporterTable(byte *p_exedata)
 {
-	if(m_Episode == 1)
+    if(mEpisode == 1)
 	{
 		// clear the teleporter table
 		if(!m_TeleporterTable.empty())
@@ -92,18 +92,16 @@ std::string CBehaviorEngine::getString(const std::string& name)
 }
 
 size_t CBehaviorEngine::getEpisode()
-{	return m_Episode;	}
+{	return mEpisode;	}
 
 EngineType CBehaviorEngine::getEngine()
 {
-	if( m_Episode >= 4 && m_Episode <= 6 )
+    if( mEpisode >= 4 && mEpisode <= 6 )
 		return ENGINE_GALAXY;
-	else if(m_Episode >= 1 && m_Episode <= 3)
+    else if(mEpisode >= 1 && mEpisode <= 3)
 		return ENGINE_VORTICON;
 	else
 		return ENGINE_LAUNCHER;
 }
 
-void CBehaviorEngine::setEpisode(size_t Episode)
-{	m_Episode = Episode;	}
 

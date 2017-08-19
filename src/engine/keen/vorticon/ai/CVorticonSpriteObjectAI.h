@@ -129,7 +129,6 @@ private:
 	CMap *mp_Map;
 	std::vector< std::unique_ptr<CVorticonSpriteObject> > &m_Objvect;
 	std::vector<CPlayer> &m_Player;
-	stOption *mp_Options;
 	int m_Level;
 	int m_Episode;
 	int m_gunfiretimer;

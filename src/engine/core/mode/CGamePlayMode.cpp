@@ -8,6 +8,7 @@
 #include "CGamePlayMode.h"
 #include "sdl/audio/music/CMusicPlayer.h"
 #include <base/GsTimer.h>
+#include <graphics/GsGraphics.h>
 #include <base/video/CVideoDriver.h>
 #include <base/GsApp.h>
 #include <memory>
@@ -59,7 +60,10 @@ void CGamePlayMode::render()
 {
     mp_PlayGame->render();
 
-    if(gBehaviorEngine.m_option[OPT_SHOWFPS].value)
+    const auto optFPS = gBehaviorEngine.mOptions[GameOption::SHOWFPS];
+
+    // TODO: Is this broken?
+    if(optFPS.value)
     {
         SDL_Rect rect;
         rect.x = 5;
@@ -84,7 +88,8 @@ void CGamePlayMode::render()
 
         std::string tempbuf = "FPS: " + ftoa(gTimer.LastFPS());
         SDL_FillRect(mpFPSSurface.get(),NULL,0x88888888);
-        //gGraphics.getFont(1).drawFont(mpFPSSurface.get(), tempbuf, 1, 1, false);
+
+        gGraphics.getFont(1).drawFont(mpFPSSurface.get(), tempbuf, 1, 1, false);
 
         BlitSurface(mpFPSSurface.get(), NULL, gVideoDriver.getBlitSurface(), &rect);
     }

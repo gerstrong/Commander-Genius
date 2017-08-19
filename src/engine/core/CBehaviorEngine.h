@@ -75,9 +75,6 @@ typedef struct
 class CBehaviorEngine : public GsSingleton<CBehaviorEngine>
 {
 public:
-    CBehaviorEngine() : 	mPlayers(0),
-				mDifficulty(EASY),
-                mPausedGamePlay(false) {}
 
 	void setMessage(const std::string &name,
 					const std::string &message);
@@ -103,7 +100,8 @@ public:
 	CEventContainer &EventList()
     {	return gEventManager;	}
 
-	void setEpisode(size_t Episode);
+    void setEpisode(const size_t Episode)
+    {	mEpisode = Episode;	}
 
 	void setPause(const bool value)
 	{	mPausedGamePlay = value;	}
@@ -112,10 +110,10 @@ public:
 	{	return mPausedGamePlay;	}
 
     std::string mPatchFname;
-	stOption m_option[NUM_OPTIONS];
+    std::map<GameOption, stOption> mOptions;
 
-	unsigned int mPlayers;
-	Difficulty mDifficulty;
+    int mPlayers = 1;
+    Difficulty mDifficulty = EASY;
 
     EpisodeInfoStruct* getEpisodeInfoStructRef(const unsigned int episode)
 	{	return &pEpisodeInfo[episode-4];	}
@@ -136,9 +134,9 @@ private:
 	std::vector<stTeleporterTable> m_TeleporterTable; // Teleporter table used for the destinations
 													  // used by Episode 1 especially
 	int numStrings;
-	size_t m_Episode;
+    size_t mEpisode;
 
-	bool mPausedGamePlay;
+    bool mPausedGamePlay = false;
 
     EpisodeInfoStruct *pEpisodeInfo;
 

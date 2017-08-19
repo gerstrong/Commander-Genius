@@ -50,8 +50,12 @@ void CBullet::getTouchedBy(CSpriteObject& theObject)
         }
 
         // Friendly fire?
-        if(!gBehaviorEngine.m_option[OPT_ALLOWPKING].value)
+        const auto optFFire = gBehaviorEngine.mOptions[GameOption::ALLOWPKING];
+
+        if(!optFFire.value)
+        {
             return;
+        }
 
         if( player->getSpriteVariantId() != getSpriteVariantId() )
         {

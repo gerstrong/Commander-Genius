@@ -73,7 +73,7 @@ void CPlayGameVorticon::processOnWorldMap()
 						if( useobject>32 )
 						    break;
 						
-						if( !mpLevelCompleted[useobject & 0x7fff] || mp_option[OPT_LVLREPLAYABILITY].value )
+                        if( !mpLevelCompleted[useobject & 0x7fff] || gBehaviorEngine.mOptions[GameOption::LVLREPLAYABILITY].value )
 						{
 							// Create the special merge effect
 							CColorMerge *pColorMergeFX = new CColorMerge(8);

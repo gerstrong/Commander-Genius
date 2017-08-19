@@ -30,7 +30,6 @@ public:
 
 private:
     std::list<Switch*> mpOptionList;
-	stOption *mpOption;
 };
 
 }

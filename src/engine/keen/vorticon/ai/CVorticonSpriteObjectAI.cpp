@@ -21,7 +21,6 @@ m_Player(Player),
 m_dark(dark)
 {
 	mp_Map = p_map;
-	mp_Options = gBehaviorEngine.m_option;
 	m_Level = level;
 	m_Episode = episode;
 	m_gunfiretimer = 0;

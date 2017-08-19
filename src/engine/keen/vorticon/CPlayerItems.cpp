@@ -222,7 +222,7 @@ void CPlayer::procGoodie(int tile, int mpx, int mpy)
 // make some sprite fly (Points, and items) :-)
 void CPlayer::riseBonus(int spr, int x, int y)
 {
-	 if (mp_option[OPT_RISEBONUS].value)
+     if (gBehaviorEngine.mOptions[GameOption::RISEBONUS].value)
 	 {
 		 CRisingPoints *GotPointsObj = new CRisingPoints(mp_Map, x<<CSF, y<<CSF);
 		 GotPointsObj->sprite = spr;
@@ -234,9 +234,9 @@ void CPlayer::riseBonus(int spr, int x, int y)
 
 
 // gives keycard for door doortile to player p
-void CPlayer::give_keycard(int doortile)
+void CPlayer::give_keycard(const int doortile)
 {
-	size_t maxkeycards = (mp_option[OPT_KEYSTACK].value) ? 9 : 1;
+    size_t maxkeycards = (gBehaviorEngine.mOptions[GameOption::KEYSTACK].value) ? 9 : 1;
 	playSound(SOUND_GET_CARD);
 
 	if (doortile==DOOR_YELLOW && inventory.HasCardYellow < maxkeycards)
@@ -253,7 +253,7 @@ void CPlayer::give_keycard(int doortile)
 
 
 // take away the specified keycard from the player
-void CPlayer::take_keycard(int doortile)
+void CPlayer::take_keycard(const int doortile)
 {
 	if (doortile==DOOR_YELLOW && inventory.HasCardYellow > 0)
 		inventory.HasCardYellow--;
@@ -268,7 +268,7 @@ void CPlayer::take_keycard(int doortile)
 
 
 
-bool CPlayer::showGameHint(int mpx, int mpy)
+bool CPlayer::showGameHint(const int mpx, const int mpy)
 {
 	if(hintused) return false;
 

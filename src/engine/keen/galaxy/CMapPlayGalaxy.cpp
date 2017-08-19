@@ -27,12 +27,11 @@
 CMapPlayGalaxy::CMapPlayGalaxy(std::vector<CInventory> &inventoryVec) :
 mActive(false),
 mInventoryVec(inventoryVec),
-mpOption(gBehaviorEngine.m_option),
 mMsgBoxOpen(false)
 {}
 
 
-void CMapPlayGalaxy::setActive(bool value)
+void CMapPlayGalaxy::setActive(const bool value)
 {
 	mActive = value;
 
@@ -230,7 +229,9 @@ void CMapPlayGalaxy::render()
             (*obj)->draw();
     }
 
-    if(mpOption[OPT_HUD].value )
+    const auto &optHUD = gBehaviorEngine.mOptions[GameOption::HUD];
+
+    if( optHUD.value )
     {
         for( int pId = mInventoryVec.size()-1 ; pId>=0 ; pId-- )
         {

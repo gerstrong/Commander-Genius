@@ -27,7 +27,7 @@ class SetDefaultClassic : public InvokeFunctorEvent
 public:
     void operator()() const
 	{
-		stOption *p_option = gBehaviorEngine.m_option;
+        auto &options = gBehaviorEngine.mOptions;
         gSettings.loadDrvCfg();
 		gVideoDriver.setSpecialFXMode(false);
 		st_camera_bounds &CameraBounds = gVideoDriver.getCameraBounds();
@@ -37,12 +37,12 @@ public:
 		CameraBounds.down = 130;
 		CameraBounds.speed = 5;
 		gTimer.setFPS(30);
-		p_option[OPT_ALLOWPKING].value = 0;
-		p_option[OPT_KEYSTACK].value = 0;
-		p_option[OPT_LVLREPLAYABILITY].value = 0;
-        p_option[OPT_RISEBONUS].value = 0;
-        p_option[OPT_MODERN].value = 1;
-        p_option[OPT_HUD].value = 0;
+        options[GameOption::ALLOWPKING].value = 0;
+        options[GameOption::KEYSTACK].value = 0;
+        options[GameOption::LVLREPLAYABILITY].value = 0;
+        options[GameOption::RISEBONUS].value = 0;
+        options[GameOption::MODERN].value = 1;
+        options[GameOption::HUD].value = 0;
         gSettings.saveDrvCfg();
 	}
 };
@@ -56,7 +56,7 @@ class SetDefaultEnhanced : public InvokeFunctorEvent
 public:
     void operator()() const
 	{
-		stOption *p_option = gBehaviorEngine.m_option;
+        auto &options = gBehaviorEngine.mOptions;
         gSettings.loadDrvCfg();
 		gVideoDriver.setSpecialFXMode(true);
 		st_camera_bounds &CameraBounds = gVideoDriver.getCameraBounds();
@@ -66,10 +66,10 @@ public:
 		CameraBounds.down = 108;
 		CameraBounds.speed = 20;
 		gTimer.setFPS(60);
-		p_option[OPT_KEYSTACK].value = 1;
-		p_option[OPT_RISEBONUS].value = 1;
-        p_option[OPT_MODERN].value = 1;
-		p_option[OPT_HUD].value = 1;
+        options[GameOption::KEYSTACK].value = 1;
+        options[GameOption::RISEBONUS].value = 1;
+        options[GameOption::MODERN].value = 1;
+        options[GameOption::HUD].value = 1;
         gSettings.saveDrvCfg();
 	}
 };

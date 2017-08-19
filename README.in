@@ -279,7 +279,7 @@ How to compile it under Ubuntu:
    Even without any data copied CG should run but tell that there are no games then.
 
 How to compile it under Ubuntu:
- * Install using the package manager (use "yum" instead of "dnf" for fedora 23 or older):
+ * Install using the package manager (replace "yum" with "dnf" for fedora 21 or older):
 
    dnf install -y \
      SDL2-devel boost-devel libogg-devel gcc-c++ cmake libvorbis-devel SDL2_image-devel mesa-libGL-devel libcurl-devel cmake-data
