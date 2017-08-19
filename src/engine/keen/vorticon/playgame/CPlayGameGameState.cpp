@@ -161,7 +161,7 @@ bool CPlayGameVorticon::loadGameState()
 	m_Player[0].setupCameraObject();
 	m_Player[0].mpCamera->attachObject(&m_Player[0]);
 	
-	while(m_Player[0].mpCamera->m_moving)
+	while(m_Player[0].mpCamera->mMoving)
 	{
 	  m_Player[0].mpCamera->process();
       m_Player[0].mpCamera->processEvents();
@@ -361,7 +361,7 @@ bool CPlayGameVorticon::loadXMLGameState()
         player.mpCamera->attachObject(&player);
     }
 
-    while(m_Player[0].mpCamera->m_moving)
+    while(m_Player[0].mpCamera->mMoving)
     {
       m_Player[0].mpCamera->process();
       m_Player[0].mpCamera->processEvents();

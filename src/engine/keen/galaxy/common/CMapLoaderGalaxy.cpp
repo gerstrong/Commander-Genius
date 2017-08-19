@@ -174,7 +174,7 @@ bool CMapLoaderGalaxy::unpackPlaneData( std::ifstream &mapFile,
             for(size_t x=0; x<Map.m_width ; ++x)
     		{
                 const int offset = stride+x;
-                word tile = plane.at(offset);
+                const word tile = plane.at(offset);
 
                 *ptr = tile;
     			ptr++;
@@ -333,13 +333,13 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
         // Start with the Background
         Map.setupEmptyDataPlanes(3, Width, Height);
 
-        gLogging.textOut("Decompressing the Map... plane 0<br>" );
+        gLogging.textOut("Decompressing the Map... plane 0 (Background)<br>" );
         ok &= unpackPlaneData(MapFile, Map, 0, Plane_Offset[0], Plane_Length[0], magic_word);
 
-        gLogging.textOut("Decompressing the Map... plane 1<br>" );
+        gLogging.textOut("Decompressing the Map... plane 1 (Foreground)<br>" );
         ok &= unpackPlaneData(MapFile, Map, 1, Plane_Offset[1], Plane_Length[1], magic_word);
 
-        gLogging.textOut("Decompressing the Map... plane 2<br>" );
+        gLogging.textOut("Decompressing the Map... plane 2 (Infolayer)<br>" );
         ok &= unpackPlaneData(MapFile, Map, 2, Plane_Offset[2], Plane_Length[2], magic_word);
 
 

@@ -273,6 +273,13 @@ void GalaxyEngine::pumpEvent(const CEvent *evPtr)
         if(!argLevel.empty())
         {
             const int startLevel = atoi(argLevel.c_str());
+
+            // There always is at least one sprite variant, the original one!
+            if(mSpriteVars.empty())
+            {
+                mSpriteVars.push_back(0);
+            }
+
             switchToGameplay(startLevel, mSpriteVars);
             gEventManager.add(new StartNewGameEvent(EASY, startLevel));
         }

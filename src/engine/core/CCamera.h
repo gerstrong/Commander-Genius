@@ -92,9 +92,10 @@ public:
         mCamLeadChange = false;
     }
 
-	bool m_attached;
-	bool m_freeze;
-	bool m_moving;
+    bool mAttached = true;
+    bool mFreeze = false;
+    bool mMoving = true;
+
 
 	/**
 	 *	Just relative structure to the camera position. This is used when the player tries to look up or down

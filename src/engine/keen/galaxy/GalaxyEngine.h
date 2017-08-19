@@ -74,6 +74,7 @@ public:
 
     std::unique_ptr<ComputerWrist> mpComputerWrist;
 
+    // In case the are different sprites for the player used, this vector takes care of mapping the right one.
     std::vector<int> mSpriteVars;
 };
 

@@ -127,8 +127,8 @@ void CMap::collectBlockersCoordiantes()
     scrollBlockX.clear();
     scrollBlockY.clear();
 
-    scrollBlockY.push_back(2<<CSF);
-    scrollBlockX.push_back(2<<CSF);
+    scrollBlockY.push_back(1<<CSF);
+    scrollBlockX.push_back(1<<CSF);
 
     int ep = gBehaviorEngine.getEpisode();
 

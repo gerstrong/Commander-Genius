@@ -132,7 +132,10 @@ bool CSettings::loadDrvCfg()
 {
 	CConfiguration Configuration(CONFIGFILENAME);
 
-	if(!Configuration.Parse()) return false;
+    if(!Configuration.Parse())
+    {
+        return false;
+    }
 	else
 	{
 		CVidConfig VidConf;

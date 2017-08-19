@@ -2646,7 +2646,9 @@ void CPlayerLevel::process()
 	
 
 		if ( mPoleGrabTime < MAX_POLE_GRAB_TIME )
+        {
 		    mPoleGrabTime++;
+        }
 
         (this->*mp_processState)();
 	}
@@ -2724,7 +2726,9 @@ void CPlayerLevel::process()
 
 
 	    if(!processActionRoutine())
-		exists = false;
+        {
+            exists = false;
+        }
 	}
 
 
@@ -2744,7 +2748,7 @@ void CPlayerLevel::process()
 			(mp_processState != FallProcess) )
 		{
 			processPushOutCollision();
-		}
+		}                
 	}
 	
 	
