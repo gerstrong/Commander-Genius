@@ -71,7 +71,7 @@ void CConfiguration::SetKeyword(const std::string &section,
                                 const std::string &keyword,
                                 const bool value)
 {
-	WriteString(section, keyword, value ? "true" : "false");
+    WriteString(section, keyword, (value==true) ? "true" : "false");
 }
 
 void CConfiguration::WriteInt(const std::string &section,

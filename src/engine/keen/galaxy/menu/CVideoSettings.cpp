@@ -63,7 +63,7 @@ GalaxyMenu(GsRect<float>(0.15f, 0.20f, 0.65f, 0.55f) )
 		List.push_back( itoa (i) );
 
     mpFPSSelection = new NumberControl( "FPS", 10, 120, 10, 60 );
-	mpMenuDialog->addControl( mpFPSSelection );
+    //mpMenuDialog->addControl( mpFPSSelection );
 
     mpGameResSelection = new ComboSelection( "GameRes",
         filledStrList(1, "?x?") );
@@ -111,7 +111,7 @@ GalaxyMenu(GsRect<float>(0.15f, 0.20f, 0.65f, 0.55f) )
     mpMenuDialog->addControl( mpRenderScaleQualitySel );
 
     mpVPadSwitch  = new Switch( "VirtPad" );
-    mpMenuDialog->addControl( mpVPadSwitch );    
+    //mpMenuDialog->addControl( mpVPadSwitch );
 
 
     mpSFXSwitch = new Switch( "Special FX" );
@@ -149,7 +149,7 @@ void CVideoSettings::refresh()
 	mpSFXSwitch->enable( mUserVidConf.m_special_fx );	
 
     // TODO: find a way to indicate a color
-    mpBorderColorSwitch->enable( false );
+    mpBorderColorSwitch->enable( mUserVidConf.mBorderColorsEnabled );
 
     mpHorizBordersSelection->setSelection( mUserVidConf.mHorizBorders );
 
@@ -260,6 +260,8 @@ void CVideoSettings::release()
         mUserVidConf.mBorderColors.g = 0xAA;
         mUserVidConf.mBorderColors.b = 0xAA;
     }
+
+    mUserVidConf.mBorderColorsEnabled = mpBorderColorSwitch->isEnabled();
 
     mUserVidConf.mHorizBorders = mpHorizBordersSelection->getSelection();
 

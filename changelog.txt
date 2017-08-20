@@ -1,5 +1,6 @@
 v1.9.9.4:
 ---------
+- Fixes for better mod support
 - Standard Resolution is now at 800x600
 - Added instructions for building under Fedora
 

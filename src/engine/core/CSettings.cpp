@@ -193,7 +193,7 @@ bool CSettings::loadDrvCfg()
 
 #endif
 
-        Configuration.SetKeyword("Video", "VirtPad", &VidConf.mVPad);
+        Configuration.SetKeyword("Video", "VirtPad", VidConf.mVPad);
 
 		st_camera_bounds &CameraBounds = VidConf.m_CameraBounds;
 		Configuration.ReadInteger("Bound", "left", &CameraBounds.left, 152);

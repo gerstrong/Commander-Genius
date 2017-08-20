@@ -54,7 +54,7 @@ VorticonMenu(GsRect<float>(0.15f, 0.24f, 0.65f, 0.55f) )
 		List.push_back( itoa (i) );
 
     mpFPSSelection = new NumberControl( "FPS", 10, 120, 10, 60, false );
-	mpMenuDialog->addControl( mpFPSSelection );
+    //mpMenuDialog->addControl( mpFPSSelection );
 
     mpGameResSelection = new ComboSelection( "GameRes",
         filledStrList(1, "?x?") );
@@ -98,9 +98,7 @@ VorticonMenu(GsRect<float>(0.15f, 0.24f, 0.65f, 0.55f) )
 #endif
 
     mpVPadSwitch  = new Switch( "VirtPad" );
-    mpMenuDialog->addControl( mpVPadSwitch );
-
-
+    //mpMenuDialog->addControl( mpVPadSwitch );
 
     mpSFXSwitch = new Switch( "Special FX" );
     mpMenuDialog->addControl( mpSFXSwitch );
@@ -131,7 +129,7 @@ void CVideoSettings::refresh()
 	mpSFXSwitch->enable( mUserVidConf.m_special_fx );	
 
     // TODO: find a way to indicate a color
-    mpBorderColorSwitch->enable( false );
+    mpBorderColorSwitch->enable( mUserVidConf.mBorderColorsEnabled );
 
     mpHorizBordersSelection->setSelection( static_cast<int>( mUserVidConf.mHorizBorders ) );
 
@@ -203,6 +201,7 @@ void CVideoSettings::release()
 
     mUserVidConf.mHorizBorders = mpHorizBordersSelection->getSelection();
 
+    mUserVidConf.mBorderColorsEnabled = mpBorderColorSwitch->isEnabled();
 	
 #if !defined(EMBEDDED)	
 
