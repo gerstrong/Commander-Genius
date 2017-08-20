@@ -253,7 +253,7 @@ void CVideoSettings::release()
 
 	mUserVidConf.m_special_fx = mpSFXSwitch->isEnabled();
 
-    // TODO: Better way to setup colors in the menu
+    // TODO: Find a better way to setup colors in the menu
     if(mpBorderColorSwitch->isEnabled())
     {
         mUserVidConf.mBorderColors.r = 0x00;

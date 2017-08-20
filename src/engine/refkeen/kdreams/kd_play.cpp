@@ -979,7 +979,7 @@ id0_int_t	wallclip[8][16] = {			// the height of a given point in a tile
 
 void ClipToEnds (objtype *ob)
 {
-	id0_unsigned_t	id0_far *map/*,tile,facetile,info*/,wall;
+    id0_unsigned_t	id0_far *map/*,tile,facetile,info*/;
 	//id0_int_t	leftpix,rightpix,midtiles,toppix,bottompix;
 	id0_int_t	/*x,*/y,clip,move,totalmove,maxmove,midxpix;
 
@@ -990,8 +990,10 @@ void ClipToEnds (objtype *ob)
 		mapbwidthtable[oldtilebottom-1]/2 + ob->tilemidx;
 	// (REFKEEN) Comparison is unsigned in vanilla Keen (has an effect on the explosion of King Boobus Tuber)
 	for (y=oldtilebottom-1 ; (id0_unsigned_t)y<=ob->tilebottom ; y++,map+=mapwidth)
-	{
-        if (wall = mapFile.tileinfo[NORTHWALL+*map])
+    {
+        const auto wall = mapFile.tileinfo[NORTHWALL+*map];
+
+        if (wall)
 		{
 			clip = wallclip[wall&7][midxpix];
 			move = ( (y<<G_T_SHIFT)+clip - 1) - ob->bottom;
@@ -1010,7 +1012,9 @@ void ClipToEnds (objtype *ob)
 	// (REFKEEN) Again comparison should be unsigned
 	for (y=oldtiletop+1 ; (id0_unsigned_t)y>=ob->tiletop ; y--,map-=mapwidth)
 	{
-        if (wall = mapFile.tileinfo[SOUTHWALL+*map])
+        const auto wall = mapFile.tileinfo[SOUTHWALL+*map];
+
+        if (wall)
 		{
 			clip = wallclip[wall&7][midxpix];
 			move = ( ((y+1)<<G_T_SHIFT)-clip ) - ob->top;
@@ -1055,7 +1059,9 @@ void ClipToEastWalls (objtype *ob)
 		map = (id0_unsigned_t id0_far *)mapsegs[1] +
 			mapbwidthtable[y]/2 + ob->tileleft;
 
-        if (ob->hiteast = mapFile.tileinfo[EASTWALL+*map])
+        ob->hiteast = mapFile.tileinfo[EASTWALL+*map];
+
+        if (ob->hiteast)
 		{
 			move = ( (ob->tileleft+1)<<G_T_SHIFT ) - ob->left;
 			MoveObjHoriz (ob,move);
@@ -1084,7 +1090,9 @@ void ClipToWestWalls (objtype *ob)
 		map = (id0_unsigned_t id0_far *)mapsegs[1] +
 			mapbwidthtable[y]/2 + ob->tileright;
 
-        if (ob->hitwest = mapFile.tileinfo[WESTWALL+*map])
+        ob->hitwest = mapFile.tileinfo[WESTWALL+*map];
+
+        if (ob->hitwest)
 		{
 			move = ( (ob->tileright<<G_T_SHIFT ) -1) - ob->right;
 			MoveObjHoriz (ob,move);
@@ -1578,7 +1586,7 @@ void PlayLoopInit()
     /*BE_ST_AltControlScheme_Push();
     BE_ST_AltControlScheme_PrepareInGameControls(KbdDefs[0].button0, KbdDefs[0].button1, KbdDefs[0].up, KbdDefs[0].down, KbdDefs[0].left, KbdDefs[0].right);*/
 
-    objtype	*obj, *check;
+    //objtype	*obj, *check;
     //id0_long_t	newtime;
 
     button0held = button1held = false;

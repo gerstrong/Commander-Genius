@@ -132,7 +132,7 @@ static const char *g_sdlDOSScanCodeStrs[] = {
 };
 
 // Same, but for onscreen keyboard in non-shifted state
-static const char *g_sdlDOSScanCodeKeyboardNonShiftedStrs[] = {
+/*static const char *g_sdlDOSScanCodeKeyboardNonShiftedStrs[] = {
 	NULL, "Esc",
 	"1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "\x11",
 	NULL, "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "[", "]", "Ent",
@@ -142,10 +142,10 @@ static const char *g_sdlDOSScanCodeKeyboardNonShiftedStrs[] = {
 	NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
 	NULL, "\x18", NULL, NULL, "\x1B", NULL, "\x1A", "+", NULL, "\x19", NULL,
 	NULL, "Del",
-};
+};*/
 
 // Same but shifted
-static const char *g_sdlDOSScanCodeKeyboardShiftedStrs[] = {
+/*static const char *g_sdlDOSScanCodeKeyboardShiftedStrs[] = {
 	NULL, "Esc",
 	"!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "_", "+", "\x11",
 	NULL, "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "{", "}", "Ent",
@@ -155,10 +155,10 @@ static const char *g_sdlDOSScanCodeKeyboardShiftedStrs[] = {
 	NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
 	NULL, "\x18", NULL, NULL, "\x1B", NULL, "\x1A", "+", NULL, "\x19", NULL,
 	NULL, "Del",
-};
+};*/
 
 // One of the shifted and non-shifted variants
-static const char **g_sdlDOSScanCodeKeyboardStrs_Ptr;
+//static const char **g_sdlDOSScanCodeKeyboardStrs_Ptr;
 
 // On-screen keyboard layout definition (probably better we don't use "special" keys e.g., with scancode 0xE0 sent, even though there shouldn't be a difference)
 
@@ -298,55 +298,56 @@ static void BEL_ST_CreateTextInputTextureIfNeeded(void)
 	SDL_SetTextureBlendMode(g_sdlTextInputTexture, SDL_BLENDMODE_BLEND); // Yes there's some Alpha
 }
 */
-static void BEL_ST_RedrawKeyToBuffer(uint32_t *picPtr, int picWidth, const char *text, bool isSelected)
-{
-#if 0
-	// This can happen for space that should be skipped
-	if (!text)
-		text = "";
-#endif
 
-	/*** Draw frame ***/
-	uint32_t frameColor = isSelected ? g_sdlEGABGRAScreenColors[15] /*White*/ : g_sdlEGABGRAScreenColors[8] /*Gray*/;
-	uint32_t *currPtr = picPtr;
-	// Frame top
-	for (int currCol = 0; currCol < ALTCONTROLLER_KEYBOARD_KEY_PIXWIDTH; ++currCol, ++currPtr)
-	{
-		*currPtr = frameColor;
-	}
-	// Frame left + key + Frame right
-	currPtr += picWidth-ALTCONTROLLER_KEYBOARD_KEY_PIXWIDTH;
-	for (int currRow = 1; currRow < ALTCONTROLLER_KEYBOARD_KEY_PIXHEIGHT-1; ++currRow)
-	{
-		// Frame left pixel
-		*(currPtr++) = frameColor;
-		// Line between frame sides
-		for (int currCol = 1; currCol < ALTCONTROLLER_KEYBOARD_KEY_PIXWIDTH-1; ++currCol, ++currPtr)
-		{
-			*currPtr = g_sdlEGABGRAScreenColors[7]/*Light gray*/;
-		}
-		// Frame right pixel
-		*currPtr = frameColor;
+//static void BEL_ST_RedrawKeyToBuffer(uint32_t *picPtr, int picWidth, const char *text, bool isSelected)
+//{
+//#if 0
+//	// This can happen for space that should be skipped
+//	if (!text)
+//		text = "";
+//#endif
 
-		currPtr += picWidth-ALTCONTROLLER_KEYBOARD_KEY_PIXWIDTH+1;
-	}
-	// Frame bottom
-	for (int currCol = 0; currCol < ALTCONTROLLER_KEYBOARD_KEY_PIXWIDTH; ++currCol, ++currPtr)
-	{
-		*currPtr = frameColor;
-	}
-	/*** Draw text ***/
-	BEL_ST_RedrawTextToBuffer(picPtr + (ALTCONTROLLER_KEYBOARD_KEY_PIXWIDTH-ALTCONTROLLER_CHAR_PIX_WIDTH*strlen(text))/2 + picWidth*(ALTCONTROLLER_KEYBOARD_KEY_PIXHEIGHT-ALTCONTROLLER_CHAR_PIX_HEIGHT)/2, picWidth, text);
-	// Add some alpha channel (shouldn't be a lot)
-	currPtr = picPtr;
-	for (int currRow = 0; currRow < ALTCONTROLLER_KEYBOARD_KEY_PIXHEIGHT; ++currRow, currPtr += picWidth-ALTCONTROLLER_KEYBOARD_KEY_PIXWIDTH)
-	{
-		for (int currCol = 0; currCol < ALTCONTROLLER_KEYBOARD_KEY_PIXWIDTH; ++currCol, ++currPtr)
-		{
-		*currPtr &= 0xDFFFFFFF; // BGRA
-		}
-	}
-}
+//	/// Draw frame
+//	uint32_t frameColor = isSelected ? g_sdlEGABGRAScreenColors[15] /*White*/ : g_sdlEGABGRAScreenColors[8] /*Gray*/;
+//	uint32_t *currPtr = picPtr;
+//	// Frame top
+//	for (int currCol = 0; currCol < ALTCONTROLLER_KEYBOARD_KEY_PIXWIDTH; ++currCol, ++currPtr)
+//	{
+//		*currPtr = frameColor;
+//	}
+//	// Frame left + key + Frame right
+//	currPtr += picWidth-ALTCONTROLLER_KEYBOARD_KEY_PIXWIDTH;
+//	for (int currRow = 1; currRow < ALTCONTROLLER_KEYBOARD_KEY_PIXHEIGHT-1; ++currRow)
+//	{
+//		// Frame left pixel
+//		*(currPtr++) = frameColor;
+//		// Line between frame sides
+//		for (int currCol = 1; currCol < ALTCONTROLLER_KEYBOARD_KEY_PIXWIDTH-1; ++currCol, ++currPtr)
+//		{
+//			*currPtr = g_sdlEGABGRAScreenColors[7]/*Light gray*/;
+//		}
+//		// Frame right pixel
+//		*currPtr = frameColor;
+
+//		currPtr += picWidth-ALTCONTROLLER_KEYBOARD_KEY_PIXWIDTH+1;
+//	}
+//	// Frame bottom
+//	for (int currCol = 0; currCol < ALTCONTROLLER_KEYBOARD_KEY_PIXWIDTH; ++currCol, ++currPtr)
+//	{
+//		*currPtr = frameColor;
+//	}
+//	/*** Draw text ***/
+//	BEL_ST_RedrawTextToBuffer(picPtr + (ALTCONTROLLER_KEYBOARD_KEY_PIXWIDTH-ALTCONTROLLER_CHAR_PIX_WIDTH*strlen(text))/2 + picWidth*(ALTCONTROLLER_KEYBOARD_KEY_PIXHEIGHT-ALTCONTROLLER_CHAR_PIX_HEIGHT)/2, picWidth, text);
+//	// Add some alpha channel (shouldn't be a lot)
+//	currPtr = picPtr;
+//	for (int currRow = 0; currRow < ALTCONTROLLER_KEYBOARD_KEY_PIXHEIGHT; ++currRow, currPtr += picWidth-ALTCONTROLLER_KEYBOARD_KEY_PIXWIDTH)
+//	{
+//		for (int currCol = 0; currCol < ALTCONTROLLER_KEYBOARD_KEY_PIXWIDTH; ++currCol, ++currPtr)
+//		{
+//		*currPtr &= 0xDFFFFFFF; // BGRA
+//		}
+//	}
+//}
 /*
 static void BEL_ST_RedrawWholeTextInputUI(void)
 {
@@ -1211,8 +1212,6 @@ void BEL_ST_UpdateHostDisplay(SDL_Surface *sfc)
 
     if (g_sdlScreenMode == 3) // Text mode TODO: Broken for some reason, check!
 	{
-		static bool wereBlinkingCharsShown;
-		static bool wasBlinkingCursorShown;
 		bool areBlinkingCharsShown = (((uint64_t)(70086*SDL_GetTicks()/1000)/(1000*VGA_TXT_BLINK_VERT_FRAME_RATE)) % 2);
 		bool isBlinkingCursorShown = g_sdlTxtCursorEnabled && (((uint64_t)(70086*SDL_GetTicks()/1000)/(1000*VGA_TXT_CURSOR_BLINK_VERT_FRAME_RATE)) % 2);
         /*if (!g_sdlDoRefreshGfxOutput && (wereBlinkingCharsShown == areBlinkingCharsShown) && (wasBlinkingCursorShown == isBlinkingCursorShown))
@@ -1222,8 +1221,9 @@ void BEL_ST_UpdateHostDisplay(SDL_Surface *sfc)
 			return;
         }*/
         /// Do update
-        wereBlinkingCharsShown = areBlinkingCharsShown;
-		wasBlinkingCursorShown = isBlinkingCursorShown;
+//        static bool wereBlinkingCharsShown = areBlinkingCharsShown;
+//        static bool wasBlinkingCursorShown = isBlinkingCursorShown;
+
         void *pixels = sfc->pixels;
         //int pitch;
         //SDL_LockTexture(g_sdlTexture, NULL, &pixels, &pitch);
@@ -1433,7 +1433,7 @@ void BEL_ST_UpdateHostDisplay(SDL_Surface *sfc)
 
         uint8_t *currPalPixPtr = currPalPixPtrBase;
 
-        for(uint32_t pixY=0 ; pixY < sfc->h ; pixY++ )
+        for(int pixY=0 ; pixY < sfc->h ; pixY++ )
         {
             uint32_t *currPixPtr = currPixPtrBase + pixY*sfc->w;
 

@@ -97,7 +97,7 @@ void change_file_date(filename,dosdate,tmu_date)
   SetFileTime(hFile,&ftm,&ftLastAcc,&ftm);
   CloseHandle(hFile);
 #else
-#ifdef unix || __APPLE__
+#if defined(linux) || defined(__APPLE__)
   struct utimbuf ut;
   struct tm newdate;
   newdate.tm_sec = tmu_date.tm_sec;
@@ -125,11 +125,15 @@ int mymkdir(dirname)
     const char* dirname;
 {
     int ret=0;
-#ifdef _WIN32
+#if defined(WIN32) || defined(_WIN32)
     ret = _mkdir(dirname);
-#elif unix
+#endif
+
+#if defined(__linux__) || __linux__
     ret = mkdir (dirname,0775);
-#elif __APPLE__
+#endif
+
+#if defined(__APPLE__)
     ret = mkdir (dirname,0775);
 #endif
     return ret;
