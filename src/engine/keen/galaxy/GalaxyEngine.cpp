@@ -306,8 +306,8 @@ void GalaxyEngine::pumpEvent(const CEvent *evPtr)
 
         //if(gBehaviorEngine.mPlayers > 1)
         {
+            // Ensure the Sprite variations are correctly setup
             mSpriteVars.clear();
-
             for(int i=0 ; i<gBehaviorEngine.mPlayers ; i++ )
             {
                 mSpriteVars.push_back(i);
@@ -354,6 +354,13 @@ void GalaxyEngine::pumpEvent(const CEvent *evPtr)
     }    
     else if( dynamic_cast<const LoadGameEvent*>(evPtr) ) // If GamePlayMode is not running but loading is requested...
     {
+        // Ensure the Sprite variations are correctly setup
+        mSpriteVars.clear();
+        for(int i=0 ; i<gBehaviorEngine.mPlayers ; i++ )
+        {
+            mSpriteVars.push_back(i);
+        }
+
         std::unique_ptr<CPlayGameGalaxy> pgGalaxy(new CPlayGameGalaxy(0, mSpriteVars));
         pgGalaxy->init();
         pgGalaxy->loadGame();
