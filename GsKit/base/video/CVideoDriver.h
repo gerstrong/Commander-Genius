@@ -130,7 +130,7 @@ public:
 #ifdef USE_OPENGL
 	void enableOpenGL(bool value) { mVidConfig.mOpengl = value; }	
 #else
-    void enableOpenGL(bool value) { m_VidConfig.mOpengl = false; }
+    void enableOpenGL(bool value) { mVidConfig.mOpengl = false; }
 #endif
 
     void setRenderQuality(const std::string &value) { mVidConfig.mRenderScQuality = value; }
