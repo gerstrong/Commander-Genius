@@ -82,8 +82,6 @@ public:
 
     void setupModsDialog();
 
-    void setupDosExecDialog();
-
     void pumpEvent(const CEvent *evPtr);
     void ponderGameSelDialog(const float deltaT);
 
@@ -148,11 +146,6 @@ private:
     std::shared_ptr<CGUIBitmap> mpCurrentDownloadBmp;
     std::vector< std::shared_ptr<GsBitmap> > mpDownloadPrevievBmpVec;
     std::vector<GameCatalogueEntry> mGameCatalogue;
-
-    ////
-
-
-    std::unique_ptr<CGUIDialog> mpDosExecDialog;
 
 
     // This dialog is used for some messages serving as some sort of feedback

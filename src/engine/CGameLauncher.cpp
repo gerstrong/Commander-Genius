@@ -522,78 +522,6 @@ void CGameLauncher::setupModsDialog()
 
 
 
-struct DosExecListFiller
-{
-    std::set<std::string> list;
-
-    bool operator() (const std::string& filename) {
-        std::string ext = GetFileExtension(filename);
-        if (stringcaseequal(ext, "exe"))
-        {
-            list.insert(filename);
-        }
-        if (stringcaseequal(ext, "bat"))
-        {
-            list.insert(filename);
-        }
-
-        return true;
-    }
-};
-
-
-void CGameLauncher::setupDosExecDialog()
-{
-    const std::string dataDir = getDirectory( m_chosenGame );
-
-    // TODO: fetch the List of available patch files
-    // Get the list of ".pat" files
-    DosExecListFiller dosExecList;
-    FindFiles(dosExecList, dataDir, false, FM_REG);
-
-    if( dosExecList.list.empty() )
-    {
-        mExecFilename = "";
-        mDoneExecSelection=true;
-        return;
-    }
-
-    // If the there are not at least 2 mods to select, do not create the patch selection dialog
-    if( dosExecList.list.size() == 1 )
-    {
-        mExecFilename = *(dosExecList.list.begin());
-        mDoneExecSelection=true;
-        return;
-    }
-
-    mpDosExecDialog.reset(new CGUIDialog(GsRect<float>(0.1f, 0.1f, 0.8f, 0.85f), CGUIDialog::EXPAND)),
-    mpDosExecDialog->initEmptyBackground();
-
-
-    if(!mDosExecStrVec.empty())
-        mDosExecStrVec.clear();
-
-    mpDosExecSelList = new CGUITextSelectionList();
-
-
-    for( auto &elem : dosExecList.list )
-    {
-        const std::string dirname = GetDirName(elem);
-        std::string name = elem.substr(dirname.size()+1);
-        mDosExecStrVec.push_back(elem);
-        mpDosExecSelList->addText(name);
-    }
-
-    mpDosExecSelList->setConfirmButtonEvent(new GMDosExecSelected());
-    mpDosExecSelList->setBackButtonEvent(new GMQuit());
-
-    mpDosExecDialog->addControl(new CGUIText("Choose your executable:"), GsRect<float>(0.0f, 0.0f, 1.0f, 0.05f));
-    mpDosExecDialog->addControl(mpDosExecSelList, GsRect<float>(0.01f, 0.07f, 0.49f, 0.87f));
-
-
-    mpDosExecDialog->addControl(new GsButton( "Start >", new GMDosExecSelected() ), GsRect<float>(0.65f, 0.865f, 0.3f, 0.07f) );
-}
-
 
 void CGameLauncher::pumpEvent(const CEvent *evPtr)
 {
@@ -709,9 +637,6 @@ void CGameLauncher::ponderPatchDialog()
 {
     if(mpPatchDialog)
         mpPatchDialog->processLogic();
-
-    if(mpDosExecDialog)
-        mpDosExecDialog->processLogic();
 
     // Launch the code of the Startmenu here in case a game has been chosen
     if( mDonePatchSelection ) // Means a game has been selected
@@ -855,9 +780,6 @@ void CGameLauncher::render()
     // Do the rendering of the dialog
     if(mpPatchDialog)
         mpPatchDialog->processRendering();
-
-    if(mpDosExecDialog)
-        mpDosExecDialog->processRendering();
 
     if(mpGameStoreDialog)
         mpGameStoreDialog->processRendering();
