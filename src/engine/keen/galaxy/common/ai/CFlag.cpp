@@ -63,6 +63,18 @@ m_baseframe(0)
 
 }
 
+void CFlag::deserialize(CSaveGameController &savedGame)
+{
+  savedGame.decodeData(m_Pos.x);
+  savedGame.decodeData(m_Pos.y);
+}
+
+void CFlag::serialize(CSaveGameController &savedGame)
+{
+  savedGame.encodeData(m_Pos.x);
+  savedGame.encodeData(m_Pos.y);
+}
+
 void CFlag::getTouchedBy(CSpriteObject &theObject)
 {    
     if( getActionNumber(A_FLAG_FLIP) )

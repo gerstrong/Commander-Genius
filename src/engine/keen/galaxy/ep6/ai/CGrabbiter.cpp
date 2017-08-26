@@ -24,6 +24,24 @@ CStunnable(pmap, foeID, x, y)
 }
 
 
+void
+CGrabbiter::
+deserialize(CSaveGameController &savedGame)
+{
+    savedGame.decodeData(m_Pos.x);
+    savedGame.decodeData(m_Pos.y);
+}
+
+void
+CGrabbiter::
+serialize(CSaveGameController &savedGame)
+{
+    savedGame.encodeData(m_Pos.x);
+    savedGame.encodeData(m_Pos.y);
+}
+
+
+
 void CGrabbiter::processHungry()
 {
 

@@ -36,6 +36,24 @@ mTimer(0)
 }
 
 
+void
+CRope::
+deserialize(CSaveGameController &savedGame)
+{
+  savedGame.decodeData(m_Pos.x);
+  savedGame.decodeData(m_Pos.y);
+}
+
+void
+CRope::
+serialize(CSaveGameController &savedGame)
+{
+  savedGame.encodeData(m_Pos.x);
+  savedGame.encodeData(m_Pos.y);
+}
+
+
+
 void CRope::processActive()
 {
     

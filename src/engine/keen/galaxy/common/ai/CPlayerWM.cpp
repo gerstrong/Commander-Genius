@@ -69,6 +69,20 @@ mounted(false)
 }
 
 
+void
+CPlayerWM::
+deserialize(CSaveGameController &savedGame)
+{
+  savedGame.decodeData(mUsedGrapplingHook);
+}
+
+void
+CPlayerWM::
+serialize(CSaveGameController &savedGame)
+{
+  savedGame.encodeData(mUsedGrapplingHook);
+}
+
 /**
  * Before Keen rides on the foot we get the location where to ride
  */

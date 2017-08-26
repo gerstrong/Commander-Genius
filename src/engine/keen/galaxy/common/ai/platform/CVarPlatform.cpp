@@ -34,6 +34,24 @@ CVarPlatform::CVarPlatform(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y,
     calcBoundingBoxes();
 }
 
+
+void
+CVarPlatform::
+deserialize(CSaveGameController &savedGame)
+{
+    savedGame.decodeData(target.x);
+    savedGame.decodeData(target.y);
+}
+
+void
+CVarPlatform::
+serialize(CSaveGameController &savedGame)
+{
+    savedGame.encodeData(target.x);
+    savedGame.encodeData(target.y);
+}
+
+
 void CVarPlatform::process()
 {
     int xBlockPos = target.x - getXPosition();

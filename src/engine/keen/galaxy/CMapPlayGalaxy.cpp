@@ -291,7 +291,7 @@ void CMapPlayGalaxy::operator>>(CSaveGameController &savedGame)
 		savedGame.encodeData( it->honorPriority );
 		savedGame.encodeData( it->sprite );
 		savedGame.encodeData( it->m_ActionNumber );
-		it->serialize(savedGame);
+        it->serialize(savedGame);
 	}
 
 	// Save the map_data as it is left

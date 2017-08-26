@@ -48,15 +48,9 @@ public:
 
     void pumpEvent(const CEvent *evPtr);
 	
-	void deserialize(CSaveGameController &savedGame) 
-	{
-	  savedGame.decodeData(mUsedGrapplingHook);
-	}
+    void deserialize(CSaveGameController &savedGame);
 
-	void serialize(CSaveGameController &savedGame) 
-	{
-	  savedGame.encodeData(mUsedGrapplingHook);                  
-	}
+    void serialize(CSaveGameController &savedGame);
 
     void serialize(boost::property_tree::ptree &node)
     {
