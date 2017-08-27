@@ -15,12 +15,10 @@
 #include "engine/core/Cheat.h"
 #include "common/CInventory.h"
 #include "common/CGalaxySpriteObject.h"
-//#include "engine/core/CBehaviorEngine.h"
 #include "ep4/CMapLoaderGalaxyEp4.h"
 #include "ep5/CMapLoaderGalaxyEp5.h"
 #include "ep6/CMapLoaderGalaxyEp6.h"
 #include <base/CInput.h>
-//#include "sdl/CVideoDriver.h"
 #include "sdl/audio/music/CMusic.h"
 #include <base/utils/StringUtils.h>
 #include <memory>

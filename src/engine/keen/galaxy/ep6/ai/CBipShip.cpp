@@ -20,10 +20,10 @@ A_BIPSHIP_SMOKE = 9
 };
 
 
-const int FLY_SPEED = 30;
+constexpr int FLY_SPEED = 30;
 
-const int TIME_UNTIL_LOOK = 160;
-const int CSF_DISTANCE_TO_SHOOT = 8<<CSF;
+constexpr int TIME_UNTIL_LOOK = 160;
+constexpr int CSF_DISTANCE_TO_SHOOT = 8<<CSF;
 
 
 

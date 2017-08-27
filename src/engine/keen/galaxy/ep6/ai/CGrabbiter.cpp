@@ -58,7 +58,7 @@ void CGrabbiter::getTouchedBy(CSpriteObject& theObject)
 {
     if(getActionNumber(A_GRABBITER_NAPPING))
     {
-	return;
+        return;
     }
     
     

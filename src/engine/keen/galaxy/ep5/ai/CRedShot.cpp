@@ -20,10 +20,10 @@ A_REDSHOT_MOVE = 0,
 A_REDSHOT_SMASH = 2
 };
 
-const int MOVE_X_SPEED = 200;
-const int MOVE_Y_SPEED = 30;
+constexpr int MOVE_X_SPEED = 200;
+constexpr int MOVE_Y_SPEED = 30;
 
-const int TIME_UNTIL_SMASH = 20;
+constexpr int TIME_UNTIL_SMASH = 20;
 
 CRedShot::CRedShot(CMap* pmap, 
 		   const Uint16 foeID, 

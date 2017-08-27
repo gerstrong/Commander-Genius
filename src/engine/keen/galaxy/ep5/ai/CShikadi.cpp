@@ -39,11 +39,9 @@ A_SHIKADI_POLE_ZAPS = 8,
 A_SHIKADI_STUNNED = 10
 };
 
-const int WALK_SPEED = 25;
-
-const int TIME_UNTIL_STAND = 150;
-
-const int TIME_TO_ZAP = 30;
+constexpr int WALK_SPEED = 25;
+constexpr int TIME_UNTIL_STAND = 150;
+constexpr int TIME_TO_ZAP = 30;
   
 CShikadi::CShikadi(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
 CStunnable(pmap, foeID, x, y),

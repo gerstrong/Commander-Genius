@@ -14,10 +14,10 @@ A_BIP_SQUISHED = 5
     
     
     
-const int WALK_SPEED = 30;
+constexpr int WALK_SPEED = 30;
 
-const int STAND_TIME = 30;
-const int WALK_TIME = 300;
+constexpr int STAND_TIME = 30;
+constexpr int WALK_TIME = 300;
     
     
 CBip::CBip(CMap* pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) : 

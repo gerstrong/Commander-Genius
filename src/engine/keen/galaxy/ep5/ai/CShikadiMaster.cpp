@@ -34,10 +34,9 @@ A_MASTER_SHOOT = 4,
 A_MASTER_TELEPORT = 6
 };
 
-const int TIME_UNTIL_REACT = 100;
-
-const int TIME_UNTIL_SHOOT = 100;
-const int TIME_UNTIL_TELEPORTED = 50;
+constexpr int TIME_UNTIL_REACT = 100;
+constexpr int TIME_UNTIL_SHOOT = 100;
+constexpr int TIME_UNTIL_TELEPORTED = 50;
 
 
   

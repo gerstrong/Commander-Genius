@@ -14,7 +14,7 @@ enum FLECTACTIONS
 };
   
 
-const int WALK_SPEED = 30;
+constexpr int WALK_SPEED = 30;
   
   
 CFlect::CFlect(CMap* pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :

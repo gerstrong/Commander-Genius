@@ -13,7 +13,7 @@ A_BLOOGLET_RUN = 0,	/* Ordinary run action */
 A_BLOOGLET_STUNNED = 4
 };
 
-const int RUN_SPEED = 45;
+constexpr int RUN_SPEED = 45;
 
 
 CBlooglet::CBlooglet(CMap *pmap, const Uint16 foeID, const int actionOff, const bool carriesGem,

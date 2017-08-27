@@ -44,11 +44,10 @@ A_MINE_DETONATE = 3
 };
 
 
-const int TIME_SIT = 150;
-const int TIME_MOVE = 150;
-const int TIME_CHANGE_DIR = 150;
-
-const int MOVE_SPEED = 10;
+constexpr int TIME_SIT = 150;
+constexpr int TIME_MOVE = 150;
+constexpr int TIME_CHANGE_DIR = 150;
+constexpr int MOVE_SPEED = 10;
 
 CShikadiMine::CShikadiMine(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
 CStunnable(pmap, foeID, x, y),

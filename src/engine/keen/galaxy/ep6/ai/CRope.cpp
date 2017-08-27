@@ -21,7 +21,7 @@ A_ROPE_ACTIVE = 0,
 A_ROPE_THROWN = 1
 };
 
-const int THROW_TIME = 10;
+constexpr int THROW_TIME = 10;
 
 
 CRope::CRope(CMap* pmap, Uint32 x, Uint32 y) :

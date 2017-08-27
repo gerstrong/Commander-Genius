@@ -12,11 +12,9 @@ A_BLOOGUARD_CLUBBING = 4,
 A_BLOOGUARD_STUNNED = 8
 };
 
-const int WALK_SPEED = 30;
-
-const int CSF_DISTANCE_TO_CLUB = 6<<CSF;
-
-const int TIME_UNTIL_CLUB = 38;
+constexpr int WALK_SPEED = 30;
+constexpr int CSF_DISTANCE_TO_CLUB = 6<<CSF;
+constexpr int TIME_UNTIL_CLUB = 38;
 
 CBlooguard::CBlooguard(CMap* pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
 CStunnable(pmap, foeID, x, y),

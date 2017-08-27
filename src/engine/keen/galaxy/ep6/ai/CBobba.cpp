@@ -25,12 +25,10 @@ A_BOBBA_SHOOT = 3
 };    
     
 
-const int MOVE_X_SPEED = 30;
-
-const int SIT_TIME = 60;
-const int SHOOT_TIME = 120;
-
-const int MAX_JUMP_INERTIA = -170;
+constexpr int MOVE_X_SPEED = 30;
+constexpr int SIT_TIME = 60;
+constexpr int SHOOT_TIME = 120;
+constexpr int MAX_JUMP_INERTIA = -170;
 
 CBobba::CBobba(CMap* pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) : 
 CGalaxyActionSpriteObject(pmap, foeID, x, y, 0)

@@ -17,7 +17,7 @@ enum SLICESTARACTIONS
 A_SLICESTAR_MOVE = 0
 };
 
-const int MOVE_SPEED = 25;
+constexpr int MOVE_SPEED = 25;
   
 CSlicestar::CSlicestar(CMap *pmap, const Uint16 foeID, 
 		       const Uint32 x, const Uint32 y, 

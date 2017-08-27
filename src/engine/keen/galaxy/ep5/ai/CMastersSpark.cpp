@@ -21,7 +21,7 @@ $2CF2W #Master sparks
 
 namespace galaxy {  
 
-const int WALK_SPEED = 25;
+constexpr int WALK_SPEED = 25;
 
   
 CMastersSpark::CMastersSpark(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :

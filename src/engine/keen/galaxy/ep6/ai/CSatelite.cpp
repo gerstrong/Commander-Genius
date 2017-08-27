@@ -15,9 +15,8 @@ namespace galaxy
 {
     
 
-const int MOVE_SPEED = 40;
-
-const int TILES_UNTIL_UNMOUNT = 8;
+constexpr int MOVE_SPEED = 40;
+constexpr int TILES_UNTIL_UNMOUNT = 8;
 
 
 CSatelite::CSatelite(CMap* pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) : 

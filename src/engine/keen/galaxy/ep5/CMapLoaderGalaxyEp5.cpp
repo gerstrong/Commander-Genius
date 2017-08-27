@@ -48,13 +48,13 @@ CMapLoaderGalaxy(ObjectPtr, inventoryVec)
 // 31 seem to be the stoppers, those are not created because the platform
 // get this from the object map directly
 
-const unsigned int PLATFORM_HORIZ_ALT = 28;
-const unsigned int PLATFORM_VERT = 29;
-const unsigned int PLATFORM_HORIZ = 30;
+constexpr unsigned int PLATFORM_HORIZ_ALT = 28;
+constexpr unsigned int PLATFORM_VERT = 29;
+constexpr unsigned int PLATFORM_HORIZ = 30;
 // 31 does not count, because it's a blocker.
-const unsigned int PLATFORM_DROP = 32;
+constexpr unsigned int PLATFORM_DROP = 32;
 
-const unsigned int DIVE_SUIT = 35;
+constexpr unsigned int DIVE_SUIT = 35;
 
 bool CMapLoaderGalaxyEp5::isKeenPlayer(const int foeID)
 {

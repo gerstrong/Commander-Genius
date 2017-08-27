@@ -42,16 +42,16 @@ A_ORBATRIX_LAND = 4,
 A_ORBATRIX_SLIDE = 5
 };
 
-const int MAX_BOUNCE_BOOST = -150;
-const int FLY_SPEED = 10;
-const int HOR_SPEED = 80;
-//const int VER_SPEED = 40;
+constexpr int MAX_BOUNCE_BOOST = -150;
+constexpr int FLY_SPEED = 10;
+constexpr int HOR_SPEED = 80;
+//constexpr int VER_SPEED = 40;
 
-const int TIME_UNTIL_MOVE = 20;
-const int TIME_UNTIL_CURL = 20;
-const int TIME_UNTIL_SLIDE = 20;
-const int TIME_UNTIL_UNCURL = 200;
-const int TIME_UNTIL_FLOAT = 20;
+constexpr int TIME_UNTIL_MOVE = 20;
+constexpr int TIME_UNTIL_CURL = 20;
+constexpr int TIME_UNTIL_SLIDE = 20;
+constexpr int TIME_UNTIL_UNCURL = 200;
+constexpr int TIME_UNTIL_FLOAT = 20;
 
 COrbatrix::COrbatrix(CMap* pmap, const Uint16 foeID, Uint32 x, Uint32 y, const int sprVar) :
 CGalaxyActionSpriteObject(pmap, foeID, x, y, sprVar),

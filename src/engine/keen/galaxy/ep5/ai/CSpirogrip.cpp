@@ -53,12 +53,11 @@ enum GRIPACTIONS
     A_GRIP_MOVE_UP = 19
 };
 
-const int MOVE_SPEED = 50;
-
-const int TIME_UNTIL_SPIN = 50;
-const int TIME_UNTIL_FLY = 150;
-const int TIME_UNTIL_PAUSE = 50;
-const int TIME_UNTIL_BACKUP = 100;
+constexpr int MOVE_SPEED = 50;
+constexpr int TIME_UNTIL_SPIN = 50;
+constexpr int TIME_UNTIL_FLY = 150;
+constexpr int TIME_UNTIL_PAUSE = 50;
+constexpr int TIME_UNTIL_BACKUP = 100;
 
   
 CSpirogrip::CSpirogrip(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :

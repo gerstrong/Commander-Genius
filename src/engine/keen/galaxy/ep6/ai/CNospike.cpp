@@ -38,13 +38,11 @@ A_NOSPIKE_STUNNED = 13
 };
 
 
-const int WALK_SPEED = 30;
-const int CHARGE_SPEED = 60;
-
-const int TIME_UNTIL_WALK = 120;
-const int TIME_UNTIL_SIT = 120;
-
-const int CSF_DISTANCE_TO_CHARGE = 6<<CSF;
+constexpr int WALK_SPEED = 30;
+constexpr int CHARGE_SPEED = 60;
+constexpr int TIME_UNTIL_WALK = 120;
+constexpr int TIME_UNTIL_SIT = 120;
+constexpr int CSF_DISTANCE_TO_CHARGE = 6<<CSF;
 
 
 CNospike::CNospike(CMap* pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) : 

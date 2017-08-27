@@ -31,9 +31,8 @@ enum SPHEREFULACTIONS
     A_SPHEREFUL_STATE5 = 5,
 };
 
-const int MOVE_SPEED = 10;
-
-const int FLY_TIME = 150;
+constexpr int MOVE_SPEED = 10;
+constexpr int FLY_TIME = 150;
 
 // TODO: Floating diamonds around are still missing!
   
