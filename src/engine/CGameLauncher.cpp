@@ -583,6 +583,14 @@ void CGameLauncher::pumpEvent(const CEvent *evPtr)
         {
             mLauncherDialog.sendEvent(new CommandEvent( IC_DOWN ));
         }
+        if(mwe->amount.x < 0.0)
+        {
+            mLauncherDialog.sendEvent(new CommandEvent( IC_RIGHT ));
+        }
+        else if(mwe->amount.x > 0.0)
+        {
+            mLauncherDialog.sendEvent(new CommandEvent( IC_LEFT ));
+        }
     }
 }
 

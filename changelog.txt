@@ -1,6 +1,8 @@
 v1.9.9.5:
 ---------
 - Code cleanups (SaveController)
+- Mouse scrolling improved. It seems to work again in most of the mice.
+  Also horizontal scrolling is implemented now.
 
 v1.9.9.4:
 ---------
