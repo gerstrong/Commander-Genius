@@ -575,11 +575,11 @@ void CGameLauncher::pumpEvent(const CEvent *evPtr)
     if( const MouseWheelEvent *mwe = dynamic_cast<const MouseWheelEvent*>(evPtr) )
     {
         // Wrapper for the simple mouse scroll event
-        if(mwe->amount.y < 0.0)
+        if(mwe->amount.y > 0.0)
         {
             mLauncherDialog.sendEvent(new CommandEvent( IC_UP ));
         }
-        else if(mwe->amount.y > 0.0)
+        else if(mwe->amount.y < 0.0)
         {
             mLauncherDialog.sendEvent(new CommandEvent( IC_DOWN ));
         }

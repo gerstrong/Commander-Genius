@@ -751,14 +751,6 @@ void CInput::pollEvents()
                     gPointDevice.mPointingState.mActionButton = 1;
                     gPointDevice.mPointingState.mPos = Pos;
                 }
-                else if(Event.button.button == 4) // scroll up
-                {
-                    gEventManager.add( new MouseWheelEvent( Vector2D<float>(0.0, -1.0) ) );
-                }
-                else if(Event.button.button == 5) // scroll down
-                {
-                    gEventManager.add( new MouseWheelEvent( Vector2D<float>(0.0, 1.0) ) );
-                }
             }
 
 			break;
@@ -779,6 +771,11 @@ void CInput::pollEvents()
             }
 
 			break;
+
+        case SDL_MOUSEWHEEL:
+            gEventManager.add( new MouseWheelEvent( Vector2D<float>(float(Event.wheel.x),
+                                                                    float(Event.wheel.y)) ) );
+            break;
 
 		case SDL_MOUSEMOTION:
             transMouseRelCoord(Pos, Event.motion, activeArea);
