@@ -35,7 +35,9 @@ void replaceSlashes(std::string &text)
 {
 #ifdef WIN32
     for (std::string::iterator it = text.begin(); it != text.end(); it++)
+    {
         if (*it == '/') *it = '\\';
+    }
 #endif
 }
 
