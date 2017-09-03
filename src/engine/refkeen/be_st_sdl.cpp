@@ -24,7 +24,7 @@ static void (*g_sdlKeyboardInterruptFuncPtr)(uint8_t) = 0;
 static SDL_Joystick *g_sdlJoysticks[BE_ST_MAXJOYSTICKS];
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-static SDL_GameController *g_sdlControllers[BE_ST_MAXJOYSTICKS];
+//static SDL_GameController *g_sdlControllers[BE_ST_MAXJOYSTICKS];
 #endif
 
 typedef enum { CONTROLSCHEMEMAP_TYPE_KEYVAL = 0, CONTROLSCHEMEMAP_TYPE_HELPER } SchemeMapTypeEnumT;
@@ -53,20 +53,20 @@ typedef struct {
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 /*** These represent button states (pressed/released), although a call to BEL_ST_AltControlScheme_CleanUp zeros these out ***/
-static bool g_sdlControllersButtonsStates[BE_ST_MAXJOYSTICKS][SDL_CONTROLLER_BUTTON_MAX];
+//static bool g_sdlControllersButtonsStates[BE_ST_MAXJOYSTICKS][SDL_CONTROLLER_BUTTON_MAX];
 // We may optionally use analog axes as buttons (e.g., using stick as arrow keys, triggers as buttons)
-static bool g_sdlControllersAxesStates[BE_ST_MAXJOYSTICKS][SDL_CONTROLLER_AXIS_MAX][2];
+//static bool g_sdlControllersAxesStates[BE_ST_MAXJOYSTICKS][SDL_CONTROLLER_AXIS_MAX][2];
 
 /*** Same as above, but represent actual states of buttons and axes (even after cleaning up) ***/
-static bool g_sdlControllersActualButtonsStates[BE_ST_MAXJOYSTICKS][SDL_CONTROLLER_BUTTON_MAX];
+//static bool g_sdlControllersActualButtonsStates[BE_ST_MAXJOYSTICKS][SDL_CONTROLLER_BUTTON_MAX];
 // We may optionally use analog axes as buttons (e.g., using stick as arrow keys, triggers as buttons)
-static bool g_sdlControllersActualAxesStates[BE_ST_MAXJOYSTICKS][SDL_CONTROLLER_AXIS_MAX][2];
+//static bool g_sdlControllersActualAxesStates[BE_ST_MAXJOYSTICKS][SDL_CONTROLLER_AXIS_MAX][2];
 
 #endif
 
 #define NUM_OF_CONTROLLER_MAPS_IN_STACK 8
 
-static bool g_sdlControllerSchemeNeedsCleanUp;
+//static bool g_sdlControllerSchemeNeedsCleanUp;
 /*
 static struct {
 	BESDLControllerMap stack[SDL_CONTROLLER_BUTTON_MAX];
@@ -76,10 +76,10 @@ static struct {
 */
 // Used e.g., when a few choices should be temporarily shown during gameplay,
 // but otherwise the "current mapping" is a different one for the game itself
-static BESDLControllerMap g_sdlControllerLowPriorityMap;
+//static BESDLControllerMap g_sdlControllerLowPriorityMap;
 
 // Either g_sdlControllertoScanCodeMaps.currPtr, or &g_sdlControllertoScanCodeMaps
-static BESDLControllerMap *g_sdlControllerActualCurrPtr;
+//static BESDLControllerMap *g_sdlControllerActualCurrPtr;
 /*
 static const BESDLControllerMap g_sdlControllerToScanCodeMap_default = {
 	CONTROLSCHEMEMAP_TYPE_KEYVAL, BE_ST_SC_ENTER, // SDL_CONTROLLER_BUTTON_A
@@ -166,7 +166,7 @@ enum {
 // The index is taken off the enum above so ENSURE THESE ARE CONSISTENT!
 //
 // HACK: If this is updated, also check g_sdlCfgEntries!!!
-static const char *g_sdlControlSchemeKeyMapCfgKeyPrefixes[] = {
+/*static const char *g_sdlControlSchemeKeyMapCfgKeyPrefixes[] = {
 #ifdef REFKEEN_VER_KDREAMS
 	"altcontrolscheme_jump=",
 	"altcontrolscheme_throw=",
@@ -187,7 +187,7 @@ static const char *g_sdlControlSchemeKeyMapCfgKeyPrefixes[] = {
 #endif
 	0,
 };
-
+*/
 /*
 static SDL_GameControllerAxis g_sdlXAxisForMenuMouse, g_sdlYAxisForMenuMouse;
 
@@ -201,8 +201,8 @@ uint8_t g_sdlLastKeyScanCode;
 void BE_ST_InitAudio(void);
 void BE_ST_ShutdownAudio(void);
 void BE_ST_ShutdownGfx(void);
-static void BEL_ST_ParseConfig(void);
-static BESDLControllerMapEntry * BEL_ST_GetKeyMapPtrFromCfgVal(BESDLControllerMap *controllerMapPtr, int mappingCfgVal);
+//static void BEL_ST_ParseConfig(void);
+//static BESDLControllerMapEntry * BEL_ST_GetKeyMapPtrFromCfgVal(BESDLControllerMap *controllerMapPtr, int mappingCfgVal);
 /*
 void BE_ST_InitAll(void)
 {
@@ -369,21 +369,21 @@ void BE_ST_ExitWithErrorMsg(const char *msg)
 }
 
 // Enumerated by SDL_GameControllerButton, for most
-static const char *g_sdlControlSchemeKeyMapCfgVals[] = {
+/*static const char *g_sdlControlSchemeKeyMapCfgVals[] = {
 	"a", "b", "x", "y", 0, 0, 0, 0, 0, "lshoulder", "rshoulder", 0, 0, 0, 0,
 	"ltrigger", "rtrigger", // Actually axes but these are added as extras
-};
+};*/
 
 // Values for in-game (digital) movement
-static const char *g_sdlControlSchemeMovementMapCfgVals[] = {
+/*static const char *g_sdlControlSchemeMovementMapCfgVals[] = {
 	"dpad", "lstick", "rstick",
-};
+};*/
 
 // Values for menu mouse control
-static const char *g_sdlControlSchemeMenuMouseMapCfgVals[] = {
+/*static const char *g_sdlControlSchemeMenuMouseMapCfgVals[] = {
 	"none", "lstick", "rstick",
 };
-
+*/
 RefKeenConfig g_refKeenCfg;
 
 #ifdef REFKEEN_VER_KDREAMS
@@ -400,7 +400,7 @@ RefKeenConfig g_refKeenCfg;
 #error "FATAL ERROR: No Ref port game macro is defined!"
 #endif
 
-static void BEL_ST_ParseSetting_FullScreen(const char *keyprefix, const char *buffer)
+/*static void BEL_ST_ParseSetting_FullScreen(const char *keyprefix, const char *buffer)
 {
 	if (!strcmp(buffer, "true"))
 	{
@@ -410,8 +410,8 @@ static void BEL_ST_ParseSetting_FullScreen(const char *keyprefix, const char *bu
 	{
 		g_refKeenCfg.isFullscreen = false;
 	}
-}
-
+}*/
+/*
 static void BEL_ST_ParseSetting_FullRes(const char *keyprefix, const char *buffer)
 {
 	sscanf(buffer, "%dx%d", &g_refKeenCfg.fullWidth, &g_refKeenCfg.fullHeight);
@@ -425,7 +425,7 @@ static void BEL_ST_ParseSetting_WindowRes(const char *keyprefix, const char *buf
 static void BEL_ST_ParseSetting_DisplayNum(const char *keyprefix, const char *buffer)
 {
 	sscanf(buffer, "%d", &g_refKeenCfg.displayNum);
-}
+}*/
 /*
 static void BEL_ST_ParseSetting_SDLRendererDriver(const char *keyprefix, const char *buffer)
 {
@@ -503,7 +503,7 @@ static void BEL_ST_ParseSetting_SndSampleRate(const char *keyprefix, const char 
 	g_refKeenCfg.sndSampleRate = atoi(buffer);
 }
 */
-static void BEL_ST_ParseSetting_DisableSoundSubSystem(const char *keyprefix, const char *buffer)
+/*static void BEL_ST_ParseSetting_DisableSoundSubSystem(const char *keyprefix, const char *buffer)
 {
 	if (!strcmp(buffer, "true"))
 	{
@@ -513,8 +513,8 @@ static void BEL_ST_ParseSetting_DisableSoundSubSystem(const char *keyprefix, con
 	{
 		g_refKeenCfg.disableSoundSubSystem = false;
 	}
-}
-
+}*/
+/*
 static void BEL_ST_ParseSetting_AlternativeControlScheme(const char *keyprefix, const char *buffer)
 {
 	if (!strcmp(buffer, "true"))
@@ -548,8 +548,8 @@ static void BEL_ST_ParseSetting_AlternativeControlSchemeKeyMap(const char *keypr
 			return;
 		}
 	}
-}
-
+}*/
+/*
 static void BEL_ST_ParseSetting_AlternativeControlSchemeMovementMap(const char *keyprefix, const char *buffer)
 {
 	for (int valindex = 0; valindex < (int)(sizeof(g_sdlControlSchemeMovementMapCfgVals)/sizeof(*g_sdlControlSchemeMovementMapCfgVals)); ++valindex)
@@ -573,7 +573,7 @@ static void BEL_ST_ParseSetting_AlternativeControlSchemeMenuMouseMap(const char 
 		}
 	}
 }
-
+*/
 #ifdef BE_ST_ENABLE_FARPTR_CFG
 // HACK (cfg file may be rewritten and we don't want to remove any setting)
 static bool g_sdlIsFarPtrSegOffsetSettingRead = false;
@@ -1284,7 +1284,7 @@ static bool BEL_ST_AltControlScheme_HandleEntry(BESDLControllerMapEntry entry, b
 }
 */
 
-static void BEL_ST_AltControlScheme_CleanUp(void)
+/*static void BEL_ST_AltControlScheme_CleanUp(void)
 {
 	if (!g_sdlControllerSchemeNeedsCleanUp)
 		return;
@@ -1308,7 +1308,7 @@ static void BEL_ST_AltControlScheme_CleanUp(void)
 			dosKeyEvent.dosScanCode = BE_ST_SC_LSHIFT;
 			BEL_ST_HandleEmuKeyboardEvent(false, dosKeyEvent);
 		}
-	}
+    }*/
 	// Otherwise simulate key releases based on the mapping
 /*	else
 	{
@@ -1357,8 +1357,8 @@ static void BEL_ST_AltControlScheme_CleanUp(void)
 
 	g_sdlControllerSchemeNeedsCleanUp = false;
 */
-
-}
+/*
+}*/
 
 /*
 void BE_ST_AltControlScheme_Push(void)
@@ -1779,7 +1779,7 @@ void BE_ST_PollEvents(SDL_Event event)
 						}
 					}
 				}
-
+*/
                 /*
 				// Repeat with analog axes (ignored with text input scheme in use)
 				if (g_sdlControllerActualCurrPtr->schemeType == CONTROLSCHEME_TEXTINPUT)

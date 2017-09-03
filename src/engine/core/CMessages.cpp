@@ -383,24 +383,24 @@ bool CMessages::extractGlobalStrings()
 		case 4:
 		{
 			if(!extractEp4Strings(StringMap))
-				gLogging.textOut(RED,"This version of the game is not supported!");
+				gLogging.textOut(FONTCOLORS::RED,"This version of the game is not supported!");
 		} break;
 
 		case 5:
 		{
 			if(!extractEp5Strings(StringMap))
-				gLogging.textOut(RED,"This version of the game is not supported!");
+				gLogging.textOut(FONTCOLORS::RED,"This version of the game is not supported!");
 		} break;
 
 		case 6:
 		{
 			if(!extractEp6Strings(StringMap))
-				gLogging.textOut(RED,"This version of the game is not supported!");
+				gLogging.textOut(FONTCOLORS::RED,"This version of the game is not supported!");
 		} break;
 
 		default:
 		{
-			gLogging.textOut(RED,"This version of the game is not supported!");
+			gLogging.textOut(FONTCOLORS::RED,"This version of the game is not supported!");
 			return false;
 		}
 	}
@@ -413,7 +413,7 @@ bool CMessages::extractGlobalStrings()
 		std::map<std::string, std::string>::iterator i;
 		for( i = StringMap.begin() ; i != StringMap.end() ; i++ )
 		{
-			gpBehaviorEngine->setMessage(i->first, i->second);
+			gBehaviorEngine.setMessage(i->first, i->second);
 		}
 		gLogging.ftextOut("Loaded %d strings from the exe-file.<br>", StringMap.size());
 		return true;

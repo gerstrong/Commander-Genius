@@ -30,17 +30,17 @@ enum AMPTONACTIONS
 
 
 
-const int CSF_DISTANCE_TO_FOLLOW = 6<<CSF;
+constexpr int CSF_DISTANCE_TO_FOLLOW = 6<<CSF;
 
-const int WALK_SPEED = 25;
-const int SLIDE_SPEED = 25;
+constexpr int WALK_SPEED = 25;
+constexpr int SLIDE_SPEED = 25;
 
-const int UMOUNT_TIME = 30;
+constexpr int UMOUNT_TIME = 30;
 
-const int TIME_UNTIL_SHOOT = 500;
+constexpr int TIME_UNTIL_SHOOT = 500;
 
-const int mAmptonOffset = 0x21DC;
-const int mShikadiMasterOffset = 0x2B6C; // For Yeti shoot sprite (Keen 9)
+constexpr int mAmptonOffset = 0x21DC;
+constexpr int mShikadiMasterOffset = 0x2B6C; // For Yeti shoot sprite (Keen 9)
 
 
 
@@ -63,7 +63,7 @@ CAmpton::CAmpton(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y)
 
     mHealthPoints = 1;
 
-    auto diff = gpBehaviorEngine->mDifficulty;
+    auto diff = gBehaviorEngine.mDifficulty;
 
     mWalkSound = SOUND_AMPTONWALK0;
 
@@ -291,7 +291,7 @@ void CAmpton::processPoleSlide()
     // Check for Floor here!
     const int fall1 = mp_Map->getPlaneDataAt(1, l_x, l_y_down+(1<<CSF));
     //const int fall1 = mp_Map->getPlaneDataAt(1, l_x, l_y_down);
-    const CTileProperties &TileProp1 = gpBehaviorEngine->getTileProperties(1)[fall1];
+    const CTileProperties &TileProp1 = gBehaviorEngine.getTileProperties(1)[fall1];
     const bool leavePole = (TileProp1.bup != 0);
 
     if(leavePole)

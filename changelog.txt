@@ -1,9 +1,48 @@
+v1.9.9.5:
+---------
+- Code cleanups (SaveController)
+- Mouse scrolling improved. It seems to work again in most of the mice.
+  Also horizontal scrolling is implemented now.
+
+v1.9.9.4:
+---------
+- Fixes for better mod support
+- Standard Resolution is now at 800x600
+- Added instructions for building under Fedora
+
+v1.9.9.3:
+---------
+- Improved log responsiveness
+- More error messages are now logged in minizip code
+- Tidied up code in general
+- More C++ use
+
+v1.9.9.2:
+---------
+- Menu UI Fixes.
+- Removed Dosbox Fusion code
+- Bug fixes 
+
+v1.9.9.1:
+---------
+- More improvements on the story and finales texts of the galaxy games.
+
+v1.9.9.0:
+---------
+- Mod and engine fixes
+
 v1.9.8.8:
 ---------
 - New Horizontal borders
 - Screen now occupy colors
 - Bug fixes
 
+v1.9.8.7:
+---------
+-  Modern style option finally does something (translucent Keen in hidden areas)
+-  A lot of more and improved error catching
+-  Lots of bug fixes
+-  Improved mods compatibility
 
 v1.9.8.3:
 ---------

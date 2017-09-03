@@ -21,7 +21,8 @@ public:
             Uint32 y,
             direction_t facedir,
             CInventory &l_Inventory,
-            const int playerID);
+            const int playerID,
+            const int spriteVar);
 
 	void kill(const bool force = false);
 	void process();

@@ -28,9 +28,6 @@ mp_AttachedObject(p_attacher)
 	m_relcam.y = 0;
 	sprite = BLANKSPRITE;
 	solid = false;
-	m_attached = true;
-	m_freeze = false;
-	m_moving = true;
 
     const int camId = mp_AttachedObject->getSpriteVariantId();
 
@@ -41,7 +38,7 @@ mp_AttachedObject(p_attacher)
 
 void CCamera::cycleCamlead()
 {
-    const int numPlayers = gpBehaviorEngine->mPlayers;
+    const int numPlayers = gBehaviorEngine.mPlayers;
 
     if( numPlayers == 1 ) // For one player this doesn't make sense to change
         return;
@@ -131,7 +128,7 @@ void CCamera::process()
         setPosition(m_Pos);
     }
 
-    if(m_freeze)
+    if(mFreeze)
 		return;
 	
 	SDL_Rect gamerect = gVideoDriver.getGameResolution().SDLRect();
@@ -139,7 +136,7 @@ void CCamera::process()
 	const int maxscrolly = (mp_Map->m_height<<4) - gamerect.h - 32;
 	
 
-	if(!m_attached)
+    if(!mAttached)
 	{	// This means, that there is no attached object. Let the camera scroll freely!
         const size_t movespeed = 100;
 		if(gInput.getHoldedCommand(IC_LEFT))
@@ -156,7 +153,7 @@ void CCamera::process()
 		if(mp_AttachedObject == NULL)
 			return;
 
-		m_moving = false;
+        mMoving = false;
 
         mp_Map->mGamePlayPos = mp_AttachedObject->getMidPos();
 
@@ -166,27 +163,27 @@ void CCamera::process()
 		const Uint32 local_y = getYPosition();
 
 
-		// Make the camera move and tell if it's scrolling through the m_moving variable
+        // Make the camera move and tell if it's scrolling through the mMoving variable
 		if( attached_x > local_x )
 		{
 			moveRight( attached_x - local_x );
-			m_moving |= true;
+            mMoving |= true;
 		}
 		else if( attached_x < local_x )
 		{
 			moveLeft( local_x - attached_x );
-			m_moving |= true;
+            mMoving |= true;
 		}
 
 		if( attached_y > local_y )
 		{
 			moveDown( attached_y - local_y );
-			m_moving |= true;
+            mMoving |= true;
 		}
 		else if( attached_y < local_y )
 		{
 			moveUp( local_y - attached_y );
-			m_moving |= true;
+            mMoving |= true;
 		}
 	}
 

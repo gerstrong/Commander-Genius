@@ -33,7 +33,7 @@ m_offset(0)
     auto &keenFiles = gKeenFiles;
 
     setGameDirectory(keenFiles.gameDir);
-	setEpisode(gpBehaviorEngine->getEpisode());
+	setEpisode(gBehaviorEngine.getEpisode());
 }
 
 void CSaveGameController::setGameDirectory(const std::string& game_directory)
@@ -545,11 +545,9 @@ std::string CSaveGameController::getSlotNameXML(const std::string &filename)
     using boost::property_tree::ptree;
     ptree pt;
 
-    CSaveGameController &savedGame = *(gpSaveGameController);
-
     m_stateXMLfilename = filename;
 
-    if(!savedGame.loadXMLTree(pt))
+    if(!gSaveGameController.loadXMLTree(pt))
         return "";
 
     /// Load the nodes and retrieve the data as needed

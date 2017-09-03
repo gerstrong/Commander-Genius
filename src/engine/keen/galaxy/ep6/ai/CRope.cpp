@@ -21,7 +21,7 @@ A_ROPE_ACTIVE = 0,
 A_ROPE_THROWN = 1
 };
 
-const int THROW_TIME = 10;
+constexpr int THROW_TIME = 10;
 
 
 CRope::CRope(CMap* pmap, Uint32 x, Uint32 y) :
@@ -34,6 +34,24 @@ mTimer(0)
     setupGalaxyObjectOnMap(0x1C16, A_ROPE_THROWN);    
     solid=false;
 }
+
+
+void
+CRope::
+deserialize(CSaveGameController &savedGame)
+{
+  savedGame.decodeData(m_Pos.x);
+  savedGame.decodeData(m_Pos.y);
+}
+
+void
+CRope::
+serialize(CSaveGameController &savedGame)
+{
+  savedGame.encodeData(m_Pos.x);
+  savedGame.encodeData(m_Pos.y);
+}
+
 
 
 void CRope::processActive()

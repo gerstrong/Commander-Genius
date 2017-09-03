@@ -42,15 +42,11 @@ A_SHELLY_SMASH = 8,
 A_SHELLY_SMOKE = 10
 };
 
-const int WALK_SPEED = 10;
-
-const int JUMP_X_SPEED = 50;
-
-const int SMOKE_TIME = 40;
-
-const int MAX_JUMP_INERTIA = 150;
-
-const int CSF_DISTANCE_TO_JUMP = 6<<CSF;
+constexpr int WALK_SPEED = 10;
+constexpr int JUMP_X_SPEED = 50;
+constexpr int SMOKE_TIME = 40;
+constexpr int MAX_JUMP_INERTIA = 150;
+constexpr int CSF_DISTANCE_TO_JUMP = 6<<CSF;
   
 CShelly::CShelly(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
 CStunnable(pmap, foeID, x, y),

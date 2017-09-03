@@ -31,7 +31,7 @@ mAllowReturn(false)
     dropSpeedAcc = 5;
     hoverSpeed = DROP_MAX_SPEED_LIMIT;
 
-    auto diff = gpBehaviorEngine->mDifficulty;
+    auto diff = gBehaviorEngine.mDifficulty;
 
     if(diff > NINJA)
     {

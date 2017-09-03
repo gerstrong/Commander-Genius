@@ -67,6 +67,7 @@ void CEGAGraphicsGalaxy::createBitmapsIDs()
 	m_BitmapNameMap[2][28] = "TITLE";
 	m_BitmapNameMap[2][20] = "KEENSWATCH";
 	m_BitmapNameMap[2][30] = "KEENTHUMBSUP";
+    m_BitmapNameMap[2][0] = "HELPHAND";
 	
 	// Sprites
 	m_SpriteNameMap[2][129] = "HUDBACKGROUND";

@@ -29,7 +29,7 @@ void CPlatform::process()
 {
     CCarrier::process();
     
-	sprite = (gpBehaviorEngine->getEpisode()==2) ? OBJ_PLATFORM_DEFSPRITE_EP2 : OBJ_PLATFORM_DEFSPRITE_EP3;
+	sprite = (gBehaviorEngine.getEpisode()==2) ? OBJ_PLATFORM_DEFSPRITE_EP2 : OBJ_PLATFORM_DEFSPRITE_EP3;
 	sprite += animframe;
 
 	if (animtimer > PLATFORM_ANIM_RATE)

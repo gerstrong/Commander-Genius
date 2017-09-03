@@ -106,13 +106,13 @@ bool CMessie::tryToUnmount()
             if(infotile == NESSIE_LAND)
             {
                 // Look for the Nessie object
-                std::vector<CTileProperties> &TileProperty = gpBehaviorEngine->getTileProperties();
+                std::vector<CTileProperties> &TileProperty = gBehaviorEngine.getTileProperties();
                 CTileProperties &Tile = TileProperty[mp_Map->at(x+dx, y+dy)];
                 if( !Tile.bdown and !Tile.bup and
                         !Tile.bleft and !Tile.bright )
                 {
                     // unmount Messie!                    
-                    mounted->solid = !gpBehaviorEngine->mCheatmode.god;
+                    mounted->solid = !gBehaviorEngine.mCheatmode.god;
                     mounted->beingteleported = false;
 
                     mounted->moveToForce((x+dx)<<CSF, (y+dy)<<CSF);

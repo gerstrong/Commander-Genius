@@ -10,14 +10,14 @@
 
 #include <string>
 
-enum e_OptionKeyword
+enum class GameOption
 {
-	OPT_ALLOWPKING, OPT_KEYSTACK,
-	OPT_LVLREPLAYABILITY, OPT_RISEBONUS,
-    OPT_MODERN,
-	OPT_HUD, OPT_FLASHEFFECT,
-    OPT_SHOWFPS,
-	NUM_OPTIONS
+    ALLOWPKING,
+    KEYSTACK,
+    LVLREPLAYABILITY, RISEBONUS,
+    MODERN,
+    HUD,FLASHEFFECT,
+    SHOWFPS
 };
 
 struct stOption

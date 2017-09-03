@@ -38,12 +38,6 @@
 
 #include "keen/dreams/dreamsengine.h"
 
-#ifdef DBFUSION
-#include "dbfusion/dbFusionNgine.h"
-#endif // DBFUSION
-
-bool disallowDBFusion = false;
-
 
 
 
@@ -59,9 +53,9 @@ m_firsttime(first_time),
 m_start_game_no(start_game_no),
 m_start_level(start_level)
 {	
-    g_pSound->unloadSoundData();
+    gSound.unloadSoundData();
     // The last menu has been removed. Restore back the game status
-    gpBehaviorEngine->setPause(false);
+    gBehaviorEngine.setPause(false);
 
     gMenuController.clearMenuStack();
     letchooseagain();
@@ -159,23 +153,6 @@ bool CGameLauncher::setupMenu()
                                              0.75f,
                                              0.75f ), GsRect<float>(0.0f, 0.0f, 0.07f, 0.07f) );
     mLauncherDialog.addControl(mpGameSelecList, GsRect<float>(0.01f, 0.07f, 0.49f, 0.79f));
-
-
-#ifdef DBFUSION
-
-    GsButton *fusionShellBtn = new GsButton( "DosFusion Shell >", new GMDBFusionStart() );
-    GsButton *fusionBtn = new GsButton( "DosFusion! >", new GMDosGameFusionStart() );
-
-    if(disallowDBFusion)
-    {
-        fusionShellBtn->enable(false);
-        fusionBtn->enable(false);
-    }
-
-    mLauncherDialog.addControl( fusionShellBtn, GsRect<float>(0.01f, 0.865f, 0.3f, 0.07f) );
-    mLauncherDialog.addControl( fusionBtn, GsRect<float>(0.35f, 0.865f, 0.3f, 0.07f) );
-#endif
-
 
     #ifdef DOWNLOADER
     verifyGameStore();
@@ -398,7 +375,7 @@ void CGameLauncher::start()
     SDL_ShowCursor(SDL_ENABLE);
 
     // Set the native resolution
-    gVideoDriver.setNativeResolution(gVideoDriver.getVidConfig().m_DisplayRect);
+    gVideoDriver.setNativeResolution(gVideoDriver.getVidConfig().mDisplayRect);
 
     // In some cases especially when another game was running, the scene wasn't cleaned up.
     // We do this here
@@ -435,7 +412,7 @@ void CGameLauncher::start()
         {
             if(!mGameLauncher.setupMenu())
             {
-                gLogging.textOut(RED,"No game can be launched, because game data files are missing.<br>");
+                gLogging.textOut(FONTCOLORS::RED,"No game can be launched, because game data files are missing.<br>");
                 return 0;
             }
 
@@ -545,106 +522,9 @@ void CGameLauncher::setupModsDialog()
 
 
 
-struct DosExecListFiller
-{
-    std::set<std::string> list;
-
-    bool operator() (const std::string& filename) {
-        std::string ext = GetFileExtension(filename);
-        if (stringcaseequal(ext, "exe"))
-        {
-            list.insert(filename);
-        }
-        if (stringcaseequal(ext, "bat"))
-        {
-            list.insert(filename);
-        }
-
-        return true;
-    }
-};
-
-
-void CGameLauncher::setupDosExecDialog()
-{
-    const std::string dataDir = getDirectory( m_chosenGame );
-
-    // TODO: fetch the List of available patch files
-    // Get the list of ".pat" files
-    DosExecListFiller dosExecList;
-    FindFiles(dosExecList, dataDir, false, FM_REG);
-
-    if( dosExecList.list.empty() )
-    {
-        mExecFilename = "";
-        mDoneExecSelection=true;
-        return;
-    }
-
-    // If the there are not at least 2 mods to select, do not create the patch selection dialog
-    if( dosExecList.list.size() == 1 )
-    {
-        mExecFilename = *(dosExecList.list.begin());
-        mDoneExecSelection=true;
-        return;
-    }
-
-    mpDosExecDialog.reset(new CGUIDialog(GsRect<float>(0.1f, 0.1f, 0.8f, 0.85f), CGUIDialog::EXPAND)),
-    mpDosExecDialog->initEmptyBackground();
-
-
-    if(!mDosExecStrVec.empty())
-        mDosExecStrVec.clear();
-
-    mpDosExecSelList = new CGUITextSelectionList();
-
-
-    for( auto &elem : dosExecList.list )
-    {
-        const std::string dirname = GetDirName(elem);
-        std::string name = elem.substr(dirname.size()+1);
-        mDosExecStrVec.push_back(elem);
-        mpDosExecSelList->addText(name);
-    }
-
-    mpDosExecSelList->setConfirmButtonEvent(new GMDosExecSelected());
-    mpDosExecSelList->setBackButtonEvent(new GMQuit());
-
-    mpDosExecDialog->addControl(new CGUIText("Choose your executable:"), GsRect<float>(0.0f, 0.0f, 1.0f, 0.05f));
-    mpDosExecDialog->addControl(mpDosExecSelList, GsRect<float>(0.01f, 0.07f, 0.49f, 0.87f));
-
-
-    mpDosExecDialog->addControl(new GsButton( "Start >", new GMDosExecSelected() ), GsRect<float>(0.65f, 0.865f, 0.3f, 0.07f) );
-}
-
 
 void CGameLauncher::pumpEvent(const CEvent *evPtr)
 {
-
-#ifdef DBFUSION
-    if( dynamic_cast<const GMDBFusionStart*>(evPtr) )
-    {
-        gEventManager.add( new StartDBFusionEngine() );
-        disallowDBFusion = true;
-    }
-    else if( dynamic_cast<const GMDosGameFusionStart*>(evPtr) )
-    {
-        setChosenGame(mpSelList->getSelection());
-
-        if(m_chosenGame >= 0)
-        {
-            setupDosExecDialog();
-        }
-    }
-    else if( dynamic_cast<const GMDosExecSelected*>(evPtr) )
-    {
-        mExecFilename = mDosExecStrVec[mpDosExecSelList->getSelection()];
-        mDoneExecSelection = true;
-    }
-    else
-#endif
-
-
     #ifdef DOWNLOADER
     if( dynamic_cast<const GMDownloadDlgOpen*>(evPtr) )
     {
@@ -695,13 +575,21 @@ void CGameLauncher::pumpEvent(const CEvent *evPtr)
     if( const MouseWheelEvent *mwe = dynamic_cast<const MouseWheelEvent*>(evPtr) )
     {
         // Wrapper for the simple mouse scroll event
-        if(mwe->amount.y < 0.0)
+        if(mwe->amount.y > 0.0)
         {
             mLauncherDialog.sendEvent(new CommandEvent( IC_UP ));
         }
-        else if(mwe->amount.y > 0.0)
+        else if(mwe->amount.y < 0.0)
         {
             mLauncherDialog.sendEvent(new CommandEvent( IC_DOWN ));
+        }
+        if(mwe->amount.x < 0.0)
+        {
+            mLauncherDialog.sendEvent(new CommandEvent( IC_RIGHT ));
+        }
+        else if(mwe->amount.x > 0.0)
+        {
+            mLauncherDialog.sendEvent(new CommandEvent( IC_LEFT ));
         }
     }
 }
@@ -758,9 +646,6 @@ void CGameLauncher::ponderPatchDialog()
     if(mpPatchDialog)
         mpPatchDialog->processLogic();
 
-    if(mpDosExecDialog)
-        mpDosExecDialog->processLogic();
-
     // Launch the code of the Startmenu here in case a game has been chosen
     if( mDonePatchSelection ) // Means a game has been selected
     {
@@ -773,7 +658,7 @@ void CGameLauncher::ponderPatchDialog()
         // We have to check which Episode will be used
         const int episode = getEpisode( m_chosenGame );
 
-        gpBehaviorEngine->mPatchFname = mPatchFilename;
+        gBehaviorEngine.mPatchFname = mPatchFilename;
 
         if( episode > 0 ) // The game has to have a valid episode!
         {
@@ -813,20 +698,9 @@ void CGameLauncher::ponderPatchDialog()
         else
         {
             letchooseagain();
-            gLogging.textOut(RED,"No Suitable game was detected in this path! Please check its contents!\n");
+            gLogging.textOut(FONTCOLORS::RED,"No Suitable game was detected in this path! Please check its contents!\n");
         }
     }
-
-
-#ifdef DBFUSION
-    if(mDoneExecSelection)
-    {
-        mpDosExecDialog = nullptr;
-        gEventManager.add( new StartDBFusionEngine(mExecFilename) );
-        disallowDBFusion = true;
-    }
-#endif
-
 }
 
 
@@ -914,9 +788,6 @@ void CGameLauncher::render()
     // Do the rendering of the dialog
     if(mpPatchDialog)
         mpPatchDialog->processRendering();
-
-    if(mpDosExecDialog)
-        mpDosExecDialog->processRendering();
 
     if(mpGameStoreDialog)
         mpGameStoreDialog->processRendering();

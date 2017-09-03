@@ -1,5 +1,4 @@
 
-OPTION(DBFUSION "Dosbox Fusion" No)
 
 include_directories(${SDL_INCLUDE_DIR})
 
@@ -12,18 +11,17 @@ if(DOWNLOADER)
 endif()
 
 
-if(DBFUSION)
-    add_subdirectory(dbfusion)
-    add_definitions(-DDBFUSION)
-endif()
-
 add_subdirectory(refkeen)
 
 set(EngineSources CGameLauncher.cpp CGameLauncher.h
                    downloadgui.cpp
                    gamedownloader.cpp gamedownloader.h
-                   unzip/miniunz.c unzip/ioapi.c
-                   unzip/unzip.c)
+                   unzip/miniunz.c
+                   unzip/ioapi.c
+                   unzip/ioapi.h
+                   unzip/iowin32.h
+                   unzip/unzip.c
+                   unzip/unzip.h)
 
 IF(WIN32)
 set(EngineSources ${EngineSources} unzip/iowin32.c)

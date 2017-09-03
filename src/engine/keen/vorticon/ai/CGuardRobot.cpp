@@ -209,7 +209,7 @@ void CGuardRobot::guard_fire()
 
 void CGuardRobot::getTouchedBy(CVorticonSpriteObject &theObject)
 {
-	if ( gpBehaviorEngine->mDifficulty>=NORMAL )
+	if ( gBehaviorEngine.mDifficulty>=NORMAL )
 	{
 		if(CPlayer *player = dynamic_cast<CPlayer*>(&theObject))
 			player->kill(); // Only on normal and hard mode when keen touches it, he can die

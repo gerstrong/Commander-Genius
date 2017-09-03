@@ -24,6 +24,24 @@ CStunnable(pmap, foeID, x, y)
 }
 
 
+void
+CGrabbiter::
+deserialize(CSaveGameController &savedGame)
+{
+    savedGame.decodeData(m_Pos.x);
+    savedGame.decodeData(m_Pos.y);
+}
+
+void
+CGrabbiter::
+serialize(CSaveGameController &savedGame)
+{
+    savedGame.encodeData(m_Pos.x);
+    savedGame.encodeData(m_Pos.y);
+}
+
+
+
 void CGrabbiter::processHungry()
 {
 
@@ -40,7 +58,7 @@ void CGrabbiter::getTouchedBy(CSpriteObject& theObject)
 {
     if(getActionNumber(A_GRABBITER_NAPPING))
     {
-	return;
+        return;
     }
     
     
@@ -54,7 +72,7 @@ void CGrabbiter::getTouchedBy(CSpriteObject& theObject)
             player->m_Inventory.Item.m_special.ep6.sandwich--;
 
             // Show grabbiter message
-            showMsg( gpBehaviorEngine->getString("KEEN_GRABBITER_SLEEPY") );
+            showMsg( gBehaviorEngine.getString("KEEN_GRABBITER_SLEEPY") );
 
             setAction(A_GRABBITER_NAPPING);
             playSound(SOUND_GRABBITER_SLEEP);
@@ -62,10 +80,10 @@ void CGrabbiter::getTouchedBy(CSpriteObject& theObject)
         else
         {
             // Sound play
-            g_pSound->playSound(SOUND_GRABBITER_HUNGRY, PLAY_PAUSEALL);
+            gSound.playSound(SOUND_GRABBITER_HUNGRY, PLAY_PAUSEALL);
 
             // Show grabbiter message
-            showMsg( gpBehaviorEngine->getString("KEEN_GRABBITER_HUNGRY") );
+            showMsg( gBehaviorEngine.getString("KEEN_GRABBITER_HUNGRY") );
         }
     }
 }

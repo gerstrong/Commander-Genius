@@ -25,7 +25,7 @@ const int BLOCK_TOLERANCE_VORTICON = (2<<STC);
 void CSpriteObject::setupCollisionModel()
 {
     // In future we might more stuff here. For now only the episode number so certain are considered or ignored.
-    episode = gpBehaviorEngine->getEpisode();
+    episode = gBehaviorEngine.getEpisode();
 
     if(episode >= 4)
     {
@@ -179,7 +179,7 @@ void CSpriteObject::adjustSlopedTiles( int x, int y1, int y2, const int xspeed )
 		return;
 
 	// process the sloped tiles here. Galaxy only or special patch!!
-	if(gpBehaviorEngine->getEpisode() > 3)
+	if(gBehaviorEngine.getEpisode() > 3)
 	{
 		if(!moveSlopedTileDown(x, y2, xspeed))
 			moveSlopedTileUp(x, y1, xspeed);
@@ -191,7 +191,7 @@ bool CSpriteObject::moveSlopedTileDown( int x, int y, const int xspeed )
 	if(yinertia!=0)
 		return false;
 
-	std::vector<CTileProperties> &TileProperty = gpBehaviorEngine->getTileProperties();
+	std::vector<CTileProperties> &TileProperty = gBehaviorEngine.getTileProperties();
 
 	const Sint8 slope = TileProperty[mp_Map->at(x>>CSF, y>>CSF)].bup;
 
@@ -234,7 +234,7 @@ void CSpriteObject::moveSlopedTileUp( int x, int y, const int xspeed )
 	if(yinertia!=0)
 		return;
 
-	std::vector<CTileProperties> &TileProperty = gpBehaviorEngine->getTileProperties();
+	std::vector<CTileProperties> &TileProperty = gBehaviorEngine.getTileProperties();
 	const Sint8 slope = TileProperty[mp_Map->at(x>>CSF, y>>CSF)].bdown;
 
 	// Check first, if there is a tile on players level
@@ -323,7 +323,7 @@ bool CSpriteObject::hitdetectWithTile(const int num, const int lx, const int ly,
  */
 bool CSpriteObject::hitdetectWithTilePropertyRect(const Uint16 Property, int &lx, int &ly, const int lw, const int lh, const int res)
 {
-	std::vector<CTileProperties> &Tile = gpBehaviorEngine->getTileProperties(1);
+	std::vector<CTileProperties> &Tile = gBehaviorEngine.getTileProperties(1);
 	
 	int i,j;
 	Sint8 behavior;
@@ -361,7 +361,7 @@ bool CSpriteObject::hitdetectWithTilePropertyRect(const Uint16 Property, int &lx
 // Read only version. The detected position is not read. Just returns true and false. That's it!
 bool CSpriteObject::hitdetectWithTilePropertyRectRO(const Uint16 Property, const int lx, const int ly, const int lw, const int lh, const int res)
 {
-	std::vector<CTileProperties> &Tile = gpBehaviorEngine->getTileProperties(1);
+	std::vector<CTileProperties> &Tile = gBehaviorEngine.getTileProperties(1);
 	
 	int i,j;
 	Sint8 behavior;
@@ -389,7 +389,7 @@ bool CSpriteObject::hitdetectWithTilePropertyRectRO(const Uint16 Property, const
 
 bool CSpriteObject::hitdetectWithTilePropertyHor(const Uint16 Property, const int lxl, const int lxr, const int ly, const int res)
 {
-	std::vector<CTileProperties> &Tile = gpBehaviorEngine->getTileProperties(1);
+	std::vector<CTileProperties> &Tile = gBehaviorEngine.getTileProperties(1);
 	
 	int i;
 	Sint8 behavior;
@@ -410,7 +410,7 @@ bool CSpriteObject::hitdetectWithTilePropertyHor(const Uint16 Property, const in
 
 bool CSpriteObject::hitdetectWithTilePropertyVert(const Uint16 Property, const int lx, const int lyu, const int lyd, const int res)
 {
-    	std::vector<CTileProperties> &Tile = gpBehaviorEngine->getTileProperties(1);
+    	std::vector<CTileProperties> &Tile = gBehaviorEngine.getTileProperties(1);
 	
 	int i;
 	Sint8 behavior;
@@ -437,7 +437,7 @@ bool CSpriteObject::hitdetectWithTilePropertyVert(const Uint16 Property, const i
  */
 bool CSpriteObject::hitdetectWithTileProperty(const int Property, const int x, const int y)
 {
-	std::vector<CTileProperties> &Tile = gpBehaviorEngine->getTileProperties(1);
+	std::vector<CTileProperties> &Tile = gBehaviorEngine.getTileProperties(1);
 	const int tileID = mp_Map->getPlaneDataAt(1, x, y);
 	const Sint8 behavior = Tile[tileID].behaviour;
 	if( (behavior&0x7F) == Property ) // 0x7F is the mask which covers for foreground properties
@@ -448,7 +448,7 @@ bool CSpriteObject::hitdetectWithTileProperty(const int Property, const int x, c
 
 bool CSpriteObject::turnAroundOnCliff( int x1, int x2, int y2 )
 {
-	std::vector<CTileProperties> &TileProperty = gpBehaviorEngine->getTileProperties();
+	std::vector<CTileProperties> &TileProperty = gBehaviorEngine.getTileProperties();
 	const int x_left = (x1-(1<<STC))>>CSF;
 	const int x_right = (x2+(1<<STC))>>CSF;
 	const int y_bottom = (y2+(1<<STC))>>CSF;
@@ -546,7 +546,7 @@ bool CSpriteObject::checkMapBoundaryU(const int y1)
 
 int CSpriteObject::checkSolidR( int x1, int x2, int y1, int y2)
 {
-	std::vector<CTileProperties> &TileProperty = gpBehaviorEngine->getTileProperties();
+	std::vector<CTileProperties> &TileProperty = gBehaviorEngine.getTileProperties();
 	int blocker;
 
 	x2 += COLISION_RES;
@@ -580,7 +580,7 @@ int CSpriteObject::checkSolidR( int x1, int x2, int y1, int y2)
 int CSpriteObject::checkSolidL( int x1, int x2, int y1, int y2)
 {
 	int blocker;
-	std::vector<CTileProperties> &TileProperty = gpBehaviorEngine->getTileProperties();
+	std::vector<CTileProperties> &TileProperty = gBehaviorEngine.getTileProperties();
 
 	x1 -= COLISION_RES;
 
@@ -621,7 +621,7 @@ int CSpriteObject::checkSolidL( int x1, int x2, int y1, int y2)
 
 int CSpriteObject::checkSolidU(int x1, int x2, int y1, const bool push_mode )
 {
-	std::vector<CTileProperties> &TileProperty = gpBehaviorEngine->getTileProperties();
+	std::vector<CTileProperties> &TileProperty = gBehaviorEngine.getTileProperties();
 
 	y1 -= COLISION_RES;
 
@@ -656,7 +656,7 @@ bool CSpriteObject::checkMapBoundaryD(const int y2)
 
 int CSpriteObject::checkSolidD( int x1, int x2, int y2, const bool push_mode )
 {
-	std::vector<CTileProperties> &TileProperty = gpBehaviorEngine->getTileProperties();
+	std::vector<CTileProperties> &TileProperty = gBehaviorEngine.getTileProperties();
 
 	y2 += COLISION_RES;
 
@@ -772,7 +772,7 @@ void CSpriteObject::processMoveBitUp()
 
     if(blockedu)
     {
-        if(gpBehaviorEngine->getEpisode()<=3) // Galaxy only!
+        if(gBehaviorEngine.getEpisode()<=3) // Galaxy only!
             return;
 
         // additionally if there is a narrow space and the object might fit in, try to move it into that space

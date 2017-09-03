@@ -9,15 +9,14 @@
 #include "options.h"
 #include "fileio/CConfiguration.h"
 
+#include <base/Singleton.h>
 
 #ifndef CSETTINGS_H_
 #define CSETTINGS_H_
 
-#include "CSingleton.h"
-#define g_pSettings	CSettings::Get()
+#define gSettings	CSettings::get()
 
-
-class CSettings : public CSingleton<CSettings>
+class CSettings : public GsSingleton<CSettings>
 {
 public:
 
@@ -29,7 +28,12 @@ public:
 	bool loadGameOptions();
 	bool saveGameOptions();
 	void loadDefaultGameCfg();
-	void setOption( e_OptionKeyword opt, const std::string &menuname, const std::string &name, char value);
+
+    void setOption( const GameOption opt,
+                    const std::string &menuname,
+                    const std::string &name,
+                    char value);
+
 	const std::string getConfigFileName() const;
 	virtual ~CSettings();
 };

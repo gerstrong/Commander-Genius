@@ -64,7 +64,7 @@ void CCameraSettings::release()
 
 	gVideoDriver.saveCameraBounds(m_CameraBounds);
 
-	g_pSettings->saveDrvCfg();
+	gSettings.saveDrvCfg();
 }
 
 }

@@ -3,6 +3,7 @@
 
 #include "../../common/ai/CPlayerLevel.h"
 #include "../../common/dialog/CMessageBoxBitmapGalaxy.h"
+#include "../../menu/ComputerWrist.h"
 #include "engine/core/mode/CGameMode.h"
 #include "fileio/KeenFiles.h"
 
@@ -37,13 +38,11 @@ A_NOSPIKE_STUNNED = 13
 };
 
 
-const int WALK_SPEED = 30;
-const int CHARGE_SPEED = 60;
-
-const int TIME_UNTIL_WALK = 120;
-const int TIME_UNTIL_SIT = 120;
-
-const int CSF_DISTANCE_TO_CHARGE = 6<<CSF;
+constexpr int WALK_SPEED = 30;
+constexpr int CHARGE_SPEED = 60;
+constexpr int TIME_UNTIL_WALK = 120;
+constexpr int TIME_UNTIL_SIT = 120;
+constexpr int CSF_DISTANCE_TO_CHARGE = 6<<CSF;
 
 
 CNospike::CNospike(CMap* pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) : 
@@ -238,23 +237,11 @@ void CNospike::getTouchedBy(CSpriteObject& theObject)
     if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
     {
         if( mCanFinishGame && getActionNumber(A_NOSPIKE_STUNNED) ) // This will only happen in the Keen 8 Mod!
-        {
-            std::vector<CMessageBoxGalaxy*> msg;
-
-            msg.push_back( new CMessageBoxBitmapGalaxy( "Thanks for the rescue", gGraphics.getBitmapFromId(3), LEFT));
-            msg.push_back( new CMessageBoxBitmapGalaxy( "Null Problemo", *gGraphics.getBitmapFromStr("KEENTHUMBSUP"), RIGHT));
-
-            const std::string end_text("End of Episode.\n"
-                                       "The game will be restarted.\n"
-                                       "You can replay it again or\n"
-                                       "try another Episode for more fun!\n"
-                                       "The original epilog is under construction.");
-
-            msg.push_back( new CMessageBoxGalaxy(end_text, new EventEndGamePlay()) );
-
-            showMsgVec(msg);
-
+        {            
             dead = true;
+
+            gEventManager.add(new OpenComputerWrist(4));
+            gEventManager.add(new EventEndGamePlay());
         }
         else
         {

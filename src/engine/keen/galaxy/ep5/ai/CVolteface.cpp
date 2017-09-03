@@ -28,9 +28,8 @@ A_VOLTFACE_MOVE = 0,
 A_VOLTFACE_STUNNED = 4
 };
 
-const int MOVE_SPEED = 50;
+constexpr int MOVE_SPEED = 50;
 
-  
 CVolteface::CVolteface(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
 CStunnable(pmap, foeID, x, y),
 CMoveTarget(m_Pos, xDirection, yDirection),

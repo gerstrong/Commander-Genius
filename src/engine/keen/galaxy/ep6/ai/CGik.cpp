@@ -21,8 +21,8 @@ A_GIK_LAND = 4,
 A_GIK_SLIDE = 5
 };
 
-const int MAX_BOUNCE_BOOST = -115;
-const int HOR_SPEED = 20;
+constexpr int MAX_BOUNCE_BOOST = -115;
+constexpr int HOR_SPEED = 20;
 
 
 CGik::CGik(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
@@ -61,7 +61,7 @@ void CGik::processWalk()
 
 void CGik::processJump()
 {
-    std::vector<CTileProperties> &TileProperty = gpBehaviorEngine->getTileProperties();
+    std::vector<CTileProperties> &TileProperty = gBehaviorEngine.getTileProperties();
 
     int xMid = getXMidPos();
     int y2 = getYDownPos();

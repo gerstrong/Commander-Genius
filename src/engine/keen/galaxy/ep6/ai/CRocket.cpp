@@ -43,6 +43,28 @@ mpCarriedPlayer(nullptr)
 }
 
 
+void
+CRocket::
+deserialize(CSaveGameController &savedGame)
+{
+    savedGame.decodeData(m_Pos.x);
+    savedGame.decodeData(m_Pos.y);
+    savedGame.decodeData(target.x);
+    savedGame.decodeData(target.y);
+}
+
+void
+CRocket::
+serialize(CSaveGameController &savedGame)
+{
+    savedGame.encodeData(m_Pos.x);
+    savedGame.encodeData(m_Pos.y);
+    savedGame.encodeData(target.x);
+    savedGame.encodeData(target.y);
+}
+
+
+
 void CRocket::processSitting()
 {
 
@@ -136,7 +158,7 @@ void CRocket::getTouchedBy(CSpriteObject& theObject)
 	    else
 	    {
 		    // Tell the player he cannot climb yet
-            showMsgWithBmp(gpBehaviorEngine->getString("KEEN_KEYCARD_REQUIRED"), 29, RIGHT);
+            showMsgWithBmp(gBehaviorEngine.getString("KEEN_KEYCARD_REQUIRED"), 29, RIGHT);
 		    player->moveYDir((1<<CSF)/2);		
 	    }
 	}

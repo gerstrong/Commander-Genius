@@ -28,7 +28,8 @@ class CPlayGameGalaxy : public CPlayGame
 {
 public:
 
-    CPlayGameGalaxy(const int startlevel);
+    CPlayGameGalaxy(const int startlevel,
+                    const std::vector<int> &spriteVars);
 
     bool loadGameState();
     //bool saveGameState();
@@ -57,7 +58,6 @@ private:
     std::vector<CInventory> mInventoryVec;
     CWorldMap m_WorldMap;
     CLevelPlay m_LevelPlay;
-    CSaveGameController &m_SavedGame;
     GsBitmap m_BackgroundBitmap;
     std::list< std::shared_ptr<CMessageBoxGalaxy> > mMessageBoxes;
 

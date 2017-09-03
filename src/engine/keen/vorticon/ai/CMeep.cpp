@@ -34,7 +34,7 @@ CVorticonSpriteObject(p_map,x,y, OBJ_MEEP)
 	animframe = 0;
 	animtimer = 0;
 
-    const auto diff = gpBehaviorEngine->mDifficulty;
+    const auto diff = gBehaviorEngine.mDifficulty;
 
     if(diff==HARD)
 		mHealthPoints++;
@@ -109,10 +109,10 @@ void CMeep::process()
 		timer = 0;
 		state = MEEP_DYING;
 		dying = true;
-		g_pSound->playStereofromCoord(SOUND_SHOT_HIT, PLAY_NOW, scrx);
+		gSound.playStereofromCoord(SOUND_SHOT_HIT, PLAY_NOW, scrx);
 	}
 
-	std::vector<CTileProperties> &TileProperties = gpBehaviorEngine->getTileProperties();
+	std::vector<CTileProperties> &TileProperties = gBehaviorEngine.getTileProperties();
 
 	switch(state)
 	{

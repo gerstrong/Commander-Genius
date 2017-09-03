@@ -174,7 +174,7 @@ bool CMapLoaderGalaxy::unpackPlaneData( std::ifstream &mapFile,
             for(size_t x=0; x<Map.m_width ; ++x)
     		{
                 const int offset = stride+x;
-                word tile = plane.at(offset);
+                const word tile = plane.at(offset);
 
                 *ptr = tile;
     			ptr++;
@@ -333,13 +333,13 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
         // Start with the Background
         Map.setupEmptyDataPlanes(3, Width, Height);
 
-        gLogging.textOut("Decompressing the Map... plane 0<br>" );
+        gLogging.textOut("Decompressing the Map... plane 0 (Background)<br>" );
         ok &= unpackPlaneData(MapFile, Map, 0, Plane_Offset[0], Plane_Length[0], magic_word);
 
-        gLogging.textOut("Decompressing the Map... plane 1<br>" );
+        gLogging.textOut("Decompressing the Map... plane 1 (Foreground)<br>" );
         ok &= unpackPlaneData(MapFile, Map, 1, Plane_Offset[1], Plane_Length[1], magic_word);
 
-        gLogging.textOut("Decompressing the Map... plane 2<br>" );
+        gLogging.textOut("Decompressing the Map... plane 2 (Infolayer)<br>" );
         ok &= unpackPlaneData(MapFile, Map, 2, Plane_Offset[2], Plane_Length[2], magic_word);
 
 
@@ -360,6 +360,7 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
     }
     else
     {
+        gLogging.ftextOut("Error while trying to open the \"%s\" file!", gamemapfile.c_str() );
         return false;
     }
 
@@ -368,7 +369,7 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
     Map.drawAll();
     gVideoDriver.updateScrollBuffer(Map.m_scrollx, Map.m_scrolly);
 
-    gLogging.textOut("Map got loaded succesfully!");
+    gLogging.textOut("Map got loaded successfully!");
 
     return true;
 }
@@ -390,7 +391,7 @@ void CMapLoaderGalaxy::spawnFoes(CMap &Map)
 	if(!m_ObjectPtr.empty())
 		m_ObjectPtr.clear();
 
-    const int numPlayers = gpBehaviorEngine->mPlayers;
+    const int numPlayers = gBehaviorEngine.mPlayers;
 
 	// he we go to the adding objects
 	Map.mNumFuses = 0;

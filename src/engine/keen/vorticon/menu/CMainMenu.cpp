@@ -31,7 +31,7 @@ void MainMenu::createVorticonMenu( const bool openedGamePlay )
 {
 
 #if defined (SINGLEPLAYER)
-	gpBehaviorEngine->mPlayers = 1;
+	gBehaviorEngine.mPlayers = 1;
     Button *button = new Button( "New Game",
 										new OpenMenuEvent(new CDifficultySelection) );
 #else

@@ -23,13 +23,13 @@ $3092W  #Babobba napping
 $30B0W  #Babobba napping
 */    
 
-const int MOVE_X_SPEED = 30;
+constexpr int MOVE_X_SPEED = 30;
 
-const int SIT_TIME = 80;
-const int NAP_TIME = 300;
-const int SHOOT_TIME = 10;
+constexpr int SIT_TIME = 80;
+constexpr int NAP_TIME = 300;
+constexpr int SHOOT_TIME = 10;
 
-const int MAX_JUMP_INERTIA = -120;
+constexpr int MAX_JUMP_INERTIA = -120;
 
 
 enum BABOBBAACTIONS
@@ -43,7 +43,7 @@ A_BABOBBA_NAPPING = 6
 };
 
 
-const int CSF_DISTANCE_TO_FIRE = 7<<CSF;
+constexpr int CSF_DISTANCE_TO_FIRE = 7<<CSF;
 
 CBabobba::CBabobba(CMap* pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) : 
 CStunnable(pmap, foeID, x, y),

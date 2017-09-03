@@ -9,15 +9,7 @@ public:
     GalaxyButton(const std::string& text,
                  CEvent *ev);
 
-    void drawEnabledButton(GsWeakSurface &blitsfc,
-                           const SDL_Rect &lRect,
-                           const bool alternate);
-
-    virtual void processRender(const GsRect<float> &RectDispCoordFloat);
-
-private:
-
-    void setupButtonSurface();
+    virtual void processRender(const GsRect<float> &RectDispCoordFloat);   
 };
 
 #endif /* __GALAXYBUTTON_H__ */

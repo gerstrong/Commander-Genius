@@ -14,26 +14,26 @@
 #include "CPlayer.h"
 #include <vector>
 
-#define FOOB_WALK_SPEED      15
-#define FOOB_WALK_ANIM_RATE  4
+const int FOOB_WALK_SPEED  =    15;
+const int FOOB_WALK_ANIM_RATE =  4;
 
-#define FOOB_FLEE_SPEED      77
-#define FOOB_FLEE_ANIM_RATE  1
+const int FOOB_FLEE_SPEED   =   77;
+const int FOOB_FLEE_ANIM_RATE =  1;
 
-#define FOOB_SPOOK_SHOW_TIME    12
+const int FOOB_SPOOK_SHOW_TIME =   12;
 
-#define FOOB_HARDMODE_BLOCK_TIME	35
+const int FOOB_HARDMODE_BLOCK_TIME = 	35;
 
-#define FOOB_EXPLODE_ANIM_RATE  8
+const int FOOB_EXPLODE_ANIM_RATE =  8;
 
-#define FOOB_SPOOK_TIME         40
-#define FOOB_RELAX_TIME         400
+const int FOOB_SPOOK_TIME    =     40;
+const int FOOB_RELAX_TIME    =     400;
 
-#define FOOB_WALK_LEFT_FRAME    93
-#define FOOB_WALK_RIGHT_FRAME   95
-#define FOOB_SPOOK_FRAME        97
-#define FOOB_EXPLODE_FRAME      97
-#define FOOB_DEAD_FRAME         101
+const int FOOB_WALK_LEFT_FRAME =   93;
+const int FOOB_WALK_RIGHT_FRAME =  95;
+const int FOOB_SPOOK_FRAME = 97;
+const int FOOB_EXPLODE_FRAME =     97;
+const int FOOB_DEAD_FRAME    =     101;
 
 class CFoob : public CVorticonSpriteObject
 {
@@ -52,6 +52,7 @@ private:
 		FOOB_EXPLODE,
 		FOOB_DEAD
 	} state;
+
 	direction_t dir;
 
 	int animframe, animtimer;

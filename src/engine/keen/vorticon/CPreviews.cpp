@@ -56,7 +56,7 @@ int CPreviews::openNextScene()
 
 
         std::string filename = "previews.ck";
-		filename += itoa(gpBehaviorEngine->getEpisode());
+		filename += itoa(gBehaviorEngine.getEpisode());
 
         const std::string fullFname = getResourceFilename( filename, gKeenFiles.gameDir, true, false);
 

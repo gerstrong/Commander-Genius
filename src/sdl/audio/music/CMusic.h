@@ -20,10 +20,11 @@
 #include <memory>
 #include <base/GsEvent.h>
 
-#include "CSingleton.h"
-#define g_pMusicPlayer CMusic::Get()
+#include <base/Singleton.h>
 
-class CMusic : public CSingleton<CMusic>
+#define gMusicPlayer CMusic::get()
+
+class CMusic : public GsSingleton<CMusic>
 {
 public:
 

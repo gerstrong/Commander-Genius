@@ -63,7 +63,7 @@ GalaxyMenu(GsRect<float>(0.15f, 0.20f, 0.65f, 0.55f) )
 		List.push_back( itoa (i) );
 
     mpFPSSelection = new NumberControl( "FPS", 10, 120, 10, 60 );
-	mpMenuDialog->addControl( mpFPSSelection );
+    //mpMenuDialog->addControl( mpFPSSelection );
 
     mpGameResSelection = new ComboSelection( "GameRes",
         filledStrList(1, "?x?") );
@@ -111,7 +111,7 @@ GalaxyMenu(GsRect<float>(0.15f, 0.20f, 0.65f, 0.55f) )
     mpMenuDialog->addControl( mpRenderScaleQualitySel );
 
     mpVPadSwitch  = new Switch( "VirtPad" );
-    mpMenuDialog->addControl( mpVPadSwitch );    
+    //mpMenuDialog->addControl( mpVPadSwitch );
 
 
     mpSFXSwitch = new Switch( "Special FX" );
@@ -149,7 +149,7 @@ void CVideoSettings::refresh()
 	mpSFXSwitch->enable( mUserVidConf.m_special_fx );	
 
     // TODO: find a way to indicate a color
-    mpBorderColorSwitch->enable( false );
+    mpBorderColorSwitch->enable( mUserVidConf.mBorderColorsEnabled );
 
     mpHorizBordersSelection->setSelection( mUserVidConf.mHorizBorders );
 
@@ -175,17 +175,17 @@ void CVideoSettings::refresh()
 
 	std::string resStr;
 
-	resStr = itoa(mUserVidConf.m_DisplayRect.w);
+	resStr = itoa(mUserVidConf.mDisplayRect.w);
 	resStr += "x";
-	resStr += itoa(mUserVidConf.m_DisplayRect.h);        
+	resStr += itoa(mUserVidConf.mDisplayRect.h);        
 	mpResolutionSelection->setSelection(resStr);        
 
 
     mpGameResSelection->setList( GamesResList, NUM_GAME_RESOLUTIONS );
 
-    resStr = itoa(mUserVidConf.m_GameRect.w);
+    resStr = itoa(mUserVidConf.mGameRect.w);
     resStr += "x";
-    resStr += itoa(mUserVidConf.m_GameRect.h);
+    resStr += itoa(mUserVidConf.mGameRect.h);
     mpGameResSelection->setSelection(resStr);
 
 
@@ -213,10 +213,10 @@ void CVideoSettings::release()
     std::string scalerStr = mpFilterSelection->getSelection();
 
     const std::string res = mpResolutionSelection->getSelection();
-    sscanf( res.c_str(), "%hux%hux", &mUserVidConf.m_DisplayRect.w, &mUserVidConf.m_DisplayRect.h );
+    sscanf( res.c_str(), "%hux%hux", &mUserVidConf.mDisplayRect.w, &mUserVidConf.mDisplayRect.h );
 
     const std::string GameResStr = mpGameResSelection->getSelection();
-    sscanf( GameResStr.c_str(), "%hux%hux", &mUserVidConf.m_GameRect.w, &mUserVidConf.m_GameRect.h );
+    sscanf( GameResStr.c_str(), "%hux%hux", &mUserVidConf.mGameRect.w, &mUserVidConf.mGameRect.h );
 
 	int w, h;
 	const std::string aspect = mpAspectSelection->getSelection();
@@ -246,20 +246,22 @@ void CVideoSettings::release()
 #endif
 
 #if defined(CAANOO) || defined(WIZ) || defined(DINGOO) || defined(NANONOTE) || defined(ANDROID)
-	mUserVidConf.m_DisplayRect.w = 320;
-	mUserVidConf.m_DisplayRect.h = 200;
+	mUserVidConf.mDisplayRect.w = 320;
+	mUserVidConf.mDisplayRect.h = 200;
 #endif
 
 
 	mUserVidConf.m_special_fx = mpSFXSwitch->isEnabled();
 
-    // TODO: Better way to setup colors in the menu
+    // TODO: Find a better way to setup colors in the menu
     if(mpBorderColorSwitch->isEnabled())
     {
         mUserVidConf.mBorderColors.r = 0x00;
         mUserVidConf.mBorderColors.g = 0xAA;
         mUserVidConf.mBorderColors.b = 0xAA;
     }
+
+    mUserVidConf.mBorderColorsEnabled = mpBorderColorSwitch->isEnabled();
 
     mUserVidConf.mHorizBorders = mpHorizBordersSelection->getSelection();
 
@@ -272,7 +274,7 @@ void CVideoSettings::release()
 	// At this point we also must apply and save the settings
 	if( !gVideoDriver.applyMode() )
 	{
-        g_pSettings->loadDrvCfg(); // If it fails load the old settings
+        gSettings.loadDrvCfg(); // If it fails load the old settings
 		return;
 	}		
 
@@ -282,7 +284,7 @@ void CVideoSettings::release()
 		gVideoDriver.start();
 	}
 	
-	g_pSettings->saveDrvCfg();
+	gSettings.saveDrvCfg();
 
     gMenuController.updateGraphics();
 }

@@ -78,7 +78,7 @@ void CEndingEp1::ReturnsToShip()
 		m_mustsetup = false;
 	}
 
-	if(m_Player[0].mpCamera->m_moving)
+	if(m_Player[0].mpCamera->mMoving)
 	{
 		m_starttime = gTimer.getTicks();
 		m_Player[0].processCamera();

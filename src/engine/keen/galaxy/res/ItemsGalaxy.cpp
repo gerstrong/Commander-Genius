@@ -23,7 +23,7 @@ void stItemGalaxy::reset()
 
     m_keycards = 0;
 
-    const int ep = gpBehaviorEngine->getEpisode();
+    const int ep = gBehaviorEngine.getEpisode();
 
     if(ep == 4)
     {
@@ -46,7 +46,7 @@ void stItemGalaxy::triggerAllItemsCheat()
     m_bullets = 99;
     m_gem.fillup();
 
-    const int ep = gpBehaviorEngine->getEpisode();
+    const int ep = gBehaviorEngine.getEpisode();
 
     if(ep == 4)
     {
@@ -82,7 +82,7 @@ void stItemGalaxy::operator>>(boost::property_tree::ptree &invNode)
     invNode.put("keycards", m_keycards);
     invNode.put("fuse_levels_completed", fuse_levels_completed);
 
-    const auto ep = gpBehaviorEngine->getEpisode();
+    const auto ep = gBehaviorEngine.getEpisode();
     if(ep == 4)
     {
        invNode.put("elders", m_special.ep4.elders);
@@ -118,7 +118,7 @@ void stItemGalaxy::operator<<(boost::property_tree::ptree &invNode)
     m_keycards = invNode.get<int>("keycards", 0);
     fuse_levels_completed = invNode.get<int>("fuse_levels_completed", 0);
 
-    const auto ep = gpBehaviorEngine->getEpisode();
+    const auto ep = gBehaviorEngine.getEpisode();
     if(ep == 4)
     {
        m_special.ep4.elders = invNode.get<int>("elders", 0);

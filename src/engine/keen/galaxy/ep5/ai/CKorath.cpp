@@ -29,9 +29,8 @@ A_KORATH_SIT = 4,
 A_KORATH_STUNNED = 5
 };
 
-const int TIME_TO_SIT = 50;
-
-const int WALK_SPEED = 25;
+constexpr int TIME_TO_SIT = 50;
+constexpr int WALK_SPEED = 25;
   
 CKorath::CKorath(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
 CStunnable(pmap, foeID, x, y),
@@ -118,7 +117,7 @@ void CKorath::getTouchedBy(CSpriteObject &theObject)
         {
             dead = true;
             setAction(A_KORATH_STUNNED);
-            g_pSound->playSound(SOUND_FUSE_BREAK);
+            gSound.playSound(SOUND_FUSE_BREAK);
         }
         else
         {

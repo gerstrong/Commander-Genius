@@ -2,6 +2,8 @@
 #include <base/CInput.h>
 #include <base/utils/StringUtils.h>
 #include <graphics/GsGraphics.h>
+#include <graphics/effects/CColorMerge.h>
+#include <engine/core/CBehaviorEngine.h>
 
 #include <sstream>
 
@@ -42,46 +44,73 @@ ComputerWrist::ComputerWrist(const int ep) :
     mHandBmp.scaleTo(handBmpSize);
 
 
-    GsRect<Uint16> upperBorderBmpSize;
-    mUpperBorderBmp = *gGraphics.getBitmapFromStr("HELP_UPPERBORDER");
-    upperBorderBmpSize.w = mUpperBorderBmp.width();
-    upperBorderBmpSize.h = mUpperBorderBmp.height();
-    mUpperBorderBmp.scaleTo(upperBorderBmpSize);
+    if(ep != 6)
+    {
 
-    GsRect<Uint16> leftBorderBmpSize;
-    mLeftBorderBmp = *gGraphics.getBitmapFromStr("HELP_LEFTBORDER");
-    leftBorderBmpSize.w = mLeftBorderBmp.width();
-    leftBorderBmpSize.h = mLeftBorderBmp.height();
-    mLeftBorderBmp.scaleTo(leftBorderBmpSize);
+        GsRect<Uint16> upperBorderBmpSize;
+        mUpperBorderBmp = *gGraphics.getBitmapFromStr("HELP_UPPERBORDER");
+        upperBorderBmpSize.w = mUpperBorderBmp.width();
+        upperBorderBmpSize.h = mUpperBorderBmp.height();
+        mUpperBorderBmp.scaleTo(upperBorderBmpSize);
 
-    GsRect<Uint16> rightBorderBmpSize;
-    mRightBorderBmp = *gGraphics.getBitmapFromStr("HELP_RIGHTBORDER");
-    rightBorderBmpSize.w = mRightBorderBmp.width();
-    rightBorderBmpSize.h = mRightBorderBmp.height();
-    mRightBorderBmp.scaleTo(rightBorderBmpSize);
+        GsRect<Uint16> leftBorderBmpSize;
+        mLeftBorderBmp = *gGraphics.getBitmapFromStr("HELP_LEFTBORDER");
+        leftBorderBmpSize.w = mLeftBorderBmp.width();
+        leftBorderBmpSize.h = mLeftBorderBmp.height();
+        mLeftBorderBmp.scaleTo(leftBorderBmpSize);
 
-    GsRect<Uint16> bottomBorderBmpSize;
-    mBottomBorderBmp = *gGraphics.getBitmapFromStr("HELP_LOWERBORDER");
-    bottomBorderBmpSize.w = mBottomBorderBmp.width();
-    bottomBorderBmpSize.h = mBottomBorderBmp.height();
-    mBottomBorderBmp.scaleTo(bottomBorderBmpSize);
+        GsRect<Uint16> rightBorderBmpSize;
+        mRightBorderBmp = *gGraphics.getBitmapFromStr("HELP_RIGHTBORDER");
+        rightBorderBmpSize.w = mRightBorderBmp.width();
+        rightBorderBmpSize.h = mRightBorderBmp.height();
+        mRightBorderBmp.scaleTo(rightBorderBmpSize);
 
+
+
+
+        GsRect<Uint16> bottomBorderBmpSize;
+        mBottomBorderBmp = *gGraphics.getBitmapFromStr("HELP_LOWERBORDER");
+        bottomBorderBmpSize.w = mBottomBorderBmp.width();
+        bottomBorderBmpSize.h = mBottomBorderBmp.height();
+        mBottomBorderBmp.scaleTo(bottomBorderBmpSize);
+
+        GsRect<Uint16> lowerBorderBmpSize;
+        mLowerBorderControlBmp = *gGraphics.getBitmapFromStr("HELP_LOWERBORDERCONTROL");
+        lowerBorderBmpSize.w = mLowerBorderControlBmp.width();
+        lowerBorderBmpSize.h = mLowerBorderControlBmp.height();
+        mLowerBorderControlBmp.scaleTo(lowerBorderBmpSize);
+
+    }
 
     // NOTE: The index is always at six
     mBmpIndex = 6;
 
-
     GsFont &font = gGraphics.getFont(mFontId);
     GsWeakSurface blitsfc(gVideoDriver.getBlitSurface());
 
-    const int numLines = (blitsfc.height() - (mUpperBorderBmp.height() + mBottomBorderBmp.height()))/font.getPixelTextHeight();
+    int numLines = blitsfc.height();
 
-    for(int i=0 ; i < numLines ; i++)
+    if( ep != 6 )
     {
-        mMinPos.push_back(mLeftBorderBmp.width());
-        mMaxPos.push_back(blitsfc.width() - (mLeftBorderBmp.width() + mRightBorderBmp.width() + 11) );
+        numLines = (blitsfc.height() - (mUpperBorderBmp.height() + mBottomBorderBmp.height()))/font.getPixelTextHeight();
+
+        for(int i=0 ; i < numLines ; i++)
+        {
+            mMinPos.push_back(mLeftBorderBmp.width()+2);
+            mMaxPos.push_back(blitsfc.width() - (mLeftBorderBmp.width() + mRightBorderBmp.width() + 9) );
+        }
+    }
+    else
+    {
+        for(int i=0 ; i < numLines ; i++)
+        {
+            mMinPos.push_back(2);
+            mMaxPos.push_back(blitsfc.width());
+        }
     }
 
+    CColorMerge *pColorMergeFX = new CColorMerge(16);
+    gEffectController.setupEffect(pColorMergeFX);
 }
 
 ComputerWrist::ComputerWrist(const int ep, const int section) :
@@ -142,6 +171,16 @@ void ComputerWrist::ponderMainMenu(const float deltaT)
     if( gInput.getPressedCommand(IC_JUMP) || gInput.getPressedCommand(IC_STATUS) )
     {
         mSection = mSelection;
+
+        // Strange cross mapping of the selection against Section to load
+        switch(mSelection)
+        {
+            case 1: mSection = 2; break;
+            case 2: mSection = 1; break;
+            case 4: mSection = 3; break;
+            default: break;
+        }
+
         mSectionPage = 0;
         mCurrentTextLines = gGameText.readPage(mSection, mSectionPage);
         mNumPagesOfThisSection = gGameText.getNumPages(mSection);
@@ -167,6 +206,8 @@ void ComputerWrist::parseText()
 {
     GsWeakSurface blitsfc(gVideoDriver.getBlitSurface());
 
+    int ep = gBehaviorEngine.getEpisode();
+
     //SDL_Rect lRect;
     //lRect.h = blitsfc.height();
     //lRect.w = blitsfc.width()-(mLeftBorderBmp.width()+mRightBorderBmp.width());
@@ -184,14 +225,16 @@ void ComputerWrist::parseText()
 
     static std::map<char, Uint32> wristColorMap =
     {
-        {'b', 0x0000FF},
+        {'b', 0x55FFFF},
         {'e', 0xFCFC54},
+        {'f', 0xFFFFFF},
+        {'B', 0x55FFFF},
+        {'E', 0xFCFC54},
         {'F', 0xFFFFFF},
-
     };
 
 
-    Uint32 color = 0xFFFF00;
+    Uint32 color = 0xFCFC54;
 
     // Get the text that is actually used
     for(const auto &line : mCurrentTextLines)
@@ -201,6 +244,11 @@ void ComputerWrist::parseText()
         if(skipmode && line[0] == '^')
         {
             Font.setupColor(color);
+            skipmode = false;
+        }
+
+        if(skipmode && line[0] != '^')
+        {
             skipmode = false;
         }
 
@@ -220,7 +268,6 @@ void ComputerWrist::parseText()
             }
             else if(line[1] == 'c')
             {
-                // TODO: Color detection
                 const char colorCode = line[2];
                 color = wristColorMap[colorCode];
                 Font.setupColor(color);
@@ -259,9 +306,29 @@ void ComputerWrist::parseText()
                     cursorPos.x = mMinPos[cursorPos.y];
                 }
 
-                Font.drawFont(blitsfc.getSDLSurface(), word, cursorPos.x, cursorPos.y*fontHeight+mUpperBorderBmp.height());
+                // There might be a change of color
+                if(word[0] == '^')
+                {
+                    if(word[1] == 'c')
+                    {
+                        const char colorCode = word[2];
+                        color = wristColorMap[colorCode];
+                        Font.setupColor(color);
+                    }
+                }
+                else
+                {
+                    if(ep != 6)
+                    {
+                        Font.drawFont(blitsfc.getSDLSurface(), word, cursorPos.x, cursorPos.y*fontHeight+mUpperBorderBmp.height()+2);
+                    }
+                    else
+                    {
+                        Font.drawFont(blitsfc.getSDLSurface(), word, cursorPos.x, cursorPos.y*fontHeight+2);
+                    }
 
-                cursorPos.x += (wordWidth+Font.getWidthofChar(' '));
+                    cursorPos.x += (wordWidth+Font.getWidthofChar(' '));
+                }
             }
 
             cursorPos.y++;
@@ -274,6 +341,8 @@ void ComputerWrist::parseGraphics()
 {
     std::stringstream ss;
 
+    int ep = gBehaviorEngine.getEpisode();
+
     int x,y,chunk;
     GsWeakSurface blitsfc(gVideoDriver.getBlitSurface());
 
@@ -282,6 +351,32 @@ void ComputerWrist::parseGraphics()
 
     const auto fontHeight = gGraphics.getFont(mFontId).getPixelTextHeight();
     const auto spaceWidth = gGraphics.getFont(mFontId).getWidthofChar(' ');
+
+    if(ep != 6)
+    {
+        for(auto &minPos : mMinPos)
+        {
+            minPos = mLeftBorderBmp.width()+2;
+        }
+
+        for(auto &maxPos : mMaxPos)
+        {
+            maxPos = blitsfc.width() - (mLeftBorderBmp.width() + mRightBorderBmp.width() + 9);
+        }
+    }
+    else
+    {
+        for(auto &minPos : mMinPos)
+        {
+            minPos = 2;
+        }
+
+        for(auto &maxPos : mMaxPos)
+        {
+            maxPos = blitsfc.width();
+        }
+
+    }
 
     for(const auto &line : mCurrentTextLines)
     {
@@ -307,10 +402,19 @@ void ComputerWrist::parseGraphics()
                 const auto bmpW = bmp.width();
 
                 // Got the bitmap, block the matrix at that part
-                for(int i=y ; i<y+bmpH ; i++)
+
+                int minHeight = y-fontHeight;
+
+                if(minHeight < 0)
+                {
+                    minHeight = 0;
+                }
+
+                for(int i=minHeight ; i<y+bmpH ; i++)
                 {
                     // Wrap left side text
-                    if((x+bmpW)/2 < lRect.w/2)
+                    //if((x+bmpW)/2 < lRect.w/2)
+                    if((x+bmpW) < lRect.w/2)
                     {
                         // Left hand wrap
                         for(int j=x ; j<x+bmpW ; j++)
@@ -322,10 +426,10 @@ void ComputerWrist::parseGraphics()
                                 mMinPos[i/fontHeight] = j+spaceWidth+8;
                             }
                         }
-                    }
+                    }                                        
                     else    // Wrap right side text
                     {
-                        for(int j=x ; j<spaceWidth+bmpW ; j++)
+                        for(int j=x ; j<x+spaceWidth+bmpW ; j++)
                         {
                             auto curMaxPos = mMaxPos[i/fontHeight];
 
@@ -356,18 +460,9 @@ void ComputerWrist::renderPage()
 
     Font.setupColor(0xFFFFFF);
 
-    Font.drawFontCentered( blitsfc.getSDLSurface(), "Under Construction! Press Back (Esc)...", lRect.x, lRect.w, lRect.y, false);
-
-    //int linePos = 0;
-
     lRect.h = Font.getPixelTextHeight();
 
     lRect.x = 0;    lRect.y = 0;
-
-    //const auto screenW = blitsfc.width() - (mRightBorderBmp.width()+mLeftBorderBmp.width());
-    //const auto screenH = blitsfc.height() - (mUpperBorderBmp.height()+mBottomBorderBmp.height());
-
-    //const auto height = Font.getPixelTextHeight();
 
     // Bring borders to the screen
     renderBorders();
@@ -384,11 +479,21 @@ void ComputerWrist::renderBorders()
 {
     GsWeakSurface blitsfc(gVideoDriver.getBlitSurface());
 
-    mUpperBorderBmp.draw(0, 0);
-    mLeftBorderBmp.draw(0, mUpperBorderBmp.height());
+    int ep = gBehaviorEngine.getEpisode();
 
-    mRightBorderBmp.draw(blitsfc.width()-mRightBorderBmp.width(), mUpperBorderBmp.height());
-    mBottomBorderBmp.draw(mLeftBorderBmp.width(), mLeftBorderBmp.height());
+    if(ep != 6)
+    {
+        mUpperBorderBmp.draw(0, 0);
+        mLeftBorderBmp.draw(0, mUpperBorderBmp.height());
+
+        mRightBorderBmp.draw(blitsfc.width()-mRightBorderBmp.width(), mUpperBorderBmp.height());
+        mBottomBorderBmp.draw(mLeftBorderBmp.width(), mLeftBorderBmp.height());
+
+        if(mSection != -1)
+        {
+            mLowerBorderControlBmp.draw(mLeftBorderBmp.width(), mLeftBorderBmp.height()+mUpperBorderBmp.height()-mLowerBorderControlBmp.height() );
+        }
+    }
 }
 
 void ComputerWrist::renderMainMenu()

@@ -21,7 +21,7 @@ m_speed(speed)
 	owner.obj_type = byType;
 	owner.ID = byID;
 
-	size_t Episode = gpBehaviorEngine->getEpisode();
+	size_t Episode = gBehaviorEngine.getEpisode();
 	if(Episode == 1) sprite = OBJ_RAY_DEFSPRITE_EP1;
 	else if(Episode == 2) sprite = OBJ_RAY_DEFSPRITE_EP2;
 	else if(Episode == 3) sprite = OBJ_RAY_DEFSPRITE_EP3;
@@ -33,7 +33,7 @@ m_speed(speed)
 	state = RAY_STATE_FLY;
 	inhibitfall = true;
 
-	std::vector<CTileProperties> &TileProperty = gpBehaviorEngine->getTileProperties();
+	std::vector<CTileProperties> &TileProperty = gBehaviorEngine.getTileProperties();
 
 	blockedl = TileProperty[mp_Map->at((m_Pos.x + m_BBox.x1)>>CSF, (m_Pos.y + (m_BBox.y1+m_BBox.y2)/2)>>CSF)].bright;
 	blockedr = TileProperty[mp_Map->at((m_Pos.x + m_BBox.x2)>>CSF, (m_Pos.y + (m_BBox.y1+m_BBox.y2)/2)>>CSF)].bleft;
@@ -73,7 +73,7 @@ void CRay::setZapped()
 	state = RAY_STATE_ZAPZOT;
 	zapzottimer = RAY_ZAPZOT_TIME;
 
-	size_t Episode = gpBehaviorEngine->getEpisode();
+	size_t Episode = gBehaviorEngine.getEpisode();
 	if (Episode==1)
 	{
 		if (rnd()&1)
@@ -173,8 +173,10 @@ void CRay::getTouchedBy(CVorticonSpriteObject &theObject)
             {
                if(theObject.getSpriteVariantId() != getSpriteVariantId())
                {
-                   if(!gpBehaviorEngine->m_option[OPT_ALLOWPKING].value)
+                   if (!gBehaviorEngine.mOptions[GameOption::ALLOWPKING].value)
+                   {
                        return;
+                   }
 
                    state = RAY_STATE_SETZAPZOT;
                    canbezapped = false;

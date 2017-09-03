@@ -58,5 +58,15 @@ struct StartNewGameEvent : CEvent
 };
 
 
+// Invoked when New Game -> 1 Player-> Sprite Number
+struct SelectPlayerSpriteVarEvent : CEvent
+{
+    SelectPlayerSpriteVarEvent(const int sprite) :
+        mSprite(sprite) {}
+
+    const int mSprite = 0;
+};
+
+
 
 #endif /* __KEENENGINE_H__ */

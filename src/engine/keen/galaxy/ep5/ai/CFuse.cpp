@@ -86,7 +86,7 @@ bool CFuse::loadPythonScripts(const std::string &scriptBaseName)
                         {
                             std::string levelText = "LEVEL_TEXT";
                             levelText += itoa(level);
-                            gpBehaviorEngine->setMessage(levelText, message);
+                            gBehaviorEngine.setMessage(levelText, message);
                         }
                     }
 
@@ -192,7 +192,7 @@ void CFuse::getTouchedBy(CSpriteObject &theObject)
         std::string levelText = "LEVEL_TEXT";
         levelText += itoa(level);
 
-        const auto msg = gpBehaviorEngine->getString(levelText);
+        const auto msg = gBehaviorEngine.getString(levelText);
 
         if(!msg.empty())
         {

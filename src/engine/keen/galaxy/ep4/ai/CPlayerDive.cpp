@@ -21,11 +21,12 @@ CPlayerDive::CPlayerDive(CMap *pmap,
 		Uint32 y,
 		direction_t facedir,
         CInventory &l_Inventory,
-        const int playerID) :
+        const int playerID,
+        const int spriteVar) :
 CPlayerBase(pmap, foeID, x, y,
 		facedir,
 		l_Inventory,        
-        playerID),
+        playerID, spriteVar),
 m_swimupspeed(0),
 m_breathtimer(0),
 mDidSwimUp(false)
@@ -40,12 +41,12 @@ const int DIE_FALL_MAX_INERTIA = 150;
 void CPlayerDive::kill(const bool force)
 {
 	// Here were prepare Keen to die, setting the action to die
-    if(!gpBehaviorEngine->mCheatmode.god || force)
+    if(!gBehaviorEngine.mCheatmode.god || force)
 	{
 		if(mp_processState == &CPlayerBase::processDying && yinertia < 0)
 			return;
 
-		g_pSound->playSound( SOUND_KEEN_DIE, PLAY_NORESTART );
+		gSound.playSound( SOUND_KEEN_DIE, PLAY_NORESTART );
 		setupGalaxyObjectOnMap(0x0D2E, (rand()%2));
 
         if(!m_dying)
@@ -68,10 +69,10 @@ const int BREATH_TIME = 60;
 void CPlayerDive::processDiving()
 {
 	// In case no-clipping was triggered, make it solid, or remove it...
-    if(gpBehaviorEngine->mCheatmode.noclipping)
+    if(gBehaviorEngine.mCheatmode.noclipping)
 	{
 		solid = !solid;
-        gpBehaviorEngine->mCheatmode.noclipping = false;
+        gBehaviorEngine.mCheatmode.noclipping = false;
 	}
 
 

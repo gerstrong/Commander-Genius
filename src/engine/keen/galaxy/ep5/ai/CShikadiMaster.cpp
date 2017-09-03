@@ -34,10 +34,9 @@ A_MASTER_SHOOT = 4,
 A_MASTER_TELEPORT = 6
 };
 
-const int TIME_UNTIL_REACT = 100;
-
-const int TIME_UNTIL_SHOOT = 100;
-const int TIME_UNTIL_TELEPORTED = 50;
+constexpr int TIME_UNTIL_REACT = 100;
+constexpr int TIME_UNTIL_SHOOT = 100;
+constexpr int TIME_UNTIL_TELEPORTED = 50;
 
 
   
@@ -48,7 +47,7 @@ CStunnable(pmap, foeID, x, y)
     mActionMap[A_MASTER_SHOOT] = (GASOFctr) &CShikadiMaster::processShooting;
     mActionMap[A_MASTER_TELEPORT] = (GASOFctr) &CShikadiMaster::processTeleporting;
 
-    auto diff = gpBehaviorEngine->mDifficulty;
+    auto diff = gBehaviorEngine.mDifficulty;
 
     if(diff > HARD)
     {
@@ -231,7 +230,7 @@ void CShikadiMaster::processTeleporting()
 	    const int testBoxY1 = (ty - 1)<<CSF;
 	    const int testBoxY2 = (ty + 4)<<CSF;
 	    
-	    std::vector<CTileProperties> &Tile = gpBehaviorEngine->getTileProperties(1);
+	    std::vector<CTileProperties> &Tile = gBehaviorEngine.getTileProperties(1);
 	    
 	    bool allow_teleport = true;
 	    
@@ -258,7 +257,7 @@ void CShikadiMaster::processTeleporting()
 	    
 	    if(!allow_teleport)  continue;
 	    
-	    // make it through previous nested loop == succesful tele
+        // make it through previous nested loop == successful tele
 	    //KeenXVel = KeenYVel = 0;
 	    moveToForce(tx<<CSF, ty<<CSF);
 	    setAction(A_MASTER_STAND);

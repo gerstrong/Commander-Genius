@@ -14,13 +14,11 @@ namespace vorticon
 {
 
 COptions::COptions() :
-VorticonMenu( GsRect<float>(0.1f, 0.14f, 0.8f, NUM_OPTIONS*0.07f) ),
-mpOption(gpBehaviorEngine->m_option)
+VorticonMenu( GsRect<float>(0.1f, 0.14f, 0.8f, gBehaviorEngine.mOptions.size()*0.07f) )
 {
-
-	for( int i = 0 ; i < NUM_OPTIONS ; i++ )
+    for( auto &optionIt : gBehaviorEngine.mOptions)
 	{
-        mpOptionList.push_back( new Switch(mpOption[i].menuname) );
+        mpOptionList.push_back( new Switch(optionIt.second.menuname) );
 		mpMenuDialog->addControl( mpOptionList.back() );
 	}
 }
@@ -29,8 +27,11 @@ void COptions::refresh()
 {
     std::list<Switch*>::iterator it = mpOptionList.begin();
 
-	for( int i=0 ; it != mpOptionList.end() ; it++, i++ )
-		(*it)->enable( mpOption[i].value );
+    for( auto optIt = gBehaviorEngine.mOptions.begin() ;
+         it != mpOptionList.end() ; it++, optIt++ )
+    {
+        (*it)->enable( optIt->second.value );
+    }
 
 }
 
@@ -41,13 +42,16 @@ void COptions::ponder(const float deltaT)
 
     auto it = mpOptionList.begin();
 
-	for( int i=0 ; it != mpOptionList.end() ; it++, i++ )
-		mpOption[i].value = (*it)->isEnabled();
+    for( auto optIt = gBehaviorEngine.mOptions.begin() ;
+         it != mpOptionList.end() ; it++, optIt++ )
+    {
+        optIt->second.value = (*it)->isEnabled();
+    }
 }
 
 void COptions::release()
 {
-	g_pSettings->saveGameOptions();
+	gSettings.saveGameOptions();
 }
 
 }

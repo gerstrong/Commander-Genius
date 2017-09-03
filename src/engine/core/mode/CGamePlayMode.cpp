@@ -6,9 +6,9 @@
  */
 
 #include "CGamePlayMode.h"
-#include "graphics/effects/CColorMerge.h"
 #include "sdl/audio/music/CMusicPlayer.h"
 #include <base/GsTimer.h>
+#include <graphics/GsGraphics.h>
 #include <base/video/CVideoDriver.h>
 #include <base/GsApp.h>
 #include <memory>
@@ -47,7 +47,7 @@ void CGamePlayMode::ponder(const float deltaT)
 	}
 	else if( mp_PlayGame->getStartGame() )
 	{ // Start another new game
-        EventContainer.add( new GMSwitchToPlayGameMode(m_Episode, gpBehaviorEngine->mPlayers, m_DataDirectory) );
+        EventContainer.add( new GMSwitchToPlayGameMode(m_Episode, gBehaviorEngine.mPlayers, m_DataDirectory) );
 	}
 	else if( mp_PlayGame->getExitEvent() )
 	{
@@ -60,7 +60,10 @@ void CGamePlayMode::render()
 {
     mp_PlayGame->render();
 
-    if(gpBehaviorEngine->m_option[OPT_SHOWFPS].value)
+    const auto optFPS = gBehaviorEngine.mOptions[GameOption::SHOWFPS];
+
+    // TODO: Is this broken?
+    if(optFPS.value)
     {
         SDL_Rect rect;
         rect.x = 5;
@@ -85,7 +88,8 @@ void CGamePlayMode::render()
 
         std::string tempbuf = "FPS: " + ftoa(gTimer.LastFPS());
         SDL_FillRect(mpFPSSurface.get(),NULL,0x88888888);
-        //gGraphics.getFont(1).drawFont(mpFPSSurface.get(), tempbuf, 1, 1, false);
+
+        gGraphics.getFont(1).drawFont(mpFPSSurface.get(), tempbuf, 1, 1, false);
 
         BlitSurface(mpFPSSurface.get(), NULL, gVideoDriver.getBlitSurface(), &rect);
     }

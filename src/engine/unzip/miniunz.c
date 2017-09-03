@@ -1,4 +1,3 @@
-#ifdef DOWNLOADER
 /*
    miniunz.c
    Version 1.1, February 14h, 2010
@@ -12,7 +11,6 @@
          Modifications for Zip64 support on both zip and unzip
          Copyright (C) 2009-2010 Mathias Svensson ( http://result42.com )
 */
-
 
 #if (!defined(_WIN32)) && (!defined(WIN32)) && (!defined(__APPLE__))
         #ifndef __USE_FILE_OFFSET64
@@ -29,7 +27,7 @@
         #endif
 #endif
 
-#if defined(__APPLE__) || defined(IOAPI_NO_64)
+#ifdef __APPLE__
 // In darwin and perhaps other BSD variants off_t is a 64 bit value, hence no need for specific 64 bit functions
 #define FOPEN_FUNC(filename, mode) fopen(filename, mode)
 #define FTELLO_FUNC(stream) ftello(stream)
@@ -64,7 +62,7 @@
 #define MAXFILENAME (256)
 
 #ifdef _WIN32
-//#define USEWIN32IOAPI // Disabled: For some reason this does is broken. Without it, it works well enough
+#define USEWIN32IOAPI
 #include "iowin32.h"
 #endif
 /*
@@ -99,8 +97,7 @@ void change_file_date(filename,dosdate,tmu_date)
   SetFileTime(hFile,&ftm,&ftLastAcc,&ftm);
   CloseHandle(hFile);
 #else
-
-#if defined(unix) || defined(__APPLE__)
+#if defined(linux) || defined(__APPLE__)
   struct utimbuf ut;
   struct tm newdate;
   newdate.tm_sec = tmu_date.tm_sec;
@@ -117,7 +114,6 @@ void change_file_date(filename,dosdate,tmu_date)
   ut.actime=ut.modtime=mktime(&newdate);
   utime(filename,&ut);
 #endif
-
 #endif
 }
 
@@ -129,11 +125,15 @@ int mymkdir(dirname)
     const char* dirname;
 {
     int ret=0;
-#ifdef _WIN32
+#if defined(WIN32) || defined(_WIN32)
     ret = _mkdir(dirname);
-#elif __APPLE__
+#endif
+
+#if defined(__linux__) || __linux__
     ret = mkdir (dirname,0775);
-#else
+#endif
+
+#if defined(__APPLE__)
     ret = mkdir (dirname,0775);
 #endif
     return ret;
@@ -187,6 +187,24 @@ int makedir (newdir)
     }
   free(buffer);
   return 1;
+}
+
+void do_banner()
+{
+    printf("MiniUnz 1.01b, demo of zLib + Unz package written by Gilles Vollant\n");
+    printf("more info at http://www.winimage.com/zLibDll/unzip.html\n\n");
+}
+
+void do_help()
+{
+    printf("Usage : miniunz [-e] [-x] [-v] [-l] [-o] [-p password] file.zip [file_to_extr.] [-d extractdir]\n\n" \
+           "  -e  Extract without pathname (junk paths)\n" \
+           "  -x  Extract with pathname\n" \
+           "  -v  list files\n" \
+           "  -l  list files\n" \
+           "  -d  directory to extract into\n" \
+           "  -o  overwrite files without prompting\n" \
+           "  -p  extract crypted file using password\n\n");
 }
 
 void Display64BitsSize(ZPOS64_T n, int size_char)
@@ -295,15 +313,13 @@ int do_list(uf)
 }
 
 
-int do_extract_currentfile(uf,popt_extract_without_path,dirname,popt_overwrite,password)
+int do_extract_currentfile(uf,popt_extract_without_path,popt_overwrite,password)
     unzFile uf;
     const int* popt_extract_without_path;
-    const char *dirname;
     int* popt_overwrite;
     const char* password;
 {
     char filename_inzip[256];
-    char filename_inzip_full[256];
     char* filename_withoutpath;
     char* p;
     int err=UNZ_OK;
@@ -312,7 +328,7 @@ int do_extract_currentfile(uf,popt_extract_without_path,dirname,popt_overwrite,p
     uInt size_buf;
 
     unz_file_info64 file_info;
-    uLong ratio=0;
+    //uLong ratio=0;
     err = unzGetCurrentFileInfo64(uf,&file_info,filename_inzip,sizeof(filename_inzip),NULL,0,NULL,0);
 
     if (err!=UNZ_OK)
@@ -328,21 +344,6 @@ int do_extract_currentfile(uf,popt_extract_without_path,dirname,popt_overwrite,p
         printf("Error allocating memory\n");
         return UNZ_INTERNALERROR;
     }
-
-
-    // Since chdir doesn't seems to work, we indicating the full path instead.
-    strcpy(filename_inzip_full, dirname);
-
-#ifdef _WIN32
-    strcat(filename_inzip_full, "\\");
-#else
-    strcat(filename_inzip_full, "/");
-#endif
-
-    strcat(filename_inzip_full, filename_inzip);
-
-    strcpy(filename_inzip, filename_inzip_full);
-
 
     p = filename_withoutpath = filename_inzip;
     while ((*p) != '\0')
@@ -384,8 +385,29 @@ int do_extract_currentfile(uf,popt_extract_without_path,dirname,popt_overwrite,p
             if (ftestexist!=NULL)
             {
                 fclose(ftestexist);
+                do
+                {
+                    char answer[128];
+                    int ret;
+
+                    printf("The file %s exists. Overwrite ? [y]es, [n]o, [A]ll: ",write_filename);
+                    ret = scanf("%1s",answer);
+                    if (ret != 1)
+                    {
+                       exit(EXIT_FAILURE);
+                    }
+                    rep = answer[0] ;
+                    if ((rep>='a') && (rep<='z'))
+                        rep -= 0x20;
+                }
+                while ((rep!='Y') && (rep!='N') && (rep!='A'));
+            }
+
+            if (rep == 'N')
                 skip = 1;
-            }            
+
+            if (rep == 'A')
+                *popt_overwrite=1;
         }
 
         if ((skip==0) && (err==UNZ_OK))
@@ -454,17 +476,16 @@ int do_extract_currentfile(uf,popt_extract_without_path,dirname,popt_overwrite,p
 }
 
 
-int do_extract(uf,opt_extract_without_path,dirname,opt_overwrite,password)
+int do_extract(uf,opt_extract_without_path,opt_overwrite,password)
     unzFile uf;
     int opt_extract_without_path;
-    const char *dirname;
     int opt_overwrite;
     const char* password;
 {
     uLong i;
     unz_global_info64 gi;
     int err;
-    FILE* fout=NULL;
+    //FILE* fout=NULL;
 
     err = unzGetGlobalInfo64(uf,&gi);
     if (err!=UNZ_OK)
@@ -473,7 +494,6 @@ int do_extract(uf,opt_extract_without_path,dirname,opt_overwrite,password)
     for (i=0;i<gi.number_entry;i++)
     {
         if (do_extract_currentfile(uf,&opt_extract_without_path,
-                                      dirname,
                                       &opt_overwrite,
                                       password) != UNZ_OK)
             break;
@@ -499,7 +519,7 @@ int do_extract_onefile(uf,filename,opt_extract_without_path,opt_overwrite,passwo
     int opt_overwrite;
     const char* password;
 {
-    int err = UNZ_OK;
+    //int err = UNZ_OK;
     if (unzLocateFile(uf,filename,CASESENSITIVITY)!=UNZ_OK)
     {
         printf("file %s not found in the zipfile\n",filename);
@@ -515,40 +535,39 @@ int do_extract_onefile(uf,filename,opt_extract_without_path,opt_overwrite,passwo
 }
 
 
-/*int mainUnzip(argc,argv)
-    int argc;
-    char *argv[];*/
 int unzipFile(const char *input,
               const char *outputDir)
 {
-    const char *zipfilename=input;
-    const char *filename_to_extract=NULL;
-    const char *password=NULL;
+    const char *zipfilename = input;
+    const char *filename_to_extract = NULL;
+    const char *password = NULL;
     char filename_try[MAXFILENAME+16] = "";
-    //int i;
-    int ret_value=0;
-    int opt_do_list=0;
-    int opt_do_extract=1;
-    int opt_do_extract_withoutpath=0;
-    int opt_overwrite=0;
-    int opt_extractdir=0;
+
+    int ret_value = 0;
+    int opt_do_list = 0;
+    int opt_do_extract = 1;
+    int opt_do_extract_withoutpath = 0;
+    int opt_overwrite = 0;
+    int opt_extractdir = 0;
     const char *dirname = outputDir;
-    unzFile uf=NULL;
+    unzFile uf = NULL;
 
     // Default options
     opt_do_extract = 1;
     opt_extractdir = 1;
 
-    if (zipfilename!=NULL)
+
+    if (zipfilename != NULL)
     {
 
 #        ifdef USEWIN32IOAPI
         zlib_filefunc64_def ffunc;
 #        endif
 
-        strncpy(filename_try, zipfilename,MAXFILENAME-1);
+        strncpy(filename_try, zipfilename, MAXFILENAME-1);
         /* strncpy doesnt append the trailing NULL, of the string is too long. */
         filename_try[ MAXFILENAME ] = '\0';
+
 
 #        ifdef USEWIN32IOAPI
         fill_win32_filefunc64A(&ffunc);
@@ -556,6 +575,8 @@ int unzipFile(const char *input,
 #        else
         uf = unzOpen64(zipfilename);
 #        endif
+
+
         if (uf==NULL)
         {
             strcat(filename_try,".zip");
@@ -564,15 +585,25 @@ int unzipFile(const char *input,
 #            else
             uf = unzOpen64(filename_try);
 #            endif
+
+        }
+
+        // didn't work? let try 32-bit extraction functions then
+        if (uf == NULL)
+        {
+            uf = unzOpen(zipfilename);
+        }
+
+        if (uf == NULL)
+        {
+            uf = unzOpen(filename_try);
         }
     }
 
     if (uf==NULL)
     {
-        printf("Cannot open %s or %s.zip\n",zipfilename,zipfilename);
         return 1;
     }
-    printf("%s opened\n",filename_try);
 
     if (opt_do_list==1)
         ret_value = do_list(uf);
@@ -584,7 +615,6 @@ int unzipFile(const char *input,
         if (opt_extractdir && chdir(dirname))
 #endif
         {
-          printf("Error changing into %s, aborting\n", dirname);
           exit(-1);
         }
 
@@ -598,4 +628,3 @@ int unzipFile(const char *input,
 
     return ret_value;
 }
-#endif // DOWNLOADER

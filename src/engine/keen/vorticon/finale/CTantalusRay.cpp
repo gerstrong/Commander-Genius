@@ -73,7 +73,7 @@ void CTantalusRay::shootray()
 		shootObject->solid = false;
 		shootObject->exists = shootObject->onscreen = true;
 		m_Object.push_back( move(shootObject) );
-		g_pSound->playSound(SOUND_KEEN_FIRE, PLAY_NOW);
+		gSound.playSound(SOUND_KEEN_FIRE, PLAY_NOW);
 
 		m_mustsetup = false;
 	}

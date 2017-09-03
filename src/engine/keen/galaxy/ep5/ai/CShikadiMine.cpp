@@ -14,6 +14,7 @@
 #include "../../common/ai/CPlayerLevel.h"
 #include <base/utils/misc.h>
 #include "../../common/dialog/CMessageBoxGalaxy.h"
+#include "../../menu/ComputerWrist.h"
 #include "engine/core/mode/CGameMode.h"
 
 
@@ -43,11 +44,10 @@ A_MINE_DETONATE = 3
 };
 
 
-const int TIME_SIT = 150;
-const int TIME_MOVE = 150;
-const int TIME_CHANGE_DIR = 150;
-
-const int MOVE_SPEED = 10;
+constexpr int TIME_SIT = 150;
+constexpr int TIME_MOVE = 150;
+constexpr int TIME_CHANGE_DIR = 150;
+constexpr int MOVE_SPEED = 10;
 
 CShikadiMine::CShikadiMine(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
 CStunnable(pmap, foeID, x, y),
@@ -503,18 +503,13 @@ void CMineShards::process()
             mp_Map->setTile(dx+i, dy+1, t2, true, 1);
             mp_Map->setTile(dx+i, dy+2, t3, true, 1);
             mp_Map->setTile(dx+i, dy+3, t4, true, 1);
-        }
+        }                
 
-
-		const std::string end_text("End of Episode.\n"
-					       "The game will be restarted.\n"
-					       "You can replay it again or\n"
-					       "try another Episode for more fun!\n"
-					       "The original epilog is under construction.");
-
-        showMsg(end_text, new EventEndGamePlay());
 		dead = true;
 		exists = false;
+
+        gEventManager.add(new OpenComputerWrist(4));
+        gEventManager.add(new EventEndGamePlay());
 
 		return;
 	}

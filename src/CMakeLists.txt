@@ -10,16 +10,21 @@ else()
 endif()
 
 
-IF(NOT DEFINED BUILD_TARGET)
 IF(WIN32)
 	SET(BUILD_TARGET WIN32)
-		ADD_DEFINITIONS(-DWIN32)
-		ADD_DEFINITIONS(-DTARGET_WIN32)
-ELSE(WIN32)
+        ADD_DEFINITIONS(-DWIN32)
+        ADD_DEFINITIONS(-DTARGET_WIN32)        
+ELSEIF(UNIX)
 	SET(BUILD_TARGET LINUX)
-ENDIF(WIN32)
-MESSAGE( STATUS "WARNING: You did not specify the build type with the -DBUILD_TARGET= Parameter. ${BUILD_TARGET} has been choosen" )
-MESSAGE( STATUS "Available builds are: WIN32, LINUX GP2X. WIZ, CAANOO, DINGOO, NANONOTE" )
+ENDIF()
+
+IF(APPLE)
+    SET(BUILD_TARGET APPLE)
+endif()
+
+IF(NOT DEFINED BUILD_TARGET)
+    MESSAGE( STATUS "WARNING: You did not specify the build type with the -DBUILD_TARGET= Parameter. ${BUILD_TARGET} has been choosen" )
+    MESSAGE( STATUS "Available builds are: WIN32, LINUX GP2X. WIZ, CAANOO, DINGOO, NANONOTE" )
 ENDIF(NOT DEFINED BUILD_TARGET)
 
 
@@ -39,16 +44,6 @@ endif ()
 #Alignment error report is important for android builds
 ADD_DEFINITIONS(-Werror=cast-align)
 
-
-
-# Directory creation of all the chosen build
-#set(BUILD_BASE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Build")
-#set(BUILD_DIR "${BUILD_BASE_DIR}/${BUILD_TARGET}")
-#execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory ${BUILD_BASE_DIR})
-#execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory ${BUILD_DIR})
-
-#SET(EXECUTABLE_OUTPUT_PATH ${BUILD_DIR})
-
 # Use python3 for AI scripting and more!
 IF(USE_PYTHON3)
     FIND_PACKAGE(PythonLibs)
@@ -60,7 +55,7 @@ ENDIF()
 
 # main includes
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
-INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/lib/GsKit)
+INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/GsKit)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/)
 
@@ -102,16 +97,8 @@ ELSEIF(CMAKE_BUILD_TYPE STREQUAL "Release")
 ENDIF(CMAKE_BUILD_TYPE STREQUAL "Debug")
 
 
-
-# Make sure the compiler can find include files from our Gskit library.
-#include_directories (${CommanderGenius_SOURCE_DIR}/../lib/GsKit)
-
 # Make sure the linker can find the GsKit library once it is built.
 link_directories (${CommanderGenius_BINARY_DIR}/lib/GsKit)
-
-# We need that so we can compile dosbox fusion
-#include_directories (${CommanderGenius_SOURCE_DIR}/src/engine/dbfusion)
-#include_directories (${CommanderGenius_SOURCE_DIR}/src/engine/dbfusion/include)
 
 
 set(Boost_USE_STATIC_LIBS OFF)
@@ -135,9 +122,17 @@ endif( ZLIB_FOUND )
 if(DOWNLOADER)
     FIND_PACKAGE(CURL)
     IF(CURL_FOUND)
-      INCLUDE_DIRECTORIES(${CURL_INCLUDE_DIR})
+
+ 	if(WIN32)
+ 	   ADD_DEFINITIONS(-DCURL_STATICLIB)    
+        endif()
+	
+	INCLUDE_DIRECTORIES(${CURL_INCLUDE_DIR})
+
     ELSE(CURL_FOUND)
+
       MESSAGE(FATAL_ERROR "Could not find the CURL library and development files." )
+
     ENDIF(CURL_FOUND)
 endif()
 
@@ -145,13 +140,6 @@ if(USE_SDL2)
 
       find_package(SDL2 REQUIRED)
       find_package(SDL2_image REQUIRED)
-#    IF(WIN32)
-#      include(FindSDL2 OPTIONAL)      
-#    else()
-#      INCLUDE(FindPkgConfig)
-      #PKG_SEARCH_MODULE(SDL2 REQUIRED sdl2)
-      #PKG_SEARCH_MODULE(SDL2IMAGE REQUIRED SDL2_image>=2.0.0)
-#    endif()
 
     if(SDL2_FOUND)
         message(STATUS "Using shared SDL Version 2 for Commander Genius")
@@ -168,7 +156,6 @@ else(USE_SDL2)
         # SDL2 not found, try to use SDL1.2
         FIND_PACKAGE( SDL REQUIRED )
         FIND_PACKAGE( SDL_image REQUIRED )
-        #PKG_SEARCH_MODULE(SDLIMAGE REQUIRED SDL_image)
 
         if(NOT ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
                 include(FindSDL OPTIONAL)
@@ -192,16 +179,7 @@ IF (OPENGL)
 ENDIF (OPENGL)
 
 
-MESSAGE( STATUS "DOSBox-Fusion: ${DBFUSION}" )
 MESSAGE( STATUS "Internal Downloader: ${DOWNLOADER}" )
-
-if(DBFUSION)
-	if(WIN32)
-		# For the Windows build you need this flag or is dosbox part is going to hang while mounting the drive
-		ADD_DEFINITIONS("-fpermissive -mno-ms-bitfields")
-	endif(WIN32)
-endif(DBFUSION)
-
 
 add_subdirectory(engine)
 add_subdirectory(sdl)
@@ -213,7 +191,13 @@ add_subdirectory(graphics)
 get_property(cg_obj_libs GLOBAL PROPERTY CG_OBJ_LIBS)
 
 # Add executable Commander Genius
-add_executable (CGeniusExe CGenius.cpp fileio.cpp misc.cpp ${cg_obj_libs})
+add_executable (CGeniusExe CGenius.cpp
+                fileio.cpp misc.cpp
+                CRingBuffer.h
+                fileio.h
+                ${CMAKE_CURRENT_SOURCE_DIR}/../changelog.txt
+                ${CMAKE_CURRENT_SOURCE_DIR}/../README.in
+                ${cg_obj_libs})
 
 # Since some RefKeen is used, we also need C99 Standard
 set_property(TARGET CGeniusExe PROPERTY C_STANDARD 99)
@@ -246,7 +230,7 @@ IF(OPENGL)
 
     IF(WIN32)
 	TARGET_LINK_LIBRARIES(CGeniusExe opengl32)
-    ELSE()
+    ELSEIF(UNIX AND NOT APPLE)
 	TARGET_LINK_LIBRARIES(CGeniusExe GL)
     ENDIF()
 ENDIF(OPENGL)
@@ -268,10 +252,7 @@ IF(CURL_FOUND)
   TARGET_LINK_LIBRARIES(CGeniusExe ${CURL_LIBRARIES})
 ENDIF(CURL_FOUND)
 
-# Set binary(executable) file name. In Windows this filename needs the exe extension
 # The Windows Version has an icon in the executable
-
-
 IF(WIN32)
 	SET_TARGET_PROPERTIES(CGeniusExe PROPERTIES OUTPUT_NAME "CGenius")
 #	ADD_CUSTOM_COMMAND(TARGET CGeniusExe PRE_LINK COMMAND cp ${CMAKE_CURRENT_SOURCE_DIR}/src/CGLogo.rc ${CMAKE_CURRENT_SOURCE_DIR}/CGLogo.rc )
@@ -303,27 +284,7 @@ IF(OPENGL)
     target_link_libraries(CGeniusExe ${OPENGL_LIBRARIES})
 ENDIF(OPENGL)
 
-# Only if you want to use Dosfusion
-if(DBFUSION)
-    #target_link_libraries(CGeniusExe SDL_sound)
-
-    target_link_libraries(CGeniusExe m)
-    target_link_libraries(CGeniusExe png)
-
-	if(WIN32)
-		target_link_libraries(CGeniusExe SDL2_net)
-	else()
-		target_link_libraries(CGeniusExe asound)
-		target_link_libraries(CGeniusExe X11)
-		target_link_libraries(CGeniusExe pthread)
-		target_link_libraries(CGeniusExe dl)
-	endif(WIN32)
-
-endif(DBFUSION)
-
 LINK_DIRECTORIES(/opt/local/lib)
-
-cotire(CGeniusExe)
 
 # Stuff definitions in case we want to install it
 INCLUDE(install.cmake)

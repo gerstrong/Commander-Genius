@@ -1375,7 +1375,7 @@ US_LineInput(id0_int_t x,id0_int_t y,id0_char_t *buf,const id0_char_t *def,id0_b
             break;
         }
 
-		if (redraw)
+		if (FONTCOLORS::REDraw)
 		{
 			px = x;
 			py = y;

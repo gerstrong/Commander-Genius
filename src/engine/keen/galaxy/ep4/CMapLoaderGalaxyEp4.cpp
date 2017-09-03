@@ -76,6 +76,8 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 {
 
 	CGalaxySpriteObject* p_newfoe = nullptr;
+
+    const int totalNumPlayer = mInventoryVec.size();
 			
 	// Point Item Sprites (Candies, etc...)
 	for( Uint32 i=61 ; i<=67 ; i++ )
@@ -104,7 +106,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 	}	
 	
 	
-	const Difficulty difficulty = gpBehaviorEngine->mDifficulty;
+	const Difficulty difficulty = gBehaviorEngine.mDifficulty;
 
 	// If a foe was found just return.
 	if( p_newfoe )
@@ -119,7 +121,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 	case 0x01:
     case 0x02:
 
-        if(mInventoryVec.size() > (unsigned int)(mNumLoadedPlayers))
+        if(totalNumPlayer > mNumLoadedPlayers)
         {
             auto &inventory = mInventoryVec[mNumLoadedPlayers];
             if(inventory.Item.m_lifes >= 0)
@@ -127,7 +129,8 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
                 // This is the player on the map in one level
                 inventory.Item.mLevelName = Map.getLevelName();
                 p_newfoe = new galaxy::CPlayerLevel(&Map, foe, x, y, m_ObjectPtr,
-                                                    (foe==0x01) ? RIGHT : LEFT, inventory, 0x98C, mNumLoadedPlayers);
+                                                    (foe==0x01) ? RIGHT : LEFT, inventory, 0x98C,
+                                                    mNumLoadedPlayers, inventory.mSpriteVar);
             }
             mNumLoadedPlayers++;
         }
@@ -135,7 +138,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 
 	case 0x03:
 
-        if(mInventoryVec.size() > (unsigned int)(mNumLoadedPlayers))
+        if(totalNumPlayer > mNumLoadedPlayers)
         {
             auto &inventory = mInventoryVec[mNumLoadedPlayers];
 
@@ -144,7 +147,8 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
                 // This is the player on the world map
                 // Add the Camera into the game scene and attach it to this player
                 inventory.Item.mLevelName = Map.getLevelName();
-                p_newfoe = new galaxy::CPlayerWM(&Map, foe, x, y, inventory, 0x15C2, mNumLoadedPlayers);
+                p_newfoe = new galaxy::CPlayerWM(&Map, foe, x, y, inventory, 0x15C2,
+                                                 mNumLoadedPlayers, mNumLoadedPlayers);
             }
             mNumLoadedPlayers++;
         }
@@ -279,7 +283,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 
 	case 0x22:
 
-        if(mInventoryVec.size() > (unsigned int)(mNumLoadedPlayers) )
+        if(totalNumPlayer > mNumLoadedPlayers )
         {
             // Place a gun in case Keen is missing bullets
             for( auto &inventory : mInventoryVec)
@@ -307,7 +311,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 
 	case 0x2A:
 
-        if(mInventoryVec.size() > (unsigned int)(mNumLoadedPlayers) )
+        if(totalNumPlayer > mNumLoadedPlayers )
         {
             auto &inventory = mInventoryVec[mNumLoadedPlayers];
 
@@ -316,7 +320,9 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
                 // This is Keen in the diving suit
                 inventory.Item.mLevelName = Map.getLevelName();
                 p_newfoe = new galaxy::CPlayerDive(&Map, foe, x, y,
-                                                   RIGHT, inventory, mNumLoadedPlayers);
+                                                   RIGHT, inventory,
+                                                   mNumLoadedPlayers,
+                                                   mNumLoadedPlayers);
             }
             mNumLoadedPlayers++;
         }

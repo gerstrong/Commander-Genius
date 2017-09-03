@@ -26,12 +26,11 @@ enum FLEEXACTIONS
 };
 
 
-const int WALK_SPEED = 30;
-const int TRACK_SPEED = 120;
-
-const int TIME_LOOKING = 200;
-const int TIME_UNTIL_LOOK = 200;
-const int DISTANCE_UNTIL_TRACK = 8<<CSF;
+constexpr int WALK_SPEED = 30;
+constexpr int TRACK_SPEED = 120;
+constexpr int TIME_LOOKING = 200;
+constexpr int TIME_UNTIL_LOOK = 200;
+constexpr int DISTANCE_UNTIL_TRACK = 8<<CSF;
 
 
 CFleex::CFleex(CMap* pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) : 

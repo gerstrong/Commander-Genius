@@ -34,10 +34,12 @@ struct KeenState
 class CPlayerLevel : public CPlayerBase
 {
 public:
-	CPlayerLevel(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y,
-			std::vector< std::shared_ptr<CGalaxySpriteObject> > &ObjectPtrs, direction_t facedir,
-            CInventory &l_Inventory,
-            const size_t offset, const int playerID);
+    CPlayerLevel(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y,
+                std::vector< std::shared_ptr<CGalaxySpriteObject> > &ObjectPtrs, direction_t facedir,
+                CInventory &l_Inventory,
+                const size_t offset,
+                const int playerIdx,
+                const int spriteTableIdx);
 
 
 	void prepareToShoot();
@@ -338,8 +340,9 @@ private:
 	int mPoleGrabTime;
 	int mClimbSpeedX;
 	int mExitDoorTimer;
-	int mStunTimer;
-	
+    int mStunTimer;
+    bool mReleasedShot = false;
+
 	std::vector< std::shared_ptr<CGalaxySpriteObject> > &mObjectPtrs;
 };
 

@@ -31,10 +31,10 @@ void CSpecialItem::getTouchedBy(CSpriteObject& theObject)
 		CEventContainer& EventContainer = gEventManager;
 
 		// Sound play
-		g_pSound->playSound(SOUND_GET_SPECIAL_ITEM, PLAY_PAUSEALL);
+		gSound.playSound(SOUND_GET_SPECIAL_ITEM, PLAY_PAUSEALL);
 
 		// Show got item message
-        showMsgWithBmp( gpBehaviorEngine->getString(answermap[mFoeID-0x63]), 30, LEFT );
+        showMsgWithBmp( gBehaviorEngine.getString(answermap[mFoeID-0x63]), 30, LEFT );
 
 		switch(mFoeID)
 		{

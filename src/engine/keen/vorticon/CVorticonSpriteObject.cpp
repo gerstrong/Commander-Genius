@@ -19,7 +19,7 @@ touchedBy(0)
 {
 	if(m_type != OBJ_NONE )
 	{
-		setupObjectType(gpBehaviorEngine->getEpisode());
+		setupObjectType(gBehaviorEngine.getEpisode());
 		performCollisions();
 	}
 

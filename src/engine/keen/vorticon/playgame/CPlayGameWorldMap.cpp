@@ -73,14 +73,14 @@ void CPlayGameVorticon::processOnWorldMap()
 						if( useobject>32 )
 						    break;
 						
-						if( !mpLevelCompleted[useobject & 0x7fff] || mp_option[OPT_LVLREPLAYABILITY].value )
+                        if( !mpLevelCompleted[useobject & 0x7fff] || gBehaviorEngine.mOptions[GameOption::LVLREPLAYABILITY].value )
 						{
 							// Create the special merge effect
 							CColorMerge *pColorMergeFX = new CColorMerge(8);
 
 							m_level_command = START_LEVEL;
 							m_Level = useobject & 0x7fff;
-							g_pMusicPlayer->stop();
+							gMusicPlayer.stop();
 							player.playSound(SOUND_ENTER_LEVEL);
 							// save where on the map, the player entered. This is a checkpoint!
 							m_checkpoint_x = player.getXPosition();
@@ -110,7 +110,7 @@ void CPlayGameVorticon::goBacktoMap()
 
 	m_level_command = START_LEVEL;
 	m_Level = WM_MAP_NUM;
-	g_pMusicPlayer->stop();
+	gMusicPlayer.stop();
 	// Now that the new level/map will be loaded, the players aren't dead anymore!
 	std::vector<CPlayer>::iterator player= m_Player.begin();
 	for( ; player != m_Player.end() ; player++ )
@@ -133,7 +133,7 @@ void CPlayGameVorticon::goBacktoMap()
 		if(width > 0)
 		{
 			int frame = player->playerbaseframe;
-			if(gpBehaviorEngine->getEpisode() == 3) frame++;
+			if(gBehaviorEngine.getEpisode() == 3) frame++;
 
             gGraphics.getSprite(varId,frame+0).setWidth(width);
             gGraphics.getSprite(varId,frame+1).setWidth(width);
@@ -152,7 +152,7 @@ void CPlayGameVorticon::goBacktoMap()
 
 void CPlayGameVorticon::YourShipNeedsTheseParts()
 {
-	std::unique_ptr<CMessageBoxVort> MessageBox( new CMessageBoxVort(gpBehaviorEngine->getString("EP1_SHIP")) );
+	std::unique_ptr<CMessageBoxVort> MessageBox( new CMessageBoxVort(gBehaviorEngine.getString("EP1_SHIP")) );
 
 	bool joy, bat, vac, wis;
 	joy = bat = vac = wis = false;
@@ -178,7 +178,7 @@ void CPlayGameVorticon::ShipEp3()
 {
 	// get one of four random strings and display it!!
 	std::string strname = "EP3_SHIP"+ itoa((rand()%4)+1);
-	std::unique_ptr<CMessageBoxVort> msg( new CMessageBoxVort(gpBehaviorEngine->getString(strname)) );
+	std::unique_ptr<CMessageBoxVort> msg( new CMessageBoxVort(gBehaviorEngine.getString(strname)) );
 	mMessageBoxes.push_back( move(msg) );
 }
 
@@ -222,7 +222,7 @@ void CPlayGameVorticon::showKeensLeft()
 		SDL_FillRect(boxsurface, &rect, color );
 		Font.getBGColour(&r, &g, &b, false);
 		SDL_FillRect(boxsurface, &rect, SDL_MapRGB( boxsurface->format, r, g, b) );
-		Font.drawFont( boxsurface, gpBehaviorEngine->getString("LIVES_LEFT"), 36, 8, true);
+		Font.drawFont( boxsurface, gBehaviorEngine.getString("LIVES_LEFT"), 36, 8, true);
 
 
 		y = 20;
@@ -304,9 +304,9 @@ void CPlayGameVorticon::readTeleportDestCoordinatesEP1(int objectID, int &destx,
 	destx = desty = 0;
 
 	std::vector<stTeleporterTable>::iterator TTable =
-			gpBehaviorEngine->getTeleporterTable().begin();
+			gBehaviorEngine.getTeleporterTable().begin();
 	size_t i = 0;
-	for( ; TTable != gpBehaviorEngine->getTeleporterTable().end() ; TTable++, i++ )
+	for( ; TTable != gBehaviorEngine.getTeleporterTable().end() ; TTable++, i++ )
 	{
 		if(TTable->objectnumber2 == objectID || TTable->objectnumber1 == objectID)
 		{

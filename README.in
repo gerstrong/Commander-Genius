@@ -248,14 +248,13 @@ How to launch Commander Genius (If you didn't compile it):
 
 
 Getting the most recent Source Code:
- * Well, as many projects it is hosted at GitHub.
+ * The most recent version is hosted at GitHub.
  * From the Linux command line type:
    git clone git://github.com/gerstrong/Commander-Genius.git
+ * I recommend you using the master branch. I might create a more stable one later
 
 
 How to compile it under Ubuntu:
- * This is based on the source code that we provide on our website
- * As we know which packages are needed, because we use Ubuntu, here is an extra guide. 
  * Install through Synaptic or "sudo apt install" following packages:
    Common dependencies:
  	- build-essential
@@ -265,19 +264,31 @@ How to compile it under Ubuntu:
         - libboost
         - libcurl4-openssl-dev
         - zlib
-        - python3 (python 3.5 recommended)         
- 
-   For SDL 1.2:
- 	- libsdl1.2-dev
- 	- libsdl-image1.2-dev
-
-   For SDL2:
+        - python3 (python 3.5 recommended)          
         - libsdl2-dev
         - libsdl-image2-dev
 
- * extract my source code into "CGenius".
- * cd into the source directory "CGenius"
- * Run "cmake -DUSE_SDL2=yes" depending on how you want to compile.
+ * Extract my source code into "CGeniusSrc".
+ * cd into the source directory "CGeniusSrc"
+ * mkdir -p CGeniusBuild
+ * cd CGeniusBuild
+ * Run "cmake ../CGeniusSrc"
+ * Run "make".
+ * If everything went fine you should be able to see an executable in the build directory.
+   Copy the game data files to <CG-Data> if you didn't already and run Commander Genius.
+   Even without any data copied CG should run but tell that there are no games then.
+
+How to compile it under Ubuntu:
+ * Install using the package manager (replace "yum" with "dnf" for fedora 21 or older):
+
+   dnf install -y \
+     SDL2-devel boost-devel libogg-devel gcc-c++ cmake libvorbis-devel SDL2_image-devel mesa-libGL-devel libcurl-devel cmake-data
+
+ * Extract my source code into "CGeniusSrc".
+ * cd into the source directory "CGeniusSrc"
+ * mkdir -p CGeniusBuild
+ * cd CGeniusBuild
+ * Run "cmake ../CGeniusSrc"
  * Run "make".
  * If everything went fine you should be able to see an executable in the build directory.
    Copy the game data files to <CG-Data> if you didn't already and run Commander Genius.
@@ -285,13 +296,15 @@ How to compile it under Ubuntu:
 
 Compiling CG on any Linux/UNIX (other than Ubuntu):
  * If you want to compile the game, you need to have all the standard
-   development libraries and GNU C Compiler (at least version 4) installed 
+   development libraries and GNU C Compiler (at least version 4.8) installed 
    on your system.
- * You need to install the "vorbis", "SDL" and "Mesa/OpenGL" development libraries to get 
+ * You need to install the "vorbis", "ogg", "SDL", "curl", "boost" and "Mesa/OpenGL" development libraries to get 
    it successfully compiled.
- * extract my source code to "cgenius". 
- * cd into the "cgenius" subdirectory.
- * Run "cmake -DUSE_SDL2=yes"
+ * Extract my source code into "CGeniusSrc".
+ * cd into the source directory "CGeniusSrc"
+ * mkdir -p CGeniusBuild
+ * cd CGeniusBuild
+ * Run "cmake ../CGeniusSrc"
  * Run "make".
  * Then, you can run "CGenius".
    
@@ -350,7 +363,7 @@ Before you play the game, you should take a look at the controls. Normally LAlt,
 are the action keys. You can also assign joystick buttons, axes and hats to those actions or just
 change the keys to your liking. The changes are global to all the Keen games.
 
-For Mobile users, I added Sandwich button which during the gameplay can be seen at the top right corner (red color).
+For Mobile users, I added Sandwich button which during the gameplay can be seen at the top right corner (FONTCOLORS::RED color).
 Click or tap on it and you get opened the Main-Menu
 
 
@@ -389,6 +402,11 @@ On Galaxy and Dreams games it works like known.
 
 - FAQ -
 =======
+Q: Where is Commander Keen 2,3, 5 and 6?
+A: Due to legal issues with the Commander Keen games we are only allowed to provide a copy of Keen 1, 4, Dreams
+   and everything mod related of those. This is possible beacause it is shareware. If you happen to have a copy of the other
+   Keen games just copy them to the data directory under "games" and CG will detect them.
+
 Q: Commander Genius is slow? Please help!
 A: You can decrease the fps under settings->video. OpenGL may also help on some systems with ScaleX disabled. 
    Try to lower the resolution, a lower filter, or decrease some stuff in the sounds section.
@@ -396,7 +414,7 @@ A: You can decrease the fps under settings->video. OpenGL may also help on some 
    the program. Also HQP requires more resources.
    
 Q: What about Keen Dreams?
-A: You can play already to the end. 
+A: You can already play it through. Neer thought we would support that one a day, but NY00123 made it possible.
    Not all versions are supported but the supported version has some little enhancements as well.
    If you forget to collect some of the bombs in a level you can replay that level making the game better to play
    in my opinion. The support on that game is still WIP but you can finish it already.
@@ -412,7 +430,7 @@ Also remember to test the lastest version from the testing repo we sometimes pro
 Your error might have been already fixed there. If there is no testing version after the release, 
 just report it. ;-)
 
-Of course you can send an email, but Github at this stage is more useful for us.
+Of course you can send an email, but Github is more useful to me:
 
 http://github.com/gerstrong/Commander-Genius/issues
 
@@ -439,6 +457,8 @@ Commander Spleen
 Dreams
 Napalm (More Keen Data Structure Information)
 Malvineous
+Clobber
+Mewingtree
 Hans de Goede (The Fedora Guy)
 Levellass (Keen EXE-Information)
 ZidaneA (For his music tracks!)

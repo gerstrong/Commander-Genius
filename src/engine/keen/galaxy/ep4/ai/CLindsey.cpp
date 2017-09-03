@@ -61,22 +61,22 @@ void CLindsey::getTouchedBy(CSpriteObject &theObject)
     // When Keen touches the pincess give that hint
     if( dynamic_cast<CPlayerLevel*>(&theObject) )
     {
-        g_pSound->playSound(SOUND_GET_WETSUIT, PLAY_PAUSEALL);
+        gSound.playSound(SOUND_GET_WETSUIT, PLAY_PAUSEALL);
 
         std::array< std::string, 3> lindsey_text;
 
-        lindsey_text[0] = gpBehaviorEngine->getString(answermap[0]);
+        lindsey_text[0] = gBehaviorEngine.getString(answermap[0]);
 
         Uint16 cur_level = mp_Map->getLevel();
         if(cur_level > 5)
         {
-            lindsey_text[1] = gpBehaviorEngine->getString(answermap[1]);
-            lindsey_text[2] = gpBehaviorEngine->getString(answermap[3]);
+            lindsey_text[1] = gBehaviorEngine.getString(answermap[1]);
+            lindsey_text[2] = gBehaviorEngine.getString(answermap[3]);
         }
         else
         {
-            lindsey_text[1] = gpBehaviorEngine->getString(answermap[2]);
-            lindsey_text[2] = gpBehaviorEngine->getString(answermap[4]);
+            lindsey_text[1] = gBehaviorEngine.getString(answermap[2]);
+            lindsey_text[2] = gBehaviorEngine.getString(answermap[4]);
         }
 
 

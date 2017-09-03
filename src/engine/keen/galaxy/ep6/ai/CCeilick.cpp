@@ -15,8 +15,8 @@ A_CEILICK_STUNNED = 21
 };
 
 
-const int X_DIST_TO_LICK = 3<<CSF;
-const int Y_DIST_TO_LICK = 8<<CSF;
+constexpr int X_DIST_TO_LICK = 3<<CSF;
+constexpr int Y_DIST_TO_LICK = 8<<CSF;
 
 
 CCeilick::CCeilick(CMap* pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :

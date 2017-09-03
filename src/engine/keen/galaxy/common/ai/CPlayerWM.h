@@ -41,21 +41,16 @@ public:
             Uint32 y,
             CInventory &l_Inventory,
             const unsigned int actionoffset,
-            const int playerID);
+            const int playerIdx,
+            const int spriteTableIdx);
 
     Vector2D<int> fetchFootDestCoord();
 
     void pumpEvent(const CEvent *evPtr);
 	
-	void deserialize(CSaveGameController &savedGame) 
-	{
-	  savedGame.decodeData(mUsedGrapplingHook);
-	}
+    void deserialize(CSaveGameController &savedGame);
 
-	void serialize(CSaveGameController &savedGame) 
-	{
-	  savedGame.encodeData(mUsedGrapplingHook);                  
-	}
+    void serialize(CSaveGameController &savedGame);
 
     void serialize(boost::property_tree::ptree &node)
     {

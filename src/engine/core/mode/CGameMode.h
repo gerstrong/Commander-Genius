@@ -47,8 +47,6 @@ struct GMStart : CEvent {};
 
 struct GMPatchSelected : CEvent {};
 
-struct GMDosExecSelected : CEvent {};
-
 struct GameStorePullGame : CEvent {};
 
 

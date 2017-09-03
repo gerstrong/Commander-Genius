@@ -15,7 +15,7 @@ onsamelevel(false)
 	canbezapped = 1;
 	dead = 0;
 
-	if(gpBehaviorEngine->mDifficulty==HARD)
+	if(gBehaviorEngine.mDifficulty==HARD)
 		mHealthPoints++;
 }
 
@@ -114,7 +114,7 @@ void CFoob::process()
 				xinertia = FOOB_FLEE_SPEED;
 				blockedtime = 0;
 			}
-			else if(gpBehaviorEngine->mDifficulty==HARD)
+			else if(gBehaviorEngine.mDifficulty==HARD)
 			{
 				if (++blockedtime >= FOOB_HARDMODE_BLOCK_TIME)
 				{
@@ -131,7 +131,7 @@ void CFoob::process()
 				xinertia = -FOOB_FLEE_SPEED;
 				blockedtime = 0;
 			}
-			else if(gpBehaviorEngine->mDifficulty==HARD)
+			else if(gBehaviorEngine.mDifficulty==HARD)
 			{
 				if (++blockedtime >= FOOB_HARDMODE_BLOCK_TIME)
 				{
@@ -175,36 +175,38 @@ void CFoob::process()
 bool CFoob::isNearby(CVorticonSpriteObject &theObject)
 {
     if(CPlayer *player = dynamic_cast<CPlayer*>(&theObject))
-    {		
-	if ( (player->getYDownPos() >= getYUpPos()-(2<<CSF)) &&
-		(player->getYDownPos() <= getYDownPos()+(1<<CSF)) )
-	{
-		onsamelevel = true;
-		SpookedByWho = player->m_index;
-	}
-	
-	if(state == FOOB_SPOOK)
-	{
-		sprite = FOOB_SPOOK_FRAME;
+    {
+        if ( (player->getYDownPos() >= getYUpPos()-(2<<CSF)) &&
+             (player->getYDownPos() <= getYDownPos()+(1<<CSF)) )
+        {
+            onsamelevel = true;
+            SpookedByWho = player->m_index;
+        }
 
-		if (spooktimer > FOOB_SPOOK_SHOW_TIME)
-		{
-			state = FOOB_FLEE;
-			OffOfSameLevelTime = 0;
-			// run away from the offending player
-			
-			if (player->getXPosition() < getXPosition())
-				dir = RIGHT;
-			else
-				dir = LEFT;
-			
-			// in hard mode run TOWARDS the player (he's deadly in hard mode)
-			if (gpBehaviorEngine->mDifficulty==HARD)
-				dir = LEFT ? RIGHT : LEFT;
+        if(state == FOOB_SPOOK)
+        {
+            sprite = FOOB_SPOOK_FRAME;
 
-		}
-		else spooktimer++;		
-	}
+            if (spooktimer > FOOB_SPOOK_SHOW_TIME)
+            {
+                state = FOOB_FLEE;
+                OffOfSameLevelTime = 0;
+                // run away from the offending player
+
+                if (player->getXPosition() < getXPosition())
+                    dir = RIGHT;
+                else
+                    dir = LEFT;
+
+                // in hard mode run TOWARDS the player (he's deadly in hard mode)
+                if (gBehaviorEngine.mDifficulty == HARD)
+                {
+                    dir = (dir==LEFT) ? RIGHT : LEFT;
+                }
+
+            }
+            else spooktimer++;
+        }
     }
     
     return true;
@@ -214,7 +216,7 @@ void CFoob::getTouchedBy(CVorticonSpriteObject &theObject)
 {
 	if(CPlayer *player = dynamic_cast<CPlayer*>(&theObject))
 	{
-		if(gpBehaviorEngine->mDifficulty==HARD)
+		if(gBehaviorEngine.mDifficulty==HARD)
 			player->kill();
 	}
 }

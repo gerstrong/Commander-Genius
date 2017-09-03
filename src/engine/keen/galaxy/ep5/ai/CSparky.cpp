@@ -22,18 +22,13 @@ A_SPARKY_TURN = 20,
 A_SPARKY_STUNNED = 23
 };
 
-const int TIME_UNTIL_MOVE = 5;
-const int TIME_FOR_LOOK = 150;
-
-const int WALK_SPEED = 25;
-
-const int CSF_DISTANCE_TO_FOLLOW = 6<<CSF;
-
-const int CHARGE_TIME = 250;
-const int CHARGE_SPEED = 75;
-
-const int TURN_TIME = 10;
-
+constexpr int TIME_UNTIL_MOVE = 5;
+constexpr int TIME_FOR_LOOK = 150;
+constexpr int WALK_SPEED = 25;
+constexpr int CSF_DISTANCE_TO_FOLLOW = 6<<CSF;
+constexpr int CHARGE_TIME = 250;
+constexpr int CHARGE_SPEED = 75;
+constexpr int TURN_TIME = 10;
   
 CSparky::CSparky(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
 CStunnable(pmap, foeID, x, y),
@@ -52,7 +47,7 @@ mGoodChargeChance(false)
     mActionMap[A_SPARKY_TURN] = (void (CGalaxyActionSpriteObject::*)()) &CSparky::processTurn;
     mActionMap[A_SPARKY_STUNNED] = (void (CGalaxyActionSpriteObject::*)()) &CStunnable::processGettingStunned;
   
-    auto diff = gpBehaviorEngine->mDifficulty;
+    auto diff = gBehaviorEngine.mDifficulty;
 
 
     if(diff > NINJA && foeID == 0x06)

@@ -143,7 +143,9 @@ bool CResourceLoader::process(int* ret)
 		
 		// wait time remaining in current loop
 		if( waitTime > 0 )
+        {
 		    timerDelay(waitTime);	
+        }
 		
 		total_elapsed += static_cast<float>(waitTime);
 		
@@ -156,8 +158,11 @@ bool CResourceLoader::process(int* ret)
 		    total_elapsed = 0.0f;
 		}
 
+
         if(!threadFinalized)
+        {
             threadFinalized = threadPool->finalizeIfReady(mp_Thread, ret);
+        }
 	}
 	
 	// Draw the last Frame, so transition looks complete!
@@ -267,7 +272,11 @@ void CResourceLoader::renderLoadingGraphic()
         bgRect.h = rect.h+2;
 
 		// Fade from yellow to green with this formula
-        Uint32 color = SDL_MapRGB(sfc->format, gameHeight-(gameHeight*m_permil)/1000, gameHeight, 0 );
+        const Uint8 r = gameHeight-(gameHeight*m_permil)/1000;
+        const Uint8 g = gameHeight;
+        const Uint8 b = 0;
+
+        Uint32 color = SDL_MapRGB(sfc->format, r, g, b );
 		
 		SDL_FillRect(sfc, &bgRect, SDL_MapRGB(sfc->format, 128, 128, 128));
 		SDL_FillRect(sfc, &rect, color);
@@ -468,8 +477,12 @@ void CResourceLoaderBackground::render()
         bgRect.w = halfWidth+2;
         bgRect.h = rect.h+2;
 
+        const Uint8 r = 255-(255*m_permil)/1000;
+        const Uint8 g = (255*m_permil)/1000;
+        const Uint8 b = 0;
+
         // Fade from yellow to green with this formula
-        Uint32 color = SDL_MapRGB(sfc->format, gameHeight-(gameHeight*m_permil)/1000, gameHeight, 0 );
+        Uint32 color = SDL_MapRGB(sfc->format, r, g, b );
 
         SDL_FillRect(sfc, &bgRect, SDL_MapRGB(sfc->format, 128, 128, 128));
         SDL_FillRect(sfc, &rect, color);

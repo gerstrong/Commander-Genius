@@ -41,7 +41,7 @@ void CSoundSlot::openOGGSound(const std::string& filename, SDL_AudioSpec *pspec,
     const unsigned int BUFFER_SIZE = 32768;     // 32 KB buffers
     SoundBuffer = NULL;
 
-    const SDL_AudioSpec &audioSpec = g_pSound->getAudioSpec();
+    const SDL_AudioSpec &audioSpec = gSound.getAudioSpec();
 
     if(ov_fopen( (char *)GetFullFileName(filename).c_str(), &oggStream ) == 0)
     {
@@ -116,7 +116,7 @@ bool CSoundSlot::HQSndLoad(const std::string& gamepath, const std::string& sound
 {
 	SDL_AudioSpec AudioFileSpec;
 
-    const SDL_AudioSpec &audioSpec = g_pSound->getAudioSpec();
+    const SDL_AudioSpec &audioSpec = gSound.getAudioSpec();
 
 	SDL_AudioCVT  Audio_cvt;
 
@@ -135,11 +135,11 @@ bool CSoundSlot::HQSndLoad(const std::string& gamepath, const std::string& sound
 
         if(oggdata == nullptr)
         {
-            gLogging.textOut(PURPLE,"Something is wrong with \"%s\"<br>", buf);
+            gLogging.textOut(FONTCOLORS::PURPLE,"Something is wrong with \"%s\"<br>", buf);
 			return false;
         }
 #else
-		gLogging.textOut(PURPLE,"NOTE: OGG-Support is disabled! Get another version or compile it yourself!<br>");
+		gLogging.textOut(FONTCOLORS::PURPLE,"NOTE: OGG-Support is disabled! Get another version or compile it yourself!<br>");
 #endif
 
 #if defined(OGG) || defined(TREMOR)
@@ -168,7 +168,7 @@ bool CSoundSlot::HQSndLoad(const std::string& gamepath, const std::string& sound
 	// Check that the convert was built
 	if(ret == -1)
 	{
-		gLogging.textOut(PURPLE,"Couldn't convert the sound correctly!<br>");
+		gLogging.textOut(FONTCOLORS::PURPLE,"Couldn't convert the sound correctly!<br>");
         SDL_FreeWAV(wavdata);
 		return false;
 	}

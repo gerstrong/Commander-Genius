@@ -27,12 +27,11 @@
 CMapPlayGalaxy::CMapPlayGalaxy(std::vector<CInventory> &inventoryVec) :
 mActive(false),
 mInventoryVec(inventoryVec),
-mpOption(gpBehaviorEngine->m_option),
 mMsgBoxOpen(false)
 {}
 
 
-void CMapPlayGalaxy::setActive(bool value)
+void CMapPlayGalaxy::setActive(const bool value)
 {
 	mActive = value;
 
@@ -61,7 +60,7 @@ void CMapPlayGalaxy::pumpEvent(const CEvent *evPtr)
         for( auto obj=mObjectPtr.rbegin() ; obj!=mObjectPtr.rend() ; obj++ )
         {
             galaxy::CInchWorm *inchworm = dynamic_cast<galaxy::CInchWorm*>(obj->get());
-            if( inchworm != NULL )
+            if( inchworm != nullptr )
             {
                 inchworm->exists = false;
             }
@@ -80,8 +79,23 @@ void CMapPlayGalaxy::pumpEvent(const CEvent *evPtr)
             }
         }
 
-        std::shared_ptr<CGalaxySpriteObject> foot(new galaxy::CFoot( &mMap, ev->foeID, 0x2EF4, posX, posY));
-        mObjectPtr.push_back( foot );
+        bool alreadySpawned = false;
+
+        // Check if there is already is a spawned foot
+        for ( std::shared_ptr<CGalaxySpriteObject> &ptr : mObjectPtr )
+        {
+            if( std::dynamic_pointer_cast<galaxy::CFoot>(ptr) )
+            {
+                alreadySpawned = true;
+                break;
+            }
+        }
+
+        if(!alreadySpawned)
+        {
+            std::shared_ptr<CGalaxySpriteObject> foot(new galaxy::CFoot( &mMap, ev->foeID, 0x2EF4, posX, posY));
+            mObjectPtr.push_back( foot );
+        }
     }
 
 
@@ -215,7 +229,9 @@ void CMapPlayGalaxy::render()
             (*obj)->draw();
     }
 
-    if(mpOption[OPT_HUD].value )
+    const auto &optHUD = gBehaviorEngine.mOptions[GameOption::HUD];
+
+    if( optHUD.value )
     {
         for( int pId = mInventoryVec.size()-1 ; pId>=0 ; pId-- )
         {
@@ -275,7 +291,7 @@ void CMapPlayGalaxy::operator>>(CSaveGameController &savedGame)
 		savedGame.encodeData( it->honorPriority );
 		savedGame.encodeData( it->sprite );
 		savedGame.encodeData( it->m_ActionNumber );
-		it->serialize(savedGame);
+        it->serialize(savedGame);
 	}
 
 	// Save the map_data as it is left
@@ -298,7 +314,7 @@ bool CMapPlayGalaxy::operator<<(CSaveGameController &savedGame)
 	savedGame.decodeData( level );
 
 	std::unique_ptr<galaxy::CMapLoaderGalaxy> mapLoader;
-	const unsigned int episode = gpBehaviorEngine->getEpisode();
+	const unsigned int episode = gBehaviorEngine.getEpisode();
 
 	if(episode == 4)
 	{
@@ -322,7 +338,7 @@ bool CMapPlayGalaxy::operator<<(CSaveGameController &savedGame)
 	mapLoader->loadMap( mMap, level );
 
     // Load the Background Music
-	g_pMusicPlayer->stop();
+	gMusicPlayer.stop();
 
 
     if( !galaxy::loadLevelMusic(level) )
@@ -331,7 +347,7 @@ bool CMapPlayGalaxy::operator<<(CSaveGameController &savedGame)
     }
     else
     {
-    	g_pMusicPlayer->play();
+    	gMusicPlayer.play();
     }
 
 
@@ -488,7 +504,7 @@ void CMapPlayGalaxy::operator<<(boost::property_tree::ptree &levelNode)
     int level = levelNode.get<int>("level", 0);
 
     std::unique_ptr<galaxy::CMapLoaderGalaxy> mapLoader;
-    const unsigned int episode = gpBehaviorEngine->getEpisode();
+    const unsigned int episode = gBehaviorEngine.getEpisode();
 
     if(episode == 4)
     {
@@ -511,7 +527,7 @@ void CMapPlayGalaxy::operator<<(boost::property_tree::ptree &levelNode)
     // Load the World map level.
     mapLoader->loadMap( mMap, level );
 
-    g_pMusicPlayer->stop();
+    gMusicPlayer.stop();
 
     // Prepare to load the Background Music
     if( !galaxy::loadLevelMusic(level) )
@@ -520,7 +536,7 @@ void CMapPlayGalaxy::operator<<(boost::property_tree::ptree &levelNode)
     }
     else
     {
-        g_pMusicPlayer->play();
+        gMusicPlayer.play();
     }
 
 

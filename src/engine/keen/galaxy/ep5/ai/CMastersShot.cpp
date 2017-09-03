@@ -21,9 +21,7 @@ $2C7AW #Master's shot
 
 namespace galaxy {  
   
-const int WALK_SPEED = 25;
-
-
+constexpr int WALK_SPEED = 25;
   
 CMastersShot::CMastersShot(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
 CStunnable(pmap, foeID, x, y),

@@ -27,7 +27,7 @@ bool CAudioGalaxy::readPCSpeakerSoundintoWaveForm(CSoundSlot &soundslot, const b
 	const longword size = READLONGWORD(pcsdata_ptr);
 	soundslot.priority = READWORD(pcsdata_ptr);
 
-    const SDL_AudioSpec &audioSpec = g_pSound->getAudioSpec();
+    const SDL_AudioSpec &audioSpec = gSound.getAudioSpec();
 
 	std::vector<Sint16> waveform;
 	// TODO:  There should be a better way of determining if sound is signed or not...
@@ -76,7 +76,7 @@ void CAudioGalaxy::setupAudioMap()
 {
     // Preparation which might help wehn some patches are applied    
     byte *ptr = gKeenFiles.exeFile.getRawData();
-    auto episode = gpBehaviorEngine->getEpisode();
+    auto episode = gBehaviorEngine.getEpisode();
     size_t holder = 0;
 
     // Episode 4
@@ -298,7 +298,7 @@ bool CAudioGalaxy::LoadFromAudioCK(const unsigned int dictOffset)
 
     setupAudioMap();
 
-    const SDL_AudioSpec &audioSpec = g_pSound->getAudioSpec();
+    const SDL_AudioSpec &audioSpec = gSound.getAudioSpec();
 
     if(audioSpec.format == 0)
     {
@@ -483,7 +483,7 @@ bool CAudioGalaxy::LoadFromAudioCK(const unsigned int dictOffset)
  */
 bool CAudioGalaxy::loadSoundData(const unsigned int dictOffset)
 {
-    COPLEmulator &OPLEmulator = g_pSound->getOPLEmulatorRef();
+    COPLEmulator &OPLEmulator = gSound.getOPLEmulatorRef();
 
     OPLEmulator.shutdown();
     OPLEmulator.init();

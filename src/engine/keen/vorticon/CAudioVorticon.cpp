@@ -92,7 +92,7 @@ bool CAudioVorticon::loadPCSpeakerSound(std::vector<T> &waveform, const std::str
     byte *buffer = mFileBuffer.data();
     byte *buf_ptr = buffer+0x6;
 
-    const auto &audioSpec = g_pSound->getAudioSpec();
+    const auto &audioSpec = gSound.getAudioSpec();
 
 	nr_of_sounds = READWORD(buf_ptr);
 
@@ -165,7 +165,7 @@ bool CAudioVorticon::loadSound( const std::string& path, const std::string& sear
     Uint8* buf = nullptr;
 	bool ok = false;
 
-    const Uint16 format = g_pSound->getAudioSpec().format;
+    const Uint16 format = gSound.getAudioSpec().format;
 
     if( format == AUDIO_S8 )
 	{

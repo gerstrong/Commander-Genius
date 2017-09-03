@@ -109,6 +109,7 @@ private:
     GsBitmap mLeftBorderBmp;
     GsBitmap mRightBorderBmp;
     GsBitmap mBottomBorderBmp;
+    GsBitmap mLowerBorderControlBmp;
 
     /////////  For the Main Menu only /////////////////////
     GsBitmap mMainMenuBmp;
@@ -129,7 +130,7 @@ private:
     int mFontId = 0;
 
     std::vector<int> mMinPos;
-    std::vector<int> mMaxPos;
+    std::vector<int> mMaxPos;   
 };
 
 }

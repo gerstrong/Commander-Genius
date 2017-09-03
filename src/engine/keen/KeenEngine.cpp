@@ -16,9 +16,9 @@
 
 void KeenEngine::switchToGamePlayMode(const int startLevel)
 {
-    const int episode = gpBehaviorEngine->getEpisode();
+    const int episode = gBehaviorEngine.getEpisode();
 
-    auto &numPlayers = gpBehaviorEngine->mPlayers;
+    auto &numPlayers = gBehaviorEngine.mPlayers;
 
     // If you get here, you always have at least one player
     if(numPlayers <= 0)
@@ -42,14 +42,14 @@ void KeenEngine::start()
 
     if( ExeFile.getHeaderData() == NULL)
     {
-        gLogging.textOut(RED, "KeenEngine::loadResources: Could not load data from the EXE File<br>");
+        gLogging.textOut(FONTCOLORS::RED, "KeenEngine::loadResources: Could not load data from the EXE File<br>");
         gEventManager.add(new GMSwitchToGameLauncher() );
         return;
     }
 
     gKeenFiles.setupFilenames(mEp);
 
-    gpBehaviorEngine->setEpisode(mEp);
+    gBehaviorEngine.setEpisode(mEp);
 
     // Load the Resources
     loadResources( LOADALL );
@@ -61,10 +61,10 @@ void KeenEngine::pumpEvent(const CEvent *evPtr)
 
     if( const StartNewGameEvent* pStart = dynamic_cast<const StartNewGameEvent*>(evPtr) )
     {
-        gpBehaviorEngine->mDifficulty = pStart->mDifficulty;
+        gBehaviorEngine.mDifficulty = pStart->mDifficulty;
         switchToGamePlayMode(pStart->mStartLevel);
         return;
-    }       
+    }                    
 }
 
 void KeenEngine::ponder(const float deltaT)
@@ -77,9 +77,9 @@ void KeenEngine::ponder(const float deltaT)
     if(!mpGameMode)
         return;
 
-    if(g_pMusicPlayer->active() && !g_pMusicPlayer->playing())
+    if(gMusicPlayer.active() && !gMusicPlayer.playing())
     {
-       g_pMusicPlayer->play();
+       gMusicPlayer.play();
     }
 
     // Did the player press the quit/back button

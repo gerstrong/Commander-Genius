@@ -37,7 +37,7 @@ m_baseframe(0)
 	mActionMap[A_FLAG_WAVE] = &CFlag::processWaving;
 	mActionMap[A_FLAG_FLIP] = &CFlag::processFlipping;
 	
-	const auto episode = gpBehaviorEngine->getEpisode();    
+	const auto episode = gBehaviorEngine.getEpisode();    
 
     if(canLock)
     {
@@ -61,6 +61,18 @@ m_baseframe(0)
 	    setupGalaxyObjectOnMap(0x15EE, A_FLAG_FLIP);                
 	}
 
+}
+
+void CFlag::deserialize(CSaveGameController &savedGame)
+{
+  savedGame.decodeData(m_Pos.x);
+  savedGame.decodeData(m_Pos.y);
+}
+
+void CFlag::serialize(CSaveGameController &savedGame)
+{
+  savedGame.encodeData(m_Pos.x);
+  savedGame.encodeData(m_Pos.y);
 }
 
 void CFlag::getTouchedBy(CSpriteObject &theObject)
@@ -95,7 +107,7 @@ void CFlag::process()
 {
     if(mPlayMapSound)
     {
-        g_pSound->playSound( SOUND_FLAG_APPEAR );
+        gSound.playSound( SOUND_FLAG_APPEAR );
         mPlayMapSound = false;
     }
 
@@ -128,9 +140,9 @@ void CFlag::processFlipping()
 	{
 	    setAction(A_FLAG_WAVE);        
 	    setActionSprite();
-	    g_pSound->playSound( SOUND_FLAG_LAND );
+	    gSound.playSound( SOUND_FLAG_LAND );
 	    
-	    const auto episode = gpBehaviorEngine->getEpisode();
+	    const auto episode = gBehaviorEngine.getEpisode();
         if(episode == 6)
         {
             Vector2D<int> tilePos = m_Pos;

@@ -100,8 +100,8 @@ void CPlayer::touchedExit(int mpx)
 		
 		ppogostick = false;
 		
-		g_pMusicPlayer->stop();
-		g_pSound->playSound(SOUND_LEVEL_DONE, PLAY_NOW);
+		gMusicPlayer.stop();
+		gSound.playSound(SOUND_LEVEL_DONE, PLAY_NOW);
 		level_done = LEVEL_DONE_WALK;
 		solid = false;
 		inhibitfall = true;
@@ -112,7 +112,7 @@ void CPlayer::walkbehindexitdoor()
 {
 	int xb, diff, width;
 
-    const int ep = gpBehaviorEngine->getEpisode();
+    const int ep = gBehaviorEngine.getEpisode();
 
 	
     // don't draw keen as he walks through the door (past exitXpos)
@@ -146,7 +146,7 @@ void CPlayer::kill(bool force)
 {
 	if(!force) // force can happens for example, when player leaves the map to the most lower-side
 	{
-        if ( gpBehaviorEngine->mCheatmode.god ) return;
+        if ( gBehaviorEngine.mCheatmode.god ) return;
 		if (ankhmode || ankhtime || level_done) return;
 	}
 
@@ -162,8 +162,8 @@ void CPlayer::kill(bool force)
 		pdie_xvect -= DIE_MAX_XVECT;
 		inventory.lives--;
 		SelectFrame();
-		g_pSound->playSound(SOUND_KEEN_DIE, PLAY_NOW);
-		g_pMusicPlayer->stop();
+		gSound.playSound(SOUND_KEEN_DIE, PLAY_NOW);
+		gMusicPlayer.stop();
 
 		if(inventory.canlooseitem[0])	inventory.HasJoystick = false;
 		if(inventory.canlooseitem[1])	inventory.HasBattery = false;
@@ -182,7 +182,7 @@ void CPlayer::dieanim() // Bad word for that. It's the entire die code
 	if (pdie==PDIE_FELLOFFMAP)
 	{
 		// wait for falling sound to complete, then kill the player
-		if (!g_pSound->isPlaying(SOUND_KEEN_FALL))
+		if (!gSound.isPlaying(SOUND_KEEN_FALL))
 		{
 			pdie = 0;
 			kill();
@@ -238,7 +238,7 @@ void CPlayer::keencicle()
 		else
 		{ // thawing out, show the thaw frame
 
-            const int ep = gpBehaviorEngine->getEpisode();
+            const int ep = gBehaviorEngine.getEpisode();
 
             if (ep==3)
 				pfrozenframe = 2;
@@ -304,7 +304,7 @@ void CPlayer::TogglePogo_and_Switches()
 	unsigned int mx, my;
 	Uint16 t;
 	
-	std::vector<CTileProperties> &TileProperty = gpBehaviorEngine->getTileProperties(1);
+	std::vector<CTileProperties> &TileProperty = gBehaviorEngine.getTileProperties(1);
 
 	// detect if KPOGO key only pressed
 	if ( playcontrol[PA_POGO] && !pfrozentime && !lastpogo )
@@ -375,7 +375,7 @@ void CPlayer::TogglePogo_and_Switches()
 
 void CPlayer::JumpAndPogo()
 {
-	CPhysicsSettings &PhysicsSettings = gpBehaviorEngine->getPhysicsSettings();
+	CPhysicsSettings &PhysicsSettings = gBehaviorEngine.getPhysicsSettings();
 
 	// handle the JUMP key, both for normal jumps and (high) pogo jumps
 	if (!pjumping && !pfalling && !pfiring)
@@ -422,7 +422,7 @@ void CPlayer::JumpAndPogo()
 								if(!pogofirsttime)
 								{
 									const int jump = PhysicsSettings.player.maxjumpspeed;
-                                    const int pogo = (gpBehaviorEngine->mDifficulty >= NORMAL) ?
+                                    const int pogo = (gBehaviorEngine.mDifficulty >= NORMAL) ?
 													(11*PhysicsSettings.player.maxpogospeed)/10
                                     				: PhysicsSettings.player.maxpogospeed;
                                    	pjumpupspeed = 3*(pogo-jump)*playcontrol[PA_JUMP] / 50 + jump;
@@ -581,7 +581,7 @@ void CPlayer::JumpAndPogo()
 	}
 	
     // If we are in Godmode, use the Pogo, and holding the jump button will make the player fly
-    if( ppogostick && gpBehaviorEngine->mCheatmode.jump )
+    if( ppogostick && gBehaviorEngine.mCheatmode.jump )
     {
     	if(playcontrol[PA_X] < 0) xinertia-=3;
     	if(playcontrol[PA_X] > 0) xinertia+=3;
@@ -592,7 +592,7 @@ void CPlayer::JumpAndPogo()
 
 void CPlayer::boostInertia(const int amt)
 {
-	CPhysicsSettings &PhysicsSettings = gpBehaviorEngine->getPhysicsSettings();
+	CPhysicsSettings &PhysicsSettings = gBehaviorEngine.getPhysicsSettings();
 
     int pinitspeed = PhysicsSettings.player.max_x_speed/2;
 
@@ -620,8 +620,8 @@ void CPlayer::boostInertia(const int amt)
 
 void CPlayer::Playerfalling()
 {
-	std::vector<CTileProperties> &TileProperty = gpBehaviorEngine->getTileProperties();
-	CPhysicsSettings &PhysicsSettings = gpBehaviorEngine->getPhysicsSettings();
+	std::vector<CTileProperties> &TileProperty = gBehaviorEngine.getTileProperties();
+	CPhysicsSettings &PhysicsSettings = gBehaviorEngine.getPhysicsSettings();
 
 	if (pfalling)
 	{
@@ -692,7 +692,7 @@ void CPlayer::Playerfalling()
 			pfallspeed += PhysicsSettings.fallspeed_increase;
 
 		// add current fall speed to player Y or make him fly in godmode with pogo        
-        if( !gpBehaviorEngine->mCheatmode.jump || !ppogostick || !gInput.getHoldedCommand(IC_JUMP) )
+        if( !gBehaviorEngine.mCheatmode.jump || !ppogostick || !gInput.getHoldedCommand(IC_JUMP) )
 			moveDown(pfallspeed);
 	}
 	else
@@ -700,7 +700,7 @@ void CPlayer::Playerfalling()
 		if (plastfalling)
 		{  // just now stopped falling
 			if (pdie != PDIE_FELLOFFMAP)
-				g_pSound->stopSound(SOUND_KEEN_FALL);  // terminate fall noise
+				gSound.stopSound(SOUND_KEEN_FALL);  // terminate fall noise
 			// thud noise
 			if (!ppogostick)
 				playSound( SOUND_KEEN_LAND );
@@ -809,7 +809,7 @@ void CPlayer::SelectFrame()
 {
     sprite = playerbaseframe;      // basic standing
 	
-    const int ep = gpBehaviorEngine->getEpisode();
+    const int ep = gBehaviorEngine.getEpisode();
 
     if (ep==3) sprite++;
 
@@ -934,7 +934,7 @@ void CPlayer::checkSolidDoors()
 	int mx2 = getXRightPos();
 	int my1 = getYUpPos();
 	int my2 = getYDownPos();
-	std::vector<CTileProperties> &TileProperty = gpBehaviorEngine->getTileProperties();
+	std::vector<CTileProperties> &TileProperty = gBehaviorEngine.getTileProperties();
 
 	for( int my=my1 ; my<my2 ; my+=(1<<STC) )
 	{
@@ -987,7 +987,7 @@ void CPlayer::getShotByRay(object_t &obj_type)
 		if( pfrozentime > PFROZEN_THAW )
 			pfrozentime = PFROZEN_THAW;
 
-		if(gpBehaviorEngine->getEpisode() == 1)
+		if(gBehaviorEngine.getEpisode() == 1)
 			return;
 	}
 	else
@@ -1003,7 +1003,7 @@ void CPlayer::processStatusScreen()
 
     if(!mpStatusScr)
     {
-        const int ep = gpBehaviorEngine->getEpisode();
+        const int ep = gBehaviorEngine.getEpisode();
 
         mpStatusScr.reset(new CStatusScreen(ep, &inventory, mp_levels_completed, ankhtime, playerbaseframe, mSprVar));
     }

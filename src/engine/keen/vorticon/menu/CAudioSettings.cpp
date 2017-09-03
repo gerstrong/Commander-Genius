@@ -26,7 +26,7 @@ VorticonMenu(GsRect<float>(0.075f, 0.24f, 0.85f, 0.4f) )
 {
 
 #if !defined(EMBEDDED)
-    mpRate = new ComboSelection( "Rate", g_pSound->getAvailableRateList());
+    mpRate = new ComboSelection( "Rate", gSound.getAvailableRateList());
 	mpMenuDialog->addControl( mpRate );
 #endif
 
@@ -41,19 +41,19 @@ VorticonMenu(GsRect<float>(0.075f, 0.24f, 0.85f, 0.4f) )
     mpSBToggle = new ComboSelection( "Card", filledStrList( 2, "PC Speaker", "Soundblaster" ) );
 	mpMenuDialog->addControl( mpSBToggle );
 
-    mpSoundVolume = new NumberControl( "Sound Vol", 0, SDL_MIX_MAXVOLUME, 8, g_pSound->getSoundVolume(), true );
+    mpSoundVolume = new NumberControl( "Sound Vol", 0, SDL_MIX_MAXVOLUME, 8, gSound.getSoundVolume(), true );
 	mpMenuDialog->addControl( mpSoundVolume );
 
 
-    mpMusicVolume = new NumberControl( "Music Vol", 0, SDL_MIX_MAXVOLUME, 8, g_pSound->getMusicVolume(), true );
+    mpMusicVolume = new NumberControl( "Music Vol", 0, SDL_MIX_MAXVOLUME, 8, gSound.getMusicVolume(), true );
     mpMenuDialog->addControl( mpMusicVolume );
 }
 
 
 void CAudioSettings::refresh()
 {
-    mAudioSpec = g_pSound->getAudioSpec();
-	mSoundblaster = g_pSound->getSoundBlasterMode();
+    mAudioSpec = gSound.getAudioSpec();
+	mSoundblaster = gSound.getSoundBlasterMode();
 	mSoundVolume = mpSoundVolume->getSelection();
 
 #if !defined(EMBEDDED)
@@ -66,7 +66,7 @@ void CAudioSettings::refresh()
 	mpDepth->setSelection( mAudioSpec.format == AUDIO_U8 ? "8-bit" : "16-bit" );
 #endif
 	mpSBToggle->setSelection( mSoundblaster ? "Soundblaster" : "PC Speaker" );
-    g_pMusicPlayer->play();
+    gMusicPlayer.play();
 }
 
 
@@ -75,12 +75,12 @@ void CAudioSettings::ponder(const float deltaT)
     CBaseMenu::ponder(0);
 
 	if( mSoundVolume != mpSoundVolume->getSelection() )
-		g_pSound->playSound(SOUND_GET_ITEM);
+		gSound.playSound(SOUND_GET_ITEM);
 
 	mSoundVolume = mpSoundVolume->getSelection();
 
-	g_pSound->setSoundVolume( mSoundVolume );
-    g_pSound->setMusicVolume( mpMusicVolume->getSelection() );
+	gSound.setSoundVolume( mSoundVolume );
+    gSound.setMusicVolume( mpMusicVolume->getSelection() );
 }
 
 
@@ -97,16 +97,16 @@ void CAudioSettings::release()
 
 	mSoundblaster = ( mpSBToggle->getSelection() == "Soundblaster" ? true : false );
 
-	g_pSound->unloadSoundData();
-	g_pSound->destroy();
-	g_pSound->setSettings(mAudioSpec, mSoundblaster);
-	g_pSound->init();
+	gSound.unloadSoundData();
+	gSound.destroy();
+	gSound.setSettings(mAudioSpec, mSoundblaster);
+	gSound.init();
 
     setupAudio();
 
-	g_pMusicPlayer->reload();
+	gMusicPlayer.reload();
 
-    g_pSettings->saveDrvCfg();       
+    gSettings.saveDrvCfg();       
 }
 
 }

@@ -21,31 +21,45 @@ CWorldMap::CWorldMap(std::vector<CInventory> &inventoryVec):
 CMapPlayGalaxy(inventoryVec)
 {}
 
-void CWorldMap::init()
+bool CWorldMap::init()
 {
 	// Load the World map level.
 	std::unique_ptr<CMapLoaderGalaxy> MapLoader;
 
-	if(gpBehaviorEngine->getEpisode() == 4)
+	if(gBehaviorEngine.getEpisode() == 4)
+    {
         MapLoader.reset( new CMapLoaderGalaxyEp4( mObjectPtr, mInventoryVec) );
-	else if(gpBehaviorEngine->getEpisode() == 5)
+    }
+	else if(gBehaviorEngine.getEpisode() == 5)
+    {
         MapLoader.reset( new CMapLoaderGalaxyEp5( mObjectPtr, mInventoryVec) );
-	else if(gpBehaviorEngine->getEpisode() == 6)
+    }
+	else if(gBehaviorEngine.getEpisode() == 6)
+    {
         MapLoader.reset( new CMapLoaderGalaxyEp6( mObjectPtr, mInventoryVec) );
+    }
 
-	MapLoader->loadMap( mMap, 0 );
-	gpBehaviorEngine->mapLevelName = MapLoader->getLevelName();
+    const bool ok = MapLoader->loadMap( mMap, 0 );
 
-    const std::string loading_text = gpBehaviorEngine->getString("LEVEL0_LOAD_TEXT");
+    if(!ok)
+    {
+        return false;
+    }
+
+	gBehaviorEngine.mapLevelName = MapLoader->getLevelName();
+
+    const std::string loading_text = gBehaviorEngine.getString("LEVEL0_LOAD_TEXT");
 
     gEffectController.setupEffect(new CColorMerge(8));
 	
-	if(!gpSaveGameController->busy())
+	if(!gSaveGameController.busy())
 	{
         showMsgWithBmp(loading_text, "KEENTHUMBSUP", LEFT);
 	}
 
 	mMap.drawAll();
+
+    return true;
 }
 
 
@@ -54,10 +68,10 @@ void CWorldMap::init()
  */
 void CWorldMap::loadAndPlayMusic()
 {
-	g_pMusicPlayer->stop();
+	gMusicPlayer.stop();
     if(loadLevelMusic(0))
     {
-		g_pMusicPlayer->play();
+		gMusicPlayer.play();
     }
 }
 

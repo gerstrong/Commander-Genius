@@ -585,7 +585,7 @@ int BE_Cross_getc(BE_FILE_T fp);
 void BE_Cross_close(BE_FILE_T &fp);
 
 // WARNING: Do *not* assume this is recursive!!
-static void BEL_Cross_mkdir(const char *path)
+/*static void BEL_Cross_mkdir(const char *path)
 {
 #ifdef REFKEEN_PLATFORM_WINDOWS
 	mkdir(path);
@@ -593,7 +593,7 @@ static void BEL_Cross_mkdir(const char *path)
 	mkdir(path, 0755);
 #endif
 }
-
+*/
 
 // Opens *existing* file from given directory in a case-insensitive manner
 /*static*/ BE_FILE_T BEL_Cross_open_from_dir(const char *filename, bool isOverwriteRequest, const char *searchdir)
@@ -657,6 +657,7 @@ static void BEL_Cross_mkdir(const char *path)
 
 extern char *dreamsengine_datapath;
 
+/*
 static bool BEL_Cross_CheckGameFileDetails(const BE_GameFileDetails_T *details, const char *searchdir)
 {
     BE_FILE_T fp = BEL_Cross_open_from_dir(details->filename, false, dreamsengine_datapath);
@@ -665,7 +666,7 @@ static bool BEL_Cross_CheckGameFileDetails(const BE_GameFileDetails_T *details, 
 
 	if (details->filesize == BE_Cross_FileLengthFromHandle(fp))
 	{
-		uint32_t crc32;
+        //uint32_t crc32;
         //if (!Crc32_ComputeFile(fp, &crc32) && (crc32 == details->crc32))
 		{
 			BE_Cross_close(fp);
@@ -675,7 +676,7 @@ static bool BEL_Cross_CheckGameFileDetails(const BE_GameFileDetails_T *details, 
 	BE_Cross_close(fp);
 	return false;
 }
-
+*/
 
 // ***ASSUMPTION: descStr points to a C string literal which is never modified nor deleted!!!***
 /*void BEL_Cross_ConditionallyAddGameInstallation(const BE_GameVerDetails_T *details, const char *searchdir, const char *descStr)

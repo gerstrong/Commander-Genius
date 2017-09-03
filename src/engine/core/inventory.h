@@ -11,23 +11,23 @@
 
 struct stInventory
 {
-	unsigned long score;
-	unsigned long extralifeat;
-	unsigned int charges;        // ray gun ammo
-	signed char lives;
-	bool HasPogo;
-	unsigned char HasCardYellow;
-	unsigned char HasCardRed;
-	unsigned char HasCardGreen;
-	unsigned char HasCardBlue;
+    unsigned long score = 0;
+    unsigned long extralifeat = 0;
+    unsigned int charges = 0;        // ray gun ammo
+    signed char lives = 0;
+    bool HasPogo = false;
+    unsigned char HasCardYellow = 0;
+    unsigned char HasCardRed = 0;
+    unsigned char HasCardGreen = 0;
+    unsigned char HasCardBlue = 0;
 	
 	// ep1 normally
-	bool HasJoystick;
-	bool HasWiskey;
-	bool HasBattery;
-	bool HasVacuum;
+    bool HasJoystick = false;
+    bool HasWiskey = false;
+    bool HasBattery = false;
+    bool HasVacuum = false;
 
-	bool canlooseitem[4];
+    bool canlooseitem[4] = {0,0,0,0};
 
     void serialize(boost::property_tree::ptree &node)
     {

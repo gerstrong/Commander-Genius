@@ -28,6 +28,7 @@
 #include "engine/core/CPlanes.h"
 #include <fstream>
 #include <cstring>
+#include <string>
 #include <SDL.h>
 
 
@@ -40,135 +41,125 @@ namespace galaxy
 
 static EpisodeInfoStruct EpisodeInfo[] =
 {
-	{	/* Episode 4 */
-		0x3D740,	/* ExeImageSize */
-		0x21080,	/* OffEgaHead */
-		0x358F6,	/* OffEgaDict */
-		4751,		/* NumChunks */
-		3, 3,		/* NumFonts, IndexFonts */
-		115, 6,		/* NumBitmaps, IndexBitmaps */
-		3, 121,		/* NumMaskedBitmaps, IndexMasked Bitmaps */
-		397, 124,	/* NumSprites, IndexSprites */
-		104, 521,	/* Num8Tiles, Index8Tiles */
-		20, 522,	/* Num8MaskedTiles, Index8MaskedTiles */
-		1296, 523,	/* Num16Tiles, Index16Tiles */
-		2916, 1819,	/* Num16MaskedTiles, Index16MaskedTiles */
-		4, 4735,	/* NumMisc, IndexMisc */
-		7, 4739,	/* NumTexts, IndexTexts */
-		5, 4746		/* NumDemos, IndexDemos */
-	},
-	{	/* Episode 5 */
-		0x3E370,	/* ExeImageSize */
-		0x21FC0,	/* OffEgaHead */
-		0x362C4,	/* OffEgaDict */
-		4931,		/* NumChunks */
-		3, 3,		/* NumFonts, IndexFonts */
-		93, 6,		/* NumBitmaps, IndexBitmaps */
-		3, 99,		/* NumMaskedBitmaps, IndexMasked Bitmaps */
-		346, 102,	/* NumSprites, IndexSprites */
-		104, 448,	/* Num8Tiles, Index8Tiles */
-		20, 449,	/* Num8MaskedTiles, Index8MaskedTiles */
-		1512, 450,	/* Num16Tiles, Index16Tiles */
-		2952, 1962,	/* Num16MaskedTiles, Index16MaskedTiles */
-		5, 4921,	/* NumMisc, IndexMisc */
-		7, 4914,	/* NumTexts, IndexTexts */
-		5, 4926		/* NumDemos, IndexDemos */
-	},
-	{	/* Episode 6 */
-		0x3F950,	/* ExeImageSize */
-		0x20F50,	/* OffEgaHead */
-		0x372EE,	/* OffEgaDict */
-		5560,		/* NumChunks */
-		3, 3,		/* NumFonts, IndexFonts */
-		37, 6,		/* NumBitmaps, IndexBitmaps */
-		3, 43,		/* NumMaskedBitmaps, IndexMasked Bitmaps */
-		390, 46,	/* NumSprites, IndexSprites */
-		104, 436,	/* Num8Tiles, Index8Tiles */
-		12, 437,	/* Num8MaskedTiles, Index8MaskedTiles */
-		2376, 438,	/* Num16Tiles, Index16Tiles */
-		2736, 2814,	/* Num16MaskedTiles, Index16MaskedTiles */
-		4, 5551,	/* NumMisc, IndexMisc */
-		1, 5550,	/* NumTexts, IndexTexts */
-		5, 5555		/* NumDemos, IndexDemos */
-	},
-	{	/* Episode 7 (Dreams) */
-		// The following ExeImageSize = KDREAMS.EXE (213536) - 0x1C00:
-		206368,		/* ExeImageSize */
-		0x1CB20,	/* OffEgaHead */
-		0x29F12,	/* OffEgaDict */
-		3019,		/* NumChunks */
-		0, 0,		/* NumFonts, IndexFonts */
-		0, 0,		/* NumBitmaps, IndexBitmaps */
-		0, 0,		/* NumMaskedBitmaps, IndexMasked Bitmaps */
-		0, 0,		/* NumSprites, IndexSprites */
-		1, 368,		/* Num8Tiles, Index8Tiles */
-		1, 369,		/* Num8MaskedTiles, Index8MaskedTiles */
-		1440, 370,	/* Num16Tiles, Index16Tiles */
-		1224,1810 ,	/* Num16MaskedTiles, Index16MaskedTiles */
-		0, 0,		/* NumMisc, IndexMisc */
-		0, 0,		/* NumTexts, IndexTexts */
-		0, 0		/* NumDemos, IndexDemos */
-	}
+    {   /* Episode 4 */
+        0x3D740,    /* ExeImageSize */
+        0x21080,    /* OffEgaHead */
+        0x358F6,    /* OffEgaDict */
+        4751,       /* NumChunks */
+        3, 3,       /* NumFonts, IndexFonts */
+        115, 6,     /* NumBitmaps, IndexBitmaps */
+        3, 121,     /* NumMaskedBitmaps, IndexMasked Bitmaps */
+        397, 124,   /* NumSprites, IndexSprites */
+        104, 521,   /* Num8Tiles, Index8Tiles */
+        20, 522,    /* Num8MaskedTiles, Index8MaskedTiles */
+        1296, 523,  /* Num16Tiles, Index16Tiles */
+        2916, 1819, /* Num16MaskedTiles, Index16MaskedTiles */
+        4, 4735,    /* NumMisc, IndexMisc */
+        7, 4739,    /* NumTexts, IndexTexts */
+        5, 4746     /* NumDemos, IndexDemos */
+    },
+    {   /* Episode 5 */
+        0x3E370,    /* ExeImageSize */
+        0x21FC0,    /* OffEgaHead */
+        0x362C4,    /* OffEgaDict */
+        4931,       /* NumChunks */
+        3, 3,       /* NumFonts, IndexFonts */
+        93, 6,      /* NumBitmaps, IndexBitmaps */
+        3, 99,      /* NumMaskedBitmaps, IndexMasked Bitmaps */
+        346, 102,   /* NumSprites, IndexSprites */
+        104, 448,   /* Num8Tiles, Index8Tiles */
+        20, 449,    /* Num8MaskedTiles, Index8MaskedTiles */
+        1512, 450,  /* Num16Tiles, Index16Tiles */
+        2952, 1962, /* Num16MaskedTiles, Index16MaskedTiles */
+        5, 4921,    /* NumMisc, IndexMisc */
+        7, 4914,    /* NumTexts, IndexTexts */
+        5, 4926     /* NumDemos, IndexDemos */
+    },
+    {   /* Episode 6 */
+        0x3F950,    /* ExeImageSize */
+        0x20F50,    /* OffEgaHead */
+        0x372EE,    /* OffEgaDict */
+        5560,       /* NumChunks */
+        3, 3,       /* NumFonts, IndexFonts */
+        37, 6,      /* NumBitmaps, IndexBitmaps */
+        3, 43,      /* NumMaskedBitmaps, IndexMasked Bitmaps */
+        390, 46,    /* NumSprites, IndexSprites */
+        104, 436,   /* Num8Tiles, Index8Tiles */
+        12, 437,    /* Num8MaskedTiles, Index8MaskedTiles */
+        2376, 438,  /* Num16Tiles, Index16Tiles */
+        2736, 2814, /* Num16MaskedTiles, Index16MaskedTiles */
+        4, 5551,    /* NumMisc, IndexMisc */
+        1, 5550,    /* NumTexts, IndexTexts */
+        5, 5555     /* NumDemos, IndexDemos */
+    },
+    {   /* Episode 7 (Dreams) */
+        // The following ExeImageSize = KDREAMS.EXE (213536) - 0x1C00:
+        206368,     /* ExeImageSize */
+        0x1CB20,    /* OffEgaHead */
+        0x29F12,    /* OffEgaDict */
+        3019,       /* NumChunks */
+        0, 0,       /* NumFonts, IndexFonts */
+        0, 0,       /* NumBitmaps, IndexBitmaps */
+        0, 0,       /* NumMaskedBitmaps, IndexMasked Bitmaps */
+        0, 0,       /* NumSprites, IndexSprites */
+        1, 368,     /* Num8Tiles, Index8Tiles */
+        1, 369,     /* Num8MaskedTiles, Index8MaskedTiles */
+        1440, 370,  /* Num16Tiles, Index16Tiles */
+        1224,1810 , /* Num16MaskedTiles, Index16MaskedTiles */
+        0, 0,       /* NumMisc, IndexMisc */
+        0, 0,       /* NumTexts, IndexTexts */
+        0, 0        /* NumDemos, IndexDemos */
+    }
 };
 
-/////
-// Class members start here!
-/////
-/**
- * \brief	This creates the class for reading the graphical
- * \param	episode		Episode of the chosen game
- * \param	path		Path to where the game is found on the media
- * \param	ExeFile		Object to ExeFile in which the
- */
+
+
 CEGAGraphicsGalaxy::CEGAGraphicsGalaxy(CExeFile &ExeFile) :
 CEGAGraphics(ExeFile.getEpisode(), gKeenFiles.gameDir),
 m_Exefile(ExeFile)
 {
-	createBitmapsIDs();
-	gpBehaviorEngine->setEpisodeInfoStructPtr(EpisodeInfo);
+    createBitmapsIDs();
+    gBehaviorEngine.setEpisodeInfoStructPtr(EpisodeInfo);
 }
 
 
-/**
- * \brief	load the data into the structure
- * \return 	returns true, if loading was successful
- */
+
 bool CEGAGraphicsGalaxy::loadData()
 {
-	// Set the palette, so the proper colours are loaded
-	gGraphics.Palette.setupColorPalettes(m_Exefile.getRawData(), m_episode);
+    // Set the palette, so the proper colours are loaded
+    gGraphics.Palette.setupColorPalettes(m_Exefile.getRawData(), m_episode);
 
-	if(!begin()) return false;
+    if(!begin()) return false;
 
-	// First, retrieve the Tile properties so the tilemap gets properly formatted
-	// Important especially for masks, and later in the game for the behaviours
-	// of those objects
-	CTileLoader TileLoader( m_Exefile );
-	if(!TileLoader.load(EpisodeInfo[m_episode-4].Num16Tiles,
-						EpisodeInfo[m_episode-4].Num16MaskedTiles))
-		return false;
+    // First, retrieve the Tile properties so the tilemap gets properly formatted
+    // Important especially for masks, and later in the game for the behaviours
+    // of those objects
+    CTileLoader TileLoader( m_Exefile );
+    if(!TileLoader.load(EpisodeInfo[m_episode-4].Num16Tiles,
+                        EpisodeInfo[m_episode-4].Num16MaskedTiles))
+        return false;
 
     if(!readfonts()) return false;
     if(!readBitmaps()) return false;
     if(!readMaskedBitmaps()) return false;
 
-	gGraphics.createEmptyTilemaps(4);
+    gGraphics.createEmptyTilemaps(4);
 
     if(!readTilemaps(EpisodeInfo[m_episode-4].Num16Tiles, 4, 18,
-			EpisodeInfo[m_episode-4].Index16Tiles,
-			gGraphics.getTileMap(0), false)) return false;
-	if(!readMaskedTilemaps(EpisodeInfo[m_episode-4].Num16MaskedTiles, 4, 18,
-			EpisodeInfo[m_episode-4].Index16MaskedTiles,
-			gGraphics.getTileMap(1), false)) return false;
+            EpisodeInfo[m_episode-4].Index16Tiles,
+            gGraphics.getTileMap(0), false)) return false;
+    if(!readMaskedTilemaps(EpisodeInfo[m_episode-4].Num16MaskedTiles, 4, 18,
+            EpisodeInfo[m_episode-4].Index16MaskedTiles,
+            gGraphics.getTileMap(1), false)) return false;
     if(!readTilemaps(EpisodeInfo[m_episode-4].Num8Tiles, 3, 1,
-			EpisodeInfo[m_episode-4].Index8Tiles,
-			gGraphics.getTileMap(2), true)) return false;
-	if(!readMaskedTilemaps(EpisodeInfo[m_episode-4].Num8MaskedTiles, 3, 1,
-			EpisodeInfo[m_episode-4].Index8MaskedTiles,
-			gGraphics.getTileMap(3), true)) return false;
+            EpisodeInfo[m_episode-4].Index8Tiles,
+            gGraphics.getTileMap(2), true)) return false;
+    if(!readMaskedTilemaps(EpisodeInfo[m_episode-4].Num8MaskedTiles, 3, 1,
+            EpisodeInfo[m_episode-4].Index8MaskedTiles,
+            gGraphics.getTileMap(3), true)) return false;
 
-	if(!readSprites( EpisodeInfo[m_episode-4].NumSprites,
-			EpisodeInfo[m_episode-4].IndexSprites )) return false;
+    if(!readSprites( EpisodeInfo[m_episode-4].NumSprites,
+            EpisodeInfo[m_episode-4].IndexSprites )) return false;
 
     if(!readTexts())
         return false;
@@ -179,8 +170,8 @@ bool CEGAGraphicsGalaxy::loadData()
     if( !readMiscStuff() )
         return false;
 
-	//k456_export_demos();
-	//k456_export_end();
+    //k456_export_demos();
+    //k456_export_end();
 
     // Now try to store a preview if possible
     // Create an intro in case it does not exist yet
@@ -194,279 +185,276 @@ bool CEGAGraphicsGalaxy::loadData()
         SDL_SaveBMP( pBitmap->getSDLSurface(), fullpath.c_str());
     }
 
-	return true;
+    return true;
 }
 
 /**
- * \brief 	This function extracts a picture from the galaxy graphics map, and converts it properly to a
- * 			SDL Surface
+ * \brief   This function extracts a picture from the galaxy graphics map, and converts it properly to a
+ *          SDL Surface
  */
 void CEGAGraphicsGalaxy::extractPicture(SDL_Surface *sfc,
-		std::vector<unsigned char> &data, size_t Width, size_t Height,
-		bool masked)
+        std::vector<unsigned char> &data, size_t Width, size_t Height,
+        bool masked)
 {
-	if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
-	SDL_FillRect(sfc, NULL, 0x0);
+    if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
+    SDL_FillRect(sfc, NULL, 0x0);
 
-	if(!data.empty())
-	{
-		// Decode the bitmap data
-		for(size_t p = 0; p < 4; p++)
-		{
-			Uint8* pixel = (Uint8*) sfc->pixels;
+    if(!data.empty())
+    {
+        // Decode the bitmap data
+        for(size_t p = 0; p < 4; p++)
+        {
+            Uint8* pixel = (Uint8*) sfc->pixels;
 
-			// get location of plane p
-			if(masked)
-			{
+            // get location of plane p
+            if(masked)
+            {
                 Uint8* pointer = &data[0] + (p+1) * Width * Height;
 
-				// now try to extract the bits and pass it to the SDL-Surface
-				for(size_t y = 0; y < Height; y++)
-				{
-					for(size_t x = 0; x < Width; x++)
-					{
-						for(Uint8 b=0 ; b<8 ; b++)
-						{
+                // now try to extract the bits and pass it to the SDL-Surface
+                for(size_t y = 0; y < Height; y++)
+                {
+                    for(size_t x = 0; x < Width; x++)
+                    {
+                        for(Uint8 b=0 ; b<8 ; b++)
+                        {
                             Uint8 bit = getBit(*pointer, 7-b);
                             *pixel |= (bit<<p);
-							pixel++;
-						}
-						pointer++;
-					}
-				}
-			}
-			else
-			{
+                            pixel++;
+                        }
+                        pointer++;
+                    }
+                }
+            }
+            else
+            {
                 Uint8* pointer = &data[0] + p * Width * Height;
 
-				// now try to extract the bits and pass it to the SDL-Surface
-				for(size_t y = 0; y < Height; y++)
-				{
-					for(size_t x = 0; x < Width; x++)
-					{
-						for(Uint8 b=0 ; b<8 ; b++)
-						{
+                // now try to extract the bits and pass it to the SDL-Surface
+                for(size_t y = 0; y < Height; y++)
+                {
+                    for(size_t x = 0; x < Width; x++)
+                    {
+                        for(Uint8 b=0 ; b<8 ; b++)
+                        {
                             Uint8 bit = getBit(*pointer, 7-b);
                             *pixel |= (bit<<p);
-							pixel++;
-						}
-						pointer++;
-					}
-				}
-			}
-		}
+                            pixel++;
+                        }
+                        pointer++;
+                    }
+                }
+            }
+        }
 
-		if(masked)
-		{
-			// This stuff is for reading the mask and apply it to the pixel map
-			Uint8 *pointer = &data[0];
-			Uint8* pixel = (Uint8*) sfc->pixels;
+        if(masked)
+        {
+            // This stuff is for reading the mask and apply it to the pixel map
+            Uint8 *pointer = &data[0];
+            Uint8* pixel = (Uint8*) sfc->pixels;
 
-			// now try to extract the bits and pass it to the SDL-Surface
-			for(size_t y = 0; y < Height; y++)
-			{
-				for(size_t x = 0; x < Width; x++)
-				{
-					for(Uint8 b=0 ; b<8 ; b++)
-					{
-						Uint8 bit = getBit(*pointer, 7-b);
-						if(bit == 1)
-							*pixel = 16;
+            // now try to extract the bits and pass it to the SDL-Surface
+            for(size_t y = 0; y < Height; y++)
+            {
+                for(size_t x = 0; x < Width; x++)
+                {
+                    for(Uint8 b=0 ; b<8 ; b++)
+                    {
+                        Uint8 bit = getBit(*pointer, 7-b);
+                        if(bit == 1)
+                            *pixel = 16;
 
-						pixel++;
-					}
-					pointer++;
-				}
-			}
-		}
-	}
+                        pixel++;
+                    }
+                    pointer++;
+                }
+            }
+        }
+    }
 
-	if(SDL_MUSTLOCK(sfc)) SDL_UnlockSurface(sfc);
+    if(SDL_MUSTLOCK(sfc)) SDL_UnlockSurface(sfc);
 }
 
 /**
- * \brief 	This function extracts a tile from the galaxy graphics map, and converts it properly to a
- * 			SDL Surface
+ * \brief   This function extracts a tile from the galaxy graphics map, and converts it properly to a
+ *          SDL Surface
  */
 void CEGAGraphicsGalaxy::extractTile(SDL_Surface *sfc, std::vector<unsigned char> &data,
-		Uint16 size, Uint16 columns, size_t tile, bool usetileoffset)
+        Uint16 size, Uint16 columns, size_t tile, bool usetileoffset)
 {
-	if(!data.empty())
-	{
-		// Decode the image data
-		for(size_t p = 0; p < 4; p++)
-		{
-			// Decode the lines of the bitmap data
-			size_t tileoff = usetileoffset ? (tile*4*columns*(size/8)*size) : 0;
-			Uint8 *pointer = &(data[0]) + tileoff + p * (size/8) * size;
-			for(size_t y = 0; y < size; y++)
-			{
-				Uint8 *pixel = (Uint8*)sfc->pixels +
-						size*(tile%columns) +
-						size*size*columns*(tile/columns) +
-						(size*columns*y);
-				for(size_t x = 0; x < (size/8); x++)
-				{
-					Uint8 bit,b;
-					for(b=0 ; b<8 ; b++)
-					{
-						bit = getBit(*pointer, 7-b);
-						*pixel |= (bit<<p);
-						pixel++;
-					}
-					pointer++;
-				}
-			}
-
-		}
-	}
+    if(!data.empty())
+    {
+        // Decode the image data
+        for(size_t p = 0; p < 4; p++)
+        {
+            // Decode the lines of the bitmap data
+            size_t tileoff = usetileoffset ? (tile*4*columns*(size/8)*size) : 0;
+            Uint8 *pointer = &(data[0]) + tileoff + p * (size/8) * size;
+            for(size_t y = 0; y < size; y++)
+            {
+                Uint8 *pixel = (Uint8*)sfc->pixels +
+                        size*(tile%columns) +
+                        size*size*columns*(tile/columns) +
+                        (size*columns*y);
+                for(size_t x = 0; x < (size/8); x++)
+                {
+                    Uint8 bit,b;
+                    for(b=0 ; b<8 ; b++)
+                    {
+                        bit = getBit(*pointer, 7-b);
+                        *pixel |= (bit<<p);
+                        pixel++;
+                    }
+                    pointer++;
+                }
+            }
+        }
+    }
 }
 
 /**
- * \brief 	This function extracts a masked tile from the galaxy graphics map, and converts it properly to a
- * 			SDL Surface
+ * \brief   This function extracts a masked tile from the galaxy graphics map, and converts it properly to a
+ *          SDL Surface
  */
 void CEGAGraphicsGalaxy::extractMaskedTile(SDL_Surface *sfc, std::vector<unsigned char> &data,
-		Uint16 size, Uint16 columns, size_t tile, bool usetileoffset)
+        Uint16 size, Uint16 columns, size_t tile, bool usetileoffset)
 {
-	if(!data.empty())
-	{
-		// Decode the image data
-		size_t tileoff = usetileoffset ? (tile*5*columns*(size/8)*size) : 0;
-		for(size_t p = 0; p < 4; p++)
-		{
-			// Decode the lines of the bitmap data
-			Uint8 *pointer = &(data[0]) + tileoff + (p+1) * (size/8) * size;
-			for(size_t y = 0; y < size; y++)
-			{
-				Uint8 *pixel = (Uint8*)sfc->pixels +
-						size*(tile%columns) +
-						size*size*columns*(tile/columns) +
-						(size*columns*y);
-				for(size_t x = 0; x < (size/8); x++)
-				{
-					Uint8 bit,b;
-					for(b=0 ; b<8 ; b++)
-					{
-						bit = getBit(*pointer, 7-b);
-						*pixel |= (bit<<p);
-						pixel++;
-					}
-					pointer++;
-				}
-			}
-		}
+    if(!data.empty())
+    {
+        // Decode the image data
+        size_t tileoff = usetileoffset ? (tile*5*columns*(size/8)*size) : 0;
+        for(size_t p = 0; p < 4; p++)
+        {
+            // Decode the lines of the bitmap data
+            Uint8 *pointer = &(data[0]) + tileoff + (p+1) * (size/8) * size;
+            for(size_t y = 0; y < size; y++)
+            {
+                Uint8 *pixel = (Uint8*)sfc->pixels +
+                        size*(tile%columns) +
+                        size*size*columns*(tile/columns) +
+                        (size*columns*y);
+                for(size_t x = 0; x < (size/8); x++)
+                {
+                    Uint8 bit,b;
+                    for(b=0 ; b<8 ; b++)
+                    {
+                        bit = getBit(*pointer, 7-b);
+                        *pixel |= (bit<<p);
+                        pixel++;
+                    }
+                    pointer++;
+                }
+            }
+        }
 
-		// now apply the mask!
-		Uint8 *pointer = &(data[0]) + tileoff;
-		for(size_t y = 0; y < size; y++)
-		{
-			Uint8 *pixel = (Uint8*)sfc->pixels +
-					size*(tile%columns) +
-					size*size*columns*(tile/columns) +
-					(size*columns*y);
-			for(size_t x = 0; x < (size/8); x++)
-			{
-				Uint8 bit,b;
-				for(b=0 ; b<8 ; b++)
-				{
-					bit = getBit(*pointer, 7-b);
-					if(bit == 1)
-						*pixel = 16;
-					pixel++;
-				}
-				pointer++;
-			}
-		}
-	}
+        // now apply the mask!
+        Uint8 *pointer = &(data[0]) + tileoff;
+        for(size_t y = 0; y < size; y++)
+        {
+            Uint8 *pixel = (Uint8*)sfc->pixels +
+                    size*(tile%columns) +
+                    size*size*columns*(tile/columns) +
+                    (size*columns*y);
+            for(size_t x = 0; x < (size/8); x++)
+            {
+                Uint8 bit,b;
+                for(b=0 ; b<8 ; b++)
+                {
+                    bit = getBit(*pointer, 7-b);
+                    if(bit == 1)
+                        *pixel = 16;
+                    pixel++;
+                }
+                pointer++;
+            }
+        }
+    }
 }
-
 
 
 
 bool CEGAGraphicsGalaxy::readEGAHead()
 {
-	// The file can be embedded in an exe file or separate on disk. Look for the disk one first!
-	std::string filename;
+    // The file can be embedded in an exe file or separate on disk. Look for the disk one first!
+    std::string filename;
     if (m_episode <= 6) filename = JoinPaths(m_path, "EGAHEAD.CK" + to_string(m_episode));
     else filename =  JoinPaths(m_path, "KDREAMSHEAD.EGA"); // Not sure about that one
-	const int ep = m_episode - 4; // index for EpisodeInfo; 0 - keen4, 1 - keen5, etc.
+    const int ep = m_episode - 4; // index for EpisodeInfo; 0 - keen4, 1 - keen5, etc.
 
-	std::ifstream File; OpenGameFileR(File, filename, std::ios::binary);
-	byte *p_head = nullptr;
+    std::ifstream File; OpenGameFileR(File, filename, std::ios::binary);
+    byte *p_head = nullptr;
 
     std::vector<char> egaHeadData;
 
-	size_t numChunks = EpisodeInfo[ep].NumChunks;
+    size_t numChunks = EpisodeInfo[ep].NumChunks;
 
     if(File) // File exists!
-	{
+    {
         size_t egaheadlen = 0;
-		File.seekg(1,std::ios::end);
+        File.seekg(1,std::ios::end);
         egaheadlen = File.tellg();
 
         // TODO: Keen 6 vs Mirror mod. Mirror mod shows as count one chunk more, please check!
         numChunks = egaheadlen/3; // 24-bit chunks
         if(egaheadlen != 0) // File not empty!
-		{
+        {
             egaheadlen--;
-			File.seekg(0,std::ios::beg);
+            File.seekg(0,std::ios::beg);
 
-			char b;
-			while(!File.eof())
-			{
-				File.get(b);
+            char b;
+            while(!File.eof())
+            {
+                File.get(b);
                 egaHeadData.push_back(b);
-			}
+            }
 
             p_head = reinterpret_cast<byte*>(&egaHeadData.front());
-		}
-	} // no external file. Read it from the exe then
+        }
+    } // no external file. Read it from the exe then
     else
-	{
-		byte *p_data = reinterpret_cast<byte*>(m_Exefile.getHeaderData());
+    {
+        byte *p_data = reinterpret_cast<byte*>(m_Exefile.getHeaderData());
 
-		// The stuff is Huffman compressed. Use an instance for that
-		unsigned long exeheaderlen = 0;
-		unsigned long exeimglen = 0;
+        // The stuff is Huffman compressed. Use an instance for that
+        unsigned long exeheaderlen = 0;
+        unsigned long exeimglen = 0;
 
-		//if(m_episode == 7) exeheaderlen = HEADERLEN_KDREAMS;
-		if(!m_Exefile.readExeImageSize( p_data, &exeimglen, &exeheaderlen))
-			return false;
+        //if(m_episode == 7) exeheaderlen = HEADERLEN_KDREAMS;
+        if(!m_Exefile.readExeImageSize( p_data, &exeimglen, &exeheaderlen))
+            return false;
 
-		// Read the EGAHEAD
-		p_head = p_data + exeheaderlen + EpisodeInfo[ep].OffEgaHead;
-	}
+        // Read the EGAHEAD
+        p_head = p_data + exeheaderlen + EpisodeInfo[ep].OffEgaHead;
+    }
 
-	unsigned long offset = 0;
-	unsigned long offset_limit;
+    unsigned long offset = 0;
+    unsigned long offset_limit;
 
-	// For some reason, MultiMania's KDR support uses a slightly different limit
-	// in offset ops. We're not in DOS, so we don't have to worry about
-	// memory here >:P
-	if (ep < 3) offset_limit = 0x00FFFFFF;
-	else offset_limit = 0xFFFFFFFF;
+    // For some reason, MultiMania's KDR support uses a slightly different limit
+    // in offset ops. We're not in DOS, so we don't have to worry about
+    // memory here >:P
+    if (ep < 3) offset_limit = 0x00FFFFFF;
+    else offset_limit = 0xFFFFFFFF;
 
     // TODO: The 4-byte offset should go outside the loop... somehow...
     for(size_t i = 0 ; i < numChunks ; i++)
-	{
-		if (ep != 3)
-		{
+    {
+        if (ep != 3)
+        {
             memcpy(&offset, p_head, 3); // Keen 4-6
-			p_head += 3;
-			offset &= offset_limit;
-		}
-		else
-		{
+            p_head += 3;
+            offset &= offset_limit;
+        }
+        else
+        {
             memcpy(&offset, p_head, 4); // KeenDreams
-			p_head += 4;
-		}
-		m_egahead.push_back(offset);
-	}
+            p_head += 4;
+        }
+        m_egahead.push_back(offset);
+    }
 
-	return true;
+    return true;
 }
-
 
 
 
@@ -475,6 +463,7 @@ bool CEGAGraphicsGalaxy::readEGAHead()
     std::ofstream ofile( dumpfile.c_str() );
     ofile.write( reinterpret_cast<char*>(in), inlen );
 }*/
+
 
 
 std::vector<unsigned long> CEGAGraphicsGalaxy::readOutLenVec(const int ep,
@@ -488,7 +477,6 @@ std::vector<unsigned long> CEGAGraphicsGalaxy::readOutLenVec(const int ep,
     // memory here >:P
     if (ep < 3) offset_limit = 0x00FFFFFF;
     else offset_limit = 0xFFFFFFFF;
-
 
     std::vector<unsigned long> outLenVec;
 
@@ -512,7 +500,7 @@ std::vector<unsigned long> CEGAGraphicsGalaxy::readOutLenVec(const int ep,
                     outlen = 2 * 16 * 5;
                 else if(i >= EpisodeInfo[ep].Index16Tiles)
                     outlen = 2 * 16 * 4;
-                else if(i >= EpisodeInfo[ep].Index8MaskedTiles)	// 8x8 tiles are all in one chunk!
+                else if(i >= EpisodeInfo[ep].Index8MaskedTiles) // 8x8 tiles are all in one chunk!
                     outlen = EpisodeInfo[ep].Num8MaskedTiles * 8 * 5;
                 else if(i >= EpisodeInfo[ep].Index8Tiles)
                     outlen = EpisodeInfo[ep].Num8Tiles * 8 * 4;
@@ -533,111 +521,113 @@ std::vector<unsigned long> CEGAGraphicsGalaxy::readOutLenVec(const int ep,
 
 
 /**
- * \brief	prepares to load the data. Does a bit of extraction
- * \return 	true, if loading was successful, otherwise false
+ * \brief   prepares to load the data. Does a bit of extraction
+ * \return  true, if loading was successful, otherwise false
  */
 bool CEGAGraphicsGalaxy::begin()
 {
-	// The stuff is Huffman compressed. Use an instance for that
-	CHuffman Huffman;
-	unsigned long exeheaderlen = 0;
-	unsigned long exeimglen = 0;
-	assert(m_episode >= 4);
-	int ep = m_episode - 4; // index for EpisodeInfo; 0 - keen4, 1 - keen5, etc
+    // The stuff is Huffman compressed. Use an instance for that
+    CHuffman Huffman;
+    unsigned long exeheaderlen = 0;
+    unsigned long exeimglen = 0;
+    assert(m_episode >= 4);
+    int ep = m_episode - 4; // index for EpisodeInfo; 0 - keen4, 1 - keen5, etc
 
-	byte *p_data = reinterpret_cast<byte*>(m_Exefile.getHeaderData());
+    byte *p_data = reinterpret_cast<byte*>(m_Exefile.getHeaderData());
 
-	//if(m_episode == 7) exeheaderlen = HEADERLEN_KDREAMS;
-	if(!m_Exefile.readExeImageSize( p_data, &exeimglen, &exeheaderlen))
-		return false;
+    //if(m_episode == 7) exeheaderlen = HEADERLEN_KDREAMS;
+    if(!m_Exefile.readExeImageSize( p_data, &exeimglen, &exeheaderlen))
+        return false;
 
-	std::string filename;
+    std::string filename;
 
-	// We need the EGADICT. Read it to our structure of Huffman, he needs it!
-	// Try to read it either from a file
+    // We need the EGADICT. Read it to our structure of Huffman, he needs it!
+    // Try to read it either from a file
 
     if(!gKeenFiles.egadictFilename.empty())
     {
         filename =  JoinPaths(m_path, gKeenFiles.egadictFilename);
     }
 
-	if( Huffman.readDictionaryFromFile(filename) )
-	{
-		gLogging.textOut("EGADICT was read from external file");
-	}
-	else
-	{
-		Huffman.readDictionaryNumberfromEnd( m_Exefile ); // or from the embedded Exe file
-	}
+    if( Huffman.readDictionaryFromFile(filename) )
+    {
+        gLogging.textOut("EGADICT was read from external file");
+    }
+    else
+    {
+        Huffman.readDictionaryNumberfromEnd( m_Exefile ); // or from the embedded Exe file
+    }
 
-	// Now we go for EGAHEAD
-	if(!readEGAHead())
-	{
-		gLogging.textOut("Error! Couldn't read EGAHEAD from this game!");
-		return false;
-	}
+    // Now we go for EGAHEAD
+    if(!readEGAHead())
+    {
+        gLogging.textOut("Error! Couldn't read EGAHEAD from this game!");
+        return false;
+    }
 
-	// Now read the EGAGRAPH
+    // Now read the EGAGRAPH
     if (m_episode <= 6) filename = JoinPaths(m_path, "EGAGRAPH.CK" + to_string(m_episode));
     else filename = JoinPaths(m_path, "KDREAMS.EGA");
 
-	std::ifstream File; OpenGameFileR(File, filename, std::ios::binary);
+    std::ifstream File; OpenGameFileR(File, filename, std::ios::binary);
 
-	if(!File)
-	{
-		gLogging.textOut(RED,"Error the file \"" + filename + "\" is missing or can't be read!");
-		return false;
-	}
+    if(!File)
+    {
+        gLogging.textOut(FONTCOLORS::RED,"Error the file \"" + filename + "\" is missing or can't be read!");
+        return false;
+    }
 
-	size_t egagraphlen = 0;
-	File.seekg(1,std::ios::end);
-	egagraphlen = File.tellg();
-	if(egagraphlen == 0)
-	{
-		gLogging.textOut(RED,"Error the file \"" + filename + "\" is empty!");
-		return false;
-	}
-	egagraphlen--;
-	File.seekg(0,std::ios::beg);
+    size_t egagraphlen = 0;
+    File.seekg(1,std::ios::end);
+    egagraphlen = File.tellg();
+    if(egagraphlen == 0)
+    {
+        gLogging.textOut(FONTCOLORS::RED,"Error the file \"" + filename + "\" is empty!");
+        return false;
+    }
+    egagraphlen--;
+    File.seekg(0,std::ios::beg);
 
-	std::vector<unsigned char> CompEgaGraphData(egagraphlen);
-	File.read((char*)&CompEgaGraphData[0], egagraphlen);
+    std::vector<unsigned char> CompEgaGraphData(egagraphlen);
+    File.read((char*)&CompEgaGraphData[0], egagraphlen);
 
-	// Make a clean memory pattern
-	ChunkStruct ChunkTemplate;
-	ChunkTemplate.len=0;
-	m_egagraph.assign(m_egahead.size(), ChunkTemplate);
+    // Make a clean memory pattern
+    ChunkStruct ChunkTemplate;
+    ChunkTemplate.len=0;
+    m_egagraph.assign(m_egahead.size(), ChunkTemplate);
 
-	unsigned long inlen = 0, outlen = 0;
+    unsigned long inlen = 0, outlen = 0;
 
-	unsigned long offset = 0;
-	unsigned long offset_limit;
+    unsigned long offset = 0;
+    unsigned long offset_limit;
 
-	// For some reason, MultiMania's KDR support uses a slightly different limit
-	// in offset ops. We're not in DOS, so we don't have to worry about
-	// memory here >:P
-	if (ep < 3) offset_limit = 0x00FFFFFF;
-	else offset_limit = 0xFFFFFFFF;
+    // For some reason, MultiMania's KDR support uses a slightly different limit
+    // in offset ops. We're not in DOS, so we don't have to worry about
+    // memory here >:P
+    if (ep < 3) offset_limit = 0x00FFFFFF;
+    else offset_limit = 0xFFFFFFFF;
 
 
     std::vector<unsigned long> outLenVec = readOutLenVec(ep, CompEgaGraphData);
 
+    auto dataSize = CompEgaGraphData.size();
+    size_t numBadChunks = 0;
 
-	// Now lets decompress the graphics
-	auto offPtr = m_egahead.begin();
+    // Now lets decompress the graphics
+    auto offPtr = m_egahead.begin();
     for(size_t i = 0 ; offPtr != m_egahead.end() ; offPtr++, i++)
-	{
-		// Show that something is happening
-		offset = *offPtr;
+    {
+        // Show that something is happening
+        offset = *offPtr;
 
         outlen = outLenVec[i];
 
         /*if(outlen == 0)
-            continue;*/
+          continue;*/
 
-		// Make sure the chunk is valid
-		if(offset < offset_limit && offset + 4 <= CompEgaGraphData.size())
-		{
+        // Make sure the chunk is valid
+        if(offset < offset_limit && offset + 4 <= dataSize)
+        {
 
             // Get the expanded length of the chunk
             if(i >= EpisodeInfo[ep].Index8Tiles && i < EpisodeInfo[ep].Index16MaskedTiles + EpisodeInfo[ep].Num16MaskedTiles)
@@ -647,7 +637,7 @@ bool CEGAGraphicsGalaxy::begin()
                     outlen = 2 * 16 * 5;
                 else if(i >= EpisodeInfo[ep].Index16Tiles)
                     outlen = 2 * 16 * 4;
-                else if(i >= EpisodeInfo[ep].Index8MaskedTiles)	// 8x8 tiles are all in one chunk!
+                else if(i >= EpisodeInfo[ep].Index8MaskedTiles) // 8x8 tiles are all in one chunk!
                     outlen = EpisodeInfo[ep].Num8MaskedTiles * 8 * 5;
                 else if(i >= EpisodeInfo[ep].Index8Tiles)
                     outlen = EpisodeInfo[ep].Num8Tiles * 8 * 4;
@@ -658,108 +648,145 @@ bool CEGAGraphicsGalaxy::begin()
                 offset += 4;
             }
 
+            inlen = 0;
+            // Find out the input length
+            size_t j;
 
-			// Allocate memory and decompress the chunk
-			m_egagraph[i].len = outlen;
-			m_egagraph[i].data.assign(outlen, 0);
-
-			inlen = 0;
-			// Find out the input length
-			size_t j;
-
-			auto secondOffPtr = offPtr;
-			secondOffPtr++;
-			for( j = i + 1; secondOffPtr != m_egahead.end() ; secondOffPtr++, j++ )
-			{
-			    const unsigned long second = *secondOffPtr;
-			    if(second != offset_limit)
-			    {
-                    inlen = second - offset;
+            auto secondOffPtr = offPtr;
+            secondOffPtr++;
+            for( j = i + 1; secondOffPtr != m_egahead.end() ; secondOffPtr++, j++ )
+            {
+                const unsigned long second = *secondOffPtr;
+                if(second < offset_limit)
+                {
+                    // Check that the second offset is valid
+                    if(second > dataSize)
+                    {
+                        gLogging.textOut(FONTCOLORS::RED,"Error! The file \"" + filename + "\" contains a second offset that is too large!");
+                    }
+                    else if(second < offset)
+                    {
+                        gLogging.textOut(FONTCOLORS::RED,"Error! The file \"" + filename + "\" contains a second offset that is less than the first offset!");
+                    }
+                    else
+                    {
+                        inlen = second - offset;
+                    }
                     break;
-			    }
-			}
+                }
+            }
 
-			if( secondOffPtr == m_egahead.end() )
-				inlen = egagraphlen - offset;
+            if( secondOffPtr == m_egahead.end() )
+            {
+                inlen = egagraphlen - offset;
+            }
+            else if(inlen == 0) {
+                m_egagraph[i].len = 0;
+                gLogging.ftextOut("Giving up due to bad chunk at offset=%x", offset);
+                ++numBadChunks;
+                break;
+            }
 
-			byte *in = &CompEgaGraphData[offset];
-			byte *out = &m_egagraph[i].data[0];
+            // Allocate memory and decompress the chunk
+            m_egagraph[i].len = outlen;
+            m_egagraph[i].data.assign(outlen, 0);
 
-			Huffman.expand(in, out, inlen, outlen);
-		}
-		else
-		{
-			m_egagraph[i].len = 0;
-		}
-	}
+            byte *in = &CompEgaGraphData[offset];
+            byte *out = &m_egagraph[i].data[0];
 
-	File.close();
-	return true;
+            Huffman.expand(in, out, inlen, outlen);
+        }
+        else
+        {
+            m_egagraph[i].len = 0;
+            if (offset != offset_limit) {
+                gLogging.ftextOut("Skipping chunk with bad offset=%x", offset);
+                ++numBadChunks;
+            }
+        }
+    }
+
+    File.close();
+    return (numBadChunks == 0);
 }
 
 /**
- * \brief	This function gets the bit of an unsigned char variable at certain position
- * \param	data		variable where the bit is to be sent.
- * \param	leftshift	sets the position of the bit the function has to retrieve
- * \return 	returns 1, if the bit at position is one, else 0
+ * \brief   This function gets the bit of an unsigned char variable at certain position
+ * \param   data        variable where the bit is to be sent.
+ * \param   leftshift   sets the position of the bit the function has to retrieve
+ * \return  returns 1, if the bit at position is one, else 0
  */
 Uint8 CEGAGraphicsGalaxy::getBit(unsigned char data, Uint8 leftshift)
 {
-	Uint8 value;
+    Uint8 value;
 
-	value = data & (1<<leftshift);
-	value >>= leftshift;
+    value = data & (1<<leftshift);
+    value >>= leftshift;
 
-	return value;
+    return value;
 }
 
 /**
- * \brief	Read the fonts to the Gfx-Engine
- * \return 	returns true, if the fonts were read successfully, else false
+ * \brief   Read the fonts to the Gfx-Engine
+ * \return  returns true, if the fonts were read successfully, else false
  */
 bool CEGAGraphicsGalaxy::readfonts()
 {
-	int bw, y, x;
+    int bw, y, x;
 
-	int ep = m_episode - 4;
-	SDL_Color *Palette = gGraphics.Palette.m_Palette;
+    int ep = m_episode - 4;
+    SDL_Color *Palette = gGraphics.Palette.m_Palette;
 
-	gGraphics.createEmptyFontmaps(EpisodeInfo[ep].NumFonts+1);
+    gGraphics.createEmptyFontmaps(EpisodeInfo[ep].NumFonts+1);
 
-	for(Uint16 i = 0; i < EpisodeInfo[ep].NumFonts; i++)
-	{
+    for(Uint16 i = 0; i < EpisodeInfo[ep].NumFonts; i++)
+    {
         GsFont &font = gGraphics.getFont(i);
 
         const std::vector<unsigned char> &fontData = m_egagraph.at(EpisodeInfo[ep].IndexFonts + i).data;
 
         if(fontData.at(0))
-		{
-			// ARM processor requires all ints and structs to be 4-byte aligned, so we're just using memcpy()
-			FontHeadStruct FontHeadData, *FontHead = &FontHeadData;
+        {
+            if(fontData.size() < sizeof(FontHeadStruct))
+            {
+                gLogging.ftextOut("bad font head source data size i=%u size=%u", i, fontData.size());
+                return false;
+            }
+
+            // ARM processor requires all ints and structs to be 4-byte aligned, so we're just using memcpy()
+            FontHeadStruct FontHeadData, *FontHead = &FontHeadData;
             memcpy( FontHead, &(fontData.at(0)), sizeof(FontHeadStruct) );
 
-			// Find out the maximum character width
-			int maxwidth=0;
-			for(Uint16 j = 0; j < 256; j++)
-			{
-				if(FontHead->Width[j] > maxwidth)
-					maxwidth = FontHead->Width[j];
-			}
+            if(FontHead->Height == 0)
+            {
+                gLogging.ftextOut("bad font head height i=%u Height=%u", i, FontHead->Height);
+                return false;
+            }
+
+            // Find out the maximum character width
+            int maxwidth=0;
+            for(Uint16 j = 0; j < 256; j++)
+            {
+                if(FontHead->Width[j] > maxwidth)
+                    maxwidth = FontHead->Width[j];
+            }
 
             font.CreateSurface(Palette, gVideoDriver.getScrollSurface()->flags, maxwidth*16, FontHead->Height * 16);
 
             auto sfc = font.SDLSurfacePtr();
 
-			SDL_FillRect(sfc, NULL, 0x8);
+            SDL_FillRect(sfc, NULL, 0x8);
 
-			if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
-			Uint8* pixel = (Uint8*) sfc->pixels;
+            if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
+            Uint8* pixel = (Uint8*) sfc->pixels;
 
-			unsigned char *pointer = &(m_egagraph[EpisodeInfo[ep].IndexFonts + i].data.at(0));
+            const std::vector<unsigned char> &data = m_egagraph[EpisodeInfo[ep].IndexFonts + i].data;
+            const unsigned char * const pointer = &(data.at(0));
+            const unsigned char * const pointerEnd = pointer + data.size();
 
             auto createfontMap = [&](const int from, const int numChars, const int startOff)
             {
-                if(!m_egagraph.at(EpisodeInfo[ep].IndexFonts + i).data.empty())
+                if(!data.empty())
                 {
                     // Decode the font data
                     for(int j = from; j < from+numChars; j++)
@@ -775,17 +802,27 @@ bool CEGAGraphicsGalaxy::readfonts()
                         {
                             SDL_Rect rect;
 
-                            rect.x = ((j+startOff)%16)*maxwidth;
-                            rect.y = ((j+startOff)/16)*FontHead->Height;
                             rect.w = FontHead->Width[j];
                             rect.h = FontHead->Height;
+
+                            // Check that data size is enough for given offset, etc.
+                            if(FontHead->Offset[j] + (((rect.h - 1) * bw) + ((rect.w - 1) / 8)) > (pointerEnd - pointer))
+                            {
+                                gLogging.ftextOut("bad font head width or height i=%u j=%d w=%d h=%d", i, j, rect.w, rect.h);
+                                return false;
+                            }
+
+                            const unsigned char * const offsetPointer = pointer + FontHead->Offset[j];
+
+                            rect.x = ((j+startOff)%16)*maxwidth;
+                            rect.y = ((j+startOff)/16)*FontHead->Height;
 
                             for( y = 0 ; y < rect.h ; y++ )
                             {
                                 pixelpos = pixel + (rect.y+y)*sfc->pitch+rect.x;
                                 for( x = 0 ; x < rect.w ; x++ )
                                 {
-                                    Uint8 color = getBit(*(pointer + FontHead->Offset[j] + (y*bw) + x/8 ), 7-(x%8) )*0xF;
+                                    Uint8 color = getBit(*(offsetPointer + (y*bw) + x/8 ), 7-(x%8) )*0xF;
                                     if(color == 0x0) // Put a mask on black colors in font always
                                         color = COLORKEY;
                                     pixelpos[x] = color;
@@ -794,122 +831,195 @@ bool CEGAGraphicsGalaxy::readfonts()
                         }
                     }
                 }
+                return true;
             };
 
             // The first two fonts have an ordered which fits quite well to the ascii tables.
             // The third one is much different so we just patch it differently
+            bool success;
             if(i < 2)
             {
-                createfontMap(0, 256, '\0');
+                success = createfontMap(0, 256, '\0');
             }
             else
             {
-                // Capital letters // 'A' == 65 in ASCII
-                createfontMap(32, 26, 33);
+                success =
+                    // Capital letters // 'A' == 65 in ASCII
+                    createfontMap(32, 26, 33) &&
 
-                // Lower case letters
-                createfontMap(58, 26, 39);
+                    // Lower case letters
+                    createfontMap(58, 26, 39) &&
 
-                // Special characters
-                createfontMap(84, 1, 46-84);  // '.' == 46 in ASCII 84 in Plane 2
-                createfontMap(85, 1, 44-85);  // ',' == 44 in ASCII
-                createfontMap(86, 1, 45-86);  // '-' == 45 in ASCII
-                createfontMap(87, 1, 34-87);  // '"' == 34 in ASCII
-                createfontMap(88, 1, 32-88);  // ' ' == 32 in ASCII
-                createfontMap(89, 1, 33-89);  // '!' == 33 in ASCII
-                createfontMap(90, 1, 39-90);  // ''' == 39 in ASCII
+                    // Special characters
+                    createfontMap(84, 1, 46-84) &&  // '.' == 46 in ASCII 84 in Plane 2
+                    createfontMap(85, 1, 44-85) &&  // ',' == 44 in ASCII
+                    createfontMap(86, 1, 45-86) &&  // '-' == 45 in ASCII
+                    createfontMap(87, 1, 34-87) &&  // '"' == 34 in ASCII
+                    createfontMap(88, 1, 32-88) &&  // ' ' == 32 in ASCII
+                    createfontMap(89, 1, 33-89) &&  // '!' == 33 in ASCII
+                    createfontMap(90, 1, 39-90);  // ''' == 39 in ASCII
             }
 
             SDL_UnlockSurface(sfc);
-		}
+
+            if(!success)
+            {
+                return false;
+            }
+        }
 
         font.deriveHighResSurfaces();
-	}
+    }
 
-	return true;
+    return true;
 }
 
 /**
- * \brief	This one extracts the bitmaps used in Keen 4-6 (Maybe Dreams in future)
- * \return 	returns true, if the fonts were read successfully, else false
+ * \brief   This one extracts the bitmaps used in Keen 4-6 (Maybe Dreams in future)
+ * \return  returns true, if the fonts were read successfully, else false
  */
 bool CEGAGraphicsGalaxy::readBitmaps()
 {
-	int ep = m_episode - 4;
+    int ep = m_episode - 4;
 
     const EpisodeInfoStruct &epInfo = EpisodeInfo[ep];
 
-	// ARM processor requires all ints and structs to be 4-byte aligned, so we're just using memcpy()
+    // ARM processor requires all ints and structs to be 4-byte aligned, so we're just using memcpy()
     BitmapHeadStruct BmpHead[epInfo.NumBitmaps];
     memcpy( BmpHead, &(m_egagraph.at(0).data.at(0)), epInfo.NumBitmaps*sizeof(BitmapHeadStruct));
-	SDL_Color *Palette = gGraphics.Palette.m_Palette;
+    SDL_Color *Palette = gGraphics.Palette.m_Palette;
 
     gGraphics.createEmptyBitmaps(epInfo.NumBitmaps);
 
-	SDL_Rect bmpRect;
-	bmpRect.x = bmpRect.y = 0;
+    SDL_Rect bmpRect;
+    bmpRect.x = bmpRect.y = 0;
 
     for(size_t i = 0; i < epInfo.NumBitmaps; i++)
-	{
+    {
+        // Use upper limit to protect against overflow.
+        if(BmpHead[i].Width < 1 || BmpHead[i].Width > 100)
+        {
+            gLogging.ftextOut("bad bitmap i=%u BmpHead[i].Width=%u", i, BmpHead[i].Width);
+            return false;
+        }
+        if(BmpHead[i].Height < 1 || BmpHead[i].Height > 1000)
+        {
+            gLogging.ftextOut("bad bitmap i=%u BmpHead[i].Height=%u", i, BmpHead[i].Height);
+            return false;
+        }
+
+        // Check that data size is consistent with width and height.
+        std::vector<unsigned char> &data = m_egagraph.at(epInfo.IndexBitmaps + i).data;
+        if(!data.empty() && BmpHead[i].Width * BmpHead[i].Height * 4u != data.size())
+        {
+            gLogging.ftextOut("bad bitmap i=%u Width=%u Height=%u size=%u", i, BmpHead[i].Width, BmpHead[i].Height, data.size());
+            return false;
+        }
+
         GsBitmap &Bitmap = gGraphics.getBitmapFromId(i);
-		bmpRect.w = BmpHead[i].Width*8;
-		bmpRect.h = BmpHead[i].Height;
-		Bitmap.createSurface(gVideoDriver.getScrollSurface()->flags, bmpRect, Palette);
+        bmpRect.w = BmpHead[i].Width*8;
+        bmpRect.h = BmpHead[i].Height;
+        Bitmap.createSurface(gVideoDriver.getScrollSurface()->flags, bmpRect, Palette);
 
-		extractPicture(Bitmap.getSDLSurface(),
-                m_egagraph.at(epInfo.IndexBitmaps + i).data,
-				BmpHead[i].Width, BmpHead[i].Height);
+        extractPicture(Bitmap.getSDLSurface(),
+                data,
+                BmpHead[i].Width, BmpHead[i].Height);
 
+        Bitmap.setName(m_BitmapNameMap[ep][i]);
+    }
 
-		Bitmap.setName(m_BitmapNameMap[ep][i]);
-	}
-
-	return true;
+    return true;
 }
 
 bool CEGAGraphicsGalaxy::readMaskedBitmaps()
 {
-	int ep = m_episode - 4;
-	// ARM processor requires all ints and structs to be 4-byte aligned, so we're just using memcpy()
-	BitmapHeadStruct BmpMaskedHead[EpisodeInfo[ep].NumMaskedBitmaps];
-	memcpy( BmpMaskedHead, &(m_egagraph.at(1).data.at(0)), EpisodeInfo[ep].NumMaskedBitmaps*sizeof(BitmapHeadStruct) );
-	SDL_Color *Palette = gGraphics.Palette.m_Palette;
+    int ep = m_episode - 4;
+    // ARM processor requires all ints and structs to be 4-byte aligned, so we're just using memcpy()
+    BitmapHeadStruct BmpMaskedHead[EpisodeInfo[ep].NumMaskedBitmaps];
+    memcpy( BmpMaskedHead, &(m_egagraph.at(1).data.at(0)), EpisodeInfo[ep].NumMaskedBitmaps*sizeof(BitmapHeadStruct) );
+    SDL_Color *Palette = gGraphics.Palette.m_Palette;
 
-	gGraphics.createEmptyMaskedBitmaps(EpisodeInfo[ep].NumMaskedBitmaps);
+    gGraphics.createEmptyMaskedBitmaps(EpisodeInfo[ep].NumMaskedBitmaps);
     gGraphics.createEmptyMisGsBitmaps(2);
 
-	SDL_Rect bmpRect;
-	bmpRect.x = bmpRect.y = 0;
+    SDL_Rect bmpRect;
+    bmpRect.x = bmpRect.y = 0;
 
-	for(size_t i = 0; i < EpisodeInfo[ep].NumMaskedBitmaps; i++)
-	{
-		GsBitmap &Bitmap = gGraphics.getMaskedBitmap(i);
-		bmpRect.w = BmpMaskedHead[i].Width*8;
-		bmpRect.h = BmpMaskedHead[i].Height;
+    for(size_t i = 0; i < EpisodeInfo[ep].NumMaskedBitmaps; i++)
+    {
+        // Use upper limit to protect against overflow.
+        if(BmpMaskedHead[i].Width < 1 || BmpMaskedHead[i].Width > 100)
+        {
+            gLogging.ftextOut("bad masked bitmap i=%u Width=%u", i, BmpMaskedHead[i].Width);
+            return false;
+        }
+        if(BmpMaskedHead[i].Height < 1 || BmpMaskedHead[i].Height > 1000)
+        {
+            gLogging.ftextOut("bad masked bitmap i=%u Height=%u", i, BmpMaskedHead[i].Height);
+            return false;
+        }
 
-		Bitmap.createSurface(gVideoDriver.getScrollSurface()->flags, bmpRect, Palette);
+        // Check that data size is consistent with width and height.
+        std::vector<unsigned char> &data = m_egagraph.at(EpisodeInfo[ep].IndexMaskedBitmaps + i).data;
+        if(!data.empty() && BmpMaskedHead[i].Width * BmpMaskedHead[i].Height * 5u != data.size())
+        {
+            gLogging.ftextOut("bad masked bitmap i=%u Width=%u Height=%u size=%u", i, BmpMaskedHead[i].Width, BmpMaskedHead[i].Height, data.size());
+            return false;
+        }
 
-		extractPicture(Bitmap.getSDLSurface(),
-				m_egagraph.at(EpisodeInfo[ep].IndexMaskedBitmaps + i).data,
-				BmpMaskedHead[i].Width, BmpMaskedHead[i].Height, true);
-	}
-	return true;
+        GsBitmap &Bitmap = gGraphics.getMaskedBitmap(i);
+        bmpRect.w = BmpMaskedHead[i].Width*8;
+        bmpRect.h = BmpMaskedHead[i].Height;
+
+        Bitmap.createSurface(gVideoDriver.getScrollSurface()->flags, bmpRect, Palette);
+
+        extractPicture(Bitmap.getSDLSurface(),
+                data,
+                BmpMaskedHead[i].Width, BmpMaskedHead[i].Height, true);
+    }
+    return true;
 }
 
 bool CEGAGraphicsGalaxy::readTilemaps( const size_t NumTiles, size_t pbasetilesize,
-										size_t rowlength, size_t IndexOfTiles,
-										GsTilemap &Tilemap, bool tileoff)
+                                        size_t rowlength, size_t IndexOfTiles,
+                                        GsTilemap &Tilemap, bool tileoff)
 {
-	Tilemap.CreateSurface( gGraphics.Palette.m_Palette, SDL_SWSURFACE,
-							NumTiles, pbasetilesize, rowlength );
-	SDL_Surface *sfc = Tilemap.getSDLSurface();
-	SDL_FillRect(sfc,NULL, 0);
-	if(SDL_MUSTLOCK(sfc))	SDL_LockSurface(sfc);
+    Tilemap.CreateSurface( gGraphics.Palette.m_Palette, SDL_SWSURFACE,
+                            NumTiles, pbasetilesize, rowlength );
+    SDL_Surface *sfc = Tilemap.getSDLSurface();
+    SDL_FillRect(sfc,NULL, 0);
+    if(SDL_MUSTLOCK(sfc))   SDL_LockSurface(sfc);
 
-	for(size_t i = 0; i < NumTiles; i++)
-	{
-		extractTile(sfc, m_egagraph.at(IndexOfTiles + (tileoff ? 0 : i)).data, (1<<pbasetilesize), rowlength, i, tileoff);
-	}
+    std::vector<unsigned char> &data = m_egagraph.at(IndexOfTiles).data;
+
+    const Uint16 size = (1 << pbasetilesize);
+
+    const size_t tileSize = 4 * (size / 8) * size;
+
+    if(tileoff)
+    {
+        size_t expectedSize = NumTiles * rowlength * tileSize;
+        if(!data.empty() && data.size() != expectedSize)
+        {
+            gLogging.ftextOut("bad tile offset data expected size=%u data size=%u", expectedSize, data.size());
+        }
+    }
+
+    for(size_t i = 0; i < NumTiles; i++)
+    {
+        // Check that data size is consistent with pbasetilesize and rowlength.
+        if(!tileoff)
+        {
+            data = m_egagraph.at(IndexOfTiles + i).data;
+            if(!data.empty() && data.size() != tileSize)
+            {
+                gLogging.ftextOut("bad tile i=%u expected size=%u data size=%u", i, tileSize, data.size());
+                return false;
+            }
+        }
+
+        extractTile(sfc, data, size, rowlength, i, tileoff);
+    }
 
     SDL_UnlockSurface(sfc);
 
@@ -922,25 +1032,51 @@ bool CEGAGraphicsGalaxy::readTilemaps( const size_t NumTiles, size_t pbasetilesi
     // Optimize surfaces for the screen
     Tilemap.optimizeSurface();
 
-	return true;
+    return true;
 }
 
 bool CEGAGraphicsGalaxy::readMaskedTilemaps( size_t NumTiles, size_t pbasetilesize,
-											size_t rowlength, size_t IndexOfTiles,
-											GsTilemap &Tilemap, bool tileoff)
+                                            size_t rowlength, size_t IndexOfTiles,
+                                            GsTilemap &Tilemap, bool tileoff)
 {
-	Tilemap.CreateSurface( gGraphics.Palette.m_Palette, SDL_SWSURFACE,
-							NumTiles, pbasetilesize, rowlength );
-	SDL_Surface *sfc = Tilemap.getSDLSurface();
-	SDL_FillRect(sfc,NULL, 0);
-	if(SDL_MUSTLOCK(sfc))	SDL_LockSurface(sfc);
+    Tilemap.CreateSurface( gGraphics.Palette.m_Palette, SDL_SWSURFACE,
+                            NumTiles, pbasetilesize, rowlength );
+    SDL_Surface *sfc = Tilemap.getSDLSurface();
+    SDL_FillRect(sfc,NULL, 0);
+    if(SDL_MUSTLOCK(sfc))   SDL_LockSurface(sfc);
 
-	for(size_t i = 0; i < NumTiles; i++)
-	{
-		extractMaskedTile(sfc, m_egagraph.at(IndexOfTiles + (tileoff ? 0 : i)).data, (1<<pbasetilesize), rowlength, i, tileoff);
-	}
+    std::vector<unsigned char> &data = m_egagraph.at(IndexOfTiles).data;
 
-	SDL_UnlockSurface(sfc);
+    const Uint16 size = (1 << pbasetilesize);
+
+    const size_t tileSize = 5 * (size / 8) * size;
+
+    if(tileoff)
+    {
+        const size_t expectedSize = NumTiles * rowlength * tileSize;
+        if(!data.empty() && data.size() != expectedSize)
+        {
+            gLogging.ftextOut("bad masked tile offset data expected size=%u data size=%u", expectedSize, data.size());
+        }
+    }
+
+    for(size_t i = 0; i < NumTiles; i++)
+    {
+        // Check that data size is consistent with pbasetilesize and rowlength.
+        if(!tileoff)
+        {
+            data = m_egagraph.at(IndexOfTiles + i).data;
+            if(!data.empty() && data.size() != tileSize)
+            {
+                gLogging.ftextOut("bad masked tile i=%u expected size=%u data size=%u", i, tileSize, data.size());
+                return false;
+            }
+        }
+
+        extractMaskedTile(sfc, data, size, rowlength, i, tileoff);
+    }
+
+    SDL_UnlockSurface(sfc);
 
     /// Let's see if there is a high colour tilemap we can load instead
     if(pbasetilesize == 4) // Only valid for the 16x16 tiles tilemap!
@@ -952,114 +1088,126 @@ bool CEGAGraphicsGalaxy::readMaskedTilemaps( size_t NumTiles, size_t pbasetilesi
         }
     }
 
-
-	return true;
+    return true;
 }
-
-
-
 
 
 
 bool CEGAGraphicsGalaxy::readSprites( size_t NumSprites, size_t IndexSprite )
 {
-	// Create all the sprites
+    // Create all the sprites
     gGraphics.createEmptySprites(4, NumSprites);
 
-	int ep = m_episode - 4;
+    int ep = m_episode - 4;
 
-	// ARM processor requires all ints and structs to be 4-byte aligned, so we're just using memcpy()
+    // Check that source head data size is appropriate.
+    const std::vector<unsigned char> &headData = m_egagraph.at(2).data;
+    if(headData.size() != NumSprites * sizeof(SpriteHeadStruct))
+    {
+        gLogging.ftextOut("bad sprite head data size=%u", headData.size());
+        return false;
+    }
+
+    // ARM processor requires all ints and structs to be 4-byte aligned, so we're just using memcpy()
     std::vector<SpriteHeadStruct> sprHead(NumSprites, SpriteHeadStruct());
-    memcpy( sprHead.data(), &(m_egagraph.at(2).data.at(0)), NumSprites*sizeof(SpriteHeadStruct) );
+    memcpy( sprHead.data(), &(headData.at(0)), NumSprites*sizeof(SpriteHeadStruct) );
 
-	for(size_t i = 0; i < NumSprites; i++)
-	{
+    for(size_t i = 0; i < NumSprites; i++)
+    {
         SpriteHeadStruct Head = sprHead[i];
-		std::vector<unsigned char> &data = m_egagraph.at(IndexSprite + i).data;
+
+        std::vector<unsigned char> &data = m_egagraph.at(IndexSprite + i).data;
+        // Check that data size is consistent with Head.Width and Head.Height.
+        // Width and Height are unsigned short, so there's no overflow risk.
+        if(!data.empty() && data.size() != (Head.Width * Head.Height * 5u))
+        {
+            gLogging.ftextOut("bad sprite data i=%u Width=%d Height=%d data size=%u", i, Head.Width, Head.Height, data.size());
+            return false;
+        }
 
         GsSprite &Sprite = gGraphics.getSprite(0,i);
-		Sprite.setSize( Head.Width*8, Head.Height );
+        Sprite.setSize( Head.Width*8, Head.Height );
 
         Sprite.setOffset( Head.OrgX>>(TILE_S), Head.OrgY>>(TILE_S) );
 
-		// Setup the collision information
-		int boxX1 = ((Head.Rx1) << (STC-TILE_S));
-		int boxY1 = ((Head.Ry1) << (STC-TILE_S));
-		int boxX2 = ((Head.Rx2) << (STC-TILE_S));
-		int boxY2 = ((Head.Ry2) << (STC-TILE_S));
+        // Setup the collision information
+        int boxX1 = ((Head.Rx1) << (STC-TILE_S));
+        int boxY1 = ((Head.Ry1) << (STC-TILE_S));
+        int boxX2 = ((Head.Rx2) << (STC-TILE_S));
+        int boxY2 = ((Head.Ry2) << (STC-TILE_S));
 
-		if(boxX2-boxX1 >= 1<<STC)
-		{
-		   boxX2 --;
-		   boxX1 += (1<<STC);
-		}
+        if(boxX2-boxX1 >= 1<<STC)
+        {
+           boxX2 --;
+           boxX1 += (1<<STC);
+        }
 
-		if(boxY2-boxY1 >= 1<<STC)
-		{
-		   boxY2 --;
-		   boxY1 += (1<<STC);
-		}
+        if(boxY2-boxY1 >= 1<<STC)
+        {
+           boxY2 --;
+           boxY1 += (1<<STC);
+        }
 
-		Sprite.setBoundingBoxCoordinates( boxX1, boxY1, boxX2, boxY2 );
+        Sprite.setBoundingBoxCoordinates( boxX1, boxY1, boxX2, boxY2 );
 
-		Sprite.createSurface( gVideoDriver.mpVideoEngine->getBlitSurface()->flags,
-				gGraphics.Palette.m_Palette );
+        Sprite.createSurface( gVideoDriver.mpVideoEngine->getBlitSurface()->flags,
+                gGraphics.Palette.m_Palette );
 
-		SDL_Surface *sfc = Sprite.getSDLSurface();
-		SDL_FillRect(sfc,NULL, 0);
-		if(SDL_MUSTLOCK(sfc))	SDL_LockSurface(sfc);
+        SDL_Surface *sfc = Sprite.getSDLSurface();
+        SDL_FillRect(sfc,NULL, 0);
+        if(SDL_MUSTLOCK(sfc))   SDL_LockSurface(sfc);
 
-		if(!data.empty())
-		{
-			// Decode the image data
-			for(size_t p = 0; p < 4; p++)
-			{
-				// Decode the lines of the bitmap data
-				Uint8 *pointer = &(data[0]) + (p+1) * Head.Width * Head.Height;
-				for(size_t y = 0; y < Head.Height; y++)
-				{
-					Uint8 *pixel = (Uint8*)sfc->pixels +
-							(Head.Width * 8 *y);
-					for(size_t x = 0; x < Head.Width; x++)
-					{
-						Uint8 bit,b;
-						for(b=0 ; b<8 ; b++)
-						{
-							bit = getBit(*pointer, 7-b);
-							*pixel |= (bit<<p);
-							pixel++;
-						}
-						pointer++;
-					}
-				}
-			}
+        if(!data.empty())
+        {
+            // Decode the image data
+            for(size_t p = 0; p < 4; p++)
+            {
+                // Decode the lines of the bitmap data
+                Uint8 *pointer = &(data[0]) + (p+1) * Head.Width * Head.Height;
+                for(size_t y = 0; y < Head.Height; y++)
+                {
+                    Uint8 *pixel = (Uint8*)sfc->pixels +
+                            (Head.Width * 8 *y);
+                    for(size_t x = 0; x < Head.Width; x++)
+                    {
+                        Uint8 bit,b;
+                        for(b=0 ; b<8 ; b++)
+                        {
+                            bit = getBit(*pointer, 7-b);
+                            *pixel |= (bit<<p);
+                            pixel++;
+                        }
+                        pointer++;
+                    }
+                }
+            }
 
-			// now apply the mask!
-			Uint8 *pointer = &(data[0]);
-			for(size_t y = 0; y < Head.Height; y++)
-			{
-				Uint8 *pixel = (Uint8*)sfc->pixels +
-						(Head.Width * 8*y);
-				for(size_t x = 0; x < Head.Width; x++)
-				{
-					Uint8 bit,b;
-					for(b=0 ; b<8 ; b++)
-					{
-						bit = getBit(*pointer, 7-b);
-						if(bit == 1)
-							*pixel = 16;
-						pixel++;
-					}
-					pointer++;
-				}
-			}
-		}
-		SDL_UnlockSurface(sfc);
+            // now apply the mask!
+            Uint8 *pointer = &(data[0]);
+            for(size_t y = 0; y < Head.Height; y++)
+            {
+                Uint8 *pixel = (Uint8*)sfc->pixels +
+                        (Head.Width * 8*y);
+                for(size_t x = 0; x < Head.Width; x++)
+                {
+                    Uint8 bit,b;
+                    for(b=0 ; b<8 ; b++)
+                    {
+                        bit = getBit(*pointer, 7-b);
+                        if(bit == 1)
+                            *pixel = 16;
+                        pixel++;
+                    }
+                    pointer++;
+                }
+            }
+        }
+        SDL_UnlockSurface(sfc);
 
-		Sprite.setName(m_SpriteNameMap[ep][i]);
-	}
+        Sprite.setName(m_SpriteNameMap[ep][i]);
+    }
 
-    // Now let's copy all the sprites ant tint to the proper colors
+    // Now let's copy all the sprites. After that some of them are tinted tint to the proper colors
 
     auto &SpriteOrigVec = gGraphics.getSpriteVec(0);
 
@@ -1069,8 +1217,11 @@ bool CEGAGraphicsGalaxy::readSprites( size_t NumSprites, size_t IndexSprite )
     }
 
     // For the other variant let's exchange some colors
+
+    // Second Player
     auto &SpriteVecPlayer2 = gGraphics.getSpriteVec(1);
-    for( auto &sprite : SpriteVecPlayer2)
+    int ctr = 0;
+    for( GsSprite &sprite : SpriteVecPlayer2)
     {
         // Red against Purple
         sprite.exchangeSpriteColor( 5, 4, 0 );
@@ -1080,8 +1231,24 @@ bool CEGAGraphicsGalaxy::readSprites( size_t NumSprites, size_t IndexSprite )
         sprite.exchangeSpriteColor( 2, 6, 0 );
         sprite.exchangeSpriteColor( 10, 14, 0 );
         sprite.optimizeSurface();
+
+        std::string filename = "4SPR0000.bmp";
+
+        const std::string numStr = to_string(ctr);
+        filename.replace(8-numStr.length(),numStr.length(),numStr);
+
+        std::string kyliePath = JoinPaths(gKeenFiles.gameDir, "gfx/player/kylie/");
+        kyliePath = JoinPaths(kyliePath, filename);
+
+        if( sprite.loadHQSprite(kyliePath) )
+        {
+            sprite.applyTransparency();
+        }
+
+        ctr++;
     }
 
+    // Third Player
     auto &SpriteVecPlayer3 = gGraphics.getSpriteVec(2);
     for( auto &sprite : SpriteVecPlayer3)
     {
@@ -1095,7 +1262,7 @@ bool CEGAGraphicsGalaxy::readSprites( size_t NumSprites, size_t IndexSprite )
         sprite.optimizeSurface();
     }
 
-
+    // Fourth Player
     auto &SpriteVecPlayer4 = gGraphics.getSpriteVec(3);
     for( auto &sprite : SpriteVecPlayer4)
     {
@@ -1114,8 +1281,9 @@ bool CEGAGraphicsGalaxy::readSprites( size_t NumSprites, size_t IndexSprite )
         sprite.optimizeSurface();
     }
 
-	return true;
+    return true;
 }
+
 
 
 bool CEGAGraphicsGalaxy::readTexts()
@@ -1125,8 +1293,14 @@ bool CEGAGraphicsGalaxy::readTexts()
     gGameText.clear();
 
     for(unsigned int i = 0; i < EpisodeInfo[ep].NumTexts; i++)
-	{
+    {
         ChunkStruct &thisChunk = m_egagraph.at(EpisodeInfo[ep].IndexTexts + i);
+
+        if(thisChunk.data.size() == 0)
+        {
+            gLogging.ftextOut("bad text chunk (zero size) i=%u", i);
+            return false;
+        }
 
         if(thisChunk.data.at(0))
         {
@@ -1134,12 +1308,11 @@ bool CEGAGraphicsGalaxy::readTexts()
             std::string text(txtData);
 
             gGameText.addLine(text);
-		}
-	}
+        }
+    }
 
     return true;
 }
-
 
 
 
@@ -1150,10 +1323,21 @@ bool CEGAGraphicsGalaxy::readMiscStuff()
 
     // Only position 1 and 2 are read. This will the terminator text.
     // Those are monochrom...
-
     for(int misc = 1 ; misc<3 ; misc++)
     {
         const int index = EpisodeInfo[m_episode-4].IndexMisc + misc;
+
+        const auto dataSize = m_egagraph.at(index).data.size();
+
+        if(dataSize < (sizeof(Uint16) * 3))
+        {
+            gLogging.ftextOut("bad misc data size=%u at index=%d misc=%d",
+                              dataSize, index, misc);
+            return false;
+        }
+
+        const Uint16 * const dataEndPtr = (Uint16 *)(&m_egagraph.at(index).data[0] + dataSize);
+
         Uint16 *dataPtr;
 
         memcpy( &dataPtr, &(m_egagraph.at(index).data), sizeof(Uint16 *) );
@@ -1162,6 +1346,27 @@ bool CEGAGraphicsGalaxy::readMiscStuff()
         dataPtr++;
         memcpy(&width, dataPtr, sizeof(Uint16) );
         dataPtr++;
+
+        // Limit the height and width to ensure 32-bit safety further below.
+        if(height <= 0 || height > 10000)
+        {
+            gLogging.ftextOut("bad misc height=%d index=%d misc=%d",
+                              height, index, misc);
+            return false;
+        }
+        if(width <= 0 || width > 10000)
+        {
+            gLogging.ftextOut("bad misc width=%d index=%d misc=%d",
+                              width, index, misc);
+            return false;
+        }
+
+        if(((2 + height) * sizeof(Uint16)) > dataSize)
+        {
+            gLogging.ftextOut("bad misc data size=%u for height=%d index=%d misc=%d",
+                              dataSize, height, index, misc);
+            return false;
+        }
 
         SDL_Rect bmpRect;
 
@@ -1191,32 +1396,34 @@ bool CEGAGraphicsGalaxy::readMiscStuff()
         default: textColor = SDL_MapRGB(bmp->format, 0xaa,0xaa,0xaa); break;
         }
 
-
         const Uint32 blackColor = SDL_MapRGB(bmp->format, 0,0,0);
 
         Uint32 currentColor = blackColor;
 
-        int amountOfPixels = 0;
+        const int expectedNumPixels = width * height;
 
-        for(int line=0 ; line < height ; line++)
+        int pixelNum = 0;
+
+        bool bad = false;
+        while(pixelNum < expectedNumPixels)
         {
-            Uint16 pixelCount = *rlepointer;
+            if(rlepointer == dataEndPtr)
+            {
+                gLogging.ftextOut("bad misc rle data size=%u for pixelNum=%d width=%d height=%d index=%d misc=%d",
+                                  dataSize, pixelNum, width, height, index, misc);
+                bad = true;
+                break;
+            }
 
-            while( pixelCount != 0xFFFF ) // End-Flag
+            Uint16 pixelCount = *rlepointer;
+            if(pixelCount != 0xFFFF)
             {
                 for(int i=0 ; i<pixelCount ; i++)
                 {
                     *sfcPtr = currentColor;
                     sfcPtr += bytePerPixel;
-                    amountOfPixels++;
                 }
-
-                currentColor =
-                        (currentColor == blackColor) ?
-                            textColor : blackColor;
-
-                rlepointer++;
-                pixelCount = *rlepointer;
+                pixelNum += pixelCount;
             }
 
             currentColor =
@@ -1226,17 +1433,21 @@ bool CEGAGraphicsGalaxy::readMiscStuff()
             rlepointer++;
         }
 
-        if(amountOfPixels != height*width)
+        if(pixelNum != expectedNumPixels)
         {
-            gLogging.ftextOut("Warning! Someting is wrong with the amount of read pixels in MisGsBitmap %d.\n", misc);
+            gLogging.ftextOut("Something is wrong with the number of read pixels in misc %d.\n", misc);
+            bad = true;
         }
 
         SDL_UnlockSurface(bmp);
-    }
 
+        if(bad)
+        {
+            return false;
+        }
+    }
 
     return true;
 }
-
 
 }

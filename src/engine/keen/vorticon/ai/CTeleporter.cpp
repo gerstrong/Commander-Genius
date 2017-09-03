@@ -38,7 +38,7 @@ m_Player(mp_vec_Player)
 
 	//sprite = BlankSprite;
 	//sprite = 0;
-	animtimer = (gpBehaviorEngine->getEpisode()!=3) ? TELEPORTER_ANIM_RATE_EP1 : TELEPORTER_ANIM_RATE_EP3;
+	animtimer = (gBehaviorEngine.getEpisode()!=3) ? TELEPORTER_ANIM_RATE_EP1 : TELEPORTER_ANIM_RATE_EP3;
 	animframe = 0;
 	numframechanges = 0;
 
@@ -52,7 +52,7 @@ m_Player(mp_vec_Player)
 
 void CTeleporter::reset()
 {
-	if(gpBehaviorEngine->getEpisode() == 1)
+	if(gBehaviorEngine.getEpisode() == 1)
 	{
 	    if(idleframe == TELEPORT_GRAY_IDLEFRAME_EP1)
 		baseframe = TELEPORT_GRAY_BASEFRAME_EP1;
@@ -78,9 +78,9 @@ void CTeleporter::process()
 	mx = x >> CSF;
 	my = y >> CSF;
 
-	animrate = (gpBehaviorEngine->getEpisode()!=3) ?
+	animrate = (gBehaviorEngine.getEpisode()!=3) ?
 					TELEPORTER_ANIM_RATE_EP1 : TELEPORTER_ANIM_RATE_EP3;
-	numframes = (gpBehaviorEngine->getEpisode()!=3) ?
+	numframes = (gBehaviorEngine.getEpisode()!=3) ?
 					TELEPORTER_NUMFRAMES_EP1 : TELEPORTER_NUMFRAMES_EP3;
 
 

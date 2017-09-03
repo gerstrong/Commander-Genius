@@ -117,7 +117,7 @@ void CEGALatch::loadTilemap(GsTilemap &Tilemap, CPlanes &Planes, const int episo
 	// Load Hi-Colour, VGA, SVGA Tiles into the tilemap	
     if(Tilemap.loadHiresTile("gfx/ck" + itoa(episode) + "tiles", path))
 	{
-	  gLogging.textOut(GREEN, "Additional VGA Bitmap for the Tileset has been loaded successfully!");
+	  gLogging.textOut(FONTCOLORS::GREEN, "Additional VGA Bitmap for the Tileset has been loaded successfully!");
     }
 
 	// Adapt the tilemap to the display, so they are faster blit
@@ -322,7 +322,7 @@ void CEGALatch::applyMasks()
 
 	for( Uint16 t=0 ; t<m_num16tiles ; t++ )
 	{
-		if( gpBehaviorEngine->getTileProperties().at(t).behaviour == -2 )  // This is for masked tiles.
+		if( gBehaviorEngine.getTileProperties().at(t).behaviour == -2 )  // This is for masked tiles.
 		{
 			SDL_Rect srGsRect, dstRect;
 			srGsRect.w = srGsRect.h = 16;

@@ -118,7 +118,7 @@ bool CPlayer::isWMSolid(int xb, int yb)
 		if( mp_levels_completed[level_coordinates & 0x7fff] ) // check if level is done
 			  return false;
 
-        if( (gInput.getHoldedKey(KTAB) && gInput.getHoldedKey(KSHIFT)) || gpBehaviorEngine->mCheatmode.jump )
+        if( (gInput.getHoldedKey(KTAB) && gInput.getHoldedKey(KSHIFT)) || gBehaviorEngine.mCheatmode.jump )
 			  return false;
 		else
 			  return true;
@@ -130,7 +130,7 @@ const int WMSOLIDBUMPSPEED = 1;
 
 void CPlayer::verifySolidLevels()
 {
-    if(gpBehaviorEngine->mCheatmode.noclipping) return;
+    if(gBehaviorEngine.mCheatmode.noclipping) return;
 
 	int x1 = getXLeftPos();
 	int x2 = getXRightPos();

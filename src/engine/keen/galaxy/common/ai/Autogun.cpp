@@ -14,7 +14,7 @@ mTimer(0)
 {
     // Coding for autogun. It covers Keen 4 Darts in Pyramids and the auto shooting guns in Keen 5
 
-    const int ep = gpBehaviorEngine->getEpisode();
+    const int ep = gBehaviorEngine.getEpisode();
 
     xDirection = horDir;
     yDirection = vertDir;
@@ -64,7 +64,7 @@ mTimer(0)
 
 void AutoShot::waiting()
 {
-    const int ep = gpBehaviorEngine->getEpisode();
+    const int ep = gBehaviorEngine.getEpisode();
     if(ep > 4)
     {
         if(sprite < mBaseSprite + mNumAnimSprites + 1)
@@ -127,7 +127,7 @@ void AutoShot::setWaitStatus()
 {        
     // wait! in keen 4 it has to return
     processState = &AutoShot::waiting;
-    if(gpBehaviorEngine->getEpisode() > 4)
+    if(gBehaviorEngine.getEpisode() > 4)
     {
         sprite = mBaseSprite + mNumAnimSprites;
     }

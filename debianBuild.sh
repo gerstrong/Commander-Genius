@@ -1,6 +1,7 @@
 #!/bin/sh
 
 VERSION=1.9.8
+SUBVER=ppa3
 KEY="0x6A1F4CC6"
 
 DST=../cgenius_${VERSION}
@@ -26,6 +27,7 @@ cd ${DST}
 # Sources Packages signed for PPA
 debuild -S -k${KEY}
 
+cd ..
 
-debuild -us -uc
-#dput ppa:gerstrong/cgenius commandergenius_${VERSION}ppa1_source.changes
+#debuild -us -uc
+dput ppa:gerstrong/cgenius commandergenius_${VERSION}${SUBVER}_source.changes

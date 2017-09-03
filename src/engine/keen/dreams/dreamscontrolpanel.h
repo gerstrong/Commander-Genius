@@ -4,7 +4,7 @@
 #include <base/GsEngine.h>
 
 #include "dreamsgameplay.h"
-
+#include <string>
 
 namespace dreams
 {

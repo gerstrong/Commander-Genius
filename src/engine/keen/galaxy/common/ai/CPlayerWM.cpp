@@ -33,11 +33,13 @@ CPlayerWM::CPlayerWM(CMap *pmap,
         Uint32 y,
         CInventory &l_Inventory,
         const unsigned int actionoffset,
-        const int playerID):
+        const int playerIdx,
+        const int spriteTableIdx):
 CPlayerBase(pmap, foeID, x, y,
 		    LEFT,
             l_Inventory,
-            playerID),
+            playerIdx,
+            spriteTableIdx),
 m_basesprite(0),
 m_teleportanibasetile(0),
   m_teleportoldtile(0),
@@ -67,6 +69,20 @@ mounted(false)
 }
 
 
+void
+CPlayerWM::
+deserialize(CSaveGameController &savedGame)
+{
+  savedGame.decodeData(mUsedGrapplingHook);
+}
+
+void
+CPlayerWM::
+serialize(CSaveGameController &savedGame)
+{
+  savedGame.encodeData(mUsedGrapplingHook);
+}
+
 /**
  * Before Keen rides on the foot we get the location where to ride
  */
@@ -77,8 +93,8 @@ Vector2D<int> CPlayerWM::fetchFootDestCoord()
 	int coordData;
 
     const byte *dataPtr = gKeenFiles.exeFile.getRawData();
-	//const byte *dataPtr = gpBehaviorEngine->m_ExeFile.getDSegPtr(); // only Zeros here!
-	//const byte *dataPtr = (byte*) gpBehaviorEngine->m_ExeFile.getHeaderData();
+	//const byte *dataPtr = gBehaviorEngine.m_ExeFile.getDSegPtr(); // only Zeros here!
+	//const byte *dataPtr = (byte*) gBehaviorEngine.m_ExeFile.getHeaderData();
 
 	memcpy(&coordData, dataPtr+0xDE43, sizeof(int));
 	location1.x = coordData & 0xFF;
@@ -138,7 +154,7 @@ void CPlayerWM::pumpEvent(const CEvent *evPtr)
             {                
                 finishLevel(ev->levelObject);
 
-                if(gpBehaviorEngine->getEpisode() == 5)
+                if(gBehaviorEngine.getEpisode() == 5)
                 {
                     // enough fuses broken, which are all the fuse levels, except the secret one.
                     // In this case open the elevator door for the last level!
@@ -335,7 +351,7 @@ void CPlayerWM::processMoving()
             else
             {
                 // Tell the player he cannot climb yet                
-                showMsgWithBmp(gpBehaviorEngine->getString("KEEN_ROPE_REQUIRED"), 29, RIGHT);
+                showMsgWithBmp(gBehaviorEngine.getString("KEEN_ROPE_REQUIRED"), 29, RIGHT);
                 moveYDir(-(climbDir<<CSF)/2);
             }
         }
@@ -353,7 +369,7 @@ void CPlayerWM::processMoving()
     }
     
     // In Episode 5 and 6 there are teleporters. Verify those teleporters and elevators
-    if(gpBehaviorEngine->getEpisode() >= 5)
+    if(gBehaviorEngine.getEpisode() >= 5)
         verifyTeleportation();
     
     // Normal walking
@@ -401,10 +417,10 @@ void CPlayerWM::processMoving()
     }
     
     // In case noclipping was triggered, make it solid, or remove it...
-    if(gpBehaviorEngine->mCheatmode.noclipping)
+    if(gBehaviorEngine.mCheatmode.noclipping)
     {
         solid = !solid;
-        gpBehaviorEngine->mCheatmode.noclipping = false;
+        gBehaviorEngine.mCheatmode.noclipping = false;
     }
 
 
@@ -424,12 +440,12 @@ void CPlayerWM::processMoving()
             int level = object - 0xC000;
             const Uint16 flag_dest = level + 0xF000;
 
-            const int ep = gpBehaviorEngine->getEpisode();
+            const int ep = gBehaviorEngine.getEpisode();
             const int shipLevel = (ep < 6) ? 18 : 17;
 
             if(mp_Map->findTile(flag_dest, &x, &y, 2) ||
-                    gpBehaviorEngine->m_option[OPT_LVLREPLAYABILITY].value
-                    || level >= shipLevel)
+                    gBehaviorEngine.mOptions[GameOption::LVLREPLAYABILITY].value ||
+                    level >= shipLevel)
             {
                 vkc->mHideStartButton = false;
             }
@@ -477,8 +493,8 @@ void CPlayerWM::processMoving()
         {
             if( !m_cantswim )
             {
-                g_pSound->playSound( SOUND_CANT_DO, PLAY_PAUSEALL );
-                showMsgWithBmp(gpBehaviorEngine->getString("CANT_SWIM_TEXT"), 105, LEFT);
+                gSound.playSound( SOUND_CANT_DO, PLAY_PAUSEALL );
+                showMsgWithBmp(gBehaviorEngine.getString("CANT_SWIM_TEXT"), 105, LEFT);
 
                 m_cantswim = true;
             }
@@ -564,7 +580,7 @@ void CPlayerWM::verifyTeleportation()
 
 		bool isElevator = false;
 		
-		std::vector<CTileProperties> &Tile = gpBehaviorEngine->getTileProperties(1);
+		std::vector<CTileProperties> &Tile = gBehaviorEngine.getTileProperties(1);
 		Uint16 behav = Tile[mp_Map->at( x, y, 1)].behaviour;
 			
 		// Elevator are double the size. Check that! Else it must be an teleporter		
@@ -747,7 +763,7 @@ void CPlayerWM::processOpeningElevator()
     curTile[2] = mp_Map->getPlaneDataAt( 1, (x-1)<<CSF, (y-1)<<CSF );
     curTile[3] = mp_Map->getPlaneDataAt( 1, x<<CSF,     (y-1)<<CSF );
 
-    std::vector<CTileProperties> &tileProp = gpBehaviorEngine->getTileProperties(1);
+    std::vector<CTileProperties> &tileProp = gBehaviorEngine.getTileProperties(1);
 
     const auto &prop0 = tileProp[ curTile[0] ];
     const auto &prop1 = tileProp[ curTile[1] ];
@@ -827,7 +843,7 @@ void CPlayerWM::setupTeleportAnimation(const bool unset, const Vector2D<int> &po
 {
     const int x = pos.x;
     const int y = pos.y;
-    const int ep = gpBehaviorEngine->getEpisode();
+    const int ep = gBehaviorEngine.getEpisode();
 
     if(!unset)
         m_teleportoldtile = mp_Map->getPlaneDataAt( 1, x, y );
@@ -900,7 +916,7 @@ void CPlayerWM::processEnteringTeleporter()
 	  const int x = target.x;
 	  const int y = target.y;
 
-      const int ep = gpBehaviorEngine->getEpisode();
+      const int ep = gBehaviorEngine.getEpisode();
 
       // Amount of animation tiles.
       const int teleportAnimTiles = (ep==5) ? 1 : 3;
@@ -979,7 +995,7 @@ void CPlayerWM::processLeavingTeleporter()
         const int x = pos.x;
         const int y = pos.y;
 
-        const int ep = gpBehaviorEngine->getEpisode();
+        const int ep = gBehaviorEngine.getEpisode();
 
         // Amount of animation tiles.
         const int teleportAnimTiles = (ep==5) ? 1 : 3;
@@ -1010,8 +1026,8 @@ void CPlayerWM::startLevel(Uint16 object)
     int x, y;
     int level = object - 0xC000;
 
-    const auto ep = gpBehaviorEngine->getEpisode();
-    //int shipLevel = gpBehaviorEngine->;
+    const auto ep = gBehaviorEngine.getEpisode();
+    //int shipLevel = gBehaviorEngine.;
     int shipLevel;
 
     switch(ep)
@@ -1031,7 +1047,7 @@ void CPlayerWM::startLevel(Uint16 object)
 
     // Check if there already exists a flag. If that's not the case enter the level
     if( mp_Map->findTile(flag_dest, &x, &y, 2) ||
-        gpBehaviorEngine->m_option[OPT_LVLREPLAYABILITY].value ||
+        gBehaviorEngine.mOptions[GameOption::LVLREPLAYABILITY].value ||
         level >= shipLevel)
     {
         gEventManager.add(new EventEnterLevel(object));
@@ -1063,7 +1079,7 @@ bool CPlayerWM::finishLevel(const int object)
     if( mp_Map->findTile(flag_dest, &x, &y, 2) )
 	{
 		// spawn the flag
-		const auto episode = gpBehaviorEngine->getEpisode();
+		const auto episode = gBehaviorEngine.getEpisode();
         Vector2D<Uint32> src(getXPosition(), getYPosition());
 
         // Here we move the coordinates for the correction position of the done flag/sign
@@ -1119,7 +1135,7 @@ bool CPlayerWM::finishLevel(const int object)
 void CPlayerWM::checkforSwimming(bool &bleft, bool &bright, bool &bup, bool &bdown)
 {
 	Uint16 left, right, up, down;
-	std::vector<CTileProperties> &Tile = gpBehaviorEngine->getTileProperties(1);
+	std::vector<CTileProperties> &Tile = gBehaviorEngine.getTileProperties(1);
 
 	bleft = bright = bup = bdown = false;
 

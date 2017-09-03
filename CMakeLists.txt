@@ -1,36 +1,26 @@
 # CMake file for development of Commander Genius (taken from OLX)
 # This CMake file is used under Linux normally. 
 
-#TODO: Search SDL_image 2.0 still fails
-
-#cmake_minimum_required(VERSION 3.1)
-cmake_minimum_required(VERSION 2.8.12)
+cmake_minimum_required(VERSION 3.1)
 
 
 OPTION(OGG "Ogg/Vorbis support" Yes)
 OPTION(TREMOR "Tremor support" No)
-OPTION(DBFUSION "Dosbox fusion" No)
 OPTION(DOWNLOADER "Internal Downloader" Yes)
-OPTION(USE_SDL2 "SDL2 support" Yes)
 OPTION(USE_PYTHON3 "Python3 for scripting" No)
+OPTION(USE_SDL2 "SDL2 support" Yes)
 
 
 Project(CommanderGenius)
 
-if(POLICY CMP0058)
-    cmake_policy(SET CMP0058 NEW)
-endif()
+#if(POLICY CMP0058)
+#    cmake_policy(SET CMP0058 NEW)
+#endif()
 
 set (CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/CMake")
-include(cotire)
+#include(cotire)
 
-if (CMAKE_VERSION VERSION_LESS "3.1")
-  if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    set (CMAKE_CXX_FLAGS "--std=gnu++11 ${CMAKE_CXX_FLAGS}")
-  endif ()
-else ()
-  set (CMAKE_CXX_STANDARD 11)
-endif ()
+set (CMAKE_CXX_STANDARD 11)
 
 #------------------------------------------------------------------------------
 # Set a default build type if none was specified
@@ -73,41 +63,31 @@ endif(UNIX)
 # Force SDL2 on windows systems
 IF(WIN32)
 
-    #include(FindSDL2.cmake)
-    #include(FindSDL2_net.cmake)
-                INCLUDE(FindPkgConfig)
-                find_package(SDL2 REQUIRED)
-                find_package(SDL2_image REQUIRED >=2.0.0)
+    INCLUDE(FindPkgConfig)
+    find_package(SDL2 REQUIRED)
+    find_package(SDL2_image REQUIRED >=2.0.0)
 
     if(SDL2_FOUND)
         message(STATUS "Using shared SDL Version 2 for Commander Genius")
         include_directories(${SDL2_INCLUDE_DIR})
         include_directories(${SDL2_NET_INCLUDE_DIRS})
         include_directories(/usr/include/SDL2/)
-    endif(SDL2_FOUND)	
-
+    endif(SDL2_FOUND)
 
 	
 else(WIN32)
         if(USE_SDL2)
  
-		INCLUDE(FindPkgConfig) 
+                INCLUDE(FindPkgConfig)
                 find_package(SDL2 REQUIRED)
                 find_package(SDL2_image REQUIRED >=2.0.0)
-		#PKG_SEARCH_MODULE(SDL2 REQUIRED sdl2)
-                #FIND_PACKAGE( SDL2_net REQUIRED )
    
-		if(SDL2_FOUND)
-			message(STATUS "Using shared SDL Version 2 for Commander Genius")
-			include_directories(${SDL2_INCLUDE_DIR})
-			include_directories(${SDL2_NET_INCLUDE_DIRS})
-			include_directories(/usr/include/SDL2/)
-		endif(SDL2_FOUND)
 
-        	set(SDL2_INCLUDE_DIRS /Library/Frameworks/SDL2.framework/Headers)
-        	set(SDL2_IMAGE_INCLUDE_DIRS /Library/Frameworks/SDL2_image.framework/Headers)   
+                set(SDL2_INCLUDE_DIRS /Library/Frameworks/SDL2.framework/Headers)
+                set(SDL2_IMAGE_INCLUDE_DIRS /Library/Frameworks/SDL2_image.framework/Headers)
 
         else(USE_SDL2)
+
             # SDL2 not defined, try SDL1.2
             FIND_PACKAGE( SDL REQUIRED )
             FIND_PACKAGE( SDL_net REQUIRED )
@@ -130,13 +110,12 @@ else(WIN32)
 
 endif(WIN32)
 
+
 # Add GsKit
-add_subdirectory("lib/GsKit")
+add_subdirectory("GsKit")
 
 
 # Compile to internal Commander Genius sources
 add_subdirectory("src")
 
-
 INCLUDE(package.cmake)
-

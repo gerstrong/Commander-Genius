@@ -84,7 +84,7 @@ bool COGGPlayer::open(const bool lock)
     if(lock) SDL_LockAudio();
 
 
-    auto &audioSpec = g_pSound->getAudioSpec();
+    auto &audioSpec = gSound.getAudioSpec();
 
 	// If Ogg detected, decode it into the stream psound->sound_buffer.
 	// It must fit into the Audio_cvt structure, so that it can be converted
@@ -215,7 +215,7 @@ void COGGPlayer::readBuffer(Uint8* buffer, Uint32 length)
 	if(!m_playing || !m_Audio_cvt.buf)
 		return;
 
-    auto &audioSpec = g_pSound->getAudioSpec();
+    auto &audioSpec = gSound.getAudioSpec();
     auto freq = audioSpec.freq;
 
 	bool rewind = false;

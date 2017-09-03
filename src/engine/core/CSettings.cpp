@@ -41,8 +41,8 @@ bool CSettings::saveDispCfg()
     Configuration.Parse();
 
     CVidConfig &VidConf = gVideoDriver.getVidConfig();
-    Configuration.WriteInt("Video", "width", VidConf.m_DisplayRect.w);
-    Configuration.WriteInt("Video", "height", VidConf.m_DisplayRect.h);
+    Configuration.WriteInt("Video", "width", VidConf.mDisplayRect.w);
+    Configuration.WriteInt("Video", "height", VidConf.mDisplayRect.h);
 
     return Configuration.saveCfgFile();
 }
@@ -71,11 +71,11 @@ bool CSettings::saveDrvCfg()
         Configuration.SetKeyword("Video", "OpenGL", VidConf.mOpengl);
         Configuration.SetKeyword("Video", "VirtPad", VidConf.mVPad);
 
-        Configuration.WriteInt("Video", "width", VidConf.m_DisplayRect.w);
-        Configuration.WriteInt("Video", "height", VidConf.m_DisplayRect.h);
+        Configuration.WriteInt("Video", "width", VidConf.mDisplayRect.w);
+        Configuration.WriteInt("Video", "height", VidConf.mDisplayRect.h);
 
-        Configuration.WriteInt("Video", "gameWidth", VidConf.m_GameRect.w);
-        Configuration.WriteInt("Video", "gameHeight", VidConf.m_GameRect.h);
+        Configuration.WriteInt("Video", "gameWidth", VidConf.mGameRect.w);
+        Configuration.WriteInt("Video", "gameHeight", VidConf.mGameRect.h);
 
         Configuration.WriteInt("Video", "scale", VidConf.Zoom);
 #if defined(USE_OPENGL)
@@ -97,27 +97,27 @@ bool CSettings::saveDrvCfg()
         Configuration.WriteInt("Bound", "down", CameraBounds.down);
         Configuration.WriteInt("Bound", "speed", CameraBounds.speed);
 
-        Configuration.WriteInt("Audio", "channels", (g_pSound->getAudioSpec()).channels);
-        Configuration.WriteInt("Audio", "format", (g_pSound->getAudioSpec()).format);
-        Configuration.WriteInt("Audio", "rate", (g_pSound->getAudioSpec()).freq);
-        Configuration.SetKeyword("Audio", "sndblaster", g_pSound->getSoundBlasterMode());
-        Configuration.WriteInt("Audio", "musicvol", (g_pSound->getMusicVolume()/8));
-        Configuration.WriteInt("Audio", "soundvol", (g_pSound->getSoundVolume()/8));
+        Configuration.WriteInt("Audio", "channels", (gSound.getAudioSpec()).channels);
+        Configuration.WriteInt("Audio", "format", (gSound.getAudioSpec()).format);
+        Configuration.WriteInt("Audio", "rate", (gSound.getAudioSpec()).freq);
+        Configuration.SetKeyword("Audio", "sndblaster", gSound.getSoundBlasterMode());
+        Configuration.WriteInt("Audio", "musicvol", (gSound.getMusicVolume()/8));
+        Configuration.WriteInt("Audio", "soundvol", (gSound.getSoundVolume()/8));
 
     }
     catch(...)
     {
-        gLogging.textOut(RED,"General error writing the configuration file...\n");
+        gLogging.textOut(FONTCOLORS::RED,"General error writing the configuration file...\n");
     }
 
     bool ok = Configuration.saveCfgFile();
 
-    gLogging.textOut(GREEN,"Saving game options...");
+    gLogging.textOut(FONTCOLORS::GREEN,"Saving game options...");
 
     if(ok)
-        gLogging.textOut(GREEN,"ok.");
+        gLogging.textOut(FONTCOLORS::GREEN,"ok.");
     else
-        gLogging.textOut(RED,"error.");
+        gLogging.textOut(FONTCOLORS::RED,"error.");
 
     return ok;
 }
@@ -132,12 +132,15 @@ bool CSettings::loadDrvCfg()
 {
 	CConfiguration Configuration(CONFIGFILENAME);
 
-	if(!Configuration.Parse()) return false;
+    if(!Configuration.Parse())
+    {
+        return false;
+    }
 	else
 	{
 		CVidConfig VidConf;
-        GsRect<Uint16> &res = VidConf.m_DisplayRect;
-        GsRect<Uint16> &gamesRes = VidConf.m_GameRect;
+        GsRect<Uint16> &res = VidConf.mDisplayRect;
+        GsRect<Uint16> &gamesRes = VidConf.mGameRect;
         int value = 0;
         Configuration.ReadInteger("Video", "width", &value, 320);
         res.w = value;
@@ -151,7 +154,7 @@ bool CSettings::loadDrvCfg()
 
 		if(res.w*res.h <= 0)
 		{
-			gLogging.ftextOut(RED,"Error reading the configuration file!<br>");
+			gLogging.ftextOut(FONTCOLORS::RED,"Error reading the configuration file!<br>");
 			return false;
 		}
 
@@ -190,7 +193,7 @@ bool CSettings::loadDrvCfg()
 
 #endif
 
-        Configuration.SetKeyword("Video", "VirtPad", &VidConf.mVPad);
+        Configuration.SetKeyword("Video", "VirtPad", VidConf.mVPad);
 
 		st_camera_bounds &CameraBounds = VidConf.m_CameraBounds;
 		Configuration.ReadInteger("Bound", "left", &CameraBounds.left, 152);
@@ -211,15 +214,15 @@ bool CSettings::loadDrvCfg()
 		Configuration.ReadInteger("Audio", "channels", &audio_channels, 2);
 		Configuration.ReadInteger("Audio", "format", &audio_format, AUDIO_U8);
 		Configuration.ReadKeyword("Audio", "sndblaster", &audio_sndblaster, false);
-        g_pSound->setSettings(audio_rate, audio_channels, audio_format, audio_sndblaster);
+        gSound.setSettings(audio_rate, audio_channels, audio_format, audio_sndblaster);
 
 
 		int sound_vol, music_vol;
 		Configuration.ReadInteger("Audio", "musicvol", &music_vol, SDL_MIX_MAXVOLUME);
 		Configuration.ReadInteger("Audio", "soundvol", &sound_vol, SDL_MIX_MAXVOLUME);
 
-		g_pSound->setMusicVolume(music_vol*8);
-		g_pSound->setSoundVolume(sound_vol*8);
+		gSound.setMusicVolume(music_vol*8);
+		gSound.setSoundVolume(sound_vol*8);
 	}
 	return true;
 }
@@ -257,9 +260,9 @@ void CSettings::loadDefaultGraphicsCfg() //Loads default graphics
  * 						of the applied option
  * \param	value		Value that has to be set.
  */
-void CSettings::setOption( e_OptionKeyword opt, const std::string &menuname, const std::string &name, char value)
+void CSettings::setOption( const GameOption opt, const std::string &menuname, const std::string &name, char value)
 {
-	stOption &option = gpBehaviorEngine->m_option[opt];
+    stOption &option = gBehaviorEngine.mOptions[opt];
 	option.menuname = menuname;
 	option.name = name;
 	option.value = value;
@@ -269,14 +272,14 @@ void CSettings::setOption( e_OptionKeyword opt, const std::string &menuname, con
  */
 void CSettings::loadDefaultGameCfg()
 {
-	setOption( OPT_ALLOWPKING,		"Friendly Fire    ", "pking", 1 );
-	setOption( OPT_KEYSTACK,			"Keystacking      ", "keystack", 0 );
-	setOption( OPT_LVLREPLAYABILITY,	"Replay Levels    ", "level_replayability", 0 );
-	setOption( OPT_RISEBONUS,		"Rising Bonus     ", "rise_bonus", 1 );
-    setOption( OPT_MODERN,		"Modern Style     ", "modern_style", 1 );
-    setOption( OPT_HUD,				"HUD Display      ", "hud", 1 );
-    setOption( OPT_SHOWFPS,			"Show FPS         ", "showfps", 0 );
-    setOption( OPT_FLASHEFFECT,		"Flash Effects    ", "flashfx", 1 );
+	setOption( GameOption::ALLOWPKING,		"Friendly Fire    ", "pking", 1 );
+    setOption( GameOption::KEYSTACK,			"Keystacking      ", "keystack", 0 );
+    setOption( GameOption::LVLREPLAYABILITY,	"Replay Levels    ", "level_replayability", 0 );
+    setOption( GameOption::RISEBONUS,		"Rising Bonus     ", "rise_bonus", 1 );
+    setOption( GameOption::MODERN,		"Modern Style     ", "modern_style", 1 );
+    setOption( GameOption::HUD,				"HUD Display      ", "hud", 1 );
+    setOption( GameOption::SHOWFPS,			"Show FPS         ", "showfps", 0 );
+    setOption( GameOption::FLASHEFFECT,		"Flash Effects    ", "flashfx", 1 );
 }
 
 /**
@@ -286,19 +289,18 @@ void CSettings::loadDefaultGameCfg()
  */
 bool CSettings::loadGameOptions()
 {
-	int i;
 	CConfiguration Configuration(CONFIGFILENAME);
 
 	if(!Configuration.Parse()) return false;
 
 	loadDefaultGameCfg();
 
-	stOption *p_option = gpBehaviorEngine->m_option;
-	for (i = 0; i < NUM_OPTIONS; i++)
+    for(auto &option : gBehaviorEngine.mOptions)
 	{
+        auto &second = option.second;
 		bool newvalue;
-		Configuration.ReadKeyword("Game", p_option[i].name, &newvalue, false);
-		p_option[i].value = (newvalue) ? 1 : 0;
+        Configuration.ReadKeyword("Game", option.second.name, &newvalue, false);
+        second.value = (newvalue) ? 1 : 0;
 	}
 	
 	gLogging.ftextOut("<br>Your personal settings were loaded successfully...<br>");
@@ -312,11 +314,16 @@ bool CSettings::saveGameOptions()
 {
 	CConfiguration Configuration(CONFIGFILENAME);
 
-	if(!Configuration.Parse()) return false;
+    if ( !Configuration.Parse() )
+    {
+        return false;
+    }
 
-	stOption *p_option = gpBehaviorEngine->m_option;
-	for (int i = 0; i < NUM_OPTIONS; i++)
-		Configuration.SetKeyword("Game", p_option[i].name, p_option[i].value);
+
+    for(auto &option : gBehaviorEngine.mOptions)
+    {
+        Configuration.SetKeyword("Game", option.second.name, option.second.value);
+    }
 
 	Configuration.saveCfgFile();
 	return true;

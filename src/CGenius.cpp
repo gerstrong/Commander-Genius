@@ -48,13 +48,13 @@
 
 
 /**
- * \brief  This is the function where CG beings
+ * @brief  This is the function where CG beings
  *
- * \param	argc   	number of arguments
- * \param	argv   	pointer to  char arrays where
+ * @param	argc   	number of arguments
+ * @param	argv   	pointer to  char arrays where
  * 					where the passed arguments are stored
  * 					in the process
- * \return	        This always returns 0. If
+ * @return	        This always returns 0. If
  * 					some errors appear, take a look
  * 					at the Logfile.
  *
@@ -94,35 +94,39 @@ int main(int argc, char *argv[])
 	SetBinaryDir( GetAbsolutePath(binary_dir) );
 
 	InitThreadPool();
-    InitSearchPaths(g_pSettings->getConfigFileName());
+    InitSearchPaths(gSettings.getConfigFileName());
 
-    gLogging.CreateLogfile("CGLog.html", APP_NAME, CGVERSION);
+    if( !gLogging.CreateLogfile("CGLog.html", APP_NAME, CGVERSION) )
+    {
+        errors << "Not even able to create \"CGLog.html\"." << endl;
+        return 1;
+    }
 
 
     // Init Video Driver with SDL all together
-    if(!gVideoDriver.init())
+    if( !gVideoDriver.init() )
     {
         return 1;
     }
 
     // Check if there are settings on the PC, otherwise use defaults.
-    if(!g_pSettings->loadDrvCfg())
+    if( !gSettings.loadDrvCfg() )
     {
         //m_firsttime = true;
-        gLogging.textOut(RED,"First time message: CG didn't find the driver config file. ");
-        gLogging.textOut(RED,"However, it generated some default values and will save them now.\n");
-        g_pSettings->saveDrvCfg();
+        gLogging.textOut(FONTCOLORS::RED,"First time message: CG didn't find the driver config file. ");
+        gLogging.textOut(FONTCOLORS::RED,"However, it generated some default values and will save them now.\n");
+        gSettings.saveDrvCfg();
     }
 
-    gLogging.textOut(GREEN,"Loading game options...\n");
-    if(!g_pSettings->loadGameOptions())
+    gLogging.textOut(FONTCOLORS::GREEN,"Loading game options...\n");
+    if(!gSettings.loadGameOptions())
     {
-        gLogging.textOut(RED,"Cannot load defaults...\n");
-        g_pSettings->loadDefaultGameCfg();
+        gLogging.textOut(FONTCOLORS::RED,"Cannot load defaults...\n");
+        gSettings.loadDefaultGameCfg();
     }
 
     // Init the Game sound
-    g_pSound->init();
+    gSound.init();
 
     ////////////////////////////////////////////////////
     // Initialize CG and run the main cycle if worthy //
@@ -140,7 +144,7 @@ int main(int argc, char *argv[])
         gApp.runMainCycle();
 	}
 
-    g_pSettings->saveDispCfg();
+    gSettings.saveDispCfg();
 
 	UnInitThreadPool();
 	return 0;

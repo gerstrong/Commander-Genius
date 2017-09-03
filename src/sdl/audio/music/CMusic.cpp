@@ -22,7 +22,7 @@
 bool CMusic::loadTrack(const int track)
 {
 
-    g_pSound->pauseAudio();
+    gSound.pauseAudio();
 
     gLogging.textOut("Load track number " + itoa(track) + "");
 
@@ -31,7 +31,7 @@ bool CMusic::loadTrack(const int track)
 
     if(mpPlayer->loadMusicTrack(track))
     {
-        g_pSound->resumeAudio();
+        gSound.resumeAudio();
         return true;
     }
 #endif
@@ -42,7 +42,7 @@ bool CMusic::loadTrack(const int track)
         gLogging.textOut("No music to be loaded for Track" + itoa(track) + ".");
     }
 
-    g_pSound->resumeAudio();
+    gSound.resumeAudio();
 	return true;
 }
 
@@ -54,13 +54,13 @@ bool CMusic::load(const std::string &musicfile)
 	if(musicfile == "")
 		return false;
 
-	const SDL_AudioSpec &audioSpec = g_pSound->getAudioSpec();
+	const SDL_AudioSpec &audioSpec = gSound.getAudioSpec();
 
 	if(audioSpec.format != 0)
 	{
 		std::string extension = GetFileExtension(musicfile);
 
-        g_pSound->pauseAudio();
+        gSound.pauseAudio();
 
 		stringlwr(extension);
 
@@ -80,7 +80,7 @@ bool CMusic::load(const std::string &musicfile)
             mpPlayer->loadMusicFromFile(musicfile);
 #else
 		    gLogging.ftextOut("Music Manager: Neither OGG bor TREMOR-Support are enabled! Please use another build<br>");
-            g_pSound->resumeAudio();
+            gSound.resumeAudio();
 		    return false;
 #endif
 		}
@@ -88,29 +88,29 @@ bool CMusic::load(const std::string &musicfile)
         if(!mpPlayer->open(true))
 		{
 		    mpPlayer.reset();
-		    gLogging.textOut(PURPLE,"Music Manager: File could not be opened: \"%s\". File is damaged or something is wrong with your soundcard!<br>", musicfile.c_str());
+		    gLogging.textOut(FONTCOLORS::PURPLE,"Music Manager: File could not be opened: \"%s\". File is damaged or something is wrong with your soundcard!<br>", musicfile.c_str());
 
-            g_pSound->resumeAudio();
+            gSound.resumeAudio();
 		    return false;
         }
 
-        g_pSound->resumeAudio();
+        gSound.resumeAudio();
 		return true;
 
 	}
 	else
 	{
-		gLogging.textOut(PURPLE,"Music Manager: I would like to open the music for you. But your Soundcard seems to be disabled!!<br>");
+		gLogging.textOut(FONTCOLORS::PURPLE,"Music Manager: I would like to open the music for you. But your Soundcard seems to be disabled!!<br>");
 	}
 
-    gLogging.textOut(PURPLE,"Music Manager: Got a tune to play");
+    gLogging.textOut(FONTCOLORS::PURPLE,"Music Manager: Got a tune to play");
 
 	return false;
 }
 
 void CMusic::reload()
 {
-    g_pSound->pauseAudio();
+    gSound.pauseAudio();
 
 	if(!mpPlayer)
 	{
@@ -119,7 +119,7 @@ void CMusic::reload()
 
 	mpPlayer->reload();
 
-    g_pSound->resumeAudio();
+    gSound.resumeAudio();
 }
 
 void CMusic::play()
@@ -145,12 +145,12 @@ void CMusic::stop()
 	if(!mpPlayer)
 		return;
 
-    g_pSound->pauseAudio();
+    gSound.pauseAudio();
 
     mpPlayer->close(true);
     mpPlayer.reset();
 
-    g_pSound->resumeAudio();
+    gSound.resumeAudio();
 }
 
 // length only refers to the part(buffer) that has to be played

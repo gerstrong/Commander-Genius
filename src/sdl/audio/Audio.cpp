@@ -45,7 +45,7 @@ inline static void CCallback(void *unused, Uint8 *stream, int len)
     SDL_memset(stream, 0, len);
 
     // let it call a method on my (singleton) sound object
-    Audio::GetNoPtrChk()->callback(unused, stream, len);
+    Audio::get().callback(unused, stream, len);
 }
 
 Audio::Audio() :
@@ -264,9 +264,9 @@ void Audio::callback(void *unused, Uint8 *stream, int len)
 
 	Uint8* buffer = m_MixedForm.data();        
 
-    if (g_pMusicPlayer->playing())
+    if (gMusicPlayer.playing())
     {
-    	g_pMusicPlayer->readWaveform(buffer, len);
+    	gMusicPlayer.readWaveform(buffer, len);
         mixAudio(stream, buffer, len, m_MusicVolume);
     }
 

@@ -25,7 +25,7 @@ struct IMFChunkType
 class CIMFPlayer : public CMusicPlayer
 {
 public:
-    CIMFPlayer( COPLEmulator& opl_emulator = g_pSound->getOPLEmulatorRef());
+    CIMFPlayer( COPLEmulator& opl_emulator = gSound.getOPLEmulatorRef());
 
 
 	/**

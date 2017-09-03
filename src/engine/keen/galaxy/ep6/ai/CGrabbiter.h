@@ -11,17 +11,9 @@ class CGrabbiter : public CStunnable
 public:
     CGrabbiter(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y);
     
-    void deserialize(CSaveGameController &savedGame)
-    {
-        savedGame.decodeData(m_Pos.x);
-        savedGame.decodeData(m_Pos.y);
-    }
+    void deserialize(CSaveGameController &savedGame);
     
-    void serialize(CSaveGameController &savedGame)
-    {
-        savedGame.encodeData(m_Pos.x);
-        savedGame.encodeData(m_Pos.y);
-    }
+    void serialize(CSaveGameController &savedGame);
 
     void serialize(boost::property_tree::ptree &node)
     {

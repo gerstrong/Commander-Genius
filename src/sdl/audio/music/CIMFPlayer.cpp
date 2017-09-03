@@ -23,7 +23,7 @@ m_opl_emulator(opl_emulator),
 m_numreadysamples(0),
 m_IMFDelay(0)
 {
-    m_samplesPerMusicTick = g_pSound->getAudioSpec().freq / m_opl_emulator.getIMFClockRate();
+    m_samplesPerMusicTick = gSound.getAudioSpec().freq / m_opl_emulator.getIMFClockRate();
 }
 
 
@@ -103,7 +103,7 @@ bool CIMFPlayer::open(const bool lock)
     if(lock)  SDL_LockAudio();
 
 	m_numreadysamples = m_IMFDelay = 0;
-    m_samplesPerMusicTick = g_pSound->getAudioSpec().freq / m_opl_emulator.getIMFClockRate();
+    m_samplesPerMusicTick = gSound.getAudioSpec().freq / m_opl_emulator.getIMFClockRate();
 	
 	m_opl_emulator.setup();
 
@@ -133,7 +133,7 @@ void CIMFPlayer::close(const bool lock)
 
 void CIMFPlayer::OPLUpdate(byte *buffer, const unsigned int length)
 {    
-    auto &audioSpec = g_pSound->getAudioSpec();
+    auto &audioSpec = gSound.getAudioSpec();
 
     if(mMixBuffer.empty())
     {
@@ -188,7 +188,7 @@ void CIMFPlayer::readBuffer(Uint8* buffer, Uint32 length)
     if(!m_playing)
         return;
 
-    auto &audioSpec = g_pSound->getAudioSpec();
+    auto &audioSpec = gSound.getAudioSpec();
 
     
     /// if a delay of the instruments is pending, play it

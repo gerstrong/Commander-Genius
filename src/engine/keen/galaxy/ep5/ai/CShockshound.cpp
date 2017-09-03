@@ -44,13 +44,11 @@ A_HOUND_SHOOT = 9,
 A_HOUND_STUNNED = 13
 };
 
-const int WALK_SPEED = 25;
-
-const int TIME_TO_BARK = 64;
-const int TIME_TO_SIT = 32;
-const int TIME_WALKING = 50;
-
-const int JUMP_INERTIA = -120;
+constexpr int WALK_SPEED = 25;
+constexpr int TIME_TO_BARK = 64;
+constexpr int TIME_TO_SIT = 32;
+constexpr int TIME_WALKING = 50;
+constexpr int JUMP_INERTIA = -120;
 
   
 CShockshound::CShockshound(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :

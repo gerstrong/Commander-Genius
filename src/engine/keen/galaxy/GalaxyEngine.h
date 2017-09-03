@@ -65,12 +65,17 @@ public:
     /**
      * @brief switchToGameplay  Switch directly to gameplay and start certain level
      * @param startLevel    Level which to start
+     * @param spriteVars    Sprite Variations
      */
-    void switchToGameplay(const int startLevel);
+    void switchToGameplay(const int startLevel,
+                          const std::vector<int> &spriteVars);
 
     void pumpEvent(const CEvent *evPtr);
 
     std::unique_ptr<ComputerWrist> mpComputerWrist;
+
+    // In case the are different sprites for the player used, this vector takes care of mapping the right one.
+    std::vector<int> mSpriteVars;
 };
 
 }

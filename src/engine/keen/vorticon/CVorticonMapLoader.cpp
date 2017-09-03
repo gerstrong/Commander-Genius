@@ -120,12 +120,12 @@ bool CVorticonMapLoaderBase::loadBase(  Uint8 episode,
 	// HQ Music. Load Music for a level if you have HQP
 	if(loadNewMusic)
 	{
-		g_pMusicPlayer->stop();
+		gMusicPlayer.stop();
 
 		// If no music from the songlist could be loaded try the normal table which
 		// has another format. It is part of HQP
-		if(!g_pMusicPlayer->LoadfromSonglist(path, level))
-			g_pMusicPlayer->LoadfromMusicTable(path, levelname);
+		if(!gMusicPlayer.LoadfromSonglist(path, level))
+			gMusicPlayer.LoadfromMusicTable(path, levelname);
 	}
 
 	// decompress map RLEW data
@@ -260,7 +260,7 @@ void CVorticonMapLoaderWithPlayer::addWorldMapObject(unsigned int t, Uint16 x, U
         for( auto &player : mPlayerContainer )
         {
             player.setupforLevelPlay();
-            player.solid = !gpBehaviorEngine->mCheatmode.noclipping;
+            player.solid = !gBehaviorEngine.mCheatmode.noclipping;
         }
 
         break;
@@ -278,7 +278,7 @@ void CVorticonMapLoaderWithPlayer::addWorldMapObject(unsigned int t, Uint16 x, U
     default:             // level marker
 
         // Taken from the original CloneKeen. If hard-mode chosen, swap levels 5 and 9 Episode 1
-        if(episode == 1 && gpBehaviorEngine->mDifficulty >= HARD)
+        if(episode == 1 && gBehaviorEngine.mDifficulty >= HARD)
         {
             if(t == 5)
                 t = 9;
@@ -292,7 +292,7 @@ void CVorticonMapLoaderWithPlayer::addWorldMapObject(unsigned int t, Uint16 x, U
             if ((t&0x7fff) <= MAX_LEVELS_VORTICON && mPlayerContainer.front().mp_levels_completed[t&0x00ff])
             {
                 // Change the level tile to a done sign
-                int newtile = gpBehaviorEngine->getTileProperties()[mpMap->at(x,y)].chgtile;
+                int newtile = gBehaviorEngine.getTileProperties()[mpMap->at(x,y)].chgtile;
 
                 // Consistency check! Some Mods have issues with that.
                 if(episode == 1 || episode == 2)
@@ -384,7 +384,7 @@ void CVorticonMapLoaderWithPlayer::addSpriteObject(unsigned int t, Uint16 x, Uin
 			case 3:    // vorticon (ep1) Vorticon Commander (ep2)
 				if (episode==1)
 				{
-					CPhysicsSettings &Phy = gpBehaviorEngine->getPhysicsSettings();
+					CPhysicsSettings &Phy = gBehaviorEngine.getPhysicsSettings();
 
 					size_t health = (level==16) ? Phy.vorticon.commander_hp : Phy.vorticon.default_hp;
 					enemyobject = new CVorticon( mpMap.get(), x<<CSF, y<<CSF, health );
@@ -507,7 +507,7 @@ void CVorticonMapLoaderWithPlayer::addSpriteObject(unsigned int t, Uint16 x, Uin
 				enemyobject->solid = false;
 				break;
 			default:
-				gLogging.ftextOut(PURPLE,"unknown enemy type %d at (%d,%d)<br>", t, x, y);
+				gLogging.ftextOut(FONTCOLORS::PURPLE,"unknown enemy type %d at (%d,%d)<br>", t, x, y);
 				break;
 			}
 

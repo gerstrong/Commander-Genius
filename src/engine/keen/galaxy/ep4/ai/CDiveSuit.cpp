@@ -33,14 +33,14 @@ void CDiveSuit::getTouchedBy(CSpriteObject &theObject)
 	{
 		bool &swimsuit = player->m_Inventory.Item.m_special.ep4.swimsuit;
 
-		g_pSound->playSound( SOUND_GET_WETSUIT, PLAY_PAUSEALL );
+		gSound.playSound( SOUND_GET_WETSUIT, PLAY_PAUSEALL );
 		taken = swimsuit = true;
 
         auto evExit = new EventExitLevel(mp_Map->getLevel(), true, false, mSprVar);
         evExit->playSound = true;
 
 
-        showMsgWithBmp( gpBehaviorEngine->getString("SWIM_SUIT_TEXT"), "KEENTHUMBSUP", LEFT, evExit);
+        showMsgWithBmp( gBehaviorEngine.getString("SWIM_SUIT_TEXT"), "KEENTHUMBSUP", LEFT, evExit);
 
         player->m_Inventory.Item.m_gem.clear();
 	}

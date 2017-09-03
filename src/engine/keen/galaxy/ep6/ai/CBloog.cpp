@@ -18,7 +18,7 @@ A_BLOOG_WALK = 0,	/* Ordinary walk action */
 A_BLOOG_STUNNED = 4
 };
 
-const int WALK_SPEED = 30;
+constexpr int WALK_SPEED = 30;
 
 
 CBloog::CBloog(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
@@ -28,7 +28,7 @@ mTimer(0)
 
     mHealthPoints = 1;
 
-    const Difficulty diff = gpBehaviorEngine->mDifficulty;
+    const Difficulty diff = gBehaviorEngine.mDifficulty;
 
     if(foeID == 0x04 && diff > HARD)
     {

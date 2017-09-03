@@ -28,17 +28,9 @@ public:
 
     void process();
 
-    void deserialize(CSaveGameController &savedGame)
-    {
-        savedGame.decodeData(target.x);
-        savedGame.decodeData(target.y);
-    }
+    void deserialize(CSaveGameController &savedGame);
 
-    void serialize(CSaveGameController &savedGame)
-    {
-        savedGame.encodeData(target.x);
-        savedGame.encodeData(target.y);
-    }
+    void serialize(CSaveGameController &savedGame);
 
     void serialize(boost::property_tree::ptree &node)
     {

@@ -27,7 +27,7 @@ bool CAudioResources::readISFintoWaveForm( CSoundSlot &soundslot, const byte *im
     }
 
 	soundslot.priority = READWORD(imfdata_ptr);
-    COPLEmulator &OPLEmulator = g_pSound->getOPLEmulatorRef();
+    COPLEmulator &OPLEmulator = gSound.getOPLEmulatorRef();
 
 	// It's time make it Adlib Sound structure and read it into the waveform
 	AdLibSound AL_Sound = *((AdLibSound*) imfdata_ptr);
@@ -45,7 +45,7 @@ bool CAudioResources::readISFintoWaveForm( CSoundSlot &soundslot, const byte *im
 	}
 	OPLEmulator.AlSetFXInst(AL_Sound.inst);
 
-    const SDL_AudioSpec &audioSpec = g_pSound->getAudioSpec();
+    const SDL_AudioSpec &audioSpec = gSound.getAudioSpec();
 
 
     const unsigned int samplesPerMusicTick = audioSpec.freq/OPLEmulator.getIMFClockRate();

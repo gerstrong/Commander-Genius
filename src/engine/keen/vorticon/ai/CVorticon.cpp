@@ -19,14 +19,14 @@ CVorticon::CVorticon(CMap *p_map, Uint32 x, Uint32 y, char hp, object_t objtype)
 	mHealthPoints = hp;
 	canbezapped = true;
 
-    const auto diff = gpBehaviorEngine->mDifficulty;
+    const auto diff = gBehaviorEngine.mDifficulty;
 
     if(diff > NORMAL)
 		mHealthPoints++;
     else if( diff < NORMAL && mHealthPoints > 1 )
 		mHealthPoints--;
 
-	short Episode = gpBehaviorEngine->getEpisode();
+	short Episode = gBehaviorEngine.getEpisode();
 	// copy in animation frame indexes for the current ep
     if (Episode == 1)
     {
@@ -137,7 +137,7 @@ void CVorticon::getTouchedBy(CVorticonSpriteObject &theObject)
 void CVorticon::process() 
 {
 	bool kill = false;
-	short Episode = gpBehaviorEngine->getEpisode();
+	short Episode = gBehaviorEngine.getEpisode();
 
 	if (mHealthPoints <= 0 && state != VORT_DYING && state != VORT2_DYING)
 		kill = true;
@@ -149,7 +149,7 @@ void CVorticon::process()
 		if (Episode == 1) 
 		{
 			// White Fade and back			
-			if(gpBehaviorEngine->m_option[OPT_FLASHEFFECT].value)
+            if (gBehaviorEngine.mOptions[GameOption::FLASHEFFECT].value)
 			{
                 gEffectController.setupEffect(new CFlash(3000, 8, 0xFFFFFF, 200));
 			}
@@ -207,7 +207,7 @@ void CVorticon::process()
 		dist_traveled++;
 		int odds;
 
-		switch (gpBehaviorEngine->mDifficulty)
+		switch (gBehaviorEngine.mDifficulty)
 		{
 		case EASY:
 			odds = getProbability(VORT_JUMP_PROB_EASY);

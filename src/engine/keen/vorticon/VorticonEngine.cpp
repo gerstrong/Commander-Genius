@@ -36,7 +36,7 @@ bool setupAudio()
 
     if(audio->loadSoundData(0))
     {
-        g_pSound->setupSoundData(audio->sndSlotMap, audio);
+        gSound.setupSoundData(audio->sndSlotMap, audio);
         return true;
     }
 
@@ -90,9 +90,9 @@ void VorticonEngine::openMainMenu()
         return;
 
     // Check if music is playing and pause if it is
-    if(g_pMusicPlayer->active())
+    if(gMusicPlayer.active())
     {
-       g_pMusicPlayer->pause();
+       gMusicPlayer.pause();
     }
 
     gEventManager.add( new OpenMenuEvent( new MainMenu(mOpenedGamePlay) ) );
@@ -139,14 +139,14 @@ bool VorticonEngine::loadResources( const Uint8 flags )
             }
 
             // Patch the EXE-File-Data directly in the memory.
-            CPatcher Patcher(ExeFile, gpBehaviorEngine->mPatchFname);
+            CPatcher Patcher(ExeFile, gBehaviorEngine.mPatchFname);
             Patcher.process();
 
             mLoader.setPermilage(100);
 
             gTimer.setLPS(DEFAULT_LPS_VORTICON);
 
-            gpBehaviorEngine->readTeleporterTable(p_exedata);
+            gBehaviorEngine.readTeleporterTable(p_exedata);
 
             if( (mFlags & LOADGFX) == LOADGFX )
             {
@@ -173,7 +173,7 @@ bool VorticonEngine::loadResources( const Uint8 flags )
                 mLoader.setPermilage(800);
             }
 
-            gpBehaviorEngine->getPhysicsSettings().loadGameConstants(mEp, p_exedata);
+            gBehaviorEngine.getPhysicsSettings().loadGameConstants(mEp, p_exedata);
             mLoader.setPermilage(900);
 
             // If there are patches left that must be apllied later, do it here!
@@ -195,15 +195,14 @@ bool VorticonEngine::loadResources( const Uint8 flags )
 void VorticonEngine::switchToPassiveMode()
 {
     // Now look if there are any old savegames that need to be converted
-    CSaveGameController &savedgames = *gpSaveGameController;
-    savedgames.setGameDirectory(mDataPath);
-    savedgames.setEpisode(mEp);
+    gSaveGameController.setGameDirectory(mDataPath);
+    gSaveGameController.setEpisode(mEp);
 
     mpGameMode.reset( new vorticon::CPassiveVort() );
     mpGameMode->init();
 
     mOpenedGamePlay = false;
-    g_pMusicPlayer->stop();
+    gMusicPlayer.stop();
 
     std::string finaleStr = gArgs.getValue("finale");
     std::transform(finaleStr.begin(), finaleStr.end(), finaleStr.begin(), ::tolower);
@@ -220,11 +219,11 @@ void VorticonEngine::pumpEvent(const CEvent *evPtr)
     if( dynamic_cast<const FinishedLoadingResources*>(evPtr) )
     {        
         switchToPassiveMode();
-        gpSaveGameController->convertAllOldFormats();
+        gSaveGameController.convertAllOldFormats();
     }
     else if( const NewGamePlayersEvent* pNewGame = dynamic_cast<const NewGamePlayersEvent*>(evPtr) )
     {
-        gpBehaviorEngine->mPlayers = pNewGame->mSelection;
+        gBehaviorEngine.mPlayers = pNewGame->mSelection;
         gEventManager.add( new OpenMenuEvent(new CDifficultySelection) );
         return;
     }
@@ -257,7 +256,7 @@ void VorticonEngine::pumpEvent(const CEvent *evPtr)
 
         mpGameMode->init();
         mOpenedGamePlay = true;
-        gpBehaviorEngine->setPause(false);
+        gBehaviorEngine.setPause(false);
         gEventManager.add( new CloseAllMenusEvent() );        
     }
     else if( dynamic_cast<const GMSwitchToPassiveMode*>(evPtr) )
@@ -272,7 +271,7 @@ void VorticonEngine::pumpEvent(const CEvent *evPtr)
         pgVort->loadGame();
         mpGameMode = std::move(pgVort);
         mOpenedGamePlay = true;
-        gpBehaviorEngine->setPause(false);
+        gBehaviorEngine.setPause(false);
         gEventManager.add( new CloseAllMenusEvent() );
     }
     else if( dynamic_cast<const OpenMainMenuEvent*>(evPtr) )

@@ -31,7 +31,7 @@ m_overwrite(false)
 {
 	// Load the state-file list
     std::vector<std::string> StateFileList;
-    gpSaveGameController->readSlotList(StateFileList);
+    gSaveGameController.readSlotList(StateFileList);
 
     for(Uint32 i=0 ; i<8 ; i++)
 	{
@@ -53,7 +53,7 @@ void CSaveMenu::refresh()
 {
     // Load the state-file list
     std::vector<std::string> StateFileList;
-    gpSaveGameController->readSlotList(StateFileList);
+    gSaveGameController.readSlotList(StateFileList);
 
     std::list< std::shared_ptr<CGUIControl> > &list = mpMenuDialog->getControlList();
 
@@ -124,8 +124,8 @@ void CSaveMenu::sendEvent(std::shared_ptr<CEvent> &command)
 				{
                     const std::string saveText = pInput->getText();
 #endif
-                    gpSaveGameController->prepareSaveGame( sel, saveText );
-                    gpBehaviorEngine->setPause(false);
+                    gSaveGameController.prepareSaveGame( sel, saveText );
+                    gBehaviorEngine.setPause(false);
 					gEventManager.add( new CloseAllMenusEvent() );
 #ifndef NOTYPESAVE
 				}

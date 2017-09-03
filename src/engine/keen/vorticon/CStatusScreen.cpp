@@ -73,7 +73,7 @@ std::string CStatusScreen::fetchDifficultyText()
 {
 	std::string out;
 
-    auto diff = gpBehaviorEngine->mDifficulty;
+    auto diff = gBehaviorEngine.mDifficulty;
 
     if(diff == EASY)
         out = "Easy-";
@@ -108,7 +108,7 @@ void CStatusScreen::createInventorySfcEp1(const int varSpr)
 	GsTilemap &Tilemap = gGraphics.getTileMap(1);
 
 	gGraphics.drawDialogBox( p_surface, 0, 0, dlgW,dlgH, Font.getBGColour(p_surface->format, true));
-	Font.drawFont( p_surface, gpBehaviorEngine->getString("EP1_StatusBox"), 1<<3, 1<<3, true);
+	Font.drawFont( p_surface, gBehaviorEngine.getString("EP1_StatusBox"), 1<<3, 1<<3, true);
 	
 	// Now draw some white rects. Those are the holders for items, numbers, etc.
 	SDL_Rect rect;
@@ -145,7 +145,7 @@ void CStatusScreen::createInventorySfcEp1(const int varSpr)
 	// 321: joystick/battery/vacuum/fuel not gotten
 	// 424: yellow/red/green/blue cards
 	// 448: ship parts, gotten
-	CPhysicsSettings &Phy = gpBehaviorEngine->getPhysicsSettings();
+	CPhysicsSettings &Phy = gBehaviorEngine.getPhysicsSettings();
 	// raygun icon
 	Tilemap.drawTile(p_surface, 4<<3, (8<<3)+3, Phy.misc.raygun_tile);
 	// pogo
@@ -240,7 +240,7 @@ void CStatusScreen::createInventorySfcEp2(const int varSpr)
 	SDL_Surface *p_surface = CreateStatusSfc();
     GsTilemap &Tilemap = gGraphics.getTileMap(1);
 
-	tempbuf = gpBehaviorEngine->getString("EP2_StatusBox");
+	tempbuf = gBehaviorEngine.getString("EP2_StatusBox");
 	gGraphics.drawDialogBox( p_surface, 0,0,dlgW,dlgH, Font.getBGColour(true));
 	Font.drawFont( p_surface, tempbuf, (0+1)<<3, (0+1)<<3, true);
 
@@ -329,14 +329,14 @@ void CStatusScreen::createInventorySfcEp2(const int varSpr)
 	}
 
 	// cities saved
-	if (mpLevelCompleted[4]) Font.drawFont( p_surface, gpBehaviorEngine->getString("EP2_LVL4_TargetName"), (0+1)<<3, (0+8)<<3);
-	if (mpLevelCompleted[6]) Font.drawFont( p_surface, gpBehaviorEngine->getString("EP2_LVL6_TargetName"), (0+8)<<3, (0+8)<<3);
-	if (mpLevelCompleted[7]) Font.drawFont( p_surface, gpBehaviorEngine->getString("EP2_LVL7_TargetName"), (0+1)<<3, (0+9)<<3);
-	if (mpLevelCompleted[13]) Font.drawFont( p_surface, gpBehaviorEngine->getString("EP2_LVL13_TargetName"), (0+8)<<3, (0+9)<<3);
-	if (mpLevelCompleted[11]) Font.drawFont( p_surface, gpBehaviorEngine->getString("EP2_LVL11_TargetName"), (0+1)<<3, (0+10)<<3);
-	if (mpLevelCompleted[9]) Font.drawFont( p_surface, gpBehaviorEngine->getString("EP2_LVL9_TargetName"), (0+8)<<3, (0+10)<<3);
-	if (mpLevelCompleted[15]) Font.drawFont( p_surface, gpBehaviorEngine->getString("EP2_LVL15_TargetName"), (0+1)<<3, (0+11)<<3);
-	if (mpLevelCompleted[16]) Font.drawFont( p_surface, gpBehaviorEngine->getString("EP2_LVL16_TargetName"), (0+8)<<3, (0+11)<<3);
+	if (mpLevelCompleted[4]) Font.drawFont( p_surface, gBehaviorEngine.getString("EP2_LVL4_TargetName"), (0+1)<<3, (0+8)<<3);
+	if (mpLevelCompleted[6]) Font.drawFont( p_surface, gBehaviorEngine.getString("EP2_LVL6_TargetName"), (0+8)<<3, (0+8)<<3);
+	if (mpLevelCompleted[7]) Font.drawFont( p_surface, gBehaviorEngine.getString("EP2_LVL7_TargetName"), (0+1)<<3, (0+9)<<3);
+	if (mpLevelCompleted[13]) Font.drawFont( p_surface, gBehaviorEngine.getString("EP2_LVL13_TargetName"), (0+8)<<3, (0+9)<<3);
+	if (mpLevelCompleted[11]) Font.drawFont( p_surface, gBehaviorEngine.getString("EP2_LVL11_TargetName"), (0+1)<<3, (0+10)<<3);
+	if (mpLevelCompleted[9]) Font.drawFont( p_surface, gBehaviorEngine.getString("EP2_LVL9_TargetName"), (0+8)<<3, (0+10)<<3);
+	if (mpLevelCompleted[15]) Font.drawFont( p_surface, gBehaviorEngine.getString("EP2_LVL15_TargetName"), (0+1)<<3, (0+11)<<3);
+	if (mpLevelCompleted[16]) Font.drawFont( p_surface, gBehaviorEngine.getString("EP2_LVL16_TargetName"), (0+8)<<3, (0+11)<<3);
 
 	// Now draw the difficulty at the bottom
 	Font.drawFontCentered( p_surface, fetchDifficultyText(), dlgW<<3, (dlgH-2)<<3, true);
@@ -364,7 +364,7 @@ void CStatusScreen::createInventorySfcEp3(const int varSpr)
 	SDL_Surface *p_surface = CreateStatusSfc();
     GsTilemap &Tilemap = gGraphics.getTileMap(1);
 
-	tempbuf = gpBehaviorEngine->getString("EP3_StatusBox");
+	tempbuf = gBehaviorEngine.getString("EP3_StatusBox");
 	gGraphics.drawDialogBox( p_surface, 0,0,dlgW,dlgH, Font.getBGColour(true));
 	Font.drawFont( p_surface, tempbuf, (0+1)<<3, (0+1)<<3, true);
 
