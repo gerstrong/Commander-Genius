@@ -563,10 +563,8 @@ bool IsAbsolutePath(const std::string& path)
 
 static std::string specialSearchPathForTheme = "";
 
-void initSpecialSearchPathForTheme() {
-	/*if(tLXOptions->sTheme != "") {
-	 specialSearchPathForTheme = GetFullFileName("themes/" + tLXOptions->sTheme);
-	 } else */
+void initSpecialSearchPathForTheme()
+{
 	specialSearchPathForTheme = "";
 }
 

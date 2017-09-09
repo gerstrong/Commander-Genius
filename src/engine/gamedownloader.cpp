@@ -227,32 +227,28 @@ bool GameDownloader::loadCatalogue(const std::string &catalogueFile)
 #include <fileio/KeenFiles.h>
 
 bool GameDownloader::checkForMissingGames( std::vector< std::string > &missingList )
-{
-    std::string gameCatalogueStr = "gameCatalogue.xml";
-
-    bool cataFound = false;
-
+{    
     // Load game catalogue
-    if( !loadCatalogue(gameCatalogueStr) )
+    if( !loadCatalogue(mCatalogFName) )
     {
         // try with search paths
         for(searchpathlist::const_iterator p = tSearchPaths.begin(); p != tSearchPaths.end(); p++)
         {
             std::string newPath  = *p;
             ReplaceFileVariables(newPath);
-            newPath = JoinPaths(newPath, gameCatalogueStr);
+            newPath = JoinPaths(newPath, mCatalogFName);
 
             gLogging.ftextOut("Looking at: %s<br>", newPath.c_str() );
 
             if(loadCatalogue(newPath))
             {
-                cataFound = true;
+                mCataFound = true;
                 break;
             }
 
         }
 
-        if(!cataFound)
+        if(!mCataFound)
         {
             // If not found search within for subdirectories
             std::set<std::string> dirs;
@@ -261,13 +257,13 @@ bool GameDownloader::checkForMissingGames( std::vector< std::string > &missingLi
 
             for(std::set<std::string>::iterator i = dirs.begin(); i != dirs.end(); ++i)
             {
-                const std::string newPath = JoinPaths(*i, gameCatalogueStr);
+                const std::string newPath = JoinPaths(*i, mCatalogFName);
 
                 gLogging.ftextOut("Looking at: %s<br>", newPath.c_str() );
 
                 if(loadCatalogue(newPath))
                 {
-                    cataFound = true;
+                    mCataFound = true;
                     break;
                 }
             }
@@ -276,12 +272,12 @@ bool GameDownloader::checkForMissingGames( std::vector< std::string > &missingLi
     }
     else
     {
-        cataFound = true;
+        mCataFound = true;
     }
 
-    if(!cataFound)
+    if(!mCataFound)
     {
-        gLogging.ftextOut("Sorry, catalogue file was not found: %s<br>", gameCatalogueStr.c_str() );
+        gLogging.ftextOut("Sorry, catalogue file was not found: %s<br>", mCatalogFName.c_str() );
         return -1;
     }
 

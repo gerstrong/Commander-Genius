@@ -2,12 +2,13 @@
 #include <widgets/GsProgressbar.h>
 #include <widgets/GsButton.h>
 #include <base/GsApp.h>
+#include <base/utils/FindFile.h>
 
+#include <sstream>
 
 #include "CGameLauncher.h"
 #include "gamedownloader.h"
 #include "core/mode/CGameMode.h"
-
 
 // Here we take a look at the game the user still does not
 // have and decide if the "New Stuff" will become selectable.
@@ -21,6 +22,26 @@ void CGameLauncher::verifyGameStore()
 
     std::vector< std::string > missingList;
     gameDownloader.checkForMissingGames( missingList );
+
+    if(!gameDownloader.hasCatalog())
+    {
+        std::stringstream ss;
+
+        const auto cataFile   = gameDownloader.catalogFName();
+        const auto searchPath = GetFirstSearchPath();
+
+        ss << "You seem not to have a game catalog.\n";
+        ss << "The file is called " << "\"" << cataFile  <<  "\" \n";
+        ss << "You might want to download \n";
+        ss << "and copy one into:\n";
+        ss << "\"" << searchPath << "\".\n";
+        ss << "\"+ More\" button is disabled...\n";
+
+        std::string msg(ss.str());
+
+        showMessageBox(msg);
+    }
+
 
     if(!missingList.empty())
     {

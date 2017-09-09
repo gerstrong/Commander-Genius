@@ -1,3 +1,8 @@
+v1.9.9.6:
+---------
+- Better feedback for the user, more error messages and warnings,
+  especially for misconfigured CG and first time user
+
 v1.9.9.5:
 ---------
 - Code cleanups (SaveController)

@@ -188,7 +188,23 @@ bool CGameLauncher::setupMenu()
     mLauncherDialog.addControl( banner, GsRect<float>(0.0f, 0.95f, 1.0f, 0.05f) );
 
     if(!gamesDetected)
+    {
+        std::stringstream ss;
+
+        const auto searchPathGames =
+                JoinPaths(GetFirstSearchPath(),"games");
+
+        ss << "No games detected!\n";
+        ss << "You can copy some into:\n";
+        ss << "\"" << searchPathGames << "\",\n";
+        ss << "or download using \"+ More\" button.\n";
+
+        std::string msg(ss.str());
+
+        showMessageBox(msg);
+
         return false;
+    }
 
     // Set the first game selected and highlight the start button
     mpGameSelecList->setSelection(0);

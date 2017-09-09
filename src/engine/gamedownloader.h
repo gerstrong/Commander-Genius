@@ -63,13 +63,26 @@ public:
 
     int handle();
 
+    /**
+     * @brief hasCatalog tells user if a catalog was detected
+     * @return is there a catalog, return true, otherwise false
+     */
+    bool hasCatalog() const
+    { return mCataFound;}
+
+    std::string catalogFName() const
+    { return mCatalogFName; }
+
 private:
     int &mProgress;
     bool &mCancelDownload;
 
+    bool mCataFound = false;
+
     const std::string mGameFileName;
     const std::string mGameName;
 
+    const std::string mCatalogFName = "gameCatalogue.xml";
 
     std::vector<GameCatalogueEntry> mGameCatalogue;
 };
