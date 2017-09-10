@@ -699,15 +699,18 @@ bool CEGAGraphicsGalaxy::begin()
         else
         {
             m_egagraph[i].len = 0;
-            if (offset != offset_limit) {
-                gLogging.ftextOut("Skipping chunk with bad offset=%x", offset);
+            if (offset != offset_limit)
+            {
+                gLogging.ftextOut("Skipping chunk with bad offset=%x\n", offset);
                 ++numBadChunks;
             }
         }
     }
 
+    gLogging << "Found a total of " << numBadChunks << " bad offsets\n.";
+
     File.close();
-    return (numBadChunks == 0);
+    return true;
 }
 
 /**
