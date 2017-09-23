@@ -35,7 +35,6 @@ public:
                     char value);
 
 	const std::string getConfigFileName() const;
-	virtual ~CSettings();
 };
 
 #endif /* CSETTINGS_H_ */

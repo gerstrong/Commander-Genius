@@ -34,7 +34,7 @@ CMessages::extractNextString( const std::string matchingstring )
 {
 	std::string Text;
 
-	for(unsigned long pos=mOffset ; ; pos++)
+    for(unsigned long pos = mOffset ; ; pos++)
 	{
 		if(mp_exe[pos] == 0x0)
 		{
@@ -54,11 +54,14 @@ CMessages::extractNextString( const std::string matchingstring )
 // This function reads the strings specified between the offsets,
 // and creates a pair for for the map
 std::pair<std::string, std::string>
-CMessages::extractString( const std::string matchingstring, unsigned long start, unsigned long end, long offset )
+CMessages::extractString( const std::string matchingstring,
+                          const unsigned long start,
+                          const unsigned long end,
+                          const long offset )
 {
 	std::string Text;
 
-	for(unsigned long pos=start+offset ; pos<end+offset ; pos++)
+    for(unsigned long pos = start+offset ; pos < end+offset ; pos++)
 	{
 		while(mp_exe[pos] == 0xA)
 		{
@@ -189,33 +192,32 @@ bool CMessages::extractEp4Strings(std::map<std::string, std::string>& StringMap)
 	return false;
 }
 
-bool CMessages::extractEp5Strings(std::map<std::string, std::string>& StringMap)
+bool CMessages::extractEp5Strings(std::map<std::string, std::string>& stringMap)
 {
 	switch(m_version)
 	{
 		case 140:
 		{
             // Level loading Texts (Base is usually at 0x2C00)
-			setDecodeOffset(0x201F0);
-            StringMap.insert( extractNextString( "LEVEL0_LOAD_TEXT" ) );
-
-            unsigned int levelOffset = 0x201F0;
-
-            for(unsigned int i=1 ; i<=18 ; i++)
+            int entryPtr = 0x31B18;
+            for(int i=0 ; i<=18 ; i++)
             {
-                levelOffset += 0x30;
+                auto levelOffset = MERGERLOFFSET( GETLONGWORD(&(mp_exe[entryPtr])) );
+
                 setDecodeOffset(levelOffset);
                 const std::string levelKey = "LEVEL" + to_string(i) + "_LOAD_TEXT";
-                StringMap.insert( extractNextString( levelKey ) );
+                stringMap.insert( extractNextString( levelKey ) );
+
+                entryPtr += 4;
             }
 
             // Fuse text. This text is loaded when you break one of the fuses
             setDecodeOffset(0x31BFB);
-            StringMap.insert( extractNextString( "FUSE_WONDER" ) );
-            StringMap.insert( extractNextString( "FUSE_CASUAL" ) );
+            stringMap.insert( extractNextString( "FUSE_WONDER" ) );
+            stringMap.insert( extractNextString( "FUSE_CASUAL" ) );
 
             setDecodeOffset(0x1FDE0);
-            StringMap.insert( extractNextString( "STORY_TEXT" ) );
+            stringMap.insert( extractNextString( "STORY_TEXT" ) );
 
 
 			return true;

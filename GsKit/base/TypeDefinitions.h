@@ -28,7 +28,7 @@ typedef void * memptr;
  * @param ptr     Pointer to data
  * @return        The value
  */
-static inline auto GETWORD(byte *ptr) -> word
+static inline auto GETWORD(const byte *ptr) -> word
 {
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
     return (ptr[0]<<8 | ptr[1]);
@@ -56,7 +56,7 @@ static inline auto READWORD(byte *&ptr) -> word
  * @param ptr           Pointer to data
  * @return              The value
  */
-static inline auto GETLONGWORD(byte *ptr) -> longword
+static inline auto GETLONGWORD(const byte *ptr) -> longword
 {
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
     longword val = ptr[0]<<24 | ptr[1] << 16 | ptr[2] << 8 | ptr[3];
@@ -79,6 +79,19 @@ static inline auto READLONGWORD(byte *&ptr) -> longword
     return val;
 }
 
+/**
+ * @brief MERGERLOFFSET Strange offset merger.
+ *                      For some offsets, it helps detecting the pointer correctly.
+ *                      It is used for level names basically
+ * @param levelLongWord word to work on
+ * @return tranformed value
+ */
+static inline auto MERGERLOFFSET(const unsigned long levelLongWord) ->  unsigned long
+{
+    const unsigned long part1 = levelLongWord >> 12;
+    const unsigned long part2 = levelLongWord & 0xFFF;
+    return part1 + part2;
+};
 
 
 #endif /* __TYPEDEFINITIONS_H__ */
