@@ -1,3 +1,8 @@
+v1.9.9.7:
+---------
+- More warnings and error handling
+- better handling with Mods and defective offsets.
+
 v1.9.9.6:
 ---------
 - Better feedback for the user, more error messages and warnings,
