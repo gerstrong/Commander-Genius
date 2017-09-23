@@ -31,6 +31,7 @@ void COptions::refresh()
     for( const auto &option :  gBehaviorEngine.mOptions )
     {
         (*it)->enable( option.second.value );
+        it++;
     }
 }
 
