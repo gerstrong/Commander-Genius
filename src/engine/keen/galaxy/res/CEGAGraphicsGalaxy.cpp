@@ -131,12 +131,14 @@ bool CEGAGraphicsGalaxy::loadData()
 
     if(!begin()) return false;
 
+    auto &curEpInfo = EpisodeInfo[m_episode-4];
+
     // First, retrieve the Tile properties so the tilemap gets properly formatted
     // Important especially for masks, and later in the game for the behaviours
     // of those objects
     CTileLoader TileLoader( m_Exefile );
-    if(!TileLoader.load(EpisodeInfo[m_episode-4].Num16Tiles,
-                        EpisodeInfo[m_episode-4].Num16MaskedTiles))
+    if(!TileLoader.load(curEpInfo.Num16Tiles,
+                        curEpInfo.Num16MaskedTiles))
         return false;
 
     if(!readfonts()) return false;
@@ -145,21 +147,21 @@ bool CEGAGraphicsGalaxy::loadData()
 
     gGraphics.createEmptyTilemaps(4);
 
-    if(!readTilemaps(EpisodeInfo[m_episode-4].Num16Tiles, 4, 18,
-            EpisodeInfo[m_episode-4].Index16Tiles,
+    if(!readTilemaps(curEpInfo.Num16Tiles, 4, 18,
+            curEpInfo.Index16Tiles,
             gGraphics.getTileMap(0), false)) return false;
-    if(!readMaskedTilemaps(EpisodeInfo[m_episode-4].Num16MaskedTiles, 4, 18,
-            EpisodeInfo[m_episode-4].Index16MaskedTiles,
+    if(!readMaskedTilemaps(curEpInfo.Num16MaskedTiles, 4, 18,
+            curEpInfo.Index16MaskedTiles,
             gGraphics.getTileMap(1), false)) return false;
-    if(!readTilemaps(EpisodeInfo[m_episode-4].Num8Tiles, 3, 1,
-            EpisodeInfo[m_episode-4].Index8Tiles,
+    if(!readTilemaps(curEpInfo.Num8Tiles, 3, 1,
+            curEpInfo.Index8Tiles,
             gGraphics.getTileMap(2), true)) return false;
-    if(!readMaskedTilemaps(EpisodeInfo[m_episode-4].Num8MaskedTiles, 3, 1,
-            EpisodeInfo[m_episode-4].Index8MaskedTiles,
+    if(!readMaskedTilemaps(curEpInfo.Num8MaskedTiles, 3, 1,
+            curEpInfo.Index8MaskedTiles,
             gGraphics.getTileMap(3), true)) return false;
 
-    if(!readSprites( EpisodeInfo[m_episode-4].NumSprites,
-            EpisodeInfo[m_episode-4].IndexSprites )) return false;
+    if(!readSprites( curEpInfo.NumSprites,
+                     curEpInfo.IndexSprites )) return false;
 
     if(!readTexts())
         return false;
@@ -621,9 +623,6 @@ bool CEGAGraphicsGalaxy::begin()
         offset = *offPtr;
 
         outlen = outLenVec[i];
-
-        /*if(outlen == 0)
-          continue;*/
 
         // Make sure the chunk is valid
         if(offset < offset_limit && offset + 4 <= dataSize)
@@ -1112,32 +1111,34 @@ bool CEGAGraphicsGalaxy::readSprites( size_t NumSprites, size_t IndexSprite )
     }
 
     // ARM processor requires all ints and structs to be 4-byte aligned, so we're just using memcpy()
-    std::vector<SpriteHeadStruct> sprHead(NumSprites, SpriteHeadStruct());
-    memcpy( sprHead.data(), &(headData.at(0)), NumSprites*sizeof(SpriteHeadStruct) );
+    std::vector<SpriteHeadStruct> sprHeads(NumSprites, SpriteHeadStruct());
+    memcpy( sprHeads.data(), &(headData.at(0)), NumSprites*sizeof(SpriteHeadStruct) );
 
     for(size_t i = 0; i < NumSprites; i++)
     {
-        SpriteHeadStruct Head = sprHead[i];
+        const SpriteHeadStruct curSprHead = sprHeads[i];
 
         std::vector<unsigned char> &data = m_egagraph.at(IndexSprite + i).data;
         // Check that data size is consistent with Head.Width and Head.Height.
         // Width and Height are unsigned short, so there's no overflow risk.
-        if(!data.empty() && data.size() != (Head.Width * Head.Height * 5u))
+        if(!data.empty() && data.size() != (curSprHead.Width * curSprHead.Height * 5u))
         {
-            gLogging.ftextOut("bad sprite data i=%u Width=%d Height=%d data size=%u", i, Head.Width, Head.Height, data.size());
+            gLogging << "bad sprite data at " << i
+                     << " Size=" << curSprHead.Width << "x" << curSprHead.Height
+                     << " datasize=" << data.size() << "\n";
             return false;
         }
 
-        GsSprite &Sprite = gGraphics.getSprite(0,i);
-        Sprite.setSize( Head.Width*8, Head.Height );
+        GsSprite &Sprite = gGraphics.getSprite(0, i);
+        Sprite.setSize( curSprHead.Width*8, curSprHead.Height );
 
-        Sprite.setOffset( Head.OrgX>>(TILE_S), Head.OrgY>>(TILE_S) );
+        Sprite.setOffset( curSprHead.OrgX>>(TILE_S), curSprHead.OrgY>>(TILE_S) );
 
         // Setup the collision information
-        int boxX1 = ((Head.Rx1) << (STC-TILE_S));
-        int boxY1 = ((Head.Ry1) << (STC-TILE_S));
-        int boxX2 = ((Head.Rx2) << (STC-TILE_S));
-        int boxY2 = ((Head.Ry2) << (STC-TILE_S));
+        int boxX1 = ((curSprHead.Rx1) << (STC-TILE_S));
+        int boxY1 = ((curSprHead.Ry1) << (STC-TILE_S));
+        int boxX2 = ((curSprHead.Rx2) << (STC-TILE_S));
+        int boxY2 = ((curSprHead.Ry2) << (STC-TILE_S));
 
         if(boxX2-boxX1 >= 1<<STC)
         {
@@ -1166,12 +1167,12 @@ bool CEGAGraphicsGalaxy::readSprites( size_t NumSprites, size_t IndexSprite )
             for(size_t p = 0; p < 4; p++)
             {
                 // Decode the lines of the bitmap data
-                Uint8 *pointer = &(data[0]) + (p+1) * Head.Width * Head.Height;
-                for(size_t y = 0; y < Head.Height; y++)
+                Uint8 *pointer = &(data[0]) + (p+1) * curSprHead.Width * curSprHead.Height;
+                for(size_t y = 0; y < curSprHead.Height; y++)
                 {
                     Uint8 *pixel = (Uint8*)sfc->pixels +
-                            (Head.Width * 8 *y);
-                    for(size_t x = 0; x < Head.Width; x++)
+                            (curSprHead.Width * 8 *y);
+                    for(size_t x = 0; x < curSprHead.Width; x++)
                     {
                         Uint8 bit,b;
                         for(b=0 ; b<8 ; b++)
@@ -1187,11 +1188,11 @@ bool CEGAGraphicsGalaxy::readSprites( size_t NumSprites, size_t IndexSprite )
 
             // now apply the mask!
             Uint8 *pointer = &(data[0]);
-            for(size_t y = 0; y < Head.Height; y++)
+            for(size_t y = 0; y < curSprHead.Height; y++)
             {
                 Uint8 *pixel = (Uint8*)sfc->pixels +
-                        (Head.Width * 8*y);
-                for(size_t x = 0; x < Head.Width; x++)
+                        (curSprHead.Width * 8*y);
+                for(size_t x = 0; x < curSprHead.Width; x++)
                 {
                     Uint8 bit,b;
                     for(b=0 ; b<8 ; b++)
@@ -1214,6 +1215,7 @@ bool CEGAGraphicsGalaxy::readSprites( size_t NumSprites, size_t IndexSprite )
 
     auto &SpriteOrigVec = gGraphics.getSpriteVec(0);
 
+    // Copy the sprites
     for( unsigned int i=1 ; i<4 ; i++ )
     {
         gGraphics.getSpriteVec(i) = SpriteOrigVec;
