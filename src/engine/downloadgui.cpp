@@ -123,7 +123,8 @@ void CGameLauncher::ponderDownloadDialog()
 
 void CGameLauncher::setupDownloadDialog()
 {
-    mpGameStoreDialog.reset(  new CGUIDialog( GsRect<float>(0.1f, 0.1f, 0.8f, 0.85f), CGUIDialog::EXPAND )  );
+    mpGameStoreDialog.reset(  new CGUIDialog( GsRect<float>(0.1f, 0.1f, 0.8f, 0.85f),
+                                              CGUIDialog::FXKind::EXPAND )  );
     mpGameStoreDialog->initEmptyBackground();
 
     mFinishedDownload = 0;

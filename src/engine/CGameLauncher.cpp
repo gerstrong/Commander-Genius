@@ -47,7 +47,8 @@ CGameLauncher::CGameLauncher(const bool first_time,
                              const int start_level) :
 mDonePatchSelection(false),
 mDoneExecSelection(false),
-mLauncherDialog(CGUIDialog(GsRect<float>(0.1f, 0.1f, 0.8f, 0.85f), CGUIDialog::EXPAND)),
+mLauncherDialog(CGUIDialog(GsRect<float>(0.1f, 0.1f, 0.8f, 0.85f),
+                           CGUIDialog::FXKind::EXPAND)),
 mGameScanner(),
 m_firsttime(first_time),
 m_start_game_no(start_game_no),
@@ -466,7 +467,8 @@ void CGameLauncher::showMessageBox(const std::string &text)
 {
     std::vector<std::string> strVec = explode(text, "\n");
 
-    mpMsgDialog.reset(new CGUIDialog(GsRect<float>(0.1f, 0.1f, 0.8f, 0.85f), CGUIDialog::EXPAND));
+    mpMsgDialog.reset(new CGUIDialog(GsRect<float>(0.1f, 0.1f, 0.8f, 0.85f),
+                                     CGUIDialog::FXKind::EXPAND));
 
     mpMsgDialog->initEmptyBackground();
 
@@ -508,7 +510,8 @@ void CGameLauncher::setupModsDialog()
         return;
     }
 
-    mpPatchDialog.reset(new CGUIDialog(GsRect<float>(0.1f, 0.1f, 0.8f, 0.85f), CGUIDialog::EXPAND));
+    mpPatchDialog.reset(new CGUIDialog(GsRect<float>(0.1f, 0.1f, 0.8f, 0.85f),
+                                       CGUIDialog::FXKind::EXPAND));
     mpPatchDialog->initEmptyBackground();
 
     if(!mPatchStrVec.empty())

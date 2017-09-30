@@ -17,7 +17,7 @@
 
 
 CMessageBoxVort::CMessageBoxVort(const std::string& Text, bool lower, bool keymsg, bool leftbound) :
-CMessageBox(Text, lower, keymsg, leftbound, CGUIDialog::EXPAND)
+CMessageBox(Text, lower, keymsg, leftbound, CGUIDialog::FXKind::EXPAND)
 {
    initVorticonBackground();   
 }

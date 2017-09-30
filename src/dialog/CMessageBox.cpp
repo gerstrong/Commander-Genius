@@ -22,7 +22,11 @@ struct CloseDialog : public InvokeFunctorEvent
 	bool &mMustClose;
 };
 
-CMessageBox::CMessageBox(const std::string& text, bool lower, bool keymsg, bool leftbound, const FXState fx) :
+CMessageBox::CMessageBox(const std::string& text,
+                         const bool lower,
+                         const bool keymsg,
+                         const bool leftbound,
+                         const FXKind fx) :
 CGUIDialog(GsRect<float>(0.1f, 0.1f, 0.8f, 0.8f), fx),
 m_mustclose(false)
 {

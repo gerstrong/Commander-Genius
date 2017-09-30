@@ -25,12 +25,18 @@ class CMessageBox : public CGUIDialog
 {
 public:
 	// Init functions
-    CMessageBox(const std::string& Text, bool lower, bool keymsg, bool leftbound, const FXState fx = NONE);
+    CMessageBox(const std::string& Text,
+                const bool lower,
+                const bool keymsg,
+                const bool leftbound,
+                const FXKind fx = FXKind::NONE);
 	virtual ~CMessageBox() {}
 
-	/** Processing
-	 * There are dialog boxes in both engines. They have are different and must be overloaded with this function.
-	 */
+    /**
+     * @brief processLogic There are dialog boxes in both engines.
+     *                     They have are different and must be
+     *                     overloaded with this method.
+     */
     void processLogic();
 
     virtual void render();
