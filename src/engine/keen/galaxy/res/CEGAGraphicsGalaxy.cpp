@@ -1332,7 +1332,9 @@ bool CEGAGraphicsGalaxy::readMiscStuff()
     {
         const int index = EpisodeInfo[m_episode-4].IndexMisc + misc;
 
-        const auto dataSize = m_egagraph.at(index).data.size();
+        const auto &dataChunk = m_egagraph.at(index);
+
+        const auto dataSize = dataChunk.data.size();
 
         if(dataSize < (sizeof(Uint16) * 3))
         {
@@ -1341,11 +1343,16 @@ bool CEGAGraphicsGalaxy::readMiscStuff()
             return false;
         }
 
-        const Uint16 * const dataEndPtr = (Uint16 *)(&m_egagraph.at(index).data[0] + dataSize);
 
-        Uint16 *dataPtr;
+        // Memcpy is here required for correct alignment on devices with different architectures
+        // and compiles which do not like pointer from 8-bit to 16-bit
 
-        memcpy( &dataPtr, &(m_egagraph.at(index).data), sizeof(Uint16 *) );
+        Uint16 *dataEndPtr = nullptr;
+        memcpy( &dataEndPtr, &(dataChunk.data) + dataSize, sizeof(Uint16 *) );
+
+
+        Uint16 *dataPtr = nullptr;
+        memcpy( &dataPtr, &(dataChunk.data), sizeof(Uint16 *) );
 
         memcpy(&height, dataPtr, sizeof(Uint16) );
         dataPtr++;
@@ -1396,9 +1403,9 @@ bool CEGAGraphicsGalaxy::readMiscStuff()
 
         switch(m_episode) // The color of the terminator depends on the episode.
         {
-        case 6:  textColor = SDL_MapRGB(bmp->format, 0xff,0x55,0xff); break;
-        case 5:  textColor = SDL_MapRGB(bmp->format, 0xff,0x55,0x55); break;
-        default: textColor = SDL_MapRGB(bmp->format, 0xaa,0xaa,0xaa); break;
+            case 6:  textColor = SDL_MapRGB(bmp->format, 0xff,0x55,0xff); break;
+            case 5:  textColor = SDL_MapRGB(bmp->format, 0xff,0x55,0x55); break;
+            default: textColor = SDL_MapRGB(bmp->format, 0xaa,0xaa,0xaa); break;
         }
 
         const Uint32 blackColor = SDL_MapRGB(bmp->format, 0,0,0);

@@ -134,7 +134,7 @@ bool CAudioVorticon::loadPCSpeakerSound(std::vector<T> &waveform, const std::str
             waveform.assign(audioSpec.channels*wavetime*numBeeps, audioSpec.silence);
 
             generateWave((byte*)waveform.data(), sizeof(T), wavetime, buf_ptr, numBeeps, true, AMP, audioSpec);
-			gLogging.ftextOut("CAudioVorticon::loadSound : loaded sound %s into the waveform.<br>", searchname.c_str());
+            gLogging.ftextOut("CAudioVorticon::loadSound: loaded sound %s into the waveform.<br>", searchname.c_str());
 
 			return true;
 		}
@@ -145,7 +145,7 @@ bool CAudioVorticon::loadPCSpeakerSound(std::vector<T> &waveform, const std::str
 		mayContinue |= (buffDiff < buf_size);
 	}
 	// sound could not be found
-	gLogging.ftextOut("CAudioVorticon::loadSound : sound \"%s\" could not be found.<br>", searchname.c_str());
+    gLogging.ftextOut("CAudioVorticon::loadSound: sound \"%s\" could not be found.<br>", searchname.c_str());
 
 	return false;
 }

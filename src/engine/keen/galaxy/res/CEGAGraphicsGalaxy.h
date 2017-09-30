@@ -74,6 +74,11 @@ public:
      */
 	bool readTexts();
 
+    /**
+     * @brief readMiscStuff Stuff like Demos and Terminator text
+     *        is read here...
+     * @return true if everything went fine, otherwise false.
+     */
     bool readMiscStuff();
 
 	bool readSprites( size_t NumSprites, size_t IndexSprite );
