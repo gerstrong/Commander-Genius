@@ -912,7 +912,6 @@ void BE_ST_CGAFullUpdateFromWrappedMem(const uint8_t *segPtr, const uint8_t *off
 	}
 }
 
-//extern SDL_sem* gpRenderLock;
 
 void BE_ST_SetScreenMode(int mode)
 {
@@ -1322,122 +1321,222 @@ void updateTextMode(SDL_Surface *sfc)
 
 void updateEGAGraphics(SDL_Surface *sfc)
 {
-    /*if (!g_sdlDoRefreshGfxOutput)
+    uint32_t ratioW = (sfc->w)/(g_sdlTexWidth);
+    uint32_t ratioH = (sfc->h)/(g_sdlTexHeight);
+
+    if(ratioW == 1 && ratioH == 1) // Optimized. One layer less and
+                                   // fewer loops to run through
     {
-        if (g_sdlForceGfxControlUiRefresh)
-            BEL_ST_FinishHostDisplayUpdate();
-        return;
-    }*/
-    uint16_t currLineFirstByte = (g_sdlScreenStartAddress + g_sdlPelPanning/8) % 0x10000;
-    uint8_t panningWithinInByte = g_sdlPelPanning%8;
-    uint8_t *currPalPixPtrBase, *currPalPixCachePtr;
-    bool doUpdate = false;
-    for (int line = 0, col; line < GFX_TEX_HEIGHT; ++line)
-    {
-        uint8_t currBitNum = 7-panningWithinInByte, currBitMask = 1<<currBitNum;
-        uint16_t currByte = currLineFirstByte;
-        currPalPixPtrBase = g_sdlHostScrMem.egaGfx + line*g_sdlTexWidth;
-        currPalPixCachePtr = g_sdlHostScrMemCache.egaGfx + line*g_sdlTexWidth;
-        for (col = 0; col < g_sdlTexWidth; ++col, ++currPalPixPtrBase)
+        if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
+
+        void *pixels = sfc->pixels;
+
+        uint32_t *currPixPtr = (uint32_t *)pixels;
+
+        uint16_t currLineFirstByte = (g_sdlScreenStartAddress + g_sdlPelPanning/8) % 0x10000;
+        uint8_t panningWithinInByte = g_sdlPelPanning%8;
+        bool doUpdate = false;
+        for (int line = 0, col; line < g_sdlTexHeight; ++line)
         {
-            *currPalPixPtrBase = ((g_sdlVidMem.egaGfx[0][currByte]&currBitMask)>>currBitNum) |
-                             (((g_sdlVidMem.egaGfx[1][currByte]&currBitMask)>>currBitNum)<<1) |
-                             (((g_sdlVidMem.egaGfx[2][currByte]&currBitMask)>>currBitNum)<<2) |
-                             (((g_sdlVidMem.egaGfx[3][currByte]&currBitMask)>>currBitNum)<<3);
-            doUpdate |= (*currPalPixPtrBase != *currPalPixCachePtr);
-            *currPalPixCachePtr = *currPalPixPtrBase;
-            if (currBitNum == 0)
+            uint8_t currBitNum = 7-panningWithinInByte, currBitMask = 1<<currBitNum;
+            uint16_t currByte = currLineFirstByte;
+
+            for (col = 0; col < g_sdlTexWidth; ++col)
             {
-                ++currByte;
-                currByte %= 0x10000;
-                currBitNum = 7;
-                currBitMask = 0x80;
+                const uint8_t thePixel =
+                           ((g_sdlVidMem.egaGfx[0][currByte]&currBitMask)>>currBitNum) |
+                          (((g_sdlVidMem.egaGfx[1][currByte]&currBitMask)>>currBitNum)<<1) |
+                          (((g_sdlVidMem.egaGfx[2][currByte]&currBitMask)>>currBitNum)<<2) |
+                          (((g_sdlVidMem.egaGfx[3][currByte]&currBitMask)>>currBitNum)<<3);
+
+                *currPixPtr = g_sdlEGACurrBGRAPaletteAndBorder[thePixel];
+
+                currPixPtr++;
+
+                if (currBitNum == 0)
+                {
+                    ++currByte;
+                    currByte %= 0x10000;
+                    currBitNum = 7;
+                    currBitMask = 0x80;
+                }
+                else
+                {
+                    --currBitNum;
+                    currBitMask >>= 1;
+                }
+                if (col == 8*g_sdlLineWidth)
+                {
+                    ++col;
+                    break;
+                }
+            }
+
+            if (g_sdlSplitScreenLine == line)
+            {
+                currLineFirstByte = 0; // NEXT line begins split screen, NOT g_sdlSplitScreenLine
             }
             else
             {
-                --currBitNum;
-                currBitMask >>= 1;
-            }
-            if (col == 8*g_sdlLineWidth)
-            {
-                ++col;
-                ++currPalPixPtrBase;
-                ++currPalPixCachePtr;
-                break;
+                currLineFirstByte += g_sdlLineWidth;
+                currLineFirstByte %= 0x10000;
             }
         }
-        // Just if this makes sense... (FIXME: Check!)
-        for (; col < g_sdlTexWidth; ++col, ++currPalPixPtrBase, ++currPalPixCachePtr)
-        {
-            doUpdate |= (*currPalPixCachePtr);
-            *currPalPixPtrBase = 0;
-            *currPalPixCachePtr = 0;
-        }
-        if (g_sdlSplitScreenLine == line)
-        {
-            currLineFirstByte = 0; // NEXT line begins split screen, NOT g_sdlSplitScreenLine
-        }
-        else
-        {
-            currLineFirstByte += g_sdlLineWidth;
-            currLineFirstByte %= 0x10000;
-        }
-    }
-    if (!doUpdate)
-    {
-        int paletteAndBorderEntry;
-        for (paletteAndBorderEntry = 0; paletteAndBorderEntry < 17; ++paletteAndBorderEntry)
-        {
-            if (g_sdlEGACurrBGRAPaletteAndBorder[paletteAndBorderEntry] != g_sdlEGACurrBGRAPaletteAndBorderCache[paletteAndBorderEntry])
-            {
-                g_sdlEGACurrBGRAPaletteAndBorderCache[paletteAndBorderEntry] = g_sdlEGACurrBGRAPaletteAndBorder[paletteAndBorderEntry];
-                doUpdate = true;
-            }
-        }
+
+        if(SDL_MUSTLOCK(sfc)) SDL_UnlockSurface(sfc);
+
         if (!doUpdate)
         {
-            g_sdlDoRefreshGfxOutput = false;
-            return;
+            int paletteAndBorderEntry;
+            for (paletteAndBorderEntry = 0; paletteAndBorderEntry < 17; ++paletteAndBorderEntry)
+            {
+                if (g_sdlEGACurrBGRAPaletteAndBorder[paletteAndBorderEntry] != g_sdlEGACurrBGRAPaletteAndBorderCache[paletteAndBorderEntry])
+                {
+                    g_sdlEGACurrBGRAPaletteAndBorderCache[paletteAndBorderEntry] = g_sdlEGACurrBGRAPaletteAndBorder[paletteAndBorderEntry];
+                    doUpdate = true;
+                }
+            }
+            if (!doUpdate)
+            {
+                g_sdlDoRefreshGfxOutput = false;
+                return;
+            }
         }
+
+        g_sdlDoRefreshGfxOutput = false;
+
     }
-    void *pixels = sfc->pixels;
-
-    uint32_t *currPixPtrBase = (uint32_t *)pixels;
-    currPalPixPtrBase = g_sdlHostScrMem.egaGfx;
-
-
-    uint32_t ratioW = (sfc->w)/(GFX_TEX_WIDTH);
-    uint32_t ratioH = (sfc->h)/(GFX_TEX_HEIGHT);
-
-    uint8_t *currPalPixPtr = currPalPixPtrBase;
-
-    for(int pixY=0 ; pixY < sfc->h ; pixY++ )
+    else // unoptimized. This happens when the game resolution does not match the keen dreams resolution
     {
-        uint32_t *currPixPtr = currPixPtrBase + pixY*sfc->w;
 
-        const int yStart = (pixY/ratioH)*GFX_TEX_WIDTH;
-
-        for(uint32_t pixX=0 ; pixX < ratioW*GFX_TEX_WIDTH ; pixX++ )
+        uint16_t currLineFirstByte = (g_sdlScreenStartAddress + g_sdlPelPanning/8) % 0x10000;
+        uint8_t panningWithinInByte = g_sdlPelPanning%8;
+        uint8_t *currPalPixPtrBase, *currPalPixCachePtr;
+        bool doUpdate = false;
+        for (int line = 0, col; line < g_sdlTexHeight; ++line)
         {
-            currPalPixPtr = currPalPixPtrBase + yStart + pixX/ratioW;
+            uint8_t currBitNum = 7-panningWithinInByte, currBitMask = 1<<currBitNum;
+            uint16_t currByte = currLineFirstByte;
+            currPalPixPtrBase = g_sdlHostScrMem.egaGfx + line*g_sdlTexWidth;
+            currPalPixCachePtr = g_sdlHostScrMemCache.egaGfx + line*g_sdlTexWidth;
+            for (col = 0; col < g_sdlTexWidth; ++col, ++currPalPixPtrBase)
+            {
+                *currPalPixPtrBase = ((g_sdlVidMem.egaGfx[0][currByte]&currBitMask)>>currBitNum) |
+                        (((g_sdlVidMem.egaGfx[1][currByte]&currBitMask)>>currBitNum)<<1) |
+                        (((g_sdlVidMem.egaGfx[2][currByte]&currBitMask)>>currBitNum)<<2) |
+                        (((g_sdlVidMem.egaGfx[3][currByte]&currBitMask)>>currBitNum)<<3);
 
-            *currPixPtr = g_sdlEGACurrBGRAPaletteAndBorder[*currPalPixPtr];
+                doUpdate |= (*currPalPixPtrBase != *currPalPixCachePtr);
+                *currPalPixCachePtr = *currPalPixPtrBase;
 
+                if (currBitNum == 0)
+                {
+                    ++currByte;
+                    currByte %= 0x10000;
+                    currBitNum = 7;
+                    currBitMask = 0x80;
+                }
+                else
+                {
+                    --currBitNum;
+                    currBitMask >>= 1;
+                }
+                if (col == 8*g_sdlLineWidth)
+                {
+                    ++col;
+                    ++currPalPixPtrBase;
+                    ++currPalPixCachePtr;
+                    break;
+                }
+            }
+            // Just if this makes sense... (FIXME: Check!)
+            for (; col < g_sdlTexWidth; ++col, ++currPalPixPtrBase, ++currPalPixCachePtr)
+            {
+                doUpdate |= (*currPalPixCachePtr);
+            }
 
-            currPixPtr++;
+            memset(currPalPixPtrBase, 0, sizeof(uint8_t));
+            memset(currPalPixCachePtr, 0, sizeof(uint8_t));
+
+            if (g_sdlSplitScreenLine == line)
+            {
+                currLineFirstByte = 0; // NEXT line begins split screen, NOT g_sdlSplitScreenLine
+            }
+            else
+            {
+                currLineFirstByte += g_sdlLineWidth;
+                currLineFirstByte %= 0x10000;
+            }
         }
-    }
 
-    g_sdlDoRefreshGfxOutput = false;
+        if (!doUpdate)
+        {
+            int paletteAndBorderEntry;
+            for (paletteAndBorderEntry = 0; paletteAndBorderEntry < 17; ++paletteAndBorderEntry)
+            {
+                if (g_sdlEGACurrBGRAPaletteAndBorder[paletteAndBorderEntry] != g_sdlEGACurrBGRAPaletteAndBorderCache[paletteAndBorderEntry])
+                {
+                    g_sdlEGACurrBGRAPaletteAndBorderCache[paletteAndBorderEntry] = g_sdlEGACurrBGRAPaletteAndBorder[paletteAndBorderEntry];
+                    doUpdate = true;
+                }
+            }
+            if (!doUpdate)
+            {
+                g_sdlDoRefreshGfxOutput = false;
+                return;
+            }
+        }
+
+        if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
+
+        void *pixels = sfc->pixels;
+
+        uint32_t *currPixPtrBase = (uint32_t *)pixels;
+        currPalPixPtrBase = g_sdlHostScrMem.egaGfx;
+
+        // Can we skip loops by just blitting the surfaces?
+
+        uint8_t *currPalPixPtr = currPalPixPtrBase;
+
+        /*if( ratioW == 1 && ratioH == 1)
+    {
+        memcpy(currPixPtrBase, );
+    }
+    else*/
+        {
+            for(int pixY=0 ; pixY < sfc->h ; pixY++ )
+            {
+                uint32_t *currPixPtr = currPixPtrBase + pixY*sfc->w;
+
+                const int yStart = (pixY/ratioH)*GFX_TEX_WIDTH;
+
+                for(uint32_t pixX=0 ; pixX < ratioW*GFX_TEX_WIDTH ; pixX++ )
+                {
+                    currPalPixPtr = currPalPixPtrBase + yStart + pixX/ratioW;
+
+                    *currPixPtr = g_sdlEGACurrBGRAPaletteAndBorder[*currPalPixPtr];
+
+                    currPixPtr++;
+                }
+            }
+        }
+
+        g_sdlDoRefreshGfxOutput = false;
+
+        if(SDL_MUSTLOCK(sfc)) SDL_UnlockSurface(sfc);
+
+    }
 }
 
 void BEL_ST_UpdateHostDisplay(SDL_Surface *sfc)
-{
-    if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
-
+{    
     if (g_sdlScreenMode == 3) // Text mode TODO: Broken for some reason, check!
 	{        
+        if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
+
         updateTextMode(sfc);
+
+        if(SDL_MUSTLOCK(sfc)) SDL_UnlockSurface(sfc);
 	}
     else if (g_sdlScreenMode == 4) // CGA graphics TODO: revisit when in CGA Mode
 	{
@@ -1461,9 +1560,7 @@ void BEL_ST_UpdateHostDisplay(SDL_Surface *sfc)
 	else // EGA graphics mode 0xD or 0xE
 	{
         updateEGAGraphics(sfc);
-    }
-
-    if(SDL_MUSTLOCK(sfc)) SDL_UnlockSurface(sfc);
+    }   
 }
 
 
