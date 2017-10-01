@@ -24,8 +24,8 @@ void BE_ST_MarkGfxForUpdate(void)
 	g_sdlDoRefreshGfxOutput = true;
 }
 
-#define GFX_TEX_WIDTH 320
-#define GFX_TEX_HEIGHT 200
+const int GFX_TEX_WIDTH  = 320;
+const int GFX_TEX_HEIGHT = 200;
 #define VGA_TXT_TEX_WIDTH 720
 #define VGA_TXT_TEX_HEIGHT 400
 //#define EGACGA_TXT_TEX_WIDTH 640
@@ -41,8 +41,8 @@ void BE_ST_MarkGfxForUpdate(void)
 #define ENGINE_VGA_TXT_OVERSCAN_TOP 7
 #define ENGINE_VGA_TXT_OVERSCAN_BOTTOM 7
 
-#define TXT_COLS_NUM 80
-#define TXT_ROWS_NUM 25
+const int TXT_COLS_NUM = 80;
+const int TXT_ROWS_NUM = 25;
 
 #define VGA_TXT_CURSOR_BLINK_VERT_FRAME_RATE 8
 #define VGA_TXT_BLINK_VERT_FRAME_RATE 16
@@ -1202,124 +1202,242 @@ static void BEL_ST_FinishHostDisplayUpdate(void)
 
 
 
+void updateTextMode(SDL_Surface *sfc)
+{
+
+    const auto VGA_TXT_CHAR_PIX_WIDTH = ((sfc->w)/TXT_COLS_NUM);
+    const auto VGA_TXT_CHAR_PIX_HEIGHT = ((sfc->h)/TXT_ROWS_NUM);
+
+    bool areBlinkingCharsShown = (((uint64_t)(70086*SDL_GetTicks()/1000)/(1000*VGA_TXT_BLINK_VERT_FRAME_RATE)) % 2);
+    bool isBlinkingCursorShown = g_sdlTxtCursorEnabled && (((uint64_t)(70086*SDL_GetTicks()/1000)/(1000*VGA_TXT_CURSOR_BLINK_VERT_FRAME_RATE)) % 2);
+    /*if (!g_sdlDoRefreshGfxOutput && (wereBlinkingCharsShown == areBlinkingCharsShown) && (wasBlinkingCursorShown == isBlinkingCursorShown))
+    {
+        if (g_sdlForceGfxControlUiRefresh)
+            BEL_ST_FinishHostDisplayUpdate();
+        return;
+    }*/
+    /// Do update
+//        static bool wereBlinkingCharsShown = areBlinkingCharsShown;
+//        static bool wasBlinkingCursorShown = isBlinkingCursorShown;
+
+    void *pixels = sfc->pixels;
+    //int pitch;
+    //SDL_LockTexture(g_sdlTexture, NULL, &pixels, &pitch);
+
+    uint8_t *screenPixelPtrYOffset = static_cast<uint8_t*>(pixels);
+    int bpp = sfc->format->BytesPerPixel;
+    // Uint8 *p = (Uint8 *)surface->pixels + y * surface->pitch + x * bpp;
+    uint8_t currChar;
+    const uint8_t *currCharFontPtrVBase;
+    uint32_t currBackgroundColor, currCharColor;
+    uint8_t *currScrPixelPtrY;
+    int txtByteCounter = 0;
+    int currCharPixX, currCharPixY;
+    for (int currCharY = 0, currCharX; currCharY < TXT_ROWS_NUM; ++currCharY)
+    {
+        // Draw striped lines
+        uint8_t *screenPixelPtrXOffset = screenPixelPtrYOffset;
+
+        for (currCharX = 0; currCharX < TXT_COLS_NUM; ++currCharX)
+        {
+            currChar = g_sdlVidMem.text[txtByteCounter];
+            // Luckily, the width*height product is always divisible by 8...
+            // Note that the actual width is always 8,
+            // even in VGA mode. We convert to 9 while drawing.
+            currCharFontPtrVBase = g_vga_8x16TextFont + currChar*16*8;
+            ++txtByteCounter;
+            currBackgroundColor = g_sdlEGABGRAScreenColors[(g_sdlVidMem.text[txtByteCounter] >> 4) & 7];
+            // Should the character blink?
+            if (!(g_sdlVidMem.text[txtByteCounter] & 0x80) || areBlinkingCharsShown)
+                currCharColor = g_sdlEGABGRAScreenColors[g_sdlVidMem.text[txtByteCounter] & 15];
+            else
+                currCharColor = currBackgroundColor;
+            ++txtByteCounter;
+
+            currScrPixelPtrY = screenPixelPtrXOffset;
+
+            const uint8_t *currCharFontPtrV;
+
+            const int vgaTxtCharPixH = VGA_TXT_CHAR_PIX_HEIGHT;
+
+            for (currCharPixY = 0 ; currCharPixY < vgaTxtCharPixH ; ++currCharPixY)
+            {
+                // NOTE: The char width is actually 8
+                // in both of the EGA and VGA fonts. On the
+                // VGA case, the 9th pixel is determined
+                // according to the 8th and char number.
+                uint8_t *currScrPixelPtrX = currScrPixelPtrY;
+
+                currCharFontPtrV = currCharFontPtrVBase + ((currCharPixY*16)/vgaTxtCharPixH)*8;
+
+                Uint32 color;
+
+                //for (currCharPixX = 0; currCharPixX < 8; ++currCharPixX, ++currCharFontPtr)
+                for (currCharPixX = 0; currCharPixX < VGA_TXT_CHAR_PIX_WIDTH; ++currCharPixX)
+                {
+                    const uint8_t *currCharFontPtrH = currCharFontPtrV + (currCharPixX*8)/VGA_TXT_CHAR_PIX_WIDTH;
+
+                    color = (*currCharFontPtrH) ? currCharColor : currBackgroundColor;
+
+                    memcpy(currScrPixelPtrX, &color, sizeof(Uint32));
+
+                    currScrPixelPtrX += bpp;
+                }
+
+                // Add an extra 9th column on VGA
+                color = ((currChar < 192) || (currChar > 223)) ? currBackgroundColor : (color-1);
+
+                memcpy(currScrPixelPtrX, &color, sizeof(Uint32));
+
+                currScrPixelPtrY += sfc->pitch;
+            }
+
+            screenPixelPtrXOffset += bpp*VGA_TXT_CHAR_PIX_WIDTH;
+        }
+        // Go to the character right below current one
+        screenPixelPtrYOffset += sfc->pitch*VGA_TXT_CHAR_PIX_HEIGHT;
+    }
+    // Finish with outputting the cursor if required
+    currCharColor = g_sdlEGABGRAScreenColors[g_sdlVidMem.text[1+((TXT_COLS_NUM*g_sdlTxtCursorPosY+g_sdlTxtCursorPosX)<<1)] & 15];
+
+    // Blinking cursor
+    if (isBlinkingCursorShown)
+    {
+        uint32_t *screenPixelPtr = (uint32_t *)pixels+g_sdlTexWidth;
+        screenPixelPtr += g_sdlTxtCursorPosY*VGA_TXT_CHAR_PIX_HEIGHT*g_sdlTexWidth;
+        screenPixelPtr += g_sdlTxtCursorPosX*VGA_TXT_CHAR_PIX_WIDTH;
+        // Out of 3 last scanlines of char, draw to the first 2.
+        screenPixelPtr += (VGA_TXT_CHAR_PIX_HEIGHT-3)*g_sdlTexWidth;
+        for (currCharPixY = 0; currCharPixY < 2; currCharPixY++)
+        {
+            for (currCharPixX = 0; currCharPixX < VGA_TXT_CHAR_PIX_WIDTH; currCharPixX++, screenPixelPtr++)
+                *screenPixelPtr = currCharColor;
+            screenPixelPtr += g_sdlTexWidth - VGA_TXT_CHAR_PIX_WIDTH;
+        }
+    }
+
+    g_sdlDoRefreshGfxOutput = false;
+}
+
+
+void updateEGAGraphics(SDL_Surface *sfc)
+{
+    /*if (!g_sdlDoRefreshGfxOutput)
+    {
+        if (g_sdlForceGfxControlUiRefresh)
+            BEL_ST_FinishHostDisplayUpdate();
+        return;
+    }*/
+    uint16_t currLineFirstByte = (g_sdlScreenStartAddress + g_sdlPelPanning/8) % 0x10000;
+    uint8_t panningWithinInByte = g_sdlPelPanning%8;
+    uint8_t *currPalPixPtrBase, *currPalPixCachePtr;
+    bool doUpdate = false;
+    for (int line = 0, col; line < GFX_TEX_HEIGHT; ++line)
+    {
+        uint8_t currBitNum = 7-panningWithinInByte, currBitMask = 1<<currBitNum;
+        uint16_t currByte = currLineFirstByte;
+        currPalPixPtrBase = g_sdlHostScrMem.egaGfx + line*g_sdlTexWidth;
+        currPalPixCachePtr = g_sdlHostScrMemCache.egaGfx + line*g_sdlTexWidth;
+        for (col = 0; col < g_sdlTexWidth; ++col, ++currPalPixPtrBase)
+        {
+            *currPalPixPtrBase = ((g_sdlVidMem.egaGfx[0][currByte]&currBitMask)>>currBitNum) |
+                             (((g_sdlVidMem.egaGfx[1][currByte]&currBitMask)>>currBitNum)<<1) |
+                             (((g_sdlVidMem.egaGfx[2][currByte]&currBitMask)>>currBitNum)<<2) |
+                             (((g_sdlVidMem.egaGfx[3][currByte]&currBitMask)>>currBitNum)<<3);
+            doUpdate |= (*currPalPixPtrBase != *currPalPixCachePtr);
+            *currPalPixCachePtr = *currPalPixPtrBase;
+            if (currBitNum == 0)
+            {
+                ++currByte;
+                currByte %= 0x10000;
+                currBitNum = 7;
+                currBitMask = 0x80;
+            }
+            else
+            {
+                --currBitNum;
+                currBitMask >>= 1;
+            }
+            if (col == 8*g_sdlLineWidth)
+            {
+                ++col;
+                ++currPalPixPtrBase;
+                ++currPalPixCachePtr;
+                break;
+            }
+        }
+        // Just if this makes sense... (FIXME: Check!)
+        for (; col < g_sdlTexWidth; ++col, ++currPalPixPtrBase, ++currPalPixCachePtr)
+        {
+            doUpdate |= (*currPalPixCachePtr);
+            *currPalPixPtrBase = 0;
+            *currPalPixCachePtr = 0;
+        }
+        if (g_sdlSplitScreenLine == line)
+        {
+            currLineFirstByte = 0; // NEXT line begins split screen, NOT g_sdlSplitScreenLine
+        }
+        else
+        {
+            currLineFirstByte += g_sdlLineWidth;
+            currLineFirstByte %= 0x10000;
+        }
+    }
+    if (!doUpdate)
+    {
+        int paletteAndBorderEntry;
+        for (paletteAndBorderEntry = 0; paletteAndBorderEntry < 17; ++paletteAndBorderEntry)
+        {
+            if (g_sdlEGACurrBGRAPaletteAndBorder[paletteAndBorderEntry] != g_sdlEGACurrBGRAPaletteAndBorderCache[paletteAndBorderEntry])
+            {
+                g_sdlEGACurrBGRAPaletteAndBorderCache[paletteAndBorderEntry] = g_sdlEGACurrBGRAPaletteAndBorder[paletteAndBorderEntry];
+                doUpdate = true;
+            }
+        }
+        if (!doUpdate)
+        {
+            g_sdlDoRefreshGfxOutput = false;
+            return;
+        }
+    }
+    void *pixels = sfc->pixels;
+
+    uint32_t *currPixPtrBase = (uint32_t *)pixels;
+    currPalPixPtrBase = g_sdlHostScrMem.egaGfx;
+
+
+    uint32_t ratioW = (sfc->w)/(GFX_TEX_WIDTH);
+    uint32_t ratioH = (sfc->h)/(GFX_TEX_HEIGHT);
+
+    uint8_t *currPalPixPtr = currPalPixPtrBase;
+
+    for(int pixY=0 ; pixY < sfc->h ; pixY++ )
+    {
+        uint32_t *currPixPtr = currPixPtrBase + pixY*sfc->w;
+
+        const int yStart = (pixY/ratioH)*GFX_TEX_WIDTH;
+
+        for(uint32_t pixX=0 ; pixX < ratioW*GFX_TEX_WIDTH ; pixX++ )
+        {
+            currPalPixPtr = currPalPixPtrBase + yStart + pixX/ratioW;
+
+            *currPixPtr = g_sdlEGACurrBGRAPaletteAndBorder[*currPalPixPtr];
+
+
+            currPixPtr++;
+        }
+    }
+
+    g_sdlDoRefreshGfxOutput = false;
+}
+
 void BEL_ST_UpdateHostDisplay(SDL_Surface *sfc)
 {
     if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
 
-    #define VGA_TXT_CHAR_PIX_WIDTH  ((sfc->w)/TXT_COLS_NUM)
-    #define VGA_TXT_CHAR_PIX_HEIGHT ((sfc->h)/TXT_ROWS_NUM)
-
-
     if (g_sdlScreenMode == 3) // Text mode TODO: Broken for some reason, check!
-	{
-		bool areBlinkingCharsShown = (((uint64_t)(70086*SDL_GetTicks()/1000)/(1000*VGA_TXT_BLINK_VERT_FRAME_RATE)) % 2);
-		bool isBlinkingCursorShown = g_sdlTxtCursorEnabled && (((uint64_t)(70086*SDL_GetTicks()/1000)/(1000*VGA_TXT_CURSOR_BLINK_VERT_FRAME_RATE)) % 2);
-        /*if (!g_sdlDoRefreshGfxOutput && (wereBlinkingCharsShown == areBlinkingCharsShown) && (wasBlinkingCursorShown == isBlinkingCursorShown))
-		{
-			if (g_sdlForceGfxControlUiRefresh)
-				BEL_ST_FinishHostDisplayUpdate();
-			return;
-        }*/
-        /// Do update
-//        static bool wereBlinkingCharsShown = areBlinkingCharsShown;
-//        static bool wasBlinkingCursorShown = isBlinkingCursorShown;
-
-        void *pixels = sfc->pixels;
-        //int pitch;
-        //SDL_LockTexture(g_sdlTexture, NULL, &pixels, &pitch);
-
-        uint8_t *screenPixelPtrYOffset = static_cast<uint8_t*>(pixels);
-        int bpp = sfc->format->BytesPerPixel;
-        // Uint8 *p = (Uint8 *)surface->pixels + y * surface->pitch + x * bpp;
-		uint8_t currChar;
-        const uint8_t *currCharFontPtrVBase;
-        uint32_t currBackgroundColor, currCharColor;
-        uint8_t *currScrPixelPtrY;
-		int txtByteCounter = 0;
-        int currCharPixX, currCharPixY;
-		for (int currCharY = 0, currCharX; currCharY < TXT_ROWS_NUM; ++currCharY)
-		{
-			// Draw striped lines                        
-            uint8_t *screenPixelPtrXOffset = screenPixelPtrYOffset;
-
-            for (currCharX = 0; currCharX < TXT_COLS_NUM; ++currCharX)
-			{
-                currChar = g_sdlVidMem.text[txtByteCounter];
-				// Luckily, the width*height product is always divisible by 8...
-				// Note that the actual width is always 8,
-				// even in VGA mode. We convert to 9 while drawing.
-                currCharFontPtrVBase = g_vga_8x16TextFont + currChar*16*8;
-				++txtByteCounter;
-				currBackgroundColor = g_sdlEGABGRAScreenColors[(g_sdlVidMem.text[txtByteCounter] >> 4) & 7];
-				// Should the character blink?
-				if (!(g_sdlVidMem.text[txtByteCounter] & 0x80) || areBlinkingCharsShown)
-					currCharColor = g_sdlEGABGRAScreenColors[g_sdlVidMem.text[txtByteCounter] & 15];
-				else
-					currCharColor = currBackgroundColor;
-                ++txtByteCounter;
-
-                currScrPixelPtrY = screenPixelPtrXOffset;
-
-                const uint8_t *currCharFontPtrV;
-
-                const int vgaTxtCharPixH = VGA_TXT_CHAR_PIX_HEIGHT;
-
-                for (currCharPixY = 0 ; currCharPixY < vgaTxtCharPixH ; ++currCharPixY)
-				{
-                    // NOTE: The char width is actually 8
-                    // in both of the EGA and VGA fonts. On the
-                    // VGA case, the 9th pixel is determined
-                    // according to the 8th and char number.
-                    uint8_t *currScrPixelPtrX = currScrPixelPtrY;
-
-                    currCharFontPtrV = currCharFontPtrVBase + ((currCharPixY*16)/vgaTxtCharPixH)*8;
-
-                    Uint32 color;
-
-                    //for (currCharPixX = 0; currCharPixX < 8; ++currCharPixX, ++currCharFontPtr)
-                    for (currCharPixX = 0; currCharPixX < VGA_TXT_CHAR_PIX_WIDTH; ++currCharPixX)
-					{                        
-                        const uint8_t *currCharFontPtrH = currCharFontPtrV + (currCharPixX*8)/VGA_TXT_CHAR_PIX_WIDTH;
-
-                        color = (*currCharFontPtrH) ? currCharColor : currBackgroundColor;
-
-                        memcpy(currScrPixelPtrX, &color, sizeof(Uint32));
-
-                        currScrPixelPtrX += bpp;
-					}
-
-					// Add an extra 9th column on VGA
-                    color = ((currChar < 192) || (currChar > 223)) ? currBackgroundColor : (color-1);
-
-                    memcpy(currScrPixelPtrX, &color, sizeof(Uint32));
-
-                    currScrPixelPtrY += sfc->pitch;
-				}
-
-                screenPixelPtrXOffset += bpp*VGA_TXT_CHAR_PIX_WIDTH;
-            }
-			// Go to the character right below current one
-            screenPixelPtrYOffset += sfc->pitch*VGA_TXT_CHAR_PIX_HEIGHT;
-		}
-		// Finish with outputting the cursor if required
-        currCharColor = g_sdlEGABGRAScreenColors[g_sdlVidMem.text[1+((TXT_COLS_NUM*g_sdlTxtCursorPosY+g_sdlTxtCursorPosX)<<1)] & 15];
-
-        // Blinking cursor
-        if (isBlinkingCursorShown)
-		{
-            uint32_t *screenPixelPtr = (uint32_t *)pixels+g_sdlTexWidth;
-            screenPixelPtr += g_sdlTxtCursorPosY*VGA_TXT_CHAR_PIX_HEIGHT*g_sdlTexWidth;
-			screenPixelPtr += g_sdlTxtCursorPosX*VGA_TXT_CHAR_PIX_WIDTH;
-			// Out of 3 last scanlines of char, draw to the first 2.
-            screenPixelPtr += (VGA_TXT_CHAR_PIX_HEIGHT-3)*g_sdlTexWidth;
-			for (currCharPixY = 0; currCharPixY < 2; currCharPixY++)
-			{
-				for (currCharPixX = 0; currCharPixX < VGA_TXT_CHAR_PIX_WIDTH; currCharPixX++, screenPixelPtr++)
-					*screenPixelPtr = currCharColor;
-				screenPixelPtr += g_sdlTexWidth - VGA_TXT_CHAR_PIX_WIDTH;
-			}
-        }
-
+	{        
+        updateTextMode(sfc);
 	}
     else if (g_sdlScreenMode == 4) // CGA graphics TODO: revisit when in CGA Mode
 	{
@@ -1342,111 +1460,9 @@ void BEL_ST_UpdateHostDisplay(SDL_Surface *sfc)
 	}
 	else // EGA graphics mode 0xD or 0xE
 	{
-        /*if (!g_sdlDoRefreshGfxOutput)
-		{
-			if (g_sdlForceGfxControlUiRefresh)
-				BEL_ST_FinishHostDisplayUpdate();
-			return;
-        }*/
-		uint16_t currLineFirstByte = (g_sdlScreenStartAddress + g_sdlPelPanning/8) % 0x10000;
-		uint8_t panningWithinInByte = g_sdlPelPanning%8;
-        uint8_t *currPalPixPtrBase, *currPalPixCachePtr;
-		bool doUpdate = false;
-		for (int line = 0, col; line < GFX_TEX_HEIGHT; ++line)
-		{
-			uint8_t currBitNum = 7-panningWithinInByte, currBitMask = 1<<currBitNum;
-			uint16_t currByte = currLineFirstByte;
-            currPalPixPtrBase = g_sdlHostScrMem.egaGfx + line*g_sdlTexWidth;
-			currPalPixCachePtr = g_sdlHostScrMemCache.egaGfx + line*g_sdlTexWidth;
-            for (col = 0; col < g_sdlTexWidth; ++col, ++currPalPixPtrBase)
-			{
-                *currPalPixPtrBase = ((g_sdlVidMem.egaGfx[0][currByte]&currBitMask)>>currBitNum) |
-				                 (((g_sdlVidMem.egaGfx[1][currByte]&currBitMask)>>currBitNum)<<1) |
-				                 (((g_sdlVidMem.egaGfx[2][currByte]&currBitMask)>>currBitNum)<<2) |
-				                 (((g_sdlVidMem.egaGfx[3][currByte]&currBitMask)>>currBitNum)<<3);
-                doUpdate |= (*currPalPixPtrBase != *currPalPixCachePtr);
-                *currPalPixCachePtr = *currPalPixPtrBase;
-				if (currBitNum == 0)
-				{
-					++currByte;
-					currByte %= 0x10000;
-					currBitNum = 7;
-					currBitMask = 0x80;
-				}
-				else
-				{
-					--currBitNum;
-					currBitMask >>= 1;
-				}
-				if (col == 8*g_sdlLineWidth)
-				{
-					++col;
-                    ++currPalPixPtrBase;
-					++currPalPixCachePtr;
-					break;
-				}
-			}
-			// Just if this makes sense... (FIXME: Check!)
-            for (; col < g_sdlTexWidth; ++col, ++currPalPixPtrBase, ++currPalPixCachePtr)
-			{
-				doUpdate |= (*currPalPixCachePtr);
-                *currPalPixPtrBase = 0;
-				*currPalPixCachePtr = 0;
-			}
-			if (g_sdlSplitScreenLine == line)
-			{
-				currLineFirstByte = 0; // NEXT line begins split screen, NOT g_sdlSplitScreenLine
-            }
-			else
-			{
-				currLineFirstByte += g_sdlLineWidth;
-				currLineFirstByte %= 0x10000;
-			}
-		}
-		if (!doUpdate)
-		{
-			int paletteAndBorderEntry;
-			for (paletteAndBorderEntry = 0; paletteAndBorderEntry < 17; ++paletteAndBorderEntry)
-			{
-				if (g_sdlEGACurrBGRAPaletteAndBorder[paletteAndBorderEntry] != g_sdlEGACurrBGRAPaletteAndBorderCache[paletteAndBorderEntry])
-				{
-					g_sdlEGACurrBGRAPaletteAndBorderCache[paletteAndBorderEntry] = g_sdlEGACurrBGRAPaletteAndBorder[paletteAndBorderEntry];
-					doUpdate = true;
-				}
-			}
-			if (!doUpdate)
-			{
-				g_sdlDoRefreshGfxOutput = false;
-                /*if (g_sdlForceGfxControlUiRefresh)
-                       BEL_ST_FinishHostDisplayUpdate();*/
-				return;
-			}
-		}
-        void *pixels = sfc->pixels;       
-
-        uint32_t *currPixPtrBase = (uint32_t *)pixels;
-        currPalPixPtrBase = g_sdlHostScrMem.egaGfx;
-
-
-        uint32_t ratioW = (sfc->w)/(GFX_TEX_WIDTH);
-        uint32_t ratioH = (sfc->h)/(GFX_TEX_HEIGHT);
-
-        uint8_t *currPalPixPtr = currPalPixPtrBase;
-
-        for(int pixY=0 ; pixY < sfc->h ; pixY++ )
-        {
-            uint32_t *currPixPtr = currPixPtrBase + pixY*sfc->w;
-
-            for(uint32_t pixX=0 ; pixX < ratioW*GFX_TEX_WIDTH ; pixX++ )
-            {
-                currPalPixPtr = currPalPixPtrBase + (pixY/ratioH)*GFX_TEX_WIDTH + pixX/ratioW;
-                *currPixPtr = g_sdlEGACurrBGRAPaletteAndBorder[*currPalPixPtr];
-                currPixPtr++;
-            }
-        }
+        updateEGAGraphics(sfc);
     }
 
-    g_sdlDoRefreshGfxOutput = false;
     if(SDL_MUSTLOCK(sfc)) SDL_UnlockSurface(sfc);
 }
 
