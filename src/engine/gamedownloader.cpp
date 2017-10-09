@@ -93,7 +93,6 @@ size_t write_data(void *ptr, size_t size, size_t nmemb, FILE *stream)
 int downloadFile(const std::string &filename, int &progress,
                  const std::string &downloadDirPath)
 {
-
     progressPtr = &progress;
 
     const std::string urlString = "http://downloads.sourceforge.net/project/clonekeenplus/Downloads/" + filename;
@@ -149,13 +148,15 @@ int downloadFile(const std::string &filename, int &progress,
           res = curl_easy_perform(curl);
 
           gLogging.ftextOut( FONTCOLORS::GREEN, "Finished downloading from \"%s\", destination: \"%s\"", urlString.c_str(), outputPath.c_str());
+
+          progress = 1000;
       }
       else
-      {
+      {                    
           /* always cleanup */
           curl_easy_cleanup(curl);
 
-          gLogging.ftextOut( FONTCOLORS::GREEN, "Error creating path \"%s\" for writing", outputPath.c_str());
+          gLogging.ftextOut( FONTCOLORS::RED, "Error creating path \"%s\" for writing", outputPath.c_str());
           return 1;
       }
 
@@ -187,7 +188,6 @@ bool GameDownloader::loadCatalogue(const std::string &catalogueFile)
 
     try
     {
-
         // Load the XML file into the property tree. If reading fails
         // (cannot open file, parse error), an exception is thrown.
         read_xml(catalogueFile, pt);

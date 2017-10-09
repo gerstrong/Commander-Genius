@@ -587,6 +587,8 @@ void CGameLauncher::pumpEvent(const CEvent *evPtr)
     else if( dynamic_cast<const CancelDownloadEvent*>(evPtr))
     {
         mCancelDownload = true;
+        mpDloadCancel->enable(false);
+        mpDloadProgressCtrl->setBad(true);
     }
 
 

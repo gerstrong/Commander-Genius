@@ -29,13 +29,13 @@ class CAudioSettings : public GalaxyMenu
 public:
 	CAudioSettings();
 
-	void init();
+    void init();
 
-    void ponder(const float deltaT);
+    void ponder(const float deltaT) override;
 
-	void release();
+    void release() override;
 
-    void refresh();
+    void refresh() override;
 
 private:
 

@@ -70,17 +70,18 @@ void CGameLauncher::pullGame(const int selection)
 
     mCancelDownload = false;
 
+    mpDloadProgressCtrl->enableFancyAnimation(true);
+
     mpGameDownloader = threadPool->start(new GameDownloader(mDownloadProgress,
                                                             mCancelDownload,
                                                             gameFileName,
-                                                            gameName), "Game Downloader started!");
+                                                            gameName),
+                                                            "Game Downloader started!");
 
 }
 
 void CGameLauncher::ponderDownloadDialog()
 {
-    // TODO: This is yet no way to cancel the download progress
-
     // Update the description if selection changed
     int sel = mpGSSelList->getSelection();
     if(mLastStoreSelection != sel)
@@ -94,7 +95,7 @@ void CGameLauncher::ponderDownloadDialog()
         mLastStoreSelection = sel;
     }
 
-    // Disable Some Elements while downloading
+    // Disable some dialog elements while downloading
     if(mDownloading)
     {
         mpDloadSelectionList->enable(false);
@@ -113,7 +114,9 @@ void CGameLauncher::ponderDownloadDialog()
 
     // When everything is done, The launcher should be restarted, for searching new games.
 
-    if( mFinishedDownload && mpGameDownloader->finished )
+    if( mFinishedDownload &&
+        mpGameDownloader->finished &&
+        mpDloadProgressCtrl->finished() )
     {        
         mpGameStoreDialog = nullptr;
         gEventManager.add(new GMSwitchToGameLauncher() );
@@ -155,11 +158,13 @@ void CGameLauncher::setupDownloadDialog()
 
     // Title
     mpDloadTitleText = std::dynamic_pointer_cast<CGUIText>(
-            mpGameStoreDialog->addControl(new CGUIText("Select your Game for Download"), GsRect<float>(0.0f, 0.0f, 1.0f, 0.05f)) );
+            mpGameStoreDialog->addControl(new CGUIText("Select your Game for Download"),
+                                          GsRect<float>(0.0f, 0.0f, 1.0f, 0.05f)) );
 
     // Selection List
     mpDloadSelectionList = std::dynamic_pointer_cast<CGUITextSelectionList>(
-            mpGameStoreDialog->addControl(mpGSSelList, GsRect<float>(0.01f, 0.04f, 0.50f, 0.65f)) );
+            mpGameStoreDialog->addControl(mpGSSelList,
+                                          GsRect<float>(0.01f, 0.04f, 0.50f, 0.65f)) );
 
     // Create an empty Bitmap control for the preview
     mpCurrentDownloadBmp = std::dynamic_pointer_cast<CGUIBitmap>(
@@ -169,17 +174,19 @@ void CGameLauncher::setupDownloadDialog()
 
     // Description Text Box
     mpDDescriptionText = std::dynamic_pointer_cast<CGUIText>(
-            mpGameStoreDialog->addControl(new CGUIText("Description"), GsRect<float>(0.01f, 0.70f, 0.98f, 0.1f)) );
+            mpGameStoreDialog->addControl(new CGUIText("Description"),
+                                          GsRect<float>(0.01f, 0.70f, 0.98f, 0.1f)) );
 
 
 
     // Progress Bar
-    mpGameStoreDialog->addControl(new GsProgressBar(mDownloadProgress), GsRect<float>(0.1f, 0.8f, 0.8f, 0.05f));
+    mpDloadProgressCtrl = std::dynamic_pointer_cast<GsProgressBar>(
+            mpGameStoreDialog->addControl(new GsProgressBar(mDownloadProgress),
+                                  GsRect<float>(0.1f, 0.8f, 0.8f, 0.05f)) );
 
     // Bottom Controls
     mpDloadBack = std::dynamic_pointer_cast<GsButton>(
             mpGameStoreDialog->addControl( new GsButton( "< Back", new CloseBoxEvent() ),
-                                           //GsRect<float>(0.165f, 0.865f, 0.2f, 0.07f) ) );
                                            GsRect<float>(0.100f, 0.865f, 0.25f, 0.07f) ) );
 
     mpDloadCancel = std::dynamic_pointer_cast<GsButton>(
@@ -189,7 +196,6 @@ void CGameLauncher::setupDownloadDialog()
 
     mpDloadDownload = std::dynamic_pointer_cast<GsButton>(
             mpGameStoreDialog->addControl( new GsButton( "Download", new GameStorePullGame() ),
-                                           //GsRect<float>(0.635f, 0.865f, 0.2f, 0.07f) ) );
                                             GsRect<float>(0.650f, 0.865f, 0.25f, 0.07f) ) );
 
 

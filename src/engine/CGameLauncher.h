@@ -16,6 +16,7 @@
 #include <widgets/GsText.h>
 #include <widgets/GsButton.h>
 #include <widgets/GsTextSelectionList.h>
+#include <widgets/GsProgressbar.h>
 
 #include <string>
 #include <vector>
@@ -92,7 +93,9 @@ public:
     void ponder(const float deltaT);
     void render();
 
-	int getChosengame(){ return m_chosenGame; }
+    int getChosengame()
+    { return m_chosenGame; }
+
 	bool setChosenGame(int chosengame) { m_chosenGame = chosengame; return waschosen();  }
 	bool waschosen(){ return (m_chosenGame>=0); }
     void letchooseagain()
@@ -143,6 +146,7 @@ private:
     std::shared_ptr<GsButton> mpDloadBack;
     std::shared_ptr<GsButton> mpDloadCancel;
     std::shared_ptr<GsButton> mpDloadDownload;
+    std::shared_ptr<GsProgressBar> mpDloadProgressCtrl;
     std::shared_ptr<CGUIBitmap> mpCurrentDownloadBmp;
     std::vector< std::shared_ptr<GsBitmap> > mpDownloadPrevievBmpVec;
     std::vector<GameCatalogueEntry> mGameCatalogue;
