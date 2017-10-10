@@ -29,10 +29,10 @@ public:
 	bool saveGameOptions();
 	void loadDefaultGameCfg();
 
-    void setOption( const GameOption opt,
+    void setOption(const GameOption opt,
                     const std::string &menuname,
                     const std::string &name,
-                    char value);
+                    const char value);
 
 	const std::string getConfigFileName() const;
 };

@@ -260,7 +260,10 @@ void CSettings::loadDefaultGraphicsCfg() //Loads default graphics
  * 						of the applied option
  * \param	value		Value that has to be set.
  */
-void CSettings::setOption( const GameOption opt, const std::string &menuname, const std::string &name, char value)
+void CSettings::setOption( const GameOption opt,
+                           const std::string &menuname,
+                           const std::string &name,
+                           const char value)
 {
     stOption &option = gBehaviorEngine.mOptions[opt];
 	option.menuname = menuname;
