@@ -2106,7 +2106,7 @@ void processLevelcomplete()
 void GameLoopOpen()
 {
     id0_unsigned_t	cities,i;
-    id0_long_t	orgx,orgy;
+    //id0_long_t	orgx,orgy;
 
     gamestate.difficulty = restartgame;
     restartgame = gd_Continue;

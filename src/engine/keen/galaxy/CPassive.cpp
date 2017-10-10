@@ -45,6 +45,9 @@ mCommanderTextSfc(gGraphics.getMiscGsBitmap(0)),
 mKeenTextSfc(gGraphics.getMiscGsBitmap(1)),
 mSkipSection(false)
 {
+//    auto &tetTest = gGraphics.getMiscGsBitmap(0);
+//    mCommanderTextSfc = tetTest;
+
     const GsRect<Uint16> gameRect = gVideoDriver.getVidConfig().mGameRect;
     gVideoDriver.setNativeResolution(gameRect);
 
@@ -83,8 +86,10 @@ mSkipSection(false)
 
     mCommanderTextSfc.scaleTo(cmdTextRect);
     mCommanderTextSfc.setColorKey( 0, 0, 0 );
+    mCommanderTextSfc.optimizeSurface();
     mKeenTextSfc.scaleTo(keenTextRect);
     mKeenTextSfc.setColorKey( 0, 0, 0 );
+    mKeenTextSfc.optimizeSurface();
 
     mCommanderTextPos = Vector2D<int>(gameRes.w, (gameRes.h-cmdTextRect.h)/2 );
     mKeenTextPos = Vector2D<int>(-mKeenTextSfc.width(), (gameRes.h-cmdTextRect.h)/2 );
