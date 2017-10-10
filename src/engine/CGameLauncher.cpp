@@ -149,7 +149,7 @@ bool CGameLauncher::setupMenu()
 
     mLauncherDialog.addControl(new CGUIText("Pick a Game"), GsRect<float>(0.0f, 0.01f, 1.0f, 0.05f));
     mLauncherDialog.addControl(new GsButton( "x", new GMQuit(),
-                                             CGUIControl::Style::UNSET,
+                                             GsControl::Style::UNSET,
                                              1.0f,
                                              0.75f,
                                              0.75f ), GsRect<float>(0.0f, 0.0f, 0.069f, 0.069f) );

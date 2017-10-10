@@ -12,7 +12,7 @@ class VorticonMenu : public CBaseMenu
 public:
     VorticonMenu( const GsRect<float>& rect ):
         CBaseMenu( rect, new GsButton( "x", new CloseMenuEvent(),
-                                       CGUIControl::Style::UNSET,
+                                       GsControl::Style::UNSET,
                                        1.0f,
                                        0.75f,
                                        0.75f) )

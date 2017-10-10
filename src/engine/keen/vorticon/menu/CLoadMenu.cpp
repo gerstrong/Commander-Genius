@@ -58,7 +58,7 @@ void CLoadMenu::refresh()
 
     Uint32 i=0;
 
-    std::list< std::shared_ptr<CGUIControl> > &list = mpMenuDialog->getControlList();
+    std::list< std::shared_ptr<GsControl> > &list = mpMenuDialog->getControlList();
 
     auto itCtrl = list.begin();
     itCtrl++;
@@ -69,7 +69,7 @@ void CLoadMenu::refresh()
 
         if( !text.empty() )
         {
-            std::shared_ptr<CGUIControl> &ctrl = *itCtrl;
+            std::shared_ptr<GsControl> &ctrl = *itCtrl;
             GsButton *button = dynamic_cast<GsButton*>( ctrl.get() );
 
             button->setText(text);
@@ -81,7 +81,7 @@ void CLoadMenu::refresh()
 
     for( int j = i ; j<8 ; j++ )
     {
-        std::shared_ptr<CGUIControl> &ctrl = *itCtrl;
+        std::shared_ptr<GsControl> &ctrl = *itCtrl;
         GsButton *button = dynamic_cast<GsButton*>( ctrl.get() );
 
         button->setText("Empty");

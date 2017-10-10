@@ -55,7 +55,7 @@ void CSaveMenu::refresh()
     std::vector<std::string> StateFileList;
     gSaveGameController.readSlotList(StateFileList);
 
-    std::list< std::shared_ptr<CGUIControl> > &list = mpMenuDialog->getControlList();
+    std::list< std::shared_ptr<GsControl> > &list = mpMenuDialog->getControlList();
 
     auto itCtrl = list.begin();
     itCtrl++;
@@ -66,7 +66,7 @@ void CSaveMenu::refresh()
         if(i < StateFileList.size())
             text = StateFileList.at(i);
 
-        std::shared_ptr<CGUIControl> &ctrl = *itCtrl;
+        std::shared_ptr<GsControl> &ctrl = *itCtrl;
         InputText *input = dynamic_cast<InputText*>( ctrl.get() );
 
         input->setText(text);
