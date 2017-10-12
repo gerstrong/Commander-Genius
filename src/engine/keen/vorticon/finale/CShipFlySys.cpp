@@ -23,7 +23,7 @@ mpMap(pMap)
 	m_finished = false;
 	m_scrollingon = true;
 	m_ShipQueuePtr = 0;
-	m_player.sprite = m_playsprite_right;
+	m_player.mSpriteIdx = m_playsprite_right;
 
 	// Now, that everything is initialized, create a mark that will be used
 	// as ! or ? Sprite
@@ -60,29 +60,29 @@ void CShipFlySys::process()
 		 {
 		 case DUP:
 			 m_player.moveUp(SHIPSPD);
-			 m_player.sprite = m_playsprite_right;
+			 m_player.mSpriteIdx = m_playsprite_right;
 			 break;
 		 case DDOWN:
 			 m_player.moveDown(SHIPSPD/2);
-			 m_player.sprite = m_playsprite_right;
+			 m_player.mSpriteIdx = m_playsprite_right;
 			 break;
 		 case DLEFT:
 			 m_player.moveLeft(SHIPSPD);
-			 m_player.sprite = m_playsprite_left;
+			 m_player.mSpriteIdx = m_playsprite_left;
 			 break;
 		 case DRIGHT:
 			 m_player.moveRight(SHIPSPD);
-			 m_player.sprite = m_playsprite_right;
+			 m_player.mSpriteIdx = m_playsprite_right;
 			 break;
 		 case DDOWNRIGHT:
 			 m_player.moveRight(SHIPSPD*2);
 			 m_player.moveDown(SHIPSPD*0.8);
-			 m_player.sprite = m_playsprite_right;
+			 m_player.mSpriteIdx = m_playsprite_right;
 			 break;
 		 case DUPLEFT:
 			 m_player.moveLeft(SHIPSPD*2);
 			 m_player.moveUp(SHIPSPD*0.8);
-			 m_player.sprite = m_playsprite_left;
+			 m_player.mSpriteIdx = m_playsprite_left;
 			 break;
 		 }
 

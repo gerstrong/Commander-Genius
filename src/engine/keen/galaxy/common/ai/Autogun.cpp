@@ -55,7 +55,7 @@ mTimer(0)
     }
 
     processState = &AutoShot::waiting;
-    sprite = mBaseSprite;
+    mSpriteIdx = mBaseSprite;
 
     origin = getPosition();
 
@@ -67,11 +67,11 @@ void AutoShot::waiting()
     const int ep = gBehaviorEngine.getEpisode();
     if(ep > 4)
     {
-        if(sprite < mBaseSprite + mNumAnimSprites + 1)
-            sprite++;
+        if(mSpriteIdx < mBaseSprite + mNumAnimSprites + 1)
+            mSpriteIdx++;
         else
         {
-            sprite = mBaseSprite;
+            mSpriteIdx = mBaseSprite;
             dontdraw = true;
         }
     }
@@ -89,7 +89,7 @@ void AutoShot::waiting()
     }
 
     dontdraw = false;
-    sprite = mBaseSprite;
+    mSpriteIdx = mBaseSprite;
     mTimer = 0;
     processState = &AutoShot::flying;
 
@@ -129,7 +129,7 @@ void AutoShot::setWaitStatus()
     processState = &AutoShot::waiting;
     if(gBehaviorEngine.getEpisode() > 4)
     {
-        sprite = mBaseSprite + mNumAnimSprites;
+        mSpriteIdx = mBaseSprite + mNumAnimSprites;
     }
     
     dontdraw = true;
@@ -143,7 +143,7 @@ void AutoShot::flying()
   moveXDir(xDirection*FLY_SPEED);
   moveYDir(yDirection*FLY_SPEED);
     
-  sprite = mBaseSprite + (mTimer % mNumAnimSprites);
+  mSpriteIdx = mBaseSprite + (mTimer % mNumAnimSprites);
   
   if(yDirection == DOWN && blockedd)
     setWaitStatus();

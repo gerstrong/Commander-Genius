@@ -120,7 +120,7 @@ void CMeep::process()
 
 		if (dir==RIGHT)
 		{
-			sprite = MEEP_WALK_RIGHT_FRAME + animframe;
+			mSpriteIdx = MEEP_WALK_RIGHT_FRAME + animframe;
 
 			not_about_to_fall = TileProperties.at(mp_Map->at((getXLeftPos())>>CSF, (getYDownPos()+(1<<STC))>>CSF)).bup;
 
@@ -131,7 +131,7 @@ void CMeep::process()
 		}
 		else
 		{
-			sprite = MEEP_WALK_LEFT_FRAME + animframe;
+			mSpriteIdx = MEEP_WALK_LEFT_FRAME + animframe;
 			not_about_to_fall = TileProperties.at(mp_Map->at((getXRightPos())>>CSF, (getYDownPos()+(1<<STC))>>CSF)).bup;
 
 			if (blockedl || !not_about_to_fall)
@@ -152,11 +152,11 @@ void CMeep::process()
 	case MEEP_SING:
 		if (dir==RIGHT)
 		{
-			sprite = MEEP_SING_RIGHT_FRAME;
+			mSpriteIdx = MEEP_SING_RIGHT_FRAME;
 		}
 		else
 		{
-			sprite = MEEP_SING_LEFT_FRAME;
+			mSpriteIdx = MEEP_SING_LEFT_FRAME;
 		}
 
 		if (timer > MEEP_SING_SHOW_TIME)
@@ -175,10 +175,10 @@ void CMeep::process()
 		else timer++;
 		break;
 	case MEEP_DYING:
-		sprite = MEEP_DYING_FRAME;
+		mSpriteIdx = MEEP_DYING_FRAME;
 		if (timer > MEEP_DYING_SHOW_TIME)
 		{
-			sprite = MEEP_DEAD_FRAME;
+			mSpriteIdx = MEEP_DEAD_FRAME;
 			dead = true;
 			timer = 0;
 		}

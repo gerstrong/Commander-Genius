@@ -126,10 +126,10 @@ void CCeilick::getTouchedBy(CSpriteObject& theObject)
 
 void CCeilick::draw()
 {
-    if( sprite == BLANKSPRITE || dontdraw )
+    if( mSpriteIdx == BLANKSPRITE || dontdraw )
         return;
 
-    GsSprite &Sprite = gGraphics.getSprite(mSprVar,sprite);
+    GsSprite &Sprite = gGraphics.getSprite(mSprVar,mSpriteIdx);
 
     scrx = (m_Pos.x>>STC)-mp_Map->m_scrollx;
     scry = (m_Pos.y>>STC)-mp_Map->m_scrolly;

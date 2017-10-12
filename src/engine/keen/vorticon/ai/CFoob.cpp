@@ -55,7 +55,7 @@ void CFoob::process()
 
 		if (dir == RIGHT)
 		{  // walking right
-			sprite = FOOB_WALK_RIGHT_FRAME + animframe;
+			mSpriteIdx = FOOB_WALK_RIGHT_FRAME + animframe;
 			if (blockedr)
 			{
 				dir = LEFT;
@@ -67,7 +67,7 @@ void CFoob::process()
 		}
 		else
 		{  // walking left
-			sprite = FOOB_WALK_LEFT_FRAME + animframe;
+			mSpriteIdx = FOOB_WALK_LEFT_FRAME + animframe;
 			if (blockedl)
 			{
 				dir = RIGHT;
@@ -108,7 +108,7 @@ void CFoob::process()
 
 		if (dir == RIGHT)
 		{  // walking right
-			sprite = FOOB_WALK_RIGHT_FRAME + animframe;
+			mSpriteIdx = FOOB_WALK_RIGHT_FRAME + animframe;
 			if (!blockedr)
 			{
 				xinertia = FOOB_FLEE_SPEED;
@@ -125,7 +125,7 @@ void CFoob::process()
 		}
 		else
 		{  // walking left
-			sprite = FOOB_WALK_LEFT_FRAME + animframe;
+			mSpriteIdx = FOOB_WALK_LEFT_FRAME + animframe;
 			if (!blockedl)
 			{
 				xinertia = -FOOB_FLEE_SPEED;
@@ -152,8 +152,8 @@ void CFoob::process()
 
 	case FOOB_EXPLODE:
 		// ahhhhh; I'm sorry.....you poor little thing......
-		sprite = FOOB_EXPLODE_FRAME + animframe;
-		if (sprite==FOOB_DEAD_FRAME)
+		mSpriteIdx = FOOB_EXPLODE_FRAME + animframe;
+		if (mSpriteIdx==FOOB_DEAD_FRAME)
 		{
 			state = FOOB_DEAD;
 			dead = 1;
@@ -185,7 +185,7 @@ bool CFoob::isNearby(CVorticonSpriteObject &theObject)
 
         if(state == FOOB_SPOOK)
         {
-            sprite = FOOB_SPOOK_FRAME;
+            mSpriteIdx = FOOB_SPOOK_FRAME;
 
             if (spooktimer > FOOB_SPOOK_SHOW_TIME)
             {

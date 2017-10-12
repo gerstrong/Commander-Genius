@@ -51,7 +51,7 @@ CVorticon(p_map, x, y, 4, OBJ_VORTELITE)
 {
 	state = VORTELITE_WALK;
 	movedir = LEFT;
-	sprite = VORTELITE_WALK_LEFT_FRAME;
+	mSpriteIdx = VORTELITE_WALK_LEFT_FRAME;
 	frame = 0;
 	animtimer = 0;
 	timer = 0;
@@ -185,7 +185,7 @@ void CVorticonElite::process()
 
 		if (movedir==LEFT)
 		{  // move left
-			sprite = VORTELITE_WALK_LEFT_FRAME + frame;
+			mSpriteIdx = VORTELITE_WALK_LEFT_FRAME + frame;
 			if (!blockedl)
 			{
 				xinertia = -m_speed;
@@ -210,7 +210,7 @@ void CVorticonElite::process()
 		}
 		else
 		{  // move right
-			sprite = VORTELITE_WALK_RIGHT_FRAME + frame;
+			mSpriteIdx = VORTELITE_WALK_RIGHT_FRAME + frame;
 			if (!blockedr)
 			{
 				xinertia = m_speed;
@@ -258,9 +258,9 @@ void CVorticonElite::process()
 		break;
 	case VORTELITE_ABOUTTOFIRE:
 		if (movedir==RIGHT)
-		{ sprite = VORTELITE_FIRE_RIGHT_FRAME; }
+		{ mSpriteIdx = VORTELITE_FIRE_RIGHT_FRAME; }
 		else
-		{ sprite = VORTELITE_FIRE_LEFT_FRAME; }
+		{ mSpriteIdx = VORTELITE_FIRE_LEFT_FRAME; }
 		if (timer > VORTELITE_HOLD_GUN_OUT_TIME)
 		{
 			timer = 0;
@@ -272,7 +272,7 @@ void CVorticonElite::process()
 			else
                 newobject = new CRay(mp_Map, getXLeftPos()-1, getYPosition()+(9<<STC), LEFT, CENTER, getSpriteVariantId());
 			newobject->setOwner( m_type, m_index);
-			newobject->sprite = ENEMYRAYEP2;
+			newobject->mSpriteIdx = ENEMYRAYEP2;
 			// don't shoot other vorticon elite
 			spawnObj(newobject);
 
@@ -283,9 +283,9 @@ void CVorticonElite::process()
 		break;
 	case VORTELITE_FIRED:
 		if (movedir==RIGHT)
-		{ sprite = VORTELITE_FIRE_RIGHT_FRAME; }
+		{ mSpriteIdx = VORTELITE_FIRE_RIGHT_FRAME; }
 		else
-		{ sprite = VORTELITE_FIRE_LEFT_FRAME; }
+		{ mSpriteIdx = VORTELITE_FIRE_LEFT_FRAME; }
 
 		if (timer > VORTELITE_HOLD_GUN_AFTER_FIRE_TIME)
 		{
@@ -297,10 +297,10 @@ void CVorticonElite::process()
 		else timer++;
 		break;
 	case VORTELITE_DYING:
-		sprite = VORTELITE_DYING_FRAME;
+		mSpriteIdx = VORTELITE_DYING_FRAME;
 		if (animtimer > VORTELITE_DIE_ANIM_TIME)
 		{
-			sprite = VORTELITE_DEAD_FRAME;
+			mSpriteIdx = VORTELITE_DEAD_FRAME;
 			dead = true;
 		}
 		else
@@ -321,9 +321,9 @@ void CVorticonElite::initiatejump()
 	yinertia = -((rand()%(VORTELITE_MAX_JUMP_HEIGHT-VORTELITE_MIN_JUMP_HEIGHT))+VORTELITE_MIN_JUMP_HEIGHT);
 
 	if (movedir==RIGHT)
-		sprite = VORTELITE_JUMP_RIGHT_FRAME;
+		mSpriteIdx = VORTELITE_JUMP_RIGHT_FRAME;
 	else
-		sprite = VORTELITE_JUMP_LEFT_FRAME;
+		mSpriteIdx = VORTELITE_JUMP_LEFT_FRAME;
 
 	state = VORTELITE_JUMP;
 }

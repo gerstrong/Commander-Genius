@@ -15,7 +15,7 @@ frame(0)
 	 canbezapped = true;  // will stop bullets but are not harmed
 	 mInvincible = true;
 	 inhibitfall = false;
-	 sprite = BUTLER_WALK_LEFT_FRAME;
+	 mSpriteIdx = BUTLER_WALK_LEFT_FRAME;
 	 alignToTile();
 }
 
@@ -35,14 +35,14 @@ void CButler::process()
 	 case BUTLER_WALK:	     
 		 if (xDirection==LEFT)
 		 {  // move left
-			 sprite = BUTLER_WALK_LEFT_FRAME + frame;
+			 mSpriteIdx = BUTLER_WALK_LEFT_FRAME + frame;
 			 if (!blockedl)
 			 {
 				 xinertia = -BUTLER_WALK_SPEED;
 			 }
 			 else
 			 {
-				 sprite = BUTLER_TURNRIGHT_FRAME;
+				 mSpriteIdx = BUTLER_TURNRIGHT_FRAME;
 				 frame = 0;
 				 timer = 0;
 				 animtimer = 0;
@@ -51,14 +51,14 @@ void CButler::process()
 		 }
 		 else
 		 {  // move right
-			 sprite = BUTLER_WALK_RIGHT_FRAME + frame;
+			 mSpriteIdx = BUTLER_WALK_RIGHT_FRAME + frame;
 			 if (!blockedr)
 			 {
 				 xinertia = BUTLER_WALK_SPEED;
 			 }
 			 else
 			 {
-				 sprite = BUTLER_TURNLEFT_FRAME;
+				 mSpriteIdx = BUTLER_TURNLEFT_FRAME;
 				 frame = 0;
 				 timer = 0;
 				 animtimer = 0;

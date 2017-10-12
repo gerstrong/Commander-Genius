@@ -20,12 +20,12 @@ CItemEffect::CItemEffect(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y, Uin
 CGalaxySpriteObject(pmap, foeID, x, y, 0)
 {
 	m_timer = 0;
-	sprite = l_sprite-124;
+	mSpriteIdx = l_sprite-124;
 	honorPriority = false;
 	solid = false;
 	m_ieffect = ieffect;
 			
-    GsSprite &rSprite = gGraphics.getSprite(mSprVar,sprite);
+    GsSprite &rSprite = gGraphics.getSprite(mSprVar,mSpriteIdx);
 
 	int moveup = (1<<CSF)-1;
 	moveup -= ((rSprite.getHeight()+1)<<STC);
@@ -63,7 +63,7 @@ void CItemEffect::process()
 			exists = false;
 
 		if((m_timer%6) == 5)
-			sprite++;
+			mSpriteIdx++;
 	}
 
 	m_timer++;

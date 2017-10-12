@@ -95,11 +95,11 @@ void CBallJack::process()
 
 	if (m_type==OBJ_BALL)
 	{
-		sprite = OBJ_BALL_DEFSPRITE;
+		mSpriteIdx = OBJ_BALL_DEFSPRITE;
 	}
 	else
 	{
-		sprite = OBJ_JACK_DEFSPRITE + animframe;
+		mSpriteIdx = OBJ_JACK_DEFSPRITE + animframe;
 		if (animtimer > JACK_ANIM_RATE)
 		{
 			animframe++;

@@ -40,7 +40,7 @@ mStolen(false)
 	setupGalaxyObjectOnMap( 0x31E2, A_SMIRKY_LOOK );
 	xDirection = LEFT;
 	
-    GsSprite &rSprite = gGraphics.getSprite(mSprVar,sprite);
+    GsSprite &rSprite = gGraphics.getSprite(mSprVar,mSpriteIdx);
 	processMove( 0, rSprite.m_bboxY1-rSprite.m_bboxY2 );
 	performCollisions();
 	
@@ -238,7 +238,7 @@ void CTreasureEater::process()
 	}
 	else // TODO: This a workaround, because the last known action doesn't seem to be triggered
 	{
-		sprite = 231;
+		mSpriteIdx = 231;
 	}
 }
 

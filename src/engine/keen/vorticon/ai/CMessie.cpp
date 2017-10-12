@@ -154,14 +154,14 @@ void CMessie::process()
     }
     
     // animation
-	sprite = baseframe + animframe;
+	mSpriteIdx = baseframe + animframe;
 	
 	// Did player try to mount Messie?
 	if (mounted)
 	{
 	    // Move mounted object with Messie. It still should be hidden at this point.
 	    mounted->moveTo(m_Pos);
-	    sprite += 8;
+	    mSpriteIdx += 8;
 	    
 	    // If first Player pushes the first button, unmount!
         if(gInput.getPressedCommand(IC_JUMP))

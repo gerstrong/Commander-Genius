@@ -81,7 +81,7 @@ public:
      */
     bool readMiscStuff();
 
-	bool readSprites( size_t NumSprites, size_t IndexSprite );
+    bool readSprites(const size_t NumSprites, const size_t IndexSprite );
 
 	void createBitmapsIDs();
 

@@ -61,7 +61,7 @@ void CSpriteObject::performCollisionsSameBox()
 
 void CSpriteObject::calcBoundingBoxes()
 {
-    GsSprite &rSprite = gGraphics.getSprite(0,sprite);
+    GsSprite &rSprite = gGraphics.getSprite(0,mSpriteIdx);
 
     m_BBox.x1 = rSprite.m_bboxX1;
     m_BBox.x2 = rSprite.m_bboxX2;
@@ -128,7 +128,7 @@ void getSlopePointsUpperTile(signed  char slope, int &yb1, int &yb2)
 
 void CSpriteObject::alignToTile()
 {
-    if(sprite == BLANKSPRITE)
+    if(mSpriteIdx == BLANKSPRITE)
     {
         return;
     }
@@ -165,7 +165,7 @@ void CSpriteObject::performCollisions()
 	blockedr = blockedl = false;
 	blockedu = blockedd = false;
 
-	if ( sprite != BLANKSPRITE )
+	if ( mSpriteIdx != BLANKSPRITE )
 	{
 		calcBoundingBoxes();
 		performCollisionsSameBox();

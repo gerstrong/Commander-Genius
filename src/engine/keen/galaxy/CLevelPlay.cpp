@@ -91,7 +91,8 @@ bool CLevelPlay::loadLevel(const Uint16 level)
 
     showMsgWithBmp( loading_text, "KEENTHUMBSUP", LEFT );
 
-	mMap.drawAll();
+	mMap.drawAll();    
+
 	return true;
 }
 

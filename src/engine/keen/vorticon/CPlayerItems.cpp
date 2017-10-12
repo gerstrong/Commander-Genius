@@ -225,7 +225,7 @@ void CPlayer::riseBonus(int spr, int x, int y)
      if (gBehaviorEngine.mOptions[GameOption::RISEBONUS].value)
 	 {
 		 CRisingPoints *GotPointsObj = new CRisingPoints(mp_Map, x<<CSF, y<<CSF);
-		 GotPointsObj->sprite = spr;
+		 GotPointsObj->mSpriteIdx = spr;
 		 gEventManager.add(new EventSpawnObject(GotPointsObj) );
 	 }
 }

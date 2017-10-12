@@ -15,7 +15,7 @@ CDiveSuit::CDiveSuit(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y, const i
 CGalaxySpriteObject(pmap, foeID, x, y, sprVar),
 taken(false)
 {    
-    sprite = 306;
+    mSpriteIdx = 306;
     calcBoundingBoxes();
     alignToTile();
 }

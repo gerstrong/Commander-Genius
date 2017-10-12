@@ -105,7 +105,7 @@ void CVortiNinja::process()
 		dietimer++;
 		if (dietimer > NINJA_DYING_SHOW_TIME)
 		{
-			sprite = NINJA_DEAD_FRAME;
+			mSpriteIdx = NINJA_DEAD_FRAME;
 			dead = true;
 		}
 	}
@@ -134,8 +134,8 @@ void CVortiNinja::process()
 
 		}
 
-		sprite = (dir==LEFT) ? NINJA_STAND_LEFT_FRAME : NINJA_STAND_RIGHT_FRAME;
-		sprite += animframe;
+		mSpriteIdx = (dir==LEFT) ? NINJA_STAND_LEFT_FRAME : NINJA_STAND_RIGHT_FRAME;
+		mSpriteIdx += animframe;
 
 		if (animtimer > NINJA_STAND_ANIM_RATE)
 		{
@@ -148,7 +148,7 @@ void CVortiNinja::process()
 
 	case NINJA_KICK:
 		if (!dying)
-			sprite = (dir==LEFT) ? NINJA_KICK_LEFT_FRAME : NINJA_KICK_RIGHT_FRAME;
+			mSpriteIdx = (dir==LEFT) ? NINJA_KICK_LEFT_FRAME : NINJA_KICK_RIGHT_FRAME;
 		else
 			state = NINJA_DYING;
 
@@ -173,11 +173,11 @@ void CVortiNinja::process()
 		break;
 
 	case NINJA_DYING:
-		sprite = NINJA_DYING_FRAME;
+		mSpriteIdx = NINJA_DYING_FRAME;
 
 		if (dietimer > NINJA_DYING_SHOW_TIME)
 		{
-			sprite = NINJA_DEAD_FRAME;
+			mSpriteIdx = NINJA_DEAD_FRAME;
 			dead = true;
 		}
 		break;

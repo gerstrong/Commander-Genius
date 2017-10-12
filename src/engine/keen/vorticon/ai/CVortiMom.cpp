@@ -110,7 +110,7 @@ void CVortiMom::process()
 
 		if (dir==RIGHT)
 		{
-			sprite = MOTHER_WALK_RIGHT_FRAME + animframe;
+			mSpriteIdx = MOTHER_WALK_RIGHT_FRAME + animframe;
 
 			if (blockedr)
 			{
@@ -123,7 +123,7 @@ void CVortiMom::process()
 		}
 		else
 		{
-			sprite = MOTHER_WALK_LEFT_FRAME + animframe;
+			mSpriteIdx = MOTHER_WALK_LEFT_FRAME + animframe;
 
 			if (blockedl)
 				dir = RIGHT;
@@ -142,7 +142,7 @@ void CVortiMom::process()
 		break;
 
 	case MOTHER_SPIT:
-		sprite = (dir==RIGHT) ?
+		mSpriteIdx = (dir==RIGHT) ?
 				MOTHER_SPIT_RIGHT_FRAME:MOTHER_SPIT_LEFT_FRAME;
 
 
@@ -165,7 +165,7 @@ void CVortiMom::process()
 	    {
 		if (mHealthPoints <= 0)
 		{
-		    sprite = MOTHER_DEAD_FRAME;
+		    mSpriteIdx = MOTHER_DEAD_FRAME;
 		    dead = true;
 		    timer = 0;
 
@@ -174,7 +174,7 @@ void CVortiMom::process()
 		    return;
 		}
 	    }	    	    	    
-	    sprite = MOTHER_HURT_FRAME;
+	    mSpriteIdx = MOTHER_HURT_FRAME;
 	    timer++;
 	    break;
 	default: break;
@@ -187,7 +187,7 @@ void CVortiMom::getShotByRay(object_t &obj_type)
 	{
 		if(mHealthPoints>1 && gVideoDriver.getSpecialFXConfig())
 			blink(10);
-		sprite = MOTHER_HURT_FRAME;
+		mSpriteIdx = MOTHER_HURT_FRAME;
 		mHealthPoints--;
 		state = MOTHER_HURT;
 

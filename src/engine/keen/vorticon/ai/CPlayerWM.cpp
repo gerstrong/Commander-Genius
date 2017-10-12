@@ -160,13 +160,13 @@ void CPlayer::verifySolidLevels()
 void CPlayer::selectFrameOnWorldMap()
 {
     // select base frame for current direction
-    if (pShowDir.x==RIGHT) sprite = playerbaseframe + PMAPRIGHTFRAME;
-    else if (pShowDir.x==LEFT) sprite = playerbaseframe + PMAPLEFTFRAME;
+    if (pShowDir.x==RIGHT) mSpriteIdx = playerbaseframe + PMAPRIGHTFRAME;
+    else if (pShowDir.x==LEFT) mSpriteIdx = playerbaseframe + PMAPLEFTFRAME;
 
-    if (pShowDir.y==UP) sprite = playerbaseframe + PMAPUPFRAME;
-    else if (pShowDir.y==DOWN) sprite = playerbaseframe + PMAPDOWNFRAME;
+    if (pShowDir.y==UP) mSpriteIdx = playerbaseframe + PMAPUPFRAME;
+    else if (pShowDir.y==DOWN) mSpriteIdx = playerbaseframe + PMAPDOWNFRAME;
 
     // add in walk frame if walking
-    if (pwalking) sprite += pwalkframe;
+    if (pwalking) mSpriteIdx += pwalkframe;
 }
 

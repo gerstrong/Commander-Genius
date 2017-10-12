@@ -71,7 +71,7 @@ void CEndingEp2::HeadsForEarth()
 		MapLoader.load(2, 81, path);
 
 		m_Player[0].hideplayer = false;
-		m_Player[0].sprite = SPR_VORTICON_MOTHERSHIP;
+		m_Player[0].mSpriteIdx = SPR_VORTICON_MOTHERSHIP;
 		m_Player[0].solid = false;
 
 		mpShipFlySys.reset( new CShipFlySys( m_Player[0], mpMap, SPR_SHIP_RIGHT_EP2, SPR_SHIP_LEFT_EP2 ) );

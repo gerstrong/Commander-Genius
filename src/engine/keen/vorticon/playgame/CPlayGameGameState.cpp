@@ -133,7 +133,7 @@ bool CPlayGameVorticon::loadGameState()
 	  ok &= savedGame.decodeData(object.cansupportplayer);
 	  ok &= savedGame.decodeData(object.inhibitfall);
 	  ok &= savedGame.decodeData(object.honorPriority);
-	  ok &= savedGame.decodeData(object.sprite);
+	  ok &= savedGame.decodeData(object.mSpriteIdx);
 	  object.performCollisions();
 	  
 	  if(object.m_type == OBJ_DOOR or
@@ -321,7 +321,7 @@ bool CPlayGameVorticon::loadXMLGameState()
             spriteObj.cansupportplayer = spriteTree.get<bool>("cansupportplayer", true);
             spriteObj.inhibitfall = spriteTree.get<bool>("inhibitfall", true);
             spriteObj.honorPriority = spriteTree.get<bool>("honorPriority", true);
-            spriteObj.sprite = spriteTree.get<int>("sprite", 0);
+            spriteObj.mSpriteIdx = spriteTree.get<int>("sprite", 0);
 
 
             spriteObj.performCollisions();
@@ -459,7 +459,7 @@ bool CPlayGameVorticon::saveXMLGameState()
         spriteNode.put("cansupportplayer", spriteObj->cansupportplayer);
         spriteNode.put("inhibitfall", spriteObj->inhibitfall);
         spriteNode.put("honorPriority", spriteObj->honorPriority);
-        spriteNode.put("sprite", spriteObj->sprite);
+        spriteNode.put("sprite", spriteObj->mSpriteIdx);
     }
 
     // Save the map_data as it is left       
@@ -543,7 +543,7 @@ bool CPlayGameVorticon::saveGameState()
 		savedGame.encodeData(mSpriteObjectContainer[i]->cansupportplayer);
 		savedGame.encodeData(mSpriteObjectContainer[i]->inhibitfall);
 		savedGame.encodeData(mSpriteObjectContainer[i]->honorPriority);
-		savedGame.encodeData(mSpriteObjectContainer[i]->sprite);
+		savedGame.encodeData(mSpriteObjectContainer[i]->mSpriteIdx);
 	}
 
 	// Save the map_data as it is left

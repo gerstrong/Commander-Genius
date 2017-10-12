@@ -114,7 +114,7 @@ void CPlayer::setupCameraObject()
 void CPlayer::setDatatoZero()
 {
 	// When worldmap is set up, use that frame
-	sprite = PMAPDOWNFRAME;
+	mSpriteIdx = PMAPDOWNFRAME;
 
 	performCollisions();
 

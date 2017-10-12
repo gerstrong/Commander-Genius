@@ -110,7 +110,7 @@ timer(0)
 		break;
 	case SE_MORTIMER_ZAPSUP:  break;
 	case SE_MORTIMER_RANDOMZAPS:
-		sprite = BLANKSPRITE;
+		mSpriteIdx = BLANKSPRITE;
 		counter = 0;
 		break;
 
@@ -197,7 +197,7 @@ bool CManglingMachine::isNearby(CVorticonSpriteObject &theObject)
 		if(sparksleft == 0)
 		{
 			// keen just destroyed the last spark
-			sprite = BLANKSPRITE;
+			mSpriteIdx = BLANKSPRITE;
 			armsDestroy = true;
 			// go into a state where we'll destroy mortimer's arms
 			state = MSPARK_DESTROYARMS;
@@ -326,7 +326,7 @@ void CManglingMachine::se_mortimer_spark()
 	switch(state)
 	{
 	case MSPARK_IDLE:
-		sprite = MORTIMER_SPARK_BASEFRAME + frame;
+		mSpriteIdx = MORTIMER_SPARK_BASEFRAME + frame;
 
 		if (timer > SPARK_ANIMRATE)
 		{
@@ -455,7 +455,7 @@ void CManglingMachine::se_mortimer_heart(CVorticonSpriteObject *obj)
         switch(state)
         {
         case HEART_IDLE:
-            sprite = MORTIMER_HEART_BASEFRAME + frame;
+            mSpriteIdx = MORTIMER_HEART_BASEFRAME + frame;
 
             if (timer > HEART_ANIMRATE)
             {
@@ -467,7 +467,7 @@ void CManglingMachine::se_mortimer_heart(CVorticonSpriteObject *obj)
             if (mHealthPoints <= 0)
             {
                 legsDestroy = true;
-                sprite = BLANKSPRITE;
+                mSpriteIdx = BLANKSPRITE;
                 set_mortimer_surprised(true);
 
                 // destroy Mortimer's machine

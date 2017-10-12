@@ -89,7 +89,7 @@ void CTantalusRay::shootray()
 		if( x>0 && y>0 )
 			mpMap->gotoPos(x, y);
 
-		shootObject.sprite = TANTALUS_SPRITE + m_alternate_sprite;
+		shootObject.mSpriteIdx = TANTALUS_SPRITE + m_alternate_sprite;
 		m_alternate_sprite ^= 1;
 
 		if( (shot_x>>CSF) >= EARTH_COORD_X)
@@ -122,7 +122,7 @@ void CTantalusRay::explodeEarth()
 			{
 				chunk.reset( new CEarthChunk(mpMap.get(),shot_x+(14<<STC), shot_y) );
 				chunk->m_Direction = EC_UPLEFTLEFT;
-				chunk->sprite = (i > 4) ? EARTHCHUNK_SMALL_DN : EARTHCHUNK_SMALL_UP;
+				chunk->mSpriteIdx = (i > 4) ? EARTHCHUNK_SMALL_DN : EARTHCHUNK_SMALL_UP;
 				
 				m_Object.push_back( move(chunk) );
 			}
@@ -144,25 +144,25 @@ void CTantalusRay::explodeEarth()
 			// spawn four big fragments of the earth to go flying off
 			chunk.reset(  new CEarthChunk(mpMap.get(),shot_x+(8<<STC), shot_y) );
 			chunk->m_Direction = EC_UPLEFT;
-			chunk->sprite = EARTHCHUNK_BIG_UP;
+			chunk->mSpriteIdx = EARTHCHUNK_BIG_UP;
 			chunk->solid = false;
 			m_Object.push_back( move(chunk) );
 
 			chunk.reset( new CEarthChunk(mpMap.get(),shot_x+(8<<STC), shot_y) );
 			chunk->m_Direction = EC_UPRIGHT;
-			chunk->sprite = EARTHCHUNK_BIG_UP;
+			chunk->mSpriteIdx = EARTHCHUNK_BIG_UP;
 			chunk->solid = false;
 			m_Object.push_back( move(chunk) );
 
 			chunk.reset( new CEarthChunk(mpMap.get(),shot_x+(8<<STC), shot_y) );
 			chunk->m_Direction = EC_DOWNRIGHT;
-			chunk->sprite = EARTHCHUNK_BIG_DN;
+			chunk->mSpriteIdx = EARTHCHUNK_BIG_DN;
 			chunk->solid = false;
 			m_Object.push_back( move(chunk) );
 
 			chunk.reset( new CEarthChunk(mpMap.get(),shot_x+(8<<STC), shot_y) );
 			chunk->m_Direction = EC_DOWNLEFT;
-			chunk->sprite = EARTHCHUNK_BIG_DN;
+			chunk->mSpriteIdx = EARTHCHUNK_BIG_DN;
 			chunk->solid = false;
 			m_Object.push_back( move(chunk) );
 

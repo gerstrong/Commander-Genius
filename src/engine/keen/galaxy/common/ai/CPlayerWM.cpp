@@ -58,7 +58,7 @@ mounted(false)
 	CGalaxySpriteObject::setActionForce(0);
 	setActionSprite();
 
-	walkBaseFrame = sprite;
+	walkBaseFrame = mSpriteIdx;
 	wavingBaseFrame = walkBaseFrame + 22;
 	swimBaseFrame = walkBaseFrame + 24;
 	climbBaseFrame = walkBaseFrame + 37;
@@ -278,8 +278,8 @@ void CPlayerWM::processWaving()
     }
 
     m_animation_time = 10;
-    sprite = m_basesprite;
-    sprite +=  m_animation%2;
+    mSpriteIdx = m_basesprite;
+    mSpriteIdx +=  m_animation%2;
 }
 
 
@@ -293,7 +293,7 @@ void CPlayerWM::processMoving()
     // Only happens in Keen6 when keening is hanging on the satelite
     if(mounted)
     {
-        sprite = 181;
+        mSpriteIdx = 181;
         return;
     }
     
@@ -509,7 +509,7 @@ void CPlayerWM::processClimbing()
 {
     moveYDir(yDirection*30);
     
-    sprite = m_basesprite + m_animation%2;
+    mSpriteIdx = m_basesprite + m_animation%2;
 
     direction_t climbDir;
     
@@ -1223,30 +1223,30 @@ bool CPlayerWM::checkforClimbing(direction_t &climbDir)
 void CPlayerWM::performWalkingAnimation(bool walking)
 {
 	if(xDirection == RIGHT && yDirection == 0)
-		sprite = m_basesprite + 1;
+		mSpriteIdx = m_basesprite + 1;
 	else if(xDirection == 0 && yDirection == UP)
-		sprite = m_basesprite + 4;
+		mSpriteIdx = m_basesprite + 4;
 	else if(xDirection == 0 && yDirection == DOWN)
-		sprite = m_basesprite + 7;
+		mSpriteIdx = m_basesprite + 7;
 	else if(xDirection == RIGHT && yDirection == DOWN)
-		sprite = m_basesprite + 10;
+		mSpriteIdx = m_basesprite + 10;
 	else if(xDirection == LEFT && yDirection == DOWN)
-		sprite = m_basesprite + 13;
+		mSpriteIdx = m_basesprite + 13;
 	else if(xDirection == LEFT && yDirection == UP)
-		sprite = m_basesprite + 16;
+		mSpriteIdx = m_basesprite + 16;
 	else if(xDirection == RIGHT && yDirection == UP)
-		sprite = m_basesprite + 19;
+		mSpriteIdx = m_basesprite + 19;
 	else
-		sprite = m_basesprite - 2;
+		mSpriteIdx = m_basesprite - 2;
 
 	if(walking)
 	{
 		m_animation_time = 5;
-		sprite +=  m_animation%3;
+		mSpriteIdx +=  m_animation%3;
 		playWalkSound();
 	}
 	else
-		sprite +=  2;
+		mSpriteIdx +=  2;
 
 	if(swimming)
 	{
@@ -1262,21 +1262,21 @@ void CPlayerWM::performWalkingAnimation(bool walking)
 void CPlayerWM::performSwimmingAnimation(const bool moving)
 {
 	if(xDirection == RIGHT && yDirection == 0)
-		sprite = m_basesprite + 2;
+		mSpriteIdx = m_basesprite + 2;
 	else if(xDirection == 0 && yDirection == DOWN)
-		sprite = m_basesprite + 4;
+		mSpriteIdx = m_basesprite + 4;
 	else if(xDirection == LEFT && yDirection == 0)
-		sprite = m_basesprite + 6;
+		mSpriteIdx = m_basesprite + 6;
 	else if(xDirection == RIGHT && yDirection == UP)
-		sprite = m_basesprite + 8;
+		mSpriteIdx = m_basesprite + 8;
 	else if(xDirection == RIGHT && yDirection == DOWN)
-		sprite = m_basesprite + 10;
+		mSpriteIdx = m_basesprite + 10;
 	else if(xDirection == LEFT && yDirection == DOWN)
-		sprite = m_basesprite + 12;
+		mSpriteIdx = m_basesprite + 12;
 	else if(xDirection == LEFT && yDirection == UP)
-		sprite = m_basesprite + 14;
+		mSpriteIdx = m_basesprite + 14;
 	else
-		sprite = m_basesprite;
+		mSpriteIdx = m_basesprite;
 
 	if(!swimming)
 	{
@@ -1285,7 +1285,7 @@ void CPlayerWM::performSwimmingAnimation(const bool moving)
 	}
 
 	m_animation_time = 5;
-	sprite +=  m_animation%2;
+	mSpriteIdx +=  m_animation%2;
 
     playSwimSound(moving);
 }

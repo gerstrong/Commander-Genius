@@ -24,7 +24,7 @@ silent(false)
     this->vector_y = vector_y;
 
     inhibitfall = true;
-    sprite = BLANKSPRITE;
+    mSpriteIdx = BLANKSPRITE;
     blockedd = true;
 }
 

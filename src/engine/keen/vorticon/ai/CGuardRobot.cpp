@@ -63,7 +63,7 @@ void CGuardRobot::process()
 		else
 			animtimer++;
 
-		sprite = LOOK_FRAME + frame;
+		mSpriteIdx = LOOK_FRAME + frame;
 
 		// when time is up go back to moving
 		if (timer > LOOK_TOTALTIME)
@@ -92,9 +92,9 @@ void CGuardRobot::process()
 		} else animtimer++;
 
 		if (movedir==LEFT)
-			sprite = WALK_LEFT_FRAME + frame;
+			mSpriteIdx = WALK_LEFT_FRAME + frame;
 		else
-			sprite = WALK_RIGHT_FRAME + frame;
+			mSpriteIdx = WALK_RIGHT_FRAME + frame;
 
 		// if we're about to, or just did, fire a volley, don't move
 		if (!hardmode)
@@ -128,7 +128,7 @@ void CGuardRobot::process()
                     else
                         newobject = new CRay(mp_Map,getXPosition(), getYUpPos()+(5<<STC), LEFT, CENTER, getSpriteVariantId());
                     newobject->setOwner(OBJ_GUARDROBOT, m_index);
-                    newobject->sprite = ENEMYRAYEP2;
+                    newobject->mSpriteIdx = ENEMYRAYEP2;
 
                     gEventManager.add(new EventSpawnObject(newobject));
 
@@ -178,7 +178,7 @@ void CGuardRobot::process()
 		}
 		else
 		{  // move right
-			sprite = WALK_RIGHT_FRAME + frame;
+			mSpriteIdx = WALK_RIGHT_FRAME + frame;
 			if (!blockedr)
 			{
 				xinertia = WALK_SPEED;

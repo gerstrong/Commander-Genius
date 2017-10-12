@@ -44,12 +44,12 @@ bool CTank::isNearby(CVorticonSpriteObject &theObject)
 		if(player->getXMidPos() < getXMidPos())
 		{
 		    movedir = LEFT;
-		    sprite = TANK_WALK_LEFT_FRAME;
+		    mSpriteIdx = TANK_WALK_LEFT_FRAME;
 		}
 		else if(player->getXMidPos() > getXMidPos())
 		{
 		    movedir = RIGHT;
-		    sprite = TANK_WALK_RIGHT_FRAME;
+		    mSpriteIdx = TANK_WALK_RIGHT_FRAME;
 		}
 		state = TANK_WALK;
 		animtimer = 0;
@@ -71,7 +71,7 @@ void CTank::process()
 		if (movedir==LEFT)
 		{  // move left
 			xDirection = LEFT;
-			sprite = TANK_WALK_LEFT_FRAME + frame;
+			mSpriteIdx = TANK_WALK_LEFT_FRAME + frame;
 			xinertia = -TANK_WALK_SPEED;
 			if( blockedl )
 			{
@@ -87,7 +87,7 @@ void CTank::process()
 		else
 		{  // move right
 			xDirection = RIGHT;
-			sprite = TANK_WALK_RIGHT_FRAME + frame;
+			mSpriteIdx = TANK_WALK_RIGHT_FRAME + frame;
 			xinertia = TANK_WALK_SPEED;
 			if ( blockedr )
 			{
@@ -134,7 +134,7 @@ void CTank::process()
 
 	case TANK_TURN:
 		// If it gets stuck somewhere turn around
-		sprite = TANK_LOOK_FRAME + frame;
+		mSpriteIdx = TANK_LOOK_FRAME + frame;
 		// animation
 		if (animtimer > TANK_LOOK_ANIM_TIME)
 		{
@@ -165,7 +165,7 @@ void CTank::process()
                 newobject = new CRay(mp_Map, getXMidPos()-(1<<CSF), getYUpPos()+height_top, LEFT, CENTER, getSpriteVariantId());
 			newobject->setOwner(OBJ_TANK, m_index);
 			newobject->setSpeed(108);
-			newobject->sprite = ENEMYRAY;
+			newobject->mSpriteIdx = ENEMYRAY;
 			newobject->canbezapped = true;
 			gEventManager.add(new EventSpawnObject(newobject));
 		}
@@ -191,7 +191,7 @@ void CTank::process()
 		break;
 
 	case TANK_LOOK:
-		sprite = TANK_LOOK_FRAME + frame;
+		mSpriteIdx = TANK_LOOK_FRAME + frame;
 		// animation
 		if (animtimer > TANK_LOOK_ANIM_TIME)
 		{

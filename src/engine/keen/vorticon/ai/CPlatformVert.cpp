@@ -31,7 +31,7 @@ void CPlatformVert::process()
 {
     CCarrier::process();
     
-	sprite = OBJ_PLATFORM_DEFSPRITE_EP3 + animframe;
+	mSpriteIdx = OBJ_PLATFORM_DEFSPRITE_EP3 + animframe;
 
 	if (animtimer > PLATVERT_ANIM_RATE)
 	{

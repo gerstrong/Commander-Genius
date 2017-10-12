@@ -85,7 +85,7 @@ bool CVorticon::isNearby(CVorticonSpriteObject &theObject)
     {
         if(state == VORT_LOOK)
         {
-            sprite = LookFrame + frame;
+            mSpriteIdx = LookFrame + frame;
 
             if (animtimer > VORT_LOOK_ANIM_TIME)
             {
@@ -182,7 +182,7 @@ void CVorticon::process()
 
 		break;
 	case VORT_LOOK:
-		sprite = LookFrame + frame;
+		mSpriteIdx = LookFrame + frame;
 
 		if (animtimer > VORT_LOOK_ANIM_TIME) 
 		{
@@ -229,7 +229,7 @@ void CVorticon::process()
 			}
 		}
 		if (movedir == LEFT) { // move left
-			sprite = WalkLeftFrame + frame;
+			mSpriteIdx = WalkLeftFrame + frame;
 
 			if (!blockedl)
             {
@@ -262,7 +262,7 @@ void CVorticon::process()
         }
         else
         { // move right
-			sprite = WalkRightFrame + frame;
+			mSpriteIdx = WalkRightFrame + frame;
 
 			if (!blockedr)
             {
@@ -301,7 +301,7 @@ void CVorticon::process()
 			animtimer++;
 		break;
 	case VORT_DYING:
-		sprite = DyingFrame + frame;
+		mSpriteIdx = DyingFrame + frame;
 
 		if (animtimer > VORT_DIE_ANIM_TIME) {
 			frame++;
@@ -317,9 +317,9 @@ void CVorticon::process()
 			animtimer++;
 		break;
 	case VORT2_DYING:
-		sprite = DyingFrame;
+		mSpriteIdx = DyingFrame;
 		if (animtimer > VORT2_DIE_ANIM_TIME) {
-			sprite = DeadFrame;
+			mSpriteIdx = DeadFrame;
 			dead = true;
 		} else {
 			animtimer++;
@@ -342,9 +342,9 @@ void CVorticon::initiateJump()
 			+ VORT_MIN_JUMP_HEIGHT);
 
 	if (movedir == RIGHT)
-		sprite = JumpRightFrame;
+		mSpriteIdx = JumpRightFrame;
 	else
-		sprite = JumpLeftFrame;
+		mSpriteIdx = JumpLeftFrame;
 
 	state = VORT_JUMP;
 }

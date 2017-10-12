@@ -101,7 +101,7 @@ void CGarg::process()
 		// die, you stupid garg, die!
 		state = GARG_DYING;
 		dying = true;
-		sprite = GARG_DYING_FRAME;
+		mSpriteIdx = GARG_DYING_FRAME;
 		yinertia = GARGDIE_START_INERTIA;
 		playSound(SOUND_GARG_DIE);
 	}
@@ -110,8 +110,8 @@ void CGarg::process()
 	if(state != GARG_LOOK &&  state != GARG_CHARGE && state != GARG_DYING)
 	{
 		// Set the proper frame
-		sprite = (movedir==LEFT) ? GARG_WALK_LEFT : GARG_WALK_RIGHT;
-		sprite += walkframe;
+		mSpriteIdx = (movedir==LEFT) ? GARG_WALK_LEFT : GARG_WALK_RIGHT;
+		mSpriteIdx += walkframe;
 
 		// collides? Change direction
 		if( movedir==LEFT && blockedl )
@@ -133,7 +133,7 @@ void CGarg::process()
 	case GARG_DYING:
 		if ( blockedd && yinertia >= 0 )
 		{
-			sprite = GARG_DEAD_FRAME;
+			mSpriteIdx = GARG_DEAD_FRAME;
 			dead = true;
 		}
 		break;
@@ -166,7 +166,7 @@ void CGarg::process()
 		// look animation
 		if (!timer)
 		{
-			sprite = GARG_STAND + lookframe;
+			mSpriteIdx = GARG_STAND + lookframe;
 			looktimes++;
 
 			if (++lookframe>3)
@@ -230,7 +230,7 @@ void CGarg::charge()
 {
 	if (movedir==LEFT)
 	{  // garg is charging left
-		sprite = GARG_WALK_LEFT + walkframe;
+		mSpriteIdx = GARG_WALK_LEFT + walkframe;
 		if (!blockedl)
 		{
 			xinertia = -GARG_CHARGE_SPEED;
@@ -245,7 +245,7 @@ void CGarg::charge()
 	}
 	else
 	{  // garg is charging right
-		sprite = GARG_WALK_RIGHT + walkframe;
+		mSpriteIdx = GARG_WALK_RIGHT + walkframe;
 		if (!blockedr)
 		{
 			xinertia = GARG_CHARGE_SPEED;

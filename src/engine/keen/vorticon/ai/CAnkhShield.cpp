@@ -25,7 +25,7 @@ ankhtime(attachedPlayer.ankhtime)
 	inhibitfall = true;
 	canbezapped = false;
 	state = ANKH_STATE_NOFLICKER;
-	sprite = ANKH_SHIELD_FRAME;
+	mSpriteIdx = ANKH_SHIELD_FRAME;
 }
 
 void CAnkhShield::process()
@@ -52,24 +52,24 @@ void CAnkhShield::process()
 	switch(state)
 	{
 	case ANKH_STATE_NOFLICKER:
-		sprite = ANKH_SHIELD_FRAME + (frame&1);
+		mSpriteIdx = ANKH_SHIELD_FRAME + (frame&1);
 		break;
 	case ANKH_STATE_FLICKERFAST:
 		if (frame&1)
-			sprite = BLANKSPRITE;
+			mSpriteIdx = BLANKSPRITE;
 		else
 		{
 			if (frame&2)
-				sprite = ANKH_SHIELD_FRAME+1;
+				mSpriteIdx = ANKH_SHIELD_FRAME+1;
 			else
-				sprite = ANKH_SHIELD_FRAME;
+				mSpriteIdx = ANKH_SHIELD_FRAME;
 		}
 		break;
 	case ANKH_STATE_FLICKERSLOW:
 		if (frame>4)
-			sprite = BLANKSPRITE;
+			mSpriteIdx = BLANKSPRITE;
 		else
-			sprite = ANKH_SHIELD_FRAME;
+			mSpriteIdx = ANKH_SHIELD_FRAME;
 		break;
 	}
 

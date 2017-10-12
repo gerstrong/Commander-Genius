@@ -69,7 +69,7 @@ void CEndingEp3::HonorScene()
 
 		m_Player[0].hideplayer = false;
 		m_Player[0].moveTo(Vector2D<int>(244<<STC, 104<<STC));
-		m_Player[0].sprite = 0;
+		m_Player[0].mSpriteIdx = 0;
 
 		mpMap->gotoPos(32, 32);
 		mpMap->drawAll();
@@ -119,7 +119,7 @@ void CEndingEp3::PaparazziScene()
 		m_mustsetup = true;
 		m_Player[0].hideplayer = true;
 		m_Player[0].moveToForce(Vector2D<int>(330<<STC, 104<<STC));
-		m_Player[0].sprite = 0;
+		m_Player[0].mSpriteIdx = 0;
 	}
 }
 

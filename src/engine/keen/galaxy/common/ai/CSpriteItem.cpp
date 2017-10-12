@@ -21,7 +21,7 @@ mGravity(gravity)
 {
 	m_basesprite = sprite;
 	m_timer = (y*256+x)%MAX_ANIMATION_TIMER;
-	this->sprite = (m_timer%2 == 0) ? m_basesprite : m_basesprite+1;
+	this->mSpriteIdx = (m_timer%2 == 0) ? m_basesprite : m_basesprite+1;
 	calcBoundingBoxes();
 	inhibitfall = true;
 	yinertia = -70;
@@ -39,7 +39,7 @@ void CSpriteItem::process()
     // Do the animation stuff here!
     if(m_timer == 0)
     {
-	this->sprite = (m_basesprite == this->sprite) ? m_basesprite + 1 : m_basesprite;
+	this->mSpriteIdx = (m_basesprite == this->mSpriteIdx) ? m_basesprite + 1 : m_basesprite;
     }
     
     if(m_timer < MAX_ANIMATION_TIMER)

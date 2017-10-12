@@ -149,7 +149,7 @@ void CPlatformVertical::draw()
     if( dontdraw )
         return;
     
-    GsSprite &Sprite = gGraphics.getSprite(mSprVar,sprite);
+    GsSprite &Sprite = gGraphics.getSprite(mSprVar,mSpriteIdx);
 
     scrx = (m_Pos.x>>STC)-mp_Map->m_scrollx;
     scry = (m_Pos.y>>STC)-mp_Map->m_scrolly;
@@ -186,7 +186,7 @@ void CPlatformVertical::draw()
                 continue;
 
             GsSprite &playSprite = gGraphics.getSprite(player->getSpriteVariantId(),
-                                                          player->sprite);
+                                                          player->mSpriteIdx);
             int distx = player->getXPosition()-getXPosition();
             int disty = player->getYPosition()-getYPosition();
 

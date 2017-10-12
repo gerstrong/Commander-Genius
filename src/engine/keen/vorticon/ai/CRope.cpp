@@ -16,7 +16,7 @@ CVorticonSpriteObject(p_map, x, y, OBJ_ROPE)
 	state = ROPE_IDLE;
 	canbezapped = 1;
 	inhibitfall = true;
-	sprite = OBJ_ROPE_DEFSPRITE;
+	mSpriteIdx = OBJ_ROPE_DEFSPRITE;
 	solid = false;
 	droptimer = 0;
 }
@@ -57,7 +57,7 @@ void CRope::getShotByRay(object_t &obj_type)
 			state = ROPE_DROPSTONE;
 			droptimer = 0;
 			// hide the rope
-			sprite = BLANKSPRITE;
+			mSpriteIdx = BLANKSPRITE;
 			// get upper left corner of the stone
 			const int x = (getXPosition()>>CSF);
 			const int y = (getYPosition()>>CSF);

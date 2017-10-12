@@ -22,7 +22,7 @@ animtimer(0)
 
 void CEarthExplosion::process()
 {
-	sprite = EXPLODESPRITE + animframe;
+	mSpriteIdx = EXPLODESPRITE + animframe;
 	if (animtimer > EXPLODE_ANIM_RATE)
 	{
 		if (m_HorDir!=RIGHT && animframe==0)

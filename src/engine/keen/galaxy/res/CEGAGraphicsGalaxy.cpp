@@ -1095,7 +1095,8 @@ bool CEGAGraphicsGalaxy::readMaskedTilemaps( size_t NumTiles, size_t pbasetilesi
 
 
 
-bool CEGAGraphicsGalaxy::readSprites( size_t NumSprites, size_t IndexSprite )
+bool CEGAGraphicsGalaxy::readSprites( const size_t NumSprites,
+                                      const size_t IndexSprite )
 {
     // Create all the sprites
     gGraphics.createEmptySprites(4, NumSprites);
@@ -1129,10 +1130,10 @@ bool CEGAGraphicsGalaxy::readSprites( size_t NumSprites, size_t IndexSprite )
             return false;
         }
 
-        GsSprite &Sprite = gGraphics.getSprite(0, i);
-        Sprite.setSize( curSprHead.Width*8, curSprHead.Height );
+        GsSprite &sprite = gGraphics.getSprite(0, i);
+        sprite.setSize( curSprHead.Width*8, curSprHead.Height );
 
-        Sprite.setOffset( curSprHead.OrgX>>(TILE_S), curSprHead.OrgY>>(TILE_S) );
+        sprite.setOffset( curSprHead.OrgX>>(TILE_S), curSprHead.OrgY>>(TILE_S) );
 
         // Setup the collision information
         int boxX1 = ((curSprHead.Rx1) << (STC-TILE_S));
@@ -1152,12 +1153,12 @@ bool CEGAGraphicsGalaxy::readSprites( size_t NumSprites, size_t IndexSprite )
            boxY1 += (1<<STC);
         }
 
-        Sprite.setBoundingBoxCoordinates( boxX1, boxY1, boxX2, boxY2 );
+        sprite.setBoundingBoxCoordinates( boxX1, boxY1, boxX2, boxY2 );
 
-        Sprite.createSurface( gVideoDriver.mpVideoEngine->getBlitSurface()->flags,
-                gGraphics.Palette.m_Palette );
+        sprite.createSurface( gVideoDriver.mpVideoEngine->getBlitSurface()->flags,
+                              gGraphics.Palette.m_Palette );
 
-        SDL_Surface *sfc = Sprite.getSDLSurface();
+        SDL_Surface *sfc = sprite.getSDLSurface();
         SDL_FillRect(sfc,NULL, 0);
         if(SDL_MUSTLOCK(sfc))   SDL_LockSurface(sfc);
 
@@ -1208,10 +1209,10 @@ bool CEGAGraphicsGalaxy::readSprites( size_t NumSprites, size_t IndexSprite )
         }
         SDL_UnlockSurface(sfc);
 
-        Sprite.setName(m_SpriteNameMap[ep][i]);
+        sprite.setName(m_SpriteNameMap[ep][i]);
     }
 
-    // Now let's copy all the sprites. After that some of them are tinted tint to the proper colors
+    // Now let's copy all the sprites. After that some of them are tinted to the proper colors
 
     auto &SpriteOrigVec = gGraphics.getSpriteVec(0);
 
@@ -1235,7 +1236,6 @@ bool CEGAGraphicsGalaxy::readSprites( size_t NumSprites, size_t IndexSprite )
         // Yellow against Green
         sprite.exchangeSpriteColor( 2, 6, 0 );
         sprite.exchangeSpriteColor( 10, 14, 0 );
-        sprite.optimizeSurface();
 
         std::string filename = "4SPR0000.bmp";
 
@@ -1264,7 +1264,6 @@ bool CEGAGraphicsGalaxy::readSprites( size_t NumSprites, size_t IndexSprite )
         // Yellow against Purple
         sprite.exchangeSpriteColor( 5, 6, 0 );
         sprite.exchangeSpriteColor( 13, 14, 0 );
-        sprite.optimizeSurface();
     }
 
     // Fourth Player
@@ -1278,12 +1277,6 @@ bool CEGAGraphicsGalaxy::readSprites( size_t NumSprites, size_t IndexSprite )
         // Green against Purple
         sprite.exchangeSpriteColor( 2, 5, 0 );
         sprite.exchangeSpriteColor( 10, 13, 0 );
-        sprite.optimizeSurface();
-    }
-
-    for(auto &sprite : gGraphics.getSpriteVec(0))
-    {
-        sprite.optimizeSurface();
     }
 
     return true;

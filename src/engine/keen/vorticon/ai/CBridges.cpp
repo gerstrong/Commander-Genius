@@ -25,7 +25,7 @@ m_dir(LEFT)
 	timer = 0;
 	inhibitfall = true;
 	canbezapped = false;
-	sprite = BLANKSPRITE;
+	mSpriteIdx = BLANKSPRITE;
 
 	// if the platform is already extended, turn ourselves
 	// into an se_retract_plat()

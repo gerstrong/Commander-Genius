@@ -68,7 +68,7 @@ void CCarrier::draw()
     if( dontdraw )
         return;
     
-    GsSprite &Sprite = gGraphics.getSprite(mSprVar,sprite);
+    GsSprite &Sprite = gGraphics.getSprite(mSprVar,mSpriteIdx);
     
     scrx = (m_Pos.x>>STC)-mp_Map->m_scrollx;
     scry = (m_Pos.y>>STC)-mp_Map->m_scrolly;
@@ -96,7 +96,7 @@ void CCarrier::draw()
                 if(!carriedPlayer)
                     continue;
 
-                GsSprite &playSprite = gGraphics.getSprite(mSprVar, carriedPlayer->sprite);
+                GsSprite &playSprite = gGraphics.getSprite(mSprVar, carriedPlayer->mSpriteIdx);
                 int distx = carriedPlayer->getXPosition()-getXPosition();
                 int disty = carriedPlayer->getYPosition()-getYPosition();
 

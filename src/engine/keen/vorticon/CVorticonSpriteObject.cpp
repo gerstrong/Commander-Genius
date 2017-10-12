@@ -30,63 +30,63 @@ void CVorticonSpriteObject::setupObjectType(const int Episode)
 	switch(m_type)
 	{
 	// Mainly Episode 1
-	case OBJ_GARG: sprite = OBJ_GARG_DEFSPRITE; break;
-	case OBJ_BUTLER: sprite = OBJ_BUTLER_DEFSPRITE; break;
-	case OBJ_TANK: sprite = OBJ_TANK_DEFSPRITE; break;
-	case OBJ_ICECHUNK: sprite = OBJ_ICECHUNK_DEFSPRITE; break;
-	case OBJ_ICEBIT: sprite = OBJ_ICEBIT_DEFSPRITE; break;
-	case OBJ_ICECANNON: sprite = OBJ_ICECHUNK_DEFSPRITE; break;
-	case OBJ_ROPE: sprite = OBJ_ROPE_DEFSPRITE; break;
+	case OBJ_GARG: mSpriteIdx = OBJ_GARG_DEFSPRITE; break;
+	case OBJ_BUTLER: mSpriteIdx = OBJ_BUTLER_DEFSPRITE; break;
+	case OBJ_TANK: mSpriteIdx = OBJ_TANK_DEFSPRITE; break;
+	case OBJ_ICECHUNK: mSpriteIdx = OBJ_ICECHUNK_DEFSPRITE; break;
+	case OBJ_ICEBIT: mSpriteIdx = OBJ_ICEBIT_DEFSPRITE; break;
+	case OBJ_ICECANNON: mSpriteIdx = OBJ_ICECHUNK_DEFSPRITE; break;
+	case OBJ_ROPE: mSpriteIdx = OBJ_ROPE_DEFSPRITE; break;
 
 	// Mainly Episode 2
-	case OBJ_SCRUB: sprite = OBJ_SCRUB_DEFSPRITE; break;
-	case OBJ_GUARDROBOT: sprite = OBJ_TANKEP2_DEFSPRITE; break;
-	case OBJ_VORTELITE: sprite = OBJ_VORTELITE_DEFSPRITE; break;
-	case OBJ_SPARK: sprite = OBJ_SPARK_DEFSPRITE_EP2; break;
+	case OBJ_SCRUB: mSpriteIdx = OBJ_SCRUB_DEFSPRITE; break;
+	case OBJ_GUARDROBOT: mSpriteIdx = OBJ_TANKEP2_DEFSPRITE; break;
+	case OBJ_VORTELITE: mSpriteIdx = OBJ_VORTELITE_DEFSPRITE; break;
+	case OBJ_SPARK: mSpriteIdx = OBJ_SPARK_DEFSPRITE_EP2; break;
 
 	// Mainly Episode 3
-	case OBJ_FOOB: sprite = OBJ_FOOB_DEFSPRITE; break;
-	case OBJ_NINJA: sprite = OBJ_NINJA_DEFSPRITE; break;
-	case OBJ_MOTHER: sprite = OBJ_MOTHER_DEFSPRITE; break;
-	case OBJ_MEEP: sprite = OBJ_MEEP_DEFSPRITE; break;
-	case OBJ_BALL: sprite = OBJ_BALL_DEFSPRITE; break;
-	case OBJ_JACK: sprite = OBJ_JACK_DEFSPRITE; break;
-	case OBJ_MESSIE: sprite = OBJ_NESSIE_DEFSPRITE; break;
-	case OBJ_AUTORAY_V: sprite = RAY_VERT_EP3; break;
-	case OBJ_SNDWAVE: sprite = OBJ_SNDWAVE_DEFSPRITE; break;
+	case OBJ_FOOB: mSpriteIdx = OBJ_FOOB_DEFSPRITE; break;
+	case OBJ_NINJA: mSpriteIdx = OBJ_NINJA_DEFSPRITE; break;
+	case OBJ_MOTHER: mSpriteIdx = OBJ_MOTHER_DEFSPRITE; break;
+	case OBJ_MEEP: mSpriteIdx = OBJ_MEEP_DEFSPRITE; break;
+	case OBJ_BALL: mSpriteIdx = OBJ_BALL_DEFSPRITE; break;
+	case OBJ_JACK: mSpriteIdx = OBJ_JACK_DEFSPRITE; break;
+	case OBJ_MESSIE: mSpriteIdx = OBJ_NESSIE_DEFSPRITE; break;
+	case OBJ_AUTORAY_V: mSpriteIdx = RAY_VERT_EP3; break;
+	case OBJ_SNDWAVE: mSpriteIdx = OBJ_SNDWAVE_DEFSPRITE; break;
 
 	case OBJ_VORT:
 		{
-			if(Episode == 1) sprite = OBJ_VORT_DEFSPRITE_EP1;
-			else if(Episode == 2) sprite = OBJ_VORT_DEFSPRITE_EP2;
-			else if(Episode == 3) sprite = OBJ_VORT_DEFSPRITE_EP3;
+			if(Episode == 1) mSpriteIdx = OBJ_VORT_DEFSPRITE_EP1;
+			else if(Episode == 2) mSpriteIdx = OBJ_VORT_DEFSPRITE_EP2;
+			else if(Episode == 3) mSpriteIdx = OBJ_VORT_DEFSPRITE_EP3;
 		}break;
 
 	case OBJ_BABY:
 	{
-		if(Episode == 2) sprite = OBJ_BABY_DEFSPRITE_EP2;
-		else sprite = OBJ_BABY_DEFSPRITE_EP3;
+		if(Episode == 2) mSpriteIdx = OBJ_BABY_DEFSPRITE_EP2;
+		else mSpriteIdx = OBJ_BABY_DEFSPRITE_EP3;
 	}break;
 
 	case OBJ_PLATFORM:
 	case OBJ_PLATVERT:
 	{
-		if(Episode == 2) sprite = OBJ_PLATFORM_DEFSPRITE_EP2;
-		else sprite = OBJ_PLATFORM_DEFSPRITE_EP3;
+		if(Episode == 2) mSpriteIdx = OBJ_PLATFORM_DEFSPRITE_EP2;
+		else mSpriteIdx = OBJ_PLATFORM_DEFSPRITE_EP3;
 	}break;
 
 
 	case OBJ_AUTORAY: {
-		if(Episode == 1) sprite = ENEMYRAY;
-		else if(Episode == 2) sprite = ENEMYRAYEP2;
-		sprite = ENEMYRAYEP3;
+		if(Episode == 1) mSpriteIdx = ENEMYRAY;
+		else if(Episode == 2) mSpriteIdx = ENEMYRAYEP2;
+		mSpriteIdx = ENEMYRAYEP3;
 	}break;
 
-	case OBJ_DOOR: sprite = DOOR_YELLOW_SPRITE; break;
-	case OBJ_TELEPORTER: sprite = OBJ_TELEPORTER_DEFSPRITE; break;
-	case OBJ_SECTOREFFECTOR: sprite = BLANKSPRITE; break;
-	case OBJ_GOTPOINTS: sprite = PT500_SPRITE; break;
-	default: sprite = BLANKSPRITE; break;
+	case OBJ_DOOR: mSpriteIdx = DOOR_YELLOW_SPRITE; break;
+	case OBJ_TELEPORTER: mSpriteIdx = OBJ_TELEPORTER_DEFSPRITE; break;
+	case OBJ_SECTOREFFECTOR: mSpriteIdx = BLANKSPRITE; break;
+	case OBJ_GOTPOINTS: mSpriteIdx = PT500_SPRITE; break;
+	default: mSpriteIdx = BLANKSPRITE; break;
 	}
 
 }

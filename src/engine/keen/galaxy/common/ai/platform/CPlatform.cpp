@@ -192,10 +192,10 @@ void CPlatform::getTouchedBy(CSpriteObject &theObject)
 void CPlatform::draw()
 {
     // This draw routine also is able to draw a second object in case it is holding one.
-    if( sprite == BLANKSPRITE || dontdraw )
+    if( mSpriteIdx == BLANKSPRITE || dontdraw )
         return;
     
-    GsSprite &Sprite = gGraphics.getSprite(mSprVar,sprite);
+    GsSprite &Sprite = gGraphics.getSprite(mSprVar,mSpriteIdx);
     
     scrx = (m_Pos.x>>STC)-mp_Map->m_scrollx;
     scry = (m_Pos.y>>STC)-mp_Map->m_scrolly;
@@ -224,7 +224,7 @@ void CPlatform::draw()
         {
             if(carriedObj)
             {
-                GsSprite &playSprite = gGraphics.getSprite(carriedObj->getSpriteVariantId(),carriedObj->sprite);
+                GsSprite &playSprite = gGraphics.getSprite(carriedObj->getSpriteVariantId(),carriedObj->mSpriteIdx);
                 int distx = carriedObj->getXPosition()-getXPosition();
                 int disty = carriedObj->getYPosition()-getYPosition();
 

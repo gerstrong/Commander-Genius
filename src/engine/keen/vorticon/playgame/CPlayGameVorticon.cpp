@@ -114,7 +114,7 @@ void CPlayGameVorticon::setupPlayers()
 		else
 		{
             player.m_playingmode = CPlayer::LEVELPLAY;
-            player.sprite = PSTANDFRAME;
+            player.mSpriteIdx = PSTANDFRAME;
             player.solid=true;
 		}
         player.dontdraw = false;
@@ -142,7 +142,10 @@ void CPlayGameVorticon::setupPlayers()
 }
 
 bool CPlayGameVorticon::init()
-{    
+{
+    // Required to sprites are correctly masked
+    gGraphics.optimizeSprites();
+
     const GsRect<Uint16> gameRect = gVideoDriver.getVidConfig().mGameRect;
     gVideoDriver.setNativeResolution(gameRect);
 

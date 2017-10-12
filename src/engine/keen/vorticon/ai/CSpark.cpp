@@ -38,11 +38,11 @@ void CSpark::process()
 
 	if (state==SPARK_ANIMATE)
 	{
-		sprite = SPARK_BASEFRAME + frame;
+		mSpriteIdx = SPARK_BASEFRAME + frame;
 	}
 	else
 	{
-		sprite = BLANKSPRITE;
+		mSpriteIdx = BLANKSPRITE;
 	}
 
 	switch(state)

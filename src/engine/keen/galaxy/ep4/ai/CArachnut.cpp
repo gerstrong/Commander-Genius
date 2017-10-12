@@ -25,7 +25,7 @@ CGalaxySpriteObject(pmap, foeID, x, y, 0)
 	setupGalaxyObjectOnMap( 0x2378, A_ARACHNUT_WALK );
 	xDirection = LEFT;
 
-    GsSprite &rSprite = gGraphics.getSprite(mSprVar,sprite);
+    GsSprite &rSprite = gGraphics.getSprite(mSprVar,mSpriteIdx);
 	performCollisions();
 	processMove( 0, rSprite.m_bboxY1-rSprite.m_bboxY2 );
 	processActionRoutine();

@@ -65,7 +65,7 @@ void CScrub::process()
 	switch(state)
 	{
 	case SCRUB_DYING:
-		sprite = SCRUB_FRY_FRAME;
+		mSpriteIdx = SCRUB_FRY_FRAME;
 		moveYDir(scrubdie_inertia_y);
 		if ( scrubdie_inertia_y < Physics.max_fallspeed )
 			scrubdie_inertia_y += Physics.fallspeed_increase;
@@ -73,7 +73,7 @@ void CScrub::process()
 		dietimer = 0;
 		if (scrubdie_inertia_y >= 0 && blockedd)
 		{
-			sprite = SCRUB_DEAD_FRAME;
+			mSpriteIdx = SCRUB_DEAD_FRAME;
 			state = SCRUB_DEAD;
 			dead = true;
 		}
@@ -116,11 +116,11 @@ void CScrub::getTouchedBy(CVorticonSpriteObject& theObject)
  */
 void CScrub::walkLeft(int mx, int my)
 {
-	sprite = SCRUB_WALK_LEFT + walkframe;
+	mSpriteIdx = SCRUB_WALK_LEFT + walkframe;
 
 	if (blockedl)
 	{
-		sprite = SCRUB_WALK_UP + walkframe;
+		mSpriteIdx = SCRUB_WALK_UP + walkframe;
 		xDirection = 0;
 		yDirection = -1;
 	}
@@ -158,13 +158,13 @@ void CScrub::walkLeft(int mx, int my)
  */
 void CScrub::walkDown()
 {
-	sprite = SCRUB_WALK_DOWN + walkframe;
+	mSpriteIdx = SCRUB_WALK_DOWN + walkframe;
 
 	if (blockedd)
 	{
 		yDirection = 0;
 		xDirection = -1;
-		sprite = SCRUB_WALK_LEFT + walkframe;
+		mSpriteIdx = SCRUB_WALK_LEFT + walkframe;
 	}
 	else
 	{
@@ -175,7 +175,7 @@ void CScrub::walkDown()
 		{	// Move right
 			yDirection = 0;
 			xDirection = 1;
-			sprite = SCRUB_WALK_RIGHT + walkframe;
+			mSpriteIdx = SCRUB_WALK_RIGHT + walkframe;
 
             processMove(0,(16<<STC));
             performCollisions();
@@ -199,13 +199,13 @@ void CScrub::walkDown()
  */
 void CScrub::walkRight(int mx, int my)
 {
-	sprite = SCRUB_WALK_RIGHT + walkframe;
+	mSpriteIdx = SCRUB_WALK_RIGHT + walkframe;
 
 	if (blockedr)
 	{
 		xDirection = 0;
 		yDirection = 1;
-		sprite = SCRUB_WALK_DOWN + walkframe;
+		mSpriteIdx = SCRUB_WALK_DOWN + walkframe;
 	}
 	else
 	{
@@ -244,12 +244,12 @@ void CScrub::walkRight(int mx, int my)
  */
 void CScrub::walkUp()
 {
-	sprite = SCRUB_WALK_UP + walkframe;
+	mSpriteIdx = SCRUB_WALK_UP + walkframe;
 	if (blockedu)
 	{
 		yDirection = 0;
 		xDirection = 1;
-		sprite = SCRUB_WALK_RIGHT + walkframe;
+		mSpriteIdx = SCRUB_WALK_RIGHT + walkframe;
 	}
 	else
 	{
@@ -260,7 +260,7 @@ void CScrub::walkUp()
 		{	// Move Left!
 			yDirection = 0;
 			xDirection = LEFT;
-			sprite = SCRUB_WALK_LEFT + walkframe;
+			mSpriteIdx = SCRUB_WALK_LEFT + walkframe;
 			performCollisions();
 			processMove(0,-(1<<STC));
 			processMove(-(4<<STC),0);
@@ -275,7 +275,7 @@ void CScrub::walkUp()
  */
 void CScrub::fall()
 {
-	sprite = SCRUB_WALK_LEFT;
+	mSpriteIdx = SCRUB_WALK_LEFT;
 	if (blockedd)
 	{
 		inhibitfall = true;

@@ -40,7 +40,7 @@ CVorticonSpriteObject(p_map, x, y, OBJ_BABY, 0)
 
 	// babies are in ep2 & ep3, but frameset starts one index prior in ep3
 	if (gBehaviorEngine.getEpisode()==3) ep3 = true; else ep3 = false;
-	sprite = BABY_WALK_RIGHT_FRAME - ep3;
+	mSpriteIdx = BABY_WALK_RIGHT_FRAME - ep3;
 
     if(diff > NORMAL)
 		mHealthPoints++;
@@ -96,7 +96,7 @@ void CVortikid::process()
 		dietimer = 0;
 		state = BABY_DYING;
 		dying = true;
-		sprite = BABY_FRY_FRAME - ep3;
+		mSpriteIdx = BABY_FRY_FRAME - ep3;
 		if (onscreen && !gSound.isPlaying(SOUND_VORT_DIE))
 			playSound(SOUND_VORT_DIE);
 
@@ -128,7 +128,7 @@ void CVortikid::process()
 			}
 
 			if (xinertia == 0 && yinertia == 0 &&
-				sprite == (BABY_DEAD_FRAME-ep3))
+				mSpriteIdx == (BABY_DEAD_FRAME-ep3))
 			{
 				dead = true;
 				xinertia = 0;
@@ -139,7 +139,7 @@ void CVortikid::process()
 
 		if (dietimer > BABY_FRY_TIME)
 		{
-			sprite = BABY_DEAD_FRAME-ep3;
+			mSpriteIdx = BABY_DEAD_FRAME-ep3;
 		}
 		else dietimer++;
 		break;
@@ -147,7 +147,7 @@ void CVortikid::process()
 		// run in appropriate direction
 		if (dir==RIGHT)
 		{ // running right
-			sprite = BABY_WALK_RIGHT_FRAME + walkframe - ep3;
+			mSpriteIdx = BABY_WALK_RIGHT_FRAME + walkframe - ep3;
 			if (blockedr)
 			{
 				dir = LEFT;
@@ -160,7 +160,7 @@ void CVortikid::process()
 		}
 		else
 		{ // running left
-			sprite = BABY_WALK_LEFT_FRAME + walkframe - ep3;
+			mSpriteIdx = BABY_WALK_LEFT_FRAME + walkframe - ep3;
 			if (blockedl)
 			{
 				dir = RIGHT;

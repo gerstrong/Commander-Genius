@@ -26,7 +26,7 @@ CSpriteObject::CSpriteObject(CMap *pmap,
                              const int spriteVar) :
 m_index(m_number_of_objects),
 mHealthPoints(1),
-sprite(BLANKSPRITE),
+mSpriteIdx(BLANKSPRITE),
 m_jumpdownfromobject(false),
 mp_Map(pmap),
 m_blinktime(0),
@@ -532,10 +532,10 @@ void CSpriteObject::playSound( const GameSound snd,
 // or priority tile!
 void CSpriteObject::draw()
 {
-    if( sprite == BLANKSPRITE || dontdraw )
+    if( mSpriteIdx == BLANKSPRITE || dontdraw )
 		return;
 
-    GsSprite &Sprite = gGraphics.getSprite(mSprVar, sprite);
+    GsSprite &Sprite = gGraphics.getSprite(mSprVar, mSpriteIdx);
 
     if(!Sprite.valid())
     {
@@ -570,7 +570,7 @@ void CSpriteObject::draw()
 
 		if(m_blinktime > 0)
 		{
-			Sprite.drawBlinkingSprite( showX, showY );
+            Sprite.drawBlinkingSprite( showX, showY );
 			m_blinktime--;
 		}
 		else

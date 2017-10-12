@@ -25,7 +25,7 @@ CRay(p_map, x, y, dir, CENTER, 0, byType, byID)
 		m_Pos -= Vector2D<Uint32>(14<<STC,0);
 
 	m_speed = (gBehaviorEngine.mDifficulty>=NORMAL) ? FIREBALL_HARD_SPEED : FIREBALL_SPEED;
-	sprite = (m_HorDir == RIGHT) ? FIREBALL_RIGHT_FRAME : FIREBALL_LEFT_FRAME;
+	mSpriteIdx = (m_HorDir == RIGHT) ? FIREBALL_RIGHT_FRAME : FIREBALL_LEFT_FRAME;
 	performCollisions();
 }
 
@@ -45,9 +45,9 @@ void CFireBall::process()
 	if(state == RAY_STATE_FLY)
 	{
 		if (m_HorDir == RIGHT)
-			sprite = FIREBALL_RIGHT_FRAME + animframe;
+			mSpriteIdx = FIREBALL_RIGHT_FRAME + animframe;
 		else
-			sprite = FIREBALL_LEFT_FRAME + animframe;
+			mSpriteIdx = FIREBALL_LEFT_FRAME + animframe;
 
 		moveinAir();
 

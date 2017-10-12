@@ -22,11 +22,11 @@ m_speed(speed)
 	owner.ID = byID;
 
 	size_t Episode = gBehaviorEngine.getEpisode();
-	if(Episode == 1) sprite = OBJ_RAY_DEFSPRITE_EP1;
-	else if(Episode == 2) sprite = OBJ_RAY_DEFSPRITE_EP2;
-	else if(Episode == 3) sprite = OBJ_RAY_DEFSPRITE_EP3;
+	if(Episode == 1) mSpriteIdx = OBJ_RAY_DEFSPRITE_EP1;
+	else if(Episode == 2) mSpriteIdx = OBJ_RAY_DEFSPRITE_EP2;
+	else if(Episode == 3) mSpriteIdx = OBJ_RAY_DEFSPRITE_EP3;
 
-    GsSprite &rSprite = gGraphics.getSprite(mSprVar,sprite);
+    GsSprite &rSprite = gGraphics.getSprite(mSprVar,mSpriteIdx);
 	m_BBox.x1 = rSprite.m_bboxX1;		m_BBox.x2 = rSprite.m_bboxX2;
 	m_BBox.y1 = rSprite.m_bboxY1;		m_BBox.y2 = rSprite.m_bboxY2;
 
@@ -77,23 +77,23 @@ void CRay::setZapped()
 	if (Episode==1)
 	{
 		if (rnd()&1)
-		{ sprite = RAY_FRAME_ZAP_EP1; }
+		{ mSpriteIdx = RAY_FRAME_ZAP_EP1; }
 		else
-		{ sprite = RAY_FRAME_ZOT_EP1; }
+		{ mSpriteIdx = RAY_FRAME_ZOT_EP1; }
 	}
 	else if (Episode==2)
 	{
 		if (rnd()&1)
-		{ sprite = RAY_FRAME_ZAP_EP2; }
+		{ mSpriteIdx = RAY_FRAME_ZAP_EP2; }
 		else
-		{ sprite = RAY_FRAME_ZOT_EP2; }
+		{ mSpriteIdx = RAY_FRAME_ZOT_EP2; }
 	}
 	else
 	{
 		if (rnd()&1)
-		{ sprite = RAY_FRAME_ZAP_EP3; }
+		{ mSpriteIdx = RAY_FRAME_ZAP_EP3; }
 		else
-		{ sprite = RAY_FRAME_ZOT_EP3; }
+		{ mSpriteIdx = RAY_FRAME_ZOT_EP3; }
 	}
 
 	if (m_HorDir==LEFT || m_HorDir==RIGHT)

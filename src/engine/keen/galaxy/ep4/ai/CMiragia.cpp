@@ -22,7 +22,7 @@ m_waittime(WAIT_BETWEEN_FADE_TIME),
 m_empty(true)
 {
     solid = false;
-    sprite = BLANKSPRITE;
+    mSpriteIdx = BLANKSPRITE;
     dontdraw = true;
 }
 

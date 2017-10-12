@@ -27,7 +27,7 @@ dist_traveled(0),
 movedir(LEFT)
 {
 	m_type = OBJ_YORP;
-	sprite = OBJ_YORP_DEFSPRITE;
+	mSpriteIdx = OBJ_YORP_DEFSPRITE;
 	canbezapped = true;
     deadly = false;
 
@@ -62,7 +62,7 @@ void CYorp::process()
 		state = YORP_DYING;
 		dying = true;
 		dietimer = 0;
-		sprite = YORP_DYING_FRAME;
+		mSpriteIdx = YORP_DYING_FRAME;
 		yinertia = YORPDIE_START_INERTIA;
 		playSound(SOUND_YORP_DIE);
 	}
@@ -115,10 +115,10 @@ void CYorp::processLooking()
 
 		switch(lookposition)
 		{
-			case 0: sprite = YORP_LOOK_LEFT; break;
-			case 1: sprite = YORP_STAND; break;
-			case 2: sprite = YORP_LOOK_RIGHT; break;
-			case 3: sprite = YORP_STAND; break;
+			case 0: mSpriteIdx = YORP_LOOK_LEFT; break;
+			case 1: mSpriteIdx = YORP_STAND; break;
+			case 2: mSpriteIdx = YORP_LOOK_RIGHT; break;
+			case 3: mSpriteIdx = YORP_STAND; break;
 		}
 		looktimes++;
 
@@ -159,7 +159,7 @@ void CYorp::processMoving()
 
 	if (movedir==LEFT)
 	{  // yorp is walking left
-		sprite = YORP_WALK_LEFT + walkframe;
+		mSpriteIdx = YORP_WALK_LEFT + walkframe;
 		if (!blockedl)
 		{
 			xinertia = m_hardmode ? -YORP_WALK_SPEED_FAST : -YORP_WALK_SPEED;
@@ -175,7 +175,7 @@ void CYorp::processMoving()
 	}
 	else
 	{  // yorp is walking right
-		sprite = YORP_WALK_RIGHT + walkframe;
+		mSpriteIdx = YORP_WALK_RIGHT + walkframe;
 		if (!blockedr)
 		{
 			xinertia = m_hardmode ? YORP_WALK_SPEED_FAST : YORP_WALK_SPEED;
@@ -202,7 +202,7 @@ void CYorp::processMoving()
 
 void CYorp::processStunned()
 {
-	sprite = YORP_STUNFRAME + walkframe;
+	mSpriteIdx = YORP_STUNFRAME + walkframe;
 	if (timer > YORP_STUN_ANIM_TIME)
 	{
 		char numlooks = m_hardmode ? YORP_STUNTIME_FAST : YORP_STUNTIME;
@@ -224,7 +224,7 @@ void CYorp::processDying()
 {
 	if (yinertia >= 0 && blockedd)
 	{
-		sprite = YORP_DEAD_FRAME;
+		mSpriteIdx = YORP_DEAD_FRAME;
 		dead = true;
 	}
 }

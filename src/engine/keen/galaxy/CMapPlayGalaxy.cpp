@@ -289,7 +289,7 @@ void CMapPlayGalaxy::operator>>(CSaveGameController &savedGame)
 		savedGame.encodeData( it->cansupportplayer );
 		savedGame.encodeData( it->inhibitfall );
 		savedGame.encodeData( it->honorPriority );
-		savedGame.encodeData( it->sprite );
+		savedGame.encodeData( it->mSpriteIdx );
 		savedGame.encodeData( it->m_ActionNumber );
         it->serialize(savedGame);
 	}
@@ -395,7 +395,7 @@ bool CMapPlayGalaxy::operator<<(CSaveGameController &savedGame)
 		savedGame.decodeData( pNewfoe->cansupportplayer );
 		savedGame.decodeData( pNewfoe->inhibitfall );
 		savedGame.decodeData( pNewfoe->honorPriority );
-		savedGame.decodeData( pNewfoe->sprite );
+		savedGame.decodeData( pNewfoe->mSpriteIdx );
 		savedGame.decodeData( actionNumber );
 		pNewfoe->deserialize(savedGame);
 
@@ -475,7 +475,7 @@ void CMapPlayGalaxy::operator>>(boost::property_tree::ptree &levelNode)
         spriteNode.put("cansupportplayer", it->cansupportplayer);
         spriteNode.put("inhibitfall", it->inhibitfall);
         spriteNode.put("honorPriority", it->honorPriority);
-        spriteNode.put("spritePic", it->sprite);
+        spriteNode.put("spritePic", it->mSpriteIdx);
         spriteNode.put("Actionumber", it->m_ActionNumber);
         it->serialize(spriteNode);
     }
@@ -593,7 +593,7 @@ void CMapPlayGalaxy::operator<<(boost::property_tree::ptree &levelNode)
             pNewfoe->cansupportplayer = spriteNode.get<bool>("cansupportplayer", false);
             pNewfoe->inhibitfall = spriteNode.get<bool>("inhibitfall", false);
             pNewfoe->honorPriority = spriteNode.get<bool>("honorPriority", false);
-            pNewfoe->sprite = spriteNode.get<int>("spritePic", 1);
+            pNewfoe->mSpriteIdx = spriteNode.get<int>("spritePic", 1);
             const Uint16 actionNumber = spriteNode.get<int>("Actionumber", 1);
             pNewfoe->deserialize(spriteNode);
 

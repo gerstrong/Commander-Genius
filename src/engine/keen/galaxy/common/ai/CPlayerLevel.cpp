@@ -1576,7 +1576,7 @@ void CPlayerLevel::processPressUp()
                     setAction(A_KEEN_ENTER_DOOR);
 
                     setActionSprite();
-                    GsSprite &rSprite = gGraphics.getSprite(mSprVar,sprite);
+                    GsSprite &rSprite = gGraphics.getSprite(mSprVar,mSpriteIdx);
 
                     // Here the Player will be snapped to the center
 
@@ -1615,7 +1615,7 @@ void CPlayerLevel::processPressUp()
                 setAction(A_KEEN_ENTER_DOOR);
 
                 setActionSprite();
-                GsSprite &rSprite = gGraphics.getSprite(mSprVar,sprite);
+                GsSprite &rSprite = gGraphics.getSprite(mSprVar,mSpriteIdx);
 
                 // Here the Player will be snapped to the center of the door
 

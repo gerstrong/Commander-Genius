@@ -26,7 +26,7 @@ mp_AttachedObject(p_attacher)
 {
 	m_relcam.x = 0;
 	m_relcam.y = 0;
-	sprite = BLANKSPRITE;
+	mSpriteIdx = BLANKSPRITE;
 	solid = false;
 
     const int camId = mp_AttachedObject->getSpriteVariantId();

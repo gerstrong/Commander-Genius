@@ -64,7 +64,7 @@ mTimer(0)
     xDirection = CENTER;
     yDirection = CENTER;
 
-    mEyeSprite = sprite + 1;
+    mEyeSprite = mSpriteIdx + 1;
 
     setEyeCenterOffset(mTargetEyeXOffset, mTargetEyeYOffset);
 
@@ -76,7 +76,7 @@ mTimer(0)
 void CShikadiMine::setEyeCenterOffset(int &x, int &y)
 {
     GsSprite &eyeSprite = gGraphics.getSprite(mSprVar,mEyeSprite);
-    GsSprite &spriteRef = gGraphics.getSprite(mSprVar,sprite);
+    GsSprite &spriteRef = gGraphics.getSprite(mSprVar,mSpriteIdx);
     x = (spriteRef.getWidth()-eyeSprite.getWidth())/2;
     y = (spriteRef.getHeight()-eyeSprite.getHeight())/2;
 }
@@ -266,7 +266,7 @@ void CShikadiMine::processChangeDir()
       setEyeCenterOffset(mTargetEyeXOffset, mTargetEyeYOffset);
 
       GsSprite &eyeSprite = gGraphics.getSprite(mSprVar,mEyeSprite);
-      GsSprite &spriteRef = gGraphics.getSprite(mSprVar,sprite);
+      GsSprite &spriteRef = gGraphics.getSprite(mSprVar,mSpriteIdx);
 
       if(xDirection == LEFT)
 	mTargetEyeXOffset = 0;
@@ -370,10 +370,10 @@ void CShikadiMine::process()
 
 void CShikadiMine::draw()
 {
-	if( sprite == BLANKSPRITE || dontdraw )
+	if( mSpriteIdx == BLANKSPRITE || dontdraw )
 		return;
 
-    GsSprite &Sprite = gGraphics.getSprite(mSprVar,sprite);
+    GsSprite &Sprite = gGraphics.getSprite(mSprVar,mSpriteIdx);
 
 	scrx = (m_Pos.x>>STC)-mp_Map->m_scrollx;
 	scry = (m_Pos.y>>STC)-mp_Map->m_scrolly;

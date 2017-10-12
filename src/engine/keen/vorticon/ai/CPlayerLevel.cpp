@@ -807,23 +807,23 @@ void CPlayer::raygun()
 // select the appropriate player frame based on what he's doing
 void CPlayer::SelectFrame()
 {
-    sprite = playerbaseframe;      // basic standing
+    mSpriteIdx = playerbaseframe;      // basic standing
 	
     const int ep = gBehaviorEngine.getEpisode();
 
-    if (ep==3) sprite++;
+    if (ep==3) mSpriteIdx++;
 
     // select the frame assuming he's pointing right. ep1 does not select
     // a walk frame while fading--this is for the bonus teleporter in L13.
-    if (pdie) sprite += PDIEFRAME + pdieframe;
+    if (pdie) mSpriteIdx += PDIEFRAME + pdieframe;
     else
     {
-        if (pfrozentime) sprite = PFRAME_FROZEN + pfrozenframe;
-        else if (pfiring) sprite += PFIREFRAME;
-        else if (ppogostick) sprite += PFRAME_POGO + (pjumping==PPREPAREPOGO);
-        else if (pjumping) sprite += pjumpframe;
-        else if (pfalling) sprite += 13;
-        else if (pwalking || psemisliding) sprite += pwalkframe;
+        if (pfrozentime) mSpriteIdx = PFRAME_FROZEN + pfrozenframe;
+        else if (pfiring) mSpriteIdx += PFIREFRAME;
+        else if (ppogostick) mSpriteIdx += PFRAME_POGO + (pjumping==PPREPAREPOGO);
+        else if (pjumping) mSpriteIdx += pjumpframe;
+        else if (pfalling) mSpriteIdx += 13;
+        else if (pwalking || psemisliding) mSpriteIdx += pwalkframe;
     }
 	
     // if he's going left switch the frame selected above to the
@@ -832,19 +832,19 @@ void CPlayer::SelectFrame()
     {
 		if (pfiring)
 		{
-			sprite++;
+			mSpriteIdx++;
 		}
 		else if (ppogostick)
 		{
-			sprite+=2;
+			mSpriteIdx+=2;
 		}
 		else if (pjumping || pfalling)
 		{
-			sprite+=6;
+			mSpriteIdx+=6;
 		}
 		else
 		{
-			sprite+=4;
+			mSpriteIdx+=4;
 		}
     }
 }
