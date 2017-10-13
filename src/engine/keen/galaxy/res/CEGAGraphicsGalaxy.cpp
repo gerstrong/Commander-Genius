@@ -193,6 +193,8 @@ bool CEGAGraphicsGalaxy::loadData()
                         curEpInfo.Num16MaskedTiles))
         return false;
 
+    if(!readTables()) return false;
+
     if(!readfonts()) return false;
     if(!readBitmaps()) return false;
     if(!readMaskedBitmaps()) return false;
@@ -776,6 +778,49 @@ Uint8 CEGAGraphicsGalaxy::getBit(unsigned char data, Uint8 leftshift)
 
     return value;
 }
+
+/**
+ * \brief   Read the tables for pictures (bitmaps), masked pictures (bitmaps), and sprites.
+ * \return  returns true, if the tables were read successfully, else false
+ */
+bool CEGAGraphicsGalaxy::readTables()
+{
+    const int ep = getEpisodeInfoIndex();
+    const std::vector<unsigned char> &bitmapTable = m_egagraph.at(0).data;
+
+    if(bitmapTable.size() != (EpisodeInfo[ep].NumBitmaps * 4))
+    {
+        gLogging.ftextOut("bad bitmap table size=%u vs NumBitmaps=%u (x4)",
+                          bitmapTable.size(), EpisodeInfo[ep].NumBitmaps);
+    }
+
+    const std::vector<unsigned char> &maskedBitmapTable = m_egagraph.at(1).data;
+
+    if(maskedBitmapTable.size() != (EpisodeInfo[ep].NumMaskedBitmaps * 4))
+    {
+        gLogging.ftextOut("bad masked bitmap table size=%u vs NumBitmaps=%u (x4)",
+                          maskedBitmapTable.size(), EpisodeInfo[ep].NumMaskedBitmaps);
+    }
+
+    const std::vector<unsigned char> &spriteTable = m_egagraph.at(2).data;
+
+    if(spriteTable.size() != (EpisodeInfo[ep].NumSprites * 18))
+    {
+        gLogging.ftextOut("bad sprite table size=%u vs NumSprites=%u (x18)",
+                          spriteTable.size(), EpisodeInfo[ep].NumSprites);
+    }
+
+    // gLogging.ftextOut("sprite table size=%u vs NumSprites=%u",
+    //                   spriteTable.size(), EpisodeInfo[ep].NumSprites);
+
+    // for(size_t i = 0; i < spriteTable.size(); ++i)
+    // {
+    //     gLogging.ftextOut("sprite table i=%u entry=%x", i, spriteTable[i]);
+    // }
+
+    return true;
+}
+
 
 /**
  * \brief   Read the fonts to the Gfx-Engine
