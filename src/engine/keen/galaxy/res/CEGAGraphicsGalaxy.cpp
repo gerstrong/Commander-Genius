@@ -1426,6 +1426,7 @@ bool CEGAGraphicsGalaxy::readTexts()
 
 
 
+// This sets up gGraphics.getMiscGsBitmap surfaces (0 for "COMMANDER", 1 for "KEEN").
 bool CEGAGraphicsGalaxy::readMiscStuff()
 {
     int width = 0; int height = 0;
@@ -1435,7 +1436,7 @@ bool CEGAGraphicsGalaxy::readMiscStuff()
 
     // Only position 1 and 2 are read. This will the terminator text.
     // Those are monochrom...
-    for(int misc = 1 ; misc<3 ; misc++)
+    for(size_t misc = 0 ; misc < EpisodeInfo[m_episode-4].NumMisc; misc++)
     {
         const int index = indexMisc + misc;
 
@@ -1465,6 +1466,15 @@ bool CEGAGraphicsGalaxy::readMiscStuff()
         dataPtr++;
         memcpy(&width, dataPtr, sizeof(Uint16) );
         dataPtr++;
+
+        gLogging.ftextOut("misc width=%d height=%d index=%d misc=%d",
+                          width, height, index, misc);
+        if(misc < 1 || misc > 2)
+        {
+            // Skip these other misc entries.
+            // todo: What are these other misc entries for?
+            continue;
+        }
 
         // Limit the height and width to ensure 32-bit safety further below.
         // The minima are set to avoid crashes elsewhere in the code.
