@@ -745,6 +745,10 @@ bool CEGAGraphicsGalaxy::begin()
             byte *out = &m_egagraph[i].data[0];
 
             Huffman.expand(in, out, inlen, outlen);
+
+            // std::string filename = std::string("/tmp/egagraph_i_") + std::to_string(i) ;
+            // std::ofstream ofile( filename.c_str() );
+            // ofile.write( reinterpret_cast<char*>(out), outlen);
         }
         else
         {
@@ -1120,6 +1124,9 @@ bool CEGAGraphicsGalaxy::readTilemaps( const size_t NumTiles, size_t pbasetilesi
         extractTile(sfc, data, size, rowlength, i, tileoff);
     }
 
+    // std::string filename = std::string("/tmp/read_tilemaps_") + std::to_string(NumTiles) + std::string("_") + std::to_string(IndexOfTiles) + std::string(".bmp");
+    // SDL_SaveBMP(sfc, filename.c_str());
+
     SDL_UnlockSurface(sfc);
 
     /// Let's see if there is a high colour tilemap we can load instead
@@ -1174,6 +1181,9 @@ bool CEGAGraphicsGalaxy::readMaskedTilemaps( size_t NumTiles, size_t pbasetilesi
 
         extractMaskedTile(sfc, data, size, rowlength, i, tileoff);
     }
+
+    // std::string filename = std::string("/tmp/read_masked_tilemaps_") + std::to_string(NumTiles) + std::string("_") + std::to_string(IndexOfTiles) + std::string(".bmp");
+    // SDL_SaveBMP(sfc, filename.c_str());
 
     SDL_UnlockSurface(sfc);
 
@@ -1309,6 +1319,9 @@ bool CEGAGraphicsGalaxy::readSprites( const size_t NumSprites,
         // Special case for k6demo
         size_t spriteNameOffset = (ep == 4 ? 3 : ep);
         sprite.setName(m_SpriteNameMap[spriteNameOffset][i]);
+
+        // std::string filename = std::string("/tmp/read_sprites_") + std::to_string(i) + std::string(".bmp");
+        // SDL_SaveBMP(sfc, filename.c_str());
     }
 
     // Now let's copy all the sprites. After that some of them are tinted to the proper colors
