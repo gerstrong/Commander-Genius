@@ -1548,6 +1548,14 @@ bool CEGAGraphicsGalaxy::readMiscStuff()
             Uint16 pixelCount = *rlepointer;
             if(pixelCount != 0xFFFF)
             {
+                if(pixelNum + pixelCount > expectedNumPixels)
+                {
+                    gLogging.ftextOut("bad misc rle pixel count %u for pixelNum=%d expectedNumPixels=%u width=%d height=%d index=%d misc=%d",
+                                      pixelCount, pixelNum, expectedNumPixels, width, height, index, misc);
+                    bad = true;
+                    break;
+                }
+
                 for(int i=0 ; i<pixelCount ; i++)
                 {
                     *sfcPtr = currentColor;
