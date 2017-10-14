@@ -246,6 +246,10 @@ bool CPlayGameGalaxy::saveXMLGameState()
 // Setup for the ingame
 bool CPlayGameGalaxy::init()
 {
+    // Required to sprites are correctly masked
+    gGraphics.optimizeSprites();
+
+
 	if(m_Level == 0)
 	{
 		m_WorldMap.setActive(true);

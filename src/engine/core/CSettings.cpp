@@ -281,7 +281,7 @@ void CSettings::loadDefaultGameCfg()
     setOption( GameOption::RISEBONUS,		"Rising Bonus     ", "rise_bonus", 1 );
     setOption( GameOption::MODERN,          "Modern Style     ", "modern_style", 1 );
     setOption( GameOption::HUD,				"HUD Display      ", "hud", 1 );
-    setOption( GameOption::SHOWFPS,			"Show FPS         ", "showfps", 0 );
+    //setOption( GameOption::SHOWFPS,			"Show FPS         ", "showfps", 0 );
     setOption( GameOption::FLASHEFFECT,		"Flash Effects    ", "flashfx", 1 );
 }
 

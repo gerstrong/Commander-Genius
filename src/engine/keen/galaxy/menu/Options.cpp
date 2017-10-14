@@ -45,6 +45,7 @@ void COptions::ponder(const float deltaT)
     for( auto &option :  gBehaviorEngine.mOptions )
     {
         option.second.value = (*it)->isEnabled();
+        it++;
     }
 }
 
