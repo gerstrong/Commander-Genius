@@ -10,7 +10,12 @@
 #include "sdl/audio/Audio.h"
 
 size_t bulletActionMap[] =
-{	0x1738, 0x1502,0x153E	};
+{
+    0x1738,
+    0x1502,
+    0x153E,
+    0x15A4  // k6demo
+};
 
 namespace galaxy
 {
@@ -26,9 +31,9 @@ mReversed(false)
 	xDirection = xDir;
 	yDirection = yDir;
 
-	const size_t ep = gBehaviorEngine.getEpisode();
+	const size_t offsetIndex = gBehaviorEngine.isDemo() ? 3 : gBehaviorEngine.getEpisode() - 4;
 
-	setupGalaxyObjectOnMap(bulletActionMap[ep-4], A_KEENSHOT_MOVING);
+	setupGalaxyObjectOnMap(bulletActionMap[offsetIndex], A_KEENSHOT_MOVING);
 	setActionSprite();
 	calcBoundingBoxes();
     playSound( SOUND_KEEN_FIRE );

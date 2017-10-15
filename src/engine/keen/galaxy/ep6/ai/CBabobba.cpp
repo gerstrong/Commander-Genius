@@ -57,7 +57,7 @@ mGoodFireChance(false)
 	mActionMap[A_BABOBBA_STUNNED] = (GASOFctr) &CStunnable::processGettingStunned;
 	mActionMap[A_BABOBBA_NAPPING] = (GASOFctr) &CBabobba::processNapping;
 	
-	setupGalaxyObjectOnMap(0x2F48, A_BABOBBA_JUMP);
+	setupGalaxyObjectOnMap(gBehaviorEngine.isDemo() ? 0x221E : 0x2F48, A_BABOBBA_JUMP);
 	
 	xDirection = LEFT;
 	yinertia = MAX_JUMP_INERTIA;
@@ -245,7 +245,7 @@ mTimer(0)
 	mActionMap[A_CINDER_LANDED] = (void (CGalaxyActionSpriteObject::*)()) &CCinder::processLanded;
 	mActionMap[A_CINDER_DYING] = (void (CGalaxyActionSpriteObject::*)()) &CCinder::processDying;
 	
-	setupGalaxyObjectOnMap(0x30CE, A_CINDER_TOSSED);
+	setupGalaxyObjectOnMap(gBehaviorEngine.isDemo() ? 0x2368 : 0x30CE, A_CINDER_TOSSED);
 	
 	yinertia = -60;
 	xDirection = horDir;

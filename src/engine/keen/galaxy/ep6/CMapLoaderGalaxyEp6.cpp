@@ -41,9 +41,12 @@ namespace galaxy
 
 
 CMapLoaderGalaxyEp6::CMapLoaderGalaxyEp6(std::vector< std::shared_ptr<CGalaxySpriteObject> > &ObjectPtr,
-        std::vector<CInventory> &inventoryVec) :
+                                         std::vector<CInventory> &inventoryVec,
+                                         bool demo = false) :
 CMapLoaderGalaxy(ObjectPtr, inventoryVec)
-{}
+{
+    m_demo = demo;
+}
 
 bool CMapLoaderGalaxyEp6::isKeenPlayer(const int foeID)
 {
@@ -119,7 +122,10 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp6::addFoe(CMap &Map, word foe, size_t x, 
 			// This is the player on the map in one level
             inventory.Item.mLevelName = Map.getLevelName();
 			p_newfoe = new galaxy::CPlayerLevel(&Map, foe, x, y, m_ObjectPtr,
-                    (foe==1) ? RIGHT : LEFT, inventory, 0x89A, mNumLoadedPlayers, mNumLoadedPlayers);
+                                                            (foe==1) ? RIGHT : LEFT,
+                                                            inventory,
+                                                            m_demo ? 0x91E : 0x89A,
+                                                            mNumLoadedPlayers, mNumLoadedPlayers);
         }
         mNumLoadedPlayers++;
         break;
@@ -132,7 +138,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp6::addFoe(CMap &Map, word foe, size_t x, 
 			// This is the player on the world map
 			// Add the Camera into the game scene and attach it to this player
             inventory.Item.mLevelName = Map.getLevelName();
-            p_newfoe = new galaxy::CPlayerWM(&Map,foe, x, y, inventory, 0x13E0, mNumLoadedPlayers, mNumLoadedPlayers );
+            p_newfoe = new galaxy::CPlayerWM(&Map,foe, x, y, inventory, m_demo ? 0x1446 : 0x13E0, mNumLoadedPlayers, mNumLoadedPlayers );
         }
         mNumLoadedPlayers++;
         break;
@@ -146,10 +152,10 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp6::addFoe(CMap &Map, word foe, size_t x, 
 		
 
 	// Blooglets
-	case 0x07:	p_newfoe = new galaxy::CBlooglet(&Map, foe, 0x208A, false, x, y);	break;
-	case 0x08:	p_newfoe = new galaxy::CBlooglet(&Map, foe, 0x2120, false, x, y);	break;
-	case 0x09:	p_newfoe = new galaxy::CBlooglet(&Map, foe, 0x21B6, false, x, y);	break;
-	case 0x0A:	p_newfoe = new galaxy::CBlooglet(&Map, foe, 0x224C, false, x, y);	break;
+	case 0x07:	p_newfoe = new galaxy::CBlooglet(&Map, foe, m_demo ? 0x1D4A : 0x208A, false, x, y);	break;
+	case 0x08:	p_newfoe = new galaxy::CBlooglet(&Map, foe, m_demo ? 0x1DE0 : 0x2120, false, x, y);	break;
+	case 0x09:	p_newfoe = new galaxy::CBlooglet(&Map, foe, m_demo ? 0x1E76 : 0x21B6, false, x, y);	break;
+	case 0x0A:	p_newfoe = new galaxy::CBlooglet(&Map, foe, m_demo ? 0x1F0C : 0x224C, false, x, y);	break;
 	
 	// Blooglets carrying gems
 	case 0x0B:	p_newfoe = new galaxy::CBlooglet(&Map, foe, 0x208A, true, x, y);	break;
@@ -168,41 +174,41 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp6::addFoe(CMap &Map, word foe, size_t x, 
 
 		
 	case 0x1B: 
-            p_newfoe = new galaxy::CPlatformVertical( &Map, foe, x, y, UP, 0x1DD8, 0 );
+            p_newfoe = new galaxy::CPlatformVertical( &Map, foe, x, y, UP, m_demo ? 0x1A98 : 0x1DD8, 0 );
 			break;
 	case 0x1C: 
-            p_newfoe = new galaxy::CPlatformHorizontal( &Map, foe, RIGHT, x, y, 0x1DD8, 0 );
+            p_newfoe = new galaxy::CPlatformHorizontal( &Map, foe, RIGHT, x, y, m_demo ? 0x1A98 : 0x1DD8, 0 );
 			break;
 	case 0x1D: 
-            p_newfoe = new galaxy::CPlatformVertical( &Map, foe, x, y, DOWN, 0x1DD8, 0 );
+            p_newfoe = new galaxy::CPlatformVertical( &Map, foe, x, y, DOWN, m_demo ? 0x1A98 : 0x1DD8, 0 );
 			break;
 	case 0x1E: 
-            p_newfoe = new galaxy::CPlatformHorizontal( &Map, foe, LEFT, x, y, 0x1DD8, 0 );
+            p_newfoe = new galaxy::CPlatformHorizontal( &Map, foe, LEFT, x, y, m_demo ? 0x1A98 : 0x1DD8, 0 );
 			break;		
 			
 	case 0x20:	
-            p_newfoe = new galaxy::CPlatformDrop( &Map, foe, x, y, 0x1E14, 0); break;
+            p_newfoe = new galaxy::CPlatformDrop( &Map, foe, x, y, m_demo ? 0x1A98 : 0x1E14, 0); break;
 		
 
 	case 0x21: if (difficulty >= NORMAL) break;
 	case 0x22: if (difficulty >= HARD) break;
 	case 0x23: 
-            p_newfoe = new galaxy::CPlatformSit( &Map, foe, x, y, 0x1E14, 0); break;
+            p_newfoe = new galaxy::CPlatformSit( &Map, foe, x, y, m_demo ? 0x1A98 : 0x1E14, 0); break;
 
 			
         // Var Plats red color
 	case 0x24:
-            p_newfoe = new galaxy::CVarPlatform( &Map, foe, x, y, CENTER, UP, 0x1E6E, 0); break;
+            p_newfoe = new galaxy::CVarPlatform( &Map, foe, x, y, CENTER, UP, m_demo ? 0x1A98 : 0x1E6E, 0); break;
 	case 0x25:
-            p_newfoe = new galaxy::CVarPlatform( &Map, foe, x, y, RIGHT, CENTER, 0x1E6E, 0);	break;
+            p_newfoe = new galaxy::CVarPlatform( &Map, foe, x, y, RIGHT, CENTER, m_demo ? 0x1A98 : 0x1E6E, 0);	break;
 	case 0x26:
-            p_newfoe = new galaxy::CVarPlatform( &Map, foe, x, y, CENTER, DOWN, 0x1E6E, 0);	break;
+            p_newfoe = new galaxy::CVarPlatform( &Map, foe, x, y, CENTER, DOWN, m_demo ? 0x1A98 : 0x1E6E, 0);	break;
 	case 0x27:
-            p_newfoe = new galaxy::CVarPlatform( &Map, foe, x, y, LEFT, CENTER, 0x1E6E, 0);	break;
+            p_newfoe = new galaxy::CVarPlatform( &Map, foe, x, y, LEFT, CENTER, m_demo ? 0x1A98 : 0x1E6E, 0);	break;
 			
 			
 	case 0x28:
-            p_newfoe = new galaxy::CPlatformMoveAway( &Map, foe, x, y, CENTER, LEFT, 0x1EC8, 0);
+            p_newfoe = new galaxy::CPlatformMoveAway( &Map, foe, x, y, CENTER, LEFT, m_demo ? 0x1A98 : 0x1EC8, 0);
 			break;
 			
 	case 0x2B: if( difficulty < HARD ) break;

@@ -34,7 +34,7 @@ mpInteractPlayer(nullptr)
     mActionMap[A_GIK_LAND] = (GASOFctr) &CGik::processLand;
     mActionMap[A_GIK_SLIDE] = (GASOFctr) &CGik::processSlide;
 
-    setupGalaxyObjectOnMap(0x2604, A_GIK_WALK);
+    setupGalaxyObjectOnMap(gBehaviorEngine.isDemo() ? 0x2000 : 0x2604, A_GIK_WALK);
 
     xDirection = LEFT;
 }

@@ -161,7 +161,7 @@ bool VorticonEngine::loadResources( const Uint8 flags )
             if( (mFlags & LOADSTR) == LOADSTR )
             {
                 // load the strings.
-                CMessages Messages(p_exedata, mEp, version);
+                CMessages Messages(p_exedata, mEp, false, version);
                 Messages.extractGlobalStrings();
                 mLoader.setPermilage(500);
             }

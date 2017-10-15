@@ -171,8 +171,10 @@ bool CGameLauncher::setupMenu()
 
     mpEpisodeText = new CGUIText("Game");
     mpVersionText = new CGUIText("Version");
-    mLauncherDialog.addControl(mpEpisodeText, GsRect<float>(0.5f, 0.75f, 0.5f, 0.05f));
-    mLauncherDialog.addControl(mpVersionText, GsRect<float>(0.5f, 0.80f, 0.5f, 0.05f));
+    mpDemoText = new CGUIText("Demo");
+    mLauncherDialog.addControl(mpEpisodeText, GsRect<float>(0.5f, 0.70f, 0.5f, 0.05f));
+    mLauncherDialog.addControl(mpVersionText, GsRect<float>(0.5f, 0.75f, 0.5f, 0.05f));
+    mLauncherDialog.addControl(mpDemoText, GsRect<float>(0.5f, 0.80f, 0.5f, 0.05f));
 
     // This way it goes right to the selection list.
     mLauncherDialog.setSelection(2);
@@ -339,6 +341,7 @@ bool CGameLauncher::scanExecutables(const std::string& path)
 		newentry.version = executable.getEXEVersion();
 		newentry.supported = executable.Supported();
 		newentry.episode = i;
+		newentry.demo = executable.isDemo();
 		newentry.path    = path;
 		newentry.exefilename = executable.getFileName();
 		// Check for an existing custom label for the menu
@@ -647,11 +650,14 @@ void CGameLauncher::ponderGameSelDialog(const float deltaT)
     if(mSelection != mpGameSelecList->getSelection())
     {
         mSelection = mpGameSelecList->getSelection();
-        const std::string nameText = "Episode " + itoa(m_Entries[mSelection].episode);
+        auto &entry = m_Entries[mSelection];
+        const std::string nameText = "Episode " + itoa(entry.episode);
         mpEpisodeText->setText(nameText);
-        float fVer = m_Entries[mSelection].version;
+        float fVer = entry.version;
         fVer /= 100.0f;
         mpVersionText->setText("Version: " + ftoa(fVer));
+
+        mpDemoText->setText(entry.demo ? "Demo" : "");
 
         // Now update the bitmap
         mCurrentBmp->setBitmapPtr(mpPrevievBmpVec[mSelection]);

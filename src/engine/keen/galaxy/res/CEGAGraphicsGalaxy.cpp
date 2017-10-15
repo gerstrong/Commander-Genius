@@ -109,6 +109,46 @@ static EpisodeInfoStruct EpisodeInfo[] =
         0, 0,       /* NumMisc, IndexMisc */
         0, 0,       /* NumTexts, IndexTexts */
         0, 0        /* NumDemos, IndexDemos */
+    },
+    {   /* Episode 6 (demo) */
+        // Size of datafile.dump.k6demo (exefile raw data)
+        0x37650,    /* ExeImageSize */
+        // Offset in exefile raw data of 000000 chunk before contiguous
+        // run of chunk offsets. (Which should be preceded by two other
+        // 000000 "chunks".)
+        0x1c230,    /* OffEgaHead k6demo */
+        // Look for fd 01 00 00 00 00, + 6 - 1024 to get start of egadict.
+        0x2fa40,    /* OffEgaDict */
+        // Inspect egahead. This excludes last chunk which is offset to end of data file.
+        4365,       /* NumChunks */
+        // Fonts has the same sizes as k4, so looks good.
+         3, 3,       /* NumFonts, IndexFonts */
+        // Sum of NumBitmaps and IndexBitmaps should give IndexMasked Bitmaps.
+        // NumBitmaps should match outlen for i=0 (chunk 0).
+        32, 6,      /* NumBitmaps, IndexBitmaps */
+        // Masked bitmaps starts with size=10920 (jump) like k4,
+        // so needs to have index of 38.
+        // The sizes match k4, so NumMaskedBitmaps looks good as is at 3.
+        // NumMaskedBitmaps should match outlen for i=1 (chunk 1).
+        3, 38,      /* NumMaskedBitmaps, IndexMasked Bitmaps */
+        // The index is the sum of the previous num and index.
+        281, 41,    /* NumSprites, IndexSprites */
+        // Index8Tiles is the sum of NumSprites and IndexSprites.
+        104, 322,   /* Num8Tiles, Index8Tiles */
+        12, 323,    /* Num8MaskedTiles, Index8MaskedTiles */
+        // 16Tiles have size of 128 or 0.
+        1296, 324,  /* Num16Tiles, Index16Tiles */
+        // last 16 tile seems to be at 1616
+        // 16MaskedTiles have size of 160 or 0.
+        2736, 1620, /* Num16MaskedTiles, Index16MaskedTiles */
+        // Misc have size of ~4008-15044
+        // The index is the sum of NumTexts and IndexTexts.
+        4, 4357,    /* NumMisc, IndexMisc */
+        // Texts have size of ~313-6884
+        1, 4356,    /* NumTexts, IndexTexts */
+        // Demos have size ~66-194 and small first two words.
+        // NumChunks - 4 gives IndexDemos.
+        4, 4361     /* NumDemos, IndexDemos */
     }
 };
 
@@ -122,7 +162,19 @@ m_Exefile(ExeFile)
     gBehaviorEngine.setEpisodeInfoStructPtr(EpisodeInfo);
 }
 
+// Get the index for EpisodeInfo.
+// 0 - keen4
+// 1 - keen5
+// 2 - keen6
+// 3 - keen dreams
+// 4 - keen6 demo
+size_t CEGAGraphicsGalaxy::getEpisodeInfoIndex()
+{
+    if (m_episode == 6 && m_Exefile.isDemo())
+        return 4;
 
+    return m_episode - 4;
+}
 
 bool CEGAGraphicsGalaxy::loadData()
 {
@@ -131,7 +183,7 @@ bool CEGAGraphicsGalaxy::loadData()
 
     if(!begin()) return false;
 
-    auto &curEpInfo = EpisodeInfo[m_episode-4];
+    auto &curEpInfo = EpisodeInfo[getEpisodeInfoIndex()];
 
     // First, retrieve the Tile properties so the tilemap gets properly formatted
     // Important especially for masks, and later in the game for the behaviours
@@ -381,7 +433,7 @@ bool CEGAGraphicsGalaxy::readEGAHead()
     std::string filename;
     if (m_episode <= 6) filename = JoinPaths(m_path, "EGAHEAD.CK" + to_string(m_episode));
     else filename =  JoinPaths(m_path, "KDREAMSHEAD.EGA"); // Not sure about that one
-    const int ep = m_episode - 4; // index for EpisodeInfo; 0 - keen4, 1 - keen5, etc.
+    const int ep = getEpisodeInfoIndex();
 
     std::ifstream File; OpenGameFileR(File, filename, std::ios::binary);
     byte *p_head = nullptr;
@@ -430,28 +482,19 @@ bool CEGAGraphicsGalaxy::readEGAHead()
     }
 
     unsigned long offset = 0;
-    unsigned long offset_limit;
 
     // For some reason, MultiMania's KDR support uses a slightly different limit
     // in offset ops. We're not in DOS, so we don't have to worry about
     // memory here >:P
-    if (ep < 3) offset_limit = 0x00FFFFFF;
-    else offset_limit = 0xFFFFFFFF;
+    bool dreams = (ep == 3);
+    unsigned long offset_limit = dreams ? 0xFFFFFFFF : 0x00FFFFFF;
 
-    // TODO: The 4-byte offset should go outside the loop... somehow...
+    size_t chunkSize = dreams ? 4 : 3;
     for(size_t i = 0 ; i < numChunks ; i++)
     {
-        if (ep != 3)
-        {
-            memcpy(&offset, p_head, 3); // Keen 4-6
-            p_head += 3;
-            offset &= offset_limit;
-        }
-        else
-        {
-            memcpy(&offset, p_head, 4); // KeenDreams
-            p_head += 4;
-        }
+        memcpy(&offset, p_head, chunkSize);
+        p_head += chunkSize;
+        offset &= offset_limit;
         m_egahead.push_back(offset);
     }
 
@@ -472,13 +515,12 @@ std::vector<unsigned long> CEGAGraphicsGalaxy::readOutLenVec(const int ep,
                                                              const std::vector<unsigned char> &compEgaGraphData)
 {
     unsigned long offset = 0;
-    unsigned long offset_limit;
 
     // For some reason, MultiMania's KDR support uses a slightly different limit
     // in offset ops. We're not in DOS, so we don't have to worry about
     // memory here >:P
-    if (ep < 3) offset_limit = 0x00FFFFFF;
-    else offset_limit = 0xFFFFFFFF;
+    bool dreams = (ep == 3);
+    unsigned long offset_limit = dreams ? 0xFFFFFFFF : 0x00FFFFFF;
 
     std::vector<unsigned long> outLenVec;
 
@@ -533,7 +575,7 @@ bool CEGAGraphicsGalaxy::begin()
     unsigned long exeheaderlen = 0;
     unsigned long exeimglen = 0;
     assert(m_episode >= 4);
-    int ep = m_episode - 4; // index for EpisodeInfo; 0 - keen4, 1 - keen5, etc
+    int ep = getEpisodeInfoIndex();
 
     byte *p_data = reinterpret_cast<byte*>(m_Exefile.getHeaderData());
 
@@ -601,14 +643,12 @@ bool CEGAGraphicsGalaxy::begin()
     unsigned long inlen = 0, outlen = 0;
 
     unsigned long offset = 0;
-    unsigned long offset_limit;
 
     // For some reason, MultiMania's KDR support uses a slightly different limit
     // in offset ops. We're not in DOS, so we don't have to worry about
     // memory here >:P
-    if (ep < 3) offset_limit = 0x00FFFFFF;
-    else offset_limit = 0xFFFFFFFF;
-
+    bool dreams = (ep == 3);
+    unsigned long offset_limit = dreams ? 0xFFFFFFFF : 0x00FFFFFF;
 
     std::vector<unsigned long> outLenVec = readOutLenVec(ep, CompEgaGraphData);
 
@@ -736,7 +776,7 @@ bool CEGAGraphicsGalaxy::readfonts()
 {
     int bw, y, x;
 
-    int ep = m_episode - 4;
+    const int ep = getEpisodeInfoIndex();
     SDL_Color *Palette = gGraphics.Palette.m_Palette;
 
     gGraphics.createEmptyFontmaps(EpisodeInfo[ep].NumFonts+1);
@@ -882,7 +922,7 @@ bool CEGAGraphicsGalaxy::readfonts()
  */
 bool CEGAGraphicsGalaxy::readBitmaps()
 {
-    int ep = m_episode - 4;
+    const int ep = getEpisodeInfoIndex();
 
     const EpisodeInfoStruct &epInfo = EpisodeInfo[ep];
 
@@ -927,7 +967,9 @@ bool CEGAGraphicsGalaxy::readBitmaps()
                 data,
                 BmpHead[i].Width, BmpHead[i].Height);
 
-        Bitmap.setName(m_BitmapNameMap[ep][i]);
+        // Special case for k6demo
+        size_t bitmapNameOffset = (ep == 4 ? 3 : ep);
+        Bitmap.setName(m_BitmapNameMap[bitmapNameOffset][i]);
     }
 
     return true;
@@ -935,7 +977,8 @@ bool CEGAGraphicsGalaxy::readBitmaps()
 
 bool CEGAGraphicsGalaxy::readMaskedBitmaps()
 {
-    int ep = m_episode - 4;
+    const int ep = getEpisodeInfoIndex();
+
     // ARM processor requires all ints and structs to be 4-byte aligned, so we're just using memcpy()
     BitmapHeadStruct BmpMaskedHead[EpisodeInfo[ep].NumMaskedBitmaps];
     memcpy( BmpMaskedHead, &(m_egagraph.at(1).data.at(0)), EpisodeInfo[ep].NumMaskedBitmaps*sizeof(BitmapHeadStruct) );
@@ -1101,7 +1144,7 @@ bool CEGAGraphicsGalaxy::readSprites( const size_t NumSprites,
     // Create all the sprites
     gGraphics.createEmptySprites(4, NumSprites);
 
-    int ep = m_episode - 4;
+    const int ep = getEpisodeInfoIndex();
 
     // Check that source head data size is appropriate.
     const std::vector<unsigned char> &headData = m_egagraph.at(2).data;
@@ -1209,7 +1252,9 @@ bool CEGAGraphicsGalaxy::readSprites( const size_t NumSprites,
         }
         SDL_UnlockSurface(sfc);
 
-        sprite.setName(m_SpriteNameMap[ep][i]);
+        // Special case for k6demo
+        size_t spriteNameOffset = (ep == 4 ? 3 : ep);
+        sprite.setName(m_SpriteNameMap[spriteNameOffset][i]);
     }
 
     // Now let's copy all the sprites. After that some of them are tinted to the proper colors
@@ -1286,7 +1331,7 @@ bool CEGAGraphicsGalaxy::readSprites( const size_t NumSprites,
 
 bool CEGAGraphicsGalaxy::readTexts()
 {
-    int ep = m_episode - 4;
+    const int ep = getEpisodeInfoIndex();
 
     gGameText.clear();
 
@@ -1319,11 +1364,13 @@ bool CEGAGraphicsGalaxy::readMiscStuff()
     int width = 0; int height = 0;
     SDL_Color *Palette = gGraphics.Palette.m_Palette;
 
+    size_t indexMisc = EpisodeInfo[getEpisodeInfoIndex()].IndexMisc;
+
     // Only position 1 and 2 are read. This will the terminator text.
     // Those are monochrom...
     for(int misc = 1 ; misc<3 ; misc++)
     {
-        const int index = EpisodeInfo[m_episode-4].IndexMisc + misc;
+        const int index = indexMisc + misc;
 
         const auto &dataChunk = m_egagraph.at(index);
 

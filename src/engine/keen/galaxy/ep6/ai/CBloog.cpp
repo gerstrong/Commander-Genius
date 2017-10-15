@@ -53,7 +53,7 @@ mTimer(0)
 	mActionMap[A_BLOOG_WALK] = (GASOFctr) &CBloog::processWalking;
 	mActionMap[A_BLOOG_STUNNED] = (GASOFctr) &CStunnable::processGettingStunned;
 	
-	setupGalaxyObjectOnMap(0x1EE6, A_BLOOG_WALK);
+	setupGalaxyObjectOnMap(gBehaviorEngine.isDemo() ? 0x1BA6 : 0x1EE6, A_BLOOG_WALK);
 	
 	xDirection = LEFT;
 

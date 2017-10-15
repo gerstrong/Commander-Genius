@@ -46,11 +46,13 @@ struct GameEntry
     short version;
     bool supported;
     Uint16 episode;
+    bool demo;
     bool crcpass;
 
     GameEntry() :  version(0),
     			   supported(false),
     			   episode(0),
+    			   demo(false),
     			   crcpass(false) {}
 
 };
@@ -159,7 +161,8 @@ private:
     std::shared_ptr<CGUIBitmap> mCurrentBmp;
     std::vector< std::shared_ptr<GsBitmap> > mpPrevievBmpVec;
     CGUIText *mpEpisodeText;
-	CGUIText *mpVersionText;
+    CGUIText *mpDemoText;
+    CGUIText *mpVersionText;
 
     CGUITextSelectionList *mpGSSelList;
 

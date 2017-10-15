@@ -16,7 +16,7 @@
 
 class CTileLoader {
 public:
-	CTileLoader(int episode, int version, unsigned char *data);
+	CTileLoader(int episode, bool demo, int version, unsigned char *data);
 	CTileLoader(CExeFile &Exefile);
 	
 	bool load(size_t NumUnMaskedTiles, size_t NumMaskedTiles);
@@ -25,6 +25,7 @@ public:
 
 private:
 	int m_episode;
+	bool m_demo;
 	int m_version;
 	long m_offset;
 	byte *m_data;
@@ -38,6 +39,7 @@ private:
 	bool canbePickedup(const signed char behaviour);
 	bool isaDoor(const signed char behaviour);
 	bool smartTileChangerEnabled();
+	size_t getOffset();
 };
 
 #endif /* CTILELOADER_H_ */

@@ -102,7 +102,7 @@ bool CEGAGraphicsVort::loadData( int version, unsigned char *p_exedata )
 	// Important especially for masks, and later in the game for the behaviours
     // of those objects
 
-	CTileLoader TileLoader( m_episode, version, p_exedata );
+	CTileLoader TileLoader( m_episode, false, version, p_exedata );
 	if(!TileLoader.load(0, Num16Tiles))
 		return false;
 

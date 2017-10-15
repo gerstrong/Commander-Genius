@@ -80,6 +80,8 @@ bool CExeFile::readData(const unsigned int episode, const std::string& datadirec
 
 	crc32_init();
 
+	bool demo = false;
+
 	std::string filename = datadirectory + "/keen" + itoa(episode) + ".exe";
 
 	std::ifstream File;
@@ -99,6 +101,8 @@ bool CExeFile::readData(const unsigned int episode, const std::string& datadirec
         // try another filename (Used in Episode 4-6) for demo versions
         filename = datadirectory + "/k" + itoa(episode) + "demo.exe";
         OpenGameFileR(File, filename, std::ios::binary);
+        if(File)
+            demo = true;
     }
 
     // Keen Dreams section. It is called "KDREAMS.EXE" for what I know. Remember, case sensitity is
@@ -120,6 +124,7 @@ bool CExeFile::readData(const unsigned int episode, const std::string& datadirec
 
 	m_filename = filename;
 	m_episode = episode;
+	m_demo = demo;
 
     std::string localDataDir = datadirectory;
     if( localDataDir != "")
@@ -173,9 +178,13 @@ bool CExeFile::readData(const unsigned int episode, const std::string& datadirec
 			/*Keen 4:*/ 0x2EE70,
 			/*Keen 5:*/ 0x30340,
 			/*Keen 6:*/ 0x30D30,
-            /*Keen 7:*/ 0x23A70 // Keen Dreams
+            /*Keen 7:*/ 0x23A70,  // Keen Dreams
+			/*Keen 6:*/ 0x2A4F0   // Demo
 	};
-    m_data_segment = m_rawdata+offset_map[episode];
+
+    size_t offset_index = (demo && episode == 6) ? 8 : episode;
+
+    m_data_segment = m_rawdata + offset_map[offset_index];
 
 	m_crc = getcrc32( mData.data(), m_datasize );
 

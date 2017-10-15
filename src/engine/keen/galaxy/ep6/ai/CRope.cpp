@@ -31,7 +31,7 @@ mTimer(0)
     mActionMap[A_ROPE_ACTIVE] = (void (CGalaxyActionSpriteObject::*)()) &CRope::processActive;
     mActionMap[A_ROPE_THROWN] = (void (CGalaxyActionSpriteObject::*)()) &CRope::processThrown;
 
-    setupGalaxyObjectOnMap(0x1C16, A_ROPE_THROWN);    
+    setupGalaxyObjectOnMap(gBehaviorEngine.isDemo() ? 0x1A5C : 0x1C16, A_ROPE_THROWN);
     solid=false;
 }
 

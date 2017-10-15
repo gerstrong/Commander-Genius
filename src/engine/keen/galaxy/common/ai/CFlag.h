@@ -16,6 +16,7 @@
 //#include <base/utils/CVec.h>
 
 const Uint16 WAVING_BASEFRAME = 181;
+const Uint16 WAVING_BASEFRAME_DEMO = 175;
 
 namespace galaxy  {
 

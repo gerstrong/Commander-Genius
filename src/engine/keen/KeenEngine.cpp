@@ -51,6 +51,8 @@ void KeenEngine::start()
 
     gBehaviorEngine.setEpisode(mEp);
 
+    gBehaviorEngine.setDemo(ExeFile.isDemo());
+
     // Load the Resources
     loadResources( LOADALL );
 }

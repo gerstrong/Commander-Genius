@@ -32,7 +32,8 @@ void stItemGalaxy::reset()
     }
     else if(ep == 6)
     {
-        m_special.ep6.hook = 0;
+        // k6demo starts with possesion of the hook.
+        m_special.ep6.hook = gBehaviorEngine.isDemo() ? 1 : 0;
         m_special.ep6.sandwich = 0;
         m_special.ep6.rocketKeycard = 0;
     }

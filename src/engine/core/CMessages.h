@@ -13,7 +13,7 @@
 
 class CMessages {
 public:	
-	CMessages(unsigned char *p_exebuf, char episode, int version);
+	CMessages(unsigned char *p_exebuf, char episode, bool demo, int version);
 	
 	bool extractGlobalStrings();
 	
@@ -35,9 +35,11 @@ private:
 	bool extractEp4Strings(std::map<std::string, std::string>& StringMap);
     bool extractEp5Strings(std::map<std::string, std::string>& stringMap);
 	bool extractEp6Strings(std::map<std::string, std::string>& StringMap);
+	bool extractEp6DemoStrings(std::map<std::string, std::string>& StringMap);
 
 	unsigned char *mp_exe;
 	char m_episode;
+	bool m_demo;
 	int m_version;
 	
 	unsigned int mOffset;

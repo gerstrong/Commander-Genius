@@ -61,7 +61,7 @@ mounted(false)
 	walkBaseFrame = mSpriteIdx;
 	wavingBaseFrame = walkBaseFrame + 22;
 	swimBaseFrame = walkBaseFrame + 24;
-	climbBaseFrame = walkBaseFrame + 37;
+	climbBaseFrame = walkBaseFrame + (gBehaviorEngine.isDemo() ? 26 : 37);
 	m_basesprite = walkBaseFrame;
 
 	performCollisions();
@@ -351,7 +351,7 @@ void CPlayerWM::processMoving()
             else
             {
                 // Tell the player he cannot climb yet                
-                showMsgWithBmp(gBehaviorEngine.getString("KEEN_ROPE_REQUIRED"), 29, RIGHT);
+                showMsgWithBmp(gBehaviorEngine.getString("KEEN_ROPE_REQUIRED"), "KEENTALKING", RIGHT);
                 moveYDir(-(climbDir<<CSF)/2);
             }
         }
@@ -1083,7 +1083,7 @@ bool CPlayerWM::finishLevel(const int object)
         Vector2D<Uint32> src(getXPosition(), getYPosition());
 
         // Here we move the coordinates for the correction position of the done flag/sign
-        GsSprite &FlagSprite = gGraphics.getSprite(mSprVar, WAVING_BASEFRAME);
+        GsSprite &FlagSprite = gGraphics.getSprite(mSprVar, gBehaviorEngine.isDemo() ? WAVING_BASEFRAME_DEMO : WAVING_BASEFRAME);
 
 		unsigned int csfX = (x<<CSF);
 		unsigned int csfY = (y<<CSF);

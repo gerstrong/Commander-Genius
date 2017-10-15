@@ -36,7 +36,7 @@ bool CWorldMap::init()
     }
 	else if(gBehaviorEngine.getEpisode() == 6)
     {
-        MapLoader.reset( new CMapLoaderGalaxyEp6( mObjectPtr, mInventoryVec) );
+        MapLoader.reset( new CMapLoaderGalaxyEp6( mObjectPtr, mInventoryVec, gBehaviorEngine.isDemo() ) );
     }
 
     const bool ok = MapLoader->loadMap( mMap, 0 );

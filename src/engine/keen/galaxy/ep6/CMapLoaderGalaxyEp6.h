@@ -17,11 +17,14 @@ class CMapLoaderGalaxyEp6 : public CMapLoaderGalaxy
 {
 public:
     CMapLoaderGalaxyEp6(std::vector< std::shared_ptr<CGalaxySpriteObject> > &ObjectPtr,
-            std::vector<CInventory> &inventoryVec);
+                        std::vector<CInventory> &inventoryVec,
+                        bool demo);
 
     bool isKeenPlayer(const int foeID);
 
 	CGalaxySpriteObject* addFoe(CMap &Map, word foe, size_t x, size_t y);
+private:
+    bool m_demo;
 };
 
 }

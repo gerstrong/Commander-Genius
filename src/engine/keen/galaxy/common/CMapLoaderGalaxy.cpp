@@ -51,7 +51,7 @@ size_t CMapLoaderGalaxy::getMapheadOffset()
 	{
 	case 4:	offset = 0x24830; break;
 	case 5:	offset = 0x25990; break;
-	case 6:	offset = 0x25080; break;
+	case 6:	offset = gKeenFiles.exeFile.isDemo() ? 0x1F560 : 0x25080; break;
 	default:	break;
 	}
 
