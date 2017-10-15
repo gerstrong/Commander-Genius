@@ -987,7 +987,7 @@ bool CPlayerLevel::stun()
     playSound(SOUND_KEEN_STUNNED);
 
     mEndOfAction = false;
-    m_Action.setActionFormat(0x1868);
+    m_Action.setActionFormat(gBehaviorEngine.isDemo() ? 0x1862 : 0x1868);
 
     mStunTimer = 0;
     return true;

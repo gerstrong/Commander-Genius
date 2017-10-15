@@ -47,7 +47,7 @@ void CLevelPlay::loadMap(const int level)
     }
     else if(episode == 6)
     {
-        MapLoader.reset(new CMapLoaderGalaxyEp6(mObjectPtr, mInventoryVec));
+        MapLoader.reset(new CMapLoaderGalaxyEp6(mObjectPtr, mInventoryVec, gBehaviorEngine.isDemo()));
     }
     else
     {

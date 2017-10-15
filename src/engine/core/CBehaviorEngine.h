@@ -92,6 +92,7 @@ public:
 	// This function evaluates if the used engine is galaxy or vorticon
 	EngineType getEngine();
 	size_t getEpisode();
+	bool isDemo();
 	stTeleporterTable& getTeleporterTableAt(size_t num)
 	{ return m_TeleporterTable[num]; }
 	std::vector<stTeleporterTable>& getTeleporterTable()
@@ -102,6 +103,9 @@ public:
 
     void setEpisode(const size_t Episode)
     {	mEpisode = Episode;	}
+
+    void setDemo(bool demo)
+    {	mDemo = demo;	}
 
 	void setPause(const bool value)
 	{	mPausedGamePlay = value;	}
@@ -115,8 +119,8 @@ public:
     int mPlayers = 1;
     Difficulty mDifficulty = EASY;
 
-    EpisodeInfoStruct* getEpisodeInfoStructRef(const unsigned int episode)
-	{	return &pEpisodeInfo[episode-4];	}
+    EpisodeInfoStruct* getEpisodeInfoStructRef()
+    {	return &pEpisodeInfo[mDemo ? 4 : mEpisode - 4];	}
 
 	void setEpisodeInfoStructPtr(const EpisodeInfoStruct* epStruct)
     {	pEpisodeInfo = const_cast<EpisodeInfoStruct*>(epStruct);	}
@@ -135,6 +139,7 @@ private:
 													  // used by Episode 1 especially
 	int numStrings;
     size_t mEpisode;
+    bool mDemo;
 
     bool mPausedGamePlay = false;
 

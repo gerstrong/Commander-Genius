@@ -46,7 +46,7 @@ m_baseframe(0)
 
 	if(episode == 6)
 	{
-        setupGalaxyObjectOnMap(0x13F4, A_FLAG_FLIP);
+            setupGalaxyObjectOnMap(gBehaviorEngine.isDemo() ? 0x145A : 0x13F4, A_FLAG_FLIP);
 	}
 	else if(episode == 5)
 	{

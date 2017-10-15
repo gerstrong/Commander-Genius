@@ -66,11 +66,25 @@ void CEGAGraphicsGalaxy::createBitmapsIDs()
     m_BitmapNameMap[2][27] = "STARWARS";
 	m_BitmapNameMap[2][28] = "TITLE";
 	m_BitmapNameMap[2][20] = "KEENSWATCH";
+	m_BitmapNameMap[2][29] = "KEENTALKING";
 	m_BitmapNameMap[2][30] = "KEENTHUMBSUP";
     m_BitmapNameMap[2][0] = "HELPHAND";
 	
 	// Sprites
 	m_SpriteNameMap[2][129] = "HUDBACKGROUND";
+
+	/// Keen 6 demo Image IDs
+	// Bitmaps
+    m_BitmapNameMap[3][22] = "STARWARS";
+	m_BitmapNameMap[3][23] = "TITLE";
+	m_BitmapNameMap[3][15] = "KEENSWATCH";
+	m_BitmapNameMap[3][24] = "KEENTALKING";
+	m_BitmapNameMap[3][25] = "KEENTHUMBSUP";
+    // The following is not right for k6demo, but here as a placeholder:
+    m_BitmapNameMap[3][0] = "HELPHAND";
+	
+	// Sprites
+	m_SpriteNameMap[3][129] = "HUDBACKGROUND";
 
 	// Menu Labels
 	m_BitmapNameMap[1][61] = "MAINMENULABEL";
@@ -103,6 +117,23 @@ void CEGAGraphicsGalaxy::createBitmapsIDs()
 	m_BitmapNameMap[2][16] = "OPTIONSMENULABEL";
 	m_BitmapNameMap[2][17] = "PADDLELABEL";
 	m_BitmapNameMap[2][18] = "QUITLABEL";
+
+	// Menu Labels (demo)
+	m_BitmapNameMap[3][0]  = "MAINMENULABEL";
+	m_BitmapNameMap[3][1]  = "NEWGAMELABEL";
+	m_BitmapNameMap[3][2]  = "LOADMENULABEL";
+	m_BitmapNameMap[3][3]  = "SAVEMENULABEL";
+	m_BitmapNameMap[3][4]  = "CONFIGMENULABEL";
+	m_BitmapNameMap[3][5]  = "SNDEFFMENULABEL";
+	m_BitmapNameMap[3][6]  = "MUSICMENULABEL";
+	m_BitmapNameMap[3][7]  = "KEYBMENULABEL";
+	m_BitmapNameMap[3][8]  = "MOVEMENULABEL";
+	m_BitmapNameMap[3][9]  = "BUTTONMENULABEL";
+	m_BitmapNameMap[3][10] = "JOYMENULABEL";
+	m_BitmapNameMap[3][11] = "OPTIONSMENULABEL";
+	m_BitmapNameMap[3][12] = "PADDLELABEL";
+	m_BitmapNameMap[3][13] = "QUITLABEL";
+
 }
 
 }

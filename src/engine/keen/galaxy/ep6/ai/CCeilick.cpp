@@ -30,7 +30,7 @@ mLaughed(false)
 	mActionMap[A_CEILICK_LICK] = (GASOFctr) &CCeilick::processLicking;
 	mActionMap[A_CEILICK_STUNNED] = (GASOFctr) &CStunnable::processGettingStunned;
 	
-	setupGalaxyObjectOnMap(0x31BE, A_CEILICK_SLEEP);
+	setupGalaxyObjectOnMap(gBehaviorEngine.isDemo() ? 0x23FE : 0x31BE, A_CEILICK_SLEEP);
 	
     xDirection = LEFT;
     solid = false;

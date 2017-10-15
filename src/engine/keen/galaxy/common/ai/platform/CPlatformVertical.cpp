@@ -12,6 +12,7 @@
 
 const int FIRE_CHANGE_TIME = 5;
 const int FIRE_SPRITE = 363;
+const int FIRE_SPRITE_DEMO = 314;
 
 namespace galaxy
 {
@@ -22,9 +23,10 @@ CGalaxySpriteObject(pmap, foeID, x, y, sprVar),
 CPlatform(pmap, foeID, x, y),
 drawFire(false),
 dimFire(false),
-m_FireSprite(FIRE_SPRITE),
 m_fireTimer(0)
 {
+    m_FireSprite = gBehaviorEngine.isDemo() ? FIRE_SPRITE_DEMO : FIRE_SPRITE;
+
     Vector2D<Uint32> pos = getPosition();
 
     pos.y = (pos.y>>CSF);   pos.x = (pos.x>>CSF);

@@ -57,8 +57,8 @@ mSkipSection(false)
         mCreditsBmpID = 98;
     else if(episode == 5)
         mCreditsBmpID = 77;
-    else
-        mCreditsBmpID = 23;
+    else if(episode == 6)
+        mCreditsBmpID = gBehaviorEngine.isDemo() ? 18 : 23;
 
     mCurrentLogoBmp = gGraphics.getBitmapFromId(mCreditsBmpID);
 

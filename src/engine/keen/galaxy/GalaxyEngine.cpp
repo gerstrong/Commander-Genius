@@ -193,7 +193,7 @@ bool GalaxyEngine::loadResources( const Uint8 flags )
             if( (mFlags & LOADSTR) == LOADSTR )
             {
                 // load the strings.
-                CMessages Messages(p_exedata, Episode, version);
+                CMessages Messages(p_exedata, Episode, ExeFile.isDemo(), version);
                 Messages.extractGlobalStrings();
                 mLoader.setPermilage(450);
             }

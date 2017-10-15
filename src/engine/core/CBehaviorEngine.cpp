@@ -94,6 +94,9 @@ std::string CBehaviorEngine::getString(const std::string& name)
 size_t CBehaviorEngine::getEpisode()
 {	return mEpisode;	}
 
+bool CBehaviorEngine::isDemo()
+{	return mDemo;	}
+
 EngineType CBehaviorEngine::getEngine()
 {
     if( mEpisode >= 4 && mEpisode <= 6 )

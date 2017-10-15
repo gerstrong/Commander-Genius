@@ -575,7 +575,14 @@ void CSpriteObject::draw()
 		}
 		else
 		{
-            Sprite.drawSprite( showX, showY, w, h, (255-transluceny) );
+                    if (w && h)
+                    {
+                        Sprite.drawSprite( showX, showY, w, h, (255-transluceny) );
+                    }
+                    else
+                    {
+                        gLogging.ftextOut("drawSprite problem w=%d h=%d mSprVar=%d mSpriteIdx=%d", w, h, mSprVar, mSpriteIdx);
+                    }
 		}
 		hasbeenonscreen = true;
 	}

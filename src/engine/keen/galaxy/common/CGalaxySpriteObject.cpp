@@ -32,7 +32,7 @@ mClipped(false),
 m_jumpdown(false),
 mEndOfAction(false)
 {
-    EpisodeInfoStruct* eiStructPtr = gBehaviorEngine.getEpisodeInfoStructRef(gBehaviorEngine.getEpisode());
+    EpisodeInfoStruct* eiStructPtr = gBehaviorEngine.getEpisodeInfoStructRef();
     spriteOffset = eiStructPtr->IndexSprites;
 }
 

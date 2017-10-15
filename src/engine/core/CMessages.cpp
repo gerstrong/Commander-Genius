@@ -16,11 +16,12 @@
 
 #include <cstring>
 
-CMessages::CMessages(unsigned char *p_exebuf, char episode, int version) :
+CMessages::CMessages(unsigned char *p_exebuf, char episode, bool demo, int version) :
 	mp_exe(p_exebuf),
 	mOffset(0)
 {
 	m_episode = episode;
+	m_demo = demo;
 	m_version = version;
 }
 
@@ -276,6 +277,56 @@ bool CMessages::extractEp6Strings(std::map<std::string, std::string>& StringMap)
   return false;
 }
 
+bool CMessages::extractEp6DemoStrings(std::map<std::string, std::string>& StringMap)
+{
+  switch(m_version)
+  {
+    case 100:
+    {
+      // Level loading Texts
+      StringMap.insert( extractStringOff( "LEVEL0_LOAD_TEXT", 0x1B3B0 ) );
+      StringMap.insert( extractStringOff( "LEVEL1_LOAD_TEXT",  0x1B3D0 ) );
+      StringMap.insert( extractStringOff( "LEVEL2_LOAD_TEXT",  0x1B400 ) );
+      StringMap.insert( extractStringOff( "LEVEL3_LOAD_TEXT",  0x1B446 ) );
+      StringMap.insert( extractStringOff( "LEVEL4_LOAD_TEXT",  0x1B460 ) );
+      StringMap.insert( extractStringOff( "LEVEL5_LOAD_TEXT",  0x1B490 ) );
+      StringMap.insert( extractStringOff( "LEVEL6_LOAD_TEXT",  0x1B4C0 ) );
+      StringMap.insert( extractStringOff( "LEVEL7_LOAD_TEXT",  0x1B4F0 ) );
+      StringMap.insert( extractStringOff( "LEVEL8_LOAD_TEXT",  0x1B510 ) );
+      StringMap.insert( extractStringOff( "LEVEL9_LOAD_TEXT",  0x1B540 ) );
+      StringMap.insert( extractStringOff( "LEVEL10_LOAD_TEXT", 0x1B570 ) );
+      StringMap.insert( extractStringOff( "LEVEL11_LOAD_TEXT", 0x1B5A0 ) );
+      StringMap.insert( extractStringOff( "LEVEL12_LOAD_TEXT", 0x1B5F0 ) );
+      StringMap.insert( extractStringOff( "LEVEL13_LOAD_TEXT", 0x1B620 ) );
+      StringMap.insert( extractStringOff( "LEVEL14_LOAD_TEXT", 0x1B660 ) );
+      StringMap.insert( extractStringOff( "LEVEL15_LOAD_TEXT", 0x1B6A0 ) );
+      StringMap.insert( extractStringOff( "LEVEL16_LOAD_TEXT", 0x1B6E0 ) );
+      StringMap.insert( extractStringOff( "LEVEL17_LOAD_TEXT", 0x1B710 ) );
+      StringMap.insert( extractStringOff( "LEVEL18_LOAD_TEXT", 0x1B740 ) );
+      
+      // Got Item Text.
+      setDecodeOffset(0x325B6);
+      StringMap.insert( extractNextString( "KEEN_GOT_SANDWICH" ) );
+      StringMap.insert( extractNextString( "KEEN_GOT_GRAPPLING_HOOK" ) );
+      StringMap.insert( extractNextString( "KEEN_GOT_SHIPCARD" ) );
+      
+      // Grabbiter Text
+      setDecodeOffset(0x2C49A);
+      // StringMap.insert( extractNextString( "KEEN_GRABBITER_HUNGRY" ) );
+      // StringMap.insert( extractNextString( "KEEN_GRABBITER_SLEEPY" ) );
+      // StringMap.insert( extractNextString( "KEEN_KEYCARD_REQUIRED" ) );
+      StringMap.insert( extractNextString( "KEEN_ROPE_REQUIRED" ) );
+
+      setDecodeOffset(0x1AFF0);
+      StringMap.insert( extractNextString( "STORY_TEXT" ) );
+
+      
+      return true;
+    } break;
+  }
+  return false;
+}
+
 bool CMessages::extractGlobalStrings()
 {
 	std::map<std::string, std::string> StringMap; // Structure which stores all the extracted string
@@ -396,7 +447,8 @@ bool CMessages::extractGlobalStrings()
 
 		case 6:
 		{
-			if(!extractEp6Strings(StringMap))
+			if(!(m_demo ? extractEp6DemoStrings(StringMap) :
+					extractEp6Strings(StringMap)))
 				gLogging.textOut(FONTCOLORS::RED,"This version of the game is not supported!");
 		} break;
 

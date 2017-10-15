@@ -27,7 +27,7 @@ mStubPlayer(false)
     mActionMap[A_BLOOGUARD_CLUBBING] = (GASOFctr) &CBlooguard::processClubbing;
     mActionMap[A_BLOOGUARD_STUNNED] = (GASOFctr) &CStunnable::processGettingStunned;
     
-    setupGalaxyObjectOnMap(0x1F7C, A_BLOOGUARD_WALK);
+    setupGalaxyObjectOnMap(gBehaviorEngine.isDemo() ? 0x1C3C : 0x1F7C, A_BLOOGUARD_WALK);
     
     xDirection = LEFT;
 }

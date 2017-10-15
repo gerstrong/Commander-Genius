@@ -326,7 +326,7 @@ bool CMapPlayGalaxy::operator<<(CSaveGameController &savedGame)
 	}
 	else if(episode == 6)
 	{
-        mapLoader.reset( new galaxy::CMapLoaderGalaxyEp6( mObjectPtr, mInventoryVec) );
+        mapLoader.reset( new galaxy::CMapLoaderGalaxyEp6( mObjectPtr, mInventoryVec, gBehaviorEngine.isDemo()) );
 	}
 	else
 	{
@@ -516,7 +516,7 @@ void CMapPlayGalaxy::operator<<(boost::property_tree::ptree &levelNode)
     }
     else if(episode == 6)
     {
-        mapLoader.reset( new galaxy::CMapLoaderGalaxyEp6( mObjectPtr, mInventoryVec) );
+        mapLoader.reset( new galaxy::CMapLoaderGalaxyEp6( mObjectPtr, mInventoryVec, gBehaviorEngine.isDemo() ) );
     }
     else
     {

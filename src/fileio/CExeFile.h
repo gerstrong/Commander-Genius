@@ -58,6 +58,8 @@ public:
 	int getEXECrc();
 	bool readExeImageSize(unsigned char *p_data_start, unsigned long *imglen, unsigned long *headerlen) const;
 	
+    bool isDemo() const
+    {	return m_demo;	}
 
     byte* getRawData() const
     {	return m_rawdata;	}
@@ -112,6 +114,7 @@ private:
 	size_t m_datasize;
 	size_t m_headersize;
 	int m_episode;
+	bool m_demo;
 	unsigned int m_crc;
 	std::vector<byte> mData;
 	void *m_headerdata;

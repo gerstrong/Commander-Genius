@@ -16,9 +16,10 @@
 #include "CTileLoader.h"
 
 
-CTileLoader::CTileLoader(int episode, int version, unsigned char *data)
+CTileLoader::CTileLoader(int episode, bool demo, int version, unsigned char *data)
 {
 	m_episode = episode;
+	m_demo = demo;
 	m_version = version;
 	m_data = data;
 	m_offset = 0;
@@ -28,6 +29,7 @@ CTileLoader::CTileLoader(int episode, int version, unsigned char *data)
 CTileLoader::CTileLoader(CExeFile &Exefile)
 {
 	m_episode = Exefile.getEpisode();
+	m_demo = Exefile.isDemo();
 	m_version = Exefile.getEXEVersion();
 	m_data = Exefile.getRawData();
 	m_offset = 0;
@@ -53,11 +55,19 @@ void CTileLoader::setupOffsetMap()
 	m_offsetMap[6][140] = 0x25212;
 
 	m_offsetMap[7][100] = 0x11322;
+
+	// k6demo
+	m_offsetMap[8][100] = 0x1f6f2;
+}
+
+size_t CTileLoader::getOffset()
+{
+    return m_offsetMap[m_demo ? 8 : m_episode][m_version];
 }
 
 bool CTileLoader::load(size_t NumUnMaskedTiles, size_t NumMaskedTiles)
 {
-	if(m_offsetMap[m_episode][m_version])
+	if(getOffset())
 	{
 		if(m_episode == 1 || m_episode == 2 || m_episode == 3 )
 		{
@@ -91,7 +101,7 @@ void CTileLoader::readVorticonTileinfo(std::vector<CTileProperties> &TilePropert
 	const size_t NumTiles = TileProperties.size();
 	size_t planesize = 2*NumTiles;
 
-	byte *data = m_data + m_offsetMap[m_episode][m_version];
+	byte *data = m_data + getOffset();
 
 	// Special workaround. I don't know why this happens, but Episode 3 doesn not seems to read
 	// the plane size. TODO: Check where that value is hidden in the EXE file.
@@ -161,7 +171,7 @@ void CTileLoader::readVorticonTileinfo(std::vector<CTileProperties> &TilePropert
 
 void CTileLoader::readGalaxyTileinfo(size_t NumUnMaskedTiles, size_t NumMaskedTiles)
 {
-	byte *data = m_data + m_offsetMap[m_episode][m_version];
+	byte *data = m_data + getOffset();
 	std::vector<CTileProperties> &TileUnmaskedProperties = gBehaviorEngine.getTileProperties(0);
 
 	for(size_t j=0 ; j < NumUnMaskedTiles ; j++)
