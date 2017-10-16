@@ -74,8 +74,6 @@ bool COGGPlayer::loadMusicFromFile(const std::string& filename)
 
 bool COGGPlayer::open(const bool lock)
 {       
-    //while(SDL_GetAudioStatus() == SDL_AUDIO_PLAYING);
-
     if(m_Audio_cvt.buf)
     {
         close(lock);

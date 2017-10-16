@@ -128,8 +128,6 @@ void CIMFPlayer::close(const bool lock)
 }
 
 
-#include <fstream>
-
 
 void CIMFPlayer::OPLUpdate(byte *buffer, const unsigned int length)
 {    

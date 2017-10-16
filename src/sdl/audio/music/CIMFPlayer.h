@@ -42,7 +42,7 @@ public:
 	void readBuffer(Uint8* buffer, Uint32 length);
 
 
-    bool loadMusicTrack(const int track);
+    bool loadMusicTrack(const int track) override;
 
 private:
 
@@ -55,9 +55,9 @@ private:
 	RingBuffer<IMFChunkType> m_IMF_Data;
     COPLEmulator &m_opl_emulator;
 
-	Uint32 m_numreadysamples;
-	Uint32 m_samplesPerMusicTick;
-	unsigned int m_IMFDelay;
+    Uint32 m_numreadysamples = 0;
+    Uint32 m_samplesPerMusicTick =0;
+    unsigned int m_IMFDelay = 0;
     std::vector<Sint32> mMixBuffer;
 };
 

@@ -11,14 +11,6 @@
 #include <sdl/audio/CAudioResources.h>
 #include "fileio/CExeFile.h"
 
-const Uint32 GalaxySongAssignments[] =
-{
-	0x02F206,
-	0x03067A,
-	0x03103E,
-};
-
-
 class CAudioGalaxy : public CAudioResources
 {
 public:

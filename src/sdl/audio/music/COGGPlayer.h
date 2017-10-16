@@ -34,13 +34,18 @@ public:
     COGGPlayer(const std::string& filename);
 	virtual ~COGGPlayer();
 
-    bool loadMusicTrack(const int track);
+    bool loadMusicTrack(const int track) override;
+
     bool loadMusicFromFile(const std::string& filename);
+
     bool open(const bool lock);
+
 	void readBuffer(Uint8* buffer, Uint32 length);
+
     void close(const bool lock);
 
 private:
+
     bool readOGGStream(char *buffer, const size_t &size, const SDL_AudioSpec &OGGAudioSpec );
     bool readOGGStreamAndResample(Uint8 *buffer, const int output_size, const size_t input_size, const SDL_AudioSpec &OGGAudioSpec );
 

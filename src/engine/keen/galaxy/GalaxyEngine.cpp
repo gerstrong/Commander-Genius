@@ -30,6 +30,15 @@ namespace galaxy
 {
 
 
+const Uint32 GalaxySongAssignments[] =
+{
+    0x02F206,  // Keen 4
+    0x03067A,  // Keen 5
+    0x03103E,  // Keen 6
+    0x02A872   // Keen 6 Demo
+};
+
+
 bool setupAudio()
 {
     const CExeFile &ExeFile = gKeenFiles.exeFile;
@@ -51,7 +60,12 @@ bool loadLevelMusic(const int level)
 
     CExeFile &ExeFile = gKeenFiles.exeFile;
     const auto episode = ExeFile.getEpisode();
-    const int Idx = episode-4;
+    int Idx = episode-4;
+
+    if(episode == 6 && ExeFile.isDemo())
+    {
+        Idx = 3;
+    }
 
     const std::string path = gKeenFiles.gameDir;
 
