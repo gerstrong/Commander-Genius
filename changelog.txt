@@ -1,6 +1,8 @@
 v1.9.9.8:
 ---------
 - Keen 6 Demo working now (Special thanks to Mewingtree)
+- Graphical artifacts fixed in SDL 1.2
+- HUD in Vorticon Keen with SDL 1.2 displayed correctly again
 
 v1.9.9.7:
 ---------
