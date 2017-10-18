@@ -56,11 +56,13 @@ VorticonMenu(GsRect<float>(0.15f, 0.24f, 0.65f, 0.55f) )
     mpFPSSelection = new NumberControl( "FPS", 10, 120, 10, 60, false );
     //mpMenuDialog->addControl( mpFPSSelection );
 
+#if !defined(EMBEDDED)
+
     mpGameResSelection = new ComboSelection( "GameRes",
         filledStrList(1, "?x?") );
     mpMenuDialog->addControl( mpGameResSelection );
 	
-#if !defined(EMBEDDED)	
+
 	
     mpAspectSelection = new ComboSelection( "Aspect",
 		filledStrList(1, "disabled") );

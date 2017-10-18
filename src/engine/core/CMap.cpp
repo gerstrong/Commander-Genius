@@ -850,7 +850,7 @@ void CMap::_drawForegroundTiles()
     {
         for( size_t x=x1 ; x<=x2 ; x++)
         {
-            Uint16 fg = m_Plane[1].getMapDataAt(x,y);
+            const auto fg = m_Plane[1].getMapDataAt(x,y);
 
             const int loc_x = (x<<TILE_S)-m_scrollx;
             const int loc_y = (y<<TILE_S)-m_scrolly;
@@ -865,12 +865,14 @@ void CMap::_drawForegroundTiles()
             {
                 if(TileProperties[fg].behaviour < 0)
                 {
+#if !defined(EMBEDDED)
                     if( ( loc_x > visBlendX1 && loc_x < visBlendX2 ) &&
                         ( loc_y > visBlendY1 && loc_y < visBlendY2 ) )
                     {
                         tilemap.drawTileBlended(surface, loc_x, loc_y, fg, 192 );
                     }
                     else
+#endif
                     {
                         tilemap.drawTile(surface, loc_x, loc_y, fg );
                     }
