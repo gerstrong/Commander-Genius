@@ -19,10 +19,10 @@ const int EFFECT_SPEED = 10;
 CHUD::CHUD(unsigned long &score, signed char &lives,
            unsigned int &charges, const int id) :
 m_score(score),
-m_lives(lives),
+mLives(lives),
 m_charges(charges),
-m_oldScore(score),
-m_oldCharges(charges),
+mOldScore(score),
+mOldCharges(charges),
 timer(0)
 {
     setup(id);
@@ -30,23 +30,11 @@ timer(0)
 
 void CHUD::createHUDBlit()
 {    
-#if SDL_VERSION_ATLEAST(2, 0, 0)
     mpHUDBlit.reset( CG_CreateRGBSurface( mRenderRect ), &SDL_FreeSurface );
     mpHUDBlit.reset(gVideoDriver.convertThroughBlitSfc(mpHUDBlit.get()), &SDL_FreeSurface);
 
+#if SDL_VERSION_ATLEAST(2, 0, 0)
     SDL_SetSurfaceAlphaMod( mpHUDBlit.get(), 220);
-#else    
-    auto *blit = gVideoDriver.getBlitSurface();
-    SDL_PixelFormat *format = blit->format;
-
-    SDL_Surface *sfc = SDL_CreateRGBSurface( SDL_SWSURFACE,
-                mRenderRect.w, mRenderRect.h, RES_BPP,
-                format->Rmask,
-                format->Gmask,
-                format->Bmask,
-                format->Amask );
-
-    mpHUDBlit.reset( sfc, &SDL_FreeSurface );
 #endif
 }
 
@@ -100,9 +88,12 @@ void CHUD::setup(const int id)
 void CHUD::CreateVorticonBackground()
 {
     // Create a surface for the Background
-    mBackground.createFromSDLSfc( SDL_ConvertSurface( mpHUDBlit.get(), mpHUDBlit->format, 0) );
+    mBackground.createRGBSurface(mRenderRect);
+    //mBackground.createFromSDLSfc( SDL_ConvertSurface( mpHUDBlit.get(), mpHUDBlit->format, 0) );
 
-    mBackground.setAlpha(255);
+    //mBackground.fillRGB(0,0,0);
+
+    //mBackground.setAlpha(255);
     //mBackground.setAlpha(0);
 
 
@@ -225,9 +216,9 @@ void CHUD::renderGalaxy()
 {
   // Compute the score that really will be seen
   int score, lives, charges;
-  score = (m_oldScore<999999999) ? m_oldScore : 999999999;
-  lives = (m_lives<99) ? m_lives : 99;
-  charges = (m_oldCharges<99) ? m_oldCharges : 99;
+  score = (mOldScore<999999999) ? mOldScore : 999999999;
+  lives = (mLives<99) ? mLives : 99;
+  charges = (mOldCharges<99) ? mOldCharges : 99;
 
   // Draw the HUD with all the digits
   SDL_Surface* blitsfc = mpHUDBlit.get();
@@ -265,28 +256,32 @@ void CHUD::renderVorticon()
 {
 	// Compute the score that really will be seen
 	int score, lives, charges;
-    score = (m_oldScore<99999999) ? m_oldScore : 99999999;
-	lives = (m_lives<99) ? m_lives : 99;
-	charges = (m_oldCharges<99) ? m_oldCharges : 99;
+    score = (mOldScore<99999999) ? mOldScore : 99999999;
+    lives = (mLives<99) ? mLives : 99;
+    charges = (mOldCharges<99) ? mOldCharges : 99;
+
+    auto weakSfc = mpHUDBlit.get();
 
 	// Draw the background
-    BlitSurface(mBackground.getSDLSurface(), NULL, mpHUDBlit.get(), NULL );
+    BlitSurface(mBackground.getSDLSurface(), NULL, weakSfc, NULL );
 
 
 	GsFont &Font = gGraphics.getFont(1);
 
-	// Draw the lives
-    Font.drawFont(mpHUDBlit.get(), getRightAlignedString(itoa(lives),2), 15, 15, false);
+    // Print the lives
+    Font.drawFont(weakSfc, getRightAlignedString(itoa(lives),2), 15, 15, false);
 
-	// Draw the charges
-    Font.drawFont(mpHUDBlit.get(), getRightAlignedString(itoa(charges),2), 56, 15, false);
+    // Print the charges
+    Font.drawFont(weakSfc, getRightAlignedString(itoa(charges),2), 56, 15, false);
 
-    Font.drawFont(mpHUDBlit.get(), getRightAlignedString(itoa(score),8),8, 2, false );
+    // Print the score
+    Font.drawFont(weakSfc, getRightAlignedString(itoa(score),8),8, 2, false );
 
     auto finalRenderRect = mRenderRect;     // Finally pull it a bit down if there are extra borders.
     finalRenderRect.y += gVideoDriver.getVidConfig().mHorizBorders;
 
-    BlitSurface( mpHUDBlit.get(), NULL, gVideoDriver.getBlitSurface(), &finalRenderRect );
+    BlitSurface( mBackground.getSDLSurface(), nullptr, gVideoDriver.getBlitSurface(), &finalRenderRect );
+    BlitSurface( weakSfc, nullptr, gVideoDriver.getBlitSurface(), &finalRenderRect );
 }
 
 
@@ -300,30 +295,30 @@ void CHUD::render()
 	{
 	    timer = 0;
 
-	    if(m_oldCharges < m_charges)
-		m_oldCharges++;
-	    else if(m_oldCharges > m_charges)
-		m_oldCharges--;
+        if(mOldCharges < m_charges)
+        mOldCharges++;
+        else if(mOldCharges > m_charges)
+        mOldCharges--;
 	}
 
-	int delta = (m_score-m_oldScore)/EFFECT_SPEED;
+    int delta = (m_score-mOldScore)/EFFECT_SPEED;
 
-	if(m_oldScore < m_score)
+    if(mOldScore < m_score)
 	{
 	    if(delta == 0)
 		delta = 1;
-	    m_oldScore += delta;
-	    if(m_oldScore > m_score)
-		m_oldScore = m_score;
+        mOldScore += delta;
+        if(mOldScore > m_score)
+        mOldScore = m_score;
 	}
-	else if(m_oldScore > m_score)
+    else if(mOldScore > m_score)
 	{
     	    if(delta == 0)
 		delta = -1;
 
-	    m_oldScore += delta;
-    	    if(m_oldScore < m_score)
-		m_oldScore = m_score;
+        mOldScore += delta;
+            if(mOldScore < m_score)
+        mOldScore = m_score;
 	}
 
 	if( Episode>=1 && Episode<=3 )
@@ -335,6 +330,6 @@ void CHUD::render()
 
 void CHUD::sync()
 {
-    m_oldCharges = m_charges;
-    m_oldScore = m_score;
+    mOldCharges = m_charges;
+    mOldScore = m_score;
 }

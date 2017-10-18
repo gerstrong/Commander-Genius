@@ -62,11 +62,11 @@ private:
     SDL_Rect mRenderRect;
 
 	unsigned long &m_score;
-	signed char &m_lives;
+	signed char &mLives;
 	unsigned int &m_charges;
 
-	unsigned long m_oldScore;
-	unsigned int m_oldCharges;
+	unsigned long mOldScore;
+	unsigned int mOldCharges;
 
     GsSprite mHUDBox;
 
