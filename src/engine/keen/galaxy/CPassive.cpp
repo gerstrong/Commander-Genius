@@ -501,6 +501,7 @@ void CPassiveGalaxy::processStarWars()
 void CPassiveGalaxy::renderTitle()
 {
     // draw the title bitmap here!
+    // This is the full screen title graphic.
     mBackgroundTitle.draw(0, 0);
 }
 
