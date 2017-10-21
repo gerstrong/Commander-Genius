@@ -687,6 +687,15 @@ bool CEGAGraphicsGalaxy::begin()
                 offset += 4;
             }
 
+            // Set an arbitrary, but large, limit on outlen, to avoid blowouts
+            // on bad input data.
+            if(outlen > 100000)
+            {
+                gLogging.ftextOut("outlen too big at i=%u offset=%x outlen=%u",
+                                  i, offset, outlen);
+                return false;
+            }
+
             inlen = 0;
             // Find out the input length
             size_t j;
@@ -1400,13 +1409,14 @@ bool CEGAGraphicsGalaxy::readMiscStuff()
         dataPtr++;
 
         // Limit the height and width to ensure 32-bit safety further below.
-        if(height <= 0 || height > 10000)
+        // The minima are set to avoid crashes elsewhere in the code.
+        if(height < 4 || height > 10000)
         {
             gLogging.ftextOut("bad misc height=%d index=%d misc=%d",
                               height, index, misc);
             return false;
         }
-        if(width <= 0 || width > 10000)
+        if(width < 2 || width > 10000)
         {
             gLogging.ftextOut("bad misc width=%d index=%d misc=%d",
                               width, index, misc);
