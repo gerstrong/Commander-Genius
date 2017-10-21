@@ -402,7 +402,11 @@ void CMapLoaderGalaxy::spawnFoes(CMap &Map)
 	{
 		for(size_t x=0 ; x<width ; x++)
 		{
-            const int foeID = *data_ptr;
+            const int foeID = *data_ptr++;
+
+            // Skip unused 0 foe id, as an optimisation.
+            if(foeID == 0)
+                continue;
 
             // Check if it is the player, because in multiplayer we spawn multiple keens
             if(isKeenPlayer(foeID)) // World Map only
@@ -424,8 +428,6 @@ void CMapLoaderGalaxy::spawnFoes(CMap &Map)
                     m_ObjectPtr.push_back(pNewfoe);
                 }
             }
-
-            data_ptr++;
 		}
 	}
 
