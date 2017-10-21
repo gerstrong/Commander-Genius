@@ -24,3 +24,5 @@ install_manifest.txt
 .DS_Store
 readme.txt
 CMakeFiles
+README
+debian/README

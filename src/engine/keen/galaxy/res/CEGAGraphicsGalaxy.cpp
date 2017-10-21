@@ -193,6 +193,8 @@ bool CEGAGraphicsGalaxy::loadData()
                         curEpInfo.Num16MaskedTiles))
         return false;
 
+    if(!readTables()) return false;
+
     if(!readfonts()) return false;
     if(!readBitmaps()) return false;
     if(!readMaskedBitmaps()) return false;
@@ -687,6 +689,15 @@ bool CEGAGraphicsGalaxy::begin()
                 offset += 4;
             }
 
+            // Set an arbitrary, but large, limit on outlen, to avoid blowouts
+            // on bad input data.
+            if(outlen > 100000)
+            {
+                gLogging.ftextOut("outlen too big at i=%u offset=%x outlen=%u",
+                                  i, offset, outlen);
+                return false;
+            }
+
             inlen = 0;
             // Find out the input length
             size_t j;
@@ -734,6 +745,10 @@ bool CEGAGraphicsGalaxy::begin()
             byte *out = &m_egagraph[i].data[0];
 
             Huffman.expand(in, out, inlen, outlen);
+
+            // std::string filename = std::string("/tmp/egagraph_i_") + std::to_string(i) ;
+            // std::ofstream ofile( filename.c_str() );
+            // ofile.write( reinterpret_cast<char*>(out), outlen);
         }
         else
         {
@@ -767,6 +782,49 @@ Uint8 CEGAGraphicsGalaxy::getBit(unsigned char data, Uint8 leftshift)
 
     return value;
 }
+
+/**
+ * \brief   Read the tables for pictures (bitmaps), masked pictures (bitmaps), and sprites.
+ * \return  returns true, if the tables were read successfully, else false
+ */
+bool CEGAGraphicsGalaxy::readTables()
+{
+    const int ep = getEpisodeInfoIndex();
+    const std::vector<unsigned char> &bitmapTable = m_egagraph.at(0).data;
+
+    if(bitmapTable.size() != (EpisodeInfo[ep].NumBitmaps * 4))
+    {
+        gLogging.ftextOut("bad bitmap table size=%u vs NumBitmaps=%u (x4)",
+                          bitmapTable.size(), EpisodeInfo[ep].NumBitmaps);
+    }
+
+    const std::vector<unsigned char> &maskedBitmapTable = m_egagraph.at(1).data;
+
+    if(maskedBitmapTable.size() != (EpisodeInfo[ep].NumMaskedBitmaps * 4))
+    {
+        gLogging.ftextOut("bad masked bitmap table size=%u vs NumBitmaps=%u (x4)",
+                          maskedBitmapTable.size(), EpisodeInfo[ep].NumMaskedBitmaps);
+    }
+
+    const std::vector<unsigned char> &spriteTable = m_egagraph.at(2).data;
+
+    if(spriteTable.size() != (EpisodeInfo[ep].NumSprites * 18))
+    {
+        gLogging.ftextOut("bad sprite table size=%u vs NumSprites=%u (x18)",
+                          spriteTable.size(), EpisodeInfo[ep].NumSprites);
+    }
+
+    // gLogging.ftextOut("sprite table size=%u vs NumSprites=%u",
+    //                   spriteTable.size(), EpisodeInfo[ep].NumSprites);
+
+    // for(size_t i = 0; i < spriteTable.size(); ++i)
+    // {
+    //     gLogging.ftextOut("sprite table i=%u entry=%x", i, spriteTable[i]);
+    // }
+
+    return true;
+}
+
 
 /**
  * \brief   Read the fonts to the Gfx-Engine
@@ -1066,6 +1124,9 @@ bool CEGAGraphicsGalaxy::readTilemaps( const size_t NumTiles, size_t pbasetilesi
         extractTile(sfc, data, size, rowlength, i, tileoff);
     }
 
+    // std::string filename = std::string("/tmp/read_tilemaps_") + std::to_string(NumTiles) + std::string("_") + std::to_string(IndexOfTiles) + std::string(".bmp");
+    // SDL_SaveBMP(sfc, filename.c_str());
+
     SDL_UnlockSurface(sfc);
 
     /// Let's see if there is a high colour tilemap we can load instead
@@ -1120,6 +1181,9 @@ bool CEGAGraphicsGalaxy::readMaskedTilemaps( size_t NumTiles, size_t pbasetilesi
 
         extractMaskedTile(sfc, data, size, rowlength, i, tileoff);
     }
+
+    // std::string filename = std::string("/tmp/read_masked_tilemaps_") + std::to_string(NumTiles) + std::string("_") + std::to_string(IndexOfTiles) + std::string(".bmp");
+    // SDL_SaveBMP(sfc, filename.c_str());
 
     SDL_UnlockSurface(sfc);
 
@@ -1255,6 +1319,9 @@ bool CEGAGraphicsGalaxy::readSprites( const size_t NumSprites,
         // Special case for k6demo
         size_t spriteNameOffset = (ep == 4 ? 3 : ep);
         sprite.setName(m_SpriteNameMap[spriteNameOffset][i]);
+
+        // std::string filename = std::string("/tmp/read_sprites_") + std::to_string(i) + std::string(".bmp");
+        // SDL_SaveBMP(sfc, filename.c_str());
     }
 
     // Now let's copy all the sprites. After that some of them are tinted to the proper colors
@@ -1359,6 +1426,7 @@ bool CEGAGraphicsGalaxy::readTexts()
 
 
 
+// This sets up gGraphics.getMiscGsBitmap surfaces (0 for "COMMANDER", 1 for "KEEN").
 bool CEGAGraphicsGalaxy::readMiscStuff()
 {
     int width = 0; int height = 0;
@@ -1368,7 +1436,7 @@ bool CEGAGraphicsGalaxy::readMiscStuff()
 
     // Only position 1 and 2 are read. This will the terminator text.
     // Those are monochrom...
-    for(int misc = 1 ; misc<3 ; misc++)
+    for(size_t misc = 0 ; misc < EpisodeInfo[m_episode-4].NumMisc; misc++)
     {
         const int index = indexMisc + misc;
 
@@ -1399,14 +1467,24 @@ bool CEGAGraphicsGalaxy::readMiscStuff()
         memcpy(&width, dataPtr, sizeof(Uint16) );
         dataPtr++;
 
+        gLogging.ftextOut("misc width=%d height=%d index=%d misc=%d",
+                          width, height, index, misc);
+        if(misc < 1 || misc > 2)
+        {
+            // Skip these other misc entries.
+            // todo: What are these other misc entries for?
+            continue;
+        }
+
         // Limit the height and width to ensure 32-bit safety further below.
-        if(height <= 0 || height > 10000)
+        // The minima are set to avoid crashes elsewhere in the code.
+        if(height < 4 || height > 10000)
         {
             gLogging.ftextOut("bad misc height=%d index=%d misc=%d",
                               height, index, misc);
             return false;
         }
-        if(width <= 0 || width > 10000)
+        if(width < 2 || width > 10000)
         {
             gLogging.ftextOut("bad misc width=%d index=%d misc=%d",
                               width, index, misc);
@@ -1470,6 +1548,14 @@ bool CEGAGraphicsGalaxy::readMiscStuff()
             Uint16 pixelCount = *rlepointer;
             if(pixelCount != 0xFFFF)
             {
+                if(pixelNum + pixelCount > expectedNumPixels)
+                {
+                    gLogging.ftextOut("bad misc rle pixel count %u for pixelNum=%d expectedNumPixels=%u width=%d height=%d index=%d misc=%d",
+                                      pixelCount, pixelNum, expectedNumPixels, width, height, index, misc);
+                    bad = true;
+                    break;
+                }
+
                 for(int i=0 ; i<pixelCount ; i++)
                 {
                     *sfcPtr = currentColor;
