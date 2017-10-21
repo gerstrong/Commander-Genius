@@ -67,6 +67,7 @@ size_t CTileLoader::getOffset()
 
 bool CTileLoader::load(size_t NumUnMaskedTiles, size_t NumMaskedTiles)
 {
+	bool success = false;
 	if(getOffset())
 	{
 		if(m_episode == 1 || m_episode == 2 || m_episode == 3 )
@@ -77,26 +78,26 @@ bool CTileLoader::load(size_t NumUnMaskedTiles, size_t NumMaskedTiles)
 			{
 			  std::vector<CTileProperties> &tileProperties = gBehaviorEngine.getTileProperties(i);			
 			  tileProperties.assign(NumMaskedTiles, emptyTileProperties);						  
-			  readVorticonTileinfo(tileProperties);
+			  success = readVorticonTileinfo(tileProperties);
 			}
 		}
-		if(m_episode == 4 || m_episode == 5 || m_episode == 6 || m_episode == 7 )
+		else if(m_episode == 4 || m_episode == 5 || m_episode == 6 || m_episode == 7 )
 		{
 			CTileProperties TileProperties;
 			gBehaviorEngine.getTileProperties(0).assign(NumUnMaskedTiles, TileProperties);
 			gBehaviorEngine.getTileProperties(1).assign(NumMaskedTiles, TileProperties);
-			readGalaxyTileinfo(NumUnMaskedTiles, NumMaskedTiles);
+			success = readGalaxyTileinfo(NumUnMaskedTiles, NumMaskedTiles);
 		}
 	}
 
-	return true;
+	return success;
 }
 
 /**
  * \brief This function assings the tileinfo data block previously read to the internal TileProperties
  * 		  structure in CG.
  */
-void CTileLoader::readVorticonTileinfo(std::vector<CTileProperties> &TileProperties)
+bool CTileLoader::readVorticonTileinfo(std::vector<CTileProperties> &TileProperties)
 {
 	const size_t NumTiles = TileProperties.size();
 	size_t planesize = 2*NumTiles;
@@ -167,38 +168,61 @@ void CTileLoader::readVorticonTileinfo(std::vector<CTileProperties> &TilePropert
 
 	// This function assigns the correct tiles that have to be changed
 	assignChangeTileAttribute(TileProperties);
+	return true;
 }
 
-void CTileLoader::readGalaxyTileinfo(size_t NumUnMaskedTiles, size_t NumMaskedTiles)
+bool CTileLoader::readGalaxyTileinfo(size_t NumUnMaskedTiles, size_t NumMaskedTiles)
 {
-	byte *data = m_data + getOffset();
-	std::vector<CTileProperties> &TileUnmaskedProperties = gBehaviorEngine.getTileProperties(0);
+    bool success = true;
 
-	for(size_t j=0 ; j < NumUnMaskedTiles ; j++)
-	{
+    byte *data = m_data + getOffset();
+    std::vector<CTileProperties> &TileUnmaskedProperties = gBehaviorEngine.getTileProperties(0);
+
+    for(size_t j=0 ; j < NumUnMaskedTiles ; j++)
+    {
         TileUnmaskedProperties[j].animationTime = data[j];
 
         auto nxTile = static_cast<Sint8>(data[NumUnMaskedTiles+j]);
+        size_t nxTileIndex = nxTile + j;
+        if(nxTileIndex >= NumUnMaskedTiles)
+        {
+            gLogging.ftextOut("bad nxTileIndex at j=%u nxTile=%d NumUnMaskedTiles=%u",
+                              j, nxTile, NumUnMaskedTiles);
+            success = false;
+            break;
+        }
 
         TileUnmaskedProperties[j].nextTile = nxTile;
         TileUnmaskedProperties[nxTile+j].prevTile   = j;
-	}
+    }
 
-	std::vector<CTileProperties> &TileMaskedProperties = gBehaviorEngine.getTileProperties(1);
-	for(size_t j=0 ; j < NumMaskedTiles ; j++)
-	{
-		TileMaskedProperties[j].bup 			= data[j+2*NumUnMaskedTiles];
-		TileMaskedProperties[j].bright 			= data[j+2*NumUnMaskedTiles+NumMaskedTiles];
-		TileMaskedProperties[j].bdown 			= data[j+2*NumUnMaskedTiles+2*NumMaskedTiles];
-		TileMaskedProperties[j].bleft 			= data[j+2*NumUnMaskedTiles+3*NumMaskedTiles];
+    std::vector<CTileProperties> &TileMaskedProperties = gBehaviorEngine.getTileProperties(1);
+    size_t maskedTilesBase = 2 * NumUnMaskedTiles;
+    for(size_t j=0 ; j < NumMaskedTiles ; j++)
+    {
+        size_t offset = j + maskedTilesBase;
+        TileMaskedProperties[j].bup    = data[offset];
+        TileMaskedProperties[j].bright = data[offset+NumMaskedTiles];
+        TileMaskedProperties[j].bdown  = data[offset+2*NumMaskedTiles];
+        TileMaskedProperties[j].bleft  = data[offset+3*NumMaskedTiles];
 
-        auto nxTile = static_cast<Sint8>(data[j+2*NumUnMaskedTiles+4*NumMaskedTiles]);
+        auto nxTile = static_cast<Sint8>(data[offset+4*NumMaskedTiles]);
+        size_t nxTileIndex = nxTile + j;
+        if(nxTileIndex >= NumMaskedTiles)
+        {
+            gLogging.ftextOut("bad nxTileIndex at j=%u nxTile=%d NumMaskedTiles=%u",
+                              j, nxTile, NumUnMaskedTiles);
+            success = false;
+            break;
+        }
 
-        TileMaskedProperties[j].nextTile 		= nxTile;
-        TileMaskedProperties[nxTile+j].prevTile   = j;
-		TileMaskedProperties[j].behaviour 		= data[j+2*NumUnMaskedTiles+5*NumMaskedTiles];
-        TileMaskedProperties[j].animationTime 	= data[j+2*NumUnMaskedTiles+6*NumMaskedTiles];
-	}
+        TileMaskedProperties[j].nextTile = nxTile;
+        TileMaskedProperties[nxTileIndex].prevTile = j;
+        TileMaskedProperties[j].behaviour     = data[offset+5*NumMaskedTiles];
+        TileMaskedProperties[j].animationTime = data[offset+6*NumMaskedTiles];
+    }
+
+    return success;
 }
 
 void CTileLoader::assignChangeTileAttribute(std::vector<CTileProperties> &TilePropertiesVec)
