@@ -40,6 +40,7 @@ public:
 
 	// in case you just want to see the Exe-File which CG sustains in the memory
 	void dumpFile(const std::string& filename);
+	void dumpDataFile(const std::string& filename);
 
     /**
      * @brief readData  Attempt to read the data of the given episode
