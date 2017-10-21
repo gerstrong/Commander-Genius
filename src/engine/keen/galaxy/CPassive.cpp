@@ -193,8 +193,14 @@ void CPassiveGalaxy::processIntro()
 
     const int logoMidPosY = mLogoPosY+mCurrentLogoBmp.height()/2;
 
-    mCommanderTextPos.x -= 2;
-    mKeenTextPos.x++;
+    // Set the speed for the horizontal scrolling of the terminator text.
+    // Set this decrement such that the overall time taken to scroll gives
+    // enough time for all the credits to show.
+    mCommanderTextPos.x -= 1;
+
+    // Use half speed for the "KEEN" text to account for its shorter length.
+    if((mCommanderTextPos.x & 1) == 0)
+        mKeenTextPos.x++;
 
     if(mTerminatorLogoNum < 4)
     {
