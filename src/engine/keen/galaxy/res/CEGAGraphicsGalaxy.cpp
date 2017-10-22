@@ -595,14 +595,24 @@ bool CEGAGraphicsGalaxy::begin()
         filename =  JoinPaths(m_path, gKeenFiles.egadictFilename);
     }
 
-    if( Huffman.readDictionaryFromFile(filename) )
+    if( IsFileAvailable(filename) )
     {
-        gLogging.textOut("EGADICT was read from external file");
+        if( !Huffman.readDictionaryFromFile(filename) )
+        {
+            gLogging << "Fatal error reading EGADICT file at path: \""
+                     << filename << "\".";
+            return false;
+        }
+        else
+        {
+            gLogging << "EGADICT was read at path: \"" << filename << "\".";
+        }
     }
     else
     {
         Huffman.readDictionaryNumberfromEnd( m_Exefile ); // or from the embedded Exe file
     }
+
 
     // Now we go for EGAHEAD
     if(!readEGAHead())

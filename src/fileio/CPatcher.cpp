@@ -49,7 +49,7 @@ void CPatcher::process()
 	// then read out of the list the patch commands and apply them to the
 	// Exe-file data m_data
 
-	gLogging.textOut("Trying to load and apply the patch we found...<br>");
+    gLogging << "Trying to load and apply the patch \"" << mPatchFname  << "\"...<br>";
 
 	filterPatches(m_TextList);
 
