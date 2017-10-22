@@ -40,7 +40,7 @@ struct KeenFiles : public GsSingleton<KeenFiles>
             // If other files are in the directory, the patch files have assign that!
             egagraphFilename = "egagraph.ck" + epStr;
             egaheadFilename = "egahead.ck" + epStr;
-            egadictFilename = "egadct.ck" + epStr;
+            egadictFilename = "egadict.ck" + epStr;
             audioFilename = "audio.ck" + epStr;
             audioHedFilename = "audiohed.ck" + epStr;
             audioDictFilename = "audiodct.ck" + epStr;

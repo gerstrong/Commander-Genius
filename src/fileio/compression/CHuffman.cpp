@@ -92,7 +92,9 @@ void CHuffman::readDictionaryAt( byte *p_exedata, unsigned long offset)
 
 
 /* Expand huffman-compressed input file into output buffer */
-void CHuffman::expand(byte *pin, byte *pout, const unsigned long inlen, const unsigned long outlen)
+void CHuffman::expand(byte *pin, byte *pout,
+                      const unsigned long inlen,
+                      const unsigned long outlen)
 {
 	unsigned short curnode;
 	unsigned long incnt = 0, outcnt = 0;

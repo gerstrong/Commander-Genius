@@ -413,9 +413,13 @@ bool CExeFile::unpackAudioInterval( RingBuffer<IMFChunkType> &imfData,
     CHuffman Huffman;
 
     if(audioDictfilename.empty())
+    {
         Huffman.readDictionaryNumber( *this, 0, 0 );
+    }
     else
+    {
         Huffman.readDictionaryFromFile( audioDictfilename );
+    }
 
     if( audio_start < audio_end )
     {
@@ -424,18 +428,36 @@ bool CExeFile::unpackAudioInterval( RingBuffer<IMFChunkType> &imfData,
         uint32_t emb_file_data_size;
         memcpy( &emb_file_data_size, &AudioCompFileData[audio_start], sizeof(uint32_t) );
 
-        byte imf_data[emb_file_data_size];
-        byte *imf_data_ptr = imf_data;
-        Huffman.expand( (byte*)(&AudioCompFileData[audio_comp_data_start]), imf_data, audio_end-audio_comp_data_start, emb_file_data_size);
+        byte imfDataPrim[emb_file_data_size];
+        byte *imfDataPtr = imfDataPrim;
+
+
+        const unsigned long insize = audio_end-audio_comp_data_start;
+
+        // In some mods no compression is performed, so just copy the bytes
+        // into the other array
+        if(emb_file_data_size == insize)
+        {
+            mempcpy(imfDataPrim,
+                    (byte*)(&AudioCompFileData[audio_comp_data_start]),
+                    insize);
+        }
+        else
+        {
+            Huffman.expand( (byte*)(&AudioCompFileData[audio_comp_data_start]),
+                            imfDataPrim,
+                            insize,
+                            emb_file_data_size);
+        }
 
         word data_size;
 
-        if (*imf_data_ptr == 0) // Is the IMF file of Type-0?
+        if (*imfDataPtr == 0) // Is the IMF file of Type-0?
             data_size = emb_file_data_size;
         else
         {
-            data_size = *((word*) (void*) imf_data_ptr);
-            imf_data_ptr+=sizeof(word);
+            data_size = *((word*) (void*) imfDataPtr);
+            imfDataPtr += sizeof(word);
         }
 
 
@@ -444,7 +466,7 @@ bool CExeFile::unpackAudioInterval( RingBuffer<IMFChunkType> &imfData,
 
         const word imf_chunks = data_size/sizeof(IMFChunkType);
         imfData.reserve(imf_chunks);
-        memcpy(imfData.getStartPtr(), imf_data_ptr, data_size);
+        memcpy(imfData.getStartPtr(), imfDataPtr, data_size);
         return true;
     }
     else

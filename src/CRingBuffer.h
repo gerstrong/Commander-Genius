@@ -89,7 +89,7 @@ public:
 	void clear()
 	{
 		delete [] mp_start;
-		mp_start = NULL;
+        mp_start = nullptr;
 		m_size = 0;
 	}
 
@@ -99,7 +99,7 @@ public:
 	 */
 	bool empty()
 	{
-		return (m_size == 0 || mp_start == NULL);
+        return (m_size == 0 || mp_start == nullptr);
 	}
 
 	/**
