@@ -446,6 +446,35 @@ bool CAudioGalaxy::LoadFromAudioCK(const unsigned int dictOffset)
 
     m_soundslot.assign(number_of_total_sounds, CSoundSlot());
 
+
+    bool mustDehuffman = false;
+
+    // Test, if we need to apply hufmann decompression. If out and in sizes are the same,
+    // it won't be the case. This happens usually with mods.
+    for( unsigned int snd=0 ; snd<number_of_total_sounds ; snd++ )
+    {
+        const uint32_t audio_start = audiohed[snd];
+        const uint32_t audio_end = audiohed[snd+1];
+
+        const uint32_t audio_comp_data_start = audio_start+sizeof(uint32_t); // Why this strange offset by 4 bytes?
+
+        if( audio_comp_data_start < audio_end )
+        {
+            const uint32_t *AudioCompFileData32 = reinterpret_cast<uint32_t*>(
+                        reinterpret_cast<void*>(AudioCompFileData.data() + audio_start));
+
+            outsize = *AudioCompFileData32;
+
+            const unsigned long insize = audio_end-audio_comp_data_start;
+
+            if(outsize != insize)
+            {
+                mustDehuffman = true;
+                break;
+            }
+        }
+    }
+
     for( unsigned int snd=0 ; snd<number_of_total_sounds ; snd++ )
     {
         /// Now we have all the data we need.
@@ -477,13 +506,13 @@ bool CAudioGalaxy::LoadFromAudioCK(const unsigned int dictOffset)
             }
 
             // Same size, just copy then
-            /*if(outsize == insize)
+            if(!mustDehuffman)
             {
                 memcpy(imfdataPtr,
                        (byte*)(&AudioCompFileData[audio_comp_data_start]),
                        insize);
             }
-            else */// uncompress!
+            else // uncompress!
             {
                 Huffman.expand( (byte*)(&AudioCompFileData[audio_comp_data_start]),
                                 imfdataPtr,
