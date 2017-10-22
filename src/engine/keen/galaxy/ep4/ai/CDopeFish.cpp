@@ -97,7 +97,9 @@ void CDopeFish::getTouchedBy(CSpriteObject &theObject)
 	if(CPlayerBase *Player = dynamic_cast<CPlayerBase*>(&theObject))
 	{
 		if( getActionNumber(A_DOPEFISH_EAT) )
+        {
 			Player->getEaten();
+        }
 	}
 }
 

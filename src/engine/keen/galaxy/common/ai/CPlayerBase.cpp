@@ -521,8 +521,8 @@ void CPlayerBase::getEaten()
 		honorPriority = false;
 		m_timer = 0;
 		gSound.playSound( SOUND_KEEN_DIE, PLAY_NORESTART );
-		mp_processState = &CPlayerBase::processGetEaten;
-	}
+		mp_processState = &CPlayerBase::processGetEaten;        
+	}    
 }
 
 
@@ -671,13 +671,13 @@ void CPlayerBase::processDying()
 
 
 
-const int DIE_GETEATEN_TIME = 120;
+const int DIE_GETEATEN_TIME = 240;
+
 void CPlayerBase::processGetEaten()
 {
 	if(m_timer >= DIE_GETEATEN_TIME)
 	{
         dead = true;
-		exists = false;
 		solid = true;
 		honorPriority = true;
 		m_timer = 0;
