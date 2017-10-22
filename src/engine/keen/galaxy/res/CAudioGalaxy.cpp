@@ -477,13 +477,13 @@ bool CAudioGalaxy::LoadFromAudioCK(const unsigned int dictOffset)
             }
 
             // Same size, just copy then
-            if(outsize == insize)
+            /*if(outsize == insize)
             {
                 memcpy(imfdataPtr,
                        (byte*)(&AudioCompFileData[audio_comp_data_start]),
                        insize);
             }
-            else // uncompress!
+            else */// uncompress!
             {
                 Huffman.expand( (byte*)(&AudioCompFileData[audio_comp_data_start]),
                                 imfdataPtr,
