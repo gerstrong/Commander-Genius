@@ -52,6 +52,7 @@
 #else
 # include <unistd.h>
 # include <utime.h>
+#include <sys/stat.h>
 #endif
 
 
@@ -118,10 +119,11 @@ void change_file_date(filename,dosdate,tmu_date)
 }
 
 
-/* mymkdir and change_file_date are not 100 % portable
+/* createDir and change_file_date are not 100 % portable
    As I don't know well Unix, I wait feedback for the unix portion */
 
-int mymkdir(dirname)
+
+int createDir(dirname)
     const char* dirname;
 {
     int ret=0;
@@ -160,7 +162,7 @@ int makedir (newdir)
   if (buffer[len-1] == '/') {
     buffer[len-1] = '\0';
   }
-  if (mymkdir(buffer) == 0)
+  if (createDir(buffer) == 0)
     {
       free(buffer);
       return 1;
@@ -175,7 +177,7 @@ int makedir (newdir)
         p++;
       hold = *p;
       *p = 0;
-      if ((mymkdir(buffer) == -1) && (errno == ENOENT))
+      if ((createDir(buffer) == -1) && (errno == ENOENT))
         {
           printf("couldn't create directory %s\n",buffer);
           free(buffer);
@@ -358,7 +360,7 @@ int do_extract_currentfile(uf,popt_extract_without_path,popt_overwrite,password)
         if ((*popt_extract_without_path)==0)
         {
             printf("creating directory: %s\n",filename_inzip);
-            mymkdir(filename_inzip);
+            createDir(filename_inzip);
         }
     }
     else

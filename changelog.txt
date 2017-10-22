@@ -1,3 +1,11 @@
+v2.0.0.0:
+---------
+- Coming soon!
+
+v1.9.9.9:
+---------
+- More errors messages, bett checking of resources files (Special thanks to Mewingtree)
+
 v1.9.9.8:
 ---------
 - Keen 6 Demo working now (Special thanks to Mewingtree)

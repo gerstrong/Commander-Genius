@@ -196,7 +196,7 @@ bool GalaxyEngine::loadResources( const Uint8 flags )
                 CEGAGraphicsGalaxy graphics(ExeFile);
                 if( !graphics.loadData() )
                 {
-                    gLogging.textOut("Sorry, this graphics file is invalid! Quitting...");
+                    gLogging << "Sorry, this graphics file is invalid! Quitting...";
                     gEventManager.add( new GMQuit() );
                     return 0;
                 }

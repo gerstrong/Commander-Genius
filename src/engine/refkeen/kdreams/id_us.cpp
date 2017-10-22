@@ -289,7 +289,7 @@ static void
 USL_ReadConfig(void)
 {
 	id0_boolean_t		gotit;
-	BE_FILE_T			file;
+//	BE_FILE_T			file;
 	SDMode		sd;
 	SMMode		sm;
 	ControlType	ctl;
@@ -2577,17 +2577,17 @@ USL_DoHelp(memptr text,id0_long_t len)
 void
 USL_DoHelpInit(memptr text, id0_long_t len, int &lines)
 {
-    CursorInfo	info;
+    //CursorInfo	info;
     id0_boolean_t		done,
             moved;
     id0_int_t			scroll;
-    id0_word_t		i,
-            pixdiv,
+    id0_word_t		//i,
+            //pixdiv,
             w,h,
             cur,page,
-            top,num,loc,
-            id0_far *lp,
-            base,srcbase,destbase;
+            //top,num,loc,
+            id0_far *lp/*,
+            base,srcbase,destbase*/;
     ScanCode	waitkey;
     id0_longword_t	lasttime;
     WindowRec	wr;
