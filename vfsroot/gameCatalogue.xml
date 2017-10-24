@@ -24,6 +24,10 @@
               link="Keen4Plus.zip" 
               description="Rescue the members of the High Council of Gnosticus IV!" 
               picture="keen4special.png"/>
+	<Game name="Keen 6 Demo" 
+              link="K6DEMO.zip" 
+              description="DEMO: Alien ate my Babysitter" 
+              picture="K6DEMO.png"/>
 	<Game name="Keen 7" 
               link="Keen7.zip" 
               description="Universe is toast Part I" 
