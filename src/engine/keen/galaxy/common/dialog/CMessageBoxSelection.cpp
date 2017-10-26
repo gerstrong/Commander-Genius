@@ -17,7 +17,7 @@ namespace galaxy
 
 const int FONT_ID = 0;
 
-const int BLEND_SPEED = 15;
+const int BLEND_SPEED = 10;
 
 CMessageBoxSelection::CMessageBoxSelection( const std::string& Text,
                                             const std::list<TextEventMatchOption> &Options) :
@@ -199,20 +199,24 @@ void CMessageBoxSelection::ponder()
 
     // Smooth animation of the rectangle
     if(mSmoothCursor < 12*m_selection)
+    {
         mSmoothCursor++;
+    }
     else if(mSmoothCursor > 12*m_selection)
+    {
         mSmoothCursor--;
-}
+    }
 
-void CMessageBoxSelection::render()
-{
-    BlitSurface(mMBSurface.getSDLSurface(), nullptr, gVideoDriver.getBlitSurface(), &mMBRect);
 
     // now draw the glowing rectangle. It fades here!
     if(blendup)
-        blend+= BLEND_SPEED;
+    {
+        blend += BLEND_SPEED;
+    }
     else
-        blend-= BLEND_SPEED;
+    {
+        blend -= BLEND_SPEED;
+    }
 
     if(blend <= SDL_ALPHA_TRANSPARENT)
     {
@@ -225,6 +229,12 @@ void CMessageBoxSelection::render()
         blendup = false;
         blend = SDL_ALPHA_OPAQUE;
     }
+}
+
+void CMessageBoxSelection::render()
+{
+    BlitSurface(mMBSurface.getSDLSurface(), nullptr, gVideoDriver.getBlitSurface(), &mMBRect);
+
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     SDL_SetSurfaceAlphaMod( mpSelSurface1.get(), blend );

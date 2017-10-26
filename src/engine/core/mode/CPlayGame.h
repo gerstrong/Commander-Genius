@@ -30,7 +30,6 @@ public:
     void loadGame();
 
     virtual bool loadGameState() = 0;
-    //virtual bool saveGameState() = 0;
     virtual bool loadXMLGameState() = 0;
     virtual bool saveXMLGameState() = 0;
 	virtual void cleanup() = 0;
@@ -46,6 +45,8 @@ public:
 
 	char getEpisode();
 	char getNumPlayers();
+
+    void renderFPSDisplay();
 
 protected:
 	bool m_endgame;

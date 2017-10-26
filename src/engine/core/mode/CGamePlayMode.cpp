@@ -56,42 +56,9 @@ void CGamePlayMode::ponder(const float deltaT)
 
 }
 
+
 void CGamePlayMode::render()
 {
-    mp_PlayGame->render();
+    mp_PlayGame->render();    
 
-    const auto optFPS = gBehaviorEngine.mOptions[GameOption::SHOWFPS];
-
-    // TODO: Is this broken?
-    if(optFPS.value)
-    {
-        SDL_Rect rect;
-        rect.x = 5;
-        rect.y = 5;
-        rect.w = 150;
-        rect.h = 10;
-
-        if(!mpFPSSurface)
-        {
-            auto *blit = gVideoDriver.getBlitSurface();
-            SDL_PixelFormat *format = blit->format;
-
-            mpFPSSurface.reset( SDL_CreateRGBSurface( SDL_SWSURFACE,
-                        rect.w,
-                        rect.h,
-                        RES_BPP,
-                        format->Rmask,
-                        format->Gmask,
-                        format->Bmask,
-                        format->Amask ), &SDL_FreeSurface );
-        }
-
-        std::string tempbuf = "FPS: " + ftoa(gTimer.LastFPS());
-        SDL_FillRect(mpFPSSurface.get(),NULL,0x88888888);
-
-        gGraphics.getFont(1).drawFont(mpFPSSurface.get(), tempbuf, 1, 1, false);
-
-        BlitSurface(mpFPSSurface.get(), NULL, gVideoDriver.getBlitSurface(), &rect);
-    }
 }
-

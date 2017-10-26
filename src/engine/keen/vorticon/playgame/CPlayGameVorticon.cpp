@@ -39,7 +39,8 @@
 /// \param SavedGame
 ///
 ///
-CPlayGameVorticon::CPlayGameVorticon(const int startlevel) :
+CPlayGameVorticon::
+CPlayGameVorticon(const int startlevel) :
 CPlayGame(startlevel)
 {
     // If no level has been set or is out of bound, set it to map.
@@ -418,7 +419,9 @@ void CPlayGameVorticon::render()
 {
     // Check for fading processes if necessary
     if(gGraphics.Palette.in_progress())
+    {
         gGraphics.Palette.applyFade();
+    }
 
     // Draw all the Stuff here!
     drawAllElements();
@@ -440,7 +443,6 @@ void CPlayGameVorticon::render()
 
     // Draw the Ingame button for mouse/finger control
     drawMenuInGameButton(menuButtonRectWithBorder);
-
 }
 
 void CPlayGameVorticon::cycleCamLead()

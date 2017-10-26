@@ -11,8 +11,8 @@
 #include <base/GsEngine.h>
 #include <memory>
 
-#ifndef __GAMEENGINE_H__
-#define __GAMEENGINE_H__
+#ifndef GAMEENGINE_H
+#define GAMEENGINE_H
 
 class GameEngine : public GsEngine
 {
@@ -24,8 +24,13 @@ public:
     {}
 
     virtual void start() = 0;
+
     void ponder(const float deltaT);
+
     void render();
+
+    void renderFPSDisplay();
+
     virtual void pumpEvent(const CEvent *evPtr);
 
 
@@ -38,7 +43,12 @@ protected:
     bool mOpenedGamePlay;
 
     const std::string mDataPath;
+
+private:
+
+    std::shared_ptr<SDL_Surface> mpFPSSurface;
+
 };
 
 
-#endif /* __GAMEENGINE_H__ */
+#endif /* GAMEENGINE_H */

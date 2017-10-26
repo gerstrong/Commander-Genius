@@ -58,4 +58,5 @@ void CPlayGame::loadGame()
 // Getters
 bool CPlayGame::getEndGame() { return m_endgame; }
 bool CPlayGame::getStartGame() { return m_startgame; }
-/*char CPlayGame::getEpisode() { return m_Episode; }*/
+
+

@@ -25,9 +25,9 @@ public:
 
 	
 
-    void pumpEvent(const CEvent *evPtr);
-    void ponder(const float deltaT);
-    void render();
+    void pumpEvent(const CEvent *evPtr) override;
+    void ponder(const float deltaT) override;
+    void render() override;
 
 private:
 	int m_startLevel;
@@ -35,8 +35,6 @@ private:
 	std::string m_DataDirectory;
 	CSaveGameController m_SavedGame;
 	std::unique_ptr<CPlayGame> mp_PlayGame;
-	
-	std::shared_ptr<SDL_Surface> mpFPSSurface;
 };
 
 #endif /* CGAMEPLAYMODE_H_ */
