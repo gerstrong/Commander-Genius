@@ -16,7 +16,7 @@ enum class GameOption
     KEYSTACK,
     LVLREPLAYABILITY, RISEBONUS,
     MODERN,
-    HUD,FLASHEFFECT,
+    HUD,SPECIALFX,
     SHOWFPS
 };
 

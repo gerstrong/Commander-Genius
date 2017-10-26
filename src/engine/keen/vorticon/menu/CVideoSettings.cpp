@@ -54,7 +54,10 @@ VorticonMenu(GsRect<float>(0.15f, 0.24f, 0.65f, 0.55f) )
 		List.push_back( itoa (i) );
 
     mpFPSSelection = new NumberControl( "FPS", 10, 120, 10, 60, false );
-    //mpMenuDialog->addControl( mpFPSSelection );
+    mpMenuDialog->addControl( mpFPSSelection );
+
+    mpFrameSkip = new Switch( "FrameSkip" );
+    mpMenuDialog->addControl( mpFrameSkip );
 
 #if !defined(EMBEDDED)
 
@@ -100,10 +103,6 @@ VorticonMenu(GsRect<float>(0.15f, 0.24f, 0.65f, 0.55f) )
 #endif
 
     mpVPadSwitch  = new Switch( "VirtPad" );
-    //mpMenuDialog->addControl( mpVPadSwitch );
-
-    mpSFXSwitch = new Switch( "Special FX" );
-    mpMenuDialog->addControl( mpSFXSwitch );
 
     mpBorderColorSwitch = new Switch( "Border Color" );
     mpMenuDialog->addControl( mpBorderColorSwitch );
@@ -118,7 +117,9 @@ void CVideoSettings::refresh()
 
 	// Load the config into the GUI
 	// TODO: Temporary. This must become a float later...
-	mpFPSSelection->setSelection( static_cast<int>( gTimer.FPS() ) );
+    const auto iFPS = static_cast<int>( gTimer.FPS() );
+    mpFPSSelection->setSelection( iFPS );
+    mpFrameSkip->enable( (iFPS> 0.0) ? true : false );
 
 #if defined(USE_OPENGL)
     mpOpenGLSwitch->enable( mUserVidConf.mOpengl );
@@ -127,8 +128,6 @@ void CVideoSettings::refresh()
     mpVPadSwitch->enable(mpVPadSwitch->isEnabled());
 
     mpRenderScaleQualitySel->setSelection(mUserVidConf.mRenderScQuality);
-
-	mpSFXSwitch->enable( mUserVidConf.m_special_fx );	
 
     // TODO: find a way to indicate a color
     mpBorderColorSwitch->enable( mUserVidConf.mBorderColorsEnabled );
@@ -180,7 +179,12 @@ void CVideoSettings::release()
 {
 	// Save up the changed stuff
 
-	gTimer.setFPS( mpFPSSelection->getSelection() );
+	gTimer.setFPS( mpFPSSelection->getSelection() );    
+
+    if(!mpFrameSkip->isEnabled())
+    {
+        gTimer.setFPS( 0.0 );
+    }
 
 #if defined(USE_OPENGL)
     mUserVidConf.mOpengl = mpOpenGLSwitch->isEnabled();
@@ -257,8 +261,6 @@ void CVideoSettings::release()
 	mUserVidConf.mDisplayRect.h = 200;
 #endif
 
-
-	mUserVidConf.m_special_fx = mpSFXSwitch->isEnabled();
 
     if(mpBorderColorSwitch->isEnabled())
     {

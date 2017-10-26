@@ -318,9 +318,11 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
     DeriveSpecialSprites( gGraphics.getTileMap(1), gGraphics.getSpriteVec(0) );
     gResourceLoader.setPermilage(800);
 
-	// Here special Effects are applied, only when the option is enabled for it
-	if(gVideoDriver.getSpecialFXConfig())
+    // Here special Effects if desired
+    if(gBehaviorEngine.mOptions[GameOption::SPECIALFX].value)
+    {
 		ApplySpecialFX();
+    }
 
     gResourceLoader.setPermilage(900);
 

@@ -36,7 +36,7 @@ bool Title::init(int Episode)
 	gTimer.ResetSecondsTimer();
 	mTime = 10; // show the title screen for 10 secs.
 	pSurface = gVideoDriver.mpVideoEngine->getBlitSurface();
-	if(!gVideoDriver.getSpecialFXConfig())
+    if(!gBehaviorEngine.mOptions[GameOption::SPECIALFX].value)
         gEffectController.setupEffect(new CColorMerge(16));
 	else
         gEffectController.setupEffect(new CPixelate(16));

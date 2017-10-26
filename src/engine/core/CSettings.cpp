@@ -84,7 +84,6 @@ bool CSettings::saveDrvCfg()
 #endif
         Configuration.WriteInt("Video", "filter", VidConf.m_ScaleXFilter);
         Configuration.WriteString("Video", "scaletype", VidConf.m_normal_scale ? "normal" : "scalex" );
-        Configuration.SetKeyword("Video", "specialfx", VidConf.m_special_fx);
         Configuration.WriteInt("Video", "fps", gTimer.FPS());
         Configuration.SetKeyword("Video", "vsync", VidConf.vsync);
 
@@ -163,7 +162,6 @@ bool CSettings::loadDrvCfg()
 		Configuration.ReadInteger("Video", "scale", &value, 1);
 		VidConf.Zoom = value;
 
-		Configuration.ReadKeyword("Video", "specialfx", &VidConf.m_special_fx, true);
 
 		std::string arcStr;
 		Configuration.ReadString("Video", "aspect", arcStr, "none");
@@ -282,8 +280,8 @@ void CSettings::loadDefaultGameCfg()
     setOption( GameOption::RISEBONUS,		"Rising Bonus     ", "rise_bonus", 1 );
     setOption( GameOption::MODERN,          "Modern Style     ", "modern_style", 1 );
     setOption( GameOption::HUD,				"HUD Display      ", "hud", 1 );
-    //setOption( GameOption::SHOWFPS,			"Show FPS         ", "showfps", 0 );
-    setOption( GameOption::FLASHEFFECT,		"Flash Effects    ", "flashfx", 1 );
+    setOption( GameOption::SPECIALFX,		"Special Effects  ", "specialfx", 1 );
+    setOption( GameOption::SHOWFPS,			"Show FPS         ", "showfps", 0 );
 }
 
 /**

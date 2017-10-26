@@ -332,7 +332,7 @@ void CVorticonElite::getShotByRay(object_t &obj_type)
 {
 	if( !mInvincible && mHealthPoints>0 && obj_type != OBJ_GUARDROBOT)
 	{
-		if(mHealthPoints>1 && gVideoDriver.getSpecialFXConfig())
+        if(mHealthPoints>1 && gBehaviorEngine.mOptions[GameOption::SPECIALFX].value)
 			blink(10);
 		mHealthPoints--;
 	}

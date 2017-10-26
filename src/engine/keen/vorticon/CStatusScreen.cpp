@@ -47,9 +47,9 @@ void CStatusScreen::draw()
 	// Fade in and out process
 	if(m_closing)
 	{
-        if(gVideoDriver.getSpecialFXConfig() && !gEffectController.runningEffect())
+        if(gBehaviorEngine.mOptions[GameOption::SPECIALFX].value && !gEffectController.runningEffect())
 			m_closed = true;
-		else if(!gVideoDriver.getSpecialFXConfig())
+        else if(!gBehaviorEngine.mOptions[GameOption::SPECIALFX].value)
 			m_closed = true;
 	}
 

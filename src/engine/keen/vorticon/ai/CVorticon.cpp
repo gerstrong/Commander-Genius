@@ -149,7 +149,7 @@ void CVorticon::process()
 		if (Episode == 1) 
 		{
 			// White Fade and back			
-            if (gBehaviorEngine.mOptions[GameOption::FLASHEFFECT].value)
+            if (gBehaviorEngine.mOptions[GameOption::SPECIALFX].value)
 			{
                 gEffectController.setupEffect(new CFlash(3000, 8, 0xFFFFFF, 200));
 			}

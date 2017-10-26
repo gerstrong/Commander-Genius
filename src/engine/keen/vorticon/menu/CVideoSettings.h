@@ -37,6 +37,7 @@ private:
 
 
     NumberControl	*mpFPSSelection;
+    Switch		*mpFrameSkip;
 
 #if defined(USE_OPENGL)
     Switch			*mpOpenGLSwitch;
@@ -49,7 +50,6 @@ private:
     ComboSelection	*mpFilterSelection;
     ComboSelection	*mpAspectSelection;
     Switch		*mpVSyncSwitch;
-    Switch		*mpSFXSwitch;
     Switch		*mpBorderColorSwitch;
     NumberControl		*mpHorizBordersSelection;
     Button		*mpFullScreenSwitch;

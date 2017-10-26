@@ -29,7 +29,6 @@ public:
 	{
         auto &options = gBehaviorEngine.mOptions;
         gSettings.loadDrvCfg();
-		gVideoDriver.setSpecialFXMode(false);
 		st_camera_bounds &CameraBounds = gVideoDriver.getCameraBounds();
 		CameraBounds.left = 140;
 		CameraBounds.up = 50;
@@ -43,6 +42,7 @@ public:
         options[GameOption::RISEBONUS].value = 0;
         options[GameOption::MODERN].value = 1;
         options[GameOption::HUD].value = 0;
+        options[GameOption::SPECIALFX].value = 0;
         gSettings.saveDrvCfg();
 	}
 };
@@ -58,7 +58,6 @@ public:
 	{
         auto &options = gBehaviorEngine.mOptions;
         gSettings.loadDrvCfg();
-		gVideoDriver.setSpecialFXMode(true);
 		st_camera_bounds &CameraBounds = gVideoDriver.getCameraBounds();
 		CameraBounds.left = 152;
 		CameraBounds.up = 92;
@@ -70,6 +69,7 @@ public:
         options[GameOption::RISEBONUS].value = 1;
         options[GameOption::MODERN].value = 1;
         options[GameOption::HUD].value = 1;
+        options[GameOption::SPECIALFX].value = 1;
         gSettings.saveDrvCfg();
 	}
 };

@@ -185,7 +185,7 @@ void CVortiMom::getShotByRay(object_t &obj_type)
 {
 	if( state != MOTHER_HURT && mHealthPoints>0 )
 	{
-		if(mHealthPoints>1 && gVideoDriver.getSpecialFXConfig())
+        if(mHealthPoints>1 && gBehaviorEngine.mOptions[GameOption::SPECIALFX].value)
 			blink(10);
 		mSpriteIdx = MOTHER_HURT_FRAME;
 		mHealthPoints--;
