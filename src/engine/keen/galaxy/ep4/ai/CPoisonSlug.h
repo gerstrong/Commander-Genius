@@ -32,7 +32,7 @@ public:
 	 */
 	void processPooing();
 
-	int checkSolidD( int x1, int x2, int y2, const bool push_mode );
+    int checkSolidD( int x1, int x2, int y2, const bool push_mode ) override;
 
 	void process();
 
