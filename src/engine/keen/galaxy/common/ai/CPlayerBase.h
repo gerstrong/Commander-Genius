@@ -211,7 +211,7 @@ public:
     /**
      * @brief kill          Kill Keen.
      * @param force         If true Keen may die even in god mode
-     * @param noDieProcess  Do not show the dying progress, kill huim directly if this flag is true
+     * @param noDieProcess  Do not show any dying animation kill him directly
      */
     virtual void kill(const bool force = false,
                       const bool noDieProcess = false);

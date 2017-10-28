@@ -24,8 +24,10 @@ public:
             const int playerID,
             const int spriteVar);
 
-	void kill(const bool force = false);
-	void process();
+    void kill(const bool force = false,
+              const bool noDieProcess = false) override;
+
+    void process() override;
 
 private:
 

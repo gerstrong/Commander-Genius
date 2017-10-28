@@ -31,14 +31,15 @@ m_swimupspeed(0),
 m_breathtimer(0),
 mDidSwimUp(false)
 {
-	mActionMap[A_KEENSWIM_MOVE] = (void (CPlayerBase::*)()) &CPlayerDive::processDiving;
+    mActionMap[A_KEENSWIM_MOVE] = static_cast<void (CPlayerBase::*)()>(&CPlayerDive::processDiving);
 
 	setupGalaxyObjectOnMap(0x19EC, A_KEENSWIM_MOVE);
 }
 
 const int DIE_FALL_MAX_INERTIA = 150;
 
-void CPlayerDive::kill(const bool force)
+void CPlayerDive::kill(const bool force,
+                       const bool )
 {
 	// Here were prepare Keen to die, setting the action to die
     if(!gBehaviorEngine.mCheatmode.god || force)
