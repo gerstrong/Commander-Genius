@@ -14,7 +14,7 @@ extern "C"
 #include "be_st.h"
 
 
-static SDL_Rect g_sdlAspectCorrectionRect, g_sdlAspectCorrectionBorderedRect;
+//static SDL_Rect g_sdlAspectCorrectionRect, g_sdlAspectCorrectionBorderedRect;
 
 static bool g_sdlDoRefreshGfxOutput;
 bool g_sdlForceGfxControlUiRefresh;
@@ -105,7 +105,7 @@ static int g_sdlTxtColor = 7, g_sdlTxtBackground = 0;
 // face buttons image, assuming longest texts possible (3 chars long)
 static const int g_sdlControllerFaceButtonsTextLocs[] = {15, 34, 28, 21, 2, 21, 15, 8};
 
-static SDL_Rect g_sdlControllerFaceButtonsRect, g_sdlControllerDpadRect, g_sdlControllerTextInputRect;
+//static SDL_Rect g_sdlControllerFaceButtonsRect, g_sdlControllerDpadRect, g_sdlControllerTextInputRect;
 
 
 static bool g_sdlFaceButtonsAreShown, g_sdlDpadIsShown, g_sdlTextInputUIIsShown;
@@ -119,7 +119,7 @@ static bool g_sdlTextInputIsKeyPressed, g_sdlTextInputIsShifted;
 // Scancode names for controller face buttons UI and similar
 // (but not a whole on-screen keyboard), based on DOS scancodes
 // (doesn't include "special" keys for which 0xE0 is sent), and others
-static const char *g_sdlDOSScanCodeStrs[] = {
+/*static const char *g_sdlDOSScanCodeStrs[] = {
 	NULL, "Esc",
 	"1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "\x11",
 	"Tab", "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "[", "]", "Ent",
@@ -129,7 +129,7 @@ static const char *g_sdlDOSScanCodeStrs[] = {
 	"F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "Num", "Scl",
 	"Hom", "\x18", "PgU", NULL, "\x1B", NULL, "\x1A", NULL, "End", "\x19", "PgD",
 	"Ins", "Del",
-};
+};*/
 
 // Same, but for onscreen keyboard in non-shifted state
 /*static const char *g_sdlDOSScanCodeKeyboardNonShiftedStrs[] = {

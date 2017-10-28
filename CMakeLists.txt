@@ -3,22 +3,12 @@
 
 cmake_minimum_required(VERSION 3.1)
 
-
-OPTION(OGG "Ogg/Vorbis support" Yes)
-OPTION(TREMOR "Tremor support" No)
-OPTION(DOWNLOADER "Internal Downloader" Yes)
-OPTION(USE_PYTHON3 "Python3 for scripting" No)
-OPTION(USE_SDL2 "SDL2 support" Yes)
-
-
 Project(CommanderGenius)
 
-#if(POLICY CMP0058)
-#    cmake_policy(SET CMP0058 NEW)
-#endif()
-
 set (CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/CMake")
-#include(cotire)
+
+# Use compile time reducer
+include(cotire)
 
 set (CMAKE_CXX_STANDARD 11)
 
@@ -58,64 +48,20 @@ if(UNIX)
 endif(UNIX)
 
 
+# Check that GsKit also has been loaded
+if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/GsKit/CMakeLists.txt")
 
+    MESSAGE(FATAL_ERROR "You need to have the sources of GsKit in order to build Commander Genius. "
+                  "If you got the sources from github try to this in the source directory: "
+                  "git submodule init &&"
+                  "git submodule update")
 
-# Force SDL2 on windows systems
-IF(WIN32)
-
-    INCLUDE(FindPkgConfig)
-    find_package(SDL2 REQUIRED)
-    find_package(SDL2_image REQUIRED >=2.0.0)
-
-    if(SDL2_FOUND)
-        message(STATUS "Using shared SDL Version 2 for Commander Genius")
-        include_directories(${SDL2_INCLUDE_DIR})
-        include_directories(${SDL2_NET_INCLUDE_DIRS})
-        include_directories(/usr/include/SDL2/)
-    endif(SDL2_FOUND)
-
-	
-else(WIN32)
-        if(USE_SDL2)
- 
-                INCLUDE(FindPkgConfig)
-                find_package(SDL2 REQUIRED)
-                find_package(SDL2_image REQUIRED >=2.0.0)
-   
-
-                set(SDL2_INCLUDE_DIRS /Library/Frameworks/SDL2.framework/Headers)
-                set(SDL2_IMAGE_INCLUDE_DIRS /Library/Frameworks/SDL2_image.framework/Headers)
-
-        else(USE_SDL2)
-
-            # SDL2 not defined, try SDL1.2
-            FIND_PACKAGE( SDL REQUIRED )
-            FIND_PACKAGE( SDL_net REQUIRED )
-            if(NOT ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-                include(FindSDL OPTIONAL)
-            endif()
-
-            if(SDL_FOUND)
-                message(STATUS "Using shared SDL Version 1.2")
-                include_directories(${SDL_INCLUDE_DIR})
-                INCLUDE_DIRECTORIES(${SDL_INCLUDE_DIRS})
-            else(SDL_FOUND)
-                # TODO: Use the prebuilt one on Windows
-                message("Using static SDL from Externals")
-                include_directories(Externals/SDL Externals/SDL/include)
-                add_subdirectory(Externals/SDL)
-            endif(SDL_FOUND)
-
-        endif(USE_SDL2)
-
-endif(WIN32)
-
+endif()
 
 # Add GsKit
 add_subdirectory("GsKit")
 
-
-# Compile to internal Commander Genius sources
+# And build Commander Genius on top of that!
 add_subdirectory("src")
 
 INCLUDE(package.cmake)

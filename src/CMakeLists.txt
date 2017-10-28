@@ -9,6 +9,11 @@ else()
     OPTION(OPENGL "OpenGL support" Yes)
 endif()
 
+OPTION(DOWNLOADER "Internal Downloader" Yes)
+
+OPTION(OGG "Ogg/Vorbis support" Yes)
+OPTION(TREMOR "Tremor support" No)
+
 
 IF(WIN32)
 	SET(BUILD_TARGET WIN32)
@@ -94,7 +99,7 @@ IF(CMAKE_BUILD_TYPE STREQUAL "Debug")
 ELSEIF(CMAKE_BUILD_TYPE STREQUAL "Release")
 	ADD_DEFINITIONS(-DRELEASE)
         ADD_DEFINITIONS(-O3)
-ENDIF(CMAKE_BUILD_TYPE STREQUAL "Debug")
+ENDIF()
 
 
 # Make sure the linker can find the GsKit library once it is built.
@@ -145,10 +150,6 @@ if(USE_SDL2)
         message(STATUS "Using shared SDL Version 2 for Commander Genius")
         include_directories(${SDL2_INCLUDE_DIRS})
         include_directories(${SDL2_IMAGE_INCLUDE_DIRS})
-
-        #include_directories(${SDL2_NET_INCLUDE_DIRS})
-
-        include_directories(/usr/include/SDL2/)
     endif(SDL2_FOUND)
 
 else(USE_SDL2)
@@ -213,9 +214,9 @@ target_link_libraries( CGeniusExe ${ZLIB_LIBRARIES} )
 
 if(USE_SDL2)
         target_link_libraries(CGeniusExe ${SDL2_LIBRARY})
-        target_link_libraries(CGeniusExe ${SDLIMAGE_LIBRARY})
+        target_link_libraries(CGeniusExe ${SDL2IMAGE_LIBRARY})
 	message(STATUS "SDL2_LIBRARY = ${SDL2_LIBRARY}")
-	message(STATUS "SDLIMAGE_LIBRARY = ${SDLIMAGE_LIBRARY}")
+        message(STATUS "SDL2IMAGE_LIBRARY = ${SDL2IMAGE_LIBRARY}")
 else(USE_SDL2)
         # SDL stuff to link
         target_link_libraries(CGeniusExe ${SDL_NET_LIBRARIES})
@@ -284,7 +285,7 @@ IF(OPENGL)
     target_link_libraries(CGeniusExe ${OPENGL_LIBRARIES})
 ENDIF(OPENGL)
 
-LINK_DIRECTORIES(/opt/local/lib)
+cotire(CGeniusExe)
 
 # Stuff definitions in case we want to install it
 INCLUDE(install.cmake)
