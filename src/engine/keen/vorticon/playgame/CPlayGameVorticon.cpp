@@ -527,7 +527,7 @@ void CPlayGameVorticon::handleFKeys()
 			it_player->performCollisions();
 		}
 
-		gSound.playSound(SOUND_GUN_CLICK, PLAY_FORCE);
+        gSound.playSound(SOUND_GUN_CLICK, SoundPlayMode::PLAY_FORCE);
 
 		// Show a message like in the original game
         std::unique_ptr<CMessageBoxVort> msg(new CMessageBoxVort(gBehaviorEngine.mCheatmode.god ? gBehaviorEngine.getString("GODMODEON") : gBehaviorEngine.getString("GODMODEOFF")));
@@ -537,7 +537,7 @@ void CPlayGameVorticon::handleFKeys()
 
 	if(gInput.getPressedKey(KP) && mMessageBoxes.empty())
 	{
-		gSound.playSound(SOUND_GUN_CLICK, PLAY_FORCE);
+        gSound.playSound(SOUND_GUN_CLICK, SoundPlayMode::PLAY_FORCE);
 		std::unique_ptr<CMessageBoxVort> msg( new CMessageBoxVort("Game Paused") );
 		mMessageBoxes.push_back(move(msg));
 	}

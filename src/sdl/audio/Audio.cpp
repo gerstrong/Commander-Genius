@@ -232,7 +232,7 @@ void Audio::stopSound(const GameSound snd)
 	}
 }
 
-// returns true if a sound is currently playing in PLAY_FORCE mode
+// returns true if a sound is currently playing in SoundPlayMode::PLAY_FORCE mode
 bool Audio::forcedisPlaying()
 {
     std::vector<CSoundChannel>::iterator snd_chnl = mSndChnlVec.begin();
@@ -361,7 +361,7 @@ void Audio::playStereosoundSlot(unsigned char slotplay,
 	CSoundSlot *mp_Slots = mpAudioRessources->getSlotPtr();
     CSoundSlot &new_slot = mp_Slots[slotplay];
 
-    if(mode == SoundPlayMode::SoundPlayMode::PLAY_PAUSEALL)
+    if(mode == SoundPlayMode::PLAY_PAUSEALL)
     {
         mPauseGameplay = true;
     }
