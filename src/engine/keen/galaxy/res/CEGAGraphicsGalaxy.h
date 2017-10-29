@@ -93,7 +93,8 @@ public:
      * @param indexSprite   Index where reading of sprites start.
      * @return true if everything went fine, otherwise false.
      */
-    bool readSprites(const size_t numSprites, const size_t indexSprite );
+    bool readSprites(const size_t numSprites,
+                     const size_t indexSprite );
 
 	void createBitmapsIDs();
 

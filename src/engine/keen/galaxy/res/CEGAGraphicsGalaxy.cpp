@@ -1265,13 +1265,13 @@ bool CEGAGraphicsGalaxy::readSprites( const size_t numSprites,
     // Create all the sprites
     gGraphics.createEmptySprites(4, numSprites);
 
-    const int ep = getEpisodeInfoIndex();
+    const auto ep = static_cast<int>(getEpisodeInfoIndex());
 
     // Check that source head data size is appropriate.
     const std::vector<unsigned char> &headData = m_egagraph.at(2).data;
     if(headData.size() != numSprites * sizeof(SpriteHeadStruct))
     {
-        gLogging.ftextOut("bad sprite head data size=%u", headData.size());
+        gLogging << "bad sprite head data size=" <<  int(headData.size()) << ".";
         return false;
     }
 
@@ -1279,23 +1279,24 @@ bool CEGAGraphicsGalaxy::readSprites( const size_t numSprites,
     std::vector<SpriteHeadStruct> sprHeads(numSprites, SpriteHeadStruct());
     memcpy( sprHeads.data(), &(headData.at(0)), numSprites*sizeof(SpriteHeadStruct) );
 
-    for(size_t i = 0; i < numSprites; i++)
+    for(int i = 0; i < int(numSprites); i++)
     {
-        const SpriteHeadStruct curSprHead = sprHeads[i];
+        const SpriteHeadStruct curSprHead = sprHeads[size_t(i)];
 
-        std::vector<unsigned char> &data = m_egagraph.at(indexSprite + i).data;
+        auto &data = m_egagraph.at(indexSprite + size_t(i)).data;
+
         // Check that data size is consistent with Head.Width and Head.Height.
         // Width and Height are unsigned short, so there's no overflow risk.
         if(!data.empty() && data.size() != (curSprHead.Width * curSprHead.Height * 5u))
         {
             gLogging << "bad sprite data at " << i
                      << " Size=" << curSprHead.Width << "x" << curSprHead.Height
-                     << " datasize=" << data.size() << "\n";
+                     << " datasize=" << int(data.size()) << "\n";
             return false;
         }
 
         GsSprite &sprite = gGraphics.getSprite(0, i);
-        sprite.setSize( curSprHead.Width*8, curSprHead.Height );
+        sprite.setSize( Uint8(curSprHead.Width*8), Uint8(curSprHead.Height) );
 
         sprite.setOffset( curSprHead.OrgX>>(TILE_S), curSprHead.OrgY>>(TILE_S) );
 
@@ -1323,7 +1324,7 @@ bool CEGAGraphicsGalaxy::readSprites( const size_t numSprites,
                               gGraphics.Palette.m_Palette );
 
         SDL_Surface *sfc = sprite.getSDLSurface();
-        SDL_FillRect(sfc,NULL, 0);
+        SDL_FillRect(sfc, nullptr, 0);
         if(SDL_MUSTLOCK(sfc))   SDL_LockSurface(sfc);
 
         if(!data.empty())
@@ -1393,34 +1394,53 @@ bool CEGAGraphicsGalaxy::readSprites( const size_t numSprites,
 
     // For the other variant let's exchange some colors
 
-    // Second Player
+    // Nice bonus: We can load own kylie bitmaps and let them become sprites
+    std::string kyliePath = JoinPaths(gKeenFiles.gameDir, "gfx/player/kylie");
+
+    // Second Player, could be kylie's own bitmaps
     auto &SpriteVecPlayer2 = gGraphics.getSpriteVec(1);
     int ctr = 0;
-    for( GsSprite &sprite : SpriteVecPlayer2)
+
+    struct stat s;
+    S_ISDIR( s.st_mode );
+    if(StatFile(kyliePath, &s))
     {
-        // Red against Purple
-        sprite.exchangeSpriteColor( 5, 4, 0 );
-        sprite.exchangeSpriteColor( 13, 12, 0 );
-
-        // Yellow against Green
-        sprite.exchangeSpriteColor( 2, 6, 0 );
-        sprite.exchangeSpriteColor( 10, 14, 0 );
-
-        std::string filename = "4SPR0000.bmp";
-
-        const std::string numStr = to_string(ctr);
-        filename.replace(8-numStr.length(),numStr.length(),numStr);
-
-        std::string kyliePath = JoinPaths(gKeenFiles.gameDir, "gfx/player/kylie/");
-        kyliePath = JoinPaths(kyliePath, filename);
-
-        if( sprite.loadHQSprite(kyliePath) )
+        for( GsSprite &sprite : SpriteVecPlayer2)
         {
-            sprite.applyTransparency();
+            std::string filename = "4SPR0000.bmp";
+
+            // Look for additional Kylie Sprites as bitmaps
+
+            // Ugly conversion of the filenames
+            const std::string numStr = to_string(ctr);
+            filename.replace(8-numStr.length(),numStr.length(),numStr);
+
+            const auto kylieFilePath = JoinPaths(kyliePath, filename);
+
+            if( sprite.loadHQSprite(kylieFilePath) )
+            {
+                sprite.applyTransparency();
+            }
+
+            ctr++;
+        }
+    }
+    else
+    {
+        for( GsSprite &sprite : SpriteVecPlayer2)
+        {
+            // Red against Purple
+            sprite.exchangeSpriteColor( 5, 4, 0 );
+            sprite.exchangeSpriteColor( 13, 12, 0 );
+
+            // Yellow against Green
+            sprite.exchangeSpriteColor( 2, 6, 0 );
+            sprite.exchangeSpriteColor( 10, 14, 0 );
+            ctr++;
         }
 
-        ctr++;
     }
+
 
     // Third Player
     auto &SpriteVecPlayer3 = gGraphics.getSpriteVec(2);
