@@ -40,9 +40,9 @@ const Uint32 GalaxySongAssignments[] =
 
 
 bool setupAudio()
-{
+{        
     const CExeFile &ExeFile = gKeenFiles.exeFile;
-    const unsigned int ep = ExeFile.getEpisode();
+    const auto ep = static_cast<unsigned int>(ExeFile.getEpisode());
 
     CAudioGalaxy *audio = new CAudioGalaxy();
 
@@ -159,12 +159,11 @@ void GalaxyEngine::openMainMenu()
 
 bool GalaxyEngine::loadResources( const Uint8 flags )
 {
-    gLogging.ftextOut("Loading Galaxy Engine...<br>");
+    gLogging << "Loading Galaxy Engine...<br>";
 
     gTimer.setLPS(DEFAULT_LPS_GALAXY);
 
     mEngineLoader.setStyle(PROGRESS_STYLE_BAR);
-    //const std::string threadname = "Loading Keen " + itoa(mEp);
 
     struct GalaxyDataLoad : public Action
     {
@@ -216,6 +215,7 @@ bool GalaxyEngine::loadResources( const Uint8 flags )
             if( (mFlags & LOADSND) == LOADSND )
             {
                 gLogging.ftextOut("Loading audio... <br>");
+
                 // Load the sound data                
                 setupAudio();
 

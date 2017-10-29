@@ -38,15 +38,20 @@ public:
 	short getNumTiles();
 
     /**
-     * \brief	load the data into the structure
-     * \return 	returns true, if loading was successful
+     * @brief	load the data into the structure
+     * @return 	returns true, if loading was successful
      */
 	bool loadData();
 
 
+    /**
+     * @brief   This function extracts a picture from the galaxy graphics map, and converts it properly to a
+     *          SDL Surface
+     */
 	void extractPicture(SDL_Surface *sfc,
 			std::vector<unsigned char> &data, size_t Width, size_t Height,
 			bool masked=false);
+
 	void extractTile(SDL_Surface *sfc, std::vector<unsigned char> &data,
 			Uint16 size, Uint16 columns, size_t tile, bool usetileoffset);
 	void extractMaskedTile(SDL_Surface *sfc, std::vector<unsigned char> &data,
@@ -82,7 +87,13 @@ public:
      */
     bool readMiscStuff();
 
-    bool readSprites(const size_t NumSprites, const size_t IndexSprite );
+    /**
+     * @brief readSprites   Reads all the used sprites by the game
+     * @param numSprites    Number of sprites to read
+     * @param indexSprite   Index where reading of sprites start.
+     * @return true if everything went fine, otherwise false.
+     */
+    bool readSprites(const size_t numSprites, const size_t indexSprite );
 
 	void createBitmapsIDs();
 
@@ -95,7 +106,7 @@ private:
 	std::string m_BitmapNameMap[4][1000];
 	std::string m_SpriteNameMap[4][1000];
 
-	CExeFile &m_Exefile;
+    CExeFile &mExefile;
 };
 
 }

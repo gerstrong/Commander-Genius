@@ -64,10 +64,10 @@ bool CEGAGraphicsVort::loadData( int version, unsigned char *p_exedata )
 	// assure that the last used resources are freed
 
 	// Set the palette, so the proper colours are loaded
-    gGraphics.Palette.setupColorPalettes(p_exedata, m_episode);
+    gGraphics.Palette.setupColorPalettes(p_exedata, mEpisode);
 
 	std::ifstream HeadFile;
-	OpenGameFileR(HeadFile, ((m_path != "") ? m_path + "/" : "") + "egahead.ck" + itoa(m_episode), std::ios::binary);
+	OpenGameFileR(HeadFile, ((m_path != "") ? m_path + "/" : "") + "egahead.ck" + itoa(mEpisode), std::ios::binary);
 
 	if(!HeadFile)
 		return false;
@@ -102,7 +102,7 @@ bool CEGAGraphicsVort::loadData( int version, unsigned char *p_exedata )
 	// Important especially for masks, and later in the game for the behaviours
     // of those objects
 
-	CTileLoader TileLoader( m_episode, false, version, p_exedata );
+	CTileLoader TileLoader( mEpisode, false, version, p_exedata );
 	if(!TileLoader.load(0, Num16Tiles))
 		return false;
 
@@ -117,16 +117,16 @@ bool CEGAGraphicsVort::loadData( int version, unsigned char *p_exedata )
 							NumBitmaps,
 							BitmapLocation);
 
-    m_Latch->loadHead( &data[0], m_episode );
+    m_Latch->loadHead( &data[0], mEpisode );
 
-    m_Latch->loadData( m_path, m_episode, version, p_exedata, (compressed>>1) ); // The second bit tells, if latch is compressed.
+    m_Latch->loadData( m_path, mEpisode, version, p_exedata, (compressed>>1) ); // The second bit tells, if latch is compressed.
 
 
     m_Sprit = new CEGASprit(SpritePlaneSize,
 							SpriteStart,
 							NumSprites,
 							SpriteLocation,
-							m_path, m_episode);
+							m_path, mEpisode);
     m_Sprit->loadHead(&data[0]);
 
     struct SpriteLoad: public Action
@@ -144,7 +144,7 @@ bool CEGAGraphicsVort::loadData( int version, unsigned char *p_exedata )
 	};
 
     SpriteLoad sprLoad(m_Sprit,
-                       ((m_path != "") ? m_path + "/" : "") + "egasprit.ck" + itoa(m_episode),
+                       ((m_path != "") ? m_path + "/" : "") + "egasprit.ck" + itoa(mEpisode),
                        (compressed>>1));
 	
     sprLoad.handle();

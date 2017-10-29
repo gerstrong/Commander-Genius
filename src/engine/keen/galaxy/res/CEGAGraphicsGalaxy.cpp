@@ -156,7 +156,7 @@ static EpisodeInfoStruct EpisodeInfo[] =
 
 CEGAGraphicsGalaxy::CEGAGraphicsGalaxy(CExeFile &ExeFile) :
 CEGAGraphics(ExeFile.getEpisode(), gKeenFiles.gameDir),
-m_Exefile(ExeFile)
+mExefile(ExeFile)
 {
     createBitmapsIDs();
     gBehaviorEngine.setEpisodeInfoStructPtr(EpisodeInfo);
@@ -170,61 +170,110 @@ m_Exefile(ExeFile)
 // 4 - keen6 demo
 size_t CEGAGraphicsGalaxy::getEpisodeInfoIndex()
 {
-    if (m_episode == 6 && m_Exefile.isDemo())
+    if (mEpisode == 6 && mExefile.isDemo())
+    {
         return 4;
+    }
 
-    return m_episode - 4;
+    return size_t(mEpisode - 4);
 }
 
 bool CEGAGraphicsGalaxy::loadData()
 {
     // Set the palette, so the proper colours are loaded
-    gGraphics.Palette.setupColorPalettes(m_Exefile.getRawData(), m_episode);
+    gGraphics.Palette.setupColorPalettes(mExefile.getRawData(), mEpisode);
 
-    if(!begin()) return false;
+    if(!begin())
+    {
+        return false;
+    }
 
     auto &curEpInfo = EpisodeInfo[getEpisodeInfoIndex()];
 
     // First, retrieve the Tile properties so the tilemap gets properly formatted
     // Important especially for masks, and later in the game for the behaviours
     // of those objects
-    CTileLoader TileLoader( m_Exefile );
+    CTileLoader TileLoader( mExefile );
     if(!TileLoader.load(curEpInfo.Num16Tiles,
                         curEpInfo.Num16MaskedTiles))
+    {
         return false;
+    }
 
-    if(!readTables()) return false;
 
-    if(!readfonts()) return false;
-    if(!readBitmaps()) return false;
-    if(!readMaskedBitmaps()) return false;
+    if(!readTables())
+    {
+        return false;
+    }
+
+    if(!readfonts())
+    {
+        return false;
+    }
+
+    if(!readBitmaps())
+    {
+        return false;
+    }
+
+    if(!readMaskedBitmaps())
+    {
+        return false;
+    }
 
     gGraphics.createEmptyTilemaps(4);
 
     if(!readTilemaps(curEpInfo.Num16Tiles, 4, 18,
-            curEpInfo.Index16Tiles,
-            gGraphics.getTileMap(0), false)) return false;
+                     curEpInfo.Index16Tiles,
+                     gGraphics.getTileMap(0), false))
+    {
+        return false;
+    }
+
+
     if(!readMaskedTilemaps(curEpInfo.Num16MaskedTiles, 4, 18,
-            curEpInfo.Index16MaskedTiles,
-            gGraphics.getTileMap(1), false)) return false;
+                           curEpInfo.Index16MaskedTiles,
+                           gGraphics.getTileMap(1), false))
+    {
+        return false;
+    }
+
+
     if(!readTilemaps(curEpInfo.Num8Tiles, 3, 1,
-            curEpInfo.Index8Tiles,
-            gGraphics.getTileMap(2), true)) return false;
+                     curEpInfo.Index8Tiles,
+                     gGraphics.getTileMap(2), true))
+    {
+        return false;
+    }
+
+
     if(!readMaskedTilemaps(curEpInfo.Num8MaskedTiles, 3, 1,
-            curEpInfo.Index8MaskedTiles,
-            gGraphics.getTileMap(3), true)) return false;
+                           curEpInfo.Index8MaskedTiles,
+                           gGraphics.getTileMap(3), true))
+    {
+        return false;
+    }
+
 
     if(!readSprites( curEpInfo.NumSprites,
-                     curEpInfo.IndexSprites )) return false;
+                     curEpInfo.IndexSprites ))
+    {
+        return false;
+    }
+
 
     if(!readTexts())
+    {
         return false;
+    }
 
 
     //k456_export_texts();
 
     if( !readMiscStuff() )
+    {
         return false;
+    }
 
     //k456_export_demos();
     //k456_export_end();
@@ -244,16 +293,14 @@ bool CEGAGraphicsGalaxy::loadData()
     return true;
 }
 
-/**
- * \brief   This function extracts a picture from the galaxy graphics map, and converts it properly to a
- *          SDL Surface
- */
-void CEGAGraphicsGalaxy::extractPicture(SDL_Surface *sfc,
-        std::vector<unsigned char> &data, size_t Width, size_t Height,
-        bool masked)
+
+void CEGAGraphicsGalaxy::
+extractPicture(SDL_Surface *sfc,
+               std::vector<unsigned char> &data, size_t Width, size_t Height,
+               bool masked)
 {
     if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
-    SDL_FillRect(sfc, NULL, 0x0);
+    SDL_FillRect(sfc, nullptr, 0x0);
 
     if(!data.empty())
     {
@@ -433,7 +480,7 @@ bool CEGAGraphicsGalaxy::readEGAHead()
 {
     // The file can be embedded in an exe file or separate on disk. Look for the disk one first!
     std::string filename;
-    if (m_episode <= 6) filename = JoinPaths(m_path, "EGAHEAD.CK" + to_string(m_episode));
+    if (mEpisode <= 6) filename = JoinPaths(m_path, "EGAHEAD.CK" + to_string(mEpisode));
     else filename =  JoinPaths(m_path, "KDREAMSHEAD.EGA"); // Not sure about that one
     const int ep = getEpisodeInfoIndex();
 
@@ -469,14 +516,14 @@ bool CEGAGraphicsGalaxy::readEGAHead()
     } // no external file. Read it from the exe then
     else
     {
-        byte *p_data = reinterpret_cast<byte*>(m_Exefile.getHeaderData());
+        byte *p_data = reinterpret_cast<byte*>(mExefile.getHeaderData());
 
         // The stuff is Huffman compressed. Use an instance for that
         unsigned long exeheaderlen = 0;
         unsigned long exeimglen = 0;
 
         //if(m_episode == 7) exeheaderlen = HEADERLEN_KDREAMS;
-        if(!m_Exefile.readExeImageSize( p_data, &exeimglen, &exeheaderlen))
+        if(!mExefile.readExeImageSize( p_data, &exeimglen, &exeheaderlen))
             return false;
 
         // Read the EGAHEAD
@@ -576,13 +623,13 @@ bool CEGAGraphicsGalaxy::begin()
     CHuffman Huffman;
     unsigned long exeheaderlen = 0;
     unsigned long exeimglen = 0;
-    assert(m_episode >= 4);
+    assert(mEpisode >= 4);
     int ep = getEpisodeInfoIndex();
 
-    byte *p_data = reinterpret_cast<byte*>(m_Exefile.getHeaderData());
+    byte *p_data = reinterpret_cast<byte*>(mExefile.getHeaderData());
 
     //if(m_episode == 7) exeheaderlen = HEADERLEN_KDREAMS;
-    if(!m_Exefile.readExeImageSize( p_data, &exeimglen, &exeheaderlen))
+    if(!mExefile.readExeImageSize( p_data, &exeimglen, &exeheaderlen))
         return false;
 
     std::string filename;
@@ -610,7 +657,7 @@ bool CEGAGraphicsGalaxy::begin()
     }
     else
     {
-        Huffman.readDictionaryNumberfromEnd( m_Exefile ); // or from the embedded Exe file
+        Huffman.readDictionaryNumberfromEnd( mExefile ); // or from the embedded Exe file
     }
 
 
@@ -622,7 +669,7 @@ bool CEGAGraphicsGalaxy::begin()
     }
 
     // Now read the EGAGRAPH
-    if (m_episode <= 6) filename = JoinPaths(m_path, "EGAGRAPH.CK" + to_string(m_episode));
+    if (mEpisode <= 6) filename = JoinPaths(m_path, "EGAGRAPH.CK" + to_string(mEpisode));
     else filename = JoinPaths(m_path, "KDREAMS.EGA");
 
     std::ifstream File; OpenGameFileR(File, filename, std::ios::binary);
@@ -1212,31 +1259,31 @@ bool CEGAGraphicsGalaxy::readMaskedTilemaps( size_t NumTiles, size_t pbasetilesi
 
 
 
-bool CEGAGraphicsGalaxy::readSprites( const size_t NumSprites,
-                                      const size_t IndexSprite )
+bool CEGAGraphicsGalaxy::readSprites( const size_t numSprites,
+                                      const size_t indexSprite )
 {
     // Create all the sprites
-    gGraphics.createEmptySprites(4, NumSprites);
+    gGraphics.createEmptySprites(4, numSprites);
 
     const int ep = getEpisodeInfoIndex();
 
     // Check that source head data size is appropriate.
     const std::vector<unsigned char> &headData = m_egagraph.at(2).data;
-    if(headData.size() != NumSprites * sizeof(SpriteHeadStruct))
+    if(headData.size() != numSprites * sizeof(SpriteHeadStruct))
     {
         gLogging.ftextOut("bad sprite head data size=%u", headData.size());
         return false;
     }
 
     // ARM processor requires all ints and structs to be 4-byte aligned, so we're just using memcpy()
-    std::vector<SpriteHeadStruct> sprHeads(NumSprites, SpriteHeadStruct());
-    memcpy( sprHeads.data(), &(headData.at(0)), NumSprites*sizeof(SpriteHeadStruct) );
+    std::vector<SpriteHeadStruct> sprHeads(numSprites, SpriteHeadStruct());
+    memcpy( sprHeads.data(), &(headData.at(0)), numSprites*sizeof(SpriteHeadStruct) );
 
-    for(size_t i = 0; i < NumSprites; i++)
+    for(size_t i = 0; i < numSprites; i++)
     {
         const SpriteHeadStruct curSprHead = sprHeads[i];
 
-        std::vector<unsigned char> &data = m_egagraph.at(IndexSprite + i).data;
+        std::vector<unsigned char> &data = m_egagraph.at(indexSprite + i).data;
         // Check that data size is consistent with Head.Width and Head.Height.
         // Width and Height are unsigned short, so there's no overflow risk.
         if(!data.empty() && data.size() != (curSprHead.Width * curSprHead.Height * 5u))
@@ -1446,7 +1493,7 @@ bool CEGAGraphicsGalaxy::readMiscStuff()
 
     // Only position 1 and 2 are read. This will the terminator text.
     // Those are monochrom...
-    for(size_t misc = 0 ; misc < EpisodeInfo[m_episode-4].NumMisc; misc++)
+    for(size_t misc = 0 ; misc < EpisodeInfo[mEpisode-4].NumMisc; misc++)
     {
         const int index = indexMisc + misc;
 
@@ -1529,7 +1576,7 @@ bool CEGAGraphicsGalaxy::readMiscStuff()
 
         Uint32 textColor;
 
-        switch(m_episode) // The color of the terminator depends on the episode.
+        switch(mEpisode) // The color of the terminator depends on the episode.
         {
             case 6:  textColor = SDL_MapRGB(bmp->format, 0xff,0x55,0xff); break;
             case 5:  textColor = SDL_MapRGB(bmp->format, 0xff,0x55,0x55); break;

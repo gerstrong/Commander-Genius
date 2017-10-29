@@ -20,12 +20,12 @@ class CEGAGraphics
 {
 public:
     CEGAGraphics(const short episode, const std::string& path) :
-        m_episode(episode),
+        mEpisode(episode),
         m_path(path) {}
 
 
 protected:
-    const short m_episode;
+    const short mEpisode;
     const std::string &m_path;
 };
 
