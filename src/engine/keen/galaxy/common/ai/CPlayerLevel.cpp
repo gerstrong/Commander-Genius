@@ -2681,7 +2681,7 @@ void CPlayerLevel::process()
 
         const std::string fuse_msg = gBehaviorEngine.getString( (specialLevel) ? "FUSE_WONDER" : "FUSE_CASUAL");
 
-        gSound.playSound( SOUND_FUSE_BREAK, PLAY_PAUSEALL );
+        gSound.playSound( SOUND_FUSE_BREAK, SoundPlayMode::PLAY_PAUSEALL );
 
         gEffectController.setupEffect(new CDimDark(8));
 

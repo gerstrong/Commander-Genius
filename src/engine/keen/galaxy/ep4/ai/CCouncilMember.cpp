@@ -132,9 +132,9 @@ void CCouncilMember::performJanitorMode()
     std::vector<CMessageBoxGalaxy*> msgs;
 
     msgs.push_back( new CMessageBoxBitmapGalaxy(elder_text[0], gGraphics.getBitmapFromId(104), LEFT) );
-    msgs.push_back( new CMessageBoxBitmapGalaxy(elder_text[1], gGraphics.getBitmapFromId(104), LEFT) );
-    msgs.push_back( new CMessageBoxBitmapGalaxy(elder_text[2], *gGraphics.getBitmapFromStr("KEENTALKING"), RIGHT) );
-    msgs.push_back( new CMessageBoxBitmapGalaxy(elder_text[3], gGraphics.getBitmapFromId(104), LEFT) );
+    msgs.push_back( new CMessageBoxBitmapGalaxy(elder_text[1], *gGraphics.getBitmapFromStr("KEENTALKING"), RIGHT) );
+    msgs.push_back( new CMessageBoxBitmapGalaxy(elder_text[2], gGraphics.getBitmapFromId(104), LEFT) );
+    msgs.push_back( new CMessageBoxBitmapGalaxy(elder_text[3], *gGraphics.getBitmapFromStr("KEENTALKING"), RIGHT) );
 
     showMsgVec( msgs );
 
@@ -161,7 +161,7 @@ void CCouncilMember::getTouchedBy(CSpriteObject &theObject)
 		}
 
 
-		gSound.playSound(SOUND_RESCUE_COUNCIL_MEMBER, PLAY_PAUSEALL);
+		gSound.playSound(SOUND_RESCUE_COUNCIL_MEMBER, SoundPlayMode::PLAY_PAUSEALL);
         gEventManager.add( new EventPlayTrack(5) );        
 
 		std::string elder_text[2];

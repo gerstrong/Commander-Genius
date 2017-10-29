@@ -325,7 +325,7 @@ public:
 	 *  \description plays certain sound of an object. Stereo will automatically applied when used
 	 */
 	void playSound( const GameSound snd,
-				    const SoundPlayMode mode=PLAY_NOW );
+				    const SoundPlayMode mode=SoundPlayMode::PLAY_NOW );
 
 	virtual void draw();
 

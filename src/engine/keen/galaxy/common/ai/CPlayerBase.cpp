@@ -520,7 +520,9 @@ void CPlayerBase::getEaten()
 		solid = false;
 		honorPriority = false;
 		m_timer = 0;
-		gSound.playSound( SOUND_KEEN_DIE, PLAY_NORESTART );
+        gSound.playSound( SOUND_KEEN_DIE,
+                          SoundPlayMode::PLAY_NORESTART );
+
 		mp_processState = &CPlayerBase::processGetEaten;        
 	}    
 }
@@ -731,7 +733,7 @@ void CPlayerBase::kill(const bool force,
 
     solid = false;
     honorPriority = false;
-    gSound.playSound( SOUND_KEEN_DIE, PLAY_NORESTART );
+    gSound.playSound( SOUND_KEEN_DIE, SoundPlayMode::PLAY_NORESTART );
 }
 
 

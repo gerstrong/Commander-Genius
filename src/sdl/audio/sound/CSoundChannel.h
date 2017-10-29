@@ -15,16 +15,12 @@
 
 // sound play modes
 // start playing sound now, unless a higher priority sound is playing
-enum SoundPlayMode{
-// Normal play now
-PLAY_NOW,
-// will not restart the sound if it is already playing.
-PLAY_NORESTART,
-// plays the sound regardless of priority, and does not allow any other
-// sounds to play until it completes.
-PLAY_FORCE,
-// This will play the sound and pause the gameplay while it does
-PLAY_PAUSEALL
+enum class SoundPlayMode
+{
+    PLAY_NOW,// Normal play now
+    PLAY_NORESTART, // will not restart the sound if it is already playing.
+    PLAY_FORCE, // plays the sound regardless of priority, and does not allow any other
+    PLAY_PAUSEALL   // This will play the sound and pause the gameplay while it does
 };
 
 // 8 bit sound
@@ -35,6 +31,7 @@ PLAY_PAUSEALL
 #define WAVE_OUT_U8		(WAVE_SILENCE_U8+WAVEFORM_VOLUME_8)
 #define WAVE_IN_S8		(WAVE_SILENCE_S8-WAVEFORM_VOLUME_8)
 #define WAVE_OUT_S8		(WAVE_SILENCE_S8+WAVEFORM_VOLUME_8)
+
 // 16 bit sound
 #define WAVEFORM_VOLUME_16	1280
 #define WAVE_SILENCE_U16        32768
@@ -53,9 +50,9 @@ public:
     CSoundChannel(const SDL_AudioSpec &AudioSpec);
 
 	void stopSound();
-	bool isPlaying() { return m_sound_playing; }
-	bool isForcedPlaying() { return (m_sound_playing && m_sound_forced); }
-	CSoundSlot *getCurrentSoundPtr() { return mp_current_SndSlot; }
+    bool isPlaying() { return mSoundPlaying; }
+    bool isForcedPlaying() { return (mSoundPlaying && mSoundForced); }
+    CSoundSlot *getCurrentSoundPtr() { return mpCurrentSndSlot; }
 
 	/**
 	 * \brief	Reads the sound of a specified slot into the waveform which normally is mixed
@@ -68,8 +65,8 @@ public:
 	template <typename T>
 	void transintoStereoChannels(T* waveform, const Uint32 len);
 
-	short getBalance() { return m_balance; }
-	void setBalance(short value) { m_balance = value; }
+    short getBalance() { return mBalance; }
+    void setBalance(short value) { mBalance = value; }
 
 	/**
 	 * \brief	Sets up the slot to play a sound
@@ -80,13 +77,13 @@ public:
 					const bool sound_forced );
 
 private:
-    bool m_sound_playing;           	// true = a sound is currently playing
-    CSoundSlot *mp_current_SndSlot;		// Pointer to the slot of the currently playing sound
-    Uint32 m_sound_ptr;               	// position within sound that we're at
-    bool m_sound_paused;             	// true = pause playback
-    bool m_sound_forced;
+    bool mSoundPlaying;           	// true = a sound is currently playing
+    CSoundSlot *mpCurrentSndSlot;		// Pointer to the slot of the currently playing sound
+    Uint32 mSoundPtr;               	// position within sound that we're at
+    bool mSoundPaused;             	// true = pause playback
+    bool mSoundForced;
 
-    short m_balance;					// This variable is used for stereo sound, and to calculate where the sound must be played!
+    short mBalance;					// This variable is used for stereo sound, and to calculate where the sound must be played!
 
     SDL_AudioSpec m_AudioSpec;
 };

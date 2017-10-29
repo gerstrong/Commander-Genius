@@ -52,7 +52,7 @@ Audio::Audio() :
 m_MusicVolume(SDL_MIX_MAXVOLUME),
 m_SoundVolume(SDL_MIX_MAXVOLUME),
 mUseSoundBlaster(false),
-m_pause_gameplay(false)
+mPauseGameplay(false)
 {
 	mAudioSpec.channels = 2; // Stereo Sound
 	mAudioSpec.format = AUDIO_S16; // 16-bit sound
@@ -64,7 +64,7 @@ m_pause_gameplay(false)
 Audio::~Audio()
 {
     // Wait until callback function finishes its calls
-    while(m_callback_running);
+    while(mCallbackRunning);
 }
 
 bool Audio::init()
@@ -82,7 +82,7 @@ bool Audio::init()
 		default: mAudioSpec.samples = 1024; break;
 	}
 	mAudioSpec.callback = CCallback;
-	mAudioSpec.userdata = NULL;
+    mAudioSpec.userdata = nullptr;
 
 	// Initialize variables
 	if( SDL_OpenAudio(&mAudioSpec, &obtained) < 0 )
@@ -97,7 +97,7 @@ bool Audio::init()
 
 	mAudioSpec = obtained;
 
-    m_MixedForm.resize(mAudioSpec.size);
+    mMixedForm.resize(mAudioSpec.size);
 
 	gLogging.ftextOut("SDL_AudioSpec:<br>");
 	gLogging.ftextOut("  freq: %d<br>", mAudioSpec.freq);
@@ -116,21 +116,20 @@ bool Audio::init()
 			break;
 	}
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    gLogging.ftextOut("Using audio driver: %s<br>", SDL_GetCurrentAudioDriver());
+    gLogging << "Using audio driver: "  << SDL_GetCurrentAudioDriver() << " <br>";
 #else
-   // gLogging.ftextOut("Using audio driver: %s<br>", SDL_AudioDriverName(name, 32));
+    //gLogging << "Using audio driver: "  << SDL_AudioDriverName(name, 32) << " <br>";
 #endif
 
     const unsigned int channels = 32;
 
-    if(!mSndChnlVec.empty())
-        mSndChnlVec.clear();
+    mSndChnlVec.clear();
 
     mSndChnlVec.assign(channels, CSoundChannel(mAudioSpec));
 
     SDL_PauseAudio(0);
 
-	gLogging.ftextOut("Sound System: SDL sound system initialized.<br>");
+    gLogging << "Sound System: SDL sound system initialized.<br>";
 
 	// Let's initialize the OPL Emulator here!
 	m_OPL_Player.init();
@@ -171,8 +170,8 @@ void Audio::destroy()
     SDL_LockAudio();
 	SDL_CloseAudio();
 
-	if(!m_MixedForm.empty())
-		m_MixedForm.clear();
+    if(!mMixedForm.empty())
+        mMixedForm.clear();
 
     if(!mSndChnlVec.empty())
         mSndChnlVec.clear();
@@ -238,15 +237,21 @@ bool Audio::forcedisPlaying()
 {
     std::vector<CSoundChannel>::iterator snd_chnl = mSndChnlVec.begin();
     for( ; snd_chnl != mSndChnlVec.end() ; snd_chnl++)
+    {
 		if(snd_chnl->isForcedPlaying())
+        {
 			return true;
+        }
+    }
 
 	return false;
 }
 
-void Audio::callback(void *unused, Uint8 *stream, int len)
+void Audio::callback(void *unused,
+                     Uint8 *stream,
+                     int len)
 {
-    m_callback_running = true;
+    mCallbackRunning = true;
 
     // Subcallbacks for so far are only used by the dosfusion system
     for(auto &subCallback : mSubCallbackVec)
@@ -256,13 +261,13 @@ void Audio::callback(void *unused, Uint8 *stream, int len)
 
 	if(!mpAudioRessources)        
     {
-        m_callback_running = false;
+        mCallbackRunning = false;
 		return;
     }
 
-    m_MixedForm.resize(len);
+    mMixedForm.resize(len);
 
-	Uint8* buffer = m_MixedForm.data();        
+    Uint8* buffer = mMixedForm.data();
 
     if (gMusicPlayer.playing())
     {
@@ -277,7 +282,7 @@ void Audio::callback(void *unused, Uint8 *stream, int len)
 		if(snd_chnl->isPlaying())
 		{
 			any_sound_playing |= true;
-			snd_chnl->readWaveform( buffer, len);
+            snd_chnl->readWaveform( buffer, len );
             mixAudio(stream, buffer, len, m_SoundVolume);
 		}
     }
@@ -285,23 +290,22 @@ void Audio::callback(void *unused, Uint8 *stream, int len)
 	if(!any_sound_playing)
 	{
 		// means no sound is playing
-		m_pause_gameplay = false;
+        mPauseGameplay = false;
 	}
 
-	m_callback_running = false;
+    mCallbackRunning = false;
 }
 
-// if priorities allow, plays the sound "snd".
-// nonzero return value indicates a higher priority sound is playing.
-void Audio::playSound(	const GameSound snd,
-			const SoundPlayMode mode )
+
+void Audio::playSound(const GameSound snd,
+                      const SoundPlayMode mode )
 {
 	playStereosound(snd, mode, 0);
 }
 
-void Audio::playStereofromCoord( const GameSound snd,
-				  const SoundPlayMode mode,
-                  const int xCoord )
+void Audio::playStereofromCoord(const GameSound snd,
+                                const SoundPlayMode mode,
+                                const int xCoord )
 {
     if(mAudioSpec.channels == 2)
     {
@@ -316,7 +320,7 @@ void Audio::playStereofromCoord( const GameSound snd,
 	    bal = 255;
 	}
 
-    	playStereosound(snd, mode, bal);
+        playStereosound(snd, mode, bal);
     }
     else
     {
@@ -324,7 +328,9 @@ void Audio::playStereofromCoord( const GameSound snd,
     }
 }
 
-void Audio::playStereosound(const GameSound snd, const char mode, const short balance)
+void Audio::playStereosound(const GameSound snd,
+                            const SoundPlayMode mode,
+                            const short balance)
 {
     if( mSndChnlVec.empty() ) return;
 
@@ -335,43 +341,52 @@ void Audio::playStereosound(const GameSound snd, const char mode, const short ba
 
 	const int speaker_snds_end_off = mpAudioRessources->getNumberofSounds()/2;
 
-	if(slotplay >= speaker_snds_end_off)
+    if (slotplay >= speaker_snds_end_off)
 		return;
 
-    if(mUseSoundBlaster && mp_Slots[slotplay+speaker_snds_end_off].getSoundData())
+    if (mUseSoundBlaster && mp_Slots[slotplay+speaker_snds_end_off].getSoundData())
 		slotplay += speaker_snds_end_off;
 
-	if (mode==PLAY_NORESTART && isPlaying(snd))
+    if (mode == SoundPlayMode::PLAY_NORESTART && isPlaying(snd))
 		return;
 
 	playStereosoundSlot(slotplay, mode, balance);
 }
 
 
-void Audio::playStereosoundSlot(unsigned char slotplay, const char mode, const short balance)
+void Audio::playStereosoundSlot(unsigned char slotplay,
+                                const SoundPlayMode mode,
+                                const short balance)
 {
 	CSoundSlot *mp_Slots = mpAudioRessources->getSlotPtr();
     CSoundSlot &new_slot = mp_Slots[slotplay];
 
-	if(mode==PLAY_PAUSEALL)
-		m_pause_gameplay = true;
+    if(mode == SoundPlayMode::SoundPlayMode::PLAY_PAUSEALL)
+    {
+        mPauseGameplay = true;
+    }
 
 	// stop all other sounds if this sound has maximum priority
-	if ( mode==PLAY_FORCE )
+    if ( mode == SoundPlayMode::PLAY_FORCE )
+    {
 		stopAllSounds();
+    }
 
 	// first try to find an empty channel
-	std::vector<CSoundChannel>::iterator snd_chnl;
-    for( snd_chnl = mSndChnlVec.begin() ; snd_chnl != mSndChnlVec.end() ; snd_chnl++)
+    std::vector<CSoundChannel>::iterator sndChnl;
+    for( sndChnl = mSndChnlVec.begin() ; sndChnl != mSndChnlVec.end() ; sndChnl++)
 	{
-		CSoundSlot &current_slot = *snd_chnl->getCurrentSoundPtr();
+        CSoundSlot &current_slot = *sndChnl->getCurrentSoundPtr();
 
-		if ( !snd_chnl->isPlaying() || ( new_slot.priority >= current_slot.priority ) )
+        if ( !sndChnl->isPlaying() || ( new_slot.priority >= current_slot.priority ) )
 		{
 			if(mAudioSpec.channels == 2)
-				snd_chnl->setBalance(balance);
+            {
+                sndChnl->setBalance(balance);
+            }
 
-			snd_chnl->setupSound( new_slot, (mode==PLAY_FORCE) ? true : false );
+            sndChnl->setupSound( new_slot,
+                                 (mode==SoundPlayMode::PLAY_FORCE) ? true : false );
 			break;
 		}
 	}
@@ -393,12 +408,12 @@ void Audio::setupSoundData(const std::map<GameSound, int> &slotMap,
 void Audio::unloadSoundData()
 {
     // Wait for callback to finish running...
-    while(m_callback_running);
+    while(mCallbackRunning);
 
     SDL_LockAudio();
 
     mpAudioRessources.release();
-    m_MixedForm.clear();
+    mMixedForm.clear();
 
     SDL_UnlockAudio();
 }
@@ -407,7 +422,7 @@ void Audio::unloadSoundData()
 
 bool Audio::pauseGamePlay()
 {
-	return m_pause_gameplay;
+    return mPauseGameplay;
 }
 
 

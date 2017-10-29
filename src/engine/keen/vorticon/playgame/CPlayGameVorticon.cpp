@@ -200,7 +200,7 @@ bool CPlayGameVorticon::init()
     }
 
     if(m_showKeensLeft)
-	  gSound.playSound(SOUND_KEENSLEFT, PLAY_NOW);
+	  gSound.playSound(SOUND_KEENSLEFT, SoundPlayMode::PLAY_NOW);
 
 	// In the case that we are in Episode 3 last Level, show Mortimer Messages
 	if( m_Episode == 3 && m_Level == 16 )
@@ -399,7 +399,7 @@ void CPlayGameVorticon::ponder(const float deltaT)
 		else // Bitmap must first be created
 		{
             GsBitmap *pBitmap = gGraphics.getBitmapFromStr("GAMEOVER");
-			gSound.playSound(SOUND_GAME_OVER, PLAY_NOW);
+			gSound.playSound(SOUND_GAME_OVER, SoundPlayMode::PLAY_NOW);
 			mpGameoverBmp.reset( new CEGABitmap( mMap.get() , gVideoDriver.getBlitSurface(), pBitmap) );
 
             GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();

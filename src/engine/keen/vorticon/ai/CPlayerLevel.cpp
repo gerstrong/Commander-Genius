@@ -101,7 +101,7 @@ void CPlayer::touchedExit(int mpx)
 		ppogostick = false;
 		
 		gMusicPlayer.stop();
-		gSound.playSound(SOUND_LEVEL_DONE, PLAY_NOW);
+		gSound.playSound(SOUND_LEVEL_DONE, SoundPlayMode::PLAY_NOW);
 		level_done = LEVEL_DONE_WALK;
 		solid = false;
 		inhibitfall = true;
@@ -162,7 +162,7 @@ void CPlayer::kill(bool force)
 		pdie_xvect -= DIE_MAX_XVECT;
 		inventory.lives--;
 		SelectFrame();
-		gSound.playSound(SOUND_KEEN_DIE, PLAY_NOW);
+		gSound.playSound(SOUND_KEEN_DIE, SoundPlayMode::PLAY_NOW);
 		gMusicPlayer.stop();
 
 		if(inventory.canlooseitem[0])	inventory.HasJoystick = false;
@@ -859,7 +859,7 @@ void CPlayer::bump( const direction_t direction )
 	if( pjumping == PPREPAREJUMP || pjumping == PPREPAREPOGO || dead || level_done!=LEVEL_NOT_DONE )
 		return;
 
-	playSound( SOUND_YORP_BUMP, PLAY_NORESTART );
+	playSound( SOUND_YORP_BUMP, SoundPlayMode::PLAY_NORESTART );
 
 	if(!pfiring)
 		pShowDir.x = pDir.x = direction;
@@ -875,7 +875,7 @@ void CPlayer::bump(const direction_t direction, const int amount )
     if( pjumping == PPREPAREJUMP || pjumping == PPREPAREPOGO || dead || level_done!=LEVEL_NOT_DONE )
         return;
 
-    playSound( SOUND_YORP_BUMP, PLAY_NORESTART );
+    playSound( SOUND_YORP_BUMP, SoundPlayMode::PLAY_NORESTART );
 
     if(!pfiring)
         pShowDir.x = pDir.x = direction;

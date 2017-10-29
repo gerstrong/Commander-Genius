@@ -8,8 +8,8 @@
  * It manages the Soundslots, Music, etc. everything audio related to Commander Genius
  */
 
-#ifndef __AUDIO_H__
-#define __AUDIO_H__
+#ifndef AUDIO_H
+#define AUDIO_H
 
 #include <base/Singleton.h>
 
@@ -38,13 +38,47 @@ public:
 	void callback(void *unused, Uint8 *stream, int len);
 	void pauseAudio(void);
 	void resumeAudio(void);
+
+
+    /**
+     * @brief playSound If priorities allow, plays the sound "snd".
+     * @param snd
+     * @param mode
+     * @return nonzero return value indicates a higher priority sound is playing.
+     */
 	void playSound(	const GameSound snd,
-					const SoundPlayMode mode = PLAY_NOW );
+                    const SoundPlayMode mode = SoundPlayMode::PLAY_NOW );
+
+    /**
+     * @brief playStereofromCoord  Play one sound
+     * @param snd       sound number to play
+     * @param mode      how to play
+     * @param xCoord    X Coordinate in relative to the listening object
+     */
     void playStereofromCoord(const GameSound snd,
                              const SoundPlayMode mode,
                              const int xCoord);
-	void playStereosound(const GameSound snd, const char mode, const short balance);
-	void playStereosoundSlot(unsigned char slotplay, const char mode, const short balance);
+
+    /**
+     * @brief playStereosound Play with indication of balance
+     * @param snd   number of sound to play
+     * @param mode  How to play it
+     * @param balance between -127(left) to 127(right)
+     */
+    void playStereosound(const GameSound snd,
+                         const SoundPlayMode mode,
+                         const short balance);
+
+    /**
+     * @brief playStereosoundSlot
+     * @param slotplay
+     * @param mode
+     * @param balance
+     */
+    void playStereosoundSlot(const unsigned char slotplay,
+                             const SoundPlayMode mode,
+                             const short balance);
+
 	bool isPlaying(const GameSound snd);
 	void stopSound(const GameSound snd);
 	void destroy();
@@ -92,7 +126,7 @@ public:
     }
 
 protected:
-    bool m_callback_running = false;
+    bool mCallbackRunning = false;
 	SDL_AudioSpec mAudioSpec;
 
     std::vector< void (SDLCALL *)(void *, Uint8 *, int) > mSubCallbackVec;
@@ -108,13 +142,13 @@ private:
     // Boolean that holds if the Soundblaster is to be used. If set false it will use the PC Speaker emulation
     bool mUseSoundBlaster;
 
-	std::vector<Uint8> m_MixedForm;	// Mainly used by the callback function. Declared once and allocated
+	std::vector<Uint8> mMixedForm;	// Mainly used by the callback function. Declared once and allocated
                                     // for the whole runtime
 
     std::map<GameSound, int> sndSlotMap;
 
     COPLEmulator m_OPL_Player;
-    bool m_pause_gameplay;
+    bool mPauseGameplay;
 };
 
 #endif /* __AUDIO_H__ */

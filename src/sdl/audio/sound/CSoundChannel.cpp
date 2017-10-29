@@ -12,8 +12,9 @@
 #include <cstring>
 
 
-CSoundChannel::CSoundChannel(const SDL_AudioSpec &AudioSpec) :
-mp_current_SndSlot(nullptr),
+CSoundChannel::
+CSoundChannel(const SDL_AudioSpec &AudioSpec) :
+mpCurrentSndSlot(nullptr),
 m_AudioSpec(AudioSpec)
 {
     stopSound();
@@ -23,11 +24,11 @@ void CSoundChannel::stopSound()
 {
     SDL_LockAudio();
 
-    mp_current_SndSlot = nullptr;
-	m_balance = 0;
-    m_sound_ptr = 0;
-    m_sound_paused = true;
-    m_sound_playing = false;
+    mpCurrentSndSlot = nullptr;
+    mBalance = 0;
+    mSoundPtr = 0;
+    mSoundPaused = true;
+    mSoundPlaying = false;
 
     SDL_UnlockAudio();
 }
@@ -37,10 +38,10 @@ void CSoundChannel::setupSound( CSoundSlot &SndSlottoPlay,
 {
     SDL_LockAudio();
 
-	mp_current_SndSlot = &SndSlottoPlay;
-	m_sound_playing = true;
-	m_sound_ptr = 0;
-	m_sound_forced = sound_forced;
+    mpCurrentSndSlot = &SndSlottoPlay;
+    mSoundPlaying = true;
+    mSoundPtr = 0;
+    mSoundForced = sound_forced;
 
     SDL_UnlockAudio();
 }
@@ -52,15 +53,15 @@ void CSoundChannel::setupSound( CSoundSlot &SndSlottoPlay,
 template <typename T>
 void CSoundChannel::transintoStereoChannels(T* waveform, const Uint32 len)
 {
-	if(m_balance != 0) // Because, if it is not zero, there is no balance, and waves must be adapted
+    if(mBalance != 0) // Because, if it is not zero, there is no balance, and waves must be adapted
 	{
 		// m_balance -127 is only for the left speaker, while 127 is for the right speaker. 0 Is center. Everything beyond is played but partially muted.
 		Sint32 Pulse32;
 		const Sint32 Silence = m_AudioSpec.silence;
 		const Uint32 length = len/sizeof(T);
 
-		Sint32 leftamt = -m_balance;
-		Sint32 rightamt = m_balance;
+        Sint32 leftamt = -mBalance;
+        Sint32 rightamt = mBalance;
 
 		if(leftamt > 127)
 		{
@@ -78,46 +79,50 @@ void CSoundChannel::transintoStereoChannels(T* waveform, const Uint32 len)
 		for( Uint32 index = 0 ; index < length ; )
 		{
 			/// balance here!
-			// first the left channel
+            // For the left channel
 			Pulse32 = waveform[index] - Silence;
 			Pulse32 *= (129 + leftamt);
 			Pulse32 >>= 8;
-			waveform[index++] = Pulse32 + Silence;
+            waveform[index++] = T(Pulse32 + Silence);
 
-			// then the right channel
+            // For the Right channel
 			Pulse32 = waveform[index] - Silence;
 			Pulse32 *= (129 + rightamt);
 			Pulse32 >>= 8;
-			waveform[index++] = Pulse32 + Silence;
+            waveform[index++] = T(Pulse32 + Silence);
 		}
 	}
 }
 
 void CSoundChannel::readWaveform( Uint8 * const waveform, const Uint32 len )
 {
-	byte *snddata = mp_current_SndSlot->getSoundData();
-	const Uint32 sndlength = mp_current_SndSlot->getSoundlength();
+    auto snddata = mpCurrentSndSlot->getSoundData();
+    const Uint32 sndlength = mpCurrentSndSlot->getSoundlength();
 
-	if ((m_sound_ptr + len) >= sndlength)
+    if ((mSoundPtr + len) >= sndlength)
 	{
 		// Fill up the buffer and the rest with silence
-		const Uint32 len_left = sndlength-m_sound_ptr;
-		memcpy(waveform, snddata + m_sound_ptr, len_left );
+        const Uint32 len_left = sndlength-mSoundPtr;
+        memcpy(waveform, snddata + mSoundPtr, len_left );
 		memset(waveform+len_left, m_AudioSpec.silence, len-len_left );
-		m_sound_ptr = 0;
-		m_sound_playing = false;
+        mSoundPtr = 0;
+        mSoundPlaying = false;
 	}
 	else
 	{
-		memcpy(waveform, snddata + m_sound_ptr, len );
-		m_sound_ptr += len;
+        memcpy(waveform, snddata + mSoundPtr, len );
+        mSoundPtr += len;
 	}
 
 	if(m_AudioSpec.channels == 2)
 	{
 		if(m_AudioSpec.format == AUDIO_U16 || m_AudioSpec.format == AUDIO_S16)
+        {
 			transintoStereoChannels((Sint16*) (void *) waveform, len);
+        }
 		else
+        {
 			transintoStereoChannels(waveform, len);
+        }
 	}
 }
