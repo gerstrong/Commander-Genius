@@ -25,7 +25,7 @@ bool CAudioGalaxy::readPCSpeakerSoundintoWaveForm(CSoundSlot &soundslot,
                                                   const byte *pcsdata,
                                                   const Uint8 formatsize)
 {
-	byte *pcsdata_ptr = (byte*)pcsdata;
+    byte *pcsdata_ptr = const_cast<byte*>(pcsdata);
 	const longword size = READLONGWORD(pcsdata_ptr);
 	soundslot.priority = READWORD(pcsdata_ptr);
 
@@ -498,23 +498,16 @@ bool CAudioGalaxy::LoadFromAudioCK(const unsigned int dictOffset)
 
             const unsigned long insize = audio_end-audio_comp_data_start;
 
-
-            if(outsize < insize)
-            {
-                  gLogging << "Sound " << snd <<  ": Compressed size is larger than uncompressed!";
-                  continue;
-            }
-
             // Same size, just copy then
             if(!mustDehuffman)
             {
                 memcpy(imfdataPtr,
-                       (byte*)(&AudioCompFileData[audio_comp_data_start]),
+                       reinterpret_cast<byte*>(&AudioCompFileData[audio_comp_data_start]),
                        insize);
             }
             else // uncompress!
             {
-                Huffman.expand( (byte*)(&AudioCompFileData[audio_comp_data_start]),
+                Huffman.expand( reinterpret_cast<byte*>(&AudioCompFileData[audio_comp_data_start]),
                                 imfdataPtr,
                                 insize,
                                 outsize);
@@ -528,14 +521,19 @@ bool CAudioGalaxy::LoadFromAudioCK(const unsigned int dictOffset)
                                                      (audioSpec.format == AUDIO_S16) ? 2 : 1 );
                 if(!ok)
                 {
-                    gLogging.textOut("Sound " + itoa(snd) + "could not be read!");
+                    gLogging << "Sound " << snd << " could not be read!<br>";
                 }
             }
             else
             {
-                readPCSpeakerSoundintoWaveForm( m_soundslot[snd],
-                                                imfdataPtr,
-                                                (audioSpec.format == AUDIO_S16) ? 2 : 1 );
+                const bool ok = readPCSpeakerSoundintoWaveForm( m_soundslot[snd],
+                                                                imfdataPtr,
+                                                                (audioSpec.format == AUDIO_S16) ? 2 : 1 );
+
+                if(!ok)
+                {
+                    gLogging << "Sound " << snd << " could not be read!<br>";
+                }
             }
         }
     }
@@ -547,7 +545,7 @@ bool CAudioGalaxy::LoadFromAudioCK(const unsigned int dictOffset)
  * Main load function for the galaxy audio
  */
 bool CAudioGalaxy::loadSoundData(const unsigned int dictOffset)
-{
+{       
     COPLEmulator &OPLEmulator = gSound.getOPLEmulatorRef();
 
     OPLEmulator.shutdown();

@@ -522,8 +522,8 @@ void CSpriteObject::kill()
 void CSpriteObject::blink(Uint16 frametime)
 { m_blinktime = frametime; }
 
-void CSpriteObject::playSound( const GameSound snd,
-			    const SoundPlayMode mode )
+void CSpriteObject::playSound(const GameSound snd,
+                              const SoundPlayMode mode )
 {
 	gSound.playStereofromCoord(snd, mode, scrx);
 }

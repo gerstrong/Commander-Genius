@@ -358,8 +358,8 @@ void Audio::playStereosoundSlot(unsigned char slotplay,
                                 const SoundPlayMode mode,
                                 const short balance)
 {
-	CSoundSlot *mp_Slots = mpAudioRessources->getSlotPtr();
-    CSoundSlot &new_slot = mp_Slots[slotplay];
+    CSoundSlot *pSlots = mpAudioRessources->getSlotPtr();
+    CSoundSlot &chosenSlot = pSlots[slotplay];
 
     if(mode == SoundPlayMode::PLAY_PAUSEALL)
     {
@@ -376,17 +376,19 @@ void Audio::playStereosoundSlot(unsigned char slotplay,
     std::vector<CSoundChannel>::iterator sndChnl;
     for( sndChnl = mSndChnlVec.begin() ; sndChnl != mSndChnlVec.end() ; sndChnl++)
 	{
-        CSoundSlot &current_slot = *sndChnl->getCurrentSoundPtr();
+        CSoundSlot &currentSlot = *sndChnl->getCurrentSoundPtr();
 
-        if ( !sndChnl->isPlaying() || ( new_slot.priority >= current_slot.priority ) )
+        if (!sndChnl->isPlaying()
+            ||
+            chosenSlot.priority >= currentSlot.priority )
 		{
 			if(mAudioSpec.channels == 2)
             {
                 sndChnl->setBalance(balance);
             }
 
-            sndChnl->setupSound( new_slot,
-                                 (mode==SoundPlayMode::PLAY_FORCE) ? true : false );
+            sndChnl->setupSound(chosenSlot,
+                                (mode==SoundPlayMode::PLAY_FORCE) ? true : false );
 			break;
 		}
 	}

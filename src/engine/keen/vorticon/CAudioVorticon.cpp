@@ -265,7 +265,6 @@ bool CAudioVorticon::loadSoundData(const unsigned int dictOffset)
 	m_soundslot.assign(2*MAX_NUM_SOUNDS, zeroslot);
 
     ok  = loadSound( datadir, "WLDWALKSND", SOUND_WLD_WALK);
-    //ok  &= loadSound( DataDirectory, "WLDBLOCKSND", SOUND_WLD_BLOCK);
     ok &= loadSound( datadir, "KEENWALKSND", SOUND_KEEN_WALK);
     ok &= loadSound( datadir, "KEENWLK2SND", SOUND_KEEN_WALK2);
     ok &= loadSound( datadir, "KEENJUMPSND", SOUND_KEEN_JUMP);
