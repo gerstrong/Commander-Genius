@@ -142,9 +142,9 @@ bool CPlayerLevel::verifyforPole()
 
 	mPoleGrabTime = 0;
 
-	Uint32 l_x_r = getXRightPos();
-	Uint32 l_x_l = getXLeftPos();
-	Uint32 l_x = ( l_x_l + l_x_r ) / 2;	
+    auto l_x_r = getXRightPos();
+    auto l_x_l = getXLeftPos();
+    auto l_x = ( l_x_l + l_x_r ) / 2;
 	l_x = (l_x>>CSF)<<CSF;
 	const int l_y_up = ( getYUpPos() ) + (4<<STC);
 	const int l_y_down = ( ( getYDownPos() >> CSF ) + 1 ) << CSF;
@@ -152,8 +152,9 @@ bool CPlayerLevel::verifyforPole()
 	const int yDir = (m_playcontrol[PA_Y] < 0) ? -1 : 1;
 
 	// Now check if Player has the chance to climb a pole or something similar
+    // 1 = this tile is a pole (Property)
 	if( ( yDir < 0 && hitdetectWithTileProperty(1, l_x, l_y_up)  ) ||
-	    ( yDir > 0 && hitdetectWithTileProperty(1, l_x, l_y_down)  ) ) // 1 -> stands for pole Property
+        ( yDir > 0 && hitdetectWithTileProperty(1, l_x, l_y_down)  ) )
 	{
         cancelAllMoveTasks();
 
