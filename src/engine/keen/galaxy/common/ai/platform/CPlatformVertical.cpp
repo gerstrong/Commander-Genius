@@ -86,8 +86,8 @@ void CPlatformVertical::process()
     performCollisions();
 
     // Scan for blockers nearby
-    const auto objectUpper = mp_Map->getPlaneDataAt(2, upperPos<<CSF);
-    const auto objectLower = mp_Map->getPlaneDataAt(2, lowerPos<<CSF);
+    const auto objectUpper = mpMap->getPlaneDataAt(2, upperPos<<CSF);
+    const auto objectLower = mpMap->getPlaneDataAt(2, lowerPos<<CSF);
 
     // If plat is between two blockers, do not move
     if(objectUpper == 0x1F && objectLower == 0x1F)
@@ -153,8 +153,8 @@ void CPlatformVertical::draw()
     
     GsSprite &Sprite = gGraphics.getSprite(mSprVar,mSpriteIdx);
 
-    scrx = (m_Pos.x>>STC)-mp_Map->m_scrollx;
-    scry = (m_Pos.y>>STC)-mp_Map->m_scrolly;
+    scrx = (m_Pos.x>>STC)-mpMap->m_scrollx;
+    scry = (m_Pos.y>>STC)-mpMap->m_scrolly;
     
     SDL_Rect gameres = gVideoDriver.getGameResolution().SDLRect();
     

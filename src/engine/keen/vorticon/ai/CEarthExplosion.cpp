@@ -38,7 +38,7 @@ void CEarthExplosion::process()
 				x = getXPosition()>>CSF;
 				y = getYPosition()>>CSF;
 				m_HorDir = LEFT;
-				mp_Map->setTile((x+8)>>4,(y+8)>>4, SPACETILE, true);
+				mpMap->setTile((x+8)>>4,(y+8)>>4, SPACETILE, true);
 			}
 		}
 		animtimer = 0;

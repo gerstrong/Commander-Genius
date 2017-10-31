@@ -64,7 +64,7 @@ m_fireTimer(0)
 
 void CPlatformHorizontal::process()
 {
-	const Uint16 object = mp_Map->getPlaneDataAt(2, getXMidPos(), getYMidPos());
+	const Uint16 object = mpMap->getPlaneDataAt(2, getXMidPos(), getYMidPos());
 	
 	performCollisions();
 
@@ -107,8 +107,8 @@ void CPlatformHorizontal::draw()
     const int sprW = Sprite.getWidth();
     const int sprH = Sprite.getHeight();
 
-    scrx = (m_Pos.x>>STC)-mp_Map->m_scrollx;
-    scry = (m_Pos.y>>STC)-mp_Map->m_scrolly;
+    scrx = (m_Pos.x>>STC)-mpMap->m_scrollx;
+    scry = (m_Pos.y>>STC)-mpMap->m_scrolly;
     
     SDL_Rect gameres = gVideoDriver.getGameResolution().SDLRect();
     

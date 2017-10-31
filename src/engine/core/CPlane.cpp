@@ -7,16 +7,16 @@
 
 #include "CPlane.h"
 
-CPlane::CPlane() :
-m_width(0),
-m_height(0)
-{}
+#include <cassert>
 
-void CPlane::createDataMap(Uint16 width, Uint16 height)
+void CPlane::createDataMap(const int width, const int height)
 {
-	m_width = width;
-	m_height = height;
+    assert(width > 0);
+    assert(height > 0);
 
-    mDataVec.assign(m_width*m_height, 0);
-    mTimers.assign(m_width*m_height, 0);
+    mWidth = width;
+    mHeight = height;
+
+    mDataVec.assign(size_t(mWidth*mHeight), 0);
+    mTimers.assign(size_t(mWidth*mHeight), 0);
 }

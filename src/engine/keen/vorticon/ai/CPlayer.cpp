@@ -49,7 +49,7 @@ mp_levels_completed(mpLevelCompleted)
 
 
 CPlayer::CPlayer(const CPlayer &player) :
-CVorticonSpriteObject(player.mp_Map,
+CVorticonSpriteObject(player.mpMap,
                       player.getXPosition(), player.getYPosition(),
                       OBJ_PLAYER, player.getSpriteVariantId() ),
 pjumpupspeed_decrease(player.pjumpupspeed_decrease),
@@ -104,7 +104,7 @@ CPlayer& CPlayer::operator=(const CPlayer &player)
 
 void CPlayer::setupCameraObject()
 {
-    mpCamera.reset(new CCamera(mp_Map, 0, 0, this));
+    mpCamera.reset(new CCamera(mpMap, 0, 0, this));
 }
 
 
@@ -125,7 +125,7 @@ void CPlayer::setDatatoZero()
 	pfallspeed = 0;
 
     const int ep = gBehaviorEngine.getEpisode();
-    const int level = mp_Map->getLevel();
+    const int level = mpMap->getLevel();
 
     if(level==80)
 		pShowDir = Vector2D<direction_t>(CENTER,DOWN);
@@ -657,7 +657,7 @@ void CPlayer::InertiaAndFriction_X()
 	}
 
     const int ep = gBehaviorEngine.getEpisode();
-    const int level = mp_Map->getLevel();
+    const int level = mpMap->getLevel();
 
     if(level == 80) // We are on World map
 		verifySolidLevels();
@@ -933,7 +933,7 @@ void CPlayer::freeze()
 
 bool CPlayer::checkMapBoundaryR(const int x2)
 {
-	if( solid && x2 >= (int)((mp_Map->m_width-2)<<CSF) )
+	if( solid && x2 >= (int)((mpMap->m_width-2)<<CSF) )
 		return true;
 
 	return false;

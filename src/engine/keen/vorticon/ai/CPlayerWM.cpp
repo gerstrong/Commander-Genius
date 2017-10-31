@@ -91,11 +91,11 @@ int CPlayer::getNewObject()
         // get level/object marker beneath player
         xb = getXMidPos()>>STC;
         yb = getYMidPos()>>STC;
-        lvl = mp_Map->getObjectat(xb>>4, yb>>4);
+        lvl = mpMap->getObjectat(xb>>4, yb>>4);
         if (!lvl)
         {
 			yb = (getYPosition()>>CSF)+8;
-			lvl = mp_Map->getObjectat(xb>>4, yb>>4);
+			lvl = mpMap->getObjectat(xb>>4, yb>>4);
         }
         return lvl;
     }
@@ -111,7 +111,7 @@ bool CPlayer::isWMSolid(int xb, int yb)
 	int level_coordinates;
 
 	// Now check if the levels must block the player
-	level_coordinates = mp_Map->getObjectat(xb>>CSF, yb>>CSF);
+	level_coordinates = mpMap->getObjectat(xb>>CSF, yb>>CSF);
 
 	if (level_coordinates & 0x8000)
 	{

@@ -98,7 +98,7 @@ void CBabobba::processSitting()
 	playSound(SOUND_BABOBBA_CINDER);
 	
 	// Create cinder
-	CCinder *cinder = new CCinder(mp_Map, 0, 
+	CCinder *cinder = new CCinder(mpMap, 0, 
         getXMidPos(), getYUpPos(), xDirection, mSprVar);
 	
 	spawnObj( cinder );

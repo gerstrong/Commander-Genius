@@ -41,7 +41,7 @@ m_baseframe(0)
 
     if(canLock)
     {
-        mp_Map->lock();
+        mpMap->lock();
     }
 
 	if(episode == 6)
@@ -53,7 +53,7 @@ m_baseframe(0)
         // In Episode 5 the sign is not thrown! It just appears in the holder. Put it there!
 	    moveTo(m_destination);
 	    setupGalaxyObjectOnMap(0x148A, A_FLAG_WAVE);
-        mp_Map->unlock();
+        mpMap->unlock();
         mPlayMapSound = false; // There is no waving Flag so no sound fro that.
 	}
     else // Episode 4
@@ -149,11 +149,11 @@ void CFlag::processFlipping()
 
             tilePos.y = getYDownPos();
 
-            Uint32 new_tile_no = mp_Map->getPlaneDataAt(1, tilePos)+1;
+            Uint32 new_tile_no = mpMap->getPlaneDataAt(1, tilePos)+1;
             tilePos = tilePos>>CSF;
-            mp_Map->setTile(tilePos.x, tilePos.y, new_tile_no, true);
+            mpMap->setTile(tilePos.x, tilePos.y, new_tile_no, true);
         }
-        mp_Map->unlock();
+        mpMap->unlock();
 	}
 }
 

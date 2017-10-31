@@ -136,8 +136,8 @@ void CTreasureEater::processTeleporting()
 
 bool CTreasureEater::lookForNextDestination()
 {  
-  const unsigned int height = mp_Map->m_height-2;
-  const unsigned int width = mp_Map->m_width-2;
+  const unsigned int height = mpMap->m_height-2;
+  const unsigned int width = mpMap->m_width-2;
   
   for( unsigned int y = 2 ; y<height  ; y++ )
   {
@@ -147,10 +147,10 @@ bool CTreasureEater::lookForNextDestination()
 	const unsigned int high = 76;
 	for( unsigned int item = low ; item <= high ; item++ )
 	{
-	   if(mp_Map->at(x,y,2) == item)
+	   if(mpMap->at(x,y,2) == item)
 	   {
 	     unsigned int newY = getYPosition()>>CSF;
-	      if(mp_Map->at(x,newY,1) == 0)
+	      if(mpMap->at(x,newY,1) == 0)
 	      {
 		mDestination.x = x<<CSF;
 		mDestination.y = getYPosition();
@@ -207,8 +207,8 @@ void CTreasureEater::checkForItem()
 			const int lc_y = l_y>>CSF;
 			const int ep = gBehaviorEngine.getEpisode();
 			
-			mp_Map->setTile( lc_x, lc_y, 0, true, 1 );			
-			spawnObj( new CItemEffect(mp_Map, 0, lc_x<<CSF, lc_y<<CSF, got_sprite_item_pics[ep-4][4+i-21], FADEOUT) );
+			mpMap->setTile( lc_x, lc_y, 0, true, 1 );			
+			spawnObj( new CItemEffect(mpMap, 0, lc_x<<CSF, lc_y<<CSF, got_sprite_item_pics[ep-4][4+i-21], FADEOUT) );
 			mStolen = true;
 			
 		}

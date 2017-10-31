@@ -121,7 +121,7 @@ void CShikadiMaster::processStanding()
 
             // ... and spawn a shot that might hurt Keen
             const int newX = (xDirection == LEFT) ? getXLeftPos()+(4<<STC) : getXRightPos()-(4<<STC);
-            spawnObj( new CEnemyShot(mp_Map, 0,
+            spawnObj( new CEnemyShot(mpMap, 0,
                                         newX, getYUpPos()+(8<<STC),
                                         0x2C3E, xDirection, CENTER,  150, mSprVar) );
 
@@ -215,10 +215,10 @@ void CShikadiMaster::processTeleporting()
 
 	while (triesLeft > 0) 
 	{
-	    const unsigned int tx = ((rand()%(mp_Map->m_width<<CSF))/8 + mpPlayer->getXMidPos() - (0x10<<STC))>>CSF;
-	    const unsigned int ty = ((rand()%(mp_Map->m_height<<CSF))/8 + mpPlayer->getYUpPos() - (0x10<<STC))>>CSF;
+	    const unsigned int tx = ((rand()%(mpMap->m_width<<CSF))/8 + mpPlayer->getXMidPos() - (0x10<<STC))>>CSF;
+	    const unsigned int ty = ((rand()%(mpMap->m_height<<CSF))/8 + mpPlayer->getYUpPos() - (0x10<<STC))>>CSF;
 	    
-        if (ty < 2 || tx < 2 || mp_Map->m_width-5 < tx || mp_Map->m_height-5 < ty)
+        if (ty < 2 || tx < 2 || mpMap->m_width-5 < tx || mpMap->m_height-5 < ty)
         {
             rand();
             triesLeft--;
@@ -238,7 +238,7 @@ void CShikadiMaster::processTeleporting()
 	    {
 			for (int newx = testBoxX1; newx <= testBoxX2; newx += (1<<CSF) )
 			{
-				const int tile = mp_Map->getPlaneDataAt(1, newx, newy);				
+				const int tile = mpMap->getPlaneDataAt(1, newx, newy);				
 				auto &prop = Tile[tile];
 				
 				if ( (prop.behaviour & 0x80) || 

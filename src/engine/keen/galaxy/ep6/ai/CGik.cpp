@@ -67,7 +67,7 @@ void CGik::processJump()
     int y2 = getYDownPos();
 
     // When gik hits the floor set to land.
-    if( blockedd || TileProperty[mp_Map->at(xMid>>CSF, (y2+1)>>CSF)].bup>1 )
+    if( blockedd || TileProperty[mpMap->at(xMid>>CSF, (y2+1)>>CSF)].bup>1 )
     {
         setAction( A_GIK_LAND );
         return;

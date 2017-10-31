@@ -101,13 +101,13 @@ bool CMessie::tryToUnmount()
         for(int dx=-2 ; dx <= 2 ; dx++)
         {
             // If NESSIE_LAND_OBJ was found, than put the player there!
-            const int infotile = mp_Map->getObjectat(x+dx, y+dy);
+            const int infotile = mpMap->getObjectat(x+dx, y+dy);
 
             if(infotile == NESSIE_LAND)
             {
                 // Look for the Nessie object
                 std::vector<CTileProperties> &TileProperty = gBehaviorEngine.getTileProperties();
-                CTileProperties &Tile = TileProperty[mp_Map->at(x+dx, y+dy)];
+                CTileProperties &Tile = TileProperty[mpMap->at(x+dx, y+dy)];
                 if( !Tile.bdown and !Tile.bup and
                         !Tile.bleft and !Tile.bright )
                 {
@@ -265,7 +265,7 @@ void CMessie::nessie_find_next_checkpoint()
 			destx = x+xa;
 			desty = y+ya;
 
-			int obj = mp_Map->getObjectat(destx, desty);
+			int obj = mpMap->getObjectat(destx, desty);
 			if (obj==NESSIE_PATH || obj==NESSIE_WEED)
 			{
 				// find out if this is one of the last tiles we've been to
@@ -305,7 +305,7 @@ void CMessie::nessie_find_next_checkpoint()
 	this->destx = (destx<<CSF);
 	this->desty = (desty<<CSF)-(8<<STC);
 
-	int obj = mp_Map->getObjectat(destx, desty);
+	int obj = mpMap->getObjectat(destx, desty);
 	if(obj == NESSIE_WEED || obj == NESSIE_LAND)
 	{
 		state = NESSIE_PAUSE;

@@ -15,36 +15,67 @@
 class CPlane
 {
 public:
-	CPlane();
 
-	void createDataMap(Uint16 width, Uint16 height);
+    /**
+     * @brief creates a plane of data.
+     * @param width
+     * @param height
+     */
+    void createDataMap(const int width, const int height);
 
-    word *getMapDataPtr()
+    /**
+     * @brief setMapDataAt  Set a tile at the plane
+     * @param t the tile index to set
+     * @param x coordinate x
+     * @param y coordinate x
+     */
+    auto getMapDataPtr() -> word*
     {
         return mDataVec.data();
     }
 
-    word getMapDataAt(Uint16 x, Uint16 y) const
+    /**
+     * @brief setMapDataAt Returns the set tile
+     * @param x coordinate x
+     * @param y coordinate x
+     */
+    auto getMapDataAt(const int x,
+                      const int y) const -> word
     {
-        if( x < m_width && y < m_height )
+        if( x < mWidth && y < mHeight )
         {
-            return mDataVec[y*m_width+x];
+            return mDataVec[size_t(y*mWidth+x)];
         }
         return 0;
     }
 
 
-    void setMapDataAt(Uint16 t, Uint16 x, Uint16 y)
+    /**
+     * @brief setMapDataAt  Set a tile at the plane
+     * @param t the tile index to set
+     * @param x coordinate x
+     * @param y coordinate x
+     */
+    auto setMapDataAt(const word t,
+                      const int x,
+                      const int y) -> void
     {
-        mDataVec[y*m_width+x] = t;
+        mDataVec[size_t(y*mWidth+x)] = t;
     }
 
-    std::vector<Uint8> &getTimers()
+    /**
+     * @brief getTimers Reference to timers defined for the plane.
+     */
+    auto getTimers() -> std::vector<int>&
     {
         return mTimers;
     }
 
-    bool empty() const
+    /**
+     * @brief empty Is the plane empty
+     * @return true if it is, otherwise not
+     */
+    auto empty() const -> bool
     {
         return mDataVec.empty();
     }
@@ -54,9 +85,9 @@ private:
     std::vector<word> mDataVec; // the map data of one plane
 
     // In animation cycles the time when something needs to be changed
-    std::vector<Uint8> mTimers;
-	Uint16 m_width;
-	Uint16 m_height;
+    std::vector<int> mTimers;
+    int mWidth = 0;
+    int mHeight = 0;
 };
 
 #endif /* CPLANE_H_ */

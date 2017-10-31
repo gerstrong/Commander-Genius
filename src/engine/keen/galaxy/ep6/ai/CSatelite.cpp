@@ -31,7 +31,7 @@ mTilesUntilumount(0)
 	
 	m_Pos = target;
 	
-	fetchInitialDir(xDirection, yDirection, *mp_Map);
+	fetchInitialDir(xDirection, yDirection, *mpMap);
 	detectNextTarget(target, xDirection, yDirection);
 }
 
@@ -46,7 +46,7 @@ void CSatelite::processFlying()
     
     if( xBlockPosAbs < MOVE_SPEED && yBlockPosAbs < MOVE_SPEED )
     {
-	const Uint16 object = mp_Map->getPlaneDataAt(2, target.x, target.y);
+	const Uint16 object = mpMap->getPlaneDataAt(2, target.x, target.y);
 	
 	Vector2D<int> speed(xBlockPos, yBlockPos);	    
 	moveDir(speed);	
@@ -55,8 +55,8 @@ void CSatelite::processFlying()
 
 	if(mpCarriedPlayer != nullptr && mTilesUntilumount >= TILES_UNTIL_UNMOUNT)
 	{    	    
-	    const Uint16 spot1 = mp_Map->getPlaneDataAt(2, target.x, target.y+(1<<CSF) );
-	    const Uint16 spot2 = mp_Map->getPlaneDataAt(2, target.x+(1<<CSF), target.y);
+	    const Uint16 spot1 = mpMap->getPlaneDataAt(2, target.x, target.y+(1<<CSF) );
+	    const Uint16 spot2 = mpMap->getPlaneDataAt(2, target.x+(1<<CSF), target.y);
 	    // Positions where keen migh mount or land
 	    if(spot1 == 0x2D || spot2 == 0x2C)
 	    {	    

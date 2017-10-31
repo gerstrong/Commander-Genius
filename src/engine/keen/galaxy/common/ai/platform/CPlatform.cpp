@@ -197,8 +197,8 @@ void CPlatform::draw()
     
     GsSprite &Sprite = gGraphics.getSprite(mSprVar,mSpriteIdx);
     
-    scrx = (m_Pos.x>>STC)-mp_Map->m_scrollx;
-    scry = (m_Pos.y>>STC)-mp_Map->m_scrolly;
+    scrx = (m_Pos.x>>STC)-mpMap->m_scrollx;
+    scry = (m_Pos.y>>STC)-mpMap->m_scrolly;
     
     SDL_Rect gameres = gVideoDriver.getGameResolution().SDLRect();
     

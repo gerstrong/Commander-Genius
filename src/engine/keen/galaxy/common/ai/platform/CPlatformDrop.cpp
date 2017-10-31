@@ -58,9 +58,9 @@ mAllowReturn(false)
     Vector2D<Uint32> blockerPos = getPosition();
 
     // Scan the map for blockers, if there is one, it may return, otherwise not...
-    for( ; blockerPos.y < (mp_Map->m_height<<CSF) ; blockerPos.y += (1<<CSF) )
+    for( ; blockerPos.y < (mpMap->m_height<<CSF) ; blockerPos.y += (1<<CSF) )
     {
-        const Uint16 object = mp_Map->getPlaneDataAt(2, blockerPos);
+        const Uint16 object = mpMap->getPlaneDataAt(2, blockerPos);
         if( object == BLOCKSPRITEID )
         {
             mAllowReturn = true;
@@ -85,7 +85,7 @@ void CPlatformDrop::procPlatdrop()
 
 void CPlatformDrop::process()
 {    
-    const Uint16 object = mp_Map->getPlaneDataAt(2, getPosition());
+    const Uint16 object = mpMap->getPlaneDataAt(2, getPosition());
 	
 	bool blockerDetected = false;
 	

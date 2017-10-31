@@ -148,7 +148,7 @@ void CVortiMom::process()
 
 		if (timer > MOTHER_SPIT_SHOW_TIME)
 		{
-			CFireBall *newobject = new CFireBall(mp_Map, getXMidPos()-(3<<STC),
+			CFireBall *newobject = new CFireBall(mpMap, getXMidPos()-(3<<STC),
 												getYPosition()+(11<<STC), dir,
 												OBJ_MOTHER, m_index);
 			gEventManager.add(new EventSpawnObject(newobject));

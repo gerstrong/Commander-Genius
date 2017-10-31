@@ -120,7 +120,7 @@ void CShockshound::processBark()
     {
         // Spawn a Enemyshot in form electrostatic
         const int newX = (xDirection == LEFT) ? getXLeftPos()+(4<<STC) : getXRightPos()-(4<<STC);
-        spawnObj( new CEnemyShot(mp_Map, 0,
+        spawnObj( new CEnemyShot(mpMap, 0,
                                  newX, getYUpPos()-(8<<STC),
                                  0x2FC2, xDirection, CENTER,  150, mSprVar) );
 
@@ -260,7 +260,7 @@ int CShockshound::checkSolidD( int x1, int x2, int y2, const bool push_mode )
 
 bool CShockshound::checkMapBoundaryD(const int y2)
 {
-    if( (Uint32)y2 > ((mp_Map->m_height)<<CSF) )
+    if( (Uint32)y2 > ((mpMap->m_height)<<CSF) )
     {
         dead = true;
 

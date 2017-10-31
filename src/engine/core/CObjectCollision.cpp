@@ -193,7 +193,7 @@ bool CSpriteObject::moveSlopedTileDown( int x, int y, const int xspeed )
 
 	std::vector<CTileProperties> &TileProperty = gBehaviorEngine.getTileProperties();
 
-	const Sint8 slope = TileProperty[mp_Map->at(x>>CSF, y>>CSF)].bup;
+    const Sint8 slope = TileProperty[mpMap->at(x>>CSF, y>>CSF)].bup;
 
 	// Check first, if there is a tile on objects level
 	if( slope >=2 && slope<=7 )
@@ -235,7 +235,7 @@ void CSpriteObject::moveSlopedTileUp( int x, int y, const int xspeed )
 		return;
 
 	std::vector<CTileProperties> &TileProperty = gBehaviorEngine.getTileProperties();
-	const Sint8 slope = TileProperty[mp_Map->at(x>>CSF, y>>CSF)].bdown;
+    const Sint8 slope = TileProperty[mpMap->at(x>>CSF, y>>CSF)].bdown;
 
 	// Check first, if there is a tile on players level
 	if( slope >=2 && slope<=7 )
@@ -303,7 +303,7 @@ bool CSpriteObject::hitdetectWithTile(const int num, const int lx, const int ly,
     {
         for( int j=0 ; j<lh ; j+=res )
         {
-            if( mp_Map->getPlaneDataAt(1, lx+i, ly+j) == num )
+            if( mpMap->getPlaneDataAt(1, lx+i, ly+j) == num )
             {
                 return true;
             }
@@ -332,7 +332,7 @@ bool CSpriteObject::hitdetectWithTilePropertyRect(const Uint16 Property, int &lx
 	{
 		for( j=0 ; j<lh ; j+=res )
 		{
-			behavior = Tile[mp_Map->getPlaneDataAt(1, lx+i, ly+j)].behaviour;
+            behavior = Tile[mpMap->getPlaneDataAt(1, lx+i, ly+j)].behaviour;
 			if( (behavior&0x7f) == Property )
 			{
 				lx = lx+i;	ly = ly+j;
@@ -340,7 +340,7 @@ bool CSpriteObject::hitdetectWithTilePropertyRect(const Uint16 Property, int &lx
 			}						
 		}
 		
-		behavior = Tile[mp_Map->getPlaneDataAt(1, lx+i, ly+lh)].behaviour;
+        behavior = Tile[mpMap->getPlaneDataAt(1, lx+i, ly+lh)].behaviour;
 		if( (behavior&0x7f) == Property )
 		{
 			lx = lx+i;	ly = ly+lh;
@@ -348,7 +348,7 @@ bool CSpriteObject::hitdetectWithTilePropertyRect(const Uint16 Property, int &lx
 		}								
 	}
 	
-	behavior = Tile[mp_Map->getPlaneDataAt(1, lx+lw, ly+lh)].behaviour;
+    behavior = Tile[mpMap->getPlaneDataAt(1, lx+lw, ly+lh)].behaviour;
 	if( (behavior&0x7f) == Property )
 	{
 		lx = lx+lw;	ly = ly+lh;
@@ -370,17 +370,17 @@ bool CSpriteObject::hitdetectWithTilePropertyRectRO(const Uint16 Property, const
 	{
 		for( j=0 ; j<lh ; j+=res )
 		{
-			behavior = Tile[mp_Map->getPlaneDataAt(1, lx+i, ly+j)].behaviour;
+            behavior = Tile[mpMap->getPlaneDataAt(1, lx+i, ly+j)].behaviour;
 			if( (behavior&0x7f) == Property )
 			    return true;
 		}
 		
-		behavior = Tile[mp_Map->getPlaneDataAt(1, lx+i, ly+lh)].behaviour;
+        behavior = Tile[mpMap->getPlaneDataAt(1, lx+i, ly+lh)].behaviour;
 		if( (behavior&0x7f) == Property )
 			return true;
 	}
 	
-	behavior = Tile[mp_Map->getPlaneDataAt(1, lx+lw, ly+lh)].behaviour;
+    behavior = Tile[mpMap->getPlaneDataAt(1, lx+lw, ly+lh)].behaviour;
 	if( (behavior&0x7f) == Property )
 		return true;
 	
@@ -396,12 +396,12 @@ bool CSpriteObject::hitdetectWithTilePropertyHor(const Uint16 Property, const in
 
 	for( i=lxl ; i<lxr ; i+=res )
 	{		
-		behavior = Tile[mp_Map->getPlaneDataAt(1, i, ly)].behaviour;
+        behavior = Tile[mpMap->getPlaneDataAt(1, i, ly)].behaviour;
 		if( (behavior&0x7f) == Property )
 			return true;
 	}
 	
-	behavior = Tile[mp_Map->getPlaneDataAt(1, lxr, ly)].behaviour;
+    behavior = Tile[mpMap->getPlaneDataAt(1, lxr, ly)].behaviour;
 	if( (behavior&0x7f) == Property )
 		return true;
 	
@@ -417,12 +417,12 @@ bool CSpriteObject::hitdetectWithTilePropertyVert(const Uint16 Property, const i
 
 	for( i=lyu ; i<lyd ; i+=res )
 	{		
-		behavior = Tile[mp_Map->getPlaneDataAt(1, lx, i)].behaviour;
+        behavior = Tile[mpMap->getPlaneDataAt(1, lx, i)].behaviour;
 		if( (behavior&0x7f) == Property )
 			return true;
 	}
 	
-	behavior = Tile[mp_Map->getPlaneDataAt(1, lx, lyd)].behaviour;
+    behavior = Tile[mpMap->getPlaneDataAt(1, lx, lyd)].behaviour;
 	if( (behavior&0x7f) == Property )
 		return true;
 	
@@ -438,7 +438,7 @@ bool CSpriteObject::hitdetectWithTilePropertyVert(const Uint16 Property, const i
 bool CSpriteObject::hitdetectWithTileProperty(const int Property, const int x, const int y)
 {
 	std::vector<CTileProperties> &Tile = gBehaviorEngine.getTileProperties(1);
-	const int tileID = mp_Map->getPlaneDataAt(1, x, y);
+    const int tileID = mpMap->getPlaneDataAt(1, x, y);
 	const Sint8 behavior = Tile[tileID].behaviour;
 	if( (behavior&0x7F) == Property ) // 0x7F is the mask which covers for foreground properties
 		return true;
@@ -453,8 +453,8 @@ bool CSpriteObject::turnAroundOnCliff( int x1, int x2, int y2 )
 	const int x_right = (x2+(1<<STC))>>CSF;
 	const int y_bottom = (y2+(1<<STC))>>CSF;
 
-	const int floorleft = TileProperty[mp_Map->at(x_left, y_bottom)].bup;
-	const int floorright = TileProperty[mp_Map->at(x_right, y_bottom)].bup;
+    const int floorleft = TileProperty[mpMap->at(x_left, y_bottom)].bup;
+    const int floorright = TileProperty[mpMap->at(x_right, y_bottom)].bup;
 
     bool isSlope = false;
 
@@ -462,7 +462,7 @@ bool CSpriteObject::turnAroundOnCliff( int x1, int x2, int y2 )
 	{
 	    for(int x=x_left ; x<=x_right ; x++ )
 	    {
-            const int tile = TileProperty[mp_Map->at(x, y_bottom)].bup;
+            const int tile = TileProperty[mpMap->at(x, y_bottom)].bup;
             if( tile>=2 && tile<=7  )
             {
                 isSlope = true;
@@ -472,7 +472,7 @@ bool CSpriteObject::turnAroundOnCliff( int x1, int x2, int y2 )
         if(isSlope)
         {
             // look further
-            if(TileProperty[mp_Map->at(x_left, y_bottom+1)].bup != 0)
+            if(TileProperty[mpMap->at(x_left, y_bottom+1)].bup != 0)
             {
                 return false;
             }
@@ -487,7 +487,7 @@ bool CSpriteObject::turnAroundOnCliff( int x1, int x2, int y2 )
 	{
         for(int x=x_left ; x<=x_right ; x++ )
         {
-            const int tile = TileProperty[mp_Map->at(x, y_bottom)].bup;
+            const int tile = TileProperty[mpMap->at(x, y_bottom)].bup;
             if( tile>=2 && tile<=7  )
             {
                 isSlope = true;
@@ -497,7 +497,7 @@ bool CSpriteObject::turnAroundOnCliff( int x1, int x2, int y2 )
         if(isSlope)
         {
             // look further
-            if(TileProperty[mp_Map->at(x_right, y_bottom+1)].bup != 0)
+            if(TileProperty[mpMap->at(x_right, y_bottom+1)].bup != 0)
             {
                 return false;
             }
@@ -514,7 +514,7 @@ bool CSpriteObject::turnAroundOnCliff( int x1, int x2, int y2 )
 
 bool CSpriteObject::checkMapBoundaryR(const int x2)
 {
-	if( (Uint16)x2 > ((mp_Map->m_width)<<CSF) ) // Out of map?
+    if( (Uint16)x2 > ((mpMap->m_width)<<CSF) ) // Out of map?
 	{
 		exists = false; // deactivate it!
 		return true;
@@ -559,7 +559,7 @@ int CSpriteObject::checkSolidR( int x1, int x2, int y1, int y2)
 	{
 		for(int c=y1 ; c<=y2 ; c += COLISION_RES)
 		{
-			blocker = TileProperty[mp_Map->at(x2>>CSF, c>>CSF)].bleft;
+            blocker = TileProperty[mpMap->at(x2>>CSF, c>>CSF)].bleft;
 
             // Start to really test if we blow up the gBlockTolerance
             if(c-y1 > gBlockTolerance)
@@ -569,7 +569,7 @@ int CSpriteObject::checkSolidR( int x1, int x2, int y1, int y2)
             }
 		}
 
-		blocker = TileProperty[mp_Map->at(x2>>CSF, y2>>CSF)].bleft;
+        blocker = TileProperty[mpMap->at(x2>>CSF, y2>>CSF)].bleft;
 		if(blocker)
 			return blocker;
 	}
@@ -589,8 +589,8 @@ int CSpriteObject::checkSolidL( int x1, int x2, int y1, int y2)
 	{
 		for(int c=y1 ; c<=y2 ; c += COLISION_RES)
 		{
-			blocker = TileProperty[mp_Map->at(x1>>CSF, c>>CSF)].bright;
-			const bool slope = (TileProperty[mp_Map->at(x1>>CSF, c>>CSF)].bup > 1);
+            blocker = TileProperty[mpMap->at(x1>>CSF, c>>CSF)].bright;
+            const bool slope = (TileProperty[mpMap->at(x1>>CSF, c>>CSF)].bup > 1);
 
             // Start to really test if we blow up the gBlockTolerance
             if(c-y1 > gBlockTolerance)
@@ -606,8 +606,8 @@ int CSpriteObject::checkSolidL( int x1, int x2, int y1, int y2)
             }
 		}
 
-		blocker = TileProperty[mp_Map->at(x1>>CSF, y2>>CSF)].bright;
-		const bool slope = (TileProperty[mp_Map->at(x1>>CSF, y2>>CSF)].bup > 1);
+        blocker = TileProperty[mpMap->at(x1>>CSF, y2>>CSF)].bright;
+        const bool slope = (TileProperty[mpMap->at(x1>>CSF, y2>>CSF)].bup > 1);
 		if(blocker && !slope)
 			return blocker;
 		else if(slope)
@@ -633,7 +633,7 @@ int CSpriteObject::checkSolidU(int x1, int x2, int y1, const bool push_mode )
 	{
 		for(int c=x1 ; c<=x2 ; c += COLISION_RES)
 		{
-			Sint8 blocked = TileProperty[mp_Map->at(c>>CSF, y1>>CSF)].bdown;
+            Sint8 blocked = TileProperty[mpMap->at(c>>CSF, y1>>CSF)].bdown;
 
 			if(blocked)
 				return blocked;
@@ -645,7 +645,7 @@ int CSpriteObject::checkSolidU(int x1, int x2, int y1, const bool push_mode )
 
 bool CSpriteObject::checkMapBoundaryD(const int y2)
 {
-    if( (Uint32)y2 > ((mp_Map->m_height)<<CSF) )
+    if( (Uint32)y2 > ((mpMap->m_height)<<CSF) )
     {
         exists=false; // Out of map?
         return true;
@@ -669,13 +669,13 @@ int CSpriteObject::checkSolidD( int x1, int x2, int y2, const bool push_mode )
 		Sint8 blocked;
 		for(int c=x1 ; c<=x2 ; c += COLISION_RES)
 		{
-			blocked = TileProperty[mp_Map->at(c>>CSF, y2>>CSF)].bup;
+            blocked = TileProperty[mpMap->at(c>>CSF, y2>>CSF)].bup;
 
             if( blocked && (blocked < 2 || blocked > 7) )
 				return blocked;
 		}
 
-		blocked = TileProperty[mp_Map->at((x2-(1<<STC))>>CSF, y2>>CSF)].bup;
+        blocked = TileProperty[mpMap->at((x2-(1<<STC))>>CSF, y2>>CSF)].bup;
 
         if( blocked && (blocked < 2 || blocked > 7) )
 			return blocked;
@@ -728,12 +728,12 @@ const int MOVE_RES = 1;
 void CSpriteObject::processMoveBitLeft()
 {
 	/// Now check the neighboring tile to the left
-    const unsigned int x = getXPosition();
-    const unsigned int y = getYPosition();
-    const unsigned int x1 = x+m_BBox.x1;
-    const unsigned int x2 = x+m_BBox.x2;
-    const unsigned int y1 = y+m_BBox.y1;
-    const unsigned int y2 = y+m_BBox.y2;
+    const auto x = getXPosition();
+    const auto y = getYPosition();
+    const auto x1 = x+m_BBox.x1;
+    const auto x2 = x+m_BBox.x2;
+    const auto y1 = y+m_BBox.y1;
+    const auto y2 = y+m_BBox.y2;
 
 	if( (blockedl = checkSolidL(x1, x2, y1, y2)) == true)
 		return;
@@ -746,11 +746,11 @@ void CSpriteObject::processMoveBitLeft()
 
 void CSpriteObject::processMoveBitRight()
 {
-	/// Now check the neighboring tile to the right
-	const unsigned int x1 = getXPosition()+m_BBox.x1;
-	const unsigned int x2 = getXPosition()+m_BBox.x2;
-	const unsigned int y1 = getYPosition()+m_BBox.y1;
-	const unsigned int y2 = getYPosition()+m_BBox.y2;
+	/// Now check the neighboring tile to the right	
+    const auto x1 = getXPosition()+m_BBox.x1;
+    const auto x2 = getXPosition()+m_BBox.x2;
+    const auto y1 = getYPosition()+m_BBox.y1;
+    const auto y2 = getYPosition()+m_BBox.y2;
 
 	if( (blockedr = checkSolidR(x1, x2, y1, y2)) == true)
 		return;
@@ -909,10 +909,13 @@ void CSpriteObject::processPushOutCollision()
 
 	if(blockedl)
 	{
-		const unsigned int x1 = getXPosition()+m_BBox.x1+1;
-		const unsigned int x2 = getXPosition()+m_BBox.x2;
-		const unsigned int y1 = getYPosition()+m_BBox.y1;
-		const unsigned int y2 = getYPosition()+m_BBox.y2;
+        //const unsigned int x1 = getXPosition()+m_BBox.x1+1;
+        const auto x = getXPosition();
+        const auto y = getYPosition();
+        const auto x1 = x+m_BBox.x1;
+        const auto x2 = x+m_BBox.x2;
+        const auto y1 = y+m_BBox.y1;
+        const auto y2 = y+m_BBox.y2;
 
 		if( checkSolidL(x1, x2, y1, y2) )
 		{
@@ -952,6 +955,16 @@ void CSpriteObject::pumpEvent(const CEvent *evPtr)
         processMove(pObjMove->m_Vec);
         //m_EventCont.pop_Event();
     }*/
+}
+
+void CSpriteObject::cancelAllMoveTasks()
+{
+    for( auto task : mMoveTasks)
+    {
+        delete task;
+    }
+
+    mMoveTasks.clear();
 }
 
 void CSpriteObject::processEvents()

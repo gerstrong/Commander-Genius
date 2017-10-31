@@ -28,7 +28,7 @@ m_index(m_number_of_objects),
 mHealthPoints(1),
 mSpriteIdx(BLANKSPRITE),
 m_jumpdownfromobject(false),
-mp_Map(pmap),
+mpMap(pmap),
 m_blinktime(0),
 m_Pos(x,y),
 transluceny(0),
@@ -216,12 +216,12 @@ bool CSpriteObject::calcVisibility()
 
 	SDL_Rect gameres = gVideoDriver.getGameResolution().SDLRect();
 
-	const Uint32 left = (((mp_Map->m_scrollx<<STC)-(visibility<<CSF))<0) ? 0 :
-							(mp_Map->m_scrollx<<STC)-(visibility<<CSF);
-	const Uint32 right = ((mp_Map->m_scrollx+gameres.w)<<STC)+(visibility<<CSF);
-	const Uint32 up = (((mp_Map->m_scrolly<<STC)-(visibility<<CSF))<0) ? 0 :
-							(mp_Map->m_scrolly<<STC)-(visibility<<CSF);
-	const Uint32 down = ((mp_Map->m_scrolly+gameres.h)<<STC)+(visibility<<CSF);
+    const Uint32 left = (((mpMap->m_scrollx<<STC)-(visibility<<CSF))<0) ? 0 :
+                            (mpMap->m_scrollx<<STC)-(visibility<<CSF);
+    const Uint32 right = ((mpMap->m_scrollx+gameres.w)<<STC)+(visibility<<CSF);
+    const Uint32 up = (((mpMap->m_scrolly<<STC)-(visibility<<CSF))<0) ? 0 :
+                            (mpMap->m_scrolly<<STC)-(visibility<<CSF);
+    const Uint32 down = ((mpMap->m_scrolly+gameres.h)<<STC)+(visibility<<CSF);
 
 	return ( right > m_Pos.x && left < m_Pos.x && down > m_Pos.y && up < m_Pos.y );
 }
@@ -234,9 +234,9 @@ bool CSpriteObject::verifyForFalling()
 	if( !blockedd )
 	{
 		// This will check three points and avoid that keen falls on sloped tiles
-        const auto fall1 = mp_Map->getPlaneDataAt(1, getXMidPos(), getYDownPos());
-        const auto fall2 = mp_Map->getPlaneDataAt(1, getXMidPos(), getYDownPos()+(1<<(CSF)));
-        const auto fall3 = mp_Map->getPlaneDataAt(1, getXMidPos(), getYDownPos()+(2<<(CSF)));
+        const auto fall1 = mpMap->getPlaneDataAt(1, getXMidPos(), getYDownPos());
+        const auto fall2 = mpMap->getPlaneDataAt(1, getXMidPos(), getYDownPos()+(1<<(CSF)));
+        const auto fall3 = mpMap->getPlaneDataAt(1, getXMidPos(), getYDownPos()+(2<<(CSF)));
 		const CTileProperties &TileProp1 = gBehaviorEngine.getTileProperties(1)[fall1];
 		const CTileProperties &TileProp2 = gBehaviorEngine.getTileProperties(1)[fall2];
 		const CTileProperties &TileProp3 = gBehaviorEngine.getTileProperties(1)[fall3];
@@ -547,8 +547,8 @@ void CSpriteObject::draw()
         return;
     }
 
-	scrx = (m_Pos.x>>STC)-mp_Map->m_scrollx;
-	scry = (m_Pos.y>>STC)-mp_Map->m_scrolly;
+    scrx = (m_Pos.x>>STC)-mpMap->m_scrollx;
+    scry = (m_Pos.y>>STC)-mpMap->m_scrolly;
 
 	SDL_Rect gameres = gVideoDriver.getGameResolution().SDLRect();
 

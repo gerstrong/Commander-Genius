@@ -243,7 +243,7 @@ void CManglingMachine::se_mortimer_arm()
 			if (dir==DOWN)
 			{
 				// reached bottom?
-				if (mp_Map->at(mx, my+3) == 471)
+				if (mpMap->at(mx, my+3) == 471)
 				{
 					timer = 0;
 					state = ARM_WAIT;
@@ -251,18 +251,18 @@ void CManglingMachine::se_mortimer_arm()
 				else
 				{
 					// add to the pole
-					mp_Map->setTile(mx, my+1, 597, true);
+					mpMap->setTile(mx, my+1, 597, true);
 					// create left side of pincher
-					mp_Map->setTile(mx-1, my+1, 618, true);
-					mp_Map->setTile(mx-1, my+2, 620, true);
-					mp_Map->setTile(mx-1, my+3, 619, true);
+					mpMap->setTile(mx-1, my+1, 618, true);
+					mpMap->setTile(mx-1, my+2, 620, true);
+					mpMap->setTile(mx-1, my+3, 619, true);
 					// create right side of pincher
-					mp_Map->setTile(mx+1, my+1, 618, true);
-					mp_Map->setTile(mx+1, my+2, 620, true);
-					mp_Map->setTile(mx+1, my+3, 619, true);
+					mpMap->setTile(mx+1, my+1, 618, true);
+					mpMap->setTile(mx+1, my+2, 620, true);
+					mpMap->setTile(mx+1, my+3, 619, true);
 					// erase the top of the pincher we don't need anymore
-					mp_Map->setTile(mx-1, my, 169, true);
-					mp_Map->setTile(mx+1, my, 169, true);
+					mpMap->setTile(mx-1, my, 169, true);
+					mpMap->setTile(mx+1, my, 169, true);
 					moveDown(1<<CSF);
 				}
 			}
@@ -270,7 +270,7 @@ void CManglingMachine::se_mortimer_arm()
 			{  // arm going up
 
 				// reached top?
-				if (mp_Map->at(mx, my+1)==619)
+				if (mpMap->at(mx, my+1)==619)
 				{
 					timer = 0;
 					state = ARM_WAIT;
@@ -278,18 +278,18 @@ void CManglingMachine::se_mortimer_arm()
 				else
 				{
 					// create left side of pincher
-					mp_Map->changeTile(mx-1, my+1, 618);
-					mp_Map->changeTile(mx-1, my+2, 620);
-					mp_Map->changeTile(mx-1, my+3, 619);
+					mpMap->changeTile(mx-1, my+1, 618);
+					mpMap->changeTile(mx-1, my+2, 620);
+					mpMap->changeTile(mx-1, my+3, 619);
 					// create right side of pincher
-					mp_Map->changeTile(mx+1, my+1, 618);
-					mp_Map->changeTile(mx+1, my+2, 620);
-					mp_Map->changeTile(mx+1, my+3, 619);
+					mpMap->changeTile(mx+1, my+1, 618);
+					mpMap->changeTile(mx+1, my+2, 620);
+					mpMap->changeTile(mx+1, my+3, 619);
 					// erase the bottom of the pincher we don't need anymore
-					mp_Map->changeTile(mx-1, my+4, 169);
-					mp_Map->changeTile(mx+1, my+4, 169);
+					mpMap->changeTile(mx-1, my+4, 169);
+					mpMap->changeTile(mx+1, my+4, 169);
 					// erase the pole
-					mp_Map->changeTile(mx, my+2, 169);
+					mpMap->changeTile(mx, my+2, 169);
 
 					moveUp(1<<CSF);
 				}
@@ -340,7 +340,7 @@ void CManglingMachine::se_mortimer_spark()
 		{
 			set_mortimer_surprised(true);
             gEffectController.setupEffect(new CVibrate(200));
-			mp_Map->redrawAt(getXPosition()>>CSF, getYPosition()>>CSF);
+			mpMap->redrawAt(getXPosition()>>CSF, getYPosition()>>CSF);
 		}		
 		
 		break;
@@ -352,22 +352,22 @@ void CManglingMachine::se_mortimer_spark()
 			for(int x=0;x<3;x++)
 			{
 				int mx = MORTIMER_LEFT_ARM_X+x;
-				if (mp_Map->at(mx, my) != 169)
+				if (mpMap->at(mx, my) != 169)
 				{
-					mp_Map->setTile(mx, my, 169, true);
+					mpMap->setTile(mx, my, 169, true);
 					// spawn a ZAP! or a ZOT!
-                    CRay *newobject = new CRay(mp_Map, ((mx<<4)+4)<<STC, my<<4<<STC, CENTER, DOWN, getSpriteVariantId());
+                    CRay *newobject = new CRay(mpMap, ((mx<<4)+4)<<STC, my<<4<<STC, CENTER, DOWN, getSpriteVariantId());
 					newobject->state = CRay::RAY_STATE_SETZAPZOT;
 					newobject->inhibitfall = true;
 					spawnObj(newobject);
 				}
 
 				mx = MORTIMER_RIGHT_ARM_X+x;
-				if (mp_Map->at(mx, my) != 169)
+				if (mpMap->at(mx, my) != 169)
 				{
-					mp_Map->setTile(mx, my, 169, true);
+					mpMap->setTile(mx, my, 169, true);
 					// spawn a ZAP! or a ZOT!
-                    CRay *newobject = new CRay(mp_Map, ((mx<<4)+4)<<STC, my<<4<<STC, CENTER, DOWN, getSpriteVariantId());
+                    CRay *newobject = new CRay(mpMap, ((mx<<4)+4)<<STC, my<<4<<STC, CENTER, DOWN, getSpriteVariantId());
 					newobject->state = CRay::RAY_STATE_SETZAPZOT;
 					newobject->inhibitfall = true;
 					spawnObj(newobject);
@@ -403,7 +403,7 @@ void CManglingMachine::se_mortimer_heart(CVorticonSpriteObject *obj)
                 int x = getXPosition();
                 int y = getYPosition();
 
-                CManglingMachine *newobject = new CManglingMachine(mp_Map,
+                CManglingMachine *newobject = new CManglingMachine(mpMap,
                                                                    x, y,SE_MORTIMER_ZAPSUP);
                 newobject->my = MORTIMER_MACHINE_YEND;
                 newobject->timer = 0;
@@ -429,9 +429,9 @@ void CManglingMachine::se_mortimer_heart(CVorticonSpriteObject *obj)
                 for(int x=MORTIMER_MACHINE_XSTART;x<MORTIMER_MACHINE_XEND;x++)
                 {
                     // delete the tile
-                    mp_Map->setTile(x,my,169);
+                    mpMap->setTile(x,my,169);
                     // spawn a ZAP! or a ZOT!
-                    CRay *newobject = new CRay(mp_Map, ((x<<4)+4)<<STC, my<<4<<STC, CENTER, DOWN, getSpriteVariantId());
+                    CRay *newobject = new CRay(mpMap, ((x<<4)+4)<<STC, my<<4<<STC, CENTER, DOWN, getSpriteVariantId());
                     newobject->state = CRay::RAY_STATE_SETZAPZOT;
                     newobject->inhibitfall = true;
                     spawnObj(newobject);
@@ -441,7 +441,7 @@ void CManglingMachine::se_mortimer_heart(CVorticonSpriteObject *obj)
                 if (my > MORTIMER_MACHINE_YEND)
                 {
                     exists = false;
-                    mp_Map->triggerShake( 1000, 7 );
+                    mpMap->triggerShake( 1000, 7 );
                 }
                 else my++;
             }
@@ -533,7 +533,7 @@ void CManglingMachine::se_mortimer_zapsup()
 		for(x=MORTIMER_MACHINE_XSTART;x<MORTIMER_MACHINE_XEND;x++)
 		{
 			// spawn a ZAP! or a ZOT!
-            CRay *newobject = new CRay(mp_Map, ((x<<4)+4)<<STC, (my+1)<<CSF, CENTER, DOWN, getSpriteVariantId());
+            CRay *newobject = new CRay(mpMap, ((x<<4)+4)<<STC, (my+1)<<CSF, CENTER, DOWN, getSpriteVariantId());
 			newobject->state = CRay::RAY_STATE_SETZAPZOT;
 			newobject->inhibitfall = true;
 			spawnObj(newobject);
@@ -541,7 +541,7 @@ void CManglingMachine::se_mortimer_zapsup()
 			if (destroytiles)
 			{
 				// delete the tile
-				mp_Map->changeTile(x, my,169);
+				mpMap->changeTile(x, my,169);
 			}
 		}
 
@@ -584,7 +584,7 @@ void CManglingMachine::se_mortimer_leg_left()
 			if (dir==DOWN)
 			{
 				// reached bottom?
-				if (mp_Map->at(mx, my+1) == 430)
+				if (mpMap->at(mx, my+1) == 430)
 				{
 					timer = 0;
 					state = LEG_WAIT;
@@ -593,15 +593,15 @@ void CManglingMachine::se_mortimer_leg_left()
 				else
 				{
 					// create the leg
-					mp_Map->setTile(mx-3,my+1,621, true);
-					mp_Map->setTile(mx-2,my+1,623, true);
-					mp_Map->setTile(mx-1,my+1,623, true);
-					mp_Map->setTile(mx-0,my+1,622, true);
+					mpMap->setTile(mx-3,my+1,621, true);
+					mpMap->setTile(mx-2,my+1,623, true);
+					mpMap->setTile(mx-1,my+1,623, true);
+					mpMap->setTile(mx-0,my+1,622, true);
 					// erase the tiles above us that used to be the leg
-					mp_Map->setTile(mx-3,my,169, true);
-					mp_Map->setTile(mx-2,my,169, true);
-					mp_Map->setTile(mx-1,my,169, true);
-					mp_Map->setTile(mx-0,my,597, true);         // add to pole
+					mpMap->setTile(mx-3,my,169, true);
+					mpMap->setTile(mx-2,my,169, true);
+					mpMap->setTile(mx-1,my,169, true);
+					mpMap->setTile(mx-0,my,597, true);         // add to pole
 
 					moveDown(1<<CSF);
 				}
@@ -610,7 +610,7 @@ void CManglingMachine::se_mortimer_leg_left()
 			{  // leg going up
 
 				// reached top?
-				if (mp_Map->at(mx, my-1) == 420)
+				if (mpMap->at(mx, my-1) == 420)
 				{
 					timer = 0;
 					state = LEG_WAIT;
@@ -618,15 +618,15 @@ void CManglingMachine::se_mortimer_leg_left()
 				else
 				{
 					// create the leg
-					mp_Map->setTile(mx-3,my-1,621, true);
-					mp_Map->setTile(mx-2,my-1,623, true);
-					mp_Map->setTile(mx-1,my-1,623, true);
-					mp_Map->setTile(mx-0,my-1,622, true);
+					mpMap->setTile(mx-3,my-1,621, true);
+					mpMap->setTile(mx-2,my-1,623, true);
+					mpMap->setTile(mx-1,my-1,623, true);
+					mpMap->setTile(mx-0,my-1,622, true);
 					// erase the tiles beneath us that used to be the leg
-					mp_Map->setTile(mx-3,my,169, true);
-					mp_Map->setTile(mx-2,my,169, true);
-					mp_Map->setTile(mx-1,my,169, true);
-					mp_Map->setTile(mx-0,my,169, true);
+					mpMap->setTile(mx-3,my,169, true);
+					mpMap->setTile(mx-2,my,169, true);
+					mpMap->setTile(mx-1,my,169, true);
+					mpMap->setTile(mx-0,my,169, true);
 
 					moveUp(1<<CSF);
 				}
@@ -679,7 +679,7 @@ void CManglingMachine::se_mortimer_leg_right()
 			if (dir==DOWN)
 			{
 				// reached bottom?
-				if (mp_Map->at(mx, my+1) == 430)
+				if (mpMap->at(mx, my+1) == 430)
 				{
 					timer = 0;
 					state = LEG_WAIT;
@@ -688,15 +688,15 @@ void CManglingMachine::se_mortimer_leg_right()
 				else
 				{
 					// create the leg
-					mp_Map->setTile(mx+3,my+1,622, true);
-					mp_Map->setTile(mx+2,my+1,623, true);
-					mp_Map->setTile(mx+1,my+1,623, true);
-					mp_Map->setTile(mx+0,my+1,621, true);
+					mpMap->setTile(mx+3,my+1,622, true);
+					mpMap->setTile(mx+2,my+1,623, true);
+					mpMap->setTile(mx+1,my+1,623, true);
+					mpMap->setTile(mx+0,my+1,621, true);
 					// erase the tiles above us that used to be the leg
-					mp_Map->setTile(mx+3,my,169, true);
-					mp_Map->setTile(mx+2,my,169, true);
-					mp_Map->setTile(mx+1,my,169, true);
-					mp_Map->setTile(mx+0,my,597, true);         // add to pole
+					mpMap->setTile(mx+3,my,169, true);
+					mpMap->setTile(mx+2,my,169, true);
+					mpMap->setTile(mx+1,my,169, true);
+					mpMap->setTile(mx+0,my,597, true);         // add to pole
 
 					moveDown(1<<CSF);
 				}
@@ -705,7 +705,7 @@ void CManglingMachine::se_mortimer_leg_right()
 			{  // leg going up
 
 				// reached top?
-				if (mp_Map->at(mx, my-1) == 420)
+				if (mpMap->at(mx, my-1) == 420)
 				{
 					timer = 0;
 					state = LEG_WAIT;
@@ -713,15 +713,15 @@ void CManglingMachine::se_mortimer_leg_right()
 				else
 				{
 					// create the leg
-					mp_Map->setTile(mx+3,my-1,622, true);
-					mp_Map->setTile(mx+2,my-1,623, true);
-					mp_Map->setTile(mx+1,my-1,623, true);
-					mp_Map->setTile(mx+0,my-1,621, true);
+					mpMap->setTile(mx+3,my-1,622, true);
+					mpMap->setTile(mx+2,my-1,623, true);
+					mpMap->setTile(mx+1,my-1,623, true);
+					mpMap->setTile(mx+0,my-1,621, true);
 					// erase the tiles beneath us that used to be the leg
-					mp_Map->setTile(mx+3,my,169, true);
-					mp_Map->setTile(mx+2,my,169, true);
-					mp_Map->setTile(mx+1,my,169, true);
-					mp_Map->setTile(mx+0,my,169, true);
+					mpMap->setTile(mx+3,my,169, true);
+					mpMap->setTile(mx+2,my,169, true);
+					mpMap->setTile(mx+1,my,169, true);
+					mpMap->setTile(mx+0,my,169, true);
 
 					moveUp(1<<CSF);
 				}
@@ -762,7 +762,7 @@ void CManglingMachine::se_mortimer_randomzaps()
 		y = rand()%((MORTIMER_MACHINE_YENDNOLEGS*16)-(MORTIMER_MACHINE_YSTART*16))+(MORTIMER_MACHINE_YSTART*16);
 
 		// spawn a ZAP! or a ZOT!
-        CRay *newobject = new CRay(mp_Map,x<<CSF, y<<CSF, RIGHT, CENTER, getSpriteVariantId() );
+        CRay *newobject = new CRay(mpMap,x<<CSF, y<<CSF, RIGHT, CENTER, getSpriteVariantId() );
 		newobject->state = CRay::RAY_STATE_SETZAPZOT;
 		newobject->inhibitfall = true;
 		spawnObj(newobject);
@@ -793,15 +793,15 @@ void CManglingMachine::set_mortimer_surprised(bool yes)
 	{
 		//12,6 -> 610 -- give mortimer his "surprised" face
 		// deanimate mortimer's hands
-		mp_Map->setTile(12,6,610, true);
-		mp_Map->setTile(11,6,613, true);
-		mp_Map->setTile(13,6,615, true);
+		mpMap->setTile(12,6,610, true);
+		mpMap->setTile(11,6,613, true);
+		mpMap->setTile(13,6,615, true);
 	}
 	else
 	{
 		// give mortimer his normal face again
-		mp_Map->setTile(12,6,607, true);
-		mp_Map->setTile(11,6,613, true);
-		mp_Map->setTile(13,6,616, true);
+		mpMap->setTile(12,6,607, true);
+		mpMap->setTile(11,6,613, true);
+		mpMap->setTile(13,6,616, true);
 	}
 }

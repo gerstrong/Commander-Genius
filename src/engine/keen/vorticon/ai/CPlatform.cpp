@@ -45,7 +45,7 @@ void CPlatform::process()
 
 		if (movedir==RIGHT)
 		{
-            if (blockedr || getXRightPos() > int(mp_Map->m_width<<CSF) )
+            if (blockedr || getXRightPos() > int(mpMap->m_width<<CSF) )
 			{
 				movedir = LEFT;
 				waittimer = 0;

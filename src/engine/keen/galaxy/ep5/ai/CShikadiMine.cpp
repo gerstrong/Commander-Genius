@@ -375,8 +375,8 @@ void CShikadiMine::draw()
 
     GsSprite &Sprite = gGraphics.getSprite(mSprVar,mSpriteIdx);
 
-	scrx = (m_Pos.x>>STC)-mp_Map->m_scrollx;
-	scry = (m_Pos.y>>STC)-mp_Map->m_scrolly;
+	scrx = (m_Pos.x>>STC)-mpMap->m_scrollx;
+	scry = (m_Pos.y>>STC)-mpMap->m_scrolly;
 
 	SDL_Rect gameres = gVideoDriver.getGameResolution().SDLRect();
 
@@ -465,22 +465,22 @@ void CMineShards::process()
 
 	int dx=0, dy=0;
 
-	if( mp_Map->getPlaneDataAt(2, lx, ly) == 0x29 )
+	if( mpMap->getPlaneDataAt(2, lx, ly) == 0x29 )
 	{
 	  dx = lx; dy = ly;
 	  coreExplode |= true;
 	}
-	if( mp_Map->getPlaneDataAt(2, lx+(1<<CSF), ly) == 0x29 )
+	if( mpMap->getPlaneDataAt(2, lx+(1<<CSF), ly) == 0x29 )
 	{
 	  dx = lx+(1<<CSF); dy = ly;
 	  coreExplode |= true;
 	}
-	if( mp_Map->getPlaneDataAt(2, lx, ly+(1<<CSF)) == 0x29 )
+	if( mpMap->getPlaneDataAt(2, lx, ly+(1<<CSF)) == 0x29 )
 	{
 	  dx = lx; dy = ly+(1<<CSF);
 	  coreExplode |= true;
 	}
-	if( mp_Map->getPlaneDataAt(2, lx+(1<<CSF), ly+(1<<CSF)) == 0x29 )
+	if( mpMap->getPlaneDataAt(2, lx+(1<<CSF), ly+(1<<CSF)) == 0x29 )
 	{
 	  dx = lx+(1<<CSF); dy = ly+(1<<CSF);
 	  coreExplode |= true;
@@ -495,14 +495,14 @@ void CMineShards::process()
 
         for(int i=0 ; i<4 ; i++)
         {
-            const int t1 = mp_Map->at(i,0);
-            const int t2 = mp_Map->at(i,1);
-            const int t3 = mp_Map->at(i+4,0);
-            const int t4 = mp_Map->at(i+4,1);
-            mp_Map->setTile(dx+i, dy,   t1, true, 1);
-            mp_Map->setTile(dx+i, dy+1, t2, true, 1);
-            mp_Map->setTile(dx+i, dy+2, t3, true, 1);
-            mp_Map->setTile(dx+i, dy+3, t4, true, 1);
+            const int t1 = mpMap->at(i,0);
+            const int t2 = mpMap->at(i,1);
+            const int t3 = mpMap->at(i+4,0);
+            const int t4 = mpMap->at(i+4,1);
+            mpMap->setTile(dx+i, dy,   t1, true, 1);
+            mpMap->setTile(dx+i, dy+1, t2, true, 1);
+            mpMap->setTile(dx+i, dy+2, t3, true, 1);
+            mpMap->setTile(dx+i, dy+3, t4, true, 1);
         }                
 
 		dead = true;

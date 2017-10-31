@@ -62,7 +62,7 @@ void CBlooglet::getTouchedBy(CSpriteObject &theObject)
       const int newX = getXMidPos();
       const int newY = getYUpPos();
       const Uint32 newSprite = 118+2*( mFoeID-0xB );
-      auto *gem = new CSpriteItem(mp_Map, mFoeID+0x2E, newX, newY, newSprite, 0,true);
+      auto *gem = new CSpriteItem(mpMap, mFoeID+0x2E, newX, newY, newSprite, 0,true);
       gem->honorPriority = false;
       spawnObj( gem );
       playSound(SOUND_JUMPED_GEM);

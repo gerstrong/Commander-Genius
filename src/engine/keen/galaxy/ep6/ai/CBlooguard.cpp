@@ -89,7 +89,7 @@ bool CBlooguard::isNearby(CSpriteObject& theObject)
             mStubPlayer = false;
 		    if(player->stun())
 		    {
-                mp_Map->triggerShake( 10, 5 );
+                mpMap->triggerShake( 10, 5 );
             }
 		    
 		    return true;

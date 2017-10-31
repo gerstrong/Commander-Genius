@@ -60,17 +60,17 @@ void CSpark::process()
 			playSound(SOUND_SHOT_HIT);
 
 			// break the glass and blow out the electric arcs
-			mp_Map->setTile(mx - 2, my, 492, true);
-			mp_Map->setTile(mx - 1, my, 546, true);
-			mp_Map->setTile(mx, my, 547, true);
-			mp_Map->setTile(mx + 1, my, 548, true);
-			mp_Map->setTile(mx + 2, my, 492, true);
+			mpMap->setTile(mx - 2, my, 492, true);
+			mpMap->setTile(mx - 1, my, 546, true);
+			mpMap->setTile(mx, my, 547, true);
+			mpMap->setTile(mx + 1, my, 548, true);
+			mpMap->setTile(mx + 2, my, 492, true);
 			// remove the unneeded dome tiles
-			mp_Map->setTile(mx - 1, my-1, BG_GREY, true);
-			mp_Map->setTile(mx, my-1, BG_GREY, true);
-			mp_Map->setTile(mx + 1, my-1, BG_GREY, true);
+			mpMap->setTile(mx - 1, my-1, BG_GREY, true);
+			mpMap->setTile(mx, my-1, BG_GREY, true);
+			mpMap->setTile(mx + 1, my-1, BG_GREY, true);
 			// break the switch
-			mp_Map->setTile(mx - 3, my + 4, 506, true);
+			mpMap->setTile(mx - 3, my + 4, 506, true);
 
 			// meltdown!
 			state = SPARK_BLOWUP1;
@@ -84,9 +84,9 @@ void CSpark::process()
 		{
 			timer = 0;
 			my = my+3+blowy;
-			mp_Map->setTile(mx, my, 505, true);
+			mpMap->setTile(mx, my, 505, true);
 			// spawn a ZAP! or a ZOT!
-            CRay *newobject = new CRay(mp_Map, mx<<CSF, my<<CSF, CENTER, DOWN, getSpriteVariantId());
+            CRay *newobject = new CRay(mpMap, mx<<CSF, my<<CSF, CENTER, DOWN, getSpriteVariantId());
 			newobject->state = CRay::RAY_STATE_SETZAPZOT;
 			newobject->setOwner(m_type, m_index);
 			gEventManager.add( new EventSpawnObject(newobject) );
@@ -116,7 +116,7 @@ void CSpark::process()
 				{
 					for(x=0;x<3;x++)
 					{
-						mp_Map->setTile(mx+x,my+y,533, true);
+						mpMap->setTile(mx+x,my+y,533, true);
 					}
 				}
 				exists = false;
@@ -129,9 +129,9 @@ void CSpark::process()
 			{
 				//my = my+3+y;
 				//my = my+y;
-				mp_Map->setTile(mx, my+y, 549, true);
+				mpMap->setTile(mx, my+y, 549, true);
 				// spawn a ZAP! or a ZOT!
-                CRay *newobject = new CRay(mp_Map, mx<<CSF, (my+y)<<CSF, CENTER, DOWN, getSpriteVariantId());
+                CRay *newobject = new CRay(mpMap, mx<<CSF, (my+y)<<CSF, CENTER, DOWN, getSpriteVariantId());
 				newobject->setOwner(m_type ,m_index);
 				newobject->state = CRay::RAY_STATE_SETZAPZOT;
 				playSound(SOUND_SHOT_HIT);

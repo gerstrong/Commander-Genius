@@ -58,7 +58,7 @@ void CIceCannon::process()
 		int newpos_x = getXPosition();
 		int newpos_y = getYPosition();
 		if(vector_x > 0) newpos_x += 512;
-		CIceChunk *chunk = new CIceChunk(mp_Map, newpos_x, newpos_y,vector_x, vector_y);
+		CIceChunk *chunk = new CIceChunk(mpMap, newpos_x, newpos_y,vector_x, vector_y);
 		if(!silent)
 		{
 		    playSound(SOUND_CANNONFIRE);
@@ -194,19 +194,19 @@ void CIceChunk::smash()
 	    CIceBit *chunk;
 
 		// upleft
-		chunk = new CIceBit(mp_Map, getXPosition(), getYPosition(), -1, -1);
+		chunk = new CIceBit(mpMap, getXPosition(), getYPosition(), -1, -1);
 		spawnObj(chunk);
 
 		// upright
-		chunk = new CIceBit(mp_Map, getXPosition(), getYPosition(), 1, -1);
+		chunk = new CIceBit(mpMap, getXPosition(), getYPosition(), 1, -1);
 		spawnObj(chunk);
 
 		// downleft
-		chunk = new CIceBit(mp_Map, getXPosition(), getYPosition(), -1, 1);
+		chunk = new CIceBit(mpMap, getXPosition(), getYPosition(), -1, 1);
 		spawnObj(chunk);
 
 		// downright
-		chunk = new CIceBit(mp_Map, getXPosition(), getYPosition(), 1, 1);
+		chunk = new CIceBit(mpMap, getXPosition(), getYPosition(), 1, 1);
 		spawnObj(chunk);
 	}
 	exists = false;

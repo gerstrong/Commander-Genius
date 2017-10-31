@@ -51,8 +51,8 @@ void CWaterMine::processMove()
 
 	if(yDirection)
 	{
-		const Uint16 blockerUp = mp_Map->getPlaneDataAt(2, getXMidPos(), getYUpPos());
-		const Uint16 blockerDown = mp_Map->getPlaneDataAt(2, getXMidPos(), getYDownPos());
+		const Uint16 blockerUp = mpMap->getPlaneDataAt(2, getXMidPos(), getYUpPos());
+		const Uint16 blockerDown = mpMap->getPlaneDataAt(2, getXMidPos(), getYDownPos());
 
 		// If there is a blocker, block the Watermine
 		if( blockerUp == 31 )
@@ -73,8 +73,8 @@ void CWaterMine::processMove()
 	}
 	else
 	{
-		const Uint16 blockerLeft = mp_Map->getPlaneDataAt(2, getXLeftPos(), getYMidPos());
-		const Uint16 blockerRight = mp_Map->getPlaneDataAt(2, getXRightPos(), getYMidPos());
+		const Uint16 blockerLeft = mpMap->getPlaneDataAt(2, getXLeftPos(), getYMidPos());
+		const Uint16 blockerRight = mpMap->getPlaneDataAt(2, getXRightPos(), getYMidPos());
 
 		// If there is a blocker, block the Watermine
 		if( blockerLeft == 31 )

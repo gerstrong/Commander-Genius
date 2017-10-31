@@ -45,7 +45,7 @@ void CPlayer::getgoodies()
 bool CPlayer::getGoodie(int px, int py)
 {
 	std::vector<CTileProperties> &TileProperty = gBehaviorEngine.getTileProperties();
-	Uint16 tile = mp_Map->at(px, py);
+	Uint16 tile = mpMap->at(px, py);
 	auto behaviour = TileProperty[tile].behaviour;
 	
 	if (behaviour>0 && behaviour<31)
@@ -54,7 +54,7 @@ bool CPlayer::getGoodie(int px, int py)
 			(TileProperty[tile].behaviour > 17 && TileProperty[tile].behaviour < 22) ||
 			(TileProperty[tile].behaviour == 27 || TileProperty[tile].behaviour == 28)   ) // All pickupable items
 		{  // pick up the goodie, i.e. erase it from the map
-			mp_Map->changeTile(px, py, TileProperty[tile].chgtile);
+			mpMap->changeTile(px, py, TileProperty[tile].chgtile);
 		}
 		else if (TileProperty[tile].behaviour == 1) // Lethal (Deadly) Behavoir
 		{  // whoah, this "goodie" isn't so good...
@@ -224,7 +224,7 @@ void CPlayer::riseBonus(int spr, int x, int y)
 {
      if (gBehaviorEngine.mOptions[GameOption::RISEBONUS].value)
 	 {
-		 CRisingPoints *GotPointsObj = new CRisingPoints(mp_Map, x<<CSF, y<<CSF);
+		 CRisingPoints *GotPointsObj = new CRisingPoints(mpMap, x<<CSF, y<<CSF);
 		 GotPointsObj->mSpriteIdx = spr;
 		 gEventManager.add(new EventSpawnObject(GotPointsObj) );
 	 }
@@ -273,19 +273,19 @@ bool CPlayer::showGameHint(const int mpx, const int mpy)
 	if(hintused) return false;
 
     const int ep = gBehaviorEngine.getEpisode();
-    const int level = mp_Map->getLevel();
+    const int level = mpMap->getLevel();
 
     if(ep == 1)
 	{
-		if(mp_Map->at(mpx, mpy) >= 435 && mp_Map->at(mpx, mpy) <= 438)
+		if(mpMap->at(mpx, mpy) >= 435 && mpMap->at(mpx, mpy) <= 438)
 		{
 			// it's a garg statue
 			int tile = gBehaviorEngine.getPhysicsSettings().misc.one_eyed_tile;
-			mp_Map->setTile(mpx, mpy, tile, true);
+			mpMap->setTile(mpx, mpy, tile, true);
 		}
 		else // It's a yorp statue.. or something else
 		{
-			mp_Map->setTile(mpx, mpy, 315, true);
+			mpMap->setTile(mpx, mpy, 315, true);
 		}
 
         hintstring =  "EP1_YSIYM_LVL" + itoa(level);
@@ -295,7 +295,7 @@ bool CPlayer::showGameHint(const int mpx, const int mpy)
 		// Keen 2 seems to have a bug with those tiles.
 		// On other parts on the map they can be triggered
 		// This small condition should fix that bug
-		int t = mp_Map->at(mpx, mpy+1);
+		int t = mpMap->at(mpx, mpy+1);
 		if(t != 429) return false;
 
 		// make the switch stop glowing
@@ -310,7 +310,7 @@ bool CPlayer::showGameHint(const int mpx, const int mpy)
 		default:
 			return false;
 		}
-		mp_Map->setTile(mpx, mpy+1, 13*14, true);
+		mpMap->setTile(mpx, mpy+1, 13*14, true);
 	}
 	hintused = true;
 	return true;
@@ -384,28 +384,28 @@ void CPlayer::openDoor(int doortile, int doorsprite, int mpx, int mpy)
     const int ep = gBehaviorEngine.getEpisode();
 
 	// erase door from map
-    if (ep==3)	chgtotile = mp_Map->at(mpx-1, mpy);
-	else	chgtotile = TileProperty[mp_Map->at(mpx ,mpy)].chgtile;
+    if (ep==3)	chgtotile = mpMap->at(mpx-1, mpy);
+	else	chgtotile = TileProperty[mpMap->at(mpx ,mpy)].chgtile;
 
-	if(TileProperty[mp_Map->at(mpx ,mpy-1)].behaviour>1 &&
-			TileProperty[mp_Map->at(mpx ,mpy-1)].behaviour<6 ) // This happens because, sometimes the player opens the door
+	if(TileProperty[mpMap->at(mpx ,mpy-1)].behaviour>1 &&
+			TileProperty[mpMap->at(mpx ,mpy-1)].behaviour<6 ) // This happens because, sometimes the player opens the door
 	{	// from a lower part.
-		mp_Map->setTile(mpx, mpy-1, chgtotile);
+		mpMap->setTile(mpx, mpy-1, chgtotile);
 		tilefix=1;
 	}
-	if(TileProperty[mp_Map->at(mpx ,mpy)].behaviour>1 &&
-			TileProperty[mp_Map->at(mpx ,mpy)].behaviour<6) // This happens because, sometimes the player opens the door
+	if(TileProperty[mpMap->at(mpx ,mpy)].behaviour>1 &&
+			TileProperty[mpMap->at(mpx ,mpy)].behaviour<6) // This happens because, sometimes the player opens the door
 	{ // from a lower part.
-		mp_Map->setTile(mpx, mpy, chgtotile); // upper?
+		mpMap->setTile(mpx, mpy, chgtotile); // upper?
 	}
-	if(TileProperty[mp_Map->at(mpx, mpy+1)].behaviour>1 &&
-			TileProperty[mp_Map->at(mpx, mpy+1)].behaviour<6) // This happens because, sometimes the player opens the door
+	if(TileProperty[mpMap->at(mpx, mpy+1)].behaviour>1 &&
+			TileProperty[mpMap->at(mpx, mpy+1)].behaviour<6) // This happens because, sometimes the player opens the door
 	{ // from a lower part.
-		mp_Map->setTile(mpx, mpy+1, chgtotile); // When he stands in front of the door!
+		mpMap->setTile(mpx, mpy+1, chgtotile); // When he stands in front of the door!
 	}
 
 	// replace the door tiles with a door object, which will do the animation
-	CDoor *doorobj = new CDoor(mp_Map, mpx<<CSF,(mpy-tilefix)<<CSF, doorsprite);
+	CDoor *doorobj = new CDoor(mpMap, mpx<<CSF,(mpy-tilefix)<<CSF, doorsprite);
 	gEventManager.add(new EventSpawnObject(doorobj) );    
 }
 

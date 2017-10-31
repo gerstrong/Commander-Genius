@@ -45,7 +45,7 @@ mTimer(0)
 
 	calcBoundingBoxes();		
 	
-	fetchInitialDir(xDirection, yDirection, *mp_Map);
+	fetchInitialDir(xDirection, yDirection, *mpMap);
 	solid = false;
 }
 
@@ -60,7 +60,7 @@ void CVolteface::processMoving()
     
     if( xBlockPosAbs < MOVE_SPEED && yBlockPosAbs < MOVE_SPEED )
     {
-	const Uint16 object = mp_Map->getPlaneDataAt(2, target.x, target.y);
+	const Uint16 object = mpMap->getPlaneDataAt(2, target.x, target.y);
 	
 	Vector2D<int> speed(xBlockPos, yBlockPos);	    
 	moveDir(speed);

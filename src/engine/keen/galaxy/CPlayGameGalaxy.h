@@ -39,7 +39,7 @@ public:
 
     void looseManagement(const int playerID,
                          const bool playerGameOver,
-                         const int levelObj,
+                         const uint16_t levelObj,
                          const std::string &levelName);
 
     void pumpEvent(const CEvent *evPtr);

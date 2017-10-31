@@ -124,7 +124,7 @@ bool CVorticonElite::isNearby(CVorticonSpriteObject &theObject)
             dist_traveled++;
 
 
-            if (getProbability(VORTELITE_JUMP_PROB) && !mp_Map->m_Dark && !blockedu)
+            if (getProbability(VORTELITE_JUMP_PROB) && !mpMap->m_Dark && !blockedu)
             {  // let's jump.
                 initiatejump();
                 return true;
@@ -197,12 +197,12 @@ void CVorticonElite::process()
 				// if we only traveled a tiny amount before hitting a wall, we've
 				// probably fallen into a small narrow area, and we need to try
 				// to jump out of it
-				if (dist_traveled < VORTELITE_TRAPPED_DIST && !mp_Map->m_Dark && blockedd)
+				if (dist_traveled < VORTELITE_TRAPPED_DIST && !mpMap->m_Dark && blockedd)
 				{
 					initiatejump();
 					goto reprocess;
 				}
-                else if(mp_Map->m_Dark)
+                else if(mpMap->m_Dark)
                 {
                     dist_traveled = 0;
                 }
@@ -222,12 +222,12 @@ void CVorticonElite::process()
 				// if we only traveled a tiny amount before hitting a wall, we've
 				// probably fallen into a small narrow area, and we need to try
 				// to jump out of it
-				if (dist_traveled < VORTELITE_TRAPPED_DIST && !mp_Map->m_Dark && blockedd)
+				if (dist_traveled < VORTELITE_TRAPPED_DIST && !mpMap->m_Dark && blockedd)
 				{
 					initiatejump();
 					goto reprocess;
 				}
-                else if(mp_Map->m_Dark)
+                else if(mpMap->m_Dark)
                 {
                     dist_traveled = 0;
                 }
@@ -268,9 +268,9 @@ void CVorticonElite::process()
 
 			CRay *newobject;
 			if (movedir==RIGHT)
-                newobject = new CRay(mp_Map, getXRightPos()+1, getYPosition()+(9<<STC), RIGHT, CENTER, getSpriteVariantId());
+                newobject = new CRay(mpMap, getXRightPos()+1, getYPosition()+(9<<STC), RIGHT, CENTER, getSpriteVariantId());
 			else
-                newobject = new CRay(mp_Map, getXLeftPos()-1, getYPosition()+(9<<STC), LEFT, CENTER, getSpriteVariantId());
+                newobject = new CRay(mpMap, getXLeftPos()-1, getYPosition()+(9<<STC), LEFT, CENTER, getSpriteVariantId());
 			newobject->setOwner( m_type, m_index);
 			newobject->mSpriteIdx = ENEMYRAYEP2;
 			// don't shoot other vorticon elite

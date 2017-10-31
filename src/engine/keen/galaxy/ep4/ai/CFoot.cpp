@@ -27,7 +27,7 @@ void CFoot::getTouchedBy(CSpriteObject &theObject)
 {
 	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
 	{
-        gEventManager.add( new EventExitLevelWithFoot(mp_Map->getLevel(), player->getSpriteVariantId()) );
+        gEventManager.add( new EventExitLevelWithFoot(mpMap->getLevel(), player->getSpriteVariantId()) );
         player->m_Inventory.Item.m_gem.clear();
 	}
 }

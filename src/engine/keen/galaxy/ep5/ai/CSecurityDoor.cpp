@@ -31,8 +31,8 @@ void CSecurityDoor::process()
     {
         for(int x = startX ; x<endX ; x++)
         {
-            const int newTile = mp_Map->getPlaneDataAt(1, x<<CSF, y<<CSF);
-            mp_Map->setTile(x, y, newTile-4, true, 1);
+            const int newTile = mpMap->getPlaneDataAt(1, x<<CSF, y<<CSF);
+            mpMap->setTile(x, y, newTile-4, true, 1);
         }
     }
     

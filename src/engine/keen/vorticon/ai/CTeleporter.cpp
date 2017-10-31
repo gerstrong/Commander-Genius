@@ -42,7 +42,7 @@ m_Player(mp_vec_Player)
 	animframe = 0;
 	numframechanges = 0;
 
-	idleframe = mp_Map->at(mx,my);
+	idleframe = mpMap->at(mx,my);
 	
 	reset();
 	
@@ -99,15 +99,15 @@ void CTeleporter::process()
 
 				if (numframechanges > numframes)
 				{ // animation is done
-					mp_Map->setTile(mx, my, idleframe);
-					mp_Map->redrawAt(mx, my);
+					mpMap->setTile(mx, my, idleframe);
+					mpMap->redrawAt(mx, my);
 					numframechanges = 0;
 					direction = TELEPORTING_SCROLL;
 				}
 				else
 				{ // teleport animation is not done. show the next frame
-					mp_Map->setTile(mx, my, baseframe + animframe);
-					mp_Map->redrawAt(mx, my);
+					mpMap->setTile(mx, my, baseframe + animframe);
+					mpMap->redrawAt(mx, my);
 				}
 			}
 			else
@@ -150,7 +150,7 @@ void CTeleporter::process()
 				m_Player[player].moveTo(Vector2D<int>(x, y));
 				direction = TELEPORTING_OUT;
 
-				idleframe = mp_Map->at(x>>CSF, y>>CSF);
+				idleframe = mpMap->at(x>>CSF, y>>CSF);
 				
 				reset();
 
@@ -170,8 +170,8 @@ void CTeleporter::process()
 				if (numframechanges > numframes)
 				{ // animation is done
 					int player = whichplayer;
-					mp_Map->setTile(mx, my, idleframe);
-					mp_Map->redrawAt(mx, my);
+					mpMap->setTile(mx, my, idleframe);
+					mpMap->redrawAt(mx, my);
 
 					exists=false;
 					m_Player[player].beingteleported = false;
@@ -180,8 +180,8 @@ void CTeleporter::process()
 				}
 				else
 				{ // teleport animation is not done. show the next frame
-					mp_Map->setTile(mx, my, baseframe + animframe);
-					mp_Map->redrawAt(mx, my);
+					mpMap->setTile(mx, my, baseframe + animframe);
+					mpMap->redrawAt(mx, my);
 				}
 			}
 			else

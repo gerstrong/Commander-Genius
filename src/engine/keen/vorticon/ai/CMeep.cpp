@@ -122,7 +122,7 @@ void CMeep::process()
 		{
 			mSpriteIdx = MEEP_WALK_RIGHT_FRAME + animframe;
 
-			not_about_to_fall = TileProperties.at(mp_Map->at((getXLeftPos())>>CSF, (getYDownPos()+(1<<STC))>>CSF)).bup;
+			not_about_to_fall = TileProperties.at(mpMap->at((getXLeftPos())>>CSF, (getYDownPos()+(1<<STC))>>CSF)).bup;
 
 			if (blockedr || !not_about_to_fall)
 				dir = LEFT;
@@ -132,7 +132,7 @@ void CMeep::process()
 		else
 		{
 			mSpriteIdx = MEEP_WALK_LEFT_FRAME + animframe;
-			not_about_to_fall = TileProperties.at(mp_Map->at((getXRightPos())>>CSF, (getYDownPos()+(1<<STC))>>CSF)).bup;
+			not_about_to_fall = TileProperties.at(mpMap->at((getXRightPos())>>CSF, (getYDownPos()+(1<<STC))>>CSF)).bup;
 
 			if (blockedl || !not_about_to_fall)
 				dir = RIGHT;
@@ -163,9 +163,9 @@ void CMeep::process()
 		{
 			CSoundWave *newobject;
 			if (dir==RIGHT)
-				newobject = new CSoundWave(mp_Map, getXRightPos(), getYPosition()+(5<<STC), RIGHT);
+				newobject = new CSoundWave(mpMap, getXRightPos(), getYPosition()+(5<<STC), RIGHT);
 			else
-				newobject = new CSoundWave(mp_Map, getXLeftPos(), getYPosition()+(5<<STC), LEFT);
+				newobject = new CSoundWave(mpMap, getXLeftPos(), getYPosition()+(5<<STC), LEFT);
 			newobject->setOwner(OBJ_MEEP, m_index);
 			newobject->solid = false;
 			spawnObj(newobject);

@@ -152,7 +152,7 @@ void CSpriteItem::getTouchedBy(CSpriteObject &theObject)
 			gSound.playSound( SOUND_GET_GEM );
 		}
 		
-        spawnObj(new CItemEffect(mp_Map, 0, getXPosition(), getYPosition(), newanimsprite, FADEOUT));
+        spawnObj(new CItemEffect(mpMap, 0, getXPosition(), getYPosition(), newanimsprite, FADEOUT));
 
 		exists = false;
 	}

@@ -93,13 +93,13 @@ void CRope::rope_movestone()
 	{
 		for( int x=0 ; x<STONE_WIDTH ; x++ )
 		{
-			mp_Map->setTile(x+xa,y+ya, mp_Map->at(x+xa, y+ya-1), true);
+			mpMap->setTile(x+xa,y+ya, mpMap->at(x+xa, y+ya-1), true);
 		}
 	}
 
 	// clear the space at the top
 	for(int x=0; x<STONE_WIDTH ; x++)
-		mp_Map->setTile(x+xa,ya,bgtile, true);
+		mpMap->setTile(x+xa,ya,bgtile, true);
 
 	stoneY++;
 	moveDown(1<<CSF);

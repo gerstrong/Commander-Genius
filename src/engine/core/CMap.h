@@ -125,19 +125,22 @@ public:
 	void drawAnimatedTile(SDL_Surface *dst, Uint16 mx, Uint16 my, Uint16 tile);
 	void animateAllTiles();
 
-	unsigned int getlevelat(unsigned int x, unsigned int y)
+    auto getlevelat(const int x,
+                    const int y) -> int
 	{
-		return m_Plane[2].getMapDataAt(x>>TILE_S,y>>TILE_S);
+		return mPlanes[2].getMapDataAt(x>>TILE_S,y>>TILE_S);
 	}
 
-    Uint16 getPlaneDataAt(int plane, unsigned int x, unsigned int y) const
+    auto getPlaneDataAt(const int plane,
+                          const int x,
+                          const int y) const -> int
 	{
-		return m_Plane[plane].getMapDataAt(x>>CSF, y>>CSF);
+		return mPlanes[plane].getMapDataAt(x>>CSF, y>>CSF);
 	}
 
     Uint16 getPlaneDataAt(int plane, Vector2D<Uint32> pos) const
 	{
-		return m_Plane[plane].getMapDataAt(pos.x>>CSF, pos.y>>CSF);
+		return mPlanes[plane].getMapDataAt(pos.x>>CSF, pos.y>>CSF);
 	}
 
 	word *getData(Uint8 PlaneNum);
@@ -218,7 +221,7 @@ private:
 
 	float mAnimtileTimer;
 
-	CPlane m_Plane[3];
+	CPlane mPlanes[3];
 	Uint16 m_Level;
 	std::string m_LevelName;
 	std::vector<int> scrollBlockX;

@@ -154,7 +154,7 @@ void CCouncilMember::getTouchedBy(CSpriteObject &theObject)
 
 		// TODO: In this part we have to check which level we are and send the proper messages
 
-		if(mp_Map->isSecret)
+		if(mpMap->isSecret)
 		{
 			performJanitorMode();
 			return;
@@ -187,7 +187,7 @@ void CCouncilMember::getTouchedBy(CSpriteObject &theObject)
 
         if(!customDlgs)
         {
-            if( mp_Map->getLevel() == 17 ) // Under water the text is a bit different
+            if( mpMap->getLevel() == 17 ) // Under water the text is a bit different
             {
                 elder_text[0] = gBehaviorEngine.getString("ELDERS_UNDERWATER_TEXT");
                 elder_text[1] = "";
@@ -220,7 +220,7 @@ void CCouncilMember::getTouchedBy(CSpriteObject &theObject)
 		}
 		else
 		{
-            auto evExit = new EventExitLevel(mp_Map->getLevel(), true, false, mSprVar);
+            auto evExit = new EventExitLevel(mpMap->getLevel(), true, false, mSprVar);
             evExit->playSound = true;
 
             msgs.push_back( new CMessageBoxBitmapGalaxy(

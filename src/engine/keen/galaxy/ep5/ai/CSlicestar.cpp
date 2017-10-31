@@ -64,7 +64,7 @@ void CSlicestar::process()
 
 	if(mUseBlocker)
 	{
-	  const Uint16 object = mp_Map->getPlaneDataAt(2, getPosition());
+	  const Uint16 object = mpMap->getPlaneDataAt(2, getPosition());
 	
 	  // If there is a blocker, change the direction
 	  if( object == 0x1F )

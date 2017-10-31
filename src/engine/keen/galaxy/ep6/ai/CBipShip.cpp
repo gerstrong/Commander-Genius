@@ -75,7 +75,7 @@ void CBipShip::processMoving()
 		int x_coord = getXMidPos();
 		x_coord += (xDirection == LEFT) ? -(8<<STC) : +(8<<STC);
 
-	  	CEnemyShot *laser = new CEnemyShot(mp_Map, 0, x_coord, getYMidPos()-(8<<STC),
+	  	CEnemyShot *laser = new CEnemyShot(mpMap, 0, x_coord, getYMidPos()-(8<<STC),
                                     0x2A7A, xDirection, 0,  100, mSprVar);
 		spawnObj( laser );
 		mKeenIsNear = false; 
@@ -102,7 +102,7 @@ void CBipShip::processHit()
 	// crash and spawn bip
 	const int newX = getXMidPos();
 	const int newY = getYUpPos();
-	auto *bip = new CBip(mp_Map, 0x6C, newX, newY);
+	auto *bip = new CBip(mpMap, 0x6C, newX, newY);
 	spawnObj( bip );
 	setAction(A_BIPSHIP_WRECKAGE);
     }

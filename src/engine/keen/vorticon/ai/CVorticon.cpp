@@ -9,7 +9,7 @@
 // depending on levelcontrol.Episode).
 CVorticon::CVorticon(CMap *p_map, Uint32 x, Uint32 y, char hp, object_t objtype) :
     CVorticonSpriteObject(p_map, x, y, objtype, 0),
-	m_Dark(mp_Map->m_Dark)
+	m_Dark(mpMap->m_Dark)
 {
 	frame = 0;
 	animtimer = 0;

@@ -169,22 +169,22 @@ void CPlayerWM::pumpEvent(const CEvent *evPtr)
                         int y = (0x37)<<CSF; // on the map
 
                         // I only will change the closed elevator tiles!
-                        const int tileID = mp_Map->getPlaneDataAt(1, x, y);
+                        const int tileID = mpMap->getPlaneDataAt(1, x, y);
 
                         // I only will change the closed elevator tiles!
                         if(tileID == 0x072C)
                         {
                             const int t_ul = tileID+10;
-                            const int t_ur = mp_Map->getPlaneDataAt(1, x+(1<<CSF), y) + 10;
-                            const int t_ll = mp_Map->getPlaneDataAt(1, x,          y+(1<<CSF)) + 10;
-                            const int t_lr = mp_Map->getPlaneDataAt(1, x+(1<<CSF), y+(1<<CSF)) + 10;
+                            const int t_ur = mpMap->getPlaneDataAt(1, x+(1<<CSF), y) + 10;
+                            const int t_ll = mpMap->getPlaneDataAt(1, x,          y+(1<<CSF)) + 10;
+                            const int t_lr = mpMap->getPlaneDataAt(1, x+(1<<CSF), y+(1<<CSF)) + 10;
 
                             x >>= CSF; y >>= CSF;
 
-                            mp_Map->setTile(x,   y, t_ul, true);
-                            mp_Map->setTile(x+1, y, t_ur, true);
-                            mp_Map->setTile(x,   y+1, t_ll, true);
-                            mp_Map->setTile(x+1, y+1, t_lr, true);
+                            mpMap->setTile(x,   y, t_ul, true);
+                            mpMap->setTile(x+1, y, t_ur, true);
+                            mpMap->setTile(x,   y+1, t_ll, true);
+                            mpMap->setTile(x+1, y+1, t_lr, true);
                         }
                     }
                 }
@@ -197,7 +197,7 @@ void CPlayerWM::pumpEvent(const CEvent *evPtr)
             // TODO: This part is only meant for Episode 5. We should catch exception
             // Whenever another episode tries to trigger this call.
             int x,y;
-            mp_Map->findTile( 0x1A, &x, &y, 2);
+            mpMap->findTile( 0x1A, &x, &y, 2);
 
             const int newX = x<<CSF;
             const int newY = y<<CSF;
@@ -232,7 +232,7 @@ void CPlayerWM::pumpEvent(const CEvent *evPtr)
  */
 void CPlayerWM::process()
 {
-    if(mp_Map->locked())
+    if(mpMap->locked())
         return;
 
     processInput();
@@ -345,7 +345,7 @@ void CPlayerWM::processMoving()
                 else
                     y = (y+climbDir)<<CSF;
 
-                spawnObj(new CRope(mp_Map, x, y));
+                spawnObj(new CRope(mpMap, x, y));
                 playSound(SOUND_ROPE_THROW);
             }
             else
@@ -428,7 +428,7 @@ void CPlayerWM::processMoving()
     // Get the object
     int x = getXMidPos();
     int y = getYMidPos();
-    Uint16 object = mp_Map->getPlaneDataAt(2, x, y);
+    Uint16 object = mpMap->getPlaneDataAt(2, x, y);
     if(object) // if we found an object
     {
 
@@ -443,7 +443,7 @@ void CPlayerWM::processMoving()
             const int ep = gBehaviorEngine.getEpisode();
             const int shipLevel = (ep < 6) ? 18 : 17;
 
-            if(mp_Map->findTile(flag_dest, &x, &y, 2) ||
+            if(mpMap->findTile(flag_dest, &x, &y, 2) ||
                     gBehaviorEngine.mOptions[GameOption::LVLREPLAYABILITY].value ||
                     level >= shipLevel)
             {
@@ -572,7 +572,7 @@ void CPlayerWM::verifyTeleportation()
 	int y = getYUpPos();
 
 	// Check if Keen touches a teleporter or elevator
-	const Uint16 object = mp_Map->getPlaneDataAt( 2, x, y );
+	const Uint16 object = mpMap->getPlaneDataAt( 2, x, y );
 	if(object < 0xC000 && object > 0x100)
 	{
 		x = (x >> CSF);
@@ -581,16 +581,16 @@ void CPlayerWM::verifyTeleportation()
 		bool isElevator = false;
 		
 		std::vector<CTileProperties> &Tile = gBehaviorEngine.getTileProperties(1);
-		Uint16 behav = Tile[mp_Map->at( x, y, 1)].behaviour;
+		Uint16 behav = Tile[mpMap->at( x, y, 1)].behaviour;
 			
 		// Elevator are double the size. Check that! Else it must be an teleporter		
 		if( behav==33 || behav==34 )
 		{		
-		  if(object == mp_Map->getPlaneDataAt( 2, (x-1) << CSF, y << CSF ))
+		  if(object == mpMap->getPlaneDataAt( 2, (x-1) << CSF, y << CSF ))
 		  {
 		    isElevator |= true;
 		  }
-		  if(object == mp_Map->getPlaneDataAt( 2, (x+1) << CSF, y << CSF ))
+		  if(object == mpMap->getPlaneDataAt( 2, (x+1) << CSF, y << CSF ))
 		  {
 		    x = x + 1;
 		    isElevator |= true;
@@ -669,10 +669,10 @@ void CPlayerWM::processClosingElevator()
 {
 	const int x = getXMidPos() >> CSF;
 	const int y = getYMidPos() >> CSF;
-	const Uint16 tile1 = mp_Map->getPlaneDataAt( 1, x<<CSF, y<<CSF );
-	const Uint16 tile2 = mp_Map->getPlaneDataAt( 1, (x-1)<<CSF, y<<CSF );
-	const Uint16 tile3 = mp_Map->getPlaneDataAt( 1, (x-1)<<CSF, (y-1)<<CSF );
-	const Uint16 tile4 = mp_Map->getPlaneDataAt( 1, x<<CSF, (y-1)<<CSF );
+	const Uint16 tile1 = mpMap->getPlaneDataAt( 1, x<<CSF, y<<CSF );
+	const Uint16 tile2 = mpMap->getPlaneDataAt( 1, (x-1)<<CSF, y<<CSF );
+	const Uint16 tile3 = mpMap->getPlaneDataAt( 1, (x-1)<<CSF, (y-1)<<CSF );
+	const Uint16 tile4 = mpMap->getPlaneDataAt( 1, x<<CSF, (y-1)<<CSF );
 
 	elevator_close_timer++;
 	if(elevator_close_timer >= ELEVATOR_CLOSE_TIME)
@@ -680,10 +680,10 @@ void CPlayerWM::processClosingElevator()
 		elevator_close_timer = 0;
 
 		// Make the player close the elevator
-		mp_Map->setTile(x, y, tile1-2, true);
-		mp_Map->setTile(x-1, y, tile2-2, true);
-		mp_Map->setTile(x-1, y-1, tile3-2, true);
-		mp_Map->setTile(x, y-1, tile4-2, true);
+		mpMap->setTile(x, y, tile1-2, true);
+		mpMap->setTile(x-1, y, tile2-2, true);
+		mpMap->setTile(x-1, y-1, tile3-2, true);
+		mpMap->setTile(x, y-1, tile4-2, true);
 
 		playSound(SOUND_ELEVATOR_OPEN);
 
@@ -698,7 +698,7 @@ void CPlayerWM::processClosingElevator()
 			const int y = getYMidPos();
 
 			// Check if Keen touches a teleporter or elevator
-			const Uint16 object = mp_Map->getPlaneDataAt( 2, x, y );
+			const Uint16 object = mpMap->getPlaneDataAt( 2, x, y );
 			const Uint32 filter = object & 0xFFFF;
 			const Uint32 newPosX = (filter & 0xFF00) >> 8;
 			const Uint32 newPosY = (filter & 0x00FF);
@@ -758,10 +758,10 @@ void CPlayerWM::processOpeningElevator()
 
     std::array<Uint16,4> curTile;
 
-    curTile[0] = mp_Map->getPlaneDataAt( 1, x<<CSF,     y<<CSF );
-    curTile[1] = mp_Map->getPlaneDataAt( 1, (x-1)<<CSF, y<<CSF );
-    curTile[2] = mp_Map->getPlaneDataAt( 1, (x-1)<<CSF, (y-1)<<CSF );
-    curTile[3] = mp_Map->getPlaneDataAt( 1, x<<CSF,     (y-1)<<CSF );
+    curTile[0] = mpMap->getPlaneDataAt( 1, x<<CSF,     y<<CSF );
+    curTile[1] = mpMap->getPlaneDataAt( 1, (x-1)<<CSF, y<<CSF );
+    curTile[2] = mpMap->getPlaneDataAt( 1, (x-1)<<CSF, (y-1)<<CSF );
+    curTile[3] = mpMap->getPlaneDataAt( 1, x<<CSF,     (y-1)<<CSF );
 
     std::vector<CTileProperties> &tileProp = gBehaviorEngine.getTileProperties(1);
 
@@ -776,10 +776,10 @@ void CPlayerWM::processOpeningElevator()
 		elevator_close_timer = 0;
 
 		// Make the player close the elevator
-        mp_Map->setTile(x,   y,   curTile[0] + prop0.nextTile, true);
-        mp_Map->setTile(x-1, y,   curTile[1] + prop1.nextTile, true);
-        mp_Map->setTile(x-1, y-1, curTile[2] + prop2.nextTile, true);
-        mp_Map->setTile(x,   y-1, curTile[3] + prop3.nextTile, true);
+        mpMap->setTile(x,   y,   curTile[0] + prop0.nextTile, true);
+        mpMap->setTile(x-1, y,   curTile[1] + prop1.nextTile, true);
+        mpMap->setTile(x-1, y-1, curTile[2] + prop2.nextTile, true);
+        mpMap->setTile(x,   y-1, curTile[3] + prop3.nextTile, true);
 
 		playSound(SOUND_ELEVATOR_OPEN);
 
@@ -846,7 +846,7 @@ void CPlayerWM::setupTeleportAnimation(const bool unset, const Vector2D<int> &po
     const int ep = gBehaviorEngine.getEpisode();
 
     if(!unset)
-        m_teleportoldtile = mp_Map->getPlaneDataAt( 1, x, y );
+        m_teleportoldtile = mpMap->getPlaneDataAt( 1, x, y );
 
     // Depending on having Keen 6 or 5 the animation tiles are a bit different
     if( ep==5 )
@@ -858,7 +858,7 @@ void CPlayerWM::setupTeleportAnimation(const bool unset, const Vector2D<int> &po
         m_teleportanibasetile = unset ? m_teleportoldtile : 0xA35;
     }
 
-    mp_Map->setTile(x>>CSF, y>>CSF, m_teleportanibasetile, true);
+    mpMap->setTile(x>>CSF, y>>CSF, m_teleportanibasetile, true);
 }
 
 
@@ -896,7 +896,7 @@ void CPlayerWM::processEnteringTeleporter()
         setupTeleportAnimation(true, target);
 
 		// Get the destination
-		const Uint16 object = mp_Map->getPlaneDataAt( 2, x, y );
+		const Uint16 object = mpMap->getPlaneDataAt( 2, x, y );
 		const Uint32 filter = object & 0xFFFF;
 		const Uint32 newPosX = (filter & 0xFF00) >> 8;
 		const Uint32 newPosY = (filter & 0x00FF);                
@@ -921,14 +921,14 @@ void CPlayerWM::processEnteringTeleporter()
       // Amount of animation tiles.
       const int teleportAnimTiles = (ep==5) ? 1 : 3;
 
-	  Uint16 aniTile = mp_Map->getPlaneDataAt( 1, x, y ) + 1;
+	  Uint16 aniTile = mpMap->getPlaneDataAt( 1, x, y ) + 1;
 
       if(m_teleportanibasetile + teleportAnimTiles < aniTile)
 	  {
 	    aniTile = m_teleportanibasetile;
 	  }
 
-	  mp_Map->setTile(x>>CSF, y>>CSF, aniTile, true);
+	  mpMap->setTile(x>>CSF, y>>CSF, aniTile, true);
 
 	  moveDir(vec_norm*SLOW_TELEPORT_WALK_SPEED);
 	}
@@ -947,9 +947,9 @@ void CPlayerWM::processWarpInTeleporter()
 	new_pos.y += ((m_BBox.y2-m_BBox.y1)/2);
 	m_camera.setPosition(new_pos);
 
-    mp_Map->mGamePlayPos = new_pos;
-    mp_Map->calcVisibleArea();
-    mp_Map->refreshVisibleArea();
+    mpMap->mGamePlayPos = new_pos;
+    mpMap->calcVisibleArea();
+    mpMap->refreshVisibleArea();
 
 	mProcessPtr = &CPlayerWM::processLeavingTeleporter;
 	playSound(SOUND_TELEPORT);
@@ -1000,14 +1000,14 @@ void CPlayerWM::processLeavingTeleporter()
         // Amount of animation tiles.
         const int teleportAnimTiles = (ep==5) ? 1 : 3;
 
-        Uint16 aniTile = mp_Map->getPlaneDataAt( 1, x, y ) + 1;
+        Uint16 aniTile = mpMap->getPlaneDataAt( 1, x, y ) + 1;
 
         if(m_teleportanibasetile + teleportAnimTiles < aniTile)
         {
           aniTile = m_teleportanibasetile;
         }
 
-        mp_Map->setTile(x>>CSF, y>>CSF, aniTile, true);
+        mpMap->setTile(x>>CSF, y>>CSF, aniTile, true);
 
 		moveDir(vec_norm*SLOW_TELEPORT_WALK_SPEED);
 	}
@@ -1046,7 +1046,7 @@ void CPlayerWM::startLevel(Uint16 object)
     const Uint16 flag_dest = level + 0xF000;
 
     // Check if there already exists a flag. If that's not the case enter the level
-    if( mp_Map->findTile(flag_dest, &x, &y, 2) ||
+    if( mpMap->findTile(flag_dest, &x, &y, 2) ||
         gBehaviorEngine.mOptions[GameOption::LVLREPLAYABILITY].value ||
         level >= shipLevel)
     {
@@ -1067,16 +1067,16 @@ bool CPlayerWM::finishLevel(const int object)
 	// if a door or other blocker was found remove it
 	int x, y;
 	Uint16 door = object + 0xD000;
-    while( mp_Map->findTile(door, &x, &y, 2) )
+    while( mpMap->findTile(door, &x, &y, 2) )
 	{
         // Remove blocks in case there are
-		mp_Map->setTile( x, y, 0, true, 1);
-		mp_Map->setTile( x, y, 0, true, 2);
-		mp_Map->redrawAt( x, y);
+		mpMap->setTile( x, y, 0, true, 1);
+		mpMap->setTile( x, y, 0, true, 2);
+		mpMap->redrawAt( x, y);
 	}
 
 	Uint16 flag_dest = object + 0xF000;
-    if( mp_Map->findTile(flag_dest, &x, &y, 2) )
+    if( mpMap->findTile(flag_dest, &x, &y, 2) )
 	{
 		// spawn the flag
 		const auto episode = gBehaviorEngine.getEpisode();
@@ -1109,14 +1109,14 @@ bool CPlayerWM::finishLevel(const int object)
 
         Vector2D<Uint32> dst(csfX, csfY);
 
-        CFlag *pFlag = new CFlag(mp_Map, src, dst, mSprVar, true, true);
+        CFlag *pFlag = new CFlag(mpMap, src, dst, mSprVar, true, true);
 		spawnObj(pFlag);
 
 
         // Mark the tileinfo on the map as level finished,
         // so player cannot just re-enter. Exception: If option "replayability" is enabled,
         // or any special level like the bwb rocket, which can be accessed at any time
-		mp_Map->setTile( x, y, 0, true, 2);
+		mpMap->setTile( x, y, 0, true, 2);
 
         return true;
 	}
@@ -1139,10 +1139,10 @@ void CPlayerWM::checkforSwimming(bool &bleft, bool &bright, bool &bup, bool &bdo
 
 	bleft = bright = bup = bdown = false;
 
-	left = Tile[mp_Map->at( getXLeftPos()>>CSF, getYMidPos()>>CSF, 1)].behaviour;
-	right = Tile[mp_Map->at( getXRightPos()>>CSF, getYMidPos()>>CSF, 1)].behaviour;
-	up = Tile[mp_Map->at( getXMidPos()>>CSF, getYUpPos()>>CSF, 1)].behaviour;
-	down = Tile[mp_Map->at( getXMidPos()>>CSF, getYDownPos()>>CSF, 1)].behaviour;
+	left = Tile[mpMap->at( getXLeftPos()>>CSF, getYMidPos()>>CSF, 1)].behaviour;
+	right = Tile[mpMap->at( getXRightPos()>>CSF, getYMidPos()>>CSF, 1)].behaviour;
+	up = Tile[mpMap->at( getXMidPos()>>CSF, getYUpPos()>>CSF, 1)].behaviour;
+	down = Tile[mpMap->at( getXMidPos()>>CSF, getYDownPos()>>CSF, 1)].behaviour;
 
 	// from top
 	if(up == 11)
@@ -1199,7 +1199,7 @@ bool CPlayerWM::checkforClimbing(direction_t &climbDir)
 	const int y = getYMidPos();
 	const int x = getXMidPos();
 	
-	const int info = mp_Map->getPlaneDataAt(2, x, y);
+	const int info = mpMap->getPlaneDataAt(2, x, y);
 
 	// from top
 	if(info == 0x0F)

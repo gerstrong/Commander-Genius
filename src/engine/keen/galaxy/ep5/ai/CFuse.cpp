@@ -32,8 +32,8 @@ mTimer(0)
 	
 	xDirection = LEFT;
 	
-	mp_Map->mNumFuses++;
-	mp_Map->mFuseInLevel = true;
+	mpMap->mNumFuses++;
+	mpMap->mFuseInLevel = true;
 
     loadPythonScripts("qed");
 }
@@ -188,7 +188,7 @@ void CFuse::getTouchedBy(CSpriteObject &theObject)
 
     if( auto *thePlayer = dynamic_cast<CPlayerLevel*>(&theObject) )
     {
-        const auto level = mp_Map->getLevel();
+        const auto level = mpMap->getLevel();
         std::string levelText = "LEVEL_TEXT";
         levelText += itoa(level);
 
@@ -198,7 +198,7 @@ void CFuse::getTouchedBy(CSpriteObject &theObject)
         {
             thePlayer->m_Inventory.Item.m_gem.clear();
             thePlayer->m_Inventory.Item.fuse_levels_completed++;
-            mp_Map->mFuseInLevel = false;
+            mpMap->mFuseInLevel = false;
 
             std::vector<CMessageBoxGalaxy*> msgs;
 
@@ -221,7 +221,7 @@ void CFuse::getTouchedBy(CSpriteObject &theObject)
                 const Uint16 where_x = (getXPosition()+x)>>CSF;
                 const Uint16 where_y = (getYPosition()+y)>>CSF;
 
-                mp_Map->setTile(where_x, where_y, 0, true, 1);
+                mpMap->setTile(where_x, where_y, 0, true, 1);
             }
         }
 

@@ -52,7 +52,7 @@ void CSoundWave::process()
 	{
 		mSpriteIdx = SNDWAVE_RIGHT_FRAME + animframe;
 
-		if (x > static_cast<int>(mp_Map->m_width) )
+		if (x > static_cast<int>(mpMap->m_width) )
 			exists=false;
 		else
 		{

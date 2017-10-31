@@ -201,7 +201,7 @@ void CPlayer::dieanim() // Bad word for that. It's the entire die code
 	// is it time to start flying off the screen?
 	if (!pdietillfly)
 	{  // time to fly off the screen
-		if (((getYPosition()>>STC)+128 > mp_Map->m_scrolly) && (getYPosition()>(48<<STC)))
+		if (((getYPosition()>>STC)+128 > mpMap->m_scrolly) && (getYPosition()>(48<<STC)))
 		{   // player has not reached top of screen
 			// make player fly up
 			moveUp(-PDIE_RISE_SPEED);
@@ -316,7 +316,7 @@ void CPlayer::TogglePogo_and_Switches()
 		{
 			my = (getYPosition()+(i<<STC))>>CSF;
 			
-			t = mp_Map->at(mx, my);
+			t = mpMap->at(mx, my);
 
 			// check for extending-platform switch
 			if ( TileProperty[t].behaviour == 25  ||  TileProperty[t].behaviour == 26 || TileProperty[t].behaviour == 23 )
@@ -324,15 +324,15 @@ void CPlayer::TogglePogo_and_Switches()
 				// Flip the switch!
 				playSound(SOUND_SWITCH_TOGGLE);
 				if ( TileProperty[t].behaviour == 26 && t == TILE_SWITCH_DOWN )
-					mp_Map->changeTile(mx, my, TILE_SWITCH_UP);
+					mpMap->changeTile(mx, my, TILE_SWITCH_UP);
 				else if ( TileProperty[t].behaviour == 25 && t == TILE_SWITCH_UP )
-					mp_Map->changeTile(mx, my, TILE_SWITCH_DOWN);
+					mpMap->changeTile(mx, my, TILE_SWITCH_DOWN);
 
 				// figure out where the platform is supposed to extend at
 				// (this is coded in the object layer...
 				// high byte is the Y offset and the low byte is the X offset,
 				// and it's relative to the position of the switch.)
-				Uint16 bridge = mp_Map->getObjectat(mx, my);
+				Uint16 bridge = mpMap->getObjectat(mx, my);
 
 				if (bridge == 0) // Uh Oh! This means you have enabled a tantalus ray of the ship
 				{ // lightswitch
@@ -351,7 +351,7 @@ void CPlayer::TogglePogo_and_Switches()
 					const int platy = my + pyoff;
 					
 					// spawn a "sector effector" to extend/retract the platform
-					CBridges *platobject = new CBridges(mp_Map, mx<<CSF, my<<CSF,
+					CBridges *platobject = new CBridges(mpMap, mx<<CSF, my<<CSF,
 							platx, platy);
                     spawnObj(platobject);
 				}
@@ -649,7 +649,7 @@ void CPlayer::Playerfalling()
 	int xleft  = getXLeftPos();
 	int ydown  = getYDownPos();
 
-	auto behaviour = TileProperty[mp_Map->at(xleft>>CSF, ydown>>CSF)].behaviour;
+	auto behaviour = TileProperty[mpMap->at(xleft>>CSF, ydown>>CSF)].behaviour;
 	if( behaviour>=2 && behaviour<=5 )
 		blockedu = true; // This workaround prevents the player from falling through doors.
 
@@ -667,8 +667,8 @@ void CPlayer::Playerfalling()
 		// Check if player is on iceplayer.
 		if(!pjumping && !ppogostick)
 		{
-			int ice = TileProperty[mp_Map->at(getXLeftPos()>>CSF, (ydown+(1<<STC))>>CSF)].slippery;
-			ice |= TileProperty[mp_Map->at(getXRightPos()>>CSF, (ydown+(1<<STC))>>CSF)].slippery;
+			int ice = TileProperty[mpMap->at(getXLeftPos()>>CSF, (ydown+(1<<STC))>>CSF)].slippery;
+			ice |= TileProperty[mpMap->at(getXRightPos()>>CSF, (ydown+(1<<STC))>>CSF)].slippery;
 			if(!blockedl && !blockedr)
 			{
 				if(ice == 2) psemisliding = true;
@@ -716,7 +716,7 @@ void CPlayer::Playerfalling()
 	if (pfalling || pjumping) psliding=0;
 
 	// If he falls to the ground even being god, kill him
-	if( (Uint16)getYDownPos() > ((mp_Map->m_height)<<CSF) )
+	if( (Uint16)getYDownPos() > ((mpMap->m_height)<<CSF) )
 		kill(true);
 }
 
@@ -769,7 +769,7 @@ void CPlayer::raygun()
 				if (pDir.x == RIGHT) xdir = getXRightPos()+xinertia;
 				else xdir = getXLeftPos()+xinertia-(16<<STC);
 
-                CRay *rayobject = new CRay(mp_Map, xdir, ydir,
+                CRay *rayobject = new CRay(mpMap, xdir, ydir,
                                            static_cast<direction_t>(pDir.x),
                                            CENTER,
                                            getSpriteVariantId(),
@@ -938,8 +938,8 @@ void CPlayer::checkSolidDoors()
 
 	for( int my=my1 ; my<my2 ; my+=(1<<STC) )
 	{
-		if( (TileProperty[mp_Map->at(mx1>>CSF, my>>CSF)].behaviour>1 &&
-				TileProperty[mp_Map->at(mx1>>CSF, my>>CSF)].behaviour<6 ) )
+		if( (TileProperty[mpMap->at(mx1>>CSF, my>>CSF)].behaviour>1 &&
+				TileProperty[mpMap->at(mx1>>CSF, my>>CSF)].behaviour<6 ) )
 		{
 			blockedl = true; break;
 		}
@@ -947,8 +947,8 @@ void CPlayer::checkSolidDoors()
 
 	for( int my=my1 ; my<my2 ; my+=(1<<STC) )
 	{
-		if( (TileProperty[mp_Map->at(mx2>>CSF, my>>CSF)].behaviour>1 &&
-				TileProperty[mp_Map->at(mx2>>CSF, my>>CSF)].behaviour<6 ) )
+		if( (TileProperty[mpMap->at(mx2>>CSF, my>>CSF)].behaviour>1 &&
+				TileProperty[mpMap->at(mx2>>CSF, my>>CSF)].behaviour<6 ) )
 		{
 			blockedr = true; break;
 		}
@@ -956,8 +956,8 @@ void CPlayer::checkSolidDoors()
 
 	for( int mx=mx1 ; mx<mx2 ; mx+=(1<<STC) )
 	{
-		if( (TileProperty[mp_Map->at(mx>>CSF, my1>>CSF)].behaviour>1 &&
-				TileProperty[mp_Map->at(mx>>CSF, my1>>CSF)].behaviour<6 ) )
+		if( (TileProperty[mpMap->at(mx>>CSF, my1>>CSF)].behaviour>1 &&
+				TileProperty[mpMap->at(mx>>CSF, my1>>CSF)].behaviour<6 ) )
 		{
 			blockedd = true; break;
 		}
@@ -965,8 +965,8 @@ void CPlayer::checkSolidDoors()
 
 	for( int mx=mx1 ; mx<mx2 ; mx+=(1<<STC) )
 	{
-		if( (TileProperty[mp_Map->at(mx>>CSF, my2>>CSF)].behaviour>1 &&
-				TileProperty[mp_Map->at(mx>>CSF, my2>>CSF)].behaviour<6 ) )
+		if( (TileProperty[mpMap->at(mx>>CSF, my2>>CSF)].behaviour>1 &&
+				TileProperty[mpMap->at(mx>>CSF, my2>>CSF)].behaviour<6 ) )
 		{
 			blockedu = true; break;
 		}

@@ -12,8 +12,8 @@ CVorticonSpriteObject(pmap, x, y, OBJ_DOOR, 0)
 	inhibitfall = true;
 	x = getXPosition()>>CSF;
 	y = getYPosition()>>CSF;
-	mp_Map->redrawAt(x, y);
-	mp_Map->redrawAt(x, y+1);
+	mpMap->redrawAt(x, y);
+	mpMap->redrawAt(x, y+1);
 }
 
 void CDoor::process()

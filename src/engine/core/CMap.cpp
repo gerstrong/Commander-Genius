@@ -50,7 +50,7 @@ bool CMap::setupEmptyDataPlanes(int numPlanes, Uint32 width, Uint32 height)
 
     for(int i=0 ; i<numPlanes ; i++)
     {
-        m_Plane[i].createDataMap(m_width, m_height);
+        mPlanes[i].createDataMap(m_width, m_height);
     }
 
 	return true;
@@ -86,7 +86,7 @@ void CMap::refreshStripes()
 Uint16 CMap::at(Uint16 x, Uint16 y, Uint16 t)
 {
 	if(x < m_width && y < m_height )
-		return m_Plane[t].getMapDataAt(x,y);
+        return mPlanes[t].getMapDataAt(x,y);
 	else
 		return 0;
 }
@@ -104,22 +104,22 @@ Uint16 CMap::getObjectat(Uint16 x, Uint16 y)
  */
 word *CMap::getData(Uint8 PlaneNum)
 {
-	return m_Plane[PlaneNum].getMapDataPtr();
+    return mPlanes[PlaneNum].getMapDataPtr();
 }
 
 word *CMap::getInfoData()
 {
-	return m_Plane[2].getMapDataPtr();
+    return mPlanes[2].getMapDataPtr();
 }
 
 word *CMap::getForegroundData()
 {
-	return m_Plane[1].getMapDataPtr();
+    return mPlanes[1].getMapDataPtr();
 }
 
 word *CMap::getBackgroundData()
 {
-	return m_Plane[0].getMapDataPtr();
+    return mPlanes[0].getMapDataPtr();
 }
 
 void CMap::collectBlockersCoordiantes()
@@ -134,7 +134,7 @@ void CMap::collectBlockersCoordiantes()
 
     if(gBehaviorEngine.getEngine() == ENGINE_GALAXY)
     {
-        const word* map_ptr = m_Plane[2].getMapDataPtr();
+        const word* map_ptr = mPlanes[2].getMapDataPtr();
 
         for(int y=0 ; y<(int)m_height ; y++)
         {
@@ -164,21 +164,21 @@ void CMap::collectBlockersCoordiantes()
 void CMap::setupAnimationTimer()
 {
     auto &frontTileProperties = gBehaviorEngine.getTileProperties(1);
-    word *p_front_tile = m_Plane[1].getMapDataPtr();
+    word *p_front_tile = mPlanes[1].getMapDataPtr();
 
     auto &backTileProperties = gBehaviorEngine.getTileProperties(0);
-    word *p_back_tile = m_Plane[0].getMapDataPtr();
+    word *p_back_tile = mPlanes[0].getMapDataPtr();
 
-    std::vector<Uint8> &timersBack = m_Plane[0].getTimers();
-    std::vector<Uint8> &timersFront = m_Plane[1].getTimers();
+    auto &timersBack = mPlanes[0].getTimers();
+    auto &timersFront = mPlanes[1].getTimers();
 
     for( size_t y=0 ; y<m_height ; y++)
     {
-        const int stride = m_width*y;
+        const size_t stride = m_width*y;
 
         for( size_t x=0 ; x<m_width ; x++)
         {
-            const int offset = stride + x;
+            const auto offset = stride + x;
 
             timersBack[offset] = backTileProperties[*p_back_tile].animationTime;
             timersFront[offset] = frontTileProperties[*p_front_tile].animationTime;
@@ -332,7 +332,7 @@ bool CMap::findObject(unsigned int obj, int *xout, int *yout)
 	{
 		for(x=2;x<m_width-2;x++)
 		{
-			if (m_Plane[2].getMapDataAt(x,y)==obj)
+            if (mPlanes[2].getMapDataAt(x,y)==obj)
 			{
 				*xout = x;
 				*yout = y;
@@ -356,7 +356,7 @@ bool CMap::findTile(unsigned int tile, int *xout, int *yout, int plane)
 	{
 		for(x=2;x<m_width-2;x++)
 		{
-            if (m_Plane[plane].getMapDataAt(x,y) == tile)
+            if (mPlanes[plane].getMapDataAt(x,y) == tile)
 			{
 				*xout = x;
 				*yout = y;
@@ -372,7 +372,7 @@ bool CMap::setTile(Uint16 x, Uint16 y, Uint16 t, Uint16 plane)
 	if( x<m_width && y<m_height )
 	{
 		//mp_foreground_data[y*m_width + x] = t;
-		m_Plane[plane].setMapDataAt(t, x, y);
+        mPlanes[plane].setMapDataAt(t, x, y);
 		return true;
 	}
 	else
@@ -663,8 +663,8 @@ void CMap::redrawAt(const Uint32 mx, const Uint32 my)
         const Uint16 loc_x = (((mx-m_mapx)<<4)+m_mapxstripepos)&drawMask;
         const Uint16 loc_y = (((my-m_mapy)<<4)+m_mapystripepos)&drawMask;
 
-		const size_t bg = m_Plane[0].getMapDataAt(mx, my);
-		const size_t fg = m_Plane[1].getMapDataAt(mx, my);
+        const size_t bg = mPlanes[0].getMapDataAt(mx, my);
+        const size_t fg = mPlanes[1].getMapDataAt(mx, my);
 
 		m_Tilemaps.at(0).drawTile(ScrollSurface, loc_x, loc_y, bg);
 		if(fg)
@@ -699,8 +699,8 @@ void CMap::drawAll()
     {
         for(Uint32 x=0;x<num_v_tiles;x++)
         {
-            Uint32 bg = m_Plane[0].getMapDataAt(x+m_mapx, y+m_mapy);
-            Uint32 fg = m_Plane[1].getMapDataAt(x+m_mapx, y+m_mapy);
+            Uint32 bg = mPlanes[0].getMapDataAt(x+m_mapx, y+m_mapy);
+            Uint32 fg = mPlanes[1].getMapDataAt(x+m_mapx, y+m_mapy);
 
             m_Tilemaps.at(0).drawTile(ScrollSurface, ((x<<4)+m_mapxstripepos)&drawMask,((y<<4)+m_mapystripepos)&drawMask, bg);
 
@@ -727,8 +727,8 @@ void CMap::drawHstripe(unsigned int y, unsigned int mpy)
 
 	for(Uint32 x=0;x<num_v_tiles;x++)
 	{
-	  Uint32 bg = m_Plane[0].getMapDataAt(x+m_mapx, mpy);
-	  Uint32 fg = m_Plane[1].getMapDataAt(x+m_mapx, mpy);
+      Uint32 bg = mPlanes[0].getMapDataAt(x+m_mapx, mpy);
+      Uint32 fg = mPlanes[1].getMapDataAt(x+m_mapx, mpy);
 
       m_Tilemaps.at(0).drawTile(ScrollSurface, ((x<<4)+m_mapxstripepos)&drawMask, y, bg);
 
@@ -757,8 +757,8 @@ void CMap::drawVstripe(unsigned int x, unsigned int mpx)
 
     for(Uint32 y=0 ; y<num_h_tiles ; y++)
 	{
-	  Uint32 bg = m_Plane[0].getMapDataAt(mpx, y+m_mapy);
-	  Uint32 fg = m_Plane[1].getMapDataAt(mpx, y+m_mapy);
+      Uint32 bg = mPlanes[0].getMapDataAt(mpx, y+m_mapy);
+      Uint32 fg = mPlanes[1].getMapDataAt(mpx, y+m_mapy);
 
       m_Tilemaps.at(0).drawTile(ScrollSurface, x, ((y<<4)+m_mapystripepos) & drawMask, bg);
 
@@ -850,7 +850,7 @@ void CMap::_drawForegroundTiles()
     {
         for( size_t x=x1 ; x<=x2 ; x++)
         {
-            const auto fg = m_Plane[1].getMapDataAt(x,y);
+            const auto fg = mPlanes[1].getMapDataAt(x,y);
 
             const int loc_x = (x<<TILE_S)-m_scrollx;
             const int loc_y = (y<<TILE_S)-m_scrolly;
@@ -943,13 +943,13 @@ void CMap::animateAllTiles()
         num_h_tiles = m_height-m_mapy;
 
     auto &frontTileProperties = gBehaviorEngine.getTileProperties(1);
-    word *p_front_tile = m_Plane[1].getMapDataPtr();
+    word *p_front_tile = mPlanes[1].getMapDataPtr();
 
     auto &backTileProperties = gBehaviorEngine.getTileProperties(0);
-    word *p_back_tile = m_Plane[0].getMapDataPtr();
+    word *p_back_tile = mPlanes[0].getMapDataPtr();
 
-    std::vector<Uint8> &timersBack = m_Plane[0].getTimers();
-    std::vector<Uint8> &timersFront = m_Plane[1].getTimers();
+    auto &timersBack = mPlanes[0].getTimers();
+    auto &timersFront = mPlanes[1].getTimers();
 
     for( size_t y=0 ; y<m_height ; y++)
     {
@@ -959,7 +959,7 @@ void CMap::animateAllTiles()
         {
             bool draw = false;
 
-            const int offset = stride + x;
+            const auto offset = stride + x;
 
             const CTileProperties &back_tile = backTileProperties[*p_back_tile];
             const CTileProperties &front_tile = frontTileProperties[*p_front_tile];

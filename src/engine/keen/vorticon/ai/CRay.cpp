@@ -35,8 +35,8 @@ m_speed(speed)
 
 	std::vector<CTileProperties> &TileProperty = gBehaviorEngine.getTileProperties();
 
-	blockedl = TileProperty[mp_Map->at((m_Pos.x + m_BBox.x1)>>CSF, (m_Pos.y + (m_BBox.y1+m_BBox.y2)/2)>>CSF)].bright;
-	blockedr = TileProperty[mp_Map->at((m_Pos.x + m_BBox.x2)>>CSF, (m_Pos.y + (m_BBox.y1+m_BBox.y2)/2)>>CSF)].bleft;
+	blockedl = TileProperty[mpMap->at((m_Pos.x + m_BBox.x1)>>CSF, (m_Pos.y + (m_BBox.y1+m_BBox.y2)/2)>>CSF)].bright;
+	blockedr = TileProperty[mpMap->at((m_Pos.x + m_BBox.x2)>>CSF, (m_Pos.y + (m_BBox.y1+m_BBox.y2)/2)>>CSF)].bleft;
 
 	if( blockedd || blockedr )
 		getShotByRay(owner.obj_type);

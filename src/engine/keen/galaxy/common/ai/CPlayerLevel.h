@@ -262,7 +262,7 @@ public:
 
 	void processPoleClimbingUp();
 
-	void processPoleClimbingDown();
+	void processPoleSlidingDown();
 
 
 	/**

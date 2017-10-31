@@ -62,7 +62,7 @@ void CVarPlatform::process()
     
     if( xBlockPosAbs < MOVE_SPEED && yBlockPosAbs < MOVE_SPEED )
     {
-        const Uint16 object = mp_Map->getPlaneDataAt(2, target.x, target.y);
+        const Uint16 object = mpMap->getPlaneDataAt(2, target.x, target.y);
 
         Vector2D<int> speed(xBlockPos, yBlockPos);
         movePlat(speed);

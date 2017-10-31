@@ -70,7 +70,7 @@ public:
 	void setupCameraObject();
 	void setDatatoZero();
 	void setDefaultStartValues();
-	void setMapData(CMap *p_map){ mp_Map=p_map; }
+	void setMapData(CMap *p_map){ mpMap=p_map; }
 	void setupforLevelPlay();
 	bool getLevelTrigger();
 

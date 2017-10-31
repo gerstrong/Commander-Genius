@@ -78,7 +78,7 @@ void CBobba::processSitting()
     int x_coord = getXMidPos();
     x_coord += (xDirection == LEFT) ? -(8<<STC) : +(8<<STC);
     
-    CEnemyShot *fireball = new CEnemyShot(mp_Map, 0, x_coord, getYUpPos(),
+    CEnemyShot *fireball = new CEnemyShot(mpMap, 0, x_coord, getYUpPos(),
                        0x2E76, xDirection, 0,  100, mSprVar);
     spawnObj( fireball );
     

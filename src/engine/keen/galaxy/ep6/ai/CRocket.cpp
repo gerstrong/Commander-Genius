@@ -38,7 +38,7 @@ mpCarriedPlayer(nullptr)
 		
 	setupGalaxyObjectOnMap(0x1B08, A_ROCKET_SIT);
 	
-	fetchInitialDir(xDirection, yDirection, *mp_Map);
+	fetchInitialDir(xDirection, yDirection, *mpMap);
 	detectNextTarget(target, xDirection, yDirection);
 }
 
@@ -81,7 +81,7 @@ void CRocket::processFlying()
     
     if( xBlockPosAbs < MOVE_SPEED && yBlockPosAbs < MOVE_SPEED )
     {
-	const Uint16 object = mp_Map->getPlaneDataAt(2, target.x, target.y);
+	const Uint16 object = mpMap->getPlaneDataAt(2, target.x, target.y);
 	
 	Vector2D<int> speed(xBlockPos, yBlockPos);	    
 	moveDir(speed);

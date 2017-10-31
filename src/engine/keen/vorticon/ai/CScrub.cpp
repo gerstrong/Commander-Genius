@@ -134,8 +134,8 @@ void CScrub::walkLeft(int mx, int my)
 		{
 			// First check, if he can walk over the tile
 			std::vector<CTileProperties> &TileProperties = gBehaviorEngine.getTileProperties();
-			if(!TileProperties[mp_Map->at(mx-1, my+1)].bup &&
-				!TileProperties[mp_Map->at(mx-1, my)].bleft)
+			if(!TileProperties[mpMap->at(mx-1, my+1)].bup &&
+				!TileProperties[mpMap->at(mx-1, my)].bleft)
 			{
 				// There is no gap
 				processMove(0,4<<STC);
@@ -216,8 +216,8 @@ void CScrub::walkRight(int mx, int my)
 		{
 			// First check, if he can walk over the tile
 			std::vector<CTileProperties> &TileProperties = gBehaviorEngine.getTileProperties();
-			if(!TileProperties[mp_Map->at(mx+1, my-1)].bdown &&
-               !TileProperties[mp_Map->at(mx+1, my)].bright)
+			if(!TileProperties[mpMap->at(mx+1, my-1)].bdown &&
+               !TileProperties[mpMap->at(mx+1, my)].bright)
 			{
 				// There is no gap the upper-side
                 processMove(8<<STC,0);

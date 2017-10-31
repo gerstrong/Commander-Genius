@@ -297,7 +297,7 @@ struct EventRestartLevel : CEvent {};
 
 void CPlayGameGalaxy::looseManagement( const int playerID,
                                        const bool playerGameOver,
-                                       const int levelObj,
+                                       const uint16_t levelObj,
                                        const std::string &levelName )
 {
     CEventContainer &eventContainer = gEventManager;
@@ -333,6 +333,9 @@ void CPlayGameGalaxy::looseManagement( const int playerID,
     }
     else if(allDead) // not yet!
     {
+        // Player should see the dialog first.
+        gInput.flushAll();
+
         // Create the Event Selection screen
         std::string loosemsg  = "You didn't make it past\n";
         loosemsg += levelName;

@@ -32,7 +32,7 @@ m_empty(true)
 void CMiragia::process()
 {
 	// Similar to the flag we use the animation timer and time to make it happen!
-	if(mp_Map->getAnimtiletimer()%ANIMATION_TIME == 0)
+	if(mpMap->getAnimtiletimer()%ANIMATION_TIME == 0)
 	{
 		if(m_waittime == 0)
 		{
@@ -42,13 +42,13 @@ void CMiragia::process()
 				for(size_t y=0 ; y<4 ; y++)
 				{
 					const Uint16 l_x = ((x+2+m_step*6)<<CSF);
-					const Uint16 l_y = ((mp_Map->m_height+y-6)<<CSF);
+					const Uint16 l_y = ((mpMap->m_height+y-6)<<CSF);
 					const Uint16 where_x = (getXPosition()>>CSF)+x;
 					const Uint16 where_y = (getYPosition()>>CSF)+y;
-					const Uint16 tile = mp_Map->getPlaneDataAt( 1, l_x, l_y );
-					mp_Map->setTile(where_x, where_y, tile, true, 1);
-					const Uint16 object = mp_Map->getPlaneDataAt( 2, l_x, l_y );
-					mp_Map->setTile(where_x, where_y, object, false, 2);
+					const Uint16 tile = mpMap->getPlaneDataAt( 1, l_x, l_y );
+					mpMap->setTile(where_x, where_y, tile, true, 1);
+					const Uint16 object = mpMap->getPlaneDataAt( 2, l_x, l_y );
+					mpMap->setTile(where_x, where_y, object, false, 2);
 					m_empty = false;
 				}
 			}

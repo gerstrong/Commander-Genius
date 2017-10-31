@@ -156,13 +156,8 @@ public:
 
 	bool dead, dying;
 
-	// This container will held the triggered events of the object
-
-    std::vector< ObjMove* > mMoveTasks;
 
     bool m_jumpdownfromobject;
-
-
 
 
 
@@ -319,7 +314,7 @@ public:
     virtual bool isNearby(CSpriteObject&) { return true; }
 	virtual void getShotByRay(object_t &obj_type);
     void kill_intersecting_tile(int mpx, int mpy, CSpriteObject &theObject);
-	CMap *getMapPtr() { return mp_Map; }
+    CMap *getMapPtr() { return mpMap; }
 
 	/**
 	 *  \description plays certain sound of an object. Stereo will automatically applied when used
@@ -338,6 +333,17 @@ public:
     {   mSprVar = i;    }
 
 protected:
+
+    /**
+     * @brief cancelAllMoveTasks cancels out all the already created move tasks
+     */
+    void cancelAllMoveTasks();
+
+    // This container will held the triggered events of the object
+    // TODO: This create too much fragmentation. Find a way to make this better
+    std::vector< ObjMove* > mMoveTasks;
+
+
 
 #if USE_PYTHON3
     /**
@@ -369,7 +375,7 @@ protected:
     virtual bool loadPythonScripts(const std::string &scriptBaseName);
 #endif
 
-	CMap *mp_Map;
+    CMap *mpMap;
 
 	Uint16 m_blinktime;
     bool mInvincible = false;   /** Shot might hit the object but it has no effect at all */
@@ -390,6 +396,10 @@ protected:
 	Uint8 transluceny;
 
     int mSprVar; // Sprite variant, which is used by the Spritemap
+
+
+
+
 };
 
 /**

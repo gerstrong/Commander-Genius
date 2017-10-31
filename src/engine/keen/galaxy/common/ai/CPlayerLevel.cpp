@@ -76,10 +76,10 @@ mObjectPtrs(ObjectPtrs)
 	mActionMap[A_KEEN_ENTER_DOOR] = static_cast<void (CPlayerBase::*)()>(&CPlayerLevel::processEnterDoor);
 	mActionMap[A_KEEN_POLE] = (void (CPlayerBase::*)()) &CPlayerLevel::processPoleClimbingSit;
 	mActionMap[A_KEEN_POLE_CLIMB] = (void (CPlayerBase::*)()) &CPlayerLevel::processPoleClimbingUp;
-	mActionMap[A_KEEN_POLE_SLIDE] = (void (CPlayerBase::*)()) &CPlayerLevel::processPoleClimbingDown;
+    mActionMap[A_KEEN_POLE_SLIDE] = (void (CPlayerBase::*)()) &CPlayerLevel::processPoleSlidingDown;
 	mActionMap[A_KEEN_POLE_SHOOT] = (void (CPlayerBase::*)()) &CPlayerLevel::processPoleClimbingSit;
 	mActionMap[A_KEEN_POLE_SHOOTUP] = (void (CPlayerBase::*)()) &CPlayerLevel::processPoleClimbingUp;
-	mActionMap[A_KEEN_POLE_SHOOTDOWN] = (void (CPlayerBase::*)()) &CPlayerLevel::processPoleClimbingDown;
+    mActionMap[A_KEEN_POLE_SHOOTDOWN] = (void (CPlayerBase::*)()) &CPlayerLevel::processPoleSlidingDown;
 	mActionMap[A_KEEN_RUN] = (void (CPlayerBase::*)()) &CPlayerLevel::processRunning;
 	mActionMap[A_KEEN_POGO_START] = (void (CPlayerBase::*)()) &CPlayerLevel::processPogoBounce;
 	mActionMap[A_KEEN_POGO_UP] = (void (CPlayerBase::*)()) &CPlayerLevel::processPogo;
@@ -155,8 +155,12 @@ bool CPlayerLevel::verifyforPole()
 	if( ( yDir < 0 && hitdetectWithTileProperty(1, l_x, l_y_up)  ) ||
 	    ( yDir > 0 && hitdetectWithTileProperty(1, l_x, l_y_down)  ) ) // 1 -> stands for pole Property
 	{
-		// Move to the proper X Coordinates, so Keen really grabs it!
+        cancelAllMoveTasks();
+
+        // Move to the proper X Coordinates, so Keen really grabs it!
         moveTo(Vector2D<int>(l_x - (7<<STC), getYPosition()));
+
+        // TODO: I think we need to snap him to the pole position
 
 		xinertia = 0;
 
@@ -676,7 +680,7 @@ void CPlayerLevel::tryToShoot( const Vector2D<int> &pos, const int xDir, const i
 {
 	if(m_Inventory.Item.m_bullets > 0)
 	{
-        spawnObj(new CBullet(mp_Map, 0, pos.x, pos.y, xDir, yDir, mSprVar));
+        spawnObj(new CBullet(mpMap, 0, pos.x, pos.y, xDir, yDir, mSprVar));
 		m_Inventory.Item.m_bullets--;        
 	}
 	else
@@ -732,7 +736,7 @@ bool CPlayerLevel::checkandtriggerforCliffHanging()
     
     std::vector<CTileProperties> &TileProperty = gBehaviorEngine.getTileProperties();
             
-    const bool floorNearBy = TileProperty[mp_Map->at((getXMidPos()>>CSF), (getYDownPos()>>CSF)+1)].bup;
+    const bool floorNearBy = TileProperty[mpMap->at((getXMidPos()>>CSF), (getYDownPos()>>CSF)+1)].bup;
     
     if(floorNearBy)
 	return false;
@@ -742,9 +746,9 @@ bool CPlayerLevel::checkandtriggerforCliffHanging()
     if( m_playcontrol[PA_X]<0 && blockedl )
     {
 	const int xLeft = (getXLeftPos()>>CSF)-1;
-	bool check_block = TileProperty[mp_Map->at(xLeft, yUp-1)].bup;
-	check_block |= TileProperty[mp_Map->at(xLeft, yUp-1)].bright;
-	const bool check_block_lower = TileProperty[mp_Map->at(xLeft, yUp)].bright;
+    bool check_block = TileProperty[mpMap->at(xLeft, yUp-1)].bup;
+    check_block |= TileProperty[mpMap->at(xLeft, yUp-1)].bright;
+    const bool check_block_lower = TileProperty[mpMap->at(xLeft, yUp)].bright;
 	
 	if( !check_block && check_block_lower )
 	{
@@ -770,9 +774,9 @@ bool CPlayerLevel::checkandtriggerforCliffHanging()
     else if( m_playcontrol[PA_X]>0 && blockedr )
     {
 	const int xRight = (getXRightPos()>>CSF)+1;	
-	bool check_block = TileProperty[mp_Map->at(xRight, yUp-1)].bup;
-	check_block |= TileProperty[mp_Map->at(xRight, yUp-1)].bleft;
-	bool check_block_lower = TileProperty[mp_Map->at(xRight, yUp)].bleft;
+    bool check_block = TileProperty[mpMap->at(xRight, yUp-1)].bup;
+    check_block |= TileProperty[mpMap->at(xRight, yUp-1)].bleft;
+    bool check_block_lower = TileProperty[mpMap->at(xRight, yUp)].bleft;
 	
 	if( !check_block && check_block_lower )
 	{
@@ -816,8 +820,8 @@ void CPlayerLevel::processCliffHanging()
 
 	if( xDirection == LEFT )
 	{	    
-		bool check_block = TileProperty[mp_Map->at(xLeft-1, yUp)].bup;
-		check_block |= TileProperty[mp_Map->at(xLeft, yUp)].bup;
+        bool check_block = TileProperty[mpMap->at(xLeft-1, yUp)].bup;
+        check_block |= TileProperty[mpMap->at(xLeft, yUp)].bup;
 
 		if( !check_block )
 		{
@@ -829,8 +833,8 @@ void CPlayerLevel::processCliffHanging()
 	}
 	else if( xDirection == RIGHT )
 	{
-		bool check_block = TileProperty[mp_Map->at(xRight+1, yUp)].bup;
-		check_block |= TileProperty[mp_Map->at(xRight, yUp)].bup;
+        bool check_block = TileProperty[mpMap->at(xRight+1, yUp)].bup;
+        check_block |= TileProperty[mpMap->at(xRight, yUp)].bup;
 
 		if( !check_block )
 		{
@@ -905,7 +909,7 @@ void CPlayerLevel::processCliffClimbingUp()
 			mTarget.x = getXMidPos() + xMove;
 			mTarget.y = ((yPos>>CSF)<<CSF);
 
-			int block = TileProperty[mp_Map->at((mTarget.x>>CSF), (mTarget.y>>CSF))].bup;
+            int block = TileProperty[mpMap->at((mTarget.x>>CSF), (mTarget.y>>CSF))].bup;
 
 			if(block)
 				mTarget.y -= (1<<CSF);
@@ -924,7 +928,7 @@ void CPlayerLevel::processCliffClimbingUp()
 			mTarget.x = getXMidPos() + xMove;
 			mTarget.y = ((yPos>>CSF)<<CSF);
 
-			int block = TileProperty[mp_Map->at((mTarget.x>>CSF), (mTarget.y>>CSF))].bup;
+            int block = TileProperty[mpMap->at((mTarget.x>>CSF), (mTarget.y>>CSF))].bup;
 
 			if(block)
 				mTarget.y -= (1<<CSF);
@@ -1073,22 +1077,22 @@ void CPlayerLevel::processPogoCommon()
 	}
 	
 	// Let's see if Keen breaks the fuse
-	if(mp_Map->mFuseInLevel)
+    if(mpMap->mFuseInLevel)
 	{
 	    int x = getXMidPos();
 	    int y = getYDownPos();
-	    const int tileID = mp_Map->getPlaneDataAt(1, x, y);
+        const int tileID = mpMap->getPlaneDataAt(1, x, y);
 	    
 	    if(tileID == 0x078A)
 	    {		
-            const int t1 = mp_Map->getPlaneDataAt(1, 0, 0);
-            const int t2 = mp_Map->getPlaneDataAt(1, 0, (1<<CSF));
+            const int t1 = mpMap->getPlaneDataAt(1, 0, 0);
+            const int t2 = mpMap->getPlaneDataAt(1, 0, (1<<CSF));
 
             x >>= CSF; y >>= CSF;
 
-            mp_Map->setTile(x, y, t1, true);
-            mp_Map->setTile(x, y+1, t2, true);
-            mp_Map->mNumFuses--;
+            mpMap->setTile(x, y, t1, true);
+            mpMap->setTile(x, y+1, t2, true);
+            mpMap->mNumFuses--;
 	    }
 	}
 }
@@ -1166,7 +1170,7 @@ void CPlayerLevel::processPogo()
 	
 	std::vector<CTileProperties> &TileProperty = gBehaviorEngine.getTileProperties();
             
-	const bool ceilNearBy = TileProperty[mp_Map->at((getXMidPos()>>CSF), (getYUpPos()>>CSF)-1)].bup;
+    const bool ceilNearBy = TileProperty[mpMap->at((getXMidPos()>>CSF), (getYUpPos()>>CSF)-1)].bup;
     
 
 	if (state.pogoIsPressed && !state.pogoWasPressed)
@@ -1428,7 +1432,7 @@ void CPlayerLevel::processJumping()
 
 bool CPlayerLevel::canFallThroughTile()
 {
-	const int tile = mp_Map->getPlaneDataAt(1, getXMidPos(), getYDownPos()+(5<<STC));
+    const int tile = mpMap->getPlaneDataAt(1, getXMidPos(), getYDownPos()+(5<<STC));
 	const CTileProperties &TileProp = gBehaviorEngine.getTileProperties(1)[tile];
 	return ( TileProp.bdown == 0 && TileProp.bup != 0 );
 }
@@ -1479,7 +1483,7 @@ void CPlayerLevel::processPressUp()
 	const int x_mid = (x_left+x_right)/2;
 	const int up_y = getYUpPos()+(3<<STC);
 
-	Uint32 tile_no = mp_Map->getPlaneDataAt(1, x_mid, up_y);
+    Uint32 tile_no = mpMap->getPlaneDataAt(1, x_mid, up_y);
 	int flag = Tile[tile_no].behaviour;
 
 	// pressing a switch
@@ -1508,7 +1512,7 @@ void CPlayerLevel::processPressUp()
             newtile = tile_no+1;
       }
 
-      mp_Map->setTile( x_mid>>CSF, up_y>>CSF, newtile, true, 1); // Wrong tiles, those are for the info plane
+      mpMap->setTile( x_mid>>CSF, up_y>>CSF, newtile, true, 1); // Wrong tiles, those are for the info plane
 
 	  
 	  setAction(A_KEEN_SLIDE);
@@ -1522,11 +1526,11 @@ void CPlayerLevel::processPressUp()
 
         /// Test if keen may enter a door.
         /// Note: They are usually larger
-        tile_no = mp_Map->getPlaneDataAt(1, x_left+(1<<CSF), up_y);
-        int flag_left = Tile[mp_Map->getPlaneDataAt(1, x_left, up_y)].behaviour;
+        tile_no = mpMap->getPlaneDataAt(1, x_left+(1<<CSF), up_y);
+        int flag_left = Tile[mpMap->getPlaneDataAt(1, x_left, up_y)].behaviour;
         int flag_right = Tile[tile_no].behaviour;
 
-        const int info = mp_Map->getPlaneDataAt(2, x_left+(1<<CSF), up_y);
+        const int info = mpMap->getPlaneDataAt(2, x_left+(1<<CSF), up_y);
 
         bool checkDoor = true;
 
@@ -1686,12 +1690,12 @@ void CPlayerLevel::processSliding()
         {
             for(auto y = ly1 ; y<=ly2 ; y += (1<<CSF) )
             {
-                Uint32 tile_no = mp_Map->getPlaneDataAt(1, x, y);
+                Uint32 tile_no = mpMap->getPlaneDataAt(1, x, y);
                 int flag = Tile[tile_no].behaviour;
 
                 if(flag >= 7 && flag <= 10)
                 {
-                    mp_Map->setTile(x>>CSF, y>>CSF, tile_no+18, true, 1);
+                    mpMap->setTile(x>>CSF, y>>CSF, tile_no+18, true, 1);
                     mPlacingGem = false;
                     playSound( SOUND_DOOR_OPEN );
 
@@ -1740,16 +1744,16 @@ void CPlayerLevel::processEnterDoor()
 	int xmid = getXMidPos();
 	int y1 = getYDownPos();
 
-	Uint32 t = mp_Map->getPlaneDataAt(2, xmid, y1);
+    Uint32 t = mpMap->getPlaneDataAt(2, xmid, y1);
 	
 	if(t==0)
-	    t = mp_Map->getPlaneDataAt(2, xmid, y1-(1<<CSF));
+        t = mpMap->getPlaneDataAt(2, xmid, y1-(1<<CSF));
 
 	if(t==0)
-	    t = mp_Map->getPlaneDataAt(2, xmid, y1-(2<<CSF));
+        t = mpMap->getPlaneDataAt(2, xmid, y1-(2<<CSF));
 	
 	if(t==0)
-	    t = mp_Map->getPlaneDataAt(2, xmid, y1-(3<<CSF));
+        t = mpMap->getPlaneDataAt(2, xmid, y1-(3<<CSF));
 	
 	if (t == 0) 
 	{	  
@@ -1761,16 +1765,16 @@ void CPlayerLevel::processEnterDoor()
 	  // Check if there is a teleporter. In Keen 5 there might be one!
 	  if(gBehaviorEngine.getEpisode() == 5)
 	  {
-	    Uint32 teletile = mp_Map->getPlaneDataAt(1, xmid, y1);
+        Uint32 teletile = mpMap->getPlaneDataAt(1, xmid, y1);
 	
 	    if(teletile==0)
-	      teletile = mp_Map->getPlaneDataAt(1, xmid, y1-(1<<CSF));
+          teletile = mpMap->getPlaneDataAt(1, xmid, y1-(1<<CSF));
 
 	    if(teletile==0)
-	      teletile = mp_Map->getPlaneDataAt(1, xmid, y1-(2<<CSF));
+          teletile = mpMap->getPlaneDataAt(1, xmid, y1-(2<<CSF));
 	
 	    if(teletile==0)
-	      teletile = mp_Map->getPlaneDataAt(1, xmid, y1-(3<<CSF));
+          teletile = mpMap->getPlaneDataAt(1, xmid, y1-(3<<CSF));
 	    
 	    // Code for the teleport tile
         //if(teletile == 0x0401)
@@ -1792,7 +1796,7 @@ void CPlayerLevel::processEnterDoor()
 
         gEffectController.setupEffect(new CDimDark(8));
 
-        auto evExit = new EventExitLevel(mp_Map->getLevel(), true, mustTeleportOnMap, mSprVar);
+        auto evExit = new EventExitLevel(mpMap->getLevel(), true, mustTeleportOnMap, mSprVar);
         evExit->playSound = true;
         gEventManager.add( evExit );
 				
@@ -1808,7 +1812,7 @@ void CPlayerLevel::processEnterDoor()
         gEffectController.setupEffect(new CDimDark(8));
 		gMusicPlayer.stop();
 
-        auto evExit = new EventExitLevel(mp_Map->getLevel(), true, false, mSprVar);
+        auto evExit = new EventExitLevel(mpMap->getLevel(), true, false, mSprVar);
         evExit->playSound = true;
         gEventManager.add( evExit );
 
@@ -1826,7 +1830,7 @@ void CPlayerLevel::processEnterDoor()
 	new_pos.x += ((m_BBox.x2-m_BBox.x1)/2);
     new_pos.y += ((m_BBox.y2/*-m_BBox.y1*/)/2);
 
-    mp_Map->mGamePlayPos = new_pos;
+    mpMap->mGamePlayPos = new_pos;
 	m_camera.setPosition(new_pos);    
 
 	//o->ypos = TILE2MU(*t%256 - 1) + 15;
@@ -1848,7 +1852,7 @@ void CPlayerLevel::processEnterDoor()
 
 void CPlayerLevel::toggleBridge(const Uint32 newX, const Uint32 newY)
 {
-	const int start_tile = mp_Map->getPlaneDataAt(1, newX<<CSF, newY<<CSF)-1;
+    const int start_tile = mpMap->getPlaneDataAt(1, newX<<CSF, newY<<CSF)-1;
 
     // This is usual for Keen 4. The last tile comes three tiles later
 	int end_tile = start_tile+3;
@@ -1862,11 +1866,11 @@ void CPlayerLevel::toggleBridge(const Uint32 newX, const Uint32 newY)
     {
         for(int t = start_tile+1 ;  ; x++ )
         {
-            t = mp_Map->getPlaneDataAt(1, x<<CSF, newY<<CSF);
+            t = mpMap->getPlaneDataAt(1, x<<CSF, newY<<CSF);
 
             if(tileProp[t].behaviour != 18)
             {
-                end_tile = mp_Map->getPlaneDataAt(1, (x-1)<<CSF, newY<<CSF);;
+                end_tile = mpMap->getPlaneDataAt(1, (x-1)<<CSF, newY<<CSF);;
                 break;
             }
         }
@@ -1878,7 +1882,7 @@ void CPlayerLevel::toggleBridge(const Uint32 newX, const Uint32 newY)
     for(int t = start_tile ;  ; x++ )
     {
         // Now decide whether the tile is a piece or borders of the bridge
-        t = mp_Map->getPlaneDataAt(1, x<<CSF, newY<<CSF);
+        t = mpMap->getPlaneDataAt(1, x<<CSF, newY<<CSF);
 
         if(t == 0)
             break;
@@ -1889,10 +1893,10 @@ void CPlayerLevel::toggleBridge(const Uint32 newX, const Uint32 newY)
         // We have two rows
         for(int y = newY ; y<int(newY+2) ; y++)
         {
-            t = mp_Map->getPlaneDataAt(1, x<<CSF, y<<CSF);
+            t = mpMap->getPlaneDataAt(1, x<<CSF, y<<CSF);
             const auto NewTile = t+tileProp[t].nextTile;
 
-            mp_Map->setTile(x, y, NewTile, true, 1);
+            mpMap->setTile(x, y, NewTile, true, 1);
         }
 
     }
@@ -1900,10 +1904,10 @@ void CPlayerLevel::toggleBridge(const Uint32 newX, const Uint32 newY)
     // Last column
     for(int y = newY ; y<int(newY+2) ; y++)
     {
-        int t = mp_Map->getPlaneDataAt(1, x<<CSF, y<<CSF);
+        int t = mpMap->getPlaneDataAt(1, x<<CSF, y<<CSF);
         const auto NewTile = t+tileProp[t].nextTile;
 
-        mp_Map->setTile(x, y, NewTile, true, 1);
+        mpMap->setTile(x, y, NewTile, true, 1);
     }
 
 }
@@ -1919,7 +1923,7 @@ void CPlayerLevel::toggleBridge(const Uint32 newX, const Uint32 newY)
 
 void CPlayerLevel::PressBridgeSwitch(const Uint32 lx, const Uint32 ly)
 {
-	Uint32 targetXY = mp_Map->getPlaneDataAt(2, lx, ly);
+    Uint32 targetXY = mpMap->getPlaneDataAt(2, lx, ly);
 
 	Uint32 newX = targetXY >> 8;
 	Uint32 newY = targetXY & 0xFF;
@@ -1935,12 +1939,12 @@ void CPlayerLevel::PressBridgeSwitch(const Uint32 lx, const Uint32 ly)
  */
 void CPlayerLevel::PressPlatformSwitch(const Uint32 lx, const Uint32 ly)
 {
-  Uint32 targetXY = mp_Map->getPlaneDataAt(2, lx, ly);
+  Uint32 targetXY = mpMap->getPlaneDataAt(2, lx, ly);
   
   Uint32 newX = targetXY >> 8;
   Uint32 newY = targetXY & 0xFF;
   
-  const int oldInfoTile = mp_Map->getPlaneDataAt(2, newX<<CSF, newY<<CSF);
+  const int oldInfoTile = mpMap->getPlaneDataAt(2, newX<<CSF, newY<<CSF);
   int newTile = 0x0;
   
   if(oldInfoTile == 31) // 31 stands for the plat blocker
@@ -1976,7 +1980,7 @@ void CPlayerLevel::PressPlatformSwitch(const Uint32 lx, const Uint32 ly)
     newTile = 31;
   }
   
-  mp_Map->setTile(newX, newY, newTile, true, 2);
+  mpMap->setTile(newX, newY, newTile, true, 2);
   
   return;
 }
@@ -1991,9 +1995,9 @@ void CPlayerLevel::exchangeZapper(const int mapx, const int mapy, const int offs
     int y = mapy; 
     while( nextTile != stopZapperTile )
     {
-      const int curTile = mp_Map->at(x,y);
+      const int curTile = mpMap->at(x,y);
       nextTile = curTile + offset;
-      mp_Map->setTile(x, y, nextTile, true);
+      mpMap->setTile(x, y, nextTile, true);
       y++;       
     }
 } 
@@ -2003,7 +2007,7 @@ void CPlayerLevel::exchangeZapper(const int mapx, const int mapy, const int offs
 void CPlayerLevel::disableZapper(const Uint32 lx, const Uint32 ly)
 {
     // Find the inactive zapper tile, if you don't find it, cancel the operation!
-    int startZapTile = mp_Map->at(lx, ly);
+    int startZapTile = mpMap->at(lx, ly);
     int iZapperTile = startZapTile;
     for( ; iZapperTile < startZapTile+4 ; iZapperTile++ )
     {
@@ -2026,7 +2030,7 @@ void CPlayerLevel::disableZapper(const Uint32 lx, const Uint32 ly)
 void CPlayerLevel::enableZapper(const Uint32 lx, const Uint32 ly)
 {
     // Find the active zapper tile, if you don't find it, cancel the operation!
-    int startZapTile = mp_Map->at(lx, ly);
+    int startZapTile = mpMap->at(lx, ly);
     int iZapperTile = startZapTile;
     for( ; iZapperTile > startZapTile-4 ; iZapperTile-- )
     {
@@ -2050,7 +2054,7 @@ void CPlayerLevel::openDoorsTile()
 {
 	int lx = getXMidPos();
 	int ly = getYDownPos()-(3<<STC);
-	Uint32 targetXY = mp_Map->getPlaneDataAt(2, lx, ly);
+    Uint32 targetXY = mpMap->getPlaneDataAt(2, lx, ly);
 
 	Uint32 newX = targetXY >> 8;
 	Uint32 newY = targetXY & 0xFF;
@@ -2058,10 +2062,10 @@ void CPlayerLevel::openDoorsTile()
 
     while(1)
 	{
-		tileno = mp_Map->getPlaneDataAt(1, newX<<CSF, newY<<CSF);
-		mp_Map->setTile(newX, newY, tileno+1, true, 1);
+        tileno = mpMap->getPlaneDataAt(1, newX<<CSF, newY<<CSF);
+        mpMap->setTile(newX, newY, tileno+1, true, 1);
 		newY++;
-		next_tileno = mp_Map->getPlaneDataAt(1, newX<<CSF, newY<<CSF);
+        next_tileno = mpMap->getPlaneDataAt(1, newX<<CSF, newY<<CSF);
 
         //const int freeTileno = mp_Map->getPlaneDataAt(1, (newX+1)<<CSF, newY<<CSF);
         //const bool isBlock = tilePropVec[freeTileno].bup;
@@ -2237,14 +2241,14 @@ void CPlayerLevel::processPoleClimbingSit()
 	Uint32 l_y_down = getYDownPos();
 
 
-	if ( py > 0 )
+    if ( py > 0 ) // pressed down
 	{
-		setAction(A_KEEN_POLE_SLIDE);
+		setAction(A_KEEN_POLE_SLIDE);        
 		yDirection = 1;
-		processPoleClimbingDown();
+        processPoleSlidingDown();
 		return;
 	}
-	else if ( py < 0 )
+    else if ( py < 0 ) // pressed up
 	{
 
 		// Check for the upper side and don't let him move if the pole ends
@@ -2268,7 +2272,7 @@ void CPlayerLevel::processPoleClimbingSit()
 	if ( px )
 	{
 		// This will check three points and avoid that keen falls on sloped tiles
-		const int fall1 = mp_Map->getPlaneDataAt(1, l_x, l_y_down+(1<<CSF));
+        const int fall1 = mpMap->getPlaneDataAt(1, l_x, l_y_down+(1<<CSF));
 		const CTileProperties &TileProp1 = gBehaviorEngine.getTileProperties(1)[fall1];
 		const bool leavePole = (TileProp1.bup != 0);
 
@@ -2330,25 +2334,37 @@ void CPlayerLevel::processPoleClimbingUp()
 
 
 
-void CPlayerLevel::processPoleClimbingDown()
+void CPlayerLevel::processPoleSlidingDown()
 {
-	Uint32 l_x_l = getXLeftPos();
-	Uint32 l_x = getXMidPos();
-	Uint32 l_x_r = getXRightPos();
-	Uint32 l_y_up = getYUpPos()+(16<<STC);
-	Uint32 l_y_down = getYDownPos()+(16<<STC);
+    auto l_x_l = getXLeftPos();
+    auto l_x = getXMidPos();
+    auto l_x_r = getXRightPos();
+    auto l_y_up = getYUpPos()+(16<<STC);
+    auto l_y_down = getYDownPos()+(16<<STC);
 
-	if(!hitdetectWithTileProperty(1, l_x, l_y_down))
+    // Check for the upper and lower side collision with the pole element.
+
+    bool lower = false;
+
+    lower |= hitdetectWithTileProperty(1, l_x_l, l_y_down);
+    lower |= hitdetectWithTileProperty(1, l_x, l_y_down);
+    lower |= hitdetectWithTileProperty(1, l_x_r, l_y_down);
+
+    if(!lower)
+    {
 		solid = true;
+    }
 	else
+    {
 		solid = false;
+    }
 
-	// Check for the and upper and lower side, upper because the hand can touch the edge in that case
-	bool up = false;
-	up |= hitdetectWithTileProperty(1, l_x_l, l_y_up);
-	up |= hitdetectWithTileProperty(1, l_x, l_y_up);
-	up |= hitdetectWithTileProperty(1, l_x_r, l_y_up);
-	if( up && !blockedd )
+    // upper must be considered because the hand can touch the edge in that case
+    bool upper = false;
+    upper |= hitdetectWithTileProperty(1, l_x_l, l_y_up);
+    upper |= hitdetectWithTileProperty(1, l_x, l_y_up);
+    upper |= hitdetectWithTileProperty(1, l_x_r, l_y_up);
+    if( upper && !blockedd )
 	{
 		// Slide down if there is more of the pole
 		setAction(A_KEEN_POLE_SLIDE);
@@ -2363,9 +2379,9 @@ void CPlayerLevel::processPoleClimbingDown()
 		solid = true;
 
 		bool down = false;
-		down |= mp_Map->at(l_x_l>>CSF, l_y_down>>CSF);
-		down |= mp_Map->at(l_x>>CSF, l_y_down>>CSF);
-		down |= mp_Map->at(l_x_r>>CSF, l_y_down>>CSF);
+        down |= mpMap->at(l_x_l>>CSF, l_y_down>>CSF);
+        down |= mpMap->at(l_x>>CSF, l_y_down>>CSF);
+        down |= mpMap->at(l_x_r>>CSF, l_y_down>>CSF);
 
 
 		// Check if keen is trying to climb through the floor.
@@ -2580,14 +2596,14 @@ void CPlayerLevel::push(CGalaxySpriteObject& theObject)
 
 int CPlayerLevel::checkConveyorBelt()
 {
-	Uint32 l_x_l = getXLeftPos();
-	Uint32 l_x = getXMidPos();
-	Uint32 l_x_r = getXRightPos();
-	Uint32 l_y_down = getYDownPos()+(1<<STC);
+    auto l_x_l = getXLeftPos();
+    auto l_x = getXMidPos();
+    auto l_x_r = getXRightPos();
+    auto l_y_down = getYDownPos()+(1<<STC);
 	
-	int tileID1 = mp_Map->getPlaneDataAt(1, l_x_l, l_y_down);
-	int tileID2 = mp_Map->getPlaneDataAt(1, l_x, l_y_down);
-	int tileID3 = mp_Map->getPlaneDataAt(1, l_x_r, l_y_down);
+    int tileID1 = mpMap->getPlaneDataAt(1, l_x_l, l_y_down);
+    int tileID2 = mpMap->getPlaneDataAt(1, l_x, l_y_down);
+    int tileID3 = mpMap->getPlaneDataAt(1, l_x_r, l_y_down);
 
     std::vector<CTileProperties> &tileProp = gBehaviorEngine.getTileProperties(1);
 
@@ -2666,14 +2682,14 @@ void CPlayerLevel::process()
     }
 	
 	
-	if(mp_Map->mFuseInLevel && mp_Map->mNumFuses == 0)
+    if(mpMap->mFuseInLevel && mpMap->mNumFuses == 0)
 	{
 	    // TODO: Need to spawn other messages here!
         gMusicPlayer.stop();
 
         m_Inventory.Item.m_gem.clear();
         m_Inventory.Item.fuse_levels_completed++;
-        mp_Map->mFuseInLevel = false;
+        mpMap->mFuseInLevel = false;
 
         std::vector<CMessageBoxGalaxy*> msgs;
 
@@ -2685,7 +2701,7 @@ void CPlayerLevel::process()
 
         gEffectController.setupEffect(new CDimDark(8));
 
-        auto evExit = new EventExitLevel(mp_Map->getLevel(), true, false, mSprVar);
+        auto evExit = new EventExitLevel(mpMap->getLevel(), true, false, mSprVar);
         evExit->playSound = true;
 
         msgs.push_back( new CMessageBoxBitmapGalaxy(
@@ -2762,12 +2778,12 @@ void CPlayerLevel::process()
 
 bool CPlayerLevel::verifyAndToggleZapper(const int lx, const int ly)
 {
-    Uint32 targetXY = mp_Map->getPlaneDataAt(2, lx, ly);
+    Uint32 targetXY = mpMap->getPlaneDataAt(2, lx, ly);
   
     Uint32 newX = targetXY >> 8;
     Uint32 newY = targetXY & 0xFF;
   
-    const int zapperTile = mp_Map->getPlaneDataAt(1, newX<<CSF, newY<<CSF);
+    const int zapperTile = mpMap->getPlaneDataAt(1, newX<<CSF, newY<<CSF);
   
     if(zapperTile >= 0xA68 && zapperTile <= 0xA6A )
     {
@@ -2787,13 +2803,13 @@ bool CPlayerLevel::verifyAndToggleZapper(const int lx, const int ly)
 
 bool CPlayerLevel::verifyAndToggleBridge(const int lx, const int ly)
 {
-    Uint32 targetXY = mp_Map->getPlaneDataAt(2, lx, ly);
+    Uint32 targetXY = mpMap->getPlaneDataAt(2, lx, ly);
   
     Uint32 newX = targetXY >> 8;
     Uint32 newY = targetXY & 0xFF;
   
     auto &Tile = gBehaviorEngine.getTileProperties(1);
-    const int zapperTile = mp_Map->getPlaneDataAt(1, newX<<CSF, newY<<CSF);        
+    const int zapperTile = mpMap->getPlaneDataAt(1, newX<<CSF, newY<<CSF);
     const int flag = Tile[zapperTile].behaviour;
   
     if(flag == 18 )
@@ -2812,7 +2828,7 @@ bool CPlayerLevel::verifyAndToggleBridge(const int lx, const int ly)
 
 void CPlayerLevel::TurnGiantSwitchOff(const int x, const int y)
 {
-    const int tile = mp_Map->at(x, y);
+    const int tile = mpMap->at(x, y);
     
     if(tile != 0x43C || yinertia > 0)
 	return;
@@ -2821,8 +2837,8 @@ void CPlayerLevel::TurnGiantSwitchOff(const int x, const int y)
     {
 	for(int j=-1 ; j<=1 ; j++)
 	{
-	    const int tile = mp_Map->at(x+i, y+j);
-	    mp_Map->setTile( x+i, y+j, tile-3, true );
+        const int tile = mpMap->at(x+i, y+j);
+        mpMap->setTile( x+i, y+j, tile-3, true );
 	}
     }    
     
@@ -2830,7 +2846,7 @@ void CPlayerLevel::TurnGiantSwitchOff(const int x, const int y)
     const int x_csf = x<<CSF;
     const int y_csf = y<<CSF;
     
-    Uint32 tile_no = mp_Map->getPlaneDataAt(1, x_csf, y_csf);
+    Uint32 tile_no = mpMap->getPlaneDataAt(1, x_csf, y_csf);
     int flag = Tile[tile_no].behaviour;
     
     // pressing a switch
@@ -2858,7 +2874,7 @@ void CPlayerLevel::TurnGiantSwitchOff(const int x, const int y)
 
 void CPlayerLevel::TurnGiantSwitchOn(const int x, const int y)
 {
-    const int tile = mp_Map->at(x, y);
+    const int tile = mpMap->at(x, y);
     
     if(tile != 0x439 || yinertia < 0)
 	return;    
@@ -2869,8 +2885,8 @@ void CPlayerLevel::TurnGiantSwitchOn(const int x, const int y)
     {
 	for(int j=-1 ; j<=1 ; j++)
 	{
-	    const int tile = mp_Map->at(x+i, y+j);
-	    mp_Map->setTile( x+i, y+j, tile+3, true );
+        const int tile = mpMap->at(x+i, y+j);
+        mpMap->setTile( x+i, y+j, tile+3, true );
 	}
     }
     
@@ -2878,7 +2894,7 @@ void CPlayerLevel::TurnGiantSwitchOn(const int x, const int y)
     const int x_csf = x<<CSF;
     const int y_csf = y<<CSF;
     
-    Uint32 tile_no = mp_Map->getPlaneDataAt(1, x_csf, y_csf);
+    Uint32 tile_no = mpMap->getPlaneDataAt(1, x_csf, y_csf);
     int flag = Tile[tile_no].behaviour;
     
     // pressing a switch
@@ -2926,7 +2942,7 @@ int CPlayerLevel::checkSolidU(int x1, int x2, int y1, const bool push_mode )
 
 		for(int c=x1 ; c<=x2 ; c += COLISION_RES)
 		{
-			blocked = TileProperty[mp_Map->at(c>>CSF, y1>>CSF)].bdown;
+            blocked = TileProperty[mpMap->at(c>>CSF, y1>>CSF)].bdown;
 
             if(blocked == 33)
             {
@@ -2960,7 +2976,7 @@ int CPlayerLevel::checkSolidU(int x1, int x2, int y1, const bool push_mode )
 				return blocked;
 		}
 
-		blocked = TileProperty[mp_Map->at(x2>>CSF, y1>>CSF)].bdown;
+        blocked = TileProperty[mpMap->at(x2>>CSF, y1>>CSF)].bdown;
 		
 		if( blocked >= 2 && blocked <= 7 && checkslopedU(x2, y1, blocked ))
 			return 1;
@@ -2994,7 +3010,7 @@ int CPlayerLevel::checkSolidD( int x1, int x2, int y2, const bool push_mode )
 
 		for(int c=x1 ; c<=x2 ; c += COLISION_RES)
 		{
-			blockedu = TileProperty[mp_Map->at(c>>CSF, y2>>CSF)].bup;
+            blockedu = TileProperty[mpMap->at(c>>CSF, y2>>CSF)].bup;
 
 			if(blockedu == 33)
 			{
@@ -3019,7 +3035,7 @@ int CPlayerLevel::checkSolidD( int x1, int x2, int y2, const bool push_mode )
 				return blockedu;
 		}
 
-		blockedu = TileProperty[mp_Map->at(x2>>CSF, y2>>CSF)].bup;		
+        blockedu = TileProperty[mpMap->at(x2>>CSF, y2>>CSF)].bup;
 
 		if(blockedu == 17 && m_climbing)
 			return 0;
@@ -3039,13 +3055,13 @@ int CPlayerLevel::checkSolidD( int x1, int x2, int y2, const bool push_mode )
 		int8_t blocked;
 		for(int c=x1 ; c<=x2 ; c += COLISION_RES)
 		{
-			blocked = TileProperty[mp_Map->at(c>>CSF, y2>>CSF)].bup;
+            blocked = TileProperty[mpMap->at(c>>CSF, y2>>CSF)].bup;
 
 			if(blocked)
 			{
 				if( blocked < 2 || blocked > 7 )
 				{
-					int8_t blockedd = TileProperty[mp_Map->at(c>>CSF, y2>>CSF)].bdown;
+                    int8_t blockedd = TileProperty[mpMap->at(c>>CSF, y2>>CSF)].bdown;
 
 					if(blockedd == 0 && m_jumpdown)
 						return 0;
@@ -3058,7 +3074,7 @@ int CPlayerLevel::checkSolidD( int x1, int x2, int y2, const bool push_mode )
 			}
 		}
 
-		blocked = TileProperty[mp_Map->at((x2-(1<<STC))>>CSF, y2>>CSF)].bup;
+        blocked = TileProperty[mpMap->at((x2-(1<<STC))>>CSF, y2>>CSF)].bup;
 		if(blocked)
 		{
 			if( blocked < 2 || blocked > 7 )
@@ -3066,7 +3082,7 @@ int CPlayerLevel::checkSolidD( int x1, int x2, int y2, const bool push_mode )
 		}
 	}
 
-	if( (Uint32)y2 > ((mp_Map->m_height)<<CSF) )
+    if( (Uint32)y2 > ((mpMap->m_height)<<CSF) )
     {
         kill(true, true);
     }

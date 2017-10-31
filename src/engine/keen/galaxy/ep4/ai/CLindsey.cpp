@@ -67,7 +67,7 @@ void CLindsey::getTouchedBy(CSpriteObject &theObject)
 
         lindsey_text[0] = gBehaviorEngine.getString(answermap[0]);
 
-        Uint16 cur_level = mp_Map->getLevel();
+        Uint16 cur_level = mpMap->getLevel();
         if(cur_level > 5)
         {
             lindsey_text[1] = gBehaviorEngine.getString(answermap[1]);

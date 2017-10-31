@@ -177,8 +177,8 @@ mp_processState(NULL)
     m_playcontrol.fill(0);
 	m_camera.setPosition(m_Pos);
 
-    mp_Map->calcVisibleArea();
-    mp_Map->refreshVisibleArea();
+    mpMap->calcVisibleArea();
+    mpMap->refreshVisibleArea();
 }
 
 
@@ -190,14 +190,14 @@ void CPlayerBase::processExiting()
 {
     Uint32 x = getXMidPos();
     Uint32 y = getYMidPos();
-    if( (((mp_Map->m_width-2)<<CSF) < x || (2<<CSF) > x)  || ((2<<CSF) > y) )
+    if( (((mpMap->m_width-2)<<CSF) < x || (2<<CSF) > x)  || ((2<<CSF) > y) )
       // If player leaves boundary, except for the lower part, which death
     {
         gMusicPlayer.stop();
 
         gEffectController.setupEffect(new CDimDark(8));
 
-        auto evExit = new EventExitLevel(mp_Map->getLevel(), true, false, mSprVar);
+        auto evExit = new EventExitLevel(mpMap->getLevel(), true, false, mSprVar);
         evExit->playSound = true;
         gEventManager.add( evExit );
         m_Inventory.Item.m_gem.clear();
@@ -215,7 +215,7 @@ void CPlayerBase::getAnotherLife(const int lc_x, const int lc_y, const bool disp
 	{
         const int ep = gBehaviorEngine.getEpisode();
 	    const int id = alt ? 12 : 10;
-	    CItemEffect *lifeUp = new CItemEffect(mp_Map, 0, lc_x<<CSF, lc_y<<CSF, got_sprite_item_pics[ep-4][id], FADEOUT);
+	    CItemEffect *lifeUp = new CItemEffect(mpMap, 0, lc_x<<CSF, lc_y<<CSF, got_sprite_item_pics[ep-4][id], FADEOUT);
         gEventManager.add( new EventSpawnObject( lifeUp ) );
 	}
 }
@@ -357,8 +357,8 @@ void CPlayerBase::processLevelMiscFlagsCheck()
 	// Another property of the tiles may kill keen, also in god mode
     std::vector<CTileProperties> &Tile = gBehaviorEngine.getTileProperties(1);
 	// TODO: Workaround! It seems that the deadly tiles are 17 tiles behind. Not sure, why!
-	const int tileIDl = mp_Map->getPlaneDataAt(1, l_x, (l_y+l_h)+(1<<STC));
-	const int tileIDr = mp_Map->getPlaneDataAt(1, l_x+l_w, (l_y+l_h)+(1<<STC));
+	const int tileIDl = mpMap->getPlaneDataAt(1, l_x, (l_y+l_h)+(1<<STC));
+	const int tileIDr = mpMap->getPlaneDataAt(1, l_x+l_w, (l_y+l_h)+(1<<STC));
 	if(Tile[tileIDl].bup == 9 && Tile[tileIDr].bup == 9 )
 	{        
         if(!gBehaviorEngine.mCheatmode.god)
@@ -384,8 +384,8 @@ void CPlayerBase::processLevelMiscFlagsCheck()
 	  
 	  const int lc_x = l_x>>CSF;
 	  const int lc_y = l_y>>CSF;
-	  mp_Map->setTile( lc_x, lc_y, 0, true, 1 );
-	  CItemEffect *iEffect = new CItemEffect(mp_Map, 0, lc_x<<CSF, lc_y<<CSF, dropanimation_sprite, ANIMATE);
+	  mpMap->setTile( lc_x, lc_y, 0, true, 1 );
+	  CItemEffect *iEffect = new CItemEffect(mpMap, 0, lc_x<<CSF, lc_y<<CSF, dropanimation_sprite, ANIMATE);
       spawnObj( iEffect );
 	  m_Item.m_drops++;
 	  
@@ -408,8 +408,8 @@ void CPlayerBase::processLevelMiscFlagsCheck()
 			const int lc_y = l_y>>CSF;
             const int ep = gBehaviorEngine.getEpisode();
 			
-			mp_Map->setTile( lc_x, lc_y, 0, true, 1 );
-            spawnObj( new CItemEffect(mp_Map, 0, lc_x<<CSF, lc_y<<CSF, got_sprite_item_pics[ep-4][4+i-21], FADEOUT) );
+			mpMap->setTile( lc_x, lc_y, 0, true, 1 );
+            spawnObj( new CItemEffect(mpMap, 0, lc_x<<CSF, lc_y<<CSF, got_sprite_item_pics[ep-4][4+i-21], FADEOUT) );
 			switch(i)
 			{
 			case 21: m_Item.m_points += 100;	gSound.playSound( SOUND_GET_BONUS );	break;
@@ -548,8 +548,8 @@ void CPlayerBase::respawnImportantItem(const int itemId)
 
         if(itemId == 4)
         {
-            Vector2D<int> where = mp_Map->getSpriteOrigin(105);
-            spawnObj( new galaxy::CSpriteItem(mp_Map, 0x46, where.x, where.y, 105, 0) );
+            Vector2D<int> where = mpMap->getSpriteOrigin(105);
+            spawnObj( new galaxy::CSpriteItem(mpMap, 0x46, where.x, where.y, 105, 0) );
             return;
         }
     }
@@ -562,8 +562,8 @@ void CPlayerBase::respawnImportantItem(const int itemId)
     const Uint32 newsprite = epOffset+2*itemId;
 
     // Now respawn the item
-    Vector2D<int> where = mp_Map->getSpriteOrigin(itemId+itemOffset);
-    spawnObj( new galaxy::CSpriteItem(mp_Map, itemId+itemOffset, where.x, where.y, newsprite, 0) );
+    Vector2D<int> where = mpMap->getSpriteOrigin(itemId+itemOffset);
+    spawnObj( new galaxy::CSpriteItem(mpMap, itemId+itemOffset, where.x, where.y, newsprite, 0) );
 }
 
 
@@ -622,8 +622,8 @@ void CPlayerBase::processDead()
 
 
 
-    const int levelObj = mp_Map->getLevel();
-    const std::string &levelName = mp_Map->getLevelName();
+    const int levelObj = mpMap->getLevel();
+    const std::string &levelName = mpMap->getLevelName();
 
     m_camera.forbidLead(mPlayerNum);
     m_camera.cycleCamlead();
@@ -739,7 +739,7 @@ void CPlayerBase::kill(const bool force,
 
 bool CPlayerBase::checkMapBoundaryR(const int x2)
 {
-	if( solid && x2 >= (int)((mp_Map->m_width-1)<<CSF) )
+	if( solid && x2 >= (int)((mpMap->m_width-1)<<CSF) )
 		return true;
 
 	return false;
