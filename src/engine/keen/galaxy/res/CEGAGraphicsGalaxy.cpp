@@ -1055,7 +1055,7 @@ bool CEGAGraphicsGalaxy::readBitmaps()
     size_t bitmapNameOffset = ep;
 
     // Special case for k6demo
-    if( ep == 6 && mExefile.isDemo())
+    if( ep == 4 && mExefile.isDemo())
     {
         bitmapNameOffset = 3;
     }
