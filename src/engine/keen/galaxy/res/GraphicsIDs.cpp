@@ -49,9 +49,10 @@ void CEGAGraphicsGalaxy::createBitmapsIDs()
 	/// Keen 5 Image IDs
 	// Bitmaps
     m_BitmapNameMap[1][22]  = "HELP_UPPERBORDER";
-    m_BitmapNameMap[1][22]  = "HELP_LEFTBORDER";
+    m_BitmapNameMap[1][23]  = "HELP_LEFTBORDER";
     m_BitmapNameMap[1][24]  = "HELP_RIGHTBORDER";
-    m_BitmapNameMap[1][25]  = "HELP_LOWERBORDER";
+    m_BitmapNameMap[1][25]  = "HELP_LOWERBORDERCONTROL";
+    m_BitmapNameMap[1][26]  = "HELP_LOWERBORDER";
     m_BitmapNameMap[1][18] = "HELPHAND";
     m_BitmapNameMap[1][81] = "STARWARS";
 	m_BitmapNameMap[1][82] = "TITLE";

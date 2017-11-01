@@ -1037,7 +1037,7 @@ bool CEGAGraphicsGalaxy::readfonts()
  */
 bool CEGAGraphicsGalaxy::readBitmaps()
 {
-    const int ep = getEpisodeInfoIndex();
+    const auto ep = getEpisodeInfoIndex();
 
     const EpisodeInfoStruct &epInfo = EpisodeInfo[ep];
 
@@ -1050,6 +1050,17 @@ bool CEGAGraphicsGalaxy::readBitmaps()
 
     SDL_Rect bmpRect;
     bmpRect.x = bmpRect.y = 0;
+
+
+    size_t bitmapNameOffset = ep;
+
+    // Special case for k6demo
+    if( ep == 6 && mExefile.isDemo())
+    {
+        bitmapNameOffset = 3;
+    }
+
+    auto &bitmapNamesThisEp = m_BitmapNameMap[bitmapNameOffset];
 
     for(size_t i = 0; i < epInfo.NumBitmaps; i++)
     {
@@ -1082,9 +1093,7 @@ bool CEGAGraphicsGalaxy::readBitmaps()
                 data,
                 BmpHead[i].Width, BmpHead[i].Height);
 
-        // Special case for k6demo
-        size_t bitmapNameOffset = (ep == 4 ? 3 : ep);
-        Bitmap.setName(m_BitmapNameMap[bitmapNameOffset][i]);
+        Bitmap.setName(bitmapNamesThisEp[i]);
     }
 
     return true;

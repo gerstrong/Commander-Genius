@@ -10,6 +10,7 @@
 
 #include <string>
 #include <vector>
+#include <array>
 #include <map>
 #include <SDL.h>
 #include "fileio/CExeFile.h"
@@ -99,13 +100,15 @@ public:
 	void createBitmapsIDs();
 
 private:
-        size_t getEpisodeInfoIndex();
+
+    size_t getEpisodeInfoIndex();
 
 	std::vector<unsigned long> m_egahead;
 	std::vector<ChunkStruct> m_egagraph;
 
-	std::string m_BitmapNameMap[4][1000];
-	std::string m_SpriteNameMap[4][1000];
+
+    std::array<std::array<std::string, 1000>, 4> m_BitmapNameMap;
+    std::array<std::array<std::string, 1000>, 4> m_SpriteNameMap;
 
     CExeFile &mExefile;
 };
