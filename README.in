@@ -30,6 +30,7 @@ There are also mods that can be downloaded direclty.
 
 - About -
 =========
+
 So far Commander Keen 1-6 are fully supported.
 There are some smaller missing features like PaddleWar, but
 the whole gameplay is there.
@@ -50,6 +51,7 @@ best to help you.
 
 - Features -
 ============
+
 The main goal of Commander Genius is to copy
 the original gameplay feeling as much as possible,
 and extend it further so you get a native implementation with
@@ -177,9 +179,9 @@ and we deserve at least those credits!
 Also give credits to the others who provided
 us with some code. They really deserve it.
 
+
 - Setup  -
 ==========
-
 
 Download it, install it and launch it. In the Game Launcher click/tap on "New Stuff" and choose your game.
 It will start to download. After it finished, you can play it. Can download more titles if you want, enjoy!
@@ -319,6 +321,7 @@ Also check out the CMakeLists.txt for more information.
 
 - STARTING A GAME IN CG -
 =========================
+
 Normally when you start Commander Genius you see the launcher menu in which you can choose the Keen games that were detected in the subdirectory.
 The CGLog.txt also tells you what CG detected on the system and gives feedback on further events that might occur.
 It is good to take a look at that file if something in CG goes wrong.
@@ -345,6 +348,7 @@ We might improve that in future.
 
 - VIDEO SYSTEM -
 ================
+
 Being cross-platform, there are many methods to detect different resolutions on a system.
 
 Generally it is not necessary, because many resolutions are already supported, but if
@@ -362,6 +366,7 @@ if you use a wrong configuration, because you just manually edited it.
 
 - GAME PLAY -
 =============
+
 Before you play the game, you should take a look at the controls. Normally LAlt, Ctrl, Space and Enter
 are the action keys. You can also assign joystick buttons, axes and hats to those actions or just
 change the keys to your liking. The changes are global to all the Keen games.
@@ -372,6 +377,7 @@ Click or tap on it and you get opened the Main-Menu
 
 - CHEAT CODES -
 ===============
+
 There are a full assortment of cheat codes available. Some cheats must first
 be enabled with -cheat or through the options->game menu. C+T+SPACE and G+O+D will
 always work.
@@ -397,6 +403,7 @@ Mobile Users: For those unlucky to not have a keyboard
 
 - SAVE/LOAD GAME -
 ==================
+
 The game can be saved from the menu at any time.
 Keen will be saved at the exact position it was left.
 In the vorticons engine it will save the game within the level as well.
@@ -405,6 +412,7 @@ On Galaxy and Dreams games it works like known.
 
 - FAQ -
 =======
+
 Q: Where is Commander Keen 2,3, 5 and 6?
 A: Due to legal issues with the Commander Keen games we are only allowed to provide a copy of Keen 1, 4, Dreams
    and everything mod related of those. This is possible beacause it is shareware. If you happen to have a copy of the other
@@ -425,6 +433,7 @@ A: You can already play it through. Neer thought we would support that one a day
 
 - BUG! -
 ========
+
 So you really found one or more bugs? Please report us those at
 GitHub issues and they might get fixed.
 Depending on the priority, we are going to fix them as soon as possible.
@@ -437,8 +446,10 @@ Of course you can send an email, but Github is more useful to me:
 
 http://github.com/gerstrong/Commander-Genius/issues
 
+
 - ACKNOWLEDGEMENTS -
 ====================
+
 Many thanks to people who has helped me so far in this project with their
 suggestions:
 
