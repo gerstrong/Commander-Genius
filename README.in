@@ -18,43 +18,37 @@ Porting and Support:
 
 Welcome to Commander Genius!
 
-Commander Genius is an open-source clone of
-Commander Keen (1-6, Dreams) which allows you
-to play these episodes and some of the mods
-made for them. All of the original data files
-are required to do so, however, we convienently
-provde a store where you can get some of the games
-including Episode 1, 4 and Dreams for your enjoyment.
-There are also mods that can be downloaded direclty.
+Commander Genius is an open-source clone of Commander Keen (1-6, Dreams) which
+allows you to play these episodes and some of the mods made for them. All of the
+original data files are required to do so, however, we convienently provde a
+store where you can get some of the games including Episode 1, 4 and Dreams for
+your enjoyment.  There are also mods that can be downloaded direclty.
 
 
 - About -
 =========
 
 So far Commander Keen 1-6 are fully supported.
-There are some smaller missing features like PaddleWar, but
-the whole gameplay is there.
+There are some smaller missing features like PaddleWar, but the whole gameplay
+is there.
 
 Keen Dreams is starting to work but still might have most of the issues.
 So far you can play it to the end. Also the menu lacks of a lot of features.
 Please configure input and sounds using the other games.
 
-There is an alternative called Reflection Keen which supports Keen Dreams on which
-the code is based.
+There is an alternative called Reflection Keen which supports Keen Dreams on
+which the code is based.
 
-Commander Genius runs on Linux/X11, Windows,
-Android, with plans to release on other platforms
-in the future. If you think you would like to port it,
-please send us a message and we will do our
-best to help you.
+Commander Genius runs on Linux/X11, Windows, Android, with plans to release on
+other platforms in the future. If you think you would like to port it, please
+send us a message and we will do our best to help you.
 
 
 - Features -
 ============
 
-The main goal of Commander Genius is to copy
-the original gameplay feeling as much as possible,
-and extend it further so you get a native implementation with
+The main goal of Commander Genius is to copy the original gameplay feeling as
+much as possible, and extend it further so you get a native implementation with
 even more features like:
 
 - Mod Support with nice extras
@@ -62,8 +56,8 @@ even more features like:
 - SDL 2.0 Support
 - New graphical effects
 - Multiplayer Support (Up to four players)
-- High Quality Packs which make the game look better,
-  provide better sounds and even music you might that never existed in the original games
+- High Quality Packs which make the game look better, provide better sounds and
+  even music you might that never existed in the original games
 - Ingame Menu for vorticons Keen as well as a new HUD
 - Named save slots
 - Unrestricted Joystick Support
@@ -73,62 +67,65 @@ even more features like:
 - Our Mission -
 ===============
 
-The mission of Commmander Genius held by
-opensource developers is to revive
-the gameplay experience of the games we had
-in the 90s when those Keen games were popular.
+The mission of Commmander Genius held by opensource developers is to revive the
+gameplay experience of the games we had in the 90s when those Keen games were
+popular.
 
-With experience we mean, we try to leave the graphics retro but take
-advantage of newer hardware meaning there are some enhancements over
-the original games. There is also Chocolate Keen (Keen 1-3) by NY00123 which tries
-to be as original as possible including even the frame rates as they were.
-Also RefKeen should be mentioned by the same author. It runs Keen Dreams and some of
-the Catacomb game series.
+With experience we mean, we try to leave the graphics retro but take advantage
+of newer hardware meaning there are some enhancements over the original
+games. There is also Chocolate Keen (Keen 1-3) by NY00123 which tries to be as
+original as possible including even the frame rates as they were.
+Also RefKeen should be mentioned by the same author. It runs Keen Dreams and
+some of the Catacomb game series.
 
 Now modern hardware offers much more, than what we had since back in the 90s.
-Commander Genius tries to take advantage of that modern
-hardware and bring a bit of old school
-experience to the Commander Keen games.
+Commander Genius tries to take advantage of that modern hardware and bring a bit
+of old school experience to the Commander Keen games.
 
-Because Keen was made for DOS, and we thought Linux could have
-more nice platform games, here is an alternative for you.
-With mod support and more extensions for those, because no DOS required, a lot more can be done.
+Because Keen was made for DOS, and we thought Linux could have more nice
+platform games, here is an alternative for you.
+With mod support and more extensions for those, because no DOS required, a lot
+more can be done.
 
 Yes, there also exists DOSBox but this is a more native port without emulation.
 We want to get out of that DOS limit era.
 
-Imagine Commander Genius like a platform base for the Keen games how it would be on modern
-hardware. That means there are some differences. The physics are close to the original but
-you might notice some of the details if you are an elite-expert on original Keen games.
-I think CG delivers a faster gameplay than the original ones.
-Since the framerate for graphics is higher it feels
-a bit more like that. Some people might not like that, so I recommend them to stick with dosbox
-or use dosfusion which we also provide (Disabled by default).
+Imagine Commander Genius like a platform base for the Keen games how it would be
+on modern hardware. That means there are some differences. The physics are close
+to the original but you might notice some of the details if you are an
+elite-expert on original Keen games.  I think CG delivers a faster gameplay than
+the original ones.  Since the framerate for graphics is higher it feels a bit
+more like that. Some people might not like that, so I recommend them to stick
+with dosbox or use dosfusion which we also provide (Disabled by default).
 
-Now it is a bit hard to define what that experience is obviously, because many people
-experienced that gameplay differently in the past. Some people had soundblaster, others didn't.
-Some loved the joystick support, others prefered to use keyboard.
+Now it is a bit hard to define what that experience is obviously, because many
+people experienced that gameplay differently in the past. Some people had
+soundblaster, others didn't.  Some loved the joystick support, others prefered
+to use keyboard.
 
 So getting an experience like old school for everybody is difficult.
 
 What does Commander Genius do then? Interpreting those games on modern systems,
-that's all basically. It can draw more colors on your screen and fix some issues the original
-games had back then. For example Vorticon Keen has two-button firing as option.
+that's all basically. It can draw more colors on your screen and fix some issues
+the original games had back then. For example Vorticon Keen has two-button
+firing as option.
 All buttons can be mapped to any input device in Commander Genius.
 Also the mouse can be used at some extends.
 
-Why Gerstrong did that? Because he was bored some years ago.
-Similar as some other projects get done and maintained by fans
+Why Gerstrong did that? Because he was bored some years ago.  Similar as some
+other projects get done and maintained by fans
 
-The original Keen games also have some bugs and given that the hardware
-was very limited back then, it has some weird frameskips too. There are many details
-that are different when playing Keen with Commander Genius. So the conclusion is as follows.
+The original Keen games also have some bugs and given that the hardware was very
+limited back then, it has some weird frameskips too. There are many details that
+are different when playing Keen with Commander Genius. So the conclusion is as
+follows.
 
 If you really want a vanilla feeling, even feel the lack of hardware support and
 eventual slowdowns, we encourage you playing Commander Keen on Dosbox.
 Many people are out there that think to be the right way to play it that way.
 Also for some mods it might be the only way.
-Still though Commander Genius has a patching system in which some mods run very well.
+Still though Commander Genius has a patching system in which some mods run very
+well.
 
 Commander Genius wants to be more like a new Jump'n'Run game that interprets
 Commander Keen. Billy Blaze visits all the levels you played before in the
@@ -136,13 +133,14 @@ DOS-Version taking advantage of your powerful computer or your mobile device.
 That's the strength of Commander Genius! If you are one of those people who want
 to experience Commander Keen some new ways, then this software is for you!
 
-The Dosfusion is a compilation of dosbox code into Commander Genius. It uses
-SDL 2.0, is a bit more recent compared to the original one, so you can get more out of it.
-You have some other grapical filters, the ones CG was built for and a mapper like in dosbox,
-sharing the experience you love to know. Many thanks to Qbix and his team
-for his awesome program and especially some help.
-We are still not sure, if we going to remove that implementation and concentrate more
-on the native port. There are a lot of beautiful things that can be done...
+The Dosfusion is a compilation of dosbox code into Commander Genius. It uses SDL
+2.0, is a bit more recent compared to the original one, so you can get more out
+of it.
+You have some other grapical filters, the ones CG was built for and a mapper
+like in dosbox, sharing the experience you love to know. Many thanks to Qbix and
+his team for his awesome program and especially some help.
+We are still not sure, if we going to remove that implementation and concentrate
+more on the native port. There are a lot of beautiful things that can be done...
 
 Unfortunately on Android Dosfusion does not work.
 
@@ -150,71 +148,78 @@ Unfortunately on Android Dosfusion does not work.
 - History -
 ===========
 
-The first engine was CloneKeen by a developer named Caitlin Shaw.
-Since the engine was left abandonned for most of the part, Gerstrong
-took it and created the fork called CloneKeenPlus and fixed some problems
-CloneKeen had. This fork comes from the 0.83 Version. A 0.84 version
-has been released since. That code was never taken into here, because
-it was never required.
+The first engine was CloneKeen by a developer named Caitlin Shaw.  Since the
+engine was left abandonned for most of the part, Gerstrong took it and created
+the fork called CloneKeenPlus and fixed some problems CloneKeen had. This fork
+comes from the 0.83 Version. A 0.84 version has been released since. That code
+was never taken into here, because it was never required.
 
 After CloneKeenPlus, Commander Genius was born.
-It is a complete rewrite of the engine in C++. The transition to
-Commander Genius means a transition from C to C++ code mostly using OOP.
-After all this coding, we have retained only a small portion of the
-original CloneKeen code (about 0.02%).
+It is a complete rewrite of the engine in C++. The transition to Commander
+Genius means a transition from C to C++ code mostly using OOP.
+After all this coding, we have retained only a small portion of the original
+CloneKeen code (about 0.02%).
 
-There exist other similar engines, like Refkeen and Chocolate Keen from
-which CG learned and tried to improve the overall gaming experience.
+There exist other similar engines, like Refkeen and Chocolate Keen from which CG
+learned and tried to improve the overall gaming experience.
 
 
 - License -
 ===========
 
-The Commander Genius source code may be freely
-distributed and modified as per the GPL, just
-remember to give credit to the original
-authors. We work very hard on on this project
-and we deserve at least those credits!
+The Commander Genius source code may be freely distributed and modified as per
+the GPL, just remember to give credit to the original authors. We work very hard
+on on this project and we deserve at least those credits!
 
-Also give credits to the others who provided
-us with some code. They really deserve it.
+Also give credits to the others who provided us with some code. They really
+deserve it.
 
 
 - Setup  -
 ==========
 
-Download it, install it and launch it. In the Game Launcher click/tap on "New Stuff" and choose your game.
-It will start to download. After it finished, you can play it. Can download more titles if you want, enjoy!
+Download it, install it and launch it. In the Game Launcher click/tap on "New
+Stuff" and choose your game.
+It will start to download. After it finished, you can play it. Can download more
+titles if you want, enjoy!
 
-
-If you happen to use ubuntu you might want to use our PPA so you always get updates.
-Add it using the command line and typing: sudo add-apt-repository ppa:gerstrong/cgenius
+If you happen to use ubuntu you might want to use our PPA so you always get
+updates.
+Add it using the command line and typing: sudo add-apt-repository
+ppa:gerstrong/cgenius
 
 Mageia and Arch Linux also have some packages by third-party maintainers.
 
-Windows 7 up to 10 are supported. About older versions I don't know. On some Windows Systems might need
-to install the "Microsoft Visual Studio Redistributable 2015 (x86)" package in order to get it running.
+Windows 7 up to 10 are supported. About older versions I don't know. On some
+Windows Systems might need to install the "Microsoft Visual Studio
+Redistributable 2015 (x86)" package in order to get it running.
 
 
 CG-Data locations:
 
-a) On Windows you usually find that directory under "Documents\Commander Genius".
+a) On Windows you usually find that directory under
+   "Documents\Commander Genius".
 b) If you use Linux open the directory "~/.CommanderGenius".
-c) Androids datapath usually is "/Android/data/net.sourceforge.clonekeenplus/files". For that you need to connect the device to your PC,
-   normally through a USB-Cable and in your options you have to enable file transfer. That way you access the that directory.
+c) Androids datapath usually is
+   "/Android/data/net.sourceforge.clonekeenplus/files". For that you need to
+   connect the device to your PC, normally through a USB-Cable and in your
+   options you have to enable file transfer. That way you access the that
+   directory.
    If you started CG you already should find it and see some games.
 
-If you have registered version Keen 2,3,5 or 6 put them into the directory where you will find your download games. That subdirectory
-is called "games". You can put personalized mods there as well.
+If you have registered version Keen 2,3,5 or 6 put them into the directory where
+you will find your download games. That subdirectory is called "games". You can
+put personalized mods there as well.
 
 Setting up the data of the game:
 
  * Copy the directory of the games to the "games" subdirectory of CG.
    If you own the registered versions, you can play all episodes,
    otherwise download the shareware version and copy them there.
-   You also can use mods. If you have a bundled version,
-   you already should be able to play episodes  1 and 4, as they are installed in that directory.
-   If you connect your Android Device to the PC normally you find a directory a path called like
+   You also can use mods. If you have a bundled version, you already should be
+   able to play episodes 1 and 4, as they are installed in that directory.
+   If you connect your Android Device to the PC normally you find a directory a
+   path called like
    "/Android/data/net.sourceforge.clonekeenplus/files/games".
    Copy the games there were the shareware versions are and you should be fine.
 
@@ -227,22 +232,29 @@ Setting up the data of the game:
    Keen 6 - Version 1.4 (EGA)
    Keen Dreams - Version v1.13 (EGA)
 
-   Other version might work, but we cannot guarantee. If you happen to own another version, I would
-   recommend it patching it first. There are free patches for that around the net
-   Also Keen 6 works on CG. Don't use the 1.5 version, this one is not supported, sorry!
+   Other version might work, but we cannot guarantee. If you happen to own
+   another version, I would recommend it patching it first. There are free
+   patches for that around the net
+   Also Keen 6 works on CG. Don't use the 1.5 version, this one is not
+   supported, sorry!
    Get the 1.4 version instead.
 
- * If you want to use some patched mods just copy them as separate games to that path.
-   Remeber that due copyrights mods usually do not come with the games to path. Like in Dosbox, you
-   have to copy the original game data with the patches in the same directory.
+ * If you want to use some patched mods just copy them as separate games to that
+   path.
+   Remeber that due copyrights mods usually do not come with the games to path.
+   Like in Dosbox, you have to copy the original game data with the patches in
+   the same directory.
 
- * If you want improved sounds and music, just download the High Quality Pack (HQP)
-   and extract it in the CG-Data location.
-   Be aware that CG handles global HQ files and per game files, depending where the resources get extracted.
+ * If you want improved sounds and music, just download the High Quality Pack
+   (HQP) and extract it in the CG-Data location.
+   Be aware that CG handles global HQ files and per game files, depending where
+   the resources get extracted.
    Read that readme of HQP for more information in how to use those resources.
-   Using HQP you might have to copy some resources to the specific game directory so
-   CG would detect it. For example you might want to copy ck1tiles.bmp to <CG-Data>/games/keen1/.
-   I'm thinking to make these HQP deprecated and provide special version of the games in future
+   Using HQP you might have to copy some resources to the specific game
+   directory so CG would detect it. For example you might want to copy
+   ck1tiles.bmp to <CG-Data>/games/keen1/.
+   I'm thinking to make these HQP deprecated and provide special version of the
+   games in future
 
 How to launch Commander Genius (If you didn't compile it):
  * Go to the program's directory.
@@ -256,7 +268,8 @@ Getting the most recent Source Code:
    cd Commander-Genius
    git submodule init
    git submodule update
- * I recommend you using the master branch. I might create a more stable one later
+ * I recommend you using the master branch. I might create a more stable one
+   later
 
 
 How to compile it under Ubuntu:
@@ -279,12 +292,16 @@ How to compile it under Ubuntu:
  * cd CGeniusBuild
  * Run "cmake ../CGeniusSrc"
  * Run "make".
- * If everything went fine you should be able to see an executable in the build directory.
-   Copy the game data files to <CG-Data> if you didn't already and run Commander Genius.
-   Even without any data copied CG should run but tell that there are no games then.
+ * If everything went fine you should be able to see an executable in the build
+   directory.
+   Copy the game data files to <CG-Data> if you didn't already and run Commander
+   Genius.
+   Even without any data copied CG should run but tell that there are no games
+   then.
 
 How to compile it under Ubuntu:
- * Install using the package manager (replace "yum" with "dnf" for fedora 21 or older):
+ * Install using the package manager (replace "yum" with "dnf" for fedora 21 or
+   older):
 
    dnf install -y \
      SDL2-devel boost-devel libogg-devel gcc-c++ cmake libvorbis-devel SDL2_image-devel mesa-libGL-devel libcurl-devel cmake-data
@@ -295,16 +312,19 @@ How to compile it under Ubuntu:
  * cd CGeniusBuild
  * Run "cmake ../CGeniusSrc"
  * Run "make".
- * If everything went fine you should be able to see an executable in the build directory.
-   Copy the game data files to <CG-Data> if you didn't already and run Commander Genius.
-   Even without any data copied CG should run but tell that there are no games then.
+ * If everything went fine you should be able to see an executable in the build
+   directory.
+   Copy the game data files to <CG-Data> if you didn't already and run Commander
+   Genius.
+   Even without any data copied CG should run but tell that there are no games
+   then.
 
 Compiling CG on any Linux/UNIX (other than Ubuntu):
  * If you want to compile the game, you need to have all the standard
    development libraries and GNU C Compiler (at least version 4.8) installed
    on your system.
- * You need to install the "vorbis", "ogg", "SDL", "curl", "boost" and "Mesa/OpenGL" development libraries to get
-   it successfully compiled.
+ * You need to install the "vorbis", "ogg", "SDL", "curl", "boost" and
+   "Mesa/OpenGL" development libraries to get it successfully compiled.
  * Extract my source code into "CGeniusSrc".
  * cd into the source directory "CGeniusSrc"
  * mkdir -p CGeniusBuild
@@ -322,64 +342,74 @@ Also check out the CMakeLists.txt for more information.
 - STARTING A GAME IN CG -
 =========================
 
-Normally when you start Commander Genius you see the launcher menu in which you can choose the Keen games that were detected in the subdirectory.
-The CGLog.txt also tells you what CG detected on the system and gives feedback on further events that might occur.
+Normally when you start Commander Genius you see the launcher menu in which you
+can choose the Keen games that were detected in the subdirectory.
+The CGLog.txt also tells you what CG detected on the system and gives feedback
+on further events that might occur.
 It is good to take a look at that file if something in CG goes wrong.
 
 Optionally you can pass launch arguments to Commander Genius. These are:
 
-dir=<game-directory>	This will launch the game of the given directory, in case it can be started,
-                        otherwise it will go to the game launcher with a warning shown.
-                        vg.: "CGenius.exe dir=games/keen4"
+dir=<game-directory> This will launch the game of the given directory, in case
+                     it can be started, otherwise it will go to the game
+                     launcher with a warning shown.
+                     vg.: "CGenius.exe dir=games/keen4"
 
-finale=<on/off>		If you want to directly show the finale of a game pass this parameter:
-			vg.: "CGenius.exe finale=on"
+finale=<on/off>      If you want to directly show the finale of a game pass this
+			         parameter: vg.: "CGenius.exe finale=on"
 
-level=<level>		If supply that parameter it will directly open the given level. Useful for testing stuff
+level=<level>        If supply that parameter it will directly open the given
+                     level. Useful for testing stuff
 
 
 Example: If you want to start the game of the path "C:\games\keen5" type:
 
 CGenius dir=games/keen5
 
-Remember, the path must be known by the game launcher. Absolute paths of games, can be defined in the cgenius.cfg in the [FileHandling] Section.
+Remember, the path must be known by the game launcher. Absolute paths of games,
+can be defined in the cgenius.cfg in the [FileHandling] Section.
 We might improve that in future.
 
 
 - VIDEO SYSTEM -
 ================
 
-Being cross-platform, there are many methods to detect different resolutions on a system.
+Being cross-platform, there are many methods to detect different resolutions on
+a system.
 
-Generally it is not necessary, because many resolutions are already supported, but if
-you want to support other resolutions that you don't find in the options list just modify the
-"cgenius.cfg" file by hand. CG always reads this file and checks whether your card and
-monitor support it and if possible use it. But, use it at your own risk.
+Generally it is not necessary, because many resolutions are already supported,
+but if you want to support other resolutions that you don't find in the options
+list just modify the "cgenius.cfg" file by hand. CG always reads this file and
+checks whether your card and monitor support it and if possible use it. But, use
+it at your own risk.
 
-We had to go that way, because there are many system that through SDL do not always return the correct list
-of possible resolutions though CG tries to read that list, so you might be lucky and everything for
-your case is supported.
+We had to go that way, because there are many system that through SDL do not
+always return the correct list of possible resolutions though CG tries to read
+that list, so you might be lucky and everything for your case is supported.
 
-CAUTION: This is recommended for advanced users who know what they do. The team won't bother
-if you use a wrong configuration, because you just manually edited it.
+CAUTION: This is recommended for advanced users who know what they do. The team
+won't bother if you use a wrong configuration, because you just manually edited
+it.
 
 
 - GAME PLAY -
 =============
 
-Before you play the game, you should take a look at the controls. Normally LAlt, Ctrl, Space and Enter
-are the action keys. You can also assign joystick buttons, axes and hats to those actions or just
-change the keys to your liking. The changes are global to all the Keen games.
+Before you play the game, you should take a look at the controls. Normally LAlt,
+Ctrl, Space and Enter are the action keys. You can also assign joystick buttons,
+axes and hats to those actions or just change the keys to your liking. The
+changes are global to all the Keen games.
 
-For Mobile users, I added Sandwich button which during the gameplay can be seen at the top right corner (FONTCOLORS::RED color).
+For Mobile users, I added Sandwich button which during the gameplay can be seen
+at the top right corner (FONTCOLORS::RED color).
 Click or tap on it and you get opened the Main-Menu
 
 
 - CHEAT CODES -
 ===============
 
-There are a full assortment of cheat codes available. Some cheats must first
-be enabled with -cheat or through the options->game menu. C+T+SPACE and G+O+D will
+There are a full assortment of cheat codes available. Some cheats must first be
+enabled with -cheat or through the options->game menu. C+T+SPACE and G+O+D will
 always work.
 
 
@@ -392,13 +422,14 @@ Galaxy Keen (4-6 and Dreams):
 KEY        	ACTION             DESCRIPTION
 F10+G	   	Godmode        In god mode you are invincible!
 F10+I	  	All Items      Gives all items, similar to the original.
-F10+J	  	Fly	       This will make Keen fly at any time
-F10+N	  	No Clipping    With this cheat you will go through walls. Be careful, you might also fall
-                               through the floor sometimes
+F10+J	  	Fly	           This will make Keen fly at any time
+F10+N	  	No Clipping    With this cheat you will go through walls.
+                           Be careful, you might also fall through the floor
+                           sometimes
 
 
-Mobile Users: For those unlucky to not have a keyboard
-              you can open "options->cheats" and trigger those wonderful cheats
+Mobile Users: For those unlucky to not have a keyboard you can open
+              "options->cheats" and trigger those wonderful cheats
 
 
 - SAVE/LOAD GAME -
@@ -414,32 +445,41 @@ On Galaxy and Dreams games it works like known.
 =======
 
 Q: Where is Commander Keen 2,3, 5 and 6?
-A: Due to legal issues with the Commander Keen games we are only allowed to provide a copy of Keen 1, 4, Dreams
-   and everything mod related of those. This is possible beacause it is shareware. If you happen to have a copy of the other
-   Keen games just copy them to the data directory under "games" and CG will detect them.
+A: Due to legal issues with the Commander Keen games we are only allowed to
+   provide a copy of Keen 1, 4, Dreams and everything mod related of those. This
+   is possible beacause it is shareware. If you happen to have a copy of the
+   other Keen games just copy them to the data directory under "games" and CG
+   will detect them.
 
 Q: Commander Genius is slow? Please help!
-A: You can decrease the fps under settings->video. OpenGL may also help on some systems with ScaleX disabled.
-   Try to lower the resolution, a lower filter, or decrease some stuff in the sounds section.
-   Stereo sound requires additional calculations than mono sound. There are many things you can do, to speed up
-   the program. Also HQP requires more resources.
+A: You can decrease the fps under settings->video. OpenGL may also help on some
+   systems with ScaleX disabled.
+   Try to lower the resolution, a lower filter, or decrease some stuff in the
+   sounds section.
+   Stereo sound requires additional calculations than mono sound. There are many
+   things you can do, to speed up the program. Also HQP requires more resources.
 
 Q: What about Keen Dreams?
-A: You can already play it through. Neer thought we would support that one a day, but NY00123 made it possible.
-   Not all versions are supported but the supported version has some little enhancements as well.
-   If you forget to collect some of the bombs in a level you can replay that level making the game better to play
-   in my opinion. The support on that game is still WIP but you can finish it already.
+A: You can already play it through. Neer thought we would support that one a
+   day, but NY00123 made it possible.
+   Not all versions are supported but the supported version has some little
+   enhancements as well.
+   If you forget to collect some of the bombs in a level you can replay that
+   level making the game better to play in my opinion. The support on that game
+   is still WIP but you can finish it already.
 
 
 - BUG! -
 ========
 
-So you really found one or more bugs? Please report us those at
-GitHub issues and they might get fixed.
+So you really found one or more bugs? Please report us those at GitHub issues
+and they might get fixed.
 Depending on the priority, we are going to fix them as soon as possible.
 Sending us the "CGLog.html" or "CGLog.txt" file might help tracking the error.
-Also remember to test the lastest version from the testing repo we sometimes provide.
-Your error might have been already fixed there. If there is no testing version after the release,
+Also remember to test the lastest version from the testing repo we sometimes
+provide.
+Your error might have been already fixed there. If there is no testing version
+after the release,
 just report it. ;-)
 
 Of course you can send an email, but Github is more useful to me:
@@ -489,30 +529,35 @@ Pickle
 NY00123
 
 
-Also many special thanks to Martin Hauber (Tulip), Hagel and Mancus Nemo who has been
-supporting me all the time in testing the Windows version of CG
-and giving me access to a lot of information about the games.
+Also many special thanks to Martin Hauber (Tulip), Hagel and Mancus Nemo who has
+been supporting me all the time in testing the Windows version of CG and giving
+me access to a lot of information about the games.
 Without you it wouldn't be that great!
 
 And also special thanks to Chad Ian Anderson (Pizza2004) in helping us so
 much in many points of the game.
 Every time I had chance to test his port in Mac it was awesome. I like his work!
-Even in difficult times he always supported us. I hope to read from him some time again...
+Even in difficult times he always supported us. I hope to read from him some
+time again...
 
-Furthermore special thanks to Scott (Pickle) and Albert Zeyer
-for his changes. They helped out a lot on the quality of the code and performance incrate.
+Furthermore special thanks to Scott (Pickle) and Albert Zeyer for his
+changes. They helped out a lot on the quality of the code and performance
+incrate.
 
-Also special thanks to NY00123 for helping to test many different versions and improving upon.
-Too bad he invests his time on his own projects right now, but still awesome stuff he creates.
-Also the Reflection Keen port helped to integrate Keen Dreams in CG, thanks for that hard work!
+Also special thanks to NY00123 for helping to test many different versions and
+improving upon.
+Too bad he invests his time on his own projects right now, but still awesome
+stuff he creates.
+Also the Reflection Keen port helped to integrate Keen Dreams in CG, thanks for
+that hard work!
 
 I'm sure, there were more people who helped us and we forgot to mention, but
 many thanks to them also.
 
 And many thanks to all of you, the project has become that awesome!
 
-****************************************************************************
+********************************************************************************
 For questions, comments, or updates to the source tree
 please contact: gerstrong@gmail.com or go through
 SourceForge at http://clonekeenplus.sourceforge.net/
-****************************************************************************
+********************************************************************************
