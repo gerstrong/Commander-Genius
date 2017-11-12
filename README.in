@@ -96,7 +96,7 @@ to the original, but you might notice some of the details if you are an
 elite expert on original Keen games.  I think CG delivers a faster gameplay than
 the original ones.  Since the framerate for graphics is higher, it feels a bit
 more like that. Some people might not like that, so I recommend them to stick
-with DOSBox or use Dosfusion which we also provide (disabled by default).
+with DOSBox.
 
 Now, it is a bit hard to define what that experience is obviously, because many
 people experienced that gameplay differently in the past. Some people had
@@ -132,18 +132,6 @@ Commander Keen. Billy Blaze visits all the levels you played before in the
 DOS version, taking advantage of your powerful computer or your mobile device.
 That's the strength of Commander Genius! If you are one of those people who want
 to experience Commander Keen in some new ways, then this software is for you!
-
-Dosfusion is a compilation of DOSBox code into Commander Genius. It uses SDL
-2.0, and is a bit more recent compared to the original one, so you can get more
-out of it.
-You have some other graphical filters, the ones CG was built for, and a mapper
-like in DOSBox, sharing the experience you know and love. Many thanks to Qbix
-and his team for his awesome program and especially for some help.
-We are still not sure whether we are going to remove that implementation and
-concentrate more on the native port. There are a lot of beautiful things that
-can be done...
-
-Unfortunately, on Android, Dosfusion does not work.
 
 
 - History -
