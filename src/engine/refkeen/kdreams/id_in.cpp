@@ -154,7 +154,7 @@ static	id0_word_t		DemoOffset,DemoSize;
 static	void			(*INL_KeyHook)(void);
 //static	void interrupt	(*OldKeyVect)(void);
 
-static	const id0_char_t			*ParmStrings[] = {"nojoys","nomouse",id0_nil_t};
+//static	const id0_char_t			*ParmStrings[] = {"nojoys","nomouse",id0_nil_t};
 
 //	Internal routines
 
@@ -544,13 +544,13 @@ INL_ShutJoy(id0_word_t joy)
 void
 IN_Startup(void)
 {
-	id0_boolean_t	checkjoys,checkmouse;
-	id0_word_t	i;
+	id0_boolean_t	/*checkjoys,*/checkmouse;
+	/*id0_word_t	i;*/
 
 	if (IN_Started)
 		return;
 
-	checkjoys = true;
+	/*checkjoys = true;*/
 	checkmouse = true;
     /*for (i = 1;i < id0_argc;i++)
 	{
@@ -664,9 +664,9 @@ INL_AdjustCursor(CursorInfo *info,id0_word_t buttons,id0_int_t dx,id0_int_t dy)
 void
 IN_ReadCursor(CursorInfo *info)
 {
-	id0_word_t	i,
-			buttons;
-	id0_int_t		dx,dy;
+//	id0_word_t	i,
+	id0_word_t	buttons;
+	id0_int_t	dx,dy;
 
 	info->x = info->y = 0;
 	info->button0 = info->button1 = false;
@@ -795,12 +795,12 @@ IN_ReadControl(id0_int_t player,ControlInfo *info)
                 buttons += 1 << 1;*/
 			realdelta = false;
 			break;
-        /*case ctrl_Joystick1:
+                case ctrl_Joystick1:
 		case ctrl_Joystick2:
-			INL_GetJoyDelta(type - ctrl_Joystick,&dx,&dy,false);
+		/*	INL_GetJoyDelta(type - ctrl_Joystick,&dx,&dy,false);
 			buttons = INL_GetJoyButtons(type - ctrl_Joystick);
-			realdelta = true;
-            break;*/
+			realdelta = true;*/
+		break;
 		case ctrl_Mouse:
 			INL_GetMouseDelta(&dx,&dy);
 			buttons = INL_GetMouseButtons();
@@ -999,7 +999,7 @@ IN_AckBack(void)
     /*BE_ST_AltControlScheme_Push();
     BE_ST_AltControlScheme_PrepareInputWaitControls();*/
 
-	id0_word_t	i;
+//	id0_word_t	i;
 
     /*while (!LastScan)
 	{
@@ -1049,7 +1049,7 @@ IN_AckBack(void)
 void
 IN_Ack(void)
 {
-	id0_word_t	i;
+//	id0_word_t	i;
 
 	IN_ClearKey(LastScan);
 	LastScan = sc_None;
@@ -1084,7 +1084,7 @@ id0_boolean_t
 IN_IsUserInput(void)
 {
 	id0_boolean_t	result;
-	id0_word_t	i;
+//	id0_word_t	i;
 
 	result = LastScan;
 

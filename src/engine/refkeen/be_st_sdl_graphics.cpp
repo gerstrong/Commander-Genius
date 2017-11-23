@@ -206,9 +206,9 @@ static void BEL_ST_CreatePadTextureIfNeeded(SDL_Texture **padTexturePtrPtr)
 	SDL_SetTextureBlendMode(*padTexturePtrPtr, SDL_BLENDMODE_BLEND); // Yes there's some Alpha
 }
 */
-static void BEL_ST_RedrawTextToBuffer(uint32_t *picPtr, int picWidth, const char *text)
+/*static void BEL_ST_RedrawTextToBuffer(uint32_t *picPtr, int picWidth, const char *text)
 {
-    /*for (int currRow = 0, fontXpmIndex = 3; currRow < ALTCONTROLLER_CHAR_PIX_HEIGHT; ++currRow, picPtr += picWidth, ++fontXpmIndex)
+    for (int currRow = 0, fontXpmIndex = 3; currRow < ALTCONTROLLER_CHAR_PIX_HEIGHT; ++currRow, picPtr += picWidth, ++fontXpmIndex)
 	{
 		const char *fontRowPtr = pad_font_mono_xpm[fontXpmIndex];
 		uint32_t *currPtr = picPtr;
@@ -223,8 +223,8 @@ static void BEL_ST_RedrawTextToBuffer(uint32_t *picPtr, int picWidth, const char
 				}
 			}
 		}
-    }*/
-}
+    }
+}*/
 /*
 static const char * BEL_ST_PrepareToShowOnePad(const char *scanCodes, const char **padXpm, SDL_Texture **padTexturePtrPtr, bool *areButtonsShownPtr)
 {

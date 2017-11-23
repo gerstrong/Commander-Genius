@@ -45,7 +45,8 @@
 typedef	enum	{
 					sdm_Off,
 					sdm_PC,sdm_AdLib,
-					sdm_SoundBlaster,sdm_SoundSource
+					sdm_SoundBlaster,
+                                        sdm_SoundSource
 				}	SDMode;
 typedef	enum	{
 					smm_Off,smm_AdLib

@@ -110,16 +110,22 @@ typedef	id0_byte_t		ScanCode;
 #define	key_Tab			0x09
 #define	key_Delete		0x7f
 
-typedef	enum		{
-						demo_Off,demo_Record,demo_Playback,demo_PlayDone
-					} Demo;
-typedef	enum		{
-						ctrl_Keyboard,
-							ctrl_Keyboard1 = ctrl_Keyboard,ctrl_Keyboard2,
-						ctrl_Joystick,
-							ctrl_Joystick1 = ctrl_Joystick,ctrl_Joystick2,
-						ctrl_Mouse
-					} ControlType;
+typedef	enum 
+{
+	demo_Off,demo_Record,demo_Playback,demo_PlayDone
+} Demo;
+
+typedef	enum 
+{
+	ctrl_Keyboard,
+	ctrl_Keyboard1 = ctrl_Keyboard,
+        ctrl_Keyboard2,
+	ctrl_Joystick,
+	ctrl_Joystick1 = ctrl_Joystick,
+        ctrl_Joystick2,
+	ctrl_Mouse
+} ControlType;
+
 typedef	enum		{
 						motion_Left = -1,motion_Up = -1,
 						motion_None = 0,

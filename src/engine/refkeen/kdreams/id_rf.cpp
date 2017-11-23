@@ -262,7 +262,7 @@ void RFL_UpdateSprites (void);
 =====================
 */
 
-static const id0_char_t *ParmStrings[] = {"comp",""};
+//static const id0_char_t *ParmStrings[] = {"comp",""};
 
 void RF_Startup (void)
 {
@@ -2459,6 +2459,7 @@ void RefKeen_Patch_id_rf(void)
 		refkeen_compat_id_rf_allanims_table_offset = 0xC340;
 		break;
 #endif
+	  case BE_GAMEVER_LAST: break;
 	}
 }
 

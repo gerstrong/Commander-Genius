@@ -2588,8 +2588,8 @@ USL_DoHelpInit(memptr text, id0_long_t len, int &lines)
             //top,num,loc,
             id0_far *lp/*,
             base,srcbase,destbase*/;
-    ScanCode	waitkey;
-    id0_longword_t	lasttime;
+    //ScanCode	waitkey;
+    //id0_longword_t	lasttime;
     WindowRec	wr;
 
     lines = USL_FormatHelp((id0_char_t id0_far *)text,len);
@@ -2611,10 +2611,10 @@ USL_DoHelpInit(memptr text, id0_long_t len, int &lines)
 
     IN_ClearKeysDown();
     moved = true;
-    lasttime = 0;
+    //lasttime = 0;
     scroll = 0;
     done = false;
-    waitkey = sc_None;
+    //waitkey = sc_None;
 
 }
 
@@ -3164,10 +3164,10 @@ USL_CtlDLButtonCustom(UserCall call,id0_word_t i,id0_word_t n)
 static id0_boolean_t
 USL_CtlDSButtonCustom(UserCall call,id0_word_t i, id0_word_t n)
 {
-	id0_boolean_t		ok;
-	id0_char_t		*filename;
-	id0_word_t		err;
-	BE_FILE_T			file;
+//	id0_boolean_t		ok;
+//	id0_char_t		*filename;
+//	id0_word_t		err;
+//	BE_FILE_T			file;
 	Rect		r;
 	UserItem	*ip;
 	SaveGame	*game;

@@ -79,8 +79,8 @@ extern "C"
 //	Stuff I need
 //
 // This table maps channel numbers to carrier and modulator op cells
-static	id0_byte_t			carriers[9] =  { 3, 4, 5,11,12,13,19,20,21},
-						modifiers[9] = { 0, 1, 2, 8, 9,10,16,17,18};
+//static	id0_byte_t			carriers[9] =  { 3, 4, 5,11,12,13,19,20,21};
+//static	id0_byte_t			modifiers[9] = { 0, 1, 2, 8, 9,10,16,17,18};
 #if REFKEEN_SD_ENABLE_MUSIC
 static	ActiveTrack		*tracks[sqMaxTracks];
 static	id0_word_t			sqMode,sqFadeStep;
@@ -116,7 +116,7 @@ static	id0_boolean_t			SD_Started;
 /*** (REFKEEN) We use an alternative delay mechanism for OPL emulation ***/
 //static	id0_boolean_t			TimerDone;
 //static	id0_word_t			TimerVal,TimerDelay10,TimerDelay25,TimerDelay100;
-static const id0_char_t			*ParmStrings[] =
+/*static const id0_char_t			*ParmStrings[] =
 						{
 							"noal",
 							"nosb",
@@ -127,7 +127,7 @@ static const id0_char_t			*ParmStrings[] =
 							"ss2",
 							"ss3",
 							id0_nil_t
-						};
+						};*/
 static	void			(*SoundUserHook)(void);
 static	id0_word_t			SoundNumber,SoundPriority;
 //static	void interrupt	(*t0OldService)(void);
@@ -135,8 +135,9 @@ static	id0_word_t			t0CountTable[] = {2,2,2,2,10,10};
 //static	id0_long_t			LocalTime;
 
 //	PC Sound variables
-static	id0_byte_t			pcLastSample,id0_far *pcSound;
-static	id0_longword_t		pcLengthLeft;
+//static	id0_byte_t			pcLastSample;
+static	id0_byte_t id0_far              *pcSound;
+//static	id0_longword_t		pcLengthLeft;
 static	id0_word_t			pcSoundLookup[255];
 
 //	SoundBlaster variables
@@ -168,8 +169,8 @@ static	id0_longword_t		ssLengthLeft;
 //	AdLib variables
 static	id0_boolean_t			alNoCheck;
 static	id0_byte_t			id0_far *alSound;
-static	id0_word_t			alBlock;
-static	id0_longword_t		alLengthLeft;
+//static	id0_word_t			alBlock;
+//static	id0_longword_t		alLengthLeft;
 
 //	Sequencer variables
 #if REFKEEN_SD_ENABLE_MUSIC
@@ -303,6 +304,7 @@ done:;
 //	SDL_PCPlaySound() - Plays the specified sound on the PC speaker
 //
 ///////////////////////////////////////////////////////////////////////////
+/*
 #ifdef	_MUSE_
 void
 #else
@@ -314,13 +316,14 @@ SDL_PCPlaySound(PCSound id0_far *sound)
 //asm	pushf
 //asm	cli
 
-	pcLastSample = -1;
+	pcLastSample = static_cast<id0_byte_t>(-1);
 	pcLengthLeft = sound->common.length;
 	pcSound = sound->data;
 
 //	BE_ST_UnlockAudioRecursively();
 //asm	popf
 }
+*/
 
 ///////////////////////////////////////////////////////////////////////////
 //
@@ -355,11 +358,12 @@ asm	out	0x61,al
 //	SDL_PCService() - Handles playing the next sample in a PC sound
 //
 ///////////////////////////////////////////////////////////////////////////
+/*
 static void
 SDL_PCService(void)
 {
     id0_byte_t	s = 0;
-    id0_word_t	t = 0;
+    //id0_word_t	t = 0;
 
 	if (pcSound)
 	{
@@ -373,7 +377,7 @@ SDL_PCService(void)
 			pcLastSample = s;
 			if (s)					// We have a frequency!
 			{
-				t = pcSoundLookup[s];
+				//t = pcSoundLookup[s];
 //				BE_ST_PCSpeakerOn(t);
 #if 0
 			asm	mov	bx,[t]
@@ -411,7 +415,7 @@ SDL_PCService(void)
 		}
 	}
 }
-
+*/
 ///////////////////////////////////////////////////////////////////////////
 //
 //	SDL_ShutPC() - Turns off the pc speaker
@@ -1005,6 +1009,7 @@ SDL_ALStopSound(void)
 //	SDL_ALPlaySound() - Plays the specified sound on the AdLib card
 //
 ///////////////////////////////////////////////////////////////////////////
+/*
 #ifdef	_MUSE_
 void
 #else
@@ -1049,14 +1054,14 @@ SDL_ALPlaySound(AdLibSound_Legacy id0_far *sound)
 //	BE_ST_UnlockAudioRecursively();
 //asm	popf
 }
-
+*/
 
 ///////////////////////////////////////////////////////////////////////////
 //
 // 	SDL_ALSoundService() - Plays the next sample out through the AdLib card
 //
 ///////////////////////////////////////////////////////////////////////////
-
+/*
 static void
 SDL_ALSoundService(void)
 {
@@ -1081,7 +1086,7 @@ SDL_ALSoundService(void)
 		}
 	}
 }
-
+*/
 
 #if REFKEEN_SD_ENABLE_MUSIC
 ///////////////////////////////////////////////////////////////////////////
@@ -1251,7 +1256,7 @@ SDL_DetectAdLib(void)
 //		dispatches to whatever other routines are appropriate
 //
 ///////////////////////////////////////////////////////////////////////////
-static void /*interrupt*/
+/*static void 
 SDL_t0Service(void)
 {
 	//id0_byte_t		sdcount;
@@ -1264,9 +1269,11 @@ static	id0_word_t	count = 1
 
 	switch (SoundMode)
 	{
+	case sdm_Off: break;
 	case sdm_PC:
 		SDL_PCService();
 		break;
+	case sdm_SoundBlaster:
 	case sdm_AdLib:
 		SDL_ALSoundService();
 		break;
@@ -1319,7 +1326,7 @@ static	id0_word_t	count = 1
 
 	//outportb(0x20,0x20);	// Ack the interrupt
 }
-
+*/
 ///////////////////////////////////////////////////////////////////////////
 //
 //	SDL_ShutDevice() - turns off whatever device was being used for sound fx
@@ -1330,22 +1337,24 @@ SDL_ShutDevice(void)
 {
 	switch (SoundMode)
 	{
+	case sdm_Off: break;
 	case sdm_PC:
 		SDL_ShutPC();
 		break;
 	case sdm_AdLib:
 		SDL_ShutAL();
 		break;
-#if REFKEEN_SD_ENABLE_SOUNDBLASTER
 	case sdm_SoundBlaster:
+#if REFKEEN_SD_ENABLE_SOUNDBLASTER	    
 		SDL_ShutSB();
-		break;
 #endif
-#if REFKEEN_SD_ENABLE_SOUNDSOURCE
+		break;
+
 	case sdm_SoundSource:
+#if REFKEEN_SD_ENABLE_SOUNDSOURCE	    
 		SDL_ShutSS();
-		break;
 #endif
+		break;
 	}
 	SoundMode = sdm_Off;
 }
@@ -1360,19 +1369,22 @@ SDL_StartDevice(void)
 {
 	switch (SoundMode)
 	{
+	case sdm_Off: break;
+	case sdm_PC: break;
+	  
 	case sdm_AdLib:
 		SDL_StartAL();
 		break;
-#if REFKEEN_SD_ENABLE_SOUNDBLASTER
 	case sdm_SoundBlaster:
+#if REFKEEN_SD_ENABLE_SOUNDBLASTER
 		SDL_StartSB();
-		break;
 #endif
-#if REFKEEN_SD_ENABLE_SOUNDSOURCE
+		break;
 	case sdm_SoundSource:
+#if REFKEEN_SD_ENABLE_SOUNDSOURCE
 		SDL_StartSS();
-		break;
 #endif
+		break;
 	}
 	SoundNumber = SoundPriority = 0;
 }
@@ -1630,19 +1642,21 @@ SD_Default(id0_boolean_t gotit,SDMode sd,SMMode sm)
 	{
 		switch (sd)
 		{
+		case sdm_Off: break;
+		case sdm_PC: break;
 		case sdm_AdLib:
 			gotsd = AdLibPresent;
 			break;
-#if REFKEEN_SD_ENABLE_SOUNDBLASTER
 		case sdm_SoundBlaster:
+#if REFKEEN_SD_ENABLE_SOUNDBLASTER
 			gotsd = SoundBlasterPresent;
-			break;
 #endif
-#if REFKEEN_SD_ENABLE_SOUNDSOURCE
+			break;
 		case sdm_SoundSource:
+#if REFKEEN_SD_ENABLE_SOUNDSOURCE
 			gotsd = SoundSourcePresent;
-			break;
 #endif
+			break;
 		}
 	}
 	if (!gotsd)
@@ -1801,22 +1815,23 @@ SD_SoundPlaying(void)
 
 	switch (SoundMode)
 	{
+	case sdm_Off: break;	  
 	case sdm_PC:
 		result = pcSound? true : false;
 		break;
 	case sdm_AdLib:
 		result = alSound? true : false;
 		break;
-#if REFKEEN_SD_ENABLE_SOUNDBLASTER
 	case sdm_SoundBlaster:
+#if REFKEEN_SD_ENABLE_SOUNDBLASTER
 		result = sbSamplePlaying;
-		break;
 #endif
-#if REFKEEN_SD_ENABLE_SOUNDSOURCE
+		break;
 	case sdm_SoundSource:
+#if REFKEEN_SD_ENABLE_SOUNDSOURCE
 		result = ssSample? true : false;
-		break;
 #endif
+		break;
 	}
 
 	if (result)
@@ -1835,22 +1850,23 @@ SD_StopSound(void)
 {
 	switch (SoundMode)
 	{
+        case sdm_Off: break;	  
 	case sdm_PC:
 		SDL_PCStopSound();
 		break;
 	case sdm_AdLib:
 		SDL_ALStopSound();
 		break;
-#if REFKEEN_SD_ENABLE_SOUNDBLASTER
 	case sdm_SoundBlaster:
+#if REFKEEN_SD_ENABLE_SOUNDBLASTER
 		SDL_SBStopSample();
-		break;
 #endif
-#if REFKEEN_SD_ENABLE_SOUNDSOURCE
+		break;
 	case sdm_SoundSource:
+#if REFKEEN_SD_ENABLE_SOUNDSOURCE
 		SDL_SSStopSample();
-		break;
 #endif
+		break;
 	}
 
 	SDL_SoundFinished();
