@@ -93,16 +93,21 @@ VorticonMenu(GsRect<float>(0.15f, 0.24f, 0.65f, 0.55f) )
 	mpMenuDialog->addControl( mpFullScreenSwitch );
 #endif
 
+    mpVPadSwitch  = new Switch( "VirtPad" );
+
 #if defined(USE_OPENGL)
     mpOpenGLSwitch = new Switch( "OpenGL" );
     mpMenuDialog->addControl( mpOpenGLSwitch );
 
     mpRenderScaleQualitySel = new ComboSelection( "OGL Filter",
         filledStrList( 2, "nearest", "linear" ) );
-    mpMenuDialog->addControl( mpRenderScaleQualitySel );
+
+#else
+    mpRenderScaleQualitySel = new ComboSelection( "Quality",
+        filledStrList( 3, "nearest", "linear", "best" ) );
 #endif
 
-    mpVPadSwitch  = new Switch( "VirtPad" );
+    mpMenuDialog->addControl( mpRenderScaleQualitySel );
 
     mpBorderColorSwitch = new Switch( "Border Color" );
     mpMenuDialog->addControl( mpBorderColorSwitch );

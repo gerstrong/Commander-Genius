@@ -43,18 +43,18 @@ private:
     Switch			*mpOpenGLSwitch;
 #endif
 
-    Switch          *mpVPadSwitch;
+    Switch          *mpVPadSwitch = nullptr;
 
-    ComboSelection	*mpRenderScaleQualitySel;
+    ComboSelection	*mpRenderScaleQualitySel = nullptr;
 
-    ComboSelection	*mpFilterSelection;
-    ComboSelection	*mpAspectSelection;
-    Switch		*mpVSyncSwitch;
-    Switch		*mpBorderColorSwitch;
-    NumberControl		*mpHorizBordersSelection;
-    Button		*mpFullScreenSwitch;
-    ComboSelection	*mpResolutionSelection;
-    ComboSelection	*mpGameResSelection;
+    ComboSelection	*mpFilterSelection = nullptr;
+    ComboSelection	*mpAspectSelection = nullptr;
+    Switch		*mpVSyncSwitch = nullptr;
+    Switch		*mpBorderColorSwitch = nullptr;
+    NumberControl		*mpHorizBordersSelection = nullptr;
+    Button		*mpFullScreenSwitch = nullptr;
+    ComboSelection	*mpResolutionSelection = nullptr;
+    ComboSelection	*mpGameResSelection = nullptr;
 
 };
 

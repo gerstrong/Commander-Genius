@@ -240,9 +240,13 @@ void CVideoSettings::release()
 	{
 		mUserVidConf.m_normal_scale = (scalerStr.at(0) == 'n');
 		if (mUserVidConf.m_normal_scale)
-            mUserVidConf.m_ScaleXFilter = (filterOptionType)(scalerStr.at(6)-'0');
+        {
+            mUserVidConf.m_ScaleXFilter = filterOptionType(scalerStr.at(6)-'0');
+        }
 		else
-            mUserVidConf.m_ScaleXFilter = (filterOptionType)(scalerStr.at(5)-'0');
+        {
+            mUserVidConf.m_ScaleXFilter = filterOptionType(scalerStr.at(5)-'0');
+        }
 	}
 	else
 	{
