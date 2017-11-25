@@ -329,7 +329,7 @@ id0_int_t DebugKeys (void)
 		PrintY+=6;
 		US_Print("  Warp to which level(0-16):");
 		VW_UpdateScreen();
-		esc = !US_LineInput (px,py,str,NULL,true,2,0);
+        /*esc = !US_LineInput (px,py,str,NULL,true,2,0);
 		if (!esc)
 		{
 			level = atoi (str);
@@ -338,7 +338,7 @@ id0_int_t DebugKeys (void)
 				gamestate.mapon = level;
 				playstate = warptolevel;
 			}
-		}
+        }*/
 		return 1;
 	}
 	return 0;

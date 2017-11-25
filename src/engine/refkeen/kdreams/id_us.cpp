@@ -94,7 +94,7 @@ typedef	struct
 extern	id0_boolean_t		tedlevel;
 extern	id0_word_t		tedlevelnum;
 extern	void		TEDDeath(void);
-static	const id0_char_t		*ParmStrings[] = {"TEDLEVEL",""};
+//static	const id0_char_t		*ParmStrings[] = {"TEDLEVEL",""};
 
 
 //	Global variables
@@ -587,8 +587,8 @@ USL_ClearTextScreen(void)
 void
 US_TextScreen(void)
 {
-	id0_word_t	i,
-			sx,sy;
+    //id0_word_t	i;
+    id0_word_t		sx,sy;
 
 	USL_ClearTextScreen();
 
@@ -609,6 +609,7 @@ US_TextScreen(void)
 	case BE_GAMEVER_KDREAMSE120:
 #include "id_us_s_kdreams120.hpp"
 		break;
+    case BE_GAMEVER_LAST: break;
 	}
 #endif // EGA/CGA
 #undef	scr_rowcol
@@ -629,6 +630,8 @@ US_TextScreen(void)
 				break;
 		}
     }*/
+
+
 }
 
 // REFKEEN - Looks like these are used in version 1.0 only
@@ -1206,11 +1209,12 @@ USL_XORICursor(id0_int_t x,id0_int_t y,const id0_char_t *s,id0_word_t cursor)
 //		returned
 //
 ///////////////////////////////////////////////////////////////////////////
+/*
 id0_boolean_t
 US_LineInput(id0_int_t x,id0_int_t y,id0_char_t *buf,const id0_char_t *def,id0_boolean_t escok,
 				id0_int_t maxchars,id0_int_t maxwidth)
 {
-/*
+
 
 
 
@@ -1426,9 +1430,9 @@ US_LineInput(id0_int_t x,id0_int_t y,id0_char_t *buf,const id0_char_t *def,id0_b
 	VW_UpdateScreen();
 
 	IN_ClearKeysDown();
-    return(result);*/
+    return(result);
 }
-
+*/
 //	Control panel routines
 
 static	id0_boolean_t		FlushHelp;
@@ -1829,10 +1833,12 @@ USL_DoHit(id0_word_t hiti,id0_word_t hitn)
 
 		switch (ip->type)
 		{
+        case uii_Bad: break;
 		case uii_Button:
 			// Must have a custom routine to handle hits - this just redraws
 			ip->sel ^= ui_Selected;
 			USL_DrawItem(hiti,hitn);
+            break;
 		case uii_CheckBox:
 			ip->sel ^= ui_Selected;
 			USL_DrawItem(hiti,hitn);
@@ -2053,7 +2059,8 @@ USL_GlideCursor(id0_long_t newx,id0_long_t newy)
 static void
 USL_FindRect(Rect r,Motion xd,Motion yd)
 {
-	id0_word_t		i,i1,i2,i3;
+    id0_word_t		i;
+    id0_word_t      i1=0, i2=0, i3=0;
 	// (REFKEEN) Incrementing/Decrementing an enum is a bad idea (leading to undefined behaviors in C),
 	// and illegal in C++. Hence, m1 and m2 are redefined to be a (signed) int here. Casts are done (to be compatible with C++).
 	int m1, m2;
@@ -2197,21 +2204,22 @@ USL_FindRect(Rect r,Motion xd,Motion yd)
 	switch (yd)
 	{
 	case motion_Up:
-		i1 = 1,i2 = 0,i3 = 2;
+        i1 = 1; i2 = 0; i3 = 2;
 		break;
 	case motion_None:
 		switch (xd)
 		{
 		case motion_Left:
-			i1 = 3,i2 = 0,i3 = 6;
+            i1 = 3; i2 = 0; i3 = 6;
 			break;
 		case motion_Right:
-			i1 = 5,i2 = 8,i3 = 2;
+            i1 = 5; i2 = 8; i3 = 2;
 			break;
+        case motion_None: break;
 		}
 		break;
 	case motion_Down:
-		i1 = 7,i2 = 8,i3 = 6;
+        i1 = 7; i2 = 8; i3 = 6;
 		break;
 	}
 
@@ -2578,16 +2586,18 @@ void
 USL_DoHelpInit(memptr text, id0_long_t len, int &lines)
 {
     //CursorInfo	info;
-    id0_boolean_t		done,
-            moved;
-    id0_int_t			scroll;
+    //id0_boolean_t		done;
+    //id0_boolean_t       moved;
+    //id0_int_t			scroll;
     id0_word_t		//i,
             //pixdiv,
-            w,h,
-            cur,page,
+            w,h
+            //cur,
+            //page,
             //top,num,loc,
-            id0_far *lp/*,
-            base,srcbase,destbase*/;
+            //id0_far *lp
+            //,base,srcbase,destbase
+            ;
     //ScanCode	waitkey;
     //id0_longword_t	lasttime;
     WindowRec	wr;
@@ -2604,16 +2614,16 @@ USL_DoHelpInit(memptr text, id0_long_t len, int &lines)
     VW_HideCursor();
     VW_UpdateScreen();
 
-    USL_MeasureString("",NULL,&w,&h);
-    page = WindowH / h;
-    cur = 0;
-    lp = (id0_word_t *)LineOffsets;
+    USL_MeasureString("", nullptr, &w, &h);
+    //page = WindowH / h;
+    //cur = 0;
+    //lp = (id0_word_t *)LineOffsets;
 
     IN_ClearKeysDown();
-    moved = true;
+    //moved = true;
     //lasttime = 0;
-    scroll = 0;
-    done = false;
+    //scroll = 0;
+    //done = false;
     //waitkey = sc_None;
 
 }
@@ -2633,7 +2643,7 @@ bool USL_DoHelpPonder(memptr text,id0_long_t len,
             id0_far *lp,
             base,srcbase,destbase;
     ScanCode	waitkey;
-    id0_longword_t	lasttime;
+    //id0_longword_t	lasttime;
     WindowRec	wr;
 
     CursorInfo info;
@@ -2664,13 +2674,13 @@ bool USL_DoHelpPonder(memptr text,id0_long_t len,
     VW_HideCursor();
     VW_UpdateScreen();   
 
-    USL_MeasureString("",NULL,&w,&h);
+    USL_MeasureString("", nullptr, &w,&h);
     page = WindowH / h;
-    lp = (id0_word_t *)LineOffsets;
+    lp = reinterpret_cast<id0_word_t *>(LineOffsets);
 
     IN_ClearKeysDown();
     moved = true;
-    lasttime = 0;
+    //lasttime = 0;
     waitkey = sc_None;
 
 
@@ -3522,7 +3532,7 @@ USL_HitHotKey(id0_int_t i,id0_int_t n)
 {
 	UserItem	*ip;
 
-	if (ip = TheItems[++i])
+    if ( (ip = TheItems[++i]) != nullptr )
 	{
 		if ((n = USL_FindDown(TheItems[i])) == -1)
 			n = 0;
@@ -3781,8 +3791,8 @@ US_ControlPanel_Init(void)
     /*BE_ST_AltControlScheme_Push();
     BE_ST_AltControlScheme_PrepareMenuControls();*/
 
-    id0_boolean_t		done,
-                buttondown,inrect;
+    //id0_boolean_t		done;
+    //id0_boolean_t       buttondown,inrect;
 
 
     c = LastScan;
@@ -4143,8 +4153,8 @@ US_DisplayHighScores(id0_int_t which)
 		PrintX = WindowX;
 		US_Print(" ");
 		strcpy(Scores[which].name,"");
-		US_LineInput(PrintX,PrintY,Scores[which].name,id0_nil_t,true,MaxHighName,
-                        (WindowW / 2) - 8);
+/*		US_LineInput(PrintX,PrintY,Scores[which].name,id0_nil_t,true,MaxHighName,
+                        (WindowW / 2) - 8);*/
 	}
 	fontcolor = F_BLACK;
 
