@@ -24,7 +24,7 @@ struct stOption
 {
 	std::string menuname;
 	std::string name;
-	signed char value;
+    signed char value = 0;
 };
 
 #endif /* OPTIONS_H_ */

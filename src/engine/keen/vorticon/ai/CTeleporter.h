@@ -5,8 +5,8 @@
  *      Author: gerstrong
  */
 
-#ifndef _CTELEPORTER_H_
-#define _CTELEPORTER_H_
+#ifndef CTELEPORTER_H
+#define CTELEPORTER_H
 
 #include "../CVorticonSpriteObject.h"
 #include "CPlayer.h"
@@ -21,7 +21,7 @@ class CTeleporter : public CVorticonSpriteObject
 {
 public:
 	CTeleporter(CMap *p_map, std::vector<CPlayer> &mp_vec_Player,
-			Uint32 x, Uint32 y );
+            const Uint32 x, const Uint32 y );
 
 	void reset();
 	
@@ -33,8 +33,8 @@ public:
 
 	teleportation_state direction;
 	int whichplayer;
-	unsigned int destx;
-	signed int desty;
+    int destx;
+    int desty;
 
 	int baseframe;
 	int idleframe;
@@ -46,4 +46,4 @@ private:
 	std::vector<CPlayer> &m_Player;
 };
 
-#endif /* _CTELEPORTER_H_ */
+#endif /* CTELEPORTER_H */

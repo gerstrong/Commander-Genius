@@ -4,8 +4,8 @@
  * Some classes use it as pointer to get access to the data
  */
 
-#ifndef __inventory_h__
-#define __inventory_h__
+#ifndef inventory_h
+#define inventory_h
 
 #include <boost/property_tree/ptree.hpp>
 
@@ -13,7 +13,7 @@ struct stInventory
 {
     unsigned long score = 0;
     unsigned long extralifeat = 0;
-    unsigned int charges = 0;        // ray gun ammo
+    int charges = 0;        // ray gun ammo
     signed char lives = 0;
     bool HasPogo = false;
     unsigned char HasCardYellow = 0;
@@ -59,7 +59,7 @@ struct stInventory
         score = node.get<unsigned long>("score", 0);
         extralifeat = node.get<unsigned long>("extralifeat", 0);
 
-        charges = node.get<unsigned int>("charges", 0);
+        charges = node.get<int>("charges", 0);
         lives = node.get<signed char>("lives", 0);
         HasPogo = node.get<bool>("HasPogo", false);
         HasCardYellow = node.get<unsigned char>("HasCardYellow", 0);
@@ -80,4 +80,4 @@ struct stInventory
 
 };
 
-#endif
+#endif /* inventory_h */

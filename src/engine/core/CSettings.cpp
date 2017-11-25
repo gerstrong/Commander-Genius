@@ -301,8 +301,10 @@ bool CSettings::loadGameOptions()
 	{
         auto &second = option.second;
 		bool newvalue;
-        Configuration.ReadKeyword("Game", option.second.name, &newvalue, false);
-        second.value = (newvalue) ? 1 : 0;
+        if ( Configuration.ReadKeyword("Game", option.second.name, &newvalue, false) )
+        {
+            second.value = (newvalue) ? 1 : 0;
+        }
 	}
 	
 	gLogging.ftextOut("<br>Your personal settings were loaded successfully...<br>");

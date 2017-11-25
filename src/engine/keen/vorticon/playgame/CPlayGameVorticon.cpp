@@ -457,18 +457,16 @@ void CPlayGameVorticon::cycleCamLead()
 
 void CPlayGameVorticon::handleFKeys()
 {
-	int i;
-
 	// CTSpace Cheat
     if ((gInput.getHoldedKey(KC) &&
-        gInput.getHoldedKey(KT) &&
-        gInput.getHoldedKey(KSPACE)) ||
-        gBehaviorEngine.mCheatmode.items)
+         gInput.getHoldedKey(KT) &&
+         gInput.getHoldedKey(KSPACE)) ||
+         gBehaviorEngine.mCheatmode.items)
 	{
         gBehaviorEngine.mCheatmode.items = false;
 		gInput.flushAll();
-        const int numPlayers = gBehaviorEngine.mPlayers;
-        for(i=0;i<numPlayers;i++)
+        const size_t numPlayers = size_t(gBehaviorEngine.mPlayers);
+        for(size_t i=0;i<numPlayers;i++)
 		{
 			m_Player[i].pfiring = false;
 			if (m_Player[i].m_playingmode)
@@ -637,16 +635,21 @@ void CPlayGameVorticon::teleportPlayerFromLevel(CPlayer &player, int origx, int 
 {
 	int destx, desty;
 
-	std::unique_ptr<CTeleporter> teleporter( new CTeleporter(mMap.get(), m_Player, origx, origy) );
+    std::unique_ptr<CTeleporter> teleporter(
+                new CTeleporter(mMap.get(),
+                                m_Player,
+                                Uint32(origx),
+                                Uint32(origy))
+                );
 	player.beingteleported = true;
 	player.solid = false;
 	destx = gBehaviorEngine.getTeleporterTableAt(5).x;
 	desty = gBehaviorEngine.getTeleporterTableAt(5).y;
 	teleporter->solid = false;
 	teleporter->direction = TELEPORTING_SCROLL;
-	teleporter->destx = destx>>TILE_S;
-	teleporter->desty = desty>>TILE_S;
-	teleporter->whichplayer = player.m_index;
+    teleporter->destx = destx>>TILE_S;
+    teleporter->desty = desty>>TILE_S;
+    teleporter->whichplayer = int(player.m_index);
 	mSpriteObjectContainer.push_back(move(teleporter));
 }
 
@@ -678,11 +681,12 @@ void CPlayGameVorticon::collectHighScoreInfo(CHighScores &highScores)
 		if (mpLevelCompleted[15]) saved_cities++;
 		if (mpLevelCompleted[16]) saved_cities++;
 
-		highScores.writeEP2HighScore(m_Player[0].inventory.score, saved_cities);
+        highScores.writeEP2HighScore(int(m_Player[0].inventory.score),
+                                     saved_cities);
 	}
 	else
 	{
-		highScores.writeHighScoreCommon(m_Player[0].inventory.score);
+        highScores.writeHighScoreCommon(int(m_Player[0].inventory.score));
 	}
 }
 
@@ -723,17 +727,20 @@ void CPlayGameVorticon::drawAllElements()
     mMap->_drawForegroundTiles();
 
 
-    const unsigned int numPlayers = gBehaviorEngine.mPlayers;
+
+    const size_t numPlayers = size_t(gBehaviorEngine.mPlayers);
     for( size_t i=0 ; i<numPlayers ; i++ )
     {
         m_Player[i].drawStatusScreen();
     }
 
+    auto &options = gBehaviorEngine.mOptions;
+
     if(mpFinale) // Finale processing if it is opened
     {
         mpFinale->render();
     }        
-    else if(gBehaviorEngine.mOptions[GameOption::HUD].value ) // Draw the HUD
+    else if(options[GameOption::HUD].value ) // Draw the HUD
     {
         for( auto &hud : mpHUDVec )
         {
