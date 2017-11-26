@@ -19,12 +19,11 @@
 
 
 CInventory::CInventory(const int id) :
-m_HUD(Item.m_points, Item.m_lifes, Item.m_bullets, id),
-mp_StatusBgrnd(NULL)
+m_HUD(Item.m_points, Item.m_lifes, Item.m_bullets, id)
 {
 	reset();
 
-	int Episode = gBehaviorEngine.getEpisode();
+    auto Episode = gBehaviorEngine.getEpisode();
 
 	if(Episode >= 4)
 	{
@@ -107,8 +106,11 @@ void CInventory::toggleStatusScreen()
                     new CScrollEffect(mp_StatusScreen->getStatusSfc(), scroll_pos, -scaleFac*scaleFac, CENTER, DOWN));
 
 		if(mp_StatusBgrnd)
+        {
 			SDL_FreeSurface(mp_StatusBgrnd);
-		mp_StatusBgrnd = NULL;
+        }
+
+        mp_StatusBgrnd = nullptr;
 	}
 
 	gInput.flushAll();

@@ -21,19 +21,22 @@ struct stItemGalaxy
 	unsigned long  m_points;
 	unsigned long m_lifeAt;
 	int m_drops;
-	unsigned int m_bullets;
+    int m_bullets;
 
     struct
     {
 		void fillup()
         {
-            red = 1, blue = 1, green = 1, yellow = 1;
+            red = 1; blue = 1; green = 1; yellow = 1;
         }
         void clear()
         {
-            red = 0, blue = 0, green = 0, yellow = 0;
+            red = 0; blue = 0; green = 0; yellow = 0;
         }
-		int red, blue, green, yellow;
+
+        int red = 0;   int blue = 0;
+        int green = 0; int yellow = 0;
+
 	} m_gem;
 
 	int m_keycards;

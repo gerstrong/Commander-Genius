@@ -17,7 +17,7 @@ const int EFFECT_TIME = 10;
 const int EFFECT_SPEED = 10;
 
 CHUD::CHUD(unsigned long &score, signed char &lives,
-           unsigned int &charges, const int id) :
+           signed int &charges, const int id) :
 m_score(score),
 mLives(lives),
 m_charges(charges),

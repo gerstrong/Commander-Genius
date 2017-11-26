@@ -663,6 +663,7 @@ void	PowerContact (objtype *ob, objtype *hit)
 		SD_PlaySound (BOMBBOOMSND);
 		ChangeState (ob,&s_bombexplode);
 		break;
+    default: break;
 	}
 }
 
@@ -2242,6 +2243,7 @@ void KeenContact (objtype *ob, objtype *hit)
 			gamestate.keys++;
 			ChangeState (hit,&s_bonusrise);
 			break;
+        default: break;
 		}
 		break;
 
@@ -2318,7 +2320,7 @@ void KeenContact (objtype *ob, objtype *hit)
 	case	shotobj:
 			KillKeen ();
 		break;
-
+    default: break;
 	}
 }
 

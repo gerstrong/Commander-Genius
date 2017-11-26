@@ -28,7 +28,7 @@ class CHUD
 public:
     CHUD(unsigned long &score,
          signed char &lives,
-         unsigned int &charges,
+         signed int &charges,
          const int id); // TODO: Must be removed later and replaced by a reference
 
 
@@ -63,7 +63,7 @@ private:
 
 	unsigned long &m_score;
 	signed char &mLives;
-	unsigned int &m_charges;
+    signed int &m_charges;
 
 	unsigned long mOldScore;
 	unsigned int mOldCharges;

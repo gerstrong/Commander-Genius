@@ -22,10 +22,16 @@ class CScrollEffect : public CEffects
 public:        
 
     CScrollEffect(SDL_Surface *pScrollSurface,
-            const Sint16 initialPos, Sint8 speed, const direction_t hDir, const direction_t vDir);
+                  const int initialPos,
+                  const int speed,
+                  const direction_t hDir,
+                  const direction_t vDir);
 
     CScrollEffect(GsWeakSurface &scrollSurface,
-            const Sint16 initialPos, Sint8 speed, const direction_t hDir, const direction_t vDir);
+                  const int initialPos,
+                  const int speed,
+                  const direction_t hDir,
+                  const direction_t vDir);
 
     void ponder(const float deltaT);
     void render();
@@ -34,10 +40,10 @@ public:
 
 private:
 
-    Sint16 mInitSpeed;
-    Sint16 mSpeed;
-    Sint16 mInitialSpeed;
-	Sint16 mScrollPos;
+    int mInitSpeed = 0;
+    int mSpeed = 0;
+    int mInitialSpeed = 0;
+    int mScrollPos = 0;
     const direction_t mHDir;
     const direction_t mVDir;
     std::shared_ptr<SDL_Surface> mpOldSurface;

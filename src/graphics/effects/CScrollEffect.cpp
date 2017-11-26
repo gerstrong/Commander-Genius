@@ -12,8 +12,10 @@
 
 
 CScrollEffect::CScrollEffect(SDL_Surface *pScrollSurface,
-                             const Sint16 initialPos, Sint8 speed,
-                             const direction_t hDir, const direction_t vDir) :
+                             const int initialPos,
+                             const int speed,
+                             const direction_t hDir,
+                             const direction_t vDir) :
 mInitSpeed(speed),
 mSpeed(2*speed),
 mInitialSpeed(speed),
@@ -25,8 +27,10 @@ mVDir(vDir)
 }
 
 CScrollEffect::CScrollEffect(GsWeakSurface &scrollSurface,
-                             const Sint16 initialPos, Sint8 speed,
-                             const direction_t hDir, const direction_t vDir) :
+                             const int initialPos,
+                             const int speed,
+                             const direction_t hDir,
+                             const direction_t vDir) :
 mInitSpeed(speed),
 mSpeed(speed),
 mInitialSpeed(speed),
