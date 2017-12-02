@@ -18,13 +18,13 @@ public:
 	CArachnut(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y);
 
 
-	bool isNearby(CSpriteObject &theObject);
+    bool isNearby(CSpriteObject &theObject) override;
 
-	void getTouchedBy(CSpriteObject &theObject);
+    void getTouchedBy(CSpriteObject &theObject) override;
 	
-	int checkSolidD( int x1, int x2, int y2, const bool push_mode );
+    int checkSolidD( int x1, int x2, int y2, const bool push_mode ) override;
 
-	void process();
+    void process() override;
 
 
 };

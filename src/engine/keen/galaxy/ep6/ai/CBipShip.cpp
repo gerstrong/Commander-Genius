@@ -157,6 +157,14 @@ bool CBipShip::isNearby(CSpriteObject& theObject)
   return true;
 }
 
+int CBipShip::checkSolidD( int x1, int x2, int y2, const bool push_mode )
+{
+    turnAroundOnCliff( x1, x2, y2 );
+
+    return CGalaxySpriteObject::checkSolidD(x1, x2, y2, push_mode);
+}
+
+
 void CBipShip::getTouchedBy(CSpriteObject& theObject)
 {
 	if(dead || theObject.dead)
@@ -181,12 +189,10 @@ void CBipShip::getTouchedBy(CSpriteObject& theObject)
 
 void CBipShip::process()
 {
-	performCollisions();
-		
-	if(getActionNumber() >= A_BIPSHIP_HIT)
-	{
-	  performGravityHigh();
-	}	
+    performCollisions();
+
+    performGravityHigh();
+
 
 	if(!processActionRoutine())
 	    exists = false;

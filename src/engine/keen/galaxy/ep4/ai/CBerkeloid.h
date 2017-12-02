@@ -19,12 +19,12 @@ public:
 	CBerkeloid(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y);
 
 	// When something touches the firing guy
-	void getTouchedBy(CSpriteObject &theObject);
+    void getTouchedBy(CSpriteObject &theObject) override;
 
-	void setActionForce(const size_t ActionNumber);
+    void setActionForce(const size_t ActionNumber) override;
 
 	// Check if some objects being near around need attention.
-	bool isNearby(CSpriteObject &theObject);
+    bool isNearby(CSpriteObject &theObject) override;
 
 	// Will make him move/float around
 	void processMoving();
@@ -33,12 +33,16 @@ public:
 	void processThrowing();
 
 	// Happens every LPS. Here the AI is handled
-	void process();
+    void process() override;
 
 private:
-	int mTimer;
+    int mTimer = 0;
 
-	void (CBerkeloid::*mpProcessState)();
+    // For moving a bit up and down
+    int mVertMoveDir = 1;
+
+
+    void (CBerkeloid::*mpProcessState)() = nullptr;
 	std::map< size_t, void (CBerkeloid::*)() > mActionMap;
 
 };
@@ -65,7 +69,7 @@ public:
 	void process();
 
 private:
-	void (CBerkFlame::*mpProcessState)();
+    void (CBerkFlame::*mpProcessState)() = nullptr;
 	std::map< size_t, void (CBerkFlame::*)() > mActionMap;
 
 };
