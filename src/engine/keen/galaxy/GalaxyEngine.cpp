@@ -382,6 +382,7 @@ void GalaxyEngine::pumpEvent(const CEvent *evPtr)
         mOpenedGamePlay = true;
         gBehaviorEngine.setPause(false);
         gEventManager.add( new CloseAllMenusEvent() );
+        gInput.flushAll();
     }
     else if( dynamic_cast<const OpenMainMenuEvent*>(evPtr) )
     {

@@ -27,7 +27,7 @@ user1(0),
 user2(0),
 user3(0),
 user4(0),
-m_climbing(false),
+mIsClimbing(false),
 mClipped(false),
 m_jumpdown(false),
 mEndOfAction(false)
@@ -40,7 +40,7 @@ void CGalaxySpriteObject::setupGalaxyObjectOnMap(const size_t ActionBaseOffset,
 						 const size_t ActionNumber )
 {
 	m_ActionBaseOffset = ActionBaseOffset;
-	m_climbing = false;
+	mIsClimbing = false;
 	m_jumped = false;
 
 	setActionForce(ActionNumber);
@@ -134,7 +134,7 @@ void CGalaxySpriteObject::performInverseGravityHigh()
  */
 void CGalaxySpriteObject::processFalling()
 {
-	if(m_climbing)
+	if(mIsClimbing)
 		return;
 
 	CSpriteObject::processFalling();
@@ -156,7 +156,7 @@ int CGalaxySpriteObject::checkSolidU(int x1, int x2, int y1, const bool push_mod
 	{
 		int8_t blocked;
 
-		if(m_climbing)
+		if(mIsClimbing)
 		{
 			x1 += 4*COLISION_RES;
 			x2 -= 4*COLISION_RES;
@@ -166,7 +166,7 @@ int CGalaxySpriteObject::checkSolidU(int x1, int x2, int y1, const bool push_mod
 		{
 			blocked = TileProperty[mpMap->at(c>>CSF, y1>>CSF)].bdown;
 
-			if(blocked == 17 && m_climbing)
+			if(blocked == 17 && mIsClimbing)
 				return 0;
 
 			if( blocked >= 2 && blocked <= 7 && checkslopedU(c, y1, blocked))
@@ -177,7 +177,7 @@ int CGalaxySpriteObject::checkSolidU(int x1, int x2, int y1, const bool push_mod
 		if( blocked >= 2 && blocked <= 7 && checkslopedU(x2, y1, blocked ))
 			return 1;
 
-		if(blocked == 17 && m_climbing)
+		if(blocked == 17 && mIsClimbing)
 			return 0;
 	}
 
@@ -196,7 +196,7 @@ int CGalaxySpriteObject::checkSolidD( int x1, int x2, int y2, const bool push_mo
 	{
 		int8_t blockedu;
 
-		if(m_climbing)
+		if(mIsClimbing)
 		{
 			x1 += 4*COLISION_RES;
 			x2 -= 4*COLISION_RES;
@@ -206,7 +206,7 @@ int CGalaxySpriteObject::checkSolidD( int x1, int x2, int y2, const bool push_mo
 		{
 			blockedu = TileProperty[mpMap->at(c>>CSF, y2>>CSF)].bup;
 
-			if( blockedu == 17 && m_climbing)
+			if( blockedu == 17 && mIsClimbing)
 				return 0;
 
 			if( blockedu >= 2 && blockedu <= 7 && checkslopedD(c, y2, blockedu) )
@@ -217,7 +217,7 @@ int CGalaxySpriteObject::checkSolidD( int x1, int x2, int y2, const bool push_mo
 
 		blockedu = TileProperty[mpMap->at(x2>>CSF, y2>>CSF)].bup;
 
-		if(blockedu == 17 && m_climbing)
+		if(blockedu == 17 && mIsClimbing)
 			return 0;
 
 		if( blockedu >= 2 && blockedu <= 7 && checkslopedD(x2, y2, blockedu)  )

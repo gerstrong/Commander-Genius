@@ -41,7 +41,7 @@ void CSaveGameController::setGameDirectory(const std::string& game_directory)
 	m_savedir = JoinPaths("save", game_directory);
 }
 
-void CSaveGameController::setEpisode(char Episode)
+void CSaveGameController::setEpisode(const int Episode)
 {	m_Episode = Episode;	}
 
 void CSaveGameController::setLevel(int Level)
@@ -657,8 +657,7 @@ bool CSaveGameController::alreadyExits()
     }
 }
 
-// This function writes all the data from the CPlayGame and CMenu Instances to a file,
-// closes it and flushes the data block.
+
 bool CSaveGameController::save()
 {
 	std::ofstream StateFile;

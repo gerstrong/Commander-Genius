@@ -241,8 +241,8 @@ void TestSprites(void)
 */
 id0_int_t DebugKeys (void)
 {
-	id0_boolean_t esc;
-	id0_int_t level;
+/*	id0_boolean_t esc;
+    id0_int_t level;*/
 
 #if FRILLS
 	if (Keyboard[0x12] && ingame)   // DEBUG: end + 'E' to quit level

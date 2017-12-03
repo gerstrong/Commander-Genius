@@ -65,8 +65,8 @@ private:
 	signed char &mLives;
     signed int &m_charges;
 
-	unsigned long mOldScore;
-	unsigned int mOldCharges;
+    unsigned long mOldScore;
+    signed int mOldCharges;
 
     GsSprite mHUDBox;
 

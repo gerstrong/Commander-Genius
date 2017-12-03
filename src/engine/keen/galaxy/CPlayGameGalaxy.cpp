@@ -203,18 +203,18 @@ bool CPlayGameGalaxy::saveXMLGameState()
     stateNode.put("difficulty", gBehaviorEngine.mDifficulty);
 
     // Save number of Players
-    const unsigned int numPlayers = gBehaviorEngine.mPlayers;
+    const size_t numPlayers = size_t(gBehaviorEngine.mPlayers);
     stateNode.put("NumPlayer", numPlayers);
 
     ptree &deadNode = pt.add("death", "");
-    for(unsigned int id = 0 ; id < mDead.size() ; id++ )
+    for (size_t id = 0 ; id < mDead.size() ; id++)
     {
         deadNode.put("<xmlattr>.player", id);
         deadNode.put("<xmlattr>.dead", mDead[id]);
         deadNode.put("<xmlattr>.gameover", mGameOver[id]);
     }
 
-    for( unsigned int id=0 ; id<numPlayers ; id++ )
+    for (size_t id=0 ; id<numPlayers ; id++)
     {
         ptree &playerNode = pt.add("Player", "");
         playerNode.put("<xmlattr>.variant", id);
@@ -232,10 +232,14 @@ bool CPlayGameGalaxy::saveXMLGameState()
     levelPlayNode.put("<xmlattr>.active", active);
 
     if( active )
+    {
         m_LevelPlay >> levelPlayNode;
+    }
 
     if( gSaveGameController.saveXMLTree(pt) )
+    {
         return true;
+    }
 
     return false;
 }

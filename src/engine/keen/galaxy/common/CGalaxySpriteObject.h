@@ -68,7 +68,7 @@ public:
 	int user4;
 
 	bool m_jumped;
-	bool m_climbing;
+	bool mIsClimbing;
 	bool mClipped;
 	bool m_jumpdown;
 	bool mEndOfAction;

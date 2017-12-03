@@ -120,9 +120,13 @@ void CPlatformDrop::process()
 		m_drop_speed = 0;
 
         if(m_Origin.y < m_Pos.y)
+        {
             moveUp(hoverSpeed);
+        }
 		else if(m_Origin.y > m_Pos.y)
+        {
 			moveDown(1);
+        }
 	}
     else if(m_drop_speed > 0) // not even a blocker. continue moving until out of map.
     {

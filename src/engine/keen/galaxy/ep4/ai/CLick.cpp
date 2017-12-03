@@ -129,7 +129,7 @@ bool CLick::isNearby(CSpriteObject &theObject)
         else if( dx>+CSF_DISTANCE_TO_FOLLOW_TOLERANCE && odd )
             xDirection = RIGHT;
 
-        if(getActionNumber(A_LICK_LAND))
+        if(getActionNumber(A_LICK_LAND) && blockedd)
         {
             int absdx = (dx<0) ? -dx : dx;
 
