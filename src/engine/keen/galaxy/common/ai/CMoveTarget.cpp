@@ -3,22 +3,26 @@
 
 void CMoveTarget::fetchInitialDir(int &xDirection, int &yDirection, CMap &mapRef)
 {
-  for (int y = -1 ; y<=1 ; y++ )
-  {
-    for (int x = -1 ; x<=1 ; x++ )
+    for (int y = -1 ; y<=1 ; y++ )
     {
-      if(x == 0 && y == 0)
-	continue;
-      
-      const int object = mapRef.getPlaneDataAt(2, origin.x+(x<<CSF), origin.y+(y<<CSF));
-      
-      readDirection(object, xDirection, yDirection);
-      
-      // Now check all eight cases and test if it matches
-      if( x == xDirection && y == yDirection )
-	return;
+        for (int x = -1 ; x<=1 ; x++ )
+        {
+            if(x == 0 && y == 0)
+            {
+                continue;
+            }
+
+            const int object = mapRef.getPlaneDataAt(2, origin.x+(x<<CSF), origin.y+(y<<CSF));
+
+            readDirection(object, xDirection, yDirection);
+
+            // Now check all eight cases and test if it matches
+            if( x == xDirection && y == yDirection )
+            {
+                return;
+            }
+        }
     }
-  }
 }
 
 void CMoveTarget::readDirection(const int object, int &xDirection, int &yDirection)
@@ -50,18 +54,22 @@ void CMoveTarget::readDirection(const int object, int &xDirection, int &yDirecti
 		yDirection = 0;
 		break;
 	    case 0x5F:
+        case 0x28:
 		xDirection = RIGHT;
 		yDirection = UP;
 		break;
 	    case 0x60:
+        case 0x29:
 		xDirection = RIGHT;
 		yDirection = DOWN;
 		break;
 	    case 0x61:
+        case 0x30:
 		xDirection = LEFT;
 		yDirection = DOWN;
 		break;
 	    case 0x62:
+        case 0x31:
 		xDirection = LEFT;
 		yDirection = UP;
 		break;

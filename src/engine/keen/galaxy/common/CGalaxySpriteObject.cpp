@@ -15,22 +15,7 @@ static int spriteOffset;
 CGalaxySpriteObject::CGalaxySpriteObject(CMap *pmap, const Uint16 foeID,
                                          Uint32 x, Uint32 y, const int sprVar) :
 CSpriteObject(pmap, x, y, sprVar),
-mFoeID(foeID),
-m_ActionNumber(0),
-m_ActionBaseOffset(0x0),
-nextY(0),
-topTI(0),
-bottomTI(0),
-leftTI(0),
-rightTI(0),
-user1(0),
-user2(0),
-user3(0),
-user4(0),
-mIsClimbing(false),
-mClipped(false),
-m_jumpdown(false),
-mEndOfAction(false)
+mFoeID(foeID)
 {
     EpisodeInfoStruct* eiStructPtr = gBehaviorEngine.getEpisodeInfoStructRef();
     spriteOffset = eiStructPtr->IndexSprites;
