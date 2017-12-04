@@ -56,9 +56,22 @@ bool CPlatformMoveAway::isNearby(CSpriteObject &theObject)
 		const int absdy = (dy<0) ? -dy : dy;
 
         if( mCarriedPlayerVec.empty() && mpActionProc == &CPlatformMoveAway::processStay )
-		{
+		{            
 			if( absdx < CSF_DISTANCE_TO_FOLLOW_GETAWAY && absdy < CSF_DISTANCE_TO_FOLLOW_GETAWAY )
 			{
+                if(mpActionProc == &CPlatformMoveAway::processStay)
+                {
+                    if(dx < 0)
+                    {
+                        xDirection = RIGHT;
+                    }
+                    else if(dx > 0)
+                    {
+                        xDirection = LEFT;
+                    }
+                }
+
+
 				mpActionProc = &CPlatformMoveAway::processMoveAway;
 				mSpeed = MOVE_MAX_SPEED;
 			}
