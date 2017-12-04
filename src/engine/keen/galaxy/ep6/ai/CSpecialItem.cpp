@@ -28,13 +28,8 @@ void CSpecialItem::getTouchedBy(CSpriteObject& theObject)
 	    mTaken = true;
 		auto &item = player->m_Inventory.Item.m_special.ep6;
 
-		CEventContainer& EventContainer = gEventManager;
-
 		// Sound play
 		gSound.playSound(SOUND_GET_SPECIAL_ITEM, SoundPlayMode::PLAY_PAUSEALL);
-
-		// Show got item message
-        showMsgWithBmp( gBehaviorEngine.getString(answermap[mFoeID-0x63]), 30, LEFT );
 
 		switch(mFoeID)
 		{
@@ -47,10 +42,11 @@ void CSpecialItem::getTouchedBy(CSpriteObject& theObject)
         auto exitEvent = new EventExitLevel(mpMap->getLevel(), true, false, mSprVar);
 
         // Play it but afterwards
-        exitEvent->playSound = true;
-		
-        EventContainer.add( exitEvent );
-		
+        exitEvent->playSound = true;                
+
+        // Show got item message
+        showMsgWithBmp( gBehaviorEngine.getString(answermap[mFoeID-0x63]), 30, LEFT, exitEvent );
+
         player->m_Inventory.Item.m_gem.clear();
 	}    
 }
