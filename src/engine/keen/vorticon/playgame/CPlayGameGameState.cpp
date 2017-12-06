@@ -245,8 +245,6 @@ bool CPlayGameVorticon::loadXMLGameState()
     m_level_command = START_LEVEL;
 
 
-    mMap->m_Dark = stateNode.get<bool>("dark", false);
-
     // Empty container of the levels so we loaded the ones from our states
     if(!m_Player.empty())
         m_Player.clear();
@@ -378,6 +376,7 @@ bool CPlayGameVorticon::loadXMLGameState()
                            mMap->m_Dark) );
     setupPlayers();
 
+    mMap->m_Dark = stateNode.get<bool>("dark", false);
     gGraphics.Palette.setdark(mMap->m_Dark);
 
 

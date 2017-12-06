@@ -19,7 +19,6 @@ CMap::CMap():
 m_width(0), m_height(0),
 m_worldmap(false),
 m_animation_enabled(true),
-m_Dark(false),
 mNumFuses(0),
 mFuseInLevel(false),
 m_Tilemaps(gGraphics.getTileMaps()),
