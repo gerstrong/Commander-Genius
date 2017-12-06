@@ -8,8 +8,7 @@
 // Vorticon (all Episodes, albeit the behavior changes slightly
 // depending on levelcontrol.Episode).
 CVorticon::CVorticon(CMap *p_map, Uint32 x, Uint32 y, char hp, object_t objtype) :
-    CVorticonSpriteObject(p_map, x, y, objtype, 0),
-	m_Dark(mpMap->m_Dark)
+    CVorticonSpriteObject(p_map, x, y, objtype, 0)
 {
 	frame = 0;
 	animtimer = 0;
@@ -222,7 +221,7 @@ void CVorticon::process()
 
 		if (odds)
 		{ // let's jump.
-			if (!m_Dark && !blockedu)
+            if (!mpMap->m_Dark && !blockedu)
 			{
 				initiateJump();
 				goto vort_reprocess;
@@ -241,12 +240,12 @@ void CVorticon::process()
 				animtimer = 0;
 				state = VORT_LOOK;
 
-                if(!m_Dark)
+                if(!mpMap->m_Dark)
                 {
                     // if we only traveled a tiny amount before hitting a wall, we've
                     // probably fallen into a small narrow area, and we need to try
                     // to jump out of it
-                    if (dist_traveled < VORT_TRAPPED_DIST && !m_Dark && blockedd
+                    if (dist_traveled < VORT_TRAPPED_DIST && !mpMap->m_Dark && blockedd
                             && !blockedu) {
                         initiateJump();
                         if (rnd() & 1)
@@ -274,9 +273,9 @@ void CVorticon::process()
 				animtimer = 0;
 				state = VORT_LOOK;
 
-                if(!m_Dark)
+                if(!mpMap->m_Dark)
                 {
-                    if (dist_traveled < VORT_TRAPPED_DIST && !m_Dark && blockedd
+                    if (dist_traveled < VORT_TRAPPED_DIST && !mpMap->m_Dark && blockedd
                             && !blockedu) {
                         initiateJump();
                         if (rnd() & 1) {
