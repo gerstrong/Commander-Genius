@@ -68,7 +68,6 @@ public:
 
 protected:
 	int m_Level;
-	bool &m_Dark;
 
 	enum {
 	VORT_WALK,

@@ -474,7 +474,8 @@ bool CSpriteObject::turnAroundOnCliff( int x1, int x2, int y2 )
         if(isSlope)
         {
             // look further
-            if(TileProperty[mpMap->at(x_left, y_bottom+1)].bup != 0)
+            if(TileProperty[mpMap->at(x_left, y_bottom+1)].bup != 0 ||
+               TileProperty[mpMap->at(x_left, y_bottom+2)].bup != 0)
             {
                 return false;
             }
@@ -501,7 +502,8 @@ bool CSpriteObject::turnAroundOnCliff( int x1, int x2, int y2 )
         if(isSlope)
         {
             // look further
-            if(TileProperty[mpMap->at(x_right, y_bottom+1)].bup != 0)
+            if(TileProperty[mpMap->at(x_right, y_bottom+1)].bup != 0 ||
+               TileProperty[mpMap->at(x_right, y_bottom+2)].bup != 0)
             {
                 return false;
             }
