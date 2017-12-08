@@ -448,74 +448,149 @@ bool CSpriteObject::hitdetectWithTileProperty(const int Property, const int x, c
 
 bool CSpriteObject::turnAroundOnCliff( int x1, int x2, int y2 )
 {
-	std::vector<CTileProperties> &TileProperty = gBehaviorEngine.getTileProperties();
-	const int x_left = (x1-(1<<STC))>>CSF;
-	const int x_right = (x2+(1<<STC))>>CSF;
-	const int y_bottom = (y2+(1<<STC))>>CSF;
-
-    const int floorleft = TileProperty[mpMap->at(x_left, y_bottom)].bup;
-    const int floorright = TileProperty[mpMap->at(x_right, y_bottom)].bup;
-
-    bool isSlope = false;
-
-    if( floorleft == 0 &&
-        floorright >= 1 &&
-        xDirection == LEFT )
+  std::vector<CTileProperties> &TileProperty = gBehaviorEngine.getTileProperties();
+  const int x_left = (x1-(1<<STC))>>CSF;
+  const int x_right = (x2+(1<<STC))>>CSF;
+  const int y_bottom = (y2+(1<<STC))>>CSF;
+  
+  const int floorleft = TileProperty[mpMap->at(x_left, y_bottom)].bup;
+  const int floorright = TileProperty[mpMap->at(x_right, y_bottom)].bup;
+  
+  bool isSlope = false;
+  
+  if( floorleft == 0 &&
+      floorright >= 1 &&
+      xDirection == LEFT )
+    {
+      for(int x=x_left ; x<=x_right ; x++ )
 	{
-	    for(int x=x_left ; x<=x_right ; x++ )
+	  const int tile = TileProperty[mpMap->at(x, y_bottom)].bup;
+	  if( tile>=2 && tile<=7  )
 	    {
-            const int tile = TileProperty[mpMap->at(x, y_bottom)].bup;
-            if( tile>=2 && tile<=7  )
-            {
-                isSlope = true;
-            }
+	      isSlope = true;
 	    }
-
-        if(isSlope)
-        {
-            // look further
-            if(TileProperty[mpMap->at(x_left, y_bottom+1)].bup != 0 ||
-               TileProperty[mpMap->at(x_left, y_bottom+2)].bup != 0)
-            {
-                return false;
-            }
-        }
-
-	
-	    blockedl = floorright;
-	    return true;
 	}
-
-    if( floorright == 0 &&
-        floorleft >= 1 &&
-        xDirection == RIGHT )
+      
+      if(isSlope)
 	{
-        for(int x=x_left ; x<=x_right ; x++ )
-        {
-            const int tile = TileProperty[mpMap->at(x, y_bottom)].bup;
-            if( tile>=2 && tile<=7  )
-            {
-                isSlope = true;
-            }
-        }
-
-        if(isSlope)
-        {
-            // look further
-            if(TileProperty[mpMap->at(x_right, y_bottom+1)].bup != 0 ||
-               TileProperty[mpMap->at(x_right, y_bottom+2)].bup != 0)
-            {
-                return false;
-            }
-        }
-
-
-	    blockedr = floorleft;
-	    return true;
-	}	
-
-	return false;
+	  // look further
+	  if(TileProperty[mpMap->at(x_left, y_bottom+1)].bup != 0 ||
+	     TileProperty[mpMap->at(x_left, y_bottom+2)].bup != 0)
+	    {
+	      return false;
+	    }
+	}
+      
+      
+      blockedl = floorright;
+      return true;
+    }
+  
+  if( floorright == 0 &&
+      floorleft >= 1 &&
+      xDirection == RIGHT )
+    {
+      for(int x=x_left ; x<=x_right ; x++ )
+	{
+	  const int tile = TileProperty[mpMap->at(x, y_bottom)].bup;
+	  if( tile>=2 && tile<=7  )
+	    {
+	      isSlope = true;
+	    }
+	}
+      
+      if(isSlope)
+	{
+	  // look further
+	  if(TileProperty[mpMap->at(x_right, y_bottom+1)].bup != 0 ||
+	     TileProperty[mpMap->at(x_right, y_bottom+2)].bup != 0)
+	    {
+	      return false;
+	    }
+	}
+      
+      
+      blockedr = floorleft;
+      return true;
+    }	
+  
+  return false;
 }
+
+bool CSpriteObject::turnAroundOnSlope( int x1, int x2, int y2 )
+{
+  std::vector<CTileProperties> &TileProperty = gBehaviorEngine.getTileProperties();
+  const int x_left = (x1-(1<<STC))>>CSF;
+  const int x_right = (x2+(1<<STC))>>CSF;
+  const int y_bottom = (y2+(1<<STC))>>CSF;
+  
+  const int floorleft = TileProperty[mpMap->at(x_left, y_bottom)].bup;
+  const int floorright = TileProperty[mpMap->at(x_right, y_bottom)].bup;
+  
+  bool isSlope = false;
+  
+  if( floorleft == 0 &&
+      floorright >= 1 &&
+      xDirection == LEFT )
+    {
+      for(int x=x_left ; x<=x_right ; x++ )
+	{
+	  const int tile = TileProperty[mpMap->at(x, y_bottom)].bup;
+	  if( tile>=2 && tile<=7  )
+	    {
+	      isSlope = true;
+	    }
+	}
+      
+      if(isSlope)
+	{
+	  // look further
+	  if(TileProperty[mpMap->at(x_left, y_bottom+1)].bup != 0 ||
+	     TileProperty[mpMap->at(x_left, y_bottom+2)].bup != 0)
+	    {
+	      isSlope = true;
+	    }
+	}
+      
+      if(isSlope)
+	{
+	  blockedl = floorright;
+	}      
+    }
+  
+  if( floorright == 0 &&
+      floorleft >= 1 &&
+      xDirection == RIGHT )
+    {
+      for(int x=x_left ; x<=x_right ; x++ )
+	{
+	  const int tile = TileProperty[mpMap->at(x, y_bottom)].bup;
+	  if( tile>=2 && tile<=7  )
+	    {
+	      isSlope = true;
+	    }
+	}
+      
+      if(isSlope)
+	{
+	  // look further
+	  if(TileProperty[mpMap->at(x_right, y_bottom+1)].bup != 0 ||
+	     TileProperty[mpMap->at(x_right, y_bottom+2)].bup != 0)
+	    {
+	      isSlope = true;
+	    }
+	}
+                  
+      if(isSlope)
+	{      
+	  blockedr = floorleft;
+	  return true;
+	}      
+    }	
+  
+  return false;
+}
+
 
 
 bool CSpriteObject::checkMapBoundaryR(const int x2)
