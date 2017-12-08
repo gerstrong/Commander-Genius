@@ -294,11 +294,16 @@ void CHUD::render()
 	if(timer >= EFFECT_TIME)
 	{
 	    timer = 0;
-
-        if(mOldCharges < m_charges)
-        mOldCharges++;
-        else if(mOldCharges > m_charges)
-        mOldCharges--;
+	    
+	    if(mOldCharges < m_charges)
+	    {
+		mOldCharges++;
+	    }
+	    
+	    else if(mOldCharges > m_charges)
+	    {
+		mOldCharges--;
+	    }        
 	}
 
     int delta = (m_score-mOldScore)/EFFECT_SPEED;
