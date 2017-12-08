@@ -20,16 +20,24 @@ public:
 
   void deserialize(boost::property_tree::ptree &node)
   {
-      auto &posNode = node.put("origin", "");
+      mTimer = node.get("<xmlattr>.timer", mTimer);
+      auto &posNode = node.put("pos", "");
       m_Pos.x = posNode.get<Uint32>("<xmlattr>.x", m_Pos.x);
       m_Pos.y = posNode.get<Uint32>("<xmlattr>.y", m_Pos.y);
+      auto &originNode = node.put("origin", "");
+      origin.x = originNode.get<Uint32>("<xmlattr>.x", origin.x);
+      origin.y = originNode.get<Uint32>("<xmlattr>.y", origin.y);
   }
 
   void serialize(boost::property_tree::ptree &node)
   {
-      auto &posNode = node.put("origin", "");
-      posNode.put("<xmlattr>.x", origin.x);
-      posNode.put("<xmlattr>.y", origin.y);
+      node.put("<xmlattr>.timer", mTimer);
+      auto &posNode = node.put("pos", "");
+      posNode.put("<xmlattr>.x", m_Pos.x);
+      posNode.put("<xmlattr>.y", m_Pos.y);
+      auto &originNode = node.put("origin", "");
+      originNode.put("<xmlattr>.x", origin.x);
+      originNode.put("<xmlattr>.y", origin.y);
   }
   
 private:
@@ -46,7 +54,7 @@ private:
   Vector2D<Uint32> origin;
   int mBaseSprite;
   int mNumAnimSprites;
-  int mTimer;
+  int mTimer = 0;
 };
 
 }
