@@ -935,9 +935,9 @@ These only work in the context of the double buffered update routines
 
 void VWL_DrawCursor (void)
 {
-	cursorspot = bufferofs + ylookup[cursory+pansy]+(cursorx+pansx)/SCREENXDIV;
-	VW_ScreenToMem(cursorspot,cursorsave,cursorwidth,cursorheight);
-	VWB_DrawSprite(cursorx,cursory,cursornumber);
+    cursorspot = bufferofs + ylookup[cursory+pansy]+(cursorx+pansx)/SCREENXDIV;
+    VW_ScreenToMem(cursorspot,cursorsave, cursorwidth, cursorheight);
+    VWB_DrawSprite(cursorx,cursory,cursornumber);
 }
 
 
@@ -1338,10 +1338,12 @@ void VWB_DrawSprite(id0_int_t x, id0_int_t y, id0_int_t chunknum)
 	width = block->width[shift];
 	height = spr->height;
 
-	if (VW_MarkUpdateBlock (x&SCREENXMASK,y,(x&SCREENXMASK)+width*SCREENXDIV-1
-		,y+height-1))
+    if (VW_MarkUpdateBlock (x&SCREENXMASK,y,
+                            (x&SCREENXMASK)+width*SCREENXDIV-1, y+height-1) )
+    {
 		VW_MaskBlock (block,block->sourceoffset[shift],dest,
 			width,height,block->planesize[shift]);
+    }
 }
 #endif
 

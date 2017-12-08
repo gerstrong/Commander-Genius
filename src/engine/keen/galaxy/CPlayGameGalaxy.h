@@ -32,7 +32,6 @@ public:
                     const std::vector<int> &spriteVars);
 
     bool loadGameState();
-    //bool saveGameState();
     bool loadXMLGameState();
     bool saveXMLGameState();
     bool init();

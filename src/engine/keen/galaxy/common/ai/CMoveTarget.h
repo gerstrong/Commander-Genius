@@ -15,7 +15,7 @@
 class CMoveTarget
 {  
 public:
-    CMoveTarget(const Vector2D<unsigned int> &pos,
+    CMoveTarget(const Vector2D<int> &pos,
 	  int &xDirection, int &yDirection) :
 	  origin(pos) 
 	  {	    	    
@@ -34,7 +34,7 @@ protected:
 
 	// Data for the MoveTarget class
     Vector2D<int> target;
-    const Vector2D<unsigned int> &origin;
+    const Vector2D<int> &origin;
 };
 
 #endif // CMOVETARGET_H

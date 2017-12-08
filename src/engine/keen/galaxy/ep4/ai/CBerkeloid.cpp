@@ -15,13 +15,11 @@ namespace galaxy {
 const int A_BERKELOID_MOVING = 0;
 const int A_BERKELOID_THROW = 4;
 
-const int BERKELOID_TIME = 5;
+const int BERKELOID_TIME = 15;
 	
 
 CBerkeloid::CBerkeloid(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
-CGalaxySpriteObject(pmap, foeID, x, y, 0),
-mTimer(0),
-mpProcessState(nullptr)
+CGalaxySpriteObject(pmap, foeID, x, y, 0)
 {
 	mActionMap[A_BERKELOID_MOVING] = &CBerkeloid::processMoving;
 	mActionMap[A_BERKELOID_THROW] = &CBerkeloid::processThrowing;
@@ -43,25 +41,31 @@ void CBerkeloid::setActionForce(const size_t ActionNumber)
 	CGalaxySpriteObject::setActionForce(ActionNumber);
 
 	if( mActionMap.find(ActionNumber) != mActionMap.end() )
+    {
 		mpProcessState = mActionMap[ActionNumber];
+    }
 	else
-		setActionForce(0); // This might happen, when the action-map is incomplete
+    {
+        setActionForce(0); // When the action-map is incomplete. Some mods have that problem
+    }
 }
 
 
 void CBerkeloid::getTouchedBy(CSpriteObject &theObject)
 {
 	if(theObject.dead )
+    {
 		return;
+    }
 
-	if( CBullet *bullet = dynamic_cast<CBullet*>(&theObject) )
+    if( auto *bullet = dynamic_cast<CBullet*>(&theObject) )
 	{
 		bullet->setAction(A_KEENSHOT_IMPACT);
 		bullet->playSound( SOUND_SHOT_HIT );
 		bullet->dead = true;
 	}
 
-	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
+    if( auto *player = dynamic_cast<CPlayerBase*>(&theObject) )
 	{
 		player->kill();
 	}
@@ -75,20 +79,30 @@ bool CBerkeloid::isNearby(CSpriteObject &theObject)
 	if( CPlayerLevel *player = dynamic_cast<CPlayerLevel*>(&theObject) )
 	{
 		if( player->getXMidPos() < getXMidPos() )
+        {
 			xDirection = LEFT;
+        }
 		else
+        {
 			xDirection = RIGHT;
+        }
 	}
 
 	return true;
 }
 
 
+
 void CBerkeloid::processMoving()
 {
-  if(blockedd)
-    moveUp(10);
-  
+    const auto x1 = m_Pos.x+m_BBox.x1;
+    const auto x2 = m_Pos.x+m_BBox.x2;
+    const auto y2 = m_Pos.y+m_BBox.y2;
+
+    turnAroundOnCliff( x1, x2, y2+(1<<CSF) );
+
+    moveYDir(30*mVertMoveDir);
+
 	if( mTimer < BERKELOID_TIME )
 	{
 		mTimer++;
@@ -99,8 +113,10 @@ void CBerkeloid::processMoving()
 		mTimer = 0;
 	}
 
+    mVertMoveDir = -mVertMoveDir;
+
 	// Chance to throw a flame
-    if( getProbability(15) )
+    if( getProbability(45) )
 	{
 		setAction( A_BERKELOID_THROW );
 		playSound( SOUND_BERKELOID_WINDUP );
@@ -119,22 +135,36 @@ void CBerkeloid::processThrowing()
 
 
 void CBerkeloid::process()
-{
+{  
+    calcBoundingBoxes();
 
-	//processFalling();
+    blockedu = true;
+    blockedd = true;
 
-	performCollisions();
+    const auto abs_x1 = m_Pos.x+m_BBox.x1;
+    const auto abs_x2 = m_Pos.x+m_BBox.x2;
+    const auto abs_y1 = m_Pos.y+m_BBox.y1;
+    const auto abs_y2 = m_Pos.y+m_BBox.y2;
 
-	(this->*mpProcessState)();
+    // Left/Right walls
+    blockedl = checkSolidL(abs_x1, abs_x2, abs_y1, abs_y2);
+    blockedr = checkSolidR(abs_x1, abs_x2, abs_y1, abs_y2);
+
+	(this->*mpProcessState)();        
 
 	if( blockedl )
+    {
 		xDirection = RIGHT;
+    }
 	else if(blockedr)
+    {
 		xDirection = LEFT;
+    }
 
 	if(!processActionRoutine())
+    {
 			exists = false;
-
+    }
 }
 
 
@@ -152,8 +182,7 @@ const int A_FLAME_LANDED = 2;
 const int FLAME_INERTIAX = 150;
 
 CBerkFlame::CBerkFlame(CMap *pmap, Uint32 x, Uint32 y, const int xDir) :
-CGalaxySpriteObject(pmap, 0, x, y, 0),
-mpProcessState(NULL)
+CGalaxySpriteObject(pmap, 0, x, y, 0)
 {
 	mActionMap[A_FLAME_THROWN] = &CBerkFlame::processThrown;
 	mActionMap[A_FLAME_LANDED] = &CBerkFlame::processLanded;

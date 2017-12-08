@@ -99,6 +99,9 @@ void CShikadiMaster::processStanding()
     if(getProbability(250))
         return;
     
+    if(!blockedd)
+        return;
+
     
     if(mTeleport)
     {
@@ -113,7 +116,7 @@ void CShikadiMaster::processStanding()
 
         if(mMoreAgressive)
         {
-            mp_processState = (GASOFctr) &CShikadiMaster::processShootingAgressive;
+            mp_processState = static_cast<GASOFctr>(&CShikadiMaster::processShootingAgressive);
         }
         else
         {

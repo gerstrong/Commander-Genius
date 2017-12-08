@@ -52,26 +52,29 @@ public:
 	// This is used for action format only
 	uint16_t mFoeID;
     uint16_t m_ActionTicker = 0;
-	uint16_t m_ActionNumber;
-	size_t m_ActionBaseOffset;
+    uint16_t m_ActionNumber = 0;
+    size_t m_ActionBaseOffset = 0x0;
 
     //int nextX;
-	int nextY;
+    int nextY = 0;
 
 	//TileInfo for surrounding tiles.
-	int topTI, bottomTI, leftTI, rightTI;
+    int topTI = 0;
+    int bottomTI = 0;
+    int leftTI = 0;
+    int rightTI = 0;
 
 
-	int user1;
-	int user2;
-	int user3;
-	int user4;
+    int user1 = 0;
+    int user2 = 0;
+    int user3 = 0;
+    int user4 = 0;
 
-	bool m_jumped;
-	bool m_climbing;
-	bool mClipped;
-	bool m_jumpdown;
-	bool mEndOfAction;
+    bool m_jumped = false;
+    bool mIsClimbing = false;
+    bool mClipped = false;
+    bool m_jumpdown = false;
+    bool mEndOfAction = false;
 };
 
 #endif /* CGALAXYSPRITEOBJECT_H_ */

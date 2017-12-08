@@ -44,7 +44,7 @@ mTimer(0)
 	setActionSprite();
 
 	calcBoundingBoxes();		
-	
+
 	fetchInitialDir(xDirection, yDirection, *mpMap);
 	solid = false;
 }
@@ -60,34 +60,34 @@ void CVolteface::processMoving()
     
     if( xBlockPosAbs < MOVE_SPEED && yBlockPosAbs < MOVE_SPEED )
     {
-	const Uint16 object = mpMap->getPlaneDataAt(2, target.x, target.y);
-	
-	Vector2D<int> speed(xBlockPos, yBlockPos);	    
-	moveDir(speed);
-	
-	// If there is an object that changes the direction of the plat, apply it!
-	readDirection(object, xDirection, yDirection );
-	detectNextTarget(target, xDirection, yDirection);
+        const Uint16 object = mpMap->getPlaneDataAt(2, target.x, target.y);
+
+        Vector2D<int> speed(xBlockPos, yBlockPos);
+        moveDir(speed);
+
+        // If there is an object that changes the direction of the plat, apply it!
+        readDirection(object, xDirection, yDirection );
+        detectNextTarget(target, xDirection, yDirection);
     }
     
     Vector2D<int> speed;
     
     if(yDirection == UP)
     {
-	speed.y = -MOVE_SPEED;
+        speed.y = -MOVE_SPEED;
     }
     else if(yDirection == DOWN)
     {
-	speed.y = MOVE_SPEED;
-    }    
+        speed.y = MOVE_SPEED;
+    }
     
     if(xDirection == RIGHT)
     {
-	speed.x = MOVE_SPEED;
+        speed.x = MOVE_SPEED;
     }
     else if(xDirection == LEFT)
     {
-	speed.x = -MOVE_SPEED;
+        speed.x = -MOVE_SPEED;
     }
     
     moveDir(speed);
@@ -95,10 +95,10 @@ void CVolteface::processMoving()
 
 void CVolteface::processStunned()
 {
-  if(getActionStatus(A_VOLTFACE_MOVE))
-  {  
-    setAction(A_VOLTFACE_MOVE);
-  }
+    if(getActionStatus(A_VOLTFACE_MOVE))
+    {
+        setAction(A_VOLTFACE_MOVE);
+    }
 }
 
 

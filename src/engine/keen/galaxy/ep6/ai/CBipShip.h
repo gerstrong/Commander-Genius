@@ -27,14 +27,16 @@ public:
   
   void processSmoke();  
   
-  bool isNearby(CSpriteObject &theObject);
+  bool isNearby(CSpriteObject &theObject) override;
 
-  void process();
+  void process() override;
+
+  int checkSolidD( int x1, int x2, int y2, const bool push_mode ) override;
 
   /**
     * What happens if the slug gets touched by another object
     */
-  void getTouchedBy(CSpriteObject &theObject);
+  void getTouchedBy(CSpriteObject &theObject) override;
 
 private:
   int mTimer;

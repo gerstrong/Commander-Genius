@@ -314,7 +314,7 @@ bool CMapPlayGalaxy::operator<<(CSaveGameController &savedGame)
 	savedGame.decodeData( level );
 
 	std::unique_ptr<galaxy::CMapLoaderGalaxy> mapLoader;
-	const unsigned int episode = gBehaviorEngine.getEpisode();
+    const auto episode = gBehaviorEngine.getEpisode();
 
 	if(episode == 4)
 	{
@@ -375,7 +375,7 @@ bool CMapPlayGalaxy::operator<<(CSaveGameController &savedGame)
 		CGalaxySpriteObject *pNewfoe = mapLoader->addFoe(mMap, foeID, x, y);
 
 		// TODO: Be careful here is a bad Null Pointer inside that structure
-		if(pNewfoe == NULL)
+        if(pNewfoe == nullptr)
 		{
             pNewfoe = new CGalaxySpriteObject(&mMap, foeID, x, y, 0);
 		}

@@ -40,7 +40,7 @@ public:
 
 	// Setters
 	void setGameDirectory(const std::string& game_directory);
-	void setEpisode(char Episode);
+    void setEpisode(const int Episode);
 	void setLevel(int Level);
 
     bool readSlotList(std::vector<std::string> &list);
@@ -75,7 +75,14 @@ public:
 	void addData(byte *data, Uint32 size);
 	bool readDataBlock(byte *data);
 
+    /**
+     * @brief save  This function writes all the data from the CPlayGame and CMenu Instances to a file,
+     *              closes it and flushes the data block.
+     * @return
+     */
 	bool save();
+
+
 	bool load();
 	bool alreadyExits();
 	
@@ -97,7 +104,7 @@ private:
     std::string m_statefilename;
     std::string m_stateXMLfilename;
     std::string m_statename;
-	char m_Episode;
+    int m_Episode;
 	int m_Level;
 	Uint32 m_offset;	
 

@@ -216,12 +216,12 @@ bool CSpriteObject::calcVisibility()
 
 	SDL_Rect gameres = gVideoDriver.getGameResolution().SDLRect();
 
-    const Uint32 left = (((mpMap->m_scrollx<<STC)-(visibility<<CSF))<0) ? 0 :
-                            (mpMap->m_scrollx<<STC)-(visibility<<CSF);
-    const Uint32 right = ((mpMap->m_scrollx+gameres.w)<<STC)+(visibility<<CSF);
-    const Uint32 up = (((mpMap->m_scrolly<<STC)-(visibility<<CSF))<0) ? 0 :
+    const int left = (((mpMap->m_scrollx<<STC)-(visibility<<CSF))<0) ? 0 :
+                       (mpMap->m_scrollx<<STC)-(visibility<<CSF);
+    const int right = ((mpMap->m_scrollx+gameres.w)<<STC)+(visibility<<CSF);
+    const int up = (((mpMap->m_scrolly<<STC)-(visibility<<CSF))<0) ? 0 :
                             (mpMap->m_scrolly<<STC)-(visibility<<CSF);
-    const Uint32 down = ((mpMap->m_scrolly+gameres.h)<<STC)+(visibility<<CSF);
+    const int down = ((mpMap->m_scrolly+gameres.h)<<STC)+(visibility<<CSF);
 
 	return ( right > m_Pos.x && left < m_Pos.x && down > m_Pos.y && up < m_Pos.y );
 }

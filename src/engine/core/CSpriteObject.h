@@ -258,8 +258,8 @@ public:
 	 * 			1 is blocked, the other depends on the engine. In Keen Galaxy they mostly represent sloped tiles
 	 * 			In vorticons the up part have other numbers which represent ice and slippery.
 	 */
-	int checkSolidR( int x1, int x2, int y1, int y2);
-	int checkSolidL( int x1, int x2, int y1, int y2);
+    int checkSolidR(int x1, int x2, int y1, int y2);
+    int checkSolidL(int x1, int x2, int y1, int y2);
 	virtual int checkSolidU( int x1, int x2, int y1, const bool push_mode=false );
 	virtual int checkSolidD( int x1, int x2, int y2, const bool push_mode=false );
 
@@ -277,7 +277,7 @@ public:
 	void moveSlopedTileUp( int x, int y, const int xspeed );
 
 	// getters for positions
-    Vector2D<Uint32> &getPosition()
+    Vector2D<int> &getPosition()
     { return m_Pos; }
 
     auto getXPosition() const -> int
@@ -386,7 +386,7 @@ protected:
 
     GameSound mWalkSound;
 
-    Vector2D<Uint32> m_Pos; 	// x,y location in map coords, CSFed, represent as 2D Vector
+    Vector2D<int> m_Pos; 	// x,y location in map coords, CSFed, represent as 2D Vector
 
 	static int m_number_of_objects;
 

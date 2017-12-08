@@ -19,7 +19,6 @@ CMap::CMap():
 m_width(0), m_height(0),
 m_worldmap(false),
 m_animation_enabled(true),
-m_Dark(false),
 mNumFuses(0),
 mFuseInLevel(false),
 m_Tilemaps(gGraphics.getTileMaps()),
@@ -83,7 +82,7 @@ void CMap::refreshStripes()
 // Getters and Setters //
 /////////////////////////
 // returns the tile which is set at the given coordinates
-Uint16 CMap::at(Uint16 x, Uint16 y, Uint16 t)
+Uint16 CMap::at(int x, int y, int t)
 {
 	if(x < m_width && y < m_height )
         return mPlanes[t].getMapDataAt(x,y);

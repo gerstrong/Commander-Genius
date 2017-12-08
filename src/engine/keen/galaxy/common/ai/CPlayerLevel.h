@@ -16,18 +16,12 @@ namespace galaxy {
 
 struct KeenState
 {
-	KeenState() :
-		jumpTimer(0), poleGrabTime(0),
-		jumpIsPressed(false), jumpWasPressed(false),
-		pogoIsPressed(false), pogoWasPressed(false)
-		{}
-
-	int jumpTimer;
-	int poleGrabTime;
-	bool jumpIsPressed;
-	bool jumpWasPressed;
-	bool pogoIsPressed;
-	bool pogoWasPressed;
+    int jumpTimer = 0;
+    int poleGrabTime = 0;
+    bool jumpIsPressed = false;
+    bool jumpWasPressed = false;
+    bool pogoIsPressed = false;
+    bool pogoWasPressed = false;
 };
 
 
@@ -42,6 +36,11 @@ public:
                 const int spriteTableIdx);
 
 
+    virtual void serialize(boost::property_tree::ptree &) override;
+
+    virtual void deserialize(boost::property_tree::ptree &) override;
+
+
 	void prepareToShoot();
 	/**
 	 * \brief	handles the input when keen standing on ground.
@@ -54,7 +53,7 @@ public:
 	 * 				This function is overloaded. Most of the process is done by the
 	 * 				CPlayerBase class.
 	 */
-	void processInput();
+    void processInput() override;
 
 
 	// Checks if player can fall through a tile
@@ -77,7 +76,6 @@ public:
 	
 	void push( CGalaxySpriteObject &theObject );
 	
-    //
     /**
      * @brief checkConveyorBelt Checks if Keen is standing or walking on a conveyor belt and returns the transport direction
      * @return 1 for right, -1 for left, 0 for nothing
@@ -324,11 +322,11 @@ public:
 private:
 
 	/** \brief Special code when Keen moving down... */
-	void processMoveBitDown();
+    void processMoveBitDown() override;
 
-    void getTouchedBy(CSpriteObject &theObject);
+    void getTouchedBy(CSpriteObject &theObject) override;
 
-	KeenState state;
+    KeenState mActionState;
 
 	int m_jumpheight;
 

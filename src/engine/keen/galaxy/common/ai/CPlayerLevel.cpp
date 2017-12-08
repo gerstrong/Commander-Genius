@@ -100,7 +100,7 @@ mObjectPtrs(ObjectPtrs)
 
 	m_jumpheight = 0;
 	dontdraw = false;
-	m_climbing = false;
+    mIsClimbing = false;
 	m_pogotoggle = false;
 	m_jumped = false;
 	m_hangtime = 0;
@@ -130,7 +130,20 @@ mObjectPtrs(ObjectPtrs)
 }
 
 
+void
+CPlayerLevel::
+deserialize(boost::property_tree::ptree &node)
+{
+  mIsClimbing = node.get("isClimbing", false);
+  mActionState =  KeenState();
+}
 
+void
+CPlayerLevel::
+serialize(boost::property_tree::ptree &node)
+{
+  node.put("isClimbing", mIsClimbing);
+}
 
 
 
@@ -170,7 +183,7 @@ bool CPlayerLevel::verifyforPole()
 
 		// Set Keen in climb mode
 		setAction(A_KEEN_POLE);
-		m_climbing = true;
+        mIsClimbing = true;
 		mClipped = false;
 		solid = false;
 		return true;
@@ -198,7 +211,7 @@ int CPlayerLevel::evalVertPogoInertia()
     if( gInput.ImpossiblePogo(mPlayerNum) )
     {
         // Or if the player triggered the impossible pogo trick
-        if(state.jumpIsPressed && state.pogoIsPressed)
+        if(mActionState.jumpIsPressed && mActionState.pogoIsPressed)
         {
             return POGO_START_INERTIA_IMPOSSIBLE_VERT;
         }
@@ -255,9 +268,9 @@ void CPlayerLevel::processRunning()
 	}
 
 
-	if (state.jumpIsPressed && !state.jumpWasPressed)
+    if (mActionState.jumpIsPressed && !mActionState.jumpWasPressed)
 	{
-		state.jumpWasPressed = true;
+        mActionState.jumpWasPressed = true;
 
         // If you pressed run, perform a long jump
         if(m_playcontrol[PA_RUN])
@@ -271,15 +284,15 @@ void CPlayerLevel::processRunning()
 
 		yinertia = -90;
         /*nextX = */nextY = 0;
-		state.jumpTimer = 18;
+        mActionState.jumpTimer = 18;
 		setAction(A_KEEN_JUMP);
 		playSound( SOUND_KEEN_JUMP );
 		return;
 	}
 
-	if (state.pogoIsPressed && !state.pogoWasPressed)
+    if (mActionState.pogoIsPressed && !mActionState.pogoWasPressed)
 	{
-		state.pogoWasPressed = true;
+        mActionState.pogoWasPressed = true;
 
         // If you pressed run, perform a long jump
         if(m_playcontrol[PA_RUN])
@@ -293,7 +306,7 @@ void CPlayerLevel::processRunning()
 
         yinertia = evalVertPogoInertia();
 //		nextX = 0;
-		state.jumpTimer = 24;
+        mActionState.jumpTimer = 24;
 		playSound( SOUND_KEEN_POGO );
 		setAction(A_KEEN_POGO_START);
 		return;
@@ -306,7 +319,7 @@ void CPlayerLevel::processRunning()
 		yinertia = 0;
 		setAction(A_KEEN_FALL);
 		playSound( SOUND_KEEN_FALL );
-		state.jumpTimer = 0;
+        mActionState.jumpTimer = 0;
 	}
 
 	if ( (blockedl && xDirection == -1) || (blockedr && xDirection == 1))
@@ -374,27 +387,27 @@ void CPlayerLevel::handleInputOnGround()
 		return;
 	}
 
-	if( state.jumpIsPressed && !state.jumpWasPressed)
+    if( mActionState.jumpIsPressed && !mActionState.jumpWasPressed)
 	{
-		state.jumpWasPressed = true;
+        mActionState.jumpWasPressed = true;
 		xinertia = 0;
 		yinertia = -90;
 		nextY = 0;
-		state.jumpTimer = 18;
+        mActionState.jumpTimer = 18;
 		setAction(A_KEEN_JUMP);
 		playSound( SOUND_KEEN_JUMP );
 		return;
 	}
 
-	if( state.pogoIsPressed && !state.pogoWasPressed)
+    if( mActionState.pogoIsPressed && !mActionState.pogoWasPressed)
 	{
-		state.pogoWasPressed = true;
+        mActionState.pogoWasPressed = true;
 		xinertia = 0;        
         yinertia = evalVertPogoInertia();
 		setAction(A_KEEN_POGO_START);
 		playSound( SOUND_KEEN_POGO );
 		nextY = 0;
-		state.jumpTimer = 24;
+        mActionState.jumpTimer = 24;
 		return;
 	}
 
@@ -448,7 +461,7 @@ void CPlayerLevel::processStanding()
 	int px = m_playcontrol[PA_X];
 	int py = m_playcontrol[PA_Y];
 
-	if( px || py || state.jumpIsPressed || state.pogoIsPressed )
+    if( px || py || mActionState.jumpIsPressed || mActionState.pogoIsPressed )
 	{
 		user1 = user2 = 0;
 		handleInputOnGround();
@@ -526,9 +539,9 @@ void CPlayerLevel::processLookingDown()
 	verifyFalling();
 
 	//Try to jump down
-	if (state.jumpIsPressed && !state.jumpWasPressed && (blockedd&7) == 1)
+    if (mActionState.jumpIsPressed && !mActionState.jumpWasPressed && (blockedd&7) == 1)
 	{
-		state.jumpWasPressed = true;
+        mActionState.jumpWasPressed = true;
 
 		//printf("Tryin' to jump down\n");
 		//If the tiles below the player are blocking on any side but the top, they cannot be jumped through
@@ -560,8 +573,8 @@ void CPlayerLevel::processLookingDown()
 
 
 	if ( m_playcontrol[PA_Y] <= 0 || m_playcontrol[PA_X] != 0
-			|| (state.jumpIsPressed && !state.jumpWasPressed)
-			|| (state.pogoIsPressed && !state.pogoWasPressed))
+            || (mActionState.jumpIsPressed && !mActionState.jumpWasPressed)
+            || (mActionState.pogoIsPressed && !mActionState.pogoWasPressed))
 	{
 		makeHimStand();
 		yDirection = 0;
@@ -662,14 +675,14 @@ void CPlayerLevel::processInput()
 		m_EnterDoorAttempt = false;
     }
 
-	state.jumpWasPressed = state.jumpIsPressed;
-	state.pogoWasPressed = state.pogoIsPressed;
+    mActionState.jumpWasPressed = mActionState.jumpIsPressed;
+    mActionState.pogoWasPressed = mActionState.pogoIsPressed;
 
-	state.jumpIsPressed = m_playcontrol[PA_JUMP];
-	state.pogoIsPressed = m_playcontrol[PA_POGO];
+    mActionState.jumpIsPressed = m_playcontrol[PA_JUMP];
+    mActionState.pogoIsPressed = m_playcontrol[PA_POGO];
 
-	if (!state.jumpIsPressed) state.jumpWasPressed = false;
-	if (!state.pogoIsPressed) state.pogoWasPressed = false;
+    if (!mActionState.jumpIsPressed) mActionState.jumpWasPressed = false;
+    if (!mActionState.pogoIsPressed) mActionState.pogoWasPressed = false;
 }
 
 
@@ -1058,7 +1071,7 @@ void CPlayerLevel::processPogoCommon()
 					yinertia = 0;
 				}
 			}
-			state.jumpTimer = 0;
+            mActionState.jumpTimer = 0;
 		}
 	}
 
@@ -1068,11 +1081,11 @@ void CPlayerLevel::processPogoCommon()
 	if(blockedd)
 	{
 		//yinertia = 0; // Not sure if that's correct
-		if (state.jumpTimer == 0)
+        if (mActionState.jumpTimer == 0)
 		{
             yinertia = evalVertPogoInertia();
 			playSound( SOUND_KEEN_POGO );
-			state.jumpTimer = 24;
+            mActionState.jumpTimer = 24;
 			setAction(A_KEEN_POGO_UP);
 		}
 	}
@@ -1105,7 +1118,7 @@ void CPlayerLevel::processPogoBounce()
 
     yinertia = evalVertPogoInertia();
 	//nextY = 6 * yinertia;
-	state.jumpTimer = 24;
+    mActionState.jumpTimer = 24;
 
 	if( !getActionStatus(A_KEEN_POGO_START) )
 		setAction(A_KEEN_POGO_UP);
@@ -1118,7 +1131,7 @@ void CPlayerLevel::processPogo()
 {
 	processPogoCommon();
 
-	if (!state.jumpTimer)
+    if (!mActionState.jumpTimer)
 	{
 		if (gBehaviorEngine.mDifficulty == EASY)
 		{
@@ -1131,17 +1144,17 @@ void CPlayerLevel::processPogo()
 	}
 	else
 	{
-		if (state.jumpIsPressed || state.jumpTimer <= 9)
+        if (mActionState.jumpIsPressed || mActionState.jumpTimer <= 9)
 			performGravityLow();
 		else
 			performGravityHigh();
 
-		if (state.jumpTimer < 2)
-			state.jumpTimer = 0;
+        if (mActionState.jumpTimer < 2)
+            mActionState.jumpTimer = 0;
 		else
-			state.jumpTimer--;
+            mActionState.jumpTimer--;
 
-		if (!state.jumpTimer && m_Action.Next_action )
+        if (!mActionState.jumpTimer && m_Action.Next_action )
         {
 			setAction(A_KEEN_POGO_HIGH);
         }
@@ -1174,9 +1187,9 @@ void CPlayerLevel::processPogo()
     const bool ceilNearBy = TileProperty[mpMap->at((getXMidPos()>>CSF), (getYUpPos()>>CSF)-1)].bup;
     
 
-	if (state.pogoIsPressed && !state.pogoWasPressed)
+    if (mActionState.pogoIsPressed && !mActionState.pogoWasPressed)
 	{
-		state.pogoWasPressed = true;
+        mActionState.pogoWasPressed = true;
 		setAction(A_KEEN_FALL);
 		
 		
@@ -1248,7 +1261,7 @@ void CPlayerLevel::verifyJumpAndFall()
 				if( yinertia<0 )
 					yinertia = 0;
 			}
-			state.jumpTimer = 0;
+            mActionState.jumpTimer = 0;
 		}
 	}
 
@@ -1270,7 +1283,7 @@ void CPlayerLevel::verifyJumpAndFall()
 
 		//TODO: Check if fuse.
 
-		if (state.jumpTimer == 0) // Or standing on a platform.
+        if (mActionState.jumpTimer == 0) // Or standing on a platform.
 		{
 			user1 = user2 = 0;	// Being on the ground is boring.
 			yDirection = 0;
@@ -1348,14 +1361,14 @@ void CPlayerLevel::processJumping()
 	    return;	
 		
 	verifyJumpAndFall();
-	if (state.jumpTimer)
+    if (mActionState.jumpTimer)
 	{
-        if(state.jumpTimer > 0 && !gBehaviorEngine.mCheatmode.jump)
-			state.jumpTimer--;
+        if(mActionState.jumpTimer > 0 && !gBehaviorEngine.mCheatmode.jump)
+            mActionState.jumpTimer--;
 
 		// Stop moving up if we've let go of control.
-		if (!state.jumpIsPressed)
-			state.jumpTimer = 0;
+        if (!mActionState.jumpIsPressed)
+            mActionState.jumpTimer = 0;
 
 		moveYDir(yinertia);
 
@@ -1396,11 +1409,11 @@ void CPlayerLevel::processJumping()
 
 	moveXDir(xinertia);
 
-	if (state.pogoIsPressed && !state.pogoWasPressed)
+    if (mActionState.pogoIsPressed && !mActionState.pogoWasPressed)
 	{
-		state.pogoWasPressed = true;
+        mActionState.pogoWasPressed = true;
 		setAction(A_KEEN_POGO_UP);
-		state.jumpTimer = 0;
+        mActionState.jumpTimer = 0;
 		return;
 	}
 
@@ -1410,11 +1423,11 @@ void CPlayerLevel::processJumping()
 	}
 
 
-    if( gBehaviorEngine.mCheatmode.jump && (state.jumpIsPressed && !state.jumpWasPressed) )
+    if( gBehaviorEngine.mCheatmode.jump && (mActionState.jumpIsPressed && !mActionState.jumpWasPressed) )
 	{
-		state.jumpWasPressed = true;
+        mActionState.jumpWasPressed = true;
 		yinertia = -90;
-		state.jumpTimer = 18;
+        mActionState.jumpTimer = 18;
 		setAction(A_KEEN_JUMP);
 		return;
 	}
@@ -2205,9 +2218,9 @@ void CPlayerLevel::performPoleHandleInput()
 	}
 
 
-	if (state.jumpIsPressed && !state.jumpWasPressed)
+    if (mActionState.jumpIsPressed && !mActionState.jumpWasPressed)
 	{
-		state.jumpWasPressed = false;
+        mActionState.jumpWasPressed = false;
 
 		if ( px )
 		    xinertia = 8*xDirection;
@@ -2215,15 +2228,15 @@ void CPlayerLevel::performPoleHandleInput()
 		    xinertia = 0;
 		
 		yinertia = -80;
-		state.jumpTimer = 10;
+        mActionState.jumpTimer = 10;
 		setAction(A_KEEN_JUMP);
 		playSound( SOUND_KEEN_JUMP );
 		yDirection = 1;
-		m_climbing = false;
+        mIsClimbing = false;
 		m_jumped = true;
 		mPoleGrabTime = 0;
 		solid = true;
-		state.poleGrabTime = 0;
+        mActionState.poleGrabTime = 0;
 	}
 
 	return;
@@ -2279,8 +2292,8 @@ void CPlayerLevel::processPoleClimbingSit()
 
 		if ( leavePole )
 		{
-			state.jumpWasPressed = false;
-			state.jumpIsPressed = true;
+            mActionState.jumpWasPressed = false;
+            mActionState.jumpIsPressed = true;
 
 			int dir = 0;
 			if(px < 0)
@@ -2290,14 +2303,14 @@ void CPlayerLevel::processPoleClimbingSit()
 
 			xinertia = 8*dir;
 			yinertia = -20;
-			state.jumpTimer = 10;
+            mActionState.jumpTimer = 10;
 			solid = true;
 			setAction(A_KEEN_JUMP);
 			yDirection = 1;
-			m_climbing = false;
+            mIsClimbing = false;
 			m_jumped = true;
 			mPoleGrabTime = 0;
-			state.poleGrabTime = 0;
+            mActionState.poleGrabTime = 0;
 
 			return;
 		}
@@ -2374,7 +2387,7 @@ void CPlayerLevel::processPoleSlidingDown()
 	else
 	{
 		// Fall down if there isn't any pole to slide down
-		m_climbing = false;
+        mIsClimbing = false;
 		yDirection = 0;
 		yinertia = 0;
 		solid = true;
@@ -2389,7 +2402,7 @@ void CPlayerLevel::processPoleSlidingDown()
 		// It's quite a strange clipping error if he succeeds.
 		if( !blockedd && !down )
 		{
-			state.jumpTimer = 0;
+            mActionState.jumpTimer = 0;
 			xinertia = 8*xDirection;
 			yinertia = 0;
 
@@ -2489,7 +2502,7 @@ void CPlayerLevel::verifyFalling()
 		yinertia = 0;
 		setAction(A_KEEN_FALL);
 		playSound( SOUND_KEEN_FALL );
-		state.jumpTimer = 0;
+        mActionState.jumpTimer = 0;
 	}
 }
 
@@ -2527,7 +2540,7 @@ void CPlayerLevel::processFalling()
     if( gBehaviorEngine.mCheatmode.jump && m_playcontrol[PA_JUMP] > 0 )
 	{
 		setAction(A_KEEN_JUMP);
-		m_climbing = false;
+        mIsClimbing = false;
 		m_jumped = true;
 		yinertia = 0;
 		yDirection = 0;
@@ -2586,7 +2599,7 @@ void CPlayerLevel::push(CGalaxySpriteObject& theObject)
   
   if(onPole())
   {
-    m_climbing = false;
+    mIsClimbing = false;
     yDirection = 0;
     yinertia = 0;
     solid = true;
@@ -2935,7 +2948,7 @@ int CPlayerLevel::checkSolidU(int x1, int x2, int y1, const bool push_mode )
 	{
 		int8_t blocked;
 
-		if(m_climbing)
+        if(mIsClimbing)
 		{
 			x1 += 4*COLISION_RES;
 			x2 -= 4*COLISION_RES;
@@ -2964,13 +2977,13 @@ int CPlayerLevel::checkSolidU(int x1, int x2, int y1, const bool push_mode )
                         if( yinertia<0 )
                             yinertia = 0;
                     }
-                    state.jumpTimer = 0;
+                    mActionState.jumpTimer = 0;
                 }
 
                 return 1;
             }
 
-			if(blocked == 17 && m_climbing)
+            if(blocked == 17 && mIsClimbing)
 				return 0;
 
 			if( blocked >= 2 && blocked <= 7 && checkslopedU(c, y1, blocked))
@@ -2982,7 +2995,7 @@ int CPlayerLevel::checkSolidU(int x1, int x2, int y1, const bool push_mode )
 		if( blocked >= 2 && blocked <= 7 && checkslopedU(x2, y1, blocked ))
 			return 1;
 
-		if(blocked == 17 && m_climbing)
+        if(blocked == 17 && mIsClimbing)
 			return 0;
 	}
 
@@ -3003,7 +3016,7 @@ int CPlayerLevel::checkSolidD( int x1, int x2, int y2, const bool push_mode )
 	{
 		int8_t blockedu;
 
-		if(m_climbing)
+        if(mIsClimbing)
 		{
 			x1 += 4*COLISION_RES;
 			x2 -= 4*COLISION_RES;
@@ -3019,17 +3032,17 @@ int CPlayerLevel::checkSolidD( int x1, int x2, int y2, const bool push_mode )
 			    
 			    const int action = getActionNumber();
 			    
-			    if ( action >= A_KEEN_POGO_START && action <= A_KEEN_POGO_HIGH && state.jumpTimer == 0)
+                if ( action >= A_KEEN_POGO_START && action <= A_KEEN_POGO_HIGH && mActionState.jumpTimer == 0)
 			    {
                     yinertia = evalVertPogoInertia();
                     playSound( SOUND_KEEN_POGO );
-                    state.jumpTimer = 24;
+                    mActionState.jumpTimer = 24;
                     setAction(A_KEEN_POGO_UP);
                     return 1;
                 }
 			}						
 			
-			if( blockedu == 17 && m_climbing)
+            if( blockedu == 17 && mIsClimbing)
 				return 0;
 
 			if( blockedu >= 2 && blockedu <= 7 && checkslopedD(c, y2, blockedu) )
@@ -3038,7 +3051,7 @@ int CPlayerLevel::checkSolidD( int x1, int x2, int y2, const bool push_mode )
 
         blockedu = TileProperty[mpMap->at(x2>>CSF, y2>>CSF)].bup;
 
-		if(blockedu == 17 && m_climbing)
+        if(blockedu == 17 && mIsClimbing)
 			return 0;
 
 		if( blockedu >= 2 && blockedu <= 7 && checkslopedD(x2, y2, blockedu)  )

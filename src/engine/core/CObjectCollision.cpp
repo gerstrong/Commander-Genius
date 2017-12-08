@@ -42,10 +42,10 @@ void CSpriteObject::setupCollisionModel()
  */
 void CSpriteObject::performCollisionsSameBox()
 {
-	const unsigned int abs_x1 = m_Pos.x+m_BBox.x1;
-	const unsigned int abs_x2 = m_Pos.x+m_BBox.x2;
-	const unsigned int abs_y1 = m_Pos.y+m_BBox.y1;
-	const unsigned int abs_y2 = m_Pos.y+m_BBox.y2;
+    const auto abs_x1 = m_Pos.x+m_BBox.x1;
+    const auto abs_x2 = m_Pos.x+m_BBox.x2;
+    const auto abs_y1 = m_Pos.y+m_BBox.y1;
+    const auto abs_y2 = m_Pos.y+m_BBox.y2;
 
 	// Left/Right borders
 	blockedl = checkSolidL(abs_x1, abs_x2, abs_y1, abs_y2);
@@ -162,14 +162,14 @@ void CSpriteObject::alignToTile()
  */
 void CSpriteObject::performCollisions()
 {
-	blockedr = blockedl = false;
-	blockedu = blockedd = false;
+    blockedr = blockedl = false;
+    blockedu = blockedd = false;
 
-	if ( mSpriteIdx != BLANKSPRITE )
-	{
-		calcBoundingBoxes();
-		performCollisionsSameBox();
-	}
+    if ( mSpriteIdx != BLANKSPRITE )
+    {
+        calcBoundingBoxes();
+        performCollisionsSameBox();
+    }
 }
 
 // Basic slope move independent of the left or right move
@@ -458,7 +458,9 @@ bool CSpriteObject::turnAroundOnCliff( int x1, int x2, int y2 )
 
     bool isSlope = false;
 
-    if( floorleft == 0 && xDirection == LEFT && floorright>=1 )
+    if( floorleft == 0 &&
+        floorright >= 1 &&
+        xDirection == LEFT )
 	{
 	    for(int x=x_left ; x<=x_right ; x++ )
 	    {
@@ -472,7 +474,8 @@ bool CSpriteObject::turnAroundOnCliff( int x1, int x2, int y2 )
         if(isSlope)
         {
             // look further
-            if(TileProperty[mpMap->at(x_left, y_bottom+1)].bup != 0)
+            if(TileProperty[mpMap->at(x_left, y_bottom+1)].bup != 0 ||
+               TileProperty[mpMap->at(x_left, y_bottom+2)].bup != 0)
             {
                 return false;
             }
@@ -483,7 +486,9 @@ bool CSpriteObject::turnAroundOnCliff( int x1, int x2, int y2 )
 	    return true;
 	}
 
-    if( floorright == 0 && xDirection == RIGHT && floorleft==1 )
+    if( floorright == 0 &&
+        floorleft >= 1 &&
+        xDirection == RIGHT )
 	{
         for(int x=x_left ; x<=x_right ; x++ )
         {
@@ -497,7 +502,8 @@ bool CSpriteObject::turnAroundOnCliff( int x1, int x2, int y2 )
         if(isSlope)
         {
             // look further
-            if(TileProperty[mpMap->at(x_right, y_bottom+1)].bup != 0)
+            if(TileProperty[mpMap->at(x_right, y_bottom+1)].bup != 0 ||
+               TileProperty[mpMap->at(x_right, y_bottom+2)].bup != 0)
             {
                 return false;
             }

@@ -54,10 +54,10 @@ public:
 
     void serialize(boost::property_tree::ptree &node)
     {
-        node.put("usedGrapplingHook",mUsedGrapplingHook);
+        node.put("usedGrapplingHook", mUsedGrapplingHook);
 
         const bool swimming = isSwimming();
-        node.put("isSwimming",swimming);
+        node.put("isSwimming", swimming);
     }
     void deserialize(boost::property_tree::ptree &node)
     {

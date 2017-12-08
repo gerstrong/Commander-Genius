@@ -94,7 +94,7 @@ public:
     void renderShaking();
 	void _drawForegroundTiles();
 
-	Uint16 at(Uint16 x, Uint16 y, Uint16 t=1);
+    Uint16 at(int x, int y, int t=1);
 	Uint16 getObjectat(Uint16 x, Uint16 y);
 	/*
 	 * \brief
@@ -194,7 +194,7 @@ public:
 	std::string m_gamepath;
 
 	bool m_animation_enabled;
-	bool m_Dark;
+    bool m_Dark = false;
 	bool isSecret;
 	int mNumFuses;
     bool mFuseInLevel;
