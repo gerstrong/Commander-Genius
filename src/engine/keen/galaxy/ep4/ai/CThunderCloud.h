@@ -46,9 +46,9 @@ private:
 
 	void (CThunderCloud::*mpProcessState)();
 	std::map< size_t, void (CThunderCloud::*)() > mActionMap;
-	int mTimer;
-	CThunderBolt *mpBolt;
-	bool mSecondTry;
+    int mTimer = 0;
+    CThunderBolt *mpBolt = nullptr;
+    bool mSecondTry = false;
 };
 
 

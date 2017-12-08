@@ -28,10 +28,7 @@ const int TIME_TO_STRIKE_1 = 30;
 const int TIME_TO_STRIKE_2 = 90;
 
 CThunderCloud::CThunderCloud(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y, const int sprVar) :
-CGalaxySpriteObject(pmap, foeID, x, y, sprVar),
-mTimer(0),
-mpBolt(NULL),
-mSecondTry(false)
+CGalaxySpriteObject(pmap, foeID, x, y, sprVar)
 {
 	mActionMap[A_CLOUD_ASLEEP] = &CThunderCloud::processAsleep;
 	mActionMap[A_CLOUD_WAKING] = &CThunderCloud::processWaking;
@@ -104,7 +101,7 @@ bool CThunderCloud::isNearby(CSpriteObject &theObject)
 				mSecondTry = !mSecondTry;
 				setAction(A_CLOUD_STRIKING);
 				playSound(SOUND_THUNDERCLOUD_STRIKE);
-                mpBolt = new CThunderBolt( mpMap, getXLeftPos() + (12<<STC), getYDownPos() + (32<<STC), mSprVar );
+                mpBolt = new CThunderBolt( mpMap, getXLeftPos() + (12<<STC), getYDownPos() - (8<<STC), mSprVar );
 				spawnObj( mpBolt );
 			}
 		}
