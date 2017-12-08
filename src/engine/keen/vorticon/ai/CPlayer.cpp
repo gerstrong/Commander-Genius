@@ -909,24 +909,36 @@ void CPlayer::StatusBox()
 
 void CPlayer::freeze()
 {    
-    if ( gBehaviorEngine.mCheatmode.god ) return;
-    if ( ankhmode ) return;
-	if ( ankhtime ) return;
-	// give the player a little "kick"
-
-	CPhysicsSettings &PhysicsSettings = gBehaviorEngine.getPhysicsSettings();
-
-	pjumpupspeed = PhysicsSettings.player.maxjumpspeed;
-
-	pjumping = PJUMPUP;
-	pjustjumped = true;
-
-	// and freeze him (stun him on ep2/3)
-	pfrozentime = PFROZEN_TIME;
-	pfrozenframe = 0;
-	pfrozenanimtimer = 0;
-	ppogostick = false;
-	playcontrol[PA_X] = 0;
+  if ( level_done )
+    {
+      return;
+    }
+  
+  if ( gBehaviorEngine.mCheatmode.god ) 
+    {
+      return;
+    }
+  
+  if ( ankhmode || ankhtime ) 
+    {
+      return;
+    }
+  
+  // give the player a little "kick"
+  
+  CPhysicsSettings &PhysicsSettings = gBehaviorEngine.getPhysicsSettings();
+  
+  pjumpupspeed = PhysicsSettings.player.maxjumpspeed;
+  
+  pjumping = PJUMPUP;
+  pjustjumped = true;
+  
+  // and freeze him (stun him on ep2/3)
+  pfrozentime = PFROZEN_TIME;
+  pfrozenframe = 0;
+  pfrozenanimtimer = 0;
+  ppogostick = false;
+  playcontrol[PA_X] = 0;
 }
 
 

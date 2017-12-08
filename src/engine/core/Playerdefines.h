@@ -9,12 +9,12 @@
 #define PLAYERDEFINES_H_
 
 enum player_actions{
-PA_X = 0,
-PA_Y,
-PA_JUMP, PA_POGO,
-PA_FIRE, PA_RUN,
-PA_STATUS,
-PA_MAX_ACTIONS
+  PA_X = 0,
+  PA_Y,
+  PA_JUMP, PA_POGO,
+  PA_FIRE, PA_RUN,
+  PA_STATUS,
+  PA_MAX_ACTIONS
 };
 
 
@@ -29,8 +29,9 @@ PA_MAX_ACTIONS
 
 // various states we go through when a level is completed
 // to do the walking out the exit door animation
-enum levelstate{
-	LEVEL_NOT_DONE,            // not completed
+enum levelstate
+{
+	LEVEL_NOT_DONE = 0,            // not completed
 	LEVEL_DONE_WALK,           // walking through exit door
 	LEVEL_DONE_WAIT,           // finished walk through door, wait a bit
 	LEVEL_DONE_FADEOUT,        // fading out
@@ -38,9 +39,10 @@ enum levelstate{
 	LEVEL_TELEPORTER		   // Happens when Bonus Teleporter in Level was used
 };
 
-enum jumpstate{
+enum jumpstate
+{
 	// the various jump states
-	PNOJUMP,                        // not jumping
+	PNOJUMP = 0,                        // not jumping
 	PPREPAREJUMP,                   // doing the jump animation
 	PJUMPUP,                        // jumping
 	PJUMPED,                        // Player has jumped
