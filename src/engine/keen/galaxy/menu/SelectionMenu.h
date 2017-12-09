@@ -60,6 +60,8 @@ public:
         mpMenuDialog->addControl( new GalaxyButton( "Ninja", new StartNewGameEvent(NINJA) ) );
         mpMenuDialog->addControl( new GalaxyButton( "Elite", new StartNewGameEvent(ELITE) ) );
         setMenuLabel("NEWGAMELABEL");
+
+        mpMenuDialog->setSelection(1);
     }
 };
 
