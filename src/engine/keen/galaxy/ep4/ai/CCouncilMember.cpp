@@ -147,8 +147,6 @@ void CCouncilMember::getTouchedBy(CSpriteObject &theObject)
 	if(rescued)
 		return;
 
-    const auto curLevel = mpMap->getLevel();
-
 	// When Keen touches the Council Member exit the level and add one to the council list
 	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
 	{
@@ -179,16 +177,17 @@ void CCouncilMember::getTouchedBy(CSpriteObject &theObject)
         {
             customDlgs = true;
 
+            int level = mpMap->getLevel();
             bool ok = true;
-            ok &= loadStrFunction(pModule, "getMemberDialog", elder_text[0], curLevel);
-            ok &= loadStrFunction(pModule, "getMemberAnswer", elder_text[1], curLevel);
+            ok &= loadStrFunction(pModule, "getMemberDialog", elder_text[0], level);
+            ok &= loadStrFunction(pModule, "getMemberAnswer", elder_text[1], level);
         }
 
         #endif
 
         if(!customDlgs)
         {
-            if( curLevel == 17 ) // Under water the text is a bit different
+            if( mpMap->getLevel() == 17 ) // Under water the text is a bit different
             {
                 elder_text[0] = gBehaviorEngine.getString("ELDERS_UNDERWATER_TEXT");
                 elder_text[1] = "";

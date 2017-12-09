@@ -438,7 +438,7 @@ bool CExeFile::unpackAudioInterval( RingBuffer<IMFChunkType> &imfData,
         // into the other array
         if(emb_file_data_size == insize)
         {
-            mempcpy(imfDataPrim,
+            memcpy(imfDataPrim,
                     (byte*)(&AudioCompFileData[audio_comp_data_start]),
                     insize);
         }
