@@ -1,6 +1,8 @@
 #ifndef	__BE_ST_SDL__
 #define __BE_ST_SDL__
 
+#include <stdio.h>
+
 // WARNING: This struct is used by BE_ST_SDL ONLY
 
 typedef enum { VSYNC_AUTO, VSYNC_OFF, VSYNC_ON } VSyncSettingType;

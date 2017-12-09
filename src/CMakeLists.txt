@@ -148,8 +148,8 @@ if(USE_SDL2)
 
     if(SDL2_FOUND)
         message(STATUS "Using shared SDL Version 2 for Commander Genius")
-        include_directories(${SDL2_INCLUDE_DIRS})
-        include_directories(${SDL2_IMAGE_INCLUDE_DIRS})
+        include_directories(${SDL2_INCLUDE_DIR})
+        include_directories(${SDL2_IMAGE_INCLUDE_DIR})
     endif(SDL2_FOUND)
 
 else(USE_SDL2)

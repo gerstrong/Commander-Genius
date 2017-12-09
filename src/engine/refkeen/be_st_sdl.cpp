@@ -1675,7 +1675,7 @@ void BE_ST_PollEvents(SDL_Event event)
             break;*/
 		case SDL_QUIT:
             //BE_ST_ShutdownAll();
-			exit(0);
+			//exit(0);
 			break;
 		default: ;
 		}
