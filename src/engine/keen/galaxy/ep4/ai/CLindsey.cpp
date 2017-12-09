@@ -57,6 +57,8 @@ void CLindsey::getTouchedBy(CSpriteObject &theObject)
 {
     if(prepareToVanish)
 	return;
+
+    int curLevel = mpMap->getLevel();
     
     // When Keen touches the pincess give that hint
     if( dynamic_cast<CPlayerLevel*>(&theObject) )
@@ -67,8 +69,7 @@ void CLindsey::getTouchedBy(CSpriteObject &theObject)
 
         lindsey_text[0] = gBehaviorEngine.getString(answermap[0]);
 
-        Uint16 cur_level = mpMap->getLevel();
-        if(cur_level > 5)
+        if(curLevel > 5)
         {
             lindsey_text[1] = gBehaviorEngine.getString(answermap[1]);
             lindsey_text[2] = gBehaviorEngine.getString(answermap[3]);
@@ -94,10 +95,9 @@ void CLindsey::getTouchedBy(CSpriteObject &theObject)
         {
             customDlgs = true;
 
-            int level = mp_Map->getLevel();
             bool ok = true;
-            ok &= loadStrFunction(pModule, "getLindseyDialog", lindsey_text[0], level);
-            ok &= loadStrFunction(pModule, "getLindseyAnswer", lindsey_text[1], level);
+            ok &= loadStrFunction(pModule, "getLindseyDialog", lindsey_text[0], curLevel);
+            ok &= loadStrFunction(pModule, "getLindseyAnswer", lindsey_text[1], curLevel);
         }
 
         #endif

@@ -10,6 +10,8 @@ set (CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/CMake")
 # Use compile time reducer
 include(cotire)
 
+option(USE_PYTHON3 "Use Python3 scripts" yes)
+
 set (CMAKE_CXX_STANDARD 11)
 
 #------------------------------------------------------------------------------

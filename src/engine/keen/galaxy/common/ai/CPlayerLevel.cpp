@@ -2081,7 +2081,7 @@ void CPlayerLevel::openDoorsTile()
 		newY++;
         next_tileno = mpMap->getPlaneDataAt(1, newX<<CSF, newY<<CSF);
 
-        //const int freeTileno = mp_Map->getPlaneDataAt(1, (newX+1)<<CSF, newY<<CSF);
+        //const int freeTileno = mpMap->getPlaneDataAt(1, (newX+1)<<CSF, newY<<CSF);
         //const bool isBlock = tilePropVec[freeTileno].bup;
 
         /*if( isBlock ) // Freeshot for some doors, which might have strange

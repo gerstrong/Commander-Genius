@@ -45,7 +45,7 @@ bool CFuse::loadPythonScripts(const std::string &scriptBaseName)
     #if USE_PYTHON3
     auto pModule = gPython.loadModule( scriptBaseName, JoinPaths(gKeenFiles.gameDir ,"ai") );
 
-    const int level = mp_Map->getLevel();
+    const int level = mpMap->getLevel();
 
     if (pModule != nullptr)
     {

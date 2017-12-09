@@ -288,7 +288,7 @@ void CAmpton::processPoleSlide()
 
     // Check for Floor here!
     const int fall1 = mpMap->getPlaneDataAt(1, l_x, l_y_down+(1<<CSF));
-    //const int fall1 = mp_Map->getPlaneDataAt(1, l_x, l_y_down);
+    //const int fall1 = mpMap->getPlaneDataAt(1, l_x, l_y_down);
     const CTileProperties &TileProp1 = gBehaviorEngine.getTileProperties(1)[fall1];
     const bool leavePole = (TileProp1.bup != 0);
 
