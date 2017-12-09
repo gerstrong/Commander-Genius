@@ -17,9 +17,11 @@ CEnemyShot::CEnemyShot(CMap *pmap,
                        const int x, const int y,
                        const int actionFormatOffset,
                        const int xDir, const int yDir,
-                       const float speed, const int sprVar) :
+                       const float speed, const int sprVar,
+                       const bool climbOnPoles) :
 CGalaxySpriteObject(pmap, foeID, x, y, sprVar),
-m_speedF(speed)
+m_speedF(speed),
+mClimbOnPoles(climbOnPoles)
 {
 	setupGalaxyObjectOnMap(actionFormatOffset, 0);
 
@@ -49,8 +51,16 @@ void CEnemyShot::process()
         moveYDir(speed*yDirection);
 
         m_speedInt -= float(speed);
-    }
+    }        
 
+    // Shots climbing up poles must be in contact with poles
+    if(mClimbOnPoles)
+    {
+        if(!hitdetectWithTileProperty(1, getXMidPos(), getYMidPos()))
+        {
+            exists = false;
+        }
+    }
     
     // If it collides against something, make it non-existent
     if( (blockedd && yDirection == DOWN) ||

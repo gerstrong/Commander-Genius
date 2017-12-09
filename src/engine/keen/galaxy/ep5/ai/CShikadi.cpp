@@ -48,10 +48,10 @@ CStunnable(pmap, foeID, x, y),
 mHealth(4),
 mTimer(0)
 {
-    mActionMap[A_SHIKADI_STAND] = (GASOFctr) &CShikadi::processStanding;
-    mActionMap[A_SHIKADI_WALK] = (GASOFctr) &CShikadi::processWalking;
-    mActionMap[A_SHIKADI_POLE_ZAPS] = (GASOFctr) &CShikadi::processPoleZaps;
-    mActionMap[A_SHIKADI_STUNNED] = (GASOFctr) &CStunnable::processGettingStunned;
+    mActionMap[A_SHIKADI_STAND]     = static_cast<GASOFctr>(&CShikadi::processStanding);
+    mActionMap[A_SHIKADI_WALK]      = static_cast<GASOFctr>(&CShikadi::processWalking);
+    mActionMap[A_SHIKADI_POLE_ZAPS] = static_cast<GASOFctr>(&CShikadi::processPoleZaps);
+    mActionMap[A_SHIKADI_STUNNED]   = static_cast<GASOFctr>(&CStunnable::processGettingStunned);
   
     // Adapt this AI
     setupGalaxyObjectOnMap(0x2D10, A_SHIKADI_STAND);
@@ -103,8 +103,9 @@ void CShikadi::processWalking()
           newX = (newX>>CSF)<<CSF;
           // Spawn a Enemyshot in form electrostatic  charge which goes upwards
           spawnObj( new CEnemyShot(mpMap, 0,
-                                                                  newX, getYUpPos(),
-                                                                  0x2E5A, 0, UP,  150, mSprVar) );
+                                   newX, getYUpPos(),
+                                   0x2E5A, 0, UP,
+                                   150, mSprVar, true) );
           setAction(A_SHIKADI_POLE_ZAPS);
           playSound(SOUND_POLEZAP);
           return;

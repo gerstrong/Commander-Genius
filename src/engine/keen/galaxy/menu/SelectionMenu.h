@@ -53,12 +53,12 @@ public:
     CDifficultySelection() :
         GalaxyMenu( GsRect<float>(0.25f, 0.2f, 0.5f, 0.5f) )
     {
-        mpMenuDialog->addControl( new GalaxyButton( "Easy", new StartNewGameEvent(EASY) ) );
-        mpMenuDialog->addControl( new GalaxyButton( "Normal", new StartNewGameEvent(NORMAL) ) );
-        mpMenuDialog->addControl( new GalaxyButton( "Hard", new StartNewGameEvent(HARD) ) );
-        mpMenuDialog->addControl( new GalaxyButton( "Expert", new StartNewGameEvent(EXPERT) ) );
-        mpMenuDialog->addControl( new GalaxyButton( "Ninja", new StartNewGameEvent(NINJA) ) );
-        mpMenuDialog->addControl( new GalaxyButton( "Elite", new StartNewGameEvent(ELITE) ) );
+        mpMenuDialog->addControl( new GalaxyButton( "EASY", new StartNewGameEvent(EASY) ) );
+        mpMenuDialog->addControl( new GalaxyButton( "NORMAL", new StartNewGameEvent(NORMAL) ) );
+        mpMenuDialog->addControl( new GalaxyButton( "HARD", new StartNewGameEvent(HARD) ) );
+        mpMenuDialog->addControl( new GalaxyButton( "EXPERT", new StartNewGameEvent(EXPERT) ) );
+        mpMenuDialog->addControl( new GalaxyButton( "NINJA", new StartNewGameEvent(NINJA) ) );
+        mpMenuDialog->addControl( new GalaxyButton( "ELITE", new StartNewGameEvent(ELITE) ) );
         setMenuLabel("NEWGAMELABEL");
 
         mpMenuDialog->setSelection(1);

@@ -23,7 +23,8 @@ public:
                const int x, const int y,
                const int actionFormatOffset,
                const int xDir, const int yDir,
-               const float speed, const int srpVar);
+               const float speed, const int srpVar,
+               const bool climbOnPoles = false);
 
 	void getTouchedBy(CSpriteObject &theObject);
 
@@ -32,6 +33,8 @@ public:
 private:
     float m_speedF = 0.0;
     float m_speedInt = 0.0;
+
+    bool mClimbOnPoles = false;
 };
 
 } /* namespace galaxy */
