@@ -247,7 +247,7 @@ void CHUD::renderGalaxy()
   auto finalRenderRect = mRenderRect;     // Finally pull it a bit down if there are extra borders.
   finalRenderRect.y += gVideoDriver.getVidConfig().mHorizBorders;
 
-  BlitSurface( blitsfc, NULL, gVideoDriver.getBlitSurface(), &finalRenderRect );
+  BlitSurface( blitsfc, nullptr, gVideoDriver.getBlitSurface(), &finalRenderRect );
 }
 /**
  * \brief This part of the code will render the entire HUD. Vorticon version
@@ -263,7 +263,7 @@ void CHUD::renderVorticon()
     auto weakSfc = mpHUDBlit.get();
 
 	// Draw the background
-    BlitSurface(mBackground.getSDLSurface(), NULL, weakSfc, NULL );
+    BlitSurface(mBackground.getSDLSurface(), nullptr, weakSfc, nullptr );
 
 
 	GsFont &Font = gGraphics.getFont(1);
@@ -277,11 +277,28 @@ void CHUD::renderVorticon()
     // Print the score
     Font.drawFont(weakSfc, getRightAlignedString(itoa(score),8),8, 2, false );
 
+    if(gBehaviorEngine.mPlayers > 1)
+    {
+        SDL_Rect rect;
+        rect.x = 2; rect.y = 29;
+        rect.h = 2; rect.w = 10;
+
+        if(mId == CCamera::getLead())
+        {
+            SDL_FillRect(weakSfc, &rect, 0xffff0000);
+        }
+        else
+        {
+            SDL_FillRect(weakSfc, &rect, 0x00000000);
+        }
+    }
+
+
     auto finalRenderRect = mRenderRect;     // Finally pull it a bit down if there are extra borders.
     finalRenderRect.y += gVideoDriver.getVidConfig().mHorizBorders;
 
     BlitSurface( mBackground.getSDLSurface(), nullptr, gVideoDriver.getBlitSurface(), &finalRenderRect );
-    BlitSurface( weakSfc, nullptr, gVideoDriver.getBlitSurface(), &finalRenderRect );
+    BlitSurface( weakSfc, nullptr, gVideoDriver.getBlitSurface(), &finalRenderRect );        
 }
 
 

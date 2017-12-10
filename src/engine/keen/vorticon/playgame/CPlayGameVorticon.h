@@ -123,5 +123,8 @@ private:
     std::vector< std::unique_ptr<CHUD> > mpHUDVec;
 	std::shared_ptr<SDL_Surface> mpKeenLeftSfc;
 	SDL_Rect keenleft_rect;
+
+    // Menu-Button
+    SDL_Rect mMenuButtonRect = {310, 0, 10, 10};
 };
 #endif /* CPlayGameVorticon_H_ */

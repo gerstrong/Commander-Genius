@@ -272,10 +272,6 @@ void CPlayGameVorticon::pumpEvent(const CEvent *evPtr)
 }
 
 
-// Menu-Button
-const SDL_Rect menuButtonRect = {310, 0, 10, 10};
-
-
 ////
 // Process Routine
 ////
@@ -363,7 +359,7 @@ void CPlayGameVorticon::ponder(const float deltaT)
 
 
     // Check if Sandwhich-Menu was clicked
-    GsRect<float> rRect(menuButtonRect);
+    GsRect<float> rRect(mMenuButtonRect);
     const float w = gVideoDriver.getBlitSurface()->w;
     const float h = gVideoDriver.getBlitSurface()->h;
 
@@ -437,8 +433,10 @@ void CPlayGameVorticon::render()
         }
     }
 
+    // The position of the sandwich menu depends on the configured blit resolution
+    mMenuButtonRect.x = gVideoDriver.getBlitSurface()->w-10;
 
-    auto menuButtonRectWithBorder = menuButtonRect;
+    auto menuButtonRectWithBorder = mMenuButtonRect;
     menuButtonRectWithBorder.y += gVideoDriver.getVidConfig().mHorizBorders;
 
     // Draw the Ingame button for mouse/finger control

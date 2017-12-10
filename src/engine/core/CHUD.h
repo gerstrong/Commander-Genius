@@ -32,9 +32,6 @@ public:
          const int id); // TODO: Must be removed later and replaced by a reference
 
 
-	//CHUD(const CHUD &orig);
-
-
 	/**
 	 * \brief This part of the code will render the entire HUD
 	 */

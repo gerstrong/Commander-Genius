@@ -367,11 +367,23 @@ We might improve that in future.
 ===========================================
 
 One of the special features in Commander Genius is the multi player mode up
-to four players.
+to four players. It is meant to be having being cooperative.
+
+You might need space in the levels and a better point of view, so you should
+consider switching the Game Resolution to 640x480. This might reveal some
+secrets but the internet also reveals those to what...?
+
+Because everything happens in one screen,
+the camera moves according to the first player. Pressing the
+camlead button ("c" as default when using keyboard), you pass the camera
+to the next player. Now the first player have to follow him. He can pass the
+camera to the next player at any time. The last player would pass it to first
+one, like cycling through it happens. The red line under the helmet icon in the HUD
+indicates how has the camera.
 
 Secret Key (Galaxy only):
 While multiple players are seen, hold the Shift-key and press 1,2,3 or 4 to assign
-the control to another player.
+the control to another player. He has to have the camera in order to do that.
 
 
 
