@@ -270,9 +270,9 @@ How to compile it under Ubuntu:
         - libvorbis-dev
         - libogg-dev
         - libgl1-mesa-dev
-        - libboost
         - libcurl4-openssl-dev
-        - zlib
+        - zlib1g-dev
+        - libboost-dev
         - python3 (python 3.5 recommended)
         - libsdl2-dev
         - libsdl-image2-dev
