@@ -134,7 +134,7 @@ void CGarg::process()
 		if ( blockedd && yinertia >= 0 )
 		{
 			mSpriteIdx = GARG_DEAD_FRAME;
-			dead = true;
+			mIsDead = true;
 		}
 		break;
 	case GARG_LOOK:

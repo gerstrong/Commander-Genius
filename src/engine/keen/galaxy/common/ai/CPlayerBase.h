@@ -230,7 +230,7 @@ public:
 
 	CCamera m_camera;
 	
-	bool m_dying;
+	bool mDying;
     bool mExitTouched;
 
 protected:
@@ -239,14 +239,15 @@ protected:
 	bool checkMapBoundaryR(const int x2);
 	bool checkMapBoundaryU(const int y1);
 
-	unsigned short mPlayerNum;	
+    const int mPlayerNum;
+    int mPlayerCtrlNum; // For the control input
 
-    std::array<Sint16, PA_MAX_ACTIONS> m_playcontrol;
+    std::array<Sint16, PA_MAX_ACTIONS> mPlaycontrol;
 	int m_timer;
 	
 
 
-	void (CPlayerBase::*mp_processState)();
+    void (CPlayerBase::*mp_processState)() = nullptr;
 	unsigned char m_walktimer;
 	std::map< size_t, void (CPlayerBase::*)() > mActionMap;
 

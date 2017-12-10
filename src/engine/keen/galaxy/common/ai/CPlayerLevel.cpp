@@ -106,22 +106,6 @@ mObjectPtrs(ObjectPtrs)
 	m_hangtime = 0;
 	mExitTouched = false;
 
-	/*for(size_t add = offset ; add <= offset+200*0x1E ; add += 0x02 )
-	{
-		m_Action.spriteLeft = 0;
-		m_Action.spriteRight = 0;
-		m_Action.setActionFormat(add);
-		setActionSprite();
-
-		for(int sp = 46+39 ; sp <= 46+39 ; sp++)
-		{
-			if( m_Action.spriteLeft == sp && m_Action.spriteRight == sp)
-			{
-				printf("sprite %i and %i found at %x\n", m_Action.spriteLeft, m_Action.spriteRight, add);
-			}
-		}
-	}*/
-
 	setupGalaxyObjectOnMap(offset, A_KEEN_STAND);
 
 	performCollisions();
@@ -162,7 +146,7 @@ bool CPlayerLevel::verifyforPole()
 	const int l_y_up = ( getYUpPos() ) + (4<<STC);
 	const int l_y_down = ( ( getYDownPos() >> CSF ) + 1 ) << CSF;
 
-	const int yDir = (m_playcontrol[PA_Y] < 0) ? -1 : 1;
+    const int yDir = (mPlaycontrol[PA_Y] < 0) ? -1 : 1;
 
 	// Now check if Player has the chance to climb a pole or something similar
     // 1 = this tile is a pole (Property)
@@ -204,11 +188,11 @@ void CPlayerLevel::makeHimStand()
 int CPlayerLevel::evalVertPogoInertia()
 {
     // If Super Pogo is enabled
-    if( gInput.SuperPogo(mPlayerNum) )
+    if( gInput.SuperPogo(mPlayerCtrlNum) )
     {
         return POGO_START_INERTIA_IMPOSSIBLE_VERT;
     }
-    if( gInput.ImpossiblePogo(mPlayerNum) )
+    if( gInput.ImpossiblePogo(mPlayerCtrlNum) )
     {
         // Or if the player triggered the impossible pogo trick
         if(mActionState.jumpIsPressed && mActionState.pogoIsPressed)
@@ -225,8 +209,8 @@ void CPlayerLevel::processRunning()
 {
 	prepareToShoot();
 
-	int px = m_playcontrol[PA_X];
-	int py = m_playcontrol[PA_Y];
+    int px = mPlaycontrol[PA_X];
+    int py = mPlaycontrol[PA_Y];
 
 	// Most of the walking routine is done by the action script itself
 
@@ -273,7 +257,7 @@ void CPlayerLevel::processRunning()
         mActionState.jumpWasPressed = true;
 
         // If you pressed run, perform a long jump
-        if(m_playcontrol[PA_RUN])
+        if(mPlaycontrol[PA_RUN])
         {
             xinertia = xDirection * 32;
         }
@@ -295,7 +279,7 @@ void CPlayerLevel::processRunning()
         mActionState.pogoWasPressed = true;
 
         // If you pressed run, perform a long jump
-        if(m_playcontrol[PA_RUN])
+        if(mPlaycontrol[PA_RUN])
         {
             xinertia = xDirection * 32;
         }
@@ -362,7 +346,7 @@ void CPlayerLevel::processRunning()
 void CPlayerLevel::prepareToShoot()
 {
 	// He could shoot
-	if( m_playcontrol[PA_FIRE] && !m_fire_recharge_time )
+    if( mPlaycontrol[PA_FIRE] && !m_fire_recharge_time )
 	{
 		setAction(A_KEEN_SHOOT);
         mReleasedShot = false;
@@ -374,8 +358,8 @@ void CPlayerLevel::prepareToShoot()
 
 void CPlayerLevel::handleInputOnGround()
 {
-	int px = m_playcontrol[PA_X];
-	int py = m_playcontrol[PA_Y];
+    int px = mPlaycontrol[PA_X];
+    int py = mPlaycontrol[PA_Y];
 
 
 	if(px)
@@ -458,8 +442,8 @@ void CPlayerLevel::processStanding()
 
 	verifyFalling();
 
-	int px = m_playcontrol[PA_X];
-	int py = m_playcontrol[PA_Y];
+    int px = mPlaycontrol[PA_X];
+    int py = mPlaycontrol[PA_Y];
 
     if( px || py || mActionState.jumpIsPressed || mActionState.pogoIsPressed )
 	{
@@ -514,7 +498,7 @@ void CPlayerLevel::processStanding()
 
 void CPlayerLevel::processReadingBook()
 {
-    if( m_playcontrol[PA_X] )
+    if( mPlaycontrol[PA_X] )
     {
 	user1 = user2 = 0;
 	setAction(A_KEEN_BOOK_CLOSE);
@@ -572,7 +556,7 @@ void CPlayerLevel::processLookingDown()
 	}
 
 
-	if ( m_playcontrol[PA_Y] <= 0 || m_playcontrol[PA_X] != 0
+    if ( mPlaycontrol[PA_Y] <= 0 || mPlaycontrol[PA_X] != 0
             || (mActionState.jumpIsPressed && !mActionState.jumpWasPressed)
             || (mActionState.pogoIsPressed && !mActionState.pogoWasPressed))
 	{
@@ -582,10 +566,10 @@ void CPlayerLevel::processLookingDown()
 	}
 
 
-	if( m_playcontrol[PA_Y]>0 )
+    if( mPlaycontrol[PA_Y]>0 )
 	{
 
-		if ( m_playcontrol[PA_JUMP] > 0 && !onslope  )
+        if ( mPlaycontrol[PA_JUMP] > 0 && !onslope  )
 		{
 			const bool jumpdowntile = canFallThroughTile();
 			if( pSupportedbyobject || jumpdowntile )
@@ -670,7 +654,7 @@ void CPlayerLevel::processInput()
 {
 	CPlayerBase::processInput();
 
-	if(m_playcontrol[PA_Y] >= 0)
+    if(mPlaycontrol[PA_Y] >= 0)
     {
 		m_EnterDoorAttempt = false;
     }
@@ -678,8 +662,8 @@ void CPlayerLevel::processInput()
     mActionState.jumpWasPressed = mActionState.jumpIsPressed;
     mActionState.pogoWasPressed = mActionState.pogoIsPressed;
 
-    mActionState.jumpIsPressed = m_playcontrol[PA_JUMP];
-    mActionState.pogoIsPressed = m_playcontrol[PA_POGO];
+    mActionState.jumpIsPressed = mPlaycontrol[PA_JUMP];
+    mActionState.pogoIsPressed = mPlaycontrol[PA_POGO];
 
     if (!mActionState.jumpIsPressed) mActionState.jumpWasPressed = false;
     if (!mActionState.pogoIsPressed) mActionState.pogoWasPressed = false;
@@ -711,13 +695,13 @@ void CPlayerLevel::tryToShoot( const Vector2D<int> &pos, const int xDir, const i
 void CPlayerLevel::shootInAir()
 {
 	// process simple shooting
-	if( m_playcontrol[PA_Y] < 0 )
+    if( mPlaycontrol[PA_Y] < 0 )
 	{
 		setActionForce(A_KEEN_JUMP_SHOOTUP);
         const Vector2D<int> newVec(getXMidPos()-(3<<STC), getYUpPos()-(16<<STC));
 		tryToShoot(newVec, 0, -1);
 	}
-	else if( m_playcontrol[PA_Y] > 0 )
+    else if( mPlaycontrol[PA_Y] > 0 )
 	{
 		setActionForce(A_KEEN_JUMP_SHOOTDOWN);
         const Vector2D<int> newVec(getXMidPos()-(3<<STC), getYDownPos());
@@ -757,7 +741,7 @@ bool CPlayerLevel::checkandtriggerforCliffHanging()
     
     const int yUp = getYUpPos()>>CSF;
             
-    if( m_playcontrol[PA_X]<0 && blockedl )
+    if( mPlaycontrol[PA_X]<0 && blockedl )
     {
 	const int xLeft = (getXLeftPos()>>CSF)-1;
     bool check_block = TileProperty[mpMap->at(xLeft, yUp-1)].bup;
@@ -785,7 +769,7 @@ bool CPlayerLevel::checkandtriggerforCliffHanging()
 	    return true;
 	}
     }
-    else if( m_playcontrol[PA_X]>0 && blockedr )
+    else if( mPlaycontrol[PA_X]>0 && blockedr )
     {
 	const int xRight = (getXRightPos()>>CSF)+1;	
     bool check_block = TileProperty[mpMap->at(xRight, yUp-1)].bup;
@@ -861,7 +845,7 @@ void CPlayerLevel::processCliffHanging()
 
     
 	// In case you released the direction
-	if( m_playcontrol[PA_Y] == 0 && m_playcontrol[PA_X] == 0)
+    if( mPlaycontrol[PA_Y] == 0 && mPlaycontrol[PA_X] == 0)
 	{
 		m_hangtime = 0;
 	}
@@ -873,8 +857,8 @@ void CPlayerLevel::processCliffHanging()
 	}
 
 	// If you want to climb up
-	if( ((xDirection == LEFT)  && (m_playcontrol[PA_X] < 0)) ||
-            ((xDirection == RIGHT) && (m_playcontrol[PA_X] > 0))  )
+    if( ((xDirection == LEFT)  && (mPlaycontrol[PA_X] < 0)) ||
+            ((xDirection == RIGHT) && (mPlaycontrol[PA_X] > 0))  )
 	{
 		// This will reset the target whenever the process object of climbing is launched
 		mTarget.x = -1;
@@ -883,9 +867,9 @@ void CPlayerLevel::processCliffHanging()
 	}
 
 	// If you want to fall down.
-	else if( m_playcontrol[PA_Y] > 0 ||
-		((xDirection == LEFT) && (m_playcontrol[PA_X] > 0)) ||
-		((xDirection == RIGHT) && (m_playcontrol[PA_X] < 0))  )
+    else if( mPlaycontrol[PA_Y] > 0 ||
+        ((xDirection == LEFT) && (mPlaycontrol[PA_X] > 0)) ||
+        ((xDirection == RIGHT) && (mPlaycontrol[PA_X] < 0))  )
 	{
 		setAction( A_KEEN_FALL );
 		playSound( SOUND_KEEN_FALL );
@@ -1028,12 +1012,12 @@ void CPlayerLevel::processStunned()
 void CPlayerLevel::processMovingHorizontal()
 {
 	// Verify facing directions
-	if(  m_playcontrol[PA_X]<0  ) // left
+    if(  mPlaycontrol[PA_X]<0  ) // left
 		xDirection = LEFT;
-	else if( m_playcontrol[PA_X]>0  ) // right
+    else if( mPlaycontrol[PA_X]>0  ) // right
 		xDirection = RIGHT;
 
-	moveXDir(m_playcontrol[PA_X]>>1);
+    moveXDir(mPlaycontrol[PA_X]>>1);
 }
 
 
@@ -1161,13 +1145,13 @@ void CPlayerLevel::processPogo()
 	}
 
 
-	if (m_playcontrol[PA_X])
+    if (mPlaycontrol[PA_X])
 	{
 		//if (!xinertia)
 		{
-			if(m_playcontrol[PA_X]<0)
+            if(mPlaycontrol[PA_X]<0)
 				xDirection = -1;
-			else if(m_playcontrol[PA_X]>0)
+            else if(mPlaycontrol[PA_X]>0)
 				xDirection = 1;
 		}
 		//performPhysAccelHor(xDirection, 48); // This value was in omnispeak. 56 might fit better. Please report in case of problems!
@@ -1205,7 +1189,7 @@ void CPlayerLevel::processPogo()
 	moveXDir(xinertia);
 
 	// process Shooting in air
-	if( m_playcontrol[PA_FIRE] && !m_fire_recharge_time )
+    if( mPlaycontrol[PA_FIRE] && !m_fire_recharge_time )
 	{
 		xinertia = 0;
 		shootInAir();
@@ -1290,7 +1274,7 @@ void CPlayerLevel::verifyJumpAndFall()
 			playSound( SOUND_KEEN_LAND );
 
 			//TODO: Finish these
-			if( m_playcontrol[PA_X] != 0 )
+            if( mPlaycontrol[PA_X] != 0 )
 			{
 				setAction(A_KEEN_RUN);
 			}
@@ -1391,12 +1375,12 @@ void CPlayerLevel::processJumping()
 	}
 	
 	//Move horizontally
-	if ( m_playcontrol[PA_X] != 0 )
+    if ( mPlaycontrol[PA_X] != 0 )
 	{
-		xDirection = (m_playcontrol[PA_X] < 0) ? -1 : 1;
+        xDirection = (mPlaycontrol[PA_X] < 0) ? -1 : 1;
 
         // Jump further if run is pressed
-        if(m_playcontrol[PA_RUN])
+        if(mPlaycontrol[PA_RUN])
         {
             performPhysAccelHor(xDirection*5, 75);
         }
@@ -1417,7 +1401,7 @@ void CPlayerLevel::processJumping()
 		return;
 	}
 
-	if (m_playcontrol[PA_Y] < 0)
+    if (mPlaycontrol[PA_Y] < 0)
 	{
 		verifyforPole();
 	}
@@ -1433,7 +1417,7 @@ void CPlayerLevel::processJumping()
 	}
 
 	// process Shooting in air
-	if( m_playcontrol[PA_FIRE] && !m_fire_recharge_time )
+    if( mPlaycontrol[PA_FIRE] && !m_fire_recharge_time )
     {
 		shootInAir();
     }
@@ -1459,7 +1443,7 @@ bool CPlayerLevel::canFallThroughTile()
 void CPlayerLevel::processLookingUp()
 {
 	// While looking up, Keen could shoot up!
-	if( m_playcontrol[PA_FIRE] && !m_fire_recharge_time )
+    if( mPlaycontrol[PA_FIRE] && !m_fire_recharge_time )
 	{
 		setActionForce(A_KEEN_SHOOT_UP);
         mReleasedShot = false;
@@ -1470,7 +1454,7 @@ void CPlayerLevel::processLookingUp()
 	if( m_camera.m_relcam.y > -MAX_SCROLL_VIEW )
 		m_camera.m_relcam.y -= (2<<STC);
 
-	if( m_playcontrol[PA_Y]<0 )
+    if( mPlaycontrol[PA_Y]<0 )
 		return;
 
 	makeHimStand();
@@ -2166,8 +2150,8 @@ void CK_KeenPullThink4(CK_object *obj)
 
 void CPlayerLevel::performPoleHandleInput()
 {
-	const int px = m_playcontrol[PA_X];
-	const int py = m_playcontrol[PA_Y];
+    const int px = mPlaycontrol[PA_X];
+    const int py = mPlaycontrol[PA_Y];
 	
 	if ( px )
     {
@@ -2178,7 +2162,7 @@ void CPlayerLevel::performPoleHandleInput()
 	if( py < 0 )
 	{
 		// First check player pressed shoot button
-		if( m_playcontrol[PA_FIRE] && !m_fire_recharge_time )
+        if( mPlaycontrol[PA_FIRE] && !m_fire_recharge_time )
 		{
 			m_fire_recharge_time = FIRE_RECHARGE_TIME;
 			setActionForce(A_KEEN_POLE_SHOOTUP);
@@ -2191,7 +2175,7 @@ void CPlayerLevel::performPoleHandleInput()
 	else if( py > 0 )
 	{
 		// First check player pressed shoot button
-		if( m_playcontrol[PA_FIRE] && !m_fire_recharge_time )
+        if( mPlaycontrol[PA_FIRE] && !m_fire_recharge_time )
 		{
 			m_fire_recharge_time = FIRE_RECHARGE_TIME;
 			setActionForce(A_KEEN_POLE_SHOOTDOWN);
@@ -2203,7 +2187,7 @@ void CPlayerLevel::performPoleHandleInput()
 	else if(!m_fire_recharge_time)
 	{
 		// First check player pressed shoot button
-		if( m_playcontrol[PA_FIRE] )
+        if( mPlaycontrol[PA_FIRE] )
 		{
 			m_fire_recharge_time = FIRE_RECHARGE_TIME;
 			setActionForce(A_KEEN_POLE_SHOOT);
@@ -2245,8 +2229,8 @@ void CPlayerLevel::performPoleHandleInput()
 
 void CPlayerLevel::processPoleClimbingSit()
 {
-	const int px = m_playcontrol[PA_X];
-	const int py = m_playcontrol[PA_Y];
+    const int px = mPlaycontrol[PA_X];
+    const int py = mPlaycontrol[PA_Y];
 
 	Uint32 l_x_l = getXLeftPos();
 	Uint32 l_x = getXMidPos();
@@ -2431,12 +2415,12 @@ void CPlayerLevel::processPoleSlidingDown()
 		return;
 	}
 
-	if (m_playcontrol[PA_Y] == 0)
+    if (mPlaycontrol[PA_Y] == 0)
 	{
 		setAction(A_KEEN_POLE);
 		yDirection = 0;
 	}
-	else if (m_playcontrol[PA_Y] < 0)
+    else if (mPlaycontrol[PA_Y] < 0)
 	{
 		setAction(A_KEEN_POLE_CLIMB);
 		yDirection = -1;
@@ -2479,7 +2463,7 @@ void CPlayerLevel::processShootWhileStanding()
     else
     {
         // wait until player releases the button and get back to stand status
-        if( !m_playcontrol[PA_FIRE] )
+        if( !mPlaycontrol[PA_FIRE] )
         {
             yDirection = 0;
             if(getActionNumber(A_KEEN_SHOOT_UP))
@@ -2537,7 +2521,7 @@ void CPlayerLevel::processFalling()
 
 	// If Jump mode is enabled he can jump again
 	// This will cancel the pole process and make Keen jump
-    if( gBehaviorEngine.mCheatmode.jump && m_playcontrol[PA_JUMP] > 0 )
+    if( gBehaviorEngine.mCheatmode.jump && mPlaycontrol[PA_JUMP] > 0 )
 	{
 		setAction(A_KEEN_JUMP);
         mIsClimbing = false;
@@ -2549,11 +2533,11 @@ void CPlayerLevel::processFalling()
 
 	/// While falling Keen could switch to pogo again anytime
 	// but first the player must release the pogo button
-	if( !m_playcontrol[PA_POGO] )
+    if( !mPlaycontrol[PA_POGO] )
 		m_pogotoggle = false;
 
 	// Now we can check if player wants to use it again
-	if( !m_pogotoggle && m_playcontrol[PA_POGO] )
+    if( !m_pogotoggle && mPlaycontrol[PA_POGO] )
 	{
 		m_jumpheight = 0;
 		yinertia = 0;
@@ -2562,12 +2546,12 @@ void CPlayerLevel::processFalling()
 	}
 
 	// Check if keen should stick to the pole
-	if( m_playcontrol[PA_Y] < 0 )
+    if( mPlaycontrol[PA_Y] < 0 )
 	{
 		verifyforPole();
 	}
 	
-	if( m_playcontrol[PA_FIRE] && !m_fire_recharge_time )
+    if( mPlaycontrol[PA_FIRE] && !m_fire_recharge_time )
 		shootInAir();
 }
 
@@ -2642,12 +2626,12 @@ int CPlayerLevel::checkConveyorBelt()
 
 void CPlayerLevel::process()
 {
-    if(m_dying)
+    if(mDying)
     {
         setActionSprite();
     }
 
-    if(dead) // If this player is dead, the camera still runs,
+    if(mIsDead) // If this player is dead, the camera still runs,
     {       // in case a second player inherits the camera lead
         processCamera();
         return;
@@ -2658,7 +2642,7 @@ void CPlayerLevel::process()
         return;
     }
     
-	if(!m_dying)
+    if(!mDying)
 	{
 		processInput();
 
@@ -2731,14 +2715,14 @@ void CPlayerLevel::process()
 	    
 
 	// make the fire recharge time decreased if player is not pressing firing button
-	if(m_fire_recharge_time && !m_playcontrol[PA_FIRE])
+    if(m_fire_recharge_time && !mPlaycontrol[PA_FIRE])
 	{
 	    m_fire_recharge_time--;
 	}
 
 	processLevelMiscFlagsCheck();
 
-    if(m_dying)
+    if(mDying)
     {
         return;
     }
@@ -2746,7 +2730,7 @@ void CPlayerLevel::process()
 	if(!mExitDoorTimer)
 	{
         // Run very fast
-        if(m_playcontrol[PA_RUN])
+        if(mPlaycontrol[PA_RUN])
         {
             if(xDirection == LEFT )
                 moveLeft( m_Action.h_anim_move<<1 );
@@ -2762,7 +2746,7 @@ void CPlayerLevel::process()
 	}
 
 
-	if(!m_dying && !mExitTouched)
+    if(!mDying && !mExitTouched)
 	{
 		processExiting();
 
@@ -2934,7 +2918,7 @@ void CPlayerLevel::TurnGiantSwitchOn(const int x, const int y)
 
 int CPlayerLevel::checkSolidU(int x1, int x2, int y1, const bool push_mode )
 {
-    if(m_dying)  return 0;
+    if(mDying)  return 0;
 
 	if(hitdetectWithTilePropertyHor(1, x1, x2, y1-COLISION_RES, 1<<CSF))
 	    return 0;
@@ -3007,7 +2991,7 @@ int CPlayerLevel::checkSolidD( int x1, int x2, int y2, const bool push_mode )
 {
 	std::vector<CTileProperties> &TileProperty = gBehaviorEngine.getTileProperties();
 
-    if(m_dying)  return 0;
+    if(mDying)  return 0;
 
 	y2 += COLISION_RES;
 

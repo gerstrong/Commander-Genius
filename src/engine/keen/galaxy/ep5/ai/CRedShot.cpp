@@ -59,7 +59,7 @@ void CRedShot::smash()
   if(mTimer < TIME_UNTIL_SMASH)
     return;
   
-  dead = true;
+  mIsDead = true;
   exists = false;
   
   mTimer = 0;  
@@ -67,7 +67,7 @@ void CRedShot::smash()
 
 void CRedShot::getTouchedBy(CSpriteObject &theObject)
 {
-	if(dead || theObject.dead)
+	if(mIsDead || theObject.mIsDead)
 		return;
 
 	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )

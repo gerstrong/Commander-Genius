@@ -68,7 +68,7 @@ CWormmouth::CWormmouth(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
 
 bool CWormmouth::isNearby(CSpriteObject &theObject)
 {
-  if(dead || theObject.dead )
+  if(mIsDead || theObject.mIsDead )
     return false;
   
   
@@ -107,7 +107,7 @@ bool CWormmouth::isNearby(CSpriteObject &theObject)
 
 void CWormmouth::getTouchedBy(CSpriteObject &theObject)
 {
-  if(dead || theObject.dead )
+  if(mIsDead || theObject.mIsDead )
     return;
   
   
@@ -118,8 +118,8 @@ void CWormmouth::getTouchedBy(CSpriteObject &theObject)
   if( dynamic_cast<CBullet*>(&theObject) )
     {
       setAction( A_WORMMOUTH_STUNNED );
-      dead = true;
-      theObject.dead = true;
+      mIsDead = true;
+      theObject.mIsDead = true;
       if(!processActionRoutine())
 	exists = false;
       performCollisions();

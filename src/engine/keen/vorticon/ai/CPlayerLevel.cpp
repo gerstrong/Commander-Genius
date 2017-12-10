@@ -856,7 +856,7 @@ const int bumpamount = 160;
 // if solid = true, object acts like a solid "wall".
 void CPlayer::bump( const direction_t direction )
 {
-	if( pjumping == PPREPAREJUMP || pjumping == PPREPAREPOGO || dead || level_done!=LEVEL_NOT_DONE )
+	if( pjumping == PPREPAREJUMP || pjumping == PPREPAREPOGO || mIsDead || level_done!=LEVEL_NOT_DONE )
 		return;
 
 	playSound( SOUND_YORP_BUMP, SoundPlayMode::PLAY_NORESTART );
@@ -872,7 +872,7 @@ void CPlayer::bump( const direction_t direction )
 
 void CPlayer::bump(const direction_t direction, const int amount )
 {
-    if( pjumping == PPREPAREJUMP || pjumping == PPREPAREPOGO || dead || level_done!=LEVEL_NOT_DONE )
+    if( pjumping == PPREPAREJUMP || pjumping == PPREPAREPOGO || mIsDead || level_done!=LEVEL_NOT_DONE )
         return;
 
     playSound( SOUND_YORP_BUMP, SoundPlayMode::PLAY_NORESTART );
@@ -889,7 +889,7 @@ void CPlayer::bump(const direction_t direction, const int amount )
 // Scrub, etc "push".
 void CPlayer::push( CSpriteObject &theObject )
 {
-	if( dead || level_done!=LEVEL_NOT_DONE )
+	if( mIsDead || level_done!=LEVEL_NOT_DONE )
 		return;
 
 	int obj_lx = theObject.getXLeftPos();
@@ -916,7 +916,7 @@ void CPlayer::push( CSpriteObject &theObject )
 // plats in keen 3 can push him down as well
 void CPlayer::pushDown( CSpriteObject &theObject )
 {
-    if( dead || level_done!=LEVEL_NOT_DONE )
+    if( mIsDead || level_done!=LEVEL_NOT_DONE )
         return;
 
     int objY = theObject.getYDownPos();

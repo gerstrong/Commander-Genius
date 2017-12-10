@@ -174,7 +174,7 @@ bool CBabobba::isNearby(CSpriteObject &theObject)
 
 void CBabobba::getTouchedBy(CSpriteObject& theObject)
 {
-	if(dead || theObject.dead)
+	if(mIsDead || theObject.mIsDead)
 		return;
 
 	CStunnable::getTouchedBy(theObject);
@@ -183,8 +183,8 @@ void CBabobba::getTouchedBy(CSpriteObject& theObject)
 	if( dynamic_cast<CBullet*>(&theObject) )
 	{
 		setAction(A_BABOBBA_STUNNED);
-		dead = true;
-		theObject.dead = true;
+		mIsDead = true;
+		theObject.mIsDead = true;
 	}
 	
 	if(getActionNumber(A_BABOBBA_NAPPING))
@@ -287,7 +287,7 @@ void CCinder::processDying()
     
     mTimer = 0;
     
-    dead = true;
+    mIsDead = true;
     exists = false;
 }
 

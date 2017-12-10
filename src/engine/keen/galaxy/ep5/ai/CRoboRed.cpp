@@ -248,7 +248,7 @@ bool CRoboRed::isNearby(CSpriteObject &theObject)
 
 void CRoboRed::getTouchedBy(CSpriteObject &theObject)
 {
-    if(dead || theObject.dead)
+    if(mIsDead || theObject.mIsDead)
         return;
 
     CStunnable::getTouchedBy(theObject);
@@ -262,7 +262,7 @@ void CRoboRed::getTouchedBy(CSpriteObject &theObject)
         }
 
 
-        theObject.dead = true;
+        theObject.mIsDead = true;
     }
 
     if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )

@@ -72,7 +72,7 @@ bool CTreasureEater::isNearby(CSpriteObject &theObject)
 
 void CTreasureEater::getTouchedBy(CSpriteObject &theObject)
 {
-	if(dead || theObject.dead )
+	if(mIsDead || theObject.mIsDead )
 		return;
 
 
@@ -83,8 +83,8 @@ void CTreasureEater::getTouchedBy(CSpriteObject &theObject)
 	{
 		setAction( A_SMIRKY_STUNNED );
 		setActionSprite();
-		dead = true;
-		theObject.dead = true;
+		mIsDead = true;
+		theObject.mIsDead = true;
 	}
 
 	// Here go the items

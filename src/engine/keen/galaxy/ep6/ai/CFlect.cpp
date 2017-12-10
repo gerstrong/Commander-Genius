@@ -55,7 +55,7 @@ void CFlect::processWalking()
 
 void CFlect::getTouchedBy(CSpriteObject& theObject)
 {
-  if(dead || theObject.dead)
+  if(mIsDead || theObject.mIsDead)
     return;	
   
   // Was it a bullet? Than make it stunned.
@@ -69,8 +69,8 @@ void CFlect::getTouchedBy(CSpriteObject& theObject)
     {
       CStunnable::getTouchedBy(theObject);	    
       setAction(A_FLECT_STUN);
-      dead = true;
-      bullet->dead = true;
+      mIsDead = true;
+      bullet->mIsDead = true;
     }
     else
     {
@@ -90,7 +90,7 @@ void CFlect::getTouchedBy(CSpriteObject& theObject)
 
 bool CFlect::isNearby(CSpriteObject& theObject)
 {
-    if(getActionStatus(A_FLECT_STUN) || dead)
+    if(getActionStatus(A_FLECT_STUN) || mIsDead)
       return false;
   
     if( CPlayerLevel *player = dynamic_cast<CPlayerLevel*>(&theObject) )

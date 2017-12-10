@@ -225,7 +225,7 @@ void CYorp::processDying()
 	if (yinertia >= 0 && blockedd)
 	{
 		mSpriteIdx = YORP_DEAD_FRAME;
-		dead = true;
+		mIsDead = true;
 	}
 }
 

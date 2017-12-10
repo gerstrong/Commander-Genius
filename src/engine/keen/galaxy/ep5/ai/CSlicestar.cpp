@@ -40,7 +40,7 @@ mUseBlocker(useBlocker)
 
 void CSlicestar::getTouchedBy(CSpriteObject &theObject)
 {
-	if(dead || theObject.dead)
+	if(mIsDead || theObject.mIsDead)
 		return;
 
 	CStunnable::getTouchedBy(theObject);
@@ -48,7 +48,7 @@ void CSlicestar::getTouchedBy(CSpriteObject &theObject)
     // Was it a bullet? Zap zot!
 	if( dynamic_cast<CBullet*>(&theObject) )
 	{
-		theObject.dead = true;
+		theObject.mIsDead = true;
 	}
 
 	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )

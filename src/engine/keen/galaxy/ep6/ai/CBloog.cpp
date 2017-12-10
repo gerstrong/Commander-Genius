@@ -84,7 +84,7 @@ void CBloog::processWalking()
 
 void CBloog::getTouchedBy(CSpriteObject &theObject)
 {
-	if(dead || theObject.dead)
+	if(mIsDead || theObject.mIsDead)
 		return;
 
 	CStunnable::getTouchedBy(theObject);
@@ -93,12 +93,12 @@ void CBloog::getTouchedBy(CSpriteObject &theObject)
 	if( dynamic_cast<CBullet*>(&theObject) )
 	{		
         mHealthPoints--;
-        theObject.dead = true;
+        theObject.mIsDead = true;
 
         if(mHealthPoints == 0)
         {
             setAction(A_BLOOG_STUNNED);
-            dead = true;
+            mIsDead = true;
         }
         else
         {

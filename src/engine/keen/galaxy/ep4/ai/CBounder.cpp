@@ -69,15 +69,15 @@ void CBounder::getTouchedBy(CSpriteObject &theObject)
 			player->pSupportedbyobject = this;
 	}
 	
-	if(dead || theObject.dead)
+	if(mIsDead || theObject.mIsDead)
 		return;	
 
 	// Was it a bullet? Then make it stunned.
 	if( theObject.exists && dynamic_cast<CBullet*>(&theObject) )
 	{
 		setAction( A_BOUNDER_STUNNED );
-		dead = true;
-		theObject.dead = true;
+		mIsDead = true;
+		theObject.mIsDead = true;
 	}
 	
 }

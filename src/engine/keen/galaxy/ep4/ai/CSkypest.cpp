@@ -44,7 +44,7 @@ bool CSkypest::isNearby(CSpriteObject &theObject)
 
 void CSkypest::getTouchedBy(CSpriteObject &theObject)
 {
-	if(dead || theObject.dead )
+	if(mIsDead || theObject.mIsDead )
 		return;
 
 	// When Keen touches the Council Member exit the level and add one to the council list
@@ -53,7 +53,7 @@ void CSkypest::getTouchedBy(CSpriteObject &theObject)
 		// Check if player is using pogo and Skypest is licking
 		if( getActionNumber(A_SKYPEST_LICKEYES) && Player->isPogoing() )
 		{
-			dead = true;
+			mIsDead = true;
 			playSound(SOUND_SQUISH_SKYPEST);
 			setAction(A_SKYPEST_SQUISHED);
 		}

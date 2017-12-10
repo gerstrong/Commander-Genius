@@ -53,7 +53,7 @@ void CBerkeloid::setActionForce(const size_t ActionNumber)
 
 void CBerkeloid::getTouchedBy(CSpriteObject &theObject)
 {
-	if(theObject.dead )
+	if(theObject.mIsDead )
     {
 		return;
     }
@@ -62,7 +62,7 @@ void CBerkeloid::getTouchedBy(CSpriteObject &theObject)
 	{
 		bullet->setAction(A_KEENSHOT_IMPACT);
 		bullet->playSound( SOUND_SHOT_HIT );
-		bullet->dead = true;
+		bullet->mIsDead = true;
 	}
 
     if( auto *player = dynamic_cast<CPlayerBase*>(&theObject) )
@@ -207,7 +207,7 @@ void CBerkFlame::setActionForce(const size_t ActionNumber)
 
 void CBerkFlame::getTouchedBy(CSpriteObject &theObject)
 {
-	if(theObject.dead )
+	if(theObject.mIsDead )
 		return;
 
 	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )

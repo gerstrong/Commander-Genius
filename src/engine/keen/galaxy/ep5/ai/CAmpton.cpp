@@ -331,7 +331,7 @@ bool CAmpton::isNearby(CSpriteObject &theObject)
 
 void CAmpton::getTouchedBy(CSpriteObject &theObject)
 {
-    if(dead || theObject.dead)
+    if(mIsDead || theObject.mIsDead)
         return;
 
     CStunnable::getTouchedBy(theObject);
@@ -340,7 +340,7 @@ void CAmpton::getTouchedBy(CSpriteObject &theObject)
     if( dynamic_cast<CBullet*>(&theObject) )
     {
         mHealthPoints--;
-        theObject.dead = true;
+        theObject.mIsDead = true;
 
         if(mHealthPoints == 0)
         {
@@ -350,7 +350,7 @@ void CAmpton::getTouchedBy(CSpriteObject &theObject)
             }
 
             setAction(A_AMPTON_STUNNED);
-            dead = true;
+            mIsDead = true;
             solid = true;
         }
         else
@@ -394,7 +394,7 @@ void CAmpton::process()
     if(!getActionNumber(A_AMPTON_POLE_SLIDE))
         performGravityMid();
 
-    if(!dead) // If we is dead, there is no way to continue moving or turning
+    if(!mIsDead) // If we is dead, there is no way to continue moving or turning
     {
         if( blockedl )
         {

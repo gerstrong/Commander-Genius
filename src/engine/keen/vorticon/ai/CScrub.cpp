@@ -38,7 +38,7 @@ scrubdie_inertia_y(0)
 	canbezapped = true;
 
 	performCollisions();
-	dead = false;
+	mIsDead = false;
 	fallspeed = 0;
 }
 
@@ -75,7 +75,7 @@ void CScrub::process()
 		{
 			mSpriteIdx = SCRUB_DEAD_FRAME;
 			state = SCRUB_DEAD;
-			dead = true;
+			mIsDead = true;
 		}
 		return;
 		break;
@@ -282,7 +282,7 @@ void CScrub::fall()
 		canbezapped = true;
 
 		performCollisions();
-		dead = false;
+		mIsDead = false;
 		fallspeed = 0;
 
 		yDirection = 0;

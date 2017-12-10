@@ -55,7 +55,7 @@ void CMimrock::getTouchedBy(CSpriteObject &theObject)
     if( getActionStatus(A_MIMROCK_SIT) ) 
 	return;
 		
-    if(dead || theObject.dead)
+    if(mIsDead || theObject.mIsDead)
 	return;
 			
     CStunnable::getTouchedBy(theObject);
@@ -65,8 +65,8 @@ void CMimrock::getTouchedBy(CSpriteObject &theObject)
     {
 	setAction( A_MIMROCK_STUNNED );
 	honorPriority = false;
-	theObject.dead = true;
-	dead = true;
+	theObject.mIsDead = true;
+	mIsDead = true;
     }
 
 			
@@ -79,7 +79,7 @@ void CMimrock::getTouchedBy(CSpriteObject &theObject)
 
 bool CMimrock::isNearby(CSpriteObject &theObject)
 {
-    if(dead || theObject.dead || mTimer > 0 )
+    if(mIsDead || theObject.mIsDead || mTimer > 0 )
         return true;
 
     if( !blockedd || getActionStatus(A_MIMROCK_JUMP) || getActionStatus(A_MIMROCK_BOUNCE) )

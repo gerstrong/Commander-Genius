@@ -164,17 +164,17 @@ CGalaxySpriteObject(pmap, foeID, x, y, spriteVar),
 m_Inventory(l_Inventory),
 m_camera(pmap,x,y,this),
 mPlayerNum(playerID),
-mp_processState(NULL)
+mPlayerCtrlNum(playerID)
 {
     mActionMap[A_KEEN_DIE] = &CPlayerBase::processDying;
     mActionMap[A_KEEN_DIE_ALT] = &CPlayerBase::processDying;
 
 	m_walktimer = 0;
 	m_timer = 0;
-	m_dying = false;
+	mDying = false;
 	xDirection = facedir;
 
-    m_playcontrol.fill(0);
+    mPlaycontrol.fill(0);
 	m_camera.setPosition(m_Pos);
 
     mpMap->calcVisibleArea();
@@ -259,62 +259,76 @@ bool CPlayerBase::calcVisibility()
 
 void CPlayerBase::processInput()
 {
+    // If player has the camlead, he can also reassign the input
+    // by pressing Shift+Number
+    if(mPlayerNum == m_camera.getLead() && gBehaviorEngine.mPlayers > 1)
+    {
+        if(gInput.getHoldedKey(KSHIFT))
+        {
+            if(gInput.getPressedKey(KNUM1)) mPlayerCtrlNum = 0;
+            if(gInput.getPressedKey(KNUM2)) mPlayerCtrlNum = 1;
+            if(gInput.getPressedKey(KNUM3)) mPlayerCtrlNum = 2;
+            if(gInput.getPressedKey(KNUM4)) mPlayerCtrlNum = 3;
+        }
+    }
+
+
 	// Entry for every player
-	m_playcontrol[PA_X] = 0;
-	m_playcontrol[PA_Y] = 0;
+	mPlaycontrol[PA_X] = 0;
+	mPlaycontrol[PA_Y] = 0;
 
-	if(gInput.getHoldedCommand(mPlayerNum, IC_LEFT))
-		m_playcontrol[PA_X] -= 100;
-	else if(gInput.getHoldedCommand(mPlayerNum, IC_RIGHT))
-		m_playcontrol[PA_X] += 100;
+    if(gInput.getHoldedCommand(mPlayerCtrlNum, IC_LEFT))
+		mPlaycontrol[PA_X] -= 100;
+    else if(gInput.getHoldedCommand(mPlayerCtrlNum, IC_RIGHT))
+		mPlaycontrol[PA_X] += 100;
 
-	if(gInput.getHoldedCommand(mPlayerNum, IC_DOWN))
-		m_playcontrol[PA_Y] += 100;
-	else if(gInput.getHoldedCommand(mPlayerNum, IC_UP))
-		m_playcontrol[PA_Y] -= 100;
+    if(gInput.getHoldedCommand(mPlayerCtrlNum, IC_DOWN))
+		mPlaycontrol[PA_Y] += 100;
+    else if(gInput.getHoldedCommand(mPlayerCtrlNum, IC_UP))
+		mPlaycontrol[PA_Y] -= 100;
 
-	if(gInput.getHoldedCommand(mPlayerNum, IC_UPPERLEFT))
+    if(gInput.getHoldedCommand(mPlayerCtrlNum, IC_UPPERLEFT))
 	{
-		m_playcontrol[PA_X] -= 100;
-		m_playcontrol[PA_Y] -= 100;
+		mPlaycontrol[PA_X] -= 100;
+		mPlaycontrol[PA_Y] -= 100;
 	}
-	else if(gInput.getHoldedCommand(mPlayerNum, IC_UPPERRIGHT))
+    else if(gInput.getHoldedCommand(mPlayerCtrlNum, IC_UPPERRIGHT))
 	{
-		m_playcontrol[PA_X] += 100;
-		m_playcontrol[PA_Y] -= 100;
+		mPlaycontrol[PA_X] += 100;
+		mPlaycontrol[PA_Y] -= 100;
 	}
-	else if(gInput.getHoldedCommand(mPlayerNum, IC_LOWERLEFT))
+    else if(gInput.getHoldedCommand(mPlayerCtrlNum, IC_LOWERLEFT))
 	{
-		m_playcontrol[PA_X] -= 100;
-		m_playcontrol[PA_Y] += 100;
+		mPlaycontrol[PA_X] -= 100;
+		mPlaycontrol[PA_Y] += 100;
 	}
-	else if(gInput.getHoldedCommand(mPlayerNum, IC_LOWERRIGHT))
+    else if(gInput.getHoldedCommand(mPlayerCtrlNum, IC_LOWERRIGHT))
 	{
-		m_playcontrol[PA_X] += 100;
-		m_playcontrol[PA_Y] += 100;
+		mPlaycontrol[PA_X] += 100;
+		mPlaycontrol[PA_Y] += 100;
 	}
 
-	m_playcontrol[PA_JUMP]   = gInput.getHoldedCommand(mPlayerNum, IC_JUMP)   ? 1 : 0;
-	m_playcontrol[PA_POGO]   = gInput.getHoldedCommand(mPlayerNum, IC_POGO)   ? 1 : 0;    
-    m_playcontrol[PA_RUN]  = gInput.getHoldedCommand(mPlayerNum, IC_RUN)   ? 1 : 0;
+    mPlaycontrol[PA_JUMP]   = gInput.getHoldedCommand(mPlayerCtrlNum, IC_JUMP)   ? 1 : 0;
+    mPlaycontrol[PA_POGO]   = gInput.getHoldedCommand(mPlayerCtrlNum, IC_POGO)   ? 1 : 0;
+    mPlaycontrol[PA_RUN]  = gInput.getHoldedCommand(mPlayerCtrlNum, IC_RUN)   ? 1 : 0;
 
 	// The possibility to charge jumps. This is mainly used for the pogo. it is limited to 50
-	if( m_playcontrol[PA_JUMP] > 50) m_playcontrol[PA_JUMP] = 50;
+	if( mPlaycontrol[PA_JUMP] > 50) mPlaycontrol[PA_JUMP] = 50;
 
 	// Two button firing process
-	if(gInput.getTwoButtonFiring(mPlayerNum))
+    if(gInput.getTwoButtonFiring(mPlayerCtrlNum))
 	{
-		if(m_playcontrol[PA_JUMP] && m_playcontrol[PA_POGO])
+		if(mPlaycontrol[PA_JUMP] && mPlaycontrol[PA_POGO])
 		{
-			m_playcontrol[PA_FIRE] = 1;
-			m_playcontrol[PA_JUMP] = 0;
-			m_playcontrol[PA_POGO] = 0;
+			mPlaycontrol[PA_FIRE] = 1;
+			mPlaycontrol[PA_JUMP] = 0;
+			mPlaycontrol[PA_POGO] = 0;
 		}
-		else if(m_playcontrol[PA_FIRE])
+		else if(mPlaycontrol[PA_FIRE])
 		{
-			m_playcontrol[PA_FIRE] = 0;
-			m_playcontrol[PA_JUMP] = 0;
-			m_playcontrol[PA_POGO] = 0;
+			mPlaycontrol[PA_FIRE] = 0;
+			mPlaycontrol[PA_JUMP] = 0;
+			mPlaycontrol[PA_POGO] = 0;
 			gInput.flushCommand(IC_JUMP);
             gInput.flushCommand(IC_FIRE);
             gInput.flushCommand(IC_RUN);
@@ -324,7 +338,7 @@ void CPlayerBase::processInput()
 	}
 	else
 	{
-		m_playcontrol[PA_FIRE] = gInput.getHoldedCommand(mPlayerNum, IC_FIRE) ? 1 : 0;
+        mPlaycontrol[PA_FIRE] = gInput.getHoldedCommand(mPlayerCtrlNum, IC_FIRE) ? 1 : 0;
 	}
 }
 
@@ -512,9 +526,9 @@ void CPlayerBase::playSwimSound(const bool moving)
 void CPlayerBase::getEaten()
 {
 	// Here were prepare Keen to die, setting the action to die
-    if(!gBehaviorEngine.mCheatmode.god && !m_dying)
+    if(!gBehaviorEngine.mCheatmode.god && !mDying)
 	{
-		m_dying = true;
+		mDying = true;
 		yinertia = 0;
 		dontdraw = true;
 		solid = false;
@@ -632,8 +646,8 @@ void CPlayerBase::processDead()
                                               m_Inventory.Item.m_lifes<0,
                                               levelObj, levelName) );
 
-    dead = false;
-	m_dying = false;
+    mIsDead = false;
+	mDying = false;
     exists = false;
 
     if(m_Inventory.Item.m_gem.red)
@@ -665,7 +679,7 @@ void CPlayerBase::processDying()
 
 	if( m_camera.outOfSight() )
 	{
-	    dead = true;
+	    mIsDead = true;
 	    honorPriority = true;	    
 	}        
 }
@@ -679,7 +693,7 @@ void CPlayerBase::processGetEaten()
 {
 	if(m_timer >= DIE_GETEATEN_TIME)
 	{
-        dead = true;
+        mIsDead = true;
 		solid = true;
 		honorPriority = true;
 		m_timer = 0;
@@ -701,10 +715,10 @@ void CPlayerBase::kill(const bool force,
     if(gBehaviorEngine.mCheatmode.god && !force)
         return;
     
-    if(!m_dying)
+    if(!mDying)
         m_Inventory.Item.m_lifes--;
 
-    m_dying = true;    
+    mDying = true;    
 
     if(getActionStatus(A_KEEN_DIE))
     {
@@ -727,7 +741,7 @@ void CPlayerBase::kill(const bool force,
     }
     else
     {
-        dead = true;
+        mIsDead = true;
         honorPriority = true;
     }
 
@@ -763,7 +777,7 @@ bool CPlayerBase::checkMapBoundaryU(const int y1)
 
 void CPlayerBase::push(CGalaxySpriteObject& theObject)
 {
-	if( dead )
+	if( mIsDead )
 		return;
 
 	int obj_lx = theObject.getXLeftPos();

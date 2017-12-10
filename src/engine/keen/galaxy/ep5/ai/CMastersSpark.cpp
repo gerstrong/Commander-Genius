@@ -53,7 +53,7 @@ void CMastersSpark::processWalking()
 
 void CMastersSpark::getTouchedBy(CSpriteObject &theObject)
 {
-	if(dead || theObject.dead)
+	if(mIsDead || theObject.mIsDead)
 		return;
 
 	CStunnable::getTouchedBy(theObject);
@@ -73,12 +73,12 @@ void CMastersSpark::process()
 	if( blockedl )
 	{
 	  xDirection = RIGHT;
-	  dead = true;
+	  mIsDead = true;
 	}
 	else if(blockedr)
 	{
 	  xDirection = LEFT;
-	  dead = true;
+	  mIsDead = true;
 	}
 
 	if(!processActionRoutine())

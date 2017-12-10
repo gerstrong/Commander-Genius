@@ -119,7 +119,7 @@ bool CBobba::isNearby(CSpriteObject& theObject)
 
 void CBobba::getTouchedBy(CSpriteObject& theObject)
 {
-	if(dead || theObject.dead)
+	if(mIsDead || theObject.mIsDead)
 		return;
 
 	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )

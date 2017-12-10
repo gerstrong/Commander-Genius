@@ -92,7 +92,7 @@ void CKorath::processSitting()
 
 void CKorath::getTouchedBy(CSpriteObject &theObject)
 {
-	if(dead || theObject.dead)
+	if(mIsDead || theObject.mIsDead)
 		return;
 
 	CStunnable::getTouchedBy(theObject);
@@ -100,8 +100,8 @@ void CKorath::getTouchedBy(CSpriteObject &theObject)
 	// Was it a bullet? Than make it stunned.
 	if( dynamic_cast<CBullet*>(&theObject) )
 	{
-		dead = true;
-		theObject.dead = true;
+		mIsDead = true;
+		theObject.mIsDead = true;
 		setAction(A_KORATH_STUNNED);        
 	}
 
@@ -115,7 +115,7 @@ void CKorath::getTouchedBy(CSpriteObject &theObject)
         // Usually this is only possible with Keen 9 and my own speciality
         if(mPogoStunnable && pogoActive)
         {
-            dead = true;
+            mIsDead = true;
             setAction(A_KORATH_STUNNED);
             gSound.playSound(SOUND_FUSE_BREAK);
         }
@@ -141,7 +141,7 @@ void CKorath::process()
 	
 	performGravityMid();
 
-	if(!dead) // If we is dead, there is no way to continue moving or turning
+	if(!mIsDead) // If we is dead, there is no way to continue moving or turning
 	{
 	  if( blockedl )
 	  {	    

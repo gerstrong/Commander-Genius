@@ -41,7 +41,7 @@ void CSecurityDoor::process()
     if(mFrameCount >= 3)
     {
         exists = false;
-        dead = true;
+        mIsDead = true;
     }
 
     

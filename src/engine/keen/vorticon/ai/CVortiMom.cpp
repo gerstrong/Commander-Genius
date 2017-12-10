@@ -166,7 +166,7 @@ void CVortiMom::process()
 		if (mHealthPoints <= 0)
 		{
 		    mSpriteIdx = MOTHER_DEAD_FRAME;
-		    dead = true;
+		    mIsDead = true;
 		    timer = 0;
 
 		    playSound(SOUND_VORT_DIE);

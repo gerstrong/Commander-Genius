@@ -194,7 +194,7 @@ bool CShockshound::isNearby(CSpriteObject &theObject)
 
 void CShockshound::getTouchedBy(CSpriteObject &theObject)
 {
-	if(dead || theObject.dead)
+	if(mIsDead || theObject.mIsDead)
 		return;
 
 	CStunnable::getTouchedBy(theObject);
@@ -204,7 +204,7 @@ void CShockshound::getTouchedBy(CSpriteObject &theObject)
 	{
         mHealthPoints--;
 
-	    theObject.dead = true;
+	    theObject.mIsDead = true;
 	    
         if(mHealthPoints == 0)
         {
@@ -215,7 +215,7 @@ void CShockshound::getTouchedBy(CSpriteObject &theObject)
             }
             else
             {
-                dead = true;
+                mIsDead = true;
             }
 
         }
@@ -262,7 +262,7 @@ bool CShockshound::checkMapBoundaryD(const int y2)
 {
     if( (Uint32)y2 > ((mpMap->m_height)<<CSF) )
     {
-        dead = true;
+        mIsDead = true;
 
         // If that not mortimer (Keen 9) make the object non existent
         if(!mEndGameOnDefeat)
@@ -291,13 +291,13 @@ void CShockshound::process()
 	  xDirection = LEFT;
 	}
 
-    if(getActionNumber(A_HOUND_STUNNED) && !dead)
+    if(getActionNumber(A_HOUND_STUNNED) && !mIsDead)
     {
         setAction(A_HOUND_WALK);
     }
 
     // keen 9 - Mortimer, if he dies you win that episode
-    if(mEndGameOnDefeat && dead)
+    if(mEndGameOnDefeat && mIsDead)
     {
         std::vector<CMessageBoxGalaxy*> msg;
 

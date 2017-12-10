@@ -301,7 +301,7 @@ void CVorticonElite::process()
 		if (animtimer > VORTELITE_DIE_ANIM_TIME)
 		{
 			mSpriteIdx = VORTELITE_DEAD_FRAME;
-			dead = true;
+			mIsDead = true;
 		}
 		else
 		{

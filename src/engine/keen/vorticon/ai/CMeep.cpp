@@ -179,7 +179,7 @@ void CMeep::process()
 		if (timer > MEEP_DYING_SHOW_TIME)
 		{
 			mSpriteIdx = MEEP_DEAD_FRAME;
-			dead = true;
+			mIsDead = true;
 			timer = 0;
 		}
 		else timer++;

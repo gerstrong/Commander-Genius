@@ -120,7 +120,7 @@ bool CPlayGameVorticon::loadGameState()
 	  ok &= savedGame.decodeData(x);
 	  ok &= savedGame.decodeData(y);
 	  object.moveToForce(Vector2D<int>(x,y));
-	  ok &= savedGame.decodeData(object.dead);
+	  ok &= savedGame.decodeData(object.mIsDead);
 	  ok &= savedGame.decodeData(object.onscreen);
 	  ok &= savedGame.decodeData(object.hasbeenonscreen);
 	  ok &= savedGame.decodeData(object.exists);
@@ -306,7 +306,7 @@ bool CPlayGameVorticon::loadXMLGameState()
 
             spriteObj.m_type = type;
             spriteObj.moveToForce(Vector2D<int>(x,y));
-            spriteObj.dead = spriteTree.get<bool>("dead", false);
+            spriteObj.mIsDead = spriteTree.get<bool>("dead", false);
             spriteObj.onscreen = spriteTree.get<bool>("onscreen", false);
             spriteObj.hasbeenonscreen = spriteTree.get<bool>("hasbeenonscreen", false);
             spriteObj.exists = spriteTree.get<bool>("exists", false);
@@ -445,7 +445,7 @@ bool CPlayGameVorticon::saveXMLGameState()
         spriteNode.put("type", spriteObj->m_type);
         spriteNode.put("x", spriteObj->getXPosition());
         spriteNode.put("y", spriteObj->getYPosition());
-        spriteNode.put("dead", spriteObj->dead);
+        spriteNode.put("dead", spriteObj->mIsDead);
         spriteNode.put("onscreen", spriteObj->onscreen);
         spriteNode.put("hasbeenonscreen", spriteObj->hasbeenonscreen);
         spriteNode.put("exists", spriteObj->exists);
@@ -529,7 +529,7 @@ bool CPlayGameVorticon::saveGameState()
 		savedGame.encodeData(mSpriteObjectContainer[i]->m_type);
 		savedGame.encodeData(mSpriteObjectContainer[i]->getXPosition());
 		savedGame.encodeData(mSpriteObjectContainer[i]->getYPosition());
-		savedGame.encodeData(mSpriteObjectContainer[i]->dead);
+		savedGame.encodeData(mSpriteObjectContainer[i]->mIsDead);
 		savedGame.encodeData(mSpriteObjectContainer[i]->onscreen);
 		savedGame.encodeData(mSpriteObjectContainer[i]->hasbeenonscreen);
 		savedGame.encodeData(mSpriteObjectContainer[i]->exists);

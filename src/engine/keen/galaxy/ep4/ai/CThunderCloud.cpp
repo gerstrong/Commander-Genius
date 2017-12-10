@@ -189,7 +189,7 @@ CGalaxySpriteObject(pmap, 0, x, y, sprVar)
 
 void CThunderBolt::getTouchedBy(CSpriteObject &theObject)
 {
-	if(theObject.dead )
+	if(theObject.mIsDead )
 		return;
 
 	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )

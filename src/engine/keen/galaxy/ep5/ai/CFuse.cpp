@@ -182,7 +182,7 @@ bool CFuse::loadPythonScripts(const std::string &scriptBaseName)
 
 void CFuse::getTouchedBy(CSpriteObject &theObject)
 {
-	if(dead || theObject.dead)
+	if(mIsDead || theObject.mIsDead)
 		return;
 
 
@@ -208,7 +208,7 @@ void CFuse::getTouchedBy(CSpriteObject &theObject)
                                 RIGHT) );
 
             showMsgVec( msgs );
-            dead = true;
+            mIsDead = true;
         }
     }
     else if( auto *theEnemyShot = dynamic_cast<CEnemyShot*>(&theObject) ) // happens when Keen 9 - Fight against Mortimer
@@ -225,8 +225,8 @@ void CFuse::getTouchedBy(CSpriteObject &theObject)
             }
         }
 
-        dead = true;
-        theEnemyShot->dead = true;
+        mIsDead = true;
+        theEnemyShot->mIsDead = true;
     }
 
 }

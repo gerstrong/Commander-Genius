@@ -91,7 +91,7 @@ bool CDopeFish::isNearby(CSpriteObject &theObject)
 
 void CDopeFish::getTouchedBy(CSpriteObject &theObject)
 {
-	if(theObject.dead)
+	if(theObject.mIsDead)
 		return;
 
 	if(CPlayerBase *Player = dynamic_cast<CPlayerBase*>(&theObject))

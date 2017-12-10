@@ -76,7 +76,7 @@ void CBip::processSquished()
 
 void CBip::getTouchedBy(CSpriteObject& theObject)
 {
-	if(dead || theObject.dead)
+	if(mIsDead || theObject.mIsDead)
 		return;
 
 	// Was it a bullet? Than make it stunned.
@@ -84,7 +84,7 @@ void CBip::getTouchedBy(CSpriteObject& theObject)
 	{
 		playSound(SOUND_SQUISH);
 		setAction(A_BIP_SQUISHED);
-		dead = true;
+		mIsDead = true;
 	}
 }
 

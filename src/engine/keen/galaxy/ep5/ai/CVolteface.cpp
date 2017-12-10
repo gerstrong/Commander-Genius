@@ -108,7 +108,7 @@ void CVolteface::getTouchedBy(CSpriteObject &theObject)
 	if( getActionNumber(A_VOLTFACE_STUNNED) )
 	  return;
   
-	if(theObject.dead)
+	if(theObject.mIsDead)
 	  return;		
 
 	CStunnable::getTouchedBy(theObject);
@@ -117,7 +117,7 @@ void CVolteface::getTouchedBy(CSpriteObject &theObject)
 	if( dynamic_cast<CBullet*>(&theObject) )
 	{
 	  setAction(A_VOLTFACE_STUNNED);
-	  theObject.dead = true;
+	  theObject.mIsDead = true;
 	}
 
 	if( CPlayerLevel *player = dynamic_cast<CPlayerLevel*>(&theObject) )

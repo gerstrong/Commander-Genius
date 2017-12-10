@@ -87,7 +87,7 @@ void CLick::process()
 
 void CLick::getTouchedBy(CSpriteObject &theObject)
 {
-	if(dead || theObject.dead)
+	if(mIsDead || theObject.mIsDead)
 		return;
 
 	CStunnable::getTouchedBy(theObject);
@@ -96,8 +96,8 @@ void CLick::getTouchedBy(CSpriteObject &theObject)
 	if( dynamic_cast<CBullet*>(&theObject) )
 	{
 		setAction( A_LICK_STUNNED );
-		theObject.dead = true;
-		dead = true;
+		theObject.mIsDead = true;
+		mIsDead = true;
 	}
 
 	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )

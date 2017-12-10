@@ -363,6 +363,17 @@ Remember, the path must be known by the game launcher. Absolute paths of games
 can be defined in the cgenius.cfg file in the [FileHandling] section.
 We might improve that in future.
 
+- Multiplayer Hints (PC/RPi Version only) -
+===========================================
+
+One of the special features in Commander Genius is the multi player mode up
+to four players.
+
+Secret Key (Galaxy only):
+While multiple players are seen, hold the Shift-key and press 1,2,3 or 4 to assign
+the control to another player.
+
+
 
 - VIDEO SYSTEM -
 ================

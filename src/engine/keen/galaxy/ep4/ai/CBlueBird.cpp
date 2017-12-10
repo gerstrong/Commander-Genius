@@ -142,14 +142,14 @@ void CBlueBird::processStunned()
 
 void CBlueBird::getTouchedBy(CSpriteObject &theObject)
 {
-	if( theObject.dead )
+	if( theObject.mIsDead )
 		return;
 
 	if( CBullet *bullet = dynamic_cast<CBullet*>(&theObject) )
 	{
 		bullet->setAction(A_KEENSHOT_IMPACT);
 		bullet->playSound( SOUND_SHOT_HIT );
-		bullet->dead = true;
+		bullet->mIsDead = true;
 		inhibitfall = false;
 		setAction(A_EAGLE_STUNNED);
 	}

@@ -124,7 +124,7 @@ std::vector<CSpriteObject*> CCarrier::fetchCarriedPlayer()
         if(player == nullptr)
             continue;
 
-        if( !player->dead || !player->dying )
+        if( !player->mIsDead || !player->dying )
             carriedSO.push_back( (CSpriteObject*) player);
     }
 

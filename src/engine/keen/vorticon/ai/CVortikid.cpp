@@ -130,7 +130,7 @@ void CVortikid::process()
 			if (xinertia == 0 && yinertia == 0 &&
 				mSpriteIdx == (BABY_DEAD_FRAME-ep3))
 			{
-				dead = true;
+				mIsDead = true;
 				xinertia = 0;
 			}
 			xdectimer = 0;

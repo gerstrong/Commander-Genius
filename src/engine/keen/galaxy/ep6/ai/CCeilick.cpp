@@ -104,7 +104,7 @@ bool CCeilick::isNearby(CSpriteObject& theObject)
 
 void CCeilick::getTouchedBy(CSpriteObject& theObject)
 {
-	if(dead || theObject.dead)
+	if(mIsDead || theObject.mIsDead)
 		return;
 
 	CStunnable::getTouchedBy(theObject);
@@ -114,8 +114,8 @@ void CCeilick::getTouchedBy(CSpriteObject& theObject)
 	{
 		setAction(A_CEILICK_STUNNED);
         mCrawlPos = 0;
-		dead = true;
-		theObject.dead = true;
+		mIsDead = true;
+		theObject.mIsDead = true;
 	}
 
 	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )

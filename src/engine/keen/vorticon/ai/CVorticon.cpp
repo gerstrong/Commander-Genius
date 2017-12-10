@@ -128,7 +128,7 @@ void CVorticon::getTouchedBy(CVorticonSpriteObject &theObject)
 {
     if( CPlayer *player = dynamic_cast<CPlayer*>(&theObject) )
     {
-	if (state != VORT_DYING and !dead and state != VORT2_DYING)
+	if (state != VORT_DYING and !mIsDead and state != VORT2_DYING)
 	    player->kill();
     }    
 }
@@ -308,7 +308,7 @@ void CVorticon::process()
 				frame = 5;
 				gGraphics.Palette.fadeto(0, FADE_SPEED_VERY_SLOW);
 				if (!gGraphics.Palette.in_progress())
-					dead = true;
+					mIsDead = true;
 			}
 
 			animtimer = 0;
@@ -319,7 +319,7 @@ void CVorticon::process()
 		mSpriteIdx = DyingFrame;
 		if (animtimer > VORT2_DIE_ANIM_TIME) {
 			mSpriteIdx = DeadFrame;
-			dead = true;
+			mIsDead = true;
 		} else {
 			animtimer++;
 		}

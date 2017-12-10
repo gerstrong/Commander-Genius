@@ -44,7 +44,7 @@ mSprVar(spriteVar)
 	xinertia = 0;
 	onslope = false;
 	scrx = scry = 0;
-	dead = false;
+	mIsDead = false;
 	hasbeenonscreen = false;
 	honorPriority = true;
 	dontdraw = false;
@@ -508,7 +508,7 @@ void CSpriteObject::kill()
 	if ( exists && canbezapped )
 	{
 		mHealthPoints = 0;
-		dead = true;
+		mIsDead = true;
 	}
 }
 

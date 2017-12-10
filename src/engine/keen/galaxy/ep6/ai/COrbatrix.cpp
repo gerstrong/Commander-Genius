@@ -199,14 +199,14 @@ bool COrbatrix::isNearby(CSpriteObject &theObject)
 
 void COrbatrix::getTouchedBy(CSpriteObject& theObject)
 {
-    if(dead || theObject.dead)
+    if(mIsDead || theObject.mIsDead)
         return;
 
     // Was it a bullet, make it zap/zot
     if( dynamic_cast<CBullet*>(&theObject) )
     {
         setAction(A_ORBATRIX_FLOAT);
-        theObject.dead = true;
+        theObject.mIsDead = true;
         return;
     }
     
@@ -225,7 +225,7 @@ void COrbatrix::getTouchedBy(CSpriteObject& theObject)
             stItemGalaxy &Item = player->m_Inventory.Item;
             Item.m_gem.red++;
             spawnObj(new CItemEffect(mpMap, 0, getXPosition(), getYPosition(), got_sprite_item_pics[2][2], FADEOUT));
-            dead = true;
+            mIsDead = true;
             exists = false;
         }
     }

@@ -44,7 +44,7 @@ std::vector<CSpriteObject*> CPlatform::fetchCarryingPlayer()
             continue;
         }
 
-        if(!player->dying || !player->dead)
+        if(!player->dying || !player->mIsDead)
         {
             carriedObjVec.push_back(player);
         }

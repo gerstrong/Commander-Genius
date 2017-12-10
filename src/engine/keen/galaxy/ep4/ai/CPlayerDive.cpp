@@ -50,10 +50,10 @@ void CPlayerDive::kill(const bool force,
 		gSound.playSound( SOUND_KEEN_DIE, SoundPlayMode::PLAY_NORESTART );
 		setupGalaxyObjectOnMap(0x0D2E, (rand()%2));
 
-        if(!m_dying)
+        if(!mDying)
             m_Inventory.Item.m_lifes--;
 
-		m_dying = true;                
+		mDying = true;                
 		yinertia = -DIE_FALL_MAX_INERTIA;
 		solid = false;
 		honorPriority = false;
@@ -78,11 +78,11 @@ void CPlayerDive::processDiving()
 
 
     // If Released set to false
-    if(!m_playcontrol[PA_JUMP])
+    if(!mPlaycontrol[PA_JUMP])
         mDidSwimUp = false;
 
 	// If Player presses Jump button, make Keen swim faster
-    if(m_playcontrol[PA_JUMP] && !mDidSwimUp)
+    if(mPlaycontrol[PA_JUMP] && !mDidSwimUp)
 	{
 		// Animate more Keen when pressing Jump button
 		if(getActionNumber(A_KEENSWIM_MOVE))
@@ -96,8 +96,8 @@ void CPlayerDive::processDiving()
         mDidSwimUp = true;
 	}
 
-    const int pax = m_playcontrol[PA_X];
-    const int pay = m_playcontrol[PA_Y];
+    const int pax = mPlaycontrol[PA_X];
+    const int pay = mPlaycontrol[PA_Y];
 
     if( pax != 0 )
     {
@@ -120,13 +120,13 @@ void CPlayerDive::processDiving()
 
 
 	// Up and down swimming
-    if(m_playcontrol[PA_Y] < 0)
+    if(mPlaycontrol[PA_Y] < 0)
 	{
 		moveUp(MOVESPEED+m_swimupspeed);
 		yDirection = UP;
 	}
 	
-    else if(m_playcontrol[PA_Y] > 0)
+    else if(mPlaycontrol[PA_Y] > 0)
 	{
 		moveDown(MOVESPEED+m_swimupspeed);
 		yDirection = DOWN;
@@ -164,7 +164,7 @@ void CPlayerDive::process()
 {    
     processInput();
 
-    if(!m_dying && !mExitTouched)
+    if(!mDying && !mExitTouched)
     {
         processExiting();
     }

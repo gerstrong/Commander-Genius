@@ -65,14 +65,14 @@ void CEgg::hatch()
 
 void CEgg::getTouchedBy(CSpriteObject &theObject)
 {
-	if( !getActionNumber(A_EGG_NORMAL) || theObject.dead )
+	if( !getActionNumber(A_EGG_NORMAL) || theObject.mIsDead )
 		return;
 
 	if( CBullet *bullet = dynamic_cast<CBullet*>(&theObject) )
 	{
 		bullet->setAction(A_KEENSHOT_IMPACT);
 		bullet->playSound( SOUND_SHOT_HIT );
-		bullet->dead = true;
+		bullet->mIsDead = true;
 		hatch();
 	}
 

@@ -167,15 +167,15 @@ int CBipShip::checkSolidD( int x1, int x2, int y2, const bool push_mode )
 
 void CBipShip::getTouchedBy(CSpriteObject& theObject)
 {
-	if(dead || theObject.dead)
+	if(mIsDead || theObject.mIsDead)
 		return;
 
 	// Was it a bullet? Than make it stunned.
 	if( dynamic_cast<CBullet*>(&theObject) )
 	{
 		setAction(A_BIPSHIP_HIT);
-		dead = true;
-		theObject.dead = true;
+		mIsDead = true;
+		theObject.mIsDead = true;
 		playSound(SOUND_BIP_SHIP_LAND);		
 	}
 

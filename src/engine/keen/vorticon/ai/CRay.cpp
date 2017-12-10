@@ -158,7 +158,7 @@ void CRay::moveinAir()
 
 void CRay::getTouchedBy(CVorticonSpriteObject &theObject)
 {
-	if( !theObject.dead && !theObject.dying )
+	if( !theObject.mIsDead && !theObject.dying )
 	{
 		if(theObject.canbezapped && state ==  RAY_STATE_FLY )
 		{

@@ -106,7 +106,7 @@ void CVortiNinja::process()
 		if (dietimer > NINJA_DYING_SHOW_TIME)
 		{
 			mSpriteIdx = NINJA_DEAD_FRAME;
-			dead = true;
+			mIsDead = true;
 		}
 	}
 
@@ -178,7 +178,7 @@ void CVortiNinja::process()
 		if (dietimer > NINJA_DYING_SHOW_TIME)
 		{
 			mSpriteIdx = NINJA_DEAD_FRAME;
-			dead = true;
+			mIsDead = true;
 		}
 		break;
 	default: break;

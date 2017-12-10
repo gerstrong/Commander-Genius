@@ -268,8 +268,8 @@ void CPlayerWM::processWaving()
     waveTimer++;
 
 
-    if( m_playcontrol[PA_Y] != 0 || m_playcontrol[PA_X] != 0 ||
-            m_playcontrol[PA_JUMP] || waveTimer >= (TIME_TO_WAVE/4) )
+    if( mPlaycontrol[PA_Y] != 0 || mPlaycontrol[PA_X] != 0 ||
+            mPlaycontrol[PA_JUMP] || waveTimer >= (TIME_TO_WAVE/4) )
     {
         mProcessPtr = &CPlayerWM::processMoving;
         m_basesprite = walkBaseFrame;
@@ -308,7 +308,7 @@ void CPlayerWM::processMoving()
         movespeed = 0;
 
     // Running a bist faster on the world map
-    if(m_playcontrol[PA_RUN])
+    if(mPlaycontrol[PA_RUN])
     {
         movespeed = (movespeed*6)/5;
     }
@@ -374,9 +374,9 @@ void CPlayerWM::processMoving()
     
     // Normal walking
 
-    if( m_playcontrol[PA_X]<0 && !bleft)
+    if( mPlaycontrol[PA_X]<0 && !bleft)
     {
-        if( m_playcontrol[PA_Y] == 0 )
+        if( mPlaycontrol[PA_Y] == 0 )
             yDirection = 0;
 	
         moveLeft(movespeed);
@@ -384,9 +384,9 @@ void CPlayerWM::processMoving()
         xDirection = LEFT;
         waveTimer = 0;
     }
-    else if( m_playcontrol[PA_X]>0 && !bright)
+    else if( mPlaycontrol[PA_X]>0 && !bright)
     {
-        if(m_playcontrol[PA_Y]==0)
+        if(mPlaycontrol[PA_Y]==0)
             yDirection = 0;
 	
         moveRight(movespeed);
@@ -395,9 +395,9 @@ void CPlayerWM::processMoving()
         waveTimer = 0;
     }
         
-    if(m_playcontrol[PA_Y]<0 && !bup)
+    if(mPlaycontrol[PA_Y]<0 && !bup)
     {
-        if(m_playcontrol[PA_X]==0)
+        if(mPlaycontrol[PA_X]==0)
             xDirection = 0;
 
         moveUp(movespeed);
@@ -405,9 +405,9 @@ void CPlayerWM::processMoving()
         yDirection = UP;
         waveTimer = 0;
     }
-    else if(m_playcontrol[PA_Y]>0 && !bdown)
+    else if(mPlaycontrol[PA_Y]>0 && !bdown)
     {
-        if(m_playcontrol[PA_X]==0)
+        if(mPlaycontrol[PA_X]==0)
             xDirection = 0;
 
         moveDown(movespeed);
@@ -452,7 +452,7 @@ void CPlayerWM::processMoving()
         }
 
         // Try to start a level
-        if( m_playcontrol[PA_JUMP] )
+        if( mPlaycontrol[PA_JUMP] )
         {
             // start the level
             startLevel(object);

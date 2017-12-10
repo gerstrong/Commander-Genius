@@ -172,7 +172,7 @@ void CMapPlayGalaxy::ponderBase(const float deltaT)
                     }
 
                     // Is he really dead?
-                    if( player->dead || (!visibility && player->m_dying) )
+                    if( player->mIsDead || (!visibility && player->mDying) )
                     {
                         player->processDead();
                     }
@@ -274,7 +274,7 @@ void CMapPlayGalaxy::operator>>(CSaveGameController &savedGame)
 		savedGame.encodeData( it->mFoeID );
 		savedGame.encodeData( newXpos );
 		savedGame.encodeData( newYpos );
-		savedGame.encodeData( it->dead );
+		savedGame.encodeData( it->mIsDead );
 		savedGame.encodeData( it->onscreen );
 		savedGame.encodeData( it->hasbeenonscreen );
 		savedGame.encodeData( it->exists );
@@ -380,7 +380,7 @@ bool CMapPlayGalaxy::operator<<(CSaveGameController &savedGame)
             pNewfoe = new CGalaxySpriteObject(&mMap, foeID, x, y, 0);
 		}
 
-		savedGame.decodeData( pNewfoe->dead );
+		savedGame.decodeData( pNewfoe->mIsDead );
 		savedGame.decodeData( pNewfoe->onscreen );
 		savedGame.decodeData( pNewfoe->hasbeenonscreen );
 		savedGame.decodeData( pNewfoe->exists );
@@ -460,7 +460,7 @@ void CMapPlayGalaxy::operator>>(boost::property_tree::ptree &levelNode)
         spriteNode.put("<xmlattr>.x", newXpos);
         spriteNode.put("<xmlattr>.y", newYpos);
 
-        spriteNode.put("dead", it->dead);
+        spriteNode.put("dead", it->mIsDead);
         spriteNode.put("onscreen", it->onscreen);
         spriteNode.put("hasbeenonscreen", it->hasbeenonscreen);
         spriteNode.put("exists", it->exists);
@@ -578,7 +578,7 @@ void CMapPlayGalaxy::operator<<(boost::property_tree::ptree &levelNode)
                 pNewfoe = new CGalaxySpriteObject(&mMap, foeID, x, y, sprVarID);
             }
 
-            pNewfoe->dead = spriteNode.get<bool>("dead", false);
+            pNewfoe->mIsDead = spriteNode.get<bool>("dead", false);
             pNewfoe->onscreen = spriteNode.get<bool>("onscreen", false);
             pNewfoe->hasbeenonscreen = spriteNode.get<bool>("hasbeenonscreen", false);
             pNewfoe->exists = spriteNode.get<bool>("exists", false);

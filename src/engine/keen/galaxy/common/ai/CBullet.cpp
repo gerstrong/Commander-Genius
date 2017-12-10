@@ -50,7 +50,7 @@ void CBullet::getTouchedBy(CSpriteObject& theObject)
         if(mReversed) // Happens usually in Episode 6
         {
             player->stun();
-            dead = true;
+            mIsDead = true;
             setAction(A_KEENSHOT_IMPACT);
         }
 
@@ -83,7 +83,7 @@ void CBullet::process()
 	{
 		setAction(A_KEENSHOT_IMPACT);
 		playSound( SOUND_SHOT_HIT );
-		dead = true;
+		mIsDead = true;
 	}
 
 	if(!processActionRoutine())

@@ -60,7 +60,7 @@ bool CMastersShot::isNearby(CSpriteObject &theObject)
 
 void CMastersShot::getTouchedBy(CSpriteObject &theObject)
 {
-	if(dead || theObject.dead)
+	if(mIsDead || theObject.mIsDead)
 		return;
 
 	CStunnable::getTouchedBy(theObject);
@@ -69,8 +69,8 @@ void CMastersShot::getTouchedBy(CSpriteObject &theObject)
 	if( dynamic_cast<CBullet*>(&theObject) )
 	{
 		playSound(SOUND_ROBO_STUN);
-		dead = true;
-		theObject.dead = true;
+		mIsDead = true;
+		theObject.mIsDead = true;
 	}
 
 	/*if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )

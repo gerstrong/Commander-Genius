@@ -93,7 +93,7 @@ void CVorticonSpriteObjectAI::process()
 			object.performCollisions();
 			object.processFalling();
 
-			if(!object.dead) // Only do that if not dead
+			if(!object.mIsDead) // Only do that if not dead
 			{
 				// hit detection with players
 				object.touchPlayer = false;

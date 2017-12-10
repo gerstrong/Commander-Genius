@@ -290,7 +290,7 @@ void CShikadiMine::processDetonate()
 {
   if(!processActionRoutine())
   {
-      dead = true;
+      mIsDead = true;
       exists = false;
 
       // Spawn little explosion shards here!
@@ -329,7 +329,7 @@ bool CShikadiMine::isNearby(CSpriteObject &theObject)
 
 void CShikadiMine::getTouchedBy(CSpriteObject &theObject)
 {
-	if(dead || theObject.dead)
+	if(mIsDead || theObject.mIsDead)
 		return;
 
 	if(getActionNumber(A_MINE_DETONATE))
@@ -341,7 +341,7 @@ void CShikadiMine::getTouchedBy(CSpriteObject &theObject)
 	// Was it a bullet? Than make it stunned.
 	if( dynamic_cast<CBullet*>(&theObject) )
 	{
-	    theObject.dead = true;
+	    theObject.mIsDead = true;
 	    playSound(SOUND_MINEEXPLODE);
 	    setAction(A_MINE_DETONATE);
 	}
@@ -430,7 +430,7 @@ mXSpeed(xSpeed)
 
 void CMineShards::getTouchedBy(CSpriteObject& theObject)
 {
-	if(dead || theObject.dead)
+	if(mIsDead || theObject.mIsDead)
 		return;
 
 	CStunnable::getTouchedBy(theObject);
@@ -505,7 +505,7 @@ void CMineShards::process()
             mpMap->setTile(dx+i, dy+3, t4, true, 1);
         }                
 
-		dead = true;
+		mIsDead = true;
 		exists = false;
 
         gEventManager.add(new OpenComputerWrist(4));
@@ -516,7 +516,7 @@ void CMineShards::process()
 
 	if( blockedd )
 	{
-	  dead = true;
+	  mIsDead = true;
 	  exists = false;
 	  return;
 	}

@@ -153,7 +153,7 @@ void CShelly::processSmoke()
     
     mTimer = 0;
     
-    dead = true;
+    mIsDead = true;
       
     // Spawn little explosion shards here!
     const int newX = getXMidPos();      
@@ -204,7 +204,7 @@ bool CShelly::isNearby(CSpriteObject &theObject)
 
 void CShelly::getTouchedBy(CSpriteObject &theObject)
 {
-	if(dead || theObject.dead)
+	if(mIsDead || theObject.mIsDead)
 		return;
 
 	CStunnable::getTouchedBy(theObject);
@@ -212,7 +212,7 @@ void CShelly::getTouchedBy(CSpriteObject &theObject)
 	// Was it a bullet? 
 	if( dynamic_cast<CBullet*>(&theObject) )
 	{
-		theObject.dead = true;
+		theObject.mIsDead = true;
 	}
 
 	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
@@ -260,7 +260,7 @@ mXSpeed(xSpeed)
 
 void CShellyFrags::getTouchedBy(CSpriteObject& theObject)
 {
-	if(dead || theObject.dead)
+	if(mIsDead || theObject.mIsDead)
 		return;
 
 	CStunnable::getTouchedBy(theObject);
@@ -289,7 +289,7 @@ void CShellyFrags::process()
 	
 	if( blockedd )
 	{
-	  dead = true;
+	  mIsDead = true;
 	  exists = false;
 	  return;
 	}

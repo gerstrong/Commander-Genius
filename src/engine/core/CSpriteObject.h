@@ -154,7 +154,7 @@ class CSpriteObject
     signed int xinertia, yinertia;
     CSpriteObject *pSupportedbyobject;
     
-    bool dead, dying;
+    bool mIsDead, dying;
     
     
     bool m_jumpdownfromobject;

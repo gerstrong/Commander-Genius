@@ -57,7 +57,7 @@ bool CArachnut::isNearby(CSpriteObject &theObject)
 
 void CArachnut::getTouchedBy(CSpriteObject &theObject)
 {
-	if( theObject.dead || getActionStatus(A_ARACHNUT_STUNNED) )
+	if( theObject.mIsDead || getActionStatus(A_ARACHNUT_STUNNED) )
 		return;
 
 	if( CBullet *bullet = dynamic_cast<CBullet*>(&theObject) )

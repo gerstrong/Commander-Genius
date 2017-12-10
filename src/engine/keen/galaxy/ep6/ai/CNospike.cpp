@@ -207,7 +207,7 @@ bool CNospike::isNearby(CSpriteObject& theObject)
 
 void CNospike::getTouchedBy(CSpriteObject& theObject)
 {
-    if(dead || theObject.dead)
+    if(mIsDead || theObject.mIsDead)
         return;
     
     CStunnable::getTouchedBy(theObject);
@@ -216,7 +216,7 @@ void CNospike::getTouchedBy(CSpriteObject& theObject)
     if( dynamic_cast<CBullet*>(&theObject) )
     {
         mHealth--;
-        theObject.dead = true;
+        theObject.mIsDead = true;
 
         if(mHealth == 0)
         {
@@ -224,7 +224,7 @@ void CNospike::getTouchedBy(CSpriteObject& theObject)
 
             if(!mCanFinishGame)
             {
-                dead = true;
+                mIsDead = true;
             }
         }
         else
@@ -238,7 +238,7 @@ void CNospike::getTouchedBy(CSpriteObject& theObject)
     {
         if( mCanFinishGame && getActionNumber(A_NOSPIKE_STUNNED) ) // This will only happen in the Keen 8 Mod!
         {            
-            dead = true;
+            mIsDead = true;
 
             gEventManager.add(new OpenComputerWrist(4));
             gEventManager.add(new EventEndGamePlay());

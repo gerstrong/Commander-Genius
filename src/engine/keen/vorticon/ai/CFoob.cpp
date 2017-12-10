@@ -13,7 +13,7 @@ onsamelevel(false)
 	OnSameLevelTime = 0;
 	blockedr = 0;
 	canbezapped = 1;
-	dead = 0;
+	mIsDead = 0;
 
 	if(gBehaviorEngine.mDifficulty==HARD)
 		mHealthPoints++;
@@ -156,7 +156,7 @@ void CFoob::process()
 		if (mSpriteIdx==FOOB_DEAD_FRAME)
 		{
 			state = FOOB_DEAD;
-			dead = 1;
+			mIsDead = 1;
 		}
 		else
 		{

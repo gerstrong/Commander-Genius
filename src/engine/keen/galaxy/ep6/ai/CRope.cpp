@@ -73,7 +73,7 @@ void CRope::processThrown()
 
 void CRope::getTouchedBy(CSpriteObject& theObject)
 {
-    if(dead || theObject.dead)
+    if(mIsDead || theObject.mIsDead)
         return;
 }
 

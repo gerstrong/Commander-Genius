@@ -113,7 +113,7 @@ bool CBlooguard::isNearby(CSpriteObject& theObject)
 
 void CBlooguard::getTouchedBy(CSpriteObject& theObject)
 {
-    if(dead || theObject.dead)
+    if(mIsDead || theObject.mIsDead)
 	return;
     
     CStunnable::getTouchedBy(theObject);
@@ -122,12 +122,12 @@ void CBlooguard::getTouchedBy(CSpriteObject& theObject)
     if( dynamic_cast<CBullet*>(&theObject) )
     {
 	mHealth--;
-	theObject.dead = true;
+	theObject.mIsDead = true;
 	
 	if(mHealth == 0)
 	{
 	    setAction(A_BLOOGUARD_STUNNED);
-	    dead = true;
+	    mIsDead = true;
 	}
 	else
 	{

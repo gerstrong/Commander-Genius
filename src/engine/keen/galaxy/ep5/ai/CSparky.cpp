@@ -205,7 +205,7 @@ bool CSparky::isNearby(CSpriteObject &theObject)
 
 void CSparky::getTouchedBy(CSpriteObject &theObject)
 {
-	if(dead || theObject.dead)
+	if(mIsDead || theObject.mIsDead)
 		return;
 
 	CStunnable::getTouchedBy(theObject);
@@ -216,7 +216,7 @@ void CSparky::getTouchedBy(CSpriteObject &theObject)
     // Was it a bullet? Than make it stunned when health goes to zero.
 	if( dynamic_cast<CBullet*>(&theObject) )
     {
-        theObject.dead = true;
+        theObject.mIsDead = true;
 
         if(mRecoverFromStun)
         {
@@ -229,7 +229,7 @@ void CSparky::getTouchedBy(CSpriteObject &theObject)
             if(mHealthPoints == 0)
             {
                 setAction(A_SPARKY_STUNNED);
-                dead = true;
+                mIsDead = true;
             }
             else
             {
@@ -252,7 +252,7 @@ void CSparky::getTouchedBy(CSpriteObject &theObject)
 
 int CSparky::checkSolidD( int x1, int x2, int y2, const bool push_mode )
 {
-    if(turnAroundOnCliff( x1, x2, y2 ) && !dead)
+    if(turnAroundOnCliff( x1, x2, y2 ) && !mIsDead)
     {
         setAction(A_SPARKY_TURN);
     }
@@ -288,7 +288,7 @@ void CSparky::process()
         performGravityMid();
     }
 
-    if(!dead) // If foe is dead, there is no way to continue moving or turning
+    if(!mIsDead) // If foe is dead, there is no way to continue moving or turning
     {
       if( blockedl )
       {

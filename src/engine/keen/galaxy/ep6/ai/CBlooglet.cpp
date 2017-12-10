@@ -48,7 +48,7 @@ void CBlooglet::processRunning()
 
 void CBlooglet::getTouchedBy(CSpriteObject &theObject)
 {
-  if(dead || theObject.dead)
+  if(mIsDead || theObject.mIsDead)
     return;
   
   CStunnable::getTouchedBy(theObject);
@@ -69,8 +69,8 @@ void CBlooglet::getTouchedBy(CSpriteObject &theObject)
     }
     
     setAction(A_BLOOGLET_STUNNED);
-    dead = true;
-    theObject.dead = true;
+    mIsDead = true;
+    theObject.mIsDead = true;
   }
   
   if( CPlayerLevel *player = dynamic_cast<CPlayerLevel*>(&theObject) )

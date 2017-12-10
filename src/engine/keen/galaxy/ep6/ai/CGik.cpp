@@ -104,7 +104,7 @@ void CGik::processSlide()
 
 void CGik::getTouchedBy(CSpriteObject &theObject)
 {
-    if(dead || theObject.dead)
+    if(mIsDead || theObject.mIsDead)
         return;
 
     if( CPlayerLevel *player = dynamic_cast<CPlayerLevel*>(&theObject) )

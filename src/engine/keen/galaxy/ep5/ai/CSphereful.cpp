@@ -143,7 +143,7 @@ bool CSphereful::isNearby(CSpriteObject &theObject)
 
 void CSphereful::getTouchedBy(CSpriteObject &theObject)
 {
-	if(dead || theObject.dead)
+	if(mIsDead || theObject.mIsDead)
 		return;
 
 	CStunnable::getTouchedBy(theObject);
@@ -151,11 +151,11 @@ void CSphereful::getTouchedBy(CSpriteObject &theObject)
 	// Was it a bullet? Than make it stunned.
 	if( dynamic_cast<CBullet*>(&theObject) )
 	{
-		theObject.dead = true;
+		theObject.mIsDead = true;
 
         if(!mInvincible)
         {
-            dead = true;
+            mIsDead = true;
 
             setAction(A_SPHEREFUL_STATE3);
         }
@@ -173,7 +173,7 @@ void CSphereful::process()
 {
 	performCollisions();
 	
-    if(!dead)
+    if(!mIsDead)
     {
         if(!processActionRoutine())
         {

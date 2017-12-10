@@ -80,7 +80,7 @@ void CStunnable::draw()
   
   CGalaxySpriteObject::draw();
   
-  if(dead && blockedd && yinertia == 0)
+  if(mIsDead && blockedd && yinertia == 0)
   {                
     if(starTimer > 0)
     {
