@@ -154,7 +154,7 @@ void CVideoSettings::refresh()
 
 	
     mpFilterSelection->setSelection( mUserVidConf.m_ScaleXFilter==1 ? "none" : (mUserVidConf.m_normal_scale ? "normal" : "scale") + itoa(mUserVidConf.m_ScaleXFilter) + "x" );
-	mpVSyncSwitch->enable( mUserVidConf.vsync );
+	mpVSyncSwitch->enable( mUserVidConf.mVSync );
 	mpFullScreenSwitch->setText( mUserVidConf.Fullscreen ? "Go Windowed" : "Go Fullscreen" );
 
     mpResolutionSelection->setList( ResolutionsList, NUM_MAIN_RESOLUTIONS );
@@ -225,7 +225,7 @@ void CVideoSettings::release()
     }
 
 
-	mUserVidConf.vsync = mpVSyncSwitch->isEnabled();
+	mUserVidConf.mVSync = mpVSyncSwitch->isEnabled();
     std::string scalerStr = mpFilterSelection->getSelection();
 
     const std::string res = mpResolutionSelection->getSelection();

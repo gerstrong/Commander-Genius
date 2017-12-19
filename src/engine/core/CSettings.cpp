@@ -85,7 +85,7 @@ bool CSettings::saveDrvCfg()
         Configuration.WriteInt("Video", "filter", VidConf.m_ScaleXFilter);
         Configuration.WriteString("Video", "scaletype", VidConf.m_normal_scale ? "normal" : "scalex" );
         Configuration.WriteInt("Video", "fps", gTimer.FPS());
-        Configuration.SetKeyword("Video", "vsync", VidConf.vsync);
+        Configuration.SetKeyword("Video", "vsync", VidConf.mVSync);
 
         const std::string arc_str = itoa(VidConf.mAspectCorrection.w) + ":" + itoa(VidConf.mAspectCorrection.h);
         Configuration.WriteString("Video", "aspect", arc_str);
@@ -168,7 +168,7 @@ bool CSettings::loadDrvCfg()
 		VidConf.mAspectCorrection.w = VidConf.mAspectCorrection.h = 0;
 		sscanf( arcStr.c_str(), "%i:%i", &VidConf.mAspectCorrection.w, &VidConf.mAspectCorrection.h );
 
-		Configuration.ReadKeyword("Video", "vsync", &VidConf.vsync, true);
+		Configuration.ReadKeyword("Video", "vsync", &VidConf.mVSync, true);
 		Configuration.ReadInteger("Video", "filter", &value, 1);
         VidConf.m_ScaleXFilter = (filterOptionType)(value);
 

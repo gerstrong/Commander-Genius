@@ -1,4 +1,5 @@
 # Maintainer: Gerhard Stein <gerstrong@steinzone.de>
+# Contributor: Peter Lewis <plewis@aur.archlinux.org>
 pkgname=commander-genius-git
 _pkgname=Commander-Genius
 pkgver=v1998beta.r76.g6c92c209
