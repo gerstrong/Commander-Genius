@@ -445,15 +445,15 @@ static void BEL_ST_ParseSetting_VSync(const char *keyprefix, const char *buffer)
 {
 	if (!strcmp(buffer, "on"))
 	{
-		g_refKeenCfg.vSync = VSYNC_ON;
+		g_refKeenCfg.mVSync = VSYNC_ON;
 	}
 	else if (!strcmp(buffer, "off"))
 	{
-		g_refKeenCfg.vSync = VSYNC_OFF;
+		g_refKeenCfg.mVSync = VSYNC_OFF;
 	}
 	else if (!strcmp(buffer, "auto"))
 	{
-		g_refKeenCfg.vSync = VSYNC_AUTO;
+		g_refKeenCfg.mVSync = VSYNC_AUTO;
 	}
 }
 
@@ -648,7 +648,7 @@ static void BEL_ST_ParseConfig(void)
 	g_refKeenCfg.winHeight = 0;
 	g_refKeenCfg.displayNum = 0;
 	g_refKeenCfg.sdlRendererDriver = -1;
-	g_refKeenCfg.vSync = VSYNC_AUTO;
+	g_refKeenCfg.mVSync = VSYNC_AUTO;
 	g_refKeenCfg.isBilinear = true;
 	g_refKeenCfg.scaleType = SCALE_ASPECT;
 	g_refKeenCfg.scaleFactor = 2;
@@ -731,7 +731,7 @@ static void BEL_ST_ParseConfig(void)
 		SDL_GetRenderDriverInfo(g_refKeenCfg.sdlRendererDriver, &info); // g_refKeenCfg.sdlRendererDriver should be a valid renderer driver index here
 		fprintf(fp, "sdlrenderer=%s\n", info.name);
 	}
-	fprintf(fp, "vsync=%s\n", g_refKeenCfg.vSync == VSYNC_AUTO ? "auto" : (g_refKeenCfg.vSync == VSYNC_ON ? "on" : "off"));
+	fprintf(fp, "vsync=%s\n", g_refKeenCfg.mVSync == VSYNC_AUTO ? "auto" : (g_refKeenCfg.mVSync == VSYNC_ON ? "on" : "off"));
 	fprintf(fp, "bilinear=%s\n", g_refKeenCfg.isBilinear ? "true" : "false");
 	fprintf(fp, "scaletype=%s\n", (g_refKeenCfg.scaleType == SCALE_ASPECT) ? "aspect" : "fill");
 	fprintf(fp, "scalefactor=%d\n", g_refKeenCfg.scaleFactor);
