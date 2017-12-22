@@ -24,9 +24,11 @@ void CSecurityDoor::process()
     // Now move the frames
     const int startX = getXPosition()>>CSF;
     const int startY = getYPosition()>>CSF;
-    const int endX = startX+4;
+    //const int endX = startX+4;
+    //const int endY = startY+4;
+    const int endX = startX+3;
     const int endY = startY+4;
-    
+
     for(int y = startY ; y<endY ; y++)
     {
         for(int x = startX ; x<endX ; x++)

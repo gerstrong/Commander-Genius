@@ -240,6 +240,12 @@ public:
 	 */
 	void processLookingUp();
 
+    /**
+     * @brief verifySwitches Is Player trying to flip a switch?
+     * @return
+     */
+    bool verifySwitches();
+
 	/**
 	 * This function will process everything that happens when player presses up
 	 */
