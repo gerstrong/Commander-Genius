@@ -238,7 +238,7 @@ inline int32_t BE_Mem_FarCoreLeft(void)
 
 // Use this in cases an original DOS program attempts to access contents of
 // segment no. 0 for some reason
-extern uint8_t g_be_cross_dosZeroSeg[];
+//extern uint8_t g_be_cross_dosZeroSeg[];
 
 #ifdef __cplusplus
 }

@@ -204,6 +204,10 @@ add_executable (CGeniusExe CGenius.cpp
 set_property(TARGET CGeniusExe PROPERTY C_STANDARD 99)
 
 
+# Link Engine
+target_link_libraries (CGeniusExe engine)
+
+
 # Link GsKit
 target_link_libraries (CGeniusExe GsKit)
 
