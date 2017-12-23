@@ -8,7 +8,7 @@ add_definitions(-DREFKEEN_VER_KDREAMS_ANYEGA_ALL)
 add_definitions(-DGRMODE=EGAGR)
 
 
-add_library(refkeen_kdreams OBJECT 
+add_library(refkeen_kdreams
         id_ca.cpp
         id_in.cpp
         id_mm.cpp
@@ -47,5 +47,4 @@ add_library(refkeen_kdreams OBJECT
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/../)
 
-
-set_property(GLOBAL APPEND PROPERTY CG_OBJ_LIBS $<TARGET_OBJECTS:refkeen_kdreams>)
+#set_property(GLOBAL APPEND PROPERTY CG_OBJ_LIBS $<TARGET_OBJECTS:refkeen_kdreams>)

@@ -1,9 +1,12 @@
 
-
 include_directories(${SDL_INCLUDE_DIR})
 
 add_subdirectory(core)
 add_subdirectory(keen)
+add_subdirectory(refkeen)
+
+# Move this to somewhere else
+add_subdirectory(unzip)
 
 
 if(DOWNLOADER)
@@ -11,22 +14,15 @@ if(DOWNLOADER)
 endif()
 
 
-add_subdirectory(refkeen)
+set(CXXSRC CGameLauncher.cpp
+           downloadgui.cpp
+           gamedownloader.cpp)
 
-set(EngineSources CGameLauncher.cpp CGameLauncher.h
-                   downloadgui.cpp
-                   gamedownloader.cpp gamedownloader.h
-                   unzip/miniunz.c
-                   unzip/ioapi.c
-                   unzip/ioapi.h
-                   unzip/iowin32.h
-                   unzip/unzip.c
-                   unzip/unzip.h)
 
-IF(WIN32)
-set(EngineSources ${EngineSources} unzip/iowin32.c)
-ENDIF(WIN32)
+set(HSRC CGameLauncher.h
+         gamedownloader.h)
 
-add_library(engine OBJECT ${EngineSources})
+add_library(engine ${CXXSRC}
+                   ${HSRC})
 
-set_property(GLOBAL APPEND PROPERTY CG_OBJ_LIBS $<TARGET_OBJECTS:engine>)
+target_link_libraries(engine refkeen keen core unzip)

@@ -12,12 +12,12 @@ add_definitions(-DREFKEEN_VER_KDREAMS)
 add_definitions(-DREFKEEN_VER_KDREAMS_ANYEGA_ALL)
 add_definitions(-DGRMODE=EGAGR)
 
-
+# TODO: This is not a definition
 ADD_DEFINITIONS(-Werror=cast-align)
 
-add_library(refkeen OBJECT ${SOURCES} ${INCLUDES}
-                           ${SOURCES_UNLZEXE} ${INCLUDES_UNLZEXE})
+add_library(refkeen ${SOURCES}
+                    ${INCLUDES}
+                    ${SOURCES_UNLZEXE}
+                    ${INCLUDES_UNLZEXE})
 
-#target_link_libraries(refkeen refkeen_kdreams)
-
-set_property(GLOBAL APPEND PROPERTY CG_OBJ_LIBS $<TARGET_OBJECTS:refkeen>)
+target_link_libraries(refkeen refkeen_kdreams)
