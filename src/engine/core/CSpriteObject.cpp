@@ -513,14 +513,16 @@ void CSpriteObject::kill()
 }
 
 /**
- * \brief This function triggers the blinking behavior of an object.
+ * \brief This function triggers the blinking behavior of an object (The object flashes).
  * 		  Normally this happens, when an enemy gets shot and can get
  * 		  multiple hits.
  * \param frametime	amount of drawn blinking frames during the blitting.
  * 					Every draw cycle performs one
  */
 void CSpriteObject::blink(Uint16 frametime)
-{ m_blinktime = frametime; }
+{
+    m_blinktime = frametime;
+}
 
 void CSpriteObject::playSound(const GameSound snd,
                               const SoundPlayMode mode )
@@ -580,15 +582,15 @@ void CSpriteObject::draw()
 		}
 		else
 		{
-                    if (w && h)
-                    {
-                        Sprite.drawSprite( showX, showY, w, h, (255-transluceny) );
-                    }
-                    else
-                    {
-                        gLogging.ftextOut("drawSprite problem w=%d h=%d mSprVar=%d mSpriteIdx=%d", w, h, mSprVar, mSpriteIdx);
-                    }
-		}
+            if (w && h)
+            {
+                Sprite.drawSprite( showX, showY, w, h, (255-transluceny) );
+            }
+            else
+            {
+                gLogging.ftextOut("drawSprite problem w=%d h=%d mSprVar=%d mSpriteIdx=%d", w, h, mSprVar, mSpriteIdx);
+            }
+        }
 		hasbeenonscreen = true;
 	}
 }

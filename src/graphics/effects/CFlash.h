@@ -6,7 +6,7 @@
  *
  *  This class has been designed for the Flash
  *  Effect that is seen, when a vorticon is shot in EP1
- *  or a Vortelite in EP2
+ *  or a Vortelite in EP2 for example
  */
 
 #ifndef CFLASH_H_

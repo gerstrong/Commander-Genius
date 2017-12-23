@@ -230,8 +230,8 @@ public:
 
 	CCamera m_camera;
 	
-	bool mDying;
-    bool mExitTouched;
+    bool mDying = false;
+    bool mExitTouched = false;
 
 protected:
 

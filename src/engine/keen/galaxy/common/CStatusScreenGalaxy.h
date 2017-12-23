@@ -23,7 +23,10 @@ public:
     CStatusScreenGalaxy(const stItemGalaxy& Item);
 
 	// This will generate the status screen. It must be derived by other classes, depending on the Episode
-	virtual void GenerateStatus() = 0;
+    void GenerateStatusEp4();
+    void GenerateStatusEp5();
+    void GenerateStatusEp6();
+
 
     // Returns the right text string to show if the currently setup difficulty
     std::string getDifficultyText();

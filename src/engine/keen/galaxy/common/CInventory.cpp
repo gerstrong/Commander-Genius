@@ -13,11 +13,6 @@
 #include "graphics/effects/CScrollEffect.h"
 
 
-#include "../ep4/CStatusScreenGalaxyEp4.h"
-#include "../ep5/CStatusScreenGalaxyEp5.h"
-#include "../ep6/CStatusScreenGalaxyEp6.h"
-
-
 CInventory::CInventory(const int id) :
 m_HUD(Item.m_points, Item.m_lifes, Item.m_bullets, id)
 {
@@ -32,19 +27,8 @@ m_HUD(Item.m_points, Item.m_lifes, Item.m_bullets, id)
 	    Item.m_bullets = 8;
 	    if( difficulty > EASY )
 		Item.m_bullets = 5;
-	
-	    if(Episode == 4)
-	    {
-            mp_StatusScreen.reset(new CStatusScreenGalaxyEp4(Item));
-	    }
-	    else if(Episode == 5)
-	    {
-            mp_StatusScreen.reset(new CStatusScreenGalaxyEp5(Item));
-	    }
-	    else if(Episode == 6)
-	    {
-            mp_StatusScreen.reset(new CStatusScreenGalaxyEp6(Item));
-	    }
+
+        mp_StatusScreen.reset(new CStatusScreenGalaxy(Item));
 	}
 	
 	m_HUD.sync();
@@ -78,7 +62,22 @@ void CInventory::toggleStatusScreen()
 	{
 		int scroll_pos = 0;
 
-		mp_StatusScreen->GenerateStatus();
+
+        const auto Ep = gBehaviorEngine.getEpisode();
+
+        if(Ep == 6)
+        {
+            mp_StatusScreen->GenerateStatusEp6();
+        }
+        else if(Ep == 5)
+        {
+            mp_StatusScreen->GenerateStatusEp5();
+        }
+        else
+        {
+            mp_StatusScreen->GenerateStatusEp4();
+        }
+
         mp_StatusScreen->scaleToResolution();
 		gVideoDriver.collectSurfaces();
 

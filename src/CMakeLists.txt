@@ -47,7 +47,8 @@ else ()
 endif ()
 
 #Alignment error report is important for android builds
-ADD_DEFINITIONS(-Werror=cast-align)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror=cast-align")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Werror=cast-align")
 
 # Use python3 for AI scripting and more!
 IF(USE_PYTHON3)
@@ -203,14 +204,11 @@ add_executable (CGeniusExe CGenius.cpp
 # Since some RefKeen is used, we also need C99 Standard
 set_property(TARGET CGeniusExe PROPERTY C_STANDARD 99)
 
-
-# Link Engine
+# Link CG Engines
 target_link_libraries (CGeniusExe engine)
 
-
 # Link GsKit
-target_link_libraries (CGeniusExe GsKit)
-
+#target_link_libraries (CGeniusExe GsKit)
 
 # Link zlib
 target_link_libraries( CGeniusExe ${ZLIB_LIBRARIES} )

@@ -9,7 +9,7 @@
 #include "CBullet.h"
 #include "platform/CPlatform.h"
 #include "../CGalaxySpriteObject.h"
-#include "../../ep5/ai/CSecurityDoor.h"
+#include "CSecurityDoor.h"
 
 #include "sdl/audio/Audio.h"
 #include "graphics/effects/CColorMerge.h"
@@ -54,63 +54,49 @@ CPlayerLevel::CPlayerLevel(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y,
                         CInventory &l_Inventory,
                         const size_t offset, const int playerIdx, const int spriteTableIdx) :
 CPlayerBase(pmap, foeID, x, y, facedir, l_Inventory, playerIdx, spriteTableIdx),
-mPlacingGem(false),
-mPoleGrabTime(0),
-mExitDoorTimer(0),
-mStunTimer(0),
 mObjectPtrs(ObjectPtrs)
 {
-	mActionMap[A_KEEN_STAND] = (void (CPlayerBase::*)()) &CPlayerLevel::processStanding;
-	mActionMap[A_KEEN_ON_PLAT] = (void (CPlayerBase::*)()) &CPlayerLevel::processStanding;
-	mActionMap[A_KEEN_QUESTION] = (void (CPlayerBase::*)()) &CPlayerLevel::processStanding;
-	mActionMap[A_KEEN_BORED] = (void (CPlayerBase::*)()) &CPlayerLevel::processStanding;
-	mActionMap[A_KEEN_BOOK_OPEN] = (void (CPlayerBase::*)()) &CPlayerLevel::processReadingBook;
-	mActionMap[A_KEEN_BOOK_READ] = (void (CPlayerBase::*)()) &CPlayerLevel::processReadingBook;
-	mActionMap[A_KEEN_BOOK_CLOSE] = (void (CPlayerBase::*)()) &CPlayerLevel::processReadingBook;	
-	mActionMap[A_KEEN_MOON] = (void (CPlayerBase::*)()) &CPlayerLevel::processPants;
-	mActionMap[A_KEEN_LOOKUP] = (void (CPlayerBase::*)()) &CPlayerLevel::processLookingUp;
-	mActionMap[A_KEEN_LOOKDOWN] = (void (CPlayerBase::*)()) &CPlayerLevel::processLookingDown;
-	mActionMap[A_KEEN_SHOOT] = (void (CPlayerBase::*)()) &CPlayerLevel::processShootWhileStanding;
-	mActionMap[A_KEEN_SHOOT_UP] = (void (CPlayerBase::*)()) &CPlayerLevel::processShootWhileStanding;
-	mActionMap[A_KEEN_SLIDE] = (void (CPlayerBase::*)()) &CPlayerLevel::processSliding;
+    mActionMap[A_KEEN_STAND] = static_cast<void (CPlayerBase::*)()> (&CPlayerLevel::processStanding);
+    mActionMap[A_KEEN_ON_PLAT] = static_cast<void (CPlayerBase::*)()> (&CPlayerLevel::processStanding);
+    mActionMap[A_KEEN_QUESTION] = static_cast<void (CPlayerBase::*)()> (&CPlayerLevel::processStanding);
+    mActionMap[A_KEEN_BORED] = static_cast<void (CPlayerBase::*)()> (&CPlayerLevel::processStanding);
+    mActionMap[A_KEEN_BOOK_OPEN] = static_cast<void (CPlayerBase::*)()> (&CPlayerLevel::processReadingBook);
+    mActionMap[A_KEEN_BOOK_READ] = static_cast<void (CPlayerBase::*)()> (&CPlayerLevel::processReadingBook);
+    mActionMap[A_KEEN_BOOK_CLOSE] = static_cast<void (CPlayerBase::*)()> (&CPlayerLevel::processReadingBook);
+    mActionMap[A_KEEN_MOON] = static_cast<void (CPlayerBase::*)()> (&CPlayerLevel::processPants);
+    mActionMap[A_KEEN_LOOKUP] = static_cast<void (CPlayerBase::*)()> (&CPlayerLevel::processLookingUp);
+    mActionMap[A_KEEN_LOOKDOWN] = static_cast<void (CPlayerBase::*)()> (&CPlayerLevel::processLookingDown);
+    mActionMap[A_KEEN_SHOOT] = static_cast<void (CPlayerBase::*)()> (&CPlayerLevel::processShootWhileStanding);
+    mActionMap[A_KEEN_SHOOT_UP] = static_cast<void (CPlayerBase::*)()> (&CPlayerLevel::processShootWhileStanding);
+    mActionMap[A_KEEN_SLIDE] = static_cast<void (CPlayerBase::*)()> (&CPlayerLevel::processSliding);
 	mActionMap[A_KEEN_ENTER_DOOR] = static_cast<void (CPlayerBase::*)()>(&CPlayerLevel::processEnterDoor);
-	mActionMap[A_KEEN_POLE] = (void (CPlayerBase::*)()) &CPlayerLevel::processPoleClimbingSit;
-	mActionMap[A_KEEN_POLE_CLIMB] = (void (CPlayerBase::*)()) &CPlayerLevel::processPoleClimbingUp;
-    mActionMap[A_KEEN_POLE_SLIDE] = (void (CPlayerBase::*)()) &CPlayerLevel::processPoleSlidingDown;
-	mActionMap[A_KEEN_POLE_SHOOT] = (void (CPlayerBase::*)()) &CPlayerLevel::processPoleClimbingSit;
-	mActionMap[A_KEEN_POLE_SHOOTUP] = (void (CPlayerBase::*)()) &CPlayerLevel::processPoleClimbingUp;
-    mActionMap[A_KEEN_POLE_SHOOTDOWN] = (void (CPlayerBase::*)()) &CPlayerLevel::processPoleSlidingDown;
-	mActionMap[A_KEEN_RUN] = (void (CPlayerBase::*)()) &CPlayerLevel::processRunning;
-	mActionMap[A_KEEN_POGO_START] = (void (CPlayerBase::*)()) &CPlayerLevel::processPogoBounce;
-	mActionMap[A_KEEN_POGO_UP] = (void (CPlayerBase::*)()) &CPlayerLevel::processPogo;
-	mActionMap[A_KEEN_POGO_HIGH] = (void (CPlayerBase::*)()) &CPlayerLevel::processPogo;
-	mActionMap[A_KEEN_JUMP] = (void (CPlayerBase::*)()) &CPlayerLevel::processJumping;
-	mActionMap[A_KEEN_JUMP_DOWN] = (void (CPlayerBase::*)()) &CPlayerLevel::processJumping;
-	mActionMap[A_KEEN_FALL] = (void (CPlayerBase::*)()) &CPlayerLevel::processJumping;
-	mActionMap[A_KEEN_JUMP_SHOOT] = (void (CPlayerBase::*)()) &CPlayerLevel::processJumping;
-	mActionMap[A_KEEN_JUMP_SHOOTUP] = (void (CPlayerBase::*)()) &CPlayerLevel::processJumping;
-	mActionMap[A_KEEN_JUMP_SHOOTDOWN] = (void (CPlayerBase::*)()) &CPlayerLevel::processJumping;
-	mActionMap[A_KEEN_HANG] = (void (CPlayerBase::*)()) &CPlayerLevel::processCliffHanging;
-	mActionMap[A_KEEN_CLIMB] = (void (CPlayerBase::*)()) &CPlayerLevel::processCliffClimbingUp;
-	mActionMap[A_KEEN_STUNNED] = (void (CPlayerBase::*)()) &CPlayerLevel::processStunned;
-
-
-	m_fire_recharge_time = 0;
-	m_EnterDoorAttempt = false;
-
-	m_jumpheight = 0;
-	dontdraw = false;
-    mIsClimbing = false;
-	m_pogotoggle = false;
-	m_jumped = false;
-	m_hangtime = 0;
-	mExitTouched = false;
+    mActionMap[A_KEEN_POLE] = static_cast<void (CPlayerBase::*)()> (&CPlayerLevel::processPoleClimbingSit);
+    mActionMap[A_KEEN_POLE_CLIMB] = static_cast<void (CPlayerBase::*)()> (&CPlayerLevel::processPoleClimbingUp);
+    mActionMap[A_KEEN_POLE_SLIDE] = static_cast<void (CPlayerBase::*)()> (&CPlayerLevel::processPoleSlidingDown);
+    mActionMap[A_KEEN_POLE_SHOOT] = static_cast<void (CPlayerBase::*)()> (&CPlayerLevel::processPoleClimbingSit);
+    mActionMap[A_KEEN_POLE_SHOOTUP] = static_cast<void (CPlayerBase::*)()> (&CPlayerLevel::processPoleClimbingUp);
+    mActionMap[A_KEEN_POLE_SHOOTDOWN] = static_cast<void (CPlayerBase::*)()> (&CPlayerLevel::processPoleSlidingDown);
+    mActionMap[A_KEEN_RUN] = static_cast<void (CPlayerBase::*)()> (&CPlayerLevel::processRunning);
+    mActionMap[A_KEEN_POGO_START] = static_cast<void (CPlayerBase::*)()> (&CPlayerLevel::processPogoBounce);
+    mActionMap[A_KEEN_POGO_UP] = static_cast<void (CPlayerBase::*)()> (&CPlayerLevel::processPogo);
+    mActionMap[A_KEEN_POGO_HIGH] = static_cast<void (CPlayerBase::*)()> (&CPlayerLevel::processPogo);
+    mActionMap[A_KEEN_JUMP] = static_cast<void (CPlayerBase::*)()> (&CPlayerLevel::processJumping);
+    mActionMap[A_KEEN_JUMP_DOWN] = static_cast<void (CPlayerBase::*)()> (&CPlayerLevel::processJumping);
+    mActionMap[A_KEEN_FALL] = static_cast<void (CPlayerBase::*)()> (&CPlayerLevel::processJumping);
+    mActionMap[A_KEEN_JUMP_SHOOT] = static_cast<void (CPlayerBase::*)()> (&CPlayerLevel::processJumping);
+    mActionMap[A_KEEN_JUMP_SHOOTUP] = static_cast<void (CPlayerBase::*)()> (&CPlayerLevel::processJumping);
+    mActionMap[A_KEEN_JUMP_SHOOTDOWN] = static_cast<void (CPlayerBase::*)()> (&CPlayerLevel::processJumping);
+    mActionMap[A_KEEN_HANG] = static_cast<void (CPlayerBase::*)()> (&CPlayerLevel::processCliffHanging);
+    mActionMap[A_KEEN_CLIMB] = static_cast<void (CPlayerBase::*)()> (&CPlayerLevel::processCliffClimbingUp);
+    mActionMap[A_KEEN_STUNNED] = static_cast<void (CPlayerBase::*)()> (&CPlayerLevel::processStunned);
 
 	setupGalaxyObjectOnMap(offset, A_KEEN_STAND);
 
 	performCollisions();
 	if(!processActionRoutine())
+    {
 			exists = false;
+    }
 }
 
 

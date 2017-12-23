@@ -5,10 +5,37 @@ if(NOTYPESAVE)
     add_definitions(-DNOTYPESAVE)
 endif()
 
+add_subdirectory(common)
+add_subdirectory(ep4)
+add_subdirectory(ep5)
+add_subdirectory(ep6)
+add_subdirectory(menu)
+add_subdirectory(res)
 
-FILE(GLOB_RECURSE srcs *.cpp *.h)
-add_library(engine_keen_galaxy OBJECT ${srcs})
+set(CXXSRC
+	CLevelPlay.cpp
+	CMapPlayGalaxy.cpp
+	CPassive.cpp
+	CPlayGameGalaxy.cpp
+	GalaxyEngine.cpp)
+
+set(HSRC
+	CLevelPlay.h
+	CMapPlayGalaxy.h
+	CPassive.h
+	CPlayGameGalaxy.h
+	GalaxyEngine.h)
 
 
-set_property(GLOBAL APPEND PROPERTY CG_OBJ_LIBS $<TARGET_OBJECTS:engine_keen_galaxy>)
 
+add_library(engine_keen_galaxy ${HSRC} ${CXXSRC})
+
+target_link_libraries(engine_keen_galaxy 
+                      engine_keen_galaxy_common
+                      engine_keen_ep4 
+                      engine_keen_ep5 
+                      engine_keen_ep6
+                      engine_keen_galaxy_menu
+                      engine_keen_galaxy_res)
+
+cotire(engine_keen_galaxy)

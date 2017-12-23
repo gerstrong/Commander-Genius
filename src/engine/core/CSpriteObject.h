@@ -179,11 +179,11 @@ class CSpriteObject
     virtual bool calcVisibility();
     
     /**
-	 * \description This will verify whether object has to fall or not.
+     * @brief This will verify whether object has to fall or not.
 	 * 				This function must be called when it might be moving
 	 * 				because it also checks the lower sloped tiles cases
 	 *
-	 * \todo 		This function should also be called by foes in some cases
+     * @todo		This function should also be called by foes in some cases
 	 */
     bool verifyForFalling();
     
@@ -414,10 +414,7 @@ class CSpriteObject
     Uint8 transluceny;
     
     int mSprVar; // Sprite variant, which is used by the Spritemap
-    
-    
-    
-    
+
 };
 
 /**

@@ -323,7 +323,7 @@ public:
 	int checkSolidD( int x1, int x2, int y2, const bool push_mode=false );	
 
 
-	bool mPlacingGem;
+    bool mPlacingGem = false;
 
 private:
 
@@ -334,17 +334,17 @@ private:
 
     KeenState mActionState;
 
-	int m_jumpheight;
+    int m_jumpheight = 0;
 
-	bool m_pogotoggle;
+    bool m_pogotoggle = false;
 
-	int m_fire_recharge_time;
-	bool m_EnterDoorAttempt;
-	int m_hangtime;
-	int mPoleGrabTime;
+    int m_fire_recharge_time = 0;
+    bool m_EnterDoorAttempt = false;
+    int m_hangtime = 0;
+    int mPoleGrabTime = 0;
 	int mClimbSpeedX;
-	int mExitDoorTimer;
-    int mStunTimer;
+    int mExitDoorTimer = 0;
+    int mStunTimer = 0;
     bool mReleasedShot = false;
 
 	std::vector< std::shared_ptr<CGalaxySpriteObject> > &mObjectPtrs;

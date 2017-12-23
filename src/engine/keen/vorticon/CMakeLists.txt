@@ -9,6 +9,5 @@ endif()
 FILE(GLOB_RECURSE srcs *.cpp *.h)
 add_library(engine_keen_vorticon OBJECT ${srcs})
 
-
 set_property(GLOBAL APPEND PROPERTY CG_OBJ_LIBS $<TARGET_OBJECTS:engine_keen_vorticon>)
 
