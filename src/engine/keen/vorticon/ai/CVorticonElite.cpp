@@ -123,31 +123,38 @@ bool CVorticonElite::isNearby(CVorticonSpriteObject &theObject)
 
             dist_traveled++;
 
+            const auto diff = gBehaviorEngine.mDifficulty;
 
-            if (getProbability(VORTELITE_JUMP_PROB) && !mpMap->m_Dark && !blockedu)
-            {  // let's jump.
-                initiatejump();
-                return true;
-            }
-            else
+            if(!mpMap->m_Dark || diff > HARD)
             {
-                if (timesincefire > VORTELITE_MIN_TIME_BETWEEN_FIRE)
+                if (getProbability(VORTELITE_JUMP_PROB) && !blockedu)
+                {  // let's jump.
+                    initiatejump();
+                    return true;
+                }
+                else
                 {
-                    if (getProbability(VORTELITE_FIRE_PROB))
-                    {  	// let's fire
-                        // usually shoot toward keen
-                        if (rand()%5 != 0)
-                        {
-                            if (getXPosition() < player->getXPosition())
-                                movedir = RIGHT;
-                            else
-                                movedir = LEFT;
+                    if (timesincefire > VORTELITE_MIN_TIME_BETWEEN_FIRE)
+                    {
+                        if (getProbability(VORTELITE_FIRE_PROB))
+                        {  	// let's fire
+                            // usually shoot toward keen
+                            if (rand()%5 != 0)
+                            {
+                                if (getXPosition() < player->getXPosition())
+                                    movedir = RIGHT;
+                                else
+                                    movedir = LEFT;
+                            }
+                            timer = 0;
+                            state = VORTELITE_ABOUTTOFIRE;
                         }
-                        timer = 0;
-                        state = VORTELITE_ABOUTTOFIRE;
+                    }
+                    else
+                    {
+                        timesincefire++;
                     }
                 }
-                else timesincefire++;
             }
         }
     }
