@@ -18,6 +18,11 @@
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 #endif
 
+/*
+GsSurface sfc;
+sfc.createRGBSurface(rect);
+*/
+
 
 SDL_Surface *CG_CreateRGBSurface( const SDL_Rect rect )
 {

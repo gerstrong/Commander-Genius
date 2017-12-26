@@ -65,16 +65,14 @@ void CMessageBoxVort::addTileAt(Uint16 tile, Uint16 x, Uint16 y)
 	rect.x = rect.y = 0;
 	rect.w = rect.h = tileDim;
 
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-    std::shared_ptr<SDL_Surface> bmpSfc( CG_CreateRGBSurface( rect ), &SDL_FreeSurface );
-    bmpSfc.reset(gVideoDriver.convertThroughBlitSfc(bmpSfc.get()), &SDL_FreeSurface);
 
-#else
-    std::shared_ptr<SDL_Surface> bmpSfc( CG_CreateRGBSurface(rect), &SDL_FreeSurface );
-#endif
+    GsSurface bmpSfc;
+    bmpSfc.createRGBSurface(rect);
+    bmpSfc.makeBlitCompatible();
 
-    SDL_FillRect(bmpSfc.get(), NULL, 0xFF00FFFF);
-	tilemap.drawTile(bmpSfc.get(), 0, 0, tile);
+    bmpSfc.fillRGBA(0xFF, 0x00, 0xFF, 0xFF);
+
+    tilemap.drawTile(bmpSfc.getSDLSurface(), 0, 0, tile);
 
 	rect.x = x;	rect.y = y;
 

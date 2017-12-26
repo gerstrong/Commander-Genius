@@ -25,11 +25,10 @@ m_timer(0)
 	m_8x8tilewidth = m_8x8tileheight = 8;
 	m_mustclose = false;
 
-	SDL_Surface *temp = CG_CreateRGBSurface( gVideoDriver.getGameResolution().SDLRect() );
+    GsSurface temp;
+    temp.createRGBSurface(gVideoDriver.getGameResolution().SDLRect());
 
-    mpTextVSfc.reset(gVideoDriver.convertThroughBlitSfc(temp), &SDL_FreeSurface);
-
-    SDL_FreeSurface(temp);
+    mpTextVSfc.reset(gVideoDriver.convertThroughBlitSfc(temp.getSDLSurface()), &SDL_FreeSurface);
 }
 
 void CTextViewer::scrollDown()

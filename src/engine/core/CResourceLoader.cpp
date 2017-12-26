@@ -328,8 +328,8 @@ m_style(PROGRESS_STYLE_TEXT)
     rect.x = 0;		rect.y = 0;
     rect.w = gameRes.w;	rect.h = gameRes.h;
 
-    mpProgressSfc.reset( CG_CreateRGBSurface( rect ), &SDL_FreeSurface );
-    mpProgressSfc.reset( gVideoDriver.convertThroughBlitSfc(mpProgressSfc.get()), &SDL_FreeSurface );
+    mProgressSfc.createRGBSurface(rect);
+    mProgressSfc.makeBlitCompatible();
 }
 
 
@@ -416,8 +416,7 @@ void CResourceLoaderBackground::run(const float deltaT)
  */
 void CResourceLoaderBackground::render()
 {
-    SDL_Surface *sfc = mpProgressSfc.get();
-    SDL_FillRect(sfc, nullptr, 0x0);
+    mProgressSfc.fillRGB(0, 0, 0);
 
     GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
 
@@ -433,14 +432,15 @@ void CResourceLoaderBackground::render()
         int rest = m_permil%10;
         std::string text = "Loading ... " + itoa(percent)+"."+ itoa(rest)+" \%";
 
-        SDL_Rect textRect;
+        GsRect<Uint16> textRect;
         GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
         const float scaleUpW = float(gameRes.w)/320.0f;
         const float scaleUpH = float(gameRes.h)/200.0f;
         textRect.x = (int)(80.0*scaleUpW);        textRect.y = (int)(100.0*scaleUpH);
         textRect.w = 200;        textRect.h = 10;
-        SDL_FillRect(sfc, &textRect, SDL_MapRGB(sfc->format, 0, 0, 0));
-        Font.drawFont(sfc, text , textRect.x, textRect.y, true);
+
+        mProgressSfc.fillRGB(textRect, 0, 0, 0);
+        Font.drawFont(mProgressSfc.getSDLSurface(), text , textRect.x, textRect.y, true);
     }
     else if(m_style == PROGRESS_STYLE_BITMAP)
     {
@@ -448,7 +448,7 @@ void CResourceLoaderBackground::render()
         SDL_Rect rect;
         int width = Bitmap.width();
         int height = Bitmap.height();
-        Bitmap._draw( (gameWidth-width)/2, (gameHeight-height)/2, sfc);
+        Bitmap._draw( (gameWidth-width)/2, (gameHeight-height)/2, mProgressSfc.getSDLSurface());
 
         rect.x = (gameWidth-width)/2;
         rect.y = (gameHeight+height)/2;
@@ -457,9 +457,7 @@ void CResourceLoaderBackground::render()
         rect.h = 4;
 
         // Fade from yellow to green with this formula
-        Uint32 color = SDL_MapRGB(sfc->format, 200-(200*m_permil)/1000, 200, 0 );
-
-        SDL_FillRect(sfc, &rect, color);
+        mProgressSfc.fillRGB(rect, 200-(200*m_permil)/1000, 200, 0);
     }
     else if(m_style == PROGRESS_STYLE_BAR)
     {
@@ -482,18 +480,13 @@ void CResourceLoaderBackground::render()
         const Uint8 b = 0;
 
         // Fade from yellow to green with this formula
-        Uint32 color = SDL_MapRGB(sfc->format, r, g, b );
-
-        SDL_FillRect(sfc, &bgRect, SDL_MapRGB(sfc->format, 128, 128, 128));
-        SDL_FillRect(sfc, &rect, color);
+        mProgressSfc.fillRGB(bgRect, 128, 128, 128);
+        mProgressSfc.fillRGB(rect, r, g, b);
     }
 
     // In there is garbage of other drawn stuff clean it up.
     auto blit = gVideoDriver.getBlitSurface();
-
-    SDL_FillRect( blit, nullptr, SDL_MapRGB(blit->format, 0,0,0) );
-
-    BlitSurface( mpProgressSfc.get(), nullptr, blit, nullptr );
+    BlitSurface( mProgressSfc.getSDLSurface(), nullptr, blit, nullptr );
 }
 
 

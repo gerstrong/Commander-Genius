@@ -29,7 +29,7 @@ timer(0)
 }
 
 void CHUD::createHUDBlit()
-{    
+{        
     mpHUDBlit.reset( CG_CreateRGBSurface( mRenderRect ), &SDL_FreeSurface );
     mpHUDBlit.reset(gVideoDriver.convertThroughBlitSfc(mpHUDBlit.get()), &SDL_FreeSurface);
 

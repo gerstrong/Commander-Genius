@@ -14,6 +14,7 @@
 
 #include <base/Singleton.h>
 #include <base/utils/ThreadPool.h>
+#include <graphics/GsSurface.h>
 
 #include <base/GsGear.h>
 #include <memory>
@@ -97,7 +98,7 @@ private:
 
     ProgressStyle m_style;
     ThreadPoolItem *mpThread;
-    std::shared_ptr<SDL_Surface> mpProgressSfc;
+    GsSurface mProgressSfc;
 };
 
 

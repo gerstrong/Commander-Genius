@@ -190,8 +190,12 @@ void CGameLauncher::setupDownloadDialog()
                                            GsRect<float>(0.100f, 0.865f, 0.25f, 0.07f) ) );
 
     mpDloadCancel = std::dynamic_pointer_cast<GsButton>(
-            mpGameStoreDialog->addControl( new GsButton( "Cancel", new CancelDownloadEvent() ),
+            mpGameStoreDialog->addControl( new GsButton( "Cancel", new CancelDownloadEvent(),
+                                                         GsControl::Style::UNSET,
+                                                         1.0f, 0.675f, 0.675f) ,
                                            GsRect<float>(0.375f, 0.865f, 0.25f, 0.07f) ) );
+
+
     mpDloadCancel->enable(false);
 
     mpDloadDownload = std::dynamic_pointer_cast<GsButton>(

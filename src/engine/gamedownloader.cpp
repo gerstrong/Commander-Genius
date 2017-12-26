@@ -277,7 +277,7 @@ bool GameDownloader::checkForMissingGames( std::vector< std::string > &missingLi
 
     if(!mCataFound)
     {
-        gLogging.ftextOut("Sorry, catalogue file was not found: %s<br>", mCatalogFName.c_str() );
+        gLogging.ftextOut("Sorry, the catalogue file \"%s\" was not found <br>", mCatalogFName.c_str() );
         return -1;
     }
 
