@@ -56,7 +56,7 @@ private:
 
 	ProgressStyle m_style;
     ThreadPoolItem *mp_Thread;
-	std::shared_ptr<SDL_Surface> mpProgressSfc;
+    GsSurface mProgressSfc;
 };
 
 

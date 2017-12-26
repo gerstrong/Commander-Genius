@@ -125,7 +125,7 @@ bool CVorticonElite::isNearby(CVorticonSpriteObject &theObject)
 
             const auto diff = gBehaviorEngine.mDifficulty;
 
-            if(!mpMap->m_Dark || diff > HARD)
+            if(!mpMap->m_Dark || diff > EASY)
             {
                 if (getProbability(VORTELITE_JUMP_PROB) && !blockedu)
                 {  // let's jump.

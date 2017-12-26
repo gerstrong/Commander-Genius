@@ -64,11 +64,6 @@ void CStatusScreen::draw()
 	}
 }
 
-SDL_Surface* CStatusScreen::CreateStatusSfc()
-{
-	return CG_CreateRGBSurface( m_StatusRect );
-}
-
 std::string CStatusScreen::fetchDifficultyText()
 {
 	std::string out;
@@ -104,7 +99,10 @@ void CStatusScreen::createInventorySfcEp1(const int varSpr)
 	m_StatusRect.w = (dlgW+1)*8;
 	m_StatusRect.h = dlgH*8;
 	
-	SDL_Surface *p_surface = CreateStatusSfc();
+    GsSurface sfc;
+    sfc.createRGBSurface(m_StatusRect);
+    SDL_Surface *p_surface = sfc.getSDLSurface();
+
 	GsTilemap &Tilemap = gGraphics.getTileMap(1);
 
 	gGraphics.drawDialogBox( p_surface, 0, 0, dlgW,dlgH, Font.getBGColour(p_surface->format, true));
@@ -221,8 +219,6 @@ void CStatusScreen::createInventorySfcEp1(const int varSpr)
     
 //#else
     mpStatusSfc.reset(gVideoDriver.convertThroughBlitSfc(p_surface), &SDL_FreeSurface);
-//#endif
-	SDL_FreeSurface(p_surface);
 }
 
 void CStatusScreen::createInventorySfcEp2(const int varSpr)
@@ -237,7 +233,9 @@ void CStatusScreen::createInventorySfcEp2(const int varSpr)
 	m_StatusRect.w = (dlgW+1)*8;
 	m_StatusRect.h = dlgH*8;
 
-	SDL_Surface *p_surface = CreateStatusSfc();
+    GsSurface sfc;
+    sfc.createRGBSurface(m_StatusRect);
+    SDL_Surface *p_surface = sfc.getSDLSurface();
     GsTilemap &Tilemap = gGraphics.getTileMap(1);
 
 	tempbuf = gBehaviorEngine.getString("EP2_StatusBox");
@@ -361,7 +359,10 @@ void CStatusScreen::createInventorySfcEp3(const int varSpr)
 	m_StatusRect.w = (dlgW+1)*8;
 	m_StatusRect.h = dlgH*8;
 
-	SDL_Surface *p_surface = CreateStatusSfc();
+    GsSurface sfc;
+    sfc.createRGBSurface(m_StatusRect);
+    SDL_Surface *p_surface = sfc.getSDLSurface();
+
     GsTilemap &Tilemap = gGraphics.getTileMap(1);
 
 	tempbuf = gBehaviorEngine.getString("EP3_StatusBox");

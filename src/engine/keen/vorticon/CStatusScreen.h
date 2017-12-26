@@ -28,7 +28,6 @@ public:
 
 private:
 
-	SDL_Surface* CreateStatusSfc();
 
 	char m_episode;
 	int m_baseframe;
