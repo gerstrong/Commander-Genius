@@ -17,6 +17,13 @@ ai/CPlayerWM.cpp
 ai/CSecurityDoor.cpp
 ai/CSpriteItem.cpp
 ai/CStunnable.cpp
+ai/platform/CPlatform.cpp
+ai/platform/CPlatformDrop.cpp
+ai/platform/CPlatformHorizontal.cpp
+ai/platform/CPlatformMoveAway.cpp
+ai/platform/CPlatformSit.cpp
+ai/platform/CPlatformVertical.cpp
+ai/platform/CVarPlatform.cpp
 dialog/CMessageBoxBitmapGalaxy.cpp
 dialog/CMessageBoxGalaxy.cpp
 dialog/CMessageBoxSelection.cpp
@@ -42,6 +49,13 @@ ai/CSecurityDoor.h
 ai/CSpriteItem.h
 ai/CStunnable.h
 ai/platforms.h
+ai/platform/CPlatformDrop.h
+ai/platform/CPlatform.h
+ai/platform/CPlatformHorizontal.h
+ai/platform/CPlatformMoveAway.h
+ai/platform/CPlatformSit.h
+ai/platform/CPlatformVertical.h
+ai/platform/CVarPlatform.h
 dialog/CMessageBoxBitmapGalaxy.h
 dialog/CMessageBoxGalaxy.h
 dialog/CMessageBoxSelection.h

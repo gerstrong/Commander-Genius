@@ -43,3 +43,9 @@ ai/CVolteface.h
 )
 
 add_library(engine_keen_galaxy_ep5 ${CXXSRC} ${HSRC} )
+
+
+target_link_libraries(engine_keen_galaxy_ep5
+                      engine_keen_galaxy_common
+                      engine_keen_galaxy_menu
+                      engine_keen_galaxy_res)

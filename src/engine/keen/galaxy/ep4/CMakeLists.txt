@@ -61,3 +61,9 @@ ai/CWormmouth.h
 )
 
 add_library(engine_keen_galaxy_ep4 ${CXXSRC} ${HSRC} )
+
+
+target_link_libraries(engine_keen_galaxy_ep4
+                      engine_keen_galaxy_common
+                      engine_keen_galaxy_menu
+                      engine_keen_galaxy_res)
