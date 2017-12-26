@@ -10,4 +10,5 @@ add_library(engine_keen KeenEngine.cpp KeenEngine.h)
 target_link_libraries(engine_keen
                       engine_keen_galaxy
                       engine_keen_dreams
+                      engine_keen_vorticon
                       fileio)
