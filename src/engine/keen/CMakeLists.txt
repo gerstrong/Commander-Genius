@@ -7,4 +7,7 @@ add_subdirectory(dreams)
 
 add_library(engine_keen KeenEngine.cpp KeenEngine.h)
 
-target_link_libraries(engine_keen engine_keen_galaxy fileio)
+target_link_libraries(engine_keen
+                      engine_keen_galaxy
+                      engine_keen_dreams
+                      fileio)

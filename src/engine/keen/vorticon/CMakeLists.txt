@@ -6,8 +6,184 @@ if(NOTYPESAVE)
 endif()
 
 
-FILE(GLOB_RECURSE srcs *.cpp *.h)
-add_library(engine_keen_vorticon OBJECT ${srcs})
 
-set_property(GLOBAL APPEND PROPERTY CG_OBJ_LIBS $<TARGET_OBJECTS:engine_keen_vorticon>)
+set(CXXSRC
+    CAbout.cpp
+    CAudioVorticon.cpp
+    CCredits.cpp
+    CEGAGraphicsVort.cpp
+    CEGALatch.cpp
+    CEGASprit.cpp
+    CHelp.cpp
+    CHighScores.cpp
+    CInfoScene.cpp
+    COrderingInfo.cpp
+    CPassiveVort.cpp
+    CPlayerItems.cpp
+    CPreviews.cpp
+    CStatusScreen.cpp
+    CStory.cpp
+    CTitle.cpp
+    CVorticonMapLoader.cpp
+    CVorticonSpriteObject.cpp
+    VorticonEngine.cpp
+    ai/CAnkhShield.cpp
+    ai/CAutoRay.cpp
+    ai/CBallJack.cpp
+    ai/CBridges.cpp
+    ai/CButler.cpp
+    ai/CCarrier.cpp
+    ai/CDoor.cpp
+    ai/CEarthChunk.cpp
+    ai/CEarthExplosion.cpp
+    ai/CEGABitmap.cpp
+    ai/CFireBall.cpp
+    ai/CFoob.cpp
+    ai/CGarg.cpp
+    ai/CGuardRobot.cpp
+    ai/CIceCannon.cpp
+    ai/CManglingMachine.cpp
+    ai/CMeep.cpp
+    ai/CMessie.cpp
+    ai/CPlatform.cpp
+    ai/CPlatformVert.cpp
+    ai/CPlayer.cpp
+    ai/CPlayerLevel.cpp
+    ai/CPlayerWM.cpp
+    ai/CRay.cpp
+    ai/CRisingPoints.cpp
+    ai/CRope.cpp
+    ai/CScrub.cpp
+    ai/CSoundWave.cpp
+    ai/CSpark.cpp
+    ai/CTank.cpp
+    ai/CTeleporter.cpp
+    ai/CVorticon.cpp
+    ai/CVorticonElite.cpp
+    ai/CVorticonSpriteObjectAI.cpp
+    ai/CVortikid.cpp
+    ai/CVortiMom.cpp
+    ai/CVortiNinja.cpp
+    ai/CYorp.cpp
+dialog/CMessageBoxVort.cpp
+finale/CEndingEp1.cpp
+finale/CEndingEp2.cpp
+finale/CEndingEp3.cpp
+finale/CFinale.cpp
+finale/CFinaleStaticScene.cpp
+finale/CShipFlySys.cpp
+finale/CTantalusRay.cpp
+finale/finale.cpp
+menu/CAudioSettings.cpp
+menu/CCameraSettings.cpp
+menu/CConfirmMenu.cpp
+menu/CControlsettings.cpp
+menu/cheatsmenu.cpp
+menu/CHelpMenu.cpp
+menu/CLoadMenu.cpp
+menu/CMainMenu.cpp
+menu/COptions.cpp
+menu/CProfilesMenu.cpp
+menu/CSaveMenu.cpp
+menu/CSettingsMenu.cpp
+menu/CVideoSettings.cpp
+menu/VorticonMenu.cpp
+menu/widgets/Button.cpp
+menu/widgets/ComboSelection.cpp
+menu/widgets/Inputtext.cpp
+menu/widgets/NumberControl.cpp
+menu/widgets/Switch.cpp
+playgame/CPlayGameDialogs.cpp
+playgame/CPlayGameGameState.cpp
+playgame/CPlayGameLevel.cpp
+playgame/CPlayGameVorticon.cpp
+playgame/CPlayGameWorldMap.cpp
+    )
+
+set(HSRC
+    CAbout.h
+    CAudioVorticon.h
+    CCredits.h
+    CEGAGraphicsVort.h
+    CEGALatch.h
+    CEGASprit.h
+    CHelp.h
+    CHighScores.h
+    CInfoScene.h
+    COrderingInfo.h
+    CPassiveVort.h
+    CPreviews.h
+    CStatusScreen.h
+    CStory.h
+    CTitle.h
+    CVorticonMapLoader.h
+    CVorticonSpriteObject.h
+    VorticonEngine.h
+    ai/CAnkhShield.h
+    ai/CAutoRay.h
+    ai/CBallJack.h
+    ai/CBridges.h
+    ai/CButler.h
+    ai/CCarrier.h
+    ai/CDoor.h
+    ai/CEarthChunk.h
+    ai/CEarthExplosion.h
+    ai/CEGABitmap.h
+    ai/CFireBall.h
+    ai/CFoob.h
+    ai/CGarg.h
+    ai/CGuardRobot.h
+    ai/CIceCannon.h
+    ai/CManglingMachine.h
+    ai/CMeep.h
+    ai/CMessie.h
+    ai/CPlatform.h
+    ai/CPlayer.h
+    ai/CRay.h
+    ai/CRisingPoints.h
+    ai/CRope.h
+    ai/CScrub.h
+    ai/CSoundWave.h
+    ai/CSpark.h
+    ai/CTank.h
+    ai/CTeleporter.h
+    ai/CVorticonElite.h
+    ai/CVorticon.h
+    ai/CVorticonSpriteObjectAI.h
+    ai/CVortiKid.h
+    ai/CVortiMom.h
+    ai/CVortiNinja.h
+    ai/CYorp.h
+    dialog/CMessageBoxVort.h
+    finale/CEndingEp1.h
+    finale/CEndingEp2.h
+    finale/CEndingEp3.h
+    finale/CFinale.h
+    finale/CFinaleStaticScene.h
+    finale/CShipFlySys.h
+    finale/CTantalusRay.h
+    menu/CAudioSettings.h
+    menu/CCameraSettings.h
+    menu/CConfirmMenu.h
+    menu/CControlsettings.h
+    menu/cheatsmenu.h
+    menu/CHelpMenu.h
+    menu/CLoadMenu.h
+    menu/CMainMenu.h
+    menu/COptions.h
+    menu/CProfilesMenu.h
+    menu/CSaveMenu.h
+    menu/CSelectionMenu.h
+    menu/CSettingsMenu.h
+    menu/CVideoSettings.h
+    menu/VorticonMenu.h
+    menu/widgets/Button.h
+    menu/widgets/ComboSelection.h
+    menu/widgets/Inputtext.h
+    menu/widgets/NumberControl.h
+    menu/widgets/Switch.h
+    playgame/CPlayGameVorticon.h
+    )
+
+add_library(engine_keen_vorticon ${CXXSRC} ${HSRC})
 

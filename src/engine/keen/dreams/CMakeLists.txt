@@ -5,8 +5,22 @@ if(NOTYPESAVE)
     add_definitions(-DNOTYPESAVE)
 endif()
 
-FILE(GLOB_RECURSE srcs *.cpp *.h)
-add_library(engine_keen_dreams OBJECT ${srcs})
 
+set(CXXSRC
+    dreamscontrolpanel.cpp
+    dreamsdosintro.cpp
+    dreamsengine.cpp
+    dreamsgameplay.cpp
+    dreamsintro.cpp
+    )
 
-set_property(GLOBAL APPEND PROPERTY CG_OBJ_LIBS $<TARGET_OBJECTS:engine_keen_dreams>)
+set(HSRC
+    dreamscontrolpanel.h
+    dreamsdosintro.h
+    dreamsengine.h
+    dreamsgameplay.h
+    dreamsintro.h
+    )
+
+add_library(engine_keen_dreams ${CXXSRC} ${HSRC})
+
