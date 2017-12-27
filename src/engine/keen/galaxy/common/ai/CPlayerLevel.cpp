@@ -2606,7 +2606,9 @@ void CPlayerLevel::centerView()
 
 void CPlayerLevel::push(CGalaxySpriteObject& theObject)
 {
-  if(dying)
+  if(dying ||
+     m_EnterDoorAttempt ||
+     getActionStatus(A_KEEN_SLIDE) )
     return;
   
   CPlayerBase::push(theObject);

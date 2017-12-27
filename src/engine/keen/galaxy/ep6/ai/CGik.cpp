@@ -213,7 +213,7 @@ void CGik::process()
         {
             mpInteractPlayer->pSupportedbyobject = nullptr;
             mpInteractPlayer->m_jumpdownfromobject = false;
-            mpInteractPlayer = NULL;
+            mpInteractPlayer = nullptr;
         }
         else if(mpInteractPlayer->pSupportedbyobject)
         {

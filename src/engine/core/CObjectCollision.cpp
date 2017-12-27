@@ -665,7 +665,7 @@ int CSpriteObject::checkSolidL( int x1, int x2, int y1, int y2)
 
 	x1 -= COLISION_RES;
 
-	// Check for right from the object
+    // Check for right side of the tile
 	if(solid)
 	{
 		for(int c=y1 ; c<=y2 ; c += COLISION_RES)
@@ -988,12 +988,13 @@ void CSpriteObject::processPushOutCollision()
 		}
 	}
 
+    const auto x = getXPosition();
+    const auto y = getYPosition();
+
+
 	if(blockedl)
 	{
-        //const unsigned int x1 = getXPosition()+m_BBox.x1+1;
-        const auto x = getXPosition();
-        const auto y = getYPosition();
-        const auto x1 = x+m_BBox.x1;
+        const auto x1 = x+m_BBox.x1+(1<<STC);
         const auto x2 = x+m_BBox.x2;
         const auto y1 = y+m_BBox.y1;
         const auto y2 = y+m_BBox.y2;
@@ -1011,12 +1012,12 @@ void CSpriteObject::processPushOutCollision()
 	}
 	else if(blockedr)
 	{
-		const unsigned int x1 = getXPosition()+m_BBox.x1;
-		const unsigned int x2 = getXPosition()+m_BBox.x2-1;
-		const unsigned int y1 = getYPosition()+m_BBox.y1;
-		const unsigned int y2 = getYPosition()+m_BBox.y2;
+        const unsigned int x1 = x+m_BBox.x1;
+        const unsigned int x2 = x+m_BBox.x2-(1<<STC);
+        const unsigned int y1 = y+m_BBox.y1;
+        const unsigned int y2 = y+m_BBox.y2;
 
-		if( checkSolidR(x1, x2, y1, y2) /*&& checkSolidL(x1, x2, y1, y2)*/ )
+        if( checkSolidR(x1, x2, y1, y2) )
 		{
 			// Push him right to the position where he is not blocked anymore
 			int should_x = x2;
