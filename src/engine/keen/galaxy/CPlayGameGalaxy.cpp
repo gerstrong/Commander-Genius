@@ -253,7 +253,6 @@ bool CPlayGameGalaxy::init()
     // Required to sprites are correctly masked
     gGraphics.optimizeSprites();
 
-
 	if(m_Level == 0)
 	{
 		m_WorldMap.setActive(true);
@@ -265,6 +264,10 @@ bool CPlayGameGalaxy::init()
 		m_LevelPlay.loadLevel(m_Level);
 		m_LevelPlay.setActive(true);
 	}
+
+    const int numPlayers = gBehaviorEngine.mPlayers;
+    mDead.assign(numPlayers, false);
+    mGameOver.assign(numPlayers, false);
 
     return true;
 }
@@ -299,7 +302,7 @@ struct EventSendSelectionDialogMsg : CEvent {
 struct EventRestartLevel : CEvent {};
 
 
-void CPlayGameGalaxy::looseManagement( const int playerID,
+void CPlayGameGalaxy::looseManagement( const int playerIdx,
                                        const bool playerGameOver,
                                        const uint16_t levelObj,
                                        const std::string &levelName )
@@ -312,12 +315,17 @@ void CPlayGameGalaxy::looseManagement( const int playerID,
 
     unsigned int nextAliveID = 0;
 
-    while(mDead[nextAliveID]) nextAliveID++;
+    while(mDead[nextAliveID])
+    {
+        nextAliveID++;
+    }
 
-    mDead[playerID] = true;
+    mDead[playerIdx] = true;
 
     if(playerGameOver)
-        mGameOver[playerID] = true;
+    {
+        mGameOver[playerIdx] = true;
+    }
 
     for(auto deadIt = mDead.begin() ; deadIt != mDead.end() ; deadIt++ )
     {
@@ -347,7 +355,7 @@ void CPlayGameGalaxy::looseManagement( const int playerID,
         pdialogevent->addOption("Try Again", new EventRestartLevel() );
 
         std::string exitMsg = "Exit to " + gBehaviorEngine.mapLevelName;
-        pdialogevent->addOption(exitMsg, new EventExitLevel( levelObj, false, false, playerID) );
+        pdialogevent->addOption(exitMsg, new EventExitLevel( levelObj, false, false, playerIdx) );
         eventContainer.add( pdialogevent );
 
         for(auto deadIt = mDead.begin() ; deadIt != mDead.end() ; deadIt++ )
@@ -362,7 +370,7 @@ void CPlayGameGalaxy::looseManagement( const int playerID,
     if( numDeadPlayers > 1 && nextAliveID < numDeadPlayers )
     {
         CInventory &next = mInventoryVec[nextAliveID];
-        CInventory &dying = mInventoryVec[playerID];
+        CInventory &dying = mInventoryVec[playerIdx];
 
         next.fetchImportantStuff(dying);
     }
@@ -405,6 +413,11 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
     {
         if(ev->data >= 0xC000)	// Start a new level!
         {
+            // Ensure no one is dead anymore
+            const int numPlayers = gBehaviorEngine.mPlayers;
+            mDead.assign(numPlayers, false);
+            mGameOver.assign(numPlayers, false);
+
             const Uint16 newLevel = ev->data - 0xC000;
             if(newLevel < 50)
             {
@@ -423,6 +436,11 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
     }
     else if( const EventExitLevel *ev = dynamic_cast<const EventExitLevel*>(evPtr) )
     {                
+        // Ensure no one is dead anymore
+        const int numPlayers = gBehaviorEngine.mPlayers;
+        mDead.assign(numPlayers, false);
+        mGameOver.assign(numPlayers, false);
+
         if( ev->playSound )
         {
             gSound.playSound( SOUND_LEVEL_DONE );
@@ -465,7 +483,6 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
             gMusicPlayer.stop();
             m_WorldMap.setActive(false);
             m_LevelPlay.loadLevel(newLevel);
-            //gSound.playSound( SOUND_ENTER_LEVEL );
             m_LevelPlay.setActive(true);
         }
     }

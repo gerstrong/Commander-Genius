@@ -31,7 +31,7 @@ CMapPlayGalaxy(inventory)
 
 
 void CLevelPlay::loadMap(const int level)
-{
+{      
 	// Load the World map level.
 	std::unique_ptr<CMapLoaderGalaxy> MapLoader;
 
