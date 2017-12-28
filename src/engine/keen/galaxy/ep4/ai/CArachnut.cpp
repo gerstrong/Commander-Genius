@@ -41,15 +41,8 @@ bool CArachnut::isNearby(CSpriteObject &theObject)
 
 	if( CPlayerLevel *player = dynamic_cast<CPlayerLevel*>(&theObject) )
 	{
-		if( player->getXMidPos() < getXMidPos() )
-			xDirection = LEFT;
-		else
-			xDirection = RIGHT;
-
-		if( player->getYMidPos() < getYMidPos() )
-			yDirection = UP;
-		else
-			yDirection = DOWN;
+        xDirection = ( player->getXMidPos() < getXMidPos() ) ? LEFT : RIGHT;
+        yDirection = ( player->getYMidPos() < getYMidPos() ) ? UP : DOWN;
 	}
 
 	return true;

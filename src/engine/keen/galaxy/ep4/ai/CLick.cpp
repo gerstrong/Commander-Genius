@@ -32,14 +32,12 @@ const int LICK_HOP_TIME = 20;
 const int LICK_LAND_TIME = 20;
 
 CLick::CLick(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
-CStunnable(pmap, foeID, x, y),
-m_timer(0),
-keenNear(false)
+CStunnable(pmap, foeID, x, y)
 {
-	mActionMap[A_LICK_HOP] = (GASOFctr) (&CLick::processHop);
-	mActionMap[A_LICK_LAND] = (GASOFctr) (&CLick::processLand);
-	mActionMap[A_LICK_BREATHE] = (GASOFctr) (&CLick::processBreathe);
-	mActionMap[A_LICK_STUNNED] = (GASOFctr) &CStunnable::processGettingStunned;
+    mActionMap[A_LICK_HOP]     = static_cast<GASOFctr>(&CLick::processHop);
+    mActionMap[A_LICK_LAND]    = static_cast<GASOFctr>(&CLick::processLand);
+    mActionMap[A_LICK_BREATHE] = static_cast<GASOFctr>(&CLick::processBreathe);
+    mActionMap[A_LICK_STUNNED] = static_cast<GASOFctr>(&CStunnable::processGettingStunned);
 
 
     const Difficulty diff = gBehaviorEngine.mDifficulty;

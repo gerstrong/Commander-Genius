@@ -32,8 +32,8 @@ private:
 	void processBreathe();
 	void processStunned();
 
-	int m_timer;
-	bool keenNear;
+    int m_timer = 0;
+    bool keenNear = false;
 };
 
 } /* namespace galaxy */

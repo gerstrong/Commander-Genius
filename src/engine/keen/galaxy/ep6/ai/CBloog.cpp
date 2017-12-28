@@ -7,7 +7,9 @@
 
 
 #include "CBloog.h"
-#include "../../common/ai/CPlayerBase.h"
+#include "../../common/ai/CPlayerLevel.h"
+
+#include <base/utils/misc.h>
 
 
 namespace galaxy {
@@ -64,6 +66,19 @@ mTimer(0)
     processActionRoutine();
 }
 
+
+bool CBloog::isNearby(CSpriteObject &theObject)
+{
+    if( !getProbability(10) )
+        return false;
+
+    if( CPlayerLevel *player = dynamic_cast<CPlayerLevel*>(&theObject) )
+    {
+        xDirection = ( player->getXMidPos() < getXMidPos() ) ? LEFT : RIGHT;
+    }
+
+    return true;
+}
 
 
 void CBloog::processWalking()

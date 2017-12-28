@@ -1,4 +1,7 @@
 #include "CGik.h"
+#include "../../common/ai/CPlayerLevel.h"
+#include <base/utils/misc.h>
+
 
 namespace galaxy
 {
@@ -22,25 +25,70 @@ A_GIK_SLIDE = 5
 };
 
 constexpr int MAX_BOUNCE_BOOST = -115;
-constexpr int HOR_SPEED = 20;
 
+constexpr int WALK_SPEED = 20;
+constexpr int JUMP_X_SPEED = 40;
+constexpr int LAND_X_SPEED = 40;
+constexpr int SLIDE_X_SPEED = 40;
+
+const int CSF_DISTANCE_TO_JUMP = 10<<CSF;
+
+const int GIK_JUMP_SPEED = 100;
+const int GIK_SILDE_TIME = 100;
 
 CGik::CGik(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
-CGalaxyActionSpriteObject(pmap, foeID, x, y, 0),
-mpInteractPlayer(nullptr)
+CGalaxyActionSpriteObject(pmap, foeID, x, y, 0)
 {
-    mActionMap[A_GIK_WALK] = (GASOFctr) &CGik::processWalk;
-    mActionMap[A_GIK_JUMP] = (GASOFctr) &CGik::processJump;
-    mActionMap[A_GIK_LAND] = (GASOFctr) &CGik::processLand;
-    mActionMap[A_GIK_SLIDE] = (GASOFctr) &CGik::processSlide;
+    mActionMap[A_GIK_WALK]  = static_cast<GASOFctr>(&CGik::processWalk);
+    mActionMap[A_GIK_JUMP]  = static_cast<GASOFctr>(&CGik::processJump);
+    mActionMap[A_GIK_LAND]  = static_cast<GASOFctr>(&CGik::processLand);
+    mActionMap[A_GIK_SLIDE] = static_cast<GASOFctr>(&CGik::processSlide);
 
     setupGalaxyObjectOnMap(gBehaviorEngine.isDemo() ? 0x2000 : 0x2604, A_GIK_WALK);
 
     xDirection = LEFT;
 }
 
-void CGik::processWalk()
+
+bool CGik::isNearby(CSpriteObject &theObject)
 {
+    if( !getProbability(10) )
+        return false;
+
+    if( !getActionNumber(A_GIK_WALK) )
+    {
+        return true;
+    }
+
+
+    if( CPlayerLevel *player = dynamic_cast<CPlayerLevel*>(&theObject) )
+    {
+        auto dist = player->getXMidPos()-getXMidPos();
+
+        xDirection = ( dist < 0 ) ? LEFT : RIGHT;
+
+        const auto distLen = std::abs(dist);
+
+        if(!mpInteractPlayer)
+        {
+            if(distLen < CSF_DISTANCE_TO_JUMP)
+            {
+                m_timer = GIK_SILDE_TIME;
+                yinertia = -GIK_JUMP_SPEED;
+
+                setAction(A_GIK_JUMP);
+            }
+        }
+
+    }
+
+    return true;
+}
+
+
+void CGik::processWalk()
+{        
+    mXSpeed = WALK_SPEED;
     // If player is standing on bounder, he can control him a bit also
     /*if(mpInteractPlayer)
     {
@@ -60,17 +108,12 @@ void CGik::processWalk()
 }
 
 void CGik::processJump()
-{
-    std::vector<CTileProperties> &TileProperty = gBehaviorEngine.getTileProperties();
+{    
+    mXSpeed = JUMP_X_SPEED;
 
-    int xMid = getXMidPos();
-    int y2 = getYDownPos();
-
-    // When gik hits the floor set to land.
-    if( blockedd || TileProperty[mpMap->at(xMid>>CSF, (y2+1)>>CSF)].bup>1 )
+    if(yinertia > 0)
     {
-        setAction( A_GIK_LAND );
-        return;
+        setAction(A_GIK_LAND);
     }
 
     // Will block the player when bounder touches him, but he is not riding him
@@ -92,13 +135,32 @@ void CGik::processJump()
 
 void CGik::processLand()
 {
+    mXSpeed = LAND_X_SPEED;
 
+    std::vector<CTileProperties> &TileProperty = gBehaviorEngine.getTileProperties();
+
+    int xMid = getXMidPos();
+    int y2 = getYDownPos();
+
+    // When gik hits the floor set to land.
+    if( blockedd || TileProperty[mpMap->at(xMid>>CSF, (y2+1)>>CSF)].bup>1 )
+    {
+        setAction( A_GIK_SLIDE );
+        return;
+    }
 }
 
 
 void CGik::processSlide()
 {
+    mXSpeed = SLIDE_X_SPEED;
 
+    m_timer--;
+    if( m_timer <= 0 )
+    {
+        setAction( A_GIK_WALK );
+        m_timer = GIK_SILDE_TIME;
+    }
 }
 
 
@@ -109,6 +171,11 @@ void CGik::getTouchedBy(CSpriteObject &theObject)
 
     if( CPlayerLevel *player = dynamic_cast<CPlayerLevel*>(&theObject) )
     {
+        if(getActionNumber(A_GIK_LAND) || getActionNumber(A_GIK_SLIDE))
+        {
+            player->kill();
+        }
+
         if(player->getActionNumber() != A_KEEN_ENTER_DOOR)
         {
             mpInteractPlayer = player;
@@ -233,11 +300,11 @@ void CGik::process()
     
     if(xDirection == LEFT)
     {
-        moveLeft(HOR_SPEED, false);
+        moveLeft(mXSpeed, false);
     }
     else if(xDirection == RIGHT)
     {
-        moveRight(HOR_SPEED, false);
+        moveRight(mXSpeed, false);
     }
 
 
