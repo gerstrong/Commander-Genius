@@ -71,10 +71,12 @@ void CHUD::setup(const int id)
         mRenderRect.w = mHUDBox.getWidth()-7;
         mRenderRect.x += (mRenderRect.w-2)*id;
 
+        auto HUDBoxSfc = mHUDBox.smartSDLSurface();
+
         #if SDL_VERSION_ATLEAST(2, 0, 0)
-            SDL_SetSurfaceBlendMode(mHUDBox.getSDLSurface(), SDL_BLENDMODE_NONE);
+            SDL_SetSurfaceBlendMode(HUDBoxSfc.get(), SDL_BLENDMODE_NONE);
         #else
-            SDL_SetAlpha(mHUDBox.getSDLSurface(), 0, 0);
+            SDL_SetAlpha(HUDBoxSfc.get(), 0, 0);
         #endif
 
         createHUDBlit();
@@ -107,7 +109,8 @@ void CHUD::CreateVorticonBackground()
 
     mKeenHeadSprite = gGraphics.getSprite(mId,PMAPDOWNFRAME);
 
-    SDL_Surface *keenHeadSfc = mKeenHeadSprite.getSDLSurface();
+    auto keenHeadSmartSfc = mKeenHeadSprite.smartSDLSurface();
+    SDL_Surface *keenHeadSfc = keenHeadSmartSfc.get();
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     SDL_SetSurfaceBlendMode( keenHeadSfc, SDL_BLENDMODE_NONE);
@@ -131,7 +134,8 @@ void CHUD::CreateVorticonBackground()
     headdstrect.x = 45-(headsrGsRect.w/2);
     headdstrect.y = 19-(headsrGsRect.h/2);
 
-    SDL_Surface *keenGunSfc = mKeenGunSprite.getSDLSurface();
+    auto keenGunSmartSfc = mKeenGunSprite.smartSDLSurface();
+    SDL_Surface *keenGunSfc = keenGunSmartSfc.get();
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     SDL_SetSurfaceBlendMode(keenGunSfc, SDL_BLENDMODE_NONE);

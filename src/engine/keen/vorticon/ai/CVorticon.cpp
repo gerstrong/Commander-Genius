@@ -275,12 +275,16 @@ void CVorticon::process()
 
                 if(!mpMap->m_Dark)
                 {
-                    if (dist_traveled < VORT_TRAPPED_DIST && !mpMap->m_Dark && blockedd
-                            && !blockedu) {
+                    if (dist_traveled < VORT_TRAPPED_DIST &&
+                            blockedd &&
+                            !blockedu)
+                    {
                         initiateJump();
-                        if (rnd() & 1) {
+                        if (rnd() & 1)
+                        {
                             yinertia = -VORT_MAX_JUMP_HEIGHT;
-                        } else {
+                        } else
+                        {
                             yinertia = -VORT_MIN_JUMP_HEIGHT;
                         }
                         goto vort_reprocess;

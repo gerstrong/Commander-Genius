@@ -83,19 +83,33 @@ void getSlopePointsLowerTile(signed char slope, int &yb1, int &yb2)
 {
 	// Calculate the corner y coordinates
 	if( slope == 2 )
-		yb1 = 0,	yb2 = 256;
+    {
+        yb1 = 0;	yb2 = 256;
+    }
 	else if( slope == 3 )
-		yb1 = 256,	yb2 = 512;
+    {
+        yb1 = 256;	yb2 = 512;
+    }
 	else if( slope == 4 )
-		yb1 = 0,	yb2 = 512;
+    {
+        yb1 = 0;	yb2 = 512;
+    }
 	else if( slope == 5 )
-		yb1 = 256,	yb2 = 0;
+    {
+        yb1 = 256;	yb2 = 0;
+    }
 	else if( slope == 6 )
-		yb1 = 512,	yb2 = 256;
+    {
+        yb1 = 512;	yb2 = 256;
+    }
 	else if( slope == 7 )
-		yb1 = 512,	yb2 = 0;
+    {
+        yb1 = 512;	yb2 = 0;
+    }
 	else
-		yb1 = 0, yb2 = 0;
+    {
+        yb1 = 0; yb2 = 0;
+    }
 }
 
 /**

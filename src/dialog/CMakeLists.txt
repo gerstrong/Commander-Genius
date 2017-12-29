@@ -1,8 +1,18 @@
 
 include_directories(${SDL_INCLUDE_DIR})
 
-FILE(GLOB SRCS *.cpp *.h)
+set(CXXSRC
+    CDlgFrame.cpp
+    CDlgOptionText.cpp
+    CMessageBox.cpp
+    CTextViewer.cpp)
 
-add_library(dialog OBJECT ${SRCS})
-set_property(GLOBAL APPEND PROPERTY CG_OBJ_LIBS $<TARGET_OBJECTS:dialog>)
+set(HSRC
+    CDlgFrame.h
+    CDlgOptionText.h
+    CMessageBox.h
+    CTextViewer.h)
+
+add_library(cg_dialog ${CXXSRC} ${HSRC})
+
 

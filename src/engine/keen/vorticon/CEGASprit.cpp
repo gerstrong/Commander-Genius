@@ -154,7 +154,8 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 	{
 		for(int s=0 ; s<m_numsprites ; s++)
 		{
-            sfc = gGraphics.getSprite(0,s).getSDLSurface();
+            auto smartSfc = gGraphics.getSprite(0,s).smartSDLSurface();
+            sfc = smartSfc.get();
 			if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
 			pixel = (Uint8*) sfc->pixels;
 
@@ -173,13 +174,16 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 	// note that we invert the mask because our graphics functions
 	// use white on black masks whereas keen uses black on white.
 	for(int s=0 ; s<m_numsprites ; s++)
-	{
-        GsSprite &Sprite = gGraphics.getSprite(0,s);
-		SDL_Surface *pixsfc = Sprite.getSDLSurface();
-		SDL_Surface *masksfc = Sprite.getSDLMaskSurface();
+	{        
+        GsSprite &sprite = gGraphics.getSprite(0,s);
+
+        auto smartSfc = sprite.smartSDLSurface();
+        auto masksfc = sprite.smartSDLMaskSurface();
+
+        SDL_Surface *pixsfc = smartSfc.get();
 
 		if(SDL_MUSTLOCK(pixsfc)) SDL_LockSurface(pixsfc);
-		if(SDL_MUSTLOCK(masksfc)) SDL_LockSurface(masksfc);
+        if(SDL_MUSTLOCK(masksfc.get())) SDL_LockSurface(masksfc.get());
 
 		pixel = (Uint8*) masksfc->pixels;
 
@@ -193,7 +197,7 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 					pixel[y*masksfc->w + x] = 15;
 			}
 		}
-		if(SDL_MUSTLOCK(masksfc)) SDL_UnlockSurface(masksfc);
+        if(SDL_MUSTLOCK(masksfc.get())) SDL_UnlockSurface(masksfc.get());
 		if(SDL_MUSTLOCK(pixsfc)) SDL_UnlockSurface(pixsfc);
 
 		percent = (s*100)/m_numsprites;
@@ -431,9 +435,10 @@ void CEGASprit::CreateYellowSpriteofTile( GsTilemap &tilemap, Uint16 tile, GsSpr
 						  gGraphics.Palette.m_Palette );
 	sprite.optimizeSurface();
 	
-	SDL_Surface *src_sfc = sprite.getSDLSurface();
+    auto smartSrcSfc = sprite.smartSDLSurface();
+    SDL_Surface *src_sfc = smartSrcSfc.get();
 	
-	BlitSurface(tilemap.getSDLSurface(), &tile_rect, src_sfc, NULL);
+    BlitSurface(tilemap.getSDLSurface(), &tile_rect, src_sfc, nullptr);
 	
 	if(SDL_MUSTLOCK(src_sfc)) SDL_LockSurface(src_sfc);
 	
