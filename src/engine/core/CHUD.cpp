@@ -67,8 +67,6 @@ void CHUD::setup(const int id)
         mRenderRect.w = mHUDBox.getWidth()-7;
         mRenderRect.x += (mRenderRect.w-2)*id;
 
-        mHUDBox.Surface().setAlpha(0);
-
         createHUDBlit();
     }
 }
