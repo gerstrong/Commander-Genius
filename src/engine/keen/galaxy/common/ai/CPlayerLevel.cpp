@@ -657,25 +657,20 @@ void CPlayerLevel::processInput()
 
 
 
-
-
-
 void CPlayerLevel::tryToShoot( const Vector2D<int> &pos, const int xDir, const int yDir )
 {
-	if(m_Inventory.Item.m_bullets > 0)
-	{
+    if(m_Inventory.Item.m_bullets > 0)
+    {
         spawnObj(new CBullet(mpMap, 0, pos.x, pos.y, xDir, yDir, mSprVar));
-		m_Inventory.Item.m_bullets--;        
-	}
-	else
-	{
-		playSound( SOUND_GUN_CLICK );
-	}
+        m_Inventory.Item.m_bullets--;
+    }
+    else
+    {
+        playSound( SOUND_GUN_CLICK );
+    }
 
     mReleasedShot = true;
 }
-
-
 
 
 void CPlayerLevel::shootInAir()

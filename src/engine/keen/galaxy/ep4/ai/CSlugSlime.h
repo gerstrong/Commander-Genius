@@ -24,12 +24,12 @@ public:
     CSlugSlime(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y, const int sprVar);
 
 	/** Main Process cycle */
-	void process();
+	void process() override;
 
 	/** What happens when something touches that slime */
-	void getTouchedBy(CSpriteObject &theObject);
+    void getTouchedBy(CSpriteObject &theObject) override;
 private:
-    int m_timer;
+    int m_timer = 0;
 
 };
 

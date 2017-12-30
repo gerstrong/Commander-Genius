@@ -41,7 +41,7 @@ void CSlugSlime::process()
 {
 	performCollisions();
 
-    performGravityHigh();
+    performGravityMid();
 	
     if( m_timer < POISON_TIME )
     {
@@ -57,4 +57,10 @@ void CSlugSlime::process()
 			exists = false;
 }
 
+
+
 };
+
+
+
+
