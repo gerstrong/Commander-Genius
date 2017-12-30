@@ -3,6 +3,10 @@ v2.0.0.0:
 - Many AI fixes in keen 4, 5 and 6
 - Platform sprite corrections in Keen 5
 - New Application logo
+- Many collision fixes
+- Smoother scrolling with vsync
+- GUI improvements
+- Multiplayer improvements
 
 v1.9.9.9:
 ---------

@@ -75,6 +75,13 @@ public:
 	void drawAllElements();
 	void cycleCamLead();
 	void handleFKeys();
+
+    /**
+     * @brief verifyMultiplayerConsistency Ensure some multiplayer aspects are kept consisten
+     *        so the player are able to continue when someone, gets lost, whatever
+     */
+    void verifyMultiplayerConsistency();
+
 	void verifyFinales();
 	void collectHighScoreInfo(CHighScores &highScores);
 	void createFinale();

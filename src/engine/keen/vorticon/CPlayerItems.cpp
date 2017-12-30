@@ -80,7 +80,9 @@ void CPlayer::procGoodie(int tile, int mpx, int mpy)
 		playSound(SOUND_GET_BONUS);
 	}
 	else if (behaviour > 10 && behaviour < 16)
+    {
 		playSound(SOUND_GET_ITEM);
+    }
 	
 	char shotInc = 5;     
     byte *exeptr = gKeenFiles.exeFile.getRawData();
@@ -118,18 +120,12 @@ void CPlayer::procGoodie(int tile, int mpx, int mpy)
 				openDoor(DOOR_BLUE, DOOR_BLUE_SPRITE, mpx, mpy);
 			break;
 		case 7:    // What gives you 100 Points
-			/*if(m_episode == 3 && mp_option[OPT_SWITCHSCORES].value)
-			getBonuspoints(500, mpx, mpy);
-			else*/
 			getBonuspoints(100, mpx, mpy);
 			break;
 		case 8:    // What gives you 200 Points
 			getBonuspoints(200, mpx, mpy);
 			break;
 		case 6:    // What gives you 500 Points
-			/*if(m_episode == 3 && mp_option[OPT_SWITCHSCORES].value)
-			getBonuspoints(100, mpx, mpy);
-			else*/
 			getBonuspoints(500, mpx, mpy);
 			break;
 		case 9:    // What gives you 1000 Points

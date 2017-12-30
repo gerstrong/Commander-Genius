@@ -1,15 +1,10 @@
 **************************************************************
              Commander Genius
 
-    (c)2008-2017           Gerstrong
-
-Testing:
-    (c)2014-2016           Mancus
-    (c)2013-2015           Hagel
-
+    (c)2008-2018           Gerstrong
 
 Porting and Support:
-    (c)2010-2017          Pelya (Android-Distro)
+    (c)2010-2018          Pelya (Android-Distro)
 
            Released under GNU/GPL
 
@@ -519,8 +514,10 @@ Pickle
 Sciz CT
 Lemm
 Mewingtree
+Mancus
+Hagel
 Markus Arnold (ThinkLabs. Thanks for your generous contribution.)
-DSL (Nice icon contribution)
+DSL (Nice legacy icon contribution)
 Motorfingers
 Qbix and his DOSBox team (for creating DOSBox, which made Dosfusion possible)
 Chrisfischtopher
@@ -530,7 +527,7 @@ Napalm (More Keen data structure information)
 Malvineous
 Clobber
 Mewingtree
-Hans de Goede (The Fedora Guy)
+Hans de Goede (The Redhat/Fedora Guy)
 Levellass (Keen EXE information)
 ZidaneA (For his music tracks!)
 Iv4n (wiivn)

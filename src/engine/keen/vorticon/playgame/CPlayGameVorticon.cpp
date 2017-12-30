@@ -407,6 +407,7 @@ void CPlayGameVorticon::ponder(const float deltaT)
 	{
 		// Handle special functional keys for paused game, F1 Help, god mode, all items, etc.
 		handleFKeys();
+        verifyMultiplayerConsistency();
 	}
 	
 }
@@ -540,33 +541,41 @@ void CPlayGameVorticon::handleFKeys()
 
     if(m_Player.empty())
         return;
-
-	// Menus will only open if Keen is solid or in god mode. This means neither dying nor teleporting
-    /*if( m_Player[0].solid || ( gBehaviorEngine.mCheatmode.god && !m_Player[0].dying ) )
-	{        
-		// F2 - Sound Menu
-		if ( gInput.getPressedKey(KF2) )
-		{
-			//mp_Menu = new CMenuVorticon( ACTIVE, m_Map,
-				//	m_SavedGame,  m_restartVideo, m_hideobjects );
-			//mp_Menu->init(AUDIO);
-		}
-		// F3 - Controls Menu
-		else if ( gInput.getPressedKey(KF3) )
-		{
-			//mp_Menu = new CMenuVorticon( ACTIVE, m_Map,
-				//	m_SavedGame,  m_restartVideo, m_hideobjects );
-			//mp_Menu->init(CONTROLS);
-		}
-		// F5 - save game
-		else if ( gInput.getPressedKey(KF5) )
-		{
-			//mp_Menu = new CMenuVorticon( ACTIVE, m_Map,
-				//	m_SavedGame,  m_restartVideo, m_hideobjects );
-			//mp_Menu->init(SAVE);
-        }
-    }*/
 }
+
+
+#define ShareWithOthers(pattern) \
+    bool pattern = false;  \
+    for(size_t i=0;i<numPlayers;i++)  \
+    {  \
+        if(m_Player[i].inventory.pattern) \
+        {  \
+            pattern = true;  \
+            break;  \
+        } \
+    }  \
+    if(pattern)  \
+    { \
+        for(size_t i=0;i<numPlayers;i++)  \
+        { \
+            m_Player[i].inventory.pattern = true; \
+        } \
+    }
+
+
+void CPlayGameVorticon::verifyMultiplayerConsistency()
+{
+    const size_t numPlayers = size_t(gBehaviorEngine.mPlayers);
+
+    ShareWithOthers(HasPogo);
+    ShareWithOthers(HasJoystick);
+    ShareWithOthers(HasWiskey);
+    ShareWithOthers(HasBattery);
+    ShareWithOthers(HasVacuum);
+
+}
+
+
 
 // The Ending and mortimer cutscenes for example
 void CPlayGameVorticon::verifyFinales()

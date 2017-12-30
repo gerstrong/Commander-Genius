@@ -1,6 +1,6 @@
-#ifndef __CG__VERSION_H__
-#define __CG__VERSION_H__
+#ifndef CG__VERSION_H
+#define CG__VERSION_H
 
-#define CGVERSION	"1.9.9.9-Beta"
+#define CGVERSION	"2.0.0.0-Release"
 
 #endif
