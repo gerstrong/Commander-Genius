@@ -85,9 +85,13 @@ void CMap::refreshStripes()
 Uint16 CMap::at(int x, int y, int t)
 {
 	if(x < m_width && y < m_height )
+    {
         return mPlanes[t].getMapDataAt(x,y);
+    }
 	else
+    {
 		return 0;
+    }
 }
 
 //////////////////////////

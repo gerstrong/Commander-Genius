@@ -1332,9 +1332,11 @@ bool CEGAGraphicsGalaxy::readSprites( const size_t numSprites,
         sprite.createSurface( gVideoDriver.mpVideoEngine->getBlitSurface()->flags,
                               gGraphics.Palette.m_Palette );
 
-        auto smartSfc = sprite.smartSDLSurface();
-        SDL_Surface *sfc = smartSfc.get();
-        SDL_FillRect(sfc, nullptr, 0);
+        auto &gsSfc = sprite.Surface();
+        gsSfc.fillRGB(0,0,0);
+
+        SDL_Surface *sfc = gsSfc.getSDLSurface();
+
         if(SDL_MUSTLOCK(sfc))   SDL_LockSurface(sfc);
 
         if(!data.empty())

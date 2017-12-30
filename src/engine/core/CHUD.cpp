@@ -63,21 +63,11 @@ void CHUD::setup(const int id)
         mRenderRect.w = 80;	mRenderRect.h = 30;
         mHUDBox = *gGraphics.getSprite(mId,"HUDBACKGROUND");
 
-        #if SDL_VERSION_ATLEAST(2, 0, 0)
-        #else
-            mHUDBox.optimizeSurface();
-        #endif
         mRenderRect.h = mHUDBox.getHeight();
         mRenderRect.w = mHUDBox.getWidth()-7;
         mRenderRect.x += (mRenderRect.w-2)*id;
 
-        auto HUDBoxSfc = mHUDBox.smartSDLSurface();
-
-        #if SDL_VERSION_ATLEAST(2, 0, 0)
-            SDL_SetSurfaceBlendMode(HUDBoxSfc.get(), SDL_BLENDMODE_NONE);
-        #else
-            SDL_SetAlpha(HUDBoxSfc.get(), 0, 0);
-        #endif
+        mHUDBox.Surface().setAlpha(0);
 
         createHUDBlit();
     }
@@ -109,16 +99,16 @@ void CHUD::CreateVorticonBackground()
 
     mKeenHeadSprite = gGraphics.getSprite(mId,PMAPDOWNFRAME);
 
-    auto keenHeadSmartSfc = mKeenHeadSprite.smartSDLSurface();
-    SDL_Surface *keenHeadSfc = keenHeadSmartSfc.get();
+    if(mKeenHeadSprite.empty())
+        return;
 
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-    SDL_SetSurfaceBlendMode( keenHeadSfc, SDL_BLENDMODE_NONE);
-#else
-    SDL_SetAlpha(keenHeadSfc, 0, 0);
-#endif
 
-    BlitSurface( keenHeadSfc, &headsrGsRect, mBackground.getSDLSurface(), &headdstrect );
+    auto &keenHeadSmartSfc = mKeenHeadSprite.Surface();
+
+    keenHeadSmartSfc.setAlpha(0);
+
+    keenHeadSmartSfc.blitTo(mBackground);
+    //BlitSurface( keenHeadSfc, &headsrGsRect, mBackground.getSDLSurface(), &headdstrect );
 
 
 	int sprite=0;
@@ -134,16 +124,12 @@ void CHUD::CreateVorticonBackground()
     headdstrect.x = 45-(headsrGsRect.w/2);
     headdstrect.y = 19-(headsrGsRect.h/2);
 
-    auto keenGunSmartSfc = mKeenGunSprite.smartSDLSurface();
-    SDL_Surface *keenGunSfc = keenGunSmartSfc.get();
+    auto &keenGunSfc = mKeenGunSprite.Surface();
 
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-    SDL_SetSurfaceBlendMode(keenGunSfc, SDL_BLENDMODE_NONE);
-#else
-    SDL_SetAlpha(keenGunSfc, 0, 0);
-#endif
+    keenGunSfc.setAlpha(0);
 
-    BlitSurface( keenGunSfc, &headsrGsRect, mBackground.getSDLSurface(), &headdstrect );
+    keenGunSfc.blitTo(mBackground, headdstrect);
+    //BlitSurface( keenGunSfc, &headsrGsRect, mBackground.getSDLSurface(), &headdstrect );
 
 	// Draw the rounded borders
     DrawCircle(0, 0, 76);

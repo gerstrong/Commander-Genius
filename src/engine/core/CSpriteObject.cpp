@@ -544,7 +544,7 @@ void CSpriteObject::draw()
 
     GsSprite &Sprite = gGraphics.getSprite(mSprVar, mSpriteIdx);
 
-    if(!Sprite.valid())
+    if(Sprite.empty())
     {
         return;
     }

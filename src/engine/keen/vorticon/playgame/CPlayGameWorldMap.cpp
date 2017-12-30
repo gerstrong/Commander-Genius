@@ -236,7 +236,8 @@ void CPlayGameVorticon::showKeensLeft()
                 const int liveW = livesSprite.getWidth();
                 const int liveH = livesSprite.getHeight();
                 livesSprite.drawSprite(boxsurface, x, y, liveW, liveH );
-				x+=16;
+
+                x+=16;
 			}
 			y += 16;
 		}

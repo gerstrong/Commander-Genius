@@ -994,7 +994,9 @@ bool CPlayer::drawStatusScreen()
 	if(m_showStatusScreen)
 	{
         if(mpStatusScr)
+        {
             mpStatusScr->draw();
+        }
 		
 		return false;
 	}

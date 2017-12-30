@@ -144,7 +144,7 @@ void CPlayGameVorticon::setupPlayers()
 
 bool CPlayGameVorticon::init()
 {
-    // Required to sprites are correctly masked
+    // Required to get sprites correctly masked
     gGraphics.optimizeSprites();
 
     const GsRect<Uint16> gameRect = gVideoDriver.getVidConfig().mGameRect;

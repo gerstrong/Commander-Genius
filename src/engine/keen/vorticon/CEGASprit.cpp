@@ -50,7 +50,7 @@ EGASpriteModell(NULL)
 {
 	m_planesize = planesize;
 	m_spritestartloc = spritestartloc;
-	m_numsprites = numsprites;
+    mNumsprites = numsprites;
 	m_spriteloc = spriteloc;
 }
 
@@ -59,9 +59,9 @@ bool CEGASprit::loadHead(char *data)
 {
 	data += m_spritestartloc;
 	
-	EGASpriteModell = new st_sprite[m_numsprites];
+    EGASpriteModell = new st_sprite[mNumsprites];
 	
-    for(int i=0 ; i<m_numsprites ; i++ )
+    for(int i=0 ; i<mNumsprites ; i++ )
     {
     	memcpy(&(EGASpriteModell[i].width),data+128*i,2);
     	memcpy(&(EGASpriteModell[i].height),data+128*i+2,2);
@@ -86,19 +86,18 @@ bool CEGASprit::loadHead(char *data)
 
 bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 {
-	byte *RawData;
-    SDL_Surface *sfc;
-    Uint8* pixel;
     Uint32 percent = 0;
 	
 	FILE* latchfile = OpenGameFile(filename.c_str(),"rb");
 	
 	if(!latchfile)
+    {
 		return false;
+    }
 	
 	gResourceLoader.setPermilage(10);
 
-	RawData = new byte[m_planesize * 5];
+    byte RawData[m_planesize * 5];
     // get the data out of the file into the memory, decompressing it if necessary.
     if (compresseddata)
     {
@@ -132,10 +131,14 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 	Planes.setOffsets(plane1, plane2, plane3, plane4, plane5);
 	
 	// load the image data
-    gGraphics.createEmptySprites(4,MAX_SPRITES+1);
-	for(int i=0 ; i<m_numsprites ; i++)
+    gGraphics.createEmptySprites(4, MAX_SPRITES+1);
+
+    auto &SpriteVecPlayer1 = gGraphics.getSpriteVec(0);
+
+    // Read unmasked sprite
+    for(int i=0 ; i<mNumsprites ; i++)
 	{
-        GsSprite &Sprite = gGraphics.getSprite(0,i);
+        GsSprite &Sprite = SpriteVecPlayer1[i];
 		Sprite.setSize( EGASpriteModell[i].width, EGASpriteModell[i].height );
 		Sprite.setBoundingBoxCoordinates( (EGASpriteModell[i].hitbox_l << STC),
 				(EGASpriteModell[i].hitbox_u << STC),
@@ -144,76 +147,85 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 		Sprite.createSurface( gVideoDriver.mpVideoEngine->getBlitSurface()->flags,
 				gGraphics.Palette.m_Palette );
 
-		percent = (i*50)/m_numsprites;
+        percent = (i*50)/mNumsprites;
 		gResourceLoader.setPermilage(50+percent);
 	}
 
 	gResourceLoader.setPermilage(100);
 
+    // Read unmasked sprite
 	for(int p=0 ; p<4 ; p++)
 	{
-		for(int s=0 ; s<m_numsprites ; s++)
+        for(int s=0 ; s<mNumsprites ; s++)
 		{
-            auto smartSfc = gGraphics.getSprite(0,s).smartSDLSurface();
-            sfc = smartSfc.get();
-			if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
-			pixel = (Uint8*) sfc->pixels;
+            auto &sfc = SpriteVecPlayer1[s].Surface();
+            sfc.lock();
+            auto pix = sfc.PixelPtr();
 
-			Planes.readPlane(p, pixel, sfc->w, sfc->h);
+            Planes.readPlane(p, pix, sfc.width(), sfc.height());
 
-			if(SDL_MUSTLOCK(sfc)) SDL_UnlockSurface(sfc);
+            sfc.unlock();
 
-			percent = (s*100)/m_numsprites;
+            percent = (s*100)/mNumsprites;
 			gResourceLoader.setPermilage(100+percent);
 		}
 	}
 
 	gResourceLoader.setPermilage(200);
 
+    // Read its mask
 	// now load the 5th plane, which contains the sprite masks.
 	// note that we invert the mask because our graphics functions
 	// use white on black masks whereas keen uses black on white.
-	for(int s=0 ; s<m_numsprites ; s++)
+    for(int s=0 ; s<mNumsprites ; s++)
 	{        
         GsSprite &sprite = gGraphics.getSprite(0,s);
 
-        auto smartSfc = sprite.smartSDLSurface();
-        auto masksfc = sprite.smartSDLMaskSurface();
+        auto &sfc = sprite.Surface();
+        auto &maskSfc = sprite.MaskSurface();
 
-        SDL_Surface *pixsfc = smartSfc.get();
+        sfc.lock();
+        maskSfc.lock();
 
-		if(SDL_MUSTLOCK(pixsfc)) SDL_LockSurface(pixsfc);
-        if(SDL_MUSTLOCK(masksfc.get())) SDL_LockSurface(masksfc.get());
+        auto pix = sfc.PixelPtr();
+        auto maskPix = maskSfc.PixelPtr();
 
-		pixel = (Uint8*) masksfc->pixels;
-
-		for(int y=0 ; y<masksfc->h ; y++)
+        for(int y=0 ; y<maskSfc.height() ; y++)
 		{
-			for(int x=0 ; x<masksfc->w ; x++)
+            for(int x=0 ; x<maskSfc.width() ; x++)
 			{
 				if(Planes.getbit(4))
-                    pixel[y*masksfc->w + x] = ((Uint8*)pixsfc->pixels)[y*pixsfc->w + x];
+                {
+                    maskPix[y*maskSfc.width() + x] = pix[y*sfc.width() + x];
+                }
 				else
-					pixel[y*masksfc->w + x] = 15;
+                {
+                    maskPix[y*maskSfc.width() + x] = 15;
+                }
 			}
 		}
-        if(SDL_MUSTLOCK(masksfc.get())) SDL_UnlockSurface(masksfc.get());
-		if(SDL_MUSTLOCK(pixsfc)) SDL_UnlockSurface(pixsfc);
 
-		percent = (s*100)/m_numsprites;
+        maskSfc.unlock();
+        sfc.unlock();
+
+        percent = (s*100)/mNumsprites;
 		gResourceLoader.setPermilage(200+percent);
 	}
 
 	gResourceLoader.setPermilage(300);
-	
-	if(RawData){ delete[] RawData; RawData = NULL;}
-	
-    LoadSpecialSprites( gGraphics.getSpriteVec(0) );
 
+    LoadSpecialSprites( SpriteVecPlayer1 );
 
     for(unsigned int i=1 ; i<4 ; i++)
     {
-        gGraphics.getSpriteVec(i) = gGraphics.getSpriteVec(0);
+        auto &spriteVecI = gGraphics.getSpriteVec(i);
+
+        assert(SpriteVecPlayer1.size() == spriteVecI.size());
+
+        for(int j=0 ; j<SpriteVecPlayer1.size() ; j++)
+        {
+            spriteVecI[j] = SpriteVecPlayer1[j];
+        }
     }
 
 
@@ -222,6 +234,10 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
     for( unsigned int i = 0 ; i < SpriteVecPlayer2.size() ; i++)
     {
         auto &sprite = SpriteVecPlayer2[i];
+
+        if(sprite.empty())
+            continue;
+
         // Red against Purple
         sprite.exchangeSpriteColor( 5, 4, 0 );
         sprite.exchangeSpriteColor( 13, 12, 0 );
@@ -235,6 +251,9 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
     auto &SpriteVecPlayer3 = gGraphics.getSpriteVec(2);
     for( auto &sprite : SpriteVecPlayer3)
     {
+        if(sprite.empty())
+            continue;
+
         // Red against Green
         sprite.exchangeSpriteColor( 2, 4, 0 );
         sprite.exchangeSpriteColor( 10, 12, 0 );
@@ -247,6 +266,9 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
     auto &SpriteVecPlayer4 = gGraphics.getSpriteVec(3);
     for( auto &sprite : SpriteVecPlayer4)
     {
+        if(sprite.empty())
+            continue;
+
         // Red against Yellow
         sprite.exchangeSpriteColor( 6, 4, 0 );
         sprite.exchangeSpriteColor( 14, 12, 0 );
@@ -257,18 +279,24 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
     }
 
 
+    // Optimize all so far created sprite surfaces
     for(unsigned int i=0 ; i<4 ; i++)
     {
-        for(Uint16 s=0 ; s<gGraphics.getSpriteVec(i).size() ; s++)
-        {
-            GsSprite &Sprite = gGraphics.getSprite(i,s);
-            Sprite.optimizeSurface();
+        auto &spriteVec = gGraphics.getSpriteVec(i);
 
-            percent = (s*50)/m_numsprites;
+        for(Uint16 s=0 ; s<spriteVec.size() ; s++)
+        {
+            GsSprite &Sprite = spriteVec[s];
+
+            if(!Sprite.empty())
+            {
+                Sprite.optimizeSurface();
+            }
+
+            percent = (s*50)/mNumsprites;
             gResourceLoader.setPermilage(300+percent);
         }
     }
-
 
     gResourceLoader.setPermilage(350);
 
@@ -277,7 +305,6 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 	std::string gfxpath = JoinPaths(m_gamepath, "gfx");
 	GetFileList(filelist, fileListAdder, gfxpath, false, FM_REG);
 	FilterFilelist(filelist, "sprite");
-
 
 	std::set<std::string>::iterator it = filelist.begin();
 	int listsize = filelist.size();
@@ -289,9 +316,9 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
             continue;
 
 		int num = getRessourceID(name, "sprite");
-		if(num < m_numsprites )
+        if(num < mNumsprites )
 		{
-            GsSprite &Sprite = gGraphics.getSprite(0, num);
+            GsSprite &Sprite = SpriteVecPlayer1[num];
 			std::string filename = getResourceFilename("gfx/"+name, m_gamepath, false, true);
 			Sprite.loadHQSprite(filename);
 		}
@@ -300,18 +327,17 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 		gResourceLoader.setPermilage(350+percent);
     }
 
-
-
 	gResourceLoader.setPermilage(500);
 
     for(unsigned int i=0 ; i<4 ; i++)
     {
-        const int NoSprites = gGraphics.getSpriteVec(i).size();
-        for(Uint16 s=0 ; s<NoSprites ; s++)
+        auto &spriteVec = gGraphics.getSpriteVec(i);
+        const int noSprites = spriteVec.size();
+        for(Uint16 s=0 ; s<noSprites ; s++)
         {
-            gGraphics.getSprite(i,s).applyTransparency();
+            spriteVec[s].applyTransparency();
 
-            percent = (s*250)/NoSprites;
+            percent = (s*250)/noSprites;
             gResourceLoader.setPermilage(500+percent);
         }
     }
@@ -331,9 +357,11 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
     gResourceLoader.setPermilage(900);
 
     // Apply the sprites for player 2,3 and 4
-    DerivePlayerSprites( 1,gGraphics.getSpriteVec(1) );
-    DerivePlayerSprites( 2,gGraphics.getSpriteVec(2) );
-    DerivePlayerSprites( 3,gGraphics.getSpriteVec(3) );
+    DerivePlayerSprites( 1, gGraphics.getSpriteVec(1) );
+    DerivePlayerSprites( 2, gGraphics.getSpriteVec(2) );
+    DerivePlayerSprites( 3, gGraphics.getSpriteVec(3) );
+
+
     gResourceLoader.setPermilage(1000);
 
 
@@ -435,12 +463,12 @@ void CEGASprit::CreateYellowSpriteofTile( GsTilemap &tilemap, Uint16 tile, GsSpr
 						  gGraphics.Palette.m_Palette );
 	sprite.optimizeSurface();
 	
-    auto smartSrcSfc = sprite.smartSDLSurface();
-    SDL_Surface *src_sfc = smartSrcSfc.get();
-	
+    auto &srcSfc = sprite.Surface();
+    SDL_Surface *src_sfc = srcSfc.getSDLSurface();
+	    
     BlitSurface(tilemap.getSDLSurface(), &tile_rect, src_sfc, nullptr);
 	
-	if(SDL_MUSTLOCK(src_sfc)) SDL_LockSurface(src_sfc);
+    srcSfc.lock();
 	
 	if(src_sfc->format->BitsPerPixel == 8) return;
 
@@ -468,7 +496,8 @@ void CEGASprit::CreateYellowSpriteofTile( GsTilemap &tilemap, Uint16 tile, GsSpr
 		}
 	}
 	
-	if(SDL_MUSTLOCK(src_sfc)) SDL_UnlockSurface(src_sfc);
+    srcSfc.unlock();
+
 }
 
 /**

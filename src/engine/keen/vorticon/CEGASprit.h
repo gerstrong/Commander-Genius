@@ -29,7 +29,7 @@ public:
 	bool loadData(const std::string& filename, bool compresseddata);
 
 private:
-	int m_numsprites;
+	int mNumsprites;
 	int m_planesize;
 	long m_spritestartloc;
 	long m_spriteloc;

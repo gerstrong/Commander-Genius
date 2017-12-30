@@ -7,6 +7,8 @@ v2.0.0.0:
 - Smoother scrolling with vsync
 - GUI improvements
 - Multiplayer improvements
+- Sprite class now uses GsSurface in order to increase performance
+  and reduce crashes
 
 v1.9.9.9:
 ---------
