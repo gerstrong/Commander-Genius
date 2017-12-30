@@ -401,7 +401,8 @@ void CEGASprit::DerivePlayerSprites( const int id, std::vector<GsSprite> &sprite
 
         const int num = getRessourceID(name, spriteFn);
         GsSprite &Sprite = gGraphics.getSprite(id,num);
-        std::string filename = getResourceFilename("gfx/"+name, m_gamepath, false, true);
+        std::string filename =
+                getResourceFilename("gfx/"+name, m_gamepath, false, true);
         Sprite.loadHQSprite(filename);
         Sprite.applyTransparency();
     }
