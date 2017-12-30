@@ -81,13 +81,6 @@ void CHUD::CreateVorticonBackground()
 {
     // Create a surface for the Background
     mBackground.createRGBSurface(mRenderRect);
-    //mBackground.createFromSDLSfc( SDL_ConvertSurface( mpHUDBlit.get(), mpHUDBlit->format, 0) );
-
-    //mBackground.fillRGB(0,0,0);
-
-    //mBackground.setAlpha(255);
-    //mBackground.setAlpha(0);
-
 
 	SDL_Rect headsrGsRect, headdstrect;
 	headsrGsRect.x = 0;
@@ -97,7 +90,8 @@ void CHUD::CreateVorticonBackground()
     headdstrect.x = 0;
     headdstrect.y = 11;
 
-    mKeenHeadSprite = gGraphics.getSprite(mId,PMAPDOWNFRAME);
+
+    mKeenHeadSprite.copy(gGraphics.getSprite(mId,PMAPDOWNFRAME));
 
     if(mKeenHeadSprite.empty())
         return;
@@ -105,11 +99,7 @@ void CHUD::CreateVorticonBackground()
 
     auto &keenHeadSmartSfc = mKeenHeadSprite.Surface();
 
-    keenHeadSmartSfc.setAlpha(0);
-
-    keenHeadSmartSfc.blitTo(mBackground);
-    //BlitSurface( keenHeadSfc, &headsrGsRect, mBackground.getSDLSurface(), &headdstrect );
-
+    keenHeadSmartSfc.blitTo(mBackground, headsrGsRect, headdstrect);
 
 	int sprite=0;
 	const int Episode = gBehaviorEngine.getEpisode();
@@ -125,11 +115,7 @@ void CHUD::CreateVorticonBackground()
     headdstrect.y = 19-(headsrGsRect.h/2);
 
     auto &keenGunSfc = mKeenGunSprite.Surface();
-
-    keenGunSfc.setAlpha(0);
-
-    keenGunSfc.blitTo(mBackground, headdstrect);
-    //BlitSurface( keenGunSfc, &headsrGsRect, mBackground.getSDLSurface(), &headdstrect );
+    keenGunSfc.blitTo(mBackground, headsrGsRect, headdstrect);
 
 	// Draw the rounded borders
     DrawCircle(0, 0, 76);
@@ -250,10 +236,10 @@ void CHUD::renderVorticon()
     lives = (mLives<99) ? mLives : 99;
     charges = (mOldCharges<99) ? mOldCharges : 99;
 
-    auto weakSfc = mpHUDBlit.get();
+    auto weakSfc = GsWeakSurface(mpHUDBlit.get());
 
 	// Draw the background
-    BlitSurface(mBackground.getSDLSurface(), nullptr, weakSfc, nullptr );
+    mBackground.blitTo(weakSfc);
 
 
 	GsFont &Font = gGraphics.getFont(1);
@@ -275,11 +261,11 @@ void CHUD::renderVorticon()
 
         if(mId == CCamera::getLead())
         {
-            SDL_FillRect(weakSfc, &rect, 0xffff0000);
+            weakSfc.fillRGBA(rect, 0xFF, 0x0, 0x0, 0xFF);
         }
         else
         {
-            SDL_FillRect(weakSfc, &rect, 0x00000000);
+            weakSfc.fillRGBA(rect, 0x0, 0x0, 0x0, 0x0);
         }
     }
 
@@ -287,8 +273,10 @@ void CHUD::renderVorticon()
     auto finalRenderRect = mRenderRect;     // Finally pull it a bit down if there are extra borders.
     finalRenderRect.y += gVideoDriver.getVidConfig().mHorizBorders;
 
-    BlitSurface( mBackground.getSDLSurface(), nullptr, gVideoDriver.getBlitSurface(), &finalRenderRect );
-    BlitSurface( weakSfc, nullptr, gVideoDriver.getBlitSurface(), &finalRenderRect );        
+    GsWeakSurface blit(gVideoDriver.getBlitSurface());
+
+    mBackground.blitTo(blit, finalRenderRect);
+    weakSfc.blitTo(blit, finalRenderRect);
 }
 
 
@@ -334,9 +322,13 @@ void CHUD::render()
 	}
 
 	if( Episode>=1 && Episode<=3 )
+    {
 	  renderVorticon();
+    }
 	else if( Episode>=4 && Episode<=6 )
+    {
       renderGalaxy();
+    }
 }
 
 

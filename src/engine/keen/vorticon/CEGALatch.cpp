@@ -104,7 +104,7 @@ void CEGALatch::loadTilemap(GsTilemap &Tilemap, CPlanes &Planes, const int episo
 {
 	Tilemap.CreateSurface( gGraphics.Palette.m_Palette, SDL_SWSURFACE, m_num16tiles, 4, 13 );
 	SDL_Surface *sfc = Tilemap.getSDLSurface();
-	SDL_FillRect(sfc,NULL, 0);
+    SDL_FillRect(sfc, nullptr, 0);
 	
 	if(SDL_MUSTLOCK(sfc))	SDL_LockSurface(sfc);
 	Uint8 *u_pixel = (Uint8*) sfc->pixels;
