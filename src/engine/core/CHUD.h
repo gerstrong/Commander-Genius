@@ -69,7 +69,7 @@ private:
 
     GsSurface mBackground;
 
-	std::shared_ptr<SDL_Surface> mpHUDBlit;
+    GsSurface mHUDBlit;
     int mId;
 
 	int timer;

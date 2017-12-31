@@ -30,12 +30,9 @@ timer(0)
 
 void CHUD::createHUDBlit()
 {        
-    mpHUDBlit.reset( CG_CreateRGBSurface( mRenderRect ), &SDL_FreeSurface );
-    mpHUDBlit.reset(gVideoDriver.convertThroughBlitSfc(mpHUDBlit.get()), &SDL_FreeSurface);
-
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-    SDL_SetSurfaceAlphaMod( mpHUDBlit.get(), 220);
-#endif
+    mHUDBlit.createRGBSurface(mRenderRect);
+    mHUDBlit.makeBlitCompatible();
+    mHUDBlit.setAlpha(220);
 }
 
 void CHUD::setup(const int id)
@@ -61,7 +58,10 @@ void CHUD::setup(const int id)
     else // Galaxy HUD
     {
         mRenderRect.w = 80;	mRenderRect.h = 30;
-        mHUDBox = *gGraphics.getSprite(mId,"HUDBACKGROUND");
+
+        auto &hudBg = *gGraphics.getSprite(mId,"HUDBACKGROUND");
+
+        mHUDBox.copy(hudBg);
 
         mRenderRect.h = mHUDBox.getHeight();
         mRenderRect.w = mHUDBox.getWidth()-7;
@@ -195,7 +195,7 @@ void CHUD::renderGalaxy()
   charges = (mOldCharges<99) ? mOldCharges : 99;
 
   // Draw the HUD with all the digits
-  SDL_Surface* blitsfc = mpHUDBlit.get();
+  auto blitsfc = mHUDBlit.getSDLSurface();
 
   const int w = mHUDBox.getWidth();
   const int h = mHUDBox.getHeight();
@@ -221,7 +221,9 @@ void CHUD::renderGalaxy()
   auto finalRenderRect = mRenderRect;     // Finally pull it a bit down if there are extra borders.
   finalRenderRect.y += gVideoDriver.getVidConfig().mHorizBorders;
 
-  BlitSurface( blitsfc, nullptr, gVideoDriver.getBlitSurface(), &finalRenderRect );
+  auto weak = GsWeakSurface(gVideoDriver.getBlitSurface());
+
+  mHUDBlit.blitTo(weak, finalRenderRect);
 }
 /**
  * \brief This part of the code will render the entire HUD. Vorticon version
@@ -234,22 +236,20 @@ void CHUD::renderVorticon()
     lives = (mLives<99) ? mLives : 99;
     charges = (mOldCharges<99) ? mOldCharges : 99;
 
-    auto weakSfc = GsWeakSurface(mpHUDBlit.get());
-
 	// Draw the background
-    mBackground.blitTo(weakSfc);
+    mBackground.blitTo(mHUDBlit);
 
 
 	GsFont &Font = gGraphics.getFont(1);
 
     // Print the lives
-    Font.drawFont(weakSfc, getRightAlignedString(itoa(lives),2), 15, 15, false);
+    Font.drawFont(mHUDBlit, getRightAlignedString(itoa(lives),2), 15, 15, false);
 
     // Print the charges
-    Font.drawFont(weakSfc, getRightAlignedString(itoa(charges),2), 56, 15, false);
+    Font.drawFont(mHUDBlit, getRightAlignedString(itoa(charges),2), 56, 15, false);
 
     // Print the score
-    Font.drawFont(weakSfc, getRightAlignedString(itoa(score),8),8, 2, false );
+    Font.drawFont(mHUDBlit, getRightAlignedString(itoa(score),8),8, 2, false );
 
     if(gBehaviorEngine.mPlayers > 1)
     {
@@ -259,11 +259,11 @@ void CHUD::renderVorticon()
 
         if(mId == CCamera::getLead())
         {
-            weakSfc.fillRGBA(rect, 0xFF, 0x0, 0x0, 0xFF);
+            mHUDBlit.fillRGBA(rect, 0xFF, 0x0, 0x0, 0xFF);
         }
         else
         {
-            weakSfc.fillRGBA(rect, 0x0, 0x0, 0x0, 0x0);
+            mHUDBlit.fillRGBA(rect, 0x0, 0x0, 0x0, 0x0);
         }
     }
 
@@ -274,7 +274,7 @@ void CHUD::renderVorticon()
     GsWeakSurface blit(gVideoDriver.getBlitSurface());
 
     mBackground.blitTo(blit, finalRenderRect);
-    weakSfc.blitTo(blit, finalRenderRect);
+    mHUDBlit.blitTo(blit, finalRenderRect);
 }
 
 
