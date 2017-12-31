@@ -106,7 +106,8 @@ void CAbout::init()
 	else if(m_type == "CG")
     {
         const std::string path = getResourceFilename("gfx/CGLogo.bmp", gKeenFiles.gameDir, true, true);
-        mpLogoBMP.reset( SDL_LoadBMP(GetFullFileName(path).c_str()), &SDL_FreeSurface );
+
+        mLogoBmp.loadBmp(GetFullFileName(path));
 
         m_lines.push_back("Commander Genius is an interpreter");
         m_lines.push_back("made with the goal of recreating");
@@ -138,10 +139,10 @@ void CAbout::init()
     m_logo_rect.x = m_logo_rect.y = 0;
     m_logo_rect.h = m_logo_rect.w = 0;
 
-    if(mpLogoBMP)
+    if(mLogoBmp)
     {
-        m_logo_rect.w = mpLogoBMP->w;
-        m_logo_rect.h = mpLogoBMP->h;
+        m_logo_rect.w = mLogoBmp.width();
+        m_logo_rect.h = mLogoBmp.height();
         m_logo_rect.x = 160-m_logo_rect.w/2;
         m_logo_rect.y = 22;
     }
@@ -173,8 +174,11 @@ void CAbout::render()
     }
     else if(m_type == "CG")
     {
-        if(mpLogoBMP)
-            BlitSurface(mpLogoBMP.get(), nullptr, gVideoDriver.getBlitSurface(), &m_logo_rect);
+        if(mLogoBmp)
+        {
+            GsWeakSurface weakBlit(gVideoDriver.getBlitSurface());
+            mLogoBmp.blitTo(weakBlit, m_logo_rect);
+        }
     }
 
     for(std::size_t i=0 ; i<m_lines.size() ; i++)

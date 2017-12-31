@@ -55,12 +55,11 @@ void CStatusScreen::draw()
 
 	if(!m_closed)
 	{
-        SDL_Surface *blit = gVideoDriver.getBlitSurface();
+        auto weak = GsWeakSurface(gVideoDriver.getBlitSurface());
 
-        m_StatusRect.x = (blit->w-m_StatusRect.w)/2;
-        m_StatusRect.y = (blit->h-m_StatusRect.h)/2;
-
-        BlitSurface( mpStatusSfc.get(), NULL, blit, &m_StatusRect);
+        m_StatusRect.x = (weak.width()-m_StatusRect.w)/2;
+        m_StatusRect.y = (weak.height()-m_StatusRect.h)/2;
+        mStatusSfc.blitTo(weak, m_StatusRect);
 	}
 }
 
@@ -99,9 +98,9 @@ void CStatusScreen::createInventorySfcEp1(const int varSpr)
 	m_StatusRect.w = (dlgW+1)*8;
 	m_StatusRect.h = dlgH*8;
 	
-    GsSurface sfc;
-    sfc.createRGBSurface(m_StatusRect);
-    SDL_Surface *p_surface = sfc.getSDLSurface();
+    mStatusSfc.createRGBSurface(m_StatusRect);
+
+    SDL_Surface *p_surface = mStatusSfc.getSDLSurface();
 
 	GsTilemap &Tilemap = gGraphics.getTileMap(1);
 
@@ -215,10 +214,7 @@ void CStatusScreen::createInventorySfcEp1(const int varSpr)
 	// Now draw the difficulty at the bottom
 	Font.drawFontCentered( p_surface, fetchDifficultyText(), dlgW<<3, (dlgH-2)<<3, true);
 
-//#if SDL_VERSION_ATLEAST(2, 0, 0)
-    
-//#else
-    mpStatusSfc.reset(gVideoDriver.convertThroughBlitSfc(p_surface), &SDL_FreeSurface);
+    mStatusSfc.makeBlitCompatible();
 }
 
 void CStatusScreen::createInventorySfcEp2(const int varSpr)
@@ -233,9 +229,8 @@ void CStatusScreen::createInventorySfcEp2(const int varSpr)
 	m_StatusRect.w = (dlgW+1)*8;
 	m_StatusRect.h = dlgH*8;
 
-    GsSurface sfc;
-    sfc.createRGBSurface(m_StatusRect);
-    SDL_Surface *p_surface = sfc.getSDLSurface();
+    mStatusSfc.createRGBSurface(m_StatusRect);
+    SDL_Surface *p_surface = mStatusSfc.getSDLSurface();
     GsTilemap &Tilemap = gGraphics.getTileMap(1);
 
 	tempbuf = gBehaviorEngine.getString("EP2_StatusBox");
@@ -339,12 +334,7 @@ void CStatusScreen::createInventorySfcEp2(const int varSpr)
 	// Now draw the difficulty at the bottom
 	Font.drawFontCentered( p_surface, fetchDifficultyText(), dlgW<<3, (dlgH-2)<<3, true);
 
-//#if SDL_VERSION_ATLEAST(2, 0, 0)
-    
-//#else
-    mpStatusSfc.reset(gVideoDriver.convertThroughBlitSfc(p_surface), &SDL_FreeSurface);
-//#endif
-	SDL_FreeSurface(p_surface);
+    mStatusSfc.makeBlitCompatible();
 }
 
 void CStatusScreen::createInventorySfcEp3(const int varSpr)
@@ -359,9 +349,8 @@ void CStatusScreen::createInventorySfcEp3(const int varSpr)
 	m_StatusRect.w = (dlgW+1)*8;
 	m_StatusRect.h = dlgH*8;
 
-    GsSurface sfc;
-    sfc.createRGBSurface(m_StatusRect);
-    SDL_Surface *p_surface = sfc.getSDLSurface();
+    mStatusSfc.createRGBSurface(m_StatusRect);
+    SDL_Surface *p_surface = mStatusSfc.getSDLSurface();
 
     GsTilemap &Tilemap = gGraphics.getTileMap(1);
 
@@ -463,6 +452,5 @@ void CStatusScreen::createInventorySfcEp3(const int varSpr)
 	// Now draw the difficulty at the bottom
 	Font.drawFontCentered( p_surface, fetchDifficultyText(), dlgW<<3, (dlgH-2)<<3, true);
 
-    mpStatusSfc.reset(gVideoDriver.convertThroughBlitSfc(p_surface), &SDL_FreeSurface);
-	SDL_FreeSurface(p_surface);
+    mStatusSfc.makeBlitCompatible();
 }

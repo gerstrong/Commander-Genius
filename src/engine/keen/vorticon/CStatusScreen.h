@@ -10,7 +10,7 @@
 
 #include <SDL.h>
 #include "engine/core/inventory.h"
-#include <memory>
+#include "graphics/GsSurface.h"
 
 class CStatusScreen
 {
@@ -37,7 +37,7 @@ private:
 
 	bool m_closing, m_closed;
 
-	std::shared_ptr<SDL_Surface> mpStatusSfc;
+    GsSurface mStatusSfc;
 	SDL_Rect m_StatusRect;
 };
 

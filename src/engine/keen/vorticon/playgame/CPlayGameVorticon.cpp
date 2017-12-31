@@ -711,7 +711,9 @@ void CPlayGameVorticon::drawObjects()
 	for (; it_player != it_end ; it_player++)
 	{
 		if(!it_player->beingteleported)
+        {
 			it_player->draw();
+        }
 	}
 
 }
