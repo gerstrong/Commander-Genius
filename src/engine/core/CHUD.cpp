@@ -31,8 +31,8 @@ timer(0)
 void CHUD::createHUDBlit()
 {        
     mHUDBlit.createRGBSurface(mRenderRect);
-    mHUDBlit.makeBlitCompatible();
     mHUDBlit.setAlpha(220);
+    mHUDBlit.makeBlitCompatible();
 }
 
 void CHUD::setup(const int id)
@@ -62,6 +62,8 @@ void CHUD::setup(const int id)
         auto &hudBg = *gGraphics.getSprite(mId,"HUDBACKGROUND");
 
         mHUDBox.copy(hudBg);
+		
+		mHUDBox.Surface().makeBlitCompatible();
 
         mRenderRect.h = mHUDBox.getHeight();
         mRenderRect.w = mHUDBox.getWidth()-7;
