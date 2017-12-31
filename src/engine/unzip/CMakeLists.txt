@@ -11,3 +11,5 @@ set(HSRC
 
 add_library(unzip ${CXXSRC} ${HSRC})
 
+target_link_libraries(unzip z)
+

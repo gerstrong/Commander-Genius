@@ -36,6 +36,7 @@ target_link_libraries(engine_keen_galaxy
                       engine_keen_galaxy_ep5
                       engine_keen_galaxy_ep6
                       engine_keen_galaxy_menu
-                      engine_keen_galaxy_res)
+                      engine_keen_galaxy_res
+		      engine_keen)
 
 cotire(engine_keen_galaxy)

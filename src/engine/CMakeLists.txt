@@ -25,5 +25,13 @@ set(HSRC CGameLauncher.h
 add_library(engine ${CXXSRC}
                    ${HSRC})
 
-target_link_libraries(engine refkeen engine_keen engine_core unzip GsKit cg_dialog)
+target_link_libraries(engine 
+                      refkeen 
+                      engine_keen_galaxy  
+		      engine_keen_vorticon
+		      engine_keen_dreams
+                      engine_core
+                      GsKit 
+                      cg_dialog
+                      unzip)
 

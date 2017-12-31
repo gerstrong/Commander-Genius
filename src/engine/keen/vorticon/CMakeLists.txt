@@ -187,4 +187,4 @@ set(HSRC
 
 add_library(engine_keen_vorticon ${CXXSRC} ${HSRC})
 
-target_link_libraries(engine_keen_vorticon GsKit)
+target_link_libraries(engine_keen_vorticon GsKit engine_keen)

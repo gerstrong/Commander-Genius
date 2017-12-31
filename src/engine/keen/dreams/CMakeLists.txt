@@ -24,4 +24,4 @@ set(HSRC
 
 add_library(engine_keen_dreams ${CXXSRC} ${HSRC})
 
-target_link_libraries(engine_keen_dreams refkeen)
+target_link_libraries(engine_keen_dreams refkeen engine_keen)
