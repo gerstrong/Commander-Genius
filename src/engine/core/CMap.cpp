@@ -84,7 +84,7 @@ void CMap::refreshStripes()
 // returns the tile which is set at the given coordinates
 Uint16 CMap::at(int x, int y, int t)
 {
-	if(x < m_width && y < m_height )
+    if(x < int(m_width) && y < int(m_height) )
     {
         return mPlanes[t].getMapDataAt(x,y);
     }

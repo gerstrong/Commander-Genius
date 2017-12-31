@@ -273,8 +273,8 @@ void CSpriteObject::moveSlopedTileUp( int x, int y, const int xspeed )
 		int y_csf;
 		y_csf = (y>>CSF)<<CSF;
 
-		Uint32 newpos_y = y_csf - m_BBox.y1 + y_rel + (1<<STC);
-		if( m_Pos.y < newpos_y )
+        int newpos_y = y_csf - m_BBox.y1 + y_rel + (1<<STC);
+        if( m_Pos.y < newpos_y )
 			m_Pos.y = newpos_y;
 
 		onslope = true;
