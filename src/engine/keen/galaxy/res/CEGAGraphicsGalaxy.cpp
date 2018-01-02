@@ -715,6 +715,8 @@ bool CEGAGraphicsGalaxy::begin()
 
     auto dataSize = CompEgaGraphData.size();
     size_t numBadChunks = 0;
+    
+    auto &info = EpisodeInfo[epIdx];
 
     // Now lets decompress the graphics
     auto offPtr = m_egahead.begin();
@@ -730,17 +732,18 @@ bool CEGAGraphicsGalaxy::begin()
         {
 
             // Get the expanded length of the chunk
-            if(i >= EpisodeInfo[epIdx].Index8Tiles && i < EpisodeInfo[epIdx].Index16MaskedTiles + EpisodeInfo[epIdx].Num16MaskedTiles)
+            if(i >= info.Index8Tiles && 
+	       i < info.Index16MaskedTiles + info.Num16MaskedTiles)
             {
                 // Expanded sizes of 8, 16,and 32 tiles are implicit
-                if(i >= EpisodeInfo[epIdx].Index16MaskedTiles) // 16x16 tiles are one/chunk
+                if(i >= info.Index16MaskedTiles) // 16x16 tiles are one/chunk
                     outlen = 2 * 16 * 5;
-                else if(i >= EpisodeInfo[epIdx].Index16Tiles)
+                else if(i >= info.Index16Tiles)
                     outlen = 2 * 16 * 4;
-                else if(i >= EpisodeInfo[epIdx].Index8MaskedTiles) // 8x8 tiles are all in one chunk!
-                    outlen = EpisodeInfo[epIdx].Num8MaskedTiles * 8 * 5;
-                else if(i >= EpisodeInfo[epIdx].Index8Tiles)
-                    outlen = EpisodeInfo[epIdx].Num8Tiles * 8 * 4;
+                else if(i >= info.Index8MaskedTiles) // 8x8 tiles are all in one chunk!
+                    outlen = info.Num8MaskedTiles * 8 * 5;
+                else if(i >= info.Index8Tiles)
+                    outlen = info.Num8Tiles * 8 * 4;
             }
             else
             {
@@ -804,10 +807,6 @@ bool CEGAGraphicsGalaxy::begin()
             byte *out = &m_egagraph[i].data[0];
 
             Huffman.expand(in, out, inlen, outlen);
-
-            // std::string filename = std::string("/tmp/egagraph_i_") + std::to_string(i) ;
-            // std::ofstream ofile( filename.c_str() );
-            // ofile.write( reinterpret_cast<char*>(out), outlen);
         }
         else
         {
@@ -848,29 +847,31 @@ Uint8 CEGAGraphicsGalaxy::getBit(unsigned char data, Uint8 leftshift)
  */
 bool CEGAGraphicsGalaxy::readTables()
 {
-    const int ep = getEpisodeInfoIndex();
+    const auto epIdx = int(getEpisodeInfoIndex());
     const std::vector<unsigned char> &bitmapTable = m_egagraph.at(0).data;
+    
+    auto &info = EpisodeInfo[epIdx];
 
-    if(bitmapTable.size() != (EpisodeInfo[ep].NumBitmaps * 4))
+    if(bitmapTable.size() != (info.NumBitmaps * 4))
     {
         gLogging.ftextOut("bad bitmap table size=%u vs NumBitmaps=%u (x4)",
-                          bitmapTable.size(), EpisodeInfo[ep].NumBitmaps);
+                          bitmapTable.size(), info.NumBitmaps);
     }
 
     const std::vector<unsigned char> &maskedBitmapTable = m_egagraph.at(1).data;
 
-    if(maskedBitmapTable.size() != (EpisodeInfo[ep].NumMaskedBitmaps * 4))
+    if(maskedBitmapTable.size() != (info.NumMaskedBitmaps * 4))
     {
         gLogging.ftextOut("bad masked bitmap table size=%u vs NumBitmaps=%u (x4)",
-                          maskedBitmapTable.size(), EpisodeInfo[ep].NumMaskedBitmaps);
+                          maskedBitmapTable.size(), info.NumMaskedBitmaps);
     }
 
     const std::vector<unsigned char> &spriteTable = m_egagraph.at(2).data;
 
-    if(spriteTable.size() != (EpisodeInfo[ep].NumSprites * 18))
+    if(spriteTable.size() != (info.NumSprites * 18))
     {
         gLogging.ftextOut("bad sprite table size=%u vs NumSprites=%u (x18)",
-                          spriteTable.size(), EpisodeInfo[ep].NumSprites);
+                          spriteTable.size(), info.NumSprites);
     }
 
     // gLogging.ftextOut("sprite table size=%u vs NumSprites=%u",
