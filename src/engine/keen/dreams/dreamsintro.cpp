@@ -58,9 +58,10 @@ DreamsIntro::DreamsIntro()
 
 }
 
-void DreamsIntro::start()
+bool DreamsIntro::start()
 {
     ingame = false;
+    return true;
 }
 
 void DreamsIntro::pumpEvent(const CEvent *evPtr)

@@ -154,9 +154,10 @@ void InitGame()
 }
 
 
-void DreamsDosIntro::start()
+bool DreamsDosIntro::start()
 {
     InitGame();
+    return true;
 }
 
 void DreamsDosIntro::pumpEvent(const CEvent *evPtr)

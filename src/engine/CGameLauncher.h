@@ -76,7 +76,7 @@ public:
      */
     bool setupMenu();
 
-    void start();
+    bool start() override;
 
     void showMessageBox(const std::string &text);
 

@@ -25,7 +25,7 @@ public:
     /**
      * @brief start called the first time usually when the instance was created
      */
-    void start();
+    bool start() override;
 
     /**
      * @brief pumpEvent Events like user closes windows or mouse presses are processed here.

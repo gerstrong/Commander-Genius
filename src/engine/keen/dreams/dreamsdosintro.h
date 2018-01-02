@@ -17,7 +17,7 @@ class DreamsDosIntro : public GsEngine
     /**
      * @brief start Usually this is started before anything else but still after the construction.
      */
-    void start();
+    bool start() override;
 
     /**
      * @brief pumpEvent Events like user closes windows or mouse presses are processed here.

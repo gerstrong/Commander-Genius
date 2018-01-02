@@ -74,9 +74,10 @@ DreamsControlPanel::~DreamsControlPanel()
 
 
 
-void DreamsControlPanel::start()
+bool DreamsControlPanel::start()
 {
     US_ControlPanel_Init();    
+    return true;
 }
 
 

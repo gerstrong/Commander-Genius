@@ -80,7 +80,8 @@ void CExeFile::dumpDataFile(const std::string& filename)
 	ofile.write( reinterpret_cast<char*>(m_rawdata), m_datasize - m_headersize);
 }
 
-bool CExeFile::readData(const unsigned int episode, const std::string& datadirectory)
+bool CExeFile::readData(const unsigned int episode,
+                        const std::string& datadirectory)
 {
     // TODO: It would be nice to gather a list of executables and by scanning it decide which episode will be played.
 
@@ -199,8 +200,44 @@ bool CExeFile::readData(const unsigned int episode, const std::string& datadirec
 	return true;
 }
 
+
+bool CExeFile::readMainPythonScript(const unsigned int episode,
+                                    const std::string& datadirectory)
+{
+    std::string filename = datadirectory + "/keen" + itoa(episode) + ".py";
+
+    std::ifstream File;
+    OpenGameFileR(File, filename, std::ios::binary);
+
+    // If we still have no file found, the directory with the game cannot be used at all.
+    if(!File)
+        return false;
+
+    m_filename = filename;
+    m_episode = episode;
+
+    std::string localDataDir = datadirectory;
+    if( localDataDir != "")
+    {
+        if(*(localDataDir.end()-1) != '/')
+            localDataDir += "/";
+    }
+
+    auto &keenFiles = gKeenFiles;
+    keenFiles.gameDir = localDataDir;
+
+    gLogging << "Python script \"" << filename << "\" detected!";
+
+    mIsPythonScript = true;
+
+    return true;
+}
+
 bool CExeFile::Supported()
 {
+    if(mIsPythonScript)
+        return true;
+
 
 	if( m_supportmap.find(m_datasize) == m_supportmap.end())
 		return false;

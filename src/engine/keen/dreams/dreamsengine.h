@@ -78,7 +78,7 @@ public:
     /**
      * @brief start Starts the Dreams engine which refers to accessing RefKeen code
      */
-    void start();
+    bool start() override;
 
     /**
      * @brief ponder    Everything logic related here

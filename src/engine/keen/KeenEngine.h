@@ -19,7 +19,7 @@ public:
 
     virtual void openMainMenu() = 0;
 
-    void start();
+    bool start() override;
 
     virtual void pumpEvent(const CEvent *evPtr);
 

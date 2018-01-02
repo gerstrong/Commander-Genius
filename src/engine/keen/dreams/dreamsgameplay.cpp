@@ -34,13 +34,15 @@ void startLevel();
 
 
 
-void DreamsGamePlay::start()
+bool DreamsGamePlay::start()
 {
     if(!ResumeGame)
     {
         GamePlayStart();
         GamePlayStartLevel();                
     }    
+
+    return true;
 }
 
 

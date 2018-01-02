@@ -398,7 +398,7 @@ void DreamsEngine::applyScreenMode()
 }
 
 
-void DreamsEngine::start()
+bool DreamsEngine::start()
 {
     CExeFile &ExeFile = gKeenFiles.exeFile;
 
@@ -436,6 +436,8 @@ void DreamsEngine::start()
     gGameStateChange = GSS_INTRO_TEXT;
 
     mpScene->start();
+
+    return true;
 }
 
 bool mResourcesLoaded = false;

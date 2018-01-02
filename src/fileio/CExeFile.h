@@ -51,6 +51,15 @@ class CExeFile {
     bool readData(const unsigned int episode, const std::string& datadirectory);
 
     /**
+     * @brief readMainPythonScript Try to get a main python script load
+     * @param episode Episode for which to read for
+     * @param datadirectory path where the data is located
+     * @return if everything went well true, otherwise false
+     */
+    bool readMainPythonScript(const unsigned int episode,
+                              const std::string& datadirectory);
+
+    /**
      * @brief Tells whether The Exe-File is supported by CG or not.
      *        This Information is hard-coded in the CExefile constructor
      */
@@ -115,6 +124,7 @@ private:
 	size_t m_datasize;
 	size_t m_headersize;
 	int m_episode;
+    bool mIsPythonScript = false;
 	bool m_demo;
 	unsigned int m_crc;
 	std::vector<byte> mData;

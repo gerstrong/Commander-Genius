@@ -4,8 +4,10 @@
 /**
  * @brief start Usually this is started before anything else but still after construction.
  */
-void Textmode::start()
-{}
+bool Textmode::start()
+{
+    return true;
+}
 
 /**
  * @brief pumpEvent Events like user closes windows or mouse presses are processed here.

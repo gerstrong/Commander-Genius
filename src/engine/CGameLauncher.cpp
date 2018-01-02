@@ -334,9 +334,14 @@ bool CGameLauncher::scanExecutables(const std::string& path)
     for(int i = 1; i <= 7; ++i)
     {
 		CExeFile executable;
-		// Load the exe into memory
+        // Load the exe into memory or a python script
 		if(!executable.readData(i, path))
-			continue;
+        {
+            if(!executable.readMainPythonScript(i, path))
+            {
+                continue;
+            }
+        }
 
 		// Process the exe for type
 		GameEntry newentry;
@@ -392,7 +397,7 @@ bool CGameLauncher::scanExecutables(const std::string& path)
 }
 
 
-void CGameLauncher::start()
+bool CGameLauncher::start()
 {
     // Here it always makes sense to have the mouse cursor active
     SDL_ShowCursor(SDL_ENABLE);
@@ -447,6 +452,8 @@ void CGameLauncher::start()
     mGameScanner.setStyle(PROGRESS_STYLE_TEXT);
     mGameScanner.RunLoadActionBackground(new GamesScan(*this));
     mGameScanner.start();
+
+    return true;
 }
 
 
@@ -693,7 +700,18 @@ void CGameLauncher::ponderPatchDialog()
         if( episode > 0 ) // The game has to have a valid episode!
         {
             // Get the EXE-Data of the game and load it into the memory.
-            if(!gKeenFiles.exeFile.readData(episode, DataDirectory))
+            bool ok = false;
+
+            if(gKeenFiles.exeFile.readData(episode, DataDirectory))
+            {
+               ok = true;
+            }
+            else if(gKeenFiles.exeFile.readMainPythonScript(episode, DataDirectory))
+            {
+               ok = true;
+            }
+
+            if(!ok)
             {
                 letchooseagain();
             }

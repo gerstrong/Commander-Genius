@@ -30,7 +30,7 @@ void KeenEngine::switchToGamePlayMode(const int startLevel)
 
 
 
-void KeenEngine::start()
+bool KeenEngine::start()
 {
     int version;
 
@@ -44,7 +44,7 @@ void KeenEngine::start()
     {
         gLogging.textOut(FONTCOLORS::RED, "KeenEngine::loadResources: Could not load data from the EXE File<br>");
         gEventManager.add(new GMSwitchToGameLauncher() );
-        return;
+        return false;
     }
 
     gKeenFiles.setupFilenames(mEp);
@@ -55,6 +55,8 @@ void KeenEngine::start()
 
     // Load the Resources
     loadResources( LOADALL );
+
+    return true;
 }
 
 void KeenEngine::pumpEvent(const CEvent *evPtr)
