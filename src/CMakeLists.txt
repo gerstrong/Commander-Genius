@@ -227,16 +227,6 @@ else(USE_SDL2)
 endif(USE_SDL2)
 
 
-IF(OPENGL)
-    # OpenGL Parsing
-    find_package(OpenGL REQUIRED)
-
-#    IF(WIN32)
-#	TARGET_LINK_LIBRARIES(CGeniusExe opengl32)
-#    ELSEIF(UNIX AND NOT APPLE)
-#	TARGET_LINK_LIBRARIES(CGeniusExe GL)
-#    ENDIF()
-ENDIF(OPENGL)
 
 # TODO: Does not work with MacOS. Where is the pkgconfig or cmake script
 IF(OGG)
@@ -285,8 +275,9 @@ target_link_libraries(CGeniusExe ${PYTHON_LIBRARIES})
 
 IF(OPENGL)
     # OpenGL stuff to link
-    target_link_libraries(CGeniusExe ${OPENGL_LIBRARIES})
+    target_link_libraries(GsKit ${OPENGL_LIBRARIES})
 ENDIF(OPENGL)
+
 
 cotire(CGeniusExe)
 

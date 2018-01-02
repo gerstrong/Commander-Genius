@@ -1,5 +1,9 @@
-v2.0.0.0:
----------
+v2.0.1:
+-------
+
+
+v2.0.0:
+-------
 - Many AI fixes in keen 4, 5 and 6
 - Platform sprite corrections in Keen 5
 - New Application logo
