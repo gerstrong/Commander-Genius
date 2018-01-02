@@ -215,9 +215,10 @@ Setting up the data for the game:
    Keen 4 - Version 1.4 (EGA)
    Keen 5 - Version 1.4 (EGA)
    Keen 6 - Version 1.4 (EGA)
+   Keen 6 Demo - Version 1.4 (EGA)
    Keen Dreams - Version v1.13 (EGA)
 
-   Other version might work, but we cannot guarantee it. If you happen to own
+   Other versions might work, but we cannot guarantee it. If you happen to own
    another version, I would recommend patching it first. There are free patches
    for that around the net.
    Also Keen 6 works on CG. Don't use the 1.5 version, which is not supported,
@@ -449,13 +450,13 @@ Mobile users: For those unlucky enough to not have a keyboard you can open
 The game can be saved from the menu at any time.
 Keen will be saved at the exact position it was left.
 In the Vorticons engine it will save the game within the level as well.
-On Galaxy and Dreams games, it works like usual.
+On Galaxy and Dreams games it works like usual.
 
 
 - FAQ -
 =======
 
-Q: Where is Commander Keen 2,3, 5 and 6?
+Q: Where is Commander Keen 2, 3, 5 and 6?
 A: Due to legal issues with the Commander Keen games, we are only allowed to
    provide a copy of Keen 1, 4, Dreams and everything mod related to those. This
    is possible because it is shareware. If you happen to have a copy of the
@@ -526,7 +527,7 @@ Dreams
 Napalm (More Keen data structure information)
 Malvineous
 Clobber
-Mewingtree
+Mewingtree (Keen 6 Demo support)
 Hans de Goede (The Redhat/Fedora Guy)
 Levellass (Keen EXE information)
 ZidaneA (For his music tracks!)
@@ -556,7 +557,7 @@ time again...
 
 Furthermore, special thanks to Scott (Pickle) and Albert Zeyer for their
 changes. They helped out a lot on the quality of the code and performance
-incrate.
+incrates.
 
 Also special thanks to NY00123 for helping to test many different versions and
 improving them.
