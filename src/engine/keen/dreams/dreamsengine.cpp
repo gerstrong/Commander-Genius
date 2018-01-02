@@ -243,7 +243,7 @@ bool extractEmbeddedFilesIntoMemory(const BE_GameVerDetails_T &gameVerDetails)
 
     CExeFile &ExeFile = gKeenFiles.exeFile;
 
-    uint8_t* headerData = (uint8_t*) ExeFile.getHeaderData();
+    uint8_t* headerData = static_cast<uint8_t*>(ExeFile.getHeaderData());
 
     for (const BE_EmbeddedGameFileDetails_T *embeddedfileDetailsBuffer = gameVerDetails.embeddedFiles; embeddedfileDetailsBuffer->fileDetails.filename; ++embeddedfileDetailsBuffer)
     {

@@ -208,7 +208,7 @@ set_property(TARGET CGeniusExe PROPERTY C_STANDARD 99)
 target_link_libraries (CGeniusExe engine)
 
 # Link GsKit
-#target_link_libraries (CGeniusExe GsKit)
+target_link_libraries (CGeniusExe GsKit)
 
 # Link zlib
 target_link_libraries( CGeniusExe ${ZLIB_LIBRARIES} )
@@ -275,7 +275,7 @@ target_link_libraries(CGeniusExe ${PYTHON_LIBRARIES})
 
 IF(OPENGL)
     # OpenGL stuff to link
-    target_link_libraries(GsKit ${OPENGL_LIBRARIES})
+    target_link_libraries(CGeniusExe ${OPENGL_LIBRARIES})
 ENDIF(OPENGL)
 
 

@@ -24,24 +24,24 @@
 #include <map>
 
 class CExeFile {
-public:
-	CExeFile();
-	
+  public:
+    CExeFile();
+    
     char getEpisode() const
     { return m_episode;	}
-
+    
     size_t getExeDataSize() const
     { return m_datasize;	}
-
+    
     std::string getFileName()
     { return m_filename; }
-
-	unsigned long fetchUncompressedHeaderSize(void *m_headerdata);
-
-	// in case you just want to see the Exe-File which CG sustains in the memory
-	void dumpFile(const std::string& filename);
-	void dumpDataFile(const std::string& filename);
-
+    
+    unsigned long fetchUncompressedHeaderSize(void *m_headerdata);
+    
+    // in case you just want to see the Exe-File which CG sustains in the memory
+    void dumpFile(const std::string& filename);
+    void dumpDataFile(const std::string& filename);
+    
     /**
      * @brief readData  Attempt to read the data of the given episode
      * @param episode   Episode for which to read for
@@ -50,15 +50,15 @@ public:
      */
     bool readData(const unsigned int episode, const std::string& datadirectory);
 
-	/**
-	 * \brief Tells whether The Exe-File is supported by CG or not.
-	 * 		  This Information is hard-coded in the CExefile constructor
-	 */
-	bool Supported();
-	int getEXEVersion();
-	int getEXECrc();
-	bool readExeImageSize(unsigned char *p_data_start, unsigned long *imglen, unsigned long *headerlen) const;
-	
+    /**
+     * @brief Tells whether The Exe-File is supported by CG or not.
+     *        This Information is hard-coded in the CExefile constructor
+     */
+    bool Supported();
+    int getEXEVersion();
+    int getEXECrc();
+    bool readExeImageSize(unsigned char *p_data_start, unsigned long *imglen, unsigned long *headerlen) const;
+    
     bool isDemo() const
     {	return m_demo;	}
 

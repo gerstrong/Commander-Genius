@@ -40,7 +40,7 @@ void KeenEngine::start()
 
     gLogging.ftextOut("Commander Keen Episode %d (Version %d.%d) was detected.<br>", mEp, version/100, version%100);
 
-    if( ExeFile.getHeaderData() == NULL)
+    if( ExeFile.getHeaderData() == nullptr)
     {
         gLogging.textOut(FONTCOLORS::RED, "KeenEngine::loadResources: Could not load data from the EXE File<br>");
         gEventManager.add(new GMSwitchToGameLauncher() );

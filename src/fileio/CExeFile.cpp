@@ -485,13 +485,13 @@ bool CExeFile::readMusicHedInternal(RingBuffer<IMFChunkType> &imfData,
 
     const uint32_t *starthedptr = reinterpret_cast<uint32_t*>(getHeaderData());
     uint32_t *audiohedptr = const_cast<uint32_t*>(starthedptr);
-    for( const uint32_t *endptr = (uint32_t*) (void*) getHeaderData()+getExeDataSize()/sizeof(uint32_t);
+    for( const uint32_t *endptr = starthedptr+getExeDataSize()/sizeof(uint32_t);
          audiohedptr < endptr ;
          audiohedptr++ )
     {
         if(*audiohedptr == audiofilecompsize)
         {
-            for( const uint32_t *startptr = (uint32_t*) (void*) getHeaderData() ;
+            for( const uint32_t *startptr = starthedptr ;
                  audiohedptr > startptr ; audiohedptr-- )
             {
                 // Get the number of Audio files we have

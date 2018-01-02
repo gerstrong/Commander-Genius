@@ -485,7 +485,7 @@ bool CEGAGraphicsGalaxy::readEGAHead()
     const int ep = getEpisodeInfoIndex();
 
     std::ifstream File; OpenGameFileR(File, filename, std::ios::binary);
-    byte *p_head = nullptr;
+    byte *headPtr = nullptr;
 
     std::vector<char> egaHeadData;
 
@@ -511,7 +511,7 @@ bool CEGAGraphicsGalaxy::readEGAHead()
                 egaHeadData.push_back(b);
             }
 
-            p_head = reinterpret_cast<byte*>(&egaHeadData.front());
+            headPtr = reinterpret_cast<byte*>(&egaHeadData.front());
         }
     } // no external file. Read it from the exe then
     else
@@ -527,7 +527,7 @@ bool CEGAGraphicsGalaxy::readEGAHead()
             return false;
 
         // Read the EGAHEAD
-        p_head = p_data + exeheaderlen + EpisodeInfo[ep].OffEgaHead;
+        headPtr = p_data + exeheaderlen + EpisodeInfo[ep].OffEgaHead;
     }
 
     unsigned long offset = 0;
@@ -541,8 +541,8 @@ bool CEGAGraphicsGalaxy::readEGAHead()
     size_t chunkSize = dreams ? 4 : 3;
     for(size_t i = 0 ; i < numChunks ; i++)
     {
-        memcpy(&offset, p_head, chunkSize);
-        p_head += chunkSize;
+        memcpy(&offset, headPtr, chunkSize);
+        headPtr += chunkSize;
         offset &= offset_limit;
         m_egahead.push_back(offset);
     }
@@ -574,6 +574,8 @@ std::vector<unsigned long> CEGAGraphicsGalaxy::readOutLenVec(const int ep,
     std::vector<unsigned long> outLenVec;
 
     std::vector<unsigned long>::iterator offPtr = m_egahead.begin();
+    
+    auto &info = EpisodeInfo[ep];
 
     for(size_t i = 0 ; offPtr != m_egahead.end() ; offPtr++, i++)
     {
@@ -586,17 +588,17 @@ std::vector<unsigned long> CEGAGraphicsGalaxy::readOutLenVec(const int ep,
         if(offset < offset_limit && offset + 4 <= compEgaGraphData.size())
         {
             // Get the expanded length of the chunk
-            if(i >= EpisodeInfo[ep].Index8Tiles && i < EpisodeInfo[ep].Index16MaskedTiles + EpisodeInfo[ep].Num16MaskedTiles)
+            if(i >= info.Index8Tiles && i < info.Index16MaskedTiles + info.Num16MaskedTiles)
             {
                 // Expanded sizes of 8, 16,and 32 tiles are implicit
-                if(i >= EpisodeInfo[ep].Index16MaskedTiles) // 16x16 tiles are one/chunk
+                if(i >= info.Index16MaskedTiles) // 16x16 tiles are one/chunk
                     outlen = 2 * 16 * 5;
-                else if(i >= EpisodeInfo[ep].Index16Tiles)
+                else if(i >= info.Index16Tiles)
                     outlen = 2 * 16 * 4;
-                else if(i >= EpisodeInfo[ep].Index8MaskedTiles) // 8x8 tiles are all in one chunk!
-                    outlen = EpisodeInfo[ep].Num8MaskedTiles * 8 * 5;
-                else if(i >= EpisodeInfo[ep].Index8Tiles)
-                    outlen = EpisodeInfo[ep].Num8Tiles * 8 * 4;
+                else if(i >= info.Index8MaskedTiles) // 8x8 tiles are all in one chunk!
+                    outlen = info.Num8MaskedTiles * 8 * 5;
+                else if(i >= info.Index8Tiles)
+                    outlen = info.Num8Tiles * 8 * 4;
             }
             else
             {
@@ -624,12 +626,12 @@ bool CEGAGraphicsGalaxy::begin()
     unsigned long exeheaderlen = 0;
     unsigned long exeimglen = 0;
     assert(mEpisode >= 4);
-    int ep = getEpisodeInfoIndex();
+    auto epIdx = int(getEpisodeInfoIndex());
 
-    byte *p_data = reinterpret_cast<byte*>(mExefile.getHeaderData());
+    byte *dataPtr = reinterpret_cast<byte*>(mExefile.getHeaderData());
 
     //if(m_episode == 7) exeheaderlen = HEADERLEN_KDREAMS;
-    if(!mExefile.readExeImageSize( p_data, &exeimglen, &exeheaderlen))
+    if(!mExefile.readExeImageSize( dataPtr, &exeimglen, &exeheaderlen))
         return false;
 
     std::string filename;
@@ -706,10 +708,10 @@ bool CEGAGraphicsGalaxy::begin()
     // For some reason, MultiMania's KDR support uses a slightly different limit
     // in offset ops. We're not in DOS, so we don't have to worry about
     // memory here >:P
-    bool dreams = (ep == 3);
+    bool dreams = (epIdx == 3);
     unsigned long offset_limit = dreams ? 0xFFFFFFFF : 0x00FFFFFF;
 
-    std::vector<unsigned long> outLenVec = readOutLenVec(ep, CompEgaGraphData);
+    std::vector<unsigned long> outLenVec = readOutLenVec(epIdx, CompEgaGraphData);
 
     auto dataSize = CompEgaGraphData.size();
     size_t numBadChunks = 0;
@@ -728,17 +730,17 @@ bool CEGAGraphicsGalaxy::begin()
         {
 
             // Get the expanded length of the chunk
-            if(i >= EpisodeInfo[ep].Index8Tiles && i < EpisodeInfo[ep].Index16MaskedTiles + EpisodeInfo[ep].Num16MaskedTiles)
+            if(i >= EpisodeInfo[epIdx].Index8Tiles && i < EpisodeInfo[epIdx].Index16MaskedTiles + EpisodeInfo[epIdx].Num16MaskedTiles)
             {
                 // Expanded sizes of 8, 16,and 32 tiles are implicit
-                if(i >= EpisodeInfo[ep].Index16MaskedTiles) // 16x16 tiles are one/chunk
+                if(i >= EpisodeInfo[epIdx].Index16MaskedTiles) // 16x16 tiles are one/chunk
                     outlen = 2 * 16 * 5;
-                else if(i >= EpisodeInfo[ep].Index16Tiles)
+                else if(i >= EpisodeInfo[epIdx].Index16Tiles)
                     outlen = 2 * 16 * 4;
-                else if(i >= EpisodeInfo[ep].Index8MaskedTiles) // 8x8 tiles are all in one chunk!
-                    outlen = EpisodeInfo[ep].Num8MaskedTiles * 8 * 5;
-                else if(i >= EpisodeInfo[ep].Index8Tiles)
-                    outlen = EpisodeInfo[ep].Num8Tiles * 8 * 4;
+                else if(i >= EpisodeInfo[epIdx].Index8MaskedTiles) // 8x8 tiles are all in one chunk!
+                    outlen = EpisodeInfo[epIdx].Num8MaskedTiles * 8 * 5;
+                else if(i >= EpisodeInfo[epIdx].Index8Tiles)
+                    outlen = EpisodeInfo[epIdx].Num8Tiles * 8 * 4;
             }
             else
             {

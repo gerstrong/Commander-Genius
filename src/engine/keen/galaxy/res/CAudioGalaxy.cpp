@@ -357,7 +357,6 @@ bool CAudioGalaxy::LoadFromAudioCK(const unsigned int dictOffset)
     std::string audiohedfilename = gKeenFiles.audioHedFilename;
     audiohedfilename = getResourceFilename( audiohedfilename, gKeenFiles.gameDir, false, false);
 
-    uint32_t *audiostarthedptr;
     uint32_t *audioendhedptr;
 
     std::vector<uint32_t> audiohed;
@@ -377,7 +376,7 @@ bool CAudioGalaxy::LoadFromAudioCK(const unsigned int dictOffset)
     }
     else // no file found? Use the embedded one!
     {
-        audiostarthedptr = reinterpret_cast<uint32_t*>(ExeFile.getHeaderData());
+        uint32_t *audiostarthedptr = reinterpret_cast<uint32_t*>(ExeFile.getHeaderData());
         audioendhedptr = audiostarthedptr + ExeFile.getExeDataSize()/sizeof(uint32_t);
 
         uint32_t *audiohedptr = audiostarthedptr;
@@ -386,7 +385,7 @@ bool CAudioGalaxy::LoadFromAudioCK(const unsigned int dictOffset)
         {
             if(*audiohedptr == audiofilecompsize)
             {
-                for( const uint32_t *startptr = (uint32_t*) (void*) ExeFile.getHeaderData() ;
+                for( const uint32_t *startptr = audiostarthedptr ;
                      audiohedptr > startptr ; audiohedptr-- )
                 {
                     // Get the number of Audio files we have
