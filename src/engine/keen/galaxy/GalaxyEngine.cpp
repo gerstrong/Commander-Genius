@@ -174,7 +174,7 @@ bool GalaxyEngine::loadResources( const Uint8 flags )
             mFlags(flags),
             mLoader(loader) {}
 
-        int handle()
+        int handleExeFile()
         {
             CExeFile &ExeFile = gKeenFiles.exeFile;
             int version = ExeFile.getEXEVersion();
@@ -216,7 +216,7 @@ bool GalaxyEngine::loadResources( const Uint8 flags )
             {
                 gLogging.ftextOut("Loading audio... <br>");
 
-                // Load the sound data                
+                // Load the sound data
                 setupAudio();
 
                 mLoader.setPermilage(900);
@@ -239,6 +239,74 @@ bool GalaxyEngine::loadResources( const Uint8 flags )
             gEventManager.add(new FinishedLoadingResources());
 
             return 1;
+        }
+
+        int handlePythonFile()
+        {
+            CExeFile &ExeFile = gKeenFiles.exeFile;
+            const int Episode = ExeFile.getEpisode();
+
+            mLoader.setPermilage(50);
+
+            if( (mFlags & LOADGFX) == LOADGFX )
+            {
+                // Decode the entire graphics for the game (Only EGAGRAPH.CK?)
+                CEGAGraphicsGalaxy graphics(ExeFile);
+                if( !graphics.loadData() )
+                {
+                    gLogging << "Sorry, this graphics file is invalid! Quitting...";
+                    gEventManager.add( new GMQuit() );
+                    return 0;
+                }
+
+                mLoader.setPermilage(400);
+            }
+
+            if( (mFlags & LOADSTR) == LOADSTR )
+            {
+                // load the strings.
+                /*CMessages Messages(p_exedata, Episode, ExeFile.isDemo(), version);
+                Messages.extractGlobalStrings();
+                mLoader.setPermilage(450);*/
+            }
+
+
+            if( (mFlags & LOADSND) == LOADSND )
+            {
+                gLogging.ftextOut("Loading audio... <br>");
+
+                // Load the sound data
+                setupAudio();
+
+                mLoader.setPermilage(900);
+                gLogging.ftextOut("Done loading audio.<br>");
+            }
+
+            gLogging.ftextOut("Loading game constants...<br>");
+
+            /*
+            gBehaviorEngine.getPhysicsSettings().loadGameConstants(Episode, p_exedata);
+            */
+
+            gLogging.ftextOut("Done loading the resources...<br>");
+
+            mLoader.setPermilage(1000);
+
+            gEventManager.add(new FinishedLoadingResources());
+
+            return 1;
+        }
+
+        int handle()
+        {
+            if(gKeenFiles.exeFile.isPythonScript())
+            {
+                return handlePythonFile();
+            }
+            else
+            {
+                return handleExeFile();
+            }
         }
     };
 

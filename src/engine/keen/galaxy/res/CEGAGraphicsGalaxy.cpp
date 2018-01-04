@@ -630,9 +630,13 @@ bool CEGAGraphicsGalaxy::begin()
 
     byte *dataPtr = reinterpret_cast<byte*>(mExefile.getHeaderData());
 
-    //if(m_episode == 7) exeheaderlen = HEADERLEN_KDREAMS;
-    if(!mExefile.readExeImageSize( dataPtr, &exeimglen, &exeheaderlen))
-        return false;
+    if( !mExefile.isPythonScript() )
+    {
+        //if(m_episode == 7) exeheaderlen = HEADERLEN_KDREAMS;
+        if(!mExefile.readExeImageSize( dataPtr, &exeimglen, &exeheaderlen))
+            return false;
+    }
+
 
     std::string filename;
 

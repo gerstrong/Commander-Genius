@@ -82,6 +82,10 @@ class CExeFile {
 
     bool loadMusicTrack(RingBuffer<IMFChunkType> &imfData, const int track) const;
 
+    bool isPythonScript() const
+    {   return mIsPythonScript;   }
+
+
 
 private:
 
@@ -101,6 +105,7 @@ private:
     bool readCompressedAudiointoMemory(RingBuffer<IMFChunkType> &imfData,
                                        std::vector<uint32_t> &musiched,
                                        std::vector<uint8_t> &AudioCompFileData) const;
+
 
 
 	struct EXE_HEADER
