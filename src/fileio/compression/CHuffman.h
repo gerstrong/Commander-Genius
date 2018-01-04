@@ -41,6 +41,8 @@ public:
 private:
 
 	nodestruct m_nodes[DICT_SIZE];
+
+    void dumpToExternalFile(const std::string &fname);
 };
 
 #endif /* CHUFFMAN_H_ */

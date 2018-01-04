@@ -648,6 +648,7 @@ bool CEGAGraphicsGalaxy::begin()
         filename =  JoinPaths(m_path, gKeenFiles.egadictFilename);
     }
 
+
     if( IsFileAvailable(filename) )
     {
         if( !Huffman.readDictionaryFromFile(filename) )
@@ -663,7 +664,20 @@ bool CEGAGraphicsGalaxy::begin()
     }
     else
     {
-        Huffman.readDictionaryNumberfromEnd( mExefile ); // or from the embedded Exe file
+        if(mExefile.isPythonScript())
+        {
+            gLogging << "You need to provide a dictionary file if you "
+                        "are using a python executable";
+            return false;
+        }
+        else
+        {
+
+            if(!Huffman.readDictionaryNumberfromEnd( mExefile ))
+            {
+                return  false;
+            }
+        }
     }
 
 

@@ -47,8 +47,11 @@ bool CHuffman::readDictionaryNumber( const CExeFile& ExeFile,
     }
 }
 
+
+
+
 bool CHuffman::readDictionaryNumberfromEnd(const CExeFile& ExeFile)
-{
+{        
     const uint32_t bytesToCheck = ExeFile.getExeDataSize()-DICT_SIG_BYTES;
 
     uint8_t *data_ptr = static_cast<uint8_t*>(ExeFile.getHeaderData())+bytesToCheck;
@@ -61,9 +64,15 @@ bool CHuffman::readDictionaryNumberfromEnd(const CExeFile& ExeFile)
        		uint8_t *dictdata = data_ptr-(DICT_SIZE*sizeof(nodestruct))+DICT_SIG_BYTES;
        		const Uint32 size = DICT_SIZE*sizeof(nodestruct);
        		memcpy(m_nodes, dictdata, size);
+
+            //dumpToExternalFile("dump.huffmann");
+
        		return true;
         }
     }
+
+
+
     return false;
 }
 
@@ -136,4 +145,10 @@ void CHuffman::expand(byte *pin, byte *pout,
 
 	}
 	while(incnt < inlen && outcnt < outlen);
+}
+
+void CHuffman::dumpToExternalFile(const std::string &fname)
+{
+    std::ofstream file(fname.c_str());
+    file.write(reinterpret_cast<const char*>(m_nodes), sizeof(m_nodes));
 }
