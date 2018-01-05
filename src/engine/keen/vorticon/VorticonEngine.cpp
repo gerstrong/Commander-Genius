@@ -152,7 +152,7 @@ bool VorticonEngine::loadResources( const Uint8 flags )
             {
                 // Decode the entire graphics for the game (EGALATCH, EGASPRIT, etc.)
                 // This will also read the Tile-Properties
-                CEGAGraphicsVort graphics(mEp, mDataPath);
+                CEGAGraphicsVort graphics;
                 graphics.loadData(version, p_exedata);
                 mLoader.setPermilage(400);
                 mLoader.setStyle(PROGRESS_STYLE_BITMAP);

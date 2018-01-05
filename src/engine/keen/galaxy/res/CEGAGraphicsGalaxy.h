@@ -14,7 +14,6 @@
 #include <map>
 #include <SDL.h>
 #include "fileio/CExeFile.h"
-#include "engine/core/CEGAGraphics.h"
 #include "graphics/GsTilemap.h"
 
 #include "EGAStructs.h"
@@ -22,18 +21,12 @@
 namespace galaxy
 {
 
-//
-class CEGAGraphicsGalaxy : public CEGAGraphics
+
+class CEGAGraphicsGalaxy
 {
 public:
 
-    /**
-     * \brief	This creates the class for reading the graphical
-     * \param	episode		Episode of the chosen game
-     * \param	path		Path to where the game is found on the media
-     * \param	ExeFile		Object to ExeFile in which the
-     */
-	CEGAGraphicsGalaxy(CExeFile &ExeFile);
+	CEGAGraphicsGalaxy();
 
 	int getNumSprites();
 	short getNumTiles();
@@ -109,8 +102,6 @@ private:
 
     std::array<std::array<std::string, 1000>, 4> m_BitmapNameMap;
     std::array<std::array<std::string, 1000>, 4> m_SpriteNameMap;
-
-    CExeFile &mExefile;
 };
 
 }

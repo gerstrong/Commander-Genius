@@ -192,7 +192,7 @@ bool GalaxyEngine::loadResources( const Uint8 flags )
             if( (mFlags & LOADGFX) == LOADGFX )
             {
                 // Decode the entire graphics for the game (Only EGAGRAPH.CK?)
-                CEGAGraphicsGalaxy graphics(ExeFile);
+                CEGAGraphicsGalaxy graphics;
                 if( !graphics.loadData() )
                 {
                     gLogging << "Sorry, this graphics file is invalid! Quitting...";
@@ -251,7 +251,7 @@ bool GalaxyEngine::loadResources( const Uint8 flags )
             if( (mFlags & LOADGFX) == LOADGFX )
             {
                 // Decode the entire graphics for the game (Only EGAGRAPH.CK?)
-                CEGAGraphicsGalaxy graphics(ExeFile);
+                CEGAGraphicsGalaxy graphics;
                 if( !graphics.loadData() )
                 {
                     gLogging << "Sorry, this graphics file is invalid! Quitting...";

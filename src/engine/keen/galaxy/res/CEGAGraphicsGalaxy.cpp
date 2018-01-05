@@ -154,9 +154,7 @@ static EpisodeInfoStruct EpisodeInfo[] =
 
 
 
-CEGAGraphicsGalaxy::CEGAGraphicsGalaxy(CExeFile &ExeFile) :
-CEGAGraphics(ExeFile.getEpisode(), gKeenFiles.gameDir),
-mExefile(ExeFile)
+CEGAGraphicsGalaxy::CEGAGraphicsGalaxy()
 {
     createBitmapsIDs();
     gBehaviorEngine.setEpisodeInfoStructPtr(EpisodeInfo);
@@ -170,18 +168,24 @@ mExefile(ExeFile)
 // 4 - keen6 demo
 size_t CEGAGraphicsGalaxy::getEpisodeInfoIndex()
 {
-    if (mEpisode == 6 && mExefile.isDemo())
+  const int  episode = gKeenFiles.exeFile.getEpisode();
+  const bool isDemo    = gKeenFiles.exeFile.isDemo();
+  
+  if (episode == 6 && isDemo)
     {
-        return 4;
+      return 4;
     }
-
-    return size_t(mEpisode - 4);
+  
+  return size_t(episode - 4);
 }
 
 bool CEGAGraphicsGalaxy::loadData()
-{
+{  
     // Set the palette, so the proper colours are loaded
-    gGraphics.Palette.setupColorPalettes(mExefile.getRawData(), mEpisode);
+    const int  episode = gKeenFiles.exeFile.getEpisode();
+    auto &exefile = gKeenFiles.exeFile;
+  
+    gGraphics.Palette.setupColorPalettes(nullptr, episode);
 
     if(!begin())
     {
@@ -193,7 +197,7 @@ bool CEGAGraphicsGalaxy::loadData()
     // First, retrieve the Tile properties so the tilemap gets properly formatted
     // Important especially for masks, and later in the game for the behaviours
     // of those objects
-    CTileLoader TileLoader( mExefile );
+    CTileLoader TileLoader( exefile );
     if(!TileLoader.load(curEpInfo.Num16Tiles,
                         curEpInfo.Num16MaskedTiles))
     {
@@ -280,7 +284,7 @@ bool CEGAGraphicsGalaxy::loadData()
 
     // Now try to store a preview if possible
     // Create an intro in case it does not exist yet
-    const std::string  path = gKeenFiles.gameDir;
+    const std::string  &path = gKeenFiles.gameDir;
     std::string fullpath = getResourceFilename("preview.bmp", path, false);
     if( fullpath == "" )
     {   // Not found create it
@@ -480,8 +484,13 @@ bool CEGAGraphicsGalaxy::readEGAHead()
 {
     // The file can be embedded in an exe file or separate on disk. Look for the disk one first!
     std::string filename;
-    if (mEpisode <= 6) filename = JoinPaths(m_path, "EGAHEAD.CK" + to_string(mEpisode));
-    else filename =  JoinPaths(m_path, "KDREAMSHEAD.EGA"); // Not sure about that one
+    
+    const auto &exefile = gKeenFiles.exeFile;
+    const int  episode  = exefile.getEpisode();        
+    const std::string &gamedir = gKeenFiles.gameDir;
+    
+    if (episode <= 6) filename = JoinPaths(gamedir, "EGAHEAD.CK" + to_string(episode));
+    else filename =  JoinPaths(gamedir, "KDREAMSHEAD.EGA"); // Not sure about that one
     const int ep = getEpisodeInfoIndex();
 
     std::ifstream File; OpenGameFileR(File, filename, std::ios::binary);
@@ -516,14 +525,14 @@ bool CEGAGraphicsGalaxy::readEGAHead()
     } // no external file. Read it from the exe then
     else
     {
-        byte *p_data = reinterpret_cast<byte*>(mExefile.getHeaderData());
+        byte *p_data = reinterpret_cast<byte*>(exefile.getHeaderData());
 
         // The stuff is Huffman compressed. Use an instance for that
         unsigned long exeheaderlen = 0;
         unsigned long exeimglen = 0;
 
         //if(m_episode == 7) exeheaderlen = HEADERLEN_KDREAMS;
-        if(!mExefile.readExeImageSize( p_data, &exeimglen, &exeheaderlen))
+        if(!exefile.readExeImageSize( p_data, &exeimglen, &exeheaderlen))
             return false;
 
         // Read the EGAHEAD
@@ -620,20 +629,26 @@ std::vector<unsigned long> CEGAGraphicsGalaxy::readOutLenVec(const int ep,
  * \return  true, if loading was successful, otherwise false
  */
 bool CEGAGraphicsGalaxy::begin()
-{
+{  
+    const auto &exefile = gKeenFiles.exeFile;
+    const int  episode  = exefile.getEpisode();          
+  
     // The stuff is Huffman compressed. Use an instance for that
     CHuffman Huffman;
     unsigned long exeheaderlen = 0;
     unsigned long exeimglen = 0;
-    assert(mEpisode >= 4);
+    assert(episode >= 4);
     auto epIdx = int(getEpisodeInfoIndex());
+    
+    const std::string &gamedir = gKeenFiles.gameDir;
+    
 
-    byte *dataPtr = reinterpret_cast<byte*>(mExefile.getHeaderData());
+    byte *dataPtr = reinterpret_cast<byte*>(exefile.getHeaderData());
 
-    if( !mExefile.isPythonScript() )
+    if( !exefile.isPythonScript() )
     {
         //if(m_episode == 7) exeheaderlen = HEADERLEN_KDREAMS;
-        if(!mExefile.readExeImageSize( dataPtr, &exeimglen, &exeheaderlen))
+        if(!exefile.readExeImageSize( dataPtr, &exeimglen, &exeheaderlen))
             return false;
     }
 
@@ -645,7 +660,7 @@ bool CEGAGraphicsGalaxy::begin()
 
     if(!gKeenFiles.egadictFilename.empty())
     {
-        filename =  JoinPaths(m_path, gKeenFiles.egadictFilename);
+        filename =  JoinPaths(gamedir, gKeenFiles.egadictFilename);
     }
 
 
@@ -664,7 +679,7 @@ bool CEGAGraphicsGalaxy::begin()
     }
     else
     {
-        if(mExefile.isPythonScript())
+        if(exefile.isPythonScript())
         {
             gLogging << "You need to provide a dictionary file if you "
                         "are using a python executable";
@@ -673,7 +688,7 @@ bool CEGAGraphicsGalaxy::begin()
         else
         {
 
-            if(!Huffman.readDictionaryNumberfromEnd( mExefile ))
+            if(!Huffman.readDictionaryNumberfromEnd( exefile ))
             {
                 return  false;
             }
@@ -689,8 +704,8 @@ bool CEGAGraphicsGalaxy::begin()
     }
 
     // Now read the EGAGRAPH
-    if (mEpisode <= 6) filename = JoinPaths(m_path, "EGAGRAPH.CK" + to_string(mEpisode));
-    else filename = JoinPaths(m_path, "KDREAMS.EGA");
+    if (episode <= 6) filename = JoinPaths(gamedir, "EGAGRAPH.CK" + to_string(episode));
+    else filename = JoinPaths(gamedir, "KDREAMS.EGA");
 
     std::ifstream File; OpenGameFileR(File, filename, std::ios::binary);
 
@@ -1061,6 +1076,9 @@ bool CEGAGraphicsGalaxy::readBitmaps()
     const auto ep = getEpisodeInfoIndex();
 
     const EpisodeInfoStruct &epInfo = EpisodeInfo[ep];
+    
+    const auto &exefile = gKeenFiles.exeFile;
+    
 
     // ARM processor requires all ints and structs to be 4-byte aligned, so we're just using memcpy()
     BitmapHeadStruct BmpHead[epInfo.NumBitmaps];
@@ -1076,7 +1094,7 @@ bool CEGAGraphicsGalaxy::readBitmaps()
     size_t bitmapNameOffset = ep;
 
     // Special case for k6demo
-    if( ep == 4 && mExefile.isDemo())
+    if( ep == 4 && exefile.isDemo())
     {
         bitmapNameOffset = 3;
     }
@@ -1174,10 +1192,12 @@ bool CEGAGraphicsGalaxy::readTilemaps( const size_t NumTiles, size_t pbasetilesi
                                         size_t rowlength, size_t IndexOfTiles,
                                         GsTilemap &Tilemap, bool tileoff)
 {
+    const std::string  &gamedir = gKeenFiles.gameDir;
+    
     Tilemap.CreateSurface( gGraphics.Palette.m_Palette, SDL_SWSURFACE,
                             NumTiles, pbasetilesize, rowlength );
     SDL_Surface *sfc = Tilemap.getSDLSurface();
-    SDL_FillRect(sfc,NULL, 0);
+    SDL_FillRect(sfc, nullptr, 0);
     if(SDL_MUSTLOCK(sfc))   SDL_LockSurface(sfc);
 
     std::vector<unsigned char> &data = m_egagraph.at(IndexOfTiles).data;
@@ -1219,7 +1239,7 @@ bool CEGAGraphicsGalaxy::readTilemaps( const size_t NumTiles, size_t pbasetilesi
     /// Let's see if there is a high colour tilemap we can load instead
     if(pbasetilesize == 4) // Only valid for the 16x16 tiles tilemap!
     {
-        Tilemap.loadHiresTile("gfx/4TIL0000", m_path);
+        Tilemap.loadHiresTile("gfx/4TIL0000", gamedir);
     }
 
     // Optimize surfaces for the screen
@@ -1232,6 +1252,8 @@ bool CEGAGraphicsGalaxy::readMaskedTilemaps( size_t NumTiles, size_t pbasetilesi
                                             size_t rowlength, size_t IndexOfTiles,
                                             GsTilemap &Tilemap, bool tileoff)
 {
+    const std::string  &gamedir = gKeenFiles.gameDir;  
+  
     Tilemap.CreateSurface( gGraphics.Palette.m_Palette, SDL_SWSURFACE,
                             NumTiles, pbasetilesize, rowlength );
     SDL_Surface *sfc = Tilemap.getSDLSurface();
@@ -1278,7 +1300,7 @@ bool CEGAGraphicsGalaxy::readMaskedTilemaps( size_t NumTiles, size_t pbasetilesi
     if(pbasetilesize == 4) // Only valid for the 16x16 tiles tilemap!
     {
         // Looking for high color pictures
-        if( Tilemap.loadHiresTile("gfx/4TIL0001", m_path) )
+        if( Tilemap.loadHiresTile("gfx/4TIL0001", gamedir) )
         {
             Tilemap.applyGalaxyHiColourMask();
         }
@@ -1543,10 +1565,13 @@ bool CEGAGraphicsGalaxy::readMiscStuff()
     SDL_Color *Palette = gGraphics.Palette.m_Palette;
 
     size_t indexMisc = EpisodeInfo[getEpisodeInfoIndex()].IndexMisc;
-
+    
+    const auto &exefile = gKeenFiles.exeFile;
+    const int  episode  = exefile.getEpisode();        
+    
     // Only position 1 and 2 are read. This will the terminator text.
     // Those are monochrom...
-    for(size_t misc = 0 ; misc < EpisodeInfo[mEpisode-4].NumMisc; misc++)
+    for(size_t misc = 0 ; misc < EpisodeInfo[episode-4].NumMisc; misc++)
     {
         const int index = indexMisc + misc;
 
@@ -1629,7 +1654,7 @@ bool CEGAGraphicsGalaxy::readMiscStuff()
 
         Uint32 textColor;
 
-        switch(mEpisode) // The color of the terminator depends on the episode.
+        switch(episode) // The color of the terminator depends on the episode.
         {
             case 6:  textColor = SDL_MapRGB(bmp->format, 0xff,0x55,0xff); break;
             case 5:  textColor = SDL_MapRGB(bmp->format, 0xff,0x55,0x55); break;

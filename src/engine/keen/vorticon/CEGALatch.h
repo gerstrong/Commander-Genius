@@ -10,7 +10,6 @@
 
 #include <SDL.h>
 #include <string>
-//#include "common/CTileProperties.h"
 #include <graphics/GsTilemap.h>
 #include "engine/core/CPlanes.h"
 #include <vector>
