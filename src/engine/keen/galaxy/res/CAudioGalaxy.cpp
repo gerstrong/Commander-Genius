@@ -143,8 +143,10 @@ void CAudioGalaxy::setupAudioMap()
       sndSlotMapGalaxy[5][SOUND_KEEN_WALK2] = 1;
       sndSlotMapGalaxy[5][SOUND_KEEN_JUMP] = 2;
 
-      memcpy(&holder, ptr + 0xC87D, 1 );
-      sndSlotMapGalaxy[5][SOUND_KEEN_LAND] = holder;
+      // TODO: I think this came from Keen 9. Needs some rework.
+      //memcpy(&holder, ptr + 0xC87D, 1 );
+      //sndSlotMapGalaxy[5][SOUND_KEEN_LAND] = holder;
+      sndSlotMapGalaxy[5][SOUND_KEEN_LAND] = 3;
 
       sndSlotMapGalaxy[5][SOUND_KEEN_FIRE] = 4;
       sndSlotMapGalaxy[5][SOUND_MINEEXPLODE] = 5;
@@ -171,25 +173,33 @@ void CAudioGalaxy::setupAudioMap()
       sndSlotMapGalaxy[5][SOUND_SCRAMBLE] = 26;
       sndSlotMapGalaxy[5][SOUND_SPIROGRIP] = 27;
 
-      memcpy(&holder, ptr + 0x129FC, 1 );
+      // TODO: I think this came from Keen 9. Needs some rework.
+      //memcpy(&holder, ptr + 0x129FC, 1 );
       sndSlotMapGalaxy[5][SOUND_SPINDREDSLAM] = 28;
 
       sndSlotMapGalaxy[5][SOUND_ROBORED_SHOOT] = 29;
       sndSlotMapGalaxy[5][SOUND_ROBORED_SHOOT2] = 30;
 
-      memcpy(&holder, ptr + 0x112DE, 1 );
-      sndSlotMapGalaxy[5][SOUND_AMPTONWALK0] = holder;
 
-      memcpy(&holder, ptr + 0x112F3, 1 );
-      sndSlotMapGalaxy[5][SOUND_AMPTONWALK1] = holder;
+      // TODO: I think this came from Keen 9. Needs some rework.
+      //memcpy(&holder, ptr + 0x112DE, 1 );
+      //sndSlotMapGalaxy[5][SOUND_AMPTONWALK0] = holder;
+      sndSlotMapGalaxy[5][SOUND_AMPTONWALK0] = 31;
+
+      // TODO: I think this came from Keen 9. Needs some rework.
+      //memcpy(&holder, ptr + 0x112F3, 1 );
+      //sndSlotMapGalaxy[5][SOUND_AMPTONWALK1] = holder;
+      sndSlotMapGalaxy[5][SOUND_AMPTONWALK1] = 32;
 
       sndSlotMapGalaxy[5][SOUND_ROBO_STUN] = 33;
       sndSlotMapGalaxy[5][SOUND_STATUS_SLIDE_IN] = 34;
       sndSlotMapGalaxy[5][SOUND_STATUS_SLIDE_OUT] = 35;
       sndSlotMapGalaxy[5][SOUND_SPARKY_CHARGE] = 36;
 
-      memcpy(&holder, ptr + 0x10F93, 1 );
-      sndSlotMapGalaxy[5][SOUND_SPINDREDFLYDOWN] = holder;
+      // TODO: I think this came from Keen 9. Needs some rework.
+      //memcpy(&holder, ptr + 0x10F93, 1 );
+      //sndSlotMapGalaxy[5][SOUND_SPINDREDFLYDOWN] = holder;
+      sndSlotMapGalaxy[5][SOUND_SPINDREDFLYDOWN] = 37;
 
       sndSlotMapGalaxy[5][SOUND_MASTERSHOT] = 38;
       sndSlotMapGalaxy[5][SOUND_MASTERTELE] = 39;
@@ -210,8 +220,10 @@ void CAudioGalaxy::setupAudioMap()
       //sndSlotMapGalaxy[5][?] = 54;
       sndSlotMapGalaxy[5][SOUND_GET_CARD] = 55;
 
-      memcpy(&holder, ptr + 0x13784, 1 );
-      sndSlotMapGalaxy[5][SOUND_ELEVATING] = holder;
+      // TODO: I think this came from Keen 9. Needs some rework.
+      //memcpy(&holder, ptr + 0x13784, 1 );
+      //sndSlotMapGalaxy[5][SOUND_ELEVATING] = holder;
+      sndSlotMapGalaxy[5][SOUND_ELEVATING] = 56;
       //sndSlotMapGalaxy[5][SOUND_ELEVATOR_OPEN] = 57;
       //sndSlotMapGalaxy[5][?] = 58;
       sndSlotMapGalaxy[5][SOUND_SPHEREFULCEILING] = 59;
