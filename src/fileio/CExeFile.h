@@ -64,7 +64,7 @@ class CExeFile {
      *        This Information is hard-coded in the CExefile constructor
      */
     bool Supported();
-    int getEXEVersion();
+    int getEXEVersion() const;
     int getEXECrc();
     bool readExeImageSize(unsigned char *p_data_start, unsigned long *imglen, unsigned long *headerlen) const;
     

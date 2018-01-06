@@ -222,7 +222,7 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 
         assert(SpriteVecPlayer1.size() == spriteVecI.size());
 
-        for(int j=0 ; j<SpriteVecPlayer1.size() ; j++)
+        for(size_t j=0 ; j<SpriteVecPlayer1.size() ; j++)
         {
             spriteVecI[j] = SpriteVecPlayer1[j];
         }

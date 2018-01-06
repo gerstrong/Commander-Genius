@@ -17,9 +17,10 @@
 class CTileLoader {
 public:
 	CTileLoader(int episode, bool demo, int version, unsigned char *data);
-	CTileLoader(CExeFile &Exefile);
+    CTileLoader();
 
-	bool load(size_t NumUnMaskedTiles, size_t NumMaskedTiles);
+    bool load(const size_t NumUnMaskedTiles,
+              const size_t NumMaskedTiles);
 
 private:
 	int m_episode;
@@ -32,9 +33,30 @@ private:
 	typedef std::map<int,long> VersionMap;
 	std::map<int, VersionMap> m_offsetMap;
 
-	bool readVorticonTileinfo(std::vector<CTileProperties> &TileProperties);
-	bool readGalaxyTileinfo(size_t NumUnMaskedTiles, size_t NumMaskedTiles);
+    /**
+     * @brief readVorticonTileinfo
+     * @param data
+     * @param TileProperties
+     * @return
+     */
+    bool readVorticonTileinfo(byte *data,
+                              std::vector<CTileProperties> &TileProperties);
+
+    bool readGalaxyTileinfo(byte *data,
+                            const size_t NumUnMaskedTiles,
+                            const size_t NumMaskedTiles);
+
 	void assignChangeTileAttribute(std::vector<CTileProperties> &TilePropertiesVec);
+
+    /**
+     * @brief readOffsetMapfromFile If python script is given, a tli file.
+     * @param tileFname Tileset file to consider.
+     * @param tileData vector of bytes where the loaded data is stored.
+     * @return true if everything went fine. otherwise false
+     */
+    bool readOffsetMapfromFile(const std::string &tliFname,
+                               std::vector<byte> &tileData);
+
 	void setupOffsetMap();
 	bool canbePickedup(const signed char behaviour);
 	bool isaDoor(const signed char behaviour);

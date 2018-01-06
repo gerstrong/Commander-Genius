@@ -183,7 +183,6 @@ bool CEGAGraphicsGalaxy::loadData()
 {  
     // Set the palette, so the proper colours are loaded
     const int  episode = gKeenFiles.exeFile.getEpisode();
-    auto &exefile = gKeenFiles.exeFile;
   
     gGraphics.Palette.setupColorPalettes(nullptr, episode);
 
@@ -197,7 +196,7 @@ bool CEGAGraphicsGalaxy::loadData()
     // First, retrieve the Tile properties so the tilemap gets properly formatted
     // Important especially for masks, and later in the game for the behaviours
     // of those objects
-    CTileLoader TileLoader( exefile );
+    CTileLoader TileLoader;
     if(!TileLoader.load(curEpInfo.Num16Tiles,
                         curEpInfo.Num16MaskedTiles))
     {

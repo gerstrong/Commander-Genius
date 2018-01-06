@@ -15,6 +15,7 @@
 #include "engine/core/CBehaviorEngine.h"
 #include "CTileLoader.h"
 
+#include <fileio/KeenFiles.h>
 
 CTileLoader::CTileLoader(int episode, bool demo, int version, unsigned char *data)
 {
@@ -26,14 +27,39 @@ CTileLoader::CTileLoader(int episode, bool demo, int version, unsigned char *dat
 	setupOffsetMap();
 }
 
-CTileLoader::CTileLoader(CExeFile &Exefile)
+CTileLoader::CTileLoader()
 {
+    const auto &Exefile = gKeenFiles.exeFile;
+
 	m_episode = Exefile.getEpisode();
 	m_demo = Exefile.isDemo();
 	m_version = Exefile.getEXEVersion();
 	m_data = Exefile.getRawData();
 	m_offset = 0;
-	setupOffsetMap();
+
+    if(!Exefile.isPythonScript())
+    {
+        setupOffsetMap();
+    }
+}
+
+bool CTileLoader::readOffsetMapfromFile(const std::string &tliFname,
+                                        std::vector<byte> &tileData)
+{
+    std::ifstream tliFile(tliFname.c_str());
+
+    if(!tliFile)
+    {
+        return false;
+    }
+
+    tliFile.seekg(0, tliFile.end);
+    const auto fileSize = tliFile.tellg();
+
+    tileData.resize(size_t(fileSize));
+    tliFile.read(reinterpret_cast<char*>(tileData.data()), fileSize);
+
+    return true;
 }
 
 void CTileLoader::setupOffsetMap()
@@ -65,10 +91,42 @@ size_t CTileLoader::getOffset()
     return m_offsetMap[m_demo ? 8 : m_episode][m_version];
 }
 
-bool CTileLoader::load(size_t NumUnMaskedTiles, size_t NumMaskedTiles)
+bool CTileLoader::load(const size_t NumUnMaskedTiles,
+                       const size_t NumMaskedTiles)
 {
 	bool success = false;
-	if(getOffset())
+    bool isTiledataLoaded = false;
+
+    byte *data = nullptr;
+
+    std::vector<byte> tileData;
+
+    if(gKeenFiles.exeFile.isPythonScript())
+    {
+        const auto &gameDir = gKeenFiles.gameDir;
+
+        const std::string tliFname = "Keen" + itoa(m_episode) + ".tli";
+        const auto tliPath = JoinPaths(gameDir, tliFname);
+        const auto fullTliPath = GetFullFileName(tliPath);
+
+        if(!readOffsetMapfromFile(fullTliPath, tileData))
+        {
+            gLogging << "Error reading " << tliPath;
+            return false;
+        }
+        else
+        {
+            isTiledataLoaded = true;
+            data = tileData.data();
+        }
+    }
+    else if(getOffset())
+    {
+        isTiledataLoaded = true;
+        data = m_data + getOffset();
+    }
+
+    if(isTiledataLoaded)
 	{
 		if(m_episode == 1 || m_episode == 2 || m_episode == 3 )
 		{
@@ -77,8 +135,8 @@ bool CTileLoader::load(size_t NumUnMaskedTiles, size_t NumMaskedTiles)
 			for(int i=0 ; i<2 ; i++)
 			{
 			  std::vector<CTileProperties> &tileProperties = gBehaviorEngine.getTileProperties(i);			
-			  tileProperties.assign(NumMaskedTiles, emptyTileProperties);						  
-			  success = readVorticonTileinfo(tileProperties);
+              tileProperties.assign(NumMaskedTiles, emptyTileProperties);
+              success = readVorticonTileinfo(data, tileProperties);
 			}
 		}
 		else if(m_episode == 4 || m_episode == 5 || m_episode == 6 || m_episode == 7 )
@@ -86,7 +144,7 @@ bool CTileLoader::load(size_t NumUnMaskedTiles, size_t NumMaskedTiles)
 			CTileProperties TileProperties;
 			gBehaviorEngine.getTileProperties(0).assign(NumUnMaskedTiles, TileProperties);
 			gBehaviorEngine.getTileProperties(1).assign(NumMaskedTiles, TileProperties);
-			success = readGalaxyTileinfo(NumUnMaskedTiles, NumMaskedTiles);
+            success = readGalaxyTileinfo(data, NumUnMaskedTiles, NumMaskedTiles);
 		}
 	}
 
@@ -97,12 +155,11 @@ bool CTileLoader::load(size_t NumUnMaskedTiles, size_t NumMaskedTiles)
  * \brief This function assings the tileinfo data block previously read to the internal TileProperties
  * 		  structure in CG.
  */
-bool CTileLoader::readVorticonTileinfo(std::vector<CTileProperties> &TileProperties)
+bool CTileLoader::readVorticonTileinfo(byte *data,
+                                       std::vector<CTileProperties> &TileProperties)
 {
 	const size_t NumTiles = TileProperties.size();
 	size_t planesize = 2*NumTiles;
-
-	byte *data = m_data + getOffset();
 
 	// Special workaround. I don't know why this happens, but Episode 3 doesn not seems to read
 	// the plane size. TODO: Check where that value is hidden in the EXE file.
@@ -171,11 +228,12 @@ bool CTileLoader::readVorticonTileinfo(std::vector<CTileProperties> &TilePropert
 	return true;
 }
 
-bool CTileLoader::readGalaxyTileinfo(size_t NumUnMaskedTiles, size_t NumMaskedTiles)
+bool CTileLoader::readGalaxyTileinfo(byte *data,
+                                     const size_t NumUnMaskedTiles,
+                                     const size_t NumMaskedTiles)
 {
     bool success = true;
 
-    byte *data = m_data + getOffset();
     std::vector<CTileProperties> &TileUnmaskedProperties = gBehaviorEngine.getTileProperties(0);
 
     for(size_t j=0 ; j < NumUnMaskedTiles ; j++)

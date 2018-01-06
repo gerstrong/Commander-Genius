@@ -248,7 +248,7 @@ bool CExeFile::Supported()
 	return  m_supportmap[m_datasize][m_episode];
 }
 
-int CExeFile::getEXEVersion()
+int CExeFile::getEXEVersion() const
 {
     switch (m_datasize)
     {
