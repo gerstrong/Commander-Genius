@@ -40,10 +40,8 @@ bool loadActionFile(const std::string &actFilePath)
     return true;
 }
 
-void ActionFormatType::setActionFormat( const size_t sprite_offset )
+byte *getActionBasePtr()
 {
-    byte *ptr = nullptr;
-	
     auto &exeFile = gKeenFiles.exeFile;
 
     if(exeFile.isPythonScript())
@@ -62,19 +60,23 @@ void ActionFormatType::setActionFormat( const size_t sprite_offset )
             if(actFullFilePath == "")
             {
                 gLogging << "Error Loading Action file " << actFullFilePath;
-                return;
+                return nullptr;
             }
 
             loadActionFile(actFullFilePath);
         }
 
-        ptr = actionFormatData.data();
+        return actionFormatData.data();
     }
     else
     {
-        ptr = exeFile.getDSegPtr();
+        return exeFile.getDSegPtr();
     }
+}
 
+void ActionFormatType::setActionFormat( const size_t sprite_offset )
+{
+    byte *ptr = getActionBasePtr();
 	ptr += sprite_offset;
 	memcpy( this, ptr, 15*sizeof(int16_t) );	
 }
@@ -92,7 +94,7 @@ void ActionFormatType::setNextActionFormat()
 
 bool ActionFormatType::getActionFormat( const size_t sprite_offset )
 {
-	byte *ptr = gKeenFiles.exeFile.getDSegPtr();
+    byte *ptr = getActionBasePtr();
 	ptr += sprite_offset;
 	return (memcmp( this, ptr, 15*sizeof(int16_t) ) == 0);
 }
@@ -101,8 +103,7 @@ bool ActionFormatType::getActionFormat( const size_t sprite_offset )
 bool dumpActionFormatToFile(const std::string &fileName,
                             const size_t numChunks)
 {
-    auto &exeFile = gKeenFiles.exeFile;
-    byte *ptr = exeFile.getDSegPtr();
+    byte *ptr = getActionBasePtr();
 
     //std::vector<byte> actionData(numChunks*30, 0);
     std::vector<byte> actionData;

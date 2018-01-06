@@ -59,6 +59,11 @@ bool KeenEngine::start()
 
     gKeenFiles.setupFilenames(mEp);
 
+    if(!loadGamefileNames())
+    {
+        return false;
+    }
+
     gBehaviorEngine.setEpisode(mEp);
 
     // Load the Resources

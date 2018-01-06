@@ -127,7 +127,8 @@ bool CMapLoaderGalaxy::unpackPlaneData( std::ifstream &mapFile,
 
 	for(size_t i=0 ; i<length ; i++)
     {
-        Carmack_Plane.push_back( mapFile.get() );
+        const byte value = mapFile.get();
+        Carmack_Plane.push_back( value );
     }
 
 	size_t decarmacksize = (Carmack_Plane.at(1)<<8)+Carmack_Plane.at(0);
@@ -246,7 +247,8 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
     std::string gamemapfile = gKeenFiles.gamemapsFilename;
 
     std::ifstream MapFile;
-    if(OpenGameFileR(MapFile, getResourceFilename(gamemapfile,path,true,false), std::ios::binary))
+    if(OpenGameFileR(MapFile,
+                     getResourceFilename(gamemapfile,path,true,false), std::ios::binary))
     {
         if(level_offset == 0 && mapHeadContainer.empty())
         {

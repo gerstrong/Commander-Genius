@@ -55,6 +55,7 @@ bool CTileLoader::readOffsetMapfromFile(const std::string &tliFname,
 
     tliFile.seekg(0, tliFile.end);
     const auto fileSize = tliFile.tellg();
+    tliFile.seekg(0, tliFile.beg);
 
     tileData.resize(size_t(fileSize));
     tliFile.read(reinterpret_cast<char*>(tileData.data()), fileSize);

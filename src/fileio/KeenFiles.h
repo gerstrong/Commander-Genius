@@ -74,4 +74,6 @@ struct FileListAdder
 int getRessourceID(const std::string& filename, const std::string& namefilter);
 
 
+bool loadGamefileNames();
+
 #endif /* __KEENFILES_H__ */
