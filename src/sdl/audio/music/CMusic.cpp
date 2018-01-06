@@ -211,7 +211,8 @@ bool CMusic::LoadfromSonglist(const std::string &gamepath, const int &level)
 	return false;
 }
 
-bool CMusic::LoadfromMusicTable(const std::string &gamepath, const std::string &levelfilename)
+bool CMusic::LoadfromMusicTable(const std::string &gamepath,
+                                const std::string &levelfilename)
 {
     bool fileloaded = false;
     std::ifstream Tablefile;
@@ -247,6 +248,42 @@ bool CMusic::LoadfromMusicTable(const std::string &gamepath, const std::string &
 
     return false;
 }
+
+int CMusic::readTrackNofromMusicTable(const std::string &gamepath,
+                                      const std::string &levelfilename)
+{
+    bool fileloaded = false;
+    std::ifstream Tablefile;
+
+    std::string musicpath = getResourceFilename(JoinPaths("music", "table.cfg"), gamepath, false, true);
+
+    if(musicpath == "") return false;
+
+    fileloaded = OpenGameFileR(Tablefile, musicpath);
+
+    if(!fileloaded) return false;
+
+    std::string str_buf;
+
+    while(!Tablefile.eof())
+    {
+        getline(Tablefile, str_buf, ' ');
+        str_buf.erase(0, str_buf.find_first_not_of('\n'));
+        if( str_buf == levelfilename )	// found the level! Load the song!
+        {
+            // Get the song filename and load it!
+            getline(Tablefile, str_buf);
+            TrimSpaces(str_buf);
+
+            return atoi(str_buf.c_str());
+        }
+        Tablefile.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    }
+
+    return -1;
+}
+
+
 
 CMusic::~CMusic()
 {

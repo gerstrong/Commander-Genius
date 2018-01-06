@@ -17,8 +17,8 @@
 
 #include <stdint.h>
 #include <stdio.h>
-#include <string.h>
-
+//#include <string.h>
+#include <string>
 
 enum GalaxyActionType
 {
@@ -70,5 +70,14 @@ struct ActionFormatType
 	 */
 	bool getActionFormat( const size_t sprite_offset );
 };
+
+/**
+ * @brief dumpActionFormatToFile   Dumps the action format
+ * @param fileName  name of the file
+ * @param numChunks  Number of action chunks to dump (one change is 30 bytes long)
+ * @return true if everything went fine, otherwise false.
+ */
+bool dumpActionFormatToFile(const std::string &fileName,
+                            const size_t numChunks);
 
 #endif /* ACTIONFORMAT_H_ */

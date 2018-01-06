@@ -78,10 +78,14 @@ bool loadLevelMusic(const int level)
         return true;
     }
 
-    Uint16 track;
+    int track = gMusicPlayer.readTrackNofromMusicTable(path, levelname);
 
-    byte* musictable_start = ExeFile.getRawData()+GalaxySongAssignments[Idx];
-    memcpy( &track, musictable_start+level*sizeof(Uint16), sizeof(Uint16));
+    // Does the file provide some number as track number to use.
+    if(track < -1)
+    {
+        byte* musictable_start = ExeFile.getRawData()+GalaxySongAssignments[Idx];
+        memcpy( &track, musictable_start+level*sizeof(Uint16), sizeof(Uint16));
+    }
 
     if(track > 20)
     {
@@ -236,6 +240,8 @@ bool GalaxyEngine::loadResources( const Uint8 flags )
 
             mLoader.setPermilage(1000);
 
+            //dumpActionFormatToFile("keen5.act", 425);
+
             gEventManager.add(new FinishedLoadingResources());
 
             return 1;
@@ -243,9 +249,6 @@ bool GalaxyEngine::loadResources( const Uint8 flags )
 
         int handlePythonFile()
         {
-            CExeFile &ExeFile = gKeenFiles.exeFile;
-            const int Episode = ExeFile.getEpisode();
-
             mLoader.setPermilage(50);
 
             if( (mFlags & LOADGFX) == LOADGFX )
