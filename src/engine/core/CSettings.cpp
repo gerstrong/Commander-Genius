@@ -68,7 +68,7 @@ bool CSettings::saveDrvCfg()
             Configuration.WriteString("FileHandling", "SearchPath" + itoa(i), *p);
 
         CVidConfig &VidConf = gVideoDriver.getVidConfig();
-        Configuration.SetKeyword("Video", "fullscreen", VidConf.Fullscreen);
+        Configuration.SetKeyword("Video", "fullscreen", VidConf.mFullscreen);
         Configuration.SetKeyword("Video", "OpenGL", VidConf.mOpengl);
         Configuration.SetKeyword("Video", "VirtPad", VidConf.mVPad);
 
@@ -160,7 +160,7 @@ bool CSettings::loadDrvCfg()
 			return false;
 		}
 
-		Configuration.ReadKeyword("Video", "fullscreen", &VidConf.Fullscreen, false);
+		Configuration.ReadKeyword("Video", "fullscreen", &VidConf.mFullscreen, false);
 		Configuration.ReadInteger("Video", "scale", &value, 1);
 		VidConf.Zoom = value;
 

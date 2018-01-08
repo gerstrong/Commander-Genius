@@ -210,6 +210,9 @@ target_link_libraries (CGeniusExe engine)
 # Link GsKit
 target_link_libraries (CGeniusExe GsKit)
 
+# Link our SDL Extensions
+target_link_libraries(CGeniusExe sdl_extensions)
+
 # Link zlib
 target_link_libraries( CGeniusExe ${ZLIB_LIBRARIES} )
 

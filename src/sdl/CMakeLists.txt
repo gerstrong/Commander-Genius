@@ -4,6 +4,6 @@ add_subdirectory(sys)
 
 include_directories(${SDL_INCLUDE_DIR})
 
-add_library(sdl OBJECT extensions.cpp extensions.h)
-set_property(GLOBAL APPEND PROPERTY CG_OBJ_LIBS $<TARGET_OBJECTS:sdl>)
+add_library(sdl_extensions extensions.cpp extensions.h)
 
+target_link_libraries(sdl_extensions sdl_extensions_audio sdl_extensions_sys)

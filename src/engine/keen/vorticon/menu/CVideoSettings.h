@@ -43,6 +43,8 @@ private:
     Switch			*mpOpenGLSwitch;
 #endif
 
+    Switch          *mpShowCursorSwitch = nullptr;
+
     Switch          *mpVPadSwitch = nullptr;
 
     ComboSelection	*mpRenderScaleQualitySel = nullptr;

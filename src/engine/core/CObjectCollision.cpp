@@ -202,8 +202,10 @@ void CSpriteObject::adjustSlopedTiles( int x, int y1, int y2, const int xspeed )
 
 bool CSpriteObject::moveSlopedTileDown( int x, int y, const int xspeed )
 {
-	if(yinertia!=0)
+    if(yinertia != 0)
+    {
 		return false;
+    }
 
 	std::vector<CTileProperties> &TileProperty = gBehaviorEngine.getTileProperties();
 
@@ -229,7 +231,7 @@ bool CSpriteObject::moveSlopedTileDown( int x, int y, const int xspeed )
 		int y_csf;
 		y_csf = (y>>CSF)<<CSF;
 
-		const Uint32 newpos_y = y_csf - m_BBox.y2 + y_rel - (1<<STC);
+        const int newpos_y = y_csf - m_BBox.y2 + y_rel - (1<<STC);
 		if( m_Pos.y > newpos_y )
         {
 			m_Pos.y = newpos_y;

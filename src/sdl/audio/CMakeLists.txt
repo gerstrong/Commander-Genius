@@ -6,8 +6,11 @@ add_subdirectory(sound)
 include_directories(${SDL_INCLUDE_DIR})
 
 
-add_library(sdl_audio OBJECT Audio.cpp Audio.h
-                             Mixer.cpp
-                             CAudioResources.cpp CAudioResources.h)
+add_library(sdl_extensions_audio Audio.cpp Audio.h
+                                 Mixer.cpp
+                                 CAudioResources.cpp CAudioResources.h)
 
-set_property(GLOBAL APPEND PROPERTY CG_OBJ_LIBS $<TARGET_OBJECTS:sdl_audio>)
+target_link_libraries(sdl_extensions_audio
+                      sdl_extensions_audio_music
+                      sdl_extensions_audio_sound
+                      sdl_extensions_audio_base)

@@ -13,8 +13,6 @@
 #include <base/utils/StringUtils.h>
 #include <widgets/GsMenuController.h>
 
-
-//#include "hardware/Configurator.h"
 #include "engine/core/CBehaviorEngine.h"
 #include "CameraSettings.h"
 #include "CVideoSettings.h"
@@ -40,7 +38,7 @@ private:
 
     void operator()() const
 	{
-		mVSettings.mUserVidConf.Fullscreen = !mVSettings.mUserVidConf.Fullscreen;
+        mVSettings.mUserVidConf.mFullscreen = !mVSettings.mUserVidConf.mFullscreen;
 		mVSettings.release();
         mVSettings.refresh();
 	}
@@ -141,6 +139,7 @@ void CVideoSettings::refresh()
     mpOpenGLSwitch->enable( mUserVidConf.mOpengl );
 #endif
 
+    //mpShowCursorSwitch->enable( mUserVidConf.mShowCursor );
 
     mpVPadSwitch->enable( mUserVidConf.mVPad );
 
@@ -169,7 +168,8 @@ void CVideoSettings::refresh()
 	
     mpFilterSelection->setSelection( mUserVidConf.m_ScaleXFilter==1 ? "none" : (mUserVidConf.m_normal_scale ? "normal" : "scale") + itoa(mUserVidConf.m_ScaleXFilter) + "x" );
 	mpVSyncSwitch->enable( mUserVidConf.mVSync );
-	mpFullScreenSwitch->setText( mUserVidConf.Fullscreen ? "Go Windowed" : "Go Fullscreen" );
+    mpFullScreenSwitch->setText( mUserVidConf.mFullscreen ? "Go Windowed" : "Go Fullscreen" );
+
 
     mpResolutionSelection->setList( ResolutionsList, NUM_MAIN_RESOLUTIONS );
 

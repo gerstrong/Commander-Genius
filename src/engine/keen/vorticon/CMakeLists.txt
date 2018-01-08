@@ -65,39 +65,39 @@ set(CXXSRC
     ai/CVortiMom.cpp
     ai/CVortiNinja.cpp
     ai/CYorp.cpp
-dialog/CMessageBoxVort.cpp
-finale/CEndingEp1.cpp
-finale/CEndingEp2.cpp
-finale/CEndingEp3.cpp
-finale/CFinale.cpp
-finale/CFinaleStaticScene.cpp
-finale/CShipFlySys.cpp
-finale/CTantalusRay.cpp
-finale/finale.cpp
-menu/CAudioSettings.cpp
-menu/CCameraSettings.cpp
-menu/CConfirmMenu.cpp
-menu/CControlsettings.cpp
-menu/cheatsmenu.cpp
-menu/CHelpMenu.cpp
-menu/CLoadMenu.cpp
-menu/CMainMenu.cpp
-menu/COptions.cpp
-menu/CProfilesMenu.cpp
-menu/CSaveMenu.cpp
-menu/CSettingsMenu.cpp
-menu/CVideoSettings.cpp
-menu/VorticonMenu.cpp
-menu/widgets/Button.cpp
-menu/widgets/ComboSelection.cpp
-menu/widgets/Inputtext.cpp
-menu/widgets/NumberControl.cpp
-menu/widgets/Switch.cpp
-playgame/CPlayGameDialogs.cpp
-playgame/CPlayGameGameState.cpp
-playgame/CPlayGameLevel.cpp
-playgame/CPlayGameVorticon.cpp
-playgame/CPlayGameWorldMap.cpp
+    dialog/CMessageBoxVort.cpp
+    finale/CEndingEp1.cpp
+    finale/CEndingEp2.cpp
+    finale/CEndingEp3.cpp
+    finale/CFinale.cpp
+    finale/CFinaleStaticScene.cpp
+    finale/CShipFlySys.cpp
+    finale/CTantalusRay.cpp
+    finale/finale.cpp
+    menu/CAudioSettings.cpp
+    menu/CCameraSettings.cpp
+    menu/CConfirmMenu.cpp
+    menu/CControlsettings.cpp
+    menu/cheatsmenu.cpp
+    menu/CHelpMenu.cpp
+    menu/CLoadMenu.cpp
+    menu/CMainMenu.cpp
+    menu/COptions.cpp
+    menu/CProfilesMenu.cpp
+    menu/CSaveMenu.cpp
+    menu/CSettingsMenu.cpp
+    menu/CVideoSettings.cpp
+    menu/VorticonMenu.cpp
+    menu/widgets/Button.cpp
+    menu/widgets/ComboSelection.cpp
+    menu/widgets/Inputtext.cpp
+    menu/widgets/NumberControl.cpp
+    menu/widgets/Switch.cpp
+    playgame/CPlayGameDialogs.cpp
+    playgame/CPlayGameGameState.cpp
+    playgame/CPlayGameLevel.cpp
+    playgame/CPlayGameVorticon.cpp
+    playgame/CPlayGameWorldMap.cpp
     )
 
 set(HSRC
