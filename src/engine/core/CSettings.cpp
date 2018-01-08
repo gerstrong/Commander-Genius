@@ -79,9 +79,7 @@ bool CSettings::saveDrvCfg()
         Configuration.WriteInt("Video", "gameHeight", VidConf.mGameRect.h);
 
         Configuration.WriteInt("Video", "scale", VidConf.Zoom);
-#if defined(USE_OPENGL)
         Configuration.WriteString("Video", "OGLfilter", VidConf.mRenderScQuality );
-#endif
         Configuration.WriteInt("Video", "filter", VidConf.m_ScaleXFilter);
         Configuration.WriteString("Video", "scaletype", VidConf.m_normal_scale ? "normal" : "scalex" );
         Configuration.WriteInt("Video", "fps", gTimer.FPS());
@@ -115,9 +113,13 @@ bool CSettings::saveDrvCfg()
     gLogging.textOut(FONTCOLORS::GREEN,"Saving game options...");
 
     if(ok)
+    {
         gLogging.textOut(FONTCOLORS::GREEN,"ok.");
+    }
     else
+    {
         gLogging.textOut(FONTCOLORS::RED,"error.");
+    }
 
     return ok;
 }
@@ -184,13 +186,8 @@ bool CSettings::loadDrvCfg()
 		}
 
 
-
-#if defined(USE_OPENGL)
-
         Configuration.ReadKeyword("Video", "OpenGL", &VidConf.mOpengl, true);
         Configuration.ReadString("Video", "OGLfilter",  VidConf.mRenderScQuality, "nearest");
-
-#endif
 
         Configuration.SetKeyword("Video", "VirtPad", VidConf.mVPad);
 

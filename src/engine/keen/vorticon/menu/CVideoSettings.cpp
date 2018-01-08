@@ -198,7 +198,6 @@ void CVideoSettings::release()
 
     mUserVidConf.mVPad = mpVPadSwitch->isEnabled();
 
-
     mUserVidConf.mRenderScQuality = mpRenderScaleQualitySel->getSelection();
 
     // TODO: Better way to setup colors in the menu

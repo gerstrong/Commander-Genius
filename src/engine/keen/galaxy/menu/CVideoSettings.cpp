@@ -144,8 +144,9 @@ void CVideoSettings::refresh()
 
     mpVPadSwitch->enable( mUserVidConf.mVPad );
 
-
+#if defined(USE_OPENGL)
     mpRenderScaleQualitySel->setSelection(mUserVidConf.mRenderScQuality);
+#endif
 
     // TODO: find a way to indicate a color
     mpBorderColorSwitch->enable( mUserVidConf.mBorderColorsEnabled );
@@ -207,11 +208,10 @@ void CVideoSettings::release()
 
 #if defined(USE_OPENGL)
     mUserVidConf.mOpengl = mpOpenGLSwitch->isEnabled();
+    mUserVidConf.mRenderScQuality = mpRenderScaleQualitySel->getSelection();
 #endif
 
     mUserVidConf.mVPad = mpVPadSwitch->isEnabled();
-
-    mUserVidConf.mRenderScQuality = mpRenderScaleQualitySel->getSelection();
 	
 #if !defined(EMBEDDED)	
 	mUserVidConf.mVSync = mpVSyncSwitch->isEnabled();
