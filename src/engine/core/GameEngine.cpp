@@ -72,26 +72,18 @@ void GameEngine::renderFPSDisplay()
         rect.w = 150;
         rect.h = 10;
 
-        if(!mpFPSSurface)
+        if(!mFPSSurface)
         {
-            auto *blit = gVideoDriver.getBlitSurface();
-            SDL_PixelFormat *format = blit->format;
-
-            mpFPSSurface.reset( SDL_CreateRGBSurface( SDL_SWSURFACE,
-                        rect.w,
-                        rect.h,
-                        RES_BPP,
-                        format->Rmask,
-                        format->Gmask,
-                        format->Bmask,
-                        format->Amask ), &SDL_FreeSurface );
+            mFPSSurface.createRGBSurface(rect);
         }
 
         std::string tempbuf = "FPS: " + ftoa(gTimer.LastFPS());
-        SDL_FillRect(mpFPSSurface.get(),NULL,0x88888888);
 
-        gGraphics.getFont(1).drawFont(mpFPSSurface.get(), tempbuf, 1, 1, false);
+        mFPSSurface.fillRGBA(0x88, 0x88, 0x88, 0x88);
 
-        BlitSurface(mpFPSSurface.get(), NULL, gVideoDriver.getBlitSurface(), &rect);
+        gGraphics.getFont(1).drawFont(mFPSSurface, tempbuf, 1, 1, false);
+
+        GsWeakSurface blitWeak(gVideoDriver.getBlitSurface());
+        mFPSSurface.blitTo(blitWeak, rect);
     }
 }

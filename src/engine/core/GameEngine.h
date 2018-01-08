@@ -9,6 +9,7 @@
 #include "CResourceLoader.h"
 
 #include <base/GsEngine.h>
+#include <graphics/GsSurface.h>
 #include <memory>
 
 #ifndef GAMEENGINE_H
@@ -46,7 +47,7 @@ protected:
 
 private:
 
-    std::shared_ptr<SDL_Surface> mpFPSSurface;
+    GsSurface mFPSSurface;
 
 };
 
