@@ -1,3 +1,11 @@
+commandergenius (2.0.1ppa1) xenial; urgency=low
+
+  *  Upstream update to version 2.0.1
+  *  Many bug fixes, better performance
+  *  Much improved download manager
+
+ -- Gerhard Stein <gerstrong@gmail.com>  Thu, 11 Jan 2018 18:40:08 +0100
+
 commandergenius (1.9.8ppa3) xenial; urgency=low
 
   *  Modern style option finally does something (translucent Keen in hidden areas)

@@ -1,7 +1,7 @@
 #!/bin/sh
 
-VERSION=1.9.8
-SUBVER=ppa3
+VERSION=2.0.1
+SUBVER=ppa1
 KEY="0x6A1F4CC6"
 
 DST=../cgenius_${VERSION}
