@@ -1,5 +1,7 @@
 v2.0.1:
 -------
+- Path fixes under windows
+- Updated GsKit
 
 
 v2.0.0:

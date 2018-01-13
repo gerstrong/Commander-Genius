@@ -28,6 +28,12 @@ MESSAGE(STATUS "Preparing the Build-System for Commander Genius" )
 execute_process(COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/get_version.sh OUTPUT_VARIABLE CG_VERSION)
 string(REGEX REPLACE "[\r\n]" "" CG_VERSION "${CG_VERSION}")
 
+# Since shell script get_version is not processed properly on windows, we have to define manually here.
+# TODO: Better system for defining the version
+IF(WIN32)
+  set(CG_VERSION "2.0.1")
+endif()
+
 # Generate the README file with the correct version string
 configure_file(README.in README)
 configure_file(README.in ${CMAKE_BINARY_DIR}/README)
@@ -66,4 +72,10 @@ add_subdirectory("GsKit")
 # And build Commander Genius on top of that!
 add_subdirectory("src")
 
+MESSAGE( STATUS "CG_VERSION = ${CG_VERSION}" )
+
 INCLUDE(package.cmake)
+
+MESSAGE( STATUS "Build system is prepared. To Build the project just type \"make\"" )
+MESSAGE( STATUS "If you want to create the installation package just type \"make package\" after you build the project" )
+
