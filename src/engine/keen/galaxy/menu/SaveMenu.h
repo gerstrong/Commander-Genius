@@ -25,8 +25,7 @@ public:
 
 
 private:
-    //CConfirmMenu *mp_OverwriteMenu;
-	bool m_overwrite;
+    bool m_overwrite = false;
 };
 
 }
