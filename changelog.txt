@@ -1,3 +1,8 @@
+v2.0.2:
+-------
+- Bug fixes basically
+- Bug that same music was loaded in all the levels fixed
+
 v2.0.1:
 -------
 - Path fixes under windows
