@@ -23,6 +23,7 @@ mScrollPos(initialPos),
 mHDir(hDir),
 mVDir(vDir)
 {
+
     mpScrollSurface.reset( gVideoDriver.convertThroughBlitSfc(pScrollSurface), &SDL_FreeSurface );
 }
 

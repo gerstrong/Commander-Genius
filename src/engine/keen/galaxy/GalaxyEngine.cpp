@@ -83,7 +83,9 @@ bool loadLevelMusic(const int level)
     // Does the file provide some number as track number to use.
     if(track < -1)
     {
-        byte* musictable_start = ExeFile.getRawData()+GalaxySongAssignments[Idx];
+        track = 0;
+        byte* rawDataPtr = ExeFile.getRawData();
+        byte* musictable_start = rawDataPtr+GalaxySongAssignments[Idx];
         memcpy( &track, musictable_start+level*sizeof(Uint16), sizeof(Uint16));
     }
 

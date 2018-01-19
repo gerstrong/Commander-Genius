@@ -30,16 +30,14 @@ void CVibrate::ponder(const float deltaT)
 
 void CVibrate::render()
 {
-    SDL_Surface *sfc = gVideoDriver.getBlitSurface();
     SDL_Rect gamerect = gVideoDriver.getGameResolution().SDLRect();
 
-    // then erase the entire old surface ...
-//#if SDL_VERSION_ATLEAST(2, 0, 0)
+    // Copy the blit surface into the buffer
+    GsWeakSurface blitWeak(gVideoDriver.getBlitSurface());
+    mVibSfc.createCopy(blitWeak);
 
-//#else
-    mpVibSfc.reset( gVideoDriver.convertThroughBlitSfc(sfc), &SDL_FreeSurface );
-//#endif
-    SDL_FillRect(sfc, &gamerect, SDL_MapRGB(sfc->format, 0,0,0));
+    // Erase what we have now...
+    blitWeak.fillRGB(gamerect, 0, 0, 0);
 
     // ... and create that moved to some direction;
     mVibRect.x = m_dir_x;
@@ -48,6 +46,5 @@ void CVibrate::render()
     mVibRect.w = gamerect.h;
 
     // Blit it and free temp surface
-    BlitSurface( mpVibSfc.get(), &gamerect,
-                     gVideoDriver.getBlitSurface(), &mVibRect );
+    mVibSfc.blitTo(blitWeak, gamerect, mVibRect);
 }

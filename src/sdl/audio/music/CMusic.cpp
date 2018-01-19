@@ -257,11 +257,11 @@ int CMusic::readTrackNofromMusicTable(const std::string &gamepath,
 
     std::string musicpath = getResourceFilename(JoinPaths("music", "table.cfg"), gamepath, false, true);
 
-    if(musicpath == "") return false;
+    if(musicpath == "") return -3;
 
     fileloaded = OpenGameFileR(Tablefile, musicpath);
 
-    if(!fileloaded) return false;
+    if(!fileloaded) return -2;
 
     std::string str_buf;
 

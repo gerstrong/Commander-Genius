@@ -11,6 +11,7 @@
 #include <memory>
 
 #include <base/video/GsEffectController.h>
+#include <graphics/GsSurface.h>
 
 #include <base/GsTimer.h>
 
@@ -28,7 +29,7 @@ private:
 
 	Sint8 m_dir_x, m_dir_y;
 
-	std::shared_ptr<SDL_Surface> mpVibSfc;
+    GsSurface mVibSfc;
 
     SDL_Rect mVibRect;
 };
