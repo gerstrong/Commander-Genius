@@ -208,9 +208,10 @@ bool GameDownloader::loadCatalogue(const std::string &catalogueFile)
             const auto filePath = JoinPaths("cache", gce.mPictureFile);
 
             const auto fullfname = GetFullFileName(filePath);
-            SDL_Surface *pPrimBmp = IMG_Load( fullfname.c_str() );
-            std::shared_ptr<SDL_Surface> bmpSfcPtr( pPrimBmp );
-            gce.pBmp.reset( new GsBitmap(bmpSfcPtr) );
+
+            gce.mBmpPtr.reset(new GsBitmap);
+
+            gce.mBmpPtr->loadImg(fullfname);
 
             mGameCatalogue.push_back(gce);
         }

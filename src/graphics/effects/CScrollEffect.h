@@ -36,7 +36,7 @@ public:
     void ponder(const float deltaT);
     void render();
 
-	Sint16 getScrollPosition();
+    int getScrollPosition();
 
 private:
 
@@ -46,8 +46,7 @@ private:
     int mScrollPos = 0;
     const direction_t mHDir;
     const direction_t mVDir;
-    std::shared_ptr<SDL_Surface> mpOldSurface;
-    std::shared_ptr<SDL_Surface> mpScrollSurface;
+    GsSurface mOldSurface, mScrollSurface;
 
     float mRemains = 0.0f;
 };

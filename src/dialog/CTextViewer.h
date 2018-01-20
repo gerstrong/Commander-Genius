@@ -63,7 +63,7 @@ private:
 	bool m_mustclose;
 	int m_timer;
 
-	std::shared_ptr<SDL_Surface> mpTextVSfc;
+    std::shared_ptr<SDL_Surface> mpTextVSfc;
 };
 
 #endif /* CTEXTVIEWER_H_ */

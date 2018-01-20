@@ -45,13 +45,10 @@ mCommanderTextSfc(gGraphics.getMiscGsBitmap(0)),
 mKeenTextSfc(gGraphics.getMiscGsBitmap(1)),
 mSkipSection(false)
 {
-//    auto &tetTest = gGraphics.getMiscGsBitmap(0);
-//    mCommanderTextSfc = tetTest;
-
     const GsRect<Uint16> gameRect = gVideoDriver.getVidConfig().mGameRect;
     gVideoDriver.setNativeResolution(gameRect);
 
-    const int episode = gBehaviorEngine.getEpisode();
+    const auto episode = gBehaviorEngine.getEpisode();
 
     if(episode == 4)
         mCreditsBmpID = 98;
@@ -72,11 +69,11 @@ mSkipSection(false)
 
     // Scale Bitmaps to adapt the resolutions
     GsRect<Uint16> cmdTextRect, keenTextRect;
-    cmdTextRect.w = mCommanderTextSfc.getSDLSurface()->w;
+    cmdTextRect.w = mCommanderTextSfc.width();
     cmdTextRect.x = cmdTextRect.y = 0;
-    cmdTextRect.h = mCommanderTextSfc.getSDLSurface()->h;
-    keenTextRect.w = mKeenTextSfc.getSDLSurface()->w;
-    keenTextRect.h = mKeenTextSfc.getSDLSurface()->h;
+    cmdTextRect.h = mCommanderTextSfc.height();
+    keenTextRect.w = mKeenTextSfc.width();
+    keenTextRect.h = mKeenTextSfc.height();
     keenTextRect.x = keenTextRect.y = 0;
 
     cmdTextRect.h *= mScaleFactor;

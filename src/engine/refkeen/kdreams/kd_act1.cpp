@@ -247,7 +247,9 @@ void ChangeState (objtype *ob, statetype *state)
 	ob->ticcount = 0;
 
     if(!state)
+    {
         return;
+    }
 
 	if (state->rightshapenum)
 	{

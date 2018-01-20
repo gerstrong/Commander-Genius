@@ -159,7 +159,8 @@ private:
     CResourceLoaderBackground mGameScanner;
 
     std::shared_ptr<CGUIBitmap> mCurrentBmp;
-    std::vector< std::shared_ptr<GsBitmap> > mpPrevievBmpVec;
+    std::vector< std::shared_ptr<GsBitmap> > mPreviewBmpPtrVec;
+
     CGUIText *mpEpisodeText;
     CGUIText *mpDemoText;
     CGUIText *mpVersionText;

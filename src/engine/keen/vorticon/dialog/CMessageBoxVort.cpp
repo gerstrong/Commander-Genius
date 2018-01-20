@@ -8,7 +8,7 @@
 #include <memory>
 #include <base/video/CVideoDriver.h>
 #include <base/CInput.h>
-#include <widgets/GsBitmap.h>
+#include <widgets/GsBitmapBox.h>
 
 
 #include "CMessageBoxVort.h"
@@ -16,7 +16,10 @@
 #include "sdl/extensions.h"
 
 
-CMessageBoxVort::CMessageBoxVort(const std::string& Text, bool lower, bool keymsg, bool leftbound) :
+CMessageBoxVort::CMessageBoxVort(const std::string& Text,
+                                 const bool lower,
+                                 const bool keymsg,
+                                 const bool leftbound) :
 CMessageBox(Text, lower, keymsg, leftbound, CGUIDialog::FXKind::EXPAND)
 {
    initVorticonBackground();   
@@ -88,6 +91,6 @@ void CMessageBoxVort::addTileAt(Uint16 tile, Uint16 x, Uint16 y)
 
     fRect.transformInverse(scaleRect);
 
-    std::shared_ptr<GsBitmap> pBitmap(new GsBitmap(bmpSfc));
-    addControl( new CGUIBitmap(pBitmap), fRect );
+    std::shared_ptr<GsBitmap> bmpShared(new GsBitmap(bmpSfc));
+    addControl( new CGUIBitmap(bmpShared), fRect );
 }

@@ -10,8 +10,7 @@
 
 
 CColorMerge::CColorMerge(const Uint8 speed) :
-m_Speed(speed),
-m_Alpha(0)
+m_Speed(speed)
 {
     getSnapshot();
 }
@@ -21,18 +20,14 @@ void CColorMerge::getSnapshot()
 {
     gVideoDriver.collectSurfaces();
 
-    mpOldSurface.reset( gVideoDriver.convertThroughBlitSfc( gVideoDriver.mpVideoEngine->getBlitSurface() ), &SDL_FreeSurface );
+    mOldSurface.createFromSDLSfc(gVideoDriver.mpVideoEngine->getBlitSurface());
 }
 
 // Effect cycle
 void CColorMerge::ponder(const float deltaT)
 {
 	// Process the effect
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-    SDL_SetSurfaceAlphaMod( mpOldSurface.get(), 255-m_Alpha );
-#else
-    SDL_SetAlpha( mpOldSurface.get(), SDL_SRCALPHA, 255-m_Alpha );
-#endif
+    mOldSurface.setAlpha(255-m_Alpha);
 	
 	const int sum = m_Alpha + m_Speed;
 
@@ -49,8 +44,8 @@ void CColorMerge::ponder(const float deltaT)
 
 void CColorMerge::render()
 {
-    BlitSurface( mpOldSurface.get(), NULL,
-                gVideoDriver.getBlitSurface(), NULL );
+    GsWeakSurface weakBlit(gVideoDriver.getBlitSurface());
+    mOldSurface.blitTo(weakBlit);
 }
 
 

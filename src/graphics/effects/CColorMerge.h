@@ -15,8 +15,7 @@
 #include <memory>
 
 #include <base/video/GsEffectController.h>
-
-
+#include <graphics/GsSurface.h>
 
 class CColorMerge : public CEffects
 {
@@ -25,18 +24,15 @@ public:
 
     void ponder(const float deltaT);
     void render();
-	
-	std::shared_ptr<SDL_Surface> &getSfc()
-	{  return mpOldSurface;  }
-	
+		
 	void getSnapshot();		
 
 private:
 	
-	Uint8 m_Speed;
-	Uint8 m_Alpha;
+    Uint8 m_Speed = 0;
+    Uint8 m_Alpha = 0;
 
-	std::shared_ptr<SDL_Surface> mpOldSurface;
+    GsSurface mOldSurface;
 };
 
 #endif /* CCOLORMERGE_H_ */

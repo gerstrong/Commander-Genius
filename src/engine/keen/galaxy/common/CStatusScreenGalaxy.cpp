@@ -59,8 +59,8 @@ void CStatusScreenGalaxy::drawBase(SDL_Rect &EditRect)
 	GsBitmap &SupportBmp = gGraphics.getMaskedBitmap(2);
 	SDL_Rect SupportRect;
 
-	SupportRect.w = SupportBmp.getSDLSurface()->w;
-	SupportRect.h = SupportBmp.getSDLSurface()->h;
+    SupportRect.w = SupportBmp.width();
+    SupportRect.h = SupportBmp.height();
 	Dest.x = (DestRect.w-SupportRect.w)/2;	Dest.y = 0; 
 
     BlitSurface( SupportBmp.getSDLSurface(), NULL, mpStatusSurface.get(), &Dest );

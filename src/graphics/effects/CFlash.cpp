@@ -13,13 +13,9 @@ CFlash::CFlash(Uint32 msecs, Uint8 speed, Uint32 color) :
     m_StartTime(gTimer.getTicks()),
     m_RunTime(msecs),
     m_Speed(speed),
-    m_Color(color),
-    m_Alpha(0),
-    m_FadeDir(FADE_IN),
-    m_Style(FADE_PULSE),
-    m_MaxAlpha(255),
-    mFadeSurface(gVideoDriver.convertThroughBlitSfc(gVideoDriver.getBlitSurface()))
+    m_Color(color)
 {
+    mFadeSurface.createFromSDLSfc(gVideoDriver.getBlitSurface());
     mFadeSurface.fill(m_Color);
 }
 
@@ -28,12 +24,10 @@ CFlash::CFlash(Uint32 msecs, Uint8 speed, Uint32 color, Uint8 m_maxalpha) :
     m_RunTime(msecs),
     m_Speed(speed),
     m_Color(color),
-    m_Alpha(0),
-    m_FadeDir(FADE_IN),
     m_Style(FADE_NORMAL),
-    m_MaxAlpha(m_maxalpha),
-    mFadeSurface(gVideoDriver.convertThroughBlitSfc(gVideoDriver.getBlitSurface()))
+    m_MaxAlpha(m_maxalpha)
 {
+    mFadeSurface.createFromSDLSfc(gVideoDriver.getBlitSurface());
     mFadeSurface.fill(m_Color);
 }
 

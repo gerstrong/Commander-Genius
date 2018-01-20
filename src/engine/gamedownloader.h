@@ -15,8 +15,7 @@ struct GameCatalogueEntry
     std::string mDescription;
     std::string mPictureFile;
 
-    // Pointer to the bitmap
-    std::shared_ptr<GsBitmap> pBmp;
+    std::shared_ptr<GsBitmap> mBmpPtr;
 };
 
 

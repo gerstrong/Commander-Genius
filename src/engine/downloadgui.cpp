@@ -90,7 +90,7 @@ void CGameLauncher::ponderDownloadDialog()
 
         mpDDescriptionText->setText(gameEntry.mDescription);
 
-        mpCurrentDownloadBmp->setBitmapPtr(gameEntry.pBmp);
+        mpCurrentDownloadBmp->setBitmapPtr(gameEntry.mBmpPtr);
 
         mLastStoreSelection = sel;
     }

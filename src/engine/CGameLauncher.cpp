@@ -121,7 +121,7 @@ bool CGameLauncher::setupMenu()
     mCurrentBmp = std::dynamic_pointer_cast< CGUIBitmap >
                   ( mLauncherDialog.getControlList().back() );
 
-    mpPrevievBmpVec.resize(m_Entries.size());
+    mPreviewBmpPtrVec.resize(m_Entries.size());
 
 	std::vector<GameEntry>::iterator it = m_Entries.begin();
     unsigned int i=0;
@@ -136,10 +136,8 @@ bool CGameLauncher::setupMenu()
 
         if(IsFileAvailable(fullfilename))
         {
-            SDL_Surface *pPrimBmp = SDL_LoadBMP(GetFullFileName(fullfilename).c_str());
-            std::shared_ptr<SDL_Surface> bmpSfcPtr( pPrimBmp );
-            std::shared_ptr<GsBitmap> pBmp(new GsBitmap(bmpSfcPtr));
-            mpPrevievBmpVec[i] = pBmp;
+            mPreviewBmpPtrVec[i].reset(new GsBitmap);
+            mPreviewBmpPtrVec[i]->loadHQBitmap(fullfilename);
         }
         i++;
     }
@@ -670,7 +668,7 @@ void CGameLauncher::ponderGameSelDialog(const float deltaT)
         mpDemoText->setText(entry.demo ? "Demo" : "");
 
         // Now update the bitmap
-        mCurrentBmp->setBitmapPtr(mpPrevievBmpVec[mSelection]);
+        mCurrentBmp->setBitmapPtr(mPreviewBmpPtrVec[mSelection]);
     }
 
     mLauncherDialog.processLogic();

@@ -13,7 +13,10 @@
 class CMessageBoxVort : public CMessageBox
 {
 public:
-	CMessageBoxVort(const std::string& Text, bool lower = false, bool keymsg = false, bool leftbound = false);
+    CMessageBoxVort(const std::string& Text,
+                    const bool lower = false,
+                    const bool keymsg = false,
+                    const bool leftbound = false);
 
     void initVorticonBackground();
 

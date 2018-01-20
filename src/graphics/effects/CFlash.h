@@ -39,10 +39,10 @@ private:
 
 	Uint8 m_Speed;
 	Uint32 m_Color;
-	Uint8 m_Alpha;
-	fade_dir m_FadeDir;
-	Uint8 m_Style;
-	Uint8 m_MaxAlpha;   
+    Uint8 m_Alpha = 0;
+    fade_dir m_FadeDir = FADE_IN;
+    Uint8 m_Style = FADE_PULSE;
+    Uint8 m_MaxAlpha = 255;
     GsSurface mFadeSurface;
 };
 

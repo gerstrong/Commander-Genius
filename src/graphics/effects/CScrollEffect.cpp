@@ -23,8 +23,7 @@ mScrollPos(initialPos),
 mHDir(hDir),
 mVDir(vDir)
 {
-
-    mpScrollSurface.reset( gVideoDriver.convertThroughBlitSfc(pScrollSurface), &SDL_FreeSurface );
+    mScrollSurface.createFromSDLSfc(pScrollSurface);
 }
 
 CScrollEffect::CScrollEffect(GsWeakSurface &scrollSurface,
@@ -39,7 +38,7 @@ mScrollPos(initialPos),
 mHDir(hDir),
 mVDir(vDir)
 {
-    mpScrollSurface.reset( gVideoDriver.convertThroughBlitSfc(scrollSurface.getSDLSurface()), &SDL_FreeSurface );
+    mScrollSurface.createCopy(scrollSurface);
 }
 
 void CScrollEffect::ponder(const float deltaT)
@@ -73,12 +72,12 @@ void CScrollEffect::ponder(const float deltaT)
             if(mVDir == DOWN)
             {
                 posOldSfc = gVideoDriver.getBlitSurface()->h;
-                posScrollSfc = mpScrollSurface->h;
+                posScrollSfc = mScrollSurface.height();
             }
             else
             {
                 posOldSfc = gVideoDriver.getBlitSurface()->w;
-                posScrollSfc = mpScrollSurface->w;
+                posScrollSfc = mScrollSurface.width();
             }
 
 
@@ -99,27 +98,25 @@ void CScrollEffect::render()
 {
     SDL_Rect gameres = gVideoDriver.getGameResolution().SDLRect();
     SDL_Rect dest = gameres;
-    SDL_Rect src = mpScrollSurface->clip_rect;
+    SDL_Rect src = mScrollSurface.getSDLSurface()->clip_rect;
 
     if(mVDir == DOWN)
     {
-        src.y = mpScrollSurface->h-mScrollPos;
+        src.y = mScrollSurface.height()-mScrollPos;
         dest.h = mScrollPos;
     }
     else if(mHDir == RIGHT)
     {
-        src.x = mpScrollSurface->w-mScrollPos;
+        src.x = mScrollSurface.width()-mScrollPos;
         dest.w = mScrollPos;
     }
 
-    BlitSurface(mpScrollSurface.get(),
-                   &src,
-                   gVideoDriver.getBlitSurface(),
-                   &dest);
+    GsWeakSurface blitWeak(gVideoDriver.getBlitSurface());
 
+    mScrollSurface.blitTo(blitWeak, src, dest);
 }
 
-Sint16 CScrollEffect::getScrollPosition()
+int CScrollEffect::getScrollPosition()
 {
 	return mScrollPos;
 }
