@@ -81,15 +81,19 @@ void CInventory::toggleStatusScreen()
         mp_StatusScreen->scaleToResolution();
 		gVideoDriver.collectSurfaces();
 
-        mp_StatusBgrnd = gVideoDriver.convertThroughBlitSfc(gVideoDriver.mpVideoEngine->getBlitSurface());
 
         CScrollEffect* ScrollEffect = dynamic_cast<CScrollEffect*>(gEffectController.Effect());
 
 		if( ScrollEffect )
+        {
 			scroll_pos = ScrollEffect->getScrollPosition();
+        }
 
         gEffectController.setupEffect(
-                    new CScrollEffect(mp_StatusScreen->getStatusSfc(), scroll_pos, scaleFac*scaleFac, CENTER, DOWN));
+                    new CScrollEffect(mp_StatusScreen->mStatusSfcTransformed,
+                                      scroll_pos,
+                                      scaleFac*scaleFac,
+                                      CENTER, DOWN));
 	}
 	else
 	{		
@@ -99,17 +103,15 @@ void CInventory::toggleStatusScreen()
 
         // Check if it's already scrolling and get the position
 		if( ScrollEffect )
-			scroll_pos = ScrollEffect->getScrollPosition();
-
-        gEffectController.setupEffect(
-                    new CScrollEffect(mp_StatusScreen->getStatusSfc(), scroll_pos, -scaleFac*scaleFac, CENTER, DOWN));
-
-		if(mp_StatusBgrnd)
         {
-			SDL_FreeSurface(mp_StatusBgrnd);
+			scroll_pos = ScrollEffect->getScrollPosition();
         }
 
-        mp_StatusBgrnd = nullptr;
+        gEffectController.setupEffect(
+                    new CScrollEffect(mp_StatusScreen->mStatusSfcTransformed,
+                                      scroll_pos, -scaleFac*scaleFac,
+                                      CENTER, DOWN));
+
 	}
 
 	gInput.flushAll();

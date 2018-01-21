@@ -31,7 +31,7 @@ void CHUD::createHUDBlit()
 {        
     mHUDBlit.createRGBSurface(mRenderRect);
     mHUDBlit.setAlpha(220);
-    mHUDBlit.makeBlitCompatible();
+    mHUDBlit.makeBlitCompatible();    
 }
 
 void CHUD::setup(const int id)
@@ -196,18 +196,18 @@ void CHUD::renderGalaxy()
   charges = (mOldCharges<99) ? mOldCharges : 99;
 
   // Draw the HUD with all the digits
-  auto blitsfc = mHUDBlit.getSDLSurface();
+  auto hudBlitsfc = mHUDBlit.getSDLSurface();
 
   const int w = mHUDBox.getWidth();
   const int h = mHUDBox.getHeight();
 
-  mHUDBox.drawSprite( blitsfc, -4, 0, w, h);
+  mHUDBox.drawSprite( hudBlitsfc, -4, 0, w, h);
 
   if(lives >= 0)
   {
-    gGraphics.drawDigits(getRightAlignedString(itoa(score),9), 4, 4, blitsfc );
-    gGraphics.drawDigits(getRightAlignedString(itoa(charges),2),60, 20, blitsfc );
-    gGraphics.drawDigits(getRightAlignedString(itoa(lives),2), 20, 20, blitsfc );
+    gGraphics.drawDigits(getRightAlignedString(itoa(score),9), 4, 4, hudBlitsfc );
+    gGraphics.drawDigits(getRightAlignedString(itoa(charges),2),60, 20, hudBlitsfc );
+    gGraphics.drawDigits(getRightAlignedString(itoa(lives),2), 20, 20, hudBlitsfc );
 
     if(gBehaviorEngine.mPlayers > 1 && mId == CCamera::getLead())
     {
@@ -215,7 +215,7 @@ void CHUD::renderGalaxy()
         rect.x = 7; rect.y = 29;
         rect.h = 1; rect.w = 10;
 
-        SDL_FillRect(blitsfc, &rect, 0xffff0000);
+        SDL_FillRect(hudBlitsfc, &rect, 0xffff0000);
     }
   }
 

@@ -11,20 +11,6 @@
 #include <cassert>
 
 
-CScrollEffect::CScrollEffect(SDL_Surface *pScrollSurface,
-                             const int initialPos,
-                             const int speed,
-                             const direction_t hDir,
-                             const direction_t vDir) :
-mInitSpeed(speed),
-mSpeed(2*speed),
-mInitialSpeed(speed),
-mScrollPos(initialPos),
-mHDir(hDir),
-mVDir(vDir)
-{
-    mScrollSurface.createFromSDLSfc(pScrollSurface);
-}
 
 CScrollEffect::CScrollEffect(GsWeakSurface &scrollSurface,
                              const int initialPos,

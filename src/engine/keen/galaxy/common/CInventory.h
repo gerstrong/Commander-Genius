@@ -61,7 +61,6 @@ public:
 
 	CHUD m_HUD;
 	std::shared_ptr<CStatusScreenGalaxy> mp_StatusScreen;
-    SDL_Surface *mp_StatusBgrnd = nullptr;
 };
 
 

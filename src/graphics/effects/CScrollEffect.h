@@ -21,12 +21,6 @@ class CScrollEffect : public CEffects
 {
 public:        
 
-    CScrollEffect(SDL_Surface *pScrollSurface,
-                  const int initialPos,
-                  const int speed,
-                  const direction_t hDir,
-                  const direction_t vDir);
-
     CScrollEffect(GsWeakSurface &scrollSurface,
                   const int initialPos,
                   const int speed,

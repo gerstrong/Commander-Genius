@@ -36,11 +36,11 @@ public:
 
 	// Generate the base for the Status screen. This function is common for all Keen4-6 galaxy games
 	// and start_x and start_y will return the start offset pixel where particular stuff can be drawn
-	void drawBase(SDL_Rect &EditRect);
+    void drawBase(SDL_Rect &EditRect);
 
 	// return the pointer to the allocated status screen surface
-	SDL_Surface *getStatusSfc()
-    {	return	mStatusSfcTransformed.getSDLSurface();	}
+    /*SDL_Surface *getStatusSfc()
+    {	return	mStatusSfcTransformed.getSDLSurface();	}*/
 
 	// Draw the status
 	void draw();

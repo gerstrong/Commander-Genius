@@ -46,10 +46,11 @@ std::string CStatusScreenGalaxy::getDifficultyText()
 
 void CStatusScreenGalaxy::drawBase(SDL_Rect &EditRect)
 {
-    SDL_Rect DestRect;
-    DestRect.w = 320;    DestRect.h = 200;
+    SDL_Rect DestRect = {0, 0, 320, 200};
 
     mStatusSurface.createRGBSurface(DestRect);
+
+    mStatusSurface.makeBlitCompatible();
 
     /// Draw the required bitmaps and backgrounds for Statusscreen
 	// Draw the support Bitmap and see where the gray rectangle starts...
@@ -73,7 +74,7 @@ void CStatusScreenGalaxy::drawBase(SDL_Rect &EditRect)
 	BackRect.x = (DestRect.w-BackRect.w)/2;
 	BackRect.y = SupportRect.h;
 
-    mStatusSurface.fillRGBA(BackRect, 0xFF, 0xAA, 0xAA, 0xAA);
+    mStatusSurface.fillRGB(BackRect, 0xAA, 0xAA, 0xAA);
 
 	// Draw the cables Bitmap
 	GsBitmap &Cables_Bitmap = gGraphics.getMaskedBitmap(1);
@@ -123,15 +124,15 @@ void CStatusScreenGalaxy::drawBase(SDL_Rect &EditRect)
 
 void CStatusScreenGalaxy::scaleToResolution()
 {
-    SDL_Rect gameres = gVideoDriver.getGameResolution().SDLRect();
+    /*SDL_Rect gameres = gVideoDriver.getGameResolution().SDLRect();
     const int scaleFac = gameres.h/200;
     GsWeakSurface blit(gVideoDriver.getBlitSurface());
 
     SDL_PixelFormat *format = mStatusSurface.getSDLSurface()->format;
 
     mStatusSfcTransformed.create(0,
-                                 blit.width(),
-                                 blit.height(),
+                                 blit.width()*scaleFac,
+                                 blit.height()*scaleFac,
                                  32,
                                  format->Rmask,
                                  format->Gmask,
@@ -141,11 +142,9 @@ void CStatusScreenGalaxy::scaleToResolution()
     mStatusSurface.setBlendMode(0);
     mStatusSurface.setAlpha(0);
 
-    SDL_Rect srcRect = mStatusSurface.getSDLSurface()->clip_rect;
-    srcRect.w *= scaleFac;
-    srcRect.h *= scaleFac;
+    mStatusSurface.blitScaledTo(mStatusSfcTransformed);*/
 
-    mStatusSurface.blitScaledTo(mStatusSfcTransformed);
+    mStatusSfcTransformed.createCopy(mStatusSurface);
 }
 
 void CStatusScreenGalaxy::GenerateStatusEp4()
@@ -158,7 +157,8 @@ void CStatusScreenGalaxy::GenerateStatusEp4()
 
     Font.drawFontCentered(mStatusSurface.getSDLSurface(), "LOCATION", EditRect.x, EditRect.w, EditRect.y, false);
 
-    // Temporary Rect for drawing some stuff like background for scores and so...
+
+    // drawing Rect for stuff like background for scores and items
     SDL_Rect TempRect;
 
     // Location Rect
@@ -168,7 +168,8 @@ void CStatusScreenGalaxy::GenerateStatusEp4()
     TempRect.h = 20;
 
     Font.setupColor(0x0);
-    mStatusSurface.fillRGBA(0xFF, 0xFF, 0xFF, 0xFF);
+
+    mStatusSurface.fillRGBA(TempRect, 0xFF, 0xFF, 0xFF, 0xFF);
     Font.drawFontCentered(mStatusSurface.getSDLSurface(),
                           m_Item.mLevelName,
                           TempRect.x,
@@ -176,6 +177,7 @@ void CStatusScreenGalaxy::GenerateStatusEp4()
                           TempRect.y+6,
                           false);
     Font.setupColor(mStatusSurface.mapRGB(0x44, 0x44, 0x44));
+
 
     /// SCORE and EXTRA Rect
     TempRect.x = EditRect.x;
@@ -187,13 +189,13 @@ void CStatusScreenGalaxy::GenerateStatusEp4()
 
     // Score Box
     TempRect.w = 8*8;
-    mStatusSurface.fillRGBA(TempRect, 0xFF, 0x0, 0x0, 0x0);
+    mStatusSurface.fillRGBA(TempRect, 0x0, 0x0, 0x0, 0xFF);
     gGraphics.drawDigits(getRightAlignedString(itoa(m_Item.m_points), 8), TempRect.x, TempRect.y+2,
                          mStatusSurface.getSDLSurface());
 
     // Extra Box
     TempRect.x = EditRect.x+96;
-    mStatusSurface.fillRGBA(0xFF, 0x0, 0x0, 0x0);
+    mStatusSurface.fillRGBA(TempRect, 0x0, 0x0, 0x0, 0xFF);
     gGraphics.drawDigits(getRightAlignedString(itoa(m_Item.m_lifeAt), 8),
                          TempRect.x, TempRect.y+2,
                          mStatusSurface.getSDLSurface());
@@ -226,7 +228,7 @@ void CStatusScreenGalaxy::GenerateStatusEp4()
 
     // Rescued Box
     TempRect.w = 8*8;
-    mStatusSurface.fillRGBA(0xFF, 0x0, 0x0, 0x0);
+    mStatusSurface.fillRGBA(TempRect, 0x0, 0x0, 0x0, 0xFF);
     for( int count=0 ; count<m_Item.m_special.ep4.elders ; count++ )
     {
         gGraphics.drawDigit(40,
@@ -253,7 +255,7 @@ void CStatusScreenGalaxy::GenerateStatusEp4()
     TempRect.x = TempRect.x+8*5;
 
 
-    mStatusSurface.fillRGBA(TempRect, 0xFF, 0x0, 0x0, 0x0);
+    mStatusSurface.fillRGBA(TempRect, 0x0, 0x0, 0x0, 0xFF);
 
     if(m_Item.m_gem.red)
     {
@@ -279,7 +281,7 @@ void CStatusScreenGalaxy::GenerateStatusEp4()
     TempRect.w = 8*3; TempRect.h = 10;
     TempRect.x = TempRect.x+8*5;
 
-    mStatusSurface.fillRGBA(TempRect, 0xFF, 0x0, 0x0, 0x0);
+    mStatusSurface.fillRGBA(TempRect, 0x0, 0x0, 0x0, 0xFF);
     gGraphics.drawDigits(getRightAlignedString(itoa(m_Item.m_bullets), 3),
                          TempRect.x, TempRect.y+1,
                          mStatusSurface.getSDLSurface());
@@ -290,7 +292,7 @@ void CStatusScreenGalaxy::GenerateStatusEp4()
     Font.drawFont(mStatusSurface, "KEENS", TempRect.x, TempRect.y, false);
     TempRect.w = 8*2; TempRect.h = 10;
     TempRect.x = TempRect.x+8*5+8;
-    mStatusSurface.fillRGBA(TempRect, 0xFF, 0x0, 0x0, 0x0);
+    mStatusSurface.fillRGBA(TempRect, 0x0, 0x0, 0x0, 0xFF);
     gGraphics.drawDigits(getRightAlignedString(itoa(m_Item.m_lifes), 2),
                          TempRect.x,
                          TempRect.y+1,
@@ -303,7 +305,7 @@ void CStatusScreenGalaxy::GenerateStatusEp4()
     TempRect.w = 8*2; TempRect.h = 10;
     TempRect.x = TempRect.x+8*5+8;
 
-    mStatusSurface.fillRGBA(TempRect, 0xFF, 0x0, 0x0, 0x0);
+    mStatusSurface.fillRGBA(TempRect, 0x0, 0x0, 0x0, 0xFF);
     gGraphics.drawDigits(getRightAlignedString(itoa(m_Item.m_drops), 2),
                          TempRect.x,
                          TempRect.y+1,
@@ -611,6 +613,6 @@ void CStatusScreenGalaxy::GenerateStatusEp6()
 
 void CStatusScreenGalaxy::draw()
 {
-    GsWeakSurface blit(gVideoDriver.getBlitSurface());
-    mStatusSfcTransformed.blitTo(blit);
+    auto weakBlit = GsWeakSurface(gVideoDriver.getBlitSurface());
+    mStatusSfcTransformed.blitTo(weakBlit);
 }
