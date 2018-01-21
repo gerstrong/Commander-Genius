@@ -19,8 +19,7 @@ m_Speed(speed)
 void CColorMerge::getSnapshot()
 {
     gVideoDriver.collectSurfaces();
-
-    mOldSurface.createFromSDLSfc(gVideoDriver.mpVideoEngine->getBlitSurface());
+    mOldSurface.createCopy(gVideoDriver.mpVideoEngine->gameSfc());
 }
 
 // Effect cycle
@@ -44,8 +43,7 @@ void CColorMerge::ponder(const float deltaT)
 
 void CColorMerge::render()
 {
-    GsWeakSurface weakBlit(gVideoDriver.getBlitSurface());
-    mOldSurface.blitTo(weakBlit);
+    mOldSurface.blitTo(gVideoDriver.gameSfc());
 }
 
 

@@ -35,7 +35,7 @@ private:
 	SDL_Rect m_logo_rect;
 	std::vector<std::string> m_lines;
 	std::string m_type;
-    GsSurface mDrawSfc;
+    //GsSurface mDrawSfc;
 };
 
 #endif /* CABOUT_H_ */

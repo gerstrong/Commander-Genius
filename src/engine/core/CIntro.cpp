@@ -19,7 +19,7 @@ CIntro::CIntro()
 	m_scrolly = 200;
 	m_finished = false;
 	mp_bmp_surface = gVideoDriver.mpVideoEngine->getBlitSurface();
-	SDL_FillRect(mp_bmp_surface, NULL, 0);
+    SDL_FillRect(mp_bmp_surface, nullptr, 0);
 }
 
 void CIntro::init()

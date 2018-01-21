@@ -235,7 +235,8 @@ bool CVorticonMapLoaderWithPlayer::load( Uint8 episode,
 
     // Set Map Delegation Object and refresh whole level
     mpMap->drawAll();
-    gVideoDriver.updateScrollBuffer( mpMap->m_scrollx, mpMap->m_scrolly );
+    gVideoDriver.updateScrollBuffer( mpMap->m_scrollx,
+                                     mpMap->m_scrolly );
 
     return true;
 }

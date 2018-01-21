@@ -22,8 +22,8 @@ class CColorMerge : public CEffects
 public:
 	CColorMerge(const Uint8 speed);
 
-    void ponder(const float deltaT);
-    void render();
+    void ponder(const float deltaT) override;
+    void render() override;
 		
 	void getSnapshot();		
 

@@ -24,9 +24,7 @@
 CStatusScreen::CStatusScreen(char episode, stInventory *p_inventory, bool *p_level_completed, int &ankhtime,
                              int baseframe, int varSprite ) :
  mpLevelCompleted(p_level_completed),
- m_ankhtime(ankhtime),
- m_closing(false),
- m_closed(false)
+ m_ankhtime(ankhtime)
 {
 	m_episode = episode;
 	mp_inventory = p_inventory;
@@ -48,9 +46,13 @@ void CStatusScreen::draw()
 	if(m_closing)
 	{
         if(gBehaviorEngine.mOptions[GameOption::SPECIALFX].value && !gEffectController.runningEffect())
+        {
 			m_closed = true;
+        }
         else if(!gBehaviorEngine.mOptions[GameOption::SPECIALFX].value)
+        {
 			m_closed = true;
+        }
 	}
 
 	if(!m_closed)

@@ -35,7 +35,8 @@ private:
     bool *mpLevelCompleted;
     int &m_ankhtime;
 
-	bool m_closing, m_closed;
+    bool m_closing = false;
+    bool m_closed = false;
 
     GsSurface mStatusSfc;
 	SDL_Rect m_StatusRect;

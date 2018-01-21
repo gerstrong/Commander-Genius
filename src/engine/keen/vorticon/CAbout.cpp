@@ -147,8 +147,8 @@ void CAbout::init()
         m_logo_rect.y = 22;
     }
 
-    GsWeakSurface weakBlit(gVideoDriver.getBlitSurface());
-    mDrawSfc.blitScaledTo(weakBlit);
+    //GsWeakSurface weakBlit(gVideoDriver.getBlitSurface());
+    //mDrawSfc.blitScaledTo(weakBlit);
 }
 
 
@@ -180,10 +180,10 @@ void CAbout::render()
 
     for(std::size_t i=0 ; i<m_lines.size() ; i++)
     {
-        gGraphics.getFont(1).drawFont(mDrawSfc, m_lines.at(i), 24, 72+i*8, true);
+        gGraphics.getFont(1).drawFont(weakBlit, m_lines.at(i), 24, 72+i*8, true);
     }
 
-    mDrawSfc.blitScaledTo(weakBlit);
+    //mDrawSfc.blitScaledTo(weakBlit);
 }
 
 void CAbout::teardown()
@@ -193,8 +193,8 @@ void CAbout::teardown()
         m_lines.clear();
     }
 
-    mDrawSfc.tryToDestroy();
-    mpMap = NULL;
+    //mDrawSfc.tryToDestroy();
+    mpMap = nullptr;
     CEventContainer &EventContainer = gEventManager;
     EventContainer.add(new ResetScrollSurface);
 }

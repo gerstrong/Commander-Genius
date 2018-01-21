@@ -200,7 +200,9 @@ bool CPlayGameVorticon::init()
     }
 
     if(m_showKeensLeft)
+    {
 	  gSound.playSound(SOUND_KEENSLEFT, SoundPlayMode::PLAY_NOW);
+    }
 
 	// In the case that we are in Episode 3 last Level, show Mortimer Messages
 	if( m_Episode == 3 && m_Level == 16 )
@@ -219,6 +221,7 @@ bool CPlayGameVorticon::init()
 	    mMessageBoxes.push_back(move(msg6));
 	    gSound.playSound(SOUND_MORTIMER);
 	}
+
 
     return true;
 }
@@ -344,7 +347,7 @@ void CPlayGameVorticon::ponder(const float deltaT)
                 CHighScores *pHighScores = new CHighScores();
                 pHighScores->init();
                 collectHighScoreInfo(*pHighScores);
-                gEventManager.add(new GMSwitchToPassiveMode(/*m_Gamepath, m_Episode*/));
+                gEventManager.add(new GMSwitchToPassiveMode());
                 gEventManager.add(new StartInfoSceneEvent( pHighScores ));
             }
         }
@@ -388,7 +391,7 @@ void CPlayGameVorticon::ponder(const float deltaT)
 				CHighScores *pHighScores = new CHighScores();
 				pHighScores->init();
 				collectHighScoreInfo(*pHighScores);
-                gEventManager.add(new GMSwitchToPassiveMode(/*m_Gamepath, m_Episode*/));
+                gEventManager.add(new GMSwitchToPassiveMode());
 				gEventManager.add(new StartInfoSceneEvent( pHighScores ));
 			}
 		}
@@ -424,7 +427,9 @@ void CPlayGameVorticon::render()
     drawAllElements();
 
     if( m_Level == WORLD_MAP_LEVEL_VORTICON && m_showKeensLeft )
+    {
         showKeensLeft();
+    }
 
     if(m_gameover && !mpFinale) // game over mode
     {
@@ -734,8 +739,6 @@ void CPlayGameVorticon::drawAllElements()
 
     // Draw masked tiles here!
     mMap->_drawForegroundTiles();
-
-
 
     const size_t numPlayers = size_t(gBehaviorEngine.mPlayers);
     for( size_t i=0 ; i<numPlayers ; i++ )

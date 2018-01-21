@@ -29,8 +29,8 @@ void CPlayGameVorticon::processInLevel()
 		m_Player[i].processInLevel();
 
 		// If the player touched a hint trigger in which we have to show a Message, do it so
-		std::string hinttext;
-		if( (hinttext=m_Player[i].pollHintMessage()) != "")
+        std::string hinttext = m_Player[i].pollHintMessage();
+        if( hinttext != "" )
 		{
 		    std::unique_ptr<CMessageBoxVort> msg( new CMessageBoxVort(gBehaviorEngine.getString(hinttext), false, true) );
 		    mMessageBoxes.push_back( move(msg) );

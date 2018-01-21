@@ -243,7 +243,7 @@ private:
 
 // CMap related Events
 /**
- * \description	you might use this event in case you want to release the scrollbuffer and give another instance
+ * @description	you might use this event in case you want to release the scrollbuffer and give another instance
  * 				chance to use it.
  * 				You should invoke this, when an instance with a CMap Object owned the Scrollbuffers
  */
