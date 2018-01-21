@@ -150,13 +150,7 @@ void CHighScores::init()
 	bmp.rect.h = bmp.p_Bitmap->height();
 	m_Bitmaps.push_back(bmp);
 
-	SDL_Surface *temp = CG_CreateRGBSurface( gVideoDriver.getGameResolution().SDLRect() );
-//#if SDL_VERSION_ATLEAST(2, 0, 0)
-    
-//#else
-    mpTextSfc.reset(gVideoDriver.convertThroughBlitSfc(temp), &SDL_FreeSurface);
-//#endif
-	SDL_FreeSurface(temp);
+    mTextSfc.createRGBSurface(gVideoDriver.getGameResolution().SDLRect());
 }
 
 
@@ -178,7 +172,6 @@ void CHighScores::ponder()
 void CHighScores::render()
 {
     // Process Drawing related stuff
-    SDL_Surface *sfc = mpTextSfc.get();
     GsFont &Font = gGraphics.getFont(1);
 
     mpMap->animateAllTiles();
@@ -204,23 +197,28 @@ void CHighScores::render()
 
         // This cleans up the text. We need that because otherwise when user deletes his name while writing
         // it might leave tracks
-        Font.drawFont(sfc, std::string(13,' '), x, y+(i<<4), true);
+        Font.drawFont(mTextSfc, std::string(13,' '), x, y+(i<<4), true);
 
         if(i == m_Place)
+        {
             actualName += (m_blink == true) ? "|" : " ";
+        }
 
-        Font.drawFont(sfc, actualName, x, y+(i<<4), true);
-        Font.drawFont(sfc, m_Score[i], x2-((m_Score[i].size())<<3), y+(i<<4), true);
+        Font.drawFont(mTextSfc, actualName, x, y+(i<<4), true);
+        Font.drawFont(mTextSfc, m_Score[i], x2-((m_Score[i].size())<<3), y+(i<<4), true);
     }
 
     // Here it must be split up into Episodes 1, 2 and 3.
     if(m_Episode == 2)
     {
         for( Uint8 i=0 ; i<8 ; i++ )
-            Font.drawFont(sfc, itoa(m_Cities[i]), 252, 56+(i<<4), true);
+        {
+            Font.drawFont(mTextSfc, itoa(m_Cities[i]), 252, 56+(i<<4), true);
+        }
     }
 
-    BlitSurface(mpTextSfc.get(), nullptr, gVideoDriver.getBlitSurface(), nullptr);
+    GsWeakSurface weakBlit(gVideoDriver.getBlitSurface());
+    mTextSfc.blitTo(weakBlit);
 }
 
 

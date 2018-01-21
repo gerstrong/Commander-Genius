@@ -52,18 +52,11 @@ blendup(true)
 
 void CMessageBoxSelection::init()
 {
-    auto *blit = gVideoDriver.getBlitSurface();
-    SDL_PixelFormat *format = blit->format;
+    GsWeakSurface weakBlit(gVideoDriver.getBlitSurface());
 
-    mMBSurface.create(SDL_SWSURFACE,
-                      mMBRect.w,
-                      mMBRect.h,
-                      RES_BPP,
-                      format->Rmask,
-                      format->Gmask,
-                      format->Bmask,
-                      format->Amask);
+    SDL_PixelFormat *format = weakBlit.getSDLSurface()->format;
 
+    mMBSurface.createRGBSurface(mMBRect);
     mMBSurface.makeBlitCompatible();
 
 	initGalaxyFrame();
@@ -76,19 +69,12 @@ void CMessageBoxSelection::init()
     
 	GsFont &Font = gGraphics.getFont(FONT_ID);
 
-    SDL_Surface *pColoredTextSurface = SDL_CreateRGBSurface( SDL_SWSURFACE,
-                                                             rect.w,
-                                                             rect.h,
-                                                             RES_BPP,
-                                                             format->Rmask,
-                                                             format->Gmask,
-                                                             format->Bmask,
-                                                             format->Amask );
-
+    GsSurface coloredTextSurface;
+    coloredTextSurface.createRGBSurface(rect);
 
 	const Uint32 oldColor = Font.getFGColor();
 
-	Font.setupColor( SDL_MapRGB( format, 0, 0, 0 ) );
+    Font.setupColor( weakBlit.mapRGB(0,0,0) );
 
 	auto textList = explode(mText, "\n");
 	
@@ -96,27 +82,15 @@ void CMessageBoxSelection::init()
 	for( auto &it : textList  )
 	{	    
 	    int xmid = (rect.w-Font.calcPixelTextWidth(it))/2+rect.x;
-        Font.drawFont( pColoredTextSurface, it, xmid, yoff, false);
+        Font.drawFont( coloredTextSurface, it, xmid, yoff, false);
 	    yoff += 12;
 	}	
 
-	// Adapt the newly created surface to the running screen.
-	SDL_Surface *temp;
-
-
-    if(RES_BPP == 32) // Only if there is an Alpha Channel (32 BPP)
-        temp = gVideoDriver.convertThroughBlitSfc(pColoredTextSurface);
-	else // or
-        temp = gVideoDriver.convertThroughBlitSfc(pColoredTextSurface);
-
-	SDL_FreeSurface(pColoredTextSurface);
-	pColoredTextSurface = temp;
+    coloredTextSurface.makeBlitCompatible();
 
 	Font.setupColor( oldColor );
 
-	std::unique_ptr<SDL_Surface,SDL_Surface_Deleter> pTextSfc(pColoredTextSurface);			
-    BlitSurface(pTextSfc.get(), NULL, mMBSurface.getSDLSurface(), const_cast<SDL_Rect*>(&rect));
-	
+    coloredTextSurface.blitTo(mMBSurface, rect);
 	
 	// Create the Border and with two Surfaces of different colors create the rectangle
 	SDL_Rect selRect;
@@ -129,42 +103,22 @@ void CMessageBoxSelection::init()
 	cutRect.y += 2;
 	cutRect.w -= 4;
 	cutRect.h -= 4;
-		
-    mpSelSurface1.reset( SDL_CreateRGBSurface( SDL_SWSURFACE,
-                                               selRect.w,
-                                               selRect.h,
-                                               RES_BPP,
-                                               format->Rmask,
-                                               format->Gmask,
-                                               format->Bmask,
-                                               0 ),
-                         &SDL_FreeSurface);
 
-    mpSelSurface2.reset( SDL_CreateRGBSurface( SDL_SWSURFACE,
-                                               selRect.w,
-                                               selRect.h,
-                                               RES_BPP,
-                                               format->Rmask,
-                                               format->Gmask,
-                                               format->Bmask,
-                                               0 ),
-                         &SDL_FreeSurface);
+    mSelSurface1.createRGBSurface(selRect);
+    mSelSurface2.createRGBSurface(selRect);
 
-	SDL_FillRect( mpSelSurface1.get(), &selRect, SDL_MapRGB( format, 255, 0, 0 ) );
-	SDL_FillRect( mpSelSurface2.get(), &selRect, SDL_MapRGB( format, 0, 0, 255 ) );
 
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-    SDL_SetColorKey(mpSelSurface1.get(), SDL_TRUE, SDL_MapRGB( format, 0, 0, 0 ));
-    SDL_SetColorKey(mpSelSurface2.get(), SDL_TRUE, SDL_MapRGB( format, 0, 0, 0 ));    
-    SDL_SetSurfaceBlendMode(mpSelSurface1.get(), SDL_BLENDMODE_BLEND);
-    SDL_SetSurfaceBlendMode(mpSelSurface2.get(), SDL_BLENDMODE_BLEND);
-#else
-    SDL_SetColorKey( mpSelSurface1.get(), SDL_SRCCOLORKEY, SDL_MapRGB( format, 0, 0, 0 ) );
-    SDL_SetColorKey( mpSelSurface2.get(), SDL_SRCCOLORKEY, SDL_MapRGB( format, 0, 0, 0 ) );
-#endif
+    mSelSurface1.fillRGB(255, 0,   0);
+    mSelSurface2.fillRGB(  0, 0, 255);
 
-	SDL_FillRect( mpSelSurface1.get(), &cutRect, SDL_MapRGB( format, 0, 0, 0 ) );
-	SDL_FillRect( mpSelSurface2.get(), &cutRect, SDL_MapRGB( format, 0, 0, 0 ) );
+    mSelSurface1.setColorKey( mSelSurface1.mapRGB(0, 0, 0) );
+    mSelSurface2.setColorKey( mSelSurface2.mapRGB(0, 0, 0) );
+
+    mSelSurface1.setBlendMode(SDL_BLENDMODE_BLEND);
+    mSelSurface2.setBlendMode(SDL_BLENDMODE_BLEND);
+
+    mSelSurface1.fillRGB(cutRect, 0, 0, 0);
+    mSelSurface2.fillRGB(cutRect, 0, 0, 0);
 }
 
 
@@ -174,7 +128,9 @@ void CMessageBoxSelection::ponder()
 	if(gInput.getPressedCommand(IC_JUMP) || gInput.getPressedKey(KENTER) )
 	{
 		for( int c=0 ; c<m_selection ; c++ )
+        {
 			m_Options.pop_front();
+        }
 
         gEventManager.add( m_Options.front().event );
 
@@ -185,16 +141,24 @@ void CMessageBoxSelection::ponder()
 	else if(gInput.getPressedCommand(IC_DOWN))
 	{
 		if(m_selection >= ((int)m_Options.size()-1) )
+        {
             m_selection = 0;
+        }
 		else
+        {
 			m_selection++;
+        }
 	}
 	else if(gInput.getPressedCommand(IC_UP))
 	{
 		if(m_selection <= 0 )
+        {
 			m_selection = m_Options.size()-1;
+        }
 		else
+        {
 			m_selection--;
+        }
 	}
 
     // Smooth animation of the rectangle
@@ -233,16 +197,12 @@ void CMessageBoxSelection::ponder()
 
 void CMessageBoxSelection::render()
 {
-    BlitSurface(mMBSurface.getSDLSurface(), nullptr, gVideoDriver.getBlitSurface(), &mMBRect);
+    GsWeakSurface weakBlit(gVideoDriver.getBlitSurface());
 
+    mMBSurface.blitTo(weakBlit, mMBRect);
 
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-    SDL_SetSurfaceAlphaMod( mpSelSurface1.get(), blend );
-    SDL_SetSurfaceAlphaMod( mpSelSurface2.get(), SDL_ALPHA_OPAQUE-blend );
-#else
-    SDL_SetAlpha( mpSelSurface1.get(), SDL_SRCALPHA, blend );
-    SDL_SetAlpha( mpSelSurface2.get(), SDL_SRCALPHA, SDL_ALPHA_OPAQUE-blend );
-#endif
+    mSelSurface1.setAlpha(static_cast<unsigned char>(blend));
+    mSelSurface2.setAlpha(static_cast<unsigned char>(SDL_ALPHA_OPAQUE-blend));
 
     SDL_Rect cursorSel;
 
@@ -255,11 +215,10 @@ void CMessageBoxSelection::render()
         if(i == m_selection)
         {
             cursorSel.y = mMBRect.y + mSmoothCursor + 44;
-            BlitSurface(mpSelSurface1.get(), nullptr, gVideoDriver.getBlitSurface(), &cursorSel);
-            BlitSurface(mpSelSurface2.get(), nullptr, gVideoDriver.getBlitSurface(), &cursorSel);
+            mSelSurface1.blitTo(weakBlit, cursorSel);
+            mSelSurface2.blitTo(weakBlit, cursorSel);
         }
     }
-
 }
 
 }

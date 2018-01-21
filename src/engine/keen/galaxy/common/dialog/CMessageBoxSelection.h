@@ -43,8 +43,9 @@ public:
     void render();
 	
 private:
-    std::shared_ptr<SDL_Surface> mpSelSurface1;
-	std::shared_ptr<SDL_Surface> mpSelSurface2;
+
+    GsSurface mSelSurface1, mSelSurface2;
+
 	int blend;
 	bool blendup;
 

@@ -25,10 +25,8 @@ m_timer(0)
 	m_8x8tilewidth = m_8x8tileheight = 8;
 	m_mustclose = false;
 
-    GsSurface temp;
-    temp.createRGBSurface(gVideoDriver.getGameResolution().SDLRect());
-
-    mpTextVSfc.reset(gVideoDriver.convertThroughBlitSfc(temp.getSDLSurface()), &SDL_FreeSurface);
+    mTextVSfc.createRGBSurface(gVideoDriver.getGameResolution().SDLRect());
+    mTextVSfc.makeBlitCompatible();
 }
 
 void CTextViewer::scrollDown()
@@ -189,14 +187,14 @@ unsigned char CTextViewer::getnextwordlength(const std::string nextword)
 {
 	int i=0;
 	while(nextword[i] != ' ' && nextword[i] != '\n' && nextword[i] != 26 ) i++;
-	return i;
+    return static_cast<unsigned char>(i);
 }
 
 void CTextViewer::drawTextlines()
 {
 	for(int i=1 ; i<(m_h/m_8x8tileheight) && i<(int)m_textline.size()-m_linepos ; i++)
     {
-		gGraphics.getFont(1).drawFont(mpTextVSfc.get(),
+        gGraphics.getFont(1).drawFont(mTextVSfc,
 									 m_textline[i+m_linepos-1],
                                      m_x+m_8x8tilewidth,
 									 m_y + (i)*m_8x8tileheight-m_scrollpos,
@@ -238,9 +236,10 @@ void CTextViewer::ponder(const float deltaT)
 void CTextViewer::render()
 {
     renderBox();
-    // This comes after, because it does use semi-transparent overlay
 
-    BlitSurface(mpTextVSfc.get(), NULL, gVideoDriver.getBlitSurface(), NULL);
+    // This comes after, because it does use semi-transparent overlay
+    GsWeakSurface weakBlit(gVideoDriver.getBlitSurface());
+    mTextVSfc.blitTo(weakBlit);
 }
 
 
@@ -248,7 +247,7 @@ void CTextViewer::render()
 // This function shows the Story of Commander Keen!
 void CTextViewer::renderBox()
 {
-	SDL_Surface *sfc = mpTextVSfc.get();
+    SDL_Surface *sfc = mTextVSfc.getSDLSurface();
 
 	// first draw the blank rect
 	GsFont &Font = gGraphics.getFont(1);

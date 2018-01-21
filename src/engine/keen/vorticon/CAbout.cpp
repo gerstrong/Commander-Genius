@@ -147,13 +147,8 @@ void CAbout::init()
         m_logo_rect.y = 22;
     }
 
-    SDL_Surface *temp = CG_CreateRGBSurface( gVideoDriver.getGameResolution().SDLRect() );
-//#if SDL_VERSION_ATLEAST(2, 0, 0)
-
-//#else
-    mpDrawSfc.reset(gVideoDriver.convertThroughBlitSfc(temp), &SDL_FreeSurface);
-//#endif
-    SDL_FreeSurface(temp);
+    GsWeakSurface weakBlit(gVideoDriver.getBlitSurface());
+    mDrawSfc.blitScaledTo(weakBlit);
 }
 
 
@@ -168,6 +163,9 @@ void CAbout::render()
     mpMap->animateAllTiles();
     gVideoDriver.blitScrollSurface();
 
+    GsWeakSurface weakBlit(gVideoDriver.getBlitSurface());
+
+
     if(m_type == "ID")
     {
         mp_bmp->draw( 160-mp_bmp->width()/2, 22);
@@ -176,24 +174,26 @@ void CAbout::render()
     {
         if(mLogoBmp)
         {
-            GsWeakSurface weakBlit(gVideoDriver.getBlitSurface());
             mLogoBmp.blitTo(weakBlit, m_logo_rect);
         }
     }
 
     for(std::size_t i=0 ; i<m_lines.size() ; i++)
     {
-        gGraphics.getFont(1).drawFont(mpDrawSfc.get(), m_lines.at(i), 24, 72+i*8, true);
+        gGraphics.getFont(1).drawFont(mDrawSfc, m_lines.at(i), 24, 72+i*8, true);
     }
 
-    BlitSurface(mpDrawSfc.get(), nullptr, gVideoDriver.getBlitSurface(), nullptr);
+    mDrawSfc.blitScaledTo(weakBlit);
 }
 
 void CAbout::teardown()
 {
     if(!m_lines.empty())
+    {
         m_lines.clear();
-    mpDrawSfc = NULL;
+    }
+
+    mDrawSfc.tryToDestroy();
     mpMap = NULL;
     CEventContainer &EventContainer = gEventManager;
     EventContainer.add(new ResetScrollSurface);

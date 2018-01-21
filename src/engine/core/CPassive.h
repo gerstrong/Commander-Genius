@@ -66,6 +66,6 @@ protected:
     bool mEndEpisode;
 	std::string m_DataDirectory;
 	CSaveGameController m_SavedGame;
-	std::shared_ptr<SDL_Surface> mpTextSfc;
+    GsSurface mTextSfc;
 };
 #endif /* CPASSIVE_H_ */

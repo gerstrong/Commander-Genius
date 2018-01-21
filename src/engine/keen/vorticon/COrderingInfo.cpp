@@ -141,13 +141,8 @@ void COrderingInfo::init()
 			break;
 	}
 
-	SDL_Surface *temp = CG_CreateRGBSurface( gVideoDriver.getGameResolution().SDLRect() );
-//#if SDL_VERSION_ATLEAST(2, 0, 0)
-    
-//#else
-    mpTextSfc.reset(gVideoDriver.convertThroughBlitSfc(temp), &SDL_FreeSurface);
-//#endif
-	SDL_FreeSurface(temp);
+    mTextSfc.createRGBSurface(gVideoDriver.getGameResolution().SDLRect());
+    mTextSfc.makeBlitCompatible();
 }
 
 void COrderingInfo::ponder()
@@ -170,18 +165,20 @@ void COrderingInfo::render()
 
     for(int i=0 ; i<m_numberoflines ; i++)
     {
-        gGraphics.getFont(1).drawFont(mpTextSfc.get(), m_Textline[i],
-                                            160-m_Textline[i].size()*4, 8*(i+m_starty), true);
+        gGraphics.getFont(1).drawFont(mTextSfc, m_Textline[i],
+                                      160-m_Textline[i].size()*4, 8*(i+m_starty), true);
     }
 
-    BlitSurface(mpTextSfc.get(), nullptr, gVideoDriver.getBlitSurface(), nullptr);
+    GsWeakSurface weakBlit(gVideoDriver.getBlitSurface());
+    mTextSfc.blitTo(weakBlit);
 }
 
 void COrderingInfo::teardown()
 {
 	if(!m_Textline.empty())
 		m_Textline.clear();
-	mpMap = NULL;
+
+    mpMap = nullptr;
 	CEventContainer &EventContainer = gEventManager;
 	EventContainer.add(new ResetScrollSurface);
 }

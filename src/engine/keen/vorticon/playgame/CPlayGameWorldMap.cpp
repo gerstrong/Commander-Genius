@@ -194,7 +194,7 @@ void CPlayGameVorticon::showKeensLeft()
     const unsigned int KEENSLEFT_X = 7*scW;
     const unsigned int KEENSLEFT_Y = 10*scH;
 
-	if(!mpKeenLeftSfc)
+    if(mKeenLeftSfc)
 	{
 		int x,y,i,p;
 		int boxY, boxH;
@@ -242,27 +242,27 @@ void CPlayGameVorticon::showKeensLeft()
 			y += 16;
 		}
 
-		const SDL_Surface *blit = gVideoDriver.mpVideoEngine->getBlitSurface();
-		mpKeenLeftSfc.reset(SDL_ConvertSurface( boxsurface, blit->format, blit->flags ), &SDL_FreeSurface);
-		SDL_FreeSurface(boxsurface);
+        mKeenLeftSfc.createFromSDLSfc(boxsurface);
+        mKeenLeftSfc.makeBlitCompatible();
 	}
 	else
 	{
 		keenleft_rect.x = (KEENSLEFT_X+1)*8;
         keenleft_rect.y = (KEENSLEFT_Y - numPlayers + 2)*8;
-		keenleft_rect.w = mpKeenLeftSfc->w;
-		keenleft_rect.h = mpKeenLeftSfc->h;
+        keenleft_rect.w = mKeenLeftSfc.width();
+        keenleft_rect.h = mKeenLeftSfc.height();
 
 
 		if( gTimer.HasTimeElapsed(3000) || gInput.getPressedAnyCommand() )
 		{
 			m_showKeensLeft = false;
-			mpKeenLeftSfc.reset();
+            mKeenLeftSfc.tryToDestroy();
 			gInput.flushAll();
 		}
 		else
 		{
-            BlitSurface(mpKeenLeftSfc.get(), nullptr, gVideoDriver.getBlitSurface(), &keenleft_rect);
+            GsWeakSurface weakBlit(gVideoDriver.getBlitSurface());
+            mKeenLeftSfc.blitTo(weakBlit, keenleft_rect);
 		}
 	}
 }

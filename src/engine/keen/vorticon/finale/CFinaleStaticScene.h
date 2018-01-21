@@ -41,8 +41,6 @@ public:
 private:
 
 	std::vector<bitmap_structure> m_BitmapVector;
-    //std::shared_ptr<SDL_Surface> mpSceneSurface;
-    //GsSurface mSceneSurface;
     GsBitmap mSceneBmp;
 	bool m_mustclose;    
     int m_timer; // Only used, if no Text to display is set. Example is the preview section

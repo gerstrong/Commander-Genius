@@ -88,15 +88,12 @@ void CCredits::init()
 	m_scrolly = -54*8;
 
 	for(int j=0 ; j<54 ; j++)
+    {
 		m_mid[j] = 160-(m_scrolltext[j].size()*4);
+    }
 
-	SDL_Surface *temp = CG_CreateRGBSurface( gVideoDriver.getGameResolution().SDLRect() );
-//#if SDL_VERSION_ATLEAST(2, 0, 0)
-    
-//#else
-    mpDrawSfc.reset(gVideoDriver.convertThroughBlitSfc(temp), &SDL_FreeSurface);
-//#endif
-	SDL_FreeSurface(temp);
+    mDrawSfc.createRGBSurface( gVideoDriver.getGameResolution().SDLRect() );
+    mDrawSfc.makeBlitCompatible();
 }
 
 void CCredits::ponder()
@@ -105,9 +102,14 @@ void CCredits::ponder()
 	else
 	{
 		m_timer=0;
-		if(m_scrolly>-54*8) m_scrolly--;
+        if(m_scrolly>-54*8)
+        {
+            m_scrolly--;
+        }
 		else
+        {
 			m_scrolly = gVideoDriver.getGameResolution().h;
+        }
 	}
 	
 
@@ -121,24 +123,24 @@ void CCredits::render()
     mpMap->animateAllTiles();
     gVideoDriver.blitScrollSurface();
 
-    SDL_FillRect(mpDrawSfc.get(), NULL, 0x0);
+    mDrawSfc.fillRGB(0, 0, 0);
 
     for(int j=0 ; j<54 ; j++)
     {
         if(m_scrolly+(j<<3) > -8 && m_scrolly+(j<<3) < gVideoDriver.getGameResolution().h)
         {
-            creditFont.drawFont( mpDrawSfc.get(), m_scrolltext[j], m_mid[j], m_scrolly+(j<<3), true);
+            creditFont.drawFont( mDrawSfc, m_scrolltext[j], m_mid[j], m_scrolly+(j<<3), true);
         }
     }
 
-    BlitSurface(mpDrawSfc.get(), nullptr, gVideoDriver.getBlitSurface(), nullptr);
+    GsWeakSurface weakBlit(gVideoDriver.getBlitSurface());
+    mDrawSfc.blitScaledTo(weakBlit);
 }
 
 
 void CCredits::teardown()
 {
-	mpDrawSfc = NULL;
-	mpMap = NULL;
+    mpMap = nullptr;
 	CEventContainer &EventContainer = gEventManager;
 	EventContainer.add(new ResetScrollSurface);
 }

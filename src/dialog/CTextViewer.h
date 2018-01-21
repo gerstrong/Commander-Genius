@@ -8,7 +8,8 @@
 #ifndef CTEXTVIEWER_H_
 #define CTEXTVIEWER_H_
 
-#include <SDL.h>
+#include <graphics/GsSurface.h>
+
 #include <vector>
 #include <string>
 #include <memory>
@@ -63,7 +64,7 @@ private:
 	bool m_mustclose;
 	int m_timer;
 
-    std::shared_ptr<SDL_Surface> mpTextVSfc;
+    GsSurface mTextVSfc;
 };
 
 #endif /* CTEXTVIEWER_H_ */

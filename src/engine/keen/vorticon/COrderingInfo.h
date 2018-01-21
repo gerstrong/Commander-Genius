@@ -30,7 +30,7 @@ private:
 	int m_numberoflines;	// number of lines to print
 	
 	std::shared_ptr<CMap> mpMap;
-	std::shared_ptr<SDL_Surface> mpTextSfc;
+    GsSurface mTextSfc;
 };
 
 #endif /* CORDERINGINFO_H_ */

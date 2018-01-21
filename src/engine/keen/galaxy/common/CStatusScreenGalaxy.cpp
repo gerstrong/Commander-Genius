@@ -48,7 +48,8 @@ void CStatusScreenGalaxy::drawBase(SDL_Rect &EditRect)
 {
     SDL_Rect DestRect;
     DestRect.w = 320;    DestRect.h = 200;
-   	mpStatusSurface.reset(CG_CreateRGBSurface(DestRect), &SDL_FreeSurface);
+
+    mStatusSurface.createRGBSurface(DestRect);
 
     /// Draw the required bitmaps and backgrounds for Statusscreen
 	// Draw the support Bitmap and see where the gray rectangle starts...
@@ -63,7 +64,7 @@ void CStatusScreenGalaxy::drawBase(SDL_Rect &EditRect)
     SupportRect.h = SupportBmp.height();
 	Dest.x = (DestRect.w-SupportRect.w)/2;	Dest.y = 0; 
 
-    BlitSurface( SupportBmp.getSDLSurface(), NULL, mpStatusSurface.get(), &Dest );
+    SupportBmp.draw(Dest.x, Dest.y, mStatusSurface);
 
 	// Draw the gray surface
 	SDL_Rect BackRect;
@@ -71,7 +72,8 @@ void CStatusScreenGalaxy::drawBase(SDL_Rect &EditRect)
 	BackRect.h = 152;
 	BackRect.x = (DestRect.w-BackRect.w)/2;
 	BackRect.y = SupportRect.h;
-	SDL_FillRect( mpStatusSurface.get(), &BackRect, 0xFFAAAAAA); //gray
+
+    mStatusSurface.fillRGBA(BackRect, 0xFF, 0xAA, 0xAA, 0xAA);
 
 	// Draw the cables Bitmap
 	GsBitmap &Cables_Bitmap = gGraphics.getMaskedBitmap(1);
@@ -80,38 +82,38 @@ void CStatusScreenGalaxy::drawBase(SDL_Rect &EditRect)
 	CableRect.h = Cables_Bitmap.getSDLSurface()->h;
 	Dest.x = BackRect.x - CableRect.w;	Dest.y = 0;
 
-    BlitSurface( Cables_Bitmap.getSDLSurface(), NULL, mpStatusSurface.get(), &Dest );
+    Cables_Bitmap.draw(Dest.x, Dest.y, mStatusSurface);
 
 	// Now draw the borders
 	GsTilemap &Tilemap = gGraphics.getTileMap(2);
 
 	// Upper Left corner
-	Tilemap.drawTile(mpStatusSurface.get(), BackRect.x, BackRect.y, 54);
+    Tilemap.drawTile(mStatusSurface, BackRect.x, BackRect.y, 54);
 
 	// Upper Part
 	for(int c=1 ; c<(BackRect.w/8)-1 ; c++)
-		Tilemap.drawTile(mpStatusSurface.get(), BackRect.x+c*8, BackRect.y, 55);
+        Tilemap.drawTile(mStatusSurface, BackRect.x+c*8, BackRect.y, 55);
 
 	// Upper Right Part
-	Tilemap.drawTile(mpStatusSurface.get(), BackRect.x+BackRect.w-8, BackRect.y, 56);
+    Tilemap.drawTile(mStatusSurface, BackRect.x+BackRect.w-8, BackRect.y, 56);
 
 	// Left Part
 	for(int c=1 ; c<(BackRect.h/8)-1 ; c++)
-		Tilemap.drawTile(mpStatusSurface.get(), BackRect.x, BackRect.y+c*8, 57);
+        Tilemap.drawTile(mStatusSurface, BackRect.x, BackRect.y+c*8, 57);
 
 	// Right Part
 	for(int c=1 ; c<(BackRect.h/8)-1 ; c++)
-		Tilemap.drawTile(mpStatusSurface.get(), BackRect.x+BackRect.w-8, BackRect.y+c*8, 59);
+        Tilemap.drawTile(mStatusSurface, BackRect.x+BackRect.w-8, BackRect.y+c*8, 59);
 
 	// Lower Left Part
-	Tilemap.drawTile(mpStatusSurface.get(), BackRect.x, BackRect.y+BackRect.h-8, 60);
+    Tilemap.drawTile(mStatusSurface, BackRect.x, BackRect.y+BackRect.h-8, 60);
 
 	// Lower Part
 	for(int c=1 ; c<(BackRect.w/8)-1 ; c++)
-		Tilemap.drawTile(mpStatusSurface.get(), BackRect.x+c*8, BackRect.y+BackRect.h-8, 61);
+        Tilemap.drawTile(mStatusSurface, BackRect.x+c*8, BackRect.y+BackRect.h-8, 61);
 
 	// Lower Right Part
-	Tilemap.drawTile(mpStatusSurface.get(), BackRect.x+BackRect.w-8, BackRect.y+BackRect.h-8, 62);
+    Tilemap.drawTile(mStatusSurface, BackRect.x+BackRect.w-8, BackRect.y+BackRect.h-8, 62);
 
 	EditRect.x = BackRect.x+16;
 	EditRect.y = BackRect.y+12;
@@ -125,7 +127,7 @@ void CStatusScreenGalaxy::scaleToResolution()
     const int scaleFac = gameres.h/200;
     GsWeakSurface blit(gVideoDriver.getBlitSurface());
 
-    SDL_PixelFormat *format = mpStatusSurface->format;
+    SDL_PixelFormat *format = mStatusSurface.getSDLSurface()->format;
 
     mStatusSfcTransformed.create(0,
                                  blit.width(),
@@ -136,22 +138,14 @@ void CStatusScreenGalaxy::scaleToResolution()
                                  format->Bmask,
                                  format->Amask );
 
+    mStatusSurface.setBlendMode(0);
+    mStatusSurface.setAlpha(0);
 
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-    SDL_SetSurfaceBlendMode(mpStatusSurface.get(), SDL_BLENDMODE_NONE);
-#else
-    SDL_SetAlpha(mpStatusSurface.get(), 0, 0);
-#endif
-
-    SDL_Rect srcRect = mpStatusSurface->clip_rect;
+    SDL_Rect srcRect = mStatusSurface.getSDLSurface()->clip_rect;
     srcRect.w *= scaleFac;
     srcRect.h *= scaleFac;
 
-    blitScaled(mpStatusSurface.get(),
-               srcRect,
-               mStatusSfcTransformed.getSDLSurface(),
-               srcRect,
-               NONE);
+    mStatusSurface.blitScaledTo(mStatusSfcTransformed);
 }
 
 void CStatusScreenGalaxy::GenerateStatusEp4()
@@ -162,7 +156,7 @@ void CStatusScreenGalaxy::GenerateStatusEp4()
     GsFont &Font = gGraphics.getFont(0);
     Font.setupColor(0x555555);
 
-    Font.drawFontCentered(mpStatusSurface.get(), "LOCATION", EditRect.x, EditRect.w, EditRect.y, false);
+    Font.drawFontCentered(mStatusSurface.getSDLSurface(), "LOCATION", EditRect.x, EditRect.w, EditRect.y, false);
 
     // Temporary Rect for drawing some stuff like background for scores and so...
     SDL_Rect TempRect;
@@ -174,28 +168,35 @@ void CStatusScreenGalaxy::GenerateStatusEp4()
     TempRect.h = 20;
 
     Font.setupColor(0x0);
-    SDL_FillRect(mpStatusSurface.get(), &TempRect, 0xFFFFFFFF);
-    Font.drawFontCentered(mpStatusSurface.get(), m_Item.mLevelName, TempRect.x, TempRect.w, TempRect.y+6, false);
-    Font.setupColor(0x444444);
-
+    mStatusSurface.fillRGBA(0xFF, 0xFF, 0xFF, 0xFF);
+    Font.drawFontCentered(mStatusSurface.getSDLSurface(),
+                          m_Item.mLevelName,
+                          TempRect.x,
+                          TempRect.w,
+                          TempRect.y+6,
+                          false);
+    Font.setupColor(mStatusSurface.mapRGB(0x44, 0x44, 0x44));
 
     /// SCORE and EXTRA Rect
     TempRect.x = EditRect.x;
     TempRect.y = EditRect.y+32;
     TempRect.w = EditRect.w/2; TempRect.h = 10;
-    Font.drawFont(mpStatusSurface.get(), "SCORE            EXTRA", TempRect.x+16, TempRect.y, false);
+    Font.drawFont(mStatusSurface, "SCORE            EXTRA", TempRect.x+16, TempRect.y, false);
     TempRect.w = (EditRect.w/2)-16; TempRect.h = 11;
     TempRect.y = EditRect.y+42;
 
     // Score Box
     TempRect.w = 8*8;
-    SDL_FillRect(mpStatusSurface.get(), &TempRect, 0xFF000000);
-    gGraphics.drawDigits(getRightAlignedString(itoa(m_Item.m_points), 8), TempRect.x, TempRect.y+2, mpStatusSurface.get());
+    mStatusSurface.fillRGBA(TempRect, 0xFF, 0x0, 0x0, 0x0);
+    gGraphics.drawDigits(getRightAlignedString(itoa(m_Item.m_points), 8), TempRect.x, TempRect.y+2,
+                         mStatusSurface.getSDLSurface());
 
     // Extra Box
     TempRect.x = EditRect.x+96;
-    SDL_FillRect(mpStatusSurface.get(), &TempRect, 0xFF000000);
-    gGraphics.drawDigits(getRightAlignedString(itoa(m_Item.m_lifeAt), 8), TempRect.x, TempRect.y+2, mpStatusSurface.get());
+    mStatusSurface.fillRGBA(0xFF, 0x0, 0x0, 0x0);
+    gGraphics.drawDigits(getRightAlignedString(itoa(m_Item.m_lifeAt), 8),
+                         TempRect.x, TempRect.y+2,
+                         mStatusSurface.getSDLSurface());
 
     byte *ptr = gKeenFiles.exeFile.getRawData();
 
@@ -219,76 +220,107 @@ void CStatusScreenGalaxy::GenerateStatusEp4()
     TempRect.x = EditRect.x;
     TempRect.y = EditRect.y+56;
     TempRect.w = EditRect.w/2; TempRect.h = 10;
-    Font.drawFont(mpStatusSurface.get(), rescLine, TempRect.x+8, TempRect.y, false);
+    Font.drawFont(mStatusSurface, rescLine, TempRect.x+8, TempRect.y, false);
     TempRect.w = (EditRect.w/2)-16; TempRect.h = 11;
     TempRect.y = EditRect.y+66;
 
     // Rescued Box
     TempRect.w = 8*8;
-    SDL_FillRect(mpStatusSurface.get(), &TempRect, 0xFF000000);
+    mStatusSurface.fillRGBA(0xFF, 0x0, 0x0, 0x0);
     for( int count=0 ; count<m_Item.m_special.ep4.elders ; count++ )
-        gGraphics.drawDigit(40, TempRect.x+8*count, TempRect.y+1, mpStatusSurface.get());
+    {
+        gGraphics.drawDigit(40,
+                            TempRect.x+8*count,
+                            TempRect.y+1,
+                            mStatusSurface.getSDLSurface());
+    }
 
     // Level Box
     TempRect.x = EditRect.x+96;
-    SDL_FillRect(mpStatusSurface.get(), &TempRect, 0xFFFFFFFF);
+    mStatusSurface.fillRGBA(TempRect, 0xFF, 0xFF, 0xFF, 0xFF);
     Font.setupColor(0x0);
 
     const std::string difftext = getDifficultyText();
 
-    Font.drawFontCentered(mpStatusSurface.get(), difftext, TempRect.x, TempRect.w, TempRect.y+1, false);
+    Font.drawFontCentered(mStatusSurface.getSDLSurface(), difftext, TempRect.x, TempRect.w, TempRect.y+1, false);
     Font.setupColor(0x333333);
 
     // Keys Box
     TempRect.x = EditRect.x;
     TempRect.y = EditRect.y+80;
-    Font.drawFont(mpStatusSurface.get(), "KEYS", TempRect.x, TempRect.y, false);
+    Font.drawFont(mStatusSurface, "KEYS", TempRect.x, TempRect.y, false);
     TempRect.w = 8*4; TempRect.h = 10;
     TempRect.x = TempRect.x+8*5;
-    SDL_FillRect(mpStatusSurface.get(), &TempRect, 0xFF000000);
+
+
+    mStatusSurface.fillRGBA(TempRect, 0xFF, 0x0, 0x0, 0x0);
+
     if(m_Item.m_gem.red)
-        gGraphics.drawDigit(36, TempRect.x, TempRect.y+1, mpStatusSurface.get());
+    {
+        gGraphics.drawDigit(36, TempRect.x, TempRect.y+1, mStatusSurface.getSDLSurface());
+    }
     if(m_Item.m_gem.yellow)
-        gGraphics.drawDigit(37, TempRect.x+8, TempRect.y+1, mpStatusSurface.get());
+    {
+        gGraphics.drawDigit(37, TempRect.x+8, TempRect.y+1, mStatusSurface.getSDLSurface());
+    }
     if(m_Item.m_gem.blue)
-        gGraphics.drawDigit(38, TempRect.x+16, TempRect.y+1, mpStatusSurface.get());
+    {
+        gGraphics.drawDigit(38, TempRect.x+16, TempRect.y+1, mStatusSurface.getSDLSurface());
+    }
     if(m_Item.m_gem.green)
-        gGraphics.drawDigit(39, TempRect.x+24, TempRect.y+1, mpStatusSurface.get());
+    {
+        gGraphics.drawDigit(39, TempRect.x+24, TempRect.y+1, mStatusSurface.getSDLSurface());
+    }
 
     // Ammo Box
     TempRect.x = EditRect.x+96;
     TempRect.y = EditRect.y+80;
-    Font.drawFont(mpStatusSurface.get(), "AMMO", TempRect.x, TempRect.y, false);
+    Font.drawFont(mStatusSurface, "AMMO", TempRect.x, TempRect.y, false);
     TempRect.w = 8*3; TempRect.h = 10;
     TempRect.x = TempRect.x+8*5;
-    SDL_FillRect(mpStatusSurface.get(), &TempRect, 0xFF000000);
-    gGraphics.drawDigits(getRightAlignedString(itoa(m_Item.m_bullets), 3), TempRect.x, TempRect.y+1, mpStatusSurface.get());
+
+    mStatusSurface.fillRGBA(TempRect, 0xFF, 0x0, 0x0, 0x0);
+    gGraphics.drawDigits(getRightAlignedString(itoa(m_Item.m_bullets), 3),
+                         TempRect.x, TempRect.y+1,
+                         mStatusSurface.getSDLSurface());
 
     // Keens Box
     TempRect.x = EditRect.x;
     TempRect.y = EditRect.y+96;
-    Font.drawFont(mpStatusSurface.get(), "KEENS", TempRect.x, TempRect.y, false);
+    Font.drawFont(mStatusSurface, "KEENS", TempRect.x, TempRect.y, false);
     TempRect.w = 8*2; TempRect.h = 10;
     TempRect.x = TempRect.x+8*5+8;
-    SDL_FillRect(mpStatusSurface.get(), &TempRect, 0xFF000000);
-    gGraphics.drawDigits(getRightAlignedString(itoa(m_Item.m_lifes), 2), TempRect.x, TempRect.y+1, mpStatusSurface.get());
+    mStatusSurface.fillRGBA(TempRect, 0xFF, 0x0, 0x0, 0x0);
+    gGraphics.drawDigits(getRightAlignedString(itoa(m_Item.m_lifes), 2),
+                         TempRect.x,
+                         TempRect.y+1,
+                         mStatusSurface.getSDLSurface());
 
     // Drops Box
     TempRect.x = EditRect.x+96;
     TempRect.y = EditRect.y+96;
-    Font.drawFont(mpStatusSurface.get(), dropsLine, TempRect.x, TempRect.y, false);
+    Font.drawFont(mStatusSurface, dropsLine, TempRect.x, TempRect.y, false);
     TempRect.w = 8*2; TempRect.h = 10;
     TempRect.x = TempRect.x+8*5+8;
-    SDL_FillRect(mpStatusSurface.get(), &TempRect, 0xFF000000);
-    gGraphics.drawDigits(getRightAlignedString(itoa(m_Item.m_drops), 2), TempRect.x, TempRect.y+1, mpStatusSurface.get());
+
+    mStatusSurface.fillRGBA(TempRect, 0xFF, 0x0, 0x0, 0x0);
+    gGraphics.drawDigits(getRightAlignedString(itoa(m_Item.m_drops), 2),
+                         TempRect.x,
+                         TempRect.y+1,
+                         mStatusSurface.getSDLSurface());
 
     // Swim Suit Box
     TempRect.x = EditRect.x;
     TempRect.y = EditRect.y+114;
     TempRect.w = (EditRect.w/2)-16; TempRect.h = 11;
-    SDL_FillRect(mpStatusSurface.get(), &TempRect, 0xFFFFFFFF);
+
+    mStatusSurface.fillRGBA(TempRect, 0xFF, 0xFF, 0xFF, 0xFF);
     Font.setupColor(0x0);
-    Font.drawFontCentered(mpStatusSurface.get(), m_Item.m_special.ep4.swimsuit ? swLine : "???", TempRect.x, TempRect.w, TempRect.y+1, false);
+    Font.drawFontCentered(mStatusSurface.getSDLSurface(),
+                          m_Item.m_special.ep4.swimsuit ? swLine : "???",
+                          TempRect.x,
+                          TempRect.w,
+                          TempRect.y+1, false);
 
     // Press a Key Sign
     GsTilemap &Tilemap = gGraphics.getTileMap(2);
@@ -296,12 +328,12 @@ void CStatusScreenGalaxy::GenerateStatusEp4()
     TempRect.y = EditRect.y+110;
     for( int c=0 ; c<10 ; c++ )
     {
-        Tilemap.drawTile(mpStatusSurface.get(), TempRect.x+c*8, TempRect.y, 72+c);
+        Tilemap.drawTile(mStatusSurface, TempRect.x+c*8, TempRect.y, 72+c);
     }
     TempRect.y += 8;
     for( int c=0 ; c<10 ; c++ )
     {
-        Tilemap.drawTile(mpStatusSurface.get(), TempRect.x+c*8, TempRect.y, 82+c);
+        Tilemap.drawTile(mStatusSurface, TempRect.x+c*8, TempRect.y, 82+c);
     }
 }
 
@@ -313,7 +345,8 @@ void CStatusScreenGalaxy::GenerateStatusEp5()
     GsFont &Font = gGraphics.getFont(0);
     Font.setupColor(0x555555);
 
-    Font.drawFontCentered(mpStatusSurface.get(), "LOCATION", EditRect.x, EditRect.w, EditRect.y, false);
+    Font.drawFontCentered(mStatusSurface.getSDLSurface(), "LOCATION",
+                          EditRect.x, EditRect.w, EditRect.y, false);
 
     // Temporary Rect for drawing some stuff like background for scores and so...
     SDL_Rect TempRect;
@@ -325,8 +358,10 @@ void CStatusScreenGalaxy::GenerateStatusEp5()
     TempRect.h = 20;
 
     Font.setupColor(0x0);
-    SDL_FillRect(mpStatusSurface.get(), &TempRect, 0xFFFFFFFF);
-    Font.drawFontCentered(mpStatusSurface.get(), m_Item.mLevelName, TempRect.x, TempRect.w, TempRect.y+6, false);
+
+    mStatusSurface.fillRGBA(TempRect, 0xFF, 0xFF, 0xFF, 0xFF);
+
+    Font.drawFontCentered(mStatusSurface.getSDLSurface(), m_Item.mLevelName, TempRect.x, TempRect.w, TempRect.y+6, false);
     Font.setupColor(0x444444);
 
 
@@ -334,40 +369,40 @@ void CStatusScreenGalaxy::GenerateStatusEp5()
     TempRect.x = EditRect.x;
     TempRect.y = EditRect.y+32;
     TempRect.w = EditRect.w/2; TempRect.h = 10;
-    Font.drawFont(mpStatusSurface.get(), "SCORE            EXTRA", TempRect.x+16, TempRect.y, false);
+    Font.drawFont(mStatusSurface.getSDLSurface(), "SCORE            EXTRA", TempRect.x+16, TempRect.y, false);
     TempRect.w = (EditRect.w/2)-16; TempRect.h = 11;
     TempRect.y = EditRect.y+42;
 
     // Score Box
     TempRect.w = 8*8;
-    SDL_FillRect(mpStatusSurface.get(), &TempRect, 0xFF000000);
-    gGraphics.drawDigits(getRightAlignedString(itoa(m_Item.m_points), 8), TempRect.x, TempRect.y+2, mpStatusSurface.get());
+    SDL_FillRect(mStatusSurface.getSDLSurface(), &TempRect, 0xFF000000);
+    gGraphics.drawDigits(getRightAlignedString(itoa(m_Item.m_points), 8), TempRect.x, TempRect.y+2, mStatusSurface.getSDLSurface());
 
     // Extra Box
     TempRect.x = EditRect.x+96;
-    SDL_FillRect(mpStatusSurface.get(), &TempRect, 0xFF000000);
-    gGraphics.drawDigits(getRightAlignedString(itoa(m_Item.m_lifeAt), 8), TempRect.x, TempRect.y+2, mpStatusSurface.get());
+    SDL_FillRect(mStatusSurface.getSDLSurface(), &TempRect, 0xFF000000);
+    gGraphics.drawDigits(getRightAlignedString(itoa(m_Item.m_lifeAt), 8), TempRect.x, TempRect.y+2, mStatusSurface.getSDLSurface());
 
     TempRect.x = EditRect.x;
     TempRect.y = EditRect.y+56;
-    Font.drawFont(mpStatusSurface.get(), "KEYCARD", TempRect.x, TempRect.y+4, false);
+    Font.drawFont(mStatusSurface.getSDLSurface(), "KEYCARD", TempRect.x, TempRect.y+4, false);
 
     // Small Keycard Box
     TempRect.y = EditRect.y+59;
     TempRect.x = EditRect.x+54;
     TempRect.w = 10;
     TempRect.h = 10;
-    SDL_FillRect(mpStatusSurface.get(), &TempRect, 0xFF000000);
+    SDL_FillRect(mStatusSurface.getSDLSurface(), &TempRect, 0xFF000000);
     if(m_Item.m_keycards)
     {
-        gGraphics.drawDigit(40, TempRect.x+1, TempRect.y+1, mpStatusSurface.get());
+        gGraphics.drawDigit(40, TempRect.x+1, TempRect.y+1, mStatusSurface.getSDLSurface());
     }
 
     // LEVEL Rects
     TempRect.w = EditRect.w/2;
     TempRect.x = EditRect.x+24;
     TempRect.y = EditRect.y+56;
-    Font.drawFont(mpStatusSurface.get(), "                  LEVEL", TempRect.x, TempRect.y, false);
+    Font.drawFont(mStatusSurface.getSDLSurface(), "                  LEVEL", TempRect.x, TempRect.y, false);
     TempRect.h = 11;
     TempRect.y = EditRect.y+66;
 
@@ -375,56 +410,56 @@ void CStatusScreenGalaxy::GenerateStatusEp5()
     // Level Box
     TempRect.x = EditRect.x+96;
     TempRect.w = 64;
-    SDL_FillRect(mpStatusSurface.get(), &TempRect, 0xFFFFFFFF);
+    SDL_FillRect(mStatusSurface.getSDLSurface(), &TempRect, 0xFFFFFFFF);
     Font.setupColor(0x0);
 
     const std::string difftext = getDifficultyText();
 
-    Font.drawFontCentered(mpStatusSurface.get(), difftext, TempRect.x, TempRect.w, TempRect.y+1, false);
+    Font.drawFontCentered(mStatusSurface.getSDLSurface(), difftext, TempRect.x, TempRect.w, TempRect.y+1, false);
     Font.setupColor(0x333333);
 
     // Keys Box
     TempRect.x = EditRect.x;
     TempRect.y = EditRect.y+80;
-    Font.drawFont(mpStatusSurface.get(), "KEYS", TempRect.x, TempRect.y, false);
+    Font.drawFont(mStatusSurface.getSDLSurface(), "KEYS", TempRect.x, TempRect.y, false);
     TempRect.w = 8*4; TempRect.h = 10;
     TempRect.x = TempRect.x+8*5;
-    SDL_FillRect(mpStatusSurface.get(), &TempRect, 0xFF000000);
+    SDL_FillRect(mStatusSurface.getSDLSurface(), &TempRect, 0xFF000000);
     if(m_Item.m_gem.red)
-        gGraphics.drawDigit(36, TempRect.x, TempRect.y+1, mpStatusSurface.get());
+        gGraphics.drawDigit(36, TempRect.x, TempRect.y+1, mStatusSurface.getSDLSurface());
     if(m_Item.m_gem.yellow)
-        gGraphics.drawDigit(37, TempRect.x+8, TempRect.y+1, mpStatusSurface.get());
+        gGraphics.drawDigit(37, TempRect.x+8, TempRect.y+1, mStatusSurface.getSDLSurface());
     if(m_Item.m_gem.blue)
-        gGraphics.drawDigit(38, TempRect.x+16, TempRect.y+1, mpStatusSurface.get());
+        gGraphics.drawDigit(38, TempRect.x+16, TempRect.y+1, mStatusSurface.getSDLSurface());
     if(m_Item.m_gem.green)
-        gGraphics.drawDigit(39, TempRect.x+24, TempRect.y+1, mpStatusSurface.get());
+        gGraphics.drawDigit(39, TempRect.x+24, TempRect.y+1, mStatusSurface.getSDLSurface());
 
     // Ammo Box
     TempRect.x = EditRect.x+96;
     TempRect.y = EditRect.y+80;
-    Font.drawFont(mpStatusSurface.get(), "AMMO", TempRect.x, TempRect.y, false);
+    Font.drawFont(mStatusSurface.getSDLSurface(), "AMMO", TempRect.x, TempRect.y, false);
     TempRect.w = 8*3; TempRect.h = 10;
     TempRect.x = TempRect.x+8*5;
-    SDL_FillRect(mpStatusSurface.get(), &TempRect, 0xFF000000);
-    gGraphics.drawDigits(getRightAlignedString(itoa(m_Item.m_bullets), 3), TempRect.x, TempRect.y+1, mpStatusSurface.get());
+    SDL_FillRect(mStatusSurface.getSDLSurface(), &TempRect, 0xFF000000);
+    gGraphics.drawDigits(getRightAlignedString(itoa(m_Item.m_bullets), 3), TempRect.x, TempRect.y+1, mStatusSurface.getSDLSurface());
 
     // Keens Box
     TempRect.x = EditRect.x;
     TempRect.y = EditRect.y+96;
-    Font.drawFont(mpStatusSurface.get(), "KEENS", TempRect.x, TempRect.y, false);
+    Font.drawFont(mStatusSurface.getSDLSurface(), "KEENS", TempRect.x, TempRect.y, false);
     TempRect.w = 8*2; TempRect.h = 10;
     TempRect.x = TempRect.x+8*5+8;
-    SDL_FillRect(mpStatusSurface.get(), &TempRect, 0xFF000000);
-    gGraphics.drawDigits(getRightAlignedString(itoa(m_Item.m_lifes), 2), TempRect.x, TempRect.y+1, mpStatusSurface.get());
+    SDL_FillRect(mStatusSurface.getSDLSurface(), &TempRect, 0xFF000000);
+    gGraphics.drawDigits(getRightAlignedString(itoa(m_Item.m_lifes), 2), TempRect.x, TempRect.y+1, mStatusSurface.getSDLSurface());
 
     // Drops Box
     TempRect.x = EditRect.x+96;
     TempRect.y = EditRect.y+96;
-    Font.drawFont(mpStatusSurface.get(), "VITALIN", TempRect.x, TempRect.y, false);
+    Font.drawFont(mStatusSurface.getSDLSurface(), "VITALIN", TempRect.x, TempRect.y, false);
     TempRect.w = 8*2; TempRect.h = 10;
     TempRect.x = TempRect.x+8*5+8;
-    SDL_FillRect(mpStatusSurface.get(), &TempRect, 0xFF000000);
-    gGraphics.drawDigits(getRightAlignedString(itoa(m_Item.m_drops), 2), TempRect.x, TempRect.y+1, mpStatusSurface.get());
+    SDL_FillRect(mStatusSurface.getSDLSurface(), &TempRect, 0xFF000000);
+    gGraphics.drawDigits(getRightAlignedString(itoa(m_Item.m_drops), 2), TempRect.x, TempRect.y+1, mStatusSurface.getSDLSurface());
 
     // Press a Key Sign
     GsTilemap &Tilemap = gGraphics.getTileMap(2);
@@ -432,8 +467,8 @@ void CStatusScreenGalaxy::GenerateStatusEp5()
     TempRect.y = EditRect.y+110;
     for( int c=0 ; c<10 ; c++ )
     {
-        Tilemap.drawTile(mpStatusSurface.get(), TempRect.x+c*8, TempRect.y, 72+c);
-        Tilemap.drawTile(mpStatusSurface.get(), TempRect.x+c*8, TempRect.y+8, 82+c);
+        Tilemap.drawTile(mStatusSurface.getSDLSurface(), TempRect.x+c*8, TempRect.y, 72+c);
+        Tilemap.drawTile(mStatusSurface.getSDLSurface(), TempRect.x+c*8, TempRect.y+8, 82+c);
     }
 }
 
@@ -445,7 +480,7 @@ void CStatusScreenGalaxy::GenerateStatusEp6()
     GsFont &Font = gGraphics.getFont(0);
     Font.setupColor(0x555555);
 
-    Font.drawFontCentered(mpStatusSurface.get(), "LOCATION", EditRect.x, EditRect.w, EditRect.y, false);
+    Font.drawFontCentered(mStatusSurface.getSDLSurface(), "LOCATION", EditRect.x, EditRect.w, EditRect.y, false);
 
     // Temporary Rect for drawing some stuff like background for scores and so...
     SDL_Rect TempRect;
@@ -457,8 +492,8 @@ void CStatusScreenGalaxy::GenerateStatusEp6()
     TempRect.h = 20;
 
     Font.setupColor(0x0);
-    SDL_FillRect(mpStatusSurface.get(), &TempRect, 0xFFFFFFFF);
-    Font.drawFontCentered(mpStatusSurface.get(), m_Item.mLevelName, TempRect.x, TempRect.w, TempRect.y+6, false);
+    SDL_FillRect(mStatusSurface.getSDLSurface(), &TempRect, 0xFFFFFFFF);
+    Font.drawFontCentered(mStatusSurface.getSDLSurface(), m_Item.mLevelName, TempRect.x, TempRect.w, TempRect.y+6, false);
     Font.setupColor(0x444444);
 
 
@@ -466,29 +501,29 @@ void CStatusScreenGalaxy::GenerateStatusEp6()
     TempRect.x = EditRect.x;
     TempRect.y = EditRect.y+32;
     TempRect.w = EditRect.w/2; TempRect.h = 10;
-    Font.drawFont(mpStatusSurface.get(), "SCORE            EXTRA", TempRect.x+16, TempRect.y, false);
+    Font.drawFont(mStatusSurface.getSDLSurface(), "SCORE            EXTRA", TempRect.x+16, TempRect.y, false);
     TempRect.w = (EditRect.w/2)-16; TempRect.h = 11;
     TempRect.y = EditRect.y+42;
 
     // Score Box
     TempRect.w = 8*8;
-    SDL_FillRect(mpStatusSurface.get(), &TempRect, 0xFF000000);
-    gGraphics.drawDigits(getRightAlignedString(itoa(m_Item.m_points), 8), TempRect.x, TempRect.y+2, mpStatusSurface.get());
+    SDL_FillRect(mStatusSurface.getSDLSurface(), &TempRect, 0xFF000000);
+    gGraphics.drawDigits(getRightAlignedString(itoa(m_Item.m_points), 8), TempRect.x, TempRect.y+2, mStatusSurface.getSDLSurface());
 
     // Extra Box
     TempRect.x = EditRect.x+96;
-    SDL_FillRect(mpStatusSurface.get(), &TempRect, 0xFF000000);
-    gGraphics.drawDigits(getRightAlignedString(itoa(m_Item.m_lifeAt), 8), TempRect.x, TempRect.y+2, mpStatusSurface.get());
+    SDL_FillRect(mStatusSurface.getSDLSurface(), &TempRect, 0xFF000000);
+    gGraphics.drawDigits(getRightAlignedString(itoa(m_Item.m_lifeAt), 8), TempRect.x, TempRect.y+2, mStatusSurface.getSDLSurface());
 
     // Items Box
     TempRect.x = EditRect.x;
     TempRect.y = EditRect.y+66;
-    Font.drawFont(mpStatusSurface.get(), "ITEMS", TempRect.x, TempRect.y+1, false);
+    Font.drawFont(mStatusSurface.getSDLSurface(), "ITEMS", TempRect.x, TempRect.y+1, false);
 
     TempRect.x = EditRect.x+44;
     TempRect.w = 30;
     TempRect.h = 10;
-    SDL_FillRect(mpStatusSurface.get(), &TempRect, 0xFF000000);
+    SDL_FillRect(mStatusSurface.getSDLSurface(), &TempRect, 0xFF000000);
 
     auto &spItem = m_Item.m_special.ep6;
 
@@ -496,15 +531,15 @@ void CStatusScreenGalaxy::GenerateStatusEp6()
     const int hookTile = (spItem.hook > 0) ? 4 : 3;
     const int keycardTile = (spItem.rocketKeycard > 0) ? 6 : 5;
 
-    gGraphics.drawDigit(sandwichTile, TempRect.x+1, TempRect.y+1, mpStatusSurface.get());
-    gGraphics.drawDigit(hookTile, TempRect.x+11, TempRect.y+1, mpStatusSurface.get());
-    gGraphics.drawDigit(keycardTile, TempRect.x+21, TempRect.y+1, mpStatusSurface.get());
+    gGraphics.drawDigit(sandwichTile, TempRect.x+1, TempRect.y+1, mStatusSurface.getSDLSurface());
+    gGraphics.drawDigit(hookTile, TempRect.x+11, TempRect.y+1, mStatusSurface.getSDLSurface());
+    gGraphics.drawDigit(keycardTile, TempRect.x+21, TempRect.y+1, mStatusSurface.getSDLSurface());
 
     // LEVEL Rects
     TempRect.w = EditRect.w/2;
     TempRect.x = EditRect.x+24;
     TempRect.y = EditRect.y+56;
-    Font.drawFont(mpStatusSurface.get(), "                  LEVEL", TempRect.x, TempRect.y);
+    Font.drawFont(mStatusSurface.getSDLSurface(), "                  LEVEL", TempRect.x, TempRect.y);
     TempRect.h = 11;
     TempRect.y = EditRect.y+66;
 
@@ -512,56 +547,56 @@ void CStatusScreenGalaxy::GenerateStatusEp6()
     // Level Box
     TempRect.x = EditRect.x+96;
     TempRect.w = 64;
-    SDL_FillRect(mpStatusSurface.get(), &TempRect, 0xFFFFFFFF);
+    SDL_FillRect(mStatusSurface.getSDLSurface(), &TempRect, 0xFFFFFFFF);
     Font.setupColor(0x0);
 
     const std::string difftext = getDifficultyText();
 
-    Font.drawFontCentered(mpStatusSurface.get(), difftext, TempRect.x, TempRect.w, TempRect.y+1, false);
+    Font.drawFontCentered(mStatusSurface.getSDLSurface(), difftext, TempRect.x, TempRect.w, TempRect.y+1, false);
     Font.setupColor(0x333333);
 
     // Keys Box
     TempRect.x = EditRect.x;
     TempRect.y = EditRect.y+80;
-    Font.drawFont(mpStatusSurface.get(), "KEYS", TempRect.x, TempRect.y);
+    Font.drawFont(mStatusSurface.getSDLSurface(), "KEYS", TempRect.x, TempRect.y);
     TempRect.w = 8*4; TempRect.h = 10;
     TempRect.x = TempRect.x+8*5;
-    SDL_FillRect(mpStatusSurface.get(), &TempRect, 0xFF000000);
+    SDL_FillRect(mStatusSurface.getSDLSurface(), &TempRect, 0xFF000000);
     if(m_Item.m_gem.red)
-        gGraphics.drawDigit(36, TempRect.x, TempRect.y+1, mpStatusSurface.get());
+        gGraphics.drawDigit(36, TempRect.x, TempRect.y+1, mStatusSurface.getSDLSurface());
     if(m_Item.m_gem.yellow)
-        gGraphics.drawDigit(37, TempRect.x+8, TempRect.y+1, mpStatusSurface.get());
+        gGraphics.drawDigit(37, TempRect.x+8, TempRect.y+1, mStatusSurface.getSDLSurface());
     if(m_Item.m_gem.blue)
-        gGraphics.drawDigit(38, TempRect.x+16, TempRect.y+1, mpStatusSurface.get());
+        gGraphics.drawDigit(38, TempRect.x+16, TempRect.y+1, mStatusSurface.getSDLSurface());
     if(m_Item.m_gem.green)
-        gGraphics.drawDigit(39, TempRect.x+24, TempRect.y+1, mpStatusSurface.get());
+        gGraphics.drawDigit(39, TempRect.x+24, TempRect.y+1, mStatusSurface.getSDLSurface());
 
     // Ammo Box
     TempRect.x = EditRect.x+96;
     TempRect.y = EditRect.y+80;
-    Font.drawFont(mpStatusSurface.get(), "AMMO", TempRect.x, TempRect.y);
+    Font.drawFont(mStatusSurface.getSDLSurface(), "AMMO", TempRect.x, TempRect.y);
     TempRect.w = 8*3; TempRect.h = 10;
     TempRect.x = TempRect.x+8*5;
-    SDL_FillRect(mpStatusSurface.get(), &TempRect, 0xFF000000);
-    gGraphics.drawDigits(getRightAlignedString(itoa(m_Item.m_bullets), 3), TempRect.x, TempRect.y+1, mpStatusSurface.get());
+    SDL_FillRect(mStatusSurface.getSDLSurface(), &TempRect, 0xFF000000);
+    gGraphics.drawDigits(getRightAlignedString(itoa(m_Item.m_bullets), 3), TempRect.x, TempRect.y+1, mStatusSurface.getSDLSurface());
 
     // Keens Box
     TempRect.x = EditRect.x;
     TempRect.y = EditRect.y+96;
-    Font.drawFont(mpStatusSurface.get(), "KEENS", TempRect.x, TempRect.y);
+    Font.drawFont(mStatusSurface.getSDLSurface(), "KEENS", TempRect.x, TempRect.y);
     TempRect.w = 8*2; TempRect.h = 10;
     TempRect.x = TempRect.x+8*5+8;
-    SDL_FillRect(mpStatusSurface.get(), &TempRect, 0xFF000000);
-    gGraphics.drawDigits(getRightAlignedString(itoa(m_Item.m_lifes), 2), TempRect.x, TempRect.y+1, mpStatusSurface.get());
+    SDL_FillRect(mStatusSurface.getSDLSurface(), &TempRect, 0xFF000000);
+    gGraphics.drawDigits(getRightAlignedString(itoa(m_Item.m_lifes), 2), TempRect.x, TempRect.y+1, mStatusSurface.getSDLSurface());
 
     // Drops Box
     TempRect.x = EditRect.x+96;
     TempRect.y = EditRect.y+96;
-    Font.drawFont(mpStatusSurface.get(), "VIVAS", TempRect.x, TempRect.y);
+    Font.drawFont(mStatusSurface.getSDLSurface(), "VIVAS", TempRect.x, TempRect.y);
     TempRect.w = 8*2; TempRect.h = 10;
     TempRect.x = TempRect.x+8*5+8;
-    SDL_FillRect(mpStatusSurface.get(), &TempRect, 0xFF000000);
-    gGraphics.drawDigits(getRightAlignedString(itoa(m_Item.m_drops), 2), TempRect.x, TempRect.y+1, mpStatusSurface.get());
+    SDL_FillRect(mStatusSurface.getSDLSurface(), &TempRect, 0xFF000000);
+    gGraphics.drawDigits(getRightAlignedString(itoa(m_Item.m_drops), 2), TempRect.x, TempRect.y+1, mStatusSurface.getSDLSurface());
 
     // Press a Key Sign
     GsTilemap &Tilemap = gGraphics.getTileMap(2);
@@ -569,8 +604,8 @@ void CStatusScreenGalaxy::GenerateStatusEp6()
     TempRect.y = EditRect.y+110;
     for( int c=0 ; c<10 ; c++ )
     {
-        Tilemap.drawTile(mpStatusSurface.get(), TempRect.x+c*8, TempRect.y, 72+c);
-        Tilemap.drawTile(mpStatusSurface.get(), TempRect.x+c*8, TempRect.y+8, 82+c);
+        Tilemap.drawTile(mStatusSurface.getSDLSurface(), TempRect.x+c*8, TempRect.y, 72+c);
+        Tilemap.drawTile(mStatusSurface.getSDLSurface(), TempRect.x+c*8, TempRect.y+8, 82+c);
     }
 }
 

@@ -128,7 +128,7 @@ private:
 	bool m_showKeensLeft;
 	std::vector< std::unique_ptr<CVorticonSpriteObject> > mSpriteObjectContainer;
     std::vector< std::unique_ptr<CHUD> > mpHUDVec;
-	std::shared_ptr<SDL_Surface> mpKeenLeftSfc;
+    GsSurface mKeenLeftSfc;
 	SDL_Rect keenleft_rect;
 
     // Menu-Button

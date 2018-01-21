@@ -46,7 +46,8 @@ public:
 	void draw();
 
 	bool m_showstatus;
-	std::shared_ptr<SDL_Surface> mpStatusSurface;
+    GsSurface mStatusSurface;
+
     GsSurface mStatusSfcTransformed;
 	const stItemGalaxy& m_Item;
 };

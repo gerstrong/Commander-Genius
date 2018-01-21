@@ -26,9 +26,8 @@ bool CPassiveVort::init()
     const GsRect<Uint16> gameRect(320, 200);
     gVideoDriver.setNativeResolution(gameRect);
 
-	SDL_Surface *temp = CG_CreateRGBSurface( gVideoDriver.getGameResolution().SDLRect() );
-    mpTextSfc.reset(gVideoDriver.convertThroughBlitSfc(temp), &SDL_FreeSurface);
-	SDL_FreeSurface(temp);
+    mTextSfc.createRGBSurface(gVideoDriver.getGameResolution().SDLRect());
+    mTextSfc.makeBlitCompatible();
 
 	if( m_mode == INTRO )
 	{
@@ -138,11 +137,8 @@ void CPassiveVort::render()
     // Blit the background
     gVideoDriver.blitScrollSurface();
 
-    BlitSurface( mpTextSfc.get(),
-                     nullptr,
-                     gVideoDriver.getBlitSurface(),
-                     nullptr );
-
+    GsWeakSurface weakBlit(gVideoDriver.getBlitSurface());
+    mTextSfc.blitTo(weakBlit);
 
     // Modes. We have three: Intro, Main-tile and Demos. We could add more.
     if( m_mode == INTRO )
