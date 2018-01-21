@@ -7,7 +7,7 @@
 
 #include "CResourceLoader.h"
 #include "graphics/GsGraphics.h"
-#include "sdl/extensions.h"
+
 #include <base/video/CVideoDriver.h>
 #include <base/GsTimer.h>
 #include <base/utils/StringUtils.h>

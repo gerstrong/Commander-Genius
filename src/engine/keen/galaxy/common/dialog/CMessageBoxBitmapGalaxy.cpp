@@ -7,7 +7,7 @@
 
 #include "CMessageBoxBitmapGalaxy.h"
 #include <base/video/CVideoDriver.h>
-#include "sdl/extensions.h"
+
 #include "dialog/CMessageBox.h"
 
 namespace galaxy

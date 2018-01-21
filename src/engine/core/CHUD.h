@@ -12,15 +12,15 @@
 #ifndef CHUD_H_
 #define CHUD_H_
 
-#include <SDL.h>
 #include <string>
 #include <functional>
 #include <memory>
+#include <graphics/GsSprite.h>
+#include <graphics/GsSurface.h>
+
 #include "Playerdefines.h"
 #include "engine/core/spritedefines.h"
-#include "graphics/GsSprite.h"
-#include "sdl/extensions.h"
-#include <graphics/GsSurface.h>
+
 
 
 class CHUD

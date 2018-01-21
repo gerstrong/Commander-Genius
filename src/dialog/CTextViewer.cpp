@@ -10,7 +10,6 @@
 #include <base/CInput.h>
 #include "CTextViewer.h"
 #include "graphics/GsGraphics.h"
-#include "sdl/extensions.h"
 #include <base/video/CVideoDriver.h>
 #include <base/utils/FindFile.h>
 #include <base/GsLogging.h>

@@ -5,4 +5,4 @@ FILE(GLOB_RECURSE srcs *.cpp *.h)
 
 add_library(engine_core ${srcs})
 
-target_link_libraries(engine_core sdl_extensions)
+target_link_libraries(engine_core sdl_extensions_audio sdl_extensions_sys)

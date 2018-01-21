@@ -11,7 +11,7 @@
 #include <base/utils/FindFile.h>
 #include <base/CInput.h>
 #include "CVorticonMapLoader.h"
-#include "sdl/extensions.h"
+
 
 #include "fileio/KeenFiles.h"
 #include "fileio/ResourceMgmt.h"

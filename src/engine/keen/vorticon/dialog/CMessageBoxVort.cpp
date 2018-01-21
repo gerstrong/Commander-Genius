@@ -13,7 +13,7 @@
 
 #include "CMessageBoxVort.h"
 #include "graphics/GsGraphics.h"
-#include "sdl/extensions.h"
+
 
 
 CMessageBoxVort::CMessageBoxVort(const std::string& Text,

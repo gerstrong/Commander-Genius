@@ -16,7 +16,7 @@
 #include <base/utils/FindFile.h>
 #include <base/video/CVideoDriver.h>
 #include "CVorticonMapLoader.h"
-#include "sdl/extensions.h"
+
 
 #include "fileio/KeenFiles.h"
 

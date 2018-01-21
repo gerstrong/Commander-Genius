@@ -14,7 +14,7 @@
 #include <base/video/CVideoDriver.h>
 #include "CVorticonMapLoader.h"
 #include "fileio/ResourceMgmt.h"
-#include "sdl/extensions.h"
+
 
 #include <fileio/KeenFiles.h>
 

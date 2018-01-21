@@ -13,7 +13,7 @@
 
 #include "fileio/CExeFile.h"
 #include "CVorticonMapLoader.h"
-#include "sdl/extensions.h"
+
 #include "fileio/KeenFiles.h"
 
 

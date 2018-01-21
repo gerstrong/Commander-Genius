@@ -20,7 +20,7 @@
 #include "../CVorticonMapLoader.h"
 #include "graphics/GsGraphics.h"
 #include "../ai/CTeleporter.h"
-#include "sdl/extensions.h"
+
 #include "../finale/CEndingEp1.h"
 #include "../finale/CEndingEp2.h"
 #include "../finale/CEndingEp3.h"

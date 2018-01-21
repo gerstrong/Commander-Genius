@@ -9,7 +9,6 @@
 #include "engine/core/CCamera.h"
 #include "engine/core/CBehaviorEngine.h"
 #include <base/video/CVideoDriver.h>
-#include "sdl/extensions.h"
 #include "graphics/GsGraphics.h"
 #include <base/utils/StringUtils.h>
 

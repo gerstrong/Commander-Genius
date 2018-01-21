@@ -13,7 +13,7 @@
 #include <base/video/CVideoDriver.h>
 #include <base/CInput.h>
 #include "engine/CGameLauncher.h"
-#include "sdl/extensions.h"
+
 #include "engine/core/mode/CGameMode.h"
 
 #include "engine/core/VGamepads/vgamepadsimple.h"

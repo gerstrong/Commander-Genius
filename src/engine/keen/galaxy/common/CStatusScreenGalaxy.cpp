@@ -13,7 +13,7 @@
 
 #include "engine/core/CBehaviorEngine.h"
 #include "fileio/KeenFiles.h"
-#include "sdl/extensions.h"
+
 
 CStatusScreenGalaxy::CStatusScreenGalaxy(const stItemGalaxy& Item) :
 m_showstatus(false),
