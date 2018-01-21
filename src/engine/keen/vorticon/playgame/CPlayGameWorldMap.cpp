@@ -194,7 +194,7 @@ void CPlayGameVorticon::showKeensLeft()
     const unsigned int KEENSLEFT_X = 7*scW;
     const unsigned int KEENSLEFT_Y = 10*scH;
 
-    if(mKeenLeftSfc)
+    if(!mKeenLeftSfc)
 	{
 		int x,y,i,p;
 		int boxY, boxH;
