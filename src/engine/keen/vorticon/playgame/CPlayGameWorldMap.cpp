@@ -194,7 +194,7 @@ void CPlayGameVorticon::showKeensLeft()
     const unsigned int KEENSLEFT_X = 7*scW;
     const unsigned int KEENSLEFT_Y = 10*scH;
 
-    if(!mKeenLeftSfc)
+    if(mKeenLeftSfc.empty())
 	{
 		int x,y,i,p;
 		int boxY, boxH;
@@ -209,21 +209,27 @@ void CPlayGameVorticon::showKeensLeft()
 		SDL_Rect rect;
 		rect.x = (KEENSLEFT_X+1)*8;	rect.y = (boxY+2)*8;
 		rect.w = (KEENSLEFT_W+1)*8;	rect.h = (boxH)*8;
-		SDL_Surface *boxsurface = SDL_CreateRGBSurface( SDL_SWSURFACE, rect.w, rect.h, RES_BPP, 0, 0, 0, 0 );
+
+        mKeenLeftSfc.createRGBSurface(rect);
 
 		rect.x = 8;	rect.y = 16;
 		rect.w = (KEENSLEFT_W-1)*8;	rect.h = (boxH-3)*8;
 
 		Uint8 r, g, b;
 		Font.getBGColour(&r, &g, &b, true);
-		Uint32 color = SDL_MapRGB( boxsurface->format, r, g, b);
+        const auto color = mKeenLeftSfc.mapRGB(r, g, b);
 
-		gGraphics.drawDialogBox( boxsurface, 0, 0, KEENSLEFT_W, boxH, color );
-		SDL_FillRect(boxsurface, &rect, color );
+        gGraphics.drawDialogBox( mKeenLeftSfc.getSDLSurface(),
+                                 0, 0,
+                                 KEENSLEFT_W, boxH,
+                                 color );
+        mKeenLeftSfc.fillRGB(rect, r, g, b);
+
 		Font.getBGColour(&r, &g, &b, false);
-		SDL_FillRect(boxsurface, &rect, SDL_MapRGB( boxsurface->format, r, g, b) );
-		Font.drawFont( boxsurface, gBehaviorEngine.getString("LIVES_LEFT"), 36, 8, true);
 
+        mKeenLeftSfc.fillRGB(rect, r, g, b);
+
+        Font.drawFont( mKeenLeftSfc, gBehaviorEngine.getString("LIVES_LEFT"), 36, 8, true);
 
 		y = 20;
         for(p=0; p<numPlayers ; p++)
@@ -235,14 +241,15 @@ void CPlayGameVorticon::showKeensLeft()
 
                 const int liveW = livesSprite.getWidth();
                 const int liveH = livesSprite.getHeight();
-                livesSprite.drawSprite(boxsurface, x, y, liveW, liveH );
+                livesSprite.drawSprite(mKeenLeftSfc.getSDLSurface(),
+                                       x, y,
+                                       liveW, liveH );
 
                 x+=16;
 			}
 			y += 16;
 		}
 
-        mKeenLeftSfc.createFromSDLSfc(boxsurface);
         mKeenLeftSfc.makeBlitCompatible();
 	}
 	else
@@ -269,10 +276,12 @@ void CPlayGameVorticon::showKeensLeft()
 
 int CPlayGameVorticon::getTeleporterInfo(int objectID)
 {
-	if(m_Episode == 1) {
+    if(m_Episode == 1)
+    {
 		if( objectID > 33 && objectID < 47 ) return objectID;
 	}
-	else if(m_Episode == 3) {
+    else if(m_Episode == 3)
+    {
 		if( (objectID & 0xF00) == 0xF00) return objectID;
 	}
 	return 0;
@@ -291,9 +300,13 @@ void CPlayGameVorticon::teleportPlayer(int objectID, CPlayer &player)
 	teleporter->solid = false;
 	teleporter->direction = TELEPORTING_IN;
 	if(m_Episode == 1)
+    {
 		readTeleportDestCoordinatesEP1(objectID, destx, desty);
+    }
 	else if(m_Episode == 3)
+    {
 		readTeleportDestCoordinatesEP3(objectID, destx, desty);
+    }
 	teleporter->destx = destx>>TILE_S;
 	teleporter->desty = desty>>TILE_S;
 	teleporter->whichplayer = player.m_index;

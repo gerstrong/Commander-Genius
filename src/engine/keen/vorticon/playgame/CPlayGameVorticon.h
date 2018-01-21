@@ -49,22 +49,22 @@ public:
     CPlayGameVorticon(const int startlevel = 0);
 
 	void setupPlayers();
-    bool init();
+    bool init() override;
 
 	// Game states
-	bool loadGameState();
+    bool loadGameState() override;
 	bool saveGameState();
 
-    bool loadXMLGameState();
-    bool saveXMLGameState();
+    bool loadXMLGameState() override;
+    bool saveXMLGameState() override;
 
-    void pumpEvent(const CEvent *evPtr);
+    void pumpEvent(const CEvent *evPtr) override;
 
-    void ponder(const float deltaT);
+    void ponder(const float deltaT) override;
 	void processOnWorldMap();
 	void processInLevel();
 
-    void render();
+    void render() override;
 
 	void showKeensLeft();
 	void goBacktoMap();
@@ -110,7 +110,9 @@ public:
 	void readTeleportDestCoordinatesEP1(int objectID, int &destx, int &desty);
 	void readTeleportDestCoordinatesEP3(int objectID, int &destx, int &desty);
 
-	void cleanup();
+    void cleanup() override;
+
+    virtual ~CPlayGameVorticon() override {}
 
 private:
 
@@ -125,10 +127,14 @@ private:
 	std::unique_ptr<CFinale> mpFinale;
 	std::unique_ptr<CEGABitmap> mpGameoverBmp;
 	std::list< std::shared_ptr<CMessageBoxVort> > mMessageBoxes;
+
 	bool m_showKeensLeft;
+
 	std::vector< std::unique_ptr<CVorticonSpriteObject> > mSpriteObjectContainer;
     std::vector< std::unique_ptr<CHUD> > mpHUDVec;
+
     GsSurface mKeenLeftSfc;
+
 	SDL_Rect keenleft_rect;
 
     // Menu-Button

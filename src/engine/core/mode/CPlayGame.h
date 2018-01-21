@@ -36,6 +36,8 @@ public:
 
     virtual void pumpEvent(const CEvent *evPtr);
 
+    virtual ~CPlayGame() {}
+
 	bool isFinished();
 	bool getEndGame();
 	bool getStartGame();
