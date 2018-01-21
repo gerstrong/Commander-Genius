@@ -124,27 +124,25 @@ void CStatusScreenGalaxy::drawBase(SDL_Rect &EditRect)
 
 void CStatusScreenGalaxy::scaleToResolution()
 {
-    /*SDL_Rect gameres = gVideoDriver.getGameResolution().SDLRect();
+    SDL_Rect gameres = gVideoDriver.getGameResolution().SDLRect();
     const int scaleFac = gameres.h/200;
-    GsWeakSurface blit(gVideoDriver.getBlitSurface());
+    GsWeakSurface weakBlit(gVideoDriver.getBlitSurface());
 
-    SDL_PixelFormat *format = mStatusSurface.getSDLSurface()->format;
+    //SDL_PixelFormat *format = mStatusSurface.getSDLSurface()->format;
 
-    mStatusSfcTransformed.create(0,
-                                 blit.width()*scaleFac,
-                                 blit.height()*scaleFac,
-                                 32,
-                                 format->Rmask,
-                                 format->Gmask,
-                                 format->Bmask,
-                                 format->Amask );
+    auto biggerRect = mStatusSurface.getSDLSurface()->clip_rect;
+    biggerRect.w *= scaleFac;
+    biggerRect.h *= scaleFac;
 
-    mStatusSurface.setBlendMode(0);
-    mStatusSurface.setAlpha(0);
+    mStatusSfcTransformed.createRGBSurface(biggerRect);
+    mStatusSurface.blitScaledTo(mStatusSfcTransformed);
 
-    mStatusSurface.blitScaledTo(mStatusSfcTransformed);*/
-
-    mStatusSfcTransformed.createCopy(mStatusSurface);
+    // Modern makes the hud a small bit semi transparent
+    const auto &optModern = gBehaviorEngine.mOptions[GameOption::MODERN];
+    if (optModern.value)
+    {
+        mStatusSfcTransformed.setAlpha(244);
+    }
 }
 
 void CStatusScreenGalaxy::GenerateStatusEp4()

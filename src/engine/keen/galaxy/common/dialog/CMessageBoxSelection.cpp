@@ -54,8 +54,6 @@ void CMessageBoxSelection::init()
 {
     GsWeakSurface weakBlit(gVideoDriver.getBlitSurface());
 
-    SDL_PixelFormat *format = weakBlit.getSDLSurface()->format;
-
     mMBSurface.createRGBSurface(mMBRect);
     mMBSurface.makeBlitCompatible();
 
