@@ -186,8 +186,8 @@ bool CGameLauncher::setupMenu()
     // Banner. TODO: Create a class for that...
     CGUIBanner *banner = new CGUIBanner("Commander Genius " CGVERSION "\n"
                     "By Gerstrong,\n"
+                    "Zilem,\n"
                     "Pelya,\n"
-                    "Hagel,\n"
 					"and the CG Contributors\n");
     mLauncherDialog.addControl( banner, GsRect<float>(0.0f, 0.95f, 1.0f, 0.05f) );
 

@@ -42,8 +42,8 @@ void CHighScores::fetchScoreTable()
 	m_Name[1] = "Tulip";
 	m_Name[2] = "Albert";
 	m_Name[3] = "Pickle";
-	m_Name[4] = "Pizza2004";
-	m_Name[5] = "DaVince";
+    m_Name[4] = "Zilem";
+    m_Name[5] = "Hagel";
 	m_Name[6] = "Katy Shaw";
 	m_Name[7] = "The Fans";
 	

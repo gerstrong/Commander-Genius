@@ -20,12 +20,13 @@
  - The Commander Genius Team
 
  CloneKeen          2003-2005   Caitlin Shaw
- CloneKeenPlus      2008-2014   Gerstrong
+ CloneKeenPlus      2008-2018   Gerstrong
  Commander Genius   2009-2014   Tulip,
  Commander Genius   2009-2013   NY00123,
  Commander Genius   2009-2013   Pickle, DaVince, Albert and Pizza2004
  Commander Genius   2010-2012   Lemm, Commander Spleen, Zear, Pelya and FCTW
- Commander Genius   2013-2014   Hagel
+ Commander Genius   2013-2015   Hagel
+ Commander Genius   2018        Zilem
  */
 
 #include "../version.h"
