@@ -275,6 +275,7 @@ How to compile it under Ubuntu:
         - python3 (python 3.5 recommended)
         - libsdl2-dev
         - libsdl2-image-dev
+        - libsdl2-mixer-dev
 
  * Extract my source code into the "CGeniusSrc" directory.
  * cd CGeniusSrc

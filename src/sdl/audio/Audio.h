@@ -120,10 +120,10 @@ public:
 	// Returns as list of strings the frequencies
 	std::list<std::string> getAvailableRateList() const;
 
-    void addSubCallback( void (SDLCALL *callback)(void *, Uint8 *, int) )
+    /*void addSubCallback( void (SDLCALL *callback)(void *, Uint8 *, int) )
     {
         mSubCallbackVec.push_back(callback);
-    }
+    }*/
 
 protected:
     bool mCallbackRunning = false;

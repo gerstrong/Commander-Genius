@@ -21,11 +21,20 @@
 
 bool CMusic::loadTrack(const int track)
 {
-
     gSound.pauseAudio();
 
     gLogging.textOut("Load track number " + itoa(track) + "");
 
+#if defined(USE_SDLMIXER)
+        /*Mix_Music *music;
+        music = Mix_LoadMUS(m_filename);
+        if(!music)
+        {
+            printf("Mix_LoadMUS(\"music.mp3\"): %s\n", Mix_GetError());
+            // this might be a critical error...
+        }
+*/
+#else
 #if defined(OGG) || defined(TREMOR)
     mpPlayer.reset( new COGGPlayer );
 
@@ -41,6 +50,8 @@ bool CMusic::loadTrack(const int track)
     {
         gLogging.textOut("No music to be loaded for Track" + itoa(track) + ".");
     }
+#endif
+
 
     gSound.resumeAudio();
 	return true;
@@ -49,7 +60,9 @@ bool CMusic::loadTrack(const int track)
 
 bool CMusic::load(const std::string &musicfile)
 {        
-	mpPlayer.reset();
+    #if !defined(USE_SDLMIXER)
+        mpPlayer.reset();
+    #endif
 
 	if(musicfile == "")
 		return false;
@@ -64,6 +77,7 @@ bool CMusic::load(const std::string &musicfile)
 
 		stringlwr(extension);
 
+#if !defined(USE_SDLMIXER)
 		if( extension == "imf" )
 		{
             mpPlayer.reset( new CIMFPlayer );
@@ -73,8 +87,25 @@ bool CMusic::load(const std::string &musicfile)
                 return false;
             }
 		}
-		else if( extension == "ogg" )
+        else
+#endif
+        if( extension == "ogg" )
 		{
+
+#if defined(USE_SDLMIXER)
+
+            mpMixMusic = Mix_LoadMUS(GetFullFileName(musicfile).c_str());
+            if(!mpMixMusic)
+            {
+                gLogging.ftextOut("Mix_LoadMUS(\"%s\"): %s\n",
+                                  musicfile.c_str(),
+                                  Mix_GetError());
+                return false;
+            }
+
+        }
+#else
+
 #if defined(OGG) || defined(TREMOR)
             mpPlayer.reset( new COGGPlayer );
             mpPlayer->loadMusicFromFile(musicfile);
@@ -83,6 +114,7 @@ bool CMusic::load(const std::string &musicfile)
             gSound.resumeAudio();
 		    return false;
 #endif
+
 		}
 
         if(!mpPlayer->open(true))
@@ -93,6 +125,8 @@ bool CMusic::load(const std::string &musicfile)
             gSound.resumeAudio();
 		    return false;
         }
+
+#endif
 
         gSound.resumeAudio();
 		return true;
@@ -112,38 +146,63 @@ void CMusic::reload()
 {
     gSound.pauseAudio();
 
+#if defined(USE_SDLMIXER)
+    Mix_RewindMusic();
+#else
 	if(!mpPlayer)
 	{
 		return;
 	}
 
-	mpPlayer->reload();
+    mpPlayer->reload();
+#endif
 
     gSound.resumeAudio();
 }
 
 void CMusic::play()
 {
+#if defined(USE_SDLMIXER)
+
+    // play music forever, fading in over 2 seconds
+    // Mix_Music *music; // I assume this has been loaded already
+    if(Mix_FadeInMusic(mpMixMusic, -1, 2000) == -1)
+    {
+        gLogging.ftextOut("Mix_FadeInMusic: %s\n", Mix_GetError());
+        // well, there's no music, but most games don't break without music...
+    }
+
+    Mix_VolumeMusic(SDL_MIX_MAXVOLUME);
+
+#else
 	if(!mpPlayer)
 	{
 		return;
 	}
 
 	mpPlayer->play(true);
+#endif
 }
 
 void CMusic::pause()
 {
+    #if defined(USE_SDLMIXER)
+        Mix_PauseMusic();
+    #else
 	if(!mpPlayer)
 		return;
 
 	mpPlayer->play(false);
+    #endif
 }
 
 void CMusic::stop()
 {
-	if(!mpPlayer)
-		return;
+#if defined(USE_SDLMIXER)
+    Mix_FadeOutMusic(3000);
+#else
+    if(!mpPlayer)
+        return;
 
     gSound.pauseAudio();
 
@@ -151,15 +210,19 @@ void CMusic::stop()
     mpPlayer.reset();
 
     gSound.resumeAudio();
+#endif
+
 }
 
 // length only refers to the part(buffer) that has to be played
 void CMusic::readWaveform(Uint8* buffer, size_t length)
 {
+    #if !defined(USE_SDLMIXER)
 	if( !mpPlayer )
 		return;
 
 	mpPlayer->readBuffer(buffer, length);
+    #endif
 }
 
 bool CMusic::LoadfromSonglist(const std::string &gamepath, const int &level)

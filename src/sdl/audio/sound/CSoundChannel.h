@@ -78,7 +78,7 @@ public:
 
 private:
     bool mSoundPlaying;           	// true = a sound is currently playing
-    CSoundSlot *mpCurrentSndSlot;		// Pointer to the slot of the currently playing sound
+    CSoundSlot *mpCurrentSndSlot = nullptr;		// Pointer to the slot of the currently playing sound
     Uint32 mSoundPtr;               	// position within sound that we're at
     bool mSoundPaused;             	// true = pause playback
     bool mSoundForced;

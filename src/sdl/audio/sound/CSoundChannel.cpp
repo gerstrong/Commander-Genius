@@ -14,7 +14,6 @@
 
 CSoundChannel::
 CSoundChannel(const SDL_AudioSpec &AudioSpec) :
-mpCurrentSndSlot(nullptr),
 m_AudioSpec(AudioSpec)
 {
     stopSound();

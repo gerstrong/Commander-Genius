@@ -22,6 +22,11 @@
 
 #include <base/Singleton.h>
 
+#if defined(USE_SDLMIXER)
+#include <SDL_mixer.h>
+#endif
+
+
 #define gMusicPlayer CMusic::get()
 
 class CMusic : public GsSingleton<CMusic>
@@ -54,23 +59,41 @@ public:
 	bool playing()
     {
         if(!active())
+        {
             return false;
+        }
 
+        #if defined(USE_SDLMIXER)
+        return Mix_PlayingMusic();
+        #else
         return mpPlayer->playing();
+        #endif
     }
 
     bool active()
     {
+        #if defined(USE_SDLMIXER)
+             return Mix_PlayingMusic();
+        #else
         if(mpPlayer)
             return true;
         else
             return false;
+        #endif
     }
 
 
 private:
 
+#if !defined(USE_SDLMIXER)
 	std::unique_ptr<CMusicPlayer> mpPlayer;
+#endif
+
+
+#if defined(USE_SDLMIXER)
+    Mix_Music *mpMixMusic = nullptr;
+#endif
+
 
 };
 

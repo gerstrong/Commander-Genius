@@ -3,6 +3,7 @@
  *
  *  Created on: 17.02.2011
  *      Author: Gerstrong
+ *  NOTE: if you use SDL_Mixer this is not required!
  */
 
 #if defined(OGG) || defined(TREMOR)
@@ -15,7 +16,6 @@
 #include <base/GsLogging.h>
 
 #include "fileio/KeenFiles.h"
-
 
 COGGPlayer::COGGPlayer() :
 m_pcm_size(0),

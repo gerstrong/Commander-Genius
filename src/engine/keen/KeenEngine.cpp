@@ -97,7 +97,8 @@ void KeenEngine::ponder(const float deltaT)
     if(!mpGameMode)
         return;
 
-    if(gMusicPlayer.active() && !gMusicPlayer.playing())
+    if(gMusicPlayer.active() &&
+       !gMusicPlayer.playing())
     {
        gMusicPlayer.play();
     }

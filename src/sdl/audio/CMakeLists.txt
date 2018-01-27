@@ -1,4 +1,5 @@
 
+
 add_subdirectory(base)
 add_subdirectory(music)
 add_subdirectory(sound)
@@ -14,3 +15,12 @@ target_link_libraries(sdl_extensions_audio
                       sdl_extensions_audio_music
                       sdl_extensions_audio_sound
                       sdl_extensions_audio_base)
+
+
+if(${SDLMIXER_FOUND})
+    LINK_DIRECTORIES(${SDLMIXER_LIBRARY_DIRS})
+    target_link_libraries(sdl_extensions_audio
+                          ${SDLMIXER_LIBRARIES})
+endif()
+
+

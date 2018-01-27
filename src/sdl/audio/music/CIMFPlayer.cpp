@@ -53,7 +53,9 @@ bool CIMFPlayer::loadMusicFromFile(const std::string& filename)
         fseek(fp, 0, SEEK_SET);
     }
     
+#if !defined(USE_SDLMIXER)
     SDL_LockAudio();
+#endif
     
     if(!m_IMF_Data.empty())
         m_IMF_Data.clear();
@@ -80,7 +82,9 @@ bool CIMFPlayer::loadMusicFromFile(const std::string& filename)
 
 bool CIMFPlayer::loadMusicTrack(const int track)
 {
+#if !defined(USE_SDLMIXER)
     SDL_LockAudio();
+#endif
 
     if( m_IMF_Data.empty() )
         m_IMF_Data.clear();
@@ -100,14 +104,18 @@ bool CIMFPlayer::loadMusicTrack(const int track)
 
 bool CIMFPlayer::open(const bool lock)
 {
-    if(lock)  SDL_LockAudio();
+#if !defined(USE_SDLMIXER)
+    if(lock) SDL_LockAudio();
+#endif
 
 	m_numreadysamples = m_IMFDelay = 0;
     m_samplesPerMusicTick = gSound.getAudioSpec().freq / m_opl_emulator.getIMFClockRate();
 	
 	m_opl_emulator.setup();
 
+#if !defined(USE_SDLMIXER)
     if(lock) SDL_UnlockAudio();
+#endif
 
 	return !m_IMF_Data.empty();
 }

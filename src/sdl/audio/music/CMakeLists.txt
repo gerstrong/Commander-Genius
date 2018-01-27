@@ -20,3 +20,9 @@ ENDIF(OGG)
 IF(TREMOR)
   TARGET_LINK_LIBRARIES(sdl_extensions_audio_music vorbisidec)
 ENDIF(TREMOR)
+
+if(${SDLMIXER_FOUND})
+    LINK_DIRECTORIES(${SDLMIXER_LIBRARY_DIRS})
+    target_link_libraries(sdl_extensions_audio_music
+                          ${SDLMIXER_LIBRARIES})
+endif()

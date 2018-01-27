@@ -39,7 +39,7 @@ void CSoundSlot::openOGGSound(const std::string& filename, SDL_AudioSpec *pspec,
 
     OggVorbis_File  oggStream;     				// stream handle
     const unsigned int BUFFER_SIZE = 32768;     // 32 KB buffers
-    SoundBuffer = NULL;
+    SoundBuffer = nullptr;
 
     const SDL_AudioSpec &audioSpec = gSound.getAudioSpec();
 

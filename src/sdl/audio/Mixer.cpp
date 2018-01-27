@@ -23,7 +23,10 @@
 /**
  * This will mix 16-bit signed streams together.
  */
-void mixAudioSigned16(Uint8 *dst, const Uint8 *src, Uint32 len, Uint32 volume)
+void mixAudioSigned16(Uint8 *dst,
+                      const Uint8 *src,
+                      Uint32 len,
+                      Uint32 volume)
 {
 	len /= 2;
 

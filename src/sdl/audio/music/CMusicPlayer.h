@@ -15,6 +15,7 @@
 #include <SDL.h>
 #include <string>
 
+
 class CMusicPlayer
 {
 public:
@@ -33,6 +34,7 @@ public:
 
 protected:
     bool m_playing = false;
+
 };
 
 #endif /* CMUSICPLAYER_H_ */

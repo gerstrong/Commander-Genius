@@ -12,6 +12,10 @@
 #include <base/utils/FindFile.h>
 #include "sdl/audio/music/CMusic.h"
 
+#if defined(USE_SDLMIXER)
+#include <SDL_mixer.h>
+#endif
+
 #include <fstream>
 
 
@@ -84,8 +88,71 @@ bool Audio::init()
 	mAudioSpec.callback = CCallback;
     mAudioSpec.userdata = nullptr;
 
-	// Initialize variables
-	if( SDL_OpenAudio(&mAudioSpec, &obtained) < 0 )
+    // Initialize audio system
+#if defined(USE_SDLMIXER)
+    if( Mix_OpenAudio(mAudioSpec.freq,
+                      mAudioSpec.format,
+                      mAudioSpec.channels,
+                      mAudioSpec.samples) < 0 )
+    {
+        gLogging << "Mix_OpenAudio: " << Mix_GetError();
+        return false;
+    }
+
+    {
+        int n = Mix_GetNumChunkDecoders();
+
+        gLogging << "There are "<< n << " available chunk(sample) decoders";
+
+        for(int i=0; i<n; ++i)
+        {
+            gLogging << "	" << Mix_GetChunkDecoder(i);
+        }
+
+        n = Mix_GetNumMusicDecoders();
+
+        gLogging << "There are " << n << "available music decoders:";
+
+        for(int i=0; i<n; ++i)
+        {
+            gLogging << "	" << Mix_GetMusicDecoder(i);
+        }
+    }
+
+
+    // print out some info on the audio device and stream
+    int audio_rate;
+    Uint16 audio_format;
+    int audio_channels;
+
+    Mix_QuerySpec(&audio_rate, &audio_format, &audio_channels);
+
+    const auto bits = audio_format&0xFF;
+    const auto sample_size = bits/8 + audio_channels;
+
+    mAudioSpec.freq = audio_rate;
+    mAudioSpec.format = audio_format;
+    mAudioSpec.channels = Uint8(audio_channels);
+    mAudioSpec.samples = Uint16(sample_size);
+
+    gLogging << "Opened audio at " << audio_rate << " Hz "
+             << bits << " bit "
+             << (audio_channels>1?"stereo":"mono")
+             << ", " << sample_size << " bytes audio buffer.\n";
+
+    const unsigned int channels = 32;
+    Mix_AllocateChannels(channels);
+
+
+    /*mSndChnlVec.clear();
+
+    mSndChnlVec.assign(channels, CSoundChannel(mAudioSpec));*/
+
+    //SDL_PauseAudio(0);
+
+
+#else
+    if( SDL_OpenAudio(&mAudioSpec, &obtained) < 0 )
 	{
 		gLogging.ftextOut("SoundDrv_Start(): Couldn't open audio: %s<br>", SDL_GetError());
 		gLogging.ftextOut("Sound will be disabled.<br>");
@@ -129,6 +196,9 @@ bool Audio::init()
 
     SDL_PauseAudio(0);
 
+#endif
+
+
     gLogging << "Sound System: SDL sound system initialized.<br>";
 
 	// Let's initialize the OPL Emulator here!
@@ -167,8 +237,14 @@ void Audio::destroy()
 {
 	stopAllSounds();
 
-    SDL_LockAudio();
+
+#if defined(USE_SDLMIXER)
+    Mix_CloseAudio();
+#else
+    SDL_LockAudio();    
 	SDL_CloseAudio();
+#endif
+
 
     if(!mMixedForm.empty())
         mMixedForm.clear();
@@ -192,13 +268,21 @@ void Audio::stopAllSounds()
 // pauses any currently playing sounds
 void Audio::pauseAudio()
 {
-	SDL_PauseAudio(1);
+#if defined(USE_SDLMIXER)
+    SDL_PauseAudio(1);
+#else
+    Mix_Pause(-1);
+#endif
 }
 
 // resumes playing a previously paused sound
 void Audio::resumeAudio()
 {
-	SDL_PauseAudio(0);
+#if defined(USE_SDLMIXER)
+    SDL_PauseAudio(0);
+#else
+    Mix_Resume(-1);
+#endif
 }
 
 // returns true if sound snd is currently playing
@@ -253,17 +337,14 @@ void Audio::callback(void *unused,
 {
     mCallbackRunning = true;
 
-    // Subcallbacks for so far are only used by the dosfusion system
-    for(auto &subCallback : mSubCallbackVec)
-    {
-        subCallback(unused, stream, len);
-    }
-
 	if(!mpAudioRessources)        
     {
         mCallbackRunning = false;
 		return;
     }
+
+#if defined(USE_SDLMIXER)
+#else
 
     mMixedForm.resize(len);
 
@@ -292,6 +373,8 @@ void Audio::callback(void *unused,
 		// means no sound is playing
         mPauseGameplay = false;
 	}
+
+#endif
 
     mCallbackRunning = false;
 }
@@ -399,7 +482,9 @@ void Audio::setupSoundData(const std::map<GameSound, int> &slotMap,
 {
     assert(audioResPtr);
 
+#if !defined(USE_SDLMIXER)
     SDL_LockAudio();
+#endif
 
     sndSlotMap = slotMap;
     mpAudioRessources.reset(audioResPtr);
@@ -412,7 +497,9 @@ void Audio::unloadSoundData()
     // Wait for callback to finish running...
     while(mCallbackRunning);
 
+#if !defined(USE_SDLMIXER)
     SDL_LockAudio();
+#endif
 
     mpAudioRessources.release();
     mMixedForm.clear();
