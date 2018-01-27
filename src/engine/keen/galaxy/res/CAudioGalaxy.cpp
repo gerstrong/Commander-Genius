@@ -59,11 +59,16 @@ bool CAudioGalaxy::readPCSpeakerSoundintoWaveForm(CSoundSlot &soundslot,
             std::vector<Uint8> wave8;
             std::vector<Sint16>::iterator it = waveform.begin();
             for( ; it != waveform.end(); it++ )
+            {
                 wave8.push_back(*it);
+            }
+
             soundslot.setupWaveForm((Uint8*)&wave8[0], wave8.size()*sizeof(Uint8));
         }
         else
+        {
             soundslot.setupWaveForm((Uint8*)&waveform[0], waveform.size()*sizeof(Sint16));
+        }
 
     }
 

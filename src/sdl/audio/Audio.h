@@ -83,8 +83,8 @@ public:
 	void stopSound(const GameSound snd);
 	void destroy();
 
-	void setSoundVolume(const Uint8 volume) { m_SoundVolume = volume; }
-	void setMusicVolume(const Uint8 volume) { m_MusicVolume = volume; }
+    void setSoundVolume(const Uint8 volume);
+    void setMusicVolume(const Uint8 volume);
 	Uint8 getSoundVolume() { return m_SoundVolume; }
 	Uint8 getMusicVolume() { return m_MusicVolume; }
 
@@ -134,21 +134,25 @@ protected:
 private:
 
     // Channels of sound which can be played at the same time.
+
     std::vector<CSoundChannel>	mSndChnlVec;
+
     std::unique_ptr<CAudioResources> mpAudioRessources;
+
 	Uint8 m_MusicVolume;
 	Uint8 m_SoundVolume;
 
     // Boolean that holds if the Soundblaster is to be used. If set false it will use the PC Speaker emulation
-    bool mUseSoundBlaster;
+    bool mUseSoundBlaster = false;
 
-	std::vector<Uint8> mMixedForm;	// Mainly used by the callback function. Declared once and allocated
-                                    // for the whole runtime
+#if !defined(USE_SDLMIXER)
+	std::vector<Uint8> mMixedForm;	// Mainly used by the callback function. Declared once and allocated                                    // for the whole runtime
+#endif
 
     std::map<GameSound, int> sndSlotMap;
 
     COPLEmulator m_OPL_Player;
-    bool mPauseGameplay;
+    bool mPauseGameplay = false;
 };
 
 #endif /* __AUDIO_H__ */

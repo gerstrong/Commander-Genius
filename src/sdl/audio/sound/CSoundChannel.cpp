@@ -11,6 +11,12 @@
 #include <cstdio>
 #include <cstring>
 
+#include <base/GsLogging.h>
+
+#if defined(USE_SDLMIXER)
+#include <SDL_mixer.h>
+#endif
+
 
 CSoundChannel::
 CSoundChannel(const SDL_AudioSpec &AudioSpec) :
@@ -21,6 +27,18 @@ m_AudioSpec(AudioSpec)
 
 void CSoundChannel::stopSound()
 {
+
+#if defined(USE_SDLMIXER)
+
+    mpCurrentSndSlot = nullptr;
+    mBalance = 0;
+    mSoundPtr = 0;
+    mSoundPaused = true;
+    mSoundPlaying = false;
+
+
+#else
+
     SDL_LockAudio();
 
     mpCurrentSndSlot = nullptr;
@@ -30,11 +48,30 @@ void CSoundChannel::stopSound()
     mSoundPlaying = false;
 
     SDL_UnlockAudio();
+#endif
 }
 
 void CSoundChannel::setupSound( CSoundSlot &SndSlottoPlay,
 								const bool sound_forced )
 {
+#if defined(USE_SDLMIXER)
+
+    mpCurrentSndSlot = &SndSlottoPlay;
+    mSoundPlaying = true;
+    mSoundPtr = 0;
+    mSoundForced = sound_forced;
+
+    auto waveChunk = mpCurrentSndSlot->WaveChunk();
+
+    // play sample on first free unreserved channel
+    // play it exactly once through
+    if(Mix_PlayChannel(0, waveChunk, 0) == -1)
+    {
+        gLogging.ftextOut("Mix_PlayChannel: %s\n", Mix_GetError());
+    }
+
+#else
+
     SDL_LockAudio();
 
     mpCurrentSndSlot = &SndSlottoPlay;
@@ -43,6 +80,7 @@ void CSoundChannel::setupSound( CSoundSlot &SndSlottoPlay,
     mSoundForced = sound_forced;
 
     SDL_UnlockAudio();
+#endif
 }
 
 /** \brief This program reads the balance information and balances the stereo sound
@@ -96,7 +134,7 @@ void CSoundChannel::transintoStereoChannels(T* waveform, const Uint32 len)
 void CSoundChannel::readWaveform( Uint8 * const waveform, const Uint32 len )
 {
     auto snddata = mpCurrentSndSlot->getSoundData();
-    const Uint32 sndlength = mpCurrentSndSlot->getSoundlength();
+    const Uint32 sndlength = mpCurrentSndSlot->getSoundlength();    
 
     if ((mSoundPtr + len) >= sndlength)
 	{

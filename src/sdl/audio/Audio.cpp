@@ -54,9 +54,7 @@ inline static void CCallback(void *unused, Uint8 *stream, int len)
 
 Audio::Audio() :
 m_MusicVolume(SDL_MIX_MAXVOLUME),
-m_SoundVolume(SDL_MIX_MAXVOLUME),
-mUseSoundBlaster(false),
-mPauseGameplay(false)
+m_SoundVolume(SDL_MIX_MAXVOLUME)
 {
 	mAudioSpec.channels = 2; // Stereo Sound
 	mAudioSpec.format = AUDIO_S16; // 16-bit sound
@@ -144,9 +142,9 @@ bool Audio::init()
     Mix_AllocateChannels(channels);
 
 
-    /*mSndChnlVec.clear();
+    mSndChnlVec.clear();
 
-    mSndChnlVec.assign(channels, CSoundChannel(mAudioSpec));*/
+    mSndChnlVec.assign(channels, CSoundChannel(mAudioSpec));
 
     //SDL_PauseAudio(0);
 
@@ -243,11 +241,12 @@ void Audio::destroy()
 #else
     SDL_LockAudio();    
 	SDL_CloseAudio();
-#endif
-
 
     if(!mMixedForm.empty())
         mMixedForm.clear();
+#endif
+
+
 
     if(!mSndChnlVec.empty())
         mSndChnlVec.clear();
@@ -268,7 +267,7 @@ void Audio::stopAllSounds()
 // pauses any currently playing sounds
 void Audio::pauseAudio()
 {
-#if defined(USE_SDLMIXER)
+#if !defined(USE_SDLMIXER)
     SDL_PauseAudio(1);
 #else
     Mix_Pause(-1);
@@ -278,7 +277,7 @@ void Audio::pauseAudio()
 // resumes playing a previously paused sound
 void Audio::resumeAudio()
 {
-#if defined(USE_SDLMIXER)
+#if !defined(USE_SDLMIXER)
     SDL_PauseAudio(0);
 #else
     Mix_Resume(-1);
@@ -315,6 +314,24 @@ void Audio::stopSound(const GameSound snd)
 		}
 	}
 }
+
+void Audio::setSoundVolume(const Uint8 volume)
+{
+    m_SoundVolume = volume;
+
+#if defined(USE_SDLMIXER)
+    Mix_Volume(-1, volume);
+#endif
+}
+void Audio::setMusicVolume(const Uint8 volume)
+{
+    m_MusicVolume = volume;
+
+#if defined(USE_SDLMIXER)
+    Mix_VolumeMusic(volume);
+#endif
+}
+
 
 // returns true if a sound is currently playing in SoundPlayMode::PLAY_FORCE mode
 bool Audio::forcedisPlaying()
@@ -425,15 +442,21 @@ void Audio::playStereosound(const GameSound snd,
 	const int speaker_snds_end_off = mpAudioRessources->getNumberofSounds()/2;
 
     if (slotplay >= speaker_snds_end_off)
+    {
 		return;
+    }
 
     if (mUseSoundBlaster && mp_Slots[slotplay+speaker_snds_end_off].getSoundData())
+    {
 		slotplay += speaker_snds_end_off;
+    }
 
     if (mode == SoundPlayMode::PLAY_NORESTART && isPlaying(snd))
+    {
 		return;
+    }
 
-	playStereosoundSlot(slotplay, mode, balance);
+    playStereosoundSlot(slotplay, mode, balance);
 }
 
 
@@ -455,9 +478,9 @@ void Audio::playStereosoundSlot(unsigned char slotplay,
 		stopAllSounds();
     }
 
+
 	// first try to find an empty channel
-    std::vector<CSoundChannel>::iterator sndChnl;
-    for( sndChnl = mSndChnlVec.begin() ; sndChnl != mSndChnlVec.end() ; sndChnl++)
+    for( auto sndChnl = mSndChnlVec.begin() ; sndChnl != mSndChnlVec.end() ; sndChnl++)
 	{
         CSoundSlot &currentSlot = *sndChnl->getCurrentSoundPtr();
 
@@ -502,9 +525,11 @@ void Audio::unloadSoundData()
 #endif
 
     mpAudioRessources.release();
-    mMixedForm.clear();
 
+#if !defined(USE_SDLMIXER)
+    mMixedForm.clear();
     SDL_UnlockAudio();
+#endif
 }
 
 

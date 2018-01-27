@@ -164,8 +164,7 @@ void CMusic::play()
 {
 #if defined(USE_SDLMIXER)
 
-    // play music forever, fading in over 2 seconds
-    // Mix_Music *music; // I assume this has been loaded already
+    // Play music forever, fading in over 2 seconds
     if(Mix_FadeInMusic(mpMixMusic, -1, 2000) == -1)
     {
         gLogging.ftextOut("Mix_FadeInMusic: %s\n", Mix_GetError());
@@ -199,7 +198,7 @@ void CMusic::pause()
 void CMusic::stop()
 {
 #if defined(USE_SDLMIXER)
-    Mix_FadeOutMusic(3000);
+    Mix_FadeOutMusic(1000);
 #else
     if(!mpPlayer)
         return;

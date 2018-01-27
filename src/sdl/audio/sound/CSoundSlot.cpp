@@ -27,8 +27,7 @@ int ov_fopen(char *path,OggVorbis_File *vf);
 #endif
 
 
-CSoundSlot::CSoundSlot() :
-m_soundlength(0)
+CSoundSlot::CSoundSlot()
 {}
 
 #if !(TARGET_OS_IPHONE) || !(TARGET_IPHONE_SIMULATOR)
@@ -103,13 +102,22 @@ void CSoundSlot::setupWaveForm( Uint8 *buf, Uint32 len )
 	m_soundlength = len;
     mSounddata.resize(m_soundlength);
     memcpy(mSounddata.data(), buf, m_soundlength);
+
+#if defined(USE_SDLMIXER)
+
+    if(!(mpWaveChunk=Mix_QuickLoad_RAW(mSounddata.data(), mSounddata.size())))
+    {
+        gLogging.ftextOut("Mix_QuickLoad_WAV: %s\n", Mix_GetError());
+        // handle error
+    }
+
+#endif
 }
 
 void CSoundSlot::setupWaveForm( const std::vector<Uint8>& waveform )
 {
-	m_soundlength = waveform.size();
-    mSounddata.resize(m_soundlength);
-    memcpy(mSounddata.data(), &waveform[0], m_soundlength);
+    setupWaveForm( (Uint8*)(&waveform[0]),
+                   Uint32(waveform.size()) );
 }
 
 bool CSoundSlot::HQSndLoad(const std::string& gamepath, const std::string& soundname)
@@ -226,11 +234,17 @@ bool CSoundSlot::HQSndLoad(const std::string& gamepath, const std::string& sound
 	return true;
 }
 
-
 void CSoundSlot::unload()
 {
     if(!mSounddata.empty())
+    {
         mSounddata.clear();
+    }
+
+#if defined(USE_SDLMIXER)
+    Mix_FreeChunk(mpWaveChunk);
+    mpWaveChunk = nullptr;
+#endif
 }
 
 

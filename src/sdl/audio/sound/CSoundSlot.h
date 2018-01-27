@@ -13,6 +13,10 @@
 #include <vector>
 #include <SDL.h>
 
+#if defined(USE_SDLMIXER)
+#include <SDL_mixer.h>
+#endif
+
 class CSoundSlot {
 public:
 
@@ -30,14 +34,25 @@ public:
     {
         return mSounddata.data();
     }
+
+#if defined(USE_SDLMIXER)
+    auto WaveChunk()
+    {
+        return mpWaveChunk;
+    }
+#endif
 	
 	word priority;
 
 private:
     std::vector<byte> mSounddata;
-	unsigned int m_soundlength;
+    unsigned int m_soundlength = 0;
     bool mHasCommonFreqBase;
     int mOggFreq;
+
+#if defined(USE_SDLMIXER)
+    Mix_Chunk *mpWaveChunk = nullptr;
+#endif
 };
 
 #endif /* CSOUNDSLOT_H_ */
