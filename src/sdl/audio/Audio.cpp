@@ -138,7 +138,7 @@ bool Audio::init()
              << (audio_channels>1?"stereo":"mono")
              << ", " << sample_size << " bytes audio buffer.\n";
 
-    const unsigned int channels = 32;
+    const unsigned int channels = 64;
     Mix_AllocateChannels(channels);
 
 
@@ -146,8 +146,10 @@ bool Audio::init()
 
     mSndChnlVec.assign(channels, CSoundChannel(mAudioSpec));
 
-    //SDL_PauseAudio(0);
+    Mix_VolumeMusic(m_MusicVolume);
+    Mix_Volume(-1, m_SoundVolume);
 
+    //SDL_PauseAudio(0);
 
 #else
     if( SDL_OpenAudio(&mAudioSpec, &obtained) < 0 )
@@ -315,20 +317,26 @@ void Audio::stopSound(const GameSound snd)
 	}
 }
 
-void Audio::setSoundVolume(const Uint8 volume)
+void Audio::setSoundVolume(const Uint8 volume, const bool immediately)
 {
     m_SoundVolume = volume;
 
 #if defined(USE_SDLMIXER)
-    Mix_Volume(-1, volume);
+    if(immediately)
+    {
+        Mix_Volume(-1, volume);
+    }
 #endif
 }
-void Audio::setMusicVolume(const Uint8 volume)
+void Audio::setMusicVolume(const Uint8 volume, const bool immediately)
 {
     m_MusicVolume = volume;
 
 #if defined(USE_SDLMIXER)
-    Mix_VolumeMusic(volume);
+    if(immediately)
+    {
+        Mix_VolumeMusic(volume);
+    }
 #endif
 }
 

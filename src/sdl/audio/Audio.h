@@ -83,8 +83,8 @@ public:
 	void stopSound(const GameSound snd);
 	void destroy();
 
-    void setSoundVolume(const Uint8 volume);
-    void setMusicVolume(const Uint8 volume);
+    void setSoundVolume(const Uint8 volume, const bool immediately=false);
+    void setMusicVolume(const Uint8 volume, const bool immediately=false);
 	Uint8 getSoundVolume() { return m_SoundVolume; }
 	Uint8 getMusicVolume() { return m_MusicVolume; }
 
