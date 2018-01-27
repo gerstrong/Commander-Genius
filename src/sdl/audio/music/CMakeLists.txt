@@ -21,8 +21,8 @@ IF(TREMOR)
   TARGET_LINK_LIBRARIES(sdl_extensions_audio_music vorbisidec)
 ENDIF(TREMOR)
 
-if(${SDLMIXER_FOUND})
-    LINK_DIRECTORIES(${SDLMIXER_LIBRARY_DIRS})
+if(${SDL_MIXER_FOUND})
+    LINK_DIRECTORIES(${SDL_MIXER_LIBRARY_DIRS})
     target_link_libraries(sdl_extensions_audio_music
-                          ${SDLMIXER_LIBRARIES})
+                          ${SDL_MIXER_LIBRARIES})
 endif()
