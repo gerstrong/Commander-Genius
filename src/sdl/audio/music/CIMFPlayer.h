@@ -15,6 +15,10 @@
 #include <SDL.h>
 #include <string>
 
+#if defined(USE_SDLMIXER)
+#include <SDL_mixer.h>
+#endif
+
 struct IMFChunkType
 {
 	byte al_reg;
@@ -60,5 +64,41 @@ private:
     unsigned int m_IMFDelay = 0;
     std::vector<Sint32> mMixBuffer;
 };
+
+
+#if defined(USE_SDLMIXER)
+// External Music hooks for the imf player
+
+/**
+ * @brief loadIMFFile
+ * @param fname
+ * @return
+ */
+bool loadIMFFile(const std::string &fname);
+
+/**
+ * @brief loadIMFTrack
+ * @param track
+ * @return
+ */
+bool loadIMFTrack(const int track);
+
+/**
+ * @brief imfMusicPlayer Music play function
+ * @param udata   udata to be a pointer to an int
+ * @param stream
+ * @param len
+ */
+void imfMusicPlayer(void *udata,
+                    Uint8 *stream,
+                    int len);
+
+/**
+ * @brief musicFinished
+ */
+void musicFinished();
+
+#endif
+
 
 #endif /* CIMFPLAYER_H_ */

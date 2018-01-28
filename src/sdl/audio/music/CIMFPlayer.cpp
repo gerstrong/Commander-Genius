@@ -17,13 +17,16 @@
 #include <string>
 #include <cassert>
 
+#if defined (USE_SDLMIXER)
+#include <SDL_mixer.h>
+#endif
+
 
 CIMFPlayer::CIMFPlayer( COPLEmulator& opl_emulator ) :
-m_opl_emulator(opl_emulator),
-m_numreadysamples(0),
-m_IMFDelay(0)
+m_opl_emulator(opl_emulator)
 {
-    m_samplesPerMusicTick = gSound.getAudioSpec().freq / m_opl_emulator.getIMFClockRate();
+    m_samplesPerMusicTick = gSound.getAudioSpec().freq /
+            m_opl_emulator.getIMFClockRate();
 }
 
 
@@ -34,7 +37,7 @@ bool CIMFPlayer::loadMusicFromFile(const std::string& filename)
     word data_size;
     bool ok = false;
     
-    if( ( fp = OpenGameFile(filename, "rb") ) == NULL )
+    if( ( fp = OpenGameFile(filename, "rb") ) == nullptr )
     {
         return false;
     }
@@ -91,11 +94,15 @@ bool CIMFPlayer::loadMusicTrack(const int track)
 
     if(!gKeenFiles.exeFile.loadMusicTrack(m_IMF_Data, track))
     {
+#if !defined(USE_SDLMIXER)
         SDL_UnlockAudio();
+#endif
         return false;
     }
 
+#if !defined(USE_SDLMIXER)
     SDL_UnlockAudio();
+#endif
 
     return true;
 }
@@ -234,3 +241,69 @@ void CIMFPlayer::readBuffer(Uint8* buffer, Uint32 length)
         }
     }
 }
+
+
+
+#if defined(USE_SDLMIXER)
+////// Hooks for SDL_Mixer Only ///////
+
+// We still a local to file declared object from the IMFPlayer class.
+// That one is only used here!
+
+CIMFPlayer locIMFPlayer;
+
+int locImfMusPos = 0;
+
+bool loadIMFFile(const std::string &fname)
+{
+    if(locIMFPlayer.loadMusicFromFile(fname))
+    {
+        Mix_HookMusic(imfMusicPlayer, &locImfMusPos);
+        return true;
+    }
+
+    return false;
+}
+
+bool loadIMFTrack(const int track)
+{
+    if(locIMFPlayer.loadMusicTrack(track))
+    {
+        Mix_HookMusic(imfMusicPlayer, &locImfMusPos);
+        locIMFPlayer.open(false);
+        locIMFPlayer.play(true);
+        return true;
+    }
+
+    return false;
+}
+
+
+void imfMusicPlayer(void *udata,
+                    Uint8 *stream,
+                    int len)
+{
+    int pos = *static_cast<int*>(udata);
+
+    // Fill buffer with music
+    locIMFPlayer.readBuffer(stream,
+                            static_cast<Uint32>(len));
+
+    // set udata for next time
+    pos+=len;
+    *static_cast<int*>(udata) = pos;
+}
+
+// make a music finished function
+void musicFinished()
+{
+    // Not sure, what should happen here.
+    //locIMFPlayer.close();
+    //locIMFPlayer.reload();
+}
+
+
+#endif
+
+
+

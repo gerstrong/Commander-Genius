@@ -26,15 +26,15 @@ bool CMusic::loadTrack(const int track)
     gLogging.textOut("Load track number " + itoa(track) + "");
 
 #if defined(USE_SDLMIXER)
-        /*Mix_Music *music;
-        music = Mix_LoadMUS(m_filename);
-        if(!music)
-        {
-            printf("Mix_LoadMUS(\"music.mp3\"): %s\n", Mix_GetError());
-            // this might be a critical error...
-        }
-*/
+
+    if(loadIMFTrack(track))
+    {
+        gSound.resumeAudio();
+        return true;
+    }
+
 #else
+
 #if defined(OGG) || defined(TREMOR)
     mpPlayer.reset( new COGGPlayer );
 
@@ -50,6 +50,7 @@ bool CMusic::loadTrack(const int track)
     {
         gLogging.textOut("No music to be loaded for Track" + itoa(track) + ".");
     }
+
 #endif
 
 
@@ -77,19 +78,26 @@ bool CMusic::load(const std::string &musicfile)
 
 		stringlwr(extension);
 
-#if !defined(USE_SDLMIXER)
 		if( extension == "imf" )
 		{
+            #if defined(USE_SDLMIXER)
+
+            if(!loadIMFFile(musicfile))
+            {
+                return false;
+            }
+
+            #else
             mpPlayer.reset( new CIMFPlayer );
 
             if(!mpPlayer->loadMusicFromFile(musicfile))
             {
                 return false;
             }
+
+            #endif
 		}
-        else
-#endif
-        if( extension == "ogg" )
+        else if( extension == "ogg" )
 		{
 
 #if defined(USE_SDLMIXER)
@@ -110,7 +118,7 @@ bool CMusic::load(const std::string &musicfile)
             mpPlayer.reset( new COGGPlayer );
             mpPlayer->loadMusicFromFile(musicfile);
 #else
-		    gLogging.ftextOut("Music Manager: Neither OGG bor TREMOR-Support are enabled! Please use another build<br>");
+            gLogging.ftextOut("Music Manager: Neither OGG nor TREMOR-Support are enabled! Please use another build<br>");
             gSound.resumeAudio();
 		    return false;
 #endif
@@ -169,7 +177,7 @@ void CMusic::play()
     {
         gLogging.ftextOut("Mix_FadeInMusic: %s\n", Mix_GetError());
         // well, there's no music, but most games don't break without music...
-    }
+    }        
 
     Mix_VolumeMusic(SDL_MIX_MAXVOLUME);
 

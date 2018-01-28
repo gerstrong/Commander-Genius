@@ -10,8 +10,6 @@
 
 #include "CMusicPlayer.h"
 #include "fileio/TypeDefinitions.h"
-/* #include "fileio/CExeFile.h" */
-/* #include "sdl/sound/CSound.h" */
 #include <hardware/COPLEmulator.h>
 #include "CRingBuffer.h"
 #include <SDL.h>
