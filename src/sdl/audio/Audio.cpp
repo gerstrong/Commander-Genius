@@ -126,17 +126,16 @@ bool Audio::init()
     Mix_QuerySpec(&audio_rate, &audio_format, &audio_channels);
 
     const auto bits = audio_format&0xFF;
-    const auto sample_size = bits/8 + audio_channels;
+    //const auto sample_size = bits/8 + audio_channels;
 
     mAudioSpec.freq = audio_rate;
     mAudioSpec.format = audio_format;
     mAudioSpec.channels = Uint8(audio_channels);
-    mAudioSpec.samples = Uint16(sample_size);
 
     gLogging << "Opened audio at " << audio_rate << " Hz "
              << bits << " bit "
              << (audio_channels>1?"stereo":"mono")
-             << ", " << sample_size << " bytes audio buffer.\n";
+             << ", " << mAudioSpec.size << " bytes audio buffer.\n";
 
     const unsigned int channels = 64;
     Mix_AllocateChannels(channels);

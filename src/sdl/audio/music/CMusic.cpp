@@ -172,10 +172,10 @@ void CMusic::play()
 {
 #if defined(USE_SDLMIXER)
 
-    // Play music forever, fading in over 2 seconds
+    // Play music forever
     if(Mix_FadeInMusic(mpMixMusic, -1, 2000) == -1)
     {
-        gLogging.ftextOut("Mix_FadeInMusic: %s\n", Mix_GetError());
+        gLogging.ftextOut("Mix_PlayMusic: %s\n", Mix_GetError());
         // well, there's no music, but most games don't break without music...
     }        
 
@@ -193,8 +193,8 @@ void CMusic::play()
 
 void CMusic::pause()
 {
-    #if defined(USE_SDLMIXER)
-        Mix_PauseMusic();
+    #if defined(USE_SDLMIXER)      
+        Mix_PauseMusic();        
     #else
 	if(!mpPlayer)
 		return;
@@ -205,8 +205,9 @@ void CMusic::pause()
 
 void CMusic::stop()
 {
-#if defined(USE_SDLMIXER)
-    Mix_FadeOutMusic(1000);
+#if defined(USE_SDLMIXER)        
+    Mix_HaltMusic();
+
 #else
     if(!mpPlayer)
         return;

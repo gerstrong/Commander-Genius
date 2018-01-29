@@ -129,7 +129,9 @@ bool CIMFPlayer::open(const bool lock)
 
 void CIMFPlayer::close(const bool lock)
 {
-    if(lock)  SDL_LockAudio();
+#if !defined(USE_SDLMIXER)
+    if(lock) SDL_LockAudio();
+#endif
 
 	play(false);
 	m_IMF_Data.gotoStart();	
@@ -137,7 +139,9 @@ void CIMFPlayer::close(const bool lock)
 	m_opl_emulator.ShutAL();
 	m_opl_emulator.shutdown();
 
+#if !defined(USE_SDLMIXER)
     if(lock) SDL_UnlockAudio();
+#endif
 
 	return;
 }
@@ -258,7 +262,11 @@ bool loadIMFFile(const std::string &fname)
 {
     if(locIMFPlayer.loadMusicFromFile(fname))
     {
+        locIMFPlayer.close(false);
+        locIMFPlayer.open(false);
         Mix_HookMusic(imfMusicPlayer, &locImfMusPos);
+        Mix_HookMusicFinished(musicFinished);
+        locIMFPlayer.play(true);
         return true;
     }
 
@@ -269,8 +277,10 @@ bool loadIMFTrack(const int track)
 {
     if(locIMFPlayer.loadMusicTrack(track))
     {
-        Mix_HookMusic(imfMusicPlayer, &locImfMusPos);
+        locIMFPlayer.close(false);
         locIMFPlayer.open(false);
+        Mix_HookMusic(imfMusicPlayer, &locImfMusPos);
+        Mix_HookMusicFinished(musicFinished);
         locIMFPlayer.play(true);
         return true;
     }
@@ -298,8 +308,7 @@ void imfMusicPlayer(void *udata,
 void musicFinished()
 {
     // Not sure, what should happen here.
-    //locIMFPlayer.close();
-    //locIMFPlayer.reload();
+    locIMFPlayer.close(false);
 }
 
 
