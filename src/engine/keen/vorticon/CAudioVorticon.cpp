@@ -152,7 +152,9 @@ bool CAudioVorticon::loadPCSpeakerSound(std::vector<T> &waveform, const std::str
 
 // loads sound searchname from file fname, into sounds[] entry loadnum
 // return value is false on failure
-bool CAudioVorticon::loadSound( const std::string& path, const std::string& searchname, unsigned int loadnum)
+bool CAudioVorticon::loadSound( const std::string& path,
+                                const std::string& searchname,
+                                unsigned int loadnum)
 {
 	CSoundSlot &current_snd_slot = m_soundslot[loadnum];
 	CSoundSlot &current_hq_snd_slot = m_soundslot[loadnum+MAX_NUM_SOUNDS];
@@ -196,7 +198,8 @@ bool CAudioVorticon::loadSound( const std::string& path, const std::string& sear
 		current_snd_slot.setupWaveForm( buf,  waveform.size()*sizeof(Sint16) );
 	}
 
-	current_hq_snd_slot.HQSndLoad(path, searchname);
+    current_hq_snd_slot.HQSndLoad(path,
+                                  searchname);
 
 	return ok;
 

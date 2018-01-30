@@ -120,8 +120,40 @@ void CSoundSlot::setupWaveForm( const std::vector<Uint8>& waveform )
                    Uint32(waveform.size()) );
 }
 
-bool CSoundSlot::HQSndLoad(const std::string& gamepath, const std::string& soundname)
+bool CSoundSlot::HQSndLoad(const std::string& gamepath,
+                           const std::string& soundname)
 {
+#if defined(USE_SDLMIXER)
+
+   // m_soundlength = len;
+
+
+    // load sample.wav in to sample
+    std::string buf;
+
+    buf = getResourceFilename("snd/" + soundname + ".OGG", gamepath, false, true); // Start with OGG
+
+    if(buf != "")
+    {
+        buf = getResourceFilename("snd/" + soundname + ".WAV", gamepath, false); // Start with OGG
+    }
+
+    if(buf != "")
+    {
+        return false;
+    }
+
+    if(!(mpWaveChunk=Mix_LoadWAV(buf.c_str())))
+    {
+        gLogging.ftextOut("Mix_LoadWAV: %s\n", Mix_GetError());
+        // handle error
+        return false;
+    }
+
+    return true;
+
+#else
+
 	SDL_AudioSpec AudioFileSpec;
 
     const SDL_AudioSpec &audioSpec = gSound.getAudioSpec();
@@ -232,6 +264,7 @@ bool CSoundSlot::HQSndLoad(const std::string& gamepath, const std::string& sound
 	free(Audio_cvt.buf);
 
 	return true;
+#endif
 }
 
 void CSoundSlot::unload()

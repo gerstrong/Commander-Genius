@@ -27,10 +27,14 @@ private:
     void loadSoundStream(Uint8* exedata);
 
 	template <typename T>
-    bool loadPCSpeakerSound(std::vector<T> &waveform, const std::string& searchname,
-			bool IsSigned, Uint16& Priority);
+    bool loadPCSpeakerSound(std::vector<T> &waveform,
+                            const std::string& searchname,
+                            bool IsSigned,
+                            Uint16& Priority);
 
-    bool loadSound(const std::string& path, const std::string& searchname, unsigned int loadnum);
+    bool loadSound(const std::string& path,
+                   const std::string& searchname,
+                   unsigned int loadnum);
 
     std::vector<byte> mFileBuffer;
 };
