@@ -235,15 +235,19 @@ bool CExeFile::readMainPythonScript(const unsigned int episode,
 
 bool CExeFile::Supported()
 {
-    if(mIsPythonScript)
-        return true;
+    if(mIsPythonScript) return true;
 
+    if( m_supportmap.find(m_datasize) ==
+            m_supportmap.end())
+    {
+        return false;
+    }
 
-	if( m_supportmap.find(m_datasize) == m_supportmap.end())
+    if( m_supportmap[m_datasize].find(m_episode) ==
+            m_supportmap[m_datasize].end() )
+    {
 		return false;
-
-	if( m_supportmap[m_datasize].find(m_episode) == m_supportmap[m_datasize].end() )
-		return false;
+    }
 
 	return  m_supportmap[m_datasize][m_episode];
 }

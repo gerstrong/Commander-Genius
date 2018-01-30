@@ -17,36 +17,38 @@
 #include <SDL_mixer.h>
 #endif
 
+int CSoundChannel::mTotNumChannels = 0;
 
 CSoundChannel::
 CSoundChannel(const SDL_AudioSpec &AudioSpec) :
 m_AudioSpec(AudioSpec)
 {
     stopSound();
+    mId = mTotNumChannels;
+    mTotNumChannels++;
 }
 
-void CSoundChannel::stopSound()
+CSoundChannel::
+~CSoundChannel()
 {
+    mTotNumChannels--;
+}
+
+void
+CSoundChannel::
+stopSound()
+{
+#if defined(USE_SDLMIXER)
+    SDL_LockAudio();
+#endif
+
+    mpCurrentSndSlot = nullptr;
+    mBalance = 0;
+    mSoundPtr = 0;
+    mSoundPaused = true;
+    mSoundPlaying = false;
 
 #if defined(USE_SDLMIXER)
-
-    mpCurrentSndSlot = nullptr;
-    mBalance = 0;
-    mSoundPtr = 0;
-    mSoundPaused = true;
-    mSoundPlaying = false;
-
-
-#else
-
-    SDL_LockAudio();
-
-    mpCurrentSndSlot = nullptr;
-    mBalance = 0;
-    mSoundPtr = 0;
-    mSoundPaused = true;
-    mSoundPlaying = false;
-
     SDL_UnlockAudio();
 #endif
 }
@@ -65,7 +67,7 @@ void CSoundChannel::setupSound( CSoundSlot &SndSlottoPlay,
 
     // play sample on first free unreserved channel
     // play it exactly once through
-    if(Mix_PlayChannel(0, waveChunk, 0) == -1)
+    if(Mix_PlayChannel(mId, waveChunk, 0) == -1)
     {
         gLogging.ftextOut("Mix_PlayChannel: %s\n", Mix_GetError());
     }

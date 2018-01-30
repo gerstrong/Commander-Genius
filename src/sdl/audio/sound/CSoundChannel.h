@@ -49,6 +49,8 @@ class CSoundChannel
 public:
     CSoundChannel(const SDL_AudioSpec &AudioSpec);
 
+    virtual ~CSoundChannel();
+
 	void stopSound();
     bool isPlaying() { return mSoundPlaying; }
     bool isForcedPlaying() { return (mSoundPlaying && mSoundForced); }
@@ -86,6 +88,9 @@ private:
     short mBalance;					// This variable is used for stereo sound, and to calculate where the sound must be played!
 
     SDL_AudioSpec m_AudioSpec;
+
+    static int mTotNumChannels;
+    int mId = 0;
 };
 
 #endif /* CSOUNDCHANNEL_H_ */
