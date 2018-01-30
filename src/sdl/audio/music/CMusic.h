@@ -56,6 +56,20 @@ public:
 
 	bool LoadfromSonglist(const std::string &gamepath, const int &level);
 
+    bool paused()
+    {
+        if(!active())
+        {
+            return false;
+        }
+
+        #if defined(USE_SDLMIXER)
+        return Mix_PausedMusic();
+        #else
+        return mpPlayer->playing();
+        #endif
+    }
+
 	bool playing()
     {
         if(!active())

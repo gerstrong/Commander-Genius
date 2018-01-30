@@ -172,6 +172,16 @@ void CMusic::play()
 {
 #if defined(USE_SDLMIXER)
 
+    if(Mix_PlayingMusic())
+    {
+        Mix_HaltMusic();
+    }
+
+    if(Mix_PausedMusic())
+    {
+        Mix_ResumeMusic();
+    }
+
     // Play music forever
     if(Mix_FadeInMusic(mpMixMusic, -1, 2000) == -1)
     {
@@ -194,7 +204,12 @@ void CMusic::play()
 void CMusic::pause()
 {
     #if defined(USE_SDLMIXER)      
+
+    if(!Mix_PausedMusic())
+    {
         Mix_PauseMusic();        
+    }
+
     #else
 	if(!mpPlayer)
 		return;
@@ -206,7 +221,11 @@ void CMusic::pause()
 void CMusic::stop()
 {
 #if defined(USE_SDLMIXER)        
-    Mix_FadeOutMusic(500);
+
+    if(Mix_PlayingMusic())
+    {
+        Mix_FadeOutMusic(500);
+    }
 
 #else
     if(!mpPlayer)
