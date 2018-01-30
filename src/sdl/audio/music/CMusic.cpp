@@ -206,7 +206,7 @@ void CMusic::pause()
 void CMusic::stop()
 {
 #if defined(USE_SDLMIXER)        
-    Mix_HaltMusic();
+    Mix_FadeOutMusic(500);
 
 #else
     if(!mpPlayer)
