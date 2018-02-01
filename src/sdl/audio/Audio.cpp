@@ -519,7 +519,9 @@ void Audio::setupSoundData(const std::map<GameSound, int> &slotMap,
     sndSlotMap = slotMap;
     mpAudioRessources.reset(audioResPtr);
 
+#if !defined(USE_SDLMIXER)
     SDL_UnlockAudio();
+#endif
 }
 
 void Audio::unloadSoundData()

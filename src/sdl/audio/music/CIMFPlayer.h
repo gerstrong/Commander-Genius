@@ -98,6 +98,13 @@ void imfMusicPlayer(void *udata,
  */
 void musicFinished();
 
+
+
+/**
+ * @brief unhookAll
+ */
+void unhookAll();
+
 #endif
 
 

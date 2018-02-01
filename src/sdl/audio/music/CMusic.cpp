@@ -63,10 +63,19 @@ bool CMusic::load(const std::string &musicfile)
 {        
     #if !defined(USE_SDLMIXER)
         mpPlayer.reset();
+    #else
+
+        if(mpMixMusic)
+        {
+            Mix_FreeMusic(mpMixMusic);
+            mpMixMusic = nullptr;
+        }
+
+        unhookAll();
+
     #endif
 
-	if(musicfile == "")
-		return false;
+    if(musicfile == "") return false;
 
 	const SDL_AudioSpec &audioSpec = gSound.getAudioSpec();
 
@@ -74,7 +83,7 @@ bool CMusic::load(const std::string &musicfile)
 	{
 		std::string extension = GetFileExtension(musicfile);
 
-        gSound.pauseAudio();
+        stop();
 
 		stringlwr(extension);
 
@@ -102,7 +111,8 @@ bool CMusic::load(const std::string &musicfile)
 
 #if defined(USE_SDLMIXER)
 
-            mpMixMusic = Mix_LoadMUS(GetFullFileName(musicfile).c_str());
+            const auto fullFname = GetFullFileName(musicfile);
+            mpMixMusic = Mix_LoadMUS(fullFname.c_str());
             if(!mpMixMusic)
             {
                 gLogging.ftextOut("Mix_LoadMUS(\"%s\"): %s\n",
@@ -136,7 +146,6 @@ bool CMusic::load(const std::string &musicfile)
 
 #endif
 
-        gSound.resumeAudio();
 		return true;
 
 	}
@@ -172,14 +181,19 @@ void CMusic::play()
 {
 #if defined(USE_SDLMIXER)
 
+    if(Mix_PausedMusic())
+    {
+        Mix_ResumeMusic();
+    }
+
     if(Mix_PlayingMusic())
     {
         Mix_HaltMusic();
     }
 
-    if(Mix_PausedMusic())
+    if(!mpMixMusic)
     {
-        Mix_ResumeMusic();
+        return;
     }
 
     // Play music forever
@@ -189,7 +203,7 @@ void CMusic::play()
         // well, there's no music, but most games don't break without music...
     }        
 
-    Mix_VolumeMusic(SDL_MIX_MAXVOLUME);
+    //Mix_VolumeMusic(SDL_MIX_MAXVOLUME);
 
 #else
 	if(!mpPlayer)
@@ -224,8 +238,16 @@ void CMusic::stop()
 
     if(Mix_PlayingMusic())
     {
-        Mix_FadeOutMusic(500);
+        Mix_HaltMusic();
     }
+
+    if(mpMixMusic)
+    {
+        Mix_FreeMusic(mpMixMusic);
+        mpMixMusic = nullptr;
+    }
+
+    unhookAll();
 
 #else
     if(!mpPlayer)
@@ -293,7 +315,10 @@ bool CMusic::LoadfromSonglist(const std::string &gamepath, const int &level)
     			// Get the song filename and load it!
     			std::string filename = getResourceFilename( music_filename, gamepath, false, true);
     			if( load(filename) )
+                {
     				play();
+                }
+
     			return true;
     		}
     	}

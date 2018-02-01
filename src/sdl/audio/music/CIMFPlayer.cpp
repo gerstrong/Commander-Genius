@@ -77,7 +77,9 @@ bool CIMFPlayer::loadMusicFromFile(const std::string& filename)
     
     fclose(fp);
 
+#if !defined(USE_SDLMIXER)
     SDL_UnlockAudio();
+#endif
     
     return ok;
 }
@@ -309,6 +311,12 @@ void musicFinished()
 {
     // Not sure, what should happen here.
     locIMFPlayer.close(false);
+}
+
+void unhookAll()
+{
+    Mix_HookMusic(nullptr, &locImfMusPos);
+    Mix_HookMusicFinished(nullptr);
 }
 
 
