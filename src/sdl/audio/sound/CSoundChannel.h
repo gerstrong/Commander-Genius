@@ -49,6 +49,9 @@ class CSoundChannel
 public:
     CSoundChannel(const SDL_AudioSpec &AudioSpec);
 
+    CSoundChannel(const CSoundChannel &chnl);
+
+
     virtual ~CSoundChannel();
 
 	void stopSound();

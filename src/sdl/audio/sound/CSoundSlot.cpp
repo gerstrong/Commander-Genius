@@ -272,11 +272,14 @@ void CSoundSlot::unload()
     if(!mSounddata.empty())
     {
         mSounddata.clear();
-    }
+    }        
 
 #if defined(USE_SDLMIXER)
-    Mix_FreeChunk(mpWaveChunk);
-    mpWaveChunk = nullptr;
+    if(mpWaveChunk)
+    {
+        Mix_FreeChunk(mpWaveChunk);
+        mpWaveChunk = nullptr;
+    }
 #endif
 }
 

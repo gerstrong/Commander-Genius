@@ -73,7 +73,7 @@ void CAudioSettings::refresh()
 	mpDepth->setSelection( mAudioSpec.format == AUDIO_U8 ? "8-bit" : "16-bit" );
 #endif
 	mpSBToggle->setSelection( mSoundblaster ? "Soundblaster" : "PC Speaker" );
-	gMusicPlayer.play();
+    gMusicPlayer.play();
 }
 
 
@@ -82,7 +82,9 @@ void CAudioSettings::ponder(const float deltaT)
     GalaxyMenu::ponder(0);
 
 	if( mSoundVolume != mpSoundVolume->getSelection() )
+    {
 		gSound.playSound(SOUND_GET_ITEM);
+    }
 
 	mSoundVolume = mpSoundVolume->getSelection();
 

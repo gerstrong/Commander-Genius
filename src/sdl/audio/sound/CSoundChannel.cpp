@@ -10,6 +10,7 @@
 #include <cstdlib>
 #include <cstdio>
 #include <cstring>
+#include <cassert>
 
 #include <base/GsLogging.h>
 
@@ -29,16 +30,29 @@ m_AudioSpec(AudioSpec)
 }
 
 CSoundChannel::
+CSoundChannel(const CSoundChannel &chnl)
+{
+    *this = chnl;
+    mId = mTotNumChannels;
+    mTotNumChannels++;
+}
+
+CSoundChannel::
 ~CSoundChannel()
 {
     mTotNumChannels--;
+
+    if(mTotNumChannels < 0)
+    {
+        assert(0);
+    }
 }
 
 void
 CSoundChannel::
 stopSound()
 {
-#if defined(USE_SDLMIXER)
+#if !defined(USE_SDLMIXER)
     SDL_LockAudio();
 #endif
 
@@ -49,6 +63,8 @@ stopSound()
     mSoundPlaying = false;
 
 #if defined(USE_SDLMIXER)
+    Mix_HaltChannel(mId);
+#else
     SDL_UnlockAudio();
 #endif
 }

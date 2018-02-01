@@ -161,7 +161,7 @@ bool CMusic::load(const std::string &musicfile)
 
 void CMusic::reload()
 {
-    gSound.pauseAudio();
+    //gSound.pauseAudio();
 
 #if defined(USE_SDLMIXER)
     Mix_RewindMusic();
@@ -174,7 +174,7 @@ void CMusic::reload()
     mpPlayer->reload();
 #endif
 
-    gSound.resumeAudio();
+    //gSound.resumeAudio();
 }
 
 void CMusic::play()

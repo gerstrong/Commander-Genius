@@ -237,9 +237,7 @@ void Audio::destroy()
 	stopAllSounds();
 
 
-#if defined(USE_SDLMIXER)
-    Mix_CloseAudio();
-#else
+#if !defined(USE_SDLMIXER)
     SDL_LockAudio();    
 	SDL_CloseAudio();
 
@@ -250,19 +248,27 @@ void Audio::destroy()
 
 
     if(!mSndChnlVec.empty())
+    {
         mSndChnlVec.clear();
+    }
 
 	// Shutdown the OPL Emulator here!
 	gLogging.ftextOut("SoundDrv_Stop(): shut down.<br>");
 
 	m_OPL_Player.shutdown();
+
+#if defined(USE_SDLMIXER)
+    Mix_CloseAudio();
+#endif
 }
 
 // stops all currently playing sounds
 void Audio::stopAllSounds()
 {
     for( auto &snd_chnl : mSndChnlVec )
+    {
 		snd_chnl.stopSound();
+    }
 }
 
 // pauses any currently playing sounds
