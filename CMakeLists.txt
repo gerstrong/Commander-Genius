@@ -12,7 +12,7 @@ include(cotire)
 
 option(USE_PYTHON3 "Use Python3 scripts" yes)
 
-set (CMAKE_CXX_STANDARD 11)
+set (CMAKE_CXX_STANDARD 14)
 
 #------------------------------------------------------------------------------
 # Set a default build type if none was specified

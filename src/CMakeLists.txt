@@ -161,7 +161,7 @@ else(USE_SDL2)
         if(SDL_FOUND)
                 message(STATUS "Using shared SDL Version 1.2")
                 include_directories(${SDL_INCLUDE_DIR})
-                INCLUDE_DIRECTORIES(${SDL_INCLUDE_DIRS})
+                #INCLUDE_DIRECTORIES(${SDL_INCLUDE_DIRS})
         else(SDL_FOUND)
                 # TODO: Use the prebuilt one on Windows
                 message("Using static SDL from Externals")
@@ -179,8 +179,15 @@ ENDIF (OPENGL)
 IF(WIN32)
     find_package(SDL_Mixer)
 else(WIN32)
+
     INCLUDE(FindPkgConfig)
-    PKG_CHECK_MODULES(SDL_MIXER SDL2_mixer>=2.0.0)
+
+    if(USE_SDL2)
+        PKG_CHECK_MODULES(SDL_MIXER SDL2_mixer>=2.0.0)
+    else()
+        PKG_CHECK_MODULES(SDL_MIXER SDL_mixer>=1.0.0)
+    endif()
+
 endif(WIN32)
 
 if(${SDL_MIXER_FOUND})
@@ -227,15 +234,15 @@ target_link_libraries( CGeniusExe ${ZLIB_LIBRARIES} )
 
 
 if(USE_SDL2)
-        target_link_libraries(CGeniusExe ${SDL2_LIBRARY})
-        target_link_libraries(CGeniusExe ${SDL2IMAGE_LIBRARY})
+#        target_link_libraries(CGeniusExe ${SDL2_LIBRARY})
+#        target_link_libraries(CGeniusExe ${SDL2IMAGE_LIBRARY})
 	message(STATUS "SDL2_LIBRARY = ${SDL2_LIBRARY}")
         message(STATUS "SDL2IMAGE_LIBRARY = ${SDL2IMAGE_LIBRARY}")
 else(USE_SDL2)
         # SDL stuff to link
-        target_link_libraries(CGeniusExe ${SDL_NET_LIBRARIES})
-        target_link_libraries(CGeniusExe ${SDL_LIBRARY})
-        target_link_libraries(CGeniusExe ${SDL_IMAGE_LIBRARY})
+#        target_link_libraries(CGeniusExe ${SDL_NET_LIBRARIES})
+#        target_link_libraries(CGeniusExe ${SDL_LIBRARY})
+#        target_link_libraries(CGeniusExe ${SDL_IMAGE_LIBRARY})
 endif(USE_SDL2)
 
 

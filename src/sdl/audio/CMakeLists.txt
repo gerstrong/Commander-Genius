@@ -20,7 +20,7 @@ target_link_libraries(sdl_extensions_audio
 if(${SDL_MIXER_FOUND})
     LINK_DIRECTORIES(${SDL_MIXER_LIBRARY_DIRS})
     target_link_libraries(sdl_extensions_audio
-                          ${SDL_MIXER_LIBRARIES})
+                          ${SDL_MIXER_LIBRARY})
 endif()
 
 
