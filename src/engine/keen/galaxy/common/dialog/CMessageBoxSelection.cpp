@@ -112,8 +112,8 @@ void CMessageBoxSelection::init()
     mSelSurface1.setColorKey( mSelSurface1.mapRGB(0, 0, 0) );
     mSelSurface2.setColorKey( mSelSurface2.mapRGB(0, 0, 0) );
 
-    mSelSurface1.setBlendMode(SDL_BLENDMODE_BLEND);
-    mSelSurface2.setBlendMode(SDL_BLENDMODE_BLEND);
+    mSelSurface1.setBlendMode(1);
+    mSelSurface2.setBlendMode(1);
 
     mSelSurface1.fillRGB(cutRect, 0, 0, 0);
     mSelSurface2.fillRGB(cutRect, 0, 0, 0);
