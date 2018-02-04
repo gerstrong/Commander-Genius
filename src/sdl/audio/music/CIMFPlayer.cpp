@@ -266,13 +266,11 @@ void imfMusicPlayer(void *udata,
     int pos = *static_cast<int*>(udata);
 
     // Fill buffer with music
+    memset(stream, 0, static_cast<size_t>(len));
+
     locIMFPlayer.readBuffer(stream,
                             static_cast<Uint32>(len));
     // fill buffer with...uh...music...
-    /*for(int i=0; i<len; i++)
-    {
-        stream[i]=(i+pos)&0xff;
-    }*/
 
     // set udata for next time
     pos+=len;
