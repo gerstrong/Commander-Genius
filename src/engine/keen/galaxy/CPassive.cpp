@@ -84,6 +84,7 @@ mSkipSection(false)
     mCommanderTextSfc.scaleTo(cmdTextRect);
     mCommanderTextSfc.setColorKey( 0, 0, 0 );
     mCommanderTextSfc.optimizeSurface();
+
     mKeenTextSfc.scaleTo(keenTextRect);
     mKeenTextSfc.setColorKey( 0, 0, 0 );
     mKeenTextSfc.optimizeSurface();

@@ -30,8 +30,7 @@ timer(0)
 void CHUD::createHUDBlit()
 {        
     mHUDBlit.createRGBSurface(mRenderRect);
-    mHUDBlit.setAlpha(220);
-    mHUDBlit.makeBlitCompatible();    
+    mHUDBlit.makeBlitCompatible();
 }
 
 void CHUD::setup(const int id)
@@ -51,6 +50,7 @@ void CHUD::setup(const int id)
     {
         mRenderRect.w = 84;	mRenderRect.h = 30;
         mRenderRect.x += (mRenderRect.w-4)*id;
+
         createHUDBlit();
         CreateVorticonBackground();
     }
@@ -62,8 +62,6 @@ void CHUD::setup(const int id)
 
         mHUDBox.copy(hudBg);
 		
-		mHUDBox.Surface().makeBlitCompatible();
-
         mRenderRect.h = mHUDBox.getHeight();
         mRenderRect.w = mHUDBox.getWidth()-7;
         mRenderRect.x += (mRenderRect.w-2)*id;
@@ -80,6 +78,11 @@ void CHUD::CreateVorticonBackground()
 {
     // Create a surface for the Background
     mBackground.createRGBSurface(mRenderRect);
+
+    // This also works better with older SDL versions
+    mBackground.applyDisplayFormat();
+    mBackground.fillRGB(0x00, 0xFE, 0xFF);
+    mBackground.setColorKey(0x00, 0xFE, 0xFF);
 
 	SDL_Rect headsrGsRect, headdstrect;
 	headsrGsRect.x = 0;

@@ -202,6 +202,11 @@ void CMessageBoxSelection::render()
     mSelSurface1.setAlpha(static_cast<unsigned char>(blend));
     mSelSurface2.setAlpha(static_cast<unsigned char>(SDL_ALPHA_OPAQUE-blend));
 
+    mSelSurface1.applyDisplayFormat();
+    mSelSurface2.applyDisplayFormat();
+    mSelSurface1.setColorKey(0,0,0);
+    mSelSurface2.setColorKey(0,0,0);
+
     SDL_Rect cursorSel;
 
     cursorSel.w = cursorSel.h = 10;

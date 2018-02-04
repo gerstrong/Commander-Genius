@@ -72,7 +72,7 @@ void CIntro::ponder()
 
 void CIntro::render()
 {
-    if(mp_bm[0] != NULL)
+    if(mp_bm[0] != nullptr)
     {
         mp_bm[1]->draw( m_mid[1], m_scrolly+11);
 
