@@ -145,10 +145,6 @@ private:
     // Boolean that holds if the Soundblaster is to be used. If set false it will use the PC Speaker emulation
     bool mUseSoundBlaster = false;
 
-#if !defined(USE_SDLMIXER)
-	std::vector<Uint8> mMixedForm;	// Mainly used by the callback function. Declared once and allocated                                    // for the whole runtime
-#endif
-
     std::map<GameSound, int> sndSlotMap;
 
     COPLEmulator m_OPL_Player;

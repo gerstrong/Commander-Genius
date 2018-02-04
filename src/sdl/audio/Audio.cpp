@@ -12,9 +12,7 @@
 #include <base/utils/FindFile.h>
 #include "sdl/audio/music/CMusic.h"
 
-#if defined(USE_SDLMIXER)
 #include <SDL_mixer.h>
-#endif
 
 #include <fstream>
 
@@ -87,7 +85,6 @@ bool Audio::init()
     mAudioSpec.userdata = nullptr;
 
     // Initialize audio system
-#if defined(USE_SDLMIXER)
     if( Mix_OpenAudio(mAudioSpec.freq,
                       mAudioSpec.format,
                       mAudioSpec.channels,
@@ -150,54 +147,6 @@ bool Audio::init()
 
     //SDL_PauseAudio(0);
 
-#else
-    if( SDL_OpenAudio(&mAudioSpec, &obtained) < 0 )
-	{
-		gLogging.ftextOut("SoundDrv_Start(): Couldn't open audio: %s<br>", SDL_GetError());
-		gLogging.ftextOut("Sound will be disabled.<br>");
-		mAudioSpec.channels = 0;
-		mAudioSpec.format = 0;
-		mAudioSpec.freq = 0;
-		return false;
-	}
-
-	mAudioSpec = obtained;
-
-    mMixedForm.resize(mAudioSpec.size);
-
-	gLogging.ftextOut("SDL_AudioSpec:<br>");
-	gLogging.ftextOut("  freq: %d<br>", mAudioSpec.freq);
-	gLogging.ftextOut("  channels: %d<br>", mAudioSpec.channels);
-	gLogging.ftextOut("  audio buffer size: %d<br>", mAudioSpec.size);
-	switch( mAudioSpec.format )
-	{
-		case AUDIO_U8:
-			gLogging.ftextOut("  format: AUDIO_U8<br>" );
-			break;
-		case AUDIO_S16:
-			gLogging.ftextOut("  format: AUDIO_S16<br>" );
-			break;
-		default:
-			gLogging.ftextOut("  format: UNKNOWN %d<br>", mAudioSpec.format );
-			break;
-	}
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-    gLogging << "Using audio driver: "  << SDL_GetCurrentAudioDriver() << " <br>";
-#else
-    //gLogging << "Using audio driver: "  << SDL_AudioDriverName(name, 32) << " <br>";
-#endif
-
-    const unsigned int channels = 32;
-
-    mSndChnlVec.clear();
-
-    mSndChnlVec.assign(channels, CSoundChannel(mAudioSpec));
-
-    SDL_PauseAudio(0);
-
-#endif
-
-
     gLogging << "Sound System: SDL sound system initialized.<br>";
 
 	// Let's initialize the OPL Emulator here!
@@ -236,17 +185,6 @@ void Audio::destroy()
 {
 	stopAllSounds();
 
-
-#if !defined(USE_SDLMIXER)
-    SDL_LockAudio();    
-	SDL_CloseAudio();
-
-    if(!mMixedForm.empty())
-        mMixedForm.clear();
-#endif
-
-
-
     if(!mSndChnlVec.empty())
     {
         mSndChnlVec.clear();
@@ -257,9 +195,7 @@ void Audio::destroy()
 
 	m_OPL_Player.shutdown();
 
-#if defined(USE_SDLMIXER)
     Mix_CloseAudio();
-#endif
 }
 
 // stops all currently playing sounds
@@ -274,21 +210,13 @@ void Audio::stopAllSounds()
 // pauses any currently playing sounds
 void Audio::pauseAudio()
 {
-#if !defined(USE_SDLMIXER)
-    SDL_PauseAudio(1);
-#else
     Mix_Pause(-1);
-#endif
 }
 
 // resumes playing a previously paused sound
 void Audio::resumeAudio()
 {
-#if !defined(USE_SDLMIXER)
-    SDL_PauseAudio(0);
-#else
     Mix_Resume(-1);
-#endif
 }
 
 // returns true if sound snd is currently playing
@@ -326,23 +254,19 @@ void Audio::setSoundVolume(const Uint8 volume, const bool immediately)
 {
     m_SoundVolume = volume;
 
-#if defined(USE_SDLMIXER)
     if(immediately)
     {
         Mix_Volume(-1, volume);
     }
-#endif
 }
 void Audio::setMusicVolume(const Uint8 volume, const bool immediately)
 {
     m_MusicVolume = volume;
 
-#if defined(USE_SDLMIXER)
     if(immediately)
     {
         Mix_VolumeMusic(volume);
     }
-#endif
 }
 
 
@@ -372,39 +296,6 @@ void Audio::callback(void *unused,
         mCallbackRunning = false;
 		return;
     }
-
-#if defined(USE_SDLMIXER)
-#else
-
-    mMixedForm.resize(len);
-
-    Uint8* buffer = mMixedForm.data();
-
-    if (gMusicPlayer.playing())
-    {
-    	gMusicPlayer.readWaveform(buffer, len);
-        mixAudio(stream, buffer, len, m_MusicVolume);
-    }
-
-    bool any_sound_playing = false;
-    std::vector<CSoundChannel>::iterator snd_chnl = mSndChnlVec.begin();
-    for( ; snd_chnl != mSndChnlVec.end() ; snd_chnl++)
-   	{
-		if(snd_chnl->isPlaying())
-		{
-			any_sound_playing |= true;
-            snd_chnl->readWaveform( buffer, len );
-            mixAudio(stream, buffer, len, m_SoundVolume);
-		}
-    }
-
-	if(!any_sound_playing)
-	{
-		// means no sound is playing
-        mPauseGameplay = false;
-	}
-
-#endif
 
     mCallbackRunning = false;
 }
@@ -518,16 +409,8 @@ void Audio::setupSoundData(const std::map<GameSound, int> &slotMap,
 {
     assert(audioResPtr);
 
-#if !defined(USE_SDLMIXER)
-    SDL_LockAudio();
-#endif
-
     sndSlotMap = slotMap;
     mpAudioRessources.reset(audioResPtr);
-
-#if !defined(USE_SDLMIXER)
-    SDL_UnlockAudio();
-#endif
 }
 
 void Audio::unloadSoundData()
@@ -535,16 +418,7 @@ void Audio::unloadSoundData()
     // Wait for callback to finish running...
     while(mCallbackRunning);
 
-#if !defined(USE_SDLMIXER)
-    SDL_LockAudio();
-#endif
-
     mpAudioRessources.release();
-
-#if !defined(USE_SDLMIXER)
-    mMixedForm.clear();
-    SDL_UnlockAudio();
-#endif
 }
 
 

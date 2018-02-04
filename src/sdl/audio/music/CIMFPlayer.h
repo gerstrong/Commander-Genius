@@ -15,9 +15,7 @@
 #include <SDL.h>
 #include <string>
 
-#if defined(USE_SDLMIXER)
 #include <SDL_mixer.h>
-#endif
 
 struct IMFChunkType
 {
@@ -66,7 +64,6 @@ private:
 };
 
 
-#if defined(USE_SDLMIXER)
 // External Music hooks for the imf player
 
 /**
@@ -105,7 +102,6 @@ void musicFinished();
  */
 void unhookAll();
 
-#endif
 
 
 #endif /* CIMFPLAYER_H_ */

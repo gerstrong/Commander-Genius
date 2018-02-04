@@ -14,9 +14,7 @@
 
 #include <base/GsLogging.h>
 
-#if defined(USE_SDLMIXER)
 #include <SDL_mixer.h>
-#endif
 
 int CSoundChannel::mTotNumChannels = 0;
 
@@ -52,28 +50,18 @@ void
 CSoundChannel::
 stopSound()
 {
-#if !defined(USE_SDLMIXER)
-    SDL_LockAudio();
-#endif
-
     mpCurrentSndSlot = nullptr;
     mBalance = 0;
     mSoundPtr = 0;
     mSoundPaused = true;
     mSoundPlaying = false;
 
-#if defined(USE_SDLMIXER)
     Mix_HaltChannel(mId);
-#else
-    SDL_UnlockAudio();
-#endif
 }
 
 void CSoundChannel::setupSound( CSoundSlot &SndSlottoPlay,
 								const bool sound_forced )
 {
-#if defined(USE_SDLMIXER)
-
     mpCurrentSndSlot = &SndSlottoPlay;
     mSoundPlaying = true;
     mSoundPtr = 0;
@@ -87,18 +75,6 @@ void CSoundChannel::setupSound( CSoundSlot &SndSlottoPlay,
     {
         gLogging.ftextOut("Mix_PlayChannel: %s\n", Mix_GetError());
     }
-
-#else
-
-    SDL_LockAudio();
-
-    mpCurrentSndSlot = &SndSlottoPlay;
-    mSoundPlaying = true;
-    mSoundPtr = 0;
-    mSoundForced = sound_forced;
-
-    SDL_UnlockAudio();
-#endif
 }
 
 /** \brief This program reads the balance information and balances the stereo sound

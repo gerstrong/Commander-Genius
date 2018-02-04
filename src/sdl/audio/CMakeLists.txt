@@ -17,10 +17,8 @@ target_link_libraries(sdl_extensions_audio
                       sdl_extensions_audio_base)
 
 
-if(${SDL_MIXER_FOUND})
     LINK_DIRECTORIES(${SDL_MIXER_LIBRARY_DIRS})
     target_link_libraries(sdl_extensions_audio
                           ${SDL_MIXER_LIBRARY})
-endif()
 
 

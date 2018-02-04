@@ -176,22 +176,9 @@ IF (OPENGL)
         ADD_DEFINITIONS(-DUSE_OPENGL)
 ENDIF (OPENGL)
 
-IF(WIN32)
-    find_package(SDL_Mixer)
-else(WIN32)
+find_package(SDL_mixer REQUIRED)
 
-    INCLUDE(FindPkgConfig)
-
-    if(USE_SDL2)
-        PKG_CHECK_MODULES(SDL_MIXER SDL2_mixer>=2.0.0)
-    else()
-        PKG_CHECK_MODULES(SDL_MIXER SDL_mixer>=1.0.0)
-    endif()
-
-endif(WIN32)
-
-if(${SDL_MIXER_FOUND})
-    ADD_DEFINITIONS(-DUSE_SDLMIXER)
+if(SDL_MIXER_FOUND)
     INCLUDE_DIRECTORIES(${SDL_MIXER_INCLUDE_DIRS})
 endif()
 

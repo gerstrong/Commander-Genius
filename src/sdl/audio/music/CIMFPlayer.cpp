@@ -17,9 +17,7 @@
 #include <string>
 #include <cassert>
 
-#if defined (USE_SDLMIXER)
 #include <SDL_mixer.h>
-#endif
 
 
 CIMFPlayer::CIMFPlayer( COPLEmulator& opl_emulator ) :
@@ -56,10 +54,6 @@ bool CIMFPlayer::loadMusicFromFile(const std::string& filename)
         fseek(fp, 0, SEEK_SET);
     }
     
-#if !defined(USE_SDLMIXER)
-    SDL_LockAudio();
-#endif
-    
     if(!m_IMF_Data.empty())
         m_IMF_Data.clear();
 
@@ -76,10 +70,6 @@ bool CIMFPlayer::loadMusicFromFile(const std::string& filename)
     }
     
     fclose(fp);
-
-#if !defined(USE_SDLMIXER)
-    SDL_UnlockAudio();
-#endif
     
     return ok;
 }
@@ -87,24 +77,13 @@ bool CIMFPlayer::loadMusicFromFile(const std::string& filename)
 
 bool CIMFPlayer::loadMusicTrack(const int track)
 {
-#if !defined(USE_SDLMIXER)
-    SDL_LockAudio();
-#endif
-
     if( m_IMF_Data.empty() )
         m_IMF_Data.clear();
 
     if(!gKeenFiles.exeFile.loadMusicTrack(m_IMF_Data, track))
     {
-#if !defined(USE_SDLMIXER)
-        SDL_UnlockAudio();
-#endif
         return false;
     }
-
-#if !defined(USE_SDLMIXER)
-    SDL_UnlockAudio();
-#endif
 
     return true;
 }
@@ -113,37 +92,21 @@ bool CIMFPlayer::loadMusicTrack(const int track)
 
 bool CIMFPlayer::open(const bool lock)
 {
-#if !defined(USE_SDLMIXER)
-    if(lock) SDL_LockAudio();
-#endif
-
 	m_numreadysamples = m_IMFDelay = 0;
     m_samplesPerMusicTick = gSound.getAudioSpec().freq / m_opl_emulator.getIMFClockRate();
 	
 	m_opl_emulator.setup();
-
-#if !defined(USE_SDLMIXER)
-    if(lock) SDL_UnlockAudio();
-#endif
 
 	return !m_IMF_Data.empty();
 }
 
 void CIMFPlayer::close(const bool lock)
 {
-#if !defined(USE_SDLMIXER)
-    if(lock) SDL_LockAudio();
-#endif
-
 	play(false);
 	m_IMF_Data.gotoStart();	
 	m_numreadysamples = m_IMFDelay = 0;	
 	m_opl_emulator.ShutAL();
 	m_opl_emulator.shutdown();
-
-#if !defined(USE_SDLMIXER)
-    if(lock) SDL_UnlockAudio();
-#endif
 
 	return;
 }
@@ -250,7 +213,6 @@ void CIMFPlayer::readBuffer(Uint8* buffer, Uint32 length)
 
 
 
-#if defined(USE_SDLMIXER)
 ////// Hooks for SDL_Mixer Only ///////
 
 // We still a local to file declared object from the IMFPlayer class.
@@ -319,8 +281,6 @@ void unhookAll()
     Mix_HookMusicFinished(nullptr);
 }
 
-
-#endif
 
 
 
