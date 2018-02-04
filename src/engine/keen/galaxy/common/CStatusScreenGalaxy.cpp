@@ -49,8 +49,7 @@ void CStatusScreenGalaxy::drawBase(SDL_Rect &EditRect)
     SDL_Rect DestRect = {0, 0, 320, 200};
 
     mStatusSurface.createRGBSurface(DestRect);
-
-    mStatusSurface.makeBlitCompatible();
+    //mStatusSurface.makeBlitCompatible();
 
     /// Draw the required bitmaps and backgrounds for Statusscreen
 	// Draw the support Bitmap and see where the gray rectangle starts...
@@ -125,16 +124,28 @@ void CStatusScreenGalaxy::drawBase(SDL_Rect &EditRect)
 void CStatusScreenGalaxy::scaleToResolution()
 {
     SDL_Rect gameres = gVideoDriver.getGameResolution().SDLRect();
-    const int scaleFac = gameres.h/200;
+    int scaleFac = gameres.h/200;
     GsWeakSurface weakBlit(gVideoDriver.getBlitSurface());
 
-    //SDL_PixelFormat *format = mStatusSurface.getSDLSurface()->format;
+    if(scaleFac < 0) scaleFac = 1;
 
     auto biggerRect = mStatusSurface.getSDLSurface()->clip_rect;
     biggerRect.w *= scaleFac;
     biggerRect.h *= scaleFac;
 
     mStatusSfcTransformed.createRGBSurface(biggerRect);
+
+    // NOTE: Colorkey confusion in legacy version. This fixes the problem
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+#else
+    if(scaleFac == 1)
+    {
+        mStatusSfcTransformed.applyDisplayFormat();
+        mStatusSfcTransformed.fillRGB(0x0, 0xFE, 0xFF);
+        mStatusSfcTransformed.setColorKey(0x0, 0xFE, 0xFF);
+    }
+#endif
+
     mStatusSurface.blitScaledTo(mStatusSfcTransformed);
 
     // Modern makes the hud a small bit semi transparent
