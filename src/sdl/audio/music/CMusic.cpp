@@ -21,6 +21,8 @@
 
 bool CMusic::loadTrack(const int track)
 {
+    //return false;
+    // TODO: This still crashes IMF Music has issues
     gSound.pauseAudio();
 
     gLogging.textOut("Load track number " + itoa(track) + "");
@@ -31,10 +33,8 @@ bool CMusic::loadTrack(const int track)
         return true;
     }
 
-
-
     gSound.resumeAudio();
-	return true;
+    return false;
 }
 
 

@@ -128,7 +128,10 @@ void CIMFPlayer::OPLUpdate(byte *buffer, const unsigned int length)
     // Mix into the destination buffer, doubling up into stereo.
     if(audioSpec.format == AUDIO_S16)
 	{
-		Sint16 *buf16 = (Sint16*) (void*) buffer;
+        Sint16 *buf16 = static_cast<Sint16*>(
+                                static_cast<void*>(buffer)
+                                            );
+
 		for (unsigned int i=0; i<length; ++i)
 		{
 		    Sint32 mix = mMixBuffer[i];
@@ -140,7 +143,7 @@ void CIMFPlayer::OPLUpdate(byte *buffer, const unsigned int length)
 		    
             for (unsigned int j=0; j<audioSpec.channels; j++)
 			{
-                *buf16 = mix + audioSpec.silence;
+                *buf16 = static_cast<Sint16>(mix + audioSpec.silence);
 				buf16++;
 			}
 		}
@@ -165,19 +168,22 @@ void CIMFPlayer::OPLUpdate(byte *buffer, const unsigned int length)
 	}
 }
 
-void CIMFPlayer::readBuffer(Uint8* buffer, Uint32 length)
+void CIMFPlayer::readBuffer(Uint8* buffer,
+                            Uint32 length)
 {
     if(!m_playing)
         return;
 
     auto &audioSpec = gSound.getAudioSpec();
-
     
     /// if a delay of the instruments is pending, play it
-    Uint32 sampleslen = audioSpec.samples;
+    //Uint32 sampleslen = audioSpec.samples;
     Uint32 sample_mult = audioSpec.channels;
-    sample_mult = (audioSpec.format == AUDIO_S16) ? sample_mult*sizeof(Sint16) : sample_mult*sizeof(Uint8) ;
+    sample_mult = (audioSpec.format == AUDIO_S16) ?
+                sample_mult*sizeof(Sint16) : sample_mult*sizeof(Uint8) ;
 	
+    Uint32 sampleslen = length/sample_mult;
+
 	// while the waveform is not filled
     while(1)
     {
@@ -196,7 +202,7 @@ void CIMFPlayer::readBuffer(Uint8* buffer, Uint32 length)
         if(m_numreadysamples < sampleslen)
         {
             // Every time a tune has been played call this.
-            OPLUpdate( buffer, m_numreadysamples );
+            //OPLUpdate( buffer, m_numreadysamples );
             buffer += m_numreadysamples*sample_mult;
             sampleslen -= m_numreadysamples;
             m_IMFDelay = 0;
@@ -262,6 +268,11 @@ void imfMusicPlayer(void *udata,
     // Fill buffer with music
     locIMFPlayer.readBuffer(stream,
                             static_cast<Uint32>(len));
+    // fill buffer with...uh...music...
+    /*for(int i=0; i<len; i++)
+    {
+        stream[i]=(i+pos)&0xff;
+    }*/
 
     // set udata for next time
     pos+=len;
