@@ -26,7 +26,7 @@ void CSpecialItem::getTouchedBy(CSpriteObject& theObject)
 	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
 	{
 	    mTaken = true;
-		auto &item = player->m_Inventory.Item.m_special.ep6;
+		auto &item = player->m_Inventory.Item.m_special;
 
 		// Sound play
 		gSound.playSound(SOUND_GET_SPECIAL_ITEM, SoundPlayMode::PLAY_PAUSEALL);

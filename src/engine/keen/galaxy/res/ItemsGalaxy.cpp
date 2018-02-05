@@ -27,15 +27,15 @@ void stItemGalaxy::reset()
 
     if(ep == 4)
     {
-        m_special.ep4.elders = 0;
-        m_special.ep4.swimsuit = 0;
+        m_special.elders = 0;
+        m_special.swimsuit = 0;
     }
     else if(ep == 6)
     {
         // k6demo starts with possesion of the hook.
-        m_special.ep6.hook = gBehaviorEngine.isDemo() ? 1 : 0;
-        m_special.ep6.sandwich = 0;
-        m_special.ep6.rocketKeycard = 0;
+        m_special.hook = gBehaviorEngine.isDemo() ? 1 : 0;
+        m_special.sandwich = 0;
+        m_special.rocketKeycard = 0;
     }
 
     fuse_levels_completed = 0;
@@ -51,13 +51,13 @@ void stItemGalaxy::triggerAllItemsCheat()
 
     if(ep == 4)
     {
-        m_special.ep4.swimsuit = 1;
+        m_special.swimsuit = 1;
     }
     else if(ep == 6)
     {
-        m_special.ep6.hook = 1;
-        m_special.ep6.sandwich = 1;
-        m_special.ep6.rocketKeycard = 1;
+        m_special.hook = 1;
+        m_special.sandwich = 1;
+        m_special.rocketKeycard = 1;
     }
 
     m_keycards = 1;
@@ -86,14 +86,14 @@ void stItemGalaxy::operator>>(boost::property_tree::ptree &invNode)
     const auto ep = gBehaviorEngine.getEpisode();
     if(ep == 4)
     {
-       invNode.put("elders", m_special.ep4.elders);
-       invNode.put("swimsuit", m_special.ep4.swimsuit);
+       invNode.put("elders", m_special.elders);
+       invNode.put("swimsuit", m_special.swimsuit);
     }
     else if(ep == 6)
     {
-       invNode.put("hook", m_special.ep6.hook);
-       invNode.put("rocketKeycard", m_special.ep6.rocketKeycard);
-       invNode.put("sandwich", m_special.ep6.sandwich);
+       invNode.put("hook", m_special.hook);
+       invNode.put("rocketKeycard", m_special.rocketKeycard);
+       invNode.put("sandwich", m_special.sandwich);
     }
 }
 
@@ -122,13 +122,13 @@ void stItemGalaxy::operator<<(boost::property_tree::ptree &invNode)
     const auto ep = gBehaviorEngine.getEpisode();
     if(ep == 4)
     {
-       m_special.ep4.elders = invNode.get<int>("elders", 0);
-       m_special.ep4.swimsuit = invNode.get<bool>("swimsuit", false);
+       m_special.elders = invNode.get<int>("elders", 0);
+       m_special.swimsuit = invNode.get<bool>("swimsuit", false);
     }
     else if(ep == 6)
     {
-       m_special.ep6.hook = invNode.get<int>("hook", 0);
-       m_special.ep6.rocketKeycard = invNode.get<int>("rocketKeycard", 0);
-       m_special.ep6.sandwich = invNode.get<int>("sandwich", 0);
+       m_special.hook = invNode.get<int>("hook", 0);
+       m_special.rocketKeycard = invNode.get<int>("rocketKeycard", 0);
+       m_special.sandwich = invNode.get<int>("sandwich", 0);
     }
 }

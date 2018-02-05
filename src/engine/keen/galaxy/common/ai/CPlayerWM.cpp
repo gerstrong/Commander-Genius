@@ -328,9 +328,9 @@ void CPlayerWM::processMoving()
         // Check if Keen has a hook, but
         if(!mUsedGrapplingHook)
         {
-            if(m_Inventory.Item.m_special.ep6.hook > 0)
+            if(m_Inventory.Item.m_special.hook > 0)
             {
-                m_Inventory.Item.m_special.ep6.hook--;
+                m_Inventory.Item.m_special.hook--;
                 mUsedGrapplingHook = true;
 
                 int x = getXMidPos();
@@ -485,7 +485,7 @@ void CPlayerWM::processMoving()
     }
     else if( isSwimming() )
     {
-        if(m_Inventory.Item.m_special.ep4.swimsuit)
+        if(m_Inventory.Item.m_special.swimsuit)
         {
             performSwimmingAnimation(moving);
         }
@@ -1188,7 +1188,7 @@ void CPlayerWM::checkforSwimming(bool &bleft, bool &bright, bool &bup, bool &bdo
         makeHimSwim(false);
 	}
 
-	if(m_Inventory.Item.m_special.ep4.swimsuit)
+    if(m_Inventory.Item.m_special.swimsuit)
 	{
 		bleft = bright = bup = bdown = false;
 	}

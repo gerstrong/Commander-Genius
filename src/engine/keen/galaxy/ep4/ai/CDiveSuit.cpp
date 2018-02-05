@@ -31,7 +31,7 @@ void CDiveSuit::getTouchedBy(CSpriteObject &theObject)
 	// When Keen touches the Council Member exit the level and add one to the council list
 	if( CPlayerLevel *player = dynamic_cast<CPlayerLevel*>(&theObject) )
 	{
-		bool &swimsuit = player->m_Inventory.Item.m_special.ep4.swimsuit;
+		bool &swimsuit = player->m_Inventory.Item.m_special.swimsuit;
 
 		gSound.playSound( SOUND_GET_WETSUIT, SoundPlayMode::PLAY_PAUSEALL );
 		taken = swimsuit = true;

@@ -150,7 +150,7 @@ void CCouncilMember::getTouchedBy(CSpriteObject &theObject)
 	// When Keen touches the Council Member exit the level and add one to the council list
 	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
 	{
-		int &rescuedelders = player->m_Inventory.Item.m_special.ep4.elders;
+		int &rescuedelders = player->m_Inventory.Item.m_special.elders;
 
 		// TODO: In this part we have to check which level we are and send the proper messages
 

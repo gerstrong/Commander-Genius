@@ -43,11 +43,11 @@ void CInventory::reset()
 
 void CInventory::fetchImportantStuff(const CInventory &other)
 {
-    Item.m_special.ep4.swimsuit |= other.Item.m_special.ep4.swimsuit;
-    Item.m_special.ep4.elders += other.Item.m_special.ep4.elders;
-    Item.m_special.ep6.sandwich |= other.Item.m_special.ep6.sandwich;
-    Item.m_special.ep6.hook |= other.Item.m_special.ep6.hook;
-    Item.m_special.ep6.rocketKeycard |= other.Item.m_special.ep6.rocketKeycard;
+    Item.m_special.swimsuit |= other.Item.m_special.swimsuit;
+    Item.m_special.elders += other.Item.m_special.elders;
+    Item.m_special.sandwich |= other.Item.m_special.sandwich;
+    Item.m_special.hook |= other.Item.m_special.hook;
+    Item.m_special.rocketKeycard |= other.Item.m_special.rocketKeycard;
 }
 
 

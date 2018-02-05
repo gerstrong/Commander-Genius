@@ -238,7 +238,7 @@ void CStatusScreenGalaxy::GenerateStatusEp4()
     // Rescued Box
     TempRect.w = 8*8;
     mStatusSurface.fillRGBA(TempRect, 0x0, 0x0, 0x0, 0xFF);
-    for( int count=0 ; count<m_Item.m_special.ep4.elders ; count++ )
+    for( int count=0 ; count<m_Item.m_special.elders ; count++ )
     {
         gGraphics.drawDigit(40,
                             TempRect.x+8*count,
@@ -328,7 +328,7 @@ void CStatusScreenGalaxy::GenerateStatusEp4()
     mStatusSurface.fillRGBA(TempRect, 0xFF, 0xFF, 0xFF, 0xFF);
     Font.setupColor(0x0);
     Font.drawFontCentered(mStatusSurface.getSDLSurface(),
-                          m_Item.m_special.ep4.swimsuit ? swLine : "???",
+                          m_Item.m_special.swimsuit ? swLine : "???",
                           TempRect.x,
                           TempRect.w,
                           TempRect.y+1, false);
@@ -536,7 +536,7 @@ void CStatusScreenGalaxy::GenerateStatusEp6()
     TempRect.h = 10;
     SDL_FillRect(mStatusSurface.getSDLSurface(), &TempRect, 0xFF000000);
 
-    auto &spItem = m_Item.m_special.ep6;
+    auto &spItem = m_Item.m_special;
 
     const int sandwichTile = (spItem.sandwich > 0) ? 2 : 1;
     const int hookTile = (spItem.hook > 0) ? 4 : 3;

@@ -67,9 +67,9 @@ void CGrabbiter::getTouchedBy(CSpriteObject& theObject)
         const int diffX = getXMidPos()-player->getXMidPos();
         player->moveXDir(-diffX/4);
 
-        if(player->m_Inventory.Item.m_special.ep6.sandwich > 0)
+        if(player->m_Inventory.Item.m_special.sandwich > 0)
         {
-            player->m_Inventory.Item.m_special.ep6.sandwich--;
+            player->m_Inventory.Item.m_special.sandwich--;
 
             // Show grabbiter message
             showMsg( gBehaviorEngine.getString("KEEN_GRABBITER_SLEEPY") );

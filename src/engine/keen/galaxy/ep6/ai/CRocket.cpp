@@ -147,7 +147,7 @@ void CRocket::getTouchedBy(CSpriteObject& theObject)
 
 	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
 	{
-	    if(player->m_Inventory.Item.m_special.ep6.rocketKeycard > 0)
+	    if(player->m_Inventory.Item.m_special.rocketKeycard > 0)
 	    {
 		setAction(A_ROCKET_FLY);
 		playSound(SOUND_ROCKET_LAUNCH);

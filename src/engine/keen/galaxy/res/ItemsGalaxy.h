@@ -42,20 +42,13 @@ struct stItemGalaxy
 	int m_keycards;
     int fuse_levels_completed;
 
-	union {
-	    
-		struct
-		{
-			bool swimsuit;
-			int elders;
-		}ep4;
-		
-		struct
-		{
-			unsigned char sandwich;
-			unsigned char hook;
-			unsigned char rocketKeycard;
-		}ep6;
+    struct
+    {
+        bool swimsuit = false;
+        int elders = 0;
+        unsigned char sandwich = 0;
+        unsigned char hook = 0;
+        unsigned char rocketKeycard = 0;
 				
     } m_special;
 
