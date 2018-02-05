@@ -525,8 +525,8 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
  */
 void CPlayGameGalaxy::ponder(const float deltaT)
 {
-    if( gSound.pauseGamePlay() )
-        return;
+    /*if( gSound.pauseGamePlay() )
+        return;*/
 
     if( gMenuController.active() )
         return;
