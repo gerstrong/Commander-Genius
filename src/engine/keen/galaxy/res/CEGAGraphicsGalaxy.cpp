@@ -730,8 +730,7 @@ bool CEGAGraphicsGalaxy::begin()
 
     // Make a clean memory pattern
     ChunkStruct ChunkTemplate;
-    ChunkTemplate.len=0;
-    m_egagraph.assign(m_egahead.size(), ChunkTemplate);
+    m_egagraph.assign(m_egahead.size()+1, ChunkTemplate);
 
     unsigned long inlen = 0, outlen = 0;
 
@@ -1545,7 +1544,11 @@ bool CEGAGraphicsGalaxy::readTexts()
 
         if(thisChunk.data.at(0))
         {
-            const auto *txtData = (char*)( thisChunk.data.data() );
+            std::vector<char> chunkData(thisChunk.data.size()+1, 0);
+
+            memcpy(chunkData.data(), thisChunk.data.data(), thisChunk.data.size());
+
+            const auto *txtData = (char*)( chunkData.data() );
             std::string text(txtData);
 
             gGameText.addLine(text);
@@ -1589,8 +1592,10 @@ bool CEGAGraphicsGalaxy::readMiscStuff()
         // Memcpy is here required for correct alignment on devices with different architectures
         // and compiles which do not like pointer from 8-bit to 16-bit
 
-        Uint16 *dataEndPtr = nullptr;
-        memcpy( &dataEndPtr, &(dataChunk.data) + dataSize, sizeof(Uint16 *) );
+        //Uint16 *dataEndPtr = nullptr;
+
+        // This might copy beyond the boundaries. We need to fix that.
+        //memcpy( &dataEndPtr, &(dataChunk.data) + dataSize, sizeof(Uint16 *) );
 
 
         Uint16 *dataPtr = nullptr;
@@ -1671,13 +1676,14 @@ bool CEGAGraphicsGalaxy::readMiscStuff()
         bool bad = false;
         while(pixelNum < expectedNumPixels)
         {
+            /*
             if(rlepointer == dataEndPtr)
             {
                 gLogging.ftextOut("bad misc rle data size=%u for pixelNum=%d width=%d height=%d index=%d misc=%d",
                                   dataSize, pixelNum, width, height, index, misc);
                 bad = true;
                 break;
-            }
+            }*/
 
             Uint16 pixelCount = *rlepointer;
             if(pixelCount != 0xFFFF)

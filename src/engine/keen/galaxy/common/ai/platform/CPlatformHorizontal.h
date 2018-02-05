@@ -28,7 +28,7 @@ public:
 
 private:
     
-	bool drawFire;
+    bool drawFire = false;
 	int m_FireSprite;
 	int m_fireTimer;
 

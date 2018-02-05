@@ -93,7 +93,7 @@ VorticonMenu(GsRect<float>(0.15f, 0.24f, 0.65f, 0.55f) )
 	mpMenuDialog->addControl( mpFullScreenSwitch );
 #endif
 
-    mpVPadSwitch  = new Switch( "VirtPad" );
+    //mpVPadSwitch  = new Switch( "VirtPad" );
 
 #if defined(USE_OPENGL)
     mpOpenGLSwitch = new Switch( "OpenGL" );
@@ -132,7 +132,7 @@ void CVideoSettings::refresh()
 
     //mpShowCursorSwitch->enable( mUserVidConf.mShowCursor );
 
-    mpVPadSwitch->enable(mpVPadSwitch->isEnabled());
+    //mpVPadSwitch->enable(mpVPadSwitch->isEnabled());
 
     mpRenderScaleQualitySel->setSelection(mUserVidConf.mRenderScQuality);
 
@@ -198,7 +198,7 @@ void CVideoSettings::release()
 #endif       
 
 
-    mUserVidConf.mVPad = mpVPadSwitch->isEnabled();
+    //mUserVidConf.mVPad = mpVPadSwitch->isEnabled();
 
     mUserVidConf.mRenderScQuality = mpRenderScaleQualitySel->getSelection();
 
@@ -217,7 +217,7 @@ void CVideoSettings::release()
 	
 #if !defined(EMBEDDED)	
 
-    mUserVidConf.mVPad = mpVPadSwitch->isEnabled();
+    //mUserVidConf.mVPad = mpVPadSwitch->isEnabled();
 
     // Disable OpenGL when using Virtual GL
     if(mUserVidConf.mVPad)

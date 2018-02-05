@@ -45,7 +45,7 @@ private:
 
     Switch          *mpShowCursorSwitch = nullptr;
 
-    Switch			*mpVPadSwitch;
+    //Switch			*mpVPadSwitch;
 
     ComboSelection	*mpRenderScaleQualitySel;
 

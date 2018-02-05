@@ -103,7 +103,12 @@ void CSoundSlot::setupWaveForm( Uint8 *buf, Uint32 len )
     mSounddata.resize(m_soundlength);
     memcpy(mSounddata.data(), buf, m_soundlength);
 
-    if(!(mpWaveChunk=Mix_QuickLoad_RAW(mSounddata.data(), mSounddata.size())))
+    if(mpWaveChunk)
+    {
+        Mix_FreeChunk(mpWaveChunk);
+    }
+
+    if(!(mpWaveChunk = Mix_QuickLoad_RAW(mSounddata.data(), mSounddata.size())))
     {
         gLogging.ftextOut("Mix_QuickLoad_WAV: %s\n", Mix_GetError());
         // handle error

@@ -112,7 +112,7 @@ GalaxyMenu(GsRect<float>(0.15f, 0.20f, 0.65f, 0.55f) )
 
     mpMenuDialog->addControl( mpRenderScaleQualitySel );
 
-    mpVPadSwitch  = new Switch( "VirtPad" );
+    //mpVPadSwitch  = new Switch( "VirtPad" );
     //mpMenuDialog->addControl( mpVPadSwitch );
 
     mpBorderColorSwitch = new Switch( "Border Color" );
@@ -141,7 +141,7 @@ void CVideoSettings::refresh()
 
     //mpShowCursorSwitch->enable( mUserVidConf.mShowCursor );
 
-    mpVPadSwitch->enable( mUserVidConf.mVPad );
+    //mpVPadSwitch->enable( mUserVidConf.mVPad );
 
 #if defined(USE_OPENGL)
     mpRenderScaleQualitySel->setSelection(mUserVidConf.mRenderScQuality);
@@ -211,7 +211,7 @@ void CVideoSettings::release()
     mUserVidConf.mRenderScQuality = mpRenderScaleQualitySel->getSelection();
 #endif
 
-    mUserVidConf.mVPad = mpVPadSwitch->isEnabled();
+    //mUserVidConf.mVPad = mpVPadSwitch->isEnabled();
 	
 #if !defined(EMBEDDED)	
 	mUserVidConf.mVSync = mpVSyncSwitch->isEnabled();

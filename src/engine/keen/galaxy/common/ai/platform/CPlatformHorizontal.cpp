@@ -117,18 +117,26 @@ void CPlatformHorizontal::draw()
         int showX = scrx+Sprite.getXOffset();
         int showY = scry+Sprite.getYOffset();
 
-        GsSprite &fireSprite = gGraphics.getSprite(mSprVar,m_FireSprite);
+        // Only in Episode 4
+        if(drawFire)
+        {
+            GsSprite &fireSprite = gGraphics.getSprite(mSprVar,m_FireSprite);
 
-        const int w = fireSprite.getWidth();
-        const int h = fireSprite.getHeight();
+            const int w = fireSprite.getWidth();
+            const int h = fireSprite.getHeight();
 
-        if(drawFire && xDirection == RIGHT)
-            fireSprite.drawSprite(showX-2, showY+8, w, h);
+            if(xDirection == RIGHT)
+            {
+                fireSprite.drawSprite(showX-2, showY+8, w, h);
+            }
 
-        Sprite.drawSprite( showX, showY, sprW, sprH, (255-transluceny) );
+            Sprite.drawSprite( showX, showY, sprW, sprH, (255-transluceny) );
 
-        if(drawFire && xDirection == LEFT)
-            fireSprite.drawSprite(showX+Sprite.getWidth()-6, showY+8, w, h);
+            if(xDirection == LEFT)
+            {
+                fireSprite.drawSprite(showX+Sprite.getWidth()-6, showY+8, w, h);
+            }
+        }
 
 
         for( auto &player : mCarriedPlayerVec)

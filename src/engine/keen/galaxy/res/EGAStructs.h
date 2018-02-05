@@ -34,9 +34,7 @@ struct EpisodeInfoStruct
 
 struct ChunkStruct
 {
-    ChunkStruct() : len(0) {}
-
-	unsigned long len;
+    unsigned long len = 0;
 	std::vector<unsigned char> data;
 };
 
