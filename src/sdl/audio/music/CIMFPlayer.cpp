@@ -161,7 +161,7 @@ void CIMFPlayer::OPLUpdate(byte *buffer, const unsigned int length)
 		    
             for (unsigned int j=0; j<audioSpec.channels; j++)
 			{
-                *buffer = mix + audioSpec.silence;
+                *buffer = static_cast<byte>(mix + audioSpec.silence);
 				buffer++;
 			}
 		}
@@ -202,7 +202,7 @@ void CIMFPlayer::readBuffer(Uint8* buffer,
         if(m_numreadysamples < sampleslen)
         {
             // Every time a tune has been played call this.
-            //OPLUpdate( buffer, m_numreadysamples );
+            OPLUpdate( buffer, m_numreadysamples );
             buffer += m_numreadysamples*sample_mult;
             sampleslen -= m_numreadysamples;
             m_IMFDelay = 0;

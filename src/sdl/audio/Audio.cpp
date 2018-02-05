@@ -70,7 +70,7 @@ Audio::~Audio()
 bool Audio::init()
 {
 	gLogging.ftextOut("Starting the sound driver...<br>");
-	SDL_AudioSpec obtained;
+    //SDL_AudioSpec obtained;
 
 	// now start up the SDL sound system
 	mAudioSpec.silence = 0;
@@ -79,7 +79,7 @@ bool Audio::init()
 	{
 		case 11025: mAudioSpec.samples = 256; break;
 		case 22050: mAudioSpec.samples = 512; break;
-		default: mAudioSpec.samples = 1024; break;
+        default: mAudioSpec.samples = 1024; break;
 	}
 	mAudioSpec.callback = CCallback;
     mAudioSpec.userdata = nullptr;
@@ -134,7 +134,7 @@ bool Audio::init()
              << (audio_channels>1?"stereo":"mono")
              << ", " << mAudioSpec.size << " bytes audio buffer.\n";
 
-    const unsigned int channels = 64;
+    const unsigned int channels = 32;
     Mix_AllocateChannels(channels);
 
 
