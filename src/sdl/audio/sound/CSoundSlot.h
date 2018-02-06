@@ -15,10 +15,14 @@
 
 #include <SDL_mixer.h>
 
-class CSoundSlot {
+class CSoundSlot
+{
 public:
 
 	CSoundSlot();
+
+    virtual ~CSoundSlot();
+
 	
 	void openOGGSound(const std::string& filename, SDL_AudioSpec *pspec, Uint8 *&SoundBuffer, Uint32 &SoundLen);
 	void setupWaveForm( Uint8 *buf, Uint32 len );

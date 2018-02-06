@@ -30,6 +30,12 @@ int ov_fopen(char *path,OggVorbis_File *vf);
 CSoundSlot::CSoundSlot()
 {}
 
+CSoundSlot::~CSoundSlot()
+{
+    unload();
+}
+
+
 #if !(TARGET_OS_IPHONE) || !(TARGET_IPHONE_SIMULATOR)
 void CSoundSlot::openOGGSound(const std::string& filename, SDL_AudioSpec *pspec, Uint8 *&SoundBuffer, Uint32 &SoundLen)
 {
