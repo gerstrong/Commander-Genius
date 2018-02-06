@@ -27,17 +27,12 @@
 #ifndef CRINGBUFFER_H_
 #define CRINGBUFFER_H_
 
-// TODO: It is more of a container. We should rename that to Ring or RingComposite or similar.
 
 template <typename T>
 class RingBuffer {
 public:
 
-	RingBuffer():
-        mp_start(nullptr),
-        mp_cur(nullptr),
-        mp_end(nullptr),
-		m_size(0)
+    RingBuffer()
 	{}
 
 	~RingBuffer()
@@ -64,17 +59,21 @@ public:
 	/**
 	 * Allocates memory for the Ring buffer
 	 */
-	bool reserve(unsigned int size)
+    bool resize(const unsigned int size)
 	{
 		if(!empty())
 		{
-			// TODO: throw exception here! This must never happen!
+            clear();
 			return false;
 		}
 
 		m_size = size;
+
 		if(m_size == 0)
+        {
 			return false;
+        }
+
 		mp_cur = new T[m_size];
 		mp_start = mp_cur;
 		mp_end = mp_start + m_size;
@@ -88,7 +87,11 @@ public:
 	 */
 	void clear()
 	{
-		delete [] mp_start;
+        if(mp_start)
+        {
+            delete [] mp_start;
+        }
+
         mp_start = nullptr;
 		m_size = 0;
 	}
@@ -193,8 +196,10 @@ public:
 
 
 private:
-	T *mp_start, *mp_cur, *mp_end;
-	unsigned int m_size;
+    T *mp_start = nullptr;
+    T *mp_cur   = nullptr;
+    T *mp_end   = nullptr;
+    unsigned int m_size = 0;
 };
 
 #endif /* CRINGBUFFER_H_ */

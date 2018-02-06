@@ -31,6 +31,7 @@ void CHUD::createHUDBlit()
 {        
     mHUDBlit.createRGBSurface(mRenderRect);
     mHUDBlit.makeBlitCompatible();
+    mHUDBlit.fillRGB(0,0,0);
 }
 
 void CHUD::setup(const int id)

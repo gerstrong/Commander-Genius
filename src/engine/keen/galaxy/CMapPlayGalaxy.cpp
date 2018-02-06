@@ -340,7 +340,6 @@ bool CMapPlayGalaxy::operator<<(CSaveGameController &savedGame)
     // Load the Background Music
 	gMusicPlayer.stop();
 
-
     if( !galaxy::loadLevelMusic(level) )
     {
     	gLogging.textOut("Warning: The music cannot be played. Check that all the files have been correctly copied!");

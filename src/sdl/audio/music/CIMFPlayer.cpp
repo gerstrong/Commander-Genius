@@ -58,7 +58,7 @@ bool CIMFPlayer::loadMusicFromFile(const std::string& filename)
         m_IMF_Data.clear();
 
     const word imf_chunks = (data_size/sizeof(IMFChunkType));
-    m_IMF_Data.reserve(imf_chunks);
+    m_IMF_Data.resize(imf_chunks);
     
     if( imf_chunks != fread( m_IMF_Data.getStartPtr(), sizeof(IMFChunkType), imf_chunks, fp ) )
     {
@@ -77,8 +77,10 @@ bool CIMFPlayer::loadMusicFromFile(const std::string& filename)
 
 bool CIMFPlayer::loadMusicTrack(const int track)
 {
-    if( m_IMF_Data.empty() )
+    if( !m_IMF_Data.empty() )
+    {
         m_IMF_Data.clear();
+    }
 
     if(!gKeenFiles.exeFile.loadMusicTrack(m_IMF_Data, track))
     {
@@ -230,9 +232,14 @@ int locImfMusPos = 0;
 
 bool loadIMFFile(const std::string &fname)
 {
-    if(locIMFPlayer.loadMusicFromFile(fname))
+    if(locIMFPlayer.playing())
     {
         locIMFPlayer.close(false);
+        Mix_HaltMusic();
+    }
+
+    if(locIMFPlayer.loadMusicFromFile(fname))
+    {
         locIMFPlayer.open(false);
         Mix_HookMusic(imfMusicPlayer, &locImfMusPos);
         Mix_HookMusicFinished(musicFinished);
@@ -245,9 +252,14 @@ bool loadIMFFile(const std::string &fname)
 
 bool loadIMFTrack(const int track)
 {
-    if(locIMFPlayer.loadMusicTrack(track))
+    if(locIMFPlayer.playing())
     {
         locIMFPlayer.close(false);
+        Mix_HaltMusic();
+    }
+
+    if(locIMFPlayer.loadMusicTrack(track))
+    {        
         locIMFPlayer.open(false);
         Mix_HookMusic(imfMusicPlayer, &locImfMusPos);
         Mix_HookMusicFinished(musicFinished);
@@ -286,6 +298,7 @@ void musicFinished()
 
 void unhookAll()
 {
+    locImfMusPos = 0;
     Mix_HookMusic(nullptr, &locImfMusPos);
     Mix_HookMusicFinished(nullptr);
 }

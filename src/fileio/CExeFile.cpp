@@ -494,7 +494,9 @@ bool CExeFile::unpackAudioInterval( RingBuffer<IMFChunkType> &imfData,
         word data_size;
 
         if (*imfDataPtr == 0) // Is the IMF file of Type-0?
+        {
             data_size = emb_file_data_size;
+        }
         else
         {
             data_size = *((word*) (void*) imfDataPtr);
@@ -503,10 +505,12 @@ bool CExeFile::unpackAudioInterval( RingBuffer<IMFChunkType> &imfData,
 
 
         if(!imfData.empty())
+        {
             imfData.clear();
+        }
 
         const word imf_chunks = data_size/sizeof(IMFChunkType);
-        imfData.reserve(imf_chunks);
+        imfData.resize(imf_chunks);
         memcpy(imfData.getStartPtr(), imfDataPtr, data_size);
         return true;
     }
@@ -650,7 +654,9 @@ bool CExeFile::readCompressedAudiointoMemory(RingBuffer<IMFChunkType> &imfData,
     uint32_t audiofilecompsize;
     std::string init_audiofilename = "AUDIO.CK" + itoa(episode);
 
-    std::string audiofilename = getResourceFilename( init_audiofilename, gKeenFiles.gameDir, true, false);
+    const std::string audiofilename = getResourceFilename( init_audiofilename,
+                                                     gKeenFiles.gameDir,
+                                                     true, false);
 
     if( audiofilename == "" )
         return false;
@@ -665,13 +671,16 @@ bool CExeFile::readCompressedAudiointoMemory(RingBuffer<IMFChunkType> &imfData,
 
     // create memory so we can store the Audio.ck there and use it later for extraction
     AudioCompFileData.resize(audiofilecompsize);
-    AudioFile.read((char*) &(AudioCompFileData.front()), audiofilecompsize);
+    AudioFile.read((char*) &(AudioCompFileData.front()),
+                    audiofilecompsize);
     AudioFile.close();
 
     std::string audiohedfile = gKeenFiles.audioHedFilename;
 
     if(!audiohedfile.empty())
+    {
         audiohedfile = getResourceFilename( audiohedfile, gKeenFiles.gameDir, false, false);
+    }
 
     // The musiched is just one part of the AUDIOHED. It's not a separate file.
     // Open the AUDIOHED so we know where to mp_IMF_Data decompress
@@ -685,7 +694,8 @@ bool CExeFile::readCompressedAudiointoMemory(RingBuffer<IMFChunkType> &imfData,
 
 
 
-bool CExeFile::loadMusicTrack(RingBuffer<IMFChunkType> &imfData, const int track) const
+bool CExeFile::loadMusicTrack(RingBuffer<IMFChunkType> &imfData,
+                              const int track) const
 {
     // Now get the proper music slot reading the assignment table.
     std::vector<uint8_t> AudioCompFileData;
