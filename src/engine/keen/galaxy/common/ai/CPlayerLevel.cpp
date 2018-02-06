@@ -40,7 +40,7 @@ const int POGO_INERTIA_HOR_REACTION = 2;
 
 const int FIRE_RECHARGE_TIME = 5;
 
-const int MAX_POLE_GRAB_TIME = 19;
+const int MAX_POLE_GRAB_TIME = 10;
 
 const int MAX_SCROLL_VIEW = (8<<CSF);
 
@@ -121,7 +121,9 @@ bool CPlayerLevel::verifyforPole()
 {
 	// Timeout before Keen can grab again after he jumped off.
 	if ( mPoleGrabTime < MAX_POLE_GRAB_TIME )
+    {
 		return false;
+    }
 
 	mPoleGrabTime = 0;
 
