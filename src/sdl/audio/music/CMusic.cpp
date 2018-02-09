@@ -39,6 +39,8 @@ bool CMusic::loadTrack(const int track)
 bool CMusic::load(const std::string &musicfile)
 {        
 
+    Mix_HaltMusic();
+
         if(mpMixMusic)
         {
             Mix_FreeMusic(mpMixMusic);
@@ -242,8 +244,12 @@ bool CMusic::LoadfromMusicTable(const std::string &gamepath,
             if( load(filename) )
             {
                 play();
+                return true;
             }
-            return true;
+            else
+            {
+                return false;
+            }
         }
         Tablefile.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     }
