@@ -32,6 +32,7 @@ CSoundChannel(const CSoundChannel &chnl)
 {
     *this = chnl;
     mId = mTotNumChannels;
+    stopSound();
     mTotNumChannels++;
 }
 

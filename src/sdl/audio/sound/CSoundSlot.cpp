@@ -27,11 +27,11 @@ CSoundSlot::~CSoundSlot()
 
 void CSoundSlot::setupWaveForm( Uint8 *buf, Uint32 len )
 {
+    unload();
+
 	m_soundlength = len;
     mSounddata.resize(m_soundlength);
-    memcpy(mSounddata.data(), buf, m_soundlength);
-
-    unload();
+    memcpy(mSounddata.data(), buf, m_soundlength);    
 
     if(!(mpWaveChunk = Mix_QuickLoad_RAW(mSounddata.data(), mSounddata.size())))
     {

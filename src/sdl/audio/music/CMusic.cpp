@@ -76,7 +76,7 @@ bool CMusic::load(const std::string &musicfile)
             if(!mpMixMusic)
             {
                 gLogging.ftextOut("Mix_LoadMUS(\"%s\"): %s\n",
-                                  musicfile.c_str(),
+                                  fullFname.c_str(),
                                   Mix_GetError());
                 return false;
             }
@@ -99,11 +99,11 @@ bool CMusic::load(const std::string &musicfile)
 
 void CMusic::reload()
 {
-    //gSound.pauseAudio();
+    gSound.pauseAudio();
 
     Mix_RewindMusic();
 
-    //gSound.resumeAudio();
+    gSound.resumeAudio();
 }
 
 void CMusic::play()
@@ -160,11 +160,6 @@ void CMusic::stop()
 
 }
 
-// length only refers to the part(buffer) that has to be played
-void CMusic::readWaveform(Uint8* buffer, size_t length)
-{
-    return;
-}
 
 bool CMusic::LoadfromSonglist(const std::string &gamepath, const int &level)
 {

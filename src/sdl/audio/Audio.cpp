@@ -287,22 +287,6 @@ bool Audio::forcedisPlaying()
 	return false;
 }
 
-/*
-void Audio::callback(void *unused,
-                     Uint8 *stream,
-                     int len)
-{
-    mCallbackRunning = true;
-
-	if(!mpAudioRessources)        
-    {
-        mCallbackRunning = false;
-		return;
-    }
-
-    mCallbackRunning = false;
-}
-*/
 
 void Audio::playSound(const GameSound snd,
                       const SoundPlayMode mode )
