@@ -11,8 +11,8 @@ endif()
 
 OPTION(DOWNLOADER "Internal Downloader" Yes)
 
-OPTION(OGG "Ogg/Vorbis support" Yes)
-OPTION(TREMOR "Tremor support" No)
+#OPTION(OGG "Ogg/Vorbis support" Yes)
+#OPTION(TREMOR "Tremor support" No)
 
 
 IF(WIN32)
@@ -64,27 +64,27 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/CMake)
 
 
 # Try to use Ogg if enabled
-IF (OGG)
-    IF(BUILD_TARGET STREQUAL WIN32)
-	set(VORBIS_INCLUDE_DIR ${CMAKE_INCLUDE_PATH})
-    ELSE(BUILD_TARGET STREQUAL WIN32)
-	FIND_PATH(VORBIS_INCLUDE_DIR vorbis/vorbisfile.h DOC "Include for Ogg Vorbis")
-    ENDIF()
+#IF (OGG)
+#    IF(BUILD_TARGET STREQUAL WIN32)
+        #set(VORBIS_INCLUDE_DIR ${CMAKE_INCLUDE_PATH})
+    #ELSE(BUILD_TARGET STREQUAL WIN32)
+#	FIND_PATH(VORBIS_INCLUDE_DIR vorbis/vorbisfile.h DOC "Include for Ogg Vorbis")
+ #   ENDIF()
 
-    SET(VORBIS_INCLUDE_PATH "${VORBIS_INCLUDE_DIR}/vorbis")
-    ADD_DEFINITIONS(-DOGG)
-    INCLUDE_DIRECTORIES(${VORBIS_INCLUDE_PATH})
-    INCLUDE_DIRECTORIES(${VORBIS_INCLUDE_DIR})
-ENDIF (OGG)
+#    SET(VORBIS_INCLUDE_PATH "${VORBIS_INCLUDE_DIR}/vorbis")
+#    ADD_DEFINITIONS(-DOGG)
+#    INCLUDE_DIRECTORIES(${VORBIS_INCLUDE_PATH})
+#    INCLUDE_DIRECTORIES(${VORBIS_INCLUDE_DIR})
+#ENDIF (OGG)
 
-IF (TREMOR)
-	FIND_PATH(TREMOR_INCLUDE_DIR
-		ivorbisfile.h
-		PATHS /usr/include /usr/include/tremor
-		DOC "Include for Tremor")
-	INCLUDE_DIRECTORIES(${TREMOR_INCLUDE_DIR})
-	ADD_DEFINITIONS(-DTREMOR)
-ENDIF (TREMOR)
+#IF (TREMOR)
+        #FIND_PATH(TREMOR_INCLUDE_DIR
+                #ivorbisfile.h
+                #PATHS /usr/include /usr/include/tremor
+#		DOC "Include for Tremor")
+        #INCLUDE_DIRECTORIES(${TREMOR_INCLUDE_DIR})
+        #ADD_DEFINITIONS(-DTREMOR)
+#ENDIF (TREMOR)
 
 
 

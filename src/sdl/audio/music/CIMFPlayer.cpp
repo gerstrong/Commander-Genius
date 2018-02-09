@@ -299,7 +299,7 @@ void musicFinished()
 void unhookAll()
 {
     locImfMusPos = 0;
-    Mix_HookMusic(nullptr, &locImfMusPos);
+    Mix_HookMusic(nullptr, nullptr);
     Mix_HookMusicFinished(nullptr);
 }
 

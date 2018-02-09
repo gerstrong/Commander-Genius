@@ -42,13 +42,13 @@ static const int availableRates[numAvailableRates]=
 
 
 // define a callback function we can work with
-inline static void CCallback(void *unused, Uint8 *stream, int len)
+/*inline static void CCallback(void *unused, Uint8 *stream, int len)
 {
     SDL_memset(stream, 0, len);
 
     // let it call a method on my (singleton) sound object
     Audio::get().callback(unused, stream, len);
-}
+}*/
 
 Audio::Audio() :
 m_MusicVolume(SDL_MIX_MAXVOLUME),
@@ -81,7 +81,7 @@ bool Audio::init()
 		case 22050: mAudioSpec.samples = 512; break;
         default: mAudioSpec.samples = 1024; break;
 	}
-	mAudioSpec.callback = CCallback;
+    //mAudioSpec.callback = CCallback;
     mAudioSpec.userdata = nullptr;
 
     // Initialize audio system
@@ -211,12 +211,14 @@ void Audio::stopAllSounds()
 void Audio::pauseAudio()
 {
     Mix_Pause(-1);
+    Mix_PauseMusic();
 }
 
 // resumes playing a previously paused sound
 void Audio::resumeAudio()
 {
     Mix_Resume(-1);
+    Mix_ResumeMusic();
 }
 
 // returns true if sound snd is currently playing
@@ -285,6 +287,7 @@ bool Audio::forcedisPlaying()
 	return false;
 }
 
+/*
 void Audio::callback(void *unused,
                      Uint8 *stream,
                      int len)
@@ -299,7 +302,7 @@ void Audio::callback(void *unused,
 
     mCallbackRunning = false;
 }
-
+*/
 
 void Audio::playSound(const GameSound snd,
                       const SoundPlayMode mode )
