@@ -59,7 +59,7 @@ ENDIF()
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
 INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/GsKit)
 
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/)
+#set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/CMake)
 
 
@@ -234,7 +234,7 @@ target_link_libraries( CGeniusExe ${ZLIB_LIBRARIES} )
 
 
 if(USE_SDL2)
-	message(STATUS "SDL2_LIBRARY = ${SDL2_LIBRARY}")
+        message(STATUS "SDL2_LIBRARY = ${SDL2_LIBRARY}")
         message(STATUS "SDL2IMAGE_LIBRARY = ${SDL2IMAGE_LIBRARY}")
 else(USE_SDL2)
         # SDL stuff to link
@@ -268,7 +268,7 @@ if(WIN32)
 	target_link_libraries(CGeniusExe mingw32)
 	target_link_libraries(CGeniusExe user32)
 	target_link_libraries(CGeniusExe gdi32)
-	target_link_libraries(CGeniusExe SDL2Main SDL2)
+        target_link_libraries(CGeniusExe SDL2Main SDL2)
 	target_link_libraries(CGeniusExe SDL2_image)
 	target_link_libraries(CGeniusExe winmm)
 	target_link_libraries(CGeniusExe Imm32)

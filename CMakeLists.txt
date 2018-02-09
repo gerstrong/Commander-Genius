@@ -9,6 +9,7 @@ set (CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/CMake")
 
 # Use compile time reducer
 include(cotire)
+include(FindSDL2_mixer)
 
 option(USE_PYTHON3 "Use Python3 scripts" yes)
 
