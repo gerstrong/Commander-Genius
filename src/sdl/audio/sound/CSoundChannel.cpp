@@ -22,8 +22,8 @@ CSoundChannel::
 CSoundChannel(const SDL_AudioSpec &AudioSpec) :
 m_AudioSpec(AudioSpec)
 {
-    stopSound();
     mId = mTotNumChannels;
+    stopSound();
     mTotNumChannels++;
 }
 
@@ -39,6 +39,8 @@ CSoundChannel::
 ~CSoundChannel()
 {
     mTotNumChannels--;
+
+    stopSound();
 
     if(mTotNumChannels < 0)
     {

@@ -17,16 +17,6 @@
 #include "sdl/audio/Audio.h"
 #include <base/utils/FindFile.h>
 
-
-#if defined(OGG)
-#define OV_EXCLUDE_STATIC_CALLBACKS // Will reduce some nasty warning, since we don't use those callbacks
-#include <vorbisfile.h>
-#elif defined(TREMOR)
-#include <ivorbisfile.h>
-int ov_fopen(char *path,OggVorbis_File *vf);
-#endif
-
-
 CSoundSlot::CSoundSlot()
 {}
 
@@ -35,84 +25,13 @@ CSoundSlot::~CSoundSlot()
     unload();
 }
 
-
-#if !(TARGET_OS_IPHONE) || !(TARGET_IPHONE_SIMULATOR)
-void CSoundSlot::openOGGSound(const std::string& filename, SDL_AudioSpec *pspec, Uint8 *&SoundBuffer, Uint32 &SoundLen)
-{
-
-#if defined(OGG) || defined(TREMOR)
-
-    OggVorbis_File  oggStream;     				// stream handle
-    const unsigned int BUFFER_SIZE = 32768;     // 32 KB buffers
-    SoundBuffer = nullptr;
-
-    const SDL_AudioSpec &audioSpec = gSound.getAudioSpec();
-
-    if(ov_fopen( (char *)GetFullFileName(filename).c_str(), &oggStream ) == 0)
-    {
-    	long bytes;
-    	char array[BUFFER_SIZE];
-    	std::vector<char> buffer;
-
-    	int bitStream;
-        vorbis_info*  vorbisInfo = ov_info(&oggStream, -1);
-        ov_comment(&oggStream, -1);
-        pspec->format = AUDIO_S16LSB; // Ogg Audio seems to always use this format
-        pspec->channels = vorbisInfo->channels;
-
-        mOggFreq = vorbisInfo->rate;
-
-        pspec->freq = mOggFreq;
-
-
-        mHasCommonFreqBase = true;
-
-        // Since I cannot convert with a proper quality from 44100 to 48000 Ogg wave output
-        // we set m_AudioFileSpec frequency to the same as the one of the SDL initialized AudioSpec
-        // scale just the buffer using readOGGStreamAndResample.
-        // This is base problem, but we have workarounds for that...
-        if( (pspec->freq%audioSpec.freq != 0) &&
-            (audioSpec.freq%pspec->freq != 0) )
-        {
-            pspec->freq = audioSpec.freq;
-            mHasCommonFreqBase = false;
-        }
-
-
-        SoundLen = 0;
-
-        do {
-			// Read up to a buffer's worth of decoded sound data
-#if defined(OGG)
-        	bytes = ov_read(&oggStream, array, BUFFER_SIZE, 0, 2, 1, &bitStream);
-#elif defined(TREMOR)
-        	bytes = ov_read(&oggStream, array, BUFFER_SIZE, &bitStream);
-#endif
-			// Append to end of buffer
-			buffer.insert(buffer.end(), array, array + bytes);
-        } while (bytes > 0);
-
-        ov_clear(&oggStream);
-
-        SoundLen = buffer.size();
-        SoundBuffer = (Uint8*) malloc(SoundLen*sizeof(Uint8));
-        memcpy(SoundBuffer, &(buffer[0]), SoundLen);
-    }
-    #endif
-}
-#endif
-
-
 void CSoundSlot::setupWaveForm( Uint8 *buf, Uint32 len )
 {
 	m_soundlength = len;
     mSounddata.resize(m_soundlength);
     memcpy(mSounddata.data(), buf, m_soundlength);
 
-    if(mpWaveChunk)
-    {
-        Mix_FreeChunk(mpWaveChunk);
-    }
+    unload();
 
     if(!(mpWaveChunk = Mix_QuickLoad_RAW(mSounddata.data(), mSounddata.size())))
     {
@@ -144,6 +63,8 @@ bool CSoundSlot::HQSndLoad(const std::string& gamepath,
     {
         return false;
     }
+
+    unload();
 
     if(!(mpWaveChunk=Mix_LoadWAV(buf.c_str())))
     {

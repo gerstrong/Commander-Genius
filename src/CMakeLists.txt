@@ -234,8 +234,6 @@ target_link_libraries( CGeniusExe ${ZLIB_LIBRARIES} )
 
 
 if(USE_SDL2)
-#        target_link_libraries(CGeniusExe ${SDL2_LIBRARY})
-#        target_link_libraries(CGeniusExe ${SDL2IMAGE_LIBRARY})
 	message(STATUS "SDL2_LIBRARY = ${SDL2_LIBRARY}")
         message(STATUS "SDL2IMAGE_LIBRARY = ${SDL2IMAGE_LIBRARY}")
 else(USE_SDL2)
