@@ -10,23 +10,25 @@
 #endif
 #define QUOTIENT 0x04C11DB7
 
-unsigned int crctab[256];
+static unsigned int crctab[256];
 
-void crc32_init(void)
+void crc32_init()
 {
-    int i,j;
-	
     unsigned int crc;
 	
-    for (i = 0; i < 256; i++)
+    for (unsigned int i = 0; i < 256; i++)
     {
         crc = i << 24;
-        for (j = 0; j < 8; j++)
+        for (unsigned int j = 0; j < 8; j++)
         {
             if (crc & 0x80000000)
+            {
                 crc = (crc << 1) ^ QUOTIENT;
+            }
             else
+            {
                 crc = crc << 1;
+            }
         }
         crctab[i] = crc; // may need to account for big endian
     }

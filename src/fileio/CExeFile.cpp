@@ -83,13 +83,10 @@ void CExeFile::dumpDataFile(const std::string& filename)
 bool CExeFile::readData(const unsigned int episode,
                         const std::string& datadirectory)
 {
-    // TODO: It would be nice to gather a list of executables and by scanning it decide which episode will be played.
-
-	crc32_init();
-
 	bool demo = false;
 
-	std::string filename = datadirectory + "/keen" + itoa(episode) + ".exe";
+    std::string filename =  JoinPaths(datadirectory,
+                                      "keen" + itoa(episode) + ".exe" );
 
 	std::ifstream File;
 	OpenGameFileR(File, filename, std::ios::binary);
@@ -98,7 +95,8 @@ bool CExeFile::readData(const unsigned int episode,
 	if(!File)
 	{
 		// try another filename (Used in Episode 4-6)
-		filename = datadirectory + "/keen" + itoa(episode) + "e.exe";
+        filename = JoinPaths(datadirectory,
+                             "keen" + itoa(episode) + "e.exe");
 		OpenGameFileR(File, filename, std::ios::binary);
 	}
 
@@ -106,7 +104,8 @@ bool CExeFile::readData(const unsigned int episode,
     if(!File)
     {
         // try another filename (Used in Episode 4-6) for demo versions
-        filename = datadirectory + "/k" + itoa(episode) + "demo.exe";
+        filename = JoinPaths(datadirectory,
+                             "k" + itoa(episode) + "demo.exe");
         OpenGameFileR(File, filename, std::ios::binary);
         if(File)
             demo = true;
@@ -117,17 +116,21 @@ bool CExeFile::readData(const unsigned int episode,
     if(!File)
     {
         // try another filename (Used in Episode 4-6) for demo versions
-        filename = datadirectory + "/kdreams.exe";
+        filename = JoinPaths(datadirectory, "kdreams.exe");
         OpenGameFileR(File, filename, std::ios::binary);
 
         // This is only for Keen Dreams so it has to be 7!
         if(episode != 7)
+        {
             return false;
+        }
     }
 
     // If we still have no file found, the directory with the game cannot be used at all.
 	if(!File)
+    {
 		return false;	
+    }
 
 	m_filename = filename;
 	m_episode = episode;
@@ -584,7 +587,8 @@ bool CExeFile::readMusicHedInternal(RingBuffer<IMFChunkType> &imfData,
 
     for( size_t i=0 ; i<number_of_audiorecs-music_start ; i++ )
     {
-        musiched.push_back(*audiohedptr);
+        const uint32_t record = *audiohedptr;
+        musiched.push_back(record);
         audiohedptr++;
     }
 
@@ -700,6 +704,8 @@ bool CExeFile::loadMusicTrack(RingBuffer<IMFChunkType> &imfData,
     // Now get the proper music slot reading the assignment table.
     std::vector<uint8_t> AudioCompFileData;
     std::vector<uint32_t> musiched;
+
+    assert(track >= 0);
 
     if( readCompressedAudiointoMemory(imfData, musiched, AudioCompFileData) )
     {

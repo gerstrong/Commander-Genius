@@ -90,7 +90,6 @@ bool CGameLauncher::setupMenu()
     mLauncherDialog.initEmptyBackground();
     mSelection      = -1;
 
-    bool gamesDetected = false;
 
     // TODO: Put that scanning into a separate so we can show a loading menu
     // Scan for games...
@@ -102,12 +101,16 @@ bool CGameLauncher::setupMenu()
     // Process any custom labels
     getLabels();
 
+    bool gamesDetected = false;
+
     // Scan VFS DIR_ROOT for exe's
     gamesDetected |= scanExecutables(DIR_ROOT);
     mGameScanner.setPermilage(100);
 
     // Recursivly scan into DIR_GAMES subdir's for exe's
-    gamesDetected |= scanSubDirectories(DIR_GAMES, DEPTH_MAX_GAMES, 200, 900);
+    gamesDetected |= scanSubDirectories(DIR_GAMES,
+                                        DEPTH_MAX_GAMES,
+                                        200, 900);
 
     mpGameSelecList = new CGUITextSelectionList();
 
@@ -263,7 +266,8 @@ bool CGameLauncher::scanSubDirectories(const std::string& path,
 
 	std::set<std::string> dirs;
 	FileListAdder fileListAdder;
-	GetFileList(dirs, fileListAdder, path, false, FM_DIR);
+    GetFileList(dirs, fileListAdder,
+                path, false, FM_DIR);
 
     size_t interval = dirs.size();
 
@@ -278,9 +282,9 @@ bool CGameLauncher::scanSubDirectories(const std::string& path,
 
     mGameScanner.setPermilage(startPermil);
 
-	for(std::set<std::string>::iterator i = dirs.begin(); i != dirs.end(); ++i)
+    for( const auto &subdir : dirs )
 	{
-		std::string newpath = path + '/' +  *i;
+        std::string newpath = JoinPaths(path , subdir);
 
         gamesDetected |= scanExecutables(newpath);
 
@@ -289,7 +293,9 @@ bool CGameLauncher::scanSubDirectories(const std::string& path,
             lastPermil = endPermil;
 
         if(maxdepth > 1 && scanSubDirectories(newpath, maxdepth - 1, permil, lastPermil))
+        {
             gamesDetected = true;
+        }
 
         permil = lastPermil;
         mGameScanner.setPermilage(permil);
@@ -397,6 +403,9 @@ bool CGameLauncher::scanExecutables(const std::string& path)
 
 bool CGameLauncher::start()
 {
+    // CRC init when Launcher starts.
+    crc32_init();
+
     // Here it always makes sense to have the mouse cursor active
     SDL_ShowCursor(SDL_ENABLE);
 

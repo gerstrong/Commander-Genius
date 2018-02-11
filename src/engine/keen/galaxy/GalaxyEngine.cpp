@@ -81,7 +81,7 @@ bool loadLevelMusic(const int level)
     int track = gMusicPlayer.readTrackNofromMusicTable(path, levelname);
 
     // Does the file provide some number as track number to use.
-    if(track < -1)
+    if(track <= -1)
     {
         track = 0;
         byte* rawDataPtr = ExeFile.getRawData();

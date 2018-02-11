@@ -21,9 +21,16 @@
 
 bool CMusic::loadTrack(const int track)
 {
+    gLogging.textOut("Load track number " + itoa(track) + "");
+
+    if(track < 0)
+    {
+        gLogging.textOut("The requested Track-Number does not make sense. Music will not be loaded here!");
+        return false;
+    }
+
     gSound.pauseAudio();
 
-    gLogging.textOut("Load track number " + itoa(track) + "");
 
     if(loadIMFTrack(track))
     {
