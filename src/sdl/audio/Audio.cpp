@@ -375,23 +375,39 @@ void Audio::playStereosoundSlot(unsigned char slotplay,
 
 
 	// first try to find an empty channel
-    for( auto sndChnl = mSndChnlVec.begin() ; sndChnl != mSndChnlVec.end() ; sndChnl++)
+    for( auto &sndChnl : mSndChnlVec)
 	{
-        CSoundSlot &currentSlot = *sndChnl->getCurrentSoundPtr();
+        // check if channel is still playing
 
-        if (!sndChnl->isPlaying()
-            ||
-            chosenSlot.priority >= currentSlot.priority )
-		{
-			if(mAudioSpec.channels == 2)
+        auto slotPtr = sndChnl.getCurrentSoundPtr();
+
+        if(slotPtr)
+        {
+            CSoundSlot &currentSlot = *(slotPtr);
+
+            if (!sndChnl.isPlaying() ||
+                chosenSlot.priority >= currentSlot.priority )
             {
-                sndChnl->setBalance(balance);
+                if(mAudioSpec.channels == 2)
+                {
+                    sndChnl.setBalance(balance);
+                }
+
+                sndChnl.setupSound(chosenSlot,
+                                  (mode==SoundPlayMode::PLAY_FORCE) ? true : false );
+                break;
+            }
+        }
+        else if (!sndChnl.isPlaying())
+        {
+            if(mAudioSpec.channels == 2)
+            {
+                sndChnl.setBalance(balance);
             }
 
-            sndChnl->setupSound(chosenSlot,
+            sndChnl.setupSound(chosenSlot,
                                 (mode==SoundPlayMode::PLAY_FORCE) ? true : false );
-			break;
-		}
+        }
 	}
 }
 

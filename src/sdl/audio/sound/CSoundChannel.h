@@ -55,8 +55,8 @@ public:
     virtual ~CSoundChannel();
 
 	void stopSound();
-    bool isPlaying() { return mSoundPlaying; }
-    bool isForcedPlaying() { return (mSoundPlaying && mSoundForced); }
+    bool isPlaying();
+    bool isForcedPlaying() { return (isPlaying() && mSoundForced); }
     CSoundSlot *getCurrentSoundPtr() { return mpCurrentSndSlot; }
 
 	/**
@@ -66,7 +66,7 @@ public:
 	 * \warning	If there is no sound curently assigned to be played, please don't call that function.
 	 * 			It might crash. Call setupSound first before you call this one!
 	 */
-	void readWaveform( Uint8 * const waveform, const Uint32 len );
+    //void readWaveform( Uint8 * const waveform, const Uint32 len );
 	template <typename T>
 	void transintoStereoChannels(T* waveform, const Uint32 len);
 
@@ -82,7 +82,7 @@ public:
 					const bool sound_forced );
 
 private:
-    bool mSoundPlaying;           	// true = a sound is currently playing
+
     CSoundSlot *mpCurrentSndSlot = nullptr;		// Pointer to the slot of the currently playing sound
     Uint32 mSoundPtr = 0;               	// position within sound that we're at
     bool mSoundPaused = true;             	// true = pause playback

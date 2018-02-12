@@ -49,24 +49,33 @@ void
 CSoundChannel::
 stopSound()
 {
-    mpCurrentSndSlot = nullptr;
-    mBalance = 0;
-    mSoundPtr = 0;
-    mSoundPaused = true;
-    mSoundPlaying = false;
-
-    /*
     if(Mix_Playing(mId))
     {
         Mix_HaltChannel(mId);
-    }*/
+    }
+
+    mBalance = 0;
+    mSoundPtr = 0;
+    mSoundPaused = true;
+}
+
+bool
+CSoundChannel::isPlaying()
+{
+    if(Mix_Playing(mId))
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
 void CSoundChannel::setupSound( CSoundSlot &SndSlottoPlay,
 								const bool sound_forced )
 {
     mpCurrentSndSlot = &SndSlottoPlay;
-    mSoundPlaying = true;
     mSoundPtr = 0;
     mSoundForced = sound_forced;
 
@@ -128,7 +137,7 @@ void CSoundChannel::transintoStereoChannels(T* waveform, const Uint32 len)
 	}
 }
 
-void CSoundChannel::readWaveform( Uint8 * const waveform, const Uint32 len )
+/*void CSoundChannel::readWaveform( Uint8 * const waveform, const Uint32 len )
 {
     auto snddata = mpCurrentSndSlot->getSoundData();
     const Uint32 sndlength = mpCurrentSndSlot->getSoundlength();    
@@ -160,3 +169,4 @@ void CSoundChannel::readWaveform( Uint8 * const waveform, const Uint32 len )
         }
 	}
 }
+*/
