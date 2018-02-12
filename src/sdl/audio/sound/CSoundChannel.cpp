@@ -23,7 +23,6 @@ CSoundChannel(const SDL_AudioSpec &AudioSpec) :
 m_AudioSpec(AudioSpec)
 {
     mId = mTotNumChannels;
-    stopSound();
     mTotNumChannels++;
 }
 
@@ -32,7 +31,6 @@ CSoundChannel(const CSoundChannel &chnl)
 {
     *this = chnl;
     mId = mTotNumChannels;
-    stopSound();
     mTotNumChannels++;
 }
 
@@ -40,8 +38,6 @@ CSoundChannel::
 ~CSoundChannel()
 {
     mTotNumChannels--;
-
-    stopSound();
 
     if(mTotNumChannels < 0)
     {
@@ -59,7 +55,10 @@ stopSound()
     mSoundPaused = true;
     mSoundPlaying = false;
 
-    Mix_HaltChannel(mId);
+    if(Mix_Playing(mId))
+    {
+        Mix_HaltChannel(mId);
+    }
 }
 
 void CSoundChannel::setupSound( CSoundSlot &SndSlottoPlay,

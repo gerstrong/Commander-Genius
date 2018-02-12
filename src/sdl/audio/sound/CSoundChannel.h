@@ -84,11 +84,11 @@ public:
 private:
     bool mSoundPlaying;           	// true = a sound is currently playing
     CSoundSlot *mpCurrentSndSlot = nullptr;		// Pointer to the slot of the currently playing sound
-    Uint32 mSoundPtr;               	// position within sound that we're at
-    bool mSoundPaused;             	// true = pause playback
-    bool mSoundForced;
+    Uint32 mSoundPtr = 0;               	// position within sound that we're at
+    bool mSoundPaused = true;             	// true = pause playback
+    bool mSoundForced = false;
 
-    short mBalance;					// This variable is used for stereo sound, and to calculate where the sound must be played!
+    short mBalance = 0;					// This variable is used for stereo sound, and to calculate where the sound must be played!
 
     SDL_AudioSpec m_AudioSpec;
 

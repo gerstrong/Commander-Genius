@@ -245,10 +245,12 @@ void Audio::stopSound(const GameSound snd)
 	{
 		if (snd_chnl->isPlaying())
 		{
-			CSoundSlot *pSlotToStop =  mpAudioRessources->getSlotPtrAt(snd);
-			if( snd_chnl->getCurrentSoundPtr() == pSlotToStop )
-				snd_chnl->stopSound();
-		}
+            CSoundSlot *pSlotToStop =  mpAudioRessources->getSlotPtrAt(snd);
+            if( snd_chnl->getCurrentSoundPtr() == pSlotToStop )
+            {
+                snd_chnl->stopSound();
+            }
+        }
 	}
 }
 
