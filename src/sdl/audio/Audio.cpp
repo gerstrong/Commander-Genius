@@ -185,6 +185,8 @@ void Audio::destroy()
 {
 	stopAllSounds();
 
+    Mix_HaltChannel(-1);
+
     if(!mSndChnlVec.empty())
     {
         mSndChnlVec.clear();

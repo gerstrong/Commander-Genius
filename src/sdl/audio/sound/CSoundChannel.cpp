@@ -55,10 +55,11 @@ stopSound()
     mSoundPaused = true;
     mSoundPlaying = false;
 
+    /*
     if(Mix_Playing(mId))
     {
         Mix_HaltChannel(mId);
-    }
+    }*/
 }
 
 void CSoundChannel::setupSound( CSoundSlot &SndSlottoPlay,
