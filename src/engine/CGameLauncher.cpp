@@ -381,8 +381,6 @@ bool CGameLauncher::scanExecutables(const std::string& path)
             newentry.name = filterGameName(newentry.path);
 		}
 
-		newentry.name += " ";
-
 		// Save the type information about the exe
 		m_Entries.push_back(newentry);
 
