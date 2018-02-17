@@ -99,8 +99,8 @@ bool CSettings::saveDrvCfg()
         Configuration.WriteInt("Audio", "format", (gSound.getAudioSpec()).format);
         Configuration.WriteInt("Audio", "rate", (gSound.getAudioSpec()).freq);
         Configuration.SetKeyword("Audio", "sndblaster", gSound.getSoundBlasterMode());
-        Configuration.WriteInt("Audio", "musicvol", (gSound.getMusicVolume()/8));
-        Configuration.WriteInt("Audio", "soundvol", (gSound.getSoundVolume()/8));
+        Configuration.WriteInt("Audio", "musicvol", (gSound.getMusicVolume()));
+        Configuration.WriteInt("Audio", "soundvol", (gSound.getSoundVolume()));
 
     }
     catch(...)

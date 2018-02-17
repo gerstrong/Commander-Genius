@@ -123,7 +123,6 @@ bool Audio::init()
     Mix_QuerySpec(&audio_rate, &audio_format, &audio_channels);
 
     const auto bits = audio_format&0xFF;
-    //const auto sample_size = bits/8 + audio_channels;
 
     mAudioSpec.freq = audio_rate;
     mAudioSpec.format = audio_format;

@@ -46,7 +46,7 @@ starTimer(TIME_STAR_SHOWN)
 void CStunnable::getTouchedBy(CSpriteObject &theObject)
 {
 	CBullet *bullet = dynamic_cast<CBullet*>(&theObject);
-	if( theObject.exists && bullet != NULL )
+    if( theObject.exists && bullet != nullptr )
 	{
 		bullet->setAction(A_KEENSHOT_IMPACT);
 		bullet->playSound( SOUND_SHOT_HIT );

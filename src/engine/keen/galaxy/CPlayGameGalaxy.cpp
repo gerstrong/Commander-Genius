@@ -565,8 +565,9 @@ void CPlayGameGalaxy::ponder(const float deltaT)
         else
         {
             if(!msgboxactive && gInput.getPressedCommand(playerCount, IC_STATUS))
-            {
+            {             
                 gSound.playSound(SOUND_STATUS_SLIDE_IN);
+
                 inv.toggleStatusScreen();
             }
         }
