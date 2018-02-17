@@ -41,11 +41,11 @@ VorticonMenu(GsRect<float>(0.075f, 0.24f, 0.85f, 0.4f) )
     mpSBToggle = new ComboSelection( "Card", filledStrList( 2, "PC Speaker", "Soundblaster" ) );
 	mpMenuDialog->addControl( mpSBToggle );
 
-    mpSoundVolume = new NumberControl( "Sound Vol", 0, SDL_MIX_MAXVOLUME, 8, gSound.getSoundVolume(), true );
+    mpSoundVolume = new NumberControl( "Sound Vol", 0, 100, 4, gSound.getSoundVolume(), true );
 	mpMenuDialog->addControl( mpSoundVolume );
 
 
-    mpMusicVolume = new NumberControl( "Music Vol", 0, SDL_MIX_MAXVOLUME, 8, gSound.getMusicVolume(), true );
+    mpMusicVolume = new NumberControl( "Music Vol", 0, 100, 4, gSound.getMusicVolume(), true );
     mpMenuDialog->addControl( mpMusicVolume );
 }
 

@@ -43,11 +43,11 @@ GalaxyMenu(GsRect<float>(0.075f, 0.24f, 0.85f, 0.4f) )
     mpSBToggle = new ComboSelection( "Card", filledStrList( 2, "PC Speaker", "Soundblaster" ) );
 	mpMenuDialog->addControl( mpSBToggle );
 
-    mpSoundVolume = new NumberControl( "Sound Vol", 0, SDL_MIX_MAXVOLUME, 8, gSound.getSoundVolume() );
+    mpSoundVolume = new NumberControl( "Sound Vol", 0, 100, 4, gSound.getSoundVolume() );
 	mpMenuDialog->addControl( mpSoundVolume );
 
 
-    mpMusicVolume = new NumberControl( "Music Vol", 0, SDL_MIX_MAXVOLUME, 8, gSound.getMusicVolume() );
+    mpMusicVolume = new NumberControl( "Music Vol", 0, 100, 4, gSound.getMusicVolume() );
 	mpMenuDialog->addControl( mpMusicVolume );
 
 	setMenuLabel("SNDEFFMENULABEL");
