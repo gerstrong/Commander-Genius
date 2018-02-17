@@ -37,7 +37,8 @@ void CSoundSlot::setupWaveForm( Uint8 *buf, Uint32 len )
     {
         gLogging.ftextOut("Mix_QuickLoad_WAV: %s\n", Mix_GetError());
         // handle error
-    }
+        return;
+    }    
 }
 
 void CSoundSlot::setupWaveForm( const std::vector<Uint8>& waveform )

@@ -16,6 +16,8 @@
 
 #include <SDL_mixer.h>
 
+#include "sdl/audio/Audio.h"
+
 int CSoundChannel::mTotNumChannels = 0;
 
 CSoundChannel::
@@ -81,12 +83,16 @@ void CSoundChannel::setupSound( CSoundSlot &SndSlottoPlay,
 
     auto waveChunk = mpCurrentSndSlot->WaveChunk();
 
-    // play sample on first free unreserved channel
+    const auto sndVol = gSound.getSoundVolume();
+
+    Mix_VolumeChunk(waveChunk, sndVol);
+
+    // play sample on given Channel
     // play it exactly once through
     if(Mix_PlayChannel(mId, waveChunk, 0) == -1)
     {
         gLogging.ftextOut("Mix_PlayChannel: %s\n", Mix_GetError());
-    }
+    }        
 }
 
 /** \brief This program reads the balance information and balances the stereo sound
