@@ -217,8 +217,8 @@ bool CSettings::loadDrvCfg()
 		Configuration.ReadInteger("Audio", "musicvol", &music_vol, SDL_MIX_MAXVOLUME);
 		Configuration.ReadInteger("Audio", "soundvol", &sound_vol, SDL_MIX_MAXVOLUME);
 
-		gSound.setMusicVolume(music_vol*8);
-		gSound.setSoundVolume(sound_vol*8);
+        gSound.setMusicVolume(Uint8(music_vol));
+        gSound.setSoundVolume(Uint8(sound_vol));
 	}
 	return true;
 }

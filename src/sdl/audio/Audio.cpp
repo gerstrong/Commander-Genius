@@ -256,23 +256,15 @@ void Audio::stopSound(const GameSound snd)
 	}
 }
 
-void Audio::setSoundVolume(const Uint8 volume, const bool immediately)
+void Audio::setSoundVolume(const Uint8 volume)
 {
     m_SoundVolume = volume;
-
-    if(immediately)
-    {
-        Mix_Volume(-1, volume);
-    }
+    Mix_Volume(-1, volume);
 }
-void Audio::setMusicVolume(const Uint8 volume, const bool immediately)
+void Audio::setMusicVolume(const Uint8 volume)
 {
     m_MusicVolume = volume;
-
-    if(immediately)
-    {
-        Mix_VolumeMusic(volume);
-    }
+    Mix_VolumeMusic(volume);
 }
 
 
@@ -407,6 +399,8 @@ void Audio::playStereosoundSlot(unsigned char slotplay,
 
             sndChnl.setupSound(chosenSlot,
                                 (mode==SoundPlayMode::PLAY_FORCE) ? true : false );
+
+            break;
         }
 	}
 }

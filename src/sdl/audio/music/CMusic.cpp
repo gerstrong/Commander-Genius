@@ -138,8 +138,6 @@ void CMusic::play()
         gLogging.ftextOut("Mix_PlayMusic: %s\n", Mix_GetError());
         // well, there's no music, but most games don't break without music...
     }        
-
-    //Mix_VolumeMusic(SDL_MIX_MAXVOLUME);
 }
 
 void CMusic::pause()

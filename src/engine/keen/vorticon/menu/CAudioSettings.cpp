@@ -79,8 +79,8 @@ void CAudioSettings::ponder(const float deltaT)
 
 	mSoundVolume = mpSoundVolume->getSelection();
 
-    gSound.setSoundVolume( mSoundVolume, true );
-    gSound.setMusicVolume( mpMusicVolume->getSelection(), true );
+    gSound.setSoundVolume( mSoundVolume );
+    gSound.setMusicVolume( mpMusicVolume->getSelection() );
 }
 
 
