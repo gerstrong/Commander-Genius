@@ -83,8 +83,24 @@ public:
 	void stopSound(const GameSound snd);
 	void destroy();
 
-    void setSoundVolume(const Uint8 volume);
-    void setMusicVolume(const Uint8 volume);
+    /**
+     * @brief setSoundVolume    Set Sound effects volume
+     * @param volume
+     * @param updateMixer       if true the SDL Mixer gets the volume updated directly
+     *                          This should not be done when the Audio Device has not been yet initialized
+     */
+    void setSoundVolume(const Uint8 volume,
+                        const bool updateMixer = true);
+
+    /**
+     * @brief setMusicVolume
+     * @param volume
+     * @param updateMixer       if true the SDL Mixer gets the volume updated directly
+     *                          This should not be done when the Audio Device has not been yet initialized
+     */
+    void setMusicVolume(const Uint8 volume,
+                        const bool updateMixer = true);
+
 	Uint8 getSoundVolume() { return m_SoundVolume; }
 	Uint8 getMusicVolume() { return m_MusicVolume; }
 

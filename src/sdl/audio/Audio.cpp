@@ -255,15 +255,25 @@ void Audio::stopSound(const GameSound snd)
 	}
 }
 
-void Audio::setSoundVolume(const Uint8 volume)
+void Audio::setSoundVolume(const Uint8 volume,
+                           const bool updateMixer)
 {
     m_SoundVolume = volume;
-    Mix_Volume(-1, volume);
+
+    if(updateMixer)
+    {
+        Mix_Volume(-1, volume);
+    }
 }
-void Audio::setMusicVolume(const Uint8 volume)
+void Audio::setMusicVolume(const Uint8 volume,
+                           const bool updateMixer)
 {
     m_MusicVolume = volume;
-    Mix_VolumeMusic(volume);
+
+    if(updateMixer)
+    {
+        Mix_VolumeMusic(volume);
+    }
 }
 
 
