@@ -29,8 +29,6 @@ pkgver() {
 
 build() {
   cd "$srcdir/$_pkgname"
-  git submodule init 
-  git submodule update  
   sed -i 's/APPDIR\ games/APPDIR\ bin/' ./src/install.cmake
 
   [ $CARCH == 'x86_64' ] && cmake -DBUILD_TYPE=LINUX64 -DCMAKE_INSTALL_PREFIX=/usr
