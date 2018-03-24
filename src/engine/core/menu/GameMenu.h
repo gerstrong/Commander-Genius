@@ -14,13 +14,11 @@ public:
         CBaseMenu( rect, CGUIDialog::FXKind(0) ),
         mStyle(style)
     {
-        //GsRect<float> localRect(0.30f, 0.282f, 0.5f, 0.5f);
-        GsRect<float> localRect(0.25f, 0.282f, 0.6f, 0.5f);
-        mpMenuDialog->setRect(localRect);
-
-
         if(style == GsControl::GALAXY)
         {
+            GsRect<float> localRect(0.25f, 0.282f, 0.6f, 0.5f);
+            mpMenuDialog->setRect(localRect);
+
             mpReturnButton = new GameButton( "x",
                                              new CloseMenuEvent(),
                                              style);
@@ -33,6 +31,10 @@ public:
         }
         else if(style == GsControl::VORTICON)
         {
+            GsRect<float> localRect(0.15f, 0.282f, 0.70f, 0.5f);
+            mpMenuDialog->setRect(localRect);
+
+
             mpReturnButton = new GsButton( "x",
                                            new CloseMenuEvent(),
                                            GsControl::Style::UNSET);

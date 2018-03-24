@@ -14,7 +14,6 @@
 #include "SelectionMenu.h"
 #include "LoadMenu.h"
 #include "SaveMenu.h"
-//#include "CHelpMenu.h"
 #include "engine/core/CBehaviorEngine.h"
 
 #include "widgets/Button.h"

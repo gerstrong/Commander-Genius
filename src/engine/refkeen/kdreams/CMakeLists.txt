@@ -1,7 +1,8 @@
 include_directories(${SDL_INCLUDE_DIR})
 
 FILE(GLOB INCLUDES *.h)
-#FILE(GLOB SOURCES *.c)
+
+set ( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wswitch")
 
 add_definitions(-DREFKEEN_VER_KDREAMS)
 add_definitions(-DREFKEEN_VER_KDREAMS_ANYEGA_ALL)
