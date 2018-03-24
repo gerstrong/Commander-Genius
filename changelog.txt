@@ -1,3 +1,32 @@
+v2.2.0:
+-------
+- Cleaned Repository
+- More unified Menu for both Galaxy and Vorticon games
+- Faster Builds
+- Many bug fixes
+- Player selection in Keen 4 Plus. Play as Lindsey, Council or Kyle
+- Different character in Multiplayer mode
+- Added support for Mod, Midi and FLAC
+- Improved virtual gamepad for mobile version yet to come
+
+v2.1.2:
+-------
+- Load Bitmap fixes
+- Sprite selection screen when Single player mode (Galaxy)
+
+v2.1.1:
+-------
+- Sprite Refinements (Galaxy)
+
+v2.1.0:
+-------
+- lots of tidy ups in the menu code. Now a very unified menu is used
+  for both vorticon and galaxy keen. This reduced the code by many previously copied
+  files.
+- More python support. First mod using no Exe file uses python scripts 
+  for the engine, MoMGalaxy. Now it has some more features more to the original
+  Keen and less glitches.
+
 v2.0.8:
 -------
 - More cleanups, improved audio volume management.
@@ -6,10 +35,12 @@ v2.0.7:
 -------
 - More Audio fixes, cleaned up code, less crashes
 
-
 v2.0.6:
 -------
 - Full integration of SDL_mixer, IMF fixes. Now it sounds a bit better.
+- Audio Code cleanups
+- Improve CMake scripts
+- Fixed some crashes
 
 v2.0.5:
 -------
