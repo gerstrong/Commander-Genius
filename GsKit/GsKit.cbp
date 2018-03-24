@@ -1,0 +1,397 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+   <FileVersion major="1" minor="6" />
+   <Project>
+      <Option title="GsKit" />
+      <Option makefile_is_custom="1" />
+      <Option compiler="gcc" />
+      <Option virtualFolders="CMake Files\;CMake Files\lib\;CMake Files\lib\GsKit\;CMake Files\src\;CMake Files\src\engine\;CMake Files\src\engine\core\;CMake Files\src\engine\keen\;CMake Files\src\engine\keen\galaxy\;CMake Files\src\engine\keen\vorticon\;CMake Files\src\sdl\;CMake Files\src\sdl\audio\;CMake Files\src\sdl\audio\base\;CMake Files\src\sdl\audio\music\;CMake Files\src\sdl\audio\sound\;CMake Files\src\sdl\sys\;CMake Files\src\fileio\;CMake Files\src\fileio\compression\;CMake Files\src\dialog\;CMake Files\src\graphics\;" />
+      <Build>
+      <Target title="all">
+         <Option working_dir="/home/gerstrong/workspace/Commander-Genius/lib/GsKit" />
+         <Option type="4" />
+         <MakeCommands>
+            <Build command="/usr/bin/gmake -f &quot;/home/gerstrong/workspace/Commander-Genius/lib/GsKit/Makefile&quot;  VERBOSE=1 all" />
+            <CompileFile command="/usr/bin/gmake -f &quot;/home/gerstrong/workspace/Commander-Genius/lib/GsKit/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
+            <Clean command="/usr/bin/gmake -f &quot;/home/gerstrong/workspace/Commander-Genius/lib/GsKit/Makefile&quot;  VERBOSE=1 clean" />
+            <DistClean command="/usr/bin/gmake -f &quot;/home/gerstrong/workspace/Commander-Genius/lib/GsKit/Makefile&quot;  VERBOSE=1 clean" />
+         </MakeCommands>
+      </Target>
+      <Target title="GsKit">
+         <Option output="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/libGsKit.a" prefix_auto="0" extension_auto="0" />
+         <Option working_dir="/home/gerstrong/workspace/Commander-Genius/lib/GsKit" />
+         <Option object_output="./" />
+         <Option type="2" />
+         <Option compiler="gcc" />
+         <Compiler>
+            <Add option="-DSYSTEM_DATA_DIR=&quot;/usr/local/share/games&quot;" />
+            <Add directory="/home/gerstrong/workspace/Commander-Genius/lib/GsKit" />
+            <Add directory="/usr/include" />
+            <Add directory="/usr/include/SDL2" />
+            <Add directory="/usr/lib/gcc/x86_64-mageia-linux-gnu/4.8.2/../../../../include/c++/4.8.2" />
+            <Add directory="/usr/lib/gcc/x86_64-mageia-linux-gnu/4.8.2/../../../../include/c++/4.8.2/backward" />
+            <Add directory="/usr/lib/gcc/x86_64-mageia-linux-gnu/4.8.2/../../../../include/c++/4.8.2/x86_64-mageia-linux-gnu" />
+            <Add directory="/usr/lib/gcc/x86_64-mageia-linux-gnu/4.8.2/include" />
+            <Add directory="/usr/local/include" />
+         </Compiler>
+         <MakeCommands>
+            <Build command="/usr/bin/gmake -f &quot;/home/gerstrong/workspace/Commander-Genius/lib/GsKit/Makefile&quot;  VERBOSE=1 GsKit" />
+            <CompileFile command="/usr/bin/gmake -f &quot;/home/gerstrong/workspace/Commander-Genius/lib/GsKit/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
+            <Clean command="/usr/bin/gmake -f &quot;/home/gerstrong/workspace/Commander-Genius/lib/GsKit/Makefile&quot;  VERBOSE=1 clean" />
+            <DistClean command="/usr/bin/gmake -f &quot;/home/gerstrong/workspace/Commander-Genius/lib/GsKit/Makefile&quot;  VERBOSE=1 clean" />
+         </MakeCommands>
+      </Target>
+      <Target title="GsKit/fast">
+         <Option output="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/libGsKit.a" prefix_auto="0" extension_auto="0" />
+         <Option working_dir="/home/gerstrong/workspace/Commander-Genius/lib/GsKit" />
+         <Option object_output="./" />
+         <Option type="2" />
+         <Option compiler="gcc" />
+         <Compiler>
+            <Add option="-DSYSTEM_DATA_DIR=&quot;/usr/local/share/games&quot;" />
+            <Add directory="/home/gerstrong/workspace/Commander-Genius/lib/GsKit" />
+            <Add directory="/usr/include" />
+            <Add directory="/usr/include/SDL2" />
+            <Add directory="/usr/lib/gcc/x86_64-mageia-linux-gnu/4.8.2/../../../../include/c++/4.8.2" />
+            <Add directory="/usr/lib/gcc/x86_64-mageia-linux-gnu/4.8.2/../../../../include/c++/4.8.2/backward" />
+            <Add directory="/usr/lib/gcc/x86_64-mageia-linux-gnu/4.8.2/../../../../include/c++/4.8.2/x86_64-mageia-linux-gnu" />
+            <Add directory="/usr/lib/gcc/x86_64-mageia-linux-gnu/4.8.2/include" />
+            <Add directory="/usr/local/include" />
+         </Compiler>
+         <MakeCommands>
+            <Build command="/usr/bin/gmake -f &quot;/home/gerstrong/workspace/Commander-Genius/lib/GsKit/Makefile&quot;  VERBOSE=1 GsKit/fast" />
+            <CompileFile command="/usr/bin/gmake -f &quot;/home/gerstrong/workspace/Commander-Genius/lib/GsKit/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
+            <Clean command="/usr/bin/gmake -f &quot;/home/gerstrong/workspace/Commander-Genius/lib/GsKit/Makefile&quot;  VERBOSE=1 clean" />
+            <DistClean command="/usr/bin/gmake -f &quot;/home/gerstrong/workspace/Commander-Genius/lib/GsKit/Makefile&quot;  VERBOSE=1 clean" />
+         </MakeCommands>
+      </Target>
+      </Build>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/CInput.cpp">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/GsApp.cpp">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/GsArguments.cpp">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/GsLogging.cpp">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/GsTimer.cpp">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/utils/Base64.cpp">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/utils/ConfigHandler.cpp">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/utils/CrashHandler.cpp">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/utils/Debug.cpp">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/utils/FindFile.cpp">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/utils/Geometry.cpp">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/utils/StringBuf.cpp">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/utils/StringUtils.cpp">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/utils/ThreadPool.cpp">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/utils/Unicode.cpp">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/video/COpenGL.cpp">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/video/CSDLVideo.cpp">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/video/CVidConfig.cpp">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/video/CVideoDriver.cpp">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/video/CVideoEngine.cpp">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/video/scaler/CScaler.cpp">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/video/scaler/scale2x.cpp">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/video/scaler/scale3x.cpp">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/video/scaler/scalebit.cpp">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/fileio/CConfiguration.cpp">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/fileio/IniReader.cpp">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/fileio/ResourceMgmt.cpp">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/graphics/GsBitmap.cpp">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/graphics/GsCursor.cpp">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/graphics/GsFont.cpp">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/graphics/GsGraphics.cpp">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/graphics/GsPalette.cpp">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/graphics/GsSprite.cpp">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/graphics/GsSurface.cpp">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/graphics/GsTilemap.cpp">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/widgets/GsBanner.cpp">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/widgets/GsBaseMenu.cpp">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/widgets/GsBitmap.cpp">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/widgets/GsButton.cpp">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/widgets/GsComboSelection.cpp">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/widgets/GsControl.cpp">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/widgets/GsDialog.cpp">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/widgets/GsInputText.cpp">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/widgets/GsMenuController.cpp">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/widgets/GsNumberControl.cpp">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/widgets/GsScrollbar.cpp">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/widgets/GsSwitch.cpp">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/widgets/GsText.cpp">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/widgets/GsTextSelectionList.cpp">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/CMakeFiles/CMakeDirectoryInformation.cmake">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/CMakeFiles/GsKit.dir/DependInfo.cmake">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/CMakeFiles/GsKit.dir/cmake_clean.cmake">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/CMakeFiles/GsKit.dir/cmake_clean_target.cmake">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/FindSDL2.cmake">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/GsKit.cbp">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/CInput.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/Configurator.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/FindFile.cpp~">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/GsApp.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/GsArguments.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/GsEngine.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/GsEvent.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/GsGear.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/GsLogging.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/GsTimer.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/InputEvents.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/PointDevice.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/Singleton.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/TypeDefinitions.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/Vector2D.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/utils/Base64.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/utils/CVec.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/utils/Color.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/utils/ConfigHandler.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/utils/CrashHandler.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/utils/Debug.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/utils/Event.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/utils/EventQueue.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/utils/FindFile.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/utils/FindFile.h~">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/utils/Functors.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/utils/Geometry.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/utils/Iterator.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/utils/MathLib.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/utils/Mutex.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/utils/ReadWriteLock.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/utils/Ref.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/utils/RefCounter.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/utils/StringBuf.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/utils/StringUtils.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/utils/ThreadPool.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/utils/Unicode.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/utils/Utils.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/utils/misc.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/video/CEffects.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/video/COpenGL.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/video/CSDLVideo.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/video/CVidConfig.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/video/CVideoDriver.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/video/CVideoEngine.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/video/GsEffectController.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/video/resolutionlist.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/video/scaler/CScaler.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/video/scaler/scale2x.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/video/scaler/scale3x.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/base/video/scaler/scalebit.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/cmake_install.cmake">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/fileio/CConfiguration.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/fileio/IniReader.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/fileio/ResourceMgmt.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/graphics/GsBitmap.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/graphics/GsCursor.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/graphics/GsFont.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/graphics/GsGraphics.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/graphics/GsPalette.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/graphics/GsSprite.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/graphics/GsSurface.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/graphics/GsTilemap.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/widgets/GsBanner.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/widgets/GsBaseMenu.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/widgets/GsBitmap.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/widgets/GsButton.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/widgets/GsComboSelection.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/widgets/GsControl.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/widgets/GsDialog.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/widgets/GsInputText.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/widgets/GsMenuController.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/widgets/GsNumberControl.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/widgets/GsScrollbar.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/widgets/GsSwitch.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/widgets/GsText.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/widgets/GsTextSelectionList.h">
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\" />
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/README.in">
+          <Option virtualFolder="CMake Files\" />
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\lib\GsKit\" />
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/lib/GsKit/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\lib\GsKit\" />
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/src/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\src\" />
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/src/install.cmake">
+          <Option virtualFolder="CMake Files\src\" />
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/src/engine/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\src\engine\" />
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/src/engine/core/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\src\engine\core\" />
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/src/engine/keen/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\src\engine\keen\" />
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/src/engine/keen/galaxy/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\src\engine\keen\galaxy\" />
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/src/engine/keen/vorticon/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\src\engine\keen\vorticon\" />
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/src/sdl/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\src\sdl\" />
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/src/sdl/audio/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\src\sdl\audio\" />
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/src/sdl/audio/base/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\src\sdl\audio\base\" />
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/src/sdl/audio/music/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\src\sdl\audio\music\" />
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/src/sdl/audio/sound/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\src\sdl\audio\sound\" />
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/src/sdl/sys/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\src\sdl\sys\" />
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/src/fileio/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\src\fileio\" />
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/src/fileio/compression/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\src\fileio\compression\" />
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/src/dialog/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\src\dialog\" />
+      </Unit>
+      <Unit filename="/home/gerstrong/workspace/Commander-Genius/src/graphics/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\src\graphics\" />
+      </Unit>
+   </Project>
+</CodeBlocks_project_file>
