@@ -6,6 +6,26 @@
 #include <base/GsLogging.h>
 #include <fileio/ResourceMgmt.h>
 
+
+bool TouchButton::loadPicture(const std::string &picFile)
+{
+    const std::string buttonFname = getResourceFilename(picFile, "", true, true);
+    if(buttonFname == "") return false;
+
+    mTexture.load(GetFullFileName(buttonFname), gVideoDriver.Renderer());
+    if( !mTexture )
+    {
+        gLogging.ftextOut("Failed to load the texture: %s!\n", picFile.c_str());
+        return false;
+    }
+
+    mTexture.setBlendMode(SDL_BLENDMODE_BLEND);
+    return true;
+}
+
+VirtualKeenControl::~VirtualKeenControl()
+{}
+
 bool VirtualKeenControl::init()
 {
 #if SDL_VERSION_ATLEAST(2, 0, 0)
@@ -29,53 +49,47 @@ bool VirtualKeenControl::init()
     const GsRect<Uint16> upRect(0, blit.height()-buttonSize, buttonSize, buttonSize);
     mOverlay.fill(upRect, SDL_MapRGBA(format, 128, 0, 0, 128 ));
 
-    /// Load Textures
+    /// Load The buttons images
     {
-        auto loadButtonTexture = [&](const std::string &fname, GsTexture &texture) -> bool
-        {
-            const std::string buttonFname = getResourceFilename(fname, "", true, true);
-            if(buttonFname == "") return false;
+        // Directional pad
+        if(!mDPad.loadPicture("dpad.png")) return false;
 
-            texture.load(GetFullFileName(buttonFname), gVideoDriver.Renderer());
-            if( !texture )
-            {
-                gLogging.ftextOut("Failed to load the texture: %s!\n", fname.c_str());
-                return false;
-            }
+        if(!mConfirmButton.loadPicture("confirm.png")) return false;
 
-            texture.setBlendMode(SDL_BLENDMODE_BLEND);
-            return true;
-        };
+        if(!mStartButton.loadPicture("start.png")) return false;
 
-        // Dpad
-        if( !loadButtonTexture("dpad.png", mDPadTexture) )
-            return false;
+        if(!mJumpButton.loadPicture("1.png")) return false;
 
-        // Confirm Button
-        if( !loadButtonTexture("confirm.png", mConfirmButtonTexture) )
-            return false;
+        if(!mPogoButton.loadPicture("2.png")) return false;
 
-        // Start Button
-        if( !loadButtonTexture("start.png", mStartButtonTexture) )
-            return false;
+        if(!mStatusButton.loadPicture("3.png")) return false;
 
-        // Jump Button
-        if( !loadButtonTexture("1.png", mJumpButtonTexture) )
-            return false;
+        if(!mStatusButton.loadPicture("4.png")) return false;
+    }
 
-        // Pogo Button
-        if( !loadButtonTexture("2.png", mPogoButtonTexture) )
-            return false;
+#endif
 
-        // Shoot Button
-        if( !loadButtonTexture("3.png", mShootButtonTexture) )
-            return false;
+    return true;
+}
 
         // Status Button
         if( !loadButtonTexture("4.png", mStatusButtonTexture) )
             return false;
 
+bool VirtualKeenControl::ponder()
+{
+#if SDL_VERSION_ATLEAST(2, 0, 0)
 
+    if(!mDPad.invisible)
+    {
+        const float dpadSize = 0.2f;
+
+        const GsRect<float> dpadRect(0, 1.0f-dpadSize,
+                                      dpadSize, dpadSize);
+
+        mDPad.setRect(dpadRect);
+
+        mDPad.mTexture.setAlpha(uint8_t(255.0f*mTranslucency));
     }
 
 #endif
@@ -86,50 +100,55 @@ bool VirtualKeenControl::init()
 void VirtualKeenControl::render(GsWeakSurface &sfc)
 {
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    GsRect<Uint16> dispRect = gVideoDriver.getVidConfig().mDisplayRect;
+    GsRect<Uint16> clickGameArea = gVideoDriver.mpVideoEngine->getActiveAreaRect();        
 
-    GsRect<Uint16> clickGameArea = gVideoDriver.mpVideoEngine->getAspectCorrRect();
-
-    /// DPad
-    if(mShowDPad)
+    auto addTexture = [](TouchButton &button) -> void
     {
-        const float dpadSize = 0.2f;
+        if(!button.invisible)
+        {
+            gVideoDriver.addTextureRefToRender(button.mTexture, button.Rect());
+        }
+    };
 
-        const Uint16 dpadWidth = clickGameArea.w * dpadSize;
-        const Uint16 dpadHeight = clickGameArea.h * dpadSize;
+    addTexture(mDPad);
 
-        const GsRect<Uint16> dpadRect(0, dispRect.h-dpadHeight, dpadWidth, dpadHeight);
-        mDPadTexture.setAlpha(uint8_t(255.0f*mTranslucency));
-        gVideoDriver.addTextureRefToRender(mDPadTexture, dpadRect);
+    /*
+    addTexture(mStatusButton);
+
+    if(mButtonMode == BUTTON_MODE::OK)
+    {
+        addTexture(mConfirmButton);
     }
 
-    /// Confirm Button
-    if(mButtonMode == OK)
+    if(mButtonMode == BUTTON_MODE::WMAP &&
+            !mHideStartButton)
     {
-        const float buttonSize = 0.1f;
+        addTexture(mStartButton);
+        addTexture(mStatusButton);
+    }*/
 
-        const Uint16 width = clickGameArea.w * buttonSize;
-        const Uint16 height = clickGameArea.h * buttonSize;
+/*
 
-        const GsRect<Uint16> confirmRect(dispRect.w-2*width, dispRect.h-2*height, width, height);
-        mConfirmButtonTexture.setAlpha(uint8_t(255.0f*mTranslucency));
-        gVideoDriver.addTextureRefToRender(mConfirmButtonTexture, confirmRect);
-    }
+
 
     // On map, show the start button if keen approaches a level
-    if(mButtonMode == WMAP && !mHideStartButton)
+    if(mButtonMode == BUTTON_MODE::WMAP && !mHideStartButton)
     {
         const float buttonSize = 0.1f;
 
         const Uint16 width = clickGameArea.w * buttonSize;
-        const Uint16 height = clickGameArea.h * buttonSize;
+        const Uint16 height = clickGameArea.h * buttonSize;        
 
-        const GsRect<Uint16> confirmRect(dispRect.w-2*width, dispRect.h-2*height, width, height);
+        const GsRect<Uint16> confirmRect(clickGameArea.w-2*width, clickGameArea.h-2*height, width, height);
         mStartButtonTexture.setAlpha(uint8_t(255.0f*mTranslucency));
         gVideoDriver.addTextureRefToRender(mStartButtonTexture, confirmRect);
+
+        const GsRect<Uint16> statusButtonRect(clickGameArea.w*0.5f, clickGameArea.h-height, width, height);
+        mStatusButtonTexture.setAlpha(uint8_t(255.0f*mTranslucency));
+        gVideoDriver.addTextureRefToRender(mStatusButtonTexture, statusButtonRect);
     }
 
-    if(mButtonMode == ACTION)
+    if(mButtonMode == BUTTON_MODE::ACTION)
     {
         const float buttonSize = 0.1f;
 
@@ -137,22 +156,18 @@ void VirtualKeenControl::render(GsWeakSurface &sfc)
         const Uint16 height = clickGameArea.h * buttonSize;
 
         // Main controls
-        const GsRect<Uint16> shootButtonRect(dispRect.w-2*width, dispRect.h-2*height, width, height);
+        const GsRect<Uint16> shootButtonRect(clickGameArea.w-2*width, clickGameArea.h-2*height, width, height);
         mShootButtonTexture.setAlpha(uint8_t(255.0f*mTranslucency));
         gVideoDriver.addTextureRefToRender(mShootButtonTexture, shootButtonRect);
 
-        const GsRect<Uint16> jumpButtonRect(dispRect.w-2*width, dispRect.h-height, width, height);
+        const GsRect<Uint16> jumpButtonRect(clickGameArea.w-2*width, clickGameArea.h-height, width, height);
         mJumpButtonTexture.setAlpha(uint8_t(255.0f*mTranslucency));
         gVideoDriver.addTextureRefToRender(mJumpButtonTexture, jumpButtonRect);
 
-        const GsRect<Uint16> pogoButtonRect(dispRect.w-width, dispRect.h-height, width, height);
+        const GsRect<Uint16> pogoButtonRect(clickGameArea.w-width, clickGameArea.h-height, width, height);
         mPogoButtonTexture.setAlpha(uint8_t(255.0f*mTranslucency));
         gVideoDriver.addTextureRefToRender(mPogoButtonTexture, pogoButtonRect);
-
-        const GsRect<Uint16> statusButtonRect(dispRect.w*0.5f, dispRect.h-height, width, height);
-        mStatusButtonTexture.setAlpha(uint8_t(255.0f*mTranslucency));
-        gVideoDriver.addTextureRefToRender(mStatusButtonTexture, statusButtonRect);
-    }
+    }*/
 #endif
 }
 
@@ -169,7 +184,8 @@ void VirtualKeenControl::mouseState(const Vector2D<float> &Pos, const bool down)
     const float yBottom = 1.0f;
     const float yTop = yBottom-dpadSize;
 
-    auto verifyButtonMatch = [&](const GsRect<float> &buttonRect, InputCommands cmd)
+    auto verifyButtonMatch = [&](const GsRect<float> &buttonRect,
+                                 InputCommands cmd)
     {
         if( buttonRect.HasPoint(Pos) )
         {
@@ -186,7 +202,7 @@ void VirtualKeenControl::mouseState(const Vector2D<float> &Pos, const bool down)
         /// Dpad presses
         if(Pos.x >= 0.0f && Pos.x < dpadSize)
         {
-            if(mShowDPad)
+            if(!mDPad.invisible)
             {
                 // Y-Direction
                 // Up presses
@@ -222,10 +238,12 @@ void VirtualKeenControl::mouseState(const Vector2D<float> &Pos, const bool down)
             /// Then, if any other button was pressed...
             const float buttonSize = 0.1f;
 
-            if(mButtonMode == OK)
+            if(mButtonMode == BUTTON_MODE::OK)
             {
                 // Was the Ok button pressed?
-                GsRect<float> confirmRect(1.0f-2.0f*buttonSize, 1.0f-2.0f*buttonSize, buttonSize, buttonSize);
+                GsRect<float> confirmRect(1.0f-2.0f*buttonSize,
+                                          1.0f-2.0f*buttonSize,
+                                          buttonSize, buttonSize);
 
                 if( confirmRect.HasPoint(Pos) )
                 {
@@ -235,16 +253,19 @@ void VirtualKeenControl::mouseState(const Vector2D<float> &Pos, const bool down)
             }
 
             // On map if we can enter a level, let's enter!
-            if(mButtonMode == WMAP && !mHideStartButton)
+            if(mButtonMode == BUTTON_MODE::WMAP && !mHideStartButton)
             {
                 // Was the Ok button pressed?
                 GsRect<float> confirmRect(1.0f-2.0f*buttonSize, 1.0f-2.0f*buttonSize, buttonSize, buttonSize);
-
                 verifyButtonMatch(confirmRect, IC_JUMP);
+
+                // Was the Status button pressed?
+                const GsRect<float> statusButtonRect(0.5f, 1.0f-buttonSize, buttonSize, buttonSize);
+                verifyButtonMatch(statusButtonRect, IC_STATUS);
             }
 
 
-            if(mButtonMode == ACTION)
+            if(mButtonMode == BUTTON_MODE::ACTION)
             {
                 // Was the Shoot button pressed?
                 const GsRect<float> shootButtonRect(1.0f-2.0f*buttonSize, 1.0f-2.0f*buttonSize, buttonSize, buttonSize);
@@ -257,10 +278,13 @@ void VirtualKeenControl::mouseState(const Vector2D<float> &Pos, const bool down)
                 // Was the Pogo button pressed?
                 const GsRect<float> pogoButtonRect(1.0f-buttonSize, 1.0f-buttonSize, buttonSize, buttonSize);
                 verifyButtonMatch(pogoButtonRect, IC_POGO);
+            }
 
-                // Was the Run button pressed?
+            if(mShowStatusButton)
+            {
+                // Was the Status button pressed?
                 const GsRect<float> statusButtonRect(0.5f, 1.0f-buttonSize, buttonSize, buttonSize);
-                verifyButtonMatch(statusButtonRect, IC_RUN);
+                verifyButtonMatch(statusButtonRect, IC_STATUS);
             }
         }
     }

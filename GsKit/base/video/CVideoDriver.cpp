@@ -36,6 +36,26 @@ CVideoDriver::~CVideoDriver()
 }
 
 
+void CVideoDriver::addTextureRefToRender(GsTexture& textureRef, const GsRect<float> &dstRect)
+{
+    const GsRect<Uint16> clickGameArea = mpVideoEngine->getActiveAreaRect();
+
+    const auto dpadX  = Uint16(float(clickGameArea.w) * dstRect.x);
+    const auto dpadY  = Uint16(float(clickGameArea.h) * dstRect.y);
+    const auto dpadWidth  = Uint16(float(clickGameArea.w) * dstRect.w);
+    const auto dpadHeight = Uint16(float(clickGameArea.h) * dstRect.h);
+
+    const GsRect<Uint16> dpadRect(dpadX, dpadY,
+                                  dpadWidth, dpadHeight);
+
+
+    std::tuple< GsTexture&, const GsRect<Uint16>, const GsRect<Uint16> >
+            triple( textureRef, {0, 0, 0, 0}, dpadRect );
+
+    mpVideoEngine->mRenderTexturePtrs.push(triple);
+}
+
+
 bool CVideoDriver::init()
 {
     mVidConfig.reset();

@@ -129,7 +129,7 @@ bool CPassiveGalaxy::init()
 
     VirtualKeenControl *vkc = dynamic_cast<VirtualKeenControl*>(gInput.mpVirtPad.get());
     assert(vkc);
-    vkc->mShowDPad = false;
+    vkc->mDPad.invisible = true;
 
     const auto &storyText = gBehaviorEngine.getString("STORY_TEXT");
     mStoryTextVector = explode(storyText, "\n");
@@ -370,7 +370,7 @@ void CPassiveGalaxy::processTitle()
 
             VirtualKeenControl *vkc = dynamic_cast<VirtualKeenControl*>(gInput.mpVirtPad.get());
             assert(vkc);
-            vkc->mShowDPad = true;
+            vkc->mDPad.invisible = false;
 
             gEventManager.add(new OpenMainMenuEvent());
             mSkipSection = false;
@@ -468,7 +468,7 @@ void CPassiveGalaxy::processStarWars()
 
             VirtualKeenControl *vkc = dynamic_cast<VirtualKeenControl*>(gInput.mpVirtPad.get());
             assert(vkc);
-            vkc->mShowDPad = true;
+            vkc->mDPad.invisible = false;
 
             gEventManager.add(new OpenMainMenuEvent());
             mSkipSection = false;

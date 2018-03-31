@@ -712,7 +712,7 @@ void CPlayGameGalaxy::processInput()
         }
 
         assert(vkc);
-        vkc->mShowDPad = true;
+        vkc->mDPad.invisible = false;
 }
 
 

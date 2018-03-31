@@ -7,36 +7,32 @@ class VirtualKeenControl : public GsVirtualInput
 {
 public:
 
+    virtual ~VirtualKeenControl();
+
     // OK => Only show Ok Button
     // WMAP => Shows Enter Button for the world map and another one for the item box and one for the main menu
     // ACTION => Shows the three action button for jumping, pogo and fire as well as the item box button and the main menu button
-    enum BUTTON_MODE
-    {
-        OK = 0,
-        WMAP = 1,
-        ACTION = 2
-    };
-
-    /**
-     * @brief VirtualKeenControl Will initialize
-     */
-    VirtualKeenControl() :
-        mShowDPad(true),
-        mHideStartButton(false),
-        mButtonMode(OK) {}
-
+    enum class BUTTON_MODE
+    {  OK, WMAP, ACTION  };
 
     /**
      * @brief init initialize the object
      * @return true if everything went right, otherwise false.
      */
-    bool init();
+    bool init() override;
+
+    /**
+     * @brief ponder Performs some logic like transformations
+     * @return
+     */
+    bool ponder() override;
+
 
     /**
      * @brief render is called when it's time to render this object
      * @param sfc Reference to surface on which it can be rendered.
      */
-    void render(GsWeakSurface &sfc);
+    void render(GsWeakSurface &sfc) override;
 
     /**
      * @brief mouseState    Mouse state processing. Since the up and down code are similar,
@@ -50,7 +46,7 @@ public:
      * @brief mouseDown     Mouse down event when sent when touch event triggered or mouse sends that.
      * @param Pos           Position of the mouse event
      */
-    void mouseDown(const Vector2D<float> &Pos)
+    void mouseDown(const Vector2D<float> &Pos) override
     {
         mouseState(Pos, true);
     }
@@ -59,29 +55,38 @@ public:
      * @brief mouseDown     Mouse Up event when sent when touch event triggered or mouse sends that.
      * @param Pos           Position of the mouse event
      */
-    void mouseUp(const Vector2D<float> &Pos)
+    void mouseUp(const Vector2D<float> &Pos) override
     {
         mouseState(Pos, false);
     }
 
+
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 
-    GsTexture mDPadTexture;
-    GsTexture mConfirmButtonTexture;
-    GsTexture mStartButtonTexture;
+    //GsTexture mDPadTexture;    
+    //GsTexture mConfirmButtonTexture;
+    //GsTexture mStartButtonTexture;
+
+    TouchButton mDPad;
+    TouchButton mConfirmButton;
+    TouchButton mStartButton;
 
     // Control buttons
-    GsTexture mJumpButtonTexture;
-    GsTexture mShootButtonTexture;
-    GsTexture mPogoButtonTexture;
-    GsTexture mStatusButtonTexture;
+    //GsTexture mJumpButtonTexture;
+    //GsTexture mShootButtonTexture;
+    //GsTexture mPogoButtonTexture;
+    //GsTexture mStatusButtonTexture;
+    TouchButton mJumpButton;
+    TouchButton mShootButton;
+    TouchButton mPogoButton;
+    TouchButton mStatusButton;
 
 #endif
 
-    bool mShowDPad;
-    bool mHideStartButton;
+    bool mShowStatusButton = false;
+    bool mHideStartButton = false;
 
-    BUTTON_MODE mButtonMode;
+    BUTTON_MODE mButtonMode = BUTTON_MODE::OK;
 };
 
 #endif // VGAMEPADSIMPLE_H

@@ -194,13 +194,7 @@ public:
      * @param textureRef    pointer to the SDL Texture
      * @param dstRect       Rect where to put this texture on
      */
-    void addTextureRefToRender(GsTexture& textureRef, const GsRect<Uint16> &dstRect)
-    {
-        std::tuple< GsTexture&, const GsRect<Uint16>, const GsRect<Uint16> >
-                triple( textureRef, {0, 0, 0, 0}, dstRect );
-
-        mpVideoEngine->mRenderTexturePtrs.push(triple);
-    }
+    void addTextureRefToRender(GsTexture& textureRef, const GsRect<float> &dstRect);
 
 
 #endif

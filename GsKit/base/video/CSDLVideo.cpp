@@ -114,6 +114,7 @@ bool CSDLVideo::resizeDisplayScreen(const GsRect<Uint16>& newDim)
     if(renderer != nullptr)
     {
         SDL_RenderSetLogicalSize(renderer, mActiveAreaRect.w, mActiveAreaRect.h);
+        SDL_RenderSetViewport(renderer, nullptr);
     }
 #else
     mDisplaySfc.setPtr(SDL_SetVideoMode( mActiceAreaRect.w, mActiceAreaRect.h, 32, m_Mode ));
@@ -188,6 +189,26 @@ void CSDLVideo::hackIt() {} // Empty
 #endif
 
 
+/**
+ * @brief tilt  tilt the rect 90 degree clockwise
+ * @param dpadRect  rect to rotate
+ * @param rotPt     point of rotation
+ * @return The rotated rect
+ */
+GsRect<int> tilt(const GsRect<int> &dpadRect,
+                 const Vector2D<int> &rotPt)
+{
+    const int x1_rel = dpadRect.x-rotPt.x;
+    const int y1_rel = dpadRect.y-rotPt.y;
+    const int x2_rel = -y1_rel;
+    const int y2_rel = x1_rel;
+
+    return GsRect<int>( x2_rel+rotPt.x,
+                        y2_rel+rotPt.y,
+                        dpadRect.h,
+                        dpadRect.w);
+}
+
 
 void CSDLVideo::transformScreenToDisplay()
 {
@@ -195,6 +216,8 @@ void CSDLVideo::transformScreenToDisplay()
 #if SDL_VERSION_ATLEAST(2, 0, 0)            
 
     const bool tiltVideo = m_VidConfig.mTiltedScreen;
+
+    const auto &finalWindowSize = m_VidConfig.mDisplayRect;
 
     mpScreenSfc->lock();
     SDL_UpdateTexture(mpSDLScreenTexture.get(),
@@ -219,18 +242,11 @@ void CSDLVideo::transformScreenToDisplay()
     {
         if(tiltVideo)
         {
-            /*
-            SDL_Point pt;
-
-            pt.x = mActiveAreaRect.w/2;
-            pt.y = mActiveAreaRect.h/2;*/
-
             SDL_RenderCopyEx(local_renderer,
                              local_texture,
                              local_srcrect,
                              local_dstrect,
                              90.0,
-                             //&pt,
                              nullptr,
                              SDL_FLIP_NONE);
         }
@@ -243,7 +259,7 @@ void CSDLVideo::transformScreenToDisplay()
         }
     };
 
-    SDL_RenderClear(renderer);
+    SDL_RenderClear(renderer);    
 
     RenderCopy(renderer, mpSDLScreenTexture.get(), nullptr, nullptr);
 
@@ -258,6 +274,9 @@ void CSDLVideo::transformScreenToDisplay()
         const GsRect<Uint16> &src = std::get<1>(triple);
         const GsRect<Uint16> &dst = std::get<2>(triple);
 
+
+        // TODO: Tilt here!
+
         if(src.empty())
         {
             if(dst.empty())
@@ -267,7 +286,14 @@ void CSDLVideo::transformScreenToDisplay()
             else
             {
                 SDL_Rect dstSDL = dst.SDLRect();
+
                 RenderCopy(renderer, texture, nullptr, &dstSDL);
+
+                // Transfrom the coordinates for the final screen.
+                /*dstSDL.y = (dstSDL.y*finalWindowSize.h)/mActiveAreaRect.h;
+                dstSDL.x = (dstSDL.x*finalWindowSize.x)/mActiveAreaRect.w;
+
+                RenderCopy(renderer, texture, nullptr, &dstSDL);*/
             }
         }
         else

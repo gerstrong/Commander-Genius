@@ -169,6 +169,9 @@ public:
                             const SDL_MouseMotionEvent motion,
                             const GsRect<Uint16> &activeArea);
 
+    /**
+     * @brief	Called every logic cycle. This triggers the events that occur and process them through various functions
+     */
 	void pollEvents();
 
 	bool getHoldedKey(int key);
@@ -210,6 +213,8 @@ public:
 
 	bool AutoGun(const int player) { return mFullyAutomatic[player]; }
 	void setAutoGun(const int player, const bool value) { mFullyAutomatic[player] = value; }
+
+    void ponder();
 
     /**
      * @brief render will render stuff the input want's to get on the screen.

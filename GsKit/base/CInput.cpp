@@ -607,11 +607,18 @@ void CInput::transMouseRelCoord(Vector2D<float> &Pos,
 }
 
 
+void CInput::ponder()
+{
+    if(!mpVirtPad)
+        return;
+
+    if(!mpVirtPad->active())
+        return;
+
+    mpVirtPad->ponder();
+}
 
 
-/**
- * \brief	Called every logic cycle. This triggers the events that occur and process them through various functions
- */
 void CInput::pollEvents()
 {
     // Semaphore
@@ -1448,20 +1455,6 @@ void CInput::flushEvents()
 {
     m_EventList.clear();
 }
-
-struct TouchButton
-{
-	stInputCommand* cmd;
-	int immediateIndex;
-	int x, y, w, h;
-    bool invisible;
-
-	bool isInside(int _x, int _y) const {
-		return
-		x <= _x && _x < x + w &&
-		y <= _y && _y < y + h;
-	}
-};
 
 static const int w = 480, h = 320;
 

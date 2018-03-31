@@ -150,7 +150,8 @@ bool CVideoEngine::init()
 	return true;
 }
 
-void CVideoEngine::updateAspectRect(const GsRect<Uint16>& displayRes, const int aspWidth, const int aspHeight)
+void CVideoEngine::updateAspectRect(const GsRect<Uint16>& displayRes,
+                                    const int aspWidth, const int aspHeight)
 {
     if (aspWidth == 0 || aspHeight == 0)
 	{

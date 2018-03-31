@@ -184,6 +184,7 @@ bool GsApp::loadDrivers()
 // This function is run every time, the Timer says so, through.
 void GsApp::ponder(const float deltaT)
 {
+    gInput.ponder();
     pollEvents();
 
     // Process the game control object if no effects are being processed
