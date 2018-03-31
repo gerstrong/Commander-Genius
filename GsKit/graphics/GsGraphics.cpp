@@ -263,7 +263,8 @@ std::vector<GsSprite> &GsGraphics::getSpriteVec(const int var)
 GsSprite &GsGraphics::getSpecialSpriteRef(const std::string &name)
 {   return mSpecialSpriteMap[name];    }
 
-GsFont &GsGraphics::getFont(Uint8 index) { return Font.at(index); }
+GsFont &GsGraphics::getFont(Uint8 index)
+{    return Font.at(index); }
 
 GsBitmap *GsGraphics::getBitmapFromStr(const std::string &name) const
 {

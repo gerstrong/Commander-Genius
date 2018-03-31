@@ -22,6 +22,8 @@ public:
      */
     void drawVorticonStyle(SDL_Rect& lRect);
 
+    void drawNoStyle(SDL_Rect& lRect);
+
 
     void processRender(const GsRect<float> &RectDispCoordFloat);
 };

@@ -28,7 +28,7 @@ GsControl::GsControl(const Style style) :
 }
 
 GsControl::GsControl() :
-    GsControl(Style::UNSET) {}
+    GsControl(Style::NONE) {}
 
 
 void GsControl::processBlendEffects()

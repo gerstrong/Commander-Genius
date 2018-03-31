@@ -69,7 +69,6 @@ GameMenu( GsRect<float>(0.25f, 0.24f, 0.5f, 0.40f),
                                              new OpenMenuEvent( new CheatsMenu(style) ),
                                              style ) );
 
-
     setMenuLabel("CONFIGMENULABEL");
 }
 

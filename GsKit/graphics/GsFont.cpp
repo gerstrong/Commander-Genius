@@ -263,14 +263,21 @@ Uint32 GsFont::getFGColor()
 	// the given color
     std::array<SDL_Color, 16> color;
     auto fontSfc = mpFontSurface[0]->getSDLSurface();
-    auto palette = fontSfc->format->palette;
-
-    memcpy( color.data(), palette->colors, color.size()*sizeof(SDL_Color) );
+    auto palette = fontSfc->format->palette;   
 
     SDL_PixelFormat *pPixelformat = gVideoDriver.getBlitSurface()->format;
 
+    if(palette)
+    {
+    memcpy( color.data(), palette->colors, color.size()*sizeof(SDL_Color) );
+
 	// Change palette colors to the desired one
     return SDL_MapRGB(pPixelformat, color[15].r, color[15].g, color[15].b);
+    }
+    else
+    {
+        return SDL_MapRGB(pPixelformat, 0x0, 0x0, 0x0);
+    }
 }
 
 void GsFont::createTextSurface(GsSurface &sfc,

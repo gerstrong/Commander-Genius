@@ -24,7 +24,7 @@ public:
 			const int value,
             const int fontid,
             const bool slider,
-            const Style style = Style::UNSET);
+            const Style style = Style::NONE);
 
 
 	void increment();

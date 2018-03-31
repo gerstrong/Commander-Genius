@@ -45,6 +45,40 @@ void Switch::drawVorticonStyle(SDL_Rect& lRect)
 	drawTwirl(lRect);
 }
 
+void Switch::drawNoStyle(SDL_Rect& lRect)
+{
+    if(!mEnabled)
+    {
+        return;
+    }
+
+    ComboSelection::drawNoStyle(lRect);
+
+    /*
+    SDL_Surface *blitsfc = gVideoDriver.getBlitSurface();
+
+    // Now lets draw the text of the list control
+    GsFont &Font = gGraphics.getFont(0);
+
+    Font.drawFont( blitsfc, mText, lRect.x+24, lRect.y, false );
+    Font.drawFont( blitsfc, ":", lRect.x+24+mText.size()*8, lRect.y, false );
+
+    std::string text;
+    if( (*mOLCurrent) == "off" )
+    {
+        text = "\24\25\26\27";
+    }
+    else
+    {
+        text = "\34\35\36\37";
+    }
+
+
+    Font.drawFont( blitsfc, text,
+                   lRect.x+24+(mText.size()+2)*8,
+                   lRect.y, false );*/
+}
+
 
 void Switch::processRender(const GsRect<float> &RectDispCoordFloat)
 {
@@ -59,5 +93,12 @@ void Switch::processRender(const GsRect<float> &RectDispCoordFloat)
         displayRect.transform(RectDispCoordFloat);
         SDL_Rect lRect = displayRect.SDLRect();
         drawVorticonStyle(lRect);
-    }        
+    }
+    else
+    {
+        GsRect<float> displayRect = mRect;
+        displayRect.transform(RectDispCoordFloat);
+        SDL_Rect lRect = displayRect.SDLRect();
+        drawNoStyle(lRect);
+    }
 }

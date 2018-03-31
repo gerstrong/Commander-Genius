@@ -182,7 +182,14 @@ public:
         SDL_FillRect( mpSurface, &mpSurface->clip_rect, SDL_MapRGBA( mpSurface->format, r, g, b, a ) );
     }
 
-    void fillRGBA(const GsRect<Uint16> &rect, const Uint8 r, const Uint8 g, const Uint8 b, const Uint8 a)
+    void fillRGBA(const GsColor &color)
+    {
+        fillRGBA( color.r, color.g, color.b, color.a );
+    }
+
+
+    void fillRGBA(const GsRect<Uint16> &rect,
+                  const Uint8 r, const Uint8 g, const Uint8 b, const Uint8 a)
     {
         fill( rect, mapRGBA(r,g,b,a) );
     }

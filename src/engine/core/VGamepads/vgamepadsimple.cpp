@@ -199,41 +199,40 @@ void VirtualKeenControl::mouseState(const Vector2D<float> &Pos, const bool down)
         SDL_Event ev;
         ev.type = (down ? SDL_KEYDOWN : SDL_KEYUP);
 
-        /// Dpad presses
-        if(Pos.x >= 0.0f && Pos.x < dpadSize)
+        if( !mDPad.invisible &&
+             mDPad.isInside(Pos.x, Pos.y) )
         {
-            if(!mDPad.invisible)
+            // Y-Direction
+            // Up presses
+            if(Pos.y<yTop+dpadSizePiece)
             {
-                // Y-Direction
-                // Up presses
-                if(Pos.y<yTop+dpadSizePiece)
-                {
-                    ev.key.keysym.sym = SDLK_UP;
-                    SDL_PushEvent(&ev);
-                }
-                // Down presses
-                else if(Pos.y>=yBottom-dpadSizePiece)
-                {
-                    ev.key.keysym.sym = SDLK_DOWN;
-                    SDL_PushEvent(&ev);
-                }
+                ev.key.keysym.sym = SDLK_UP;
+                SDL_PushEvent(&ev);
+            }
+            // Down presses
+            else if(Pos.y>=yBottom-dpadSizePiece)
+            {
+                ev.key.keysym.sym = SDLK_DOWN;
+                SDL_PushEvent(&ev);
+            }
 
-                // X-Direction
-                // Left presses
-                if(Pos.x<dpadSizePiece)
-                {
-                    ev.key.keysym.sym = SDLK_LEFT;
-                    SDL_PushEvent(&ev);
-                }
-                // Right presses
-                else if(Pos.x>=dpadSize-dpadSizePiece)
-                {
-                    ev.key.keysym.sym = SDLK_RIGHT;
-                    SDL_PushEvent(&ev);
-                }
+            // X-Direction
+            // Left presses
+            if(Pos.x<dpadSizePiece)
+            {
+                ev.key.keysym.sym = SDLK_LEFT;
+                SDL_PushEvent(&ev);
+            }
+            // Right presses
+            else if(Pos.x>=dpadSize-dpadSizePiece)
+            {
+                ev.key.keysym.sym = SDLK_RIGHT;
+                SDL_PushEvent(&ev);
             }
         }
-        else
+
+        /// Dpad presses
+        if(Pos.x > dpadSize)
         {
             /// Then, if any other button was pressed...
             const float buttonSize = 0.1f;

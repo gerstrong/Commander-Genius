@@ -10,11 +10,17 @@ GameButton::GameButton(const std::string& text,
                        const Style style) :
 GsButton(text, ev, style)
 {
-    mFontID = 1;
-
-    if(mStyle == Style::GALAXY)
+    if(mStyle == Style::NONE)
+    {
+        mFontID = 0;
+    }
+    else if(mStyle == Style::GALAXY)
     {
         setText(text);
+    }
+    else
+    {
+        mFontID = 1;
     }
 }
 
@@ -65,5 +71,9 @@ void GameButton::processRender(const GsRect<float> &RectDispCoordFloat)
     else if(mStyle == Style::VORTICON)
     {
         drawVorticonStyle(lRect);
+    }
+    else
+    {
+        drawNoStyle(lRect);
     }
 }

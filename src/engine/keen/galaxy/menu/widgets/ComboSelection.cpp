@@ -3,14 +3,20 @@
 #include <graphics/GsGraphics.h>
 #include <base/video/CVideoDriver.h>
 
-namespace galaxy
-{
 
-ComboSelection::ComboSelection( const std::string& text,
-                                const std::list<std::string>& optionsList ) :
-CGUIComboSelection(text, optionsList)
+ComboSelection::ComboSelection(const std::string& text,
+                                const std::list<std::string>& optionsList, 
+                               const Style &style) :
+CGUIComboSelection(text, optionsList, style)
 {
-    mFontID = 1;
+    if(mStyle == Style::NONE)
+    {
+        mFontID = 0;
+    }
+    else
+    {
+        mFontID = 1;
+    }
     setupButtonSurface(mText);
 }
 
@@ -55,19 +61,41 @@ void ComboSelection::processRender(const GsRect<float> &RectDispCoordFloat)
     GsRect<float> displayRect = mRect;
     displayRect.transform(RectDispCoordFloat);
     SDL_Rect lRect = displayRect.SDLRect();
-
-    GsWeakSurface blitsfc( gVideoDriver.getBlitSurface() );
-
-    if(!mEnabled)
+    
+    GsWeakSurface blitsfc( gVideoDriver.getBlitSurface() );    
+    
+    if(mStyle == Style::GALAXY)
+    {        
+        if(!mEnabled)
+        {
+            mTextDisabledSfc.blitTo(blitsfc, lRect);
+        }
+        else
+        {
+            drawEnabledButton(blitsfc, lRect, mHovered);
+        }
+        
+        drawBlinker(lRect);
+    }
+    else if(mStyle == Style::VORTICON)
     {
-        mTextDisabledSfc.blitTo(blitsfc, lRect);
+        if(!mEnabled)
+            return;
+        
+        // Now lets draw the text of the list control
+        GsFont &Font = gGraphics.getFont(mFontID);
+        
+        Font.drawFont( blitsfc.getSDLSurface(), mText, lRect.x+24, lRect.y, false );
+        Font.drawFont( blitsfc.getSDLSurface(), ":", lRect.x+24+mText.size()*8, lRect.y, false );
+        const std::string text = (*mOLCurrent);
+        Font.drawFont( blitsfc.getSDLSurface(), text, lRect.x+24+(mText.size()+2)*8, lRect.y, false );
+        
+        drawTwirl(lRect);      
     }
     else
     {
-        drawEnabledButton(blitsfc, lRect, mHovered);
+        drawNoStyle(lRect);
     }
-
-    drawBlinker(lRect);
+    
 }
 
-}

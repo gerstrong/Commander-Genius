@@ -19,7 +19,7 @@ public:
 
     CGUIInputText(const std::string& text,
                   const int fontID = 0,
-                  const GsControl::Style style = Style::UNSET);
+                  const GsControl::Style style = Style::NONE);
 
 	bool sendEvent(const InputCommands command);
 

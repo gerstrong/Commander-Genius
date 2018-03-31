@@ -16,4 +16,7 @@ public:
 };
 
 
+struct OpenSettingsMenuEvent : public CEvent {};
+
+
 #endif /* GALAXY_SETTINGSMENU_H_INCLUDED */

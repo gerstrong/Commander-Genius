@@ -80,7 +80,7 @@ void GsButton::drawNoStyle(SDL_Rect& lRect)
 {
     GsWeakSurface blitsfc(gVideoDriver.getBlitSurface());
 
-    int lComp;
+    int lComp = 0xFF;
 
     // Set as default a grey border
     Uint32 borderColor = blitsfc.mapRGBA( 0xBB, 0xBB, 0xBB, 0xFF);
@@ -120,10 +120,6 @@ void GsButton::drawNoStyle(SDL_Rect& lRect)
             lComp = 0xFF - (lightRatio*(0xFF-0xDF)/255);
         }
     }
-    else
-    {
-        lComp = 0xFF;
-    }
 
 
     auto lcompf = float(lComp);
@@ -144,11 +140,13 @@ void GsButton::drawNoStyle(SDL_Rect& lRect)
 
     if(mEnabled) // If the button is enabled use the normal text, otherwise the highlighted color
     {
-        Font.drawFontCentered( blitsfc.getSDLSurface(), mText, lRect.x, lRect.w, lRect.y, lRect.h, false );
+        Font.drawFontCentered( blitsfc.getSDLSurface(), mText,
+                               lRect.x, lRect.w, lRect.y, lRect.h, false );
     }
     else
     {
-        Font.drawFontCentered( blitsfc.getSDLSurface(), mText, lRect.x, lRect.w, lRect.y, lRect.h, true );
+        Font.drawFontCentered( blitsfc.getSDLSurface(), mText,
+                               lRect.x, lRect.w, lRect.y, lRect.h, true );
     }
 }
 

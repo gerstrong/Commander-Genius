@@ -20,7 +20,7 @@ public:
 
     CGUIComboSelection( const std::string& text,
                         const std::list<std::string>& optionsList,
-                        const GsControl::Style style = Style::UNSET);
+                        const GsControl::Style style = Style::NONE);
 
 	const std::string& getSelection()
     {

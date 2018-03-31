@@ -12,6 +12,8 @@
 #include <base/GsVirtualinput.h>
 #include <base/utils/ThreadPool.h>
 
+#include <engine/core/menu/SettingsMenu.h>
+
 #include <widgets/GsDialog.h>
 #include <widgets/GsText.h>
 #include <widgets/GsButton.h>
@@ -167,7 +169,7 @@ private:
 
     CGUITextSelectionList *mpGSSelList;
 
-    CGUITextSelectionList *mpGameSelecList;
+    CGUITextSelectionList *mpGameSelectionList;
     CGUITextSelectionList *mpPatchSelList;
     CGUITextSelectionList *mpDosExecSelList;
 

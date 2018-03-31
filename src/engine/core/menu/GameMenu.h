@@ -37,7 +37,22 @@ public:
 
             mpReturnButton = new GsButton( "x",
                                            new CloseMenuEvent(),
-                                           GsControl::Style::UNSET);
+                                           GsControl::Style::NONE);
+
+            mpMenuDialog->addControl( mpReturnButton,
+                                      GsRect<float>(-0.05f, -0.05f,
+                                                    0.08f/localRect.w,
+                                                    0.08f/localRect.h) );
+        }
+        else
+        {
+            GsRect<float> localRect(0.15f, 0.282f, 0.70f, 0.5f);
+            mpMenuDialog->setRect(localRect);
+
+
+            mpReturnButton = new GsButton( "x",
+                                           new CloseMenuEvent(),
+                                           GsControl::Style::NONE);
 
             mpMenuDialog->addControl( mpReturnButton,
                                       GsRect<float>(-0.05f, -0.05f,
@@ -56,13 +71,18 @@ public:
         {
             initVorticonBackground();
         }
-
+        else
+        {
+            initBackgroundNoStyle();
+        }
         
     }
 
     void createGalaxyBackground();
 
     void initVorticonBackground();
+
+    void initBackgroundNoStyle();
 
     // Processes the stuff that the menus have in common
     virtual void ponder(const float deltaT) override;

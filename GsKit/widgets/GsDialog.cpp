@@ -19,7 +19,8 @@ const unsigned int MAX_ELEMENTS_PER_PAGE = 7;
 const unsigned int MAX_STEPS = 20;
 
 
-CGUIDialog::CGUIDialog(const GsRect<float> &SrGsRect, const FXKind fx) :
+CGUIDialog::CGUIDialog(const GsRect<float> &SrGsRect,
+                       const FXKind fx) :
 mRect(SrGsRect),
 mSelection(0),
 mFXSetup(fx),
@@ -103,7 +104,6 @@ CGUIDialog::addControl( GsControl *newControl )
     std::unique_ptr<GsControl> ctrl(newControl);
     return addControl(ctrl);
 }
-
 
 
 void CGUIDialog::selectPrevItem()

@@ -19,7 +19,6 @@ class GsControl
 public:
 	enum Style
 	{
-		UNSET,
 		NONE,
 		VORTICON,
         GALAXY
@@ -82,7 +81,6 @@ public:
 
 	void drawBlinker( const SDL_Rect& lRect );
 
-
     // The relative rect describes the rect which is normally tied to its parent.
     GsRect<float> mRect;
 	
@@ -105,7 +103,7 @@ protected:
 
     int mLightRatio = 128; // This blends between selected and unselected item.
 
-    Style mStyle = Style::UNSET;
+    Style mStyle = Style::NONE;
 
     /**
      * @brief mHoverTriggers    This is for touch friendly devices were there is no device

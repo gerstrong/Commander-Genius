@@ -27,6 +27,10 @@ CGUINumberControl(text, startValue, endValue,
     {
         setupButtonSurface();
     }
+    else
+    {
+        mFontID = 0;
+    }
 }
 
 
@@ -115,6 +119,10 @@ void NumberControl::processRender(const GsRect<float> &RectDispCoordFloat)
         
         drawTwirl(lRect);
         
+    }
+    else
+    {
+        drawNoStyle(lRect);
     }
 }
 

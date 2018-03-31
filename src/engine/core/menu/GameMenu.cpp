@@ -19,7 +19,7 @@ void GameMenu::createGalaxyBackground()
 
     // Besides the Background Bitmap we need to draw two lines
     SDL_Rect scoreRect;
-    scoreRect.w = 15*gameRes.w/32;
+    scoreRect.w = (15*gameRes.w)/32;
     scoreRect.h = gameRes.h/200;
     scoreRect.x = gameRes.w/4;
     scoreRect.y = 55;
@@ -60,6 +60,26 @@ void GameMenu::initVorticonBackground()
     mpMenuDialog->drawBorderRect(backSfc, sdlRect);
 }
 
+void GameMenu::initBackgroundNoStyle()
+{
+    GsRect<float> rect = mpMenuDialog->getRect();
+
+    const SDL_Rect sdlRect = gVideoDriver.toBlitRect(rect);
+    mBackground.create(0, sdlRect.w, sdlRect.h, RES_BPP, 0, 0, 0, 0);
+
+    // Now lets draw the text of the list control
+    GsFont &Font = gGraphics.getFont(0);
+
+    GsColor backColor(0xFF, 0xFF, 0xFF);
+    GsColor borderColor(0x7F, 0x7F, 0x7F);
+
+    mBackground.fillRGBA(backColor);
+    mBackground.fillRGBA(GsRect<Uint16>(0, 0, sdlRect.w, 1), borderColor);
+    mBackground.fillRGBA(GsRect<Uint16>(0, 0, 1, sdlRect.h), borderColor);
+    mBackground.fillRGBA(GsRect<Uint16>(0, sdlRect.h-1, sdlRect.w, 1 ), borderColor);
+    mBackground.fillRGBA(GsRect<Uint16>(sdlRect.w-1, 0, 1, sdlRect.h), borderColor);
+}
+
 // Processes the stuff that the menus have in common
 void
 GameMenu::ponder(const float deltaT)
@@ -87,6 +107,13 @@ void GameMenu::render()
             mBackground.blitTo(blit);
         }
         else if(mStyle == GsControl::Style::VORTICON)
+        {
+            GsRect<float> rect = mpMenuDialog->getRect();
+            const SDL_Rect sdlRect = gVideoDriver.toBlitRect(rect);
+
+            mBackground.blitTo(blit, sdlRect);
+        }
+        else
         {
             GsRect<float> rect = mpMenuDialog->getRect();
             const SDL_Rect sdlRect = gVideoDriver.toBlitRect(rect);

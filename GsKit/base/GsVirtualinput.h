@@ -14,8 +14,9 @@ public:
 
     /**
      * @brief isInside Is given coordinate inside the button?
-     */
-    bool isInside(const int _x, const int _y) const
+     */    
+    template<class T>
+    bool isInside(const T _x, const T _y) const
     {
         return
         x <= _x && _x < x + w &&
@@ -69,9 +70,7 @@ public:
     /**
      * @brief GsVirtualInput basic constructor, just setup some variables.
      */
-    GsVirtualInput() :
-    mEnabled(true),
-    mTranslucency(0.5f) {}
+    GsVirtualInput() {}
 
 
     virtual ~GsVirtualInput() {}
@@ -117,11 +116,11 @@ public:
 
 protected:
 
-    bool mEnabled;
+    bool mEnabled = true;
 
     GsSurface mOverlay;
 
-    float mTranslucency;
+    float mTranslucency = 0.5f;
 
 };
 

@@ -23,7 +23,7 @@ public:
 
     GsButton(const std::string& text,
             CEvent *ev = nullptr,
-            const Style style = Style::UNSET,
+            const Style style = Style::NONE,
             const float red = 0.875f,
             const float green = 0.875f,
             const float blue = 1.0f);

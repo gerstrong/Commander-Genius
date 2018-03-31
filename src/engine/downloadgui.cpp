@@ -110,8 +110,6 @@ void CGameLauncher::ponderDownloadDialog()
         mFinishedDownload = true;
     }
 
-    // TODO: The files are downloaded into a "Downloads" folder. Secondly they need to be extracted, if the directory does not exist yet.
-
     // When everything is done, The launcher should be restarted, for searching new games.
 
     if( mFinishedDownload &&
@@ -191,7 +189,7 @@ void CGameLauncher::setupDownloadDialog()
 
     mpDloadCancel = std::dynamic_pointer_cast<GsButton>(
             mpGameStoreDialog->addControl( new GsButton( "Cancel", new CancelDownloadEvent(),
-                                                         GsControl::Style::UNSET,
+                                                         GsControl::Style::NONE,
                                                          1.0f, 0.675f, 0.675f) ,
                                            GsRect<float>(0.375f, 0.865f, 0.25f, 0.07f) ) );
 
