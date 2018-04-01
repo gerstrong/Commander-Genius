@@ -92,6 +92,19 @@ bool VirtualKeenControl::ponder()
         mDPad.mTexture.setAlpha(uint8_t(255.0f*mTranslucency));
     }
 
+    if(!mConfirmButton.invisible)
+    {
+        const float buttonSize = 0.1f;
+
+        const GsRect<float> confirmRect(1.0f-2.0f*buttonSize,
+                                         1.0f-2.0f*buttonSize,
+                                         buttonSize, buttonSize);
+
+        mConfirmButton.setRect(confirmRect);
+
+        mConfirmButton.mTexture.setAlpha(uint8_t(255.0f*mTranslucency));
+    }
+
 #endif
 
     return true;
@@ -112,32 +125,37 @@ void VirtualKeenControl::render(GsWeakSurface &sfc)
 
     addTexture(mDPad);
 
-    /*
-    addTexture(mStatusButton);
+
+    //addTexture(mStatusButton);
 
     if(mButtonMode == BUTTON_MODE::OK)
     {
         addTexture(mConfirmButton);
     }
 
-    if(mButtonMode == BUTTON_MODE::WMAP &&
+    /*if(mButtonMode == BUTTON_MODE::WMAP &&
             !mHideStartButton)
     {
         addTexture(mStartButton);
         addTexture(mStatusButton);
-    }*/
+    }
+
+    if(mButtonMode == BUTTON_MODE::ACTION)
+    {
+        addTexture(mShootButton);
+        addTexture(mJumpButton);
+        addTexture(mPogoButton);
+    }
+*/
 
 /*
-
-
-
     // On map, show the start button if keen approaches a level
     if(mButtonMode == BUTTON_MODE::WMAP && !mHideStartButton)
     {
         const float buttonSize = 0.1f;
 
         const Uint16 width = clickGameArea.w * buttonSize;
-        const Uint16 height = clickGameArea.h * buttonSize;        
+        const Uint16 height = clickGameArea.h * buttonSize;
 
         const GsRect<Uint16> confirmRect(clickGameArea.w-2*width, clickGameArea.h-2*height, width, height);
         mStartButtonTexture.setAlpha(uint8_t(255.0f*mTranslucency));

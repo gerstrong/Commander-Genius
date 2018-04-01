@@ -263,8 +263,6 @@ void CSDLVideo::transformScreenToDisplay()
 
     mainDstrect.x = mActiveAreaRect.x;
     mainDstrect.y = mActiveAreaRect.y;
-    //mainDstrect.w = m_VidConfig.mDisplayRect.w*m_VidConfig.m_ScaleXFilter;
-    //mainDstrect.h = m_VidConfig.mDisplayRect.h*m_VidConfig.m_ScaleXFilter;
     mainDstrect.w = mActiveAreaRect.w;
     mainDstrect.h = mActiveAreaRect.h;
 
@@ -295,13 +293,11 @@ void CSDLVideo::transformScreenToDisplay()
             {
                 SDL_Rect dstSDL = dst.SDLRect();
 
-                RenderCopy(renderer, texture, nullptr, &dstSDL);
-
                 // Transfrom the coordinates for the final screen.
-                /*dstSDL.y = (dstSDL.y*finalWindowSize.h)/mActiveAreaRect.h;
-                dstSDL.x = (dstSDL.x*finalWindowSize.x)/mActiveAreaRect.w;
+                dstSDL.y += mActiveAreaRect.y;
+                dstSDL.x += mActiveAreaRect.x;
 
-                RenderCopy(renderer, texture, nullptr, &dstSDL);*/
+                RenderCopy(renderer, texture, nullptr, &dstSDL);
             }
         }
         else
