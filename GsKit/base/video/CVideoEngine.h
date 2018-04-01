@@ -70,12 +70,12 @@ public:
 
 
     /**
-     * @brief updateAspectRect Updates the mActiveAreaRect which is used when rendering the screen
+     * @brief updateActiveArea Updates the mActiveAreaRect which is used when rendering the screen
      * @param displayRes The dimension of the window or resolution of the display when in Fullscreen
      * @param aspWidth wished aspect width
      * @param aspHeight wished aspect height
      */
-    void updateAspectRect(const GsRect<Uint16>& displayRes, const int aspWidth, const int aspHeight);
+    void updateActiveArea(const GsRect<Uint16>& displayRes, const int aspWidth, const int aspHeight);
 
     virtual void transformScreenToDisplay() = 0;
 	virtual void shutdown();
@@ -146,7 +146,7 @@ protected:
 
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    std::unique_ptr<SDL_Texture, SDL_Texture_Deleter> mpSDLScreenTexture;
+    std::unique_ptr<SDL_Texture, SDL_Texture_Deleter> mpMainScreenTexture;
 #else
 
     // it is what you see on your monitor in the end in your window or on fullscreen

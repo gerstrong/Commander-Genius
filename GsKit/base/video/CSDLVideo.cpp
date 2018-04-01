@@ -36,9 +36,6 @@ bool CSDLVideo::init()
         SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
     }
 
-    const int aspW = m_VidConfig.mAspectCorrection.w;
-    const int aspH = m_VidConfig.mAspectCorrection.h;
-
     if(window)
     {
         SDL_DestroyWindow(window);
@@ -81,7 +78,10 @@ bool CSDLVideo::init()
     SDL_RenderClear(renderer);
     SDL_RenderPresent(renderer);
 
-    updateAspectRect(m_VidConfig.mDisplayRect, aspW, aspH);
+    const int aspW = m_VidConfig.mAspectCorrection.w;
+    const int aspH = m_VidConfig.mAspectCorrection.h;
+
+    updateActiveArea(m_VidConfig.mDisplayRect, aspW, aspH);
 
     resizeDisplayScreen(m_VidConfig.mDisplayRect);
 
@@ -108,7 +108,7 @@ bool CSDLVideo::resizeDisplayScreen(const GsRect<Uint16>& newDim)
     const int w = m_VidConfig.mAspectCorrection.w;
     const int h = m_VidConfig.mAspectCorrection.h;
 
-    updateAspectRect(newDim, w, h);
+    updateActiveArea(newDim, w, h);
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     if(renderer != nullptr)
@@ -217,10 +217,8 @@ void CSDLVideo::transformScreenToDisplay()
 
     const bool tiltVideo = m_VidConfig.mTiltedScreen;
 
-    const auto &finalWindowSize = m_VidConfig.mDisplayRect;
-
     mpScreenSfc->lock();
-    SDL_UpdateTexture(mpSDLScreenTexture.get(),
+    SDL_UpdateTexture(mpMainScreenTexture.get(),
                       nullptr,
                       mpScreenSfc->getSDLSurface()->pixels,
                       mpScreenSfc->width() * sizeof (Uint32));
@@ -261,7 +259,17 @@ void CSDLVideo::transformScreenToDisplay()
 
     SDL_RenderClear(renderer);    
 
-    RenderCopy(renderer, mpSDLScreenTexture.get(), nullptr, nullptr);
+    SDL_Rect mainDstrect;
+
+    mainDstrect.x = mActiveAreaRect.x;
+    mainDstrect.y = mActiveAreaRect.y;
+    //mainDstrect.w = m_VidConfig.mDisplayRect.w*m_VidConfig.m_ScaleXFilter;
+    //mainDstrect.h = m_VidConfig.mDisplayRect.h*m_VidConfig.m_ScaleXFilter;
+    mainDstrect.w = mActiveAreaRect.w;
+    mainDstrect.h = mActiveAreaRect.h;
+
+
+    RenderCopy(renderer, mpMainScreenTexture.get(), nullptr, &mainDstrect);
 
 
     // Now render the textures which additionally sent over...

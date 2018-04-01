@@ -58,13 +58,13 @@ GameMenu( GsRect<float>(0.25f, 0.24f, 0.5f, 0.40f),
                                                                                                             style) ),
                                              style ) );
 #endif
-
+/*
 #if !defined(EMBEDDED)
     mpMenuDialog->addControl( new GameButton( "Camera",
                                               new OpenMenuEvent( new CCameraSettings(style) ),
                                               style ) );
 #endif
-
+*/
     mpMenuDialog->addControl(new GameButton( "Cheats",
                                              new OpenMenuEvent( new CheatsMenu(style) ),
                                              style ) );

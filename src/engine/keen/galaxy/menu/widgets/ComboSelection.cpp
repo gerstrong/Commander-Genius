@@ -94,7 +94,16 @@ void ComboSelection::processRender(const GsRect<float> &RectDispCoordFloat)
     }
     else
     {
-        drawNoStyle(lRect);
+        if(!mEnabled)
+            return;
+
+        // Now lets draw the text of the list control
+        GsFont &Font = gGraphics.getFont(mFontID);
+
+        Font.drawFont( blitsfc.getSDLSurface(), mText, lRect.x+24, lRect.y, false );
+        Font.drawFont( blitsfc.getSDLSurface(), ":", lRect.x+24+mText.size()*8, lRect.y, false );
+        const std::string text = (*mOLCurrent);
+        Font.drawFont( blitsfc.getSDLSurface(), text, lRect.x+24+(mText.size()+2)*8, lRect.y, false );
     }
     
 }

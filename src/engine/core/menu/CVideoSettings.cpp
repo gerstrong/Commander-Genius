@@ -81,7 +81,7 @@ GameMenu(GsRect<float>(0.15f, 0.20f, 0.65f, 0.55f), style )
 
 void CVideoSettings::refresh()
 {
-	mUserVidConf = gVideoDriver.getVidConfig();
+    mUsersConf = gVideoDriver.getVidConfig();
     
 	// Load the config into the GUI
 	// TODO: Temporary. This must become a float later...
@@ -89,24 +89,24 @@ void CVideoSettings::refresh()
     mpFPSSelection->setSelection( iFPS );
     mpFrameSkip->enable( (iFPS> 0.0) ? true : false );
 
-    mpShowCursorSwitch->enable( mUserVidConf.mShowCursor );
-    mpTiltScreenSwitch->enable( mUserVidConf.mTiltedScreen );
+    mpShowCursorSwitch->enable( mUsersConf.mShowCursor );
+    mpTiltScreenSwitch->enable( mUsersConf.mTiltedScreen );
 
-    mpVPadSwitch->enable( mUserVidConf.mVPad );
+    mpVPadSwitch->enable( mUsersConf.mVPad );
 
     // TODO: find a way to indicate a color
-    mpBorderColorSwitch->enable( mUserVidConf.mBorderColorsEnabled );
+    mpBorderColorSwitch->enable( mUsersConf.mBorderColorsEnabled );
 
-    mpHorizBordersSelection->setSelection( mUserVidConf.mHorizBorders );
+    mpHorizBordersSelection->setSelection( mUsersConf.mHorizBorders );
 
 #if !defined(EMBEDDED)
 
     mpGameResSelection->setList( GamesResList, NUM_GAME_RESOLUTIONS );
 
     std::string resStr;
-    resStr = itoa(mUserVidConf.mGameRect.w);
+    resStr = itoa(mUsersConf.mGameRect.w);
     resStr += "x";
-    resStr += itoa(mUserVidConf.mGameRect.h);
+    resStr += itoa(mUsersConf.mGameRect.h);
     mpGameResSelection->setSelection(resStr);
 
 #endif
@@ -117,8 +117,8 @@ void CVideoSettings::refresh()
 void CVideoSettings::release()
 {
 	// Save up the changed stuff
-    mUserVidConf.mShowCursor = mpShowCursorSwitch->isEnabled();    
-    mUserVidConf.mTiltedScreen = mpTiltScreenSwitch->isEnabled();
+    mUsersConf.mShowCursor = mpShowCursorSwitch->isEnabled();
+    mUsersConf.mTiltedScreen = mpTiltScreenSwitch->isEnabled();
 
 	gTimer.setFPS( mpFPSSelection->getSelection() );
 
@@ -127,51 +127,51 @@ void CVideoSettings::release()
         gTimer.setFPS( 0.0 );
     }
 
-    mUserVidConf.mVPad = mpVPadSwitch->isEnabled();    
+    mUsersConf.mVPad = mpVPadSwitch->isEnabled();
 
 
-    mUserVidConf.mHorizBorders = mpHorizBordersSelection->getSelection();
+    mUsersConf.mHorizBorders = mpHorizBordersSelection->getSelection();
 
-    mUserVidConf.mBorderColorsEnabled = mpBorderColorSwitch->isEnabled();
+    mUsersConf.mBorderColorsEnabled = mpBorderColorSwitch->isEnabled();
 	
 #if !defined(EMBEDDED)	
 
-    mUserVidConf.mVPad = mpVPadSwitch->isEnabled();
+    mUsersConf.mVPad = mpVPadSwitch->isEnabled();
 
     // Disable OpenGL when using Virtual GL
-    if(mUserVidConf.mVPad)
+    if(mUsersConf.mVPad)
     {
-        mUserVidConf.mOpengl = false;
+        mUsersConf.mOpengl = false;
     }
 
 
     const std::string GameResStr = mpGameResSelection->getSelection();
-    sscanf( GameResStr.c_str(), "%hux%hux", &mUserVidConf.mGameRect.w, &mUserVidConf.mGameRect.h );
+    sscanf( GameResStr.c_str(), "%hux%hux", &mUsersConf.mGameRect.w, &mUsersConf.mGameRect.h );
 
 #endif
 
 #if defined(CAANOO) || defined(WIZ) || defined(DINGOO) || defined(NANONOTE) || defined(ANDROID)
-	mUserVidConf.mDisplayRect.w = 320;
-	mUserVidConf.mDisplayRect.h = 200;
+    mUsersConf.mDisplayRect.w = 320;
+    mUsersConf.mDisplayRect.h = 200;
 #endif
 
     // TODO: Find a better way to setup colors in the menu
     if(mpBorderColorSwitch->isEnabled())
     {
-        mUserVidConf.mBorderColors.r = 0x00;
-        mUserVidConf.mBorderColors.g = 0xAA;
-        mUserVidConf.mBorderColors.b = 0xAA;
+        mUsersConf.mBorderColors.r = 0x00;
+        mUsersConf.mBorderColors.g = 0xAA;
+        mUsersConf.mBorderColors.b = 0xAA;
     }
 
-    mUserVidConf.mBorderColorsEnabled = mpBorderColorSwitch->isEnabled();
+    mUsersConf.mBorderColorsEnabled = mpBorderColorSwitch->isEnabled();
 
-    mUserVidConf.mHorizBorders = mpHorizBordersSelection->getSelection();
+    mUsersConf.mHorizBorders = mpHorizBordersSelection->getSelection();
 
 	// In case the user changed something in the camera settings, reload that.
-	mUserVidConf.m_CameraBounds = gVideoDriver.getCameraBounds();
+    mUsersConf.m_CameraBounds = gVideoDriver.getCameraBounds();
 
 	CVidConfig oldVidConf = gVideoDriver.getVidConfig();
-	gVideoDriver.setVidConfig(mUserVidConf);		
+    gVideoDriver.setVidConfig(mUsersConf);
 
 	// At this point we also must apply and save the settings
 	if( !gVideoDriver.applyMode() )

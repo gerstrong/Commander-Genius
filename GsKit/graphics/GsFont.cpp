@@ -237,42 +237,45 @@ void GsFont::tintColor( const Uint32 fgColor )
 
 void GsFont::setupColor( const Uint32 fgColor )
 {
-	// Here comes the main part. We have to manipulate the Surface the way it gets
-	// the given color
+    // Here comes the main part. We have to manipulate the Surface the way it gets
+    // the given color
     std::array<SDL_Color, 16> color;
 
     for(auto &pFontSurface : mpFontSurface)
     {
         auto palette = pFontSurface->getSDLSurface()->format->palette;
 
-        memcpy( color.data(), palette->colors, 16*sizeof(SDL_Color) );
-
         SDL_PixelFormat *pPixelformat = gVideoDriver.getBlitSurface()->format;
 
-        SDL_GetRGB(fgColor, pPixelformat, &color[15].r, &color[15].g, &color[15].b);
+        if(palette)
+        {
+            memcpy( color.data(), palette->colors, 16*sizeof(SDL_Color) );
 
-        // Change palette colors to the one requested
-        pFontSurface->setPaletteColors(color.data());
-        pFontSurface->setColorKey(COLORKEY_4BIT);
+            SDL_GetRGB(fgColor, pPixelformat, &color[15].r, &color[15].g, &color[15].b);
+
+            // Change palette colors to the one requested
+            pFontSurface->setPaletteColors(color.data());
+            pFontSurface->setColorKey(COLORKEY_4BIT);
+        }
     }
 }
 
 Uint32 GsFont::getFGColor()
 {
-	// Here comes the main part. We have to manipulate the Surface the way it gets
-	// the given color
+    // Here comes the main part. We have to manipulate the Surface the way it gets
+    // the given color
     std::array<SDL_Color, 16> color;
     auto fontSfc = mpFontSurface[0]->getSDLSurface();
-    auto palette = fontSfc->format->palette;   
+    auto palette = fontSfc->format->palette;
 
     SDL_PixelFormat *pPixelformat = gVideoDriver.getBlitSurface()->format;
 
     if(palette)
     {
-    memcpy( color.data(), palette->colors, color.size()*sizeof(SDL_Color) );
+        memcpy( color.data(), palette->colors, color.size()*sizeof(SDL_Color) );
 
-	// Change palette colors to the desired one
-    return SDL_MapRGB(pPixelformat, color[15].r, color[15].g, color[15].b);
+        // Change palette colors to the desired one
+        return SDL_MapRGB(pPixelformat, color[15].r, color[15].g, color[15].b);
     }
     else
     {

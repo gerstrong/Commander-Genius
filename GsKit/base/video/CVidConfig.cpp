@@ -58,8 +58,8 @@ void CVidConfig::reset()
     mOpengl = false; // Must stay optional for better compatibility
 #endif
 
-	mAspectCorrection.w=4;
-	mAspectCorrection.h=3;
+    mAspectCorrection.w = 4;
+    mAspectCorrection.h = 3;
 	m_CameraBounds.reset();
 
     mGameRect.x = 0;

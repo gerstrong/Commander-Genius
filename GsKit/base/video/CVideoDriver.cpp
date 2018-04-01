@@ -201,7 +201,8 @@ void CVideoDriver::verifyResolution(GsRect<Uint16>& resolution,
 #endif
 }
 
-void CVideoDriver::setVidConfig(const CVidConfig& VidConf) {
+void CVideoDriver::setVidConfig(const CVidConfig& VidConf)
+{
     mVidConfig = VidConf;
     setMode(mVidConfig.mDisplayRect);
 }

@@ -602,8 +602,10 @@ void CInput::transMouseRelCoord(Vector2D<float> &Pos,
 								const SDL_MouseMotionEvent motion,
                                 const GsRect<Uint16> &activeArea)
 {
-    Pos.x = ( static_cast<float>(motion.x-activeArea.x)/static_cast<float>(activeArea.w) );
-    Pos.y = ( static_cast<float>(motion.y-activeArea.y)/static_cast<float>(activeArea.h) );
+    Pos.x = ( static_cast<float>(motion.x-activeArea.x)/
+              static_cast<float>(activeArea.w) );
+    Pos.y = ( static_cast<float>(motion.y-activeArea.y)/
+              static_cast<float>(activeArea.h) );
 }
 
 
@@ -652,30 +654,15 @@ void CInput::pollEvents()
 
     // TODO: It seems that Win32 Build get different coordinates. I still don't know why...
     // Maybe I'm doing something wrong here!
+    /*
 #ifdef WIN32
-    //if( !gVideoDriver.isOpenGL() )
-    {
-        activeArea.x = 0;
-        activeArea.y = 0;
-    }
-#endif
-
-
-#if SDL_VERSION_ATLEAST(2, 0, 0)    
     if( !gVideoDriver.isOpenGL() )
     {
         activeArea.x = 0;
         activeArea.y = 0;
     }
-#else
-    //if( !gVideoDriver.isOpenGL() )
-    /*{
-        activeArea.x = 0;
-        activeArea.y = 0;
-    }*/
 #endif
-
-
+*/
 
 	// While there's an event to handle
 	while( SDL_PollEvent( &Event ) )
@@ -725,7 +712,7 @@ void CInput::pollEvents()
             {
                 gVideoDriver.mpVideoEngine->resizeDisplayScreen(
                         GsRect<Uint16>(Event.window.data1,
-                                      Event.window.data2) );
+                                       Event.window.data2) );
                 dispRect.w = Event.window.data1;
                 dispRect.h = Event.window.data2;
             }

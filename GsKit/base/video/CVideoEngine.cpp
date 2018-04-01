@@ -150,8 +150,8 @@ bool CVideoEngine::init()
 	return true;
 }
 
-void CVideoEngine::updateAspectRect(const GsRect<Uint16>& displayRes,
-                                    const int aspWidth, const int aspHeight)
+void CVideoEngine::updateActiveArea(const GsRect<Uint16>& displayRes,
+                                   const int aspWidth, const int aspHeight)
 {
     if (aspWidth == 0 || aspHeight == 0)
 	{
@@ -241,7 +241,7 @@ bool CVideoEngine::createSurfaces(const GsRect<Uint16> &gamerect)
     initOverlaySurface(blit->w, blit->h);       
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    mpSDLScreenTexture.reset( SDL_CreateTexture(renderer,
+    mpMainScreenTexture.reset( SDL_CreateTexture(renderer,
                                    SDL_PIXELFORMAT_ARGB8888,
                                    SDL_TEXTUREACCESS_STREAMING,
                                    gamerect.w*m_VidConfig.m_ScaleXFilter,

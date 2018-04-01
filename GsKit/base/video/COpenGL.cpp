@@ -43,7 +43,7 @@ bool COpenGL::resizeDisplayScreen(const GsRect<Uint16>& newDim)
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)        
   
-    updateAspectRect(newDim, w, h);
+    updateActiveArea(newDim, w, h);
 
     setUpViewPort(mActiveAreaRect);
 
@@ -56,7 +56,7 @@ bool COpenGL::resizeDisplayScreen(const GsRect<Uint16>& newDim)
 		return false;
 	}
 
-    updateAspectRect(newDim, w, h);
+    updateActiveArea(newDim, w, h);
 
     setUpViewPort(mActiceAreaRect);
 

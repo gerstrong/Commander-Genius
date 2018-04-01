@@ -52,33 +52,17 @@ void Switch::drawNoStyle(SDL_Rect& lRect)
         return;
     }
 
-    ComboSelection::drawNoStyle(lRect);
-
-    /*
     SDL_Surface *blitsfc = gVideoDriver.getBlitSurface();
 
     // Now lets draw the text of the list control
     GsFont &Font = gGraphics.getFont(0);
 
-    Font.drawFont( blitsfc, mText, lRect.x+24, lRect.y, false );
-    Font.drawFont( blitsfc, ":", lRect.x+24+mText.size()*8, lRect.y, false );
+    std::string text = mText + ": " + (*mOLCurrent);
 
-    std::string text;
-    if( (*mOLCurrent) == "off" )
-    {
-        text = "\24\25\26\27";
-    }
-    else
-    {
-        text = "\34\35\36\37";
-    }
+    Font.drawFont( blitsfc, text, lRect.x+40, lRect.y, false );
 
-
-    Font.drawFont( blitsfc, text,
-                   lRect.x+24+(mText.size()+2)*8,
-                   lRect.y, false );*/
+    drawTwirl(lRect);
 }
-
 
 void Switch::processRender(const GsRect<float> &RectDispCoordFloat)
 {
