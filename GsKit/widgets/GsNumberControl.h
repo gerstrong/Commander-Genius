@@ -30,7 +30,7 @@ public:
 	void increment();
 	void decrement();
 
-	bool sendEvent(const InputCommands command);
+	bool sendEvent(const InputCommand command);
 
 	int getSelection();
 	void setSelection( const int value );

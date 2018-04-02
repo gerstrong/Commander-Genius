@@ -27,7 +27,7 @@ class ReadInputEvent : public InvokeFunctorEvent
 public:
 
 	ReadInputEvent( const int selPlayer,
-			const InputCommands command,
+			const InputCommand command,
 			const std::string &commandName ) :
 		mSelPlayer(selPlayer),
 		mCommand(command),
@@ -49,7 +49,7 @@ public:
 	}
 
 	int mSelPlayer;
-	InputCommands mCommand;
+	InputCommand mCommand;
 	const std::string mCommandName;
 	GsButton* mpButton;
 };
@@ -151,7 +151,7 @@ void CControlSettingsBase::ponder(const float deltaT)
 
             int pos; unsigned char input;
             std::string evName = gInput.getNewMappedEvent(pos, input);
-            InputCommands com = static_cast<InputCommands>(pos);
+            InputCommand com = static_cast<InputCommand>(pos);
 
             if(pos >= MID_COMMANDS_OFFSETS)
                 pos -= MID_COMMANDS_OFFSETS;
@@ -188,7 +188,7 @@ void CControlSettingsMovement::refresh()
 	if(!mpButtonList.empty())
 		mpButtonList.clear();
 
-	std::map<InputCommands, std::string>::iterator it = mCommandName.begin();
+	std::map<InputCommand, std::string>::iterator it = mCommandName.begin();
 	for ( ; it != mCommandName.end(); it++ )
 	{
 		const std::string buf = it->second;
@@ -223,7 +223,7 @@ void CControlSettingsButtons::refresh()
 	if(!mpButtonList.empty())
 		mpButtonList.clear();
 
-	std::map<InputCommands, std::string>::iterator it = mCommandName.begin();
+	std::map<InputCommand, std::string>::iterator it = mCommandName.begin();
 	for ( ; it != mCommandName.end(); it++ )
 	{
 		const std::string buf = it->second;

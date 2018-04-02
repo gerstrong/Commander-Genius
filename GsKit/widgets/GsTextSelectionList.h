@@ -27,7 +27,7 @@ public:
 	void setConfirmButtonEvent(CEvent *ev);
 	void setBackButtonEvent(CEvent *ev);
 
-	bool sendEvent(const InputCommands command);
+	bool sendEvent(const InputCommand command);
 	void addText(const std::string &text);    
 	void processLogic();
     void processRender(const GsRect<float> &RectDispCoordFloat);

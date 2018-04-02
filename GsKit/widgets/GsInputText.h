@@ -21,7 +21,7 @@ public:
                   const int fontID = 0,
                   const GsControl::Style style = Style::NONE);
 
-	bool sendEvent(const InputCommands command);
+	bool sendEvent(const InputCommand command);
 
 	void processLogic();
 

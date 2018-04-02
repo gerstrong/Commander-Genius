@@ -16,7 +16,7 @@
 #define INPUTEVENTS_H_
 
 
-enum InputCommands
+enum InputCommand
 {
 	IC_LEFT = 0,
 	IC_RIGHT,
@@ -65,10 +65,10 @@ struct MouseWheelEvent : CEvent
 
 struct CommandEvent : public CEvent
 {
-	CommandEvent(const InputCommands command) :
+    CommandEvent(const InputCommand command) :
 		mCommand(command) {}
 
-	InputCommands mCommand;
+    InputCommand mCommand;
 };
 
 

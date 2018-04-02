@@ -102,8 +102,9 @@ void CLevelPlay::ponder(const float deltaT)
     {
         VirtualKeenControl *vkc = dynamic_cast<VirtualKeenControl*>(gInput.mpVirtPad.get());
         assert(vkc);
-        vkc->mButtonMode = VirtualKeenControl::ACTION;
+        //vkc->mButtonMode = VirtualKeenControl::BUTTON_MODE::ACTION;
         vkc->mHideStartButton = true;
+        vkc->mShowStatusButton = true;
     }
 
     ponderBase(deltaT);

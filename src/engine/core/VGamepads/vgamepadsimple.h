@@ -63,19 +63,11 @@ public:
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 
-    //GsTexture mDPadTexture;    
-    //GsTexture mConfirmButtonTexture;
-    //GsTexture mStartButtonTexture;
-
     TouchButton mDPad;
     TouchButton mConfirmButton;
     TouchButton mStartButton;
 
     // Control buttons
-    //GsTexture mJumpButtonTexture;
-    //GsTexture mShootButtonTexture;
-    //GsTexture mPogoButtonTexture;
-    //GsTexture mStatusButtonTexture;
     TouchButton mJumpButton;
     TouchButton mShootButton;
     TouchButton mPogoButton;
@@ -86,7 +78,7 @@ public:
     bool mShowStatusButton = false;
     bool mHideStartButton = false;
 
-    BUTTON_MODE mButtonMode = BUTTON_MODE::OK;
+    //BUTTON_MODE mButtonMode = BUTTON_MODE::OK;
 };
 
 #endif // VGAMEPADSIMPLE_H

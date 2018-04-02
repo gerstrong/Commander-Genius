@@ -52,7 +52,7 @@ void CGUINumberControl::decrement()
 }
 
 
-bool CGUINumberControl::sendEvent(const InputCommands command)
+bool CGUINumberControl::sendEvent(const InputCommand command)
 {
 	if(command == IC_STATUS || command == IC_JUMP || command == IC_RIGHT)
 	{

@@ -677,7 +677,7 @@ void CGameLauncher::ponderGameSelDialog(const float deltaT)
     {
         if( gInput.getPressedCommand(cmd) )
         {
-            mLauncherDialog.sendEvent(new CommandEvent( static_cast<InputCommands>(cmd) ));
+            mLauncherDialog.sendEvent(new CommandEvent( static_cast<InputCommand>(cmd) ));
             break;
         }
     }
@@ -802,7 +802,7 @@ void CGameLauncher::ponder(const float deltaT)
         {
             if( gInput.getPressedCommand(cmd) )
             {
-                mpGameStoreDialog->sendEvent(new CommandEvent( static_cast<InputCommands>(cmd) ));
+                mpGameStoreDialog->sendEvent(new CommandEvent( static_cast<InputCommand>(cmd) ));
                 break;
             }
         }

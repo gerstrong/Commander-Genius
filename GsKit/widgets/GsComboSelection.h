@@ -29,7 +29,7 @@ public:
 
     virtual void cycleOption();
 
-	bool sendEvent(const InputCommands command);
+	bool sendEvent(const InputCommand command);
 
     virtual void setSelection( const std::string& selectionText );
 

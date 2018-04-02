@@ -56,6 +56,8 @@ bool VirtualKeenControl::init()
 
         if(!mConfirmButton.loadPicture("confirm.png")) return false;
 
+        mConfirmButton.invisible = false;
+
         if(!mStartButton.loadPicture("start.png")) return false;
 
         if(!mJumpButton.loadPicture("1.png")) return false;
@@ -113,7 +115,7 @@ bool VirtualKeenControl::ponder()
 void VirtualKeenControl::render(GsWeakSurface &sfc)
 {
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    GsRect<Uint16> clickGameArea = gVideoDriver.mpVideoEngine->getActiveAreaRect();        
+    //GsRect<Uint16> clickGameArea = gVideoDriver.mpVideoEngine->getActiveAreaRect();
 
     auto addTexture = [](TouchButton &button) -> void
     {
@@ -128,10 +130,7 @@ void VirtualKeenControl::render(GsWeakSurface &sfc)
 
     //addTexture(mStatusButton);
 
-    if(mButtonMode == BUTTON_MODE::OK)
-    {
-        addTexture(mConfirmButton);
-    }
+    addTexture(mConfirmButton);
 
     /*if(mButtonMode == BUTTON_MODE::WMAP &&
             !mHideStartButton)
@@ -193,17 +192,9 @@ void VirtualKeenControl::render(GsWeakSurface &sfc)
 void VirtualKeenControl::mouseState(const Vector2D<float> &Pos, const bool down)
 {
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    /// Menu Control process of one mouse state
-    const float dpadSize = 0.2f;
 
-    // Size of the buttons on the dpad
-    const float dpadSizePiece = 0.3f*dpadSize;
-
-    const float yBottom = 1.0f;
-    const float yTop = yBottom-dpadSize;
-
-    auto verifyButtonMatch = [&](const GsRect<float> &buttonRect,
-                                 InputCommands cmd)
+    auto bindButtonCommand = [&](const GsRect<float> &buttonRect,
+            const InputCommand &cmd)
     {
         if( buttonRect.HasPoint(Pos) )
         {
@@ -212,99 +203,50 @@ void VirtualKeenControl::mouseState(const Vector2D<float> &Pos, const bool down)
     };
 
 
-    if(Pos.y >= yTop && Pos.y < 1.0f)
+    SDL_Event ev;
+    ev.type = (down ? SDL_KEYDOWN : SDL_KEYUP);
+
+    if( !mDPad.invisible &&
+        mDPad.isInside(Pos.x, Pos.y) )
     {
-        SDL_Event ev;
-        ev.type = (down ? SDL_KEYDOWN : SDL_KEYUP);
+        // Size of the buttons on the dpad
+        const float dpadSizePiece = 0.3f*mDPad.w;
 
-        if( !mDPad.invisible &&
-             mDPad.isInside(Pos.x, Pos.y) )
+        // Y-Direction
+        // Up presses
+        if(Pos.y<mDPad.y+dpadSizePiece)
         {
-            // Y-Direction
-            // Up presses
-            if(Pos.y<yTop+dpadSizePiece)
-            {
-                ev.key.keysym.sym = SDLK_UP;
-                SDL_PushEvent(&ev);
-            }
-            // Down presses
-            else if(Pos.y>=yBottom-dpadSizePiece)
-            {
-                ev.key.keysym.sym = SDLK_DOWN;
-                SDL_PushEvent(&ev);
-            }
-
-            // X-Direction
-            // Left presses
-            if(Pos.x<dpadSizePiece)
-            {
-                ev.key.keysym.sym = SDLK_LEFT;
-                SDL_PushEvent(&ev);
-            }
-            // Right presses
-            else if(Pos.x>=dpadSize-dpadSizePiece)
-            {
-                ev.key.keysym.sym = SDLK_RIGHT;
-                SDL_PushEvent(&ev);
-            }
+            ev.key.keysym.sym = SDLK_UP;
+            SDL_PushEvent(&ev);
+        }
+        // Down presses
+        else if(Pos.y>=1.0f-dpadSizePiece)
+        {
+            ev.key.keysym.sym = SDLK_DOWN;
+            SDL_PushEvent(&ev);
         }
 
-        /// Dpad presses
-        if(Pos.x > dpadSize)
+        // X-Direction
+        // Left presses
+        if(Pos.x<dpadSizePiece)
         {
-            /// Then, if any other button was pressed...
-            const float buttonSize = 0.1f;
-
-            if(mButtonMode == BUTTON_MODE::OK)
-            {
-                // Was the Ok button pressed?
-                GsRect<float> confirmRect(1.0f-2.0f*buttonSize,
-                                          1.0f-2.0f*buttonSize,
-                                          buttonSize, buttonSize);
-
-                if( confirmRect.HasPoint(Pos) )
-                {
-                    ev.key.keysym.sym = SDLK_RETURN;
-                    SDL_PushEvent(&ev);
-                }
-            }
-
-            // On map if we can enter a level, let's enter!
-            if(mButtonMode == BUTTON_MODE::WMAP && !mHideStartButton)
-            {
-                // Was the Ok button pressed?
-                GsRect<float> confirmRect(1.0f-2.0f*buttonSize, 1.0f-2.0f*buttonSize, buttonSize, buttonSize);
-                verifyButtonMatch(confirmRect, IC_JUMP);
-
-                // Was the Status button pressed?
-                const GsRect<float> statusButtonRect(0.5f, 1.0f-buttonSize, buttonSize, buttonSize);
-                verifyButtonMatch(statusButtonRect, IC_STATUS);
-            }
-
-
-            if(mButtonMode == BUTTON_MODE::ACTION)
-            {
-                // Was the Shoot button pressed?
-                const GsRect<float> shootButtonRect(1.0f-2.0f*buttonSize, 1.0f-2.0f*buttonSize, buttonSize, buttonSize);
-                verifyButtonMatch(shootButtonRect, IC_FIRE);
-
-                // Was the Jump button pressed?
-                const GsRect<float> jumpButtonRect(1.0f-2.0f*buttonSize, 1.0f-buttonSize, buttonSize, buttonSize);
-                verifyButtonMatch(jumpButtonRect, IC_JUMP);
-
-                // Was the Pogo button pressed?
-                const GsRect<float> pogoButtonRect(1.0f-buttonSize, 1.0f-buttonSize, buttonSize, buttonSize);
-                verifyButtonMatch(pogoButtonRect, IC_POGO);
-            }
-
-            if(mShowStatusButton)
-            {
-                // Was the Status button pressed?
-                const GsRect<float> statusButtonRect(0.5f, 1.0f-buttonSize, buttonSize, buttonSize);
-                verifyButtonMatch(statusButtonRect, IC_STATUS);
-            }
+            ev.key.keysym.sym = SDLK_LEFT;
+            SDL_PushEvent(&ev);
+        }
+        // Right presses
+        else if(Pos.x>=mDPad.w-dpadSizePiece)
+        {
+            ev.key.keysym.sym = SDLK_RIGHT;
+            SDL_PushEvent(&ev);
         }
     }
+
+    bindButtonCommand(mConfirmButton.Rect(), IC_JUMP);
+    bindButtonCommand(mStatusButton.Rect(), IC_STATUS);
+    bindButtonCommand(mShootButton.Rect(), IC_FIRE);
+    bindButtonCommand(mJumpButton.Rect(), IC_JUMP);
+    bindButtonCommand(mPogoButton.Rect(), IC_POGO);
+
 #endif
 
 }

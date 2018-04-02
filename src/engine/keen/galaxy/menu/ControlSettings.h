@@ -56,8 +56,13 @@ public:
 protected:
     int mSelectedPlayer;
 
+<<<<<<< HEAD:src/engine/keen/galaxy/menu/ControlSettings.h
     std::vector<GalaxyButton*> mpButtonList;
     std::map<InputCommands, std::string> mCommandName;
+=======
+    std::vector<GameButton*> mpButtonList;
+    std::map<InputCommand, std::string> mCommandName;
+>>>>>>> ce7f64a6... Cleanups, fixes:src/engine/core/menu/ControlSettings.h
 
     bool mapping;
 };

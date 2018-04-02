@@ -39,7 +39,7 @@ mTick(false)
 }
 
 
-bool CGUIInputText::sendEvent(const InputCommands command)
+bool CGUIInputText::sendEvent(const InputCommand command)
 {
     if(command == IC_STATUS || command == IC_JUMP)
     {

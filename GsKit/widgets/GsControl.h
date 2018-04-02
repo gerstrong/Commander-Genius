@@ -74,7 +74,7 @@ public:
         mHovered = value;
     }
 
-	virtual bool sendEvent(const InputCommands command) { return false; }
+	virtual bool sendEvent(const InputCommand command) { return false; }
 
 
 	void drawTwirl( const SDL_Rect& lRect );

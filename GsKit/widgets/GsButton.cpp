@@ -40,7 +40,7 @@ void GsButton::setupButtonSurface()
 }
 
 
-bool GsButton::sendEvent(const InputCommands command)
+bool GsButton::sendEvent(const InputCommand command)
 {
     if(command == IC_STATUS || command == IC_JUMP)
     {

@@ -91,7 +91,7 @@ void CSaveMenu::ponder(const float deltaT)
     {
         if( gInput.getPressedCommand(cmd) )
         {
-            std::shared_ptr<CEvent> command(new CommandEvent( static_cast<InputCommands>(cmd) ));
+            std::shared_ptr<CEvent> command(new CommandEvent( static_cast<InputCommand>(cmd) ));
             sendEvent(command);
             break;
         }

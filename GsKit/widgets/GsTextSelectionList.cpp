@@ -32,7 +32,7 @@ void CGUITextSelectionList::setBackButtonEvent(CEvent *ev)
 	mBackEvent.reset(ev);
 }
 
-bool CGUITextSelectionList::sendEvent(const InputCommands command)
+bool CGUITextSelectionList::sendEvent(const InputCommand command)
 {
 	if(command == IC_UP)
 	{

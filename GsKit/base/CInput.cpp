@@ -1310,7 +1310,9 @@ bool CInput::getPressedCommand(int command)
 {
 	bool retval = false;
 	for(int player=0; player<NUM_INPUTS ; player++ )
+    {
 		retval |= getPressedCommand(player, command);
+    }
 	return retval;
 }
 

@@ -23,6 +23,8 @@
 
 #include <array>
 
+#include "engine/core/CBehaviorEngine.h"
+
 const int TIME_TO_WAVE = 400;
 
 namespace galaxy {
@@ -147,7 +149,7 @@ void CPlayerWM::pumpEvent(const CEvent *evPtr)
     // Events for the Player are processed here.
     if( const EventPlayerEndLevel* ev = dynamic_cast<const EventPlayerEndLevel*>(evPtr) )
     {
-        if(ev->who == mSprVar)
+        if(ev->who == mSpecialIdx)
         {            
             gEventManager.flush();
             if(ev->sucess)
@@ -434,7 +436,6 @@ void CPlayerWM::processMoving()
 
         if( gVideoDriver.VGamePadEnabled() )
         {
-
             VirtualKeenControl *vkc = dynamic_cast<VirtualKeenControl*>(gInput.mpVirtPad.get());
 
             int level = object - 0xC000;
@@ -463,8 +464,9 @@ void CPlayerWM::processMoving()
     {
         VirtualKeenControl *vkc = dynamic_cast<VirtualKeenControl*>(gInput.mpVirtPad.get());
         assert(vkc);
-        vkc->mButtonMode = VirtualKeenControl::WMAP;
+        //vkc->mButtonMode = VirtualKeenControl::BUTTON_MODE::WMAP;
         vkc->mHideStartButton = true;
+        vkc->mShowStatusButton = true;
     }
 
     
@@ -1040,7 +1042,12 @@ void CPlayerWM::startLevel(Uint16 object)
 
     if(ep == 4)
     {
-        shipLevel = gKeenFiles.exeFile.getRawData()[0x60FD];
+        shipLevel = 18;
+
+        if(!gKeenFiles.exeFile.isPythonScript())
+        {
+            shipLevel = gKeenFiles.exeFile.getRawData()[0x60FD];
+        }
     }
 
     const Uint16 flag_dest = level + 0xF000;

@@ -30,7 +30,7 @@ public:
     
     void setupButtonSurface();
 
-	bool sendEvent(const InputCommands command);
+	bool sendEvent(const InputCommand command);
 
     void updateGraphics();
 
