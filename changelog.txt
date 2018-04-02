@@ -1,3 +1,8 @@
+v2.2.1:
+-------
+- Thumb animation
+- Code for settings that can be opened when in game launcher
+
 v2.2.0:
 -------
 - Cleaned Repository
