@@ -46,6 +46,9 @@ GameMenu( GsRect<float>(0.25f, 0.24f, 0.5f, 0.40f),
                                              new OpenMenuEvent( new COptions(Style()) ),
                                              style ) );
 
+    if(style != GsControl::Style::NONE)
+    {
+
 
 #if defined (SINGLEPLAYER)
     mpMenuDialog->addControl( new GameButton( "Controls",
@@ -68,6 +71,8 @@ GameMenu( GsRect<float>(0.25f, 0.24f, 0.5f, 0.40f),
     mpMenuDialog->addControl(new GameButton( "Cheats",
                                              new OpenMenuEvent( new CheatsMenu(style) ),
                                              style ) );
+
+    }
 
     setMenuLabel("CONFIGMENULABEL");
 }

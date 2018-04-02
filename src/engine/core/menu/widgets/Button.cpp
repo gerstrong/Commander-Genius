@@ -10,15 +10,12 @@ GameButton::GameButton(const std::string& text,
                        const Style style) :
 GsButton(text, ev, style)
 {
-    if(mStyle == Style::NONE)
+    if(mStyle == Style::GALAXY)
     {
-        mFontID = 0;
-    }
-    else if(mStyle == Style::GALAXY)
-    {
+        mFontID = 1;
         setText(text);
     }
-    else
+    else if(mStyle == Style::VORTICON)
     {
         mFontID = 1;
     }

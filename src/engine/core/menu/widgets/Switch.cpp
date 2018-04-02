@@ -57,7 +57,7 @@ void Switch::drawNoStyle(SDL_Rect& lRect)
     // Now lets draw the text of the list control
     GsFont &Font = gGraphics.getFont(0);
 
-    std::string text = mText + ": " + (*mOLCurrent);
+    std::string text = mText + ":" + (*mOLCurrent);
 
     Font.drawFont( blitsfc, text, lRect.x+40, lRect.y, false );
 
