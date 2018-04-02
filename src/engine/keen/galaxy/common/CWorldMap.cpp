@@ -54,7 +54,7 @@ bool CWorldMap::init()
 	
 	if(!gSaveGameController.busy())
 	{
-        showMsgWithBmp(loading_text, "KEENTHUMBSUP", LEFT);
+        showMsgWithBmp(loading_text, "KEENTHUMBSUPLOADING", LEFT, true);
 	}
 
 	mMap.drawAll();

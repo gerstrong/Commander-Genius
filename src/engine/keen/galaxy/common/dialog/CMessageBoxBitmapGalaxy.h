@@ -27,26 +27,43 @@ public:
     CMessageBoxBitmapGalaxy(const std::string& Text,
                             const GsBitmap &BitmapRef,
                             const direction_t alignment,
+                            const bool animation,
                             CEvent *closeEv = nullptr);
 
     virtual ~CMessageBoxBitmapGalaxy() {}
 
-	virtual void init();
+    virtual void init() override;
+
+    void ponder() override;
+    void render() override;
+
 
 private:
     const GsBitmap &mBitmap;
 	const direction_t mAlignment;        
+
+    /**
+     * @brief mMBAnimatedSurface Some boxes have animation,
+     *                           like Billys hand forming a fist
+     */
+    GsSurface mMBAnimatedSurface;
+    int mAnimtimer = 0;
+    int mAnimFrame = 1;
+
+    int mShowtime = -1;
 };
 
 void showMsgWithBmp(const std::string &text,
                     const std::string &bmp,
                     const direction_t alignment,
+                    const bool animation,
                     CEvent *closeEv = nullptr);
 
 
 void showMsgWithBmp(const std::string &text,
                     const unsigned int bmpID,
                     const direction_t alignment ,
+                    const bool animation,
                     CEvent *closeEv = nullptr);
 
 

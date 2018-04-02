@@ -472,7 +472,7 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
             m_WorldMap.loadAndPlayMusic();
         }
 
-        showMsgWithBmp( loading_text, "KEENTHUMBSUP", LEFT);
+        showMsgWithBmp( loading_text, "KEENTHUMBSUPLOADING", LEFT, true);
 
         const EventExitLevel &evCopy = *ev;
 

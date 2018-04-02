@@ -136,7 +136,8 @@ void CMessageBoxGalaxy::ponder()
 void CMessageBoxGalaxy::render()
 {
     // Just render the MessageBox
-    BlitSurface(mMBSurface.getSDLSurface(), nullptr, gVideoDriver.getBlitSurface(), &mMBRect);
+    BlitSurface(mMBSurface.getSDLSurface(), nullptr,
+                gVideoDriver.getBlitSurface(), &mMBRect);
 }
 
 

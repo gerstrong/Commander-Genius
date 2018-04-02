@@ -110,19 +110,25 @@ void CMapPlayGalaxy::pumpEvent(const CEvent *evPtr)
 
 void CMapPlayGalaxy::ponderBase(const float deltaT)
 {
-    const bool msgboxactive = mMsgBoxOpen;
-
-    bool pause = msgboxactive;
+    bool oneInvOpen = false;
 
     // Check if the engine need to be paused
     for( auto &inv : mInventoryVec)
-        pause |= inv.showStatus();
+    {
+        oneInvOpen |= inv.showStatus();
+    }
 
     // Animate the tiles of the map
-    mMap.m_animation_enabled = !pause;
+    mMap.m_animation_enabled = !oneInvOpen;
+
+    if(mMsgBoxOpen)
+    {
+        mMap.m_animation_enabled = true;
+    }
+
     mMap.animateAllTiles();
 
-    if(!pause)
+    if(!oneInvOpen && !mMsgBoxOpen)
     {
         for( auto obj = mObjectPtr.begin(); obj != mObjectPtr.end() ; obj++)
         {
@@ -182,7 +188,6 @@ void CMapPlayGalaxy::ponderBase(const float deltaT)
             objRef.processEvents();
         }
 	}
-
 
 }
 

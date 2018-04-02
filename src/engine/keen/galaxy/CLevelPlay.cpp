@@ -89,7 +89,7 @@ bool CLevelPlay::loadLevel(const Uint16 level)
 	const std::string level_text = "LEVEL" + itoa(level) + "_LOAD_TEXT";
     const std::string loading_text = gBehaviorEngine.getString(level_text);
 
-    showMsgWithBmp( loading_text, "KEENTHUMBSUP", LEFT );
+    showMsgWithBmp( loading_text, "KEENTHUMBSUPLOADING", LEFT, true );
 
 	mMap.drawAll();    
 

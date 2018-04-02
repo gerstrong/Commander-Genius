@@ -353,7 +353,8 @@ void CPlayerWM::processMoving()
             else
             {
                 // Tell the player he cannot climb yet                
-                showMsgWithBmp(gBehaviorEngine.getString("KEEN_ROPE_REQUIRED"), "KEENTALKING", RIGHT);
+                showMsgWithBmp(gBehaviorEngine.getString("KEEN_ROPE_REQUIRED"),
+                               "KEENTALKING", RIGHT, false);
                 moveYDir(-(climbDir<<CSF)/2);
             }
         }
@@ -496,7 +497,8 @@ void CPlayerWM::processMoving()
             if( !m_cantswim )
             {
                 gSound.playSound( SOUND_CANT_DO, SoundPlayMode::PLAY_PAUSEALL );
-                showMsgWithBmp(gBehaviorEngine.getString("CANT_SWIM_TEXT"), 105, LEFT);
+                showMsgWithBmp(gBehaviorEngine.getString("CANT_SWIM_TEXT"),
+                               105, LEFT, false);
 
                 m_cantswim = true;
             }

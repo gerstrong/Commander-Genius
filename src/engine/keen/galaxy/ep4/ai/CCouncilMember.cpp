@@ -131,10 +131,14 @@ void CCouncilMember::performJanitorMode()
 
     std::vector<CMessageBoxGalaxy*> msgs;
 
-    msgs.push_back( new CMessageBoxBitmapGalaxy(elder_text[0], gGraphics.getBitmapFromId(104), LEFT) );
-    msgs.push_back( new CMessageBoxBitmapGalaxy(elder_text[1], *gGraphics.getBitmapFromStr("KEENTALKING"), RIGHT) );
-    msgs.push_back( new CMessageBoxBitmapGalaxy(elder_text[2], gGraphics.getBitmapFromId(104), LEFT) );
-    msgs.push_back( new CMessageBoxBitmapGalaxy(elder_text[3], *gGraphics.getBitmapFromStr("KEENTALKING"), RIGHT) );
+    msgs.push_back( new CMessageBoxBitmapGalaxy(elder_text[0],
+                    gGraphics.getBitmapFromId(104), LEFT, false) );
+    msgs.push_back( new CMessageBoxBitmapGalaxy(elder_text[1],
+                    *gGraphics.getBitmapFromStr("KEENTALKING"), RIGHT, false) );
+    msgs.push_back( new CMessageBoxBitmapGalaxy(elder_text[2],
+                    gGraphics.getBitmapFromId(104), LEFT, false) );
+    msgs.push_back( new CMessageBoxBitmapGalaxy(elder_text[3],
+                    *gGraphics.getBitmapFromStr("KEENTALKING"), RIGHT, false) );
 
     showMsgVec( msgs );
 
@@ -201,7 +205,8 @@ void CCouncilMember::getTouchedBy(CSpriteObject &theObject)
 
         std::vector<CMessageBoxGalaxy*> msgs;
 
-        msgs.push_back( new CMessageBoxBitmapGalaxy(elder_text[0], gGraphics.getBitmapFromId(104), LEFT) );
+        msgs.push_back( new CMessageBoxBitmapGalaxy(elder_text[0],
+                        gGraphics.getBitmapFromId(104), LEFT, false) );
 
 		rescuedelders++;
 		
@@ -209,11 +214,12 @@ void CCouncilMember::getTouchedBy(CSpriteObject &theObject)
 		{
             msgs.push_back( new CMessageBoxBitmapGalaxy(elder_text[1],
                                     *gGraphics.getBitmapFromStr("KEENTHUMBSUP"),
-                                    RIGHT) );
+                                    RIGHT, false) );
 
 
             msgs.push_back( new CMessageBoxBitmapGalaxy(gBehaviorEngine.getString(answermap[8]),
-                            *gGraphics.getBitmapFromStr("KEENTHUMBSUP"), RIGHT) );
+                            *gGraphics.getBitmapFromStr("KEENTHUMBSUP"),
+                            RIGHT,false) );
 
             gEventManager.add(new OpenComputerWrist(4));
             gEventManager.add(new EventEndGamePlay());

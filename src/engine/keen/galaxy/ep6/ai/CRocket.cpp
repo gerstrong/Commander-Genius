@@ -145,23 +145,24 @@ void CRocket::getTouchedBy(CSpriteObject& theObject)
 	if(getActionNumber(A_ROCKET_FLY))
 		return;
 
-	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
-	{
-	    if(player->m_Inventory.Item.m_special.rocketKeycard > 0)
-	    {
-		setAction(A_ROCKET_FLY);
-		playSound(SOUND_ROCKET_LAUNCH);
-		mpCarriedPlayer = player;
-		mpCarriedPlayer->solid = false;
-		mpCarriedPlayer->dontdraw = true;
-	    }
-	    else
-	    {
-		    // Tell the player he cannot climb yet
-            showMsgWithBmp(gBehaviorEngine.getString("KEEN_KEYCARD_REQUIRED"), 29, RIGHT);
-		    player->moveYDir((1<<CSF)/2);		
-	    }
-	}
+    if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
+    {
+        if(player->m_Inventory.Item.m_special.rocketKeycard > 0)
+        {
+            setAction(A_ROCKET_FLY);
+            playSound(SOUND_ROCKET_LAUNCH);
+            mpCarriedPlayer = player;
+            mpCarriedPlayer->solid = false;
+            mpCarriedPlayer->dontdraw = true;
+        }
+        else
+        {
+            // Tell the player he cannot climb yet
+            showMsgWithBmp(gBehaviorEngine.getString("KEEN_KEYCARD_REQUIRED"),
+                           29, RIGHT, false);
+            player->moveYDir((1<<CSF)/2);
+        }
+    }
 }
 
 void CRocket::process()

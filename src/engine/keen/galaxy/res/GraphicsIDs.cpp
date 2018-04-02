@@ -27,8 +27,14 @@ void CEGAGraphicsGalaxy::createBitmapsIDs()
     m_BitmapNameMap[0][102] = "STARWARS";
 	m_BitmapNameMap[0][103] = "TITLE";
 	m_BitmapNameMap[0][105] = "KEENTALKING";
-	m_BitmapNameMap[0][106] = "KEENTHUMBSUP";
-	m_SpriteNameMap[0][129] = "HUDBACKGROUND";
+    m_BitmapNameMap[0][106] = "KEENTHUMBSUP";
+    m_BitmapNameMap[0][109] = "KEENTHUMBSUPLOADING";
+    m_BitmapNameMap[0][110] = "KEENTHUMBSUPLOADING1";
+    m_BitmapNameMap[0][111] = "KEENTHUMBSUPLOADING2";
+    m_BitmapNameMap[0][112] = "KEENTHUMBSUPLOADING3";
+    m_BitmapNameMap[0][113] = "KEENTHUMBSUPLOADING4";
+    m_BitmapNameMap[0][114] = "KEENTHUMBSUPLOADING5";
+    m_SpriteNameMap[0][129] = "HUDBACKGROUND";
 
 	// Menu Labels
 	m_BitmapNameMap[0][82] = "MAINMENULABEL";
@@ -58,6 +64,13 @@ void CEGAGraphicsGalaxy::createBitmapsIDs()
 	m_BitmapNameMap[1][82] = "TITLE";
 	m_BitmapNameMap[1][76] = "KEENSWATCH";
 	m_BitmapNameMap[1][85] = "KEENTHUMBSUP";
+    m_BitmapNameMap[1][86] = "KEENTHUMBSUPLOADING";
+    m_BitmapNameMap[1][87] = "KEENTHUMBSUPLOADING1";
+    m_BitmapNameMap[1][88] = "KEENTHUMBSUPLOADING2";
+    m_BitmapNameMap[1][89] = "KEENTHUMBSUPLOADING3";
+    m_BitmapNameMap[1][90] = "KEENTHUMBSUPLOADING4";
+    m_BitmapNameMap[1][91] = "KEENTHUMBSUPLOADING5";
+
 	
 	// Sprites
 	m_SpriteNameMap[1][133] = "HUDBACKGROUND";
@@ -69,6 +82,13 @@ void CEGAGraphicsGalaxy::createBitmapsIDs()
 	m_BitmapNameMap[2][20] = "KEENSWATCH";
 	m_BitmapNameMap[2][29] = "KEENTALKING";
 	m_BitmapNameMap[2][30] = "KEENTHUMBSUP";
+    m_BitmapNameMap[2][31] = "KEENTHUMBSUPLOADING";
+    m_BitmapNameMap[2][32] = "KEENTHUMBSUPLOADING1";
+    m_BitmapNameMap[2][33] = "KEENTHUMBSUPLOADING2";
+    m_BitmapNameMap[2][34] = "KEENTHUMBSUPLOADING3";
+    m_BitmapNameMap[2][35] = "KEENTHUMBSUPLOADING4";
+    m_BitmapNameMap[2][36] = "KEENTHUMBSUPLOADING5";
+
     m_BitmapNameMap[2][0] = "HELPHAND";
 	
 	// Sprites
@@ -81,6 +101,13 @@ void CEGAGraphicsGalaxy::createBitmapsIDs()
 	m_BitmapNameMap[3][15] = "KEENSWATCH";
 	m_BitmapNameMap[3][24] = "KEENTALKING";
 	m_BitmapNameMap[3][25] = "KEENTHUMBSUP";
+    m_BitmapNameMap[3][26] = "KEENTHUMBSUPLOADING";
+    m_BitmapNameMap[3][27] = "KEENTHUMBSUPLOADING1";
+    m_BitmapNameMap[3][28] = "KEENTHUMBSUPLOADING2";
+    m_BitmapNameMap[3][29] = "KEENTHUMBSUPLOADING3";
+    m_BitmapNameMap[3][30] = "KEENTHUMBSUPLOADING4";
+    m_BitmapNameMap[3][31] = "KEENTHUMBSUPLOADING5";
+
     // The following is not right for k6demo, but here as a placeholder:
     m_BitmapNameMap[3][0] = "HELPHAND";
 	
