@@ -113,7 +113,17 @@ bool CSDLVideo::resizeDisplayScreen(const GsRect<Uint16>& newDim)
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     if(renderer != nullptr)
     {
-        SDL_RenderSetLogicalSize(renderer, mActiveAreaRect.w, mActiveAreaRect.h);
+
+        SDL_RenderSetLogicalSize(renderer,
+                                 mActiveAreaRect.w,
+                                 mActiveAreaRect.h);
+
+/*
+        SDL_RenderSetLogicalSize(renderer,
+                                 mActiveAreaRect.w*2,
+                                 mActiveAreaRect.h*2);
+*/
+
         SDL_RenderSetViewport(renderer, nullptr);
     }
 #else
@@ -232,7 +242,16 @@ void CSDLVideo::transformScreenToDisplay()
                            255);
 
 
-    // TODO:
+    //SDL_Point midPt;
+
+    const Vector2D<int> rotPt(mActiveAreaRect.x+mActiveAreaRect.w/2,
+                              mActiveAreaRect.y+mActiveAreaRect.h/2);
+
+    /*midPt.x = rotPt.x;
+    midPt.y = rotPt.y;*/
+
+
+
     auto RenderCopy = [&] (SDL_Renderer * local_renderer,
                            SDL_Texture * local_texture,
                            const SDL_Rect * local_srcrect,
@@ -264,8 +283,7 @@ void CSDLVideo::transformScreenToDisplay()
     mainDstrect.x = mActiveAreaRect.x;
     mainDstrect.y = mActiveAreaRect.y;
     mainDstrect.w = mActiveAreaRect.w;
-    mainDstrect.h = mActiveAreaRect.h;
-
+    mainDstrect.h = mActiveAreaRect.h;   
 
     RenderCopy(renderer, mpMainScreenTexture.get(), nullptr, &mainDstrect);
 
@@ -281,8 +299,6 @@ void CSDLVideo::transformScreenToDisplay()
         const GsRect<Uint16> &dst = std::get<2>(triple);
 
 
-        // TODO: Tilt here!
-
         if(src.empty())
         {
             if(dst.empty())
@@ -296,6 +312,11 @@ void CSDLVideo::transformScreenToDisplay()
                 // Transfrom the coordinates for the final screen.
                 dstSDL.y += mActiveAreaRect.y;
                 dstSDL.x += mActiveAreaRect.x;
+
+                if(tiltVideo)
+                {
+                    dstSDL = tilt(dstSDL, rotPt).SDLRect();
+                }
 
                 RenderCopy(renderer, texture, nullptr, &dstSDL);
             }
@@ -316,7 +337,6 @@ void CSDLVideo::transformScreenToDisplay()
 
         mRenderTexturePtrs.pop();
     }
-
 
     SDL_RenderPresent(renderer);
 

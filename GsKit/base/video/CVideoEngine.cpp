@@ -171,8 +171,20 @@ void CVideoEngine::updateActiveArea(const GsRect<Uint16>& displayRes,
         mActiveAreaRect.w = displayRes.w;
         mActiveAreaRect.h = (displayRes.w*aspHeight)/aspWidth;
     }
+
+/*
     mActiveAreaRect.x = (displayRes.w-mActiveAreaRect.w)/2;
     mActiveAreaRect.y = (displayRes.h-mActiveAreaRect.h)/2;
+*/
+
+    mActiveAreaRect.x = (displayRes.w-mActiveAreaRect.w)/2;
+    mActiveAreaRect.y = (displayRes.h-mActiveAreaRect.h)/2;
+
+
+/*
+    mActiveAreaRect.x = 0;
+    mActiveAreaRect.y = 0;
+*/
 }
 
 
