@@ -392,11 +392,12 @@ void GalaxyEngine::pumpEvent(const CEvent *evPtr)
             gEventManager.add(new GMSwitchToGameLauncher);
         }
     }
-    else if( const NewGamePlayersEvent* pNewGame = dynamic_cast<const NewGamePlayersEvent*>(evPtr) )
+    else if( const NewGamePlayersEvent* pNewGame =
+             dynamic_cast<const NewGamePlayersEvent*>(evPtr) )
     {
         gBehaviorEngine.mPlayers = pNewGame->mSelection;
 
-        //if(gBehaviorEngine.mPlayers > 1)
+        if(gBehaviorEngine.mPlayers > 1)
         {
             // Ensure the Sprite variations are correctly setup
             mSpriteVars.clear();
@@ -405,15 +406,15 @@ void GalaxyEngine::pumpEvent(const CEvent *evPtr)
                 mSpriteVars.push_back(i);
             }
 
-            //mSpriteVars.assign(1, pStart->mSprite);
             gEventManager.add( new OpenMenuEvent(
                                    new CDifficultySelection(
                                        GsControl::Style::GALAXY)) );
         }
-        /*else
+        else
         {
-            gEventManager.add( new OpenMenuEvent(new CPlayerSpriteVarSelection) );
-        }*/
+            gEventManager.add( new OpenMenuEvent(
+                                   new CPlayerSpriteVarSelection(GsControl::Style::GALAXY)) );
+        }
         return;
     }        
     else if( const SelectPlayerSpriteVarEvent* pStart =
