@@ -4,9 +4,10 @@
 #include <base/utils/StringUtils.h>
 #include <widgets/GsMenuController.h>
 
-#include "engine/core/CResourceLoader.h"
 #include "GalaxyEngine.h"
+#include "engine/core/CResourceLoader.h"
 #include "engine/core/CBehaviorEngine.h"
+#include "engine/core/menu/MainMenu.h"
 #include "engine/CGameLauncher.h"
 #include "fileio/CPatcher.h"
 #include "fileio/CSaveGameController.h"
@@ -19,7 +20,7 @@
 
 #include "menu/MainMenu.h"
 #include "menu/SelectionMenu.h"
-#include "menu/ControlSettings.h"
+#include "engine/core/menu/ControlSettings.h"
 #include "menu/ComputerWrist.h"
 #include "res/CAudioGalaxy.h"
 #include <base/video/CVideoDriver.h>
@@ -156,7 +157,9 @@ void GalaxyEngine::openMainMenu()
     }
 
 
-    gEventManager.add( new OpenMenuEvent( new MainMenu(mOpenedGamePlay) ) );
+    gEventManager.add( new OpenMenuEvent(
+                           new MainMenu(mOpenedGamePlay,
+                                        GsControl::GALAXY) ) );
 
     gEffectController.setupEffect( new CColorMerge(16) );
 }
@@ -352,6 +355,8 @@ void GalaxyEngine::pumpEvent(const CEvent *evPtr)
 {
     KeenEngine::pumpEvent(evPtr);
 
+    const auto style = GsControl::GALAXY;
+
     if( dynamic_cast<const FinishedLoadingResources*>(evPtr) )
     {
         const auto argLevel = gArgs.getValue("level");
@@ -401,7 +406,9 @@ void GalaxyEngine::pumpEvent(const CEvent *evPtr)
             }
 
             //mSpriteVars.assign(1, pStart->mSprite);
-            gEventManager.add( new OpenMenuEvent(new CDifficultySelection) );
+            gEventManager.add( new OpenMenuEvent(
+                                   new CDifficultySelection(
+                                       GsControl::Style::GALAXY)) );
         }
         /*else
         {
@@ -409,30 +416,37 @@ void GalaxyEngine::pumpEvent(const CEvent *evPtr)
         }*/
         return;
     }        
-    else if( const SelectPlayerSpriteVarEvent* pStart = dynamic_cast<const SelectPlayerSpriteVarEvent*>(evPtr) )
+    else if( const SelectPlayerSpriteVarEvent* pStart =
+             dynamic_cast<const SelectPlayerSpriteVarEvent*>(evPtr) )
     {
         mSpriteVars.assign(1, pStart->mSprite);
-        gEventManager.add( new OpenMenuEvent(new CDifficultySelection) );
+        gEventManager.add( new OpenMenuEvent(
+                               new CDifficultySelection(GsControl::Style::GALAXY)) );
         return;
     }
     // Control Menu Events
-    else if( const OpenMovementControlMenuEvent* ctrlMenu = dynamic_cast<const OpenMovementControlMenuEvent*>(evPtr) )
+    else if( const OpenMovementControlMenuEvent* ctrlMenu =
+             dynamic_cast<const OpenMovementControlMenuEvent*>(evPtr) )
     {
         const int players = ctrlMenu->mSelection;
         gEventManager.add( new OpenMenuEvent(
-                                new CControlSettingsMovement(players) ) );
+                                new CControlSettingsMovement(players,
+                                                             GsControl::Style::GALAXY) ) );
     }
-    else if( const OpenButtonsControlMenuEvent* ctrlMenu = dynamic_cast<const OpenButtonsControlMenuEvent*>(evPtr) )
+    else if( const OpenButtonsControlMenuEvent* ctrlMenu =
+             dynamic_cast<const OpenButtonsControlMenuEvent*>(evPtr) )
     {
         const int players = ctrlMenu->mSelection;
         gEventManager.add( new OpenMenuEvent(
-                                new CControlSettingsButtons(players) ) );
+                                new CControlSettingsButtons(players,
+                                                            GsControl::Style::GALAXY) ) );
     }
-    else if( const OpenControlMenuEvent* ctrlMenu = dynamic_cast<const OpenControlMenuEvent*>(evPtr) )
+    else if( const OpenControlMenuEvent* ctrlMenu =
+             dynamic_cast<const OpenControlMenuEvent*>(evPtr) )
     {
         const int players = ctrlMenu->mSelection;
         gEventManager.add( new OpenMenuEvent(
-                                new CControlsettings(players) ) );
+                                new CControlsettings(players, style) ) );
     }
     else if( const GMSwitchToPlayGameMode* pPlayGame = dynamic_cast<const GMSwitchToPlayGameMode*>(evPtr) )
     {

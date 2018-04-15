@@ -10,7 +10,7 @@
 
 #include "VorticonMenu.h"
 
-
+/*
 namespace vorticon
 {
 
@@ -29,5 +29,5 @@ private:
 };
 
 }
-
+*/
 #endif /* CSAVEMENU_H_ */

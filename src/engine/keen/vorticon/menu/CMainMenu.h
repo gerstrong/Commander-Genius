@@ -11,7 +11,7 @@
 
 #ifndef _VORTICON_MAINMENU_H_
 #define _VORTICON_MAINMENU_H_
-
+/*
 namespace vorticon
 {
 
@@ -26,5 +26,5 @@ public:
 struct OpenMainMenuEvent : public CEvent {};
 
 }
-
+*/
 #endif /* _VORTICON_MAINMENU_H_ */

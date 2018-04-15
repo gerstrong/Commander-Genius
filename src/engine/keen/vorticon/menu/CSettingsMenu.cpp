@@ -21,7 +21,7 @@
 #include "CSelectionMenu.h"
 
 #include "widgets/Button.h"
-
+/*
 namespace vorticon
 {
 
@@ -57,3 +57,4 @@ VorticonMenu( GsRect<float>(0.25f, 0.24f, 0.5f, 0.32f) )
 }
 
 }
+*/

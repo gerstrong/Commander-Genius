@@ -32,8 +32,7 @@ target_link_libraries(engine
                       engine_keen_galaxy  
 		      engine_keen_vorticon
 		      engine_keen_dreams
-                      engine_core
-                      GsKit 
+                      engine_core                       
                       cg_dialog
                       unzip)
 

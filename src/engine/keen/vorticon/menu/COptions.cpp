@@ -9,7 +9,7 @@
 #include <base/CInput.h>
 #include "engine/core/CBehaviorEngine.h"
 #include "engine/core/CSettings.h"
-
+/*
 namespace vorticon
 {
 
@@ -55,3 +55,4 @@ void COptions::release()
 }
 
 }
+*/

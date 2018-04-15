@@ -8,20 +8,15 @@
 #ifndef CLOADMENU_H_
 #define CLOADMENU_H_
 
-#include "GalaxyMenu.h"
+#include "GameMenu.h"
 
 
-namespace galaxy
-{
-
-class CLoadMenu : public GalaxyMenu
+class CLoadMenu : public GameMenu
 {
 public:
-	CLoadMenu();
+        CLoadMenu(const GsControl::Style &style);
 
     void refresh();
 };
-
-}
 
 #endif /* CLOADMENU_H_ */

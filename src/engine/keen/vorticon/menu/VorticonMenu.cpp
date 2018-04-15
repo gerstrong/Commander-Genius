@@ -1,7 +1,7 @@
 #include <graphics/GsGraphics.h>
 
 #include "VorticonMenu.h"
-
+/*
 void VorticonMenu::initVorticonBackground()
 {
     GsRect<float> rect = mpMenuDialog->getRect();
@@ -41,3 +41,4 @@ void VorticonMenu::render()
 
     CBaseMenu::render();
 }
+*/

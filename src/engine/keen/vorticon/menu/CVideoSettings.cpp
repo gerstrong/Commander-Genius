@@ -18,7 +18,7 @@
 #include "engine/core/CSettings.h"
 #include "engine/core/videoAspect.h"
 
-
+/*
 namespace vorticon
 {
 
@@ -303,3 +303,4 @@ void CVideoSettings::release()
 }
 
 }
+*/

@@ -3,8 +3,6 @@
 
 #include <widgets/GsNumberControl.h>
 
-namespace galaxy
-{
 
 class NumberControl : public CGUINumberControl
 {
@@ -13,7 +11,9 @@ public:
                   const int startValue,
                   const int endValue,
                   const int deltaValue,
-                  const int value);
+                  const int value,
+                  const bool slider,
+                  const GsControl::Style style);
 
     void setupButtonSurface();
 
@@ -21,7 +21,5 @@ public:
 
     void processRender(const GsRect<float> &RectDispCoordFloat);
 };
-
-}
 
 #endif // __NUMBERCONTROL_H__

@@ -16,8 +16,6 @@
 #include <string>
 
 
-namespace galaxy
-{
 
 /**
  * \brief This sets the default settings for a classic gameplay
@@ -74,17 +72,18 @@ public:
 	}
 };
 
-CProfilesMenu::CProfilesMenu() :
-GalaxyMenu( GsRect<float>(0.25f, 0.4f, 0.5f, 0.2f) )
+CProfilesMenu::CProfilesMenu(const GsControl::Style style) :
+GameMenu( GsRect<float>(0.25f, 0.4f, 0.5f, 0.2f), style )
 {
-    mpMenuDialog->addControl(new GalaxyButton( "Classic mode",
-										     new SetDefaultClassic() ) );
+    mpMenuDialog->addControl(new GameButton( "Classic mode",
+                                             new SetDefaultClassic(),
+                                             style) );
 
-    mpMenuDialog->addControl(new GalaxyButton( "Enhanced mode",
-										     new SetDefaultEnhanced() ) );
+    mpMenuDialog->addControl(new GameButton( "Enhanced mode",
+                                             new SetDefaultEnhanced(),
+                                             style) );
 
 	setMenuLabel("OPTIONSMENULABEL");
 }
 
 
-}

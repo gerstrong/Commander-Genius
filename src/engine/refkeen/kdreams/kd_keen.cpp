@@ -2047,6 +2047,7 @@ void	KeenDropThink		(objtype *ob)
 		ob->state = &s_keenpole;
 		ob->ydir = 0;
 		break;
+    default: break;
 	}
 
 	PoleActions (ob);

@@ -9,11 +9,11 @@
 #include <base/CInput.h>
 #include "engine/core/CSettings.h"
 
-namespace galaxy
-{
 
-COptions::COptions() :
-GalaxyMenu( GsRect<float>(0.1f, 0.14f, 0.8f, gBehaviorEngine.mOptions.size()*0.07f) )
+COptions::COptions(const GsControl::Style style) :
+GameMenu( GsRect<float>(0.1f, 0.14f, 0.8f,
+                        gBehaviorEngine.mOptions.size()*0.07f),
+                        style)
 {
     for( const auto &option :  gBehaviorEngine.mOptions )
 	{
@@ -38,7 +38,7 @@ void COptions::refresh()
 
 void COptions::ponder(const float deltaT)
 {
-    GalaxyMenu::ponder(0);
+    GameMenu::ponder(0);
 
     auto it = mpOptionList.begin();
 
@@ -54,4 +54,3 @@ void COptions::release()
 	gSettings.saveGameOptions();
 }
 
-}

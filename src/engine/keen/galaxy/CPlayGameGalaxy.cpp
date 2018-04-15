@@ -26,6 +26,7 @@
 #include "common/ai/CPlayerLevel.h"
 #include "common/ai/CPlayerWM.h"
 #include "engine/core/VGamepads/vgamepadsimple.h"
+#include "engine/core/menu/MainMenu.h"
 #include "menu/MainMenu.h"
 
 #include <fileio/KeenFiles.h>

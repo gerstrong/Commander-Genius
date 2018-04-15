@@ -19,9 +19,12 @@
 #include "engine/core/menu/GameMenu.h"
 #include "fileio/KeenFiles.h"
 #include "fileio/ResourceMgmt.h"
+#include "engine/keen/KeenEngine.h"
+
 
 #include <base/utils/StringUtils.h>
 #include <base/utils/FindFile.h>
+
 
 struct SelectionEvent : CEvent
 {

@@ -3,17 +3,14 @@
 
 #include "Button.h"
 
-namespace galaxy
-{
-
-class BorderedButton : public GalaxyButton
+class BorderedButton : public GameButton
 {
 public:
-    BorderedButton(const std::string& text, CEvent *ev);
+    BorderedButton(const std::string& text, CEvent *ev,
+                   const GsControl::Style style);
 
     void processRender(const GsRect<float> &RectDispCoordFloat);
 };
 
-}
 
 #endif // __GALAXY_BORDEREDBUTTON_H__

@@ -22,7 +22,7 @@
 
 #include "widgets/Button.h"
 
-
+/*
 namespace vorticon
 {
 
@@ -90,3 +90,4 @@ VorticonMenu( GsRect<float>(0.25f, 0.23f, 0.5f, 0.5f) )
 
 }
 
+*/

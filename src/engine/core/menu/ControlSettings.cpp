@@ -7,7 +7,7 @@
 
 #include <base/utils/StringUtils.h>
 
-#include "GalaxyMenu.h"
+
 #include "SelectionMenu.h"
 #include "ControlSettings.h"
 #include "engine/core/CBehaviorEngine.h"
@@ -15,9 +15,6 @@
 #include <base/CInput.h>
 
 
-
-namespace galaxy
-{
 
 /**
  * \brief This sets the default settings for a classic gameplay
@@ -76,16 +73,17 @@ public:
 
 
 
-CControlsettings::CControlsettings( const int selectedPlayer ) :
-GalaxyMenu( GsRect<float>(0.1f, 0.25f, 0.8f, 0.5f) ),
+CControlsettings::CControlsettings(const int selectedPlayer ,
+                                   const GsControl::Style style) :
+GameMenu( GsRect<float>(0.1f, 0.25f, 0.8f, 0.5f), style ),
 mSelectedPlayer(selectedPlayer)
 {
-	GsButton *button;
+    GameButton *button;
 
-    button = new GalaxyButton( "Movement", new OpenMovementControlMenuEvent(mSelectedPlayer) );
+    button = new GameButton( "Movement", new OpenMovementControlMenuEvent(mSelectedPlayer), style );
 	mpMenuDialog->addControl( button );
 
-    button = new GalaxyButton( "Buttons", new OpenButtonsControlMenuEvent(mSelectedPlayer) );
+    button = new GameButton( "Buttons", new OpenButtonsControlMenuEvent(mSelectedPlayer), style );
 	mpMenuDialog->addControl( button );
 
     mpTwoButtonSwitch = new Switch( "Two Button Fire" );
@@ -108,7 +106,7 @@ mSelectedPlayer(selectedPlayer)
 	mpMenuDialog->addControl( mpSuperPogoSwitch );
 	mpMenuDialog->addControl( mpImpPogoSwitch );
 	mpMenuDialog->addControl( mpAutoGunSwitch );
-    mpMenuDialog->addControl( new GalaxyButton( "Reset Controls", new ResetInputEvent(mSelectedPlayer-1) ) );
+    mpMenuDialog->addControl( new GameButton( "Reset Controls", new ResetInputEvent(mSelectedPlayer-1), style ) );
     
     setMenuLabel("KEYBMENULABEL");
 
@@ -131,8 +129,8 @@ void CControlsettings::release()
 
 
 // Movements Parts of the Control Settings
-CControlSettingsBase::CControlSettingsBase(const int selectedPlayer) :
-GalaxyMenu( GsRect<float>(0.01f, (1.0f-((MAX_COMMANDS/2.0f)+2)*0.06f)*0.5f, 0.98f,(MAX_COMMANDS/2.0f+2)*0.06f) ),
+CControlSettingsBase::CControlSettingsBase(const int selectedPlayer, const GsControl::Style style) :
+GameMenu( GsRect<float>(0.01f, (1.0f-((MAX_COMMANDS/2.0f)+2)*0.06f)*0.5f, 0.98f,(MAX_COMMANDS/2.0f+2)*0.06f), style ),
 mSelectedPlayer(selectedPlayer)
 {}
 
@@ -159,7 +157,7 @@ void CControlSettingsBase::ponder(const float deltaT)
             mpButtonList[pos]->setText(mCommandName[com] + evName);
         }
 
-        GalaxyMenu::ponder(0);
+        //GameButton::ponder(0);
     }
 }
 
@@ -195,7 +193,7 @@ void CControlSettingsMovement::refresh()
 		const std::string buf2 = gInput.getEventShortName( it->first, mSelectedPlayer-1 );
 
 		ReadInputEvent *rie = new ReadInputEvent(mSelectedPlayer, it->first, it->second);
-        GalaxyButton	*guiButton = new GalaxyButton( buf+buf2, rie );
+        auto	*guiButton = new GameButton( buf+buf2, rie, Style() );
 		rie->setButtonPtr(guiButton);
 
 		mpButtonList.push_back( guiButton );
@@ -230,7 +228,7 @@ void CControlSettingsButtons::refresh()
 		const std::string buf2 = gInput.getEventShortName( it->first, mSelectedPlayer-1 );
 
 		ReadInputEvent *rie = new ReadInputEvent(mSelectedPlayer, it->first, it->second);
-        GalaxyButton	*guiButton = new GalaxyButton( buf+buf2, rie );
+        auto	*guiButton = new GameButton( buf+buf2, rie, Style() );
 		rie->setButtonPtr(guiButton);
 
 
@@ -242,5 +240,3 @@ void CControlSettingsButtons::refresh()
 	setMenuLabel("BUTTONMENULABEL");
 }
 
-
-}

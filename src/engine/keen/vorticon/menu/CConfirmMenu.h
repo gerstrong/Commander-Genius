@@ -11,7 +11,7 @@
 #include "VorticonMenu.h"
 
 #include <string>
-
+/*
 class CConfirmMenu : public VorticonMenu
 {
 public:
@@ -22,5 +22,5 @@ private:
 	std::string m_question;
 	bool &m_to_be_confirmed;
 };
-
+*/
 #endif /* CCONFIRMMENU_H_ */

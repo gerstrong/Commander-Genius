@@ -1,19 +1,15 @@
 #ifndef CHEATSMENU_H
 #define CHEATSMENU_H
 
-#include "GalaxyMenu.h"
+#include "engine/core/menu/GameMenu.h"
 
 #include "widgets/Switch.h"
 
-namespace galaxy
-{
 
-
-
-class CheatsMenu : public GalaxyMenu
+class CheatsMenu : public GameMenu
 {
 public:
-    CheatsMenu();
+    CheatsMenu(const GsControl::Style style);
 
     void init();
 
@@ -30,6 +26,5 @@ private:
     Switch		*mpItemsSwitch;
 };
 
-}
 
 #endif // CHEATSMENU_H

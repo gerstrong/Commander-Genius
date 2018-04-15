@@ -7,7 +7,7 @@
 
 #ifndef CCONTROLSETTINGS_H_
 #define CCONTROLSETTINGS_H_
-
+/*
 #include "VorticonMenu.h"
 
 #include <base/utils/StringUtils.h>
@@ -115,6 +115,6 @@ struct OpenMovementControlMenuEvent : OpenControlMenuEvent
 };
 
 }
-
+*/
 
 #endif /* CCONTROLSETTINGS_H_ */

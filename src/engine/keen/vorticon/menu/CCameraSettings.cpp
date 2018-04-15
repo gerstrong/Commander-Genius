@@ -11,7 +11,7 @@
 #include "engine/core/CBehaviorEngine.h"
 #include "engine/core/CSettings.h"
 #include <base/utils/StringUtils.h>
-
+/*
 namespace vorticon
 {
 
@@ -68,3 +68,4 @@ void CCameraSettings::release()
 }
 
 }
+*/

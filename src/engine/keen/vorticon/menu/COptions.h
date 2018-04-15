@@ -13,7 +13,7 @@
 #include <list>
 
 #include "engine/core/CBehaviorEngine.h"
-
+/*
 namespace vorticon
 {
 
@@ -33,5 +33,5 @@ private:
 };
 
 }
-
+*/
 #endif /* COPTIONS_H_ */

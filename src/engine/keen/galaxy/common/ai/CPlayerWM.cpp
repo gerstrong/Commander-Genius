@@ -149,7 +149,7 @@ void CPlayerWM::pumpEvent(const CEvent *evPtr)
     // Events for the Player are processed here.
     if( const EventPlayerEndLevel* ev = dynamic_cast<const EventPlayerEndLevel*>(evPtr) )
     {
-        if(ev->who == mSpecialIdx)
+        if(ev->who == mSprVar)
         {            
             gEventManager.flush();
             if(ev->sucess)

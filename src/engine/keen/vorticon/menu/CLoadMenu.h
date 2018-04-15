@@ -9,7 +9,7 @@
 #define CLOADMENU_H_
 
 #include "VorticonMenu.h"
-
+/*
 namespace vorticon
 {
 
@@ -22,5 +22,5 @@ public:
 };
 
 }
-
+*/
 #endif /* CLOADMENU_H_ */

@@ -12,7 +12,7 @@
 #include "widgets/NumberControl.h"
 
 #include <base/video/CVidConfig.h>
-
+/*
 namespace vorticon
 {
 
@@ -37,5 +37,5 @@ private:
 };
 
 }
-
+*/
 #endif /* CCAMERASETTINGS_H_ */

@@ -9,7 +9,7 @@
 #define CHELPMENU_H_
 
 #include "VorticonMenu.h"
-
+/*
 namespace vorticon
 {
 
@@ -20,5 +20,5 @@ public:
 };
 
 }
-
+*/
 #endif /* CHELPMENU_H_ */

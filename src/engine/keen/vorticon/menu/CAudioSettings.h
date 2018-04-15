@@ -16,7 +16,7 @@
 #include "fileio/CExeFile.h"
 #include <SDL.h>
 #include <string>
-
+/*
 namespace vorticon
 {
 
@@ -49,5 +49,5 @@ private:
 };
 
 }
-
+*/
 #endif /* __VORTICON_AUDIOSETTINGS_H_ */

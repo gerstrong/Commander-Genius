@@ -158,7 +158,7 @@ bool CGameLauncher::setupMenu()
                                              0.75f,
                                              0.75f ),
                                GsRect<float>(0.0f, 0.0f, 0.069f, 0.069f) );
-
+/*
     mLauncherDialog.addControl(new GsButton( "|", new OpenSettingsMenuEvent(),
                                              GsControl::Style::NONE,
                                              0.75f,
@@ -166,7 +166,7 @@ bool CGameLauncher::setupMenu()
                                              1.0f ),
                                GsRect<float>(0.93f, 0.0f, 0.069f, 0.069f) );
 
-
+*/
 
     mLauncherDialog.addControl(mpGameSelectionList,
                                GsRect<float>(0.01f, 0.07f, 0.49f, 0.79f));

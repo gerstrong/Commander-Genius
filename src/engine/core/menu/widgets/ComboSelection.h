@@ -3,15 +3,12 @@
 
 #include <widgets/GsComboSelection.h>
 
-namespace galaxy
-{
-
-
 class ComboSelection : public CGUIComboSelection
 {
 public:
     ComboSelection( const std::string& text,
-                    const std::list<std::string>& optionsList );
+                    const std::list<std::string>& optionsList,
+                    const Style &style);
 
     void cycleOption();
 
@@ -21,7 +18,5 @@ public:
 
     void processRender(const GsRect<float> &RectDispCoordFloat);
 };
-
-}
 
 #endif // __COMBOSELECTION_H__

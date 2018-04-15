@@ -7,8 +7,8 @@
 
 #include <base/video/CVideoDriver.h>
 #include <base/CInput.h>
-#include <widgets/GsMenuController.h>
 #include <base/video/GsEffectController.h>
+#include <widgets/GsMenuController.h>
 
 
 #include "CPassive.h"
@@ -19,6 +19,7 @@
 #include "sdl/audio/music/CMusic.h"
 
 #include "engine/core/VGamepads/vgamepadsimple.h"
+#include "engine/core/menu/MainMenu.h"
 
 
 

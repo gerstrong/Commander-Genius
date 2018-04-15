@@ -22,6 +22,7 @@
 /**
  * \brief This sets the default settings for a classic gameplay
  */
+/*
 class SetDefaultClassic : public InvokeFunctorEvent
 {
 public:
@@ -46,11 +47,12 @@ public:
 		gSettings.saveDrvCfg();
 	}
 };
-
+*/
 
 /**
  * \brief This sets the default settings for an enhanced gameplay
  */
+/*
 class SetDefaultEnhanced : public InvokeFunctorEvent
 {
 public:
@@ -88,3 +90,4 @@ VorticonMenu( GsRect<float>(0.25f, 0.4f, 0.5f, 0.2f) )
 }
 
 };
+*/

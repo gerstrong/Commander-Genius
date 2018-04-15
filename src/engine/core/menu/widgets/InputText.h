@@ -1,5 +1,5 @@
-#ifndef GALAXY_INPUTTEXT_H_INCLUDED
-#define GALAXY_INPUTTEXT_H_INCLUDED
+#ifndef INPUTTEXT_H_INCLUDED
+#define INPUTTEXT_H_INCLUDED
 
 #include <widgets/GsInputText.h>
 
@@ -15,4 +15,4 @@ public:
 };
 
 
-#endif // GALAXY_INPUTTEXT_H_INCLUDED
+#endif // INPUTTEXT_H_INCLUDED

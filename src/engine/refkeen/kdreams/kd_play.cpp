@@ -2162,6 +2162,7 @@ void GameLoopOpen()
         case victorious:
             GameFinale ();
             goto done;
+        default: break;
         }
 
 

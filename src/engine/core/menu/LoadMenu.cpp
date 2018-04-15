@@ -19,8 +19,6 @@
 #include "widgets/BorderedButton.h"
 
 
-namespace galaxy
-{
 
 
 struct LoadGameSlotFunctorEvent : public InvokeFunctorEvent
@@ -38,13 +36,15 @@ struct LoadGameSlotFunctorEvent : public InvokeFunctorEvent
 };
 
 
-CLoadMenu::CLoadMenu() :
-GalaxyMenu( GsRect<float>(0.1f, 0.0f, 0.8f, 1.0f) )
+CLoadMenu::CLoadMenu(const GsControl::Style &style) :
+GameMenu( GsRect<float>(0.1f, 0.0f, 0.8f, 1.0f),
+          style)
 {
     for( int j = 0 ; j<8 ; j++ )
 	{
         GsButton *button = new BorderedButton( "Empty",
-                                new LoadGameSlotFunctorEvent(j));
+                                               new LoadGameSlotFunctorEvent(j),
+                                               style);
         mpMenuDialog->addControl( button,
                                   GsRect<float>(
                                       0.0f, 0.1f+(j*0.1f), 0.8f, 0.1f) );
@@ -97,9 +97,5 @@ void CLoadMenu::refresh()
         button->enable( false );
         itCtrl++;
     }
-
-}
-
-
 
 }

@@ -8,15 +8,13 @@
 #ifndef CSAVEMENU_H_
 #define CSAVEMENU_H_
 
-#include "CConfirmMenu.h"
+//#include "CConfirmMenu.h"
+#include "GameMenu.h"
 
-namespace galaxy
-{
-
-class CSaveMenu : public GalaxyMenu
+class CSaveMenu : public GameMenu
 {
 public:
-	CSaveMenu();
+    CSaveMenu(const GsControl::Style &style);
     void refresh();
     void processSpecific(){}
     void ponder(const float deltaT);
@@ -27,7 +25,5 @@ public:
 private:
     bool m_overwrite = false;
 };
-
-}
 
 #endif /* CSAVEMENU_H_ */

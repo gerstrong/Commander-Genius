@@ -48,12 +48,12 @@ void CGameLauncher::verifyGameStore()
         GsButton *downloadBtn = new GsButton( "+ More", new GMDownloadDlgOpen() );
         mLauncherDialog.addControl( downloadBtn, GsRect<float>(0.125f, 0.865f, 0.25f, 0.07f) );
     }
-    else
+    /*else
     {
         GsButton *cataLogBtn = new GsButton( "Catalogue", new GMDownloadDlgOpen() );
         mLauncherDialog.addControl( cataLogBtn, GsRect<float>(0.125f, 0.865f, 0.25f, 0.07f) );
 
-    }
+    }*/
 
     mGameCatalogue = gameDownloader.getGameCatalogue();
 }

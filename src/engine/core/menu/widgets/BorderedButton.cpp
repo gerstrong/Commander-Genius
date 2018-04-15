@@ -4,12 +4,10 @@
 #include <base/video/CVideoDriver.h>
 
 
-namespace galaxy
-{
 
-
-BorderedButton::BorderedButton(const std::string &text, CEvent *ev) :
-GalaxyButton(text, ev)
+BorderedButton::BorderedButton(const std::string &text, CEvent *ev,
+                               const GsControl::Style style) :
+GameButton(text, ev, style)
 {}
 
 
@@ -56,5 +54,3 @@ void BorderedButton::processRender(const GsRect<float> &RectDispCoordFloat)
     }
 }
 
-
-}

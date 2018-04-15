@@ -14,7 +14,7 @@
 #include <widgets/GsMenuController.h>
 
 #include "engine/core/CBehaviorEngine.h"
-#include "CameraSettings.h"
+//#include "CameraSettings.h"
 #include "CVideoSettings.h"
 #include <base/utils/Utils.h>
 

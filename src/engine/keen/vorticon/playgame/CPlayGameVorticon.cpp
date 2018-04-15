@@ -16,7 +16,7 @@
 #include "CPlayGameVorticon.h"
 #include "sdl/audio/Audio.h"
 #include "engine/core/mode/CGameMode.h"
-#include "engine/keen/vorticon/menu/CMainMenu.h"
+#include "engine/core/menu/MainMenu.h"
 #include "../CVorticonMapLoader.h"
 #include "graphics/GsGraphics.h"
 #include "../ai/CTeleporter.h"
@@ -375,7 +375,7 @@ void CPlayGameVorticon::ponder(const float deltaT)
     {
         if( gMenuController.empty() ) // If no menu is open, open the main menu
         {
-            gEventManager.add(new vorticon::OpenMainMenuEvent());
+            gEventManager.add(new OpenMainMenuEvent());
         }
     }
 

@@ -1,15 +1,16 @@
-#ifndef __GALAXYBUTTON_H__
-#define __GALAXYBUTTON_H__
+#ifndef __GameButton_H__
+#define __GameButton_H__
 
 #include <widgets/GsButton.h>
 
-class GalaxyButton : public GsButton
+/*
+class GameButton : public GsButton
 {
 public:
-    GalaxyButton(const std::string& text,
+    GameButton(const std::string& text,
                  CEvent *ev);
 
     virtual void processRender(const GsRect<float> &RectDispCoordFloat);   
-};
+};*/
 
-#endif /* __GALAXYBUTTON_H__ */
+#endif /* __GameButton_H__ */

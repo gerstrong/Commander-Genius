@@ -10,6 +10,9 @@
 
 #include <widgets/GsBaseMenu.h>
 
+#include "engine/core/menu/GameMenu.h"
+
+#include "SelectionMenu.h"
 #include <base/utils/StringUtils.h>
 #include <base/GsEvent.h>
 #include "widgets/Button.h"
@@ -20,14 +23,13 @@
 
 #include "SelectionMenu.h"
 
-namespace galaxy
-{
 
 // Main Class for Controller Config
-class CControlsettings : public GalaxyMenu
+class CControlsettings : public GameMenu
 {
 public:
-	CControlsettings(const int selectedPlayer);
+    CControlsettings(const int selectedPlayer,
+                     const GsControl::Style style);
 
     void refresh();
 
@@ -45,10 +47,11 @@ private:
 };
 
 
-class CControlSettingsBase : public GalaxyMenu
+class CControlSettingsBase : public GameMenu
 {
 public:
-    CControlSettingsBase(const int selectedPlayer);
+    CControlSettingsBase(const int selectedPlayer,
+                         const GsControl::Style style);
 
     virtual void ponder(const float deltaT);
     virtual void release();
@@ -56,13 +59,8 @@ public:
 protected:
     int mSelectedPlayer;
 
-<<<<<<< HEAD:src/engine/keen/galaxy/menu/ControlSettings.h
-    std::vector<GalaxyButton*> mpButtonList;
-    std::map<InputCommands, std::string> mCommandName;
-=======
     std::vector<GameButton*> mpButtonList;
     std::map<InputCommand, std::string> mCommandName;
->>>>>>> ce7f64a6... Cleanups, fixes:src/engine/core/menu/ControlSettings.h
 
     bool mapping;
 };
@@ -72,8 +70,9 @@ protected:
 class CControlSettingsMovement : public CControlSettingsBase
 {
 public:
-    CControlSettingsMovement(const int selectedPlayer) :
-        CControlSettingsBase(selectedPlayer) {}
+    CControlSettingsMovement(const int selectedPlayer,
+                             const GsControl::Style &style) :
+        CControlSettingsBase(selectedPlayer, style) {}
 
     void refresh();
 };
@@ -84,8 +83,9 @@ public:
 class CControlSettingsButtons : public CControlSettingsBase
 {
 public:
-    CControlSettingsButtons(const int selectedPlayer) :
-        CControlSettingsBase(selectedPlayer) {}
+    CControlSettingsButtons(const int selectedPlayer,
+                            const GsControl::Style &style) :
+        CControlSettingsBase(selectedPlayer, style) {}
 
     void refresh();
 };
@@ -113,6 +113,5 @@ struct OpenMovementControlMenuEvent : OpenControlMenuEvent
         OpenControlMenuEvent(option) {}
 };
 
-}
 
 #endif /* CCONTROLSETTINGS_H_ */

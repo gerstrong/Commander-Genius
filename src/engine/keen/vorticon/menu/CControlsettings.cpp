@@ -11,13 +11,14 @@
 #include "engine/core/CBehaviorEngine.h"
 
 #include <base/CInput.h>
-
+/*
 namespace vorticon
 {
-
+*/
 /**
  * \brief This sets the default settings for a classic gameplay
  */
+/*
 class ReadInputEvent : public InvokeFunctorEvent
 {
 public:
@@ -50,10 +51,11 @@ public:
     Button* mpButton;
 };
 
-
+*/
 /**
  * \brief This sets the default settings for a classic gameplay
  */
+/*
 class ResetInputEvent : public InvokeFunctorEvent
 {
 public:
@@ -230,3 +232,4 @@ void CControlSettingsButtons::init()
 
 }
 
+*/

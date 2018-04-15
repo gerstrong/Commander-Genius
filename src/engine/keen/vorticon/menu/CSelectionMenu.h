@@ -15,7 +15,7 @@
 #include "../../menu/CSelectionMenu.h"
 #include "VorticonMenu.h"
 #include "widgets/Button.h"
-
+/*
 namespace vorticon
 {
 
@@ -66,6 +66,6 @@ public:
 
 };
 
-
+*/
 
 #endif /* CVORITCONSELECTIONMENU_H_ */

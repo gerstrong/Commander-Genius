@@ -21,11 +21,9 @@
 
 const std::string EMPTY_TEXT = "EMPTY";
 
-namespace galaxy
-{
 
-CSaveMenu::CSaveMenu() :
-GalaxyMenu(GsRect<float>(0.1f, 0.0f, 0.8f, 1.0f) ),
+CSaveMenu::CSaveMenu(const GsControl::Style &style) :
+GameMenu(GsRect<float>(0.1f, 0.0f, 0.8f, 1.0f), style ),
 m_overwrite(false)
 {
 	// Load the state-file list
@@ -38,7 +36,7 @@ m_overwrite(false)
         if(i < StateFileList.size())
             text = StateFileList.at(i);
 
-        mpMenuDialog->addControl( new InputText( text ),
+        mpMenuDialog->addControl( new InputText( text, style ),
                                   GsRect<float>(
                                       0.0f, 0.1f+(i*0.1f), 0.8f, 0.1f) );
 
@@ -54,7 +52,8 @@ void CSaveMenu::refresh()
     std::vector<std::string> StateFileList;
     gSaveGameController.readSlotList(StateFileList);
 
-    std::list< std::shared_ptr<GsControl> > &list = mpMenuDialog->getControlList();
+    std::list< std::shared_ptr<GsControl> > &list =
+            mpMenuDialog->getControlList();
 
     auto itCtrl = list.begin();
     itCtrl++;
@@ -158,6 +157,4 @@ void CSaveMenu::release()
     {
         pInput->setTypeMode(false);
     }
-}
-
 }

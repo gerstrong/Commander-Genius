@@ -11,7 +11,7 @@
 
 #ifndef CMAINMENU_H_
 #define CMAINMENU_H_
-
+/*
 namespace galaxy
 {
 
@@ -26,5 +26,5 @@ public:
 struct OpenMainMenuEvent : public CEvent {};
 
 }
-
+*/
 #endif /* CMAINMENU_H_ */

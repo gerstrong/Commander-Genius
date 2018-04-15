@@ -19,20 +19,5 @@
 #include <widgets/GsBaseMenu.h>
 #include <base/utils/StringUtils.h>
 
-struct SelectionEvent : CEvent
-{
-	SelectionEvent(const int option) :
-        mSelection(option) {}
-
-	int mSelection;
-};
-
-// Invoked when New Game -> Players selected
-struct NewGamePlayersEvent : SelectionEvent
-{
-	NewGamePlayersEvent(const int players) :
-        SelectionEvent(players) {}
-};
-
 
 #endif /* CSELECTIONMENU_H_ */

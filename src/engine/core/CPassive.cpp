@@ -12,6 +12,8 @@
 #include <widgets/GsMenuController.h>
 
 #include "fileio/KeenFiles.h"
+#include "base/CInput.h"
+#include "base/video/GsEffectController.h"
 
 
 CPassive::CPassive()

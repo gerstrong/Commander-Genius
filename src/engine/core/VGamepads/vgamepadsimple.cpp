@@ -74,10 +74,6 @@ bool VirtualKeenControl::init()
     return true;
 }
 
-        // Status Button
-        if( !loadButtonTexture("4.png", mStatusButtonTexture) )
-            return false;
-
 bool VirtualKeenControl::ponder()
 {
 #if SDL_VERSION_ATLEAST(2, 0, 0)

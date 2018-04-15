@@ -4,7 +4,7 @@
 #include "VorticonMenu.h"
 
 #include "widgets/Switch.h"
-
+/*
 namespace vorticon
 {
 
@@ -31,5 +31,5 @@ private:
 };
 
 }
-
+*/
 #endif // CHEATSMENU_H

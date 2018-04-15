@@ -11,6 +11,7 @@
 #include <base/video/CVideoDriver.h>
 #include <base/GsTimer.h>
 #include <base/utils/StringUtils.h>
+#include <base/video/GsEffectController.h>
 #include <cassert>
 
 CResourceLoader::CResourceLoader() :

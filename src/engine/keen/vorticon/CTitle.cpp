@@ -15,7 +15,7 @@
 #include <widgets/GsMenuController.h>
 #include <base/CInput.h>
 
-#include "menu/CMainMenu.h"
+#include "engine/core/menu/MainMenu.h"
 #include "ai/CEGABitmap.h"
 
 namespace vorticon

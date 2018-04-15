@@ -6,13 +6,13 @@
 #include <widgets/GsMenuController.h>
 #include <base/video/CVideoDriver.h>
 
-
+/*
 class VorticonMenu : public CBaseMenu
 {
 public:
     VorticonMenu( const GsRect<float>& rect ):
         CBaseMenu( rect, new GsButton( "x", new CloseMenuEvent(),
-                                       GsControl::Style::UNSET,
+                                       GsControl::Style::NONE,
                                        1.0f,
                                        0.75f,
                                        0.75f) )
@@ -38,5 +38,6 @@ public:
 private:
     GsSurface mBackground;
 };
+*/
 
 #endif /* __VORTICONMENU_H__ */

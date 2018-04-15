@@ -2,12 +2,16 @@
 #include <base/GsTimer.h>
 #include <base/GsApp.h>
 #include <base/utils/StringUtils.h>
+#include <base/CInput.h>
 
 #include <widgets/GsMenuController.h>
 #include <base/GsArguments.h>
 
 #include "engine/core/CResourceLoader.h"
 #include "engine/core/CBehaviorEngine.h"
+#include "engine/core/menu/MainMenu.h"
+#include "engine/core/menu/SelectionMenu.h"
+#include "engine/core/menu/ControlSettings.h"
 #include "engine/CGameLauncher.h"
 #include "fileio/CPatcher.h"
 #include "fileio/CSaveGameController.h"
@@ -95,7 +99,9 @@ void VorticonEngine::openMainMenu()
        gMusicPlayer.pause();
     }
 
-    gEventManager.add( new OpenMenuEvent( new MainMenu(mOpenedGamePlay) ) );
+    gEventManager.add( new OpenMenuEvent(
+                           new MainMenu(mOpenedGamePlay,
+                                        GsControl::Style::VORTICON) ) );
 }
 
 
@@ -224,27 +230,33 @@ void VorticonEngine::pumpEvent(const CEvent *evPtr)
     else if( const NewGamePlayersEvent* pNewGame = dynamic_cast<const NewGamePlayersEvent*>(evPtr) )
     {
         gBehaviorEngine.mPlayers = pNewGame->mSelection;
-        gEventManager.add( new OpenMenuEvent(new CDifficultySelection) );
+        gEventManager.add( new OpenMenuEvent(new CDifficultySelection(GsControl::Style::VORTICON)) );
         return;
     }
     // Control Menu Events
-    else if( const OpenMovementControlMenuEvent* ctrlMenu = dynamic_cast<const OpenMovementControlMenuEvent*>(evPtr) )
+    else if( const OpenMovementControlMenuEvent* ctrlMenu =
+             dynamic_cast<const OpenMovementControlMenuEvent*>(evPtr) )
     {
         const int players = ctrlMenu->mSelection;
         gEventManager.add( new OpenMenuEvent(
-                                new CControlSettingsMovement(players) ) );
+                                new CControlSettingsMovement(players,
+                                                             GsControl::Style::VORTICON) ) );
     }
-    else if( const OpenButtonsControlMenuEvent* ctrlMenu = dynamic_cast<const OpenButtonsControlMenuEvent*>(evPtr) )
+    else if( const OpenButtonsControlMenuEvent* ctrlMenu =
+             dynamic_cast<const OpenButtonsControlMenuEvent*>(evPtr) )
     {
         const int players = ctrlMenu->mSelection;
         gEventManager.add( new OpenMenuEvent(
-                                new CControlSettingsButtons(players) ) );
+                                new CControlSettingsButtons(players,
+                                                            GsControl::Style::VORTICON) ) );
     }
-    else if( const OpenControlMenuEvent* ctrlMenu = dynamic_cast<const OpenControlMenuEvent*>(evPtr) )
+    else if( const OpenControlMenuEvent* ctrlMenu =
+             dynamic_cast<const OpenControlMenuEvent*>(evPtr) )
     {
         const int players = ctrlMenu->mSelection;
         gEventManager.add( new OpenMenuEvent(
-                                new CControlsettings(players) ) );
+                                new CControlsettings(players,
+                                                     GsControl::Style::VORTICON) ) );
     }
     else if( const GMSwitchToPlayGameMode* pPlayGame = dynamic_cast<const GMSwitchToPlayGameMode*>(evPtr) )
     {
@@ -276,9 +288,11 @@ void VorticonEngine::pumpEvent(const CEvent *evPtr)
     }
     else if( dynamic_cast<const OpenMainMenuEvent*>(evPtr) )
     {
-        gEventManager.add( new OpenMenuEvent( new MainMenu(mOpenedGamePlay) ) );
+        gEventManager.add( new OpenMenuEvent( new MainMenu(mOpenedGamePlay,
+                                                           GsControl::Style::VORTICON) ) );
     }
-    else if( const StartInfoSceneEvent *scene = dynamic_cast<const StartInfoSceneEvent*>(evPtr) )
+    else if( const StartInfoSceneEvent *scene =
+             dynamic_cast<const StartInfoSceneEvent*>(evPtr) )
     {
         gMenuController.lock(true);
         gMenuController.hide(true);

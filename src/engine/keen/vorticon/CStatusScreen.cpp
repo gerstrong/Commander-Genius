@@ -11,6 +11,8 @@
 
 #include <base/video/CVideoDriver.h>
 #include <base/utils/StringUtils.h>
+#include <base/video/GsEffectController.h>
+
 
 #include "CStatusScreen.h"
 #include "graphics/GsGraphics.h"

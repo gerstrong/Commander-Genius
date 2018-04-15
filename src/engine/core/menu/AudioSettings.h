@@ -8,7 +8,7 @@
 #ifndef CAUDIOSETTINGS_H_
 #define CAUDIOSETTINGS_H_
 
-#include "GalaxyMenu.h"
+#include "engine/core/menu/GameMenu.h"
 
 #include "widgets/Switch.h"
 #include "widgets/Button.h"
@@ -20,14 +20,11 @@
 #include <string>
 
 
-namespace galaxy
-{
 
-
-class CAudioSettings : public GalaxyMenu
+class CAudioSettings : public GameMenu
 {
 public:
-	CAudioSettings();
+    CAudioSettings(const GsControl::Style &style);
 
     void init();
 
@@ -53,7 +50,5 @@ private:
 	int mSoundVolume;
 };
 
-
-}
 
 #endif /* CAUDIOSETTINGS_H_ */

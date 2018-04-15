@@ -14,7 +14,7 @@
 #include "engine/core/CBehaviorEngine.h"
 #include "engine/core/CBehaviorEngine.h"
 #include "engine/core/mode/CGameMode.h"
-
+/*
 namespace vorticon
 {
 
@@ -92,3 +92,4 @@ void CLoadMenu::refresh()
 }
 
 }
+*/

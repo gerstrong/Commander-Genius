@@ -2,11 +2,9 @@
 
 #include "engine/core/CBehaviorEngine.h"
 
-namespace galaxy
-{
 
-CheatsMenu::CheatsMenu() :
-GalaxyMenu(GsRect<float>(0.075f, 0.24f, 0.85f, 0.4f) )
+CheatsMenu::CheatsMenu(const GsControl::Style style) :
+GameMenu(GsRect<float>(0.075f, 0.24f, 0.85f, 0.4f), style )
 {
     mpJumpSwitch = new Switch( "Fly Mode" );
     mpMenuDialog->addControl( mpJumpSwitch );
@@ -40,5 +38,3 @@ void CheatsMenu::release()
     gBehaviorEngine.mCheatmode.items = mpItemsSwitch->isEnabled();
 }
 
-
-}

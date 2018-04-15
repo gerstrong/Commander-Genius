@@ -17,7 +17,7 @@
 #include <base/utils/StringUtils.h>
 
 #include "../VorticonEngine.h"
-
+/*
 namespace vorticon
 {
 
@@ -110,3 +110,4 @@ void CAudioSettings::release()
 }
 
 }
+*/

@@ -1,17 +1,23 @@
 #ifndef __GALAXYMENU_H__
 #define __GALAXYMENU_H__
 
-#include <widgets/GsBaseMenu.h>
+#include "engine/core/menu/GameMenu.h"
 
-#include "widgets/Button.h"
+//#include "widgets/Button.h"
+#include "engine/core/menu/widgets/Button.h"
 
 #include <widgets/GsMenuController.h>
 
-class GalaxyMenu : public CBaseMenu
+class GalaxyMenu : public GameMenu
 {
 public:
     GalaxyMenu( const GsRect<float>& rect ):
-        CBaseMenu( rect, new GalaxyButton( "x", new CloseMenuEvent()), CGUIDialog::FXKind(0) )
+        GameMenu( rect,
+                   /*new GameButton( "x",
+                                   new CloseMenuEvent(),
+                                   GsControl::Style::GALAXY),*/
+                   /*CGUIDialog::FXKind(0)*/
+                  GsControl::Style::GALAXY)
     {
         GsRect<float> localRect(0.30f, 0.282f, 0.5f, 0.5f);
         mpMenuDialog->setRect(localRect);

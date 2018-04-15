@@ -9,7 +9,7 @@
 #define CPROFILESMENU_H_
 
 #include "VorticonMenu.h"
-
+/*
 namespace vorticon
 {
 
@@ -20,5 +20,5 @@ public:
 };
 
 };
-
+*/
 #endif /* CPROFILESMENU_H_ */

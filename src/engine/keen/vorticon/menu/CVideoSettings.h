@@ -18,7 +18,7 @@
 #include "widgets/Button.h"
 
 #include <base/video/CVidConfig.h>
-
+/*
 namespace vorticon
 {
 
@@ -61,5 +61,5 @@ private:
 };
 
 }
-
+*/
 #endif /* CVIDEOSETTINGS_H_ */

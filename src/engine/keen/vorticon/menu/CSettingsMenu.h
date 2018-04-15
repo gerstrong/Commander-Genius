@@ -13,7 +13,7 @@
 #include "engine/core/options.h"
 #include "fileio/CExeFile.h"
 #include "engine/core/CBehaviorEngine.h"
-
+/*
 namespace vorticon
 {
 
@@ -26,5 +26,5 @@ private:
 };
 
 }
-
+*/
 #endif /* __VORTICONSETTINGSMENU_H_ */

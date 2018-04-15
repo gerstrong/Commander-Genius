@@ -8,19 +8,17 @@
 #ifndef COPTIONS_H_
 #define COPTIONS_H_
 
-#include "GalaxyMenu.h"
+#include "engine/core/menu/GameMenu.h"
 #include "widgets/Switch.h"
 #include <list>
 
 #include "engine/core/CBehaviorEngine.h"
 
-namespace galaxy
-{
 
-class COptions : public GalaxyMenu
+class COptions : public GameMenu
 {
 public:
-	COptions();
+    COptions(const GsControl::Style style);
 
     void refresh();
 
@@ -31,7 +29,5 @@ public:
 private:
     std::list<Switch*> mpOptionList;
 };
-
-}
 
 #endif /* COPTIONS_H_ */

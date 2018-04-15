@@ -22,7 +22,7 @@
 #include <ctime>
 
 const std::string EMPTY_TEXT = "EMPTY";
-
+/*
 namespace vorticon
 {
 
@@ -58,17 +58,6 @@ void CSaveMenu::refresh()
 
     std::shared_ptr<GsControl> &ctrl = *itCtrl;
     InputText *input = dynamic_cast<InputText*>( ctrl.get() );
-
-    /*for(Uint32 i=0 ;i<8 ; i++)
-    {
-        std::string text = EMPTY_TEXT;
-        if(i < StateFileList.size())
-            text = StateFileList.at(i);
-
-
-        if(i==0)
-            input->setText(text);
-    }*/
 
     std::string text = EMPTY_TEXT;
 
@@ -166,3 +155,4 @@ void CSaveMenu::release()
 }
 
 }
+*/

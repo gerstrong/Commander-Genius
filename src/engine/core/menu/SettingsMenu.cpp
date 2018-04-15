@@ -15,7 +15,7 @@
 
 #include "CVideoSettings.h"
 #include "DisplaySettings.h"
-#include "CameraSettings.h"
+//#include "CameraSettings.h"
 #include "AudioSettings.h"
 #include "Options.h"
 #include "ControlSettings.h"

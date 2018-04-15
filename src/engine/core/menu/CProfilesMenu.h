@@ -8,16 +8,13 @@
 #ifndef CPROFILESMENU_H_
 #define CPROFILESMENU_H_
 
-#include "GalaxyMenu.h"
+#include "engine/core/menu/GameMenu.h"
 
-namespace galaxy
-{
 
-class CProfilesMenu : public GalaxyMenu
+class CProfilesMenu : public GameMenu
 {
 public:
-	CProfilesMenu();
+    CProfilesMenu(const GsControl::Style style);
 };
 
-}
 #endif /* CPROFILESMENU_H_ */
