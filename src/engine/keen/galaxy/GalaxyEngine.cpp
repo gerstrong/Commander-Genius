@@ -397,9 +397,9 @@ void GalaxyEngine::pumpEvent(const CEvent *evPtr)
     {
         gBehaviorEngine.mPlayers = pNewGame->mSelection;
 
+        // Ensure the Sprite variations are correctly setup
         if(gBehaviorEngine.mPlayers > 1)
         {
-            // Ensure the Sprite variations are correctly setup
             mSpriteVars.clear();
             for(int i=0 ; i<gBehaviorEngine.mPlayers ; i++ )
             {
@@ -449,7 +449,8 @@ void GalaxyEngine::pumpEvent(const CEvent *evPtr)
         gEventManager.add( new OpenMenuEvent(
                                 new CControlsettings(players, style) ) );
     }
-    else if( const GMSwitchToPlayGameMode* pPlayGame = dynamic_cast<const GMSwitchToPlayGameMode*>(evPtr) )
+    else if( const GMSwitchToPlayGameMode* pPlayGame =
+             dynamic_cast<const GMSwitchToPlayGameMode*>(evPtr) )
     {
         const GMSwitchToPlayGameMode &playGame = const_cast<GMSwitchToPlayGameMode&>(*pPlayGame);
         switchToGameplay(playGame.m_startlevel, mSpriteVars);

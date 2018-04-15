@@ -112,6 +112,8 @@ private:
     int mCurId = 0;
 
     ComboSelection *mpComboSelection = nullptr;
+
+
 };
 
 

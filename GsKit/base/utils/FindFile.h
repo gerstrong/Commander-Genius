@@ -199,7 +199,19 @@ std::ofstream && OpenGameFileW(const std::string& path, const std::ios_base::ope
 
 std::string GetFileContents(const std::string& path, bool absolute = false);
 std::string ExtractDirectory(const std::string& path);
+
 std::string JoinPaths(const std::string& path1, const std::string& path2);
+
+
+// Join Path version where you can pass more than two parameters
+template<typename T, typename... Args>
+std::string JoinPaths(const T& path1, const T& path2, Args... args)
+{
+    const auto path = JoinPaths(path1, path2);
+    return JoinPaths(path, args...);
+}
+
+
 
 std::string GetScriptInterpreterCommandForFile(const std::string& filename);
 

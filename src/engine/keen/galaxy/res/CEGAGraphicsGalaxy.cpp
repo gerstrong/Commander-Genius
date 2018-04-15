@@ -1447,38 +1447,12 @@ bool CEGAGraphicsGalaxy::readSprites( const size_t numSprites,
 
     // For the other variant let's exchange some colors
 
-    // Nice bonus: We can load own kylie bitmaps and let them become sprites
-    std::string kyliePath = JoinPaths(gKeenFiles.gameDir, "gfx/player/kylie");
 
     // Second Player, could be kylie's own bitmaps
     auto &SpriteVecPlayer2 = gGraphics.getSpriteVec(1);
     int ctr = 0;
 
-    struct stat s;
-    S_ISDIR( s.st_mode );
-    if(StatFile(kyliePath, &s))
-    {
-        for( GsSprite &sprite : SpriteVecPlayer2)
-        {
-            std::string filename = "4SPR0000.bmp";
-
-            // Look for additional Kylie Sprites as bitmaps
-
-            // Ugly conversion of the filenames
-            const std::string numStr = to_string(ctr);
-            filename.replace(8-numStr.length(),numStr.length(),numStr);
-
-            const auto kylieFilePath = JoinPaths(kyliePath, filename);
-
-            if( sprite.loadHQSprite(kylieFilePath) )
-            {
-                sprite.applyTransparency();
-            }
-
-            ctr++;
-        }
-    }
-    else
+    //else
     {
         for( GsSprite &sprite : SpriteVecPlayer2)
         {
@@ -1519,6 +1493,62 @@ bool CEGAGraphicsGalaxy::readSprites( const size_t numSprites,
         // Green against Purple
         sprite.exchangeSpriteColor( 2, 5, 0 );
         sprite.exchangeSpriteColor( 10, 13, 0 );
+    }
+
+    const std::string gfxDir = "gfx";
+    const std::string playerDir = "player";
+    const std::string playersPathList = JoinPaths(gKeenFiles.gameDir,
+                                                 gfxDir,
+                                                 playerDir);
+
+    std::set<std::string> playersList;
+    FileListAdder fileListAdder;
+    GetFileList(playersList, fileListAdder,
+                playersPathList, false, FM_DIR);
+
+
+    // For a list of players try to load the sprites
+    int numSpriteVar = 0;
+    for(const auto &player : playersList)
+    {
+        auto &SpriteVecPlayer = gGraphics.getSpriteVec(numSpriteVar);
+
+        const std::string curPlayerPath = JoinPaths(playersPathList, player);
+
+        std::set<std::string> spriteList;
+        FileListAdder spritefilesAdder;
+        GetFileList(spriteList, spritefilesAdder,
+                    curPlayerPath, false, FM_REG);
+
+        for(const auto &spriteFile : spriteList)
+        {
+            const auto numStr = spriteFile.substr(spriteFile.length()-8,
+                                                  spriteFile.length()-4);
+
+            int idx = atoi(numStr.c_str());
+
+            if(idx >= int(SpriteVecPlayer.size()))
+            {
+                gLogging << "Warning: Index " << idx << " out of reach.";
+                continue;
+            }
+
+            const auto spriteFilePath = JoinPaths(curPlayerPath,
+                                                  spriteFile);
+
+            GsSprite &sprite = SpriteVecPlayer[idx];
+
+            if( sprite.loadHQSprite(spriteFilePath) )
+            {
+                sprite.applyTransparency();
+            }
+            else
+            {
+                gLogging << "Warning: " << spriteFile << " could not be loaded.";
+            }
+        }
+
+        numSpriteVar++;
     }
 
     return true;
