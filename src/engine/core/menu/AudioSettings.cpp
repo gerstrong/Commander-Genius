@@ -25,7 +25,7 @@ GameMenu(GsRect<float>(0.075f, 0.24f, 0.85f, 0.4f), style )
 
 #endif
 
-    mpStereo = new Switch( "Stereo" );
+    mpStereo = new Switch( "Stereo", style );
 	mpMenuDialog->addControl( mpStereo );
 
 

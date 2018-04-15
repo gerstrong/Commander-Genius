@@ -86,19 +86,19 @@ mSelectedPlayer(selectedPlayer)
     button = new GameButton( "Buttons", new OpenButtonsControlMenuEvent(mSelectedPlayer), style );
 	mpMenuDialog->addControl( button );
 
-    mpTwoButtonSwitch = new Switch( "Two Button Fire" );
+    mpTwoButtonSwitch = new Switch( "Two Button Fire", style );
 	mpTwoButtonSwitch->enable(gInput.getTwoButtonFiring(mSelectedPlayer-1));
 
-    mpAnalogSwitch = new Switch( "Analog Movement" );
+    mpAnalogSwitch = new Switch( "Analog Movement", style );
 	mpAnalogSwitch->enable(gInput.isAnalog(mSelectedPlayer-1));
 
-    mpSuperPogoSwitch = new Switch( "Super Pogo" );
+    mpSuperPogoSwitch = new Switch( "Super Pogo", style );
 	mpSuperPogoSwitch->enable(gInput.SuperPogo(mSelectedPlayer-1));
 
-    mpImpPogoSwitch = new Switch( "Impossible Pogo" );
+    mpImpPogoSwitch = new Switch( "Impossible Pogo", style );
 	mpImpPogoSwitch->enable(gInput.ImpossiblePogo(mSelectedPlayer-1));
 
-    mpAutoGunSwitch = new Switch( "Auto Gun" );
+    mpAutoGunSwitch = new Switch( "Auto Gun", style );
 	mpAutoGunSwitch->enable(gInput.AutoGun(mSelectedPlayer-1));
 
 	mpMenuDialog->addControl( mpTwoButtonSwitch );

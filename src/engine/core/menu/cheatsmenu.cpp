@@ -6,16 +6,16 @@
 CheatsMenu::CheatsMenu(const GsControl::Style style) :
 GameMenu(GsRect<float>(0.075f, 0.24f, 0.85f, 0.4f), style )
 {
-    mpJumpSwitch = new Switch( "Fly Mode" );
+    mpJumpSwitch = new Switch( "Fly Mode", style );
     mpMenuDialog->addControl( mpJumpSwitch );
 
-    mpGodSwitch = new Switch( "God Mode" );
+    mpGodSwitch = new Switch( "God Mode", style );
     mpMenuDialog->addControl( mpGodSwitch );
 
-    mpNoClipSwitch = new Switch( "No Clipping" );
+    mpNoClipSwitch = new Switch( "No Clipping", style );
     mpMenuDialog->addControl( mpNoClipSwitch );
 
-    mpItemsSwitch = new Switch( "Free items" );
+    mpItemsSwitch = new Switch( "Free items", style );
     mpMenuDialog->addControl( mpItemsSwitch );
 
 }

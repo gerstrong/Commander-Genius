@@ -8,7 +8,7 @@ class Switch : public ComboSelection
 {
 public:
     Switch( const std::string& text,
-            const Style style=Style::NONE );
+            const Style style );
 
     void enable( const bool sel )
     {	ComboSelection::setSelection( sel ? "on" : "off" );	}
