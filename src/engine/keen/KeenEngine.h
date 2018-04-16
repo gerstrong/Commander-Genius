@@ -61,10 +61,10 @@ struct StartNewGameEvent : CEvent
 // Invoked when New Game -> 1 Player-> Sprite Number
 struct SelectPlayerSpriteVarEvent : CEvent
 {
-    SelectPlayerSpriteVarEvent(const int sprite) :
-        mSprite(sprite) {}
+    SelectPlayerSpriteVarEvent(const int special) :
+        mSpecialIdx(special) {}
 
-    const int mSprite = 0;
+    int mSpecialIdx = 0;
 };
 
 

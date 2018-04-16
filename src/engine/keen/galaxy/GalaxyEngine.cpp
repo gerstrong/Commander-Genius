@@ -420,7 +420,7 @@ void GalaxyEngine::pumpEvent(const CEvent *evPtr)
     else if( const SelectPlayerSpriteVarEvent* pStart =
              dynamic_cast<const SelectPlayerSpriteVarEvent*>(evPtr) )
     {
-        mSpriteVars.assign(1, pStart->mSprite);
+        mSpriteVars.assign(1, pStart->mSpecialIdx);
         gEventManager.add( new OpenMenuEvent(
                                new CDifficultySelection(GsControl::Style::GALAXY)) );
         return;

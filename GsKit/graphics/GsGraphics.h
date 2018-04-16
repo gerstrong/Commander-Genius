@@ -55,6 +55,9 @@ public:
 	void drawDialogBox(SDL_Surface *DialogSurface, int x1, int y1, int w, int h, Uint32 colour = 0xFFFFFF);
     int getNumSprites(const int var);
 
+    std::vector< std::vector<GsSprite> > &spriteVecVec()
+    { return mSprite; }
+
     GsTilemap &getTileMap(size_t tilemap);
     std::vector<GsTilemap> &getTileMaps();
     GsBitmap &getBitmapFromId(Uint16 slot);

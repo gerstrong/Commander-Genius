@@ -109,10 +109,11 @@ private:
 
     std::map<std::string, int> mIdMap;
 
-    int mCurId = 0;
+    int mCurIdx = 0;
 
     ComboSelection *mpComboSelection = nullptr;
 
+    GameButton *mpGameButton = nullptr;
 
 };
 

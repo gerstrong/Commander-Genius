@@ -710,7 +710,7 @@ bool CEGAGraphicsGalaxy::begin()
 
     if(!File)
     {
-        gLogging.textOut(FONTCOLORS::RED,"Error the file \"" + filename + "\" is missing or can't be read!");
+        gLogging.textOut(FONTCOLORS::RED, "Error the file \"" + filename + "\" is missing or can't be read!");
         return false;
     }
 
@@ -719,7 +719,7 @@ bool CEGAGraphicsGalaxy::begin()
     egagraphlen = File.tellg();
     if(egagraphlen == 0)
     {
-        gLogging.textOut(FONTCOLORS::RED,"Error the file \"" + filename + "\" is empty!");
+        gLogging.textOut(FONTCOLORS::RED, "Error the file \"" + filename + "\" is empty!");
         return false;
     }
     egagraphlen--;

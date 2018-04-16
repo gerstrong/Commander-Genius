@@ -58,6 +58,11 @@ public:
         setupButtonSurface("  " + mText);
     }
 
+    std::shared_ptr<CEvent> &event()
+    {
+        return mEvent;
+    }
+
 	std::string getText()
 	{	return mText;	}
 
