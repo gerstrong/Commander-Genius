@@ -122,7 +122,7 @@ void CStunnable::draw()
         int w = StarSprite.getWidth();
         int h = StarSprite.getHeight();
 
-        auto visGA = gVideoDriver.mpVideoEngine->mRelativeVisGameArea;
+        const auto visGA = gVideoDriver.mpVideoEngine->mRelativeVisGameArea;
 
         if( showX+StarSprite.getWidth() < visGA.x || showX > visGA.x+visGA.w )
             return;

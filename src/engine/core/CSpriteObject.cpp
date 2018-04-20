@@ -562,17 +562,17 @@ void CSpriteObject::draw()
         int w = Sprite.getWidth();
         int h = Sprite.getHeight();
 
-        auto visGA = gVideoDriver.mpVideoEngine->mRelativeVisGameArea;
+        const auto visGA = gVideoDriver.mpVideoEngine->mRelativeVisGameArea;
 
-        if( showX+Sprite.getWidth() < visGA.x || showX > visGA.x+visGA.w+16 )
+        if( showX+w < visGA.x || showX > visGA.x+visGA.w+16 )
             return;
 
-        if( showY+Sprite.getHeight() < visGA.y || showY > visGA.y+visGA.h+16 )
+        if( showY+h < visGA.y || showY > visGA.y+visGA.h+16 )
             return;
 
-        if( showX+w > visGA.x+visGA.w+16 )
+        if( showX+Sprite.getWidth() > visGA.x+visGA.w+16 )
             w = w - ((showX+w) - (visGA.x+visGA.w+16));
-        if( showY+h > visGA.y+visGA.h+16 )
+        if( showY+Sprite.getHeight() > visGA.y+visGA.h+16 )
             h = h - ((showY+h) - (visGA.y+visGA.h+16));
 
 		if(m_blinktime > 0)

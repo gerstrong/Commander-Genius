@@ -99,7 +99,7 @@ void CCamera::setPosition(const Vector2D<int>& newpos)
 	moveToForce(newpos);
 
     // Only the lead camera may change the scroll position
-    if(mCamlead != mp_AttachedObject->getSpriteVariantId())
+    if(mCamlead != mp_AttachedObject->getSpecialIdx())
     {
         return;
     }
@@ -119,9 +119,9 @@ void CCamera::process()
         cycleCamlead();
     }
 
-    const int camId = mp_AttachedObject->getSpriteVariantId();
+    const int playerIdx = mp_AttachedObject->getSpecialIdx();
 
-    if(camId != mCamlead)
+    if(playerIdx != mCamlead)
         return;
 
     if(mCamLeadChange)
@@ -191,8 +191,8 @@ void CCamera::process()
 	}
 
 
-    Uint16 &scroll_x = mpMap->m_scrollx;
-    Uint16 &scroll_y = mpMap->m_scrolly;
+    const Uint16 &scroll_x = mpMap->m_scrollx;
+    const Uint16 &scroll_y = mpMap->m_scrolly;
 
     // delta is how much we need to scroll in order to get the camera stalled
     int delta_x = (getXPosition()>>STC)-scroll_x;

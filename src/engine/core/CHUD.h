@@ -31,7 +31,7 @@ public:
     CHUD(unsigned long &score,
          signed char &lives,
          signed int &charges,
-         const int id); // TODO: Must be removed later and replaced by a reference
+         const int playerIdx, const int spriteVar); // TODO: Must be removed later and replaced by a reference
 
 
 	//CHUD(const CHUD &orig);
@@ -47,7 +47,7 @@ public:
     /**
       * \brief Sets up the HUD Box for certain id sprite variant
       */
-    void setup(const int id);
+    void setup(const int playerIdx, const int spriteVar);
 
 	/**
 	 * \brief This will sync some data in the HUD, especially the oldScore variable

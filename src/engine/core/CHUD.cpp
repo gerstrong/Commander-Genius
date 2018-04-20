@@ -16,7 +16,8 @@ const int EFFECT_TIME = 10;
 const int EFFECT_SPEED = 10;
 
 CHUD::CHUD(unsigned long &score, signed char &lives,
-           signed int &charges, const int id) :
+           signed int &charges, const int playerIdx,
+           const int spriteVar) :
 m_score(score),
 mLives(lives),
 m_charges(charges),
@@ -24,7 +25,7 @@ mOldScore(score),
 mOldCharges(charges),
 timer(0)
 {
-    setup(id);
+    setup(playerIdx, spriteVar);
 }
 
 void CHUD::createHUDBlit()
@@ -34,9 +35,10 @@ void CHUD::createHUDBlit()
     mHUDBlit.fillRGB(0,0,0);
 }
 
-void CHUD::setup(const int id)
+void CHUD::setup(const int playerIdx,
+                 const int spriteVar)
 {
-    mId = id;
+    mId = playerIdx;
 
     mRenderRect.x = 8;	mRenderRect.y = 4;
 
@@ -50,7 +52,7 @@ void CHUD::setup(const int id)
     if( Episode >= 1 && Episode <= 3 )
     {
         mRenderRect.w = 84;	mRenderRect.h = 30;
-        mRenderRect.x += (mRenderRect.w-4)*id;
+        mRenderRect.x += (mRenderRect.w-4)*playerIdx;
 
         createHUDBlit();
         CreateVorticonBackground();
@@ -59,13 +61,13 @@ void CHUD::setup(const int id)
     {
         mRenderRect.w = 80;	mRenderRect.h = 30;
 
-        auto &hudBg = *gGraphics.getSprite(mId,"HUDBACKGROUND");
+        auto &hudBg = *gGraphics.getSprite(spriteVar, "HUDBACKGROUND");
 
         mHUDBox.copy(hudBg);
 		
         mRenderRect.h = mHUDBox.getHeight();
         mRenderRect.w = mHUDBox.getWidth()-7;
-        mRenderRect.x += (mRenderRect.w-2)*id;
+        mRenderRect.x += (mRenderRect.w-2)*playerIdx;
 
         createHUDBlit();
     }

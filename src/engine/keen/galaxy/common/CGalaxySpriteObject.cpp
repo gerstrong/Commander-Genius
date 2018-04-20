@@ -293,7 +293,7 @@ void CGalaxySpriteObject::setActionSprite()
     
 	if(mSpriteIdx >= 0)
 	{
-        GsSprite &rSprite = gGraphics.getSprite(mSprVar,mSpriteIdx);
+        GsSprite &rSprite = gGraphics.getSprite(mSprVar, mSpriteIdx);
 	    oldBoxY2 = rSprite.m_bboxY2;
 	    oldBoxY1 = rSprite.m_bboxY1;
 	}

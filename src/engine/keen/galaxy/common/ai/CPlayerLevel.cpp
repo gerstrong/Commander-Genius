@@ -1821,7 +1821,8 @@ void CPlayerLevel::processEnterDoor()
 
         gEffectController.setupEffect(new CDimDark(8));
 
-        auto evExit = new EventExitLevel(mpMap->getLevel(), true, mustTeleportOnMap, mSprVar);
+        auto evExit = new EventExitLevel(mpMap->getLevel(), true,
+                                         mustTeleportOnMap, mSpecialIdx);
         evExit->playSound = true;
         gEventManager.add( evExit );
 				
@@ -1837,7 +1838,7 @@ void CPlayerLevel::processEnterDoor()
         gEffectController.setupEffect(new CDimDark(8));
 		gMusicPlayer.stop();
 
-        auto evExit = new EventExitLevel(mpMap->getLevel(), true, false, mSprVar);
+        auto evExit = new EventExitLevel(mpMap->getLevel(), true, false, mSpecialIdx);
         evExit->playSound = true;
         gEventManager.add( evExit );
 
@@ -2728,7 +2729,7 @@ void CPlayerLevel::process()
 
         gEffectController.setupEffect(new CDimDark(8));
 
-        auto evExit = new EventExitLevel(mpMap->getLevel(), true, false, mSprVar);
+        auto evExit = new EventExitLevel(mpMap->getLevel(), true, false, mSpecialIdx);
         evExit->playSound = true;
 
         msgs.push_back( new CMessageBoxBitmapGalaxy(

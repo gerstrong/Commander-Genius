@@ -211,7 +211,7 @@ void CPlatform::draw()
         int showX = scrx+Sprite.getXOffset();
         int showY = scry+Sprite.getYOffset();
 
-        auto visGA = gVideoDriver.mpVideoEngine->mRelativeVisGameArea;
+        const auto visGA = gVideoDriver.mpVideoEngine->mRelativeVisGameArea;
 
         if( showX+Sprite.getWidth() < visGA.x || showX > visGA.x+visGA.w )
             return;

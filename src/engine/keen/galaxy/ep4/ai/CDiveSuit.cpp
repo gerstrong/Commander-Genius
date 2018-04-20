@@ -36,7 +36,7 @@ void CDiveSuit::getTouchedBy(CSpriteObject &theObject)
 		gSound.playSound( SOUND_GET_WETSUIT, SoundPlayMode::PLAY_PAUSEALL );
 		taken = swimsuit = true;
 
-        auto evExit = new EventExitLevel(mpMap->getLevel(), true, false, mSprVar);
+        auto evExit = new EventExitLevel(mpMap->getLevel(), true, false, player->getSpecialIdx());
         evExit->playSound = true;
 
 

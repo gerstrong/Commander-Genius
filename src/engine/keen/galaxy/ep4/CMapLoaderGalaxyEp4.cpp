@@ -78,6 +78,9 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 	CGalaxySpriteObject* p_newfoe = nullptr;
 
     const int totalNumPlayer = mInventoryVec.size();
+
+    const int variations = gGraphics.spriteVecVec().size();
+
 			
 	// Point Item Sprites (Candies, etc...)
 	for( Uint32 i=61 ; i<=67 ; i++ )
@@ -85,7 +88,8 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 		if( foe == i )
 		{
 			const Uint32 newsprite = 103+2*(i-61);
-            p_newfoe = new galaxy::CSpriteItem(&Map, foe, x, y, newsprite, 0);
+            p_newfoe = new galaxy::CSpriteItem(&Map, foe, x, y,
+                                               newsprite, x%variations);
 		}
 	}
 
@@ -116,6 +120,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 	// otherwise look for special foe.
 	Vector2D<Uint32> loc(x,y);
 
+
 	switch(foe)
 	{
 	case 0x01:
@@ -130,7 +135,8 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
                 inventory.Item.mLevelName = Map.getLevelName();
                 p_newfoe = new galaxy::CPlayerLevel(&Map, foe, x, y, m_ObjectPtr,
                                                     (foe==0x01) ? RIGHT : LEFT, inventory, 0x98C,
-                                                    mNumLoadedPlayers, inventory.mSpriteVar);
+                                                    mNumLoadedPlayers,
+                                                    inventory.mSpriteVar);
             }
             mNumLoadedPlayers++;
         }
@@ -148,7 +154,8 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
                 // Add the Camera into the game scene and attach it to this player
                 inventory.Item.mLevelName = Map.getLevelName();
                 p_newfoe = new galaxy::CPlayerWM(&Map, foe, x, y, inventory, 0x15C2,
-                                                 mNumLoadedPlayers, mNumLoadedPlayers);
+                                                 mNumLoadedPlayers,
+                                                 inventory.mSpriteVar);
             }
             mNumLoadedPlayers++;
         }

@@ -52,7 +52,7 @@ m_LevelPlay( mInventoryVec)
 
     for(int i=0 ; i<numPlayers ; i++)
     {
-        mInventoryVec[i].setup(spriteVars[i]);
+        mInventoryVec[i].setup(i, spriteVars[i]);
     }
 
     m_WorldMap.init();
@@ -159,9 +159,10 @@ bool CPlayGameGalaxy::loadXMLGameState()
         if(node.first == "Player")
         {
             ptree &playerNode = node.second;
-            variant = playerNode.get<int>("<xmlattr>.variant");
+            variant = playerNode.get<int>("<xmlattr>.variant");            
+            const int idx = playerNode.get("<xmlattr>.id", 0);
             auto &invNode = playerNode.get_child("inventory");
-            mInventoryVec[variant].setup(variant);
+            mInventoryVec[variant].setup(idx, variant);
             mInventoryVec[variant] << invNode;
         }
     }
@@ -218,7 +219,8 @@ bool CPlayGameGalaxy::saveXMLGameState()
     for (size_t id=0 ; id<numPlayers ; id++)
     {
         ptree &playerNode = pt.add("Player", "");
-        playerNode.put("<xmlattr>.variant", id);
+        playerNode.put("<xmlattr>.variant", mInventoryVec[id].mSpriteVar);
+        playerNode.put("<xmlattr>.id", id);
         auto &invNode = playerNode.put("inventory", "");
         mInventoryVec[id] >> invNode;
     }

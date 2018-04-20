@@ -226,7 +226,9 @@ void CCouncilMember::getTouchedBy(CSpriteObject &theObject)
 		}
 		else
 		{
-            auto evExit = new EventExitLevel(mpMap->getLevel(), true, false, mSprVar);
+            auto evExit = new EventExitLevel(mpMap->getLevel(),
+                                             true, false,
+                                             player->getSpecialIdx());
             evExit->playSound = true;
 
             msgs.push_back( new CMessageBoxBitmapGalaxy(

@@ -13,8 +13,10 @@
 #include "graphics/effects/CScrollEffect.h"
 
 
-CInventory::CInventory(const int id) :
-m_HUD(Item.m_points, Item.m_lifes, Item.m_bullets, id)
+CInventory::CInventory(const int playerIdx,
+                       const int spriteVar) :
+m_HUD(Item.m_points, Item.m_lifes, Item.m_bullets,
+      playerIdx, spriteVar)
 {
 	reset();
 
@@ -123,10 +125,11 @@ void CInventory::drawHUD()
     m_HUD.render();
 }
 
-void CInventory::setup(const int sprVar)
+void CInventory::setup(const int playerIdx,
+                       const int sprVar)
 {
     mSpriteVar = sprVar;
-    m_HUD.setup(sprVar);
+    m_HUD.setup(playerIdx, sprVar);
 }
 
 void CInventory::drawStatus()

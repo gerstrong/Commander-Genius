@@ -149,23 +149,22 @@ const int CPlayerBase::mEpisodeActionNumMap[3][NUM_KEEN_ACTIONS] =
 		//{}
 };
 
-CPlayerBase::CPlayerBase
-(
-		CMap *pmap,
-		const Uint16 foeID,
-		Uint32 x,
-		Uint32 y,
-		direction_t facedir,
-		CInventory &l_Inventory,
-        int playerID,
-        int spriteVar
-) :
-CGalaxySpriteObject(pmap, foeID, x, y, spriteVar),
-m_Inventory(l_Inventory),
-m_camera(pmap,x,y,this),
-mPlayerNum(playerID),
-mPlayerCtrlNum(playerID)
+CPlayerBase::
+CPlayerBase(CMap *pmap,
+            const Uint16 foeID,
+            Uint32 x,
+            Uint32 y,
+            direction_t facedir,
+            CInventory &l_Inventory,
+            const int playerIdx,
+            const int spriteVar) :
+    CGalaxySpriteObject(pmap, foeID, x, y, spriteVar),
+    m_Inventory(l_Inventory),
+    m_camera(pmap,x,y,this),
+    mPlayerNum(playerIdx),
+    mPlayerCtrlNum(playerIdx)
 {
+    mSpecialIdx = playerIdx;
     mActionMap[A_KEEN_DIE] = &CPlayerBase::processDying;
     mActionMap[A_KEEN_DIE_ALT] = &CPlayerBase::processDying;
 
@@ -197,7 +196,8 @@ void CPlayerBase::processExiting()
 
         gEffectController.setupEffect(new CDimDark(8));
 
-        auto evExit = new EventExitLevel(mpMap->getLevel(), true, false, mSprVar);
+        auto evExit = new EventExitLevel(mpMap->getLevel(),
+                                         true, false, mSpecialIdx);
         evExit->playSound = true;
         gEventManager.add( evExit );
         m_Inventory.Item.m_gem.clear();

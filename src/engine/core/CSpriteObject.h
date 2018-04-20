@@ -344,12 +344,17 @@ class CSpriteObject
     
     virtual ~CSpriteObject();
     
+    int getSpecialIdx() const
+    {   return mSpecialIdx;    }
+
     int getSpriteVariantId() const
     {   return mSprVar;    }
-    
+
+    void setSpecialIdx(const int i)
+    {   mSpecialIdx = i;    }
+
     void setSpriteVariantId(const int i)
     {   mSprVar = i;    }
-    
   protected:
     
     /**
@@ -413,7 +418,11 @@ class CSpriteObject
     
     Uint8 transluceny;
     
-    int mSprVar; // Sprite variant, which is used by the Spritemap
+protected:
+
+    int mSprVar = 0; // Sprite variant, which is used by the Spritemap
+
+    int mSpecialIdx = 0; // Special index for different usages. In case of players, that is it's index
 
 };
 
