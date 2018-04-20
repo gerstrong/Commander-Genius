@@ -15,10 +15,10 @@ class CSaveMenu : public GameMenu
 {
 public:
     CSaveMenu(const GsControl::Style &style);
-    void refresh();
+    void refresh() override;
     void processSpecific(){}
-    void ponder(const float deltaT);
-	void sendEvent(std::shared_ptr<CEvent> &command);
+    void ponder(const float deltaT) override;
+    void sendEvent(std::shared_ptr<CEvent> &command) override;
     void release();
 
 

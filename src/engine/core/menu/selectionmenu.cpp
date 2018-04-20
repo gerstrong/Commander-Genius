@@ -4,6 +4,21 @@
 
 #include "graphics/GsGraphics.h"
 
+
+struct ChangeEvent : InvokeFunctorEvent
+{
+    ChangeEvent(CPlayerSpriteVarSelection &selObj):
+        mSelObj(selObj) {}
+
+    CPlayerSpriteVarSelection &mSelObj;
+
+    void operator()() const
+    {
+        mSelObj.changeEvent();
+    }
+};
+
+
 CPlayerSpriteVarSelection::
 CPlayerSpriteVarSelection(const GsControl::Style style) :
     GameMenu( GsRect<float>(0.25f, 0.2f, 0.5f, 0.5f), style )
@@ -33,8 +48,37 @@ CPlayerSpriteVarSelection(const GsControl::Style style) :
 
     mpMenuDialog->addControl( mpGameButton,
                               GsRect<float>(0.07f, 0.71f,
-                                            0.1f, 0.8f));
+                                            0.8f, 0.1f));
 
+    mpChangeButton = new GameButton( "Change",
+                                   new ChangeEvent(*this),
+                                   style);
+
+    mpMenuDialog->addControl( mpChangeButton,
+                              GsRect<float>(0.07f, 0.81f,
+                                            0.8f, 0.1f));
+
+
+}
+
+
+void
+CPlayerSpriteVarSelection::
+changeEvent()
+{
+    mCurIdx++;
+
+    if( mCurIdx >= int(mpPlayerBmpVec.size()) )
+    {
+        mCurIdx = 0;
+    }
+
+    mBmpBox->setBitmapPtr(mpPlayerBmpVec[mCurIdx]);
+
+    // Change data in the event of the game button
+    auto event = mpGameButton->event();
+    auto spsv = std::dynamic_pointer_cast<SelectPlayerSpriteVarEvent>(event);
+    spsv->mSpecialIdx = mCurIdx;
 }
 
 void

@@ -22,7 +22,7 @@ class CBaseMenu
 public:
 
 	enum Property
-	{
+    {
 		CLOSEABLE,
 		CANGOBACK
 	};

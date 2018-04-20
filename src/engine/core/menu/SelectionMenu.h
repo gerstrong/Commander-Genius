@@ -98,8 +98,10 @@ class CPlayerSpriteVarSelection : public GameMenu
 public:
     CPlayerSpriteVarSelection(const GsControl::Style style);
 
+    void changeEvent();
+
     // Processes the stuff that the menus have in common
-    void ponder(const float deltaT);
+    void ponder(const float deltaT) override;
 
 private:
 
@@ -114,6 +116,7 @@ private:
     ComboSelection *mpComboSelection = nullptr;
 
     GameButton *mpGameButton = nullptr;
+    GameButton *mpChangeButton = nullptr;
 
 };
 
