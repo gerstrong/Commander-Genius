@@ -159,6 +159,8 @@ void CControlSettingsBase::ponder(const float deltaT)
 
         //GameButton::ponder(0);
     }
+
+    GameMenu::ponder(deltaT);
 }
 
 void CControlSettingsBase::release()

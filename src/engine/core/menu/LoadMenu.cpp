@@ -42,14 +42,28 @@ GameMenu( GsRect<float>(0.1f, 0.0f, 0.8f, 1.0f),
 {
     for( int j = 0 ; j<8 ; j++ )
 	{
-        GsButton *button = new BorderedButton( "Empty",
-                                               new LoadGameSlotFunctorEvent(j),
-                                               style);
-        mpMenuDialog->addControl( button,
-                                  GsRect<float>(
-                                      0.0f, 0.1f+(j*0.1f), 0.8f, 0.1f) );
+        GsButton *button;
 
-		button->enable( false );
+        if(style == GsControl::Style::GALAXY)
+        {
+
+            button = new BorderedButton( "Empty",
+                                         new LoadGameSlotFunctorEvent(j),
+                                         style);
+            mpMenuDialog->addControl( button,
+                                      GsRect<float>(
+                                          0.0f, 0.1f+(j*0.1f), 0.8f, 0.1f) );
+        }
+        else
+        {
+            button = new GameButton( "Empty",
+                                     new LoadGameSlotFunctorEvent(j),
+                                     style);
+
+            mpMenuDialog->addControl( button );
+        }
+
+        button->enable( false );
 	}
 
 	setMenuLabel("LOADMENULABEL");
