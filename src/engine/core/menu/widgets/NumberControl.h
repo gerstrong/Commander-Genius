@@ -19,6 +19,8 @@ public:
 
     void processLogic();
 
+    void drawNoStyle(SDL_Rect& lRect);
+
     void processRender(const GsRect<float> &RectDispCoordFloat);
 };
 

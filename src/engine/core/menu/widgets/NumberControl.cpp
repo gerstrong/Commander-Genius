@@ -60,6 +60,35 @@ void NumberControl::processLogic()
     }
 }
 
+void NumberControl::drawNoStyle(SDL_Rect& lRect)
+{
+    // Now lets draw the text of the list control
+    GsFont &Font = gGraphics.getFont(mFontID);
+
+    std::string text = mText + ":";
+
+    SDL_Surface *blitsfc = gVideoDriver.getBlitSurface();
+
+/*
+    if(mSlider)
+    {
+        text += sliderStr();
+    }
+    else*/
+    {
+        text += (mDecSel) ? "\025" : " ";
+        text += itoa(mValue);
+        if(mIncSel)
+            text += static_cast<char>(17);
+        else
+            text += " ";
+    }
+
+    Font.drawFont( blitsfc, text, lRect.x+40, lRect.y, false );
+
+    drawTwirl(lRect);
+}
+
 void NumberControl::processRender(const GsRect<float> &RectDispCoordFloat)
 {
     // Transform to the display coordinates
