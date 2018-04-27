@@ -141,7 +141,9 @@ bool CPlayerLevel::verifyforPole()
 
     if(yDir == 0) return false;
 
-    for(int x = l_x ; x<l_x+(2<<CSF) ; x+=(1<<CSF))
+    const auto firstX = l_x_l-(1<<CSF);
+    const auto lastX  = l_x_r+(1<<CSF);
+    for(int x = firstX ; x<=lastX ; x+=(1<<CSF))
     {
         if( ( yDir < 0 && hitdetectWithTileProperty(1, x, l_y_up)  ) ||
             ( yDir > 0 && hitdetectWithTileProperty(1, x, l_y_down)  ) )
@@ -149,9 +151,9 @@ bool CPlayerLevel::verifyforPole()
             cancelAllMoveTasks();
 
             // Move to the proper X Coordinates, so Keen really grabs it!
-            moveTo(Vector2D<int>(l_x - (7<<STC), getYPosition()));
-
-            // TODO: I think we need to snap him to the pole position
+            const auto polePosX = (x>>CSF)<<CSF;
+            const auto centeredX = polePosX-((1<<CSF)/2);
+            moveTo(Vector2D<int>(centeredX, getYPosition()));
 
             xinertia = 0;
 
