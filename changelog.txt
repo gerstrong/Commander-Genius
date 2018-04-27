@@ -1,6 +1,8 @@
 v2.2.2:
 -------
 - More settings in the Launcher finally working!
+- Council fixes
+- Pole collision improvements
 
 v2.2.1:
 -------
