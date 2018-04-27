@@ -138,28 +138,35 @@ bool CPlayerLevel::verifyforPole()
 
 	// Now check if Player has the chance to climb a pole or something similar
     // 1 = this tile is a pole (Property)
-	if( ( yDir < 0 && hitdetectWithTileProperty(1, l_x, l_y_up)  ) ||
-        ( yDir > 0 && hitdetectWithTileProperty(1, l_x, l_y_down)  ) )
-	{
-        cancelAllMoveTasks();
 
-        // Move to the proper X Coordinates, so Keen really grabs it!
-        moveTo(Vector2D<int>(l_x - (7<<STC), getYPosition()));
+    if(yDir == 0) return false;
 
-        // TODO: I think we need to snap him to the pole position
+    for(int x = l_x ; x<l_x+(2<<CSF) ; x+=(1<<CSF))
+    {
+        if( ( yDir < 0 && hitdetectWithTileProperty(1, x, l_y_up)  ) ||
+            ( yDir > 0 && hitdetectWithTileProperty(1, x, l_y_down)  ) )
+        {
+            cancelAllMoveTasks();
 
-		xinertia = 0;
+            // Move to the proper X Coordinates, so Keen really grabs it!
+            moveTo(Vector2D<int>(l_x - (7<<STC), getYPosition()));
 
-		//next.x = 0;
-		//next.y = 64*yDir;
+            // TODO: I think we need to snap him to the pole position
 
-		// Set Keen in climb mode
-		setAction(A_KEEN_POLE);
-        mIsClimbing = true;
-		mClipped = false;
-		solid = false;
-		return true;
-	}
+            xinertia = 0;
+
+            //next.x = 0;
+            //next.y = 64*yDir;
+
+            // Set Keen in climb mode
+            setAction(A_KEEN_POLE);
+            mIsClimbing = true;
+            mClipped = false;
+            solid = false;
+            return true;
+        }
+    }
+
 	return false;
 }
 
@@ -2735,7 +2742,8 @@ void CPlayerLevel::process()
         msgs.push_back( new CMessageBoxBitmapGalaxy(
                             fuse_msg,
                             *gGraphics.getBitmapFromStr("KEENTHUMBSUP"),
-                            RIGHT,
+                            LEFT,
+                            false,
                             evExit) );
 
         showMsgVec( msgs );

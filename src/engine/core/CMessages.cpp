@@ -86,7 +86,7 @@ CMessages::extractStringOff( const std::string matchingstring, unsigned long sta
 {
 	std::string Text;
 
-	for(unsigned long pos=start ; ; pos++)
+    for(unsigned long pos=start ; ; pos++)
 	{
 		while(mp_exe[pos] == 0xA)
 		{

@@ -35,7 +35,7 @@ public:
 
 private:
 
-    Switch          *mpTiltScreenSwitch = nullptr;
+    //Switch          *mpTiltScreenSwitch = nullptr;
     Switch          *mpShowCursorSwitch = nullptr;
     Switch			*mpVPadSwitch  = nullptr;
     NumberControl	*mpFPSSelection  = nullptr;

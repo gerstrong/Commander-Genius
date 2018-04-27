@@ -1,3 +1,7 @@
+v2.2.2:
+-------
+- More settings in the Launcher finally working!
+
 v2.2.1:
 -------
 - Thumb animation

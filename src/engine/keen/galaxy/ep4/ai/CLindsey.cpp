@@ -107,18 +107,18 @@ void CLindsey::getTouchedBy(CSpriteObject &theObject)
         if(!customDlgs)
         {
             msgs.push_back( new CMessageBoxBitmapGalaxy(lindsey_text[0],
-                            gGraphics.getBitmapFromId(108), LEFT, false) );
+                            gGraphics.getBitmapFromId(108), LEFT, false, nullptr) );
             msgs.push_back( new CMessageBoxBitmapGalaxy(lindsey_text[1],
-                            gGraphics.getBitmapFromId(108), LEFT, false) );
+                            gGraphics.getBitmapFromId(108), LEFT, false, nullptr) );
             msgs.push_back( new CMessageBoxBitmapGalaxy(lindsey_text[2],
-                            *gGraphics.getBitmapFromStr("KEENTHUMBSUP"), RIGHT, false) );
+                            *gGraphics.getBitmapFromStr("KEENTHUMBSUP"), RIGHT, false, nullptr) );
         }
         else
         {
             msgs.push_back( new CMessageBoxBitmapGalaxy(lindsey_text[0],
-                            gGraphics.getBitmapFromId(108), LEFT, false) );
+                            gGraphics.getBitmapFromId(108), LEFT, false, nullptr) );
             msgs.push_back( new CMessageBoxBitmapGalaxy(lindsey_text[1],
-                            *gGraphics.getBitmapFromStr("KEENTHUMBSUP"), RIGHT, false) );
+                            *gGraphics.getBitmapFromStr("KEENTHUMBSUP"), RIGHT, false, nullptr) );
         }
 
         showMsgVec( msgs );

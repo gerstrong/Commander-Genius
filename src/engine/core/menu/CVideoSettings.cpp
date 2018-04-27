@@ -33,8 +33,8 @@ GameMenu(GsRect<float>(0.15f, 0.20f, 0.65f, 0.55f), style )
     mpShowCursorSwitch = new Switch("Cursor", style);
     mpMenuDialog->addControl( mpShowCursorSwitch );
 
-    mpTiltScreenSwitch = new Switch("TiltedScreen", style);
-    mpMenuDialog->addControl( mpTiltScreenSwitch );
+    //mpTiltScreenSwitch = new Switch("TiltedScreen", style);
+    //mpMenuDialog->addControl( mpTiltScreenSwitch );
     
 	// Create the fps config selection control
 	std::list<std::string>	List;
@@ -89,7 +89,7 @@ void CVideoSettings::refresh()
     mpFrameSkip->enable( (iFPS> 0.0) ? true : false );
 
     mpShowCursorSwitch->enable( mUsersConf.mShowCursor );
-    mpTiltScreenSwitch->enable( mUsersConf.mTiltedScreen );
+    //mpTiltScreenSwitch->enable( mUsersConf.mTiltedScreen );
 
     mpVPadSwitch->enable( mUsersConf.mVPad );
 
@@ -117,7 +117,7 @@ void CVideoSettings::release()
 {
 	// Save up the changed stuff
     mUsersConf.mShowCursor = mpShowCursorSwitch->isEnabled();
-    mUsersConf.mTiltedScreen = mpTiltScreenSwitch->isEnabled();
+    //mUsersConf.mTiltedScreen = mpTiltScreenSwitch->isEnabled();
 
 	gTimer.setFPS( mpFPSSelection->getSelection() );
 

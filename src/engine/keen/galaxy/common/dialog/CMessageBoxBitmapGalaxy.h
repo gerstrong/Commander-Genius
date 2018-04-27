@@ -28,7 +28,7 @@ public:
                             const GsBitmap &BitmapRef,
                             const direction_t alignment,
                             const bool animation,
-                            CEvent *closeEv = nullptr);
+                            CEvent *closeEv);
 
     virtual ~CMessageBoxBitmapGalaxy() {}
 

@@ -206,7 +206,7 @@ void CFuse::getTouchedBy(CSpriteObject &theObject)
                                 msg,
                                 gGraphics.getBitmapFromId(mLevelTestBmp),
                                 RIGHT,
-                                true) );
+                                true, nullptr) );
 
             showMsgVec( msgs );
             mIsDead = true;
