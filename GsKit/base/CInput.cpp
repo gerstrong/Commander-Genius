@@ -1451,6 +1451,8 @@ static const int w = 480, h = 320;
 
 //#if defined(MOUSEWRAPPER)
 #if SDL_VERSION_ATLEAST(2, 0, 0)
+
+#if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
 static TouchButton* getPhoneButtons(stInputCommand InputCommand[NUM_INPUTS][MAX_COMMANDS]) {
 
 	static TouchButton phoneButtons[] = {
@@ -1476,16 +1478,16 @@ static TouchButton* getPhoneButtons(stInputCommand InputCommand[NUM_INPUTS][MAX_
 
 	return phoneButtons;
 }
-
-
+#endif
 
 static const int phoneButtonN = 15;
 typedef std::set<int> MouseIndexSet;
 
+#if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
 static Uint32 phoneButtonLasttime[phoneButtonN] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 static MouseIndexSet phoneButton_MouseIndex[phoneButtonN];
 
-#if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
+
 static TouchButton* getPhoneButton(int x, int y, TouchButton phoneButtons[]) {
 	for(int i = 0; i < phoneButtonN; ++i) {
 		TouchButton& b = phoneButtons[i];
@@ -1513,6 +1515,7 @@ static bool checkMousewrapperKey(int& key) {
 }
 #endif
 
+#ifdef MOUSEWRAPPER
 void CInput::processMouse()
 {
 	TouchButton* phoneButtons = getPhoneButtons(InputCommand);
@@ -1530,6 +1533,7 @@ void CInput::processMouse()
 			immediate_keytable[b.immediateIndex] = down;
 	}
 }
+#endif
 
 void CInput::processMouse(SDL_Event& ev) {
 
@@ -1577,7 +1581,7 @@ void CInput::processMouse(SDL_Event& ev) {
 
 void CInput::processMouse(int x, int y, bool down, int mouseindex)
 {
-
+#ifdef MOUSEWRAPPER
     TouchButton* phoneButtons = getPhoneButtons(InputCommand);
 
 	for(int i = 0; i < phoneButtonN; ++i) {
@@ -1590,8 +1594,9 @@ void CInput::processMouse(int x, int y, bool down, int mouseindex)
 			break;
 		}
 	}
-
+#endif
 }
+
 
 #ifdef USE_OPENGL
 /*
