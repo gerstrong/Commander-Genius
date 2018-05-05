@@ -104,7 +104,7 @@ public:
     // TODO: Dangerous method. Must be removed in future
     SDL_Surface *getScrollSurface() { return mScrollSurface.getSDLSurface(); }
 
-    GsRect<Uint16> &getActiveAreaRect() { return mActiveAreaRect; }
+    GsRect<Uint16> getActiveAreaRect() const { return mActiveAreaRect; }
 
 	void resetScrollbuffer()
 	{

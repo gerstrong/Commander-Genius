@@ -864,6 +864,31 @@ void CGameLauncher::render()
         mLauncherDialog.processRendering();
     }
 
+
+    /*
+    // Test picture code for Screen tilting
+    auto sfc = gVideoDriver.getBlitSurface();
+
+    SDL_Rect borderRect;
+
+    SDL_FillRect(sfc, nullptr, SDL_MapRGB(sfc->format,255,255,0));
+
+    borderRect.x = 0; borderRect.y = 0;
+    borderRect.h = 2; borderRect.w = sfc->w;
+    SDL_FillRect(sfc, &borderRect, SDL_MapRGB(sfc->format,255,0,255));
+
+    borderRect.x = 0; borderRect.y = sfc->h-2;
+    borderRect.h = 2; borderRect.w = sfc->w;
+    SDL_FillRect(sfc, &borderRect, SDL_MapRGB(sfc->format,255,0,255));
+
+    borderRect.x = 0; borderRect.y = 0;
+    borderRect.h = sfc->h; borderRect.w = 2;
+    SDL_FillRect(sfc, &borderRect, SDL_MapRGB(sfc->format,0,255,0));
+
+    borderRect.x = sfc->w-2; borderRect.y = 0;
+    borderRect.h = sfc->h; borderRect.w = 2;
+    SDL_FillRect(sfc, &borderRect, SDL_MapRGB(sfc->format,0,255,0));
+*/
     // Do the rendering of the dialog
     if(mpPatchDialog)
         mpPatchDialog->processRendering();

@@ -152,39 +152,29 @@ bool CVideoEngine::init()
 
 void CVideoEngine::updateActiveArea(const GsRect<Uint16>& displayRes,
                                    const int aspWidth, const int aspHeight)
-{
+{    
     if (aspWidth == 0 || aspHeight == 0)
-	{
+    {
         mActiveAreaRect.x = mActiveAreaRect.y = 0;
         mActiveAreaRect.w = displayRes.w;
         mActiveAreaRect.h = displayRes.h;
-		return;
+
+        return;
     }
 
     if (aspHeight*displayRes.w >= aspWidth*displayRes.h) // Wider than width:height, so shrink width
-	{
+    {
         mActiveAreaRect.h = displayRes.h;
-        mActiveAreaRect.w = (displayRes.h*aspWidth)/aspHeight;
+        mActiveAreaRect.w = ((displayRes.h*aspWidth)/aspHeight);
     }
-    else // Taller than width:height so shrink height
-	{
+    else // Taller than width:height so adapt height
+    {
         mActiveAreaRect.w = displayRes.w;
         mActiveAreaRect.h = (displayRes.w*aspHeight)/aspWidth;
     }
 
-/*
     mActiveAreaRect.x = (displayRes.w-mActiveAreaRect.w)/2;
     mActiveAreaRect.y = (displayRes.h-mActiveAreaRect.h)/2;
-*/
-
-    mActiveAreaRect.x = (displayRes.w-mActiveAreaRect.w)/2;
-    mActiveAreaRect.y = (displayRes.h-mActiveAreaRect.h)/2;
-
-
-/*
-    mActiveAreaRect.x = 0;
-    mActiveAreaRect.y = 0;
-*/
 }
 
 

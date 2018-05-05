@@ -118,16 +118,12 @@ bool CSDLVideo::resizeDisplayScreen(const GsRect<Uint16>& newDim)
                                  mActiveAreaRect.w,
                                  mActiveAreaRect.h);
 
-/*
-        SDL_RenderSetLogicalSize(renderer,
-                                 mActiveAreaRect.w*2,
-                                 mActiveAreaRect.h*2);
-*/
-
         SDL_RenderSetViewport(renderer, nullptr);
     }
 #else
-    mDisplaySfc.setPtr(SDL_SetVideoMode( mActiceAreaRect.w, mActiceAreaRect.h, 32, m_Mode ));
+    mDisplaySfc.setPtr(SDL_SetVideoMode( mActiceAreaRect.w,
+                                         mActiceAreaRect.h,
+                                         32, m_Mode ));
 #endif
 
     return true;
@@ -200,7 +196,9 @@ void CSDLVideo::hackIt() {} // Empty
 
 
 /**
- * @brief tilt  tilt the rect 90 degree clockwise
+ * @brief tilt  tilt the rect (90 degree when squared) clockwise
+ *              note: This happens on a squared coordinate system,
+ *                    otherwise tilted as intended would never work
  * @param dpadRect  rect to rotate
  * @param rotPt     point of rotation
  * @return The rotated rect
@@ -208,15 +206,30 @@ void CSDLVideo::hackIt() {} // Empty
 GsRect<int> tilt(const GsRect<int> &dpadRect,
                  const Vector2D<int> &rotPt)
 {
-    const int x1_rel = dpadRect.x-rotPt.x;
-    const int y1_rel = dpadRect.y-rotPt.y;
+    // Because tilt with 90 degree only works if the plane is squared
+    // the coordinate must be transformed
+    if(rotPt.x <= 0 || rotPt.y <= 0)
+        return GsRect<int>(0,0,0,0);
+
+    const auto width = dpadRect.w*rotPt.y;
+    const auto height = dpadRect.h*rotPt.x;
+
+    const auto dpadMidX = dpadRect.x*rotPt.y + width/2;
+    const auto dpadMidY = dpadRect.y*rotPt.x + height/2;
+
+    const auto rotTransX = rotPt.x*rotPt.y;
+    const auto rotTransY = rotPt.y*rotPt.x;
+
+    const auto x1_rel = dpadMidX-rotTransX;
+    const auto y1_rel = dpadMidY-rotTransY;
     const int x2_rel = -y1_rel;
     const int y2_rel = x1_rel;
 
-    return GsRect<int>( x2_rel+rotPt.x,
-                        y2_rel+rotPt.y,
-                        dpadRect.h,
-                        dpadRect.w);
+    auto retX = (x2_rel+rotTransX-height/2)/rotPt.y;
+    auto retY = (y2_rel+rotTransY-width/2)/rotPt.x;
+
+    return GsRect<int>( retX, retY,
+                        dpadRect.w, dpadRect.h);
 }
 
 
@@ -242,30 +255,53 @@ void CSDLVideo::transformScreenToDisplay()
                            255);
 
 
-    //SDL_Point midPt;
-
     const Vector2D<int> rotPt(mActiveAreaRect.x+mActiveAreaRect.w/2,
                               mActiveAreaRect.y+mActiveAreaRect.h/2);
 
-    /*midPt.x = rotPt.x;
-    midPt.y = rotPt.y;*/
 
+    SDL_Rect mainDstrect = mActiveAreaRect.SDLRect();
 
 
     auto RenderCopy = [&] (SDL_Renderer * local_renderer,
                            SDL_Texture * local_texture,
                            const SDL_Rect * local_srcrect,
-                           const SDL_Rect * local_dstrect)
+                           const SDL_Rect * local_dstrect,
+                           const SDL_Point * pt)
     {
         if(tiltVideo)
         {
-            SDL_RenderCopyEx(local_renderer,
-                             local_texture,
-                             local_srcrect,
-                             local_dstrect,
-                             90.0,
-                             nullptr,
-                             SDL_FLIP_NONE);
+            if(!local_dstrect)
+            {
+                SDL_RenderCopyEx(local_renderer,
+                                 local_texture,
+                                 local_srcrect,
+                                 nullptr,
+                                 90.0,
+                                 pt,
+                                 SDL_FLIP_NONE);
+            }
+            else
+            {
+
+                auto adaptRect = *local_dstrect;
+
+                adaptRect.h = local_dstrect->w;
+                adaptRect.w = local_dstrect->h;
+
+                const auto deltaX = (adaptRect.h-adaptRect.w)/2;
+                const auto deltaY = (adaptRect.w-adaptRect.h)/2;
+
+                adaptRect.x += deltaX; adaptRect.y += deltaY;
+
+
+                SDL_RenderCopyEx(local_renderer,
+                                 local_texture,
+                                 local_srcrect,
+                                 &adaptRect,
+                                 90.0,
+                                 pt,
+                                 SDL_FLIP_NONE);
+            }
         }
         else
         {
@@ -278,14 +314,10 @@ void CSDLVideo::transformScreenToDisplay()
 
     SDL_RenderClear(renderer);    
 
-    SDL_Rect mainDstrect;
 
-    mainDstrect.x = mActiveAreaRect.x;
-    mainDstrect.y = mActiveAreaRect.y;
-    mainDstrect.w = mActiveAreaRect.w;
-    mainDstrect.h = mActiveAreaRect.h;   
+    SDL_Point pt = {mainDstrect.h/2, mainDstrect.w/2};
 
-    RenderCopy(renderer, mpMainScreenTexture.get(), nullptr, &mainDstrect);
+    RenderCopy(renderer, mpMainScreenTexture.get(), nullptr, &mainDstrect, &pt);
 
 
     // Now render the textures which additionally sent over...
@@ -303,7 +335,7 @@ void CSDLVideo::transformScreenToDisplay()
         {
             if(dst.empty())
             {
-                RenderCopy(renderer, texture, nullptr, nullptr);
+                RenderCopy(renderer, texture, nullptr, nullptr, nullptr);
             }
             else
             {
@@ -313,12 +345,18 @@ void CSDLVideo::transformScreenToDisplay()
                 dstSDL.y += mActiveAreaRect.y;
                 dstSDL.x += mActiveAreaRect.x;
 
+                SDL_Point texPt = pt;
+
+                texPt.x = dstSDL.h/2;
+                texPt.y = dstSDL.w/2;
+
                 if(tiltVideo)
                 {
+                    // If screenWxscreenH is square it works!. Need to transform on of the coords -> only thing left... :-)
                     dstSDL = tilt(dstSDL, rotPt).SDLRect();
                 }
 
-                RenderCopy(renderer, texture, nullptr, &dstSDL);
+                RenderCopy(renderer, texture, nullptr, &dstSDL, &texPt);
             }
         }
         else
@@ -326,12 +364,12 @@ void CSDLVideo::transformScreenToDisplay()
             SDL_Rect srcSDL = src.SDLRect();
             if(dst.empty())
             {
-                RenderCopy(renderer, texture, &srcSDL, nullptr);
+                RenderCopy(renderer, texture, &srcSDL, nullptr, nullptr);
             }
             else
             {
                 SDL_Rect dstSDL = dst.SDLRect();
-                RenderCopy(renderer, texture, &srcSDL, &dstSDL);
+                RenderCopy(renderer, texture, &srcSDL, &dstSDL, nullptr);
             }
         }
 
