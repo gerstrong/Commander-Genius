@@ -3,6 +3,8 @@
 
 #include "../../common/ai/CStunnable.h"
 
+#include <boost/property_tree/ptree.hpp>
+
 namespace galaxy
 {
 
@@ -11,23 +13,11 @@ class CGrabbiter : public CStunnable
 public:
     CGrabbiter(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y);
     
-    void deserialize(CSaveGameController &savedGame) override;
-    
+    void deserialize(CSaveGameController &savedGame) override;    
     void serialize(CSaveGameController &savedGame) override;
 
-    void serialize(boost::property_tree::ptree &node) override
-    {
-        auto &posNode = node.put("pos", "");
-        posNode.put("<xmlattr>.x", m_Pos.x);
-        posNode.put("<xmlattr>.y", m_Pos.y);
-    }
-    void deserialize(boost::property_tree::ptree &node) override
-    {
-        auto &posNode = node.put("pos", "");
-        m_Pos.x = posNode.get<Uint32>("<xmlattr>.x", m_Pos.x);
-        m_Pos.y = posNode.get<Uint32>("<xmlattr>.y", m_Pos.y);
-    }
-
+    void serialize(boost::property_tree::ptree &node) override;
+    void deserialize(boost::property_tree::ptree &node) override;
 
     
     void processHungry();

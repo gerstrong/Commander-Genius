@@ -11,6 +11,7 @@
 #include "ItemsGalaxy.h"
 #include "engine/core/CBehaviorEngine.h"
 
+#include <boost/property_tree/ptree.hpp>
 
 void stItemGalaxy::reset()
 {

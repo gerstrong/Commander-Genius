@@ -10,6 +10,7 @@
 #include "../CVorticonMapLoader.h"
 #include <base/utils/Base64.h>
 
+#include <boost/property_tree/ptree.hpp>
 
 ///////////////////////////
 // Game State Management //

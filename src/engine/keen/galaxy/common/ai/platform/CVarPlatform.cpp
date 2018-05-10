@@ -7,6 +7,8 @@
 
 #include "CVarPlatform.h"
 
+#include <boost/property_tree/ptree.hpp>
+
 namespace galaxy {
 
 
@@ -50,6 +52,25 @@ serialize(CSaveGameController &savedGame)
     savedGame.encodeData(target.x);
     savedGame.encodeData(target.y);
 }
+
+void
+CVarPlatform::
+serialize(boost::property_tree::ptree &node)
+{
+    auto &posNode = node.put("target", "");
+    posNode.put("<xmlattr>.x", target.x);
+    posNode.put("<xmlattr>.y", target.y);
+}
+
+void
+CVarPlatform::
+deserialize(boost::property_tree::ptree &node)
+{
+    auto &posNode = node.get_child("target");
+    target.x = posNode.get<int>("<xmlattr>.x");
+    target.y = posNode.get<int>("<xmlattr>.y");
+}
+
 
 
 void CVarPlatform::process()

@@ -34,18 +34,9 @@ namespace galaxy  {
     
     void serialize(CSaveGameController &savedGame);
 
-    void serialize(boost::property_tree::ptree &node)
-    {
-      auto &posNode = node.put("position", "");
-      posNode.put("<xmlattr>.x", m_Pos.x);
-      posNode.put("<xmlattr>.y", m_Pos.y);    
-    }
-    void deserialize(boost::property_tree::ptree &node)
-    {
-        auto &posNode = node.put("position", "");
-        m_Pos.x = posNode.get<Uint32>("<xmlattr>.x", m_Pos.x);
-        m_Pos.y = posNode.get<Uint32>("<xmlattr>.y", m_Pos.y);
-    }
+    void serialize(boost::property_tree::ptree &node);
+
+    void deserialize(boost::property_tree::ptree &node);
 
     
     void getTouchedBy(CSpriteObject &theObject);

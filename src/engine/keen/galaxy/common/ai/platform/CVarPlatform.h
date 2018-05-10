@@ -11,12 +11,11 @@
 #include "../CMoveTarget.h"
 
 #include "CPlatform.h"
-//#include <base/utils/CVec.h>
 
-#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/ptree_fwd.hpp>
 
-namespace galaxy {
-
+namespace galaxy
+{
 
 class CVarPlatform : public CPlatform, public CMoveTarget
 {
@@ -32,25 +31,12 @@ public:
 
     void serialize(CSaveGameController &savedGame);
 
-    void serialize(boost::property_tree::ptree &node)
-    {
-        auto &posNode = node.put("target", "");
-        posNode.put("<xmlattr>.x", target.x);
-        posNode.put("<xmlattr>.y", target.y);
-    }
+    void serialize(boost::property_tree::ptree &node);
 
-    void deserialize(boost::property_tree::ptree &node)
-    {
-        auto &posNode = node.get_child("target");
-        target.x = posNode.get<int>("<xmlattr>.x");
-        target.y = posNode.get<int>("<xmlattr>.y");
-    }
-
-
+    void deserialize(boost::property_tree::ptree &node);
 	
 };
 
-};
+}
 
 #endif /* CVARPLATFORM_H_ */
-

@@ -23,6 +23,8 @@
 
 #include <array>
 
+#include <boost/property_tree/ptree.hpp>
+
 #include "engine/core/CBehaviorEngine.h"
 
 const int TIME_TO_WAVE = 400;
@@ -84,6 +86,27 @@ serialize(CSaveGameController &savedGame)
 {
   savedGame.encodeData(mUsedGrapplingHook);
 }
+
+void
+CPlayerWM::
+serialize(boost::property_tree::ptree &node)
+{
+    node.put("usedGrapplingHook", mUsedGrapplingHook);
+
+    const bool swimming = isSwimming();
+    node.put("isSwimming", swimming);
+}
+void
+CPlayerWM::
+deserialize(boost::property_tree::ptree &node)
+{
+    mUsedGrapplingHook = node.get<bool>("usedGrapplingHook", false);
+
+    bool swimming;
+    swimming = node.get<bool>("isSwimming",false);
+    makeHimSwim(swimming);
+}
+
 
 /**
  * Before Keen rides on the foot we get the location where to ride

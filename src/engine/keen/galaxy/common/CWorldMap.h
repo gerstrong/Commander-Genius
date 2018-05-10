@@ -11,7 +11,6 @@
 #define CWORLDMAP_H_
 
 #include "../CMapPlayGalaxy.h"
-#include <boost/property_tree/ptree.hpp>
 
 namespace galaxy {
 

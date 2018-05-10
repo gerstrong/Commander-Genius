@@ -8,6 +8,7 @@
 #include "CFlag.h"
 #include "sdl/audio/Audio.h"
 
+#include <boost/property_tree/ptree.hpp>
 
 namespace galaxy {    
 
@@ -61,6 +62,20 @@ m_baseframe(0)
 	    setupGalaxyObjectOnMap(0x15EE, A_FLAG_FLIP);                
 	}
 
+}
+
+void CFlag::serialize(boost::property_tree::ptree &node)
+{
+  auto &posNode = node.put("position", "");
+  posNode.put("<xmlattr>.x", m_Pos.x);
+  posNode.put("<xmlattr>.y", m_Pos.y);
+}
+
+void CFlag::deserialize(boost::property_tree::ptree &node)
+{
+    auto &posNode = node.put("position", "");
+    m_Pos.x = posNode.get<Uint32>("<xmlattr>.x", m_Pos.x);
+    m_Pos.y = posNode.get<Uint32>("<xmlattr>.y", m_Pos.y);
 }
 
 void CFlag::deserialize(CSaveGameController &savedGame)

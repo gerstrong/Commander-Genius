@@ -2,6 +2,8 @@
 
 #include "../../common/ai/CPlayerBase.h"
 
+#include <boost/property_tree/ptree.hpp>
+
 /*
 $1B9EW  #Keen throw rope
 $1BBCW  #Keen throw rope
@@ -33,6 +35,16 @@ mTimer(0)
 
     setupGalaxyObjectOnMap(gBehaviorEngine.isDemo() ? 0x1A5C : 0x1C16, A_ROPE_THROWN);
     solid=false;
+}
+
+
+void
+CRope::
+serialize(boost::property_tree::ptree &node)
+{
+    auto &posNode = node.put("pos", "");
+    posNode.put("<xmlattr>.x", m_Pos.x);
+    posNode.put("<xmlattr>.y", m_Pos.y);
 }
 
 

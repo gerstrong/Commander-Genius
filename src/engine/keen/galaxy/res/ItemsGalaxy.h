@@ -10,8 +10,7 @@
 #ifndef ITEMSGALAXY_H_
 #define ITEMSGALAXY_H_
 
-//#include "engine/core/CBehaviorEngine.h"
-#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/ptree_fwd.hpp>
 #include <string>
 
 struct stItemGalaxy

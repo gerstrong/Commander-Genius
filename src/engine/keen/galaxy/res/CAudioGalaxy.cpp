@@ -82,9 +82,9 @@ bool CAudioGalaxy::readPCSpeakerSoundintoWaveForm(CSoundSlot &soundslot,
 void CAudioGalaxy::setupAudioMap()
 {
     // Preparation which might help wehn some patches are applied    
-    byte *ptr = gKeenFiles.exeFile.getRawData();
+    //byte *ptr = gKeenFiles.exeFile.getRawData();
     auto episode = gBehaviorEngine.getEpisode();
-    size_t holder = 0;
+    //size_t holder = 0;
 
     // Episode 4
     sndSlotMapGalaxy[4][SOUND_KEEN_WALK] = 0;

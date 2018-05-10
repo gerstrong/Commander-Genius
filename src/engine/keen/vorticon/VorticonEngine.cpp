@@ -30,6 +30,8 @@
 
 #include <fileio/KeenFiles.h>
 
+#include <algorithm>
+
 namespace vorticon
 {
 

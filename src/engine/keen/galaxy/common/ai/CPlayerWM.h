@@ -49,24 +49,10 @@ public:
     void pumpEvent(const CEvent *evPtr);
 	
     void deserialize(CSaveGameController &savedGame);
-
     void serialize(CSaveGameController &savedGame);
 
-    void serialize(boost::property_tree::ptree &node)
-    {
-        node.put("usedGrapplingHook", mUsedGrapplingHook);
-
-        const bool swimming = isSwimming();
-        node.put("isSwimming", swimming);
-    }
-    void deserialize(boost::property_tree::ptree &node)
-    {
-        mUsedGrapplingHook = node.get<bool>("usedGrapplingHook", false);
-
-        bool swimming;
-        swimming = node.get<bool>("isSwimming",false);
-        makeHimSwim(swimming);
-    }
+    void serialize(boost::property_tree::ptree &node);
+    void deserialize(boost::property_tree::ptree &node);
 
 	void process();
 	void processMoving();

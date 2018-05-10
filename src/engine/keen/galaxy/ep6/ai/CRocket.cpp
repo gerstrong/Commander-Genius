@@ -2,6 +2,7 @@
 #include "../../common/ai/CPlayerBase.h"
 #include "../../common/dialog/CMessageBoxBitmapGalaxy.h"
 
+#include <boost/property_tree/ptree.hpp>
 
 namespace galaxy
 {
@@ -62,6 +63,34 @@ serialize(CSaveGameController &savedGame)
     savedGame.encodeData(target.x);
     savedGame.encodeData(target.y);
 }
+
+
+void
+CRocket::
+serialize(boost::property_tree::ptree &node)
+{
+    auto &posNode = node.put("pos","");
+    posNode.put("<xmlattr>.x", m_Pos.x);
+    posNode.put("<xmlattr>.y", m_Pos.y);
+
+    auto &targetNode = node.put("target","");
+    targetNode.put("<xmlattr>.x", target.x);
+    targetNode.put("<xmlattr>.y", target.y);
+}
+
+void
+CRocket::
+deserialize(boost::property_tree::ptree &node)
+{
+    auto &posNode = node.put("pos", "");
+    m_Pos.x = posNode.get<Uint32>("<xmlattr>.x", m_Pos.x);
+    m_Pos.y = posNode.get<Uint32>("<xmlattr>.y", m_Pos.y);
+
+    auto &targetNode = node.put("target","");
+    target.x = targetNode.get<int>("<xmlattr>.x", target.x);
+    target.y = targetNode.get<int>("<xmlattr>.y", target.y);
+}
+
 
 
 

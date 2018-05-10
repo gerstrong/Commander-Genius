@@ -18,6 +18,8 @@
 #include <base/GsTimer.h>
 #include <base/GsLogging.h>
 
+#include <boost/property_tree/ptree.hpp>
+
 #include "../dialog/CMessageBoxBitmapGalaxy.h"
 
 

@@ -1,6 +1,8 @@
 #include "Autogun.h"
 #include "CPlayerBase.h"
 
+#include <boost/property_tree/ptree.hpp>
+
 namespace galaxy
 {  
 
@@ -57,6 +59,28 @@ CGalaxySpriteObject(pmap, foeID, x, y, sprVar)
     origin = getPosition();
 
     performCollisions();
+}
+
+void AutoShot::deserialize(boost::property_tree::ptree &node)
+{
+    mTimer = node.get("<xmlattr>.timer", mTimer);
+    auto &posNode = node.put("pos", "");
+    m_Pos.x = posNode.get<Uint32>("<xmlattr>.x", m_Pos.x);
+    m_Pos.y = posNode.get<Uint32>("<xmlattr>.y", m_Pos.y);
+    auto &originNode = node.put("origin", "");
+    origin.x = originNode.get<Uint32>("<xmlattr>.x", origin.x);
+    origin.y = originNode.get<Uint32>("<xmlattr>.y", origin.y);
+}
+
+void AutoShot::serialize(boost::property_tree::ptree &node)
+{
+    node.put("<xmlattr>.timer", mTimer);
+    auto &posNode = node.put("pos", "");
+    posNode.put("<xmlattr>.x", m_Pos.x);
+    posNode.put("<xmlattr>.y", m_Pos.y);
+    auto &originNode = node.put("origin", "");
+    originNode.put("<xmlattr>.x", origin.x);
+    originNode.put("<xmlattr>.y", origin.y);
 }
 
 void AutoShot::waiting()
