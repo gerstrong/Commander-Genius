@@ -164,10 +164,12 @@ public:
      * @param Pos       Resulting relative coordinate to handle
      * @param motion    SDL Motion Event in which the raw pointer position is requested
      * @param activeArea    Area which is seen and interacted.
+     * @param tiltedScreen  is the screen tilted.
      */
     void transMouseRelCoord(Vector2D<float> &Pos,
                             const SDL_MouseMotionEvent motion,
-                            const GsRect<Uint16> &activeArea);
+                            const GsRect<Uint16> &activeArea,
+                            const bool tiltedScreen);
 
     /**
      * @brief	Called every logic cycle. This triggers the events that occur and process them through various functions

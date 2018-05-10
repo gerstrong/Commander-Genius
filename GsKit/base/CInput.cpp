@@ -598,13 +598,48 @@ bool CInput::isAnalog(const int player) { return mAnalogAxesMovement[player]; }
 void CInput::enableAnalog(const int player, const bool value) { mAnalogAxesMovement[player]=value; }
 
 
+GsRect<int> tiltBack(const GsRect<int> &screenRect,
+                     const Vector2D<int> &pt)
+{
+    const Vector2D<int> rotPt(screenRect.w/2, screenRect.h/2);
+
+    // Because tilt with 90 degree only works if the plane is squared
+    // the coordinate must be transformed
+    if(rotPt.x <= 0 || rotPt.y <= 0)
+        return GsRect<int>(0,0,0,0);
+
+    const auto rotTransX = rotPt.x*rotPt.y;
+    const auto rotTransY = rotPt.y*rotPt.x;
+
+    const auto x1_rel = (pt.x-rotPt.x)*rotPt.y;
+    const auto y1_rel = (pt.y-rotPt.y)*rotPt.x;
+    const int x2_rel = y1_rel;
+    const int y2_rel = -x1_rel;
+
+    auto retX = (x2_rel+rotTransX)/rotPt.y;
+    auto retY = (y2_rel+rotTransY)/rotPt.x;
+
+    return GsRect<int>( retX, retY,
+                        screenRect.w, screenRect.h);
+}
+
 void CInput::transMouseRelCoord(Vector2D<float> &Pos,
 								const SDL_MouseMotionEvent motion,
-                                const GsRect<Uint16> &activeArea)
+                                const GsRect<Uint16> &activeArea,
+                                const bool tiltedScreen)
 {
-    Pos.x = ( static_cast<float>(motion.x-activeArea.x)/
+    const Vector2D<int> rotPt(motion.x, motion.y);
+
+    auto myCoord = rotPt;
+
+    if(tiltedScreen)
+    {
+        myCoord = tiltBack(activeArea, myCoord);
+    }
+
+    Pos.x = ( static_cast<float>(myCoord.x-activeArea.x)/
               static_cast<float>(activeArea.w) );
-    Pos.y = ( static_cast<float>(motion.y-activeArea.y)/
+    Pos.y = ( static_cast<float>(myCoord.y-activeArea.y)/
               static_cast<float>(activeArea.h) );
 }
 
@@ -652,17 +687,7 @@ void CInput::pollEvents()
 
     auto &dispRect = gVideoDriver.getVidConfig().mDisplayRect;
 
-    // TODO: It seems that Win32 Build get different coordinates. I still don't know why...
-    // Maybe I'm doing something wrong here!
-    /*
-#ifdef WIN32
-    if( !gVideoDriver.isOpenGL() )
-    {
-        activeArea.x = 0;
-        activeArea.y = 0;
-    }
-#endif
-*/
+    const bool tiltedScreen = gVideoDriver.getVidConfig().mTiltedScreen;
 
 	// While there's an event to handle
 	while( SDL_PollEvent( &Event ) )
@@ -733,7 +758,7 @@ void CInput::pollEvents()
             {                                                
                 if(Event.button.button <= 3)
                 {
-                    transMouseRelCoord(Pos, Event.motion, activeArea);
+                    transMouseRelCoord(Pos, Event.motion, activeArea, tiltedScreen);
                     mpVirtPad->mouseDown(Pos);
                 }
             }
@@ -741,7 +766,7 @@ void CInput::pollEvents()
             {
                 if(Event.button.button <= 3)
                 {
-                    transMouseRelCoord(Pos, Event.motion, activeArea);
+                    transMouseRelCoord(Pos, Event.motion, activeArea, tiltedScreen);
                     m_EventList.add( new PointingDevEvent( Pos, PDE_BUTTONDOWN ) );
                     gPointDevice.mPointingState.mActionButton = 1;
                     gPointDevice.mPointingState.mPos = Pos;
@@ -753,13 +778,13 @@ void CInput::pollEvents()
 		case SDL_MOUSEBUTTONUP:
             if(gVideoDriver.VGamePadEnabled() && mpVirtPad && mpVirtPad->active())
             {
-                transMouseRelCoord(Pos, Event.motion, activeArea);
+                transMouseRelCoord(Pos, Event.motion, activeArea, tiltedScreen);
                 mpVirtPad->mouseUp(Pos);
             }
             else
             {
                 passSDLEventVec = true;
-                transMouseRelCoord(Pos, Event.motion, activeArea);
+                transMouseRelCoord(Pos, Event.motion, activeArea, tiltedScreen);
                 m_EventList.add( new PointingDevEvent( Pos, PDE_BUTTONUP ) );
                 gPointDevice.mPointingState.mActionButton = 0;
                 gPointDevice.mPointingState.mPos = Pos;
@@ -775,7 +800,7 @@ void CInput::pollEvents()
 #endif
 
 		case SDL_MOUSEMOTION:
-            transMouseRelCoord(Pos, Event.motion, activeArea);
+            transMouseRelCoord(Pos, Event.motion, activeArea, tiltedScreen);
             m_EventList.add( new PointingDevEvent( Pos, PDE_MOVED ) );
             gPointDevice.mPointingState.mPos = Pos;
 			break;
