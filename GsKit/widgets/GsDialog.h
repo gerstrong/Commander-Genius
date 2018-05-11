@@ -57,9 +57,6 @@ public:
 	// processes the whole rendering of the Dialog
     void processRendering(SDL_Surface *blit);
 
-    // Update the background. Happens when the Menu is created or graphical settings are changed within the game
-    void setBackground(GsSurface &bgSfc);
-
     // Update all graphics. Happens when Video settings are normally changed
     void updateGraphics();
 

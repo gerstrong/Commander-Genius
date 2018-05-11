@@ -34,15 +34,8 @@ mFXvStep(0)
     }
 }
 
-
-void CGUIDialog::setBackground(GsSurface &bgSfc)
-{
-    mBackgroundSfc.createCopy(bgSfc);
-}
-
 void CGUIDialog::updateGraphics()
 {
-    //updateBackground();
     for( auto &control : mControlList )
     {
         control->updateGraphics();

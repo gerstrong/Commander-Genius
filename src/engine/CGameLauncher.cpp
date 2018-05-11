@@ -786,6 +786,13 @@ void CGameLauncher::ponderPatchDialog()
 ////
 void CGameLauncher::ponder(const float deltaT)
 {
+    // In case after display/video setting changes, we need to reset the native resolution
+    if(gVideoDriver.getRefreshSignal())
+    {
+        // Set the native resolution
+        gVideoDriver.setNativeResolution(gVideoDriver.getVidConfig().mDisplayRect);
+    }
+
     if(mpMsgDialog)
     {
         // Command (Keyboard/Joystick) events for the game center dialog
