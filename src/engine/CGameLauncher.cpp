@@ -514,7 +514,10 @@ void CGameLauncher::showMessageBox(const std::string &text)
 
 
 
-    mpMsgDialog->addControl(new GsButton("Ok", new CloseBoxEvent()), GsRect<float>(0.4f, 0.85f, 0.2f, 0.05f) );
+    auto *pOkButton = new GsButton("Ok", new CloseBoxEvent());
+    mpMsgDialog->addControl(pOkButton, GsRect<float>(0.4f, 0.85f, 0.2f, 0.05f));
+    pOkButton->select(true);
+    mpMsgDialog->setCurrentControl(pOkButton);
 
 }
 
@@ -785,6 +788,16 @@ void CGameLauncher::ponder(const float deltaT)
 {
     if(mpMsgDialog)
     {
+        // Command (Keyboard/Joystick) events for the game center dialog
+        for( int cmd = IC_JUMP ; cmd < MAX_COMMANDS ; cmd++ )
+        {
+            if( gInput.getPressedCommand(cmd) )
+            {
+                mpMsgDialog->sendEvent(new CommandEvent( static_cast<InputCommand>(cmd) ));
+                break;
+            }
+        }
+
         mpMsgDialog->processLogic();
         return;
     }
