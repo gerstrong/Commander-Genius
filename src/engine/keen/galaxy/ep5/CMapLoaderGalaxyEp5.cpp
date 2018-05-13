@@ -137,7 +137,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp5::addFoe(CMap &Map, word foe, size_t x, 
             inventory.Item.mLevelName = Map.getLevelName();
 
             p_newfoe = new galaxy::CPlayerLevel(&Map, foe, x, y, m_ObjectPtr,
-               (foe==1) ? RIGHT : LEFT, inventory, 0x0888, mNumLoadedPlayers, mNumLoadedPlayers);
+               (foe==1) ? RIGHT : LEFT, inventory, 0x0888, mNumLoadedPlayers, inventory.mSpriteVar);
         }
         mNumLoadedPlayers++;
         break;

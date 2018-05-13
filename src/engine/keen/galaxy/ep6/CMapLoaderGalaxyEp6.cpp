@@ -125,7 +125,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp6::addFoe(CMap &Map, word foe, size_t x, 
                                                             (foe==1) ? RIGHT : LEFT,
                                                             inventory,
                                                             m_demo ? 0x91E : 0x89A,
-                                                            mNumLoadedPlayers, mNumLoadedPlayers);
+                                                            mNumLoadedPlayers, inventory.mSpriteVar);
         }
         mNumLoadedPlayers++;
         break;

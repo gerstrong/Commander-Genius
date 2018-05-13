@@ -141,7 +141,7 @@ private:
 
     // Some pictures for sprites have three sections,
     // but there have been arising some which only use two and the mask is a special odd color
-    int mFold = 3;
+    int mFold = 1;
 };
 
 #endif /* GsSprite_H_ */
