@@ -329,7 +329,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
                 p_newfoe = new galaxy::CPlayerDive(&Map, foe, x, y,
                                                    RIGHT, inventory,
                                                    mNumLoadedPlayers,
-                                                   mNumLoadedPlayers);
+                                                   inventory.mSpriteVar);
             }
             mNumLoadedPlayers++;
         }

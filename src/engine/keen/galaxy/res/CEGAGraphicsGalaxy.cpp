@@ -1097,6 +1097,19 @@ bool CEGAGraphicsGalaxy::readBitmaps()
         bitmapNameOffset = 3;
     }
 
+    // Looks for bitmap files lying around
+    // If there are some load them as well
+    const std::string gfxDir = "gfx";
+    const std::string bmpsDir = "bmps";
+    const std::string bmpDirPath = JoinPaths(gKeenFiles.gameDir,
+                                             gfxDir, bmpsDir);
+
+    std::set<std::string> bmpFileList;
+    FileListAdder bmpfilesAdder;
+    GetFileList(bmpFileList, bmpfilesAdder,
+                bmpDirPath, false, FM_REG);
+
+
     auto &bitmapNamesThisEp = m_BitmapNameMap[bitmapNameOffset];
 
     for(size_t i = 0; i < epInfo.NumBitmaps; i++)
@@ -1131,6 +1144,35 @@ bool CEGAGraphicsGalaxy::readBitmaps()
                 BmpHead[i].Width, BmpHead[i].Height);
 
         Bitmap.setName(bitmapNamesThisEp[i]);
+
+        for(const auto &bmpFile : bmpFileList)
+        {
+            const auto numStr = bmpFile.substr(bmpFile.length()-8,
+                                               bmpFile.length()-4);
+
+            size_t idx = atoi(numStr.c_str());
+
+            if(i != idx)
+                continue;
+
+            if(idx >= epInfo.NumBitmaps)
+            {
+                gLogging << "Warning: Index " << idx << " out of reach.";
+                continue;
+            }
+
+            const auto bmpFilePath = JoinPaths(bmpDirPath, bmpFile);
+
+            if( Bitmap.loadHQBitmap(bmpFilePath) )
+            {
+                gLogging << bmpFile << " got loaded correctly.";
+            }
+            else
+            {
+                gLogging << "Warning: " << bmpFile << " did not get loaded correctly.";
+            }
+
+        }
     }
 
     return true;
@@ -1614,12 +1656,25 @@ bool CEGAGraphicsGalaxy::readMiscStuff()
     
     const auto &exefile = gKeenFiles.exeFile;
     const int  episode  = exefile.getEpisode();        
+
+    // Looks for bitmap files lying around
+    // If there are some load them as well
+    const std::string gfxDir = "gfx";
+    const std::string bmpsDir = "misc";
+    const std::string bmpDirPath = JoinPaths(gKeenFiles.gameDir,
+                                             gfxDir, bmpsDir);
+
+    std::set<std::string> bmpFileList;
+    FileListAdder bmpfilesAdder;
+    GetFileList(bmpFileList, bmpfilesAdder,
+                bmpDirPath, false, FM_REG);
+
     
     // Only position 1 and 2 are read. This will the terminator text.
     // Those are monochrom...
-    for(size_t misc = 0 ; misc < EpisodeInfo[episode-4].NumMisc; misc++)
+    for(size_t miscIdx = 0 ; miscIdx < EpisodeInfo[episode-4].NumMisc; miscIdx++)
     {
-        const int index = indexMisc + misc;
+        const int index = indexMisc + miscIdx;
 
         const auto &dataChunk = m_egagraph.at(index);
 
@@ -1628,7 +1683,7 @@ bool CEGAGraphicsGalaxy::readMiscStuff()
         if(dataSize < (sizeof(Uint16) * 3))
         {
             gLogging.ftextOut("bad misc data size=%u at index=%d misc=%d",
-                              dataSize, index, misc);
+                              dataSize, index, miscIdx);
             return false;
         }
 
@@ -1651,8 +1706,8 @@ bool CEGAGraphicsGalaxy::readMiscStuff()
         dataPtr++;
 
         gLogging.ftextOut("misc width=%d height=%d index=%d misc=%d",
-                          width, height, index, misc);
-        if(misc < 1 || misc > 2)
+                          width, height, index, miscIdx);
+        if(miscIdx < 1 || miscIdx > 2)
         {
             // Skip these other misc entries.
             // todo: What are these other misc entries for?
@@ -1664,26 +1719,26 @@ bool CEGAGraphicsGalaxy::readMiscStuff()
         if(height < 4 || height > 10000)
         {
             gLogging.ftextOut("bad misc height=%d index=%d misc=%d",
-                              height, index, misc);
+                              height, index, miscIdx);
             return false;
         }
         if(width < 2 || width > 10000)
         {
             gLogging.ftextOut("bad misc width=%d index=%d misc=%d",
-                              width, index, misc);
+                              width, index, miscIdx);
             return false;
         }
 
         if(((2 + height) * sizeof(Uint16)) > dataSize)
         {
             gLogging.ftextOut("bad misc data size=%u for height=%d index=%d misc=%d",
-                              dataSize, height, index, misc);
+                              dataSize, height, index, miscIdx);
             return false;
         }
 
         SDL_Rect bmpRect;
 
-        GsBitmap &Bitmap = gGraphics.getMiscGsBitmap(misc-1);
+        GsBitmap &Bitmap = gGraphics.getMiscGsBitmap(miscIdx-1);
         bmpRect.w = width;
         bmpRect.h = height;
 
@@ -1735,7 +1790,7 @@ bool CEGAGraphicsGalaxy::readMiscStuff()
                 if(pixelNum + pixelCount > expectedNumPixels)
                 {
                     gLogging.ftextOut("bad misc rle pixel count %u for pixelNum=%d expectedNumPixels=%u width=%d height=%d index=%d misc=%d",
-                                      pixelCount, pixelNum, expectedNumPixels, width, height, index, misc);
+                                      pixelCount, pixelNum, expectedNumPixels, width, height, index, miscIdx);
                     bad = true;
                     break;
                 }
@@ -1757,7 +1812,7 @@ bool CEGAGraphicsGalaxy::readMiscStuff()
 
         if(pixelNum != expectedNumPixels)
         {
-            gLogging.ftextOut("Something is wrong with the number of read pixels in misc %d.\n", misc);
+            gLogging.ftextOut("Something is wrong with the number of read pixels in misc %d.\n", miscIdx);
             bad = true;
         }
 
@@ -1766,6 +1821,35 @@ bool CEGAGraphicsGalaxy::readMiscStuff()
         if(bad)
         {
             return false;
+        }
+
+        for(const auto &bmpFile : bmpFileList)
+        {
+            const auto numStr = bmpFile.substr(bmpFile.length()-8,
+                                               bmpFile.length()-4);
+
+            size_t idx = atoi(numStr.c_str());
+
+            if((miscIdx-1) != idx)
+                continue;
+
+            if(idx >= EpisodeInfo[episode-4].NumMisc)
+            {
+                gLogging << "Warning: Index " << idx << " out of reach.";
+                continue;
+            }
+
+            const auto bmpFilePath = JoinPaths(bmpDirPath, bmpFile);
+
+            if( Bitmap.loadHQBitmap(bmpFilePath) )
+            {
+                gLogging << bmpFile << " got loaded correctly.";
+            }
+            else
+            {
+                gLogging << "Warning: " << bmpFile << " did not get loaded correctly.";
+            }
+
         }
     }
 
