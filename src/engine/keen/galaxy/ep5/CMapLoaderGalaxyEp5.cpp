@@ -150,7 +150,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp5::addFoe(CMap &Map, word foe, size_t x, 
 			// Add the Camera into the game scene and attach it to this player
             inventory.Item.mLevelName = Map.getLevelName();
             p_newfoe = new galaxy::CPlayerWM(&Map,foe, x, y, inventory, 0x146E,
-                                             mNumLoadedPlayers, mNumLoadedPlayers );
+                                             mNumLoadedPlayers, inventory.mSpriteVar );
 			// 0x137A
         }
         mNumLoadedPlayers++;
