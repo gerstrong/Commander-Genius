@@ -37,8 +37,8 @@ CPlayerSpriteVarSelection(const GsControl::Style style) :
         mBmpBox = new CGUIBitmap(mpPlayerBmpVec[0]);
 
         mpMenuDialog->addControl( mBmpBox,
-                                  GsRect<float>(0.07f, 0.41f,
-                                                0.15f, 0.2f));
+                                  GsRect<float>(0.17f, 0.21f,
+                                                0.24f, 0.32f));
     }
 
 
@@ -47,7 +47,7 @@ CPlayerSpriteVarSelection(const GsControl::Style style) :
                                    style);
 
     mpMenuDialog->addControl( mpGameButton,
-                              GsRect<float>(0.07f, 0.71f,
+                              GsRect<float>(0.17f, 0.71f,
                                             0.8f, 0.1f));
 
     mpChangeButton = new GameButton( "Change",
@@ -55,7 +55,7 @@ CPlayerSpriteVarSelection(const GsControl::Style style) :
                                    style);
 
     mpMenuDialog->addControl( mpChangeButton,
-                              GsRect<float>(0.07f, 0.81f,
+                              GsRect<float>(0.17f, 0.81f,
                                             0.8f, 0.1f));
 
 

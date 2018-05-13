@@ -40,6 +40,8 @@ public:
     void createEmptySprites(const size_t numVar,
                             const size_t num_sprites);
 
+    void appendSpriteVec(const std::vector<GsSprite> &spriteVec);
+
 	void createEmptyBitmaps(Uint16 num_bmps);
     void createEmptyMaskedBitmaps(Uint16 num_bmps);
     void createEmptyMisGsBitmaps(Uint16 num_bmps);

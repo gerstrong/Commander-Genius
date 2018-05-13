@@ -1506,11 +1506,25 @@ bool CEGAGraphicsGalaxy::readSprites( const size_t numSprites,
     GetFileList(playersList, fileListAdder,
                 playersPathList, false, FM_DIR);
 
+    // If there are more players than preallocated, enlarge the rooster
+    if(gGraphics.spriteVecVec().size() < playersList.size())
+    {
+        auto curNumSpriteVecs = gGraphics.spriteVecVec().size();
+
+        gLogging << "More player to load. Enlarging sprite buffer...";
+
+        // Copy the sprites
+        for( unsigned int i=curNumSpriteVecs ; i< playersList.size() ; i++ )
+        {
+            gGraphics.appendSpriteVec(SpriteOrigVec);
+        }
+    }
+
 
     // For a list of players try to load the sprites
     int numSpriteVar = 0;
     for(const auto &player : playersList)
-    {
+    {        
         auto &SpriteVecPlayer = gGraphics.getSpriteVec(numSpriteVar);
 
         const std::string curPlayerPath = JoinPaths(playersPathList, player);

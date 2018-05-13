@@ -55,9 +55,18 @@ public:
      */
     bool empty();
 
+    void readMask2Fold(SDL_Surface *srcSfc);
+    void readMask3Fold(SDL_Surface *srcSfc);
 
+    /**
+     * \brief Reads the mask of a created modkeen style bitmap und converts that mask to 8-bit
+     * 		  so it can be applied to the others. This is for HQ Sprites, the other ones have an internal algorithm
+     */
 	void readMask(SDL_Surface *displaysurface);
 	void readBBox(SDL_Surface *displaysurface);
+
+    void applyTransparency2Fold();
+    void applyTransparency3Fold();
 	void applyTransparency();
 	void applyTranslucency(Uint8 value);
 	void copy( GsSprite &Destination, SDL_Color *Palette );
@@ -65,6 +74,8 @@ public:
     void exchangeSpriteColor(const Uint16 find1, const Uint16 find2, const Uint16 miny );
 
 	void generateSprite( const int points );
+
+    void detectFoldness();
 	bool loadHQSprite( const std::string& filename );
 	
 	void setSize(Uint8 w, Uint8 h) { m_xsize = w; m_ysize = h; }
@@ -126,7 +137,11 @@ private:
     Uint8 m_xsize = 0;
     Uint8 m_ysize = 0;
 	Sint16 m_xoffset, m_yoffset;
-    Uint8 m_alpha = 255;
+    Uint8 m_alpha = 255;    
+
+    // Some pictures for sprites have three sections,
+    // but there have been arising some which only use two and the mask is a special odd color
+    int mFold = 3;
 };
 
 #endif /* GsSprite_H_ */

@@ -108,7 +108,7 @@ GsSprite::exportBitmap()
     const GsWeakSurface weak = GsWeakSurface(mSurface);
     GsBitmap bmp(weak);
 
-    bmp.trimWidth(bmp.width()/3);
+    bmp.trimWidth(bmp.width()/mFold);
 
     return bmp;
 }
@@ -201,7 +201,47 @@ void GsSprite::generateSprite( const int points )
 	m_bboxY2=getHeight();
 }
 
+void GsSprite::detectFoldness()
+{
+    // The foldness can be detected looking at the picture
+    // searching for the start of the bounding box color.
+    mFold = 3;
+    mSurface.lock();
 
+    auto *srcSfc = mSurface.getSDLSurface();
+
+    auto *pixPtr = (Uint8*)(srcSfc->pixels);
+
+    for( Uint8 x=0 ; x<srcSfc->w ; x++ )
+    {
+        Uint32 color = 0x0;
+        memcpy( &color, pixPtr, srcSfc->format->BytesPerPixel );
+
+        Uint8 r, g, b, a;
+        SDL_GetRGBA( color, srcSfc->format, &r, &g, &b, &a );
+
+        // Now test it
+        if( g == 0x55 && b == 0x55)
+        {
+            if(r == 0x55 || r == 0xff)
+            {
+                // Odd it this happens
+                if(x == 0) return;
+
+                // Found it!
+                if(srcSfc->w/x == 2)
+                    mFold = 2;
+
+                return;
+            }
+        }
+
+
+        pixPtr += srcSfc->format->BytesPerPixel;
+    }
+
+    mSurface.unlock();
+}
 
 bool GsSprite::loadHQSprite( const std::string& filename )
 {
@@ -222,7 +262,9 @@ bool GsSprite::loadHQSprite( const std::string& filename )
     mSurface.createCopy(bmpSfc);
     mMaskSurface.createCopy(bmpSfc);
 
-    m_xsize = bmpSfc.width()/3;
+    detectFoldness();
+
+    m_xsize = bmpSfc.width()/mFold;
     m_ysize = bmpSfc.height();
 
     readMask(bmpSfc.getSDLSurface());
@@ -233,21 +275,17 @@ bool GsSprite::loadHQSprite( const std::string& filename )
     return true;
 }
 
-/**
- * \brief Reads the mask of a created modkeen style bitmap und converts that mask to 8-bit
- * 		  so it can be applied to the others. This is for HQ Sprites, the other ones have an internal algorithm
- */
-void GsSprite::readMask(SDL_Surface *srcSfc)
+void GsSprite::readMask2Fold(SDL_Surface *srcSfc)
 {
     assert(srcSfc);
 
-	Uint8 *maskpx, *pixel;
-	Uint32 color = 0;
-	Uint8 mask = 0;
-	Uint8 r,g,b,a;
+    Uint8 *maskpx, *pixel;
+    Uint32 color = 0;
+    Uint8 mask = 0;
+    Uint8 r,g,b,a;
 
     // We have three fragments in one bitmap. The second fragment is the mask
-    Uint16 w = (srcSfc->w)/3;
+    Uint16 w = (srcSfc->w)/mFold;
 
     assert(w>0);
 
@@ -261,35 +299,40 @@ void GsSprite::readMask(SDL_Surface *srcSfc)
     auto maskSfc = mMaskSurface.getSDLSurface();
 
     // In same occasions the dimensions are not exact. In that case, apply the minimum
-    const auto minW = std::min(Uint16(srcSfc->w/3), mMaskSurface.width());
+    const auto minW = std::min(Uint16(srcSfc->w/mFold), mMaskSurface.width());
     const auto minH = std::min(Uint16(srcSfc->h), mMaskSurface.height());
 
-    Uint8* srcLinePtr = static_cast<Uint8*>(srcSfc->pixels) + minW*srcSfc->format->BytesPerPixel;
+    Uint8* srcLinePtr = static_cast<Uint8*>(srcSfc->pixels);
     Uint8* maskLinePtr = static_cast<Uint8*>(maskSfc->pixels);
 
     for( Uint8 y=0 ; y<minH ; y++ )
-	{                
+    {
         pixel = srcLinePtr;
         maskpx = maskLinePtr;
 
         for( Uint8 x=0 ; x<minW ; x++ )
-		{
+        {
             memcpy( &color, pixel, srcSfc->format->BytesPerPixel );
 
             SDL_GetRGBA( color, srcSfc->format, &r, &g, &b, &a );
 
-			Uint32 mask32 = (r+g+b)/(3*16);
-			mask = 15-mask32;
-
+            if(r == 0xcc && g == 0xff  && b == 0xcc)
+            {
+                mask = 0;
+            }
+            else
+            {
+                mask = 16;
+            }
             memcpy( maskpx, &mask, srcSfc->format->BytesPerPixel );
 
             pixel  += srcSfc->format->BytesPerPixel;
             maskpx += maskSfc->format->BytesPerPixel;
-		}
+        }
 
         srcLinePtr  += srcSfc->w * srcSfc->format->BytesPerPixel;
         maskLinePtr += maskSfc->w * maskSfc->format->BytesPerPixel;
-	}
+    }
 
     mMaskSurface.unlock();
 
@@ -297,6 +340,77 @@ void GsSprite::readMask(SDL_Surface *srcSfc)
     {
         SDL_UnlockSurface(srcSfc);
     }
+
+}
+void GsSprite::readMask3Fold(SDL_Surface *srcSfc)
+{
+    assert(srcSfc);
+
+    Uint8 *maskpx, *pixel;
+    Uint32 color = 0;
+    Uint8 mask = 0;
+    Uint8 r,g,b,a;
+
+    // We have three fragments in one bitmap. The second fragment is the mask
+    Uint16 w = (srcSfc->w)/mFold;
+
+    assert(w>0);
+
+    if(SDL_MUSTLOCK(srcSfc))
+    {
+        SDL_LockSurface(srcSfc);
+    }
+
+    mMaskSurface.lock();
+
+    auto maskSfc = mMaskSurface.getSDLSurface();
+
+    // In same occasions the dimensions are not exact. In that case, apply the minimum
+    const auto minW = std::min(Uint16(srcSfc->w/mFold), mMaskSurface.width());
+    const auto minH = std::min(Uint16(srcSfc->h), mMaskSurface.height());
+
+    Uint8* srcLinePtr = static_cast<Uint8*>(srcSfc->pixels) + minW*srcSfc->format->BytesPerPixel;
+    Uint8* maskLinePtr = static_cast<Uint8*>(maskSfc->pixels);
+
+    for( Uint8 y=0 ; y<minH ; y++ )
+    {
+        pixel = srcLinePtr;
+        maskpx = maskLinePtr;
+
+        for( Uint8 x=0 ; x<minW ; x++ )
+        {
+            memcpy( &color, pixel, srcSfc->format->BytesPerPixel );
+
+            SDL_GetRGBA( color, srcSfc->format, &r, &g, &b, &a );
+
+            Uint32 mask32 = (r+g+b)/(3*16);
+            mask = 15-mask32;
+
+            memcpy( maskpx, &mask, srcSfc->format->BytesPerPixel );
+
+            pixel  += srcSfc->format->BytesPerPixel;
+            maskpx += maskSfc->format->BytesPerPixel;
+        }
+
+        srcLinePtr  += srcSfc->w * srcSfc->format->BytesPerPixel;
+        maskLinePtr += maskSfc->w * maskSfc->format->BytesPerPixel;
+    }
+
+    mMaskSurface.unlock();
+
+    if(SDL_MUSTLOCK(srcSfc))
+    {
+        SDL_UnlockSurface(srcSfc);
+    }
+}
+
+
+void GsSprite::readMask(SDL_Surface *srcSfc)
+{
+    if(mFold == 2)
+        readMask2Fold(srcSfc);
+    else
+        readMask3Fold(srcSfc);
 }
 
 /**
@@ -307,13 +421,11 @@ void GsSprite::readBBox(SDL_Surface *displaysurface)
 	// TODO: That code need to be implemented
 }
 
-void GsSprite::applyTransparency()
+void GsSprite::applyTransparency2Fold()
 {
-    if( mSurface.empty() || mMaskSurface.empty() ) return;
-
     mSurface.lock();
     mMaskSurface.lock();
-	
+
     const auto bpp = mSurface.getSDLSurface()->format->BytesPerPixel;
     const auto maskBpp = mMaskSurface.getSDLSurface()->format->BytesPerPixel;
 
@@ -322,16 +434,16 @@ void GsSprite::applyTransparency()
     const auto minH = std::min(Uint16(mSurface.height()), mMaskSurface.height());
 
     for( int y=0 ; y<minH ; y++ )
-	{
+    {
         Uint8 *pixel  = mSurface.PixelPtr() + y*mSurface.getSDLSurface()->pitch;
         Uint8 *maskpx = mMaskSurface.PixelPtr() + y*mMaskSurface.getSDLSurface()->pitch;
 
         for( int x=0 ; x<minW ; x++ )
-		{
+        {
             Uint32 colour;
             Uint8 r,g,b,a;
             memcpy( &colour, pixel, bpp );
-			
+
             mSurface.getRGBA(colour, r, g, b, a);
 
             const Uint8 maskCol = *maskpx;
@@ -348,14 +460,74 @@ void GsSprite::applyTransparency()
             colour = mSurface.mapRGBA(r, g, b, a);
 
             memcpy( pixel, &colour, bpp );
-			
+
             pixel  += bpp;
             maskpx += maskBpp;
-		}
-	}
+        }
+    }
 
     mMaskSurface.unlock();
     mSurface.unlock();
+}
+
+void GsSprite::applyTransparency3Fold()
+{
+    mSurface.lock();
+    mMaskSurface.lock();
+
+    const auto bpp = mSurface.getSDLSurface()->format->BytesPerPixel;
+    const auto maskBpp = mMaskSurface.getSDLSurface()->format->BytesPerPixel;
+
+    // In same occasions the dimensions are not exact. In that case, apply the minimum
+    const auto minW = std::min(Uint16(mSurface.width()), mMaskSurface.width());
+    const auto minH = std::min(Uint16(mSurface.height()), mMaskSurface.height());
+
+    for( int y=0 ; y<minH ; y++ )
+    {
+        Uint8 *pixel  = mSurface.PixelPtr() + y*mSurface.getSDLSurface()->pitch;
+        Uint8 *maskpx = mMaskSurface.PixelPtr() + y*mMaskSurface.getSDLSurface()->pitch;
+
+        for( int x=0 ; x<minW ; x++ )
+        {
+            Uint32 colour;
+            Uint8 r,g,b,a;
+            memcpy( &colour, pixel, bpp );
+
+            mSurface.getRGBA(colour, r, g, b, a);
+
+            const Uint8 maskCol = *maskpx;
+
+            if(maskCol<16)
+            {
+                a = (255*maskCol)/15;
+            }
+            else
+            {
+                a = 255;
+            }
+
+            colour = mSurface.mapRGBA(r, g, b, a);
+
+            memcpy( pixel, &colour, bpp );
+
+            pixel  += bpp;
+            maskpx += maskBpp;
+        }
+    }
+
+    mMaskSurface.unlock();
+    mSurface.unlock();
+}
+
+
+void GsSprite::applyTransparency()
+{
+    if( mSurface.empty() || mMaskSurface.empty() ) return;
+
+    if(mFold == 2)
+        applyTransparency2Fold();
+    else
+        applyTransparency3Fold();
 }
 
 void GsSprite::applyTranslucency(Uint8 value)

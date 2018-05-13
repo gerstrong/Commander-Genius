@@ -1,3 +1,9 @@
+v2.2.3:
+-------
+- Video/Display change fixes
+- Virtual Pad improvements
+- Tilting screen finally works as intended
+
 v2.2.2:
 -------
 - More settings in the Launcher finally working!

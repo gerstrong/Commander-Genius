@@ -42,6 +42,11 @@ void GsGraphics::createEmptySprites(const size_t numVar,
     mSprite.assign(numVar, spriteVec);
 }
 
+void GsGraphics::appendSpriteVec(const std::vector<GsSprite> &spriteVec)
+{
+    mSprite.push_back(spriteVec);
+}
+
 void GsGraphics::dumpSprites()
 {
     for(size_t i = 0; i < mSprite[0].size(); i++)
