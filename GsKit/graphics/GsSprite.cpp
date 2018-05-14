@@ -210,9 +210,9 @@ void GsSprite::detectFoldness()
 
     auto *srcSfc = mSurface.getSDLSurface();
 
-    auto *pixPtr = (Uint8*)(srcSfc->pixels);
+    Uint8 *pixPtr = (Uint8*)(srcSfc->pixels);
 
-    for( Uint8 x=0 ; x<srcSfc->w ; x++ )
+    for( int x=0 ; x<srcSfc->w ; x++ )
     {
         Uint32 color = 0x0;
         memcpy( &color, pixPtr, srcSfc->format->BytesPerPixel );
@@ -226,13 +226,14 @@ void GsSprite::detectFoldness()
             if(r == 0x55 || r == 0xff)
             {
                 // Odd it this happens
-                if(x == 0) return;
+                if(x == 0)
+                    break;
 
                 // Found it!
                 if(srcSfc->w/x == 2)
                     mFold = 2;
 
-                return;
+                break;
             }
         }
 
