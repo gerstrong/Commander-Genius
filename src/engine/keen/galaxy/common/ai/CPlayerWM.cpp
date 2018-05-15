@@ -472,7 +472,7 @@ void CPlayerWM::processMoving()
                     gBehaviorEngine.mOptions[GameOption::LVLREPLAYABILITY].value ||
                     level >= shipLevel)
             {
-                vkc->mHideStartButton = false;
+                vkc->mStartButton.invisible = false;
             }
         }
 
@@ -488,9 +488,9 @@ void CPlayerWM::processMoving()
     {
         VirtualKeenControl *vkc = dynamic_cast<VirtualKeenControl*>(gInput.mpVirtPad.get());
         assert(vkc);
-        //vkc->mButtonMode = VirtualKeenControl::BUTTON_MODE::WMAP;
-        vkc->mHideStartButton = true;
-        vkc->mShowStatusButton = true;
+        vkc->mDPad.invisible = false;
+        vkc->mStatusButton.invisible = false;
+        vkc->mStartButton.invisible = false;
     }
 
     

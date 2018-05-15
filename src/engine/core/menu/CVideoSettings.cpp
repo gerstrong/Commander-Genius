@@ -62,7 +62,7 @@ GameMenu(GsRect<float>(0.15f, 0.20f, 0.65f, 0.55f), style )
 #endif
 
     mpVPadSwitch  = new Switch( "VirtPad", style );
-    //mpMenuDialog->addControl( mpVPadSwitch, style );
+    mpMenuDialog->addControl( mpVPadSwitch, style );
 
     mpBorderColorSwitch = new Switch( "Border Color", style );
     mpMenuDialog->addControl( mpBorderColorSwitch );

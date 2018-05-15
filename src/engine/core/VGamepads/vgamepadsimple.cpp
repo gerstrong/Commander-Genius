@@ -55,18 +55,22 @@ bool VirtualKeenControl::init()
         if(!mDPad.loadPicture("dpad.png")) return false;
 
         if(!mConfirmButton.loadPicture("confirm.png")) return false;
-
         mConfirmButton.invisible = false;
 
         if(!mStartButton.loadPicture("start.png")) return false;
+        mStartButton.invisible = true;
 
         if(!mJumpButton.loadPicture("1.png")) return false;
+        mJumpButton.invisible = true;
 
         if(!mPogoButton.loadPicture("2.png")) return false;
+        mPogoButton.invisible = true;
 
-        if(!mStatusButton.loadPicture("3.png")) return false;
+        if(!mShootButton.loadPicture("3.png")) return false;
+        mShootButton.invisible = true;
 
         if(!mStatusButton.loadPicture("4.png")) return false;
+        mStatusButton.invisible = true;
     }
 
 #endif
@@ -95,7 +99,7 @@ bool VirtualKeenControl::ponder()
         const float buttonSize = 0.1f;
 
         const GsRect<float> confirmRect(1.0f-2.0f*buttonSize,
-                                         1.0f-2.0f*buttonSize,
+                                        1.0f-2.0f*buttonSize,
                                          buttonSize, buttonSize);
 
         mConfirmButton.setRect(confirmRect);
@@ -103,10 +107,88 @@ bool VirtualKeenControl::ponder()
         mConfirmButton.mTexture.setAlpha(uint8_t(255.0f*mTranslucency));
     }
 
+    if(!mStatusButton.invisible)
+    {
+        const float buttonSize = 0.1f;
+
+        const GsRect<float> statusRect(1.0f-4.0f*buttonSize,
+                                       1.0f-2.0f*buttonSize,
+                                       buttonSize, buttonSize);
+
+        mStatusButton.setRect(statusRect);
+
+        mStatusButton.mTexture.setAlpha(uint8_t(255.0f*mTranslucency));
+    }
+
+    if(!mStartButton.invisible)
+    {
+        const float buttonSize = 0.1f;
+
+        const GsRect<float> startRect(1.0f-3.0f*buttonSize,
+                                      1.0f-2.0f*buttonSize,
+                                      buttonSize, buttonSize);
+
+        mStartButton.setRect(startRect);
+
+        mStartButton.mTexture.setAlpha(uint8_t(255.0f*mTranslucency));
+    }
+
+    if(!mJumpButton.invisible)
+    {
+        const float buttonSize = 0.1f;
+
+        const GsRect<float> jumpRect(1.0f-2.0f*buttonSize,
+                                     1.0f-1.0f*buttonSize,
+                                      buttonSize, buttonSize);
+
+        mJumpButton.setRect(jumpRect);
+
+        mJumpButton.mTexture.setAlpha(uint8_t(255.0f*mTranslucency));
+    }
+
+    if(!mPogoButton.invisible)
+    {
+        const float buttonSize = 0.1f;
+
+        const GsRect<float> pogoRect(1.0f-1.0f*buttonSize,
+                                     1.0f-1.0f*buttonSize,
+                                      buttonSize, buttonSize);
+
+        mPogoButton.setRect(pogoRect);
+
+        mPogoButton.mTexture.setAlpha(uint8_t(255.0f*mTranslucency));
+    }
+
+    if(!mShootButton.invisible)
+    {
+        const float buttonSize = 0.1f;
+
+        const GsRect<float> shootRect(1.0f-2.0f*buttonSize,
+                                      1.0f-2.0f*buttonSize,
+                                      buttonSize, buttonSize);
+
+        mShootButton.setRect(shootRect);
+
+        mShootButton.mTexture.setAlpha(uint8_t(255.0f*mTranslucency));
+    }
+
 #endif
 
     return true;
 }
+
+void VirtualKeenControl::hideAllButtons()
+{
+    mDPad.invisible = true;
+    mConfirmButton.invisible = true;
+    mStartButton.invisible = true;
+
+    mJumpButton.invisible = true;
+    mShootButton.invisible = true;
+    mPogoButton.invisible = true;
+    mStatusButton.invisible = true;
+}
+
 
 void VirtualKeenControl::render(GsWeakSurface &sfc)
 {
@@ -123,25 +205,13 @@ void VirtualKeenControl::render(GsWeakSurface &sfc)
 
     addTexture(mDPad);
 
-
-    //addTexture(mStatusButton);
-
     addTexture(mConfirmButton);
+    addTexture(mStartButton);
 
-    /*if(mButtonMode == BUTTON_MODE::WMAP &&
-            !mHideStartButton)
-    {
-        addTexture(mStartButton);
-        addTexture(mStatusButton);
-    }
-
-    if(mButtonMode == BUTTON_MODE::ACTION)
-    {
-        addTexture(mShootButton);
-        addTexture(mJumpButton);
-        addTexture(mPogoButton);
-    }
-*/
+    addTexture(mStatusButton);
+    addTexture(mShootButton);
+    addTexture(mJumpButton);
+    addTexture(mPogoButton);
 
 /*
     // On map, show the start button if keen approaches a level
@@ -238,6 +308,7 @@ void VirtualKeenControl::mouseState(const Vector2D<float> &Pos, const bool down)
     }
 
     bindButtonCommand(mConfirmButton.Rect(), IC_JUMP);
+    bindButtonCommand(mStartButton.Rect(), IC_JUMP);
     bindButtonCommand(mStatusButton.Rect(), IC_STATUS);
     bindButtonCommand(mShootButton.Rect(), IC_FIRE);
     bindButtonCommand(mJumpButton.Rect(), IC_JUMP);

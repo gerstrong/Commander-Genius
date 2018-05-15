@@ -60,6 +60,11 @@ public:
         mouseState(Pos, false);
     }
 
+    /**
+     * @brief hideAllButtons    Hide all the virtual button
+     */
+    void hideAllButtons();
+
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 
@@ -75,10 +80,6 @@ public:
 
 #endif
 
-    bool mShowStatusButton = false;
-    bool mHideStartButton = false;
-
-    //BUTTON_MODE mButtonMode = BUTTON_MODE::OK;
 };
 
 #endif // VGAMEPADSIMPLE_H
