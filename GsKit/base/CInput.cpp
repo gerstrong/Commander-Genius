@@ -1572,7 +1572,7 @@ void CInput::processMouse(SDL_Event& ev) {
         h = screenRect.h;
 	}
 
-    if(touch == NULL) return; //The touch has been removed
+    if(touch == nullptr) return; //The touch has been removed
 
     //float fx = ((float)ev.tfinger.x)/touch->xres;
     //float fy = ((float)ev.tfinger.y)/touch->yres;

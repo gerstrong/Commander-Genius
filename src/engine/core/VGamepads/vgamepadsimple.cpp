@@ -259,10 +259,13 @@ void VirtualKeenControl::mouseState(const Vector2D<float> &Pos, const bool down)
 {
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 
-    auto bindButtonCommand = [&](const GsRect<float> &buttonRect,
+    auto bindButtonCommand = [&](const TouchButton &button,
             const InputCommand &cmd)
     {
-        if( buttonRect.HasPoint(Pos) )
+        if(button.invisible)
+            return;
+
+        if( button.Rect().HasPoint(Pos) )
         {
             gInput.setCommand(0, cmd, down);
         }
@@ -307,12 +310,12 @@ void VirtualKeenControl::mouseState(const Vector2D<float> &Pos, const bool down)
         }
     }
 
-    bindButtonCommand(mConfirmButton.Rect(), IC_JUMP);
-    bindButtonCommand(mStartButton.Rect(), IC_JUMP);
-    bindButtonCommand(mStatusButton.Rect(), IC_STATUS);
-    bindButtonCommand(mShootButton.Rect(), IC_FIRE);
-    bindButtonCommand(mJumpButton.Rect(), IC_JUMP);
-    bindButtonCommand(mPogoButton.Rect(), IC_POGO);
+    bindButtonCommand(mConfirmButton, IC_JUMP);
+    bindButtonCommand(mStartButton, IC_JUMP);
+    bindButtonCommand(mStatusButton, IC_STATUS);
+    bindButtonCommand(mShootButton, IC_FIRE);
+    bindButtonCommand(mJumpButton, IC_JUMP);
+    bindButtonCommand(mPogoButton, IC_POGO);
 
 #endif
 
