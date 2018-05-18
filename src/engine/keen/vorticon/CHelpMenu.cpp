@@ -4,7 +4,7 @@
  *  Created on: 22.05.2010
  *      Author: gerstrong
  */
-
+/*
 #include "CHelpMenu.h"
 
 #include "CStory.h"
@@ -57,3 +57,4 @@ GameMenu( GsRect<float>(0.25f, 0.24f, 0.5f, 0.5f), style )
         
     }
 }
+*/

@@ -18,8 +18,8 @@
 #include "CPassive.h"
 #include "CPlayGameGalaxy.h"
 
-#include "menu/MainMenu.h"
-#include "menu/SelectionMenu.h"
+//#include "menu/MainMenu.h"
+//#include "menu/SelectionMenu.h"
 #include "engine/core/menu/ControlSettings.h"
 #include "menu/ComputerWrist.h"
 #include "res/CAudioGalaxy.h"

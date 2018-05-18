@@ -15,7 +15,7 @@
 #include "graphics/GsGraphics.h"
 #include "graphics/effects/CPixelate.h"
 
-#include "menu/MainMenu.h"
+//#include "menu/MainMenu.h"
 #include "sdl/audio/music/CMusic.h"
 
 #include "engine/core/VGamepads/vgamepadsimple.h"
