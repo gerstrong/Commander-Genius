@@ -17,7 +17,7 @@ extern "C"
 
 // For template implementations of reads/writes of enums from/to 16 little-endian integers...
 #ifdef REFKEEN_VER_KDREAMS
-#include "kd_def.h"
+#include "kdreams/kd_def.h"
 #elif defined REFKEEN_VER_CAT3D
 #include "c3_def.h"
 #elif defined REFKEEN_VER_CATADVENTURES

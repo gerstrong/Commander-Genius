@@ -37,8 +37,6 @@ public:
 
     void transformScreenToDisplay();
 
-    void hackIt();
-
 private:
 
     GsSurface mOverlaySurface;

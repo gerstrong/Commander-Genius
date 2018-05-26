@@ -80,7 +80,7 @@ public:
      */
     void setAlpha( const Uint8 alpha )
     {
-        //Modulate texture alpha
+        // Modulate texture alpha
         SDL_SetTextureAlphaMod( mpTexture, alpha );
     }
 

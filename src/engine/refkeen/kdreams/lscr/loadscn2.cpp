@@ -32,7 +32,7 @@ extern "C"
 #include <stdlib.h>
 //#include <process.h>
 
-#include "id_heads.h" // For types like id0_int_t, and refkeen.h
+#include "../id_heads.h" // For types like id0_int_t, and refkeen.h
 
 #include "jampak.h"
 #include "sl_file.h"

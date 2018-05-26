@@ -206,8 +206,10 @@ int CSaveGameController::getOldSGVersion(const std::string& fname)
 // This function converts savegame all files from old versions of CG to the new format
 void CSaveGameController::convertAllOldFormats()
 {
+#ifndef ANDROID
 	for(size_t slot=0 ; slot<=9 ; slot++ )
 		convertOldFormat(slot);
+#endif
 }
 
 /**

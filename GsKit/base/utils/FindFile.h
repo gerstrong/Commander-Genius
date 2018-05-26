@@ -124,7 +124,8 @@ std::string GetAbsolutePath (const std::string &path);
 // this function gives the case sensitive right name of a file
 // also, it replaces ${var} in the searchname
 // returns false if no success, true else
-bool GetExactFileName(const std::string& abs_searchname, std::string& filename);
+bool GetExactFileName(const std::string& abs_searchname,
+					  std::string& filename);
 
 #else // WIN32
 

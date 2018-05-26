@@ -170,30 +170,6 @@ void CSDLVideo::clearSurfaces()
     mGameSfc.fillRGB(0,0,0);
 }
 
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-
-bool mHack = false;
-
-SDL_Texture *hackTex;
-
-void CSDLVideo::hackIt()
-{
-    if(mHack) return;
-
-    mHack = true;
-
-
-     SDL_Surface* loadedSurface = IMG_Load( "global/dpad.png" );
-
-     hackTex = SDL_CreateTextureFromSurface( renderer, loadedSurface );
-
-
-     SDL_FreeSurface( loadedSurface );
-}
-#else
-void CSDLVideo::hackIt() {} // Empty
-#endif
-
 
 /**
  * @brief tilt  tilt the rect (90 degree when squared) clockwise
