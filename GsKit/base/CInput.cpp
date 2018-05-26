@@ -753,18 +753,22 @@ void CInput::pollEvents()
 
 		case SDL_MOUSEBUTTONDOWN:
 
-            // If Virtual gamepad takes control...
-            if(gVideoDriver.VGamePadEnabled() && mpVirtPad && mpVirtPad->active())
-            {                                                
-                if(Event.button.button <= 3)
+            if(Event.button.button <= 3)
+            {
+                // If Virtual gamepad takes control...
+                if(gVideoDriver.VGamePadEnabled() && mpVirtPad &&
+                        mpVirtPad->active() )
                 {
                     transMouseRelCoord(Pos, Event.motion, activeArea, tiltedScreen);
-                    mpVirtPad->mouseDown(Pos);
+
+                    if(!mpVirtPad->mouseDown(Pos))
+                    {
+                        m_EventList.add( new PointingDevEvent( Pos, PDE_BUTTONDOWN ) );
+                        gPointDevice.mPointingState.mActionButton = 1;
+                        gPointDevice.mPointingState.mPos = Pos;
+                    }
                 }
-            }
-            else
-            {
-                if(Event.button.button <= 3)
+                else
                 {
                     transMouseRelCoord(Pos, Event.motion, activeArea, tiltedScreen);
                     m_EventList.add( new PointingDevEvent( Pos, PDE_BUTTONDOWN ) );
@@ -776,10 +780,17 @@ void CInput::pollEvents()
 			break;
 
 		case SDL_MOUSEBUTTONUP:
-            if(gVideoDriver.VGamePadEnabled() && mpVirtPad && mpVirtPad->active())
+            if(gVideoDriver.VGamePadEnabled() && mpVirtPad &&
+                    mpVirtPad->active())
             {
                 transMouseRelCoord(Pos, Event.motion, activeArea, tiltedScreen);
-                mpVirtPad->mouseUp(Pos);
+                if(!mpVirtPad->mouseUp(Pos))
+                {
+                    passSDLEventVec = true;
+                    m_EventList.add( new PointingDevEvent( Pos, PDE_BUTTONUP ) );
+                    gPointDevice.mPointingState.mActionButton = 0;
+                    gPointDevice.mPointingState.mPos = Pos;
+                }
             }
             else
             {

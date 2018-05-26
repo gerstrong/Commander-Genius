@@ -29,13 +29,14 @@ VirtualKeenControl::~VirtualKeenControl()
 bool VirtualKeenControl::init()
 {
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    GsWeakSurface blit(gVideoDriver.getBlitSurface());
+    /*GsWeakSurface blit(gVideoDriver.getBlitSurface());
     SDL_PixelFormat *format = blit.getSDLSurface()->format;
 
-    const int buttonSize = 50;
+    const int buttonSize = 50;*/
 
 
     // Create the overlay surface and fill it with alpha 0
+    /*
     mOverlay.create(0, blit.width(), blit.height(), 32, 0, 0, 0, 0);
 
     mOverlay.setBlendMode(SDL_BLENDMODE_BLEND);
@@ -48,9 +49,14 @@ bool VirtualKeenControl::init()
     // Left arrow
     const GsRect<Uint16> upRect(0, blit.height()-buttonSize, buttonSize, buttonSize);
     mOverlay.fill(upRect, SDL_MapRGBA(format, 128, 0, 0, 128 ));
+    */
+
 
     /// Load The buttons images
     {
+        // Start with the Background for the gamepad
+        if(!mPadBackground.loadPicture("bckgrnd.png")) return false;
+
         // Directional pad
         if(!mDPad.loadPicture("dpad.png")) return false;
 
@@ -82,11 +88,26 @@ bool VirtualKeenControl::ponder()
 {
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 
+    const float bottom = 0.975f;
+    const float top = 0.025f;
+    const float left = 0.025f;
+    const float right = 0.975f;
+
+    if(!mPadBackground.invisible)
+    {
+        const GsRect<float> dpadRect(0.0f, 0.75f,
+                                     1.0f, 0.25f);
+
+        mPadBackground.setRect(dpadRect);
+
+        mPadBackground.mTexture.setAlpha(uint8_t(255.0f*mTranslucency));
+    }
+
     if(!mDPad.invisible)
     {
         const float dpadSize = 0.2f;
 
-        const GsRect<float> dpadRect(0, 1.0f-dpadSize,
+        const GsRect<float> dpadRect(left, bottom-dpadSize,
                                       dpadSize, dpadSize);
 
         mDPad.setRect(dpadRect);
@@ -98,8 +119,8 @@ bool VirtualKeenControl::ponder()
     {
         const float buttonSize = 0.1f;
 
-        const GsRect<float> confirmRect(1.0f-2.0f*buttonSize,
-                                        1.0f-2.0f*buttonSize,
+        const GsRect<float> confirmRect(right-2.0f*buttonSize,
+                                        bottom-2.0f*buttonSize,
                                          buttonSize, buttonSize);
 
         mConfirmButton.setRect(confirmRect);
@@ -111,8 +132,8 @@ bool VirtualKeenControl::ponder()
     {
         const float buttonSize = 0.1f;
 
-        const GsRect<float> statusRect(1.0f-4.0f*buttonSize,
-                                       1.0f-2.0f*buttonSize,
+        const GsRect<float> statusRect(right-4.0f*buttonSize,
+                                       bottom-2.0f*buttonSize,
                                        buttonSize, buttonSize);
 
         mStatusButton.setRect(statusRect);
@@ -124,8 +145,8 @@ bool VirtualKeenControl::ponder()
     {
         const float buttonSize = 0.1f;
 
-        const GsRect<float> startRect(1.0f-3.0f*buttonSize,
-                                      1.0f-2.0f*buttonSize,
+        const GsRect<float> startRect(right-3.0f*buttonSize,
+                                      bottom-2.0f*buttonSize,
                                       buttonSize, buttonSize);
 
         mStartButton.setRect(startRect);
@@ -137,8 +158,8 @@ bool VirtualKeenControl::ponder()
     {
         const float buttonSize = 0.1f;
 
-        const GsRect<float> jumpRect(1.0f-2.0f*buttonSize,
-                                     1.0f-1.0f*buttonSize,
+        const GsRect<float> jumpRect(right-2.0f*buttonSize,
+                                     bottom-1.0f*buttonSize,
                                       buttonSize, buttonSize);
 
         mJumpButton.setRect(jumpRect);
@@ -150,8 +171,8 @@ bool VirtualKeenControl::ponder()
     {
         const float buttonSize = 0.1f;
 
-        const GsRect<float> pogoRect(1.0f-1.0f*buttonSize,
-                                     1.0f-1.0f*buttonSize,
+        const GsRect<float> pogoRect(right-1.0f*buttonSize,
+                                     bottom-1.0f*buttonSize,
                                       buttonSize, buttonSize);
 
         mPogoButton.setRect(pogoRect);
@@ -163,8 +184,8 @@ bool VirtualKeenControl::ponder()
     {
         const float buttonSize = 0.1f;
 
-        const GsRect<float> shootRect(1.0f-2.0f*buttonSize,
-                                      1.0f-2.0f*buttonSize,
+        const GsRect<float> shootRect(right-2.0f*buttonSize,
+                                      bottom-2.0f*buttonSize,
                                       buttonSize, buttonSize);
 
         mShootButton.setRect(shootRect);
@@ -179,6 +200,7 @@ bool VirtualKeenControl::ponder()
 
 void VirtualKeenControl::hideAllButtons()
 {
+    mPadBackground.invisible = true;
     mDPad.invisible = true;
     mConfirmButton.invisible = true;
     mStartButton.invisible = true;
@@ -203,6 +225,8 @@ void VirtualKeenControl::render(GsWeakSurface &sfc)
         }
     };
 
+    addTexture(mPadBackground);
+
     addTexture(mDPad);
 
     addTexture(mConfirmButton);
@@ -213,51 +237,16 @@ void VirtualKeenControl::render(GsWeakSurface &sfc)
     addTexture(mJumpButton);
     addTexture(mPogoButton);
 
-/*
-    // On map, show the start button if keen approaches a level
-    if(mButtonMode == BUTTON_MODE::WMAP && !mHideStartButton)
-    {
-        const float buttonSize = 0.1f;
-
-        const Uint16 width = clickGameArea.w * buttonSize;
-        const Uint16 height = clickGameArea.h * buttonSize;
-
-        const GsRect<Uint16> confirmRect(clickGameArea.w-2*width, clickGameArea.h-2*height, width, height);
-        mStartButtonTexture.setAlpha(uint8_t(255.0f*mTranslucency));
-        gVideoDriver.addTextureRefToRender(mStartButtonTexture, confirmRect);
-
-        const GsRect<Uint16> statusButtonRect(clickGameArea.w*0.5f, clickGameArea.h-height, width, height);
-        mStatusButtonTexture.setAlpha(uint8_t(255.0f*mTranslucency));
-        gVideoDriver.addTextureRefToRender(mStatusButtonTexture, statusButtonRect);
-    }
-
-    if(mButtonMode == BUTTON_MODE::ACTION)
-    {
-        const float buttonSize = 0.1f;
-
-        const Uint16 width = clickGameArea.w * buttonSize;
-        const Uint16 height = clickGameArea.h * buttonSize;
-
-        // Main controls
-        const GsRect<Uint16> shootButtonRect(clickGameArea.w-2*width, clickGameArea.h-2*height, width, height);
-        mShootButtonTexture.setAlpha(uint8_t(255.0f*mTranslucency));
-        gVideoDriver.addTextureRefToRender(mShootButtonTexture, shootButtonRect);
-
-        const GsRect<Uint16> jumpButtonRect(clickGameArea.w-2*width, clickGameArea.h-height, width, height);
-        mJumpButtonTexture.setAlpha(uint8_t(255.0f*mTranslucency));
-        gVideoDriver.addTextureRefToRender(mJumpButtonTexture, jumpButtonRect);
-
-        const GsRect<Uint16> pogoButtonRect(clickGameArea.w-width, clickGameArea.h-height, width, height);
-        mPogoButtonTexture.setAlpha(uint8_t(255.0f*mTranslucency));
-        gVideoDriver.addTextureRefToRender(mPogoButtonTexture, pogoButtonRect);
-    }*/
 #endif
 }
 
 
-void VirtualKeenControl::mouseState(const Vector2D<float> &Pos, const bool down)
+bool VirtualKeenControl::mouseState(const Vector2D<float> &Pos, const bool down)
 {
-#if SDL_VERSION_ATLEAST(2, 0, 0)
+#if SDL_VERSION_ATLEAST(2, 0, 0)    
+
+    if( !mPadBackground.isInside(Pos.x, Pos.y) )
+        return false;
 
     auto bindButtonCommand = [&](const TouchButton &button,
             const InputCommand &cmd)
@@ -269,8 +258,7 @@ void VirtualKeenControl::mouseState(const Vector2D<float> &Pos, const bool down)
         {
             gInput.setCommand(0, cmd, down);
         }
-    };
-
+    };        
 
     SDL_Event ev;
     ev.type = (down ? SDL_KEYDOWN : SDL_KEYUP);
@@ -318,5 +306,7 @@ void VirtualKeenControl::mouseState(const Vector2D<float> &Pos, const bool down)
     bindButtonCommand(mPogoButton, IC_POGO);
 
 #endif
+
+    return true;
 
 }

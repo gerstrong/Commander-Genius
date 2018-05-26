@@ -40,25 +40,35 @@ public:
      * @param Pos           Position
      * @param down          true if event indicates mouse button down, otherwise up
      */
-    void mouseState(const Vector2D<float> &Pos, const bool down);
+    bool mouseState(const Vector2D<float> &Pos, const bool down);
 
     /**
      * @brief mouseDown     Mouse down event when sent when touch event triggered or mouse sends that.
      * @param Pos           Position of the mouse event
      */
-    void mouseDown(const Vector2D<float> &Pos) override
+    bool mouseDown(const Vector2D<float> &Pos) override
     {
-        mouseState(Pos, true);
+        return mouseState(Pos, true);
     }
 
     /**
      * @brief mouseDown     Mouse Up event when sent when touch event triggered or mouse sends that.
      * @param Pos           Position of the mouse event
      */
-    void mouseUp(const Vector2D<float> &Pos) override
+    bool mouseUp(const Vector2D<float> &Pos) override
     {
-        mouseState(Pos, false);
+        return mouseState(Pos, false);
     }
+
+    /**
+     * @brief active    Checks if click events happened in the virtual dpad
+     * @return
+     */
+    bool isInside(const Vector2D<float> &Pos) const override
+    {
+        return mPadBackground.isInside(Pos.x, Pos.y);
+    }
+
 
     /**
      * @brief hideAllButtons    Hide all the virtual button
@@ -68,6 +78,7 @@ public:
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 
+    TouchButton mPadBackground;
     TouchButton mDPad;
     TouchButton mConfirmButton;
     TouchButton mStartButton;
@@ -76,9 +87,9 @@ public:
     TouchButton mJumpButton;
     TouchButton mShootButton;
     TouchButton mPogoButton;
-    TouchButton mStatusButton;
+    TouchButton mStatusButton;        
 
-#endif
+#endif    
 
 };
 

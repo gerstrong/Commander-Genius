@@ -84,6 +84,7 @@ public:
         return mEnabled;
     }
 
+
     /**
      * @brief init initialize the object
      * @return true if everything went right, otherwise false.
@@ -106,19 +107,26 @@ public:
      * @brief mouseDown     Mouse down event when sent when touch event triggered or mouse sends that.
      * @param Pos           Position of the mouse event
      */
-    virtual void mouseDown(const Vector2D<float> &Pos) = 0;
+    virtual bool mouseDown(const Vector2D<float> &Pos) = 0;
 
     /**
      * @brief mouseDown     Mouse Up event when sent when touch event triggered or mouse sends that.
      * @param Pos           Position of the mouse event
      */
-    virtual void mouseUp(const Vector2D<float> &Pos) = 0;
+    virtual bool mouseUp(const Vector2D<float> &Pos) = 0;
+
+    /**
+     * @brief active    Checks if click events happened in the virtual dpad
+     * @return
+     */
+    virtual bool isInside(const Vector2D<float> &Pos) const = 0;
+
 
 protected:
 
     bool mEnabled = true;
 
-    GsSurface mOverlay;
+    //GsSurface mOverlay;
 
     float mTranslucency = 0.5f;
 
