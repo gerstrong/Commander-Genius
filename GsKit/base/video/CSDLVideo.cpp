@@ -27,6 +27,11 @@ bool CSDLVideo::init()
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)    
 
+#ifdef ANDROID
+    SDL_SetHint(SDL_HINT_ORIENTATIONS, "LandscapeLeft LandscapeRight");
+#endif
+
+
     if(m_VidConfig.mRenderScQuality == "linear")
     {
         SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
