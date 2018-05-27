@@ -162,12 +162,12 @@ public:
     /**
      * @brief transMouseRelCoord    transforms a mouse click from the screen coordinates to the relative coordinates
      * @param Pos       Resulting relative coordinate to handle
-     * @param motion    SDL Motion Event in which the raw pointer position is requested
+     * @param rotPt     pointer
      * @param activeArea    Area which is seen and interacted.
      * @param tiltedScreen  is the screen tilted.
      */
     void transMouseRelCoord(Vector2D<float> &Pos,
-                            const SDL_MouseMotionEvent motion,
+                            const Vector2D<int> pointer,
                             const GsRect<Uint16> &activeArea,
                             const bool tiltedScreen);
 
