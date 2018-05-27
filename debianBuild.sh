@@ -1,6 +1,6 @@
 #!/bin/sh
 
-VERSION=2.0.1
+VERSION=2.2.3
 SUBVER=ppa1
 KEY="0x6A1F4CC6"
 
