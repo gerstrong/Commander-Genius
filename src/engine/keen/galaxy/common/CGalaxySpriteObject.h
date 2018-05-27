@@ -28,10 +28,10 @@ public:
 	void performGravityHigh();
 	void performInverseGravityHigh();
 
-	void processFalling();
+	void processFalling() override;
 
-	int checkSolidU(int x1, int x2, int y1, const bool push_mode=false );
-	int checkSolidD(int x1, int x2, int y2, const bool push_mode=false );
+	int checkSolidU(int x1, int x2, int y1, const bool push_mode=false ) override;
+	int checkSolidD(int x1, int x2, int y2, const bool push_mode=false ) override;
 
 	bool getActionNumber(int16_t ActionNumber);
 	virtual bool getActionStatus(int16_t ActionNumber);

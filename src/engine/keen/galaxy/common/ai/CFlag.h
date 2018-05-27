@@ -30,20 +30,20 @@ namespace galaxy  {
       const bool newAction, const bool canLock );
     
     
-    void deserialize(CSaveGameController &savedGame);
+    void deserialize(CSaveGameController &savedGame) override;
     
-    void serialize(CSaveGameController &savedGame);
+    void serialize(CSaveGameController &savedGame) override;
 
-    void serialize(boost::property_tree::ptree &node);
+    void serialize(boost::property_tree::ptree &node) override;
 
-    void deserialize(boost::property_tree::ptree &node);
+    void deserialize(boost::property_tree::ptree &node) override;
 
     
-    void getTouchedBy(CSpriteObject &theObject);
+    void getTouchedBy(CSpriteObject &theObject) override;
     
     // The flag is flying when player throws it.
     // It's waving all the time being stuck on the pole.
-    void process();
+    void process() override;
     void processFlipping();
     void processWaving();
     
@@ -51,9 +51,9 @@ namespace galaxy  {
      * @brief Flag can always be visible and active, even if he is not seen.
      * @return
      */
-    bool calcVisibility();
+    bool calcVisibility() override;
 
-    void setActionForce(const size_t ActionNumber);
+    void setActionForce(const size_t ActionNumber) override;
     
   private:
     // Where the flag/sign will pop in

@@ -87,15 +87,15 @@ public:
 
     void setupModsDialog();
 
-    void pumpEvent(const CEvent *evPtr);
+    void pumpEvent(const CEvent *evPtr) override;
     void ponderGameSelDialog(const float deltaT);
 
     void verifyGameStore();
     void ponderDownloadDialog();
 
     void ponderPatchDialog();
-    void ponder(const float deltaT);
-    void render();
+    void ponder(const float deltaT) override;
+    void render() override;
 
     int getChosengame()
     { return m_chosenGame; }

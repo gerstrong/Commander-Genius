@@ -34,12 +34,12 @@ public:
 
     int checkSolidD( int x1, int x2, int y2, const bool push_mode ) override;
 
-	void process();
+	void process() override;
 
 	/**
 	 * What happens if the slug gets touched by another object
 	 */
-	void getTouchedBy(CSpriteObject &theObject);
+	void getTouchedBy(CSpriteObject &theObject) override;
 
 private:
 	int m_timer;

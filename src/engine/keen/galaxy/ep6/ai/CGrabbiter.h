@@ -24,12 +24,12 @@ public:
     
     void processNapping();
     
-    void process();
+    void process() override;
 
     /**
      * What happens it gets touched by another object
      */
-    void getTouchedBy(CSpriteObject &theObject);    
+    void getTouchedBy(CSpriteObject &theObject) override;
 };
 
 }

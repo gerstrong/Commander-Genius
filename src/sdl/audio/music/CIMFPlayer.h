@@ -35,13 +35,13 @@ public:
 	 * 			Only galaxy supports that feature, and the original games will read two files form the EXE-file
 	 * 			AUDIOHED and AUDIODICT to get the right tune for the music player.
 	 */
-    bool loadMusicFromFile(const std::string& filename);
+    bool loadMusicFromFile(const std::string& filename) override;
 
 	void OPLUpdate(byte *buffer, const unsigned int length);
 
-    bool open(const bool lock);
-    void close(const bool lock);
-	void readBuffer(Uint8* buffer, Uint32 length);
+    bool open(const bool lock) override;
+    void close(const bool lock) override;
+	void readBuffer(Uint8* buffer, Uint32 length) override;
 
 
     bool loadMusicTrack(const int track) override;

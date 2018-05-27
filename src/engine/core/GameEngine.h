@@ -26,7 +26,7 @@ public:
 
     virtual bool start() = 0;
 
-    void ponder(const float deltaT);
+    void ponder(const float deltaT) override;
 
     void render();
 

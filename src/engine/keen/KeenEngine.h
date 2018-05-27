@@ -21,9 +21,9 @@ public:
 
     bool start() override;
 
-    virtual void pumpEvent(const CEvent *evPtr);
+    virtual void pumpEvent(const CEvent *evPtr) override;
 
-    virtual void ponder(const float deltaT);
+    virtual void ponder(const float deltaT) override;
 
     virtual bool loadResources( const Uint8 flags ) = 0;
 

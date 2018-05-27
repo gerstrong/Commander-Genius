@@ -90,7 +90,7 @@ public:
 	/**
 	 * \description This is the main process cycle
 	 */
-	void process();
+	void process() override;
 
 
 	/**
@@ -200,7 +200,7 @@ public:
 	/**
 	 * \description Simple process called while Keen is falling down
 	 */
-	void processFalling();
+	void processFalling() override;
 
 
 
@@ -319,8 +319,8 @@ public:
 	}
 
 	
-	int checkSolidU(int x1, int x2, int y1, const bool push_mode=false );
-	int checkSolidD( int x1, int x2, int y2, const bool push_mode=false );	
+	int checkSolidU(int x1, int x2, int y1, const bool push_mode=false ) override;
+	int checkSolidD( int x1, int x2, int y2, const bool push_mode=false ) override;
 
 
     bool mPlacingGem = false;
