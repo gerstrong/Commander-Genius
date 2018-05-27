@@ -133,17 +133,17 @@ public:
      *                  If there are underlying objects using events, they are passed
      * @param evPtr
      */
-    void pumpEvent(const CEvent *evPtr);
+    void pumpEvent(const CEvent *evPtr) override;
 
     /**
      * @brief ponder
      */
-    void ponder(const float deltaT);
+    void ponder(const float deltaT) override;
 
     /**
      * @brief render
      */
-    void render();
+    void render() override;
 
 private:
 

@@ -24,15 +24,15 @@ public:
         mDataPath(datapath)
     {}
 
-    virtual bool start() = 0;
+    virtual bool start() override = 0;
 
     void ponder(const float deltaT) override;
 
-    void render();
+    void render() override;
 
     void renderFPSDisplay();
 
-    virtual void pumpEvent(const CEvent *evPtr);
+    virtual void pumpEvent(const CEvent *evPtr) override;
 
 
 protected:

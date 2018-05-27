@@ -84,15 +84,15 @@ public:
      * @brief ponder    Everything logic related here
      * @param deltaT    timestep
      */
-    void ponder(const float deltaT);
+    void ponder(const float deltaT) override;
 
-    void pumpEvent(const CEvent *evPtr);
+    void pumpEvent(const CEvent *evPtr) override;
 
 
     /**
      * @brief render    Everything to ne drawn here!
      */
-    void render();
+    void render() override;
 
 
 private:

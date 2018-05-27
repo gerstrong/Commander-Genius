@@ -19,7 +19,7 @@ public:
     void processSpecific(){}
     void ponder(const float deltaT) override;
     void sendEvent(std::shared_ptr<CEvent> &command) override;
-    void release();
+    void release() override;
 
 
 private:

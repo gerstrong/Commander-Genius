@@ -22,12 +22,12 @@ public:
      * @brief ponder    Logic cycle run usually at 120 LPS
      * @param deltaT    how much time of logic to do
      */
-    void ponder(const float deltaT);
+    void ponder(const float deltaT) override;
 
     /**
      * @brief render Everything that needs to be rendered representing the current state of the object
      */
-    void render();
+    void render() override;
 
 };
 
