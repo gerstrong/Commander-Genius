@@ -45,6 +45,14 @@ public:
      */
     bool loadPicture(const std::string &picFile);
 
+    /**
+     * @brief loadEmdbeddedPicture  Load picture from internal memory
+     * @param data
+     * @return
+     */
+    bool loadEmdbeddedPicture(const unsigned char *data,
+                              const unsigned int size);
+
 
 
     stInputCommand* cmd = nullptr;

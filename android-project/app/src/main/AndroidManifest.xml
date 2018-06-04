@@ -3,9 +3,9 @@
      com.gamemaker.game
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.libsdl.app"
-    android:versionCode="1"
-    android:versionName="1.0"
+    package="net.sourceforge.clonekeenplus"
+    android:versionCode="22000"
+    android:versionName="2.2.3"
     android:installLocation="auto">
 
     <!-- Android 4.0.1 -->

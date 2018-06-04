@@ -8,6 +8,8 @@
 #include <curl/curl.h>
 #include <SDL_image.h>
 
+#include <fileio/KeenFiles.h>
+
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
 
@@ -188,6 +190,9 @@ bool GameDownloader::loadCatalogue(const std::string &catalogueFile)
 
     try
     {
+
+
+
         // Load the XML file into the property tree. If reading fails
         // (cannot open file, parse error), an exception is thrown.
         read_xml(catalogueFile, pt);
@@ -225,10 +230,20 @@ bool GameDownloader::loadCatalogue(const std::string &catalogueFile)
     return true;
 }
 
-#include <fileio/KeenFiles.h>
+bool GameDownloader::downloadCatalogue()
+{
+    pCancelDownload = &mCancelDownload;
+
+    const int res = downloadFile(mCatalogFName, mProgress, "");
+
+    if(res==0)
+        return true;
+
+    return false;
+}
 
 bool GameDownloader::checkForMissingGames( std::vector< std::string > &missingList )
-{    
+{                
     // Load game catalogue
     if( !loadCatalogue(mCatalogFName) )
     {
@@ -275,6 +290,7 @@ bool GameDownloader::checkForMissingGames( std::vector< std::string > &missingLi
     {
         mCataFound = true;
     }
+
 
     if(!mCataFound)
     {

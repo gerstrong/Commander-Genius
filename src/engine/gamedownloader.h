@@ -19,7 +19,6 @@ struct GameCatalogueEntry
 };
 
 
-
 class GameDownloader : public Action
 {
 public:
@@ -45,6 +44,13 @@ public:
      * @return
      */
     bool loadCatalogue(const std::string &catalogueFile);
+
+
+    /**
+     * @brief downloadCatalogue Download the missing catalogue file
+     * @return
+     */
+    bool downloadCatalogue();
 
     /**
      * @brief checkForMissingGames      Test if there are games that the user does not have yet.

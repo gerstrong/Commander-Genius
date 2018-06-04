@@ -809,7 +809,8 @@ void CInput::pollEvents()
             dispRect.h = Event.resize.h;
 			break;
 #endif
-/*
+
+#ifndef ANDROID
 		case SDL_MOUSEBUTTONDOWN:
 
             if(Event.button.button <= 3)
@@ -881,7 +882,7 @@ void CInput::pollEvents()
             gPointDevice.mPointingState.mPos = Pos;
 			break;
 
-*/
+#endif
 		}
 
         if(passSDLEventVec)

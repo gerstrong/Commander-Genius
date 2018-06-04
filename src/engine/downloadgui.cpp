@@ -21,25 +21,36 @@ void CGameLauncher::verifyGameStore()
 
 
     std::vector< std::string > missingList;
+
+    // First try
     gameDownloader.checkForMissingGames( missingList );
 
     if(!gameDownloader.hasCatalog())
-    {
-        std::stringstream ss;
+    {                
+        // Try to download the catalogue file
+        if(gameDownloader.downloadCatalogue())
+        {
+            gameDownloader.checkForMissingGames( missingList );
+        }
 
-        const auto cataFile   = gameDownloader.catalogFName();
-        const auto searchPath = GetFirstSearchPath();
+        if(!gameDownloader.hasCatalog())
+        {
+            std::stringstream ss;
 
-        ss << "You seem not to have a game catalog.\n";
-        ss << "The file is called " << "\"" << cataFile  <<  "\" \n";
-        ss << "You might want to download \n";
-        ss << "and copy one into:\n";
-        ss << "\"" << searchPath << "\".\n";
-        ss << "\"+ More\" button is disabled...\n";
+            const auto cataFile   = gameDownloader.catalogFName();
+            const auto searchPath = GetFirstSearchPath();
 
-        std::string msg(ss.str());
+            ss << "You seem not to have a game catalog.\n";
+            ss << "The file is called " << "\"" << cataFile  <<  "\" \n";
+            ss << "You might want to download \n";
+            ss << "and copy one into:\n";
+            ss << "\"" << searchPath << "\".\n";
+            ss << "\"+ More\" button is disabled...\n";
 
-        showMessageBox(msg);
+            std::string msg(ss.str());
+
+            showMessageBox(msg);
+        }
     }
 
 

@@ -67,6 +67,41 @@ public:
         return (mpTexture!=nullptr);
     }
 
+    /**
+     * @brief loadFromMem   Will try to load the texture
+     * @param data pointer from where to load it
+     * @renderer renderer on which the texture will be drawn
+     * @return true if it was loaded, otherwise false
+     */
+    bool loadFromMem(const unsigned char *data,
+                     const unsigned int size,
+                     SDL_Renderer *renderer)
+    {
+        // Do we have an old texture? Unload it
+        if(mpTexture)
+            unload();
+
+        SDL_RWops *rw = SDL_RWFromMem((void*)data, size);
+
+        // Load image at specified path
+        SDL_Surface* loadedSurface = IMG_Load_RW(rw, 1);
+        if( loadedSurface )
+        {
+            //Create texture from surface pixels
+            mpTexture = SDL_CreateTextureFromSurface( renderer, loadedSurface );
+            if( mpTexture == nullptr )
+            {
+                //printf( "Unable to create texture from %s! SDL Error: %s\n", path.c_str(), SDL_GetError() );
+            }
+
+            // Get rid of old surface
+            SDL_FreeSurface( loadedSurface );
+        }
+
+        return (mpTexture!=nullptr);
+    }
+
+
      //Set blending
     void setBlendMode( SDL_BlendMode blending )
     {

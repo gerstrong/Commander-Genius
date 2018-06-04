@@ -74,10 +74,7 @@ m_start_level(start_level)
 }
 
 CGameLauncher::~CGameLauncher()
-{
-    // The virtual pad must not exist anymore!
-    gInput.mpVirtPad = nullptr;
-}
+{}
 
 ////
 // Initialization Routine
@@ -466,8 +463,7 @@ bool CGameLauncher::start()
 
             return 1;
         }
-    };
-
+    };        
 
     mGameScanner.setStyle(PROGRESS_STYLE_TEXT);
     mGameScanner.RunLoadActionBackground(new GamesScan(*this));

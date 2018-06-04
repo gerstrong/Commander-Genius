@@ -6,6 +6,22 @@
 #include <base/GsLogging.h>
 #include <fileio/ResourceMgmt.h>
 
+#include "dpad.h"
+#include "button1.h"
+#include "button2.h"
+#include "button3.h"
+#include "button4.h"
+#include "buttonBg.h"
+#include "buttonConfirm.h"
+#include "buttonStart.h"
+
+
+bool TouchButton::loadEmdbeddedPicture(const unsigned char *data,
+                                       const unsigned int size)
+{
+    return mTexture.loadFromMem(data, size,
+                         gVideoDriver.Renderer());
+}
 
 bool TouchButton::loadPicture(const std::string &picFile)
 {
@@ -29,53 +45,39 @@ VirtualKeenControl::~VirtualKeenControl()
 bool VirtualKeenControl::init()
 {
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    /*GsWeakSurface blit(gVideoDriver.getBlitSurface());
-    SDL_PixelFormat *format = blit.getSDLSurface()->format;
+    // Check if the virtual game pad image exist. If not download the picture package
 
-    const int buttonSize = 50;*/
-
-
-    // Create the overlay surface and fill it with alpha 0
-    /*
-    mOverlay.create(0, blit.width(), blit.height(), 32, 0, 0, 0, 0);
-
-    mOverlay.setBlendMode(SDL_BLENDMODE_BLEND);
-    mOverlay.setAlpha(uint8_t(255.0f*mTranslucency));
-
-    mOverlay.fill(SDL_MapRGBA(format, 0, 0, 0, 0 ));
-
-    /// Draw a D-Pad
-
-    // Left arrow
-    const GsRect<Uint16> upRect(0, blit.height()-buttonSize, buttonSize, buttonSize);
-    mOverlay.fill(upRect, SDL_MapRGBA(format, 128, 0, 0, 128 ));
-    */
-
+    /*if(!checkVPadImage())
+    {
+        downloadVPadImages();
+        extractVPadImages();
+    }
+*/
 
     /// Load The buttons images
     {
         // Start with the Background for the gamepad
-        if(!mPadBackground.loadPicture("bckgrnd.png")) return false;
+        if(!mPadBackground.loadEmdbeddedPicture(gButtonBgPng, sizeof(gButtonBgPng))) return false;
 
         // Directional pad
-        if(!mDPad.loadPicture("dpad.png")) return false;
+        if(!mDPad.loadEmdbeddedPicture(gDPadPng, sizeof(gDPadPng))) return false;
 
-        if(!mConfirmButton.loadPicture("confirm.png")) return false;
+        if(!mConfirmButton.loadEmdbeddedPicture(gButtonConfirmPng, sizeof(gButtonConfirmPng))) return false;
         mConfirmButton.invisible = false;
 
-        if(!mStartButton.loadPicture("start.png")) return false;
+        if(!mStartButton.loadEmdbeddedPicture(gButtonStartPng, sizeof(gButtonStartPng))) return false;
         mStartButton.invisible = true;
 
-        if(!mJumpButton.loadPicture("1.png")) return false;
+        if(!mJumpButton.loadEmdbeddedPicture(gButton1Png, sizeof(gButton1Png))) return false;
         mJumpButton.invisible = true;
 
-        if(!mPogoButton.loadPicture("2.png")) return false;
+        if(!mPogoButton.loadEmdbeddedPicture(gButton2Png, sizeof(gButton2Png))) return false;
         mPogoButton.invisible = true;
 
-        if(!mShootButton.loadPicture("3.png")) return false;
+        if(!mShootButton.loadEmdbeddedPicture(gButton3Png, sizeof(gButton3Png))) return false;
         mShootButton.invisible = true;
 
-        if(!mStatusButton.loadPicture("4.png")) return false;
+        if(!mStatusButton.loadEmdbeddedPicture(gButton4Png, sizeof(gButton4Png))) return false;
         mStatusButton.invisible = true;
     }
 
