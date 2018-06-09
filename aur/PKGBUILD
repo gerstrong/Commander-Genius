@@ -2,7 +2,7 @@
 # Contributor: Peter Lewis <plewis@aur.archlinux.org>
 pkgname=commander-genius-git
 _pkgname=Commander-Genius
-pkgver=v200Release
+pkgver=v223Release
 pkgrel=1
 pkgdesc="A modern implementation of the classic game Commander Keen"
 arch=('i686' 'x86_64')
@@ -17,7 +17,7 @@ replaces=()
 backup=()
 options=()
 install=
-source=(git+https://github.com/gerstrong/Commander-Genius.git)
+source=(git+https://gitlab.com/Dringgstein/Commander-Genius.git)
 noextract=()
 md5sums=('SKIP')
 

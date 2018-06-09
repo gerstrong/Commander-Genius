@@ -1,6 +1,6 @@
 Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: Commander-Genius
-Source: https://github.com/gerstrong/Commander-Genius/
+Source: https://gitlab.com/Dringgstein/Commander-Genius.git
 
 Files: *
 Copyright: 2008-2015 Gerhard Stein

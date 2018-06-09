@@ -252,12 +252,10 @@ How to launch Commander Genius (if you didn't compile it):
 
 
 Getting the most recent source code:
- * The most recent version is hosted at GitHub.
+ * The most recent version is hosted at GitLab.
  * From the Linux command line, type:
-   git clone git://github.com/gerstrong/Commander-Genius.git
+   git clone https://gitlab.com/Dringgstein/commandergenius.git
    cd Commander-Genius
-   git submodule init
-   git submodule update
  * I recommend you using the master branch. I might create a more stable one
    later.
 
@@ -489,7 +487,7 @@ A: You can already play it through. Never thought we would support that one
 - BUG! -
 ========
 
-So you really found one or more bugs? Please report those to use via GitHub
+So you really found one or more bugs? Please report those to use via GitLab
 issues and they might get fixed.
 Depending on the priority, we are going to fix them as soon as possible.
 Sending us the "CGLog.html" or "CGLog.txt" file might help with tracking down
@@ -498,9 +496,9 @@ Also remember to test using the latest version from the testing repo we
 sometimes provide. Your error might have been already fixed there.
 If there is no testing version after the release, just report it. ;-)
 
-Of course you can send an email, but GitHub is more useful to me:
+Of course you can send an email, but GitLab is more useful to me:
 
-https://github.com/gerstrong/Commander-Genius/issues
+https://gitlab.com/Dringgstein/Commander-Genius/issues
 
 
 - ACKNOWLEDGEMENTS -

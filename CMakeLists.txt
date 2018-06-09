@@ -60,10 +60,7 @@ endif(UNIX)
 # Check that GsKit also has been loaded
 if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/GsKit/CMakeLists.txt")
 
-    MESSAGE(FATAL_ERROR "You need to have the sources of GsKit in order to build Commander Genius. "
-                  "If you got the sources from github try to this in the source directory: "
-                  "git submodule init &&"
-                  "git submodule update")
+    MESSAGE(FATAL_ERROR "You need to have the sources of GsKit in order to build Commander Genius. ")
 
 endif()
 
