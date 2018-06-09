@@ -269,17 +269,18 @@ bool VirtualKeenControl::mouseState(const Vector2D<float> &Pos, const bool down)
         mDPad.isInside(Pos.x, Pos.y) )
     {
         // Size of the buttons on the dpad
-        const float dpadSizePiece = 0.3f*mDPad.w;
+        const float dpadSizePieceW = 0.4f*mDPad.w;
+        const float dpadSizePieceH = 0.4f*mDPad.h;
 
         // Y-Direction
         // Up presses
-        if(Pos.y<mDPad.y+dpadSizePiece)
+        if(Pos.y<mDPad.y+dpadSizePieceH)
         {
             ev.key.keysym.sym = SDLK_UP;
             SDL_PushEvent(&ev);
         }
         // Down presses
-        else if(Pos.y>=1.0f-dpadSizePiece)
+        else if(Pos.y>=mDPad.y+mDPad.h-dpadSizePieceH)
         {
             ev.key.keysym.sym = SDLK_DOWN;
             SDL_PushEvent(&ev);
@@ -287,13 +288,13 @@ bool VirtualKeenControl::mouseState(const Vector2D<float> &Pos, const bool down)
 
         // X-Direction
         // Left presses
-        if(Pos.x<dpadSizePiece)
+        if(Pos.x<mDPad.x+dpadSizePieceW)
         {
             ev.key.keysym.sym = SDLK_LEFT;
             SDL_PushEvent(&ev);
         }
         // Right presses
-        else if(Pos.x>=mDPad.w-dpadSizePiece)
+        else if(Pos.x>=mDPad.x+mDPad.w-dpadSizePieceW)
         {
             ev.key.keysym.sym = SDLK_RIGHT;
             SDL_PushEvent(&ev);

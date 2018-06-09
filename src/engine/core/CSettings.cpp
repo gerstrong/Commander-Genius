@@ -191,7 +191,7 @@ bool CSettings::loadDrvCfg()
 
         Configuration.ReadKeyword("Video", "OpenGL", &VidConf.mOpengl, true);
         Configuration.ReadString("Video", "OGLfilter",  VidConf.mRenderScQuality, "nearest");
-        Configuration.ReadKeyword("Video", "VirtPad", &VidConf.mVPad, false);
+        Configuration.ReadKeyword("Video", "VirtPad", &VidConf.mVPad, VidConf.mVPad);
         Configuration.ReadKeyword("Video", "ShowCursor", &VidConf.mShowCursor, true);
         Configuration.ReadKeyword("Video", "TiltedScreen", &VidConf.mTiltedScreen, false);
 

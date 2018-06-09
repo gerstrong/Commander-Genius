@@ -66,7 +66,13 @@ public:
 	bool m_normal_scale;
 	unsigned short Zoom;
     bool mOpengl;
+
+#ifdef ANDROID
+    bool mVPad = true;
+#else
     bool mVPad = false;
+#endif
+
 	GsRect<int> mAspectCorrection;
     bool mVSync;
     bool mShowCursor = true;
