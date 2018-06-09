@@ -3,8 +3,23 @@ add_subdirectory(compression)
 
 include_directories(${SDL_INCLUDE_DIR})
 
-FILE(GLOB SRCS *.cpp *.h)
-
-add_library(fileio ${SRCS})
+add_library(fileio CExeFile.cpp
+    CPatcher.cpp
+    CPatcherUtils.cpp
+    crc.cpp
+    CSaveGameController.cpp
+    CTileLoader.cpp
+    KeenFiles.cpp
+    lz.cpp
+    CExeFile.h
+    CPatcher.h
+    crc.h
+    CSavedGameCoder.h
+    CSaveGameController.h
+    CTileLoader.h
+    CTileProperties.h
+    KeenFiles.h
+    lz.h
+    Oldsavegamestructs.h)
 
 target_link_libraries(fileio fileio_compression)

@@ -1,7 +1,19 @@
 
 include_directories(${SDL_INCLUDE_DIR})
 
-FILE(GLOB SRCS effects/*.cpp effects/*.h)
+SET(SRCS    effects/CColorMerge.cpp
+            effects/CColorMerge.h
+            effects/CDimDark.cpp
+            effects/CDimDark.h
+            effects/CFlash.cpp
+            effects/CFlash.h
+            effects/CPixelate.cpp
+            effects/CPixelate.h
+            effects/CScrollEffect.cpp
+            effects/CScrollEffect.h
+            effects/CVibrate.cpp
+            effects/CVibrate.h)
+
 
 add_library(graphics OBJECT ${SRCS})
 

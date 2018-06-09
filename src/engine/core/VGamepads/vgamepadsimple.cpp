@@ -278,12 +278,28 @@ bool VirtualKeenControl::mouseState(const Vector2D<float> &Pos, const bool down)
         {
             ev.key.keysym.sym = SDLK_UP;
             SDL_PushEvent(&ev);
+
+            if(down)
+            {
+                SDL_Event evUp;
+                evUp.type = SDL_KEYUP;
+                evUp.key.keysym.sym = SDLK_DOWN;
+                SDL_PushEvent(&evUp);
+            }
         }
         // Down presses
         else if(Pos.y>=mDPad.y+mDPad.h-dpadSizePieceH)
         {
             ev.key.keysym.sym = SDLK_DOWN;
             SDL_PushEvent(&ev);
+
+            if(down)
+            {
+                SDL_Event evUp;
+                evUp.type = SDL_KEYUP;
+                evUp.key.keysym.sym = SDLK_UP;
+                SDL_PushEvent(&evUp);
+            }
         }
 
         // X-Direction
@@ -292,12 +308,30 @@ bool VirtualKeenControl::mouseState(const Vector2D<float> &Pos, const bool down)
         {
             ev.key.keysym.sym = SDLK_LEFT;
             SDL_PushEvent(&ev);
+
+            if(down)
+            {
+                SDL_Event evUp;
+                evUp.type = SDL_KEYUP;
+                evUp.key.keysym.sym = SDLK_RIGHT;
+                SDL_PushEvent(&evUp);
+            }
+
         }
         // Right presses
         else if(Pos.x>=mDPad.x+mDPad.w-dpadSizePieceW)
         {
             ev.key.keysym.sym = SDLK_RIGHT;
             SDL_PushEvent(&ev);
+
+            if(down)
+            {
+                SDL_Event evUp;
+                evUp.type = SDL_KEYUP;
+                evUp.key.keysym.sym = SDLK_LEFT;
+                SDL_PushEvent(&evUp);
+            }
+
         }
     }
 
