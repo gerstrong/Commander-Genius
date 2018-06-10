@@ -7,7 +7,7 @@ Project(CommanderGenius)
 
 set (CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/CMake")
 
-# Use compile time reducer
+# Use COmpile TIme REducer
 include(cotire)
 include(FindSDL2_mixer)
 

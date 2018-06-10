@@ -75,6 +75,11 @@ public:
      */
     void hideAllButtons();
 
+    /**
+     * @brief hideEverything    Hide the whole pad.
+     */
+    void hideEverything();
+
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 

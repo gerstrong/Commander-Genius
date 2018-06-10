@@ -200,7 +200,7 @@ bool VirtualKeenControl::ponder()
     return true;
 }
 
-void VirtualKeenControl::hideAllButtons()
+void VirtualKeenControl::hideEverything()
 {
     mPadBackground.invisible = true;
     mDPad.invisible = true;
@@ -212,6 +212,19 @@ void VirtualKeenControl::hideAllButtons()
     mPogoButton.invisible = true;
     mStatusButton.invisible = true;
 }
+
+void VirtualKeenControl::hideAllButtons()
+{
+    mPadBackground.invisible = false;
+    mConfirmButton.invisible = true;
+    mStartButton.invisible = true;
+
+    mJumpButton.invisible = true;
+    mShootButton.invisible = true;
+    mPogoButton.invisible = true;
+    mStatusButton.invisible = true;
+}
+
 
 
 void VirtualKeenControl::render(GsWeakSurface &sfc)

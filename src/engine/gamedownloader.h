@@ -3,6 +3,7 @@
 
 #include <base/utils/ThreadPool.h>
 #include <graphics/GsBitmap.h>
+#include <boost/property_tree/ptree_fwd.hpp>
 
 #include <vector>
 #include <string>
@@ -10,6 +11,7 @@
 
 struct GameCatalogueEntry
 {
+    int mVersionCode = 0;
     std::string mName;
     std::string mLink;
     std::string mDescription;
@@ -37,6 +39,23 @@ public:
         mCancelDownload(cancelDownload),
         mGameFileName(gameFileName),
         mGameName(gameName) {}
+
+    /**
+     * @brief readGamesNode New and more secure way of reading games from the catalogue
+     *                      Here the compatibility is tested by checking a version code
+     * @param pt    Node ref
+     * @return
+     */
+    bool readGamesNode(boost::property_tree::ptree &pt);
+
+
+    /**
+     * @brief readLegacyCatalogue   The legacy catalogue has less checks of the games
+     *                              and will exist only for older releases
+     * @param pt    Node ref
+     * @return true if something was read
+     */
+    bool readLegacyCatalogue(boost::property_tree::ptree &pt);
 
     /**
      * @brief loadCatalogue     Load the game catalogue

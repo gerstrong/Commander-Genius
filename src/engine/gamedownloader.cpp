@@ -12,7 +12,7 @@
 
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
-
+#include "../version.h"
 
 extern "C"
 {
@@ -181,22 +181,56 @@ int downloadFile(const std::string &filename, int &progress,
 }
 
 
-bool GameDownloader::loadCatalogue(const std::string &catalogueFile)
+bool GameDownloader::readGamesNode(boost::property_tree::ptree &pt)
 {
-    // Create an empty property tree object
-    using boost::property_tree::ptree;
-    ptree pt;
-
-
     try
     {
+        for( auto &gameNode : pt.get_child("Games") )
+        {
+            // Filter the comments ...
+            if(gameNode.first == "<xmlcomment>")
+                continue;
+
+            GameCatalogueEntry gce;
+
+            gce.mVersionCode = gameNode.second.get<int>("<xmlattr>.versioncode");
+
+            gce.mName = gameNode.second.get<std::string>("<xmlattr>.name");
+            gce.mLink = gameNode.second.get<std::string>("<xmlattr>.link");
 
 
+            if(gce.mVersionCode > CGVERSIONCODE)
+            {
+                gLogging.ftextOut("Game %s not supported. Required Version code %d, got %d.\n<br>",
+                                  gce.mName, CGVERSIONCODE, gce.mVersionCode );
+                continue;
+            }
 
-        // Load the XML file into the property tree. If reading fails
-        // (cannot open file, parse error), an exception is thrown.
-        read_xml(catalogueFile, pt);
 
+            gce.mDescription = gameNode.second.get<std::string>("<xmlattr>.description");
+            gce.mPictureFile = gameNode.second.get<std::string>("<xmlattr>.picture");
+
+            const auto filePath = JoinPaths("cache", gce.mPictureFile);
+
+            const auto fullfname = GetFullFileName(filePath);
+
+            gce.mBmpPtr.reset(new GsBitmap);
+
+            gce.mBmpPtr->loadImg(fullfname);
+
+            mGameCatalogue.push_back(gce);
+        }
+    }
+    catch(...)
+    {
+        return false;
+    }
+}
+
+bool GameDownloader::readLegacyCatalogue(boost::property_tree::ptree &pt)
+{
+    try
+    {
         for( auto &gameNode : pt.get_child("Catalogue") )
         {
             // Filter the comments ...
@@ -220,6 +254,37 @@ bool GameDownloader::loadCatalogue(const std::string &catalogueFile)
 
             mGameCatalogue.push_back(gce);
         }
+    }
+    catch(...)
+    {
+        return false;
+    }
+
+    return true;
+}
+
+bool GameDownloader::loadCatalogue(const std::string &catalogueFile)
+{
+    // Create an empty property tree object
+    using boost::property_tree::ptree;
+    ptree pt;
+
+
+    try
+    {
+
+
+
+        // Load the XML file into the property tree. If reading fails
+        // (cannot open file, parse error), an exception is thrown.
+        read_xml(catalogueFile, pt);
+
+        bool ok = false;
+
+        ok |= readGamesNode(pt);
+        ok |= readLegacyCatalogue(pt);
+
+        return ok;
 
     }
     catch(...)

@@ -82,10 +82,10 @@ void CWorldMap::ponder(const float deltaT)
     {
         VirtualKeenControl *vkc = dynamic_cast<VirtualKeenControl*>(gInput.mpVirtPad.get());
         assert(vkc);
-        vkc->mConfirmButton.invisible = true;
+        vkc->hideAllButtons();
+        vkc->mDPad.invisible = false;
+        vkc->mStartButton.invisible = false;
     }
-
-    VirtualKeenControl *vkc = dynamic_cast<VirtualKeenControl*>(gInput.mpVirtPad.get());
 
 
     ponderBase(deltaT);
