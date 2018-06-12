@@ -435,9 +435,17 @@ bool CGameLauncher::start()
 
     const auto height = gVideoDriver.getHeight();
 
-    // Height is larger than 480, use the scaled up fonts in the menu,
+    // Depending on the height the font is loaded as scaled
     // so readability is better on higher resolutions.
-    if(height > 480)
+    if(height >= 1920)
+    {
+        Font.loadinternalFont(8);
+    }
+    else if(height > 960)
+    {
+        Font.loadinternalFont(4);
+    }
+    else if(height > 480)
     {
         Font.loadinternalFont(2);
     }

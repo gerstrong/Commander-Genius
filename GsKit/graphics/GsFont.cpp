@@ -11,10 +11,11 @@
 #include <base/video/scaler/CScaler.h>
 #include "GsFont.xpm"
 #include "GsFont2x.xpm"
+#include "GsFont4x.xpm"
+#include "GsFont8x.xpm"
 #include "AlternateFont.xpm"
 #include <string.h>
 #include <cstdlib>
-
 
 ///////////////////////////////////
 ///// Initialization Routines /////
@@ -189,6 +190,16 @@ void GsFont::loadinternalFont(const int size)
     {
         setFillWidthTable(16);
         loadinternalFont(GsFont2x_xpm);
+    }
+    else if(size == 4)
+    {
+        setFillWidthTable(32);
+        loadinternalFont(GsFont4x_xpm);
+    }
+    else if(size == 8)
+    {
+        setFillWidthTable(64);
+        loadinternalFont(GsFont8x_xpm);
     }
     else
     {

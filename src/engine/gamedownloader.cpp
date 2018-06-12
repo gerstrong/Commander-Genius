@@ -225,6 +225,8 @@ bool GameDownloader::readGamesNode(boost::property_tree::ptree &pt)
     {
         return false;
     }
+
+    return true;
 }
 
 bool GameDownloader::readLegacyCatalogue(boost::property_tree::ptree &pt)
