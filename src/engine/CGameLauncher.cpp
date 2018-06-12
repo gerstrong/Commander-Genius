@@ -441,11 +441,11 @@ bool CGameLauncher::start()
     {
         Font.loadinternalFont(8);
     }
-    else if(height > 960)
+    else if(height >= 960)
     {
         Font.loadinternalFont(4);
     }
-    else if(height > 480)
+    else if(height >= 480)
     {
         Font.loadinternalFont(2);
     }

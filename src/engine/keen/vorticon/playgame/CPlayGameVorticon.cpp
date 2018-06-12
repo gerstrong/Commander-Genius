@@ -17,6 +17,7 @@
 #include "sdl/audio/Audio.h"
 #include "engine/core/mode/CGameMode.h"
 #include "engine/core/menu/MainMenu.h"
+#include "engine/core/VGamepads/vgamepadsimple.h"
 #include "../CVorticonMapLoader.h"
 #include "graphics/GsGraphics.h"
 #include "../ai/CTeleporter.h"
@@ -281,6 +282,18 @@ void CPlayGameVorticon::pumpEvent(const CEvent *evPtr)
 ////
 void CPlayGameVorticon::ponder(const float deltaT)
 {
+    VirtualKeenControl *vkc = dynamic_cast<VirtualKeenControl*>(gInput.mpVirtPad.get());
+
+    if(!vkc)
+    {
+        gInput.mpVirtPad.reset(new VirtualKeenControl);
+        gInput.mpVirtPad->init();
+        vkc = dynamic_cast<VirtualKeenControl*>(gInput.mpVirtPad.get());
+    }
+
+    assert(vkc);
+    vkc->mDPad.invisible = false;
+
 	if( !mpFinale && !gMenuController.active() ) // Game is not paused, no messages have to be shown and no menu is open
 	{
 		if(mMessageBoxes.empty() && !StatusScreenOpen())

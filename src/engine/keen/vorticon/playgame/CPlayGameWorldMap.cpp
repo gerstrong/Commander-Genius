@@ -13,13 +13,14 @@
 #include "graphics/GsGraphics.h"
 #include "graphics/effects/CColorMerge.h"
 #include "sdl/audio/Audio.h"
+#include "engine/core/VGamepads/vgamepadsimple.h"
 #include "../ai/CTeleporter.h"
 #include "../ai/CMessie.h"
 
 const int LVLS_SHIP = 20;
 
 void CPlayGameVorticon::processOnWorldMap()
-{
+{            
     const int numPlayers = m_Player.size();
     for( int i=0 ; i<numPlayers ; i++ )
 	{
@@ -97,6 +98,17 @@ void CPlayGameVorticon::processOnWorldMap()
 			}
 		}
 	}
+
+
+    if( gVideoDriver.VGamePadEnabled() )
+    {
+        VirtualKeenControl *vkc = dynamic_cast<VirtualKeenControl*>(gInput.mpVirtPad.get());
+        assert(vkc);
+        vkc->hideAllButtons();
+        vkc->mDPad.invisible = false;
+        vkc->mStartButton.invisible = false;
+    }
+
 }
 
 void CPlayGameVorticon::goBacktoMap()

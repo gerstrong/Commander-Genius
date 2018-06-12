@@ -8,11 +8,29 @@
 #include "CPlayGameVorticon.h"
 #include "../ai/CManglingMachine.h"
 #include "engine/core/objenums.h"
+#include "engine/core/VGamepads/vgamepadsimple.h"
 #include "sdl/audio/Audio.h"
 #include "../finale/CTantalusRay.h"
+#include <base/video/CVideoDriver.h>
+#include <base/CInput.h>
 
 void CPlayGameVorticon::processInLevel()
 {
+    if( gVideoDriver.VGamePadEnabled() )
+    {
+        VirtualKeenControl *vkc = dynamic_cast<VirtualKeenControl*>(gInput.mpVirtPad.get());
+        assert(vkc);
+        vkc->hideAllButtons();
+        vkc->mPadBackground.invisible = false;
+        vkc->mDPad.invisible = false;
+        vkc->mJumpButton.invisible = false;
+        vkc->mPogoButton.invisible = false;
+        vkc->mShootButton.invisible = false;
+        vkc->mStatusButton.invisible = false;
+    }
+
+
+
 	if(m_gameover)
 		return;
 

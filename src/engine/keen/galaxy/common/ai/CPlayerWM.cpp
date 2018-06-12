@@ -486,11 +486,13 @@ void CPlayerWM::processMoving()
     }
     else
     {
-        VirtualKeenControl *vkc = dynamic_cast<VirtualKeenControl*>(gInput.mpVirtPad.get());
-        assert(vkc);
-        vkc->mDPad.invisible = false;
-        vkc->mStatusButton.invisible = false;
-        vkc->mStartButton.invisible = false;
+        if( gVideoDriver.VGamePadEnabled() )
+        {
+            VirtualKeenControl *vkc = dynamic_cast<VirtualKeenControl*>(gInput.mpVirtPad.get());
+            vkc->mDPad.invisible = false;
+            vkc->mStatusButton.invisible = false;
+            vkc->mStartButton.invisible = true;
+        }
     }
 
     
