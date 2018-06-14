@@ -63,7 +63,7 @@ bool VirtualKeenControl::init()
         if(!mDPad.loadEmdbeddedPicture(gDPadPng, sizeof(gDPadPng))) return false;
 
         if(!mConfirmButton.loadEmdbeddedPicture(gButtonConfirmPng, sizeof(gButtonConfirmPng))) return false;
-        mConfirmButton.invisible = false;
+        mConfirmButton.invisible = true;
 
         if(!mStartButton.loadEmdbeddedPicture(gButtonStartPng, sizeof(gButtonStartPng))) return false;
         mStartButton.invisible = true;
@@ -91,7 +91,7 @@ bool VirtualKeenControl::ponder()
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 
     const float bottom = 0.975f;
-    const float top = 0.025f;
+    //const float top = 0.025f;
     const float left = 0.025f;
     const float right = 0.975f;
 

@@ -202,7 +202,7 @@ bool GameDownloader::readGamesNode(boost::property_tree::ptree &pt)
             if(gce.mVersionCode > CGVERSIONCODE)
             {
                 gLogging.ftextOut("Game %s not supported. Required Version code %d, got %d.\n<br>",
-                                  gce.mName, CGVERSIONCODE, gce.mVersionCode );
+                                  gce.mName.c_str(), CGVERSIONCODE, gce.mVersionCode );
                 continue;
             }
 
