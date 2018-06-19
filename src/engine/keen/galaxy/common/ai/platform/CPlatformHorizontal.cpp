@@ -137,6 +137,11 @@ void CPlatformHorizontal::draw()
                 fireSprite.drawSprite(showX+Sprite.getWidth()-6, showY+8, w, h);
             }
         }
+        else
+        {
+            Sprite.drawSprite( showX, showY, sprW, sprH, (255-transluceny) );
+        }
+
 
 
         for( auto &player : mCarriedPlayerVec)
