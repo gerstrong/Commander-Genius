@@ -7,6 +7,7 @@
 #include <cstdio>
 #include <curl/curl.h>
 #include <SDL_image.h>
+#include <fileio/KeenFiles.h>
 
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
@@ -225,7 +226,6 @@ bool GameDownloader::loadCatalogue(const std::string &catalogueFile)
     return true;
 }
 
-#include <fileio/KeenFiles.h>
 
 bool GameDownloader::checkForMissingGames( std::vector< std::string > &missingList )
 {    
