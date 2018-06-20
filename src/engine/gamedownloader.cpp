@@ -7,7 +7,6 @@
 #include <cstdio>
 #include <curl/curl.h>
 #include <SDL_image.h>
-
 #include <fileio/KeenFiles.h>
 
 #include <boost/property_tree/ptree.hpp>
@@ -180,7 +179,6 @@ int downloadFile(const std::string &filename, int &progress,
 
 }
 
-
 bool GameDownloader::readGamesNode(boost::property_tree::ptree &pt)
 {
     try
@@ -265,6 +263,9 @@ bool GameDownloader::readLegacyCatalogue(boost::property_tree::ptree &pt)
     return true;
 }
 
+
+
+
 bool GameDownloader::loadCatalogue(const std::string &catalogueFile)
 {
     // Create an empty property tree object
@@ -310,7 +311,7 @@ bool GameDownloader::downloadCatalogue()
 }
 
 bool GameDownloader::checkForMissingGames( std::vector< std::string > &missingList )
-{                
+{
     // Load game catalogue
     if( !loadCatalogue(mCatalogFName) )
     {
@@ -357,7 +358,6 @@ bool GameDownloader::checkForMissingGames( std::vector< std::string > &missingLi
     {
         mCataFound = true;
     }
-
 
     if(!mCataFound)
     {

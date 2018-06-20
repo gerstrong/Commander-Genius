@@ -17,7 +17,7 @@ const int A_WORMMOUTH_LOOK = 1;
 const int A_WORMMOUTH_EAT = 9;
 const int A_WORMMOUTH_STUNNED = 14;
 
-const int DIST_TO_EAT_X = (1<<CSF)/2;
+const int DIST_TO_EAT_X = (2<<CSF);
 const int DIST_TO_EAT_Y = 2<<CSF;
 const int LOOK_TIMER = 10;
 
@@ -80,24 +80,24 @@ bool CWormmouth::isNearby(CSpriteObject &theObject)
       const int wormmouthY = getYMidPos();
       
       if( getActionNumber(A_WORMMOUTH_LOOK) )
-	{
-	  if( playerX < wormmouthX && xDirection != LEFT )
-	    mTurnAround = true;
-	  else if( playerX > wormmouthX && xDirection != RIGHT )
-	    mTurnAround = true;
-	}
+      {
+          if( playerX < wormmouthX && xDirection != LEFT )
+              mTurnAround = true;
+          else if( playerX > wormmouthX && xDirection != RIGHT )
+              mTurnAround = true;
+      }
       
       const int diffX = playerX - wormmouthX;
       const int diffY = playerY - wormmouthY;
       if( abs(diffX) < DIST_TO_EAT_X &&
-	  abs(diffY) < DIST_TO_EAT_Y &&
-	  !getActionNumber(A_WORMMOUTH_EAT) )
-	{
-	  setAction(A_WORMMOUTH_EAT);
-	  playSound( SOUND_WORMOUTH_STRIKE );
-	}
+          abs(diffY) < DIST_TO_EAT_Y &&
+          !getActionNumber(A_WORMMOUTH_EAT) )
+      {
+          setAction(A_WORMMOUTH_EAT);
+          playSound( SOUND_WORMOUTH_STRIKE );
+      }
       
-    }
+  }
   
   return true;
 }
@@ -107,33 +107,35 @@ bool CWormmouth::isNearby(CSpriteObject &theObject)
 
 void CWormmouth::getTouchedBy(CSpriteObject &theObject)
 {
-  if(mIsDead || theObject.mIsDead )
-    return;
-  
-  
-  CStunnable::getTouchedBy(theObject);
-  
-  
-  // Was it a bullet? Than make it stunned.
-  if( dynamic_cast<CBullet*>(&theObject) )
+    if(mIsDead || theObject.mIsDead )
+        return;
+
+
+    CStunnable::getTouchedBy(theObject);
+
+
+    // Was it a bullet? Than make it stunned.
+    if( dynamic_cast<CBullet*>(&theObject) )
     {
-      setAction( A_WORMMOUTH_STUNNED );
-      mIsDead = true;
-      theObject.mIsDead = true;
-      if(!processActionRoutine())
-	exists = false;
-      performCollisions();
-      processGettingStunned();
+        setAction( A_WORMMOUTH_STUNNED );
+        mIsDead = true;
+        theObject.mIsDead = true;
+
+        if(!processActionRoutine())
+            exists = false;
+
+        performCollisions();
+        processGettingStunned();
     }
-  
-  
-  if( !getActionNumber(A_WORMMOUTH_EAT) )
-    return;
-  
-  
-  if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
+
+
+    if( !getActionNumber(A_WORMMOUTH_EAT) )
+        return;
+
+
+    if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
     {
-      player->kill();
+        player->kill();
     }
 }
 

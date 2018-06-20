@@ -2487,7 +2487,13 @@ void CPlayerLevel::processShootWhileStanding()
     {
         if( getActionNumber(A_KEEN_SHOOT) && !getActionStatus(A_KEEN_SHOOT) )
         {
-            const int newx = getXPosition();
+            int newx = getXPosition();
+
+            if(xDirection > 0)
+                newx = getXRightPos();
+            else
+                newx = getXLeftPos()-(1<<CSF);
+
             const int newy = getYPosition()+(6<<STC);
             const Vector2D<int> newVec(newx, newy);
             tryToShoot(newVec, xDirection, yDirection);
