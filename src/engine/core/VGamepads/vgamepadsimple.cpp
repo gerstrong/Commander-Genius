@@ -260,6 +260,29 @@ bool VirtualKeenControl::mouseState(const Vector2D<float> &Pos, const bool down)
 {
 #if SDL_VERSION_ATLEAST(2, 0, 0)    
 
+    auto unbindButtonCommand = [&](const TouchButton &button,
+            const InputCommand &cmd)
+    {
+        gInput.setCommand(0, cmd, false);
+    };
+
+    unbindButtonCommand(mConfirmButton, IC_JUMP);
+    unbindButtonCommand(mStartButton, IC_JUMP);
+    unbindButtonCommand(mStatusButton, IC_STATUS);
+    unbindButtonCommand(mShootButton, IC_FIRE);
+    unbindButtonCommand(mJumpButton, IC_JUMP);
+    unbindButtonCommand(mPogoButton, IC_POGO);
+
+
+    // Always sent released first, better for VPads
+    SDL_Event evUp;
+    evUp.type = SDL_KEYUP;
+
+    evUp.key.keysym.sym = SDLK_UP;    SDL_PushEvent(&evUp);
+    evUp.key.keysym.sym = SDLK_LEFT;  SDL_PushEvent(&evUp);
+    evUp.key.keysym.sym = SDLK_RIGHT; SDL_PushEvent(&evUp);
+    evUp.key.keysym.sym = SDLK_DOWN;  SDL_PushEvent(&evUp);
+
     if( !mPadBackground.isInside(Pos.x, Pos.y) )
         return false;
 
