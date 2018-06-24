@@ -16,7 +16,7 @@
 #include "CAudioSettings.h"
 #include "COptions.h"
 #include "cheatsmenu.h"
-#include "CControlsettings.h"
+//#include "CControlsettings.h"
 #include "CProfilesMenu.h"
 #include "CSelectionMenu.h"
 

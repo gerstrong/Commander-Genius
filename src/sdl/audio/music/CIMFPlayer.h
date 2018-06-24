@@ -46,6 +46,8 @@ public:
 
     bool loadMusicTrack(const int track) override;
 
+    int mVolume = 0;
+
 private:
 
 		
@@ -61,10 +63,17 @@ private:
     Uint32 m_samplesPerMusicTick =0;
     unsigned int m_IMFDelay = 0;
     std::vector<Sint32> mMixBuffer;
+
 };
 
 
 // External Music hooks for the imf player
+
+/**
+ * @brief setImfMusic   Set volume of external player
+ * @param vol
+ */
+void setImfMusic(const int vol);
 
 /**
  * @brief loadIMFFile

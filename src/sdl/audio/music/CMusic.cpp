@@ -48,17 +48,17 @@ bool CMusic::load(const std::string &musicfile)
 
     Mix_HaltMusic();
 
-        if(mpMixMusic)
-        {
-            Mix_FreeMusic(mpMixMusic);
-            mpMixMusic = nullptr;
-        }
+    if(mpMixMusic)
+    {
+        Mix_FreeMusic(mpMixMusic);
+        mpMixMusic = nullptr;
+    }
 
-        unhookAll();
+    unhookAll();
 
     if(musicfile == "") return false;
 
-	const SDL_AudioSpec &audioSpec = gSound.getAudioSpec();
+    const SDL_AudioSpec &audioSpec = gSound.getAudioSpec();
 
 	if(audioSpec.format != 0)
 	{
@@ -133,7 +133,7 @@ void CMusic::play()
     }
 
     // Play music forever
-    if(Mix_FadeInMusic(mpMixMusic, -1, 2000) == -1)
+    if(Mix_PlayMusic(mpMixMusic, -1) == -1)
     {
         gLogging.ftextOut("Mix_PlayMusic: %s\n", Mix_GetError());
         // well, there's no music, but most games don't break without music...

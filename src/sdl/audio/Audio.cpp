@@ -272,6 +272,7 @@ void Audio::setMusicVolume(const Uint8 volume,
 
     if(updateMixer)
     {
+        setImfMusic(volume);
         Mix_VolumeMusic(volume);
     }
 }
@@ -307,20 +308,20 @@ void Audio::playStereofromCoord(const GameSound snd,
     {
         int bal = (xCoord - (320>>1));	// Faster calculation of balance transformation
 
-    	if(bal < -255)
-	{
-	    bal = -255;
-	}
-    	else if(bal > 255)
-	{
-	    bal = 255;
-	}
+        if(bal < -255)
+        {
+            bal = -255;
+        }
+        else if(bal > 255)
+        {
+            bal = 255;
+        }
 
         playStereosound(snd, mode, bal);
     }
     else
     {
-    	playSound(snd, mode);
+        playSound(snd, mode);
     }
 }
 

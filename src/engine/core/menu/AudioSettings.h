@@ -48,6 +48,7 @@ private:
 
 	// This one does not really set the volume at all, it only verifies, if it changed...
 	int mSoundVolume;
+    int mMusicVolume;
 };
 
 

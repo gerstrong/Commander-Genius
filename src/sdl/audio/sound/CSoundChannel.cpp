@@ -142,37 +142,3 @@ void CSoundChannel::transintoStereoChannels(T* waveform, const Uint32 len)
 		}
 	}
 }
-
-/*void CSoundChannel::readWaveform( Uint8 * const waveform, const Uint32 len )
-{
-    auto snddata = mpCurrentSndSlot->getSoundData();
-    const Uint32 sndlength = mpCurrentSndSlot->getSoundlength();    
-
-    if ((mSoundPtr + len) >= sndlength)
-	{
-		// Fill up the buffer and the rest with silence
-        const Uint32 len_left = sndlength-mSoundPtr;
-        memcpy(waveform, snddata + mSoundPtr, len_left );
-		memset(waveform+len_left, m_AudioSpec.silence, len-len_left );
-        mSoundPtr = 0;
-        mSoundPlaying = false;
-	}
-	else
-	{
-        memcpy(waveform, snddata + mSoundPtr, len );
-        mSoundPtr += len;
-	}
-
-	if(m_AudioSpec.channels == 2)
-	{
-		if(m_AudioSpec.format == AUDIO_U16 || m_AudioSpec.format == AUDIO_S16)
-        {
-			transintoStereoChannels((Sint16*) (void *) waveform, len);
-        }
-		else
-        {
-			transintoStereoChannels(waveform, len);
-        }
-	}
-}
-*/

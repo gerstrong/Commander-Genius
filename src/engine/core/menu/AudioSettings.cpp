@@ -58,6 +58,7 @@ void CAudioSettings::refresh()
 	mAudioSpec = gSound.getAudioSpec();
 	mSoundblaster = gSound.getSoundBlasterMode();
 	mSoundVolume = mpSoundVolume->getSelection();
+    mMusicVolume = mpMusicVolume->getSelection();
 
     mpSoundVolume->setSelection(gSound.getSoundVolume());
     mpMusicVolume->setSelection(gSound.getMusicVolume());
@@ -85,9 +86,10 @@ void CAudioSettings::ponder(const float deltaT)
     }
 
 	mSoundVolume = mpSoundVolume->getSelection();
+    mMusicVolume = mpMusicVolume->getSelection();
 
     gSound.setSoundVolume( mSoundVolume );
-    gSound.setMusicVolume( mpMusicVolume->getSelection() );
+    gSound.setMusicVolume( mMusicVolume );
 }
 
 

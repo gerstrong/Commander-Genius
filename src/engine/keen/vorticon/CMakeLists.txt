@@ -77,7 +77,6 @@ set(CXXSRC
     menu/CAudioSettings.cpp
     menu/CCameraSettings.cpp
     menu/CConfirmMenu.cpp
-    menu/CControlsettings.cpp
     menu/cheatsmenu.cpp
     menu/CHelpMenu.cpp
     menu/CLoadMenu.cpp
@@ -165,7 +164,6 @@ set(HSRC
     menu/CAudioSettings.h
     menu/CCameraSettings.h
     menu/CConfirmMenu.h
-    menu/CControlsettings.h
     menu/cheatsmenu.h
     menu/CHelpMenu.h
     menu/CLoadMenu.h

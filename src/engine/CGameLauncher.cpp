@@ -9,6 +9,7 @@
 #include <base/GsLogging.h>
 #include <base/video/CVideoDriver.h>
 #include <base/CInput.h>
+#include <base/InputEvents.h>
 #include <base/GsApp.h>
 #include <widgets/GsTextSelectionList.h>
 #include <widgets/GsBanner.h>

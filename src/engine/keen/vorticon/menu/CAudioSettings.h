@@ -16,38 +16,6 @@
 #include "fileio/CExeFile.h"
 #include <SDL.h>
 #include <string>
-/*
-namespace vorticon
-{
-
-class CAudioSettings : public VorticonMenu
-{
-public:
-	CAudioSettings();
-
-    void refresh();
-
-    void ponder(const float deltaT);
-
-	void release();
 
 
-private:
-
-    ComboSelection	*mpRate;
-    Switch			*mpStereo;
-    ComboSelection	*mpDepth;
-    ComboSelection	*mpSBToggle;
-    NumberControl	*mpSoundVolume;
-    NumberControl	*mpMusicVolume;
-
-	SDL_AudioSpec	mAudioSpec;
-	bool mSoundblaster;
-
-	// This one does not really set the volume at all, it only verifies, if it changed...
-	int mSoundVolume;
-};
-
-}
-*/
 #endif /* __VORTICON_AUDIOSETTINGS_H_ */

@@ -123,7 +123,7 @@ void CIMFPlayer::OPLUpdate(byte *buffer, const unsigned int length)
     {
         gLogging.textOut("Creating enough Audio Buffer for the IMF-Player");
         mMixBuffer.assign(audioSpec.samples, 0);
-    }
+    }        
 
     m_opl_emulator.Chip__GenerateBlock2( length, mMixBuffer.data() );
 
@@ -145,7 +145,8 @@ void CIMFPlayer::OPLUpdate(byte *buffer, const unsigned int length)
 		    
             for (unsigned int j=0; j<audioSpec.channels; j++)
 			{
-                *buf16 = static_cast<Sint16>(mix + audioSpec.silence);
+                int val = mix + audioSpec.silence;
+                *buf16 = static_cast<Sint16>((val*mVolume)/MIX_MAX_VOLUME);
 				buf16++;
 			}
 		}
@@ -163,7 +164,8 @@ void CIMFPlayer::OPLUpdate(byte *buffer, const unsigned int length)
 		    
             for (unsigned int j=0; j<audioSpec.channels; j++)
 			{
-                *buffer = static_cast<byte>(mix + audioSpec.silence);
+                int val = mix + audioSpec.silence;
+                *buffer = static_cast<Sint16>((val*mVolume)/MIX_MAX_VOLUME);
 				buffer++;
 			}
 		}
@@ -229,6 +231,11 @@ void CIMFPlayer::readBuffer(Uint8* buffer,
 CIMFPlayer locIMFPlayer;
 
 int locImfMusPos = 0;
+
+void setImfMusic(const int vol)
+{
+    locIMFPlayer.mVolume = vol;
+}
 
 bool loadIMFFile(const std::string &fname)
 {

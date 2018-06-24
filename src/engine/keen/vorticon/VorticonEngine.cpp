@@ -24,7 +24,6 @@
 
 #include "menu/CMainMenu.h"
 #include "menu/CSelectionMenu.h"
-#include "menu/CControlsettings.h"
 
 #include "playgame/CPlayGameVorticon.h"
 
