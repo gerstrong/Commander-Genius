@@ -234,7 +234,9 @@ void VirtualKeenControl::render(GsWeakSurface &sfc)
 
     auto addTexture = [](TouchButton &button) -> void
     {
-        if(!button.invisible)
+        if(!button.invisible &&
+            button.w > 0.0f &&
+            button.h > 0.0f)
         {
             gVideoDriver.addTextureRefToRender(button.mTexture, button.Rect());
         }

@@ -75,7 +75,7 @@ public:
 	 */
 	inline void Chip__GenerateBlock2(const Bitu total, Bit32s* output )
 	{
-		::Chip__GenerateBlock2( &m_opl_chip, total, output );
+        ::Chip__GenerateBlock2( &m_opl_chip, total, output );
 	}
 
 	/**

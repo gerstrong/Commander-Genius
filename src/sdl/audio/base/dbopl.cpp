@@ -1318,20 +1318,22 @@ void Chip__GenerateBlock2(Chip *self, Bitu total, Bit32s* output )
 
     while ( total > 0 )
     {
-	Channel *ch;
+        Channel *ch;
 
-	Bit32u samples = Chip__ForwardLFO( self, total );
-	for ( ch = self->chan; ch < self->chan + 9; )
-	{
-	    ch = (ch->synthHandler)( ch, self, samples, output );
-	}
-	total -= samples;
-	output += samples;
+        Bit32u samples = Chip__ForwardLFO( self, total );
+        for ( ch = self->chan; ch < self->chan + 9; )
+        {
+            ch = (ch->synthHandler)( ch, self, samples, output );
+        }
+        total -= samples;
+        output += samples;
     }
 }
 
 void Chip__GenerateBlock3(Chip *self, Bitu total, Bit32s* output  )
 {
+    memset(output, 0, sizeof(Bit32s) * total);
+
 	while ( total > 0 )
 	{
 		Bit32u samples = Chip__ForwardLFO( self, total );
