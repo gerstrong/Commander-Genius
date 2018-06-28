@@ -478,7 +478,7 @@ void CPlayerBase::guideToTarget(const Vector2D<int> &speed)
 
 
 
-const int MAX_WALKSOUNDTIMER = 30;
+const int MAX_WALKSOUNDTIMER = 27;
 
 void CPlayerBase::playWalkSound()
 {

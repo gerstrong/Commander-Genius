@@ -28,6 +28,7 @@ COPLEmulator::~COPLEmulator()
 	shutdown();
 }
 
+
 void COPLEmulator::AlSetFXInst(Instrument &inst)
 {
     byte c,m;
@@ -53,13 +54,20 @@ void COPLEmulator::AlSetFXInst(Instrument &inst)
 // This will setup the sound for Adlib Sound or Music
 void COPLEmulator::StartOPLforAdlibSound()
 {
+    Chip__WriteReg(4,0x60);	// Reset T1 & T2
+    Chip__WriteReg(4,0x80);	// Reset IRQ
+    Chip__WriteReg(2,0xff);	// Set timer 1
+    Chip__WriteReg(4,0x21);	// Start timer 1
+    Chip__WriteReg(4,0x60);
+    Chip__WriteReg(4,0x80);
+
     for (int i = 1; i <= 0xf5; i++)       // Zero all the registers
     {
         Chip__WriteReg( i, 0 );
     }
 
     Chip__WriteReg( 1, 0x20);             // Set WSE=1
-//    alOut(8, 0);                // Set CSM=0 & SEL=0
+    Chip__WriteReg( 8, 0);     // Set CSM=0 & SEL=0
 
     Chip__WriteReg( alEffects, 0);
     AlSetFXInst(m_alZeroInst);

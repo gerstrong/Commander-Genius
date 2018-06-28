@@ -45,7 +45,7 @@ bool CAudioResources::readISFintoWaveForm( CSoundSlot &soundslot,
 		// TODO: Bad instrument. Please tell that also...
 		return false;
 	}
-	OPLEmulator.AlSetFXInst(AL_Sound.inst);
+    OPLEmulator.AlSetFXInst(AL_Sound.inst);
 
     const SDL_AudioSpec &audioSpec = gSound.getAudioSpec();
 

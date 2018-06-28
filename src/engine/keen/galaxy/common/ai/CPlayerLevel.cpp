@@ -1737,6 +1737,8 @@ void CPlayerLevel::processSliding()
 void CPlayerLevel::processEnterDoor()
 {
 		
+    playWalkSound();
+
 	if( getActionStatus(A_KEEN_STAND) )
 	    dontdraw = true;
 
