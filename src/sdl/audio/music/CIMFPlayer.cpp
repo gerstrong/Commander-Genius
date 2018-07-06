@@ -20,7 +20,7 @@
 #include <SDL_mixer.h>
 
 
-CIMFPlayer::CIMFPlayer( COPLEmulator& opl_emulator ) :
+CIMFPlayer::CIMFPlayer(COPLEmulator& opl_emulator) :
 m_opl_emulator(opl_emulator)
 {
     m_samplesPerMusicTick = gSound.getAudioSpec().freq /
@@ -119,6 +119,8 @@ void CIMFPlayer::OPLUpdate(byte *buffer, const unsigned int length)
 {    
     auto &audioSpec = gSound.getAudioSpec();
 
+    const int vol = gSound.getMusicVolume();
+
     if(mMixBuffer.empty())
     {
         gLogging.textOut("Creating enough Audio Buffer for the IMF-Player");
@@ -146,7 +148,7 @@ void CIMFPlayer::OPLUpdate(byte *buffer, const unsigned int length)
             for (unsigned int j=0; j<audioSpec.channels; j++)
 			{
                 int val = mix + audioSpec.silence;
-                *buf16 = static_cast<Sint16>((val*mVolume)/MIX_MAX_VOLUME);
+                *buf16 = static_cast<Sint16>((val*vol)/MIX_MAX_VOLUME);
 				buf16++;
 			}
 		}
@@ -165,7 +167,7 @@ void CIMFPlayer::OPLUpdate(byte *buffer, const unsigned int length)
             for (unsigned int j=0; j<audioSpec.channels; j++)
 			{
                 int val = mix + audioSpec.silence;
-                *buffer = static_cast<Sint16>((val*mVolume)/MIX_MAX_VOLUME);
+                *buffer = static_cast<Sint16>((val*vol)/MIX_MAX_VOLUME);
 				buffer++;
 			}
 		}
@@ -228,14 +230,9 @@ void CIMFPlayer::readBuffer(Uint8* buffer,
 // We still a local to file declared object from the IMFPlayer class.
 // That one is only used here!
 
-CIMFPlayer locIMFPlayer;
+CIMFPlayer locIMFPlayer(gSound.getOPLEmulatorRef());
 
 int locImfMusPos = 0;
-
-void setImfMusic(const int vol)
-{
-    locIMFPlayer.mVolume = vol;
-}
 
 bool loadIMFFile(const std::string &fname)
 {

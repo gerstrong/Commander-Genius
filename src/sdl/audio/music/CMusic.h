@@ -55,29 +55,13 @@ public:
 
     bool paused()
     {
-        if(!active())
-        {
-            return false;
-        }
-
         return Mix_PausedMusic();
     }
 
 	bool playing()
     {
-        if(!active())
-        {
-            return false;
-        }
-
         return Mix_PlayingMusic();
     }
-
-    bool active()
-    {
-             return Mix_PlayingMusic();
-    }
-
 
 private:
 

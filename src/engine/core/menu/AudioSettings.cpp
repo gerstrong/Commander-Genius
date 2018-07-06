@@ -107,12 +107,12 @@ void CAudioSettings::release()
 
 	mSoundblaster = ( mpSBToggle->getSelection() == "Soundblaster" ? true : false );
 
-	gSound.unloadSoundData();
-	gSound.destroy();
+//	gSound.unloadSoundData();
+//	gSound.destroy();
 	gSound.setSettings(mAudioSpec, mSoundblaster);
 	gSound.init();
 
-	gMusicPlayer.reload();
+//	gMusicPlayer.reload();
 
 	gSettings.saveDrvCfg();
 }

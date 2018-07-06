@@ -16,12 +16,33 @@
 #include "buttonStart.h"
 
 
+
 bool TouchButton::loadEmdbeddedPicture(const unsigned char *data,
                                        const unsigned int size)
 {
     return mTexture.loadFromMem(data, size,
                          gVideoDriver.Renderer());
 }
+
+void TouchButton::clearFingers()
+{
+    mFingerSet.clear();
+}
+
+void TouchButton::insertFingerId(const SDL_FingerID fid)
+{
+    mFingerSet.insert(fid);
+}
+
+void TouchButton::removeFingerId(const SDL_FingerID fid)
+{
+    auto it = mFingerSet.find(fid);
+    if(it != mFingerSet.end())
+    {
+        mFingerSet.erase(fid);
+    }
+}
+
 
 bool TouchButton::loadPicture(const std::string &picFile)
 {
@@ -258,10 +279,24 @@ void VirtualKeenControl::render(GsWeakSurface &sfc)
 }
 
 
-bool VirtualKeenControl::mouseState(const Vector2D<float> &Pos, const bool down)
+void VirtualKeenControl::flush()
 {
-#if SDL_VERSION_ATLEAST(2, 0, 0)    
+    mConfirmButton.clearFingers();
+    mStartButton.clearFingers();
+    mStatusButton.clearFingers();
+    mShootButton.clearFingers();
+    mJumpButton.clearFingers();
+    mPogoButton.clearFingers();
+    mDPad.clearFingers();
+}
 
+
+bool VirtualKeenControl::mouseFingerState(const Vector2D<float> &Pos,
+                                          const SDL_TouchFingerEvent &touchFingerEvent,
+                                          const bool down)
+{
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+/*
     auto unbindButtonCommand = [&](const TouchButton &button,
             const InputCommand &cmd)
     {
@@ -283,13 +318,188 @@ bool VirtualKeenControl::mouseState(const Vector2D<float> &Pos, const bool down)
     evUp.key.keysym.sym = SDLK_UP;    SDL_PushEvent(&evUp);
     evUp.key.keysym.sym = SDLK_LEFT;  SDL_PushEvent(&evUp);
     evUp.key.keysym.sym = SDLK_RIGHT; SDL_PushEvent(&evUp);
-    evUp.key.keysym.sym = SDLK_DOWN;  SDL_PushEvent(&evUp);
+    evUp.key.keysym.sym = SDLK_DOWN;  SDL_PushEvent(&evUp);*/
+
+/*
+    if( !mPadBackground.isInside(Pos.x, Pos.y) )
+        return false;*/
+
+    bool ok = false;
+
+    auto bindButtonCommand = [&](TouchButton &button,
+                                 const InputCommand &cmd) -> bool
+    {
+        if(button.invisible)
+            return false;
+
+        if( button.Rect().HasPoint(Pos) )
+        {
+            gInput.setCommand(0, cmd, down);
+
+            if(down)
+            {
+                button.insertFingerId(touchFingerEvent.fingerId);
+            }
+            else
+            {
+                button.removeFingerId(touchFingerEvent.fingerId);
+            }
+
+            return true;
+        }
+        else
+        {
+            auto it = button.mFingerSet.find(touchFingerEvent.fingerId);
+
+            if( it != button.mFingerSet.end() )
+            {
+                gInput.setCommand(0, cmd, false);
+                button.mFingerSet.erase(it);
+            }
+
+            return false;
+        }
+    };
+
+    SDL_Event ev;
+    ev.type = (down ? SDL_KEYDOWN : SDL_KEYUP);
+
+    if( !mDPad.invisible &&
+        mDPad.isInside(Pos.x, Pos.y) )
+    {
+        // Size of the buttons on the dpad
+        const float dpadSizePieceW = 0.4f*mDPad.w;
+        const float dpadSizePieceH = 0.4f*mDPad.h;
+
+        // Y-Direction
+        // Up presses
+        if(Pos.y<mDPad.y+dpadSizePieceH)
+        {
+            ev.key.keysym.sym = SDLK_UP;
+            SDL_PushEvent(&ev);
+
+            if(down)
+            {
+                SDL_Event evUp;
+                evUp.type = SDL_KEYUP;
+                evUp.key.keysym.sym = SDLK_DOWN;
+                SDL_PushEvent(&evUp);                
+            }
+        }
+        // Down presses
+        else if(Pos.y>=mDPad.y+mDPad.h-dpadSizePieceH)
+        {
+            ev.key.keysym.sym = SDLK_DOWN;
+            SDL_PushEvent(&ev);
+
+            if(down)
+            {
+                SDL_Event evUp;
+                evUp.type = SDL_KEYUP;
+                evUp.key.keysym.sym = SDLK_UP;
+                SDL_PushEvent(&evUp);
+            }
+        }
+
+        // X-Direction
+        // Left presses
+        if(Pos.x<mDPad.x+dpadSizePieceW)
+        {
+            ev.key.keysym.sym = SDLK_LEFT;
+            SDL_PushEvent(&ev);
+
+            if(down)
+            {
+                SDL_Event evUp;
+                evUp.type = SDL_KEYUP;
+                evUp.key.keysym.sym = SDLK_RIGHT;
+                SDL_PushEvent(&evUp);
+            }
+
+        }
+        // Right presses
+        else if(Pos.x>=mDPad.x+mDPad.w-dpadSizePieceW)
+        {
+            ev.key.keysym.sym = SDLK_RIGHT;
+            SDL_PushEvent(&ev);
+
+            if(down)
+            {
+                SDL_Event evUp;
+                evUp.type = SDL_KEYUP;
+                evUp.key.keysym.sym = SDLK_LEFT;
+                SDL_PushEvent(&evUp);
+            }
+
+        }
+
+        mDPad.insertFingerId(touchFingerEvent.fingerId);
+        ok |= true;
+    }
+    else
+    {
+        auto it = mDPad.mFingerSet.find(touchFingerEvent.fingerId);
+
+        if( it != mDPad.mFingerSet.end() )
+        {
+            mDPad.mFingerSet.erase(it);
+
+            SDL_Event evUp;
+            evUp.type = SDL_KEYUP;
+
+            evUp.key.keysym.sym = SDLK_UP;    SDL_PushEvent(&evUp);
+            evUp.key.keysym.sym = SDLK_LEFT;  SDL_PushEvent(&evUp);
+            evUp.key.keysym.sym = SDLK_RIGHT; SDL_PushEvent(&evUp);
+            evUp.key.keysym.sym = SDLK_DOWN;  SDL_PushEvent(&evUp);
+        }
+
+    }
+
+
+    ok |= bindButtonCommand(mConfirmButton, IC_JUMP);
+    ok |= bindButtonCommand(mStartButton, IC_JUMP);
+    ok |= bindButtonCommand(mStatusButton, IC_STATUS);
+    ok |= bindButtonCommand(mShootButton, IC_FIRE);
+    ok |= bindButtonCommand(mJumpButton, IC_JUMP);
+    ok |= bindButtonCommand(mPogoButton, IC_POGO);
+
+#endif
+
+    return ok;
+}
+
+bool VirtualKeenControl::mouseState(const Vector2D<float> &Pos, const bool down)
+{
+#if SDL_VERSION_ATLEAST(2, 0, 0)    
+/*
+    auto unbindButtonCommand = [&](const TouchButton &button,
+            const InputCommand &cmd)
+    {
+        gInput.setCommand(0, cmd, false);
+    };
+
+    unbindButtonCommand(mConfirmButton, IC_JUMP);
+    unbindButtonCommand(mStartButton, IC_JUMP);
+    unbindButtonCommand(mStatusButton, IC_STATUS);
+    unbindButtonCommand(mShootButton, IC_FIRE);
+    unbindButtonCommand(mJumpButton, IC_JUMP);
+    unbindButtonCommand(mPogoButton, IC_POGO);
+
+
+    // Always sent released first, better for VPads
+    SDL_Event evUp;
+    evUp.type = SDL_KEYUP;
+
+    evUp.key.keysym.sym = SDLK_UP;    SDL_PushEvent(&evUp);
+    evUp.key.keysym.sym = SDLK_LEFT;  SDL_PushEvent(&evUp);
+    evUp.key.keysym.sym = SDLK_RIGHT; SDL_PushEvent(&evUp);
+    evUp.key.keysym.sym = SDLK_DOWN;  SDL_PushEvent(&evUp);*/
 
     if( !mPadBackground.isInside(Pos.x, Pos.y) )
         return false;
 
     auto bindButtonCommand = [&](const TouchButton &button,
-            const InputCommand &cmd)
+                                 const InputCommand &cmd)
     {
         if(button.invisible)
             return;

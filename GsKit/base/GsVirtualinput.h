@@ -4,6 +4,7 @@
 #include "graphics/GsSurface.h"
 #include "graphics/GsTexture.h"
 
+#include <set>
 
 class stInputCommand;
 
@@ -62,6 +63,25 @@ public:
     bool invisible = true;
 
     GsTexture mTexture;
+
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+
+    void clearFingers();
+
+    void insertFingerId(const SDL_FingerID fid);
+
+    void removeFingerId(const SDL_FingerID fid);
+
+    bool hasFingers() const
+    {
+        return !mFingerSet.empty();
+    }
+
+//private:
+
+    std::set<SDL_FingerID> mFingerSet;
+
+#endif
 };
 
 /**
@@ -105,6 +125,12 @@ public:
      */
     virtual bool ponder() = 0;
 
+
+    /**
+     * @brief flush
+     */
+    virtual void flush() = 0;
+
     /**
      * @brief render is called when it's time to render this object
      * @param sfc Reference to surface on which it can be rendered.
@@ -118,10 +144,25 @@ public:
     virtual bool mouseDown(const Vector2D<float> &Pos) = 0;
 
     /**
-     * @brief mouseDown     Mouse Up event when sent when touch event triggered or mouse sends that.
+     * @brief mouseUp     Mouse Up event when sent when touch event triggered or mouse sends that.
      * @param Pos           Position of the mouse event
      */
     virtual bool mouseUp(const Vector2D<float> &Pos) = 0;
+
+
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+
+    /**
+     * @brief mouseFingerState Event Fingers on touch surfaces
+     * @param Pos position
+     * @param touchFingerEvent event sent by SDL
+     * @return true if something was processed here
+     */
+    virtual bool mouseFingerState(const Vector2D<float> &Pos,
+                                  const SDL_TouchFingerEvent &touchFingerEvent,
+                                  const bool down) = 0;
+
+#endif
 
     /**
      * @brief active    Checks if click events happened in the virtual dpad

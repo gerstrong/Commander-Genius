@@ -110,6 +110,8 @@ void CMusic::reload()
 {
     gSound.pauseAudio();
 
+    play();
+
     Mix_RewindMusic();
 
     gSound.resumeAudio();
@@ -117,15 +119,7 @@ void CMusic::reload()
 
 void CMusic::play()
 {
-    if(Mix_PausedMusic())
-    {
-        Mix_ResumeMusic();
-    }
-
-    if(Mix_PlayingMusic())
-    {
-        Mix_HaltMusic();
-    }
+    Mix_HaltMusic();
 
     if(!mpMixMusic)
     {
@@ -137,25 +131,19 @@ void CMusic::play()
     {
         gLogging.ftextOut("Mix_PlayMusic: %s\n", Mix_GetError());
         // well, there's no music, but most games don't break without music...
-    }        
+    }
+
+    Mix_ResumeMusic();
 }
 
 void CMusic::pause()
 {
-
-    if(!Mix_PausedMusic())
-    {
-        Mix_PauseMusic();        
-    }
-
+    Mix_PauseMusic();
 }
 
 void CMusic::stop()
 {
-    if(Mix_PlayingMusic())
-    {
-        Mix_HaltMusic();
-    }
+    Mix_HaltMusic();
 
     if(mpMixMusic)
     {
@@ -164,7 +152,6 @@ void CMusic::stop()
     }
 
     unhookAll();
-
 }
 
 

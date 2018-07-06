@@ -2,6 +2,9 @@
 #define VGAMEPADSIMPLE_H
 
 #include <base/GsVirtualinput.h>
+#include <base/CInput.h>
+#include <utility>
+#include <set>
 
 class VirtualKeenControl : public GsVirtualInput
 {
@@ -61,6 +64,19 @@ public:
     }
 
     /**
+     * @brief flush Flush stuck events
+     */
+    void flush() override;
+
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+
+    bool mouseFingerState(const Vector2D<float> &Pos,
+                          const SDL_TouchFingerEvent &touchFingerEvent,
+                          const bool down) override;
+
+#endif
+
+    /**
      * @brief active    Checks if click events happened in the virtual dpad
      * @return
      */
@@ -93,6 +109,8 @@ public:
     TouchButton mShootButton;
     TouchButton mPogoButton;
     TouchButton mStatusButton;        
+
+    std::set< SDL_FingerID > mFingerSet;
 
 #endif    
 

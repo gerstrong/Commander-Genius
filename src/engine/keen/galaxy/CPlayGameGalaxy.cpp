@@ -431,6 +431,8 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
                 m_LevelPlay.setActive(true);
             }
         }
+
+        gInput.flushFingerEvents();
     }
     else if( dynamic_cast<const EventRestartLevel*>(evPtr) )
     {

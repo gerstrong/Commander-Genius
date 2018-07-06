@@ -272,7 +272,6 @@ void Audio::setMusicVolume(const Uint8 volume,
 
     if(updateMixer)
     {
-        setImfMusic(volume);
         Mix_VolumeMusic(volume);
     }
 }

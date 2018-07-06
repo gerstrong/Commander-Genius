@@ -26,6 +26,8 @@
 
 class Audio : public GsSingleton<Audio>
 {
+    friend class CIMFPlayer;
+
 public:
     Audio();
     ~Audio();

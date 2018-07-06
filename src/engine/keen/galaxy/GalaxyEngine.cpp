@@ -114,11 +114,7 @@ void GalaxyEngine::ponder(const float deltaT)
     if( gInput.getPressedCommand(IC_HELP) && !gMenuController.empty())
     {
         // Check if music is playing and pause if it is
-        if(gMusicPlayer.active())
-        {
-            gMusicPlayer.pause();
-        }
-
+        gMusicPlayer.pause();
 
         // Episode 6 for a strange reason does not have the help screen
         if(!mpComputerWrist && (ep!=6))
@@ -151,11 +147,7 @@ void GalaxyEngine::openMainMenu()
 
 
     // Check if music is playing and pause if it is
-    if(gMusicPlayer.active())
-    {
-       gMusicPlayer.pause();
-    }
-
+    gMusicPlayer.pause();
 
     gEventManager.add( new OpenMenuEvent(
                            new MainMenu(mOpenedGamePlay,

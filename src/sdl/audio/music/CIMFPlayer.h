@@ -26,8 +26,9 @@ struct IMFChunkType
 
 class CIMFPlayer : public CMusicPlayer
 {
+
 public:
-    CIMFPlayer( COPLEmulator& opl_emulator = gSound.getOPLEmulatorRef());
+    CIMFPlayer( COPLEmulator& opl_emulator);
 
 
 	/**
@@ -45,8 +46,6 @@ public:
 
 
     bool loadMusicTrack(const int track) override;
-
-    int mVolume = 0;
 
 private:
 
@@ -69,11 +68,6 @@ private:
 
 // External Music hooks for the imf player
 
-/**
- * @brief setImfMusic   Set volume of external player
- * @param vol
- */
-void setImfMusic(const int vol);
 
 /**
  * @brief loadIMFFile

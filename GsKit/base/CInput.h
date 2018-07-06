@@ -172,6 +172,11 @@ public:
                             const bool tiltedScreen);
 
     /**
+     * @brief flushFingerEvents If some registered finger get stuck, this method cleans up
+     */
+    void flushFingerEvents();
+
+    /**
      * @brief	Called every logic cycle. This triggers the events that occur and process them through various functions
      */
 	void pollEvents();

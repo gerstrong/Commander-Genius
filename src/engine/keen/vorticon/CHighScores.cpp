@@ -404,7 +404,7 @@ bool CHighScores::loadHighScoreTable()
 	memset(c_name, 0, 8*16*sizeof(char));
 	memset(c_score, 0, 8*8*sizeof(char));
 	memset(c_extra, 0, 8*4*sizeof(char));
-	memset(c_cities, 0, 8*sizeof(char));
+    memset(c_cities, 0, 8*sizeof(int));
 	
 	ScoreTableFile.read((char*)c_name, 8*16*sizeof(char));
 	ScoreTableFile.seekg(8*16*sizeof(char),ios_base::cur);
@@ -444,7 +444,7 @@ bool CHighScores::saveHighScoreTable()
 	memset(c_name, 0, 8*16*sizeof(char));
 	memset(c_score, 0, 8*8*sizeof(char));
 	memset(c_extra, 0, 8*4*sizeof(char));
-	memset(c_cities, 0, 8*sizeof(char));
+    memset(c_cities, 0, 8*sizeof(int));
 	
 	// Format the C++ strings to C Strings
 	for(size_t i=0 ; i<8 ; i++)

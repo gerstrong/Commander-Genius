@@ -654,6 +654,16 @@ void CInput::ponder()
 }
 
 
+
+void CInput::flushFingerEvents()
+{
+    if(!mpVirtPad)
+        return;
+
+    mpVirtPad->flush();
+}
+
+
 void CInput::pollEvents()
 {
     // Semaphore
@@ -735,7 +745,7 @@ void CInput::pollEvents()
             {
                 transMouseRelCoord(Pos, rotPt, activeArea, tiltedScreen);
 
-                if(!mpVirtPad->mouseDown(Pos))
+                if(!mpVirtPad->mouseFingerState(Pos, Event.tfinger, true))
                 {
                     m_EventList.add( new PointingDevEvent( Pos, PDE_BUTTONDOWN ) );
                     gPointDevice.mPointingState.mActionButton = 1;
@@ -761,7 +771,7 @@ void CInput::pollEvents()
                                     Event.tfinger.y*float(activeArea.h));
 
                 transMouseRelCoord(Pos, rotPt, activeArea, tiltedScreen);
-                if(!mpVirtPad->mouseUp(Pos))
+                if(!mpVirtPad->mouseFingerState(Pos, Event.tfinger, false))
                 {
                     passSDLEventVec = true;
                     m_EventList.add( new PointingDevEvent( Pos, PDE_BUTTONUP ) );
@@ -781,13 +791,33 @@ void CInput::pollEvents()
         break;
 
 
-		case SDL_FINGERMOTION: {
-            const Vector2D<int> rotPt(Event.tfinger.x, Event.tfinger.y);
-            transMouseRelCoord(Pos, rotPt, activeArea, tiltedScreen);
-            m_EventList.add(new PointingDevEvent(Pos, PDE_MOVED));
-            gPointDevice.mPointingState.mPos = Pos;
+        case SDL_FINGERMOTION:
+        {
+            Vector2D<int> rotPt(Event.tfinger.x*float(activeArea.w),
+                                Event.tfinger.y*float(activeArea.h));
 
-            //processMouse(Event);
+            // If Virtual gamepad takes control...
+            if(gVideoDriver.VGamePadEnabled() && mpVirtPad &&
+               mpVirtPad->active() )
+            {
+                transMouseRelCoord(Pos, rotPt, activeArea, tiltedScreen);
+
+                if(!mpVirtPad->mouseFingerState(Pos, Event.tfinger, true))
+                {
+                    m_EventList.add( new PointingDevEvent( Pos, PDE_BUTTONDOWN ) );
+                    gPointDevice.mPointingState.mActionButton = 1;
+                    gPointDevice.mPointingState.mPos = Pos;
+                }
+            }
+            else
+            {
+                const Vector2D<int> rotPt(Event.tfinger.x, Event.tfinger.y);
+                transMouseRelCoord(Pos, rotPt, activeArea, tiltedScreen);
+                m_EventList.add(new PointingDevEvent(Pos, PDE_MOVED));
+                gPointDevice.mPointingState.mPos = Pos;
+
+                //processMouse(Event);
+            }
         }
 		break;
 

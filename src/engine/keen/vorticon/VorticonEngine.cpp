@@ -94,11 +94,7 @@ void VorticonEngine::openMainMenu()
     if( !gMenuController.empty() )
         return;
 
-    // Check if music is playing and pause if it is
-    if(gMusicPlayer.active())
-    {
-       gMusicPlayer.pause();
-    }
+    gMusicPlayer.pause();
 
     gEventManager.add( new OpenMenuEvent(
                            new MainMenu(mOpenedGamePlay,
