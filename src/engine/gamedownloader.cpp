@@ -1,4 +1,4 @@
-#ifdef DOWNLOADER
+
 
 #include "gamedownloader.h"
 
@@ -478,4 +478,4 @@ int GameDownloader::handle()
 
     return res;
 }
-#endif // DOWNLOADER
+
