@@ -236,9 +236,12 @@ void CPlayerWM::pumpEvent(const CEvent *evPtr)
 
     else if( const EventPlayerRideFoot* ev = dynamic_cast<const EventPlayerRideFoot*>(evPtr) )
     {
-        gEventManager.flush();
-        finishLevel(ev->levelObject);
-        solid = false;
+        if(ev->who == mSpecialIdx)
+        {
+            gEventManager.flush();
+            finishLevel(ev->levelObject);
+            solid = false;
+        }
 
         // Here we need to set the coordinates calculated to where Keen has to go.
         target = fetchFootDestCoord();

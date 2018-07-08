@@ -25,8 +25,10 @@ struct EventPlayerEndLevel : CEvent {
 
 struct EventPlayerRideFoot : CEvent {
     const uint16_t levelObject;
+    const int who;
     EventPlayerRideFoot(const EventExitLevelWithFoot &ev) :
-                    levelObject(ev.levelObject) {}
+                    levelObject(ev.levelObject),
+                    who(ev.who) {}
 };
 
 
