@@ -222,7 +222,7 @@ void VorticonEngine::pumpEvent(const CEvent *evPtr)
     if( dynamic_cast<const FinishedLoadingResources*>(evPtr) )
     {        
         switchToPassiveMode();
-        gSaveGameController.convertAllOldFormats();
+        //gSaveGameController.convertAllOldFormats();
     }
     else if( const NewGamePlayersEvent* pNewGame = dynamic_cast<const NewGamePlayersEvent*>(evPtr) )
     {

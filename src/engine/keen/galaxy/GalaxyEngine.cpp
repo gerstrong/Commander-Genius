@@ -371,7 +371,7 @@ void GalaxyEngine::pumpEvent(const CEvent *evPtr)
         {
             switchToPassive();
         }
-        gSaveGameController.convertAllOldFormats();
+        //gSaveGameController.convertAllOldFormats();
     }
     else if( dynamic_cast<const EventEndGamePlay*>(evPtr) )
     {

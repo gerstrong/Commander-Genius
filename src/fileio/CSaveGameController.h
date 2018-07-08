@@ -45,8 +45,8 @@ public:
 
     bool readSlotList(std::vector<std::string> &list);
 
-	bool convertOldFormat(size_t slot);
-	void convertAllOldFormats();
+    //bool convertOldFormat(size_t slot);
+    //void convertAllOldFormats();
 	void readOldHeader(FILE *fp, byte *episode, byte *level, byte *lives, byte *num_players);
 	Uint32 getSlotNumber(const std::string &filename);
     std::string getExtension(const std::string &filename);

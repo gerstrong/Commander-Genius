@@ -1,3 +1,11 @@
+v2.2.5:
+-------
+- Audio Setting fixes
+- Many Virtual Pad improvements
+- Some AI fixes
+- Foot fix with multiple players
+- Save game fixes
+
 v2.2.3:
 -------
 - Video/Display change fixes
