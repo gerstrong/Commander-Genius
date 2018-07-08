@@ -215,6 +215,7 @@ void CSaveGameController::convertAllOldFormats()
 /**
  * This function loads the savegame of the 5th version
  */
+/*
 bool CSaveGameController::loadSaveGameVersion5(const std::string &fname, OldSaveGameFormatV5& old)
 {
 	FILE *fp;
@@ -227,7 +228,7 @@ bool CSaveGameController::loadSaveGameVersion5(const std::string &fname, OldSave
 	readOldHeader(fp, &episode, &level, &lives, &numplayers);
 
 	gLogging.ftextOut("game_load: restoring structures...\n");
-	/*primaryplayer =*/ fgetc(fp); // primary player doesn't exist anymore! Jump that!
+    / fgetc(fp); // primary player doesn't exist anymore! Jump that!
 
 	sgrle_compress(fp, (unsigned char *) &old.LevelControl, sizeof(old.LevelControl));
 
@@ -257,7 +258,7 @@ bool CSaveGameController::loadSaveGameVersion5(const std::string &fname, OldSave
 
 	tempbuf = new unsigned char[22624];
 
-	/*highest_objslot = */fgetc(fp); fgetc(fp); // Not used anymore since objects are held in an vector.
+    fgetc(fp); fgetc(fp); // Not used anymore since objects are held in an vector.
 	if (sgrle_decompressV2(fp, (unsigned char *)tempbuf, 22624)) return false;
 	if (sgrle_decompressV2(fp, (unsigned char *)tempbuf, 9612)) return false;
 
@@ -269,7 +270,8 @@ bool CSaveGameController::loadSaveGameVersion5(const std::string &fname, OldSave
 
 	return true;
 }
-
+*/
+/*
 bool CSaveGameController::loadSaveGameVersion4(const std::string &fname, OldSaveGameFormatV4& old)
 {
 	FILE *fp;
@@ -474,7 +476,7 @@ bool CSaveGameController::convertOldFormat(size_t slot)
 
 	return true;
 }
-
+*/
 
 // this is seperated out of game_load for modularity because menumanager.c
 // also uses it, in it's save-game "preview" menu on the load game screen

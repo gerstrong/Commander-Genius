@@ -20,7 +20,7 @@
 
 #include "engine/core/Playerdefines.h"
 #include "engine/core/inventory.h"
-
+/*
 struct OldSaveGameFormatV5
 {
 	struct stLevelControl
@@ -367,5 +367,5 @@ struct OldSaveGameFormatV4
 
 	OldSaveGameFormatV4() { memset(this, 0, sizeof(OldSaveGameFormatV4)); }
 };
-
+*/
 #endif /* OLDSAVEGAMESTRUCTS_H_ */

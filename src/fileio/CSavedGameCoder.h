@@ -15,6 +15,7 @@
 #define CPlayGameCoder_H_
 
 #include <base/TypeDefinitions.h>
+#include <cstring>
 
 // This functions are used for enconding/decoding a variable to the game data format.
 // It makes everything platform independent

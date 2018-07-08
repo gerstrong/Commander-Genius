@@ -93,8 +93,8 @@ public:
 	
 private:
 
-	bool loadSaveGameVersion5(const std::string &fname, OldSaveGameFormatV5& old);
-	bool loadSaveGameVersion4(const std::string &fname, OldSaveGameFormatV4& old);
+//	bool loadSaveGameVersion5(const std::string &fname, OldSaveGameFormatV5& old);
+//	bool loadSaveGameVersion4(const std::string &fname, OldSaveGameFormatV4& old);
 
 	bool IsOldSGVersion5(const std::string& fname);
 	bool IsOldSGVersion4(const std::string& fname);
