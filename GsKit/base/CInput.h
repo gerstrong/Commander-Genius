@@ -297,6 +297,15 @@ public:
     // One virtual input overlay can be active be processed. This is useful for game to ported on mobile devices
     std::unique_ptr<GsVirtualInput> mpVirtPad;
 
+    /**
+     * @brief setInVPadConfigState Want to open the vpad configuration?
+     *        Then open this!
+     */
+    void setInVPadConfigState()
+    {
+        mVPadConfigState = true;
+    }
+
 private:
 
     // Input Events
@@ -325,6 +334,8 @@ private:
 	bool m_exit;
 	int m_cmdpulse;
 	short m_joydeadzone;
+
+    bool mVPadConfigState = false;
 
 	bool immediate_keytable[KEYTABLE_SIZE];
 	bool last_immediate_keytable[KEYTABLE_SIZE];

@@ -18,5 +18,7 @@ public:
 
 struct OpenSettingsMenuEvent : public CEvent {};
 
+struct OpenVGamePadSettingsEvent : public CEvent {};
+
 
 #endif /* GALAXY_SETTINGSMENU_H_INCLUDED */

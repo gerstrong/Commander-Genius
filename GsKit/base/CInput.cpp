@@ -347,6 +347,12 @@ void CInput::render()
     if(!mpVirtPad)
         return;
 
+    if(mVPadConfigState)
+    {
+        mpVirtPad->renderConfig();
+        return;
+    }
+
     if(!mpVirtPad->active())
         return;
 
@@ -668,6 +674,12 @@ void CInput::pollEvents()
 {
     // Semaphore
     SDL_SemWait( pollSem );
+
+    if(mpVirtPad && mVPadConfigState)
+    {
+        mpVirtPad->processConfig();
+        return;
+    }
 
     if(remapper.mappingInput)
     {

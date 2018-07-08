@@ -221,6 +221,19 @@ bool VirtualKeenControl::ponder()
     return true;
 }
 
+
+void VirtualKeenControl::processConfig()
+{
+    assert(0);
+}
+
+
+void VirtualKeenControl::renderConfig()
+{
+    assert(0);
+}
+
+
 void VirtualKeenControl::hideEverything()
 {
     mPadBackground.invisible = true;

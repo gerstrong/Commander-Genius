@@ -132,6 +132,17 @@ public:
     virtual void flush() = 0;
 
     /**
+     * @brief renderConfig  Render configuration dialog of the dialog
+     */
+    virtual void processConfig() = 0;
+
+
+    /**
+     * @brief renderConfig  Render configuration dialog of the dialog
+     */
+    virtual void renderConfig() = 0;
+
+    /**
      * @brief render is called when it's time to render this object
      * @param sfc Reference to surface on which it can be rendered.
      */
