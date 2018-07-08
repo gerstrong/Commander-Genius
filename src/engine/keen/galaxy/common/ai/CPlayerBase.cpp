@@ -261,7 +261,7 @@ void CPlayerBase::processInput()
 {
     // If player has the camlead, he can also reassign the input
     // by pressing Shift+Number
-    if(mPlayerNum == m_camera.getLead() && gBehaviorEngine.mPlayers > 1)
+    if(mPlayerNum == m_camera.getLead() && gBehaviorEngine.numPlayers() > 1)
     {
         if(gInput.getHoldedKey(KSHIFT))
         {

@@ -47,7 +47,8 @@ void CGamePlayMode::ponder(const float deltaT)
 	}
 	else if( mp_PlayGame->getStartGame() )
 	{ // Start another new game
-        EventContainer.add( new GMSwitchToPlayGameMode(m_Episode, gBehaviorEngine.mPlayers, m_DataDirectory) );
+        EventContainer.add( new GMSwitchToPlayGameMode(m_Episode,
+                                                       m_DataDirectory) );
 	}
 	else if( mp_PlayGame->getExitEvent() )
 	{

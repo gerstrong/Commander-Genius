@@ -387,13 +387,14 @@ void GalaxyEngine::pumpEvent(const CEvent *evPtr)
     else if( const NewGamePlayersEvent* pNewGame =
              dynamic_cast<const NewGamePlayersEvent*>(evPtr) )
     {
-        gBehaviorEngine.mPlayers = pNewGame->mSelection;
+        const auto numPlayerVars = pNewGame->mSelection;
+        gBehaviorEngine.setNumPlayers(numPlayerVars);
 
         // Ensure the Sprite variations are correctly setup
-        if(gBehaviorEngine.mPlayers > 1)
+        if(numPlayerVars > 1)
         {
             mSpriteVars.clear();
-            for(int i=0 ; i<gBehaviorEngine.mPlayers ; i++ )
+            for(int i=0 ; i<numPlayerVars ; i++ )
             {
                 mSpriteVars.push_back(i);
             }
@@ -451,7 +452,7 @@ void GalaxyEngine::pumpEvent(const CEvent *evPtr)
     {
         // Ensure the Sprite variations are correctly setup
         mSpriteVars.clear();
-        for(int i=0 ; i<gBehaviorEngine.mPlayers ; i++ )
+        for(int i=0 ; i<gBehaviorEngine.numPlayers() ; i++ )
         {
             mSpriteVars.push_back(i);
         }

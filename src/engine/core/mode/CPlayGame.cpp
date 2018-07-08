@@ -50,9 +50,6 @@ void CPlayGame::loadGame()
         gLogging.textOut("XML based save state loaded successfully!");
         return;
     }
-
-    // This is for legacy savegame state formats
-    loadGameState();
 }
 
 // Getters

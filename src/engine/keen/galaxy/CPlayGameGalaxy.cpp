@@ -44,13 +44,13 @@ CPlayGame(startlevel),
 m_WorldMap( mInventoryVec),
 m_LevelPlay( mInventoryVec)
 {
-    const int numPlayers = gBehaviorEngine.mPlayers;
-    mDead.assign(numPlayers, false);
-    mGameOver.assign(numPlayers, false);
+    const int numPlayer = gBehaviorEngine.numPlayers();
+    mDead.assign(numPlayer, false);
+    mGameOver.assign(numPlayer, false);
 
-    mInventoryVec.resize(numPlayers);
+    mInventoryVec.resize(numPlayer);
 
-    for(int i=0 ; i<numPlayers ; i++)
+    for(int i=0 ; i<numPlayer ; i++)
     {
         mInventoryVec[i].setup(i, spriteVars[i]);
     }
@@ -70,46 +70,6 @@ m_LevelPlay( mInventoryVec)
     gEffectController.setupEffect(pColorMergeFX);
 }
 
-// NOTE: Only for compatibility mode. Since CG 1.5 it is only used for
-// supporting older versions of Savegame states of CG
-bool CPlayGameGalaxy::loadGameState()
-{
-    CSaveGameController &savedGame = gSaveGameController;
-
-	// This fills the datablock from CSavedGame object
-	if(!savedGame.load())
-		return false;
-
-	// Create the special merge effect (Fadeout)
-	CColorMerge *pColorMergeFX = new CColorMerge(8);
-
-	/// Save the Game in the CSavedGame object
-	// store the episode, level and difficulty
-	savedGame.decodeData(m_Episode);
-    savedGame.decodeData(gBehaviorEngine.mDifficulty);
-
-	// Load number of Players
-    savedGame.decodeData(gBehaviorEngine.mPlayers);
-
-	// We need to load both Levels first, before we do the writing from the saved state.
-
-    mInventoryVec[0] << savedGame;
-
-	bool active;
-	savedGame.decodeData( active );
-	m_WorldMap.setActive(active);
-	m_WorldMap << savedGame;
-
-	savedGame.decodeData( active );
-	m_LevelPlay.setActive(active);
-	if(active)
-        m_LevelPlay<<savedGame;
-
-	// Create the special merge effect (Fadeout)
-    gEffectController.setupEffect(pColorMergeFX);
-
-	return true;
-}
 
 
 
@@ -134,7 +94,7 @@ bool CPlayGameGalaxy::loadXMLGameState()
 
     // Get number of Players
     const unsigned int numPlayers = stateNode.get<int>("NumPlayer");
-    gBehaviorEngine.mPlayers = numPlayers;
+    gBehaviorEngine.setNumPlayers(numPlayers);
 
     if(!mInventoryVec.empty())
         mInventoryVec.clear();
@@ -162,8 +122,8 @@ bool CPlayGameGalaxy::loadXMLGameState()
             variant = playerNode.get<int>("<xmlattr>.variant");            
             const int idx = playerNode.get("<xmlattr>.id", 0);
             auto &invNode = playerNode.get_child("inventory");
-            mInventoryVec[variant].setup(idx, variant);
-            mInventoryVec[variant] << invNode;
+            mInventoryVec[idx].setup(idx, variant);
+            mInventoryVec[idx] << invNode;
         }
     }
 
@@ -205,7 +165,7 @@ bool CPlayGameGalaxy::saveXMLGameState()
     stateNode.put("difficulty", gBehaviorEngine.mDifficulty);
 
     // Save number of Players
-    const size_t numPlayers = size_t(gBehaviorEngine.mPlayers);
+    const size_t numPlayers = size_t(gBehaviorEngine.numPlayers());
     stateNode.put("NumPlayer", numPlayers);
 
     ptree &deadNode = pt.add("death", "");
@@ -268,7 +228,7 @@ bool CPlayGameGalaxy::init()
 		m_LevelPlay.setActive(true);
 	}
 
-    const int numPlayers = gBehaviorEngine.mPlayers;
+    const int numPlayers = gBehaviorEngine.numPlayers();
     mDead.assign(numPlayers, false);
     mGameOver.assign(numPlayers, false);
 
@@ -417,7 +377,7 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
         if(ev->data >= 0xC000)	// Start a new level!
         {
             // Ensure no one is dead anymore
-            const int numPlayers = gBehaviorEngine.mPlayers;
+            const int numPlayers = gBehaviorEngine.numPlayers();
             mDead.assign(numPlayers, false);
             mGameOver.assign(numPlayers, false);
 
@@ -442,7 +402,7 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
     else if( const EventExitLevel *ev = dynamic_cast<const EventExitLevel*>(evPtr) )
     {                
         // Ensure no one is dead anymore
-        const int numPlayers = gBehaviorEngine.mPlayers;
+        const int numPlayers = gBehaviorEngine.numPlayers();
         mDead.assign(numPlayers, false);
         mGameOver.assign(numPlayers, false);
 

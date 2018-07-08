@@ -52,7 +52,6 @@ public:
     bool init() override;
 
 	// Game states
-    bool loadGameState() override;
 	bool saveGameState();
 
     bool loadXMLGameState() override;

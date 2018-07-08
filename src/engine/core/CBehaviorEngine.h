@@ -116,7 +116,6 @@ public:
     std::string mPatchFname;
     std::map<GameOption, stOption> mOptions;
 
-    int mPlayers = 1;
     Difficulty mDifficulty = EASY;
 
     EpisodeInfoStruct* getEpisodeInfoStructRef()
@@ -126,11 +125,42 @@ public:
     {	pEpisodeInfo = const_cast<EpisodeInfoStruct*>(epStruct);	}
 	
 	
+    auto numPlayers() const {
+        return mPlayers;
+    }
+
+    void setNumPlayers(const int numPlayers){
+        mPlayers = numPlayers;
+    }
+/*
+
+    auto numPlayerVariants() const {
+        return mPlayers;
+    }
+
+    void setNumPlayerVariants(const int numPlayerVar){
+        mPlayerVariants = numPlayerVar;
+    }
+*/
+
 	std::string mapLevelName;
 
     stCheat mCheatmode;
 
 private:
+
+    /**
+     * @brief mPlayers  Number of players
+     */
+    int mPlayers = 1;
+
+    /**
+     * @brief mPlayerVarianst  Number of players that totally are possible.
+     *                         Means not what is currently being played.
+     */
+    //int mPlayerVariants = 1;
+
+
 	std::vector<CTileProperties> m_TileProperties[2];
     CPhysicsSettings m_PhysicsSettings;
 

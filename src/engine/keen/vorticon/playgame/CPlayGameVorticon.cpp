@@ -58,7 +58,7 @@ CPlayGame(startlevel)
 		m_Player.clear();
     }
 
-    const int numPlayers = gBehaviorEngine.mPlayers;
+    const int numPlayers = gBehaviorEngine.numPlayers();
 
     m_Player.assign( numPlayers, CPlayer(mpLevelCompleted, *mMap.get(), 0) );
 
@@ -101,7 +101,7 @@ void CPlayGameVorticon::setupPlayers()
     if(!mpHUDVec.empty())
         mpHUDVec.clear();
 
-    const int numPlayers = gBehaviorEngine.mPlayers;
+    const int numPlayers = gBehaviorEngine.numPlayers();
 
     for (int i=0 ; i<numPlayers ; i++)
 	{
@@ -111,7 +111,6 @@ void CPlayGameVorticon::setupPlayers()
 		{
             player.m_playingmode = CPlayer::WORLDMAP;
             m_showKeensLeft |= ( player.pdie == PDIE_DEAD );
-            //if(player.godmode) player.solid = false;
 		}
 		else
 		{
@@ -159,7 +158,7 @@ bool CPlayGameVorticon::init()
 
 	CVorticonMapLoaderWithPlayer MapLoader( mMap, m_Player, mSpriteObjectContainer );
 	MapLoader.m_checkpointset = m_checkpointset;
-    const int numPlayers = gBehaviorEngine.mPlayers;
+    const int numPlayers = gBehaviorEngine.numPlayers();
 
 	// load level map
     if( !MapLoader.load( m_Episode, m_Level, m_Gamepath ) )
@@ -230,7 +229,7 @@ bool CPlayGameVorticon::init()
 
 bool CPlayGameVorticon::StatusScreenOpen()
 {
-    const int numPlayers = gBehaviorEngine.mPlayers;
+    const int numPlayers = gBehaviorEngine.numPlayers();
     for( unsigned short i=0 ; i<numPlayers ; i++ )
 	{
         if(m_Player[i].m_showStatusScreen)
@@ -320,7 +319,7 @@ void CPlayGameVorticon::ponder(const float deltaT)
 
                   if(m_Player[mCamLead].pdie)
                   {
-                      const int numPlayers = gBehaviorEngine.mPlayers;
+                      const int numPlayers = gBehaviorEngine.numPlayers();
                       for( int i=0 ; i<numPlayers ; i++ )
                       {
                           if(m_Player[i].pdie)
@@ -467,7 +466,7 @@ void CPlayGameVorticon::cycleCamLead()
 {
 	mCamLead++;
 
-    const int numPlayers = gBehaviorEngine.mPlayers;
+    const int numPlayers = gBehaviorEngine.numPlayers();
     if( mCamLead >= numPlayers  )
 		mCamLead = 0;
 }
@@ -483,7 +482,7 @@ void CPlayGameVorticon::handleFKeys()
 	{
         gBehaviorEngine.mCheatmode.items = false;
 		gInput.flushAll();
-        const size_t numPlayers = size_t(gBehaviorEngine.mPlayers);
+        const size_t numPlayers = size_t(gBehaviorEngine.numPlayers());
         for(size_t i=0;i<numPlayers;i++)
 		{
 			m_Player[i].pfiring = false;
@@ -584,7 +583,7 @@ void CPlayGameVorticon::handleFKeys()
 
 void CPlayGameVorticon::verifyMultiplayerConsistency()
 {
-    const size_t numPlayers = size_t(gBehaviorEngine.mPlayers);
+    const size_t numPlayers = size_t(gBehaviorEngine.numPlayers());
 
     ShareWithOthers(HasPogo);
     ShareWithOthers(HasJoystick);
@@ -606,7 +605,7 @@ void CPlayGameVorticon::verifyFinales()
 		hasBattery = hasWiskey = hasJoystick = hasVaccum = false;
 
 		// Check if one of the Players has the items
-        const unsigned int numPlayers = gBehaviorEngine.mPlayers;
+        const unsigned int numPlayers = gBehaviorEngine.numPlayers();
         for( size_t i=0 ;i < numPlayers ; i++)
 		{
 			hasBattery |= m_Player[i].inventory.HasBattery;
@@ -754,7 +753,7 @@ void CPlayGameVorticon::drawAllElements()
     // Draw masked tiles here!
     mMap->_drawForegroundTiles();
 
-    const size_t numPlayers = size_t(gBehaviorEngine.mPlayers);
+    const size_t numPlayers = size_t(gBehaviorEngine.numPlayers());
     for( size_t i=0 ; i<numPlayers ; i++ )
     {
         m_Player[i].drawStatusScreen();

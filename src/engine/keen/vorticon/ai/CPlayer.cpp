@@ -41,8 +41,9 @@ mp_levels_completed(mpLevelCompleted)
     m_playingmode = WORLDMAP;
 
 
-    // Set every value in the class to zero.
-    memset(&inventory, 0, sizeof(stInventory));
+    // Reset inventory
+    inventory = stInventory();
+
     setDefaultStartValues();
     setDatatoZero();
 }

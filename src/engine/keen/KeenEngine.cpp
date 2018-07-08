@@ -18,14 +18,10 @@ void KeenEngine::switchToGamePlayMode(const int startLevel)
 {
     const int episode = gBehaviorEngine.getEpisode();
 
-    auto &numPlayers = gBehaviorEngine.mPlayers;
-
-    // If you get here, you always have at least one player
-    if(numPlayers <= 0)
-        numPlayers = 1;
-
     std::string DataDirectory = gKeenFiles.gameDir;
-    gEventManager.add( new GMSwitchToPlayGameMode( episode, numPlayers, DataDirectory, startLevel ) );
+    gEventManager.add( new GMSwitchToPlayGameMode( episode,
+                                                   DataDirectory,
+                                                   startLevel ) );
 }
 
 

@@ -29,7 +29,6 @@ public:
 
     void loadGame();
 
-    virtual bool loadGameState() = 0;
     virtual bool loadXMLGameState() = 0;
     virtual bool saveXMLGameState() = 0;
 	virtual void cleanup() = 0;

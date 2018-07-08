@@ -34,13 +34,14 @@ void CPlayGameVorticon::processInLevel()
 	if(m_gameover)
 		return;
 
-    const int numPlayers = gBehaviorEngine.mPlayers;
+    const int numPlayers = gBehaviorEngine.numPlayers();
 
 	// Perform player Objects...
     for( int i=0 ; i<numPlayers ; i++ )
 	{
 		// check if someone has lives
-		if(m_Player[i].inventory.lives==0 && m_Player[i].pdie==PDIE_DEAD)
+        if(m_Player[i].inventory.lives==0 &&
+           m_Player[i].pdie==PDIE_DEAD)
 			continue;
 
 		// Process the other stuff like, items, jump, etc.

@@ -42,7 +42,8 @@ void CHUD::setup(const int playerIdx,
 
     mRenderRect.x = 8;	mRenderRect.y = 4;
 
-    if(gBehaviorEngine.mPlayers > 3)
+    // Start at zero, beacuse we need more room for the HUD Boxes
+    if(gBehaviorEngine.numPlayers() > 3)
     {
         mRenderRect.x = 0;	mRenderRect.y = 0;
     }
@@ -215,7 +216,7 @@ void CHUD::renderGalaxy()
     gGraphics.drawDigits(getRightAlignedString(itoa(charges),2),60, 20, hudBlitsfc );
     gGraphics.drawDigits(getRightAlignedString(itoa(lives),2), 20, 20, hudBlitsfc );
 
-    if(gBehaviorEngine.mPlayers > 1 && mId == CCamera::getLead())
+    if(gBehaviorEngine.numPlayers() > 1 && mId == CCamera::getLead())
     {
         SDL_Rect rect;
         rect.x = 7; rect.y = 29;
@@ -258,7 +259,7 @@ void CHUD::renderVorticon()
     // Print the score
     Font.drawFont(mHUDBlit, getRightAlignedString(itoa(score),8),8, 2, false );
 
-    if(gBehaviorEngine.mPlayers > 1)
+    if(gBehaviorEngine.numPlayers() > 1)
     {
         SDL_Rect rect;
         rect.x = 2; rect.y = 29;

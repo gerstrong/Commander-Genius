@@ -15,180 +15,6 @@
 ///////////////////////////
 // Game State Management //
 ///////////////////////////
-bool CPlayGameVorticon::loadGameState()
-{
-    gMusicPlayer.stop();
-
-    if(loadXMLGameState())
-    {
-        return true;
-    }
-
-    CSaveGameController &savedGame = gSaveGameController;
-	
-	bool ok = true;
-
-	// This fills the datablock from CSavedGame object
-	if(!savedGame.load())
-	{
-	  return false;
-	}
-	
-	// Create the special merge effect (Fadeout)
-	CColorMerge *pColorMergeFX = new CColorMerge(8);
-	
-	// Prepare for loading the new level map and the players.
-	cleanup();
-	
-	// get the episode, level and difficulty
-	char newLevel;
-	ok &= savedGame.decodeData(m_Episode);
-	ok &= savedGame.decodeData(newLevel);
-	
-	bool loadmusic = ( m_Level != newLevel || m_Level == 80 );
-	m_Level = newLevel;
-	
-	ok &= savedGame.decodeData(gBehaviorEngine.mDifficulty);
-	
-	bool dark, checkpointset;
-	int checkx, checky;
-	ok &= savedGame.decodeData(checkpointset);
-	ok &= savedGame.decodeData(checkx);
-	ok &= savedGame.decodeData(checky);
-	ok &= savedGame.decodeData(dark);
-	
-
-	// Load number of Players
-    unsigned int numPlayers;
-    ok &= savedGame.decodeData(numPlayers);
-
-    gBehaviorEngine.mPlayers = numPlayers;
-	        
-	if(!m_Player.empty())
-	  m_Player.clear();
-	
-    // Start getting data of the loaded players
-    for( size_t i=0 ; i < numPlayers ; i++ )
-	{
-      m_Player.push_back( CPlayer(mpLevelCompleted, *mMap.get(), i) );
-	  m_Player.at(i).m_index = i;
-	  m_Player.at(i).setDatatoZero();
-	}
-	
-	CVorticonMapLoaderWithPlayer Maploader(mMap, m_Player, mSpriteObjectContainer);
-	m_checkpointset = checkpointset;
-	Maploader.m_checkpointset = m_checkpointset;
-	if(!Maploader.load(m_Episode, m_Level, m_Gamepath, loadmusic, false))
-	  return false;
-	
-	m_checkpoint_x = checkx;
-	m_checkpoint_y = checky;
-	
-	m_level_command = START_LEVEL;
-	
-    for(auto &player : m_Player)
-	{
-	  int x, y;
-      player.setupforLevelPlay();
-	  ok &= savedGame.decodeData(x);
-	  ok &= savedGame.decodeData(y);
-      player.moveToForce(Vector2D<int>(x,y));
-      ok &= savedGame.decodeData(player.blockedd);
-      ok &= savedGame.decodeData(player.blockedu);
-      ok &= savedGame.decodeData(player.blockedl);
-      ok &= savedGame.decodeData(player.blockedr);
-      ok &= savedGame.decodeData(player.inventory);
-      player.pdie = 0;
-	}
-	
-	// load the number of objects on screen
-	Uint32 size;
-	ok &= savedGame.decodeData(size);
-	for( Uint32 i=0 ; i<size  ; i++ )
-	{
-	  unsigned int x,y;
-	  
-	  if(i >= mSpriteObjectContainer.size())
-	  {
-        std::unique_ptr<CVorticonSpriteObject> object( new CVorticonSpriteObject( mMap.get(), 0, 0, OBJ_NONE, 0) );
-	    object->exists = false;
-	    mSpriteObjectContainer.push_back(move(object));
-	  }
-	  
-	  CVorticonSpriteObject &object = *(mSpriteObjectContainer.at(i));
-	  
-	  ok &= savedGame.decodeData(object.m_type);
-	  ok &= savedGame.decodeData(x);
-	  ok &= savedGame.decodeData(y);
-	  object.moveToForce(Vector2D<int>(x,y));
-	  ok &= savedGame.decodeData(object.mIsDead);
-	  ok &= savedGame.decodeData(object.onscreen);
-	  ok &= savedGame.decodeData(object.hasbeenonscreen);
-	  ok &= savedGame.decodeData(object.exists);
-	  ok &= savedGame.decodeData(object.blockedd);
-	  ok &= savedGame.decodeData(object.blockedu);
-	  ok &= savedGame.decodeData(object.blockedl);
-	  ok &= savedGame.decodeData(object.blockedr);
-	  ok &= savedGame.decodeData(object.mHealthPoints);
-      ok &= savedGame.decodeData(object.canbezapped);
-	  ok &= savedGame.decodeData(object.cansupportplayer);
-	  ok &= savedGame.decodeData(object.inhibitfall);
-	  ok &= savedGame.decodeData(object.honorPriority);
-	  ok &= savedGame.decodeData(object.mSpriteIdx);
-	  object.performCollisions();
-	  
-	  if(object.m_type == OBJ_DOOR or
-	    object.m_type == OBJ_RAY or
-	    object.m_type == OBJ_SNDWAVE or
-	    object.m_type == OBJ_FIREBALL or
-	    object.m_type == OBJ_ICECHUNK or
-	    object.m_type == OBJ_ICEBIT or
-	    object.m_type == OBJ_GOTPOINTS or
-	    object.m_type == OBJ_ANKHSHIELD) // Some objects are really not needed. So don't load them
-	  object.exists = false;
-	}
-	
-	// TODO: An algorithm for comparing the number of players saved and we actually have need to be in sync
-	
-	// Load the map_data as it was left last
-	ok &= savedGame.decodeData(mMap->m_width);
-	ok &= savedGame.decodeData(mMap->m_height);
-	ok &= savedGame.readDataBlock( reinterpret_cast<byte*>(mMap->getForegroundData()) );
-	
-	// Load completed levels
-	ok &= savedGame.readDataBlock( (byte*)(mpLevelCompleted) );
-	
-    m_Player[0].setMapData(mMap.get());
-	m_Player[0].setupCameraObject();
-	m_Player[0].mpCamera->attachObject(&m_Player[0]);
-	
-	while(m_Player[0].mpCamera->mMoving)
-	{
-	  m_Player[0].mpCamera->process();
-      m_Player[0].mpCamera->processEvents();
-	}
-	
-	mMap->drawAll();
-	
-	// Create the special merge effect (Fadeout)
-    gEffectController.setupEffect(pColorMergeFX);
-	
-	
-	mpObjectAI.reset( new CVorticonSpriteObjectAI(mMap.get(), mSpriteObjectContainer, m_Player,
-                              numPlayers, m_Episode, m_Level,
-					       mMap->m_Dark) );
-	setupPlayers();
-	
-	mMap->m_Dark = dark;
-	gGraphics.Palette.setdark(mMap->m_Dark);
-	
-		m_Player[0].mpCamera->reAdjust();
-	
-	
-	return ok;
-}
-
-
 
 bool CPlayGameVorticon::loadXMLGameState()
 {
@@ -371,19 +197,18 @@ bool CPlayGameVorticon::loadXMLGameState()
     // Create the special merge effect (Fadeout)
     gEffectController.setupEffect(pColorMergeFX);
 
+    gBehaviorEngine.setNumPlayers(m_Player.size());
+
 
     mpObjectAI.reset( new CVorticonSpriteObjectAI(mMap.get(), mSpriteObjectContainer, m_Player,
-                              gBehaviorEngine.mPlayers, m_Episode, m_Level,
+                              gBehaviorEngine.numPlayers(), m_Episode, m_Level,
                            mMap->m_Dark) );
     setupPlayers();
 
     mMap->m_Dark = stateNode.get<bool>("dark", false);
     gGraphics.Palette.setdark(mMap->m_Dark);
 
-
     m_Player[0].mpCamera->reAdjust();
-
-    gBehaviorEngine.mPlayers = m_Player.size();
 
     return true;
 }
@@ -414,7 +239,7 @@ bool CPlayGameVorticon::saveXMLGameState()
 
     stateNode.put("dark", mMap->m_Dark);
 
-    const unsigned int numPlayers = gBehaviorEngine.mPlayers;
+    const unsigned int numPlayers = gBehaviorEngine.numPlayers();
 
     // Now save the inventory of every player
     for( size_t i=0 ; i<numPlayers ; i++ )
@@ -506,7 +331,7 @@ bool CPlayGameVorticon::saveGameState()
 	savedGame.encodeData(mMap->m_Dark);
 
 	// Save number of Players
-    const unsigned int numPlayers = gBehaviorEngine.mPlayers;
+    const unsigned int numPlayers = gBehaviorEngine.numPlayers();
     savedGame.encodeData(numPlayers);
 
 	// Now save the inventory of every player    

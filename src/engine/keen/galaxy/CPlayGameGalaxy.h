@@ -31,7 +31,6 @@ public:
     CPlayGameGalaxy(const int startlevel,
                     const std::vector<int> &spriteVars);
 
-    bool loadGameState();
     bool loadXMLGameState();
     bool saveXMLGameState();
     bool init();

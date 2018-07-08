@@ -226,7 +226,7 @@ void VorticonEngine::pumpEvent(const CEvent *evPtr)
     }
     else if( const NewGamePlayersEvent* pNewGame = dynamic_cast<const NewGamePlayersEvent*>(evPtr) )
     {
-        gBehaviorEngine.mPlayers = pNewGame->mSelection;
+        gBehaviorEngine.setNumPlayers(pNewGame->mSelection);
         gEventManager.add( new OpenMenuEvent(new CDifficultySelection(GsControl::Style::VORTICON)) );
         return;
     }
