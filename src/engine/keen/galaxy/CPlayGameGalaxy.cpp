@@ -406,6 +406,7 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
         mDead.assign(numPlayers, false);
         mGameOver.assign(numPlayers, false);
 
+
         if( ev->playSound )
         {
             gSound.playSound( SOUND_LEVEL_DONE );
@@ -530,7 +531,14 @@ void CPlayGameGalaxy::ponder(const float deltaT)
         else
         {
             if(!msgboxactive && gInput.getPressedCommand(playerCount, IC_STATUS))
-            {             
+            {
+                CMapPlayGalaxy *pMap = &m_WorldMap;
+
+                if(!pMap->isActive())
+                    pMap = &m_LevelPlay;
+
+                inv.Item.mLevelName = pMap->getLevelName();
+
                 gSound.playSound(SOUND_STATUS_SLIDE_IN);
 
                 inv.toggleStatusScreen();

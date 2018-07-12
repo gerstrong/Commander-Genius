@@ -84,7 +84,8 @@ void CInventory::toggleStatusScreen()
 		gVideoDriver.collectSurfaces();
 
 
-        CScrollEffect* ScrollEffect = dynamic_cast<CScrollEffect*>(gEffectController.Effect());
+        CScrollEffect* ScrollEffect =
+                dynamic_cast<CScrollEffect*>(gEffectController.Effect());
 
 		if( ScrollEffect )
         {

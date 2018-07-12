@@ -164,7 +164,8 @@ void CStatusScreenGalaxy::GenerateStatusEp4()
     GsFont &Font = gGraphics.getFont(0);
     Font.setupColor(0x555555);
 
-    Font.drawFontCentered(mStatusSurface.getSDLSurface(), "LOCATION", EditRect.x, EditRect.w, EditRect.y, false);
+    Font.drawFontCentered(mStatusSurface.getSDLSurface(), "LOCATION",
+                          EditRect.x, EditRect.w, EditRect.y, false);
 
 
     // drawing Rect for stuff like background for scores and items
@@ -192,14 +193,16 @@ void CStatusScreenGalaxy::GenerateStatusEp4()
     TempRect.x = EditRect.x;
     TempRect.y = EditRect.y+32;
     TempRect.w = EditRect.w/2; TempRect.h = 10;
-    Font.drawFont(mStatusSurface, "SCORE            EXTRA", TempRect.x+16, TempRect.y, false);
+    Font.drawFont(mStatusSurface, "SCORE            EXTRA", TempRect.x+16,
+                  TempRect.y, false);
     TempRect.w = (EditRect.w/2)-16; TempRect.h = 11;
     TempRect.y = EditRect.y+42;
 
     // Score Box
     TempRect.w = 8*8;
     mStatusSurface.fillRGBA(TempRect, 0x0, 0x0, 0x0, 0xFF);
-    gGraphics.drawDigits(getRightAlignedString(itoa(m_Item.m_points), 8), TempRect.x, TempRect.y+2,
+    gGraphics.drawDigits(getRightAlignedString(itoa(m_Item.m_points), 8),
+                         TempRect.x, TempRect.y+2,
                          mStatusSurface.getSDLSurface());
 
     // Extra Box
@@ -372,7 +375,8 @@ void CStatusScreenGalaxy::GenerateStatusEp5()
 
     mStatusSurface.fillRGBA(TempRect, 0xFF, 0xFF, 0xFF, 0xFF);
 
-    Font.drawFontCentered(mStatusSurface.getSDLSurface(), m_Item.mLevelName, TempRect.x, TempRect.w, TempRect.y+6, false);
+    Font.drawFontCentered(mStatusSurface.getSDLSurface(), m_Item.mLevelName,
+                          TempRect.x, TempRect.w, TempRect.y+6, false);
     Font.setupColor(0x444444);
 
 
@@ -504,7 +508,8 @@ void CStatusScreenGalaxy::GenerateStatusEp6()
 
     Font.setupColor(0x0);
     SDL_FillRect(mStatusSurface.getSDLSurface(), &TempRect, 0xFFFFFFFF);
-    Font.drawFontCentered(mStatusSurface.getSDLSurface(), m_Item.mLevelName, TempRect.x, TempRect.w, TempRect.y+6, false);
+    Font.drawFontCentered(mStatusSurface.getSDLSurface(), m_Item.mLevelName,
+                          TempRect.x, TempRect.w, TempRect.y+6, false);
     Font.setupColor(0x444444);
 
 
