@@ -256,7 +256,8 @@ void CStatusScreenGalaxy::GenerateStatusEp4()
 
     const std::string difftext = getDifficultyText();
 
-    Font.drawFontCentered(mStatusSurface.getSDLSurface(), difftext, TempRect.x, TempRect.w, TempRect.y+1, false);
+    Font.drawFontCentered(mStatusSurface.getSDLSurface(), difftext,
+                          TempRect.x, TempRect.w, TempRect.y+1, false);
     Font.setupColor(0x333333);
 
     // Keys Box
