@@ -42,5 +42,6 @@ int main()
     compileBinIntoCharArray("bckgrnd.png","gButtonBgPng", "buttonBg.h");
     compileBinIntoCharArray("confirm.png","gButtonConfirmPng", "buttonConfirm.h");
     compileBinIntoCharArray("start.png","gButtonStartPng", "buttonStart.h");
+    compileBinIntoCharArray("closeBtn.png","gButtonClosePng", "buttonClose.h");
     return 0;
 }

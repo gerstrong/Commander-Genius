@@ -38,6 +38,12 @@ public:
 
 
     /**
+     * @brief processCloseConfig    In case the close config button was tapped
+     * @param Pos
+     */
+    void processCloseConfig(const Vector2D<float> &Pos);
+
+    /**
      * @brief renderConfig  Render configuration dialog of the dialog
      */
     void renderConfig() override;
@@ -94,7 +100,7 @@ public:
      */
     bool isInside(const Vector2D<float> &Pos) const override
     {
-        return mPadBackground.isInside(Pos.x, Pos.y);
+        return mPadConfigBackground.isInside(Pos.x, Pos.y);
     }
 
 
@@ -111,7 +117,8 @@ public:
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 
-    TouchButton mPadBackground;
+    TouchButton mCloseConfigButton;
+    TouchButton mPadConfigBackground;
     TouchButton mDPad;
     TouchButton mConfirmButton;
     TouchButton mStartButton;
@@ -125,6 +132,8 @@ public:
     std::set< SDL_FingerID > mFingerSet;
 
 #endif    
+
+    bool mConfigOpened = false;
 
 };
 

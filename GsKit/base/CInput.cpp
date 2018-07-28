@@ -347,14 +347,14 @@ void CInput::render()
     if(!mpVirtPad)
         return;
 
+    if(!mpVirtPad->active())
+        return;
+
     if(mVPadConfigState)
     {
         mpVirtPad->renderConfig();
-        return;
     }
 
-    if(!mpVirtPad->active())
-        return;
 
     GsWeakSurface blit(gVideoDriver.getBlitSurface());
     mpVirtPad->render(blit);
@@ -678,7 +678,6 @@ void CInput::pollEvents()
     if(mpVirtPad && mVPadConfigState)
     {
         mpVirtPad->processConfig();
-        return;
     }
 
     if(remapper.mappingInput)

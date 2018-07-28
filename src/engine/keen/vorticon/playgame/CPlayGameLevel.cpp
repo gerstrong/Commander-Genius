@@ -21,7 +21,6 @@ void CPlayGameVorticon::processInLevel()
         VirtualKeenControl *vkc = dynamic_cast<VirtualKeenControl*>(gInput.mpVirtPad.get());
         assert(vkc);
         vkc->hideAllButtons();
-        vkc->mPadBackground.invisible = false;
         vkc->mDPad.invisible = false;
         vkc->mJumpButton.invisible = false;
         vkc->mPogoButton.invisible = false;

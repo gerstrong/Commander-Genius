@@ -4,6 +4,7 @@
 #include <base/utils/FindFile.h>
 #include <base/CInput.h>
 #include <base/GsLogging.h>
+#include <graphics/GsTexture.h>
 #include <fileio/ResourceMgmt.h>
 
 #include "dpad.h"
@@ -14,6 +15,7 @@
 #include "buttonBg.h"
 #include "buttonConfirm.h"
 #include "buttonStart.h"
+#include "buttonClose.h"
 
 
 
@@ -77,8 +79,13 @@ bool VirtualKeenControl::init()
 
     /// Load The buttons images
     {
-        // Start with the Background for the gamepad
-        if(!mPadBackground.loadEmdbeddedPicture(gButtonBgPng, sizeof(gButtonBgPng))) return false;
+        // Close for configuratin of Virtual pad
+        if(!mCloseConfigButton.loadEmdbeddedPicture(gButtonClosePng, sizeof(gButtonClosePng))) return false;
+
+        GsTexture &tex = mPadConfigBackground.mTexture;
+        tex.fillRGB( gVideoDriver.Renderer(), 0x0, 0x0, 0x0);
+        tex.setAlpha(128);
+        mPadConfigBackground.invisible = true;
 
         // Directional pad
         if(!mDPad.loadEmdbeddedPicture(gDPadPng, sizeof(gDPadPng))) return false;
@@ -116,15 +123,23 @@ bool VirtualKeenControl::ponder()
     const float left = 0.025f;
     const float right = 0.975f;
 
-    if(!mPadBackground.invisible)
+    if(!mPadConfigBackground.invisible)
     {
-        const GsRect<float> dpadRect(0.0f, 0.75f,
-                                     1.0f, 0.25f);
+        const GsRect<float> dpadRect(0.0f, 0.0f,
+                                     1.0f, 1.0f);
 
-        mPadBackground.setRect(dpadRect);
-
-        mPadBackground.mTexture.setAlpha(uint8_t(255.0f*mTranslucency));
+        mPadConfigBackground.setRect(dpadRect);
     }
+
+
+    if(!mCloseConfigButton.invisible)
+    {
+        const GsRect<float> dpadRect(0.45f, 0.45f,
+                                     0.1f, 0.1f);
+
+        mCloseConfigButton.setRect(dpadRect);
+    }
+
 
     if(!mDPad.invisible)
     {
@@ -224,19 +239,59 @@ bool VirtualKeenControl::ponder()
 
 void VirtualKeenControl::processConfig()
 {
-    assert(0);
+    // Opening section
+    if(!mConfigOpened)
+    {
+        mConfigOpened = true;
+        mPadConfigBackground.invisible = false;
+        return;
+    }
+}
+
+void VirtualKeenControl::processCloseConfig(const Vector2D<float> &Pos)
+{
+    // If there is a close button to hit, were are in configuration mode
+    // and need to close that.
+    if(!mCloseConfigButton.invisible)
+    {
+        // Was it hit?
+        if(mCloseConfigButton.Rect().HasPoint(Pos))
+        {
+            mConfigOpened = false;
+            mPadConfigBackground.invisible = true;
+            gInput.setInVPadConfigState(false);
+            return;
+        }
+    }
 }
 
 
 void VirtualKeenControl::renderConfig()
 {
-    assert(0);
+    //assert(0);
+
+    auto addTexture = [](TouchButton &button) -> void
+    {
+        button.invisible = false;
+
+        if(!button.invisible &&
+           button.w > 0.0f &&
+           button.h > 0.0f)
+        {
+            gVideoDriver.addTextureRefToRender(button.mTexture, button.Rect());
+        }
+    };
+
+    mPadConfigBackground.mTexture.setAlpha(127);
+    addTexture(mPadConfigBackground);
+
+    addTexture(mCloseConfigButton);
 }
 
 
 void VirtualKeenControl::hideEverything()
 {
-    mPadBackground.invisible = true;
+    mPadConfigBackground.invisible = true;
     mDPad.invisible = true;
     mConfirmButton.invisible = true;
     mStartButton.invisible = true;
@@ -249,7 +304,7 @@ void VirtualKeenControl::hideEverything()
 
 void VirtualKeenControl::hideAllButtons()
 {
-    mPadBackground.invisible = false;
+    mPadConfigBackground.invisible = false;
     mConfirmButton.invisible = true;
     mStartButton.invisible = true;
 
@@ -275,8 +330,6 @@ void VirtualKeenControl::render(GsWeakSurface &sfc)
             gVideoDriver.addTextureRefToRender(button.mTexture, button.Rect());
         }
     };
-
-    addTexture(mPadBackground);
 
     addTexture(mDPad);
 
@@ -334,8 +387,9 @@ bool VirtualKeenControl::mouseFingerState(const Vector2D<float> &Pos,
     evUp.key.keysym.sym = SDLK_DOWN;  SDL_PushEvent(&evUp);*/
 
 /*
-    if( !mPadBackground.isInside(Pos.x, Pos.y) )
+    if( !mPadConfigBackground.isInside(Pos.x, Pos.y) )
         return false;*/
+    processCloseConfig(Pos);
 
     bool ok = false;
 
@@ -508,7 +562,10 @@ bool VirtualKeenControl::mouseState(const Vector2D<float> &Pos, const bool down)
     evUp.key.keysym.sym = SDLK_RIGHT; SDL_PushEvent(&evUp);
     evUp.key.keysym.sym = SDLK_DOWN;  SDL_PushEvent(&evUp);*/
 
-    if( !mPadBackground.isInside(Pos.x, Pos.y) )
+    processCloseConfig(Pos);
+
+
+    if( mPadConfigBackground.invisible )
         return false;
 
     auto bindButtonCommand = [&](const TouchButton &button,

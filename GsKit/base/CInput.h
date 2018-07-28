@@ -301,9 +301,9 @@ public:
      * @brief setInVPadConfigState Want to open the vpad configuration?
      *        Then open this!
      */
-    void setInVPadConfigState()
+    void setInVPadConfigState(const bool value)
     {
-        mVPadConfigState = true;
+        mVPadConfigState = value;
     }
 
 private:

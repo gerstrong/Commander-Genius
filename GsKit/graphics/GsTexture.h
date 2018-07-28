@@ -33,6 +33,21 @@ public:
     }
 
 
+    void create(SDL_Renderer* renderer,
+                Uint32        format,
+                int           access,
+                int           w,
+                int           h)
+    {
+        if(mpTexture)
+            unload();
+
+        mpTexture = SDL_CreateTexture(renderer,
+                                      format,
+                                      access,
+                                      w, h);
+    }
+
     /**
      * @brief loadTexture   Will try to load the texture
      * @param fname filename to load
@@ -118,6 +133,18 @@ public:
         // Modulate texture alpha
         SDL_SetTextureAlphaMod( mpTexture, alpha );
     }
+
+    /**
+     * @brief fillRGB   Fills the texture with a certain color
+     * @param renderer
+     * @param r
+     * @param g
+     * @param b
+     */
+    void fillRGB( SDL_Renderer *renderer,
+                  const Uint8 r,
+                  const Uint8 g,
+                  const Uint8 b );
 
     /**
      * @brief operator bool For testing the object itself, if the texture is loaded
