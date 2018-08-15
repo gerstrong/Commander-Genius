@@ -917,11 +917,27 @@ void CInput::pollEvents()
 #endif
 
 		case SDL_MOUSEMOTION:
+
             const Vector2D<int> rotPt(Event.motion.x, Event.motion.y);
             transMouseRelCoord(Pos, Event.motion, activeArea, tiltedScreen);
-            m_EventList.add( new PointingDevEvent( Pos, PDE_MOVED ) );
-            gPointDevice.mPointingState.mPos = Pos;
-			break;
+
+            if(gVideoDriver.VGamePadEnabled() && mpVirtPad &&
+                    mpVirtPad->active())
+            {
+                if(!mpVirtPad->mouseUp(Pos))
+                {
+                    passSDLEventVec = true;
+                    m_EventList.add( new PointingDevEvent( Pos, PDE_BUTTONUP ) );
+                    gPointDevice.mPointingState.mActionButton = 0;
+                    gPointDevice.mPointingState.mPos = Pos;
+                }
+            }
+            else
+            {
+                m_EventList.add( new PointingDevEvent( Pos, PDE_MOVED ) );
+                gPointDevice.mPointingState.mPos = Pos;
+                break;
+            }
 
 #endif
 		}

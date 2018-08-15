@@ -81,7 +81,7 @@ public:
 #endif
 
 
-    bool mMouseDown = true;
+    bool mMouseDown = false;
 };
 
 /**

@@ -511,13 +511,11 @@ bool VirtualKeenControl::mouseState(const Vector2D<float> &Pos, const bool down)
         if(button.invisible)
             return;
 
+        button.mMouseDown = false;
+
         if( button.Rect().HasPoint(Pos) )
         {
             gInput.setCommand(0, cmd, down);
-            button.mMouseDown = false;
-        }
-        else
-        {
             button.mMouseDown = true;
         }
     };        
