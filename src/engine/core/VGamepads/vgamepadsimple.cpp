@@ -18,12 +18,14 @@
 #include "buttonClose.h"
 
 
-
 bool TouchButton::loadEmdbeddedPicture(const unsigned char *data,
                                        const unsigned int size)
-{
-    return mTexture.loadFromMem(data, size,
-                         gVideoDriver.Renderer());
+{        
+    bool ok = mTexture.loadFromMem(data, size, gVideoDriver.Renderer(), false);
+
+    ok &= mTextureDark.loadFromMem(data, size, gVideoDriver.Renderer(), true);
+
+    return ok;
 }
 
 void TouchButton::clearFingers()
@@ -45,37 +47,12 @@ void TouchButton::removeFingerId(const SDL_FingerID fid)
     }
 }
 
-
-bool TouchButton::loadPicture(const std::string &picFile)
-{
-    const std::string buttonFname = getResourceFilename(picFile, "", true, true);
-    if(buttonFname == "") return false;
-
-    mTexture.load(GetFullFileName(buttonFname), gVideoDriver.Renderer());
-    if( !mTexture )
-    {
-        gLogging.ftextOut("Failed to load the texture: %s!\n", picFile.c_str());
-        return false;
-    }
-
-    mTexture.setBlendMode(SDL_BLENDMODE_BLEND);
-    return true;
-}
-
 VirtualKeenControl::~VirtualKeenControl()
 {}
 
 bool VirtualKeenControl::init()
 {
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    // Check if the virtual game pad image exist. If not download the picture package
-
-    /*if(!checkVPadImage())
-    {
-        downloadVPadImages();
-        extractVPadImages();
-    }
-*/
 
     /// Load The buttons images
     {
@@ -316,10 +293,9 @@ void VirtualKeenControl::hideAllButtons()
 
 
 
-void VirtualKeenControl::render(GsWeakSurface &sfc)
+void VirtualKeenControl::render(GsWeakSurface &)
 {
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    //GsRect<Uint16> clickGameArea = gVideoDriver.mpVideoEngine->getActiveAreaRect();
 
     auto addTexture = [](TouchButton &button) -> void
     {
@@ -327,7 +303,16 @@ void VirtualKeenControl::render(GsWeakSurface &sfc)
             button.w > 0.0f &&
             button.h > 0.0f)
         {
-            gVideoDriver.addTextureRefToRender(button.mTexture, button.Rect());
+            if(button.hasFingersPressing())
+            {
+                gVideoDriver.addTextureRefToRender(button.mTextureDark,
+                                                   button.Rect());
+            }
+            else
+            {
+                gVideoDriver.addTextureRefToRender(button.mTexture,
+                                                   button.Rect());
+            }
         }
     };
 
@@ -362,33 +347,7 @@ bool VirtualKeenControl::mouseFingerState(const Vector2D<float> &Pos,
                                           const bool down)
 {
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-/*
-    auto unbindButtonCommand = [&](const TouchButton &button,
-            const InputCommand &cmd)
-    {
-        gInput.setCommand(0, cmd, false);
-    };
 
-    unbindButtonCommand(mConfirmButton, IC_JUMP);
-    unbindButtonCommand(mStartButton, IC_JUMP);
-    unbindButtonCommand(mStatusButton, IC_STATUS);
-    unbindButtonCommand(mShootButton, IC_FIRE);
-    unbindButtonCommand(mJumpButton, IC_JUMP);
-    unbindButtonCommand(mPogoButton, IC_POGO);
-
-
-    // Always sent released first, better for VPads
-    SDL_Event evUp;
-    evUp.type = SDL_KEYUP;
-
-    evUp.key.keysym.sym = SDLK_UP;    SDL_PushEvent(&evUp);
-    evUp.key.keysym.sym = SDLK_LEFT;  SDL_PushEvent(&evUp);
-    evUp.key.keysym.sym = SDLK_RIGHT; SDL_PushEvent(&evUp);
-    evUp.key.keysym.sym = SDLK_DOWN;  SDL_PushEvent(&evUp);*/
-
-/*
-    if( !mPadConfigBackground.isInside(Pos.x, Pos.y) )
-        return false;*/
     processCloseConfig(Pos);
 
     bool ok = false;
@@ -537,30 +496,8 @@ bool VirtualKeenControl::mouseFingerState(const Vector2D<float> &Pos,
 
 bool VirtualKeenControl::mouseState(const Vector2D<float> &Pos, const bool down)
 {
+
 #if SDL_VERSION_ATLEAST(2, 0, 0)    
-/*
-    auto unbindButtonCommand = [&](const TouchButton &button,
-            const InputCommand &cmd)
-    {
-        gInput.setCommand(0, cmd, false);
-    };
-
-    unbindButtonCommand(mConfirmButton, IC_JUMP);
-    unbindButtonCommand(mStartButton, IC_JUMP);
-    unbindButtonCommand(mStatusButton, IC_STATUS);
-    unbindButtonCommand(mShootButton, IC_FIRE);
-    unbindButtonCommand(mJumpButton, IC_JUMP);
-    unbindButtonCommand(mPogoButton, IC_POGO);
-
-
-    // Always sent released first, better for VPads
-    SDL_Event evUp;
-    evUp.type = SDL_KEYUP;
-
-    evUp.key.keysym.sym = SDLK_UP;    SDL_PushEvent(&evUp);
-    evUp.key.keysym.sym = SDLK_LEFT;  SDL_PushEvent(&evUp);
-    evUp.key.keysym.sym = SDLK_RIGHT; SDL_PushEvent(&evUp);
-    evUp.key.keysym.sym = SDLK_DOWN;  SDL_PushEvent(&evUp);*/
 
     processCloseConfig(Pos);
 
@@ -568,7 +505,7 @@ bool VirtualKeenControl::mouseState(const Vector2D<float> &Pos, const bool down)
     if( mPadConfigBackground.invisible )
         return false;
 
-    auto bindButtonCommand = [&](const TouchButton &button,
+    auto bindButtonCommand = [&](TouchButton &button,
                                  const InputCommand &cmd)
     {
         if(button.invisible)
@@ -577,6 +514,11 @@ bool VirtualKeenControl::mouseState(const Vector2D<float> &Pos, const bool down)
         if( button.Rect().HasPoint(Pos) )
         {
             gInput.setCommand(0, cmd, down);
+            button.mMouseDown = false;
+        }
+        else
+        {
+            button.mMouseDown = true;
         }
     };        
 

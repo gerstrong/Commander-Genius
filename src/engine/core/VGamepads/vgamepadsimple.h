@@ -133,7 +133,7 @@ public:
 
 #endif    
 
-    bool mConfigOpened = false;
+    bool mConfigOpened = false;    
 
 };
 

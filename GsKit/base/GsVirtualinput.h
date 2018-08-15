@@ -41,12 +41,6 @@ public:
     }
 
     /**
-     * @brief loadPicture   load the button-picture from a given file
-     * @param picFile       file to load
-     */
-    bool loadPicture(const std::string &picFile);
-
-    /**
      * @brief loadEmdbeddedPicture  Load picture from internal memory
      * @param data
      * @return
@@ -58,11 +52,12 @@ public:
 
     stInputCommand* cmd = nullptr;
     int immediateIndex = 0;
-    //int x = 0, y = 0, w = 0, h = 0;
+
     float x = 0.0f, y = 0.0f, w = 0.0f, h = 0.0f;
     bool invisible = true;        
 
     GsTexture mTexture;
+    GsTexture mTextureDark;
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 
@@ -72,16 +67,21 @@ public:
 
     void removeFingerId(const SDL_FingerID fid);
 
-    bool hasFingers() const
+    bool hasFingersPressing() const
     {
+        if(mMouseDown)
+            return true;
+
         return !mFingerSet.empty();
     }
 
-//private:
 
     std::set<SDL_FingerID> mFingerSet;
 
 #endif
+
+
+    bool mMouseDown = true;
 };
 
 /**
