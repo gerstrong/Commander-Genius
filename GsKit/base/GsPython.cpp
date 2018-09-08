@@ -201,7 +201,7 @@ bool loadStrFunction(PyObject * pModule,
         {
             PyObject *objectsRepresentation = PyObject_Repr(pValue);
 
-            char *str = PyUnicode_AsUTF8(objectsRepresentation) ;
+            auto *str = PyUnicode_AsUTF8(objectsRepresentation) ;
 
             if(str)
             {
@@ -265,7 +265,7 @@ bool loadStrFunction(PyObject * pModule,
         {
             PyObject *objectsRepresentation = PyObject_Repr(pValue);
 
-            char *str = PyUnicode_AsUTF8(objectsRepresentation) ;
+            auto *str = PyUnicode_AsUTF8(objectsRepresentation) ;
 
             if(str)
             {

@@ -48,6 +48,12 @@ public:
     bool loadEmdbeddedPicture(const unsigned char *data,
                               const unsigned int size);
 
+    /**
+     * @brief render    The actual render function.
+     * @param dark      Should the texture be rendered dark?
+     */
+    void render(const bool dark);
+
 
 
     stInputCommand* cmd = nullptr;
@@ -58,6 +64,7 @@ public:
 
     GsTexture mTexture;
     GsTexture mTextureDark;
+
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 
@@ -80,6 +87,8 @@ public:
 
 #endif
 
+    // Happens when user tried to put the button to a different location
+    bool beingRepositioned = false;
 
     bool mMouseDown = false;
 };
@@ -190,7 +199,6 @@ protected:
     //GsSurface mOverlay;
 
     float mTranslucency = 0.5f;
-
 };
 
 

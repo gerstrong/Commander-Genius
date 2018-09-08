@@ -38,10 +38,10 @@ public:
 
 
     /**
-     * @brief processCloseConfig    In case the close config button was tapped
+     * @brief processConfigTouchbuttons    In case the close config button was tapped
      * @param Pos
      */
-    void processCloseConfig(const Vector2D<float> &Pos);
+    void processConfigTouchbuttons(const Vector2D<float> &Pos, const bool down);
 
     /**
      * @brief renderConfig  Render configuration dialog of the dialog
@@ -130,6 +130,8 @@ public:
     TouchButton mStatusButton;        
 
     std::set< SDL_FingerID > mFingerSet;
+
+    TouchButton *mpCurrentButton4Config = nullptr;
 
 #endif    
 

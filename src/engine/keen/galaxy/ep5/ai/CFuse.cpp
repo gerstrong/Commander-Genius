@@ -73,7 +73,7 @@ bool CFuse::loadPythonScripts(const std::string &scriptBaseName)
                 {                    
                     PyObject *objectsRepresentation = PyObject_Repr(pValue);
 
-                    char *str = PyUnicode_AsUTF8(objectsRepresentation) ;
+                    auto *str = PyUnicode_AsUTF8(objectsRepresentation) ;
 
                     if(str)
                     {
