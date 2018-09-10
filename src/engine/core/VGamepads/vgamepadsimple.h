@@ -117,8 +117,8 @@ public:
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 
-    TouchButton mCloseConfigButton;
     TouchButton mPadConfigBackground;
+    TouchButton mCloseConfigButton;
     TouchButton mDPad;
     TouchButton mConfirmButton;
     TouchButton mStartButton;

@@ -255,6 +255,15 @@ void VirtualKeenControl::processConfigTouchbuttons(const Vector2D<float> &Pos,
             mConfigOpened = false;
             mPadConfigBackground.invisible = true;
             gInput.setInVPadConfigState(false);
+
+            mDPad.invisible = true;
+            mConfirmButton.invisible = true;
+            mStartButton.invisible = true;
+            mJumpButton.invisible = true;
+            mShootButton.invisible = true;
+            mPogoButton.invisible = true;
+            mStatusButton.invisible = true;
+
             return;
         }
     }
