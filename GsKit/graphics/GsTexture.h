@@ -111,6 +111,17 @@ public:
         return mpTexture;
     }
 
+    void fillRGB( SDL_Renderer *renderer,
+                             const Uint8 r,
+                             const Uint8 g,
+                             const Uint8 b );
+
+
+    bool loadFromMem(const unsigned char *data,
+                     const unsigned int size,
+                     SDL_Renderer *renderer,
+                     const bool dark);
+
 private:
 
     SDL_Texture* mpTexture = nullptr;
