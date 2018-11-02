@@ -13,6 +13,8 @@
 #ifndef MISC_H_
 #define MISC_H_
 
+#include <string>
+
 unsigned int rnd(void);
 bool getProbability(unsigned short prob);
 
