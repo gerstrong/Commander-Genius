@@ -16,4 +16,6 @@
 unsigned int rnd(void);
 bool getProbability(unsigned short prob);
 
+std::string getTimeStr();
+
 #endif /* MISC_H_ */
