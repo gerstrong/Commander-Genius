@@ -126,8 +126,8 @@ bool CSDLVideo::resizeDisplayScreen(const GsRect<Uint16>& newDim)
         SDL_RenderSetViewport(renderer, nullptr);
     }
 #else
-    mDisplaySfc.setPtr(SDL_SetVideoMode( mActiceAreaRect.w,
-                                         mActiceAreaRect.h,
+    mDisplaySfc.setPtr(SDL_SetVideoMode( mActiveAreaRect.w,
+                                         mActiveAreaRect.h,
                                          32, m_Mode ));
 #endif
 

@@ -58,7 +58,7 @@ bool COpenGL::resizeDisplayScreen(const GsRect<Uint16>& newDim)
 
     updateActiveArea(newDim, w, h);
 
-    setUpViewPort(mActiceAreaRect);
+    setUpViewPort(mActiveAreaRect);
 
 #endif
 
@@ -190,7 +190,7 @@ bool COpenGL::init()
 	}
 #else // not SDL 2.0
 	// Setup the view port for the first time
-    setUpViewPort(mActiceAreaRect);
+    setUpViewPort(mActiveAreaRect);
 
 	// Set clear colour
 	glClearColor(0,0,0,0);

@@ -12,7 +12,6 @@
  * @note: This is SDL 2.0 or above only right now
  */
 
-#if SDL_VERSION_ATLEAST(2, 0, 0)
 
 class GsTexture
 {
@@ -28,11 +27,15 @@ public:
      */
     virtual ~GsTexture()
     {
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+
         if(mpTexture)
             unload();
+#endif
     }
 
 
+    #if SDL_VERSION_ATLEAST(2, 0, 0)
     /**
      * @brief loadTexture   Will try to load the texture
      * @param fname filename to load
@@ -41,6 +44,7 @@ public:
      */
     bool load(const std::string &fname, SDL_Renderer *renderer)
     {
+
         // Do we have an old texture? Unload it
         if(mpTexture)
             unload();
@@ -160,8 +164,9 @@ public:
 private:
 
     SDL_Texture* mpTexture = nullptr;
-};
 
 #endif
+};
+
 
 #endif // GSTEXTURE_H

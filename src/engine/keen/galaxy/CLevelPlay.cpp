@@ -98,6 +98,7 @@ bool CLevelPlay::loadLevel(const Uint16 level)
 
 void CLevelPlay::ponder(const float deltaT)
 {    
+#if SDL_VERSION_ATLEAST(2, 0, 0)
     if( gVideoDriver.VGamePadEnabled() )
     {
         VirtualKeenControl *vkc = dynamic_cast<VirtualKeenControl*>(gInput.mpVirtPad.get());
@@ -110,6 +111,7 @@ void CLevelPlay::ponder(const float deltaT)
         vkc->mShootButton.invisible = false;
         vkc->mStatusButton.invisible = false;
     }
+#endif
 
     ponderBase(deltaT);
 }

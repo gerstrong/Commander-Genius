@@ -10,7 +10,7 @@ class VirtualKeenControl : public GsVirtualInput
 {
 public:
 
-    virtual ~VirtualKeenControl();
+    virtual ~VirtualKeenControl() override;
 
     // OK => Only show Ok Button
     // WMAP => Shows Enter Button for the world map and another one for the item box and one for the main menu
@@ -86,16 +86,21 @@ public:
                           const SDL_TouchFingerEvent &touchFingerEvent,
                           const bool down) override;
 
-#endif
 
+#endif
     /**
      * @brief active    Checks if click events happened in the virtual dpad
      * @return
      */
     bool isInside(const Vector2D<float> &Pos) const override
     {
+#if SDL_VERSION_ATLEAST(2, 0, 0)
         return mPadBackground.isInside(Pos.x, Pos.y);
+#else
+        return false;
+#endif
     }
+
 
 
     /**
@@ -109,8 +114,6 @@ public:
     void hideEverything();
 
 
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-
     TouchButton mPadBackground;
     TouchButton mDPad;
     TouchButton mConfirmButton;
@@ -122,8 +125,8 @@ public:
     TouchButton mPogoButton;
     TouchButton mStatusButton;        
 
+#if SDL_VERSION_ATLEAST(2, 0, 0)
     std::set< SDL_FingerID > mFingerSet;
-
 #endif    
 
 };

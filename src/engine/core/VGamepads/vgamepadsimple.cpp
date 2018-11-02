@@ -20,10 +20,15 @@
 bool TouchButton::loadEmdbeddedPicture(const unsigned char *data,
                                        const unsigned int size)
 {
+#if SDL_VERSION_ATLEAST(2, 0, 0)
     return mTexture.loadFromMem(data, size,
                          gVideoDriver.Renderer());
+#else
+    return false;
+#endif
 }
 
+#if SDL_VERSION_ATLEAST(2, 0, 0)
 void TouchButton::clearFingers()
 {
     mFingerSet.clear();
@@ -43,9 +48,11 @@ void TouchButton::removeFingerId(const SDL_FingerID fid)
     }
 }
 
+#endif
 
 bool TouchButton::loadPicture(const std::string &picFile)
 {
+#if SDL_VERSION_ATLEAST(2, 0, 0)
     const std::string buttonFname = getResourceFilename(picFile, "", true, true);
     if(buttonFname == "") return false;
 
@@ -56,8 +63,11 @@ bool TouchButton::loadPicture(const std::string &picFile)
         return false;
     }
 
-    mTexture.setBlendMode(SDL_BLENDMODE_BLEND);
+    mTexture.setBlendMode(SDL_BLENDMODE_BLEND);    
     return true;
+#else
+    return false;
+#endif
 }
 
 VirtualKeenControl::~VirtualKeenControl()
@@ -236,6 +246,7 @@ void VirtualKeenControl::renderConfig()
 
 void VirtualKeenControl::hideEverything()
 {
+#if SDL_VERSION_ATLEAST(2, 0, 0)
     mPadBackground.invisible = true;
     mDPad.invisible = true;
     mConfirmButton.invisible = true;
@@ -245,10 +256,12 @@ void VirtualKeenControl::hideEverything()
     mShootButton.invisible = true;
     mPogoButton.invisible = true;
     mStatusButton.invisible = true;
+#endif
 }
 
 void VirtualKeenControl::hideAllButtons()
 {
+#if SDL_VERSION_ATLEAST(2, 0, 0)
     mPadBackground.invisible = false;
     mConfirmButton.invisible = true;
     mStartButton.invisible = true;
@@ -257,6 +270,7 @@ void VirtualKeenControl::hideAllButtons()
     mShootButton.invisible = true;
     mPogoButton.invisible = true;
     mStatusButton.invisible = true;
+#endif
 }
 
 
@@ -294,6 +308,7 @@ void VirtualKeenControl::render(GsWeakSurface &sfc)
 
 void VirtualKeenControl::flush()
 {
+#if SDL_VERSION_ATLEAST(2, 0, 0)
     mConfirmButton.clearFingers();
     mStartButton.clearFingers();
     mStatusButton.clearFingers();
@@ -301,14 +316,16 @@ void VirtualKeenControl::flush()
     mJumpButton.clearFingers();
     mPogoButton.clearFingers();
     mDPad.clearFingers();
+#endif
 }
 
 
+#if SDL_VERSION_ATLEAST(2, 0, 0)
 bool VirtualKeenControl::mouseFingerState(const Vector2D<float> &Pos,
                                           const SDL_TouchFingerEvent &touchFingerEvent,
                                           const bool down)
 {
-#if SDL_VERSION_ATLEAST(2, 0, 0)
+
 /*
     auto unbindButtonCommand = [&](const TouchButton &button,
             const InputCommand &cmd)
@@ -476,10 +493,10 @@ bool VirtualKeenControl::mouseFingerState(const Vector2D<float> &Pos,
     ok |= bindButtonCommand(mJumpButton, IC_JUMP);
     ok |= bindButtonCommand(mPogoButton, IC_POGO);
 
-#endif
-
     return ok;
 }
+#endif
+
 
 bool VirtualKeenControl::mouseState(const Vector2D<float> &Pos, const bool down)
 {

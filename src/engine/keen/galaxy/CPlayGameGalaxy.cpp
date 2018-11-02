@@ -675,6 +675,8 @@ void CPlayGameGalaxy::render()
 
 void CPlayGameGalaxy::processInput()
 {
+
+#if SDL_VERSION_ATLEAST(2, 0, 0)
         VirtualKeenControl *vkc = dynamic_cast<VirtualKeenControl*>(gInput.mpVirtPad.get());
 
         if(!vkc)
@@ -686,6 +688,7 @@ void CPlayGameGalaxy::processInput()
 
         assert(vkc);
         vkc->mDPad.invisible = false;
+#endif
 }
 
 
