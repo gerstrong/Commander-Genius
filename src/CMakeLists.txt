@@ -47,11 +47,19 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror=cast-align")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Werror=cast-align")
 
 # Use python3 for AI scripting and more!
+# Use python3 for AI scripting and more!
 IF(USE_PYTHON3)
-    FIND_PACKAGE(PythonLibs)
-    ADD_DEFINITIONS(-DUSE_PYTHON3=1)
-    INCLUDE_DIRECTORIES(${PYTHON_INCLUDE_DIRS})
-    LINK_LIBRARIES(${PYTHON_LIBRARIES})
+    # Look for Python (Version 3.0 or later is required)
+    FIND_PACKAGE(Python3 COMPONENTS Interpreter Development)
+    if(Python3_FOUND)
+        ADD_DEFINITIONS(-DUSE_PYTHON3=1)
+        INCLUDE_DIRECTORIES(${Python3_INCLUDE_DIRS})
+        LINK_LIBRARIES(${Python3_LIBRARIES})
+        message(STATUS "Python3_LIBRARIES = ${Python3_LIBRARIES}")
+        message(STATUS "Python3_INCLUDE_DIRS = ${Python3_INCLUDE_DIRS}")
+    else()
+        message(FATAL_ERROR " Python3 not found!")
+    endif()
 ENDIF()
 
 
@@ -117,27 +125,6 @@ ELSE(Boost_FOUND)
 ENDIF(Boost_FOUND)
 
 
-find_package( ZLIB REQUIRED )
-if ( ZLIB_FOUND )
-    include_directories( ${ZLIB_INCLUDE_DIRS} )
-endif( ZLIB_FOUND )
-
-if(DOWNLOADER)
-    FIND_PACKAGE(CURL)
-    IF(CURL_FOUND)
-
- 	if(WIN32)
- 	   ADD_DEFINITIONS(-DCURL_STATICLIB)    
-        endif()
-	
-	INCLUDE_DIRECTORIES(${CURL_INCLUDE_DIR})
-
-    ELSE(CURL_FOUND)
-
-      MESSAGE(FATAL_ERROR "Could not find the CURL library and development files." )
-
-    ENDIF(CURL_FOUND)
-endif()
 
 if(USE_SDL2)
 
@@ -229,9 +216,6 @@ target_link_libraries (CGeniusExe GsKit)
 # Link our SDL Extensions
 target_link_libraries(CGeniusExe sdl_extensions_audio sdl_extensions_sys)
 
-# Link zlib
-target_link_libraries( CGeniusExe ${ZLIB_LIBRARIES} )
-
 
 if(USE_SDL2)
         message(STATUS "SDL2_LIBRARY = ${SDL2_LIBRARY}")
@@ -244,11 +228,6 @@ else(USE_SDL2)
 endif(USE_SDL2)
 
 
-
-
-IF(CURL_FOUND)
-  TARGET_LINK_LIBRARIES(CGeniusExe ${CURL_LIBRARIES})
-ENDIF(CURL_FOUND)
 
 # The Windows Version has an icon in the executable
 IF(WIN32)

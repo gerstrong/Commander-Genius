@@ -1,7 +1,7 @@
 # CMake file for development of Commander Genius (taken from OLX)
 # This CMake file is used under Linux normally. 
 
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.10)
 
 Project(CommanderGenius)
 
@@ -9,7 +9,10 @@ set (CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/CMake")
 
 # Use COmpile TIme REducer
 include(cotire)
-include(FindSDL2_mixer)
+
+if(USE_SDL2S)
+    include(FindSDL2_mixer)
+endif()
 
 option(USE_PYTHON3 "Use Python3 scripts" yes)
 

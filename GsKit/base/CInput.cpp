@@ -46,6 +46,7 @@ CInput::CInput()
 	for(size_t c=1 ; c<= NUM_INPUTS ; c++)
 		resetControls(c);
 	memset(&Event,0,sizeof(Event));
+
 #if !TARGET_OS_IPHONE && !TARGET_IPHONE_SIMULATOR
 	loadControlconfig(); // we want to have the default settings in all cases
 	startJoyDriver(); // not for iPhone for now, could cause trouble (unwanted input events)
