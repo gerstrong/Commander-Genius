@@ -6,6 +6,7 @@
 #include <deque>
 #include <list>
 #include <memory>
+#include <ctime>
 
 struct CEvent { virtual ~CEvent(); };
 

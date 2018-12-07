@@ -12,6 +12,7 @@
 #include <vector>
 #include <iostream>
 #include <fstream>
+#include <cstring>
 
 #include <base/GsLogging.h>
 #include <base/GsEvent.h>
