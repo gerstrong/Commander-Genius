@@ -1,14 +1,13 @@
-#ifndef __GSEVENT_H_
-#define __GSEVENT_H_
+#ifndef GSEVENT_H
+#define GSEVENT_H
 
 #include "base/Singleton.h"
-#include <ctime>
 #include <vector>
 #include <deque>
 #include <list>
 #include <memory>
 
-struct CEvent { virtual ~CEvent() {} };
+struct CEvent { virtual ~CEvent(); };
 
 struct InvokeFunctorEvent : CEvent
 {
@@ -22,18 +21,19 @@ struct InvokeFunctorEvent : CEvent
 class GsEventSink
 {
 public:
+
+    virtual ~GsEventSink();
+
     virtual void pumpEvent(const CEvent *ev) = 0;
 };
+
+
+#define gEventManager CEventContainer::get()
+
 
 class CEventContainer : public GsSingleton<CEventContainer>
 {
 public:
-
-    CEventContainer() :
-        pausetime(0),
-        timepoint(0),
-        mFlush(false)
-    {}
 
     size_t size() { return m_EventList.size(); }
     bool empty() { return m_EventList.empty(); }
@@ -161,7 +161,5 @@ T* CEventContainer::occurredEvent()
     return dynamic_cast<T*> (m_EventList.front().get());
 }
 
-#define gEventManager CEventContainer::get()
 
-
-#endif /* __GSEVENT_H_ */
+#endif /* GSEVENT_H */

@@ -301,7 +301,7 @@ bool CGameLauncher::scanSubDirectories(const std::string& path,
     if(deltaPerMil < 1)
         deltaPerMil = 1;
 
-    mGameScanner.setPermilage(startPermil);
+    mGameScanner.setPermilage(int(startPermil));
 
     for( const auto &subdir : dirs )
 	{

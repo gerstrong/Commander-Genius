@@ -1944,6 +1944,8 @@ void	KeenPoleThink		(objtype *ob)
 		ob->ydir = 1;
 		KeenDropThink (ob);
 		return;
+    default:
+        break;
 	}
 
 	if (c.xaxis)
@@ -2003,6 +2005,8 @@ void	KeenClimbThink		(objtype *ob)
 		ob->ydir = 1;
 		KeenDropThink (ob);
 		break;
+    default:
+        break;
 	}
 
 	PoleActions (ob);
