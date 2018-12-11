@@ -113,6 +113,15 @@ void CSkypest::processFly()
 
 void CSkypest::process()
 {
+    // No discussion, if skypest is dead, it is squished
+    // Solves the situation when a save game was loaded
+    // and quished
+    if(mIsDead)
+    {
+        xDirection = yDirection = 0;
+        setAction(A_SKYPEST_SQUISHED);
+    }
+
     performCollisions();
     
     (this->*mp_processState)();
