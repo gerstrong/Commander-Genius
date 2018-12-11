@@ -179,7 +179,9 @@ int downloadFile(const std::string &filename, int &progress,
 
 }
 
-bool GameDownloader::readGamesNode(boost::property_tree::ptree &pt)
+#define TRACE_NODE(x) gLogging << #x"=" << x;
+
+bool GameDownloader::readGamesNode(const boost::property_tree::ptree &pt)
 {
     try
     {
@@ -189,12 +191,15 @@ bool GameDownloader::readGamesNode(boost::property_tree::ptree &pt)
             if(gameNode.first == "<xmlcomment>")
                 continue;
 
-            GameCatalogueEntry gce;
+            GameCatalogueEntry gce;            
 
             gce.mVersionCode = gameNode.second.get<int>("<xmlattr>.versioncode");
+            TRACE_NODE(gce.mVersionCode);
 
             gce.mName = gameNode.second.get<std::string>("<xmlattr>.name");
+            TRACE_NODE(gce.mName);
             gce.mLink = gameNode.second.get<std::string>("<xmlattr>.link");
+            TRACE_NODE(gce.mLink);
 
 
             if(gce.mVersionCode > CGVERSIONCODE)
@@ -206,7 +211,9 @@ bool GameDownloader::readGamesNode(boost::property_tree::ptree &pt)
 
 
             gce.mDescription = gameNode.second.get<std::string>("<xmlattr>.description");
+            TRACE_NODE(gce.mDescription);
             gce.mPictureFile = gameNode.second.get<std::string>("<xmlattr>.picture");
+            TRACE_NODE(gce.mPictureFile);
 
             const auto filePath = JoinPaths("cache", gce.mPictureFile);
 
@@ -219,15 +226,21 @@ bool GameDownloader::readGamesNode(boost::property_tree::ptree &pt)
             mGameCatalogue.push_back(gce);
         }
     }
+    catch(std::exception const&  ex)
+    {
+        gLogging << "Exception while reading game node: " << ex.what() << "\n";
+        return false;
+    }
     catch(...)
     {
+        gLogging << "Unknown Exception while reading game node\n.";
         return false;
     }
 
     return true;
 }
 
-bool GameDownloader::readLegacyCatalogue(boost::property_tree::ptree &pt)
+bool GameDownloader::readLegacyCatalogue(const boost::property_tree::ptree &pt)
 {
     try
     {
@@ -255,8 +268,14 @@ bool GameDownloader::readLegacyCatalogue(boost::property_tree::ptree &pt)
             mGameCatalogue.push_back(gce);
         }
     }
+    catch(std::exception const&  ex)
+    {
+        gLogging << "Exception while reading game node (Legacy): " << ex.what() << "\n";
+        return false;
+    }
     catch(...)
     {
+        gLogging << "Unknown Exception while reading game node\n.";
         return false;
     }
 
@@ -284,7 +303,9 @@ bool GameDownloader::loadCatalogue(const std::string &catalogueFile)
 
         bool ok = false;
 
+        gLogging << "Reading Games from Store...\n" ;
         ok |= readGamesNode(pt);
+        gLogging << "Reading Games from Store (Legacy)...\n" ;
         ok |= readLegacyCatalogue(pt);
 
         return ok;
@@ -379,6 +400,8 @@ bool GameDownloader::checkForMissingGames( std::vector< std::string > &missingLi
         const std::string gameFile = gameEntry.mLink;
 
         const auto downloadGamePath = JoinPaths(downloadPath, gameFile);
+
+        gLogging << "Scanning \"" << gameEntry.mName << "\"\n";
 
         if( !IsFileAvailable(downloadGamePath) )
         {
