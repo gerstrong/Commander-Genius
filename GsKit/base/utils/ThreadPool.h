@@ -7,8 +7,8 @@
  *
  */
 
-#ifndef __OLX__THREADPOOL_H__
-#define __OLX__THREADPOOL_H__
+#ifndef THREADPOOL_H__
+#define THREADPOOL_H__
 
 #include <set>
 #include <string>
@@ -90,5 +90,5 @@ struct _ThreadFuncWrapper {
 _ThreadFuncWrapper<T>::Wrapper<&memberfunc>::startThread(this, name)
 
 
-#endif
+#endif // THREADPOOL_H__
 

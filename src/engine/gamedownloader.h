@@ -97,11 +97,17 @@ public:
     std::string catalogFName() const
     { return mCatalogFName; }
 
+    void setupDownloadCatalogue(const bool value)
+    {
+        mDownloadCatalogue = value;
+    }
+
 private:
     int &mProgress;
     bool &mCancelDownload;
 
     bool mCataFound = false;
+    bool mDownloadCatalogue = false;
 
     const std::string mGameFileName;
     const std::string mGameName;

@@ -3,6 +3,7 @@
 #include <widgets/GsButton.h>
 #include <base/GsApp.h>
 #include <base/utils/FindFile.h>
+#include <base/utils/ThreadPool.h>
 
 #include <sstream>
 
@@ -15,37 +16,35 @@
 // If he has all the games, the button won't be shown.
 void CGameLauncher::verifyGameStore()
 {
-    int progress = 0;
-    bool cancel = false;
-    GameDownloader gameDownloader(progress, cancel);
+    m_DownloadProgress = 0;
+    m_DownloadCancel = false;
 
+    GameDownloader *pGameDownloader;
+    pGameDownloader = new GameDownloader(m_DownloadProgress, m_DownloadCancel);
 
     std::vector< std::string > missingList;
 
-    // Try to download the catalogue file
-    gameDownloader.downloadCatalogue();
+    // First try    
+    pGameDownloader->checkForMissingGames( missingList );
 
-    // First try
-    gameDownloader.checkForMissingGames( missingList );
-
-    if(!gameDownloader.hasCatalog())
+    if(!pGameDownloader->hasCatalog())
     {
 
         std::stringstream ss;
 
-        const auto cataFile   = gameDownloader.catalogFName();
+        const auto cataFile   = pGameDownloader->catalogFName();
         const auto searchPath = GetFirstSearchPath();
 
         ss << "You seem not to have a game catalog.\n";
         ss << "The file is called " << "\"" << cataFile  <<  "\" \n";
-        ss << "You might want to download \n";
-        ss << "and copy one into:\n";
+        ss << "I can try to download it or \n";
+        ss << "you copy one into:\n";
         ss << "\"" << searchPath << "\".\n";
-        ss << "\"+ More\" button is disabled...\n";
+        ss << "For now \"+ More\" button is disabled...\n";
 
         std::string msg(ss.str());
 
-        showMessageBox(msg);
+        showMessageBox(msg);                
     }
 
 
@@ -54,14 +53,30 @@ void CGameLauncher::verifyGameStore()
         GsButton *downloadBtn = new GsButton( "+ More", new GMDownloadDlgOpen() );
         mLauncherDialog.addControl( downloadBtn, GsRect<float>(0.125f, 0.865f, 0.25f, 0.07f) );
     }
-    /*else
+
+    mGameCatalogue = pGameDownloader->getGameCatalogue();
+
+    // Try to download the catalogue file, in the background
+    if(!mp_Thread)
     {
-        GsButton *cataLogBtn = new GsButton( "Catalogue", new GMDownloadDlgOpen() );
-        mLauncherDialog.addControl( cataLogBtn, GsRect<float>(0.125f, 0.865f, 0.25f, 0.07f) );
-
-    }*/
-
-    mGameCatalogue = gameDownloader.getGameCatalogue();
+        pGameDownloader->setupDownloadCatalogue(true);
+        mp_Thread = threadPool->start(pGameDownloader, "Loading catalogue file in the background");
+    }
+    else
+    {
+        if(mp_Thread)
+        {
+            int ret;
+            if(threadPool->finalizeIfReady(mp_Thread, &ret))
+            {
+                mp_Thread = nullptr;
+            }
+        }
+        else
+        {
+            delete pGameDownloader;
+        }
+    }
 }
 
 
@@ -84,7 +99,7 @@ void CGameLauncher::pullGame(const int selection)
 
     mpDloadProgressCtrl->enableFancyAnimation(true);
 
-    mpGameDownloader = threadPool->start(new GameDownloader(mDownloadProgress,
+    mpGameDownloadThread = threadPool->start(new GameDownloader(mDownloadProgress,
                                                             mCancelDownload,
                                                             gameFileName,
                                                             gameName),
@@ -125,7 +140,7 @@ void CGameLauncher::ponderDownloadDialog()
     // When everything is done, The launcher should be restarted, for searching new games.
 
     if( mFinishedDownload &&
-        mpGameDownloader->finished &&
+        mpGameDownloadThread->finished &&
         mpDloadProgressCtrl->finished() )
     {        
         mpGameStoreDialog = nullptr;

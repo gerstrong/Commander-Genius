@@ -68,7 +68,7 @@ public:
                   const int start_game_no = -1,
                   const int start_level = -1);
 
-    ~CGameLauncher();
+    ~CGameLauncher() override;
 
 	typedef std::vector<std::string> DirList;
 
@@ -186,7 +186,7 @@ private:
     int mDownloadProgress = 0;
     bool mCancelDownload = false;
 
-    ThreadPoolItem* mpGameDownloader;
+    ThreadPoolItem* mpGameDownloadThread = nullptr;
 
     bool scanSubDirectories(const std::string& path,
                             const size_t maxdepth,
@@ -200,6 +200,11 @@ private:
     void getLabels();
     std::string scanLabels(const std::string& path);
     void putLabels();
+
+    int m_DownloadProgress = 0;
+    bool m_DownloadCancel = false;
+
+    ThreadPoolItem *mp_Thread = nullptr;
 };
 
 

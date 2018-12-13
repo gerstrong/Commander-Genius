@@ -75,7 +75,14 @@ m_start_level(start_level)
 }
 
 CGameLauncher::~CGameLauncher()
-{}
+{
+    if(mp_Thread)
+    {
+        int ret = 0;
+        threadPool->finalizeIfReady(mp_Thread, &ret);
+        mp_Thread = nullptr;
+    }
+}
 
 ////
 // Initialization Routine
@@ -526,12 +533,13 @@ void CGameLauncher::showMessageBox(const std::string &text)
     }
 
 
+    auto *pRetryButton = new GsButton("Retry", new GMSwitchToGameLauncher());
+    mpMsgDialog->addControl(pRetryButton, GsRect<float>(0.2f, 0.85f, 0.2f, 0.05f));
 
     auto *pOkButton = new GsButton("Ok", new CloseBoxEvent());
-    mpMsgDialog->addControl(pOkButton, GsRect<float>(0.4f, 0.85f, 0.2f, 0.05f));
+    mpMsgDialog->addControl(pOkButton, GsRect<float>(0.6f, 0.85f, 0.2f, 0.05f));
     pOkButton->select(true);
     mpMsgDialog->setCurrentControl(pOkButton);
-
 }
 
 

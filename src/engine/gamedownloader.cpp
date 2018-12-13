@@ -423,6 +423,12 @@ int GameDownloader::handle()
 
     pCancelDownload = &mCancelDownload;
 
+    if(mDownloadCatalogue)
+    {
+        downloadCatalogue();
+        return res;
+    }
+
     // Get the first path. We assume that one is writable
     std::string searchPaths;
     GetExactFileName(GetFirstSearchPath(), searchPaths);
@@ -492,10 +498,7 @@ int GameDownloader::handle()
         {
             remove(downloadGamePath.c_str());
         }
-
     }
-
-
 
     mProgress = 1000;
 
