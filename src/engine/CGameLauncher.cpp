@@ -79,7 +79,7 @@ CGameLauncher::~CGameLauncher()
     if(mp_Thread)
     {
         int ret = 0;
-        threadPool->finalizeIfReady(mp_Thread, &ret);
+        threadPool->wait(mp_Thread, &ret);
         mp_Thread = nullptr;
     }
 }

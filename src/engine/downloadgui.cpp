@@ -19,20 +19,19 @@ void CGameLauncher::verifyGameStore()
     m_DownloadProgress = 0;
     m_DownloadCancel = false;
 
-    GameDownloader *pGameDownloader;
-    pGameDownloader = new GameDownloader(m_DownloadProgress, m_DownloadCancel);
+    GameDownloader gameDownloader(m_DownloadProgress, m_DownloadCancel);
 
     std::vector< std::string > missingList;
 
     // First try    
-    pGameDownloader->checkForMissingGames( missingList );
+    gameDownloader.checkForMissingGames( missingList );
 
-    if(!pGameDownloader->hasCatalog())
+    if(!gameDownloader.hasCatalog())
     {
 
         std::stringstream ss;
 
-        const auto cataFile   = pGameDownloader->catalogFName();
+        const auto cataFile   = gameDownloader.catalogFName();
         const auto searchPath = GetFirstSearchPath();
 
         ss << "You seem not to have a game catalog.\n";
@@ -54,13 +53,14 @@ void CGameLauncher::verifyGameStore()
         mLauncherDialog.addControl( downloadBtn, GsRect<float>(0.125f, 0.865f, 0.25f, 0.07f) );
     }
 
-    mGameCatalogue = pGameDownloader->getGameCatalogue();
+    mGameCatalogue = gameDownloader.getGameCatalogue();
 
     // Try to download the catalogue file, in the background
     if(!mp_Thread)
     {
-        pGameDownloader->setupDownloadCatalogue(true);
-        mp_Thread = threadPool->start(pGameDownloader, "Loading catalogue file in the background");
+        GameDownloader *pCatalogueDownloader = new GameDownloader(m_DownloadProgress, m_DownloadCancel);
+        pCatalogueDownloader->setupDownloadCatalogue(true);
+        mp_Thread = threadPool->start(pCatalogueDownloader, "Loading catalogue file in the background");
     }
     else
     {
@@ -71,10 +71,6 @@ void CGameLauncher::verifyGameStore()
             {
                 mp_Thread = nullptr;
             }
-        }
-        else
-        {
-            delete pGameDownloader;
         }
     }
 }
@@ -89,8 +85,8 @@ void CGameLauncher::pullGame(const int selection)
         return;
 
     // Start downloading the game
-    const auto gameFileName = mGameCatalogue[selection].mLink;
-    const auto gameName = mGameCatalogue[selection].mName;
+    const auto gameFileName = mGameCatalogue[size_t(selection)].mLink;
+    const auto gameName = mGameCatalogue[size_t(selection)].mName;
 
     mDownloading = true;
     mpDloadTitleText->setText("Downloading Game...");
