@@ -713,19 +713,22 @@ void CGameLauncher::ponderGameSelDialog(const float deltaT)
 
     // Check if the selection changed. Update the right data panel
     if(mSelection != mpGameSelectionList->getSelection())
-    {
-        mSelection = mpGameSelectionList->getSelection();
-        auto &entry = m_Entries[mSelection];
-        const std::string nameText = "Episode " + itoa(entry.episode);
-        mpEpisodeText->setText(nameText);
-        float fVer = entry.version;
-        fVer /= 100.0f;
-        mpVersionText->setText("Version: " + ftoa(fVer));
+    {                                
+        if(!m_Entries.empty())
+        {
+            mSelection = mpGameSelectionList->getSelection();
+            auto &entry = m_Entries[mSelection];
+            const std::string nameText = "Episode " + itoa(entry.episode);
+            mpEpisodeText->setText(nameText);
+            float fVer = entry.version;
+            fVer /= 100.0f;
+            mpVersionText->setText("Version: " + ftoa(fVer));
 
-        mpDemoText->setText(entry.demo ? "Demo" : "");
+            mpDemoText->setText(entry.demo ? "Demo" : "");
 
-        // Now update the bitmap
-        mCurrentBmp->setBitmapPtr(mPreviewBmpPtrVec[mSelection]);
+            // Now update the bitmap
+            mCurrentBmp->setBitmapPtr(mPreviewBmpPtrVec[mSelection]);
+        }
     }
 
     mLauncherDialog.processLogic();
