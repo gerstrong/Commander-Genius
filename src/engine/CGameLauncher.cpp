@@ -65,7 +65,7 @@ m_start_level(start_level)
 
     gInput.mpVirtPad.reset(new VirtualKeenControl);
 
-    if( gInput.mpVirtPad->init() )
+    if( !gInput.mpVirtPad->init() )
     {
         const std::string err = "Error loading the Virtual Gamepad!";
 

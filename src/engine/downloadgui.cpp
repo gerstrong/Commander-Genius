@@ -166,15 +166,18 @@ void CGameLauncher::setupDownloadDialog()
 
     assert( !missingList.empty() );
 
-    // Create the selection list
-    for( auto &gameName : missingList )
+    if(!missingList.empty())
     {
-        mpGSSelList->addText(gameName);
+        // Create the selection list
+        for( auto &gameName : missingList )
+        {
+            mpGSSelList->addText(gameName);
+        }
+
+        mpGSSelList->setSelection(0);
+        mpGSSelList->setConfirmButtonEvent(new GameStorePullGame());
     }
 
-    mpGSSelList->setSelection(0);
-
-    mpGSSelList->setConfirmButtonEvent(new GameStorePullGame());
     mpGSSelList->setBackButtonEvent(new GMQuit());
 
     // Title
