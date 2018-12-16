@@ -96,7 +96,8 @@ int downloadFile(const std::string &filename, int &progress,
 {
     progressPtr = &progress;
 
-    const std::string urlString = "http://downloads.sourceforge.net/project/clonekeenplus/Downloads/" + filename;
+    const std::string urlString = "http://downloads.sourceforge.net/project/clonekeenplus/Downloads/" + filename;    
+    const std::string outputPathTemp = JoinPaths(downloadDirPath, "temp" + filename);
     const std::string outputPath = JoinPaths(downloadDirPath, filename);
 
     CURLcode res = CURLE_OK;
@@ -122,7 +123,7 @@ int downloadFile(const std::string &filename, int &progress,
       /* pass the struct pointer into the progress function */
       curl_easy_setopt(curl, CURLOPT_PROGRESSDATA, &prog);
 
-      FILE *fp = OpenGameFile(outputPath, "wb");
+      FILE *fp = OpenGameFile(outputPathTemp, "wb");
       if(fp != nullptr)
       {
           curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_data);
@@ -148,7 +149,7 @@ int downloadFile(const std::string &filename, int &progress,
           curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 0L);
           res = curl_easy_perform(curl);
 
-          gLogging.ftextOut( FONTCOLORS::GREEN, "Finished downloading from \"%s\", destination: \"%s\"", urlString.c_str(), outputPath.c_str());
+          gLogging.ftextOut( FONTCOLORS::GREEN, "Finished downloading from \"%s\", destination: \"%s\"", urlString.c_str(), outputPathTemp.c_str());
 
           progress = 1000;
       }
@@ -157,11 +158,9 @@ int downloadFile(const std::string &filename, int &progress,
           /* always cleanup */
           curl_easy_cleanup(curl);
 
-          gLogging.ftextOut( FONTCOLORS::RED, "Error creating path \"%s\" for writing", outputPath.c_str());
+          gLogging.ftextOut( FONTCOLORS::RED, "Error creating path \"%s\" for writing", outputPathTemp.c_str());
           return 1;
       }
-
-
 
       // output any error to the central CG Log
       if(res != CURLE_OK)          
@@ -173,10 +172,20 @@ int downloadFile(const std::string &filename, int &progress,
       curl_easy_cleanup(curl);
 
       fclose(fp);
+
+      // If all went well, the temp file will become the real one
+      if(res == CURLE_OK)
+      {
+          remove(outputPath.c_str());
+          Rename(outputPathTemp, outputPath);
+      }
+      else
+      {
+          remove(GetFullFileName(outputPathTemp).c_str());
+      }
     }
 
     return (int)res;
-
 }
 
 #define TRACE_NODE(x) gLogging << #x"=" << x;
@@ -315,18 +324,18 @@ bool GameDownloader::loadCatalogue(const std::string &catalogueFile)
     {
         return false;
     }
-
-    return true;
 }
 
 bool GameDownloader::downloadCatalogue()
 {
-    pCancelDownload = &mCancelDownload;
+    pCancelDownload = &mCancelDownload;    
 
     const int res = downloadFile(mCatalogFName, mProgress, "");
 
     if(res==0)
+    {                
         return true;
+    }
 
     return false;
 }
@@ -426,6 +435,7 @@ int GameDownloader::handle()
     if(mDownloadCatalogue)
     {
         downloadCatalogue();
+        mProgressError = res;
         return res;
     }
 
@@ -501,6 +511,7 @@ int GameDownloader::handle()
     }
 
     mProgress = 1000;
+    mProgressError = res;
 
     return res;
 }

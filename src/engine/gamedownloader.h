@@ -26,16 +26,20 @@ class GameDownloader : public Action
 public:
 
     GameDownloader(int &progress,
+                   int &errorCode,
                    bool &cancelDownload) :
         mProgress(progress),
+        mProgressError(errorCode),
         mCancelDownload(cancelDownload){}
 
 
     GameDownloader(int &progress,
+                   int &errorCode,
                    bool &cancelDownload,
                    const std::string &gameFileName,
                    const std::string &gameName) :
         mProgress(progress),
+        mProgressError(errorCode),
         mCancelDownload(cancelDownload),
         mGameFileName(gameFileName),
         mGameName(gameName) {}
@@ -85,7 +89,7 @@ public:
     }
 
 
-    int handle();
+    int handle() override;
 
     /**
      * @brief hasCatalog tells user if a catalog was detected
@@ -104,6 +108,7 @@ public:
 
 private:
     int &mProgress;
+    int &mProgressError;
     bool &mCancelDownload;
 
     bool mCataFound = false;

@@ -50,6 +50,9 @@ void GameEngine::render()
         return;
     }
 
+    if(!mpGameMode)
+        return;
+
     // Render the game mode object
     mpGameMode->render();
 

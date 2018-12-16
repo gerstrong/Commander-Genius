@@ -158,7 +158,7 @@ GsProgressBar::processRender(const GsRect<float> &RectDispCoordFloat)
 
     float progressWidth = 0.0;
 
-    if(mProgressToRender < 0.0 || mProgressToRender > 1000.0)
+    if(mProgressToRender < 0.0f || mProgressToRender > 1000.0f)
     {
         progressWidth = displayRect.w;
     }
@@ -182,7 +182,7 @@ GsProgressBar::processRender(const GsRect<float> &RectDispCoordFloat)
 
     std::stringstream ss;
 
-    if( mProgressToRender == 0.0 ) // Less than not doing
+    if( mProgressToRender == 0.0f ) // Exactly 0 percent
     {
         ss << "0 %";
 
@@ -199,7 +199,7 @@ GsProgressBar::processRender(const GsRect<float> &RectDispCoordFloat)
             SDL_FillRect(pBlitsurface, &bgSDLRect, bgColor);
         }
     }
-    else if( mProgressToRender < 0.0 ) // Less than not doing
+    else if( mProgressToRender < 0.0f ) // Less than not doing
     {
         const auto progressColor = SDL_MapRGBA( pBlitsurface->format, 0, 255, 128, 255 );
 
@@ -208,19 +208,34 @@ GsProgressBar::processRender(const GsRect<float> &RectDispCoordFloat)
         SDL_FillRect(pBlitsurface, &bgSDLRect, bgColor);
         SDL_FillRect(pBlitsurface, &progressSDLRect, progressColor);
     }
-    else if( mProgressToRender >= 1000.0 ) // Finished
+    else if( mProgressToRender >= 1000.0f ) // Finished
     {
         SDL_FillRect(pBlitsurface, &bgSDLRect, bgColor);
 
-        if(!mBad)
+        if(!mUserAbort)
         {
-            const auto progressColor = SDL_MapRGBA( pBlitsurface->format, 0, 255, mFlashBlue, 255 );
-            ss << "Completed!";
+            Uint32 progressColor;
+
+            if(mErrorCode == 0)
+            {
+                progressColor = SDL_MapRGBA(
+                            pBlitsurface->format,
+                            0, 255, Uint8(mFlashBlue), 255 );
+                ss << "Completed!";
+            }
+            else
+            {
+                progressColor = SDL_MapRGBA(
+                            pBlitsurface->format,
+                            255, 0, Uint8(mFlashBlue), 255 );
+                ss << "Error!";
+            }
+
             SDL_FillRect(pBlitsurface, &progressSDLRect, progressColor);
-        }
+        }        
         else
         {
-            const auto progressColor = SDL_MapRGBA( pBlitsurface->format, 255, 0, mFlashBlue, 255 );
+            const auto progressColor = SDL_MapRGBA( pBlitsurface->format, 255, 128, Uint8(mFlashBlue), 255 );
             ss << "Aborted!";
             SDL_FillRect(pBlitsurface, &progressSDLRect, progressColor);
         }

@@ -326,10 +326,10 @@ bool CGameLauncher::scanSubDirectories(const std::string& path,
         }
 
         permil = lastPermil;
-        mGameScanner.setPermilage(permil);
+        mGameScanner.setPermilage(int(permil));
 	}
 
-    mGameScanner.setPermilage(endPermil);
+    mGameScanner.setPermilage(int(endPermil));
 
     return gamesDetected;
 }
@@ -645,7 +645,7 @@ void CGameLauncher::pumpEvent(const CEvent *evPtr)
     {
         mCancelDownload = true;
         mpDloadCancel->enable(false);
-        mpDloadProgressCtrl->setBad(true);
+        mpDloadProgressCtrl->setUserAbort(true);
     }
     else if( dynamic_cast<const OpenSettingsMenuEvent*>(evPtr) )
     {

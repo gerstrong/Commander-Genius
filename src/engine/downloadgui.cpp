@@ -19,7 +19,9 @@ void CGameLauncher::verifyGameStore()
     m_DownloadProgress = 0;
     m_DownloadCancel = false;
 
-    GameDownloader gameDownloader(m_DownloadProgress, m_DownloadCancel);
+    GameDownloader gameDownloader(m_DownloadProgress,
+                                  m_DownloadProgressError,
+                                  m_DownloadCancel);
 
     std::vector< std::string > missingList;
 
@@ -58,7 +60,10 @@ void CGameLauncher::verifyGameStore()
     // Try to download the catalogue file, in the background
     if(!mp_Thread)
     {
-        GameDownloader *pCatalogueDownloader = new GameDownloader(m_DownloadProgress, m_DownloadCancel);
+        GameDownloader *pCatalogueDownloader =
+                new GameDownloader(m_DownloadProgress,
+                                   m_DownloadProgressError,
+                                   m_DownloadCancel);
         pCatalogueDownloader->setupDownloadCatalogue(true);
         mp_Thread = threadPool->start(pCatalogueDownloader, "Loading catalogue file in the background");
     }
@@ -96,6 +101,7 @@ void CGameLauncher::pullGame(const int selection)
     mpDloadProgressCtrl->enableFancyAnimation(true);
 
     mpGameDownloadThread = threadPool->start(new GameDownloader(mDownloadProgress,
+                                                                mDownloadErrorCode,
                                                             mCancelDownload,
                                                             gameFileName,
                                                             gameName),
@@ -109,7 +115,7 @@ void CGameLauncher::ponderDownloadDialog()
     int sel = mpGSSelList->getSelection();
     if(mLastStoreSelection != sel)
     {        
-        auto &gameEntry = mGameCatalogue[sel];
+        auto &gameEntry = mGameCatalogue[size_t(sel)];
 
         mpDDescriptionText->setText(gameEntry.mDescription);
 
@@ -154,17 +160,16 @@ void CGameLauncher::setupDownloadDialog()
     mFinishedDownload = 0;
     mDownloadProgress = 0;
     mDownloading = false;
+    mDownloadErrorCode = 0;
 
     int progress = 0;
     bool cancel = false;
-    GameDownloader gameDownloader(progress, cancel);
+    GameDownloader gameDownloader(progress, mDownloadErrorCode, cancel);
 
     std::vector< std::string > missingList;
     gameDownloader.checkForMissingGames( missingList );
 
     mpGSSelList = new CGUITextSelectionList();
-
-    assert( !missingList.empty() );
 
     if(!missingList.empty())
     {
@@ -205,7 +210,8 @@ void CGameLauncher::setupDownloadDialog()
 
     // Progress Bar
     mpDloadProgressCtrl = std::dynamic_pointer_cast<GsProgressBar>(
-            mpGameStoreDialog->addControl(new GsProgressBar(mDownloadProgress),
+            mpGameStoreDialog->addControl(new GsProgressBar(mDownloadProgress,
+                                                            mDownloadErrorCode),
                                   GsRect<float>(0.1f, 0.8f, 0.8f, 0.05f)) );
 
     // Bottom Controls

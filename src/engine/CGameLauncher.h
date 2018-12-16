@@ -184,6 +184,7 @@ private:
     int m_start_level;
 
     int mDownloadProgress = 0;
+    int mDownloadErrorCode = 0;
     bool mCancelDownload = false;
 
     ThreadPoolItem* mpGameDownloadThread = nullptr;
@@ -202,6 +203,7 @@ private:
     void putLabels();
 
     int m_DownloadProgress = 0;
+    int m_DownloadProgressError = 0;
     bool m_DownloadCancel = false;
 
     ThreadPoolItem *mp_Thread = nullptr;
