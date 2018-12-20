@@ -1,6 +1,7 @@
 v2.2.7:
 -------
 - Optimized Catalog Downloader. Now it downloads in the background
+- Much improved Downloader
 - Retry option added, when downloading catalogue fails or is not yet finished
 
 v2.2.6:
