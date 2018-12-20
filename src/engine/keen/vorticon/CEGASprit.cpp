@@ -43,10 +43,11 @@ CEGASprit::CEGASprit(int planesize,
 	int numsprites,
 	long spriteloc,
 	const std::string &gamepath,
-	size_t episode) :
+    size_t episode,
+    CResourceLoaderBackground &loader) :
 m_gamepath(gamepath),
 m_Episode(episode),
-EGASpriteModell(NULL)
+mLoader(loader)
 {
 	m_planesize = planesize;
 	m_spritestartloc = spritestartloc;
@@ -95,7 +96,7 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 		return false;
     }
 	
-	gResourceLoader.setPermilage(10);
+    mLoader.setPermilage(10);
 
     byte RawData[m_planesize * 5];
     // get the data out of the file into the memory, decompressing it if necessary.
@@ -112,7 +113,7 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 	
     fclose(latchfile);
 
-	gResourceLoader.setPermilage(50);
+    mLoader.setPermilage(50);
 	
     // TODO: Try to blit the Font map here!
 	// these are the offsets of the different video planes as
@@ -148,10 +149,10 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 				gGraphics.Palette.m_Palette );
 
         percent = (i*50)/mNumsprites;
-		gResourceLoader.setPermilage(50+percent);
+        mLoader.setPermilage(50+percent);
 	}
 
-	gResourceLoader.setPermilage(100);
+    mLoader.setPermilage(100);
 
     // Read unmasked sprite
 	for(int p=0 ; p<4 ; p++)
@@ -167,11 +168,11 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
             sfc.unlock();
 
             percent = (s*100)/mNumsprites;
-			gResourceLoader.setPermilage(100+percent);
+            mLoader.setPermilage(100+percent);
 		}
 	}
 
-	gResourceLoader.setPermilage(200);
+    mLoader.setPermilage(200);
 
     // Read its mask
 	// now load the 5th plane, which contains the sprite masks.
@@ -209,10 +210,10 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
         sfc.unlock();
 
         percent = (s*100)/mNumsprites;
-		gResourceLoader.setPermilage(200+percent);
+        mLoader.setPermilage(200+percent);
 	}
 
-	gResourceLoader.setPermilage(300);
+    mLoader.setPermilage(300);
 
     LoadSpecialSprites( SpriteVecPlayer1 );
 
@@ -294,11 +295,11 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
             }
 
             percent = (s*50)/mNumsprites;
-            gResourceLoader.setPermilage(300+percent);
+            mLoader.setPermilage(300+percent);
         }
     }
 
-    gResourceLoader.setPermilage(350);
+    mLoader.setPermilage(350);
 
     std::set<std::string> filelist;
 	FileListAdder fileListAdder;
@@ -324,10 +325,10 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 		}
 
 		percent = (c*150)/listsize;
-		gResourceLoader.setPermilage(350+percent);
+        mLoader.setPermilage(350+percent);
     }
 
-	gResourceLoader.setPermilage(500);
+    mLoader.setPermilage(500);
 
     for(unsigned int i=0 ; i<4 ; i++)
     {
@@ -338,15 +339,15 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
             spriteVec[s].applyTransparency();
 
             percent = (s*250)/noSprites;
-            gResourceLoader.setPermilage(500+percent);
+            mLoader.setPermilage(500+percent);
         }
     }
 
-    gResourceLoader.setPermilage(750);
+    mLoader.setPermilage(750);
 
 	// Now create special sprites, like those for effects and the doors!
     DeriveSpecialSprites( gGraphics.getTileMap(1), gGraphics.getSpriteVec(0) );
-    gResourceLoader.setPermilage(800);
+    mLoader.setPermilage(800);
 
     // Here special Effects if desired
     if(gBehaviorEngine.mOptions[GameOption::SPECIALFX].value)
@@ -354,7 +355,7 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 		ApplySpecialFX();
     }
 
-    gResourceLoader.setPermilage(900);
+    mLoader.setPermilage(900);
 
     // Apply the sprites for player 2,3 and 4
     DerivePlayerSprites( 1, gGraphics.getSpriteVec(1) );
@@ -362,7 +363,7 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
     DerivePlayerSprites( 3, gGraphics.getSpriteVec(3) );
 
 
-    gResourceLoader.setPermilage(1000);
+    mLoader.setPermilage(1000);
 
 
 	return true;
@@ -543,6 +544,10 @@ void CEGASprit::ApplySpecialFX()
 
 }
 
-CEGASprit::~CEGASprit() {
-	if(EGASpriteModell) delete [] EGASpriteModell, EGASpriteModell = NULL;
+CEGASprit::~CEGASprit()
+{
+    if(EGASpriteModell)
+    {
+        delete [] EGASpriteModell, EGASpriteModell = nullptr;
+    }
 }

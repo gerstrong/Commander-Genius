@@ -105,7 +105,8 @@ bool CEGAGraphicsVort::loadData( int version, unsigned char *p_exedata )
 			  SpriteStart,
 			  NumSprites,
 			  SpriteLocation,
-			  gamedir, episode);
+              gamedir, episode,
+              mLoader);
   m_Sprit->loadHead(&data[0]);
   
   struct SpriteLoad: public Action

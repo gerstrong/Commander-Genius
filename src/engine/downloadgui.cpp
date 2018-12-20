@@ -58,25 +58,14 @@ void CGameLauncher::verifyGameStore()
     mGameCatalogue = gameDownloader.getGameCatalogue();
 
     // Try to download the catalogue file, in the background
-    if(!mp_Thread)
     {
         GameDownloader *pCatalogueDownloader =
                 new GameDownloader(m_DownloadProgress,
                                    m_DownloadProgressError,
                                    m_DownloadCancel);
         pCatalogueDownloader->setupDownloadCatalogue(true);
-        mp_Thread = threadPool->start(pCatalogueDownloader, "Loading catalogue file in the background");
-    }
-    else
-    {
-        if(mp_Thread)
-        {
-            int ret;
-            if(threadPool->finalizeIfReady(mp_Thread, &ret))
-            {
-                mp_Thread = nullptr;
-            }
-        }
+        threadPool->start(pCatalogueDownloader,
+                          "Loading catalogue file in the background");
     }
 }
 
@@ -140,7 +129,6 @@ void CGameLauncher::ponderDownloadDialog()
     }
 
     // When everything is done, The launcher should be restarted, for searching new games.
-
     if( mFinishedDownload &&
         mpGameDownloadThread->finished &&
         mpDloadProgressCtrl->finished() )

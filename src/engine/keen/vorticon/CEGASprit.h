@@ -12,7 +12,7 @@
 #include <SDL.h>
 #include <vector>
 #include "graphics/GsGraphics.h"
-//#include "common/CTileProperties.h"
+#include "engine/core/CResourceLoader.h"
 
 
 class CEGASprit {
@@ -22,7 +22,8 @@ public:
 			  int numsprites,
 			  long spriteloc,
 			  const std::string &gamepath,
-			  size_t episode);
+              size_t episode,
+              CResourceLoaderBackground &loader);
 	virtual ~CEGASprit();
 
 	bool loadHead(char *data);
@@ -49,7 +50,9 @@ private:
 		long hv_offset; // Unused in Keen games. Used in later games such as Shadow Knights
 		// There are 3 copies of the same Elements in the file. There were used for performance
 		// in DOS but are ignored here.
-	}*EGASpriteModell;
+    } *EGASpriteModell = nullptr;
+
+    CResourceLoaderBackground &mLoader;
 
 	void generateSprite( const int points, GsSprite &sprite );
 	void LoadSpecialSprites( std::vector<GsSprite> &sprite );

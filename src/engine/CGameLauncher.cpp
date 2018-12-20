@@ -75,14 +75,7 @@ m_start_level(start_level)
 }
 
 CGameLauncher::~CGameLauncher()
-{
-    if(mp_Thread)
-    {
-        int ret = 0;
-        threadPool->wait(mp_Thread, &ret);
-        mp_Thread = nullptr;
-    }
-}
+{}
 
 ////
 // Initialization Routine

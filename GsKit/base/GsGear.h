@@ -1,5 +1,5 @@
-#ifndef __GSGEAR_H__
-#define __GSGEAR_H__
+#ifndef GSGEAR_H__
+#define GSGEAR_H__
 
 /**
   \description GsGear is pretty much what ensures a correct connection
@@ -15,9 +15,9 @@
 class GsGear
 {
 public:
-    virtual void pumpEvent(const CEvent *evPtr) {}
+    virtual void pumpEvent(const CEvent *) {}
     virtual void run(const float deltaT) = 0;
     virtual void render() {}
 };
 
-#endif // __GSGEAR_H__
+#endif // GSGEAR_H__

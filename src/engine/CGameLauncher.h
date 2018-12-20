@@ -205,8 +205,6 @@ private:
     int m_DownloadProgress = 0;
     int m_DownloadProgressError = 0;
     bool m_DownloadCancel = false;
-
-    ThreadPoolItem *mp_Thread = nullptr;
 };
 
 
