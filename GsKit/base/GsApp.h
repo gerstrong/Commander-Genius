@@ -28,7 +28,7 @@ public:
     GsAppEventSink(GsApp* pApp) :
         mpApp(pApp) {}
 
-    void pumpEvent(const CEvent *ev);
+    void pumpEvent(const CEvent *ev) override;
 
 private:
     GsApp* mpApp;
@@ -58,10 +58,6 @@ public:
     bool mustShutdown(){ return (mpCurEngine==nullptr); }
 
     void pumpEvent(const CEvent *evPtr);
-
-    /*
-    int m_startGame_no;
-    int m_startLevel;*/
 
 
 private:
