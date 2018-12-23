@@ -5,6 +5,7 @@
 #include <SDL_image.h>
 #include <cstdio>
 #include <string>
+#include <cassert>
 
 /**
  * @brief The GsTexture class is a wrapper for SDL Textures introduced in SDL 2.0. It can be used extended with other libraries, OpenGL maybe, but
