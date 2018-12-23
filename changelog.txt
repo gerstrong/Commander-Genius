@@ -1,3 +1,8 @@
+v2.2.8:
+-------
+- Compilation fixes
+- Adjustments for Android SDL2 Port
+
 v2.2.7:
 -------
 - Optimized Catalog Downloader. Now it downloads in the background
