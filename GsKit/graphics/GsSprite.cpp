@@ -225,7 +225,7 @@ void GsSprite::detectFoldness()
         {
             if(r == 0x55 || r == 0xff)
             {
-                // Odd it this happens
+                // Odd if this happens
                 if(x == 0)
                     break;
 
@@ -236,7 +236,6 @@ void GsSprite::detectFoldness()
                 break;
             }
         }
-
 
         pixPtr += srcSfc->format->BytesPerPixel;
     }
