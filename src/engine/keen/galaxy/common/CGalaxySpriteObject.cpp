@@ -18,7 +18,7 @@ CSpriteObject(pmap, x, y, sprVar),
 mFoeID(foeID)
 {
     EpisodeInfoStruct* eiStructPtr = gBehaviorEngine.getEpisodeInfoStructRef();
-    spriteOffset = eiStructPtr->IndexSprites;
+    spriteOffset = int(eiStructPtr->IndexSprites);
 }
 
 void CGalaxySpriteObject::setupGalaxyObjectOnMap(const size_t ActionBaseOffset,

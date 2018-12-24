@@ -30,7 +30,10 @@
 
 struct EventEnterLevel : CEvent {
     uint16_t data;
-    EventEnterLevel(const uint16_t d) : data(d) {}
+    int mSprVar = 0;
+    EventEnterLevel(const int sprVar,
+                    const uint16_t d) : data(d),
+                                        mSprVar(sprVar) {}
 };
 
 

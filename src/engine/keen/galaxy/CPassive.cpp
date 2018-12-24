@@ -29,7 +29,7 @@ SDL_Surface *keenSfc;
 
 // 10 Seconds are for 1200 logic cycles
 const int INTRO_TIME = 1200;
-const int STARWARS_TIME = 1200;
+//const int STARWARS_TIME = 1200;
 const int STARWARS_SCROLL_TIME = 3;
 
 
@@ -40,8 +40,8 @@ namespace galaxy
 CPassiveGalaxy::CPassiveGalaxy() :
 processPonderMode(&CPassiveGalaxy::processIntro),
 processRenderMode(&CPassiveGalaxy::renderIntro),
-mBackgroundTitle(*gGraphics.getBitmapFromStr("TITLE")),
-mBackgroundStarWars(*gGraphics.getBitmapFromStr("STARWARS")),
+mBackgroundTitle(*gGraphics.getBitmapFromStr(0, "TITLE")),
+mBackgroundStarWars(*gGraphics.getBitmapFromStr(0, "STARWARS")),
 mCommanderTextSfc(gGraphics.getMiscGsBitmap(0)),
 mKeenTextSfc(gGraphics.getMiscGsBitmap(1)),
 mSkipSection(false)
@@ -58,7 +58,7 @@ mSkipSection(false)
     else if(episode == 6)
         mCreditsBmpID = gBehaviorEngine.isDemo() ? 18 : 23;
 
-    mCurrentLogoBmp = gGraphics.getBitmapFromId(mCreditsBmpID);
+    mCurrentLogoBmp = gGraphics.getBitmapFromId(0, mCreditsBmpID);
 
     GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
 
@@ -220,7 +220,7 @@ void CPassiveGalaxy::processIntro()
             mTerminatorLogoNum++;
             mTerminatorTimer = 0;
 
-            mCurrentLogoBmp = gGraphics.getBitmapFromId(mCreditsBmpID+mTerminatorLogoNum);
+            mCurrentLogoBmp = gGraphics.getBitmapFromId(0, mCreditsBmpID+mTerminatorLogoNum);
             mCurrentLogoBmp.optimizeSurface();
 
             GsRect<Uint16> logoBmpRect;
@@ -310,7 +310,7 @@ void CPassiveGalaxy::processIntroZoom()
         gInput.flushAll();
         processPonderMode = &CPassiveGalaxy::processTitle;
         processRenderMode = &CPassiveGalaxy::renderTitle;
-        mBackgroundTitle = *gGraphics.getBitmapFromStr("TITLE");
+        mBackgroundTitle = *gGraphics.getBitmapFromStr(0, "TITLE");
 
         mIntroTimer = INTRO_TIME;
 
@@ -390,7 +390,7 @@ void CPassiveGalaxy::processTitle()
 
         processPonderMode = &CPassiveGalaxy::processStarWars;
         processRenderMode = &CPassiveGalaxy::renderStarWars;
-        mBackgroundStarWars = *gGraphics.getBitmapFromStr("STARWARS");
+        mBackgroundStarWars = *gGraphics.getBitmapFromStr(0, "STARWARS");
 
         GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
         mBackgroundStarWars.scaleTo(gameRes);

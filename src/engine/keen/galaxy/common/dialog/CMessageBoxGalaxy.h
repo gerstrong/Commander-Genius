@@ -28,7 +28,9 @@ public:
      * \brief This constructor creates a typical Keen Galaxy Message Box
 	 * \param Text 				Message to be shown
 	 */
-    CMessageBoxGalaxy(const std::string& Text, CEvent *closeEv = nullptr);
+    CMessageBoxGalaxy(const int sprVar,
+                      const std::string& Text,
+                      CEvent *closeEv = nullptr);
 
 	virtual void init();
 
@@ -43,7 +45,7 @@ public:
 	SDL_Rect getRect() const
 	{ return mMBRect; }
 
-	const bool isFinished() const
+    bool isFinished() const
 	{	return mMustClose;	}
 
 
@@ -62,10 +64,11 @@ protected:
     GsSurface mMBSurface;
 	unsigned int mTextHeight;
     std::unique_ptr<CEvent> mCloseEv;
+    int mSprVar = 0;
 };
 
 
-void showMsg(const std::string &text, CEvent *closeEv = nullptr);
+void showMsg(const int sprVar, const std::string &text, CEvent *closeEv = nullptr);
 
 struct EventSendDialog : CEvent
 {

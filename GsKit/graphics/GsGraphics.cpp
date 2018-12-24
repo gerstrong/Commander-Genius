@@ -76,11 +76,25 @@ void GsGraphics::optimizeSprites()
     }    
 }
 
-void GsGraphics::createEmptyBitmaps(Uint16 num_bmps)
+void GsGraphics::createEmptyBitmaps(const size_t numVar,
+                                    Uint16 num_bmps)
 {
-    freeBitmaps(mBitmap);
-    GsBitmap bitmap;
-    mBitmap.assign(num_bmps, bitmap);
+    for(auto &bitmap : mBitmap)
+    {
+        freeBitmaps(bitmap);
+    }
+
+    mBitmap.clear();
+
+    for(size_t i=0 ; i<numVar ; i++)
+    {
+        std::vector<GsBitmap> bitmapVec;
+
+        GsBitmap bitmap;
+        bitmapVec.assign(num_bmps, bitmap);
+
+        mBitmap.push_back( bitmapVec );
+    }
 }
 
 void GsGraphics::createEmptyMaskedBitmaps(Uint16 num_bmps)
@@ -153,12 +167,12 @@ void GsGraphics::freeFonts()
     Font.pop_back();
 }
 
-void GsGraphics::freeBitmaps(std::vector<GsBitmap> &Bitmap)
-{
-	while ( !Bitmap.empty() )
-	{
-		Bitmap.pop_back();
-	}
+void GsGraphics::freeBitmaps(std::vector<GsBitmap> &bitmapVec)
+{    
+    while ( !bitmapVec.empty() )
+    {
+        bitmapVec.pop_back();
+    }
 }
 
 void GsGraphics::freeSprites()
@@ -249,8 +263,10 @@ GsTilemap &GsGraphics::getTileMap(size_t tilemap)
 std::vector<GsTilemap> &GsGraphics::getTileMaps()
 {   return Tilemap; }
 
-GsBitmap &GsGraphics::getBitmapFromId(Uint16 slot)
-{   return mBitmap[slot];    }
+GsBitmap &GsGraphics::getBitmapFromId(const int var,
+                                      const int slot)
+//{   return mBitmap[var][slot];    }
+{   return mBitmap[0][slot];   }
 
 GsBitmap &GsGraphics::getMaskedBitmap(Uint16 slot)
 {   return maskedBitmap[slot];   }
@@ -271,16 +287,23 @@ GsSprite &GsGraphics::getSpecialSpriteRef(const std::string &name)
 GsFont &GsGraphics::getFont(Uint8 index)
 {    return Font.at(index); }
 
-GsBitmap *GsGraphics::getBitmapFromStr(const std::string &name) const
+GsBitmap *GsGraphics::getBitmapFromStr(const int sprVar,
+                                       const std::string &name) const
 {
 	std::string s_name;
-    for(unsigned int i=0 ; i<mBitmap.size() ; i++)
+
+    //const auto bmpVecIdx = sprVar;
+    const auto bmpVecIdx = 0;
+
+    for(unsigned int i=0 ; i<mBitmap[bmpVecIdx].size() ; i++)
 	{
-        s_name = mBitmap[i].getName();
+        auto &bitmap = mBitmap[bmpVecIdx][i];
+
+        s_name = bitmap.getName();
 
 		if(s_name == name)
         {
-            return const_cast<GsBitmap*>(&mBitmap[i]);
+            return const_cast<GsBitmap*>(&bitmap);
         }
 	}
 
@@ -317,7 +340,7 @@ GsSprite *GsGraphics::getSprite(const int var, const std::string &name) const
 GsGraphics::~GsGraphics()
 {
 	freeBitmaps(maskedBitmap);
-    freeBitmaps(mBitmap);
+
 	freeSprites();
 	freeFonts();
 	freeTilemap();

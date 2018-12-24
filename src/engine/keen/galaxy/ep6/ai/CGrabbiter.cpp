@@ -83,12 +83,14 @@ void CGrabbiter::getTouchedBy(CSpriteObject& theObject)
         const int diffX = getXMidPos()-player->getXMidPos();
         player->moveXDir(-diffX/4);
 
+        const int sprVar = player->getSpriteVariantId();
+
         if(player->m_Inventory.Item.m_special.sandwich > 0)
         {
             player->m_Inventory.Item.m_special.sandwich--;
 
             // Show grabbiter message
-            showMsg( gBehaviorEngine.getString("KEEN_GRABBITER_SLEEPY") );
+            showMsg(sprVar, gBehaviorEngine.getString("KEEN_GRABBITER_SLEEPY") );
 
             setAction(A_GRABBITER_NAPPING);
             playSound(SOUND_GRABBITER_SLEEP);
@@ -99,7 +101,7 @@ void CGrabbiter::getTouchedBy(CSpriteObject& theObject)
             gSound.playSound(SOUND_GRABBITER_HUNGRY, SoundPlayMode::PLAY_PAUSEALL);
 
             // Show grabbiter message
-            showMsg( gBehaviorEngine.getString("KEEN_GRABBITER_HUNGRY") );
+            showMsg(sprVar, gBehaviorEngine.getString("KEEN_GRABBITER_HUNGRY") );
         }
     }
 }

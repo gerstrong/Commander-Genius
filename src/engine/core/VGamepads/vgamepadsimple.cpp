@@ -356,41 +356,6 @@ bool VirtualKeenControl::mouseFingerState(const Vector2D<float> &Pos,
 
     bool ok = false;
 
-    auto bindButtonCommand = [&](TouchButton &button,
-                                 const InputCommand &cmd) -> bool
-    {
-        if(button.invisible)
-            return false;
-
-        if( button.Rect().HasPoint(Pos) )
-        {
-            gInput.setCommand(0, cmd, down);
-
-            if(down)
-            {
-                button.insertFingerId(touchFingerEvent.fingerId);
-            }
-            else
-            {
-                button.removeFingerId(touchFingerEvent.fingerId);
-            }
-
-            return true;
-        }
-        else
-        {
-            auto it = button.mFingerSet.find(touchFingerEvent.fingerId);
-
-            if( it != button.mFingerSet.end() )
-            {
-                gInput.setCommand(0, cmd, false);
-                button.mFingerSet.erase(it);
-            }
-
-            return false;
-        }
-    };
-
     SDL_Event ev;
     ev.type = (down ? SDL_KEYDOWN : SDL_KEYUP);
 
@@ -484,6 +449,42 @@ bool VirtualKeenControl::mouseFingerState(const Vector2D<float> &Pos,
         }
 
     }
+
+
+    auto bindButtonCommand = [&](TouchButton &button,
+                                 const InputCommand &cmd) -> bool
+    {
+        if(button.invisible)
+            return false;
+
+        if( button.Rect().HasPoint(Pos) )
+        {
+            gInput.setCommand(0, cmd, down);
+
+            if(down)
+            {
+                button.insertFingerId(touchFingerEvent.fingerId);
+            }
+            else
+            {
+                button.removeFingerId(touchFingerEvent.fingerId);
+            }
+
+            return true;
+        }
+        else
+        {
+            auto it = button.mFingerSet.find(touchFingerEvent.fingerId);
+
+            if( it != button.mFingerSet.end() )
+            {
+                gInput.setCommand(0, cmd, false);
+                button.mFingerSet.erase(it);
+            }
+
+            return false;
+        }
+    };
 
 
     ok |= bindButtonCommand(mConfirmButton, IC_JUMP);

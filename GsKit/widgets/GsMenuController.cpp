@@ -21,19 +21,14 @@ void drawMenuInGameButton(const SDL_Rect &buttonRect)
     SDL_FillRect(dst, &tempRect, SDL_MapRGB(dst->format, 255, 0, 0) );
 
     SDL_Rect line = buttonRect;
-    line.x += 2;    line.y += 2;
-    line.w -= 4;    line.h  = 1;
+    line.w -= 4;    line.h  = 2; line.x += 2;
+    line.y +=2;
 
     // This draws the classical sandwich icon
-    SDL_FillRect(dst, &line, SDL_MapRGB(dst->format, 255, 255, 255) );
-
-    line.y += 2;
-
-    SDL_FillRect(dst, &line, SDL_MapRGB(dst->format, 255, 255, 255) );
-
-    line.y += 2;
-
-    SDL_FillRect(dst, &line, SDL_MapRGB(dst->format, 255, 255, 255) );
+    for(;line.y<buttonRect.h-2;line.y+=5)
+    {
+        SDL_FillRect(dst, &line, SDL_MapRGB(dst->format, 255, 255, 255) );
+    }
 }
 
 
@@ -44,14 +39,7 @@ bool checkSandwichMenuClicked(GsRect<float> &rRect)
     const bool hasPoint = rRect.HasPoint(pointingState.mPos);
     const bool bDown = (pointingState.mActionButton > 0);
 
-    if(bDown && hasPoint)
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
+    return (bDown && hasPoint);
 }
 
 

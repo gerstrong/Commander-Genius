@@ -488,6 +488,7 @@ void InitBaseSearchPaths() {
 #else // all other systems (Linux, *BSD, OS/2, ...)
 #ifdef ANDROID
 	//AddToFileList(&basesearchpaths, "${HOME}/SaveData");
+	AddToFileList(&basesearchpaths, SDL_AndroidGetInternalStoragePath());
 	AddToFileList(&basesearchpaths, "/storage/emulated/0/Android/data/net.sourceforge.clonekeenplusplus/files/SaveData");
 #else
 	AddToFileList(&basesearchpaths, "${HOME}/.CommanderGenius");

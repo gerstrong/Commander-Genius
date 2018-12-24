@@ -164,7 +164,7 @@ CPlayerBase(CMap *pmap,
     mPlayerNum(playerIdx),
     mPlayerCtrlNum(playerIdx)
 {
-    mSpecialIdx = playerIdx;
+    mPlayerIdx = playerIdx;
     mActionMap[A_KEEN_DIE] = &CPlayerBase::processDying;
     mActionMap[A_KEEN_DIE_ALT] = &CPlayerBase::processDying;
 
@@ -197,7 +197,7 @@ void CPlayerBase::processExiting()
         gEffectController.setupEffect(new CDimDark(8));
 
         auto evExit = new EventExitLevel(mpMap->getLevel(),
-                                         true, false, mSpecialIdx);
+                                         true, false, mPlayerIdx);
         evExit->playSound = true;
         gEventManager.add( evExit );
         m_Inventory.Item.m_gem.clear();

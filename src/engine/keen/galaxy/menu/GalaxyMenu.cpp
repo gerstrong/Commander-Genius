@@ -4,7 +4,7 @@
 
 void GalaxyMenu::createGalaxyBackground()
 {
-    GsBitmap backgroundBmp( *gGraphics.getBitmapFromStr("KEENSWATCH") );
+    GsBitmap backgroundBmp( *gGraphics.getBitmapFromStr(0, "KEENSWATCH") );
 
     GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
     backgroundBmp.scaleTo(gameRes);

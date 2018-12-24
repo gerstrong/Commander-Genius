@@ -307,7 +307,7 @@ void CShockshound::process()
                                    "try another Episode for more fun!\n"
                                    "The original epilog is under construction.");
 
-        msg.push_back( new CMessageBoxGalaxy(end_text, new EventEndGamePlay()) );
+        msg.push_back( new CMessageBoxGalaxy(0, end_text, new EventEndGamePlay()) );
 
         showMsgVec(msg);
         exists = false;

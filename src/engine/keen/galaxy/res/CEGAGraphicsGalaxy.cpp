@@ -289,7 +289,7 @@ bool CEGAGraphicsGalaxy::loadData()
     {   // Not found create it
         fullpath = JoinPaths(path, "preview.bmp");
         fullpath = GetWriteFullFileName(fullpath, true);
-        GsBitmap *pBitmap = gGraphics.getBitmapFromStr("TITLE");
+        GsBitmap *pBitmap = gGraphics.getBitmapFromStr(0, "TITLE");
         SDL_SaveBMP( pBitmap->getSDLSurface(), fullpath.c_str());
     }
 
@@ -310,7 +310,7 @@ extractPicture(SDL_Surface *sfc,
         // Decode the bitmap data
         for(size_t p = 0; p < 4; p++)
         {
-            Uint8* pixel = (Uint8*) sfc->pixels;
+            auto pixel = reinterpret_cast<Uint8*>(sfc->pixels);
 
             // get location of plane p
             if(masked)
@@ -1083,7 +1083,7 @@ bool CEGAGraphicsGalaxy::readBitmaps()
     memcpy( BmpHead, &(m_egagraph.at(0).data.at(0)), epInfo.NumBitmaps*sizeof(BitmapHeadStruct));
     SDL_Color *Palette = gGraphics.Palette.m_Palette;
 
-    gGraphics.createEmptyBitmaps(epInfo.NumBitmaps);
+    gGraphics.createEmptyBitmaps(1, epInfo.NumBitmaps);
 
     SDL_Rect bmpRect;
     bmpRect.x = bmpRect.y = 0;
@@ -1112,7 +1112,7 @@ bool CEGAGraphicsGalaxy::readBitmaps()
 
     auto &bitmapNamesThisEp = m_BitmapNameMap[bitmapNameOffset];
 
-    for(size_t i = 0; i < epInfo.NumBitmaps; i++)
+    for(unsigned int i = 0; i < epInfo.NumBitmaps; i++)
     {
         // Use upper limit to protect against overflow.
         if(BmpHead[i].Width < 1 || BmpHead[i].Width > 100)
@@ -1134,16 +1134,19 @@ bool CEGAGraphicsGalaxy::readBitmaps()
             return false;
         }
 
-        GsBitmap &Bitmap = gGraphics.getBitmapFromId(i);
+        GsBitmap &bitmap = gGraphics.getBitmapFromId(0, i);
         bmpRect.w = BmpHead[i].Width*8;
         bmpRect.h = BmpHead[i].Height;
-        Bitmap.createSurface(gVideoDriver.getScrollSurface()->flags, bmpRect, Palette);
+        bitmap.createSurface(gVideoDriver.getScrollSurface()->flags,
+                             bmpRect, Palette);
 
-        extractPicture(Bitmap.getSDLSurface(),
+        extractPicture(bitmap.getSDLSurface(),
                 data,
                 BmpHead[i].Width, BmpHead[i].Height);
 
-        Bitmap.setName(bitmapNamesThisEp[i]);
+        auto &bmpName = bitmapNamesThisEp[i];
+
+        bitmap.setName(bmpName);
 
         for(const auto &bmpFile : bmpFileList)
         {
@@ -1163,7 +1166,7 @@ bool CEGAGraphicsGalaxy::readBitmaps()
 
             const auto bmpFilePath = JoinPaths(bmpDirPath, bmpFile);
 
-            if( Bitmap.loadHQBitmap(bmpFilePath) )
+            if( bitmap.loadHQBitmap(bmpFilePath) )
             {
                 gLogging << bmpFile << " got loaded correctly.";
             }
@@ -1494,7 +1497,6 @@ bool CEGAGraphicsGalaxy::readSprites( const size_t numSprites,
     auto &SpriteVecPlayer2 = gGraphics.getSpriteVec(1);
     int ctr = 0;
 
-    //else
     {
         for( GsSprite &sprite : SpriteVecPlayer2)
         {
@@ -1556,7 +1558,7 @@ bool CEGAGraphicsGalaxy::readSprites( const size_t numSprites,
         gLogging << "More player to load. Enlarging sprite buffer...";
 
         // Copy the sprites
-        for( unsigned int i=curNumSpriteVecs ; i< playersList.size() ; i++ )
+        for( auto i=curNumSpriteVecs ; i< playersList.size() ; i++ )
         {
             gGraphics.appendSpriteVec(SpriteOrigVec);
         }
@@ -1592,7 +1594,7 @@ bool CEGAGraphicsGalaxy::readSprites( const size_t numSprites,
             const auto spriteFilePath = JoinPaths(curPlayerPath,
                                                   spriteFile);
 
-            GsSprite &sprite = SpriteVecPlayer[idx];
+            GsSprite &sprite = SpriteVecPlayer[size_t(idx)];
 
             if( sprite.loadHQSprite(spriteFilePath) )
             {
@@ -1614,7 +1616,7 @@ bool CEGAGraphicsGalaxy::readSprites( const size_t numSprites,
 
 bool CEGAGraphicsGalaxy::readTexts()
 {
-    const int ep = getEpisodeInfoIndex();
+    const auto ep = getEpisodeInfoIndex();
 
     gGameText.clear();
 
@@ -1634,7 +1636,7 @@ bool CEGAGraphicsGalaxy::readTexts()
 
             memcpy(chunkData.data(), thisChunk.data.data(), thisChunk.data.size());
 
-            const auto *txtData = (char*)( chunkData.data() );
+            const auto *txtData = reinterpret_cast<char*>( chunkData.data() );
             std::string text(txtData);
 
             gGameText.addLine(text);

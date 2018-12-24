@@ -40,7 +40,7 @@ void CDiveSuit::getTouchedBy(CSpriteObject &theObject)
         evExit->playSound = true;
 
 
-        showMsgWithBmp( gBehaviorEngine.getString("SWIM_SUIT_TEXT"), "KEENTHUMBSUP", LEFT, evExit);
+        showMsgWithBmp( 0, gBehaviorEngine.getString("SWIM_SUIT_TEXT"), "KEENTHUMBSUP", LEFT, evExit);
 
         player->m_Inventory.Item.m_gem.clear();
 	}

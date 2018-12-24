@@ -172,7 +172,7 @@ void CPlayerWM::pumpEvent(const CEvent *evPtr)
     // Events for the Player are processed here.
     if( const EventPlayerEndLevel* ev = dynamic_cast<const EventPlayerEndLevel*>(evPtr) )
     {
-        if(ev->who == mSpecialIdx)
+        if(ev->who == mPlayerIdx)
         {            
             gEventManager.flush();
             if(ev->sucess)
@@ -236,7 +236,7 @@ void CPlayerWM::pumpEvent(const CEvent *evPtr)
 
     else if( const EventPlayerRideFoot* ev = dynamic_cast<const EventPlayerRideFoot*>(evPtr) )
     {
-        if(ev->who == mSpecialIdx)
+        if(ev->who == mPlayerIdx)
         {
             gEventManager.flush();
             finishLevel(ev->levelObject);
@@ -379,7 +379,7 @@ void CPlayerWM::processMoving()
             else
             {
                 // Tell the player he cannot climb yet                
-                showMsgWithBmp(gBehaviorEngine.getString("KEEN_ROPE_REQUIRED"),
+                showMsgWithBmp(mSprVar, gBehaviorEngine.getString("KEEN_ROPE_REQUIRED"),
                                "KEENTALKING", RIGHT, false);
                 moveYDir(-(climbDir<<CSF)/2);
             }
@@ -529,7 +529,8 @@ void CPlayerWM::processMoving()
             if( !m_cantswim )
             {
                 gSound.playSound( SOUND_CANT_DO, SoundPlayMode::PLAY_PAUSEALL );
-                showMsgWithBmp(gBehaviorEngine.getString("CANT_SWIM_TEXT"),
+                showMsgWithBmp(mSprVar,
+                               gBehaviorEngine.getString("CANT_SWIM_TEXT"),
                                105, LEFT, false);
 
                 m_cantswim = true;
@@ -1063,7 +1064,6 @@ void CPlayerWM::startLevel(Uint16 object)
     int level = object - 0xC000;
 
     const auto ep = gBehaviorEngine.getEpisode();
-    //int shipLevel = gBehaviorEngine.;
     int shipLevel;
 
     switch(ep)
@@ -1091,7 +1091,7 @@ void CPlayerWM::startLevel(Uint16 object)
         gBehaviorEngine.mOptions[GameOption::LVLREPLAYABILITY].value ||
         level >= shipLevel)
     {
-        gEventManager.add(new EventEnterLevel(object));
+        gEventManager.add(new EventEnterLevel(mSprVar, object));
 
         if(level > 0 && level < 50)
         {

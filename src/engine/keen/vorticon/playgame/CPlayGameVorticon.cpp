@@ -410,7 +410,7 @@ void CPlayGameVorticon::ponder(const float deltaT)
 		}
 		else // Bitmap must first be created
 		{
-            GsBitmap *pBitmap = gGraphics.getBitmapFromStr("GAMEOVER");
+            GsBitmap *pBitmap = gGraphics.getBitmapFromStr(0, "GAMEOVER");
 			gSound.playSound(SOUND_GAME_OVER, SoundPlayMode::PLAY_NOW);
 			mpGameoverBmp.reset( new CEGABitmap( mMap.get() , gVideoDriver.getBlitSurface(), pBitmap) );
 
@@ -453,7 +453,7 @@ void CPlayGameVorticon::render()
     }
 
     // The position of the sandwich menu depends on the configured blit resolution
-    mMenuButtonRect.x = gVideoDriver.getBlitSurface()->w-10;
+    mMenuButtonRect.x = gVideoDriver.getBlitSurface()->w-mMenuButtonRect.w;
 
     auto menuButtonRectWithBorder = mMenuButtonRect;
     menuButtonRectWithBorder.y += gVideoDriver.getVidConfig().mHorizBorders;

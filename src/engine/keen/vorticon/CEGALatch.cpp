@@ -52,12 +52,12 @@ bool CEGALatch::loadHead( char *data, short m_episode )
 
 	data += m_bitmaptablelocation;
 
-	gGraphics.createEmptyBitmaps(m_bitmaps);
+    gGraphics.createEmptyBitmaps(1, m_bitmaps);
 	for(int i=0 ; i<m_bitmaps ; i++)
 	{
 		std::string name;
 		//char name[9];
-        GsBitmap &Bitmap = gGraphics.getBitmapFromId(i);
+        GsBitmap &Bitmap = gGraphics.getBitmapFromId(0, i);
 		memcpy(&bmpRect.w,data+16*i,2);
 		memcpy(&bmpRect.h,data+16*i+2,2);
 		name = static_cast<const char*>(data+16*i+8);
@@ -252,7 +252,7 @@ bool CEGALatch::loadData( const std::string &path,
 	{
 		for(int b=0 ; b<m_bitmaps ; b++)
 		{
-            GsBitmap &bitmap = gGraphics.getBitmapFromId(b);
+            GsBitmap &bitmap = gGraphics.getBitmapFromId(0, b);
 			// this points to the location that we're currently
 			// decoding bitmap data to
 
@@ -282,7 +282,7 @@ bool CEGALatch::loadData( const std::string &path,
 	{
 		std::string filename=*it;
 		int num = getRessourceID(filename, "bitmap");
-        GsBitmap &bitmap = gGraphics.getBitmapFromId(num);
+        GsBitmap &bitmap = gGraphics.getBitmapFromId(0, num);
 		filename = getResourceFilename("gfx/" + filename, path, false);
 		bitmap.loadHQBitmap(filename);
 	}
@@ -295,7 +295,7 @@ bool CEGALatch::loadData( const std::string &path,
     {   // Not found create it
         fullpath = path + "/preview.bmp";
         fullpath = GetWriteFullFileName(fullpath, true);
-        GsBitmap *pBitmap = gGraphics.getBitmapFromStr("TITLE");
+        GsBitmap *pBitmap = gGraphics.getBitmapFromStr(0, "TITLE");
         SDL_SaveBMP( pBitmap->getSDLSurface(), fullpath.c_str());
     }
 

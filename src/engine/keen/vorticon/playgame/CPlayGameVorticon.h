@@ -137,6 +137,6 @@ private:
 	SDL_Rect keenleft_rect;
 
     // Menu-Button
-    SDL_Rect mMenuButtonRect = {310, 0, 10, 10};
+    SDL_Rect mMenuButtonRect = {0, 0, 24, 16};
 };
 #endif /* CPlayGameVorticon_H_ */

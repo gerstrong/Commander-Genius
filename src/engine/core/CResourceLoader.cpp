@@ -147,7 +147,7 @@ void CResourceLoaderBackground::render()
     }
     else if(m_style == PROGRESS_STYLE_BITMAP)
     {
-        GsBitmap &Bitmap = *gGraphics.getBitmapFromStr("ONEMOMEN");
+        GsBitmap &Bitmap = *gGraphics.getBitmapFromStr(0, "ONEMOMEN");
         SDL_Rect rect;
         int width = Bitmap.width();
         int height = Bitmap.height();

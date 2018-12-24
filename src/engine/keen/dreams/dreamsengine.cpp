@@ -17,7 +17,9 @@
 #include "dreamsintro.h"
 #include "dreamsgameplay.h"
 
+#ifndef REFKEEN_VER_KDREAMS_ANYEGA_ALL
 #define REFKEEN_VER_KDREAMS_ANYEGA_ALL
+#endif
 
 
 dreams::DreamsEngine *gDreamsEngine;

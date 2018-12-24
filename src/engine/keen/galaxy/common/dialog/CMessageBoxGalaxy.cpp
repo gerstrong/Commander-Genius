@@ -24,10 +24,13 @@ namespace galaxy
 
 const int FONT_ID = 0;
 
-CMessageBoxGalaxy::CMessageBoxGalaxy(const std::string& Text, CEvent *closeEv) :
+CMessageBoxGalaxy::CMessageBoxGalaxy(const int sprVar,
+                                     const std::string& Text,
+                                     CEvent *closeEv) :
 mMustClose(false),
 mText(Text),
-mCloseEv(closeEv)
+mCloseEv(closeEv),
+mSprVar(sprVar)
 {
 	GsFont &Font = gGraphics.getFont(FONT_ID);
 
@@ -141,9 +144,9 @@ void CMessageBoxGalaxy::render()
 }
 
 
-void showMsg( const std::string &text, CEvent *closeEv )
+void showMsg(const int sprVar, const std::string &text, CEvent *closeEv )
 {
-    CMessageBoxGalaxy *msgBox = new CMessageBoxGalaxy(text, closeEv);
+    CMessageBoxGalaxy *msgBox = new CMessageBoxGalaxy(sprVar, text, closeEv);
     msgBox->init();
     gEventManager.add( new EventSendDialog( msgBox ) );    
 }
