@@ -2,6 +2,7 @@
 #include <widgets/GsProgressbar.h>
 #include <widgets/GsButton.h>
 #include <base/GsApp.h>
+#include <base/GsEventContainer.h>
 #include <base/utils/FindFile.h>
 #include <base/utils/ThreadPool.h>
 

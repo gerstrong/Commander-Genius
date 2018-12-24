@@ -6,7 +6,7 @@
  */
 
 #ifndef __GSAPP_H_
-#define __GSAPP_H_
+#define GSAPP_H
 
 #include <base/GsEvent.h>
 #include <base/GsEngine.h>
@@ -69,4 +69,4 @@ private:
 // It's a simple quit event which will force CG to close the App
 struct GMQuit : CEvent {};
 
-#endif /* __GSAPP_H_ */
+#endif /* GSAPP_H */

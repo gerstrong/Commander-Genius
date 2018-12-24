@@ -11,8 +11,9 @@
 #include <SDL.h>
 #include <string>
 #include <list>
+#include <vector>
 #include <base/utils/Geometry.h>
-#include <base/GsEvent.h>
+#include <base/GsEventContainer.h>
 #include <base/InputEvents.h>
 
 #include <base/Singleton.h>

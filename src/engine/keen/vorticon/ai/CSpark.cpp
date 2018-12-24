@@ -5,6 +5,8 @@
  *      Author: gerstrong
  */
 
+#include <base/GsEventContainer.h>
+
 #include "CSpark.h"
 #include "CRay.h"
 

@@ -8,6 +8,7 @@
 #include "engine/core/spritedefines.h"
 #include "CSpriteObject.h"
 #include <base/GsLogging.h>
+#include <base/GsEventContainer.h>
 #include <base/video/CVideoDriver.h>
 
 #include <base/utils/FindFile.h>

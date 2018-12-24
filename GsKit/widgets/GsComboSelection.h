@@ -10,6 +10,7 @@
 
 #include <string>
 #include <memory>
+#include <list>
 #include <graphics/GsSurface.h>
 
 #include "GsButton.h"

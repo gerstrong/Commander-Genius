@@ -8,10 +8,10 @@
 #ifndef CMESSAGEBOXGALAXY_H_
 #define CMESSAGEBOXGALAXY_H_
 
-//#include <base/utils/CVec.h>
 #include <string>
 #include <SDL.h>
 #include <memory>
+#include <vector>
 
 #include <base/GsEvent.h>
 #include <graphics/GsSurface.h>
@@ -23,6 +23,8 @@ namespace galaxy
 class CMessageBoxGalaxy
 {
 public:
+
+    virtual ~CMessageBoxGalaxy();
 
 	/**
      * \brief This constructor creates a typical Keen Galaxy Message Box

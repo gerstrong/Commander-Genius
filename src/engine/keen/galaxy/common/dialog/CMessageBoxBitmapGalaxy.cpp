@@ -7,6 +7,7 @@
 
 #include "CMessageBoxBitmapGalaxy.h"
 #include <base/video/CVideoDriver.h>
+#include <base/GsEventContainer.h>
 
 #include "dialog/CMessageBox.h"
 

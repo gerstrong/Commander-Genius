@@ -263,6 +263,12 @@ GsTilemap &GsGraphics::getTileMap(size_t tilemap)
 std::vector<GsTilemap> &GsGraphics::getTileMaps()
 {   return Tilemap; }
 
+void GsGraphics::setBitmapNameForIdx(const std::string name,
+                                     const int idx)
+{
+    mBitmapNameToIdx[name] = idx;
+}
+
 GsBitmap &GsGraphics::getBitmapFromId(const int var,
                                       const int slot)
 //{   return mBitmap[var][slot];    }
@@ -290,22 +296,17 @@ GsFont &GsGraphics::getFont(Uint8 index)
 GsBitmap *GsGraphics::getBitmapFromStr(const int sprVar,
                                        const std::string &name) const
 {
-	std::string s_name;
-
     //const auto bmpVecIdx = sprVar;
     const auto bmpVecIdx = 0;
 
-    for(unsigned int i=0 ; i<mBitmap[bmpVecIdx].size() ; i++)
-	{
-        auto &bitmap = mBitmap[bmpVecIdx][i];
+    auto it = mBitmapNameToIdx.find(name);
 
-        s_name = bitmap.getName();
-
-		if(s_name == name)
-        {
-            return const_cast<GsBitmap*>(&bitmap);
-        }
-	}
+    if(it != mBitmapNameToIdx.end())
+    {
+        const int idx = it->second;
+        auto &bitmap = mBitmap[bmpVecIdx][size_t(idx)];
+        return const_cast<GsBitmap*>(&bitmap);
+    }
 
 	std::string error = "Ooops! Wrong TextID ";
 	error += "name";

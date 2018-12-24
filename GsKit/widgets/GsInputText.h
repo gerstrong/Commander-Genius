@@ -10,8 +10,7 @@
 
 #include "GsControl.h"
 #include <string>
-
-//#include "engine/CEvent.h"
+#include <memory>
 
 class CGUIInputText : public GsControl
 {

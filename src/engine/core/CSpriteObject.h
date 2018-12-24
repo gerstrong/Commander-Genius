@@ -9,8 +9,8 @@
  */
 
 
-#ifndef __CSpriteObject_H_
-#define __CSpriteObject_H_
+#ifndef CSpriteObject_H
+#define CSpriteObject_H
 
 #include <base/GsEvent.h>
 
@@ -439,4 +439,4 @@ struct EventSpawnObject : CEvent {
       pObject( pObject ) {}
 };
 
-#endif // __CSpriteObject_H_
+#endif // CSpriteObject_H_

@@ -44,6 +44,8 @@ mSprVar(sprVar)
     mMBRect.y = (gameRes.h-mMBRect.h)/2;
 }
 
+CMessageBoxGalaxy::~CMessageBoxGalaxy() {}
+
 void CMessageBoxGalaxy::init()
 {
     mMBSurface.createRGBSurface(mMBRect);

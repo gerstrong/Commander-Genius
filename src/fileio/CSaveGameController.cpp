@@ -8,6 +8,7 @@
  */
 
 #include <base/utils/FindFile.h>
+#include <base/GsEventContainer.h>
 #include "CSaveGameController.h"
 #include "engine/core/CBehaviorEngine.h"
 

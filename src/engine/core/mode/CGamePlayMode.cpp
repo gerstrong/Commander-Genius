@@ -11,6 +11,7 @@
 #include <graphics/GsGraphics.h>
 #include <base/video/CVideoDriver.h>
 #include <base/GsApp.h>
+#include <base/GsEventContainer.h>
 #include <memory>
 
 CGamePlayMode::CGamePlayMode(const int Episode,

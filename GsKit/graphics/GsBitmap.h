@@ -83,8 +83,8 @@ public:
     void setColorKey(const Uint8 r, const Uint8 g, const Uint8 b);
     bool scaleTo(const GsRect<Uint16> &destRes);
 
-	std::string getName() const { return mName; }
-	void setName(const std::string &name) { mName = name; }
+//	std::string getName() const { return mName; }
+//	void setName(const std::string &name) { mName = name; }
 
 
     /**
@@ -101,7 +101,7 @@ public:
     void _draw(const int x, const int y, SDL_Surface *dst) const;
 
 private:
-	std::string mName;
+    //std::string mName;
     GsSurface mBitmapSurface;
 };
 

@@ -11,6 +11,8 @@
 #define CGUITEXT_H_
 
 #include <string>
+#include <list>
+#include <memory>
 
 #include "GsControl.h"
 

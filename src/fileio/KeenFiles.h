@@ -5,8 +5,8 @@
  *      Author: gerstrong
  */
 
-#ifndef __KEENFILES_H__
-#define __KEENFILES_H__
+#ifndef KEENFILES_H
+#define KEENFILES_H
 
 #include <string>
 #include <set>
@@ -76,4 +76,4 @@ int getRessourceID(const std::string& filename, const std::string& namefilter);
 
 bool loadGamefileNames();
 
-#endif /* __KEENFILES_H__ */
+#endif /* KEENFILES_H */

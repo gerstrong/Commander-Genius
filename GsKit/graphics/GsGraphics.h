@@ -23,6 +23,7 @@
 #include <vector>
 #include <memory>
 #include <unordered_map>
+#include <string>
 
 #include <base/Singleton.h>
 #define gGraphics GsGraphics::get()
@@ -62,6 +63,11 @@ public:
 
     GsTilemap &getTileMap(size_t tilemap);
     std::vector<GsTilemap> &getTileMaps();
+
+    void setBitmapNameForIdx(const std::string name,
+                             const int idx);
+
+
     GsBitmap &getBitmapFromId(const int var,
                               const int slot);
     GsBitmap &getMaskedBitmap(Uint16 slot);
@@ -93,11 +99,16 @@ private:
 
 	std::vector<GsFont> Font;
     std::vector<GsTilemap> Tilemap;
+
     std::vector< std::vector<GsBitmap> > mBitmap;
+    std::unordered_map<std::string, int> mBitmapNameToIdx;
+
     std::vector<GsBitmap> maskedBitmap;
     std::vector<GsBitmap> miscGsBitmap;
     std::vector< std::vector<GsSprite> > mSprite;
     
+
+
     std::unordered_map<std::string, GsSprite> mSpecialSpriteMap;
 };
 

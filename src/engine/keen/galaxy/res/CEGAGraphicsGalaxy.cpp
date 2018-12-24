@@ -1146,7 +1146,7 @@ bool CEGAGraphicsGalaxy::readBitmaps()
 
         auto &bmpName = bitmapNamesThisEp[i];
 
-        bitmap.setName(bmpName);
+        gGraphics.setBitmapNameForIdx(bmpName, i);
 
         for(const auto &bmpFile : bmpFileList)
         {
