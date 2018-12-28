@@ -100,6 +100,7 @@ void CPlayGameVorticon::processOnWorldMap()
 	}
 
 
+#ifdef VIRTUALPAD
     if( gVideoDriver.VGamePadEnabled() )
     {
         VirtualKeenControl *vkc = dynamic_cast<VirtualKeenControl*>(gInput.mpVirtPad.get());
@@ -108,6 +109,7 @@ void CPlayGameVorticon::processOnWorldMap()
         vkc->mDPad.invisible = false;
         vkc->mStartButton.invisible = false;
     }
+#endif
 
 }
 

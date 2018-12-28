@@ -16,6 +16,7 @@
 
 void CPlayGameVorticon::processInLevel()
 {
+#ifdef VIRTUALPAD
     if( gVideoDriver.VGamePadEnabled() )
     {
         VirtualKeenControl *vkc = dynamic_cast<VirtualKeenControl*>(gInput.mpVirtPad.get());
@@ -28,6 +29,7 @@ void CPlayGameVorticon::processInLevel()
         vkc->mShootButton.invisible = false;
         vkc->mStatusButton.invisible = false;
     }
+#endif
 
 
 

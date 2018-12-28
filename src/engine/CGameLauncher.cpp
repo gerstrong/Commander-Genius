@@ -63,6 +63,7 @@ m_start_level(start_level)
     gMenuController.clearMenuStack();
     letchooseagain();
 
+#ifdef VIRTUALPAD
     gInput.mpVirtPad.reset(new VirtualKeenControl);
 
     if( !gInput.mpVirtPad->init() )
@@ -71,6 +72,7 @@ m_start_level(start_level)
 
         gLogging.textOut(err);
     }
+#endif
 
 }
 
@@ -644,11 +646,13 @@ void CGameLauncher::pumpEvent(const CEvent *evPtr)
     {
         gEventManager.add( new OpenMenuEvent(
                                new SettingsMenu(GsControl::Style::NONE) ) );
-    }    
+    }
+#ifdef VIRTUALPAD
     else if( dynamic_cast<const OpenVGamePadSettingsEvent*>(evPtr) )
     {
         gInput.setInVPadConfigState();
     }
+#endif
 
 
 

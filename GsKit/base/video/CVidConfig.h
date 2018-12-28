@@ -67,10 +67,12 @@ public:
 	unsigned short Zoom;
     bool mOpengl;
 
+#ifdef VIRTUALPAD
 #ifdef ANDROID
     bool mVPad = true;
 #else
     bool mVPad = false;
+#endif
 #endif
 
 	GsRect<int> mAspectCorrection;

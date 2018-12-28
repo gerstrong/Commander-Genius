@@ -101,9 +101,9 @@ void CPlayGameVorticon::setupPlayers()
     if(!mpHUDVec.empty())
         mpHUDVec.clear();
 
-    const int numPlayers = gBehaviorEngine.numPlayers();
+    const auto numPlayers = gBehaviorEngine.numPlayers();
 
-    for (int i=0 ; i<numPlayers ; i++)
+    for (auto i=0 ; i<numPlayers ; i++)
 	{
         auto &player = m_Player[i];
 
@@ -281,6 +281,7 @@ void CPlayGameVorticon::pumpEvent(const CEvent *evPtr)
 ////
 void CPlayGameVorticon::ponder(const float deltaT)
 {
+#ifdef VIRTUALPAD
     VirtualKeenControl *vkc = dynamic_cast<VirtualKeenControl*>(gInput.mpVirtPad.get());
 
     if(!vkc)
@@ -292,6 +293,7 @@ void CPlayGameVorticon::ponder(const float deltaT)
 
     assert(vkc);
     vkc->mDPad.invisible = false;
+#endif
 
 	if( !mpFinale && !gMenuController.active() ) // Game is not paused, no messages have to be shown and no menu is open
 	{

@@ -171,14 +171,14 @@ bool CInput::startJoyDriver()
 	}
     else
 	{
-		const size_t joyNum = SDL_NumJoysticks();
+        const auto joyNum = SDL_NumJoysticks();
 		if( joyNum > 0 )
 		{
 			SDL_JoystickEventState(SDL_ENABLE);
 			gLogging.ftextOut("Detected %i joystick(s).<br>\n", joyNum );
             gLogging << "The names of the joysticks are:<br>";
 
-			for( size_t i=0; i < joyNum; i++ )
+            for( auto i=0; i < joyNum; i++ )
 			{
 #if SDL_VERSION_ATLEAST(2, 0, 0)
                 gLogging.ftextOut("    %s<br>", SDL_JoystickNameForIndex(i));
@@ -342,6 +342,7 @@ std::string CInput::getEventShortName(int command, unsigned char input)
 
 void CInput::render()
 {
+#ifdef VIRTUALPAD
     if(!gVideoDriver.VGamePadEnabled())
         return;
 
@@ -359,6 +360,7 @@ void CInput::render()
 
     GsWeakSurface blit(gVideoDriver.getBlitSurface());
     mpVirtPad->render(blit);
+#endif
 }
 
 
@@ -651,6 +653,7 @@ void CInput::transMouseRelCoord(Vector2D<float> &Pos,
 
 void CInput::ponder()
 {
+#ifdef VIRTUALPAD
     if(!mpVirtPad)
         return;
 
@@ -658,16 +661,19 @@ void CInput::ponder()
         return;
 
     mpVirtPad->ponder();
+#endif
 }
 
 
 
 void CInput::flushFingerEvents()
 {
+#ifdef VIRTUALPAD
     if(!mpVirtPad)
         return;
 
     mpVirtPad->flush();
+#endif
 }
 
 
@@ -676,11 +682,13 @@ void CInput::pollEvents()
     // Semaphore
     SDL_SemWait( pollSem );
 
+#ifdef VIRTUALPAD
     if(mpVirtPad && mVPadConfigState)
     {
         mpVirtPad->processConfig();
         return;
     }
+#endif
 
     if(remapper.mappingInput)
     {
@@ -752,6 +760,7 @@ void CInput::pollEvents()
             Vector2D<int> rotPt(Event.tfinger.x*float(activeArea.w),
                                 Event.tfinger.y*float(activeArea.h));
 
+#ifdef VIRTUALPAD
             // If Virtual gamepad takes control...
             if(gVideoDriver.VGamePadEnabled() && mpVirtPad &&
                mpVirtPad->active() )
@@ -766,6 +775,7 @@ void CInput::pollEvents()
                 }
             }
             else
+#endif
             {
                 transMouseRelCoord(Pos, Event.tfinger, activeArea, tiltedScreen);
                 m_EventList.add( new PointingDevEvent( Pos, PDE_BUTTONDOWN ) );
@@ -777,6 +787,7 @@ void CInput::pollEvents()
 
         case SDL_FINGERUP:
 
+#ifdef VIRTUALPAD
             if(gVideoDriver.VGamePadEnabled() && mpVirtPad &&
                mpVirtPad->active())
             {
@@ -793,6 +804,7 @@ void CInput::pollEvents()
                 }
             }
             else
+#endif
             {
                 passSDLEventVec = true;
                 const Vector2D<int> rotPt(Event.tfinger.x, Event.tfinger.y);
@@ -810,6 +822,7 @@ void CInput::pollEvents()
                                 Event.tfinger.y*float(activeArea.h));
 
             // If Virtual gamepad takes control...
+#ifdef VIRTUALPAD
             if(gVideoDriver.VGamePadEnabled() && mpVirtPad &&
                mpVirtPad->active() )
             {
@@ -823,6 +836,7 @@ void CInput::pollEvents()
                 }
             }
             else
+#endif
             {
                 const Vector2D<int> rotPt(Event.tfinger.x, Event.tfinger.y);
                 transMouseRelCoord(Pos, rotPt, activeArea, tiltedScreen);
@@ -858,6 +872,7 @@ void CInput::pollEvents()
 
             if(Event.button.button <= 3)
             {
+#ifdef VIRTUALPAD
                 // If Virtual gamepad takes control...
                 if(gVideoDriver.VGamePadEnabled() && mpVirtPad &&
                    mpVirtPad->active() )
@@ -873,6 +888,7 @@ void CInput::pollEvents()
                     }
                 }
                 else
+#endif
                 {
                     const Vector2D<int> rotPt(Event.motion.x, Event.motion.y);
                     transMouseRelCoord(Pos, Event.motion, activeArea, tiltedScreen);
@@ -886,6 +902,7 @@ void CInput::pollEvents()
 
 		case SDL_MOUSEBUTTONUP:
 
+#ifdef VIRTUALPAD
             if(gVideoDriver.VGamePadEnabled() && mpVirtPad &&
                     mpVirtPad->active())
             {
@@ -900,6 +917,7 @@ void CInput::pollEvents()
                 }
             }
             else
+#endif
             {
                 passSDLEventVec = true;
                 const Vector2D<int> rotPt(Event.motion.x, Event.motion.y);
@@ -1716,9 +1734,9 @@ void CInput::processMouse(SDL_Event& ev) {
 		case SDL_FINGERMOTION:
             //float fdx = ((float)ev.tfinger.dx)/touch->xres;
             //float fdy = ((float)ev.tfinger.dy)/touch->yres;
-            float fdx = ((float)ev.tfinger.dx)/touch->x;
-            float fdy = ((float)ev.tfinger.dy)/touch->y;
-            dx = (int)(fdx*w); dy = (int)(fdy*h);
+            float fdx = (float(ev.tfinger.dx))/touch->x;
+            float fdy = (float(ev.tfinger.dy))/touch->y;
+            dx = int(fdx*w); dy = int(fdy*h);
 			processMouse(x - dx, y - dy, false, ev.tfinger.fingerId);
 			processMouse(x, y, true, ev.tfinger.fingerId);
 			break;

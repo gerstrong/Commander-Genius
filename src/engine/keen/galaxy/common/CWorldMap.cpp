@@ -79,6 +79,7 @@ void CWorldMap::loadAndPlayMusic()
 void CWorldMap::ponder(const float deltaT)
 {
 
+#ifdef VIRTUALPAD
     if( gVideoDriver.VGamePadEnabled() )
     {
         VirtualKeenControl *vkc = dynamic_cast<VirtualKeenControl*>(gInput.mpVirtPad.get());
@@ -87,6 +88,7 @@ void CWorldMap::ponder(const float deltaT)
         vkc->mDPad.invisible = false;
         vkc->mStartButton.invisible = false;
     }
+#endif
 
 
     ponderBase(deltaT);

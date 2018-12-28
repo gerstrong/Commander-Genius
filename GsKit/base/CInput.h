@@ -295,6 +295,7 @@ public:
      */
     void pushBackButtonEventExtEng();
 
+#ifdef VIRTUALPAD
     // One virtual input overlay can be active be processed. This is useful for game to ported on mobile devices
     std::unique_ptr<GsVirtualInput> mpVirtPad;
 
@@ -306,6 +307,7 @@ public:
     {
         mVPadConfigState = true;
     }
+#endif
 
 private:
 
@@ -336,7 +338,9 @@ private:
 	int m_cmdpulse;
 	short m_joydeadzone;
 
+#ifdef VIRTUALPAD
     bool mVPadConfigState = false;
+#endif
 
 	bool immediate_keytable[KEYTABLE_SIZE];
 	bool last_immediate_keytable[KEYTABLE_SIZE];

@@ -98,6 +98,7 @@ bool CLevelPlay::loadLevel(const int sprVar, const Uint16 level)
 
 void CLevelPlay::ponder(const float deltaT)
 {    
+#ifdef VIRTUALPAD
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     if( gVideoDriver.VGamePadEnabled() )
     {
@@ -111,6 +112,7 @@ void CLevelPlay::ponder(const float deltaT)
         vkc->mShootButton.invisible = false;
         vkc->mStatusButton.invisible = false;
     }
+#endif
 #endif
 
     ponderBase(deltaT);

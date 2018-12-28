@@ -125,6 +125,7 @@ bool CPassiveGalaxy::init()
     SDL_FillRect( blit, NULL, SDL_MapRGB(blit->format,0,0,0));
     gInput.flushAll();
 
+#ifdef VIRTUALPAD
     gInput.mpVirtPad.reset(new VirtualKeenControl);
     gInput.mpVirtPad->init();
 
@@ -132,6 +133,7 @@ bool CPassiveGalaxy::init()
     VirtualKeenControl *vkc = dynamic_cast<VirtualKeenControl*>(gInput.mpVirtPad.get());
     assert(vkc);
     vkc->mDPad.invisible = true;
+#endif
 #endif
 
     const auto &storyText = gBehaviorEngine.getString("STORY_TEXT");
@@ -371,10 +373,12 @@ void CPassiveGalaxy::processTitle()
 		{
             gInput.flushAll();
 
+#ifdef VIRTUALPAD
 #if SDL_VERSION_ATLEAST(2, 0, 0)
             VirtualKeenControl *vkc = dynamic_cast<VirtualKeenControl*>(gInput.mpVirtPad.get());
             assert(vkc);
             vkc->mDPad.invisible = false;
+#endif
 #endif
 
             gEventManager.add(new OpenMainMenuEvent());
@@ -471,10 +475,12 @@ void CPassiveGalaxy::processStarWars()
         {
             gInput.flushAll();
 
+#ifdef VIRTUALPAD
 #if SDL_VERSION_ATLEAST(2, 0, 0)
             VirtualKeenControl *vkc = dynamic_cast<VirtualKeenControl*>(gInput.mpVirtPad.get());
             assert(vkc);
             vkc->mDPad.invisible = false;
+#endif
 #endif
 
             gEventManager.add(new OpenMainMenuEvent());
