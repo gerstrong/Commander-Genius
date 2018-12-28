@@ -260,6 +260,23 @@ Getting the most recent source code:
    later.
 
 
+Requirements:
+
+Build Tools. Works best with GNU Compiler and Clang
+which supports at least C++14.
+
+CMake 3.12 or later. If you use an older version if CMake you will have to
+disable Python Support (cmake -DUSE_PYTHON3=0).
+
+SDL2, SDL2_Image and SDL2_mixer. There is support for SDL1.2
+but it is getting deprecated and will be removed in future.
+
+Boost libraries. I plan to remove that in future, but right now we need it.
+
+libogg and libvorbis. I also plan to remove those since SDL2_mixer does the job.
+
+Curl and Zlib, so you can fully use the Game store CG provides.
+
 How to compile it under Ubuntu:
  * Install through Synaptic or "sudo apt install" the following packages:
    Common dependencies:
@@ -275,9 +292,9 @@ How to compile it under Ubuntu:
         - libsdl2-image-dev
         - libsdl2-mixer-dev
 
- * Extract my source code into the "CGeniusSrc" directory.
- * cd CGeniusSrc
- * mkdir -p CGeniusBuild
+ * Create an empty build Dir: mkdir -p CGeniusBuild
+ * Extract my source code into the "CGeniusSrc" directory. 
+ * cd CGeniusSrc 
  * cd CGeniusBuild
  * Run "cmake ../CGeniusSrc".
  * Run "make".

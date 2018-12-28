@@ -1,3 +1,9 @@
+v2.2.9:
+-------
+- Added a Macro for completly building without the virtual pad
+- Cleanups by removing entire files
+
+
 v2.2.8:
 -------
 - Compilation fixes
