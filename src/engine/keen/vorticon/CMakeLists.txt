@@ -80,12 +80,9 @@ set(CXXSRC
     menu/cheatsmenu.cpp
     menu/CHelpMenu.cpp
     menu/CLoadMenu.cpp
-    menu/CMainMenu.cpp
     menu/COptions.cpp
     menu/CProfilesMenu.cpp
     menu/CSaveMenu.cpp
-    menu/CSettingsMenu.cpp
-    menu/CVideoSettings.cpp
     menu/VorticonMenu.cpp
     menu/widgets/Button.cpp
     menu/widgets/ComboSelection.cpp
@@ -167,13 +164,10 @@ set(HSRC
     menu/cheatsmenu.h
     menu/CHelpMenu.h
     menu/CLoadMenu.h
-    menu/CMainMenu.h
     menu/COptions.h
     menu/CProfilesMenu.h
     menu/CSaveMenu.h
     menu/CSelectionMenu.h
-    menu/CSettingsMenu.h
-    menu/CVideoSettings.h
     menu/VorticonMenu.h
     menu/widgets/Button.h
     menu/widgets/ComboSelection.h
