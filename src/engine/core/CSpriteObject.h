@@ -265,7 +265,10 @@ class CSpriteObject
     bool hitdetectWithTilePropertyHor(const Uint16 Property, const int lxl, const int lxr, const int ly, const int res);
     bool hitdetectWithTilePropertyVert(const Uint16 Property, const int lx, const int lyu, const int lyd, const int res);
     bool hitdetectWithTileProperty(const int Property, const int x, const int y);
-    virtual void kill();
+
+    virtual void kill(const bool force = false,
+                      const bool noDieProcess = false);
+
     void blink(Uint16 frametime);
     
     // Collision parts
@@ -330,7 +333,7 @@ class CSpriteObject
     virtual void processFalling();
     virtual void getTouchedBy(CSpriteObject&) {}
     virtual bool isNearby(CSpriteObject&) { return true; }
-    virtual void getShotByRay(object_t &obj_type);
+    virtual void getShotByRay(object_t &);
     void kill_intersecting_tile(int mpx, int mpy, CSpriteObject &theObject);
     CMap *getMapPtr() { return mpMap; }
     

@@ -137,31 +137,31 @@ public:
 
 
     /**
-	 * Pushes the players by the given object Reference
-	 */
-	void push( CGalaxySpriteObject &theObject );
+     * Pushes the players by the given object Reference
+     */
+    void push( CGalaxySpriteObject &theObject );
 
-	/**
-	 * Overloaded getActionStatus which uses the episodes' map
-	 */
-	bool getActionStatus(int16_t ActionNumber);
+    /**
+     * Overloaded getActionStatus which uses the episodes' map
+     */
+    bool getActionStatus(int16_t ActionNumber) override;
 
-	/**
-	 * returns the Sprite ID from the given action
-	 */
-	int getSpriteIDFromAction(const int16_t ActionNumber);
+    /**
+     * returns the Sprite ID from the given action
+     */
+    int getSpriteIDFromAction(const int16_t ActionNumber);
 
-	/**
-	 * Overloaded setActionForce which uses the action for the player
-	 */
-	void setActionForce(const size_t ActionNumber);
+    /**
+     * Overloaded setActionForce which uses the action for the player
+     */
+    void setActionForce(const size_t ActionNumber) override;
 
-	/**
-	 * \brief The Player will get 1 UP when that function is launched
-	 */
-	void getAnotherLife(const int lc_x, const int lc_y, const bool display, const bool alt);
+    /**
+     * \brief The Player will get 1 UP when that function is launched
+     */
+    void getAnotherLife(const int lc_x, const int lc_y, const bool display, const bool alt);
 
-    virtual void pumpEvent(const CEvent *evPtr);
+    virtual void pumpEvent(const CEvent *evPtr) override;
 
     /**
      * \description Camera of the player gets performed here...
@@ -172,11 +172,11 @@ public:
      * @brief Player can always be visible and active, even if he is not seen.
      * @return
      */
-    bool calcVisibility();
+    bool calcVisibility() override;
 
-	/**
-	 * \description Read the Input of the Player and sets the variables accordingly
-	 */
+    /**
+         * \description Read the Input of the Player and sets the variables accordingly
+         */
 	virtual void processInput();
 
 
@@ -217,7 +217,7 @@ public:
      * @param noDieProcess  Do not show any dying animation kill him directly
      */
     virtual void kill(const bool force = false,
-                      const bool noDieProcess = false);
+                      const bool noDieProcess = false) override;
 
 	/**
 	 * Happens when usually the Dopefish eats Keen

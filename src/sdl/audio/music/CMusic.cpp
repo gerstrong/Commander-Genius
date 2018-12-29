@@ -7,7 +7,6 @@
 
 #include "sdl/audio/Audio.h"
 #include "sdl/audio/base/Sampling.h"
-#include "sdl/audio/music/COGGPlayer.h"
 #include "sdl/audio/music/CIMFPlayer.h"
 #include "CMusic.h"
 #include <base/GsLogging.h>

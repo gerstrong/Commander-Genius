@@ -1607,14 +1607,13 @@ void CInput::flushEvents()
     m_EventList.clear();
 }
 
-static const int w = 480, h = 320;
-
 #define KSHOWHIDECTRLS	(-10)
 
 //#if defined(MOUSEWRAPPER)
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 
 #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
+static const int w = 480, h = 320;
 static TouchButton* getPhoneButtons(stInputCommand InputCommand[NUM_INPUTS][MAX_COMMANDS]) {
 
 	static TouchButton phoneButtons[] = {
@@ -1642,10 +1641,11 @@ static TouchButton* getPhoneButtons(stInputCommand InputCommand[NUM_INPUTS][MAX_
 }
 #endif
 
-static const int phoneButtonN = 15;
+
 typedef std::set<int> MouseIndexSet;
 
 #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
+static const int phoneButtonN = 15;
 static Uint32 phoneButtonLasttime[phoneButtonN] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 static MouseIndexSet phoneButton_MouseIndex[phoneButtonN];
 
