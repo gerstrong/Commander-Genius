@@ -20,8 +20,8 @@ size_t bulletActionMap[] =
 namespace galaxy
 {
 
-const Uint32 speed = 10;
-const Uint32 hittime = 100;
+//const Uint32 speed = 10;
+//const Uint32 hittime = 100;
 
 CBullet::CBullet(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y,
                  const int xDir, const int yDir, const int sprVar) :

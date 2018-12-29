@@ -37,7 +37,7 @@ public:
 	
 private:
 
-	int mTimer;	
+//	int mTimer = 0;
 };
 
 }

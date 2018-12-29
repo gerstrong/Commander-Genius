@@ -22,9 +22,7 @@ const int MAX_BOUNCE_BOOST = -115;
 const int HOR_SPEED = 40;
 
 CBounder::CBounder(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
-CStunnable(pmap, foeID, x, y),
-bounceboost(0),
-mpInteractPlayer(NULL)
+CStunnable(pmap, foeID, x, y)
 {
 	mActionMap[A_BOUNDER_BOUNCE] = (GASOFctr) &CBounder::processBounce;
 	mActionMap[A_BOUNDER_MOVE] = (GASOFctr) &CBounder::processBounce;

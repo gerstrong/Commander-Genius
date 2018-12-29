@@ -22,6 +22,8 @@ public:
 			const std::shared_ptr<CMap> &pMap,
 			std::vector< std::unique_ptr<CVorticonSpriteObject> > &Object);
 
+	virtual ~CFinale();
+
 	void addMsgBoxString(const std::string &text);
 
 	void showEndingText();    

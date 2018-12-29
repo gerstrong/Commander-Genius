@@ -56,9 +56,9 @@ public:
 
 
 
-    stInputCommand* cmd = nullptr;
+    //stInputCommand* cmd = nullptr;
     int immediateIndex = 0;
-    //int x = 0, y = 0, w = 0, h = 0;
+
     float x = 0.0f, y = 0.0f, w = 0.0f, h = 0.0f;
     bool invisible = true;
 
@@ -76,8 +76,6 @@ public:
     {
         return !mFingerSet.empty();
     }
-
-//private:
 
     std::set<SDL_FingerID> mFingerSet;
 
@@ -98,7 +96,7 @@ public:
     /**
      * @brief GsVirtualInput basic constructor, just setup some variables.
      */
-    GsVirtualInput() {}
+    //GsVirtualInput() {}
 
 
     virtual ~GsVirtualInput() {}
@@ -185,8 +183,6 @@ public:
 protected:
 
     bool mEnabled = true;
-
-    //GsSurface mOverlay;
 
     float mTranslucency = 0.5f;
 

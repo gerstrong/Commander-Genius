@@ -10,7 +10,7 @@
  you feel merit inclusion in the source tree email them
  to me at gerstrong@gmail.com.
 
- Thanks to ID Software for the "Commander Keen" series. 
+ Thanks to ID Software for the "Commander Keen" series.
  "Commander Keen" and it's associated
  graphics, level, and sound files are the property of ID
  Software. Commander Genius requires the original version of a
@@ -35,7 +35,7 @@
 
 
 #ifdef ANDROID
-	#include <SDL_main.h>
+#include <SDL_main.h>
 #endif
 
 #include <base/utils/FindFile.h>
@@ -64,54 +64,54 @@ int main(int argc, char *argv[])
 {
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    #ifdef ANDROID
-        SDL_SetMainReady( );
-    #endif
+#ifdef ANDROID
+    SDL_SetMainReady( );
+#endif
 #endif
 
-	// Check if CG should look into a given directory
-	std::string binary_dir;
-	if(argc >= 1)
-	{		
-		binary_dir = argv[0];
-		size_t slashpos = findLastPathSep(binary_dir);
-		
-		if(slashpos != std::string::npos)
-		{
-			binary_dir.erase(slashpos);
+    // Check if CG should look into a given directory
+    std::string binary_dir;
+    if(argc >= 1)
+    {
+        binary_dir = argv[0];
+        size_t slashpos = findLastPathSep(binary_dir);
+
+        if(slashpos != std::string::npos)
+        {
+            binary_dir.erase(slashpos);
             binary_dir = SystemNativeToUtf8(binary_dir);
-		}
-		else
-		{
-			binary_dir = ".";
-		}
-	}
-	else
-	{
-		warnings << "Binary-argument not given, assuming current dir" << endl;
-		binary_dir = ".";
-	}
+        }
+        else
+        {
+            binary_dir = ".";
+        }
+    }
+    else
+    {
+        warnings << "Binary-argument not given, assuming current dir" << endl;
+        binary_dir = ".";
+    }
 
-	SetBinaryDir( GetAbsolutePath(binary_dir) );
+    SetBinaryDir( GetAbsolutePath(binary_dir) );
 
-	InitThreadPool();
+    InitThreadPool();
     InitSearchPaths(gSettings.getConfigFileName());
 
     if( !gLogging.CreateLogfile("CGLog.html", APP_NAME, CGVERSION) )
     {
         errors << "Not even able to create \"CGLog.html\"." << endl;
-        return 1;
+      return 1;
     }
 
 
-    // Init Video Driver with SDL all together
-    if( !gVideoDriver.init() )
+  // Init Video Driver with SDL all together
+  if( !gVideoDriver.init() )
     {
-        return 1;
+      return 1;
     }
 
-    // Check if there are settings on the PC, otherwise use defaults.
-    if( !gSettings.loadDrvCfg() )
+  // Check if there are settings on the PC, otherwise use defaults.
+  if( !gSettings.loadDrvCfg() )
     {
         //m_firsttime = true;
         gLogging.textOut(FONTCOLORS::RED,"First time message: CG didn't find the driver config file. ");
@@ -133,7 +133,7 @@ int main(int argc, char *argv[])
     // Initialize CG and run the main cycle if worthy //
     ////////////////////////////////////////////////////
     if( gApp.init( argc, argv ) )
-	{
+    {
         ////////////////////////////////
         // Set GameLauncher as Engine //
         ////////////////////////////////
@@ -143,10 +143,10 @@ int main(int argc, char *argv[])
         // Run the Commander Genius //
         //////////////////////////////
         gApp.runMainCycle();
-	}
+    }
 
     gSettings.saveDispCfg();
 
-	UnInitThreadPool();
-	return 0;
+    UnInitThreadPool();
+    return 0;
 }

@@ -160,7 +160,7 @@ class CInput : public GsSingleton<CInput>
 public:
     CInput();
 
-    ~CInput();
+    virtual ~CInput();
 
     /**
      * @brief transMouseRelCoord    transforms a mouse click from the screen coordinates to the relative coordinates

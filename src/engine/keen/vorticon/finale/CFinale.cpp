@@ -22,6 +22,9 @@ mpMap(pMap),
 m_Object(Object)
 {}
 
+CFinale::~CFinale()
+{}
+
 void CFinale::addMsgBoxString(const std::string &text)
 {
     std::unique_ptr<CMessageBoxVort> msg( new CMessageBoxVort(gBehaviorEngine.getString(text), true) );

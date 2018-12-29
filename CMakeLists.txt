@@ -7,12 +7,15 @@ Project(CommanderGenius)
 
 set (CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/CMake")
 
+option(USE_VIRTUALPAD "Enable Onscreen Virtual Gamepad support " yes)
+
+if(USE_VIRTUALPAD)
+    ADD_DEFINITIONS(-DVIRTUALPAD)
+endif(USE_VIRTUALPAD)
+
+
 # Use COmpile TIme REducer
 include(cotire)
-
-if(USE_SDL2S)
-    include(FindSDL2_mixer)
-endif()
 
 option(USE_PYTHON3 "Use Python3 scripts" yes)
 

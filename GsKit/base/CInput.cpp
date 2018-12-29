@@ -258,7 +258,7 @@ void CInput::loadControlconfig(void)
 	else
 	{
 		for(size_t c=1 ; c<= NUM_INPUTS ; c++)
-			resetControls(c);
+			resetControls(int(c));
 	}
 }
 
@@ -274,26 +274,30 @@ void CInput::saveControlconfig()
 	std::string section;
 	for(size_t i=0 ; i<NUM_INPUTS ; i++)
 	{
-		section = "input" + itoa(i);
-		Configuration.WriteString(section, "Left", getEventName(IC_LEFT, i));
-		Configuration.WriteString(section, "Up", getEventName(IC_UP, i));
-		Configuration.WriteString(section, "Right", getEventName(IC_RIGHT, i));
-		Configuration.WriteString(section, "Down", getEventName(IC_DOWN, i));
-		Configuration.WriteString(section, "Upper-Left", getEventName(IC_UPPERLEFT, i));
-		Configuration.WriteString(section, "Upper-Right", getEventName(IC_UPPERRIGHT, i));
-		Configuration.WriteString(section, "Lower-Left", getEventName(IC_LOWERLEFT, i));
-		Configuration.WriteString(section, "Lower-Right", getEventName(IC_LOWERRIGHT, i));
-		Configuration.WriteString(section, "Jump", getEventName(IC_JUMP, i));
-		Configuration.WriteString(section, "Pogo", getEventName(IC_POGO, i));
-        Configuration.WriteString(section, "Fire", getEventName(IC_FIRE, i));
-        Configuration.WriteString(section, "Run", getEventName(IC_RUN, i));
-        Configuration.WriteString(section, "Status", getEventName(IC_STATUS, i));
-		Configuration.WriteString(section, "Camlead", getEventName(IC_CAMLEAD, i));
-		Configuration.WriteString(section, "Help", getEventName(IC_HELP, i));
-		Configuration.WriteString(section, "Back", getEventName(IC_BACK, i));
-		Configuration.SetKeyword(section, "TwoButtonFiring", TwoButtonFiring[i]);
-		Configuration.SetKeyword(section, "Analog", mAnalogAxesMovement[i]);
+	    section = "input" + itoa(i);
+
+	    const auto inputVal = static_cast<unsigned char>(i);
+
+	    Configuration.WriteString(section, "Left", getEventName(IC_LEFT, inputVal));
+	    Configuration.WriteString(section, "Up", getEventName(IC_UP, inputVal));
+	    Configuration.WriteString(section, "Right", getEventName(IC_RIGHT, inputVal));
+	    Configuration.WriteString(section, "Down", getEventName(IC_DOWN, inputVal));
+	    Configuration.WriteString(section, "Upper-Left", getEventName(IC_UPPERLEFT, inputVal));
+	    Configuration.WriteString(section, "Upper-Right", getEventName(IC_UPPERRIGHT, inputVal));
+	    Configuration.WriteString(section, "Lower-Left", getEventName(IC_LOWERLEFT, inputVal));
+	    Configuration.WriteString(section, "Lower-Right", getEventName(IC_LOWERRIGHT, inputVal));
+	    Configuration.WriteString(section, "Jump", getEventName(IC_JUMP, inputVal));
+	    Configuration.WriteString(section, "Pogo", getEventName(IC_POGO, inputVal));
+	    Configuration.WriteString(section, "Fire", getEventName(IC_FIRE, inputVal));
+	    Configuration.WriteString(section, "Run", getEventName(IC_RUN, inputVal));
+	    Configuration.WriteString(section, "Status", getEventName(IC_STATUS, inputVal));
+	    Configuration.WriteString(section, "Camlead", getEventName(IC_CAMLEAD, inputVal));
+	    Configuration.WriteString(section, "Help", getEventName(IC_HELP, inputVal));
+	    Configuration.WriteString(section, "Back", getEventName(IC_BACK, inputVal));
+	    Configuration.SetKeyword(section, "TwoButtonFiring", TwoButtonFiring[i]);
+	    Configuration.SetKeyword(section, "Analog", mAnalogAxesMovement[i]);
 	}
+
 	Configuration.saveCfgFile();
 }
 

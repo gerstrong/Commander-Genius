@@ -15,7 +15,7 @@
 #include <graphics/GsGraphics.h>
 #include <base/GsLogging.h>
 
-const unsigned int MAX_ELEMENTS_PER_PAGE = 7;
+//const unsigned int MAX_ELEMENTS_PER_PAGE = 7;
 const unsigned int MAX_STEPS = 20;
 
 

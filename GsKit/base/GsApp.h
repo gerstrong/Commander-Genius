@@ -5,8 +5,8 @@
  *      Author: gerstrong
  */
 
-#ifndef __GSAPP_H_
-#define GSAPP_H
+#ifndef GSAPP_H_
+#define GSAPP_H_
 
 #include <base/GsEvent.h>
 #include <base/GsEngine.h>

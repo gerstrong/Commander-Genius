@@ -7,17 +7,10 @@ Project(GsKit)
 
 OPTION(USE_SDL2 "SDL2 support" Yes)
 option(USE_PYTHON3 "Use Python3 scripts" yes)
-option(USE_VIRTUALPAD "Enable Onscreen Virtual Gamepad support " yes)
 
 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
-
-if(USE_VIRTUALPAD)
-    ADD_DEFINITIONS(-DVIRTUALPAD)
-endif(USE_VIRTUALPAD)
-
 
 IF(WIN32)
 	ADD_DEFINITIONS(-DWIN32)
