@@ -6,12 +6,15 @@
  */
 
 #include "CInventory.h"
+
 #include "engine/core/CBehaviorEngine.h"
 #include "graphics/GsGraphics.h"
 #include <base/video/CVideoDriver.h>
 #include <base/CInput.h>
 #include "graphics/effects/CScrollEffect.h"
 
+#include "fileio/KeenFiles.h"
+#include <base/GsPython.h>
 
 CInventory::CInventory(const int playerIdx,
                        const int spriteVar) :
@@ -20,18 +23,48 @@ m_HUD(Item.m_points, Item.m_lifes, Item.m_bullets,
 {
 	reset();
 
-    auto Episode = gBehaviorEngine.getEpisode();
+    auto ep = gBehaviorEngine.getEpisode();
 
-	if(Episode >= 4)
+    if(ep >= 4)
 	{
 	    const Difficulty difficulty = gBehaviorEngine.mDifficulty;
 	    
 	    Item.m_bullets = 8;
 	    if( difficulty > EASY )
-		Item.m_bullets = 5;
+        {
+            Item.m_bullets = 5;
+        }
 
         mp_StatusScreen.reset(new CStatusScreenGalaxy(Item));
 	}
+
+#if USE_PYTHON3
+
+    auto pModule = gPython.loadModule( "constants", gKeenFiles.gameDir );
+
+    if (pModule != nullptr)
+    {
+        int startBullets = 0;
+        bool ok;
+        ok = loadIntegerFunc(pModule, "getStartWithNumBullets", startBullets);
+        if(ok)
+        {
+             Item.m_bullets = startBullets;
+        }
+
+        bool usePogo;
+
+        ok = loadBooleanFunc(pModule, "mayUsePogo", usePogo);
+        if(ok)
+        {
+             Item.m_special.mCanPogo = usePogo;
+        }
+
+    }
+
+#endif
+
+
 	
 	m_HUD.sync();
 }
