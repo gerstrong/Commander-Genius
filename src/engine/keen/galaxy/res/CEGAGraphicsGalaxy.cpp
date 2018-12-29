@@ -1676,7 +1676,7 @@ bool CEGAGraphicsGalaxy::readMiscStuff()
     // Those are monochrom...
     for(size_t miscIdx = 0 ; miscIdx < EpisodeInfo[episode-4].NumMisc; miscIdx++)
     {
-        const int index = indexMisc + miscIdx;
+        const auto index = indexMisc + miscIdx;
 
         const auto &dataChunk = m_egagraph.at(index);
 
@@ -1688,16 +1688,6 @@ bool CEGAGraphicsGalaxy::readMiscStuff()
                               dataSize, index, miscIdx);
             return false;
         }
-
-
-        // Memcpy is here required for correct alignment on devices with different architectures
-        // and compiles which do not like pointer from 8-bit to 16-bit
-
-        //Uint16 *dataEndPtr = nullptr;
-
-        // This might copy beyond the boundaries. We need to fix that.
-        //memcpy( &dataEndPtr, &(dataChunk.data) + dataSize, sizeof(Uint16 *) );
-
 
         Uint16 *dataPtr = nullptr;
         memcpy( &dataPtr, &(dataChunk.data), sizeof(Uint16 *) );

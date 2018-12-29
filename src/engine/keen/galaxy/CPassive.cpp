@@ -15,17 +15,10 @@
 #include "graphics/GsGraphics.h"
 #include "graphics/effects/CPixelate.h"
 
-//#include "menu/MainMenu.h"
 #include "sdl/audio/music/CMusic.h"
 
 #include "engine/core/VGamepads/vgamepadsimple.h"
 #include "engine/core/menu/MainMenu.h"
-
-
-
-SDL_Surface *commanderSfc;
-SDL_Surface *keenSfc;
-
 
 // 10 Seconds are for 1200 logic cycles
 const int INTRO_TIME = 1200;
@@ -122,7 +115,7 @@ mSkipSection(false)
 bool CPassiveGalaxy::init()
 {
     auto blit = gVideoDriver.getBlitSurface();
-    SDL_FillRect( blit, NULL, SDL_MapRGB(blit->format,0,0,0));
+    SDL_FillRect( blit, nullptr, SDL_MapRGB(blit->format,0,0,0));
     gInput.flushAll();
 
 #ifdef VIRTUALPAD
@@ -263,8 +256,8 @@ void CPassiveGalaxy::processIntro()
 void CPassiveGalaxy::processIntroZoom()
 {
     const int leftEdge = 8;
-    const int topEdge = 8;
-    const int maxWidth = (19*gVideoDriver.getGameResolution().w)/20;
+    const int topEdge = 3;
+    const int maxWidth = (37*gVideoDriver.getGameResolution().w)/40;
 
     if(mZoomSfcPos.x < leftEdge)
     {
@@ -296,7 +289,9 @@ void CPassiveGalaxy::processIntroZoom()
         mZoomSfcPos.y = topEdge;
     }
 
-    if(mZoomSfcZoom.y > mScaleFactor*32)
+    const auto maxYScaleFactor = mScaleFactor*26;
+
+    if(mZoomSfcZoom.y > maxYScaleFactor)
     {
         mZoomSfcZoom.y -= mScaleFactor*4;
     }
@@ -306,9 +301,14 @@ void CPassiveGalaxy::processIntroZoom()
     if( (mZoomSfcPos.x >= leftEdge &&
          mZoomSfcPos.y <= topEdge &&
          mZoomSfcZoom.x <= maxWidth &&
-         mZoomSfcZoom.y <= mScaleFactor*32 ) ||
+         mZoomSfcZoom.y <= maxYScaleFactor ) ||
          mSkipSection)
     {
+        mZoomSfcPos.x = leftEdge;
+        mZoomSfcPos.y = topEdge;
+        mZoomSfcZoom.x = maxWidth;
+        mZoomSfcZoom.y = maxYScaleFactor;
+
         gInput.flushAll();
         processPonderMode = &CPassiveGalaxy::processTitle;
         processRenderMode = &CPassiveGalaxy::renderTitle;
