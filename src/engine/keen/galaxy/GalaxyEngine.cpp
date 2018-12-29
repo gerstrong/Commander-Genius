@@ -208,7 +208,7 @@ bool GalaxyEngine::loadResources( const Uint8 flags )
             {
                 // load the strings.
                 CMessages Messages(p_exedata, Episode, ExeFile.isDemo(), version);
-                Messages.extractGlobalStrings();
+                Messages.extractGlobalStringsUsingExe();
                 mLoader.setPermilage(450);
             }
 
@@ -248,6 +248,8 @@ bool GalaxyEngine::loadResources( const Uint8 flags )
         {
             mLoader.setPermilage(50);
 
+            const int episode = gBehaviorEngine.getEpisode();
+
             if( (mFlags & LOADGFX) == LOADGFX )
             {
                 // Decode the entire graphics for the game (Only EGAGRAPH.CK?)
@@ -265,9 +267,8 @@ bool GalaxyEngine::loadResources( const Uint8 flags )
             if( (mFlags & LOADSTR) == LOADSTR )
             {
                 // load the strings.
-                /*CMessages Messages(p_exedata, Episode, ExeFile.isDemo(), version);
-                Messages.extractGlobalStrings();
-                mLoader.setPermilage(450);*/
+                CMessages Messages(nullptr, episode, false, 0);
+                Messages.extractGlobalStringsUsingPython();
             }
 
 
@@ -284,9 +285,7 @@ bool GalaxyEngine::loadResources( const Uint8 flags )
 
             gLogging.ftextOut("Loading game constants...<br>");
 
-            /*
-            gBehaviorEngine.getPhysicsSettings().loadGameConstants(Episode, p_exedata);
-            */
+            gBehaviorEngine.getPhysicsSettings().loadGameConstants(episode, nullptr);
 
             gLogging.ftextOut("Done loading the resources...<br>");
 

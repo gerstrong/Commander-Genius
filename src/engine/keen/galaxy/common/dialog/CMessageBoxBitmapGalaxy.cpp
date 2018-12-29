@@ -14,7 +14,7 @@
 namespace galaxy
 {
 
-const int FONT_ID = 0;
+//constexpr int FONT_ID = 0;
 
 CMessageBoxBitmapGalaxy::CMessageBoxBitmapGalaxy(int sprVar,
                                                  const std::string& Text,

@@ -2543,7 +2543,7 @@ void CPlayerLevel::verifyFalling()
 // Falling code
 void CPlayerLevel::processFalling()
 {
-       	// Check Keen could hang on a cliff and do so if possible
+    // Check Keen could hang on a cliff and do so if possible
 	if(checkandtriggerforCliffHanging())
 		return;
 

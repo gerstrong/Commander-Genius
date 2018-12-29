@@ -13,9 +13,20 @@
 
 class CMessages {
 public:	
-	CMessages(unsigned char *p_exebuf, char episode, bool demo, int version);
+
+    /**
+     * @brief CMessages NOTE: The parameters are not using when
+     *                  extracting with python
+     * @param p_exebuf
+     * @param episode
+     * @param demo
+     * @param version
+     */
+    CMessages(unsigned char *p_exebuf, int episode, bool demo, int version);
 	
-	bool extractGlobalStrings();
+    bool extractGlobalStringsUsingExe();
+
+    bool extractGlobalStringsUsingPython();
 	
 	void setDecodeOffset(const unsigned int off);
 	
@@ -38,7 +49,7 @@ private:
 	bool extractEp6DemoStrings(std::map<std::string, std::string>& StringMap);
 
 	unsigned char *mp_exe;
-	char m_episode;
+    int m_episode;
 	bool m_demo;
 	int m_version;
 	

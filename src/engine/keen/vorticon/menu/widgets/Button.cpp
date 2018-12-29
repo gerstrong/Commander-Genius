@@ -15,7 +15,7 @@ GsButton(text, ev)
 }
 
 
-void Button::setupButtonSurface()
+void Button::setupButtonSurface(const std::string &)
 {
     GsFont &Font = gGraphics.getFont(mFontID);
 
