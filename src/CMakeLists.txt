@@ -11,9 +11,6 @@ endif()
 
 OPTION(DOWNLOADER "Internal Downloader" Yes)
 
-#OPTION(OGG "Ogg/Vorbis support" Yes)
-#OPTION(TREMOR "Tremor support" No)
-
 
 IF(WIN32)
 	SET(BUILD_TARGET WIN32)

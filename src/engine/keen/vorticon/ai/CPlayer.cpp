@@ -70,9 +70,8 @@ mp_levels_completed(player.mp_levels_completed)
     m_playingmode = WORLDMAP;
     playpushed_decreasetimer = 0;
 
+    inventory = stInventory();
 
-    // Set every value in the class to zero.
-    memset(&inventory, 0, sizeof(stInventory));
     setDefaultStartValues();
     setDatatoZero();
     pinertia_y = 0;
@@ -95,7 +94,7 @@ CPlayer& CPlayer::operator=(const CPlayer &player)
 
 
     // Set every value in the class to zero.
-    memset(&inventory, 0, sizeof(stInventory));
+    inventory = stInventory();
     setDefaultStartValues();
     setDatatoZero();
     

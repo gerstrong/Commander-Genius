@@ -6,7 +6,7 @@
  */
 
 #include <SDL.h>
-#include <stdio.h>
+//#include <cstdio>
 
 #include "InputEvents.h"
 #include "CInput.h"
@@ -19,12 +19,6 @@
 #include "fileio/CConfiguration.h"
 
 
-// Input Events
-
-bool pollLocked = false;
-SDL_sem *pollSem = nullptr;
-
-
 #if defined(CAANOO) || defined(WIZ) || defined(GP2X)
 #include "sys/wizgp2x.h"
 #endif
@@ -32,6 +26,11 @@ SDL_sem *pollSem = nullptr;
 #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
 #define MOUSEWRAPPER 1
 #endif
+
+CInput::~CInput()
+{
+    SDL_DestroySemaphore(mpPollSem);
+}
 
 CInput::CInput()
 {
@@ -52,9 +51,7 @@ CInput::CInput()
 	startJoyDriver(); // not for iPhone for now, could cause trouble (unwanted input events)
 #endif
 
-
-     //Create the semaphor
-    pollSem = SDL_CreateSemaphore(1);
+    mpPollSem = SDL_CreateSemaphore(1);
 }
 
 /**
@@ -557,7 +554,7 @@ void CInput::waitForAnyInput()
 
     while(1)
     {
-        const float logicLatency = gTimer.LogicLatency();
+        const auto logicLatency = gTimer.LogicLatency();
 
         curr = timerTicks();
 
@@ -587,7 +584,7 @@ void CInput::waitForAnyInput()
 
         elapsed = timerTicks() - start;
 
-        int waitTime = logicLatency - elapsed;
+        const auto waitTime = int(logicLatency - elapsed);
 
         // wait time remaining in current loop
         if( waitTime > 0 )
@@ -680,7 +677,7 @@ void CInput::flushFingerEvents()
 void CInput::pollEvents()
 {
     // Semaphore
-    SDL_SemWait( pollSem );
+    SDL_SemWait( mpPollSem );
 
 #ifdef VIRTUALPAD
     if(mpVirtPad && mVPadConfigState)
@@ -693,7 +690,7 @@ void CInput::pollEvents()
     if(remapper.mappingInput)
     {
         readNewEvent();
-        SDL_SemPost( pollSem );
+        SDL_SemPost( mpPollSem );
         return;
     }
 
@@ -1010,7 +1007,7 @@ void CInput::pollEvents()
 	WIZ_AdjustVolume( volume_direction );
 #endif
 
-    SDL_SemPost( pollSem );
+    SDL_SemPost( mpPollSem );
 }
 
 /**
@@ -1917,11 +1914,11 @@ void CInput::shutdown()
 
 bool CInput::readSDLEventVec(std::vector<SDL_Event> &evVec)
 {
-    SDL_SemWait( pollSem );
+    SDL_SemWait( mpPollSem );
 
     if(mSDLEventVec.empty())
     {
-        SDL_SemPost( pollSem );
+        SDL_SemPost( mpPollSem );
         return false;
     }
 
@@ -1929,18 +1926,18 @@ bool CInput::readSDLEventVec(std::vector<SDL_Event> &evVec)
 
     mSDLEventVec.clear();
 
-    SDL_SemPost( pollSem );
+    SDL_SemPost( mpPollSem );
 
     return true;
 }
 
 void CInput::pushBackButtonEventExtEng()
 {
-    SDL_SemWait( pollSem );
+    SDL_SemWait( mpPollSem );
 
     if(mBackEventBuffer.empty())
     {
-        SDL_SemPost( pollSem );
+        SDL_SemPost( mpPollSem );
         return;
     }
 
@@ -1956,6 +1953,6 @@ void CInput::pushBackButtonEventExtEng()
 
     mBackEventBuffer.clear();
 
-    SDL_SemPost( pollSem );
+    SDL_SemPost( mpPollSem );
 }
 

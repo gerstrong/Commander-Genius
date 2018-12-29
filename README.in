@@ -273,16 +273,12 @@ but it is getting deprecated and will be removed in future.
 
 Boost libraries. I plan to remove that in future, but right now we need it.
 
-libogg and libvorbis. I also plan to remove those since SDL2_mixer does the job.
-
 Curl and Zlib, so you can fully use the Game store CG provides.
 
 How to compile it under Ubuntu:
  * Install through Synaptic or "sudo apt install" the following packages:
    Common dependencies:
         - build-essential
-        - libvorbis-dev
-        - libogg-dev
         - libgl1-mesa-dev
         - libcurl4-openssl-dev
         - zlib1g-dev
@@ -311,7 +307,7 @@ How to compile it under Fedora:
 
    dnf install -y \
      SDL2-devel cmake cmake-data gcc-c++ python3-devel \
-     boost-devel mesa-libGL-devel libogg-devel libvorbis-devel libcurl-devel \
+     boost-devel mesa-libGL-devel libcurl-devel \
      SDL2_image-devel SDL2_mixer-devel
 
  * Extract my source code into the "CGeniusSrc" directory.
@@ -331,7 +327,7 @@ Compiling CG on any Linux/UNIX (other than Ubuntu or Fedora):
  * If you want to compile the game, you need to have all the standard
    development libraries and GNU C Compiler (at least version 4.8) installed
    on your system.
- * You need to install the "vorbis", "ogg", "SDL", "curl", "boost" and
+ * You need to install the "SDL_mixer", "SDL_image", "SDL", "curl", "boost" and
    "Mesa/OpenGL" development libraries to get it to compile successfully.
  * Extract my source code into the "CGeniusSrc" directory .
  * cd CGeniusSrc

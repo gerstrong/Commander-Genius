@@ -160,6 +160,8 @@ class CInput : public GsSingleton<CInput>
 public:
     CInput();
 
+    ~CInput();
+
     /**
      * @brief transMouseRelCoord    transforms a mouse click from the screen coordinates to the relative coordinates
      * @param Pos       Resulting relative coordinate to handle
@@ -311,6 +313,16 @@ public:
 
 private:
 
+    bool processKeys(int value);
+    void processJoystickAxis();
+    void processJoystickHat();
+    void processJoystickButton(int value);
+
+    void processMouse();
+    void processMouse(SDL_Event& ev);
+    void processMouse(int x, int y, bool down, int index);
+
+
     // Input Events
     CEventContainer m_EventList;
 
@@ -348,22 +360,13 @@ private:
 	
 	struct rm_type
 	{
-	    rm_type():
-	    mappingInput(false) {}
 	    // For mapping new Commands
-	    bool mappingInput;
-	    Uint8 mapDevice;
-	    int mapPosition;
+        bool mappingInput = false;
+        Uint8 mapDevice = 0;
+        int mapPosition = 0;
 	} remapper;
 
-    bool processKeys(int value);
-	void processJoystickAxis();
-	void processJoystickHat();
-	void processJoystickButton(int value);
-
-	void processMouse();
-	void processMouse(SDL_Event& ev);
-	void processMouse(int x, int y, bool down, int index);
+    SDL_sem *mpPollSem = nullptr;
 };
 
 

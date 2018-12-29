@@ -46,9 +46,6 @@ public:
 private:
     std::vector<byte> mSounddata;
     unsigned int m_soundlength = 0;
-    bool mHasCommonFreqBase;
-    int mOggFreq;
-
     Mix_Chunk *mpWaveChunk = nullptr;
 };
 
