@@ -41,7 +41,8 @@ public:
     void createEmptySprites(const size_t numVar,
                             const size_t num_sprites);
 
-    void appendSpriteVec(const std::vector<GsSprite> &spriteVec);
+    void appendSpriteVec(const std::vector<GsSprite> &spriteVec);   
+    void appendBitmapVec(const std::vector<GsBitmap> &bmpVec);
 
     void createEmptyBitmaps(const size_t numVar, Uint16 num_bmps);
     void createEmptyMaskedBitmaps(Uint16 num_bmps);
@@ -60,6 +61,10 @@ public:
 
     std::vector< std::vector<GsSprite> > &spriteVecVec()
     { return mSprite; }
+
+
+    std::vector< std::vector<GsBitmap> > &bmpVecVec()
+    { return mBitmap; }
 
     GsTilemap &getTileMap(size_t tilemap);
     std::vector<GsTilemap> &getTileMaps();

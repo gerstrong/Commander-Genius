@@ -47,6 +47,11 @@ void GsGraphics::appendSpriteVec(const std::vector<GsSprite> &spriteVec)
     mSprite.push_back(spriteVec);
 }
 
+void GsGraphics::appendBitmapVec(const std::vector<GsBitmap> &bmpVec)
+{
+    mBitmap.push_back(bmpVec);
+}
+
 void GsGraphics::dumpSprites()
 {
     for(size_t i = 0; i < mSprite[0].size(); i++)
