@@ -1,8 +1,13 @@
+v2.3.0:
+-------
+- Improved loading of special sprites
+- Bug fixes when more players are loaded
+- Portrait bitmaps loading finally working
+
 v2.2.9:
 -------
 - Added a Macro for completly building without the virtual pad
 - Cleanups by removing entire files
-
 
 v2.2.8:
 -------

@@ -52,7 +52,7 @@ mp_levels_completed(mpLevelCompleted)
 CPlayer::CPlayer(const CPlayer &player) :
 CVorticonSpriteObject(player.mpMap,
                       player.getXPosition(), player.getYPosition(),
-                      OBJ_PLAYER, player.getSpriteVariantId() ),
+                      OBJ_PLAYER, player.getSpriteVariantIdx() ),
 pjumpupspeed_decrease(player.pjumpupspeed_decrease),
 mp_levels_completed(player.mp_levels_completed)
 {

@@ -187,7 +187,7 @@ void CPlatformVertical::draw()
             if(!player)
                 continue;
 
-            GsSprite &playSprite = gGraphics.getSprite(player->getSpriteVariantId(),
+            GsSprite &playSprite = gGraphics.getSprite(player->getSpriteVariantIdx(),
                                                           player->mSpriteIdx);
             int distx = player->getXPosition()-getXPosition();
             int disty = player->getYPosition()-getYPosition();

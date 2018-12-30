@@ -83,7 +83,7 @@ void CGrabbiter::getTouchedBy(CSpriteObject& theObject)
         const int diffX = getXMidPos()-player->getXMidPos();
         player->moveXDir(-diffX/4);
 
-        const int sprVar = player->getSpriteVariantId();
+        const int sprVar = player->getSpriteVariantIdx();
 
         if(player->m_Inventory.Item.m_special.sandwich > 0)
         {

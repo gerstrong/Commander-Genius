@@ -356,7 +356,7 @@ void CManglingMachine::se_mortimer_spark()
 				{
 					mpMap->setTile(mx, my, 169, true);
 					// spawn a ZAP! or a ZOT!
-                    CRay *newobject = new CRay(mpMap, ((mx<<4)+4)<<STC, my<<4<<STC, CENTER, DOWN, getSpriteVariantId());
+                    CRay *newobject = new CRay(mpMap, ((mx<<4)+4)<<STC, my<<4<<STC, CENTER, DOWN, getSpriteVariantIdx());
 					newobject->state = CRay::RAY_STATE_SETZAPZOT;
 					newobject->inhibitfall = true;
 					spawnObj(newobject);
@@ -367,7 +367,7 @@ void CManglingMachine::se_mortimer_spark()
 				{
 					mpMap->setTile(mx, my, 169, true);
 					// spawn a ZAP! or a ZOT!
-                    CRay *newobject = new CRay(mpMap, ((mx<<4)+4)<<STC, my<<4<<STC, CENTER, DOWN, getSpriteVariantId());
+                    CRay *newobject = new CRay(mpMap, ((mx<<4)+4)<<STC, my<<4<<STC, CENTER, DOWN, getSpriteVariantIdx());
 					newobject->state = CRay::RAY_STATE_SETZAPZOT;
 					newobject->inhibitfall = true;
 					spawnObj(newobject);
@@ -431,7 +431,7 @@ void CManglingMachine::se_mortimer_heart(CVorticonSpriteObject *obj)
                     // delete the tile
                     mpMap->setTile(x,my,169);
                     // spawn a ZAP! or a ZOT!
-                    CRay *newobject = new CRay(mpMap, ((x<<4)+4)<<STC, my<<4<<STC, CENTER, DOWN, getSpriteVariantId());
+                    CRay *newobject = new CRay(mpMap, ((x<<4)+4)<<STC, my<<4<<STC, CENTER, DOWN, getSpriteVariantIdx());
                     newobject->state = CRay::RAY_STATE_SETZAPZOT;
                     newobject->inhibitfall = true;
                     spawnObj(newobject);
@@ -533,7 +533,7 @@ void CManglingMachine::se_mortimer_zapsup()
 		for(x=MORTIMER_MACHINE_XSTART;x<MORTIMER_MACHINE_XEND;x++)
 		{
 			// spawn a ZAP! or a ZOT!
-            CRay *newobject = new CRay(mpMap, ((x<<4)+4)<<STC, (my+1)<<CSF, CENTER, DOWN, getSpriteVariantId());
+            CRay *newobject = new CRay(mpMap, ((x<<4)+4)<<STC, (my+1)<<CSF, CENTER, DOWN, getSpriteVariantIdx());
 			newobject->state = CRay::RAY_STATE_SETZAPZOT;
 			newobject->inhibitfall = true;
 			spawnObj(newobject);
@@ -762,7 +762,7 @@ void CManglingMachine::se_mortimer_randomzaps()
 		y = rand()%((MORTIMER_MACHINE_YENDNOLEGS*16)-(MORTIMER_MACHINE_YSTART*16))+(MORTIMER_MACHINE_YSTART*16);
 
 		// spawn a ZAP! or a ZOT!
-        CRay *newobject = new CRay(mpMap,x<<CSF, y<<CSF, RIGHT, CENTER, getSpriteVariantId() );
+        CRay *newobject = new CRay(mpMap,x<<CSF, y<<CSF, RIGHT, CENTER, getSpriteVariantIdx() );
 		newobject->state = CRay::RAY_STATE_SETZAPZOT;
 		newobject->inhibitfall = true;
 		spawnObj(newobject);

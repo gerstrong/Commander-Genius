@@ -35,7 +35,7 @@ public:
 	void process();
 
 private:
-    int bounceboost = 0;
+    //int bounceboost = 0;
 
     CPlayerLevel *mpInteractPlayer = nullptr;
 };

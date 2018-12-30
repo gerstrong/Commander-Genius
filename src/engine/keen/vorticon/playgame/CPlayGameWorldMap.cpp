@@ -139,7 +139,7 @@ void CPlayGameVorticon::goBacktoMap()
 		player->inventory.HasCardGreen = 0;
 		player->inventory.HasCardRed = 0;
 
-        const int varId = player->getSpriteVariantId();
+        const int varId = player->getSpriteVariantIdx();
 
         // Now, that the level is complete, sprite can be shown again, and now goto the world map!
 		int width = player->w>>(CSF-4);

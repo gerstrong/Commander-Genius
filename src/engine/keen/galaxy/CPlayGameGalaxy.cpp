@@ -438,7 +438,9 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
             m_WorldMap.loadAndPlayMusic();
         }
 
-        showMsgWithBmp( ev->who, loading_text, "KEENTHUMBSUPLOADING", LEFT, true);
+        const auto sprVar = mInventoryVec[ev->who].mSpriteVar;
+
+        showMsgWithBmp( sprVar, loading_text, "KEENTHUMBSUPLOADING", LEFT, true);
 
         const EventExitLevel &evCopy = *ev;
 

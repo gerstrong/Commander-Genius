@@ -88,7 +88,7 @@ void CSpark::process()
 			my = my+3+blowy;
 			mpMap->setTile(mx, my, 505, true);
 			// spawn a ZAP! or a ZOT!
-            CRay *newobject = new CRay(mpMap, mx<<CSF, my<<CSF, CENTER, DOWN, getSpriteVariantId());
+            CRay *newobject = new CRay(mpMap, mx<<CSF, my<<CSF, CENTER, DOWN, getSpriteVariantIdx());
 			newobject->state = CRay::RAY_STATE_SETZAPZOT;
 			newobject->setOwner(m_type, m_index);
 			gEventManager.add( new EventSpawnObject(newobject) );
@@ -133,7 +133,7 @@ void CSpark::process()
 				//my = my+y;
 				mpMap->setTile(mx, my+y, 549, true);
 				// spawn a ZAP! or a ZOT!
-                CRay *newobject = new CRay(mpMap, mx<<CSF, (my+y)<<CSF, CENTER, DOWN, getSpriteVariantId());
+                CRay *newobject = new CRay(mpMap, mx<<CSF, (my+y)<<CSF, CENTER, DOWN, getSpriteVariantIdx());
 				newobject->setOwner(m_type ,m_index);
 				newobject->state = CRay::RAY_STATE_SETZAPZOT;
 				playSound(SOUND_SHOT_HIT);

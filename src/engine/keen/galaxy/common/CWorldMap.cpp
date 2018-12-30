@@ -55,7 +55,10 @@ bool CWorldMap::init()
 	
 	if(!gSaveGameController.busy())
 	{
-        showMsgWithBmp(0, loading_text, "KEENTHUMBSUPLOADING", LEFT, true);
+        showMsgWithBmp(mInventoryVec[0].mSpriteVar,
+                        loading_text,
+                        "KEENTHUMBSUPLOADING",
+                        LEFT, true);
 	}
 
 	mMap.drawAll();

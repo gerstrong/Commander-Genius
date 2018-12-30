@@ -149,7 +149,7 @@ void CPlatformHorizontal::draw()
             if(!player)
                 continue;
 
-            GsSprite &playSprite = gGraphics.getSprite(player->getSpriteVariantId(),player->mSpriteIdx);
+            GsSprite &playSprite = gGraphics.getSprite(player->getSpriteVariantIdx(),player->mSpriteIdx);
             int distx = player->getXPosition()-getXPosition();
             int disty = player->getYPosition()-getYPosition();
 

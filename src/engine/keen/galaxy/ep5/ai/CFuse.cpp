@@ -202,7 +202,7 @@ void CFuse::getTouchedBy(CSpriteObject &theObject)
 
             std::vector<CMessageBoxGalaxy*> msgs;
 
-            const int sprVar = thePlayer->getSpriteVariantId();
+            const int sprVar = thePlayer->getSpriteVariantIdx();
 
             msgs.push_back( new CMessageBoxBitmapGalaxy(sprVar,
                                 msg,

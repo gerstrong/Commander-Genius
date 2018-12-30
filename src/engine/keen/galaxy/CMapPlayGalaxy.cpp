@@ -460,7 +460,7 @@ void CMapPlayGalaxy::operator>>(boost::property_tree::ptree &levelNode)
         unsigned int newXpos = it->getXPosition();
 
         spriteNode.put("<xmlattr>.id", it->mFoeID);
-        spriteNode.put("<xmlattr>.variant", it->getSpriteVariantId());
+        spriteNode.put("<xmlattr>.variant", it->getSpriteVariantIdx());
         spriteNode.put("<xmlattr>.x", newXpos);
         spriteNode.put("<xmlattr>.y", newYpos);
 

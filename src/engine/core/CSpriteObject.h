@@ -350,7 +350,7 @@ class CSpriteObject
     int getSpecialIdx() const
     {   return mPlayerIdx;    }
 
-    int getSpriteVariantId() const
+    int getSpriteVariantIdx() const
     {   return mSprVar;    }
 
     void setSpecialIdx(const int i)

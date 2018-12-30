@@ -228,7 +228,7 @@ void CPlatform::draw()
         {
             if(carriedObj)
             {
-                GsSprite &playSprite = gGraphics.getSprite(carriedObj->getSpriteVariantId(),carriedObj->mSpriteIdx);
+                GsSprite &playSprite = gGraphics.getSprite(carriedObj->getSpriteVariantIdx(),carriedObj->mSpriteIdx);
                 int distx = carriedObj->getXPosition()-getXPosition();
                 int disty = carriedObj->getYPosition()-getYPosition();
 

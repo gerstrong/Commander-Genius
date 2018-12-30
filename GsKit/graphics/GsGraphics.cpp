@@ -298,11 +298,10 @@ GsSprite &GsGraphics::getSpecialSpriteRef(const std::string &name)
 GsFont &GsGraphics::getFont(Uint8 index)
 {    return Font.at(index); }
 
-GsBitmap *GsGraphics::getBitmapFromStr(const int sprVar,
+GsBitmap *GsGraphics::getBitmapFromStr(const size_t sprVar,
                                        const std::string &name) const
 {
-    //const auto bmpVecIdx = sprVar;
-    const auto bmpVecIdx = 0;
+    const size_t bmpVecIdx = sprVar;
 
     auto it = mBitmapNameToIdx.find(name);
 

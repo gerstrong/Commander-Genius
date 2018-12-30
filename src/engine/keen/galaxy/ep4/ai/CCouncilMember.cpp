@@ -207,7 +207,7 @@ void CCouncilMember::getTouchedBy(CSpriteObject &theObject)
 
         std::vector<CMessageBoxGalaxy*> msgs;
 
-        const int sprVar = player->getSpriteVariantId();
+        const int sprVar = player->getSpriteVariantIdx();
 
         msgs.push_back( new CMessageBoxBitmapGalaxy(sprVar, elder_text[0],
                         gGraphics.getBitmapFromId(sprVar, 104), LEFT, false, nullptr) );

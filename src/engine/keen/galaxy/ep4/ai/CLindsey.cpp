@@ -102,7 +102,7 @@ void CLindsey::getTouchedBy(CSpriteObject &theObject)
 
         #endif
 
-        const int sprVar = player->getSpriteVariantId();
+        const int sprVar = player->getSpriteVariantIdx();
 
 
         if(!customDlgs)

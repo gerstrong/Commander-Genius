@@ -275,9 +275,9 @@ void CVorticonElite::process()
 
 			CRay *newobject;
 			if (movedir==RIGHT)
-                newobject = new CRay(mpMap, getXRightPos()+1, getYPosition()+(9<<STC), RIGHT, CENTER, getSpriteVariantId());
+                newobject = new CRay(mpMap, getXRightPos()+1, getYPosition()+(9<<STC), RIGHT, CENTER, getSpriteVariantIdx());
 			else
-                newobject = new CRay(mpMap, getXLeftPos()-1, getYPosition()+(9<<STC), LEFT, CENTER, getSpriteVariantId());
+                newobject = new CRay(mpMap, getXLeftPos()-1, getYPosition()+(9<<STC), LEFT, CENTER, getSpriteVariantIdx());
 			newobject->setOwner( m_type, m_index);
 			newobject->mSpriteIdx = ENEMYRAYEP2;
 			// don't shoot other vorticon elite

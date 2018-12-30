@@ -29,7 +29,7 @@ mp_AttachedObject(p_attacher)
 	mSpriteIdx = BLANKSPRITE;
 	solid = false;
 
-    const int camId = mp_AttachedObject->getSpriteVariantId();
+    const int camId = mp_AttachedObject->getSpriteVariantIdx();
 
     mDontUseThisLead[camId] = false;
 

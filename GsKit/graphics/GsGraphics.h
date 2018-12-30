@@ -77,7 +77,7 @@ public:
                               const int slot);
     GsBitmap &getMaskedBitmap(Uint16 slot);
     GsBitmap &getMiscGsBitmap(Uint16 slot);
-    GsBitmap *getBitmapFromStr(const int sprVar,
+    GsBitmap *getBitmapFromStr(const size_t sprVar,
                                const std::string &name) const;
 
     GsSprite *getSprite(const int var, const std::string &name) const;
