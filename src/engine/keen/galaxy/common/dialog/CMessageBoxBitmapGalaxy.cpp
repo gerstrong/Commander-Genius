@@ -128,12 +128,12 @@ void CMessageBoxBitmapGalaxy::render()
 }
 
 
-
 void showMsgWithBmp(const int sprVar,
                     const std::string &text,
-                     const std::string &bmp,
-                     const direction_t alignment, const bool animation,
-                     CEvent *closeEv)
+                    const std::string &bmp,
+                    const direction_t alignment,
+                    const bool animation,
+                    CEvent *closeEv)
 {
     CMessageBoxBitmapGalaxy *pMsgBoxBmp =
                 new CMessageBoxBitmapGalaxy( sprVar, text,

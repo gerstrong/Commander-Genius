@@ -57,14 +57,14 @@ void showMsgWithBmp(const int sprVar, const std::string &text,
                     const std::string &bmp,
                     const direction_t alignment,
                     const bool animation,
-                    CEvent *closeEv = nullptr);
+                    CEvent *closeEv);
 
 
 void showMsgWithBmp(const int sprVar, const std::string &text,
                     const unsigned int bmpID,
                     const direction_t alignment ,
                     const bool animation,
-                    CEvent *closeEv = nullptr);
+                    CEvent *closeEv);
 
 
 }

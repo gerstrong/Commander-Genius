@@ -45,7 +45,9 @@ void CSpecialItem::getTouchedBy(CSpriteObject& theObject)
         exitEvent->playSound = true;                
 
         // Show got item message
-        showMsgWithBmp( player->getSpriteVariantIdx(), gBehaviorEngine.getString(answermap[mFoeID-0x63]), 30, LEFT, exitEvent );
+        showMsgWithBmp( player->getSpriteVariantIdx(),
+                        gBehaviorEngine.getString(answermap[mFoeID-0x63]),
+                        30, LEFT, false, exitEvent );
 
         player->m_Inventory.Item.m_gem.clear();
 	}    

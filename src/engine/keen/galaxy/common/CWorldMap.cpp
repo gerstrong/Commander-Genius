@@ -58,7 +58,7 @@ bool CWorldMap::init()
         showMsgWithBmp(mInventoryVec[0].mSpriteVar,
                         loading_text,
                         "KEENTHUMBSUPLOADING",
-                        LEFT, true);
+                        LEFT, true, nullptr);
 	}
 
 	mMap.drawAll();

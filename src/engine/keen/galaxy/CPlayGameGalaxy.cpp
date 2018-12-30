@@ -440,7 +440,8 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
 
         const auto sprVar = mInventoryVec[ev->who].mSpriteVar;
 
-        showMsgWithBmp( sprVar, loading_text, "KEENTHUMBSUPLOADING", LEFT, true);
+        showMsgWithBmp( sprVar, loading_text, "KEENTHUMBSUPLOADING",
+                        LEFT, true, nullptr);
 
         const EventExitLevel &evCopy = *ev;
 
