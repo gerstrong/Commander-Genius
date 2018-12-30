@@ -61,7 +61,7 @@ public:
      * @param VidConfig Video Configuration flags used to setup the Video Engine
      */
 	CVideoEngine(const CVidConfig& VidConfig);
-	~CVideoEngine();
+	virtual ~CVideoEngine();
 
 
 	virtual bool init();

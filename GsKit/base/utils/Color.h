@@ -18,47 +18,56 @@
 
 ///////////////////
 // If you want to use the adress of some Uint32 directly with memcpy or similar, use this
-inline Uint32 SDLColourToNativeColour(Uint32 pixel, short bpp) {
+/*
+inline Uint32 SDLColourToNativeColour(Uint32 pixel, short bpp)
+{
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
 	return (pixel << (32 - 8 * bpp));
 #else
 	return pixel;
 #endif
 }
-
+*/
 /////////////////
 // If you copied some data directly with memcpy into an Uint32, use this
-inline Uint32 NativeColourToSDLColour(Uint32 pixel, short bpp) {
+/*
+inline Uint32 NativeColourToSDLColour(Uint32 pixel, short bpp)
+{
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
 	return (pixel >> (32 - 8 * bpp));
 #else
 	return pixel;
 #endif
 }
-
+*/
 
 ///////////////
 // Get the specified component from the pixel (grabbed from SDL)
-inline Uint8 GetR(Uint32 pixel, SDL_PixelFormat *fmt)  {
+/*
+inline Uint8 GetR(Uint32 pixel, SDL_PixelFormat *fmt)
+{
 	return  (Uint8)((((pixel & fmt->Rmask) >> fmt->Rshift) << fmt->Rloss) +
 					(((pixel & fmt->Rmask) >> fmt->Rshift) >> (8 - (fmt->Rloss << 1))));
 }
 
-inline Uint8 GetG(Uint32 pixel, SDL_PixelFormat *fmt)  {
+inline Uint8 GetG(Uint32 pixel, SDL_PixelFormat *fmt)
+{
 	return  (Uint8)((((pixel & fmt->Gmask) >> fmt->Gshift) << fmt->Gloss) +
 					(((pixel & fmt->Gmask) >> fmt->Gshift) >> (8 - (fmt->Gloss << 1))));
 }
 
-inline Uint8 GetB(Uint32 pixel, SDL_PixelFormat *fmt)  {
+inline Uint8 GetB(Uint32 pixel, SDL_PixelFormat *fmt)
+{
 	return  (Uint8)((((pixel & fmt->Bmask) >> fmt->Bshift) << fmt->Bloss) +
 					(((pixel & fmt->Bmask) >> fmt->Bshift) >> (8 - (fmt->Bloss << 1))));
 }
 
-inline Uint8 GetA(Uint32 pixel, SDL_PixelFormat *fmt)  {
+inline Uint8 GetA(Uint32 pixel, SDL_PixelFormat *fmt)
+{
 	return  (Uint8)((((pixel & fmt->Amask) >> fmt->Ashift) << fmt->Aloss) +
 					(((pixel & fmt->Amask) >> fmt->Ashift) >> (8 - (fmt->Aloss << 1))));
 }
-
+*/
 //extern SDL_PixelFormat* mainPixelFormat;
 
 /*inline SDL_PixelFormat* getMainPixelFormat()
@@ -136,14 +145,16 @@ struct GsColor
      */
     void converge(GsColor &&c)
     {
-        r = (Uint16(r) + Uint16(c.r))/2;
-        g = (Uint16(g) + Uint16(c.g))/2;
-        b = (Uint16(b) + Uint16(c.b))/2;
-        a = (Uint16(a) + Uint16(c.a))/2;
+        r = Uint8((Uint16(r) + Uint16(c.r))/2);
+        g = Uint8((Uint16(g) + Uint16(c.g))/2);
+        b = Uint8((Uint16(b) + Uint16(c.b))/2);
+        a = Uint8((Uint16(a) + Uint16(c.a))/2);
     }
 
-	Uint8& operator[](int i) { switch(i) { case 0: return r; case 1: return g; case 2: return b; case 3: return a; default: assert(false); } return *((Uint8*)NULL); }
-	Uint8 operator[](int i) const { switch(i) { case 0: return r; case 1: return g; case 2: return b; case 3: return a; default: assert(false); } return 0; }
+    /*
+    Uint8& operator[](int i) { switch(i) { case 0: return r; case 1: return g; case 2: return b; case 3: return a; default: assert(false); } return *(reinterpret_cast<Uint8*>(0)); }
+    Uint8 operator[](int i) const { switch(i) { case 0: return r; case 1: return g; case 2: return b; case 3: return a; default: assert(false); } return 0; }
+    */
 };
 
 #endif // COLOR_H

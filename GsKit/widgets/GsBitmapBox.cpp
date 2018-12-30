@@ -54,7 +54,7 @@ void CGUIBitmap::updateGraphics()
 
         // Copy the bitmap to the smart pointer
         mScaledBitmapPtr.reset(new GsBitmap);
-        *mpBitmap = *gGraphics.getBitmapFromStr(mTextID);
+        *mpBitmap = *gGraphics.getBitmapFromStr(0, mTextID);
     }
 
     sizeForScreen.w /= 320;

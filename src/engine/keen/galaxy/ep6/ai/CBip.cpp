@@ -16,7 +16,7 @@ A_BIP_SQUISHED = 5
     
 constexpr int WALK_SPEED = 30;
 
-constexpr int STAND_TIME = 30;
+//constexpr int STAND_TIME = 30;
 constexpr int WALK_TIME = 300;
     
     

@@ -14,7 +14,6 @@ add_library(fileio CExeFile.cpp
     CExeFile.h
     CPatcher.h
     crc.h
-    CSavedGameCoder.h
     CSaveGameController.h
     CTileLoader.h
     CTileProperties.h

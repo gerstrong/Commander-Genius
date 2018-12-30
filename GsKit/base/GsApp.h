@@ -5,8 +5,8 @@
  *      Author: gerstrong
  */
 
-#ifndef __GSAPP_H_
-#define __GSAPP_H_
+#ifndef GSAPP_H_
+#define GSAPP_H_
 
 #include <base/GsEvent.h>
 #include <base/GsEngine.h>
@@ -28,7 +28,7 @@ public:
     GsAppEventSink(GsApp* pApp) :
         mpApp(pApp) {}
 
-    void pumpEvent(const CEvent *ev);
+    void pumpEvent(const CEvent *ev) override;
 
 private:
     GsApp* mpApp;
@@ -59,10 +59,6 @@ public:
 
     void pumpEvent(const CEvent *evPtr);
 
-    /*
-    int m_startGame_no;
-    int m_startLevel;*/
-
 
 private:
 
@@ -73,4 +69,4 @@ private:
 // It's a simple quit event which will force CG to close the App
 struct GMQuit : CEvent {};
 
-#endif /* __GSAPP_H_ */
+#endif /* GSAPP_H */

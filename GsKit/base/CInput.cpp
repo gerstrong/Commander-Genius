@@ -6,7 +6,7 @@
  */
 
 #include <SDL.h>
-#include <stdio.h>
+//#include <cstdio>
 
 #include "InputEvents.h"
 #include "CInput.h"
@@ -19,12 +19,6 @@
 #include "fileio/CConfiguration.h"
 
 
-// Input Events
-
-bool pollLocked = false;
-SDL_sem *pollSem = nullptr;
-
-
 #if defined(CAANOO) || defined(WIZ) || defined(GP2X)
 #include "sys/wizgp2x.h"
 #endif
@@ -32,6 +26,11 @@ SDL_sem *pollSem = nullptr;
 #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
 #define MOUSEWRAPPER 1
 #endif
+
+CInput::~CInput()
+{
+    SDL_DestroySemaphore(mpPollSem);
+}
 
 CInput::CInput()
 {
@@ -46,14 +45,13 @@ CInput::CInput()
 	for(size_t c=1 ; c<= NUM_INPUTS ; c++)
 		resetControls(c);
 	memset(&Event,0,sizeof(Event));
+
 #if !TARGET_OS_IPHONE && !TARGET_IPHONE_SIMULATOR
 	loadControlconfig(); // we want to have the default settings in all cases
 	startJoyDriver(); // not for iPhone for now, could cause trouble (unwanted input events)
 #endif
 
-
-     //Create the semaphor
-    pollSem = SDL_CreateSemaphore(1);
+    mpPollSem = SDL_CreateSemaphore(1);
 }
 
 /**
@@ -170,14 +168,14 @@ bool CInput::startJoyDriver()
 	}
     else
 	{
-		const size_t joyNum = SDL_NumJoysticks();
+        const auto joyNum = SDL_NumJoysticks();
 		if( joyNum > 0 )
 		{
 			SDL_JoystickEventState(SDL_ENABLE);
 			gLogging.ftextOut("Detected %i joystick(s).<br>\n", joyNum );
             gLogging << "The names of the joysticks are:<br>";
 
-			for( size_t i=0; i < joyNum; i++ )
+            for( auto i=0; i < joyNum; i++ )
 			{
 #if SDL_VERSION_ATLEAST(2, 0, 0)
                 gLogging.ftextOut("    %s<br>", SDL_JoystickNameForIndex(i));
@@ -260,7 +258,7 @@ void CInput::loadControlconfig(void)
 	else
 	{
 		for(size_t c=1 ; c<= NUM_INPUTS ; c++)
-			resetControls(c);
+			resetControls(int(c));
 	}
 }
 
@@ -276,26 +274,30 @@ void CInput::saveControlconfig()
 	std::string section;
 	for(size_t i=0 ; i<NUM_INPUTS ; i++)
 	{
-		section = "input" + itoa(i);
-		Configuration.WriteString(section, "Left", getEventName(IC_LEFT, i));
-		Configuration.WriteString(section, "Up", getEventName(IC_UP, i));
-		Configuration.WriteString(section, "Right", getEventName(IC_RIGHT, i));
-		Configuration.WriteString(section, "Down", getEventName(IC_DOWN, i));
-		Configuration.WriteString(section, "Upper-Left", getEventName(IC_UPPERLEFT, i));
-		Configuration.WriteString(section, "Upper-Right", getEventName(IC_UPPERRIGHT, i));
-		Configuration.WriteString(section, "Lower-Left", getEventName(IC_LOWERLEFT, i));
-		Configuration.WriteString(section, "Lower-Right", getEventName(IC_LOWERRIGHT, i));
-		Configuration.WriteString(section, "Jump", getEventName(IC_JUMP, i));
-		Configuration.WriteString(section, "Pogo", getEventName(IC_POGO, i));
-        Configuration.WriteString(section, "Fire", getEventName(IC_FIRE, i));
-        Configuration.WriteString(section, "Run", getEventName(IC_RUN, i));
-        Configuration.WriteString(section, "Status", getEventName(IC_STATUS, i));
-		Configuration.WriteString(section, "Camlead", getEventName(IC_CAMLEAD, i));
-		Configuration.WriteString(section, "Help", getEventName(IC_HELP, i));
-		Configuration.WriteString(section, "Back", getEventName(IC_BACK, i));
-		Configuration.SetKeyword(section, "TwoButtonFiring", TwoButtonFiring[i]);
-		Configuration.SetKeyword(section, "Analog", mAnalogAxesMovement[i]);
+	    section = "input" + itoa(i);
+
+	    const auto inputVal = static_cast<unsigned char>(i);
+
+	    Configuration.WriteString(section, "Left", getEventName(IC_LEFT, inputVal));
+	    Configuration.WriteString(section, "Up", getEventName(IC_UP, inputVal));
+	    Configuration.WriteString(section, "Right", getEventName(IC_RIGHT, inputVal));
+	    Configuration.WriteString(section, "Down", getEventName(IC_DOWN, inputVal));
+	    Configuration.WriteString(section, "Upper-Left", getEventName(IC_UPPERLEFT, inputVal));
+	    Configuration.WriteString(section, "Upper-Right", getEventName(IC_UPPERRIGHT, inputVal));
+	    Configuration.WriteString(section, "Lower-Left", getEventName(IC_LOWERLEFT, inputVal));
+	    Configuration.WriteString(section, "Lower-Right", getEventName(IC_LOWERRIGHT, inputVal));
+	    Configuration.WriteString(section, "Jump", getEventName(IC_JUMP, inputVal));
+	    Configuration.WriteString(section, "Pogo", getEventName(IC_POGO, inputVal));
+	    Configuration.WriteString(section, "Fire", getEventName(IC_FIRE, inputVal));
+	    Configuration.WriteString(section, "Run", getEventName(IC_RUN, inputVal));
+	    Configuration.WriteString(section, "Status", getEventName(IC_STATUS, inputVal));
+	    Configuration.WriteString(section, "Camlead", getEventName(IC_CAMLEAD, inputVal));
+	    Configuration.WriteString(section, "Help", getEventName(IC_HELP, inputVal));
+	    Configuration.WriteString(section, "Back", getEventName(IC_BACK, inputVal));
+	    Configuration.SetKeyword(section, "TwoButtonFiring", TwoButtonFiring[i]);
+	    Configuration.SetKeyword(section, "Analog", mAnalogAxesMovement[i]);
 	}
+
 	Configuration.saveCfgFile();
 }
 
@@ -341,6 +343,7 @@ std::string CInput::getEventShortName(int command, unsigned char input)
 
 void CInput::render()
 {
+#ifdef VIRTUALPAD
     if(!gVideoDriver.VGamePadEnabled())
         return;
 
@@ -358,6 +361,7 @@ void CInput::render()
 
     GsWeakSurface blit(gVideoDriver.getBlitSurface());
     mpVirtPad->render(blit);
+#endif
 }
 
 
@@ -554,7 +558,7 @@ void CInput::waitForAnyInput()
 
     while(1)
     {
-        const float logicLatency = gTimer.LogicLatency();
+        const auto logicLatency = gTimer.LogicLatency();
 
         curr = timerTicks();
 
@@ -584,7 +588,7 @@ void CInput::waitForAnyInput()
 
         elapsed = timerTicks() - start;
 
-        int waitTime = logicLatency - elapsed;
+        const auto waitTime = int(logicLatency - elapsed);
 
         // wait time remaining in current loop
         if( waitTime > 0 )
@@ -650,6 +654,7 @@ void CInput::transMouseRelCoord(Vector2D<float> &Pos,
 
 void CInput::ponder()
 {
+#ifdef VIRTUALPAD
     if(!mpVirtPad)
         return;
 
@@ -657,33 +662,38 @@ void CInput::ponder()
         return;
 
     mpVirtPad->ponder();
+#endif
 }
 
 
 
 void CInput::flushFingerEvents()
 {
+#ifdef VIRTUALPAD
     if(!mpVirtPad)
         return;
 
     mpVirtPad->flush();
+#endif
 }
 
 
 void CInput::pollEvents()
 {
     // Semaphore
-    SDL_SemWait( pollSem );
+    SDL_SemWait( mpPollSem );
 
+#ifdef VIRTUALPAD
     if(mpVirtPad && mVPadConfigState)
     {
         mpVirtPad->processConfig();
     }
+#endif
 
     if(remapper.mappingInput)
     {
         readNewEvent();
-        SDL_SemPost( pollSem );
+        SDL_SemPost( mpPollSem );
         return;
     }
 
@@ -750,6 +760,7 @@ void CInput::pollEvents()
             Vector2D<int> rotPt(Event.tfinger.x*float(activeArea.w),
                                 Event.tfinger.y*float(activeArea.h));
 
+#ifdef VIRTUALPAD
             // If Virtual gamepad takes control...
             if(gVideoDriver.VGamePadEnabled() && mpVirtPad &&
                mpVirtPad->active() )
@@ -764,6 +775,7 @@ void CInput::pollEvents()
                 }
             }
             else
+#endif
             {
                 transMouseRelCoord(Pos, Event.tfinger, activeArea, tiltedScreen);
                 m_EventList.add( new PointingDevEvent( Pos, PDE_BUTTONDOWN ) );
@@ -775,6 +787,7 @@ void CInput::pollEvents()
 
         case SDL_FINGERUP:
 
+#ifdef VIRTUALPAD
             if(gVideoDriver.VGamePadEnabled() && mpVirtPad &&
                mpVirtPad->active())
             {
@@ -791,6 +804,7 @@ void CInput::pollEvents()
                 }
             }
             else
+#endif
             {
                 passSDLEventVec = true;
                 const Vector2D<int> rotPt(Event.tfinger.x, Event.tfinger.y);
@@ -808,6 +822,7 @@ void CInput::pollEvents()
                                 Event.tfinger.y*float(activeArea.h));
 
             // If Virtual gamepad takes control...
+#ifdef VIRTUALPAD
             if(gVideoDriver.VGamePadEnabled() && mpVirtPad &&
                mpVirtPad->active() )
             {
@@ -821,6 +836,7 @@ void CInput::pollEvents()
                 }
             }
             else
+#endif
             {
                 const Vector2D<int> rotPt(Event.tfinger.x, Event.tfinger.y);
                 transMouseRelCoord(Pos, rotPt, activeArea, tiltedScreen);
@@ -856,6 +872,7 @@ void CInput::pollEvents()
 
             if(Event.button.button <= 3)
             {
+#ifdef VIRTUALPAD
                 // If Virtual gamepad takes control...
                 if(gVideoDriver.VGamePadEnabled() && mpVirtPad &&
                    mpVirtPad->active() )
@@ -871,6 +888,7 @@ void CInput::pollEvents()
                     }
                 }
                 else
+#endif
                 {
                     const Vector2D<int> rotPt(Event.motion.x, Event.motion.y);
                     transMouseRelCoord(Pos, Event.motion, activeArea, tiltedScreen);
@@ -884,6 +902,7 @@ void CInput::pollEvents()
 
 		case SDL_MOUSEBUTTONUP:
 
+#ifdef VIRTUALPAD
             if(gVideoDriver.VGamePadEnabled() && mpVirtPad &&
                     mpVirtPad->active())
             {
@@ -898,6 +917,7 @@ void CInput::pollEvents()
                 }
             }
             else
+#endif
             {
                 passSDLEventVec = true;
                 const Vector2D<int> rotPt(Event.motion.x, Event.motion.y);
@@ -1006,7 +1026,7 @@ void CInput::pollEvents()
 	WIZ_AdjustVolume( volume_direction );
 #endif
 
-    SDL_SemPost( pollSem );
+    SDL_SemPost( mpPollSem );
 }
 
 /**
@@ -1606,14 +1626,13 @@ void CInput::flushEvents()
     m_EventList.clear();
 }
 
-static const int w = 480, h = 320;
-
 #define KSHOWHIDECTRLS	(-10)
 
 //#if defined(MOUSEWRAPPER)
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 
 #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
+static const int w = 480, h = 320;
 static TouchButton* getPhoneButtons(stInputCommand InputCommand[NUM_INPUTS][MAX_COMMANDS]) {
 
 	static TouchButton phoneButtons[] = {
@@ -1641,10 +1660,11 @@ static TouchButton* getPhoneButtons(stInputCommand InputCommand[NUM_INPUTS][MAX_
 }
 #endif
 
-static const int phoneButtonN = 15;
+
 typedef std::set<int> MouseIndexSet;
 
 #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
+static const int phoneButtonN = 15;
 static Uint32 phoneButtonLasttime[phoneButtonN] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 static MouseIndexSet phoneButton_MouseIndex[phoneButtonN];
 
@@ -1730,9 +1750,9 @@ void CInput::processMouse(SDL_Event& ev) {
 		case SDL_FINGERMOTION:
             //float fdx = ((float)ev.tfinger.dx)/touch->xres;
             //float fdy = ((float)ev.tfinger.dy)/touch->yres;
-            float fdx = ((float)ev.tfinger.dx)/touch->x;
-            float fdy = ((float)ev.tfinger.dy)/touch->y;
-            dx = (int)(fdx*w); dy = (int)(fdy*h);
+            float fdx = (float(ev.tfinger.dx))/touch->x;
+            float fdy = (float(ev.tfinger.dy))/touch->y;
+            dx = int(fdx*w); dy = int(fdy*h);
 			processMouse(x - dx, y - dy, false, ev.tfinger.fingerId);
 			processMouse(x, y, true, ev.tfinger.fingerId);
 			break;
@@ -1913,11 +1933,11 @@ void CInput::shutdown()
 
 bool CInput::readSDLEventVec(std::vector<SDL_Event> &evVec)
 {
-    SDL_SemWait( pollSem );
+    SDL_SemWait( mpPollSem );
 
     if(mSDLEventVec.empty())
     {
-        SDL_SemPost( pollSem );
+        SDL_SemPost( mpPollSem );
         return false;
     }
 
@@ -1925,18 +1945,18 @@ bool CInput::readSDLEventVec(std::vector<SDL_Event> &evVec)
 
     mSDLEventVec.clear();
 
-    SDL_SemPost( pollSem );
+    SDL_SemPost( mpPollSem );
 
     return true;
 }
 
 void CInput::pushBackButtonEventExtEng()
 {
-    SDL_SemWait( pollSem );
+    SDL_SemWait( mpPollSem );
 
     if(mBackEventBuffer.empty())
     {
-        SDL_SemPost( pollSem );
+        SDL_SemPost( mpPollSem );
         return;
     }
 
@@ -1952,6 +1972,6 @@ void CInput::pushBackButtonEventExtEng()
 
     mBackEventBuffer.clear();
 
-    SDL_SemPost( pollSem );
+    SDL_SemPost( mpPollSem );
 }
 

@@ -771,7 +771,7 @@ void CPlayer::raygun()
                 CRay *rayobject = new CRay(mpMap, xdir, ydir,
                                            static_cast<direction_t>(pDir.x),
                                            CENTER,
-                                           getSpriteVariantId(),
+                                           getSpriteVariantIdx(),
                                            OBJ_PLAYER, m_index);
 				rayobject->setSpeed(124);
 				gEventManager.add(new EventSpawnObject(rayobject) );

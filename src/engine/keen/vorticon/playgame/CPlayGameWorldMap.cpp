@@ -100,6 +100,7 @@ void CPlayGameVorticon::processOnWorldMap()
 	}
 
 
+#ifdef VIRTUALPAD
     if( gVideoDriver.VGamePadEnabled() )
     {
         VirtualKeenControl *vkc = dynamic_cast<VirtualKeenControl*>(gInput.mpVirtPad.get());
@@ -108,6 +109,7 @@ void CPlayGameVorticon::processOnWorldMap()
         vkc->mDPad.invisible = false;
         vkc->mStartButton.invisible = false;
     }
+#endif
 
 }
 
@@ -137,7 +139,7 @@ void CPlayGameVorticon::goBacktoMap()
 		player->inventory.HasCardGreen = 0;
 		player->inventory.HasCardRed = 0;
 
-        const int varId = player->getSpriteVariantId();
+        const int varId = player->getSpriteVariantIdx();
 
         // Now, that the level is complete, sprite can be shown again, and now goto the world map!
 		int width = player->w>>(CSF-4);

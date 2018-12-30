@@ -16,15 +16,7 @@ static signed char numlooks;
 
 CYorp::CYorp( CMap *p_map, Uint32 x, Uint32 y ) :
 CVorticonSpriteObject(p_map,x,y, OBJ_YORP),
-m_hardmode(gBehaviorEngine.mDifficulty > NORMAL),
-state(YORP_LOOK),
-looktimes(YORP_NUM_LOOKS+1),
-lookposition(0),
-timer(0),
-dietimer(0),
-walkframe(0),
-dist_traveled(0),
-movedir(LEFT)
+m_hardmode(gBehaviorEngine.mDifficulty > NORMAL)
 {
 	m_type = OBJ_YORP;
 	mSpriteIdx = OBJ_YORP_DEFSPRITE;

@@ -62,7 +62,7 @@ mounted(false)
 	CGalaxySpriteObject::setActionForce(0);
 	setActionSprite();
 
-	walkBaseFrame = mSpriteIdx;
+    walkBaseFrame = Uint16(mSpriteIdx);
 	wavingBaseFrame = walkBaseFrame + 22;
 	swimBaseFrame = walkBaseFrame + 24;
 	climbBaseFrame = walkBaseFrame + (gBehaviorEngine.isDemo() ? 26 : 37);
@@ -172,7 +172,7 @@ void CPlayerWM::pumpEvent(const CEvent *evPtr)
     // Events for the Player are processed here.
     if( const EventPlayerEndLevel* ev = dynamic_cast<const EventPlayerEndLevel*>(evPtr) )
     {
-        if(ev->who == mSpecialIdx)
+        if(ev->who == mPlayerIdx)
         {            
             gEventManager.flush();
             if(ev->sucess)
@@ -236,7 +236,7 @@ void CPlayerWM::pumpEvent(const CEvent *evPtr)
 
     else if( const EventPlayerRideFoot* ev = dynamic_cast<const EventPlayerRideFoot*>(evPtr) )
     {
-        if(ev->who == mSpecialIdx)
+        if(ev->who == mPlayerIdx)
         {
             gEventManager.flush();
             finishLevel(ev->levelObject);
@@ -379,8 +379,8 @@ void CPlayerWM::processMoving()
             else
             {
                 // Tell the player he cannot climb yet                
-                showMsgWithBmp(gBehaviorEngine.getString("KEEN_ROPE_REQUIRED"),
-                               "KEENTALKING", RIGHT, false);
+                showMsgWithBmp(mSprVar, gBehaviorEngine.getString("KEEN_ROPE_REQUIRED"),
+                               "KEENTALKING", RIGHT, false, nullptr);
                 moveYDir(-(climbDir<<CSF)/2);
             }
         }
@@ -461,6 +461,7 @@ void CPlayerWM::processMoving()
     if(object) // if we found an object
     {
 
+#ifdef VIRTUALPAD
         if( gVideoDriver.VGamePadEnabled() )
         {
             VirtualKeenControl *vkc = dynamic_cast<VirtualKeenControl*>(gInput.mpVirtPad.get());
@@ -471,13 +472,16 @@ void CPlayerWM::processMoving()
             const int ep = gBehaviorEngine.getEpisode();
             const int shipLevel = (ep < 6) ? 18 : 17;
 
+#if SDL_VERSION_ATLEAST(2, 0, 0)
             if(mpMap->findTile(flag_dest, &x, &y, 2) ||
                     gBehaviorEngine.mOptions[GameOption::LVLREPLAYABILITY].value ||
                     level >= shipLevel)
             {
                 vkc->mStartButton.invisible = false;
             }
+#endif
         }
+#endif
 
         // Try to start a level
         if( mPlaycontrol[PA_JUMP] )
@@ -489,6 +493,8 @@ void CPlayerWM::processMoving()
     }
     else
     {
+#ifdef VIRTUALPAD
+#if SDL_VERSION_ATLEAST(2, 0, 0)
         if( gVideoDriver.VGamePadEnabled() )
         {
             VirtualKeenControl *vkc = dynamic_cast<VirtualKeenControl*>(gInput.mpVirtPad.get());
@@ -496,6 +502,8 @@ void CPlayerWM::processMoving()
             vkc->mStatusButton.invisible = false;
             vkc->mStartButton.invisible = true;
         }
+#endif
+#endif
     }
 
     
@@ -525,8 +533,9 @@ void CPlayerWM::processMoving()
             if( !m_cantswim )
             {
                 gSound.playSound( SOUND_CANT_DO, SoundPlayMode::PLAY_PAUSEALL );
-                showMsgWithBmp(gBehaviorEngine.getString("CANT_SWIM_TEXT"),
-                               105, LEFT, false);
+                showMsgWithBmp(mSprVar,
+                               gBehaviorEngine.getString("CANT_SWIM_TEXT"),
+                               105, LEFT, false, nullptr);
 
                 m_cantswim = true;
             }
@@ -1059,7 +1068,6 @@ void CPlayerWM::startLevel(Uint16 object)
     int level = object - 0xC000;
 
     const auto ep = gBehaviorEngine.getEpisode();
-    //int shipLevel = gBehaviorEngine.;
     int shipLevel;
 
     switch(ep)
@@ -1087,7 +1095,7 @@ void CPlayerWM::startLevel(Uint16 object)
         gBehaviorEngine.mOptions[GameOption::LVLREPLAYABILITY].value ||
         level >= shipLevel)
     {
-        gEventManager.add(new EventEnterLevel(object));
+        gEventManager.add(new EventEnterLevel(mSprVar, object));
 
         if(level > 0 && level < 50)
         {

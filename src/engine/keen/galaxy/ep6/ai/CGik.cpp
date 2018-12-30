@@ -24,7 +24,7 @@ A_GIK_LAND = 4,
 A_GIK_SLIDE = 5
 };
 
-constexpr int MAX_BOUNCE_BOOST = -115;
+//constexpr int MAX_BOUNCE_BOOST = -115;
 
 constexpr int WALK_SPEED = 20;
 constexpr int JUMP_X_SPEED = 40;

@@ -171,7 +171,7 @@ void CRay::getTouchedBy(CVorticonSpriteObject &theObject)
 			}
             else
             {
-               if(theObject.getSpriteVariantId() != getSpriteVariantId())
+               if(theObject.getSpriteVariantIdx() != getSpriteVariantIdx())
                {
                    if (!gBehaviorEngine.mOptions[GameOption::ALLOWPKING].value)
                    {

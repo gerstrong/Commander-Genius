@@ -36,7 +36,8 @@ bool CWorldMap::init()
     }
 	else if(gBehaviorEngine.getEpisode() == 6)
     {
-        MapLoader.reset( new CMapLoaderGalaxyEp6( mObjectPtr, mInventoryVec, gBehaviorEngine.isDemo() ) );
+        MapLoader.reset( new CMapLoaderGalaxyEp6( mObjectPtr, mInventoryVec,
+                                                  gBehaviorEngine.isDemo() ) );
     }
 
     const bool ok = MapLoader->loadMap( mMap, 0 );
@@ -54,7 +55,10 @@ bool CWorldMap::init()
 	
 	if(!gSaveGameController.busy())
 	{
-        showMsgWithBmp(loading_text, "KEENTHUMBSUPLOADING", LEFT, true);
+        showMsgWithBmp(mInventoryVec[0].mSpriteVar,
+                        loading_text,
+                        "KEENTHUMBSUPLOADING",
+                        LEFT, true, nullptr);
 	}
 
 	mMap.drawAll();
@@ -78,6 +82,7 @@ void CWorldMap::loadAndPlayMusic()
 void CWorldMap::ponder(const float deltaT)
 {
 
+#ifdef VIRTUALPAD
     if( gVideoDriver.VGamePadEnabled() )
     {
         VirtualKeenControl *vkc = dynamic_cast<VirtualKeenControl*>(gInput.mpVirtPad.get());
@@ -86,6 +91,7 @@ void CWorldMap::ponder(const float deltaT)
         vkc->mDPad.invisible = false;
         vkc->mStartButton.invisible = false;
     }
+#endif
 
 
     ponderBase(deltaT);

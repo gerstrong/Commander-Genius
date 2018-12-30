@@ -70,7 +70,9 @@ bool CSettings::saveDrvCfg()
         CVidConfig &VidConf = gVideoDriver.getVidConfig();
         Configuration.SetKeyword("Video", "fullscreen", VidConf.mFullscreen);
         Configuration.SetKeyword("Video", "OpenGL", VidConf.mOpengl);
+#ifdef VIRTUALPAD
         Configuration.SetKeyword("Video", "VirtPad", VidConf.mVPad);
+#endif
         Configuration.SetKeyword("Video", "ShowCursor", VidConf.mShowCursor);
         Configuration.SetKeyword("Video", "TiltedScreen", VidConf.mTiltedScreen);
 
@@ -191,7 +193,9 @@ bool CSettings::loadDrvCfg()
 
         Configuration.ReadKeyword("Video", "OpenGL", &VidConf.mOpengl, true);
         Configuration.ReadString("Video", "OGLfilter",  VidConf.mRenderScQuality, "nearest");
+#ifdef VIRTUALPAD
         Configuration.ReadKeyword("Video", "VirtPad", &VidConf.mVPad, VidConf.mVPad);
+#endif
         Configuration.ReadKeyword("Video", "ShowCursor", &VidConf.mShowCursor, true);
         Configuration.ReadKeyword("Video", "TiltedScreen", &VidConf.mTiltedScreen, false);
 

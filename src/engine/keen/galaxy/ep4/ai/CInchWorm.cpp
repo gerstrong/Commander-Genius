@@ -27,9 +27,9 @@ mInchWormContacts(0)
 }
 
 
-const int CSF_MIN_DISTANCE_TO_FOLLOW = 8<<CSF;
+//const int CSF_MIN_DISTANCE_TO_FOLLOW = 8<<CSF;
 const int CSF_DISTANCE_TO_FOLLOW_TOLERANCE = 1<<CSF;
-const int INCHWORM_SPEED = 2;
+//const int INCHWORM_SPEED = 2;
 
 
 bool CInchWorm::isNearby(CSpriteObject &theObject)

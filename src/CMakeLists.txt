@@ -11,9 +11,6 @@ endif()
 
 OPTION(DOWNLOADER "Internal Downloader" Yes)
 
-#OPTION(OGG "Ogg/Vorbis support" Yes)
-#OPTION(TREMOR "Tremor support" No)
-
 
 IF(WIN32)
 	SET(BUILD_TARGET WIN32)
@@ -47,11 +44,19 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror=cast-align")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Werror=cast-align")
 
 # Use python3 for AI scripting and more!
+# Use python3 for AI scripting and more!
 IF(USE_PYTHON3)
-    FIND_PACKAGE(PythonLibs)
-    ADD_DEFINITIONS(-DUSE_PYTHON3=1)
-    INCLUDE_DIRECTORIES(${PYTHON_INCLUDE_DIRS})
-    LINK_LIBRARIES(${PYTHON_LIBRARIES})
+    # Look for Python (Version 3.0 or later is required)
+    FIND_PACKAGE(Python3 COMPONENTS Interpreter Development)
+    if(Python3_FOUND)
+        ADD_DEFINITIONS(-DUSE_PYTHON3=1)
+        INCLUDE_DIRECTORIES(${Python3_INCLUDE_DIRS})
+        LINK_LIBRARIES(${Python3_LIBRARIES})
+        message(STATUS "Python3_LIBRARIES = ${Python3_LIBRARIES}")
+        message(STATUS "Python3_INCLUDE_DIRS = ${Python3_INCLUDE_DIRS}")
+    else()
+        message(FATAL_ERROR " Python3 not found!")
+    endif()
 ENDIF()
 
 
@@ -59,34 +64,7 @@ ENDIF()
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
 INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/GsKit)
 
-#set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/CMake)
-
-
-# Try to use Ogg if enabled
-#IF (OGG)
-#    IF(BUILD_TARGET STREQUAL WIN32)
-        #set(VORBIS_INCLUDE_DIR ${CMAKE_INCLUDE_PATH})
-    #ELSE(BUILD_TARGET STREQUAL WIN32)
-#	FIND_PATH(VORBIS_INCLUDE_DIR vorbis/vorbisfile.h DOC "Include for Ogg Vorbis")
- #   ENDIF()
-
-#    SET(VORBIS_INCLUDE_PATH "${VORBIS_INCLUDE_DIR}/vorbis")
-#    ADD_DEFINITIONS(-DOGG)
-#    INCLUDE_DIRECTORIES(${VORBIS_INCLUDE_PATH})
-#    INCLUDE_DIRECTORIES(${VORBIS_INCLUDE_DIR})
-#ENDIF (OGG)
-
-#IF (TREMOR)
-        #FIND_PATH(TREMOR_INCLUDE_DIR
-                #ivorbisfile.h
-                #PATHS /usr/include /usr/include/tremor
-#		DOC "Include for Tremor")
-        #INCLUDE_DIRECTORIES(${TREMOR_INCLUDE_DIR})
-        #ADD_DEFINITIONS(-DTREMOR)
-#ENDIF (TREMOR)
-
-
 
 # If we want to debug set the proper flags or have release etc.
 IF(CMAKE_BUILD_TYPE STREQUAL "Debug")
@@ -117,27 +95,6 @@ ELSE(Boost_FOUND)
 ENDIF(Boost_FOUND)
 
 
-find_package( ZLIB REQUIRED )
-if ( ZLIB_FOUND )
-    include_directories( ${ZLIB_INCLUDE_DIRS} )
-endif( ZLIB_FOUND )
-
-if(DOWNLOADER)
-    FIND_PACKAGE(CURL)
-    IF(CURL_FOUND)
-
- 	if(WIN32)
- 	   ADD_DEFINITIONS(-DCURL_STATICLIB)    
-        endif()
-	
-	INCLUDE_DIRECTORIES(${CURL_INCLUDE_DIR})
-
-    ELSE(CURL_FOUND)
-
-      MESSAGE(FATAL_ERROR "Could not find the CURL library and development files." )
-
-    ENDIF(CURL_FOUND)
-endif()
 
 if(USE_SDL2)
 
@@ -229,35 +186,19 @@ target_link_libraries (CGeniusExe GsKit)
 # Link our SDL Extensions
 target_link_libraries(CGeniusExe sdl_extensions_audio sdl_extensions_sys)
 
-# Link zlib
-target_link_libraries( CGeniusExe ${ZLIB_LIBRARIES} )
-
 
 if(USE_SDL2)
         message(STATUS "SDL2_LIBRARY = ${SDL2_LIBRARY}")
         message(STATUS "SDL2IMAGE_LIBRARY = ${SDL2IMAGE_LIBRARY}")
-else(USE_SDL2)
-        # SDL stuff to link
-#        target_link_libraries(CGeniusExe ${SDL_NET_LIBRARIES})
-#        target_link_libraries(CGeniusExe ${SDL_LIBRARY})
-#        target_link_libraries(CGeniusExe ${SDL_IMAGE_LIBRARY})
 endif(USE_SDL2)
 
 
 
-
-IF(CURL_FOUND)
-  TARGET_LINK_LIBRARIES(CGeniusExe ${CURL_LIBRARIES})
-ENDIF(CURL_FOUND)
-
 # The Windows Version has an icon in the executable
 IF(WIN32)
 	SET_TARGET_PROPERTIES(CGeniusExe PROPERTIES OUTPUT_NAME "CGenius")
-#	ADD_CUSTOM_COMMAND(TARGET CGeniusExe PRE_LINK COMMAND cp ${CMAKE_CURRENT_SOURCE_DIR}/src/CGLogo.rc ${CMAKE_CURRENT_SOURCE_DIR}/CGLogo.rc )
-#	ADD_CUSTOM_COMMAND(TARGET CGeniusExe PRE_LINK COMMAND ${mingw64dir}bin/icotool -c -o ${CMAKE_CURRENT_SOURCE_DIR}/CGLogo.ico ${CMAKE_CURRENT_SOURCE_DIR}/vfsroot/cglogo512.png )
 	ADD_CUSTOM_COMMAND(TARGET CGeniusExe PRE_LINK COMMAND windres ${CMAKE_CURRENT_SOURCE_DIR}/CGLogo.rc ${CMAKE_CURRENT_SOURCE_DIR}/CGLogo.o)
 	SET_TARGET_PROPERTIES(CGeniusExe PROPERTIES LINK_FLAGS "-mwindows ${CMAKE_CURRENT_SOURCE_DIR}/CGLogo.o")
-#	LINK_DIRECTORIES(/opt/mingw32/lib)
 	MESSAGE(STATUS "Will build with the CG-Icon for Windows." )
 ENDIF(WIN32)
 
@@ -268,9 +209,7 @@ if(WIN32)
 	target_link_libraries(CGeniusExe mingw32)
 	target_link_libraries(CGeniusExe user32)
 	target_link_libraries(CGeniusExe gdi32)
-        #target_link_libraries(CGeniusExe SDL2Main SDL2)
         target_link_libraries(CGeniusExe SDL2Main)
-        #target_link_libraries(CGeniusExe SDL2_image)
 	target_link_libraries(CGeniusExe winmm)
 	target_link_libraries(CGeniusExe Imm32)
 	target_link_libraries(CGeniusExe Version)

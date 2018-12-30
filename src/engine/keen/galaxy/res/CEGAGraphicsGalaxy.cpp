@@ -289,7 +289,7 @@ bool CEGAGraphicsGalaxy::loadData()
     {   // Not found create it
         fullpath = JoinPaths(path, "preview.bmp");
         fullpath = GetWriteFullFileName(fullpath, true);
-        GsBitmap *pBitmap = gGraphics.getBitmapFromStr("TITLE");
+        GsBitmap *pBitmap = gGraphics.getBitmapFromStr(0, "TITLE");
         SDL_SaveBMP( pBitmap->getSDLSurface(), fullpath.c_str());
     }
 
@@ -310,7 +310,7 @@ extractPicture(SDL_Surface *sfc,
         // Decode the bitmap data
         for(size_t p = 0; p < 4; p++)
         {
-            Uint8* pixel = (Uint8*) sfc->pixels;
+            auto pixel = reinterpret_cast<Uint8*>(sfc->pixels);
 
             // get location of plane p
             if(masked)
@@ -1065,6 +1065,19 @@ bool CEGAGraphicsGalaxy::readfonts()
     return true;
 }
 
+
+void filterList(std::set<std::string> &mySet,
+                const std::string nameFilter)
+{
+    for(auto it=mySet.begin() ; it!=mySet.end();)
+    {
+        if(it->find(nameFilter) == it->npos)
+            it = mySet.erase(it);
+        else
+            it++;
+    }
+}
+
 /**
  * \brief   This one extracts the bitmaps used in Keen 4-6 (Maybe Dreams in future)
  * \return  returns true, if the fonts were read successfully, else false
@@ -1083,7 +1096,7 @@ bool CEGAGraphicsGalaxy::readBitmaps()
     memcpy( BmpHead, &(m_egagraph.at(0).data.at(0)), epInfo.NumBitmaps*sizeof(BitmapHeadStruct));
     SDL_Color *Palette = gGraphics.Palette.m_Palette;
 
-    gGraphics.createEmptyBitmaps(epInfo.NumBitmaps);
+    gGraphics.createEmptyBitmaps(1, epInfo.NumBitmaps);
 
     SDL_Rect bmpRect;
     bmpRect.x = bmpRect.y = 0;
@@ -1097,22 +1110,9 @@ bool CEGAGraphicsGalaxy::readBitmaps()
         bitmapNameOffset = 3;
     }
 
-    // Looks for bitmap files lying around
-    // If there are some load them as well
-    const std::string gfxDir = "gfx";
-    const std::string bmpsDir = "bmps";
-    const std::string bmpDirPath = JoinPaths(gKeenFiles.gameDir,
-                                             gfxDir, bmpsDir);
-
-    std::set<std::string> bmpFileList;
-    FileListAdder bmpfilesAdder;
-    GetFileList(bmpFileList, bmpfilesAdder,
-                bmpDirPath, false, FM_REG);
-
-
     auto &bitmapNamesThisEp = m_BitmapNameMap[bitmapNameOffset];
 
-    for(size_t i = 0; i < epInfo.NumBitmaps; i++)
+    for(unsigned int i = 0; i < epInfo.NumBitmaps; i++)
     {
         // Use upper limit to protect against overflow.
         if(BmpHead[i].Width < 1 || BmpHead[i].Width > 100)
@@ -1134,46 +1134,99 @@ bool CEGAGraphicsGalaxy::readBitmaps()
             return false;
         }
 
-        GsBitmap &Bitmap = gGraphics.getBitmapFromId(i);
+        GsBitmap &bitmap = gGraphics.getBitmapFromId(0, i);
         bmpRect.w = BmpHead[i].Width*8;
         bmpRect.h = BmpHead[i].Height;
-        Bitmap.createSurface(gVideoDriver.getScrollSurface()->flags, bmpRect, Palette);
+        bitmap.createSurface(gVideoDriver.getScrollSurface()->flags,
+                             bmpRect, Palette);
 
-        extractPicture(Bitmap.getSDLSurface(),
+        extractPicture(bitmap.getSDLSurface(),
                 data,
                 BmpHead[i].Width, BmpHead[i].Height);
 
-        Bitmap.setName(bitmapNamesThisEp[i]);
+        auto &bmpName = bitmapNamesThisEp[i];
 
-        for(const auto &bmpFile : bmpFileList)
+        gGraphics.setBitmapNameForIdx(bmpName, i);        
+    }
+
+
+    // For extra graphics loaded externally
+
+    // Looks for bitmap files lying around
+    // If there are some load them as well
+    const std::string gfxDir = "gfx";
+    const std::string playerDir = "player";
+    const std::string playersPathList = JoinPaths(gKeenFiles.gameDir,
+                                                 gfxDir,
+                                                 playerDir);
+
+    std::set<std::string> playersList;
+    FileListAdder fileListAdder;
+    GetFileList(playersList, fileListAdder,
+                playersPathList, false, FM_DIR);
+
+    const auto BitmapOrigVec = gGraphics.bmpVecVec()[0];
+
+    // If there are more players than preallocated, enlarge the rooster
+    if(gGraphics.bmpVecVec().size() < playersList.size())
+    {
+        auto curNumBmpVecs = gGraphics.bmpVecVec().size();
+
+        gLogging << "More players to load. Enlarging bitmap buffer...";
+
+        // Copy the bitmap to the enlarged version
+        for( auto i=curNumBmpVecs ; i< playersList.size() ; i++ )
+        {
+            gGraphics.appendBitmapVec(BitmapOrigVec);
+        }
+    }
+
+
+
+    // For a list of players try to load different portraits
+    size_t numbitmapVar = 0;
+    for(const auto &player : playersList)
+    {
+        auto &bmpVecPlayer = gGraphics.bmpVecVec()[numbitmapVar];
+
+        const std::string curPlayerPath = JoinPaths(playersPathList, player);
+
+        std::set<std::string> bmpList;
+        FileListAdder bmpfilesAdder;
+        GetFileList(bmpList, bmpfilesAdder,
+                    curPlayerPath, false, FM_REG);
+
+        filterList(bmpList, "_pic_");
+
+        for(const auto &bmpFile : bmpList)
         {
             const auto numStr = bmpFile.substr(bmpFile.length()-8,
                                                bmpFile.length()-4);
 
-            size_t idx = atoi(numStr.c_str());
+            int idx = atoi(numStr.c_str());
 
-            if(i != idx)
-                continue;
-
-            if(idx >= epInfo.NumBitmaps)
+            if(idx >= int(bmpVecPlayer.size()))
             {
                 gLogging << "Warning: Index " << idx << " out of reach.";
                 continue;
             }
 
-            const auto bmpFilePath = JoinPaths(bmpDirPath, bmpFile);
+            const auto bmpFilePath = JoinPaths(curPlayerPath,
+                                                  bmpFile);
 
-            if( Bitmap.loadHQBitmap(bmpFilePath) )
-            {
-                gLogging << bmpFile << " got loaded correctly.";
-            }
-            else
-            {
-                gLogging << "Warning: " << bmpFile << " did not get loaded correctly.";
-            }
+            auto &bmp = bmpVecPlayer[size_t(idx)];
 
+            if( !bmp.loadHQBitmap(bmpFilePath) )
+            {
+                gLogging << "Warning: " << bmpFile << " could not be loaded.";
+            }
         }
+
+        numbitmapVar++;
     }
+
+
+
 
     return true;
 }
@@ -1479,7 +1532,7 @@ bool CEGAGraphicsGalaxy::readSprites( const size_t numSprites,
 
     // Now let's copy all the sprites. After that some of them are tinted to the proper colors
 
-    auto &SpriteOrigVec = gGraphics.getSpriteVec(0);
+    const auto SpriteOrigVec = gGraphics.getSpriteVec(0);
 
     // Copy the sprites
     for( unsigned int i=1 ; i<4 ; i++ )
@@ -1488,53 +1541,55 @@ bool CEGAGraphicsGalaxy::readSprites( const size_t numSprites,
     }
 
     // For the other variant let's exchange some colors
-
-
     // Second Player, could be kylie's own bitmaps
-    auto &SpriteVecPlayer2 = gGraphics.getSpriteVec(1);
-    int ctr = 0;
-
-    //else
     {
-        for( GsSprite &sprite : SpriteVecPlayer2)
+        auto &SpriteVecPlayer2 = gGraphics.getSpriteVec(1);
+        int ctr = 0;
+
         {
-            // Red against Purple
-            sprite.exchangeSpriteColor( 5, 4, 0 );
-            sprite.exchangeSpriteColor( 13, 12, 0 );
+            for( GsSprite &sprite : SpriteVecPlayer2)
+            {
+                // Red against Purple
+                sprite.exchangeSpriteColor( 5, 4, 0 );
+                sprite.exchangeSpriteColor( 13, 12, 0 );
 
-            // Yellow against Green
-            sprite.exchangeSpriteColor( 2, 6, 0 );
-            sprite.exchangeSpriteColor( 10, 14, 0 );
-            ctr++;
+                // Yellow against Green
+                sprite.exchangeSpriteColor( 2, 6, 0 );
+                sprite.exchangeSpriteColor( 10, 14, 0 );
+                ctr++;
+            }
+
         }
-
     }
 
-
     // Third Player
-    auto &SpriteVecPlayer3 = gGraphics.getSpriteVec(2);
-    for( auto &sprite : SpriteVecPlayer3)
     {
-        // Red against Green
-        sprite.exchangeSpriteColor( 2, 4, 0 );
-        sprite.exchangeSpriteColor( 10, 12, 0 );
+        auto &SpriteVecPlayer3 = gGraphics.getSpriteVec(2);
+        for( auto &sprite : SpriteVecPlayer3)
+        {
+            // Red against Green
+            sprite.exchangeSpriteColor( 2, 4, 0 );
+            sprite.exchangeSpriteColor( 10, 12, 0 );
 
-        // Yellow against Purple
-        sprite.exchangeSpriteColor( 5, 6, 0 );
-        sprite.exchangeSpriteColor( 13, 14, 0 );
+            // Yellow against Purple
+            sprite.exchangeSpriteColor( 5, 6, 0 );
+            sprite.exchangeSpriteColor( 13, 14, 0 );
+        }
     }
 
     // Fourth Player
-    auto &SpriteVecPlayer4 = gGraphics.getSpriteVec(3);
-    for( auto &sprite : SpriteVecPlayer4)
     {
-        // Red against Yellow
-        sprite.exchangeSpriteColor( 6, 4, 0 );
-        sprite.exchangeSpriteColor( 14, 12, 0 );
+        auto &SpriteVecPlayer4 = gGraphics.getSpriteVec(3);
+        for( auto &sprite : SpriteVecPlayer4)
+        {
+            // Red against Yellow
+            sprite.exchangeSpriteColor( 6, 4, 0 );
+            sprite.exchangeSpriteColor( 14, 12, 0 );
 
-        // Green against Purple
-        sprite.exchangeSpriteColor( 2, 5, 0 );
-        sprite.exchangeSpriteColor( 10, 13, 0 );
+            // Green against Purple
+            sprite.exchangeSpriteColor( 2, 5, 0 );
+            sprite.exchangeSpriteColor( 10, 13, 0 );
+        }
     }
 
     const std::string gfxDir = "gfx";
@@ -1553,10 +1608,10 @@ bool CEGAGraphicsGalaxy::readSprites( const size_t numSprites,
     {
         auto curNumSpriteVecs = gGraphics.spriteVecVec().size();
 
-        gLogging << "More player to load. Enlarging sprite buffer...";
+        gLogging << "More players to load. Enlarging sprite buffer...";
 
         // Copy the sprites
-        for( unsigned int i=curNumSpriteVecs ; i< playersList.size() ; i++ )
+        for( auto i=curNumSpriteVecs ; i< playersList.size() ; i++ )
         {
             gGraphics.appendSpriteVec(SpriteOrigVec);
         }
@@ -1574,7 +1629,10 @@ bool CEGAGraphicsGalaxy::readSprites( const size_t numSprites,
         std::set<std::string> spriteList;
         FileListAdder spritefilesAdder;
         GetFileList(spriteList, spritefilesAdder,
-                    curPlayerPath, false, FM_REG);
+                    curPlayerPath, false, FM_REG,
+                    "*_sprite_*");
+
+        filterList(spriteList, "_sprite_");
 
         for(const auto &spriteFile : spriteList)
         {
@@ -1592,7 +1650,7 @@ bool CEGAGraphicsGalaxy::readSprites( const size_t numSprites,
             const auto spriteFilePath = JoinPaths(curPlayerPath,
                                                   spriteFile);
 
-            GsSprite &sprite = SpriteVecPlayer[idx];
+            GsSprite &sprite = SpriteVecPlayer[size_t(idx)];
 
             if( sprite.loadHQSprite(spriteFilePath) )
             {
@@ -1614,7 +1672,7 @@ bool CEGAGraphicsGalaxy::readSprites( const size_t numSprites,
 
 bool CEGAGraphicsGalaxy::readTexts()
 {
-    const int ep = getEpisodeInfoIndex();
+    const auto ep = getEpisodeInfoIndex();
 
     gGameText.clear();
 
@@ -1634,7 +1692,7 @@ bool CEGAGraphicsGalaxy::readTexts()
 
             memcpy(chunkData.data(), thisChunk.data.data(), thisChunk.data.size());
 
-            const auto *txtData = (char*)( chunkData.data() );
+            const auto *txtData = reinterpret_cast<char*>( chunkData.data() );
             std::string text(txtData);
 
             gGameText.addLine(text);
@@ -1674,7 +1732,7 @@ bool CEGAGraphicsGalaxy::readMiscStuff()
     // Those are monochrom...
     for(size_t miscIdx = 0 ; miscIdx < EpisodeInfo[episode-4].NumMisc; miscIdx++)
     {
-        const int index = indexMisc + miscIdx;
+        const auto index = indexMisc + miscIdx;
 
         const auto &dataChunk = m_egagraph.at(index);
 
@@ -1686,16 +1744,6 @@ bool CEGAGraphicsGalaxy::readMiscStuff()
                               dataSize, index, miscIdx);
             return false;
         }
-
-
-        // Memcpy is here required for correct alignment on devices with different architectures
-        // and compiles which do not like pointer from 8-bit to 16-bit
-
-        //Uint16 *dataEndPtr = nullptr;
-
-        // This might copy beyond the boundaries. We need to fix that.
-        //memcpy( &dataEndPtr, &(dataChunk.data) + dataSize, sizeof(Uint16 *) );
-
 
         Uint16 *dataPtr = nullptr;
         memcpy( &dataPtr, &(dataChunk.data), sizeof(Uint16 *) );

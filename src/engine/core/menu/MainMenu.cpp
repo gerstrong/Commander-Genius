@@ -27,7 +27,7 @@ void MainMenu::createGameMenu( const bool openedGamePlay,
 {
 
 #if defined (SINGLEPLAYER)
-    gBehaviorEngine.mPlayers = 1;        
+    gBehaviorEngine.setNumPlayers(1);
 
     GsButton *button = new GameButton( "New Game", new NewGamePlayersEvent(1), style );
 #else

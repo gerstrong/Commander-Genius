@@ -159,7 +159,9 @@ public:
 	  mVidConfig.mAspectCorrection.h = h; 
 	}
 
+#ifdef VIRTUALPAD
     bool VGamePadEnabled() { return mVidConfig.mVPad;   }
+#endif
 
 	bool getRefreshSignal() { return m_mustrefresh; }
 	void setRefreshSignal(const bool value) { m_mustrefresh = value;  }

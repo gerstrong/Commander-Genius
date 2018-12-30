@@ -20,7 +20,6 @@
 #include <memory>
 #include <SDL.h>
 
-#define gResourceLoader CResourceLoader::get()
 
 enum ProgressStyle
 {
@@ -29,49 +28,18 @@ enum ProgressStyle
 	PROGRESS_STYLE_BAR
 };
 
-class CResourceLoader : public GsSingleton<CResourceLoader>
-{
-public:
-	CResourceLoader();
-
-	void setStyle(ProgressStyle style);
-
-    int RunLoadAction(Action* act,
-                      const std::string &threadname,
-                      const int min_permil=0,
-                      const int max_permil=1000);
-
-	bool process(int* ret);
-
-	void setPermilage(int permil);
-	
-private:
-	void setPermilageForce(int permil);
-	void renderLoadingGraphic();
-
-	int m_permil;
-	int m_permiltarget;
-	int m_min_permil;
-	int m_max_permil;
-
-	ProgressStyle m_style;
-    ThreadPoolItem *mp_Thread;
-    GsSurface mProgressSfc;
-};
-
-
-// TODO: The resource will have to load in the background. Multithreading will be done later on...
 
 class CResourceLoaderBackground : public GsGear
 {
-public:
+public:   
 
     CResourceLoaderBackground();
 
+    virtual ~CResourceLoaderBackground();
 
     void start();
-    void run(const float deltaT);
-    void render();
+    void run(const float deltaT) override;
+    void render() override;
 
     void setStyle(ProgressStyle style)
     { m_style = style; }

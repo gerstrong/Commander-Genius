@@ -4,7 +4,6 @@
 #include <base/utils/FindFile.h>
 #include <base/CInput.h>
 #include <base/GsLogging.h>
-#include <graphics/GsTexture.h>
 #include <fileio/ResourceMgmt.h>
 
 #include "dpad.h"
@@ -15,19 +14,21 @@
 #include "buttonBg.h"
 #include "buttonConfirm.h"
 #include "buttonStart.h"
-#include "buttonClose.h"
+
 
 
 bool TouchButton::loadEmdbeddedPicture(const unsigned char *data,
                                        const unsigned int size)
-{        
-    bool ok = mTexture.loadFromMem(data, size, gVideoDriver.Renderer(), false);
-
-    ok &= mTextureDark.loadFromMem(data, size, gVideoDriver.Renderer(), true);
-
-    return ok;
+{
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    return mTexture.loadFromMem(data, size,
+                         gVideoDriver.Renderer());
+#else
+    return false;
+#endif
 }
 
+#if SDL_VERSION_ATLEAST(2, 0, 0)
 void TouchButton::clearFingers()
 {
     mFingerSet.clear();
@@ -47,21 +48,27 @@ void TouchButton::removeFingerId(const SDL_FingerID fid)
     }
 }
 
-void TouchButton::render(const bool dark)
+#endif
+
+bool TouchButton::loadPicture(const std::string &picFile)
 {
-    if(dark)
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    const std::string buttonFname = getResourceFilename(picFile, "", true, true);
+    if(buttonFname == "") return false;
+
+    mTexture.load(GetFullFileName(buttonFname), gVideoDriver.Renderer());
+    if( !mTexture )
     {
-        gVideoDriver.addTextureRefToRender(mTextureDark, Rect());
-    }
-    else
-    {
-        gVideoDriver.addTextureRefToRender(mTexture, Rect());
+        gLogging.ftextOut("Failed to load the texture: %s!\n", picFile.c_str());
+        return false;
     }
 
+    mTexture.setBlendMode(SDL_BLENDMODE_BLEND);    
+    return true;
+#else
+    return false;
+#endif
 }
-
-
-// --------------- End of Touch Button -------------------- //
 
 VirtualKeenControl::~VirtualKeenControl()
 {}
@@ -69,16 +76,19 @@ VirtualKeenControl::~VirtualKeenControl()
 bool VirtualKeenControl::init()
 {
 #if SDL_VERSION_ATLEAST(2, 0, 0)
+    // Check if the virtual game pad image exist. If not download the picture package
+
+    /*if(!checkVPadImage())
+    {
+        downloadVPadImages();
+        extractVPadImages();
+    }
+*/
 
     /// Load The buttons images
     {
-        // Close for configuratin of Virtual pad
-        if(!mCloseConfigButton.loadEmdbeddedPicture(gButtonClosePng, sizeof(gButtonClosePng))) return false;
-
-        GsTexture &tex = mPadConfigBackground.mTexture;
-        tex.fillRGB( gVideoDriver.Renderer(), 0x0, 0x0, 0x0);
-        tex.setAlpha(128);
-        mPadConfigBackground.invisible = true;
+        // Start with the Background for the gamepad
+        if(!mPadBackground.loadEmdbeddedPicture(gButtonBgPng, sizeof(gButtonBgPng))) return false;
 
         // Directional pad
         if(!mDPad.loadEmdbeddedPicture(gDPadPng, sizeof(gDPadPng))) return false;
@@ -116,23 +126,15 @@ bool VirtualKeenControl::ponder()
     const float left = 0.025f;
     const float right = 0.975f;
 
-    if(!mPadConfigBackground.invisible)
+    if(!mPadBackground.invisible)
     {
-        const GsRect<float> dpadRect(0.0f, 0.0f,
-                                     1.0f, 1.0f);
+        const GsRect<float> dpadRect(0.0f, 0.75f,
+                                     1.0f, 0.25f);
 
-        mPadConfigBackground.setRect(dpadRect);
+        mPadBackground.setRect(dpadRect);
+
+        mPadBackground.mTexture.setAlpha(uint8_t(255.0f*mTranslucency));
     }
-
-
-    if(!mCloseConfigButton.invisible)
-    {
-        const GsRect<float> dpadRect(0.45f, 0.45f,
-                                     0.1f, 0.1f);
-
-        mCloseConfigButton.setRect(dpadRect);
-    }
-
 
     if(!mDPad.invisible)
     {
@@ -222,7 +224,7 @@ bool VirtualKeenControl::ponder()
         mShootButton.setRect(shootRect);
 
         mShootButton.mTexture.setAlpha(uint8_t(255.0f*mTranslucency));
-    }    
+    }
 
 #endif
 
@@ -232,115 +234,20 @@ bool VirtualKeenControl::ponder()
 
 void VirtualKeenControl::processConfig()
 {
-    // Opening section
-    if(!mConfigOpened)
-    {
-        mConfigOpened = true;
-        mPadConfigBackground.invisible = false;
-        return;
-    }
-
-}
-
-void VirtualKeenControl::processConfigTouchbuttons(const Vector2D<float> &Pos,
-                                                   const bool down)
-{
-    // If there is a close button to hit, were are in configuration mode
-    // and need to close that.
-    if(!mCloseConfigButton.invisible)
-    {
-        // Was it hit?
-        if(mCloseConfigButton.Rect().HasPoint(Pos) && down)
-        {
-            mConfigOpened = false;
-            mPadConfigBackground.invisible = true;
-            gInput.setInVPadConfigState(false);
-
-            mDPad.invisible = true;
-            mConfirmButton.invisible = true;
-            mStartButton.invisible = true;
-            mJumpButton.invisible = true;
-            mShootButton.invisible = true;
-            mPogoButton.invisible = true;
-            mStatusButton.invisible = true;
-
-            return;
-        }
-    }
-
-
-    auto bindButtonCfg = [&](TouchButton &button) -> bool
-    {
-        if(button.invisible)
-            return false;
-
-        if( button.Rect().HasPoint(Pos) )
-        {
-            if(mpCurrentButton4Config == nullptr)
-            {
-                mpCurrentButton4Config = &button;
-            }
-
-            return true;
-        }
-
-        return false;
-    };
-
-    mpCurrentButton4Config = nullptr;
-
-    bindButtonCfg(mDPad);
-
-    bindButtonCfg(mConfirmButton);
-    bindButtonCfg(mStartButton);
-
-    bindButtonCfg(mStatusButton);
-    bindButtonCfg(mShootButton);
-    bindButtonCfg(mJumpButton);
-    bindButtonCfg(mPogoButton);
+    assert(0);
 }
 
 
 void VirtualKeenControl::renderConfig()
 {
-    auto addTexture = [](TouchButton &button) -> void
-    {
-        button.invisible = false;
-
-        if(!button.invisible &&
-           button.w > 0.0f &&
-           button.h > 0.0f)
-        {
-            button.render(false);
-        }
-    };
-
-    mPadConfigBackground.mTexture.setAlpha(127);
-    addTexture(mPadConfigBackground);
-
-    addTexture(mCloseConfigButton);
-
-    addTexture(mDPad);
-
-    addTexture(mConfirmButton);
-    addTexture(mStartButton);
-
-    addTexture(mStatusButton);
-    addTexture(mShootButton);
-    addTexture(mJumpButton);
-    addTexture(mPogoButton);
-
-    // If there was a button for config selected
-    if(mpCurrentButton4Config)
-    {
-        addTexture(*mpCurrentButton4Config);
-    }
+    assert(0);
 }
 
 
 void VirtualKeenControl::hideEverything()
 {
-    mPadConfigBackground.invisible = true;
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    mPadBackground.invisible = true;
     mDPad.invisible = true;
     mConfirmButton.invisible = true;
     mStartButton.invisible = true;
@@ -349,11 +256,13 @@ void VirtualKeenControl::hideEverything()
     mShootButton.invisible = true;
     mPogoButton.invisible = true;
     mStatusButton.invisible = true;
+#endif
 }
 
 void VirtualKeenControl::hideAllButtons()
 {
-    mPadConfigBackground.invisible = false;
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    mPadBackground.invisible = false;
     mConfirmButton.invisible = true;
     mStartButton.invisible = true;
 
@@ -361,13 +270,15 @@ void VirtualKeenControl::hideAllButtons()
     mShootButton.invisible = true;
     mPogoButton.invisible = true;
     mStatusButton.invisible = true;
+#endif
 }
 
 
 
-void VirtualKeenControl::render(GsWeakSurface &)
+void VirtualKeenControl::render(GsWeakSurface &sfc)
 {
 #if SDL_VERSION_ATLEAST(2, 0, 0)
+    //GsRect<Uint16> clickGameArea = gVideoDriver.mpVideoEngine->getActiveAreaRect();
 
     auto addTexture = [](TouchButton &button) -> void
     {
@@ -375,9 +286,11 @@ void VirtualKeenControl::render(GsWeakSurface &)
             button.w > 0.0f &&
             button.h > 0.0f)
         {
-            button.render(button.hasFingersPressing());
+            gVideoDriver.addTextureRefToRender(button.mTexture, button.Rect());
         }
     };
+
+    addTexture(mPadBackground);
 
     addTexture(mDPad);
 
@@ -395,6 +308,7 @@ void VirtualKeenControl::render(GsWeakSurface &)
 
 void VirtualKeenControl::flush()
 {
+#if SDL_VERSION_ATLEAST(2, 0, 0)
     mConfirmButton.clearFingers();
     mStartButton.clearFingers();
     mStatusButton.clearFingers();
@@ -402,53 +316,46 @@ void VirtualKeenControl::flush()
     mJumpButton.clearFingers();
     mPogoButton.clearFingers();
     mDPad.clearFingers();
+#endif
 }
 
 
+#if SDL_VERSION_ATLEAST(2, 0, 0)
 bool VirtualKeenControl::mouseFingerState(const Vector2D<float> &Pos,
                                           const SDL_TouchFingerEvent &touchFingerEvent,
                                           const bool down)
 {
-#if SDL_VERSION_ATLEAST(2, 0, 0)
 
-    processConfigTouchbuttons(Pos, down);
+/*
+    auto unbindButtonCommand = [&](const TouchButton &button,
+            const InputCommand &cmd)
+    {
+        gInput.setCommand(0, cmd, false);
+    };
+
+    unbindButtonCommand(mConfirmButton, IC_JUMP);
+    unbindButtonCommand(mStartButton, IC_JUMP);
+    unbindButtonCommand(mStatusButton, IC_STATUS);
+    unbindButtonCommand(mShootButton, IC_FIRE);
+    unbindButtonCommand(mJumpButton, IC_JUMP);
+    unbindButtonCommand(mPogoButton, IC_POGO);
+
+
+    // Always sent released first, better for VPads
+    SDL_Event evUp;
+    evUp.type = SDL_KEYUP;
+
+    evUp.key.keysym.sym = SDLK_UP;    SDL_PushEvent(&evUp);
+    evUp.key.keysym.sym = SDLK_LEFT;  SDL_PushEvent(&evUp);
+    evUp.key.keysym.sym = SDLK_RIGHT; SDL_PushEvent(&evUp);
+    evUp.key.keysym.sym = SDLK_DOWN;  SDL_PushEvent(&evUp);*/
+
+/*
+    if( !mPadBackground.isInside(Pos.x, Pos.y) )
+        return false;*/
 
     bool ok = false;
 
-    auto bindButtonCommand = [&](TouchButton &button,
-                                 const InputCommand &cmd) -> bool
-    {
-        if(button.invisible)
-            return false;
-
-        if( button.Rect().HasPoint(Pos) )
-        {
-            gInput.setCommand(0, cmd, down);
-
-            if(down)
-            {
-                button.insertFingerId(touchFingerEvent.fingerId);
-            }
-            else
-            {
-                button.removeFingerId(touchFingerEvent.fingerId);
-            }
-
-            return true;
-        }
-        else
-        {
-            auto it = button.mFingerSet.find(touchFingerEvent.fingerId);
-
-            if( it != button.mFingerSet.end() )
-            {
-                gInput.setCommand(0, cmd, false);
-                button.mFingerSet.erase(it);
-            }
-
-            return false;
-        }
-    };
 
     SDL_Event ev;
     ev.type = (down ? SDL_KEYDOWN : SDL_KEYUP);
@@ -545,6 +452,42 @@ bool VirtualKeenControl::mouseFingerState(const Vector2D<float> &Pos,
     }
 
 
+    auto bindButtonCommand = [&](TouchButton &button,
+                                 const InputCommand &cmd) -> bool
+    {
+        if(button.invisible)
+            return false;
+
+        if( button.Rect().HasPoint(Pos) )
+        {
+            gInput.setCommand(0, cmd, down);
+
+            if(down)
+            {
+                button.insertFingerId(touchFingerEvent.fingerId);
+            }
+            else
+            {
+                button.removeFingerId(touchFingerEvent.fingerId);
+            }
+
+            return true;
+        }
+        else
+        {
+            auto it = button.mFingerSet.find(touchFingerEvent.fingerId);
+
+            if( it != button.mFingerSet.end() )
+            {
+                gInput.setCommand(0, cmd, false);
+                button.mFingerSet.erase(it);
+            }
+
+            return false;
+        }
+    };
+
+
     ok |= bindButtonCommand(mConfirmButton, IC_JUMP);
     ok |= bindButtonCommand(mStartButton, IC_JUMP);
     ok |= bindButtonCommand(mStatusButton, IC_STATUS);
@@ -559,106 +502,116 @@ bool VirtualKeenControl::mouseFingerState(const Vector2D<float> &Pos,
 
 bool VirtualKeenControl::mouseState(const Vector2D<float> &Pos, const bool down)
 {
-
 #if SDL_VERSION_ATLEAST(2, 0, 0)    
+/*
+    auto unbindButtonCommand = [&](const TouchButton &button,
+            const InputCommand &cmd)
+    {
+        gInput.setCommand(0, cmd, false);
+    };
 
-    processConfigTouchbuttons(Pos, down);
+    unbindButtonCommand(mConfirmButton, IC_JUMP);
+    unbindButtonCommand(mStartButton, IC_JUMP);
+    unbindButtonCommand(mStatusButton, IC_STATUS);
+    unbindButtonCommand(mShootButton, IC_FIRE);
+    unbindButtonCommand(mJumpButton, IC_JUMP);
+    unbindButtonCommand(mPogoButton, IC_POGO);
 
-    if( mPadConfigBackground.invisible )
+
+    // Always sent released first, better for VPads
+    SDL_Event evUp;
+    evUp.type = SDL_KEYUP;
+
+    evUp.key.keysym.sym = SDLK_UP;    SDL_PushEvent(&evUp);
+    evUp.key.keysym.sym = SDLK_LEFT;  SDL_PushEvent(&evUp);
+    evUp.key.keysym.sym = SDLK_RIGHT; SDL_PushEvent(&evUp);
+    evUp.key.keysym.sym = SDLK_DOWN;  SDL_PushEvent(&evUp);*/
+
+    if( !mPadBackground.isInside(Pos.x, Pos.y) )
         return false;
 
-    auto bindButtonCommand = [&](TouchButton &button,
+    auto bindButtonCommand = [&](const TouchButton &button,
                                  const InputCommand &cmd)
     {
         if(button.invisible)
             return;
 
-        button.mMouseDown = false;
-
         if( button.Rect().HasPoint(Pos) )
         {
-            if(mPadConfigBackground.invisible)
-            {
-                gInput.setCommand(0, cmd, down);
-            }
-
-            button.mMouseDown = true;
+            gInput.setCommand(0, cmd, down);
         }
-    };
+    };        
 
     SDL_Event ev;
     ev.type = (down ? SDL_KEYDOWN : SDL_KEYUP);
 
-    if(mPadConfigBackground.invisible)
+    if( !mDPad.invisible &&
+        mDPad.isInside(Pos.x, Pos.y) )
     {
-        if( !mDPad.invisible &&
-                mDPad.isInside(Pos.x, Pos.y) )
+        // Size of the buttons on the dpad
+        const float dpadSizePieceW = 0.4f*mDPad.w;
+        const float dpadSizePieceH = 0.4f*mDPad.h;
+
+        // Y-Direction
+        // Up presses
+        if(Pos.y<mDPad.y+dpadSizePieceH)
         {
-            // Size of the buttons on the dpad
-            const float dpadSizePieceW = 0.4f*mDPad.w;
-            const float dpadSizePieceH = 0.4f*mDPad.h;
+            ev.key.keysym.sym = SDLK_UP;
+            SDL_PushEvent(&ev);
 
-            // Y-Direction
-            // Up presses
-            if(Pos.y<mDPad.y+dpadSizePieceH)
+            if(down)
             {
-                ev.key.keysym.sym = SDLK_UP;
-                SDL_PushEvent(&ev);
-
-                if(down)
-                {
-                    SDL_Event evUp;
-                    evUp.type = SDL_KEYUP;
-                    evUp.key.keysym.sym = SDLK_DOWN;
-                    SDL_PushEvent(&evUp);
-                }
+                SDL_Event evUp;
+                evUp.type = SDL_KEYUP;
+                evUp.key.keysym.sym = SDLK_DOWN;
+                SDL_PushEvent(&evUp);
             }
-            // Down presses
-            else if(Pos.y>=mDPad.y+mDPad.h-dpadSizePieceH)
+        }
+        // Down presses
+        else if(Pos.y>=mDPad.y+mDPad.h-dpadSizePieceH)
+        {
+            ev.key.keysym.sym = SDLK_DOWN;
+            SDL_PushEvent(&ev);
+
+            if(down)
             {
-                ev.key.keysym.sym = SDLK_DOWN;
-                SDL_PushEvent(&ev);
-
-                if(down)
-                {
-                    SDL_Event evUp;
-                    evUp.type = SDL_KEYUP;
-                    evUp.key.keysym.sym = SDLK_UP;
-                    SDL_PushEvent(&evUp);
-                }
+                SDL_Event evUp;
+                evUp.type = SDL_KEYUP;
+                evUp.key.keysym.sym = SDLK_UP;
+                SDL_PushEvent(&evUp);
             }
+        }
 
-            // X-Direction
-            // Left presses
-            if(Pos.x<mDPad.x+dpadSizePieceW)
+        // X-Direction
+        // Left presses
+        if(Pos.x<mDPad.x+dpadSizePieceW)
+        {
+            ev.key.keysym.sym = SDLK_LEFT;
+            SDL_PushEvent(&ev);
+
+            if(down)
             {
-                ev.key.keysym.sym = SDLK_LEFT;
-                SDL_PushEvent(&ev);
-
-                if(down)
-                {
-                    SDL_Event evUp;
-                    evUp.type = SDL_KEYUP;
-                    evUp.key.keysym.sym = SDLK_RIGHT;
-                    SDL_PushEvent(&evUp);
-                }
-
+                SDL_Event evUp;
+                evUp.type = SDL_KEYUP;
+                evUp.key.keysym.sym = SDLK_RIGHT;
+                SDL_PushEvent(&evUp);
             }
-            // Right presses
-            else if(Pos.x>=mDPad.x+mDPad.w-dpadSizePieceW)
+
+        }
+        // Right presses
+        else if(Pos.x>=mDPad.x+mDPad.w-dpadSizePieceW)
+        {
+            ev.key.keysym.sym = SDLK_RIGHT;
+            SDL_PushEvent(&ev);
+
+            if(down)
             {
-                ev.key.keysym.sym = SDLK_RIGHT;
-                SDL_PushEvent(&ev);
-
-                if(down)
-                {
-                    SDL_Event evUp;
-                    evUp.type = SDL_KEYUP;
-                    evUp.key.keysym.sym = SDLK_LEFT;
-                    SDL_PushEvent(&evUp);
-                }
-
+                SDL_Event evUp;
+                evUp.type = SDL_KEYUP;
+                evUp.key.keysym.sym = SDLK_LEFT;
+                SDL_PushEvent(&evUp);
             }
+
         }
     }
 

@@ -11,15 +11,17 @@ class GsProgressBar : public GsControl
 {
 public:
 
-    GsProgressBar(const int &progress) :
-        mProgress(progress) {}
+    GsProgressBar(const int &progress,
+                  const int &errorCode) :
+        mProgress(progress),
+        mErrorCode(errorCode) {}
 
 
     void processLogic() override;
 
     void processRender(const GsRect<float> &RectDispCoordFloat) override;
 
-    const bool finished() const
+    bool finished() const
     {
         return mFinished;
     }
@@ -29,9 +31,9 @@ public:
         mDoFancyAnimation = value;
     }
 
-    void setBad(const bool value)
+    void setUserAbort(const bool value)
     {
-        mBad = value;
+        mUserAbort = value;
     }
 
 private:
@@ -49,6 +51,7 @@ private:
                              const Uint32 color2);
 
     const int &mProgress;
+    const int &mErrorCode;
 
     float mProgressToRender = 0.0f; // Progress to render. It might be behind "mProgress"
                                    // when a nice animation takes place
@@ -68,7 +71,7 @@ private:
     bool mDoFancyAnimation = false;
 
     // Bad will render the control red and show different message
-    bool mBad = false;
+    bool mUserAbort = false;
 };
 
 #endif // GSPROGRESSBAR_H

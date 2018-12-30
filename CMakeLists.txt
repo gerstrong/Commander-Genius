@@ -1,15 +1,21 @@
 # CMake file for development of Commander Genius (taken from OLX)
 # This CMake file is used under Linux normally. 
 
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.7)
 
 Project(CommanderGenius)
 
 set (CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/CMake")
 
+option(USE_VIRTUALPAD "Enable Onscreen Virtual Gamepad support " yes)
+
+if(USE_VIRTUALPAD)
+    ADD_DEFINITIONS(-DVIRTUALPAD)
+endif(USE_VIRTUALPAD)
+
+
 # Use COmpile TIme REducer
 include(cotire)
-include(FindSDL2_mixer)
 
 option(USE_PYTHON3 "Use Python3 scripts" yes)
 
@@ -32,7 +38,7 @@ string(REGEX REPLACE "[\r\n]" "" CG_VERSION "${CG_VERSION}")
 # Since shell script get_version is not processed properly on windows, we have to define manually here.
 # TODO: Better system for defining the version
 IF(WIN32)
-  set(CG_VERSION "2.2.5")
+  set(CG_VERSION "2.3.0")
 endif()
 
 # Generate the README file with the correct version string

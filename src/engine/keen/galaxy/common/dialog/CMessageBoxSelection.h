@@ -10,6 +10,7 @@
 
 #include "CMessageBoxGalaxy.h"
 #include <base/GsEvent.h>
+#include <list>
 
 /**
  *  \description small structure which bind a string to an event.
@@ -31,7 +32,8 @@ public:
 	 * 		  Options that can be selected
 	 * \param Text 				Message to be shown
 	 */
-	CMessageBoxSelection( const std::string& Text, const std::list<TextEventMatchOption> &Options );
+    CMessageBoxSelection( const std::string& Text,
+                          const std::list<TextEventMatchOption> &Options );
 	
 	void init();
 

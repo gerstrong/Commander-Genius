@@ -78,14 +78,14 @@ private:
 		YORP_MOVE,     // yorp is walking either left or right
 		YORP_STUNNED,  // the yorp is stunned
 		YORP_DYING    // the yorp is getting fried!
-	} state;
+    } state = YORP_LOOK;
 
-	unsigned char looktimes,lookposition;
-	unsigned char timer, dietimer;
-	unsigned char walkframe;
-	unsigned int dist_traveled;
+    unsigned char looktimes = YORP_NUM_LOOKS+1, lookposition = 0;
+    unsigned char timer = 0, dietimer = 0;
+    unsigned char walkframe = 0;
+    unsigned int dist_traveled = 0;
 
-	direction_t movedir;
+    direction_t movedir = LEFT;
 };
 
 #endif /* CYORP_H_ */

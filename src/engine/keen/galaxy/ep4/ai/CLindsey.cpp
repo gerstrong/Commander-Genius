@@ -61,7 +61,7 @@ void CLindsey::getTouchedBy(CSpriteObject &theObject)
     int curLevel = mpMap->getLevel();
     
     // When Keen touches the pincess give that hint
-    if( dynamic_cast<CPlayerLevel*>(&theObject) )
+    if( auto *player =  dynamic_cast<CPlayerLevel*>(&theObject) )
     {
         gSound.playSound(SOUND_GET_WETSUIT, SoundPlayMode::PLAY_PAUSEALL);
 
@@ -102,23 +102,24 @@ void CLindsey::getTouchedBy(CSpriteObject &theObject)
 
         #endif
 
+        const int sprVar = player->getSpriteVariantIdx();
 
 
         if(!customDlgs)
         {
-            msgs.push_back( new CMessageBoxBitmapGalaxy(lindsey_text[0],
-                            gGraphics.getBitmapFromId(108), LEFT, false, nullptr) );
-            msgs.push_back( new CMessageBoxBitmapGalaxy(lindsey_text[1],
-                            gGraphics.getBitmapFromId(108), LEFT, false, nullptr) );
-            msgs.push_back( new CMessageBoxBitmapGalaxy(lindsey_text[2],
-                            *gGraphics.getBitmapFromStr("KEENTHUMBSUP"), RIGHT, false, nullptr) );
+            msgs.push_back( new CMessageBoxBitmapGalaxy(sprVar, lindsey_text[0],
+                            gGraphics.getBitmapFromId(sprVar, 108), LEFT, false, nullptr) );
+            msgs.push_back( new CMessageBoxBitmapGalaxy(sprVar, lindsey_text[1],
+                            gGraphics.getBitmapFromId(sprVar, 108), LEFT, false, nullptr) );
+            msgs.push_back( new CMessageBoxBitmapGalaxy(sprVar, lindsey_text[2],
+                            *gGraphics.getBitmapFromStr(sprVar, "KEENTHUMBSUP"), RIGHT, false, nullptr) );
         }
         else
         {
-            msgs.push_back( new CMessageBoxBitmapGalaxy(lindsey_text[0],
-                            gGraphics.getBitmapFromId(108), LEFT, false, nullptr) );
-            msgs.push_back( new CMessageBoxBitmapGalaxy(lindsey_text[1],
-                            *gGraphics.getBitmapFromStr("KEENTHUMBSUP"), RIGHT, false, nullptr) );
+            msgs.push_back( new CMessageBoxBitmapGalaxy(sprVar, lindsey_text[0],
+                            gGraphics.getBitmapFromId(sprVar, 108), LEFT, false, nullptr) );
+            msgs.push_back( new CMessageBoxBitmapGalaxy(sprVar, lindsey_text[1],
+                            *gGraphics.getBitmapFromStr(sprVar, "KEENTHUMBSUP"), RIGHT, false, nullptr) );
         }
 
         showMsgVec( msgs );

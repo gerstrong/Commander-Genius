@@ -81,7 +81,7 @@ void CLevelPlay::reloadLevel()
 	loadMap( mMap.getLevel() );
 }
 
-bool CLevelPlay::loadLevel(const Uint16 level)
+bool CLevelPlay::loadLevel(const int sprVar, const Uint16 level)
 {
 	loadMap( level );
 		
@@ -89,7 +89,8 @@ bool CLevelPlay::loadLevel(const Uint16 level)
 	const std::string level_text = "LEVEL" + itoa(level) + "_LOAD_TEXT";
     const std::string loading_text = gBehaviorEngine.getString(level_text);
 
-    showMsgWithBmp( loading_text, "KEENTHUMBSUPLOADING", LEFT, true );
+    showMsgWithBmp( sprVar, loading_text, "KEENTHUMBSUPLOADING",
+                    LEFT, true, nullptr );
 
 	mMap.drawAll();    
 
@@ -98,6 +99,8 @@ bool CLevelPlay::loadLevel(const Uint16 level)
 
 void CLevelPlay::ponder(const float deltaT)
 {    
+#ifdef VIRTUALPAD
+#if SDL_VERSION_ATLEAST(2, 0, 0)
     if( gVideoDriver.VGamePadEnabled() )
     {
         VirtualKeenControl *vkc = dynamic_cast<VirtualKeenControl*>(gInput.mpVirtPad.get());
@@ -109,6 +112,8 @@ void CLevelPlay::ponder(const float deltaT)
         vkc->mShootButton.invisible = false;
         vkc->mStatusButton.invisible = false;
     }
+#endif
+#endif
 
     ponderBase(deltaT);
 }

@@ -7,20 +7,22 @@
 
 #include "CMessageBoxBitmapGalaxy.h"
 #include <base/video/CVideoDriver.h>
+#include <base/GsEventContainer.h>
 
 #include "dialog/CMessageBox.h"
 
 namespace galaxy
 {
 
-const int FONT_ID = 0;
+//constexpr int FONT_ID = 0;
 
-CMessageBoxBitmapGalaxy::CMessageBoxBitmapGalaxy(const std::string& Text,
+CMessageBoxBitmapGalaxy::CMessageBoxBitmapGalaxy(int sprVar,
+                                                 const std::string& Text,
                                                  const GsBitmap &BitmapRef,
                                                  const direction_t alignment,
                                                  const bool animation,
                                                  CEvent *closeEv) :
-CMessageBoxGalaxy(Text, closeEv),
+CMessageBoxGalaxy(sprVar, Text, closeEv),
 mBitmap(BitmapRef),
 mAlignment(alignment)
 {
@@ -91,7 +93,7 @@ void CMessageBoxBitmapGalaxy::ponder()
             std::string bmpStr = "KEENTHUMBSUPLOADING";
             bmpStr += itoa(mAnimFrame);
 
-            const GsBitmap &bitmapRef = *gGraphics.getBitmapFromStr(bmpStr);
+            const GsBitmap &bitmapRef = *gGraphics.getBitmapFromStr(mSprVar, bmpStr);
 
             const Uint16 bmpX = 10+mBitmap.width()-bitmapRef.width();
             const Uint16 bmpY = 10+mBitmap.height()-bitmapRef.height();
@@ -126,15 +128,16 @@ void CMessageBoxBitmapGalaxy::render()
 }
 
 
-
-void showMsgWithBmp(const std::string &text,
-                     const std::string &bmp,
-                     const direction_t alignment, const bool animation,
-                     CEvent *closeEv)
+void showMsgWithBmp(const int sprVar,
+                    const std::string &text,
+                    const std::string &bmp,
+                    const direction_t alignment,
+                    const bool animation,
+                    CEvent *closeEv)
 {
     CMessageBoxBitmapGalaxy *pMsgBoxBmp =
-                new CMessageBoxBitmapGalaxy( text,
-                                             *gGraphics.getBitmapFromStr(bmp),
+                new CMessageBoxBitmapGalaxy( sprVar, text,
+                                             *gGraphics.getBitmapFromStr(sprVar, bmp),
                                              alignment, animation, closeEv ) ;
 
     pMsgBoxBmp->init();
@@ -142,15 +145,16 @@ void showMsgWithBmp(const std::string &text,
     gEventManager.add( new EventSendDialog( dynamic_cast<CMessageBoxGalaxy*>(pMsgBoxBmp) ) );
 }
 
-void showMsgWithBmp( const std::string &text,
+void showMsgWithBmp( const int sprVar,
+                     const std::string &text,
                      const unsigned int bmpID,
                      const direction_t alignment,
                      const bool animation,
                      CEvent *closeEv)
 {
     CMessageBoxBitmapGalaxy *pMsgBoxBmp =
-                new CMessageBoxBitmapGalaxy( text,
-                                             gGraphics.getBitmapFromId(bmpID),
+                new CMessageBoxBitmapGalaxy( sprVar, text,
+                                             gGraphics.getBitmapFromId(sprVar, bmpID),
                                              alignment, animation, closeEv ) ;
 
     pMsgBoxBmp->init();

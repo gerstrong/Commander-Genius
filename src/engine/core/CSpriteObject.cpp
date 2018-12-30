@@ -8,6 +8,7 @@
 #include "engine/core/spritedefines.h"
 #include "CSpriteObject.h"
 #include <base/GsLogging.h>
+#include <base/GsEventContainer.h>
 #include <base/video/CVideoDriver.h>
 
 #include <base/utils/FindFile.h>
@@ -461,7 +462,7 @@ void CSpriteObject::processFalling()
 	// In order to avoid, that they can't get out, pull them out of there!
 }
 
-void CSpriteObject::getShotByRay(object_t &obj_type)
+void CSpriteObject::getShotByRay(object_t &)
 {
     if( !mInvincible && mHealthPoints>0)
 	{
@@ -503,7 +504,7 @@ void CSpriteObject::kill_intersecting_tile(int mpx, int mpy, CSpriteObject &theO
 
 
 // Just kills the object
-void CSpriteObject::kill()
+void CSpriteObject::kill(const bool, const bool)
 {
 	if ( exists && canbezapped )
 	{

@@ -45,19 +45,7 @@
 #  define __GNUC_PREREQ(maj, min) (0)
 # endif
 
-// include hash_set support
-#	if !defined(STLPORT)
-#		if defined(__GNUC__) &&  __GNUC_PREREQ(4,3) || defined(ANDROID)
-#			include <tr1/unordered_set>
-#			define hash_set std::tr1::unordered_set
-#		else
-#			include <ext/hash_set>
-using __gnu_cxx::hash_set;
-#		endif
-#	else // STLPORT
-#		include <hash_set>
-using std::hash_set;
-#	endif
+#include <unordered_set>
 
 // for getpwduid
 #	include <pwd.h>
@@ -308,7 +296,7 @@ struct strcasecomparer {
 	}
 };
 
-typedef hash_set<std::string, simple_reversestring_hasher, strcasecomparer> exactfilenamecache_t;
+typedef std::unordered_set<std::string, simple_reversestring_hasher, strcasecomparer> exactfilenamecache_t;
 struct ExactFilenameCache {
 	exactfilenamecache_t cache;
 	Mutex mutex;
@@ -500,7 +488,8 @@ void InitBaseSearchPaths() {
 #else // all other systems (Linux, *BSD, OS/2, ...)
 #ifdef ANDROID
 	//AddToFileList(&basesearchpaths, "${HOME}/SaveData");
-	AddToFileList(&basesearchpaths, "/storage/emulated/0/Android/data/net.sourceforge.clonekeenplusplus/files/SaveData");
+	AddToFileList(&basesearchpaths, SDL_AndroidGetInternalStoragePath());
+	AddToFileList(&basesearchpaths, "/storage/emulated/0/Android/data/net.sourceforge.clonekeenplus/files/SaveData");
 #else
 	AddToFileList(&basesearchpaths, "${HOME}/.CommanderGenius");
 #endif
@@ -802,7 +791,7 @@ std::string GetHomeDir()
 #else
 	char* home = getenv("HOME");
 #endif
-	if(home == NULL || home[0] == '\0') {
+    if(home == nullptr || home[0] == '\0') {
 		passwd* userinfo = getpwuid(getuid());
 		if(userinfo)
 			return userinfo->pw_dir;

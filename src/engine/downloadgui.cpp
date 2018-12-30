@@ -2,7 +2,9 @@
 #include <widgets/GsProgressbar.h>
 #include <widgets/GsButton.h>
 #include <base/GsApp.h>
+#include <base/GsEventContainer.h>
 #include <base/utils/FindFile.h>
+#include <base/utils/ThreadPool.h>
 
 #include <sstream>
 
@@ -15,17 +17,16 @@
 // If he has all the games, the button won't be shown.
 void CGameLauncher::verifyGameStore()
 {
-    int progress = 0;
-    bool cancel = false;
-    GameDownloader gameDownloader(progress, cancel);
+    m_DownloadProgress = 0;
+    m_DownloadCancel = false;
 
+    GameDownloader gameDownloader(m_DownloadProgress,
+                                  m_DownloadProgressError,
+                                  m_DownloadCancel);
 
     std::vector< std::string > missingList;
 
-    // Try to download the catalogue file
-    gameDownloader.downloadCatalogue();
-
-    // First try
+    // First try    
     gameDownloader.checkForMissingGames( missingList );
 
     if(!gameDownloader.hasCatalog())
@@ -38,14 +39,14 @@ void CGameLauncher::verifyGameStore()
 
         ss << "You seem not to have a game catalog.\n";
         ss << "The file is called " << "\"" << cataFile  <<  "\" \n";
-        ss << "You might want to download \n";
-        ss << "and copy one into:\n";
+        ss << "I can try to download it or \n";
+        ss << "you copy one into:\n";
         ss << "\"" << searchPath << "\".\n";
-        ss << "\"+ More\" button is disabled...\n";
+        ss << "For now \"+ More\" button is disabled...\n";
 
         std::string msg(ss.str());
 
-        showMessageBox(msg);
+        showMessageBox(msg);                
     }
 
 
@@ -54,14 +55,19 @@ void CGameLauncher::verifyGameStore()
         GsButton *downloadBtn = new GsButton( "+ More", new GMDownloadDlgOpen() );
         mLauncherDialog.addControl( downloadBtn, GsRect<float>(0.125f, 0.865f, 0.25f, 0.07f) );
     }
-    /*else
-    {
-        GsButton *cataLogBtn = new GsButton( "Catalogue", new GMDownloadDlgOpen() );
-        mLauncherDialog.addControl( cataLogBtn, GsRect<float>(0.125f, 0.865f, 0.25f, 0.07f) );
-
-    }*/
 
     mGameCatalogue = gameDownloader.getGameCatalogue();
+
+    // Try to download the catalogue file, in the background
+    {
+        GameDownloader *pCatalogueDownloader =
+                new GameDownloader(m_DownloadProgress,
+                                   m_DownloadProgressError,
+                                   m_DownloadCancel);
+        pCatalogueDownloader->setupDownloadCatalogue(true);
+        threadPool->start(pCatalogueDownloader,
+                          "Loading catalogue file in the background");
+    }
 }
 
 
@@ -74,8 +80,8 @@ void CGameLauncher::pullGame(const int selection)
         return;
 
     // Start downloading the game
-    const auto gameFileName = mGameCatalogue[selection].mLink;
-    const auto gameName = mGameCatalogue[selection].mName;
+    const auto gameFileName = mGameCatalogue[size_t(selection)].mLink;
+    const auto gameName = mGameCatalogue[size_t(selection)].mName;
 
     mDownloading = true;
     mpDloadTitleText->setText("Downloading Game...");
@@ -84,7 +90,8 @@ void CGameLauncher::pullGame(const int selection)
 
     mpDloadProgressCtrl->enableFancyAnimation(true);
 
-    mpGameDownloader = threadPool->start(new GameDownloader(mDownloadProgress,
+    mpGameDownloadThread = threadPool->start(new GameDownloader(mDownloadProgress,
+                                                                mDownloadErrorCode,
                                                             mCancelDownload,
                                                             gameFileName,
                                                             gameName),
@@ -98,7 +105,7 @@ void CGameLauncher::ponderDownloadDialog()
     int sel = mpGSSelList->getSelection();
     if(mLastStoreSelection != sel)
     {        
-        auto &gameEntry = mGameCatalogue[sel];
+        auto &gameEntry = mGameCatalogue[size_t(sel)];
 
         mpDDescriptionText->setText(gameEntry.mDescription);
 
@@ -123,9 +130,8 @@ void CGameLauncher::ponderDownloadDialog()
     }
 
     // When everything is done, The launcher should be restarted, for searching new games.
-
     if( mFinishedDownload &&
-        mpGameDownloader->finished &&
+        mpGameDownloadThread->finished &&
         mpDloadProgressCtrl->finished() )
     {        
         mpGameStoreDialog = nullptr;
@@ -143,27 +149,29 @@ void CGameLauncher::setupDownloadDialog()
     mFinishedDownload = 0;
     mDownloadProgress = 0;
     mDownloading = false;
+    mDownloadErrorCode = 0;
 
     int progress = 0;
     bool cancel = false;
-    GameDownloader gameDownloader(progress, cancel);
+    GameDownloader gameDownloader(progress, mDownloadErrorCode, cancel);
 
     std::vector< std::string > missingList;
     gameDownloader.checkForMissingGames( missingList );
 
     mpGSSelList = new CGUITextSelectionList();
 
-    assert( !missingList.empty() );
-
-    // Create the selection list
-    for( auto &gameName : missingList )
+    if(!missingList.empty())
     {
-        mpGSSelList->addText(gameName);
+        // Create the selection list
+        for( auto &gameName : missingList )
+        {
+            mpGSSelList->addText(gameName);
+        }
+
+        mpGSSelList->setSelection(0);
+        mpGSSelList->setConfirmButtonEvent(new GameStorePullGame());
     }
 
-    mpGSSelList->setSelection(0);
-
-    mpGSSelList->setConfirmButtonEvent(new GameStorePullGame());
     mpGSSelList->setBackButtonEvent(new GMQuit());
 
     // Title
@@ -191,7 +199,8 @@ void CGameLauncher::setupDownloadDialog()
 
     // Progress Bar
     mpDloadProgressCtrl = std::dynamic_pointer_cast<GsProgressBar>(
-            mpGameStoreDialog->addControl(new GsProgressBar(mDownloadProgress),
+            mpGameStoreDialog->addControl(new GsProgressBar(mDownloadProgress,
+                                                            mDownloadErrorCode),
                                   GsRect<float>(0.1f, 0.8f, 0.8f, 0.05f)) );
 
     // Bottom Controls

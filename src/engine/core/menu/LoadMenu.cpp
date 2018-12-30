@@ -11,6 +11,7 @@
 #include <widgets/GsMenuController.h>
 
 #include "LoadMenu.h"
+#include <base/GsEventContainer.h>
 
 #include "fileio/CSaveGameController.h"
 #include "engine/core/CBehaviorEngine.h"

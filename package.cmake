@@ -32,7 +32,6 @@ ENDIF(WIN32)
 
 FILE(GLOB CACHE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/vfsroot/cache/*.png")
 INSTALL(FILES ${CACHE_FILES} DESTINATION ${DOCDIR}/cache)
-INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/vfsroot/gameCatalogue.xml DESTINATION ${DOCDIR})
 
 
 
@@ -66,7 +65,7 @@ IF(CREATE_DEBS)
 		ELSEIF(BUILD_ARCH STREQUAL i386)
 			SET(CPACK_DEBIAN_PACKAGE_ARCHITECTURE i386)
 		ENDIF(BUILD_ARCH STREQUAL amd64)
-                SET(CPACK_DEBIAN_PACKAGE_DEPENDS "libvorbis0a (>= 1.2.3), libvorbisenc2 (>> 1.2.3), libvorbisfile3 (>= 1.2.3), libsdl2-2.0-0 (>= 2.0.0), libgl1-mesa-glx (>= 7.7.1), libsdl2-image-2.0-0 (>= 2.0), libsdl2-mixer-2.0-0 (>= 2.0), libpython3.5 (>= 3.5.2)")
+                SET(CPACK_DEBIAN_PACKAGE_DEPENDS "libsdl2-2.0-0 (>= 2.0.0), libgl1-mesa-glx (>= 7.7.1), libsdl2-image-2.0-0 (>= 2.0), libsdl2-mixer-2.0-0 (>= 2.0), libpython3.5 (>= 3.5.2)")
 		SET(CPACK_DEBIAN_PACKAGE_SECTION "games")
 		SET(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION}-${CPACK_DEBIAN_PACKAGE_ARCHITECTURE}")
 	ENDIF(WIN32)
@@ -92,7 +91,7 @@ IF(CREATE_RPMS)
 		SET(CPACK_RPM_PACKAGE_GROUP "Amusements/Games")
 		SET(CPACK_RPM_PACKAGE_VENDOR "${CPACK_PACKAGE_VENDOR}")
 		SET(CPACK_RPM_PACKAGE_DESCRIPTION "${CPACK_PACKAGE_DESCRIPTION_SUMMARY}\n .\n ${CPACK_PACKAGE_DESCRIPTION}")
-		SET(CPACK_RPM_PACKAGE_REQUIRES "SDL >= 2.0, libvorbis >= 1.3, mesa-libGL >= 7.7")
+                SET(CPACK_RPM_PACKAGE_REQUIRES "SDL >= 2.0, SDL_image >= 2.0, SDL_mixer >= 2.0, mesa-libGL >= 7.7")
 	ENDIF(WIN32)
 ENDIF(CREATE_RPMS)
 

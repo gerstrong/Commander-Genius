@@ -6,7 +6,7 @@
 
 #include <set>
 
-class stInputCommand;
+struct stInputCommand;
 
 class TouchButton
 {
@@ -41,6 +41,12 @@ public:
     }
 
     /**
+     * @brief loadPicture   load the button-picture from a given file
+     * @param picFile       file to load
+     */
+    bool loadPicture(const std::string &picFile);
+
+    /**
      * @brief loadEmdbeddedPicture  Load picture from internal memory
      * @param data
      * @return
@@ -48,25 +54,17 @@ public:
     bool loadEmdbeddedPicture(const unsigned char *data,
                               const unsigned int size);
 
-    /**
-     * @brief render    The actual render function.
-     * @param dark      Should the texture be rendered dark?
-     */
-    void render(const bool dark);
 
 
-
-    stInputCommand* cmd = nullptr;
+    //stInputCommand* cmd = nullptr;
     int immediateIndex = 0;
 
     float x = 0.0f, y = 0.0f, w = 0.0f, h = 0.0f;
-    bool invisible = true;        
+    bool invisible = true;
 
     GsTexture mTexture;
-    GsTexture mTextureDark;
 
-
-#if SDL_VERSION_ATLEAST(2, 0, 0)
+#if SDL_VERSION_ATLEAST(2, 0, 0)        
 
     void clearFingers();
 
@@ -74,23 +72,14 @@ public:
 
     void removeFingerId(const SDL_FingerID fid);
 
-    bool hasFingersPressing() const
+    bool hasFingers() const
     {
-        if(mMouseDown)
-            return true;
-
         return !mFingerSet.empty();
     }
-
 
     std::set<SDL_FingerID> mFingerSet;
 
 #endif
-
-    // Happens when user tried to put the button to a different location
-    bool beingRepositioned = false;
-
-    bool mMouseDown = false;
 };
 
 /**
@@ -146,7 +135,6 @@ public:
     virtual void processConfig() = 0;
 
 
-
     /**
      * @brief renderConfig  Render configuration dialog of the dialog
      */
@@ -196,9 +184,9 @@ protected:
 
     bool mEnabled = true;
 
-    //GsSurface mOverlay;
 
     float mTranslucency = 0.5f;
+
 };
 
 

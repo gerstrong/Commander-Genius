@@ -247,7 +247,7 @@ bool CPlayGameVorticon::saveXMLGameState()
         auto &player = m_Player[i];
         ptree &playerNode = stateNode.add("Player", "");
         playerNode.put("<xmlattr>.id", i);
-        playerNode.put("<xmlattr>.variant", player.getSpriteVariantId());
+        playerNode.put("<xmlattr>.variant", player.getSpriteVariantIdx());
 
         playerNode.put("x", player.getXPosition());
         playerNode.put("y", player.getYPosition());
@@ -267,7 +267,7 @@ bool CPlayGameVorticon::saveXMLGameState()
         // save all the objects states
         auto &spriteObj = mSpriteObjectContainer[i];
         ptree &spriteNode = stateNode.add("SpriteObj", "");
-        spriteNode.put("<xmlattr>.variant", spriteObj->getSpriteVariantId());
+        spriteNode.put("<xmlattr>.variant", spriteObj->getSpriteVariantIdx());
         spriteNode.put("type", spriteObj->m_type);
         spriteNode.put("x", spriteObj->getXPosition());
         spriteNode.put("y", spriteObj->getYPosition());

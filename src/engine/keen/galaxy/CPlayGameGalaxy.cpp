@@ -224,7 +224,7 @@ bool CPlayGameGalaxy::init()
 	else
 	{
 		// manually a level has been loaded
-		m_LevelPlay.loadLevel(m_Level);
+        m_LevelPlay.loadLevel(0, m_Level);
 		m_LevelPlay.setActive(true);
 	}
 
@@ -303,7 +303,7 @@ void CPlayGameGalaxy::looseManagement( const int playerIdx,
     if(allGameOver) // Game over?
     {
         const std::string end_text("GAME OVER!\n");
-        showMsg(end_text, new EventEndGamePlay());
+        showMsg(0, end_text, new EventEndGamePlay());
         return;
     }
     else if(allDead) // not yet!
@@ -386,7 +386,7 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
             {
                 gMusicPlayer.stop();                
                 m_WorldMap.setActive(false);
-                m_LevelPlay.loadLevel(newLevel);
+                m_LevelPlay.loadLevel(ev->mSprVar, newLevel);
                 gSound.playSound( SOUND_ENTER_LEVEL );
                 m_LevelPlay.setActive(true);
             }
@@ -438,7 +438,10 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
             m_WorldMap.loadAndPlayMusic();
         }
 
-        showMsgWithBmp( loading_text, "KEENTHUMBSUPLOADING", LEFT, true);
+        const auto sprVar = mInventoryVec[ev->who].mSpriteVar;
+
+        showMsgWithBmp( sprVar, loading_text, "KEENTHUMBSUPLOADING",
+                        LEFT, true, nullptr);
 
         const EventExitLevel &evCopy = *ev;
 
@@ -448,7 +451,7 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
         {
             gMusicPlayer.stop();
             m_WorldMap.setActive(false);
-            m_LevelPlay.loadLevel(newLevel);
+            m_LevelPlay.loadLevel(ev->who, newLevel);
             m_LevelPlay.setActive(true);
         }
     }
@@ -587,14 +590,14 @@ void CPlayGameGalaxy::ponder(const float deltaT)
             cheat.jump = !cheat.jump;
             std::string jumpstring = "Jump-Cheat has been ";
             jumpstring += ((cheat.jump) ? "enabled" : "disabled");
-            showMsg(jumpstring);
+            showMsg(0, jumpstring);
         }
         else if(gInput.getHoldedKey(KG))
         {
             cheat.god = !cheat.god;
             std::string godstring = "God-Mode has been ";
             godstring += ((cheat.god) ? "enabled" : "disabled");
-            showMsg(godstring);
+            showMsg(0, godstring);
         }
         else if(gInput.getHoldedKey(KI))
         {
@@ -603,7 +606,7 @@ void CPlayGameGalaxy::ponder(const float deltaT)
         else if(gInput.getHoldedKey(KN))
         {
             cheat.noclipping = true;
-            showMsg("No clipping toggle!");
+            showMsg(0, "No clipping toggle!");
         }
         else if(gInput.getHoldedKey(KS))
         {
@@ -613,14 +616,14 @@ void CPlayGameGalaxy::ponder(const float deltaT)
             cheat.items = true;
             cheat.god = true;
             cheat.jump = true;
-            showMsg("Super Cheat!");
+            showMsg(0, "Super Cheat!");
         }
     }
 
 
     if(cheat.items)
     {
-        showMsg("Free items!");
+        showMsg(0, "Free items!");
 
         for( auto &inv : mInventoryVec )
             inv.Item.triggerAllItemsCheat();
@@ -657,7 +660,7 @@ void CPlayGameGalaxy::render()
     const bool msgboxactive = !mMessageBoxes.empty();
 
     // The position of the sandwich menu depends on the configured blit resolution
-    mMenuButtonRect.x = gVideoDriver.getBlitSurface()->w-10;
+    mMenuButtonRect.x = gVideoDriver.getBlitSurface()->w-mMenuButtonRect.w;
 
     auto menuButtonRectWithBorder = mMenuButtonRect;
     menuButtonRectWithBorder.y += gVideoDriver.getVidConfig().mHorizBorders;
@@ -675,6 +678,9 @@ void CPlayGameGalaxy::render()
 
 void CPlayGameGalaxy::processInput()
 {
+
+#ifdef VIRTUALPAD
+#if SDL_VERSION_ATLEAST(2, 0, 0)
         VirtualKeenControl *vkc = dynamic_cast<VirtualKeenControl*>(gInput.mpVirtPad.get());
 
         if(!vkc)
@@ -686,6 +692,8 @@ void CPlayGameGalaxy::processInput()
 
         assert(vkc);
         vkc->mDPad.invisible = false;
+#endif
+#endif
 }
 
 

@@ -23,6 +23,7 @@
 #include <vector>
 #include <memory>
 #include <unordered_map>
+#include <string>
 
 #include <base/Singleton.h>
 #define gGraphics GsGraphics::get()
@@ -40,9 +41,10 @@ public:
     void createEmptySprites(const size_t numVar,
                             const size_t num_sprites);
 
-    void appendSpriteVec(const std::vector<GsSprite> &spriteVec);
+    void appendSpriteVec(const std::vector<GsSprite> &spriteVec);   
+    void appendBitmapVec(const std::vector<GsBitmap> &bmpVec);
 
-	void createEmptyBitmaps(Uint16 num_bmps);
+    void createEmptyBitmaps(const size_t numVar, Uint16 num_bmps);
     void createEmptyMaskedBitmaps(Uint16 num_bmps);
     void createEmptyMisGsBitmaps(Uint16 num_bmps);
     void createEmptyFontmaps(Uint8 num_fonts);
@@ -60,12 +62,23 @@ public:
     std::vector< std::vector<GsSprite> > &spriteVecVec()
     { return mSprite; }
 
+
+    std::vector< std::vector<GsBitmap> > &bmpVecVec()
+    { return mBitmap; }
+
     GsTilemap &getTileMap(size_t tilemap);
     std::vector<GsTilemap> &getTileMaps();
-    GsBitmap &getBitmapFromId(Uint16 slot);
+
+    void setBitmapNameForIdx(const std::string name,
+                             const int idx);
+
+
+    GsBitmap &getBitmapFromId(const int var,
+                              const int slot);
     GsBitmap &getMaskedBitmap(Uint16 slot);
     GsBitmap &getMiscGsBitmap(Uint16 slot);
-    GsBitmap *getBitmapFromStr(const std::string &name) const;
+    GsBitmap *getBitmapFromStr(const size_t sprVar,
+                               const std::string &name) const;
 
     GsSprite *getSprite(const int var, const std::string &name) const;
 	
@@ -91,11 +104,16 @@ private:
 
 	std::vector<GsFont> Font;
     std::vector<GsTilemap> Tilemap;
-    std::vector<GsBitmap> mBitmap;
+
+    std::vector< std::vector<GsBitmap> > mBitmap;
+    std::unordered_map<std::string, int> mBitmapNameToIdx;
+
     std::vector<GsBitmap> maskedBitmap;
     std::vector<GsBitmap> miscGsBitmap;
     std::vector< std::vector<GsSprite> > mSprite;
     
+
+
     std::unordered_map<std::string, GsSprite> mSpecialSpriteMap;
 };
 

@@ -35,7 +35,7 @@ void CAbout::init()
 	// Load the SDL_Bitmap
 	if(m_type == "ID")
 	{
-        mp_bmp = gGraphics.getBitmapFromStr("IDLOGO");
+        mp_bmp = gGraphics.getBitmapFromStr(0, "IDLOGO");
 		
 		// Get the offset where in the data the info is...
 		size_t offset = 0;

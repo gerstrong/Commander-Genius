@@ -63,14 +63,16 @@ m_start_level(start_level)
     gMenuController.clearMenuStack();
     letchooseagain();
 
+#ifdef VIRTUALPAD
     gInput.mpVirtPad.reset(new VirtualKeenControl);
 
-    if( gInput.mpVirtPad->init() )
+    if( !gInput.mpVirtPad->init() )
     {
         const std::string err = "Error loading the Virtual Gamepad!";
 
         gLogging.textOut(err);
     }
+#endif
 
 }
 
@@ -301,7 +303,7 @@ bool CGameLauncher::scanSubDirectories(const std::string& path,
     if(deltaPerMil < 1)
         deltaPerMil = 1;
 
-    mGameScanner.setPermilage(startPermil);
+    mGameScanner.setPermilage(int(startPermil));
 
     for( const auto &subdir : dirs )
 	{
@@ -319,10 +321,10 @@ bool CGameLauncher::scanSubDirectories(const std::string& path,
         }
 
         permil = lastPermil;
-        mGameScanner.setPermilage(permil);
+        mGameScanner.setPermilage(int(permil));
 	}
 
-    mGameScanner.setPermilage(endPermil);
+    mGameScanner.setPermilage(int(endPermil));
 
     return gamesDetected;
 }
@@ -526,12 +528,13 @@ void CGameLauncher::showMessageBox(const std::string &text)
     }
 
 
+    auto *pRetryButton = new GsButton("Retry", new GMSwitchToGameLauncher());
+    mpMsgDialog->addControl(pRetryButton, GsRect<float>(0.2f, 0.85f, 0.2f, 0.05f));
 
     auto *pOkButton = new GsButton("Ok", new CloseBoxEvent());
-    mpMsgDialog->addControl(pOkButton, GsRect<float>(0.4f, 0.85f, 0.2f, 0.05f));
+    mpMsgDialog->addControl(pOkButton, GsRect<float>(0.6f, 0.85f, 0.2f, 0.05f));
     pOkButton->select(true);
     mpMsgDialog->setCurrentControl(pOkButton);
-
 }
 
 
@@ -637,17 +640,19 @@ void CGameLauncher::pumpEvent(const CEvent *evPtr)
     {
         mCancelDownload = true;
         mpDloadCancel->enable(false);
-        mpDloadProgressCtrl->setBad(true);
+        mpDloadProgressCtrl->setUserAbort(true);
     }
     else if( dynamic_cast<const OpenSettingsMenuEvent*>(evPtr) )
     {
         gEventManager.add( new OpenMenuEvent(
                                new SettingsMenu(GsControl::Style::NONE) ) );
-    }    
+    }
+#ifdef VIRTUALPAD
     else if( dynamic_cast<const OpenVGamePadSettingsEvent*>(evPtr) )
     {
         gInput.setInVPadConfigState(true);
     }
+#endif
 
 
 
@@ -656,19 +661,19 @@ void CGameLauncher::pumpEvent(const CEvent *evPtr)
     if( const MouseWheelEvent *mwe = dynamic_cast<const MouseWheelEvent*>(evPtr) )
     {
         // Wrapper for the simple mouse scroll event
-        if(mwe->amount.y > 0.0)
+        if(mwe->amount.y > 0.0f)
         {
             mLauncherDialog.sendEvent(new CommandEvent( IC_UP ));
         }
-        else if(mwe->amount.y < 0.0)
+        else if(mwe->amount.y < 0.0f)
         {
             mLauncherDialog.sendEvent(new CommandEvent( IC_DOWN ));
         }
-        if(mwe->amount.x < 0.0)
+        if(mwe->amount.x < 0.0f)
         {
             mLauncherDialog.sendEvent(new CommandEvent( IC_RIGHT ));
         }
-        else if(mwe->amount.x > 0.0)
+        else if(mwe->amount.x > 0.0f)
         {
             mLauncherDialog.sendEvent(new CommandEvent( IC_LEFT ));
         }
@@ -705,19 +710,22 @@ void CGameLauncher::ponderGameSelDialog(const float deltaT)
 
     // Check if the selection changed. Update the right data panel
     if(mSelection != mpGameSelectionList->getSelection())
-    {
-        mSelection = mpGameSelectionList->getSelection();
-        auto &entry = m_Entries[mSelection];
-        const std::string nameText = "Episode " + itoa(entry.episode);
-        mpEpisodeText->setText(nameText);
-        float fVer = entry.version;
-        fVer /= 100.0f;
-        mpVersionText->setText("Version: " + ftoa(fVer));
+    {                                
+        if(!m_Entries.empty())
+        {
+            mSelection = mpGameSelectionList->getSelection();
+            auto &entry = m_Entries[mSelection];
+            const std::string nameText = "Episode " + itoa(entry.episode);
+            mpEpisodeText->setText(nameText);
+            float fVer = entry.version;
+            fVer /= 100.0f;
+            mpVersionText->setText("Version: " + ftoa(fVer));
 
-        mpDemoText->setText(entry.demo ? "Demo" : "");
+            mpDemoText->setText(entry.demo ? "Demo" : "");
 
-        // Now update the bitmap
-        mCurrentBmp->setBitmapPtr(mPreviewBmpPtrVec[mSelection]);
+            // Now update the bitmap
+            mCurrentBmp->setBitmapPtr(mPreviewBmpPtrVec[mSelection]);
+        }
     }
 
     mLauncherDialog.processLogic();

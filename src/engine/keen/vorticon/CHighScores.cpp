@@ -91,7 +91,7 @@ void CHighScores::init()
 	// Setup the Bitmaps that will be shown
 	stBitmap bmp;
 	
-    bmp.p_Bitmap = gGraphics.getBitmapFromStr("HIGHSCOR");
+    bmp.p_Bitmap = gGraphics.getBitmapFromStr(0, "HIGHSCOR");
 	bmp.rect.x = 160-(bmp.p_Bitmap->width()/2);
 	bmp.rect.y = 6;
 	bmp.rect.w = bmp.p_Bitmap->width();
@@ -100,7 +100,7 @@ void CHighScores::init()
 	
 	if(m_Episode == 2)
 	{
-        bmp.p_Bitmap = gGraphics.getBitmapFromStr("SAVED");
+        bmp.p_Bitmap = gGraphics.getBitmapFromStr(0, "SAVED");
 		bmp.rect.x = 232;
 		bmp.rect.y = 32;
 		bmp.rect.w = bmp.p_Bitmap->width();
@@ -111,7 +111,7 @@ void CHighScores::init()
 	else if(m_Episode == 1)
 	{
 		
-        bmp.p_Bitmap = gGraphics.getBitmapFromStr("PARTS");
+        bmp.p_Bitmap = gGraphics.getBitmapFromStr(0, "PARTS");
 		bmp.rect.x = 232;
 		bmp.rect.y = 32;
 		bmp.rect.w = bmp.p_Bitmap->width();
@@ -138,13 +138,13 @@ void CHighScores::init()
 	}
 	else bmp.rect.y = 32;
 	
-    bmp.p_Bitmap = gGraphics.getBitmapFromStr("NAME");
+    bmp.p_Bitmap = gGraphics.getBitmapFromStr(0, "NAME");
 	bmp.rect.x = (m_Episode == 3) ? 69 : 40;
 	bmp.rect.w = bmp.p_Bitmap->width();
 	bmp.rect.h = bmp.p_Bitmap->height();
 	m_Bitmaps.push_back(bmp);
 	
-    bmp.p_Bitmap = gGraphics.getBitmapFromStr("SCORE");
+    bmp.p_Bitmap = gGraphics.getBitmapFromStr(0, "SCORE");
 	bmp.rect.x = (m_Episode == 3) ? 207 : 154;
 	bmp.rect.w = bmp.p_Bitmap->width();
 	bmp.rect.h = bmp.p_Bitmap->height();

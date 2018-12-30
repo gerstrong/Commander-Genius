@@ -28,8 +28,8 @@ namespace galaxy
 
 
 ComputerWrist::ComputerWrist(const int ep) :
-    mMainMenuBmp(gGraphics.getBitmapFromId(0)), // Zero always seem to be that menu
-    mHandBmp(*gGraphics.getBitmapFromStr("HELPHAND"))
+    mMainMenuBmp(gGraphics.getBitmapFromId(0, 0)), // Zero always seem to be that menu
+    mHandBmp(*gGraphics.getBitmapFromStr(0, "HELPHAND"))
 {
     // Prepare the Menu Bmp
     GsRect<Uint16> mainBmpSize;
@@ -48,19 +48,19 @@ ComputerWrist::ComputerWrist(const int ep) :
     {
 
         GsRect<Uint16> upperBorderBmpSize;
-        mUpperBorderBmp = *gGraphics.getBitmapFromStr("HELP_UPPERBORDER");
+        mUpperBorderBmp = *gGraphics.getBitmapFromStr(0, "HELP_UPPERBORDER");
         upperBorderBmpSize.w = mUpperBorderBmp.width();
         upperBorderBmpSize.h = mUpperBorderBmp.height();
         mUpperBorderBmp.scaleTo(upperBorderBmpSize);
 
         GsRect<Uint16> leftBorderBmpSize;
-        mLeftBorderBmp = *gGraphics.getBitmapFromStr("HELP_LEFTBORDER");
+        mLeftBorderBmp = *gGraphics.getBitmapFromStr(0, "HELP_LEFTBORDER");
         leftBorderBmpSize.w = mLeftBorderBmp.width();
         leftBorderBmpSize.h = mLeftBorderBmp.height();
         mLeftBorderBmp.scaleTo(leftBorderBmpSize);
 
         GsRect<Uint16> rightBorderBmpSize;
-        mRightBorderBmp = *gGraphics.getBitmapFromStr("HELP_RIGHTBORDER");
+        mRightBorderBmp = *gGraphics.getBitmapFromStr(0, "HELP_RIGHTBORDER");
         rightBorderBmpSize.w = mRightBorderBmp.width();
         rightBorderBmpSize.h = mRightBorderBmp.height();
         mRightBorderBmp.scaleTo(rightBorderBmpSize);
@@ -69,13 +69,13 @@ ComputerWrist::ComputerWrist(const int ep) :
 
 
         GsRect<Uint16> bottomBorderBmpSize;
-        mBottomBorderBmp = *gGraphics.getBitmapFromStr("HELP_LOWERBORDER");
+        mBottomBorderBmp = *gGraphics.getBitmapFromStr(0, "HELP_LOWERBORDER");
         bottomBorderBmpSize.w = mBottomBorderBmp.width();
         bottomBorderBmpSize.h = mBottomBorderBmp.height();
         mBottomBorderBmp.scaleTo(bottomBorderBmpSize);
 
         GsRect<Uint16> lowerBorderBmpSize;
-        mLowerBorderControlBmp = *gGraphics.getBitmapFromStr("HELP_LOWERBORDERCONTROL");
+        mLowerBorderControlBmp = *gGraphics.getBitmapFromStr(0, "HELP_LOWERBORDERCONTROL");
         lowerBorderBmpSize.w = mLowerBorderControlBmp.width();
         lowerBorderBmpSize.h = mLowerBorderControlBmp.height();
         mLowerBorderControlBmp.scaleTo(lowerBorderBmpSize);
@@ -397,7 +397,7 @@ void ComputerWrist::parseGraphics()
 
                 chunk = chunk - mBmpIndex;
 
-                GsBitmap &bmp = gGraphics.getBitmapFromId(chunk);
+                GsBitmap &bmp = gGraphics.getBitmapFromId(0, chunk);
                 const auto bmpH = bmp.height();
                 const auto bmpW = bmp.width();
 

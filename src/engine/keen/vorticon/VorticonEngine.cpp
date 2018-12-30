@@ -22,7 +22,6 @@
 #include "CPassiveVort.h"
 #include "CAudioVorticon.h"
 
-#include "menu/CMainMenu.h"
 #include "menu/CSelectionMenu.h"
 
 #include "playgame/CPlayGameVorticon.h"
@@ -155,7 +154,7 @@ bool VorticonEngine::loadResources( const Uint8 flags )
             {
                 // Decode the entire graphics for the game (EGALATCH, EGASPRIT, etc.)
                 // This will also read the Tile-Properties
-                CEGAGraphicsVort graphics;
+                CEGAGraphicsVort graphics(mLoader);
                 graphics.loadData(version, p_exedata);
                 mLoader.setPermilage(400);
                 mLoader.setStyle(PROGRESS_STYLE_BITMAP);
@@ -165,7 +164,7 @@ bool VorticonEngine::loadResources( const Uint8 flags )
             {
                 // load the strings.
                 CMessages Messages(p_exedata, mEp, false, version);
-                Messages.extractGlobalStrings();
+                Messages.extractGlobalStringsUsingExe();
                 mLoader.setPermilage(500);
             }
 

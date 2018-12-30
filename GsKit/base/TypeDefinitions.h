@@ -7,8 +7,8 @@
  *
  */
 
-#ifndef __TYPEDEFINITIONS_H__
-#define __TYPEDEFINITIONS_H__
+#ifndef TYPEDEFINITIONS_H
+#define TYPEDEFINITIONS_H
 
 // Some good basic types
 
@@ -94,4 +94,4 @@ static inline auto MERGERLOFFSET(const unsigned long levelLongWord) ->  unsigned
 };
 
 
-#endif /* __TYPEDEFINITIONS_H__ */
+#endif /* TYPEDEFINITIONS_H */

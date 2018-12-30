@@ -11,9 +11,24 @@ add_subdirectory(refkeen)
 add_subdirectory(unzip)
 
 
+
 if(DOWNLOADER)
     add_definitions(-DDOWNLOADER)
+
+    FIND_PACKAGE(CURL)
+
+    IF(CURL_FOUND)
+      if(WIN32)
+         ADD_DEFINITIONS(-DCURL_STATICLIB)
+      endif()
+        INCLUDE_DIRECTORIES(${CURL_INCLUDE_DIR})
+    ELSE()
+      MESSAGE(FATAL_ERROR "Could not find the CURL library and development files." )
+    ENDIF()
+
 endif()
+
+
 
 
 set(CXXSRC CGameLauncher.cpp
@@ -36,3 +51,4 @@ target_link_libraries(engine
                       cg_dialog
                       unzip)
 
+TARGET_LINK_LIBRARIES(engine ${CURL_LIBRARIES})

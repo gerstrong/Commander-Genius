@@ -1,17 +1,18 @@
 #include "sdl/audio/Audio.h"
 #include "engine/core/spritedefines.h"
+#include <base/GsEventContainer.h>
 
 #include "CGuardRobot.h"
 #include "CRay.h"
 
-const int PREPAREFIRE_TIME = 6;
+//const int PREPAREFIRE_TIME = 6;
 // frames
 const int WALK_LEFT_FRAME = 116;
 const int WALK_RIGHT_FRAME = 112;
 const int LOOK_FRAME = 120;
 
-const int PREPAREFIRE_TIME_FAST = 22;
-const int WAITAFTER_FIRE = 14;
+//const int PREPAREFIRE_TIME_FAST = 22;
+//const int WAITAFTER_FIRE = 14;
 
 const int TRAVELDIST = 100;
 
@@ -20,7 +21,7 @@ const int MIN_TIME_TILL_CAN_FIRE = 31;
 const int MAX_TIME_TILL_CAN_FIRE = 200;
 const int TIME_BETWEEN_SHOTS = 12;
 const int TIME_BEFORE_FIRE_WHEN_SEE = 6;
-const int TIME_BETWEEN_FIRE_CAUSE_LEVEL = 25;
+//const int TIME_BETWEEN_FIRE_CAUSE_LEVEL = 25;
 
 const int WALK_SPEED = 31;
 const unsigned int WALK_ANIM_TIME = 6;
@@ -124,9 +125,9 @@ void CGuardRobot::process()
                     if (onscreen)
                         playSound(SOUND_TANK_FIRE);
                     if (movedir==RIGHT)
-                        newobject = new CRay(mpMap,getXRightPos()+(4<<STC), getYUpPos()+(5<<STC), RIGHT, CENTER, getSpriteVariantId());
+                        newobject = new CRay(mpMap,getXRightPos()+(4<<STC), getYUpPos()+(5<<STC), RIGHT, CENTER, getSpriteVariantIdx());
                     else
-                        newobject = new CRay(mpMap,getXPosition(), getYUpPos()+(5<<STC), LEFT, CENTER, getSpriteVariantId());
+                        newobject = new CRay(mpMap,getXPosition(), getYUpPos()+(5<<STC), LEFT, CENTER, getSpriteVariantIdx());
                     newobject->setOwner(OBJ_GUARDROBOT, m_index);
                     newobject->mSpriteIdx = ENEMYRAYEP2;
 

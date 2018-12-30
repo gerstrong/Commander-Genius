@@ -15,21 +15,14 @@
 #include "graphics/GsGraphics.h"
 #include "graphics/effects/CPixelate.h"
 
-//#include "menu/MainMenu.h"
 #include "sdl/audio/music/CMusic.h"
 
 #include "engine/core/VGamepads/vgamepadsimple.h"
 #include "engine/core/menu/MainMenu.h"
 
-
-
-SDL_Surface *commanderSfc;
-SDL_Surface *keenSfc;
-
-
 // 10 Seconds are for 1200 logic cycles
 const int INTRO_TIME = 1200;
-const int STARWARS_TIME = 1200;
+//const int STARWARS_TIME = 1200;
 const int STARWARS_SCROLL_TIME = 3;
 
 
@@ -40,8 +33,8 @@ namespace galaxy
 CPassiveGalaxy::CPassiveGalaxy() :
 processPonderMode(&CPassiveGalaxy::processIntro),
 processRenderMode(&CPassiveGalaxy::renderIntro),
-mBackgroundTitle(*gGraphics.getBitmapFromStr("TITLE")),
-mBackgroundStarWars(*gGraphics.getBitmapFromStr("STARWARS")),
+mBackgroundTitle(*gGraphics.getBitmapFromStr(0, "TITLE")),
+mBackgroundStarWars(*gGraphics.getBitmapFromStr(0, "STARWARS")),
 mCommanderTextSfc(gGraphics.getMiscGsBitmap(0)),
 mKeenTextSfc(gGraphics.getMiscGsBitmap(1)),
 mSkipSection(false)
@@ -58,7 +51,7 @@ mSkipSection(false)
     else if(episode == 6)
         mCreditsBmpID = gBehaviorEngine.isDemo() ? 18 : 23;
 
-    mCurrentLogoBmp = gGraphics.getBitmapFromId(mCreditsBmpID);
+    mCurrentLogoBmp = gGraphics.getBitmapFromId(0, mCreditsBmpID);
 
     GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
 
@@ -122,15 +115,19 @@ mSkipSection(false)
 bool CPassiveGalaxy::init()
 {
     auto blit = gVideoDriver.getBlitSurface();
-    SDL_FillRect( blit, NULL, SDL_MapRGB(blit->format,0,0,0));
+    SDL_FillRect( blit, nullptr, SDL_MapRGB(blit->format,0,0,0));
     gInput.flushAll();
 
+#ifdef VIRTUALPAD
     gInput.mpVirtPad.reset(new VirtualKeenControl);
     gInput.mpVirtPad->init();
 
+#if SDL_VERSION_ATLEAST(2, 0, 0)
     VirtualKeenControl *vkc = dynamic_cast<VirtualKeenControl*>(gInput.mpVirtPad.get());
     assert(vkc);
     vkc->mDPad.invisible = true;
+#endif
+#endif
 
     const auto &storyText = gBehaviorEngine.getString("STORY_TEXT");
     mStoryTextVector = explode(storyText, "\n");
@@ -218,7 +215,7 @@ void CPassiveGalaxy::processIntro()
             mTerminatorLogoNum++;
             mTerminatorTimer = 0;
 
-            mCurrentLogoBmp = gGraphics.getBitmapFromId(mCreditsBmpID+mTerminatorLogoNum);
+            mCurrentLogoBmp = gGraphics.getBitmapFromId(0, mCreditsBmpID+mTerminatorLogoNum);
             mCurrentLogoBmp.optimizeSurface();
 
             GsRect<Uint16> logoBmpRect;
@@ -259,8 +256,8 @@ void CPassiveGalaxy::processIntro()
 void CPassiveGalaxy::processIntroZoom()
 {
     const int leftEdge = 8;
-    const int topEdge = 8;
-    const int maxWidth = (19*gVideoDriver.getGameResolution().w)/20;
+    const int topEdge = 3;
+    const int maxWidth = (37*gVideoDriver.getGameResolution().w)/40;
 
     if(mZoomSfcPos.x < leftEdge)
     {
@@ -292,7 +289,9 @@ void CPassiveGalaxy::processIntroZoom()
         mZoomSfcPos.y = topEdge;
     }
 
-    if(mZoomSfcZoom.y > mScaleFactor*32)
+    const auto maxYScaleFactor = mScaleFactor*26;
+
+    if(mZoomSfcZoom.y > maxYScaleFactor)
     {
         mZoomSfcZoom.y -= mScaleFactor*4;
     }
@@ -302,13 +301,18 @@ void CPassiveGalaxy::processIntroZoom()
     if( (mZoomSfcPos.x >= leftEdge &&
          mZoomSfcPos.y <= topEdge &&
          mZoomSfcZoom.x <= maxWidth &&
-         mZoomSfcZoom.y <= mScaleFactor*32 ) ||
+         mZoomSfcZoom.y <= maxYScaleFactor ) ||
          mSkipSection)
     {
+        mZoomSfcPos.x = leftEdge;
+        mZoomSfcPos.y = topEdge;
+        mZoomSfcZoom.x = maxWidth;
+        mZoomSfcZoom.y = maxYScaleFactor;
+
         gInput.flushAll();
         processPonderMode = &CPassiveGalaxy::processTitle;
         processRenderMode = &CPassiveGalaxy::renderTitle;
-        mBackgroundTitle = *gGraphics.getBitmapFromStr("TITLE");
+        mBackgroundTitle = *gGraphics.getBitmapFromStr(0, "TITLE");
 
         mIntroTimer = INTRO_TIME;
 
@@ -369,9 +373,13 @@ void CPassiveGalaxy::processTitle()
 		{
             gInput.flushAll();
 
+#ifdef VIRTUALPAD
+#if SDL_VERSION_ATLEAST(2, 0, 0)
             VirtualKeenControl *vkc = dynamic_cast<VirtualKeenControl*>(gInput.mpVirtPad.get());
             assert(vkc);
             vkc->mDPad.invisible = false;
+#endif
+#endif
 
             gEventManager.add(new OpenMainMenuEvent());
             mSkipSection = false;
@@ -386,7 +394,7 @@ void CPassiveGalaxy::processTitle()
 
         processPonderMode = &CPassiveGalaxy::processStarWars;
         processRenderMode = &CPassiveGalaxy::renderStarWars;
-        mBackgroundStarWars = *gGraphics.getBitmapFromStr("STARWARS");
+        mBackgroundStarWars = *gGraphics.getBitmapFromStr(0, "STARWARS");
 
         GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
         mBackgroundStarWars.scaleTo(gameRes);
@@ -467,9 +475,13 @@ void CPassiveGalaxy::processStarWars()
         {
             gInput.flushAll();
 
+#ifdef VIRTUALPAD
+#if SDL_VERSION_ATLEAST(2, 0, 0)
             VirtualKeenControl *vkc = dynamic_cast<VirtualKeenControl*>(gInput.mpVirtPad.get());
             assert(vkc);
             vkc->mDPad.invisible = false;
+#endif
+#endif
 
             gEventManager.add(new OpenMainMenuEvent());
             mSkipSection = false;

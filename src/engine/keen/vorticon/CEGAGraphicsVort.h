@@ -10,6 +10,7 @@
 
 #include "CEGALatch.h"
 #include "CEGASprit.h"
+#include "engine/core/CResourceLoader.h"
 
 namespace vorticon
 {
@@ -17,7 +18,13 @@ namespace vorticon
 class CEGAGraphicsVort
 {
 public:
-	bool loadData( int version, unsigned char *p_exedata );
+
+    CEGAGraphicsVort(CResourceLoaderBackground &loader) :
+        mLoader(loader) {}
+
+
+    bool loadData( int version,
+                   unsigned char *p_exedata);
 	short getNumTiles();
 	int getNumSprites();
 
@@ -52,6 +59,8 @@ private:
 	SDL_Surface *m_BigTileSurface = nullptr;	// May be 32x32. Never used in the original games
 	SDL_Surface *m_TileSurface = nullptr;		// 16x16 Tiles
 	SDL_Surface *m_BitmapsSurface = nullptr;	// Bitmaps of the games, like title screen
+
+    CResourceLoaderBackground &mLoader;
 };
 
 }

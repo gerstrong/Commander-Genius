@@ -26,16 +26,20 @@ class GameDownloader : public Action
 public:
 
     GameDownloader(int &progress,
+                   int &errorCode,
                    bool &cancelDownload) :
         mProgress(progress),
+        mProgressError(errorCode),
         mCancelDownload(cancelDownload){}
 
 
     GameDownloader(int &progress,
+                   int &errorCode,
                    bool &cancelDownload,
                    const std::string &gameFileName,
                    const std::string &gameName) :
         mProgress(progress),
+        mProgressError(errorCode),
         mCancelDownload(cancelDownload),
         mGameFileName(gameFileName),
         mGameName(gameName) {}
@@ -46,7 +50,7 @@ public:
      * @param pt    Node ref
      * @return
      */
-    bool readGamesNode(boost::property_tree::ptree &pt);
+    bool readGamesNode(const boost::property_tree::ptree &pt);
 
 
     /**
@@ -55,7 +59,7 @@ public:
      * @param pt    Node ref
      * @return true if something was read
      */
-    bool readLegacyCatalogue(boost::property_tree::ptree &pt);
+    bool readLegacyCatalogue(const boost::property_tree::ptree &pt);
 
     /**
      * @brief loadCatalogue     Load the game catalogue
@@ -85,7 +89,7 @@ public:
     }
 
 
-    int handle();
+    int handle() override;
 
     /**
      * @brief hasCatalog tells user if a catalog was detected
@@ -97,11 +101,18 @@ public:
     std::string catalogFName() const
     { return mCatalogFName; }
 
+    void setupDownloadCatalogue(const bool value)
+    {
+        mDownloadCatalogue = value;
+    }
+
 private:
     int &mProgress;
+    int &mProgressError;
     bool &mCancelDownload;
 
     bool mCataFound = false;
+    bool mDownloadCatalogue = false;
 
     const std::string mGameFileName;
     const std::string mGameName;

@@ -22,8 +22,8 @@ GsBitmap::GsBitmap(const GsWeakSurface &sfc)
 }
 
 
-GsBitmap::GsBitmap(const GsBitmap &bitmap) :
-mName(bitmap.getName())
+GsBitmap::GsBitmap(const GsBitmap &bitmap)/* :
+mName(bitmap.getName())*/
 {    
     if(bitmap.empty())
     {
@@ -33,8 +33,8 @@ mName(bitmap.getName())
     mBitmapSurface.createCopy(bitmap.mBitmapSurface);
 }
 
-GsBitmap::GsBitmap(GsBitmap &bitmap) :
-mName(bitmap.getName())
+GsBitmap::GsBitmap(GsBitmap &bitmap)/* :
+mName(bitmap.getName())*/
 {
     if(bitmap.empty())
     {
@@ -51,7 +51,7 @@ mName(bitmap.getName())
  */
 GsBitmap & GsBitmap::operator=(const GsBitmap &bmp)
 {
-    mName = bmp.getName();
+    //mName = bmp.getName();
 
     if(!bmp.empty())
     {

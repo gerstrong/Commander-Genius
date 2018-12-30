@@ -260,12 +260,25 @@ Getting the most recent source code:
    later.
 
 
+Requirements:
+
+Build Tools. Works best with GNU Compiler and Clang
+which supports at least C++14.
+
+CMake 3.12 or later. If you use an older version if CMake you will have to
+disable Python Support (cmake -DUSE_PYTHON3=0).
+
+SDL2, SDL2_Image and SDL2_mixer. There is support for SDL1.2
+but it is getting deprecated and will be removed in future.
+
+Boost libraries. I plan to remove that in future, but right now we need it.
+
+Curl and Zlib, so you can fully use the Game store CG provides.
+
 How to compile it under Ubuntu:
  * Install through Synaptic or "sudo apt install" the following packages:
    Common dependencies:
         - build-essential
-        - libvorbis-dev
-        - libogg-dev
         - libgl1-mesa-dev
         - libcurl4-openssl-dev
         - zlib1g-dev
@@ -275,9 +288,9 @@ How to compile it under Ubuntu:
         - libsdl2-image-dev
         - libsdl2-mixer-dev
 
- * Extract my source code into the "CGeniusSrc" directory.
- * cd CGeniusSrc
- * mkdir -p CGeniusBuild
+ * Create an empty build Dir: mkdir -p CGeniusBuild
+ * Extract my source code into the "CGeniusSrc" directory. 
+ * cd CGeniusSrc 
  * cd CGeniusBuild
  * Run "cmake ../CGeniusSrc".
  * Run "make".
@@ -294,7 +307,7 @@ How to compile it under Fedora:
 
    dnf install -y \
      SDL2-devel cmake cmake-data gcc-c++ python3-devel \
-     boost-devel mesa-libGL-devel libogg-devel libvorbis-devel libcurl-devel \
+     boost-devel mesa-libGL-devel libcurl-devel \
      SDL2_image-devel SDL2_mixer-devel
 
  * Extract my source code into the "CGeniusSrc" directory.
@@ -314,7 +327,7 @@ Compiling CG on any Linux/UNIX (other than Ubuntu or Fedora):
  * If you want to compile the game, you need to have all the standard
    development libraries and GNU C Compiler (at least version 4.8) installed
    on your system.
- * You need to install the "vorbis", "ogg", "SDL", "curl", "boost" and
+ * You need to install the "SDL_mixer", "SDL_image", "SDL", "curl", "boost" and
    "Mesa/OpenGL" development libraries to get it to compile successfully.
  * Extract my source code into the "CGeniusSrc" directory .
  * cd CGeniusSrc
@@ -535,6 +548,7 @@ Alexander 'z33ky' Hirsch
 hasufell
 Alexandre Detiste
 Zear
+Oet
 Napalm (More Keen data structure information)
 Malvineous
 Clobber

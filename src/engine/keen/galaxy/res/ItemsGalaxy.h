@@ -16,10 +16,10 @@
 struct stItemGalaxy
 {
 
-	signed char m_lifes;
-	unsigned long  m_points;
-	unsigned long m_lifeAt;
-	int m_drops;
+    signed char m_lifes;
+    unsigned long  m_points;
+    unsigned long m_lifeAt;
+    int m_drops;
     int m_bullets;
 
     struct
@@ -49,6 +49,9 @@ struct stItemGalaxy
         unsigned char hook = 0;
         unsigned char rocketKeycard = 0;
 				
+        // In all galaxy games Keen can use the pogo. Some mods might want to disable this.
+        bool mCanPogo = true;
+
     } m_special;
 
     std::string mLevelName;

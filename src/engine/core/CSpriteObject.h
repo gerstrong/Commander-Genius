@@ -9,8 +9,8 @@
  */
 
 
-#ifndef __CSpriteObject_H_
-#define __CSpriteObject_H_
+#ifndef CSpriteObject_H
+#define CSpriteObject_H
 
 #include <base/GsEvent.h>
 
@@ -265,7 +265,10 @@ class CSpriteObject
     bool hitdetectWithTilePropertyHor(const Uint16 Property, const int lxl, const int lxr, const int ly, const int res);
     bool hitdetectWithTilePropertyVert(const Uint16 Property, const int lx, const int lyu, const int lyd, const int res);
     bool hitdetectWithTileProperty(const int Property, const int x, const int y);
-    virtual void kill();
+
+    virtual void kill(const bool force = false,
+                      const bool noDieProcess = false);
+
     void blink(Uint16 frametime);
     
     // Collision parts
@@ -330,7 +333,7 @@ class CSpriteObject
     virtual void processFalling();
     virtual void getTouchedBy(CSpriteObject&) {}
     virtual bool isNearby(CSpriteObject&) { return true; }
-    virtual void getShotByRay(object_t &obj_type);
+    virtual void getShotByRay(object_t &);
     void kill_intersecting_tile(int mpx, int mpy, CSpriteObject &theObject);
     CMap *getMapPtr() { return mpMap; }
     
@@ -345,13 +348,13 @@ class CSpriteObject
     virtual ~CSpriteObject();
     
     int getSpecialIdx() const
-    {   return mSpecialIdx;    }
+    {   return mPlayerIdx;    }
 
-    int getSpriteVariantId() const
+    int getSpriteVariantIdx() const
     {   return mSprVar;    }
 
     void setSpecialIdx(const int i)
-    {   mSpecialIdx = i;    }
+    {   mPlayerIdx = i;    }
 
     void setSpriteVariantId(const int i)
     {   mSprVar = i;    }
@@ -422,7 +425,7 @@ protected:
 
     int mSprVar = 0; // Sprite variant, which is used by the Spritemap
 
-    int mSpecialIdx = 0; // Special index for different usages. In case of players, that is it's index
+    int mPlayerIdx = 0; // Special index for different usages. In case of players, that is its index
 
 };
 
@@ -439,4 +442,4 @@ struct EventSpawnObject : CEvent {
       pObject( pObject ) {}
 };
 
-#endif // __CSpriteObject_H_
+#endif // CSpriteObject_H_

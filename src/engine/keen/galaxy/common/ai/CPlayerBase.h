@@ -29,40 +29,43 @@
 #include <array>
 
 struct EventEnterLevel : CEvent {
-    uint16_t data;
-    EventEnterLevel(const uint16_t d) : data(d) {}
+  uint16_t data;
+  int mSprVar = 0;
+  EventEnterLevel(const int sprVar,
+                  const uint16_t d) : data(d),
+    mSprVar(sprVar) {}
 };
 
 
 
 
 struct EventExitLevel : CEvent {
-    const uint16_t levelObject;
-    const bool sucess;
-    const bool teleport;
-    const int who;
-    bool playSound = false;
-    EventExitLevel(const uint16_t l, const bool s, const bool t, const bool lWho) :
-        levelObject(l), sucess(s), teleport(t), who(lWho) {}
+  const uint16_t levelObject;
+  const bool sucess;
+  const bool teleport;
+  const int who;
+  bool playSound = false;
+  EventExitLevel(const uint16_t l, const bool s, const bool t, const bool lWho) :
+    levelObject(l), sucess(s), teleport(t), who(lWho) {}
 };
 
 struct EventExitLevelWithFoot : CEvent {
-    const uint16_t levelObject;
-    const int who;
-    EventExitLevelWithFoot(const uint16_t l, const int lWho) : levelObject(l), who(lWho) {}
+  const uint16_t levelObject;
+  const int who;
+  EventExitLevelWithFoot(const uint16_t l, const int lWho) : levelObject(l), who(lWho) {}
 };
 
 
 struct EventDieKeenPlayer  : CEvent
 {
-    const int playerID;
-    const bool gameOver;
-    const int levelObj;
-    const std::string levelName;
+  const int playerID;
+  const bool gameOver;
+  const int levelObj;
+  const std::string levelName;
 
-    EventDieKeenPlayer(const int id, const bool go, const int lo, const std::string &ln) :
-        playerID(id), gameOver(go),
-        levelObj(lo), levelName(ln){}
+  EventDieKeenPlayer(const int id, const bool go, const int lo, const std::string &ln) :
+    playerID(id), gameOver(go),
+    levelObj(lo), levelName(ln){}
 };
 
 
@@ -70,59 +73,59 @@ namespace galaxy
 {
 
 
-enum PLAYER_ACTIONS
-{
-A_KEEN_STAND = 0,
-A_KEEN_ON_PLAT,
-A_KEEN_BORED,
-A_KEEN_QUESTION,
-A_KEEN_MOON,
-A_KEEN_BOOK_OPEN,
-A_KEEN_BOOK_READ,
-A_KEEN_BOOK_CLOSE,
-A_KEEN_LOOKUP,
-A_KEEN_LOOKDOWN,
-A_KEEN_ACTION_1,
-A_KEEN_ACTION_2,
-A_KEEN_ACTION_3,
-A_KEEN_DIE,
-A_KEEN_DIE_ALT,
-A_KEEN_SHOOT,
-A_KEEN_SHOOT_UP,
-A_KEEN_ACTION_4,
-A_KEEN_SLIDE,
-A_KEEN_ENTER_DOOR,
-A_KEEN_POLE,
-A_KEEN_POLE_CLIMB,
-A_KEEN_POLE_SLIDE,
-A_KEEN_POLE_SHOOT,
-A_KEEN_POLE_SHOOTUP,
-A_KEEN_POLE_SHOOTDOWN,
-A_KEEN_RUN,
-A_KEEN_POGO_START,
-A_KEEN_POGO_UP,
-A_KEEN_POGO_HIGH,
-A_KEEN_JUMP,
-A_KEEN_JUMP_DOWN,
-A_KEEN_FALL,
-A_KEEN_JUMP_SHOOT,
-A_KEEN_JUMP_SHOOTUP,
-A_KEEN_JUMP_SHOOTDOWN,
-A_KEEN_HANG,
-A_KEEN_CLIMB,
-A_KEEN_RIDING_ON_FOOT,
-A_KEEN_STUNNED,
-NUM_KEEN_ACTIONS
-};
+  enum PLAYER_ACTIONS
+  {
+    A_KEEN_STAND = 0,
+    A_KEEN_ON_PLAT,
+    A_KEEN_BORED,
+    A_KEEN_QUESTION,
+    A_KEEN_MOON,
+    A_KEEN_BOOK_OPEN,
+    A_KEEN_BOOK_READ,
+    A_KEEN_BOOK_CLOSE,
+    A_KEEN_LOOKUP,
+    A_KEEN_LOOKDOWN,
+    A_KEEN_ACTION_1,
+    A_KEEN_ACTION_2,
+    A_KEEN_ACTION_3,
+    A_KEEN_DIE,
+    A_KEEN_DIE_ALT,
+    A_KEEN_SHOOT,
+    A_KEEN_SHOOT_UP,
+    A_KEEN_ACTION_4,
+    A_KEEN_SLIDE,
+    A_KEEN_ENTER_DOOR,
+    A_KEEN_POLE,
+    A_KEEN_POLE_CLIMB,
+    A_KEEN_POLE_SLIDE,
+    A_KEEN_POLE_SHOOT,
+    A_KEEN_POLE_SHOOTUP,
+    A_KEEN_POLE_SHOOTDOWN,
+    A_KEEN_RUN,
+    A_KEEN_POGO_START,
+    A_KEEN_POGO_UP,
+    A_KEEN_POGO_HIGH,
+    A_KEEN_JUMP,
+    A_KEEN_JUMP_DOWN,
+    A_KEEN_FALL,
+    A_KEEN_JUMP_SHOOT,
+    A_KEEN_JUMP_SHOOTUP,
+    A_KEEN_JUMP_SHOOTDOWN,
+    A_KEEN_HANG,
+    A_KEEN_CLIMB,
+    A_KEEN_RIDING_ON_FOOT,
+    A_KEEN_STUNNED,
+    NUM_KEEN_ACTIONS
+  };
 
 
-class CPlayerBase : public CGalaxySpriteObject
-{
-public:
-	/**
-	 * \description Basic Constructor. An Object always need the pointer to the Map of the level,
-	 * 				Coordinates as also the type of the Object
-	 */
+  class CPlayerBase : public CGalaxySpriteObject
+  {
+  public:
+    /**
+         * \description Basic Constructor. An Object always need the pointer to the Map of the level,
+         * 				Coordinates as also the type of the Object
+         */
     CPlayerBase(CMap *pmap,
                 const Uint16 foeID,
                 Uint32 x,
@@ -134,31 +137,31 @@ public:
 
 
     /**
-	 * Pushes the players by the given object Reference
-	 */
-	void push( CGalaxySpriteObject &theObject );
+     * Pushes the players by the given object Reference
+     */
+    void push( CGalaxySpriteObject &theObject );
 
-	/**
-	 * Overloaded getActionStatus which uses the episodes' map
-	 */
-	bool getActionStatus(int16_t ActionNumber);
+    /**
+     * Overloaded getActionStatus which uses the episodes' map
+     */
+    bool getActionStatus(int16_t ActionNumber) override;
 
-	/**
-	 * returns the Sprite ID from the given action
-	 */
-	int getSpriteIDFromAction(const int16_t ActionNumber);
+    /**
+     * returns the Sprite ID from the given action
+     */
+    int getSpriteIDFromAction(const int16_t ActionNumber);
 
-	/**
-	 * Overloaded setActionForce which uses the action for the player
-	 */
-	void setActionForce(const size_t ActionNumber);
+    /**
+     * Overloaded setActionForce which uses the action for the player
+     */
+    void setActionForce(const size_t ActionNumber) override;
 
-	/**
-	 * \brief The Player will get 1 UP when that function is launched
-	 */
-	void getAnotherLife(const int lc_x, const int lc_y, const bool display, const bool alt);
+    /**
+     * \brief The Player will get 1 UP when that function is launched
+     */
+    void getAnotherLife(const int lc_x, const int lc_y, const bool display, const bool alt);
 
-    virtual void pumpEvent(const CEvent *evPtr);
+    virtual void pumpEvent(const CEvent *evPtr) override;
 
     /**
      * \description Camera of the player gets performed here...
@@ -169,40 +172,40 @@ public:
      * @brief Player can always be visible and active, even if he is not seen.
      * @return
      */
-    bool calcVisibility();
+    bool calcVisibility() override;
 
-	/**
-	 * \description Read the Input of the Player and sets the variables accordingly
-	 */
-	virtual void processInput();
-
-
-	void processLevelMiscFlagsCheck();
-
-	/**
-	 * Produces the walking sound. To produce that sound correctly, it uses a special timer.
-	 * That's the reason we need that aiding function
-	 */
-	void playWalkSound();
+    /**
+         * \description Read the Input of the Player and sets the variables accordingly
+         */
+    virtual void processInput();
 
 
-	/**
-	 * Make keen move with x/y speed move towards a target which is held in the variable "mTarget"
-	 * it only moves towards, this routines is exec'd several times in order achieve a smooth transition.
-	 */
+    void processLevelMiscFlagsCheck();
+
+    /**
+         * Produces the walking sound. To produce that sound correctly, it uses a special timer.
+         * That's the reason we need that aiding function
+         */
+    void playWalkSound();
+
+
+    /**
+         * Make keen move with x/y speed move towards a target which is held in the variable "mTarget"
+         * it only moves towards, this routines is exec'd several times in order achieve a smooth transition.
+         */
     void guideToTarget(const Vector2D<int> &speed);
 
 
-	/**
+    /**
      * Same here but with swimming. If moving set to true player is moving keen actually
-	 */
+         */
     void playSwimSound(const bool moving);
 
     void respawnImportantItem(const int itemId);
 
     bool touchedBottomOfMap();
 
-	void processDead();
+    void processDead();
     virtual void processDying();
 
     void processExiting();
@@ -214,45 +217,45 @@ public:
      * @param noDieProcess  Do not show any dying animation kill him directly
      */
     virtual void kill(const bool force = false,
-                      const bool noDieProcess = false);
+                      const bool noDieProcess = false) override;
 
-	/**
-	 * Happens when usually the Dopefish eats Keen
-	 */
-	void getEaten();
+    /**
+     * Happens when usually the Dopefish eats Keen
+     */
+    void getEaten();
 
-	/**
-	 * Process the cycle when keen is getting eaten
-	 */
-	void processGetEaten();
+    /**
+     * Process the cycle when keen is getting eaten
+     */
+    void processGetEaten();
 
-	CInventory &m_Inventory;
+    CInventory &m_Inventory;
 
-	CCamera m_camera;
-	
+    CCamera m_camera;
+
     bool mDying = false;
     bool mExitTouched = false;
 
-protected:
+  protected:
 
-	bool checkMapBoundaryL(const int x1);
-	bool checkMapBoundaryR(const int x2);
-	bool checkMapBoundaryU(const int y1);
+    bool checkMapBoundaryL(const int x1) override;
+    bool checkMapBoundaryR(const int x2) override;
+    bool checkMapBoundaryU(const int y1) override;
 
     const int mPlayerNum;
     int mPlayerCtrlNum; // For the control input
 
     std::array<Sint16, PA_MAX_ACTIONS> mPlaycontrol;
-	int m_timer;
-	
+    int m_timer;
+
 
 
     void (CPlayerBase::*mp_processState)() = nullptr;
-	unsigned char m_walktimer;
-	std::map< size_t, void (CPlayerBase::*)() > mActionMap;
+    unsigned char m_walktimer;
+    std::map< size_t, void (CPlayerBase::*)() > mActionMap;
 
-	// Assignment for the same player for all the episodes
-	static const int mEpisodeActionNumMap[3][NUM_KEEN_ACTIONS];
+    // Assignment for the same player for all the episodes
+    static const int mEpisodeActionNumMap[3][NUM_KEEN_ACTIONS];
 
     Vector2D<int> mTarget;
 };

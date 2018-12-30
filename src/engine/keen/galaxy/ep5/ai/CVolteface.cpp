@@ -32,8 +32,7 @@ constexpr int MOVE_SPEED = 50;
 
 CVolteface::CVolteface(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
 CStunnable(pmap, foeID, x, y),
-CMoveTarget(m_Pos, xDirection, yDirection),
-mTimer(0)
+CMoveTarget(m_Pos, xDirection, yDirection)
 {
 	mActionMap[A_VOLTFACE_MOVE] = (GASOFctr) &CVolteface::processMoving;
 	mActionMap[A_VOLTFACE_STUNNED] = (GASOFctr) &CVolteface::processStunned;

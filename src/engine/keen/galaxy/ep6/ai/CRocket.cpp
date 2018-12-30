@@ -187,8 +187,9 @@ void CRocket::getTouchedBy(CSpriteObject& theObject)
         else
         {
             // Tell the player he cannot climb yet
-            showMsgWithBmp(gBehaviorEngine.getString("KEEN_KEYCARD_REQUIRED"),
-                           29, RIGHT, false);
+            showMsgWithBmp(player->getSpriteVariantIdx(),
+                           gBehaviorEngine.getString("KEEN_KEYCARD_REQUIRED"),
+                           29, RIGHT, false, nullptr);
             player->moveYDir((1<<CSF)/2);
         }
     }

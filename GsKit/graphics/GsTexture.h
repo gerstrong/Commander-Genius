@@ -28,26 +28,15 @@ public:
      */
     virtual ~GsTexture()
     {
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+
         if(mpTexture)
             unload();
+#endif
     }
 
 
-    void create(SDL_Renderer* renderer,
-                Uint32        format,
-                int           access,
-                int           w,
-                int           h)
-    {
-        if(mpTexture)
-            unload();
-
-        mpTexture = SDL_CreateTexture(renderer,
-                                      format,
-                                      access,
-                                      w, h);
-    }
-
+    #if SDL_VERSION_ATLEAST(2, 0, 0)
     /**
      * @brief loadTexture   Will try to load the texture
      * @param fname filename to load
@@ -90,8 +79,31 @@ public:
      */
     bool loadFromMem(const unsigned char *data,
                      const unsigned int size,
-                     SDL_Renderer *renderer,
-                     const bool negative);
+                     SDL_Renderer *renderer)
+    {
+        // Do we have an old texture? Unload it
+        if(mpTexture)
+            unload();
+
+        SDL_RWops *rw = SDL_RWFromMem((void*)data, size);
+
+        // Load image at specified path
+        SDL_Surface* loadedSurface = IMG_Load_RW(rw, 1);
+        if( loadedSurface )
+        {
+            //Create texture from surface pixels
+            mpTexture = SDL_CreateTextureFromSurface( renderer, loadedSurface );
+            if( mpTexture == nullptr )
+            {
+                //printf( "Unable to create texture from %s! SDL Error: %s\n", path.c_str(), SDL_GetError() );
+            }
+
+            // Get rid of old surface
+            SDL_FreeSurface( loadedSurface );
+        }
+
+        return (mpTexture!=nullptr);
+    }
 
 
      //Set blending
@@ -110,18 +122,6 @@ public:
         // Modulate texture alpha
         SDL_SetTextureAlphaMod( mpTexture, alpha );
     }
-
-    /**
-     * @brief fillRGB   Fills the texture with a certain color
-     * @param renderer
-     * @param r
-     * @param g
-     * @param b
-     */
-    void fillRGB( SDL_Renderer *renderer,
-                  const Uint8 r,
-                  const Uint8 g,
-                  const Uint8 b );
 
     /**
      * @brief operator bool For testing the object itself, if the texture is loaded
@@ -150,9 +150,22 @@ public:
         return mpTexture;
     }
 
+    void fillRGB( SDL_Renderer *renderer,
+                             const Uint8 r,
+                             const Uint8 g,
+                             const Uint8 b );
+
+
+    bool loadFromMem(const unsigned char *data,
+                     const unsigned int size,
+                     SDL_Renderer *renderer,
+                     const bool dark);
+
 private:
 
     SDL_Texture* mpTexture = nullptr;
+
+#endif
 };
 
 #endif

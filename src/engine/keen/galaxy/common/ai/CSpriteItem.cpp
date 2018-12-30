@@ -107,7 +107,26 @@ void CSpriteItem::getTouchedBy(CSpriteObject &theObject)
 			newanimsprite = 231;
 			gSound.playSound( SOUND_GET_CARD );
 		}
-				
+
+        // Enable pogo if some script would like that
+#if USE_PYTHON3
+    auto pModule = gPython.loadModule( "constants", gKeenFiles.gameDir );
+
+    if (pModule != nullptr)
+    {
+            int value = 0;
+            const auto ok = loadIntegerFunc(pModule, "enablePogo", value, m_basesprite);
+            if(ok)
+            {
+                if(value==1)
+                {
+                    Item.m_special.mCanPogo = true;
+                }
+            }
+    }
+
+#endif
+
 
 		// Now add the stuff to the inventory
 		if(ep == 5)

@@ -21,7 +21,7 @@ const int BLEND_SPEED = 10;
 
 CMessageBoxSelection::CMessageBoxSelection( const std::string& Text,
                                             const std::list<TextEventMatchOption> &Options) :
-CMessageBoxGalaxy(Text, nullptr),
+CMessageBoxGalaxy(0, Text, nullptr),
 m_Options(Options),
 m_selection(0),
 blend(0),

@@ -11,8 +11,9 @@
 #include <SDL.h>
 #include <string>
 #include <list>
+#include <vector>
 #include <base/utils/Geometry.h>
-#include <base/GsEvent.h>
+#include <base/GsEventContainer.h>
 #include <base/InputEvents.h>
 
 #include <base/Singleton.h>
@@ -159,6 +160,8 @@ class CInput : public GsSingleton<CInput>
 public:
     CInput();
 
+    virtual ~CInput();
+
     /**
      * @brief transMouseRelCoord    transforms a mouse click from the screen coordinates to the relative coordinates
      * @param Pos       Resulting relative coordinate to handle
@@ -294,6 +297,7 @@ public:
      */
     void pushBackButtonEventExtEng();
 
+#ifdef VIRTUALPAD
     // One virtual input overlay can be active be processed. This is useful for game to ported on mobile devices
     std::unique_ptr<GsVirtualInput> mpVirtPad;
 
@@ -305,8 +309,19 @@ public:
     {
         mVPadConfigState = value;
     }
+#endif
 
 private:
+
+    bool processKeys(int value);
+    void processJoystickAxis();
+    void processJoystickHat();
+    void processJoystickButton(int value);
+
+    void processMouse();
+    void processMouse(SDL_Event& ev);
+    void processMouse(int x, int y, bool down, int index);
+
 
     // Input Events
     CEventContainer m_EventList;
@@ -335,7 +350,9 @@ private:
 	int m_cmdpulse;
 	short m_joydeadzone;
 
+#ifdef VIRTUALPAD
     bool mVPadConfigState = false;
+#endif
 
 	bool immediate_keytable[KEYTABLE_SIZE];
 	bool last_immediate_keytable[KEYTABLE_SIZE];
@@ -343,22 +360,13 @@ private:
 	
 	struct rm_type
 	{
-	    rm_type():
-	    mappingInput(false) {}
 	    // For mapping new Commands
-	    bool mappingInput;
-	    Uint8 mapDevice;
-	    int mapPosition;
+        bool mappingInput = false;
+        Uint8 mapDevice = 0;
+        int mapPosition = 0;
 	} remapper;
 
-    bool processKeys(int value);
-	void processJoystickAxis();
-	void processJoystickHat();
-	void processJoystickButton(int value);
-
-	void processMouse();
-	void processMouse(SDL_Event& ev);
-	void processMouse(int x, int y, bool down, int index);
+    SDL_sem *mpPollSem = nullptr;
 };
 
 

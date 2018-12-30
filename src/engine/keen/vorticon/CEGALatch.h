@@ -39,7 +39,7 @@ public:
 
 	virtual ~CEGALatch();
 
-	char *RawData;
+    char *RawData = nullptr;
 
 private:
   

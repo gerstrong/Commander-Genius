@@ -310,7 +310,6 @@ void GsTilemap::applyGalaxyHiColourMask()
             pix = SDL_MapRGBA( format, r, g, b, alpha );
 
             memcpy(px, &pix, format->BytesPerPixel);
-
         }
     }
 

@@ -26,18 +26,11 @@ void stItemGalaxy::reset()
 
     const int ep = gBehaviorEngine.getEpisode();
 
-    if(ep == 4)
-    {
-        m_special.elders = 0;
-        m_special.swimsuit = 0;
-    }
-    else if(ep == 6)
-    {
-        // k6demo starts with possesion of the hook.
-        m_special.hook = gBehaviorEngine.isDemo() ? 1 : 0;
-        m_special.sandwich = 0;
-        m_special.rocketKeycard = 0;
-    }
+    m_special.elders = 0;
+    m_special.swimsuit = 0;
+    m_special.hook = gBehaviorEngine.isDemo() ? 1 : 0;
+    m_special.sandwich = 0;
+    m_special.rocketKeycard = 0;
 
     fuse_levels_completed = 0;
 }

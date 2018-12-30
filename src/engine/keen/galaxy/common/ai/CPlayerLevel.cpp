@@ -26,19 +26,19 @@
 namespace galaxy {
 
 
-const int MAX_JUMPHEIGHT = 10;
-const int MIN_JUMPHEIGHT = 5;
+//const int MAX_JUMPHEIGHT = 10;
+//const int MIN_JUMPHEIGHT = 5;
 
-const int MAX_POGOHEIGHT = 20;
-const int MIN_POGOHEIGHT = 5;
-const int POGO_SLOWDOWN = 4;
+//const int MAX_POGOHEIGHT = 20;
+//const int MIN_POGOHEIGHT = 5;
+//const int POGO_SLOWDOWN = 4;
 
-const int POGO_START_INERTIA = -125; // 48 In K5 Disassemble
-const int POGO_START_INERTIA_VERT = -100;
-const int POGO_START_INERTIA_MAX_VERT = -168;
-const int POGO_START_INERTIA_IMPOSSIBLE_VERT = -180;
-const int POGO_INERTIA_HOR_MAX = 64;
-const int POGO_INERTIA_HOR_REACTION = 2;
+constexpr int POGO_START_INERTIA = -125; // 48 In K5 Disassemble
+//const int POGO_START_INERTIA_VERT = -100;
+//const int POGO_START_INERTIA_MAX_VERT = -168;
+constexpr int POGO_START_INERTIA_IMPOSSIBLE_VERT = -180;
+//const int POGO_INERTIA_HOR_MAX = 64;
+//const int POGO_INERTIA_HOR_REACTION = 2;
 
 const int FIRE_RECHARGE_TIME = 5;
 
@@ -273,27 +273,30 @@ void CPlayerLevel::processRunning()
 		return;
 	}
 
-    if (mActionState.pogoIsPressed && !mActionState.pogoWasPressed)
-	{
-        mActionState.pogoWasPressed = true;
-
-        // If you pressed run, perform a long jump
-        if(mPlaycontrol[PA_RUN])
+    if(m_Inventory.Item.m_special.mCanPogo)
+    {
+        if (mActionState.pogoIsPressed && !mActionState.pogoWasPressed)
         {
-            xinertia = xDirection * 32;
-        }
-        else
-        {
-            xinertia = xDirection * 16;
-        }
+            mActionState.pogoWasPressed = true;
 
-        yinertia = evalVertPogoInertia();
-//		nextX = 0;
-        mActionState.jumpTimer = 24;
-		playSound( SOUND_KEEN_POGO );
-		setAction(A_KEEN_POGO_START);
-		return;
-	}
+            // If you pressed run, perform a long jump
+            if(mPlaycontrol[PA_RUN])
+            {
+                xinertia = xDirection * 32;
+            }
+            else
+            {
+                xinertia = xDirection * 16;
+            }
+
+            yinertia = evalVertPogoInertia();
+            //		nextX = 0;
+            mActionState.jumpTimer = 24;
+            playSound( SOUND_KEEN_POGO );
+            setAction(A_KEEN_POGO_START);
+            return;
+        }
+    }
 
 
 	if (verifyForFalling())
@@ -382,17 +385,20 @@ void CPlayerLevel::handleInputOnGround()
 		return;
 	}
 
-    if( mActionState.pogoIsPressed && !mActionState.pogoWasPressed)
-	{
-        mActionState.pogoWasPressed = true;
-		xinertia = 0;        
-        yinertia = evalVertPogoInertia();
-		setAction(A_KEEN_POGO_START);
-		playSound( SOUND_KEEN_POGO );
-		nextY = 0;
-        mActionState.jumpTimer = 24;
-		return;
-	}
+    if(m_Inventory.Item.m_special.mCanPogo)
+    {
+        if( mActionState.pogoIsPressed && !mActionState.pogoWasPressed)
+        {
+            mActionState.pogoWasPressed = true;
+            xinertia = 0;
+            yinertia = evalVertPogoInertia();
+            setAction(A_KEEN_POGO_START);
+            playSound( SOUND_KEEN_POGO );
+            nextY = 0;
+            mActionState.jumpTimer = 24;
+            return;
+        }
+    }
 
 	// He could duck or use the pole
 	if( py > 0 )
@@ -1056,18 +1062,21 @@ void CPlayerLevel::processPogoCommon()
 
 
 	// Houston, we've landed!
-	if(blockedd)
-	{
-		//yinertia = 0; // Not sure if that's correct
-        if (mActionState.jumpTimer == 0)
-		{
-            yinertia = evalVertPogoInertia();
-			playSound( SOUND_KEEN_POGO );
-            mActionState.jumpTimer = 24;
-			setAction(A_KEEN_POGO_UP);
-		}
-	}
-	
+    if(m_Inventory.Item.m_special.mCanPogo)
+    {
+        if(blockedd)
+        {
+            //yinertia = 0; // Not sure if that's correct
+            if (mActionState.jumpTimer == 0)
+            {
+                yinertia = evalVertPogoInertia();
+                playSound( SOUND_KEEN_POGO );
+                mActionState.jumpTimer = 24;
+                setAction(A_KEEN_POGO_UP);
+            }
+        }
+    }
+
 	// Let's see if Keen breaks the fuse
     if(mpMap->mFuseInLevel)
 	{
@@ -1387,13 +1396,16 @@ void CPlayerLevel::processJumping()
 
 	moveXDir(xinertia);
 
-    if (mActionState.pogoIsPressed && !mActionState.pogoWasPressed)
-	{
-        mActionState.pogoWasPressed = true;
-		setAction(A_KEEN_POGO_UP);
-        mActionState.jumpTimer = 0;
-		return;
-	}
+    if(m_Inventory.Item.m_special.mCanPogo)
+    {
+        if (mActionState.pogoIsPressed && !mActionState.pogoWasPressed)
+        {
+            mActionState.pogoWasPressed = true;
+            setAction(A_KEEN_POGO_UP);
+            mActionState.jumpTimer = 0;
+            return;
+        }
+    }
 
     if (mPlaycontrol[PA_Y] < 0)
 	{
@@ -1835,7 +1847,7 @@ void CPlayerLevel::processEnterDoor()
         gEffectController.setupEffect(new CDimDark(8));
 
         auto evExit = new EventExitLevel(mpMap->getLevel(), true,
-                                         mustTeleportOnMap, mSpecialIdx);
+                                         mustTeleportOnMap, mPlayerIdx);
         evExit->playSound = true;
         gEventManager.add( evExit );
 				
@@ -1851,7 +1863,7 @@ void CPlayerLevel::processEnterDoor()
         gEffectController.setupEffect(new CDimDark(8));
 		gMusicPlayer.stop();
 
-        auto evExit = new EventExitLevel(mpMap->getLevel(), true, false, mSpecialIdx);
+        auto evExit = new EventExitLevel(mpMap->getLevel(), true, false, mPlayerIdx);
         evExit->playSound = true;
         gEventManager.add( evExit );
 
@@ -2543,7 +2555,7 @@ void CPlayerLevel::verifyFalling()
 // Falling code
 void CPlayerLevel::processFalling()
 {
-       	// Check Keen could hang on a cliff and do so if possible
+    // Check Keen could hang on a cliff and do so if possible
 	if(checkandtriggerforCliffHanging())
 		return;
 
@@ -2578,19 +2590,23 @@ void CPlayerLevel::processFalling()
 		return;
 	}
 
-	/// While falling Keen could switch to pogo again anytime
-	// but first the player must release the pogo button
-    if( !mPlaycontrol[PA_POGO] )
-		m_pogotoggle = false;
+    if(m_Inventory.Item.m_special.mCanPogo)
+    {
 
-	// Now we can check if player wants to use it again
-    if( !m_pogotoggle && mPlaycontrol[PA_POGO] )
-	{
-		m_jumpheight = 0;
-		yinertia = 0;
-		setAction(A_KEEN_POGO_START);
-		m_pogotoggle = true;
-	}
+        /// While falling Keen could switch to pogo again anytime
+        // but first the player must release the pogo button
+        if( !mPlaycontrol[PA_POGO] )
+            m_pogotoggle = false;
+
+        // Now we can check if player wants to use it again
+        if( !m_pogotoggle && mPlaycontrol[PA_POGO] )
+        {
+            m_jumpheight = 0;
+            yinertia = 0;
+            setAction(A_KEEN_POGO_START);
+            m_pogotoggle = true;
+        }
+    }
 
 	// Check if keen should stick to the pole
     if( mPlaycontrol[PA_Y] < 0 )
@@ -2748,12 +2764,13 @@ void CPlayerLevel::process()
 
         gEffectController.setupEffect(new CDimDark(8));
 
-        auto evExit = new EventExitLevel(mpMap->getLevel(), true, false, mSpecialIdx);
+        auto evExit = new EventExitLevel(mpMap->getLevel(), true, false, mPlayerIdx);
         evExit->playSound = true;
 
-        msgs.push_back( new CMessageBoxBitmapGalaxy(
+
+        msgs.push_back( new CMessageBoxBitmapGalaxy( mSprVar,
                             fuse_msg,
-                            *gGraphics.getBitmapFromStr("KEENTHUMBSUP"),
+                            *gGraphics.getBitmapFromStr(mSprVar, "KEENTHUMBSUP"),
                             LEFT,
                             false,
                             evExit) );

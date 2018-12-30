@@ -1,9 +1,13 @@
 # CMake file for development of Commander Genius (taken from OLX)
 # This CMake file is used under Linux normally. 
 
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.7)
+
+Project(GsKit)
 
 OPTION(USE_SDL2 "SDL2 support" Yes)
+option(USE_PYTHON3 "Use Python3 scripts" yes)
+
 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -76,14 +80,21 @@ endif(USE_SDL2)
 # Use python3 for AI scripting and more!
 IF(USE_PYTHON3)
     # Look for Python (Version 3.0 or later is required)
-    FIND_PACKAGE(PythonLibs)
-    ADD_DEFINITIONS(-DUSE_PYTHON3=1)
-    INCLUDE_DIRECTORIES(${PYTHON_INCLUDE_DIRS})
-    LINK_LIBRARIES(${PYTHON_LIBRARIES})
+    FIND_PACKAGE(Python3 COMPONENTS Interpreter Development)
+    if(Python3_FOUND)
+        ADD_DEFINITIONS(-DUSE_PYTHON3=1)
+        INCLUDE_DIRECTORIES(${Python3_INCLUDE_DIRS})
+        LINK_LIBRARIES(${Python3_LIBRARIES})
+        message(STATUS "Python3_LIBRARIES = ${Python3_LIBRARIES}")
+        message(STATUS "Python3_INCLUDE_DIRS = ${Python3_INCLUDE_DIRS}")
+    else()
+        message(FATAL_ERROR "Python3 not found!")
+    endif()
 ENDIF()
 
 
-Project(GsKit)
+
+
 
 # From this point files are globbed for compilation and project setup
 file(GLOB_RECURSE ALL_SRCS_GSKIT_BASE *.c* *.h*)
@@ -106,7 +117,8 @@ endif()
 
 IF(OPENGL)
     # OpenGL Parsing
-    find_package(OpenGL REQUIRED)
+    set(OpenGL_GL_PREFERENCE GLVND)
+    find_package(OpenGL REQUIRED)    
 
     ADD_DEFINITIONS(-DGL)
     ADD_DEFINITIONS(-DUSE_OPENGL)

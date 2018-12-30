@@ -24,7 +24,7 @@ public:
      * @param level level number
      * @return true opon success, otherwise false
      */
-    bool loadLevel(const Uint16 level);
+    bool loadLevel(const int sprVar, const Uint16 level);
 
     /**
      * @brief reloadLevel load the opened level again

@@ -61,8 +61,10 @@ GameMenu(GsRect<float>(0.15f, 0.20f, 0.65f, 0.55f), style )
 	
 #endif
 
+#ifdef VIRTUALPAD
     mpVPadSwitch  = new Switch( "VirtPad", style );
     mpMenuDialog->addControl( mpVPadSwitch, style );
+#endif
 
     mpBorderColorSwitch = new Switch( "Border Color", style );
     mpMenuDialog->addControl( mpBorderColorSwitch );
@@ -91,7 +93,9 @@ void CVideoSettings::refresh()
     mpShowCursorSwitch->enable( mUsersConf.mShowCursor );
     mpTiltScreenSwitch->enable( mUsersConf.mTiltedScreen );
 
+#ifdef VIRTUALPAD
     mpVPadSwitch->enable( mUsersConf.mVPad );
+#endif
 
     // TODO: find a way to indicate a color
     mpBorderColorSwitch->enable( mUsersConf.mBorderColorsEnabled );
@@ -126,7 +130,9 @@ void CVideoSettings::release()
         gTimer.setFPS( 0.0 );
     }
 
+#ifdef VIRTUALPAD
     mUsersConf.mVPad = mpVPadSwitch->isEnabled();
+#endif
 
 
     mUsersConf.mHorizBorders = mpHorizBordersSelection->getSelection();
@@ -135,6 +141,7 @@ void CVideoSettings::release()
 	
 #if !defined(EMBEDDED)	
 
+#ifdef VIRTUALPAD
     mUsersConf.mVPad = mpVPadSwitch->isEnabled();
 
     // Disable OpenGL when using Virtual GL
@@ -142,7 +149,7 @@ void CVideoSettings::release()
     {
         mUsersConf.mOpengl = false;
     }
-
+#endif
 
     const std::string GameResStr = mpGameResSelection->getSelection();
     sscanf( GameResStr.c_str(), "%hux%hux", &mUsersConf.mGameRect.w, &mUsersConf.mGameRect.h );

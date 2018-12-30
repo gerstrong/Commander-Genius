@@ -63,7 +63,7 @@ private:
     std::vector<bool> mGameOver;
 
     // Menu-Button
-    SDL_Rect mMenuButtonRect = {310, 0, 10, 10};
+    SDL_Rect mMenuButtonRect = {0, 0, 24, 16};
 };
 
 }

@@ -1,5 +1,5 @@
-#ifndef __VORTICONBUTTON_H__
-#define __VORTICONBUTTON_H__
+#ifndef VORTICONBUTTON_H
+#define VORTICONBUTTON_H
 
 #include <widgets/GsButton.h>
 
@@ -16,7 +16,7 @@ public:
 
 private:
 
-    void setupButtonSurface();
+    void setupButtonSurface(const std::string &);
 
     void drawVorticonStyle(SDL_Rect& lRect);
 
@@ -24,4 +24,4 @@ private:
 
 }
 
-#endif /* __VORTICONBUTTON_H__ */
+#endif /* VORTICONBUTTON_H */

@@ -10,7 +10,7 @@ class VirtualKeenControl : public GsVirtualInput
 {
 public:
 
-    virtual ~VirtualKeenControl();
+    virtual ~VirtualKeenControl() override;
 
     // OK => Only show Ok Button
     // WMAP => Shows Enter Button for the world map and another one for the item box and one for the main menu
@@ -36,12 +36,6 @@ public:
      */
     void processConfig() override;
 
-
-    /**
-     * @brief processConfigTouchbuttons    In case the close config button was tapped
-     * @param Pos
-     */
-    void processConfigTouchbuttons(const Vector2D<float> &Pos, const bool down);
 
     /**
      * @brief renderConfig  Render configuration dialog of the dialog
@@ -100,8 +94,13 @@ public:
      */
     bool isInside(const Vector2D<float> &Pos) const override
     {
-        return mPadConfigBackground.isInside(Pos.x, Pos.y);
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+        return mPadBackground.isInside(Pos.x, Pos.y);
+#else
+        return false;
+#endif
     }
+
 
 
     /**
@@ -117,8 +116,7 @@ public:
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 
-    TouchButton mPadConfigBackground;
-    TouchButton mCloseConfigButton;
+    TouchButton mPadBackground;
     TouchButton mDPad;
     TouchButton mConfirmButton;
     TouchButton mStartButton;
@@ -129,13 +127,10 @@ public:
     TouchButton mPogoButton;
     TouchButton mStatusButton;        
 
+#if SDL_VERSION_ATLEAST(2, 0, 0)
     std::set< SDL_FingerID > mFingerSet;
 
-    TouchButton *mpCurrentButton4Config = nullptr;
-
 #endif    
-
-    bool mConfigOpened = false;    
 
 };
 

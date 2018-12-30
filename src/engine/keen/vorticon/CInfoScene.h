@@ -11,12 +11,14 @@
 #define CINFOSCENE_H_
 
 #include <base/GsEvent.h>
-
+#include <memory>
 
 class CInfoScene
 {
 public:
 	CInfoScene();
+
+    virtual ~CInfoScene();
 
 	virtual void init()
 	{ m_destroy_me = false; }
@@ -25,12 +27,10 @@ public:
     virtual void render() = 0;
     virtual void teardown() = 0;
 
-	virtual ~CInfoScene() { }
-
 	bool destroyed() { return m_destroy_me; }
 
 protected:
-	bool m_destroy_me;
+    bool m_destroy_me = false;
 };
 
 

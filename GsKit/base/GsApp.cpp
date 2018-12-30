@@ -251,15 +251,14 @@ void GsApp::runMainCycle()
         curr = timerTicks();
 
         if(gTimer.resetLogicSignal())
-            start = curr;
-
+            start = curr;        
 
         if(vsyncEnabled)
         {
             start = timerTicks();
 
             // Game cycle
-            {
+            {                            
                 // Poll Inputs
                 gInput.pollEvents();
 

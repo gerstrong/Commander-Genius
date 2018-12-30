@@ -1,3 +1,30 @@
+v2.3.0:
+-------
+- Improved loading of special sprites
+- Bug fixes when more players are loaded
+- Portrait bitmaps loading finally working
+
+v2.2.9:
+-------
+- Added a Macro for completly building without the virtual pad
+- Cleanups by removing entire files
+
+v2.2.8:
+-------
+- Compilation fixes
+- Adjustments for Android SDL2 Port
+
+v2.2.7:
+-------
+- Optimized Catalog Downloader. Now it downloads in the background
+- Much improved Downloader
+- Retry option added, when downloading catalogue fails or is not yet finished
+
+v2.2.6:
+-------
+- Bug fixes
+- Code cleanups
+
 v2.2.5:
 -------
 - Audio Setting fixes

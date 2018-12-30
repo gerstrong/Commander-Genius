@@ -31,7 +31,9 @@ CPassive::CPassive()
 CPassive::~CPassive()
 {
 
+#ifdef VIRTUALPAD
     gInput.mpVirtPad = nullptr;
+#endif
 
 }
 

@@ -131,14 +131,16 @@ void CCouncilMember::performJanitorMode()
 
     std::vector<CMessageBoxGalaxy*> msgs;
 
-    msgs.push_back( new CMessageBoxBitmapGalaxy(elder_text[0],
-                    gGraphics.getBitmapFromId(104), LEFT, false, nullptr) );
-    msgs.push_back( new CMessageBoxBitmapGalaxy(elder_text[1],
-                    *gGraphics.getBitmapFromStr("KEENTALKING"), RIGHT, false, nullptr) );
-    msgs.push_back( new CMessageBoxBitmapGalaxy(elder_text[2],
-                    gGraphics.getBitmapFromId(104), LEFT, false, nullptr) );
-    msgs.push_back( new CMessageBoxBitmapGalaxy(elder_text[3],
-                    *gGraphics.getBitmapFromStr("KEENTALKING"), RIGHT, false, nullptr) );
+    int sprVar = 0;
+
+    msgs.push_back( new CMessageBoxBitmapGalaxy(sprVar, elder_text[0],
+                    gGraphics.getBitmapFromId(sprVar, 104), LEFT, false, nullptr) );
+    msgs.push_back( new CMessageBoxBitmapGalaxy(sprVar, elder_text[1],
+                    *gGraphics.getBitmapFromStr(sprVar, "KEENTALKING"), RIGHT, false, nullptr) );
+    msgs.push_back( new CMessageBoxBitmapGalaxy(sprVar, elder_text[2],
+                    gGraphics.getBitmapFromId(sprVar, 104), LEFT, false, nullptr) );
+    msgs.push_back( new CMessageBoxBitmapGalaxy(sprVar, elder_text[3],
+                    *gGraphics.getBitmapFromStr(sprVar, "KEENTALKING"), RIGHT, false, nullptr) );
 
     showMsgVec( msgs );
 
@@ -205,20 +207,22 @@ void CCouncilMember::getTouchedBy(CSpriteObject &theObject)
 
         std::vector<CMessageBoxGalaxy*> msgs;
 
-        msgs.push_back( new CMessageBoxBitmapGalaxy(elder_text[0],
-                        gGraphics.getBitmapFromId(104), LEFT, false, nullptr) );
+        const int sprVar = player->getSpriteVariantIdx();
+
+        msgs.push_back( new CMessageBoxBitmapGalaxy(sprVar, elder_text[0],
+                        gGraphics.getBitmapFromId(sprVar, 104), LEFT, false, nullptr) );
 
 		rescuedelders++;
 		
 		if(rescuedelders >= NumberToRescue) // In this case the game ends.
 		{
-            msgs.push_back( new CMessageBoxBitmapGalaxy(elder_text[1],
-                                    *gGraphics.getBitmapFromStr("KEENTHUMBSUP"),
+            msgs.push_back( new CMessageBoxBitmapGalaxy(sprVar, elder_text[1],
+                                    *gGraphics.getBitmapFromStr(sprVar, "KEENTHUMBSUP"),
                                     RIGHT, false, nullptr) );
 
 
-            msgs.push_back( new CMessageBoxBitmapGalaxy(gBehaviorEngine.getString(answermap[8]),
-                            *gGraphics.getBitmapFromStr("KEENTHUMBSUP"),
+            msgs.push_back( new CMessageBoxBitmapGalaxy(sprVar, gBehaviorEngine.getString(answermap[8]),
+                            *gGraphics.getBitmapFromStr(sprVar, "KEENTHUMBSUP"),
                             RIGHT,false, nullptr) );
 
             gEventManager.add(new OpenComputerWrist(4));
@@ -232,8 +236,8 @@ void CCouncilMember::getTouchedBy(CSpriteObject &theObject)
             evExit->playSound = true;
 
             msgs.push_back( new CMessageBoxBitmapGalaxy(
-                                elder_text[1],
-                                *gGraphics.getBitmapFromStr("KEENTHUMBSUP"),
+                                sprVar, elder_text[1],
+                                *gGraphics.getBitmapFromStr(sprVar, "KEENTHUMBSUP"),
                                 RIGHT,
                                 false,
                                 evExit) );
