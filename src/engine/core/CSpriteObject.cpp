@@ -166,6 +166,8 @@ bool CSpriteObject::loadPythonScripts(const std::string &scriptBaseName)
 
         loadAiGetterBool(pModule, "isStunnableWithPogo", mPogoStunnable);
 
+        loadAiGetterBool(pModule, "isStunnableWithJump", mJumpStunnable);
+
         loadAiGetterBool(pModule, "mayShoot", mMayShoot);
 
         int health = mHealthPoints;

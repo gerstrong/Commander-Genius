@@ -412,6 +412,30 @@ void CPlayerBase::processLevelMiscFlagsCheck()
 	  gSound.playSound( SOUND_GET_DROP );
 	}
 
+#if USE_PYTHON3
+        auto pModule = gPython.loadModule( "constants", gKeenFiles.gameDir);
+        int value = 0;
+
+        if (pModule != nullptr)
+        {
+            for( Uint32 i=21 ; i<=28 ; i++ )
+            {
+                if(hitdetectWithTilePropertyRect(i, l_x, l_y, l_w, l_h, 2<<STC))
+                {
+                    loadIntegerFunc(pModule, "defineSlipperyTile",
+                                    value, int(i));
+
+                    if(value>0)
+                    {
+                        xinertia = xDirection * 16;
+                        moveXDir(xinertia*5);
+                        return;
+                    }
+                }
+            }
+        }
+#endif
+
 	/// Tile Items (Sprite-Items are handled in the CSpriteItem Class)
 	// All the collectable items go from 21 to 28
 	for( Uint32 i=21 ; i<=28 ; i++ )

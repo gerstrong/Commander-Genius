@@ -25,7 +25,8 @@ public:
 	 * Action functions
 	 */
 	void processWalking();	
-	void processSitting();	
+	void processSitting();	    
+    void processStunned() override;
 	
 
 	int checkSolidD( int x1, int x2, int y2, const bool push_mode );
@@ -38,7 +39,7 @@ public:
 	void getTouchedBy(CSpriteObject &theObject);
 	
 private:
-	int mTimer;
+    int mTimer = 0;
 };
 
 }

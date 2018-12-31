@@ -408,6 +408,7 @@ class CSpriteObject
     bool mRecoverFromStun = false; /** If foe get shot they might be able to recover at later time */
     bool mNeverStop = false;        /** This will make foe continue walking and never change actions (Keen 9 - Cybloog) */
     bool mPogoStunnable = false;        /** This will make foe continue walking and never change actions (Keen 9 - Cybloog) */
+    bool mJumpStunnable = false;
     bool mMayShoot = false;         /** If enemy if allowed to shoot. Not all of them are able to do that.*/
     
     GameSound mWalkSound;

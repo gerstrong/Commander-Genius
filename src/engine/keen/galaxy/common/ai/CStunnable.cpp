@@ -61,7 +61,7 @@ void CStunnable::processGettingStunned()
     {      
       yinertia = -30; // It gets a small impulse
       
-      mp_processState = (GASOFctr) &CStunnable::processStunned;
+      mp_processState = static_cast<GASOFctr>(&CStunnable::processStunned);
       blockedd = false;
       
       moveUp(8<<STC);
@@ -81,60 +81,60 @@ void CStunnable::draw()
   CGalaxySpriteObject::draw();
   
   if(mIsDead && blockedd && yinertia == 0)
-  {                
-    if(starTimer > 0)
-    {
-      starTimer--;
-    }
-    else
-    {            
-      const unsigned char anim = m_animation_timer % STARRING_ANIMATION_TIME;
-      
-      if(anim == 0)
+  {
+      if(starTimer > 0)
       {
-	starSprite++;
-	
-	if(starSprite > starSpriteBase+2)
-	{
-	  starSprite = starSpriteBase;
-	  m_animation_timer = 0;
-	}
+          starTimer--;
       }
-      
-      // Animation timer increasing all the time
-      m_animation_timer++;
-      
-      
-      GsSprite &StarSprite = gGraphics.getSprite(mSprVar, starSprite);
-      
-      int yoffset = (StarSprite.getHeight()<<STC);
-      int xoffset = (StarSprite.getWidth()<<STC);
-      
-      scrx = ((getXMidPos()-xoffset/2)>>STC)-mpMap->m_scrollx;
-      scry = ((m_Pos.y-(m_BBox.Height()/2)-yoffset)>>STC)-mpMap->m_scrolly;
-      
-      SDL_Rect gameres = gVideoDriver.getGameResolution().SDLRect();
-      
-      if( scrx < gameres.w && scry < gameres.h && exists )
+      else
       {
-        int showX = scrx+StarSprite.getXOffset();
-        int showY = scry+StarSprite.getYOffset();
-        int w = StarSprite.getWidth();
-        int h = StarSprite.getHeight();
+          const unsigned char anim = m_animation_timer % STARRING_ANIMATION_TIME;
 
-        const auto visGA = gVideoDriver.mpVideoEngine->mRelativeVisGameArea;
+          if(anim == 0)
+          {
+              starSprite++;
 
-        if( showX+StarSprite.getWidth() < visGA.x || showX > visGA.x+visGA.w )
-            return;
+              if(starSprite > starSpriteBase+2)
+              {
+                  starSprite = starSpriteBase;
+                  m_animation_timer = 0;
+              }
+          }
 
-        if( showY+StarSprite.getHeight() < visGA.y || showY > visGA.y+visGA.h )
-            return;
+          // Animation timer increasing all the time
+          m_animation_timer++;
 
-        StarSprite.drawSprite( showX, showY, w, h, (255-transluceny) );
+
+          GsSprite &StarSprite = gGraphics.getSprite(mSprVar, starSprite);
+
+          int yoffset = (StarSprite.getHeight()<<STC);
+          int xoffset = (StarSprite.getWidth()<<STC);
+
+          scrx = ((getXMidPos()-xoffset/2)>>STC)-mpMap->m_scrollx;
+          scry = ((m_Pos.y-(m_BBox.Height()/2)-yoffset)>>STC)-mpMap->m_scrolly;
+
+          SDL_Rect gameres = gVideoDriver.getGameResolution().SDLRect();
+
+          if( scrx < gameres.w && scry < gameres.h && exists )
+          {
+              int showX = scrx+StarSprite.getXOffset();
+              int showY = scry+StarSprite.getYOffset();
+              int w = StarSprite.getWidth();
+              int h = StarSprite.getHeight();
+
+              const auto visGA = gVideoDriver.mpVideoEngine->mRelativeVisGameArea;
+
+              if( showX+StarSprite.getWidth() < visGA.x || showX > visGA.x+visGA.w )
+                  return;
+
+              if( showY+StarSprite.getHeight() < visGA.y || showY > visGA.y+visGA.h )
+                  return;
+
+              StarSprite.drawSprite( showX, showY, w, h, (255-transluceny) );
+          }
       }
-    }
-  }    
-  	
+  }
+
 }
 
 
