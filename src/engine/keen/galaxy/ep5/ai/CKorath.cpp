@@ -31,10 +31,10 @@ A_KORATH_STUNNED = 5
 
 constexpr int TIME_TO_SIT = 50;
 constexpr int WALK_SPEED = 25;
+constexpr int STUN_TIME = 240;
   
 CKorath::CKorath(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
-CStunnable(pmap, foeID, x, y),
-mTimer(0)
+CStunnable(pmap, foeID, x, y)
 {  
   	mActionMap[A_KORATH_WALK] = (GASOFctr) &CKorath::processWalking;
   	mActionMap[A_KORATH_SIT] = (GASOFctr) &CKorath::processSitting;
@@ -88,6 +88,21 @@ void CKorath::processSitting()
   }
 }
 
+void CKorath::processStunned()
+{
+    if(mIsDead)
+        return;
+
+    mTimer++;
+
+    if( mTimer < STUN_TIME )
+      return;
+
+    mTimer = 0;
+
+    setAction(A_KORATH_SIT);
+}
+
 
 
 void CKorath::getTouchedBy(CSpriteObject &theObject)
@@ -107,15 +122,29 @@ void CKorath::getTouchedBy(CSpriteObject &theObject)
 
 	if( CPlayerLevel *player = dynamic_cast<CPlayerLevel*>(&theObject) )
 	{
+        const bool jumpActive =
+            player->getActionStatus(A_KEEN_JUMP) ||
+            player->getActionStatus(A_KEEN_JUMP_DOWN);
+
         const bool pogoActive =
             player->getActionStatus(A_KEEN_POGO_START) ||
             player->getActionStatus(A_KEEN_POGO_HIGH)  ||
             player->getActionStatus(A_KEEN_POGO_UP);
 
-        // Usually this is only possible with Keen 9 and my own speciality
+        // Usually this is only possible with Keen 9 and some special code
         if(mPogoStunnable && pogoActive)
         {
-            mIsDead = true;
+            if(!mRecoverFromStun)
+                mIsDead = true;
+
+            setAction(A_KORATH_STUNNED);
+            gSound.playSound(SOUND_FUSE_BREAK);
+        }
+        else if(mJumpStunnable && jumpActive)
+        {
+            if(!mRecoverFromStun)
+                mIsDead = true;
+
             setAction(A_KORATH_STUNNED);
             gSound.playSound(SOUND_FUSE_BREAK);
         }
@@ -141,15 +170,14 @@ void CKorath::process()
 	
 	performGravityMid();
 
-	if(!mIsDead) // If we is dead, there is no way to continue moving or turning
+    if(!mIsDead) // If dead, there is no way to continue moving or turning
 	{
 	  if( blockedl )
 	  {	    
 	    xDirection = RIGHT;
 	  }
 	  else if(blockedr)
-	  {
-	    
+	  {	    
 	    xDirection = LEFT;
 	  }
 	}
