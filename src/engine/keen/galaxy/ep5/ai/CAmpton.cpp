@@ -30,7 +30,7 @@ enum AMPTONACTIONS
 
 
 
-constexpr int CSF_DISTANCE_TO_FOLLOW = 6<<CSF;
+//constexpr int CSF_DISTANCE_TO_FOLLOW = 6<<CSF;
 
 constexpr int WALK_SPEED = 25;
 constexpr int SLIDE_SPEED = 25;
@@ -39,8 +39,8 @@ constexpr int UMOUNT_TIME = 30;
 
 constexpr int TIME_UNTIL_SHOOT = 500;
 
-constexpr int mAmptonOffset = 0x21DC;
-constexpr int mShikadiMasterOffset = 0x2B6C; // For Yeti shoot sprite (Keen 9)
+//constexpr int mAmptonOffset = 0x21DC;
+//constexpr int mShikadiMasterOffset = 0x2B6C; // For Yeti shoot sprite (Keen 9)
 
 
 

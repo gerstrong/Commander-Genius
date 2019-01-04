@@ -1,5 +1,5 @@
-#ifndef __NUMBERCONTROL_H__
-#define __NUMBERCONTROL_H__
+#ifndef NUMBERCONTROL_H
+#define NUMBERCONTROL_H
 
 #include <widgets/GsNumberControl.h>
 
@@ -24,4 +24,4 @@ public:
     void processRender(const GsRect<float> &RectDispCoordFloat);
 };
 
-#endif // __NUMBERCONTROL_H__
+#endif // NUMBERCONTROL_H

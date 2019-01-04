@@ -127,7 +127,6 @@ public:
     TouchButton mPogoButton;
     TouchButton mStatusButton;        
 
-#if SDL_VERSION_ATLEAST(2, 0, 0)
     std::set< SDL_FingerID > mFingerSet;
 
 #endif    
