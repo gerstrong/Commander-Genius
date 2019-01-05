@@ -280,14 +280,15 @@ void CSettings::setOption( const GameOption opt,
  */
 void CSettings::loadDefaultGameCfg()
 {
-	setOption( GameOption::ALLOWPKING,		"Friendly Fire    ", "pking", 1 );
-    setOption( GameOption::KEYSTACK,		"Keystacking      ", "keystack", 0 );
-    setOption( GameOption::LVLREPLAYABILITY,"Replay Levels    ", "level_replayability", 0 );
-    setOption( GameOption::RISEBONUS,		"Rising Bonus     ", "rise_bonus", 1 );
-    setOption( GameOption::MODERN,          "Modern Style     ", "modern_style", 1 );
-    setOption( GameOption::HUD,				"HUD Display      ", "hud", 1 );
-    setOption( GameOption::SPECIALFX,		"Special Effects  ", "specialfx", 1 );
-    setOption( GameOption::SHOWFPS,			"Show FPS         ", "showfps", 0 );
+    setOption( GameOption::ALLOWPKING,		"Friendly Fire  ", "pking", 1 );
+    setOption( GameOption::KEYSTACK,		"Keystacking    ", "keystack", 0 );
+    setOption( GameOption::LVLREPLAYABILITY,"Replay Levels  ", "level_replayability", 0 );
+    setOption( GameOption::RISEBONUS,		"Rising Bonus   ", "rise_bonus", 1 );
+    setOption( GameOption::MODERN,          "Modern Style   ", "modern_style", 1 );
+    setOption( GameOption::HUD,				"HUD Display    ", "hud", 1 );
+    setOption( GameOption::SPECIALFX,		"Special Effects", "specialfx", 1 );
+    setOption( GameOption::SHOWFPS,			"Show FPS       ", "showfps", 0 );
+    setOption( GameOption::SANDWICHMENU,    "Menu Button    ", "sandwichbutton", 1 );
 }
 
 /**

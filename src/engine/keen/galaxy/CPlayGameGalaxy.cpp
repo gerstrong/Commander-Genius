@@ -662,11 +662,14 @@ void CPlayGameGalaxy::render()
     // The position of the sandwich menu depends on the configured blit resolution
     mMenuButtonRect.x = gVideoDriver.getBlitSurface()->w-mMenuButtonRect.w;
 
-    auto menuButtonRectWithBorder = mMenuButtonRect;
-    menuButtonRectWithBorder.y += gVideoDriver.getVidConfig().mHorizBorders;
+    if(gBehaviorEngine.mOptions[GameOption::SANDWICHMENU].value)
+    {
+        auto menuButtonRectWithBorder = mMenuButtonRect;
+        menuButtonRectWithBorder.y += gVideoDriver.getVidConfig().mHorizBorders;
 
-    // Draw a menu button where the mouse/finger might tap on
-    drawMenuInGameButton(menuButtonRectWithBorder);
+        // Draw a menu button where the mouse/finger might tap on
+        drawMenuInGameButton(menuButtonRectWithBorder);
+    }
 
     // Draw some Textboxes with Messages only if one of those is open and needs to be drawn
     if(msgboxactive)

@@ -57,7 +57,40 @@ mTimer(0)
     setupGalaxyObjectOnMap(0x2D10, A_SHIKADI_STAND);
     
     xDirection = LEFT;
+
+    loadPythonScripts("shikadi");
 }
+
+
+bool CShikadi::loadPythonScripts(const std::string &scriptBaseName)
+{
+#if USE_PYTHON3
+    auto pModule = gPython.loadModule( scriptBaseName, JoinPaths(gKeenFiles.gameDir ,"ai") );
+
+    if (pModule != nullptr)
+    {
+        //loadAiGetterBool(pModule, "moreAgressive", mMoreAgressive);
+
+        mp_processState = static_cast<GASOFctr>(&CShikadi::processPython);
+
+        Py_DECREF(pModule);
+    }
+    else
+    {
+        return false;
+    }
+
+    Py_Finalize();
+#endif
+    return true;
+}
+
+
+void CShikadi::processPython()
+{
+
+}
+
 
 void CShikadi::processStanding()
 {

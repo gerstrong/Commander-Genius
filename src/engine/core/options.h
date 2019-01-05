@@ -17,7 +17,8 @@ enum class GameOption
     LVLREPLAYABILITY, RISEBONUS,
     MODERN,
     HUD,SPECIALFX,
-    SHOWFPS
+    SHOWFPS,
+    SANDWICHMENU
 };
 
 struct stOption

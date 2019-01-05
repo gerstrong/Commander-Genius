@@ -39,6 +39,10 @@ public:
 	 * What happens if the slug gets touched by another object
 	 */
 	void getTouchedBy(CSpriteObject &theObject);
+
+    void processPython();
+
+    bool loadPythonScripts(const std::string &scriptBaseName) override;
 	
 private:
     int mHealth;
