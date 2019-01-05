@@ -941,6 +941,7 @@ void CInput::pollEvents()
             const Vector2D<int> rotPt(Event.motion.x, Event.motion.y);
             transMouseRelCoord(Pos, Event.motion, activeArea, tiltedScreen);
 
+#ifdef VIRTUALPAD
             if(gVideoDriver.VGamePadEnabled() && mpVirtPad &&
                     mpVirtPad->active())
             {
@@ -953,6 +954,7 @@ void CInput::pollEvents()
                 }
             }
             else
+#endif
             {
                 m_EventList.add( new PointingDevEvent( Pos, PDE_MOVED ) );
                 gPointDevice.mPointingState.mPos = Pos;
