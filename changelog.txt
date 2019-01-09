@@ -1,3 +1,9 @@
+v2.3.1:
+-------
+- More Python support for mods
+- Menu (sandwich) button can be disabled if wished
+- Updated SDL2 dlls for windows
+
 v2.3.0:
 -------
 - Improved loading of special sprites
