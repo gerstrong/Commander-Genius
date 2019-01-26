@@ -18,10 +18,7 @@ public:
       bool load(const std::string &modName,
                 const std::string &dirPath);
 
-      ~GsPythonModule()
-      {
-          Py_XDECREF(mpModule);
-      }
+      virtual ~GsPythonModule();
 
       PyObject *rawPtr() const
       {
@@ -45,6 +42,8 @@ class GsPythonFunc
 
 public:
 
+    virtual ~GsPythonFunc();
+
     bool load(GsPythonModule &module,
               const std::string &funcName);
 
@@ -55,12 +54,7 @@ public:
     }
 
 
-    ~GsPythonFunc()
-    {
-        Py_XDECREF(mpFunction);
-    }
-
-    void call();
+    PyObject *call();
 
 private:
     PyObject *mpFunction = nullptr;
@@ -72,6 +66,10 @@ class GsPython : public GsSingleton<GsPython>
 {
 
 public:
+
+    GsPython();
+    virtual ~GsPython();
+
     /**
      * @brief loadModule  Load the module and return as python object
      * @param scriptBaseName    name of script to load

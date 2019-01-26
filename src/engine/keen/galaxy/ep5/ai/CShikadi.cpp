@@ -12,6 +12,7 @@
 #include "../../common/ai/CEnemyShot.h"
 #include <base/utils/misc.h>
 
+
 /*
 $2D10W #Shikadi stand
 $2D2EW #Shikadi stand
@@ -41,7 +42,7 @@ A_SHIKADI_STUNNED = 10
 
 constexpr int WALK_SPEED = 25;
 constexpr int TIME_UNTIL_STAND = 150;
-constexpr int TIME_TO_ZAP = 30;
+//constexpr int TIME_TO_ZAP = 30;
   
 CShikadi::CShikadi(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
 CStunnable(pmap, foeID, x, y),
@@ -73,14 +74,15 @@ bool CShikadi::loadPythonScripts(const std::string &scriptBaseName)
 
         mp_processState = static_cast<GASOFctr>(&CShikadi::processPython);
 
-        Py_DECREF(pModule);
+        mModule.load( "shikadi", JoinPaths(gKeenFiles.gameDir ,"ai") );
+        mProcessFunc.load(mModule, "process");
     }
     else
     {
         return false;
     }
 
-    Py_Finalize();
+    //Py_Finalize();
 #endif
     return true;
 }
@@ -88,7 +90,42 @@ bool CShikadi::loadPythonScripts(const std::string &scriptBaseName)
 
 void CShikadi::processPython()
 {
+    // TODO: Needs to be put into members of class. This part is yet too CPU heavy
+    // NOTE: My tests for using Pyton in CG. These will be forwared to a more common function
+    // The following will atempt to get a walk instruction from Python process.
+    if (mProcessFunc)
+    {
+        PyObject *pDict = mProcessFunc.call();
 
+        // Process return a dictionary of tasks to perform with some values
+        if (pDict != nullptr)
+        {
+            // TODO: The commented still crashes. I think it is related to some DECREF
+            PyObject *key, *value;
+            Py_ssize_t pos = 0;
+
+            while (PyDict_Next(pDict, &pos, &key, &value))
+            {
+                PyObject* repr = PyObject_Repr(key);
+                PyObject* str = PyUnicode_AsEncodedString(repr, "utf-8", "~E~");
+                const std::string keyAsStr = PyBytes_AS_STRING(str);
+
+                const long iValue = PyLong_AsLong(value);
+
+                //gLogging.ftextOut("%s : %ld\n", bytes, iValue);
+
+                if(keyAsStr == "'walk'")
+                {
+                    moveXDir(iValue);
+                }
+
+                Py_XDECREF(repr);
+                Py_XDECREF(str);
+            }
+
+            Py_DECREF(pDict);
+        }
+    }
 }
 
 

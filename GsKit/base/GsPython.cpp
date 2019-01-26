@@ -55,6 +55,29 @@ void duplicateBackslashes(std::string &text)
 #endif
 }
 
+GsPython::GsPython()
+{
+    Py_Initialize();
+}
+
+GsPython::~GsPython()
+{
+    Py_Finalize();
+}
+
+
+GsPythonModule::~GsPythonModule()
+{
+    Py_XDECREF(mpModule);
+}
+
+
+GsPythonFunc::~GsPythonFunc()
+{
+    Py_XDECREF(mpFunction);
+}
+
+
 bool
 GsPythonModule::
 load(const std::string &modName,
@@ -64,7 +87,6 @@ load(const std::string &modName,
 
     return (mpModule != nullptr) ? true : false;
 }
-
 
 bool
 GsPythonFunc::
@@ -95,30 +117,18 @@ load(GsPythonModule &module,
 }
 
 
-void
+PyObject*
 GsPythonFunc::call()
 {
-    /*PyObject *pValue = */PyObject_CallObject(mpFunction, nullptr);
+    PyObject *pValue = PyObject_CallObject(mpFunction, nullptr);
 
-    /*if (pValue != nullptr)
+    if (pValue == nullptr)
     {
-        if( PyObject_IsTrue(pValue) )
-        {
-            value = true;
-        }
-        else
-        {
-            value = false;
-        }
-        Py_DECREF(pValue);
-    }
-    else
-    {
-        Py_DECREF(pFunc);
         PyErr_Print();
         gLogging.ftextOut("Call failed\n");
-        return false;
-    }*/
+    }
+
+    return pValue;
 }
 
 
@@ -152,10 +162,7 @@ PyObject *GsPython::loadModule(const std::string &scriptBaseName,
     const std::string pythonHome = JoinPaths(searchPath,"python3.5");
     setenv("PYTHONHOME", pythonHome.c_str(), 1);
     setenv("PYTHONPATH", pythonHome.c_str(), 1);
-#endif
-
-
-    Py_Initialize();
+#endif    
 
 
     PyObject* programName = PyUnicode_FromString(scriptBaseName.c_str());

@@ -186,7 +186,7 @@ bool CSpriteObject::loadPythonScripts(const std::string &scriptBaseName)
         return false;
     }
 
-    Py_Finalize();
+    //Py_Finalize();
 
     return true;
 

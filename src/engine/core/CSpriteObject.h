@@ -113,7 +113,7 @@ class CSpriteObject
 {
   public:
     CSpriteObject(CMap *pmap, Uint32 x, Uint32 y, const int spriteVar);
-    
+
     unsigned int m_index;        	// Like an ID for some objects that need this implementation
     
     
@@ -399,6 +399,10 @@ class CSpriteObject
      * @return if load was successful true, otherwise false.
      */
     virtual bool loadPythonScripts(const std::string &scriptBaseName);
+
+    GsPythonModule mModule;
+    GsPythonFunc mProcessFunc;
+
 #endif
     
     CMap *mpMap;

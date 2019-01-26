@@ -79,7 +79,7 @@ bool CShikadiMaster::loadPythonScripts(const std::string &scriptBaseName)
         return false;
     }
 
-    Py_Finalize();
+    //Py_Finalize();
 #endif
     return true;
 }
