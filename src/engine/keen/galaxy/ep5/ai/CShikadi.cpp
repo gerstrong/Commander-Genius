@@ -66,23 +66,15 @@ mTimer(0)
 bool CShikadi::loadPythonScripts(const std::string &scriptBaseName)
 {
 #if USE_PYTHON3
-    auto pModule = gPython.loadModule( scriptBaseName, JoinPaths(gKeenFiles.gameDir ,"ai") );
 
-    if (pModule != nullptr)
-    {
-        //loadAiGetterBool(pModule, "moreAgressive", mMoreAgressive);
+    mModule.load( scriptBaseName, JoinPaths(gKeenFiles.gameDir ,"ai") );
 
-        mp_processState = static_cast<GASOFctr>(&CShikadi::processPython);
-
-        mModule.load( "shikadi", JoinPaths(gKeenFiles.gameDir ,"ai") );
-        mProcessFunc.load(mModule, "process");
-    }
-    else
-    {
+    if(!mModule)
         return false;
-    }
 
-    //Py_Finalize();
+    mp_processState = static_cast<GASOFctr>(&CShikadi::processPython);
+    mProcessFunc.load(mModule, "process");
+
 #endif
     return true;
 }

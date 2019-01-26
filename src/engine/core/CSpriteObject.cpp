@@ -63,6 +63,12 @@ mSprVar(spriteVar)
 }
 
 #if USE_PYTHON3
+
+bool CSpriteObject::loadAiGetterBool(const std::string &pyMethodStr, bool &value)
+{
+    return loadAiGetterBool(mModule.rawPtr(), pyMethodStr, value);
+}
+
 bool CSpriteObject::loadAiGetterBool(PyObject * pModule, const std::string &pyMethodStr, bool &value)
 {
     // pFunc is a new reference
@@ -150,43 +156,35 @@ bool CSpriteObject::loadAiGetterInteger(PyObject * pModule, const std::string &p
 
 bool CSpriteObject::loadPythonScripts(const std::string &scriptBaseName)
 {
-    auto pModule = gPython.loadModule( scriptBaseName, JoinPaths(gKeenFiles.gameDir ,"ai") );
+    mModule.load( scriptBaseName, JoinPaths(gKeenFiles.gameDir ,"ai") );
 
-    if (pModule != nullptr)
-    {
-        loadAiGetterBool(pModule, "canRecoverFromStun", mRecoverFromStun);
-
-        loadAiGetterBool(pModule, "turnAroundOnCliff", mTurnAroundOnCliff);
-
-        loadAiGetterBool(pModule, "endGameOnDefeat", mEndGameOnDefeat);
-
-        loadAiGetterBool(pModule, "isInvincible", mInvincible);
-
-        loadAiGetterBool(pModule, "willNeverStop", mNeverStop);        
-
-        loadAiGetterBool(pModule, "isStunnableWithPogo", mPogoStunnable);
-
-        loadAiGetterBool(pModule, "isStunnableWithJump", mJumpStunnable);
-
-        loadAiGetterBool(pModule, "mayShoot", mMayShoot);
-
-        int health = mHealthPoints;
-        loadAiGetterInteger(pModule, "healthPoints", health);
-        mHealthPoints = health;
-
-        int walksound = mWalkSound;
-        loadAiGetterInteger(pModule, "walkSound", walksound);
-        mWalkSound = GameSound(walksound);
-
-
-        Py_DECREF(pModule);
-    }
-    else
-    {
+    if(!mModule)
         return false;
-    }
 
-    //Py_Finalize();
+    loadAiGetterBool("canRecoverFromStun", mRecoverFromStun);
+
+    loadAiGetterBool("turnAroundOnCliff", mTurnAroundOnCliff);
+
+    loadAiGetterBool("endGameOnDefeat", mEndGameOnDefeat);
+
+    loadAiGetterBool("isInvincible", mInvincible);
+
+    loadAiGetterBool("willNeverStop", mNeverStop);
+
+    loadAiGetterBool("isStunnableWithPogo", mPogoStunnable);
+
+    loadAiGetterBool("isStunnableWithJump", mJumpStunnable);
+
+    loadAiGetterBool("mayShoot", mMayShoot);
+
+    auto pModule = mModule.rawPtr();
+    int health = mHealthPoints;
+    loadAiGetterInteger(pModule, "healthPoints", health);
+    mHealthPoints = health;
+
+    int walksound = mWalkSound;
+    loadAiGetterInteger(pModule, "walkSound", walksound);
+    mWalkSound = GameSound(walksound);
 
     return true;
 

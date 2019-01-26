@@ -372,6 +372,10 @@ class CSpriteObject
     
     
 #if USE_PYTHON3
+
+
+    bool loadAiGetterBool(const std::string &pyMethodStr, bool &value);
+
     /**
      * @brief loadAiGetterInteger
      * @param pModule

@@ -3,9 +3,7 @@
 
 CCarrier::CCarrier(CMap* pmap, Uint32 x, Uint32 y, object_t type) : 
 CVorticonSpriteObject(pmap, x, y, type, 0)
-{
-
-}
+{}
 
 void CCarrier::getTouchedBy(CVorticonSpriteObject& theObject)
 {                
@@ -77,8 +75,8 @@ void CCarrier::draw()
     
     if( scrx < gameres.w && scry < gameres.h && exists )
     {
-        Uint16 showX = scrx+Sprite.getXOffset();
-        Uint16 showY = scry+Sprite.getYOffset();
+        auto showX = Uint16(scrx+Sprite.getXOffset());
+        auto showY = Uint16(scry+Sprite.getYOffset());
         if(m_blinktime > 0)
         {
             Sprite.drawBlinkingSprite( showX, showY );
@@ -125,7 +123,7 @@ std::vector<CSpriteObject*> CCarrier::fetchCarriedPlayer()
             continue;
 
         if( !player->mIsDead || !player->dying )
-            carriedSO.push_back( (CSpriteObject*) player);
+            carriedSO.push_back( static_cast<CSpriteObject*>(player) );
     }
 
     return carriedSO;

@@ -72,11 +72,6 @@ GsPythonModule::~GsPythonModule()
 }
 
 
-GsPythonFunc::~GsPythonFunc()
-{
-    Py_XDECREF(mpFunction);
-}
-
 
 bool
 GsPythonModule::
@@ -86,6 +81,11 @@ load(const std::string &modName,
     mpModule = gPython.loadModule( modName, dirPath );
 
     return (mpModule != nullptr) ? true : false;
+}
+
+GsPythonFunc::~GsPythonFunc()
+{
+    Py_XDECREF(mpFunction);
 }
 
 bool
