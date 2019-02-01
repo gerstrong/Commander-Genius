@@ -21,7 +21,7 @@ class CGUIText : public GsControl
 public:
 	CGUIText(const std::string& text);
 
-    void setupButtonSurface(const std::string& text);
+    void setupButtonSurface(const std::string& text = "");
 
 	virtual void setText(const std::string& text);
 

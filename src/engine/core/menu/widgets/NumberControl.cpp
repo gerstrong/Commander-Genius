@@ -34,7 +34,7 @@ CGUINumberControl(text, startValue, endValue,
 }
 
 
-void NumberControl::setupButtonSurface()
+void NumberControl::setupButtonSurface(const std::string &text)
 {        
     GsFont &Font = gGraphics.getFont(mFontID);
 

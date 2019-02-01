@@ -87,10 +87,10 @@ public:
 	std::list< std::shared_ptr<GsControl> >& getControlList()
 	{	return mControlList;	}
 
-	const int Selection() const
+    int Selection() const
 	{	return mSelection;	}
 
-    void setSelection(const unsigned int sel);
+    void setSelection(const int sel);
 
 	GsControl* CurrentControl()
 	{	return 	mpCurrentCtrl;	}

@@ -40,13 +40,14 @@ m_HUD(Item.m_points, Item.m_lifes, Item.m_bullets,
 
 #if USE_PYTHON3
 
-    auto pModule = gPython.loadModule( "constants", gKeenFiles.gameDir );
+    GsPythonModule module;
+    module.load("constants", gKeenFiles.gameDir);
 
-    if (pModule != nullptr)
+    if (module)
     {
         int startBullets = 0;
         bool ok;
-        ok = loadIntegerFunc(pModule, "getStartWithNumBullets", startBullets);
+        ok = module.loadIntegerFunc("getStartWithNumBullets", startBullets);
         if(ok)
         {
              Item.m_bullets = startBullets;
@@ -54,7 +55,7 @@ m_HUD(Item.m_points, Item.m_lifes, Item.m_bullets,
 
         bool usePogo;
 
-        ok = loadBooleanFunc(pModule, "mayUsePogo", usePogo);
+        ok = module.loadBooleanFunc("mayUsePogo", usePogo);
         if(ok)
         {
              Item.m_special.mCanPogo = usePogo;
@@ -63,8 +64,6 @@ m_HUD(Item.m_points, Item.m_lifes, Item.m_bullets,
     }
 
 #endif
-
-
 	
 	m_HUD.sync();
 }

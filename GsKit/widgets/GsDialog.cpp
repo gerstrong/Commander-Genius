@@ -147,6 +147,9 @@ void CGUIDialog::selectPrevItem()
 
 void CGUIDialog::selectNextItem()
 {
+    if(!mpCurrentCtrl)
+        return;
+
     if(mpCurrentCtrl->isSelected())
     {
         mpCurrentCtrl->select(false);
@@ -184,7 +187,7 @@ void CGUIDialog::selectNextItem()
 }
 
 
-void CGUIDialog::setSelection(const unsigned int sel)
+void CGUIDialog::setSelection(const int sel)
 {
 	const int steps = sel-mSelection;
 

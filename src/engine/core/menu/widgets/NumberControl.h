@@ -15,13 +15,13 @@ public:
                   const bool slider,
                   const GsControl::Style style);
 
-    void setupButtonSurface();
+    void setupButtonSurface(const std::string &text = "") override;
 
-    void processLogic();
+    void processLogic() override;
 
     void drawNoStyle(SDL_Rect& lRect);
 
-    void processRender(const GsRect<float> &RectDispCoordFloat);
+    void processRender(const GsRect<float> &RectDispCoordFloat) override;
 };
 
 #endif // NUMBERCONTROL_H

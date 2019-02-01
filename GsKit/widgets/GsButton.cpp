@@ -30,16 +30,6 @@ mBlue(blue)
 {}
 
 
-void GsButton::setupButtonSurface()
-{
-    GsFont &Font = gGraphics.getFont(mFontID);
-
-    Font.createTextSurface(mTextDarkSfc, "  " + mText, 38, 134, 38 );
-    Font.createTextSurface(mTextLightSfc, "  " + mText, 84, 234, 84 );
-    Font.createTextSurface(mTextDisabledSfc, "  " + mText, 123, 150, 123 );
-}
-
-
 bool GsButton::sendEvent(const InputCommand command)
 {
     if(command == IC_STATUS || command == IC_JUMP)
@@ -153,6 +143,14 @@ void GsButton::drawNoStyle(SDL_Rect& lRect)
 void GsButton::setupButtonSurface(const std::string &text)
 {
     GsFont &Font = gGraphics.getFont(mFontID);
+
+    if(text.empty())
+    {
+        Font.createTextSurface(mTextDarkSfc, "  " + mText, 38, 134, 38 );
+        Font.createTextSurface(mTextLightSfc, "  " + mText, 84, 234, 84 );
+        Font.createTextSurface(mTextDisabledSfc, "  " + mText, 123, 150, 123 );
+        return;
+    }
 
     auto fontSfc = Font.SDLSurfacePtr();
     auto palette = fontSfc->format->palette;

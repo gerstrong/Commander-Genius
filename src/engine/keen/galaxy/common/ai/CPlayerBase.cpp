@@ -178,6 +178,8 @@ CPlayerBase(CMap *pmap,
 
     mpMap->calcVisibleArea();
     mpMap->refreshVisibleArea();
+
+    mModule.load("constants", gKeenFiles.gameDir);
 }
 
 
@@ -413,17 +415,16 @@ void CPlayerBase::processLevelMiscFlagsCheck()
 	}
 
 #if USE_PYTHON3
-        auto pModule = gPython.loadModule( "constants", gKeenFiles.gameDir);
+
         int value = 0;
 
-        if (pModule != nullptr)
+        if (mModule)
         {
             for( Uint32 i=21 ; i<=28 ; i++ )
             {
                 if(hitdetectWithTilePropertyRect(i, l_x, l_y, l_w, l_h, 2<<STC))
                 {
-                    loadIntegerFunc(pModule, "defineSlipperyTile",
-                                    value, int(i));
+                    mModule.loadIntegerFunc("defineSlipperyTile", value, int(i));
 
                     if(value>0)
                     {

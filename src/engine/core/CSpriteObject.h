@@ -406,6 +406,7 @@ class CSpriteObject
 
     GsPythonModule mModule;
     GsPythonFunc mProcessFunc;
+    GsPythonFunc mUpdatePlayerCoord;
 
 #endif
     
