@@ -42,7 +42,7 @@ public:
 
     void processPython();
 
-    bool loadPythonScripts(const std::string &scriptBaseName) override;
+    bool loadPythonScripts(const std::string &scriptBaseName);
 	
 private:
     int mHealth;
