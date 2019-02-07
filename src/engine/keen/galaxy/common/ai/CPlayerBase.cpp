@@ -179,7 +179,7 @@ CPlayerBase(CMap *pmap,
     mpMap->calcVisibleArea();
     mpMap->refreshVisibleArea();
 
-    mModule.load("constants", gKeenFiles.gameDir);
+    //mModule.load("constants", gKeenFiles.gameDir);
 }
 
 
