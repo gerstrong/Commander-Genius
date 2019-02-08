@@ -49,7 +49,6 @@ IF(USE_PYTHON3)
 
     if(${CMAKE_VERSION} VERSION_LESS "3.12.0")
         FIND_PACKAGE(PythonLibs REQUIRED)
-        TARGET_LINK_LIBRARIES(GsKit ${PYTHON_LIBRARIES})
     else()
         # Look for Python (Version 3.0 or later is required)
         FIND_PACKAGE(Python3 COMPONENTS Interpreter Development)
