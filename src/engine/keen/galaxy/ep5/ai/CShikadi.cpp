@@ -120,6 +120,10 @@ void CShikadi::processPython()
                 {
                     xDirection = iValue;
                 }
+                if(keyAsStr == "'yinertia'")
+                {
+                    yinertia = iValue;
+                }
 
                 Py_XDECREF(repr);
                 Py_XDECREF(str);

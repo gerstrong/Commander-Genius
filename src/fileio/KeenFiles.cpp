@@ -36,7 +36,7 @@ bool loadGamefileNames()
 
 #if USE_PYTHON3
 
-auto pModule = gPython.loadModule( "keen5", gKeenFiles.gameDir );
+    auto pModule = gPython.loadModule( "keen5", gKeenFiles.gameDir );
 
 if (pModule != nullptr)
 {

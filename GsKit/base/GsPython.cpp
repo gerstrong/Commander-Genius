@@ -265,6 +265,12 @@ load(GsPythonModule &module,
 PyObject*
 GsPythonFunc::call(PyObject* args)
 {
+    if(!mpFunction)
+    {
+        gLogging.ftextOut("Python function did not get defined.");
+        return nullptr;
+    }
+
     PyObject *pValue = PyObject_CallObject(mpFunction, args);
 
     if (pValue == nullptr)
