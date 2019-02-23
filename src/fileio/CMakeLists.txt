@@ -3,7 +3,7 @@ add_subdirectory(compression)
 
 include_directories(${SDL_INCLUDE_DIR})
 
-add_library(fileio CExeFile.cpp
+add_library(fileio STATIC CExeFile.cpp
     CPatcher.cpp
     CPatcherUtils.cpp
     crc.cpp

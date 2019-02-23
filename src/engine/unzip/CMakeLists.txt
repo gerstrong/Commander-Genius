@@ -19,7 +19,7 @@ set(HSRC
     iowin32.h
     unzip.h)
 
-add_library(unzip ${CXXSRC} ${HSRC})
+add_library(unzip STATIC ${CXXSRC} ${HSRC})
 
 
 # Link zlib

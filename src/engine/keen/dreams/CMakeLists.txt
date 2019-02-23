@@ -22,6 +22,6 @@ set(HSRC
     dreamsintro.h
     )
 
-add_library(engine_keen_dreams ${CXXSRC} ${HSRC})
+add_library(engine_keen_dreams STATIC ${CXXSRC} ${HSRC})
 
 target_link_libraries(engine_keen_dreams refkeen engine_keen)

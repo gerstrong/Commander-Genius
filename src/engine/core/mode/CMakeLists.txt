@@ -8,7 +8,7 @@ set(SRCS
     CPlayGame.cpp
     CPlayGame.h)
 
-add_library(engine_core_mode ${SRCS})
+add_library(engine_core_mode STATIC ${SRCS})
 
 # TODO: Not sure why Windows requires this yet.
 #if(WIN32)

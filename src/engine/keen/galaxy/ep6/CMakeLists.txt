@@ -46,7 +46,7 @@ ai/CSatelite.h
 ai/CSpecialItem.h
 )
 
-add_library(engine_keen_galaxy_ep6 ${CXXSRC} ${HSRC} )
+add_library(engine_keen_galaxy_ep6 STATIC ${CXXSRC} ${HSRC} )
 
 
 target_link_libraries(engine_keen_galaxy_ep6

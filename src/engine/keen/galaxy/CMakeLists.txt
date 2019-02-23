@@ -28,7 +28,7 @@ set(HSRC
 
 
 
-add_library(engine_keen_galaxy ${HSRC} ${CXXSRC})
+add_library(engine_keen_galaxy STATIC ${HSRC} ${CXXSRC})
 
 target_link_libraries(engine_keen_galaxy 
                       engine_keen_galaxy_common

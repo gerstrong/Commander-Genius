@@ -17,7 +17,7 @@ Switch.cpp
 Switch.h
 )
 
-add_library(engine_core_menu_widgets ${SRCS})
+add_library(engine_core_menu_widgets STATIC ${SRCS})
 
 # TODO: Not sure why Windows requires this yet.
 #if(WIN32)

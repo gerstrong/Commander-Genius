@@ -43,8 +43,8 @@ set(CXXSRC CGameLauncher.cpp
 set(HSRC CGameLauncher.h
          gamedownloader.h)
 
-add_library(engine ${CXXSRC}
-                   ${HSRC})
+add_library(engine STATIC ${CXXSRC}
+                          ${HSRC})
 
 target_link_libraries(engine 
                       refkeen 
