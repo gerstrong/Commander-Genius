@@ -6,4 +6,4 @@ Icon=/usr/share/icons/hicolor/512x512/apps/CGLogo.png
 Terminal=false
 Type=Application
 StartupNotify=true
-Categories=Application;Game;ArcadeGame;
+Categories=Game;ArcadeGame;
