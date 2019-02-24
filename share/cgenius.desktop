@@ -2,7 +2,7 @@
 Name=Commander Genius
 Comment=Play natively Commander Keen Games
 Exec=CGeniusExe
-Icon=/usr/share/icons/hicolor/512x512/apps/CGLogo.png
+Icon=CGLogo
 Terminal=false
 Type=Application
 StartupNotify=true
