@@ -13,7 +13,6 @@ if(USE_VIRTUALPAD)
     ADD_DEFINITIONS(-DVIRTUALPAD)
 endif(USE_VIRTUALPAD)
 
-
 # Use COmpile TIme REducer
 include(cotire)
 

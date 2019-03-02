@@ -71,7 +71,9 @@ public:
 
     void setDown( const bool value )
     {
+        #ifndef DISABLE_HOVER
         mHovered = value;
+        #endif
     }
 
     virtual bool sendEvent(const InputCommand) { return false; }

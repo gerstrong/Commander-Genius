@@ -32,10 +32,6 @@
  * - derivative works of the program are allowed.
  */
 
-#if HAVE_CONFIG_H
-#include <config.h>
-#endif
-
 #include "scale2x.h"
 
 #include <assert.h>
@@ -262,6 +258,8 @@ static inline void scale2x_16_def_whole(scale2x_uint16* restrict dst0, scale2x_u
 	}
 }
 
+#ifndef USE_SCALE_RANDOMWRITE
+
 static inline void scale2x_16_def_border(scale2x_uint16* restrict dst, const scale2x_uint16* restrict src0, const scale2x_uint16* restrict src1, const scale2x_uint16* restrict src2, unsigned count)
 {
 	assert(count >= 2);
@@ -306,6 +304,8 @@ static inline void scale2x_16_def_border(scale2x_uint16* restrict dst, const sca
 		dst[1] = src1[0];
 	}
 }
+
+#endif
 
 static inline void scale2x_16_def_center(scale2x_uint16* restrict dst, const scale2x_uint16* restrict src0, const scale2x_uint16* restrict src1, const scale2x_uint16* restrict src2, unsigned count)
 {

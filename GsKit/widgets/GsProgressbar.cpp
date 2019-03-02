@@ -221,7 +221,7 @@ GsProgressBar::processRender(const GsRect<float> &RectDispCoordFloat)
                 progressColor = SDL_MapRGBA(
                             pBlitsurface->format,
                             0, 255, Uint8(mFlashBlue), 255 );
-                ss << "Completed!";
+                ss << "Finalizing!";
             }
             else
             {

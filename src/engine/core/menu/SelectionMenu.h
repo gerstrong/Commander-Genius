@@ -113,7 +113,7 @@ private:
 
     int mCurIdx = 0;
 
-    ComboSelection *mpComboSelection = nullptr;
+    //ComboSelection *mpComboSelection = nullptr;
 
     GameButton *mpGameButton = nullptr;
     GameButton *mpChangeButton = nullptr;

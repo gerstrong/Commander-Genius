@@ -9,8 +9,8 @@
  *
  */
 
-#ifndef __CG_COPENGL_H__
-#define __CG_COPENGL_H__
+#ifndef CG_COPENGL_H
+#define CG_COPENGL_H
 
 #ifdef USE_OPENGL
 
@@ -53,14 +53,12 @@ public:
 private:
 	unsigned int	m_texparam;
 
-    //float	m_aspectratio;
-
 	stDims m_GameScaleDim, m_GamePOTScaleDim;
 
 	GLuint	m_texture;
 	GLuint	m_texFX;
 };
 
-#endif
+#endif // USE_OPENGL
 
-#endif
+#endif // CG_COPENGL_H

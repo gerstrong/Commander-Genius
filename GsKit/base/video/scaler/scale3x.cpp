@@ -32,7 +32,7 @@
  * - derivative works of the program are allowed.
  */
 
-#if HAVE_CONFIG_H
+#ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
 
@@ -537,6 +537,8 @@ static inline void scale3x_32_def_whole(scale3x_uint32* restrict dst0, scale3x_u
 	}
 }
 
+#ifndef USE_SCALE_RANDOMWRITE
+
 static inline void scale3x_32_def_border(scale3x_uint32* restrict dst, const scale3x_uint32* restrict src0, const scale3x_uint32* restrict src1, const scale3x_uint32* restrict src2, unsigned count)
 {
 	assert(count >= 2);
@@ -587,8 +589,6 @@ static inline void scale3x_32_def_border(scale3x_uint32* restrict dst, const sca
 		dst[2] = src1[0];
 	}
 }
-
-#ifndef USE_SCALE_RANDOMWRITE
 
 static inline void scale3x_32_def_center(scale3x_uint32* restrict dst, const scale3x_uint32* restrict src0, const scale3x_uint32* restrict src1, const scale3x_uint32* restrict src2, unsigned count)
 {

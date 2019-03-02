@@ -6,7 +6,7 @@
 #include <graphics/GsGraphics.h>
 
 
-const int SLIDER_WIDTH = 16;
+//const int SLIDER_WIDTH = 16;
 
 NumberControl::NumberControl(const std::string &text,
                              const int startValue,

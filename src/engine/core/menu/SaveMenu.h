@@ -21,9 +21,10 @@ public:
     void sendEvent(std::shared_ptr<CEvent> &command) override;
     void release() override;
 
-
+/*
 private:
     bool m_overwrite = false;
+    */
 };
 
 #endif /* CSAVEMENU_H_ */

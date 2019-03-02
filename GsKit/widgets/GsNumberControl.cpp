@@ -119,6 +119,7 @@ void CGUINumberControl::processLogic()
         }
     }
 
+#ifndef DISABLE_HOVER
     if(!bDown || mPressed)
     {
         mHovered = hasPoint;
@@ -163,6 +164,47 @@ void CGUINumberControl::processLogic()
                mLightRatio = 0;
         }
     }
+#else
+    if(bDown)
+    {
+        mPressed = true;
+
+        if( mDecSel )
+        {
+            // Cycle through the values -> go one value down
+            if( mValue > mStartValue )
+                decrement();
+        }
+        else if( mIncSel )
+        {
+            // Cycle through the values -> go one value up
+            if( mValue < mEndValue )
+                increment();
+        }
+
+        mMustRedraw = true;
+    }
+
+
+    if(mEnabled)
+    {
+        // For some nice special effects
+        if(mSelected)
+        {
+            if(mLightRatio+BLEND_SPEED < 255)
+               mLightRatio += BLEND_SPEED;
+            else
+               mLightRatio = 255;
+        }
+        else // Button is not hovered
+        {
+            if(mLightRatio-BLEND_SPEED > 0)
+               mLightRatio -= BLEND_SPEED;
+            else
+               mLightRatio = 0;
+        }
+    }
+#endif
 
 }
 

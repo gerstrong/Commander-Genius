@@ -11,8 +11,8 @@
 
 #include "GsBaseMenu.h"
 
-#ifndef __GSMENUCONTROLLER_H__
-#define __GSMENUCONTROLLER_H__
+#ifndef GSMENUCONTROLLER_H
+#define GSMENUCONTROLLER_H
 
 
 #define gMenuController CMenuController::get()
@@ -97,4 +97,4 @@ private:
     bool mHidden;
 };
 
-#endif /* __GSMENUCONTROLLER_H__ */
+#endif /* GSMENUCONTROLLER_H */
