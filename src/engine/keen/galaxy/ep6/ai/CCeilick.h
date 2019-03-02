@@ -30,7 +30,7 @@ public:
     void draw();
 
 private:
-	int mTimer;
+    //int mTimer;
 	bool mChanceToLick;
 	int mCrawlPos;
 	bool mLaughed;
