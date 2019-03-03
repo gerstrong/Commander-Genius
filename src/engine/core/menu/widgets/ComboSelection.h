@@ -1,5 +1,5 @@
-#ifndef __COMBOSELECTION_H__
-#define __COMBOSELECTION_H__
+#ifndef COMBOSELECTION_H
+#define COMBOSELECTION_H
 
 #include <widgets/GsComboSelection.h>
 

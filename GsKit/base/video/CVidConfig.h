@@ -72,6 +72,7 @@ public:
     bool mVPad = true;
 #else
     bool mVPad = false;
+    int mVPadSize = 100;
 #endif
 #endif
 
