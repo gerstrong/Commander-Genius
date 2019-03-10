@@ -22,7 +22,7 @@ A_SPARKY_TURN = 20,
 A_SPARKY_STUNNED = 23
 };
 
-constexpr int TIME_UNTIL_MOVE = 5;
+//constexpr int TIME_UNTIL_MOVE = 5;
 constexpr int TIME_FOR_LOOK = 150;
 constexpr int WALK_SPEED = 25;
 constexpr int CSF_DISTANCE_TO_FOLLOW = 6<<CSF;

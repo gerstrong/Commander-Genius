@@ -19,7 +19,6 @@ constexpr int RUN_SPEED = 45;
 CBlooglet::CBlooglet(CMap *pmap, const Uint16 foeID, const int actionOff, const bool carriesGem,
 		     const Uint32 x, const Uint32 y) :
 CStunnable(pmap, foeID, x, y),
-mTimer(0),
 mCarriesGem(carriesGem)
 {
 	mActionMap[A_BLOOGLET_RUN] = (GASOFctr) &CBlooglet::processRunning;

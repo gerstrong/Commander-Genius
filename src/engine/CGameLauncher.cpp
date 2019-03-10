@@ -159,6 +159,7 @@ bool CGameLauncher::setupMenu()
                                              0.75f ),
                                GsRect<float>(0.0f, 0.0f, 0.069f, 0.069f) );
 
+    /*
 #ifdef VIRTUALPAD
     mLauncherDialog.addControl(new GsButton( "VPad", new OpenVGamePadSettingsEvent(),
                                              GsControl::Style::NONE,
@@ -167,6 +168,7 @@ bool CGameLauncher::setupMenu()
                                              1.0f ),
                                GsRect<float>(0.75f, 0.0f, 0.17f, 0.069f) );
 #endif
+*/
 
 
     mLauncherDialog.addControl(new GsButton( "|", new OpenSettingsMenuEvent(),
@@ -649,13 +651,14 @@ void CGameLauncher::pumpEvent(const CEvent *evPtr)
         gEventManager.add( new OpenMenuEvent(
                                new SettingsMenu(GsControl::Style::NONE) ) );
     }
+/*
 #ifdef VIRTUALPAD
     else if( dynamic_cast<const OpenVGamePadSettingsEvent*>(evPtr) )
     {
         gInput.setInVPadConfigState(true);
     }
 #endif
-
+*/
 
 
 

@@ -27,7 +27,7 @@ public:
 	void getTouchedBy(CSpriteObject &theObject);
 
 private:
-	int mTimer;    
+//	int mTimer;
 	const bool mCarriesGem;
 };
 
