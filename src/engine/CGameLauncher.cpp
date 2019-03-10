@@ -215,10 +215,12 @@ bool CGameLauncher::setupMenu()
     gLogging.ftextOut("Game Autodetection Finished<br>" );
     // Banner. TODO: Create a class for that...
     CGUIBanner *banner = new CGUIBanner("Commander Genius " CGVERSION "\n"
-                    "By Gerstrong,\n"
+                    "by Gerstrong,\n"
                     "Zilem,\n"
+                    "Tulip,\n"
+                    "Albert Zeyer,\n"
                     "Pelya,\n"
-					"and the CG Contributors\n");
+                    "and many CG Contributors\n");
     mLauncherDialog.addControl( banner, GsRect<float>(0.0f, 0.95f, 1.0f, 0.05f) );
 
     if(!gamesDetected)
