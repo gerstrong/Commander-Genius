@@ -17,7 +17,7 @@ const int A_WORMMOUTH_LOOK = 1;
 const int A_WORMMOUTH_EAT = 9;
 const int A_WORMMOUTH_STUNNED = 14;
 
-const int DIST_TO_EAT_X = (2<<CSF);
+const int DIST_TO_EAT_X = (8<<STC);
 const int DIST_TO_EAT_Y = 2<<CSF;
 const int LOOK_TIMER = 10;
 
@@ -110,9 +110,7 @@ void CWormmouth::getTouchedBy(CSpriteObject &theObject)
     if(mIsDead || theObject.mIsDead )
         return;
 
-
     CStunnable::getTouchedBy(theObject);
-
 
     // Was it a bullet? Than make it stunned.
     if( dynamic_cast<CBullet*>(&theObject) )
