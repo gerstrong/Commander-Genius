@@ -72,8 +72,8 @@ public:
     bool mVPad = true;
 #else
     bool mVPad = false;
-    int mVPadSize = 100;
 #endif
+    int mVPadSize = 100;
 #endif
 
 	GsRect<int> mAspectCorrection;
