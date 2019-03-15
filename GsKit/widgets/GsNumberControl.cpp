@@ -165,7 +165,7 @@ void CGUINumberControl::processLogic()
         }
     }
 #else
-    if(bDown)
+    if(bDown && hasPoint)
     {
         mPressed = true;
 

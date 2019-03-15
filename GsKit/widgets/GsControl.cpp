@@ -11,6 +11,7 @@
 #include <base/video/CVideoDriver.h>
 #include <base/GsTimer.h>
 #include <base/PointDevice.h>
+#include <base/GsLogging.h>
 
 
 #include "GsControl.h"
@@ -75,6 +76,7 @@ void GsControl::processPointingState(const GsRect<float> &rect)
     const bool hasPoint = rect.HasPoint(pointingState.mPos);
     const bool bDown = (pointingState.mActionButton>0);
 
+
     mReleased = false;
 
     if(!bDown && mPressed)
@@ -83,6 +85,9 @@ void GsControl::processPointingState(const GsRect<float> &rect)
 
         if(hasPoint)
         {
+            gLogging.ftextOut("rect = %f,%f,%f,%f\n", rect.x, rect.y, rect.w, rect.h);
+            gLogging.ftextOut("pointingState.mPos = %f,%f\n", pointingState.mPos.x, pointingState.mPos.y);
+
             mReleased = true;
         }
     }
@@ -100,7 +105,10 @@ void GsControl::processPointingState(const GsRect<float> &rect)
 #else
     if(bDown)
     {
-        mPressed = true;
+        if(hasPoint)
+        {
+            mPressed = true;
+        }
     }
 #endif
 }

@@ -28,8 +28,13 @@ void InputText::processRender(const GsRect<float> &RectDispCoordFloat)
 
         Uint32 newcolor;
 
+#ifndef DISABLE_HOVER
         if(mHovered || mPressed || mSelected)
             newcolor = blit.mapRGB(84, 234, 84);
+#else
+        if(mPressed || mSelected)
+            newcolor = blit.mapRGB(84, 234, 84);
+#endif
         else
             newcolor = blit.mapRGB(38, 134, 38);
 

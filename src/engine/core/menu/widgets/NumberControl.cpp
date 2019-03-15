@@ -106,9 +106,9 @@ void NumberControl::processRender(const GsRect<float> &RectDispCoordFloat)
             mTextDisabledSfc.blitTo(blitsfc, lRect);
         }
         else
-        {
+        {                        
+#ifndef DISABLE_HOVER
             drawEnabledButton(blitsfc, lRect, mHovered);
-            
             if(mHovered)
             {
                 if(mDecSel)
@@ -118,6 +118,9 @@ void NumberControl::processRender(const GsRect<float> &RectDispCoordFloat)
                 else
                     mTextLightSfc.blitTo(blitsfc, lRect);
             }
+#else
+            drawEnabledButton(blitsfc, lRect, false);
+#endif
         }
         
         drawBlinker(lRect);

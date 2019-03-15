@@ -72,7 +72,11 @@ void ComboSelection::processRender(const GsRect<float> &RectDispCoordFloat)
         }
         else
         {
+#ifndef DISABLE_HOVER
             drawEnabledButton(blitsfc, lRect, mHovered);
+#else
+            drawEnabledButton(blitsfc, lRect, false);
+#endif
         }
         
         drawBlinker(lRect);

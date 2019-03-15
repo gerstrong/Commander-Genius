@@ -9,6 +9,8 @@ set (CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/CMake")
 
 option(USE_VIRTUALPAD "Enable Onscreen Virtual Gamepad support " yes)
 
+
+
 if(USE_VIRTUALPAD)
     ADD_DEFINITIONS(-DVIRTUALPAD)
 endif(USE_VIRTUALPAD)

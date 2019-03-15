@@ -82,7 +82,9 @@ private:
 
     std::vector<item> mItemList;
 
+#ifndef DISABLE_HOVER
     int mHoverSelection = 0;
+#endif
     int mPressedSelection = -1;
     int mReleasedSelection = -1;
     

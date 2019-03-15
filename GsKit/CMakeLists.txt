@@ -8,7 +8,6 @@ Project(GsKit)
 OPTION(USE_SDL2 "SDL2 support" Yes)
 option(USE_PYTHON3 "Use Python3 scripts" yes)
 
-
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 

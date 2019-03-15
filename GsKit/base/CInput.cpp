@@ -777,7 +777,8 @@ void CInput::pollEvents()
             else
 #endif
             {
-                const Vector2D<int> rotPt(Event.tfinger.x, Event.tfinger.y);
+                const Vector2D<int> rotPt(Event.tfinger.x,
+                                          Event.tfinger.y);
                 transMouseRelCoord(Pos, rotPt, activeArea, tiltedScreen);
                 m_EventList.add( new PointingDevEvent( Pos, PDE_BUTTONDOWN ) );
                 gPointDevice.mPointingState.mActionButton = 1;

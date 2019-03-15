@@ -129,10 +129,12 @@ void CGUITextSelectionList::processLogic()
                 it->mBgColor.converge( GsColor(0xB5, 0xB5, 0xF1, 0xFF) );
             }
         }
+#ifndef DISABLE_HOVER
         else if( mHoverSelection == curLinePos )
         {
             it->mBgColor.converge( GsColor(0xC5, 0xC5, 0xC5, 0xFF) );
         }
+#endif
     }
 
 
@@ -179,6 +181,7 @@ void CGUITextSelectionList::processLogic()
 
             if( mousePos.x > x_innerbound_min && mousePos.y > y_innerbound_min)
             {
+                /*
                 if(mHoverTriggers)
                 {
                     if(mHovered)
@@ -188,12 +191,14 @@ void CGUITextSelectionList::processLogic()
                         mReleasedSelection = newselection;
                     }
                 }
-                else
+                else*/
                 {
+#ifndef DISABLE_HOVER
                     if(mHovered)
                     {
                         mHoverSelection = newselection;
                     }
+#endif
                     if(mPressed)
                     {
                         mPressedSelection = newselection;
@@ -208,7 +213,9 @@ void CGUITextSelectionList::processLogic()
     }
     else
     {
+#ifndef DISABLE_HOVER
         mHoverSelection = -1;
+#endif
         mPressedSelection = -1;
     }
 }
@@ -277,11 +284,13 @@ void CGUITextSelectionList::processRender(const GsRect<float> &RectDispCoordFloa
             rect.y = ypos + (line*rect.h);
             blitsfc.fillRGBA(rect, theColor);
 		}
+#ifndef DISABLE_HOVER
         else if( mHoverSelection == curLinePos )
         {
             rect.y = ypos+(line*sepHeight);
             blitsfc.fillRGBA(rect, theColor);
         }
+#endif
 
 
         std::string trimmedText = theText;

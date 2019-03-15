@@ -94,7 +94,9 @@ protected:
 	int mFontID = 0;
 
     // For mouse/touch we have those
+#ifndef DISABLE_HOVER
 	bool mHovered  = false;
+#endif
     bool mPressed  = false;
     bool mReleased = false;
 
@@ -110,10 +112,12 @@ protected:
     /**
      * @brief mHoverTriggers    This is for touch friendly devices were there is no device
      */
+#ifndef DISABLE_HOVER
 #ifdef ANDROID
     static const bool mHoverTriggers = true;
 #else
     static const bool mHoverTriggers = false;
+#endif
 #endif
 };
 
