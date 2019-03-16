@@ -40,7 +40,7 @@ void GsControl::processBlendEffects()
         #ifndef DISABLE_HOVER
         if(mHovered || mSelected)
         #else
-        if(mSelected)
+        if(mSelected || mPressed)
         #endif
         {
             int maxBlend = 224;
@@ -59,7 +59,7 @@ void GsControl::processBlendEffects()
             else
                mLightRatio = maxBlend;
         }
-        else // Button is not hovered
+        else // Button is not hovered/pressed
         {
             if(mLightRatio-BLEND_SPEED > 0)
                mLightRatio -= BLEND_SPEED;

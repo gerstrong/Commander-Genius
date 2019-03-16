@@ -7,9 +7,13 @@ Project(CommanderGenius)
 
 set (CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/CMake")
 
-option(USE_VIRTUALPAD "Enable Onscreen Virtual Gamepad support " yes)
+option(USE_VIRTUALPAD "Enable Onscreen Virtual Gamepad support " ON)
 
+option(DISABLE_HOVER "Disables the hover over effect in the menus, useful for touch based devices" OFF)
 
+if(DISABLE_HOVER)
+    ADD_DEFINITIONS(-DDISABLE_HOVER)
+endif()
 
 if(USE_VIRTUALPAD)
     ADD_DEFINITIONS(-DVIRTUALPAD)
