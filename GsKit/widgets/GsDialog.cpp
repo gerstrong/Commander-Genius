@@ -43,23 +43,22 @@ void CGUIDialog::updateGraphics()
 }
 
 
-
-std::shared_ptr<GsControl> 
-CGUIDialog::addControl( std::unique_ptr<GsControl> &newControl,
+std::shared_ptr<GsControl>
+CGUIDialog::addControl( std::shared_ptr<GsControl> &newControl,
                         const GsRect<float>& RelRect )
 {
     GsRect<float> AbsRect = RelRect;
-	AbsRect.transform(mRect);
-	newControl->mRect = AbsRect;
+    AbsRect.transform(mRect);
+    newControl->mRect = AbsRect;
 
-    auto ctrlPtr = std::shared_ptr<GsControl>( move(newControl) );
+    auto ctrlPtr = newControl;
 
     mControlList.push_back( ctrlPtr );
 
-	if(mControlList.size() == 1)
-	{
-	    mpCurrentCtrl = mControlList.front().get();
-	}
+    if(mControlList.size() == 1)
+    {
+        mpCurrentCtrl = mControlList.front().get();
+    }
 
     return ctrlPtr;
 }
@@ -293,7 +292,7 @@ void CGUIDialog::initEmptyBackground()
 
 void CGUIDialog::drawBorderRect(SDL_Surface *backSfc, const SDL_Rect &Rect)
 {
-    GsFont &Font = gGraphics.getFont(1);
+    GsFontLegacy &Font = gGraphics.getFont(1);
     Font.drawCharacter( backSfc, 1, 0, 0 );
 
     for( int x=8 ; x<Rect.w-8 ; x+=8 )

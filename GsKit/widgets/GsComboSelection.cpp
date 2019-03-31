@@ -134,7 +134,7 @@ void CGUIComboSelection::processRender(const GsRect<float> &RectDispCoordFloat)
     }
 
     // Now lets draw the text of the list control
-    GsFont &Font = gGraphics.getFont(mFontID);
+    GsFontLegacy &Font = gGraphics.getFont(mFontID);
 
     const int fontHeight = 8;
     //const int textX = lRect.x+24+(mText.size()+2)*fontHeight;

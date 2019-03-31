@@ -932,7 +932,7 @@ bool CEGAGraphicsGalaxy::readfonts()
 
     for(Uint16 i = 0; i < EpisodeInfo[ep].NumFonts; i++)
     {
-        GsFont &font = gGraphics.getFont(i);
+        auto &font = gGraphics.getFont(i);
 
         const std::vector<unsigned char> &fontData = m_egagraph.at(EpisodeInfo[ep].IndexFonts + i).data;
 

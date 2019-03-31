@@ -36,7 +36,7 @@ CGUINumberControl(text, startValue, endValue,
 
 void NumberControl::setupButtonSurface(const std::string &text)
 {        
-    GsFont &Font = gGraphics.getFont(mFontID);
+    auto &Font = gGraphics.getFont(mFontID);
 
     const std::string showText = "  " + mText + ": " + itoa(mValue);
     GsButton::setupButtonSurface(showText);
@@ -63,7 +63,7 @@ void NumberControl::processLogic()
 void NumberControl::drawNoStyle(SDL_Rect& lRect)
 {
     // Now lets draw the text of the list control
-    GsFont &Font = gGraphics.getFont(mFontID);
+    auto &Font = gGraphics.getFont(mFontID);
 
     std::string text = mText + ":";
 
@@ -128,7 +128,7 @@ void NumberControl::processRender(const GsRect<float> &RectDispCoordFloat)
     else if(mStyle == Style::VORTICON)
     {
         // Now lets draw the text of the list control
-        GsFont &Font = gGraphics.getFont(mFontID);
+        auto &Font = gGraphics.getFont(mFontID);
         
         Font.drawFont( blitsfc, mText, lRect.x+24, lRect.y, false );
         Font.drawFont( blitsfc, ":", lRect.x+24+mText.size()*8, lRect.y, false );

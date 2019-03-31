@@ -74,7 +74,7 @@ public:
 	void process();
 
 private:
-	Uint32 m_timer;
+//	Uint32 m_timer;
 	bool mReversed;
 };
 

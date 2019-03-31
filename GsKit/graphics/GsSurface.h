@@ -10,7 +10,7 @@
 #include <cassert>
 
 static inline int BlitSurface(SDL_Surface *src, SDL_Rect *srcrect,
-                       SDL_Surface *dst, SDL_Rect *dstrect)
+                              SDL_Surface *dst, SDL_Rect *dstrect)
 {
     assert(src);    assert(dst);
 
@@ -194,11 +194,19 @@ public:
         fill( rect, mapRGBA(r,g,b,a) );
     }
 
-    void fill(const GsRect<Uint16> &rect, const Uint32 color)
+    void fill(const GsRect<Uint16> &rect,
+              const Uint32 color)
     {
         SDL_Rect sdlRect = rect.SDLRect();
         SDL_FillRect( mpSurface, &sdlRect, color );
     }
+
+    void fill(const GsRect<Uint16> &rect,
+              const GsColor &color)
+    {
+        fill( rect, color.get(mpSurface->format) );
+    }
+
 
     void fill(const Uint32 color)
     {

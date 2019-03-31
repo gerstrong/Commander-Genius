@@ -21,7 +21,7 @@ GsCursor::GsCursor(SDL_Surface *p_screen)
     SDL_FillRect(mp_Surface, nullptr, 0x0);
 }
 
-void GsCursor::generateTwirls(GsFont &Font)
+void GsCursor::generateTwirls(GsFontLegacy &Font)
 {
 	// The positions from the fonts are from 9 to 14
 	// You see, just six direction

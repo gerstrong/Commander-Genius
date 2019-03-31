@@ -29,13 +29,13 @@ void GameButton::drawVorticonStyle(SDL_Rect& lRect)
     // Now lets draw the text of the button
     if(mEnabled)
     {
-        GsFont &Font = gGraphics.getFont(mFontID);
+        auto &Font = gGraphics.getFont(mFontID);
         Font.drawFont( blitsfc, mText, lRect.x+24, lRect.y, false );
         drawTwirl(lRect);
     }
     else
     {
-        GsFont &Font = gGraphics.getFont(0);
+        auto &Font = gGraphics.getFont(0);
         Font.drawFont( blitsfc, mText, lRect.x+24, lRect.y, true );
     }
 }

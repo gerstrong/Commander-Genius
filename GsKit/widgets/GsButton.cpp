@@ -142,7 +142,7 @@ void GsButton::drawNoStyle(SDL_Rect& lRect)
 
 void GsButton::setupButtonSurface(const std::string &text)
 {
-    GsFont &Font = gGraphics.getFont(mFontID);
+    GsFontLegacy &Font = gGraphics.getFont(mFontID);
 
     if(text.empty())
     {

@@ -147,7 +147,7 @@ void CGUITextSelectionList::processLogic()
 	const float fy = mRect.y;
 	const float fh = mRect.h;
 
-    GsFont &Font = gGraphics.getFont(mFontID);
+    GsFontLegacy &Font = gGraphics.getFont(mFontID);
     const int pixth = Font.getPixelTextHeight();
 
 

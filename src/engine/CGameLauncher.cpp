@@ -448,7 +448,7 @@ bool CGameLauncher::start()
     // Resources for the main menu
     // This is only for the menu. We only need one fontmap for the list of games and some buttons
     gGraphics.createEmptyFontmaps(1);
-    GsFont &Font = gGraphics.getFont(0);
+    auto &Font = gGraphics.getFont(0);
 
     const auto height = gVideoDriver.getHeight();
 

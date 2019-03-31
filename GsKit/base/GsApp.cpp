@@ -51,10 +51,10 @@ bool getBooleanArgument( int argc, char *argv[], const std::string& text )
 
 
 
-GsApp::GsApp() :
-mSink(this)
+GsApp::GsApp()
 {
-    gEventManager.regSink(&mSink);
+    mpSink.reset(new GsAppEventSink(this));
+    gEventManager.regSink(mpSink);
 }
 
 
@@ -70,12 +70,12 @@ mSink(this)
 
 void GsApp::cleanup()
 {
-    gInput.shutdown();
+    mpSink = nullptr;
+    //gInput.shutdown();
 }
 
 GsApp::~GsApp()
 {
-    gEventManager.unregSink(&mSink);
 }
 
 
@@ -231,7 +231,11 @@ void GsApp::setEngine(GsEngine *engPtr)
 void GsApp::runMainCycle()
 {
     // I hope the engine has been set. Otherwise quit the app
-    assert(mpCurEngine);
+    if(!mpCurEngine)
+    {
+        gLogging << "No Engine set. This should not happen. Please report this the developers";
+        return ;
+    }
 
     mpCurEngine->start();
 

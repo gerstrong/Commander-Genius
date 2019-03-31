@@ -94,7 +94,7 @@ void GsScrollbar::drawScrollBar(const SDL_Rect &lRect)
 
 
     // Set the up and down arrows
-    //GsFont &Font = gGraphics.getFont(mFontID);
+    //auto &Font = gGraphics.getFont(mFontID);
     blitSurface.fillRGB( bScUpRect, 0x7F, 0x7F, 0x7F);
     //Font.drawFontCentered(blitSurface.getSDLSurface(), "\017", bScUpRect.x, bScUpRect.w, bScUpRect.y, false );
     blitSurface.fillRGB( bScDownRect, 0x7F, 0x7F, 0x7F);

@@ -6,6 +6,7 @@
 #include <cstdio>
 #include <string>
 
+
 /**
  * @brief The GsTexture class is a wrapper for SDL Textures introduced in SDL 2.0. It can be used extended with other libraries, OpenGL maybe, but
  *        this wrapper manages the texture memory a bit more C++ like, so trouble with managing it's pointer
@@ -13,6 +14,8 @@
  */
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
+
+class GsSurface;
 
 class GsTexture
 {
@@ -26,14 +29,7 @@ public:
     /**
      * @brief ~GsTexture Standard constructor
      */
-    virtual ~GsTexture()
-    {
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-
-        if(mpTexture)
-            unload();
-#endif
-    }
+    virtual ~GsTexture();
 
 
     #if SDL_VERSION_ATLEAST(2, 0, 0)
@@ -160,6 +156,8 @@ public:
                      const unsigned int size,
                      SDL_Renderer *renderer,
                      const bool dark);
+
+    bool loadFromSurface(const GsSurface &sfc);
 
 private:
 

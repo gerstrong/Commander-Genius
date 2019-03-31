@@ -11,7 +11,7 @@
 #include <base/video/CVideoDriver.h>
 #include <base/GsTimer.h>
 #include <base/PointDevice.h>
-#include <base/GsLogging.h>
+
 
 
 #include "GsControl.h"
@@ -30,6 +30,9 @@ GsControl::GsControl(const Style style) :
 
 GsControl::GsControl() :
     GsControl(Style::NONE) {}
+
+GsControl::~GsControl()
+{}
 
 
 void GsControl::processBlendEffects()
@@ -85,9 +88,6 @@ void GsControl::processPointingState(const GsRect<float> &rect)
 
         if(hasPoint)
         {
-            gLogging.ftextOut("rect = %f,%f,%f,%f\n", rect.x, rect.y, rect.w, rect.h);
-            gLogging.ftextOut("pointingState.mPos = %f,%f\n", pointingState.mPos.x, pointingState.mPos.y);
-
             mReleased = true;
         }
     }
@@ -119,7 +119,7 @@ void GsControl::drawTwirl( const SDL_Rect& lRect )
     GsWeakSurface blit(gVideoDriver.getBlitSurface());
 
 	// Now lets draw the text of the list control
-	GsFont &Font = gGraphics.getFont(mFontID);
+    auto &Font = gGraphics.getFont(mFontID);
 
 	if( gTimer.HasTimeElapsed(100) )
 	{

@@ -419,7 +419,7 @@ void CPassiveGalaxy::processTitle()
         SDL_Rect lRect;
 
         // Draw the title of the story text
-        GsFont &starwarsFont = gGraphics.getFont(2);
+        auto &starwarsFont = gGraphics.getFont(2);
 
         SDL_Rect gameResSDL = gameRes.SDLRect();
 
@@ -570,7 +570,7 @@ void CPassiveGalaxy::renderStarWars()
     lRect.x = 0;        lRect.y = lRect.h-20;
 
     // Draw some text.
-    GsFont &Font = gGraphics.getFont(1);
+    auto &Font = gGraphics.getFont(1);
 
     if(mSwapColors)
     {

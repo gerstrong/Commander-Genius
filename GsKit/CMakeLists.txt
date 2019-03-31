@@ -107,13 +107,16 @@ INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
 
 
 if(USE_SDL2)
+
     find_package(SDL2 REQUIRED)
 
     if(SDL2_FOUND)
         find_package(SDL2_image REQUIRED)
+#        find_package(SDL2_ttf REQUIRED)
 
         message(STATUS "Using shared SDL Version 2 for Commander Genius")
         include_directories(${SDL2_INCLUDE_DIRS})
+        include_directories(${SDL2_TTF_INCLUDE_DIRS})
         include_directories(${SDL2_IMAGE_INCLUDE_DIRS})
 
     endif(SDL2_FOUND)
@@ -138,6 +141,7 @@ if(USE_SDL2)
     Target_link_libraries(GsKit ${SDL2_LIBRARY})
     Target_link_libraries(GsKit ${SDL2IMAGE_LIBRARIES})
     Target_link_libraries(GsKit ${SDLIMAGE_LIBRARY})
+    Target_link_libraries(GsKit ${SDL2_TTF_LIBRARY})
 else()
     Target_link_libraries(GsKit ${SDL_LIBRARY})
     Target_link_libraries(GsKit ${SDL_LIBRARIES})

@@ -119,7 +119,7 @@ void CCredits::ponder()
 
 void CCredits::render()
 {
-    GsFont &creditFont = gGraphics.getFont(0);
+    auto &creditFont = gGraphics.getFont(0);
     mpMap->animateAllTiles();
     gVideoDriver.blitScrollSurface();
 

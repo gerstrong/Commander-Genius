@@ -20,7 +20,7 @@ $2AD6W #Spindred
 
 namespace galaxy {  
 
-constexpr int WALK_SPEED = 25;
+//constexpr int WALK_SPEED = 25;
 constexpr int MAX_BOUNCES = 2;
 constexpr int MAX_BOUNCE_INERTIA = 120;
 

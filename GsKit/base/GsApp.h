@@ -63,7 +63,7 @@ public:
 private:
 
     std::unique_ptr<GsEngine> mpCurEngine;
-    GsAppEventSink mSink;
+    std::shared_ptr<GsAppEventSink> mpSink;
 };
 
 // It's a simple quit event which will force CG to close the App

@@ -165,7 +165,7 @@ void CGUINumberControl::processLogic()
         }
     }
 #else
-    if(bDown && hasPoint)
+    if(bDown)
     {
         mPressed = true;
 
@@ -249,9 +249,7 @@ void CGUINumberControl::processRender(const GsRect<float> &RectDispCoordFloat)
     else
         lComp = 0xFF - (mLightRatio*(0xFF-0xDF)/255);
 
-    const Uint32 fillColor = blitsfc.mapRGBA( Uint8(lComp),
-                                              Uint8(lComp),
-                                              Uint8(lComp), 0xFF);
+    const Uint32 fillColor = blitsfc.mapRGBA( lComp, lComp, lComp, 0xFF);
 
     GsRect<Uint16> rect(lRect);
 
@@ -259,7 +257,7 @@ void CGUINumberControl::processRender(const GsRect<float> &RectDispCoordFloat)
 
 
     // Now lets draw the text of the list control
-    GsFont &Font = gGraphics.getFont(mFontID);
+    GsFontLegacy &Font = gGraphics.getFont(mFontID);
 
     const int fontHeight = 8;
     const int textX = lRect.x+24+(mText.size()+2)*8;

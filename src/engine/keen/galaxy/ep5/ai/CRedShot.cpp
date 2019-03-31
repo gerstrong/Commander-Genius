@@ -11,7 +11,7 @@ $2806W #Robo Red shot smash
 
 namespace galaxy {  
 
-const Uint32 speed = 10;
+//const Uint32 speed = 10;
 //const Uint32 hittime = 100;
 
 enum REDSHOTACTIONS

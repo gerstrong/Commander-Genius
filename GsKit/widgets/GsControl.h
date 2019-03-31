@@ -29,7 +29,7 @@ public:
     
     GsControl(const Style style);
     
-    virtual ~GsControl() {}
+    virtual ~GsControl();
 
 	virtual void processLogic() = 0;
 
@@ -59,14 +59,10 @@ public:
 
 
     void select( const bool value )
-    {
-        mSelected = value;
-    }
+    { mSelected = value; }
 
     bool isSelected()
-    {
-        return mSelected;
-    }
+    { return mSelected; }
 
 
     bool Up()

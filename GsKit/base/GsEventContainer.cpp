@@ -16,7 +16,7 @@ void CEventContainer::processSinks()
     // We don't need anything from this list anymore
     m_EventList.clear();
 
-    for( GsEventSink* sink : mSinkPtrList )
+    for( auto sink : mSinkPtrList )
     {
         for( auto &event : mPumpEventPtrs )
         {
