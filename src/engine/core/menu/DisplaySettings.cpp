@@ -174,6 +174,18 @@ void DisplaySettings::release()
         }
     }
 
+    {
+        const std::string resStr = mpResolutionSelection->getSelection();
+        int w, h;
+
+        const int numRead = sscanf(resStr.c_str(),"%ix%i", &w, &h);
+        std::cerr << "numRead: " << numRead << std::endl;
+        if(numRead == 2)
+        {
+            GsRect<Uint16> res(w, h);
+            mUsersConf.setResolution(res);
+        }
+    }
 
 	// In case the user changed something in the camera settings, reload that.
     mUsersConf.m_CameraBounds = gVideoDriver.getCameraBounds();
