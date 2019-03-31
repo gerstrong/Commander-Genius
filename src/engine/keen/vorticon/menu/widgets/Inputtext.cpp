@@ -22,7 +22,7 @@ void InputText::processRender(const GsRect<float> &RectDispCoordFloat)
     SDL_Surface *blitsfc = gVideoDriver.getBlitSurface();
 
     // Now lets draw the text of the list control
-    GsFont &Font = gGraphics.getFont(mFontID);
+    auto &Font = gGraphics.getFont(mFontID);
 
     Font.drawFont( blitsfc, getInputString(), lRect.x+24, lRect.y, false );
 

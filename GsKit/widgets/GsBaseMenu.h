@@ -57,7 +57,7 @@ public:
 		mpMenuDialog->sendEvent(command);
 	}
 
-	void setProperty( const Property newProperty )
+    virtual void setProperty( const Property newProperty )
 	{
 		mpReturnButton->setText( newProperty == CLOSEABLE ? "x" : "\025" );
 	}

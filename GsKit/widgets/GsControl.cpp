@@ -13,6 +13,7 @@
 #include <base/PointDevice.h>
 
 
+
 #include "GsControl.h"
 
 const int BLEND_SPEED = 16;
@@ -30,17 +31,28 @@ GsControl::GsControl(const Style style) :
 GsControl::GsControl() :
     GsControl(Style::NONE) {}
 
+GsControl::~GsControl()
+{}
+
 
 void GsControl::processBlendEffects()
 {
     if(mEnabled)
     {
         // For some nice special effects
+        #ifndef DISABLE_HOVER
         if(mHovered || mSelected)
+        #else
+        if(mSelected || mPressed)
+        #endif
         {
             int maxBlend = 224;
 
+            #ifndef DISABLE_HOVER
             if(mHovered && mSelected)
+            #else
+            if(mSelected)
+            #endif
             {
                 maxBlend = 255;
             }
@@ -50,7 +62,7 @@ void GsControl::processBlendEffects()
             else
                mLightRatio = maxBlend;
         }
-        else // Button is not hovered
+        else // Button is not hovered/pressed
         {
             if(mLightRatio-BLEND_SPEED > 0)
                mLightRatio -= BLEND_SPEED;
@@ -67,6 +79,7 @@ void GsControl::processPointingState(const GsRect<float> &rect)
     const bool hasPoint = rect.HasPoint(pointingState.mPos);
     const bool bDown = (pointingState.mActionButton>0);
 
+
     mReleased = false;
 
     if(!bDown && mPressed)
@@ -79,15 +92,25 @@ void GsControl::processPointingState(const GsRect<float> &rect)
         }
     }
 
+#ifndef DISABLE_HOVER
     if(!bDown || mPressed)
     {
-        mHovered = hasPoint;
+        mHovered = hasPoint;        
     }
 
     if(mHovered && bDown)
     {
         mPressed = true;
     }
+#else
+    if(bDown)
+    {
+        if(hasPoint)
+        {
+            mPressed = true;
+        }
+    }
+#endif
 }
 
 
@@ -96,7 +119,7 @@ void GsControl::drawTwirl( const SDL_Rect& lRect )
     GsWeakSurface blit(gVideoDriver.getBlitSurface());
 
 	// Now lets draw the text of the list control
-	GsFont &Font = gGraphics.getFont(mFontID);
+    auto &Font = gGraphics.getFont(mFontID);
 
 	if( gTimer.HasTimeElapsed(100) )
 	{
@@ -116,10 +139,12 @@ void GsControl::drawTwirl( const SDL_Rect& lRect )
 	}
 
     // Now lets draw the text of the button
+#ifndef DISABLE_HOVER
     if(mHovered)
     {
         Font.drawCharacter( blit.getSDLSurface(), 127, lRect.x+16, lRect.y );
     }
+#endif
 
 }
 
@@ -135,7 +160,11 @@ void GsControl::drawBlinker( const SDL_Rect& lRect )
 
 	int tile;
 
+#ifndef DISABLE_HOVER
     const bool blink = (mHovered || mSelected) && mTwirliconID;
+#else
+    const bool blink = mSelected && mTwirliconID;
+#endif
 
 	if(!mEnabled)
 	{

@@ -108,17 +108,19 @@ void CGUIInputText::processRender(const GsRect<float> &RectDispCoordFloat)
     {
         drawRect( blitsfc, &lRect, 1, 0x00BBBBBB, 0x00DFDFDF );
     }
+#ifndef DISABLE_HOVER
     else if( mHovered )
     {
         drawRect( blitsfc, &lRect, 1, 0x00BBBBBB, 0x00EFEFEF );
     }
+#endif
     else
     {
         drawRect( blitsfc, &lRect, 1, 0x00BBBBBB, 0x00FFFFFF );
     }
 
     // Now lets draw the text of the list control
-    GsFont &Font = gGraphics.getFont(mFontID);
+    GsFontLegacy &Font = gGraphics.getFont(mFontID);
 
     Font.drawFontCentered( blitsfc, getInputString(), lRect.x, lRect.w, lRect.y, lRect.h,false );
 }

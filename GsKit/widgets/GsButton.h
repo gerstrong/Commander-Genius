@@ -28,8 +28,6 @@ public:
             const float green = 0.875f,
             const float blue = 1.0f);
     
-    void setupButtonSurface();
-
 	bool sendEvent(const InputCommand command);
 
     void updateGraphics();
@@ -66,7 +64,7 @@ public:
 	std::string getText()
 	{	return mText;	}
 
-    virtual void setupButtonSurface(const std::string &text);
+    virtual void setupButtonSurface(const std::string &text = "");
 
 protected:
 

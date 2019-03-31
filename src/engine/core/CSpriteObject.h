@@ -73,7 +73,7 @@ struct ObjMove
     ObjMove(const Vector2D<int>& Vector) : m_Vec(Vector) {}
     ObjMove(const int offx, const int offy) : m_Vec(offx, offy) {}
     
-    virtual ~ObjMove() {}
+    virtual ~ObjMove();
 };
 
 // Event that will be used to move the objects in the game together with another object.
@@ -113,7 +113,7 @@ class CSpriteObject
 {
   public:
     CSpriteObject(CMap *pmap, Uint32 x, Uint32 y, const int spriteVar);
-    
+
     unsigned int m_index;        	// Like an ID for some objects that need this implementation
     
     
@@ -372,6 +372,10 @@ class CSpriteObject
     
     
 #if USE_PYTHON3
+
+
+    bool loadAiGetterBool(const std::string &pyMethodStr, bool &value);
+
     /**
      * @brief loadAiGetterInteger
      * @param pModule
@@ -399,6 +403,11 @@ class CSpriteObject
      * @return if load was successful true, otherwise false.
      */
     virtual bool loadPythonScripts(const std::string &scriptBaseName);
+
+    GsPythonModule mModule;
+    GsPythonFunc mProcessFunc;
+    GsPythonFunc mUpdatePlayerCoord;
+
 #endif
     
     CMap *mpMap;
@@ -408,6 +417,7 @@ class CSpriteObject
     bool mRecoverFromStun = false; /** If foe get shot they might be able to recover at later time */
     bool mNeverStop = false;        /** This will make foe continue walking and never change actions (Keen 9 - Cybloog) */
     bool mPogoStunnable = false;        /** This will make foe continue walking and never change actions (Keen 9 - Cybloog) */
+    bool mJumpStunnable = false;
     bool mMayShoot = false;         /** If enemy if allowed to shoot. Not all of them are able to do that.*/
     
     GameSound mWalkSound;

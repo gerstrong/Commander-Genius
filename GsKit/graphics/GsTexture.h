@@ -5,7 +5,7 @@
 #include <SDL_image.h>
 #include <cstdio>
 #include <string>
-#include <cassert>
+
 
 /**
  * @brief The GsTexture class is a wrapper for SDL Textures introduced in SDL 2.0. It can be used extended with other libraries, OpenGL maybe, but
@@ -13,6 +13,9 @@
  * @note: This is SDL 2.0 or above only right now
  */
 
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+
+class GsSurface;
 
 class GsTexture
 {
@@ -26,14 +29,7 @@ public:
     /**
      * @brief ~GsTexture Standard constructor
      */
-    virtual ~GsTexture()
-    {
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-
-        if(mpTexture)
-            unload();
-#endif
-    }
+    virtual ~GsTexture();
 
 
     #if SDL_VERSION_ATLEAST(2, 0, 0)
@@ -45,7 +41,6 @@ public:
      */
     bool load(const std::string &fname, SDL_Renderer *renderer)
     {
-
         // Do we have an old texture? Unload it
         if(mpTexture)
             unload();
@@ -162,6 +157,8 @@ public:
                      SDL_Renderer *renderer,
                      const bool dark);
 
+    bool loadFromSurface(const GsSurface &sfc);
+
 private:
 
     SDL_Texture* mpTexture = nullptr;
@@ -169,5 +166,6 @@ private:
 #endif
 };
 
+#endif
 
 #endif // GSTEXTURE_H

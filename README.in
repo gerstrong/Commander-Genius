@@ -290,7 +290,6 @@ How to compile it under Ubuntu:
 
  * Create an empty build Dir: mkdir -p CGeniusBuild
  * Extract my source code into the "CGeniusSrc" directory. 
- * cd CGeniusSrc 
  * cd CGeniusBuild
  * Run "cmake ../CGeniusSrc".
  * Run "make".
@@ -311,7 +310,6 @@ How to compile it under Fedora:
      SDL2_image-devel SDL2_mixer-devel
 
  * Extract my source code into the "CGeniusSrc" directory.
- * cd CGeniusSrc
  * mkdir -p CGeniusBuild
  * cd CGeniusBuild
  * Run "cmake ../CGeniusSrc".
@@ -330,7 +328,6 @@ Compiling CG on any Linux/UNIX (other than Ubuntu or Fedora):
  * You need to install the "SDL_mixer", "SDL_image", "SDL", "curl", "boost" and
    "Mesa/OpenGL" development libraries to get it to compile successfully.
  * Extract my source code into the "CGeniusSrc" directory .
- * cd CGeniusSrc
  * mkdir -p CGeniusBuild
  * cd CGeniusBuild
  * Run "cmake ../CGeniusSrc".

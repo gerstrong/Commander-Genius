@@ -89,6 +89,9 @@ void CGUINumberControl::setSelection( const int value )
 
 void CGUINumberControl::processLogic()
 {
+    if(!mEnabled)
+        return;
+
     GsPointingState &pointingState = gPointDevice.mPointingState;
 
     const bool hasPoint = mRect.HasPoint(pointingState.mPos);
@@ -119,6 +122,7 @@ void CGUINumberControl::processLogic()
         }
     }
 
+#ifndef DISABLE_HOVER
     if(!bDown || mPressed)
     {
         mHovered = hasPoint;
@@ -163,6 +167,47 @@ void CGUINumberControl::processLogic()
                mLightRatio = 0;
         }
     }
+#else
+    if(bDown)
+    {
+        mPressed = true;
+
+        if( mDecSel )
+        {
+            // Cycle through the values -> go one value down
+            if( mValue > mStartValue )
+                decrement();
+        }
+        else if( mIncSel )
+        {
+            // Cycle through the values -> go one value up
+            if( mValue < mEndValue )
+                increment();
+        }
+
+        mMustRedraw = true;
+    }
+
+
+    if(mEnabled)
+    {
+        // For some nice special effects
+        if(mSelected)
+        {
+            if(mLightRatio+BLEND_SPEED < 255)
+               mLightRatio += BLEND_SPEED;
+            else
+               mLightRatio = 255;
+        }
+        else // Button is not hovered
+        {
+            if(mLightRatio-BLEND_SPEED > 0)
+               mLightRatio -= BLEND_SPEED;
+            else
+               mLightRatio = 0;
+        }
+    }
+#endif
 
 }
 
@@ -215,7 +260,7 @@ void CGUINumberControl::processRender(const GsRect<float> &RectDispCoordFloat)
 
 
     // Now lets draw the text of the list control
-    GsFont &Font = gGraphics.getFont(mFontID);
+    GsFontLegacy &Font = gGraphics.getFont(mFontID);
 
     const int fontHeight = 8;
     const int textX = lRect.x+24+(mText.size()+2)*8;

@@ -350,14 +350,14 @@ void CInput::render()
     if(!mpVirtPad)
         return;
 
+    if(!mpVirtPad->active())
+        return;
+
     if(mVPadConfigState)
     {
         mpVirtPad->renderConfig();
-        return;
     }
 
-    if(!mpVirtPad->active())
-        return;
 
     GsWeakSurface blit(gVideoDriver.getBlitSurface());
     mpVirtPad->render(blit);
@@ -687,7 +687,6 @@ void CInput::pollEvents()
     if(mpVirtPad && mVPadConfigState)
     {
         mpVirtPad->processConfig();
-        return;
     }
 #endif
 
@@ -758,15 +757,15 @@ void CInput::pollEvents()
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 		case SDL_FINGERDOWN:
         {
-            Vector2D<int> rotPt(Event.tfinger.x*float(activeArea.w),
-                                Event.tfinger.y*float(activeArea.h));
-
 #ifdef VIRTUALPAD
             // If Virtual gamepad takes control...
             if(gVideoDriver.VGamePadEnabled() && mpVirtPad &&
                mpVirtPad->active() )
             {
-                transMouseRelCoord(Pos, rotPt, activeArea, tiltedScreen);
+                Vector2D<int> rotPt(Event.tfinger.x*float(activeArea.w),
+                                    Event.tfinger.y*float(activeArea.h));
+
+	    		transMouseRelCoord(Pos, rotPt, activeArea, tiltedScreen);
 
                 if(!mpVirtPad->mouseFingerState(Pos, Event.tfinger, true))
                 {
@@ -778,7 +777,9 @@ void CInput::pollEvents()
             else
 #endif
             {
-                transMouseRelCoord(Pos, Event.tfinger, activeArea, tiltedScreen);
+                const Vector2D<int> rotPt(Event.tfinger.x,
+                                          Event.tfinger.y);
+                transMouseRelCoord(Pos, rotPt, activeArea, tiltedScreen);
                 m_EventList.add( new PointingDevEvent( Pos, PDE_BUTTONDOWN ) );
                 gPointDevice.mPointingState.mActionButton = 1;
                 gPointDevice.mPointingState.mPos = Pos;
@@ -808,7 +809,10 @@ void CInput::pollEvents()
 #endif
             {
                 passSDLEventVec = true;
-                const Vector2D<int> rotPt(Event.tfinger.x, Event.tfinger.y);
+
+                Vector2D<int> rotPt(Event.tfinger.x*float(activeArea.w),
+                                    Event.tfinger.y*float(activeArea.h));
+
                 transMouseRelCoord(Pos, rotPt, activeArea, tiltedScreen);
                 m_EventList.add( new PointingDevEvent( Pos, PDE_BUTTONUP ) );
                 gPointDevice.mPointingState.mActionButton = 0;
@@ -938,11 +942,29 @@ void CInput::pollEvents()
 #endif
 
 		case SDL_MOUSEMOTION:
+
             const Vector2D<int> rotPt(Event.motion.x, Event.motion.y);
             transMouseRelCoord(Pos, Event.motion, activeArea, tiltedScreen);
-            m_EventList.add( new PointingDevEvent( Pos, PDE_MOVED ) );
-            gPointDevice.mPointingState.mPos = Pos;
-			break;
+
+#ifdef VIRTUALPAD
+            if(gVideoDriver.VGamePadEnabled() && mpVirtPad &&
+                    mpVirtPad->active())
+            {
+                if(!mpVirtPad->mouseUp(Pos))
+                {
+                    passSDLEventVec = true;
+                    m_EventList.add( new PointingDevEvent( Pos, PDE_BUTTONUP ) );
+                    gPointDevice.mPointingState.mActionButton = 0;
+                    gPointDevice.mPointingState.mPos = Pos;
+                }
+            }
+            else
+#endif
+            {
+                m_EventList.add( new PointingDevEvent( Pos, PDE_MOVED ) );
+                gPointDevice.mPointingState.mPos = Pos;
+                break;
+            }
 
 #endif
 		}

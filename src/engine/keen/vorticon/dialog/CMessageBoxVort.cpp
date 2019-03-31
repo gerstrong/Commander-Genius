@@ -34,7 +34,7 @@ void CMessageBoxVort::initVorticonBackground()
     mBackgroundSfc.create(0, sdlRect.w, sdlRect.h, RES_BPP, 0, 0, 0, 0);
 
     // Now lets draw the text of the list control
-    GsFont &Font = gGraphics.getFont(1);
+    auto &Font = gGraphics.getFont(1);
 
     // Now draw the borders
     SDL_Surface *backSfc = mBackgroundSfc.getSDLSurface();

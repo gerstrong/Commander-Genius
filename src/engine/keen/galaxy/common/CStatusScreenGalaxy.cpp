@@ -161,7 +161,7 @@ void CStatusScreenGalaxy::GenerateStatusEp4()
     SDL_Rect EditRect;
     drawBase(EditRect);
 
-    GsFont &Font = gGraphics.getFont(0);
+    auto &Font = gGraphics.getFont(0);
     Font.setupColor(0x555555);
 
     Font.drawFontCentered(mStatusSurface.getSDLSurface(), "LOCATION",
@@ -357,7 +357,7 @@ void CStatusScreenGalaxy::GenerateStatusEp5()
     SDL_Rect EditRect;
     drawBase(EditRect);
 
-    GsFont &Font = gGraphics.getFont(0);
+    auto &Font = gGraphics.getFont(0);
     Font.setupColor(0x555555);
 
     Font.drawFontCentered(mStatusSurface.getSDLSurface(), "LOCATION",
@@ -493,7 +493,7 @@ void CStatusScreenGalaxy::GenerateStatusEp6()
     SDL_Rect EditRect;
     drawBase(EditRect);
 
-    GsFont &Font = gGraphics.getFont(0);
+    auto &Font = gGraphics.getFont(0);
     Font.setupColor(0x555555);
 
     Font.drawFontCentered(mStatusSurface.getSDLSurface(), "LOCATION", EditRect.x, EditRect.w, EditRect.y, false);

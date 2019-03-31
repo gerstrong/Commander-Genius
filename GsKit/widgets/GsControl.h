@@ -29,7 +29,7 @@ public:
     
     GsControl(const Style style);
     
-    virtual ~GsControl() {}
+    virtual ~GsControl();
 
 	virtual void processLogic() = 0;
 
@@ -71,10 +71,12 @@ public:
 
     void setDown( const bool value )
     {
+        #ifndef DISABLE_HOVER
         mHovered = value;
+        #endif
     }
 
-	virtual bool sendEvent(const InputCommand command) { return false; }
+    virtual bool sendEvent(const InputCommand) { return false; }
 
 
 	void drawTwirl( const SDL_Rect& lRect );
@@ -92,7 +94,9 @@ protected:
 	int mFontID = 0;
 
     // For mouse/touch we have those
+#ifndef DISABLE_HOVER
 	bool mHovered  = false;
+#endif
     bool mPressed  = false;
     bool mReleased = false;
 
@@ -108,10 +112,12 @@ protected:
     /**
      * @brief mHoverTriggers    This is for touch friendly devices were there is no device
      */
+#ifndef DISABLE_HOVER
 #ifdef ANDROID
     static const bool mHoverTriggers = true;
 #else
     static const bool mHoverTriggers = false;
+#endif
 #endif
 };
 

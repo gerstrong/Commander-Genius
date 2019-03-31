@@ -46,6 +46,8 @@ GameMenu(GsRect<float>(0.15f, 0.20f, 0.65f, 0.55f), style )
     mpFPSSelection = new NumberControl( "FPS", 10, 120, 10, 60,
                                         false,
                                         style);
+
+
     mpMenuDialog->addControl( mpFPSSelection, style );
 
     mpFrameSkip = new Switch( "FrameSkip", style );
@@ -87,6 +89,10 @@ void CVideoSettings::refresh()
 	// Load the config into the GUI
 	// TODO: Temporary. This must become a float later...
     const auto iFPS = static_cast<int>( gTimer.FPS() );
+
+    // Only enable this option when VSync is turned off
+    mpFPSSelection->enable(!mUsersConf.mVSync);
+
     mpFPSSelection->setSelection( iFPS );
     mpFrameSkip->enable( (iFPS> 0.0) ? true : false );
 

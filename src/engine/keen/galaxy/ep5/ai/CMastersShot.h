@@ -27,7 +27,7 @@ public:
 	void processWalking();	
 	//void processTurn();
 	
-	bool isNearby(CSpriteObject &theObject);
+    bool isNearby(CSpriteObject &);
 
 	int checkSolidD( int x1, int x2, int y2, const bool push_mode );
 
@@ -38,8 +38,8 @@ public:
 	 */
 	void getTouchedBy(CSpriteObject &theObject);
 	
-private:
-	int mTimer;
+//private:
+//	int mTimer;
 };
 
 }

@@ -12,14 +12,14 @@
 #ifndef GsCursor_H_
 #define GsCursor_H_
 
-#include <graphics/GsFont.h>
+#include <graphics/GsFontLegacy.h>
 #include <SDL.h>
 
 class GsCursor
 {
 public:
 	GsCursor(SDL_Surface *p_screen);
-	void generateTwirls(GsFont &Font);
+	void generateTwirls(GsFontLegacy &Font);
 	void draw(SDL_Surface* dst, Uint8 character, Uint16 x, Uint16 y);
 	virtual ~GsCursor();
 

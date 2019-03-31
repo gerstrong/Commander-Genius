@@ -55,6 +55,169 @@ void duplicateBackslashes(std::string &text)
 #endif
 }
 
+GsPython::GsPython()
+{
+    Py_Initialize();
+}
+
+GsPython::~GsPython()
+{
+    Py_Finalize();
+}
+
+
+GsPythonModule::~GsPythonModule()
+{
+    Py_XDECREF(mpModule);
+}
+
+
+bool
+GsPythonModule::
+loadIntegerFunc(const std::string &pyMethodStr,
+                int &value)
+{
+    // pFunc is a new reference
+    PyObject *pFunc = PyObject_GetAttrString(mpModule, pyMethodStr.c_str());
+
+    if (pFunc && PyCallable_Check(pFunc))
+    {
+        PyObject *pValue = PyObject_CallObject(pFunc, nullptr);
+
+        if (pValue != nullptr)
+        {
+            value = PyLong_AsLong(pValue);
+            Py_DECREF(pValue);
+        }
+        else
+        {
+            Py_DECREF(pFunc);
+            PyErr_Print();
+            gLogging.ftextOut("Call failed\n");
+            return false;
+        }
+    }
+    else
+    {
+        if (PyErr_Occurred())
+        {
+            PyErr_Print();
+        }
+
+        gLogging.ftextOut("Cannot find function \"init\"\n");
+        return false;
+    }
+
+    Py_XDECREF(pFunc);
+
+    return true;
+}
+
+bool
+GsPythonModule::
+loadIntegerFunc(const std::string &pyMethodStr,
+                int &value,
+                const int param1)
+{
+    // pFunc is a new reference
+    PyObject *pFunc = PyObject_GetAttrString(mpModule, pyMethodStr.c_str());
+
+    PyObject *pArgs = PyTuple_New(1);
+    PyTuple_SetItem(pArgs, 0, PyLong_FromLong(param1));
+
+    if (pFunc && PyCallable_Check(pFunc))
+    {
+        PyObject *pValue = PyObject_CallObject(pFunc, pArgs);
+
+        if (pValue != nullptr)
+        {
+            value = PyLong_AsLong(pValue);
+            Py_DECREF(pValue);
+        }
+        else
+        {
+            Py_DECREF(pFunc);
+            PyErr_Print();
+            gLogging.ftextOut("Call failed\n");
+            return false;
+        }
+    }
+    else
+    {
+        if (PyErr_Occurred())
+        {
+            PyErr_Print();
+        }
+
+        gLogging.ftextOut("Cannot find function \"%s\"\n", pyMethodStr.c_str());
+        return false;
+    }
+
+    Py_XDECREF(pArgs);
+    Py_XDECREF(pFunc);
+
+
+    return true;
+}
+
+
+bool
+GsPythonModule::
+loadBooleanFunc(const std::string &pyMethodStr,
+                bool &value)
+{
+    // pFunc is a new reference
+    PyObject *pFunc = PyObject_GetAttrString(mpModule, pyMethodStr.c_str());
+
+    if (pFunc && PyCallable_Check(pFunc))
+    {
+        PyObject *pValue = PyObject_CallObject(pFunc, nullptr);
+
+        if (pValue != nullptr)
+        {
+            auto isBool = PyBool_Check(pValue);
+
+            if(isBool)
+            {
+                if(pValue == Py_False)
+                {
+                    value = false;
+                }
+                else if(pValue == Py_True)
+                {
+                    value = true;
+                }
+            }
+
+            Py_DECREF(pValue);
+        }
+        else
+        {
+            Py_DECREF(pFunc);
+            PyErr_Print();
+            gLogging.ftextOut("Call failed\n");
+            return false;
+        }
+    }
+    else
+    {
+        if (PyErr_Occurred())
+        {
+            PyErr_Print();
+        }
+
+        gLogging.ftextOut("Cannot find function \"init\"\n");
+        return false;
+    }
+
+    Py_XDECREF(pFunc);
+
+
+    return true;
+}
+
+
+
 bool
 GsPythonModule::
 load(const std::string &modName,
@@ -65,6 +228,10 @@ load(const std::string &modName,
     return (mpModule != nullptr) ? true : false;
 }
 
+GsPythonFunc::~GsPythonFunc()
+{
+    Py_XDECREF(mpFunction);
+}
 
 bool
 GsPythonFunc::
@@ -95,30 +262,24 @@ load(GsPythonModule &module,
 }
 
 
-void
-GsPythonFunc::call()
+PyObject*
+GsPythonFunc::call(PyObject* args)
 {
-    /*PyObject *pValue = */PyObject_CallObject(mpFunction, nullptr);
-
-    /*if (pValue != nullptr)
+    if(!mpFunction)
     {
-        if( PyObject_IsTrue(pValue) )
-        {
-            value = true;
-        }
-        else
-        {
-            value = false;
-        }
-        Py_DECREF(pValue);
+        gLogging.ftextOut("Python function did not get defined.");
+        return nullptr;
     }
-    else
+
+    PyObject *pValue = PyObject_CallObject(mpFunction, args);
+
+    if (pValue == nullptr)
     {
-        Py_DECREF(pFunc);
         PyErr_Print();
         gLogging.ftextOut("Call failed\n");
-        return false;
-    }*/
+    }
+
+    return pValue;
 }
 
 
@@ -142,7 +303,7 @@ PyObject *GsPython::loadModule(const std::string &scriptBaseName,
     replaceSlashes(aidir);
     duplicateBackslashes(aidir);
 
-    gLogging.ftextOut("calling Py_Initialize().\n", aiscriptPath.c_str() );
+    gLogging.ftextOut("calling Py_Initialize(): %s.\n", aiscriptPath.c_str() );
 
 
 #ifdef ANDROID
@@ -152,10 +313,7 @@ PyObject *GsPython::loadModule(const std::string &scriptBaseName,
     const std::string pythonHome = JoinPaths(searchPath,"python3.5");
     setenv("PYTHONHOME", pythonHome.c_str(), 1);
     setenv("PYTHONPATH", pythonHome.c_str(), 1);
-#endif
-
-
-    Py_Initialize();
+#endif    
 
 
     PyObject* programName = PyUnicode_FromString(scriptBaseName.c_str());

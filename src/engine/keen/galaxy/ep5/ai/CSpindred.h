@@ -29,9 +29,9 @@ public:
 	void getTouchedBy(CSpriteObject &theObject);
 	
 private:
-	int mTimer;
-	bool mInverseGravity;
-	int mBounces;
+    int mTimer = 0;
+    bool mInverseGravity = false;
+    int mBounces = 0;
 };
 
 }

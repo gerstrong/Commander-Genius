@@ -12,7 +12,7 @@
 
 #include <base/video/GsEffectController.h>
 
-#include "GsFont.h"
+#include "GsFontLegacy.h"
 #include "GsTilemap.h"
 #include "GsSprite.h"
 #include "GsBitmap.h"
@@ -121,7 +121,7 @@ void GsGraphics::createEmptyMisGsBitmaps(Uint16 num_bmps)
 void GsGraphics::createEmptyFontmaps(Uint8 num_fonts)
 {
 	freeFonts();
-    Font.assign(num_fonts, GsFont());
+    Font.assign(num_fonts, GsFontLegacy());
 }
 
 /*void GsGraphics::createEmptyCursorMap(SDL_Surface *surface)
@@ -295,7 +295,7 @@ std::vector<GsSprite> &GsGraphics::getSpriteVec(const int var)
 GsSprite &GsGraphics::getSpecialSpriteRef(const std::string &name)
 {   return mSpecialSpriteMap[name];    }
 
-GsFont &GsGraphics::getFont(Uint8 index)
+GsFontLegacy &GsGraphics::getFont(Uint8 index)
 {    return Font.at(index); }
 
 GsBitmap *GsGraphics::getBitmapFromStr(const size_t sprVar,

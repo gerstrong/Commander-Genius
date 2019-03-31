@@ -29,7 +29,7 @@
 #define gGraphics GsGraphics::get()
 
 
-class GsFont;
+class GsFontLegacy;
 
 class GsGraphics : public GsSingleton<GsGraphics>
 {
@@ -89,7 +89,7 @@ public:
     
     void optimizeSprites();
 
-    GsFont &getFont(Uint8 index);
+    GsFontLegacy &getFont(Uint8 index);
 	
     GsPalette Palette;
 
@@ -102,7 +102,7 @@ private:
     void freeBitmaps(std::vector<GsBitmap> &mBitmap);
     void freeSprites();
 
-	std::vector<GsFont> Font;
+	std::vector<GsFontLegacy> Font;
     std::vector<GsTilemap> Tilemap;
 
     std::vector< std::vector<GsBitmap> > mBitmap;

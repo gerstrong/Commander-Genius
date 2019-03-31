@@ -41,7 +41,7 @@ private:
     GsSurface mOldSurface;
     GsSurface mDarkSurface;
 
-    Uint32 mColorkey;
+    //Uint32 mColorkey;
 };
 
 #endif // CDIMDARK_H

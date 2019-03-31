@@ -5,6 +5,15 @@
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 
+GsTexture::~GsTexture()
+{
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+
+        if(mpTexture)
+            unload();
+#endif
+}
+
 void GsTexture::fillRGB( SDL_Renderer *renderer,
                          const Uint8 r,
                          const Uint8 g,
@@ -35,7 +44,10 @@ bool GsTexture::loadFromMem(const unsigned char *data,
     if(mpTexture)
         unload();
 
-    SDL_RWops *rw = SDL_RWFromMem( (void*)(data), size);
+    SDL_RWops *rw =
+            SDL_RWFromMem(
+                const_cast<void*>(reinterpret_cast<const void*>(data)),
+                int(size));
 
     // Load image at specified path
     SDL_Surface* loadedSurface = IMG_Load_RW(rw, 1);
@@ -59,6 +71,11 @@ bool GsTexture::loadFromMem(const unsigned char *data,
     }
 
     return (mpTexture!=nullptr);
+}
+
+bool GsTexture::loadFromSurface(const GsSurface &sfc)
+{
+    return false;
 }
 
 #endif

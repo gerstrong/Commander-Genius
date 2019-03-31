@@ -42,19 +42,19 @@ CPlayerSpriteVarSelection(const GsControl::Style style) :
     }
 
 
-    mpGameButton = new GameButton( "Start",
-                                   new SelectPlayerSpriteVarEvent(mCurIdx),
-                                   style);
-
-    mpMenuDialog->addControl( mpGameButton,
-                              GsRect<float>(0.17f, 0.71f,
-                                            0.8f, 0.1f));
-
     mpChangeButton = new GameButton( "Change",
                                    new ChangeEvent(*this),
                                    style);
 
     mpMenuDialog->addControl( mpChangeButton,
+                              GsRect<float>(0.17f, 0.66f,
+                                            0.8f, 0.1f));
+
+    mpGameButton = new GameButton( "Start",
+                                   new SelectPlayerSpriteVarEvent(mCurIdx),
+                                   style);
+
+    mpMenuDialog->addControl( mpGameButton,
                               GsRect<float>(0.17f, 0.81f,
                                             0.8f, 0.1f));
 

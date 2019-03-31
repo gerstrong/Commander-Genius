@@ -167,7 +167,7 @@ private:
 	std::map<std::string,std::string> stringmap;
 	std::vector<stTeleporterTable> m_TeleporterTable; // Teleporter table used for the destinations
 													  // used by Episode 1 especially
-	int numStrings;
+//	int numStrings;
     size_t mEpisode;
     bool mDemo;
 
@@ -175,7 +175,7 @@ private:
 
     EpisodeInfoStruct *pEpisodeInfo;
 
-    int mBwbLevel = 99;
+//    int mBwbLevel = 99;
 };
 
 #endif /* CBEHAVIORENGINE_H_ */

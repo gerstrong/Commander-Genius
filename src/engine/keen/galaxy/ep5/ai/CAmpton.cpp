@@ -30,7 +30,7 @@ enum AMPTONACTIONS
 
 
 
-constexpr int CSF_DISTANCE_TO_FOLLOW = 6<<CSF;
+//constexpr int CSF_DISTANCE_TO_FOLLOW = 6<<CSF;
 
 constexpr int WALK_SPEED = 25;
 constexpr int SLIDE_SPEED = 25;
@@ -39,8 +39,8 @@ constexpr int UMOUNT_TIME = 30;
 
 constexpr int TIME_UNTIL_SHOOT = 500;
 
-constexpr int mAmptonOffset = 0x21DC;
-constexpr int mShikadiMasterOffset = 0x2B6C; // For Yeti shoot sprite (Keen 9)
+//constexpr int mAmptonOffset = 0x21DC;
+//constexpr int mShikadiMasterOffset = 0x2B6C; // For Yeti shoot sprite (Keen 9)
 
 
 
@@ -92,35 +92,28 @@ CAmpton::CAmpton(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y)
 
 bool CAmpton::loadPythonScripts(const std::string &scriptBaseName)
 {
-    #if USE_PYTHON3
-    auto pModule = gPython.loadModule( scriptBaseName, JoinPaths(gKeenFiles.gameDir ,"ai") );
+#if USE_PYTHON3
 
-    if (pModule != nullptr)
-    {
-        loadAiGetterBool(pModule, "screamAfterShoot", mScreamAfterShoot);
+    mModule.load( scriptBaseName, JoinPaths(gKeenFiles.gameDir ,"ai") );
 
-        loadAiGetterBool(pModule, "mayShoot", mMayShoot);
-
-        loadAiGetterBool(pModule, "allowClimbing", mAllowClimbing);
-
-        int health = mHealthPoints;
-        loadAiGetterInteger(pModule, "healthPoints", health);
-        mHealthPoints = health;
-
-        int walksound = mWalkSound;
-        loadAiGetterInteger(pModule, "walkSound", walksound);
-        mWalkSound = GameSound(walksound);
-
-
-        Py_DECREF(pModule);
-    }
-    else
-    {
+    if(!mModule)
         return false;
-    }
 
-    Py_Finalize();
-    #endif
+
+    loadAiGetterBool("screamAfterShoot", mScreamAfterShoot);
+    loadAiGetterBool("mayShoot", mMayShoot);
+    loadAiGetterBool("allowClimbing", mAllowClimbing);
+
+    auto pModule = mModule.rawPtr();
+    int health = mHealthPoints;
+    loadAiGetterInteger(pModule, "healthPoints", health);
+    mHealthPoints = health;
+
+    int walksound = mWalkSound;
+    loadAiGetterInteger(pModule, "walkSound", walksound);
+    mWalkSound = GameSound(walksound);
+
+#endif
 
     return true;
 }

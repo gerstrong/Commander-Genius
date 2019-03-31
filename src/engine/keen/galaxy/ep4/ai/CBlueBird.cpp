@@ -21,7 +21,7 @@ const int A_EAGLE_STUNNED = 10;
 const int WALK_SPEED = 34;
 const int FLY_SPEED = 34;
 const int CHANCETOFLY = 50;
-const int CHANCETOSTAND = 50;
+//const int CHANCETOSTAND = 50;
 
 CBlueBird::CBlueBird(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
 CGalaxySpriteObject(pmap, foeID, x, y, 0),

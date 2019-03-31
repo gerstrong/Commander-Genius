@@ -1,3 +1,5 @@
+#if defined(VIRTUALPAD)
+
 #include "vgamepadsimple.h"
 
 #include <base/video/CVideoDriver.h>
@@ -126,10 +128,14 @@ bool VirtualKeenControl::ponder()
     const float left = 0.025f;
     const float right = 0.975f;
 
+    const auto iSize = gVideoDriver.getVidConfig().mVPadSize;
+
+    float sizeFactor = float(iSize)/200.0f;
+
     if(!mPadBackground.invisible)
     {
-        const GsRect<float> dpadRect(0.0f, 0.75f,
-                                     1.0f, 0.25f);
+        const GsRect<float> dpadRect(0.0f, bottom-sizeFactor*0.25f,
+                                     1.0f, 0.25f*sizeFactor);
 
         mPadBackground.setRect(dpadRect);
 
@@ -138,9 +144,9 @@ bool VirtualKeenControl::ponder()
 
     if(!mDPad.invisible)
     {
-        const float dpadSize = 0.2f;
+        const float dpadSize = 0.2f*sizeFactor;
 
-        const GsRect<float> dpadRect(left, bottom-dpadSize,
+        const GsRect<float> dpadRect(left, bottom-dpadSize*1.05f,
                                       dpadSize, dpadSize);
 
         mDPad.setRect(dpadRect);
@@ -150,7 +156,7 @@ bool VirtualKeenControl::ponder()
 
     if(!mConfirmButton.invisible)
     {
-        const float buttonSize = 0.1f;
+        const float buttonSize = 0.1f*sizeFactor;
 
         const GsRect<float> confirmRect(right-2.0f*buttonSize,
                                         bottom-2.0f*buttonSize,
@@ -163,10 +169,10 @@ bool VirtualKeenControl::ponder()
 
     if(!mStatusButton.invisible)
     {
-        const float buttonSize = 0.1f;
+        const float buttonSize = 0.1f*sizeFactor;
 
-        const GsRect<float> statusRect(right-4.0f*buttonSize,
-                                       bottom-2.0f*buttonSize,
+        const GsRect<float> statusRect(right-3.4f*buttonSize,
+                                       bottom-2.2f*buttonSize,
                                        buttonSize, buttonSize);
 
         mStatusButton.setRect(statusRect);
@@ -176,10 +182,10 @@ bool VirtualKeenControl::ponder()
 
     if(!mStartButton.invisible)
     {
-        const float buttonSize = 0.1f;
+        const float buttonSize = 0.1f*sizeFactor;
 
-        const GsRect<float> startRect(right-3.0f*buttonSize,
-                                      bottom-2.0f*buttonSize,
+        const GsRect<float> startRect(right-3.4f*buttonSize,
+                                      bottom-1.0f*buttonSize,
                                       buttonSize, buttonSize);
 
         mStartButton.setRect(startRect);
@@ -189,9 +195,9 @@ bool VirtualKeenControl::ponder()
 
     if(!mJumpButton.invisible)
     {
-        const float buttonSize = 0.1f;
+        const float buttonSize = 0.1f*sizeFactor;
 
-        const GsRect<float> jumpRect(right-2.0f*buttonSize,
+        const GsRect<float> jumpRect(right-2.2f*buttonSize,
                                      bottom-1.0f*buttonSize,
                                       buttonSize, buttonSize);
 
@@ -202,7 +208,7 @@ bool VirtualKeenControl::ponder()
 
     if(!mPogoButton.invisible)
     {
-        const float buttonSize = 0.1f;
+        const float buttonSize = 0.1f*sizeFactor;
 
         const GsRect<float> pogoRect(right-1.0f*buttonSize,
                                      bottom-1.0f*buttonSize,
@@ -215,10 +221,10 @@ bool VirtualKeenControl::ponder()
 
     if(!mShootButton.invisible)
     {
-        const float buttonSize = 0.1f;
+        const float buttonSize = 0.1f*sizeFactor;
 
-        const GsRect<float> shootRect(right-2.0f*buttonSize,
-                                      bottom-2.0f*buttonSize,
+        const GsRect<float> shootRect(right-2.2f*buttonSize,
+                                      bottom-2.2f*buttonSize,
                                       buttonSize, buttonSize);
 
         mShootButton.setRect(shootRect);
@@ -355,6 +361,7 @@ bool VirtualKeenControl::mouseFingerState(const Vector2D<float> &Pos,
         return false;*/
 
     bool ok = false;
+
 
     SDL_Event ev;
     ev.type = (down ? SDL_KEYDOWN : SDL_KEYUP);
@@ -494,10 +501,10 @@ bool VirtualKeenControl::mouseFingerState(const Vector2D<float> &Pos,
     ok |= bindButtonCommand(mJumpButton, IC_JUMP);
     ok |= bindButtonCommand(mPogoButton, IC_POGO);
 
-    return ok;
-}
 #endif
 
+    return ok;
+}
 
 bool VirtualKeenControl::mouseState(const Vector2D<float> &Pos, const bool down)
 {
@@ -626,3 +633,4 @@ bool VirtualKeenControl::mouseState(const Vector2D<float> &Pos, const bool down)
     return true;
 
 }
+#endif

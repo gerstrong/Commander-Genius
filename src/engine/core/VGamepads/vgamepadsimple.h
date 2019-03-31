@@ -1,3 +1,5 @@
+#if defined(VIRTUALPAD)
+
 #ifndef VGAMEPADSIMPLE_H
 #define VGAMEPADSIMPLE_H
 
@@ -86,8 +88,8 @@ public:
                           const SDL_TouchFingerEvent &touchFingerEvent,
                           const bool down) override;
 
-
 #endif
+
     /**
      * @brief active    Checks if click events happened in the virtual dpad
      * @return
@@ -114,6 +116,8 @@ public:
     void hideEverything();
 
 
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+
     TouchButton mPadBackground;
     TouchButton mDPad;
     TouchButton mConfirmButton;
@@ -125,10 +129,12 @@ public:
     TouchButton mPogoButton;
     TouchButton mStatusButton;        
 
-#if SDL_VERSION_ATLEAST(2, 0, 0)
     std::set< SDL_FingerID > mFingerSet;
+
 #endif    
 
 };
 
 #endif // VGAMEPADSIMPLE_H
+
+#endif // VIRTUALPAD

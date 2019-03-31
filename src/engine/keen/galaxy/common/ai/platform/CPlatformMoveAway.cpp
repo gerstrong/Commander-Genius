@@ -8,7 +8,7 @@
 #include "CPlatformMoveAway.h"
 
 // If the max Speed is reached, the platform won't return.
-const int DROP_MAX_SPEED_LIMIT = 200;
+//const int DROP_MAX_SPEED_LIMIT = 200;
 
 // Times the cycle has to run through until Speed is raised
 const int MOVE_SPEED_ACC = 1;

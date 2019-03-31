@@ -96,7 +96,7 @@ public:
     /**
      * @brief GsVirtualInput basic constructor, just setup some variables.
      */
-    //GsVirtualInput() {}
+    GsVirtualInput() {}
 
 
     virtual ~GsVirtualInput() {}
@@ -183,6 +183,7 @@ public:
 protected:
 
     bool mEnabled = true;
+
 
     float mTranslucency = 0.5f;
 

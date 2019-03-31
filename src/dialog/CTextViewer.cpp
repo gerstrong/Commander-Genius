@@ -249,7 +249,7 @@ void CTextViewer::renderBox()
     SDL_Surface *sfc = mTextVSfc.getSDLSurface();
 
 	// first draw the blank rect
-	GsFont &Font = gGraphics.getFont(1);
+	auto &Font = gGraphics.getFont(1);
 	int i, j;
 	for(j = 0 ; j < m_h - m_8x8tileheight ; j+= m_8x8tileheight )
 	{

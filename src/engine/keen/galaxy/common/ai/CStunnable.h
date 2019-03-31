@@ -38,7 +38,7 @@ public:
 	/**
 	 * empty cycle which is processed when the object is stunned
 	 */
-	void processStunned();
+    virtual void processStunned();
 	
 	/**
 	 * This draw routine might show stars in case the enemies are stunned

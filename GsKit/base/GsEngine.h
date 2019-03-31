@@ -10,8 +10,8 @@
  *
  */
 
-#ifndef __GSENGINE_H_
-#define __GSENGINE_H_
+#ifndef GSENGINE_H
+#define GSENGINE_H
 
 #include <base/GsEvent.h>
 #include <vector>
@@ -58,4 +58,4 @@ struct SwitchEngineEvent : CEvent
 };
 
 
-#endif /* __GSENGINE_H_ */
+#endif /* GSENGINE_H */

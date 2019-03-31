@@ -8,6 +8,7 @@
 #include <base/GsLogging.h>
 #include <base/utils/FindFile.h>
 #include <base/utils/ConfigHandler.h>
+#include <base/CInput.h>
 #include "CSettings.h"
 #include <base/GsTimer.h>
 #include "sdl/audio/Audio.h"
@@ -16,6 +17,7 @@
 #include "CBehaviorEngine.h"
 #include "fileio/CConfiguration.h"
 #include "fileio/KeenFiles.h"
+#include "engine/core/VGamepads/vgamepadsimple.h"
 
 
 
@@ -72,6 +74,7 @@ bool CSettings::saveDrvCfg()
         Configuration.SetKeyword("Video", "OpenGL", VidConf.mOpengl);
 #ifdef VIRTUALPAD
         Configuration.SetKeyword("Video", "VirtPad", VidConf.mVPad);
+        Configuration.WriteInt("Video", "VirtPadSize", VidConf.mVPadSize);
 #endif
         Configuration.SetKeyword("Video", "ShowCursor", VidConf.mShowCursor);
         Configuration.SetKeyword("Video", "TiltedScreen", VidConf.mTiltedScreen);
@@ -195,6 +198,7 @@ bool CSettings::loadDrvCfg()
         Configuration.ReadString("Video", "OGLfilter",  VidConf.mRenderScQuality, "nearest");
 #ifdef VIRTUALPAD
         Configuration.ReadKeyword("Video", "VirtPad", &VidConf.mVPad, VidConf.mVPad);
+        Configuration.ReadInteger("Video", "VirtPadSize", &VidConf.mVPadSize, VidConf.mVPadSize);
 #endif
         Configuration.ReadKeyword("Video", "ShowCursor", &VidConf.mShowCursor, true);
         Configuration.ReadKeyword("Video", "TiltedScreen", &VidConf.mTiltedScreen, false);
@@ -228,6 +232,8 @@ bool CSettings::loadDrvCfg()
 
         gSound.setMusicVolume(Uint8(music_vol), false);
         gSound.setSoundVolume(Uint8(sound_vol), false);
+
+
 	}
 	return true;
 }
@@ -280,14 +286,15 @@ void CSettings::setOption( const GameOption opt,
  */
 void CSettings::loadDefaultGameCfg()
 {
-	setOption( GameOption::ALLOWPKING,		"Friendly Fire    ", "pking", 1 );
-    setOption( GameOption::KEYSTACK,		"Keystacking      ", "keystack", 0 );
-    setOption( GameOption::LVLREPLAYABILITY,"Replay Levels    ", "level_replayability", 0 );
-    setOption( GameOption::RISEBONUS,		"Rising Bonus     ", "rise_bonus", 1 );
-    setOption( GameOption::MODERN,          "Modern Style     ", "modern_style", 1 );
-    setOption( GameOption::HUD,				"HUD Display      ", "hud", 1 );
-    setOption( GameOption::SPECIALFX,		"Special Effects  ", "specialfx", 1 );
-    setOption( GameOption::SHOWFPS,			"Show FPS         ", "showfps", 0 );
+    setOption( GameOption::ALLOWPKING,		"Friendly Fire  ", "pking", 1 );
+    setOption( GameOption::KEYSTACK,		"Keystacking    ", "keystack", 0 );
+    setOption( GameOption::LVLREPLAYABILITY,"Replay Levels  ", "level_replayability", 0 );
+    setOption( GameOption::RISEBONUS,		"Rising Bonus   ", "rise_bonus", 1 );
+    setOption( GameOption::MODERN,          "Modern Style   ", "modern_style", 1 );
+    setOption( GameOption::HUD,				"HUD Display    ", "hud", 1 );
+    setOption( GameOption::SPECIALFX,		"Special Effects", "specialfx", 1 );
+    setOption( GameOption::SHOWFPS,			"Show FPS       ", "showfps", 0 );
+    setOption( GameOption::SANDWICHMENU,    "Menu Button    ", "sandwichbutton", 1 );
 }
 
 /**

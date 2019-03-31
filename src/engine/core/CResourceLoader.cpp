@@ -130,7 +130,7 @@ void CResourceLoaderBackground::render()
     if(m_style == PROGRESS_STYLE_TEXT)
     {
         // Draw Loading Font... here!
-        GsFont &Font = gGraphics.getFont(0);
+        auto &Font = gGraphics.getFont(0);
         int percent = m_permil/10;
         int rest = m_permil%10;
         std::string text = "Loading ... " + itoa(percent)+"."+ itoa(rest)+" \%";

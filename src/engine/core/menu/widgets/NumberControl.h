@@ -1,5 +1,5 @@
-#ifndef __NUMBERCONTROL_H__
-#define __NUMBERCONTROL_H__
+#ifndef NUMBERCONTROL_H
+#define NUMBERCONTROL_H
 
 #include <widgets/GsNumberControl.h>
 
@@ -15,13 +15,13 @@ public:
                   const bool slider,
                   const GsControl::Style style);
 
-    void setupButtonSurface();
+    void setupButtonSurface(const std::string &text = "") override;
 
-    void processLogic();
+    void processLogic() override;
 
     void drawNoStyle(SDL_Rect& lRect);
 
-    void processRender(const GsRect<float> &RectDispCoordFloat);
+    void processRender(const GsRect<float> &RectDispCoordFloat) override;
 };
 
-#endif // __NUMBERCONTROL_H__
+#endif // NUMBERCONTROL_H

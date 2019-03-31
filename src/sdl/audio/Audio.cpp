@@ -90,14 +90,14 @@ bool Audio::init()
                       mAudioSpec.channels,
                       mAudioSpec.samples) < 0 )
     {
-        gLogging << "Mix_OpenAudio: " << Mix_GetError();
+        gLogging << "Mix_OpenAudio: " << Mix_GetError() << "\n";
         return false;
     }
 
     {
         int n = Mix_GetNumChunkDecoders();
 
-        gLogging << "There are "<< n << " available chunk(sample) decoders";
+        gLogging << "There are "<< n << " available chunk(sample) decoders" << "\n";
 
         for(int i=0; i<n; ++i)
         {
@@ -106,7 +106,7 @@ bool Audio::init()
 
         n = Mix_GetNumMusicDecoders();
 
-        gLogging << "There are " << n << "available music decoders:";
+        gLogging << "There are " << n << "available music decoders:" << "\n";
 
         for(int i=0; i<n; ++i)
         {

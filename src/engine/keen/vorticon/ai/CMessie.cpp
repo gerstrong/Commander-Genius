@@ -57,7 +57,7 @@ mounted(nullptr)
 }
 
 
-void CMessie::getTouchedBy(CVorticonSpriteObject &theObject)
+void CMessie::getTouchedBy(CSpriteObject &theObject)
 {
     // This is not valid. Only if nessie is mounted or unmounted
     if(CPlayer *Player = dynamic_cast<CPlayer*>(&theObject))

@@ -24,8 +24,7 @@ namespace galaxy {
 constexpr int WALK_SPEED = 25;
   
 CMastersShot::CMastersShot(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
-CStunnable(pmap, foeID, x, y),
-mTimer(0)
+CStunnable(pmap, foeID, x, y)
 {
   
 	// Adapt this AI
@@ -50,7 +49,7 @@ void CMastersShot::processWalking()
 }
 
 
-bool CMastersShot::isNearby(CSpriteObject &theObject)
+bool CMastersShot::isNearby(CSpriteObject &)
 {
 	if( !getProbability(10) )
 		return false;

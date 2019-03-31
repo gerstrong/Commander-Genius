@@ -21,7 +21,6 @@ constexpr int Y_DIST_TO_LICK = 8<<CSF;
 
 CCeilick::CCeilick(CMap* pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
 CStunnable(pmap, foeID, x, y),
-mTimer(0),
 mChanceToLick(false),
 mCrawlPos(0),
 mLaughed(false)
@@ -138,10 +137,10 @@ void CCeilick::draw()
 
     if( scrx < gameres.w && scry < gameres.h && exists )
     {
-        Uint16 showX = scrx+Sprite.getXOffset();
+        int showX = scrx+Sprite.getXOffset();
 
         // Here we use the crawl effect to smoothen the movement of the ceilick.
-        Uint16 showY = scry + mCrawlPos;
+        int showY = scry + mCrawlPos;
 
         if(mCrawlPos < 0)
             mCrawlPos++;

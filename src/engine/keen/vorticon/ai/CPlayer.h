@@ -89,8 +89,8 @@ public:
 	void processInLevel();
 	void touchedExit(int mpx);
 	void walkbehindexitdoor();
-	void kill(bool force);
-	void kill();
+    void kill(const bool force);
+    void kill();
 	void dieanim();
 	void setDir();
 	void getgoodies();
@@ -110,14 +110,14 @@ public:
 	void getShotByRay(object_t &obj_type);
     void processStatusScreen();
 
-	bool checkMapBoundaryL(const int x1);
-	bool checkMapBoundaryR(const int x2);
-	bool checkMapBoundaryU(const int y1);
+    bool checkMapBoundaryL(const int x1) override;
+    bool checkMapBoundaryR(const int x2) override;
+    bool checkMapBoundaryU(const int y1) override;
 
 	// Used for both situations
-    virtual void pumpEvent(const CEvent *evPtr);
+    virtual void pumpEvent(const CEvent *evPtr) override;
 	void processCamera();
-    void processEvents();
+    void processEvents() override;
 	void InertiaAndFriction_X();
 	void Walking();
 	void WalkingAnimation();

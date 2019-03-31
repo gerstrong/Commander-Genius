@@ -81,26 +81,15 @@ mKeenNearby(false)
 bool CRoboRed::loadPythonScripts(const std::string &scriptBaseName)
 {
 #if USE_PYTHON3
-    auto pModule = gPython.loadModule( scriptBaseName, JoinPaths(gKeenFiles.gameDir ,"ai") );
+    mModule.load( scriptBaseName, JoinPaths(gKeenFiles.gameDir ,"ai") );
 
-    if (pModule != nullptr)
-    {
-        loadAiGetterBool(pModule, "isInvincible", mInvincible);
-
-        loadAiGetterBool(pModule, "willNeverStop", mNeverStop);
-
-        loadAiGetterBool(pModule, "alternateShoot", mAlternateShot);
-
-        loadAiGetterBool(pModule, "mayJiggle", mJiggle);
-
-        Py_DECREF(pModule);
-    }
-    else
-    {
+    if(!mModule)
         return false;
-    }
 
-    Py_Finalize();
+    loadAiGetterBool("isInvincible", mInvincible);
+    loadAiGetterBool("willNeverStop", mNeverStop);
+    loadAiGetterBool("alternateShoot", mAlternateShot);
+    loadAiGetterBool("mayJiggle", mJiggle);
 
 #endif
     return true;

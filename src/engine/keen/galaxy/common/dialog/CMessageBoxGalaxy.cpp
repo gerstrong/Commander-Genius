@@ -32,7 +32,7 @@ mText(Text),
 mCloseEv(closeEv),
 mSprVar(sprVar)
 {
-	GsFont &Font = gGraphics.getFont(FONT_ID);
+	auto &Font = gGraphics.getFont(FONT_ID);
 
 	mTextHeight = Font.getPixelTextHeight()*calcNumLines(mText);
     GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
@@ -115,7 +115,7 @@ void CMessageBoxGalaxy::initGalaxyFrame()
 
 void CMessageBoxGalaxy::initText(const SDL_Rect &rect)
 {
-	GsFont &Font = gGraphics.getFont(FONT_ID);
+	auto &Font = gGraphics.getFont(FONT_ID);
 
     GsSurface textSfc;
     GsWeakSurface mbSurface(mMBSurface.getSDLSurface());

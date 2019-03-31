@@ -30,8 +30,8 @@ public:
     
     // Constructor
 	CMessie(CMap *p_map, Uint32 x, Uint32 y);
-	void getTouchedBy(CVorticonSpriteObject &theObject);
-	bool tryMounting(CPlayer &player);
+    void getTouchedBy(CSpriteObject &theObject) override;
+    bool tryMounting(CPlayer &player);
 	bool tryToUnmount();
 	void process();
 	void move_nessie();

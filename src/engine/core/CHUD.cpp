@@ -138,7 +138,7 @@ void CHUD::DrawCircle(int x, int y, int width)
 
 
 	Uint8 r,g,b;
-	GsFont &Font = gGraphics.getFont(1);
+    auto &Font = gGraphics.getFont(1);
 	Font.getBGColour(&r, &g, &b);
 
 	outline.x = x+4;
@@ -248,7 +248,7 @@ void CHUD::renderVorticon()
     mBackground.blitTo(mHUDBlit);
 
 
-	GsFont &Font = gGraphics.getFont(1);
+    auto &Font = gGraphics.getFont(1);
 
     // Print the lives
     Font.drawFont(mHUDBlit, getRightAlignedString(itoa(lives),2), 15, 15, false);

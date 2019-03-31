@@ -17,7 +17,7 @@ GsButton(text, ev)
 
 void Button::setupButtonSurface(const std::string &)
 {
-    GsFont &Font = gGraphics.getFont(mFontID);
+    auto &Font = gGraphics.getFont(mFontID);
 
     Font.createTextSurface(mTextDarkSfc, "  " + mText, 38, 134, 38 );
     Font.createTextSurface(mTextLightSfc, "  " + mText, 84, 234, 84 );
@@ -32,13 +32,13 @@ void Button::drawVorticonStyle(SDL_Rect& lRect)
     // Now lets draw the text of the button
     if(mEnabled)
     {
-        GsFont &Font = gGraphics.getFont(mFontID);
+        auto &Font = gGraphics.getFont(mFontID);
         Font.drawFont( blitsfc, mText, lRect.x+24, lRect.y, false );
         drawTwirl(lRect);
     }
     else
     {
-        GsFont &Font = gGraphics.getFont(0);
+        auto &Font = gGraphics.getFont(0);
         Font.drawFont( blitsfc, mText, lRect.x+24, lRect.y, true );
     }
 }

@@ -27,8 +27,13 @@ void BorderedButton::processRender(const GsRect<float> &RectDispCoordFloat)
 
     if(!mEnabled)
         newcolor = blitsfc.mapRGB(123, 150, 123);
+#ifndef DISABLE_HOVER
     else if(mHovered || mPressed)
         newcolor = blitsfc.mapRGB(84, 234, 84);
+#else
+    else if(mPressed)
+        newcolor = blitsfc.mapRGB(84, 234, 84);
+#endif
     else
         newcolor = blitsfc.mapRGB(38, 134, 38);
 
@@ -43,11 +48,13 @@ void BorderedButton::processRender(const GsRect<float> &RectDispCoordFloat)
     }
     else
     {
+#ifndef DISABLE_HOVER
         if(mHovered)
         {
             drawEnabledButton(blitsfc, lRect, true);
         }
         else
+#endif
         {
             drawEnabledButton(blitsfc, lRect, false);
         }

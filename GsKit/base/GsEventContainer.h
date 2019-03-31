@@ -24,12 +24,12 @@ public:
      *        Otherwise app might crash.
      * @param pSink pointer to the sink to be registered
      */
-    void regSink(GsEventSink *pSink)
+    void regSink(std::shared_ptr<GsEventSink> pSink)
     {
         mSinkPtrList.push_back(pSink);
     }
 
-    void unregSink(GsEventSink *pSink)
+    void unregSink(std::shared_ptr<GsEventSink> pSink)
     {
         mSinkPtrList.remove(pSink);
     }
@@ -80,7 +80,7 @@ public:
     void pop_Event() { m_EventList.pop_front(); }
 
 private:
-    std::list< GsEventSink* > mSinkPtrList;
+    std::list< std::shared_ptr<GsEventSink> > mSinkPtrList;
 
     std::deque< std::shared_ptr<CEvent> > m_EventList;
     std::vector< std::shared_ptr<CEvent> > mPumpEventPtrs;

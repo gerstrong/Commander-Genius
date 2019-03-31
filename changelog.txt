@@ -1,3 +1,18 @@
+v2.3.3:
+-------
+- Tweaked Game menu design
+- Optimized compilation process
+- Reduce some compiler warnings
+- Overall code modernization
+- AI improvements thanks to our issue reporters
+- Collision improvements with switches
+
+v2.3.1:
+-------
+- More Python support for mods
+- Menu (sandwich) button can be disabled if wished
+- Updated SDL2 dlls for windows
+
 v2.3.0:
 -------
 - Improved loading of special sprites

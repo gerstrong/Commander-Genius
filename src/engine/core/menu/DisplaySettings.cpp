@@ -36,13 +36,17 @@ private:
 
     void operator()() const
 	{
-        mDispSettings.mUsersConf.mFullscreen = !mDispSettings.mUsersConf.mFullscreen;
+        mDispSettings.mMyNewConf.mFullscreen = !mDispSettings.mMyNewConf.mFullscreen;
 		mDispSettings.release();
 	}
+
+    virtual ~toggleFullscreenFunctor();
 
 	DisplaySettings& mDispSettings;
 };
 
+toggleFullscreenFunctor::~toggleFullscreenFunctor()
+{}
 
 
 DisplaySettings::DisplaySettings(const GsControl::Style style) :
@@ -115,23 +119,25 @@ GameMenu(GsRect<float>(0.15f, 0.20f, 0.65f, 0.55f), style )
 
 void DisplaySettings::refresh()
 {
-    mUsersConf = gVideoDriver.getVidConfig();
+    // Copy current config to my new Config.
+    // The change are taken from the menu settings
+    mMyNewConf = gVideoDriver.getVidConfig();
 
 #if defined(USE_OPENGL)    
-    mpOpenGLSwitch->enable( mUsersConf.mOpengl );
+    mpOpenGLSwitch->enable( mMyNewConf.mOpengl );
 #endif
 
 
-    mpRenderScaleQualitySel->setSelection(mUsersConf.mRenderScQuality);
+    mpRenderScaleQualitySel->setSelection(mMyNewConf.mRenderScQuality);
 
 
 
 #if !defined(EMBEDDED)
 	mpAspectSelection->setList( aspectList, NUM_ASPECTS );		
 	std::string arcStr;
-    arcStr = itoa(mUsersConf.mAspectCorrection.w);
+    arcStr = itoa(mMyNewConf.mAspectCorrection.w);
 	arcStr += ":";
-    arcStr += itoa(mUsersConf.mAspectCorrection.h);
+    arcStr += itoa(mMyNewConf.mAspectCorrection.h);
 	
 	if( arcStr == "0:0")
 	  arcStr = "disabled";
@@ -139,18 +145,20 @@ void DisplaySettings::refresh()
 	mpAspectSelection->setSelection(arcStr);
 
 	
-    mpFilterSelection->setSelection( mUsersConf.m_ScaleXFilter==1 ? "none" : (mUsersConf.m_normal_scale ? "normal" : "scale") + itoa(mUsersConf.m_ScaleXFilter) + "x" );
-    mpVSyncSwitch->enable( mUsersConf.mVSync );
-    mpFullScreenSwitch->setText( mUsersConf.mFullscreen ? "Go Windowed" : "Go Fullscreen" );
+    mpFilterSelection->setSelection( mMyNewConf.m_ScaleXFilter==1 ? "none" :
+                                    (mMyNewConf.m_normal_scale ? "normal" : "scale") +
+                                        itoa(mMyNewConf.m_ScaleXFilter) + "x" );
+    mpVSyncSwitch->enable( mMyNewConf.mVSync );
+    mpFullScreenSwitch->setText( mMyNewConf.mFullscreen ? "Go Windowed" : "Go Fullscreen" );
 
 
     mpResolutionSelection->setList( ResolutionsList, NUM_MAIN_RESOLUTIONS );
 
 	std::string resStr;
 
-    resStr = itoa(mUsersConf.mDisplayRect.w);
+    resStr = itoa(mMyNewConf.mDisplayRect.w);
 	resStr += "x";
-    resStr += itoa(mUsersConf.mDisplayRect.h);
+    resStr += itoa(mMyNewConf.mDisplayRect.h);
 	mpResolutionSelection->setSelection(resStr);        
 
 #endif
@@ -160,26 +168,92 @@ void DisplaySettings::refresh()
 
 void DisplaySettings::release()
 {
+    // OpenGL Flag
+    mMyNewConf.mOpengl = mpOpenGLSwitch->isEnabled();
+
+    // Render Quality
+    mMyNewConf.mRenderScQuality = mpRenderScaleQualitySel->getSelection();
+
     // Read Aspect correction string
     {
         const std::string arcStr = mpAspectSelection->getSelection();
 
         const int numRead = sscanf(arcStr.c_str(),"%i:%i",
-                               &mUsersConf.mAspectCorrection.w,
-                               &mUsersConf.mAspectCorrection.h);
+                               &mMyNewConf.mAspectCorrection.w,
+                               &mMyNewConf.mAspectCorrection.h);
 
         if(numRead < 2)
         {
-            mUsersConf.mAspectCorrection.w = mUsersConf.mAspectCorrection.h = 0;
+            mMyNewConf.mAspectCorrection.w = mMyNewConf.mAspectCorrection.h = 0;
         }
     }
 
+    // Filter
+    {
+        mMyNewConf.m_ScaleXFilter = NONE;
+
+        const std::string filterText = mpFilterSelection->getSelection();
+
+        if(filterText == "normal2x")
+        {
+            mMyNewConf.m_normal_scale = true;
+            mMyNewConf.m_ScaleXFilter = SCALE_2X;
+        }
+        if(filterText == "normal3x")
+        {
+            mMyNewConf.m_normal_scale = true;
+            mMyNewConf.m_ScaleXFilter = SCALE_3X;
+        }
+        if(filterText == "normal4x")
+        {
+            mMyNewConf.m_normal_scale = true;
+            mMyNewConf.m_ScaleXFilter = SCALE_4X;
+        }
+        if(filterText == "scale2x")
+        {
+            mMyNewConf.m_normal_scale = false;
+            mMyNewConf.m_ScaleXFilter = SCALE_2X;
+        }
+        if(filterText == "scale3x")
+        {
+            mMyNewConf.m_normal_scale = false;
+            mMyNewConf.m_ScaleXFilter = SCALE_3X;
+        }
+        if(filterText == "scale4x")
+        {
+            mMyNewConf.m_normal_scale = false;
+            mMyNewConf.m_ScaleXFilter = SCALE_4X;
+        }
+    }
+
+    // Vsync
+    mMyNewConf.mVSync = mpVSyncSwitch->isEnabled();
+
+    // Fullscreen
+    const auto fsBtnText = mpFullScreenSwitch->getText();
+    mMyNewConf.mFullscreen = (fsBtnText == "Go Windowed") ? true : false;
+
+
+    // Read correct resolution
+    {
+        const std::string resStr = mpResolutionSelection->getSelection();
+        int w, h;
+
+        const int numRead = sscanf(resStr.c_str(),"%ix%i", &w, &h);
+        std::cerr << "numRead: " << numRead << std::endl;
+        if(numRead == 2)
+        {
+            GsRect<Uint16> res((Uint16(w)),
+                               (Uint16(h)));
+            mMyNewConf.setResolution(res);
+        }
+    }
 
 	// In case the user changed something in the camera settings, reload that.
-    mUsersConf.m_CameraBounds = gVideoDriver.getCameraBounds();
+    mMyNewConf.m_CameraBounds = gVideoDriver.getCameraBounds();
 
 	CVidConfig oldVidConf = gVideoDriver.getVidConfig();
-    gVideoDriver.setVidConfig(mUsersConf);
+    gVideoDriver.setVidConfig(mMyNewConf);
 
 	// At this point we also must apply and save the settings
 	if( !gVideoDriver.applyMode() )

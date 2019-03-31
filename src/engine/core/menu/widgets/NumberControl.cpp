@@ -6,7 +6,7 @@
 #include <graphics/GsGraphics.h>
 
 
-const int SLIDER_WIDTH = 16;
+//const int SLIDER_WIDTH = 16;
 
 NumberControl::NumberControl(const std::string &text,
                              const int startValue,
@@ -34,9 +34,9 @@ CGUINumberControl(text, startValue, endValue,
 }
 
 
-void NumberControl::setupButtonSurface()
+void NumberControl::setupButtonSurface(const std::string &text)
 {        
-    GsFont &Font = gGraphics.getFont(mFontID);
+    auto &Font = gGraphics.getFont(mFontID);
 
     const std::string showText = "  " + mText + ": " + itoa(mValue);
     GsButton::setupButtonSurface(showText);
@@ -63,28 +63,38 @@ void NumberControl::processLogic()
 void NumberControl::drawNoStyle(SDL_Rect& lRect)
 {
     // Now lets draw the text of the list control
-    GsFont &Font = gGraphics.getFont(mFontID);
+    auto &Font = gGraphics.getFont(mFontID);
 
     std::string text = mText + ":";
 
     SDL_Surface *blitsfc = gVideoDriver.getBlitSurface();
 
-/*
+    if(mEnabled)
+    {
+
+        /*
     if(mSlider)
     {
         text += sliderStr();
     }
     else*/
-    {
-        text += (mDecSel) ? "\025" : " ";
-        text += itoa(mValue);
-        if(mIncSel)
-            text += static_cast<char>(17);
-        else
-            text += " ";
+        {
+            text += (mDecSel) ? "\025" : " ";
+            text += itoa(mValue);
+            if(mIncSel)
+                text += static_cast<char>(17);
+            else
+                text += " ";
+        }
+
+        Font.drawFont( blitsfc, text, lRect.x+40, lRect.y, false );
     }
 
-    Font.drawFont( blitsfc, text, lRect.x+40, lRect.y, false );
+    else
+    {
+        text += " " + itoa(mValue) + " ";
+        Font.drawFont( blitsfc, text, lRect.x+40, lRect.y, true );
+    }
 
     drawTwirl(lRect);
 }
@@ -106,9 +116,9 @@ void NumberControl::processRender(const GsRect<float> &RectDispCoordFloat)
             mTextDisabledSfc.blitTo(blitsfc, lRect);
         }
         else
-        {
+        {                        
+#ifndef DISABLE_HOVER
             drawEnabledButton(blitsfc, lRect, mHovered);
-            
             if(mHovered)
             {
                 if(mDecSel)
@@ -118,6 +128,9 @@ void NumberControl::processRender(const GsRect<float> &RectDispCoordFloat)
                 else
                     mTextLightSfc.blitTo(blitsfc, lRect);
             }
+#else
+            drawEnabledButton(blitsfc, lRect, false);
+#endif
         }
         
         drawBlinker(lRect);
@@ -125,7 +138,7 @@ void NumberControl::processRender(const GsRect<float> &RectDispCoordFloat)
     else if(mStyle == Style::VORTICON)
     {
         // Now lets draw the text of the list control
-        GsFont &Font = gGraphics.getFont(mFontID);
+        auto &Font = gGraphics.getFont(mFontID);
         
         Font.drawFont( blitsfc, mText, lRect.x+24, lRect.y, false );
         Font.drawFont( blitsfc, ":", lRect.x+24+mText.size()*8, lRect.y, false );

@@ -249,7 +249,7 @@ public:
 	/**
 	 * This function will process everything that happens when player presses up
 	 */
-	void processPressUp();
+    void processPressUp();
 
 	/**
 	 * This function will ensure that Keen keeps ducking

@@ -110,12 +110,15 @@ void CSpriteItem::getTouchedBy(CSpriteObject &theObject)
 
         // Enable pogo if some script would like that
 #if USE_PYTHON3
-    auto pModule = gPython.loadModule( "constants", gKeenFiles.gameDir );
 
-    if (pModule != nullptr)
-    {
+        if(!mModule)
+        {
+            mModule.load("constants", gKeenFiles.gameDir);
+        }
+        else
+        {
             int value = 0;
-            const auto ok = loadIntegerFunc(pModule, "enablePogo", value, m_basesprite);
+            const auto ok = mModule.loadIntegerFunc("enablePogo", value, m_basesprite);
             if(ok)
             {
                 if(value==1)
@@ -123,7 +126,7 @@ void CSpriteItem::getTouchedBy(CSpriteObject &theObject)
                     Item.m_special.mCanPogo = true;
                 }
             }
-    }
+        }
 
 #endif
 

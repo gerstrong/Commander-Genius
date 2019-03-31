@@ -66,20 +66,14 @@ CStunnable(pmap, foeID, x, y)
 bool CShikadiMaster::loadPythonScripts(const std::string &scriptBaseName)
 {
 #if USE_PYTHON3
-    auto pModule = gPython.loadModule( scriptBaseName, JoinPaths(gKeenFiles.gameDir ,"ai") );
 
-    if (pModule != nullptr)
-    {
-        loadAiGetterBool(pModule, "moreAgressive", mMoreAgressive);
+    mModule.load( scriptBaseName, JoinPaths(gKeenFiles.gameDir ,"ai") );
 
-        Py_DECREF(pModule);
-    }
-    else
-    {
+    if(!mModule)
         return false;
-    }
 
-    Py_Finalize();
+    loadAiGetterBool(mModule.rawPtr(), "moreAgressive", mMoreAgressive);
+
 #endif
     return true;
 }

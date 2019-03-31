@@ -159,13 +159,17 @@ bool CGameLauncher::setupMenu()
                                              0.75f ),
                                GsRect<float>(0.0f, 0.0f, 0.069f, 0.069f) );
 
-    /*mLauncherDialog.addControl(new GsButton( "VPad", new OpenVGamePadSettingsEvent(),
+    /*
+#ifdef VIRTUALPAD
+    mLauncherDialog.addControl(new GsButton( "VPad", new OpenVGamePadSettingsEvent(),
                                              GsControl::Style::NONE,
                                              0.75f,
                                              1.0f,
                                              1.0f ),
                                GsRect<float>(0.75f, 0.0f, 0.17f, 0.069f) );
-                               */
+#endif
+*/
+
 
     mLauncherDialog.addControl(new GsButton( "|", new OpenSettingsMenuEvent(),
                                              GsControl::Style::NONE,
@@ -211,10 +215,12 @@ bool CGameLauncher::setupMenu()
     gLogging.ftextOut("Game Autodetection Finished<br>" );
     // Banner. TODO: Create a class for that...
     CGUIBanner *banner = new CGUIBanner("Commander Genius " CGVERSION "\n"
-                    "By Gerstrong,\n"
+                    "by Gerstrong,\n"
                     "Zilem,\n"
+                    "Tulip,\n"
+                    "Albert Zeyer,\n"
                     "Pelya,\n"
-					"and the CG Contributors\n");
+                    "and many CG Contributors\n");
     mLauncherDialog.addControl( banner, GsRect<float>(0.0f, 0.95f, 1.0f, 0.05f) );
 
     if(!gamesDetected)
@@ -442,7 +448,7 @@ bool CGameLauncher::start()
     // Resources for the main menu
     // This is only for the menu. We only need one fontmap for the list of games and some buttons
     gGraphics.createEmptyFontmaps(1);
-    GsFont &Font = gGraphics.getFont(0);
+    auto &Font = gGraphics.getFont(0);
 
     const auto height = gVideoDriver.getHeight();
 
@@ -647,13 +653,14 @@ void CGameLauncher::pumpEvent(const CEvent *evPtr)
         gEventManager.add( new OpenMenuEvent(
                                new SettingsMenu(GsControl::Style::NONE) ) );
     }
+/*
 #ifdef VIRTUALPAD
     else if( dynamic_cast<const OpenVGamePadSettingsEvent*>(evPtr) )
     {
-        gInput.setInVPadConfigState();
+        gInput.setInVPadConfigState(true);
     }
 #endif
-
+*/
 
 
 

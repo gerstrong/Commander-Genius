@@ -19,18 +19,18 @@ A_FLAG_FLIP = 4
 };
     
 
-const Uint16 FLYING_BASEFRAME_EP4 = 174;
-const Uint16 FLYING_BASEFRAME_EP5 = 173;
+//const Uint16 FLYING_BASEFRAME_EP4 = 174;
+//const Uint16 FLYING_BASEFRAME_EP5 = 173;
 
-const Uint16 ANIMATION_TIME = 8;
+//const Uint16 ANIMATION_TIME = 8;
 const Uint16 SPEED = 64;
 
 CFlag::CFlag(CMap *pmap, const Vector2D<Uint32> &Location,
             const Vector2D<Uint32> &dest,
             const int sprVar, bool newAction, const bool canLock ) :
 CGalaxySpriteObject(pmap, FOE_ID, Location.x, Location.y, sprVar),
-m_destination(dest),
-m_baseframe(0)
+m_destination(dest)
+//m_baseframe(0)
 {
 	solid = false;
 	honorPriority = false;
@@ -74,8 +74,8 @@ void CFlag::serialize(boost::property_tree::ptree &node)
 void CFlag::deserialize(boost::property_tree::ptree &node)
 {
     auto &posNode = node.put("position", "");
-    m_Pos.x = posNode.get<Uint32>("<xmlattr>.x", m_Pos.x);
-    m_Pos.y = posNode.get<Uint32>("<xmlattr>.y", m_Pos.y);
+    m_Pos.x = posNode.get<int>("<xmlattr>.x", m_Pos.x);
+    m_Pos.y = posNode.get<int>("<xmlattr>.y", m_Pos.y);
 }
 
 void CFlag::deserialize(CSaveGameController &savedGame)

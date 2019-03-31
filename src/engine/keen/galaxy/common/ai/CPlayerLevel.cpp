@@ -412,10 +412,7 @@ void CPlayerLevel::handleInputOnGround()
 	// He could press up and do further actions
 	if( py < 0 )
 	{
-		if(!verifyforPole())
-		{
-			processPressUp();
-		}
+        processPressUp();
 	}
 
 
@@ -1527,12 +1524,12 @@ bool CPlayerLevel::verifySwitches()
 }
 
 void CPlayerLevel::processPressUp()
-{
-    // If a switch is being pressed we are done!
+{       
+    // If a switch is being pressed
     if(verifySwitches())
     {
         return;
-    }
+    }       
 
 	std::vector<CTileProperties> &Tile = gBehaviorEngine.getTileProperties(1);
     const int x_left = (getXLeftPos()>>CSF)<<CSF;
@@ -1666,15 +1663,18 @@ void CPlayerLevel::processPressUp()
 
                 return;
             }
-
         }
-
-
     }
 
+    if(verifyforPole())
+    {
+       return;
+    }
 
 	// If the above did not happen, then just look up
 	setAction(A_KEEN_LOOKUP);
+
+    return;
 }
 
 

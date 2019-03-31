@@ -1,13 +1,12 @@
 # CMake file for development of Commander Genius (taken from OLX)
 # This CMake file is used under Linux normally. 
 
-cmake_minimum_required(VERSION 3.7)
+cmake_minimum_required(VERSION 3.5)
 
 Project(GsKit)
 
 OPTION(USE_SDL2 "SDL2 support" Yes)
 option(USE_PYTHON3 "Use Python3 scripts" yes)
-
 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -79,17 +78,23 @@ endif(USE_SDL2)
 
 # Use python3 for AI scripting and more!
 IF(USE_PYTHON3)
-    # Look for Python (Version 3.0 or later is required)
-    FIND_PACKAGE(Python3 COMPONENTS Interpreter Development)
-    if(Python3_FOUND)
-        ADD_DEFINITIONS(-DUSE_PYTHON3=1)
-        INCLUDE_DIRECTORIES(${Python3_INCLUDE_DIRS})
-        LINK_LIBRARIES(${Python3_LIBRARIES})
-        message(STATUS "Python3_LIBRARIES = ${Python3_LIBRARIES}")
-        message(STATUS "Python3_INCLUDE_DIRS = ${Python3_INCLUDE_DIRS}")
+
+    if(${CMAKE_VERSION} VERSION_LESS "3.12.0")
+        FIND_PACKAGE(PythonLibs REQUIRED)
     else()
-        message(FATAL_ERROR "Python3 not found!")
+        # Look for Python (Version 3.0 or later is required)
+        FIND_PACKAGE(Python3 COMPONENTS Interpreter Development)
+        if(Python3_FOUND)
+            ADD_DEFINITIONS(-DUSE_PYTHON3=1)
+            INCLUDE_DIRECTORIES(${Python3_INCLUDE_DIRS})
+            LINK_LIBRARIES(${Python3_LIBRARIES})
+            message(STATUS "Python3_LIBRARIES = ${Python3_LIBRARIES}")
+            message(STATUS "Python3_INCLUDE_DIRS = ${Python3_INCLUDE_DIRS}")
+        else()
+            message(FATAL_ERROR "Python3 not found!")
+        endif()
     endif()
+
 ENDIF()
 
 
@@ -102,13 +107,16 @@ INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
 
 
 if(USE_SDL2)
+
     find_package(SDL2 REQUIRED)
 
     if(SDL2_FOUND)
         find_package(SDL2_image REQUIRED)
+#        find_package(SDL2_ttf REQUIRED)
 
         message(STATUS "Using shared SDL Version 2 for Commander Genius")
         include_directories(${SDL2_INCLUDE_DIRS})
+        include_directories(${SDL2_TTF_INCLUDE_DIRS})
         include_directories(${SDL2_IMAGE_INCLUDE_DIRS})
 
     endif(SDL2_FOUND)
@@ -133,6 +141,7 @@ if(USE_SDL2)
     Target_link_libraries(GsKit ${SDL2_LIBRARY})
     Target_link_libraries(GsKit ${SDL2IMAGE_LIBRARIES})
     Target_link_libraries(GsKit ${SDLIMAGE_LIBRARY})
+    Target_link_libraries(GsKit ${SDL2_TTF_LIBRARY})
 else()
     Target_link_libraries(GsKit ${SDL_LIBRARY})
     Target_link_libraries(GsKit ${SDL_LIBRARIES})

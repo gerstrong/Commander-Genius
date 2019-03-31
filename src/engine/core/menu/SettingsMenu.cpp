@@ -15,6 +15,7 @@
 
 #include "CVideoSettings.h"
 #include "DisplaySettings.h"
+#include "VpadSettings.h"
 //#include "CameraSettings.h"
 #include "AudioSettings.h"
 #include "Options.h"
@@ -52,28 +53,42 @@ GameMenu( GsRect<float>(0.25f, 0.24f, 0.5f, 0.40f),
 
 
 #if defined (SINGLEPLAYER)
-    mpMenuDialog->addControl( new GameButton( "Controls",
-                                              new OpenMenuEvent(	new CControlsettings(1,
-                                                                             style) ),
-                                              style ) );
+        mpMenuDialog->addControl( new GameButton( "Controls",
+                                                  new OpenMenuEvent(	new CControlsettings(1,
+                                                                                             style) ),
+                                                  style ) );
 #else
-    mpMenuDialog->addControl(new GameButton( "Controls",
-                                             new OpenMenuEvent( new CPlayersSelection<OpenControlMenuEvent>(false, 
-                                                                                                            style) ),
-                                             style ) );
+        mpMenuDialog->addControl(new GameButton( "Controls",
+                                                 new OpenMenuEvent( new CPlayersSelection<OpenControlMenuEvent>(false,
+                                                                                                                style) ),
+                                                 style ) );
 #endif
-/*
+        /*
 #if !defined(EMBEDDED)
     mpMenuDialog->addControl( new GameButton( "Camera",
                                               new OpenMenuEvent( new CCameraSettings(style) ),
                                               style ) );
 #endif
 */
-    mpMenuDialog->addControl(new GameButton( "Cheats",
-                                             new OpenMenuEvent( new CheatsMenu(style) ),
-                                             style ) );
 
     }
+
+#ifdef VIRTUALPAD
+    mpMenuDialog->addControl(new GameButton( "Virtual Gamepad",
+                                             new OpenMenuEvent( new VPadSettingsMenu(style) ),
+                                             style ) );
+#endif
+
+
+    if(style != GsControl::Style::NONE)
+    {
+
+        mpMenuDialog->addControl(new GameButton( "Cheats",
+                                                 new OpenMenuEvent( new CheatsMenu(style) ),
+                                                 style ) );
+
+    }
+
 
     setMenuLabel("CONFIGMENULABEL");
 }

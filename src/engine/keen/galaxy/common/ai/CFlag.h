@@ -58,7 +58,7 @@ namespace galaxy  {
   private:
     // Where the flag/sign will pop in
     Vector2D<Uint32> m_destination;
-    Uint16 m_baseframe;
+//    Uint16 m_baseframe;
     void (CFlag::*processState)();	
     std::map< size_t, void (CFlag::*)() > mActionMap;
 
