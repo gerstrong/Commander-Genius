@@ -58,9 +58,9 @@ public:
 
     float FPS() { return 1000.0f/mRenderLatency; }
     
-    float LogicLatency() { return mLogicLatency; }
+    float LogicLatency() const { return mLogicLatency; }
 
-    float RenderLatency() { return mRenderLatency; }
+    float RenderLatency() const { return mRenderLatency; }
     
     inline bool resetLogicSignal()
     {

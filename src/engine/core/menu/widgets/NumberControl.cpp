@@ -69,22 +69,32 @@ void NumberControl::drawNoStyle(SDL_Rect& lRect)
 
     SDL_Surface *blitsfc = gVideoDriver.getBlitSurface();
 
-/*
+    if(mEnabled)
+    {
+
+        /*
     if(mSlider)
     {
         text += sliderStr();
     }
     else*/
-    {
-        text += (mDecSel) ? "\025" : " ";
-        text += itoa(mValue);
-        if(mIncSel)
-            text += static_cast<char>(17);
-        else
-            text += " ";
+        {
+            text += (mDecSel) ? "\025" : " ";
+            text += itoa(mValue);
+            if(mIncSel)
+                text += static_cast<char>(17);
+            else
+                text += " ";
+        }
+
+        Font.drawFont( blitsfc, text, lRect.x+40, lRect.y, false );
     }
 
-    Font.drawFont( blitsfc, text, lRect.x+40, lRect.y, false );
+    else
+    {
+        text += " " + itoa(mValue) + " ";
+        Font.drawFont( blitsfc, text, lRect.x+40, lRect.y, true );
+    }
 
     drawTwirl(lRect);
 }

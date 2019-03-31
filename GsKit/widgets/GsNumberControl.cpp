@@ -89,6 +89,9 @@ void CGUINumberControl::setSelection( const int value )
 
 void CGUINumberControl::processLogic()
 {
+    if(!mEnabled)
+        return;
+
     GsPointingState &pointingState = gPointDevice.mPointingState;
 
     const bool hasPoint = mRect.HasPoint(pointingState.mPos);
