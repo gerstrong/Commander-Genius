@@ -25,10 +25,7 @@ constexpr int MAX_BOUNCES = 2;
 constexpr int MAX_BOUNCE_INERTIA = 120;
 
 CSpindred::CSpindred(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
-CStunnable(pmap, foeID, x, y),
-mTimer(0),
-mInverseGravity(false),
-mBounces(0)
+CStunnable(pmap, foeID, x, y)
 {
   
 	// Adapt this AI

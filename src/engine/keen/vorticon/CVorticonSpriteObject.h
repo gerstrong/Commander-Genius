@@ -21,9 +21,9 @@ public:
 
 	bool calcVisibility();
 	
-    virtual bool isNearby(CVorticonSpriteObject &) { return true; }
+    //virtual bool isNearby(CVorticonSpriteObject &) { return true; }
 	
-    virtual void getTouchedBy(CVorticonSpriteObject &) {}
+    //virtual void getTouchedBy(CVorticonSpriteObject &) {}
 
 	object_t m_type;        		// yorp, vorticon, etc.
 

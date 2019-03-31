@@ -23,7 +23,7 @@ A_SLUG_STUNNED = 3,
 A_SLUG_STUNNED_ALT = 4
 };
 
-const int SLUG_MOVE_SPEED = 1;
+//const int SLUG_MOVE_SPEED = 1;
 const int SLUG_MOVE_TIMER = 8;
 
 CPoisonSlug::CPoisonSlug(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
@@ -84,7 +84,9 @@ void CPoisonSlug::processCrawling()
         m_timer = 0;
         setAction( A_SLUG_POOING );
         playSound( SOUND_SLUG_DEFECATE );
-        CSlugSlime *slime = new CSlugSlime(mpMap, 0, getXMidPos(), getYDownPos()-(1<<(CSF-1)), 0);
+        CSlugSlime *slime = new CSlugSlime(mpMap, 0,
+                                           getXMidPos(),
+                                           getYDownPos()-(1<<(CSF-1)), 0);
         gEventManager.add( new EventSpawnObject( slime ) );
 
         xDirection = -xDirection;

@@ -19,6 +19,7 @@ VPadSettingsMenu::VPadSettingsMenu(const GsControl::Style &style) :
 GameMenu(GsRect<float>(0.075f, 0.24f, 0.85f, 0.4f), style )
 {    
 
+#if defined (VIRTUALPAD)
     if( gVideoDriver.VGamePadEnabled() )
     {
         VirtualKeenControl *vkc = dynamic_cast<VirtualKeenControl*>(gInput.mpVirtPad.get());
@@ -31,6 +32,7 @@ GameMenu(GsRect<float>(0.075f, 0.24f, 0.85f, 0.4f), style )
 
         mpMenuDialog->addControl( mpSize );
     }
+#endif
 
     setMenuLabel("KEYBMENULABEL");
 
@@ -46,9 +48,11 @@ void VPadSettingsMenu::ponder(const float /*deltaT*/)
 {
     GameMenu::ponder(0);
 
+#if defined (VIRTUALPAD)
     const auto iSize = mpSize->getSelection();
 
     gVideoDriver.getVidConfig().mVPadSize = iSize;
+#endif
 }
 
 

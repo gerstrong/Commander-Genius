@@ -1,3 +1,5 @@
+#if defined(VIRTUALPAD)
+
 #include "vgamepadsimple.h"
 
 #include <base/video/CVideoDriver.h>
@@ -631,3 +633,4 @@ bool VirtualKeenControl::mouseState(const Vector2D<float> &Pos, const bool down)
     return true;
 
 }
+#endif

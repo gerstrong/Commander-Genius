@@ -29,8 +29,8 @@ CFlag::CFlag(CMap *pmap, const Vector2D<Uint32> &Location,
             const Vector2D<Uint32> &dest,
             const int sprVar, bool newAction, const bool canLock ) :
 CGalaxySpriteObject(pmap, FOE_ID, Location.x, Location.y, sprVar),
-m_destination(dest),
-m_baseframe(0)
+m_destination(dest)
+//m_baseframe(0)
 {
 	solid = false;
 	honorPriority = false;

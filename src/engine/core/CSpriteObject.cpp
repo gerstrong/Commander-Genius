@@ -611,3 +611,5 @@ void spawnObj(const CSpriteObject *obj)
 }
 
 
+ObjMove::~ObjMove()
+{}

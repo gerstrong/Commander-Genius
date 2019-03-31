@@ -1,3 +1,5 @@
+#if defined(VIRTUALPAD)
+
 #ifndef VGAMEPADSIMPLE_H
 #define VGAMEPADSIMPLE_H
 
@@ -134,3 +136,5 @@ public:
 };
 
 #endif // VGAMEPADSIMPLE_H
+
+#endif // VIRTUALPAD

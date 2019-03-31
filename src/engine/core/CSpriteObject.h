@@ -73,7 +73,7 @@ struct ObjMove
     ObjMove(const Vector2D<int>& Vector) : m_Vec(Vector) {}
     ObjMove(const int offx, const int offy) : m_Vec(offx, offy) {}
     
-    virtual ~ObjMove() {}
+    virtual ~ObjMove();
 };
 
 // Event that will be used to move the objects in the game together with another object.
