@@ -65,7 +65,13 @@ public:
     filterOptionType m_ScaleXFilter;
 	bool m_normal_scale;
 	unsigned short Zoom;
-    bool mOpengl;
+
+#ifdef USE_OPENGL
+    bool mOpengl = true;
+#else
+    bool mOpengl = false;
+#endif
+
 
 #ifdef VIRTUALPAD
 #ifdef ANDROID

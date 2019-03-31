@@ -31,7 +31,7 @@ public:
 
 	void release();
 
-    CVidConfig mUsersConf;
+    CVidConfig mMyNewConf;
 
 private:
 
