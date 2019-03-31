@@ -53,7 +53,7 @@ GameMenu( GsRect<float>(0.1f, 0.0f, 0.8f, 1.0f),
                                          style);
             mpMenuDialog->addControl( button,
                                       GsRect<float>(
-                                          0.0f, 0.1f+(j*0.1f), 0.8f, 0.1f) );
+                                          0.0f, 0.1f+(j*0.1f), 0.7f, 0.1f) );
         }
         else
         {

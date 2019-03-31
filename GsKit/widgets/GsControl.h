@@ -54,27 +54,32 @@ public:
     void enable( const bool value )
     {	mEnabled = value;	}
 
-    bool isEnabled()
+    bool isEnabled() const
     {   return mEnabled;    }
 
 
     void select( const bool value )
     { mSelected = value; }
 
-    bool isSelected()
+    bool isSelected() const
     { return mSelected; }
 
+    bool isPressed() const
+    { return mPressed; }
 
-    bool Up()
+
+    bool Up() const
     {	return mReleased;	}
 
 
+    #ifndef DISABLE_HOVER
     void setDown( const bool value )
     {
-        #ifndef DISABLE_HOVER
         mHovered = value;
-        #endif
     }
+    #else
+    void setDown( const bool ) {}
+    #endif
 
     virtual bool sendEvent(const InputCommand) { return false; }
 

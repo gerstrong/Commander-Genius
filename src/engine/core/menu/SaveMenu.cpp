@@ -37,7 +37,7 @@ GameMenu(GsRect<float>(0.1f, 0.0f, 0.8f, 1.0f), style )
 
         mpMenuDialog->addControl( new InputText( text, style ),
                                   GsRect<float>(
-                                      0.0f, 0.1f+(i*0.1f), 0.8f, 0.1f) );
+                                      0.0f, 0.1f+(i*0.1f), 0.7f, 0.1f) );
 
 	}
 
@@ -60,6 +60,7 @@ void CSaveMenu::refresh()
     for(Uint32 i=0 ; i<8 ; i++)
     {
         std::string text = EMPTY_TEXT;
+
         if(i < StateFileList.size())
             text = StateFileList.at(i);
 
@@ -72,7 +73,7 @@ void CSaveMenu::refresh()
 }
 
 
-void CSaveMenu::ponder(const float deltaT)
+void CSaveMenu::ponder(const float)
 {
     InputText *pInput = dynamic_cast<InputText*>(mpMenuDialog->CurrentControl());
 
@@ -84,6 +85,7 @@ void CSaveMenu::ponder(const float deltaT)
             minIC = IC_JUMP;
     }
 
+#if !defined(NOTYPESAVE)
     // Command (Keyboard/Joystick) are handled here
     for( int cmd = minIC ; cmd < MAX_COMMANDS ; cmd++ )
     {
@@ -94,6 +96,33 @@ void CSaveMenu::ponder(const float deltaT)
             break;
         }
     }
+#else
+
+    std::list< std::shared_ptr<GsControl> > &list =
+            mpMenuDialog->getControlList();
+
+    auto itCtrl = list.begin();
+    itCtrl++;
+
+    for(int i=0 ; i<8 ; i++)
+    {
+        std::shared_ptr<GsControl> &ctrl = *itCtrl;
+        InputText *input = dynamic_cast<InputText*>( ctrl.get() );
+
+        if(input->isPressed())
+        {
+            mpMenuDialog->setSelection(i+1);
+
+            std::shared_ptr<CEvent> command(
+                        new CommandEvent( static_cast<InputCommand>(IC_JUMP) ));
+            sendEvent(command);
+            break;
+        }
+
+        itCtrl++;
+    }
+
+#endif
 
     mpMenuDialog->processLogic();
 

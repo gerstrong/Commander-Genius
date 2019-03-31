@@ -30,10 +30,7 @@ CGUIInputText::CGUIInputText(const std::string& text ,
                              const int fontID,
                              const GsControl::Style style) :
 GsControl(style),
-mText(text),
-mTyping(false),
-mTypeTick(0),
-mTick(false)
+mText(text)
 {
     mFontID = fontID;
 }

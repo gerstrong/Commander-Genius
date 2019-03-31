@@ -17,7 +17,7 @@ public:
     CSaveMenu(const GsControl::Style &style);
     void refresh() override;
     void processSpecific(){}
-    void ponder(const float deltaT) override;
+    void ponder(const float) override;
     void sendEvent(std::shared_ptr<CEvent> &command) override;
     void release() override;
 
