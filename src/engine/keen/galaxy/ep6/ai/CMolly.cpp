@@ -14,7 +14,7 @@ $1D9CW  #Molly
 $1DBAW  #Molly
 */
 
-const int MOLLY_MOVE_SPEED = 1;
+//const int MOLLY_MOVE_SPEED = 1;
 
 CMolly::CMolly(CMap* pmap, const Uint16 foeID, Uint32 x, Uint32 y) : 
 CGalaxySpriteObject(pmap, foeID, x, y, 0),

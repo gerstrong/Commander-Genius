@@ -123,16 +123,17 @@ void DisplaySettings::refresh()
     // The change are taken from the menu settings
     mMyNewConf = gVideoDriver.getVidConfig();
 
-#if defined(USE_OPENGL)    
+
+#if !defined(EMBEDDED)
+
+    #if defined(USE_OPENGL)
     mpOpenGLSwitch->enable( mMyNewConf.mOpengl );
-#endif
+    #endif
 
 
     mpRenderScaleQualitySel->setSelection(mMyNewConf.mRenderScQuality);
 
 
-
-#if !defined(EMBEDDED)
 	mpAspectSelection->setList( aspectList, NUM_ASPECTS );		
 	std::string arcStr;
     arcStr = itoa(mMyNewConf.mAspectCorrection.w);
@@ -168,6 +169,9 @@ void DisplaySettings::refresh()
 
 void DisplaySettings::release()
 {
+
+#if !defined(EMBEDDED)
+
     // OpenGL Flag
     mMyNewConf.mOpengl = mpOpenGLSwitch->isEnabled();
 
@@ -252,8 +256,13 @@ void DisplaySettings::release()
 	// In case the user changed something in the camera settings, reload that.
     mMyNewConf.m_CameraBounds = gVideoDriver.getCameraBounds();
 
+#endif
+
 	CVidConfig oldVidConf = gVideoDriver.getVidConfig();
     gVideoDriver.setVidConfig(mMyNewConf);
+
+
+
 
 	// At this point we also must apply and save the settings
 	if( !gVideoDriver.applyMode() )

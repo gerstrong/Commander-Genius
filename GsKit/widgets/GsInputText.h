@@ -45,9 +45,9 @@ protected:
 
 
 	std::string mText;
-	bool mTyping;
-	int mTypeTick;
-	bool mTick;
+    bool mTyping = false;
+    int mTypeTick = 0;
+    bool mTick = false;
 
 	std::unique_ptr<SDL_Surface> mpTextSfc;
 

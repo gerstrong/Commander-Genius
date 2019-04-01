@@ -132,8 +132,10 @@ public:
      */
     void unload()
     {
-        assert(mpTexture != nullptr);
-        SDL_DestroyTexture( mpTexture );
+        if(mpTexture != nullptr)
+            SDL_DestroyTexture( mpTexture );
+
+        mpTexture = nullptr;
     }
 
 

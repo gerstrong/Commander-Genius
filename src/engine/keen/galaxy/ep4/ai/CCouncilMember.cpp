@@ -18,7 +18,7 @@
 
 namespace galaxy {
 
-const int ELDER_MOVE_SPEED = 1;
+//const int ELDER_MOVE_SPEED = 1;
 const int ELDER_MOVE_TIMER = 10;
 
 int NumberToRescue;
