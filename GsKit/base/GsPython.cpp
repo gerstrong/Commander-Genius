@@ -302,6 +302,8 @@ PyObject *GsPython::loadModule(const std::string &scriptBaseName,
     {
         gLogging.ftextOut("Python is not active, not loading the module %s\n.",
                           scriptBaseName.c_str());
+
+        return nullptr;
     }
 
     // Extra Python script for this AI defined?
