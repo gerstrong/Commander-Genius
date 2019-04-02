@@ -57,12 +57,19 @@ void duplicateBackslashes(std::string &text)
 
 GsPython::GsPython()
 {
-    Py_Initialize();
+
 }
 
 GsPython::~GsPython()
 {
-    Py_Finalize();
+    if(mActive)
+        Py_Finalize();
+}
+
+void GsPython::init()
+{
+    Py_Initialize();
+    mActive = true;
 }
 
 
@@ -286,6 +293,17 @@ GsPythonFunc::call(PyObject* args)
 PyObject *GsPython::loadModule(const std::string &scriptBaseName,
                                const std::string &baseDir)
 {
+    if(!gPython.active())
+    {
+        gPython.init();
+    }
+
+    if(!mActive)
+    {
+        gLogging.ftextOut("Python is not active, not loading the module %s\n.",
+                          scriptBaseName.c_str());
+    }
+
     // Extra Python script for this AI defined?
     std::string aiscriptPath = baseDir;
     aiscriptPath = JoinPaths(aiscriptPath,scriptBaseName);
@@ -303,7 +321,7 @@ PyObject *GsPython::loadModule(const std::string &scriptBaseName,
     replaceSlashes(aidir);
     duplicateBackslashes(aidir);
 
-    gLogging.ftextOut("calling Py_Initialize(): %s.\n", aiscriptPath.c_str() );
+    gLogging.ftextOut("calling loadModule(): %s.\n", aiscriptPath.c_str() );
 
 
 #ifdef ANDROID
