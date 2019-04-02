@@ -115,8 +115,13 @@ class GsPython : public GsSingleton<GsPython>
 
 public:
 
-    GsPython();
+    GsPython();            
     virtual ~GsPython();
+
+    bool active() const
+    {   return mActive; }
+
+    void init();
 
     /**
      * @brief loadModule  Load the module and return as python object
@@ -127,6 +132,10 @@ public:
     PyObject *loadModule(const std::string &scriptBaseName,
                          const std::string &baseDir);
 
+
+
+private:
+    bool mActive = false;
 
 };
 
