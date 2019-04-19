@@ -37,7 +37,9 @@ private:
 
     Switch          *mpTiltScreenSwitch = nullptr;
     Switch          *mpShowCursorSwitch = nullptr;
+#ifdef VIRTUALPAD
     Switch			*mpVPadSwitch  = nullptr;
+#endif
     NumberControl	*mpFPSSelection  = nullptr;
     Switch		    *mpFrameSkip  = nullptr;    
     ComboSelection	*mpGameResSelection = nullptr;        

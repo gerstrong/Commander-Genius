@@ -28,7 +28,7 @@ enum FLEEXACTIONS
 
 constexpr int WALK_SPEED = 30;
 constexpr int TRACK_SPEED = 120;
-constexpr int TIME_LOOKING = 200;
+//constexpr int TIME_LOOKING = 200;
 constexpr int TIME_UNTIL_LOOK = 200;
 constexpr int DISTANCE_UNTIL_TRACK = 8<<CSF;
 
@@ -40,10 +40,11 @@ CFleex::CFleex(CMap* pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
     mKeenAlignment(LEFT),
     mGoodTrackChance(false)
 {
-    mActionMap[A_FLEEX_WALK] = (GASOFctr) &CFleex::processWalk;
-    mActionMap[A_FLEEX_TRACK] = (GASOFctr) &CFleex::processTrack;
-    mActionMap[A_FLEEX_LOOK] = (GASOFctr) &CFleex::processLook;
-    mActionMap[A_FLEEX_STUNNED] = (GASOFctr) &CStunnable::processGettingStunned;
+
+    mapFunction(A_FLEEX_WALK, &CFleex::processWalk);
+    mapFunction(A_FLEEX_TRACK, &CFleex::processTrack);
+    mapFunction(A_FLEEX_LOOK, &CFleex::processLook);
+    mapFunction(A_FLEEX_STUNNED, &CFleex::processGettingStunned);
     
     setupGalaxyObjectOnMap(0x2C78, A_FLEEX_WALK);
     

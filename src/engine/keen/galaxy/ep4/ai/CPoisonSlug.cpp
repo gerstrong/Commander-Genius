@@ -53,10 +53,10 @@ m_timer(0)
         mHealthPoints *= 4;
     }
 
-    mActionMap[A_SLUG_MOVE] = static_cast<GASOFctr> (&CPoisonSlug::processCrawling);
-    mActionMap[A_SLUG_POOING] = static_cast<GASOFctr> (&CPoisonSlug::processPooing);
-    mActionMap[A_SLUG_STUNNED] = static_cast<GASOFctr> (&CStunnable::processGettingStunned);
-    mActionMap[A_SLUG_STUNNED_ALT] = static_cast<GASOFctr> (&CStunnable::processGettingStunned);
+    mapFunction(A_SLUG_MOVE, &CPoisonSlug::processCrawling);
+    mapFunction(A_SLUG_POOING, &CPoisonSlug::processPooing);
+    mapFunction(A_SLUG_STUNNED, &CPoisonSlug::processGettingStunned);
+    mapFunction(A_SLUG_STUNNED_ALT, &CPoisonSlug::processGettingStunned);
 
 	setupGalaxyObjectOnMap(0x2012, A_SLUG_MOVE);
 

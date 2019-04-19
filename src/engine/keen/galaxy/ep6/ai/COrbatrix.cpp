@@ -43,13 +43,13 @@ A_ORBATRIX_SLIDE = 5
 };
 
 constexpr int MAX_BOUNCE_BOOST = -150;
-constexpr int FLY_SPEED = 10;
+//constexpr int FLY_SPEED = 10;
 constexpr int HOR_SPEED = 80;
 //constexpr int VER_SPEED = 40;
 
 constexpr int TIME_UNTIL_MOVE = 20;
 constexpr int TIME_UNTIL_CURL = 20;
-constexpr int TIME_UNTIL_SLIDE = 20;
+//constexpr int TIME_UNTIL_SLIDE = 20;
 constexpr int TIME_UNTIL_UNCURL = 200;
 constexpr int TIME_UNTIL_FLOAT = 20;
 
@@ -58,14 +58,14 @@ CGalaxyActionSpriteObject(pmap, foeID, x, y, sprVar),
 mTimer(0),
 mGivesKey(false)
 {
-    mActionMap[A_ORBATRIX_FLOAT] = (void (CGalaxyActionSpriteObject::*)()) &COrbatrix::processFloat;
-    mActionMap[A_ORBATRIX_MOVE] = (void (CGalaxyActionSpriteObject::*)()) &COrbatrix::processMove;
-    mActionMap[A_ORBATRIX_CURL] = (void (CGalaxyActionSpriteObject::*)()) &COrbatrix::processCurl;
-    mActionMap[A_ORBATRIX_UNCURL] = (void (CGalaxyActionSpriteObject::*)()) &COrbatrix::processUncurl;
-    mActionMap[A_ORBATRIX_MOVE_ALT] = (void (CGalaxyActionSpriteObject::*)()) &COrbatrix::processMove;
-    mActionMap[A_ORBATRIX_BOUNCE] = (void (CGalaxyActionSpriteObject::*)()) &COrbatrix::processBounce;
-    mActionMap[A_ORBATRIX_LAND] = (void (CGalaxyActionSpriteObject::*)()) &COrbatrix::processLand;
-    mActionMap[A_ORBATRIX_SLIDE] = (void (CGalaxyActionSpriteObject::*)()) &COrbatrix::processSlide;
+    mapFunction(A_ORBATRIX_FLOAT, &COrbatrix::processFloat);
+    mapFunction(A_ORBATRIX_MOVE, &COrbatrix::processMove);
+    mapFunction(A_ORBATRIX_CURL, &COrbatrix::processCurl);
+    mapFunction(A_ORBATRIX_UNCURL, &COrbatrix::processUncurl);
+    mapFunction(A_ORBATRIX_MOVE_ALT, &COrbatrix::processMove);
+    mapFunction(A_ORBATRIX_BOUNCE, &COrbatrix::processBounce);
+    mapFunction(A_ORBATRIX_LAND, &COrbatrix::processLand);
+    mapFunction(A_ORBATRIX_SLIDE, &COrbatrix::processSlide);
 
     setupGalaxyObjectOnMap(0x27E6, A_ORBATRIX_FLOAT);
 
@@ -224,7 +224,9 @@ void COrbatrix::getTouchedBy(CSpriteObject& theObject)
         {
             stItemGalaxy &Item = player->m_Inventory.Item;
             Item.m_gem.red++;
-            spawnObj(new CItemEffect(mpMap, 0, getXPosition(), getYPosition(), got_sprite_item_pics[2][2], FADEOUT));
+            spawnObj(new CItemEffect(mpMap, 0,
+                                     getXPosition(), getYPosition(),
+                                     got_sprite_item_pics[2][2], FADEOUT));
             mIsDead = true;
             exists = false;
         }

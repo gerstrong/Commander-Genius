@@ -13,7 +13,7 @@
 static int spriteOffset;
 
 CGalaxySpriteObject::CGalaxySpriteObject(CMap *pmap, const Uint16 foeID,
-                                         Uint32 x, Uint32 y, const int sprVar) :
+                                         const int x, const int y, const int sprVar) :
 CSpriteObject(pmap, x, y, sprVar),
 mFoeID(foeID)
 {
@@ -269,7 +269,7 @@ bool CGalaxySpriteObject::getActionStatus(int16_t ActionNumber)
 {	return (m_Action.getActionFormat(m_ActionBaseOffset + 30*ActionNumber));	}
 
 int16_t CGalaxySpriteObject::getActionNumber()
-{	return m_ActionNumber;	}
+{	return int16_t(m_ActionNumber);	}
 
 
 void CGalaxySpriteObject::setActionForce(const size_t ActionNumber)

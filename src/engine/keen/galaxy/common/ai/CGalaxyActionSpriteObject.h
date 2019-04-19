@@ -21,9 +21,20 @@ public:
 	void setActionForce(const size_t ActionNumber);
 
 protected:
+
+
 	void (CGalaxyActionSpriteObject::*mp_processState)();
-	std::map< size_t, GASOFctr > mActionMap;	
+    std::map< size_t, GASOFctr > mActionMap;
+
+
+    template<class T>
+    void mapFunction(const size_t key, T func)
+    {
+        mActionMap[key] = static_cast<GASOFctr>(func);
+    }
+
 };
+
 
 }
 
