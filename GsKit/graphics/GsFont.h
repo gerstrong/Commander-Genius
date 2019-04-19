@@ -88,19 +88,19 @@ public:
      * @brief loadAlternateFont This loads the internal font found in Alternatefont.xpm
      * @return  true if it was sucessfully loaded, otherwise false
      */
-	bool loadAlternateFont();
+    //bool loadAlternateFont();
 
     /**
      * @brief loadinternalFont  Load embeeded Font map into the surface
      * @param pixmap    Static array of pixel information as XPM
      */
-    void loadinternalFont(const char *pixmap[]);
+    //void loadinternalFont(const char *pixmap[]);
 
     /**
      * @brief loadinternalFont
      * @param size  use 1 for normal sized and 2 for doubled, which would load an alternate pixmap into the surface
      */
-    void loadinternalFont(const int size);
+    //void loadinternalFont(const int size);
 
     /**
      * @brief setWidthToCharacter   This sets the width of the characters so the text is printed nicely.

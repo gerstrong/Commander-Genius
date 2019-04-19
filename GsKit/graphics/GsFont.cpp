@@ -56,7 +56,7 @@ bool GsFont::CreateSurface(SDL_Color *Palette, Uint32 Flags,
 
 
 
-
+/*
 SDL_Surface *loadfromXPMData(const char **data, const SDL_PixelFormat *format, const Uint32 flags)
 {
 	int width, height, colors;
@@ -145,8 +145,9 @@ SDL_Surface *loadfromXPMData(const char **data, const SDL_PixelFormat *format, c
 	return sfc;
 }
 
+*/
 
-
+/*
 bool GsFont::loadAlternateFont()
 {
     // Use some if the blit surface settings so it will be shown correctly
@@ -160,9 +161,9 @@ bool GsFont::loadAlternateFont()
 
 	return true;
 }
+*/
 
-
-
+/*
 void GsFont::loadinternalFont(const char *pixmap[])
 {
 	SDL_Surface *blit = gVideoDriver.getBlitSurface();
@@ -207,7 +208,7 @@ void GsFont::loadinternalFont(const int size)
     }
 }
 
-
+*/
 
 
 void GsFont::tintColor( const Uint32 fgColor )

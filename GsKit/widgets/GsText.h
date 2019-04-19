@@ -18,7 +18,10 @@
 
 #include <graphics/GsTexture.h>
 #include <graphics/GsSurface.h>
+
+#if defined(USE_SDL_TTF)
 #include <graphics/GsTrueTypeFont.h>
+#endif
 
 
 class CGUIText : public GsControl

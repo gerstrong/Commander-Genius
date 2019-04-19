@@ -54,10 +54,9 @@ bool GsFontLegacy::CreateSurface(SDL_Color *Palette, Uint32 Flags,
 }
 
 
-
-
-
-SDL_Surface *loadfromXPMData(const char **data, const SDL_PixelFormat *format, const Uint32 flags)
+SDL_Surface *loadfromXPMData(const char **data,
+                             const SDL_PixelFormat *format,
+                             const Uint32 flags)
 {
 	int width, height, colors;
 
