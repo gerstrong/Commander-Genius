@@ -33,10 +33,10 @@ public:
     void getTouchedBy(CSpriteObject &theObject) override;
     bool tryMounting(CPlayer &player);
 	bool tryToUnmount();
-	void process();
+    void process() override;
 	void move_nessie();
 	void nessie_find_next_checkpoint();
-	void processFalling() {}
+    void processFalling() override {}
 	
 private:
 	char state;

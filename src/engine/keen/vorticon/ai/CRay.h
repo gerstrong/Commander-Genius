@@ -28,7 +28,7 @@ public:
 	void moveinAir();
 	void setOwner(object_t type, unsigned int index);
 	void setSpeed(size_t speed);
-	void getTouchedBy(CVorticonSpriteObject &theObject);
+    void getTouchedBy(CSpriteObject &neutralObject);
 	void getShotByRay(object_t &obj_type);
 	bool isFlying();
 	void setZapped();

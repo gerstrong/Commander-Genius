@@ -44,7 +44,7 @@ CVorticonSpriteObject(p_map, x, y, OBJ_MOTHER)
 
 
 
-bool CVortiMom::isNearby(CVorticonSpriteObject &theObject)
+bool CVortiMom::isNearby(CSpriteObject &theObject)
 {
     if( CPlayer *player = dynamic_cast<CPlayer*>(&theObject) )
     {
@@ -69,7 +69,7 @@ bool CVortiMom::isNearby(CVorticonSpriteObject &theObject)
 }
 
 
-void CVortiMom::getTouchedBy(CVorticonSpriteObject &theObject)
+void CVortiMom::getTouchedBy(CSpriteObject &theObject)
 {
      if( CPlayer *player = dynamic_cast<CPlayer*>(&theObject) )
      {

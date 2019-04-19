@@ -5,7 +5,7 @@ CCarrier::CCarrier(CMap* pmap, Uint32 x, Uint32 y, object_t type) :
 CVorticonSpriteObject(pmap, x, y, type, 0)
 {}
 
-void CCarrier::getTouchedBy(CVorticonSpriteObject& theObject)
+void CCarrier::getTouchedBy(CSpriteObject& theObject)
 {                
     if(CPlayer *player = dynamic_cast<CPlayer*>(&theObject))
     {

@@ -2,7 +2,7 @@
 #include "sdl/audio/Audio.h"
 #include "graphics/GsGraphics.h"
 
-CFoob::CFoob(CMap *p_map, Uint32 x, Uint32 y):
+CFoob::CFoob(CMap *p_map, const int x, const int y):
 CVorticonSpriteObject(p_map,x,y, OBJ_FOOB),
 onsamelevel(false)
 {
@@ -172,7 +172,7 @@ void CFoob::process()
 	}
 }
 
-bool CFoob::isNearby(CVorticonSpriteObject &theObject)
+bool CFoob::isNearby(CSpriteObject &theObject)
 {
     if(CPlayer *player = dynamic_cast<CPlayer*>(&theObject))
     {
@@ -212,7 +212,7 @@ bool CFoob::isNearby(CVorticonSpriteObject &theObject)
     return true;
 }
 
-void CFoob::getTouchedBy(CVorticonSpriteObject &theObject)
+void CFoob::getTouchedBy(CSpriteObject &theObject)
 {
 	if(CPlayer *player = dynamic_cast<CPlayer*>(&theObject))
 	{

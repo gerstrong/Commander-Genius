@@ -14,16 +14,17 @@
 class CVorticonSpriteObject : public CSpriteObject
 {
 public:
-    CVorticonSpriteObject(CMap *pmap, Uint32 x, Uint32 y, object_t type, const int sprVar=0);
+    CVorticonSpriteObject(CMap *pmap, const int x, const int y,
+                          const object_t type, const int sprVar=0);
 
 	void setupObjectType(const int Episode);
 	bool checkforScenario();
 
-	bool calcVisibility();
+        bool calcVisibility() override;
 	
-    //virtual bool isNearby(CVorticonSpriteObject &) { return true; }
+        virtual bool isNearby(CSpriteObject &) override { return true; }
 	
-    //virtual void getTouchedBy(CVorticonSpriteObject &) {}
+        virtual void getTouchedBy(CSpriteObject &) override {}
 
 	object_t m_type;        		// yorp, vorticon, etc.
 

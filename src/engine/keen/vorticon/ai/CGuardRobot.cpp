@@ -208,7 +208,7 @@ void CGuardRobot::guard_fire()
 	pausetime = FIRE_PAUSE_TIME;
 }
 
-void CGuardRobot::getTouchedBy(CVorticonSpriteObject &theObject)
+void CGuardRobot::getTouchedBy(CSpriteObject &theObject)
 {
 	if ( gBehaviorEngine.mDifficulty>=NORMAL )
 	{

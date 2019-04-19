@@ -13,14 +13,13 @@ public:
   AutoShot(CMap *pmap, const Uint32 foeID, const Uint32 x, const Uint32 y,
     direction_t horDir, direction_t vertDir, int basesprite, const int sprVar);
   
-  void process();
+  void process() override;
   
-  void getTouchedBy(CSpriteObject &theObject);
+  void getTouchedBy(CSpriteObject &theObject) override;
 
+  void deserialize(boost::property_tree::ptree &node) override;
 
-  void deserialize(boost::property_tree::ptree &node);
-
-  void serialize(boost::property_tree::ptree &node);
+  void serialize(boost::property_tree::ptree &node) override;
   
 private:
   

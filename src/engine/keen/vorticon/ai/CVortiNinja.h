@@ -21,8 +21,8 @@ class CVortiNinja : public CVorticonSpriteObject
 public:
 	CVortiNinja(CMap *p_map, Uint32 x, Uint32 y);
 	void init();
-	bool isNearby(CVorticonSpriteObject &theObject);
-	void getTouchedBy(CVorticonSpriteObject &theObject);	
+	bool isNearby(CSpriteObject &theObject);
+	void getTouchedBy(CSpriteObject &theObject);	
 	void process();
 private:
 	ninja_actions state;

@@ -137,12 +137,8 @@ void CPlayer::walkbehindexitdoor()
     }
 }
 
-void CPlayer::kill()
-{
-    kill(false);
-}
-
-void CPlayer::kill(const bool force)
+void CPlayer::kill(const bool force,
+                   const bool noDieProcess)
 {
 	if(!force) // force can happens for example, when player leaves the map to the most lower-side
 	{

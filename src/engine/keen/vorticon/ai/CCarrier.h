@@ -11,7 +11,7 @@ class CCarrier : public CVorticonSpriteObject
 public:
     CCarrier(CMap* pmap, Uint32 x, Uint32 y, object_t type);
     
-    virtual void getTouchedBy(CVorticonSpriteObject& theObject);
+    virtual void getTouchedBy(CSpriteObject& theObject);
     
     virtual void process() = 0;
     

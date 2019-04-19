@@ -17,7 +17,7 @@ public:
 	
 	void process();
 
-    virtual void getTouchedBy(CVorticonSpriteObject& theObject);
+    virtual void getTouchedBy(CSpriteObject& theObject);
 
 private:
     

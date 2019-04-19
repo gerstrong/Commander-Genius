@@ -23,16 +23,11 @@ int CSpriteObject::m_number_of_objects = 0; // The current number of total objec
 // Initialization Routine
 ///
 CSpriteObject::CSpriteObject(CMap *pmap,
-                             Uint32 x, Uint32 y,
+                             const int x, const int y,
                              const int spriteVar) :
 m_index(m_number_of_objects),
-mHealthPoints(1),
-mSpriteIdx(BLANKSPRITE),
-m_jumpdownfromobject(false),
 mpMap(pmap),
-m_blinktime(0),
 m_Pos(x,y),
-transluceny(0),
 mSprVar(spriteVar)
 {
 	m_number_of_objects++;

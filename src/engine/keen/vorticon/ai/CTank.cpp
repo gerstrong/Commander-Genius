@@ -31,7 +31,7 @@ CVorticonSpriteObject(p_map, x, y, objtype, 0)
 }
 
 
-bool CTank::isNearby(CVorticonSpriteObject &theObject)
+bool CTank::isNearby(CSpriteObject &theObject)
 {
     if( CPlayer *player = dynamic_cast<CPlayer*>(&theObject) )
     {
@@ -205,7 +205,7 @@ void CTank::process()
 	}
 }
 
-void CTank::getTouchedBy(CVorticonSpriteObject &theObject)
+void CTank::getTouchedBy(CSpriteObject &theObject)
 {   // push keen
 	if( CPlayer *player = dynamic_cast<CPlayer*>(&theObject) )
 	{

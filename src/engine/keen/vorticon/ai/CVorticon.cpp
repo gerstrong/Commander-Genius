@@ -78,7 +78,7 @@ CVorticon::CVorticon(CMap *p_map, Uint32 x, Uint32 y, char hp, object_t objtype)
 
 const int VORTICON_PLAYER_MIN_DIST = 8<<CSF;
 
-bool CVorticon::isNearby(CVorticonSpriteObject &theObject)
+bool CVorticon::isNearby(CSpriteObject &theObject)
 {
     if( CPlayer *player = dynamic_cast<CPlayer*>(&theObject) )
     {
@@ -124,7 +124,7 @@ bool CVorticon::isNearby(CVorticonSpriteObject &theObject)
 }
 
 
-void CVorticon::getTouchedBy(CVorticonSpriteObject &theObject)
+void CVorticon::getTouchedBy(CSpriteObject &theObject)
 {
     if( CPlayer *player = dynamic_cast<CPlayer*>(&theObject) )
     {

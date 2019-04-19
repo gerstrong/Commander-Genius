@@ -5,8 +5,8 @@
  *      Author: gerstrong
  */
 
-#ifndef CPLAYER_H_
-#define CPLAYER_H_
+#ifndef CPLAYER_H
+#define CPLAYER_H
 
 #include <base/GsEvent.h>
 #include <SDL.h>
@@ -90,9 +90,10 @@ public:
 	void touchedExit(int mpx);
 	void walkbehindexitdoor();
 
-    void kill(const bool force);
-    void kill();
-	void dieanim();
+    void kill(const bool force = false,
+              const bool noDieProcess = false) override;
+
+    void dieanim();
 	void setDir();
 	void getgoodies();
 	void keencicle();
@@ -108,7 +109,7 @@ public:
 	void checkSolidDoors();
 	void SelectFrame();
 	LEVEL_TRIGGER pollLevelTrigger();
-	void getShotByRay(object_t &obj_type);
+    void getShotByRay(object_t &obj_type) override;
     void processStatusScreen();
 
     bool checkMapBoundaryL(const int x1) override;

@@ -146,7 +146,7 @@ void CManglingMachine::process()
 
 }
 
-void CManglingMachine::getTouchedBy(CVorticonSpriteObject &theObject)
+void CManglingMachine::getTouchedBy(CSpriteObject &theObject)
 {
     bool it_is_mortimer_machine = false;
     
@@ -173,7 +173,7 @@ void CManglingMachine::getTouchedBy(CVorticonSpriteObject &theObject)
     }	
 }
 
-bool CManglingMachine::isNearby(CVorticonSpriteObject &theObject) 
+bool CManglingMachine::isNearby(CSpriteObject &theObject) 
 {     
 	if(setype == SE_MORTIMER_SPARK && state == MSPARK_IDLE)
 	{

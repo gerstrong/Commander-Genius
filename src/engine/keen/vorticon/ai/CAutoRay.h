@@ -18,7 +18,7 @@ class CAutoRay : public CVorticonSpriteObject
 public:
 	enum stRayAlignment{ VERTICAL, HORIZONTAL };
 	CAutoRay(CMap *pmap, Uint32 x, Uint32 y, stRayAlignment type);
-	bool isNearby(CVorticonSpriteObject &theObject);
+	bool isNearby(CSpriteObject &theObject);
 	void process();
 
 

@@ -20,7 +20,7 @@ public:
 	CGuardRobot(CMap *p_map, Uint32 x, Uint32 y);
 	void process();
 	void guard_fire();
-    void getTouchedBy(CVorticonSpriteObject &theObject);
+    void getTouchedBy(CSpriteObject &theObject);
 
 private:
 

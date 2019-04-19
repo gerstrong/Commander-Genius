@@ -105,7 +105,7 @@ void CScrub::process()
 	}
 }
 
-void CScrub::getTouchedBy(CVorticonSpriteObject& theObject)
+void CScrub::getTouchedBy(CSpriteObject& theObject)
 {
     CCarrier::getTouchedBy(theObject);
 }

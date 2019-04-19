@@ -63,7 +63,7 @@ CVorticonSpriteObject(p_map, x, y, OBJ_BABY, 0)
 
 }
 
-void CVortikid::getTouchedBy(CVorticonSpriteObject &theObject)
+void CVortikid::getTouchedBy(CSpriteObject &theObject)
 {
     if(CPlayer *player = dynamic_cast<CPlayer*>(&theObject))
     {

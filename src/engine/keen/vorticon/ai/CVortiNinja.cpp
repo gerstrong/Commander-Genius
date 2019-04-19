@@ -43,7 +43,7 @@ void CVortiNinja::init()
 }
 
 
-bool CVortiNinja::isNearby(CVorticonSpriteObject &theObject)
+bool CVortiNinja::isNearby(CSpriteObject &theObject)
 {
     if( CPlayer *player = dynamic_cast<CPlayer*>(&theObject) )
     {
@@ -75,7 +75,7 @@ bool CVortiNinja::isNearby(CVorticonSpriteObject &theObject)
 }
 
 
-void CVortiNinja::getTouchedBy(CVorticonSpriteObject &theObject)
+void CVortiNinja::getTouchedBy(CSpriteObject &theObject)
 {
     if( CPlayer *player = dynamic_cast<CPlayer*>(&theObject) )
     {

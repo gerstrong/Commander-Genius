@@ -58,7 +58,7 @@ CVorticonSpriteObject(p_map,x,y, OBJ_MEEP)
 }
 
 
-bool CMeep::isNearby(CVorticonSpriteObject &theObject)
+bool CMeep::isNearby(CSpriteObject &theObject)
 {
     if(CPlayer *player = dynamic_cast<CPlayer*>(&theObject))
     {
@@ -87,7 +87,7 @@ bool CMeep::isNearby(CVorticonSpriteObject &theObject)
 }
 
 
-void CMeep::getTouchedBy(CVorticonSpriteObject &theObject)
+void CMeep::getTouchedBy(CSpriteObject &theObject)
 {
     if(CPlayer *player = dynamic_cast<CPlayer*>(&theObject))
     {

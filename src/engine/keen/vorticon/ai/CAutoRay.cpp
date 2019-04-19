@@ -26,7 +26,7 @@ mGunTimer(0)
 
 }
 
-bool CAutoRay::isNearby(CVorticonSpriteObject &theObject)
+bool CAutoRay::isNearby(CSpriteObject &theObject)
 {       
     if( CPlayer *player = dynamic_cast<CPlayer*>(&theObject) )
     {

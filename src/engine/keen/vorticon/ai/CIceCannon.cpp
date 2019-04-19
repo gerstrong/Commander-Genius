@@ -28,7 +28,7 @@ silent(false)
     blockedd = true;
 }
 
-bool CIceCannon::isNearby(CVorticonSpriteObject &theObject)
+bool CIceCannon::isNearby(CSpriteObject &theObject)
 {       
     if( CPlayer *player = dynamic_cast<CPlayer*>(&theObject) )
     {
@@ -95,7 +95,7 @@ silent(true)
 
 
 
-void CIceChunk::getTouchedBy(CVorticonSpriteObject &theObject)
+void CIceChunk::getTouchedBy(CSpriteObject &theObject)
 {
     if( CPlayer *player = dynamic_cast<CPlayer*>(&theObject) )
     {
@@ -162,7 +162,7 @@ void CIceChunk::process()
 	moveYDir(veloc_y);
 }
 
-bool CIceChunk::isNearby(CVorticonSpriteObject &theObject)
+bool CIceChunk::isNearby(CSpriteObject &theObject)
 {       
     if( CPlayer *player = dynamic_cast<CPlayer*>(&theObject) )
     {

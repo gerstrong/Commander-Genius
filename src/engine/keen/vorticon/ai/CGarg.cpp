@@ -39,7 +39,7 @@ m_hardmode(gBehaviorEngine.mDifficulty==HARD)
     }
 }
 
-bool CGarg::isNearby(CVorticonSpriteObject &theObject)
+bool CGarg::isNearby(CSpriteObject &theObject)
 {       
     if(CPlayer *player = dynamic_cast<CPlayer*>(&theObject))
     {
@@ -82,7 +82,7 @@ bool CGarg::isNearby(CVorticonSpriteObject &theObject)
 }
 
 
-void CGarg::getTouchedBy(CVorticonSpriteObject &theObject)
+void CGarg::getTouchedBy(CSpriteObject &theObject)
 {
 	if(CPlayer *player = dynamic_cast<CPlayer*>(&theObject))
 	{    

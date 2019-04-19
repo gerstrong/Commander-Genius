@@ -265,7 +265,7 @@ Requirements:
 Build Tools. Works best with GNU Compiler and Clang
 which supports at least C++14.
 
-CMake 3.12 or later. If you use an older version if CMake you will have to
+CMake 3.12 or later. If you use an older version of CMake you will have to
 disable Python Support (cmake -DUSE_PYTHON3=0).
 
 SDL2, SDL2_Image and SDL2_mixer. There is support for SDL1.2

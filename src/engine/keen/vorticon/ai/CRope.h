@@ -21,7 +21,7 @@ public:
 	void process();
 	void getShotByRay(object_t &obj_type);
 	void rope_movestone();
-	void getTouchedBy(CVorticonSpriteObject &theObject);
+	void getTouchedBy(CSpriteObject &theObject);
 
 private:
 	ropestates state;

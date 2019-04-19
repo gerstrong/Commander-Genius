@@ -34,7 +34,7 @@ CVorticonSpriteObject(pmap, x, y, type)
 	performCollisions();
 }
 
-void CBallJack::getTouchedBy(CVorticonSpriteObject &theObject)
+void CBallJack::getTouchedBy(CSpriteObject &theObject)
 {
     if(CPlayer *player = dynamic_cast<CPlayer*>(&theObject))
     {

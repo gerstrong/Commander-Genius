@@ -156,8 +156,11 @@ void CRay::moveinAir()
 	}
 }
 
-void CRay::getTouchedBy(CVorticonSpriteObject &theObject)
+void CRay::getTouchedBy(CSpriteObject &neutralObject)
 {
+    CVorticonSpriteObject &theObject =
+            dynamic_cast<CVorticonSpriteObject&>(neutralObject);
+
 	if( !theObject.mIsDead && !theObject.dying )
 	{
 		if(theObject.canbezapped && state ==  RAY_STATE_FLY )

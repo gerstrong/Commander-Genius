@@ -112,19 +112,22 @@ void spawnObj(const CSpriteObject *obj);
 class CSpriteObject
 {
   public:
-    CSpriteObject(CMap *pmap, Uint32 x, Uint32 y, const int spriteVar);
+    CSpriteObject(CMap *pmap,
+                  const int x,
+                  const int y,
+                  const int spriteVar);
 
-    unsigned int m_index;        	// Like an ID for some objects that need this implementation
+    int m_index;        	// Like an ID for some objects that need this implementation
     
     
     
-    unsigned int mHealthPoints;              // episode 1 style four-shots-to-kill
+    unsigned int mHealthPoints = 1;              // episode 1 style four-shots-to-kill
     bool mTurnAroundOnCliff = false;    // Can enemy turn around if there is a cliff
     bool mEndGameOnDefeat = false;    // End game if enemy is defeated. Useful for the last boss in some mods
     bool exists;
     bool onscreen;    				// true=(scrx,scry) position is visible onscreen
     bool hasbeenonscreen;
-    int mSpriteIdx;      		// which sprite should this object be drawn with
+    int mSpriteIdx = -1;      		// which sprite should this object be drawn with
     int xDirection;					// the direction to where the object is looking/heading to
     int yDirection;					// same for vertical
     
@@ -157,7 +160,7 @@ class CSpriteObject
     bool mIsDead, dying;
     
     
-    bool m_jumpdownfromobject;
+    bool m_jumpdownfromobject  = false;
     
     
     
@@ -412,7 +415,7 @@ class CSpriteObject
     
     CMap *mpMap;
     
-    Uint16 m_blinktime;
+    Uint16 m_blinktime = 0;
     bool mInvincible = false;   /** Shot might hit the object but it has no effect at all */
     bool mRecoverFromStun = false; /** If foe get shot they might be able to recover at later time */
     bool mNeverStop = false;        /** This will make foe continue walking and never change actions (Keen 9 - Cybloog) */
@@ -429,7 +432,7 @@ class CSpriteObject
     // Action Format related stuff
     ActionFormatType m_Action;
     
-    Uint8 transluceny;
+    Uint8 transluceny = 0;
     
 protected:
 

@@ -38,10 +38,10 @@ const int FOOB_DEAD_FRAME    =     101;
 class CFoob : public CVorticonSpriteObject
 {
 public:
-	CFoob(CMap *p_map, Uint32 x, Uint32 y);
-	void process();
-	bool isNearby(CVorticonSpriteObject &theObject);
-	void getTouchedBy(CVorticonSpriteObject &theObject);
+    CFoob(CMap *p_map, const int x, const int y);
+    void process() override;
+    bool isNearby(CSpriteObject &theObject) override;
+    void getTouchedBy(CSpriteObject &theObject) override;
 
 private:
 	enum FOOB_ACTIONS

@@ -58,8 +58,8 @@ public:
 	CTank(CMap *p_map, Uint32 x, Uint32 y,object_t objtype=OBJ_TANK);
 	virtual void process();
 
-	void getTouchedBy(CVorticonSpriteObject &theObject);
-	bool isNearby(CVorticonSpriteObject &theObject);
+	void getTouchedBy(CSpriteObject &theObject);
+	bool isNearby(CSpriteObject &theObject);
 
 	int checkSolidD( int x1, int x2, int y2, const bool push_mode=false );
 

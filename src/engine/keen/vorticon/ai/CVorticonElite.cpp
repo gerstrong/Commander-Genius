@@ -90,7 +90,7 @@ CVorticon(p_map, x, y, 4, OBJ_VORTELITE)
 }
 
 
-bool CVorticonElite::isNearby(CVorticonSpriteObject &theObject)
+bool CVorticonElite::isNearby(CSpriteObject &theObject)
 {
     if( CPlayer *player = dynamic_cast<CPlayer*>(&theObject) )
     {

@@ -14,7 +14,9 @@
 
 static signed char numlooks;
 
-CYorp::CYorp( CMap *p_map, Uint32 x, Uint32 y ) :
+CYorp::CYorp( CMap *p_map,
+              const Uint32 x,
+              const Uint32 y ) :
 CVorticonSpriteObject(p_map,x,y, OBJ_YORP),
 m_hardmode(gBehaviorEngine.mDifficulty > NORMAL)
 {
@@ -69,12 +71,12 @@ void CYorp::process()
 			processStunned();	break;
 		case YORP_DYING:
 			processDying();		break;
-		default: break;
+        //default: break;
 	}
 
 }
 
-bool CYorp::isNearby(CVorticonSpriteObject &theObject)
+bool CYorp::isNearby(CSpriteObject &theObject)
 {       
     if( state == YORP_LOOK )
     {
@@ -221,7 +223,7 @@ void CYorp::processDying()
 	}
 }
 
-void CYorp::getTouchedBy(CVorticonSpriteObject &theObject)
+void CYorp::getTouchedBy(CSpriteObject &theObject)
 {
 	if(CPlayer *player = dynamic_cast<CPlayer*>(&theObject))
 	{                        

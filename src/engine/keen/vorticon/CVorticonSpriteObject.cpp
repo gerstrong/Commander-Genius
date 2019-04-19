@@ -10,8 +10,8 @@
 
 
 CVorticonSpriteObject::CVorticonSpriteObject(CMap *pmap,
-                                             Uint32 x, Uint32 y,
-                                             object_t type, const int sprVar) :
+                                             const int x, const int y,
+                                             const object_t type, const int sprVar) :
 CSpriteObject(pmap, x, y, sprVar),
 m_type(type),
 touchPlayer(0),
