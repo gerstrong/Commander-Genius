@@ -16,6 +16,11 @@
 
 #include "GsControl.h"
 
+#include <graphics/GsTexture.h>
+#include <graphics/GsSurface.h>
+#include <graphics/GsTrueTypeFont.h>
+
+
 class CGUIText : public GsControl
 {
 public:
@@ -25,8 +30,7 @@ public:
 
 	virtual void setText(const std::string& text);
 
-	virtual void processLogic();
-    //void drawGalaxyStyle(SDL_Rect& lRect);
+	virtual void processLogic();    
     virtual void processRender(const GsRect<float> &RectDispCoordFloat);
 
 	// Defines in character units how tall and wide the entire text is.
@@ -42,9 +46,18 @@ private:
 
 
     /// Automatic horizontal scrolling in case the text is too big
-    float mScrollPosMax = 0;
-    float mScrollPos = 0;
-    float mScrollVel = 0.3;
+    float mScrollPosMax = 0.0f;
+    float mScrollPos = 0.0f;
+    float mScrollVel = 0.3f;
+
+#if defined(USE_SDL_TTF)
+    GsTrueTypeFont mTrueTypeFont;
+
+    GsTexture mTexture;
+    GsSurface mTextSfc;
+
+#endif
+
 
     enum class ScrollDir
     {

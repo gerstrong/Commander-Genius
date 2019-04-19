@@ -20,6 +20,14 @@ CGUIText::CGUIText(const std::string& text)
 
 void CGUIText::setText(const std::string& text)
 {
+#if defined(USE_SDL_TTF)
+    const SDL_Color textColor = { 0xff, 0, 0, 0 };
+
+    mTrueTypeFont.open("lazy.ttf", 28);
+    mTrueTypeFont.render(mTextSfc, text, textColor);
+#else
+
+
 	if(!mTextList.empty())
 		mTextList.clear();
 
@@ -56,6 +64,8 @@ void CGUIText::setText(const std::string& text)
 		mTextDim.w=buf.size();
 
 	mTextDim.h = mTextList.size();
+
+#endif
 }
 
 
@@ -91,17 +101,37 @@ void CGUIText::processLogic()
 
 void CGUIText::processRender(const GsRect<float> &RectDispCoordFloat)
 {
-	// Transform to the display coordinates
-	GsRect<float> displayRect = mRect;
-	displayRect.transform(RectDispCoordFloat);
-	SDL_Rect lRect = displayRect.SDLRect();
+    // Transform to the display coordinates
+    GsRect<float> displayRect = mRect;
+    displayRect.transform(RectDispCoordFloat);
+    SDL_Rect lRect = displayRect.SDLRect();
 
-	// Now lets draw the text of the list control
+
+#if defined(USE_SDL_TTF)
+    auto *blit = gVideoDriver.getBlitSurface();
+
+    BlitSurface(mTextSfc.getSDLSurface(), nullptr,
+                blit, &lRect);
+
+    BlitSurface(mTextSfc.getSDLSurface(), nullptr,
+                blit, nullptr);
+#endif
+
+
+    /*auto *renderer = &gVideoDriver.getRendererRef();
+
+    //Render to screen
+    SDL_RenderCopyEx( renderer,
+                      mTexture.getPtr(), nullptr,
+                      &lRect,
+                      0, nullptr, SDL_FLIP_NONE );*/
+
+    // Now lets draw the text of the list control
     auto &Font = gGraphics.getFont(mFontID);
 
     std::list<std::string>::iterator textIt = mTextList.begin();
     for( size_t i=0 ; textIt != mTextList.end() ; textIt++, i++ )
-	{
+    {
         auto &theText = *textIt;
 
         const int textWidth = Font.calcPixelTextWidth(theText);
@@ -128,7 +158,5 @@ void CGUIText::processRender(const GsRect<float> &RectDispCoordFloat)
             Font.drawFontCentered(gVideoDriver.getBlitSurface(), theText, lRect.x, lRect.w, lRect.y+i*8, false);
             mScrollPosMax = 0;
         }
-
-
-	}
+    }
 }
