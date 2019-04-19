@@ -1,3 +1,7 @@
+v2.3.4:
+-------
+- Code cleanups, fixes
+
 v2.3.3:
 -------
 - Tweaked Game menu design
