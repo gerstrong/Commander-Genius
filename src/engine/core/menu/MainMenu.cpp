@@ -70,11 +70,22 @@ void MainMenu::createGameMenu( const bool openedGamePlay,
         mpMenuDialog->addControl( infoButton );
         infoButton->enable(false);
     }*/
-    
+
     const std::string endGamePlayTest =
             openedGamePlay ? "End Game" : "Quit to Launcher";
 
+#if !defined(EMBEDDED)
+
     mpMenuDialog->addControl(new GameButton( endGamePlayTest, new EventEndGamePlay(), style ) );
+
+#else
+
+    if(openedGamePlay)
+    {
+        mpMenuDialog->addControl(new GameButton( endGamePlayTest, new EventEndGamePlay(), style ) );
+    }
+
+#endif
 
     mpMenuDialog->addControl(new GameButton( "Quit", new GMQuit(), style ) );
 

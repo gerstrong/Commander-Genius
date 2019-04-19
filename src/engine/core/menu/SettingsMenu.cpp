@@ -16,7 +16,6 @@
 #include "CVideoSettings.h"
 #include "DisplaySettings.h"
 #include "VpadSettings.h"
-//#include "CameraSettings.h"
 #include "AudioSettings.h"
 #include "Options.h"
 #include "ControlSettings.h"
@@ -30,18 +29,25 @@ GameMenu( GsRect<float>(0.25f, 0.24f, 0.5f, 0.40f),
           style )
 {
 
+#if !defined(EMBEDDED)
+
     mpMenuDialog->addControl(new GameButton( "Display",
                                              new OpenMenuEvent( new DisplaySettings(Style()) ),
                                              style ) );
+
+#endif
 
     mpMenuDialog->addControl(new GameButton( "Audio",
                                              new OpenMenuEvent( new CAudioSettings(Style()) ),
                                              style ) );
 
+#if !defined(EMBEDDED)
 
     mpMenuDialog->addControl(new GameButton( "Video",
                                              new OpenMenuEvent( new CVideoSettings(Style()) ),
                                              style ) );
+
+#endif
 
 
     mpMenuDialog->addControl(new GameButton( "Options",
@@ -63,13 +69,6 @@ GameMenu( GsRect<float>(0.25f, 0.24f, 0.5f, 0.40f),
                                                                                                                 style) ),
                                                  style ) );
 #endif
-        /*
-#if !defined(EMBEDDED)
-    mpMenuDialog->addControl( new GameButton( "Camera",
-                                              new OpenMenuEvent( new CCameraSettings(style) ),
-                                              style ) );
-#endif
-*/
 
     }
 
