@@ -682,7 +682,7 @@ FILE *OpenGameFile(const std::string& path, const char *mode) {
 		return fopen(Utf8ToSystemNative(fullfn).c_str(), mode);
 	}
 
-	return NULL;
+    return nullptr;
 }
 
 
@@ -711,12 +711,13 @@ bool OpenGameFileR(std::ifstream& f,
 	return false;
 }
 
-std::ofstream && OpenGameFileW(const std::string& path, const std::ios_base::openmode mode)
+std::ofstream OpenGameFileW(const std::string& path,
+                               const std::ios_base::openmode mode)
 {
     std::ofstream f;
 
     if(path.size() == 0)
-        return std::move(f);
+        return f;
 
     std::string fullfn = GetWriteFullFileName(path, true);
     if(fullfn.size() != 0)
@@ -724,12 +725,12 @@ std::ofstream && OpenGameFileW(const std::string& path, const std::ios_base::ope
         try
         {
             f.open(Utf8ToSystemNative(fullfn).c_str(), mode);
-            return std::move(f);
+            return f;
         }
         catch(...) {}
     }
 
-    return std::move(f);
+    return f;
 }
 
 

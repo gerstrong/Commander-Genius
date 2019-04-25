@@ -21,7 +21,7 @@ const int LVLS_SHIP = 20;
 
 void CPlayGameVorticon::processOnWorldMap()
 {            
-    const int numPlayers = m_Player.size();
+    const int numPlayers = static_cast<int>(m_Player.size());
     for( int i=0 ; i<numPlayers ; i++ )
 	{
 		CPlayer &player = m_Player[i];
@@ -307,8 +307,8 @@ int CPlayGameVorticon::getTeleporterInfo(int objectID)
  */
 void CPlayGameVorticon::teleportPlayer(int objectID, CPlayer &player)
 {
-	int destx, desty;
-	int origx, origy;
+    int destx=0, desty=0;
+    int origx=0, origy=0;
 	mMap->findObject(objectID, &origx, &origy);
 	std::unique_ptr<CTeleporter> teleporter( new CTeleporter( mMap.get(), m_Player,origx<<CSF, origy<<CSF) );
 	teleporter->solid = false;
