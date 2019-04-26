@@ -27,14 +27,19 @@
 class CGUIText : public GsControl
 {
 public:
-	CGUIText(const std::string& text);
+
+    CGUIText(const std::string& text,
+             const GsRect<float> &rect);
 
     void setupButtonSurface(const std::string& text = "");
 
 	virtual void setText(const std::string& text);
 
-	virtual void processLogic();    
+	virtual void processLogic();
     virtual void processRender(const GsRect<float> &RectDispCoordFloat);
+
+    virtual void processRender(const GsRect<float> &backRect,
+                               const GsRect<float> &frontRect);
 
 	// Defines in character units how tall and wide the entire text is.
     GsRect<unsigned int> mTextDim;
@@ -52,6 +57,7 @@ private:
     float mScrollPosMax = 0.0f;
     float mScrollPos = 0.0f;
     float mScrollVel = 0.3f;
+
 
 #if defined(USE_SDL_TTF)
     GsTrueTypeFont mTrueTypeFont;

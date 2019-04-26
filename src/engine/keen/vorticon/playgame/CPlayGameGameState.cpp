@@ -132,7 +132,7 @@ bool CPlayGameVorticon::loadXMLGameState()
             y = spriteTree.get<int>("y", 0);
 
             spriteObj.m_type = type;
-            spriteObj.moveToForce(Vector2D<int>(x,y));
+            spriteObj.moveToForce(GsVec2D<int>(x,y));
             spriteObj.mIsDead = spriteTree.get<bool>("dead", false);
             spriteObj.onscreen = spriteTree.get<bool>("onscreen", false);
             spriteObj.hasbeenonscreen = spriteTree.get<bool>("hasbeenonscreen", false);

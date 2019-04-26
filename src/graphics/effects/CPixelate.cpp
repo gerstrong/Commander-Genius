@@ -30,14 +30,14 @@ m_speed(speed)
 
 	m_line = 0;
 	m_lines_completed = 0;
-	m_drawmap = new bool[gameres.h*gameres.w];
+    m_drawmap = new bool[gameres.h*gameres.w];
 	m_pixels_per_line = new unsigned short[gameres.h];
 
     for(int y=0 ; y<gameres.h ; y++)
 	{
 		m_pixels_per_line[y] = 0;
         for(int x=0 ; x<gameres.w ; x++)
-			m_drawmap[y*gameres.w+x] = false;
+            m_drawmap[y*gameres.w+x] = false;
 	}
 }
 
@@ -143,7 +143,8 @@ void CPixelate::render()
 
     SDL_UnlockSurface(mp_OldSurface);
 
-    BlitSurface( mp_OldSurface, NULL, gVideoDriver.getBlitSurface(), NULL );
+    BlitSurface( mp_OldSurface, nullptr,
+                 gVideoDriver.getBlitSurface(), nullptr );
 }
 
 CPixelate::~CPixelate()

@@ -43,10 +43,10 @@ blendup(true)
 
 	// Create a surface for that
     GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
-	mMBRect.w = Font.calcPixelTextWidth(mText)+16;
+    mMBRect.w = Font.calcPixelTextWidth(mText)+16;
 	mMBRect.h = Font.getPixelTextHeight()*(calcNumLines(mText)+1)+16;
-    mMBRect.x = (gameRes.w-mMBRect.w)/2;
-    mMBRect.y = (gameRes.h-mMBRect.h)/2;
+    mMBRect.x = (gameRes.dim.x-mMBRect.w)/2;
+    mMBRect.y = (gameRes.dim.y-mMBRect.h)/2;
 }
 
 
@@ -62,7 +62,7 @@ void CMessageBoxSelection::init()
 	SDL_Rect rect = mMBRect;
 	rect.x = 8;
 	rect.y = 10;
-	rect.w -= 16;
+    rect.w -= 16;
 	rect.h -= 16;
     
 	auto &Font = gGraphics.getFont(FONT_ID);
@@ -79,7 +79,7 @@ void CMessageBoxSelection::init()
 	int yoff = 0;
 	for( auto &it : textList  )
 	{	    
-	    int xmid = (rect.w-Font.calcPixelTextWidth(it))/2+rect.x;
+        int xmid = (rect.w-Font.calcPixelTextWidth(it))/2+rect.x;
         Font.drawFont( coloredTextSurface, it, xmid, yoff, false);
 	    yoff += 12;
 	}	
@@ -94,12 +94,12 @@ void CMessageBoxSelection::init()
 	SDL_Rect selRect;
 	SDL_Rect cutRect;
 	selRect.x = selRect.y = 0;
-	selRect.w = rect.w-rect.x;
+    selRect.w = rect.w-rect.x;
 	selRect.h = 14;
 	cutRect = selRect;
 	cutRect.x += 2;
 	cutRect.y += 2;
-	cutRect.w -= 4;
+    cutRect.w -= 4;
 	cutRect.h -= 4;
 
     mSelSurface1.createRGBSurface(selRect);

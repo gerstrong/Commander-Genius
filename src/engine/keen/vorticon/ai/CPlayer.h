@@ -180,7 +180,7 @@ public:
     int ankhtime;
 
 
-	Vector2D<int> pDir,pShowDir,lastPDir;
+	GsVec2D<int> pDir,pShowDir,lastPDir;
 
 	char pfireframetimer;
 	bool inhibitwalking;

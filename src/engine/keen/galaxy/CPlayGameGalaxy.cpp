@@ -504,10 +504,10 @@ void CPlayGameGalaxy::ponder(const float deltaT)
     const float w = gVideoDriver.getBlitSurface()->w;
     const float h = gVideoDriver.getBlitSurface()->h;
 
-    rRect.y += gVideoDriver.getVidConfig().mHorizBorders;
+    rRect.pos.y += gVideoDriver.getVidConfig().mHorizBorders;
 
-    rRect.x /= w;       rRect.y /= h;
-    rRect.w /= w;       rRect.h /= h;
+    rRect.pos.x /= w;       rRect.pos.y /= h;
+    rRect.dim.x /= w;       rRect.dim.y /= h;
 
     if( checkSandwichMenuClicked(rRect) )
     {

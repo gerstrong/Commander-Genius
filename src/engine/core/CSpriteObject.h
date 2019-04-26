@@ -68,9 +68,9 @@ class CSpriteObject;
 // Event that will be used to move the objects in the game
 struct ObjMove
 {
-    Vector2D<int> m_Vec;
+    GsVec2D<int> m_Vec;
     
-    ObjMove(const Vector2D<int>& Vector) : m_Vec(Vector) {}
+    ObjMove(const GsVec2D<int>& Vector) : m_Vec(Vector) {}
     ObjMove(const int offx, const int offy) : m_Vec(offx, offy) {}
     
     virtual ~ObjMove();
@@ -81,7 +81,7 @@ struct ObjMove
 struct ObjMoveCouple : ObjMove
 {
     CSpriteObject &mSecond;
-    ObjMoveCouple(const Vector2D<int>& vec,
+    ObjMoveCouple(const GsVec2D<int>& vec,
 		  CSpriteObject &second) :
       ObjMove(vec), mSecond(second)  {}
     
@@ -96,7 +96,7 @@ struct ObjMoveCouples : ObjMove
 {
     std::vector<CSpriteObject*> mCarriedObjVec;
     
-    ObjMoveCouples(const Vector2D<int>& Vector,
+    ObjMoveCouples(const GsVec2D<int>& Vector,
 		   std::vector<CSpriteObject*> &carriedObjVec) :
       ObjMove(Vector), mCarriedObjVec(carriedObjVec)  {}
     
@@ -201,12 +201,12 @@ class CSpriteObject
     
     
     // Moving parts
-    void moveToForce(const Vector2D<int> &dir);
+    void moveToForce(const GsVec2D<int> &dir);
     void moveToForce(const int new_x, const int new_y);
-    void moveDir(const Vector2D<int> &dir);
+    void moveDir(const GsVec2D<int> &dir);
     void moveToHorizontal(const int& new_x);
     void moveToVertical(const int& new_y);
-    void moveTo(const Vector2D<Uint32> &new_loc);
+    void moveTo(const GsVec2D<Uint32> &new_loc);
     void moveTo(const int new_x, const int new_y);
     void moveXDir(const int amount, const bool force = false);
     void moveYDir(const int amount);
@@ -220,7 +220,7 @@ class CSpriteObject
 	 * \brief	This function checks if there is any collision and moves the object safely
 	 * \param	dir	The direction where the object has to go to...
 	 */
-    void processMove(const Vector2D<int>& dir);
+    void processMove(const GsVec2D<int>& dir);
     void processMoveBitLeft();
     void processMoveBitRight();
     virtual void processMoveBitDown();
@@ -301,7 +301,7 @@ class CSpriteObject
     void moveSlopedTileUp( int x, int y, const int xspeed );
     
     // getters for positions
-    Vector2D<int> &getPosition()
+    GsVec2D<int> &getPosition()
     { return m_Pos; }
     
     auto getXPosition() const -> int
@@ -328,8 +328,8 @@ class CSpriteObject
     auto getYMidPos() const -> int
     { return int(m_Pos.y)+(m_BBox.y2-m_BBox.y1)/2; }
     
-    auto getMidPos() const -> Vector2D<int>
-    { return Vector2D<int>(getXMidPos(), getYMidPos()); }
+    auto getMidPos() const -> GsVec2D<int>
+    { return GsVec2D<int>(getXMidPos(), getYMidPos()); }
     
     void processFallPhysics(const int boost);
     void processFallPhysics();
@@ -425,7 +425,7 @@ class CSpriteObject
     
     GameSound mWalkSound;
     
-    Vector2D<int> m_Pos; 	// x,y location in map coords, CSFed, represent as 2D Vector
+    GsVec2D<int> m_Pos; 	// x,y location in map coords, CSFed, represent as 2D Vector
     
     static int m_number_of_objects;
     

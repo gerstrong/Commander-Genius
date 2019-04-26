@@ -22,7 +22,7 @@ CRay(p_map, x, y, dir, CENTER, 0, byType, byID)
 	blockedl = blockedr = 0;
 	canbezapped = 1;
 	if(dir == LEFT)
-		m_Pos -= Vector2D<Uint32>(14<<STC,0);
+		m_Pos -= GsVec2D<Uint32>(14<<STC,0);
 
 	m_speed = (gBehaviorEngine.mDifficulty>=NORMAL) ? FIREBALL_HARD_SPEED : FIREBALL_SPEED;
 	mSpriteIdx = (m_HorDir == RIGHT) ? FIREBALL_RIGHT_FRAME : FIREBALL_LEFT_FRAME;

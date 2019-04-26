@@ -27,7 +27,7 @@ m_fireTimer(0)
 {
     m_FireSprite = gBehaviorEngine.isDemo() ? FIRE_SPRITE_DEMO : FIRE_SPRITE;
 
-    Vector2D<Uint32> pos = getPosition();
+    GsVec2D<Uint32> pos = getPosition();
 
     pos.y = (pos.y>>CSF);   pos.x = (pos.x>>CSF);
 
@@ -71,7 +71,7 @@ m_fireTimer(0)
 
 void CPlatformVertical::process()
 {
-    Vector2D<Uint32> pos = getPosition();
+    GsVec2D<Uint32> pos = getPosition();
 
     pos.y = (pos.y>>CSF);   pos.x = (pos.x>>CSF);
 

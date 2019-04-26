@@ -5,9 +5,10 @@
 
 
 ComboSelection::ComboSelection(const std::string& text,
-                                const std::list<std::string>& optionsList, 
+                                const std::list<std::string>& optionsList,
                                const Style &style) :
-CGUIComboSelection(text, optionsList, style)
+CGUIComboSelection(text, GsRect<float>(0.0f,0.0f,1.0f,1.0f),
+                   optionsList, style)
 {
     if(mStyle == Style::NONE)
     {

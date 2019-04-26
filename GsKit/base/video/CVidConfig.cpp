@@ -30,11 +30,11 @@ void CVidConfig::reset()
 	// Default values
 	mVSync = true;
 
-    mDisplayRect.x = 0;
-    mDisplayRect.y = 0;
+    mDisplayRect.pos.x = 0;
+    mDisplayRect.pos.y = 0;
 
 #if defined(CAANOO) || defined(WIZ) || defined(GP2X) || defined(DINGOO) || defined(NANONOTE)
-    mDisplayRect.w=320;
+    mDisplayRect.dim.x=320;
     mDisplayRect.h=240;
 #if defined(GP2X) || defined(NANONOTE)
 	//m_Resolution.depth=32;
@@ -43,8 +43,8 @@ void CVidConfig::reset()
 #endif
 	Fullscreen=true;
 #else
-    mDisplayRect.w = 800;
-    mDisplayRect.h = 600;
+    mDisplayRect.dim.x = 800;
+    mDisplayRect.dim.y = 600;
 	mFullscreen=false;
 #endif
 
@@ -58,23 +58,25 @@ void CVidConfig::reset()
     mOpengl = false; // Must stay optional for better compatibility
 #endif
 
-    mAspectCorrection.w = 4;
-    mAspectCorrection.h = 3;
+    mAspectCorrection.dim.x = 4;
+    mAspectCorrection.dim.y = 3;
 	m_CameraBounds.reset();
 
-    mGameRect.x = 0;
-    mGameRect.y = 0;
-    mGameRect.w = 320;
-    mGameRect.h = 200;
+    mGameRect.pos.x = 0;
+    mGameRect.pos.y = 0;
+    //mGameRect.dim.x = 960;
+    //mGameRect.dim.y = 540;
+    mGameRect.dim.x = 1920;
+    mGameRect.dim.y = 1080;
 
 #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
     mOpengl = true;
-	mAspectCorrection.w=0;
+	mAspectCorrection.dim.x=0;
 	mAspectCorrection.h=0;
 #endif
 
 #if defined(ANDROID)
-	mAspectCorrection.w=0;
+	mAspectCorrection.dim.x=0;
 	mAspectCorrection.h=0;
 #endif
 

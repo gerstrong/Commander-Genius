@@ -23,7 +23,9 @@ public:
         mpMenuDialog->setRect(localRect);
         mpMenuDialog->addControl( mpReturnButton,
                                   GsRect<float>(
-                                      -0.1f, 0.1f, 0.03f/localRect.w, 0.03f/localRect.h) );
+                                      -0.1f, 0.1f,
+                                      0.03f/localRect.dim.x,
+                                      0.03f/localRect.dim.y) );
         mpReturnButton->setDown(true);
 
         createGalaxyBackground();

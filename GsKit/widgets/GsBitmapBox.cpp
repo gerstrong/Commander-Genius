@@ -57,10 +57,10 @@ void CGUIBitmap::updateGraphics()
         *mpBitmap = *gGraphics.getBitmapFromStr(0, mTextID);
     }
 
-    sizeForScreen.w /= 320;
-    sizeForScreen.h /= 200;
-    sizeForScreen.w *= mpBitmap->width();
-    sizeForScreen.h *= mpBitmap->height();
+    sizeForScreen.dim.x /= 320;
+    sizeForScreen.dim.y /= 200;
+    sizeForScreen.dim.x *= mpBitmap->width();
+    sizeForScreen.dim.y *= mpBitmap->height();
 
     mpBitmap->scaleTo(sizeForScreen);
 }
@@ -75,6 +75,7 @@ void CGUIBitmap::processLogic()
 
 void CGUIBitmap::processRender(const GsRect<float> &RectDispCoordFloat)
 {    
+    /*
     if(!mScaledBitmapPtr)
     {
         return;
@@ -90,7 +91,7 @@ void CGUIBitmap::processRender(const GsRect<float> &RectDispCoordFloat)
 	displayRect.transform(RectDispCoordFloat);
     GsRect<Uint16> lRect = displayRect.SDLRect();
 
-    if( mScaledBitmapPtr->width()  != lRect.w ||
+    if( mScaledBitmapPtr->width()  != lRect.dim.x ||
         mScaledBitmapPtr->height() != lRect.h )
     {
         // copy the bitmap
@@ -102,6 +103,6 @@ void CGUIBitmap::processRender(const GsRect<float> &RectDispCoordFloat)
     else
     {
         mScaledBitmapPtr->draw( lRect.x, lRect.y );
-    }
+    }*/
 }
 

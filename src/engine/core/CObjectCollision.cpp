@@ -911,7 +911,7 @@ void CSpriteObject::processMoveBitDown()
 }
 
 
-void CSpriteObject::processMove(const Vector2D<int>& dir)
+void CSpriteObject::processMove(const GsVec2D<int>& dir)
 {
 	processMove(dir.x, dir.y);
 }

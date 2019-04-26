@@ -155,26 +155,23 @@ void CVideoEngine::updateActiveArea(const GsRect<Uint16>& displayRes,
 {    
     if (aspWidth == 0 || aspHeight == 0)
     {
-        mActiveAreaRect.x = mActiveAreaRect.y = 0;
-        mActiveAreaRect.w = displayRes.w;
-        mActiveAreaRect.h = displayRes.h;
-
+        mActiveAreaRect.pos = {0, 0};
+        mActiveAreaRect.dim = displayRes.dim;
         return;
     }
 
-    if (aspHeight*displayRes.w >= aspWidth*displayRes.h) // Wider than width:height, so shrink width
+    if (aspHeight*displayRes.dim.x >= aspWidth*displayRes.dim.y) // Wider than width:height, so shrink width
     {
-        mActiveAreaRect.h = displayRes.h;
-        mActiveAreaRect.w = ((displayRes.h*aspWidth)/aspHeight);
+        mActiveAreaRect.dim.y = displayRes.dim.y;
+        mActiveAreaRect.dim.x = ((displayRes.dim.y*aspWidth)/aspHeight);
     }
     else // Taller than width:height so adapt height
     {
-        mActiveAreaRect.w = displayRes.w;
-        mActiveAreaRect.h = (displayRes.w*aspHeight)/aspWidth;
+        mActiveAreaRect.dim.x = displayRes.dim.x;
+        mActiveAreaRect.dim.y = (displayRes.dim.x*aspHeight)/aspWidth;
     }
 
-    mActiveAreaRect.x = (displayRes.w-mActiveAreaRect.w)/2;
-    mActiveAreaRect.y = (displayRes.h-mActiveAreaRect.h)/2;
+    mActiveAreaRect.pos = (displayRes.dim-mActiveAreaRect.dim)/2;
 }
 
 
@@ -194,10 +191,11 @@ bool CVideoEngine::createSurfaces(const GsRect<Uint16> &gamerect)
     borderHBottom = m_VidConfig.mHorizBorders;
 
     gLogging.ftextOut("Gamesurface creation of %dx%d!\n<br>",
-                     gamerect.w, gamerect.h );
+                     gamerect.dim.x, gamerect.dim.y );
 
     mGameSfc.create(m_Mode,
-                    gamerect.w, gamerect.h, RES_BPP,
+                    gamerect.dim.x,
+                    gamerect.dim.y, RES_BPP,
                     0x00FF0000,
                     0x0000FF00,
                     0x000000FF,
@@ -207,7 +205,8 @@ bool CVideoEngine::createSurfaces(const GsRect<Uint16> &gamerect)
     SDL_SetSurfaceBlendMode(mGameSfc.getSDLSurface(), SDL_BLENDMODE_NONE);
 #endif
 
-    const int squareSize = getPowerOfTwo( gamerect.h > gamerect.w ? gamerect.h : gamerect.w );
+    const int squareSize = getPowerOfTwo( gamerect.dim.y > gamerect.dim.x ?
+                                          gamerect.dim.y : gamerect.dim.x );
 
     gLogging.ftextOut("ScrollSurface creation of %dx%d!\n<br>",
                      squareSize, squareSize );
@@ -246,8 +245,8 @@ bool CVideoEngine::createSurfaces(const GsRect<Uint16> &gamerect)
     mpMainScreenTexture.reset( SDL_CreateTexture(renderer,
                                    SDL_PIXELFORMAT_ARGB8888,
                                    SDL_TEXTUREACCESS_STREAMING,
-                                   gamerect.w*m_VidConfig.m_ScaleXFilter,
-                                   gamerect.h*m_VidConfig.m_ScaleXFilter) );
+                                   gamerect.dim.x*m_VidConfig.m_ScaleXFilter,
+                                   gamerect.dim.y*m_VidConfig.m_ScaleXFilter) );
 
 #endif
 
@@ -265,10 +264,10 @@ void CVideoEngine::blitScrollSurface() // This is only for tiles
     const int scrollSfcWidth = mScrollSurface.width();
     const int scrollSfcHeight = mScrollSurface.height();
 
-    Gamerect.x = mRelativeVisGameArea.x;
-    Gamerect.y = mRelativeVisGameArea.y;
-    Gamerect.w = mRelativeVisGameArea.w+16;
-    Gamerect.h = mRelativeVisGameArea.h+16;
+    Gamerect.x = mRelativeVisGameArea.pos.x;
+    Gamerect.y = mRelativeVisGameArea.pos.y;
+    Gamerect.w = mRelativeVisGameArea.dim.x+16;
+    Gamerect.h = mRelativeVisGameArea.dim.y+16;
 
     dstrect.x = Gamerect.x;
     dstrect.y = Gamerect.y;
@@ -340,9 +339,9 @@ void CVideoEngine::drawHorizBorders()
 
     GsRect<Uint16> rect;
 
-    rect.x = 0;     rect.y = 0;
-    rect.w = mGameSfc.width();
-    rect.h = borderHUpper;
+    rect.pos = {0, 0};
+    rect.dim.x = mGameSfc.width();
+    rect.dim.y = borderHUpper;
 
     const auto color = m_VidConfig.mBorderColors;
 
@@ -350,7 +349,7 @@ void CVideoEngine::drawHorizBorders()
     mGameSfc.fillRGB( rect, color.r, color.g, color.b );
 
 
-    rect.y = mGameSfc.height()-borderHBottom;
+    rect.pos.y = mGameSfc.height()-borderHBottom;
 
     // Lower Part
     mGameSfc.fillRGB( rect, color.r, color.g, color.b );

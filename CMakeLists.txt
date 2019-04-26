@@ -5,7 +5,8 @@ cmake_minimum_required(VERSION 3.5)
 
 Project(CommanderGenius)
 
-set (CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/CMake")
+# Add GsKit
+add_subdirectory("GsKit")
 
 option(USE_VIRTUALPAD "Enable Onscreen Virtual Gamepad support " ON)
 
@@ -19,8 +20,11 @@ if(USE_VIRTUALPAD)
     ADD_DEFINITIONS(-DVIRTUALPAD)
 endif(USE_VIRTUALPAD)
 
+# Modules path located at GsKit/CMake
+set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${CMAKE_CURRENT_SOURCE_DIR}/GsKit/CMake")
+
 # Use COmpile TIme REducer
-include(cotire)
+include(GsKit/CMake/cotire.cmake)
 
 option(USE_PYTHON3 "Use Python3 scripts" yes)
 
@@ -75,13 +79,11 @@ if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/GsKit/CMakeLists.txt")
 
 endif()
 
-# Add GsKit
-add_subdirectory("GsKit")
 
 # And build Commander Genius on top of that!
 add_subdirectory("src")
 
-MESSAGE( STATUS "CG_VERSION = ${CG_VERSION}" )
+MESSAGE(STATUS "CG_VERSION = ${CG_VERSION}" )
 
 INCLUDE(package.cmake)
 

@@ -40,7 +40,7 @@ private:
     // Speed at what the Platform might return to the original position
     int hoverSpeed;
 
-    const Vector2D<int> m_Origin;
+    const GsVec2D<int> m_Origin;
 
     bool mAllowReturn;
 };

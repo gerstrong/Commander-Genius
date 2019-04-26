@@ -202,8 +202,8 @@ void CPlayGameVorticon::showKeensLeft()
 
     GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
 
-    const int scW = gameRes.w/320;
-    const int scH = gameRes.h/200;
+    const int scW = gameRes.dim.x/320;
+    const int scH = gameRes.dim.y/200;
 
     const unsigned int KEENSLEFT_X = 7*scW;
     const unsigned int KEENSLEFT_Y = 10*scH;
@@ -222,12 +222,12 @@ void CPlayGameVorticon::showKeensLeft()
 
 		SDL_Rect rect;
 		rect.x = (KEENSLEFT_X+1)*8;	rect.y = (boxY+2)*8;
-		rect.w = (KEENSLEFT_W+1)*8;	rect.h = (boxH)*8;
+        rect.w = (KEENSLEFT_W+1)*8;	rect.h = (boxH)*8;
 
         mKeenLeftSfc.createRGBSurface(rect);
 
 		rect.x = 8;	rect.y = 16;
-		rect.w = (KEENSLEFT_W-1)*8;	rect.h = (boxH-3)*8;
+        rect.w = (KEENSLEFT_W-1)*8;	rect.h = (boxH-3)*8;
 
 		Uint8 r, g, b;
 		Font.getBGColour(&r, &g, &b, true);

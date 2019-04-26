@@ -420,7 +420,7 @@ bool CMap::changeTile(Uint16 x, Uint16 y, Uint16 t)
 void CMap::changeTileArrayY(Uint16 x, Uint16 y, Uint16 h, Uint16 tile)
 {
     SDL_Rect gameres = gVideoDriver.getGameResolution().SDLRect();
-	const Uint16 x2 = x+gameres.w/16;
+    const Uint16 x2 = x+gameres.w/16;
 	const Uint16 y2 = y+h;
 
 	for(Uint16 c_y=y ; c_y<y2 ; c_y++)
@@ -471,7 +471,7 @@ bool CMap::gotoPos(int x, int y)
 // scrolls the map one pixel right
 bool CMap::scrollRight(const bool force)
 {
-    const int res_width = gVideoDriver.getGameResolution().w;
+    const int res_width = gVideoDriver.getGameResolution().dim.x;
 
     if( !force && findVerticalScrollBlocker((m_scrollx+res_width)<<STC) )
 		return false;
@@ -537,7 +537,7 @@ bool CMap::scrollLeft(const bool force)
 
 bool CMap::scrollDown(const bool force)
 {
-    const int res_height = gVideoDriver.getGameResolution().h;
+    const int res_height = gVideoDriver.getGameResolution().dim.y;
 
     if( !force && findHorizontalScrollBlocker((m_scrolly+res_height)<<STC) )
 		return false;
@@ -622,11 +622,11 @@ void CMap::calcVisibleArea()
     // Here we need to get the scroll boundaries and
     // derive the rect from it.
     int x2, y2;
-    fetchNearestVertBlockers( mGamePlayPos.x, mVisArea.x, x2);
-    fetchNearestHorBlockers( mGamePlayPos.y, mVisArea.y, y2);
+    fetchNearestVertBlockers( mGamePlayPos.x, mVisArea.pos.x, x2);
+    fetchNearestHorBlockers( mGamePlayPos.y, mVisArea.pos.y, y2);
 
-    mVisArea.w = x2 - mVisArea.x;
-    mVisArea.h = y2 - mVisArea.y;
+    mVisArea.dim.x = x2 - mVisArea.pos.x;
+    mVisArea.dim.y = y2 - mVisArea.pos.y;
 }
 
 
@@ -634,10 +634,10 @@ void CMap::refreshVisibleArea()
 {
     GsRect<int> relativeVisGameArea;
 
-    relativeVisGameArea.x = (mVisArea.x>>STC)-m_scrollx;
-    relativeVisGameArea.y = (mVisArea.y>>STC)-m_scrolly;
-    relativeVisGameArea.w = (mVisArea.w>>STC)-16;
-    relativeVisGameArea.h = (mVisArea.h>>STC)-16;
+    relativeVisGameArea.pos.x = (mVisArea.pos.x>>STC)-m_scrollx;
+    relativeVisGameArea.pos.y = (mVisArea.pos.y>>STC)-m_scrolly;
+    relativeVisGameArea.dim.x = (mVisArea.pos.x>>STC)-16;
+    relativeVisGameArea.dim.y = (mVisArea.pos.y>>STC)-16;
 
     GsRect<int> gameResolution(gVideoDriver.getGameResolution());
 
@@ -837,15 +837,15 @@ void CMap::_drawForegroundTiles()
     const auto &visGA = gVideoDriver.mpVideoEngine->mRelativeVisGameArea;
     const auto &visBlendGA = gVideoDriver.mpVideoEngine->mRelativeBlendVisGameArea;
 
-    const int visX1 = visGA.x;
-    const int visX2 = visGA.x+visGA.w;
-    const int visY1 = visGA.y;
-    const int visY2 = visGA.y+visGA.h;
+    const int visX1 = visGA.pos.x;
+    const int visX2 = visGA.pos.x+visGA.dim.x;
+    const int visY1 = visGA.pos.y;
+    const int visY2 = visGA.pos.y+visGA.dim.y;
 
-    const int visBlendX1 = visBlendGA.x;
-    const int visBlendX2 = visBlendGA.x+visBlendGA.w;
-    const int visBlendY1 = visBlendGA.y;
-    const int visBlendY2 = visBlendGA.y+visBlendGA.h;
+    const int visBlendX1 = visBlendGA.pos.x;
+    const int visBlendX2 = visBlendGA.pos.x+visBlendGA.dim.x;
+    const int visBlendY1 = visBlendGA.pos.y;
+    const int visBlendY2 = visBlendGA.pos.y+visBlendGA.dim.y;
 
     auto &tilemap = m_Tilemaps[1];
 

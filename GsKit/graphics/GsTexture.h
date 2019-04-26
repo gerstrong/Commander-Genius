@@ -6,6 +6,7 @@
 #include <cstdio>
 #include <string>
 
+#include <cassert>
 
 /**
  * @brief The GsTexture class is a wrapper for SDL Textures introduced in SDL 2.0. It can be used extended with other libraries, OpenGL maybe, but
@@ -81,7 +82,9 @@ public:
         if(mpTexture)
             unload();
 
-        SDL_RWops *rw = SDL_RWFromMem((void*)data, size);
+        SDL_RWops *rw = SDL_RWFromMem(reinterpret_cast<void*>
+                                      (const_cast<unsigned char*>(data)),
+                                      int(size));
 
         // Load image at specified path
         SDL_Surface* loadedSurface = IMG_Load_RW(rw, 1);
@@ -132,10 +135,8 @@ public:
      */
     void unload()
     {
-        if(mpTexture != nullptr)
-            SDL_DestroyTexture( mpTexture );
-
-        mpTexture = nullptr;
+        assert(mpTexture != nullptr);
+        SDL_DestroyTexture( mpTexture );
     }
 
 

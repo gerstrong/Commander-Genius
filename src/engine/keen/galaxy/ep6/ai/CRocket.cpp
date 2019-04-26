@@ -112,7 +112,7 @@ void CRocket::processFlying()
     {
 	const Uint16 object = mpMap->getPlaneDataAt(2, target.x, target.y);
 	
-	Vector2D<int> speed(xBlockPos, yBlockPos);	    
+	GsVec2D<int> speed(xBlockPos, yBlockPos);	    
 	moveDir(speed);
 	playSound(SOUND_ROCKET_DRIVE);
 	
@@ -124,7 +124,7 @@ void CRocket::processFlying()
 	    setAction(A_ROCKET_SIT);
 	    detectNextTarget(target, xDirection, yDirection);
 	    
-	    Vector2D<int> newPlayerPos = m_Pos;
+	    GsVec2D<int> newPlayerPos = m_Pos;
 	    
 	    newPlayerPos.y = getYDownPos();
 	    newPlayerPos.x = getXRightPos();
@@ -142,7 +142,7 @@ void CRocket::processFlying()
 	detectNextTarget(target, xDirection, yDirection);		
     }
     
-    Vector2D<int> speed;
+    GsVec2D<int> speed;
     
     if(yDirection == UP)
     {

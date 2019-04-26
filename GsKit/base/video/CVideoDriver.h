@@ -49,8 +49,8 @@ public:
      */
     GsRect<float> getGameResFactors()
     {
-        const float wFac = float(getGameResolution().w)/320.0f;
-        const float hFac = float(getGameResolution().h)/200.0f;
+        const float wFac = float(getGameResolution().dim.x)/320.0f;
+        const float hFac = float(getGameResolution().dim.y)/200.0f;
 
         GsRect<float> scaledDownRect(0.0f, 0.0f, wFac, hFac);
         return scaledDownRect;
@@ -155,8 +155,8 @@ public:
 
 	void setAspectCorrection(const int w, const int h) 
 	{ 
-	  mVidConfig.mAspectCorrection.w = w; 
-	  mVidConfig.mAspectCorrection.h = h; 
+      mVidConfig.mAspectCorrection.dim.x = w;
+      mVidConfig.mAspectCorrection.dim.y = h;
 	}
 
 #ifdef VIRTUALPAD

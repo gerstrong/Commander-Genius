@@ -27,6 +27,7 @@ NumberControl::NumberControl(const std::string& text,
 					const int value,
                     const bool slider ) :
 CGUINumberControl(text,
+    GsRect<float>(0.0f, 0.0f, 1.0f, 1.0f),
     startValue,
     endValue,
     deltaValue,

@@ -750,11 +750,11 @@ void GsSprite::drawSprite( SDL_Surface *dst,
 
     const auto &gameRes = gVideoDriver.getGameResolution();
 	
-    const int max_width  = gameRes.w;
-    const int max_height = gameRes.h;
+    const int max_width  = gameRes.dim.x;
+    const int max_height = gameRes.dim.y;
 
 	if( m_xsize + x > max_width )
-		dst_rect.w = max_width - x;
+        dst_rect.w = max_width - x;
 
 	if( m_ysize + y > max_height )
         dst_rect.h = max_height - y;

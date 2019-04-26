@@ -95,7 +95,7 @@ int main(int argc, char *argv[])
     SetBinaryDir( GetAbsolutePath(binary_dir) );
 
     InitThreadPool();
-    InitSearchPaths(gSettings.getConfigFileName());
+    InitSearchPaths(gSettings.getConfigFileName()); // TODO: Recursive scan bug left, check Issue #353?
 
     if( !gLogging.CreateLogfile("CGLog.html", APP_NAME, CGVERSION) )
     {

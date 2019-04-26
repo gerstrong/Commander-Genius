@@ -236,17 +236,14 @@ void CPlayerBase::processCamera()
 
     auto &relVisBlend = gVideoDriver.mpVideoEngine->mRelativeBlendVisGameArea;
 
-    relVisBlend.x = 0;  relVisBlend.w = 0;
-    relVisBlend.y = 0;  relVisBlend.h = 0;
+    relVisBlend = 0;
 
     const auto &optModern = gBehaviorEngine.mOptions[GameOption::MODERN];
 
     if (optModern.value)
     {
-        relVisBlend.x = scrx-16;
-        relVisBlend.y = scry-32;
-        relVisBlend.w = 48;
-        relVisBlend.h = 64;
+        relVisBlend.pos = {scrx-16, scry-32};
+        relVisBlend.dim = {48, 64};
     }
 
     m_camera.process();
@@ -474,7 +471,7 @@ void CPlayerBase::processLevelMiscFlagsCheck()
 
 
 
-void CPlayerBase::guideToTarget(const Vector2D<int> &speed)
+void CPlayerBase::guideToTarget(const GsVec2D<int> &speed)
 {
 	// Check x and y diff
 	const int xDiff = mTarget.x - getXMidPos();
@@ -483,7 +480,7 @@ void CPlayerBase::guideToTarget(const Vector2D<int> &speed)
 	const int yAbsDiff = abs(yDiff);
 
 	// obtained speed
-    Vector2D<int> obtSpeed = speed;
+    GsVec2D<int> obtSpeed = speed;
 
 	while( xAbsDiff < obtSpeed.x )
 		obtSpeed.x /= 2;
@@ -587,7 +584,7 @@ void CPlayerBase::respawnImportantItem(const int itemId)
 
         if(itemId == 4)
         {
-            Vector2D<int> where = mpMap->getSpriteOrigin(105);
+            GsVec2D<int> where = mpMap->getSpriteOrigin(105);
             spawnObj( new galaxy::CSpriteItem(mpMap, 0x46, where.x, where.y, 105, 0) );
             return;
         }
@@ -601,7 +598,7 @@ void CPlayerBase::respawnImportantItem(const int itemId)
     const Uint32 newsprite = epOffset+2*itemId;
 
     // Now respawn the item
-    Vector2D<int> where = mpMap->getSpriteOrigin(itemId+itemOffset);
+    GsVec2D<int> where = mpMap->getSpriteOrigin(itemId+itemOffset);
     spawnObj( new galaxy::CSpriteItem(mpMap, itemId+itemOffset, where.x, where.y, newsprite, 0) );
 }
 

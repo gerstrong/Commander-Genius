@@ -108,7 +108,7 @@ void CCredits::ponder()
         }
 		else
         {
-			m_scrolly = gVideoDriver.getGameResolution().h;
+            m_scrolly = gVideoDriver.getGameResolution().dim.y;
         }
 	}
 	
@@ -127,9 +127,10 @@ void CCredits::render()
 
     for(int j=0 ; j<54 ; j++)
     {
-        if(m_scrolly+(j<<3) > -8 && m_scrolly+(j<<3) < gVideoDriver.getGameResolution().h)
+        if(m_scrolly+(j<<3) > -8 && m_scrolly+(j<<3) < gVideoDriver.getGameResolution().dim.y)
         {
-            creditFont.drawFont( mDrawSfc, m_scrolltext[j], m_mid[j], m_scrolly+(j<<3), true);
+            creditFont.drawFont( mDrawSfc, m_scrolltext[j],
+                                 m_mid[j], m_scrolly+(j<<3), true);
         }
     }
 

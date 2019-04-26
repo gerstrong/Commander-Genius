@@ -68,10 +68,10 @@ public:
 
     GsSurface mZoomSurface;
 
-    Vector2D<int> mCommanderTextPos;
-    Vector2D<int> mKeenTextPos;
-    Vector2D<int> mZoomSfcPos;
-    Vector2D<int> mZoomSfcZoom;
+    GsVec2D<int> mCommanderTextPos;
+    GsVec2D<int> mKeenTextPos;
+    GsVec2D<int> mZoomSfcPos;
+    GsVec2D<int> mZoomSfcZoom;
 
     int mMaxSeparationWidth;
     int mLogoPosY;

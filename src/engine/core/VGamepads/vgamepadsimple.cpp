@@ -282,7 +282,7 @@ void VirtualKeenControl::hideAllButtons()
 
 
 
-void VirtualKeenControl::render(GsWeakSurface &sfc)
+void VirtualKeenControl::render(GsWeakSurface &)
 {
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     //GsRect<Uint16> clickGameArea = gVideoDriver.mpVideoEngine->getActiveAreaRect();
@@ -328,7 +328,7 @@ void VirtualKeenControl::flush()
 
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-bool VirtualKeenControl::mouseFingerState(const Vector2D<float> &Pos,
+bool VirtualKeenControl::mouseFingerState(const GsVec2D<float> &Pos,
                                           const SDL_TouchFingerEvent &touchFingerEvent,
                                           const bool down)
 {
@@ -507,7 +507,7 @@ bool VirtualKeenControl::mouseFingerState(const Vector2D<float> &Pos,
     return ok;
 }
 
-bool VirtualKeenControl::mouseState(const Vector2D<float> &Pos, const bool down)
+bool VirtualKeenControl::mouseState(const GsVec2D<float> &Pos, const bool down)
 {
 #if SDL_VERSION_ATLEAST(2, 0, 0)    
 /*

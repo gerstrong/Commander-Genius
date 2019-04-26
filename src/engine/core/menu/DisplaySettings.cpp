@@ -136,9 +136,9 @@ void DisplaySettings::refresh()
 
 	mpAspectSelection->setList( aspectList, NUM_ASPECTS );		
 	std::string arcStr;
-    arcStr = itoa(mMyNewConf.mAspectCorrection.w);
+    arcStr = itoa(mMyNewConf.mAspectCorrection.dim.x);
 	arcStr += ":";
-    arcStr += itoa(mMyNewConf.mAspectCorrection.h);
+    arcStr += itoa(mMyNewConf.mAspectCorrection.dim.y);
 	
 	if( arcStr == "0:0")
 	  arcStr = "disabled";
@@ -157,9 +157,9 @@ void DisplaySettings::refresh()
 
 	std::string resStr;
 
-    resStr = itoa(mMyNewConf.mDisplayRect.w);
+    resStr = itoa(mMyNewConf.mDisplayRect.dim.x);
 	resStr += "x";
-    resStr += itoa(mMyNewConf.mDisplayRect.h);
+    resStr += itoa(mMyNewConf.mDisplayRect.dim.y);
 	mpResolutionSelection->setSelection(resStr);        
 
 #endif
@@ -183,12 +183,13 @@ void DisplaySettings::release()
         const std::string arcStr = mpAspectSelection->getSelection();
 
         const int numRead = sscanf(arcStr.c_str(),"%i:%i",
-                               &mMyNewConf.mAspectCorrection.w,
-                               &mMyNewConf.mAspectCorrection.h);
+                               &mMyNewConf.mAspectCorrection.dim.x,
+                               &mMyNewConf.mAspectCorrection.dim.y);
 
         if(numRead < 2)
         {
-            mMyNewConf.mAspectCorrection.w = mMyNewConf.mAspectCorrection.h = 0;
+            mMyNewConf.mAspectCorrection.dim.x = 0;
+            mMyNewConf.mAspectCorrection.dim.y = 0;
         }
     }
 

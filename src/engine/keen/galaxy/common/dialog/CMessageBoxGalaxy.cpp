@@ -40,8 +40,8 @@ mSprVar(sprVar)
 	// Create a surface for that
     mMBRect.w = Font.calcPixelTextWidth(mText)+16*2;
     mMBRect.h = Font.getPixelTextHeight()*(calcNumLines(mText)+2)+16;
-    mMBRect.x = (gameRes.w-mMBRect.w)/2;
-    mMBRect.y = (gameRes.h-mMBRect.h)/2;
+    mMBRect.x = (gameRes.dim.x-mMBRect.w)/2;
+    mMBRect.y = (gameRes.dim.y-mMBRect.h)/2;
 }
 
 CMessageBoxGalaxy::~CMessageBoxGalaxy() {}
@@ -56,7 +56,7 @@ void CMessageBoxGalaxy::init()
 	SDL_Rect rect = mMBRect;
     rect.x = 16;
     rect.y = 15;
-	rect.w -= 16;
+    rect.w -= 16;
 	rect.h -= 16;
 
 	initText(rect);
@@ -70,7 +70,7 @@ void CMessageBoxGalaxy::initGalaxyFrame()
 	SDL_Rect rect;
 	rect.x = 4;
 	rect.y = 4;
-	rect.w = mMBRect.w-16;
+    rect.w = mMBRect.w-16;
 	rect.h = mMBRect.h-16;
 	SDL_FillRect(dst, &rect, 0xFFFFFFFF);
 
@@ -78,7 +78,7 @@ void CMessageBoxGalaxy::initGalaxyFrame()
 	rect = mMBRect;
 	rect.x += 8;
 	rect.y += 8;
-	rect.w -= 16;
+    rect.w -= 16;
 	rect.h -= 16;
 
 	GsTilemap &Tilemap = gGraphics.getTileMap(3);
@@ -88,11 +88,11 @@ void CMessageBoxGalaxy::initGalaxyFrame()
 	Tilemap.drawTile(dst, 0, 0, 0);
 
 	// Upper border
-	for(int x=8 ; x<rect.w ; x+=8)
+    for(int x=8 ; x<rect.w ; x+=8)
 		Tilemap.drawTile(dst, x, 0, 1);
 
 	// Upper Right corner
-	Tilemap.drawTile(dst, rect.w, 0, 2);
+    Tilemap.drawTile(dst, rect.w, 0, 2);
 
 	// Left border
 	for(int y=8 ; y<rect.h ; y+=8)
@@ -100,17 +100,17 @@ void CMessageBoxGalaxy::initGalaxyFrame()
 
 	// Right border
 	for(int y=8 ; y<rect.h ; y+=8)
-		Tilemap.drawTile(dst, rect.w, y, 5);
+        Tilemap.drawTile(dst, rect.w, y, 5);
 
 	// Lower Left corner
 	Tilemap.drawTile(dst, 0, rect.h, 6);
 
 	// Lower border
-	for(int x=8 ; x<rect.w ; x+=8)
+    for(int x=8 ; x<rect.w ; x+=8)
 		Tilemap.drawTile(dst, x, rect.h, 7);
 
 	// Lower Right corner
-	Tilemap.drawTile(dst, rect.w, rect.h, 8);
+    Tilemap.drawTile(dst, rect.w, rect.h, 8);
 }
 
 void CMessageBoxGalaxy::initText(const SDL_Rect &rect)

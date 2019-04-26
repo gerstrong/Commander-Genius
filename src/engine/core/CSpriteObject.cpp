@@ -280,18 +280,18 @@ void CSpriteObject::performCliffStop(const int &speed)
 
 // Used in some setup mode, like putting the player to
 // the current map position
-void CSpriteObject::moveToForce(const Vector2D<int> &dir)
+void CSpriteObject::moveToForce(const GsVec2D<int> &dir)
 {
 	m_Pos = dir;
 }
 
 void CSpriteObject::moveToForce(const int new_x, const int new_y)
 {
-    moveToForce(Vector2D<int>(new_x, new_y));
+    moveToForce(GsVec2D<int>(new_x, new_y));
 }
 
 // For the vector functions
-void CSpriteObject::moveDir(const Vector2D<int> &dir)
+void CSpriteObject::moveDir(const GsVec2D<int> &dir)
 {
 	moveXDir(dir.x);
 	moveYDir(dir.y);
@@ -309,9 +309,9 @@ void CSpriteObject::moveToVertical(const int& new_y)
 	moveYDir(pos_y);
 }
 
-void CSpriteObject::moveTo(const Vector2D<Uint32> &new_loc)
+void CSpriteObject::moveTo(const GsVec2D<Uint32> &new_loc)
 {
-    Vector2D<int> amount = new_loc - m_Pos;
+    GsVec2D<int> amount = new_loc - m_Pos;
 
 	moveXDir(amount.x);
 	moveYDir(amount.y);
@@ -319,7 +319,7 @@ void CSpriteObject::moveTo(const Vector2D<Uint32> &new_loc)
 
 void CSpriteObject::moveTo(const int new_x, const int new_y)
 {
-    moveTo(Vector2D<Uint32>(new_x, new_y));
+    moveTo(GsVec2D<Uint32>(new_x, new_y));
 }
 
 void CSpriteObject::moveXDir(const int amount, const bool force)
@@ -550,7 +550,7 @@ void CSpriteObject::draw()
 
 	SDL_Rect gameres = gVideoDriver.getGameResolution().SDLRect();
 
-	if( scrx < gameres.w && scry < gameres.h && exists )
+    if( scrx < gameres.w && scry < gameres.h && exists )
 	{
         int showX = scrx+Sprite.getXOffset();
         int showY = scry+Sprite.getYOffset();
@@ -560,16 +560,16 @@ void CSpriteObject::draw()
 
         const auto visGA = gVideoDriver.mpVideoEngine->mRelativeVisGameArea;
 
-        if( showX+w < visGA.x || showX > visGA.x+visGA.w+16 )
+        if( showX+w < visGA.pos.x || showX > visGA.pos.x+visGA.dim.x+16 )
             return;
 
-        if( showY+h < visGA.y || showY > visGA.y+visGA.h+16 )
+        if( showY+h < visGA.pos.y || showY > visGA.pos.y+visGA.dim.y+16 )
             return;
 
-        if( showX+Sprite.getWidth() > visGA.x+visGA.w+16 )
-            w = w - ((showX+w) - (visGA.x+visGA.w+16));
-        if( showY+Sprite.getHeight() > visGA.y+visGA.h+16 )
-            h = h - ((showY+h) - (visGA.y+visGA.h+16));
+        if( showX+Sprite.getWidth() > visGA.pos.x+visGA.dim.x+16 )
+            w = w - ((showX+w) - (visGA.pos.x+visGA.dim.x+16));
+        if( showY+Sprite.getHeight() > visGA.pos.y+visGA.dim.y+16 )
+            h = h - ((showY+h) - (visGA.pos.y+visGA.dim.y+16));
 
 		if(m_blinktime > 0)
 		{

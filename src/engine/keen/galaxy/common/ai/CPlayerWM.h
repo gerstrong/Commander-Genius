@@ -46,7 +46,7 @@ public:
             const int playerIdx,
             const int spriteTableIdx);
 
-    Vector2D<int> fetchFootDestCoord();
+    GsVec2D<int> fetchFootDestCoord();
 
     void pumpEvent(const CEvent *evPtr);
 	
@@ -72,7 +72,7 @@ public:
 	void processOpeningElevator();
 	void processLeavingElevator();
 
-    void setupTeleportAnimation(const bool unset, const Vector2D<int> &pos);
+    void setupTeleportAnimation(const bool unset, const GsVec2D<int> &pos);
 	void processEnteringTeleporter();
 	void processWarpInTeleporter();
 	void processLeavingTeleporter();
@@ -107,7 +107,7 @@ private:
 	Uint8 m_animation_time;
 	Uint8 m_animation_ticker;
 	bool m_cantswim;
-    Vector2D<int> target;
+    GsVec2D<int> target;
 	int elevator_close_timer;
 	int elevator_frames;
 	int waveTimer;

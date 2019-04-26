@@ -40,10 +40,11 @@ void CVideoDriver::addTextureRefToRender(GsTexture& textureRef, const GsRect<flo
 {
     const GsRect<Uint16> clickGameArea = mpVideoEngine->getActiveAreaRect();
 
-    const auto dpadX  = Uint16(float(clickGameArea.w) * dstRect.x);
-    const auto dpadY  = Uint16(float(clickGameArea.h) * dstRect.y);
-    const auto dpadWidth  = Uint16(float(clickGameArea.w) * dstRect.w);
-    const auto dpadHeight = Uint16(float(clickGameArea.h) * dstRect.h);
+    const auto dpadX  = Uint16(float(clickGameArea.dim.x) * dstRect.pos.x);
+    const auto dpadY  = Uint16(float(clickGameArea.dim.y) * dstRect.pos.y);
+
+    const auto dpadWidth  = Uint16(float(clickGameArea.dim.x) * dstRect.dim.x);
+    const auto dpadHeight = Uint16(float(clickGameArea.dim.y) * dstRect.dim.y);
 
     const GsRect<Uint16> dpadRect(dpadX, dpadY,
                                   dpadWidth, dpadHeight);
@@ -113,7 +114,7 @@ void CVideoDriver::initResolutionList()
 #endif
 
 #if defined(ANDROID)
-	resolution.w = 320;
+	resolution.dim.x = 320;
 	resolution.h = 200;
 #endif
 
@@ -131,10 +132,10 @@ void CVideoDriver::initResolutionList()
 
 // TODO: Not sure if those defines are really needed anymore.
 #if (TARGET_OS_IPHONE) || (TARGET_IPHONE_SIMULATOR)
-	resolution.w = 320; //  320;
+	resolution.dim.x = 320; //  320;
 	resolution.h = 200;//  480;
 #elif defined(ANDROID)
-	resolution.w = 320;
+	resolution.dim.x = 320;
 	resolution.h = 200;
 #endif
 
@@ -142,7 +143,7 @@ void CVideoDriver::initResolutionList()
 #if !defined(EMBEDDED)
 	for (unsigned int c = 0; c < NUM_MAIN_RESOLUTIONS; c++) {
 		// Depth won't be read anymore! Take the one the system is using actually
-		if (sscanf(ResolutionsList[c], "%hux%hu", &resolution.w, &resolution.h)
+		if (sscanf(ResolutionsList[c], "%hux%hu", &resolution.dim.x, &resolution.h)
 				>= 2) {
 			// Now check if it's possible to use this resolution
 			verifyResolution(resolution, SDL_FULLSCREEN);
@@ -152,13 +153,13 @@ void CVideoDriver::initResolutionList()
 	// In case there is no fullscreen, we will adapt the resolution it fits best to the window
     if (!mVidConfig.mFullscreen) {
 		int e = 1;
-		resolution.w = 320;
+		resolution.dim.x = 320;
 		resolution.h = 200;
 
 		int maxwidth = SDL_GetVideoInfo()->current_w;
 
-		while (resolution.w < maxwidth) {
-			resolution.w = 320 * e;
+		while (resolution.dim.x < maxwidth) {
+			resolution.dim.x = 320 * e;
 			resolution.h = 200 * e;
 
 			// Now check if it's possible to use this resolution
@@ -184,7 +185,7 @@ void CVideoDriver::verifyResolution(GsRect<Uint16>& resolution,
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 
 #else
-    if (SDL_VideoModeOK(resolution.w, resolution.h, 32, flags)) {
+    if (SDL_VideoModeOK(resolution.dim.x, resolution.h, 32, flags)) {
 		std::list< GsRect<Uint16> >::iterator i;
 		for (i = m_Resolutionlist.begin(); i != m_Resolutionlist.end(); i++) {
 			if (*i == resolution)
@@ -194,7 +195,7 @@ void CVideoDriver::verifyResolution(GsRect<Uint16>& resolution,
 		if (i == m_Resolutionlist.end()) {
 #ifdef DEBUG
 			gLogging.ftextOut(FONTCOLORS::BLUE, "Resolution %ix%ix%i %X added\n",
-					resolution.w, resolution.h, 32);
+					resolution.dim.x, resolution.h, 32);
 #endif
 			m_Resolutionlist.push_back(resolution);
 		}
@@ -240,8 +241,8 @@ bool CVideoDriver::applyMode()
     const GsRect<Uint16> &GameRect = mVidConfig.mGameRect;
 
 	// Before the resolution is set, check, if the zoom factor is too high!
-    while (((Res.w / GameRect.w) < mVidConfig.Zoom
-            || (Res.h / GameRect.h) < mVidConfig.Zoom)
+    while (((Res.dim.x / GameRect.dim.x) < mVidConfig.Zoom
+            || (Res.dim.y / GameRect.dim.y) < mVidConfig.Zoom)
             && (mVidConfig.Zoom > 1))
         mVidConfig.Zoom--;
 
@@ -413,11 +414,11 @@ bool CVideoDriver::getFullscreen() {
 }
 
 unsigned int CVideoDriver::getWidth() const {
-    return mVidConfig.mDisplayRect.w;
+    return mVidConfig.mDisplayRect.dim.x;
 }
 
 unsigned int CVideoDriver::getHeight() const {
-    return mVidConfig.mDisplayRect.h;
+    return mVidConfig.mDisplayRect.dim.y;
 }
 
 unsigned short CVideoDriver::getDepth() const
@@ -441,14 +442,14 @@ st_camera_bounds &CVideoDriver::getCameraBounds()
 SDL_Rect CVideoDriver::toBlitRect(const GsRect<float> &rect)
 {
 	GsRect<Uint16> GameRes = getGameResolution();
-	GsRect<float> screenRect(0, 0, GameRes.w, GameRes.h);
+    GsRect<float> screenRect(0, 0, GameRes.dim.x, GameRes.dim.y);
 	GsRect<float> RectDispCoordFloat = rect;
 
     // Limit the boundaries
-    RectDispCoordFloat.x = std::max(RectDispCoordFloat.x, 0.0f);
-    RectDispCoordFloat.y = std::max(RectDispCoordFloat.y, 0.0f);
-    RectDispCoordFloat.h = std::min(RectDispCoordFloat.h, 1.0f);
-    RectDispCoordFloat.w = std::min(RectDispCoordFloat.w, 1.0f);
+    RectDispCoordFloat.pos.x = std::max(RectDispCoordFloat.pos.x, 0.0f);
+    RectDispCoordFloat.pos.y = std::max(RectDispCoordFloat.pos.y, 0.0f);
+    RectDispCoordFloat.dim.x = std::min(RectDispCoordFloat.dim.x, 1.0f);
+    RectDispCoordFloat.dim.y = std::min(RectDispCoordFloat.dim.y, 1.0f);
 
 	// Transform to the blit coordinates
 	RectDispCoordFloat.transform(screenRect);

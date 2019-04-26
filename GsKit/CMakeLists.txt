@@ -7,6 +7,9 @@ Project(GsKit)
 
 OPTION(USE_SDL2 "SDL2 support" Yes)
 option(USE_PYTHON3 "Use Python3 scripts" yes)
+option(USE_SDL_TTF "Use true type fonts" yes)
+
+set (CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${CMAKE_CURRENT_SOURCE_DIR}/CMake")
 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -38,12 +41,15 @@ if(USE_SDL2)
     FIND_PACKAGE(SDL2)
 
     if(SDL2_FOUND)
-        message(STATUS "Using shared SDL Version 2 for Commander Genius")
+        message(STATUS "Using shared SDL Version 2 for ${PROJECT_NAME}")
         include_directories(${SDL2_INCLUDE_DIRS})
 
-        message(STATUS "Using shared SDL Version 2 for Commander Genius")
-        set(SDL2_INCLUDE_DIRS /Library/Frameworks/SDL2.framework/Headers)
-        set(SDL2_IMAGE_INCLUDE_DIRS /Library/Frameworks/SDL2_image.framework/Headers)
+        message(STATUS "Using shared SDL Version 2 for ${PROJECT_NAME}")
+
+        if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+            set(SDL2_INCLUDE_DIRS /Library/Frameworks/SDL2.framework/Headers)
+            set(SDL2_IMAGE_INCLUDE_DIRS /Library/Frameworks/SDL2_image.framework/Headers)
+        endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 
         include_directories(${SDL2_INCLUDE_DIR})
         include_directories(${SDL2_NET_INCLUDE_DIRS})
@@ -112,9 +118,9 @@ if(USE_SDL2)
 
     if(SDL2_FOUND)
         find_package(SDL2_image REQUIRED)
-#        find_package(SDL2_ttf REQUIRED)
+        find_package(SDL2_ttf REQUIRED)
 
-        message(STATUS "Using shared SDL Version 2 for Commander Genius")
+        message(STATUS "Using shared SDL Version 2 for ${PROJECT_NAME}")
         include_directories(${SDL2_INCLUDE_DIRS})
         include_directories(${SDL2_TTF_INCLUDE_DIRS})
         include_directories(${SDL2_IMAGE_INCLUDE_DIRS})
@@ -154,4 +160,4 @@ IF(OPENGL)
     target_link_libraries(GsKit ${OPENGL_LIBRARIES})
 ENDIF(OPENGL)
 
-cotire(GsKit)
+#cotire(GsKit)

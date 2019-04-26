@@ -66,7 +66,7 @@ void CMessageBoxVort::addTileAt(Uint16 tile, Uint16 x, Uint16 y)
 	// now we'll create a new surface on which the Tile will be printed.
 	SDL_Rect rect;
 	rect.x = rect.y = 0;
-	rect.w = rect.h = tileDim;
+    rect.w = rect.h = tileDim;
 
 
     GsSurface bmpSfc;
@@ -86,8 +86,7 @@ void CMessageBoxVort::addTileAt(Uint16 tile, Uint16 x, Uint16 y)
 
     GsRect<float> scaleRect = mRect;
 
-    scaleRect.x = 0;
-    scaleRect.y = 0;
+    scaleRect = 0.0f;
 
     fRect.transformInverse(scaleRect);
 

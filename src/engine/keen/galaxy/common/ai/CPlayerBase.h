@@ -193,7 +193,7 @@ namespace galaxy
          * Make keen move with x/y speed move towards a target which is held in the variable "mTarget"
          * it only moves towards, this routines is exec'd several times in order achieve a smooth transition.
          */
-    void guideToTarget(const Vector2D<int> &speed);
+    void guideToTarget(const GsVec2D<int> &speed);
 
 
     /**
@@ -257,7 +257,7 @@ namespace galaxy
     // Assignment for the same player for all the episodes
     static const int mEpisodeActionNumMap[3][NUM_KEEN_ACTIONS];
 
-    Vector2D<int> mTarget;
+    GsVec2D<int> mTarget;
 };
 
 }

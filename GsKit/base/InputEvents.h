@@ -47,17 +47,17 @@ enum PointingDevEventTypes
 
 struct PointingDevEvent : CEvent
 {
-    Vector2D<float> Pos;
+    GsVec2D<float> Pos;
     PointingDevEventTypes Type;
-    PointingDevEvent(const Vector2D<float> &New_Pos, PointingDevEventTypes New_Type ) :
+    PointingDevEvent(const GsVec2D<float> &New_Pos, PointingDevEventTypes New_Type ) :
 		Pos(New_Pos), Type(New_Type) {}
 };
 
 
 struct MouseWheelEvent : CEvent
 {
-    Vector2D<float> amount;
-    MouseWheelEvent(const Vector2D<float> &newAmount ) :
+    GsVec2D<float> amount;
+    MouseWheelEvent(const GsVec2D<float> &newAmount ) :
         amount(newAmount) {}
 };
 

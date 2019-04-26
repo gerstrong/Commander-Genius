@@ -85,7 +85,7 @@ void CVarPlatform::process()
     {
         const Uint16 object = mpMap->getPlaneDataAt(2, target.x, target.y);
 
-        Vector2D<int> speed(xBlockPos, yBlockPos);
+        GsVec2D<int> speed(xBlockPos, yBlockPos);
         movePlat(speed);
 
         readDirection(object, xDirection, yDirection );
@@ -102,7 +102,7 @@ void CVarPlatform::process()
     else if(xDirection == LEFT && blockedl)
         xDirection = RIGHT;
     
-    Vector2D<int> speed;
+    GsVec2D<int> speed;
     
     if(yDirection == UP)
     {

@@ -41,7 +41,7 @@ bool Title::init(int Episode)
 	else
         gEffectController.setupEffect(new CPixelate(16));
 	
-    if( (pBitmap = gGraphics.getBitmapFromStr(0, "TITLE")) != NULL )
+    if( (pBitmap = gGraphics.getBitmapFromStr(0, "TITLE")) != nullptr )
 	{
 		const int width = 160-(pBitmap->width()/2);
 		std::unique_ptr<CSpriteObject> obj(new CEGABitmap( &mMap, pSurface, pBitmap ));
@@ -54,7 +54,7 @@ bool Title::init(int Episode)
 
     GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
 
-    if(gameRes.w == 320 && gameRes.h == 200 )
+    if(gameRes.dim.x == 320 && gameRes.dim.y == 200 )
     {
         if( (pBitmap = gGraphics.getBitmapFromStr(0, "F1HELP")) != nullptr )
         {

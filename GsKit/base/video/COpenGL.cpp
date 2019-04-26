@@ -20,17 +20,17 @@
 COpenGL::COpenGL(const CVidConfig &VidConfig) :
 CVideoEngine(VidConfig),
 m_texparam(GL_TEXTURE_2D),
-m_GameScaleDim(m_VidConfig.mGameRect.w*m_VidConfig.m_ScaleXFilter,
-                m_VidConfig.mGameRect.h*m_VidConfig.m_ScaleXFilter),
+m_GameScaleDim(m_VidConfig.mGameRect.dim.x*m_VidConfig.m_ScaleXFilter,
+               m_VidConfig.mGameRect.dim.y*m_VidConfig.m_ScaleXFilter),
 m_GamePOTScaleDim(getPowerOfTwo(m_GameScaleDim.w), getPowerOfTwo(m_GameScaleDim.h))
 {}
 
 void COpenGL::setUpViewPort(const GsRect<Uint16> &newDim)
 {
-    const float width = static_cast<float>(newDim.w);
-    const float height = static_cast<float>(newDim.h);
-    const float ypos = static_cast<float>(newDim.y);
-    const float xpos = static_cast<float>(newDim.x);
+    const float width = static_cast<float>(newDim.dim.x);
+    const float height = static_cast<float>(newDim.dim.y);
+    const float ypos = static_cast<float>(newDim.pos.y);
+    const float xpos = static_cast<float>(newDim.pos.x);
 
     glViewport(xpos, ypos, width, height);
 }
@@ -38,8 +38,8 @@ void COpenGL::setUpViewPort(const GsRect<Uint16> &newDim)
 bool COpenGL::resizeDisplayScreen(const GsRect<Uint16>& newDim)
 {
 	// NOTE: try not to free the last SDL_Surface of the screen, this is freed automatically by SDL		  
-    const int w = m_VidConfig.mAspectCorrection.w;
-    const int h = m_VidConfig.mAspectCorrection.h;
+    const int w = m_VidConfig.mAspectCorrection.dim.x;
+    const int h = m_VidConfig.mAspectCorrection.dim.y;
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)        
   
@@ -48,7 +48,7 @@ bool COpenGL::resizeDisplayScreen(const GsRect<Uint16>& newDim)
     setUpViewPort(mActiveAreaRect);
 
 #else
-    mDisplaySfc.setPtr(SDL_SetVideoMode( newDim.w, newDim.h, 32, m_Mode ));
+    mDisplaySfc.setPtr(SDL_SetVideoMode( newDim.dim.x, newDim.h, 32, m_Mode ));
 
     if (mDisplaySfc.empty())
 	{
@@ -92,9 +92,9 @@ static void createTexture(GLuint& tex, GLint oglfilter, GLsizei potwidth, GLsize
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
 	if(withAlpha)
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, potwidth, potheight, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, potwidth, potheight, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
 	else
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, potwidth, potheight, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, potwidth, potheight, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
 }
 
 bool COpenGL::init()
@@ -132,8 +132,8 @@ bool COpenGL::init()
     window = SDL_CreateWindow("Commander Genius",
                               SDL_WINDOWPOS_CENTERED,
                               SDL_WINDOWPOS_CENTERED,
-                              m_VidConfig.mDisplayRect.w,
-                              m_VidConfig.mDisplayRect.h,
+                              m_VidConfig.mDisplayRect.dim.x,
+                              m_VidConfig.mDisplayRect.dim.y,
                               flags);
 
 
@@ -186,7 +186,7 @@ bool COpenGL::init()
 	
 	if(m_VidConfig.m_ScaleXFilter <= 1)
 	{	// In that case we can do a texture based rendering
-		createTexture(m_texFX, oglfilter, m_GamePOTScaleDim.w, m_GamePOTScaleDim.h, true);
+        createTexture(m_texFX, oglfilter, m_GamePOTScaleDim.w, m_GamePOTScaleDim.h, true);
 	}
 #else // not SDL 2.0
 	// Setup the view port for the first time
@@ -222,18 +222,18 @@ bool COpenGL::init()
 	// Enable Texture loading for the blit screen
 	glEnable(m_texparam);
 	
-	createTexture(m_texture, oglfilter, m_GamePOTScaleDim.w, m_GamePOTScaleDim.h);
+	createTexture(m_texture, oglfilter, m_GamePOTScaleDim.dim.x, m_GamePOTScaleDim.h);
 	
     //if(m_VidConfig.m_ScaleXFilter <= 1)
 	{ // In that case we can do a texture based rendering
-	  createTexture(m_texFX, oglfilter, m_GamePOTScaleDim.w, m_GamePOTScaleDim.h, true);
+	  createTexture(m_texFX, oglfilter, m_GamePOTScaleDim.dim.x, m_GamePOTScaleDim.h, true);
 	} 
 
 #endif
 	
 	// If there were any errors
-	int error;
-	error = glGetError();
+    //int error;
+    auto error = glGetError();
 	if( error != GL_NO_ERROR)
 	{
 		gLogging.ftextOut("OpenGL Init(): %d<br>",error);

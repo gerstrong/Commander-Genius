@@ -62,15 +62,15 @@ void CStatusScreenGalaxy::drawBase(SDL_Rect &EditRect)
 
     SupportRect.w = SupportBmp.width();
     SupportRect.h = SupportBmp.height();
-	Dest.x = (DestRect.w-SupportRect.w)/2;	Dest.y = 0; 
+    Dest.x = (DestRect.w-SupportRect.w)/2;	Dest.y = 0;
 
     SupportBmp.draw(Dest.x, Dest.y, mStatusSurface);
 
 	// Draw the gray surface
 	SDL_Rect BackRect;
-	BackRect.w = 192; // Standard sizes in Keen 4
+    BackRect.w = 192; // Standard sizes in Keen 4
 	BackRect.h = 152;
-	BackRect.x = (DestRect.w-BackRect.w)/2;
+    BackRect.x = (DestRect.w-BackRect.w)/2;
 	BackRect.y = SupportRect.h;
 
     mStatusSurface.fillRGB(BackRect, 0xAA, 0xAA, 0xAA);
@@ -78,9 +78,9 @@ void CStatusScreenGalaxy::drawBase(SDL_Rect &EditRect)
 	// Draw the cables Bitmap
 	GsBitmap &Cables_Bitmap = gGraphics.getMaskedBitmap(1);
 	SDL_Rect CableRect;
-	CableRect.w = Cables_Bitmap.getSDLSurface()->w;
+    CableRect.w = Cables_Bitmap.getSDLSurface()->w;
 	CableRect.h = Cables_Bitmap.getSDLSurface()->h;
-	Dest.x = BackRect.x - CableRect.w;	Dest.y = 0;
+    Dest.x = BackRect.x - CableRect.w;	Dest.y = 0;
 
     Cables_Bitmap.draw(Dest.x, Dest.y, mStatusSurface);
 
@@ -91,7 +91,7 @@ void CStatusScreenGalaxy::drawBase(SDL_Rect &EditRect)
     Tilemap.drawTile(mStatusSurface, BackRect.x, BackRect.y, 54);
 
 	// Upper Part
-	for(int c=1 ; c<(BackRect.w/8)-1 ; c++)
+    for(int c=1 ; c<(BackRect.w/8)-1 ; c++)
         Tilemap.drawTile(mStatusSurface, BackRect.x+c*8, BackRect.y, 55);
 
 	// Upper Right Part
@@ -109,7 +109,7 @@ void CStatusScreenGalaxy::drawBase(SDL_Rect &EditRect)
     Tilemap.drawTile(mStatusSurface, BackRect.x, BackRect.y+BackRect.h-8, 60);
 
 	// Lower Part
-	for(int c=1 ; c<(BackRect.w/8)-1 ; c++)
+    for(int c=1 ; c<(BackRect.w/8)-1 ; c++)
         Tilemap.drawTile(mStatusSurface, BackRect.x+c*8, BackRect.y+BackRect.h-8, 61);
 
 	// Lower Right Part
@@ -117,7 +117,7 @@ void CStatusScreenGalaxy::drawBase(SDL_Rect &EditRect)
 
 	EditRect.x = BackRect.x+16;
 	EditRect.y = BackRect.y+12;
-	EditRect.w = BackRect.w-32;
+    EditRect.w = BackRect.w-32;
 	EditRect.h = BackRect.h-32;
 }
 
@@ -263,7 +263,8 @@ void CStatusScreenGalaxy::GenerateStatusEp4()
     // Keys Box
     TempRect.x = EditRect.x;
     TempRect.y = EditRect.y+80;
-    Font.drawFont(mStatusSurface, "KEYS", TempRect.x, TempRect.y, false);
+    Font.drawFont(mStatusSurface, "KEYS",
+                  TempRect.x, TempRect.y, false);
     TempRect.w = 8*4; TempRect.h = 10;
     TempRect.x = TempRect.x+8*5;
 
@@ -496,7 +497,8 @@ void CStatusScreenGalaxy::GenerateStatusEp6()
     auto &Font = gGraphics.getFont(0);
     Font.setupColor(0x555555);
 
-    Font.drawFontCentered(mStatusSurface.getSDLSurface(), "LOCATION", EditRect.x, EditRect.w, EditRect.y, false);
+    Font.drawFontCentered(mStatusSurface.getSDLSurface(), "LOCATION",
+                          EditRect.x, EditRect.w, EditRect.y, false);
 
     // Temporary Rect for drawing some stuff like background for scores and so...
     SDL_Rect TempRect;

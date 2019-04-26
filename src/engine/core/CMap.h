@@ -13,6 +13,7 @@
 #include <vector>
 #include <list>
 #include <base/GsTimer.h>
+#include <base/Vector2D.h>
 
 
 #include "graphics/GsTilemap.h"
@@ -138,7 +139,7 @@ public:
 		return mPlanes[plane].getMapDataAt(x>>CSF, y>>CSF);
 	}
 
-    Uint16 getPlaneDataAt(int plane, Vector2D<Uint32> pos) const
+    Uint16 getPlaneDataAt(int plane, GsVec2D<Uint32> pos) const
 	{
 		return mPlanes[plane].getMapDataAt(pos.x>>CSF, pos.y>>CSF);
 	}
@@ -174,12 +175,12 @@ public:
     { return mLocked; }
 
 
-    void setSpriteOrigin(const int sprId, const Vector2D<int> &origin)
+    void setSpriteOrigin(const int sprId, const GsVec2D<int> &origin)
     {
         mSpriteOriginList[sprId] = origin;
     }
 
-    Vector2D<int> getSpriteOrigin(const int sprId)
+    GsVec2D<int> getSpriteOrigin(const int sprId)
     {
         return mSpriteOriginList[sprId];
     }
@@ -200,7 +201,7 @@ public:
     bool mFuseInLevel;
 
 
-    Vector2D<int> mGamePlayPos;
+    GsVec2D<int> mGamePlayPos;
 
 private:
 
@@ -231,7 +232,7 @@ private:
 
     GsRect<int> mVisArea;
 
-    std::map< int, Vector2D<int> > mSpriteOriginList;
+    std::map< int, GsVec2D<int> > mSpriteOriginList;
 
     int mShakeCounter;
     int mMaxShakeCounter;

@@ -1,3 +1,10 @@
+v2.3.5:
+-------
+- Search path issues fixed (WIP)
+- New font added for better scalibility (WIP)
+- Updated GsKit, many code cleanups in the library (WIP)
+- Settings fixups (WIP)
+
 v2.3.4:
 -------
 - Code cleanups, fixes

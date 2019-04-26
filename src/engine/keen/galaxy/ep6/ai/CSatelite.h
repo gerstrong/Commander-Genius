@@ -30,7 +30,7 @@ public:
 private:
 	CPlayerWM *mpCarriedPlayer;
 	int mTilesUntilumount;
-	Vector2D<int> mPlayerPos;
+	GsVec2D<int> mPlayerPos;
 };
 
 };

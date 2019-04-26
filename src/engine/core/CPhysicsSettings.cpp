@@ -67,7 +67,7 @@ void CPhysicsSettings::loadGameConstants(int episode, byte* data)
 			misc.joy_tile = GETWORD(data+0x992A);
 			misc.bat_tile = GETWORD(data+0x995D);
 			misc.vac_tile = GETWORD(data+0x9990);
-			misc.wsk_tile = GETWORD(data+0x99C3);
+            misc.wsk_tile = GETWORD(data+0x99C3);
 
 			misc.raygun_tile = GETWORD(data+0x1166);
 			misc.pogo_tile = GETWORD(data+0x11A7);

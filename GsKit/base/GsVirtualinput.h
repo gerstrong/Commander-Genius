@@ -30,8 +30,8 @@ public:
      */
     auto setRect(const GsRect<float> &rect) -> void
     {
-        this->x = rect.x; this->y = rect.y;
-        this->w = rect.w; this->h = rect.h;
+        this->x = rect.pos.x; this->y = rect.pos.y;
+        this->w = rect.dim.x; this->h = rect.dim.y;
     }
 
     auto Rect() const -> auto
@@ -150,13 +150,13 @@ public:
      * @brief mouseDown     Mouse down event when sent when touch event triggered or mouse sends that.
      * @param Pos           Position of the mouse event
      */
-    virtual bool mouseDown(const Vector2D<float> &Pos) = 0;
+    virtual bool mouseDown(const GsVec2D<float> &Pos) = 0;
 
     /**
      * @brief mouseUp     Mouse Up event when sent when touch event triggered or mouse sends that.
      * @param Pos           Position of the mouse event
      */
-    virtual bool mouseUp(const Vector2D<float> &Pos) = 0;
+    virtual bool mouseUp(const GsVec2D<float> &Pos) = 0;
 
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
@@ -167,7 +167,7 @@ public:
      * @param touchFingerEvent event sent by SDL
      * @return true if something was processed here
      */
-    virtual bool mouseFingerState(const Vector2D<float> &Pos,
+    virtual bool mouseFingerState(const GsVec2D<float> &Pos,
                                   const SDL_TouchFingerEvent &touchFingerEvent,
                                   const bool down) = 0;
 
@@ -177,7 +177,7 @@ public:
      * @brief active    Checks if click events happened in the virtual dpad
      * @return
      */
-    virtual bool isInside(const Vector2D<float> &Pos) const = 0;
+    virtual bool isInside(const GsVec2D<float> &Pos) const = 0;
 
 
 protected:

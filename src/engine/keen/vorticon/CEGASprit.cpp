@@ -458,9 +458,9 @@ void CEGASprit::CreateYellowSpriteofTile( GsTilemap &tilemap, Uint16 tile, GsSpr
 	
 	tile_rect.x = 16*(tile%13);
 	tile_rect.y = 16*(tile/13);
-	tile_rect.w = tile_rect.h= 16;
+    tile_rect.w = tile_rect.h= 16;
 	
-	sprite.setSize(tile_rect.w, tile_rect.h);
+    sprite.setSize(tile_rect.w, tile_rect.h);
 	sprite.createSurface( gVideoDriver.mpVideoEngine->getBlitSurface()->flags,
 						  gGraphics.Palette.m_Palette );
 	sprite.optimizeSurface();
@@ -548,6 +548,8 @@ CEGASprit::~CEGASprit()
 {
     if(EGASpriteModell)
     {
-        delete [] EGASpriteModell, EGASpriteModell = nullptr;
+        delete [] EGASpriteModell;
     }
+
+    EGASpriteModell = nullptr;
 }

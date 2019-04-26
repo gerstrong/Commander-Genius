@@ -44,8 +44,8 @@ bool CSettings::saveDispCfg()
     Configuration.Parse();
 
     CVidConfig &VidConf = gVideoDriver.getVidConfig();
-    Configuration.WriteInt("Video", "width", VidConf.mDisplayRect.w);
-    Configuration.WriteInt("Video", "height", VidConf.mDisplayRect.h);
+    Configuration.WriteInt("Video", "width", VidConf.mDisplayRect.dim.x);
+    Configuration.WriteInt("Video", "height", VidConf.mDisplayRect.dim.y);
 
     return Configuration.saveCfgFile();
 }
@@ -80,11 +80,11 @@ bool CSettings::saveDrvCfg()
         Configuration.SetKeyword("Video", "TiltedScreen", VidConf.mTiltedScreen);
 
 
-        Configuration.WriteInt("Video", "width", VidConf.mDisplayRect.w);
-        Configuration.WriteInt("Video", "height", VidConf.mDisplayRect.h);
+        Configuration.WriteInt("Video", "width", VidConf.mDisplayRect.dim.x);
+        Configuration.WriteInt("Video", "height", VidConf.mDisplayRect.dim.y);
 
-        Configuration.WriteInt("Video", "gameWidth", VidConf.mGameRect.w);
-        Configuration.WriteInt("Video", "gameHeight", VidConf.mGameRect.h);
+        Configuration.WriteInt("Video", "gameWidth", VidConf.mGameRect.dim.x);
+        Configuration.WriteInt("Video", "gameHeight", VidConf.mGameRect.dim.y);
 
         Configuration.WriteInt("Video", "scale", VidConf.Zoom);
         Configuration.WriteString("Video", "OGLfilter", VidConf.mRenderScQuality );
@@ -93,7 +93,9 @@ bool CSettings::saveDrvCfg()
         Configuration.WriteInt("Video", "fps", gTimer.FPS());
         Configuration.SetKeyword("Video", "vsync", VidConf.mVSync);
 
-        const std::string arc_str = itoa(VidConf.mAspectCorrection.w) + ":" + itoa(VidConf.mAspectCorrection.h);
+        const std::string arc_str =
+                itoa(VidConf.mAspectCorrection.dim.x) + ":" +
+                itoa(VidConf.mAspectCorrection.dim.y);
         Configuration.WriteString("Video", "aspect", arc_str);
 
         st_camera_bounds &CameraBounds = VidConf.m_CameraBounds;
@@ -153,16 +155,16 @@ bool CSettings::loadDrvCfg()
         GsRect<Uint16> &gamesRes = VidConf.mGameRect;
         int value = 0;
         Configuration.ReadInteger("Video", "width", &value, 320);
-        res.w = value;
+        res.dim.x = value;
         Configuration.ReadInteger("Video", "height", &value, 200);
-        res.h = value;
+        res.dim.y = value;
 
         Configuration.ReadInteger("Video", "gameWidth", &value, 320);
-        gamesRes.w = value;
+        gamesRes.dim.x = value;
         Configuration.ReadInteger("Video", "gameHeight", &value, 200);
-        gamesRes.h = value;
+        gamesRes.dim.y = value;
 
-		if(res.w*res.h <= 0)
+        if(res.dim.x*res.dim.y <= 0)
 		{
 			gLogging.ftextOut(FONTCOLORS::RED,"Error reading the configuration file!<br>");
 			return false;
@@ -175,12 +177,13 @@ bool CSettings::loadDrvCfg()
 
 		std::string arcStr;
 		Configuration.ReadString("Video", "aspect", arcStr, "none");
-		VidConf.mAspectCorrection.w = VidConf.mAspectCorrection.h = 0;
-		sscanf( arcStr.c_str(), "%i:%i", &VidConf.mAspectCorrection.w, &VidConf.mAspectCorrection.h );
+        VidConf.mAspectCorrection.dim.x = VidConf.mAspectCorrection.dim.y = 0;
+        sscanf( arcStr.c_str(), "%i:%i", &VidConf.mAspectCorrection.dim.x,
+                                         &VidConf.mAspectCorrection.dim.y );
 
 		Configuration.ReadKeyword("Video", "vsync", &VidConf.mVSync, true);
 		Configuration.ReadInteger("Video", "filter", &value, 1);
-        VidConf.m_ScaleXFilter = (filterOptionType)(value);
+        VidConf.m_ScaleXFilter = static_cast<filterOptionType>(value);
 
 		std::string scaleType;
 		Configuration.ReadString("Video", "scaletype", scaleType, "normal");

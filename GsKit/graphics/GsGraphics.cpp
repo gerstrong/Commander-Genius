@@ -192,8 +192,8 @@ void GsGraphics::copyTileToSprite( const int var, Uint16 t, Uint16 s, Uint16 nti
 
     auto tileMapPtr = Tilemap.at(1).getSDLSurface();
 	
-	src_rect.w = src_rect.h = 16;
-	dst_rect.w = dst_rect.h = 16;
+    src_rect.w = src_rect.h = 16;
+    dst_rect.w = dst_rect.h = 16;
 
     mSprite[var][s].setSize( 16, 16*ntilestocopy );
     mSprite[var][s].createSurface( tileMapPtr->flags, Palette.m_Palette );
@@ -223,7 +223,7 @@ void GsGraphics::drawDialogBox(SDL_Surface *DialogSurface,
 {
 	int x,y,i,j;
 	SDL_Rect rect;
-	rect.x = x1*8; rect.w = (w+1)*8;
+    rect.x = x1*8; rect.w = (w+1)*8;
 	rect.y = y1*8; rect.h = (h+1)*8;
 	
 	SDL_FillRect(DialogSurface, &rect, colour);

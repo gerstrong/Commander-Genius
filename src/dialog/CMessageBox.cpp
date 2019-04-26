@@ -39,27 +39,27 @@ m_mustclose(false)
     GsRect<float> facRect( gVideoDriver.getGameResFactors() );
     closeButtonRect.transformInverse(facRect);
 
-    mpTextCtrl = new CGUIText( text );
+    mpTextCtrl = new CGUIText( text, GsRect<float>(0.0f, 0.0f, 1.0f, 1.0f) );
 
 	// Those formulas work well with our constellation but I don't think they are perfect.
 	// They transform the Message Box the way the text fits perfectly in.
-	const float screenW = gVideoDriver.getGameResolution().w;
-	const float screenH = gVideoDriver.getGameResolution().h;
-    mRect.w = static_cast<float>( (mpTextCtrl->mTextDim.w+4)*8 )/screenW;
-	mRect.h = static_cast<float>( (mpTextCtrl->mTextDim.h+2)*8 )/screenH;
-	mRect.x = (1.0f - mRect.w)/2.0f;
-	mRect.y = (1.0f - mRect.h)/2.0f;
+    const float screenW = gVideoDriver.getGameResolution().dim.x;
+    const float screenH = gVideoDriver.getGameResolution().dim.y;
+    mRect.dim.x = static_cast<float>( (mpTextCtrl->mTextDim.dim.x+4)*8 )/screenW;
+    mRect.dim.y = static_cast<float>( (mpTextCtrl->mTextDim.dim.y+2)*8 )/screenH;
+    mRect.pos.x = (1.0f - mRect.dim.x)*0.5f;
+    mRect.pos.y = (1.0f - mRect.dim.y)*0.5f;
 
 	// now let's center that long text...
     GsRect<float> textRect;
-    textRect.w = ((mpTextCtrl->mTextDim.w*8)/screenW) / mRect.w;
-    textRect.h = ((mpTextCtrl->mTextDim.h*8)/screenH) / mRect.h;
-    textRect.x = (2.0f*textRect.w)/(static_cast<float>(mpTextCtrl->mTextDim.w));
-    textRect.y = (1.0f*textRect.h)/(static_cast<float>(mpTextCtrl->mTextDim.h));
+    textRect.dim.x = ((mpTextCtrl->mTextDim.dim.x*8)/screenW) / mRect.dim.x;
+    textRect.dim.y = ((mpTextCtrl->mTextDim.dim.y*8)/screenH) / mRect.dim.y;
+    textRect.pos.x = (2.0f*textRect.dim.x)/(static_cast<float>(mpTextCtrl->mTextDim.dim.x));
+    textRect.pos.y = (1.0f*textRect.dim.y)/(static_cast<float>(mpTextCtrl->mTextDim.dim.y));
 
 	if(lower) // if lower is enabled, try to snap the Dlg to the bottom off the screen.
 	{
-		mRect.y = 1.0f - mRect.h;
+        mRect.pos.y = 1.0f - mRect.dim.y;
 	}
 
     addControl( mpTextCtrl, textRect );

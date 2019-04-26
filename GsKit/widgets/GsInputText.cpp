@@ -119,7 +119,8 @@ void CGUIInputText::processRender(const GsRect<float> &RectDispCoordFloat)
     // Now lets draw the text of the list control
     GsFontLegacy &Font = gGraphics.getFont(mFontID);
 
-    Font.drawFontCentered( blitsfc, getInputString(), lRect.x, lRect.w, lRect.y, lRect.h,false );
+    Font.drawFontCentered( blitsfc, getInputString(),
+                           lRect.x, lRect.w, lRect.y, lRect.h, false );
 }
 
 

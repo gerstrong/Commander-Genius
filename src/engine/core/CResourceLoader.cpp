@@ -26,7 +26,7 @@ m_style(PROGRESS_STYLE_TEXT)
     SDL_Rect rect;
     GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
     rect.x = 0;		rect.y = 0;
-    rect.w = gameRes.w;	rect.h = gameRes.h;
+    rect.w = gameRes.dim.x;	rect.h = gameRes.dim.y;
 
     mProgressSfc.createRGBSurface(rect);
     mProgressSfc.makeBlitCompatible();
@@ -123,8 +123,8 @@ void CResourceLoaderBackground::render()
 
     GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
 
-    const int gameWidth = gameRes.w;
-    const int gameHeight = gameRes.h;
+    const int gameWidth = gameRes.dim.x;
+    const int gameHeight = gameRes.dim.y;
     const int halfWidth = gameWidth/2;
 
     if(m_style == PROGRESS_STYLE_TEXT)
@@ -137,13 +137,16 @@ void CResourceLoaderBackground::render()
 
         GsRect<Uint16> textRect;
         GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
-        const float scaleUpW = float(gameRes.w)/320.0f;
-        const float scaleUpH = float(gameRes.h)/200.0f;
-        textRect.x = (int)(80.0*scaleUpW);        textRect.y = (int)(100.0*scaleUpH);
-        textRect.w = 200;        textRect.h = 10;
+        const float scaleUpW = float(gameRes.dim.x)/320.0f;
+        const float scaleUpH = float(gameRes.dim.y)/200.0f;
+        textRect.pos.x = (int)(80.0*scaleUpW);
+        textRect.pos.y = (int)(100.0*scaleUpH);
+        textRect.dim.x = 200;        textRect.dim.y = 10;
 
         mProgressSfc.fillRGB(textRect, 0, 0, 0);
-        Font.drawFont(mProgressSfc.getSDLSurface(), text , textRect.x, textRect.y, true);
+        Font.drawFont(mProgressSfc.getSDLSurface(),
+                      text,
+                      textRect.pos.x, textRect.pos.y, true);
     }
     else if(m_style == PROGRESS_STYLE_BITMAP)
     {

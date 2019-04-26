@@ -6,7 +6,6 @@
  */
 
 #include <SDL.h>
-//#include <cstdio>
 
 #include "InputEvents.h"
 #include "CInput.h"
@@ -609,9 +608,9 @@ void CInput::enableAnalog(const int player, const bool value) { mAnalogAxesMovem
 
 
 GsRect<int> tiltBack(const GsRect<int> &screenRect,
-                     const Vector2D<int> &pt)
+                     const GsVec2D<int> &pt)
 {
-    const Vector2D<int> rotPt(screenRect.w/2, screenRect.h/2);
+    const GsVec2D<int> rotPt(screenRect.dim.x/2, screenRect.dim.y/2);
 
     // Because tilt with 90 degree only works if the plane is squared
     // the coordinate must be transformed
@@ -630,11 +629,11 @@ GsRect<int> tiltBack(const GsRect<int> &screenRect,
     auto retY = (y2_rel+rotTransY)/rotPt.x;
 
     return GsRect<int>( retX, retY,
-                        screenRect.w, screenRect.h);
+                        screenRect.dim.x, screenRect.dim.y);
 }
 
-void CInput::transMouseRelCoord(Vector2D<float> &Pos,
-                                const Vector2D<int> pointer,
+void CInput::transMouseRelCoord(GsVec2D<float> &Pos,
+                                const GsVec2D<int> pointer,
                                 const GsRect<Uint16> &activeArea,
                                 const bool tiltedScreen)
 {
@@ -642,13 +641,15 @@ void CInput::transMouseRelCoord(Vector2D<float> &Pos,
 
     if(tiltedScreen)
     {
-        myCoord = tiltBack(activeArea, myCoord);
+        const auto tiltRect = tiltBack(activeArea, myCoord);
+        myCoord = tiltRect.pos;
     }
 
-    Pos.x = ( static_cast<float>(myCoord.x-activeArea.x)/
-              static_cast<float>(activeArea.w) );
-    Pos.y = ( static_cast<float>(myCoord.y-activeArea.y)/
-              static_cast<float>(activeArea.h) );
+    Pos.x = ( static_cast<float>(myCoord.x-activeArea.pos.x)/
+              static_cast<float>(activeArea.dim.x) );
+    Pos.y = ( static_cast<float>(myCoord.y-activeArea.pos.y)/
+              static_cast<float>(activeArea.dim.y) );
+
 }
 
 
@@ -697,7 +698,7 @@ void CInput::pollEvents()
         return;
     }
 
-    Vector2D<float> Pos;
+    GsVec2D<float> Pos;
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 
 #else
@@ -762,7 +763,7 @@ void CInput::pollEvents()
             if(gVideoDriver.VGamePadEnabled() && mpVirtPad &&
                mpVirtPad->active() )
             {
-                Vector2D<int> rotPt(Event.tfinger.x*float(activeArea.w),
+                GsVec2D<int> rotPt(Event.tfinger.x*float(activeArea.w),
                                     Event.tfinger.y*float(activeArea.h));
 
 	    		transMouseRelCoord(Pos, rotPt, activeArea, tiltedScreen);
@@ -777,7 +778,7 @@ void CInput::pollEvents()
             else
 #endif
             {
-                const Vector2D<int> rotPt(Event.tfinger.x,
+                const GsVec2D<int> rotPt(Event.tfinger.x,
                                           Event.tfinger.y);
                 transMouseRelCoord(Pos, rotPt, activeArea, tiltedScreen);
                 m_EventList.add( new PointingDevEvent( Pos, PDE_BUTTONDOWN ) );
@@ -793,7 +794,7 @@ void CInput::pollEvents()
             if(gVideoDriver.VGamePadEnabled() && mpVirtPad &&
                mpVirtPad->active())
             {
-                Vector2D<int> rotPt(Event.tfinger.x*float(activeArea.w),
+                GsVec2D<int> rotPt(Event.tfinger.x*float(activeArea.w),
                                     Event.tfinger.y*float(activeArea.h));
 
                 transMouseRelCoord(Pos, rotPt, activeArea, tiltedScreen);
@@ -810,8 +811,8 @@ void CInput::pollEvents()
             {
                 passSDLEventVec = true;
 
-                Vector2D<int> rotPt(Event.tfinger.x*float(activeArea.w),
-                                    Event.tfinger.y*float(activeArea.h));
+                GsVec2D<int> rotPt(Event.tfinger.x*float(activeArea.dim.x),
+                                   Event.tfinger.y*float(activeArea.dim.y));
 
                 transMouseRelCoord(Pos, rotPt, activeArea, tiltedScreen);
                 m_EventList.add( new PointingDevEvent( Pos, PDE_BUTTONUP ) );
@@ -823,8 +824,8 @@ void CInput::pollEvents()
 
         case SDL_FINGERMOTION:
         {
-            Vector2D<int> rotPt(Event.tfinger.x*float(activeArea.w),
-                                Event.tfinger.y*float(activeArea.h));
+            GsVec2D<int> rotPt(Event.tfinger.x*float(activeArea.dim.x),
+                               Event.tfinger.y*float(activeArea.dim.y));
 
             // If Virtual gamepad takes control...
 #ifdef VIRTUALPAD
@@ -843,7 +844,7 @@ void CInput::pollEvents()
             else
 #endif
             {
-                const Vector2D<int> rotPt(Event.tfinger.x, Event.tfinger.y);
+                const GsVec2D<int> rotPt(Event.tfinger.x, Event.tfinger.y);
                 transMouseRelCoord(Pos, rotPt, activeArea, tiltedScreen);
                 m_EventList.add(new PointingDevEvent(Pos, PDE_MOVED));
                 gPointDevice.mPointingState.mPos = Pos;
@@ -859,8 +860,8 @@ void CInput::pollEvents()
                 gVideoDriver.mpVideoEngine->resizeDisplayScreen(
                         GsRect<Uint16>(Event.window.data1,
                                        Event.window.data2) );
-                dispRect.w = Event.window.data1;
-                dispRect.h = Event.window.data2;
+                dispRect.dim.x = Event.window.data1;
+                dispRect.dim.y = Event.window.data2;
             }
             break;
 #else
@@ -882,7 +883,7 @@ void CInput::pollEvents()
                 if(gVideoDriver.VGamePadEnabled() && mpVirtPad &&
                    mpVirtPad->active() )
                 {
-                    const Vector2D<int> rotPt(Event.motion.x, Event.motion.y);
+                    const GsVec2D<int> rotPt(Event.motion.x, Event.motion.y);
                     transMouseRelCoord(Pos, rotPt, activeArea, tiltedScreen);
 
                     if(!mpVirtPad->mouseDown(Pos))
@@ -895,7 +896,7 @@ void CInput::pollEvents()
                 else
 #endif
                 {
-                    const Vector2D<int> rotPt(Event.motion.x, Event.motion.y);
+                    const GsVec2D<int> rotPt(Event.motion.x, Event.motion.y);
                     transMouseRelCoord(Pos, Event.motion, activeArea, tiltedScreen);
                     m_EventList.add( new PointingDevEvent( Pos, PDE_BUTTONDOWN ) );
                     gPointDevice.mPointingState.mActionButton = 1;
@@ -911,7 +912,7 @@ void CInput::pollEvents()
             if(gVideoDriver.VGamePadEnabled() && mpVirtPad &&
                     mpVirtPad->active())
             {
-                const Vector2D<int> rotPt(Event.motion.x, Event.motion.y);
+                const GsVec2D<int> rotPt(Event.motion.x, Event.motion.y);
                 transMouseRelCoord(Pos, rotPt, activeArea, tiltedScreen);
                 if(!mpVirtPad->mouseUp(Pos))
                 {
@@ -925,7 +926,7 @@ void CInput::pollEvents()
 #endif
             {
                 passSDLEventVec = true;
-                const Vector2D<int> rotPt(Event.motion.x, Event.motion.y);
+                const GsVec2D<int> rotPt(Event.motion.x, Event.motion.y);
                 transMouseRelCoord(Pos, Event.motion, activeArea, tiltedScreen);
                 m_EventList.add( new PointingDevEvent( Pos, PDE_BUTTONUP ) );
                 gPointDevice.mPointingState.mActionButton = 0;
@@ -936,14 +937,14 @@ void CInput::pollEvents()
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
         case SDL_MOUSEWHEEL:
-            gEventManager.add( new MouseWheelEvent( Vector2D<float>(float(Event.wheel.x),
+            gEventManager.add( new MouseWheelEvent( GsVec2D<float>(float(Event.wheel.x),
                                                                     float(Event.wheel.y)) ) );
             break;
 #endif
 
 		case SDL_MOUSEMOTION:
 
-            const Vector2D<int> rotPt(Event.motion.x, Event.motion.y);
+            const GsVec2D<int> rotPt(Event.motion.x, Event.motion.y);
             transMouseRelCoord(Pos, Event.motion, activeArea, tiltedScreen);
 
 #ifdef VIRTUALPAD
@@ -1731,7 +1732,7 @@ void CInput::processMouse(SDL_Event& ev) {
     int x, y, dx, dy, w, h;
 
 	if(SDL_GetDisplayBounds(0, &screenRect) == 0) {
-		w = screenRect.w;
+        w = screenRect.w;
         h = screenRect.h;
 	}
 
@@ -1843,7 +1844,7 @@ static void drawButton(TouchButton& button, bool down) {
 
 	int crop = 2;
 	float x1 = float(button.x + crop) / w;
-	float x2 = float(button.x+button.w - crop) / w;
+	float x2 = float(button.x+button.dim.x - crop) / w;
 	float y1 = float(button.y + crop) / h;
 	float y2 = float(button.y+button.h - crop) / h;
 

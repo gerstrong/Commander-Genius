@@ -128,9 +128,9 @@ void CPlayer::setDatatoZero()
     const int level = mpMap->getLevel();
 
     if(level==80)
-		pShowDir = Vector2D<direction_t>(CENTER,DOWN);
+		pShowDir = GsVec2D<direction_t>(CENTER,DOWN);
 	else
-		pShowDir = Vector2D<direction_t>(RIGHT,CENTER);
+		pShowDir = GsVec2D<direction_t>(RIGHT,CENTER);
 
 	pDir = pShowDir;
 	inhibitfall = hideplayer = false;

@@ -114,7 +114,7 @@ void CPlatform::movePlatDown(const int amnt)
 	moveDown(amnt);
 }
 
-void CPlatform::movePlat(const Vector2D<int> &speed)
+void CPlatform::movePlat(const GsVec2D<int> &speed)
 {
     movePlatX(speed.x);
     movePlatY(speed.y);    
@@ -213,10 +213,12 @@ void CPlatform::draw()
 
         const auto visGA = gVideoDriver.mpVideoEngine->mRelativeVisGameArea;
 
-        if( showX+Sprite.getWidth() < visGA.x || showX > visGA.x+visGA.w )
+        if( showX+Sprite.getWidth() < visGA.pos.x ||
+            showX > visGA.pos.x+visGA.dim.x )
             return;
 
-        if( showY+Sprite.getHeight() < visGA.y || showY > visGA.y+visGA.h )
+        if( showY+Sprite.getHeight() < visGA.pos.y ||
+            showY > visGA.pos.y+visGA.dim.y )
             return;
 
         int w = Sprite.getWidth();

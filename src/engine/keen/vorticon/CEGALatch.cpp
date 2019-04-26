@@ -57,10 +57,10 @@ bool CEGALatch::loadHead( char *data, short m_episode )
 		std::string name;
 		//char name[9];
         GsBitmap &Bitmap = gGraphics.getBitmapFromId(0, i);
-		memcpy(&bmpRect.w,data+16*i,2);
+        memcpy(&bmpRect.w,data+16*i,2);
 		memcpy(&bmpRect.h,data+16*i+2,2);
 		name = static_cast<const char*>(data+16*i+8);
-		bmpRect.w *= 8; // The width is always divided by eight while read, so we need to extend it back to res coords
+        bmpRect.w *= 8; // The width is always divided by eight while read, so we need to extend it back to res coords
 
 		name = name.substr(0,8); // Cut the rest of data down, if junk detected in the exe file
 		TrimSpaces(name);
@@ -324,8 +324,8 @@ void CEGALatch::applyMasks()
 		if( gBehaviorEngine.getTileProperties().at(t).behaviour == -2 )  // This is for masked tiles.
 		{
 			SDL_Rect srGsRect, dstRect;
-			srGsRect.w = srGsRect.h = 16;
-			dstRect.w = dstRect.h = 16;
+            srGsRect.w = srGsRect.h = 16;
+            dstRect.w = dstRect.h = 16;
 			
 			srGsRect.x = 16*(t%13);
 			srGsRect.y = 16*(t/13);		  
@@ -336,7 +336,8 @@ void CEGALatch::applyMasks()
 			{	
 				Uint32 u_colour = 0;
 				Uint8 r,g,b;
-				Uint8 *u_offset = (Uint8*)backSfc->pixels + bpp*((y+16*((t+1)/13))*13*16 + 16*((t+1)%13) + x);
+                Uint8 *u_offset = static_cast<Uint8*>(backSfc->pixels) +
+                            bpp*((y+16*((t+1)/13))*13*16 + 16*((t+1)%13) + x);
 				memcpy( &u_colour, u_offset, bpp );
 				SDL_GetRGB( u_colour, backSfc->format, &r, &g, &b );
 
@@ -355,7 +356,7 @@ void CEGALatch::applyMasks()
 				}
 				
 				SDL_Rect srGsRect;
-				srGsRect.w = srGsRect.h = 1;
+                srGsRect.w = srGsRect.h = 1;
 				srGsRect.x = 16*((t)%13) + x;
 				srGsRect.y = y+16*((t)/13);
 				
@@ -370,6 +371,10 @@ void CEGALatch::applyMasks()
 	  SDL_UnlockSurface(frontSfc);
 }
 
-CEGALatch::~CEGALatch() {
-    if(RawData) delete [] RawData, RawData = nullptr;
+CEGALatch::~CEGALatch()
+{
+    if(RawData)
+    { delete [] RawData;}
+
+    RawData = nullptr;
 }

@@ -90,7 +90,7 @@ void CPlatformMoveAway::processMoveAway()
 	const int x1 = m_Origin.x;
 	const int y1 = m_Origin.y;
 
-    Vector2D<int> dist(x2-x1, y2-y1);
+    GsVec2D<int> dist(x2-x1, y2-y1);
 
 
 	movePlatY(yDirection*mSpeed);
@@ -119,7 +119,7 @@ void CPlatformMoveAway::processMoveBack()
 	const int x1 = m_Origin.x;
 	const int y1 = m_Origin.y;
 
-    Vector2D<int> dist(x2-x1, y2-y1);
+    GsVec2D<int> dist(x2-x1, y2-y1);
 
 	movePlatY(-yDirection*mSpeed);
 	movePlatX(-xDirection*mSpeed);

@@ -231,7 +231,7 @@ public:
 	 * 				otherwise, the empty clicking sound is heard
 	 * \param	pos	Coordinates where the shot should be spawned
 	 */
-    void tryToShoot( const Vector2D<int> &pos, const int xDir, const int yDir );
+    void tryToShoot( const GsVec2D<int> &pos, const int xDir, const int yDir );
 
 
 

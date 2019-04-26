@@ -149,8 +149,8 @@ bool CGameLauncher::setupMenu()
     mpGameSelectionList->setConfirmButtonEvent(new GMStart());
     mpGameSelectionList->setBackButtonEvent(new GMQuit());
 
-    mLauncherDialog.addControl(new CGUIText("Pick a Game"),
-                               GsRect<float>(0.0f, 0.01f, 1.0f, 0.05f));
+    mLauncherDialog.addControl(new CGUIText("Pick a Game",
+                                      GsRect<float>(0.0f, 0.01f, 1.0f, 0.05f)));
 
     mLauncherDialog.addControl(new GsButton( "x", new GMQuit(),
                                              GsControl::Style::NONE,
@@ -200,12 +200,12 @@ bool CGameLauncher::setupMenu()
                 ) ;
 
 
-    mpEpisodeText = new CGUIText("Game");
-    mpVersionText = new CGUIText("Version");
-    mpDemoText = new CGUIText("Demo");
-    mLauncherDialog.addControl(mpEpisodeText, GsRect<float>(0.5f, 0.70f, 0.5f, 0.05f));
-    mLauncherDialog.addControl(mpVersionText, GsRect<float>(0.5f, 0.75f, 0.5f, 0.05f));
-    mLauncherDialog.addControl(mpDemoText, GsRect<float>(0.5f, 0.80f, 0.5f, 0.05f));
+    mpEpisodeText = new CGUIText("Game", GsRect<float>(0.5f, 0.70f, 0.5f, 0.05f));
+    mpVersionText = new CGUIText("Version", GsRect<float>(0.5f, 0.75f, 0.5f, 0.05f));
+    mpDemoText = new CGUIText("Demo", GsRect<float>(0.5f, 0.80f, 0.5f, 0.05f));
+    mLauncherDialog.addControl(mpEpisodeText);
+    mLauncherDialog.addControl(mpVersionText);
+    mLauncherDialog.addControl(mpDemoText);
 
     // This way it goes right to the selection list.
     mLauncherDialog.setSelection(2);
@@ -529,7 +529,8 @@ void CGameLauncher::showMessageBox(const std::string &text)
     float yStart = 0.1f;
     for( auto &txtItem : strVec)
     {
-        mpMsgDialog->addControl(new CGUIText(txtItem), GsRect<float>(0.1f, yStart, 0.8f, 0.05f));
+        mpMsgDialog->addControl(new CGUIText(txtItem,
+                                   GsRect<float>(0.1f, yStart, 0.8f, 0.05f)));
         yStart += 0.05f;
     }
 
@@ -590,7 +591,8 @@ void CGameLauncher::setupModsDialog()
     mpPatchSelList->setConfirmButtonEvent(new GMPatchSelected());
     mpPatchSelList->setBackButtonEvent(new GMQuit());
 
-    mpPatchDialog->addControl(new CGUIText("Choose your patch:"), GsRect<float>(0.0f, 0.0f, 1.0f, 0.05f));
+    mpPatchDialog->addControl(new CGUIText("Choose your patch:",
+                                           GsRect<float>(0.0f, 0.0f, 1.0f, 0.05f)));
     mpPatchDialog->addControl(mpPatchSelList, GsRect<float>(0.01f, 0.07f, 0.49f, 0.87f));
 
 
@@ -929,19 +931,19 @@ void CGameLauncher::render()
     SDL_FillRect(sfc, nullptr, SDL_MapRGB(sfc->format,255,255,0));
 
     borderRect.x = 0; borderRect.y = 0;
-    borderRect.h = 2; borderRect.w = sfc->w;
+    borderRect.h = 2; borderRect.dim.x = sfc->w;
     SDL_FillRect(sfc, &borderRect, SDL_MapRGB(sfc->format,255,0,255));
 
     borderRect.x = 0; borderRect.y = sfc->h-2;
-    borderRect.h = 2; borderRect.w = sfc->w;
+    borderRect.h = 2; borderRect.dim.x = sfc->w;
     SDL_FillRect(sfc, &borderRect, SDL_MapRGB(sfc->format,255,0,255));
 
     borderRect.x = 0; borderRect.y = 0;
-    borderRect.h = sfc->h; borderRect.w = 2;
+    borderRect.h = sfc->h; borderRect.dim.x = 2;
     SDL_FillRect(sfc, &borderRect, SDL_MapRGB(sfc->format,0,255,0));
 
     borderRect.x = sfc->w-2; borderRect.y = 0;
-    borderRect.h = sfc->h; borderRect.w = 2;
+    borderRect.h = sfc->h; borderRect.dim.x = 2;
     SDL_FillRect(sfc, &borderRect, SDL_MapRGB(sfc->format,0,255,0));
 */
     // Do the rendering of the dialog

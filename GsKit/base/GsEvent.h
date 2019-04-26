@@ -5,6 +5,12 @@
 
 struct CEvent { virtual ~CEvent(); };
 
+struct GsFunctor
+{
+    virtual void operator()() = 0;
+};
+
+
 struct InvokeFunctorEvent : CEvent
 {
     virtual void operator()() const = 0;

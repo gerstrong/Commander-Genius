@@ -10,20 +10,24 @@
 #include <base/utils/StringUtils.h>
 
 
+
 #include "GsText.h"
 
-CGUIText::CGUIText(const std::string& text)
+
+CGUIText::CGUIText(const std::string& text,
+         const GsRect<float> &rect) :
+GsControl(rect)
 {
-	setText(text);
+    setText(text);
 }
 
 
 void CGUIText::setText(const std::string& text)
-{
-#if defined(USE_SDL_TTF)
-    const SDL_Color textColor = { 0xff, 0, 0, 0 };
+{    
+    const GsColor textColor = { 0, 0, 0, 0 };
 
-    mTrueTypeFont.open("lazy.ttf", 28);
+#if defined(USE_SDL_TTF)
+    mTrueTypeFont.open("Oswald-Regular.ttf", 28);
     mTrueTypeFont.render(mTextSfc, text, textColor);
 #else
 
@@ -32,16 +36,16 @@ void CGUIText::setText(const std::string& text)
 		mTextList.clear();
 
 	// Split up the text in lines
-	mTextDim.w = 0;
+    mTextDim.dim.x = 0;
 
 	// TODO: I think there is a more elegant way to achieve this!
 	std::string buf = "";
 	for( size_t i=0 ; i<text.size() ; i++ )
 	{
 		if( endofText(text.substr(i)) )
-		{
-			if( mTextDim.w<buf.size() )
-				mTextDim.w=buf.size();
+		{            
+            if( mTextDim.dim.x<buf.size() )
+                mTextDim.dim.x=buf.size();
 
 			mTextList.push_back(buf);
 			buf.clear();
@@ -60,10 +64,10 @@ void CGUIText::setText(const std::string& text)
 	}
 	mTextList.push_back(buf);
 
-	if( mTextDim.w<buf.size() )
-		mTextDim.w=buf.size();
+    if( mTextDim.dim.x<buf.size() )
+        mTextDim.dim.x=buf.size();
 
-	mTextDim.h = mTextList.size();
+    mTextDim.dim.y = mTextList.size();
 
 #endif
 }
@@ -101,62 +105,43 @@ void CGUIText::processLogic()
 
 void CGUIText::processRender(const GsRect<float> &RectDispCoordFloat)
 {
-    // Transform to the display coordinates
-    GsRect<float> displayRect = mRect;
-    displayRect.transform(RectDispCoordFloat);
-    SDL_Rect lRect = displayRect.SDLRect();
-
 
 #if defined(USE_SDL_TTF)
-    auto *blit = gVideoDriver.getBlitSurface();
+	// Transform to the display coordinates
+    GsRect<float> displayRect = mRect;
+	displayRect.transform(RectDispCoordFloat);
+	SDL_Rect lRect = displayRect.SDLRect();
 
-    BlitSurface(mTextSfc.getSDLSurface(), nullptr,
-                blit, &lRect);
+    auto &blit = gVideoDriver.gameSfc();
 
-    BlitSurface(mTextSfc.getSDLSurface(), nullptr,
-                blit, nullptr);
+    mTextSfc.blitTo(blit, lRect);
+
 #endif
+}
 
+void CGUIText::processRender(const GsRect<float> &backRect,
+                             const GsRect<float> &frontRect)
+{
+    // Transform this object to the display coordinates
+    auto objBackRect = backRect.transformed(mRect);
+    auto objFrontRect = objBackRect.clipped(frontRect);
+
+    auto &blit = gVideoDriver.gameSfc();
+
+    auto srcRect = objBackRect.SDLRect();
+    auto dstRect = objFrontRect.SDLRect();
 
     /*auto *renderer = &gVideoDriver.getRendererRef();
 
-    //Render to screen
-    SDL_RenderCopyEx( renderer,
-                      mTexture.getPtr(), nullptr,
-                      &lRect,
-                      0, nullptr, SDL_FLIP_NONE );*/
+    srcRect.x = (srcRect.x < dstRect.x) ? dstRect.x-srcRect.x : 0;
+    srcRect.y = (srcRect.y < dstRect.y) ? dstRect.y-srcRect.y : 0;
 
-    // Now lets draw the text of the list control
-    auto &Font = gGraphics.getFont(mFontID);
+    srcRect.dim.x = (dstRect.dim.x < srcRect.dim.x) ? dstRect.dim.x : srcRect.dim.x;
+    srcRect.h = (dstRect.h < srcRect.h) ? dstRect.h : srcRect.h;
 
-    std::list<std::string>::iterator textIt = mTextList.begin();
-    for( size_t i=0 ; textIt != mTextList.end() ; textIt++, i++ )
-    {
-        auto &theText = *textIt;
+    mTextSfc.blitTo(blit, srcRect, dstRect);
+    //mTextSfc.blitTo(blit, dstRect);
 
-        const int textWidth = Font.calcPixelTextWidth(theText);
-
-        // The tolerance is the amount of pixels at least of difference to consider
-        // for scrolling. We consider a tolerance so strange jittery are avoided for text
-        // that nearly fits
-        const int tol = 8;
-
-        // The first text item decides wheter scrolling takes place
-        if(textWidth > lRect.w + tol) // tolerance
-        {
-            const auto diff = textWidth - lRect.w;
-            mScrollPosMax = diff;
-
-            Font.drawFont(gVideoDriver.getBlitSurface(),
-                          theText,
-                          lRect.x-int(mScrollPos),
-                          lRect.y+i*8,
-                          false);
-        }
-        else
-        {
-            Font.drawFontCentered(gVideoDriver.getBlitSurface(), theText, lRect.x, lRect.w, lRect.y+i*8, false);
-            mScrollPosMax = 0;
-        }
-    }
+    */
 }
+

@@ -11,9 +11,27 @@
 #include <base/GsTimer.h>
 #include <widgets/GsMenuController.h>
 #include <base/PointDevice.h>
+#include <base/PointDevice.h>
+#include <base/GsTTFSystem.h>
 
 #include "GsButton.h"
 
+
+GsButton::GsButton(const std::string& text,
+                   const GsRect<float> &rect,
+            CEvent *ev,
+            const Style style,
+            const float red,
+            const float green,
+            const float blue) :
+GsControl(style, rect),
+mText(text),
+mEvent(ev),
+mRed(red),
+mGreen(green),
+mBlue(blue),
+mTextWidget(text, GsRect<float>(0.0f, 0.0f, 1.0f, 1.0f))
+{}
 
 GsButton::GsButton(const std::string& text,
             CEvent *ev,
@@ -26,8 +44,10 @@ mText(text),
 mEvent(ev),
 mRed(red),
 mGreen(green),
-mBlue(blue)
+mBlue(blue),
+mTextWidget(text, GsRect<float>(0.0f, 0.0f, 1.0f, 1.0f))
 {}
+
 
 
 bool GsButton::sendEvent(const InputCommand command)
@@ -61,13 +81,23 @@ void GsButton::processLogic()
         // If button was pushed and gets released, trigger the assigned event.
         if(mReleased)
         {
-            gEventManager.add(mEvent);
+            if(mFunction)
+            {
+                mFunction();
+            }
+            else
+            {
+                gEventManager.add(mEvent);
+            }
         }
     }
 }
 
-void GsButton::drawNoStyle(SDL_Rect& lRect)
+void GsButton::drawNoStyle(const SDL_Rect& lRect)
 {
+    if(lRect.h == 0 || lRect.w == 0)
+        return;
+
     GsWeakSurface blitsfc(gVideoDriver.getBlitSurface());
 
     int lComp = 0xFF;
@@ -124,20 +154,23 @@ void GsButton::drawNoStyle(SDL_Rect& lRect)
 
     blitsfc.drawRect( rect, 2, borderColor, fillColor );
 
-
-    // Now lets draw the text of the list control
-    auto &Font = gGraphics.getFont(mFontID);
-
-    if(mEnabled) // If the button is enabled use the normal text, otherwise the highlighted color
+    if(!gTTFDriver.isActive())
     {
-        Font.drawFontCentered( blitsfc.getSDLSurface(), mText,
-                               lRect.x, lRect.w, lRect.y, lRect.h, false );
+        // Now lets draw the text of the list control
+        auto &Font = gGraphics.getFont(mFontID);
+
+        if(mEnabled) // If the button is enabled use the normal text, otherwise the highlighted color
+        {
+            Font.drawFontCentered( blitsfc.getSDLSurface(), mText,
+                                   lRect.x, lRect.w, lRect.y, lRect.h, false );
+        }
+        else
+        {
+            Font.drawFontCentered( blitsfc.getSDLSurface(), mText,
+                                   lRect.x, lRect.w, lRect.y, lRect.h, true );
+        }
     }
-    else
-    {
-        Font.drawFontCentered( blitsfc.getSDLSurface(), mText,
-                               lRect.x, lRect.w, lRect.y, lRect.h, true );
-    }
+
 }
 
 void GsButton::setupButtonSurface(const std::string &text)
@@ -205,4 +238,27 @@ void GsButton::processRender(const GsRect<float> &RectDispCoordFloat)
     auto lRect = displayRect.SDLRect();
 
     drawNoStyle(lRect);
+
+    if(gTTFDriver.isActive())
+    {
+        mTextWidget.processRender(displayRect);
+    }
+}
+
+void GsButton::processRender(const GsRect<float> &backRect,
+                           const GsRect<float> &frontRect)
+{    
+    // Transform this object to the display coordinates
+    auto objBackRect = backRect.transformed(mRect);
+    auto objFrontRect = objBackRect.clipped(frontRect);
+
+    auto lRect = objFrontRect.SDLRect();
+
+    drawNoStyle(lRect);
+
+    if(gTTFDriver.isActive())
+    {
+        mTextWidget.processRender(objBackRect,
+                                  objFrontRect);
+    }
 }

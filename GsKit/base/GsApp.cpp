@@ -370,4 +370,3 @@ void GsApp::runMainCycle()
 
     cleanup();
 }
-

@@ -57,13 +57,13 @@ public:
      * @param Pos           Position
      * @param down          true if event indicates mouse button down, otherwise up
      */
-    bool mouseState(const Vector2D<float> &Pos, const bool down);
+    bool mouseState(const GsVec2D<float> &Pos, const bool down);
 
     /**
      * @brief mouseDown     Mouse down event when sent when touch event triggered or mouse sends that.
      * @param Pos           Position of the mouse event
      */
-    bool mouseDown(const Vector2D<float> &Pos) override
+    bool mouseDown(const GsVec2D<float> &Pos) override
     {
         return mouseState(Pos, true);
     }
@@ -72,7 +72,7 @@ public:
      * @brief mouseDown     Mouse Up event when sent when touch event triggered or mouse sends that.
      * @param Pos           Position of the mouse event
      */
-    bool mouseUp(const Vector2D<float> &Pos) override
+    bool mouseUp(const GsVec2D<float> &Pos) override
     {
         return mouseState(Pos, false);
     }
@@ -84,7 +84,7 @@ public:
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 
-    bool mouseFingerState(const Vector2D<float> &Pos,
+    bool mouseFingerState(const GsVec2D<float> &Pos,
                           const SDL_TouchFingerEvent &touchFingerEvent,
                           const bool down) override;
 
@@ -94,7 +94,7 @@ public:
      * @brief active    Checks if click events happened in the virtual dpad
      * @return
      */
-    bool isInside(const Vector2D<float> &Pos) const override
+    bool isInside(const GsVec2D<float> &Pos) const override
     {
 #if SDL_VERSION_ATLEAST(2, 0, 0)
         return mPadBackground.isInside(Pos.x, Pos.y);

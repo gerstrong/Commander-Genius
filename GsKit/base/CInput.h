@@ -169,8 +169,8 @@ public:
      * @param activeArea    Area which is seen and interacted.
      * @param tiltedScreen  is the screen tilted.
      */
-    void transMouseRelCoord(Vector2D<float> &Pos,
-                            const Vector2D<int> pointer,
+    void transMouseRelCoord(GsVec2D<float> &Pos,
+                            const GsVec2D<int> pointer,
                             const GsRect<Uint16> &activeArea,
                             const bool tiltedScreen);
 

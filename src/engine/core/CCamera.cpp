@@ -66,11 +66,11 @@ void CCamera::attachObject(CSpriteObject *p_attacher)
 	mp_AttachedObject = p_attacher;
 }
 
-void CCamera::setPosition(const Vector2D<int>& newpos)
+void CCamera::setPosition(const GsVec2D<int>& newpos)
 {
 
-	int cam_x = newpos.x-((gVideoDriver.getGameResolution().w/2)<<STC);
-	int cam_y = newpos.y-((gVideoDriver.getGameResolution().h/2)<<STC);
+    int cam_x = newpos.x-((gVideoDriver.getGameResolution().dim.x/2)<<STC);
+    int cam_y = newpos.y-((gVideoDriver.getGameResolution().dim.y/2)<<STC);
 
     const int minimumEdgeDist = (2<<CSF)+1;
     const int maxWidth = (mpMap->m_width<<CSF)-1;
@@ -316,8 +316,8 @@ bool CCamera::outOfSight()
 {
 	bool outofsight = false;
 
-	const int cam_width = ((gVideoDriver.getGameResolution().w/2)<<STC);
-	const int cam_height = ((gVideoDriver.getGameResolution().h/2)<<STC);
+    const int cam_width = ((gVideoDriver.getGameResolution().dim.x/2)<<STC);
+    const int cam_height = ((gVideoDriver.getGameResolution().dim.y/2)<<STC);
 
 	const int camX = getXPosition();
 	const int camY = getYPosition();

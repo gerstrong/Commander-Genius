@@ -148,7 +148,7 @@ void FillSlopeRect(SDL_Surface *dst, const SDL_Rect dst_rect, Uint32 color, Sint
 		yb1 = 0, yb2 = 0;
 
 	SDL_Rect sloperect = dst_rect;
-	sloperect.w = 1;
+	sloperect.dim.x = 1;
 
 	if( blocked > 1 )
 	{
@@ -165,7 +165,7 @@ void FillSlopeRect(SDL_Surface *dst, const SDL_Rect dst_rect, Uint32 color, Sint
 	line1_rect.h = 1;
 	SDL_FillRect( dst, &line1_rect, 0xFF545454);
 	SDL_Rect line2_rect = dst_rect;
-	line2_rect.w = 1;
+	line2_rect.dim.x = 1;
 	SDL_FillRect( dst, &line2_rect, 0xFF545454);
 }
 #endif
@@ -180,7 +180,7 @@ void GsTilemap::drawTile(SDL_Surface *dst,
 	src_rect.x = (t%m_column)<<m_pbasesize;
 	src_rect.y = (t/m_column)<<m_pbasesize;
 	const int size = 1<<m_pbasesize;
-	src_rect.w = src_rect.h = dst_rect.w = dst_rect.h = size;
+    src_rect.w = src_rect.h = dst_rect.w = dst_rect.h = size;
 
 	dst_rect.x = x;		dst_rect.y = y;
 

@@ -113,9 +113,9 @@ void CVideoSettings::refresh()
     mpGameResSelection->setList( GamesResList, NUM_GAME_RESOLUTIONS );
 
     std::string resStr;
-    resStr = itoa(mUsersConf.mGameRect.w);
+    resStr = itoa(mUsersConf.mGameRect.dim.x);
     resStr += "x";
-    resStr += itoa(mUsersConf.mGameRect.h);
+    resStr += itoa(mUsersConf.mGameRect.dim.y);
     mpGameResSelection->setSelection(resStr);
 
 #endif
@@ -158,12 +158,13 @@ void CVideoSettings::release()
 #endif
 
     const std::string GameResStr = mpGameResSelection->getSelection();
-    sscanf( GameResStr.c_str(), "%hux%hux", &mUsersConf.mGameRect.w, &mUsersConf.mGameRect.h );
+    sscanf( GameResStr.c_str(), "%hux%hux",
+            &mUsersConf.mGameRect.dim.x, &mUsersConf.mGameRect.dim.y );
 
 #endif
 
 #if defined(CAANOO) || defined(WIZ) || defined(DINGOO) || defined(NANONOTE) || defined(ANDROID)
-    mUsersConf.mDisplayRect.w = 320;
+    mUsersConf.mDisplayRect.dim.x = 320;
     mUsersConf.mDisplayRect.h = 200;
 #endif
 

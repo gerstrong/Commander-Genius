@@ -17,9 +17,9 @@ CScrollEffect::CScrollEffect(GsWeakSurface &scrollSurface,
                              const int speed,
                              const direction_t hDir,
                              const direction_t vDir) :
-mInitSpeed(speed),
+//mInitSpeed(speed),
 mSpeed(speed),
-mInitialSpeed(speed),
+//mInitialSpeed(speed),
 mScrollPos(initialPos),
 mHDir(hDir),
 mVDir(vDir)

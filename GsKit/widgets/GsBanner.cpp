@@ -9,7 +9,7 @@ const int TIME_TRANSITION = 30;
 
 
 CGUIBanner::CGUIBanner(const std::string& text) :
-CGUIText(text),
+CGUIText(text, GsRect<float>(0.0f, 0.0f, 1.0f, 1.0f)),
 transition(false),
 timer(0)
 {
@@ -74,12 +74,12 @@ void CGUIBanner::processRender(const GsRect<float> &RectDispCoordFloat)
 
 	if(transition)
 	{
-	    Font.drawFontCenteredAlpha(gVideoDriver.getBlitSurface(), *prevTextIt, lRect.x, lRect.w, lRect.y, 255-alpha);
-	    Font.drawFontCenteredAlpha(gVideoDriver.getBlitSurface(), *curTextIt, lRect.x, lRect.w, lRect.y, alpha);
+        Font.drawFontCenteredAlpha(gVideoDriver.getBlitSurface(), *prevTextIt, lRect.x, lRect.w, lRect.y, 255-alpha);
+        Font.drawFontCenteredAlpha(gVideoDriver.getBlitSurface(), *curTextIt, lRect.x, lRect.w, lRect.y, alpha);
 	}
 	else
 	{
-	    Font.drawFontCentered(gVideoDriver.getBlitSurface(), *curTextIt, lRect.x, lRect.w, lRect.y, false);
+        Font.drawFontCentered(gVideoDriver.getBlitSurface(), *curTextIt, lRect.x, lRect.w, lRect.y, false);
 	}
 	
 }

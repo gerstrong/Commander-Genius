@@ -228,7 +228,9 @@ public:
                           const bool highlight = false)
     {
         drawFontCentered(dst.getSDLSurface(),
-                         text, rect.x, rect.w, rect.y, rect.h,
+                         text,
+                         rect.pos.x, rect.dim.x,
+                         rect.pos.y, rect.dim.y,
                          highlight);
     }
 

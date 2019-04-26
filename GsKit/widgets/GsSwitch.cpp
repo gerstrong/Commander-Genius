@@ -14,8 +14,9 @@
 
 //#include "engine/core/CBehaviorEngine.h"
 
-CGUISwitch::CGUISwitch( const std::string& text ) :
-CGUIComboSelection( text, filledStrList( 2, "off", "on" ) )
+CGUISwitch::CGUISwitch( const std::string& text,
+                        const GsRect<float> &rect ) :
+CGUIComboSelection( text, rect, filledStrList( 2, "off", "on" ) )
 {
 
 }
@@ -28,7 +29,7 @@ void CGUISwitch::drawVorticonStyle(SDL_Rect& lRect)
 	SDL_Surface *blitsfc = gVideoDriver.getBlitSurface();
 
 	// Now lets draw the text of the list control
-    auto &Font = gGraphics.getFont(2);
+    GsFontLegacy &Font = gGraphics.getFont(2);
 
 	Font.drawFont( blitsfc, mText, lRect.x+24, lRect.y, false );
 	Font.drawFont( blitsfc, ":", lRect.x+24+mText.size()*8, lRect.y, false );

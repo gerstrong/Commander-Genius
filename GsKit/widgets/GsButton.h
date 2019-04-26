@@ -15,22 +15,37 @@
 #include <memory>
 #include <map>
 #include <graphics/GsSurface.h>
+#include <widgets/GsText.h>
 
+#include <functional>
 
 class GsButton : public GsControl
 {
 public:
 
     GsButton(const std::string& text,
-            CEvent *ev = nullptr,
-            const Style style = Style::NONE,
-            const float red = 0.875f,
-            const float green = 0.875f,
-            const float blue = 1.0f);
-    
-	bool sendEvent(const InputCommand command);
+             const GsRect<float> &rect,
+             CEvent *ev = nullptr,
+             const Style style = Style::NONE,
+             const float red = 0.875f,
+             const float green = 0.875f,
+             const float blue = 1.0f);
 
-    void updateGraphics();
+    GsButton(const std::string& text,
+             CEvent *ev = nullptr,
+             const Style style = Style::NONE,
+             const float red = 0.875f,
+             const float green = 0.875f,
+             const float blue = 1.0f);
+
+    bool sendEvent(const InputCommand command) override;
+
+    void updateGraphics() override;
+
+    void setActivationEvent(const std::function <void ()>& f)
+    {
+        mFunction = f;
+    }
 
     /**
      * @brief drawEnabledButton Drawing of a button with fading effects.
@@ -42,13 +57,16 @@ public:
                            const SDL_Rect &lRect,
                            const bool alternate);
 
-    virtual void processLogic();
+    virtual void processLogic() override;
 
-	void drawNoStyle(SDL_Rect& lRect);
+    void drawNoStyle(const SDL_Rect &lRect);
 
 	void drawVorticonStyle(SDL_Rect& lRect);
 
-    virtual void processRender(const GsRect<float> &RectDispCoordFloat);
+    virtual void processRender(const GsRect<float> &RectDispCoordFloat) override;
+
+    virtual void processRender(const GsRect<float> &srcRectFloat,
+                               const GsRect<float> &dstRectFloat) override;
 
     void setText(const std::string& text)
 	{
@@ -84,6 +102,11 @@ private:
     const float mRed = 0.875f;
     const float mGreen = 0.875f;
     const float mBlue = 1.0f;
+
+    CGUIText mTextWidget;
+
+    std::function <void ()> mFunction;
 };
+
 
 #endif /* GsButton_H_ */

@@ -33,14 +33,12 @@ ComputerWrist::ComputerWrist(const int ep) :
 {
     // Prepare the Menu Bmp
     GsRect<Uint16> mainBmpSize;
-    mainBmpSize.w = mMainMenuBmp.width();
-    mainBmpSize.h = mMainMenuBmp.height();
+    mainBmpSize.dim = {mMainMenuBmp.width(), mMainMenuBmp.height()};
     mMainMenuBmp.scaleTo(mainBmpSize);
 
     // Same for Hand Bmp
     GsRect<Uint16> handBmpSize;
-    handBmpSize.w = mHandBmp.width();
-    handBmpSize.h = mHandBmp.height();
+    handBmpSize.dim = {mHandBmp.width(), mHandBmp.height()};
     mHandBmp.scaleTo(handBmpSize);
 
 
@@ -49,20 +47,20 @@ ComputerWrist::ComputerWrist(const int ep) :
 
         GsRect<Uint16> upperBorderBmpSize;
         mUpperBorderBmp = *gGraphics.getBitmapFromStr(0, "HELP_UPPERBORDER");
-        upperBorderBmpSize.w = mUpperBorderBmp.width();
-        upperBorderBmpSize.h = mUpperBorderBmp.height();
+        upperBorderBmpSize.dim.x = mUpperBorderBmp.width();
+        upperBorderBmpSize.dim.y = mUpperBorderBmp.height();
         mUpperBorderBmp.scaleTo(upperBorderBmpSize);
 
         GsRect<Uint16> leftBorderBmpSize;
         mLeftBorderBmp = *gGraphics.getBitmapFromStr(0, "HELP_LEFTBORDER");
-        leftBorderBmpSize.w = mLeftBorderBmp.width();
-        leftBorderBmpSize.h = mLeftBorderBmp.height();
+        leftBorderBmpSize.dim.x = mLeftBorderBmp.width();
+        leftBorderBmpSize.dim.y = mLeftBorderBmp.height();
         mLeftBorderBmp.scaleTo(leftBorderBmpSize);
 
         GsRect<Uint16> rightBorderBmpSize;
         mRightBorderBmp = *gGraphics.getBitmapFromStr(0, "HELP_RIGHTBORDER");
-        rightBorderBmpSize.w = mRightBorderBmp.width();
-        rightBorderBmpSize.h = mRightBorderBmp.height();
+        rightBorderBmpSize.dim.x = mRightBorderBmp.width();
+        rightBorderBmpSize.dim.y = mRightBorderBmp.height();
         mRightBorderBmp.scaleTo(rightBorderBmpSize);
 
 
@@ -70,14 +68,14 @@ ComputerWrist::ComputerWrist(const int ep) :
 
         GsRect<Uint16> bottomBorderBmpSize;
         mBottomBorderBmp = *gGraphics.getBitmapFromStr(0, "HELP_LOWERBORDER");
-        bottomBorderBmpSize.w = mBottomBorderBmp.width();
-        bottomBorderBmpSize.h = mBottomBorderBmp.height();
+        bottomBorderBmpSize.dim.x = mBottomBorderBmp.width();
+        bottomBorderBmpSize.dim.y = mBottomBorderBmp.height();
         mBottomBorderBmp.scaleTo(bottomBorderBmpSize);
 
         GsRect<Uint16> lowerBorderBmpSize;
         mLowerBorderControlBmp = *gGraphics.getBitmapFromStr(0, "HELP_LOWERBORDERCONTROL");
-        lowerBorderBmpSize.w = mLowerBorderControlBmp.width();
-        lowerBorderBmpSize.h = mLowerBorderControlBmp.height();
+        lowerBorderBmpSize.dim.x = mLowerBorderControlBmp.width();
+        lowerBorderBmpSize.dim.y = mLowerBorderControlBmp.height();
         mLowerBorderControlBmp.scaleTo(lowerBorderBmpSize);
 
     }
@@ -220,7 +218,7 @@ void ComputerWrist::parseText()
 
     bool skipmode = true;
 
-    Vector2D<int> cursorPos(mMinPos[0], 0);
+    GsVec2D<int> cursorPos(mMinPos[0], 0);
 
 
     static std::map<char, Uint32> wristColorMap =

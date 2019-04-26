@@ -848,7 +848,7 @@
 		<Unit filename="/mnt/bigDrive/gerstrong-big/workspace/Commander-Genius/GsKit/graphics/GsFont.cpp">
 			<Option target="GsKit"/>
 		</Unit>
-		<Unit filename="/mnt/bigDrive/gerstrong-big/workspace/Commander-Genius/GsKit/graphics/GsFont.h">
+		<Unit filename="/mnt/bigDrive/gerstrong-big/workspace/Commander-Genius/GsKit/graphics/GsFontLegacy.h">
 			<Option target="GsKit_unity"/>
 			<Option target="GsKit"/>
 		</Unit>

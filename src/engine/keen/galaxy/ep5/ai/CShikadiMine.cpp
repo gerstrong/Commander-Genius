@@ -380,10 +380,11 @@ void CShikadiMine::draw()
 
 	SDL_Rect gameres = gVideoDriver.getGameResolution().SDLRect();
 
-	if( scrx < gameres.w && scry < gameres.h && exists )
+    if( scrx < gameres.w && scry < gameres.h && exists )
 	{
 		Uint16 showX = scrx+Sprite.getXOffset();
 		Uint16 showY = scry+Sprite.getYOffset();
+
 		if(m_blinktime > 0)
 		{
 			Sprite.drawBlinkingSprite( showX, showY );

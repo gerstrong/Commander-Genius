@@ -58,11 +58,11 @@ bool CSDLVideo::init()
     }
 
 
-    window = SDL_CreateWindow("Commander Genius",
+    window = SDL_CreateWindow("Happy Menu",
                               SDL_WINDOWPOS_CENTERED,
                               SDL_WINDOWPOS_CENTERED,
-                              m_VidConfig.mDisplayRect.w,
-                              m_VidConfig.mDisplayRect.h,
+                              m_VidConfig.mDisplayRect.dim.x,
+                              m_VidConfig.mDisplayRect.dim.y,
                               flags);
 
     if(renderer)
@@ -83,8 +83,8 @@ bool CSDLVideo::init()
     SDL_RenderClear(renderer);
     SDL_RenderPresent(renderer);
 
-    const int aspW = m_VidConfig.mAspectCorrection.w;
-    const int aspH = m_VidConfig.mAspectCorrection.h;
+    const int aspW = m_VidConfig.mAspectCorrection.dim.x;
+    const int aspH = m_VidConfig.mAspectCorrection.dim.y;
 
     updateActiveArea(m_VidConfig.mDisplayRect, aspW, aspH);
 
@@ -92,7 +92,7 @@ bool CSDLVideo::init()
 
 #else
 
-    mDisplaySfc.setPtr(SDL_SetVideoMode( m_VidConfig.mDisplayRect.w, m_VidConfig.mDisplayRect.h, 32, m_Mode ));
+    mDisplaySfc.setPtr(SDL_SetVideoMode( m_VidConfig.mDisplayRect.dim.x, m_VidConfig.mDisplayRect.h, 32, m_Mode ));
 
     if (mDisplaySfc.empty())
 	{
@@ -110,8 +110,8 @@ bool CSDLVideo::init()
 
 bool CSDLVideo::resizeDisplayScreen(const GsRect<Uint16>& newDim)
 {
-    const int w = m_VidConfig.mAspectCorrection.w;
-    const int h = m_VidConfig.mAspectCorrection.h;
+    const int w = m_VidConfig.mAspectCorrection.dim.x;
+    const int h = m_VidConfig.mAspectCorrection.dim.y;
 
     updateActiveArea(newDim, w, h);
 
@@ -120,14 +120,14 @@ bool CSDLVideo::resizeDisplayScreen(const GsRect<Uint16>& newDim)
     {
 
         SDL_RenderSetLogicalSize(renderer,
-                                 mActiveAreaRect.w,
-                                 mActiveAreaRect.h);
+                                 mActiveAreaRect.dim.x,
+                                 mActiveAreaRect.dim.y);
 
         SDL_RenderSetViewport(renderer, nullptr);
     }
 #else
-    mDisplaySfc.setPtr(SDL_SetVideoMode( mActiveAreaRect.w,
-                                         mActiveAreaRect.h,
+    mDisplaySfc.setPtr(SDL_SetVideoMode( mActiveAreaRect.dim.x,
+                                         mActiveAreaRect.dim.y,
                                          32, m_Mode ));
 #endif
 
@@ -185,18 +185,18 @@ void CSDLVideo::clearSurfaces()
  * @return The rotated rect
  */
 GsRect<int> tilt(const GsRect<int> &dpadRect,
-                 const Vector2D<int> &rotPt)
+                 const GsVec2D<int> &rotPt)
 {
     // Because tilt with 90 degree only works if the plane is squared
     // the coordinate must be transformed
     if(rotPt.x <= 0 || rotPt.y <= 0)
         return GsRect<int>(0,0,0,0);
 
-    const auto width = dpadRect.w*rotPt.y;
-    const auto height = dpadRect.h*rotPt.x;
+    const auto width = dpadRect.dim.x*rotPt.y;
+    const auto height = dpadRect.dim.y*rotPt.x;
 
-    const auto dpadMidX = dpadRect.x*rotPt.y + width/2;
-    const auto dpadMidY = dpadRect.y*rotPt.x + height/2;
+    const auto dpadMidX = dpadRect.pos.x*rotPt.y + width/2;
+    const auto dpadMidY = dpadRect.pos.y*rotPt.x + height/2;
 
     const auto rotTransX = rotPt.x*rotPt.y;
     const auto rotTransY = rotPt.y*rotPt.x;
@@ -210,7 +210,7 @@ GsRect<int> tilt(const GsRect<int> &dpadRect,
     auto retY = (y2_rel+rotTransY-width/2)/rotPt.x;
 
     return GsRect<int>( retX, retY,
-                        dpadRect.w, dpadRect.h);
+                        dpadRect.dim.x, dpadRect.dim.y);
 }
 
 
@@ -236,9 +236,9 @@ void CSDLVideo::transformScreenToDisplay()
                            255);
 
 
-    const Vector2D<int> rotPt(mActiveAreaRect.x+mActiveAreaRect.w/2,
-                              mActiveAreaRect.y+mActiveAreaRect.h/2);
 
+
+    const GsVec2D<int> rotPt = mActiveAreaRect.pos + mActiveAreaRect.dim/2;
 
     SDL_Rect mainDstrect = mActiveAreaRect.SDLRect();
 
@@ -323,8 +323,8 @@ void CSDLVideo::transformScreenToDisplay()
                 SDL_Rect dstSDL = dst.SDLRect();
 
                 // Transfrom the coordinates for the final screen.
-                dstSDL.y += mActiveAreaRect.y;
-                dstSDL.x += mActiveAreaRect.x;
+                dstSDL.y += mActiveAreaRect.pos.y;
+                dstSDL.x += mActiveAreaRect.pos.x;
 
                 SDL_Point texPt = pt;
 

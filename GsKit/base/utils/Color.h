@@ -109,6 +109,12 @@ struct GsColor
     //explicit GsColor(Uint32 cl)	{ set(getMainPixelFormat(), cl); }
     GsColor(const SDL_Color& cl) : r(cl.r), g(cl.g), b(cl.b), a(SDL_ALPHA_OPAQUE) {}
 
+    SDL_Color SDLColor() const
+    {
+        SDL_Color sdlCol = {r,g,b,a};
+        return sdlCol;
+    }
+
     Uint8 r = 0;
     Uint8 g = 0;
     Uint8 b = 0;

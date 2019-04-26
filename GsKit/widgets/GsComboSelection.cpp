@@ -13,9 +13,10 @@
 #include <base/GsTimer.h>
 
 CGUIComboSelection::CGUIComboSelection( const std::string& text,
+                                        const GsRect<float> &rect,
                                         const std::list<std::string>& optionsList,
                                         const GsControl::Style style ) :
-GsButton(text, nullptr, style),
+GsButton(text, rect, nullptr, style),
 mOptionsList( optionsList ),
 mOLCurrent( mOptionsList.begin() )
 {}

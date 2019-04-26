@@ -7,7 +7,7 @@
 
 struct GsPointingState
 {
-    GsPointingState(const Vector2D<float> &pos,
+    GsPointingState(const GsVec2D<float> &pos,
                  const Uint32 actionbutton) :
         mPos(pos),
         mActionButton(actionbutton)   {}
@@ -15,7 +15,7 @@ struct GsPointingState
     GsPointingState()
         {}
 
-    Vector2D<float> mPos;
+    GsVec2D<float> mPos;
     Uint32 mActionButton;
 };
 

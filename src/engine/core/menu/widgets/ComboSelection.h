@@ -6,7 +6,7 @@
 class ComboSelection : public CGUIComboSelection
 {
 public:
-    ComboSelection( const std::string& text,
+    ComboSelection(const std::string& text,
                     const std::list<std::string>& optionsList,
                     const Style &style);
 

@@ -118,7 +118,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 
 
 	// otherwise look for special foe.
-	Vector2D<Uint32> loc(x,y);
+	GsVec2D<Uint32> loc(x,y);
 
 
 	switch(foe)

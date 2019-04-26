@@ -19,10 +19,11 @@
 int CGUINumberControl::mTwirliconID = 10;
 
 const int SLIDER_WIDTH = 16;
-const int BLEND_SPEED = 16;
+//const int BLEND_SPEED = 16;
 
 
 CGUINumberControl::CGUINumberControl(const std::string& text,
+                                     const GsRect<float> &rect,
                                       const int startValue,
                                       const int endValue,
                                       const int deltaValue,
@@ -30,7 +31,7 @@ CGUINumberControl::CGUINumberControl(const std::string& text,
                                       const int fontid,
                                       const bool slider,
                                       const Style style) :
-GsButton(text, nullptr, style),
+GsButton(text, rect, nullptr, style),
 mValue(value),
 mSlider(slider),
 mStartValue(startValue),
@@ -89,22 +90,20 @@ void CGUINumberControl::setSelection( const int value )
 
 void CGUINumberControl::processLogic()
 {
-    if(!mEnabled)
-        return;
-
+    /*
     GsPointingState &pointingState = gPointDevice.mPointingState;
 
     const bool hasPoint = mRect.HasPoint(pointingState.mPos);
     const bool bDown = (pointingState.mActionButton>0);
 
-    const float xMid = mRect.x+(mRect.w/2.0f);
+    const float xMid = mRect.x+(mRect.dim.x/2.0f);
 
     mReleased = false;
 
     mDecSel = false;
     mIncSel = false;
 
-    Vector2D<float> mousePos = pointingState.mPos;
+    GsVec2D<float> mousePos = pointingState.mPos;
 
     if( mousePos.x < xMid )
         mDecSel = true;
@@ -208,7 +207,7 @@ void CGUINumberControl::processLogic()
         }
     }
 #endif
-
+*/
 }
 
 
@@ -238,6 +237,7 @@ std::string CGUINumberControl::sliderStr()
 
 void CGUINumberControl::processRender(const GsRect<float> &RectDispCoordFloat)
 {
+    /*
 	// Transform to the display coordinates
 	GsRect<float> displayRect = mRect;
 	displayRect.transform(RectDispCoordFloat);
@@ -285,5 +285,5 @@ void CGUINumberControl::processRender(const GsRect<float> &RectDispCoordFloat)
 
         Font.drawFont( blitsfc, text, textX, textY, false );
     }
-
+*/
 }

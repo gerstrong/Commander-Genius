@@ -139,13 +139,13 @@ void CGUITextSelectionList::processLogic()
 
 
     /// Here we check if the mouse-cursor/Touch entry clicked on something!!
-    const float bw = gVideoDriver.getGameResolution().w;
-	const float bh = gVideoDriver.getGameResolution().h;
+    const float bw = gVideoDriver.getGameResolution().dim.x;
+    const float bh = gVideoDriver.getGameResolution().dim.y;
 
-	const float fx = mRect.x;
-	const float fw = mRect.w;
-	const float fy = mRect.y;
-	const float fh = mRect.h;
+    const float fx = mRect.pos.x;
+    const float fw = mRect.dim.x;
+    const float fy = mRect.pos.y;
+    const float fh = mRect.dim.y;
 
     GsFontLegacy &Font = gGraphics.getFont(mFontID);
     const int pixth = Font.getPixelTextHeight();
@@ -168,7 +168,7 @@ void CGUITextSelectionList::processLogic()
 
     processPointingState();        
 
-    const Vector2D<float> mousePos = pointingState.mPos;
+    const GsVec2D<float> mousePos = pointingState.mPos;
 
     if( rRect.HasPoint(mousePos) )
     {
@@ -249,16 +249,16 @@ void CGUITextSelectionList::processRender(const GsRect<float> &RectDispCoordFloa
 	// Move 16 Pixel so we have space for the cursor/twirl to show the selection
     const auto halfBorderHeight = (mBorderHeight/2);
     const int sepHeight = Font.getPixelTextHeight()+mBorderHeight;
-    const int xpos = rect.x+16+1;
-    const int ypos = rect.y+10;
-    unsigned int textlimitWidth = (rect.w-16)/pixtw;
+    const int xpos = rect.pos.x+16+1;
+    const int ypos = rect.pos.y+10;
+    unsigned int textlimitWidth = (rect.dim.x-16)/pixtw;
 
-    mScrollbar.mLastToShow = (rect.h/sepHeight)-1;
+    mScrollbar.mLastToShow = (rect.dim.y/sepHeight)-1;
 
-    rect.h = pixth+mBorderHeight;
+    rect.dim.y = pixth+mBorderHeight;
 
-    rect.x += 12;
-    rect.w -= 12;
+    rect.pos.x += 12;
+    rect.dim.x -= 12;
 
     auto it = mItemList.begin();
 
@@ -276,18 +276,18 @@ void CGUITextSelectionList::processRender(const GsRect<float> &RectDispCoordFloa
 
         if( mPressedSelection == curLinePos )
         {
-            rect.y = ypos+(line*rect.h);
+            rect.pos.y = ypos+(line*rect.dim.y);
             blitsfc.fillRGBA(rect, theColor);
         }
         else if( mReleasedSelection == curLinePos )
 		{
-            rect.y = ypos + (line*rect.h);
+            rect.pos.y = ypos + (line*rect.dim.y);
             blitsfc.fillRGBA(rect, theColor);
 		}
 #ifndef DISABLE_HOVER
         else if( mHoverSelection == curLinePos )
         {
-            rect.y = ypos+(line*sepHeight);
+            rect.pos.y = ypos+(line*sepHeight);
             blitsfc.fillRGBA(rect, theColor);
         }
 #endif
@@ -301,7 +301,8 @@ void CGUITextSelectionList::processRender(const GsRect<float> &RectDispCoordFloa
 			trimmedText = trimmedText.substr(0, textlimitWidth);
         }
 
-        Font.drawFont(blitsfc, trimmedText, xpos, ypos+(line*rect.h)+halfBorderHeight, false);
+        Font.drawFont(blitsfc, trimmedText,
+                      xpos, ypos+(line*rect.dim.y)+halfBorderHeight, false);
 	}
 
     mScrollbar.mMaxScrollAmt = mItemList.size()-mScrollbar.lastToShow();

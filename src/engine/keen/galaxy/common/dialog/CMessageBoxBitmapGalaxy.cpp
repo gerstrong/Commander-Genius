@@ -32,7 +32,7 @@ mAlignment(alignment)
 		mMBRect.h = mBitmap.height()+26;
 	}
 
-	mMBRect.w += (mBitmap.width()+32);
+    mMBRect.w += (mBitmap.width()+32);
 
     mMBSurface.createRGBSurface(mMBRect);
     mMBSurface.makeBlitCompatible();
@@ -59,13 +59,13 @@ void CMessageBoxBitmapGalaxy::init()
 	if( mAlignment == LEFT )
 		rect.x += mBitmap.width();
 
-	rect.w -= 16;
+    rect.w -= 16;
 	rect.h -= 8;
 	rect.y = (rect.h-mTextHeight)/2;
 
 	initText(rect);
 
-	const Uint16 bmpX = ( mAlignment == LEFT ) ? 10 : mMBRect.w-(mBitmap.width()+32);
+    const Uint16 bmpX = ( mAlignment == LEFT ) ? 10 : mMBRect.w-(mBitmap.width()+32);
     mBitmap._draw( bmpX, 10, mMBSurface.getSDLSurface() );
 
     const int scaling = gVideoDriver.getOptimalScaling();
@@ -74,8 +74,8 @@ void CMessageBoxBitmapGalaxy::init()
     mMBSurface.scaleTo(mMBRect, filterOptionType(scaling) );
 
     GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
-    mMBRect.x = (gameRes.w-mMBRect.w)/2;
-    mMBRect.y = (gameRes.h-mMBRect.h)/2;    
+    mMBRect.x = (gameRes.dim.x-mMBRect.w)/2;
+    mMBRect.y = (gameRes.dim.y-mMBRect.h)/2;
 }
 
 void CMessageBoxBitmapGalaxy::ponder()

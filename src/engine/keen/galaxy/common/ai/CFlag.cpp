@@ -25,8 +25,8 @@ A_FLAG_FLIP = 4
 //const Uint16 ANIMATION_TIME = 8;
 const Uint16 SPEED = 64;
 
-CFlag::CFlag(CMap *pmap, const Vector2D<Uint32> &Location,
-            const Vector2D<Uint32> &dest,
+CFlag::CFlag(CMap *pmap, const GsVec2D<Uint32> &Location,
+            const GsVec2D<Uint32> &dest,
             const int sprVar, bool newAction, const bool canLock ) :
 CGalaxySpriteObject(pmap, FOE_ID, Location.x, Location.y, sprVar),
 m_destination(dest)
@@ -138,9 +138,9 @@ void CFlag::processFlipping()
 {
 	if(m_Pos != m_destination)
 	{        
-        Vector2D<int> dir = m_destination - m_Pos;
+        GsVec2D<int> dir = m_destination - m_Pos;
         const float length = dir.GetLength();
-        Vector2D<float> base_dir( dir.x/length, dir.y/length );
+        GsVec2D<float> base_dir( dir.x/length, dir.y/length );
 
 		if( fabs(length) < SPEED )
 		{
@@ -160,7 +160,7 @@ void CFlag::processFlipping()
 	    const auto episode = gBehaviorEngine.getEpisode();
         if(episode == 6)
         {
-            Vector2D<int> tilePos = m_Pos;
+            GsVec2D<int> tilePos = m_Pos;
 
             tilePos.y = getYDownPos();
 

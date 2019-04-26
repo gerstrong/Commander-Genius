@@ -25,7 +25,7 @@ void drawRect( SDL_Surface *sfc,
 	{
 		TempRect.x = 0;
 		TempRect.y = 0;
-		TempRect.w = sfc->w;
+        TempRect.w = sfc->w;
 		TempRect.h = sfc->h;
 	}
 
@@ -34,25 +34,25 @@ void drawRect( SDL_Surface *sfc,
 	// Upper side contour
 	tempr.x = TempRect.x;
 	tempr.y = TempRect.y;
-	tempr.w = TempRect.w;
+    tempr.w = TempRect.w;
 	tempr.h = thickness;
 	SDL_FillRect(sfc, &tempr, ContourColor );
 
 	// Left side contour
 	tempr.y = TempRect.y + thickness;
-	tempr.w = thickness;
+    tempr.w = thickness;
 	tempr.h = TempRect.h - (2 * thickness);
 	SDL_FillRect(sfc, &tempr, ContourColor);
 
 	// Right side contour
-	tempr.x = TempRect.x + TempRect.w - thickness;
+    tempr.x = TempRect.x + TempRect.w - thickness;
 	SDL_FillRect(sfc, &tempr, ContourColor);
 
 
 	// Lower side contour
 	tempr.x = TempRect.x;
 	tempr.y = TempRect.y + TempRect.h - thickness;
-	tempr.w = TempRect.w;
+    tempr.w = TempRect.w;
 	tempr.h = thickness;
 	SDL_FillRect(sfc, &tempr, ContourColor);
 
@@ -79,13 +79,13 @@ void drawRect( SDL_Surface *sfc,
 	{
 		TempRect.x = 0;
 		TempRect.y = 0;
-		TempRect.w = sfc->w;
+        TempRect.w = sfc->w;
 		TempRect.h = sfc->h;
 	}
 
 	TempRect.x += thickness;
 	TempRect.y += thickness;
-	TempRect.w -= (2*thickness);
+    TempRect.w -= (2*thickness);
 	TempRect.h -= (2*thickness);
 
 

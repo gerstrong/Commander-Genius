@@ -25,6 +25,11 @@ public:
 	};
 
 
+    GsControl(const Style style,
+              const GsRect<float> &rect);
+
+    GsControl(const GsRect<float> &rect);
+
     GsControl();
     
     GsControl(const Style style);
@@ -37,12 +42,17 @@ public:
 
     void processPointingState()
     {
-        processPointingState(mRect);
+        //processPointingState(mRect);
     }
 
     void processPointingState(const GsRect<float> &rect);
 
+    virtual void processPointingStateRel(const GsRect<float> &rect);
+
     virtual void processRender(const GsRect<float> &RectDispCoordFloat) = 0;
+
+    virtual void processRender(const GsRect<float> &,
+                               const GsRect<float> &) {}
 
     virtual void updateGraphics() {}
 
@@ -54,21 +64,20 @@ public:
     void enable( const bool value )
     {	mEnabled = value;	}
 
-    bool isEnabled() const
+    bool isEnabled()
     {   return mEnabled;    }
 
 
     void select( const bool value )
     { mSelected = value; }
 
-    bool isSelected() const
+    bool isSelected()
     { return mSelected; }
 
     bool isPressed() const
     { return mPressed; }
 
-
-    bool Up() const
+    bool Up()
     {	return mReleased;	}
 
 
@@ -82,7 +91,6 @@ public:
     #endif
 
     virtual bool sendEvent(const InputCommand) { return false; }
-
 
 	void drawTwirl( const SDL_Rect& lRect );
 
@@ -123,7 +131,7 @@ protected:
 #else
     static const bool mHoverTriggers = false;
 #endif
-#endif
+#endif    
 };
 
 

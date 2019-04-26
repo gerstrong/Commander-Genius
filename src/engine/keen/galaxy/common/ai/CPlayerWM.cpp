@@ -111,10 +111,10 @@ deserialize(boost::property_tree::ptree &node)
 /**
  * Before Keen rides on the foot we get the location where to ride
  */
-Vector2D<int> CPlayerWM::fetchFootDestCoord()
+GsVec2D<int> CPlayerWM::fetchFootDestCoord()
 {
-    Vector2D<int> location1;
-    Vector2D<int> location2;
+    GsVec2D<int> location1;
+    GsVec2D<int> location2;
 	int coordData;
 
     const byte *dataPtr = gKeenFiles.exeFile.getRawData();
@@ -133,10 +133,10 @@ Vector2D<int> CPlayerWM::fetchFootDestCoord()
 
 
 	// Check for the first location
-    Vector2D<int> vec1;
-    Vector2D<int> vec2;
+    GsVec2D<int> vec1;
+    GsVec2D<int> vec2;
 
-    Vector2D<int> levelCoord;
+    GsVec2D<int> levelCoord;
 
 	levelCoord = getPosition();
 
@@ -151,7 +151,7 @@ Vector2D<int> CPlayerWM::fetchFootDestCoord()
 	const int dist1 = vec1.GetLength2();
 	const int dist2 = vec2.GetLength2();
 
-    Vector2D<int> newCoord;
+    GsVec2D<int> newCoord;
 
 	if(dist2 > dist1)
 		newCoord = location2;
@@ -577,10 +577,10 @@ void CPlayerWM::processRiding()
 {
 	// Ride while trying to reach the destination coords
 	// Move the player to the target
-    Vector2D<int> pos(getXPosition(), getYPosition());
-    Vector2D<int> vec = target-pos;
+    GsVec2D<int> pos(getXPosition(), getYPosition());
+    GsVec2D<int> vec = target-pos;
 
-    Vector2D<int> vec_norm = vec;
+    GsVec2D<int> vec_norm = vec;
 
 	const int dist_x = abs(vec.x);
 	const int dist_y = abs(vec.y);
@@ -672,11 +672,11 @@ const int ELEVATOR_CLOSE_TIME = 5;
 void CPlayerWM::processEnteringElevator()
 {
 	// Move him to the target
-    Vector2D<int> pos(getXPosition(), getYPosition());
-    Vector2D<int> vec = target-pos;
+    GsVec2D<int> pos(getXPosition(), getYPosition());
+    GsVec2D<int> vec = target-pos;
 
 
-    Vector2D<int> vec_norm = vec;
+    GsVec2D<int> vec_norm = vec;
 
 	const int dist_x = abs(vec.x);
 	const int dist_y = abs(vec.y);
@@ -761,11 +761,11 @@ void CPlayerWM::processClosingElevator()
 void CPlayerWM::processElevating()
 {
 	// Move the player to the target
-    Vector2D<int> pos(getXPosition(), getYPosition());
-    Vector2D<int> vec = target-pos;
+    GsVec2D<int> pos(getXPosition(), getYPosition());
+    GsVec2D<int> vec = target-pos;
 
 
-    Vector2D<int> vec_norm = vec;
+    GsVec2D<int> vec_norm = vec;
 
 	const int dist_x = abs(vec.x);
 	const int dist_y = abs(vec.y);
@@ -842,10 +842,10 @@ void CPlayerWM::processOpeningElevator()
 void CPlayerWM::processLeavingElevator()
 {
 	// Move him to the target
-    Vector2D<int> pos(getXPosition(), getYPosition());
-    Vector2D<int> vec = target-pos;
+    GsVec2D<int> pos(getXPosition(), getYPosition());
+    GsVec2D<int> vec = target-pos;
 
-    Vector2D<int> vec_norm = vec;
+    GsVec2D<int> vec_norm = vec;
 
 	const int dist_x = abs(vec.x);
 	const int dist_y = abs(vec.y);
@@ -880,7 +880,7 @@ void CPlayerWM::processLeavingElevator()
 
 // Teleporter
 
-void CPlayerWM::setupTeleportAnimation(const bool unset, const Vector2D<int> &pos)
+void CPlayerWM::setupTeleportAnimation(const bool unset, const GsVec2D<int> &pos)
 {
     const int x = pos.x;
     const int y = pos.y;
@@ -906,11 +906,11 @@ void CPlayerWM::setupTeleportAnimation(const bool unset, const Vector2D<int> &po
 void CPlayerWM::processEnteringTeleporter()
 {
 	// Move him to the target
-    Vector2D<int> pos(getXPosition(), getYPosition());
-    Vector2D<int> vec = target-pos;
+    GsVec2D<int> pos(getXPosition(), getYPosition());
+    GsVec2D<int> vec = target-pos;
 
 
-    Vector2D<int> vec_norm = vec;
+    GsVec2D<int> vec_norm = vec;
 
 	const int dist_x = abs(vec.x);
 	const int dist_y = abs(vec.y);
@@ -982,7 +982,7 @@ void CPlayerWM::processEnteringTeleporter()
 void CPlayerWM::processWarpInTeleporter()
 {
 	// Move the player to the target directly
-    Vector2D<int> new_pos(target);
+    GsVec2D<int> new_pos(target);
 	moveToForce(target);
 	new_pos.x += ((m_BBox.x2-m_BBox.x1)/2);
 	new_pos.y += ((m_BBox.y2-m_BBox.y1)/2);
@@ -1004,10 +1004,10 @@ void CPlayerWM::processWarpInTeleporter()
 void CPlayerWM::processLeavingTeleporter()
 {
 	// Move him to the target
-    Vector2D<int> pos(getXPosition(), getYPosition());
-    Vector2D<int> vec = target-pos;
+    GsVec2D<int> pos(getXPosition(), getYPosition());
+    GsVec2D<int> vec = target-pos;
 
-    Vector2D<int> vec_norm = vec;
+    GsVec2D<int> vec_norm = vec;
 
 	const int dist_x = abs(vec.x);
 	const int dist_y = abs(vec.y);
@@ -1026,7 +1026,7 @@ void CPlayerWM::processLeavingTeleporter()
 		solid = true;
 		moveDir(vec);
 
-        Vector2D<int> animTilePos = target;
+        GsVec2D<int> animTilePos = target;
         animTilePos.y -= (1<<CSF);
         setupTeleportAnimation(true, animTilePos);
 		mProcessPtr = &CPlayerWM::processMoving;
@@ -1125,7 +1125,7 @@ bool CPlayerWM::finishLevel(const int object)
 	{
 		// spawn the flag
 		const auto episode = gBehaviorEngine.getEpisode();
-        Vector2D<Uint32> src(getXPosition(), getYPosition());
+        GsVec2D<Uint32> src(getXPosition(), getYPosition());
 
         // Here we move the coordinates for the correction position of the done flag/sign
         GsSprite &FlagSprite = gGraphics.getSprite(mSprVar, gBehaviorEngine.isDemo() ? WAVING_BASEFRAME_DEMO : WAVING_BASEFRAME);
@@ -1152,7 +1152,7 @@ bool CPlayerWM::finishLevel(const int object)
             csfY += (2<<STC);
         }
 
-        Vector2D<Uint32> dst(csfX, csfY);
+        GsVec2D<Uint32> dst(csfX, csfY);
 
         CFlag *pFlag = new CFlag(mpMap, src, dst, mSprVar, true, true);
 		spawnObj(pFlag);

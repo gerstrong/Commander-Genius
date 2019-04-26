@@ -124,10 +124,12 @@ void CStunnable::draw()
 
               const auto visGA = gVideoDriver.mpVideoEngine->mRelativeVisGameArea;
 
-              if( showX+StarSprite.getWidth() < visGA.x || showX > visGA.x+visGA.w )
+              if( showX+StarSprite.getWidth() < visGA.pos.x ||
+                      showX > visGA.pos.x+visGA.dim.x )
                   return;
 
-              if( showY+StarSprite.getHeight() < visGA.y || showY > visGA.y+visGA.h )
+              if( showY+StarSprite.getHeight() < visGA.pos.y ||
+                      showY > visGA.pos.y+visGA.dim.y )
                   return;
 
               StarSprite.drawSprite( showX, showY, w, h, (255-transluceny) );

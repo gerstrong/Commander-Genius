@@ -60,7 +60,7 @@ public:
 	}
 
     /*template<typename T>
-    bool ReadVectorD2(const std::string& section, const std::string& key, Vector2D<T>& v, Vector2D<T> defv = Vector2D<T>(), bool acceptSimple = true) const {
+    bool ReadVectorD2(const std::string& section, const std::string& key, GsVec2D<T>& v, GsVec2D<T> defv = GsVec2D<T>(), bool acceptSimple = true) const {
 		v = defv;
 
 		T _v[2] = {0,0};

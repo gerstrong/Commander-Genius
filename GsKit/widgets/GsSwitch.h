@@ -14,7 +14,8 @@
 class CGUISwitch : public CGUIComboSelection
 {
 public:
-	CGUISwitch( const std::string& text );
+    CGUISwitch( const std::string& text,
+                const GsRect<float> &rect );
 
 	void enable( const bool sel )
 	{	CGUIComboSelection::setSelection( sel ? "on" : "off" );	}

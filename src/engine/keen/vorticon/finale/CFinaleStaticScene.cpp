@@ -53,9 +53,9 @@ void CFinaleStaticScene::showBitmapAt(const std::string &bitmapname, Uint16 from
     bmp_struct.dest_rect.h = bmp_struct.bitmap.height();    
 
     GsRect<Uint16> bmpDim;
-    bmpDim.w = bmp_struct.dest_rect.w*scaleFactor;
-    bmpDim.h = bmp_struct.dest_rect.h*scaleFactor;
-    bmpDim.x = 0; bmpDim.y = 0;
+    bmpDim.dim.x = bmp_struct.dest_rect.w*scaleFactor;
+    bmpDim.dim.y = bmp_struct.dest_rect.h*scaleFactor;
+    bmpDim.pos = 0;
 
     bmp_struct.bitmap.scaleTo(bmpDim);
 

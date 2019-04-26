@@ -55,25 +55,25 @@ mSkipSection(false)
 
     GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
 
-    mScaleFactor = gameRes.h/mCommanderTextSfc.height();
+    mScaleFactor = gameRes.dim.y/mCommanderTextSfc.height();
 
-    mLogoPosY = gameRes.h;
+    mLogoPosY = gameRes.dim.y;
 
     mMaxSeparationWidth = 60*mScaleFactor;
 
     // Scale Bitmaps to adapt the resolutions
     GsRect<Uint16> cmdTextRect, keenTextRect;
-    cmdTextRect.w = mCommanderTextSfc.width();
-    cmdTextRect.x = cmdTextRect.y = 0;
-    cmdTextRect.h = mCommanderTextSfc.height();
-    keenTextRect.w = mKeenTextSfc.width();
-    keenTextRect.h = mKeenTextSfc.height();
-    keenTextRect.x = keenTextRect.y = 0;
+    cmdTextRect.dim.x = mCommanderTextSfc.width();
+    cmdTextRect.pos.x = cmdTextRect.pos.y = 0;
+    cmdTextRect.dim.y = mCommanderTextSfc.height();
+    keenTextRect.dim.x = mKeenTextSfc.width();
+    keenTextRect.dim.y = mKeenTextSfc.height();
+    keenTextRect.pos.x = keenTextRect.pos.y = 0;
 
-    cmdTextRect.h *= mScaleFactor;
-    cmdTextRect.w *= mScaleFactor;
-    keenTextRect.h *= mScaleFactor;
-    keenTextRect.w *= mScaleFactor;
+    cmdTextRect.dim.y *= mScaleFactor;
+    cmdTextRect.dim.x *= mScaleFactor;
+    keenTextRect.dim.y *= mScaleFactor;
+    keenTextRect.dim.x *= mScaleFactor;
 
     mCommanderTextSfc.scaleTo(cmdTextRect);
     mCommanderTextSfc.setColorKey( 0, 0, 0 );
@@ -83,15 +83,15 @@ mSkipSection(false)
     mKeenTextSfc.setColorKey( 0, 0, 0 );
     mKeenTextSfc.optimizeSurface();
 
-    mCommanderTextPos = Vector2D<int>(gameRes.w, (gameRes.h-cmdTextRect.h)/2 );
-    mKeenTextPos = Vector2D<int>(-mKeenTextSfc.width(), (gameRes.h-cmdTextRect.h)/2 );
+    mCommanderTextPos = GsVec2D<int>(gameRes.dim.x, (gameRes.dim.y-cmdTextRect.dim.y)/2 );
+    mKeenTextPos = GsVec2D<int>(-mKeenTextSfc.width(), (gameRes.dim.y-cmdTextRect.dim.y)/2 );
 
     GsRect<Uint16> logoBmpRect;
-    logoBmpRect.w = mCurrentLogoBmp.width();
-    logoBmpRect.h = mCurrentLogoBmp.height();
-    logoBmpRect.x = logoBmpRect.y = 0;
-    logoBmpRect.h *= mScaleFactor;
-    logoBmpRect.w *= mScaleFactor;
+    logoBmpRect.dim.x = mCurrentLogoBmp.width();
+    logoBmpRect.dim.y = mCurrentLogoBmp.height();
+    logoBmpRect.pos = 0;
+    logoBmpRect.dim.y *= mScaleFactor;
+    logoBmpRect.dim.x *= mScaleFactor;
     mCurrentLogoBmp.scaleTo(logoBmpRect);
     mCurrentLogoBmp.setColorKey( 0, 0, 0 );
     mCurrentLogoBmp.optimizeSurface();
@@ -103,10 +103,10 @@ mSkipSection(false)
 
 
     mZoomSurface.create(0,
-                        cmdTextRect.w+
-                        keenTextRect.w+
+                        cmdTextRect.dim.x+
+                        keenTextRect.dim.x+
                         mMaxSeparationWidth,
-                        cmdTextRect.h,
+                        cmdTextRect.dim.y,
                         32, 0, 0, 0, 0);
 
     gInput.flushAll();
@@ -165,7 +165,7 @@ void CPassiveGalaxy::renderIntro()
     GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
     SDL_Rect gameResSDL = gameRes.SDLRect();
 
-    const int logoPosX = (gameRes.w-mCurrentLogoBmp.width())/2;
+    const int logoPosX = (gameRes.dim.x-mCurrentLogoBmp.width())/2;
 
     SDL_Surface *blitSfc = gVideoDriver.getBlitSurface();
     SDL_FillRect( blitSfc, &gameResSDL, SDL_MapRGB(blitSfc->format, 0, 0, 0) );
@@ -203,7 +203,7 @@ void CPassiveGalaxy::processIntro()
         // Step Logo comes in
         // Logo stays between first step and Third step time
         // Logo goes away
-        if(logoMidPosY > gameRes.h/2 || mTerminatorTimer > logoStayTime)
+        if(logoMidPosY > gameRes.dim.y/2 || mTerminatorTimer > logoStayTime)
             mLogoPosY -= (logoSpeed*mScaleFactor);
         else
             mTerminatorTimer++;
@@ -211,7 +211,7 @@ void CPassiveGalaxy::processIntro()
         // Change Logo
         if(mLogoPosY+mCurrentLogoBmp.height() <= 0)
         {
-            mLogoPosY = gameRes.h;
+            mLogoPosY = gameRes.dim.y;
             mTerminatorLogoNum++;
             mTerminatorTimer = 0;
 
@@ -219,11 +219,10 @@ void CPassiveGalaxy::processIntro()
             mCurrentLogoBmp.optimizeSurface();
 
             GsRect<Uint16> logoBmpRect;
-            logoBmpRect.w = mCurrentLogoBmp.width();
-            logoBmpRect.h = mCurrentLogoBmp.height();
-            logoBmpRect.x = logoBmpRect.y = 0;
-            logoBmpRect.h *= mScaleFactor;
-            logoBmpRect.w *= mScaleFactor;
+            logoBmpRect.dim.x = mCurrentLogoBmp.width();
+            logoBmpRect.dim.y = mCurrentLogoBmp.height();
+            logoBmpRect.pos = 0;
+            logoBmpRect.dim *= mScaleFactor;
 
             mCurrentLogoBmp.scaleTo(logoBmpRect);            
             mCurrentLogoBmp.setColorKey( 0, 0, 0 );
@@ -237,7 +236,7 @@ void CPassiveGalaxy::processIntro()
 
     if(textSeparation <= -mMaxSeparationWidth || mSkipSection)
     {        
-        mZoomSfcPos.x = (gameRes.w-mZoomSurface.width())/2;
+        mZoomSfcPos.x = (gameRes.dim.x-mZoomSurface.width())/2;
         mZoomSfcZoom.x = mZoomSurface.width();
         mZoomSfcZoom.y = mZoomSurface.height();
         processPonderMode = &CPassiveGalaxy::processIntroZoom;
@@ -257,7 +256,7 @@ void CPassiveGalaxy::processIntroZoom()
 {
     const int leftEdge = 8;
     const int topEdge = 3;
-    const int maxWidth = (37*gVideoDriver.getGameResolution().w)/40;
+    const int maxWidth = (37*gVideoDriver.getGameResolution().dim.x)/40;
 
     if(mZoomSfcPos.x < leftEdge)
     {
@@ -402,7 +401,9 @@ void CPassiveGalaxy::processTitle()
 
         GsSurface darkener;
 
-        darkener.create(0, gameRes.w, gameRes.h, 32,
+        darkener.create(0,
+                        gameRes.dim.x,
+                        gameRes.dim.y, 32,
                         0, 0, 0, 0);
 
 
@@ -441,7 +442,9 @@ void CPassiveGalaxy::processTitle()
 
         for(int i=0 ; i<int(mStoryTextVector.size()) ; i++)
         {
-            starwarsFont.drawFontCentered( mStarwarsTextSfc.getSDLSurface(), mStoryTextVector[i], lRect.x, lRect.w, lRect.y, false);
+            starwarsFont.drawFontCentered( mStarwarsTextSfc.getSDLSurface(),
+                                           mStoryTextVector[i],
+                                           lRect.x, lRect.w, lRect.y, false);
             lRect.y += 20;
         }
 

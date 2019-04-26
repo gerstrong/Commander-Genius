@@ -61,7 +61,7 @@ void CVolteface::processMoving()
     {
         const Uint16 object = mpMap->getPlaneDataAt(2, target.x, target.y);
 
-        Vector2D<int> speed(xBlockPos, yBlockPos);
+        GsVec2D<int> speed(xBlockPos, yBlockPos);
         moveDir(speed);
 
         // If there is an object that changes the direction of the plat, apply it!
@@ -69,7 +69,7 @@ void CVolteface::processMoving()
         detectNextTarget(target, xDirection, yDirection);
     }
     
-    Vector2D<int> speed;
+    GsVec2D<int> speed;
     
     if(yDirection == UP)
     {

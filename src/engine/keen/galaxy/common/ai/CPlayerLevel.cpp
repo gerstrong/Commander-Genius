@@ -155,7 +155,7 @@ bool CPlayerLevel::verifyforPole()
             // Move to the proper X Coordinates, so Keen really grabs it!
             const auto polePosX = (x>>CSF)<<CSF;
             const auto centeredX = polePosX-((1<<CSF)/2);
-            moveTo(Vector2D<int>(centeredX, getYPosition()));
+            moveTo(GsVec2D<int>(centeredX, getYPosition()));
 
             xinertia = 0;
 
@@ -673,7 +673,7 @@ void CPlayerLevel::processInput()
 
 
 
-void CPlayerLevel::tryToShoot( const Vector2D<int> &pos, const int xDir, const int yDir )
+void CPlayerLevel::tryToShoot( const GsVec2D<int> &pos, const int xDir, const int yDir )
 {
     if(m_Inventory.Item.m_bullets > 0)
     {
@@ -695,20 +695,20 @@ void CPlayerLevel::shootInAir()
     if( mPlaycontrol[PA_Y] < 0 )
 	{
 		setActionForce(A_KEEN_JUMP_SHOOTUP);
-        const Vector2D<int> newVec(getXMidPos()-(3<<STC), getYUpPos()-(16<<STC));
+        const GsVec2D<int> newVec(getXMidPos()-(3<<STC), getYUpPos()-(16<<STC));
 		tryToShoot(newVec, 0, -1);
 	}
     else if( mPlaycontrol[PA_Y] > 0 )
 	{
 		setActionForce(A_KEEN_JUMP_SHOOTDOWN);
-        const Vector2D<int> newVec(getXMidPos()-(3<<STC), getYDownPos());
+        const GsVec2D<int> newVec(getXMidPos()-(3<<STC), getYDownPos());
 		tryToShoot(newVec, 0, 1);
 	}
 	else
 	{
 		setActionForce(A_KEEN_JUMP_SHOOT);
 
-        const Vector2D<int> newVec(getXPosition() + ((xDirection < 0) ? -(16<<STC) : (16<<STC)),
+        const GsVec2D<int> newVec(getXPosition() + ((xDirection < 0) ? -(16<<STC) : (16<<STC)),
 									getYPosition()+(4<<STC));
         tryToShoot(newVec, xDirection, 0);
 	}
@@ -935,7 +935,7 @@ void CPlayerLevel::processCliffClimbingUp()
 	}
 
 	// This is where Keen climbs the cliff up.
-    guideToTarget( Vector2D<int>(0, 4*PLAYER_CLIMB_SPEED_Y) );
+    guideToTarget( GsVec2D<int>(0, 4*PLAYER_CLIMB_SPEED_Y) );
 
 	yDirection = 0;
 	const int yDiff = mTarget.y - getYMidPos();
@@ -951,7 +951,7 @@ void CPlayerLevel::processCliffClimbingUp()
 void CPlayerLevel::processCliffClimbingOntoFloor()
 {
 	// This is where Keen climbs the cliff towards the floor.
-    guideToTarget( Vector2D<int>(10*mClimbSpeedX, PLAYER_CLIMB_SPEED_Y) );
+    guideToTarget( GsVec2D<int>(10*mClimbSpeedX, PLAYER_CLIMB_SPEED_Y) );
 
 	if( getActionStatus(A_KEEN_STAND) || getActionStatus(A_KEEN_ON_PLAT) )
 	{
@@ -1876,7 +1876,7 @@ void CPlayerLevel::processEnterDoor()
 	const int ypos = ((t%256 - 1))<<CSF;
 	const int xpos = (t >> 8)<<CSF;
 
-    Vector2D<int> new_pos(xpos, ypos);
+    GsVec2D<int> new_pos(xpos, ypos);
 	moveToForce(new_pos);
 	new_pos.x += ((m_BBox.x2-m_BBox.x1)/2);
     new_pos.y += ((m_BBox.y2/*-m_BBox.y1*/)/2);
@@ -2219,7 +2219,7 @@ void CPlayerLevel::performPoleHandleInput()
 		{
 			m_fire_recharge_time = FIRE_RECHARGE_TIME;
 			setActionForce(A_KEEN_POLE_SHOOTUP);
-            const Vector2D<int> newVec(getXMidPos()-(3<<STC), getYUpPos()-(16<<STC));
+            const GsVec2D<int> newVec(getXMidPos()-(3<<STC), getYUpPos()-(16<<STC));
 			tryToShoot(newVec, 0, -1);
 			return;
 		}
@@ -2232,7 +2232,7 @@ void CPlayerLevel::performPoleHandleInput()
 		{
 			m_fire_recharge_time = FIRE_RECHARGE_TIME;
 			setActionForce(A_KEEN_POLE_SHOOTDOWN);
-            const Vector2D<int> newVec(getXMidPos()-(3<<STC), getYDownPos());
+            const GsVec2D<int> newVec(getXMidPos()-(3<<STC), getYDownPos());
 			tryToShoot(newVec, 0, 1);
 			return;
 		}
@@ -2244,7 +2244,7 @@ void CPlayerLevel::performPoleHandleInput()
 		{
 			m_fire_recharge_time = FIRE_RECHARGE_TIME;
 			setActionForce(A_KEEN_POLE_SHOOT);
-            const Vector2D<int> newVec(getXPosition(),
+            const GsVec2D<int> newVec(getXPosition(),
 										getYPosition()+(4<<STC));
 			tryToShoot(newVec, xDirection, yDirection);
 			return;
@@ -2509,13 +2509,13 @@ void CPlayerLevel::processShootWhileStanding()
                 newx = getXLeftPos()-(1<<CSF);
 
             const int newy = getYPosition()+(6<<STC);
-            const Vector2D<int> newVec(newx, newy);
+            const GsVec2D<int> newVec(newx, newy);
             tryToShoot(newVec, xDirection, yDirection);
         }
 
         if( getActionNumber(A_KEEN_SHOOT_UP) && !getActionStatus(A_KEEN_SHOOT_UP) )
         {
-            const Vector2D<int> newVec(getXMidPos()-(3<<STC), getYUpPos()-(16<<STC));
+            const GsVec2D<int> newVec(getXMidPos()-(3<<STC), getYUpPos()-(16<<STC));
             tryToShoot(newVec, 0, -1);
         }
     }

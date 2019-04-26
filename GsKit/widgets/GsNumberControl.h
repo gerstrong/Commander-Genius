@@ -17,11 +17,11 @@ class CGUINumberControl : public GsButton
 {
 public:
 
-	CGUINumberControl(	const std::string& text,
-			const int startValue,
-			const int endValue,
-			const int deltaValue,
-			const int value,
+    CGUINumberControl(const std::string& text, const GsRect<float> &rect,
+            const int startValue,
+            const int endValue,
+            const int deltaValue,
+            const int value,
             const int fontid,
             const bool slider,
             const Style style = Style::NONE);

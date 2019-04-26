@@ -26,8 +26,8 @@ public:
 
             mpMenuDialog->addControl( mpReturnButton,
                                       GsRect<float>(0.01f, 0.01f,
-                                                    0.15f/localRect.w,
-                                                    0.08f/localRect.h) );
+                                                    0.15f/localRect.dim.x,
+                                                    0.08f/localRect.dim.y) );
 
         }
         else if(style == GsControl::VORTICON)
@@ -37,13 +37,14 @@ public:
 
 
             mpReturnButton = new GsButton( "close",
+                                           localRect,
                                            new CloseMenuEvent(),
                                            GsControl::Style::NONE);
 
             mpMenuDialog->addControl( mpReturnButton,
                                       GsRect<float>(-0.05f, -0.05f,
-                                                    0.15f/localRect.w,
-                                                    0.08f/localRect.h) );
+                                                    0.15f/localRect.dim.x,
+                                                    0.08f/localRect.dim.y) );
         }
         else
         {
@@ -52,13 +53,14 @@ public:
 
 
             mpReturnButton = new GsButton( "x",
+                                           localRect,
                                            new CloseMenuEvent(),
                                            GsControl::Style::NONE);
 
             mpMenuDialog->addControl( mpReturnButton,
                                       GsRect<float>(-0.05f, -0.05f,
-                                                    0.08f/localRect.w,
-                                                    0.08f/localRect.h) );
+                                                    0.08f/localRect.dim.x,
+                                                    0.08f/localRect.dim.y) );
         }
 
 

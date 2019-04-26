@@ -46,7 +46,7 @@ protected:
 	void movePlatUp(const int amnt);
 	void movePlatDown(const int amnt);
 	
-    void movePlat(const Vector2D<int> &speed);
+    void movePlat(const GsVec2D<int> &speed);
 
     std::vector<CPlayerLevel*> mCarriedPlayerVec;
 };

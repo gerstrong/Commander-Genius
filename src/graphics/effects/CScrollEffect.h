@@ -34,9 +34,9 @@ public:
 
 private:
 
-    int mInitSpeed = 0;
+    //int mInitSpeed = 0;
     int mSpeed = 0;
-    int mInitialSpeed = 0;
+    //int mInitialSpeed = 0;
     int mScrollPos = 0;
     const direction_t mHDir;
     const direction_t mVDir;

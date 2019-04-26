@@ -13,20 +13,20 @@ void GameMenu::createGalaxyBackground()
 
     GsWeakSurface swatchSfc(backgroundBmp.getSDLSurface());
 
-    mBackground.create( 0, bmpRect.w, bmpRect.h, RES_BPP, 0, 0, 0, 0);
+    mBackground.create( 0, bmpRect.dim.x, bmpRect.dim.y, RES_BPP, 0, 0, 0, 0);
     swatchSfc.blitTo(mBackground);
    
 
     // Besides the Background Bitmap we need to draw two lines
     SDL_Rect scoreRect;
-    scoreRect.w = (15*gameRes.w)/32;
-    scoreRect.h = gameRes.h/200;
-    scoreRect.x = gameRes.w/4;
+    scoreRect.w = (15*gameRes.dim.x)/32;
+    scoreRect.h = gameRes.dim.y/200;
+    scoreRect.x = gameRes.dim.x/4;
     scoreRect.y = 55;
 
-    if(gameRes.h > 200) // This will display the line score correctly.
+    if(gameRes.dim.y > 200) // This will display the line score correctly.
     {
-        scoreRect.y = (scoreRect.y*gameRes.h)/202;
+        scoreRect.y = (scoreRect.y*gameRes.dim.y)/202;
     }
 
     mBackground.fillRGB(scoreRect, 84, 234, 84);

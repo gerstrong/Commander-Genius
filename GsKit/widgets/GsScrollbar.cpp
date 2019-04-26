@@ -8,10 +8,10 @@
 void GsScrollbar::processLogic()
 {
     // Here we check if the mouse-cursor/Touch entry clicked on something!!
-    const float fx = mRect.x;
-    const float fw = mRect.w;
-    const float fy = mRect.y;
-    const float fh = mRect.h;
+    const float fx = mRect.pos.x;
+    const float fw = mRect.dim.x;
+    const float fy = mRect.pos.y;
+    const float fh = mRect.dim.y;
 
     const float y_innerbound_max = fy+fh;
 
@@ -26,7 +26,7 @@ void GsScrollbar::processLogic()
 
     processPointingState(rRect);
 
-    Vector2D<float> MousePos = pointingState.mPos;
+    GsVec2D<float> MousePos = pointingState.mPos;
 
     const bool scrollAction = mReleased || mPressed;
 
@@ -38,8 +38,10 @@ void GsScrollbar::processLogic()
             {
                 float relPos = float(mScrollPos) / float(mMaxScrollAmt);
 
-                const float scrollAreaY1 = rRect.y + mArrowHeight + mSliderHeight*0.5f;
-                const float scrollAreaY2 = rRect.y + rRect.h - mArrowHeight - mSliderHeight*0.5f;
+                const float scrollAreaY1 =
+                        rRect.pos.y + mArrowHeight + mSliderHeight*0.5f;
+                const float scrollAreaY2 =
+                        rRect.pos.y + rRect.dim.y - mArrowHeight - mSliderHeight*0.5f;
                 const float scrollHeight = scrollAreaY2-scrollAreaY1;
 
                 const float midPart_y = scrollAreaY1+(scrollHeight*relPos);
@@ -94,11 +96,11 @@ void GsScrollbar::drawScrollBar(const SDL_Rect &lRect)
 
 
     // Set the up and down arrows
-    //auto &Font = gGraphics.getFont(mFontID);
+    //GsFont &Font = gGraphics.getFont(mFontID);
     blitSurface.fillRGB( bScUpRect, 0x7F, 0x7F, 0x7F);
-    //Font.drawFontCentered(blitSurface.getSDLSurface(), "\017", bScUpRect.x, bScUpRect.w, bScUpRect.y, false );
+    //Font.drawFontCentered(blitSurface.getSDLSurface(), "\017", bScUpRect.x, bScUpRect.dim.x, bScUpRect.y, false );
     blitSurface.fillRGB( bScDownRect, 0x7F, 0x7F, 0x7F);
-    //Font.drawFontCentered(blitSurface.getSDLSurface(), "\023", bScDownRect.x, bScDownRect.w, bScDownRect.y, false );
+    //Font.drawFontCentered(blitSurface.getSDLSurface(), "\023", bScDownRect.x, bScDownRect.dim.x, bScDownRect.y, false );
 
     mArrowHeight = 10.0f/float(lRect.h);
     mSliderHeight = 8.0f/float(lRect.h);
@@ -115,7 +117,7 @@ void GsScrollbar::processRender(const GsRect<float> &RectDispCoordFloat)
     drawScrollBar(lRect);
 }
 
-bool GsScrollbar::sendEvent(const InputCommand command)
+bool GsScrollbar::sendEvent(const InputCommand)
 {
     return false;
 }

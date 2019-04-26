@@ -119,7 +119,7 @@ void CTeleporter::process()
 			// In this part the player must be invisible and go to the new position, then get teleported out.
 			x = destx<<CSF;
 			y = desty<<CSF;
-			moveTo(Vector2D<int>(x, y));
+			moveTo(GsVec2D<int>(x, y));
 			m_Player[player].pDir.y = DOWN;
 			m_Player[player].beingteleported = true;
 			m_Player[player].solid = false;
@@ -147,7 +147,7 @@ void CTeleporter::process()
 
 			if(diff_x<=TELEPORTATION_SPEED && diff_y<=TELEPORTATION_SPEED)
 			{
-				m_Player[player].moveTo(Vector2D<int>(x, y));
+				m_Player[player].moveTo(GsVec2D<int>(x, y));
 				direction = TELEPORTING_OUT;
 
 				idleframe = mpMap->at(x>>CSF, y>>CSF);

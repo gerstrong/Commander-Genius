@@ -381,10 +381,10 @@ void CPlayGameVorticon::ponder(const float deltaT)
     const float w = gVideoDriver.getBlitSurface()->w;
     const float h = gVideoDriver.getBlitSurface()->h;
 
-    rRect.y += gVideoDriver.getVidConfig().mHorizBorders;
+    rRect.pos.y += gVideoDriver.getVidConfig().mHorizBorders;
 
-    rRect.x /= w;       rRect.y /= h;
-    rRect.w /= w;       rRect.h /= h;
+    rRect.pos.x /= w;       rRect.pos.y /= h;
+    rRect.dim.x /= w;       rRect.dim.y /= h;
 
     if( checkSandwichMenuClicked(rRect) )
     {
@@ -418,7 +418,8 @@ void CPlayGameVorticon::ponder(const float deltaT)
 
             GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
 
-            mpGameoverBmp->setScrPos( (gameRes.w/2) -(pBitmap->width()/2), (gameRes.h/2) -(pBitmap->height()/2) );
+            mpGameoverBmp->setScrPos( (gameRes.dim.x/2) -(pBitmap->width()/2),
+                                      (gameRes.dim.y/2) -(pBitmap->height()/2) );
 		}
 	}
 	else // No game over

@@ -34,7 +34,7 @@ void GsCursor::generateTwirls(GsFontLegacy &Font)
 	// Copy the first 5 tiles
 	twrect.x=9*8;
 	twrect.y = fmrect.x = 0;
-	twrect.w = fmrect.w = 5*8;
+    twrect.w = fmrect.w = 5*8;
 	twrect.h = fmrect.h = 8;	fmrect.y=0;
 
     GsWeakSurface fontSfcWeak(fontSfc);
@@ -73,7 +73,7 @@ void GsCursor::generateTwirls(GsFontLegacy &Font)
 
 	// Now copy the last twirl (8) taking the original 6th one
 	twrect.x=14*8;	twrect.y=0;
-	twrect.w = fmrect.w = twrect.h = fmrect.h = 8;
+    twrect.w = fmrect.w = twrect.h = fmrect.h = 8;
 	fmrect.x = 7*8;	fmrect.y = 0;
     BlitSurface(fontSfc, &twrect, mp_Surface, &fmrect);
 }
@@ -86,7 +86,7 @@ void GsCursor::draw(SDL_Surface* dst, Uint8 character, Uint16 x, Uint16 y)
 	src_rect.y = 0;
 	dst_rect.x = x;
 	dst_rect.y = y;
-	dst_rect.w = src_rect.w = 8;
+    dst_rect.w = src_rect.w = 8;
 	dst_rect.h = src_rect.h = 8;
 
     BlitSurface(mp_Surface, &src_rect, dst, &dst_rect);

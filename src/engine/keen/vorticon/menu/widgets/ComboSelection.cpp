@@ -18,7 +18,7 @@ namespace vorticon
 
 ComboSelection::ComboSelection( const std::string &text,
                                 const std::list<std::string> &optionsList ) :
-CGUIComboSelection(text, optionsList)
+CGUIComboSelection(text, GsRect<float>(0.0f, 0.0f, 1.0f, 1.0f), optionsList)
 {
     mFontID = 1;
 }

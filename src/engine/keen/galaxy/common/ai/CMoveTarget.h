@@ -14,7 +14,7 @@
 class CMoveTarget
 {  
 public:
-    CMoveTarget(const Vector2D<int> &pos,
+    CMoveTarget(const GsVec2D<int> &pos,
 	  int &xDirection, int &yDirection) :
 	  origin(pos) 
 	  {	    	    
@@ -28,12 +28,12 @@ protected:
 				int &xDirection,		
 				int &yDirection );
 
-    void detectNextTarget(const Vector2D<int> &oldTarget,
+    void detectNextTarget(const GsVec2D<int> &oldTarget,
 	  		    const int xDirection, const int yDirection	);	
 
 	// Data for the MoveTarget class
-    Vector2D<int> target;
-    const Vector2D<int> &origin;
+    GsVec2D<int> target;
+    const GsVec2D<int> &origin;
 };
 
 #endif // CMOVETARGET_H

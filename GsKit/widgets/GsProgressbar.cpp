@@ -160,14 +160,14 @@ GsProgressBar::processRender(const GsRect<float> &RectDispCoordFloat)
 
     if(mProgressToRender < 0.0f || mProgressToRender > 1000.0f)
     {
-        progressWidth = displayRect.w;
+        progressWidth = displayRect.dim.x;
     }
     else
     {
-        progressWidth = (float(mProgressToRender)*displayRect.w)/1000.0f;
+        progressWidth = (float(mProgressToRender)*displayRect.dim.x)/1000.0f;
     }
 
-    progressRect.w = progressWidth;
+    progressRect.dim.x = progressWidth;
 
 
     displayRect.transform(RectDispCoordFloat);

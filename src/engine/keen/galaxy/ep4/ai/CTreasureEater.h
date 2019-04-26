@@ -33,7 +33,7 @@ private:
 	int mTimer;
 	bool mTeleported;
 	bool mStolen;
-	Vector2D<int> mDestination;
+	GsVec2D<int> mDestination;
 };
 
 } /* namespace galaxy */

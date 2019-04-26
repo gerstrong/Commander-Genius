@@ -13,7 +13,7 @@ public:
 
     void processRender(const GsRect<float> &RectDispCoordFloat);
 
-    bool sendEvent(const InputCommand command);
+    bool sendEvent(const InputCommand);
 
     void scrollUp()
     {

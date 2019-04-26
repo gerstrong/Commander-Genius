@@ -78,10 +78,10 @@ void CMoveTarget::readDirection(const int object, int &xDirection, int &yDirecti
 	}
 }
 
-void CMoveTarget::detectNextTarget(const Vector2D<int> &oldTarget,
+void CMoveTarget::detectNextTarget(const GsVec2D<int> &oldTarget,
                     const int xDirection, const int yDirection)
 {
-    Vector2D<int> potTarget(oldTarget);
+    GsVec2D<int> potTarget(oldTarget);
     
     potTarget = (potTarget>>CSF);
         

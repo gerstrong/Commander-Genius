@@ -21,42 +21,39 @@ struct GsRect
 	template <typename T2>
     GsRect( GsRect<T2> rect )
 	{
-		x = rect.x;		y = rect.y;
-		w = rect.w;		h = rect.h;
+        pos.x = rect.pos.x;		pos.y = rect.pos.y;
+        dim.x = rect.dim.x;		dim.y = rect.dim.y;
 	}
 
 
     GsRect( const T lwidth = 0,
 		   const T lheight = 0 )
 		{
-		    x=0 ; y=0;
-		    w=lwidth; h=lheight;
+            pos.x=0 ; pos.y=0;
+            dim.x=lwidth; dim.y=lheight;
         }
 
     GsRect( const T lx,
 		   const T ly,
 		   const T lw,
-		   const T lh )
-		{ x=lx; y=ly; w=lw; h=lh; }
+           const T lh ) :
+        pos(lx,ly),
+        dim(lw,lh)
+        {}
 
     GsRect( const SDL_Rect &sdlRect ) :
-        x(sdlRect.x),
-        y(sdlRect.y),
-        w(sdlRect.w),
-        h(sdlRect.h)
+        pos(sdlRect.x, sdlRect.y),
+        dim(sdlRect.w, sdlRect.h)
     {}
 
 
     /**
-     * @brief empty The rect is empty when height or width at least is empty. This special case means, that nothing is indicated
-     *              and if a surface or texture is passed it should fill the whole destination to which it is blit.
-     *              and if x and y are zero it doesn't matter anymore. The blitters of SDL should get a null pointer
-     *              and know what they have to do.
+     * @brief empty if rect is empty nothing need to be drawn
      * @return true if empty, otherwise false.
      */
     bool empty() const
     {
-        return (h==0 || w==0) && ( x==0 && y==0 );
+        return (dim.y==0 || dim.x==0);
     }
 
 
@@ -69,55 +66,68 @@ struct GsRect
 
     bool operator==( const GsRect &target )
 	{
-		return (target.x == x && target.y == y &&
-				target.w == w && target.h == h);
+        return (target.pos.x == pos.x && target.pos.y == pos.y &&
+                target.dim.x == dim.x && target.dim.y == dim.y);
 	}
 
 	float aspectRatio() const
 	{
-		return (float(w)/float(h));
+        return (float(dim.x)/float(dim.y));
 	}
 
 	template <typename T2>
     GsRect<T>& operator=( const GsRect<T2> &newRect )
 	{
         GsRect<T> retRect;
-		x = static_cast<T>(newRect.x);
-		y = static_cast<T>(newRect.y);
-		w = static_cast<T>(newRect.w);
-		h = static_cast<T>(newRect.h);
+        pos.x = static_cast<T>(newRect.pos.x);
+        pos.y = static_cast<T>(newRect.pos.y);
+        dim.x = static_cast<T>(newRect.dim.x);
+        dim.y = static_cast<T>(newRect.dim.y);
 		return *this;
 	}
 
 	SDL_Rect SDLRect() const
 	{
 		SDL_Rect Rect;
-		Rect.x = x;
-		Rect.y = y;
-		Rect.w = w;
-		Rect.h = h;
+        Rect.x = pos.x;
+        Rect.y = pos.y;
+        Rect.w = dim.x;
+        Rect.h = dim.y;
 		return Rect;
 	}
 
     void transformInverse(const GsRect &scaleRect)
 	{
-		x /= scaleRect.w;
-		x -= scaleRect.x;
-		y /= scaleRect.h;
-		y -= scaleRect.y;
-		w /= scaleRect.w;
-		h /= scaleRect.h;
+        pos.x /= scaleRect.dim.x;
+        pos.x -= scaleRect.pos.x;
+        pos.y /= scaleRect.dim.y;
+        pos.y -= scaleRect.pos.y;
+        dim.x /= scaleRect.dim.x;
+        dim.y /= scaleRect.dim.y;
 	}
 
     void transform(const GsRect &scaleRect)
 	{
-		x *= scaleRect.w;
-		x += scaleRect.x;
-		y *= scaleRect.h;
-		y += scaleRect.y;
-		w *= scaleRect.w;
-		h *= scaleRect.h;
+        pos.x *= scaleRect.dim.x;
+        pos.y *= scaleRect.dim.y;
+
+        pos += scaleRect.pos;
+
+        dim.x *= scaleRect.dim.x;
+        dim.y *= scaleRect.dim.y;
 	}
+
+    GsRect transformed(const GsRect &scaleRect) const
+    {
+        GsRect result;
+        result.pos.x  = pos.x + dim.x * scaleRect.pos.x;
+        result.pos.y  = pos.y + dim.y * scaleRect.pos.y;
+        result.dim.x  = dim.x * scaleRect.dim.x;
+        result.dim.y  = dim.y * scaleRect.dim.y;
+
+        return result;
+    }
+
 
 
 	template <typename T2>
@@ -131,88 +141,104 @@ struct GsRect
 
 	// Check whether a point given by a Vector is with that Rect.
 	// The operation is simple but very often used.
-    bool _HasPoint(const Vector2D<T>& Pos) const
+    bool _HasPoint(const GsVec2D<T>& Pos) const
 	{
 		// check X coordinate. is it outside, return false
-        if( Pos.x < x || Pos.x >= x+w )
+        if( Pos.x < pos.x || Pos.x >= pos.x+dim.x )
 			return false;
 
 		// check Y coordinate. is it outside, return false
-        if( Pos.y < y || Pos.y >= y+h )
+        if( Pos.y < pos.y || Pos.y >= pos.y+dim.y )
 			return false;
 
 		return true;
 	}
 
 	template <typename T2>
-    bool HasPoint(const Vector2D<T2>& Pos) const
+    bool HasPoint(const GsVec2D<T2>& Pos) const
 	{
-        Vector2D<T> NewPos;
+        GsVec2D<T> NewPos;
 		NewPos.x = static_cast<T>(Pos.x);
 		NewPos.y = static_cast<T>(Pos.y);
         return _HasPoint(NewPos);
 	}
 
 
+
+
     void intersect(const GsRect &other)
     {
-        if (other.x > x)
+        if (other.pos.x > pos.x)
         {
-            const int firstX2 = x + w;
+            const int firstX2 = pos.x + dim.x;
 
-            if( firstX2 > other.x + other.w )
+            if( firstX2 > other.pos.x + other.dim.x )
             {
-                w = other.w;
+                dim.x = other.dim.x;
             }
             else
             {
-                const int newWidth = firstX2 - other.x;
+                const int newWidth = firstX2 - other.pos.x;
 
-                if(newWidth < w)
-                    w = newWidth;
+                if(newWidth < dim.x)
+                    dim.x = newWidth;
             }
 
-            x = other.x;
+            pos.x = other.pos.x;
         }
         else
         {
-            const int secondX2 = other.x + other.w;
-            const int newWidth = secondX2 - x;
+            const int secondX2 = other.pos.x + other.dim.x;
+            const int newWidth = secondX2 - pos.x;
 
-            if(newWidth < w)
-                w = newWidth;
+            if(newWidth < dim.x)
+                dim.x = newWidth;
         }
 
-        if (other.y > y)
+        if (other.pos.y > pos.y)
         {
-            const int firstY2 = y + h;
+            const int firstY2 = pos.y + dim.y;
 
-            if( firstY2 > other.y + other.h )
+            if( firstY2 > other.pos.y + other.dim.y )
             {
-                h = other.h;
+                dim.y = other.dim.y;
             }
             else
             {
-                const int newHeight = firstY2 - other.y;
+                const int newHeight = firstY2 - other.pos.y;
 
-                if(newHeight < h)
-                    h = newHeight;
+                if(newHeight < dim.y)
+                    dim.y = newHeight;
             }
 
-            y = other.y;
+            pos.y = other.pos.y;
         }
         else
         {
-            const int secondY2 = other.y + other.h;
-            const int newHeight = secondY2 - y;
+            const int secondY2 = other.pos.y + other.dim.y;
+            const int newHeight = secondY2 - pos.y;
 
-            if(newHeight < h)
-                h = newHeight;
+            if(newHeight < dim.y)
+                dim.y = newHeight;
         }
+
+        if(dim.x < 0)
+            dim.x = 0;
+        if(dim.y < 0)
+            dim.y = 0;
+    }
+
+    GsRect clipped(const GsRect &other) const
+    {
+        auto result = *this;
+        result.intersect(other);
+        return result;
     }
 
 
-	T x, y, w, h;
+
+
+    GsVec2D<T> pos, dim;
 };
 
 

@@ -99,7 +99,7 @@ void CStatusScreen::createInventorySfcEp1(const int varSpr)
 
 	dlgW = 29;
 	dlgH = 15;
-	m_StatusRect.w = (dlgW+1)*8;
+    m_StatusRect.w = (dlgW+1)*8;
 	m_StatusRect.h = dlgH*8;
 	
     mStatusSfc.createRGBSurface(m_StatusRect);
@@ -113,32 +113,32 @@ void CStatusScreen::createInventorySfcEp1(const int varSpr)
 	
 	// Now draw some white rects. Those are the holders for items, numbers, etc.
 	SDL_Rect rect;
-	rect.x = 8;	rect.w = 12*8; // Score
+    rect.x = 8;	rect.w = 12*8; // Score
 	rect.y = 2*8;	rect.h = 1*8;
 	SDL_FillRect(p_surface,&rect, Font.getBGColour(p_surface->format, false));
 
-	rect.x = 14*8;	rect.w = 15*8; // Extra keen at
+    rect.x = 14*8;	rect.w = 15*8; // Extra keen at
 	SDL_FillRect(p_surface,&rect, Font.getBGColour(p_surface->format, false));
 
-	rect.x = 8;	rect.w = 14*8; // Keens
+    rect.x = 8;	rect.w = 14*8; // Keens
 	rect.y = 4*8;	rect.h = 3*8;
 	SDL_FillRect(p_surface,&rect, Font.getBGColour(p_surface->format, false));
 
-	rect.x = 16*8;	rect.w = 13*8; // Ship Parts
+    rect.x = 16*8;	rect.w = 13*8; // Ship Parts
 	SDL_FillRect(p_surface,&rect, Font.getBGColour(p_surface->format, false));
 
-	rect.x = 8;	rect.w = 8*8; // Raygun
+    rect.x = 8;	rect.w = 8*8; // Raygun
 	rect.y = 8*8;	rect.h = 3*8;
 	SDL_FillRect(p_surface,&rect, Font.getBGColour(p_surface->format, false));
 
-	rect.x = 10*8;	rect.w = 6*8; // Pogo
+    rect.x = 10*8;	rect.w = 6*8; // Pogo
 	rect.h = 5*8;
 	SDL_FillRect(p_surface,&rect, Font.getBGColour(p_surface->format, false));
 
-	rect.x = 17*8;	rect.w = 12*8; // Keycards
+    rect.x = 17*8;	rect.w = 12*8; // Keycards
 	SDL_FillRect(p_surface,&rect, Font.getBGColour(p_surface->format, false));
 
-	rect.x = 8;	rect.w = 8*8; // Charge
+    rect.x = 8;	rect.w = 8*8; // Charge
 	rect.y = 12*8;	rect.h = 1*8;
 	SDL_FillRect(p_surface,&rect, Font.getBGColour(p_surface->format, false));
 
@@ -230,7 +230,7 @@ void CStatusScreen::createInventorySfcEp2(const int varSpr)
 
 	dlgW = 29;
 	dlgH = 14;
-	m_StatusRect.w = (dlgW+1)*8;
+    m_StatusRect.w = (dlgW+1)*8;
 	m_StatusRect.h = dlgH*8;
 
     mStatusSfc.createRGBSurface(m_StatusRect);
@@ -243,25 +243,25 @@ void CStatusScreen::createInventorySfcEp2(const int varSpr)
 
 	// Now draw some white rects. Those are the holders for items, numbers, etc.
 	SDL_Rect rect;
-	rect.x = (0+1)*8;	rect.w = 12*8; // Score
+    rect.x = (0+1)*8;	rect.w = 12*8; // Score
 	rect.y = (0+2)*8;	rect.h = 1*8;
 	SDL_FillRect(p_surface,&rect, Font.getBGColour(false));
 
-	rect.x = 0*8+14*8;	rect.w = 15*8; // Extra keen at
+    rect.x = 0*8+14*8;	rect.w = 15*8; // Extra keen at
 	SDL_FillRect(p_surface,&rect, Font.getBGColour(false));
 
-	rect.x = (0+1)*8;	rect.w = 18*8; // Keens
+    rect.x = (0+1)*8;	rect.w = 18*8; // Keens
 	rect.y = (0+4)*8;	rect.h = 3*8;
 	SDL_FillRect(p_surface,&rect, Font.getBGColour(false));
 
-	rect.x = (0+20)*8;	rect.w = 9*8; // Pistol
+    rect.x = (0+20)*8;	rect.w = 9*8; // Pistol
 	SDL_FillRect(p_surface,&rect, Font.getBGColour(false));
 
-	rect.x = (0+1)*8;	rect.w = 18*8; // Targets Saved
+    rect.x = (0+1)*8;	rect.w = 18*8; // Targets Saved
 	rect.y = (0+8)*8;	rect.h = 4*8;
 	SDL_FillRect(p_surface,&rect, Font.getBGColour(false));
 
-	rect.x = (0+20)*8;	rect.w = 9*8; // Keys
+    rect.x = (0+20)*8;	rect.w = 9*8; // Keys
 	SDL_FillRect(p_surface,&rect, Font.getBGColour(false));
 
 	// raygun icon
@@ -350,7 +350,7 @@ void CStatusScreen::createInventorySfcEp3(const int varSpr)
 
 	dlgW = 29;
 	dlgH = 13;
-	m_StatusRect.w = (dlgW+1)*8;
+    m_StatusRect.w = (dlgW+1)*8;
 	m_StatusRect.h = dlgH*8;
 
     mStatusSfc.createRGBSurface(m_StatusRect);
@@ -364,25 +364,25 @@ void CStatusScreen::createInventorySfcEp3(const int varSpr)
 
 	// Now draw some white rects. Those are the holders for items, numbers, etc.
 	SDL_Rect rect;
-	rect.x = (0+1)*8;	rect.w = 12*8; // Score
+    rect.x = (0+1)*8;	rect.w = 12*8; // Score
 	rect.y = (0+2)*8;	rect.h = 1*8;
 	SDL_FillRect(p_surface, &rect, Font.getBGColour(false));
 
-	rect.x = 0*8+14*8;	rect.w = 15*8; // Extra keen at
+    rect.x = 0*8+14*8;	rect.w = 15*8; // Extra keen at
 	SDL_FillRect(p_surface,&rect, Font.getBGColour(false));
 
-	rect.x = (0+1)*8;	rect.w = 18*8; // Keens
+    rect.x = (0+1)*8;	rect.w = 18*8; // Keens
 	rect.y = (0+4)*8;	rect.h = 3*8;
 	SDL_FillRect(p_surface,&rect, Font.getBGColour(false));
 
-	rect.x = (0+20)*8;	rect.w = 9*8; // Pistol
+    rect.x = (0+20)*8;	rect.w = 9*8; // Pistol
 	SDL_FillRect(p_surface,&rect, Font.getBGColour(false));
 
-	rect.x = (0+1)*8;	rect.w = 10*8; // Ankh
+    rect.x = (0+1)*8;	rect.w = 10*8; // Ankh
 	rect.y = (0+8)*8;	rect.h = 3*8;
 	SDL_FillRect(p_surface,&rect, Font.getBGColour(false));
 
-	rect.x = (0+12)*8;	rect.w = 17*8; // Keys
+    rect.x = (0+12)*8;	rect.w = 17*8; // Keys
 	SDL_FillRect(p_surface,&rect, Font.getBGColour(false));
 
 	// raygun icon

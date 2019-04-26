@@ -91,7 +91,7 @@ void CHUD::CreateVorticonBackground()
 	SDL_Rect headsrGsRect, headdstrect;
 	headsrGsRect.x = 0;
 	headsrGsRect.y = 0;
-	headdstrect.w = headsrGsRect.w = 16;
+    headdstrect.w = headsrGsRect.w = 16;
 	headdstrect.h = headsrGsRect.h = 16;
     headdstrect.x = 0;
     headdstrect.y = 11;
@@ -141,52 +141,52 @@ void CHUD::DrawCircle(int x, int y, int width)
     auto &Font = gGraphics.getFont(1);
 	Font.getBGColour(&r, &g, &b);
 
-	outline.x = x+4;
-	outline.y = y;
-	outline.w = width-8;
-	outline.h = 12;
+    outline.pos.x = x+4;
+    outline.pos.y = y;
+    outline.dim.x = width-8;
+    outline.dim.y = 12;
 
     mBackground.fillRGB(outline, 0,0,0);  // Black
 
-	outline.x = x+2;
-	outline.y = y+1;
-	outline.w = width-4;
-	outline.h = 10;
+    outline.pos.x = x+2;
+    outline.pos.y = y+1;
+    outline.dim.x = width-4;
+    outline.dim.y = 10;
 
     mBackground.fillRGB(outline, 0,0,0);  // Black
 
-	outline.x = x+1;
-	outline.y = y+2;
-	outline.w = width-2;
-	outline.h = 8;
+    outline.pos.x = x+1;
+    outline.pos.y = y+2;
+    outline.dim.x = width-2;
+    outline.dim.y = 8;
 
     mBackground.fillRGB(outline, 0,0,0);  // Black
 
-	outline.x = x;
-	outline.y = y+4;
-	outline.w = width;
-	outline.h = 4;
+    outline.pos.x = x;
+    outline.pos.y = y+4;
+    outline.dim.x = width;
+    outline.dim.y = 4;
 
     mBackground.fillRGB(outline, 0,0,0);  // Black
 
-	text.x = x+4;
-	text.y = y+1;
-	text.w = width-8;
-	text.h = 10;
+    text.pos.x = x+4;
+    text.pos.y = y+1;
+    text.dim.x = width-8;
+    text.dim.y = 10;
 
     mBackground.fillRGBA(text, r,g,b, 255);  // Background colour
 
-	text.x = x+2;
-	text.y = y+2;
-	text.w = width-4;
-	text.h = 8;
+    text.pos.x = x+2;
+    text.pos.y = y+2;
+    text.dim.x = width-4;
+    text.dim.y = 8;
 
     mBackground.fillRGBA(text, r,g,b, 255);  // Background colour
 
-	text.x = x+1;
-	text.y = y+4;
-	text.w = width-2;
-	text.h = 4;
+    text.pos.x = x+1;
+    text.pos.y = y+4;
+    text.dim.x = width-2;
+    text.dim.y = 4;
 
     mBackground.fillRGBA(text, r,g,b, 255);  // Background colour
 }
