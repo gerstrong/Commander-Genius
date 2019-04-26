@@ -2,7 +2,7 @@
 #include <graphics/GsGraphics.h>
 #include <base/video/CVideoDriver.h>
 
-void GameMenu::createGalaxyBackground()
+void GameMenu::initGalaxyBackground()
 {
     GsBitmap backgroundBmp( *gGraphics.getBitmapFromStr(0, "KEENSWATCH") );
 
@@ -12,6 +12,8 @@ void GameMenu::createGalaxyBackground()
     GsRect<Uint16> bmpRect(backgroundBmp.width(), backgroundBmp.height());
 
     GsWeakSurface swatchSfc(backgroundBmp.getSDLSurface());
+
+    mCachedBgRect = bmpRect;
 
     mBackground.create( 0, bmpRect.dim.x, bmpRect.dim.y, RES_BPP, 0, 0, 0, 0);
     swatchSfc.blitTo(mBackground);
@@ -37,6 +39,8 @@ void GameMenu::initVorticonBackground()
     GsRect<float> rect = mpMenuDialog->getRect();
 
     const SDL_Rect sdlRect = gVideoDriver.toBlitRect(rect);
+    mCachedBgRect.dim.x = sdlRect.w;
+    mCachedBgRect.dim.y = sdlRect.h;
     mBackground.create(0, sdlRect.w, sdlRect.h, RES_BPP, 0, 0, 0, 0);
 
     // Now lets draw the text of the list control
@@ -52,7 +56,8 @@ void GameMenu::initVorticonBackground()
     {
         for( int y=8 ; y<sdlRect.h-8 ; y+=8 )
         {
-            Font.drawCharacter( backSfc, 32, x, y );
+            Font.drawCharacter( backSfc, 32,
+                                Uint16(x), Uint16(y) );
         }
     }
 
@@ -65,6 +70,8 @@ void GameMenu::initBackgroundNoStyle()
     GsRect<float> rect = mpMenuDialog->getRect();
 
     const SDL_Rect sdlRect = gVideoDriver.toBlitRect(rect);
+    mCachedBgRect.dim.x = sdlRect.w;
+    mCachedBgRect.dim.y = sdlRect.h;
     mBackground.create(0, sdlRect.w, sdlRect.h, RES_BPP, 0, 0, 0, 0);
 
     // Now lets draw the text of the list control
@@ -99,6 +106,18 @@ void GameMenu::setMenuLabel(const std::string &label)
 void GameMenu::render()
 {
     GsWeakSurface blit(gVideoDriver.getBlitSurface());
+
+    // check if resolution still match to background. If not update it.
+    const auto bgRectW = mBackground.getSDLSurface()->w;
+    const auto bgRectH = mBackground.getSDLSurface()->h;
+
+    if(bgRectW != mCachedBgRect.dim.x ||
+       bgRectH != mCachedBgRect.dim.y)
+    {
+        (this->*initBackground)();
+        return;
+    }
+
 
     if(!mBackground.empty())
     {

@@ -12,7 +12,7 @@
 
 CVidConfig::CVidConfig()
 {
-	reset();
+    //reset();
 }
 
 bool CVidConfig::operator==(const CVidConfig& target)
@@ -27,8 +27,10 @@ bool CVidConfig::operator!=(const CVidConfig& target)
 
 void CVidConfig::reset()
 {
+
+    /*
 	// Default values
-	mVSync = true;
+    mVSync = true;
 
     mDisplayRect.pos.x = 0;
     mDisplayRect.pos.y = 0;
@@ -45,12 +47,12 @@ void CVidConfig::reset()
 #else
     mDisplayRect.dim.x = 800;
     mDisplayRect.dim.y = 600;
-	mFullscreen=false;
+    mFullscreen = false;
 #endif
 
     m_ScaleXFilter = NONE;
     m_normal_scale = true;
-	Zoom=1;
+    Zoom = 1;
 
 #ifdef USE_OPENGL
     mOpengl = true;
@@ -79,17 +81,19 @@ void CVidConfig::reset()
 	mAspectCorrection.dim.x=0;
 	mAspectCorrection.h=0;
 #endif
-
+*/
 }
 
 
 void CVidConfig::setResolution(const int width, const int height, const int depth)
 {
+    /*
 	const GsRect<Uint16> res(width, height);
 	setResolution(res);
+    */
 }
 
-void CVidConfig::setResolution(const GsRect<Uint16>& res)
+void CVidConfig::setResolution(const GsVec2D<Uint16>& res)
 {
-    mDisplayRect = res;
+    mDisplayRect.dim = res;
 }

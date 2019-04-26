@@ -18,10 +18,10 @@ struct GsVec2D
     {
         const _T2* it=begin(list);
 
-        if(it!=end(list)) return;
+        if(it==end(list)) return;
         x = static_cast<_T>(*it);
         it++;
-        if(it!=end(list)) return;
+        if(it==end(list)) return;
         y = static_cast<_T>(*it);
         it++;
     }

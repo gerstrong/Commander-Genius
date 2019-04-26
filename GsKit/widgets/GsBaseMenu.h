@@ -70,7 +70,7 @@ public:
 
 protected:
 	std::unique_ptr<CGUIDialog> mpMenuDialog;
-    GsButton *mpReturnButton = nullptr;
+    std::shared_ptr<GsButton> mpReturnButton;
 	std::list< std::unique_ptr<CEvent> > mEventList;
 };
 

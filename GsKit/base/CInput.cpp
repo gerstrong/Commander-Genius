@@ -22,7 +22,7 @@
 #include "sys/wizgp2x.h"
 #endif
 
-#if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
+#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
 #define MOUSEWRAPPER 1
 #endif
 
@@ -763,8 +763,8 @@ void CInput::pollEvents()
             if(gVideoDriver.VGamePadEnabled() && mpVirtPad &&
                mpVirtPad->active() )
             {
-                GsVec2D<int> rotPt(Event.tfinger.x*float(activeArea.w),
-                                    Event.tfinger.y*float(activeArea.h));
+                GsVec2D<int> rotPt(Event.tfinger.x*float(activeArea.dim.x),
+                                   Event.tfinger.y*float(activeArea.dim.y));
 
 	    		transMouseRelCoord(Pos, rotPt, activeArea, tiltedScreen);
 
@@ -794,8 +794,8 @@ void CInput::pollEvents()
             if(gVideoDriver.VGamePadEnabled() && mpVirtPad &&
                mpVirtPad->active())
             {
-                GsVec2D<int> rotPt(Event.tfinger.x*float(activeArea.w),
-                                    Event.tfinger.y*float(activeArea.h));
+                GsVec2D<int> rotPt(Event.tfinger.x*float(activeArea.dim.x),
+                                   Event.tfinger.y*float(activeArea.dim.y));
 
                 transMouseRelCoord(Pos, rotPt, activeArea, tiltedScreen);
                 if(!mpVirtPad->mouseFingerState(Pos, Event.tfinger, false))
@@ -1968,14 +1968,14 @@ void CInput::pushBackButtonEventExtEng()
         return;
     }
 
-    // Take one event and send an down and up event
-    for( SDL_Event ev : mBackEventBuffer )
+    // Take one event and send a down and up event
+    if(!mBackEventBuffer.empty())
     {
+        SDL_Event ev = mBackEventBuffer.front();
         ev.type = SDL_KEYDOWN;
         mSDLEventVec.push_back(ev);
         ev.type = SDL_KEYUP;
         mSDLEventVec.push_back(ev);
-        break;
     }
 
     mBackEventBuffer.clear();

@@ -44,17 +44,12 @@
 
 
 /// Main Class implementation
-CGameLauncher::CGameLauncher(const bool first_time,
-                             const int start_game_no,
-                             const int start_level) :
+CGameLauncher::CGameLauncher() :
 mDonePatchSelection(false),
 mDoneExecSelection(false),
 mLauncherDialog(CGUIDialog(GsRect<float>(0.1f, 0.1f, 0.8f, 0.85f),
                            CGUIDialog::FXKind::EXPAND)),
-mGameScanner(),
-m_firsttime(first_time),
-m_start_game_no(start_game_no),
-m_start_level(start_level)
+mGameScanner()
 {	
     gSound.unloadSoundData();
     // The last menu has been removed. Restore back the game status
@@ -84,6 +79,7 @@ CGameLauncher::~CGameLauncher()
 ////
 bool CGameLauncher::setupMenu()
 {
+
     m_mustquit      = false;
     mDonePatchSelection = false;
     m_chosenGame    = -1;
@@ -111,27 +107,26 @@ bool CGameLauncher::setupMenu()
     // Recursivly scan into DIR_GAMES subdir's for exe's
     gamesDetected |= scanSubDirectories(DIR_GAMES,
                                         DEPTH_MAX_GAMES,
-                                        200, 900);
-
-    mpGameSelectionList = new CGUITextSelectionList();
+                                        200, 900);    
 
     // Save any custom labels
     putLabels();
 
     // Create an empty Bitmap control
-    mLauncherDialog.addControl( new CGUIBitmap(),
-                                GsRect<float>(0.51f, 0.07f, 0.48f, 0.48f) );
-
-    mCurrentBmp = std::dynamic_pointer_cast< CGUIBitmap >
-                  ( mLauncherDialog.getControlList().back() );
+    mCurrentBmp = mLauncherDialog.addControl(
+                new CGUIBitmap( GsRect<float>(0.51f, 0.07f, 0.48f, 0.48f) ));
 
     mPreviewBmpPtrVec.resize(m_Entries.size());
+
+    mpGSSelList =
+            mLauncherDialog.addControl(
+                new CGUITextSelectionList(GsRect<float>(0.01f, 0.07f, 0.49f, 0.79f)));
 
 	std::vector<GameEntry>::iterator it = m_Entries.begin();
     unsigned int i=0;
     for( ; it != m_Entries.end() ; it++	)
     {
-        mpGameSelectionList->addText(it->name);
+        mpGSSelList->addText(it->name);
 
         // And try to add a preview bitmap
         std::string fullfilename = "preview.bmp";
@@ -146,20 +141,21 @@ bool CGameLauncher::setupMenu()
         i++;
     }
 
-    mpGameSelectionList->setConfirmButtonEvent(new GMStart());
-    mpGameSelectionList->setBackButtonEvent(new GMQuit());
+    mpGSSelList->setConfirmButtonEvent(new GMStart());
+    mpGSSelList->setBackButtonEvent(new GMQuit());
 
     mLauncherDialog.addControl(new CGUIText("Pick a Game",
                                       GsRect<float>(0.0f, 0.01f, 1.0f, 0.05f)));
 
-    mLauncherDialog.addControl(new GsButton( "x", new GMQuit(),
-                                             GsControl::Style::NONE,
-                                             1.0f,
-                                             0.75f,
-                                             0.75f ),
-                               GsRect<float>(0.0f, 0.0f, 0.069f, 0.069f) );
+    mLauncherDialog.addControl(
+                new GsButton( "x",
+                             GsRect<float>(0.0f, 0.0f, 0.069f, 0.069f),
+                             new GMQuit(),
+                             GsControl::Style::NONE,
+                             1.0f, 0.75f, 0.75f ) );
 
-    /*
+
+
 #ifdef VIRTUALPAD
     mLauncherDialog.addControl(new GsButton( "VPad", new OpenVGamePadSettingsEvent(),
                                              GsControl::Style::NONE,
@@ -168,44 +164,44 @@ bool CGameLauncher::setupMenu()
                                              1.0f ),
                                GsRect<float>(0.75f, 0.0f, 0.17f, 0.069f) );
 #endif
-*/
 
 
-    mLauncherDialog.addControl(new GsButton( "|", new OpenSettingsMenuEvent(),
-                                             GsControl::Style::NONE,
-                                             0.75f,
-                                             1.0f,
-                                             1.0f ),
-                               GsRect<float>(0.93f, 0.0f, 0.069f, 0.069f) );
+    const auto openSettingsMenuEvent = [&]()
+    {
+        mLauncherDialog.enable(false);
+        gEventManager.add( new OpenMenuEvent(
+                               new SettingsMenu(GsControl::Style::NONE) ) );
+    };
 
+    mLauncherDialog.addControl(
+                new GsButton( "|",
+                              GsRect<float>(0.93f, 0.0f, 0.069f, 0.069f),
+                              openSettingsMenuEvent,
+                              GsControl::Style::NONE,
+                              0.75f, 1.0f, 1.0f )  );
 
-
-    mLauncherDialog.addControl(mpGameSelectionList,
-                               GsRect<float>(0.01f, 0.07f, 0.49f, 0.79f));
 
     #ifdef DOWNLOADER
     verifyGameStore();
     #endif
 
-    mpStartButton = std::dynamic_pointer_cast<GsButton>
-                (
+    mpStartButton =
                 mLauncherDialog.addControl
                    (
                        new GsButton( "Start >",
+                                     GsRect<float>(0.60f, 0.865f, 0.25f, 0.07f),
                                      new GMStart(),
                                      GsControl::NONE,
-                                     0.675f, 1.0f, 0.675f),
-                                     GsRect<float>(0.60f, 0.865f, 0.25f, 0.07f)
-                   )
-                ) ;
+                                     0.675f, 1.0f, 0.675f)
+                   );
 
 
-    mpEpisodeText = new CGUIText("Game", GsRect<float>(0.5f, 0.70f, 0.5f, 0.05f));
-    mpVersionText = new CGUIText("Version", GsRect<float>(0.5f, 0.75f, 0.5f, 0.05f));
-    mpDemoText = new CGUIText("Demo", GsRect<float>(0.5f, 0.80f, 0.5f, 0.05f));
-    mLauncherDialog.addControl(mpEpisodeText);
-    mLauncherDialog.addControl(mpVersionText);
-    mLauncherDialog.addControl(mpDemoText);
+    mpEpisodeText = mLauncherDialog.addControl(
+                new CGUIText("Game", GsRect<float>(0.5f, 0.70f, 0.5f, 0.05f)) );
+    mpVersionText = mLauncherDialog.addControl(
+                new CGUIText("Version", GsRect<float>(0.5f, 0.75f, 0.5f, 0.05f)) );
+    mpDemoText = mLauncherDialog.addControl(
+                new CGUIText("Demo", GsRect<float>(0.5f, 0.80f, 0.5f, 0.05f)) );
 
     // This way it goes right to the selection list.
     mLauncherDialog.setSelection(2);
@@ -213,15 +209,15 @@ bool CGameLauncher::setupMenu()
     mGameScanner.setPermilage(1000);
 
     gLogging.ftextOut("Game Autodetection Finished<br>" );
-    // Banner. TODO: Create a class for that...
-    CGUIBanner *banner = new CGUIBanner("Commander Genius " CGVERSION "\n"
-                    "by Gerstrong,\n"
-                    "Zilem,\n"
-                    "Tulip,\n"
-                    "Albert Zeyer,\n"
-                    "Pelya,\n"
-                    "and many CG Contributors\n");
-    mLauncherDialog.addControl( banner, GsRect<float>(0.0f, 0.95f, 1.0f, 0.05f) );
+
+    mLauncherDialog.addControl( new CGUIBanner("Commander Genius " CGVERSION "\n"
+                                               "by Gerstrong,\n"
+                                               "Zilem,\n"
+                                               "Tulip,\n"
+                                               "Albert Zeyer,\n"
+                                               "Pelya,\n"
+                                               "and many CG Contributors\n",
+                                               GsRect<float>(0.0f, 0.95f, 1.0f, 0.05f) ) );
 
     if(!gamesDetected)
     {
@@ -243,7 +239,7 @@ bool CGameLauncher::setupMenu()
     }
 
     // Set the first game selected and highlight the start button
-    mpGameSelectionList->setSelection(0);
+    mpGSSelList->setSelection(0);
     mLauncherDialog.setSelection(3);
 
 
@@ -368,9 +364,10 @@ bool CGameLauncher::scanExecutables(const std::string& path)
     {
 		CExeFile executable;
         // Load the exe into memory or a python script
-		if(!executable.readData(i, path))
+        if(!executable.readData(static_cast<unsigned int>(i), path))
         {
-            if(!executable.readMainPythonScript(i, path))
+            if(!executable.readMainPythonScript(static_cast<unsigned int>(i),
+                                                path))
             {
                 continue;
             }
@@ -379,9 +376,9 @@ bool CGameLauncher::scanExecutables(const std::string& path)
 		// Process the exe for type
 		GameEntry newentry;
 		newentry.crcpass = executable.getEXECrc();
-		newentry.version = executable.getEXEVersion();
+        newentry.version = static_cast<short>(executable.getEXEVersion());
 		newentry.supported = executable.Supported();
-		newentry.episode = i;
+        newentry.episode = static_cast<Uint16>(i);
 		newentry.demo = executable.isDemo();
 		newentry.path    = path;
 		newentry.exefilename = executable.getFileName();
@@ -576,7 +573,8 @@ void CGameLauncher::setupModsDialog()
     if(!mPatchStrVec.empty())
         mPatchStrVec.clear();
 
-    mpPatchSelList = new CGUITextSelectionList();
+    mpPatchSelList = new CGUITextSelectionList(
+                                GsRect<float>(0.01f, 0.07f, 0.49f, 0.87f));
 
 
     for( auto &elem : patchlist.list )
@@ -593,7 +591,7 @@ void CGameLauncher::setupModsDialog()
 
     mpPatchDialog->addControl(new CGUIText("Choose your patch:",
                                            GsRect<float>(0.0f, 0.0f, 1.0f, 0.05f)));
-    mpPatchDialog->addControl(mpPatchSelList, GsRect<float>(0.01f, 0.07f, 0.49f, 0.87f));
+    mpPatchDialog->addControl(mpPatchSelList);
 
 
     mpPatchDialog->addControl(new GsButton( "Start >", new GMPatchSelected() ), GsRect<float>(0.65f, 0.865f, 0.3f, 0.07f) );
@@ -614,7 +612,7 @@ void CGameLauncher::pumpEvent(const CEvent *evPtr)
 
     if( dynamic_cast<const GMStart*>(evPtr) )
     {
-        setChosenGame(mpGameSelectionList->getSelection());
+        setChosenGame(mpGSSelList->getSelection());
 
         if(m_chosenGame >= 0)
         {
@@ -649,11 +647,6 @@ void CGameLauncher::pumpEvent(const CEvent *evPtr)
         mCancelDownload = true;
         mpDloadCancel->enable(false);
         mpDloadProgressCtrl->setUserAbort(true);
-    }
-    else if( dynamic_cast<const OpenSettingsMenuEvent*>(evPtr) )
-    {
-        gEventManager.add( new OpenMenuEvent(
-                               new SettingsMenu(GsControl::Style::NONE) ) );
     }
 /*
 #ifdef VIRTUALPAD
@@ -717,23 +710,29 @@ void CGameLauncher::ponderGameSelDialog(const float deltaT)
         }
     }
 
-    // Check if the selection changed. Update the right data panel
-    if(mSelection != mpGameSelectionList->getSelection())
-    {                                
-        if(!m_Entries.empty())
+    if(mpGSSelList)
+    {
+        // Check if the selection changed. Update the right data panel
+        if(mSelection != mpGSSelList->getSelection() &&
+           !m_Entries.empty() )
         {
-            mSelection = mpGameSelectionList->getSelection();
-            auto &entry = m_Entries[mSelection];
-            const std::string nameText = "Episode " + itoa(entry.episode);
-            mpEpisodeText->setText(nameText);
-            float fVer = entry.version;
-            fVer /= 100.0f;
-            mpVersionText->setText("Version: " + ftoa(fVer));
+            mSelection = mpGSSelList->getSelection();
 
-            mpDemoText->setText(entry.demo ? "Demo" : "");
+            if(mSelection != -1)
+            {
+                const auto sel = static_cast<unsigned int>( mSelection);
+                auto &entry = m_Entries[sel];
+                const std::string nameText = "Episode " + itoa(entry.episode);
+                mpEpisodeText->setText(nameText);
+                float fVer = entry.version;
+                fVer /= 100.0f;
+                mpVersionText->setText("Version: " + ftoa(fVer));
 
-            // Now update the bitmap
-            mCurrentBmp->setBitmapPtr(mPreviewBmpPtrVec[mSelection]);
+                mpDemoText->setText(entry.demo ? "Demo" : "");
+
+                // Now update the bitmap
+                mCurrentBmp->setBitmapPtr(mPreviewBmpPtrVec[sel]);
+            }
         }
     }
 
@@ -846,10 +845,12 @@ void CGameLauncher::ponder(const float deltaT)
         return;
     }
 
-    if(gMenuController.active())
+
+    if(!gMenuController.active() && !mLauncherDialog.isEnabled())
     {
-        return;
+        mLauncherDialog.enable(true);
     }
+
 
     #ifdef DOWNLOADER
     if(mpGameStoreDialog)
@@ -873,7 +874,9 @@ void CGameLauncher::ponder(const float deltaT)
     // Button should disabled unless a game was selected
     if(mpStartButton)
     {
-        if(mpGameSelectionList->getSelection() >= 0)
+        const auto selection = mpGSSelList->getSelection();
+
+        if(selection >= 0)
         {
             mpStartButton->enable(true);
         }

@@ -11,20 +11,77 @@
 
 #include <base/video/CSDLVideo.h>
 #include <base/video/COpenGL.h>
-#include "resolutionlist.h"
 
 #include "graphics/GsGraphics.h"
 #include <base/GsLogging.h>
+#include <base/GsApp.h>
 #include <base/utils/FindFile.h>
 #include <iostream>
 #include <fstream>
 #include <SDL_syswm.h>
 #include <SDL_image.h>
 
-CVideoDriver::CVideoDriver() :
-m_mustrefresh(false),
-mSDLImageInUse(false)
-{}
+/*
+
+#if defined(ANDROID)
+
+static const char* ResolutionsList[] =
+{
+"320x200"
+};
+
+
+#elif defined(__MACOSX__)
+
+static const char* ResolutionsList[] =
+{
+"320x200",
+"640x400",
+"960x600",
+"1280x800",
+"1600x1000",
+"1920x1200"
+};
+
+
+#else
+
+static const char* ResolutionsList[] =
+{
+"320x200",
+"320x240",
+"640x400",
+"640x480",
+"800x600",
+"960x600",
+"1024x768",
+"1152x864",
+"1280x720",
+"1280x768",
+"1280x800",
+"1280x960",
+"1280x1024",
+"1366x760",
+"1366x768",
+"1400x900",
+"1400x1050",
+"1440x900",
+"1600x900",
+"1600x1000",
+"1600x1200",
+"1680x1050",
+"1920x1080",
+"1920x1200",
+"2048x1536",
+"2560x1440",
+"2560x1600",
+"2560x2048"
+};
+
+#endif
+
+const unsigned int NUM_MAIN_RESOLUTIONS = sizeof(ResolutionsList)/sizeof(char*);
+*/
 
 CVideoDriver::~CVideoDriver()
 {
@@ -92,7 +149,9 @@ bool CVideoDriver::init()
 
 	// take the first default resolution. It might be changed if there is a config file already created
 	// If there are at least two possible resolutions choose the second one, as this is normally one basic small resolution
-	setMode(m_Resolutionlist.front());
+    GsRect<Uint16> myMode;
+    myMode.dim = *(mResolutionSet.begin());
+    setMode(myMode);
 
     return true;
 }
@@ -100,15 +159,14 @@ bool CVideoDriver::init()
 // initResolutionList() reads the local list of available resolution.
 // This function can only be called internally
 // TODO: This should return something!
-void CVideoDriver::initResolutionList()
+bool CVideoDriver::initResolutionList()
 {
 	// This call will get the resolution we have right now and set it up for the system
-	// On Handheld devices this means, they will only take that resolution and that would it be.
-	// On the PC, this is the current resolution but will add others.
-
+    // On Handheld devices this means they will only take that resolution and that would it be.
+    // On the PC, this is the current resolution but we add some more.
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    GsRect<Uint16> resolution(GsRect<Uint16>(800, 600));
+    GsVec2D<Uint16> resolution = {800, 600};
 #else
     GsRect<Uint16> resolution(SDL_GetVideoInfo());
 #endif
@@ -118,15 +176,35 @@ void CVideoDriver::initResolutionList()
 	resolution.h = 200;
 #endif
 
-	GsRect<Uint16> desktopResolution(resolution);
+    GsVec2D<Uint16> desktopResolution(resolution);
 
 	// We have a resolution list, clear it and create a new one.
-    if(!m_Resolutionlist.empty())
+    if(!mResolutionSet.empty())
     {
-        m_Resolutionlist.clear();
+        mResolutionSet.clear();
     }
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
+
+
+    // For now we consider primary display
+    const int dispIdx = 0;
+    const int numDispModes = SDL_GetNumDisplayModes(dispIdx);
+
+
+    for(int modeIdx=0 ; modeIdx<numDispModes ; modeIdx++)
+    {
+        SDL_DisplayMode mode = { SDL_PIXELFORMAT_UNKNOWN, 0, 0, 0, nullptr };
+
+        if (SDL_GetDisplayMode(dispIdx, modeIdx, &mode) != 0)
+        {
+            gLogging.ftextOut("SDL_GetDisplayMode failed: %s", SDL_GetError());
+            continue;
+        }
+
+        mResolutionSet.insert(GsVec2D<Uint16>(mode.w, mode.h));
+    }
+
 
 #else
 
@@ -172,14 +250,36 @@ void CVideoDriver::initResolutionList()
 
 #endif
 
-	// The last resolution in the list is the desktop normally, therefore the highest
-	m_Resolutionlist.push_back(desktopResolution);
+    /// The last resolution in the list is the desktop normally,
+    /// therefore the highest one is what we setup
+    mResolutionSet.insert(desktopResolution);
 
-	m_Resolution_pos = m_Resolutionlist.begin();
+    mResolutionPos = mResolutionSet.begin();
 
+
+    /// Game resolution part: The resolution used internally by the games
+
+    mGameReslist =
+    {
+        {320,200},
+        {320,240},
+        {640,480}
+    };
+
+    /// Aspect Ratio section
+    mAspectSet =
+    {
+    "disabled",
+    "4:3",
+    "16:9",
+    "16:10",
+    "5:4"
+    };
+
+    return true;
 }
 
-void CVideoDriver::verifyResolution(GsRect<Uint16>& resolution,
+void CVideoDriver::verifyResolution(GsVec2D<Uint16> &resolution,
                                     const int flags)
 {
 #if SDL_VERSION_ATLEAST(2, 0, 0)
@@ -187,21 +287,60 @@ void CVideoDriver::verifyResolution(GsRect<Uint16>& resolution,
 #else
     if (SDL_VideoModeOK(resolution.dim.x, resolution.h, 32, flags)) {
 		std::list< GsRect<Uint16> >::iterator i;
-		for (i = m_Resolutionlist.begin(); i != m_Resolutionlist.end(); i++) {
+        for (i = mResolutionSet.begin(); i != mResolutionSet.end(); i++) {
 			if (*i == resolution)
 				break;
 		}
 
-		if (i == m_Resolutionlist.end()) {
+        if (i == mResolutionSet.end()) {
 #ifdef DEBUG
 			gLogging.ftextOut(FONTCOLORS::BLUE, "Resolution %ix%ix%i %X added\n",
 					resolution.dim.x, resolution.h, 32);
 #endif
-			m_Resolutionlist.push_back(resolution);
+            mResolutionSet.push_back(resolution);
 		}
 	}
 #endif
 }
+
+std::set<std::string> CVideoDriver::getResolutionStrSet()
+{
+    std::set<std::string> resSet;
+
+    for (const auto &res : mResolutionSet)
+    {
+        resSet.insert(itoa(res.x) + "x" + itoa(res.y));
+    }
+
+
+    return resSet;
+}
+
+std::set<std::string> CVideoDriver::getGameResStrSet()
+{
+    std::set<std::string> resSet;
+
+    for (const auto &res : mGameReslist)
+    {
+        resSet.insert(itoa(res.x) + "x" + itoa(res.y));
+    }
+
+    return resSet;
+}
+
+
+std::set<std::string> CVideoDriver::getAspectStrSet()
+{
+    std::set<std::string> aspectSet;
+
+    for (const auto &res : mAspectSet)
+    {
+        aspectSet.insert(res);
+    }
+
+    return aspectSet;
+}
+
 
 void CVideoDriver::setVidConfig(const CVidConfig& VidConf)
 {
@@ -209,29 +348,32 @@ void CVideoDriver::setVidConfig(const CVidConfig& VidConf)
     setMode(mVidConfig.mDisplayRect);
 }
 
-void CVideoDriver::setMode(int width, int height, int depth) {
-	GsRect<Uint16> res(width, height);
+void CVideoDriver::setMode(const int width, const int height)
+{
+    GsRect<Uint16> res{ 0,0,
+                        static_cast<unsigned short>(width),
+                        static_cast<unsigned short>(height) };
 	setMode(res);
 }
 
 void CVideoDriver::setMode(const GsRect<Uint16>& res)
 {
-    mVidConfig.setResolution(res);
+    mVidConfig.setResolution(res.dim);
 
     // Cycle through the list until the matching resolution is matched. If it doesn't exist
 	// add it;
-    for (m_Resolution_pos = m_Resolutionlist.begin();
-         m_Resolution_pos != m_Resolutionlist.end();
-         m_Resolution_pos++)
+    for (mResolutionPos = mResolutionSet.begin();
+         mResolutionPos != mResolutionSet.end();
+         mResolutionPos++)
     {
-		if (*m_Resolution_pos == res)
+        if (*mResolutionPos == res.dim)
 			break;
     }
 
-    if (m_Resolution_pos == m_Resolutionlist.end())
+    if (mResolutionPos == mResolutionSet.end())
     {
-		m_Resolutionlist.push_back(res);
-		m_Resolution_pos--;
+        mResolutionSet.insert(res.dim);
+        mResolutionPos--;
 	}
 }
 
@@ -254,7 +396,7 @@ bool CVideoDriver::applyMode()
     if (mVidConfig.Zoom == 0)
         mVidConfig.Zoom = 1;
 
-    mVidConfig.mDisplayRect = *m_Resolution_pos;
+    mVidConfig.mDisplayRect.dim = *mResolutionPos;
 
 	return true;
 }
@@ -267,7 +409,7 @@ bool CVideoDriver::setNativeResolution(const GsRect<Uint16> &dispRect)
 bool CVideoDriver::start()
 {
 	bool retval;
-    const std::string caption = "Commander Genius";
+    const std::string caption = gApp.getName();
 #if !SDL_VERSION_ATLEAST(2, 0, 0)
     SDL_WM_SetCaption(caption.c_str(), caption.c_str());
 #endif

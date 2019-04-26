@@ -8,6 +8,7 @@
 #include "CSDLVideo.h"
 #include "CVideoEngine.h"
 #include <base/GsLogging.h>
+#include <base/GsApp.h>
 
 #include "graphics/GsGraphics.h"
 
@@ -32,7 +33,7 @@ bool CSDLVideo::init()
 #endif
 
 
-    if(m_VidConfig.mRenderScQuality == "linear")
+    if(m_VidConfig.mRenderScQuality == CVidConfig::RenderQuality::LINEAR)
     {
         SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
     }
@@ -58,7 +59,7 @@ bool CSDLVideo::init()
     }
 
 
-    window = SDL_CreateWindow("Happy Menu",
+    window = SDL_CreateWindow(gApp.getName().c_str(),
                               SDL_WINDOWPOS_CENTERED,
                               SDL_WINDOWPOS_CENTERED,
                               m_VidConfig.mDisplayRect.dim.x,

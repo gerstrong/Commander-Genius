@@ -110,6 +110,7 @@ mSelectedPlayer(selectedPlayer)
     
     setMenuLabel("KEYBMENULABEL");
 
+    mpMenuDialog->fit();
 }
 
 void CControlsettings::refresh()
@@ -154,7 +155,7 @@ void CControlSettingsBase::ponder(const float deltaT)
             if(pos >= MID_COMMANDS_OFFSETS)
                 pos -= MID_COMMANDS_OFFSETS;
 
-            mpButtonList[pos]->setText(mCommandName[com] + evName);
+            mpButtonList[static_cast<unsigned int>(pos)]->setText(mCommandName[com] + evName);
         }
 
         //GameButton::ponder(0);
@@ -240,5 +241,6 @@ void CControlSettingsButtons::refresh()
 	}
 
 	setMenuLabel("BUTTONMENULABEL");
+    mpMenuDialog->fit();
 }
 

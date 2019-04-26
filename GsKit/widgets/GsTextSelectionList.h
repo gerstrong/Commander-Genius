@@ -7,33 +7,38 @@
  *  A Graphical List Control which has some item which are shown as Text and can be selected
  */
 
-#ifndef CGUITEXTSELECTIONLIST_H_
-#define CGUITEXTSELECTIONLIST_H_
+#ifndef CGUITEXTSELECTIONLIST_H
+#define CGUITEXTSELECTIONLIST_H
 
 #include "GsControl.h"
 #include "GsScrollbar.h"
 #include <base/utils/Color.h>
 
-#include <list>
+#include <vector>
 #include <string>
+#include <memory>
 
 
 class CGUITextSelectionList : public GsControl
 {
 public:
 
-    CGUITextSelectionList();
+    CGUITextSelectionList(const GsRect<float> &rect);
 
 	void setConfirmButtonEvent(CEvent *ev);
 	void setBackButtonEvent(CEvent *ev);
 
-	bool sendEvent(const InputCommand command);
+    bool sendEvent(const InputCommand command) override;
 	void addText(const std::string &text);    
-	void processLogic();
-    void processRender(const GsRect<float> &RectDispCoordFloat);
+    void processLogic() override;
+    void processRender(const GsRect<float> &RectDispCoordFloat) override;
+
+
+    virtual void processPointingStateRel(const GsRect<float> &rect) override;
 
     /**
-     * @brief getSelection  return position of currently selected item, or -1 if nothing is selected at al
+     * @brief getSelection  return position of currently selected item,
+     *                      or -1 if nothing is selected at al
      * @return position or -1
      */
     int getSelection() const
@@ -65,7 +70,7 @@ public:
         mReleasedSelection = sel;
     }
 
-    const std::string &getItemString(const int sel) const
+    const std::string &getItemString(const unsigned int sel) const
     {
         return mItemList[sel].mText;
     }
@@ -82,9 +87,7 @@ private:
 
     std::vector<item> mItemList;
 
-#ifndef DISABLE_HOVER
     int mHoverSelection = 0;
-#endif
     int mPressedSelection = -1;
     int mReleasedSelection = -1;
     
@@ -97,4 +100,4 @@ private:
 
 };
 
-#endif /* CGUITEXTSELECTIONLIST_H_ */
+#endif /* CGUITEXTSELECTIONLIST_H */

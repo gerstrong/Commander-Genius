@@ -524,7 +524,7 @@ Logger errors(-1,-1,1, "E: ");
 #include <android/log.h>
 #endif
 
-static SDL_mutex* globalCoutMutex = NULL;
+static SDL_mutex* globalCoutMutex = nullptr;
 
 Logger::Logger(int o, int ingame, int callst, const std::string& p)
 : minCoutVerb(o), minIngameConVerb(ingame), minCallstackVerb(callst), prefix(p), lastWasNewline(true), mutex(NULL) {
@@ -534,10 +534,10 @@ Logger::Logger(int o, int ingame, int callst, const std::string& p)
 }
 
 Logger::~Logger() {
-	SDL_DestroyMutex(mutex); mutex = NULL;
+    SDL_DestroyMutex(mutex); mutex = nullptr;
 	if(globalCoutMutex) {
 		SDL_DestroyMutex(globalCoutMutex);
-		globalCoutMutex = NULL;
+        globalCoutMutex = nullptr;
 	}
 }
 
@@ -551,8 +551,9 @@ void Logger::unlock() {
 
 static void CoutPrint(const std::string& str) {
 	// TODO: We have used std::cout here before but it doesn't seem to work after a while for some reason.
-	printf("%s", str.c_str());
-#ifdef ANDROID
+	printf("%s", str.c_str());    
+
+#ifdef ANDROID    
     __android_log_print(ANDROID_LOG_INFO, "Commander Genius","%s", str.c_str());
 #endif
 }

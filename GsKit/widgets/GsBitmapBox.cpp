@@ -12,6 +12,11 @@
 #include "GsBitmapBox.h"
 
 
+CGUIBitmap::CGUIBitmap(const GsRect<float> &rect) :
+    GsControl(rect)
+{}
+
+
 CGUIBitmap::CGUIBitmap(std::shared_ptr<GsBitmap> &bmpPtr)
 {
     setBitmapPtr(bmpPtr);
@@ -21,6 +26,9 @@ void CGUIBitmap::setBitmapPtr(std::shared_ptr<GsBitmap> &bmpPtr)
 {
     if(bmpPtr)
     {
+        if(bmpPtr == mpBitmap)
+            return;
+
         mpBitmap = bmpPtr;
 
         // copy the bitmap
@@ -75,34 +83,39 @@ void CGUIBitmap::processLogic()
 
 void CGUIBitmap::processRender(const GsRect<float> &RectDispCoordFloat)
 {    
-    /*
+    // Check for loaded and valid bitmap object data
     if(!mScaledBitmapPtr)
-    {
         return;
-    }
 
     if(mScaledBitmapPtr->empty())
-    {
         return;
-    }
+
+    // Transform to the display coordinates
+    auto displayRect = mRect;
+
+    displayRect.transform(RectDispCoordFloat);
+    auto lRect = displayRect.SDLRect();
 
 	// Transform to the display coordinates
-	GsRect<float> displayRect = mRect;
-	displayRect.transform(RectDispCoordFloat);
-    GsRect<Uint16> lRect = displayRect.SDLRect();
+    /*GsRect<float> displayRect = mRect;
+    displayRect.transform(RectDispCoordFloat);
+    GsRect<Uint16> lRect = displayRect.SDLRect();*/
 
-    if( mScaledBitmapPtr->width()  != lRect.dim.x ||
+    if( mScaledBitmapPtr->width()  != lRect.w ||
         mScaledBitmapPtr->height() != lRect.h )
     {
         // copy the bitmap
         mScaledBitmapPtr.reset(new GsBitmap);
+
+        // Copy original into buffer
         *mScaledBitmapPtr = *mpBitmap;
+
         lRect.x = 0;    lRect.y = 0;
         mScaledBitmapPtr->scaleTo(lRect);
     }
     else
     {
         mScaledBitmapPtr->draw( lRect.x, lRect.y );
-    }*/
+    }
 }
 

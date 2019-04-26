@@ -21,7 +21,7 @@ class GsEngine
 {
 
 public:
-    virtual ~GsEngine() {}
+    virtual ~GsEngine();
 
     /**
      * @brief start Usually this is started before anything else but still after the construction.

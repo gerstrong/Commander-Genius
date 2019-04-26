@@ -35,9 +35,6 @@ public:
 	 * What happens if the slug gets touched by another object
 	 */
     void getTouchedBy(CSpriteObject &theObject) override;
-
-private:
-	int mTimer;
   
 };
 

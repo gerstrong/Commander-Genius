@@ -14,6 +14,9 @@ CConfiguration::CConfiguration(const std::string& filename) :
 IniReader(filename)
 {}
 
+CConfiguration::~CConfiguration()
+{}
+
 bool CConfiguration::saveCfgFile()
 {
 	std::ofstream file;

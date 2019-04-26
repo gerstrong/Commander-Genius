@@ -11,16 +11,16 @@
 #include <base/PointDevice.h>
 #include <base/utils/Color.h>
 
-
 #include "GsTextSelectionList.h"
 
-
-CGUITextSelectionList::CGUITextSelectionList()  :
+CGUITextSelectionList::CGUITextSelectionList(const GsRect<float> &rect)  :
+    GsControl(rect),
     mScrollbar(this)
 {
     GsRect<float> scrollRect(0.0f, 0.0f, 0.1f, 1.0f);
     mScrollbar.setRect(scrollRect);
 }
+
 
 void CGUITextSelectionList::setConfirmButtonEvent(CEvent *ev)
 {
@@ -100,7 +100,9 @@ void CGUITextSelectionList::addText(const std::string &text)
 void CGUITextSelectionList::processLogic()
 {
     if(!mEnabled)
-        return;        
+    {
+        return;
+    }
 
     /// Some logic for colors so we get nice fancy effects
     auto it = mItemList.begin();
@@ -137,7 +139,7 @@ void CGUITextSelectionList::processLogic()
 #endif
     }
 
-
+/*
     /// Here we check if the mouse-cursor/Touch entry clicked on something!!
     const float bw = gVideoDriver.getGameResolution().dim.x;
     const float bh = gVideoDriver.getGameResolution().dim.y;
@@ -155,24 +157,26 @@ void CGUITextSelectionList::processLogic()
 
     const float textHeight = (pixth+mBorderHeight);
 
-    const float y_innerbound_min = fy /*+ static_cast<float>(textHeight)/bh*/;
+    const float y_innerbound_min = fy ;
 	const float y_innerbound_max = y_innerbound_min +
             static_cast<float>( mItemList.size()*textHeight )/bh;
 
     const float x_innerbound_min = fx + static_cast<float>(textHeight)/bw;
 
 
-    GsRect<float> rRect(fx, fy, fw, fh);
+
+
+    GsRect<float> rRect(fx, fy, fw, fh);        
 
     GsPointingState &pointingState = gPointDevice.mPointingState;
 
-    processPointingState();        
+    //processPointingState();
 
     const GsVec2D<float> mousePos = pointingState.mPos;
 
     if( rRect.HasPoint(mousePos) )
     {
-        // Let scrollbar do it's work
+        // Let scrollbar do its work
         mScrollbar.processLogic();
 
         if( mousePos.y > fy && mousePos.y < y_innerbound_max )
@@ -181,7 +185,7 @@ void CGUITextSelectionList::processLogic()
 
             if( mousePos.x > x_innerbound_min && mousePos.y > y_innerbound_min)
             {
-                /*
+
                 if(mHoverTriggers)
                 {
                     if(mHovered)
@@ -192,7 +196,7 @@ void CGUITextSelectionList::processLogic()
                     }
                 }
                 else*/
-                {
+/*                {
 #ifndef DISABLE_HOVER
                     if(mHovered)
                     {
@@ -218,7 +222,84 @@ void CGUITextSelectionList::processLogic()
 #endif
         mPressedSelection = -1;
     }
+    */
 }
+
+
+void CGUITextSelectionList::processPointingStateRel(const GsRect<float> &rect)
+{
+    const auto absRect = rect.transformed(mRect);
+    processPointingState(absRect);
+
+    GsFontLegacy &Font = gGraphics.getFont(mFontID);
+    const int pixth = Font.getPixelTextHeight();
+
+    const auto halfBorderHeight = (mBorderHeight/2);
+
+    const float textHeight = (pixth+mBorderHeight);
+
+    const float bw = gVideoDriver.getGameResolution().dim.x;
+    const float bh = gVideoDriver.getGameResolution().dim.y;
+
+    const float fx = absRect.pos.x;
+    const float fw = absRect.dim.x;
+    const float fy = absRect.pos.y;
+    const float fh = absRect.dim.y;
+
+    const float y_innerbound_min = fy /*+ static_cast<float>(textHeight)/bh*/;
+    const float y_innerbound_max = y_innerbound_min +
+            static_cast<float>( mItemList.size()*textHeight )/bh;
+
+    const float x_innerbound_min = fx + static_cast<float>(textHeight)/bw;
+
+
+    GsRect<float> rRect(fx, fy, fw, fh);
+
+    GsPointingState &pointingState = gPointDevice.mPointingState;
+
+    //processPointingState();
+
+    const GsVec2D<float> mousePos = pointingState.mPos;
+
+    if( rRect.HasPoint(mousePos) )
+    {
+        // Let scrollbar do its work
+        mScrollbar.processLogic();
+
+        if( mousePos.y > fy && mousePos.y < y_innerbound_max )
+        {
+            int newselection = ( ((mousePos.y-fy)*bh- halfBorderHeight )/textHeight) + mScrollbar.scrollPos();
+
+            if( mousePos.x > x_innerbound_min && mousePos.y > y_innerbound_min)
+            {
+                {
+#ifndef DISABLE_HOVER
+                    if(mHovered)
+                    {
+                        mHoverSelection = newselection;
+                    }
+#endif
+                    if(mPressed)
+                    {
+                        mPressedSelection = newselection;
+                    }
+                    if(mReleased)
+                    {
+                        mReleasedSelection = newselection;
+                    }
+                }
+            }
+        }
+    }
+    else
+    {
+        mHoverSelection = -1;
+        mPressedSelection = -1;
+    }
+
+
+}
+
 
 void CGUITextSelectionList::processRender(const GsRect<float> &RectDispCoordFloat)
 {

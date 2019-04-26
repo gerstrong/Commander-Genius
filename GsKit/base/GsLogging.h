@@ -12,8 +12,6 @@
 #include <string>
 #include <fstream>
 
-const std::string APP_NAME = "Commander Genius";
-
 // Singleton macro
 #define  gLogging (CLogFile::get())
 

@@ -65,6 +65,7 @@ public:
 
             mpButtonList.push_back( button );
             mpMenuDialog->addControl( mpButtonList.back() );
+            mpMenuDialog->fit();
         }
     }
 
@@ -89,7 +90,9 @@ public:
         setMenuLabel("NEWGAMELABEL");
 
         mpMenuDialog->setSelection(1);
-    }
+
+        mpMenuDialog->fit();
+    }        
 };
 
 
@@ -105,7 +108,7 @@ public:
 
 private:
 
-    CGUIBitmap *mBmpBox;
+    std::shared_ptr<CGUIBitmap> mpBmpBox;
 
     std::vector< std::shared_ptr<GsBitmap> > mpPlayerBmpVec;
 
@@ -113,10 +116,8 @@ private:
 
     int mCurIdx = 0;
 
-    //ComboSelection *mpComboSelection = nullptr;
-
-    GameButton *mpGameButton = nullptr;
-    GameButton *mpChangeButton = nullptr;
+    std::shared_ptr<GameButton> mpGameButton;
+    std::shared_ptr<GameButton> mpChangeButton;
 
 };
 

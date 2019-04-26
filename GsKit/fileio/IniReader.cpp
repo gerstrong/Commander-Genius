@@ -30,7 +30,7 @@ IniReader::~IniReader() {}
 bool IniReader::Parse()
 {
 	FILE* f = OpenGameFile(m_filename, "r");
-	if(f == NULL)
+    if(f == nullptr)
 		return false;
 
 	bool res = true;

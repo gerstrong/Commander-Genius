@@ -13,6 +13,7 @@
 #include <base/CInput.h> // for CInput::renderOverlay
 #include "graphics/GsGraphics.h"
 #include <base/GsLogging.h>
+#include <base/GsApp.h>
 
 
 // gamerect is the base resolution for the game which is scaled with the filter
@@ -27,10 +28,10 @@ m_GamePOTScaleDim(getPowerOfTwo(m_GameScaleDim.w), getPowerOfTwo(m_GameScaleDim.
 
 void COpenGL::setUpViewPort(const GsRect<Uint16> &newDim)
 {
-    const float width = static_cast<float>(newDim.dim.x);
-    const float height = static_cast<float>(newDim.dim.y);
-    const float ypos = static_cast<float>(newDim.pos.y);
-    const float xpos = static_cast<float>(newDim.pos.x);
+    const auto width = static_cast<GLsizei>(newDim.dim.x);
+    const auto height = static_cast<GLsizei>(newDim.dim.y);
+    const auto ypos = static_cast<GLint>(newDim.pos.y);
+    const auto xpos = static_cast<GLint>(newDim.pos.x);
 
     glViewport(xpos, ypos, width, height);
 }
@@ -104,7 +105,7 @@ bool COpenGL::init()
 
     // Set by user the chosen filter
     GLint oglfilter = GL_LINEAR;
-    if(m_VidConfig.mRenderScQuality == "nearest")
+    if(m_VidConfig.mRenderScQuality == CVidConfig::RenderQuality::NEAREST)
     {
         oglfilter = GL_NEAREST;
     }
@@ -129,7 +130,7 @@ bool COpenGL::init()
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 
 
-    window = SDL_CreateWindow("Commander Genius",
+    window = SDL_CreateWindow(gApp.getName().c_str(),
                               SDL_WINDOWPOS_CENTERED,
                               SDL_WINDOWPOS_CENTERED,
                               m_VidConfig.mDisplayRect.dim.x,

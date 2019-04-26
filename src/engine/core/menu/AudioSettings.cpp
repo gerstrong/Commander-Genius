@@ -50,6 +50,7 @@ GameMenu(GsRect<float>(0.075f, 0.24f, 0.85f, 0.4f), style )
 
 	setMenuLabel("SNDEFFMENULABEL");
 
+    mpMenuDialog->fit();
 }
 
 

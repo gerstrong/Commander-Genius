@@ -19,7 +19,10 @@ class CGUIBitmap : public GsControl
 {
 public:
 
-    // Create an empty bitmap
+
+    CGUIBitmap(const GsRect<float> &rect);
+
+    // Create an empty bitmap. TODO: Must become deprecated
     CGUIBitmap() {}
 
 	// Loads an Bitmap that is given directly
@@ -36,7 +39,6 @@ public:
 	void processLogic();
 
 	void processRender(const GsRect<float> &RectDispCoordFloat);
-
 
 private:
 

@@ -151,7 +151,7 @@ void CTextViewer::formatText(const std::string &text)
 			}
 			
             while( textitem.size() < (unsigned int)((m_w-1)/m_8x8tilewidth) ) // if the text is smaller than the width of the textbox, fill it with grey background
-                textitem.push_back(' ' + 128);
+                textitem.push_back( char(' ' + 128) );
 		}
 	}
 }

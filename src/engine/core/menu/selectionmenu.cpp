@@ -34,31 +34,31 @@ CPlayerSpriteVarSelection(const GsControl::Style style) :
 
     if(!mpPlayerBmpVec.empty())
     {
-        mBmpBox = new CGUIBitmap(mpPlayerBmpVec[0]);
+        mpBmpBox =
+        mpMenuDialog->addControl( new CGUIBitmap(mpPlayerBmpVec[0]));
 
-        mpMenuDialog->addControl( mBmpBox,
-                                  GsRect<float>(0.17f, 0.21f,
-                                                0.24f, 0.32f));
+        mpBmpBox->setRect( GsRect<float>(0.17f, 0.21f,
+                                               0.24f, 0.32f) );
     }
 
 
-    mpChangeButton = new GameButton( "Change",
-                                   new ChangeEvent(*this),
-                                   style);
+    mpChangeButton =
+    mpMenuDialog->addControl(
+                new GameButton( "Change",
+                         new ChangeEvent(*this), style));
 
-    mpMenuDialog->addControl( mpChangeButton,
-                              GsRect<float>(0.17f, 0.66f,
-                                            0.8f, 0.1f));
-
-    mpGameButton = new GameButton( "Start",
-                                   new SelectPlayerSpriteVarEvent(mCurIdx),
-                                   style);
-
-    mpMenuDialog->addControl( mpGameButton,
-                              GsRect<float>(0.17f, 0.81f,
-                                            0.8f, 0.1f));
+    mpChangeButton->setRect( GsRect<float>(0.17f, 0.66f,
+                                         0.8f, 0.1f) );
 
 
+    mpGameButton =
+    mpMenuDialog->addControl(
+                new GameButton( "Start",
+                      new SelectPlayerSpriteVarEvent(mCurIdx),style));
+
+
+    mpGameButton->setRect( GsRect<float>(0.17f, 0.81f,
+                                         0.8f, 0.1f) );
 }
 
 
@@ -73,7 +73,7 @@ changeEvent()
         mCurIdx = 0;
     }
 
-    mBmpBox->setBitmapPtr(mpPlayerBmpVec[mCurIdx]);
+    mpBmpBox->setBitmapPtr(mpPlayerBmpVec[mCurIdx]);
 
     // Change data in the event of the game button
     auto event = mpGameButton->event();
@@ -126,7 +126,7 @@ ponder(const float deltaT)
 
     if(update)
     {
-        mBmpBox->setBitmapPtr(mpPlayerBmpVec[mCurIdx]);
+        mpBmpBox->setBitmapPtr(mpPlayerBmpVec[mCurIdx]);
     }
 
     // Change data in the event of the game button

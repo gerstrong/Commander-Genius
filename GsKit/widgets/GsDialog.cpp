@@ -353,8 +353,13 @@ void CGUIDialog::processLogic()
         }
     }
 
+    if(!mEnabled)
+    {
+        return;
+    }
+
     // Try to get a control that is waiting for input to be typed
-    CGUIInputText *pInputCtrl = nullptr;    
+    CGUIInputText *pInputCtrl = nullptr;
     for( auto &it : getControlList() )
     {
         GsControl *ctrl = it.get();
@@ -362,43 +367,41 @@ void CGUIDialog::processLogic()
         if(pInputCtrl)
         {
             if(pInputCtrl->Typing())
-               break;
+                break;
             pInputCtrl = nullptr;
         }
     }
 
     processPointingState(mRect);
 
-    // Relative coordinate system for the controls
-    //auto relCoordsCtrls = transformUp(mRect);
-
     if(pInputCtrl != nullptr)
     {
         pInputCtrl->processLogic();
+        return;
     }
-    else
+
+    // Process the subcontrols inputs
+    int sel = 0;
+    for( auto &it : getControlList() )
     {
+        GsControl *ctrl = it.get();
 
-        // Process the subcontrols its logic
-        int sel = 0;
-        for( auto &it : getControlList() )
+        ctrl->processPointingStateRel(mRect);
+        ctrl->processLogic();
+
+        if( dynamic_cast<GsButton*>(ctrl) ||
+                dynamic_cast<CGUIInputText*>(ctrl) )
         {
-            GsControl *ctrl = it.get();                        
-
-            ctrl->processPointingStateRel(mRect);
-            ctrl->processLogic();
-
-            if( dynamic_cast<GsButton*>(ctrl) || dynamic_cast<CGUIInputText*>(ctrl) )
+            if( ctrl->isSelected() )
             {
-                if( ctrl->isSelected() )
-                {
-                    setCurrentControl(ctrl);
-                    setSelection(sel);
-                }
+                setCurrentControl(ctrl);
+                setSelection(sel);
             }
-            sel++;
         }
+        sel++;
     }
+
+
 }
 
 void CGUIDialog::processRendering()
@@ -411,14 +414,25 @@ void CGUIDialog::processRender(const GsRect<float> &RectDispCoordFloat)
     GsWeakSurface weakBlit(gVideoDriver.getBlitSurface());
     SDL_Surface *bgSfc = mBackgroundSfc.getSDLSurface();
 
-    if(mBackgroundSfc)
-    {
+    SDL_Rect lRect = gVideoDriver.toBlitRect(mRect);
 
-        SDL_Rect lRect;
+    if(mBackgroundSfc)
+    {        
+        // Check if the dimension are still correct.
+        // They might be wrong when the resolution changed.
+
+        const auto bgRectW = mBackgroundSfc.getSDLSurface()->w;
+        const auto bgRectH = mBackgroundSfc.getSDLSurface()->h;
+
+        if(bgRectW != lRect.w || bgRectH != lRect.h)
+        {
+            initEmptyBackground();
+            return;
+        }
+
 
         if( mFXSetup == FXKind::NONE )
         {
-            lRect = gVideoDriver.toBlitRect(mRect);
             BlitSurface( bgSfc, nullptr, weakBlit.getSDLSurface(), &lRect );
         }
         else
@@ -426,7 +440,6 @@ void CGUIDialog::processRender(const GsRect<float> &RectDispCoordFloat)
 
             if( mFXhStep == 0 && mFXvStep == 0 )
             {
-                lRect = gVideoDriver.toBlitRect(mRect);
                 BlitSurface( bgSfc, nullptr, weakBlit.getSDLSurface(), &lRect );
             }
             else
@@ -481,10 +494,26 @@ void CGUIDialog::processRender(const GsRect<float> &RectDispCoordFloat)
     {
         it->processRender(displayRect);
     }
+
+    // If Dialog is disabled, make everthing within a bit darker.
+    if(!mEnabled)
+    {
+        // Not yet created, create one
+        if(!mDarkOverlaySfc)
+        {
+            const SDL_Rect lRect = gVideoDriver.toBlitRect(mRect);
+
+            mDarkOverlaySfc.create(0, lRect.w, lRect.h, RES_BPP, 0, 0, 0, 0);
+            mDarkOverlaySfc.fillRGB(0, 0, 0);
+            mDarkOverlaySfc.setAlpha(128);
+        }
+
+        mDarkOverlaySfc.blitTo(weakBlit, lRect);
+    }
 }
 
 
-void CGUIDialog::processRendering(SDL_Surface *blit)
+void CGUIDialog::processRendering(SDL_Surface*)
 {
     GsRect<Uint16> GameRes = gVideoDriver.getGameResolution();
     GsRect<float> screenRect(0, 0, GameRes.dim.x, GameRes.dim.y);

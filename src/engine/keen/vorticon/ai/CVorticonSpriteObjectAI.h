@@ -5,8 +5,8 @@
  *      Author: gerstrong
  */
 
-#ifndef __CVORTICONSPRITEOBJECTAI_H_
-#define __CVORTICONSPRITEOBJECTAI_H_
+#ifndef CVORTICONSPRITEOBJECTAI_H
+#define CVORTICONSPRITEOBJECTAI_H
 
 #include "engine/core/CMap.h"
 #include "engine/core/CSpriteObject.h"
@@ -132,7 +132,7 @@ private:
 	int m_Level;
 	int m_Episode;
 	int m_gunfiretimer;
-	bool &m_dark;
+    //bool &m_dark;
 };
 
-#endif // __CVORTICONSPRITEOBJECTAI_H_
+#endif // CVORTICONSPRITEOBJECTAI_H

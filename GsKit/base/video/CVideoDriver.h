@@ -17,6 +17,7 @@
 #include <base/GsEvent.h>
 #include <graphics/GsTexture.h>
 #include <queue>
+#include <set>
 
 #ifdef USE_OPENGL
     #include <base/video/COpenGL.h>
@@ -34,7 +35,6 @@
 class CVideoDriver : public GsSingleton<CVideoDriver>
 {
 public:
-	CVideoDriver();
 	~CVideoDriver();
 
     bool init();
@@ -89,7 +89,7 @@ public:
 
     short getZoomValue()
     {
-        return mVidConfig.Zoom;
+        return static_cast<short>(mVidConfig.Zoom);
     }
 
 
@@ -124,8 +124,12 @@ public:
 
 	SDL_Surface *getScrollSurface(void);
 
+    std::set<std::string> getResolutionStrSet();
+    std::set<std::string> getGameResStrSet();
+    std::set<std::string> getAspectStrSet();
+
 	void setVidConfig(const CVidConfig& VidConf);
-	void setMode(int width, int height,int depth);
+    void setMode(const int width, const int height);
 	void setMode(const GsRect<Uint16>& res);
     void setFilter(const filterOptionType value);
 	void setScaleType(bool IsNormal);
@@ -136,7 +140,8 @@ public:
     void enableOpenGL(bool ) { mVidConfig.mOpengl = false; }
 #endif
 
-    void setRenderQuality(const std::string &value) { mVidConfig.mRenderScQuality = value; }
+    void setRenderQuality(const CVidConfig::RenderQuality &value)
+    { mVidConfig.mRenderScQuality = value; }
 
 	/*
 	 * \brief Check whether this resolution is okay to be used or needs some adjustments if possible.
@@ -148,10 +153,10 @@ public:
 	 * \return nothing. It does not return because it always adapts the resolution to some working mode.
 	 *         If video cannot be opened at all, another function of LibSDL will find that out.
 	 */
-	void verifyResolution( GsRect<Uint16>& resolution, const int flags );
-	GsRect<Uint16>& getResolution() const { return *m_Resolution_pos; }
+    void verifyResolution( GsVec2D<Uint16>& resolution, const int flags );
+    GsVec2D<Uint16> getResolution() const { return *mResolutionPos; }
 
-	void initResolutionList();
+    bool initResolutionList();
 
 	void setAspectCorrection(const int w, const int h) 
 	{ 
@@ -205,15 +210,18 @@ public:
 
 	std::unique_ptr<CVideoEngine> mpVideoEngine;
 
-	std::list< GsRect<Uint16> > m_Resolutionlist;
-	std::list< GsRect<Uint16> > :: iterator m_Resolution_pos;
+    std::set< GsVec2D<Uint16> > mResolutionSet;
+    std::set< GsVec2D<Uint16> > :: iterator mResolutionPos;
 
+    std::set< GsVec2D<Uint16> > mGameReslist;
+
+    std::set<std::string> mAspectSet;
 
 private:
 
 	CVidConfig mVidConfig;
-	bool m_mustrefresh;
-	bool mSDLImageInUse;    
+    bool m_mustrefresh = false;
+    bool mSDLImageInUse = false;
 
 };
 #endif /* CVIDEODRIVER_H_ */

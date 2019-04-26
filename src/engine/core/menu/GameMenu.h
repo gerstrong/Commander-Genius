@@ -15,44 +15,43 @@ public:
         mStyle(style)
     {
         if(style == GsControl::GALAXY)
-        {
-            GsRect<float> localRect(0.3f, 0.282f, 0.6f, 0.5f);
-            mpMenuDialog->setRect(localRect);
+        {            
+            GsRect<float> dlgRect(0.3f, 0.282f, 0.6f, 0.5f);
+            mpMenuDialog->setRect(dlgRect);
 
-            mpReturnButton = new GameButton( "close",
-                                             new CloseMenuEvent(),
-                                             style);
+            mpReturnButton =
+                mpMenuDialog->addControl( new GameButton( "close",
+                                                      new CloseMenuEvent(),
+                                                      style) );
 
-
-            mpMenuDialog->addControl( mpReturnButton,
-                                      GsRect<float>(0.01f, 0.01f,
-                                                    0.15f/localRect.dim.x,
-                                                    0.08f/localRect.dim.y) );
+            mpReturnButton->setRect(GsRect<float>(0.01f, 0.01f,
+                                                  0.15f/dlgRect.dim.x,
+                                                  0.05f/dlgRect.dim.y));
 
         }
         else if(style == GsControl::VORTICON)
         {
-            GsRect<float> localRect(0.15f, 0.282f, 0.70f, 0.5f);
-            mpMenuDialog->setRect(localRect);
+            GsRect<float> dlgRect(0.15f, 0.282f, 0.70f, 0.5f);
+            mpMenuDialog->setRect(dlgRect);
 
 
-            mpReturnButton = new GsButton( "close",
-                                           localRect,
-                                           new CloseMenuEvent(),
-                                           GsControl::Style::NONE);
+            GsRect<float> buttonRect(-0.05f, -0.05f,
+                                     0.15f/dlgRect.dim.x,
+                                     0.08f/dlgRect.dim.y);
 
-            mpMenuDialog->addControl( mpReturnButton,
-                                      GsRect<float>(-0.05f, -0.05f,
-                                                    0.15f/localRect.dim.x,
-                                                    0.08f/localRect.dim.y) );
+            mpReturnButton =
+            mpMenuDialog->addControl( new GsButton( "close",
+                                                    buttonRect,
+                                                    new CloseMenuEvent(),
+                                                    GsControl::Style::NONE) );
         }
         else
         {
-            GsRect<float> localRect(0.15f, 0.282f, 0.70f, 0.5f);
-            mpMenuDialog->setRect(localRect);
+            //GsRect<float> localRect(0.15f, 0.282f, 0.70f, 0.5f);
+            //mpMenuDialog->setRect(localRect);
 
 
-            mpReturnButton = new GsButton( "x",
+/*            mpReturnButton = new GsButton( "x",
                                            localRect,
                                            new CloseMenuEvent(),
                                            GsControl::Style::NONE);
@@ -61,6 +60,20 @@ public:
                                       GsRect<float>(-0.05f, -0.05f,
                                                     0.08f/localRect.dim.x,
                                                     0.08f/localRect.dim.y) );
+                                                    */
+
+            const auto localRect = mpMenuDialog->getRect();
+
+            mpReturnButton =
+
+            mpMenuDialog->addControl(
+                        new GsButton( "x",
+                                      GsRect<float>(-0.05f, -0.05f,
+                                                    0.06f/localRect.dim.x,
+                                                    0.06f/localRect.dim.y),
+                                                    new CloseMenuEvent(),
+                                                    GsControl::Style::NONE) );
+
         }
 
 
@@ -68,24 +81,25 @@ public:
 
         if(style == GsControl::GALAXY)
         {
-            createGalaxyBackground();
+            initBackground = &GameMenu::initGalaxyBackground;
         }
         else if(style == GsControl::VORTICON)
         {
-            initVorticonBackground();
+            initBackground = &GameMenu::initVorticonBackground;
         }
         else
         {
-            initBackgroundNoStyle();
+            initBackground = &GameMenu::initBackgroundNoStyle;
         }
-        
+
+        (this->*initBackground)();
     }
 
-    void createGalaxyBackground();
-
+    void initGalaxyBackground();
     void initVorticonBackground();
-
     void initBackgroundNoStyle();
+
+    void (GameMenu::*initBackground) ();
 
     void setProperty( const Property newProperty ) override
     {
@@ -105,6 +119,7 @@ public:
 
 private:
     GsSurface mBackground;
+    GsRect<int> mCachedBgRect;
     
     const GsControl::Style mStyle;
 

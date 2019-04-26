@@ -87,7 +87,15 @@ bool CSettings::saveDrvCfg()
         Configuration.WriteInt("Video", "gameHeight", VidConf.mGameRect.dim.y);
 
         Configuration.WriteInt("Video", "scale", VidConf.Zoom);
-        Configuration.WriteString("Video", "OGLfilter", VidConf.mRenderScQuality );
+
+
+        const std::string oglFilter =
+                (VidConf.mRenderScQuality == CVidConfig::RenderQuality::LINEAR) ?
+                "linear" : "nearest";
+
+        Configuration.WriteString("Video", "OGLfilter", oglFilter );
+
+
         Configuration.WriteInt("Video", "filter", VidConf.m_ScaleXFilter);
         Configuration.WriteString("Video", "scaletype", VidConf.m_normal_scale ? "normal" : "scalex" );
         Configuration.WriteInt("Video", "fps", gTimer.FPS());
@@ -142,26 +150,27 @@ bool CSettings::saveDrvCfg()
  */
 bool CSettings::loadDrvCfg()
 {
-	CConfiguration Configuration(CONFIGFILENAME);
+    CConfiguration config(CONFIGFILENAME);
 
-    if(!Configuration.Parse())
+    CVidConfig VidConf;
+
+    if(!config.Parse())
     {
         return false;
     }
 	else
-	{
-		CVidConfig VidConf;
+	{		
         GsRect<Uint16> &res = VidConf.mDisplayRect;
         GsRect<Uint16> &gamesRes = VidConf.mGameRect;
         int value = 0;
-        Configuration.ReadInteger("Video", "width", &value, 320);
+        config.ReadInteger("Video", "width", &value, 320);
         res.dim.x = value;
-        Configuration.ReadInteger("Video", "height", &value, 200);
+        config.ReadInteger("Video", "height", &value, 200);
         res.dim.y = value;
 
-        Configuration.ReadInteger("Video", "gameWidth", &value, 320);
+        config.ReadInteger("Video", "gameWidth", &value, 320);
         gamesRes.dim.x = value;
-        Configuration.ReadInteger("Video", "gameHeight", &value, 200);
+        config.ReadInteger("Video", "gameHeight", &value, 200);
         gamesRes.dim.y = value;
 
         if(res.dim.x*res.dim.y <= 0)
@@ -170,23 +179,23 @@ bool CSettings::loadDrvCfg()
 			return false;
 		}
 
-		Configuration.ReadKeyword("Video", "fullscreen", &VidConf.mFullscreen, false);
-		Configuration.ReadInteger("Video", "scale", &value, 1);
+        config.ReadKeyword("Video", "fullscreen", &VidConf.mFullscreen, false);
+        config.ReadInteger("Video", "scale", &value, 1);
 		VidConf.Zoom = value;
 
 
 		std::string arcStr;
-		Configuration.ReadString("Video", "aspect", arcStr, "none");
-        VidConf.mAspectCorrection.dim.x = VidConf.mAspectCorrection.dim.y = 0;
+        config.ReadString("Video", "aspect", arcStr, "none");
+        VidConf.mAspectCorrection.dim = 0;
         sscanf( arcStr.c_str(), "%i:%i", &VidConf.mAspectCorrection.dim.x,
                                          &VidConf.mAspectCorrection.dim.y );
 
-		Configuration.ReadKeyword("Video", "vsync", &VidConf.mVSync, true);
-		Configuration.ReadInteger("Video", "filter", &value, 1);
+        config.ReadKeyword("Video", "vsync", &VidConf.mVSync, true);
+        config.ReadInteger("Video", "filter", &value, 1);
         VidConf.m_ScaleXFilter = static_cast<filterOptionType>(value);
 
 		std::string scaleType;
-		Configuration.ReadString("Video", "scaletype", scaleType, "normal");
+        config.ReadString("Video", "scaletype", scaleType, "normal");
 		VidConf.m_normal_scale = (scaleType == "normal");
 
 		// if ScaleX is one and scaletype is not at normal, this is wrong.
@@ -197,58 +206,67 @@ bool CSettings::loadDrvCfg()
 		}
 
 
-        Configuration.ReadKeyword("Video", "OpenGL", &VidConf.mOpengl, true);
-        Configuration.ReadString("Video", "OGLfilter",  VidConf.mRenderScQuality, "nearest");
+        config.ReadKeyword("Video", "OpenGL", &VidConf.mOpengl, true);
+
+        std::string oglFilter;
+        config.ReadString("Video", "OGLfilter", oglFilter, "nearest");
+
+        VidConf.mRenderScQuality =
+                (oglFilter == "linear") ?
+                    CVidConfig::RenderQuality::LINEAR :
+                    CVidConfig::RenderQuality::NEAREST;
+
 #ifdef VIRTUALPAD
-        Configuration.ReadKeyword("Video", "VirtPad", &VidConf.mVPad, VidConf.mVPad);
-        Configuration.ReadInteger("Video", "VirtPadSize", &VidConf.mVPadSize, VidConf.mVPadSize);
+        config.ReadKeyword("Video", "VirtPad", &VidConf.mVPad, VidConf.mVPad);
+        config.ReadInteger("Video", "VirtPadSize", &VidConf.mVPadSize, VidConf.mVPadSize);
 #endif
-        Configuration.ReadKeyword("Video", "ShowCursor", &VidConf.mShowCursor, true);
-        Configuration.ReadKeyword("Video", "TiltedScreen", &VidConf.mTiltedScreen, false);
+        config.ReadKeyword("Video", "ShowCursor", &VidConf.mShowCursor, true);
+        config.ReadKeyword("Video", "TiltedScreen", &VidConf.mTiltedScreen, false);
 
 
 		st_camera_bounds &CameraBounds = VidConf.m_CameraBounds;
-		Configuration.ReadInteger("Bound", "left", &CameraBounds.left, 152);
-		Configuration.ReadInteger("Bound", "right", &CameraBounds.right, 168);
-		Configuration.ReadInteger("Bound", "up", &CameraBounds.up, 92);
-		Configuration.ReadInteger("Bound", "down", &CameraBounds.down, 108);
-		Configuration.ReadInteger("Bound", "speed", &CameraBounds.speed, 20);
+        config.ReadInteger("Bound", "left", &CameraBounds.left, 152);
+        config.ReadInteger("Bound", "right", &CameraBounds.right, 168);
+        config.ReadInteger("Bound", "up", &CameraBounds.up, 92);
+        config.ReadInteger("Bound", "down", &CameraBounds.down, 108);
+        config.ReadInteger("Bound", "speed", &CameraBounds.speed, 20);
 		gVideoDriver.setVidConfig(VidConf);
 
 		int framerate;
-		Configuration.ReadInteger("Video", "fps", &framerate, 60);
+        config.ReadInteger("Video", "fps", &framerate, 60);
 		gTimer.setFPS( framerate );
 
 
 		int audio_rate, audio_channels, audio_format;
 		bool audio_sndblaster;
-		Configuration.ReadInteger("Audio", "rate", &audio_rate, 44000);
-		Configuration.ReadInteger("Audio", "channels", &audio_channels, 2);
-		Configuration.ReadInteger("Audio", "format", &audio_format, AUDIO_U8);
-		Configuration.ReadKeyword("Audio", "sndblaster", &audio_sndblaster, false);
+        config.ReadInteger("Audio", "rate", &audio_rate, 44000);
+        config.ReadInteger("Audio", "channels", &audio_channels, 2);
+        config.ReadInteger("Audio", "format", &audio_format, AUDIO_U8);
+        config.ReadKeyword("Audio", "sndblaster", &audio_sndblaster, false);
         gSound.setSettings(audio_rate, audio_channels, audio_format, audio_sndblaster);
 
 
 		int sound_vol, music_vol;
-		Configuration.ReadInteger("Audio", "musicvol", &music_vol, SDL_MIX_MAXVOLUME);
-		Configuration.ReadInteger("Audio", "soundvol", &sound_vol, SDL_MIX_MAXVOLUME);
+        config.ReadInteger("Audio", "musicvol", &music_vol, SDL_MIX_MAXVOLUME);
+        config.ReadInteger("Audio", "soundvol", &sound_vol, SDL_MIX_MAXVOLUME);
 
         gSound.setMusicVolume(Uint8(music_vol), false);
         gSound.setSoundVolume(Uint8(sound_vol), false);
 
 
 	}
+
 	return true;
 }
 
 void CSettings::loadDefaultGraphicsCfg() //Loads default graphics
 {
-	gVideoDriver.setMode(320,200,32);
+    gVideoDriver.setMode(320,200);
 	gVideoDriver.isFullscreen(false);
 
 #if defined(USE_OPENGL)
-	gVideoDriver.enableOpenGL(false);
-    gVideoDriver.setRenderQuality("linear");
+	gVideoDriver.enableOpenGL(false);           
+    gVideoDriver.setRenderQuality(CVidConfig::RenderQuality::LINEAR);
 #endif
 
 	gVideoDriver.setZoom(1);

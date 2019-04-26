@@ -8,8 +8,8 @@
  *  that can be setup by the user. For the driver code please refer to the CVideoDriver class
  */
 
-#ifndef CVIDCONFIG_H_
-#define CVIDCONFIG_H_
+#ifndef CVIDCONFIG_H
+#define CVIDCONFIG_H
 
 #include <SDL.h>
 #include <base/video/scaler/CScaler.h>
@@ -48,29 +48,33 @@ public:
 	CVidConfig();
 	bool operator==(const CVidConfig& target);
 	bool operator!=(const CVidConfig& target);
-	void reset();
+    void reset();
 
 	void setResolution(const int width, const int height, const int depth);
-	void setResolution(const GsRect<Uint16>& res);
+    void setResolution(const GsVec2D<Uint16> &res);
 
     GsRect<Uint16> mGameRect;	// Also called Screenspace.
     GsRect<Uint16> mDisplayRect; // The Fullscreen-Resolution or the Window Size
 
-    GsColor mBorderColors; /** Colors of the border (Clear colors) */
+    GsColor mBorderColors; // Colors of the border (Clear colors)
     bool mBorderColorsEnabled = false;
 
-    int mHorizBorders = 0; /** Horizontal border bars for a more CRT feeling */
+    int mHorizBorders = 0; // Horizontal border bars for a more CRT feeling
 
     bool mFullscreen = false;
     filterOptionType m_ScaleXFilter;
 	bool m_normal_scale;
+
 	unsigned short Zoom;
+
+
 
 #ifdef USE_OPENGL
     bool mOpengl = true;
 #else
     bool mOpengl = false;
 #endif
+
 
 
 #ifdef VIRTUALPAD
@@ -83,15 +87,22 @@ public:
 #endif
 
 	GsRect<int> mAspectCorrection;
-    bool mVSync;
+
+
+    bool mVSync = false;
+
     bool mShowCursor = true;
 
 	st_camera_bounds m_CameraBounds;
 
     bool mTiltedScreen = false;
 
-    std::string mRenderScQuality = "nearest";
-	
+
+    enum class RenderQuality
+    { NEAREST, LINEAR }
+    mRenderScQuality = RenderQuality::LINEAR;
+
+    //std::string mRenderScQuality = "nearest";
 };
 
-#endif /* CVIDCONFIG_H_ */
+#endif /* CVIDCONFIG_H */

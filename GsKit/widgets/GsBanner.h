@@ -6,7 +6,8 @@
 class CGUIBanner : public CGUIText
 {
 public:
-    CGUIBanner(const std::string& text);
+    CGUIBanner(const std::string& text,
+               const GsRect<float> &rect);
     
     void processLogic();
     void processRender(const GsRect<float> &RectDispCoordFloat);
@@ -15,9 +16,9 @@ public:
 private:    
     std::list<std::string>::iterator curTextIt;
     std::list<std::string>::iterator prevTextIt;
-    bool transition;
-    int timer;
-    uint8_t alpha;
+    bool transition = false;
+    int timer = 0;
+    uint8_t alpha = 0;
 };
 
 #endif // CGUIBANNER_H

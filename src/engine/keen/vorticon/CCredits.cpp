@@ -7,6 +7,7 @@
 
 #include "CCredits.h"
 #include <base/CInput.h>
+#include <base/GsApp.h>
 #include <base/video/CVideoDriver.h>
 #include "graphics/GsGraphics.h"
 #include "CVorticonMapLoader.h"
@@ -29,7 +30,7 @@ void CCredits::init()
     Maploader.load( ExeFile.getEpisode(), 90, gKeenFiles.gameDir );
 	mpMap->gotoPos( 104<<4, 16 );
 	
-	m_scrolltext[0] = "Commander Genius";
+    m_scrolltext[0] = gApp.getName();
 	m_scrolltext[1] = "aka CloneKeenPlus";
 	m_scrolltext[2] = "";
 	m_scrolltext[3] = "";

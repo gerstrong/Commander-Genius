@@ -48,6 +48,21 @@ mBlue(blue),
 mTextWidget(text, GsRect<float>(0.0f, 0.0f, 1.0f, 1.0f))
 {}
 
+GsButton::GsButton(const std::string& text,
+         const GsRect<float> &rect,
+         const std::function <void ()>& f,
+         const Style style,
+         const float red,
+         const float green,
+         const float blue) :
+    GsControl(style, rect),
+    mText(text),
+    mRed(red),
+    mGreen(green),
+    mBlue(blue),
+    mTextWidget(text, GsRect<float>(0.0f, 0.0f, 1.0f, 1.0f)),
+    mFunction(f)
+{}
 
 
 bool GsButton::sendEvent(const InputCommand command)

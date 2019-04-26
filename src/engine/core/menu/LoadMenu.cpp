@@ -68,6 +68,8 @@ GameMenu( GsRect<float>(0.1f, 0.0f, 0.8f, 1.0f),
 	}
 
 	setMenuLabel("LOADMENULABEL");
+
+    mpMenuDialog->fit();
 }
 
 
@@ -103,7 +105,7 @@ void CLoadMenu::refresh()
         itCtrl++;
     }
 
-    for( int j = i ; j<8 ; j++ )
+    for( auto j = i ; j<8 ; j++ )
     {
         std::shared_ptr<GsControl> &ctrl = *itCtrl;
         GsButton *button = dynamic_cast<GsButton*>( ctrl.get() );

@@ -51,7 +51,7 @@ private:
     int destx, desty;
 
     int pausetimer;
-    int pausex, pausey;
+//    int pausex, pausey;
 
     int mortimer_swim_amt;
 	

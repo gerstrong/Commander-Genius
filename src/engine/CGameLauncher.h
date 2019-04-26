@@ -23,6 +23,7 @@
 #include <string>
 #include <vector>
 #include <ostream>
+#include <memory>
 
 #include "core/CResourceLoader.h"
 #include "gamedownloader.h"
@@ -45,18 +46,11 @@ struct GameEntry
     std::string path;
     std::string exefilename;
     std::string name;
-    short version;
-    bool supported;
-    Uint16 episode;
-    bool demo;
-    bool crcpass;
-
-    GameEntry() :  version(0),
-    			   supported(false),
-    			   episode(0),
-    			   demo(false),
-    			   crcpass(false) {}
-
+    short version = 0;
+    bool supported = false;
+    Uint16 episode = 0;
+    bool demo = false;
+    bool crcpass = false;
 };
 
 
@@ -64,9 +58,7 @@ struct GameEntry
 class CGameLauncher : public GsEngine
 {
 public:
-    CGameLauncher(const bool first_time,
-                  const int start_game_no = -1,
-                  const int start_level = -1);
+    CGameLauncher();
 
     ~CGameLauncher() override;
 
@@ -116,8 +108,8 @@ public:
 
 private:
 
-	bool m_mustquit;
-	int m_chosenGame;
+    bool m_mustquit = false;
+    int m_chosenGame = -1;
 
     bool mFinishedDownload = true;
     bool mDownloading = false;
@@ -146,7 +138,6 @@ private:
     std::unique_ptr<CGUIDialog> mpGameStoreDialog;
     std::shared_ptr<CGUIText> mpDloadTitleText;
     std::shared_ptr<CGUIText> mpDDescriptionText;
-    std::shared_ptr<CGUITextSelectionList> mpDloadSelectionList;
     std::shared_ptr<GsButton> mpDloadBack;
     std::shared_ptr<GsButton> mpDloadCancel;
     std::shared_ptr<GsButton> mpDloadDownload;
@@ -163,13 +154,12 @@ private:
     std::shared_ptr<CGUIBitmap> mCurrentBmp;
     std::vector< std::shared_ptr<GsBitmap> > mPreviewBmpPtrVec;
 
-    CGUIText *mpEpisodeText;
-    CGUIText *mpDemoText;
-    CGUIText *mpVersionText;
+    std::shared_ptr<CGUIText> mpEpisodeText;
+    std::shared_ptr<CGUIText> mpDemoText;
+    std::shared_ptr<CGUIText> mpVersionText;
 
-    CGUITextSelectionList *mpGSSelList;
+    std::shared_ptr<CGUITextSelectionList> mpGSSelList;
 
-    CGUITextSelectionList *mpGameSelectionList;
     CGUITextSelectionList *mpPatchSelList;
     CGUITextSelectionList *mpDosExecSelList;
 
@@ -177,11 +167,7 @@ private:
 
     std::vector<std::string> mDosExecStrVec;
 
-    int mSelection;
-
-    bool m_firsttime;
-    int m_start_game_no;
-    int m_start_level;
+    int mSelection = -1;
 
     int mDownloadProgress = 0;
     int mDownloadErrorCode = 0;
@@ -212,8 +198,8 @@ private:
 // This event switches to the GameLauncher
 struct GMSwitchToGameLauncher : SwitchEngineEvent
 {
-    GMSwitchToGameLauncher(	const int ChosenGame=-1, const int StartLevel=-1 ) :
-        SwitchEngineEvent( new CGameLauncher(false, ChosenGame, ChosenGame) )
+    GMSwitchToGameLauncher() :
+        SwitchEngineEvent( new CGameLauncher() )
         { }
 };
 

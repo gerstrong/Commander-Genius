@@ -41,6 +41,7 @@
 #include <base/utils/FindFile.h>
 #include <base/GsApp.h>
 #include <base/GsLogging.h>
+#include <base/GsTTFSystem.h>
 
 #include "engine/CGameLauncher.h"
 
@@ -62,12 +63,14 @@
  */
 int main(int argc, char *argv[])
 {
-
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 #ifdef ANDROID
     SDL_SetMainReady( );
 #endif
 #endif
+
+    const std::string appName = "Commander Genius";
+    gApp.setName(appName);
 
     // Check if CG should look into a given directory
     std::string binary_dir;
@@ -97,21 +100,28 @@ int main(int argc, char *argv[])
     InitThreadPool();
     InitSearchPaths(gSettings.getConfigFileName()); // TODO: Recursive scan bug left, check Issue #353?
 
-    if( !gLogging.CreateLogfile("CGLog.html", APP_NAME, CGVERSION) )
+
+    if( !gLogging.CreateLogfile("CGLog.html", appName, CGVERSION) )
     {
         errors << "Not even able to create \"CGLog.html\"." << endl;
-      return 1;
+        return 1;
     }
 
-
-  // Init Video Driver with SDL all together
-  if( !gVideoDriver.init() )
+    if(!gTTFDriver.init())
     {
-      return 1;
+        return 1;
     }
 
-  // Check if there are settings on the PC, otherwise use defaults.
-  if( !gSettings.loadDrvCfg() )
+
+    // Init Video Driver with SDL all together
+    if( !gVideoDriver.init() )
+    {
+        return 1;
+    }
+
+
+    // Check if there are settings on the PC, otherwise use defaults.
+    if( !gSettings.loadDrvCfg() )
     {
         //m_firsttime = true;
         gLogging.textOut(FONTCOLORS::RED,"First time message: CG didn't find the driver config file. ");
@@ -129,6 +139,7 @@ int main(int argc, char *argv[])
     // Init the Game sound
     gSound.init();
 
+
     ////////////////////////////////////////////////////
     // Initialize CG and run the main cycle if worthy //
     ////////////////////////////////////////////////////
@@ -137,7 +148,7 @@ int main(int argc, char *argv[])
         ////////////////////////////////
         // Set GameLauncher as Engine //
         ////////////////////////////////
-        gApp.setEngine(new CGameLauncher(false));
+        gApp.setEngine(new CGameLauncher());
 
         //////////////////////////////
         // Run the Commander Genius //

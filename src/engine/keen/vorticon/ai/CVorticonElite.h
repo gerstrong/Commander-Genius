@@ -31,7 +31,7 @@ public:
 private:
 	vortelite_actions state;
 
-	unsigned char timer,timer2;
+    unsigned char timer/*, timer2*/;
 	unsigned int animtimer;
 	unsigned char frame;
 	direction_t movedir;

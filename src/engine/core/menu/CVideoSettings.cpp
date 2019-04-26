@@ -7,7 +7,6 @@
 
 #include <base/CInput.h>
 #include <base/GsTimer.h>
-#include <base/video/resolutionlist.h>
 #include <base/video/CVideoDriver.h>
 #include <base/utils/StringUtils.h>
 #include <widgets/GsMenuController.h>
@@ -20,7 +19,6 @@
 #include "widgets/ComboSelection.h"
 
 #include "engine/core/CSettings.h"
-#include "engine/core/videoAspect.h"
 
 
 CVideoSettings::CVideoSettings(const GsControl::Style style) :
@@ -79,6 +77,8 @@ GameMenu(GsRect<float>(0.15f, 0.20f, 0.65f, 0.55f), style )
 
 	setMenuLabel("OPTIONSMENULABEL");
 
+    mpMenuDialog->fit();
+
     refresh();
 }
 
@@ -110,7 +110,9 @@ void CVideoSettings::refresh()
 
 #if !defined(EMBEDDED)
 
-    mpGameResSelection->setList( GamesResList, NUM_GAME_RESOLUTIONS );
+
+    const auto gamesResSet = gVideoDriver.getGameResStrSet();
+    mpGameResSelection->setList( gamesResSet );
 
     std::string resStr;
     resStr = itoa(mUsersConf.mGameRect.dim.x);

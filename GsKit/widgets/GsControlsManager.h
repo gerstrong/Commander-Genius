@@ -17,10 +17,17 @@ class GsControlsManager : public GsControl
 public:
     GsControlsManager(const GsRect<float> &SrGsRect);
 
+    /**
+     * @brief fit   ensure that the added controls fit well into
+     *              control manager
+     */
     void fit();
 
 
     // Adds a control instance to the list of controls to be processed.
+    template <class T>
+    std::shared_ptr<T> addControl( std::shared_ptr<T> &ctrl );
+
     template <class T>
     std::shared_ptr<T> addControl( T *newControl );
 
@@ -56,6 +63,7 @@ public:
 
     std::shared_ptr<GsControl> addControl(std::unique_ptr<GsControl> &newControl);
 
+
     std::shared_ptr<GsControl> addControl( GsControl *newControl,
                  const GsRect<float>& RelRect );
 
@@ -76,7 +84,7 @@ public:
 
 
 
-    // Update all graphics. Happens when Video settings are normally changed
+    // Update all graphics. Happens when Video settings are changed
     void updateGraphics() override;
 
 
@@ -142,15 +150,22 @@ protected:
 
 
 template <class T>
-std::shared_ptr<T> GsControlsManager::addControl( T *newControl )
+std::shared_ptr<T> GsControlsManager::addControl( std::shared_ptr<T> &ctrl )
 {
-    std::shared_ptr<T> ctrl(newControl);
     std::shared_ptr<GsControl> abstract =
             std::static_pointer_cast< GsControl >(ctrl);
 
     addControl( abstract );
 
     return ctrl;
+}
+
+
+template <class T>
+std::shared_ptr<T> GsControlsManager::addControl( T *newControl )
+{
+    std::shared_ptr<T> ctrl(newControl);    
+    return addControl(ctrl);
 }
 
 

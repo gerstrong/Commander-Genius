@@ -805,3 +805,6 @@ void CManglingMachine::set_mortimer_surprised(bool yes)
 		mpMap->setTile(13,6,616, true);
 	}
 }
+
+void CManglingMachine::getShotByRay(object_t &obj_type)
+{}

@@ -38,7 +38,7 @@ void CAudioVorticon::loadSoundStream(Uint8* exedata)
 	if(!OpenGameFileR(file, getResourceFilename(soundfile, gamepath, false, true), std::ios::binary))
 	{
         const int ep = gKeenFiles.exeFile.getEpisode();
-		Uint32 sounds_start, sounds_end;
+        Uint32 sounds_start=0, sounds_end=0;
 
         // if not available try to extract it.
         // In Episode 2 and 3 this an usual case.

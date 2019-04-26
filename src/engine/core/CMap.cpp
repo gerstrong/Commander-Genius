@@ -636,8 +636,8 @@ void CMap::refreshVisibleArea()
 
     relativeVisGameArea.pos.x = (mVisArea.pos.x>>STC)-m_scrollx;
     relativeVisGameArea.pos.y = (mVisArea.pos.y>>STC)-m_scrolly;
-    relativeVisGameArea.dim.x = (mVisArea.pos.x>>STC)-16;
-    relativeVisGameArea.dim.y = (mVisArea.pos.y>>STC)-16;
+    relativeVisGameArea.dim.x = (mVisArea.dim.x>>STC)-16;
+    relativeVisGameArea.dim.y = (mVisArea.dim.y>>STC)-16;
 
     GsRect<int> gameResolution(gVideoDriver.getGameResolution());
 

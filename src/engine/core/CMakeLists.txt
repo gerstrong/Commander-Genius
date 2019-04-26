@@ -46,8 +46,7 @@ objenums.h
 options.h
 Playerdefines.h
 spritedefines.h
-textmode.h
-videoAspect.h)
+textmode.h)
 
 add_library(engine_core ${SRCS})
 

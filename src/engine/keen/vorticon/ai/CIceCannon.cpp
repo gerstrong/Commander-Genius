@@ -5,7 +5,7 @@
 // the chunks of ice shot out by an ice cannon (ep1)
 const int ICECHUNK_SPEED = 60;
 const int ICECHUNK_STRAIGHT_SPEED = 80;
-const int ICECHUNK_WAIT_TIME = 19;
+//const int ICECHUNK_WAIT_TIME = 19;
 
 unsigned int rnd(void);
 

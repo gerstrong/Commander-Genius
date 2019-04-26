@@ -52,8 +52,10 @@ void CGameLauncher::verifyGameStore()
 
     if(!missingList.empty())
     {
-        GsButton *downloadBtn = new GsButton( "+ More", new GMDownloadDlgOpen() );
-        mLauncherDialog.addControl( downloadBtn, GsRect<float>(0.125f, 0.865f, 0.25f, 0.07f) );
+        GsButton *downloadBtn = new GsButton( "+ More",
+                                              GsRect<float>(0.125f, 0.865f, 0.25f, 0.07f),
+                                              new GMDownloadDlgOpen() );
+        mLauncherDialog.addControl( downloadBtn );
     }
 
     mGameCatalogue = gameDownloader.getGameCatalogue();
@@ -103,6 +105,10 @@ void CGameLauncher::ponderDownloadDialog()
 {
     // Update the description if selection changed
     int sel = mpGSSelList->getSelection();
+
+    if(sel == -1)
+        return;
+
     if(mLastStoreSelection != sel)
     {        
         auto &gameEntry = mGameCatalogue[size_t(sel)];
@@ -117,7 +123,7 @@ void CGameLauncher::ponderDownloadDialog()
     // Disable some dialog elements while downloading
     if(mDownloading)
     {
-        mpDloadSelectionList->enable(false);
+        mpGSSelList->enable(false);
         mpDloadCancel->enable(true);
         mpDloadBack->enable(false);
         mpDloadDownload->enable(false);
@@ -158,7 +164,12 @@ void CGameLauncher::setupDownloadDialog()
     std::vector< std::string > missingList;
     gameDownloader.checkForMissingGames( missingList );
 
-    mpGSSelList = new CGUITextSelectionList();
+    // Selection List
+    mpGSSelList =
+            mpGameStoreDialog->addControl(
+                new CGUITextSelectionList(
+                          GsRect<float>(0.01f, 0.04f, 0.50f, 0.65f) ) );
+
 
     if(!missingList.empty())
     {
@@ -180,15 +191,10 @@ void CGameLauncher::setupDownloadDialog()
                                                        GsRect<float>(0.0f, 0.0f, 1.0f, 0.05f)))
                                                            );
 
-    // Selection List
-    mpDloadSelectionList = std::dynamic_pointer_cast<CGUITextSelectionList>(
-            mpGameStoreDialog->addControl(mpGSSelList,
-                                          GsRect<float>(0.01f, 0.04f, 0.50f, 0.65f)) );
-
     // Create an empty Bitmap control for the preview
-    mpCurrentDownloadBmp = std::dynamic_pointer_cast<CGUIBitmap>(
-            mpGameStoreDialog->addControl( new CGUIBitmap(),
-                                               GsRect<float>(0.51f, 0.04f, 0.48f, 0.38f)) );
+    mpCurrentDownloadBmp =
+            mpGameStoreDialog->addControl(
+                new CGUIBitmap(GsRect<float>(0.51f, 0.04f, 0.48f, 0.38f)));
 
 
     // Description Text Box

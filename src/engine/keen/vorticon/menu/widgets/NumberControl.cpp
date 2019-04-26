@@ -17,7 +17,7 @@ namespace vorticon
 {
 
 
-const int SLIDER_WIDTH = 16;
+//const int SLIDER_WIDTH = 16;
 
 
 NumberControl::NumberControl(const std::string& text,

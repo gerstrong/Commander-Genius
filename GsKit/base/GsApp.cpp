@@ -58,6 +58,16 @@ GsApp::GsApp()
 }
 
 
+void GsApp::setName(const std::string &appName)
+{
+    mAppName = appName;
+}
+std::string GsApp::getName()
+{
+    return mAppName;
+}
+
+
 ///////////////////////////////
 // Cleanup Game Engine here! //
 ///////////////////////////////
@@ -343,13 +353,13 @@ void GsApp::runMainCycle()
             // with violating the the LPS
             auto fWaitTime = -elapsed;
 
-            if(renderLatency > 0.0)
+            if( renderLatency > 0.0f )
             {
                 fWaitTime = renderLatency+fWaitTime;
             }
 
             // wait time remaining in current loop
-            if( fWaitTime > 0.0 )
+            if( fWaitTime > 0.0f )
             {
                 const auto waitTime = static_cast<Uint32>(fWaitTime);
                 timerDelay( waitTime );

@@ -59,11 +59,15 @@ public:
 
     void pumpEvent(const CEvent *evPtr);
 
+    void setName(const std::string &appName);
+    std::string getName();
 
 private:
 
     std::unique_ptr<GsEngine> mpCurEngine;
     std::shared_ptr<GsAppEventSink> mpSink;
+
+    std::string mAppName;
 };
 
 // It's a simple quit event which will force CG to close the App

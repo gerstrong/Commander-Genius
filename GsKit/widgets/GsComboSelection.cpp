@@ -66,22 +66,16 @@ void CGUIComboSelection::setSelection( const std::string& selectionText )
 }
 
 
-
-
-
-void CGUIComboSelection::setList(const char **strArray, const int numElem)
+void CGUIComboSelection::setList(const std::set<std::string> &strSet)
 {
-	if(!mOptionsList.empty())
-		mOptionsList.clear();
+    mOptionsList.clear();
 
-
-	for( int i=0 ; i<numElem ; i++ )
+    for( const auto &str : strSet)
     {
-		mOptionsList.push_back( strArray[i] );
+        mOptionsList.push_back( str );
     }
 
 	mOLCurrent = mOptionsList.begin();
-
 }
 
 

@@ -135,8 +135,17 @@ struct GsColor
     bool operator == ( const GsColor & c ) const { return r == c.r && g == c.g && b == c.b && a == c.a; }
     bool operator != ( const GsColor & c ) const { return ! ( *this == c ); }
 
-    GsColor operator * ( float f ) const { return GsColor( Uint8(CLAMP(r*f,0.0f,255.0f)), Uint8(CLAMP(g*f,0.0f,255.0f)), Uint8(CLAMP(b*f,0.0f,255.0f)), a ); }
-    GsColor operator + ( const GsColor & c ) const { return GsColor( (Uint8)CLAMP(Uint16(r)+c.r,0,255), (Uint8)CLAMP(Uint16(g)+c.g,0,255), (Uint8)CLAMP(Uint16(b)+c.b,0,255), (Uint8)(Uint16(a)+c.a)/2 ); }
+    GsColor operator * ( float f ) const
+        { return GsColor( Uint8(CLAMP(r*f,0.0f,255.0f)),
+                          Uint8(CLAMP(g*f,0.0f,255.0f)),
+                          Uint8(CLAMP(b*f,0.0f,255.0f)), a ); }
+
+    GsColor operator + ( const GsColor & c ) const
+        { return GsColor( (Uint8)CLAMP(Uint16(r)+c.r,0,255),
+                          (Uint8)CLAMP(Uint16(g)+c.g,0,255),
+                          (Uint8)CLAMP(Uint16(b)+c.b,0,255),
+                          (Uint8)(Uint16(a)+c.a)/2 ); }
+
     bool operator<(const GsColor& c) const
     {
 		if(r != c.r) return r < c.r;

@@ -84,6 +84,8 @@ GameMenu( GsRect<float>(0.25f, 0.4f, 0.5f, 0.2f), style )
                                              style) );
 
 	setMenuLabel("OPTIONSMENULABEL");
+
+    mpMenuDialog->fit();
 }
 
 

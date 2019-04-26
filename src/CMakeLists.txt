@@ -2,13 +2,6 @@
 # Compilers and other specific variables can be found here:
 # http://www.cmake.org/Wiki/CMake_Useful_Variables
 
-
-if(SDL2)
-    OPTION(OPENGL "OpenGL support" No)
-else()
-    OPTION(OPENGL "OpenGL support" Yes)
-endif()
-
 OPTION(DOWNLOADER "Internal Downloader" Yes)
 
 

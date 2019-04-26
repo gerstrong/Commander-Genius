@@ -24,8 +24,7 @@ constexpr int WALK_SPEED = 30;
 
 
 CBloog::CBloog(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
-CStunnable(pmap, foeID, x, y),
-mTimer(0)
+CStunnable(pmap, foeID, x, y)
 {
 
     mHealthPoints = 1;

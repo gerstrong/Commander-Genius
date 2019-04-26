@@ -2,7 +2,26 @@
 #include <graphics/GsGraphics.h>
 #include <base/video/CVideoDriver.h>
 
-void GalaxyMenu::createGalaxyBackground()
+
+GalaxyMenu::GalaxyMenu( const GsRect<float>& rect ):
+    GameMenu( rect,GsControl::Style::GALAXY)
+{
+    GsRect<float> localRect(0.30f, 0.282f, 0.5f, 0.5f);
+    mpMenuDialog->setRect(localRect);
+/*        mpMenuDialog->addControl( mpReturnButton,
+                              GsRect<float>(
+                                  -0.1f, 0.1f,
+                                  0.03f/localRect.dim.x,
+                                  0.03f/localRect.dim.y) );
+                                  */
+    mpMenuDialog->addControl( mpReturnButton );
+
+    mpReturnButton->setDown(true);
+
+    initGalaxyBackground();
+}
+
+void GalaxyMenu::initGalaxyBackground()
 {
     GsBitmap backgroundBmp( *gGraphics.getBitmapFromStr(0, "KEENSWATCH") );
 

@@ -17,8 +17,8 @@ CVorticonSpriteObjectAI::CVorticonSpriteObjectAI(CMap *p_map,
 					 int NumPlayers, int episode,
 					 int level, bool &dark) :
 m_Objvect(objvect),
-m_Player(Player),
-m_dark(dark)
+m_Player(Player)/*,
+m_dark(dark)*/
 {
 	mp_Map = p_map;
 	m_Level = level;

@@ -11,6 +11,7 @@
 #include <string>
 #include <memory>
 #include <list>
+#include <set>
 #include <graphics/GsSurface.h>
 
 #include "GsButton.h"
@@ -35,7 +36,7 @@ public:
 
     virtual void setSelection( const std::string& selectionText );
 
-	void setList(const char **strArray, const int numElem);
+    void setList(const std::set<std::string> &strSet);
 
 	void processLogic();
 

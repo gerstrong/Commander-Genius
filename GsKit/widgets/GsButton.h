@@ -15,6 +15,7 @@
 #include <memory>
 #include <map>
 #include <graphics/GsSurface.h>
+#include <base/utils/Color.h>
 #include <widgets/GsText.h>
 
 #include <functional>
@@ -22,6 +23,7 @@
 class GsButton : public GsControl
 {
 public:
+
 
     GsButton(const std::string& text,
              const GsRect<float> &rect,
@@ -37,6 +39,15 @@ public:
              const float red = 0.875f,
              const float green = 0.875f,
              const float blue = 1.0f);
+
+    GsButton(const std::string& text,
+             const GsRect<float> &rect,
+             const std::function <void ()>& f,
+             const Style style = Style::NONE,
+             const float red = 0.875f,
+             const float green = 0.875f,
+             const float blue = 1.0f);
+
 
     bool sendEvent(const InputCommand command) override;
 

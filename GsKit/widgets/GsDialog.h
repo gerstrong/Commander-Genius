@@ -37,9 +37,6 @@ public:
 	// Constructor which needs the Rect for the placement of the Dialog
     CGUIDialog(const GsRect<float> &NewRect, const FXKind fx = FXKind::NONE);
 
-	// Automatic Background draw function. It creates the background depending on what engine is currently running
-	void initBackground();
-
 	// Empty Background draw function. Just fills the Rect with a standard gray color
     void initEmptyBackground();
 
@@ -52,13 +49,13 @@ public:
 	// processes the whole logic of the Dialog
     virtual void processLogic() override;
 
-    // processes the whole rendering of the Dialog
+    // processes the whole rendering of theCGUIDialog Dialog
     void processRendering();    
 
     void processRender(const GsRect<float> &RectDispCoordFloat) override;
 
 	// processes the whole rendering of the Dialog
-    void processRendering(SDL_Surface *blit);
+    void processRendering(SDL_Surface*);
 
 	void setRect(const GsRect<float> &rect);
 	void setPosition(const float x, const float y);
@@ -66,6 +63,8 @@ public:
 protected:
 
     GsSurface    mBackgroundSfc;
+
+    GsSurface    mDarkOverlaySfc;
 
 private:
 

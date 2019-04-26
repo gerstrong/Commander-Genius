@@ -72,21 +72,23 @@ void InitSearchPaths(const std::string &cfgFname)
         if(!ReadString(cfgFname,
                        "FileHandling",
                        "SearchPath" + itoa(i), value, ""))
-        {
+        {                        
 			break;
         }
 
 		AddToFileList(&tSearchPaths, value);
 		i++;
-
 	}
 
-	// add the basesearchpaths to the searchpathlist as they should be saved in the end
-	for(searchpathlist::const_iterator p1 = basesearchpaths.begin();
-			p1 != basesearchpaths.end(); i++,p1++)
-	{
-		AddToFileList(&tSearchPaths, *p1);
-	}
+    if(tSearchPaths.empty())
+    {
+        // add the basesearchpaths to the searchpathlist as they should be saved in the end
+        for(searchpathlist::const_iterator p1 = basesearchpaths.begin();
+            p1 != basesearchpaths.end(); i++,p1++)
+        {
+            AddToFileList(&tSearchPaths, *p1);
+        }
+    }
 
 	// print the searchpaths, this may be very usefull for the user
 	notes << "I have now the following searchpaths (in this order):\n";

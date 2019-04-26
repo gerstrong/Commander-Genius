@@ -32,8 +32,10 @@ public:
 	bool Parse();
 
 	// if the return value is false, the parsing will break
-	virtual bool OnNewSection (const std::string& section) { return true; }
-	virtual bool OnEntry (const std::string& section, const std::string& propname, const std::string& value) { return true; }
+    virtual bool OnNewSection (const std::string&) { return true; }
+    virtual bool OnEntry (const std::string&,
+                          const std::string&,
+                          const std::string& ) { return true; }
 
 	// Reading
 	bool ReadString(const std::string& section, const std::string& key, std::string& value, std::string defaultv) const;

@@ -12,17 +12,18 @@ void GsControlsManager::fit()
     it++;
 
     size_t numControls = mControlList.size();
-    const float charHeight = ( 1.0f/(float)(numControls+1) );
+    const float charHeight = ( 1.0f/static_cast<float>(numControls+1) );
 
     size_t c = 1;
+    const auto padding = 0.05f;
     for( ; it != mControlList.end() ; it++ )
-    {
-        GsRect<float> rect( 0.05f,
-                   charHeight*(static_cast<float>(c)),
-                   mRect.dim.x,
+    {        
+        GsRect<float> rect( padding,
+                   charHeight*(static_cast<float>(c)+0.25f),
+                   1.0f-2.0f*padding,
                    charHeight-0.01f );
 
-        rect.transform(mRect);
+        //rect.transform(mRect);
 
         (*it)->setRect( rect );
         c++;
@@ -70,7 +71,7 @@ void GsControlsManager::selectPrevItem()
 
     if( mSelection < 0 )
     {
-        mSelection = mControlList.size()-1;
+        mSelection = static_cast<int>(mControlList.size())-1;
     }
 
 

@@ -6,8 +6,23 @@ cmake_minimum_required(VERSION 3.5)
 Project(GsKit)
 
 OPTION(USE_SDL2 "SDL2 support" Yes)
+
+if(SDL2)
+    OPTION(OPENGL "OpenGL support" No)
+else()
+    OPTION(OPENGL "OpenGL support" Yes)
+endif()
+
+option(USE_VIRTUALPAD "Enable Onscreen Virtual Gamepad support " ON)
+
+if(USE_VIRTUALPAD)
+    ADD_DEFINITIONS(-DVIRTUALPAD)
+endif(USE_VIRTUALPAD)
+
 option(USE_PYTHON3 "Use Python3 scripts" yes)
 option(USE_SDL_TTF "Use true type fonts" yes)
+
+
 
 set (CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${CMAKE_CURRENT_SOURCE_DIR}/CMake")
 

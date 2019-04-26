@@ -8,17 +8,11 @@ Project(CommanderGenius)
 # Add GsKit
 add_subdirectory("GsKit")
 
-option(USE_VIRTUALPAD "Enable Onscreen Virtual Gamepad support " ON)
-
 option(DISABLE_HOVER "Disables the hover over effect in the menus, useful for touch based devices" OFF)
 
 if(DISABLE_HOVER)
     ADD_DEFINITIONS(-DDISABLE_HOVER)
 endif()
-
-if(USE_VIRTUALPAD)
-    ADD_DEFINITIONS(-DVIRTUALPAD)
-endif(USE_VIRTUALPAD)
 
 # Modules path located at GsKit/CMake
 set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${CMAKE_CURRENT_SOURCE_DIR}/GsKit/CMake")

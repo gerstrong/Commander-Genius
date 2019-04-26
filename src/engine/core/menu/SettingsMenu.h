@@ -16,8 +16,6 @@ public:
 };
 
 
-struct OpenSettingsMenuEvent : public CEvent {};
-
 struct OpenVGamePadSettingsEvent : public CEvent {};
 
 

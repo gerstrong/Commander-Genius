@@ -8,7 +8,6 @@
 
 #include <base/CInput.h>
 #include <base/GsTimer.h>
-#include <base/video/resolutionlist.h>
 #include <base/video/CVideoDriver.h>
 #include <base/utils/StringUtils.h>
 #include <widgets/GsMenuController.h>
@@ -21,9 +20,10 @@
 #include "widgets/ComboSelection.h"
 
 #include "engine/core/CSettings.h"
-#include "engine/core/videoAspect.h"
 
 #include "DisplaySettings.h"
+
+
 
 
 class toggleFullscreenFunctor : public InvokeFunctorEvent
@@ -114,7 +114,9 @@ GameMenu(GsRect<float>(0.15f, 0.20f, 0.65f, 0.55f), style )
 
 	setMenuLabel("OPTIONSMENULABEL");
 
-    refresh();
+    mpMenuDialog->fit();
+
+    refresh();        
 }
 
 void DisplaySettings::refresh()
@@ -130,11 +132,14 @@ void DisplaySettings::refresh()
     mpOpenGLSwitch->enable( mMyNewConf.mOpengl );
     #endif
 
+    const std::string oglFilter =
+            (mMyNewConf.mRenderScQuality == CVidConfig::RenderQuality::LINEAR) ?
+            "linear" : "nearest";
 
-    mpRenderScaleQualitySel->setSelection(mMyNewConf.mRenderScQuality);
+    mpRenderScaleQualitySel->setSelection(oglFilter);
 
-
-	mpAspectSelection->setList( aspectList, NUM_ASPECTS );		
+    const auto aspSet = gVideoDriver.getAspectStrSet();
+    mpAspectSelection->setList( aspSet );
 	std::string arcStr;
     arcStr = itoa(mMyNewConf.mAspectCorrection.dim.x);
 	arcStr += ":";
@@ -153,7 +158,8 @@ void DisplaySettings::refresh()
     mpFullScreenSwitch->setText( mMyNewConf.mFullscreen ? "Go Windowed" : "Go Fullscreen" );
 
 
-    mpResolutionSelection->setList( ResolutionsList, NUM_MAIN_RESOLUTIONS );
+    const auto resList = gVideoDriver.getResolutionStrSet();
+    mpResolutionSelection->setList( resList );
 
 	std::string resStr;
 
@@ -176,7 +182,14 @@ void DisplaySettings::release()
     mMyNewConf.mOpengl = mpOpenGLSwitch->isEnabled();
 
     // Render Quality
-    mMyNewConf.mRenderScQuality = mpRenderScaleQualitySel->getSelection();
+
+
+    const std::string oglFilter = mpRenderScaleQualitySel->getSelection();
+
+    mMyNewConf.mRenderScQuality =
+            (oglFilter == "linear") ?
+                CVidConfig::RenderQuality::LINEAR :
+                CVidConfig::RenderQuality::NEAREST;
 
     // Read Aspect correction string
     {
@@ -248,8 +261,7 @@ void DisplaySettings::release()
         std::cerr << "numRead: " << numRead << std::endl;
         if(numRead == 2)
         {
-            GsRect<Uint16> res((Uint16(w)),
-                               (Uint16(h)));
+            GsVec2D<Uint16> res = {w, h};
             mMyNewConf.setResolution(res);
         }
     }
@@ -260,6 +272,12 @@ void DisplaySettings::release()
 #endif
 
 	CVidConfig oldVidConf = gVideoDriver.getVidConfig();
+
+    if(oldVidConf == mMyNewConf)
+    {
+        return;
+    }
+
     gVideoDriver.setVidConfig(mMyNewConf);
 
 

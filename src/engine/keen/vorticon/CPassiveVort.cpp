@@ -91,7 +91,7 @@ void CPassiveVort::pumpEvent(const CEvent *evPtr)
     }
 }
 
-void CPassiveVort::ponder(const float deltaT)
+void CPassiveVort::ponder(const float)
 {
     if(!mEndEpisode)
     {
@@ -124,7 +124,7 @@ void CPassiveVort::ponder(const float deltaT)
     if(getchooseGame())
     {
         // TODO: Some of game resources are still not cleaned up here!
-        gEventManager.add( new GMSwitchToGameLauncher(-1, -1) );
+        gEventManager.add( new GMSwitchToGameLauncher() );
         return;
     }
 

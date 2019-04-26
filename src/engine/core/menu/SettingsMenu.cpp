@@ -35,19 +35,16 @@ GameMenu( GsRect<float>(0.25f, 0.24f, 0.5f, 0.40f),
                                              new OpenMenuEvent( new DisplaySettings(Style()) ),
                                              style ) );
 
-#endif
-
-    mpMenuDialog->addControl(new GameButton( "Audio",
-                                             new OpenMenuEvent( new CAudioSettings(Style()) ),
-                                             style ) );
-
-#if !defined(EMBEDDED)
 
     mpMenuDialog->addControl(new GameButton( "Video",
                                              new OpenMenuEvent( new CVideoSettings(Style()) ),
                                              style ) );
 
 #endif
+
+    mpMenuDialog->addControl(new GameButton( "Audio",
+                                             new OpenMenuEvent( new CAudioSettings(Style()) ),
+                                             style ) );
 
 
     mpMenuDialog->addControl(new GameButton( "Options",
@@ -59,14 +56,16 @@ GameMenu( GsRect<float>(0.25f, 0.24f, 0.5f, 0.40f),
 
 
 #if defined (SINGLEPLAYER)
-        mpMenuDialog->addControl( new GameButton( "Controls",
-                                                  new OpenMenuEvent(	new CControlsettings(1,
-                                                                                             style) ),
+        mpMenuDialog->addControl(
+                    new GameButton( "Controls",
+                                   new OpenMenuEvent(
+                                        new CControlsettings(1,style) ),
                                                   style ) );
 #else
-        mpMenuDialog->addControl(new GameButton( "Controls",
-                                                 new OpenMenuEvent( new CPlayersSelection<OpenControlMenuEvent>(false,
-                                                                                                                style) ),
+        mpMenuDialog->addControl(
+               new GameButton( "Controls",
+                   new OpenMenuEvent(
+                       new CPlayersSelection<OpenControlMenuEvent>(false,style) ),
                                                  style ) );
 #endif
 
@@ -90,5 +89,7 @@ GameMenu( GsRect<float>(0.25f, 0.24f, 0.5f, 0.40f),
 
 
     setMenuLabel("CONFIGMENULABEL");
+
+    mpMenuDialog->fit();
 }
 

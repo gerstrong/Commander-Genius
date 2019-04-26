@@ -13,6 +13,8 @@
 
 #include "../CVorticonSpriteObject.h"
 
+class CPlayer;
+
 // "Sector Effector" types
 enum sector_effector_type{
 	SE_MORTIMER_ARM,
@@ -42,19 +44,19 @@ public:
 	void se_mortimer_randomzaps();
 	void set_mortimer_surprised(bool yes);
 
-	void getShotByRay(object_t &obj_type){};
+    void getShotByRay(object_t &obj_type);
 	
 private:
 	unsigned int setype;
 
 	unsigned char state;
 	unsigned int timer;
-	unsigned int platx, platy;
+//	unsigned int platx, platy;
 	unsigned int dir;
 
 	int counter,destroytiles;
 	unsigned int frame;
-	int mx,my;
+    int /*mx,*/my;
 	
 };
 

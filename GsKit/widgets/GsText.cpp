@@ -106,16 +106,59 @@ void CGUIText::processLogic()
 void CGUIText::processRender(const GsRect<float> &RectDispCoordFloat)
 {
 
-#if defined(USE_SDL_TTF)
-	// Transform to the display coordinates
+    // Transform to the display coordinates
     GsRect<float> displayRect = mRect;
-	displayRect.transform(RectDispCoordFloat);
-	SDL_Rect lRect = displayRect.SDLRect();
+    displayRect.transform(RectDispCoordFloat);
+    SDL_Rect lRect = displayRect.SDLRect();
+
+
+#if defined(USE_SDL_TTF)
 
     auto &blit = gVideoDriver.gameSfc();
 
     mTextSfc.blitTo(blit, lRect);
+#else
+    /*auto *renderer = &gVideoDriver.getRendererRef();
 
+    //Render to screen
+    SDL_RenderCopyEx( renderer,
+                      mTexture.getPtr(), nullptr,
+                      &lRect,
+                      0, nullptr, SDL_FLIP_NONE );*/
+
+    // Now lets draw the text of the list control
+    auto &Font = gGraphics.getFont(mFontID);
+
+    std::list<std::string>::iterator textIt = mTextList.begin();
+    for( size_t i=0 ; textIt != mTextList.end() ; textIt++, i++ )
+    {
+        auto &theText = *textIt;
+
+        const int textWidth = Font.calcPixelTextWidth(theText);
+
+        // The tolerance is the amount of pixels at least of difference to consider
+        // for scrolling. We consider a tolerance so strange jittery are avoided for text
+        // that nearly fits
+        const int tol = 8;
+
+        // The first text item decides wheter scrolling takes place
+        if(textWidth > lRect.w + tol) // tolerance
+        {
+            const auto diff = textWidth - lRect.w;
+            mScrollPosMax = diff;
+
+            Font.drawFont(gVideoDriver.getBlitSurface(),
+                          theText,
+                          lRect.x-int(mScrollPos),
+                          lRect.y+i*8,
+                          false);
+        }
+        else
+        {
+            Font.drawFontCentered(gVideoDriver.getBlitSurface(), theText, lRect.x, lRect.w, lRect.y+i*8, false);
+            mScrollPosMax = 0;
+        }
+    }
 #endif
 }
 

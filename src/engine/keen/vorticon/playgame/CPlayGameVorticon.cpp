@@ -105,7 +105,7 @@ void CPlayGameVorticon::setupPlayers()
 
     for (auto i=0 ; i<numPlayers ; i++)
 	{
-        auto &player = m_Player[i];
+        auto &player = m_Player[static_cast<unsigned int>(i)];
 
 		if( m_Level == WORLD_MAP_LEVEL_VORTICON )
 		{
@@ -134,11 +134,11 @@ void CPlayGameVorticon::setupPlayers()
         player.solid = true;
         //if(player.m_playingmode == CPlayer::WORLDMAP) player.solid = !(player.godmode);
 
-        stInventory &inventory = m_Player.at(i).inventory;
+        stInventory &inventory = m_Player.at(static_cast<unsigned int>(i)).inventory;
 
-        mpHUDVec.push_back( move(std::unique_ptr<CHUD>(new CHUD(inventory.score, inventory.lives,
+        mpHUDVec.push_back( std::unique_ptr<CHUD>(new CHUD(inventory.score, inventory.lives,
                                                                 inventory.charges, i,
-                                                                i))) );
+                                                                i)) );
 	}
 
 }
@@ -316,10 +316,10 @@ void CPlayGameVorticon::ponder(const float deltaT)
 
 
 
-              if(m_Player.size() > (unsigned int)mCamLead )
+              if(m_Player.size() > static_cast<unsigned int>(mCamLead) )
               {
 
-                  if(m_Player[mCamLead].pdie)
+                  if(m_Player[static_cast<unsigned int>(mCamLead)].pdie)
                   {
                       const int numPlayers = gBehaviorEngine.numPlayers();
                       for( int i=0 ; i<numPlayers ; i++ )
