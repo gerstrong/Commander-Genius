@@ -268,7 +268,7 @@ which supports at least C++14.
 CMake 3.12 or later. If you use an older version of CMake you will have to
 disable Python Support (cmake -DUSE_PYTHON3=0).
 
-SDL2, SDL2_Image and SDL2_mixer. There is support for SDL1.2
+SDL2, SDL2_Image, SDL2_mixer and SDL2_TTF. There is support for SDL1.2
 but it is getting deprecated and will be removed in future.
 
 Boost libraries. I plan to remove that in future, but right now we need it.
@@ -287,6 +287,7 @@ How to compile it under Ubuntu:
         - libsdl2-dev
         - libsdl2-image-dev
         - libsdl2-mixer-dev
+        - libsdl2-ttf-dev
 
  * Create an empty build Dir: mkdir -p CGeniusBuild
  * Extract my source code into the "CGeniusSrc" directory. 

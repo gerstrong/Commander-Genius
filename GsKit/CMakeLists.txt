@@ -20,7 +20,12 @@ if(USE_VIRTUALPAD)
 endif(USE_VIRTUALPAD)
 
 option(USE_PYTHON3 "Use Python3 scripts" yes)
+
 option(USE_SDL_TTF "Use true type fonts" yes)
+
+IF (USE_SDL_TTF)
+    ADD_DEFINITIONS(-DUSE_SDL_TTF)
+ENDIF(USE_SDL_TTF)
 
 
 

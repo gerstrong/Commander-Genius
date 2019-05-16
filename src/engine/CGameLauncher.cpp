@@ -144,15 +144,16 @@ bool CGameLauncher::setupMenu()
     mpGSSelList->setConfirmButtonEvent(new GMStart());
     mpGSSelList->setBackButtonEvent(new GMQuit());
 
-    mLauncherDialog.addControl(new CGUIText("Pick a Game",
-                                      GsRect<float>(0.0f, 0.01f, 1.0f, 0.05f)));
-
     mLauncherDialog.addControl(
                 new GsButton( "x",
                              GsRect<float>(0.0f, 0.0f, 0.069f, 0.069f),
                              new GMQuit(),
                              GsControl::Style::NONE,
                              1.0f, 0.75f, 0.75f ) );
+
+    mLauncherDialog.addControl(new CGUIText("Pick a Game",
+                                      GsRect<float>(0.14f, 0.01f, 0.72f, 0.05f)));
+
 
 
 
@@ -173,8 +174,9 @@ bool CGameLauncher::setupMenu()
                                new SettingsMenu(GsControl::Style::NONE) ) );
     };
 
-    mLauncherDialog.addControl(
-                new GsButton( "|",
+    mpOptionButton =
+                mLauncherDialog.addControl(
+                        new GsButton( "O",
                               GsRect<float>(0.93f, 0.0f, 0.069f, 0.069f),
                               openSettingsMenuEvent,
                               GsControl::Style::NONE,

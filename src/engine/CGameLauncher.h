@@ -128,6 +128,8 @@ private:
 	std::vector<std::string> m_Names;
     CGUIDialog mLauncherDialog;
 
+    std::shared_ptr<GsButton> mpOptionButton;
+
     // The Start-Button should change depending on the taken actions
     std::shared_ptr<GsButton> mpStartButton;
 

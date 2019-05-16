@@ -5,6 +5,13 @@ cmake_minimum_required(VERSION 3.5)
 
 Project(CommanderGenius)
 
+option(USE_SDL_TTF "Use true type fonts" yes)
+
+IF (USE_SDL_TTF)
+    ADD_DEFINITIONS(-DUSE_SDL_TTF)
+ENDIF(USE_SDL_TTF)
+
+
 # Add GsKit
 add_subdirectory("GsKit")
 

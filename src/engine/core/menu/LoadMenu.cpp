@@ -6,7 +6,7 @@
  *      Author: gerstrong
  */
 
-#include <widgets/GsText.h>
+//#include <widgets/GsText.h>
 #include <widgets/GsButton.h>
 #include <widgets/GsMenuController.h>
 

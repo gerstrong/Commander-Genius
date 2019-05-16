@@ -1,6 +1,8 @@
+
 #if defined(USE_SDL_TTF)
 
 #include "GsTrueTypeFont.h"
+#include <SDL_rwops.h>
 
 GsTrueTypeFont::GsTrueTypeFont()
 {
@@ -10,15 +12,16 @@ GsTrueTypeFont::GsTrueTypeFont()
 
 GsTrueTypeFont::~GsTrueTypeFont()
 {
-    close();
+    //close();
 }
 
 bool GsTrueTypeFont::open(const std::string &fontName,
                           const int fontSize)
 {
+    bool success = true;
+
     close();
 
-    bool success = true;
 
     //Open the font
     mpFont = TTF_OpenFont( fontName.c_str(), fontSize );
@@ -32,26 +35,54 @@ bool GsTrueTypeFont::open(const std::string &fontName,
     return success;
 }
 
+bool GsTrueTypeFont::openFromMem(const unsigned char *src,
+                                 const int memSize,
+                                 const int fontSize)
+{
+    bool success = true;
+
+    close();
+
+
+    // Open the font
+    auto voidPtr = reinterpret_cast<void*>(const_cast<unsigned char*>(src));
+    SDL_RWops *rw = SDL_RWFromMem( voidPtr, memSize );
+    mpFont = TTF_OpenFontRW( rw, 1, fontSize );
+    if( mpFont == nullptr )
+    {
+        fprintf(stderr, "Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError() );
+        success = false;
+    }
+
+    return success;
+}
+
+
 void GsTrueTypeFont::render(GsSurface &sfc,
                             const std::string &text,
                             const GsColor &color)
 {
+
     assert(mpFont != nullptr);
 
     sfc.createFromSDLSfc(
                 TTF_RenderText_Blended( mpFont,
                                       text.c_str(),
                                       color.SDLColor() ));
+
 }
 
 
 void GsTrueTypeFont::close()
 {
+
     if(!mpFont)
         return;
 
     //Free global font
     TTF_CloseFont( mpFont );
     mpFont = nullptr;
+
 }
 #endif
+

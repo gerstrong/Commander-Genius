@@ -60,13 +60,16 @@ private:
 
 
 #if defined(USE_SDL_TTF)
+
     GsTrueTypeFont mTrueTypeFont;
 
-    GsTexture mTexture;
+    //GsTexture mTexture;
     GsSurface mTextSfc;
 
 #endif
 
+    std::string mText;
+    int mFontSize = 0;
 
     enum class ScrollDir
     {

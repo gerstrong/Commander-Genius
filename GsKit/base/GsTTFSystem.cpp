@@ -31,11 +31,13 @@ bool GsTTFSystem::init()
 
 void GsTTFSystem::cleanup()
 {
+
 #if defined(USE_SDL_TTF)
     if(mActive)
     {
         TTF_Quit();    
     }
 #endif
+
 }
 

@@ -92,7 +92,7 @@ void GsControlsManager::selectPrevItem()
     }
 
     if( mSelection < 0 ) {
-        mSelection = mControlList.size()-1;
+        mSelection = int(mControlList.size())-1;
         it = mControlList.end();
     }
 

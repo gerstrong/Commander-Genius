@@ -9,10 +9,9 @@
 #include <base/video/CVideoDriver.h>
 #include <base/utils/StringUtils.h>
 
-
-
 #include "GsText.h"
 
+#include <graphics/cgttf.h>
 
 CGUIText::CGUIText(const std::string& text,
          const GsRect<float> &rect) :
@@ -26,11 +25,13 @@ void CGUIText::setText(const std::string& text)
 {    
     const GsColor textColor = { 0, 0, 0, 0 };
 
+    mText = text;
+
 #if defined(USE_SDL_TTF)
-    mTrueTypeFont.open("Oswald-Regular.ttf", 28);
+
+    mTrueTypeFont.openFromMem(gCgTtf, sizeof(gCgTtf), 28);
     mTrueTypeFont.render(mTextSfc, text, textColor);
 #else
-
 
 	if(!mTextList.empty())
 		mTextList.clear();
@@ -105,18 +106,40 @@ void CGUIText::processLogic()
 
 void CGUIText::processRender(const GsRect<float> &RectDispCoordFloat)
 {
-
     // Transform to the display coordinates
     GsRect<float> displayRect = mRect;
     displayRect.transform(RectDispCoordFloat);
-    SDL_Rect lRect = displayRect.SDLRect();
+    //SDL_Rect lRect = displayRect.SDLRect();
 
 
 #if defined(USE_SDL_TTF)
 
     auto &blit = gVideoDriver.gameSfc();
 
-    mTextSfc.blitTo(blit, lRect);
+    const GsColor textColor = { 0, 0, 0, 0 };
+
+    const int reqFontSize = int(displayRect.dim.y*0.75f);
+
+    if(mFontSize != reqFontSize)
+    {
+        mFontSize = reqFontSize;
+
+        mTrueTypeFont.openFromMem(gCgTtf, sizeof(gCgTtf), reqFontSize);
+        mTrueTypeFont.render(mTextSfc, mText, textColor);
+    }
+
+    if(mTextSfc)
+    {
+        const auto textW = mTextSfc.width();
+        const auto textH = mTextSfc.height();
+        GsVec2D<int> textSfcDim(textW, textH);
+
+        GsRect<float> blitPos = displayRect;
+        blitPos.pos = blitPos.pos + (blitPos.dim-textSfcDim)/2;
+
+        mTextSfc.blitTo(blit, blitPos.SDLRect());
+    }
+
 #else
     /*auto *renderer = &gVideoDriver.getRendererRef();
 

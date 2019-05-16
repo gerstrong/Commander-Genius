@@ -5,6 +5,7 @@
  *      Author: gerstrong
  */
 
+/*
 #include "CLoadMenu.h"
 #include <widgets/GsText.h>
 #include "widgets/Button.h"
@@ -14,6 +15,7 @@
 #include "engine/core/CBehaviorEngine.h"
 #include "engine/core/CBehaviorEngine.h"
 #include "engine/core/mode/CGameMode.h"
+*/
 /*
 namespace vorticon
 {
