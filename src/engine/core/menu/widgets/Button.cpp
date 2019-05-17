@@ -75,6 +75,6 @@ void GameButton::processRender(const GsRect<float> &RectDispCoordFloat)
     }
     else
     {
-        drawNoStyle(lRect);
+        GsButton::processRender(RectDispCoordFloat);
     }
 }

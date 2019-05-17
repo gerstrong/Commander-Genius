@@ -185,7 +185,6 @@ void GsButton::drawNoStyle(const SDL_Rect& lRect)
                                    lRect.x, lRect.w, lRect.y, lRect.h, true );
         }
     }
-
 }
 
 void GsButton::setupButtonSurface(const std::string &text)
