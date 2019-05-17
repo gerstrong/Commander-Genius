@@ -721,19 +721,28 @@ void CGameLauncher::ponderGameSelDialog(const float deltaT)
             mSelection = mpGSSelList->getSelection();
 
             if(mSelection != -1)
-            {
-                const auto sel = static_cast<unsigned int>( mSelection);
-                auto &entry = m_Entries[sel];
-                const std::string nameText = "Episode " + itoa(entry.episode);
-                mpEpisodeText->setText(nameText);
-                float fVer = entry.version;
-                fVer /= 100.0f;
-                mpVersionText->setText("Version: " + ftoa(fVer));
+            {                                
+                const auto sel = static_cast<unsigned int>(mSelection);
 
-                mpDemoText->setText(entry.demo ? "Demo" : "");
+                // In case another list loaded, but we have an old selection
+                if(sel >= m_Entries.size())
+                {
+                    mSelection = 0;
+                }
+                else
+                {
+                    auto &entry = m_Entries[sel];
+                    const std::string nameText = "Episode " + itoa(entry.episode);
+                    mpEpisodeText->setText(nameText);
+                    float fVer = entry.version;
+                    fVer /= 100.0f;
+                    mpVersionText->setText("Version: " + ftoa(fVer));
 
-                // Now update the bitmap
-                mCurrentBmp->setBitmapPtr(mPreviewBmpPtrVec[sel]);
+                    mpDemoText->setText(entry.demo ? "Demo" : "");
+
+                    // Now update the bitmap
+                    mCurrentBmp->setBitmapPtr(mPreviewBmpPtrVec[sel]);
+                }
             }
         }
     }

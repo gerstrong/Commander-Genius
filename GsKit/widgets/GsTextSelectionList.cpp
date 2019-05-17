@@ -7,9 +7,12 @@
 
 #include <base/video/CVideoDriver.h>
 #include <graphics/GsGraphics.h>
+#include <graphics/cgttf.h>
+#include <base/GsTTFSystem.h>
 #include <base/CInput.h>
 #include <base/PointDevice.h>
 #include <base/utils/Color.h>
+
 
 #include "GsTextSelectionList.h"
 
@@ -18,7 +21,7 @@ CGUITextSelectionList::CGUITextSelectionList(const GsRect<float> &rect)  :
     mScrollbar(this)
 {
     GsRect<float> scrollRect(0.0f, 0.0f, 0.1f, 1.0f);
-    mScrollbar.setRect(scrollRect);
+    mScrollbar.setRect(scrollRect);       
 }
 
 
@@ -300,19 +303,18 @@ void CGUITextSelectionList::processPointingStateRel(const GsRect<float> &rect)
 
 }
 
-
-void CGUITextSelectionList::processRender(const GsRect<float> &RectDispCoordFloat)
+void CGUITextSelectionList::processRenderSimple(const GsRect<float> &RectDispCoordFloat)
 {
-	// Blit the List surface
+    // Blit the List surface
     GsWeakSurface blitsfc(gVideoDriver.getBlitSurface());
 
-	// Transform to the display coordinates
+    // Transform to the display coordinates
     GsRect<float> displayRect = mRect;
-	displayRect.transform(RectDispCoordFloat);
+    displayRect.transform(RectDispCoordFloat);
 
     GsRect<Uint16> origRect(displayRect);
     GsRect<Uint16> rect = origRect;
-   
+
     GsColor boxColor(0xDF, 0xDF, 0xDF, 0xFF);
 
     if(mEnabled)
@@ -322,14 +324,14 @@ void CGUITextSelectionList::processRender(const GsRect<float> &RectDispCoordFloa
 
     blitsfc.fillRGBA(rect, boxColor);
 
-	// Now lets draw the text of the list control
-    auto &Font = gGraphics.getFont(mFontID);
-    const int pixth = Font.getPixelTextHeight();
+    // Now lets draw the text of the list control
+    auto &font = gGraphics.getFont(mFontID);
+    const int pixth = font.getPixelTextHeight();
     const int pixtw = pixth; // NOTE: We assume here, that the height and width are the same. Invalid to galaxy fonts!
 
-	// Move 16 Pixel so we have space for the cursor/twirl to show the selection
+    // Move 16 Pixel so we have space for the cursor/twirl to show the selection
     const auto halfBorderHeight = (mBorderHeight/2);
-    const int sepHeight = Font.getPixelTextHeight()+mBorderHeight;
+    const int sepHeight = font.getPixelTextHeight()+mBorderHeight;
     const int xpos = rect.pos.x+16+1;
     const int ypos = rect.pos.y+10;
     unsigned int textlimitWidth = (rect.dim.x-16)/pixtw;
@@ -345,30 +347,30 @@ void CGUITextSelectionList::processRender(const GsRect<float> &RectDispCoordFloa
 
     for(int i=0 ; i<mScrollbar.scrollPos() ; it++, i++);
 
-    for ( int line = 0;
-          it != mItemList.end() && line<mScrollbar.mLastToShow ;
-          it++, line++ )
-	{
+    for ( int lineIdx = 0;
+          it != mItemList.end() && lineIdx<mScrollbar.mLastToShow ;
+          it++, lineIdx++ )
+    {
         // Current line to be rendered
-        const int curLinePos = static_cast<int>(line) + mScrollbar.scrollPos();
+        const int curLinePos = static_cast<int>(lineIdx) + mScrollbar.scrollPos();
 
         const auto &theColor = it->mBgColor;
         const auto &theText = it->mText;
 
         if( mPressedSelection == curLinePos )
         {
-            rect.pos.y = ypos+(line*rect.dim.y);
+            rect.pos.y = ypos+(lineIdx*rect.dim.y);
             blitsfc.fillRGBA(rect, theColor);
         }
         else if( mReleasedSelection == curLinePos )
-		{
-            rect.pos.y = ypos + (line*rect.dim.y);
+        {
+            rect.pos.y = ypos + (lineIdx*rect.dim.y);
             blitsfc.fillRGBA(rect, theColor);
-		}
+        }
 #ifndef DISABLE_HOVER
         else if( mHoverSelection == curLinePos )
         {
-            rect.pos.y = ypos+(line*sepHeight);
+            rect.pos.y = ypos+(lineIdx*sepHeight);
             blitsfc.fillRGBA(rect, theColor);
         }
 #endif
@@ -377,14 +379,14 @@ void CGUITextSelectionList::processRender(const GsRect<float> &RectDispCoordFloa
         std::string trimmedText = theText;
 
         // If the text is too large to show, show a part of it. (by trimming)
-		if(trimmedText.size() > textlimitWidth)
+        if(trimmedText.size() > textlimitWidth)
         {
-			trimmedText = trimmedText.substr(0, textlimitWidth);
+            trimmedText = trimmedText.substr(0, textlimitWidth);
         }
 
-        Font.drawFont(blitsfc, trimmedText,
-                      xpos, ypos+(line*rect.dim.y)+halfBorderHeight, false);
-	}
+        font.drawFont(blitsfc, trimmedText,
+                      xpos, ypos+(lineIdx*rect.dim.y)+halfBorderHeight, false);
+    }
 
     mScrollbar.mMaxScrollAmt = mItemList.size()-mScrollbar.lastToShow();
 
@@ -399,4 +401,142 @@ void CGUITextSelectionList::processRender(const GsRect<float> &RectDispCoordFloa
     {
         blitsfc.drawFrameRect(origRect, 2, blitsfc.mapRGB(0xB5, 0xB5, 0xF1) );
     }
+}
+
+void CGUITextSelectionList::processRenderTTF(const GsRect<float> &RectDispCoordFloat)
+{
+    // Blit the List surface
+    GsWeakSurface blitsfc(gVideoDriver.getBlitSurface());
+
+    // Transform to the display coordinates
+    GsRect<float> displayRect = mRect;
+    displayRect.transform(RectDispCoordFloat);
+
+    GsRect<Uint16> origRect(displayRect);
+    GsRect<Uint16> rect = origRect;
+
+    GsColor boxColor(0xDF, 0xDF, 0xDF, 0xFF);
+
+    if(mEnabled)
+    {
+        boxColor = GsColor(0xFF, 0xFF, 0xFF, 0xFF);
+    }
+
+    blitsfc.fillRGBA(rect, boxColor);
+
+    // Now lets draw the text of the list control
+    auto &font = gGraphics.getFont(mFontID);
+    const int pixth = font.getPixelTextHeight();
+    const int pixtw = pixth; // NOTE: We assume here, that the height and width are the same. Invalid to galaxy fonts!
+
+    const int reqFontSize = int(pixth);
+
+    if(mFontSize != reqFontSize)
+    {
+        mFontSize = reqFontSize;
+        mTrueTypeFont.openFromMem(gCgTtf, sizeof(gCgTtf), reqFontSize);
+        mTextSfcMap.clear();
+    }
+
+
+    // Move 16 Pixel so we have space for the cursor/twirl to show the selection
+    const auto halfBorderHeight = (mBorderHeight/2);
+    const int sepHeight = font.getPixelTextHeight()+mBorderHeight;
+    const int xpos = rect.pos.x+16+1;
+    const int ypos = rect.pos.y+10;
+    unsigned int textlimitWidth = (rect.dim.x-16)/pixtw;
+
+    mScrollbar.mLastToShow = (rect.dim.y/sepHeight)-1;
+
+    rect.dim.y = pixth+mBorderHeight;
+
+    rect.pos.x += 12;
+    rect.dim.x -= 12;
+
+    auto it = mItemList.begin();
+
+    for(int i=0 ; i<mScrollbar.scrollPos() ; it++, i++);
+
+    for ( int lineIdx = 0;
+          it != mItemList.end() && lineIdx<mScrollbar.mLastToShow ;
+          it++, lineIdx++ )
+    {
+        // Current line to be rendered
+        const int curLinePos = static_cast<int>(lineIdx) + mScrollbar.scrollPos();
+
+        const auto &theColor = it->mBgColor;
+        const auto &theText = it->mText;
+
+        if( mPressedSelection == curLinePos )
+        {
+            rect.pos.y = ypos+(lineIdx*rect.dim.y);
+            blitsfc.fillRGBA(rect, theColor);
+        }
+        else if( mReleasedSelection == curLinePos )
+        {
+            rect.pos.y = ypos + (lineIdx*rect.dim.y);
+            blitsfc.fillRGBA(rect, theColor);
+        }
+#ifndef DISABLE_HOVER
+        else if( mHoverSelection == curLinePos )
+        {
+            rect.pos.y = ypos+(lineIdx*sepHeight);
+            blitsfc.fillRGBA(rect, theColor);
+        }
+#endif
+
+
+        std::string trimmedText = theText;
+
+        // If the text is too large to show, show a part of it. (by trimming)
+        if(trimmedText.size() > textlimitWidth)
+        {
+            trimmedText = trimmedText.substr(0, textlimitWidth);
+        }
+
+
+        if(mTextSfcMap[trimmedText].empty())
+        {
+            mTrueTypeFont.render(mTextSfcMap[trimmedText],
+                                 trimmedText,
+                                 GsColor(0x0, 0x0, 0x0));
+        }
+
+        auto &textSfc = mTextSfcMap[trimmedText];
+
+        GsRect<Uint16> blitToRect(textSfc.getSDLSurface()->clip_rect);
+        blitToRect.pos.x = Uint16(xpos);
+        blitToRect.pos.y = Uint16(ypos+(lineIdx*rect.dim.y)+halfBorderHeight);
+        textSfc.blitTo(blitsfc, blitToRect);
+    }
+
+    mScrollbar.mMaxScrollAmt = int(mItemList.size())-mScrollbar.lastToShow();
+
+    // Do we need a scrollbar?
+    if(mScrollbar.mMaxScrollAmt>0)
+    {
+        mScrollbar.processRender(displayRect);
+    }
+
+    // Draw a highlighted over everything
+    if( mEnabled && mSelected )
+    {
+        blitsfc.drawFrameRect(origRect, 2, blitsfc.mapRGB(0xB5, 0xB5, 0xF1) );
+    }
+}
+
+
+void CGUITextSelectionList::processRender(const GsRect<float> &RectDispCoordFloat)
+{
+
+    if(!gTTFDriver.isActive())
+    {
+        processRenderSimple(RectDispCoordFloat);
+    }
+    else
+    {
+        processRenderTTF(RectDispCoordFloat);
+    }
+
+
 }

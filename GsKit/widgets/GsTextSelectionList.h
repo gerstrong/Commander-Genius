@@ -13,10 +13,17 @@
 #include "GsControl.h"
 #include "GsScrollbar.h"
 #include <base/utils/Color.h>
+#include <graphics/GsSurface.h>
 
 #include <vector>
 #include <string>
+#include <map>
 #include <memory>
+
+#if defined(USE_SDL_TTF)
+#include <graphics/GsTrueTypeFont.h>
+#endif
+
 
 
 class CGUITextSelectionList : public GsControl
@@ -31,6 +38,9 @@ public:
     bool sendEvent(const InputCommand command) override;
 	void addText(const std::string &text);    
     void processLogic() override;
+
+    void processRenderSimple(const GsRect<float> &RectDispCoordFloat);
+    void processRenderTTF(const GsRect<float> &RectDispCoordFloat);
     void processRender(const GsRect<float> &RectDispCoordFloat) override;
 
 
@@ -87,9 +97,19 @@ private:
 
     std::vector<item> mItemList;
 
+#if defined(USE_SDL_TTF)
+
+    GsTrueTypeFont mTrueTypeFont;
+
+    std::map<std::string, GsSurface> mTextSfcMap;
+
+#endif
+
     int mHoverSelection = 0;
     int mPressedSelection = -1;
     int mReleasedSelection = -1;
+
+    int mFontSize = 28;
     
     GsScrollbar mScrollbar;
 	

@@ -38,20 +38,17 @@ public:
     }
 
     GsScrollbar(GsControl *parent) :
-        mScrollPos(0),
-        mMaxScrollAmt(0),
-        mLastToShow(0),
         mpParent(parent),
         mSliderHeight(0.0f),
         mArrowHeight(0.0f) {}
 
 
-    int mScrollPos;
-    int mMaxScrollAmt;
-    int mLastToShow;
+    int mScrollPos = 0;
+    int mMaxScrollAmt = 0;
+    int mLastToShow = 0;
 
 private:
-    GsControl *mpParent;
+    GsControl *mpParent = nullptr;
 
     float mSliderHeight;
     float mArrowHeight;
