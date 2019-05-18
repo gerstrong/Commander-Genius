@@ -46,6 +46,8 @@ protected:
 
 	std::list<std::string> mOptionsList;
 	std::list<std::string>::const_iterator mOLCurrent;
+
+    std::string mFeatureText;
 };
 
 #endif /* CGUICOMBOSELECTION_H_ */

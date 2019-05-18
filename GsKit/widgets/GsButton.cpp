@@ -11,7 +11,6 @@
 #include <base/GsTimer.h>
 #include <widgets/GsMenuController.h>
 #include <base/PointDevice.h>
-#include <base/PointDevice.h>
 #include <base/GsTTFSystem.h>
 
 #include "GsButton.h"

@@ -82,6 +82,7 @@ public:
     void setText(const std::string& text)
 	{
 		mText = text;
+        mTextWidget.setText(text);
         setupButtonSurface("  " + mText);
     }
 

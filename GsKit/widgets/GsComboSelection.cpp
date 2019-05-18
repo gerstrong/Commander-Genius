@@ -11,6 +11,8 @@
 #include <base/CInput.h>
 #include <base/video/CVideoDriver.h>
 #include <base/GsTimer.h>
+#include <base/GsTTFSystem.h>
+
 
 CGUIComboSelection::CGUIComboSelection( const std::string& text,
                                         const GsRect<float> &rect,
@@ -18,7 +20,8 @@ CGUIComboSelection::CGUIComboSelection( const std::string& text,
                                         const GsControl::Style style ) :
 GsButton(text, rect, nullptr, style),
 mOptionsList( optionsList ),
-mOLCurrent( mOptionsList.begin() )
+mOLCurrent( mOptionsList.begin() ),
+mFeatureText(text)
 {}
 
 
@@ -30,6 +33,8 @@ void CGUIComboSelection::cycleOption()
     {
 		mOLCurrent =  mOptionsList.begin();
     }
+
+    setText(mFeatureText + ": " + *mOLCurrent);
 }
 
 
@@ -54,6 +59,7 @@ void CGUIComboSelection::setSelection( const std::string& selectionText )
         if(*optionIt == selectionText)
         {
             mOLCurrent = optionIt;
+            setText(mFeatureText + ": " + *mOLCurrent);
             break;
         }
     }
@@ -76,6 +82,7 @@ void CGUIComboSelection::setList(const std::set<std::string> &strSet)
     }
 
 	mOLCurrent = mOptionsList.begin();
+    setText(mFeatureText + ": " + *mOLCurrent);
 }
 
 
@@ -111,35 +118,42 @@ void CGUIComboSelection::processRender(const GsRect<float> &RectDispCoordFloat)
 
     if( mReleased )
     {
-        drawRect( blitsfc, &lRect, 1, 0x00BBBBBB, 0x00CFCFCF );
+        drawRect( blitsfc, &lRect, 0, 0x00BBBBBB, 0x00CFCFCF );
     }
     else if( mPressed )
     {
-        drawRect( blitsfc, &lRect, 1, 0x00BBBBBB, 0x00DFDFDF );
+        drawRect( blitsfc, &lRect, 0, 0x00BBBBBB, 0x00DFDFDF );
     }
 #ifndef DISABLE_HOVER
     else if( mHovered )
     {
-        drawRect( blitsfc, &lRect, 1, 0x00BBBBBB, 0x00EFEFEF );
+        drawRect( blitsfc, &lRect, 0, 0x00BBBBBB, 0x00EFEFEF );
     }
 #endif
     else
     {
-        drawRect( blitsfc, &lRect, 1, 0x00BBBBBB, 0x00FFFFFF );
+        drawRect( blitsfc, &lRect, 0, 0x00BBBBBB, 0x00FFFFFF );
     }
 
-    // Now lets draw the text of the list control
-    GsFontLegacy &Font = gGraphics.getFont(mFontID);
 
-    const int fontHeight = 8;
-    //const int textX = lRect.x+24+(mText.size()+2)*fontHeight;
-    const int textY = lRect.y+((lRect.h-fontHeight)/2);
+    if(!gTTFDriver.isActive())
+    {
+        // Now lets draw the text of the list control
+        GsFontLegacy &Font = gGraphics.getFont(mFontID);
+
+        const int fontHeight = 8;
+        //const int textX = lRect.x+24+(mText.size()+2)*fontHeight;
+        const int textY = lRect.y+((lRect.h-fontHeight)/2);
 
 
-    Font.drawFont( blitsfc, mText, lRect.x+24, textY, false );
-    Font.drawFont( blitsfc, ":", lRect.x+24+mText.size()*8, textY, false );
-
-    const std::string text = (*mOLCurrent);
-    Font.drawFont( blitsfc, text, lRect.x+24+(mText.size()+2)*fontHeight, textY, false );
+        Font.drawFont( blitsfc, mText, lRect.x+24, textY, false );
+        //Font.drawFont( blitsfc, ":", lRect.x+24+mText.size()*8, textY, false );
+        //const std::string text = (*mOLCurrent);
+        //Font.drawFont( blitsfc, text, lRect.x+24+(mText.size()+2)*fontHeight, textY, false );
+    }
+    else
+    {
+        GsButton::processRender(RectDispCoordFloat);
+    }
 
 }

@@ -32,9 +32,7 @@ void ComboSelection::cycleOption()
 
 void ComboSelection::setupButtonSurface(const std::string &optionText)
 {
-    const std::string showText = "  " + mText + ": " + optionText;
-
-    GsButton::setupButtonSurface(showText);
+    GsButton::setupButtonSurface(optionText);
 }
 
 void ComboSelection::setSelection( const std::string& selectionText )
@@ -99,15 +97,15 @@ void ComboSelection::processRender(const GsRect<float> &RectDispCoordFloat)
     }
     else
     {
-        if(!mEnabled)
-            return;
+        CGUIComboSelection::processRender(RectDispCoordFloat);
 
+        /*
         // Now lets draw the text of the list control
         auto &Font = gGraphics.getFont(mFontID);
 
         std::string text = mText + ": " + (*mOLCurrent);
         Font.drawFont( blitsfc.getSDLSurface(), text, lRect.x+40, lRect.y, false );
-
+        */
         drawTwirl(lRect);
     }
     
