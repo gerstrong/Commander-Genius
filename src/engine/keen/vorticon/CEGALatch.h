@@ -45,10 +45,10 @@ private:
   
 	void loadTilemap(GsTilemap &Tilemap, CPlanes &Planes, const int episode, const std::string &path);
   
-	int m_num_Latches;
+//	int m_num_Latches;
 	int m_latchplanesize;
 	long m_bitmaptablelocation;
-	long m_latchstart;
+    //long m_latchstart;
 	short m_fonttiles;
 	long m_fontlocation;
 	long m_screentiles;

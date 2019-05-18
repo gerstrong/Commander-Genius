@@ -318,7 +318,9 @@ void CPassiveGalaxy::processIntroZoom()
         GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
         mBackgroundTitle.scaleTo(gameRes);
         renderIntroZoom();
-        gEffectController.setupEffect(new CPixelate(2));
+
+        const auto modern = gBehaviorEngine.mOptions[GameOption::MODERN].value;
+        gEffectController.setupEffect(new CPixelate(2, modern));
         mSkipSection = false;
     }
 }

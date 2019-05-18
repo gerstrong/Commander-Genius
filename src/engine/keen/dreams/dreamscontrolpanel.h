@@ -83,9 +83,9 @@ private:
     int mx, my;
     int mN;
 
-    uint8_t mSc;
+    //uint8_t mSc;
 
-    char mC;
+    //char mC;
     char *mBuf;
 
     int	mLasttime;

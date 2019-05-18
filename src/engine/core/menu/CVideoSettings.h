@@ -20,6 +20,7 @@
 #include "GameMenu.h"
 
 #include <base/video/CVidConfig.h>
+#include <memory>
 
 
 class CVideoSettings : public GameMenu
@@ -40,7 +41,7 @@ private:
 #ifdef VIRTUALPAD
     Switch			*mpVPadSwitch  = nullptr;
 #endif
-    NumberControl	*mpFPSSelection  = nullptr;
+    std::shared_ptr<NumberControl> mpFPSSelection;
     Switch		    *mpFrameSkip  = nullptr;    
     ComboSelection	*mpGameResSelection = nullptr;        
     Switch		    *mpBorderColorSwitch = nullptr;

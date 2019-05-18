@@ -25,13 +25,11 @@ void CGUIText::setText(const std::string& text)
 {    
     const GsColor textColor = { 0, 0, 0, 0 };
 
-    mText = text;
+    mTextChanged = (mText != text);
 
-#if defined(USE_SDL_TTF)
+    mText = text;    
 
-    //mTrueTypeFont.openFromMem(gCgTtf, sizeof(gCgTtf), 28);
-    //mTrueTypeFont.render(mTextSfc, text, textColor);
-#else
+#if !defined(USE_SDL_TTF)
 
 	if(!mTextList.empty())
 		mTextList.clear();
@@ -120,12 +118,13 @@ void CGUIText::processRender(const GsRect<float> &RectDispCoordFloat)
 
     const int reqFontSize = int(displayRect.dim.y*0.75f);
 
-    if(mFontSize != reqFontSize)
+    if(mFontSize != reqFontSize || mTextChanged)
     {
         mFontSize = reqFontSize;
 
-        mTrueTypeFont.openFromMem(gCgTtf.data(), gCgTtf.size(), reqFontSize);
+        mTrueTypeFont.openFromMem(gCgTtf, reqFontSize);
         mTrueTypeFont.render(mTextSfc, mText, textColor);
+        mTextChanged = false;
     }
 
     if(mTextSfc)
@@ -185,10 +184,12 @@ void CGUIText::processRender(const GsRect<float> &RectDispCoordFloat)
 #endif
 }
 
-void CGUIText::processRender(const GsRect<float> &backRect,
-                             const GsRect<float> &frontRect)
+void CGUIText::processRender(const GsRect<float> &/*backRect*/,
+                             const GsRect<float> &/*frontRect*/)
 {
     // Transform this object to the display coordinates
+    assert(0);
+    /*
     auto objBackRect = backRect.transformed(mRect);
     auto objFrontRect = objBackRect.clipped(frontRect);
 
@@ -197,7 +198,7 @@ void CGUIText::processRender(const GsRect<float> &backRect,
     auto srcRect = objBackRect.SDLRect();
     auto dstRect = objFrontRect.SDLRect();
 
-    /*auto *renderer = &gVideoDriver.getRendererRef();
+    auto *renderer = &gVideoDriver.getRendererRef();
 
     srcRect.x = (srcRect.x < dstRect.x) ? dstRect.x-srcRect.x : 0;
     srcRect.y = (srcRect.y < dstRect.y) ? dstRect.y-srcRect.y : 0;

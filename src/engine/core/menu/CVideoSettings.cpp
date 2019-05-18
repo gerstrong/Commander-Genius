@@ -41,12 +41,12 @@ GameMenu(GsRect<float>(0.15f, 0.20f, 0.65f, 0.55f), style )
 		List.push_back( itoa (i) );
     }
 
-    mpFPSSelection = new NumberControl( "FPS", 10, 120, 10, 60,
-                                        false,
-                                        style);
+    mpFPSSelection =
+            mpMenuDialog->addControl(
+                new NumberControl( "FPS", 10, 120, 10, 60,
+                                   false, style),
+                style );
 
-
-    mpMenuDialog->addControl( mpFPSSelection, style );
 
     mpFrameSkip = new Switch( "FrameSkip", style );
     mpMenuDialog->addControl( mpFrameSkip );

@@ -19,7 +19,7 @@
 int CGUINumberControl::mTwirliconID = 10;
 
 const int SLIDER_WIDTH = 16;
-//const int BLEND_SPEED = 16;
+const int BLEND_SPEED = 16;
 
 
 CGUINumberControl::CGUINumberControl(const std::string& text,
@@ -90,13 +90,12 @@ void CGUINumberControl::setSelection( const int value )
 
 void CGUINumberControl::processLogic()
 {
-    /*
     GsPointingState &pointingState = gPointDevice.mPointingState;
 
     const bool hasPoint = mRect.HasPoint(pointingState.mPos);
     const bool bDown = (pointingState.mActionButton>0);
 
-    const float xMid = mRect.x+(mRect.dim.x/2.0f);
+    const float xMid = mRect.pos.x+(mRect.dim.x/2.0f);
 
     mReleased = false;
 
@@ -121,7 +120,47 @@ void CGUINumberControl::processLogic()
         }
     }
 
-#ifndef DISABLE_HOVER
+#ifdef DISABLE_HOVER
+    if(bDown)
+    {
+        mPressed = true;
+
+        if( mDecSel )
+        {
+            // Cycle through the values -> go one value down
+            if( mValue > mStartValue )
+                decrement();
+        }
+        else if( mIncSel )
+        {
+            // Cycle through the values -> go one value up
+            if( mValue < mEndValue )
+                increment();
+        }
+
+        mMustRedraw = true;
+    }
+
+
+    if(mEnabled)
+    {
+        // For some nice special effects
+        if(mSelected)
+        {
+            if(mLightRatio+BLEND_SPEED < 255)
+               mLightRatio += BLEND_SPEED;
+            else
+               mLightRatio = 255;
+        }
+        else // Button is not hovered
+        {
+            if(mLightRatio-BLEND_SPEED > 0)
+               mLightRatio -= BLEND_SPEED;
+            else
+               mLightRatio = 0;
+        }
+    }
+#else
     if(!bDown || mPressed)
     {
         mHovered = hasPoint;
@@ -166,48 +205,8 @@ void CGUINumberControl::processLogic()
                mLightRatio = 0;
         }
     }
-#else
-    if(bDown)
-    {
-        mPressed = true;
-
-        if( mDecSel )
-        {
-            // Cycle through the values -> go one value down
-            if( mValue > mStartValue )
-                decrement();
-        }
-        else if( mIncSel )
-        {
-            // Cycle through the values -> go one value up
-            if( mValue < mEndValue )
-                increment();
-        }
-
-        mMustRedraw = true;
-    }
-
-
-    if(mEnabled)
-    {
-        // For some nice special effects
-        if(mSelected)
-        {
-            if(mLightRatio+BLEND_SPEED < 255)
-               mLightRatio += BLEND_SPEED;
-            else
-               mLightRatio = 255;
-        }
-        else // Button is not hovered
-        {
-            if(mLightRatio-BLEND_SPEED > 0)
-               mLightRatio -= BLEND_SPEED;
-            else
-               mLightRatio = 0;
-        }
-    }
 #endif
-*/
+
 }
 
 

@@ -10,18 +10,26 @@
 
 #include <base/video/GsEffectController.h>
 
+#include <graphics/GsSurface.h>
 
 class CPixelate  : public CEffects
 {
 public:
-	CPixelate(unsigned short speed);
+    CPixelate(unsigned short speed,
+              const bool modern);
 	void getSnapshot();
     void ponder(const float deltaT);
+
+    void renderRetro();
+    void renderModern();
+
     void render();
 	virtual ~CPixelate();
 
 private:
-	SDL_Surface *mp_OldSurface;
+    SDL_Surface *mpOldSurface = nullptr;
+    GsSurface mOldSurface;
+
 
 	// m_line tells until which line, we have to draw the pixels
 	// m_lines_completed gets ++, if a line has no more pixel that need to be drawn
@@ -32,6 +40,8 @@ private:
 	bool *m_drawmap;
 	unsigned short m_speed;
 	Uint32 mColorkey;
+
+    bool mModernMode = true;
 };
 
 #endif /* CPIXELATE_H_ */

@@ -151,6 +151,15 @@ public:
         return SDL_MapRGBA( mpSurface->format, r, g, b, a );
     }
 
+    Uint32 mapColorAlpha(const GsColor &color) const
+    {
+        const Uint8 r = color.r;
+        const Uint8 g = color.g;
+        const Uint8 b = color.b;
+        const Uint8 a = color.a;
+        return SDL_MapRGBA( mpSurface->format, r, g, b, a );
+    }
+
     void getRGB(const Uint32 color, Uint8 &r, Uint8 &g, Uint8 &b)
     {
         SDL_GetRGB( color, mpSurface->format, &r, &g, &b );
@@ -160,6 +169,15 @@ public:
     {
         SDL_GetRGBA( color, mpSurface->format, &r, &g, &b, &a );
     }
+
+    GsColor getColorAlpha(const Uint32 colorVar) const
+    {
+        GsColor color;
+        SDL_GetRGBA( colorVar, mpSurface->format,
+                     &color.r, &color.g, &color.b, &color.a );
+        return color;
+    }
+
 
 
     void fillRGB(const Uint8 r, const Uint8 g, const Uint8 b)

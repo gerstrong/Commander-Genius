@@ -70,6 +70,7 @@ private:
 
     std::string mText;
     int mFontSize = 0;
+    bool mTextChanged = true;
 
     enum class ScrollDir
     {

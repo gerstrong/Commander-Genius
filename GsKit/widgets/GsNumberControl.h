@@ -17,14 +17,15 @@ class CGUINumberControl : public GsButton
 {
 public:
 
-    CGUINumberControl(const std::string& text, const GsRect<float> &rect,
-            const int startValue,
-            const int endValue,
-            const int deltaValue,
-            const int value,
-            const int fontid,
-            const bool slider,
-            const Style style = Style::NONE);
+    CGUINumberControl(const std::string& text,
+                      const GsRect<float> &rect,
+                      const int startValue,
+                      const int endValue,
+                      const int deltaValue,
+                      const int value,
+                      const int fontid,
+                      const bool slider,
+                      const Style style = Style::NONE);
 
 
 	void increment();
@@ -48,13 +49,13 @@ protected:
     GsSurface mTextLightSfcR;
     GsSurface mTextLightSfcL;
 
-    int mValue;
-    const bool mSlider;
+    int mValue = 0;
+    const bool mSlider = false;
 
 
-    const int mStartValue;
-    const int mEndValue;
-    bool mMustRedraw;
+    const int mStartValue = 0;
+    const int mEndValue = 0;
+    bool mMustRedraw = true;
 
 private:
 

@@ -11,7 +11,6 @@
 
 #include "CPixelate.h"
 #include <base/video/CVideoDriver.h>
-//#include <base/CInput.h>
 #include <base/GsTimer.h>
 
 #include "graphics/GsGraphics.h"
@@ -21,9 +20,10 @@
 #include <cstdlib>
 
 
-CPixelate::CPixelate(unsigned short speed) :
-mp_OldSurface(nullptr),
-m_speed(speed)
+CPixelate::CPixelate(unsigned short speed,
+                     const bool modern) :
+m_speed(speed),
+mModernMode(modern)
 {
 	SDL_Rect gameres = gVideoDriver.getGameResolution().SDLRect();
 	getSnapshot();
@@ -48,36 +48,24 @@ void CPixelate::getSnapshot()
 
     SDL_Surface *blitSfc = gVideoDriver.getBlitSurface();
 
-    if(!mp_OldSurface)
+    if(mOldSurface.empty())
     {
-        SDL_PixelFormat *format = blitSfc->format;
-        mp_OldSurface = SDL_CreateRGBSurface( SDL_SWSURFACE,
-                                              blitSfc->w, blitSfc->h, 32,
-                                              format->Rmask,
-                                              format->Gmask,
-                                              format->Bmask,
-                                              0 );
+        mOldSurface.createRGBSurface(blitSfc->clip_rect);
     }
 
-    // Surface might have alpha mask. In that case the mColorKey can be zero
-    if(mp_OldSurface->format->Amask != 0)
+    if(mOldSurface.getSDLSurface()->format->Amask != 0)
     {
-        mColorkey = SDL_MapRGBA( mp_OldSurface->format, 0, 0, 0, 0 );
+        mColorkey = mOldSurface.mapRGBA( 0, 0, 0, 0 );
     }
     else
     {
-        //Map the color key
-        //Set all pixels of color R 0, G 0xFF, B 0xFF to be transparent
-
-        mColorkey = SDL_MapRGB( mp_OldSurface->format, 0, 0xFF, 0xFF );
-    #if SDL_VERSION_ATLEAST(2, 0, 0)
-        SDL_SetColorKey( mp_OldSurface, SDL_TRUE, mColorkey );
-    #else
-        SDL_SetColorKey( mp_OldSurface, SDL_SRCCOLORKEY, mColorkey );
-    #endif
+        mColorkey = mOldSurface.mapRGB( 0, 0xFF, 0xFF );
+        mOldSurface.setColorKey(mColorkey);
     }
 
-    BlitSurface(gVideoDriver.getBlitSurface(), nullptr, mp_OldSurface, nullptr);
+    GsWeakSurface mainBlit(blitSfc);
+
+    mainBlit.blitTo(mOldSurface);
 }
 
 // Effect cycle
@@ -87,7 +75,7 @@ void CPixelate::ponder(const float deltaT)
 
 	if(m_line < gameres.h)
 	{
-		m_line+=m_speed;
+        m_line+=m_speed;
         if(m_line > gameres.h || mFinished) m_line=gameres.h;
 	}
 
@@ -98,16 +86,18 @@ void CPixelate::ponder(const float deltaT)
 	}
 }
 
-void CPixelate::render()
+void CPixelate::renderModern()
 {
     SDL_Rect gameres = gVideoDriver.getGameResolution().SDLRect();
+    GsWeakSurface mainBlit(gVideoDriver.getBlitSurface());
 
-    SDL_LockSurface(mp_OldSurface);
+    mOldSurface.lock();
 
     // This is the algorithm for drawing the effect. It was invented by myself, so no guarantee,
     // it will look the same as in Keen Galaxy. We will see, when it's finished
 
-    Uint8* pixels = static_cast<Uint8*> (mp_OldSurface->pixels);
+    auto *oldfSfcSdl = mOldSurface.getSDLSurface();
+    Uint8* pixels = static_cast<Uint8*> (oldfSfcSdl->pixels);
 
     for(unsigned short y=m_lines_completed ; y<m_line ; y++)
     {
@@ -117,19 +107,36 @@ void CPixelate::render()
 
             do
             {	// get a random pixel between 0 and 320 which has not yet been occupied
-                x = rand()%gameres.w;
-            } while( m_drawmap[(Uint32)(y*gameres.w + x)] );
+                x = Uint16(rand()%gameres.w);
+            } while( m_drawmap[Uint32(y*gameres.w + x)] );
 
-            // The y line gets one pixel painted at random x, between 0 and 320.
-            //pixel = pixelstart + x*mp_OldSurface->format->BytesPerPixel;
-            m_pixels_per_line[y]++;
-            m_drawmap[y*gameres.w + x] = true;
+            Uint32 colorVar;
+            memcpy(&colorVar,
+                   pixels + y*oldfSfcSdl->pitch +
+                   x*oldfSfcSdl->format->BytesPerPixel,
+                   oldfSfcSdl->format->BytesPerPixel);
 
-            memcpy(pixels +
-                   y*mp_OldSurface->pitch +
-                   x*mp_OldSurface->format->BytesPerPixel,
-                   &mColorkey,
-                   mp_OldSurface->format->BytesPerPixel);
+            GsColor color = mOldSurface.getColorAlpha(colorVar);
+
+            const int alphaSpeed = 160;
+            if(color.a < alphaSpeed)
+            {
+                color.a = 0;
+                m_pixels_per_line[y]++;
+                m_drawmap[y*gameres.w + x] = true;
+            }
+            else
+            {
+                color.a -= alphaSpeed;
+            }
+
+            colorVar = mOldSurface.mapColorAlpha(color);
+
+            memcpy(pixels + y*oldfSfcSdl->pitch +
+                   x*oldfSfcSdl->format->BytesPerPixel,
+                   &colorVar,
+                   oldfSfcSdl->format->BytesPerPixel);
+
 
             // If there are no more pixels to draw in this line, m_lines_completed++, it won't be scanned again.
             // This will be checked against m_pixels_per_line
@@ -141,15 +148,75 @@ void CPixelate::render()
         }
     }
 
-    SDL_UnlockSurface(mp_OldSurface);
+    mOldSurface.unlock();
 
-    BlitSurface( mp_OldSurface, nullptr,
-                 gVideoDriver.getBlitSurface(), nullptr );
+    mOldSurface.blitTo(mainBlit);
+}
+
+void CPixelate::renderRetro()
+{
+    SDL_Rect gameres = gVideoDriver.getGameResolution().SDLRect();
+    GsWeakSurface mainBlit(gVideoDriver.getBlitSurface());
+
+    mOldSurface.lock();
+
+    // This is the algorithm for drawing the effect. It was invented by myself, so no guarantee,
+    // it will look the same as in Keen Galaxy. We will see, when it's finished
+
+    auto *oldfSfcSdl = mOldSurface.getSDLSurface();
+    Uint8* pixels = static_cast<Uint8*> (oldfSfcSdl->pixels);
+
+    for(unsigned short y=m_lines_completed ; y<m_line ; y++)
+    {
+        for(unsigned short drawamt=0 ; drawamt < m_speed ; drawamt++ )
+        {
+            Uint16 x;
+
+            do
+            {	// get a random pixel between 0 and 320 which has not yet been occupied
+                x = Uint16(rand()%gameres.w);
+            } while( m_drawmap[Uint32(y*gameres.w + x)] );
+
+            // The y line gets one pixel painted at random x, between 0 and 320.
+            m_pixels_per_line[y]++;
+            m_drawmap[y*gameres.w + x] = true;
+
+            memcpy(pixels +
+                   y*oldfSfcSdl->pitch +
+                   x*oldfSfcSdl->format->BytesPerPixel,
+                   &mColorkey,
+                   oldfSfcSdl->format->BytesPerPixel);
+
+            // If there are no more pixels to draw in this line, m_lines_completed++, it won't be scanned again.
+            // This will be checked against m_pixels_per_line
+            if(m_pixels_per_line[y] >= gameres.w )
+            {
+                m_lines_completed++;
+                break;
+            }
+        }
+    }
+
+    mOldSurface.unlock();
+
+    mOldSurface.blitTo(mainBlit);
+}
+
+void CPixelate::render()
+{
+    if (mModernMode)
+    {
+        renderModern();
+    }
+    else
+    {
+        renderRetro();
+    }
 }
 
 CPixelate::~CPixelate()
 {
 	delete [] m_drawmap;
 	delete [] m_pixels_per_line;
-	if(mp_OldSurface) SDL_FreeSurface(mp_OldSurface);
+    if(mpOldSurface) SDL_FreeSurface(mpOldSurface);
 }

@@ -13,8 +13,9 @@
 
 CIntro::CIntro()
 {
-	for(size_t i = 0; i < sizeof(mp_bm)/sizeof(mp_bm[0]); ++i) mp_bm[i] = NULL;
-	m_timer = 0;
+    for(size_t i = 0; i < sizeof(mp_bm)/sizeof(mp_bm[0]); ++i)
+        mp_bm[i] = nullptr;
+
 	m_introtime = 10;  // Total time (in seconds) to elapse until Main menu opens
 	m_scrolly = 200;
 	m_finished = false;

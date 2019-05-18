@@ -4,6 +4,7 @@ v2.3.5:
 - New font added for better scalibility (WIP)
 - Updated GsKit, many code cleanups in the library (WIP)
 - Settings fixups (WIP)
+- Modern setting makes the dithering effect a bit smoother when Galaxy is shown
 
 v2.3.4:
 -------
