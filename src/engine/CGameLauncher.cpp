@@ -41,8 +41,6 @@
 #include "keen/dreams/dreamsengine.h"
 
 
-
-
 /// Main Class implementation
 CGameLauncher::CGameLauncher() :
 mDonePatchSelection(false),

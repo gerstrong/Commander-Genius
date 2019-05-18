@@ -35,6 +35,7 @@ bool GsTrueTypeFont::open(const std::string &fontName,
     return success;
 }
 
+
 bool GsTrueTypeFont::openFromMem(const unsigned char *src,
                                  const int memSize,
                                  const int fontSize)
@@ -55,6 +56,13 @@ bool GsTrueTypeFont::openFromMem(const unsigned char *src,
     }
 
     return success;
+}
+
+
+bool GsTrueTypeFont::openFromMem(const std::vector<unsigned char> &src,
+                                 const int fontSize)
+{
+    return openFromMem(src.data(), int(src.size()), fontSize);
 }
 
 

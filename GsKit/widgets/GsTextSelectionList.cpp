@@ -434,7 +434,7 @@ void CGUITextSelectionList::processRenderTTF(const GsRect<float> &RectDispCoordF
     if(mFontSize != reqFontSize)
     {
         mFontSize = reqFontSize;
-        mTrueTypeFont.openFromMem(gCgTtf, sizeof(gCgTtf), reqFontSize);
+        mTrueTypeFont.openFromMem(gCgTtf, reqFontSize);
         mTextSfcMap.clear();
     }
 

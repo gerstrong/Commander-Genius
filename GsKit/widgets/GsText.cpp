@@ -29,8 +29,8 @@ void CGUIText::setText(const std::string& text)
 
 #if defined(USE_SDL_TTF)
 
-    mTrueTypeFont.openFromMem(gCgTtf, sizeof(gCgTtf), 28);
-    mTrueTypeFont.render(mTextSfc, text, textColor);
+    //mTrueTypeFont.openFromMem(gCgTtf, sizeof(gCgTtf), 28);
+    //mTrueTypeFont.render(mTextSfc, text, textColor);
 #else
 
 	if(!mTextList.empty())
@@ -124,7 +124,7 @@ void CGUIText::processRender(const GsRect<float> &RectDispCoordFloat)
     {
         mFontSize = reqFontSize;
 
-        mTrueTypeFont.openFromMem(gCgTtf, sizeof(gCgTtf), reqFontSize);
+        mTrueTypeFont.openFromMem(gCgTtf.data(), gCgTtf.size(), reqFontSize);
         mTrueTypeFont.render(mTextSfc, mText, textColor);
     }
 

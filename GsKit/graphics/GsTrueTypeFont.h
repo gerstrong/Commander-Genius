@@ -23,7 +23,11 @@ public:
     bool open(const std::string &fontName,
               const int fontSize);
 
-    bool openFromMem(const unsigned char *src, const int memSize,
+    bool openFromMem(const unsigned char *src,
+                     const int memSize,
+                     const int fontSize);
+
+    bool openFromMem(const std::vector<unsigned char> &src,
                      const int fontSize);
 
 
