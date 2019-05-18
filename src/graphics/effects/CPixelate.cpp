@@ -20,9 +20,9 @@
 #include <cstdlib>
 
 
-CPixelate::CPixelate(unsigned short speed,
+CPixelate::CPixelate(const float speed,
                      const bool modern) :
-m_speed(speed),
+mSpeed(speed),
 mModernMode(modern)
 {
 	SDL_Rect gameres = gVideoDriver.getGameResolution().SDLRect();
@@ -30,15 +30,8 @@ mModernMode(modern)
 
 	m_line = 0;
 	m_lines_completed = 0;
-    m_drawmap = new bool[gameres.h*gameres.w];
-	m_pixels_per_line = new unsigned short[gameres.h];
-
-    for(int y=0 ; y<gameres.h ; y++)
-	{
-		m_pixels_per_line[y] = 0;
-        for(int x=0 ; x<gameres.w ; x++)
-            m_drawmap[y*gameres.w+x] = false;
-	}
+    mDrawMap.assign(static_cast<unsigned int>(gameres.h*gameres.w),false);
+    mPixelsPerLine.assign(static_cast<unsigned int>(gameres.h), 0);
 }
 
 // get the Snapshot of the old surface, so the the effect can be applied on it!
@@ -75,8 +68,9 @@ void CPixelate::ponder(const float deltaT)
 
 	if(m_line < gameres.h)
 	{
-        m_line+=m_speed;
-        if(m_line > gameres.h || mFinished) m_line=gameres.h;
+        m_line += static_cast<unsigned short>(mSpeed*deltaT);
+        if(m_line > gameres.h || mFinished)
+            m_line = static_cast<unsigned short>(gameres.h);
 	}
 
 	if( m_lines_completed >= m_line )
@@ -101,14 +95,14 @@ void CPixelate::renderModern()
 
     for(unsigned short y=m_lines_completed ; y<m_line ; y++)
     {
-        for(unsigned short drawamt=0 ; drawamt < m_speed ; drawamt++ )
+        for(unsigned short drawamt=0 ; drawamt < mSpeed ; drawamt++ )
         {
             Uint16 x;
 
             do
             {	// get a random pixel between 0 and 320 which has not yet been occupied
                 x = Uint16(rand()%gameres.w);
-            } while( m_drawmap[Uint32(y*gameres.w + x)] );
+            } while( mDrawMap[Uint32(y*gameres.w + x)] );
 
             Uint32 colorVar;
             memcpy(&colorVar,
@@ -122,8 +116,8 @@ void CPixelate::renderModern()
             if(color.a < alphaSpeed)
             {
                 color.a = 0;
-                m_pixels_per_line[y]++;
-                m_drawmap[y*gameres.w + x] = true;
+                mPixelsPerLine[y]++;
+                mDrawMap[y*gameres.w + x] = true;
             }
             else
             {
@@ -140,7 +134,7 @@ void CPixelate::renderModern()
 
             // If there are no more pixels to draw in this line, m_lines_completed++, it won't be scanned again.
             // This will be checked against m_pixels_per_line
-            if(m_pixels_per_line[y] >= gameres.w )
+            if(mPixelsPerLine[y] >= gameres.w )
             {
                 m_lines_completed++;
                 break;
@@ -168,18 +162,18 @@ void CPixelate::renderRetro()
 
     for(unsigned short y=m_lines_completed ; y<m_line ; y++)
     {
-        for(unsigned short drawamt=0 ; drawamt < m_speed ; drawamt++ )
+        for(unsigned short drawamt=0 ; drawamt < mSpeed ; drawamt++ )
         {
             Uint16 x;
 
             do
             {	// get a random pixel between 0 and 320 which has not yet been occupied
                 x = Uint16(rand()%gameres.w);
-            } while( m_drawmap[Uint32(y*gameres.w + x)] );
+            } while( mDrawMap[Uint32(y*gameres.w + x)] );
 
             // The y line gets one pixel painted at random x, between 0 and 320.
-            m_pixels_per_line[y]++;
-            m_drawmap[y*gameres.w + x] = true;
+            mPixelsPerLine[y]++;
+            mDrawMap[Uint32(y*gameres.w + x)] = true;
 
             memcpy(pixels +
                    y*oldfSfcSdl->pitch +
@@ -189,7 +183,7 @@ void CPixelate::renderRetro()
 
             // If there are no more pixels to draw in this line, m_lines_completed++, it won't be scanned again.
             // This will be checked against m_pixels_per_line
-            if(m_pixels_per_line[y] >= gameres.w )
+            if(mPixelsPerLine[y] >= gameres.w )
             {
                 m_lines_completed++;
                 break;
@@ -212,11 +206,4 @@ void CPixelate::render()
     {
         renderRetro();
     }
-}
-
-CPixelate::~CPixelate()
-{
-	delete [] m_drawmap;
-	delete [] m_pixels_per_line;
-    if(mpOldSurface) SDL_FreeSurface(mpOldSurface);
 }

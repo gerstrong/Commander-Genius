@@ -40,7 +40,7 @@ bool Title::init(int Episode)
     if(!gBehaviorEngine.mOptions[GameOption::SPECIALFX].value)
         gEffectController.setupEffect(new CColorMerge(16));
     else
-        gEffectController.setupEffect(new CPixelate(16, modern));
+        gEffectController.setupEffect(new CPixelate(2.0f, modern));
 	
     if( (pBitmap = gGraphics.getBitmapFromStr(0, "TITLE")) != nullptr )
 	{

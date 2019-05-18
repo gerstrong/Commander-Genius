@@ -320,7 +320,7 @@ void CPassiveGalaxy::processIntroZoom()
         renderIntroZoom();
 
         const auto modern = gBehaviorEngine.mOptions[GameOption::MODERN].value;
-        gEffectController.setupEffect(new CPixelate(2, modern));
+        gEffectController.setupEffect(new CPixelate(0.15f, modern));
         mSkipSection = false;
     }
 }
