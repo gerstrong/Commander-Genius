@@ -11,14 +11,13 @@ const int TIME_TRANSITION = 30;
 CGUIBanner::CGUIBanner(const std::string& text, const GsRect<float> &rect) :
 CGUIText(text, rect)
 {
-    curTextIt = mTextVec.begin();
 }
 
 
 void CGUIBanner::setText(const std::string& text)
 {
     CGUIText::setText(text);
-    curTextIt = mTextVec.begin();
+    mCurLineIdx = 0;
 }
 
 void CGUIBanner::processLogic()
@@ -40,12 +39,12 @@ void CGUIBanner::processLogic()
         {
             timer = 0;
 
-            prevTextIt = curTextIt;
+            mPreLineIdx = mCurLineIdx;
 
-            curTextIt++;
+            mCurLineIdx++;
 
-            if( curTextIt == mTextVec.end() )
-                curTextIt = mTextVec.begin();
+            if( mCurLineIdx >= mTextVec.size() )
+                mCurLineIdx = 0;
 
             alpha = 0;
             mTransition = !mTransition;
@@ -68,25 +67,62 @@ void CGUIBanner::processRender(const GsRect<float> &RectDispCoordFloat)
     GsRect<float> displayRect = mRect;
     displayRect.transform(RectDispCoordFloat);
 
-    //updateFontState(displayRect);
-    CGUIText::processRender(RectDispCoordFloat);
+    updateFontState(displayRect);
 
-    /*
     auto &blit = gVideoDriver.gameSfc();
 
-    if(mTextSfc)
+
+    auto renderTxt = [&](GsSurface &textSfc)
     {
-        const auto textW = mTextSfc.width();
-        const auto textH = mTextSfc.height();
+        if(!textSfc.empty())
+        {
+            const auto textW = textSfc.width();
+            const auto textH = textSfc.height();
+            GsVec2D<int> textSfcDim(textW, textH);
+
+            GsRect<float> blitPos = displayRect;
+            blitPos.pos = blitPos.pos + (blitPos.dim-textSfcDim)/2;
+
+            textSfc.blitTo(blit, blitPos.SDLRect());
+        }
+    };
+
+
+    if(mTransition)
+    {
+        auto &sfcPrev = mTextSfcVec[mPreLineIdx];
+        auto &sfcCur  = mTextSfcVec[mCurLineIdx];
+
+        sfcPrev.setAlpha(255-alpha);
+        sfcCur.setAlpha(alpha);
+
+        renderTxt( sfcPrev );
+        renderTxt( sfcCur );
+    }
+    else
+    {
+        renderTxt( mTextSfcVec[mCurLineIdx] );
+    }
+
+/*
+    unsigned int totTextSfcH = 0;
+    for(auto &textSfc : mTextSfcVec)
+    {
+        if(textSfc.empty())
+            break;
+
+        const auto textW = textSfc.width();
+        const auto textH = textSfc.height();
         GsVec2D<int> textSfcDim(textW, textH);
 
         GsRect<float> blitPos = displayRect;
         blitPos.pos = blitPos.pos + (blitPos.dim-textSfcDim)/2;
+        blitPos.pos.y += totTextSfcH;
 
-        mTextSfc.blitTo(blit, blitPos.SDLRect());
+        textSfc.blitTo(blit, blitPos.SDLRect());
+        totTextSfcH += textH;
     }
 */
-
 #else
     // Transform to the display coordinates
     GsRect<float> displayRect = mRect;

@@ -14,8 +14,10 @@ public:
     void setText(const std::string& text);
     
 private:    
-    std::vector<std::string>::iterator curTextIt;
-    std::vector<std::string>::iterator prevTextIt;
+
+    unsigned int mCurLineIdx = 0;
+    unsigned int mPreLineIdx = 0;
+
     bool mTransition = false;
     int timer = 0;
     uint8_t alpha = 0;

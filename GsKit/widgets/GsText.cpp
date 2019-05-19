@@ -143,7 +143,7 @@ void CGUIText::processRender(const GsRect<float> &RectDispCoordFloat)
 
         GsRect<float> blitPos = displayRect;
         blitPos.pos = blitPos.pos + (blitPos.dim-textSfcDim)/2;
-        blitPos.pos.y += totTextSfcH; // TODO: Bad workaround. Improve this!
+        blitPos.pos.y += totTextSfcH;
 
         textSfc.blitTo(blit, blitPos.SDLRect());
         totTextSfcH += textH;
