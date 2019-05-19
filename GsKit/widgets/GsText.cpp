@@ -23,16 +23,8 @@ GsControl(rect)
 
 void CGUIText::setText(const std::string& text)
 {    
-    const GsColor textColor = { 0, 0, 0, 0 };
-
-    mTextChanged = (mText != text);
-
-    mText = text;    
-
-#if !defined(USE_SDL_TTF)
-
-	if(!mTextList.empty())
-		mTextList.clear();
+    if(!mTextVec.empty())
+        mTextVec.clear();
 
 	// Split up the text in lines
     mTextDim.dim.x = 0;
@@ -43,10 +35,10 @@ void CGUIText::setText(const std::string& text)
 	{
 		if( endofText(text.substr(i)) )
 		{            
-            if( mTextDim.dim.x<buf.size() )
-                mTextDim.dim.x=buf.size();
+            if( mTextDim.dim.x < buf.size() )
+                mTextDim.dim.x = static_cast<unsigned int>(buf.size());
 
-			mTextList.push_back(buf);
+            mTextVec.push_back(buf);
 			buf.clear();
 		}
 		else
@@ -61,14 +53,15 @@ void CGUIText::setText(const std::string& text)
 		while( (pos = buf.find('\n')) != std::string::npos )
 			buf.erase(pos,1);
 	}
-	mTextList.push_back(buf);
+    mTextVec.push_back(buf);
 
-    if( mTextDim.dim.x<buf.size() )
-        mTextDim.dim.x=buf.size();
+    if( mTextDim.dim.x < buf.size() )
+        mTextDim.dim.x = static_cast<unsigned int>(buf.size());
 
-    mTextDim.dim.y = mTextList.size();
+    mTextDim.dim.y = static_cast<unsigned int>(mTextVec.size());
 
-#endif
+    mTextChanged = (mText != text);
+    mText = text;
 }
 
 
@@ -102,18 +95,8 @@ void CGUIText::processLogic()
     }
 }
 
-void CGUIText::processRender(const GsRect<float> &RectDispCoordFloat)
+void CGUIText::updateFontState(const GsRect<float> &displayRect)
 {
-    // Transform to the display coordinates
-    GsRect<float> displayRect = mRect;
-    displayRect.transform(RectDispCoordFloat);
-    //SDL_Rect lRect = displayRect.SDLRect();
-
-
-#if defined(USE_SDL_TTF)
-
-    auto &blit = gVideoDriver.gameSfc();
-
     const GsColor textColor = { 0, 0, 0, 0 };
 
     const int reqFontSize = int(displayRect.dim.y*0.75f);
@@ -123,20 +106,47 @@ void CGUIText::processRender(const GsRect<float> &RectDispCoordFloat)
         mFontSize = reqFontSize;
 
         mTrueTypeFont.openFromMem(gCgTtf, reqFontSize);
-        mTrueTypeFont.render(mTextSfc, mText, textColor);
+
+        const auto numTexLines = mTextVec.size();
+        mTextSfcVec.resize(numTexLines);
+
+        for(unsigned int idx = 0 ; idx<numTexLines ; idx++)
+        {
+            mTrueTypeFont.render(mTextSfcVec[idx], mTextVec[idx], textColor);
+        }
+
         mTextChanged = false;
     }
+}
 
-    if(mTextSfc)
-    {
-        const auto textW = mTextSfc.width();
-        const auto textH = mTextSfc.height();
+void CGUIText::processRender(const GsRect<float> &RectDispCoordFloat)
+{
+    // Transform to the display coordinates
+    GsRect<float> displayRect = mRect;
+    displayRect.transform(RectDispCoordFloat);
+
+#if defined(USE_SDL_TTF)
+
+    updateFontState(displayRect);
+
+    auto &blit = gVideoDriver.gameSfc();
+
+    unsigned int totTextSfcH = 0;
+    for(auto &textSfc : mTextSfcVec)
+    {        
+        if(textSfc.empty())
+            break;
+
+        const auto textW = textSfc.width();
+        const auto textH = textSfc.height();
         GsVec2D<int> textSfcDim(textW, textH);
 
         GsRect<float> blitPos = displayRect;
         blitPos.pos = blitPos.pos + (blitPos.dim-textSfcDim)/2;
+        blitPos.pos.y += totTextSfcH; // TODO: Bad workaround. Improve this!
 
-        mTextSfc.blitTo(blit, blitPos.SDLRect());
+        textSfc.blitTo(blit, blitPos.SDLRect());
+        totTextSfcH += textH;
     }
 
 #else

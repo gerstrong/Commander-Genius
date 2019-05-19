@@ -14,9 +14,9 @@ public:
     void setText(const std::string& text);
     
 private:    
-    std::list<std::string>::iterator curTextIt;
-    std::list<std::string>::iterator prevTextIt;
-    bool transition = false;
+    std::vector<std::string>::iterator curTextIt;
+    std::vector<std::string>::iterator prevTextIt;
+    bool mTransition = false;
     int timer = 0;
     uint8_t alpha = 0;
 };

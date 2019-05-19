@@ -45,7 +45,15 @@ public:
     GsRect<unsigned int> mTextDim;
 
 protected:
-	std::list<std::string> mTextList;
+
+    void updateFontState(const GsRect<float> &displayRect);
+
+    std::vector<std::string> mTextVec;
+
+#if defined(USE_SDL_TTF)
+    std::vector<GsSurface> mTextSfcVec;
+#endif
+
 	
 private:
 	std::unique_ptr<SDL_Surface> mpTextDarkSfc;
@@ -60,12 +68,7 @@ private:
 
 
 #if defined(USE_SDL_TTF)
-
     GsTrueTypeFont mTrueTypeFont;
-
-    //GsTexture mTexture;
-    GsSurface mTextSfc;
-
 #endif
 
     std::string mText;
