@@ -914,6 +914,10 @@ void CGameLauncher::ponder(const float deltaT)
 
 void CGameLauncher::render()
 {
+    GsWeakSurface blit(gVideoDriver.getBlitSurface());
+
+    blit.fillRGB(0, 0, 0);
+
     if(mpMsgDialog)
     {
         mpMsgDialog->processRendering();
