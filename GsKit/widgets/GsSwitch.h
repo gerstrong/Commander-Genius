@@ -4,7 +4,7 @@
  *  Created on: 04.03.2012
  *      Author: gerstrong
  */
-
+/*
 #include "GsComboSelection.h"
 //#include "Utils.h"
 
@@ -28,4 +28,4 @@ public:
 	void processRender(const GsRect<float> &RectDispCoordFloat);
 };
 
-#endif /* CGUISWITCH_H_ */
+#endif*/ /* CGUISWITCH_H_ */

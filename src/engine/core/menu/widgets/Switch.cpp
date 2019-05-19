@@ -80,9 +80,6 @@ void Switch::processRender(const GsRect<float> &RectDispCoordFloat)
     }
     else
     {
-        GsRect<float> displayRect = mRect;
-        displayRect.transform(RectDispCoordFloat);
-        SDL_Rect lRect = displayRect.SDLRect();
-        drawNoStyle(lRect);
+        ComboSelection::processRender(RectDispCoordFloat);
     }
 }

@@ -77,8 +77,8 @@ GameMenu(GsRect<float>(0.15f, 0.20f, 0.65f, 0.55f), style )
 
     mpMenuDialog->addControl( mpFilterSelection );
 
-    mpVSyncSwitch = new Switch( "VSync", style );
-	mpMenuDialog->addControl( mpVSyncSwitch );
+    mpVSyncSwitch =
+        mpMenuDialog->addControl( new Switch( "VSync", style ) );
 
     mpResolutionSelection = new ComboSelection( "Size",
                                                 filledStrList(1, "?x?"),
@@ -92,8 +92,8 @@ GameMenu(GsRect<float>(0.15f, 0.20f, 0.65f, 0.55f), style )
 #endif
 
 #if defined(USE_OPENGL)
-    mpOpenGLSwitch = new Switch( "OpenGL", style );
-    mpMenuDialog->addControl( mpOpenGLSwitch );
+    mpOpenGLSwitch =
+        mpMenuDialog->addControl( new Switch( "OpenGL", style ) );
 
     mpRenderScaleQualitySel = new ComboSelection( "Quality",
                                                   filledStrList( 2, 

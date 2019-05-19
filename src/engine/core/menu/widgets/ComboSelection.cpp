@@ -44,6 +44,7 @@ void ComboSelection::setSelection( const std::string& selectionText )
         if( *mOLCurrent == selectionText )
         {
             setupButtonSurface(selectionText);
+            CGUIComboSelection::setSelection(selectionText);
             return;
         }
 

@@ -4,7 +4,7 @@
  *  Created on: 04.03.2012
  *      Author: gerstrong
  */
-
+/*
 #include <base/utils/StringUtils.h>
 #include <base/video/CVideoDriver.h>
 #include <graphics/GsGraphics.h>
@@ -53,7 +53,7 @@ void CGUISwitch::processRender(const GsRect<float> &RectDispCoordFloat)
 	// Transform to the display coordinates
 	GsRect<float> displayRect = mRect;
 	displayRect.transform(RectDispCoordFloat);
-/*	SDL_Rect lRect = displayRect.SDLRect();
+    SDL_Rect lRect = displayRect.SDLRect();
 
     if(gBehaviorEngine.getEngine() == ENGINE_VORTICON)
 	{
@@ -63,5 +63,6 @@ void CGUISwitch::processRender(const GsRect<float> &RectDispCoordFloat)
 	{
 		(this->*drawButton)(lRect);
 	}
-*/
+
 }
+*/

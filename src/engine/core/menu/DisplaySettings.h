@@ -36,13 +36,13 @@ public:
 private:
 
 #if defined(USE_OPENGL)
-    Switch			*mpOpenGLSwitch = nullptr;
+    std::shared_ptr<Switch>			mpOpenGLSwitch;
 #endif
 
     ComboSelection	*mpRenderScaleQualitySel = nullptr;
     ComboSelection	*mpFilterSelection = nullptr;
     ComboSelection	*mpAspectSelection = nullptr;
-    Switch		    *mpVSyncSwitch = nullptr;
+    std::shared_ptr<Switch>		    mpVSyncSwitch;
     ComboSelection	*mpResolutionSelection = nullptr;
     GameButton	    *mpFullScreenSwitch = nullptr;            
 

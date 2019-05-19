@@ -243,7 +243,7 @@ void GsButton::drawEnabledButton(GsWeakSurface &blitsfc, const SDL_Rect& lRect, 
 
 
 void GsButton::processRender(const GsRect<float> &RectDispCoordFloat)
-{
+{       
     // Transform to the display coordinates
     auto displayRect = mRect;
 
