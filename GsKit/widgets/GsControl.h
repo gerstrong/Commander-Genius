@@ -61,6 +61,9 @@ public:
     void setRect( const GsRect<float>& rect )
 	{	mRect = rect;	}
 
+    GsRect<float> getRect() const
+    {   return mRect;    }
+
 
     void enable( const bool value )
     {	mEnabled = value;	}
@@ -91,12 +94,13 @@ public:
 	void drawTwirl( const SDL_Rect& lRect );
 
 	void drawBlinker( const SDL_Rect& lRect );
-
-    // The relative rect describes the rect which is normally tied to its parent.
-    GsRect<float> mRect;
 	
 
 protected:
+
+    // The relative rect describes the rect which is normally tied to its parent.
+    GsRect<float> mRect;
+
 
     bool mEnabled = true;
     

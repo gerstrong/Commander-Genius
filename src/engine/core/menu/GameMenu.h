@@ -104,6 +104,9 @@ public:
     void setProperty( const Property newProperty ) override
     {
         mpReturnButton->setText( newProperty == CLOSEABLE ? "close" : "back" );
+        auto rect = mpReturnButton->getRect();
+        rect.dim.x = rect.dim.x*2.0f;
+        mpReturnButton->setRect(rect);
     }
 
 

@@ -18,7 +18,7 @@ void GsScrollbar::processLogic()
     //const float x_innerbound_min = fx + static_cast<float>(TEXT_HEIGHT)/bw;
 
     GsRect<float> rRect(fx, fy, fw, fh);
-    GsRect<float> parRect(mpParent->mRect);
+    GsRect<float> parRect(mpParent->getRect());
 
     rRect.transform(parRect);
 

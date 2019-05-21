@@ -223,7 +223,7 @@ GsControlsManager::addControl( std::shared_ptr<GsControl> &newControl,
 {
     GsRect<float> AbsRect = RelRect;
     AbsRect.transform(mRect);
-    newControl->mRect = AbsRect;
+    newControl->setRect(AbsRect);
 
     auto ctrlPtr = newControl;
 

@@ -218,7 +218,9 @@ void GsButton::setupButtonSurface(const std::string &text)
 }
 
 
-void GsButton::drawEnabledButton(GsWeakSurface &blitsfc, const SDL_Rect& lRect, const bool alternate)
+void GsButton::drawEnabledButton(GsWeakSurface &blitsfc,
+                                 const SDL_Rect& lRect,
+                                 const bool alternate)
 {
     mTextLightSfc.setAlpha(mLightRatio);
     mTextDarkSfc.setAlpha(255-mLightRatio);
