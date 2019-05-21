@@ -8,8 +8,8 @@
 void GsScrollbar::processLogic()
 {
     // Here we check if the mouse-cursor/Touch entry clicked on something!!
-    const float fx = mRect.pos.x;
-    const float fw = mRect.dim.x;
+    //const float fx = mRect.pos.x;
+    //const float fw = mRect.dim.x;
     const float fy = mRect.pos.y;
     const float fh = mRect.dim.y;
 
@@ -17,7 +17,7 @@ void GsScrollbar::processLogic()
 
     //const float x_innerbound_min = fx + static_cast<float>(TEXT_HEIGHT)/bw;
 
-    GsRect<float> rRect(fx, fy, fw, fh);
+    GsRect<float> rRect = mRect;
     GsRect<float> parRect(mpParent->getRect());
 
     rRect.transform(parRect);

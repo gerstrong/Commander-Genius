@@ -433,14 +433,14 @@ void CGUIDialog::processRender(const GsRect<float> &RectDispCoordFloat)
 
         if( mFXSetup == FXKind::NONE )
         {
-            BlitSurface( bgSfc, nullptr, weakBlit.getSDLSurface(), &lRect );
+            mBackgroundSfc.blitTo(weakBlit, lRect);
         }
         else
         {
 
             if( mFXhStep == 0 && mFXvStep == 0 )
             {
-                BlitSurface( bgSfc, nullptr, weakBlit.getSDLSurface(), &lRect );
+                mBackgroundSfc.blitTo(weakBlit, lRect);
             }
             else
             {
@@ -454,7 +454,7 @@ void CGUIDialog::processRender(const GsRect<float> &RectDispCoordFloat)
 
                 if( mFXvStep > 0 )
                 {
-                    fxRect.dim.y = (MAX_STEPS-mFXvStep)*(mRect.dim.y/float(MAX_STEPS));;
+                    fxRect.dim.y = (MAX_STEPS-mFXvStep)*(mRect.dim.y/float(MAX_STEPS));
                     fxRect.pos.y = fxRect.pos.y + (mRect.dim.y-fxRect.dim.y)/2;
                 }
 
@@ -498,11 +498,13 @@ void CGUIDialog::processRender(const GsRect<float> &RectDispCoordFloat)
     // If Dialog is disabled, make everthing within a bit darker.
     if(!mEnabled)
     {
-        // Not yet created, create one
-        if(!mDarkOverlaySfc)
-        {
-            const SDL_Rect lRect = gVideoDriver.toBlitRect(mRect);
+        const SDL_Rect lRect = gVideoDriver.toBlitRect(mRect);
 
+        // Not yet created, create one
+        if(!mDarkOverlaySfc ||
+            (mDarkOverlaySfc.height() != lRect.h ||
+             mDarkOverlaySfc.width() != lRect.w)  )
+        {                                    
             mDarkOverlaySfc.create(0, lRect.w, lRect.h, RES_BPP, 0, 0, 0, 0);
             mDarkOverlaySfc.fillRGB(0, 0, 0);
             mDarkOverlaySfc.setAlpha(128);

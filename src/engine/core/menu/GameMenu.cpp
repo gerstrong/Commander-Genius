@@ -74,9 +74,6 @@ void GameMenu::initBackgroundNoStyle()
     mCachedBgRect.dim.y = sdlRect.h;
     mBackground.create(0, sdlRect.w, sdlRect.h, RES_BPP, 0, 0, 0, 0);
 
-    // Now lets draw the text of the list control
-    //auto &Font = gGraphics.getFont(0);
-
     GsColor backColor(0xFF, 0xFF, 0xFF);
     GsColor borderColor(0x7F, 0x7F, 0x7F);
 
@@ -105,11 +102,12 @@ void GameMenu::setMenuLabel(const std::string &label)
 
 void GameMenu::render()
 {
-    GsWeakSurface blit(gVideoDriver.getBlitSurface());
+    GsRect<float> rect = mpMenuDialog->getRect();
+    const SDL_Rect sdlRect = gVideoDriver.toBlitRect(rect);
 
     // check if resolution still match to background. If not update it.
-    const auto bgRectW = mBackground.getSDLSurface()->w;
-    const auto bgRectH = mBackground.getSDLSurface()->h;
+    const auto bgRectW = sdlRect.w;
+    const auto bgRectH = sdlRect.h;
 
     if(bgRectW != mCachedBgRect.dim.x ||
        bgRectH != mCachedBgRect.dim.y)
@@ -118,25 +116,20 @@ void GameMenu::render()
         return;
     }
 
+    GsWeakSurface blit(gVideoDriver.getBlitSurface());
 
     if(!mBackground.empty())
-    {
+    {        
         if(mStyle == GsControl::Style::GALAXY)
         {
             mBackground.blitTo(blit);
         }
         else if(mStyle == GsControl::Style::VORTICON)
         {
-            GsRect<float> rect = mpMenuDialog->getRect();
-            const SDL_Rect sdlRect = gVideoDriver.toBlitRect(rect);
-
             mBackground.blitTo(blit, sdlRect);
         }
         else
         {
-            GsRect<float> rect = mpMenuDialog->getRect();
-            const SDL_Rect sdlRect = gVideoDriver.toBlitRect(rect);
-
             mBackground.blitTo(blit, sdlRect);
         }
 
