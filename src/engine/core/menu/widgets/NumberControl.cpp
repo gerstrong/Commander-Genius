@@ -19,23 +19,25 @@ CGUINumberControl(text,
                   GsRect<float>(0.0f,0.0f,1.0f,1.0f),
                   startValue, endValue,
                   deltaValue, value, 1,
-                  slider, style)
+                  slider)
 {   
+    /*
     if(mStyle == Style::VORTICON)
     {
         mFontID = 1;    
     }
     else if(mStyle == Style::GALAXY)    
     {
-        setupButtonSurface();
+        //setupButtonSurface();
     }
     else
     {
         mFontID = 0;
     }
+    */
 }
 
-
+/*
 void NumberControl::setupButtonSurface(const std::string &text)
 {        
     auto &Font = gGraphics.getFont(mFontID);
@@ -49,7 +51,7 @@ void NumberControl::setupButtonSurface(const std::string &text)
     Font.createTextSurface(mTextLightSfcR, showTextR, 84, 234, 84 );
     Font.createTextSurface(mTextLightSfcL, showTextL, 84, 234, 84 );
 }
-
+*/
 
 void NumberControl::processLogic()
 {
@@ -58,12 +60,13 @@ void NumberControl::processLogic()
     if(mMustRedraw)
     {
         mMustRedraw = false;
-        setupButtonSurface();
+        //setupButtonSurface();
     }
 }
 
 void NumberControl::drawNoStyle(SDL_Rect& lRect)
 {
+    /*
     // Now lets draw the text of the list control
     auto &Font = gGraphics.getFont(mFontID);
 
@@ -73,14 +76,14 @@ void NumberControl::drawNoStyle(SDL_Rect& lRect)
 
     if(mEnabled)
     {
-
+*/
         /*
     if(mSlider)
     {
         text += sliderStr();
     }
     else*/
-        {
+  /*      {
             text += (mDecSel) ? "\025" : " ";
             text += itoa(mValue);
             if(mIncSel)
@@ -98,13 +101,15 @@ void NumberControl::drawNoStyle(SDL_Rect& lRect)
         Font.drawFont( blitsfc, text, lRect.x+40, lRect.y, true );
     }
 
-    drawTwirl(lRect);
+    drawTwirl(lRect);*/
 }
 
 void NumberControl::processRender(const GsRect<float> &RectDispCoordFloat)
-{
+{    
+
+    CGUINumberControl::processRender(RectDispCoordFloat);
     // Transform to the display coordinates
-    GsRect<float> displayRect = mRect;
+   /* GsRect<float> displayRect = mRect;
     displayRect.transform(RectDispCoordFloat);
     SDL_Rect lRect = displayRect.SDLRect();
     
@@ -166,7 +171,7 @@ void NumberControl::processRender(const GsRect<float> &RectDispCoordFloat)
     }
     else
     {
-        drawNoStyle(lRect);
-    }
+        CGUINumberControl::processRender(RectDispCoordFloat);
+    }*/
 }
 

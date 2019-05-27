@@ -42,7 +42,7 @@ CGUINumberControl(text,
 void NumberControl::processRender(const GsRect<float> &RectDispCoordFloat)
 {
 	// Transform to the display coordinates
-	GsRect<float> displayRect = mRect;
+    /*GsRect<float> displayRect = mRect;
 	displayRect.transform(RectDispCoordFloat);
 	SDL_Rect lRect = displayRect.SDLRect();
 
@@ -71,7 +71,7 @@ void NumberControl::processRender(const GsRect<float> &RectDispCoordFloat)
     }
 
     drawTwirl(lRect);
-
+*/
 }
 
 }

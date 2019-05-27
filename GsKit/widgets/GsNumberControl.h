@@ -8,12 +8,14 @@
 #ifndef CGUINUMBERCONTROL_H_
 #define CGUINUMBERCONTROL_H_
 
+#include "GsControlsManager.h"
 #include "GsButton.h"
+#include "GsText.h"
 
 #include <string>
 #include <graphics/GsSurface.h>
 
-class CGUINumberControl : public GsButton
+class CGUINumberControl : public GsControlsManager
 {
 public:
 
@@ -62,6 +64,12 @@ private:
 	const int mDeltaValue;
 
 	static int mTwirliconID;    
+
+
+    std::shared_ptr<GsButton> mpLeftButton;
+    std::shared_ptr<CGUIText> mpCtrlName;
+    std::shared_ptr<CGUIText> mpCtrlValue;
+    std::shared_ptr<GsButton> mpRightButton;
 };
 
 #endif /* CGUINUMBERCONTROL_H_ */

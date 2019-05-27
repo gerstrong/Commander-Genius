@@ -15,7 +15,7 @@ public:
                   const bool slider,
                   const GsControl::Style style);
 
-    void setupButtonSurface(const std::string &text = "") override;
+    //void setupButtonSurface(const std::string &text = "") override;
 
     void processLogic() override;
 

@@ -412,8 +412,6 @@ void CGUIDialog::processRendering()
 void CGUIDialog::processRender(const GsRect<float> &RectDispCoordFloat)
 {
     GsWeakSurface weakBlit(gVideoDriver.getBlitSurface());
-    SDL_Surface *bgSfc = mBackgroundSfc.getSDLSurface();
-
     SDL_Rect lRect = gVideoDriver.toBlitRect(mRect);
 
     if(mBackgroundSfc)
@@ -448,13 +446,13 @@ void CGUIDialog::processRender(const GsRect<float> &RectDispCoordFloat)
 
                 if( mFXhStep > 0 )
                 {
-                    fxRect.dim.x = (MAX_STEPS-mFXhStep)*(mRect.dim.x/float(MAX_STEPS));
+                    fxRect.dim.x = (MAX_STEPS-static_cast<unsigned int>(mFXhStep))*(mRect.dim.x/float(MAX_STEPS));
                     fxRect.pos.x = fxRect.pos.x + (mRect.dim.x-fxRect.dim.x)/2;
                 }
 
                 if( mFXvStep > 0 )
                 {
-                    fxRect.dim.y = (MAX_STEPS-mFXvStep)*(mRect.dim.y/float(MAX_STEPS));
+                    fxRect.dim.y = (MAX_STEPS-static_cast<unsigned int>(mFXvStep))*(mRect.dim.y/float(MAX_STEPS));
                     fxRect.pos.y = fxRect.pos.y + (mRect.dim.y-fxRect.dim.y)/2;
                 }
 

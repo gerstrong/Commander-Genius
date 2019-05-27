@@ -11,7 +11,7 @@
 #include <base/GsTimer.h>
 #include <base/PointDevice.h>
 #include <base/utils/StringUtils.h>
-
+#include <base/GsTTFSystem.h>
 
 #include "GsNumberControl.h"
 
@@ -31,7 +31,7 @@ CGUINumberControl::CGUINumberControl(const std::string& text,
                                       const int fontid,
                                       const bool slider,
                                       const Style style) :
-GsButton(text, rect, nullptr, style),
+GsControlsManager(rect),
 mValue(value),
 mSlider(slider),
 mStartValue(startValue),
@@ -39,6 +39,31 @@ mEndValue(endValue),
 mDeltaValue(deltaValue)
 {
     mFontID = fontid;
+
+    mpLeftButton =
+            addControl(new GsButton("<",
+                                GsRect<float>(0.0f, 0.0f, 0.1f, 1.0f),
+                                [&]{this->decrement();},
+                                style,
+                                1.0f, 0.75f, 0.75f));
+
+
+    mpCtrlName =
+            addControl(new CGUIText(text,
+                                GsRect<float>(0.1f, 0.0f, 0.4f, 1.0f)));
+    mpCtrlValue =
+            addControl(new CGUIText("?",
+                                GsRect<float>(0.5f, 0.0f, 0.4f, 1.0f)));
+
+
+    mpRightButton =
+            addControl(new GsButton(">",
+                                GsRect<float>(0.9f, 0.0f, 0.1f, 1.0f),
+                                [&]{this->increment();},
+                                style,
+                                1.0f, 0.75f, 0.75f));
+
+
 }
 
 
@@ -86,10 +111,23 @@ void CGUINumberControl::setSelection( const int value )
 		mValue = value;
 
     mMustRedraw = true;
+    mpCtrlValue->setText(itoa(mValue));
 }
 
 void CGUINumberControl::processLogic()
 {
+    processPointingState();
+
+    processBlendEffects();
+
+    for(auto &obj : mControlList)
+    {
+        obj->processLogic();
+    }
+
+
+    /*
+
     GsPointingState &pointingState = gPointDevice.mPointingState;
 
     const bool hasPoint = mRect.HasPoint(pointingState.mPos);
@@ -206,7 +244,7 @@ void CGUINumberControl::processLogic()
         }
     }
 #endif
-
+*/
 }
 
 
@@ -234,55 +272,93 @@ std::string CGUINumberControl::sliderStr()
 }
 
 
-void CGUINumberControl::processRender(const GsRect<float> &RectDispCoordFloat)
+void CGUINumberControl::processRender(const GsRect<float> &rectDispCoordFloat)
 {
+    GsWeakSurface blitsfc(gVideoDriver.getBlitSurface());
+
+    // Transform to the display coordinates
+    auto displayRect = mRect;
+    displayRect.transform(rectDispCoordFloat);
+
+    for(auto &obj : mControlList)
+    {
+        obj->processRender(displayRect);
+    }
     /*
-	// Transform to the display coordinates
-	GsRect<float> displayRect = mRect;
-	displayRect.transform(RectDispCoordFloat);
-    GsRect<Uint16> lRect(displayRect);
+    if(lRect.h == 0 || lRect.w == 0)
+        return;
 
     GsWeakSurface blitsfc(gVideoDriver.getBlitSurface());
 
-    int lComp;
+    int lComp = 0xFF;
 
-    if( mPressed || mSelected )
-        lComp = 0xFF - (mLightRatio*(0xFF-0xCF)/255);
-    else
-        lComp = 0xFF - (mLightRatio*(0xFF-0xDF)/255);
+    // Set as default a grey border
+    Uint32 borderColor = blitsfc.mapRGBA( 0xBB, 0xBB, 0xBB, 0xFF);
 
-    const Uint32 fillColor = blitsfc.mapRGBA( lComp, lComp, lComp, 0xFF);
+    if(mEnabled)
+    {
+        auto lightRatio = mLightRatio;
+
+        if( mPressed || mSelected )
+        {
+            // Try to highlight the border color a bit more by determing which one dominates the most
+            auto red   = Uint8(mRed*127.0f);
+            auto green = Uint8(mGreen*127.0f);
+            auto blue  = Uint8(mBlue*127.0f);
+
+            if(red > green && red > blue)
+                red <<= 1;
+            else if(green > red  && green > blue)
+                green <<= 1;
+            else if(blue > green && blue > red )
+                blue <<= 1;
+
+            if(mPressed)
+            {
+                red <<= 1;
+                blue >>= 1;
+                lightRatio <<= 1;
+            }
+
+            // If want to highlight the button set the color
+            borderColor = blitsfc.mapRGBA( red, green, blue, 0xFF);
+
+            lComp = 0xFF - (lightRatio*(0xFF-0xCF)/255);
+        }
+        else
+        {
+            lComp = 0xFF - (lightRatio*(0xFF-0xDF)/255);
+        }
+    }
+
+
+    auto lcompf = float(lComp);
+
+    auto redC   = Uint8(lcompf*mRed);
+    auto greenC = Uint8(lcompf*mGreen);
+    auto blueC  = Uint8(lcompf*mBlue);
+
+    const auto fillColor = blitsfc.mapRGBA( redC, greenC, blueC, 0xFF);
 
     GsRect<Uint16> rect(lRect);
 
-    blitsfc.drawRect( rect, 1, 0xFFBBBBBB, fillColor );
+    blitsfc.drawRect( rect, 2, borderColor, fillColor );
 
-
-    // Now lets draw the text of the list control
-    GsFontLegacy &Font = gGraphics.getFont(mFontID);
-
-    const int fontHeight = 8;
-    const int textX = lRect.x+24+(mText.size()+2)*8;
-    const int textY = lRect.y+((lRect.h-fontHeight)/2);
-
-
-    Font.drawFont( blitsfc, mText, lRect.x+24, textY, false );
-    Font.drawFont( blitsfc, ":", lRect.x+24+mText.size()*8, textY, false );
-
-    if(mSlider)
+    if(!gTTFDriver.isActive())
     {
-        gGraphics.getFont(2).drawFont( blitsfc, sliderStr(), lRect.x+16+(mText.size()+2)*8, lRect.y, false );
-    }
-    else
-    {
-        std::string text = (mDecSel) ? "\025" : " ";
-        text += itoa(mValue);
-        if(mIncSel)
-            text += static_cast<char>(17);
+        // Now lets draw the text of the list control
+        auto &Font = gGraphics.getFont(mFontID);
+
+        if(mEnabled) // If the button is enabled use the normal text, otherwise the highlighted color
+        {
+            Font.drawFontCentered( blitsfc.getSDLSurface(), mText,
+                                   lRect.x, lRect.w, lRect.y, lRect.h, false );
+        }
         else
-            text += " ";
-
-        Font.drawFont( blitsfc, text, textX, textY, false );
+        {
+            Font.drawFontCentered( blitsfc.getSDLSurface(), mText,
+                                   lRect.x, lRect.w, lRect.y, lRect.h, true );
+        }
     }
-*/
+    */
 }
