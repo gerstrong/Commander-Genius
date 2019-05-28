@@ -13,8 +13,6 @@ void GameMenu::initGalaxyBackground()
 
     GsWeakSurface swatchSfc(backgroundBmp.getSDLSurface());
 
-    mCachedBgRect = bmpRect;
-
     mBackground.create( 0, bmpRect.dim.x, bmpRect.dim.y, RES_BPP, 0, 0, 0, 0);
     swatchSfc.blitTo(mBackground);
    
@@ -32,6 +30,16 @@ void GameMenu::initGalaxyBackground()
     }
 
     mBackground.fillRGB(scoreRect, 84, 234, 84);
+
+    GsRect<float> rect = mpMenuDialog->getRect();
+    const SDL_Rect sdlRect = gVideoDriver.toBlitRect(rect);
+
+    // check if resolution still match to background. If not update it.
+    const auto bgRectW = sdlRect.w;
+    const auto bgRectH = sdlRect.h;
+
+    mCachedBgRect.dim.x = bgRectW;
+    mCachedBgRect.dim.y = bgRectH;
 }
 
 void GameMenu::initVorticonBackground()
