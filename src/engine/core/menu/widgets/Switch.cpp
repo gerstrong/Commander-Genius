@@ -19,7 +19,7 @@ void Switch::drawVorticonStyle(SDL_Rect& lRect)
 		return;
     }
 
-	SDL_Surface *blitsfc = gVideoDriver.getBlitSurface();
+    /*SDL_Surface *blitsfc = gVideoDriver.getBlitSurface();
        
 	// Now lets draw the text of the list control
 	auto &Font = gGraphics.getFont(2);
@@ -41,7 +41,7 @@ void Switch::drawVorticonStyle(SDL_Rect& lRect)
 	Font.drawFont( blitsfc, text, 
                    lRect.x+24+(mText.size()+2)*8, 
                    lRect.y, false );
-
+*/
 	drawTwirl(lRect);
 }
 
@@ -52,7 +52,7 @@ void Switch::drawNoStyle(SDL_Rect& lRect)
         return;
     }
 
-    SDL_Surface *blitsfc = gVideoDriver.getBlitSurface();
+    /*SDL_Surface *blitsfc = gVideoDriver.getBlitSurface();
 
     // Now lets draw the text of the list control
     auto &Font = gGraphics.getFont(0);
@@ -61,7 +61,7 @@ void Switch::drawNoStyle(SDL_Rect& lRect)
 
     Font.drawFont( blitsfc, text, lRect.x+40, lRect.y, false );
 
-    drawTwirl(lRect);
+    drawTwirl(lRect);*/
 }
 
 void Switch::processRender(const GsRect<float> &RectDispCoordFloat)

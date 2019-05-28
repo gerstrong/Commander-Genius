@@ -18,11 +18,23 @@ CGUIComboSelection::CGUIComboSelection( const std::string& text,
                                         const GsRect<float> &rect,
                                         const std::list<std::string>& optionsList,
                                         const GsControl::Style style ) :
-GsButton(text, rect, nullptr, style),
+GsControlsManager(rect),
 mOptionsList( optionsList ),
 mOLCurrent( mOptionsList.begin() ),
 mFeatureText(text)
-{}
+{
+
+    mpFeatureName =
+            addControl(new CGUIText(text,
+                                GsRect<float>(0.0f, 0.0f, 0.5f, 1.0f)));
+
+    mpFeatureValue =
+            addControl(new GsButton("?",
+                                GsRect<float>(0.5f, 0.0f, 0.5f, 1.0f),
+                                [&]{this->cycleOption();},
+                                style,
+                                1.0f, 0.75f, 0.75f));
+}
 
 
 void CGUIComboSelection::cycleOption()
@@ -34,7 +46,7 @@ void CGUIComboSelection::cycleOption()
 		mOLCurrent =  mOptionsList.begin();
     }
 
-    setText(mFeatureText + ": " + *mOLCurrent);
+    mpFeatureValue->setText(*mOLCurrent);
 }
 
 
@@ -59,7 +71,7 @@ void CGUIComboSelection::setSelection( const std::string& selectionText )
         if(*optionIt == selectionText)
         {
             mOLCurrent = optionIt;
-            setText(mFeatureText + ": " + *mOLCurrent);
+            mpFeatureValue->setText(*mOLCurrent);
             break;
         }
     }
@@ -82,32 +94,31 @@ void CGUIComboSelection::setList(const std::set<std::string> &strSet)
     }
 
 	mOLCurrent = mOptionsList.begin();
-    setText(mFeatureText + ": " + *mOLCurrent);
-}
-
-
-
-void CGUIComboSelection::processLogic()
-{        
-	if(!mEnabled)
-		return;
-
-    processBlendEffects();
-
-    processPointingState();
-
-    // If combo selecton was pushed and gets released, cycle one option
-    if(mReleased)
-    {
-        cycleOption();
-    }
+    mpFeatureValue->setText(*mOLCurrent);
 }
 
 
 void CGUIComboSelection::processRender(const GsRect<float> &RectDispCoordFloat)
 {
+    GsWeakSurface blitsfc(gVideoDriver.getBlitSurface());
+
+    // Transform to the display coordinates
+    auto displayRect = mRect;
+    displayRect.transform(RectDispCoordFloat);
+
+    if(mHovered)
+    {
+        blitsfc.fill(displayRect, blitsfc.mapRGB(0xBB, 0xBB, 0xFF));
+    }
+
+
+    for(auto &obj : mControlList)
+    {
+        obj->processRender(displayRect);
+    }
+
 	// Transform to the display coordinates
-    GsRect<float> displayRect = mRect;
+   /* GsRect<float> displayRect = mRect;
 	displayRect.transform(RectDispCoordFloat);
 	SDL_Rect lRect = displayRect.SDLRect();
 
@@ -155,5 +166,5 @@ void CGUIComboSelection::processRender(const GsRect<float> &RectDispCoordFloat)
     {
         GsButton::processRender(RectDispCoordFloat);
     }
-
+*/
 }

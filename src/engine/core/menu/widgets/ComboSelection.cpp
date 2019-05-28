@@ -18,7 +18,7 @@ CGUIComboSelection(text, GsRect<float>(0.0f,0.0f,1.0f,1.0f),
     {
         mFontID = 1;
     }
-    setupButtonSurface(mText);
+    setupButtonSurface(text);
 }
 
 
@@ -32,7 +32,7 @@ void ComboSelection::cycleOption()
 
 void ComboSelection::setupButtonSurface(const std::string &optionText)
 {
-    GsButton::setupButtonSurface(optionText);
+    //GsButton::setupButtonSurface(optionText);
 }
 
 void ComboSelection::setSelection( const std::string& selectionText )
@@ -64,7 +64,7 @@ void ComboSelection::processRender(const GsRect<float> &RectDispCoordFloat)
     
     GsWeakSurface blitsfc( gVideoDriver.getBlitSurface() );    
     
-    if(mStyle == Style::GALAXY)
+    /*if(mStyle == Style::GALAXY)
     {        
         if(!mEnabled)
         {
@@ -96,7 +96,7 @@ void ComboSelection::processRender(const GsRect<float> &RectDispCoordFloat)
         
         drawTwirl(lRect);      
     }
-    else
+    else*/
     {
         CGUIComboSelection::processRender(RectDispCoordFloat);
 

@@ -26,7 +26,7 @@ CGUIComboSelection(text, GsRect<float>(0.0f, 0.0f, 1.0f, 1.0f), optionsList)
 
 void ComboSelection::processRender(const GsRect<float> &RectDispCoordFloat)
 {    
-    if(!mEnabled)
+    /*if(!mEnabled)
         return;
 
 	// Transform to the display coordinates
@@ -44,7 +44,7 @@ void ComboSelection::processRender(const GsRect<float> &RectDispCoordFloat)
     const std::string text = (*mOLCurrent);
     Font.drawFont( blitsfc, text, lRect.x+24+(mText.size()+2)*8, lRect.y, false );
 
-    drawTwirl(lRect);
+    drawTwirl(lRect);*/
 }
 
 }

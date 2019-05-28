@@ -200,6 +200,18 @@ bool GsControlsManager::sendEvent(const std::shared_ptr<CEvent> &event )
 }
 
 
+void GsControlsManager::processLogic()
+{
+    processPointingState();
+
+    processBlendEffects();
+
+    for(auto &obj : mControlList)
+    {
+        obj->processLogic();
+    }
+}
+
 std::shared_ptr<GsControl>
 GsControlsManager::addControl( std::shared_ptr<GsControl> &newControl)
 {

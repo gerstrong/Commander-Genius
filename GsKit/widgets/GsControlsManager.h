@@ -124,15 +124,14 @@ public:
 protected:
 
 
+    void processLogic() override;
+
+
     // List of Controls that the Dialog has.
     std::list< std::shared_ptr<GsControl> > mControlList;
 
     int mSelection = 0;
     GsControl *mpCurrentCtrl = nullptr;
-
-
-
-
 
     bool empty() const
     {
@@ -144,7 +143,6 @@ protected:
         mpCurrentCtrl = nullptr;
         mControlList.clear();
     }
-
 
 };
 

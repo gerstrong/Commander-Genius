@@ -14,9 +14,11 @@
 #include <set>
 #include <graphics/GsSurface.h>
 
+#include "GsControlsManager.h"
 #include "GsButton.h"
+#include "GsText.h"
 
-class CGUIComboSelection : public GsButton
+class CGUIComboSelection : public GsControlsManager
 {
 public:
 
@@ -38,8 +40,6 @@ public:
 
     void setList(const std::set<std::string> &strSet);
 
-	void processLogic();
-
 	virtual void processRender(const GsRect<float> &RectDispCoordFloat);
 
 protected:
@@ -48,6 +48,9 @@ protected:
 	std::list<std::string>::const_iterator mOLCurrent;
 
     std::string mFeatureText;
+
+    std::shared_ptr<CGUIText> mpFeatureName;
+    std::shared_ptr<GsButton> mpFeatureValue;
 };
 
 #endif /* CGUICOMBOSELECTION_H_ */

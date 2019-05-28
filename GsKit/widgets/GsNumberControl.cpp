@@ -116,16 +116,7 @@ void CGUINumberControl::setSelection( const int value )
 
 void CGUINumberControl::processLogic()
 {
-    processPointingState();
-
-    processBlendEffects();
-
-    for(auto &obj : mControlList)
-    {
-        obj->processLogic();
-    }
-
-
+    GsControlsManager::processLogic();
     /*
 
     GsPointingState &pointingState = gPointDevice.mPointingState;
@@ -279,6 +270,12 @@ void CGUINumberControl::processRender(const GsRect<float> &rectDispCoordFloat)
     // Transform to the display coordinates
     auto displayRect = mRect;
     displayRect.transform(rectDispCoordFloat);
+
+    if(mHovered)
+    {
+        blitsfc.fill(displayRect, blitsfc.mapRGB(0xBB, 0xBB, 0xFF));
+    }
+
 
     for(auto &obj : mControlList)
     {
