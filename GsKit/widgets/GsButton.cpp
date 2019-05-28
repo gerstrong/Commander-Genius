@@ -162,6 +162,13 @@ void GsButton::drawNoStyle(const SDL_Rect& lRect)
     auto greenC = Uint8(lcompf*mGreen);
     auto blueC  = Uint8(lcompf*mBlue);
 
+    if(!mEnabled)
+    {
+        redC |= 0x7F;
+        greenC |= 0x7F;
+        blueC |= 0x7F;
+    }
+
     const auto fillColor = blitsfc.mapRGBA( redC, greenC, blueC, 0xFF);
 
     GsRect<Uint16> rect(lRect);

@@ -102,13 +102,18 @@ int CGUINumberControl::getSelection()
 
 void CGUINumberControl::setSelection( const int value )
 {
+    mpLeftButton->enable(true);
+    mpRightButton->enable(true);
 
-	if( mStartValue>value )
+    if( mStartValue>value )
 		mValue = mStartValue;
 	else if( mEndValue<value )
 		mValue = mEndValue;
 	else
 		mValue = value;
+
+    mpLeftButton->enable( mValue > mStartValue ? true : false  );
+    mpRightButton->enable( mValue < mEndValue ? true : false  );
 
     mMustRedraw = true;
     mpCtrlValue->setText(itoa(mValue));
