@@ -131,7 +131,8 @@ void CVideoSettings::release()
     mUsersConf.mShowCursor = mpShowCursorSwitch->isEnabled();
     mUsersConf.mTiltedScreen = mpTiltScreenSwitch->isEnabled();
 
-	gTimer.setFPS( mpFPSSelection->getSelection() );
+    const auto fpsf = float(mpFPSSelection->getSelection());
+    gTimer.setFPS( fpsf );
 
     if(!mpFrameSkip->isEnabled())
     {

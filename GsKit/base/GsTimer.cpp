@@ -10,6 +10,9 @@
 
 #include "GsTimer.h"
 
+const auto MIN_FPS = 10.0f;
+const auto MAX_FPS = 120.0f;
+
 CTimer::CTimer() :
 mRenderLatency(1000.0f/DEFAULT_FPS),
 mLogicLatency(1000.0f/DEFAULT_LPS_VORTICON),
@@ -27,7 +30,10 @@ resetLogic(false)
 
 void CTimer::setFPS( const float fps )
 {
-    mRenderLatency = (fps <= 0.0) ? 0.0 : (1000.0f / static_cast<float>(fps));
+    const auto fpsResult = (fps <= MIN_FPS) ? MIN_FPS :
+                           (fps >= MAX_FPS) ? MAX_FPS : fps;
+
+    mRenderLatency = (1000.0f / fpsResult);
 }
 
 void CTimer::setLPS( const float lps )
