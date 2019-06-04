@@ -10,13 +10,13 @@ public:
                     const std::list<std::string>& optionsList,
                     const Style &style);
 
-    void cycleOption();
+    void cycleOption() override;
 
     void setupButtonSurface(const std::string &optionText);
 
-    void setSelection( const std::string& selectionText );
+    void setSelection( const std::string& selectionText ) override;
 
-    void processRender(const GsRect<float> &RectDispCoordFloat);
+    void processRender(const GsRect<float> &RectDispCoordFloat) override;
 };
 
 #endif // __COMBOSELECTION_H__

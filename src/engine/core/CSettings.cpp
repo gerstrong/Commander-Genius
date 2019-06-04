@@ -167,14 +167,14 @@ bool CSettings::loadDrvCfg()
         GsRect<Uint16> &gamesRes = VidConf.mGameRect;
         int value = 0;
         config.ReadInteger("Video", "width", &value, 320);
-        res.dim.x = value;
+        res.dim.x = static_cast<unsigned short>(value);
         config.ReadInteger("Video", "height", &value, 200);
-        res.dim.y = value;
+        res.dim.y = static_cast<unsigned short>(value);
 
         config.ReadInteger("Video", "gameWidth", &value, 320);
-        gamesRes.dim.x = value;
+        gamesRes.dim.x = static_cast<unsigned short>(value);
         config.ReadInteger("Video", "gameHeight", &value, 200);
-        gamesRes.dim.y = value;
+        gamesRes.dim.y = static_cast<unsigned short>(value);
 
         if(res.dim.x*res.dim.y <= 0)
 		{
@@ -184,7 +184,7 @@ bool CSettings::loadDrvCfg()
 
         config.ReadKeyword("Video", "fullscreen", &VidConf.mFullscreen, false);
         config.ReadInteger("Video", "scale", &value, 1);
-		VidConf.Zoom = value;
+        VidConf.Zoom = static_cast<unsigned short>(value);
 
 
 		std::string arcStr;

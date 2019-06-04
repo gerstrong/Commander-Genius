@@ -37,20 +37,17 @@ void ComboSelection::setupButtonSurface(const std::string &optionText)
 
 void ComboSelection::setSelection( const std::string& selectionText )
 {
-    std::list<std::string>::const_iterator ptr = mOLCurrent;
-
-    do
+    for( auto it = mOptionsList.begin() ;
+              it != mOptionsList.end() ; it++)
     {
-        if( *mOLCurrent == selectionText )
+        if( *it == selectionText )
         {
             setupButtonSurface(selectionText);
             CGUIComboSelection::setSelection(selectionText);
+            mOLCurrent = it;
             return;
         }
-
-        cycleOption();
-
-    } while( ptr != mOLCurrent );
+    }
 
     CGUIComboSelection::setSelection(selectionText);
 }

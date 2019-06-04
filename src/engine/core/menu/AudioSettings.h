@@ -37,7 +37,7 @@ public:
 private:
 
     ComboSelection	*mpRate;
-    Switch		*mpStereo;
+    Switch      	*mpStereo;
     ComboSelection	*mpDepth;
     ComboSelection	*mpSBToggle;
     NumberControl	*mpSoundVolume;

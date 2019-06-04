@@ -62,7 +62,7 @@ void CAudioSettings::refresh()
     mMusicVolume = mpMusicVolume->getSelection();
 
     mpSoundVolume->setSelection(gSound.getSoundVolume());
-    mpMusicVolume->setSelection(gSound.getMusicVolume());
+    mpMusicVolume->setSelection(gSound.getMusicVolume());        
 
 #if !defined(EMBEDDED)
 	mpRate->setSelection( itoa(mAudioSpec.freq) );

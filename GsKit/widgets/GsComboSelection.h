@@ -40,7 +40,7 @@ public:
 
     void setList(const std::set<std::string> &strSet);
 
-	virtual void processRender(const GsRect<float> &RectDispCoordFloat);
+    virtual void processRender(const GsRect<float> &RectDispCoordFloat) override;
 
 protected:
 
