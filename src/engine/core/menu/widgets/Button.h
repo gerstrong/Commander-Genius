@@ -10,6 +10,11 @@ public:
                CEvent *ev,
                const Style style);
 
+    GameButton(const std::string& text,
+               const GsRect<float> &rect,
+               CEvent *ev,
+               const Style style);
+
     virtual void processRender(const GsRect<float> &RectDispCoordFloat);   
 
     void drawVorticonStyle(SDL_Rect& lRect);

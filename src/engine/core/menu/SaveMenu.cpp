@@ -35,15 +35,17 @@ GameMenu(GsRect<float>(0.1f, 0.0f, 0.8f, 1.0f), style )
         if(i < StateFileList.size())
             text = StateFileList.at(i);
 
-        mpMenuDialog->addControl( new InputText( text, style ),
-                                  GsRect<float>(
-                                      0.0f, 0.1f+(i*0.1f), 0.7f, 0.1f) );
+        mpMenuDialog->addControl( new InputText(
+                                      text,
+                                      GsRect<float>(
+                                          0.0f, 0.1f+(i*0.1f), 0.7f, 0.1f),
+                                      style ) );
 
 	}
 
 	setMenuLabel("SAVEMENULABEL");
 
-    mpMenuDialog->fit();
+    //mpMenuDialog->fit();
 }
 
 

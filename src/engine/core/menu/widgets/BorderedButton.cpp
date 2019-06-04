@@ -5,20 +5,29 @@
 
 
 
-BorderedButton::BorderedButton(const std::string &text, CEvent *ev,
+BorderedButton::BorderedButton(const std::string &text,
+                               CEvent *ev,
                                const GsControl::Style style) :
 GameButton(text, ev, style)
+{}
+
+BorderedButton::BorderedButton(const std::string& text,
+                               const GsRect<float> &rect,
+                               CEvent *ev,
+                               const GsControl::Style style):
+GameButton(text, rect, ev, style)
 {}
 
 
 
 
-void BorderedButton::processRender(const GsRect<float> &RectDispCoordFloat)
+
+void BorderedButton::processRender(const GsRect<float> &rectDispCoordFloat)
 {
     // Transform to the display coordinates
     GsRect<float> displayRect = mRect;
 
-    displayRect.transform(RectDispCoordFloat);
+    displayRect.transform(rectDispCoordFloat);
     SDL_Rect lRect = displayRect.SDLRect();
 
     GsWeakSurface blitsfc( gVideoDriver.getBlitSurface() );

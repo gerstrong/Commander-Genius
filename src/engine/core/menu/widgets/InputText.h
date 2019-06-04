@@ -11,6 +11,11 @@ public:
               const GsControl::Style &style) :
         CGUIInputText(text, 1, style) {}
 
+    InputText(const std::string &text,
+              const GsRect<float> &rect,
+              const GsControl::Style &style) :
+        CGUIInputText(text, rect, 1, style) {}
+
     void processRender(const GsRect<float> &RectDispCoordFloat) override;
 };
 

@@ -112,7 +112,9 @@ void CGUIText::updateFontState(const GsRect<float> &displayRect)
 
         for(unsigned int idx = 0 ; idx<numTexLines ; idx++)
         {
-            mTrueTypeFont.render(mTextSfcVec[idx], mTextVec[idx], textColor);
+            mTrueTypeFont.render(mTextSfcVec[idx],
+                                 mTextVec[idx],
+                                 textColor);
         }
 
         mTextChanged = false;

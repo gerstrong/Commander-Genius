@@ -21,6 +21,23 @@ GsButton(text, ev, style)
     }
 }
 
+GameButton::GameButton(const std::string& text,
+                       const GsRect<float> &rect,
+                       CEvent *ev,
+                       const Style style) :
+GsButton(text, rect, ev, style)
+{
+    if(mStyle == Style::GALAXY)
+    {
+        mFontID = 1;
+        setText(text);
+    }
+    else if(mStyle == Style::VORTICON)
+    {
+        mFontID = 1;
+    }
+}
+
 
 void GameButton::drawVorticonStyle(SDL_Rect& lRect)
 {

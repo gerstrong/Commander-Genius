@@ -20,6 +20,12 @@ public:
                   const int fontID = 0,
                   const GsControl::Style style = Style::NONE);
 
+    CGUIInputText(const std::string& text,
+                  const GsRect<float> &rect,
+                  const int fontID = 0,
+                  const GsControl::Style style = Style::NONE);
+
+
 	bool sendEvent(const InputCommand command);
 
 	void processLogic();

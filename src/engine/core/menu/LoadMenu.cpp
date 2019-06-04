@@ -43,33 +43,30 @@ GameMenu( GsRect<float>(0.1f, 0.0f, 0.8f, 1.0f),
 {
     for( int j = 0 ; j<8 ; j++ )
 	{
-        GsButton *button;
+        std::shared_ptr<GsButton> button;
 
         if(style == GsControl::Style::GALAXY)
         {
-
-            button = new BorderedButton( "Empty",
-                                         new LoadGameSlotFunctorEvent(j),
-                                         style);
-            mpMenuDialog->addControl( button,
-                                      GsRect<float>(
-                                          0.0f, 0.1f+(j*0.1f), 0.7f, 0.1f) );
+            button.reset(new BorderedButton( "Empty",
+                                         GsRect<float>(
+                                             0.0f, 0.1f+(j*0.1f), 0.7f, 0.1f),
+                                         new LoadGameSlotFunctorEvent(Uint32(j)),
+                                         style));
+            mpMenuDialog->addControl(button);
         }
         else
         {
-            button = new GameButton( "Empty",
-                                     new LoadGameSlotFunctorEvent(j),
-                                     style);
+            button.reset(new GameButton( "Empty",
+                                     new LoadGameSlotFunctorEvent(Uint32(j)),
+                                     style) );
 
-            mpMenuDialog->addControl( button );
-        }
+        }        
+        mpMenuDialog->addControl( button );
 
         button->enable( false );
 	}
 
 	setMenuLabel("LOADMENULABEL");
-
-    mpMenuDialog->fit();
 }
 
 

@@ -35,6 +35,17 @@ mText(text)
     mFontID = fontID;
 }
 
+CGUIInputText::CGUIInputText(const std::string& text,
+                             const GsRect<float> &rect,
+                             const int fontID,
+                             const GsControl::Style style) :
+GsControl(style, rect),
+mText(text)
+{
+    mFontID = fontID;
+}
+
+
 
 bool CGUIInputText::sendEvent(const InputCommand command)
 {
