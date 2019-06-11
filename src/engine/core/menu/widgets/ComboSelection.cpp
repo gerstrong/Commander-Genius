@@ -32,7 +32,7 @@ void ComboSelection::cycleOption()
 
 void ComboSelection::setupButtonSurface(const std::string &optionText)
 {
-    //GsButton::setupButtonSurface(optionText);
+    //CGUIComboSelection::setupButtonSurface(optionText);
 }
 
 void ComboSelection::setSelection( const std::string& selectionText )
@@ -78,22 +78,21 @@ void ComboSelection::processRender(const GsRect<float> &RectDispCoordFloat)
         
         drawBlinker(lRect);
     }
-    else if(mStyle == Style::VORTICON)
+    else */if(mStyle == Style::VORTICON)
     {
-        if(!mEnabled)
-            return;
+        CGUIComboSelection::processRender(RectDispCoordFloat);
         
         // Now lets draw the text of the list control
-        auto &Font = gGraphics.getFont(mFontID);
-        
+        /*auto &Font = gGraphics.getFont(mFontID);
+
         Font.drawFont( blitsfc.getSDLSurface(), mText, lRect.x+24, lRect.y, false );
         Font.drawFont( blitsfc.getSDLSurface(), ":", lRect.x+24+mText.size()*8, lRect.y, false );
         const std::string text = (*mOLCurrent);
-        Font.drawFont( blitsfc.getSDLSurface(), text, lRect.x+24+(mText.size()+2)*8, lRect.y, false );
+        Font.drawFont( blitsfc.getSDLSurface(), text, lRect.x+24+(mText.size()+2)*8, lRect.y, false );*/
         
         drawTwirl(lRect);      
     }
-    else*/
+    else
     {
         CGUIComboSelection::processRender(RectDispCoordFloat);
 
@@ -104,7 +103,6 @@ void ComboSelection::processRender(const GsRect<float> &RectDispCoordFloat)
         std::string text = mText + ": " + (*mOLCurrent);
         Font.drawFont( blitsfc.getSDLSurface(), text, lRect.x+40, lRect.y, false );
         */
-        drawTwirl(lRect);
     }
     
 }

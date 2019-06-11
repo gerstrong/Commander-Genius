@@ -94,6 +94,11 @@ public:
 	void drawTwirl( const SDL_Rect& lRect );
 
 	void drawBlinker( const SDL_Rect& lRect );
+
+    unsigned int getId() const
+    {
+        return mId;
+    }
 	
 
 protected:
@@ -128,6 +133,11 @@ protected:
 #else
     static const bool mHoverTriggers = false;
 #endif
+
+private:
+
+    static unsigned int mNumGsControls;
+    unsigned int mId;
 };
 
 

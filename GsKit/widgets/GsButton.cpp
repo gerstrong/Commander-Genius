@@ -29,7 +29,9 @@ mEvent(ev),
 mRed(red),
 mGreen(green),
 mBlue(blue),
-mTextWidget(text, GsRect<float>(0.0f, 0.0f, 1.0f, 1.0f))
+mTextWidget(text,
+            GsRect<float>(0.0f, 0.0f, 1.0f, 1.0f),
+            style)
 {}
 
 GsButton::GsButton(const std::string& text,
@@ -44,7 +46,9 @@ mEvent(ev),
 mRed(red),
 mGreen(green),
 mBlue(blue),
-mTextWidget(text, GsRect<float>(0.0f, 0.0f, 1.0f, 1.0f))
+mTextWidget(text,
+            GsRect<float>(0.0f, 0.0f, 1.0f, 1.0f),
+            style)
 {}
 
 GsButton::GsButton(const std::string& text,
@@ -59,7 +63,9 @@ GsButton::GsButton(const std::string& text,
     mRed(red),
     mGreen(green),
     mBlue(blue),
-    mTextWidget(text, GsRect<float>(0.0f, 0.0f, 1.0f, 1.0f)),
+    mTextWidget(text,
+                GsRect<float>(0.0f, 0.0f, 1.0f, 1.0f),
+                style),
     mFunction(f)
 {}
 

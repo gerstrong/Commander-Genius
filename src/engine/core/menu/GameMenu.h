@@ -35,15 +35,15 @@ public:
             mpMenuDialog->setRect(dlgRect);
 
 
-            GsRect<float> buttonRect(-0.05f, -0.05f,
+            GsRect<float> buttonRect(-0.05f, -0.07f,
                                      0.15f/dlgRect.dim.x,
                                      0.08f/dlgRect.dim.y);
 
             mpReturnButton =
-            mpMenuDialog->addControl( new GsButton( "close",
+            mpMenuDialog->addControl( new GameButton( "close",
                                                     buttonRect,
                                                     new CloseMenuEvent(),
-                                                    GsControl::Style::NONE) );
+                                                    GsControl::Style::VORTICON) );
         }
         else
         {

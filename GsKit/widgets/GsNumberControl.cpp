@@ -50,10 +50,12 @@ mDeltaValue(deltaValue)
 
     mpCtrlName =
             addControl(new CGUIText(text,
-                                GsRect<float>(0.1f, 0.0f, 0.4f, 1.0f)));
+                                GsRect<float>(0.1f, 0.0f, 0.4f, 1.0f),
+                                    style));
     mpCtrlValue =
             addControl(new CGUIText("?",
-                                GsRect<float>(0.5f, 0.0f, 0.4f, 1.0f)));
+                                GsRect<float>(0.5f, 0.0f, 0.4f, 1.0f),
+                                    style));
 
 
     mpRightButton =

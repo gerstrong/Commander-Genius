@@ -18,7 +18,7 @@ CGUIComboSelection::CGUIComboSelection( const std::string& text,
                                         const GsRect<float> &rect,
                                         const std::list<std::string>& optionsList,
                                         const GsControl::Style style ) :
-GsControlsManager(rect),
+GsControlsManager(rect, style),
 mOptionsList( optionsList ),
 mOLCurrent( mOptionsList.begin() ),
 mFeatureText(text)
@@ -26,7 +26,8 @@ mFeatureText(text)
 
     mpFeatureName =
             addControl(new CGUIText(text,
-                                GsRect<float>(0.0f, 0.0f, 0.5f, 1.0f)));
+                                GsRect<float>(0.0f, 0.0f, 0.5f, 1.0f),
+                                    style));
 
     mpFeatureValue =
             addControl(new GsButton("?",

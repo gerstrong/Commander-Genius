@@ -20,11 +20,16 @@ const int BLEND_SPEED = 16;
 
 int GsControl::mTwirliconID;
 
+unsigned int GsControl::mNumGsControls = 0;
+
 GsControl::GsControl(const Style style,
                      const GsRect<float> &rect) :
 mRect(rect),
 mStyle(style)
-{}
+{
+    mId = mNumGsControls;
+    mNumGsControls++;
+}
 
 GsControl::GsControl(const GsRect<float> &rect) :
 GsControl(Style::NONE, rect)

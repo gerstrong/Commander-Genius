@@ -20,6 +20,15 @@ GsControl(rect)
     setText(text);
 }
 
+CGUIText::CGUIText(const std::string& text,
+         const GsRect<float> &rect,
+         const GsControl::Style style) :
+GsControl(style, rect)
+{
+    setText(text);
+}
+
+
 
 void CGUIText::setText(const std::string& text)
 {    
@@ -123,9 +132,19 @@ void CGUIText::updateFontState(const GsRect<float> &displayRect)
 
 void CGUIText::processRender(const GsRect<float> &RectDispCoordFloat)
 {
+    if( getId() == 76)
+    {
+       printf("Stop!");
+    }
+
     // Transform to the display coordinates
     GsRect<float> displayRect = mRect;
     displayRect.transform(RectDispCoordFloat);
+
+    auto lRect = displayRect.SDLRect();
+
+    if(mStyle == GsControl::NONE)
+    {
 
 #if defined(USE_SDL_TTF)
 
@@ -149,7 +168,7 @@ void CGUIText::processRender(const GsRect<float> &RectDispCoordFloat)
 
         textSfc.blitTo(blit, blitPos.SDLRect());
         totTextSfcH += textH;
-    }
+    }    
 
 #else
     /*auto *renderer = &gVideoDriver.getRendererRef();
@@ -194,6 +213,45 @@ void CGUIText::processRender(const GsRect<float> &RectDispCoordFloat)
         }
     }
 #endif
+
+    }
+    else
+    {
+        // Now lets draw the text of the list control
+        auto &Font = gGraphics.getFont(mFontID);
+
+        auto textIt = mTextVec.begin();
+        for( size_t i=0 ; textIt != mTextVec.end() ; textIt++, i++ )
+        {
+            auto &theText = *textIt;
+
+            const int textWidth = Font.calcPixelTextWidth(theText);
+
+            // The tolerance is the amount of pixels at least of difference to consider
+            // for scrolling. We consider a tolerance so strange jittery are avoided for text
+            // that nearly fits
+            const int tol = 8;
+
+            // The first text item decides wheter scrolling takes place
+            if(textWidth > lRect.w + tol) // tolerance
+            {
+                const auto diff = textWidth - lRect.w;
+                mScrollPosMax = diff;
+
+                Font.drawFont(gVideoDriver.getBlitSurface(),
+                              theText,
+                              lRect.x-int(mScrollPos),
+                              lRect.y+i*8,
+                              false);
+            }
+            else
+            {
+                Font.drawFontCentered(gVideoDriver.getBlitSurface(), theText,
+                                      lRect.x, lRect.w, lRect.y+i*8, false);
+                mScrollPosMax = 0;
+            }
+        }
+    }
 }
 
 void CGUIText::processRender(const GsRect<float> &/*backRect*/,

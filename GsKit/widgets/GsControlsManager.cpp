@@ -5,6 +5,12 @@ GsControl(SrGsRect)
 {
 }
 
+GsControlsManager::GsControlsManager(const GsRect<float> &SrGsRect,
+                                     const GsControl::Style style):
+GsControl(style, SrGsRect)
+{
+}
+
 
 void GsControlsManager::fit()
 {

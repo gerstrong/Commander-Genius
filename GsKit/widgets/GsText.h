@@ -31,6 +31,10 @@ public:
     CGUIText(const std::string& text,
              const GsRect<float> &rect);
 
+    CGUIText(const std::string& text,
+             const GsRect<float> &rect,
+             const GsControl::Style style);
+
     void setupButtonSurface(const std::string& text = "");
 
 	virtual void setText(const std::string& text);
