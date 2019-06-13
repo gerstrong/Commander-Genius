@@ -12,7 +12,7 @@ GsControl(style, SrGsRect)
 }
 
 
-void GsControlsManager::fit()
+void GsControlsManager::fit(const float width)
 {
     auto it = mControlList.begin();
     it++;
@@ -21,12 +21,13 @@ void GsControlsManager::fit()
     const float charHeight = ( 1.0f/static_cast<float>(numControls+1) );
 
     size_t c = 1;
-    const auto padding = 0.05f;
+    auto padding = 0.1f;
+
     for( ; it != mControlList.end() ; it++ )
     {        
         GsRect<float> rect( padding,
                    charHeight*(static_cast<float>(c)+0.25f),
-                   1.0f-2.0f*padding,
+                   width,
                    charHeight-0.01f );
 
         //rect.transform(mRect);
@@ -264,7 +265,7 @@ GsControlsManager::addControl( std::unique_ptr<GsControl> &newControl )
 
     mControlList.push_back( ctrlPtr );
 
-    fit();
+    fit(0.9f);
 
     if(mControlList.size() == 1)
     {

@@ -60,22 +60,19 @@ GameMenu(GsRect<float>(0.15f, 0.20f, 0.65f, 0.55f), style )
 #if !defined(EMBEDDED)
 
 	
-    mpAspectSelection = new ComboSelection( "Aspect",
-		                                    filledStrList(1, "disabled"),
-                                            style );
-	
-	mpMenuDialog->addControl( mpAspectSelection );
+    mpAspectSelection =
+            mpMenuDialog->addControl( new ComboSelection( "Aspect",
+                                                          filledStrList(1, "disabled"),
+                                                          style ) );
 
     mpFilterSelection =
-            new ComboSelection( "Filter",
-                                filledStrList( 4, 
-                                               "none",
-                                               "scale2x",
-                                               "scale3x",
-                                               "scale4x" ),
-                                style );
-
-    mpMenuDialog->addControl( mpFilterSelection );
+            mpMenuDialog->addControl( new ComboSelection( "Filter",
+                                                  filledStrList( 4,
+                                                                 "none",
+                                                                 "scale2x",
+                                                                 "scale3x",
+                                                                 "scale4x" ),
+                                                  style ) );
 
     mpVSyncSwitch =
         mpMenuDialog->addControl( new Switch( "VSync", style ) );

@@ -72,11 +72,13 @@ void Switch::processRender(const GsRect<float> &RectDispCoordFloat)
     }
     else if(mStyle == Style::VORTICON)
     {
+        ComboSelection::processRender(RectDispCoordFloat);
         // Transform to the display coordinates
         GsRect<float> displayRect = mRect;
         displayRect.transform(RectDispCoordFloat);
         SDL_Rect lRect = displayRect.SDLRect();
-        drawVorticonStyle(lRect);
+        //drawVorticonStyle(lRect);
+        drawTwirl(lRect);
     }
     else
     {

@@ -31,7 +31,7 @@ CGUINumberControl::CGUINumberControl(const std::string& text,
                                       const int fontid,
                                       const bool slider,
                                       const Style style) :
-GsControlsManager(rect),
+GsControlsManager(rect, style),
 mValue(value),
 mSlider(slider),
 mStartValue(startValue),
@@ -44,9 +44,7 @@ mDeltaValue(deltaValue)
             addControl(new GsButton("<",
                                 GsRect<float>(0.0f, 0.0f, 0.1f, 1.0f),
                                 [&]{this->decrement();},
-                                style,
-                                1.0f, 0.75f, 0.75f));
-
+                                style));
 
     mpCtrlName =
             addControl(new CGUIText(text,
@@ -62,8 +60,7 @@ mDeltaValue(deltaValue)
             addControl(new GsButton(">",
                                 GsRect<float>(0.9f, 0.0f, 0.1f, 1.0f),
                                 [&]{this->increment();},
-                                style,
-                                1.0f, 0.75f, 0.75f));
+                                style));
 
 
 }

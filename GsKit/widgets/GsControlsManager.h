@@ -24,7 +24,7 @@ public:
      * @brief fit   ensure that the added controls fit well into
      *              control manager
      */
-    void fit();
+    void fit(const float width = 0.9f);
 
 
     // Adds a control instance to the list of controls to be processed.

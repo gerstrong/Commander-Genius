@@ -12,7 +12,7 @@ public:
 
     void cycleOption() override;
 
-    void setupButtonSurface(const std::string &optionText);
+    //void setupButtonSurface(const std::string &optionText);
 
     void setSelection( const std::string& selectionText ) override;
 

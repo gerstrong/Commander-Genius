@@ -40,8 +40,8 @@ private:
 #endif
 
     ComboSelection	*mpRenderScaleQualitySel = nullptr;
-    ComboSelection	*mpFilterSelection = nullptr;
-    ComboSelection	*mpAspectSelection = nullptr;
+    std::shared_ptr<ComboSelection>	mpFilterSelection = nullptr;
+    std::shared_ptr<ComboSelection>	mpAspectSelection;
     std::shared_ptr<Switch>		    mpVSyncSwitch;
     ComboSelection	*mpResolutionSelection = nullptr;
     GameButton	    *mpFullScreenSwitch = nullptr;            

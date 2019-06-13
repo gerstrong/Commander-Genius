@@ -31,7 +31,7 @@ GameMenu(GsRect<float>(0.15f, 0.20f, 0.65f, 0.55f), style )
     mpShowCursorSwitch = new Switch("Cursor", style);
     mpMenuDialog->addControl( mpShowCursorSwitch );
 
-    mpTiltScreenSwitch = new Switch("TiltedScreen", style);
+    mpTiltScreenSwitch = new Switch("TiltedScr", style);
     mpMenuDialog->addControl( mpTiltScreenSwitch );
     
 	// Create the fps config selection control
@@ -44,8 +44,7 @@ GameMenu(GsRect<float>(0.15f, 0.20f, 0.65f, 0.55f), style )
     mpFPSSelection =
             mpMenuDialog->addControl(
                 new NumberControl( "FPS", 10, 120, 10, 60,
-                                   false, style),
-                style );
+                                   false, style) );
 
 
     mpFrameSkip = new Switch( "FrameSkip", style );
@@ -66,10 +65,10 @@ GameMenu(GsRect<float>(0.15f, 0.20f, 0.65f, 0.55f), style )
     mpMenuDialog->addControl( mpVPadSwitch, style );
 #endif
 
-    mpBorderColorSwitch = new Switch( "Border Color", style );
+    mpBorderColorSwitch = new Switch( "Brdr Color", style );
     mpMenuDialog->addControl( mpBorderColorSwitch );
 
-    mpHorizBordersSelection = new NumberControl( "H-Borders",
+    mpHorizBordersSelection = new NumberControl( "H-Brdr",
                                                  0, 80, 5, 0,
                                                  false,
                                                  style);

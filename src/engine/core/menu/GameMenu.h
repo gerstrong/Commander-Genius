@@ -16,7 +16,7 @@ public:
     {
         if(style == GsControl::GALAXY)
         {            
-            GsRect<float> dlgRect(0.3f, 0.282f, 0.6f, 0.5f);
+            GsRect<float> dlgRect(0.3f, 0.282f, 0.4f, 0.5f);
             mpMenuDialog->setRect(dlgRect);
 
             mpReturnButton =

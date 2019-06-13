@@ -16,7 +16,7 @@ GameMenu(GsRect<float>(0.075f, 0.24f, 0.85f, 0.4f), style )
     mpMenuDialog->addControl( mpNoClipSwitch );
 
     mpItemsSwitch = new Switch( "Free items", style );
-    mpMenuDialog->addControl( mpItemsSwitch );
+    mpMenuDialog->addControl( mpItemsSwitch );   
 
     mpMenuDialog->fit();
 }

@@ -27,14 +27,13 @@ mFeatureText(text)
     mpFeatureName =
             addControl(new CGUIText(text,
                                 GsRect<float>(0.0f, 0.0f, 0.5f, 1.0f),
-                                    style));
+                                    style));    
 
     mpFeatureValue =
             addControl(new GsButton("?",
                                 GsRect<float>(0.5f, 0.0f, 0.5f, 1.0f),
                                 [&]{this->cycleOption();},
-                                style,
-                                1.0f, 0.75f, 0.75f));
+                                style));
 }
 
 

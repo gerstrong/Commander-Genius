@@ -132,11 +132,6 @@ void CGUIText::updateFontState(const GsRect<float> &displayRect)
 
 void CGUIText::processRender(const GsRect<float> &RectDispCoordFloat)
 {
-    if( getId() == 76)
-    {
-       printf("Stop!");
-    }
-
     // Transform to the display coordinates
     GsRect<float> displayRect = mRect;
     displayRect.transform(RectDispCoordFloat);

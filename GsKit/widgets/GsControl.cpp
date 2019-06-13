@@ -29,6 +29,9 @@ mStyle(style)
 {
     mId = mNumGsControls;
     mNumGsControls++;
+
+    if(style == GsControl::GALAXY)
+        mFontID = 1;
 }
 
 GsControl::GsControl(const GsRect<float> &rect) :
@@ -40,6 +43,9 @@ GsControl::GsControl(const Style style) :
 GsControl(style, GsRect<float>(0.0f, 0.0f, 0.0f, 0.0f))
 {
     mTwirliconID = 10;
+
+    if(style == GsControl::GALAXY)
+        mFontID = 1;
 }
 
 GsControl::GsControl() :

@@ -18,7 +18,7 @@ CGUIComboSelection(text, GsRect<float>(0.0f,0.0f,1.0f,1.0f),
     {
         mFontID = 1;
     }
-    setupButtonSurface(text);
+    //setupButtonSurface(text);
 }
 
 
@@ -26,14 +26,14 @@ void ComboSelection::cycleOption()
 {
     CGUIComboSelection::cycleOption();
 
-    setupButtonSurface(*mOLCurrent);
+    //setupButtonSurface(*mOLCurrent);
 }
 
 
-void ComboSelection::setupButtonSurface(const std::string &optionText)
+/*void ComboSelection::setupButtonSurface(const std::string &optionText)
 {
     //CGUIComboSelection::setupButtonSurface(optionText);
-}
+}*/
 
 void ComboSelection::setSelection( const std::string& selectionText )
 {
@@ -42,7 +42,7 @@ void ComboSelection::setSelection( const std::string& selectionText )
     {
         if( *it == selectionText )
         {
-            setupButtonSurface(selectionText);
+            //setupButtonSurface(selectionText);
             CGUIComboSelection::setSelection(selectionText);
             mOLCurrent = it;
             return;
@@ -60,6 +60,8 @@ void ComboSelection::processRender(const GsRect<float> &RectDispCoordFloat)
     SDL_Rect lRect = displayRect.SDLRect();
     
     GsWeakSurface blitsfc( gVideoDriver.getBlitSurface() );    
+
+    CGUIComboSelection::processRender(RectDispCoordFloat);
     
     /*if(mStyle == Style::GALAXY)
     {        
@@ -79,9 +81,7 @@ void ComboSelection::processRender(const GsRect<float> &RectDispCoordFloat)
         drawBlinker(lRect);
     }
     else */if(mStyle == Style::VORTICON)
-    {
-        CGUIComboSelection::processRender(RectDispCoordFloat);
-        
+    {                
         // Now lets draw the text of the list control
         /*auto &Font = gGraphics.getFont(mFontID);
 
@@ -91,18 +91,6 @@ void ComboSelection::processRender(const GsRect<float> &RectDispCoordFloat)
         Font.drawFont( blitsfc.getSDLSurface(), text, lRect.x+24+(mText.size()+2)*8, lRect.y, false );*/
         
         drawTwirl(lRect);      
-    }
-    else
-    {
-        CGUIComboSelection::processRender(RectDispCoordFloat);
-
-        /*
-        // Now lets draw the text of the list control
-        auto &Font = gGraphics.getFont(mFontID);
-
-        std::string text = mText + ": " + (*mOLCurrent);
-        Font.drawFont( blitsfc.getSDLSurface(), text, lRect.x+40, lRect.y, false );
-        */
     }
     
 }

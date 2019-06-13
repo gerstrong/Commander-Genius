@@ -13,7 +13,6 @@
 #include <base/InputEvents.h>
 #include <base/utils/Geometry.h>
 
-
 class GsControl
 {
 public:

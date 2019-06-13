@@ -15,7 +15,6 @@
 
 #include "GsButton.h"
 
-
 GsButton::GsButton(const std::string& text,
                    const GsRect<float> &rect,
             CEvent *ev,
@@ -32,6 +31,17 @@ mBlue(blue),
 mTextWidget(text,
             GsRect<float>(0.0f, 0.0f, 1.0f, 1.0f),
             style)
+{}
+
+GsButton::GsButton(const std::string& text,
+         const GsRect<float> &rect,
+         CEvent *ev,
+         const Style style,
+         const GsColor &color) :
+GsButton(text, rect, ev, style,
+         float(color.r)/float(0xFF),
+         float(color.g)/float(0xFF),
+         float(color.b)/float(0xFF) )
 {}
 
 GsButton::GsButton(const std::string& text,
@@ -68,6 +78,19 @@ GsButton::GsButton(const std::string& text,
                 style),
     mFunction(f)
 {}
+
+
+GsButton::GsButton(const std::string& text,
+         const GsRect<float> &rect,
+         const std::function <void ()>& f,
+         const Style style,
+         const GsColor &color):
+GsButton(text,rect,f,style,
+         float(color.r)/float(0xFF),
+         float(color.g)/float(0xFF),
+         float(color.b)/float(0xFF))
+{}
+
 
 
 bool GsButton::sendEvent(const InputCommand command)
@@ -170,9 +193,9 @@ void GsButton::drawNoStyle(const SDL_Rect& lRect)
 
     if(!mEnabled)
     {
-        redC |= 0x7F;
-        greenC |= 0x7F;
-        blueC |= 0x7F;
+        redC = 0x8F;
+        greenC = 0x8F;
+        blueC = 0x8F;
     }
 
     const auto fillColor = blitsfc.mapRGBA( redC, greenC, blueC, 0xFF);
@@ -184,7 +207,7 @@ void GsButton::drawNoStyle(const SDL_Rect& lRect)
     if(!gTTFDriver.isActive())
     {
         // Now lets draw the text of the list control
-        auto &Font = gGraphics.getFont(mFontID);
+        auto &Font = gGraphics.getFont( Uint8(mFontID) );
 
         if(mEnabled) // If the button is enabled use the normal text, otherwise the highlighted color
         {
@@ -201,7 +224,7 @@ void GsButton::drawNoStyle(const SDL_Rect& lRect)
 
 void GsButton::setupButtonSurface(const std::string &text)
 {
-    GsFontLegacy &Font = gGraphics.getFont(mFontID);
+    GsFontLegacy &Font = gGraphics.getFont(Uint8(mFontID));
 
     if(text.empty())
     {

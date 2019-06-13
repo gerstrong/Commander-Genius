@@ -19,7 +19,7 @@ CGUINumberControl(text,
                   GsRect<float>(0.0f,0.0f,1.0f,1.0f),
                   startValue, endValue,
                   deltaValue, value, 1,
-                  slider)
+                  slider, style)
 {   
     /*
     if(mStyle == Style::VORTICON)
