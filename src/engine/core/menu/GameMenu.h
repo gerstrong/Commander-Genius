@@ -16,7 +16,7 @@ public:
     {
         if(style == GsControl::GALAXY)
         {            
-            GsRect<float> dlgRect(0.3f, 0.282f, 0.4f, 0.5f);
+            GsRect<float> dlgRect(0.25f, 0.282f, 0.45f, 0.5f);
             mpMenuDialog->setRect(dlgRect);
 
             mpReturnButton =
@@ -47,33 +47,16 @@ public:
         }
         else
         {
-            //GsRect<float> localRect(0.15f, 0.282f, 0.70f, 0.5f);
-            //mpMenuDialog->setRect(localRect);
-
-
-/*            mpReturnButton = new GsButton( "x",
-                                           localRect,
-                                           new CloseMenuEvent(),
-                                           GsControl::Style::NONE);
-
-            mpMenuDialog->addControl( mpReturnButton,
-                                      GsRect<float>(-0.05f, -0.05f,
-                                                    0.08f/localRect.dim.x,
-                                                    0.08f/localRect.dim.y) );
-                                                    */
-
             const auto localRect = mpMenuDialog->getRect();
 
             mpReturnButton =
-
-            mpMenuDialog->addControl(
+                mpMenuDialog->addControl(
                         new GsButton( "x",
                                       GsRect<float>(-0.05f, -0.05f,
                                                     0.06f/localRect.dim.x,
                                                     0.06f/localRect.dim.y),
                                                     new CloseMenuEvent(),
                                                     GsControl::Style::NONE) );
-
         }
 
 

@@ -39,12 +39,12 @@ private:
     std::shared_ptr<Switch>			mpOpenGLSwitch;
 #endif
 
-    ComboSelection	*mpRenderScaleQualitySel = nullptr;
-    std::shared_ptr<ComboSelection>	mpFilterSelection = nullptr;
+    std::shared_ptr<ComboSelection>	mpRenderScaleQualitySel;
+    std::shared_ptr<ComboSelection>	mpFilterSelection;
     std::shared_ptr<ComboSelection>	mpAspectSelection;
     std::shared_ptr<Switch>		    mpVSyncSwitch;
-    ComboSelection	*mpResolutionSelection = nullptr;
-    GameButton	    *mpFullScreenSwitch = nullptr;            
+    std::shared_ptr<ComboSelection>	mpResolutionSelection;
+    std::shared_ptr<GameButton>	    mpFullScreenSwitch;
 
 };
 

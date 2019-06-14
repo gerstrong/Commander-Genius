@@ -4,7 +4,7 @@
 #include "engine/core/menu/GameMenu.h"
 
 #include "widgets/Switch.h"
-
+#include <memory>
 
 class CheatsMenu : public GameMenu
 {
@@ -20,10 +20,11 @@ public:
 
 private:
 
-    Switch		*mpJumpSwitch;
-    Switch		*mpGodSwitch;
-    Switch		*mpNoClipSwitch;
-    Switch		*mpItemsSwitch;
+
+    std::shared_ptr<Switch>		mpJumpSwitch;
+    std::shared_ptr<Switch>		mpGodSwitch;
+    std::shared_ptr<Switch>		mpNoClipSwitch;
+    std::shared_ptr<Switch>		mpItemsSwitch;
 };
 
 

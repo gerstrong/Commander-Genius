@@ -77,37 +77,36 @@ GameMenu(GsRect<float>(0.15f, 0.20f, 0.65f, 0.55f), style )
     mpVSyncSwitch =
         mpMenuDialog->addControl( new Switch( "VSync", style ) );
 
-    mpResolutionSelection = new ComboSelection( "Size",
-                                                filledStrList(1, "?x?"),
-                                                style);
-    mpMenuDialog->addControl( mpResolutionSelection );
+    mpResolutionSelection =
+        mpMenuDialog->addControl( new ComboSelection( "Size",
+                                                  filledStrList(1, "?x?"),
+                                                  style) );
 
-    mpFullScreenSwitch = new GameButton( "Unknown mode",
-										new toggleFullscreenFunctor(*this),
-                                         style);
-	mpMenuDialog->addControl( mpFullScreenSwitch );
+    mpFullScreenSwitch =
+        mpMenuDialog->addControl( new GameButton( "Unknown mode",
+                                              new toggleFullscreenFunctor(*this),
+                                               style) );
 #endif
 
 #if defined(USE_OPENGL)
     mpOpenGLSwitch =
         mpMenuDialog->addControl( new Switch( "OpenGL", style ) );
 
-    mpRenderScaleQualitySel = new ComboSelection( "Quality",
-                                                  filledStrList( 2, 
-                                                                 "nearest", 
-                                                                 "linear" ),
-                                                  style);
-
+    mpRenderScaleQualitySel =
+            mpMenuDialog->addControl( new ComboSelection( "Quality",
+                                                          filledStrList( 2,
+                                                                         "nearest",
+                                                                         "linear" ),
+                                                          style) );
 #else
-    mpRenderScaleQualitySel = new ComboSelection( "Quality",
-                                                  filledStrList( 3, 
-                                                                 "nearest", 
-                                                                 "linear", 
-                                                                 "best" ),
-                                                  style);
+    mpRenderScaleQualitySel =
+            mpMenuDialog->addControl( new ComboSelection( "Quality",
+                                                          filledStrList( 3,
+                                                                         "nearest",
+                                                                         "linear",
+                                                                         "best" ),
+                                                          style) );
 #endif
-
-    mpMenuDialog->addControl( mpRenderScaleQualitySel );
 
 	setMenuLabel("OPTIONSMENULABEL");
 
@@ -255,7 +254,6 @@ void DisplaySettings::release()
         int w, h;
 
         const int numRead = sscanf(resStr.c_str(),"%ix%i", &w, &h);
-        std::cerr << "numRead: " << numRead << std::endl;
         if(numRead == 2)
         {
             GsVec2D<Uint16> res = {w, h};

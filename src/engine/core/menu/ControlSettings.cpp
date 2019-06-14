@@ -28,8 +28,7 @@ public:
 			const std::string &commandName ) :
 		mSelPlayer(selPlayer),
 		mCommand(command),
-		mCommandName(commandName),
-		mpButton(NULL)
+        mCommandName(commandName)
 		{}
 
 	void setButtonPtr(GsButton* button)
@@ -48,7 +47,7 @@ public:
 	int mSelPlayer;
 	InputCommand mCommand;
 	const std::string mCommandName;
-	GsButton* mpButton;
+    GsButton* mpButton = nullptr;
 };
 
 
