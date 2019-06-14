@@ -368,6 +368,9 @@ public:
 #endif
     }
 
+    void tintColor(const GsColor &gsColor);
+
+
 
 protected:
 

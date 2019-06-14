@@ -8,8 +8,14 @@ ComboSelection::ComboSelection(const std::string& text,
                                 const std::list<std::string>& optionsList,
                                const Style &style) :
 CGUIComboSelection(text, GsRect<float>(0.0f,0.0f,1.0f,1.0f),
-                   optionsList, style)
+                   optionsList,
+                   style)
 {
+    if(mStyle == Style::GALAXY)
+    {
+        setTextColor(GsColor(0x26, 0x86, 0x26));
+    }
+
     if(mStyle == Style::NONE)
     {
         mFontID = 0;
@@ -18,22 +24,13 @@ CGUIComboSelection(text, GsRect<float>(0.0f,0.0f,1.0f,1.0f),
     {
         mFontID = 1;
     }
-    //setupButtonSurface(text);
 }
 
 
 void ComboSelection::cycleOption()
 {
     CGUIComboSelection::cycleOption();
-
-    //setupButtonSurface(*mOLCurrent);
 }
-
-
-/*void ComboSelection::setupButtonSurface(const std::string &optionText)
-{
-    //CGUIComboSelection::setupButtonSurface(optionText);
-}*/
 
 void ComboSelection::setSelection( const std::string& selectionText )
 {

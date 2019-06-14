@@ -382,3 +382,38 @@ applyDisplayFormat()
 #endif
 }
 
+
+void GsWeakSurface::tintColor(const GsColor &fgColor)
+{
+    SDL_Surface *sfc = mpSurface;
+    Uint32 color = 0;
+    Uint8 r, g, b, a;
+
+    const Uint32 fgColorUint32 = mapColorAlpha(fgColor);
+
+    if(SDL_MUSTLOCK(sfc))
+        SDL_LockSurface(sfc);
+
+    // This makes the white pixel transparent
+    Uint8 *pixel = static_cast<Uint8*>(sfc->pixels);
+
+    for( Uint16 y=0 ; y<sfc->h ; y++ )
+    {
+        for( Uint16 x=0 ; x<sfc->w ; x++ )
+        {
+            memcpy( &color, pixel, sfc->format->BytesPerPixel );
+
+            SDL_GetRGBA( color, sfc->format, &r, &g, &b, &a );
+
+            if( a>0 )
+            {
+                memcpy( pixel, &fgColorUint32, sfc->format->BytesPerPixel );
+            }
+
+            pixel += sfc->format->BytesPerPixel;
+        }
+    }
+    if(SDL_MUSTLOCK(sfc))
+        SDL_LockSurface(sfc);
+}
+

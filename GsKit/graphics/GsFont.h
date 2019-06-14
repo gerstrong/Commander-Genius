@@ -121,7 +121,7 @@ public:
         return mWidthtable[letter];
     }
 
-	void tintColor( const Uint32 fgColor );
+    //void tintColor( const Uint32 fgColor );
 
 	void setupColor( const Uint32 fgColor );
 

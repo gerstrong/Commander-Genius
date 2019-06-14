@@ -100,6 +100,11 @@ public:
         setupButtonSurface("  " + mText);
     }
 
+    void setTextColor(const GsColor &color)
+    {
+        mTextWidget.setTextColor(color);
+    }
+
     std::shared_ptr<CEvent> &event()
     {
         return mEvent;

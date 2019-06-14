@@ -210,42 +210,15 @@ void GsFont::loadinternalFont(const int size)
 
 */
 
-
+/*
 void GsFont::tintColor( const Uint32 fgColor )
 {
     for(auto &pFontSurface : mpFontSurface)
     {
-
-        SDL_Surface *sfc = pFontSurface->getSDLSurface();
-        Uint32 color = 0;
-        Uint8 r, g, b, a;
-
-        if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
-
-        // This makes the white pixel transparent
-        Uint8 *pixel = (Uint8*)sfc->pixels;
-
-        for( Uint16 y=0 ; y<sfc->h ; y++ )
-        {
-            for( Uint16 x=0 ; x<sfc->w ; x++ )
-            {
-                memcpy( &color, pixel, sfc->format->BytesPerPixel );
-
-                SDL_GetRGBA( color, sfc->format, &r, &g, &b, &a );
-
-                if( a>0 )
-                {
-                    memcpy( pixel, &fgColor, sfc->format->BytesPerPixel );
-                }
-
-                pixel += sfc->format->BytesPerPixel;
-            }
-        }
-        if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
-
+        pFontSurface->tintColor(fgColor);
     }
 }
-
+*/
 
 void GsFont::setupColor( const Uint32 fgColor )
 {

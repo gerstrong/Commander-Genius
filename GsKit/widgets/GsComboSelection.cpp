@@ -168,3 +168,9 @@ void CGUIComboSelection::processRender(const GsRect<float> &RectDispCoordFloat)
     }
 */
 }
+
+void CGUIComboSelection::setTextColor(const GsColor &color)
+{
+    mpFeatureName->setTextColor(color);
+    mpFeatureValue->setTextColor(color);
+}

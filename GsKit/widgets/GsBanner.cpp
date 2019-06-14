@@ -67,7 +67,7 @@ void CGUIBanner::processRender(const GsRect<float> &RectDispCoordFloat)
     GsRect<float> displayRect = mRect;
     displayRect.transform(RectDispCoordFloat);
 
-    updateFontState(displayRect);
+    updateTTFTextSfc(displayRect);
 
     auto &blit = gVideoDriver.gameSfc();
 

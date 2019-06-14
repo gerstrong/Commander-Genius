@@ -157,7 +157,7 @@ public:
      * @brief This will help to get the right height of some Dialog Boxes
      * @return height of the text height in pixel units.
 	 */
-    unsigned int getPixelTextHeight()
+    unsigned int getPixelTextHeight() const
     {
         const auto height = mpFontSurface[0]->getSDLSurface()->h;
         return height / 16;
@@ -191,7 +191,10 @@ public:
     void drawFont(SDL_Surface* dst, const std::string& text, const Uint16 xoff, const Uint16 yoff,
                   const bool highlight = false);
 
-    void drawFont(GsWeakSurface &dst, const std::string& text, const Uint16 xoff, const Uint16 yoff, const bool highlight = false)
+    void drawFont(GsWeakSurface &dst,
+                  const std::string& text,
+                  const Uint16 xoff, const Uint16 yoff,
+                  const bool highlight = false)
     {
         drawFont(dst.getSDLSurface(), text, xoff, yoff, highlight);
     }

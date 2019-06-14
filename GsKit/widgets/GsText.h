@@ -39,6 +39,8 @@ public:
 
 	virtual void setText(const std::string& text);
 
+    void setTextColor(const GsColor &color);
+
 	virtual void processLogic();
     virtual void processRender(const GsRect<float> &RectDispCoordFloat);
 
@@ -50,7 +52,10 @@ public:
 
 protected:
 
-    void updateFontState(const GsRect<float> &displayRect);
+    void updateTTFTextSfc(const GsRect<float> &displayRect);
+
+    void updateLegacyTextSfc(const GsRect<float> &displayRect,
+                             const GsColor &textColor);
 
     std::vector<std::string> mTextVec;
 
@@ -78,13 +83,14 @@ private:
     std::string mText;
     int mFontSize = 0;
     bool mTextChanged = true;
+    GsColor mTextColor;
 
     enum class ScrollDir
     {
         NONE,
         LEFT,
         RIGHT
-    } mScrollDir = ScrollDir::NONE;
+    } mScrollDir = ScrollDir::NONE;        
 
 };
 

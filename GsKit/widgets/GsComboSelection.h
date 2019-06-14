@@ -42,6 +42,8 @@ public:
 
     virtual void processRender(const GsRect<float> &RectDispCoordFloat) override;
 
+    void setTextColor(const GsColor &color);
+
 protected:
 
 	std::list<std::string> mOptionsList;

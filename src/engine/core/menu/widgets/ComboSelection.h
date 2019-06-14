@@ -7,12 +7,10 @@ class ComboSelection : public CGUIComboSelection
 {
 public:
     ComboSelection(const std::string& text,
-                    const std::list<std::string>& optionsList,
-                    const Style &style);
+                   const std::list<std::string>& optionsList,
+                   const Style &style);
 
     void cycleOption() override;
-
-    //void setupButtonSurface(const std::string &optionText);
 
     void setSelection( const std::string& selectionText ) override;
 
