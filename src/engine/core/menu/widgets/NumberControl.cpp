@@ -21,20 +21,20 @@ CGUINumberControl(text,
                   deltaValue, value, 1,
                   slider, style)
 {   
-    /*
-    if(mStyle == Style::VORTICON)
+    if(mStyle == Style::GALAXY)
     {
-        mFontID = 1;    
+        //setTextColor(GsColor(0x26, 0x86, 0x26));
+        //enableButtonBorders(false);
     }
-    else if(mStyle == Style::GALAXY)    
-    {
-        //setupButtonSurface();
-    }
-    else
+
+    if(mStyle == Style::NONE)
     {
         mFontID = 0;
     }
-    */
+    else
+    {
+        mFontID = 1;
+    }
 }
 
 /*

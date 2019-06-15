@@ -14,6 +14,7 @@ CGUIComboSelection(text, GsRect<float>(0.0f,0.0f,1.0f,1.0f),
     if(mStyle == Style::GALAXY)
     {
         setTextColor(GsColor(0x26, 0x86, 0x26));
+        enableButtonBorders(false);
     }
 
     if(mStyle == Style::NONE)

@@ -202,7 +202,10 @@ void GsButton::drawNoStyle(const SDL_Rect& lRect)
 
     GsRect<Uint16> rect(lRect);
 
-    blitsfc.drawRect( rect, 2, borderColor, fillColor );
+    if(mShowBorders)
+    {
+        blitsfc.drawRect( rect, 2, borderColor, fillColor );
+    }
 
     if(!gTTFDriver.isActive())
     {

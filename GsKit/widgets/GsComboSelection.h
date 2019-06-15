@@ -44,6 +44,10 @@ public:
 
     void setTextColor(const GsColor &color);
 
+    void enableButtonBorders(const bool value);
+
+    void enableWidgetsCenteringH(const bool value);
+
 protected:
 
 	std::list<std::string> mOptionsList;

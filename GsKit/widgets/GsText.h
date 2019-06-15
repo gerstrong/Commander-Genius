@@ -50,6 +50,11 @@ public:
 	// Defines in character units how tall and wide the entire text is.
     GsRect<unsigned int> mTextDim;
 
+    void enableCenteringH(const bool value)
+    {
+        mHCentered = value;
+    }
+
 protected:
 
     void updateTTFTextSfc(const GsRect<float> &displayRect);
@@ -84,6 +89,8 @@ private:
     int mFontSize = 0;
     bool mTextChanged = true;
     GsColor mTextColor;
+
+    bool mHCentered = true;
 
     enum class ScrollDir
     {

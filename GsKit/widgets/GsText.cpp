@@ -150,7 +150,7 @@ void CGUIText::updateLegacyTextSfc(const GsRect<float> &displayRect,
 
         const auto letterHeight = Font.getPixelTextHeight();
 
-        lRect.y = (lRect.h-letterHeight)/2;
+        lRect.y = (static_cast<unsigned int>(lRect.h)-letterHeight)/2;
 
         const auto numTexLines = mTextVec.size();
         mTextSfcVec.resize(numTexLines);
@@ -279,9 +279,8 @@ void CGUIText::processRender(const GsRect<float> &RectDispCoordFloat)
 
     }
     else
-    {
-        mTextColor;
-        updateLegacyTextSfc(displayRect, GsColor(0x26, 0x86, 0x26));
+    {        
+        updateLegacyTextSfc(displayRect, mTextColor);
 
         unsigned int totTextSfcH = 0;
         for(auto &textSfc : mTextSfcVec)
@@ -294,7 +293,12 @@ void CGUIText::processRender(const GsRect<float> &RectDispCoordFloat)
             GsVec2D<int> textSfcDim(textW, textH);
 
             GsRect<float> blitPos = displayRect;
-            blitPos.pos = blitPos.pos + (blitPos.dim-textSfcDim)/2;
+
+            if(mHCentered)
+            {
+                blitPos.pos = blitPos.pos + (blitPos.dim-textSfcDim)/2;
+            }
+
             blitPos.pos.y += totTextSfcH;
 
             textSfc.blitTo(blit, blitPos.SDLRect());

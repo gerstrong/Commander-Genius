@@ -115,6 +115,17 @@ public:
 
     virtual void setupButtonSurface(const std::string &text = "");
 
+    void enableBorder(const bool value)
+    {
+        mShowBorders = value;
+    }
+
+    void enableCenteringH(const bool value)
+    {
+        mTextWidget.enableCenteringH(value);
+    }
+
+
 protected:
 
     std::string mText;
@@ -123,7 +134,6 @@ protected:
     GsSurface mTextLightSfc;
     GsSurface mTextRedSfc;
     GsSurface mTextDisabledSfc;
-
 
 private:        
 
@@ -137,6 +147,8 @@ private:
     CGUIText mTextWidget;
 
     std::function <void ()> mFunction;
+
+    bool mShowBorders = true;
 };
 
 

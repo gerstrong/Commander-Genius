@@ -117,60 +117,21 @@ void CGUIComboSelection::processRender(const GsRect<float> &RectDispCoordFloat)
         obj->processRender(displayRect);
     }
 
-	// Transform to the display coordinates
-   /* GsRect<float> displayRect = mRect;
-	displayRect.transform(RectDispCoordFloat);
-	SDL_Rect lRect = displayRect.SDLRect();
-
-    if(!mEnabled)
-        return;
-
-    SDL_Surface *blitsfc = gVideoDriver.getBlitSurface();
-
-    if( mReleased )
-    {
-        drawRect( blitsfc, &lRect, 0, 0x00BBBBBB, 0x00CFCFCF );
-    }
-    else if( mPressed )
-    {
-        drawRect( blitsfc, &lRect, 0, 0x00BBBBBB, 0x00DFDFDF );
-    }
-#ifndef DISABLE_HOVER
-    else if( mHovered )
-    {
-        drawRect( blitsfc, &lRect, 0, 0x00BBBBBB, 0x00EFEFEF );
-    }
-#endif
-    else
-    {
-        drawRect( blitsfc, &lRect, 0, 0x00BBBBBB, 0x00FFFFFF );
-    }
-
-
-    if(!gTTFDriver.isActive())
-    {
-        // Now lets draw the text of the list control
-        GsFontLegacy &Font = gGraphics.getFont(mFontID);
-
-        const int fontHeight = 8;
-        //const int textX = lRect.x+24+(mText.size()+2)*fontHeight;
-        const int textY = lRect.y+((lRect.h-fontHeight)/2);
-
-
-        Font.drawFont( blitsfc, mText, lRect.x+24, textY, false );
-        //Font.drawFont( blitsfc, ":", lRect.x+24+mText.size()*8, textY, false );
-        //const std::string text = (*mOLCurrent);
-        //Font.drawFont( blitsfc, text, lRect.x+24+(mText.size()+2)*fontHeight, textY, false );
-    }
-    else
-    {
-        GsButton::processRender(RectDispCoordFloat);
-    }
-*/
 }
 
 void CGUIComboSelection::setTextColor(const GsColor &color)
 {
     mpFeatureName->setTextColor(color);
     mpFeatureValue->setTextColor(color);
+}
+
+void CGUIComboSelection::enableButtonBorders(const bool value)
+{
+    mpFeatureValue->enableBorder(value);
+}
+
+void CGUIComboSelection::enableWidgetsCenteringH(const bool value)
+{
+    mpFeatureName->enableCenteringH(value);
+    mpFeatureValue->enableCenteringH(value);
 }
