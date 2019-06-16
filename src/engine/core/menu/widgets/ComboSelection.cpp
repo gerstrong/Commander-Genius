@@ -5,16 +5,28 @@
 
 
 ComboSelection::ComboSelection(const std::string& text,
-                                const std::list<std::string>& optionsList,
+                               const std::list<std::string>& optionsList,
                                const Style &style) :
 CGUIComboSelection(text, GsRect<float>(0.0f,0.0f,1.0f,1.0f),
                    optionsList,
                    style)
 {
     if(mStyle == Style::GALAXY)
-    {
-        setTextColor(GsColor(0x26, 0x86, 0x26));
+    {        
         enableButtonBorders(false);
+        enableWidgetsCenteringH(false);
+        enableBlinker(true);
+
+        mNormalTextColor = GsColor(0x26, 0x86, 0x26);
+        mHoverBgColor = GsColor(0x66, 0x66, 0x66);
+        mHoverTextColor = GsColor(0x66, 0xC6, 0x66);
+        setTextColor(mNormalTextColor);
+        setTextColorHovered(mHoverTextColor);
+    }
+
+    if(mStyle == Style::VORTICON)
+    {
+        enableTwirl(true);
     }
 
     if(mStyle == Style::NONE)
@@ -59,37 +71,22 @@ void ComboSelection::processRender(const GsRect<float> &RectDispCoordFloat)
     
     GsWeakSurface blitsfc( gVideoDriver.getBlitSurface() );    
 
-    CGUIComboSelection::processRender(RectDispCoordFloat);
-    
-    /*if(mStyle == Style::GALAXY)
-    {        
-        if(!mEnabled)
-        {
-            mTextDisabledSfc.blitTo(blitsfc, lRect);
-        }
-        else
-        {
-#ifndef DISABLE_HOVER
-            drawEnabledButton(blitsfc, lRect, mHovered);
-#else
-            drawEnabledButton(blitsfc, lRect, false);
-#endif
-        }
-        
-        drawBlinker(lRect);
-    }
-    else */if(mStyle == Style::VORTICON)
-    {                
-        // Now lets draw the text of the list control
-        /*auto &Font = gGraphics.getFont(mFontID);
+    auto controlsRect = RectDispCoordFloat;
 
-        Font.drawFont( blitsfc.getSDLSurface(), mText, lRect.x+24, lRect.y, false );
-        Font.drawFont( blitsfc.getSDLSurface(), ":", lRect.x+24+mText.size()*8, lRect.y, false );
-        const std::string text = (*mOLCurrent);
-        Font.drawFont( blitsfc.getSDLSurface(), text, lRect.x+24+(mText.size()+2)*8, lRect.y, false );*/
-        
-        drawTwirl(lRect);      
+    if(mDrawBlinker)
+    {
+        drawBlinker(lRect);
+        controlsRect.pos.x += 11;
+        controlsRect.dim.x -= 11;
     }
-    
+
+    if(mDrawTwirl)
+    {
+        controlsRect.pos.x += 24;
+        controlsRect.dim.x -= 24;
+        drawTwirl(lRect);
+    }
+
+    CGUIComboSelection::processRender(controlsRect);    
 }
 

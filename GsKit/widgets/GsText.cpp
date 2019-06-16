@@ -78,9 +78,19 @@ void CGUIText::setTextColor(const GsColor &color)
     mTextColor = color;
 }
 
+void CGUIText::setTextColorHovered(const GsColor &color)
+{
+    mTextColorHovered = color;
+}
+
 
 void CGUIText::processLogic()
 {
+    if(mHovered)
+        mTextColorCur = mTextColorHovered;
+    else
+        mTextColorCur = mTextColor;
+
     // Horizontal scrolling.
     // If Max is zero, nothing need to be scrolled
     if(mScrollPosMax <= 0)
@@ -111,34 +121,47 @@ void CGUIText::processLogic()
 
 void CGUIText::updateTTFTextSfc(const GsRect<float> &displayRect)
 {
-    const GsColor textColor = { 0, 0, 0, 0 };
-
     const int reqFontSize = int(displayRect.dim.y*0.75f);
 
-    if(mFontSize != reqFontSize || mTextChanged)
+    auto &textSfcVec = mTextSfcVecByColor[mTextColorCur];
+
+    bool needUpdate =
+            (mFontSize != reqFontSize) || (mTextChanged);
+
+    if( textSfcVec.empty() )
+        needUpdate = true;
+
+    if(needUpdate)
     {
         mFontSize = reqFontSize;                
 
         mTrueTypeFont.openFromMem(gCgTtf, reqFontSize);
 
         const auto numTexLines = mTextVec.size();
-        mTextSfcVec.resize(numTexLines);
+        textSfcVec.resize(numTexLines);
 
         for(unsigned int idx = 0 ; idx<numTexLines ; idx++)
         {
-            mTrueTypeFont.render(mTextSfcVec[idx], mTextVec[idx], mTextColor);
+            mTrueTypeFont.render(textSfcVec[idx], mTextVec[idx], mTextColorCur);
         }
 
         mTextChanged = false;
     }
 }
 
-void CGUIText::updateLegacyTextSfc(const GsRect<float> &displayRect,
-                                   const GsColor &textColor)
+void CGUIText::updateLegacyTextSfc(const GsRect<float> &displayRect)
 {
     const int reqFontSize = int(displayRect.dim.y*0.75f);
 
-    if(mFontSize != reqFontSize || mTextChanged)
+    bool needUpdate =
+            (mFontSize != reqFontSize) || (mTextChanged);
+
+    auto &textSfcVec = mTextSfcVecByColor[mTextColorCur];
+
+    if( textSfcVec.empty() )
+        needUpdate = true;
+
+    if(needUpdate)
     {                
         mFontSize = reqFontSize;                
 
@@ -153,12 +176,12 @@ void CGUIText::updateLegacyTextSfc(const GsRect<float> &displayRect,
         lRect.y = (static_cast<unsigned int>(lRect.h)-letterHeight)/2;
 
         const auto numTexLines = mTextVec.size();
-        mTextSfcVec.resize(numTexLines);
+        textSfcVec.resize(numTexLines);
 
         for(unsigned int idx = 0 ; idx<numTexLines ; idx++)
         {
             auto &theText = mTextVec[idx];
-            auto &textSfc = mTextSfcVec[idx];
+            auto &textSfc = textSfcVec[idx];
 
             textSfc.createRGBSurface(lRect);
 
@@ -172,25 +195,19 @@ void CGUIText::updateLegacyTextSfc(const GsRect<float> &displayRect,
             // The first text item decides wheter scrolling takes place
             if(textWidth > lRect.w + tol) // tolerance
             {
-                const auto diff = int(textWidth) - lRect.w;
-                mScrollPosMax = diff;
-
-                Font.drawFont(textSfc,
-                              theText,
-                              0, lRect.y+idx*letterHeight,
-                              false);
+                mScrollPosMax = int(textWidth) - lRect.w;
             }
             else
             {
-                //lRect.y = idx*8;
-
-                Font.drawFontCentered(textSfc, theText,
-                                      lRect,  false);
-
                 mScrollPosMax = 0;
             }
 
-            textSfc.tintColor( textColor );
+            Font.drawFont(textSfc,
+                          theText,
+                          0, lRect.y+idx*letterHeight,
+                          false);
+
+            textSfc.tintColor( mTextColorCur );
         }
 
         mTextChanged = false;
@@ -204,7 +221,9 @@ void CGUIText::processRender(const GsRect<float> &RectDispCoordFloat)
     displayRect.transform(RectDispCoordFloat);
 
     auto lRect = displayRect.SDLRect();
-    auto &blit = gVideoDriver.gameSfc();        
+    auto &blit = gVideoDriver.gameSfc();
+
+    auto &textSfcVec = mTextSfcVecByColor[mTextColorCur];
 
     if(mStyle == GsControl::NONE)
     {
@@ -214,7 +233,7 @@ void CGUIText::processRender(const GsRect<float> &RectDispCoordFloat)
         updateTTFTextSfc(displayRect);
 
         unsigned int totTextSfcH = 0;
-        for(auto &textSfc : mTextSfcVec)
+        for(auto &textSfc : textSfcVec)
         {
             if(textSfc.empty())
                 break;
@@ -232,7 +251,7 @@ void CGUIText::processRender(const GsRect<float> &RectDispCoordFloat)
         }
 
 #else
-        updateLegacyTextSfc(displayRect, GsColor(0x26, 0x86, 0x26));
+        updateLegacyTextSfc(displayRect);
 
         /*auto *renderer = &gVideoDriver.getRendererRef();
 
@@ -280,10 +299,10 @@ void CGUIText::processRender(const GsRect<float> &RectDispCoordFloat)
     }
     else
     {        
-        updateLegacyTextSfc(displayRect, mTextColor);
+        updateLegacyTextSfc(displayRect);
 
         unsigned int totTextSfcH = 0;
-        for(auto &textSfc : mTextSfcVec)
+        for(auto &textSfc : textSfcVec)
         {
             if(textSfc.empty())
                 break;
@@ -304,42 +323,6 @@ void CGUIText::processRender(const GsRect<float> &RectDispCoordFloat)
             textSfc.blitTo(blit, blitPos.SDLRect());
             totTextSfcH += textH;
         }
-
-
-        // Now lets draw the text of the list control
-        /*auto &Font = gGraphics.getFont(mFontID);
-
-        auto textIt = mTextVec.begin();
-        for( size_t i=0 ; textIt != mTextVec.end() ; textIt++, i++ )
-        {
-            auto &theText = *textIt;
-
-            const int textWidth = Font.calcPixelTextWidth(theText);
-
-            // The tolerance is the amount of pixels at least of difference to consider
-            // for scrolling. We consider a tolerance so strange jittery are avoided for text
-            // that nearly fits
-            const int tol = 8;
-
-            // The first text item decides wheter scrolling takes place
-            if(textWidth > lRect.w + tol) // tolerance
-            {
-                const auto diff = textWidth - lRect.w;
-                mScrollPosMax = diff;
-
-                Font.drawFont(gVideoDriver.getBlitSurface(),
-                              theText,
-                              lRect.x-int(mScrollPos),
-                              lRect.y+i*8,
-                              false);
-            }
-            else
-            {
-                Font.drawFontCentered(gVideoDriver.getBlitSurface(), theText,
-                                      lRect.x, lRect.w, lRect.y+i*8, false);
-                mScrollPosMax = 0;
-            }
-        }*/
     }
 }
 
@@ -348,26 +331,5 @@ void CGUIText::processRender(const GsRect<float> &/*backRect*/,
 {
     // Transform this object to the display coordinates
     assert(0);
-    /*
-    auto objBackRect = backRect.transformed(mRect);
-    auto objFrontRect = objBackRect.clipped(frontRect);
-
-    auto &blit = gVideoDriver.gameSfc();
-
-    auto srcRect = objBackRect.SDLRect();
-    auto dstRect = objFrontRect.SDLRect();
-
-    auto *renderer = &gVideoDriver.getRendererRef();
-
-    srcRect.x = (srcRect.x < dstRect.x) ? dstRect.x-srcRect.x : 0;
-    srcRect.y = (srcRect.y < dstRect.y) ? dstRect.y-srcRect.y : 0;
-
-    srcRect.dim.x = (dstRect.dim.x < srcRect.dim.x) ? dstRect.dim.x : srcRect.dim.x;
-    srcRect.h = (dstRect.h < srcRect.h) ? dstRect.h : srcRect.h;
-
-    mTextSfc.blitTo(blit, srcRect, dstRect);
-    //mTextSfc.blitTo(blit, dstRect);
-
-    */
 }
 

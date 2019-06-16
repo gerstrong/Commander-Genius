@@ -11,7 +11,7 @@
 #define CGUITEXT_H_
 
 #include <string>
-#include <list>
+#include <map>
 #include <memory>
 
 #include "GsControl.h"
@@ -41,6 +41,9 @@ public:
 
     void setTextColor(const GsColor &color);
 
+    void setTextColorHovered(const GsColor &color);
+
+
 	virtual void processLogic();
     virtual void processRender(const GsRect<float> &RectDispCoordFloat);
 
@@ -59,15 +62,19 @@ protected:
 
     void updateTTFTextSfc(const GsRect<float> &displayRect);
 
-    void updateLegacyTextSfc(const GsRect<float> &displayRect,
-                             const GsColor &textColor);
+    void updateLegacyTextSfc(const GsRect<float> &displayRect);
 
     std::vector<std::string> mTextVec;
 
+
 #if defined(USE_SDL_TTF)
-    std::vector<GsSurface> mTextSfcVec;
+    std::map< GsColor, std::vector<GsSurface> > mTextSfcVecByColor;
 #endif
 
+    GsColor mTextColor;
+    GsColor mTextColorHovered;
+
+    GsColor mTextColorCur;
 	
 private:
 	std::unique_ptr<SDL_Surface> mpTextDarkSfc;
@@ -88,7 +95,6 @@ private:
     std::string mText;
     int mFontSize = 0;
     bool mTextChanged = true;
-    GsColor mTextColor;
 
     bool mHCentered = true;
 

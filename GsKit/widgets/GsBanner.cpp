@@ -71,7 +71,6 @@ void CGUIBanner::processRender(const GsRect<float> &RectDispCoordFloat)
 
     auto &blit = gVideoDriver.gameSfc();
 
-
     auto renderTxt = [&](GsSurface &textSfc)
     {
         if(!textSfc.empty())
@@ -87,11 +86,12 @@ void CGUIBanner::processRender(const GsRect<float> &RectDispCoordFloat)
         }
     };
 
+    auto &textSfcVec = mTextSfcVecByColor[mTextColor];
 
     if(mTransition)
     {
-        auto &sfcPrev = mTextSfcVec[mPreLineIdx];
-        auto &sfcCur  = mTextSfcVec[mCurLineIdx];
+        auto &sfcPrev = textSfcVec[mPreLineIdx];
+        auto &sfcCur  = textSfcVec[mCurLineIdx];
 
         sfcPrev.setAlpha(255-alpha);
         sfcCur.setAlpha(alpha);
@@ -101,7 +101,7 @@ void CGUIBanner::processRender(const GsRect<float> &RectDispCoordFloat)
     }
     else
     {
-        renderTxt( mTextSfcVec[mCurLineIdx] );
+        renderTxt( textSfcVec[mCurLineIdx] );
     }
 
 /*

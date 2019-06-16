@@ -98,6 +98,17 @@ public:
     {
         return mId;
     }
+
+    void enableBlinker(const bool value)
+    {
+        mDrawBlinker = value;
+    }
+
+    void enableTwirl(const bool value)
+    {
+        mDrawTwirl = value;
+    }
+
 	
 
 protected:
@@ -123,6 +134,9 @@ protected:
     int mLightRatio = 128; // This blends between selected and unselected item.
 
     Style mStyle = Style::NONE;
+
+    bool mDrawBlinker = false;
+    bool mDrawTwirl = false;
 
     /**
      * @brief mHoverTriggers    This is for touch friendly devices were there is no device

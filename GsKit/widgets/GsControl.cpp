@@ -187,14 +187,13 @@ void GsControl::drawBlinker( const SDL_Rect& lRect )
 	if( gTimer.HasTimeElapsed(500) )
 		mTwirliconID = !mTwirliconID;
 
-
-	int tile;
-
 #ifndef DISABLE_HOVER
     const bool blink = (mHovered || mSelected) && mTwirliconID;
 #else
     const bool blink = mSelected && mTwirliconID;
 #endif
+
+    int tile;
 
 	if(!mEnabled)
 	{

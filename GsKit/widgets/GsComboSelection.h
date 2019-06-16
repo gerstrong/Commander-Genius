@@ -44,11 +44,17 @@ public:
 
     void setTextColor(const GsColor &color);
 
+    void setTextColorHovered(const GsColor &color);
+
     void enableButtonBorders(const bool value);
 
     void enableWidgetsCenteringH(const bool value);
 
 protected:
+
+    GsColor mNormalTextColor;
+    GsColor mHoverBgColor;
+    GsColor mHoverTextColor;
 
 	std::list<std::string> mOptionsList;
 	std::list<std::string>::const_iterator mOLCurrent;

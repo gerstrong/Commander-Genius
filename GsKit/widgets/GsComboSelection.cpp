@@ -19,6 +19,7 @@ CGUIComboSelection::CGUIComboSelection( const std::string& text,
                                         const std::list<std::string>& optionsList,
                                         const GsControl::Style style ) :
 GsControlsManager(rect, style),
+mHoverBgColor(0xBB, 0xBB, 0xFF),
 mOptionsList( optionsList ),
 mOLCurrent( mOptionsList.begin() ),
 mFeatureText(text)
@@ -108,7 +109,7 @@ void CGUIComboSelection::processRender(const GsRect<float> &RectDispCoordFloat)
 
     if(mHovered)
     {
-        blitsfc.fill(displayRect, blitsfc.mapRGB(0xBB, 0xBB, 0xFF));
+        blitsfc.fill(displayRect, blitsfc.mapColorAlpha(mHoverBgColor));
     }
 
 
@@ -124,6 +125,13 @@ void CGUIComboSelection::setTextColor(const GsColor &color)
     mpFeatureName->setTextColor(color);
     mpFeatureValue->setTextColor(color);
 }
+
+void CGUIComboSelection::setTextColorHovered(const GsColor &color)
+{
+    mpFeatureName->setTextColorHovered(color);
+    //mpFeatureValue->setTextColorHovered(color);
+}
+
 
 void CGUIComboSelection::enableButtonBorders(const bool value)
 {
