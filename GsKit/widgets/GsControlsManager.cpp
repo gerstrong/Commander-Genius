@@ -12,7 +12,8 @@ GsControl(style, SrGsRect)
 }
 
 
-void GsControlsManager::fit(const float width)
+void GsControlsManager::fit(const float padding,
+                            const float width)
 {
     auto it = mControlList.begin();
     it++;
@@ -21,7 +22,6 @@ void GsControlsManager::fit(const float width)
     const float charHeight = ( 1.0f/static_cast<float>(numControls+1) );
 
     size_t c = 1;
-    auto padding = 0.1f;
 
     for( ; it != mControlList.end() ; it++ )
     {        
@@ -209,14 +209,12 @@ bool GsControlsManager::sendEvent(const std::shared_ptr<CEvent> &event )
 
 void GsControlsManager::processLogic()
 {
-    processPointingState();
-
     processBlendEffects();
 
     for(auto &obj : mControlList)
     {
         obj->processLogic();
-    }
+    }        
 }
 
 std::shared_ptr<GsControl>
@@ -265,7 +263,7 @@ GsControlsManager::addControl( std::unique_ptr<GsControl> &newControl )
 
     mControlList.push_back( ctrlPtr );
 
-    fit(0.9f);
+    fit();
 
     if(mControlList.size() == 1)
     {

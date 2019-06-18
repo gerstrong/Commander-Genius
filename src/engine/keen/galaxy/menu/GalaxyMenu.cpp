@@ -16,7 +16,7 @@ GalaxyMenu::GalaxyMenu( const GsRect<float>& rect ):
                                   */
     mpMenuDialog->addControl( mpReturnButton );
 
-    mpReturnButton->setDown(true);
+    mpReturnButton->setHovered(true);
 
     initGalaxyBackground();
 }

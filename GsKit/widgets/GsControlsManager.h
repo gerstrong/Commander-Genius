@@ -24,7 +24,8 @@ public:
      * @brief fit   ensure that the added controls fit well into
      *              control manager
      */
-    void fit(const float width = 0.9f);
+    void fit(const float padding = 0.1f,
+             const float width = 0.8f);
 
 
     // Adds a control instance to the list of controls to be processed.
@@ -127,7 +128,7 @@ public:
 protected:
 
 
-    void processLogic() override;
+    virtual void processLogic() override;
 
 
     // List of Controls that the Dialog has.

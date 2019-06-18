@@ -83,7 +83,7 @@ public:
     bool Up()
     {	return mReleased;	}
 
-    void setDown( const bool value )
+    void setHovered( const bool value )
     {
         mHovered = value;
     }
@@ -109,7 +109,17 @@ public:
         mDrawTwirl = value;
     }
 
-	
+
+    void setPressed(const bool value)
+    {
+        mPressed = value;
+    }
+
+    void setReleased(const bool value)
+    {
+        mReleased = value;
+    }
+
 
 protected:
 

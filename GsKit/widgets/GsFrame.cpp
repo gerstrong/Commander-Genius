@@ -11,8 +11,6 @@ GsControlsManager(rect)
 
 void GsFrame::processLogic()
 {    
-    processPointingState();
-
     processBlendEffects();
 
     if(mEnabled)

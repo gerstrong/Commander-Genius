@@ -60,7 +60,7 @@ public:
         }
 
 
-        mpReturnButton->setDown(true);
+        mpReturnButton->setHovered(true);
 
         if(style == GsControl::GALAXY)
         {

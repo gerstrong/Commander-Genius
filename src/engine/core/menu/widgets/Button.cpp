@@ -12,6 +12,13 @@ GsButton(text, ev, style)
 {
     if(mStyle == Style::GALAXY)
     {
+        enableBorder(false);
+        enableCenteringH(false);
+        enableBlinker(true);
+
+        setTextColor(GsColor(0x26, 0x86, 0x26));
+        setTextColorHovered(GsColor(0x66, 0xC6, 0x66));
+
         mFontID = 1;
         setText(text);
     }
@@ -66,32 +73,22 @@ void GameButton::processRender(const GsRect<float> &RectDispCoordFloat)
     GsRect<float> displayRect = mRect;
     displayRect.transform(RectDispCoordFloat);
     SDL_Rect lRect = displayRect.SDLRect();    
-    
-    if(mStyle == Style::GALAXY)
+        
+    auto controlsRect = RectDispCoordFloat;
+
+    if(mDrawBlinker)
     {
-        GsWeakSurface blitsfc( gVideoDriver.getBlitSurface() );
-
-        if(!mEnabled)
-        {
-            mTextDisabledSfc.blitTo(blitsfc, lRect);
-        }
-        else
-        {
-#ifndef DISABLE_HOVER
-            drawEnabledButton(blitsfc, lRect, mHovered);
-#else
-            drawEnabledButton(blitsfc, lRect, false);
-#endif
-        }
-
         drawBlinker(lRect);
+        controlsRect.pos.x += 11;
+        controlsRect.dim.x -= 11;
     }
-    else if(mStyle == Style::VORTICON)
+
+    if(mDrawTwirl)
     {
-        drawVorticonStyle(lRect);
+        controlsRect.pos.x += 24;
+        controlsRect.dim.x -= 24;
+        drawTwirl(lRect);
     }
-    else
-    {
-        GsButton::processRender(RectDispCoordFloat);
-    }
+
+    GsButton::processRender(controlsRect);
 }

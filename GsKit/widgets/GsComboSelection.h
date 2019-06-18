@@ -42,6 +42,8 @@ public:
 
     virtual void processRender(const GsRect<float> &RectDispCoordFloat) override;
 
+    virtual void processLogic() override;
+
     void setTextColor(const GsColor &color);
 
     void setTextColorHovered(const GsColor &color);

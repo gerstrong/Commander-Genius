@@ -19,7 +19,7 @@
 int CGUINumberControl::mTwirliconID = 10;
 
 const int SLIDER_WIDTH = 16;
-const int BLEND_SPEED = 16;
+//const int BLEND_SPEED = 16;
 
 
 CGUINumberControl::CGUINumberControl(const std::string& text,

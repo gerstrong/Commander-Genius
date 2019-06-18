@@ -125,6 +125,8 @@ public:
         mTextWidget.enableCenteringH(value);
     }
 
+    void setTextColorHovered(const GsColor &color);
+
 
 protected:
 

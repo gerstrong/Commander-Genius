@@ -115,14 +115,12 @@ void GsButton::updateGraphics()
 
 void GsButton::processLogic()
 {
-    processPointingState();
-
     processBlendEffects();
 
     if(mEnabled)
     {
         // If button was pushed and gets released, trigger the assigned event.
-        if(mReleased)
+        if( mReleased )
         {
             if(mFunction)
             {
@@ -133,7 +131,14 @@ void GsButton::processLogic()
                 gEventManager.add(mEvent);
             }
         }
-    }
+
+        mTextWidget.setHovered(mHovered);
+        mTextWidget.setPressed(mPressed);
+        mTextWidget.setReleased(mReleased);
+        mTextWidget.select(mSelected);
+    }   
+
+    mTextWidget.processLogic();
 }
 
 void GsButton::drawNoStyle(const SDL_Rect& lRect)
@@ -256,6 +261,11 @@ void GsButton::setupButtonSurface(const std::string &text)
     Font.setFontSize(1);
 }
 
+void GsButton::setTextColorHovered(const GsColor &color)
+{
+    mTextWidget.setTextColorHovered(color);
+}
+
 
 void GsButton::drawEnabledButton(GsWeakSurface &blitsfc,
                                  const SDL_Rect& lRect,
@@ -293,7 +303,7 @@ void GsButton::processRender(const GsRect<float> &RectDispCoordFloat)
 
     drawNoStyle(lRect);
 
-    if(gTTFDriver.isActive())
+    //if(gTTFDriver.isActive())
     {
         mTextWidget.processRender(displayRect);
     }
