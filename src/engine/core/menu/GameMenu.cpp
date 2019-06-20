@@ -102,7 +102,7 @@ GameMenu::ponder(const float deltaT)
 
 void GameMenu::setMenuLabel(const std::string &label)
 {
-    if(mStyle == GsControl::Style::GALAXY)
+    if(mStyle == Style::GALAXY)
     {
         CBaseMenu::setMenuLabel(label);
     }
@@ -128,11 +128,11 @@ void GameMenu::render()
 
     if(!mBackground.empty())
     {        
-        if(mStyle == GsControl::Style::GALAXY)
+        if(mStyle == Style::GALAXY)
         {
             mBackground.blitTo(blit);
         }
-        else if(mStyle == GsControl::Style::VORTICON)
+        else if(mStyle == Style::VORTICON)
         {
             mBackground.blitTo(blit, sdlRect);
         }

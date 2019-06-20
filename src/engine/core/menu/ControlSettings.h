@@ -29,7 +29,7 @@ class CControlsettings : public GameMenu
 {
 public:
     CControlsettings(const int selectedPlayer,
-                     const GsControl::Style style);
+                     const Style style);
 
     void refresh();
 
@@ -51,7 +51,7 @@ class CControlSettingsBase : public GameMenu
 {
 public:
     CControlSettingsBase(const int selectedPlayer,
-                         const GsControl::Style style);
+                         const Style style);
 
     virtual void ponder(const float deltaT);
     virtual void release();
@@ -71,7 +71,7 @@ class CControlSettingsMovement : public CControlSettingsBase
 {
 public:
     CControlSettingsMovement(const int selectedPlayer,
-                             const GsControl::Style &style) :
+                             const Style &style) :
         CControlSettingsBase(selectedPlayer, style) {}
 
     void refresh();
@@ -84,7 +84,7 @@ class CControlSettingsButtons : public CControlSettingsBase
 {
 public:
     CControlSettingsButtons(const int selectedPlayer,
-                            const GsControl::Style &style) :
+                            const Style &style) :
         CControlSettingsBase(selectedPlayer, style) {}
 
     void refresh();

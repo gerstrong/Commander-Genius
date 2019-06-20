@@ -37,7 +37,7 @@ struct LoadGameSlotFunctorEvent : public InvokeFunctorEvent
 };
 
 
-CLoadMenu::CLoadMenu(const GsControl::Style &style) :
+CLoadMenu::CLoadMenu(const Style &style) :
 GameMenu( GsRect<float>(0.1f, 0.0f, 0.8f, 1.0f),
           style)
 {
@@ -45,7 +45,7 @@ GameMenu( GsRect<float>(0.1f, 0.0f, 0.8f, 1.0f),
 	{
         std::shared_ptr<GsButton> button;
 
-        if(style == GsControl::Style::GALAXY)
+        if(style == Style::GALAXY)
         {
             button.reset(new BorderedButton( "Empty",
                                          GsRect<float>(

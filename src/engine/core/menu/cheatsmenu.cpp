@@ -3,7 +3,7 @@
 #include "engine/core/CBehaviorEngine.h"
 
 
-CheatsMenu::CheatsMenu(const GsControl::Style style) :
+CheatsMenu::CheatsMenu(const Style style) :
 GameMenu(GsRect<float>(0.075f, 0.24f, 0.85f, 0.4f), style )
 {
     mpJumpSwitch =

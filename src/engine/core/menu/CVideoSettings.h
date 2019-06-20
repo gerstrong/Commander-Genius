@@ -26,7 +26,7 @@
 class CVideoSettings : public GameMenu
 {
 public:
-	CVideoSettings(const GsControl::Style style);
+	CVideoSettings(const Style style);
 
     void refresh();
 

@@ -22,10 +22,10 @@ void InputText::processRender(const GsRect<float> &RectDispCoordFloat)
     SDL_Surface *blitsfc = gVideoDriver.getBlitSurface();
 
     // Now lets draw the text of the list control
-    auto &Font = gGraphics.getFontLegacy(mFontID);
+/*    auto &Font = gGraphics.getFontLegacy(mFontID);
 
     Font.drawFont( blitsfc, getInputString(), lRect.x+24, lRect.y, false );
-
+*/
     drawTwirl(lRect);
 }
 

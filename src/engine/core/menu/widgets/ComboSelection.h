@@ -2,6 +2,7 @@
 #define COMBOSELECTION_H
 
 #include <widgets/GsComboSelection.h>
+#include "KeenStyles.h"
 
 class ComboSelection : public CGUIComboSelection
 {
@@ -15,6 +16,8 @@ public:
     void setSelection( const std::string& selectionText ) override;
 
     void processRender(const GsRect<float> &RectDispCoordFloat) override;
+
+    const Style mStyle;
 };
 
 #endif // __COMBOSELECTION_H__

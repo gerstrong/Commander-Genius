@@ -146,7 +146,7 @@ bool CGameLauncher::setupMenu()
                 new GsButton( "x",
                              GsRect<float>(0.0f, 0.0f, 0.069f, 0.069f),
                              new GMQuit(),
-                             GsControl::Style::NONE,
+                             -1,
                              1.0f, 0.75f, 0.75f ) );
 
     mLauncherDialog.addWidget(new CGUIText("Pick a Game",
@@ -157,7 +157,7 @@ bool CGameLauncher::setupMenu()
 
 #ifdef VIRTUALPAD
     mLauncherDialog.addWidget(new GsButton( "VPad", new OpenVGamePadSettingsEvent(),
-                                             GsControl::Style::NONE,
+                                             -1,
                                              0.75f,
                                              1.0f,
                                              1.0f ),
@@ -169,7 +169,7 @@ bool CGameLauncher::setupMenu()
     {
         mLauncherDialog.enable(false);
         gEventManager.add( new OpenMenuEvent(
-                               new SettingsMenu(GsControl::Style::NONE) ) );
+                               new SettingsMenu(Style::NONE) ) );
     };
 
     mpOptionButton =
@@ -177,7 +177,7 @@ bool CGameLauncher::setupMenu()
                         new GsButton( "O",
                               GsRect<float>(0.93f, 0.0f, 0.069f, 0.069f),
                               openSettingsMenuEvent,
-                              GsControl::Style::NONE,
+                              -1,
                               0.75f, 1.0f, 1.0f )  );
 
 
@@ -191,7 +191,7 @@ bool CGameLauncher::setupMenu()
                        new GsButton( "Start >",
                                      GsRect<float>(0.60f, 0.865f, 0.25f, 0.07f),
                                      new GMStart(),
-                                     GsControl::NONE,
+                                     -1,
                                      0.675f, 1.0f, 0.675f)
                    );
 
@@ -535,10 +535,6 @@ void CGameLauncher::showMessageBox(const std::string &text)
     auto *pRetryButton = new GsButton("Retry", new GMSwitchToGameLauncher());
     mpMsgDialog->addWidget(pRetryButton, GsRect<float>(0.2f, 0.85f, 0.2f, 0.05f));
 
-    /*auto *pOkButton = new GsButton("Ok",
-                                   new CloseBoxEvent());*/
-
-
     auto pOkButton = mpMsgDialog->addWidget(
                         new GsButton("Ok",
                                    GsRect<float>(0.6f, 0.85f,
@@ -650,17 +646,6 @@ void CGameLauncher::pumpEvent(const CEvent *evPtr)
         pullGame(mpGSSelList->getSelection());
     }
     #endif
-    else if( dynamic_cast<const CloseBoxEvent*>(evPtr) )
-    {
-        if(mpMsgDialog)
-        {
-            mpMsgDialog = nullptr;
-        }
-        if(mpGameStoreDialog)
-        {
-            mpGameStoreDialog = nullptr;
-        }
-    }
     else if( dynamic_cast<const CancelDownloadEvent*>(evPtr))
     {
         mCancelDownload = true;

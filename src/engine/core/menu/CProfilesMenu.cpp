@@ -72,7 +72,7 @@ public:
 	}
 };
 
-CProfilesMenu::CProfilesMenu(const GsControl::Style style) :
+CProfilesMenu::CProfilesMenu(const Style style) :
 GameMenu( GsRect<float>(0.25f, 0.4f, 0.5f, 0.2f), style )
 {
     mpMenuDialog->addWidget(new GameButton( "Classic mode",

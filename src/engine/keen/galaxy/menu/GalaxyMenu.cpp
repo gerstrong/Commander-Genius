@@ -4,7 +4,7 @@
 
 
 GalaxyMenu::GalaxyMenu( const GsRect<float>& rect ):
-    GameMenu( rect,GsControl::Style::GALAXY)
+    GameMenu( rect,Style::GALAXY)
 {
     GsRect<float> localRect(0.30f, 0.282f, 0.5f, 0.5f);
     mpMenuDialog->setRect(localRect);

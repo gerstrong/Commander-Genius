@@ -17,9 +17,6 @@ class GsWidgetsManager : public GsControl
 public:
     GsWidgetsManager(const GsRect<float> &SrGsRect);
 
-    GsWidgetsManager(const GsRect<float> &SrGsRect,
-                      const GsControl::Style style);
-
     /**
      * @brief fit   ensure that the added controls fit well into
      *              control manager

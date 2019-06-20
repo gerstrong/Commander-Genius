@@ -20,7 +20,7 @@ struct ChangeEvent : InvokeFunctorEvent
 
 
 CPlayerSpriteVarSelection::
-CPlayerSpriteVarSelection(const GsControl::Style style) :
+CPlayerSpriteVarSelection(const Style style) :
     GameMenu( GsRect<float>(0.25f, 0.2f, 0.5f, 0.5f), style )
 {
 

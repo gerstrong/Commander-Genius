@@ -2,18 +2,19 @@
 #define GALAXY_BORDEREDBUTTON_H
 
 #include "Button.h"
+#include "KeenStyles.h"
 
 class BorderedButton : public GameButton
 {
 public:
     BorderedButton(const std::string& text,
                    CEvent *ev,
-                   const GsControl::Style style);
+                   const Style style);
 
     BorderedButton(const std::string& text,
                    const GsRect<float> &rect,
                    CEvent *ev,
-                   const GsControl::Style style);
+                   const Style style);
 
     void processRender(const GsRect<float> &RectDispCoordFloat) override;
 };

@@ -2,6 +2,7 @@
 #define GAMEBUTTON_H_INCLUDED
 
 #include <widgets/GsButton.h>
+#include "KeenStyles.h"
 
 class GameButton : public GsButton
 {
@@ -18,6 +19,8 @@ public:
     virtual void processRender(const GsRect<float> &RectDispCoordFloat);   
 
     void drawVorticonStyle(SDL_Rect& lRect);
+
+    const Style mStyle;
 };
 
 #endif /* GAMEBUTTON_H_INCLUDED */

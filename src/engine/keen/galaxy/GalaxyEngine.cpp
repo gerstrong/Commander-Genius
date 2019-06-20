@@ -151,7 +151,7 @@ void GalaxyEngine::openMainMenu()
 
     gEventManager.add( new OpenMenuEvent(
                            new MainMenu(mOpenedGamePlay,
-                                        GsControl::GALAXY) ) );
+                                        Style::GALAXY) ) );
 
     gEffectController.setupEffect( new CColorMerge(16) );
 }
@@ -346,7 +346,7 @@ void GalaxyEngine::pumpEvent(const CEvent *evPtr)
 {
     KeenEngine::pumpEvent(evPtr);
 
-    const auto style = GsControl::GALAXY;
+    const auto style = Style::GALAXY;
 
     if( dynamic_cast<const FinishedLoadingResources*>(evPtr) )
     {
@@ -400,12 +400,12 @@ void GalaxyEngine::pumpEvent(const CEvent *evPtr)
 
             gEventManager.add( new OpenMenuEvent(
                                    new CDifficultySelection(
-                                       GsControl::Style::GALAXY)) );
+                                       Style::GALAXY)) );
         }
         else
         {
             gEventManager.add( new OpenMenuEvent(
-                                   new CPlayerSpriteVarSelection(GsControl::Style::GALAXY)) );
+                                   new CPlayerSpriteVarSelection(Style::GALAXY)) );
         }
         return;
     }        
@@ -414,7 +414,7 @@ void GalaxyEngine::pumpEvent(const CEvent *evPtr)
     {
         mSpriteVars.assign(1, pStart->mSpecialIdx);
         gEventManager.add( new OpenMenuEvent(
-                               new CDifficultySelection(GsControl::Style::GALAXY)) );
+                               new CDifficultySelection(Style::GALAXY)) );
         return;
     }
     // Control Menu Events
@@ -424,7 +424,7 @@ void GalaxyEngine::pumpEvent(const CEvent *evPtr)
         const int players = ctrlMenu->mSelection;
         gEventManager.add( new OpenMenuEvent(
                                 new CControlSettingsMovement(players,
-                                                             GsControl::Style::GALAXY) ) );
+                                                             Style::GALAXY) ) );
     }
     else if( const OpenButtonsControlMenuEvent* ctrlMenu =
              dynamic_cast<const OpenButtonsControlMenuEvent*>(evPtr) )
@@ -432,7 +432,7 @@ void GalaxyEngine::pumpEvent(const CEvent *evPtr)
         const int players = ctrlMenu->mSelection;
         gEventManager.add( new OpenMenuEvent(
                                 new CControlSettingsButtons(players,
-                                                            GsControl::Style::GALAXY) ) );
+                                                            Style::GALAXY) ) );
     }
     else if( const OpenControlMenuEvent* ctrlMenu =
              dynamic_cast<const OpenControlMenuEvent*>(evPtr) )

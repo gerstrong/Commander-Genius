@@ -12,7 +12,7 @@
 class SettingsMenu : public GameMenu
 {
 public:
-    SettingsMenu(const GsControl::Style &style);
+    SettingsMenu(const enum Style &style);
 };
 
 

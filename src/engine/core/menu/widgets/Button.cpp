@@ -8,7 +8,8 @@
 GameButton::GameButton(const std::string& text,
                        CEvent *ev,
                        const Style style) :
-GsButton(text, ev, style)
+GsButton(text, ev),
+mStyle(style)
 {
     if(mStyle == Style::GALAXY)
     {
@@ -21,12 +22,12 @@ GsButton(text, ev, style)
         setTextColorPressed(GsColor(0x66, 0xF6, 0x66));
         setTextColorSelected(GsColor(0xA6, 0xC6, 0x66));
 
-        mFontID = 1;
+        //mFontID = 1;
         setText(text);
     }
     else if(mStyle == Style::VORTICON)
     {
-        mFontID = 1;
+        //mFontID = 1;
     }
 }
 
@@ -34,16 +35,17 @@ GameButton::GameButton(const std::string& text,
                        const GsRect<float> &rect,
                        CEvent *ev,
                        const Style style) :
-GsButton(text, rect, ev, style)
+GsButton(text, rect, ev),
+mStyle(style)
 {
     if(mStyle == Style::GALAXY)
     {
-        mFontID = 1;
+        //mFontID = 1;
         setText(text);
     }
     else if(mStyle == Style::VORTICON)
     {
-        mFontID = 1;
+        //mFontID = 1;
     }
 }
 
@@ -55,14 +57,18 @@ void GameButton::drawVorticonStyle(SDL_Rect& lRect)
     // Now lets draw the text of the button
     if(mEnabled)
     {
+        /*
         auto &Font = gGraphics.getFontLegacy(mFontID);
         Font.drawFont( blitsfc, mText, lRect.x+24, lRect.y, false );
+        */
         drawTwirl(lRect);
     }
     else
     {
+        /*
         auto &Font = gGraphics.getFontLegacy(0);
         Font.drawFont( blitsfc, mText, lRect.x+24, lRect.y, true );
+        */
     }
 }
 

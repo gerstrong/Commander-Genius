@@ -49,7 +49,7 @@ class CPlayersSelection : public GameMenu
 
 public:
     CPlayersSelection(bool numFirst, 
-                      const GsControl::Style style) :
+                      const Style style) :
         GameMenu( GsRect<float>(0.25f, 0.35f, 0.5f, 0.3f), 
                   style )
     {
@@ -77,7 +77,7 @@ class CDifficultySelection : public GameMenu
 {
 
 public:
-    CDifficultySelection(const GsControl::Style style) :
+    CDifficultySelection(const Style style) :
         GameMenu( GsRect<float>(0.25f, 0.2f, 0.5f, 0.5f), style )
     {
         mpMenuDialog->addWidget( new GameButton( "EASY", new StartNewGameEvent(EASY), style ) );
@@ -99,7 +99,7 @@ public:
 class CPlayerSpriteVarSelection : public GameMenu
 {
 public:
-    CPlayerSpriteVarSelection(const GsControl::Style style);
+    CPlayerSpriteVarSelection(const Style style);
 
     void changeEvent();
 

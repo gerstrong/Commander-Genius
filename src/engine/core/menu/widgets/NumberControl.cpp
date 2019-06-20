@@ -19,7 +19,8 @@ CGUINumberControl(text,
                   GsRect<float>(0.0f,0.0f,1.0f,1.0f),
                   startValue, endValue,
                   deltaValue, value, 1,
-                  slider, style)
+                  slider),
+mStyle(style)
 {   
     if(mStyle == Style::GALAXY)
     {
@@ -29,11 +30,11 @@ CGUINumberControl(text,
 
     if(mStyle == Style::NONE)
     {
-        mFontID = 0;
+        //mFontID = 0;
     }
     else
     {
-        mFontID = 1;
+        //mFontID = 1;
     }
 }
 

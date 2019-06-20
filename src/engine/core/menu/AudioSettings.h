@@ -24,7 +24,7 @@
 class CAudioSettings : public GameMenu
 {
 public:
-    CAudioSettings(const GsControl::Style &style);
+    CAudioSettings(const enum Style &style);
 
     void init();
 

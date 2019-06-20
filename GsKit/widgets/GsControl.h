@@ -19,22 +19,10 @@
 class GsControl : public GsWidget
 {
 public:
-	enum Style
-	{
-		NONE,
-		VORTICON,
-        GALAXY
-	};
-
-
-    GsControl(const Style style,
-              const GsRect<float> &rect);
 
     GsControl(const GsRect<float> &rect);
 
     GsControl();
-    
-    GsControl(const Style style);
     
     virtual ~GsControl();	
 
@@ -102,10 +90,6 @@ protected:
 
 
     bool mEnabled = true;
-    
-	int mFontID = 0;
-
-
 
     // For mouse/touch we have those
 	bool mHovered  = false;
@@ -120,8 +104,6 @@ protected:
 	static int mTwirliconID;
 
     int mLightRatio = 128; // This blends between selected and unselected item.
-
-    Style mStyle = Style::NONE;
 
     bool mDrawBlinker = false;
     bool mDrawTwirl = false;

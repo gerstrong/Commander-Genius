@@ -14,7 +14,7 @@
 class CSaveMenu : public GameMenu
 {
 public:
-    CSaveMenu(const GsControl::Style &style);
+    CSaveMenu(const Style &style);
     void refresh() override;
     void processSpecific(){}
     void ponder(const float) override;

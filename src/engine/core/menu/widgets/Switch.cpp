@@ -7,7 +7,7 @@
 
 
 Switch::Switch( const std::string& text, 
-                const GsControl::Style style ) :
+                const Style style ) :
 ComboSelection( text, filledStrList( 2, "off", "on" ), style )
 {
 }

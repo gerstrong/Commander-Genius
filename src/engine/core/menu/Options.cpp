@@ -10,7 +10,7 @@
 #include "engine/core/CSettings.h"
 
 
-COptions::COptions(const GsControl::Style style) :
+COptions::COptions(const Style style) :
 GameMenu( GsRect<float>(0.1f, 0.14f, 0.8f,
                         gBehaviorEngine.mOptions.size()*0.07f),
                         style)

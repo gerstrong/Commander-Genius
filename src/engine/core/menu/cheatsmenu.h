@@ -9,7 +9,7 @@
 class CheatsMenu : public GameMenu
 {
 public:
-    CheatsMenu(const GsControl::Style style);
+    CheatsMenu(const Style style);
 
     void init();
 

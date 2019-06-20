@@ -27,21 +27,21 @@ public:
     GsButton(const std::string& text,
              const GsRect<float> &rect,
              CEvent *ev = nullptr,
-             const Style style = Style::NONE,
+             const int fontId = -1,
              const GsColor &color = GsColor(0xEE, 0xEE, 0xFF));
 
 
     GsButton(const std::string& text,
              const GsRect<float> &rect,
              CEvent *ev,
-             const Style style,
+             const int fontId,
              const float red,
              const float green,
              const float blue);
 
     GsButton(const std::string& text,
              CEvent *ev = nullptr,
-             const Style style = Style::NONE,
+             const int fontId = -1,
              const float red = 0.933f,
              const float green = 0.933f,
              const float blue = 1.0f);
@@ -49,14 +49,14 @@ public:
     GsButton(const std::string& text,
              const GsRect<float> &rect,
              const std::function <void ()>& f,
-             const Style style = Style::NONE,
+             const int fontId = -1,
              const GsColor &color = GsColor(0xEE, 0xEE, 0xFF));
 
 
     GsButton(const std::string& text,
              const GsRect<float> &rect,
              const std::function <void ()>& f,
-             const Style style,
+             const int fontId,
              const float red,
              const float green,
              const float blue);

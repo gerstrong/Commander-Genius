@@ -21,7 +21,7 @@
 class VPadSettingsMenu : public GameMenu
 {
 public:
-    VPadSettingsMenu(const GsControl::Style &style);
+    VPadSettingsMenu(const Style &style);
 
     void init();
 

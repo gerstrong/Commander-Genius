@@ -29,38 +29,37 @@ CGUINumberControl::CGUINumberControl(const std::string& text,
                                       const int deltaValue,
                                       const int value,
                                       const int fontid,
-                                      const bool slider,
-                                      const Style style) :
-GsWidgetsManager(rect, style),
+                                      const bool slider) :
+GsWidgetsManager(rect),
 mValue(value),
 mSlider(slider),
 mStartValue(startValue),
 mEndValue(endValue),
 mDeltaValue(deltaValue)
 {
-    mFontID = fontid;
+    //mFontID = fontid;
 
     mpLeftButton =
             addWidget(new GsButton("<",
                                 GsRect<float>(0.0f, 0.0f, 0.1f, 1.0f),
                                 [&]{this->decrement();},
-                                style));
+                                fontid));
 
     mpCtrlName =
             addWidget(new CGUIText(text,
                                 GsRect<float>(0.1f, 0.0f, 0.4f, 1.0f),
-                                    style));
+                                    fontid));
     mpCtrlValue =
             addWidget(new CGUIText("?",
                                 GsRect<float>(0.5f, 0.0f, 0.4f, 1.0f),
-                                    style));
+                                    fontid));
 
 
     mpRightButton =
             addWidget(new GsButton(">",
                                 GsRect<float>(0.9f, 0.0f, 0.1f, 1.0f),
                                 [&]{this->increment();},
-                                style));
+                                fontid));
 
 
 }

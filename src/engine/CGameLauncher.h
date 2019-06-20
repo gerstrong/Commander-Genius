@@ -205,9 +205,6 @@ struct GMSwitchToGameLauncher : SwitchEngineEvent
         { }
 };
 
-struct CloseBoxEvent : CEvent
-{};
-
 struct CancelDownloadEvent : CEvent
 {};
 

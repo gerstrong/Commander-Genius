@@ -22,7 +22,7 @@ void InputText::processRender(const GsRect<float> &RectDispCoordFloat)
         GsWeakSurface blit(gVideoDriver.getBlitSurface());
 
         // Now lets draw the text of the list control
-        auto &Font = gGraphics.getFontLegacy(mFontID);
+        /*auto &Font = gGraphics.getFontLegacy(mFontID);
 
         const Uint32 oldcolor = Font.getFGColor();
 
@@ -44,7 +44,7 @@ void InputText::processRender(const GsRect<float> &RectDispCoordFloat)
 
         Font.drawFont( blitsfc, getInputString(), lRect.x+24, lRect.y+2, false );
 
-        Font.setupColor( oldcolor );
+        Font.setupColor( oldcolor );*/
     }
     else if(mStyle == Style::VORTICON)
     {
@@ -59,9 +59,9 @@ void InputText::processRender(const GsRect<float> &RectDispCoordFloat)
         SDL_Surface *blitsfc = gVideoDriver.getBlitSurface();
 
         // Now lets draw the text of the list control
-        auto &Font = gGraphics.getFontLegacy(mFontID);
+        /*auto &Font = gGraphics.getFontLegacy(mFontID);
 
-        Font.drawFont( blitsfc, getInputString(), lRect.x+24, lRect.y, false );
+        Font.drawFont( blitsfc, getInputString(), lRect.x+24, lRect.y, false );*/
 
         drawTwirl(lRect);
     }
@@ -75,8 +75,9 @@ void InputText::processRender(const GsRect<float> &RectDispCoordFloat)
         SDL_Surface *blitsfc = gVideoDriver.getBlitSurface();
 
         // Now lets draw the text of the list control
-        auto &Font = gGraphics.getFontLegacy(mFontID);
+        /*auto &Font = gGraphics.getFontLegacy(mFontID);
 
         Font.drawFont( blitsfc, getInputString(), lRect.x+24, lRect.y, false );
+        */
     }
 }

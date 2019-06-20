@@ -2,7 +2,7 @@
 #define NUMBERCONTROL_H
 
 #include <widgets/GsNumberControl.h>
-
+#include "KeenStyles.h"
 
 class NumberControl : public CGUINumberControl
 {
@@ -13,7 +13,7 @@ public:
                   const int deltaValue,
                   const int value,
                   const bool slider,
-                  const GsControl::Style style);
+                  const Style style);
 
     //void setupButtonSurface(const std::string &text = "") override;
 
@@ -22,6 +22,8 @@ public:
     void drawNoStyle(SDL_Rect& lRect);
 
     void processRender(const GsRect<float> &RectDispCoordFloat) override;
+
+    const Style mStyle;
 };
 
 #endif // NUMBERCONTROL_H

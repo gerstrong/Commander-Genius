@@ -10,8 +10,9 @@
 #ifndef CGUITEXTSELECTIONLIST_H
 #define CGUITEXTSELECTIONLIST_H
 
-#include "GsControl.h"
+#include "GsScrollingFrame.h"
 #include "GsScrollbar.h"
+#include "GsText.h"
 #include <base/utils/Color.h>
 #include <graphics/GsSurface.h>
 
@@ -26,7 +27,7 @@
 
 
 
-class CGUITextSelectionList : public GsControl
+class CGUITextSelectionList : public GsScrollingFrame
 {
 public:
 
@@ -51,39 +52,15 @@ public:
      *                      or -1 if nothing is selected at al
      * @return position or -1
      */
-    int getSelection() const
-    {
-        return mReleasedSelection;
-    }
+    int getSelection() const;
 
     /**
      * @brief setSelection  selects item given by index
      * @param sel   index
      */
-    void setSelection(const int sel)
-    {
-        const int last = static_cast<int>(mItemList.size());
+    void setSelection(const int sel);
 
-        if(sel < 0)
-        {
-            mReleasedSelection = 0;
-            mSelected = false;
-            return;
-        }
-        if(sel >= last)
-        {
-            mReleasedSelection = last-1;
-            mSelected = false;
-            return;
-        }
-
-        mReleasedSelection = sel;
-    }
-
-    const std::string &getItemString(const unsigned int sel) const
-    {
-        return mItemList[sel].mText;
-    }
+    const std::string &getItemString(const unsigned int sel) const;
 
 private:
 
@@ -97,13 +74,16 @@ private:
 
     std::vector<item> mItemList;
 
+    /*
 #if defined(USE_SDL_TTF)
 
     GsTrueTypeFont mTrueTypeFont;
 
     std::map<std::string, GsSurface> mTextSfcMap;
 
-#endif
+#endif*/
+
+    std::vector< std::shared_ptr<CGUIText> > mTextWidgetVec;
 
     int mHoverSelection = 0;
     int mPressedSelection = -1;

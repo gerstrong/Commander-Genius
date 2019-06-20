@@ -213,12 +213,21 @@ void CGameLauncher::setupDownloadDialog()
 
     // Bottom Controls
     mpDloadBack = std::dynamic_pointer_cast<GsButton>(
-            mpGameStoreDialog->addWidget( new GsButton( "< Back", new CloseBoxEvent() ),
-                                           GsRect<float>(0.100f, 0.865f, 0.25f, 0.07f) ) );
+            mpGameStoreDialog->addWidget(
+                    new GsButton( "< Back",
+                                  GsRect<float>(0.100f, 0.865f, 0.25f, 0.07f),
+                                  [&]()
+                                  {
+                                    if(mpMsgDialog)
+                                        mpMsgDialog = nullptr;
+                                    if(mpGameStoreDialog)
+                                        mpGameStoreDialog = nullptr;
+
+                                  } ) ));
 
     mpDloadCancel = std::dynamic_pointer_cast<GsButton>(
             mpGameStoreDialog->addWidget( new GsButton( "Cancel", new CancelDownloadEvent(),
-                                                         GsControl::Style::NONE,
+                                                         -1,
                                                          1.0f, 0.675f, 0.675f) ,
                                            GsRect<float>(0.375f, 0.865f, 0.25f, 0.07f) ) );
 

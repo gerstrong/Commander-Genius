@@ -258,10 +258,11 @@ GsProgressBar::processRender(const GsRect<float> &RectDispCoordFloat)
     }
 
     // Now lets draw the text of the list control
-    auto &Font = gGraphics.getFontLegacy(mFontID);
+    /*auto &Font = gGraphics.getFontLegacy(mFontID);
 
     const auto fontHeight = Font.getPixelTextHeight();
     const auto fontMidYPos = bgSDLRect.y + (progressSDLRect.h-fontHeight)/2;
 
     Font.drawFontCentered( pBlitsurface, ss.str(), bgSDLRect.x, bgSDLRect.w, fontMidYPos, false );
+    */
 }

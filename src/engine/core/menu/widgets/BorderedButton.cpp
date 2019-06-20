@@ -7,14 +7,14 @@
 
 BorderedButton::BorderedButton(const std::string &text,
                                CEvent *ev,
-                               const GsControl::Style style) :
+                               const Style style) :
 GameButton(text, ev, style)
 {}
 
 BorderedButton::BorderedButton(const std::string& text,
                                const GsRect<float> &rect,
                                CEvent *ev,
-                               const GsControl::Style style):
+                               const Style style):
 GameButton(text, rect, ev, style)
 {}
 

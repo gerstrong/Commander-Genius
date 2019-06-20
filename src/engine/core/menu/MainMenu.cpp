@@ -23,7 +23,7 @@
 
 
 void MainMenu::createGameMenu( const bool openedGamePlay, 
-                               const GsControl::Style style )
+                               const Style style )
 {
 
 #if defined (SINGLEPLAYER)
@@ -97,7 +97,7 @@ void MainMenu::createGameMenu( const bool openedGamePlay,
 
 
 MainMenu::MainMenu( const bool openedGamePlay, 
-                    const GsControl::Style style ) :
+                    const Style style ) :
 GameMenu( GsRect<float>(0.25f, 0.23f, 0.5f, 0.5f), style )
 {   
     createGameMenu(openedGamePlay, style);

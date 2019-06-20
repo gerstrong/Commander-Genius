@@ -97,7 +97,7 @@ void VorticonEngine::openMainMenu()
 
     gEventManager.add( new OpenMenuEvent(
                            new MainMenu(mOpenedGamePlay,
-                                        GsControl::Style::VORTICON) ) );
+                                        Style::VORTICON) ) );
 }
 
 
@@ -226,7 +226,7 @@ void VorticonEngine::pumpEvent(const CEvent *evPtr)
     else if( const NewGamePlayersEvent* pNewGame = dynamic_cast<const NewGamePlayersEvent*>(evPtr) )
     {
         gBehaviorEngine.setNumPlayers(pNewGame->mSelection);
-        gEventManager.add( new OpenMenuEvent(new CDifficultySelection(GsControl::Style::VORTICON)) );
+        gEventManager.add( new OpenMenuEvent(new CDifficultySelection(Style::VORTICON)) );
         return;
     }
     // Control Menu Events
@@ -236,7 +236,7 @@ void VorticonEngine::pumpEvent(const CEvent *evPtr)
         const int players = ctrlMenu->mSelection;
         gEventManager.add( new OpenMenuEvent(
                                 new CControlSettingsMovement(players,
-                                                             GsControl::Style::VORTICON) ) );
+                                                             Style::VORTICON) ) );
     }
     else if( const OpenButtonsControlMenuEvent* ctrlMenu =
              dynamic_cast<const OpenButtonsControlMenuEvent*>(evPtr) )
@@ -244,7 +244,7 @@ void VorticonEngine::pumpEvent(const CEvent *evPtr)
         const int players = ctrlMenu->mSelection;
         gEventManager.add( new OpenMenuEvent(
                                 new CControlSettingsButtons(players,
-                                                            GsControl::Style::VORTICON) ) );
+                                                            Style::VORTICON) ) );
     }
     else if( const OpenControlMenuEvent* ctrlMenu =
              dynamic_cast<const OpenControlMenuEvent*>(evPtr) )
@@ -252,7 +252,7 @@ void VorticonEngine::pumpEvent(const CEvent *evPtr)
         const int players = ctrlMenu->mSelection;
         gEventManager.add( new OpenMenuEvent(
                                 new CControlsettings(players,
-                                                     GsControl::Style::VORTICON) ) );
+                                                     Style::VORTICON) ) );
     }
     else if( const GMSwitchToPlayGameMode* pPlayGame = dynamic_cast<const GMSwitchToPlayGameMode*>(evPtr) )
     {
@@ -285,7 +285,7 @@ void VorticonEngine::pumpEvent(const CEvent *evPtr)
     else if( dynamic_cast<const OpenMainMenuEvent*>(evPtr) )
     {
         gEventManager.add( new OpenMenuEvent( new MainMenu(mOpenedGamePlay,
-                                                           GsControl::Style::VORTICON) ) );
+                                                           Style::VORTICON) ) );
     }
     else if( const StartInfoSceneEvent *scene =
              dynamic_cast<const StartInfoSceneEvent*>(evPtr) )

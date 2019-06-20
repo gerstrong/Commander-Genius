@@ -18,7 +18,7 @@
 class COptions : public GameMenu
 {
 public:
-    COptions(const GsControl::Style style);
+    COptions(const Style style);
 
     void refresh();
 

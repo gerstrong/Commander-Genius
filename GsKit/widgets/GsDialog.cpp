@@ -383,8 +383,8 @@ void CGUIDialog::processLogic()
             {
                 if( ctrl->isSelected() )
                 {
-                    //setCurrentWidget(ctrl);
-                    //setSelection(sel);
+                    setCurrentWidget(ctrl);
+                    setSelection(sel);
                 }
             }
 

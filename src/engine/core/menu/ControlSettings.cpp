@@ -73,7 +73,7 @@ public:
 
 
 CControlsettings::CControlsettings(const int selectedPlayer ,
-                                   const GsControl::Style style) :
+                                   const Style style) :
 GameMenu( GsRect<float>(0.1f, 0.25f, 0.8f, 0.5f), style ),
 mSelectedPlayer(selectedPlayer)
 {
@@ -129,7 +129,7 @@ void CControlsettings::release()
 
 
 // Movements Parts of the Control Settings
-CControlSettingsBase::CControlSettingsBase(const int selectedPlayer, const GsControl::Style style) :
+CControlSettingsBase::CControlSettingsBase(const int selectedPlayer, const Style style) :
 GameMenu( GsRect<float>(0.01f, (1.0f-((MAX_COMMANDS/2.0f)+2)*0.06f)*0.5f, 0.98f,(MAX_COMMANDS/2.0f+2)*0.06f), style ),
 mSelectedPlayer(selectedPlayer)
 {}

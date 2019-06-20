@@ -14,7 +14,7 @@
 class CLoadMenu : public GameMenu
 {
 public:
-        CLoadMenu(const GsControl::Style &style);
+        CLoadMenu(const Style &style);
 
     void refresh();
 };

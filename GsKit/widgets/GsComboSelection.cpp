@@ -14,11 +14,11 @@
 #include <base/GsTTFSystem.h>
 
 
-CGUIComboSelection::CGUIComboSelection( const std::string& text,
-                                        const GsRect<float> &rect,
-                                        const std::list<std::string>& optionsList,
-                                        const GsControl::Style style ) :
-GsWidgetsManager(rect, style),
+CGUIComboSelection::
+CGUIComboSelection( const std::string& text,
+                    const GsRect<float> &rect,
+                    const std::list<std::string>& optionsList ) :
+GsWidgetsManager(rect),
 mHoverBgColor(0xBB, 0xBB, 0xFF),
 mOptionsList( optionsList ),
 mOLCurrent( mOptionsList.begin() ),
@@ -27,14 +27,12 @@ mFeatureText(text)
 
     mpFeatureName =
             addWidget(new CGUIText(text,
-                                GsRect<float>(0.0f, 0.0f, 0.5f, 1.0f),
-                                    style));    
+                                GsRect<float>(0.0f, 0.0f, 0.5f, 1.0f)));
 
     mpFeatureValue =
             addWidget(new GsButton("?",
                                 GsRect<float>(0.5f, 0.0f, 0.5f, 1.0f),
-                                [&]{this->cycleOption();},
-                                style));
+                                [&]{this->cycleOption();}));
 }
 
 

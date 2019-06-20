@@ -275,7 +275,12 @@ void CGUIText::processRender(const GsRect<float> &RectDispCoordFloat)
             GsVec2D<int> textSfcDim(textW, textH);
 
             GsRect<float> blitPos = displayRect;
-            blitPos.pos = blitPos.pos + (blitPos.dim-textSfcDim)/2;
+
+            if(mHCentered)
+            {
+                blitPos.pos = blitPos.pos + (blitPos.dim-textSfcDim)/2;
+            }
+
             blitPos.pos.y += totTextSfcH;
 
             textSfc.blitTo(blit, blitPos.SDLRect());

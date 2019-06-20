@@ -7,9 +7,10 @@
 ComboSelection::ComboSelection(const std::string& text,
                                const std::list<std::string>& optionsList,
                                const Style &style) :
-CGUIComboSelection(text, GsRect<float>(0.0f,0.0f,1.0f,1.0f),
-                   optionsList,
-                   style)
+CGUIComboSelection(text,
+                   GsRect<float>(0.0f,0.0f,1.0f,1.0f),
+                   optionsList),
+mStyle(style)
 {
     if(mStyle == Style::GALAXY)
     {        
@@ -33,11 +34,11 @@ CGUIComboSelection(text, GsRect<float>(0.0f,0.0f,1.0f,1.0f),
 
     if(mStyle == Style::NONE)
     {
-        mFontID = 0;
+        //mFontID = 0;
     }
     else
     {
-        mFontID = 1;
+        //mFontID = 1;
     }
 }
 

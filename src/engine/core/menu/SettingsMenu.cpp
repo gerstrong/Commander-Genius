@@ -24,7 +24,7 @@
 #include "cheatsmenu.h"
 
 
-SettingsMenu::SettingsMenu(const GsControl::Style &style) :
+SettingsMenu::SettingsMenu(const Style &style) :
 GameMenu( GsRect<float>(0.25f, 0.24f, 0.5f, 0.40f), 
           style )
 {
@@ -51,7 +51,7 @@ GameMenu( GsRect<float>(0.25f, 0.24f, 0.5f, 0.40f),
                                              new OpenMenuEvent( new COptions(Style()) ),
                                              style ) );
 
-    if(style != GsControl::Style::NONE)
+    if(style != Style::NONE)
     {
 
 
@@ -78,7 +78,7 @@ GameMenu( GsRect<float>(0.25f, 0.24f, 0.5f, 0.40f),
 #endif
 
 
-    if(style != GsControl::Style::NONE)
+    if(style != Style::NONE)
     {
 
         mpMenuDialog->addWidget(new GameButton( "Cheats",

@@ -16,9 +16,10 @@
 
 #include "GsTextSelectionList.h"
 
-CGUITextSelectionList::CGUITextSelectionList(const GsRect<float> &rect)  :
-    GsControl(rect),
-    mScrollbar(this)
+CGUITextSelectionList::
+CGUITextSelectionList(const GsRect<float> &rect)  :
+GsScrollingFrame(rect, rect),
+mScrollbar(this)
 {
     GsRect<float> scrollRect(0.0f, 0.0f, 0.1f, 1.0f);
     mScrollbar.setRect(scrollRect);       
@@ -76,7 +77,8 @@ bool CGUITextSelectionList::sendEvent(const InputCommand command)
 		return true;
 	}
 	else if(command == IC_STATUS || command == IC_JUMP ||
-             command == IC_POGO || command == IC_FIRE || command == IC_RUN)
+            command == IC_POGO || command == IC_FIRE ||
+            command == IC_RUN)
 	{
 		if(mConfirmEvent)
 			gEventManager.add(mConfirmEvent);
@@ -96,6 +98,18 @@ bool CGUITextSelectionList::sendEvent(const InputCommand command)
 void CGUITextSelectionList::addText(const std::string &text)
 {    
     mItemList.push_back( item(text) );
+
+
+    const auto numElem = mTextWidgetVec.size();
+    GsRect<float> textRect(0.0f, float(numElem)*0.1f,
+                           1.0f, 0.1f);
+
+    auto newTextWidget = addWidget( new CGUIText(text,
+                                            textRect));
+
+    newTextWidget->enableCenteringH(false);
+
+    mTextWidgetVec.push_back(newTextWidget);
 }
 
 
@@ -231,6 +245,7 @@ void CGUITextSelectionList::processLogic()
 
 void CGUITextSelectionList::processPointingStateRel(const GsRect<float> &rect)
 {
+/*
     const auto absRect = rect.transformed(getRect());
     processPointingState(absRect);
 
@@ -249,7 +264,7 @@ void CGUITextSelectionList::processPointingStateRel(const GsRect<float> &rect)
     const float fy = absRect.pos.y;
     const float fh = absRect.dim.y;
 
-    const float y_innerbound_min = fy /*+ static_cast<float>(textHeight)/bh*/;
+    const float y_innerbound_min = fy;
     const float y_innerbound_max = y_innerbound_min +
             static_cast<float>( mItemList.size()*textHeight )/bh;
 
@@ -300,8 +315,40 @@ void CGUITextSelectionList::processPointingStateRel(const GsRect<float> &rect)
         mPressedSelection = -1;
     }
 
-
+*/
 }
+
+int CGUITextSelectionList::getSelection() const
+{
+    return mReleasedSelection;
+}
+
+void CGUITextSelectionList::setSelection(const int sel)
+{
+    const int last = static_cast<int>(mItemList.size());
+
+    if(sel < 0)
+    {
+        mReleasedSelection = 0;
+        mSelected = false;
+        return;
+    }
+    if(sel >= last)
+    {
+        mReleasedSelection = last-1;
+        mSelected = false;
+        return;
+    }
+
+    mReleasedSelection = sel;
+}
+
+const std::string &
+CGUITextSelectionList::getItemString(const unsigned int sel) const
+{
+    return mItemList[sel].mText;
+}
+
 
 void CGUITextSelectionList::processRenderSimple(const GsRect<float> &RectDispCoordFloat)
 {
@@ -325,7 +372,7 @@ void CGUITextSelectionList::processRenderSimple(const GsRect<float> &RectDispCoo
     blitsfc.fillRGBA(rect, boxColor);
 
     // Now lets draw the text of the list control
-    auto &font = gGraphics.getFontLegacy(mFontID);
+    /*auto &font = gGraphics.getFontLegacy(mFontID);
     const int pixth = font.getPixelTextHeight();
     const int pixtw = pixth; // NOTE: We assume here, that the height and width are the same. Invalid to galaxy fonts!
 
@@ -401,6 +448,7 @@ void CGUITextSelectionList::processRenderSimple(const GsRect<float> &RectDispCoo
     {
         blitsfc.drawFrameRect(origRect, 2, blitsfc.mapRGB(0xB5, 0xB5, 0xF1) );
     }
+    */
 }
 
 void CGUITextSelectionList::processRenderTTF(const GsRect<float> &RectDispCoordFloat)
@@ -425,6 +473,7 @@ void CGUITextSelectionList::processRenderTTF(const GsRect<float> &RectDispCoordF
     blitsfc.fillRGBA(rect, boxColor);
 
     // Now lets draw the text of the list control
+    /*
     auto &font = gGraphics.getFontLegacy(mFontID);
     const int pixth = font.getPixelTextHeight();
     const int pixtw = pixth; // NOTE: We assume here, that the height and width are the same. Invalid to galaxy fonts!
@@ -523,6 +572,8 @@ void CGUITextSelectionList::processRenderTTF(const GsRect<float> &RectDispCoordF
     {
         blitsfc.drawFrameRect(origRect, 2, blitsfc.mapRGB(0xB5, 0xB5, 0xF1) );
     }
+
+    */
 }
 
 
@@ -539,4 +590,15 @@ void CGUITextSelectionList::processRender(const GsRect<float> &RectDispCoordFloa
     }
 
 
+    GsScrollingFrame::processRender(RectDispCoordFloat);
+
+    // Transform to the display coordinates
+    /*auto displayRect = getRect();
+    displayRect.transform(RectDispCoordFloat);
+
+    for(auto &obj : mWidgetList)
+    {
+        obj->processRender(displayRect);
+    }
+*/
 }

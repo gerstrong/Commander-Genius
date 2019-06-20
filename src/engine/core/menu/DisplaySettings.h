@@ -25,7 +25,7 @@
 class DisplaySettings : public GameMenu
 {
 public:
-	DisplaySettings(const GsControl::Style style);
+	DisplaySettings(const Style style);
 
     void refresh();
 

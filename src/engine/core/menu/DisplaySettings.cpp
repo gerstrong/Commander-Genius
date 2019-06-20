@@ -49,7 +49,7 @@ toggleFullscreenFunctor::~toggleFullscreenFunctor()
 {}
 
 
-DisplaySettings::DisplaySettings(const GsControl::Style style) :
+DisplaySettings::DisplaySettings(const Style style) :
 #if defined(EMBEDDED)
 GameMenu(GsRect<float>(0.15f, 0.20f, 0.65f, 0.25f), style )
 #else

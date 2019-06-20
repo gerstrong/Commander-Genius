@@ -10,11 +10,11 @@ class GameMenu : public CBaseMenu
 {
 public:
     GameMenu( const GsRect<float>& rect, 
-              const GsControl::Style &style ) :
+              const Style &style ) :
         CBaseMenu( rect, CGUIDialog::FXKind(0) ),
         mStyle(style)
     {
-        if(style == GsControl::GALAXY)
+        if(style == Style::GALAXY)
         {            
             GsRect<float> dlgRect(0.25f, 0.282f, 0.45f, 0.5f);
             mpMenuDialog->setRect(dlgRect);
@@ -29,7 +29,7 @@ public:
                                                   0.05f/dlgRect.dim.y));
 
         }
-        else if(style == GsControl::VORTICON)
+        else if(style == Style::VORTICON)
         {
             GsRect<float> dlgRect(0.15f, 0.282f, 0.70f, 0.5f);
             mpMenuDialog->setRect(dlgRect);
@@ -43,7 +43,7 @@ public:
             mpMenuDialog->addWidget( new GameButton( "close",
                                                     buttonRect,
                                                     new CloseMenuEvent(),
-                                                    GsControl::Style::VORTICON) );
+                                                    Style::VORTICON) );
         }
         else
         {
@@ -55,18 +55,17 @@ public:
                                       GsRect<float>(-0.05f, -0.05f,
                                                     0.06f/localRect.dim.x,
                                                     0.06f/localRect.dim.y),
-                                                    new CloseMenuEvent(),
-                                                    GsControl::Style::NONE) );
+                                                    new CloseMenuEvent()) );
         }
 
 
         mpReturnButton->setHovered(true);
 
-        if(style == GsControl::GALAXY)
+        if(style == Style::GALAXY)
         {
             initBackground = &GameMenu::initGalaxyBackground;
         }
-        else if(style == GsControl::VORTICON)
+        else if(style == Style::VORTICON)
         {
             initBackground = &GameMenu::initVorticonBackground;
         }
@@ -100,15 +99,14 @@ public:
 
     void setMenuLabel(const std::string &label) override;
     
-    GsControl::Style Style() 
+    Style getStyle()
     {   return mStyle;   }
 
 private:
     GsSurface mBackground;
     GsRect<int> mCachedBgRect;
     
-    const GsControl::Style mStyle;
-
+    const Style mStyle;
 };
 
 #endif /* GameMenu_H_INCLUDED */

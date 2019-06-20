@@ -16,9 +16,9 @@
 class MainMenu : public GameMenu
 {
 public:
-    MainMenu(const bool openedGamePlay, const GsControl::Style style);
+    MainMenu(const bool openedGamePlay, const Style style);
 
-    void createGameMenu(const bool openedGamePlay , const GsControl::Style style);
+    void createGameMenu(const bool openedGamePlay , const Style style);
 };
 
 struct OpenMainMenuEvent : public CEvent {};

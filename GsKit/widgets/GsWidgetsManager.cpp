@@ -5,12 +5,6 @@ GsControl(SrGsRect)
 {
 }
 
-GsWidgetsManager::GsWidgetsManager(const GsRect<float> &SrGsRect,
-                                     const GsControl::Style style):
-GsControl(style, SrGsRect)
-{
-}
-
 
 void GsWidgetsManager::fit(const float padding,
                             const float width)

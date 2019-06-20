@@ -14,7 +14,7 @@
 class CProfilesMenu : public GameMenu
 {
 public:
-    CProfilesMenu(const GsControl::Style style);
+    CProfilesMenu(const Style style);
 };
 
 #endif /* CPROFILESMENU_H_ */

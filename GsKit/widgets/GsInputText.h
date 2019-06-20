@@ -17,13 +17,11 @@ class CGUIInputText : public GsControl
 public:
 
     CGUIInputText(const std::string& text,
-                  const int fontID = 0,
-                  const GsControl::Style style = Style::NONE);
+                  const int fontID = 0);
 
     CGUIInputText(const std::string& text,
                   const GsRect<float> &rect,
-                  const int fontID = 0,
-                  const GsControl::Style style = Style::NONE);
+                  const int fontID = 0);
 
 
 	bool sendEvent(const InputCommand command);

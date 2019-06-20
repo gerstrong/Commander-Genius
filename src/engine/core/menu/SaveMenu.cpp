@@ -22,7 +22,7 @@
 const std::string EMPTY_TEXT = "EMPTY";
 
 
-CSaveMenu::CSaveMenu(const GsControl::Style &style) :
+CSaveMenu::CSaveMenu(const Style &style) :
 GameMenu(GsRect<float>(0.1f, 0.0f, 0.8f, 1.0f), style )
 {
 	// Load the state-file list

@@ -26,8 +26,7 @@ public:
                       const int deltaValue,
                       const int value,
                       const int fontid,
-                      const bool slider,
-                      const Style style = Style::NONE);
+                      const bool slider);
 
 
 	void increment();

@@ -18,11 +18,11 @@
 GsButton::GsButton(const std::string& text,
                    const GsRect<float> &rect,
             CEvent *ev,
-            const Style style,
+            const int fontId,
             const float red,
             const float green,
             const float blue) :
-GsControl(style, rect),
+GsControl(rect),
 mText(text),
 mEvent(ev),
 mRed(red),
@@ -30,15 +30,15 @@ mGreen(green),
 mBlue(blue),
 mTextWidget(text,
             GsRect<float>(0.0f, 0.0f, 1.0f, 1.0f),
-            style)
+            fontId)
 {}
 
 GsButton::GsButton(const std::string& text,
          const GsRect<float> &rect,
          CEvent *ev,
-         const Style style,
+         const int fontId,
          const GsColor &color) :
-GsButton(text, rect, ev, style,
+GsButton(text, rect, ev, fontId,
          float(color.r)/float(0xFF),
          float(color.g)/float(0xFF),
          float(color.b)/float(0xFF) )
@@ -46,11 +46,11 @@ GsButton(text, rect, ev, style,
 
 GsButton::GsButton(const std::string& text,
             CEvent *ev,
-            const Style style,
+            const int fontId,
             const float red,
             const float green,
             const float blue) :
-GsControl(style),
+GsControl(),
 mText(text),
 mEvent(ev),
 mRed(red),
@@ -58,24 +58,24 @@ mGreen(green),
 mBlue(blue),
 mTextWidget(text,
             GsRect<float>(0.0f, 0.0f, 1.0f, 1.0f),
-            style)
+            fontId)
 {}
 
 GsButton::GsButton(const std::string& text,
          const GsRect<float> &rect,
          const std::function <void ()>& f,
-         const Style style,
+         const int fontId,
          const float red,
          const float green,
          const float blue) :
-    GsControl(style, rect),
+    GsControl(rect),
     mText(text),
     mRed(red),
     mGreen(green),
     mBlue(blue),
     mTextWidget(text,
                 GsRect<float>(0.0f, 0.0f, 1.0f, 1.0f),
-                style),
+                fontId),
     mFunction(f)
 {}
 
@@ -83,9 +83,9 @@ GsButton::GsButton(const std::string& text,
 GsButton::GsButton(const std::string& text,
          const GsRect<float> &rect,
          const std::function <void ()>& f,
-         const Style style,
+         const int fontId,
          const GsColor &color):
-GsButton(text,rect,f,style,
+GsButton(text,rect,f,fontId,
          float(color.r)/float(0xFF),
          float(color.g)/float(0xFF),
          float(color.b)/float(0xFF))
@@ -214,6 +214,7 @@ void GsButton::drawNoStyle(const SDL_Rect& lRect)
         blitsfc.drawRect( rect, 2, borderColor, fillColor );
     }
 
+    /*
     if(!gTTFDriver.isActive())
     {
         // Now lets draw the text of the list control
@@ -230,6 +231,7 @@ void GsButton::drawNoStyle(const SDL_Rect& lRect)
                                    lRect.x, lRect.w, lRect.y, lRect.h, true );
         }
     }
+    */
 }
 
 void GsButton::setupButtonSurface(const std::string &text)
