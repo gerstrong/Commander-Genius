@@ -9,6 +9,7 @@
 #include "CAmpton.h"
 #include "../../common/ai/CPlayerLevel.h"
 #include "../../common/ai/CEnemyShot.h"
+#include "../../common/ai/CBullet.h"
 #include <base/utils/misc.h>
 #include <base/GsPython.h>
 

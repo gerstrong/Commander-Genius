@@ -10,7 +10,6 @@
 #ifndef CKORATH_H_
 #define CKORATH_H_
 
-#include <vector>
 #include "../../common/ai/CStunnable.h"
 
 namespace galaxy {

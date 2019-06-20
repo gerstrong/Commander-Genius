@@ -9,6 +9,7 @@
 #include "CPoisonSlug.h"
 #include "CSlugSlime.h"
 #include "../../common/ai/CPlayerBase.h"
+#include "../../common/ai/CBullet.h"
 #include <base/utils/misc.h>
 
 

@@ -8,7 +8,7 @@
 
 #include "CBloog.h"
 #include "../../common/ai/CPlayerLevel.h"
-
+#include "../../common/ai/CBullet.h"
 #include <base/utils/misc.h>
 
 

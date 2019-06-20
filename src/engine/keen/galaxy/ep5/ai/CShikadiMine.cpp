@@ -15,6 +15,7 @@
 #include <base/utils/misc.h>
 #include "../../common/dialog/CMessageBoxGalaxy.h"
 #include "../../menu/ComputerWrist.h"
+#include "../../common/ai/CBullet.h"
 #include "engine/core/mode/CGameMode.h"
 
 

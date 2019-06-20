@@ -8,9 +8,7 @@
 #ifndef CSTUNNABLE_H_
 #define CSTUNNABLE_H_
 
-#include "../../common/ai/CBullet.h"
 #include "CGalaxyActionSpriteObject.h"
-#include <map>
 
 namespace galaxy
 {
@@ -19,9 +17,8 @@ class CStunnable: public CGalaxyActionSpriteObject
 {
 public:
 	CStunnable(CMap *pmap,
-				const Uint16 foeID,
-				Uint32 x,
-				Uint32 y );
+                   const Uint16 foeID,
+                   Uint32 x, Uint32 y );
 
 	/**
 	 * What happens when some objects gets touched, or normally shot

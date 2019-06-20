@@ -5,9 +5,9 @@
  *      Author: Gerstrong
  */
 
-
 #include "CShikadiMaster.h"
 #include "../../common/ai/CEnemyShot.h"
+#include "../../common/ai/CBullet.h"
 #include "CRedShot.h"
 #include <base/utils/misc.h>
 

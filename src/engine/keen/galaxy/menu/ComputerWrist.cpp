@@ -83,7 +83,7 @@ ComputerWrist::ComputerWrist(const int ep) :
     // NOTE: The index is always at six
     mBmpIndex = 6;
 
-    auto &font = gGraphics.getFont(mFontId);
+    auto &font = gGraphics.getFontLegacy(mFontId);
     GsWeakSurface blitsfc(gVideoDriver.getBlitSurface());
 
     int numLines = blitsfc.height();
@@ -211,7 +211,7 @@ void ComputerWrist::parseText()
     //lRect.w = blitsfc.width()-(mLeftBorderBmp.width()+mRightBorderBmp.width());
 
     // Draw some text.
-    auto &Font = gGraphics.getFont(mFontId);
+    auto &Font = gGraphics.getFontLegacy(mFontId);
 
     auto fontHeight = Font.getPixelTextHeight();
 
@@ -347,8 +347,8 @@ void ComputerWrist::parseGraphics()
     SDL_Rect lRect;
     lRect.h = blitsfc.height();     lRect.w = blitsfc.width();
 
-    const auto fontHeight = gGraphics.getFont(mFontId).getPixelTextHeight();
-    const auto spaceWidth = gGraphics.getFont(mFontId).getWidthofChar(' ');
+    const auto fontHeight = gGraphics.getFontLegacy(mFontId).getPixelTextHeight();
+    const auto spaceWidth = gGraphics.getFontLegacy(mFontId).getWidthofChar(' ');
 
     if(ep != 6)
     {
@@ -454,7 +454,7 @@ void ComputerWrist::renderPage()
     lRect.x = 0;                    lRect.y = lRect.h-20;
 
     // Draw some text.
-    auto &Font = gGraphics.getFont(mFontId);
+    auto &Font = gGraphics.getFontLegacy(mFontId);
 
     Font.setupColor(0xFFFFFF);
 

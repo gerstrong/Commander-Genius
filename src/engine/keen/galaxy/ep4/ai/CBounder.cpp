@@ -6,6 +6,7 @@
  */
 
 #include "CBounder.h"
+#include "../../common/ai/CBullet.h"
 
 namespace galaxy
 {

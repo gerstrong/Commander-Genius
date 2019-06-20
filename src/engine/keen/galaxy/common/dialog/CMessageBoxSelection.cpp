@@ -37,7 +37,7 @@ blendup(true)
 	
 	mText += "\n\n";
 	
-	auto &Font = gGraphics.getFont(FONT_ID);
+	auto &Font = gGraphics.getFontLegacy(FONT_ID);
 
 	mTextHeight = Font.getPixelTextHeight()*calcNumLines(mText);
 
@@ -65,7 +65,7 @@ void CMessageBoxSelection::init()
     rect.w -= 16;
 	rect.h -= 16;
     
-	auto &Font = gGraphics.getFont(FONT_ID);
+	auto &Font = gGraphics.getFontLegacy(FONT_ID);
 
     GsSurface coloredTextSurface;
     coloredTextSurface.createRGBSurface(rect);

@@ -1,6 +1,7 @@
 #include "CFlect.h"
 
 #include "../../common/ai/CPlayerLevel.h"
+#include "../../common/ai/CBullet.h"
 
 namespace galaxy
 {

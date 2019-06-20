@@ -8,6 +8,7 @@
 #include "CLick.h"
 
 #include "../../common/ai/CPlayerBase.h"
+#include "../../common/ai/CBullet.h"
 #include <base/utils/misc.h>
 
 namespace galaxy {

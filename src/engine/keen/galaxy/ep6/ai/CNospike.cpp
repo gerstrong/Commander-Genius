@@ -4,6 +4,7 @@
 #include "../../common/ai/CPlayerLevel.h"
 #include "../../common/dialog/CMessageBoxBitmapGalaxy.h"
 #include "../../menu/ComputerWrist.h"
+#include "../../common/ai/CBullet.h"
 #include "engine/core/mode/CGameMode.h"
 #include "fileio/KeenFiles.h"
 
