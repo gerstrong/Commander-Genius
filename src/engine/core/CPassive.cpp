@@ -51,7 +51,7 @@ void CPassive::pumpEvent(const CEvent *evPtr)
 
 void CPassive::createOutlinedText(const int splash_x, const int splash_y, const std::string &text)
 {
-    auto &Font = gGraphics.getFont(1);
+    auto &Font = gGraphics.getFontLegacy(1);
     SDL_Surface *sfc = mTextSfc.getSDLSurface();
 	SDL_PixelFormat *format = sfc->format;
 

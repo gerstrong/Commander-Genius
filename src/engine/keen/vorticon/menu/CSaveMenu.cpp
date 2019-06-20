@@ -40,7 +40,7 @@ m_overwrite(false)
 		if(i <= StateFileList.size())
 			text = StateFileList.at(i-1);
 
-        mpMenuDialog->addControl(new InputText( text ) );
+        mpMenuDialog->addWidget(new InputText( text ) );
 	}
 }
 

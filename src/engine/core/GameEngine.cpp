@@ -84,7 +84,7 @@ void GameEngine::renderFPSDisplay()
 
         mFPSSurface.fillRGBA(0x88, 0x88, 0x88, 0x88);
 
-        gGraphics.getFont(1).drawFont(mFPSSurface, tempbuf, 1, 1, false);
+        gGraphics.getFontLegacy(1).drawFont(mFPSSurface, tempbuf, 1, 1, false);
 
         GsWeakSurface blitWeak(gVideoDriver.getBlitSurface());
         mFPSSurface.blitTo(blitWeak, rect);

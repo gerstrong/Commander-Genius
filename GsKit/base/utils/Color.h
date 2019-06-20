@@ -166,6 +166,15 @@ struct GsColor
         a = Uint8((Uint16(a) + Uint16(c.a))/2);
     }
 
+    void converge(const GsColor &c)
+    {
+        r = Uint8((Uint16(r) + Uint16(c.r))/2);
+        g = Uint8((Uint16(g) + Uint16(c.g))/2);
+        b = Uint8((Uint16(b) + Uint16(c.b))/2);
+        a = Uint8((Uint16(a) + Uint16(c.a))/2);
+    }
+
+
     /*
     Uint8& operator[](int i) { switch(i) { case 0: return r; case 1: return g; case 2: return b; case 3: return a; default: assert(false); } return *(reinterpret_cast<Uint8*>(0)); }
     Uint8 operator[](int i) const { switch(i) { case 0: return r; case 1: return g; case 2: return b; case 3: return a; default: assert(false); } return 0; }

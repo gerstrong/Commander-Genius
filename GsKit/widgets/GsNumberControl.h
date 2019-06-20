@@ -8,14 +8,14 @@
 #ifndef CGUINUMBERCONTROL_H_
 #define CGUINUMBERCONTROL_H_
 
-#include "GsControlsManager.h"
+#include "GsWidgetsManager.h"
 #include "GsButton.h"
 #include "GsText.h"
 
 #include <string>
 #include <graphics/GsSurface.h>
 
-class CGUINumberControl : public GsControlsManager
+class CGUINumberControl : public GsWidgetsManager
 {
 public:
 

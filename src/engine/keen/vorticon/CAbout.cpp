@@ -180,7 +180,7 @@ void CAbout::render()
 
     for(std::size_t i=0 ; i<m_lines.size() ; i++)
     {
-        gGraphics.getFont(1).drawFont(weakBlit, m_lines.at(i), 24, 72+i*8, true);
+        gGraphics.getFontLegacy(1).drawFont(weakBlit, m_lines.at(i), 24, 72+i*8, true);
     }
 
     //mDrawSfc.blitScaledTo(weakBlit);

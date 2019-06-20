@@ -95,7 +95,7 @@ void CStatusScreen::createInventorySfcEp1(const int varSpr)
 	int x,t,i,j;
 	std::string tempbuf;
 	int dlgW,dlgH;
-	auto &Font = gGraphics.getFont(1);
+	auto &Font = gGraphics.getFontLegacy(1);
 
 	dlgW = 29;
 	dlgH = 15;
@@ -226,7 +226,7 @@ void CStatusScreen::createInventorySfcEp2(const int varSpr)
 	int x,i,j;
 	std::string tempbuf;
 	int dlgW,dlgH;
-	auto &Font = gGraphics.getFont(1);
+	auto &Font = gGraphics.getFontLegacy(1);
 
 	dlgW = 29;
 	dlgH = 14;
@@ -346,7 +346,7 @@ void CStatusScreen::createInventorySfcEp3(const int varSpr)
 	int x,i,j;
 	std::string tempbuf;
 	int dlgW,dlgH;
-	auto &Font = gGraphics.getFont(1);	
+	auto &Font = gGraphics.getFontLegacy(1);	
 
 	dlgW = 29;
 	dlgH = 13;

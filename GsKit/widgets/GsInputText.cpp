@@ -99,7 +99,7 @@ void CGUIInputText::processLogic()
 void CGUIInputText::processRender(const GsRect<float> &RectDispCoordFloat)
 {
 	// Transform to the display coordinates
-	GsRect<float> displayRect = mRect;
+    GsRect<float> displayRect = getRect();
 	displayRect.transform(RectDispCoordFloat);
 	SDL_Rect lRect = displayRect.SDLRect();
 
@@ -128,7 +128,7 @@ void CGUIInputText::processRender(const GsRect<float> &RectDispCoordFloat)
     }
 
     // Now lets draw the text of the list control
-    GsFontLegacy &Font = gGraphics.getFont(mFontID);
+    GsFontLegacy &Font = gGraphics.getFontLegacy(mFontID);
 
     Font.drawFontCentered( blitsfc, getInputString(),
                            lRect.x, lRect.w, lRect.y, lRect.h, false );

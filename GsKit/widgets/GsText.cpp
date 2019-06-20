@@ -13,17 +13,18 @@
 
 #include <graphics/cgttf.h>
 
-CGUIText::CGUIText(const std::string& text,
-         const GsRect<float> &rect) :
-GsControl(rect)
+CGUIText::CGUIText(const std::string &text,
+                   const GsRect<float> &rect) :
+GsWidget(rect)
 {
     setText(text);
 }
 
-CGUIText::CGUIText(const std::string& text,
+CGUIText::CGUIText(const std::string &text,
          const GsRect<float> &rect,
-         const GsControl::Style style) :
-GsControl(style, rect)
+         const int fontId) :
+GsWidget(rect),
+mFontId(fontId)
 {
     setText(text);
 }
@@ -83,13 +84,31 @@ void CGUIText::setTextColorHovered(const GsColor &color)
     mTextColorHovered = color;
 }
 
+void CGUIText::setTextColorPressed(const GsColor &color)
+{
+    mTextColorPressed = color;
+}
+
+void CGUIText::setTextColorSelected(const GsColor &color)
+{
+    mTextColorSelected = color;
+}
+
 
 void CGUIText::processLogic()
 {
+    mTextColorCur = mTextColor;
+
+    /*
     if(mHovered)
-        mTextColorCur = mTextColorHovered;
-    else
-        mTextColorCur = mTextColor;
+        mTextColorCur.converge(mTextColorHovered);
+
+    if(mPressed)
+        mTextColorCur.converge(mTextColorPressed);
+
+    if(mSelected)
+        mTextColorCur.converge(mTextColorSelected);
+        */
 
     // Horizontal scrolling.
     // If Max is zero, nothing need to be scrolled
@@ -156,10 +175,12 @@ void CGUIText::updateLegacyTextSfc(const GsRect<float> &displayRect)
     bool needUpdate =
             (mFontSize != reqFontSize) || (mTextChanged);
 
-    auto &textSfcVec = mTextSfcVecByColor[mTextColorCur];
+    auto &curTextSfcVec = mTextSfcVecByColor[mTextColorCur];
 
-    if( textSfcVec.empty() )
+    if( curTextSfcVec.empty() )
         needUpdate = true;
+
+    const auto numTexLines = mTextVec.size();
 
     if(needUpdate)
     {                
@@ -169,22 +190,40 @@ void CGUIText::updateLegacyTextSfc(const GsRect<float> &displayRect)
         lRect.x = lRect.y = 0;
 
         // Now lets draw the text of the list control
-        auto &Font = gGraphics.getFont(Uint8(mFontID));
+        auto &Font = gGraphics.getFontLegacy(Uint8(mFontId));
 
         const auto letterHeight = Font.getPixelTextHeight();
 
         lRect.y = (static_cast<unsigned int>(lRect.h)-letterHeight)/2;
 
-        const auto numTexLines = mTextVec.size();
-        textSfcVec.resize(numTexLines);
+        for(auto &textSfcVecPair : mTextSfcVecByColor)
+        {
+            auto color = textSfcVecPair.first;
+            auto textSfcVec = textSfcVecPair.second;
+
+            textSfcVec.resize(numTexLines);
+
+            for(unsigned int idx = 0 ; idx<numTexLines ; idx++)
+            {
+                auto &theText = mTextVec[idx];
+                auto &textSfc = textSfcVec[idx];
+
+                textSfc.createRGBSurface(lRect);
+
+                Font.drawFont(textSfc,
+                              theText,
+                              0, lRect.y+idx*letterHeight,
+                              false);
+
+                textSfc.tintColor( color );
+            }
+        }
+
+        mTextChanged = false;
 
         for(unsigned int idx = 0 ; idx<numTexLines ; idx++)
         {
             auto &theText = mTextVec[idx];
-            auto &textSfc = textSfcVec[idx];
-
-            textSfc.createRGBSurface(lRect);
-
             const auto textWidth = Font.calcPixelTextWidth(theText);
 
             // The tolerance is the amount of pixels at least of difference to consider
@@ -201,23 +240,16 @@ void CGUIText::updateLegacyTextSfc(const GsRect<float> &displayRect)
             {
                 mScrollPosMax = 0;
             }
-
-            Font.drawFont(textSfc,
-                          theText,
-                          0, lRect.y+idx*letterHeight,
-                          false);
-
-            textSfc.tintColor( mTextColorCur );
         }
 
-        mTextChanged = false;
     }
+
 }
 
 void CGUIText::processRender(const GsRect<float> &RectDispCoordFloat)
 {
     // Transform to the display coordinates
-    GsRect<float> displayRect = mRect;
+    GsRect<float> displayRect = getRect();
     displayRect.transform(RectDispCoordFloat);
 
     auto lRect = displayRect.SDLRect();
@@ -225,7 +257,7 @@ void CGUIText::processRender(const GsRect<float> &RectDispCoordFloat)
 
     auto &textSfcVec = mTextSfcVecByColor[mTextColorCur];
 
-    if(mStyle == GsControl::NONE)
+    if(mFontId >= 0)
     {
 
 #if defined(USE_SDL_TTF)    

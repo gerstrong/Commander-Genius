@@ -231,10 +231,10 @@ void CGUITextSelectionList::processLogic()
 
 void CGUITextSelectionList::processPointingStateRel(const GsRect<float> &rect)
 {
-    const auto absRect = rect.transformed(mRect);
+    const auto absRect = rect.transformed(getRect());
     processPointingState(absRect);
 
-    GsFontLegacy &Font = gGraphics.getFont(mFontID);
+    GsFontLegacy &Font = gGraphics.getFontLegacy(mFontID);
     const int pixth = Font.getPixelTextHeight();
 
     const auto halfBorderHeight = (mBorderHeight/2);
@@ -309,7 +309,7 @@ void CGUITextSelectionList::processRenderSimple(const GsRect<float> &RectDispCoo
     GsWeakSurface blitsfc(gVideoDriver.getBlitSurface());
 
     // Transform to the display coordinates
-    GsRect<float> displayRect = mRect;
+    GsRect<float> displayRect = getRect();
     displayRect.transform(RectDispCoordFloat);
 
     GsRect<Uint16> origRect(displayRect);
@@ -325,7 +325,7 @@ void CGUITextSelectionList::processRenderSimple(const GsRect<float> &RectDispCoo
     blitsfc.fillRGBA(rect, boxColor);
 
     // Now lets draw the text of the list control
-    auto &font = gGraphics.getFont(mFontID);
+    auto &font = gGraphics.getFontLegacy(mFontID);
     const int pixth = font.getPixelTextHeight();
     const int pixtw = pixth; // NOTE: We assume here, that the height and width are the same. Invalid to galaxy fonts!
 
@@ -409,7 +409,7 @@ void CGUITextSelectionList::processRenderTTF(const GsRect<float> &RectDispCoordF
     GsWeakSurface blitsfc(gVideoDriver.getBlitSurface());
 
     // Transform to the display coordinates
-    GsRect<float> displayRect = mRect;
+    GsRect<float> displayRect = getRect();
     displayRect.transform(RectDispCoordFloat);
 
     GsRect<Uint16> origRect(displayRect);
@@ -425,7 +425,7 @@ void CGUITextSelectionList::processRenderTTF(const GsRect<float> &RectDispCoordF
     blitsfc.fillRGBA(rect, boxColor);
 
     // Now lets draw the text of the list control
-    auto &font = gGraphics.getFont(mFontID);
+    auto &font = gGraphics.getFontLegacy(mFontID);
     const int pixth = font.getPixelTextHeight();
     const int pixtw = pixth; // NOTE: We assume here, that the height and width are the same. Invalid to galaxy fonts!
 

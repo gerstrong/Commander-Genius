@@ -19,7 +19,7 @@ VorticonMenu( GsRect<float>(0.1f, 0.14f, 0.8f, gBehaviorEngine.mOptions.size()*0
     for( auto &optionIt : gBehaviorEngine.mOptions)
 	{
         mpOptionList.push_back( new Switch(optionIt.second.menuname) );
-		mpMenuDialog->addControl( mpOptionList.back() );
+		mpMenuDialog->addWidget( mpOptionList.back() );
 	}
 }
 

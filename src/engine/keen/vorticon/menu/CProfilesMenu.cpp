@@ -82,10 +82,10 @@ namespace vorticon
 CProfilesMenu::CProfilesMenu() :
 VorticonMenu( GsRect<float>(0.25f, 0.4f, 0.5f, 0.2f) )
 {
-    mpMenuDialog->addControl(new Button( "Classic mode",
+    mpMenuDialog->addWidget(new Button( "Classic mode",
 										     new SetDefaultClassic() ) );
 
-    mpMenuDialog->addControl(new Button( "Enhanced mode",
+    mpMenuDialog->addWidget(new Button( "Enhanced mode",
 										     new SetDefaultEnhanced() ) );
 }
 

@@ -172,7 +172,7 @@ void CHighScores::ponder()
 void CHighScores::render()
 {
     // Process Drawing related stuff
-    auto &Font = gGraphics.getFont(1);
+    auto &Font = gGraphics.getFontLegacy(1);
 
     mpMap->animateAllTiles();
 

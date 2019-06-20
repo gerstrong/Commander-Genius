@@ -132,10 +132,12 @@ void GsButton::processLogic()
             }
         }
 
+        /*
         mTextWidget.setHovered(mHovered);
         mTextWidget.setPressed(mPressed);
         mTextWidget.setReleased(mReleased);
         mTextWidget.select(mSelected);
+        */
     }   
 
     mTextWidget.processLogic();
@@ -215,7 +217,7 @@ void GsButton::drawNoStyle(const SDL_Rect& lRect)
     if(!gTTFDriver.isActive())
     {
         // Now lets draw the text of the list control
-        auto &Font = gGraphics.getFont( Uint8(mFontID) );
+        auto &Font = gGraphics.getFontLegacy( Uint8(mFontID) );
 
         if(mEnabled) // If the button is enabled use the normal text, otherwise the highlighted color
         {
@@ -232,7 +234,7 @@ void GsButton::drawNoStyle(const SDL_Rect& lRect)
 
 void GsButton::setupButtonSurface(const std::string &text)
 {
-    GsFontLegacy &Font = gGraphics.getFont(Uint8(mFontID));
+    /*GsFontLegacy &Font = gGraphics.getFont(Uint8(mFontID));
 
     if(text.empty())
     {
@@ -258,12 +260,22 @@ void GsButton::setupButtonSurface(const std::string &text)
     Font.createTextSurface(mTextDisabledSfc, text, 123, 150, 123 );
     Font.createTextSurface(mTextRedSfc, text, 180, 50, 23 );
 
-    Font.setFontSize(1);
+    Font.setFontSize(1);*/
 }
 
 void GsButton::setTextColorHovered(const GsColor &color)
 {
     mTextWidget.setTextColorHovered(color);
+}
+
+void GsButton::setTextColorPressed(const GsColor &color)
+{
+    mTextWidget.setTextColorPressed(color);
+}
+
+void GsButton::setTextColorSelected(const GsColor &color)
+{
+    mTextWidget.setTextColorSelected(color);
 }
 
 
@@ -296,7 +308,7 @@ void GsButton::drawEnabledButton(GsWeakSurface &blitsfc,
 void GsButton::processRender(const GsRect<float> &RectDispCoordFloat)
 {       
     // Transform to the display coordinates
-    auto displayRect = mRect;
+    auto displayRect = getRect();
 
     displayRect.transform(RectDispCoordFloat);
     auto lRect = displayRect.SDLRect();
@@ -313,7 +325,7 @@ void GsButton::processRender(const GsRect<float> &backRect,
                            const GsRect<float> &frontRect)
 {    
     // Transform this object to the display coordinates
-    auto objBackRect = backRect.transformed(mRect);
+    auto objBackRect = backRect.transformed(getRect());
     auto objFrontRect = objBackRect.clipped(frontRect);
 
     auto lRect = objFrontRect.SDLRect();

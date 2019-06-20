@@ -75,11 +75,11 @@ public:
 CProfilesMenu::CProfilesMenu(const GsControl::Style style) :
 GameMenu( GsRect<float>(0.25f, 0.4f, 0.5f, 0.2f), style )
 {
-    mpMenuDialog->addControl(new GameButton( "Classic mode",
+    mpMenuDialog->addWidget(new GameButton( "Classic mode",
                                              new SetDefaultClassic(),
                                              style) );
 
-    mpMenuDialog->addControl(new GameButton( "Enhanced mode",
+    mpMenuDialog->addWidget(new GameButton( "Enhanced mode",
                                              new SetDefaultEnhanced(),
                                              style) );
 

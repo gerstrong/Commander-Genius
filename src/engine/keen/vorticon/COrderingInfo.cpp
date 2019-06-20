@@ -165,7 +165,7 @@ void COrderingInfo::render()
 
     for(int i=0 ; i<m_numberoflines ; i++)
     {
-        gGraphics.getFont(1).drawFont(mTextSfc, m_Textline[i],
+        gGraphics.getFontLegacy(1).drawFont(mTextSfc, m_Textline[i],
                                       160-m_Textline[i].size()*4, 8*(i+m_starty), true);
     }
 

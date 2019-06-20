@@ -18,7 +18,7 @@ CGUIComboSelection::CGUIComboSelection( const std::string& text,
                                         const GsRect<float> &rect,
                                         const std::list<std::string>& optionsList,
                                         const GsControl::Style style ) :
-GsControlsManager(rect, style),
+GsWidgetsManager(rect, style),
 mHoverBgColor(0xBB, 0xBB, 0xFF),
 mOptionsList( optionsList ),
 mOLCurrent( mOptionsList.begin() ),
@@ -26,12 +26,12 @@ mFeatureText(text)
 {
 
     mpFeatureName =
-            addControl(new CGUIText(text,
+            addWidget(new CGUIText(text,
                                 GsRect<float>(0.0f, 0.0f, 0.5f, 1.0f),
                                     style));    
 
     mpFeatureValue =
-            addControl(new GsButton("?",
+            addWidget(new GsButton("?",
                                 GsRect<float>(0.5f, 0.0f, 0.5f, 1.0f),
                                 [&]{this->cycleOption();},
                                 style));
@@ -104,7 +104,7 @@ void CGUIComboSelection::processRender(const GsRect<float> &RectDispCoordFloat)
     GsWeakSurface blitsfc(gVideoDriver.getBlitSurface());
 
     // Transform to the display coordinates
-    auto displayRect = mRect;
+    auto displayRect = getRect();
     displayRect.transform(RectDispCoordFloat);
 
     if(mHovered)
@@ -113,7 +113,7 @@ void CGUIComboSelection::processRender(const GsRect<float> &RectDispCoordFloat)
     }
 
 
-    for(auto &obj : mControlList)
+    for(auto &obj : mWidgetList)
     {
         obj->processRender(displayRect);
     }
@@ -122,7 +122,8 @@ void CGUIComboSelection::processRender(const GsRect<float> &RectDispCoordFloat)
 
 void CGUIComboSelection::processLogic()
 {
-    for(auto &obj : mControlList)
+    /*
+    for(auto &obj : mWidgetList)
     {
         obj->setHovered(mHovered);
         obj->select(mSelected);
@@ -130,8 +131,9 @@ void CGUIComboSelection::processLogic()
         obj->setPressed(mPressed);
         obj->setReleased(mReleased);
     }
+    */
 
-    GsControlsManager::processLogic();
+    GsWidgetsManager::processLogic();
 }
 
 void CGUIComboSelection::setTextColor(const GsColor &color)
@@ -144,6 +146,18 @@ void CGUIComboSelection::setTextColorHovered(const GsColor &color)
 {
     mpFeatureName->setTextColorHovered(color);
     mpFeatureValue->setTextColorHovered(color);
+}
+
+void CGUIComboSelection::setTextColorPressed(const GsColor &color)
+{
+    mpFeatureName->setTextColorPressed(color);
+    mpFeatureValue->setTextColorPressed(color);
+}
+
+void CGUIComboSelection::setTextColorSelected(const GsColor &color)
+{
+    mpFeatureName->setTextColorSelected(color);
+    mpFeatureValue->setTextColorSelected(color);
 }
 
 

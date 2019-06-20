@@ -1,29 +1,29 @@
-#include "GsControlsManager.h"
+#include "GsWidgetsManager.h"
 
-GsControlsManager::GsControlsManager(const GsRect<float> &SrGsRect) :
+GsWidgetsManager::GsWidgetsManager(const GsRect<float> &SrGsRect) :
 GsControl(SrGsRect)
 {
 }
 
-GsControlsManager::GsControlsManager(const GsRect<float> &SrGsRect,
+GsWidgetsManager::GsWidgetsManager(const GsRect<float> &SrGsRect,
                                      const GsControl::Style style):
 GsControl(style, SrGsRect)
 {
 }
 
 
-void GsControlsManager::fit(const float padding,
+void GsWidgetsManager::fit(const float padding,
                             const float width)
 {
-    auto it = mControlList.begin();
+    auto it = mWidgetList.begin();
     it++;
 
-    size_t numControls = mControlList.size();
+    size_t numControls = mWidgetList.size();
     const float charHeight = ( 1.0f/static_cast<float>(numControls+1) );
 
     size_t c = 1;
 
-    for( ; it != mControlList.end() ; it++ )
+    for( ; it != mWidgetList.end() ; it++ )
     {        
         GsRect<float> rect( padding,
                    charHeight*(static_cast<float>(c)+0.25f),
@@ -39,22 +39,24 @@ void GsControlsManager::fit(const float padding,
 }
 
 
-void GsControlsManager::processPointingStateRel(const GsRect<float> &rect)
+void GsWidgetsManager::processPointingStateRel(const GsRect<float> &rect)
 {
-    const auto absRect = rect.transformed(mRect);
+    /*
+    const auto absRect = rect.transformed(getRect());
     processPointingState(absRect);
 
-    for(auto &control : mControlList)
+    for(auto &control : mWidgetList)
     {
         control->processPointingStateRel(absRect);
     }
+    */
 }
 
 
 
-void GsControlsManager::updateGraphics()
+void GsWidgetsManager::updateGraphics()
 {
-    for( auto &control : mControlList )
+    for( auto &control : mWidgetList )
     {
         control->updateGraphics();
     }
@@ -62,8 +64,9 @@ void GsControlsManager::updateGraphics()
 
 
 
-void GsControlsManager::selectPrevItem()
+void GsWidgetsManager::selectPrevItem()
 {
+    /*
     if(!mpCurrentCtrl)
     {
         return;
@@ -78,19 +81,19 @@ void GsControlsManager::selectPrevItem()
 
     if( mSelection < 0 )
     {
-        mSelection = static_cast<int>(mControlList.size())-1;
+        mSelection = static_cast<int>(mWidgetList.size())-1;
     }
 
 
-    auto it = mControlList.begin();
-    for( int i=0 ; it != mControlList.end() ; it++, i++ )
+    auto it = mWidgetList.begin();
+    for( int i=0 ; it != mWidgetList.end() ; it++, i++ )
     {
         if( i ==  mSelection )
             break;
     }
 
     // Ensures that disabled items are skipped
-    for( ; it != mControlList.begin() ; it-- )
+    for( ; it != mWidgetList.begin() ; it-- )
     {
         if( (*it)->isEnabled() )
             break;
@@ -99,17 +102,19 @@ void GsControlsManager::selectPrevItem()
     }
 
     if( mSelection < 0 ) {
-        mSelection = int(mControlList.size())-1;
-        it = mControlList.end();
+        mSelection = int(mWidgetList.size())-1;
+        it = mWidgetList.end();
     }
 
     (*it)->select(true);
     mpCurrentCtrl = it->get();
+    */
 }
 
 
-void GsControlsManager::selectNextItem()
+void GsWidgetsManager::selectNextItem()
 {
+    /*
     if(!mpCurrentCtrl)
         return;
 
@@ -120,19 +125,19 @@ void GsControlsManager::selectNextItem()
 
     mSelection++;
 
-    if( mSelection >= static_cast<int>(mControlList.size()) )
+    if( mSelection >= static_cast<int>(mWidgetList.size()) )
         mSelection = 0;
 
     // Find the right control!
-    auto it = mControlList.begin();
-    for( int i=0 ; it != mControlList.end() ; it++, i++ )
+    auto it = mWidgetList.begin();
+    for( int i=0 ; it != mWidgetList.end() ; it++, i++ )
     {
         if( i == mSelection )
             break;
     }
 
     // Ensures that disabled items are skipped
-    for( ; it != mControlList.end() ; it++ )
+    for( ; it != mWidgetList.end() ; it++ )
     {
         if( (*it)->isEnabled() )
             break;
@@ -140,17 +145,18 @@ void GsControlsManager::selectNextItem()
         mSelection++;
     }
 
-    if( mSelection >= static_cast<int>(mControlList.size()) ) {
+    if( mSelection >= static_cast<int>(mWidgetList.size()) ) {
         mSelection = 0;
-        it = mControlList.begin();
+        it = mWidgetList.begin();
     }
 
     (*it)->select(true);
     mpCurrentCtrl = it->get();
+    */
 }
 
 
-void GsControlsManager::setSelection(const int sel)
+void GsWidgetsManager::setSelection(const int sel)
 {
     const int steps = sel-mSelection;
 
@@ -169,13 +175,15 @@ void GsControlsManager::setSelection(const int sel)
     }
 }
 
-bool GsControlsManager::sendEvent(const std::shared_ptr<CEvent> &event )
+bool GsWidgetsManager::sendEvent(const std::shared_ptr<CEvent> &event )
 {
+    /*
+
     if( CommandEvent *ev = dynamic_cast<CommandEvent*>(event.get()) )
     {
         // Send all the other events the active control element
         int i=0;
-        for( auto &it : mControlList )
+        for( auto &it : mWidgetList )
         {
             if( i == mSelection )
             {
@@ -203,30 +211,32 @@ bool GsControlsManager::sendEvent(const std::shared_ptr<CEvent> &event )
         }
     }
 
+    */
+
     return false;
 }
 
 
-void GsControlsManager::processLogic()
+void GsWidgetsManager::processLogic()
 {
     processBlendEffects();
 
-    for(auto &obj : mControlList)
+    for(auto &obj : mWidgetList)
     {
         obj->processLogic();
     }        
 }
 
-std::shared_ptr<GsControl>
-GsControlsManager::addControl( std::shared_ptr<GsControl> &newControl)
+std::shared_ptr<GsWidget>
+GsWidgetsManager::addWidget( std::shared_ptr<GsWidget> &newControl)
 {
     auto ctrlPtr = newControl;
 
-    mControlList.push_back( ctrlPtr );
+    mWidgetList.push_back( ctrlPtr );
 
-    if(mControlList.size() == 1)
+    if(mWidgetList.size() == 1)
     {
-        mpCurrentCtrl = mControlList.front().get();
+        mpCurrentCtrl = mWidgetList.front().get();
     }
 
     return ctrlPtr;
@@ -234,21 +244,21 @@ GsControlsManager::addControl( std::shared_ptr<GsControl> &newControl)
 
 
 
-std::shared_ptr<GsControl>
-GsControlsManager::addControl( std::shared_ptr<GsControl> &newControl,
+std::shared_ptr<GsWidget>
+GsWidgetsManager::addWidget( std::shared_ptr<GsWidget> &newControl,
                         const GsRect<float>& RelRect )
 {
     GsRect<float> AbsRect = RelRect;
-    AbsRect.transform(mRect);
+    AbsRect.transform(getRect());
     newControl->setRect(AbsRect);
 
     auto ctrlPtr = newControl;
 
-    mControlList.push_back( ctrlPtr );
+    mWidgetList.push_back( ctrlPtr );
 
-    if(mControlList.size() == 1)
+    if(mWidgetList.size() == 1)
     {
-        mpCurrentCtrl = mControlList.front().get();
+        mpCurrentCtrl = mWidgetList.front().get();
     }
 
     return ctrlPtr;
@@ -256,35 +266,35 @@ GsControlsManager::addControl( std::shared_ptr<GsControl> &newControl,
 
 
 
-std::shared_ptr<GsControl>
-GsControlsManager::addControl( std::unique_ptr<GsControl> &newControl )
+std::shared_ptr<GsWidget>
+GsWidgetsManager::addWidget( std::unique_ptr<GsWidget> &newControl )
 {
-    auto ctrlPtr = std::shared_ptr<GsControl>( move(newControl) );
+    auto ctrlPtr = std::shared_ptr<GsWidget>( move(newControl) );
 
-    mControlList.push_back( ctrlPtr );
+    mWidgetList.push_back( ctrlPtr );
 
     fit();
 
-    if(mControlList.size() == 1)
+    if(mWidgetList.size() == 1)
     {
-        mpCurrentCtrl = mControlList.front().get();
+        mpCurrentCtrl = mWidgetList.front().get();
     }
 
     return ctrlPtr;
 }
 
-std::shared_ptr<GsControl>
-GsControlsManager::addControl( GsControl *newControl,
+std::shared_ptr<GsWidget>
+GsWidgetsManager::addWidget( GsWidget *newControl,
                         const GsRect<float>& RelRect )
 {
-    std::unique_ptr<GsControl> ctrl(newControl);
-    return addControl( ctrl, RelRect );
+    std::unique_ptr<GsWidget> ctrl(newControl);
+    return addWidget( ctrl, RelRect );
 }
 
-std::shared_ptr<GsControl>
-GsControlsManager::addControl( GsControl *newControl )
+std::shared_ptr<GsWidget>
+GsWidgetsManager::addWidget( GsWidget *newControl )
 {
-    std::unique_ptr<GsControl> ctrl(newControl);
-    return addControl(ctrl);
+    std::unique_ptr<GsWidget> ctrl(newControl);
+    return addWidget(ctrl);
 }
 

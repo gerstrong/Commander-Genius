@@ -89,7 +89,7 @@ public:
     
     void optimizeSprites();
 
-    GsFontLegacy &getFont(Uint8 index);
+    GsFontLegacy &getFontLegacy(Uint8 index);
 	
     GsPalette Palette;
 
@@ -102,7 +102,7 @@ private:
     void freeBitmaps(std::vector<GsBitmap> &mBitmap);
     void freeSprites();
 
-	std::vector<GsFontLegacy> Font;
+    std::vector<GsFontLegacy> mFontLegacyVec;
     std::vector<GsTilemap> Tilemap;
 
     std::vector< std::vector<GsBitmap> > mBitmap;

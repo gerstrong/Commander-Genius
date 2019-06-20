@@ -18,6 +18,8 @@ GsButton(text, ev, style)
 
         setTextColor(GsColor(0x26, 0x86, 0x26));
         setTextColorHovered(GsColor(0x66, 0xC6, 0x66));
+        setTextColorPressed(GsColor(0x66, 0xF6, 0x66));
+        setTextColorSelected(GsColor(0xA6, 0xC6, 0x66));
 
         mFontID = 1;
         setText(text);
@@ -53,13 +55,13 @@ void GameButton::drawVorticonStyle(SDL_Rect& lRect)
     // Now lets draw the text of the button
     if(mEnabled)
     {
-        auto &Font = gGraphics.getFont(mFontID);
+        auto &Font = gGraphics.getFontLegacy(mFontID);
         Font.drawFont( blitsfc, mText, lRect.x+24, lRect.y, false );
         drawTwirl(lRect);
     }
     else
     {
-        auto &Font = gGraphics.getFont(0);
+        auto &Font = gGraphics.getFontLegacy(0);
         Font.drawFont( blitsfc, mText, lRect.x+24, lRect.y, true );
     }
 }
@@ -70,7 +72,7 @@ void GameButton::drawVorticonStyle(SDL_Rect& lRect)
 void GameButton::processRender(const GsRect<float> &RectDispCoordFloat)
 {
     // Transform to the display coordinates
-    GsRect<float> displayRect = mRect;
+    GsRect<float> displayRect = getRect();
     displayRect.transform(RectDispCoordFloat);
     SDL_Rect lRect = displayRect.SDLRect();    
         

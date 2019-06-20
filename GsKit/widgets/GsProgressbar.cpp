@@ -151,8 +151,8 @@ void
 GsProgressBar::processRender(const GsRect<float> &RectDispCoordFloat)
 {
     // Transform to the display coordinates
-    GsRect<float> displayRect = mRect;
-    GsRect<float> progressRect = mRect;
+    GsRect<float> displayRect = getRect();
+    GsRect<float> progressRect = getRect();
 
     auto pBlitsurface = gVideoDriver.getBlitSurface();
 
@@ -258,7 +258,7 @@ GsProgressBar::processRender(const GsRect<float> &RectDispCoordFloat)
     }
 
     // Now lets draw the text of the list control
-    auto &Font = gGraphics.getFont(mFontID);
+    auto &Font = gGraphics.getFontLegacy(mFontID);
 
     const auto fontHeight = Font.getPixelTextHeight();
     const auto fontMidYPos = bgSDLRect.y + (progressSDLRect.h-fontHeight)/2;

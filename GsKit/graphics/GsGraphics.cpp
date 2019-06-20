@@ -121,7 +121,7 @@ void GsGraphics::createEmptyMisGsBitmaps(Uint16 num_bmps)
 void GsGraphics::createEmptyFontmaps(Uint8 num_fonts)
 {
 	freeFonts();
-    Font.assign(num_fonts, GsFontLegacy());
+    mFontLegacyVec.assign(num_fonts, GsFontLegacy());
 }
 
 /*void GsGraphics::createEmptyCursorMap(SDL_Surface *surface)
@@ -168,8 +168,8 @@ void GsGraphics::freeTilemap()
 }
 void GsGraphics::freeFonts()
 {
-  while ( !Font.empty() )
-    Font.pop_back();
+  while ( !mFontLegacyVec.empty() )
+    mFontLegacyVec.pop_back();
 }
 
 void GsGraphics::freeBitmaps(std::vector<GsBitmap> &bitmapVec)
@@ -228,11 +228,11 @@ void GsGraphics::drawDialogBox(SDL_Surface *DialogSurface,
 	
 	SDL_FillRect(DialogSurface, &rect, colour);
 
-	Font[0].drawCharacter(DialogSurface, 1, x1*8, y1*8);
-	Font[0].drawCharacter(DialogSurface, 3, (x1+w)*8, y1*8);
+    mFontLegacyVec[0].drawCharacter(DialogSurface, 1, x1*8, y1*8);
+    mFontLegacyVec[0].drawCharacter(DialogSurface, 3, (x1+w)*8, y1*8);
 	for(x=(x1*8)+8,i=0;i<w-1;i++)
 	{
-		Font[0].drawCharacter(DialogSurface, 2, x, y1*8);
+        mFontLegacyVec[0].drawCharacter(DialogSurface, 2, x, y1*8);
 		x+=8;
 	}
 	y=(y1+1)*8;
@@ -240,17 +240,17 @@ void GsGraphics::drawDialogBox(SDL_Surface *DialogSurface,
 	{
 		for(x=(x1*8),i=0;i<=w;i++)
 		{
-			if (i==0) Font[0].drawCharacter(DialogSurface, 4, x, y);
-			else if (i==w) Font[0].drawCharacter(DialogSurface, 5, x, y);
+            if (i==0) mFontLegacyVec[0].drawCharacter(DialogSurface, 4, x, y);
+            else if (i==w) mFontLegacyVec[0].drawCharacter(DialogSurface, 5, x, y);
 			x+=8;
 		}
 		y+=8;
 	}
     for(x=(x1*8),i=0;i<=w;i++)
     {
-		if (i==0) Font[0].drawCharacter(DialogSurface, 6, x, y);
-		else if (i==w) Font[0].drawCharacter(DialogSurface, 8, x, y);
-		else Font[0].drawCharacter(DialogSurface, 7, x, y);
+        if (i==0) mFontLegacyVec[0].drawCharacter(DialogSurface, 6, x, y);
+        else if (i==w) mFontLegacyVec[0].drawCharacter(DialogSurface, 8, x, y);
+        else mFontLegacyVec[0].drawCharacter(DialogSurface, 7, x, y);
 		x+=8;
     }
 }
@@ -295,8 +295,8 @@ std::vector<GsSprite> &GsGraphics::getSpriteVec(const int var)
 GsSprite &GsGraphics::getSpecialSpriteRef(const std::string &name)
 {   return mSpecialSpriteMap[name];    }
 
-GsFontLegacy &GsGraphics::getFont(Uint8 index)
-{    return Font.at(index); }
+GsFontLegacy &GsGraphics::getFontLegacy(Uint8 index)
+{    return mFontLegacyVec.at(index); }
 
 GsBitmap *GsGraphics::getBitmapFromStr(const size_t sprVar,
                                        const std::string &name) const

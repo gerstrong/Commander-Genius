@@ -34,7 +34,7 @@ void CMessageBoxVort::initVorticonBackground()
     mBackgroundSfc.create(0, sdlRect.w, sdlRect.h, RES_BPP, 0, 0, 0, 0);
 
     // Now lets draw the text of the list control
-    auto &Font = gGraphics.getFont(1);
+    auto &Font = gGraphics.getFontLegacy(1);
 
     // Now draw the borders
     SDL_Surface *backSfc = mBackgroundSfc.getSDLSurface();
@@ -84,12 +84,12 @@ void CMessageBoxVort::addTileAt(Uint16 tile, Uint16 x, Uint16 y)
 	GsRect<float> gameRect = gVideoDriver.getGameResolution();
     fRect.transformInverse(gameRect);
 
-    GsRect<float> scaleRect = mRect;
+    GsRect<float> scaleRect = getRect();
 
     scaleRect = 0.0f;
 
     fRect.transformInverse(scaleRect);
 
     std::shared_ptr<GsBitmap> bmpShared(new GsBitmap(bmpSfc));
-    addControl( new CGUIBitmap(bmpShared), fRect );
+    addWidget( new CGUIBitmap(bmpShared), fRect );
 }

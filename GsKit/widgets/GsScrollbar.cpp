@@ -10,14 +10,15 @@ void GsScrollbar::processLogic()
     // Here we check if the mouse-cursor/Touch entry clicked on something!!
     //const float fx = mRect.pos.x;
     //const float fw = mRect.dim.x;
-    const float fy = mRect.pos.y;
-    const float fh = mRect.dim.y;
+    const auto rect = getRect();
+    const float fy = rect.pos.y;
+    const float fh = rect.dim.y;
 
     const float y_innerbound_max = fy+fh;
 
     //const float x_innerbound_min = fx + static_cast<float>(TEXT_HEIGHT)/bw;
 
-    GsRect<float> rRect = mRect;
+    GsRect<float> rRect = rect;
     GsRect<float> parRect(mpParent->getRect());
 
     rRect.transform(parRect);
@@ -109,7 +110,7 @@ void GsScrollbar::drawScrollBar(const SDL_Rect &lRect)
 void GsScrollbar::processRender(const GsRect<float> &RectDispCoordFloat)
 {
     // Transform to the display coordinates
-    GsRect<float> displayRect = mRect;
+    GsRect<float> displayRect = getRect();
     displayRect.transform(RectDispCoordFloat);
 
     SDL_Rect lRect = displayRect.SDLRect();

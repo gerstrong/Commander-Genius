@@ -22,23 +22,23 @@ m_CameraBounds(gVideoDriver.getCameraBounds())
 
     mpLeftAdjust = new NumberControl( "Left",
                                              50, 270, 10, 60, false );
-	mpMenuDialog->addControl( mpLeftAdjust );
+	mpMenuDialog->addWidget( mpLeftAdjust );
 
     mpRightAdjust = new NumberControl( "Right",
                                              50, 270, 10, 60, false );
-	mpMenuDialog->addControl( mpRightAdjust );
+	mpMenuDialog->addWidget( mpRightAdjust );
 
     mpTopAdjust = new NumberControl( "Top",
                                              50, 150, 10, 60, false );
-	mpMenuDialog->addControl( mpTopAdjust );
+	mpMenuDialog->addWidget( mpTopAdjust );
 
     mpBottomAdjust = new NumberControl( "Bottom",
                                              50, 150, 10, 60, false );
-	mpMenuDialog->addControl( mpBottomAdjust );
+	mpMenuDialog->addWidget( mpBottomAdjust );
 
     mpSpeedAdjust = new NumberControl( "Speed",
                                              1, 50, 1, 25, false );
-	mpMenuDialog->addControl( mpSpeedAdjust );
+	mpMenuDialog->addWidget( mpSpeedAdjust );
 }
 
 

@@ -31,7 +31,7 @@ CGUINumberControl::CGUINumberControl(const std::string& text,
                                       const int fontid,
                                       const bool slider,
                                       const Style style) :
-GsControlsManager(rect, style),
+GsWidgetsManager(rect, style),
 mValue(value),
 mSlider(slider),
 mStartValue(startValue),
@@ -41,23 +41,23 @@ mDeltaValue(deltaValue)
     mFontID = fontid;
 
     mpLeftButton =
-            addControl(new GsButton("<",
+            addWidget(new GsButton("<",
                                 GsRect<float>(0.0f, 0.0f, 0.1f, 1.0f),
                                 [&]{this->decrement();},
                                 style));
 
     mpCtrlName =
-            addControl(new CGUIText(text,
+            addWidget(new CGUIText(text,
                                 GsRect<float>(0.1f, 0.0f, 0.4f, 1.0f),
                                     style));
     mpCtrlValue =
-            addControl(new CGUIText("?",
+            addWidget(new CGUIText("?",
                                 GsRect<float>(0.5f, 0.0f, 0.4f, 1.0f),
                                     style));
 
 
     mpRightButton =
-            addControl(new GsButton(">",
+            addWidget(new GsButton(">",
                                 GsRect<float>(0.9f, 0.0f, 0.1f, 1.0f),
                                 [&]{this->increment();},
                                 style));
@@ -120,7 +120,7 @@ void CGUINumberControl::setSelection( const int value )
 
 void CGUINumberControl::processLogic()
 {
-    GsControlsManager::processLogic();
+    GsWidgetsManager::processLogic();
     /*
 
     GsPointingState &pointingState = gPointDevice.mPointingState;
@@ -272,7 +272,7 @@ void CGUINumberControl::processRender(const GsRect<float> &rectDispCoordFloat)
     GsWeakSurface blitsfc(gVideoDriver.getBlitSurface());
 
     // Transform to the display coordinates
-    auto displayRect = mRect;
+    auto displayRect = getRect();
     displayRect.transform(rectDispCoordFloat);
 
     if(mHovered)
@@ -281,7 +281,7 @@ void CGUINumberControl::processRender(const GsRect<float> &rectDispCoordFloat)
     }
 
 
-    for(auto &obj : mControlList)
+    for(auto &obj : mWidgetList)
     {
         obj->processRender(displayRect);
     }

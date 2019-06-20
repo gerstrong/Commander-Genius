@@ -64,7 +64,7 @@ void CGUIBanner::processRender(const GsRect<float> &RectDispCoordFloat)
 
 #if defined(USE_SDL_TTF)
 
-    GsRect<float> displayRect = mRect;
+    GsRect<float> displayRect = getRect();
     displayRect.transform(RectDispCoordFloat);
 
     updateTTFTextSfc(displayRect);

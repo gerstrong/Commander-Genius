@@ -35,7 +35,7 @@ GameMenu(GsRect<float>(0.1f, 0.0f, 0.8f, 1.0f), style )
         if(i < StateFileList.size())
             text = StateFileList.at(i);
 
-        mpMenuDialog->addControl( new InputText(
+        mpMenuDialog->addWidget( new InputText(
                                       text,
                                       GsRect<float>(
                                           0.0f, 0.1f+(i*0.1f), 0.7f, 0.1f),
@@ -55,7 +55,7 @@ void CSaveMenu::refresh()
     std::vector<std::string> StateFileList;
     gSaveGameController.readSlotList(StateFileList);
 
-    std::list< std::shared_ptr<GsControl> > &list =
+    auto &list =
             mpMenuDialog->getControlList();
 
     auto itCtrl = list.begin();
@@ -68,7 +68,7 @@ void CSaveMenu::refresh()
         if(i < StateFileList.size())
             text = StateFileList.at(i);
 
-        std::shared_ptr<GsControl> &ctrl = *itCtrl;
+        auto &ctrl = *itCtrl;
         InputText *input = dynamic_cast<InputText*>( ctrl.get() );
 
         input->setText(text);
@@ -79,7 +79,7 @@ void CSaveMenu::refresh()
 
 void CSaveMenu::ponder(const float)
 {
-    InputText *pInput = dynamic_cast<InputText*>(mpMenuDialog->CurrentControl());
+    InputText *pInput = dynamic_cast<InputText*>(mpMenuDialog->CurrentWidget());
 
     int minIC = IC_LEFT;
 
@@ -102,7 +102,7 @@ void CSaveMenu::ponder(const float)
     }
 #else
 
-    std::list< std::shared_ptr<GsControl> > &list =
+    auto &list =
             mpMenuDialog->getControlList();
 
     auto itCtrl = list.begin();
@@ -110,7 +110,7 @@ void CSaveMenu::ponder(const float)
 
     for(int i=0 ; i<8 ; i++)
     {
-        std::shared_ptr<GsControl> &ctrl = *itCtrl;
+        auto &ctrl = *itCtrl;
         InputText *input = dynamic_cast<InputText*>( ctrl.get() );
 
         if(input->isPressed())
@@ -134,7 +134,7 @@ void CSaveMenu::ponder(const float)
 
 void CSaveMenu::sendEvent(std::shared_ptr<CEvent> &command)
 {
-    InputText *pInput = dynamic_cast<InputText*>(mpMenuDialog->CurrentControl());
+    InputText *pInput = dynamic_cast<InputText*>(mpMenuDialog->CurrentWidget());
 
 	// Before all events are sent to the dialog which handles selection catch some specific events
 	// required for the saving process.
@@ -183,7 +183,7 @@ void CSaveMenu::sendEvent(std::shared_ptr<CEvent> &command)
 
 void CSaveMenu::release()
 {
-    InputText *pInput = dynamic_cast<InputText*>(mpMenuDialog->CurrentControl());
+    InputText *pInput = dynamic_cast<InputText*>(mpMenuDialog->CurrentWidget());
 
     if(pInput)
     {

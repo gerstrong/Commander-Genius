@@ -20,16 +20,12 @@ const int BLEND_SPEED = 16;
 
 int GsControl::mTwirliconID;
 
-unsigned int GsControl::mNumGsControls = 0;
 
 GsControl::GsControl(const Style style,
                      const GsRect<float> &rect) :
-mRect(rect),
+GsWidget(rect),
 mStyle(style)
 {
-    mId = mNumGsControls;
-    mNumGsControls++;
-
     if(style == GsControl::GALAXY)
         mFontID = 1;
 }
@@ -138,7 +134,7 @@ void GsControl::processPointingState(const GsRect<float> &rect)
 
 void GsControl::processPointingStateRel(const GsRect<float> &rect)
 {
-    const auto absRect = rect.transformed(mRect);
+    const auto absRect = rect.transformed(getRect());
     processPointingState(absRect);
 }
 
@@ -149,7 +145,7 @@ void GsControl::drawTwirl( const SDL_Rect& lRect )
     GsWeakSurface blit(gVideoDriver.getBlitSurface());
 
 	// Now lets draw the text of the list control
-    GsFontLegacy &Font = gGraphics.getFont(mFontID);
+    GsFontLegacy &Font = gGraphics.getFontLegacy(mFontID);
 
 	if( gTimer.HasTimeElapsed(100) )
 	{

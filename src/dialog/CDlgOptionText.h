@@ -23,8 +23,9 @@ public:
 	Uint8 m_FontMapID;
 	std::string	m_text;
 
+    /*
 private:
-	bool m_selected;
+    bool m_selected;*/
 };
 
 #endif /* CDLGOPTIONTEXT_H_ */

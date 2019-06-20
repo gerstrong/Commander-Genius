@@ -20,9 +20,9 @@
 #include "GsControl.h"
 #include "GsBitmapBox.h"
 
-#include "GsControlsManager.h"
+#include "GsWidgetsManager.h"
 
-class CGUIDialog : public GsControlsManager
+class CGUIDialog : public GsWidgetsManager
 {    
 
 public:
@@ -57,8 +57,11 @@ public:
 	// processes the whole rendering of the Dialog
     void processRendering(SDL_Surface*);
 
-	void setRect(const GsRect<float> &rect);
-	void setPosition(const float x, const float y);
+    void setRect(const GsRect<float> &rect)
+    {
+        GsWidget::setRect(rect);
+    }
+
 
 protected:
 

@@ -156,7 +156,7 @@ void GsSprite::generateSprite( const int points )
 
     mSurface.createRGBSurface(rect);
 
-	GsFontLegacy &smallFont = gGraphics.getFont(2);
+	GsFontLegacy &smallFont = gGraphics.getFontLegacy(2);
 
 	// Create Text Borders TODO: Make this code to draw better looking fonts
     smallFont.drawFont( mSurface, pointStr,  0, 1, false );

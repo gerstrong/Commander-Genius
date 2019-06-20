@@ -2,7 +2,7 @@
 #define GSFRAME_H
 
 #include "GsControl.h"
-#include "GsControlsManager.h"
+#include "GsWidgetsManager.h"
 #include <base/utils/Color.h>
 #include <list>
 
@@ -13,7 +13,7 @@
  *        The coordinates are all defined in relation to the Framesize
  */
 
-class GsFrame : public GsControlsManager
+class GsFrame : public GsWidgetsManager
 {
 
 public:

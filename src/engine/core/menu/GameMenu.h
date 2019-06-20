@@ -20,7 +20,7 @@ public:
             mpMenuDialog->setRect(dlgRect);
 
             mpReturnButton =
-                mpMenuDialog->addControl( new GameButton( "close",
+                mpMenuDialog->addWidget( new GameButton( "close",
                                                       new CloseMenuEvent(),
                                                       style) );
 
@@ -40,7 +40,7 @@ public:
                                      0.08f/dlgRect.dim.y);
 
             mpReturnButton =
-            mpMenuDialog->addControl( new GameButton( "close",
+            mpMenuDialog->addWidget( new GameButton( "close",
                                                     buttonRect,
                                                     new CloseMenuEvent(),
                                                     GsControl::Style::VORTICON) );
@@ -50,7 +50,7 @@ public:
             const auto localRect = mpMenuDialog->getRect();
 
             mpReturnButton =
-                mpMenuDialog->addControl(
+                mpMenuDialog->addWidget(
                         new GsButton( "x",
                                       GsRect<float>(-0.05f, -0.05f,
                                                     0.06f/localRect.dim.x,

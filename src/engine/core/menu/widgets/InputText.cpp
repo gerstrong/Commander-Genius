@@ -14,7 +14,7 @@ void InputText::processRender(const GsRect<float> &RectDispCoordFloat)
             return;
 
         // Transform to the display coordinates
-        GsRect<float> displayRect = mRect;
+        GsRect<float> displayRect = getRect();
         displayRect.transform(RectDispCoordFloat);
         SDL_Rect lRect = displayRect.SDLRect();
 
@@ -22,7 +22,7 @@ void InputText::processRender(const GsRect<float> &RectDispCoordFloat)
         GsWeakSurface blit(gVideoDriver.getBlitSurface());
 
         // Now lets draw the text of the list control
-        auto &Font = gGraphics.getFont(mFontID);
+        auto &Font = gGraphics.getFontLegacy(mFontID);
 
         const Uint32 oldcolor = Font.getFGColor();
 
@@ -52,14 +52,14 @@ void InputText::processRender(const GsRect<float> &RectDispCoordFloat)
             return;
 
         // Transform to the display coordinates
-        GsRect<float> displayRect = mRect;
+        GsRect<float> displayRect = getRect();
         displayRect.transform(RectDispCoordFloat);
         SDL_Rect lRect = displayRect.SDLRect();
 
         SDL_Surface *blitsfc = gVideoDriver.getBlitSurface();
 
         // Now lets draw the text of the list control
-        auto &Font = gGraphics.getFont(mFontID);
+        auto &Font = gGraphics.getFontLegacy(mFontID);
 
         Font.drawFont( blitsfc, getInputString(), lRect.x+24, lRect.y, false );
 
@@ -68,14 +68,14 @@ void InputText::processRender(const GsRect<float> &RectDispCoordFloat)
     else
     {
         // Transform to the display coordinates
-        GsRect<float> displayRect = mRect;
+        GsRect<float> displayRect = getRect();
         displayRect.transform(RectDispCoordFloat);
         SDL_Rect lRect = displayRect.SDLRect();
 
         SDL_Surface *blitsfc = gVideoDriver.getBlitSurface();
 
         // Now lets draw the text of the list control
-        auto &Font = gGraphics.getFont(mFontID);
+        auto &Font = gGraphics.getFontLegacy(mFontID);
 
         Font.drawFont( blitsfc, getInputString(), lRect.x+24, lRect.y, false );
     }

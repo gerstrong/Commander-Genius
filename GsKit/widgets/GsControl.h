@@ -5,15 +5,18 @@
  *      Author: gerstrong
  *
  *  Base Class for any Type of Control
+ *  Control is a widget that allows more interaction with keyboard
+ *  mouse, touch, gestures and joystick
  */
 
 #ifndef GsControl_H_
 #define GsControl_H_
 
 #include <base/InputEvents.h>
-#include <base/utils/Geometry.h>
 
-class GsControl
+#include "GsWidget.h"
+
+class GsControl : public GsWidget
 {
 public:
 	enum Style
@@ -33,36 +36,15 @@ public:
     
     GsControl(const Style style);
     
-    virtual ~GsControl();
-
-	virtual void processLogic() = 0;
+    virtual ~GsControl();	
 
     void processBlendEffects();
 
-
-    void processPointingState()
-    {
-        //processPointingState(mRect);
-    }
+    void processPointingState() {}
 
     void processPointingState(const GsRect<float> &rect);
 
     virtual void processPointingStateRel(const GsRect<float> &rect);
-
-    virtual void processRender(const GsRect<float> &RectDispCoordFloat) = 0;
-
-    virtual void processRender(const GsRect<float> &,
-                               const GsRect<float> &) {}
-
-    virtual void updateGraphics() {}
-
-
-    void setRect( const GsRect<float>& rect )
-	{	mRect = rect;	}
-
-    GsRect<float> getRect() const
-    {   return mRect;    }
-
 
     void enable( const bool value )
     {	mEnabled = value;	}
@@ -94,11 +76,6 @@ public:
 
 	void drawBlinker( const SDL_Rect& lRect );
 
-    unsigned int getId() const
-    {
-        return mId;
-    }
-
     void enableBlinker(const bool value)
     {
         mDrawBlinker = value;
@@ -123,13 +100,12 @@ public:
 
 protected:
 
-    // The relative rect describes the rect which is normally tied to its parent.
-    GsRect<float> mRect;
-
 
     bool mEnabled = true;
     
 	int mFontID = 0;
+
+
 
     // For mouse/touch we have those
 	bool mHovered  = false;
@@ -138,6 +114,8 @@ protected:
 
     // This is needed for gamepad/keyboard input
     bool mSelected = false;
+
+
 
 	static int mTwirliconID;
 
@@ -157,10 +135,6 @@ protected:
     static const bool mHoverTriggers = false;
 #endif
 
-private:
-
-    static unsigned int mNumGsControls;
-    unsigned int mId;
 };
 
 

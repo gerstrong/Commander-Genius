@@ -3,7 +3,7 @@
 #include <base/video/CVideoDriver.h>
 
 GsFrame::GsFrame(const GsRect<float> &rect) :
-GsControlsManager(rect)
+GsWidgetsManager(rect)
 {
 
 }
@@ -25,7 +25,7 @@ void GsFrame::processLogic()
         }
     }
 
-    for(auto &obj : mControlList)
+    for(auto &obj : mWidgetList)
     {
         obj->processLogic();
     }
@@ -37,14 +37,14 @@ void GsFrame::processRender(const GsRect<float> &rectDispCoordFloat)
     GsWeakSurface blitsfc(gVideoDriver.getBlitSurface());
 
     // Transform to the display coordinates
-    auto displayRect = mRect;
+    auto displayRect = getRect();
 
     displayRect.transform(rectDispCoordFloat);
     auto lRect = displayRect.SDLRect();
 
     blitsfc.fill(lRect, mBackgroundColor);
 
-    for(auto &obj : mControlList)
+    for(auto &obj : mWidgetList)
     {
         obj->processRender(rectDispCoordFloat);
     }
@@ -57,12 +57,12 @@ void GsFrame::processRender(const GsRect<float> &backRect,
     GsWeakSurface blitsfc(gVideoDriver.getBlitSurface());
 
     // Transform this object to the display coordinates
-    auto objBackRect = backRect.transformed(mRect);
+    auto objBackRect = backRect.transformed(getRect());
     auto objFrontRect = objBackRect.clipped(frontRect);
 
     blitsfc.fill(objFrontRect.SDLRect(), mBackgroundColor);
 
-    for(auto &obj : mControlList)
+    for(auto &obj : mWidgetList)
     {
         obj->processRender(objBackRect,
                            objFrontRect);

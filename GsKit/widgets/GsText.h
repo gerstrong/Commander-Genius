@@ -14,7 +14,7 @@
 #include <map>
 #include <memory>
 
-#include "GsControl.h"
+#include "GsWidget.h"
 
 #include <graphics/GsTexture.h>
 #include <graphics/GsSurface.h>
@@ -24,24 +24,25 @@
 #endif
 
 
-class CGUIText : public GsControl
+class CGUIText : public GsWidget
 {
 public:
 
-    CGUIText(const std::string& text,
+    CGUIText(const std::string &text,
              const GsRect<float> &rect);
 
-    CGUIText(const std::string& text,
+    CGUIText(const std::string &text,
              const GsRect<float> &rect,
-             const GsControl::Style style);
+             const int fontId);
 
     void setupButtonSurface(const std::string& text = "");
 
 	virtual void setText(const std::string& text);
 
     void setTextColor(const GsColor &color);
-
     void setTextColorHovered(const GsColor &color);
+    void setTextColorPressed(const GsColor &color);
+    void setTextColorSelected(const GsColor &color);
 
 
 	virtual void processLogic();
@@ -73,14 +74,17 @@ protected:
 
     GsColor mTextColor;
     GsColor mTextColorHovered;
+    GsColor mTextColorPressed;
+    GsColor mTextColorSelected;
 
     GsColor mTextColorCur;
 	
 private:
+    /*
 	std::unique_ptr<SDL_Surface> mpTextDarkSfc;
 	std::unique_ptr<SDL_Surface> mpTextLightSfc;
 	std::unique_ptr<SDL_Surface> mpTextDisabledSfc;
-
+*/
 
     /// Automatic horizontal scrolling in case the text is too big
     float mScrollPosMax = 0.0f;
@@ -105,6 +109,7 @@ private:
         RIGHT
     } mScrollDir = ScrollDir::NONE;        
 
+    const int mFontId = -1;
 };
 
 #endif /* CGUITEXT_H_ */

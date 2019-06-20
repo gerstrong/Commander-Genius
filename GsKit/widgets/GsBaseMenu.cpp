@@ -31,7 +31,7 @@ void CBaseMenu::setMenuLabel(const std::string &label)
 {         
     GsRect<float> rect(-0.08f, -0.08f, 1.0f, 1.0f);
     CGUIBitmap* control = new CGUIBitmap(label);
-    mpMenuDialog->addControl(control, rect);
+    mpMenuDialog->addWidget(control, rect);
     control->enable(false);
 }
 

@@ -38,7 +38,7 @@ public:
                 Button *button = new Button( playerStr, new _T(i) );
 
                 mpButtonList.push_back( button );
-                mpMenuDialog->addControl( mpButtonList.back() );
+                mpMenuDialog->addWidget( mpButtonList.back() );
             }
     }
 
@@ -53,12 +53,12 @@ public:
     CDifficultySelection() :
         VorticonMenu( GsRect<float>(0.25f, 0.2f, 0.5f, 0.5f) )
     {
-        mpMenuDialog->addControl( new Button( "Easy", new StartNewGameEvent(EASY) ) );
-        mpMenuDialog->addControl( new Button( "Normal", new StartNewGameEvent(NORMAL) ) );
-        mpMenuDialog->addControl( new Button( "Hard", new StartNewGameEvent(HARD) ) );
-        mpMenuDialog->addControl( new Button( "Expert", new StartNewGameEvent(EXPERT) ) );
-        mpMenuDialog->addControl( new Button( "Ninja", new StartNewGameEvent(NINJA) ) );
-        mpMenuDialog->addControl( new Button( "Elite", new StartNewGameEvent(ELITE) ) );
+        mpMenuDialog->addWidget( new Button( "Easy", new StartNewGameEvent(EASY) ) );
+        mpMenuDialog->addWidget( new Button( "Normal", new StartNewGameEvent(NORMAL) ) );
+        mpMenuDialog->addWidget( new Button( "Hard", new StartNewGameEvent(HARD) ) );
+        mpMenuDialog->addWidget( new Button( "Expert", new StartNewGameEvent(EXPERT) ) );
+        mpMenuDialog->addWidget( new Button( "Ninja", new StartNewGameEvent(NINJA) ) );
+        mpMenuDialog->addWidget( new Button( "Elite", new StartNewGameEvent(ELITE) ) );
 
         mpMenuDialog->setSelection(1);
     }

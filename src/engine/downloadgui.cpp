@@ -55,7 +55,7 @@ void CGameLauncher::verifyGameStore()
         GsButton *downloadBtn = new GsButton( "+ More",
                                               GsRect<float>(0.125f, 0.865f, 0.25f, 0.07f),
                                               new GMDownloadDlgOpen() );
-        mLauncherDialog.addControl( downloadBtn );
+        mLauncherDialog.addWidget( downloadBtn );
     }
 
     mGameCatalogue = gameDownloader.getGameCatalogue();
@@ -166,7 +166,7 @@ void CGameLauncher::setupDownloadDialog()
 
     // Selection List
     mpGSSelList =
-            mpGameStoreDialog->addControl(
+            mpGameStoreDialog->addWidget(
                 new CGUITextSelectionList(
                           GsRect<float>(0.01f, 0.04f, 0.50f, 0.65f) ) );
 
@@ -187,19 +187,19 @@ void CGameLauncher::setupDownloadDialog()
 
     // Title
     mpDloadTitleText = std::dynamic_pointer_cast<CGUIText>(
-            mpGameStoreDialog->addControl(new CGUIText("Select your Game for Download",
+            mpGameStoreDialog->addWidget(new CGUIText("Select your Game for Download",
                                                        GsRect<float>(0.0f, 0.0f, 1.0f, 0.05f)))
                                                            );
 
     // Create an empty Bitmap control for the preview
     mpCurrentDownloadBmp =
-            mpGameStoreDialog->addControl(
+            mpGameStoreDialog->addWidget(
                 new CGUIBitmap(GsRect<float>(0.51f, 0.04f, 0.48f, 0.38f)));
 
 
     // Description Text Box
     mpDDescriptionText = std::dynamic_pointer_cast<CGUIText>(
-            mpGameStoreDialog->addControl(new CGUIText("Description",
+            mpGameStoreDialog->addWidget(new CGUIText("Description",
                                                        GsRect<float>(0.01f, 0.70f, 0.98f, 0.1f))
                                           ) );
 
@@ -207,17 +207,17 @@ void CGameLauncher::setupDownloadDialog()
 
     // Progress Bar
     mpDloadProgressCtrl = std::dynamic_pointer_cast<GsProgressBar>(
-            mpGameStoreDialog->addControl(new GsProgressBar(mDownloadProgress,
+            mpGameStoreDialog->addWidget(new GsProgressBar(mDownloadProgress,
                                                             mDownloadErrorCode),
                                   GsRect<float>(0.1f, 0.8f, 0.8f, 0.05f)) );
 
     // Bottom Controls
     mpDloadBack = std::dynamic_pointer_cast<GsButton>(
-            mpGameStoreDialog->addControl( new GsButton( "< Back", new CloseBoxEvent() ),
+            mpGameStoreDialog->addWidget( new GsButton( "< Back", new CloseBoxEvent() ),
                                            GsRect<float>(0.100f, 0.865f, 0.25f, 0.07f) ) );
 
     mpDloadCancel = std::dynamic_pointer_cast<GsButton>(
-            mpGameStoreDialog->addControl( new GsButton( "Cancel", new CancelDownloadEvent(),
+            mpGameStoreDialog->addWidget( new GsButton( "Cancel", new CancelDownloadEvent(),
                                                          GsControl::Style::NONE,
                                                          1.0f, 0.675f, 0.675f) ,
                                            GsRect<float>(0.375f, 0.865f, 0.25f, 0.07f) ) );
@@ -226,7 +226,7 @@ void CGameLauncher::setupDownloadDialog()
     mpDloadCancel->enable(false);
 
     mpDloadDownload = std::dynamic_pointer_cast<GsButton>(
-            mpGameStoreDialog->addControl( new GsButton( "Download", new GameStorePullGame() ),
+            mpGameStoreDialog->addWidget( new GsButton( "Download", new GameStorePullGame() ),
                                             GsRect<float>(0.650f, 0.865f, 0.25f, 0.07f) ) );
 
 

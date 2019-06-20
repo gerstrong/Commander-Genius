@@ -29,10 +29,10 @@ GameMenu(GsRect<float>(0.15f, 0.20f, 0.65f, 0.55f), style )
 #endif
 {
     mpShowCursorSwitch = new Switch("Cursor", style);
-    mpMenuDialog->addControl( mpShowCursorSwitch );
+    mpMenuDialog->addWidget( mpShowCursorSwitch );
 
     mpTiltScreenSwitch = new Switch("TiltedScr", style);
-    mpMenuDialog->addControl( mpTiltScreenSwitch );
+    mpMenuDialog->addWidget( mpTiltScreenSwitch );
     
 	// Create the fps config selection control
 	std::list<std::string>	List;
@@ -42,13 +42,13 @@ GameMenu(GsRect<float>(0.15f, 0.20f, 0.65f, 0.55f), style )
     }
 
     mpFPSSelection =
-            mpMenuDialog->addControl(
+            mpMenuDialog->addWidget(
                 new NumberControl( "FPS", 10, 120, 10, 60,
                                    false, style) );
 
 
     mpFrameSkip = new Switch( "FrameSkip", style );
-    mpMenuDialog->addControl( mpFrameSkip );
+    mpMenuDialog->addWidget( mpFrameSkip );
 
 
 #if !defined(EMBEDDED)
@@ -56,23 +56,23 @@ GameMenu(GsRect<float>(0.15f, 0.20f, 0.65f, 0.55f), style )
     mpGameResSelection = new ComboSelection( "GameRes",
                                              filledStrList(1, "?x?"),
                                              style );
-    mpMenuDialog->addControl( mpGameResSelection );
+    mpMenuDialog->addWidget( mpGameResSelection );
 	
 #endif
 
 #ifdef VIRTUALPAD
     mpVPadSwitch  = new Switch( "VirtPad", style );
-    mpMenuDialog->addControl( mpVPadSwitch, style );
+    mpMenuDialog->addWidget( mpVPadSwitch, style );
 #endif
 
     mpBorderColorSwitch = new Switch( "Brdr Color", style );
-    mpMenuDialog->addControl( mpBorderColorSwitch );
+    mpMenuDialog->addWidget( mpBorderColorSwitch );
 
     mpHorizBordersSelection = new NumberControl( "H-Brdr",
                                                  0, 80, 5, 0,
                                                  false,
                                                  style);
-    mpMenuDialog->addControl( mpHorizBordersSelection );
+    mpMenuDialog->addWidget( mpHorizBordersSelection );
 
 	setMenuLabel("OPTIONSMENULABEL");
 

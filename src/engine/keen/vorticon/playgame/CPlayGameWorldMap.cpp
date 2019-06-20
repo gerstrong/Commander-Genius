@@ -212,7 +212,7 @@ void CPlayGameVorticon::showKeensLeft()
 	{
 		int x,y,i,p;
 		int boxY, boxH;
-		auto &Font = gGraphics.getFont(1);
+		auto &Font = gGraphics.getFontLegacy(1);
 
 		const unsigned int KEENSLEFT_W = 24;
 		const unsigned int KEENSLEFT_H = 4;

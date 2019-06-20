@@ -14,11 +14,11 @@
 #include <set>
 #include <graphics/GsSurface.h>
 
-#include "GsControlsManager.h"
+#include "GsWidgetsManager.h"
 #include "GsButton.h"
 #include "GsText.h"
 
-class CGUIComboSelection : public GsControlsManager
+class CGUIComboSelection : public GsWidgetsManager
 {
 public:
 
@@ -45,8 +45,9 @@ public:
     virtual void processLogic() override;
 
     void setTextColor(const GsColor &color);
-
     void setTextColorHovered(const GsColor &color);
+    void setTextColorPressed(const GsColor &color);
+    void setTextColorSelected(const GsColor &color);
 
     void enableButtonBorders(const bool value);
 

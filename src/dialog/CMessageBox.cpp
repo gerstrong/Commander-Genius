@@ -45,24 +45,31 @@ m_mustclose(false)
 	// They transform the Message Box the way the text fits perfectly in.
     const float screenW = gVideoDriver.getGameResolution().dim.x;
     const float screenH = gVideoDriver.getGameResolution().dim.y;
-    mRect.dim.x = static_cast<float>( (mpTextCtrl->mTextDim.dim.x+4)*8 )/screenW;
-    mRect.dim.y = static_cast<float>( (mpTextCtrl->mTextDim.dim.y+2)*8 )/screenH;
-    mRect.pos.x = (1.0f - mRect.dim.x)*0.5f;
-    mRect.pos.y = (1.0f - mRect.dim.y)*0.5f;
+
+    auto rect = getRect();
+
+    rect.dim.x = static_cast<float>( (mpTextCtrl->mTextDim.dim.x+4)*8 )/screenW;
+    rect.dim.y = static_cast<float>( (mpTextCtrl->mTextDim.dim.y+2)*8 )/screenH;
+    rect.pos.x = (1.0f - rect.dim.x)*0.5f;
+    rect.pos.y = (1.0f - rect.dim.y)*0.5f;
 
 	// now let's center that long text...
     GsRect<float> textRect;
-    textRect.dim.x = ((mpTextCtrl->mTextDim.dim.x*8)/screenW) / mRect.dim.x;
-    textRect.dim.y = ((mpTextCtrl->mTextDim.dim.y*8)/screenH) / mRect.dim.y;
-    textRect.pos.x = (2.0f*textRect.dim.x)/(static_cast<float>(mpTextCtrl->mTextDim.dim.x));
-    textRect.pos.y = (1.0f*textRect.dim.y)/(static_cast<float>(mpTextCtrl->mTextDim.dim.y));
+    textRect.dim.x = ((mpTextCtrl->mTextDim.dim.x*8)/screenW) / rect.dim.x;
+    textRect.dim.y = ((mpTextCtrl->mTextDim.dim.y*8)/screenH) / rect.dim.y;
+    textRect.pos.x = (2.0f*textRect.dim.x)/
+                        (static_cast<float>(mpTextCtrl->mTextDim.dim.x));
+    textRect.pos.y = (1.0f*textRect.dim.y)/
+                         (static_cast<float>(mpTextCtrl->mTextDim.dim.y));
 
 	if(lower) // if lower is enabled, try to snap the Dlg to the bottom off the screen.
 	{
-        mRect.pos.y = 1.0f - mRect.dim.y;
+        rect.pos.y = 1.0f - rect.dim.y;
 	}
 
-    addControl( mpTextCtrl, textRect );
+    setRect(rect);
+
+    addWidget( mpTextCtrl, textRect );
 
     initEmptyBackground();
 }

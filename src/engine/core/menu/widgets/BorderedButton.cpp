@@ -25,7 +25,7 @@ GameButton(text, rect, ev, style)
 void BorderedButton::processRender(const GsRect<float> &rectDispCoordFloat)
 {
     // Transform to the display coordinates
-    GsRect<float> displayRect = mRect;
+    GsRect<float> displayRect = getRect();
 
     displayRect.transform(rectDispCoordFloat);
     SDL_Rect lRect = displayRect.SDLRect();

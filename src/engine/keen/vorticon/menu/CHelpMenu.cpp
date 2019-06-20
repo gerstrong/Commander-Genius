@@ -27,22 +27,22 @@ VorticonMenu( GsRect<float>(0.25f, 0.24f, 0.5f, 0.5f) )
 
 	// Create the Menu Dialog and entries
 
-    mpMenuDialog->addControl(new Button( "The Game",
+    mpMenuDialog->addWidget(new Button( "The Game",
 						new StartInfoSceneEvent( new CHelp("Game") ) ) );
 
-    mpMenuDialog->addControl(new Button( "The Story",
+    mpMenuDialog->addWidget(new Button( "The Story",
 						new StartInfoSceneEvent( new CStory ) ) );
 
-    mpMenuDialog->addControl(new Button( "Ordering Info",
+    mpMenuDialog->addWidget(new Button( "Ordering Info",
 						new StartInfoSceneEvent( new COrderingInfo ) ) );
 
-    mpMenuDialog->addControl(new Button( "About ID",
+    mpMenuDialog->addWidget(new Button( "About ID",
 						new StartInfoSceneEvent( new CAbout("ID") ) ) );
 
-    mpMenuDialog->addControl(new Button( "About CG",
+    mpMenuDialog->addWidget(new Button( "About CG",
 						new StartInfoSceneEvent( new CAbout("CG") ) ) );
 
-    mpMenuDialog->addControl(new Button( "Credits",
+    mpMenuDialog->addWidget(new Button( "Credits",
 						new StartInfoSceneEvent( new CCredits() ) ) );
 	
 	std::string filename = "previews.ck";
@@ -51,7 +51,7 @@ VorticonMenu( GsRect<float>(0.25f, 0.24f, 0.5f, 0.5f) )
 
 	if( filename != "" )
 	{
-        mpMenuDialog->addControl(new Button( "Previews!",
+        mpMenuDialog->addWidget(new Button( "Previews!",
 					new StartInfoSceneEvent( new CPreviews() ) ) );
 		    
 	}	

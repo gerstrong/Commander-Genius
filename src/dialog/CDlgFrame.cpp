@@ -60,7 +60,7 @@ void CDlgFrame::setPos(const Uint32 x, const Uint32 y)
 
 void CDlgFrame::drawVorticonFrame(SDL_Surface *dst)
 {
-	auto &Font = gGraphics.getFont(1);
+	auto &Font = gGraphics.getFontLegacy(1);
 
 	// first draw the blank rect
 	int i, j;

@@ -22,6 +22,8 @@ CGUIComboSelection(text, GsRect<float>(0.0f,0.0f,1.0f,1.0f),
         mHoverTextColor = GsColor(0x66, 0xC6, 0x66);
         setTextColor(mNormalTextColor);
         setTextColorHovered(mHoverTextColor);
+        setTextColorPressed(GsColor(0x66, 0xF6, 0x66));
+        setTextColorSelected(GsColor(0xA6, 0xC6, 0x66));
     }
 
     if(mStyle == Style::VORTICON)
@@ -65,7 +67,7 @@ void ComboSelection::setSelection( const std::string& selectionText )
 void ComboSelection::processRender(const GsRect<float> &RectDispCoordFloat)
 {
     // Transform to the display coordinates
-    GsRect<float> displayRect = mRect;
+    GsRect<float> displayRect = getRect();
     displayRect.transform(RectDispCoordFloat);
     SDL_Rect lRect = displayRect.SDLRect();
     

@@ -17,7 +17,7 @@ GsButton(text, ev)
 
 void Button::setupButtonSurface(const std::string &)
 {
-    auto &Font = gGraphics.getFont(mFontID);
+    auto &Font = gGraphics.getFontLegacy(mFontID);
 
     Font.createTextSurface(mTextDarkSfc, "  " + mText, 38, 134, 38 );
     Font.createTextSurface(mTextLightSfc, "  " + mText, 84, 234, 84 );
@@ -32,13 +32,13 @@ void Button::drawVorticonStyle(SDL_Rect& lRect)
     // Now lets draw the text of the button
     if(mEnabled)
     {
-        auto &Font = gGraphics.getFont(mFontID);
+        auto &Font = gGraphics.getFontLegacy(mFontID);
         Font.drawFont( blitsfc, mText, lRect.x+24, lRect.y, false );
         drawTwirl(lRect);
     }
     else
     {
-        auto &Font = gGraphics.getFont(0);
+        auto &Font = gGraphics.getFontLegacy(0);
         Font.drawFont( blitsfc, mText, lRect.x+24, lRect.y, true );
     }
 }
@@ -47,7 +47,7 @@ void Button::drawVorticonStyle(SDL_Rect& lRect)
 void Button::processRender(const GsRect<float> &RectDispCoordFloat)
 {
     // Transform to the display coordinates
-    GsRect<float> displayRect = mRect;
+    GsRect<float> displayRect = getRect();
     displayRect.transform(RectDispCoordFloat);
     SDL_Rect lRect = displayRect.SDLRect();
 

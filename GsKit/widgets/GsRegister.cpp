@@ -60,7 +60,7 @@ void GsRegister::processRender(const GsRect<float> &rectDispCoordFloat)
     GsWeakSurface blitsfc(gVideoDriver.getBlitSurface());
 
     // Transform to the display coordinates
-    const GsRect<float> frontRect = rectDispCoordFloat.transformed(mRect);
+    const GsRect<float> frontRect = rectDispCoordFloat.transformed(getRect());
 
     // Render Background
     blitsfc.fill(frontRect.SDLRect(), mBackgroundColor);
@@ -96,8 +96,8 @@ void GsRegister::processRender(const GsRect<float> &srcRectFloat,
     GsWeakSurface blitsfc(gVideoDriver.getBlitSurface());
 
     // Transform to the display coordinates
-    GsRect<float> displaySrcRect = mRect;
-    GsRect<float> displayDstRect = mRect;
+    GsRect<float> displaySrcRect = getRect();
+    GsRect<float> displayDstRect = getRect();
     displaySrcRect.transform(srcRectFloat);
     displayDstRect.transform(dstRectFloat);
 
@@ -126,7 +126,7 @@ void GsRegister::processRender(const GsRect<float> &srcRectFloat,
 
 void GsRegister::processPointingStateRel(const GsRect<float> &rect)
 {
-    const auto absRect = rect.transformed(mRect);
+    const auto absRect = rect.transformed(getRect());
     processPointingState(absRect);
 
     if(mpMenu)
@@ -167,7 +167,7 @@ void GsRegister::addPage(const GsColor &itemColor)
 
     auto *newFrame = new GsFrame(GsRect<float>(0.0f, itemPos,
                                          1.0f, itemWidth));
-    mpMenu->addControl(newFrame);
+    mpMenu->addWidget(newFrame);
 
     SwitchPageFctr pageSw(*this, newPage);
 

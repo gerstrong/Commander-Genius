@@ -21,7 +21,7 @@ const unsigned int MAX_STEPS = 20;
 
 CGUIDialog::CGUIDialog(const GsRect<float> &SrGsRect,
                        const FXKind fx) :
-GsControlsManager(SrGsRect),
+GsWidgetsManager(SrGsRect),
 mFXSetup(fx)
 {
     if( mFXSetup == FXKind::EXPAND )
@@ -41,7 +41,7 @@ void CGUIDialog::updateGraphics()
 */
 /*
 std::shared_ptr<GsControl>
-CGUIDialog::addControl( std::shared_ptr<GsControl> &newControl,
+CGUIDialog::addWidget( std::shared_ptr<GsControl> &newControl,
                         const GsRect<float>& RelRect )
 {
     GsRect<float> AbsRect = RelRect;
@@ -63,7 +63,7 @@ CGUIDialog::addControl( std::shared_ptr<GsControl> &newControl,
 */
 /*
 std::shared_ptr<GsControl> 
-CGUIDialog::addControl( std::unique_ptr<GsControl> &newControl )
+CGUIDialog::addWidget( std::unique_ptr<GsControl> &newControl )
 {    
     auto ctrlPtr = std::shared_ptr<GsControl>( move(newControl) );
 
@@ -82,20 +82,20 @@ CGUIDialog::addControl( std::unique_ptr<GsControl> &newControl )
 
 /*
 std::shared_ptr<GsControl> 
-CGUIDialog::addControl( GsControl *newControl,
+CGUIDialog::addWidget( GsControl *newControl,
                         const GsRect<float>& RelRect )
 {
     std::unique_ptr<GsControl> ctrl(newControl);
-    return addControl( ctrl, RelRect );
+    return addWidget( ctrl, RelRect );
 }
 */
 
 /*
 std::shared_ptr<GsControl> 
-CGUIDialog::addControl( GsControl *newControl )
+CGUIDialog::addWidget( GsControl *newControl )
 {
     std::unique_ptr<GsControl> ctrl(newControl);
-    return addControl(ctrl);
+    return addWidget(ctrl);
 }
 */
 
@@ -282,23 +282,11 @@ void CGUIDialog::fit()
 }
 */
 
-void CGUIDialog::setRect(const GsRect<float> &rect)
-{
-	mRect = rect;
-}
-
-
-void CGUIDialog::setPosition(const float x, const float y)
-{
-    mRect.pos.x = x;
-    mRect.pos.y = y;
-}
-
 
 
 void CGUIDialog::initEmptyBackground()
 {
-    const SDL_Rect lRect = gVideoDriver.toBlitRect(mRect);
+    const SDL_Rect lRect = gVideoDriver.toBlitRect(getRect());
 
     mBackgroundSfc.create(0, lRect.w, lRect.h, RES_BPP, 0, 0, 0, 0);
     mBackgroundSfc.fillRGB(230, 230, 230);
@@ -307,33 +295,33 @@ void CGUIDialog::initEmptyBackground()
 
 void CGUIDialog::drawBorderRect(SDL_Surface *backSfc, const SDL_Rect &Rect)
 {
-    GsFontLegacy &Font = gGraphics.getFont(1);
+    GsFontLegacy &Font = gGraphics.getFontLegacy(1);
     Font.drawCharacter( backSfc, 1, 0, 0 );
 
     for( int x=8 ; x<Rect.w-8 ; x+=8 )
     {
-        Font.drawCharacter( backSfc, 2, x, 0 );
+        Font.drawCharacter( backSfc, 2, Uint16(x), 0 );
     }
 
-    Font.drawCharacter( backSfc, 3, Rect.w-8, 0 );
+    Font.drawCharacter( backSfc, 3, Uint16(Rect.w-8), 0 );
 
     for( int x=8 ; x<Rect.w-8 ; x+=8 )
     {
-        Font.drawCharacter( backSfc, 7, x, Rect.h-8 );
+        Font.drawCharacter( backSfc, 7, Uint16(x), Uint16(Rect.h-8) );
     }
 
     for( int y=8 ; y<Rect.h-8 ; y+=8 )
     {
-        Font.drawCharacter( backSfc, 4, 0, y );
+        Font.drawCharacter( backSfc, 4, 0, Uint16(y) );
     }
 
     for( int y=8 ; y<Rect.h-8 ; y+=8 )
     {
-        Font.drawCharacter( backSfc, 5, Rect.w-8, y );
+        Font.drawCharacter( backSfc, 5, Uint16(Rect.w-8), Uint16(y) );
     }
 
-    Font.drawCharacter( backSfc, 6, 0, Rect.h-8 );
-    Font.drawCharacter( backSfc, 8, Rect.w-8, Rect.h-8 );
+    Font.drawCharacter( backSfc, 6, 0, Uint16(Rect.h-8) );
+    Font.drawCharacter( backSfc, 8, Uint16(Rect.w-8), Uint16(Rect.h-8) );
 }
 
 void CGUIDialog::processLogic()
@@ -362,7 +350,7 @@ void CGUIDialog::processLogic()
     CGUIInputText *pInputCtrl = nullptr;
     for( auto &it : getControlList() )
     {
-        GsControl *ctrl = it.get();
+        auto *ctrl = it.get();
         pInputCtrl = dynamic_cast<CGUIInputText*>(ctrl);
         if(pInputCtrl)
         {
@@ -372,7 +360,7 @@ void CGUIDialog::processLogic()
         }
     }
 
-    processPointingState(mRect);
+    processPointingState(getRect());
 
     if(pInputCtrl != nullptr)
     {
@@ -384,20 +372,23 @@ void CGUIDialog::processLogic()
     int sel = 0;
     for( auto &it : getControlList() )
     {
-        GsControl *ctrl = it.get();
+        auto *ctrl = it.get();
 
-        ctrl->processPointingStateRel(mRect);
+        //ctrl->processPointingStateRel(getRect());
         ctrl->processLogic();
 
+        /*
         if( dynamic_cast<GsButton*>(ctrl) ||
-                dynamic_cast<CGUIInputText*>(ctrl) )
+            dynamic_cast<CGUIInputText*>(ctrl) )
         {
             if( ctrl->isSelected() )
             {
-                setCurrentControl(ctrl);
+                setCurrentWidget(ctrl);
                 setSelection(sel);
             }
         }
+        */
+
         sel++;
     }
 
@@ -412,7 +403,8 @@ void CGUIDialog::processRendering()
 void CGUIDialog::processRender(const GsRect<float> &RectDispCoordFloat)
 {
     GsWeakSurface weakBlit(gVideoDriver.getBlitSurface());
-    SDL_Rect lRect = gVideoDriver.toBlitRect(mRect);
+    const auto rect = getRect();
+    SDL_Rect lRect = gVideoDriver.toBlitRect(rect);
 
     if(mBackgroundSfc)
     {        
@@ -441,19 +433,23 @@ void CGUIDialog::processRender(const GsRect<float> &RectDispCoordFloat)
                 mBackgroundSfc.blitTo(weakBlit, lRect);
             }
             else
-            {
-                GsRect<float> fxRect = mRect;
+            {                                
+                GsRect<float> fxRect = rect;
 
                 if( mFXhStep > 0 )
                 {
-                    fxRect.dim.x = (MAX_STEPS-static_cast<unsigned int>(mFXhStep))*(mRect.dim.x/float(MAX_STEPS));
-                    fxRect.pos.x = fxRect.pos.x + (mRect.dim.x-fxRect.dim.x)/2;
+                    fxRect.dim.x =
+                            (MAX_STEPS-static_cast<unsigned int>(mFXhStep))*
+                            (rect.dim.x/float(MAX_STEPS));
+                    fxRect.pos.x = fxRect.pos.x + (rect.dim.x-fxRect.dim.x)/2;
                 }
 
                 if( mFXvStep > 0 )
                 {
-                    fxRect.dim.y = (MAX_STEPS-static_cast<unsigned int>(mFXvStep))*(mRect.dim.y/float(MAX_STEPS));
-                    fxRect.pos.y = fxRect.pos.y + (mRect.dim.y-fxRect.dim.y)/2;
+                    fxRect.dim.y =
+                            (MAX_STEPS-static_cast<unsigned int>(mFXvStep))*
+                            (rect.dim.y/float(MAX_STEPS));
+                    fxRect.pos.y = fxRect.pos.y + (rect.dim.y-fxRect.dim.y)/2;
                 }
 
                 lRect = gVideoDriver.toBlitRect(fxRect);
@@ -485,7 +481,7 @@ void CGUIDialog::processRender(const GsRect<float> &RectDispCoordFloat)
     }
 
     
-    auto displayRect = mRect;
+    auto displayRect = rect;
     displayRect.transform(RectDispCoordFloat);
 
     for( auto &it : getControlList() )
@@ -496,7 +492,7 @@ void CGUIDialog::processRender(const GsRect<float> &RectDispCoordFloat)
     // If Dialog is disabled, make everthing within a bit darker.
     if(!mEnabled)
     {
-        const SDL_Rect lRect = gVideoDriver.toBlitRect(mRect);
+        const SDL_Rect lRect = gVideoDriver.toBlitRect(rect);
 
         // Not yet created, create one
         if(!mDarkOverlaySfc ||

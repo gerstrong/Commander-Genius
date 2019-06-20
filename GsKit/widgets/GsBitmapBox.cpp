@@ -91,7 +91,7 @@ void CGUIBitmap::processRender(const GsRect<float> &RectDispCoordFloat)
         return;
 
     // Transform to the display coordinates
-    auto displayRect = mRect;
+    auto displayRect = getRect();
 
     displayRect.transform(RectDispCoordFloat);
     auto lRect = displayRect.SDLRect();

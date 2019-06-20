@@ -52,7 +52,7 @@ GameMenu( GsRect<float>(0.1f, 0.0f, 0.8f, 1.0f),
                                              0.0f, 0.1f+(j*0.1f), 0.7f, 0.1f),
                                          new LoadGameSlotFunctorEvent(Uint32(j)),
                                          style));
-            mpMenuDialog->addControl(button);
+            mpMenuDialog->addWidget(button);
         }
         else
         {
@@ -61,7 +61,7 @@ GameMenu( GsRect<float>(0.1f, 0.0f, 0.8f, 1.0f),
                                      style) );
 
         }        
-        mpMenuDialog->addControl( button );
+        mpMenuDialog->addWidget( button );
 
         button->enable( false );
 	}
@@ -81,7 +81,7 @@ void CLoadMenu::refresh()
 
     Uint32 i=0;
 
-    std::list< std::shared_ptr<GsControl> > &list = mpMenuDialog->getControlList();
+    auto &list = mpMenuDialog->getControlList();
 
     auto itCtrl = list.begin();
     itCtrl++;
@@ -92,7 +92,7 @@ void CLoadMenu::refresh()
 
         if( !text.empty() )
         {
-            std::shared_ptr<GsControl> &ctrl = *itCtrl;
+            auto &ctrl = *itCtrl;
             GsButton *button = dynamic_cast<GsButton*>( ctrl.get() );
 
             button->setText(text);
@@ -104,7 +104,7 @@ void CLoadMenu::refresh()
 
     for( auto j = i ; j<8 ; j++ )
     {
-        std::shared_ptr<GsControl> &ctrl = *itCtrl;
+        auto &ctrl = *itCtrl;
         GsButton *button = dynamic_cast<GsButton*>( ctrl.get() );
 
         button->setText("Empty");

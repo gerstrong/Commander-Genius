@@ -80,10 +80,10 @@ mSelectedPlayer(selectedPlayer)
     GameButton *button;
 
     button = new GameButton( "Movement", new OpenMovementControlMenuEvent(mSelectedPlayer), style );
-	mpMenuDialog->addControl( button );
+	mpMenuDialog->addWidget( button );
 
     button = new GameButton( "Buttons", new OpenButtonsControlMenuEvent(mSelectedPlayer), style );
-	mpMenuDialog->addControl( button );
+	mpMenuDialog->addWidget( button );
 
     mpTwoButtonSwitch = new Switch( "Two Button Fire", style );
 	mpTwoButtonSwitch->enable(gInput.getTwoButtonFiring(mSelectedPlayer-1));
@@ -100,12 +100,12 @@ mSelectedPlayer(selectedPlayer)
     mpAutoGunSwitch = new Switch( "Auto Gun", style );
 	mpAutoGunSwitch->enable(gInput.AutoGun(mSelectedPlayer-1));
 
-	mpMenuDialog->addControl( mpTwoButtonSwitch );
-	mpMenuDialog->addControl( mpAnalogSwitch );
-	mpMenuDialog->addControl( mpSuperPogoSwitch );
-	mpMenuDialog->addControl( mpImpPogoSwitch );
-	mpMenuDialog->addControl( mpAutoGunSwitch );
-    mpMenuDialog->addControl( new GameButton( "Reset Controls", new ResetInputEvent(mSelectedPlayer-1), style ) );
+	mpMenuDialog->addWidget( mpTwoButtonSwitch );
+	mpMenuDialog->addWidget( mpAnalogSwitch );
+	mpMenuDialog->addWidget( mpSuperPogoSwitch );
+	mpMenuDialog->addWidget( mpImpPogoSwitch );
+	mpMenuDialog->addWidget( mpAutoGunSwitch );
+    mpMenuDialog->addWidget( new GameButton( "Reset Controls", new ResetInputEvent(mSelectedPlayer-1), style ) );
     
     setMenuLabel("KEYBMENULABEL");
 
@@ -199,7 +199,7 @@ void CControlSettingsMovement::refresh()
 		rie->setButtonPtr(guiButton);
 
 		mpButtonList.push_back( guiButton );
-		mpMenuDialog->addControl( guiButton );
+		mpMenuDialog->addWidget( guiButton );
 	}
 
 	setMenuLabel("MOVEMENULABEL");
@@ -235,7 +235,7 @@ void CControlSettingsButtons::refresh()
 
 
 		mpButtonList.push_back( guiButton );
-		mpMenuDialog->addControl( guiButton );
+		mpMenuDialog->addWidget( guiButton );
 
 	}
 
