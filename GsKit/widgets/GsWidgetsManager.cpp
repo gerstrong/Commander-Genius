@@ -237,8 +237,8 @@ GsWidgetsManager::addWidget( std::shared_ptr<GsWidget> &newControl)
     mWidgetList.push_back( ctrlPtr );
 
     if(mWidgetList.size() == 1)
-    {
-        mpCurrentCtrl = mWidgetList.front().get();
+    {        
+        mpCurWidget = mWidgetList.front();
     }
 
     return ctrlPtr;
@@ -260,7 +260,7 @@ GsWidgetsManager::addWidget( std::shared_ptr<GsWidget> &newControl,
 
     if(mWidgetList.size() == 1)
     {
-        mpCurrentCtrl = mWidgetList.front().get();
+        mpCurWidget = mWidgetList.front();
     }
 
     return ctrlPtr;
@@ -279,7 +279,7 @@ GsWidgetsManager::addWidget( std::unique_ptr<GsWidget> &newControl )
 
     if(mWidgetList.size() == 1)
     {
-        mpCurrentCtrl = mWidgetList.front().get();
+        mpCurWidget = mWidgetList.front();
     }
 
     return ctrlPtr;

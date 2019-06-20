@@ -113,16 +113,20 @@ public:
     }
 
 
-    GsWidget* CurrentWidget()
-    {	return 	mpCurrentCtrl;	}
+    std::shared_ptr<GsWidget> &CurrentWidget()
+    {	return 	mpCurWidget;	}
 
 
     int Selection() const
     {	return mSelection;	}
 
 
-    void setCurrentWidget(GsWidget* widget)
-    {	mpCurrentCtrl = widget;	}
+    void setCurrentWidget(std::shared_ptr<GsWidget> &widget)
+    {	mpCurWidget = widget;	}
+
+    template <class T>
+    void setCurrentWidget(std::shared_ptr<T> &widget)
+    {	mpCurWidget = std::static_pointer_cast<GsWidget>(widget);	}
 
 
 protected:
@@ -135,7 +139,7 @@ protected:
     std::list< std::shared_ptr<GsWidget> > mWidgetList;
 
     int mSelection = 0;
-    GsWidget *mpCurrentCtrl = nullptr;
+    std::shared_ptr<GsWidget> mpCurWidget;
 
     bool empty() const
     {
@@ -144,7 +148,6 @@ protected:
 
     void clear()
     {
-        mpCurrentCtrl = nullptr;
         mWidgetList.clear();
     }
 

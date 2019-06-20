@@ -535,8 +535,27 @@ void CGameLauncher::showMessageBox(const std::string &text)
     auto *pRetryButton = new GsButton("Retry", new GMSwitchToGameLauncher());
     mpMsgDialog->addWidget(pRetryButton, GsRect<float>(0.2f, 0.85f, 0.2f, 0.05f));
 
-    auto *pOkButton = new GsButton("Ok", new CloseBoxEvent());
-    mpMsgDialog->addWidget(pOkButton, GsRect<float>(0.6f, 0.85f, 0.2f, 0.05f));
+    /*auto *pOkButton = new GsButton("Ok",
+                                   new CloseBoxEvent());*/
+
+
+    auto pOkButton = mpMsgDialog->addWidget(
+                        new GsButton("Ok",
+                                   GsRect<float>(0.6f, 0.85f,
+                                                 0.2f, 0.05f),
+                                   [&]()
+                                   {
+                                       if(mpMsgDialog)
+                                       {
+                                           mpMsgDialog = nullptr;
+                                       }
+                                       if(mpGameStoreDialog)
+                                       {
+                                           mpGameStoreDialog = nullptr;
+                                       }
+
+                                   }));
+
     pOkButton->select(true);
     mpMsgDialog->setCurrentWidget(pOkButton);
 }

@@ -132,9 +132,9 @@ void GsControl::processPointingState(const GsRect<float> &rect)
 }
 
 
-void GsControl::processPointingStateRel(const GsRect<float> &rect)
+void GsControl::processPointingStateRel(const GsRect<float> &parentRect)
 {
-    const auto absRect = rect.transformed(getRect());
+    const auto absRect = parentRect.transformed(getRect());
     processPointingState(absRect);
 }
 

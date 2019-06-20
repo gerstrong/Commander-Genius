@@ -370,26 +370,26 @@ void CGUIDialog::processLogic()
 
     // Process the subcontrols inputs
     int sel = 0;
-    for( auto &it : getWidgetList() )
+    for( auto &widget : getWidgetList() )
     {
-        auto *ctrl = it.get();
+        widget->processLogic();
 
-        //ctrl->processPointingStateRel(getRect());
-        ctrl->processLogic();
-
-        /*
-        if( dynamic_cast<GsButton*>(ctrl) ||
-            dynamic_cast<CGUIInputText*>(ctrl) )
+        if(auto ctrl = std::dynamic_pointer_cast<GsControl>(widget))
         {
-            if( ctrl->isSelected() )
-            {
-                setCurrentWidget(ctrl);
-                setSelection(sel);
-            }
-        }
-        */
+            ctrl->processPointingStateRel(getRect());
 
-        sel++;
+            if( std::dynamic_pointer_cast<GsButton>(ctrl) ||
+                std::dynamic_pointer_cast<CGUIInputText>(ctrl) )
+            {
+                if( ctrl->isSelected() )
+                {
+                    //setCurrentWidget(ctrl);
+                    //setSelection(sel);
+                }
+            }
+
+            sel++;
+        }
     }
 
 
