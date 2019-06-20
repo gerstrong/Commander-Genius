@@ -56,7 +56,7 @@ void CSaveMenu::refresh()
     gSaveGameController.readSlotList(StateFileList);
 
     auto &list =
-            mpMenuDialog->getControlList();
+            mpMenuDialog->getWidgetList();
 
     auto itCtrl = list.begin();
     itCtrl++;
@@ -103,7 +103,7 @@ void CSaveMenu::ponder(const float)
 #else
 
     auto &list =
-            mpMenuDialog->getControlList();
+            mpMenuDialog->getWidgetList();
 
     auto itCtrl = list.begin();
     itCtrl++;

@@ -348,7 +348,7 @@ void CGUIDialog::processLogic()
 
     // Try to get a control that is waiting for input to be typed
     CGUIInputText *pInputCtrl = nullptr;
-    for( auto &it : getControlList() )
+    for( auto &it : getWidgetList() )
     {
         auto *ctrl = it.get();
         pInputCtrl = dynamic_cast<CGUIInputText*>(ctrl);
@@ -370,7 +370,7 @@ void CGUIDialog::processLogic()
 
     // Process the subcontrols inputs
     int sel = 0;
-    for( auto &it : getControlList() )
+    for( auto &it : getWidgetList() )
     {
         auto *ctrl = it.get();
 
@@ -484,7 +484,7 @@ void CGUIDialog::processRender(const GsRect<float> &RectDispCoordFloat)
     auto displayRect = rect;
     displayRect.transform(RectDispCoordFloat);
 
-    for( auto &it : getControlList() )
+    for( auto &it : getWidgetList() )
     {
         it->processRender(displayRect);
     }

@@ -19,7 +19,7 @@ mpMenuDialog( new CGUIDialog(rect, fx) )
 
 void CBaseMenu::select(const size_t value)
 {
-	if(value >= mpMenuDialog->getControlList().size())
+	if(value >= mpMenuDialog->getWidgetList().size())
 		return;
 
 	for(size_t c=0 ; c<value ; c++)

@@ -9,5 +9,13 @@ GsWidget::GsWidget(const GsRect<float> &rect) :
     mNumWidgets++;
 }
 
+GsWidget::GsWidget(const GsRect<float> &rect,
+                   std::shared_ptr<GsWidget> &parent):
+    GsWidget(rect)
+{
+    mParent = parent;
+}
+
+
 GsWidget::~GsWidget()
 {}

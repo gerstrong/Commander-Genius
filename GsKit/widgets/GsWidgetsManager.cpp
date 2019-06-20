@@ -39,7 +39,9 @@ void GsWidgetsManager::fit(const float padding,
 }
 
 
-void GsWidgetsManager::processPointingStateRel(const GsRect<float> &rect)
+void
+GsWidgetsManager::
+processPointingStateRel(const GsRect<float> &rect)
 {
     /*
     const auto absRect = rect.transformed(getRect());

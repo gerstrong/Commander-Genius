@@ -73,7 +73,7 @@ public:
 
     std::shared_ptr<GsWidget> addWidget( GsWidget *newControl );
 
-    std::list< std::shared_ptr<GsWidget> >& getControlList()
+    std::list< std::shared_ptr<GsWidget> >& getWidgetList()
     {	return mWidgetList;	}
 
     std::shared_ptr<GsWidget> last()

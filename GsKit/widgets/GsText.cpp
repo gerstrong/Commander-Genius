@@ -257,7 +257,7 @@ void CGUIText::processRender(const GsRect<float> &RectDispCoordFloat)
 
     auto &textSfcVec = mTextSfcVecByColor[mTextColorCur];
 
-    if(mFontId >= 0)
+    if(mFontId < 0)
     {
 
 #if defined(USE_SDL_TTF)    

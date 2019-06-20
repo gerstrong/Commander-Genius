@@ -2,6 +2,7 @@
 #define GsWidget_H_
 
 #include <base/utils/Geometry.h>
+#include <memory>
 
 class GsWidget
 {
@@ -9,6 +10,10 @@ class GsWidget
 public:
 
     GsWidget(const GsRect<float> &rect);
+
+    GsWidget(const GsRect<float> &rect,
+             std::shared_ptr<GsWidget> &parent);
+
 
     virtual ~GsWidget();
 
@@ -43,15 +48,15 @@ public:
 
     virtual void updateGraphics() {}
 
-
-
 private:
 
-    // The relative rect describes the rect which is normally tied to its parent.
-    GsRect<float> mRect;
+    std::shared_ptr<GsWidget> mParent;
 
-    static unsigned int mNumWidgets;
+    // The relative rect describes the rect which is normally tied to its parent.
+    GsRect<float> mRect;        
+
     unsigned int mId;
+    static unsigned int mNumWidgets;
 };
 
 #endif // GsWidget_H_

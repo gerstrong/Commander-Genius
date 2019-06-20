@@ -81,7 +81,7 @@ void CLoadMenu::refresh()
 
     Uint32 i=0;
 
-    auto &list = mpMenuDialog->getControlList();
+    auto &list = mpMenuDialog->getWidgetList();
 
     auto itCtrl = list.begin();
     itCtrl++;

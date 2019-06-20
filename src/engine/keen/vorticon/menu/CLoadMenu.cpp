@@ -60,7 +60,7 @@ void CLoadMenu::refresh()
 
     Uint32 i=0;
 
-    std::list< std::shared_ptr<GsControl> > &list = mpMenuDialog->getControlList();
+    std::list< std::shared_ptr<GsControl> > &list = mpMenuDialog->getWidgetList();
 
     auto itCtrl = list.begin();
     itCtrl++;
