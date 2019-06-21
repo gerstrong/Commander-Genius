@@ -142,20 +142,20 @@ void CGUIComboSelection::setTextColor(const GsColor &color)
 
 void CGUIComboSelection::setTextColorHovered(const GsColor &color)
 {
-    mpFeatureName->setTextColorHovered(color);
-    mpFeatureValue->setTextColorHovered(color);
+    //mpFeatureName->setTextColorHovered(color);
+    //mpFeatureValue->setTextColorHovered(color);
 }
 
 void CGUIComboSelection::setTextColorPressed(const GsColor &color)
 {
-    mpFeatureName->setTextColorPressed(color);
-    mpFeatureValue->setTextColorPressed(color);
+    //mpFeatureName->setTextColorPressed(color);
+    //mpFeatureValue->setTextColorPressed(color);
 }
 
 void CGUIComboSelection::setTextColorSelected(const GsColor &color)
 {
-    mpFeatureName->setTextColorSelected(color);
-    mpFeatureValue->setTextColorSelected(color);
+    //mpFeatureName->setTextColorSelected(color);
+    //mpFeatureValue->setTextColorSelected(color);
 }
 
 

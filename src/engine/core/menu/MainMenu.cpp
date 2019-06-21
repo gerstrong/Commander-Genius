@@ -29,10 +29,12 @@ void MainMenu::createGameMenu( const bool openedGamePlay,
 #if defined (SINGLEPLAYER)
     gBehaviorEngine.setNumPlayers(1);
 
-    GsButton *button = new GameButton( "New Game", new NewGamePlayersEvent(1), style );
+    GsButton *button = new GameButton( "New Game",
+                                       new NewGamePlayersEvent(1), style );
 #else
     GsButton *button = new GameButton( "New Game",
-             new OpenMenuEvent( new CPlayersSelection<NewGamePlayersEvent>(true, style) ), style );
+             new OpenMenuEvent(
+                 new CPlayersSelection<NewGamePlayersEvent>(true, style) ), style );
 #endif
 
 	mpMenuDialog->addWidget( button );

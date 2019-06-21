@@ -16,11 +16,20 @@ public:
                CEvent *ev,
                const Style style);
 
-    virtual void processRender(const GsRect<float> &RectDispCoordFloat);   
+    virtual void processLogic() override;
 
-    void drawVorticonStyle(SDL_Rect& lRect);
+    virtual void processRender(const GsRect<float> &RectDispCoordFloat) override;
 
     const Style mStyle;
+
+private:
+
+    GsColor mColorNormal;
+    GsColor mColorHovered;
+    GsColor mColorPressed;
+    GsColor mColorReleased;
+    GsColor mColorSelected;
+
 };
 
 #endif /* GAMEBUTTON_H_INCLUDED */

@@ -125,10 +125,10 @@ public:
         mTextWidget.enableCenteringH(value);
     }
 
-    void setTextColorHovered(const GsColor &color);
-    void setTextColorPressed(const GsColor &color);
-    void setTextColorSelected(const GsColor &color);
-
+    void setFontId(const int fontId)
+    {
+        mTextWidget.setFontId(fontId);
+    }
 
 protected:
 
@@ -139,6 +139,8 @@ protected:
     GsSurface mTextRedSfc;
     GsSurface mTextDisabledSfc;
 
+    CGUIText mTextWidget;
+
 private:        
 
 	std::shared_ptr<CEvent> mEvent;
@@ -148,7 +150,6 @@ private:
     const float mGreen = 0.93f;
     const float mBlue = 1.0f;
 
-    CGUIText mTextWidget;
 
     std::function <void ()> mFunction;
 

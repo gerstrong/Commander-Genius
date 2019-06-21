@@ -2,6 +2,7 @@
 #define VORTICONBUTTON_H
 
 #include <widgets/GsButton.h>
+#include <base/utils/Color.h>
 
 namespace vorticon
 {
@@ -19,7 +20,6 @@ private:
     void setupButtonSurface(const std::string &);
 
     void drawVorticonStyle(SDL_Rect& lRect);
-
 };
 
 }

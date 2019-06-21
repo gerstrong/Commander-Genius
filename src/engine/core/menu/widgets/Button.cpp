@@ -17,17 +17,18 @@ mStyle(style)
         enableCenteringH(false);
         enableBlinker(true);
 
-        setTextColor(GsColor(0x26, 0x86, 0x26));
-        setTextColorHovered(GsColor(0x66, 0xC6, 0x66));
-        setTextColorPressed(GsColor(0x66, 0xF6, 0x66));
-        setTextColorSelected(GsColor(0xA6, 0xC6, 0x66));
+        mColorNormal   = GsColor(0x26, 0x86, 0x26);
+        mColorHovered  = GsColor(0x66, 0xC6, 0x66);
+        mColorPressed  = GsColor(0x66, 0xF6, 0x66);
+        mColorReleased  = GsColor(0x66, 0xF6, 0x66);
+        mColorSelected = GsColor(0xA6, 0xC6, 0x66);
 
-        //mFontID = 1;
+        setFontId(1);
         setText(text);
     }
     else if(mStyle == Style::VORTICON)
     {
-        //mFontID = 1;
+        setFontId(0);
     }
 }
 
@@ -40,39 +41,40 @@ mStyle(style)
 {
     if(mStyle == Style::GALAXY)
     {
-        //mFontID = 1;
         setText(text);
+        setFontId(1);
     }
     else if(mStyle == Style::VORTICON)
     {
-        //mFontID = 1;
+        setFontId(0);
     }
 }
 
-
-void GameButton::drawVorticonStyle(SDL_Rect& lRect)
+void GameButton::processLogic()
 {
-    SDL_Surface *blitsfc = gVideoDriver.getBlitSurface();
+    GsButton::processLogic();
 
-    // Now lets draw the text of the button
-    if(mEnabled)
+    if(mHovered)
     {
-        /*
-        auto &Font = gGraphics.getFontLegacy(mFontID);
-        Font.drawFont( blitsfc, mText, lRect.x+24, lRect.y, false );
-        */
-        drawTwirl(lRect);
+        mTextWidget.setTextColor( mColorHovered );
+    }
+    else if(mPressed)
+    {
+        mTextWidget.setTextColor( mColorPressed );
+    }
+    else if(mReleased)
+    {
+        mTextWidget.setTextColor( mColorReleased );
+    }
+    else if(mSelected)
+    {
+        mTextWidget.setTextColor( mColorSelected );
     }
     else
     {
-        /*
-        auto &Font = gGraphics.getFontLegacy(0);
-        Font.drawFont( blitsfc, mText, lRect.x+24, lRect.y, true );
-        */
+        mTextWidget.setTextColor( mColorNormal );
     }
 }
-
-
 
 
 void GameButton::processRender(const GsRect<float> &RectDispCoordFloat)

@@ -40,10 +40,6 @@ public:
 	virtual void setText(const std::string& text);
 
     void setTextColor(const GsColor &color);
-    void setTextColorHovered(const GsColor &color);
-    void setTextColorPressed(const GsColor &color);
-    void setTextColorSelected(const GsColor &color);
-
 
 	virtual void processLogic();
     virtual void processRender(const GsRect<float> &RectDispCoordFloat);
@@ -59,6 +55,12 @@ public:
         mHCentered = value;
     }
 
+    void setFontId(const int fontId)
+    {
+        mFontId = fontId;
+    }
+
+
 protected:
 
     void updateTTFTextSfc(const GsRect<float> &displayRect);
@@ -73,19 +75,8 @@ protected:
 #endif
 
     GsColor mTextColor;
-/*
-    GsColor mTextColorHovered;
-    GsColor mTextColorPressed;
-    GsColor mTextColorSelected;
-*/
-    GsColor mTextColorCur;
 	
 private:
-    /*
-	std::unique_ptr<SDL_Surface> mpTextDarkSfc;
-	std::unique_ptr<SDL_Surface> mpTextLightSfc;
-	std::unique_ptr<SDL_Surface> mpTextDisabledSfc;
-*/
 
     /// Automatic horizontal scrolling in case the text is too big
     float mScrollPosMax = 0.0f;
@@ -110,7 +101,7 @@ private:
         RIGHT
     } mScrollDir = ScrollDir::NONE;        
 
-    const int mFontId = -1;
+    int mFontId = -1;
 };
 
 #endif /* CGUITEXT_H_ */

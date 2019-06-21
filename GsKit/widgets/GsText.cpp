@@ -79,37 +79,8 @@ void CGUIText::setTextColor(const GsColor &color)
     mTextColor = color;
 }
 
-void CGUIText::setTextColorHovered(const GsColor &color)
-{
-    //mTextColorHovered = color;
-}
-
-void CGUIText::setTextColorPressed(const GsColor &color)
-{
-    //mTextColorPressed = color;
-}
-
-void CGUIText::setTextColorSelected(const GsColor &color)
-{
-    //mTextColorSelected = color;
-}
-
-
 void CGUIText::processLogic()
 {
-    mTextColorCur = mTextColor;
-
-    /*
-    if(mHovered)
-        mTextColorCur.converge(mTextColorHovered);
-
-    if(mPressed)
-        mTextColorCur.converge(mTextColorPressed);
-
-    if(mSelected)
-        mTextColorCur.converge(mTextColorSelected);
-        */
-
     // Horizontal scrolling.
     // If Max is zero, nothing need to be scrolled
     if(mScrollPosMax <= 0)
@@ -142,7 +113,7 @@ void CGUIText::updateTTFTextSfc(const GsRect<float> &displayRect)
 {
     const int reqFontSize = int(displayRect.dim.y*0.75f);
 
-    auto &textSfcVec = mTextSfcVecByColor[mTextColorCur];
+    auto &textSfcVec = mTextSfcVecByColor[mTextColor];
 
     bool needUpdate =
             (mFontSize != reqFontSize) || (mTextChanged);
@@ -161,7 +132,7 @@ void CGUIText::updateTTFTextSfc(const GsRect<float> &displayRect)
 
         for(unsigned int idx = 0 ; idx<numTexLines ; idx++)
         {
-            mTrueTypeFont.render(textSfcVec[idx], mTextVec[idx], mTextColorCur);
+            mTrueTypeFont.render(textSfcVec[idx], mTextVec[idx], mTextColor);
         }
 
         mTextChanged = false;
@@ -175,7 +146,7 @@ void CGUIText::updateLegacyTextSfc(const GsRect<float> &displayRect)
     bool needUpdate =
             (mFontSize != reqFontSize) || (mTextChanged);
 
-    auto &curTextSfcVec = mTextSfcVecByColor[mTextColorCur];
+    auto &curTextSfcVec = mTextSfcVecByColor[mTextColor];
 
     if( curTextSfcVec.empty() )
         needUpdate = true;
@@ -198,8 +169,8 @@ void CGUIText::updateLegacyTextSfc(const GsRect<float> &displayRect)
 
         for(auto &textSfcVecPair : mTextSfcVecByColor)
         {
-            auto color = textSfcVecPair.first;
-            auto textSfcVec = textSfcVecPair.second;
+            const auto color = textSfcVecPair.first;
+            auto &textSfcVec = textSfcVecPair.second;
 
             textSfcVec.resize(numTexLines);
 
@@ -255,7 +226,7 @@ void CGUIText::processRender(const GsRect<float> &RectDispCoordFloat)
     auto lRect = displayRect.SDLRect();
     auto &blit = gVideoDriver.gameSfc();
 
-    auto &textSfcVec = mTextSfcVecByColor[mTextColorCur];
+    auto &textSfcVec = mTextSfcVecByColor[mTextColor];
 
     if(mFontId < 0)
     {

@@ -16,8 +16,8 @@ GsFrame(rect)
 
     newTextWidget->enableCenteringH(false);
 
-    mBgColorHovered = GsColor(0x5F, 0x0F, 0xFF);
-    mBgColorPressed = GsColor(0x3F, 0x3F, 0xFF);
+    mBgColorHovered  = GsColor(0xAF, 0xAF, 0xFF);
+    mBgColorPressed  = GsColor(0x3F, 0x3F, 0xFF);
     mBgColorReleased = GsColor(0x3F, 0x3F, 0xFF);
     mBgColorSelected = GsColor(0x3F, 0x3F, 0xFF);
 }

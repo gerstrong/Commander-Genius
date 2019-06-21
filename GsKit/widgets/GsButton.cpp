@@ -264,22 +264,24 @@ void GsButton::setupButtonSurface(const std::string &text)
 
     Font.setFontSize(1);*/
 }
-
+/*
 void GsButton::setTextColorHovered(const GsColor &color)
 {
-    mTextWidget.setTextColorHovered(color);
+    //mColorHovered = color;
+    //mTextWidget.setTextColorHovered(color);
 }
 
 void GsButton::setTextColorPressed(const GsColor &color)
 {
-    mTextWidget.setTextColorPressed(color);
+    //mTextWidget.setTextColorPressed(color);
 }
 
 void GsButton::setTextColorSelected(const GsColor &color)
 {
-    mTextWidget.setTextColorSelected(color);
+    //mTextWidget.setTextColorSelected(color);
 }
 
+*/
 
 void GsButton::drawEnabledButton(GsWeakSurface &blitsfc,
                                  const SDL_Rect& lRect,
@@ -317,10 +319,7 @@ void GsButton::processRender(const GsRect<float> &RectDispCoordFloat)
 
     drawNoStyle(lRect);
 
-    //if(gTTFDriver.isActive())
-    {
-        mTextWidget.processRender(displayRect);
-    }
+    mTextWidget.processRender(displayRect);
 }
 
 void GsButton::processRender(const GsRect<float> &backRect,

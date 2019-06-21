@@ -79,8 +79,8 @@ private:
 
     std::vector<item> mItemList;
 
-    int mHoverSelection = 0;
-    int mPressedSelection = -1;
+    //int mHoverSelection = 0;
+    //int mPressedSelection = -1;
     int mReleasedSelection = -1;
 
     int mFontSize = 28;

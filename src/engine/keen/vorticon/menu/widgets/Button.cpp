@@ -29,7 +29,7 @@ void Button::setupButtonSurface(const std::string &)
 
 void Button::drawVorticonStyle(SDL_Rect& lRect)
 {
-    SDL_Surface *blitsfc = gVideoDriver.getBlitSurface();
+    //SDL_Surface *blitsfc = gVideoDriver.getBlitSurface();
 /*
     // Now lets draw the text of the button
     if(mEnabled)
