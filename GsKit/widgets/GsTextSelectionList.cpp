@@ -15,6 +15,7 @@
 
 
 #include "GsTextSelectionList.h"
+#include "GsSelectableText.h"
 
 CGUITextSelectionList::
 CGUITextSelectionList(const GsRect<float> &rect)  :
@@ -97,22 +98,43 @@ bool CGUITextSelectionList::sendEvent(const InputCommand command)
 
 void CGUITextSelectionList::addText(const std::string &text)
 {    
+    const auto numElem = mItemList.size();
+
     mItemList.push_back( item(text) );
 
+    GsRect<float> frameRect(0.0f, float(numElem)*0.1f,
+                            1.0f, 0.1f);
 
-    const auto numElem = mTextWidgetVec.size();
-    GsRect<float> textRect(0.0f, float(numElem)*0.1f,
-                           1.0f, 0.1f);
+    auto selectionFrame =
+            addWidget( new GsSelectableText(frameRect, text) );
 
-    auto newTextWidget = addWidget( new CGUIText(text,
-                                            textRect));
+    selectionFrame->setParent(this);
 
-    newTextWidget->enableCenteringH(false);
-
-    mTextWidgetVec.push_back(newTextWidget);
+    selectionFrame->setActivationEvent( [this]()
+                                        {this->updateSelection();} );
 }
 
+void CGUITextSelectionList::updateSelection()
+{
 
+    int idx = 0;
+    for(auto &widget : mWidgetList)
+    {
+        auto selectableText =
+                std::dynamic_pointer_cast<GsSelectableText>(widget);
+
+        if(selectableText)
+        {
+            if(selectableText->isSelected())
+            {
+                mSelection = idx;
+                break;
+            }
+
+            idx++;
+        }
+    }
+}
 
 void CGUITextSelectionList::processLogic()
 {
@@ -121,6 +143,12 @@ void CGUITextSelectionList::processLogic()
         return;
     }
 
+    for(auto &widget : mWidgetList)
+    {
+        widget->processLogic();
+    }
+
+/*
     /// Some logic for colors so we get nice fancy effects
     auto it = mItemList.begin();
 
@@ -155,7 +183,7 @@ void CGUITextSelectionList::processLogic()
         }
 #endif
     }
-
+*/
 /*
     /// Here we check if the mouse-cursor/Touch entry clicked on something!!
     const float bw = gVideoDriver.getGameResolution().dim.x;
@@ -245,6 +273,12 @@ void CGUITextSelectionList::processLogic()
 
 void CGUITextSelectionList::processPointingStateRel(const GsRect<float> &rect)
 {
+    for(auto &widget : mWidgetList)
+    {
+        widget->processPointingStateRel(rect);
+    }
+
+
 /*
     const auto absRect = rect.transformed(getRect());
     processPointingState(absRect);
@@ -347,6 +381,19 @@ const std::string &
 CGUITextSelectionList::getItemString(const unsigned int sel) const
 {
     return mItemList[sel].mText;
+}
+
+void CGUITextSelectionList::unselectAll()
+{
+    for(auto &widget : mWidgetList)
+    {
+        auto ctrl = std::dynamic_pointer_cast<GsSelectableText>(widget);
+
+        if(ctrl)
+        {
+            ctrl->select(false);
+        }
+    }
 }
 
 
@@ -580,6 +627,7 @@ void CGUITextSelectionList::processRenderTTF(const GsRect<float> &RectDispCoordF
 void CGUITextSelectionList::processRender(const GsRect<float> &RectDispCoordFloat)
 {
 
+    /*
     if(!gTTFDriver.isActive())
     {
         processRenderSimple(RectDispCoordFloat);
@@ -588,7 +636,7 @@ void CGUITextSelectionList::processRender(const GsRect<float> &RectDispCoordFloa
     {
         processRenderTTF(RectDispCoordFloat);
     }
-
+*/
 
     GsScrollingFrame::processRender(RectDispCoordFloat);
 

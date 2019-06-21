@@ -120,6 +120,8 @@ bool CGameLauncher::setupMenu()
             mLauncherDialog.addWidget(
                 new CGUITextSelectionList(GsRect<float>(0.01f, 0.07f, 0.49f, 0.79f)));
 
+    mpGSSelList->setBackgroundColor( GsColor(0xFF, 0xFF, 0xFF) );
+
 	std::vector<GameEntry>::iterator it = m_Entries.begin();
     unsigned int i=0;
     for( ; it != m_Entries.end() ; it++	)
@@ -627,7 +629,7 @@ void CGameLauncher::pumpEvent(const CEvent *evPtr)
 
     if( dynamic_cast<const GMStart*>(evPtr) )
     {
-        setChosenGame(mpGSSelList->getSelection());
+        setChosenGame(mpGSSelList->Selection());
 
         if(m_chosenGame >= 0)
         {

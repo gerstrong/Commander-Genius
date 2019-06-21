@@ -42,7 +42,10 @@ void GsFrame::processRender(const GsRect<float> &rectDispCoordFloat)
     displayRect.transform(rectDispCoordFloat);
     auto lRect = displayRect.SDLRect();
 
-    blitsfc.fill(lRect, mBackgroundColor);
+    if(mBgEnabled)
+    {
+        blitsfc.fill(lRect, mBackgroundColor);
+    }
 
     for(auto &obj : mWidgetList)
     {
@@ -57,15 +60,18 @@ void GsFrame::processRender(const GsRect<float> &backRect,
     GsWeakSurface blitsfc(gVideoDriver.getBlitSurface());
 
     // Transform this object to the display coordinates
-    auto objBackRect = backRect.transformed(getRect());
+    auto localRect = getRect();
+    auto objBackRect = backRect.transformed(localRect);
     auto objFrontRect = objBackRect.clipped(frontRect);
 
-    blitsfc.fill(objFrontRect.SDLRect(), mBackgroundColor);
+    if(mBgEnabled)
+    {
+        blitsfc.fill(objFrontRect.SDLRect(), mBackgroundColor);
+    }
 
     for(auto &obj : mWidgetList)
     {
-        obj->processRender(objBackRect,
-                           objFrontRect);
+       obj->processRender(objBackRect, objFrontRect);
     }
 }
 

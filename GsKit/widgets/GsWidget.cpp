@@ -10,10 +10,10 @@ GsWidget::GsWidget(const GsRect<float> &rect) :
 }
 
 GsWidget::GsWidget(const GsRect<float> &rect,
-                   std::shared_ptr<GsWidget> &parent):
+                   GsWidget *parent):
     GsWidget(rect)
 {
-    mParent = parent;
+    //mpParent = parent;
 }
 
 

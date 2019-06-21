@@ -73,10 +73,11 @@ protected:
 #endif
 
     GsColor mTextColor;
+/*
     GsColor mTextColorHovered;
     GsColor mTextColorPressed;
     GsColor mTextColorSelected;
-
+*/
     GsColor mTextColorCur;
 	
 private:

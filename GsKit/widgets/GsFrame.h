@@ -9,7 +9,8 @@
 #include <functional>
 
 /**
- * @brief The GsFrame class A frame is container holding different widgets.
+ * @brief The GsFrame class represents a WidgetManager
+ *        with an activation function and an optional background colour
  *        The coordinates are all defined in relation to the Framesize
  */
 
@@ -29,14 +30,15 @@ public:
     void setBackgroundColor(const GsColor &color);
 
     void setActivationEvent(const std::function <void ()>& f)
-    {
-        mFunction = f;
-    }
+    {        mFunction = f;    }
 
+    void enableBackground(const bool value)
+    {        mBgEnabled = value;    }
 
 protected:
 
     GsColor mBackgroundColor;
+    bool mBgEnabled = true;
 
 private:
 

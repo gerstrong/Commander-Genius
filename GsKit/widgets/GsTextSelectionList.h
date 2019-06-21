@@ -38,6 +38,9 @@ public:
 
     bool sendEvent(const InputCommand command) override;
 	void addText(const std::string &text);    
+
+    void updateSelection();
+
     void processLogic() override;
 
     void processRenderSimple(const GsRect<float> &RectDispCoordFloat);
@@ -62,6 +65,8 @@ public:
 
     const std::string &getItemString(const unsigned int sel) const;
 
+    void unselectAll();
+
 private:
 
     struct item
@@ -73,17 +78,6 @@ private:
     };
 
     std::vector<item> mItemList;
-
-    /*
-#if defined(USE_SDL_TTF)
-
-    GsTrueTypeFont mTrueTypeFont;
-
-    std::map<std::string, GsSurface> mTextSfcMap;
-
-#endif*/
-
-    std::vector< std::shared_ptr<CGUIText> > mTextWidgetVec;
 
     int mHoverSelection = 0;
     int mPressedSelection = -1;

@@ -37,7 +37,6 @@ void
 GsWidgetsManager::
 processPointingStateRel(const GsRect<float> &rect)
 {
-    /*
     const auto absRect = rect.transformed(getRect());
     processPointingState(absRect);
 
@@ -45,7 +44,6 @@ processPointingStateRel(const GsRect<float> &rect)
     {
         control->processPointingStateRel(absRect);
     }
-    */
 }
 
 

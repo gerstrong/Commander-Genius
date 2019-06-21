@@ -370,14 +370,14 @@ void CGUIDialog::processLogic()
 
     // Process the subcontrols inputs
     int sel = 0;
+    const auto localRect = getRect();
     for( auto &widget : getWidgetList() )
     {
         widget->processLogic();
+        widget->processPointingStateRel(localRect);
 
         if(auto ctrl = std::dynamic_pointer_cast<GsControl>(widget))
-        {
-            ctrl->processPointingStateRel(getRect());
-
+        {            
             if( std::dynamic_pointer_cast<GsButton>(ctrl) ||
                 std::dynamic_pointer_cast<CGUIInputText>(ctrl) )
             {

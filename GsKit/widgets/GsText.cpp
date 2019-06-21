@@ -81,17 +81,17 @@ void CGUIText::setTextColor(const GsColor &color)
 
 void CGUIText::setTextColorHovered(const GsColor &color)
 {
-    mTextColorHovered = color;
+    //mTextColorHovered = color;
 }
 
 void CGUIText::setTextColorPressed(const GsColor &color)
 {
-    mTextColorPressed = color;
+    //mTextColorPressed = color;
 }
 
 void CGUIText::setTextColorSelected(const GsColor &color)
 {
-    mTextColorSelected = color;
+    //mTextColorSelected = color;
 }
 
 
@@ -363,10 +363,10 @@ void CGUIText::processRender(const GsRect<float> &RectDispCoordFloat)
     }
 }
 
-void CGUIText::processRender(const GsRect<float> &/*backRect*/,
-                             const GsRect<float> &/*frontRect*/)
+void CGUIText::processRender(const GsRect<float> &backRect,
+                             const GsRect<float> &frontRect)
 {
     // Transform this object to the display coordinates
-    assert(0);
+    processRender(backRect);
 }
 

@@ -12,7 +12,7 @@ public:
     GsWidget(const GsRect<float> &rect);
 
     GsWidget(const GsRect<float> &rect,
-             std::shared_ptr<GsWidget> &parent);
+             GsWidget *parent);
 
 
     virtual ~GsWidget();
@@ -41,6 +41,8 @@ public:
 
     virtual void processLogic() = 0;
 
+    virtual void processPointingStateRel(const GsRect<float> &) {}
+
     virtual void processRender(const GsRect<float> &RectDispCoordFloat) = 0;
 
     virtual void processRender(const GsRect<float> &,
@@ -48,9 +50,19 @@ public:
 
     virtual void updateGraphics() {}
 
+    void setParent(GsWidget *parent)
+    {
+        mpParent = parent;
+    }
+
+    GsWidget *getParent()
+    {
+        return mpParent;
+    }
+
 private:
 
-    std::shared_ptr<GsWidget> mParent;
+    GsWidget *mpParent = nullptr;
 
     // The relative rect describes the rect which is normally tied to its parent.
     GsRect<float> mRect;        

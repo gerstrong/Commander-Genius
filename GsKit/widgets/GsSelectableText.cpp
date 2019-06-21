@@ -1,0 +1,71 @@
+
+#include "GsSelectableText.h"
+#include "GsTextSelectionList.h"
+#include "GsText.h"
+
+GsSelectableText::
+GsSelectableText(const GsRect<float> &rect,
+                 const std::string &text) :
+GsFrame(rect)
+{
+    GsRect<float> textRect(0.1f, 0.1f,
+                           0.8f, 0.8f);
+
+    auto newTextWidget =
+            addWidget( new CGUIText(text, textRect) );
+
+    newTextWidget->enableCenteringH(false);
+
+    mBgColorHovered = GsColor(0x5F, 0x0F, 0xFF);
+    mBgColorPressed = GsColor(0x3F, 0x3F, 0xFF);
+    mBgColorReleased = GsColor(0x3F, 0x3F, 0xFF);
+    mBgColorSelected = GsColor(0x3F, 0x3F, 0xFF);
+}
+
+void GsSelectableText::processLogic()
+{
+    enableBackground(false);
+
+    if(mHovered || mPressed || mReleased || mSelected)
+        enableBackground(true);
+    else
+        return;
+
+    GsColor bgColor(0xFF, 0xFF, 0xFF);
+
+    if(mHovered)
+    {
+        bgColor.converge(mBgColorHovered);
+    }
+
+    if(mPressed)
+    {
+        bgColor.converge(mBgColorPressed);
+    }
+
+    if(mReleased)
+    {
+        bgColor.converge(mBgColorReleased);
+
+        auto parent =
+                dynamic_cast<CGUITextSelectionList*>(getParent());
+
+        if(parent)
+        {
+            parent->unselectAll();
+        }
+
+        mSelected = true;
+    }
+
+    if(mSelected)
+    {
+        bgColor.converge(mBgColorSelected);
+    }
+
+    setBackgroundColor(bgColor);
+
+    GsFrame::processLogic();
+}
+
+

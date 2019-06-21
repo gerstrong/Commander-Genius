@@ -324,19 +324,14 @@ void GsButton::processRender(const GsRect<float> &RectDispCoordFloat)
 }
 
 void GsButton::processRender(const GsRect<float> &backRect,
-                           const GsRect<float> &frontRect)
+                             const GsRect<float> &frontRect)
 {    
-    // Transform this object to the display coordinates
+    // Transform this object display coordinates
     auto objBackRect = backRect.transformed(getRect());
     auto objFrontRect = objBackRect.clipped(frontRect);
 
-    auto lRect = objFrontRect.SDLRect();
+    drawNoStyle( objFrontRect.SDLRect() );
 
-    drawNoStyle(lRect);
-
-    if(gTTFDriver.isActive())
-    {
-        mTextWidget.processRender(objBackRect,
-                                  objFrontRect);
-    }
+    mTextWidget.processRender(objBackRect,
+                              objFrontRect);
 }
