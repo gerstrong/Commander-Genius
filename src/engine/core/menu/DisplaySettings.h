@@ -35,7 +35,9 @@ public:
 
 private:
 
+#if defined(USE_OPENGL)
     std::shared_ptr<Switch>			mpOpenGLSwitch;
+#endif
 
     std::shared_ptr<ComboSelection>	mpRenderScaleQualitySel;
     std::shared_ptr<ComboSelection>	mpFilterSelection;

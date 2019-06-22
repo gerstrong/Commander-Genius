@@ -88,6 +88,7 @@ GameMenu(GsRect<float>(0.15f, 0.20f, 0.65f, 0.55f), style )
                                                style) );
 #endif
 
+
 #if defined(USE_OPENGL)
     mpOpenGLSwitch =
         mpMenuDialog->addWidget( new Switch( "OpenGL", style ) );
@@ -124,7 +125,9 @@ void DisplaySettings::refresh()
 
 #if !defined(EMBEDDED)
 
+#if defined(USE_OPENGL)
     mpOpenGLSwitch->enable( mMyNewConf.mOpengl );
+#endif
 
     const std::string oglFilter =
             (mMyNewConf.mRenderScQuality == CVidConfig::RenderQuality::LINEAR) ?
