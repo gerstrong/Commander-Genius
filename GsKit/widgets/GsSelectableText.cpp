@@ -8,6 +8,8 @@ GsSelectableText(const GsRect<float> &rect,
                  const std::string &text) :
 GsFrame(rect)
 {
+    mBgEnabled = false;
+
     GsRect<float> textRect(0.1f, 0.1f,
                            0.8f, 0.8f);
 
