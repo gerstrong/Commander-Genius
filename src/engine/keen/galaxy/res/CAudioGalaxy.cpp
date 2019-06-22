@@ -341,7 +341,6 @@ bool CAudioGalaxy::LoadFromAudioCK(const unsigned int dictOffset)
         Huffman.readDictionaryFromFile( audioDictfilename );
 
     /// First get the size of the AUDIO.CK? File.
-    uint32_t audiofilecompsize;
     std::string init_audiofilename = gKeenFiles.audioFilename;
 
     std::string audiofilename = getResourceFilename( init_audiofilename, gKeenFiles.gameDir, true, false);
@@ -357,7 +356,7 @@ bool CAudioGalaxy::LoadFromAudioCK(const unsigned int dictOffset)
 
     // Read File Size and allocate memory so we can read it
     AudioFile.seekg( 0, std::ios::end );
-    audiofilecompsize = AudioFile.tellg();
+    const auto audiofilecompsize = uint32_t(AudioFile.tellg());
     AudioFile.seekg( 0, std::ios::beg );
 
     // create memory so we can store the Audio.ck there and use it later for extraction
@@ -366,13 +365,16 @@ bool CAudioGalaxy::LoadFromAudioCK(const unsigned int dictOffset)
     std::vector<uint8_t> AudioCompFileData;
     AudioCompFileData.resize(audiofilecompsize, 0);
 
-    AudioFile.read((char*)AudioCompFileData.data(), audiofilecompsize);
+    AudioFile.read(reinterpret_cast<char*>(AudioCompFileData.data()),
+                   audiofilecompsize);
     AudioFile.close();
 
     // Open the AUDIOHED so we know where to decompress the audio
 
     std::string audiohedfilename = gKeenFiles.audioHedFilename;
-    audiohedfilename = getResourceFilename( audiohedfilename, gKeenFiles.gameDir, false, false);
+    audiohedfilename =
+            getResourceFilename( audiohedfilename,
+                                 gKeenFiles.gameDir, false, false);
 
     uint32_t *audioendhedptr;
 
@@ -472,7 +474,8 @@ bool CAudioGalaxy::LoadFromAudioCK(const unsigned int dictOffset)
         const uint32_t audio_start = audiohed[snd];
         const uint32_t audio_end = audiohed[snd+1];
 
-        const uint32_t audio_comp_data_start = audio_start+sizeof(uint32_t); // Why this strange offset by 4 bytes?
+        // Why this strange offset by 4 bytes?
+        const uint32_t audio_comp_data_start = audio_start+sizeof(uint32_t);
 
         if( audio_comp_data_start < audio_end )
         {

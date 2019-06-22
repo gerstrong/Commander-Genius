@@ -18,8 +18,6 @@
 #include "CPassive.h"
 #include "CPlayGameGalaxy.h"
 
-//#include "menu/MainMenu.h"
-//#include "menu/SelectionMenu.h"
 #include "engine/core/menu/ControlSettings.h"
 #include "menu/ComputerWrist.h"
 #include "res/CAudioGalaxy.h"
@@ -86,7 +84,9 @@ bool loadLevelMusic(const int level)
     {
         track = 0;
         byte* rawDataPtr = ExeFile.getRawData();
+
         byte* musictable_start = rawDataPtr+GalaxySongAssignments[Idx];
+
         memcpy( &track, musictable_start+level*sizeof(Uint16), sizeof(Uint16));
     }
 

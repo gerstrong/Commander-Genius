@@ -48,6 +48,14 @@ public:
 
     bool LoadfromMusicTable(const std::string &gamepath, const std::string &levelfilename);
 
+    /**
+     * @brief readTrackNofromMusicTable Reads the number of track that should be played.
+     *        Normally that table has some filename, but the method only
+     *        cares about a significant number found within.
+     * @param gamepath
+     * @param levelfilename
+     * @return
+     */
     int readTrackNofromMusicTable(const std::string &gamepath,
                                   const std::string &levelfilename);
 
