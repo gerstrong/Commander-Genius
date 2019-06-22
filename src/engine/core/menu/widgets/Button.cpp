@@ -20,7 +20,7 @@ mStyle(style)
         mColorNormal   = GsColor(0x26, 0x86, 0x26);
         mColorHovered  = GsColor(0x66, 0xC6, 0x66);
         mColorPressed  = GsColor(0x66, 0xF6, 0x66);
-        mColorReleased  = GsColor(0x66, 0xF6, 0x66);
+        mColorReleased = GsColor(0x46, 0xF6, 0x56);
         mColorSelected = GsColor(0xA6, 0xC6, 0x66);
 
         setFontId(1);
@@ -54,26 +54,27 @@ void GameButton::processLogic()
 {
     GsButton::processLogic();
 
+    mTextWidget.setTextColor( mColorNormal );
+
     if(mHovered)
     {
         mTextWidget.setTextColor( mColorHovered );
     }
-    else if(mPressed)
+
+    if(mPressed)
     {
         mTextWidget.setTextColor( mColorPressed );
     }
-    else if(mReleased)
+
+    if(mReleased)
     {
         mTextWidget.setTextColor( mColorReleased );
     }
-    else if(mSelected)
+
+    if(mSelected)
     {
         mTextWidget.setTextColor( mColorSelected );
-    }
-    else
-    {
-        mTextWidget.setTextColor( mColorNormal );
-    }
+    }    
 }
 
 
