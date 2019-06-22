@@ -124,9 +124,7 @@ void DisplaySettings::refresh()
 
 #if !defined(EMBEDDED)
 
-    #if defined(USE_OPENGL)
     mpOpenGLSwitch->enable( mMyNewConf.mOpengl );
-    #endif
 
     const std::string oglFilter =
             (mMyNewConf.mRenderScQuality == CVidConfig::RenderQuality::LINEAR) ?
@@ -174,12 +172,14 @@ void DisplaySettings::release()
 
 #if !defined(EMBEDDED)
 
+#if defined(USE_OPENGL)
     // OpenGL Flag
     mMyNewConf.mOpengl = mpOpenGLSwitch->isEnabled();
+#else
+    mMyNewConf.mOpengl = false;
+#endif
 
     // Render Quality
-
-
     const std::string oglFilter = mpRenderScaleQualitySel->getSelection();
 
     mMyNewConf.mRenderScQuality =

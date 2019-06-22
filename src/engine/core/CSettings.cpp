@@ -267,10 +267,8 @@ void CSettings::loadDefaultGraphicsCfg() //Loads default graphics
     gVideoDriver.setMode(320,200);
 	gVideoDriver.isFullscreen(false);
 
-#if defined(USE_OPENGL)
 	gVideoDriver.enableOpenGL(false);           
     gVideoDriver.setRenderQuality(CVidConfig::RenderQuality::LINEAR);
-#endif
 
 	gVideoDriver.setZoom(1);
     gTimer.setFPS(60.0f);

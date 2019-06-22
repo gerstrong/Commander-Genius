@@ -128,11 +128,6 @@ else(USE_SDL2)
 
 endif(USE_SDL2)
 
-IF (OPENGL)
-        ADD_DEFINITIONS(-DGL)
-        ADD_DEFINITIONS(-DUSE_OPENGL)
-ENDIF (OPENGL)
-
 if(USE_SDL2)
 	find_package(SDL2_mixer REQUIRED)
 
@@ -215,12 +210,6 @@ if(WIN32)
 endif(WIN32)
 
 target_link_libraries(CGeniusExe ${PYTHON_LIBRARIES})
-
-
-IF(OPENGL)
-    # OpenGL stuff to link
-    target_link_libraries(CGeniusExe ${OPENGL_LIBRARIES})
-ENDIF(OPENGL)
 
 
 cotire(CGeniusExe)

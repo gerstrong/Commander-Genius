@@ -8,9 +8,9 @@ Project(GsKit)
 OPTION(USE_SDL2 "SDL2 support" Yes)
 
 if(SDL2)
-    OPTION(OPENGL "OpenGL support" No)
+    OPTION(USE_OPENGL "OpenGL support" No)
 else()
-    OPTION(OPENGL "OpenGL support" Yes)
+    OPTION(USE_OPENGL "OpenGL support" Yes)
 endif()
 
 option(USE_VIRTUALPAD "Enable Onscreen Virtual Gamepad support " ON)
@@ -38,10 +38,10 @@ IF(WIN32)
 	ADD_DEFINITIONS(-DWIN32)
 ENDIF(WIN32)
 
-IF (OPENGL)
+IF (USE_OPENGL)
         ADD_DEFINITIONS(-DGL)
         ADD_DEFINITIONS(-DUSE_OPENGL)
-ENDIF (OPENGL)
+ENDIF (USE_OPENGL)
 
 
 # If we want to debug set the proper flags or have release etc.
@@ -149,14 +149,14 @@ if(USE_SDL2)
 endif()
 
 
-IF(OPENGL)
+IF(USE_OPENGL)
     # OpenGL Parsing
     set(OpenGL_GL_PREFERENCE GLVND)
     find_package(OpenGL REQUIRED)    
 
     ADD_DEFINITIONS(-DGL)
     ADD_DEFINITIONS(-DUSE_OPENGL)
-ENDIF (OPENGL)
+ENDIF (USE_OPENGL)
 
 add_library(GsKit ${ALL_SRCS_GSKIT_BASE})
 
@@ -175,9 +175,9 @@ else()
 endif()
 
 
-IF(OPENGL)
+IF(USE_OPENGL)
     # OpenGL stuff to link
     target_link_libraries(GsKit ${OPENGL_LIBRARIES})
-ENDIF(OPENGL)
+ENDIF(USE_OPENGL)
 
 #cotire(GsKit)
