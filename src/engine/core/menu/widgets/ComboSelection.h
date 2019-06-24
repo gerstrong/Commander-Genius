@@ -17,7 +17,20 @@ public:
 
     void processRender(const GsRect<float> &RectDispCoordFloat) override;
 
+    //void spawnSubWidgets() override;
+
+    virtual void processLogic() override;
+
     const Style mStyle;
+
+private:
+
+    GsColor mColorNormal;
+    GsColor mColorHovered;
+    GsColor mColorPressed;
+    GsColor mColorReleased;
+    GsColor mColorSelected;
+
 };
 
 #endif // __COMBOSELECTION_H__

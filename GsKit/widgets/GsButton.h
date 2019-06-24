@@ -72,6 +72,11 @@ public:
         mFunction = f;
     }
 
+    void activateFunction()
+    {
+        mFunction();
+    }
+
     /**
      * @brief drawEnabledButton Drawing of a button with fading effects.
      * @param blitsfc sfc where to draw

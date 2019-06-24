@@ -16,32 +16,51 @@ mStyle(style)
     {        
         enableButtonBorders(false);
         enableWidgetsCenteringH(false);
-        enableBlinker(true);
+        enableBlinker(true);        
+        enableHighlightBg(false);
 
         mNormalTextColor = GsColor(0x26, 0x86, 0x26);
         mHoverBgColor = GsColor(0x66, 0x66, 0x66);
         mHoverTextColor = GsColor(0x66, 0xC6, 0x66);
-        setTextColor(mNormalTextColor);
-        setTextColorHovered(mHoverTextColor);
+
+        /*setTextColorHovered(mHoverTextColor);
         setTextColorPressed(GsColor(0x66, 0xF6, 0x66));
         setTextColorSelected(GsColor(0xA6, 0xC6, 0x66));
+        */
+
+
+        mColorNormal   = GsColor(0x26, 0x86, 0x26);
+        mColorHovered  = GsColor(0x66, 0xC6, 0x66);
+        mColorPressed  = GsColor(0x66, 0xF6, 0x66);
+        mColorReleased = GsColor(0x46, 0xF6, 0x56);
+        mColorSelected = GsColor(0xA6, 0xC6, 0x66);
+
+        setTextColor(mColorNormal);
+
+        mpFeatureName->setFontId(1);
+        mpFeatureValue->setFontId(1);
     }
 
     if(mStyle == Style::VORTICON)
     {
         enableTwirl(true);
-    }
-
-    if(mStyle == Style::NONE)
-    {
-        //mFontID = 0;
-    }
-    else
-    {
-        //mFontID = 1;
+        enableHighlightBg(false);
     }
 }
 
+/*
+void ComboSelection::spawnSubWidgets()
+{
+    mpFeatureName =
+            addWidget(new CGUIText(mFeatureText,
+                                GsRect<float>(0.0f, 0.0f, 0.5f, 1.0f)));
+
+    mpFeatureValue =
+            addWidget(new GsButton("?",
+                                GsRect<float>(0.5f, 0.0f, 0.5f, 1.0f),
+                                [&]{this->cycleOption();}));
+}
+*/
 
 void ComboSelection::cycleOption()
 {
@@ -93,3 +112,14 @@ void ComboSelection::processRender(const GsRect<float> &RectDispCoordFloat)
     CGUIComboSelection::processRender(controlsRect);    
 }
 
+void ComboSelection::processLogic()
+{
+    setTextColor(mColorNormal);
+
+    if(mHovered)
+    {
+        setTextColor(mColorHovered);
+    }
+
+    CGUIComboSelection::processLogic();
+}

@@ -31,25 +31,29 @@ GameMenu( GsRect<float>(0.25f, 0.24f, 0.5f, 0.40f),
 
 #if !defined(EMBEDDED)
 
-    mpMenuDialog->addWidget(new GameButton( "Display",
-                                             new OpenMenuEvent( new DisplaySettings(Style()) ),
-                                             style ) );
+    mpMenuDialog->addWidget(
+                new GameButton( "Display",
+                                new OpenMenuEvent( new DisplaySettings(style) ),
+                                style ) );
 
 
-    mpMenuDialog->addWidget(new GameButton( "Video",
-                                             new OpenMenuEvent( new CVideoSettings(Style()) ),
-                                             style ) );
+    mpMenuDialog->addWidget(
+                new GameButton( "Video",
+                                new OpenMenuEvent( new CVideoSettings(style) ),
+                                style ) );
 
 #endif
 
-    mpMenuDialog->addWidget(new GameButton( "Audio",
-                                             new OpenMenuEvent( new CAudioSettings(Style()) ),
-                                             style ) );
+    mpMenuDialog->addWidget(
+                new GameButton( "Audio",
+                                new OpenMenuEvent( new CAudioSettings(style) ),
+                                style ) );
 
 
-    mpMenuDialog->addWidget(new GameButton( "Options",
-                                             new OpenMenuEvent( new COptions(Style()) ),
-                                             style ) );
+    mpMenuDialog->addWidget(
+                new GameButton( "Options",
+                                new OpenMenuEvent( new COptions(style) ),
+                                style ) );
 
     if(style != Style::NONE)
     {

@@ -160,8 +160,8 @@ ENDIF (USE_OPENGL)
 
 add_library(GsKit ${ALL_SRCS_GSKIT_BASE})
 
-# NOTE: The naming with the new Find cmake files is strange sometimes.
-#       Some use the "2" as var name others not.
+# The naming with the new Find cmake files related
+# to SDL is not always consistent. Some use the "2" as var name others not.
 if(USE_SDL2)
     Target_link_libraries(GsKit ${SDL2_LIBRARIES})
     Target_link_libraries(GsKit ${SDL2_LIBRARY})

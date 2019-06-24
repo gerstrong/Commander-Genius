@@ -31,6 +31,8 @@ public:
         return *mOLCurrent;
     }
 
+    virtual void spawnSubWidgets();
+
     virtual void cycleOption();
 
     bool sendEvent(const InputCommand command) override;
@@ -44,9 +46,6 @@ public:
     virtual void processLogic() override;
 
     void setTextColor(const GsColor &color);
-    void setTextColorHovered(const GsColor &color);
-    void setTextColorPressed(const GsColor &color);
-    void setTextColorSelected(const GsColor &color);
 
     void enableButtonBorders(const bool value);
 

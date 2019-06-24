@@ -65,14 +65,13 @@ public:
 	void drawBlinker( const SDL_Rect& lRect );
 
     void enableBlinker(const bool value)
-    {
-        mDrawBlinker = value;
-    }
+    {   mDrawBlinker = value; }
 
     void enableTwirl(const bool value)
-    {
-        mDrawTwirl = value;
-    }
+    {   mDrawTwirl = value; }
+
+    void enableHighlightBg(const bool value)
+    {   mHighlightBg = value; }
 
 
     void setPressed(const bool value)
@@ -105,8 +104,10 @@ protected:
 
     int mLightRatio = 128; // This blends between selected and unselected item.
 
-    bool mDrawBlinker = false;
-    bool mDrawTwirl = false;
+    bool mDrawBlinker = false; // Highlighting using the blinker from galaxy games
+    bool mDrawTwirl = false;  // Highlighting using the twirl from vorticon games
+    bool mHighlightBg = true; // Standard, some controls may be highlighted
+                              // if hovered or selected
 
     /**
      * @brief mHoverTriggers    This is for touch friendly devices were there is no device

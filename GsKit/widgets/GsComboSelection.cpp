@@ -24,9 +24,14 @@ mOptionsList( optionsList ),
 mOLCurrent( mOptionsList.begin() ),
 mFeatureText(text)
 {
+    spawnSubWidgets();
+}
 
+
+void CGUIComboSelection::spawnSubWidgets()
+{
     mpFeatureName =
-            addWidget(new CGUIText(text,
+            addWidget(new CGUIText(mFeatureText,
                                 GsRect<float>(0.0f, 0.0f, 0.5f, 1.0f)));
 
     mpFeatureValue =
@@ -105,7 +110,7 @@ void CGUIComboSelection::processRender(const GsRect<float> &RectDispCoordFloat)
     auto displayRect = getRect();
     displayRect.transform(RectDispCoordFloat);
 
-    if(mHovered)
+    if(mHovered && mHighlightBg)
     {
         blitsfc.fill(displayRect, blitsfc.mapColorAlpha(mHoverBgColor));
     }
@@ -120,16 +125,10 @@ void CGUIComboSelection::processRender(const GsRect<float> &RectDispCoordFloat)
 
 void CGUIComboSelection::processLogic()
 {
-    /*
-    for(auto &obj : mWidgetList)
+    if(mReleased)
     {
-        obj->setHovered(mHovered);
-        obj->select(mSelected);
-        obj->enable(mEnabled);
-        obj->setPressed(mPressed);
-        obj->setReleased(mReleased);
+        mpFeatureValue->activateFunction();
     }
-    */
 
     GsWidgetsManager::processLogic();
 }
@@ -139,25 +138,6 @@ void CGUIComboSelection::setTextColor(const GsColor &color)
     mpFeatureName->setTextColor(color);
     mpFeatureValue->setTextColor(color);
 }
-
-void CGUIComboSelection::setTextColorHovered(const GsColor &color)
-{
-    //mpFeatureName->setTextColorHovered(color);
-    //mpFeatureValue->setTextColorHovered(color);
-}
-
-void CGUIComboSelection::setTextColorPressed(const GsColor &color)
-{
-    //mpFeatureName->setTextColorPressed(color);
-    //mpFeatureValue->setTextColorPressed(color);
-}
-
-void CGUIComboSelection::setTextColorSelected(const GsColor &color)
-{
-    //mpFeatureName->setTextColorSelected(color);
-    //mpFeatureValue->setTextColorSelected(color);
-}
-
 
 void CGUIComboSelection::enableButtonBorders(const bool value)
 {
