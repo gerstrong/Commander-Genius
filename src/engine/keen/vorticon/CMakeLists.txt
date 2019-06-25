@@ -74,13 +74,8 @@ set(CXXSRC
     finale/CShipFlySys.cpp
     finale/CTantalusRay.cpp
     finale/finale.cpp
-    menu/CAudioSettings.cpp
-    menu/CCameraSettings.cpp
-    menu/CConfirmMenu.cpp
-    menu/cheatsmenu.cpp
     menu/CHelpMenu.cpp
     menu/CLoadMenu.cpp
-    menu/COptions.cpp
     menu/CSaveMenu.cpp
     menu/VorticonMenu.cpp
     menu/widgets/Button.cpp
@@ -157,13 +152,8 @@ set(HSRC
     finale/CFinaleStaticScene.h
     finale/CShipFlySys.h
     finale/CTantalusRay.h
-    menu/CAudioSettings.h
-    menu/CCameraSettings.h
-    menu/CConfirmMenu.h
-    menu/cheatsmenu.h
     menu/CHelpMenu.h
     menu/CLoadMenu.h
-    menu/COptions.h
     menu/CSaveMenu.h
     menu/VorticonMenu.h
     menu/widgets/Button.h

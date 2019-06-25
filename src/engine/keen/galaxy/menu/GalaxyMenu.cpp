@@ -8,12 +8,7 @@ GalaxyMenu::GalaxyMenu( const GsRect<float>& rect ):
 {
     GsRect<float> localRect(0.30f, 0.282f, 0.5f, 0.5f);
     mpMenuDialog->setRect(localRect);
-/*        mpMenuDialog->addWidget( mpReturnButton,
-                              GsRect<float>(
-                                  -0.1f, 0.1f,
-                                  0.03f/localRect.dim.x,
-                                  0.03f/localRect.dim.y) );
-                                  */
+
     mpMenuDialog->addWidget( mpReturnButton );
 
     mpReturnButton->setHovered(true);
