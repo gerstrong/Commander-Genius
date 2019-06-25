@@ -31,14 +31,15 @@ public:
         mCommandName(commandName)
 		{}
 
-	void setButtonPtr(GsButton* button)
+    void setButtonPtr(std::shared_ptr<GsButton> button)
 	{
 		mpButton = button;
 	}
 
     void operator()() const
 	{
-		gInput.setupNewEvent(mSelPlayer-1, mCommand);
+        gInput.setupNewEvent(Uint8(mSelPlayer-1),
+                             mCommand);
 
 		const std::string buf = mCommandName;		
 		mpButton->setText(buf + "=Reading=");
@@ -47,7 +48,7 @@ public:
 	int mSelPlayer;
 	InputCommand mCommand;
 	const std::string mCommandName;
-    GsButton* mpButton = nullptr;
+    std::shared_ptr<GsButton> mpButton;
 };
 
 
@@ -90,7 +91,12 @@ mSelectedPlayer(selectedPlayer)
 
     mpMenuDialog->addWidget(
                 new GameButton( "Buttons",
-                                new OpenButtonsControlMenuEvent(mSelectedPlayer),
+                                [this]()
+                                {
+                                  gEventManager.add( new OpenMenuEvent(
+                                    new CControlSettingsButtons(mSelectedPlayer,
+                                                             this->getStyle()) ) );
+                                },
                                 style ) );
 
     mpTwoButtonSwitch =
@@ -174,8 +180,6 @@ void CControlSettingsBase::ponder(const float deltaT)
 
             mpButtonList[static_cast<unsigned int>(pos)]->setText(mCommandName[com] + evName);
         }
-
-        //GameButton::ponder(0);
     }
 
     GameMenu::ponder(deltaT);
@@ -213,12 +217,22 @@ void CControlSettingsMovement::refresh()
         const std::string buf2 = gInput.getEventShortName( it->first,
                                                            mSelectedPlayer-1 );
 
-		ReadInputEvent *rie = new ReadInputEvent(mSelectedPlayer, it->first, it->second);
-        auto	*guiButton = new GameButton( buf+buf2, rie, Style() );
-		rie->setButtonPtr(guiButton);
+        ReadInputEvent *rie =
+                new ReadInputEvent(mSelectedPlayer,
+                                   it->first,
+                                   it->second);
+
+        auto guiButton =
+            mpMenuDialog->addWidget(
+                    new GameButton( buf+buf2,
+                                    rie,
+                                    getStyle() ) );
 
 		mpButtonList.push_back( guiButton );
-		mpMenuDialog->addWidget( guiButton );
+
+        rie->setButtonPtr(
+                    std::static_pointer_cast<GsButton>(guiButton)
+                         );
 	}
 
 	setMenuLabel("MOVEMENULABEL");
@@ -247,17 +261,25 @@ void CControlSettingsButtons::refresh()
 	std::map<InputCommand, std::string>::iterator it = mCommandName.begin();
 	for ( ; it != mCommandName.end(); it++ )
 	{
-		const std::string buf = it->second;
-		const std::string buf2 = gInput.getEventShortName( it->first, mSelectedPlayer-1 );
+        const std::string buf = it->second;
+        const std::string buf2 = gInput.getEventShortName( it->first,
+                                                           mSelectedPlayer-1 );
 
-		ReadInputEvent *rie = new ReadInputEvent(mSelectedPlayer, it->first, it->second);
-        auto	*guiButton = new GameButton( buf+buf2, rie, Style() );
-		rie->setButtonPtr(guiButton);
+        ReadInputEvent *rie =
+                new ReadInputEvent(mSelectedPlayer,
+                                   it->first, it->second);
 
+        auto guiButton =
+            mpMenuDialog->addWidget(
+                    new GameButton( buf+buf2,
+                                    rie,
+                                    getStyle() ) );
 
-		mpButtonList.push_back( guiButton );
-		mpMenuDialog->addWidget( guiButton );
+        mpButtonList.push_back( guiButton );
 
+        rie->setButtonPtr(
+                    std::static_pointer_cast<GsButton>(guiButton)
+                         );
 	}
 
 	setMenuLabel("BUTTONMENULABEL");

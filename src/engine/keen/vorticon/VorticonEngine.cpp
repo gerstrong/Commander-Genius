@@ -230,14 +230,6 @@ void VorticonEngine::pumpEvent(const CEvent *evPtr)
         return;
     }
     // Control Menu Events
-    else if( const OpenButtonsControlMenuEvent* ctrlMenu =
-             dynamic_cast<const OpenButtonsControlMenuEvent*>(evPtr) )
-    {
-        const int players = ctrlMenu->mSelection;
-        gEventManager.add( new OpenMenuEvent(
-                                new CControlSettingsButtons(players,
-                                                            Style::VORTICON) ) );
-    }
     else if( const OpenControlMenuEvent* ctrlMenu =
              dynamic_cast<const OpenControlMenuEvent*>(evPtr) )
     {

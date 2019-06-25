@@ -59,7 +59,7 @@ public:
 protected:
     int mSelectedPlayer;
 
-    std::vector<GameButton*> mpButtonList;
+    std::vector< std::shared_ptr<GameButton> > mpButtonList;
     std::map<InputCommand, std::string> mCommandName;
 
     bool mapping;
@@ -98,13 +98,6 @@ struct OpenControlMenuEvent : SelectionEvent
 {
 	OpenControlMenuEvent(const int players) :
         SelectionEvent(players) {}
-};
-
-
-struct OpenButtonsControlMenuEvent : OpenControlMenuEvent
-{
-	OpenButtonsControlMenuEvent(const int option) :
-        OpenControlMenuEvent(option) {}
 };
 
 
