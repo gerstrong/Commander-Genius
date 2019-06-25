@@ -17,8 +17,6 @@ public:
 
     void processRender(const GsRect<float> &RectDispCoordFloat) override;
 
-    //void spawnSubWidgets() override;
-
     virtual void processLogic() override;
 
     const Style mStyle;

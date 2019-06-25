@@ -6,7 +6,6 @@
 #include <graphics/GsGraphics.h>
 
 
-//const int SLIDER_WIDTH = 16;
 
 NumberControl::NumberControl(const std::string &text,
                              const int startValue,
@@ -18,161 +17,78 @@ NumberControl::NumberControl(const std::string &text,
 CGUINumberControl(text,
                   GsRect<float>(0.0f,0.0f,1.0f,1.0f),
                   startValue, endValue,
-                  deltaValue, value, 1,
+                  deltaValue, value,
                   slider),
 mStyle(style)
-{   
+{
     if(mStyle == Style::GALAXY)
     {
-        //setTextColor(GsColor(0x26, 0x86, 0x26));
-        //enableButtonBorders(false);
+        enableButtonBorders(false);
+        enableWidgetsCenteringH(false);
+        enableBlinker(true);
+        enableHighlightBg(false);
+
+        mHoverBgColor = GsColor(0x66, 0x66, 0x66);
+
+        mColorNormal   = GsColor(0x26, 0x86, 0x26);
+        mColorHovered  = GsColor(0x66, 0xC6, 0x66);
+        mColorPressed  = GsColor(0x66, 0xF6, 0x66);
+        mColorReleased = GsColor(0x46, 0xF6, 0x56);
+        mColorSelected = GsColor(0xA6, 0xC6, 0x66);
+
+        setTextColor(mColorNormal);
+
+        mpCtrlName->setFontId(1);
+        mpLeftButton->setFontId(1);
+        mpCtrlValue->setFontId(1);
+        mpRightButton->setFontId(1);
     }
 
-    if(mStyle == Style::NONE)
+    if(mStyle == Style::VORTICON)
     {
-        //mFontID = 0;
-    }
-    else
-    {
-        //mFontID = 1;
+        enableTwirl(true);
+        enableHighlightBg(false);
     }
 }
 
-/*
-void NumberControl::setupButtonSurface(const std::string &text)
-{        
-    auto &Font = gGraphics.getFont(mFontID);
-
-    const std::string showText = "  " + mText + ": " + itoa(mValue);
-    GsButton::setupButtonSurface(showText);
-
-    const std::string showTextL = "  " + mText + ":<" + itoa(mValue);
-    const std::string showTextR = "  " + mText + ": " + itoa(mValue) + ">";
-
-    Font.createTextSurface(mTextLightSfcR, showTextR, 84, 234, 84 );
-    Font.createTextSurface(mTextLightSfcL, showTextL, 84, 234, 84 );
-}
-*/
 
 void NumberControl::processLogic()
 {
+    setTextColor(mColorNormal);
+
+    if(mHovered)
+    {
+        setTextColor(mColorHovered);
+    }
+
     CGUINumberControl::processLogic();
-
-    if(mMustRedraw)
-    {
-        mMustRedraw = false;
-        //setupButtonSurface();
-    }
-}
-
-void NumberControl::drawNoStyle(SDL_Rect& lRect)
-{
-    /*
-    // Now lets draw the text of the list control
-    auto &Font = gGraphics.getFont(mFontID);
-
-    std::string text = mText + ":";
-
-    SDL_Surface *blitsfc = gVideoDriver.getBlitSurface();
-
-    if(mEnabled)
-    {
-*/
-        /*
-    if(mSlider)
-    {
-        text += sliderStr();
-    }
-    else*/
-  /*      {
-            text += (mDecSel) ? "\025" : " ";
-            text += itoa(mValue);
-            if(mIncSel)
-                text += static_cast<char>(17);
-            else
-                text += " ";
-        }
-
-        Font.drawFont( blitsfc, text, lRect.x+40, lRect.y, false );
-    }
-
-    else
-    {
-        text += " " + itoa(mValue) + " ";
-        Font.drawFont( blitsfc, text, lRect.x+40, lRect.y, true );
-    }
-
-    drawTwirl(lRect);*/
 }
 
 void NumberControl::processRender(const GsRect<float> &RectDispCoordFloat)
 {    
-
-    CGUINumberControl::processRender(RectDispCoordFloat);
     // Transform to the display coordinates
-   /* GsRect<float> displayRect = mRect;
+    GsRect<float> displayRect = getRect();
     displayRect.transform(RectDispCoordFloat);
     SDL_Rect lRect = displayRect.SDLRect();
-    
-    GsWeakSurface blitsfc(gVideoDriver.getBlitSurface());
-    
-    if(mStyle == Style::GALAXY)
+
+    GsWeakSurface blitsfc( gVideoDriver.getBlitSurface() );
+
+    auto controlsRect = RectDispCoordFloat;
+
+    if(mDrawBlinker)
     {
-        
-        if(!mEnabled)
-        {
-            mTextDisabledSfc.blitTo(blitsfc, lRect);
-        }
-        else
-        {                        
-#ifndef DISABLE_HOVER
-            drawEnabledButton(blitsfc, lRect, mHovered);
-            if(mHovered)
-            {
-                if(mDecSel)
-                    mTextLightSfcL.blitTo(blitsfc, lRect);
-                else if(mIncSel)
-                    mTextLightSfcR.blitTo(blitsfc, lRect);
-                else
-                    mTextLightSfc.blitTo(blitsfc, lRect);
-            }
-#else
-            drawEnabledButton(blitsfc, lRect, false);
-#endif
-        }
-        
         drawBlinker(lRect);
+        controlsRect.pos.x += 11;
+        controlsRect.dim.x -= 11;
     }
-    else if(mStyle == Style::VORTICON)
+
+    if(mDrawTwirl)
     {
-        // Now lets draw the text of the list control
-        auto &Font = gGraphics.getFont(mFontID);
-        
-        Font.drawFont( blitsfc, mText, lRect.x+24, lRect.y, false );
-        Font.drawFont( blitsfc, ":", lRect.x+24+mText.size()*8, lRect.y, false );
-        
-        if(mSlider)
-        {
-            gGraphics.getFont(2).drawFont( blitsfc, sliderStr(), lRect.x+16+(mText.size()+2)*8, lRect.y, false );
-        }
-        else
-        {
-            std::string text = (mDecSel) ? "\025" : " ";
-            text += itoa(mValue);
-            if(mIncSel)
-                text += static_cast<char>(17);
-            else
-                text += " ";
-            
-            Font.drawFont( blitsfc, text, lRect.x+24+(mText.size()+2)*8, lRect.y, false );
-        }
-        
+        controlsRect.pos.x += 24;
+        controlsRect.dim.x -= 24;
         drawTwirl(lRect);
-        
     }
-    else
-    {
-        CGUINumberControl::processRender(RectDispCoordFloat);
-    }*/
+
+    CGUINumberControl::processRender(controlsRect);
 }
 

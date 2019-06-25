@@ -12,9 +12,16 @@ public:
                const Style style);
 
     GameButton(const std::string& text,
+               const std::function <void ()>& f,
+               const Style style);
+
+
+    GameButton(const std::string& text,
                const GsRect<float> &rect,
                CEvent *ev,
                const Style style);
+
+    void setupStyle();
 
     virtual void processLogic() override;
 

@@ -39,11 +39,11 @@ private:
 
 	int mSelectedPlayer;
 
-    Switch *mpTwoButtonSwitch;
-    Switch *mpAnalogSwitch;
-    Switch *mpSuperPogoSwitch;
-    Switch *mpImpPogoSwitch;
-    Switch *mpAutoGunSwitch;
+    std::shared_ptr<Switch> mpTwoButtonSwitch;
+    std::shared_ptr<Switch> mpAnalogSwitch;
+    std::shared_ptr<Switch> mpSuperPogoSwitch;
+    std::shared_ptr<Switch> mpImpPogoSwitch;
+    std::shared_ptr<Switch> mpAutoGunSwitch;
 };
 
 
@@ -71,7 +71,7 @@ class CControlSettingsMovement : public CControlSettingsBase
 {
 public:
     CControlSettingsMovement(const int selectedPlayer,
-                             const Style &style) :
+                             const Style style) :
         CControlSettingsBase(selectedPlayer, style) {}
 
     void refresh();
@@ -104,12 +104,6 @@ struct OpenControlMenuEvent : SelectionEvent
 struct OpenButtonsControlMenuEvent : OpenControlMenuEvent
 {
 	OpenButtonsControlMenuEvent(const int option) :
-        OpenControlMenuEvent(option) {}
-};
-
-struct OpenMovementControlMenuEvent : OpenControlMenuEvent
-{
-	OpenMovementControlMenuEvent(const int option) :
         OpenControlMenuEvent(option) {}
 };
 

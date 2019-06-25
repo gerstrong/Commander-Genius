@@ -47,6 +47,14 @@ public:
              const float blue = 1.0f);
 
     GsButton(const std::string& text,
+             const std::function <void ()>& f,
+             const int fontId = -1,
+             const float red = 0.933f,
+             const float green = 0.933f,
+             const float blue = 1.0f);
+
+
+    GsButton(const std::string& text,
              const GsRect<float> &rect,
              const std::function <void ()>& f,
              const int fontId = -1,

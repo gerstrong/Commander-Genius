@@ -25,7 +25,6 @@ public:
                       const int endValue,
                       const int deltaValue,
                       const int value,
-                      const int fontid,
                       const bool slider);
 
 
@@ -43,7 +42,17 @@ public:
 
 	void processRender(const GsRect<float> &RectDispCoordFloat);
 
+    void setTextColor(const GsColor &color);
+
+    void enableButtonBorders(const bool value);
+
+    void enableWidgetsCenteringH(const bool value);
+
+
 protected:
+
+    virtual void spawnSubWidgets();
+
     bool mIncSel = false;
     bool mDecSel = false;
 
@@ -56,19 +65,17 @@ protected:
 
     const int mStartValue = 0;
     const int mEndValue = 0;
-    bool mMustRedraw = true;
+    const int mDeltaValue = 0;
 
-private:
+    GsColor mHoverBgColor;
 
-	const int mDeltaValue;
+    std::string mFeatureText;
 
-	static int mTwirliconID;    
-
-
-    std::shared_ptr<GsButton> mpLeftButton;
     std::shared_ptr<CGUIText> mpCtrlName;
+    std::shared_ptr<GsButton> mpLeftButton;
     std::shared_ptr<CGUIText> mpCtrlValue;
     std::shared_ptr<GsButton> mpRightButton;
+
 };
 
 #endif /* CGUINUMBERCONTROL_H_ */

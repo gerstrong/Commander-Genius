@@ -77,35 +77,45 @@ CControlsettings::CControlsettings(const int selectedPlayer ,
 GameMenu( GsRect<float>(0.1f, 0.25f, 0.8f, 0.5f), style ),
 mSelectedPlayer(selectedPlayer)
 {
-    GameButton *button;
+    mpMenuDialog->addWidget(
+                new GameButton( "Movement",
+                                [this]()
+                                {
+                                  gEventManager.add( new OpenMenuEvent(
+                                    new CControlSettingsMovement(mSelectedPlayer,
+                                                             this->getStyle()) ) );
+                                },
+                                style )  );
 
-    button = new GameButton( "Movement", new OpenMovementControlMenuEvent(mSelectedPlayer), style );
-	mpMenuDialog->addWidget( button );
 
-    button = new GameButton( "Buttons", new OpenButtonsControlMenuEvent(mSelectedPlayer), style );
-	mpMenuDialog->addWidget( button );
+    mpMenuDialog->addWidget(
+                new GameButton( "Buttons",
+                                new OpenButtonsControlMenuEvent(mSelectedPlayer),
+                                style ) );
 
-    mpTwoButtonSwitch = new Switch( "Two Button Fire", style );
+    mpTwoButtonSwitch =
+            mpMenuDialog->addWidget( new Switch( "Two Button Fire", style ) );
 	mpTwoButtonSwitch->enable(gInput.getTwoButtonFiring(mSelectedPlayer-1));
 
-    mpAnalogSwitch = new Switch( "Analog Movement", style );
+    mpAnalogSwitch =
+            mpMenuDialog->addWidget( new Switch( "Analog Movement", style ) );
 	mpAnalogSwitch->enable(gInput.isAnalog(mSelectedPlayer-1));
 
-    mpSuperPogoSwitch = new Switch( "Super Pogo", style );
+    mpSuperPogoSwitch =
+            mpMenuDialog->addWidget( new Switch( "Super Pogo", style ) );
 	mpSuperPogoSwitch->enable(gInput.SuperPogo(mSelectedPlayer-1));
 
-    mpImpPogoSwitch = new Switch( "Impossible Pogo", style );
+    mpImpPogoSwitch =
+            mpMenuDialog->addWidget( new Switch( "Impossible Pogo", style ) );
 	mpImpPogoSwitch->enable(gInput.ImpossiblePogo(mSelectedPlayer-1));
 
-    mpAutoGunSwitch = new Switch( "Auto Gun", style );
+    mpAutoGunSwitch =
+            mpMenuDialog->addWidget( new Switch( "Auto Gun", style ) );
 	mpAutoGunSwitch->enable(gInput.AutoGun(mSelectedPlayer-1));
 
-	mpMenuDialog->addWidget( mpTwoButtonSwitch );
-	mpMenuDialog->addWidget( mpAnalogSwitch );
-	mpMenuDialog->addWidget( mpSuperPogoSwitch );
-	mpMenuDialog->addWidget( mpImpPogoSwitch );
-	mpMenuDialog->addWidget( mpAutoGunSwitch );
-    mpMenuDialog->addWidget( new GameButton( "Reset Controls", new ResetInputEvent(mSelectedPlayer-1), style ) );
+    mpMenuDialog->addWidget( new GameButton( "Reset Controls",
+                                             new ResetInputEvent(mSelectedPlayer-1),
+                                             style ) );
     
     setMenuLabel("KEYBMENULABEL");
 
@@ -129,10 +139,18 @@ void CControlsettings::release()
 
 
 // Movements Parts of the Control Settings
-CControlSettingsBase::CControlSettingsBase(const int selectedPlayer, const Style style) :
-GameMenu( GsRect<float>(0.01f, (1.0f-((MAX_COMMANDS/2.0f)+2)*0.06f)*0.5f, 0.98f,(MAX_COMMANDS/2.0f+2)*0.06f), style ),
+CControlSettingsBase::
+CControlSettingsBase(const int selectedPlayer,
+                     const Style style) :
+GameMenu(
+        GsRect<float>(0.01f,
+                      (1.0f-((MAX_COMMANDS/2.0f)+2)*0.06f)*0.5f,
+                      0.98f,
+                      (MAX_COMMANDS/2.0f+2)*0.06f), style ),
 mSelectedPlayer(selectedPlayer)
-{}
+{
+
+}
 
 
 void CControlSettingsBase::ponder(const float deltaT)
@@ -192,7 +210,8 @@ void CControlSettingsMovement::refresh()
 	for ( ; it != mCommandName.end(); it++ )
 	{
 		const std::string buf = it->second;
-		const std::string buf2 = gInput.getEventShortName( it->first, mSelectedPlayer-1 );
+        const std::string buf2 = gInput.getEventShortName( it->first,
+                                                           mSelectedPlayer-1 );
 
 		ReadInputEvent *rie = new ReadInputEvent(mSelectedPlayer, it->first, it->second);
         auto	*guiButton = new GameButton( buf+buf2, rie, Style() );
@@ -203,6 +222,8 @@ void CControlSettingsMovement::refresh()
 	}
 
 	setMenuLabel("MOVEMENULABEL");
+
+    mpMenuDialog->fit();
 }
 
 

@@ -16,11 +16,7 @@
 #include "GsNumberControl.h"
 
 
-int CGUINumberControl::mTwirliconID = 10;
-
 const int SLIDER_WIDTH = 16;
-//const int BLEND_SPEED = 16;
-
 
 CGUINumberControl::CGUINumberControl(const std::string& text,
                                      const GsRect<float> &rect,
@@ -28,40 +24,40 @@ CGUINumberControl::CGUINumberControl(const std::string& text,
                                       const int endValue,
                                       const int deltaValue,
                                       const int value,
-                                      const int fontid,
                                       const bool slider) :
 GsWidgetsManager(rect),
 mValue(value),
 mSlider(slider),
 mStartValue(startValue),
 mEndValue(endValue),
-mDeltaValue(deltaValue)
+mDeltaValue(deltaValue),
+mHoverBgColor(0xBB, 0xBB, 0xFF),
+mFeatureText(text)
+{    
+    spawnSubWidgets();
+}
+
+
+void CGUINumberControl::spawnSubWidgets()
 {
-    //mFontID = fontid;
+    mpCtrlName =
+            addWidget(new CGUIText(mFeatureText,
+                                GsRect<float>(0.0f, 0.0f, 0.5f, 1.0f)));
 
     mpLeftButton =
             addWidget(new GsButton("<",
-                                GsRect<float>(0.0f, 0.0f, 0.1f, 1.0f),
-                                [&]{this->decrement();},
-                                fontid));
+                                GsRect<float>(0.5f, 0.0f, 0.1f, 1.0f),
+                                [&]{this->decrement();}));
 
-    mpCtrlName =
-            addWidget(new CGUIText(text,
-                                GsRect<float>(0.1f, 0.0f, 0.4f, 1.0f),
-                                    fontid));
     mpCtrlValue =
             addWidget(new CGUIText("?",
-                                GsRect<float>(0.5f, 0.0f, 0.4f, 1.0f),
-                                    fontid));
+                                GsRect<float>(0.6f, 0.0f, 0.3f, 1.0f)));
 
 
     mpRightButton =
             addWidget(new GsButton(">",
                                 GsRect<float>(0.9f, 0.0f, 0.1f, 1.0f),
-                                [&]{this->increment();},
-                                fontid));
-
-
+                                [&]{this->increment();}));
 }
 
 
@@ -113,7 +109,6 @@ void CGUINumberControl::setSelection( const int value )
     mpLeftButton->enable( mValue > mStartValue ? true : false  );
     mpRightButton->enable( mValue < mEndValue ? true : false  );
 
-    mMustRedraw = true;
     mpCtrlValue->setText(itoa(mValue));
 }
 
@@ -274,9 +269,9 @@ void CGUINumberControl::processRender(const GsRect<float> &rectDispCoordFloat)
     auto displayRect = getRect();
     displayRect.transform(rectDispCoordFloat);
 
-    if(mHovered)
+    if(mHovered && mHighlightBg)
     {
-        blitsfc.fill(displayRect, blitsfc.mapRGB(0xBB, 0xBB, 0xFF));
+        blitsfc.fill(displayRect, blitsfc.mapColorAlpha(mHoverBgColor));
     }
 
 
@@ -284,81 +279,28 @@ void CGUINumberControl::processRender(const GsRect<float> &rectDispCoordFloat)
     {
         obj->processRender(displayRect);
     }
-    /*
-    if(lRect.h == 0 || lRect.w == 0)
-        return;
-
-    GsWeakSurface blitsfc(gVideoDriver.getBlitSurface());
-
-    int lComp = 0xFF;
-
-    // Set as default a grey border
-    Uint32 borderColor = blitsfc.mapRGBA( 0xBB, 0xBB, 0xBB, 0xFF);
-
-    if(mEnabled)
-    {
-        auto lightRatio = mLightRatio;
-
-        if( mPressed || mSelected )
-        {
-            // Try to highlight the border color a bit more by determing which one dominates the most
-            auto red   = Uint8(mRed*127.0f);
-            auto green = Uint8(mGreen*127.0f);
-            auto blue  = Uint8(mBlue*127.0f);
-
-            if(red > green && red > blue)
-                red <<= 1;
-            else if(green > red  && green > blue)
-                green <<= 1;
-            else if(blue > green && blue > red )
-                blue <<= 1;
-
-            if(mPressed)
-            {
-                red <<= 1;
-                blue >>= 1;
-                lightRatio <<= 1;
-            }
-
-            // If want to highlight the button set the color
-            borderColor = blitsfc.mapRGBA( red, green, blue, 0xFF);
-
-            lComp = 0xFF - (lightRatio*(0xFF-0xCF)/255);
-        }
-        else
-        {
-            lComp = 0xFF - (lightRatio*(0xFF-0xDF)/255);
-        }
-    }
-
-
-    auto lcompf = float(lComp);
-
-    auto redC   = Uint8(lcompf*mRed);
-    auto greenC = Uint8(lcompf*mGreen);
-    auto blueC  = Uint8(lcompf*mBlue);
-
-    const auto fillColor = blitsfc.mapRGBA( redC, greenC, blueC, 0xFF);
-
-    GsRect<Uint16> rect(lRect);
-
-    blitsfc.drawRect( rect, 2, borderColor, fillColor );
-
-    if(!gTTFDriver.isActive())
-    {
-        // Now lets draw the text of the list control
-        auto &Font = gGraphics.getFont(mFontID);
-
-        if(mEnabled) // If the button is enabled use the normal text, otherwise the highlighted color
-        {
-            Font.drawFontCentered( blitsfc.getSDLSurface(), mText,
-                                   lRect.x, lRect.w, lRect.y, lRect.h, false );
-        }
-        else
-        {
-            Font.drawFontCentered( blitsfc.getSDLSurface(), mText,
-                                   lRect.x, lRect.w, lRect.y, lRect.h, true );
-        }
-    }
-    */
 }
+
+void CGUINumberControl::setTextColor(const GsColor &color)
+{
+    mpCtrlName->setTextColor(color);
+    mpLeftButton->setTextColor(color);
+    mpCtrlValue->setTextColor(color);
+    mpRightButton->setTextColor(color);
+}
+
+void CGUINumberControl::enableButtonBorders(const bool value)
+{
+    mpLeftButton->enableBorder(value);
+    mpRightButton->enableBorder(value);
+}
+
+void CGUINumberControl::enableWidgetsCenteringH(const bool value)
+{
+    mpCtrlName->enableCenteringH(value);
+    mpLeftButton->enableCenteringH(value);
+    mpCtrlValue->enableCenteringH(value);
+    mpRightButton->enableCenteringH(value);
+}
+
+

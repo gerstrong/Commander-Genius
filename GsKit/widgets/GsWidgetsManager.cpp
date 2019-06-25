@@ -24,8 +24,6 @@ void GsWidgetsManager::fit(const float padding,
                    width,
                    charHeight-0.01f );
 
-        //rect.transform(mRect);
-
         (*it)->setRect( rect );
         c++;
     }

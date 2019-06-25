@@ -19,15 +19,7 @@ mStyle(style)
         enableBlinker(true);        
         enableHighlightBg(false);
 
-        mNormalTextColor = GsColor(0x26, 0x86, 0x26);
         mHoverBgColor = GsColor(0x66, 0x66, 0x66);
-        mHoverTextColor = GsColor(0x66, 0xC6, 0x66);
-
-        /*setTextColorHovered(mHoverTextColor);
-        setTextColorPressed(GsColor(0x66, 0xF6, 0x66));
-        setTextColorSelected(GsColor(0xA6, 0xC6, 0x66));
-        */
-
 
         mColorNormal   = GsColor(0x26, 0x86, 0x26);
         mColorHovered  = GsColor(0x66, 0xC6, 0x66);
@@ -48,20 +40,6 @@ mStyle(style)
     }
 }
 
-/*
-void ComboSelection::spawnSubWidgets()
-{
-    mpFeatureName =
-            addWidget(new CGUIText(mFeatureText,
-                                GsRect<float>(0.0f, 0.0f, 0.5f, 1.0f)));
-
-    mpFeatureValue =
-            addWidget(new GsButton("?",
-                                GsRect<float>(0.5f, 0.0f, 0.5f, 1.0f),
-                                [&]{this->cycleOption();}));
-}
-*/
-
 void ComboSelection::cycleOption()
 {
     CGUIComboSelection::cycleOption();
@@ -74,7 +52,6 @@ void ComboSelection::setSelection( const std::string& selectionText )
     {
         if( *it == selectionText )
         {
-            //setupButtonSurface(selectionText);
             CGUIComboSelection::setSelection(selectionText);
             mOLCurrent = it;
             return;
@@ -83,6 +60,20 @@ void ComboSelection::setSelection( const std::string& selectionText )
 
     CGUIComboSelection::setSelection(selectionText);
 }
+
+
+void ComboSelection::processLogic()
+{
+    setTextColor(mColorNormal);
+
+    if(mHovered)
+    {
+        setTextColor(mColorHovered);
+    }
+
+    CGUIComboSelection::processLogic();
+}
+
 
 void ComboSelection::processRender(const GsRect<float> &RectDispCoordFloat)
 {
@@ -110,16 +101,4 @@ void ComboSelection::processRender(const GsRect<float> &RectDispCoordFloat)
     }
 
     CGUIComboSelection::processRender(controlsRect);    
-}
-
-void ComboSelection::processLogic()
-{
-    setTextColor(mColorNormal);
-
-    if(mHovered)
-    {
-        setTextColor(mColorHovered);
-    }
-
-    CGUIComboSelection::processLogic();
 }

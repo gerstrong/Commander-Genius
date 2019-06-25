@@ -11,6 +11,30 @@ GameButton::GameButton(const std::string& text,
 GsButton(text, ev),
 mStyle(style)
 {
+    setupStyle();
+}
+
+GameButton::GameButton(const std::string& text,
+           const std::function <void ()>& f,
+           const Style style) :
+GsButton(text, f),
+mStyle(style)
+{
+    setupStyle();
+}
+
+GameButton::GameButton(const std::string& text,
+                       const GsRect<float> &rect,
+                       CEvent *ev,
+                       const Style style) :
+GsButton(text, rect, ev),
+mStyle(style)
+{
+    setupStyle();
+}
+
+void GameButton::setupStyle()
+{
     if(mStyle == Style::GALAXY)
     {
         enableBorder(false);
@@ -24,25 +48,7 @@ mStyle(style)
         mColorSelected = GsColor(0xA6, 0xC6, 0x66);
 
         setFontId(1);
-        setText(text);
-    }
-    else if(mStyle == Style::VORTICON)
-    {
-        setFontId(0);
-    }
-}
-
-GameButton::GameButton(const std::string& text,
-                       const GsRect<float> &rect,
-                       CEvent *ev,
-                       const Style style) :
-GsButton(text, rect, ev),
-mStyle(style)
-{
-    if(mStyle == Style::GALAXY)
-    {
-        setText(text);
-        setFontId(1);
+        setText(mText);
     }
     else if(mStyle == Style::VORTICON)
     {

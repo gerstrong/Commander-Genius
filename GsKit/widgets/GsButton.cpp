@@ -24,13 +24,13 @@ GsButton::GsButton(const std::string& text,
             const float blue) :
 GsControl(rect),
 mText(text),
+mTextWidget(text,
+            GsRect<float>(0.0f, 0.0f, 1.0f, 1.0f),
+            fontId),
 mEvent(ev),
 mRed(red),
 mGreen(green),
-mBlue(blue),
-mTextWidget(text,
-            GsRect<float>(0.0f, 0.0f, 1.0f, 1.0f),
-            fontId)
+mBlue(blue)
 {}
 
 GsButton::GsButton(const std::string& text,
@@ -52,13 +52,30 @@ GsButton::GsButton(const std::string& text,
             const float blue) :
 GsControl(),
 mText(text),
+mTextWidget(text,
+            GsRect<float>(0.0f, 0.0f, 1.0f, 1.0f),
+            fontId),
 mEvent(ev),
 mRed(red),
 mGreen(green),
-mBlue(blue),
+mBlue(blue)
+{}
+
+GsButton::GsButton(const std::string& text,
+                   const std::function <void ()>& f,
+                   const int fontId,
+                   const float red,
+                   const float green,
+                   const float blue) :
+GsControl(),
+mText(text),
 mTextWidget(text,
             GsRect<float>(0.0f, 0.0f, 1.0f, 1.0f),
-            fontId)
+            fontId),
+mRed(red),
+mGreen(green),
+mBlue(blue),
+mFunction(f)
 {}
 
 GsButton::GsButton(const std::string& text,
@@ -70,12 +87,12 @@ GsButton::GsButton(const std::string& text,
          const float blue) :
     GsControl(rect),
     mText(text),
-    mRed(red),
-    mGreen(green),
-    mBlue(blue),
     mTextWidget(text,
                 GsRect<float>(0.0f, 0.0f, 1.0f, 1.0f),
                 fontId),
+    mRed(red),
+    mGreen(green),
+    mBlue(blue),
     mFunction(f)
 {}
 
@@ -236,52 +253,7 @@ void GsButton::drawNoStyle(const SDL_Rect& lRect)
 
 void GsButton::setupButtonSurface(const std::string &text)
 {
-    /*GsFontLegacy &Font = gGraphics.getFont(Uint8(mFontID));
-
-    if(text.empty())
-    {
-        Font.createTextSurface(mTextDarkSfc, "  " + mText, 38, 134, 38 );
-        Font.createTextSurface(mTextLightSfc, "  " + mText, 84, 234, 84 );
-        Font.createTextSurface(mTextDisabledSfc, "  " + mText, 123, 150, 123 );
-        return;
-    }
-
-    auto fontSfc = Font.SDLSurfacePtr();
-    auto palette = fontSfc->format->palette;
-
-    // If there is no palette defined, we will not bother with cached surfaces
-    if(!palette)
-    {
-        return;
-    }
-
-    Font.setOptimalFontSize();
-
-    Font.createTextSurface(mTextDarkSfc, text, 38, 134, 38 );
-    Font.createTextSurface(mTextLightSfc, text, 84, 234, 84 );
-    Font.createTextSurface(mTextDisabledSfc, text, 123, 150, 123 );
-    Font.createTextSurface(mTextRedSfc, text, 180, 50, 23 );
-
-    Font.setFontSize(1);*/
 }
-/*
-void GsButton::setTextColorHovered(const GsColor &color)
-{
-    //mColorHovered = color;
-    //mTextWidget.setTextColorHovered(color);
-}
-
-void GsButton::setTextColorPressed(const GsColor &color)
-{
-    //mTextWidget.setTextColorPressed(color);
-}
-
-void GsButton::setTextColorSelected(const GsColor &color)
-{
-    //mTextWidget.setTextColorSelected(color);
-}
-
-*/
 
 void GsButton::drawEnabledButton(GsWeakSurface &blitsfc,
                                  const SDL_Rect& lRect,

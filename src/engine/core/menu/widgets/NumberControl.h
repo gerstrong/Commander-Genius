@@ -19,11 +19,17 @@ public:
 
     void processLogic() override;
 
-    void drawNoStyle(SDL_Rect& lRect);
-
     void processRender(const GsRect<float> &RectDispCoordFloat) override;
 
     const Style mStyle;
+
+private:
+
+    GsColor mColorNormal;
+    GsColor mColorHovered;
+    GsColor mColorPressed;
+    GsColor mColorReleased;
+    GsColor mColorSelected;
 };
 
 #endif // NUMBERCONTROL_H

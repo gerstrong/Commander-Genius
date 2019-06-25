@@ -115,7 +115,6 @@ void CGUIComboSelection::processRender(const GsRect<float> &RectDispCoordFloat)
         blitsfc.fill(displayRect, blitsfc.mapColorAlpha(mHoverBgColor));
     }
 
-
     for(auto &obj : mWidgetList)
     {
         obj->processRender(displayRect);

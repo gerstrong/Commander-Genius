@@ -29,9 +29,7 @@ public:
 	const std::string& getSelection()
     {
         return *mOLCurrent;
-    }
-
-    virtual void spawnSubWidgets();
+    }    
 
     virtual void cycleOption();
 
@@ -53,9 +51,9 @@ public:
 
 protected:
 
-    GsColor mNormalTextColor;
+    virtual void spawnSubWidgets();
+
     GsColor mHoverBgColor;
-    GsColor mHoverTextColor;
 
 	std::list<std::string> mOptionsList;
 	std::list<std::string>::const_iterator mOLCurrent;
