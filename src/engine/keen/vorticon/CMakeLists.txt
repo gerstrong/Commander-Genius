@@ -81,7 +81,6 @@ set(CXXSRC
     menu/CHelpMenu.cpp
     menu/CLoadMenu.cpp
     menu/COptions.cpp
-    menu/CProfilesMenu.cpp
     menu/CSaveMenu.cpp
     menu/VorticonMenu.cpp
     menu/widgets/Button.cpp
@@ -165,9 +164,7 @@ set(HSRC
     menu/CHelpMenu.h
     menu/CLoadMenu.h
     menu/COptions.h
-    menu/CProfilesMenu.h
     menu/CSaveMenu.h
-    menu/CSelectionMenu.h
     menu/VorticonMenu.h
     menu/widgets/Button.h
     menu/widgets/ComboSelection.h

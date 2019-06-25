@@ -22,8 +22,6 @@
 #include "CPassiveVort.h"
 #include "CAudioVorticon.h"
 
-#include "menu/CSelectionMenu.h"
-
 #include "playgame/CPlayGameVorticon.h"
 
 #include <fileio/KeenFiles.h>
