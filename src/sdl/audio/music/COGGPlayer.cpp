@@ -1,0 +1,291 @@
+/*
+ * COGGPlayer.cpp
+ *
+ *  Created on: 17.02.2011
+ *      Author: Gerstrong
+ */
+
+#if defined(OGG) || defined(TREMOR)
+
+#include "COGGPlayer.h"
+
+#include <base/utils/FindFile.h>
+#include "sdl/audio/base/Sampling.h"
+#include "fileio/ResourceMgmt.h"
+#include <base/GsLogging.h>
+
+#include "fileio/KeenFiles.h"
+
+
+COGGPlayer::COGGPlayer() :
+m_pcm_size(0),
+m_music_pos(0),
+m_bitStream(0)
+{
+    m_Audio_cvt.buf = nullptr;
+}
+
+
+COGGPlayer::COGGPlayer(const std::string& filename) :
+m_filename(filename),
+m_pcm_size(0),
+m_music_pos(0),
+m_bitStream(0)
+{
+    m_Audio_cvt.buf = nullptr;
+}
+
+
+COGGPlayer::~COGGPlayer()
+{
+    if(!m_filename.empty())
+    {
+        close(true);
+    }
+}
+
+#if defined(TREMOR)
+int ov_fopen(char *path,OggVorbis_File *vf)
+{
+	int result;
+    FILE *fp = fopen(path, "rb");
+	if((result = ov_open(fp, vf, NULL, 0)) < 0)
+		fclose(fp);
+	return result;
+}
+#endif
+
+bool COGGPlayer::loadMusicFromFile(const std::string& filename)
+{
+    m_filename = getResourceFilename(JoinPaths("music", filename), gKeenFiles.gameDir, false, false);
+
+    if(m_filename.empty())
+    {
+        m_filename = filename;
+
+        if(m_filename.empty())
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+bool COGGPlayer::open(const bool lock)
+{       
+    if(m_Audio_cvt.buf)
+    {
+        close(lock);
+    }
+
+    if(lock) SDL_LockAudio();
+
+
+    auto &audioSpec = gSound.getAudioSpec();
+
+	// If Ogg detected, decode it into the stream psound->sound_buffer.
+	// It must fit into the Audio_cvt structure, so that it can be converted
+    mHasCommonFreqBase = true;
+
+    if(ov_fopen((char*)GetFullFileName(m_filename).c_str(), &m_oggStream) != 0)
+    {
+        if(lock) SDL_UnlockAudio();
+        return false;
+    }
+
+    mVorbisInfo = ov_info(&m_oggStream, -1);
+    ov_comment(&m_oggStream, -1);
+
+    m_AudioFileSpec.format = AUDIO_S16LSB; // Ogg Audio seems to always use this format
+
+    m_AudioFileSpec.channels = mVorbisInfo->channels;
+    m_AudioFileSpec.freq = mVorbisInfo->rate;
+
+    // Since I cannot convert with a proper quality from 44100 to 48000 Ogg wave output
+    // we set m_AudioFileSpec frequency to the same as the one of the SDL initialized AudioSpec
+    // scale just the buffer using readOGGStreamAndResample.
+    // This is base problem, but we have workarounds for that...
+    if( (m_AudioFileSpec.freq%audioSpec.freq != 0) &&
+        (audioSpec.freq%m_AudioFileSpec.freq != 0) )
+    {
+      #if SDL_VERSION_ATLEAST(2, 0, 0)
+        m_AudioFileSpec.freq = audioSpec.freq;
+      #endif
+        mHasCommonFreqBase = false;
+    }
+
+    m_pcm_size = ov_pcm_total(&m_oggStream,-1);
+    m_pcm_size *= (mVorbisInfo->channels*sizeof(Sint16));
+    m_music_pos = 0;
+
+
+    gLogging.ftextOut("OGG-Player: File \"%s\" has been opened successfully!<br>", m_filename.c_str());
+	int ret = SDL_BuildAudioCVT(&m_Audio_cvt,
+			m_AudioFileSpec.format, m_AudioFileSpec.channels, m_AudioFileSpec.freq,
+            audioSpec.format, audioSpec.channels, audioSpec.freq);
+
+	if(ret == -1)
+    {
+        if(lock) SDL_UnlockAudio();
+		return false;
+    }
+
+    const size_t length = audioSpec.size;
+    #if SDL_VERSION_ATLEAST(2, 0, 0)
+    #else
+        m_Audio_cvt.len_cvt = 0;
+    #endif
+
+    m_Audio_cvt.len = (length)/m_Audio_cvt.len_ratio;
+
+    m_Audio_cvt.len = (m_Audio_cvt.len>>2)<<2;
+
+    m_Audio_cvt.buf = new Uint8[m_Audio_cvt.len*m_Audio_cvt.len_mult];
+
+    if(lock) SDL_UnlockAudio();
+
+    return true;
+}
+
+
+bool COGGPlayer::loadMusicTrack(const int track)
+{	       
+    m_filename = "slot" + itoa(track) + ".ogg";
+    m_filename = getResourceFilename(JoinPaths("music", m_filename), gKeenFiles.gameDir, false, false);
+
+	if(m_filename.empty())	
+	   return false;
+	    
+    return open(true);
+}
+
+
+bool COGGPlayer::readOGGStream(char *buffer, const size_t &size, const SDL_AudioSpec &OGGAudioSpec )
+{
+	long bytes = 0;
+	unsigned long pos = 0;
+
+	while( pos<size )
+	{
+		if(m_pcm_size<=0)
+			break;
+		// Read up to a buffer's worth of decoded sound data
+	#if defined(OGG)
+		bytes = ov_read(&m_oggStream, buffer+pos, size-pos, 0, 2, 1, &m_bitStream);
+	#elif defined(TREMOR)
+		bytes = ov_read(&m_oggStream, buffer+pos, size-pos, &m_bitStream);
+	#endif
+		pos += bytes;
+		m_music_pos += bytes;
+		if( bytes <= 0 || m_music_pos >= m_pcm_size )
+		{
+			memset( buffer+pos, OGGAudioSpec.silence, size-pos );
+			pos = size;
+			m_bitStream = 0;
+			m_music_pos = 0;
+			return true;
+		}
+	}
+	return false;
+}
+
+bool COGGPlayer::readOGGStreamAndResample( Uint8 *buffer,
+                                           const int output_size,
+                                           const size_t input_size,
+                                           const SDL_AudioSpec &OGGAudioSpec )
+{
+    mResampleBuf.resize(input_size);
+
+    // In case format has not been converted yet...
+    if(output_size<0)
+        return false;
+
+    bool eof = readOGGStream( reinterpret_cast<char*>(mResampleBuf.data()), input_size, OGGAudioSpec );
+
+    resample( buffer, mResampleBuf.data(), output_size, input_size, OGGAudioSpec.format, OGGAudioSpec.channels);
+
+	return eof;
+}
+
+void COGGPlayer::readBuffer(Uint8* buffer, Uint32 length)
+{
+	if(!m_playing || !m_Audio_cvt.buf)
+		return;
+
+    auto &audioSpec = gSound.getAudioSpec();
+    auto freq = audioSpec.freq;
+
+	bool rewind = false;
+
+	// read the ogg stream
+    if( !mHasCommonFreqBase )
+	{
+        Uint64 insize = (m_Audio_cvt.len*mVorbisInfo->rate)/freq;
+		Uint8 mult = m_AudioFileSpec.channels;
+
+		if(m_AudioFileSpec.format == AUDIO_S16)
+			mult <<= 1;
+
+		insize /= mult;
+		insize++;
+		insize *= mult;
+
+
+        rewind = readOGGStreamAndResample(m_Audio_cvt.buf,
+                                          m_Audio_cvt.len_cvt,
+                                          insize,
+                                          m_AudioFileSpec);
+    }
+    else
+	{
+        rewind = readOGGStream(reinterpret_cast<char*>(m_Audio_cvt.buf),
+                               m_Audio_cvt.len,
+                               m_AudioFileSpec);
+    }
+
+    if(m_Audio_cvt.buf == nullptr)
+    {
+        close(false);
+        open(false);
+        play(true);
+        return;
+    }    
+
+	// then convert it into SDL Audio buffer
+	// Conversion to SDL Format
+	SDL_ConvertAudio(&m_Audio_cvt);
+
+	memcpy(buffer, m_Audio_cvt.buf, length);
+
+	if(rewind)
+	{
+        close(false);
+        open(false);
+		play(true);
+	}
+
+}
+
+void COGGPlayer::close(const bool lock)
+{
+    if(lock)  SDL_LockAudio();
+
+ 	if(m_Audio_cvt.buf)
+    {
+		delete [] m_Audio_cvt.buf;
+    }
+
+    m_Audio_cvt.buf = nullptr;
+	
+	m_playing = false;
+
+	m_music_pos = 0;
+	m_pcm_size = 0;		
+
+	ov_clear(&m_oggStream);
+
+    if(lock) SDL_UnlockAudio();
+}
+
+#endif
