@@ -108,7 +108,7 @@ public:
 
 private:
 
-    std::shared_ptr<CGUIBitmap> mpBmpBox;
+    std::shared_ptr<GsBitmapBox> mpBmpBox;
 
     std::vector< std::shared_ptr<GsBitmap> > mpPlayerBmpVec;
 

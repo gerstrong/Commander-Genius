@@ -144,7 +144,7 @@ private:
     std::shared_ptr<GsButton> mpDloadCancel;
     std::shared_ptr<GsButton> mpDloadDownload;
     std::shared_ptr<GsProgressBar> mpDloadProgressCtrl;
-    std::shared_ptr<CGUIBitmap> mpCurrentDownloadBmp;
+    std::shared_ptr<GsBitmapBox> mpCurrentDownloadBmp;
     std::vector< std::shared_ptr<GsBitmap> > mpDownloadPrevievBmpVec;
     std::vector<GameCatalogueEntry> mGameCatalogue;
 
@@ -153,7 +153,7 @@ private:
     std::unique_ptr<CGUIDialog> mpMsgDialog;
     CResourceLoaderBackground mGameScanner;
 
-    std::shared_ptr<CGUIBitmap> mCurrentBmp;
+    std::shared_ptr<GsBitmapBox> mCurrentBmp;
     std::vector< std::shared_ptr<GsBitmap> > mPreviewBmpPtrVec;
 
     std::shared_ptr<CGUIText> mpEpisodeText;

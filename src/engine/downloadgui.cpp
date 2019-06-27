@@ -194,7 +194,7 @@ void CGameLauncher::setupDownloadDialog()
     // Create an empty Bitmap control for the preview
     mpCurrentDownloadBmp =
             mpGameStoreDialog->addWidget(
-                new CGUIBitmap(GsRect<float>(0.51f, 0.04f, 0.48f, 0.38f)));
+                new GsBitmapBox(GsRect<float>(0.51f, 0.04f, 0.48f, 0.38f)));
 
 
     // Description Text Box

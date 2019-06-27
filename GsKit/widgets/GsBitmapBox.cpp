@@ -1,5 +1,5 @@
 /*
- * CGUIBitmap.cpp
+ * GsBitmapBox.cpp
  *
  *  Created on: 22.04.2012
  *      Author: gerstrong
@@ -12,17 +12,17 @@
 #include "GsBitmapBox.h"
 
 
-CGUIBitmap::CGUIBitmap(const GsRect<float> &rect) :
+GsBitmapBox::GsBitmapBox(const GsRect<float> &rect) :
     GsControl(rect)
 {}
 
 
-CGUIBitmap::CGUIBitmap(std::shared_ptr<GsBitmap> &bmpPtr)
+GsBitmapBox::GsBitmapBox(std::shared_ptr<GsBitmap> &bmpPtr)
 {
     setBitmapPtr(bmpPtr);
 }
 
-void CGUIBitmap::setBitmapPtr(std::shared_ptr<GsBitmap> &bmpPtr)
+void GsBitmapBox::setBitmapPtr(std::shared_ptr<GsBitmap> &bmpPtr)
 {
     if(bmpPtr)
     {
@@ -42,14 +42,14 @@ void CGUIBitmap::setBitmapPtr(std::shared_ptr<GsBitmap> &bmpPtr)
     }
 }
 
-CGUIBitmap::CGUIBitmap(const std::string &text) :
+GsBitmapBox::GsBitmapBox(const std::string &text) :
 mTextID(text)
 {
     updateGraphics();
 }
 
 
-void CGUIBitmap::updateGraphics()
+void GsBitmapBox::updateGraphics()
 {
     GsRect<Uint16> sizeForScreen = gVideoDriver.getGameResolution();
 
@@ -74,14 +74,14 @@ void CGUIBitmap::updateGraphics()
 }
 
 
-void CGUIBitmap::processLogic()
+void GsBitmapBox::processLogic()
 {
 
 }
 
 
 
-void CGUIBitmap::processRender(const GsRect<float> &RectDispCoordFloat)
+void GsBitmapBox::processRender(const GsRect<float> &RectDispCoordFloat)
 {    
     // Check for loaded and valid bitmap object data
     if(!mScaledBitmapPtr)

@@ -35,7 +35,7 @@ CPlayerSpriteVarSelection(const Style style) :
     if(!mpPlayerBmpVec.empty())
     {
         mpBmpBox =
-        mpMenuDialog->addWidget( new CGUIBitmap(mpPlayerBmpVec[0]));
+        mpMenuDialog->addWidget( new GsBitmapBox(mpPlayerBmpVec[0]));
 
         mpBmpBox->setRect( GsRect<float>(0.17f, 0.21f,
                                                0.24f, 0.32f) );

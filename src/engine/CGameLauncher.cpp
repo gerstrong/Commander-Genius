@@ -112,7 +112,7 @@ bool CGameLauncher::setupMenu()
 
     // Create an empty Bitmap control
     mCurrentBmp = mLauncherDialog.addWidget(
-                new CGUIBitmap( GsRect<float>(0.51f, 0.07f, 0.48f, 0.48f) ));
+                new GsBitmapBox( GsRect<float>(0.51f, 0.07f, 0.48f, 0.48f) ));
 
     mPreviewBmpPtrVec.resize(m_Entries.size());
 

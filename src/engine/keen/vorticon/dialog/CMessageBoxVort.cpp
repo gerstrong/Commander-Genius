@@ -91,5 +91,5 @@ void CMessageBoxVort::addTileAt(Uint16 tile, Uint16 x, Uint16 y)
     fRect.transformInverse(scaleRect);
 
     std::shared_ptr<GsBitmap> bmpShared(new GsBitmap(bmpSfc));
-    addWidget( new CGUIBitmap(bmpShared), fRect );
+    addWidget( new GsBitmapBox(bmpShared), fRect );
 }
