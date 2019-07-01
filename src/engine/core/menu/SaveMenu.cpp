@@ -142,7 +142,7 @@ void CSaveMenu::sendEvent(std::shared_ptr<CEvent> &command)
 	// required for the saving process.
 	if( CommandEvent *ev = dynamic_cast<CommandEvent*>(command.get()) )
 	{
-		const int sel = mpMenuDialog->Selection();
+		const int sel = mpMenuDialog->getSelection();
 		if( sel > 0 )
 		{            
 			if(ev->mCommand == IC_JUMP || ev->mCommand == IC_STATUS)

@@ -137,9 +137,6 @@ bool CGameLauncher::setupMenu()
                               0.75f, 1.0f, 1.0f )  );
 
 
-
-
-
 #ifdef VIRTUALPAD
     mLauncherDialog.addWidget(new GsButton( "VPad", new OpenVGamePadSettingsEvent(),
                                              -1,
@@ -618,6 +615,12 @@ void CGameLauncher::setupModsDialog()
 
 
 
+bool CGameLauncher::setChosenGame(const int chosengame)
+{
+    m_chosenGame = chosengame;
+    return waschosen();
+}
+
 
 void CGameLauncher::pumpEvent(const CEvent *evPtr)
 {
@@ -631,7 +634,8 @@ void CGameLauncher::pumpEvent(const CEvent *evPtr)
 
     if( dynamic_cast<const GMStart*>(evPtr) )
     {
-        setChosenGame(mpGSSelList->Selection());
+        const int chosengame = mpGSSelList->getSelection();
+        setChosenGame(chosengame);
 
         if(m_chosenGame >= 0)
         {

@@ -92,7 +92,7 @@ public:
     int getChosengame()
     { return m_chosenGame; }
 
-	bool setChosenGame(int chosengame) { m_chosenGame = chosengame; return waschosen();  }
+    bool setChosenGame(const int chosengame);
 	bool waschosen(){ return (m_chosenGame>=0); }
     void letchooseagain()
     {

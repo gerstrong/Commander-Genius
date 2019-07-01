@@ -110,11 +110,13 @@ public:
     {	return 	mpCurWidget;	}
 
 
-    int Selection() const
+    int getSelection() const
     {	return mSelection;	}
 
     void setSelection(const int sel)
-    {   mSelection = sel;   }
+    {
+        mSelection = sel;
+    }
 
 
     void setCurrentWidget(std::shared_ptr<GsWidget> &widget)

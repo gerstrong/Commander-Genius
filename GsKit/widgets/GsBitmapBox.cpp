@@ -13,11 +13,12 @@
 
 
 GsBitmapBox::GsBitmapBox(const GsRect<float> &rect) :
-    GsControl(rect)
+GsWidget(rect)
 {}
 
 
-GsBitmapBox::GsBitmapBox(std::shared_ptr<GsBitmap> &bmpPtr)
+GsBitmapBox::GsBitmapBox(std::shared_ptr<GsBitmap> &bmpPtr) :
+GsWidget(GsRect<float>(0.0f, 0.0f, 1.0f, 1.0f))
 {
     setBitmapPtr(bmpPtr);
 }
@@ -42,7 +43,11 @@ void GsBitmapBox::setBitmapPtr(std::shared_ptr<GsBitmap> &bmpPtr)
     }
 }
 
-GsBitmapBox::GsBitmapBox(const std::string &text) :
+// Load an Bitmap using an internal string ID of all the loaded Bitmaps
+GsBitmapBox::
+GsBitmapBox(const std::string &text,
+            const GsRect<float> &rect) :
+GsWidget(rect),
 mTextID(text)
 {
     updateGraphics();

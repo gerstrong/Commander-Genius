@@ -71,9 +71,9 @@ bool CGUITextSelectionList::sendEvent(const InputCommand command)
         {
             auto ctrl = std::dynamic_pointer_cast<GsControl>(*it);
             ctrl->select(true);
-            mSelectedIdx =
-                    int(mWidgetList.size()) -
-                    int(std::distance(mWidgetList.rbegin(), it));
+            setSelection(int(mWidgetList.size()) -
+                         int(std::distance(mWidgetList.rbegin(), it)));
+
             return true;
         }
 
@@ -108,7 +108,7 @@ bool CGUITextSelectionList::sendEvent(const InputCommand command)
         {
             auto ctrl = std::dynamic_pointer_cast<GsControl>(*it);
             ctrl->select(true);
-            mSelectedIdx = int(std::distance(mWidgetList.begin(), it));
+            setSelection(int(std::distance(mWidgetList.begin(), it)));
             return true;
         }
 
@@ -205,7 +205,7 @@ void CGUITextSelectionList::processPointingStateRel(const GsRect<float> &rect)
     }
 
 }
-
+/*
 int CGUITextSelectionList::getSelection() const
 {
     return mSelectedIdx;
@@ -230,7 +230,7 @@ void CGUITextSelectionList::setSelection(const int sel)
 
     mSelectedIdx = sel;
 }
-
+*/
 const std::string &
 CGUITextSelectionList::getItemString(const unsigned int sel) const
 {

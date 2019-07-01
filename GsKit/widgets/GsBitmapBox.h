@@ -12,10 +12,10 @@
 #include <string>
 
 
-#include "GsControl.h"
+#include "GsWidget.h"
 #include "graphics/GsBitmap.h"
 
-class GsBitmapBox : public GsControl
+class GsBitmapBox : public GsWidget
 {
 public:
 
@@ -23,7 +23,7 @@ public:
     GsBitmapBox(const GsRect<float> &rect);
 
     // Create an empty bitmap. TODO: Must become deprecated
-    GsBitmapBox() {}
+    //GsBitmapBox() {}
 
 	// Loads an Bitmap that is given directly
     GsBitmapBox(std::shared_ptr<GsBitmap> &bmpPtr);
@@ -32,7 +32,8 @@ public:
     void setBitmapPtr(std::shared_ptr<GsBitmap> &bmpPtr);
 
 	// Load an Bitmap using an internal string ID of all the loaded Bitmaps
-    GsBitmapBox(const std::string &text);
+    GsBitmapBox(const std::string &text,
+                const GsRect<float> &rect);
 
     void updateGraphics();
 

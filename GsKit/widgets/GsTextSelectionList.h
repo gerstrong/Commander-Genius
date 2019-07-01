@@ -55,13 +55,14 @@ public:
      *                      or -1 if nothing is selected at al
      * @return position or -1
      */
-    int getSelection() const;
+    //int getSelection() const;
 
     /**
      * @brief setSelection  selects item given by index
      * @param sel   index
      */
-    void setSelection(const int sel);
+    //void setSelection(const int sel);
+
 
     const std::string &getItemString(const unsigned int sel) const;
 
@@ -81,7 +82,6 @@ private:
 
     //int mHoverSelection = 0;
     //int mPressedSelection = -1;
-    int mSelectedIdx = -1;
 
     //int mFontSize = 28;
     
