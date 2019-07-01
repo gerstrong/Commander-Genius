@@ -205,32 +205,7 @@ void CGUITextSelectionList::processPointingStateRel(const GsRect<float> &rect)
     }
 
 }
-/*
-int CGUITextSelectionList::getSelection() const
-{
-    return mSelectedIdx;
-}
 
-void CGUITextSelectionList::setSelection(const int sel)
-{
-    const int last = static_cast<int>(mItemList.size());
-
-    if(sel < 0)        
-    {
-        mSelectedIdx = 0;
-        mSelected = false;
-        return;
-    }
-    if(sel >= last)
-    {
-        mSelectedIdx = last-1;
-        mSelected = false;
-        return;
-    }
-
-    mSelectedIdx = sel;
-}
-*/
 const std::string &
 CGUITextSelectionList::getItemString(const unsigned int sel) const
 {

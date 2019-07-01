@@ -50,20 +50,6 @@ public:
 
     virtual void processPointingStateRel(const GsRect<float> &rect) override;
 
-    /**
-     * @brief getSelection  return position of currently selected item,
-     *                      or -1 if nothing is selected at al
-     * @return position or -1
-     */
-    //int getSelection() const;
-
-    /**
-     * @brief setSelection  selects item given by index
-     * @param sel   index
-     */
-    //void setSelection(const int sel);
-
-
     const std::string &getItemString(const unsigned int sel) const;
 
     void unselectAll();
