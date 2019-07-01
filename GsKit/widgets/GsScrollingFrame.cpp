@@ -45,6 +45,13 @@ void GsScrollingFrame::processRender(const GsRect<float> &srcRectFloat,
     {
         widget->processRender(backRect, frontRect);
     }
+
+    if(mSelected)
+    {
+        GsColor color(0x0, 0x0, 0xFF);
+        const auto colorInt = blitsfc.mapColorAlpha(color);
+        blitsfc.drawFrameRect(lRect, 1, colorInt);
+    }
 }
 
 void GsScrollingFrame::processRender(const GsRect<float> &rectDispCoordFloat)

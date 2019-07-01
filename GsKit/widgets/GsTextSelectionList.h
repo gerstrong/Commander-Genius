@@ -81,16 +81,16 @@ private:
 
     //int mHoverSelection = 0;
     //int mPressedSelection = -1;
-    int mReleasedSelection = -1;
+    int mSelectedIdx = -1;
 
-    int mFontSize = 28;
+    //int mFontSize = 28;
     
     GsScrollbar mScrollbar;
 	
 	std::shared_ptr<CEvent> mConfirmEvent;
 	std::shared_ptr<CEvent> mBackEvent;
 
-    const int mBorderHeight = 16;
+    //const int mBorderHeight = 16;
 
 };
 

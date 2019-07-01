@@ -70,7 +70,7 @@ public:
 
 
     /**
-     * \brief Draws rect different than the SDL_Fillrect, because it has only a contour
+     * \brief Draws the countour of the given rect and thickness
      * \param sfc Surface where to draw it
      * \param rect pointer to the given rect in which it has to be drawn. If it's NULL, than the dimensions
      * 			   of sfc is used

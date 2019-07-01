@@ -50,7 +50,7 @@ public:
     bool isPressed() const
     { return mPressed; }
 
-    bool Up()
+    bool isReleased()
     {	return mReleased;	}
 
     void setHovered( const bool value )

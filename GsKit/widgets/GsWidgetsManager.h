@@ -100,10 +100,6 @@ public:
 
     virtual void processPointingStateRel(const GsRect<float> &rect) override;
 
-
-    void setSelection(const int sel);
-
-
     GsRect<float> getRect() const
     {
         return GsWidget::getRect();
@@ -116,6 +112,9 @@ public:
 
     int Selection() const
     {	return mSelection;	}
+
+    void setSelection(const int sel)
+    {   mSelection = sel;   }
 
 
     void setCurrentWidget(std::shared_ptr<GsWidget> &widget)
@@ -135,7 +134,6 @@ protected:
     // List of Controls that the Dialog has.
     std::list< std::shared_ptr<GsWidget> > mWidgetList;
 
-    int mSelection = 0;
     std::shared_ptr<GsWidget> mpCurWidget;
 
     bool empty() const
@@ -147,6 +145,10 @@ protected:
     {
         mWidgetList.clear();
     }
+
+private:
+
+    int mSelection = 0;
 
 };
 

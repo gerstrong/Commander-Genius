@@ -110,6 +110,46 @@ bool CGameLauncher::setupMenu()
     // Save any custom labels
     putLabels();
 
+    mLauncherDialog.addWidget(
+                new GsButton( "x",
+                             GsRect<float>(0.0f, 0.0f, 0.069f, 0.069f),
+                             new GMQuit(),
+                             -1,
+                             1.0f, 0.75f, 0.75f ) );
+
+    mLauncherDialog.addWidget(new CGUIText("Pick a Game",
+                                      GsRect<float>(0.14f, 0.01f, 0.72f, 0.05f)));
+
+
+    const auto openSettingsMenuEvent = [&]()
+    {
+        mLauncherDialog.enable(false);
+        gEventManager.add( new OpenMenuEvent(
+                               new SettingsMenu(Style::NONE) ) );
+    };
+
+    mpOptionButton =
+                mLauncherDialog.addWidget(
+                        new GsButton( "O",
+                              GsRect<float>(0.93f, 0.0f, 0.069f, 0.069f),
+                              openSettingsMenuEvent,
+                              -1,
+                              0.75f, 1.0f, 1.0f )  );
+
+
+
+
+
+#ifdef VIRTUALPAD
+    mLauncherDialog.addWidget(new GsButton( "VPad", new OpenVGamePadSettingsEvent(),
+                                             -1,
+                                             0.75f,
+                                             1.0f,
+                                             1.0f ),
+                               GsRect<float>(0.75f, 0.0f, 0.17f, 0.069f) );
+#endif
+
+
     // Create an empty Bitmap control
     mCurrentBmp = mLauncherDialog.addWidget(
                 new GsBitmapBox( GsRect<float>(0.51f, 0.07f, 0.48f, 0.48f) ));
@@ -143,44 +183,6 @@ bool CGameLauncher::setupMenu()
 
     mpGSSelList->setConfirmButtonEvent(new GMStart());
     mpGSSelList->setBackButtonEvent(new GMQuit());
-
-    mLauncherDialog.addWidget(
-                new GsButton( "x",
-                             GsRect<float>(0.0f, 0.0f, 0.069f, 0.069f),
-                             new GMQuit(),
-                             -1,
-                             1.0f, 0.75f, 0.75f ) );
-
-    mLauncherDialog.addWidget(new CGUIText("Pick a Game",
-                                      GsRect<float>(0.14f, 0.01f, 0.72f, 0.05f)));
-
-
-
-
-#ifdef VIRTUALPAD
-    mLauncherDialog.addWidget(new GsButton( "VPad", new OpenVGamePadSettingsEvent(),
-                                             -1,
-                                             0.75f,
-                                             1.0f,
-                                             1.0f ),
-                               GsRect<float>(0.75f, 0.0f, 0.17f, 0.069f) );
-#endif
-
-
-    const auto openSettingsMenuEvent = [&]()
-    {
-        mLauncherDialog.enable(false);
-        gEventManager.add( new OpenMenuEvent(
-                               new SettingsMenu(Style::NONE) ) );
-    };
-
-    mpOptionButton =
-                mLauncherDialog.addWidget(
-                        new GsButton( "O",
-                              GsRect<float>(0.93f, 0.0f, 0.069f, 0.069f),
-                              openSettingsMenuEvent,
-                              -1,
-                              0.75f, 1.0f, 1.0f )  );
 
 
     #ifdef DOWNLOADER
@@ -671,19 +673,23 @@ void CGameLauncher::pumpEvent(const CEvent *evPtr)
         // Wrapper for the simple mouse scroll event
         if(mwe->amount.y > 0.0f)
         {
-            mLauncherDialog.sendEvent(new CommandEvent( IC_UP ));
+            const std::shared_ptr<CEvent> cmdEvent(new CommandEvent( IC_UP ));
+            mLauncherDialog.sendEvent(cmdEvent);
         }
         else if(mwe->amount.y < 0.0f)
         {
-            mLauncherDialog.sendEvent(new CommandEvent( IC_DOWN ));
+            const std::shared_ptr<CEvent> cmdEvent(new CommandEvent( IC_DOWN ));
+            mLauncherDialog.sendEvent(cmdEvent);
         }
         if(mwe->amount.x < 0.0f)
         {
-            mLauncherDialog.sendEvent(new CommandEvent( IC_RIGHT ));
+            const std::shared_ptr<CEvent> cmdEvent(new CommandEvent( IC_RIGHT ));
+            mLauncherDialog.sendEvent(cmdEvent);
         }
         else if(mwe->amount.x > 0.0f)
         {
-            mLauncherDialog.sendEvent(new CommandEvent( IC_LEFT ));
+            const std::shared_ptr<CEvent> cmdEvent(new CommandEvent( IC_LEFT ));
+            mLauncherDialog.sendEvent(cmdEvent);
         }
     }
 }
@@ -711,7 +717,9 @@ void CGameLauncher::ponderGameSelDialog(const float deltaT)
     {
         if( gInput.getPressedCommand(cmd) )
         {
-            mLauncherDialog.sendEvent(new CommandEvent( static_cast<InputCommand>(cmd) ));
+            const std::shared_ptr<CEvent> cmdEvent(
+                        new CommandEvent( static_cast<InputCommand>(cmd) ));
+            mLauncherDialog.sendEvent(cmdEvent);
             break;
         }
     }
@@ -851,7 +859,9 @@ void CGameLauncher::ponder(const float deltaT)
         {
             if( gInput.getPressedCommand(cmd) )
             {
-                mpMsgDialog->sendEvent(new CommandEvent( static_cast<InputCommand>(cmd) ));
+                const std::shared_ptr<CEvent> cmdEvent(
+                            new CommandEvent( static_cast<InputCommand>(cmd) ));
+                mpMsgDialog->sendEvent(cmdEvent);
                 break;
             }
         }
@@ -875,7 +885,9 @@ void CGameLauncher::ponder(const float deltaT)
         {
             if( gInput.getPressedCommand(cmd) )
             {
-                mpGameStoreDialog->sendEvent(new CommandEvent( static_cast<InputCommand>(cmd) ));
+                const std::shared_ptr<CEvent> cmdEvent(
+                            new CommandEvent( static_cast<InputCommand>(cmd) ));
+                mpGameStoreDialog->sendEvent(cmdEvent);
                 break;
             }
         }

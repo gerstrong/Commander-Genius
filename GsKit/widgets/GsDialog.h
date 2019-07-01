@@ -37,6 +37,8 @@ public:
 	// Constructor which needs the Rect for the placement of the Dialog
     CGUIDialog(const GsRect<float> &NewRect, const FXKind fx = FXKind::NONE);
 
+    bool sendEvent(const std::shared_ptr<CEvent> &event ) override;
+
 	// Empty Background draw function. Just fills the Rect with a standard gray color
     void initEmptyBackground();
 

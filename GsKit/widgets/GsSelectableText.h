@@ -15,6 +15,8 @@ public:
     GsSelectableText(const GsRect<float> &rect,
                      const std::string &text);
 
+    virtual bool sendEvent( const std::shared_ptr<CEvent> &event ) override;
+
     virtual void processLogic() override;
 
 private:

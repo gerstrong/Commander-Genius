@@ -24,6 +24,11 @@ GsFrame(rect)
     mBgColorSelected = GsColor(0x3F, 0x3F, 0xFF);
 }
 
+bool GsSelectableText::sendEvent( const std::shared_ptr<CEvent> &event )
+{
+    return true;
+}
+
 void GsSelectableText::processLogic()
 {
     enableBackground(false);

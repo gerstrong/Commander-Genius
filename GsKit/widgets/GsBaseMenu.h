@@ -48,7 +48,7 @@ public:
     virtual void setMenuLabel(const std::string &label);
 
 	// Processes the stuff that the menus have in common
-    virtual void ponder(const float deltaT);
+    virtual void ponder(const float);
 
     virtual void render();
 

@@ -192,44 +192,32 @@ void CGUIDialog::selectNextItem()
 */
 
 
-/*
-void CGUIDialog::setSelection(const int sel)
-{
-	const int steps = sel-mSelection;
 
-	if(steps == 0)
-		return;
-
-	if(steps > 0)
-	{
-		for(int c=0 ; c<steps ; c++)
-			selectNextItem();
-	}
-	else
-	{
-		for(int c=0 ; c<-steps ; c++)
-			selectPrevItem();
-	}
-}
-
-*/
-
-
-/*
 bool CGUIDialog::sendEvent(const std::shared_ptr<CEvent> &event )
 {
     if( CommandEvent *ev = dynamic_cast<CommandEvent*>(event.get()) )
 	{
 		// Send all the other events the active control element
-		int i=0;
-        for( auto &it : mControlList )
+		int i=0;       
+        for( auto &widget : mWidgetList )
         {
-            if( i == mSelection )
+            auto it = std::dynamic_pointer_cast<GsControl>(widget);
+
+            if(!it)
             {
-               if( it->sendEvent(ev->mCommand) )
-                   return true;
-               else
-                   it->select( false );
+                continue;
+            }
+
+            if( it->isSelected() )
+            {
+                if( it->sendEvent(ev->mCommand) )
+                {
+                    return true;
+                }
+                else
+                {
+                    it->select( false );
+                }
             }
             else
             {
@@ -252,36 +240,6 @@ bool CGUIDialog::sendEvent(const std::shared_ptr<CEvent> &event )
 
 	return false;
 }
-
-*/
-
-/*
-
-void CGUIDialog::fit()
-{
-	auto it = mControlList.begin();
-	it++;
-
-	size_t numControls = mControlList.size();
-	const float charHeight = ( 1.0f/(float)(numControls+1) );
-
-	size_t c = 1;
-	for( ; it != mControlList.end() ; it++ )
-	{
-        GsRect<float> rect( 0.05f,
-				   charHeight*((float)c),
-				   mRect.dim.x,
-				   charHeight-0.01f );
-
-		rect.transform(mRect);
-
-		(*it)->setRect( rect );
-		c++;
-	}
-
-}
-*/
-
 
 
 void CGUIDialog::initEmptyBackground()
@@ -369,30 +327,14 @@ void CGUIDialog::processLogic()
     }
 
     // Process the subcontrols inputs
-    int sel = 0;
     const auto localRect = getRect();
     for( auto &widget : getWidgetList() )
     {
         widget->processLogic();
         widget->processPointingStateRel(localRect);
 
-        if(auto ctrl = std::dynamic_pointer_cast<GsControl>(widget))
-        {            
-            if( std::dynamic_pointer_cast<GsButton>(ctrl) ||
-                std::dynamic_pointer_cast<CGUIInputText>(ctrl) )
-            {
-                if( ctrl->isSelected() )
-                {
-                    setCurrentWidget(ctrl);
-                    setSelection(sel);
-                }
-            }
 
-            sel++;
-        }
     }
-
-
 }
 
 void CGUIDialog::processRendering()

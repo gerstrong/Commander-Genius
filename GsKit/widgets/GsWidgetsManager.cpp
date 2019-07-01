@@ -58,61 +58,60 @@ void GsWidgetsManager::updateGraphics()
 
 void GsWidgetsManager::selectPrevItem()
 {
-    /*
-    if(!mpCurrentCtrl)
-    {
+    if(!mpCurWidget)
         return;
-    }
 
-    if(mpCurrentCtrl->isSelected())
+    auto currentCtrl = std::dynamic_pointer_cast<GsControl>(mpCurWidget);
+
+    if(!currentCtrl)
+        return;
+
+    if(currentCtrl->isSelected())
     {
-        mpCurrentCtrl->select(false);
+        currentCtrl->select(false);
     }
 
     mSelection--;
 
-    if( mSelection < 0 )
-    {
+    if( mSelection < 0)
         mSelection = static_cast<int>(mWidgetList.size())-1;
-    }
 
-
-    auto it = mWidgetList.begin();
-    for( int i=0 ; it != mWidgetList.end() ; it++, i++ )
+    // Find the right control!
+    int i=0;
+    for( auto it = mWidgetList.begin() ; it != mWidgetList.end() ; it++ )
     {
-        if( i ==  mSelection )
-            break;
+        if( auto itCtrl = std::dynamic_pointer_cast<GsControl>(*it) )
+        {
+            i++;
+
+            if( i == mSelection )
+            {
+                currentCtrl = itCtrl;
+                itCtrl->select(true);
+            }
+            else
+            {
+                itCtrl->select(false);
+            }
+        }
     }
-
-    // Ensures that disabled items are skipped
-    for( ; it != mWidgetList.begin() ; it-- )
-    {
-        if( (*it)->isEnabled() )
-            break;
-
-        mSelection--;
-    }
-
-    if( mSelection < 0 ) {
-        mSelection = int(mWidgetList.size())-1;
-        it = mWidgetList.end();
-    }
-
-    (*it)->select(true);
-    mpCurrentCtrl = it->get();
-    */
 }
 
 
 void GsWidgetsManager::selectNextItem()
 {
-    /*
-    if(!mpCurrentCtrl)
+    if(!mpCurWidget)
         return;
 
-    if(mpCurrentCtrl->isSelected())
+    auto currentCtrl = std::dynamic_pointer_cast<GsControl>(mpCurWidget);
+
+    if(!currentCtrl)
+        return;
+
+
+    if(currentCtrl->isSelected())
     {
-        mpCurrentCtrl->select(false);
+        currentCtrl->select(false);
     }
 
     mSelection++;
@@ -121,33 +120,27 @@ void GsWidgetsManager::selectNextItem()
         mSelection = 0;
 
     // Find the right control!
-    auto it = mWidgetList.begin();
-    for( int i=0 ; it != mWidgetList.end() ; it++, i++ )
+    int i=0;
+    for( auto it = mWidgetList.begin() ; it != mWidgetList.end() ; it++ )
     {
-        if( i == mSelection )
-            break;
+        if( auto itCtrl = std::dynamic_pointer_cast<GsControl>(*it) )
+        {                        
+            i++;
+
+            if( i == mSelection )
+            {
+                currentCtrl = itCtrl;
+                itCtrl->select(true);
+            }
+            else
+            {
+                itCtrl->select(false);
+            }
+        }
     }
-
-    // Ensures that disabled items are skipped
-    for( ; it != mWidgetList.end() ; it++ )
-    {
-        if( (*it)->isEnabled() )
-            break;
-
-        mSelection++;
-    }
-
-    if( mSelection >= static_cast<int>(mWidgetList.size()) ) {
-        mSelection = 0;
-        it = mWidgetList.begin();
-    }
-
-    (*it)->select(true);
-    mpCurrentCtrl = it->get();
-    */
 }
 
-
+/*
 void GsWidgetsManager::setSelection(const int sel)
 {
     const int steps = sel-mSelection;
@@ -166,23 +159,29 @@ void GsWidgetsManager::setSelection(const int sel)
             selectPrevItem();
     }
 }
+*/
 
 bool GsWidgetsManager::sendEvent(const std::shared_ptr<CEvent> &event )
 {
-    /*
 
     if( CommandEvent *ev = dynamic_cast<CommandEvent*>(event.get()) )
     {
         // Send all the other events the active control element
         int i=0;
-        for( auto &it : mWidgetList )
+        for( auto &widget : mWidgetList )
         {
+            auto it = std::dynamic_pointer_cast<GsControl>(widget);
+
             if( i == mSelection )
             {
                if( it->sendEvent(ev->mCommand) )
+               {
                    return true;
+               }
                else
+               {
                    it->select( false );
+               }
             }
             else
             {
@@ -202,8 +201,6 @@ bool GsWidgetsManager::sendEvent(const std::shared_ptr<CEvent> &event )
             return true;
         }
     }
-
-    */
 
     return false;
 }

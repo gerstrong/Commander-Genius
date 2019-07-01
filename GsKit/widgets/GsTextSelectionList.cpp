@@ -5,6 +5,9 @@
  *      Author: gerstrong
  */
 
+#include "GsTextSelectionList.h"
+#include "GsSelectableText.h"
+
 #include <base/video/CVideoDriver.h>
 #include <graphics/GsGraphics.h>
 #include <graphics/cgttf.h>
@@ -14,8 +17,7 @@
 #include <base/utils/Color.h>
 
 
-#include "GsTextSelectionList.h"
-#include "GsSelectableText.h"
+#include <algorithm>
 
 CGUITextSelectionList::
 CGUITextSelectionList(const GsRect<float> &rect)  :
@@ -37,45 +39,80 @@ void CGUITextSelectionList::setBackButtonEvent(CEvent *ev)
 	mBackEvent.reset(ev);
 }
 
+
 bool CGUITextSelectionList::sendEvent(const InputCommand command)
 {
 	if(command == IC_UP)
 	{
-        mReleasedSelection--;
+        auto it = mWidgetList.rbegin();
+        auto lastSelected = mWidgetList.rend();
 
-        if(mReleasedSelection < 0)
+        // Find iterator of last selected item
+        while(it != lastSelected)
         {
-            mReleasedSelection = 0;
-            mSelected = false;
-            return false;
+            auto ctrl = std::dynamic_pointer_cast<GsControl>(*it);
+
+            assert(ctrl);
+
+            if(ctrl->isSelected())
+            {
+                ctrl->select(false);
+                lastSelected = it;
+                break;
+            }
+
+            it++;
         }
 
-        if( mReleasedSelection < mScrollbar.scrollPos() )
+        it++;
+
+        // If previous item was not the last one select it.
+        if(it != mWidgetList.rend())
         {
-            mScrollbar.scrollUp();
+            auto ctrl = std::dynamic_pointer_cast<GsControl>(*it);
+            ctrl->select(true);
+            mSelectedIdx =
+                    int(mWidgetList.size()) -
+                    int(std::distance(mWidgetList.rbegin(), it));
+            return true;
         }
 
-		return true;
-	}
+        return false;
+    }
 	else if(command == IC_DOWN)
 	{
-        const int last = static_cast<int>(mItemList.size());
+        auto it = mWidgetList.begin();
+        auto lastSelected = mWidgetList.end();
 
-        mReleasedSelection++;
-
-        if(mReleasedSelection >= last)
+        // Find iterator of last selected item
+        while(it != lastSelected)
         {
-            mReleasedSelection = last-1;
-            mSelected = false;
-            return false;
+            auto ctrl = std::dynamic_pointer_cast<GsControl>(*it);
+
+            assert(ctrl);
+
+            if(ctrl->isSelected())
+            {
+                ctrl->select(false);
+                lastSelected = it;
+                break;
+            }
+
+            it++;
         }
 
-        if( mReleasedSelection >= mScrollbar.lastToShow() - mScrollbar.scrollPos() )
+        it++;
+
+        // If previous item was not the last one select it.
+        if(it != mWidgetList.end())
         {
-            mScrollbar.scrollDown();
+            auto ctrl = std::dynamic_pointer_cast<GsControl>(*it);
+            ctrl->select(true);
+            mSelectedIdx = int(std::distance(mWidgetList.begin(), it));
+            return true;
         }
 
-		return true;
+        return false;
 	}
 	else if(command == IC_STATUS || command == IC_JUMP ||
             command == IC_POGO || command == IC_FIRE ||
@@ -92,8 +129,9 @@ bool CGUITextSelectionList::sendEvent(const InputCommand command)
 		return true;
 	}
 	else
+    {
 		return false;
-
+    }
 }
 
 void CGUITextSelectionList::addText(const std::string &text)
@@ -127,7 +165,7 @@ void CGUITextSelectionList::updateSelection()
         {
             if(selectableText->isSelected())
             {
-                mSelection = idx;
+                setSelection(idx);
                 break;
             }
 
@@ -154,35 +192,43 @@ void CGUITextSelectionList::processPointingStateRel(const GsRect<float> &rect)
 {
     const auto absRect = rect.transformed(getRect());
 
+    GsControl::processPointingStateRel(rect);
+
+    if(this->isReleased())
+    {
+        this->select(true);
+    }
+
     for(auto &widget : mWidgetList)
     {
         widget->processPointingStateRel(absRect);
     }
+
 }
 
 int CGUITextSelectionList::getSelection() const
 {
-    return mReleasedSelection;
+    return mSelectedIdx;
 }
 
 void CGUITextSelectionList::setSelection(const int sel)
 {
     const int last = static_cast<int>(mItemList.size());
 
-    if(sel < 0)
+    if(sel < 0)        
     {
-        mReleasedSelection = 0;
+        mSelectedIdx = 0;
         mSelected = false;
         return;
     }
     if(sel >= last)
     {
-        mReleasedSelection = last-1;
+        mSelectedIdx = last-1;
         mSelected = false;
         return;
     }
 
-    mReleasedSelection = sel;
+    mSelectedIdx = sel;
 }
 
 const std::string &

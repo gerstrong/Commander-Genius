@@ -6,6 +6,7 @@
  */
 
 #include <base/CInput.h>
+#include <base/InputEvents.h>
 #include <widgets/GsMenuController.h>
 
 #include "GsBaseMenu.h"
@@ -23,7 +24,10 @@ void CBaseMenu::select(const size_t value)
 		return;
 
 	for(size_t c=0 ; c<value ; c++)
-		mpMenuDialog->sendEvent( new CommandEvent(IC_DOWN) );
+    {
+        std::shared_ptr<CEvent> cmdEvent( new CommandEvent(IC_DOWN) );
+        mpMenuDialog->sendEvent(cmdEvent);
+    }
 }
 
 
@@ -36,7 +40,7 @@ void CBaseMenu::setMenuLabel(const std::string &label)
 }
 
 
-void CBaseMenu::ponder(const float deltaT)
+void CBaseMenu::ponder(const float)
 {
     // If IC_BACK is invoked, make the menu controller close the controller
     if( gInput.getPressedCommand(IC_BACK) )
@@ -50,7 +54,8 @@ void CBaseMenu::ponder(const float deltaT)
 	{
 		if( gInput.getPressedCommand(cmd) )
 		{
-		    std::shared_ptr<CEvent> command(new CommandEvent( static_cast<InputCommand>(cmd) ));
+            std::shared_ptr<CEvent> command(
+                        new CommandEvent( static_cast<InputCommand>(cmd) ));
             sendEvent(command);
 		    break;
 		}
