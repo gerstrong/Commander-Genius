@@ -15,7 +15,6 @@
 #include "../CPreviews.h"
 #include "fileio/ResourceMgmt.h"
 #include "fileio/KeenFiles.h"
-#include "widgets/Button.h"
 #include <base/utils/StringUtils.h>
 /*
 namespace vorticon

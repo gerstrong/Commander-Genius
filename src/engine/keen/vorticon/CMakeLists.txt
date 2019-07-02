@@ -78,11 +78,6 @@ set(CXXSRC
     menu/CLoadMenu.cpp
     menu/CSaveMenu.cpp
     menu/VorticonMenu.cpp
-    menu/widgets/Button.cpp
-    menu/widgets/ComboSelection.cpp
-    menu/widgets/Inputtext.cpp
-    menu/widgets/NumberControl.cpp
-    menu/widgets/Switch.cpp
     playgame/CPlayGameDialogs.cpp
     playgame/CPlayGameGameState.cpp
     playgame/CPlayGameLevel.cpp
@@ -156,11 +151,6 @@ set(HSRC
     menu/CLoadMenu.h
     menu/CSaveMenu.h
     menu/VorticonMenu.h
-    menu/widgets/Button.h
-    menu/widgets/ComboSelection.h
-    menu/widgets/Inputtext.h
-    menu/widgets/NumberControl.h
-    menu/widgets/Switch.h
     playgame/CPlayGameVorticon.h
     )
 

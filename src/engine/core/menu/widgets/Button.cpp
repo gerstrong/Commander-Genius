@@ -52,7 +52,18 @@ void GameButton::setupStyle()
     }
     else if(mStyle == Style::VORTICON)
     {
+        enableBorder(false);
+        enableCenteringH(false);
+        enableTwirl(true);
+
+        mColorNormal   = GsColor(0x0, 0x0, 0x0);
+        mColorHovered  = GsColor(0x11, 0x11, 0x11);
+        mColorPressed  = GsColor(0x44, 0x44, 0x44);
+        mColorReleased = GsColor(0x33, 0x33, 0x33);
+        mColorSelected = GsColor(0x22, 0x22, 0x22);
+
         setFontId(0);
+        setText(mText);
     }
 }
 
