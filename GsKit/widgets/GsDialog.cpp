@@ -30,167 +30,6 @@ mFXSetup(fx)
         mFXvStep = MAX_STEPS-3;
     }
 }
-/*
-void CGUIDialog::updateGraphics()
-{
-    for( auto &control : mControlList )
-    {
-        control->updateGraphics();
-    }
-}
-*/
-/*
-std::shared_ptr<GsControl>
-CGUIDialog::addWidget( std::shared_ptr<GsControl> &newControl,
-                        const GsRect<float>& RelRect )
-{
-    GsRect<float> AbsRect = RelRect;
-    AbsRect.transform(mRect);
-    newControl->mRect = AbsRect;
-
-    auto ctrlPtr = newControl;
-
-    mControlList.push_back( ctrlPtr );
-
-    if(mControlList.size() == 1)
-    {
-        mpCurrentCtrl = mControlList.front().get();
-    }
-
-    return ctrlPtr;
-}
-
-*/
-/*
-std::shared_ptr<GsControl> 
-CGUIDialog::addWidget( std::unique_ptr<GsControl> &newControl )
-{    
-    auto ctrlPtr = std::shared_ptr<GsControl>( move(newControl) );
-
-    mControlList.push_back( ctrlPtr );
-
-    fit();
-
-	if(mControlList.size() == 1)
-	{
-	    mpCurrentCtrl = mControlList.front().get();
-	}
-
-    return ctrlPtr;
-}
-*/
-
-/*
-std::shared_ptr<GsControl> 
-CGUIDialog::addWidget( GsControl *newControl,
-                        const GsRect<float>& RelRect )
-{
-    std::unique_ptr<GsControl> ctrl(newControl);
-    return addWidget( ctrl, RelRect );
-}
-*/
-
-/*
-std::shared_ptr<GsControl> 
-CGUIDialog::addWidget( GsControl *newControl )
-{
-    std::unique_ptr<GsControl> ctrl(newControl);
-    return addWidget(ctrl);
-}
-*/
-
-/*
-
-void CGUIDialog::selectPrevItem()
-{
-    if(!mpCurrentCtrl)
-    {
-        return;
-    }
-
-    if(mpCurrentCtrl->isSelected())
-    {
-        mpCurrentCtrl->select(false);
-    }
-
-	mSelection--;
-
-	if( mSelection < 0 )
-    {
-		mSelection = mControlList.size()-1;
-    }
-
-
-	auto it = mControlList.begin();
-	for( int i=0 ; it != mControlList.end() ; it++, i++ )
-	{
-		if( i ==  mSelection )
-			break;
-	}
-
-	// Ensures that disabled items are skipped
-	for( ; it != mControlList.begin() ; it-- )
-	{
-        if( (*it)->isEnabled() )
-			break;
-
-		mSelection--;
-	}
-
-    if( mSelection < 0 ) {
-		mSelection = mControlList.size()-1;
-        it = mControlList.end();
-    }
-
-    (*it)->select(true);
-	mpCurrentCtrl = it->get();
-}
-*/
-
-
-/*
-void CGUIDialog::selectNextItem()
-{
-    if(!mpCurrentCtrl)
-        return;
-
-    if(mpCurrentCtrl->isSelected())
-    {
-        mpCurrentCtrl->select(false);
-    }
-
-	mSelection++;
-
-	if( mSelection >= static_cast<int>(mControlList.size()) )
-		mSelection = 0;
-
-	// Find the right control!
-	auto it = mControlList.begin();
-	for( int i=0 ; it != mControlList.end() ; it++, i++ )
-	{
-		if( i == mSelection )
-			break;
-	}
-
-	// Ensures that disabled items are skipped
-	for( ; it != mControlList.end() ; it++ )
-	{
-        if( (*it)->isEnabled() )
-			break;
-
-		mSelection++;
-	}
-
-    if( mSelection >= static_cast<int>(mControlList.size()) ) {
-		mSelection = 0;
-        it = mControlList.begin();
-    }
-
-    (*it)->select(true);
-	mpCurrentCtrl = it->get();
-}
-*/
-
 
 
 bool CGUIDialog::sendEvent(const std::shared_ptr<CEvent> &event )
@@ -198,7 +37,6 @@ bool CGUIDialog::sendEvent(const std::shared_ptr<CEvent> &event )
     if( CommandEvent *ev = dynamic_cast<CommandEvent*>(event.get()) )
 	{
 		// Send all the other events the active control element
-		int i=0;       
         for( auto &widget : mWidgetList )
         {
             auto it = std::dynamic_pointer_cast<GsControl>(widget);
@@ -223,7 +61,6 @@ bool CGUIDialog::sendEvent(const std::shared_ptr<CEvent> &event )
             {
                 it->select( false );
             }
-            i++;
         }
 
         if(ev->mCommand == IC_DOWN || ev->mCommand == IC_RIGHT)
@@ -332,8 +169,6 @@ void CGUIDialog::processLogic()
     {
         widget->processLogic();
         widget->processPointingStateRel(localRect);
-
-
     }
 }
 
