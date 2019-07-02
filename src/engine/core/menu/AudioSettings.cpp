@@ -21,32 +21,32 @@ GameMenu(GsRect<float>(0.075f, 0.24f, 0.85f, 0.4f), style )
 #if !defined(EMBEDDED)
 
     mpRate = new ComboSelection( "Rate", gSound.getAvailableRateList(), style);
-	mpMenuDialog->addWidget( mpRate );
+	mpMenuDialog->add( mpRate );
 
 #endif
 
     mpStereo = new Switch( "Stereo", style );
-	mpMenuDialog->addWidget( mpStereo );
+	mpMenuDialog->add( mpStereo );
 
 
 #if !defined(EMBEDDED)
 
     mpDepth = new ComboSelection( "Depth", filledStrList( 2, "8-bit", "16-bit" ), style );
-	mpMenuDialog->addWidget( mpDepth );
+	mpMenuDialog->add( mpDepth );
 
 #endif
 
     mpSBToggle = new ComboSelection( "Card", filledStrList( 2, "PC Speaker", "Soundblaster" ), style );
-	mpMenuDialog->addWidget( mpSBToggle );
+	mpMenuDialog->add( mpSBToggle );
 
     mpSoundVolume = new NumberControl( "Sound Vol", 0, 100, 4, false,
                                        gSound.getSoundVolume(), style );
-	mpMenuDialog->addWidget( mpSoundVolume );
+	mpMenuDialog->add( mpSoundVolume );
 
 
     mpMusicVolume = new NumberControl( "Music Vol", 0, 100, 4, false,
                                        gSound.getMusicVolume(), style );
-	mpMenuDialog->addWidget( mpMusicVolume );
+	mpMenuDialog->add( mpMusicVolume );
 
 	setMenuLabel("SNDEFFMENULABEL");
 

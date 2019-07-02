@@ -52,7 +52,7 @@ GameMenu( GsRect<float>(0.1f, 0.0f, 0.8f, 1.0f),
                                              0.0f, 0.1f+(j*0.1f), 0.7f, 0.1f),
                                          new LoadGameSlotFunctorEvent(Uint32(j)),
                                          style));
-            mpMenuDialog->addWidget(button);
+            mpMenuDialog->add(button);
         }
         else
         {
@@ -61,7 +61,7 @@ GameMenu( GsRect<float>(0.1f, 0.0f, 0.8f, 1.0f),
                                      style) );
 
         }        
-        mpMenuDialog->addWidget( button );
+        mpMenuDialog->add( button );
 
         button->enable( false );
 	}

@@ -167,7 +167,7 @@ void GsRegister::addPage(const GsColor &itemColor)
 
     auto *newFrame = new GsFrame(GsRect<float>(0.0f, itemPos,
                                          1.0f, itemWidth));
-    mpMenu->addWidget(newFrame);
+    mpMenu->add(newFrame);
 
     SwitchPageFctr pageSw(*this, newPage);
 

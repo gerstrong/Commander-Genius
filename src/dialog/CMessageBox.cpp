@@ -69,7 +69,7 @@ m_mustclose(false)
 
     setRect(rect);
 
-    addWidget( mpTextCtrl, textRect );
+    add( mpTextCtrl );
 
     initEmptyBackground();
 }

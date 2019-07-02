@@ -35,7 +35,7 @@ CPlayerSpriteVarSelection(const Style style) :
     if(!mpPlayerBmpVec.empty())
     {
         mpBmpBox =
-        mpMenuDialog->addWidget( new GsBitmapBox(mpPlayerBmpVec[0]));
+        mpMenuDialog->add( new GsBitmapBox(mpPlayerBmpVec[0]));
 
         mpBmpBox->setRect( GsRect<float>(0.17f, 0.21f,
                                                0.24f, 0.32f) );
@@ -43,7 +43,7 @@ CPlayerSpriteVarSelection(const Style style) :
 
 
     mpChangeButton =
-    mpMenuDialog->addWidget(
+    mpMenuDialog->add(
                 new GameButton( "Change",
                          new ChangeEvent(*this), style));
 
@@ -52,7 +52,7 @@ CPlayerSpriteVarSelection(const Style style) :
 
 
     mpGameButton =
-    mpMenuDialog->addWidget(
+    mpMenuDialog->add(
                 new GameButton( "Start",
                       new SelectPlayerSpriteVarEvent(mCurIdx),style));
 

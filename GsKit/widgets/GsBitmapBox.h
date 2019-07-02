@@ -25,7 +25,11 @@ public:
     // Create an empty bitmap. TODO: Must become deprecated
     //GsBitmapBox() {}
 
-	// Loads an Bitmap that is given directly
+    // Loads an Bitmap that is given directly
+    GsBitmapBox(std::shared_ptr<GsBitmap> &bmpPtr,
+                const GsRect<float> &rect);
+
+    // Loads an Bitmap that is given directly
     GsBitmapBox(std::shared_ptr<GsBitmap> &bmpPtr);
 
     // Sets another Bitmap Pointer

@@ -46,8 +46,6 @@ struct GMStart : CEvent {};
 
 struct GMPatchSelected : CEvent {};
 
-struct GameStorePullGame : CEvent {};
-
 
 // Happens when in the menu the user decides to end the game or he reached
 // the finale

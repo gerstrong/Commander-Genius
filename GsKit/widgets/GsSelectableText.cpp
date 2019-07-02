@@ -14,7 +14,7 @@ GsFrame(rect)
                            0.8f, 0.8f);
 
     auto newTextWidget =
-            addWidget( new CGUIText(text, textRect) );
+            add( new CGUIText(text, textRect) );
 
     newTextWidget->enableCenteringH(false);
 

@@ -30,7 +30,7 @@ GameMenu(GsRect<float>(0.075f, 0.24f, 0.85f, 0.4f), style )
         mpSize = new NumberControl( "Size \%", 100, 400, 10, iSizeFac,
                                     false, style );
 
-        mpMenuDialog->addWidget( mpSize );
+        mpMenuDialog->add( mpSize );
     }
 #endif
 

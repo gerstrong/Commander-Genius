@@ -78,7 +78,7 @@ CControlsettings::CControlsettings(const int selectedPlayer ,
 GameMenu( GsRect<float>(0.1f, 0.25f, 0.8f, 0.5f), style ),
 mSelectedPlayer(selectedPlayer)
 {
-    mpMenuDialog->addWidget(
+    mpMenuDialog->add(
                 new GameButton( "Movement",
                                 [this]()
                                 {
@@ -89,7 +89,7 @@ mSelectedPlayer(selectedPlayer)
                                 style )  );
 
 
-    mpMenuDialog->addWidget(
+    mpMenuDialog->add(
                 new GameButton( "Buttons",
                                 [this]()
                                 {
@@ -100,26 +100,26 @@ mSelectedPlayer(selectedPlayer)
                                 style ) );
 
     mpTwoButtonSwitch =
-            mpMenuDialog->addWidget( new Switch( "Two Button Fire", style ) );
+            mpMenuDialog->add( new Switch( "Two Button Fire", style ) );
 	mpTwoButtonSwitch->enable(gInput.getTwoButtonFiring(mSelectedPlayer-1));
 
     mpAnalogSwitch =
-            mpMenuDialog->addWidget( new Switch( "Analog Movement", style ) );
+            mpMenuDialog->add( new Switch( "Analog Movement", style ) );
 	mpAnalogSwitch->enable(gInput.isAnalog(mSelectedPlayer-1));
 
     mpSuperPogoSwitch =
-            mpMenuDialog->addWidget( new Switch( "Super Pogo", style ) );
+            mpMenuDialog->add( new Switch( "Super Pogo", style ) );
 	mpSuperPogoSwitch->enable(gInput.SuperPogo(mSelectedPlayer-1));
 
     mpImpPogoSwitch =
-            mpMenuDialog->addWidget( new Switch( "Impossible Pogo", style ) );
+            mpMenuDialog->add( new Switch( "Impossible Pogo", style ) );
 	mpImpPogoSwitch->enable(gInput.ImpossiblePogo(mSelectedPlayer-1));
 
     mpAutoGunSwitch =
-            mpMenuDialog->addWidget( new Switch( "Auto Gun", style ) );
+            mpMenuDialog->add( new Switch( "Auto Gun", style ) );
 	mpAutoGunSwitch->enable(gInput.AutoGun(mSelectedPlayer-1));
 
-    mpMenuDialog->addWidget( new GameButton( "Reset Controls",
+    mpMenuDialog->add( new GameButton( "Reset Controls",
                                              new ResetInputEvent(mSelectedPlayer-1),
                                              style ) );
     
@@ -223,7 +223,7 @@ void CControlSettingsMovement::refresh()
                                    it->second);
 
         auto guiButton =
-            mpMenuDialog->addWidget(
+            mpMenuDialog->add(
                     new GameButton( buf+buf2,
                                     rie,
                                     getStyle() ) );
@@ -270,7 +270,7 @@ void CControlSettingsButtons::refresh()
                                    it->first, it->second);
 
         auto guiButton =
-            mpMenuDialog->addWidget(
+            mpMenuDialog->add(
                     new GameButton( buf+buf2,
                                     rie,
                                     getStyle() ) );

@@ -61,12 +61,12 @@ GameMenu(GsRect<float>(0.15f, 0.20f, 0.65f, 0.55f), style )
 
 	
     mpAspectSelection =
-            mpMenuDialog->addWidget( new ComboSelection( "Aspect",
+            mpMenuDialog->add( new ComboSelection( "Aspect",
                                                           filledStrList(1, "disabled"),
                                                           style ) );
 
     mpFilterSelection =
-            mpMenuDialog->addWidget( new ComboSelection( "Filter",
+            mpMenuDialog->add( new ComboSelection( "Filter",
                                                   filledStrList( 4,
                                                                  "none",
                                                                  "scale2x",
@@ -75,15 +75,15 @@ GameMenu(GsRect<float>(0.15f, 0.20f, 0.65f, 0.55f), style )
                                                   style ) );
 
     mpVSyncSwitch =
-        mpMenuDialog->addWidget( new Switch( "VSync", style ) );
+        mpMenuDialog->add( new Switch( "VSync", style ) );
 
     mpResolutionSelection =
-        mpMenuDialog->addWidget( new ComboSelection( "Size",
+        mpMenuDialog->add( new ComboSelection( "Size",
                                                   filledStrList(1, "?x?"),
                                                   style) );
 
     mpFullScreenSwitch =
-        mpMenuDialog->addWidget( new GameButton( "Unknown mode",
+        mpMenuDialog->add( new GameButton( "Unknown mode",
                                               new toggleFullscreenFunctor(*this),
                                                style) );
 #endif
@@ -91,17 +91,17 @@ GameMenu(GsRect<float>(0.15f, 0.20f, 0.65f, 0.55f), style )
 
 #if defined(USE_OPENGL)
     mpOpenGLSwitch =
-        mpMenuDialog->addWidget( new Switch( "OpenGL", style ) );
+        mpMenuDialog->add( new Switch( "OpenGL", style ) );
 
     mpRenderScaleQualitySel =
-            mpMenuDialog->addWidget( new ComboSelection( "Quality",
+            mpMenuDialog->add( new ComboSelection( "Quality",
                                                           filledStrList( 2,
                                                                          "nearest",
                                                                          "linear" ),
                                                           style) );
 #else
     mpRenderScaleQualitySel =
-            mpMenuDialog->addWidget( new ComboSelection( "Quality",
+            mpMenuDialog->add( new ComboSelection( "Quality",
                                                           filledStrList( 3,
                                                                          "nearest",
                                                                          "linear",

@@ -16,12 +16,18 @@ GsBitmapBox::GsBitmapBox(const GsRect<float> &rect) :
 GsWidget(rect)
 {}
 
-
-GsBitmapBox::GsBitmapBox(std::shared_ptr<GsBitmap> &bmpPtr) :
-GsWidget(GsRect<float>(0.0f, 0.0f, 1.0f, 1.0f))
+GsBitmapBox::GsBitmapBox(std::shared_ptr<GsBitmap> &bmpPtr,
+                         const GsRect<float> &rect) :
+GsWidget(rect)
 {
     setBitmapPtr(bmpPtr);
 }
+
+GsBitmapBox::GsBitmapBox(std::shared_ptr<GsBitmap> &bmpPtr) :
+GsBitmapBox(bmpPtr, GsRect<float>(0.0f, 0.0f, 1.0f, 1.0f))
+{}
+
+
 
 void GsBitmapBox::setBitmapPtr(std::shared_ptr<GsBitmap> &bmpPtr)
 {

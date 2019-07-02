@@ -3,7 +3,7 @@
 #include <base/video/CVideoDriver.h>
 
 GsFrame::GsFrame(const GsRect<float> &rect) :
-GsWidgetsManager(rect)
+GsControlsManager(rect)
 {
 
 }
@@ -25,7 +25,9 @@ void GsFrame::processLogic()
         }
     }
 
-    for(auto &obj : mWidgetList)
+    auto &wList = getWidgetList();
+
+    for(auto &obj : wList)
     {
         obj->processLogic();
     }
@@ -47,7 +49,9 @@ void GsFrame::processRender(const GsRect<float> &rectDispCoordFloat)
         blitsfc.fill(lRect, mBackgroundColor);
     }
 
-    for(auto &obj : mWidgetList)
+    auto &wList = getWidgetList();
+
+    for(auto &obj : wList)
     {
         obj->processRender(rectDispCoordFloat);
     }
@@ -69,7 +73,8 @@ void GsFrame::processRender(const GsRect<float> &backRect,
         blitsfc.fill(objFrontRect.SDLRect(), mBackgroundColor);
     }
 
-    for(auto &obj : mWidgetList)
+    auto &wList = getWidgetList();
+    for(auto &obj : wList)
     {
        obj->processRender(objBackRect, objFrontRect);
     }

@@ -21,7 +21,7 @@ const unsigned int MAX_STEPS = 20;
 
 CGUIDialog::CGUIDialog(const GsRect<float> &SrGsRect,
                        const FXKind fx) :
-GsWidgetsManager(SrGsRect),
+GsControlsManager(SrGsRect),
 mFXSetup(fx)
 {
     if( mFXSetup == FXKind::EXPAND )
@@ -34,32 +34,27 @@ mFXSetup(fx)
 
 bool CGUIDialog::sendEvent(const std::shared_ptr<CEvent> &event )
 {
+    auto &controlsList = getControlsList();
+
     if( CommandEvent *ev = dynamic_cast<CommandEvent*>(event.get()) )
 	{
 		// Send all the other events the active control element
-        for( auto &widget : mWidgetList )
+        for( auto &control : controlsList )
         {
-            auto it = std::dynamic_pointer_cast<GsControl>(widget);
-
-            if(!it)
+            if( control->isSelected() )
             {
-                continue;
-            }
-
-            if( it->isSelected() )
-            {
-                if( it->sendEvent(ev->mCommand) )
+                if( control->sendEvent(ev->mCommand) )
                 {
                     return true;
                 }
                 else
                 {
-                    it->select( false );
+                    control->select( false );
                 }
             }
             else
             {
-                it->select( false );
+                control->select( false );
             }
         }
 

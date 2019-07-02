@@ -41,21 +41,21 @@ mFeatureText(text)
 void CGUINumberControl::spawnSubWidgets()
 {
     mpCtrlName =
-            addWidget(new CGUIText(mFeatureText,
+            add(new CGUIText(mFeatureText,
                                 GsRect<float>(0.0f, 0.0f, 0.5f, 1.0f)));
 
     mpLeftButton =
-            addWidget(new GsButton("<",
+            add(new GsButton("<",
                                 GsRect<float>(0.5f, 0.0f, 0.1f, 1.0f),
                                 [&]{this->decrement();}));
 
     mpCtrlValue =
-            addWidget(new CGUIText("?",
+            add(new CGUIText("?",
                                 GsRect<float>(0.6f, 0.0f, 0.3f, 1.0f)));
 
 
     mpRightButton =
-            addWidget(new GsButton(">",
+            add(new GsButton(">",
                                 GsRect<float>(0.9f, 0.0f, 0.1f, 1.0f),
                                 [&]{this->increment();}));
 }
@@ -274,10 +274,11 @@ void CGUINumberControl::processRender(const GsRect<float> &rectDispCoordFloat)
         blitsfc.fill(displayRect, blitsfc.mapColorAlpha(mHoverBgColor));
     }
 
+    auto &widgetsList = getWidgetList();
 
-    for(auto &obj : mWidgetList)
+    for( auto &ctrl : widgetsList)
     {
-        obj->processRender(displayRect);
+        ctrl->processRender(rectDispCoordFloat);
     }
 }
 

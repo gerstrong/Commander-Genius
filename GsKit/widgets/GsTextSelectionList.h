@@ -33,8 +33,10 @@ public:
 
     CGUITextSelectionList(const GsRect<float> &rect);
 
-	void setConfirmButtonEvent(CEvent *ev);
-	void setBackButtonEvent(CEvent *ev);
+    void setConfirmButtonEvent(CEvent *ev);
+    void setConfirmButtonEvent(const std::function <void ()>& f);
+
+    void setBackButtonEvent(CEvent *ev);
 
     bool sendEvent(const InputCommand command) override;
 	void addText(const std::string &text);    
@@ -70,6 +72,9 @@ private:
 	
 	std::shared_ptr<CEvent> mConfirmEvent;
 	std::shared_ptr<CEvent> mBackEvent;
+
+    std::function <void ()> mConfirmFunction;
+    std::function <void ()> mBackFunction;
 };
 
 #endif /* CGUITEXTSELECTIONLIST_H */

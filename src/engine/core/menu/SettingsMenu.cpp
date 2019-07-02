@@ -31,26 +31,26 @@ GameMenu( GsRect<float>(0.25f, 0.24f, 0.5f, 0.40f),
 
 #if !defined(EMBEDDED)
 
-    mpMenuDialog->addWidget(
+    mpMenuDialog->add(
                 new GameButton( "Display",
                                 new OpenMenuEvent( new DisplaySettings(style) ),
                                 style ) );
 
 
-    mpMenuDialog->addWidget(
+    mpMenuDialog->add(
                 new GameButton( "Video",
                                 new OpenMenuEvent( new CVideoSettings(style) ),
                                 style ) );
 
 #endif
 
-    mpMenuDialog->addWidget(
+    mpMenuDialog->add(
                 new GameButton( "Audio",
                                 new OpenMenuEvent( new CAudioSettings(style) ),
                                 style ) );
 
 
-    mpMenuDialog->addWidget(
+    mpMenuDialog->add(
                 new GameButton( "Options",
                                 new OpenMenuEvent( new COptions(style) ),
                                 style ) );
@@ -60,13 +60,13 @@ GameMenu( GsRect<float>(0.25f, 0.24f, 0.5f, 0.40f),
 
 
 #if defined (SINGLEPLAYER)
-        mpMenuDialog->addWidget(
+        mpMenuDialog->add(
                     new GameButton( "Controls",
                                    new OpenMenuEvent(
                                         new CControlsettings(1,style) ),
                                                   style ) );
 #else
-        mpMenuDialog->addWidget(
+        mpMenuDialog->add(
                new GameButton( "Controls",
                    new OpenMenuEvent(
                        new CPlayersSelection<OpenControlMenuEvent>(false,style) ),
@@ -76,7 +76,7 @@ GameMenu( GsRect<float>(0.25f, 0.24f, 0.5f, 0.40f),
     }
 
 #ifdef VIRTUALPAD
-    mpMenuDialog->addWidget(new GameButton( "Virtual Gamepad",
+    mpMenuDialog->add(new GameButton( "Virtual Gamepad",
                                              new OpenMenuEvent( new VPadSettingsMenu(style) ),
                                              style ) );
 #endif
@@ -85,7 +85,7 @@ GameMenu( GsRect<float>(0.25f, 0.24f, 0.5f, 0.40f),
     if(style != Style::NONE)
     {
 
-        mpMenuDialog->addWidget(new GameButton( "Cheats",
+        mpMenuDialog->add(new GameButton( "Cheats",
                                                  new OpenMenuEvent( new CheatsMenu(style) ),
                                                  style ) );
 

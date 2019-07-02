@@ -29,10 +29,10 @@ GameMenu(GsRect<float>(0.15f, 0.20f, 0.65f, 0.55f), style )
 #endif
 {
     mpShowCursorSwitch = new Switch("Cursor", style);
-    mpMenuDialog->addWidget( mpShowCursorSwitch );
+    mpMenuDialog->add( mpShowCursorSwitch );
 
     mpTiltScreenSwitch = new Switch("TiltedScr", style);
-    mpMenuDialog->addWidget( mpTiltScreenSwitch );
+    mpMenuDialog->add( mpTiltScreenSwitch );
     
 	// Create the fps config selection control
 	std::list<std::string>	List;
@@ -42,13 +42,13 @@ GameMenu(GsRect<float>(0.15f, 0.20f, 0.65f, 0.55f), style )
     }
 
     mpFPSSelection =
-            mpMenuDialog->addWidget(
+            mpMenuDialog->add(
                 new NumberControl( "FPS", 10, 120, 10, 60,
                                    false, style) );
 
 
     mpFrameSkip = new Switch( "FrameSkip", style );
-    mpMenuDialog->addWidget( mpFrameSkip );
+    mpMenuDialog->add( mpFrameSkip );
 
 
 #if !defined(EMBEDDED)
@@ -56,23 +56,23 @@ GameMenu(GsRect<float>(0.15f, 0.20f, 0.65f, 0.55f), style )
     mpGameResSelection = new ComboSelection( "GameRes",
                                              filledStrList(1, "?x?"),
                                              style );
-    mpMenuDialog->addWidget( mpGameResSelection );
+    mpMenuDialog->add( mpGameResSelection );
 	
 #endif
 
 #ifdef VIRTUALPAD
     mpVPadSwitch  = new Switch( "VirtPad", style );
-    mpMenuDialog->addWidget( mpVPadSwitch, style );
+    mpMenuDialog->add( mpVPadSwitch, style );
 #endif
 
     mpBorderColorSwitch = new Switch( "Brdr Color", style );
-    mpMenuDialog->addWidget( mpBorderColorSwitch );
+    mpMenuDialog->add( mpBorderColorSwitch );
 
     mpHorizBordersSelection = new NumberControl( "H-Brdr",
                                                  0, 80, 5, 0,
                                                  false,
                                                  style);
-    mpMenuDialog->addWidget( mpHorizBordersSelection );
+    mpMenuDialog->add( mpHorizBordersSelection );
 
 	setMenuLabel("OPTIONSMENULABEL");
 

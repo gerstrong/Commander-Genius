@@ -34,6 +34,11 @@ void CGUITextSelectionList::setConfirmButtonEvent(CEvent *ev)
 	mConfirmEvent.reset(ev);
 }
 
+void CGUITextSelectionList::setConfirmButtonEvent(const std::function <void ()>& f)
+{
+    mConfirmFunction = f;
+}
+
 void CGUITextSelectionList::setBackButtonEvent(CEvent *ev)
 {
 	mBackEvent.reset(ev);
@@ -42,10 +47,12 @@ void CGUITextSelectionList::setBackButtonEvent(CEvent *ev)
 
 bool CGUITextSelectionList::sendEvent(const InputCommand command)
 {
+    auto &controlsList = getControlsList();
+
 	if(command == IC_UP)
 	{
-        auto it = mWidgetList.rbegin();
-        auto lastSelected = mWidgetList.rend();
+        auto it = controlsList.rbegin();
+        auto lastSelected = controlsList.rend();
 
         // Find iterator of last selected item
         while(it != lastSelected)
@@ -67,12 +74,12 @@ bool CGUITextSelectionList::sendEvent(const InputCommand command)
         it++;
 
         // If previous item was not the last one select it.
-        if(it != mWidgetList.rend())
+        if(it != controlsList.rend())
         {
             auto ctrl = std::dynamic_pointer_cast<GsControl>(*it);
             ctrl->select(true);
-            setSelection(int(mWidgetList.size()) -
-                         int(std::distance(mWidgetList.rbegin(), it)));
+            setSelection(int(controlsList.size()) -
+                         int(std::distance(controlsList.rbegin(), it)));
 
             return true;
         }
@@ -81,8 +88,8 @@ bool CGUITextSelectionList::sendEvent(const InputCommand command)
     }
 	else if(command == IC_DOWN)
 	{
-        auto it = mWidgetList.begin();
-        auto lastSelected = mWidgetList.end();
+        auto it = controlsList.begin();
+        auto lastSelected = controlsList.end();
 
         // Find iterator of last selected item
         while(it != lastSelected)
@@ -104,11 +111,11 @@ bool CGUITextSelectionList::sendEvent(const InputCommand command)
         it++;
 
         // If previous item was not the last one select it.
-        if(it != mWidgetList.end())
+        if(it != controlsList.end())
         {
             auto ctrl = std::dynamic_pointer_cast<GsControl>(*it);
             ctrl->select(true);
-            setSelection(int(std::distance(mWidgetList.begin(), it)));
+            setSelection(int(std::distance(controlsList.begin(), it)));
             return true;
         }
 
@@ -120,6 +127,8 @@ bool CGUITextSelectionList::sendEvent(const InputCommand command)
 	{
 		if(mConfirmEvent)
 			gEventManager.add(mConfirmEvent);
+        if(mConfirmFunction)
+            mConfirmFunction();
 		return true;
 	}
 	else if(command == IC_BACK)
@@ -144,7 +153,7 @@ void CGUITextSelectionList::addText(const std::string &text)
                             1.0f, 0.1f);
 
     auto selectionFrame =
-            addWidget( new GsSelectableText(frameRect, text) );
+            add( new GsSelectableText(frameRect, text) );
 
     selectionFrame->setParent(this);
 
@@ -154,9 +163,9 @@ void CGUITextSelectionList::addText(const std::string &text)
 
 void CGUITextSelectionList::updateSelection()
 {
-
+    auto &controlsList = getControlsList();
     int idx = 0;
-    for(auto &widget : mWidgetList)
+    for(auto &widget : controlsList)
     {
         auto selectableText =
                 std::dynamic_pointer_cast<GsSelectableText>(widget);
@@ -181,7 +190,8 @@ void CGUITextSelectionList::processLogic()
         return;
     }
 
-    for(auto &widget : mWidgetList)
+    auto &controlsList = getControlsList();
+    for(auto &widget : controlsList)
     {
         widget->processLogic();
     }
@@ -199,7 +209,8 @@ void CGUITextSelectionList::processPointingStateRel(const GsRect<float> &rect)
         this->select(true);
     }
 
-    for(auto &widget : mWidgetList)
+    auto &controlsList = getControlsList();
+    for(auto &widget : controlsList)
     {
         widget->processPointingStateRel(absRect);
     }
@@ -214,7 +225,8 @@ CGUITextSelectionList::getItemString(const unsigned int sel) const
 
 void CGUITextSelectionList::unselectAll()
 {
-    for(auto &widget : mWidgetList)
+    auto &controlsList = getControlsList();
+    for(auto &widget : controlsList)
     {
         auto ctrl = std::dynamic_pointer_cast<GsSelectableText>(widget);
 

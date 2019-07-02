@@ -8,9 +8,7 @@
 
 /**
  * @brief The GsWidgetsManager class
- *        An abstract component that manages a list of controls
- *        Because GsDialog and GsFrame needs to have a list widgets
- *        these are dervied classes
+ *        An abstract component that manages a list of widgets
  */
 class GsWidgetsManager : public GsControl
 {
@@ -27,48 +25,10 @@ public:
 
     // Adds a control instance to the list of controls to be processed.
     template <class T>
-    std::shared_ptr<T> addWidget( std::shared_ptr<T> &ctrl );
+    std::shared_ptr<T> add( std::shared_ptr<T> &ctrl );
 
     template <class T>
-    std::shared_ptr<T> addWidget( T *newControl );
-
-    template <class T>
-    std::shared_ptr<T> addWidget( T *newControl,
-                                   const GsRect<float>& RelRect );
-
-
-    template <class T>
-    std::shared_ptr<T> addWidget( T *newControl,
-                                   const float x,
-                                   const float y,
-                                   const float w,
-                                   const float h)
-    {
-        const GsRect<float> relRect(x,y,w,h);
-        return addWidget( newControl, relRect );
-    }
-
-
-    // Adds a control instance to the list of controls to be processed.
-    std::shared_ptr<GsWidget> addWidget( std::unique_ptr<GsWidget> &newControl,
-                                             const GsRect<float>& RelRect )
-    {
-        std::shared_ptr<GsWidget> shared(move(newControl));
-        return addWidget(shared, RelRect);
-    }
-
-    std::shared_ptr<GsWidget> addWidget( std::shared_ptr<GsWidget> &newControl);
-
-    std::shared_ptr<GsWidget> addWidget( std::shared_ptr<GsWidget> &newControl,
-                                           const GsRect<float>& RelRect );
-
-    std::shared_ptr<GsWidget> addWidget(std::unique_ptr<GsWidget> &newControl);
-
-
-    std::shared_ptr<GsWidget> addWidget( GsWidget *newControl,
-                 const GsRect<float>& RelRect );
-
-    std::shared_ptr<GsWidget> addWidget( GsWidget *newControl );
+    std::shared_ptr<T> add( T *newWidget );
 
     std::list< std::shared_ptr<GsWidget> >& getWidgetList()
     {	return mWidgetList;	}
@@ -78,23 +38,11 @@ public:
         return *mWidgetList.rbegin();
     }
 
-
-    void selectPrevItem();
-
-    void selectNextItem();
-
+    virtual bool sendEvent(const std::shared_ptr<CEvent> &);
 
 
     // Update all graphics. Happens when Video settings are changed
     void updateGraphics() override;
-
-
-    virtual bool sendEvent( const std::shared_ptr<CEvent> &event );
-
-    virtual bool sendEvent( CEvent *pEvent )
-    {
-        return sendEvent(std::shared_ptr<CEvent>(pEvent));
-    }
 
     bool sendEvent(const InputCommand) override { return false; }
 
@@ -106,37 +54,11 @@ public:
     }
 
 
-    std::shared_ptr<GsWidget> &CurrentWidget()
-    {	return 	mpCurWidget;	}
-
-
-    int getSelection() const
-    {	return mSelection;	}
-
-    void setSelection(const int sel)
-    {
-        mSelection = sel;
-    }
-
-
-    void setCurrentWidget(std::shared_ptr<GsWidget> &widget)
-    {	mpCurWidget = widget;	}
-
-    template <class T>
-    void setCurrentWidget(std::shared_ptr<T> &widget)
-    {	mpCurWidget = std::static_pointer_cast<GsWidget>(widget);	}
-
 
 protected:
 
 
     virtual void processLogic() override;
-
-
-    // List of Controls that the Dialog has.
-    std::list< std::shared_ptr<GsWidget> > mWidgetList;
-
-    std::shared_ptr<GsWidget> mpCurWidget;
 
     bool empty() const
     {
@@ -146,49 +68,35 @@ protected:
     void clear()
     {
         mWidgetList.clear();
-    }
+    }    
 
 private:
+    std::shared_ptr<GsWidget> add( std::shared_ptr<GsWidget> &ctrl );
 
-    int mSelection = 0;
+    // List of Controls that the Dialog has.
+    std::list< std::shared_ptr<GsWidget> > mWidgetList;
+
 
 };
 
 
 template <class T>
-std::shared_ptr<T> GsWidgetsManager::addWidget( std::shared_ptr<T> &ctrl )
+std::shared_ptr<T> GsWidgetsManager::add( std::shared_ptr<T> &ctrl )
 {
     std::shared_ptr<GsWidget> abstract =
             std::static_pointer_cast< GsWidget >(ctrl);
 
-    addWidget( abstract );
+    add( abstract );
 
     return ctrl;
 }
 
 
 template <class T>
-std::shared_ptr<T> GsWidgetsManager::addWidget( T *newWidget )
+std::shared_ptr<T> GsWidgetsManager::add( T *newWidget )
 {
     std::shared_ptr<T> ctrl(newWidget);
-    return addWidget(ctrl);
+    return add(ctrl);
 }
-
-
-
-template <class T>
-std::shared_ptr<T> GsWidgetsManager::addWidget( T *newWidget,
-                                           const GsRect<float>& relRect )
-{
-    std::shared_ptr<T> ctrl(newWidget);
-    std::shared_ptr<GsWidget> abstract =
-            std::static_pointer_cast< GsWidget >(ctrl);
-
-    addWidget( abstract, relRect );
-
-    return ctrl;
-}
-
-
 
 #endif // GsWidgetsManager_H

@@ -110,14 +110,14 @@ bool CGameLauncher::setupMenu()
     // Save any custom labels
     putLabels();
 
-    mLauncherDialog.addWidget(
+    mLauncherDialog.add(
                 new GsButton( "x",
                              GsRect<float>(0.0f, 0.0f, 0.069f, 0.069f),
                              new GMQuit(),
                              -1,
                              1.0f, 0.75f, 0.75f ) );
 
-    mLauncherDialog.addWidget(new CGUIText("Pick a Game",
+    mLauncherDialog.add(new CGUIText("Pick a Game",
                                       GsRect<float>(0.14f, 0.01f, 0.72f, 0.05f)));
 
 
@@ -129,7 +129,7 @@ bool CGameLauncher::setupMenu()
     };
 
     mpOptionButton =
-                mLauncherDialog.addWidget(
+                mLauncherDialog.add(
                         new GsButton( "O",
                               GsRect<float>(0.93f, 0.0f, 0.069f, 0.069f),
                               openSettingsMenuEvent,
@@ -138,7 +138,7 @@ bool CGameLauncher::setupMenu()
 
 
 #ifdef VIRTUALPAD
-    mLauncherDialog.addWidget(new GsButton( "VPad", new OpenVGamePadSettingsEvent(),
+    mLauncherDialog.add(new GsButton( "VPad", new OpenVGamePadSettingsEvent(),
                                              -1,
                                              0.75f,
                                              1.0f,
@@ -148,13 +148,13 @@ bool CGameLauncher::setupMenu()
 
 
     // Create an empty Bitmap control
-    mCurrentBmp = mLauncherDialog.addWidget(
+    mCurrentBmp = mLauncherDialog.add(
                 new GsBitmapBox( GsRect<float>(0.51f, 0.07f, 0.48f, 0.48f) ));
 
     mPreviewBmpPtrVec.resize(m_Entries.size());
 
     mpGSSelList =
-            mLauncherDialog.addWidget(
+            mLauncherDialog.add(
                 new CGUITextSelectionList(GsRect<float>(0.01f, 0.07f, 0.49f, 0.79f)));
 
     mpGSSelList->setBackgroundColor( GsColor(0xFF, 0xFF, 0xFF) );
@@ -187,7 +187,7 @@ bool CGameLauncher::setupMenu()
     #endif
 
     mpStartButton =
-                mLauncherDialog.addWidget
+                mLauncherDialog.add
                    (
                        new GsButton( "Start >",
                                      GsRect<float>(0.60f, 0.865f, 0.25f, 0.07f),
@@ -197,11 +197,11 @@ bool CGameLauncher::setupMenu()
                    );
 
 
-    mpEpisodeText = mLauncherDialog.addWidget(
+    mpEpisodeText = mLauncherDialog.add(
                 new CGUIText("Game", GsRect<float>(0.5f, 0.70f, 0.5f, 0.05f)) );
-    mpVersionText = mLauncherDialog.addWidget(
+    mpVersionText = mLauncherDialog.add(
                 new CGUIText("Version", GsRect<float>(0.5f, 0.75f, 0.5f, 0.05f)) );
-    mpDemoText = mLauncherDialog.addWidget(
+    mpDemoText = mLauncherDialog.add(
                 new CGUIText("Demo", GsRect<float>(0.5f, 0.80f, 0.5f, 0.05f)) );
 
     // This way it goes right to the selection list.
@@ -211,7 +211,7 @@ bool CGameLauncher::setupMenu()
 
     gLogging.ftextOut("Game Autodetection Finished<br>" );
 
-    mLauncherDialog.addWidget( new CGUIBanner("Commander Genius " CGVERSION "\n"
+    mLauncherDialog.add( new CGUIBanner("Commander Genius " CGVERSION "\n"
                                                "by Gerstrong,\n"
                                                "Zilem,\n"
                                                "Tulip,\n"
@@ -527,16 +527,18 @@ void CGameLauncher::showMessageBox(const std::string &text)
     float yStart = 0.1f;
     for( auto &txtItem : strVec)
     {
-        mpMsgDialog->addWidget(new CGUIText(txtItem,
+        mpMsgDialog->add(new CGUIText(txtItem,
                                    GsRect<float>(0.1f, yStart, 0.8f, 0.05f)));
         yStart += 0.05f;
     }
 
 
-    auto *pRetryButton = new GsButton("Retry", new GMSwitchToGameLauncher());
-    mpMsgDialog->addWidget(pRetryButton, GsRect<float>(0.2f, 0.85f, 0.2f, 0.05f));
+    mpMsgDialog->add(
+                new GsButton("Retry",
+                             GsRect<float>(0.2f, 0.85f, 0.2f, 0.05f),
+                             new GMSwitchToGameLauncher()));
 
-    auto pOkButton = mpMsgDialog->addWidget(
+    auto pOkButton = mpMsgDialog->add(
                         new GsButton("Ok",
                                    GsRect<float>(0.6f, 0.85f,
                                                  0.2f, 0.05f),
@@ -554,7 +556,7 @@ void CGameLauncher::showMessageBox(const std::string &text)
                                    }));
 
     pOkButton->select(true);
-    mpMsgDialog->setCurrentWidget(pOkButton);
+    mpMsgDialog->setCurrentControl(pOkButton);
 }
 
 
@@ -605,12 +607,14 @@ void CGameLauncher::setupModsDialog()
     mpPatchSelList->setConfirmButtonEvent(new GMPatchSelected());
     mpPatchSelList->setBackButtonEvent(new GMQuit());
 
-    mpPatchDialog->addWidget(new CGUIText("Choose your patch:",
-                                           GsRect<float>(0.0f, 0.0f, 1.0f, 0.05f)));
-    mpPatchDialog->addWidget(mpPatchSelList);
+    mpPatchDialog->add(new CGUIText("Choose your patch:",
+                                    GsRect<float>(0.0f, 0.0f, 1.0f, 0.05f)));
+    mpPatchDialog->add(mpPatchSelList);
 
 
-    mpPatchDialog->addWidget(new GsButton( "Start >", new GMPatchSelected() ), GsRect<float>(0.65f, 0.865f, 0.3f, 0.07f) );
+    mpPatchDialog->add(new GsButton( "Start >",
+                                     GsRect<float>(0.65f, 0.865f, 0.3f, 0.07f),
+                                     new GMPatchSelected() ));
 }
 
 
@@ -648,12 +652,6 @@ void CGameLauncher::pumpEvent(const CEvent *evPtr)
         mPatchFilename = mPatchStrVec[sel];
         mDonePatchSelection = true;
     }
-    #ifdef DOWNLOADER
-    else if( dynamic_cast<const GameStorePullGame*>(evPtr) )
-    {
-        pullGame(mpGSSelList->getSelection());
-    }
-    #endif
     else if( dynamic_cast<const CancelDownloadEvent*>(evPtr))
     {
         mCancelDownload = true;

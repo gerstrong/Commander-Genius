@@ -20,9 +20,9 @@
 #include "GsControl.h"
 #include "GsBitmapBox.h"
 
-#include "GsWidgetsManager.h"
+#include "GsControlsManager.h"
 
-class CGUIDialog : public GsWidgetsManager
+class CGUIDialog : public GsControlsManager
 {    
 
 public:

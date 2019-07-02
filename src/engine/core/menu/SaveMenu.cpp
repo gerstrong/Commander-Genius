@@ -35,7 +35,7 @@ GameMenu(GsRect<float>(0.1f, 0.0f, 0.8f, 1.0f), style )
         if(i < StateFileList.size())
             text = StateFileList.at(i);
 
-        mpMenuDialog->addWidget( new InputText(
+        mpMenuDialog->add( new InputText(
                                       text,
                                       GsRect<float>(
                                           0.0f, 0.1f+(i*0.1f), 0.7f, 0.1f),
@@ -79,7 +79,7 @@ void CSaveMenu::refresh()
 
 void CSaveMenu::ponder(const float)
 {
-    auto &curWidget = mpMenuDialog->CurrentWidget();
+    auto &curWidget = mpMenuDialog->CurrentControl();
     auto pInput = std::dynamic_pointer_cast<InputText>(curWidget);
 
     int minIC = IC_LEFT;
@@ -135,7 +135,7 @@ void CSaveMenu::ponder(const float)
 
 void CSaveMenu::sendEvent(std::shared_ptr<CEvent> &command)
 {
-    auto &curWidget = mpMenuDialog->CurrentWidget();
+    auto &curWidget = mpMenuDialog->CurrentControl();
     auto pInput = std::dynamic_pointer_cast<InputText>(curWidget);
 
 	// Before all events are sent to the dialog which handles selection catch some specific events
@@ -185,7 +185,7 @@ void CSaveMenu::sendEvent(std::shared_ptr<CEvent> &command)
 
 void CSaveMenu::release()
 {
-    auto &curWidget = mpMenuDialog->CurrentWidget();
+    auto &curWidget = mpMenuDialog->CurrentControl();
     auto pInput = std::dynamic_pointer_cast<InputText>(curWidget);
 
     if(pInput)

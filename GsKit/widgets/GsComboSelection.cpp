@@ -31,11 +31,11 @@ mFeatureText(text)
 void CGUIComboSelection::spawnSubWidgets()
 {
     mpFeatureName =
-            addWidget(new CGUIText(mFeatureText,
+            add(new CGUIText(mFeatureText,
                                 GsRect<float>(0.0f, 0.0f, 0.5f, 1.0f)));
 
     mpFeatureValue =
-            addWidget(new GsButton("?",
+            add(new GsButton("?",
                                 GsRect<float>(0.5f, 0.0f, 0.5f, 1.0f),
                                 [&]{this->cycleOption();}));
 }
@@ -115,7 +115,8 @@ void CGUIComboSelection::processRender(const GsRect<float> &RectDispCoordFloat)
         blitsfc.fill(displayRect, blitsfc.mapColorAlpha(mHoverBgColor));
     }
 
-    for(auto &obj : mWidgetList)
+    auto &wList = getWidgetList();
+    for(auto &obj : wList)
     {
         obj->processRender(displayRect);
     }

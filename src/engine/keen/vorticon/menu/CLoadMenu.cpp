@@ -42,7 +42,7 @@ VorticonMenu( GsRect<float>(0.1f, 0.0f, 0.8f, 1.0f) )
 	{
         Button *button = new Button( "Empty",
                                 new LoadGameSlotFunctorEvent(j) );
-		mpMenuDialog->addWidget( button );
+		mpMenuDialog->add( button );
 
 		button->enable( false );
 	}

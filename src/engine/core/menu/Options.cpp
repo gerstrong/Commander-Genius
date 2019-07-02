@@ -18,7 +18,7 @@ GameMenu( GsRect<float>(0.1f, 0.14f, 0.8f,
     for( const auto &option :  gBehaviorEngine.mOptions )
 	{
         mpOptionList.push_back( new Switch( option.second.menuname, style ) );
-		mpMenuDialog->addWidget( mpOptionList.back() );
+		mpMenuDialog->add( mpOptionList.back() );
 	}    
 
 	setMenuLabel("OPTIONSMENULABEL");

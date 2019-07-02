@@ -12,7 +12,9 @@ class GsProgressBar : public GsControl
 public:
 
     GsProgressBar(const int &progress,
-                  const int &errorCode) :
+                  const int &errorCode,
+                  const GsRect<float> &rect) :
+        GsControl(rect),
         mProgress(progress),
         mErrorCode(errorCode) {}
 

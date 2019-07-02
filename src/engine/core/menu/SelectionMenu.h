@@ -64,7 +64,7 @@ public:
             GameButton *button = new GameButton( playerStr, new _T(i), style );
 
             mpButtonList.push_back( button );
-            mpMenuDialog->addWidget( mpButtonList.back() );
+            mpMenuDialog->add( mpButtonList.back() );
             mpMenuDialog->fit();
         }
     }
@@ -80,12 +80,12 @@ public:
     CDifficultySelection(const Style style) :
         GameMenu( GsRect<float>(0.25f, 0.2f, 0.5f, 0.5f), style )
     {
-        mpMenuDialog->addWidget( new GameButton( "EASY", new StartNewGameEvent(EASY), style ) );
-        mpMenuDialog->addWidget( new GameButton( "NORMAL", new StartNewGameEvent(NORMAL), style ) );
-        mpMenuDialog->addWidget( new GameButton( "HARD", new StartNewGameEvent(HARD), style ) );
-        mpMenuDialog->addWidget( new GameButton( "EXPERT", new StartNewGameEvent(EXPERT), style ) );
-        mpMenuDialog->addWidget( new GameButton( "NINJA", new StartNewGameEvent(NINJA), style ) );
-        mpMenuDialog->addWidget( new GameButton( "ELITE", new StartNewGameEvent(ELITE), style ) );
+        mpMenuDialog->add( new GameButton( "EASY", new StartNewGameEvent(EASY), style ) );
+        mpMenuDialog->add( new GameButton( "NORMAL", new StartNewGameEvent(NORMAL), style ) );
+        mpMenuDialog->add( new GameButton( "HARD", new StartNewGameEvent(HARD), style ) );
+        mpMenuDialog->add( new GameButton( "EXPERT", new StartNewGameEvent(EXPERT), style ) );
+        mpMenuDialog->add( new GameButton( "NINJA", new StartNewGameEvent(NINJA), style ) );
+        mpMenuDialog->add( new GameButton( "ELITE", new StartNewGameEvent(ELITE), style ) );
 
         setMenuLabel("NEWGAMELABEL");
 

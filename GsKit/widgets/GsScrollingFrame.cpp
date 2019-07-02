@@ -41,7 +41,10 @@ void GsScrollingFrame::processRender(const GsRect<float> &srcRectFloat,
     backRect.pos.x += mScrollX * frontRect.dim.x;
     backRect.pos.y += mScrollY * frontRect.dim.y;
 
-    for(auto &widget : mWidgetList)
+
+    auto &wList = getWidgetList();
+
+    for(auto &widget : wList)
     {
         widget->processRender(backRect, frontRect);
     }

@@ -37,23 +37,23 @@ void MainMenu::createGameMenu( const bool openedGamePlay,
                  new CPlayersSelection<NewGamePlayersEvent>(true, style) ), style );
 #endif
 
-	mpMenuDialog->addWidget( button );
+	mpMenuDialog->add( button );
 
 	// TODO: Some items are still disabled, because those are not yet implemented in Galaxy
 
     GsButton *loadButton = new GameButton( "Load",
                                            new OpenMenuEvent( new CLoadMenu(style) ),
                                            style );
-	mpMenuDialog->addWidget( loadButton );
+	mpMenuDialog->add( loadButton );
     loadButton->enable(true);
 
     GsButton *saveButton = new GameButton( "Save",
 									       new OpenMenuEvent( new CSaveMenu(style) ),
                                            style );
-	mpMenuDialog->addWidget( saveButton );
+	mpMenuDialog->add( saveButton );
     saveButton->enable(openedGamePlay);
 
-    mpMenuDialog->addWidget(new GameButton( "Configure",
+    mpMenuDialog->add(new GameButton( "Configure",
                                              new OpenMenuEvent( new SettingsMenu(style) ),
                                              style) );
 
@@ -63,13 +63,13 @@ void MainMenu::createGameMenu( const bool openedGamePlay,
                                                     new StartInfoSceneEvent( new CHighScores(style) ),
                                                     style);
 
-        mpMenuDialog->addWidget( highscoreButton );
+        mpMenuDialog->add( highscoreButton );
         highscoreButton->enable(false);
 
 
         GsButton *infoButton = new GameButton( "Info",
                                                new OpenMenuEvent( new CHelpMenu() ) );
-        mpMenuDialog->addWidget( infoButton );
+        mpMenuDialog->add( infoButton );
         infoButton->enable(false);
     }*/
 
@@ -78,18 +78,18 @@ void MainMenu::createGameMenu( const bool openedGamePlay,
 
 #if !defined(EMBEDDED)
 
-    mpMenuDialog->addWidget(new GameButton( endGamePlayTest, new EventEndGamePlay(), style ) );
+    mpMenuDialog->add(new GameButton( endGamePlayTest, new EventEndGamePlay(), style ) );
 
 #else
 
     if(openedGamePlay)
     {
-        mpMenuDialog->addWidget(new GameButton( endGamePlayTest, new EventEndGamePlay(), style ) );
+        mpMenuDialog->add(new GameButton( endGamePlayTest, new EventEndGamePlay(), style ) );
     }
 
 #endif
 
-    mpMenuDialog->addWidget(new GameButton( "Quit", new GMQuit(), style ) );
+    mpMenuDialog->add(new GameButton( "Quit", new GMQuit(), style ) );
 
     setMenuLabel("MAINMENULABEL");
 
