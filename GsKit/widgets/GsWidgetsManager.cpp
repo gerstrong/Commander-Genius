@@ -7,7 +7,7 @@ GsControl(SrGsRect)
 
 
 void GsWidgetsManager::fit(const float padding,
-                            const float width)
+                           const float width)
 {
     auto it = mWidgetList.begin();
     it++;
@@ -139,27 +139,6 @@ void GsWidgetsManager::selectNextItem()
         }
     }
 }
-
-/*
-void GsWidgetsManager::setSelection(const int sel)
-{
-    const int steps = sel-mSelection;
-
-    if(steps == 0)
-        return;
-
-    if(steps > 0)
-    {
-        for(int c=0 ; c<steps ; c++)
-            selectNextItem();
-    }
-    else
-    {
-        for(int c=0 ; c<-steps ; c++)
-            selectPrevItem();
-    }
-}
-*/
 
 bool GsWidgetsManager::sendEvent(const std::shared_ptr<CEvent> &event )
 {
