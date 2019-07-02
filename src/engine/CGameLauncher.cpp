@@ -110,7 +110,7 @@ bool CGameLauncher::setupMenu()
     // Save any custom labels
     putLabels();
 
-    mLauncherDialog.add(
+    mLauncherDialog.addControl(
                 new GsButton( "x",
                              GsRect<float>(0.0f, 0.0f, 0.069f, 0.069f),
                              new GMQuit(),
@@ -129,7 +129,7 @@ bool CGameLauncher::setupMenu()
     };
 
     mpOptionButton =
-                mLauncherDialog.add(
+                mLauncherDialog.addControl(
                         new GsButton( "O",
                               GsRect<float>(0.93f, 0.0f, 0.069f, 0.069f),
                               openSettingsMenuEvent,
@@ -138,7 +138,7 @@ bool CGameLauncher::setupMenu()
 
 
 #ifdef VIRTUALPAD
-    mLauncherDialog.add(new GsButton( "VPad", new OpenVGamePadSettingsEvent(),
+    mLauncherDialog.addControl(new GsButton( "VPad", new OpenVGamePadSettingsEvent(),
                                              -1,
                                              0.75f,
                                              1.0f,
@@ -154,7 +154,7 @@ bool CGameLauncher::setupMenu()
     mPreviewBmpPtrVec.resize(m_Entries.size());
 
     mpGSSelList =
-            mLauncherDialog.add(
+            mLauncherDialog.addControl(
                 new CGUITextSelectionList(GsRect<float>(0.01f, 0.07f, 0.49f, 0.79f)));
 
     mpGSSelList->setBackgroundColor( GsColor(0xFF, 0xFF, 0xFF) );
@@ -187,7 +187,7 @@ bool CGameLauncher::setupMenu()
     #endif
 
     mpStartButton =
-                mLauncherDialog.add
+                mLauncherDialog.addControl
                    (
                        new GsButton( "Start >",
                                      GsRect<float>(0.60f, 0.865f, 0.25f, 0.07f),
@@ -533,12 +533,12 @@ void CGameLauncher::showMessageBox(const std::string &text)
     }
 
 
-    mpMsgDialog->add(
+    mpMsgDialog->addControl(
                 new GsButton("Retry",
                              GsRect<float>(0.2f, 0.85f, 0.2f, 0.05f),
                              new GMSwitchToGameLauncher()));
 
-    auto pOkButton = mpMsgDialog->add(
+    auto pOkButton = mpMsgDialog->addControl(
                         new GsButton("Ok",
                                    GsRect<float>(0.6f, 0.85f,
                                                  0.2f, 0.05f),

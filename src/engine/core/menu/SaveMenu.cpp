@@ -79,7 +79,7 @@ void CSaveMenu::refresh()
 
 void CSaveMenu::ponder(const float)
 {
-    auto &curWidget = mpMenuDialog->CurrentControl();
+    auto &curWidget = mpMenuDialog->CurrentWidget();
     auto pInput = std::dynamic_pointer_cast<InputText>(curWidget);
 
     int minIC = IC_LEFT;
@@ -135,7 +135,7 @@ void CSaveMenu::ponder(const float)
 
 void CSaveMenu::sendEvent(std::shared_ptr<CEvent> &command)
 {
-    auto &curWidget = mpMenuDialog->CurrentControl();
+    auto &curWidget = mpMenuDialog->CurrentWidget();
     auto pInput = std::dynamic_pointer_cast<InputText>(curWidget);
 
 	// Before all events are sent to the dialog which handles selection catch some specific events
@@ -185,7 +185,7 @@ void CSaveMenu::sendEvent(std::shared_ptr<CEvent> &command)
 
 void CSaveMenu::release()
 {
-    auto &curWidget = mpMenuDialog->CurrentControl();
+    auto &curWidget = mpMenuDialog->CurrentWidget();
     auto pInput = std::dynamic_pointer_cast<InputText>(curWidget);
 
     if(pInput)

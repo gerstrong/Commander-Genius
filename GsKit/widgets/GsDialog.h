@@ -20,9 +20,9 @@
 #include "GsControl.h"
 #include "GsBitmapBox.h"
 
-#include "GsControlsManager.h"
+#include "GsWidgetsManager.h"
 
-class CGUIDialog : public GsControlsManager
+class CGUIDialog : public GsWidgetsManager
 {    
 
 public:
@@ -68,7 +68,6 @@ public:
 protected:
 
     GsSurface    mBackgroundSfc;
-
     GsSurface    mDarkOverlaySfc;
 
 private:
@@ -82,6 +81,8 @@ private:
     FXKind mFXSetup = FXKind::NONE;
     int mFXhStep = 0;
     int mFXvStep = 0;
+
+
 };
 
 

@@ -75,6 +75,8 @@ private:
 
     std::function <void ()> mConfirmFunction;
     std::function <void ()> mBackFunction;
+
+    std::list< std::shared_ptr<GsControl> > mControlsList;
 };
 
 #endif /* CGUITEXTSELECTIONLIST_H */

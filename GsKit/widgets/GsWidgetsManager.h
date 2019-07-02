@@ -30,6 +30,11 @@ public:
     template <class T>
     std::shared_ptr<T> add( T *newWidget );
 
+    template <class T>
+    std::shared_ptr<T>
+    addControl( T *ctrl );
+
+
     std::list< std::shared_ptr<GsWidget> >& getWidgetList()
     {	return mWidgetList;	}
 
@@ -53,6 +58,34 @@ public:
         return GsWidget::getRect();
     }
 
+    void selectPrevItem();
+
+    void selectNextItem();
+
+
+    std::shared_ptr<GsControl> &CurrentWidget()
+    {	return 	mpCurControl;	}
+
+
+    int getSelection() const
+    {	return mSelection;	}
+
+    void setSelection(const int sel)
+    {
+        mSelection = sel;
+    }
+
+    /*
+    void setCurrentControl(std::shared_ptr<GsWidget> &widget)
+    {	mpCurWidget = widget;	}
+*/
+    template <class T>
+    void setCurrentControl(std::shared_ptr<T> &control)
+    {
+        mpCurControl = std::static_pointer_cast<GsControl>(control);
+    }
+
+
 
 
 protected:
@@ -70,13 +103,27 @@ protected:
         mWidgetList.clear();
     }    
 
-private:
-    std::shared_ptr<GsWidget> add( std::shared_ptr<GsWidget> &ctrl );
+    auto &getControlsList()
+    {
+        return mControlsList;
+    }
 
-    // List of Controls that the Dialog has.
+
+private:
+
+    int mSelection = -1;
+
+    std::shared_ptr<GsWidget> add( std::shared_ptr<GsWidget> &widget );
+
+    std::shared_ptr<GsControl> addControl( std::shared_ptr<GsControl> &ctrl );
+
+    std::shared_ptr<GsControl> mpCurControl;
+
+    // List of Widgets
     std::list< std::shared_ptr<GsWidget> > mWidgetList;
 
-
+    // List of Controls
+    std::list< std::shared_ptr<GsControl> > mControlsList;
 };
 
 
@@ -98,5 +145,20 @@ std::shared_ptr<T> GsWidgetsManager::add( T *newWidget )
     std::shared_ptr<T> ctrl(newWidget);
     return add(ctrl);
 }
+
+template <class T>
+std::shared_ptr<T>
+GsWidgetsManager::addControl( T *newCtrl )
+{
+    std::shared_ptr<T> ctrl(newCtrl);
+
+    std::shared_ptr<GsControl> abstract =
+            std::static_pointer_cast< GsControl >(ctrl);
+
+    addControl(abstract);
+
+    return add(ctrl);
+}
+
 
 #endif // GsWidgetsManager_H

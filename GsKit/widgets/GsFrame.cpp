@@ -3,7 +3,7 @@
 #include <base/video/CVideoDriver.h>
 
 GsFrame::GsFrame(const GsRect<float> &rect) :
-GsControlsManager(rect)
+GsWidgetsManager(rect)
 {
 
 }

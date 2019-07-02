@@ -47,6 +47,7 @@ void CGUITextSelectionList::setBackButtonEvent(CEvent *ev)
 
 bool CGUITextSelectionList::sendEvent(const InputCommand command)
 {
+
     auto &controlsList = getControlsList();
 
 	if(command == IC_UP)
@@ -153,27 +154,28 @@ void CGUITextSelectionList::addText(const std::string &text)
                             1.0f, 0.1f);
 
     auto selectionFrame =
-            add( new GsSelectableText(frameRect, text) );
+            addControl( new GsSelectableText(frameRect, text) );
 
     selectionFrame->setParent(this);
 
     selectionFrame->setActivationEvent( [this]()
-                                        {this->updateSelection();} );
+                                        {this->updateSelection();} );    
 }
 
 void CGUITextSelectionList::updateSelection()
 {
     auto &controlsList = getControlsList();
     int idx = 0;
-    for(auto &widget : controlsList)
+    for(auto &control : controlsList)
     {
         auto selectableText =
-                std::dynamic_pointer_cast<GsSelectableText>(widget);
+                std::dynamic_pointer_cast<GsSelectableText>(control);
 
         if(selectableText)
         {
             if(selectableText->isSelected())
             {
+                setCurrentControl(control);
                 setSelection(idx);
                 break;
             }
