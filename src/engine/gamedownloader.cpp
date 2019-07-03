@@ -36,7 +36,7 @@ int gDlto, gDlfrom;
 /* this is how the CURLOPT_XFERINFOFUNCTION callback works */
 static int xferinfo(void *p,
                     curl_off_t dltotal, curl_off_t dlnow,
-                    curl_off_t ultotal, curl_off_t ulnow)
+                    curl_off_t /*ultotal*/, curl_off_t /*ulnow*/)
 {
     if(*pCancelDownload)
     {
@@ -76,10 +76,10 @@ static int older_progress(void *p,
                           double ultotal, double ulnow)
 {
   return xferinfo(p,
-                  (curl_off_t)dltotal,
-                  (curl_off_t)dlnow,
-                  (curl_off_t)ultotal,
-                  (curl_off_t)ulnow);
+                  curl_off_t(dltotal),
+                  curl_off_t(dlnow),
+                  curl_off_t(ultotal),
+                  curl_off_t(ulnow));
 }
 
 
@@ -185,10 +185,10 @@ int downloadFile(const std::string &filename, int &progress,
       }
     }
 
-    return (int)res;
+    return int(res);
 }
 
-#define TRACE_NODE(x) gLogging << #x"=" << x;
+#define TRACE_NODE(x) gLogging << #x"=" << x
 
 bool GameDownloader::readGamesNode(const boost::property_tree::ptree &pt)
 {

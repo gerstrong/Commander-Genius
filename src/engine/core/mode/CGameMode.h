@@ -52,7 +52,7 @@ struct GMPatchSelected : CEvent {};
 struct EventEndGamePlay : CEvent {};
 
 ///////
-// Base Class for the modes
+// Base Class for game modes
 //////
 class CGameMode
 {

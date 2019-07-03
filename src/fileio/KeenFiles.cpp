@@ -53,8 +53,9 @@ if (pModule != nullptr)
     return ok;
 }
 
-return false;
 
+#else
+    return true;
 #endif
 
 }

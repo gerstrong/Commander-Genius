@@ -22,7 +22,7 @@ m_exitgame(false),
 m_gameover(false),
 m_restartVideo(false)
 {
-    m_NumSprites = gGraphics.getNumSprites(0);
+    m_NumSprites = gGraphics.getNumSprites(int(0));
     m_Gamepath = gKeenFiles.gameDir;
 	m_alldead = false;
 	m_hideobjects = false;

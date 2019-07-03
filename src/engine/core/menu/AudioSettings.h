@@ -16,8 +16,9 @@
 #include "widgets/NumberControl.h"
 
 #include "fileio/CExeFile.h"
-#include <SDL.h>
 #include <string>
+#include <memory>
+#include <SDL.h>
 
 
 
@@ -36,19 +37,20 @@ public:
 
 private:
 
-    ComboSelection	*mpRate;
-    Switch      	*mpStereo;
-    ComboSelection	*mpDepth;
-    ComboSelection	*mpSBToggle;
-    NumberControl	*mpSoundVolume;
-    NumberControl	*mpMusicVolume;
+
+    std::shared_ptr <ComboSelection>	mpRate;
+    std::shared_ptr <Switch>            mpStereo;
+    std::shared_ptr <ComboSelection>	mpDepth;
+    std::shared_ptr <ComboSelection>	mpSBToggle;
+    std::shared_ptr <NumberControl>     mpSoundVolume;
+    std::shared_ptr <NumberControl>     mpMusicVolume;
 
 	SDL_AudioSpec	mAudioSpec;
 	bool mSoundblaster;
 
 	// This one does not really set the volume at all, it only verifies, if it changed...
-	int mSoundVolume;
-    int mMusicVolume;
+    int mSoundVolume = 0;
+    int mMusicVolume = 0;
 };
 
 

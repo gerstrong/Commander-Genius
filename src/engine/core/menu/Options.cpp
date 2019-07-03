@@ -38,7 +38,7 @@ void COptions::refresh()
 }
 
 
-void COptions::ponder(const float deltaT)
+void COptions::ponder(const float )
 {
     GameMenu::ponder(0);
 

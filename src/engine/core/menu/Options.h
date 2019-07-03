@@ -22,7 +22,7 @@ public:
 
     void refresh();
 
-    void ponder(const float deltaT);
+    void ponder(const float);
 
 	void release();
 

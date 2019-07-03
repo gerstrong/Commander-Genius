@@ -74,82 +74,43 @@ void GsWidgetsManager::processLogic()
 }
 
 
+void GsWidgetsManager::applySelection()
+{
+    // Find the right control!
+    int i=0;
+    for( auto &ctrl : mControlsList )
+    {
+        if( i == mSelection )
+        {
+            mpCurControl = ctrl;
+            ctrl->select(true);
+        }
+        else
+        {
+            ctrl->select(false);
+        }
+        i++;
+    }
+}
 
 void GsWidgetsManager::selectPrevItem()
 {
-    auto currentCtrl = mpCurControl;
-
-    if(!currentCtrl)
-        return;
-
-    if(currentCtrl->isSelected())
-    {
-        currentCtrl->select(false);
-    }
-
     mSelection--;
 
     if( mSelection < 0)
         mSelection = static_cast<int>(mControlsList.size())-1;
 
-    // Find the right control!
-    int i=0;
-    for( auto it = mControlsList.begin() ; it != mControlsList.end() ; it++ )
-    {
-        if( auto itCtrl = std::dynamic_pointer_cast<GsControl>(*it) )
-        {
-            i++;
-
-            if( i == mSelection )
-            {
-                currentCtrl = itCtrl;
-                itCtrl->select(true);
-            }
-            else
-            {
-                itCtrl->select(false);
-            }
-        }
-    }
+    applySelection();
 }
-
 
 void GsWidgetsManager::selectNextItem()
 {
-    auto currentCtrl = mpCurControl;
-
-    if(!currentCtrl)
-        return;
-
-
-    if(currentCtrl->isSelected())
-    {
-        currentCtrl->select(false);
-    }
-
     mSelection++;
 
     if( mSelection >= static_cast<int>(mControlsList.size()) )
         mSelection = 0;
 
-    // Find the right control!
-    int i=0;
-    for( auto it = mControlsList.begin() ; it != mControlsList.end() ; it++ )
-    {
-        auto itCtrl = (*it);
-
-        if( i == mSelection )
-        {
-            currentCtrl = itCtrl;
-            itCtrl->select(true);
-        }
-        else
-        {
-            itCtrl->select(false);
-        }
-
-        i++;
-    }
+    applySelection();
 }
 
 
@@ -159,6 +120,7 @@ GsWidgetsManager::add(std::shared_ptr<GsWidget> &widget )
     mWidgetList.push_back(widget);
     return widget;
 }
+
 
 
 std::shared_ptr<GsControl>
@@ -173,5 +135,6 @@ GsWidgetsManager::addControl( std::shared_ptr<GsControl> &ctrl )
     mControlsList.push_back(ctrl);
     return ctrl;
 }
+
 
 

@@ -24,8 +24,6 @@ void stItemGalaxy::reset()
 
     m_keycards = 0;
 
-    const int ep = gBehaviorEngine.getEpisode();
-
     m_special.elders = 0;
     m_special.swimsuit = 0;
     m_special.hook = gBehaviorEngine.isDemo() ? 1 : 0;

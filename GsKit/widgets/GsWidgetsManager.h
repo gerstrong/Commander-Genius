@@ -30,11 +30,6 @@ public:
     template <class T>
     std::shared_ptr<T> add( T *newWidget );
 
-    template <class T>
-    std::shared_ptr<T>
-    addControl( T *ctrl );
-
-
     std::list< std::shared_ptr<GsWidget> >& getWidgetList()
     {	return mWidgetList;	}
 
@@ -113,9 +108,12 @@ private:
 
     int mSelection = -1;
 
+    void applySelection();
+
     std::shared_ptr<GsWidget> add( std::shared_ptr<GsWidget> &widget );
 
     std::shared_ptr<GsControl> addControl( std::shared_ptr<GsControl> &ctrl );
+
 
     std::shared_ptr<GsControl> mpCurControl;
 
@@ -130,13 +128,24 @@ private:
 template <class T>
 std::shared_ptr<T> GsWidgetsManager::add( std::shared_ptr<T> &ctrl )
 {
-    std::shared_ptr<GsWidget> abstract =
+    std::shared_ptr<GsWidget> widget =
             std::static_pointer_cast< GsWidget >(ctrl);
 
-    add( abstract );
+    add( widget );
+
+    // Test if that it also is a GsControl
+    std::shared_ptr<GsControl> control =
+            std::dynamic_pointer_cast< GsControl >(widget);
+
+    if(control)
+    {
+        addControl( control );
+    }
 
     return ctrl;
 }
+
+
 
 
 template <class T>
@@ -145,20 +154,5 @@ std::shared_ptr<T> GsWidgetsManager::add( T *newWidget )
     std::shared_ptr<T> ctrl(newWidget);
     return add(ctrl);
 }
-
-template <class T>
-std::shared_ptr<T>
-GsWidgetsManager::addControl( T *newCtrl )
-{
-    std::shared_ptr<T> ctrl(newCtrl);
-
-    std::shared_ptr<GsControl> abstract =
-            std::static_pointer_cast< GsControl >(ctrl);
-
-    addControl(abstract);
-
-    return add(ctrl);
-}
-
 
 #endif // GsWidgetsManager_H

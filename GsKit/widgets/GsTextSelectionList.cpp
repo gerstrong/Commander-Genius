@@ -154,7 +154,7 @@ void CGUITextSelectionList::addText(const std::string &text)
                             1.0f, 0.1f);
 
     auto selectionFrame =
-            addControl( new GsSelectableText(frameRect, text) );
+            add( new GsSelectableText(frameRect, text) );
 
     selectionFrame->setParent(this);
 
