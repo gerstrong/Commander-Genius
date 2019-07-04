@@ -13,6 +13,7 @@
 #include <base/GsTimer.h>
 #include <base/GsTTFSystem.h>
 
+#include <algorithm>
 
 CGUIComboSelection::
 CGUIComboSelection( const std::string& text,
@@ -27,6 +28,27 @@ mFeatureText(text)
     spawnSubWidgets();
 }
 
+void CGUIComboSelection::updateFeatureDim()
+{
+    // In some cases the value letters are very small.
+    // In such case create more room for the name
+    int maxOptionLen = 0;
+    float featNameWidth = 0.5f;
+
+    for( auto &option : mOptionsList)
+    {
+        maxOptionLen = std::max(int(option.length()), maxOptionLen);
+    }
+
+    if(maxOptionLen < 4)
+        featNameWidth = 0.25f;
+
+    const float featValWidth = 1.0f-featNameWidth;
+
+    mpFeatureName->setRect(GsRect<float>(0.0f, 0.0f, featValWidth, 1.0f));
+    mpFeatureValue->setRect(GsRect<float>(featValWidth, 0.0f, featNameWidth, 1.0f));
+}
+
 
 void CGUIComboSelection::spawnSubWidgets()
 {
@@ -36,8 +58,10 @@ void CGUIComboSelection::spawnSubWidgets()
 
     mpFeatureValue =
             add(new GsButton("?",
-                                GsRect<float>(0.5f, 0.0f, 0.5f, 1.0f),
-                                [&]{this->cycleOption();}));
+                         GsRect<float>(0.5f, 0.0f, 0.5f, 1.0f),
+                         [&]{this->cycleOption();}));
+
+    updateFeatureDim();
 }
 
 
@@ -99,6 +123,8 @@ void CGUIComboSelection::setList(const std::set<std::string> &strSet)
 
 	mOLCurrent = mOptionsList.begin();
     mpFeatureValue->setText(*mOLCurrent);
+
+    updateFeatureDim();
 }
 
 

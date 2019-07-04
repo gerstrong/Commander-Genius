@@ -455,14 +455,17 @@ void CPlayGameVorticon::render()
         }
     }
 
-    // The position of the sandwich menu depends on the configured blit resolution
-    mMenuButtonRect.x = gVideoDriver.getBlitSurface()->w-mMenuButtonRect.w;
+    if(gBehaviorEngine.mOptions[GameOption::SANDWICHMENU].value)
+    {
+        // The position of the sandwich menu depends on the configured blit resolution
+        mMenuButtonRect.x = gVideoDriver.getBlitSurface()->w-mMenuButtonRect.w;
 
-    auto menuButtonRectWithBorder = mMenuButtonRect;
-    menuButtonRectWithBorder.y += gVideoDriver.getVidConfig().mHorizBorders;
+        auto menuButtonRectWithBorder = mMenuButtonRect;
+        menuButtonRectWithBorder.y += gVideoDriver.getVidConfig().mHorizBorders;
 
-    // Draw the Ingame button for mouse/finger control
-    drawMenuInGameButton(menuButtonRectWithBorder);
+        // Draw the Ingame button for mouse/finger control
+        drawMenuInGameButton(menuButtonRectWithBorder);
+    }
 }
 
 void CPlayGameVorticon::cycleCamLead()

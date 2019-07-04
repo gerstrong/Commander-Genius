@@ -43,7 +43,7 @@ GameMenu(GsRect<float>(0.075f, 0.24f, 0.85f, 0.4f), style )
     mpSBToggle =
         mpMenuDialog->add(
                 new ComboSelection( "Card",
-                                    filledStrList( 2, "PC Speaker", "Soundblaster" ),
+                                    filledStrList( 2, "PC Speaker", "SndBlaster" ),
                                     style ) );
 
     mpSoundVolume =
@@ -79,7 +79,7 @@ void CAudioSettings::refresh()
 #if !defined(EMBEDDED)
 	mpDepth->setSelection( mAudioSpec.format == AUDIO_U8 ? "8-bit" : "16-bit" );
 #endif
-	mpSBToggle->setSelection( mSoundblaster ? "Soundblaster" : "PC Speaker" );
+    mpSBToggle->setSelection( mSoundblaster ? "SndBlaster" : "PC Speaker" );
     gMusicPlayer.play();
 }
 
@@ -113,7 +113,7 @@ void CAudioSettings::release()
 	mAudioSpec.format = mpDepth->getSelection() == "8-bit" ? AUDIO_U8 : AUDIO_S16;
 #endif
 
-	mSoundblaster = ( mpSBToggle->getSelection() == "Soundblaster" ? true : false );
+    mSoundblaster = ( mpSBToggle->getSelection() == "SndBlaster" ? true : false );
 
 	gSound.setSettings(mAudioSpec, mSoundblaster);
 	gSound.init();

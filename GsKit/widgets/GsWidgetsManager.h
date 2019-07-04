@@ -20,7 +20,7 @@ public:
      *              control manager
      */
     void fit(const float padding = 0.025f,
-             const float width = 0.875f);
+             const float width = 0.925f);
 
 
     // Adds a control instance to the list of controls to be processed.

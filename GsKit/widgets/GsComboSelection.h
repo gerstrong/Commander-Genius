@@ -24,7 +24,7 @@ public:
 
     CGUIComboSelection(const std::string& text,
                        const GsRect<float> &rect,
-                        const std::list<std::string>& optionsList);
+                       const std::list<std::string>& optionsList);
 
 	const std::string& getSelection()
     {
@@ -52,6 +52,8 @@ public:
 protected:
 
     virtual void spawnSubWidgets();
+
+    void updateFeatureDim();
 
     GsColor mHoverBgColor;
 

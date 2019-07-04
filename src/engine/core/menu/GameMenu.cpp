@@ -39,6 +39,7 @@ mStyle(style)
                                                new CloseMenuEvent(),
                                                Style::VORTICON) );
         mpReturnButton->enableBackground(true);
+        mpReturnButton->enableBorder(true);
     }
     else
     {
