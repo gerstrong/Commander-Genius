@@ -36,7 +36,7 @@ public:
      * @param text that might be contained in the parameter
      * @return if entry was found it will return the whole passed parameter containing your given text. be careful with upper lower cases
      */
-    std::string getValue(const std::string &flag);
+    std::string getValue(const std::string &flag) const;
 
     /**
      * @brief removeTag will delete the given tag. This can be useful when you launch something with a parameter,

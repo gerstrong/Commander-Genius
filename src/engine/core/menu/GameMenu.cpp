@@ -34,10 +34,11 @@ mStyle(style)
                                  0.08f/dlgRect.dim.y);
 
         mpReturnButton =
-        mpMenuDialog->add( new GameButton( "close",
-                                           buttonRect,
-                                           new CloseMenuEvent(),
-                                           Style::VORTICON) );
+            mpMenuDialog->add( new GameButton( "close",
+                                               buttonRect,
+                                               new CloseMenuEvent(),
+                                               Style::VORTICON) );
+        mpReturnButton->enableBackground(true);
     }
     else
     {

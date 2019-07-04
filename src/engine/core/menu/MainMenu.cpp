@@ -41,16 +41,16 @@ void MainMenu::createGameMenu( const bool openedGamePlay,
 
 	// TODO: Some items are still disabled, because those are not yet implemented in Galaxy
 
-    GsButton *loadButton = new GameButton( "Load",
-                                           new OpenMenuEvent( new CLoadMenu(style) ),
-                                           style );
-	mpMenuDialog->add( loadButton );
+    auto loadButton =
+            mpMenuDialog->add( new GameButton( "Load",
+                                               new OpenMenuEvent( new CLoadMenu(style) ),
+                                               style ) );
     loadButton->enable(true);
 
-    GsButton *saveButton = new GameButton( "Save",
-									       new OpenMenuEvent( new CSaveMenu(style) ),
-                                           style );
-	mpMenuDialog->add( saveButton );
+    auto saveButton =
+            mpMenuDialog->add( new GameButton( "Save",
+                                               new OpenMenuEvent( new CSaveMenu(style) ),
+                                               style ) );
     saveButton->enable(openedGamePlay);
 
     mpMenuDialog->add(new GameButton( "Configure",

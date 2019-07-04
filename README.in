@@ -308,7 +308,7 @@ How to compile it under Fedora:
    dnf install -y \
      SDL2-devel cmake cmake-data gcc-c++ python3-devel \
      boost-devel mesa-libGL-devel libcurl-devel \
-     SDL2_image-devel SDL2_mixer-devel
+     SDL2_image-devel SDL2_mixer-devel SDL2_ttf-devel
 
  * Extract my source code into the "CGeniusSrc" directory.
  * mkdir -p CGeniusBuild
@@ -354,8 +354,10 @@ Optionally, you can pass launch arguments to Commander Genius. These are:
 
 dir=<game-directory> This will launch the game from the given directory, if it
                      can be started, otherwise it will go to the game launcher
-                     with a warning shown.
-                     E.g.: "CGenius.exe dir=games/keen4"
+                     with a warning shown. If you have director name with spaces
+                     just use double quotes
+                     E.g.: CGenius.exe dir=games/keen4
+                     E.g.: CGenius.exe dir="games/Keen 1 Special Edition"
 
 finale=<on/off>      If you want to directly show the finale of a game, pass
                      this parameter.

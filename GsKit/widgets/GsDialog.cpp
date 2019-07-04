@@ -160,7 +160,10 @@ void CGUIDialog::processLogic()
 
     // Process the subcontrols inputs
     const auto localRect = getRect();
-    for( auto &widget : getWidgetList() )
+
+    auto wList = getWidgetList();
+
+    for( auto &widget : wList )
     {
         widget->processLogic();
         widget->processPointingStateRel(localRect);

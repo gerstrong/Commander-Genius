@@ -34,6 +34,7 @@
 #include <iostream>
 #include <fstream>
 #include <SDL_image.h>
+#include <algorithm>
 
 #include "keen/vorticon/VorticonEngine.h"
 #include "keen/galaxy/GalaxyEngine.h"
@@ -244,7 +245,10 @@ bool CGameLauncher::setupMenu()
     mLauncherDialog.setSelection(3);
 
 
-    const std::string gameDir = gArgs.getValue("dir");
+    std::string gameDir = gArgs.getValue("dir");
+    gameDir.erase(std::remove(gameDir.begin(), gameDir.end(), '\"'),
+                  gameDir.end());
+
     if(!gameDir.empty())
     {
         int chosenGame = 0;
@@ -310,7 +314,7 @@ bool CGameLauncher::scanSubDirectories(const std::string& path,
 
     for( const auto &subdir : dirs )
 	{
-        std::string newpath = JoinPaths(path , subdir);
+        std::string newpath = JoinPaths(path, subdir);
 
         gamesDetected |= scanExecutables(newpath);
 

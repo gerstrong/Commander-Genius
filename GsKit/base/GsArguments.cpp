@@ -10,7 +10,7 @@ void GsArguments::passArgs(int argc, char *argv[])
         size_t pos = arg.find("=");
 
         if(pos != std::string::npos && pos > 1)
-        {
+        {                        
             std::string flag = arg.substr(0,pos);
             std::string value = arg.substr(pos+1);
 
@@ -24,9 +24,9 @@ void GsArguments::passArgs(int argc, char *argv[])
     }
 }
 
-std::string GsArguments::getValue(const std::string &flag)
+std::string GsArguments::getValue(const std::string &flag) const
 {
-    std::map<std::string, std::string>::iterator it = mArgMap.find(flag);
+    auto it = mArgMap.find(flag);
 
     if( it != mArgMap.end() )
         return it->second;
