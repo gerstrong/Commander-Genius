@@ -30,16 +30,13 @@ CMessageBox::CMessageBox(const std::string& text,
 CGUIDialog(GsRect<float>(0.1f, 0.1f, 0.8f, 0.8f), fx),
 m_mustclose(false)
 {
-    //const char closeChar = 0x1F;
-    //std::string closeString;
-    //closeString = closeChar;
-
     GsRect<float> closeButtonRect(0.0f, 0.0f, (0.06f)/0.8f, (0.06f)/0.8f);
 
     GsRect<float> facRect( gVideoDriver.getGameResFactors() );
     closeButtonRect.transformInverse(facRect);
 
-    mpTextCtrl = new CGUIText( text, GsRect<float>(0.0f, 0.0f, 1.0f, 1.0f) );
+    mpTextCtrl =
+            add( new CGUIText( text, GsRect<float>(0.05f, 0.0f, 0.90f, 1.0f) ) );
 
 	// Those formulas work well with our constellation but I don't think they are perfect.
 	// They transform the Message Box the way the text fits perfectly in.
@@ -67,9 +64,9 @@ m_mustclose(false)
         rect.pos.y = 1.0f - rect.dim.y;
 	}
 
-    setRect(rect);
+    //mpTextCtrl->setFontId(0);
 
-    add( mpTextCtrl );
+    setRect(rect);    
 
     initEmptyBackground();
 }

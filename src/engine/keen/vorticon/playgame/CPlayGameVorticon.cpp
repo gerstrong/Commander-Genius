@@ -532,26 +532,36 @@ void CPlayGameVorticon::handleFKeys()
 
 
 	// GOD cheat -- toggle god mode
-	if ( gInput.getHoldedKey(KG) && gInput.getHoldedKey(KO) && gInput.getHoldedKey(KD) )
+    if ( gInput.getHoldedKey(KG) &&
+         gInput.getHoldedKey(KO) &&
+         gInput.getHoldedKey(KD) )
 	{
 		std::vector<CPlayer>::iterator it_player = m_Player.begin();
 		for( ; it_player != m_Player.end() ; it_player++)
 		{
-            gBehaviorEngine.mCheatmode.god = true;
-            gBehaviorEngine.mCheatmode.jump = true;
-            gBehaviorEngine.mCheatmode.noclipping = true;
-            //it_player->godmode ^= 1;
+            gBehaviorEngine.mCheatmode.god =
+                    !gBehaviorEngine.mCheatmode.god;
+
+            gBehaviorEngine.mCheatmode.jump =
+                    !gBehaviorEngine.mCheatmode.jump;
+
+            gBehaviorEngine.mCheatmode.noclipping =
+                    !gBehaviorEngine.mCheatmode.noclipping;
+
             // If player on map, disable the solid property of the players
             if(m_Level == 80)
-                //it_player->solid = !it_player->godmode;
-                it_player->solid = true;
+                it_player->solid = gBehaviorEngine.mCheatmode.noclipping;
 			it_player->performCollisions();
 		}
 
         gSound.playSound(SOUND_GUN_CLICK, SoundPlayMode::PLAY_FORCE);
 
 		// Show a message like in the original game
-        std::unique_ptr<CMessageBoxVort> msg(new CMessageBoxVort(gBehaviorEngine.mCheatmode.god ? gBehaviorEngine.getString("GODMODEON") : gBehaviorEngine.getString("GODMODEOFF")));
+        std::unique_ptr<CMessageBoxVort> msg(
+                    new CMessageBoxVort(
+                        gBehaviorEngine.mCheatmode.god ?
+                            gBehaviorEngine.getString("GODMODEON") :
+                            gBehaviorEngine.getString("GODMODEOFF")));
 		mMessageBoxes.push_back(move(msg));
 		gInput.flushKeys();
 	}

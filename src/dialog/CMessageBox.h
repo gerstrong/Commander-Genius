@@ -53,7 +53,7 @@ public:
 protected:
 	bool m_mustclose;
 
-	CGUIText *mpTextCtrl;
+    std::shared_ptr<CGUIText> mpTextCtrl;
 };
 
 /**

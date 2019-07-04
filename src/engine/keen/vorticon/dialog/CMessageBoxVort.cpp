@@ -23,6 +23,7 @@ CMessageBoxVort::CMessageBoxVort(const std::string& Text,
 CMessageBox(Text, lower, keymsg, leftbound, CGUIDialog::FXKind::EXPAND)
 {
    initVorticonBackground();   
+   mpTextCtrl->setFontId(0);
 }
 
 
