@@ -133,6 +133,11 @@ public:
         mShowBorders = value;
     }
 
+    void enableBackground(const bool value)
+    {
+        mUseBackground = value;
+    }
+
     void enableCenteringH(const bool value)
     {
         mTextWidget.enableCenteringH(value);
@@ -167,6 +172,9 @@ private:
     std::function <void ()> mFunction;
 
     bool mShowBorders = true;
+
+    bool mUseBackground = false; // Standard, some controls may be highlighted
+                                 // if hovered or selected
 };
 
 

@@ -148,13 +148,6 @@ void GsButton::processLogic()
                 gEventManager.add(mEvent);
             }
         }
-
-        /*
-        mTextWidget.setHovered(mHovered);
-        mTextWidget.setPressed(mPressed);
-        mTextWidget.setReleased(mReleased);
-        mTextWidget.select(mSelected);
-        */
     }   
 
     mTextWidget.processLogic();
@@ -229,7 +222,12 @@ void GsButton::drawNoStyle(const SDL_Rect& lRect)
     if(mShowBorders)
     {
         blitsfc.drawRect( rect, 2, borderColor, fillColor );
+    }    
+    else if(mUseBackground)
+    {
+        blitsfc.drawRect( rect, fillColor );
     }
+
 
     /*
     if(!gTTFDriver.isActive())

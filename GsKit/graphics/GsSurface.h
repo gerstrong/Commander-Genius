@@ -68,6 +68,9 @@ public:
                   const Uint32 contourColor,
                   const Uint32 fillColor );
 
+    void drawRect(const GsRect<Uint16> &rect,
+                  const Uint32 fillColor);
+
 
     /**
      * \brief Draws the countour of the given rect and thickness

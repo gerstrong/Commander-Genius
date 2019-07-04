@@ -2,6 +2,75 @@
 #include <graphics/GsGraphics.h>
 #include <base/video/CVideoDriver.h>
 
+
+GameMenu::GameMenu( const GsRect<float>& rect,
+                    const Style &style ) :
+CBaseMenu( rect, CGUIDialog::FXKind(0) ),
+mStyle(style)
+{
+    if(style == Style::GALAXY)
+    {
+        GsRect<float> dlgRect(0.25f, 0.282f, 0.45f, 0.5f);
+        mpMenuDialog->setRect(dlgRect);
+
+        mpReturnButton =
+            mpMenuDialog->add( new GameButton( "close",
+                                               new CloseMenuEvent(),
+                                               style) );
+
+        mpReturnButton->setRect(GsRect<float>(0.01f, 0.01f,
+                                              0.15f/dlgRect.dim.x,
+                                              0.05f/dlgRect.dim.y));
+
+    }
+    else if(style == Style::VORTICON)
+    {
+        GsRect<float> dlgRect(0.15f, 0.282f, 0.70f, 0.5f);
+        mpMenuDialog->setRect(dlgRect);
+
+
+        GsRect<float> buttonRect(-0.10f, -0.15f,
+                                 0.15f/dlgRect.dim.x,
+                                 0.08f/dlgRect.dim.y);
+
+        mpReturnButton =
+        mpMenuDialog->add( new GameButton( "close",
+                                           buttonRect,
+                                           new CloseMenuEvent(),
+                                           Style::VORTICON) );
+    }
+    else
+    {
+        const auto localRect = mpMenuDialog->getRect();
+
+        mpReturnButton =
+            mpMenuDialog->add(
+                    new GsButton( "x",
+                                  GsRect<float>(-0.05f, -0.05f,
+                                                0.06f/localRect.dim.x,
+                                                0.06f/localRect.dim.y),
+                                                new CloseMenuEvent()) );
+    }
+
+
+    mpReturnButton->setHovered(true);
+
+    if(style == Style::GALAXY)
+    {
+        initBackground = &GameMenu::initGalaxyBackground;
+    }
+    else if(style == Style::VORTICON)
+    {
+        initBackground = &GameMenu::initVorticonBackground;
+    }
+    else
+    {
+        initBackground = &GameMenu::initBackgroundNoStyle;
+    }
+
+    (this->*initBackground)();
+}
+
 void GameMenu::initGalaxyBackground()
 {
     GsBitmap backgroundBmp( *gGraphics.getBitmapFromStr(0, "KEENSWATCH") );

@@ -127,6 +127,13 @@ void GsWeakSurface::drawRect(const GsRect<Uint16> &rect,
     fill(fillRect, fillColor);
 }
 
+void GsWeakSurface::drawRect(const GsRect<Uint16> &rect,
+                             const Uint32 fillColor )
+{
+    fill(rect, fillColor);
+}
+
+
 
 void GsSurface::createRGBSurface( const SDL_Rect &rect )
 {

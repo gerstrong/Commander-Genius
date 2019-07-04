@@ -109,6 +109,7 @@ protected:
     bool mHighlightBg = true; // Standard, some controls may be highlighted
                               // if hovered or selected
 
+
     /**
      * @brief mHoverTriggers    This is for touch friendly devices were there is no device
      */

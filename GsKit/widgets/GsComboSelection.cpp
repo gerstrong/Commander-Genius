@@ -113,7 +113,7 @@ void CGUIComboSelection::processRender(const GsRect<float> &RectDispCoordFloat)
     if(mHovered && mHighlightBg)
     {
         blitsfc.fill(displayRect, blitsfc.mapColorAlpha(mHoverBgColor));
-    }
+    }    
 
     auto &wList = getWidgetList();
     for(auto &obj : wList)
