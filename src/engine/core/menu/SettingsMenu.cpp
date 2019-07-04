@@ -33,26 +33,30 @@ GameMenu( GsRect<float>(0.25f, 0.24f, 0.5f, 0.40f),
 
     mpMenuDialog->add(
                 new GameButton( "Display",
-                                new OpenMenuEvent( new DisplaySettings(style) ),
+                                new OpenMenuEvent(
+                                    new DisplaySettings(style) ),
                                 style ) );
 
 
     mpMenuDialog->add(
                 new GameButton( "Video",
-                                new OpenMenuEvent( new CVideoSettings(style) ),
+                                new OpenMenuEvent(
+                                    new CVideoSettings(style) ),
                                 style ) );
 
 #endif
 
     mpMenuDialog->add(
                 new GameButton( "Audio",
-                                new OpenMenuEvent( new CAudioSettings(style) ),
+                                new OpenMenuEvent(
+                                    new CAudioSettings(style) ),
                                 style ) );
 
 
     mpMenuDialog->add(
                 new GameButton( "Options",
-                                new OpenMenuEvent( new COptions(style) ),
+                                new OpenMenuEvent(
+                                    new COptions(style) ),
                                 style ) );
 
     if(style != Style::NONE)

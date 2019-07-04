@@ -36,7 +36,8 @@ bool checkSandwichMenuClicked(GsRect<float> &rRect);
 
 struct OpenMenuEvent : CEvent
 {
-    OpenMenuEvent(CBaseMenu* menuDlgPtr) : mMenuDialogPointer(menuDlgPtr) {}
+    OpenMenuEvent(CBaseMenu* menuDlgPtr) :
+        mMenuDialogPointer(menuDlgPtr) {}
 
 	std::shared_ptr<CBaseMenu> mMenuDialogPointer;
 };

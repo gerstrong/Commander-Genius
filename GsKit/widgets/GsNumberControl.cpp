@@ -278,7 +278,7 @@ void CGUINumberControl::processRender(const GsRect<float> &rectDispCoordFloat)
 
     for( auto &ctrl : widgetsList)
     {
-        ctrl->processRender(rectDispCoordFloat);
+        ctrl->processRender(displayRect);
     }
 }
 

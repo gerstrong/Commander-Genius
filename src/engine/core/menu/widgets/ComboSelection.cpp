@@ -37,6 +37,15 @@ mStyle(style)
     {
         enableTwirl(true);
         enableHighlightBg(false);
+
+        mColorNormal   = GsColor(0x0, 0x0, 0x0);
+        mColorHovered  = GsColor(0x11, 0x11, 0x11);
+        mColorPressed  = GsColor(0x44, 0x44, 0x44);
+        mColorReleased = GsColor(0x33, 0x33, 0x33);
+        mColorSelected = GsColor(0x22, 0x22, 0x22);
+
+        mpFeatureName->setFontId(0);
+        mpFeatureValue->setFontId(0);
     }
 }
 

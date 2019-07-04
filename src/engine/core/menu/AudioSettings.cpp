@@ -34,17 +34,21 @@ GameMenu(GsRect<float>(0.075f, 0.24f, 0.85f, 0.4f), style )
 
     mpDepth =
         mpMenuDialog->add(
-                new ComboSelection( "Depth", filledStrList( 2, "8-bit", "16-bit" ), style ) );
+                new ComboSelection( "Depth",
+                                    filledStrList( 2, "8-bit", "16-bit" ),
+                                    style ) );
 
 #endif
 
     mpSBToggle =
         mpMenuDialog->add(
-                new ComboSelection( "Card", filledStrList( 2, "PC Speaker", "Soundblaster" ), style ) );
+                new ComboSelection( "Card",
+                                    filledStrList( 2, "PC Speaker", "Soundblaster" ),
+                                    style ) );
 
     mpSoundVolume =
         mpMenuDialog->add( new NumberControl( "Sound Vol", 0, 100, 4, false,
-                                          gSound.getSoundVolume(), style ) );
+                                              gSound.getSoundVolume(), style ) );
 
 
     mpMusicVolume =

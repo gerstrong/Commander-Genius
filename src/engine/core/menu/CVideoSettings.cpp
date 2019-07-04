@@ -32,14 +32,7 @@ GameMenu(GsRect<float>(0.15f, 0.20f, 0.65f, 0.55f), style )
     mpMenuDialog->add( mpShowCursorSwitch );
 
     mpTiltScreenSwitch = new Switch("TiltedScr", style);
-    mpMenuDialog->add( mpTiltScreenSwitch );
-    
-	// Create the fps config selection control
-	std::list<std::string>	List;
-	for( int i = 10 ; i <= 120 ; i += 10 )
-    {
-		List.push_back( itoa (i) );
-    }
+    mpMenuDialog->add( mpTiltScreenSwitch );    
 
     mpFPSSelection =
             mpMenuDialog->add(
