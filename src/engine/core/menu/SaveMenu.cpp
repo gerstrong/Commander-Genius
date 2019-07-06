@@ -38,14 +38,12 @@ GameMenu(GsRect<float>(0.1f, 0.0f, 0.8f, 1.0f), style )
         mpMenuDialog->add( new InputText(
                                       text,
                                       GsRect<float>(
-                                          0.0f, 0.1f+(i*0.1f), 0.7f, 0.1f),
+                                          0.0f, 0.1f+(i*0.1f), 1.0f, 0.1f),
                                       style ) );
 
 	}
 
 	setMenuLabel("SAVEMENULABEL");
-
-    //mpMenuDialog->fit();
 }
 
 
@@ -69,7 +67,8 @@ void CSaveMenu::refresh()
             text = StateFileList.at(i);
 
         auto &ctrl = *itCtrl;
-        InputText *input = dynamic_cast<InputText*>( ctrl.get() );
+        auto input =
+                std::dynamic_pointer_cast<InputText>( ctrl );
 
         input->setText(text);
         itCtrl++;

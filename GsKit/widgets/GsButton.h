@@ -123,6 +123,12 @@ public:
         return mEvent;
     }
 
+    void setEvent(std::shared_ptr<CEvent> &event)
+    {
+        mEvent = event;
+    }
+
+
 	std::string getText()
 	{	return mText;	}
 
@@ -151,12 +157,6 @@ public:
 protected:
 
     std::string mText;
-
-    GsSurface mTextDarkSfc;
-    GsSurface mTextLightSfc;
-    GsSurface mTextRedSfc;
-    GsSurface mTextDisabledSfc;
-
     CGUIText mTextWidget;
 
 private:        

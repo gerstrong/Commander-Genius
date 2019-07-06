@@ -9,10 +9,11 @@
 #define CGUIINPUTTEXT_H_
 
 #include "GsControl.h"
+#include "GsButton.h"
 #include <string>
 #include <memory>
 
-class CGUIInputText : public GsControl
+class CGUIInputText : public GsButton
 {
 public:
 
@@ -55,6 +56,7 @@ protected:
 
 	std::unique_ptr<SDL_Surface> mpTextSfc;
 
+    //GsButton mInputButton;
 };
 
 #endif /* CGUIINPUTTEXT_H_ */

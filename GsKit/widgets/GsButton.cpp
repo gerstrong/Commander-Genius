@@ -257,9 +257,10 @@ void GsButton::drawEnabledButton(GsWeakSurface &blitsfc,
                                  const SDL_Rect& lRect,
                                  const bool alternate)
 {
-    mTextLightSfc.setAlpha(mLightRatio);
-    mTextDarkSfc.setAlpha(255-mLightRatio);
+    //mTextLightSfc.setAlpha(mLightRatio);
+    //mTextDarkSfc.setAlpha(255-mLightRatio);
 
+    /*
     if(mLightRatio > 0)
     {
         if(alternate)
@@ -276,6 +277,7 @@ void GsButton::drawEnabledButton(GsWeakSurface &blitsfc,
     {
         mTextDarkSfc.blitTo(blitsfc, lRect);
     }
+    */
 }
 
 

@@ -9,13 +9,25 @@ class InputText : public CGUIInputText
 public:
     InputText(const std::string &text,
               const GsRect<float> &rect,
-              const Style style) :
-        CGUIInputText(text, rect, -1),
-        mStyle(style) {}
+              const Style style);
+
+    void setupStyle();
+
+    void processLogic() override;
 
     void processRender(const GsRect<float> &RectDispCoordFloat) override;
 
     const Style mStyle;
+
+
+private:
+
+    GsColor mColorNormal;
+    GsColor mColorHovered;
+    GsColor mColorPressed;
+    GsColor mColorReleased;
+    GsColor mColorSelected;
+
 };
 
 

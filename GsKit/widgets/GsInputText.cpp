@@ -28,7 +28,9 @@ const int MAX_TICK = 8; // Units in a logical loop
 
 CGUIInputText::CGUIInputText(const std::string& text ,
                              const int fontID) :
-GsControl(),
+GsButton(text,
+         nullptr,
+         fontID),
 mText(text)
 {
     //mFontID = fontID;
@@ -37,7 +39,10 @@ mText(text)
 CGUIInputText::CGUIInputText(const std::string& text,
                              const GsRect<float> &rect,
                              const int fontID) :
-GsControl(rect),
+GsButton(text,
+         rect,
+         nullptr,
+         fontID),
 mText(text)
 {
     //mFontID = fontID;
@@ -96,8 +101,9 @@ void CGUIInputText::processLogic()
 
 void CGUIInputText::processRender(const GsRect<float> &RectDispCoordFloat)
 {
+    GsButton::processRender(RectDispCoordFloat);
 	// Transform to the display coordinates
-    GsRect<float> displayRect = getRect();
+    /*GsRect<float> displayRect = getRect();
 	displayRect.transform(RectDispCoordFloat);
 	SDL_Rect lRect = displayRect.SDLRect();
 
@@ -123,7 +129,7 @@ void CGUIInputText::processRender(const GsRect<float> &RectDispCoordFloat)
     else
     {
         drawRect( blitsfc, &lRect, 1, 0x00BBBBBB, 0x00FFFFFF );
-    }
+    }*/
 
     // Now lets draw the text of the list control
     /*GsFontLegacy &Font = gGraphics.getFontLegacy(mFontID);

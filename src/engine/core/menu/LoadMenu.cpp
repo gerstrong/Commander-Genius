@@ -6,21 +6,24 @@
  *      Author: gerstrong
  */
 
-//#include <widgets/GsText.h>
-#include <widgets/GsButton.h>
-#include <widgets/GsMenuController.h>
 
 #include "LoadMenu.h"
+
+#include <base/CInput.h>
 #include <base/GsEventContainer.h>
+#include <widgets/GsButton.h>
+#include <widgets/GsMenuController.h>
 
 #include "fileio/CSaveGameController.h"
 #include "engine/core/CBehaviorEngine.h"
 #include "engine/core/mode/CGameMode.h"
 
+#include "widgets/InputText.h"
+
 #include "widgets/BorderedButton.h"
 
 
-
+const std::string EMPTY_TEXT = "EMPTY";
 
 struct LoadGameSlotFunctorEvent : public InvokeFunctorEvent
 {
@@ -41,30 +44,28 @@ CLoadMenu::CLoadMenu(const Style &style) :
 GameMenu( GsRect<float>(0.1f, 0.0f, 0.8f, 1.0f),
           style)
 {
-    for( int j = 0 ; j<8 ; j++ )
-	{
-        std::shared_ptr<GsButton> button;
+    // Load the state-file list
+    std::vector<std::string> StateFileList;
+    gSaveGameController.readSlotList(StateFileList);
 
-        if(style == Style::GALAXY)
-        {
-            button.reset(new BorderedButton( "Empty",
-                                         GsRect<float>(
-                                             0.0f, 0.1f+(j*0.1f), 0.7f, 0.1f),
-                                         new LoadGameSlotFunctorEvent(Uint32(j)),
-                                         style));
-            mpMenuDialog->add(button);
-        }
-        else
-        {
-            button.reset(new GameButton( "Empty",
-                                     new LoadGameSlotFunctorEvent(Uint32(j)),
-                                     style) );
+    for(Uint32 i=0 ; i<8 ; i++)
+    {
+        std::string text = EMPTY_TEXT;
+        if(i < StateFileList.size())
+            text = StateFileList.at(i);
 
-        }        
-        mpMenuDialog->add( button );
+        auto inputText =
+            mpMenuDialog->add( new InputText(text,
+                                             GsRect<float>(
+                                                   0.0f, 0.1f+(i*0.1f),
+                                                   1.0f, 0.1f),style ) );
 
-        button->enable( false );
-	}
+        std::shared_ptr<LoadGameSlotFunctorEvent>
+                loadGameEv(new LoadGameSlotFunctorEvent(i)) ;
+
+        auto ev = std::static_pointer_cast<CEvent>(loadGameEv);
+        inputText->setEvent(ev);
+    }
 
 	setMenuLabel("LOADMENULABEL");
 }

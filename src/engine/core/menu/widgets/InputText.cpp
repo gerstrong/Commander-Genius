@@ -5,79 +5,99 @@
 #include <graphics/GsGraphics.h>
 
 
-void InputText::processRender(const GsRect<float> &RectDispCoordFloat)
+
+InputText::InputText(const std::string &text,
+          const GsRect<float> &rect,
+          const Style style) :
+CGUIInputText(text, rect, -1),
+mStyle(style)
+{
+    setupStyle();
+}
+
+void InputText::setupStyle()
 {
     if(mStyle == Style::GALAXY)
     {
+        enableBorder(false);
+        enableCenteringH(false);
+        enableBlinker(true);
 
-        if(!mEnabled)
-            return;
+        mColorNormal   = GsColor(0x26, 0x86, 0x26);
+        mColorHovered  = GsColor(0x66, 0xC6, 0x66);
+        mColorPressed  = GsColor(0x66, 0xF6, 0x66);
+        mColorReleased = GsColor(0x46, 0xF6, 0x56);
+        mColorSelected = GsColor(0xA6, 0xC6, 0x66);
 
-        // Transform to the display coordinates
-        GsRect<float> displayRect = getRect();
-        displayRect.transform(RectDispCoordFloat);
-        SDL_Rect lRect = displayRect.SDLRect();
-
-        SDL_Surface *blitsfc = gVideoDriver.getBlitSurface();
-        GsWeakSurface blit(gVideoDriver.getBlitSurface());
-
-        // Now lets draw the text of the list control
-        /*auto &Font = gGraphics.getFontLegacy(mFontID);
-
-        const Uint32 oldcolor = Font.getFGColor();
-
-        Uint32 newcolor;
-
-#ifndef DISABLE_HOVER
-        if(mHovered || mPressed || mSelected)
-            newcolor = blit.mapRGB(84, 234, 84);
-#else
-        if(mPressed || mSelected)
-            newcolor = blit.mapRGB(84, 234, 84);
-#endif
-        else
-            newcolor = blit.mapRGB(38, 134, 38);
-
-        Font.setupColor( newcolor );
-
-        blit.drawFrameRect(lRect, 1, newcolor);
-
-        Font.drawFont( blitsfc, getInputString(), lRect.x+24, lRect.y+2, false );
-
-        Font.setupColor( oldcolor );*/
+        setFontId(1);
+        setText(mText);
     }
     else if(mStyle == Style::VORTICON)
     {
-        if(!mEnabled)
-            return;
+        enableBorder(false);
+        enableCenteringH(false);
+        enableTwirl(true);
 
-        // Transform to the display coordinates
-        GsRect<float> displayRect = getRect();
-        displayRect.transform(RectDispCoordFloat);
-        SDL_Rect lRect = displayRect.SDLRect();
+        mColorNormal   = GsColor(0x0, 0x0, 0x0);
+        mColorHovered  = GsColor(0x11, 0x11, 0x11);
+        mColorPressed  = GsColor(0x44, 0x44, 0x44);
+        mColorReleased = GsColor(0x33, 0x33, 0x33);
+        mColorSelected = GsColor(0x22, 0x22, 0x22);
 
-        SDL_Surface *blitsfc = gVideoDriver.getBlitSurface();
+        setFontId(0);
+        setText(mText);
+    }
+}
 
-        // Now lets draw the text of the list control
-        /*auto &Font = gGraphics.getFontLegacy(mFontID);
+void InputText::processLogic()
+{
+    GsButton::processLogic();
 
-        Font.drawFont( blitsfc, getInputString(), lRect.x+24, lRect.y, false );*/
+    mTextWidget.setTextColor( mColorNormal );
 
+    if(mHovered)
+    {
+        mTextWidget.setTextColor( mColorHovered );
+    }
+
+    if(mPressed)
+    {
+        mTextWidget.setTextColor( mColorPressed );
+    }
+
+    if(mReleased)
+    {
+        mTextWidget.setTextColor( mColorReleased );
+    }
+
+    if(mSelected)
+    {
+        mTextWidget.setTextColor( mColorSelected );
+    }
+}
+
+void InputText::processRender(const GsRect<float> &RectDispCoordFloat)
+{
+    // Transform to the display coordinates
+    GsRect<float> displayRect = getRect();
+    displayRect.transform(RectDispCoordFloat);
+    SDL_Rect lRect = displayRect.SDLRect();
+
+    auto controlsRect = RectDispCoordFloat;
+
+    if(mDrawBlinker)
+    {
+        drawBlinker(lRect);
+        controlsRect.pos.x += 11;
+        controlsRect.dim.x -= 11;
+    }
+
+    if(mDrawTwirl)
+    {
+        controlsRect.pos.x += 24;
+        controlsRect.dim.x -= 24;
         drawTwirl(lRect);
     }
-    else
-    {
-        // Transform to the display coordinates
-        GsRect<float> displayRect = getRect();
-        displayRect.transform(RectDispCoordFloat);
-        SDL_Rect lRect = displayRect.SDLRect();
 
-        SDL_Surface *blitsfc = gVideoDriver.getBlitSurface();
-
-        // Now lets draw the text of the list control
-        /*auto &Font = gGraphics.getFontLegacy(mFontID);
-
-        Font.drawFont( blitsfc, getInputString(), lRect.x+24, lRect.y, false );
-        */
-    }
+    CGUIInputText::processRender(controlsRect);
 }

@@ -51,11 +51,12 @@ void BorderedButton::processRender(const GsRect<float> &rectDispCoordFloat)
     lRect.y +=2;
     lRect.x +=2;
 
+    /*
     if(!mEnabled)
     {
         mTextDisabledSfc.blitTo(blitsfc, lRect);
     }
-    else
+    else*/
     {
 #ifndef DISABLE_HOVER
         if(mHovered)
