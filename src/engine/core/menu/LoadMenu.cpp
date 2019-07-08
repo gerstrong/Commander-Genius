@@ -27,7 +27,7 @@ const std::string EMPTY_TEXT = "EMPTY";
 
 struct LoadGameSlotFunctorEvent : public InvokeFunctorEvent
 {
-    LoadGameSlotFunctorEvent(const Uint32 slot) : mSlot(slot+1) {}
+    LoadGameSlotFunctorEvent(const int slot) : mSlot(slot+1) {}
 
     void operator()() const
 	{
@@ -36,7 +36,7 @@ struct LoadGameSlotFunctorEvent : public InvokeFunctorEvent
 		gSaveGameController.prepareLoadGame(mSlot);
 	}
 
-	Uint32 mSlot;
+    int mSlot;
 };
 
 
@@ -64,7 +64,8 @@ GameMenu( GsRect<float>(0.1f, 0.0f, 0.8f, 1.0f),
                 loadGameEv(new LoadGameSlotFunctorEvent(i)) ;
 
         auto ev = std::static_pointer_cast<CEvent>(loadGameEv);
-        inputText->setEvent(ev);
+        inputText->setEvent(ev);        
+        inputText->enable(false);
     }
 
 	setMenuLabel("LOADMENULABEL");
@@ -80,37 +81,30 @@ void CLoadMenu::refresh()
 
     std::vector<std::string>::iterator it = StateFileList.begin();
 
-    Uint32 i=0;
-
     auto &list = mpMenuDialog->getWidgetList();
-
     auto itCtrl = list.begin();
     itCtrl++;
 
-    for( ; it != StateFileList.end() && i<8 ; i++, it++ )
+    for( auto i = 0 ;
+         it != StateFileList.end() && i<8 ;
+         i++ )
     {
         const std::string text = *it;
 
+        auto button =
+                std::static_pointer_cast<GsButton>(*itCtrl);
+
+        button->setText(EMPTY_TEXT);
+        button->enable(false);
+
         if( !text.empty() )
         {
-            auto &ctrl = *itCtrl;
-            GsButton *button = dynamic_cast<GsButton*>( ctrl.get() );
-
             button->setText(text);
-            button->enable( true );
+            button->enable(true);
         }
 
         itCtrl++;
-    }
-
-    for( auto j = i ; j<8 ; j++ )
-    {
-        auto &ctrl = *itCtrl;
-        GsButton *button = dynamic_cast<GsButton*>( ctrl.get() );
-
-        button->setText("Empty");
-        button->enable( false );
-        itCtrl++;
+        it++;
     }
 
 }
