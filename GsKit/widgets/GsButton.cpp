@@ -171,7 +171,8 @@ void GsButton::drawNoStyle(const SDL_Rect& lRect)
 
         if( mPressed || mSelected )
         {
-            // Try to highlight the border color a bit more by determing which one dominates the most
+            // Try to highlight the border color a bit more
+            // by determing which one dominates the most
             auto red   = Uint8(mRed*127.0f);
             auto green = Uint8(mGreen*127.0f);
             auto blue  = Uint8(mBlue*127.0f);
@@ -227,26 +228,6 @@ void GsButton::drawNoStyle(const SDL_Rect& lRect)
     {
         blitsfc.drawRect( rect, fillColor );
     }
-
-
-    /*
-    if(!gTTFDriver.isActive())
-    {
-        // Now lets draw the text of the list control
-        auto &Font = gGraphics.getFontLegacy( Uint8(mFontID) );
-
-        if(mEnabled) // If the button is enabled use the normal text, otherwise the highlighted color
-        {
-            Font.drawFontCentered( blitsfc.getSDLSurface(), mText,
-                                   lRect.x, lRect.w, lRect.y, lRect.h, false );
-        }
-        else
-        {
-            Font.drawFontCentered( blitsfc.getSDLSurface(), mText,
-                                   lRect.x, lRect.w, lRect.y, lRect.h, true );
-        }
-    }
-    */
 }
 
 void GsButton::setupButtonSurface(const std::string &text)

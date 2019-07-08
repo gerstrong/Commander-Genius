@@ -30,8 +30,6 @@ public:
 	void processLogic();
 
 
-    virtual void processRender(const GsRect<float> &RectDispCoordFloat);
-
 	void setText(const std::string& text)
 	{	mText = text;	}
 

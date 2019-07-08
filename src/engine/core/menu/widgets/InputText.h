@@ -27,6 +27,7 @@ private:
     GsColor mColorPressed;
     GsColor mColorReleased;
     GsColor mColorSelected;
+    GsColor mColorDisabled;
 
 };
 

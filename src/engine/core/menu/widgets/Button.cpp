@@ -46,6 +46,7 @@ void GameButton::setupStyle()
         mColorPressed  = GsColor(0x66, 0xF6, 0x66);
         mColorReleased = GsColor(0x46, 0xF6, 0x56);
         mColorSelected = GsColor(0xA6, 0xC6, 0x66);
+        mColorDisabled = GsColor(0xA6, 0xA6, 0xA6);
 
         setFontId(1);
         setText(mText);
@@ -55,13 +56,13 @@ void GameButton::setupStyle()
         enableBorder(false);
         enableCenteringH(false);
         enableTwirl(true);
-        //enableBackground(true);
 
         mColorNormal   = GsColor(0x0, 0x0, 0x0);
         mColorHovered  = GsColor(0x11, 0x11, 0x11);
         mColorPressed  = GsColor(0x44, 0x44, 0x44);
         mColorReleased = GsColor(0x33, 0x33, 0x33);
         mColorSelected = GsColor(0x22, 0x22, 0x22);
+        mColorDisabled = GsColor(0xA6, 0xA6, 0xA6);
 
         setFontId(0);
         setText(mText);
@@ -92,7 +93,11 @@ void GameButton::processLogic()
     if(mSelected)
     {
         mTextWidget.setTextColor( mColorSelected );
-    }    
+    }
+    if(!mEnabled)
+    {
+        mTextWidget.setTextColor( mColorDisabled );
+    }
 }
 
 

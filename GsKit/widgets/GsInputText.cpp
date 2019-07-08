@@ -97,49 +97,6 @@ void CGUIInputText::processLogic()
     }
 }
 
-
-
-void CGUIInputText::processRender(const GsRect<float> &RectDispCoordFloat)
-{
-    GsButton::processRender(RectDispCoordFloat);
-	// Transform to the display coordinates
-    /*GsRect<float> displayRect = getRect();
-	displayRect.transform(RectDispCoordFloat);
-	SDL_Rect lRect = displayRect.SDLRect();
-
-    if(!mEnabled)
-        return;
-
-    SDL_Surface *blitsfc = gVideoDriver.getBlitSurface();
-
-    if( mReleased )
-    {
-        drawRect( blitsfc, &lRect, 1, 0x00BBBBBB, 0x00CFCFCF );
-    }
-    else if( mPressed )
-    {
-        drawRect( blitsfc, &lRect, 1, 0x00BBBBBB, 0x00DFDFDF );
-    }
-#ifndef DISABLE_HOVER
-    else if( mHovered )
-    {
-        drawRect( blitsfc, &lRect, 1, 0x00BBBBBB, 0x00EFEFEF );
-    }
-#endif
-    else
-    {
-        drawRect( blitsfc, &lRect, 1, 0x00BBBBBB, 0x00FFFFFF );
-    }*/
-
-    // Now lets draw the text of the list control
-    /*GsFontLegacy &Font = gGraphics.getFontLegacy(mFontID);
-
-    Font.drawFontCentered( blitsfc, getInputString(),
-                           lRect.x, lRect.w, lRect.y, lRect.h, false );
-                           */
-}
-
-
 std::string CGUIInputText::getInputString()
 {
 	std::string text;
