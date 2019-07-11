@@ -15,6 +15,7 @@
 #include <memory>
 #include <string.h>
 
+
 class CStory : public CInfoScene
 {
 public:

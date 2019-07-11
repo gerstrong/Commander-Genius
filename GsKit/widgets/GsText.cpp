@@ -223,7 +223,6 @@ void CGUIText::processRender(const GsRect<float> &RectDispCoordFloat)
     GsRect<float> displayRect = getRect();
     displayRect.transform(RectDispCoordFloat);
 
-    auto lRect = displayRect.SDLRect();
     auto &blit = gVideoDriver.gameSfc();
 
     auto &textSfcVec = mTextSfcVecByColor[mTextColor];
@@ -259,15 +258,8 @@ void CGUIText::processRender(const GsRect<float> &RectDispCoordFloat)
         }
 
 #else
+        auto lRect = displayRect.SDLRect();
         updateLegacyTextSfc(displayRect);
-
-        /*auto *renderer = &gVideoDriver.getRendererRef();
-
-    //Render to screen
-    SDL_RenderCopyEx( renderer,
-                      mTexture.getPtr(), nullptr,
-                      &lRect,
-                      0, nullptr, SDL_FLIP_NONE );*/
 
     // Now lets draw the text of the list control
     auto &Font = gGraphics.getFont(mFontID);

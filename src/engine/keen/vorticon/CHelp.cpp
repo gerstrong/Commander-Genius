@@ -30,7 +30,7 @@ void CHelp::init()
 	std::string Text;
     CExeFile &ExeFile = gKeenFiles.exeFile;
     const std::string DataDirectory = gKeenFiles.gameDir;
-	const char episode = ExeFile.getEpisode();
+    const char episode = ExeFile.getEpisode();
 	
 	// Read the Storytext
 	if(mTextType == "Game")

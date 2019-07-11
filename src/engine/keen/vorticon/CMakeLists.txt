@@ -74,10 +74,6 @@ set(CXXSRC
     finale/CShipFlySys.cpp
     finale/CTantalusRay.cpp
     finale/finale.cpp
-    menu/CHelpMenu.cpp
-    menu/CLoadMenu.cpp
-    menu/CSaveMenu.cpp
-    menu/VorticonMenu.cpp
     playgame/CPlayGameDialogs.cpp
     playgame/CPlayGameGameState.cpp
     playgame/CPlayGameLevel.cpp
@@ -147,10 +143,6 @@ set(HSRC
     finale/CFinaleStaticScene.h
     finale/CShipFlySys.h
     finale/CTantalusRay.h
-    menu/CHelpMenu.h
-    menu/CLoadMenu.h
-    menu/CSaveMenu.h
-    menu/VorticonMenu.h
     playgame/CPlayGameVorticon.h
     )
 

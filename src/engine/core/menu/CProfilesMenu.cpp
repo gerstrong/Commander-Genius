@@ -6,7 +6,6 @@
  */
 
 #include "CProfilesMenu.h"
-#include "engine/keen/menu/CSelectionMenu.h"
 #include "engine/core/CSettings.h"
 #include <base/video/CVideoDriver.h>
 #include <base/GsTimer.h>

@@ -19,8 +19,7 @@
 #include "widgets/Button.h"
 #include "engine/core/mode/CGameMode.h"
 #include "SelectionMenu.h"
-
-
+#include "CHelpMenu.h"
 
 void MainMenu::createGameMenu( const bool openedGamePlay, 
                                const Style style )
@@ -72,6 +71,15 @@ void MainMenu::createGameMenu( const bool openedGamePlay,
         mpMenuDialog->add( infoButton );
         infoButton->enable(false);
     }*/
+
+
+    if(style == Style::VORTICON)
+    {
+        mpMenuDialog->add(new GameButton( "Info",
+                                          new OpenMenuEvent( new CHelpMenu(style) ),
+                                          style) );
+    }
+
 
     const std::string endGamePlayTest =
             openedGamePlay ? "End Game" : "Quit to Launcher";

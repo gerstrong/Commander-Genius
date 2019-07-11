@@ -15,6 +15,7 @@
 #include <string.h>
 #include <memory>
 
+
 class CHelp : public CInfoScene
 {
 public:

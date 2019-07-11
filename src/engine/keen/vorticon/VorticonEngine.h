@@ -1,5 +1,5 @@
-#ifndef __VORTICONENGINE_H__
-#define __VORTICONENGINE_H__
+#ifndef VORTICONENGINE_H
+#define VORTICONENGINE_H
 
 #include "engine/keen/KeenEngine.h"
 #include "CEGAGraphicsVort.h"
@@ -50,4 +50,4 @@ struct StartVorticonEngine : public SwitchEngineEvent
 };
 
 
-#endif /* __VORTICONENGINE_H__ */
+#endif /* VORTICONENGINE_H */

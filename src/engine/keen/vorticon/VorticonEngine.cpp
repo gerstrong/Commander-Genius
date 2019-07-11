@@ -12,12 +12,20 @@
 #include "engine/core/menu/MainMenu.h"
 #include "engine/core/menu/SelectionMenu.h"
 #include "engine/core/menu/ControlSettings.h"
+#include "engine/core/menu/CHelpMenu.h"
 #include "engine/CGameLauncher.h"
 #include "fileio/CPatcher.h"
 #include "fileio/CSaveGameController.h"
 #include "engine/core/CMessages.h"
 #include "sdl/audio/Audio.h"
 #include "VorticonEngine.h"
+
+#include "CHelp.h"
+#include "CStory.h"
+#include "COrderingInfo.h"
+#include "CAbout.h"
+#include "CCredits.h"
+#include "CPreviews.h"
 
 #include "CPassiveVort.h"
 #include "CAudioVorticon.h"
@@ -276,7 +284,53 @@ void VorticonEngine::pumpEvent(const CEvent *evPtr)
         gMenuController.hide(true);
         mpInfoScene = scene->mpScene;
         mpInfoScene->init();
+    }    
+    else if( const StartHelpEv *scene =
+             dynamic_cast<const StartHelpEv*>(evPtr) )
+    {
+        gMenuController.lock(true);
+        gMenuController.hide(true);
+
+        if(scene->mType ==
+           StartHelpEv::Variant::THEGAME)
+        {
+            mpInfoScene.reset(new CHelp("Game"));
+        }
+        else if(scene->mType ==
+           StartHelpEv::Variant::STORY)
+        {
+            mpInfoScene.reset(new CStory);
+        }
+        else if(scene->mType ==
+           StartHelpEv::Variant::ORDERING)
+        {
+            mpInfoScene.reset(new COrderingInfo);
+        }
+        else if(scene->mType ==
+           StartHelpEv::Variant::ABOUT_ID)
+        {
+            mpInfoScene.reset(new CAbout("ID"));
+        }
+        else if(scene->mType ==
+                StartHelpEv::Variant::ABOUT_CG)
+        {
+            mpInfoScene.reset(new CAbout("CG"));
+        }
+        else if(scene->mType ==
+                StartHelpEv::Variant::CREDITS)
+        {
+            mpInfoScene.reset(new CCredits());
+        }
+        else if(scene->mType ==
+                StartHelpEv::Variant::PREVIEWS)
+        {
+            mpInfoScene.reset(new CPreviews());
+        }
+
+
+        mpInfoScene->init();
     }
+
 }
 
 }
