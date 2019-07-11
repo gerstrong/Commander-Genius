@@ -126,6 +126,7 @@ mSelectedPlayer(selectedPlayer)
     setMenuLabel("KEYBMENULABEL");
 
     mpMenuDialog->fit();
+    select(1);
 }
 
 void CControlsettings::refresh()

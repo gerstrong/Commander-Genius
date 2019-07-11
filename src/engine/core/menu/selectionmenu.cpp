@@ -59,6 +59,7 @@ CPlayerSpriteVarSelection(const Style style) :
 
     mpGameButton->setRect( GsRect<float>(0.17f, 0.81f,
                                          0.8f, 0.1f) );
+    select(1);
 }
 
 

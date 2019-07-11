@@ -24,6 +24,7 @@ GameMenu( GsRect<float>(0.1f, 0.14f, 0.8f,
 	setMenuLabel("OPTIONSMENULABEL");
 
     mpMenuDialog->fit();
+    select(1);
 }
 
 void COptions::refresh()

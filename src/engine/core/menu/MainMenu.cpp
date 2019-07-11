@@ -93,7 +93,8 @@ void MainMenu::createGameMenu( const bool openedGamePlay,
 
     setMenuLabel("MAINMENULABEL");
 
-    mpMenuDialog->fit();
+    mpMenuDialog->fit();        
+    select(1);
 }
 
 

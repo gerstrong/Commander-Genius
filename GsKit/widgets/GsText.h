@@ -44,8 +44,7 @@ public:
 	virtual void processLogic();
     virtual void processRender(const GsRect<float> &RectDispCoordFloat);
 
-    virtual void processRender(const GsRect<float> &backRect,
-                               const GsRect<float> &frontRect);
+    virtual void processRender(const GsRect<float> &backRect, const GsRect<float> &);
 
 	// Defines in character units how tall and wide the entire text is.
     GsRect<unsigned int> mTextDim;

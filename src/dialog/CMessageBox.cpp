@@ -64,8 +64,6 @@ m_mustclose(false)
         rect.pos.y = 1.0f - rect.dim.y;
 	}
 
-    //mpTextCtrl->setFontId(0);
-
     setRect(rect);    
 
     initEmptyBackground();

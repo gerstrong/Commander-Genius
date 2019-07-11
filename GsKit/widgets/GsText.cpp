@@ -163,9 +163,10 @@ void CGUIText::updateLegacyTextSfc(const GsRect<float> &displayRect)
         // Now lets draw the text of the list control
         auto &Font = gGraphics.getFontLegacy(Uint8(mFontId));
 
-        const auto letterHeight = Font.getPixelTextHeight();
+        const auto letterHeight = int(Font.getPixelTextHeight());
 
-        lRect.y = (static_cast<unsigned int>(lRect.h)-letterHeight)/2;
+        //lRect.y = (static_cast<unsigned int>(lRect.h)-letterHeight)/2;
+        lRect.h = letterHeight;
 
         for(auto &textSfcVecPair : mTextSfcVecByColor)
         {
@@ -181,9 +182,8 @@ void CGUIText::updateLegacyTextSfc(const GsRect<float> &displayRect)
 
                 textSfc.createRGBSurface(lRect);
 
-                Font.drawFont(textSfc,
-                              theText,
-                              0, lRect.y+idx*letterHeight,
+                Font.drawFont(textSfc, theText,
+                              0, 0/*lRect.y+idx*letterHeight*/,
                               false);
 
                 textSfc.tintColor( color );
@@ -309,33 +309,44 @@ void CGUIText::processRender(const GsRect<float> &RectDispCoordFloat)
     {        
         updateLegacyTextSfc(displayRect);
 
-        unsigned int totTextSfcH = 0;
+        GsVec2D<unsigned int> totTextSfcDim(0,0);
+
+        // Calculate total text dimension in case we need to center
         for(auto &textSfc : textSfcVec)
         {
             if(textSfc.empty())
                 break;
 
-            const auto textW = textSfc.width();
-            const auto textH = textSfc.height();
-            GsVec2D<int> textSfcDim(textW, textH);
+            totTextSfcDim.x =
+                    std::max(static_cast<unsigned int>(textSfc.width()),
+                             static_cast<unsigned int>(totTextSfcDim.x));
+            totTextSfcDim.y += textSfc.height();
+        }
+
+        // Time to render
+        unsigned int totTextSfcY = 0;
+        for(auto &textSfc : textSfcVec)
+        {
+            if(textSfc.empty())
+                break;
 
             GsRect<float> blitPos = displayRect;
 
             if(mHCentered)
             {
-                blitPos.pos = blitPos.pos + (blitPos.dim-textSfcDim)/2;
+                blitPos.pos = blitPos.pos + (blitPos.dim-totTextSfcDim)/2;
             }
 
-            blitPos.pos.y += totTextSfcH;
+            blitPos.pos.y += totTextSfcY;
 
             textSfc.blitTo(blit, blitPos.SDLRect());
-            totTextSfcH += textH;
+            totTextSfcY += textSfc.height();
         }
     }
 }
 
 void CGUIText::processRender(const GsRect<float> &backRect,
-                             const GsRect<float> &frontRect)
+                             const GsRect<float> &/*frontRect*/)
 {
     // Transform this object to the display coordinates
     processRender(backRect);

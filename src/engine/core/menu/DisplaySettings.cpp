@@ -112,8 +112,8 @@ GameMenu(GsRect<float>(0.15f, 0.20f, 0.65f, 0.55f), style )
 	setMenuLabel("OPTIONSMENULABEL");
 
     mpMenuDialog->fit();
-
     refresh();        
+    select(1);
 }
 
 void DisplaySettings::refresh()

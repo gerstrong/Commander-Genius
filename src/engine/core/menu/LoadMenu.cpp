@@ -64,11 +64,12 @@ GameMenu( GsRect<float>(0.1f, 0.0f, 0.8f, 1.0f),
                 loadGameEv(new LoadGameSlotFunctorEvent(i)) ;
 
         auto ev = std::static_pointer_cast<CEvent>(loadGameEv);
-        inputText->setEvent(ev);        
+        inputText->setEvent(ev);
         inputText->enable(false);
     }
 
 	setMenuLabel("LOADMENULABEL");
+    select(1);
 }
 
 

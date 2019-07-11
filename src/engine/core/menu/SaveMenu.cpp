@@ -44,6 +44,7 @@ GameMenu(GsRect<float>(0.1f, 0.0f, 0.8f, 1.0f), style )
 	}
 
 	setMenuLabel("SAVEMENULABEL");
+    select(1);
 }
 
 
@@ -53,25 +54,32 @@ void CSaveMenu::refresh()
     std::vector<std::string> StateFileList;
     gSaveGameController.readSlotList(StateFileList);
 
-    auto &list =
-            mpMenuDialog->getWidgetList();
+    std::vector<std::string>::iterator it = StateFileList.begin();
 
+    auto &list = mpMenuDialog->getWidgetList();
     auto itCtrl = list.begin();
     itCtrl++;
 
-    for(Uint32 i=0 ; i<8 ; i++)
+    for( auto i = 0 ;
+         it != StateFileList.end() && i<8 ;
+         i++ )
     {
-        std::string text = EMPTY_TEXT;
+        const std::string text = *it;
 
-        if(i < StateFileList.size())
-            text = StateFileList.at(i);
+        auto button =
+                std::static_pointer_cast<GsButton>(*itCtrl);
 
-        auto &ctrl = *itCtrl;
-        auto input =
-                std::dynamic_pointer_cast<InputText>( ctrl );
+        button->setText(EMPTY_TEXT);
+        button->enable(false);
 
-        input->setText(text);
+        if( !text.empty() )
+        {
+            button->setText(text);
+            button->enable(true);
+        }
+
         itCtrl++;
+        it++;
     }
 }
 

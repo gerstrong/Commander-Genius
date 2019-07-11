@@ -137,11 +137,11 @@ void CGUIDialog::processLogic()
     }
 
     // Try to get a control that is waiting for input to be typed
-    CGUIInputText *pInputCtrl = nullptr;
+    std::shared_ptr<CGUIInputText> pInputCtrl;
     for( auto &it : getWidgetList() )
-    {
-        auto *ctrl = it.get();
-        pInputCtrl = dynamic_cast<CGUIInputText*>(ctrl);
+    {                
+        pInputCtrl =
+             std::dynamic_pointer_cast<CGUIInputText>(it);
         if(pInputCtrl)
         {
             if(pInputCtrl->Typing())
@@ -152,10 +152,9 @@ void CGUIDialog::processLogic()
 
     processPointingState(getRect());
 
-    if(pInputCtrl != nullptr)
+    if(pInputCtrl)
     {
         pInputCtrl->processLogic();
-        return;
     }
 
     // Process the subcontrols inputs
