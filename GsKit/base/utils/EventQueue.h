@@ -11,8 +11,8 @@
 //
 /////////////////////////////////////////
 
-#ifndef __EVENTQUEUE_H__
-#define __EVENTQUEUE_H__
+#ifndef EVENTQUEUE_H
+#define EVENTQUEUE_H
 
 #include <cassert>
 #include "ThreadPool.h" // for Action
@@ -97,5 +97,4 @@ public:
 extern EventQueue* mainQueue;
 
 
-
-#endif  //  __EVENTQUEUE_H__
+#endif  //  EVENTQUEUE_H

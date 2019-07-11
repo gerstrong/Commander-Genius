@@ -17,6 +17,7 @@
  Ref< Iterator<int> > is a typical example, because you normally
  don't want to know about the specific implementation of Iterator
  */
+
 template < typename _Obj >
 class Ref {
 private:

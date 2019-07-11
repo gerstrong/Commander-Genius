@@ -4,8 +4,8 @@
  *	by Albert Zeyer,  code under LGPL
 */
 
-#ifndef __READWRITELOCK_H__
-#define __READWRITELOCK_H__
+#ifndef READWRITELOCK_H
+#define READWRITELOCK_H
 
 #include <SDL.h>
 #include "ThreadPool.h"

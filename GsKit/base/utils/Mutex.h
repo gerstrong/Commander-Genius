@@ -7,8 +7,8 @@
  code under LGPL
  */
 
-#ifndef __MUTEX_H__
-#define __MUTEX_H__
+#ifndef MUTEX_H
+#define MUTEX_H
 
 #include <SDL_mutex.h>
 
@@ -48,4 +48,4 @@ public:
 	};
 };
 
-#endif // __MUTEX_H__
+#endif // MUTEX_H
