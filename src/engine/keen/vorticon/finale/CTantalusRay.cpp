@@ -36,10 +36,7 @@ CTantalusRay::CTantalusRay(std::list< std::shared_ptr<CMessageBoxVort> > &messag
 			    std::vector< std::unique_ptr<CVorticonSpriteObject> > &vect_obj,
 			    std::shared_ptr<CVorticonSpriteObjectAI> &objectai) :
 CFinale(messageBoxes, pMap, vect_obj),
-m_mustsetup(true),
-m_alternate_sprite(0),
 mObjectAI(objectai),
-m_timer(0),
 mp_Bitmap(gGraphics.getBitmapFromStr(0, "GAMEOVER")),
 mp_process(&CTantalusRay::shootray)
 {
@@ -48,6 +45,9 @@ mp_process(&CTantalusRay::shootray)
 
 void CTantalusRay::ponder()
 {
+    if(!mMessageBoxes.empty())
+        return;
+
     (this->*mp_process)();
 
     mObjectAI->process();
@@ -69,7 +69,11 @@ void CTantalusRay::shootray()
 
 		mpMap->drawAll();
 
-        std::unique_ptr<CVorticonSpriteObject> shootObject( new CRay(mpMap.get(), 4<<CSF, 9<<CSF, RIGHT, CENTER, 0, OBJ_NONE, 0) );
+        std::unique_ptr<CVorticonSpriteObject>
+                shootObject( new CRay(mpMap.get(),
+                                      4<<CSF, 9<<CSF,
+                                      RIGHT, CENTER, 0,
+                                      OBJ_NONE, 0) );
 		shootObject->solid = false;
 		shootObject->exists = shootObject->onscreen = true;
 		m_Object.push_back( move(shootObject) );
@@ -104,7 +108,7 @@ void CTantalusRay::shootray()
 
 void CTantalusRay::explodeEarth()
 {
-	if (!m_timer)
+    if (m_timer == 0)
 	{
 	    std::unique_ptr<CEarthChunk> chunk;
 	    
@@ -187,7 +191,10 @@ void CTantalusRay::explodeEarth()
 		m_step++;
 		m_timer = 5;
 	}
-	else m_timer--;
+    else
+    {
+        m_timer--;
+    }
 
 }
 

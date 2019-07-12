@@ -56,7 +56,7 @@
 
 #endif
 
-
+searchpathlist tSearchPaths;
 
 void InitSearchPaths(const std::string &cfgFname)
 
@@ -80,6 +80,7 @@ void InitSearchPaths(const std::string &cfgFname)
 		i++;
 	}
 
+    // If no search path could be read, pass the base paths
     if(tSearchPaths.empty())
     {
         // add the basesearchpaths to the searchpathlist as they should be saved in the end
@@ -92,8 +93,7 @@ void InitSearchPaths(const std::string &cfgFname)
 
 	// print the searchpaths, this may be very usefull for the user
 	notes << "I have now the following searchpaths (in this order):\n";
-	for(searchpathlist::const_iterator p2 = tSearchPaths.begin();
-			p2 != tSearchPaths.end(); p2++)
+    for(auto p2 = tSearchPaths.begin(); p2 != tSearchPaths.end(); p2++)
 	{
 		std::string path = *p2;
 		ReplaceFileVariables(path);
@@ -102,10 +102,6 @@ void InitSearchPaths(const std::string &cfgFname)
 	notes << " And that's all." << endl;
 
 }
-
-
-
-searchpathlist tSearchPaths;
 
 
 
@@ -471,7 +467,8 @@ bool GetExactFileName(const std::string& abs_searchname,
 
 
 searchpathlist	basesearchpaths;
-void InitBaseSearchPaths() {
+void InitBaseSearchPaths()
+{
 	basesearchpaths.clear();
 #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
 	AddToFileList(&basesearchpaths, "${HOME}/Library/Application Support/Commander Genius");

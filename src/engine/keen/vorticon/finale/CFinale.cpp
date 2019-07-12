@@ -27,7 +27,8 @@ CFinale::~CFinale()
 
 void CFinale::addMsgBoxString(const std::string &text)
 {
-    std::unique_ptr<CMessageBoxVort> msg( new CMessageBoxVort(gBehaviorEngine.getString(text), true) );
+    std::unique_ptr<CMessageBoxVort> msg(
+                new CMessageBoxVort(gBehaviorEngine.getString(text), true) );
     mMessageBoxes.push_back( move(msg) );
 }
 

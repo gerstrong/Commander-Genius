@@ -70,7 +70,7 @@ void CSaveMenu::refresh()
                 std::static_pointer_cast<GsButton>(*itCtrl);
 
         button->setText(EMPTY_TEXT);
-        button->enable(false);
+        button->enable(true);
 
         if( !text.empty() )
         {
