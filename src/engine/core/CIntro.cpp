@@ -13,8 +13,8 @@
 
 CIntro::CIntro()
 {
-    for(size_t i = 0; i < sizeof(mp_bm)/sizeof(mp_bm[0]); ++i)
-        mp_bm[i] = nullptr;
+    mp_bm.fill(nullptr);
+
 
 	m_introtime = 10;  // Total time (in seconds) to elapse until Main menu opens
 	m_scrolly = 200;
@@ -35,7 +35,7 @@ void CIntro::init()
 
     GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
 	
-	for(int j=0 ; j<6 ; j++)
+    for(unsigned int j=0 ; j<mp_bm.size() ; j++)
 	{
         if(mp_bm[j] == nullptr)
 			continue;

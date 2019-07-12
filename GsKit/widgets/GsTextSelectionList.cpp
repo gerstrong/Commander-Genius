@@ -192,6 +192,8 @@ void CGUITextSelectionList::processLogic()
         return;
     }
 
+    mScrollbar.processLogic();
+
     auto &controlsList = getControlsList();
     for(auto &widget : controlsList)
     {
@@ -285,7 +287,15 @@ void CGUITextSelectionList::processRenderTTF(const GsRect<float> &RectDispCoordF
 }
 
 
+
 void CGUITextSelectionList::processRender(const GsRect<float> &RectDispCoordFloat)
 {
     GsScrollingFrame::processRender(RectDispCoordFloat);
+
+    // Transform to the display coordinates
+    GsRect<float> scrollRect = getRect();
+    scrollRect.transform(RectDispCoordFloat);
+
+    mScrollbar.processRender(scrollRect);
 }
+

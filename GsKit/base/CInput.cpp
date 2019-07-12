@@ -39,9 +39,9 @@ CInput::CInput()
 	WIZ_AdjustVolume(VOLUME_UP);
 #endif
 	gLogging.ftextOut("Starting the input driver...<br>");
-	memset(InputCommand, 0, NUM_INPUTS*MAX_COMMANDS*sizeof(stInputCommand));
+    memset(InputCommand, 0, (NUM_INPUTS+1)*MAX_COMMANDS*sizeof(stInputCommand));
 
-	for(size_t c=1 ; c<= NUM_INPUTS ; c++)
+    for(int c=1 ; c<=NUM_INPUTS ; c++)
 		resetControls(c);
 	memset(&Event,0,sizeof(Event));
 
@@ -63,13 +63,7 @@ void CInput::resetControls(int player)
 {
 	int i;
 
-	if(player == 0)
-	{
-		player = 1;
-        gLogging << "Warning when resetting controls. The function has been used incorrectly, please report that the developer!";
-	}
-	// not a good idea, beause it would write twice in one array, and forget about the last one. (for example 4)
-	// At least this warning will tell the people, that something is not right here!
+    assert(player > 0);
 
 	m_exit = false;
 

@@ -9,6 +9,7 @@
 #define CINTRO_H_
 
 #include "graphics/GsGraphics.h"
+#include <array>
 
 class CIntro
 {
@@ -23,9 +24,10 @@ public:
 	bool isFinished() { return m_finished; }
 	
 private:
-	GsBitmap* mp_bm[6];
+
+    std::array<GsBitmap*, 6> mp_bm;
 	SDL_Surface *mp_bmp_surface;
-	int m_mid[6];
+    std::array<int, 6> m_mid;
     int m_timer = 0;
 	int m_introtime;  // Total time to elapse until Main menu opens
 	int m_scrolly;
