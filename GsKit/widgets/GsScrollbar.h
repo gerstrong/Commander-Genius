@@ -1,57 +1,34 @@
 #ifndef GSSCROLLBAR_H
 #define GSSCROLLBAR_H
 
-#include "GsControl.h"
+#include "GsWidgetsManager.h"
+#include "GsButton.h"
 
-class GsScrollbar : public GsControl
+#include <functional>
+
+class GsScrollbar : public GsWidgetsManager
 {
 public:
 
-    void processLogic();
+    GsScrollbar(const GsRect<float> &rect);
 
-    void drawScrollBar(const SDL_Rect &lRect);
+    void setScrollDownFn(const std::function<void ()> function);
+    void setScrollUpFn(const std::function<void ()> function);
 
-    void processRender(const GsRect<float> &RectDispCoordFloat);
+    void processLogic() override;
 
-    bool sendEvent(const InputCommand);
+    void processRender(const GsRect<float> &RectDispCoordFloat) override;
 
-    void scrollUp()
-    {
-        if(mScrollPos > 0)
-            mScrollPos--;
-    }
+    bool sendEvent(const InputCommand) override;
 
-    void scrollDown()
-    {
-        if(mScrollPos < mMaxScrollAmt)
-            mScrollPos++;
-    }
-
-    int scrollPos()
-    {
-        return mScrollPos;
-    }
-
-    int lastToShow()
-    {
-        return mLastToShow;
-    }
-
-    GsScrollbar(GsControl *parent) :
-        mpParent(parent),
-        mSliderHeight(0.0f),
-        mArrowHeight(0.0f) {}
-
-
-    int mScrollPos = 0;
-    int mMaxScrollAmt = 0;
-    int mLastToShow = 0;
+    void setBackgroundColor(const GsColor &color);
 
 private:
-    GsControl *mpParent = nullptr;
 
-    float mSliderHeight;
-    float mArrowHeight;
+    GsColor mBackgroundColor;
+
+    std::shared_ptr<GsButton> mpUpButton;
+    std::shared_ptr<GsButton> mpDownButton;
 };
 
 #endif // GSSCROLLBAR_H

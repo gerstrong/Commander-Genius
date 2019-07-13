@@ -10,7 +10,6 @@
 
 #include "GsWidgetsManager.h"
 #include "GsButton.h"
-#include "GsText.h"
 
 #include <string>
 #include <graphics/GsSurface.h>

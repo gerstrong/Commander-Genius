@@ -22,10 +22,19 @@
 CGUITextSelectionList::
 CGUITextSelectionList(const GsRect<float> &rect)  :
 GsScrollingFrame(rect, rect),
-mScrollbar(this)
+mScrollbar(rect)
 {
     GsRect<float> scrollRect(0.0f, 0.0f, 0.1f, 1.0f);
-    mScrollbar.setRect(scrollRect);       
+    mScrollbar.setRect(scrollRect);
+
+    mScrollbar.setScrollDownFn([this]
+                               {
+                                this->moveY(-0.1f);
+                               });
+    mScrollbar.setScrollUpFn([this]
+                               {
+                                this->moveY(0.1f);
+                               });
 }
 
 
@@ -150,8 +159,8 @@ void CGUITextSelectionList::addText(const std::string &text)
 
     mItemList.push_back( item(text) );
 
-    GsRect<float> frameRect(0.0f, float(numElem)*0.1f,
-                            1.0f, 0.1f);
+    GsRect<float> frameRect(0.1f, float(numElem)*0.1f,
+                            0.9f, 0.1f);
 
     auto selectionFrame =
             add( new GsSelectableText(frameRect, text) );
@@ -219,6 +228,7 @@ void CGUITextSelectionList::processPointingStateRel(const GsRect<float> &rect)
         widget->processPointingStateRel(absRect);
     }
 
+    mScrollbar.processPointingStateRel(absRect);
 }
 
 const std::string &
