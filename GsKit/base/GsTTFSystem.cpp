@@ -1,4 +1,5 @@
 #include "GsTTFSystem.h"
+#include <cstdio>
 
 #if defined(USE_SDL_TTF)
 #include <SDL_ttf.h>
