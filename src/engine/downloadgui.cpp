@@ -169,6 +169,8 @@ void CGameLauncher::setupDownloadDialog()
                 new CGUITextSelectionList(
                           GsRect<float>(0.01f, 0.04f, 0.50f, 0.65f) ) );
 
+    mpGSSelList->setBackgroundColor( GsColor(0xFF, 0xFF, 0xFF) );
+
     auto gamePuller = [this](){this->pullGame(mpGSSelList->getSelection());};
 
     if(!missingList.empty())

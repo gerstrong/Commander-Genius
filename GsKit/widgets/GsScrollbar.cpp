@@ -24,6 +24,19 @@ void GsScrollbar::setScrollUpFn(const std::function <void ()> function)
     mpUpButton->setActivationEvent(function);
 }
 
+void GsScrollbar::updateState(const float posY,
+                              const float minY,
+                              const float maxY)
+{
+    mpUpButton->enable( (posY >= maxY) ? false : true);
+    mpDownButton->enable( (posY <= minY) ? false : true);
+
+    mPosRel = -posY/(maxY-minY);
+
+    mPosRel = std::min(mPosRel, 1.0f);
+    mPosRel = std::max(mPosRel, 0.0f);
+}
+
 void GsScrollbar::processLogic()
 {
     GsWidgetsManager::processLogic();
@@ -39,6 +52,20 @@ void GsScrollbar::processRender(const GsRect<float> &RectDispCoordFloat)
     displayRect.transform(RectDispCoordFloat);
 
     blitsfc.fill(displayRect.SDLRect(), mBackgroundColor);
+
+    // Small position indicator
+    {
+        auto posIndRect = displayRect;
+        const auto bUpHeight = displayRect.dim.x;
+        auto sliderSize = bUpHeight*0.8f;
+        posIndRect.dim.y = posIndRect.dim.x = sliderSize;
+
+        posIndRect.pos.x = displayRect.pos.x + (0.1f * sliderSize);
+        posIndRect.pos.y = displayRect.pos.y + bUpHeight +
+                 (mPosRel * (displayRect.dim.y-(3.0f*bUpHeight)));
+
+        blitsfc.fill(posIndRect.SDLRect(), GsColor(0xD0, 0xD0, 0xD0));
+    }
 
     auto &widgetsList = getWidgetList();
 

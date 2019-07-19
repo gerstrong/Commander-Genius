@@ -35,6 +35,7 @@ public:
 
     void setConfirmButtonEvent(CEvent *ev);
     void setConfirmButtonEvent(const std::function <void ()>& f);
+    void updateScrollBar();
 
     void setBackButtonEvent(CEvent *ev);
 
@@ -69,6 +70,8 @@ private:
     std::vector<item> mItemList;
 
     GsScrollbar mScrollbar;
+    float mMaxScrollY = 0.0f;
+    float mMinScrollY = 0.0f;
 	
 	std::shared_ptr<CEvent> mConfirmEvent;
 	std::shared_ptr<CEvent> mBackEvent;

@@ -27,18 +27,37 @@ mScrollbar(rect)
     GsRect<float> scrollRect(0.0f, 0.0f, 0.1f, 1.0f);
     mScrollbar.setRect(scrollRect);
 
-    mScrollbar.setScrollDownFn([this]
-                               {
-                                this->moveY(-0.05f);
-                               });
     mScrollbar.setScrollUpFn([this]
                                {
                                 this->moveY(0.05f);
+                                this->updateScrollBar();
+                               });
+    mScrollbar.setScrollDownFn([this]
+                               {
+                                this->moveY(-0.05f);
+                                this->updateScrollBar();
                                });
 
     mScrollbar.setBackgroundColor(GsColor(0x7F, 0x7F, 0x7F));
 }
 
+void CGUITextSelectionList::updateScrollBar()
+{
+    /*
+    if(getScrollY() > mMaxScrollY)
+    {
+        this->setPosY(mMaxScrollY);
+    }
+    else if(getScrollY() < 0.0f)
+    {
+        this->setPosY(0.0f);
+    }
+    */
+
+    mScrollbar.updateState(getScrollY(),
+                           mMinScrollY,
+                           mMaxScrollY);
+}
 
 void CGUITextSelectionList::setConfirmButtonEvent(CEvent *ev)
 {
@@ -161,7 +180,9 @@ void CGUITextSelectionList::addText(const std::string &text)
 
     mItemList.push_back( item(text) );
 
-    GsRect<float> frameRect(0.1f, float(numElem)*0.1f,
+    const auto txtYPos = float(numElem)*0.1f;
+
+    GsRect<float> frameRect(0.1f, txtYPos,
                             0.9f, 0.1f);
 
     auto selectionFrame =
@@ -170,7 +191,19 @@ void CGUITextSelectionList::addText(const std::string &text)
     selectionFrame->setParent(this);
 
     selectionFrame->setActivationEvent( [this]()
-                                        {this->updateSelection();} );    
+                                        {this->updateSelection();} );
+
+    // Calculate the limits of the scroll area
+    auto listRect = getRect();
+
+    const auto scrollPosY = listRect.dim.y-txtYPos;
+
+    mMinScrollY = std::min(scrollPosY, mMinScrollY);
+    mMaxScrollY = 0.0f;
+
+    mScrollbar.updateState(getScrollY(),
+                           mMinScrollY,
+                           mMaxScrollY);
 }
 
 void CGUITextSelectionList::updateSelection()

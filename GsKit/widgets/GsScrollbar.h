@@ -15,6 +15,10 @@ public:
     void setScrollDownFn(const std::function<void ()> function);
     void setScrollUpFn(const std::function<void ()> function);
 
+    void updateState(const float posY,
+                     const float minY,
+                     const float maxY);
+
     void processLogic() override;
 
     void processRender(const GsRect<float> &RectDispCoordFloat) override;
@@ -29,6 +33,8 @@ private:
 
     std::shared_ptr<GsButton> mpUpButton;
     std::shared_ptr<GsButton> mpDownButton;
+
+    float mPosRel = 0.0f;
 };
 
 #endif // GSSCROLLBAR_H
