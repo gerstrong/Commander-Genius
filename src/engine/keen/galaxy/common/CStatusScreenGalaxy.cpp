@@ -14,6 +14,8 @@
 #include "engine/core/CBehaviorEngine.h"
 #include "fileio/KeenFiles.h"
 
+#include <cstring>
+
 
 CStatusScreenGalaxy::CStatusScreenGalaxy(const stItemGalaxy& Item) :
 m_showstatus(false),
