@@ -78,6 +78,7 @@ void GsFrame::processRender(const GsRect<float> &backRect,
     {
        obj->processRender(objBackRect, objFrontRect);
     }
+
 }
 
 

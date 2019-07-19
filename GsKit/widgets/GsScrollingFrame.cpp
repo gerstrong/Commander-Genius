@@ -16,6 +16,27 @@ void GsScrollingFrame::processLogic()
     processPointingState();
 }
 
+void GsScrollingFrame::processPointingStateRel(const GsRect<float> &rect)
+{
+    GsControl::processPointingStateRel(rect);
+
+    if(this->isReleased())
+    {
+        this->select(true);
+    }
+
+    auto absRect = rect.transformed(getRect());
+
+    absRect.pos.y += mScrollY * absRect.dim.y;
+    absRect.pos.x += mScrollX * absRect.dim.x;
+
+    auto &controlsList = getControlsList();
+    for(auto &widget : controlsList)
+    {
+        widget->processPointingStateRel(absRect);
+    }
+}
+
 void GsScrollingFrame::processRender(const GsRect<float> &srcRectFloat,
                                      const GsRect<float> &dstRectFloat)
 {
@@ -40,7 +61,6 @@ void GsScrollingFrame::processRender(const GsRect<float> &srcRectFloat,
 
     backRect.pos.x += mScrollX * frontRect.dim.x;
     backRect.pos.y += mScrollY * frontRect.dim.y;        
-
 
     auto &wList = getWidgetList();
 

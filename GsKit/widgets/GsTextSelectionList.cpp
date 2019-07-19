@@ -29,12 +29,14 @@ mScrollbar(rect)
 
     mScrollbar.setScrollDownFn([this]
                                {
-                                this->moveY(-0.1f);
+                                this->moveY(-0.05f);
                                });
     mScrollbar.setScrollUpFn([this]
                                {
-                                this->moveY(0.1f);
+                                this->moveY(0.05f);
                                });
+
+    mScrollbar.setBackgroundColor(GsColor(0x7F, 0x7F, 0x7F));
 }
 
 
@@ -212,22 +214,10 @@ void CGUITextSelectionList::processLogic()
 
 
 void CGUITextSelectionList::processPointingStateRel(const GsRect<float> &rect)
-{
-    const auto absRect = rect.transformed(getRect());
+{  
+    GsScrollingFrame::processPointingStateRel(rect);
 
-    GsControl::processPointingStateRel(rect);
-
-    if(this->isReleased())
-    {
-        this->select(true);
-    }
-
-    auto &controlsList = getControlsList();
-    for(auto &widget : controlsList)
-    {
-        widget->processPointingStateRel(absRect);
-    }
-
+    auto absRect = rect.transformed(getRect());
     mScrollbar.processPointingStateRel(absRect);
 }
 

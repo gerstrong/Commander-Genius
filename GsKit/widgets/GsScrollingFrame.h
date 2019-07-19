@@ -15,6 +15,8 @@ public:
 
     virtual void processLogic() override;
 
+    virtual void processPointingStateRel(const GsRect<float> &rect) override;
+
     virtual void processRender(const GsRect<float> &rectDispCoordFloat) override;
 
     virtual void processRender(const GsRect<float> &srcRectFloat,

@@ -115,10 +115,14 @@ public:
     {
         assert(mpSurface);
         assert(sfc.mpSurface);
-        return SDL_BlitSurface( mpSurface, nullptr, sfc.mpSurface, const_cast<SDL_Rect*>(&sdlRect) );
+        return SDL_BlitSurface( mpSurface,
+                                nullptr,
+                                sfc.mpSurface,
+                                const_cast<SDL_Rect*>(&sdlRect) );
     }
 
-    int blitTo(GsWeakSurface &sfc, const SDL_Rect &sdlSrcRect, const SDL_Rect &sdlDstRect) const
+    int blitTo(GsWeakSurface &sfc,
+               const SDL_Rect &sdlSrcRect, const SDL_Rect &sdlDstRect) const
     {
         assert(mpSurface);
         assert(sfc.mpSurface);

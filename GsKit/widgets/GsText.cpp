@@ -219,9 +219,19 @@ void CGUIText::updateLegacyTextSfc(const GsRect<float> &displayRect)
 
 void CGUIText::processRender(const GsRect<float> &RectDispCoordFloat)
 {
+    processRender(RectDispCoordFloat, RectDispCoordFloat);
+}
+
+void CGUIText::processRender(const GsRect<float> &backRect,
+                             const GsRect<float> &frontRect)
+{
+    // Transform this object display coordinates
+    auto objBackRect = backRect.transformed(getRect());
+    auto objFrontRect = objBackRect.clipped(frontRect);
+
     // Transform to the display coordinates
-    GsRect<float> displayRect = getRect();
-    displayRect.transform(RectDispCoordFloat);
+    //GsRect<float> displayRect = getRect();
+    //displayRect.transform(RectDispCoordFloat);
 
     auto &blit = gVideoDriver.gameSfc();
 
@@ -230,9 +240,9 @@ void CGUIText::processRender(const GsRect<float> &RectDispCoordFloat)
     if(mFontId < 0)
     {
 
-#if defined(USE_SDL_TTF)    
+#if defined(USE_SDL_TTF)
 
-        updateTTFTextSfc(displayRect);
+        updateTTFTextSfc(objBackRect);
 
         unsigned int totTextSfcH = 0;
         for(auto &textSfc : textSfcVec)
@@ -244,16 +254,26 @@ void CGUIText::processRender(const GsRect<float> &RectDispCoordFloat)
             const auto textH = textSfc.height();
             GsVec2D<int> textSfcDim(textW, textH);
 
-            GsRect<float> blitPos = displayRect;
+            //GsRect<float> blitPos = objBackRect;
+            GsRect<float> blitPos = objFrontRect;
 
             if(mHCentered)
             {
                 blitPos.pos = blitPos.pos + (blitPos.dim-textSfcDim)/2;
             }
 
+            auto textrect = blitPos;
+
+            textrect.pos.y = (objBackRect.pos.y < objFrontRect.pos.y) ?
+                              objBackRect.dim.y - objFrontRect.dim.y : 0;
+            textrect.pos.x = (objBackRect.pos.x < objFrontRect.pos.x) ?
+                              objBackRect.dim.x - objFrontRect.dim.x : 0;
+
             blitPos.pos.y += totTextSfcH;
 
-            textSfc.blitTo(blit, blitPos.SDLRect());
+            textSfc.blitTo(blit,
+                           textrect.SDLRect(),
+                           blitPos.SDLRect());
             totTextSfcH += textH;
         }
 
@@ -298,8 +318,8 @@ void CGUIText::processRender(const GsRect<float> &RectDispCoordFloat)
 
     }
     else
-    {        
-        updateLegacyTextSfc(displayRect);
+    {
+        updateLegacyTextSfc(objBackRect);
 
         GsVec2D<unsigned int> totTextSfcDim(0,0);
 
@@ -322,7 +342,7 @@ void CGUIText::processRender(const GsRect<float> &RectDispCoordFloat)
             if(textSfc.empty())
                 break;
 
-            GsRect<float> blitPos = displayRect;
+            GsRect<float> blitPos = objBackRect;
 
             if(mHCentered)
             {
@@ -331,16 +351,18 @@ void CGUIText::processRender(const GsRect<float> &RectDispCoordFloat)
 
             blitPos.pos.y += totTextSfcY;
 
-            textSfc.blitTo(blit, blitPos.SDLRect());
+            auto textrect = blitPos;
+
+            textrect.pos.y = (objBackRect.pos.y < objFrontRect.pos.y) ?
+                              objBackRect.dim.y - objFrontRect.dim.y : 0;
+            textrect.pos.x = (objBackRect.pos.x < objFrontRect.pos.x) ?
+                              objBackRect.dim.x - objFrontRect.dim.x : 0;
+
+            textSfc.blitTo(blit,
+                           textrect.SDLRect(),
+                           objFrontRect.SDLRect());
             totTextSfcY += textSfc.height();
         }
     }
-}
-
-void CGUIText::processRender(const GsRect<float> &backRect,
-                             const GsRect<float> &/*frontRect*/)
-{
-    // Transform this object to the display coordinates
-    processRender(backRect);
 }
 
