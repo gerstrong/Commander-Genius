@@ -416,13 +416,14 @@ bool CVideoDriver::start()
 
 #ifndef WIN32
 	atexit(SDL_Quit);
-#endif
+#endif	
 
-	gLogging.textOut("Starting graphics driver...<br>");
+	gLogging.textOut("Starting graphics driver...<br>");	
 
-#ifdef USE_OPENGL
+#ifdef USE_OPENGL	
     if (mVidConfig.mOpengl) // Try to use OpenGL if enabled by the user
-	{
+	{		
+		gLogging.textOut("Trying OpenGL...<br>");
         mpVideoEngine.reset(new COpenGL(mVidConfig));
 		retval = mpVideoEngine->init();
 
@@ -432,22 +433,28 @@ bool CVideoDriver::start()
 			applyMode();
             mpVideoEngine.reset(new CSDLVideo(mVidConfig));
 			retval = mpVideoEngine->init();
-            gLogging.textOut("will be using SDL Video<br>");
+            gLogging.textOut("will be using SDL Video...<br>");
         }
         else
         {
-            gLogging.textOut("will be using OpenGL<br>");
+            gLogging.textOut("will be using OpenGL...<br>");
         }
     }
     else
 #endif
     {
+		gLogging.textOut("Starting without OpenGL<br>");
         CSDLVideo *sdlVideoPtr = new CSDLVideo(mVidConfig);
-        mpVideoEngine.reset(sdlVideoPtr);
-		retval = mpVideoEngine->init();
-        gLogging.textOut("will be using SDL Video<br>");
+        mpVideoEngine.reset(sdlVideoPtr);				
+		retval = mpVideoEngine->init();		
 	}
-
+		
+	if(!retval)
+	{
+		gLogging.textOut("Error creating Video subsystem for the application...<br>");
+		return false;
+	}
+	
 	// Now SDL will tell if the bpp works or changes it, if not supported.
 	// this value is updated here!
 	retval &= mpVideoEngine->createSurfaces();

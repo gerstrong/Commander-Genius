@@ -106,9 +106,13 @@ int main(int argc, char *argv[])
         errors << "Not even able to create \"CGLog.html\"." << endl;
         return 1;
     }
+	
+	gLogging.textOut(FONTCOLORS::GREEN,"Created Log file...\n");
 
     if(!gTTFDriver.init())
     {
+		errors << "Failed loading the TTF Driver." << endl;
+		gLogging.textOut(FONTCOLORS::RED,"Failed loading the TTF Driver.\n");
         return 1;
     }
 
@@ -116,16 +120,18 @@ int main(int argc, char *argv[])
     // Init Video Driver with SDL all together
     if( !gVideoDriver.init() )
     {
+		errors << "Failed loading the Video Driver." << endl;
+		gLogging.textOut(FONTCOLORS::RED,"Failed loading the Video Driver.\n");
         return 1;
-    }
+    }	
 
+	gLogging.textOut(FONTCOLORS::GREEN, "Loading Settings...\n");
 
     // Check if there are settings on the PC, otherwise use defaults.
     if( !gSettings.loadDrvCfg() )
     {
-        //m_firsttime = true;
-        gLogging.textOut(FONTCOLORS::RED,"First time message: CG didn't find the driver config file. ");
-        gLogging.textOut(FONTCOLORS::RED,"However, it generated some default values and will save them now.\n");
+        gLogging.textOut(FONTCOLORS::BLUE,"First time message: CG didn't find the driver config file. ");
+        gLogging.textOut(FONTCOLORS::BLUE,"However, it generated some default values and will save them now.\n");
         gSettings.saveDrvCfg();
     }
 
@@ -134,30 +140,42 @@ int main(int argc, char *argv[])
     {
         gLogging.textOut(FONTCOLORS::RED,"Cannot load defaults...\n");
         gSettings.loadDefaultGameCfg();
-    }
+    }	
 
-    // Init the Game sound
-    gSound.init();
-
+	gLogging.textOut(FONTCOLORS::GREEN,"Initializing the Sound system...\n");
+    if(!gSound.init())
+	{
+		gLogging.textOut(FONTCOLORS::RED,"Failed to init the sound system...\n");
+		return 1;
+	}
+		
 
     ////////////////////////////////////////////////////
     // Initialize CG and run the main cycle if worthy //
     ////////////////////////////////////////////////////
+	gLogging.textOut(FONTCOLORS::GREEN,"Starting App cycle...\n");
     if( gApp.init( argc, argv ) )
-    {
+    {			
         ////////////////////////////////
         // Set GameLauncher as Engine //
         ////////////////////////////////
-        gApp.setEngine(new CGameLauncher());
+        gApp.setEngine(new CGameLauncher());			
 
         //////////////////////////////
         // Run the Commander Genius //
         //////////////////////////////
         gApp.runMainCycle();
     }
+	else
+	{
+		gLogging.textOut(FONTCOLORS::RED,"Failed to init the app cycle ...\n");
+		return 1;
+	}
 
+	gLogging.textOut(FONTCOLORS::GREEN,"Saving Display settings...\n");
     gSettings.saveDispCfg();
 
+	gLogging.textOut(FONTCOLORS::GREEN,"Tearing down thread pool...\n");
     UnInitThreadPool();
     return 0;
 }

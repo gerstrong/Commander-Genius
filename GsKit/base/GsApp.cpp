@@ -105,12 +105,13 @@ GsApp::~GsApp()
  * 					will be false.
  */
 bool GsApp::init(int argc, char *argv[])
-{
+{	
     // Pass all the arguments
     gArgs.passArgs(argc, argv);
 
 	// Setup the Hardware using the settings we have loaded
 	gLogging.textOut(FONTCOLORS::GREEN,"Loading hardware settings...<br>");
+		
     if(!loadDrivers())
 	{
         gLogging.textOut(FONTCOLORS::RED,"The program cannot start, because you do not meet the hardware requirements.<br>");
@@ -181,7 +182,8 @@ void GsApp::pollEvents()
 bool GsApp::loadDrivers()
 {
 	// Init graphics
-    if (!gVideoDriver.start()) return false;
+    if (!gVideoDriver.start()) 
+		return false;
 		
 	return true;
 }

@@ -1,11 +1,12 @@
 v2.3.5:
 -------
-- Search path issues fixed (WIP)
-- New font added for better scalibility (WIP)
-- Updated GsKit, many code cleanups in the library (WIP)
-- Settings fixups (WIP)
+- Search path issues fixed
+- New font added for better scalibility 
+- Updated GsKit, many code cleanups in the library 
+- Settings fixups
 - Modern setting makes the dithering effect a bit smoother when Galaxy is shown
 - Brought back the info menu for help and ordering info
+- More log messages for better feedback
 
 v2.3.4:
 -------

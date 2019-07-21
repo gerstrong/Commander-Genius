@@ -20,32 +20,35 @@ CVideoEngine(VidConfig)
 
 
 bool CSDLVideo::init()
-{
+{	
     if( !CVideoEngine::init() )
     {
         return false;
-    }
+    }	
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)    
 
 #ifdef ANDROID
     SDL_SetHint(SDL_HINT_ORIENTATIONS, "LandscapeLeft LandscapeRight");
+	gLogging.textOut(FONTCOLORS::BLACK,"Setting orientations: LandscapeLeft LandscapeRight<br>");
 #endif
-
 
     if(m_VidConfig.mRenderScQuality == CVidConfig::RenderQuality::LINEAR)
     {
         SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
+		gLogging.textOut(FONTCOLORS::BLACK,"Render Quality linear<br>");
     }
     else
     {
         SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
+		gLogging.textOut(FONTCOLORS::BLACK,"Render Quality standard (0)<br>");
     }
 
     if(window)
     {
+		gLogging.textOut(FONTCOLORS::BLACK,"Destroying SDL Window...<br>");
         SDL_DestroyWindow(window);
-    }
+    }	
 
     Uint32 flags = 0;
 
@@ -58,14 +61,24 @@ bool CSDLVideo::init()
         flags |= (SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
     }
 
-
+	gLogging.textOut(FONTCOLORS::BLACK,
+					"Creating SDL Window for"
+					"%s ...<br>", 
+					gApp.getName().c_str());					
+	
     window = SDL_CreateWindow(gApp.getName().c_str(),
                               SDL_WINDOWPOS_CENTERED,
                               SDL_WINDOWPOS_CENTERED,
                               m_VidConfig.mDisplayRect.dim.x,
                               m_VidConfig.mDisplayRect.dim.y,
-                              flags);
-
+                              flags);							 
+		
+	if(!window)
+	{
+		gLogging.textOut(FONTCOLORS::RED,"SDL_CreateWindow(): %s<br>", SDL_GetError());		
+		return false;
+	}	
+	
     if(renderer)
     {
         SDL_DestroyRenderer(renderer);
@@ -76,14 +89,20 @@ bool CSDLVideo::init()
     if(m_VidConfig.mVSync)
     {
         rendererFlags |= SDL_RENDERER_PRESENTVSYNC;
-    }
-
-    renderer = SDL_CreateRenderer(window, -1, rendererFlags);
-
+    }					
+		
+    renderer = SDL_CreateRenderer(window, -1, rendererFlags);		
+		
+	if(!renderer)
+	{
+		gLogging.textOut(FONTCOLORS::RED,"SDL_CreateRenderer(): %s<br>", SDL_GetError());
+		return false;
+	}
+	
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
     SDL_RenderPresent(renderer);
-
+	
     const int aspW = m_VidConfig.mAspectCorrection.dim.x;
     const int aspH = m_VidConfig.mAspectCorrection.dim.y;
 
