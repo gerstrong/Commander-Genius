@@ -12,6 +12,7 @@
 #include <string>
 #include <list>
 #include <vector>
+#include <array>
 #include <base/utils/Geometry.h>
 #include <base/GsEventContainer.h>
 #include <base/InputEvents.h>
@@ -136,9 +137,9 @@ enum EType
 
 struct stInputCommand
 {
-	bool active;
-	bool lastactive;
-	bool firsttimeactive;
+    bool active = false;
+    bool lastactive = false;
+    bool firsttimeactive = false;
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 	SDL_Keycode 	keysym;
@@ -146,13 +147,13 @@ struct stInputCommand
     SDLKey 	keysym;
 #endif
 
-	unsigned int joyeventtype;
-	int which;
-	int joyaxis;
-	unsigned short joybutton;
-	int joyvalue;	// in which direction the axis needs to be moved
-	int joymotion;	// in which direction the axis is really moved
-	int joyhatval;	// in which direction the hat is really moved
+    unsigned int joyeventtype = 0;
+    int which = 0;
+    int joyaxis = 0;
+    unsigned short joybutton = 0;
+    int joyvalue = 0;	// in which direction the axis needs to be moved
+    int joymotion = 0;	// in which direction the axis is really moved
+    int joyhatval = 0;	// in which direction the hat is really moved
 };
 
 class CInput : public GsSingleton<CInput>
@@ -251,7 +252,9 @@ public:
 	
 	void setupNewEvent(Uint8 device, int position);
 
-	void setupInputCommand( stInputCommand *pInput, int action, const std::string &string );
+    void setupInputCommand( std::array<stInputCommand, NUM_INPUTS> &input,
+                            int action,
+                            const std::string &string );
 
 	void loadControlconfig();
 	void resetControls(int player);
@@ -339,7 +342,7 @@ private:
 	SDL_Event Event;
 	std::list<SDL_Joystick*> mp_Joysticks;
 
-	stInputCommand InputCommand[NUM_INPUTS][MAX_COMMANDS];
+    std::array< std::array<stInputCommand, NUM_INPUTS>, MAX_COMMANDS > InputCommand;
 	bool TwoButtonFiring[NUM_INPUTS];
 	bool mAnalogAxesMovement[NUM_INPUTS];
 	bool mSuperPogo[NUM_INPUTS];
@@ -350,9 +353,7 @@ private:
 	int m_cmdpulse;
 	short m_joydeadzone;
 
-#ifdef VIRTUALPAD
     bool mVPadConfigState = false;
-#endif
 
 	bool immediate_keytable[KEYTABLE_SIZE];
 	bool last_immediate_keytable[KEYTABLE_SIZE];

@@ -11,6 +11,12 @@ IF (USE_SDL_TTF)
     ADD_DEFINITIONS(-DUSE_SDL_TTF)
 ENDIF(USE_SDL_TTF)
 
+option(USE_VIRTUALPAD "Enable Onscreen Virtual Gamepad support " ON)
+
+if(USE_VIRTUALPAD)
+    ADD_DEFINITIONS(-DVIRTUALPAD)
+endif(USE_VIRTUALPAD)
+
 
 # Add GsKit
 add_subdirectory("GsKit")

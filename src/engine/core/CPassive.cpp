@@ -30,11 +30,9 @@ CPassive::CPassive()
 
 CPassive::~CPassive()
 {
-
 #ifdef VIRTUALPAD
     gInput.mpVirtPad = nullptr;
 #endif
-
 }
 
 void CPassive::pumpEvent(const CEvent *evPtr)

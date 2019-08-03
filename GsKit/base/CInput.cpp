@@ -33,24 +33,25 @@ CInput::~CInput()
 
 CInput::CInput()
 {
+
 #if defined(WIZ) || defined(GP2X)
     volume_direction = VOLUME_NOCHG;
 	volume = 60-VOLUME_CHANGE_RATE;
 	WIZ_AdjustVolume(VOLUME_UP);
 #endif
-	gLogging.ftextOut("Starting the input driver...<br>");
-    memset(InputCommand, 0, (NUM_INPUTS+1)*MAX_COMMANDS*sizeof(stInputCommand));
+    gLogging.ftextOut("Starting the input driver...<br>");
 
     for(int c=1 ; c<=NUM_INPUTS ; c++)
 		resetControls(c);
-	memset(&Event,0,sizeof(Event));
+    memset(&Event, 0, sizeof(Event));
 
 #if !TARGET_OS_IPHONE && !TARGET_IPHONE_SIMULATOR
 	loadControlconfig(); // we want to have the default settings in all cases
-	startJoyDriver(); // not for iPhone for now, could cause trouble (unwanted input events)
+    startJoyDriver(); // not for iPhone for now, could cause trouble (unwanted input events)
 #endif
 
     mpPollSem = SDL_CreateSemaphore(1);
+
 }
 
 /**
@@ -391,7 +392,8 @@ std::string CInput::getEventName(int command, unsigned char input)
 	return buf;
 }
 
-void CInput::setupInputCommand( stInputCommand *pInput, int action, const std::string &string )
+void CInput::setupInputCommand(std::array<stInputCommand, NUM_INPUTS> &input,
+                               int action, const std::string &string )
 {
 	std::string buf = string;
 
@@ -404,42 +406,42 @@ void CInput::setupInputCommand( stInputCommand *pInput, int action, const std::s
 		buf = buf.substr(3);
 		size_t pos = buf.find('-');
 		buf2 = buf.substr(0, pos);
-		pInput[action].which = atoi(buf2);
+        input[action].which = atoi(buf2);
 		buf = buf.substr(pos+1);
 		buf2 = buf.substr(0,1);
 		buf = buf.substr(1);
 
 		if(buf2 == "A")
 		{
-			pInput[action].joyeventtype = ETYPE_JOYAXIS;
+            input[action].joyeventtype = ETYPE_JOYAXIS;
 			pos = buf.size()-1;
 			buf2 = buf.substr(0,pos);
-			pInput[action].joyaxis = atoi(buf2);
+            input[action].joyaxis = atoi(buf2);
 			buf2 = buf.substr(pos);
-			pInput[action].joyvalue = (buf2 == "+") ? +1 : -1;
+            input[action].joyvalue = (buf2 == "+") ? +1 : -1;
 		}
 		else if(buf2 == "B")
 		{
-			pInput[action].joyeventtype = ETYPE_JOYBUTTON;
-			pInput[action].joybutton = atoi(buf);
+            input[action].joyeventtype = ETYPE_JOYBUTTON;
+            input[action].joybutton = atoi(buf);
 		}
 		else // Should normally be H
 		{
-			pInput[action].joyeventtype = ETYPE_JOYHAT;
-			pInput[action].joyhatval = atoi(buf);
+            input[action].joyeventtype = ETYPE_JOYHAT;
+            input[action].joyhatval = atoi(buf);
 		}
 		return;
 	}
 
 	if(strCaseStartsWith(string, "Key"))
 	{
-		pInput[action].joyeventtype = ETYPE_KEYBOARD;
+        input[action].joyeventtype = ETYPE_KEYBOARD;
 		buf = buf.substr(3);
 		TrimSpaces(buf);
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-		pInput[action].keysym = (SDL_Keycode) atoi(buf);
+        input[action].keysym = (SDL_Keycode) atoi(buf);
 #else
-        pInput[action].keysym = (SDLKey) atoi(buf);
+        input[action].keysym = (SDLKey) atoi(buf);
 #endif
 		return;
 	}
@@ -476,9 +478,9 @@ void CInput::readNewEvent()
 	return;
 #endif
 
+    lokalInput = stInputCommand();
 
-	memset(&lokalInput, 0, sizeof(stInputCommand));
-	if(!m_EventList.empty())
+    if(!m_EventList.empty())
 		m_EventList.clear();
 
 	while( SDL_PollEvent( &Event ) )

@@ -213,6 +213,7 @@ void GsApp::ponder(const float deltaT)
 
 void GsApp::render()
 {
+
     if(mpCurEngine)
     {
         mpCurEngine->render();
@@ -220,7 +221,7 @@ void GsApp::render()
 
     gMenuController.render();
 
-    gInput.render();    
+    gInput.render();
 }
 
 
@@ -257,6 +258,7 @@ void GsApp::runMainCycle()
     float total_elapsed = 0.0f;
     float curr = 0.0f;
     int counter = 0;
+
 
     while(1)
     {
@@ -314,7 +316,7 @@ void GsApp::runMainCycle()
             start = timerTicks();
 
             acc += elapsed;
-
+/*
             // Perform the game cycle
             while( acc > logicLatency )
             {
@@ -329,7 +331,7 @@ void GsApp::runMainCycle()
 
                 acc -= logicLatency;
             }
-
+*/
             // Now we render the whole GameControl Object to the blit surface
             render();
 
@@ -339,6 +341,8 @@ void GsApp::runMainCycle()
             // Pass all the surfaces to one. Some special surfaces are used and are collected here
             gVideoDriver.collectSurfaces();
 
+
+
             // Now you really render the screen
             // When enabled, it also applies Filters
             gVideoDriver.updateDisplay();
@@ -347,7 +351,7 @@ void GsApp::runMainCycle()
             elapsed = timerTicks() - start;
             total_elapsed += elapsed;
 
-            if( mustShutdown() )
+            //if( mustShutdown() )
                 break;
 
             // If renderLatency is zero or less, delays won't happens.
@@ -367,7 +371,6 @@ void GsApp::runMainCycle()
                 timerDelay( waitTime );
                 total_elapsed += static_cast<float>(waitTime);
             }
-
         }
 
         // This will refresh the fps display, so it stays readable and calculates an average value.
@@ -379,6 +382,7 @@ void GsApp::runMainCycle()
             total_elapsed = 0.0f;
         }
     }
+
 
     cleanup();
 }
