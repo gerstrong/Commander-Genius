@@ -22,12 +22,14 @@ public:
 
 	bool saveCfgFile();
 
+    /*
     bool OnNewSection (const std::string& section) override;
     bool OnEntry (const std::string& section, const std::string& propname, const std::string& value) override;
+    */
 
 	void WriteString(const std::string& section, const std::string& key, const std::string& string);
 	void SetKeyword(const std::string& section, const std::string& keyword, const bool value);
-	void WriteInt(const std::string &section, const std::string &keyword, const int value);
+	void WriteInt(const std::string &section, const std::string &keyword, const int value);        
 };
 
 #endif /* CCONFIGURATION_H */

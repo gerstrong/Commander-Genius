@@ -155,119 +155,115 @@ bool CSettings::loadDrvCfg()
 {
     CConfiguration config(CONFIGFILENAME);
 
-    CVidConfig VidConf;
-
     if(!config.Parse())
     {
         return false;
     }
-	else
-	{		
-        GsRect<Uint16> &res = VidConf.mDisplayRect;
-        GsRect<Uint16> &gamesRes = VidConf.mGameRect;
-        int value = 0;
-        config.ReadInteger("Video", "width", &value, 320);
-        res.dim.x = static_cast<unsigned short>(value);
-        config.ReadInteger("Video", "height", &value, 200);
-        res.dim.y = static_cast<unsigned short>(value);
 
-        config.ReadInteger("Video", "gameWidth", &value, 320);
-        gamesRes.dim.x = static_cast<unsigned short>(value);
-        config.ReadInteger("Video", "gameHeight", &value, 200);
-        gamesRes.dim.y = static_cast<unsigned short>(value);
+    CVidConfig VidConf;
 
-        if(res.dim.x*res.dim.y <= 0)
-		{
-			gLogging.ftextOut(FONTCOLORS::RED,"Error reading the configuration file!<br>");
-			return false;
-		}
+    GsRect<Uint16> &res = VidConf.mDisplayRect;
+    GsRect<Uint16> &gamesRes = VidConf.mGameRect;
+    int value = 0;
+    config.ReadInteger("Video", "width", &value, 320);
+    res.dim.x = static_cast<unsigned short>(value);
+    config.ReadInteger("Video", "height", &value, 200);
+    res.dim.y = static_cast<unsigned short>(value);
 
-        config.ReadKeyword("Video", "fullscreen", &VidConf.mFullscreen, false);
-        config.ReadInteger("Video", "scale", &value, 1);
-        VidConf.Zoom = static_cast<unsigned short>(value);
+    config.ReadInteger("Video", "gameWidth", &value, 320);
+    gamesRes.dim.x = static_cast<unsigned short>(value);
+    config.ReadInteger("Video", "gameHeight", &value, 200);
+    gamesRes.dim.y = static_cast<unsigned short>(value);
 
+    if(res.dim.x*res.dim.y <= 0)
+    {
+        gLogging.ftextOut(FONTCOLORS::RED,"Error reading the configuration file!<br>");
+        return false;
+    }
 
-		std::string arcStr;
-        config.ReadString("Video", "aspect", arcStr, "none");
-        VidConf.mAspectCorrection.dim = 0;
-        sscanf( arcStr.c_str(), "%i:%i", &VidConf.mAspectCorrection.dim.x,
-                                         &VidConf.mAspectCorrection.dim.y );
-
-        config.ReadKeyword("Video", "vsync", &VidConf.mVSync, true);
-        config.ReadInteger("Video", "filter", &value, 1);
-        VidConf.m_ScaleXFilter = static_cast<filterOptionType>(value);
-
-		std::string scaleType;
-        config.ReadString("Video", "scaletype", scaleType, "normal");
-		VidConf.m_normal_scale = (scaleType == "normal");
-
-		// if ScaleX is one and scaletype is not at normal, this is wrong.
-		// we will change that and force it to normal
-		if(scaleType == "normal")
-		{
-		  VidConf.m_normal_scale = true;
-		}
+    config.ReadKeyword("Video", "fullscreen", &VidConf.mFullscreen, false);
+    config.ReadInteger("Video", "scale", &value, 1);
+    VidConf.Zoom = static_cast<unsigned short>(value);
 
 
-        config.ReadKeyword("Video", "OpenGL", &VidConf.mOpengl, true);
+    std::string arcStr;
+    config.ReadString("Video", "aspect", arcStr, "none");
+    VidConf.mAspectCorrection.dim = 0;
+    sscanf( arcStr.c_str(), "%i:%i", &VidConf.mAspectCorrection.dim.x,
+            &VidConf.mAspectCorrection.dim.y );
 
-        std::string oglFilter;
-        config.ReadString("Video", "OGLfilter", oglFilter, "nearest");
+    config.ReadKeyword("Video", "vsync", &VidConf.mVSync, true);
+    config.ReadInteger("Video", "filter", &value, 1);
+    VidConf.m_ScaleXFilter = static_cast<filterOptionType>(value);
 
-        VidConf.mRenderScQuality =
-                (oglFilter == "linear") ?
-                    CVidConfig::RenderQuality::LINEAR :
-                    CVidConfig::RenderQuality::NEAREST;
+    std::string scaleType;
+    config.ReadString("Video", "scaletype", scaleType, "normal");
+    VidConf.m_normal_scale = (scaleType == "normal");
+
+    // if ScaleX is one and scaletype is not at normal, this is wrong.
+    // we will change that and force it to normal
+    if(scaleType == "normal")
+    {
+        VidConf.m_normal_scale = true;
+    }
+
+
+    config.ReadKeyword("Video", "OpenGL", &VidConf.mOpengl, true);
+
+    std::string oglFilter;
+    config.ReadString("Video", "OGLfilter", oglFilter, "nearest");
+
+    VidConf.mRenderScQuality =
+            (oglFilter == "linear") ?
+                CVidConfig::RenderQuality::LINEAR :
+                CVidConfig::RenderQuality::NEAREST;
 
 #ifdef VIRTUALPAD
-        config.ReadKeyword("Video", "VirtPad", &VidConf.mVPad, VidConf.mVPad);
-        config.ReadInteger("Video", "VirtPadSize", &VidConf.mVPadSize, VidConf.mVPadSize);
+    config.ReadKeyword("Video", "VirtPad", &VidConf.mVPad, VidConf.mVPad);
+    config.ReadInteger("Video", "VirtPadSize", &VidConf.mVPadSize, VidConf.mVPadSize);
 #endif
-        config.ReadKeyword("Video", "ShowCursor", &VidConf.mShowCursor, true);
-        config.ReadKeyword("Video", "TiltedScreen", &VidConf.mTiltedScreen, false);
+    config.ReadKeyword("Video", "ShowCursor", &VidConf.mShowCursor, true);
+    config.ReadKeyword("Video", "TiltedScreen", &VidConf.mTiltedScreen, false);
 
 
-		st_camera_bounds &CameraBounds = VidConf.m_CameraBounds;
-        config.ReadInteger("Bound", "left", &CameraBounds.left, 152);
-        config.ReadInteger("Bound", "right", &CameraBounds.right, 168);
-        config.ReadInteger("Bound", "up", &CameraBounds.up, 92);
-        config.ReadInteger("Bound", "down", &CameraBounds.down, 108);
-        config.ReadInteger("Bound", "speed", &CameraBounds.speed, 20);
-		gVideoDriver.setVidConfig(VidConf);
+    st_camera_bounds &CameraBounds = VidConf.m_CameraBounds;
+    config.ReadInteger("Bound", "left", &CameraBounds.left, 152);
+    config.ReadInteger("Bound", "right", &CameraBounds.right, 168);
+    config.ReadInteger("Bound", "up", &CameraBounds.up, 92);
+    config.ReadInteger("Bound", "down", &CameraBounds.down, 108);
+    config.ReadInteger("Bound", "speed", &CameraBounds.speed, 20);
+    gVideoDriver.setVidConfig(VidConf);
 
-		int framerate;
-        config.ReadInteger("Video", "fps", &framerate, 60);
-        gTimer.setFPS( float(framerate) );
-
-
-		int audio_rate, audio_channels, audio_format;
-		bool audio_sndblaster;
-        config.ReadInteger("Audio", "rate", &audio_rate, 44000);
-        config.ReadInteger("Audio", "channels", &audio_channels, 2);
-        config.ReadInteger("Audio", "format", &audio_format, AUDIO_U8);
-        config.ReadKeyword("Audio", "sndblaster", &audio_sndblaster, false);
-        gSound.setSettings(audio_rate, audio_channels, audio_format, audio_sndblaster);
+    int framerate;
+    config.ReadInteger("Video", "fps", &framerate, 60);
+    gTimer.setFPS( float(framerate) );
 
 
-		int sound_vol, music_vol;
-        config.ReadInteger("Audio", "musicvol", &music_vol, SDL_MIX_MAXVOLUME);
-        config.ReadInteger("Audio", "soundvol", &sound_vol, SDL_MIX_MAXVOLUME);
+    int audio_rate, audio_channels, audio_format;
+    bool audio_sndblaster;
+    config.ReadInteger("Audio", "rate", &audio_rate, 44000);
+    config.ReadInteger("Audio", "channels", &audio_channels, 2);
+    config.ReadInteger("Audio", "format", &audio_format, AUDIO_U8);
+    config.ReadKeyword("Audio", "sndblaster", &audio_sndblaster, false);
+    gSound.setSettings(audio_rate, audio_channels, audio_format, audio_sndblaster);
 
-        gSound.setMusicVolume(Uint8(music_vol), false);
-        gSound.setSoundVolume(Uint8(sound_vol), false);
 
+    int sound_vol, music_vol;
+    config.ReadInteger("Audio", "musicvol", &music_vol, SDL_MIX_MAXVOLUME);
+    config.ReadInteger("Audio", "soundvol", &sound_vol, SDL_MIX_MAXVOLUME);
 
-	}
+    gSound.setMusicVolume(Uint8(music_vol), false);
+    gSound.setSoundVolume(Uint8(sound_vol), false);
 
-	return true;
+    return true;
 }
 
 void CSettings::loadDefaultGraphicsCfg() //Loads default graphics
 {
     gVideoDriver.setMode(320,200);
-	gVideoDriver.isFullscreen(false);
+    gVideoDriver.isFullscreen(false);
 
-	gVideoDriver.enableOpenGL(false);           
+    gVideoDriver.enableOpenGL(false);
     gVideoDriver.setRenderQuality(CVidConfig::RenderQuality::LINEAR);
 
 	gVideoDriver.setZoom(1);

@@ -48,7 +48,6 @@
 #include "sdl/audio/Audio.h"
 
 
-
 /**
  * @brief  This is the function where CG beings
  *
@@ -63,6 +62,7 @@
  */
 int main(int argc, char *argv[])
 {
+	
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 #ifdef ANDROID
     SDL_SetMainReady( );
@@ -106,6 +106,7 @@ int main(int argc, char *argv[])
         errors << "Not even able to create \"CGLog.html\"." << endl;
         return 1;
     }
+
 	
 	gLogging.textOut(FONTCOLORS::GREEN,"Created Log file...\n");
 
@@ -124,6 +125,7 @@ int main(int argc, char *argv[])
 		gLogging.textOut(FONTCOLORS::RED,"Failed loading the Video Driver.\n");
         return 1;
     }	
+
 
 	gLogging.textOut(FONTCOLORS::GREEN, "Loading Settings...\n");
 
@@ -154,6 +156,7 @@ int main(int argc, char *argv[])
     // Initialize CG and run the main cycle if worthy //
     ////////////////////////////////////////////////////
 	gLogging.textOut(FONTCOLORS::GREEN,"Starting App cycle...\n");
+
     if( gApp.init( argc, argv ) )
     {			
         ////////////////////////////////
@@ -170,7 +173,7 @@ int main(int argc, char *argv[])
 	{
 		gLogging.textOut(FONTCOLORS::RED,"Failed to init the app cycle ...\n");
 		return 1;
-	}
+    }
 
 	gLogging.textOut(FONTCOLORS::GREEN,"Saving Display settings...\n");
     gSettings.saveDispCfg();

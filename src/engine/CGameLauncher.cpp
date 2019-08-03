@@ -50,6 +50,7 @@ mLauncherDialog(CGUIDialog(GsRect<float>(0.1f, 0.1f, 0.8f, 0.85f),
                            CGUIDialog::FXKind::EXPAND)),
 mGameScanner()
 {	
+
     gSound.unloadSoundData();
     // The last menu has been removed. Restore back the game status
     gBehaviorEngine.setPause(false);
@@ -432,6 +433,7 @@ bool CGameLauncher::scanExecutables(const std::string& path)
 
 bool CGameLauncher::start()
 {
+
     // CRC init when Launcher starts.
     crc32_init();
 

@@ -41,7 +41,8 @@ bool IniReader::Parse()
 	std::string section;
 	std::string value;
 
-	while(!feof(f) && !ferror(f)) {
+    while(!feof(f) && !ferror(f))
+    {
 		unsigned char c = 0;
 		if(fread(&c, 1, 1, f) == 0) break;
 
@@ -60,7 +61,11 @@ bool IniReader::Parse()
 
 		case S_SECTION:
 			if(c == ']') {
-				if( ! OnNewSection(section) )  { res = false; goto parseCleanup; }
+                if( ! OnNewSection(section) )
+                {
+                    res = false;
+                    goto parseCleanup;
+                }
 				state = S_DEFAULT; NewSection(section); break; }
 			else if(c == '\n') {
 				warnings << "WARNING: section-name \"" << section << "\" of " << m_filename << " is not closed correctly" << endl;
@@ -80,7 +85,11 @@ bool IniReader::Parse()
 
 		case S_PROPVALUE:
 			if(c == '\n' || c == '#') {
-				if( ! OnEntry(section, propname, value) ) { res = false; goto parseCleanup; }
+                if( ! OnEntry(section, propname, value) )
+                {
+                    res = false;
+                    goto parseCleanup;
+                }
 				NewEntryInSection(propname, value);
 				if(c == '#') state = S_IGNORERESTLINE; else state = S_DEFAULT;
 				break; }
@@ -94,7 +103,8 @@ bool IniReader::Parse()
 	}
 
 	// In case the endline is missing at the end of file, finish the parsing of the last line
-	if (state == S_PROPVALUE)  {
+    if (state == S_PROPVALUE)
+    {
 		if( ! OnEntry(section, propname, value) ) { res = false; goto parseCleanup; }
 		NewEntryInSection(propname, value);
 	}

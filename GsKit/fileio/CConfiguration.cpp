@@ -41,10 +41,12 @@ bool CConfiguration::saveCfgFile()
 	return true;
 }
 
+/*
 bool CConfiguration::OnNewSection (const std::string& section)
 {	return true;	}
 bool CConfiguration::OnEntry (const std::string& section, const std::string& propname, const std::string& value)
 {	return true;	}
+*/
 
 void CConfiguration::WriteString(const std::string& section, const std::string& key, const std::string& string)
 {

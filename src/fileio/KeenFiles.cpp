@@ -38,24 +38,23 @@ bool loadGamefileNames()
 
     auto pModule = gPython.loadModule( "keen5", gKeenFiles.gameDir );
 
-if (pModule != nullptr)
-{
-    bool ok = true;
-    std::string stdmapheadFilename;
-    ok &= loadStrFunction(pModule, "getMapheadFile", stdmapheadFilename);
+    if (pModule != nullptr)
+    {
+        bool ok = true;
+        std::string stdmapheadFilename;
+        ok &= loadStrFunction(pModule, "getMapheadFile", stdmapheadFilename);
 
-    std::string stdGamemapsFilename;
-    ok &= loadStrFunction(pModule, "getGamemapsFile", stdGamemapsFilename);
+        std::string stdGamemapsFilename;
+        ok &= loadStrFunction(pModule, "getGamemapsFile", stdGamemapsFilename);
 
-    gKeenFiles.mapheadFilename = stdmapheadFilename;
-    gKeenFiles.gamemapsFilename = stdGamemapsFilename;
+        gKeenFiles.mapheadFilename = stdmapheadFilename;
+        gKeenFiles.gamemapsFilename = stdGamemapsFilename;
 
-    return ok;
-}
+        return ok;
+    }
 
-
+    return false;
 #else
     return true;
 #endif
-
 }
