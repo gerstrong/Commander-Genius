@@ -20,7 +20,6 @@ class CSettings : public GsSingleton<CSettings>
 {
 public:
 
-	CSettings();
     bool saveDispCfg();
 	bool saveDrvCfg();
 	bool loadDrvCfg();

@@ -10,8 +10,10 @@
 #include <base/utils/FindFile.h>
 #include <fstream>
 
-CConfiguration::CConfiguration(const std::string& filename) :
-IniReader(filename)
+const std::string CConfiguration::CONFIGFILENAME = "cgenius.cfg";
+
+CConfiguration::CConfiguration() :
+IniReader(CONFIGFILENAME)
 {}
 
 CConfiguration::~CConfiguration()

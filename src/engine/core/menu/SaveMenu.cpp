@@ -89,6 +89,7 @@ void CSaveMenu::ponder(const float)
     auto &curWidget = mpMenuDialog->CurrentWidget();
     auto pInput = std::dynamic_pointer_cast<InputText>(curWidget);
 
+#if !defined(NOTYPESAVE)
     int minIC = IC_LEFT;
 
     if(pInput!=nullptr)
@@ -97,7 +98,6 @@ void CSaveMenu::ponder(const float)
             minIC = IC_JUMP;
     }
 
-#if !defined(NOTYPESAVE)
     // Command (Keyboard/Joystick) are handled here
     for( int cmd = minIC ; cmd < MAX_COMMANDS ; cmd++ )
     {

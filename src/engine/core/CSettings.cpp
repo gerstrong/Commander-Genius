@@ -19,28 +19,13 @@
 #include "fileio/KeenFiles.h"
 #include "engine/core/VGamepads/vgamepadsimple.h"
 
-
-
-/**
- * \brief	The CSettings class handles the saving and loading of all the settings that are saved in
- * 			the game. Those are, video, audio, options and input.
- *
- * \param	p_option	pointer to an array that stores the options settings of the game
- */
-CSettings::CSettings()
-{
-	notes << "Reading game options from " << GetFullFileName(CONFIGFILENAME) << endl;
-	notes << "Will write game options to " << GetWriteFullFileName(CONFIGFILENAME, true) << endl;
-}
-
-
 /**
  * \brief	Only saves the last used resolution or window size.
  * \return	If the configuration has been saved successfully, it return true, else it's false.
  */
 bool CSettings::saveDispCfg()
 {
-    CConfiguration Configuration(CONFIGFILENAME);
+    CConfiguration Configuration;
     Configuration.Parse();
 
     CVidConfig &VidConf = gVideoDriver.getVidConfig();
@@ -58,7 +43,7 @@ bool CSettings::saveDispCfg()
  */
 bool CSettings::saveDrvCfg()
 {
-    CConfiguration Configuration(CONFIGFILENAME);
+    CConfiguration Configuration;
 
     try
     {
@@ -153,7 +138,7 @@ bool CSettings::saveDrvCfg()
  */
 bool CSettings::loadDrvCfg()
 {
-    CConfiguration config(CONFIGFILENAME);
+    CConfiguration config;
 
     if(!config.Parse())
     {
@@ -322,7 +307,7 @@ void CSettings::loadDefaultGameCfg()
  */
 bool CSettings::loadGameOptions()
 {
-	CConfiguration Configuration(CONFIGFILENAME);
+    CConfiguration Configuration;
 
 	if(!Configuration.Parse()) return false;
 
@@ -347,7 +332,7 @@ bool CSettings::loadGameOptions()
  */
 bool CSettings::saveGameOptions()
 {
-	CConfiguration Configuration(CONFIGFILENAME);
+    CConfiguration Configuration;
 
     if ( !Configuration.Parse() )
     {
@@ -365,5 +350,5 @@ bool CSettings::saveGameOptions()
 }
 
 const std::string CSettings::getConfigFileName() const
-{	return CONFIGFILENAME;	}
+{	return CConfiguration::CONFIGFILENAME;	}
 

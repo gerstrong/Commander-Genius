@@ -199,7 +199,7 @@ bool CInput::startJoyDriver()
  */
 void CInput::loadControlconfig(void)
 {
-	CConfiguration Configuration(CONFIGFILENAME);
+    CConfiguration Configuration;
 	if(Configuration.Parse())
 	{
 		std::string section;
@@ -261,7 +261,7 @@ void CInput::loadControlconfig(void)
  */
 void CInput::saveControlconfig()
 {
-	CConfiguration Configuration(CONFIGFILENAME);
+    CConfiguration Configuration;
 	Configuration.Parse();
 
 	std::string section;
@@ -773,7 +773,7 @@ void CInput::pollEvents()
 #endif
             {
                 const GsVec2D<int> rotPt(Event.tfinger.x,
-                                          Event.tfinger.y);
+                                         Event.tfinger.y);
                 transMouseRelCoord(Pos, rotPt, activeArea, tiltedScreen);
                 m_EventList.add( new PointingDevEvent( Pos, PDE_BUTTONDOWN ) );
                 gPointDevice.mPointingState.mActionButton = 1;

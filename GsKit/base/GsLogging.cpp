@@ -127,7 +127,7 @@ void CLogFile::textOut(FONTCOLORS Color, bool List, const std::string& Text)
 			textOut("<font color=blue>"); break;
         case FONTCOLORS::PURPLE:
 			textOut("<font color=purple>"); break;
-	};
+    }
 	
 	// Write the text
 	textOut(Text);

@@ -97,8 +97,10 @@ int main(int argc, char *argv[])
 
     SetBinaryDir( GetAbsolutePath(binary_dir) );
 
+    const auto cfgFName = gSettings.getConfigFileName();
+
     InitThreadPool();
-    InitSearchPaths(gSettings.getConfigFileName()); // TODO: Recursive scan bug left, check Issue #353?
+    InitSearchPaths(cfgFName); // TODO: Recursive scan bug left, check Issue #353?
 
 
     if( !gLogging.CreateLogfile("CGLog.html", appName, CGVERSION) )

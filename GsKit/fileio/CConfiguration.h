@@ -11,12 +11,10 @@
 #include "IniReader.h"
 #include <string>
 
-const std::string CONFIGFILENAME = "cgenius.cfg";
-
 class CConfiguration : public IniReader
 {
 public:
-	CConfiguration(const std::string& filename);
+    CConfiguration();
 
     virtual ~CConfiguration() override;
 
@@ -30,6 +28,8 @@ public:
 	void WriteString(const std::string& section, const std::string& key, const std::string& string);
 	void SetKeyword(const std::string& section, const std::string& keyword, const bool value);
 	void WriteInt(const std::string &section, const std::string &keyword, const int value);        
+
+    static const std::string CONFIGFILENAME;
 };
 
 #endif /* CCONFIGURATION_H */
