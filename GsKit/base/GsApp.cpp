@@ -316,7 +316,7 @@ void GsApp::runMainCycle()
             start = timerTicks();
 
             acc += elapsed;
-/*
+
             // Perform the game cycle
             while( acc > logicLatency )
             {
@@ -331,7 +331,7 @@ void GsApp::runMainCycle()
 
                 acc -= logicLatency;
             }
-*/
+
             // Now we render the whole GameControl Object to the blit surface
             render();
 
@@ -351,7 +351,7 @@ void GsApp::runMainCycle()
             elapsed = timerTicks() - start;
             total_elapsed += elapsed;
 
-            //if( mustShutdown() )
+            if( mustShutdown() )
                 break;
 
             // If renderLatency is zero or less, delays won't happens.
