@@ -23,6 +23,7 @@ m_max_permil(1000),
 mRunning(false),
 m_style(PROGRESS_STYLE_TEXT)
 {
+    /*
     SDL_Rect rect;
     GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
     rect.x = 0;		rect.y = 0;
@@ -30,6 +31,7 @@ m_style(PROGRESS_STYLE_TEXT)
 
     mProgressSfc.createRGBSurface(rect);
     mProgressSfc.makeBlitCompatible();
+    */
 }
 
 

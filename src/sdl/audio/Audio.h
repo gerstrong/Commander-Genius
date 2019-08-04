@@ -8,8 +8,8 @@
  * It manages the Soundslots, Music, etc. everything audio related to Commander Genius
  */
 
-#ifndef AUDIO_H
-#define AUDIO_H
+#ifndef SDL_AUDIO_EXTENSION_H
+#define SDL_AUDIO_EXTENSION_H
 
 #include <base/Singleton.h>
 
@@ -37,8 +37,8 @@ public:
 
 	void stopAllSounds();
     bool forcedisPlaying();
-	void callback(void *unused, Uint8 *stream, int len);
-	void pauseAudio(void);
+
+    void pauseAudio(void);
 	void resumeAudio(void);
 
 
@@ -111,6 +111,7 @@ public:
     bool getSoundBlasterMode() {	return mUseSoundBlaster;	}
     COPLEmulator &getOPLEmulatorRef() { return m_OPL_Player; }
 
+
 	void setSettings( const int rate,
 							  const int channels,
 							  const int format,
@@ -135,14 +136,15 @@ public:
 	// Tell whether a sound is played which has to stop the gameplay
 	bool pauseGamePlay();
 
+
 	// Returns as list of strings the frequencies
 	std::list<std::string> getAvailableRateList() const;
 
 protected:
-    bool mCallbackRunning = false;
-	SDL_AudioSpec mAudioSpec;
 
-    std::vector< void (SDLCALL *)(void *, Uint8 *, int) > mSubCallbackVec;
+    bool mCallbackRunning = false;
+
+	SDL_AudioSpec mAudioSpec;
 
 private:
 
@@ -162,6 +164,7 @@ private:
 
     COPLEmulator m_OPL_Player;
     bool mPauseGameplay = false;
+
 };
 
-#endif /* __AUDIO_H__ */
+#endif /* SDL_AUDIO_EXTENSION_H */

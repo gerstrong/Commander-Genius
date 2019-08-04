@@ -171,7 +171,7 @@ class CAudioResources
 {
 public:
     CAudioResources();
-    virtual ~CAudioResources() {}
+    virtual ~CAudioResources();
 
     virtual bool loadSoundData(const unsigned int dictOffset) = 0;
 	virtual void unloadSound() = 0;

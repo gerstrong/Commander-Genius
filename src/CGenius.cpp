@@ -134,7 +134,7 @@ int main(int argc, char *argv[])
         return 1;
     }	
 
-    gLogging.textOut(FONTCOLORS::GREEN, "Loading driver settings...\n");
+    gLogging.textOut(FONTCOLORS::GREEN, "Loading driver settings...\n");    
 
     // Check if there are settings on the PC, otherwise use defaults.
     if( !gSettings.loadDrvCfg() )
@@ -158,14 +158,16 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 		
+    return 0;
+
 
     ////////////////////////////////////////////////////
     // Initialize CG and run the main cycle if worthy //
     ////////////////////////////////////////////////////
-	gLogging.textOut(FONTCOLORS::GREEN,"Starting App cycle...\n");
+	gLogging.textOut(FONTCOLORS::GREEN,"Starting App cycle...\n");        
 
     if( gApp.init( argc, argv ) )
-    {			
+    {
         ////////////////////////////////
         // Set GameLauncher as Engine //
         ////////////////////////////////

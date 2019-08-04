@@ -1,10 +1,14 @@
-
+#ifdef WIN32
+#include <winsock2.h>
+#include <windows.h>
+#endif
 
 #include "gamedownloader.h"
 
 #include <base/utils/FindFile.h>
 #include <base/GsLogging.h>
 #include <cstdio>
+
 #include <curl/curl.h>
 #include <SDL_image.h>
 #include <fileio/KeenFiles.h>

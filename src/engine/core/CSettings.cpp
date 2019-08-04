@@ -44,7 +44,7 @@ bool CSettings::saveDispCfg()
  */
 bool CSettings::saveDrvCfg()
 {
-
+/*
     CConfiguration Configuration;
 
     try
@@ -130,6 +130,7 @@ bool CSettings::saveDrvCfg()
     }
 
     return ok;
+    */
 }
 
 /**
@@ -139,7 +140,7 @@ bool CSettings::saveDrvCfg()
  * \return		true if successful, false if not.
  */
 bool CSettings::loadDrvCfg()
-{      
+{
     CConfiguration config;
 
     if(!config.Parse())
@@ -230,6 +231,7 @@ bool CSettings::loadDrvCfg()
     int audio_channels = 2;
     int audio_format = AUDIO_U8;
     bool audio_sndblaster = false;
+
     config.ReadInteger("Audio", "rate", &audio_rate, audio_rate);
     config.ReadInteger("Audio", "channels", &audio_channels, audio_channels);
     config.ReadInteger("Audio", "format", &audio_format, audio_format);

@@ -15,6 +15,9 @@
 CAudioResources::CAudioResources()
 {}
 
+CAudioResources::~CAudioResources()
+{}
+
 bool CAudioResources::readISFintoWaveForm( CSoundSlot &soundslot,
                                            const byte *imfdata,
                                            const Uint8 formatsize )

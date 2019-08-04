@@ -11,7 +11,6 @@
 #include <SDL.h>
 #include <map>
 #include "CSoundSlot.h"
-//#include "common/CAudioResources.h"
 
 // sound play modes
 // start playing sound now, unless a higher priority sound is playing

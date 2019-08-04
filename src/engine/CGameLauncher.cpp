@@ -44,13 +44,11 @@
 
 /// Main Class implementation
 CGameLauncher::CGameLauncher() :
-mDonePatchSelection(false),
-mDoneExecSelection(false),
 mLauncherDialog(CGUIDialog(GsRect<float>(0.1f, 0.1f, 0.8f, 0.85f),
                            CGUIDialog::FXKind::EXPAND)),
 mGameScanner()
 {	
-
+/*
     gAudio.unloadSoundData();
     // The last menu has been removed. Restore back the game status
     gBehaviorEngine.setPause(false);
@@ -68,7 +66,7 @@ mGameScanner()
         gLogging.textOut(err);
     }
 #endif
-
+*/
 }
 
 CGameLauncher::~CGameLauncher()

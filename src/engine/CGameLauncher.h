@@ -60,9 +60,7 @@ class CGameLauncher : public GsEngine
 public:
     CGameLauncher();
 
-    ~CGameLauncher() override;
-
-	typedef std::vector<std::string> DirList;
+    virtual ~CGameLauncher() override;
 
     /**
      * @brief setupMenu This will setup the whole menu by scanning all the games in the path and building up the widgets for the selection screen
@@ -101,24 +99,19 @@ public:
         mPatchFilename = "";
     }
 
-	bool getQuit(){ return m_mustquit; }
-	std::string getDirectory(Uint8 slot) { return m_Entries.at(slot).path; }
+    bool getQuit() const { return m_mustquit; }
+    std::string getDirectory(Uint8 slot) const { return m_Entries.at(slot).path; }
     Uint8 getEpisode(Uint8 slot) const { return m_Entries.at(slot).episode; }
     std::string getEP1Directory() const { return m_Entries.at(m_ep1slot).path; }
 
+    typedef std::vector<std::string> DirList;
+
 private:
 
-    bool m_mustquit = false;
-    int m_chosenGame = -1;
-
-    bool mFinishedDownload = true;
-    bool mDownloading = false;
-
-    bool mDonePatchSelection; // Tells if the Patch file has been selected if any
+    std::string mExecFilename;
     std::string mPatchFilename;
 
-    bool mDoneExecSelection; // Tells if the Patch file has been selected if any
-    std::string mExecFilename;
+    int m_chosenGame = -1;
 
 	Uint8 m_episode;
 	DirList m_DirList;
@@ -193,6 +186,14 @@ private:
     int m_DownloadProgress = 0;
     int m_DownloadProgressError = 0;
     bool m_DownloadCancel = false;
+
+    bool m_mustquit = false;
+
+    bool mFinishedDownload = true;
+    bool mDownloading = false;
+
+    bool mDonePatchSelection = false; // Tells if the Patch file has been selected if any
+    bool mDoneExecSelection = false; // Tells if the Patch file has been selected if any
 };
 
 
