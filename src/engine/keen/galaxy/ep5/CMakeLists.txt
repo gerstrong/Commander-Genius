@@ -42,7 +42,7 @@ ai/CSpirogrip.h
 ai/CVolteface.h
 )
 
-add_library(engine_keen_galaxy_ep5 ${CXXSRC} ${HSRC} )
+add_library(engine_keen_galaxy_ep5 STATIC ${CXXSRC} ${HSRC} )
 
 
 target_link_libraries(engine_keen_galaxy_ep5

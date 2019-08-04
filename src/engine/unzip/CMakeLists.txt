@@ -31,7 +31,7 @@ else ( ZLIB_FOUND )
     Message(FATAL_ERROR "Zlib development packages not found!")
 endif( ZLIB_FOUND )
 
-add_library(unzip ${CXXSRC} ${HSRC})
+add_library(unzip STATIC ${CXXSRC} ${HSRC})
 
 
 # Link zlib

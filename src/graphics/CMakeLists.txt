@@ -15,7 +15,7 @@ SET(SRCS    effects/CColorMerge.cpp
             effects/CVibrate.h)
 
 
-add_library(graphics OBJECT ${SRCS})
+add_library(graphics STATIC OBJECT ${SRCS})
 
 set_property(GLOBAL APPEND PROPERTY CG_OBJ_LIBS $<TARGET_OBJECTS:graphics>)
 

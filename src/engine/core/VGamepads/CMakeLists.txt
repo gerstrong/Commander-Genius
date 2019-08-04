@@ -16,5 +16,5 @@ vgamepadsimple.cpp
 vgamepadsimple.h
 )
 
-add_library(engine_core_vgamepad ${SRCS})
+add_library(engine_core_vgamepad STATIC ${SRCS})
 

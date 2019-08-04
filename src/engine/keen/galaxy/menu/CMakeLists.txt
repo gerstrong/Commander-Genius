@@ -11,4 +11,4 @@ ComputerWrist.h
 GalaxyMenu.h
 )
 
-add_library(engine_keen_galaxy_menu ${CXXSRC} ${HSRC} )
+add_library(engine_keen_galaxy_menu STATIC ${CXXSRC} ${HSRC} )

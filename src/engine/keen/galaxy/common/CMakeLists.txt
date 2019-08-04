@@ -61,4 +61,4 @@ dialog/CMessageBoxGalaxy.h
 dialog/CMessageBoxSelection.h
 )
 
-add_library(engine_keen_galaxy_common ${CXXSRC} ${HSRC} )
+add_library(engine_keen_galaxy_common STATIC ${CXXSRC} ${HSRC} )

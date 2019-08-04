@@ -158,7 +158,7 @@ IF(USE_OPENGL)
     ADD_DEFINITIONS(-DUSE_OPENGL)
 ENDIF (USE_OPENGL)
 
-add_library(GsKit ${ALL_SRCS_GSKIT_BASE})
+add_library(GsKit STATIC ${ALL_SRCS_GSKIT_BASE})
 
 # The naming with the new Find cmake files related
 # to SDL is not always consistent. Some use the "2" as var name others not.

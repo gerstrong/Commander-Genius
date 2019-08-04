@@ -9,7 +9,7 @@ add_definitions(-DREFKEEN_VER_KDREAMS_ANYEGA_ALL)
 add_definitions(-DGRMODE=EGAGR)
 
 
-add_library(refkeen_kdreams
+add_library(refkeen_kdreams STATIC
         id_ca.cpp
         id_in.cpp
         id_mm.cpp

@@ -3177,7 +3177,7 @@ function (cotire_setup_unity_build_target _languages _configurations _target)
 	if ("${_targetType}" STREQUAL "EXECUTABLE")
 		add_executable(${_unityTargetName} ${_unityTargetSubType} EXCLUDE_FROM_ALL ${_unityTargetSources})
 	else()
-		add_library(${_unityTargetName} ${_unityTargetSubType} EXCLUDE_FROM_ALL ${_unityTargetSources})
+		add_library(${_unityTargetName} STATIC ${_unityTargetSubType} EXCLUDE_FROM_ALL ${_unityTargetSources})
 	endif()
 	# copy output location properties
 	set (_outputDirProperties

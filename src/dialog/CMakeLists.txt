@@ -13,6 +13,6 @@ set(HSRC
     CMessageBox.h
     CTextViewer.h)
 
-add_library(cg_dialog ${CXXSRC} ${HSRC})
+add_library(cg_dialog STATIC ${CXXSRC} ${HSRC})
 
 

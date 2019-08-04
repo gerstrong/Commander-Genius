@@ -146,6 +146,6 @@ set(HSRC
     playgame/CPlayGameVorticon.h
     )
 
-add_library(engine_keen_vorticon ${CXXSRC} ${HSRC})
+add_library(engine_keen_vorticon STATIC ${CXXSRC} ${HSRC})
 
 target_link_libraries(engine_keen_vorticon GsKit engine_keen)

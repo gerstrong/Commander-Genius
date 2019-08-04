@@ -36,7 +36,7 @@ set(SRCS
     VpadSettings.h
 )
 
-add_library(engine_core_menu ${SRCS})
+add_library(engine_core_menu STATIC ${SRCS})
 
 Target_link_libraries(engine_core_menu engine_core_menu_widgets)
 

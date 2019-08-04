@@ -48,7 +48,7 @@ Playerdefines.h
 spritedefines.h
 textmode.h)
 
-add_library(engine_core ${SRCS})
+add_library(engine_core STATIC ${SRCS})
 
 target_link_libraries(engine_core engine_core_menu)
 target_link_libraries(engine_core engine_core_mode)
