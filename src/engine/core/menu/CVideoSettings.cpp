@@ -55,7 +55,7 @@ GameMenu(GsRect<float>(0.15f, 0.20f, 0.65f, 0.55f), style )
 
 #ifdef VIRTUALPAD
     mpVPadSwitch  = new Switch( "VirtPad", style );
-    mpMenuDialog->add( mpVPadSwitch, style );
+    mpMenuDialog->add( mpVPadSwitch );
 #endif
 
     mpBorderColorSwitch = new Switch( "Brdr Color", style );
