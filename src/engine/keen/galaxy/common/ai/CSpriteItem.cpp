@@ -83,7 +83,7 @@ void CSpriteItem::getTouchedBy(CSpriteObject &theObject)
 			case 113: Item.m_points += 5000;	break;
 			default: break;
 			}
-			gSound.playSound( SOUND_GET_BONUS );
+            playSound( SOUND_GET_BONUS );
 		}
 
         if(Item.m_points >= Item.m_lifeAt)
@@ -97,7 +97,7 @@ void CSpriteItem::getTouchedBy(CSpriteObject &theObject)
 		{
 			newanimsprite = got_sprite_item_pics[ep-4][10];
 			Item.m_lifes++;
-			gSound.playSound( SOUND_EXTRA_LIFE );
+            playSound( SOUND_EXTRA_LIFE );
 		}		
 		
 		// keycard (Keen 5 only)
@@ -105,7 +105,7 @@ void CSpriteItem::getTouchedBy(CSpriteObject &theObject)
 		{
 			Item.m_keycards++;
 			newanimsprite = 231;
-			gSound.playSound( SOUND_GET_CARD );
+            playSound( SOUND_GET_CARD );
 		}
 
         // Enable pogo if some script would like that
@@ -148,7 +148,7 @@ void CSpriteItem::getTouchedBy(CSpriteObject &theObject)
 		{
 			Item.m_bullets += 5;
 			newanimsprite = got_sprite_item_pics[ep-4][11];
-			gSound.playSound( SOUND_GET_AMMO );
+            playSound( SOUND_GET_AMMO );
 		}
 		
 
@@ -171,7 +171,7 @@ void CSpriteItem::getTouchedBy(CSpriteObject &theObject)
 			default:
 				break;
 			}
-			gSound.playSound( SOUND_GET_GEM );
+            playSound( SOUND_GET_GEM );
 		}
 		
         spawnObj(new CItemEffect(mpMap, 0, getXPosition(), getYPosition(), newanimsprite, FADEOUT));

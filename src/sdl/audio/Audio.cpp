@@ -50,25 +50,28 @@ static const int availableRates[numAvailableRates]=
     Audio::get().callback(unused, stream, len);
 }*/
 
-Audio::Audio() :
-m_MusicVolume(SDL_MIX_MAXVOLUME),
-m_SoundVolume(SDL_MIX_MAXVOLUME)
+Audio::Audio()
 {
+
 	mAudioSpec.channels = 2; // Stereo Sound
 	mAudioSpec.format = AUDIO_S16; // 16-bit sound
 	mAudioSpec.freq = 44100; // high quality
 
     updateFuncPtrs();
+
 }
 
 Audio::~Audio()
 {
+
     // Wait until callback function finishes its calls
     while(mCallbackRunning);
+
 }
 
 bool Audio::init()
 {
+
 	gLogging.ftextOut("Starting the sound driver...<br>");
     //SDL_AudioSpec obtained;
 
@@ -131,7 +134,7 @@ bool Audio::init()
     gLogging << "Opened audio at " << audio_rate << " Hz "
              << bits << " bit "
              << (audio_channels>1?"stereo":"mono")
-             << ", " << mAudioSpec.size << " bytes audio buffer.\n";
+             << ", " << static_cast<int>(mAudioSpec.size) << " bytes audio buffer.\n";
 
     const unsigned int channels = 32;
     Mix_AllocateChannels(channels);
@@ -169,6 +172,7 @@ void mixAudioSigned16(Uint8 *dst, const Uint8 *src, Uint32 len, Uint32 volume);
  */
 void Audio::updateFuncPtrs()
 {
+
     if(mAudioSpec.format == AUDIO_S16)
     {
         mixAudio = mixAudioSigned16;
@@ -177,11 +181,13 @@ void Audio::updateFuncPtrs()
     {
         mixAudio = mixAudioUnsigned8;
     }
+
 }
 
 
 void Audio::destroy()
 {
+
 	stopAllSounds();
 
     Mix_HaltChannel(-1);
@@ -197,6 +203,7 @@ void Audio::destroy()
 	m_OPL_Player.shutdown();
 
     Mix_CloseAudio();
+
 }
 
 // stops all currently playing sounds
@@ -280,6 +287,7 @@ void Audio::setMusicVolume(const Uint8 volume,
 // returns true if a sound is currently playing in SoundPlayMode::PLAY_FORCE mode
 bool Audio::forcedisPlaying()
 {
+
     std::vector<CSoundChannel>::iterator snd_chnl = mSndChnlVec.begin();
     for( ; snd_chnl != mSndChnlVec.end() ; snd_chnl++)
     {
@@ -296,13 +304,16 @@ bool Audio::forcedisPlaying()
 void Audio::playSound(const GameSound snd,
                       const SoundPlayMode mode )
 {
+
 	playStereosound(snd, mode, 0);
+
 }
 
 void Audio::playStereofromCoord(const GameSound snd,
                                 const SoundPlayMode mode,
                                 const int xCoord )
 {
+
     if(mAudioSpec.channels == 2)
     {
         int bal = (xCoord - (320>>1));	// Faster calculation of balance transformation
@@ -322,12 +333,13 @@ void Audio::playStereofromCoord(const GameSound snd,
     {
         playSound(snd, mode);
     }
+
 }
 
 void Audio::playStereosound(const GameSound snd,
                             const SoundPlayMode mode,
                             const short balance)
-{
+{   
     if( mSndChnlVec.empty() ) return;
 
     if( !mpAudioRessources ) return;
@@ -353,6 +365,7 @@ void Audio::playStereosound(const GameSound snd,
     }
 
     playStereosoundSlot(slotplay, mode, balance);
+
 }
 
 
@@ -360,6 +373,7 @@ void Audio::playStereosoundSlot(unsigned char slotplay,
                                 const SoundPlayMode mode,
                                 const short balance)
 {
+
     CSoundSlot *pSlots = mpAudioRessources->getSlotPtr();
     CSoundSlot &chosenSlot = pSlots[slotplay];
 
@@ -411,12 +425,13 @@ void Audio::playStereosoundSlot(unsigned char slotplay,
 
             break;
         }
-	}
+    }
 }
 
 void Audio::setupSoundData(const std::map<GameSound, int> &slotMap,
                            CAudioResources *audioResPtr)
 {
+
     assert(audioResPtr);
 
     sndSlotMap = slotMap;
@@ -426,6 +441,7 @@ void Audio::setupSoundData(const std::map<GameSound, int> &slotMap,
 void Audio::unloadSoundData()
 {
     // Wait for callback to finish running...
+
     while(mCallbackRunning);
 
     mpAudioRessources.release();
@@ -442,12 +458,13 @@ bool Audio::pauseGamePlay()
 
 std::list<std::string> Audio::getAvailableRateList() const
 {
+
 	std::list<std::string> rateStrList;
 
 	for( unsigned int i=0 ; i<numAvailableRates ; i++ )
 		rateStrList.push_back( itoa(availableRates[i]) );
 
-	return rateStrList;
+    return rateStrList;
 }
 
 
@@ -455,6 +472,7 @@ std::list<std::string> Audio::getAvailableRateList() const
 void Audio::setSettings( const SDL_AudioSpec& audioSpec,
 	 	  	  	  	  	  const bool useSB )
 {
+
     mUseSoundBlaster = useSB;
 
 	// Check if rate matches to those available in the system
@@ -473,17 +491,19 @@ void Audio::setSettings( const SDL_AudioSpec& audioSpec,
 
 
 void Audio::setSettings( const int rate,
-						  const int channels,
-						  const int format,
-	 	  	  	  	  	  const bool useSB )
-{
+                         const int channels,
+                         const int format,
+                         const bool useSB )
+{    
+
 	SDL_AudioSpec nAudio = mAudioSpec;
 
 	nAudio.freq = rate;
-	nAudio.channels = channels;
-	nAudio.format = format;
+    nAudio.channels = Uint8(channels);
+    nAudio.format = SDL_AudioFormat(format);
 
 	setSettings(nAudio, useSB);
+
 }
 
 

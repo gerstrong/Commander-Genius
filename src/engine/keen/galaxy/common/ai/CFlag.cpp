@@ -122,7 +122,7 @@ void CFlag::process()
 {
     if(mPlayMapSound)
     {
-        gSound.playSound( SOUND_FLAG_APPEAR );
+        playSound( SOUND_FLAG_APPEAR );
         mPlayMapSound = false;
     }
 
@@ -155,7 +155,7 @@ void CFlag::processFlipping()
 	{
 	    setAction(A_FLAG_WAVE);        
 	    setActionSprite();
-	    gSound.playSound( SOUND_FLAG_LAND );
+        playSound( SOUND_FLAG_LAND );
 	    
 	    const auto episode = gBehaviorEngine.getEpisode();
         if(episode == 6)

@@ -62,15 +62,17 @@
  */
 int main(int argc, char *argv[])
 {
-	
+
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 #ifdef ANDROID
     SDL_SetMainReady( );
 #endif
 #endif
 
+
+
     const std::string appName = "Commander Genius";
-    gApp.setName(appName);
+    gApp.setName(appName);    
 
     // Check if CG should look into a given directory
     std::string binary_dir;
@@ -93,15 +95,17 @@ int main(int argc, char *argv[])
     {
         warnings << "Binary-argument not given, assuming current dir" << endl;
         binary_dir = ".";
-    }
+    }    
 
-    SetBinaryDir( GetAbsolutePath(binary_dir) );
+    SetBinaryDir( GetAbsolutePath(binary_dir) );    
 
-    const auto cfgFName = gSettings.getConfigFileName();
+    notes << "Initializing ThreadPool..." << endl;
 
     InitThreadPool();
-    InitSearchPaths(cfgFName); // TODO: Recursive scan bug left, check Issue #353?
 
+    const auto cfgFName = gSettings.getConfigFileName();
+    notes << "Configuration filename is: " << cfgFName << endl;
+    InitSearchPaths(cfgFName);
 
     if( !gLogging.CreateLogfile("CGLog.html", appName, CGVERSION) )
     {
@@ -109,8 +113,9 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-	
 	gLogging.textOut(FONTCOLORS::GREEN,"Created Log file...\n");
+
+    gLogging.textOut(FONTCOLORS::GREEN,"Initializing TTF driver...\n");
 
     if(!gTTFDriver.init())
     {
@@ -119,6 +124,7 @@ int main(int argc, char *argv[])
         return 1;
     }
 
+    gLogging.textOut(FONTCOLORS::GREEN,"Initializing Video driver...\n");
 
     // Init Video Driver with SDL all together
     if( !gVideoDriver.init() )
@@ -128,8 +134,7 @@ int main(int argc, char *argv[])
         return 1;
     }	
 
-
-	gLogging.textOut(FONTCOLORS::GREEN, "Loading Settings...\n");
+    gLogging.textOut(FONTCOLORS::GREEN, "Loading driver settings...\n");
 
     // Check if there are settings on the PC, otherwise use defaults.
     if( !gSettings.loadDrvCfg() )
@@ -139,6 +144,8 @@ int main(int argc, char *argv[])
         gSettings.saveDrvCfg();
     }
 
+    return 0;
+
     gLogging.textOut(FONTCOLORS::GREEN,"Loading game options...\n");
     if(!gSettings.loadGameOptions())
     {
@@ -147,7 +154,7 @@ int main(int argc, char *argv[])
     }	
 
 	gLogging.textOut(FONTCOLORS::GREEN,"Initializing the Sound system...\n");
-    if(!gSound.init())
+    if(!gAudio.init())
 	{
 		gLogging.textOut(FONTCOLORS::RED,"Failed to init the sound system...\n");
 		return 1;

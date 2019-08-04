@@ -22,7 +22,7 @@ GameMenu(GsRect<float>(0.075f, 0.24f, 0.85f, 0.4f), style )
 
     mpRate =
         mpMenuDialog->add(
-                new ComboSelection( "Rate", gSound.getAvailableRateList(), style) );
+                new ComboSelection( "Rate", gAudio.getAvailableRateList(), style) );
 
 #endif
 
@@ -48,12 +48,12 @@ GameMenu(GsRect<float>(0.075f, 0.24f, 0.85f, 0.4f), style )
 
     mpSoundVolume =
         mpMenuDialog->add( new NumberControl( "Sound Vol", 0, 100, 4, false,
-                                              gSound.getSoundVolume(), style ) );
+                                              gAudio.getSoundVolume(), style ) );
 
 
     mpMusicVolume =
         mpMenuDialog->add( new NumberControl( "Music Vol", 0, 100, 4, false,
-                                              gSound.getMusicVolume(), style ) );
+                                              gAudio.getMusicVolume(), style ) );
 
 	setMenuLabel("SNDEFFMENULABEL");
 
@@ -64,13 +64,13 @@ GameMenu(GsRect<float>(0.075f, 0.24f, 0.85f, 0.4f), style )
 
 void CAudioSettings::refresh()
 {
-	mAudioSpec = gSound.getAudioSpec();
-	mSoundblaster = gSound.getSoundBlasterMode();
+	mAudioSpec = gAudio.getAudioSpec();
+	mSoundblaster = gAudio.getSoundBlasterMode();
 	mSoundVolume = mpSoundVolume->getSelection();
     mMusicVolume = mpMusicVolume->getSelection();
 
-    mpSoundVolume->setSelection(gSound.getSoundVolume());
-    mpMusicVolume->setSelection(gSound.getMusicVolume());        
+    mpSoundVolume->setSelection(gAudio.getSoundVolume());
+    mpMusicVolume->setSelection(gAudio.getMusicVolume());        
 
 #if !defined(EMBEDDED)
 	mpRate->setSelection( itoa(mAudioSpec.freq) );
@@ -91,14 +91,14 @@ void CAudioSettings::ponder(const float deltaT)
 
 	if( mSoundVolume != mpSoundVolume->getSelection() )
     {
-		gSound.playSound(SOUND_GET_ITEM);
+		gAudio.playSound(SOUND_GET_ITEM);
     }
 
 	mSoundVolume = mpSoundVolume->getSelection();
     mMusicVolume = mpMusicVolume->getSelection();
 
-    gSound.setSoundVolume( mSoundVolume );
-    gSound.setMusicVolume( mMusicVolume );
+    gAudio.setSoundVolume( mSoundVolume );
+    gAudio.setMusicVolume( mMusicVolume );
 }
 
 
@@ -116,8 +116,8 @@ void CAudioSettings::release()
 
     mSoundblaster = ( mpSBToggle->getSelection() == "SndBlaster" ? true : false );
 
-	gSound.setSettings(mAudioSpec, mSoundblaster);
-	gSound.init();
+	gAudio.setSettings(mAudioSpec, mSoundblaster);
+	gAudio.init();
 
 	gSettings.saveDrvCfg();
 }

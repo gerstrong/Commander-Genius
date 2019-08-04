@@ -167,7 +167,7 @@ void CCouncilMember::getTouchedBy(CSpriteObject &theObject)
 		}
 
 
-		gSound.playSound(SOUND_RESCUE_COUNCIL_MEMBER, SoundPlayMode::PLAY_PAUSEALL);
+        playSound(SOUND_RESCUE_COUNCIL_MEMBER, SoundPlayMode::PLAY_PAUSEALL);
         gEventManager.add( new EventPlayTrack(5) );        
 
 		std::string elder_text[2];

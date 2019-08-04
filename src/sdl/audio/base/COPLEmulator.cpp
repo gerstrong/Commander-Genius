@@ -84,7 +84,7 @@ void COPLEmulator::setup()
     m_opl_chip.clear();
     Chip__Chip(&m_opl_chip);
 
-    const SDL_AudioSpec &audioSpec = gSound.getAudioSpec();
+    const SDL_AudioSpec &audioSpec = gAudio.getAudioSpec();
     Chip__Setup(&m_opl_chip, audioSpec.freq);
 
     StartOPLforAdlibSound();

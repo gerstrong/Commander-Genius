@@ -29,7 +29,7 @@ bool CAudioGalaxy::readPCSpeakerSoundintoWaveForm(CSoundSlot &soundslot,
 	const longword size = READLONGWORD(pcsdata_ptr);
 	soundslot.priority = READWORD(pcsdata_ptr);
 
-    const SDL_AudioSpec &audioSpec = gSound.getAudioSpec();
+    const SDL_AudioSpec &audioSpec = gAudio.getAudioSpec();
 
 	std::vector<Sint16> waveform;
 	// TODO:  There should be a better way of determining if sound is signed or not...
@@ -322,7 +322,7 @@ bool CAudioGalaxy::LoadFromAudioCK(const unsigned int dictOffset)
 
     setupAudioMap();
 
-    const SDL_AudioSpec &audioSpec = gSound.getAudioSpec();
+    const SDL_AudioSpec &audioSpec = gAudio.getAudioSpec();
 
     if(audioSpec.format == 0)
     {
@@ -565,7 +565,7 @@ bool CAudioGalaxy::LoadFromAudioCK(const unsigned int dictOffset)
  */
 bool CAudioGalaxy::loadSoundData(const unsigned int dictOffset)
 {       
-    COPLEmulator &OPLEmulator = gSound.getOPLEmulatorRef();
+    COPLEmulator &OPLEmulator = gAudio.getOPLEmulatorRef();
 
     OPLEmulator.shutdown();
     OPLEmulator.init();

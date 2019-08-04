@@ -18,3 +18,7 @@ vgamepadsimple.h
 
 add_library(engine_core_vgamepad STATIC ${SRCS})
 
+Target_link_libraries(engine_core_vgamepad GsKit)
+
+
+

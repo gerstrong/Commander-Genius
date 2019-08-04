@@ -139,7 +139,7 @@ void CKorath::getTouchedBy(CSpriteObject &theObject)
                 mIsDead = true;
 
             setAction(A_KORATH_STUNNED);
-            gSound.playSound(SOUND_FUSE_BREAK);
+            playSound(SOUND_FUSE_BREAK);
         }
         else if(mJumpStunnable && jumpActive)
         {
@@ -147,7 +147,7 @@ void CKorath::getTouchedBy(CSpriteObject &theObject)
                 mIsDead = true;
 
             setAction(A_KORATH_STUNNED);
-            gSound.playSound(SOUND_FUSE_BREAK);
+            playSound(SOUND_FUSE_BREAK);
         }
         else
         {

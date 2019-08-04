@@ -29,7 +29,7 @@ void CSpecialItem::getTouchedBy(CSpriteObject& theObject)
 		auto &item = player->m_Inventory.Item.m_special;
 
 		// Sound play
-		gSound.playSound(SOUND_GET_SPECIAL_ITEM, SoundPlayMode::PLAY_PAUSEALL);
+        playSound(SOUND_GET_SPECIAL_ITEM, SoundPlayMode::PLAY_PAUSEALL);
 
 		switch(mFoeID)
 		{

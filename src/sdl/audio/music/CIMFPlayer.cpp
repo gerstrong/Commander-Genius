@@ -23,7 +23,7 @@
 CIMFPlayer::CIMFPlayer(COPLEmulator& opl_emulator) :
 m_opl_emulator(opl_emulator)
 {
-    m_samplesPerMusicTick = gSound.getAudioSpec().freq /
+    m_samplesPerMusicTick = gAudio.getAudioSpec().freq /
             m_opl_emulator.getIMFClockRate();
 }
 
@@ -95,7 +95,7 @@ bool CIMFPlayer::loadMusicTrack(const int track)
 bool CIMFPlayer::open(const bool lock)
 {
 	m_numreadysamples = m_IMFDelay = 0;
-    m_samplesPerMusicTick = gSound.getAudioSpec().freq / m_opl_emulator.getIMFClockRate();
+    m_samplesPerMusicTick = gAudio.getAudioSpec().freq / m_opl_emulator.getIMFClockRate();
 	
 	m_opl_emulator.setup();
 
@@ -117,9 +117,9 @@ void CIMFPlayer::close(const bool lock)
 
 void CIMFPlayer::OPLUpdate(byte *buffer, const unsigned int length)
 {    
-    auto &audioSpec = gSound.getAudioSpec();
+    auto &audioSpec = gAudio.getAudioSpec();
 
-    const int vol = gSound.getMusicVolume();
+    const int vol = gAudio.getMusicVolume();
 
     if(mMixBuffer.empty())
     {
@@ -180,7 +180,7 @@ void CIMFPlayer::readBuffer(Uint8* buffer,
     if(!m_playing)
         return;
 
-    auto &audioSpec = gSound.getAudioSpec();
+    auto &audioSpec = gAudio.getAudioSpec();
     
     /// if a delay of the instruments is pending, play it
     //Uint32 sampleslen = audioSpec.samples;
@@ -230,7 +230,7 @@ void CIMFPlayer::readBuffer(Uint8* buffer,
 // We still a local to file declared object from the IMFPlayer class.
 // That one is only used here!
 
-CIMFPlayer locIMFPlayer(gSound.getOPLEmulatorRef());
+CIMFPlayer locIMFPlayer(gAudio.getOPLEmulatorRef());
 
 int locImfMusPos = 0;
 

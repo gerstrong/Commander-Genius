@@ -51,7 +51,7 @@ mLauncherDialog(CGUIDialog(GsRect<float>(0.1f, 0.1f, 0.8f, 0.85f),
 mGameScanner()
 {	
 
-    gSound.unloadSoundData();
+    gAudio.unloadSoundData();
     // The last menu has been removed. Restore back the game status
     gBehaviorEngine.setPause(false);
 

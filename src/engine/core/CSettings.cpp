@@ -25,6 +25,7 @@
  */
 bool CSettings::saveDispCfg()
 {
+
     CConfiguration Configuration;
     Configuration.Parse();
 
@@ -43,6 +44,7 @@ bool CSettings::saveDispCfg()
  */
 bool CSettings::saveDrvCfg()
 {
+
     CConfiguration Configuration;
 
     try
@@ -101,12 +103,12 @@ bool CSettings::saveDrvCfg()
         Configuration.WriteInt("Bound", "down", CameraBounds.down);
         Configuration.WriteInt("Bound", "speed", CameraBounds.speed);
 
-        Configuration.WriteInt("Audio", "channels", (gSound.getAudioSpec()).channels);
-        Configuration.WriteInt("Audio", "format", (gSound.getAudioSpec()).format);
-        Configuration.WriteInt("Audio", "rate", (gSound.getAudioSpec()).freq);
-        Configuration.SetKeyword("Audio", "sndblaster", gSound.getSoundBlasterMode());
-        Configuration.WriteInt("Audio", "musicvol", (gSound.getMusicVolume()));
-        Configuration.WriteInt("Audio", "soundvol", (gSound.getSoundVolume()));
+        Configuration.WriteInt("Audio", "channels", (gAudio.getAudioSpec()).channels);
+        Configuration.WriteInt("Audio", "format", (gAudio.getAudioSpec()).format);
+        Configuration.WriteInt("Audio", "rate", (gAudio.getAudioSpec()).freq);
+        Configuration.SetKeyword("Audio", "sndblaster", gAudio.getSoundBlasterMode());
+        Configuration.WriteInt("Audio", "musicvol", (gAudio.getMusicVolume()));
+        Configuration.WriteInt("Audio", "soundvol", (gAudio.getSoundVolume()));
 
     }
     catch(...)
@@ -137,13 +139,13 @@ bool CSettings::saveDrvCfg()
  * \return		true if successful, false if not.
  */
 bool CSettings::loadDrvCfg()
-{
+{      
     CConfiguration config;
 
     if(!config.Parse())
     {
         return false;
-    }
+    }    
 
     CVidConfig VidConf;
 
@@ -166,10 +168,10 @@ bool CSettings::loadDrvCfg()
         return false;
     }
 
+
     config.ReadKeyword("Video", "fullscreen", &VidConf.mFullscreen, false);
     config.ReadInteger("Video", "scale", &value, 1);
-    VidConf.Zoom = static_cast<unsigned short>(value);
-
+    VidConf.Zoom = static_cast<unsigned short>(value);    
 
     std::string arcStr;
     config.ReadString("Video", "aspect", arcStr, "none");
@@ -185,13 +187,13 @@ bool CSettings::loadDrvCfg()
     config.ReadString("Video", "scaletype", scaleType, "normal");
     VidConf.m_normal_scale = (scaleType == "normal");
 
+
     // if ScaleX is one and scaletype is not at normal, this is wrong.
     // we will change that and force it to normal
     if(scaleType == "normal")
     {
         VidConf.m_normal_scale = true;
     }
-
 
     config.ReadKeyword("Video", "OpenGL", &VidConf.mOpengl, true);
 
@@ -224,27 +226,30 @@ bool CSettings::loadDrvCfg()
     gTimer.setFPS( float(framerate) );
 
 
-    int audio_rate, audio_channels, audio_format;
-    bool audio_sndblaster;
-    config.ReadInteger("Audio", "rate", &audio_rate, 44000);
-    config.ReadInteger("Audio", "channels", &audio_channels, 2);
-    config.ReadInteger("Audio", "format", &audio_format, AUDIO_U8);
-    config.ReadKeyword("Audio", "sndblaster", &audio_sndblaster, false);
-    gSound.setSettings(audio_rate, audio_channels, audio_format, audio_sndblaster);
+    int audio_rate = 44000;
+    int audio_channels = 2;
+    int audio_format = AUDIO_U8;
+    bool audio_sndblaster = false;
+    config.ReadInteger("Audio", "rate", &audio_rate, audio_rate);
+    config.ReadInteger("Audio", "channels", &audio_channels, audio_channels);
+    config.ReadInteger("Audio", "format", &audio_format, audio_format);
+    config.ReadKeyword("Audio", "sndblaster", &audio_sndblaster, false);    
 
+    gAudio.setSettings(audio_rate, audio_channels, audio_format, audio_sndblaster);
 
     int sound_vol, music_vol;
     config.ReadInteger("Audio", "musicvol", &music_vol, SDL_MIX_MAXVOLUME);
     config.ReadInteger("Audio", "soundvol", &sound_vol, SDL_MIX_MAXVOLUME);
 
-    gSound.setMusicVolume(Uint8(music_vol), false);
-    gSound.setSoundVolume(Uint8(sound_vol), false);
+    gAudio.setMusicVolume(Uint8(music_vol), false);
+    gAudio.setSoundVolume(Uint8(sound_vol), false);
 
     return true;
 }
 
 void CSettings::loadDefaultGraphicsCfg() //Loads default graphics
 {
+
     gVideoDriver.setMode(320,200);
     gVideoDriver.isFullscreen(false);
 
@@ -279,16 +284,19 @@ void CSettings::setOption( const GameOption opt,
                            const std::string &name,
                            const char value)
 {
+
     stOption &option = gBehaviorEngine.mOptions[opt];
 	option.menuname = menuname;
 	option.name = name;
 	option.value = value;
+
 }
 /**
  * \brief  This is normally processed when the game is started. It sets the default options.
  */
 void CSettings::loadDefaultGameCfg()
 {
+
     setOption( GameOption::ALLOWPKING,		"Friendly Fire  ", "pking", 1 );
     setOption( GameOption::KEYSTACK,		"Keystacking    ", "keystack", 0 );
     setOption( GameOption::LVLREPLAYABILITY,"Replay Levels  ", "level_replayability", 0 );
@@ -298,6 +306,7 @@ void CSettings::loadDefaultGameCfg()
     setOption( GameOption::SPECIALFX,		"Special Effects", "specialfx", 1 );
     setOption( GameOption::SHOWFPS,			"Show FPS       ", "showfps", 0 );
     setOption( GameOption::SANDWICHMENU,    "Menu Button    ", "sandwichbutton", 1 );
+
 }
 
 /**
@@ -307,6 +316,7 @@ void CSettings::loadDefaultGameCfg()
  */
 bool CSettings::loadGameOptions()
 {
+
     CConfiguration Configuration;
 
 	if(!Configuration.Parse()) return false;
@@ -323,7 +333,8 @@ bool CSettings::loadGameOptions()
         }
 	}
 	
-	gLogging.ftextOut("<br>Your personal settings were loaded successfully...<br>");
+    gLogging.ftextOut("<br>Your personal settings were loaded successfully...<br>");
+
 	return true;
 }
 
@@ -332,6 +343,7 @@ bool CSettings::loadGameOptions()
  */
 bool CSettings::saveGameOptions()
 {
+
     CConfiguration Configuration;
 
     if ( !Configuration.Parse() )
@@ -345,10 +357,6 @@ bool CSettings::saveGameOptions()
         Configuration.SetKeyword("Game", option.second.name, option.second.value);
     }
 
-	Configuration.saveCfgFile();
+    Configuration.saveCfgFile();
 	return true;
 }
-
-const std::string CSettings::getConfigFileName() const
-{	return CConfiguration::CONFIGFILENAME;	}
-

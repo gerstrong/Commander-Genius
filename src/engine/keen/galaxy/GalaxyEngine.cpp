@@ -12,7 +12,6 @@
 #include "fileio/CPatcher.h"
 #include "fileio/CSaveGameController.h"
 #include "engine/core/CMessages.h"
-#include "sdl/audio/Audio.h"
 #include "graphics/effects/CColorMerge.h"
 
 #include "CPassive.h"
@@ -24,6 +23,8 @@
 #include <base/video/CVideoDriver.h>
 #include <fileio/KeenFiles.h>
 #include <base/GsArguments.h>
+
+#include "sdl/audio/Audio.h"
 
 namespace galaxy
 {
@@ -47,7 +48,7 @@ bool setupAudio()
 
     if(audio->loadSoundData(0))
     {
-        gSound.setupSoundData(audio->sndSlotMapGalaxy[ep], audio);
+        gAudio.setupSoundData(audio->sndSlotMapGalaxy[ep], audio);
         return true;
     }
 

@@ -532,7 +532,7 @@ void CPlayerWM::processMoving()
         {
             if( !m_cantswim )
             {
-                gSound.playSound( SOUND_CANT_DO, SoundPlayMode::PLAY_PAUSEALL );
+                playSound( SOUND_CANT_DO, SoundPlayMode::PLAY_PAUSEALL );
                 showMsgWithBmp(mSprVar,
                                gBehaviorEngine.getString("CANT_SWIM_TEXT"),
                                105, LEFT, false, nullptr);

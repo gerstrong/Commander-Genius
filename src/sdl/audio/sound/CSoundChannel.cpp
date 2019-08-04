@@ -83,7 +83,7 @@ void CSoundChannel::setupSound( CSoundSlot &SndSlottoPlay,
 
     auto waveChunk = mpCurrentSndSlot->WaveChunk();
 
-    const auto sndVol = gSound.getSoundVolume();
+    const auto sndVol = gAudio.getSoundVolume();
 
     Mix_VolumeChunk(waveChunk, sndVol);
 

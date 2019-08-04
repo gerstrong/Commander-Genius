@@ -47,7 +47,7 @@ void CPlayerDive::kill(const bool force,
 		if(mp_processState == &CPlayerBase::processDying && yinertia < 0)
 			return;
 
-		gSound.playSound( SOUND_KEEN_DIE, SoundPlayMode::PLAY_NORESTART );
+        playSound( SOUND_KEEN_DIE, SoundPlayMode::PLAY_NORESTART );
 		setupGalaxyObjectOnMap(0x0D2E, (rand()%2));
 
         if(!mDying)

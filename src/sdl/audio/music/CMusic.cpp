@@ -28,16 +28,16 @@ bool CMusic::loadTrack(const int track)
         return false;
     }
 
-    gSound.pauseAudio();
+    gAudio.pauseAudio();
 
 
     if(loadIMFTrack(track))
     {
-        gSound.resumeAudio();
+        gAudio.resumeAudio();
         return true;
     }
 
-    gSound.resumeAudio();
+    gAudio.resumeAudio();
     return false;
 }
 
@@ -57,7 +57,7 @@ bool CMusic::load(const std::string &musicfile)
 
     if(musicfile == "") return false;
 
-    const SDL_AudioSpec &audioSpec = gSound.getAudioSpec();
+    const SDL_AudioSpec &audioSpec = gAudio.getAudioSpec();
 
 	if(audioSpec.format != 0)
 	{
@@ -107,13 +107,13 @@ bool CMusic::load(const std::string &musicfile)
 
 void CMusic::reload()
 {
-    gSound.pauseAudio();
+    gAudio.pauseAudio();
 
     play();
 
     Mix_RewindMusic();
 
-    gSound.resumeAudio();
+    gAudio.resumeAudio();
 }
 
 void CMusic::play()

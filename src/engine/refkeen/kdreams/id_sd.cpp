@@ -1761,7 +1761,7 @@ SD_PlaySound(id0_word_t sound)
 {        
     // NOTE: GameSound names do not match here yet!
     GameSound gameSnd = GameSound(sound);
-    gSound.playSound(gameSnd);
+    gAudio.playSound(gameSnd);
 
     /*SoundCommon	id0_far *s;
 

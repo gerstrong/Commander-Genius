@@ -42,7 +42,7 @@ void CCamera::cycleCamlead()
 
     if( numPlayers == 1 ) // For one player this doesn't make sense to change
     {
-        gSound.playSound(SOUND_CANT_DO);
+        playSound(SOUND_CANT_DO);
         return;
     }
 

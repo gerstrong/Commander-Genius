@@ -54,11 +54,10 @@ target_link_libraries(engine_core engine_core_menu)
 target_link_libraries(engine_core engine_core_mode)
 target_link_libraries(engine_core engine_core_vgamepad)
 
-target_link_libraries(engine_core sdl_extensions_audio sdl_extensions_sys)
+target_link_libraries(engine_core 
+                       sdl_extensions_audio 
+					   sdl_extensions_sys)
 
-# TODO: Not sure why Windows requires this yet.
-#if(WIN32)
-#    Target_link_libraries(engine_core SDL2)
-#endif(WIN32)
+Target_link_libraries(engine_core SDL2)
 
 Target_link_libraries(engine_core GsKit)

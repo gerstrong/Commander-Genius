@@ -212,7 +212,7 @@ void CPlayerBase::processExiting()
 void CPlayerBase::getAnotherLife(const int lc_x, const int lc_y, const bool display, const bool alt)
 {
 	m_Inventory.Item.m_lifes++;
-	gSound.playSound( SOUND_EXTRA_LIFE );
+    playSound( SOUND_EXTRA_LIFE );
 	if(display)
 	{
         const int ep = gBehaviorEngine.getEpisode();
@@ -408,7 +408,7 @@ void CPlayerBase::processLevelMiscFlagsCheck()
 	    getAnotherLife(lc_x, lc_y, true, true);
 	  }
 	  
-	  gSound.playSound( SOUND_GET_DROP );
+      playSound( SOUND_GET_DROP );
 	}
 
 #if USE_PYTHON3
@@ -448,14 +448,14 @@ void CPlayerBase::processLevelMiscFlagsCheck()
             spawnObj( new CItemEffect(mpMap, 0, lc_x<<CSF, lc_y<<CSF, got_sprite_item_pics[ep-4][4+i-21], FADEOUT) );
 			switch(i)
 			{
-			case 21: m_Item.m_points += 100;	gSound.playSound( SOUND_GET_BONUS );	break;
-			case 22: m_Item.m_points += 200;	gSound.playSound( SOUND_GET_BONUS );	break;
-			case 23: m_Item.m_points += 500;	gSound.playSound( SOUND_GET_BONUS );	break;
-			case 24: m_Item.m_points += 1000;	gSound.playSound( SOUND_GET_BONUS );	break;
-			case 25: m_Item.m_points += 2000;	gSound.playSound( SOUND_GET_BONUS );	break;
-			case 26: m_Item.m_points += 5000;	gSound.playSound( SOUND_GET_BONUS );	break;
+            case 21: m_Item.m_points += 100;	playSound( SOUND_GET_BONUS );	break;
+            case 22: m_Item.m_points += 200;	playSound( SOUND_GET_BONUS );	break;
+            case 23: m_Item.m_points += 500;	playSound( SOUND_GET_BONUS );	break;
+            case 24: m_Item.m_points += 1000;	playSound( SOUND_GET_BONUS );	break;
+            case 25: m_Item.m_points += 2000;	playSound( SOUND_GET_BONUS );	break;
+            case 26: m_Item.m_points += 5000;	playSound( SOUND_GET_BONUS );	break;
 			case 27: getAnotherLife(lc_x, lc_y, true, false);	break;
-			case 28: m_Item.m_bullets += 5;	gSound.playSound( SOUND_GET_AMMO );	break;
+            case 28: m_Item.m_bullets += 5;	playSound( SOUND_GET_AMMO );	break;
 			default: break;
 			}
 
@@ -556,7 +556,7 @@ void CPlayerBase::getEaten()
 		solid = false;
 		honorPriority = false;
 		m_timer = 0;
-        gSound.playSound( SOUND_KEEN_DIE,
+        playSound( SOUND_KEEN_DIE,
                           SoundPlayMode::PLAY_NORESTART );
 
 		mp_processState = &CPlayerBase::processGetEaten;        
@@ -769,7 +769,7 @@ void CPlayerBase::kill(const bool force,
 
     solid = false;
     honorPriority = false;
-    gSound.playSound( SOUND_KEEN_DIE, SoundPlayMode::PLAY_NORESTART );
+    playSound( SOUND_KEEN_DIE, SoundPlayMode::PLAY_NORESTART );
 }
 
 

@@ -22,7 +22,7 @@
 #include "CMap.h"
 #include "graphics/GsGraphics.h"
 #include "options.h"
-#include "sdl/audio/Audio.h"
+
 
 // Enumerations are here
 #include "objenums.h"
@@ -299,6 +299,12 @@ class CSpriteObject
     void adjustSlopedTiles( int x, int y1, int y2, const int xspeed );
     bool moveSlopedTileDown( int x, int y, const int xspeed );
     void moveSlopedTileUp( int x, int y, const int xspeed );
+
+    /**
+     *  \description plays certain sound of an object. Stereo will automatically applied when used
+     */
+    void playSound( const GameSound snd,
+                    const SoundPlayMode mode=SoundPlayMode::PLAY_NOW );
     
     // getters for positions
     GsVec2D<int> &getPosition()
@@ -339,12 +345,6 @@ class CSpriteObject
     virtual void getShotByRay(object_t &);
     void kill_intersecting_tile(int mpx, int mpy, CSpriteObject &theObject);
     CMap *getMapPtr() { return mpMap; }
-    
-    /**
-	 *  \description plays certain sound of an object. Stereo will automatically applied when used
-	 */
-    void playSound( const GameSound snd,
-		    const SoundPlayMode mode=SoundPlayMode::PLAY_NOW );
     
     virtual void draw();
     

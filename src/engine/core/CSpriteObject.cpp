@@ -17,6 +17,8 @@
 
 #include "fileio/KeenFiles.h"
 
+#include "sdl/audio/Audio.h"
+
 int CSpriteObject::m_number_of_objects = 0; // The current number of total objects we have within the game!
 
 ///
@@ -173,9 +175,9 @@ bool CSpriteObject::loadPythonScripts(const std::string &scriptBaseName)
     loadAiGetterBool("mayShoot", mMayShoot);
 
     auto pModule = mModule.rawPtr();
-    int health = mHealthPoints;
+    int health = int(mHealthPoints);
     loadAiGetterInteger(pModule, "healthPoints", health);
-    mHealthPoints = health;
+    mHealthPoints = static_cast<unsigned int>(health);
 
     int walksound = mWalkSound;
     loadAiGetterInteger(pModule, "walkSound", walksound);
@@ -477,11 +479,11 @@ void CSpriteObject::kill_intersecting_tile(int mpx, int mpy, CSpriteObject &theO
 {
 	 unsigned int xpix,ypix;
 	 unsigned int x, y;
-	 xpix = mpx<<CSF;
-	 ypix = mpy<<CSF;
+     xpix = static_cast<unsigned int>(mpx << CSF);
+     ypix = static_cast<unsigned int>(mpy << CSF);
 
-	 x = theObject.getXMidPos();
-	 y = theObject.getYUpPos();
+     x = static_cast<unsigned int>(theObject.getXMidPos());
+     y = static_cast<unsigned int>(theObject.getYUpPos());
 	 if (theObject.exists)
 	 {
 		 if (xpix-(1<<CSF) <= x && xpix+(1<<CSF) >= x)
@@ -523,7 +525,7 @@ void CSpriteObject::blink(Uint16 frametime)
 void CSpriteObject::playSound(const GameSound snd,
                               const SoundPlayMode mode )
 {
-	gSound.playStereofromCoord(snd, mode, scrx);
+	gAudio.playStereofromCoord(snd, mode, scrx);
 }
 
 

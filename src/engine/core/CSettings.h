@@ -11,8 +11,8 @@
 
 #include <base/Singleton.h>
 
-#ifndef CSETTINGS_H_
-#define CSETTINGS_H_
+#ifndef CSETTINGS_H
+#define CSETTINGS_H
 
 #define gSettings	CSettings::get()
 
@@ -33,7 +33,10 @@ public:
                     const std::string &name,
                     const char value);
 
-	const std::string getConfigFileName() const;
+    std::string getConfigFileName() const
+    {
+        return CConfiguration::CONFIGFILENAME;
+    }
 };
 
-#endif /* CSETTINGS_H_ */
+#endif /* CSETTINGS_H */

@@ -195,17 +195,17 @@ void CGUIText::updateLegacyTextSfc(const GsRect<float> &displayRect)
         for(unsigned int idx = 0 ; idx<numTexLines ; idx++)
         {
             auto &theText = mTextVec[idx];
-            const auto textWidth = Font.calcPixelTextWidth(theText);
+            const auto textWidth = int(Font.calcPixelTextWidth(theText));
 
             // The tolerance is the amount of pixels at least of difference to consider
             // for scrolling. We consider a tolerance so strange jittery are avoided for text
             // that nearly fits
-            const auto tol = 8;
+            const int tol = 8;
 
             // The first text item decides wheter scrolling takes place
-            if(textWidth > lRect.w + tol) // tolerance
+            if(textWidth > int(lRect.w) + tol) // tolerance
             {
-                mScrollPosMax = int(textWidth) - lRect.w;
+                mScrollPosMax = textWidth - lRect.w;
             }
             else
             {

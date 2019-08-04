@@ -46,7 +46,7 @@ bool setupAudio()
 
     if(audio->loadSoundData(0))
     {
-        gSound.setupSoundData(audio->sndSlotMap, audio);
+        gAudio.setupSoundData(audio->sndSlotMap, audio);
         return true;
     }
 

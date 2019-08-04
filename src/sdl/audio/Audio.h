@@ -13,7 +13,7 @@
 
 #include <base/Singleton.h>
 
-#define gSound Audio::get()
+#define gAudio Audio::get()
 
 #include <SDL.h>
 #include <map>
@@ -30,7 +30,7 @@ class Audio : public GsSingleton<Audio>
 
 public:
     Audio();
-    ~Audio();
+    virtual ~Audio();
 
 	bool init();
 	void stop();
@@ -152,8 +152,8 @@ private:
 
     std::unique_ptr<CAudioResources> mpAudioRessources;
 
-	Uint8 m_MusicVolume;
-	Uint8 m_SoundVolume;
+    Uint8 m_MusicVolume = SDL_MIX_MAXVOLUME;
+    Uint8 m_SoundVolume = SDL_MIX_MAXVOLUME;
 
     // Boolean that holds if the Soundblaster is to be used. If set false it will use the PC Speaker emulation
     bool mUseSoundBlaster = false;

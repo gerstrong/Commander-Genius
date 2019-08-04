@@ -98,7 +98,7 @@ void CGrabbiter::getTouchedBy(CSpriteObject& theObject)
         else
         {
             // Sound play
-            gSound.playSound(SOUND_GRABBITER_HUNGRY, SoundPlayMode::PLAY_PAUSEALL);
+            playSound(SOUND_GRABBITER_HUNGRY, SoundPlayMode::PLAY_PAUSEALL);
 
             // Show grabbiter message
             showMsg(sprVar, gBehaviorEngine.getString("KEEN_GRABBITER_HUNGRY") );
