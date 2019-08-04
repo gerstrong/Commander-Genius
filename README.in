@@ -290,7 +290,7 @@ How to compile it under Ubuntu:
         - libsdl2-ttf-dev
 
  * Create an empty build Dir: mkdir -p CGeniusBuild
- * Extract my source code into the "CGeniusSrc" directory. 
+ * Extract my source code into the "CGeniusSrc" directory.
  * cd CGeniusBuild
  * Run "cmake ../CGeniusSrc".
  * Run "make".
@@ -334,6 +334,44 @@ Compiling CG on any Linux/UNIX (other than Ubuntu or Fedora):
  * Run "cmake ../CGeniusSrc".
  * Run "make".
  * Then, you can run "CGenius".
+
+Compiling CG on Windows (using MSYS2):
+This is my recommended way, because you have a nice terminal/shell and pacman
+for package management. All the required dependencies can be pulled without
+too much hassle. You can also install my favorite IDE QtCreator and use all
+together if you want to develop CG further
+
+ * Go to https://www.msys2.org/ and get the i686 version for 32-bit or for
+   64-bit x86_64. You can have both builds in one system but I highly recommend
+   staying always on one.
+ * Start its setup and just follow the instructions
+ * Like webpage instructions indicate: pacman -Syu and eventually pacman -Su
+   If you are entirely through with that setup,
+   the installation of dependencies for CG are next.
+
+ -> Prepare Environment for CG
+ * Set PACPFIX (32-bit):  export PACPFIX=mingw32/mingw-w64-i686
+ * pacman -S ${PACPFIX}-SDL2
+ * pacman -S ${PACPFIX}-SDL2_image
+ * pacman -S ${PACPFIX}-SDL2_mixer
+ * pacman -S ${PACPFIX}-SDL2_ttf
+ * pacman -S ${PACPFIX}-cmake
+ * pacman -S ${PACPFIX}-curl
+ * pacman -S ${PACPFIX}-zlib
+ * pacman -S ${PACPFIX}-boost
+ * pacman -S ${PACPFIX}-python3
+ * pacman -S ${PACPFIX}-gcc
+ * pacman -S ${PACPFIX}-make
+ * pacman -S make
+ * pacman -S git
+
+ -> Build CG using MSYS2
+ * git clone https://gitlab.com/Dringgstein/commandergenius.git
+ * mkdir cgenius_build
+ * cd cgenius_build
+ * cmake -G "Unix Makefiles" ../Commander-Genius
+ * make
+
 
 We also provide CMake for Wiz, if you want to compile it for embedded systems.
 We had support for Linux and Win32, but since there is a bug when built for a
@@ -538,6 +576,7 @@ FCTW
 Markus Arnold (ThinkLabs. Thanks for your generous contribution.)
 DSL (Nice legacy icon contribution)
 Motorfingers
+James Le Cuirot
 Tim Wegener
 Qbix and his DOSBox team (for creating DOSBox, which made Dosfusion possible)
 Chrisfischtopher
