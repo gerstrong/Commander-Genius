@@ -134,17 +134,14 @@ bool CGameLauncher::setupMenu()
                         new GsButton( "O",
                               GsRect<float>(0.93f, 0.0f, 0.069f, 0.069f),
                               openSettingsMenuEvent,
-                              -1,
-                              0.75f, 1.0f, 1.0f )  );
+                              -1, 0.75f, 1.0f, 1.0f )  );
 
 
 #ifdef VIRTUALPAD
-    mLauncherDialog.add(new GsButton( "VPad", new OpenVGamePadSettingsEvent(),
-                                             -1,
-                                             0.75f,
-                                             1.0f,
-                                             1.0f ),
-                               GsRect<float>(0.75f, 0.0f, 0.17f, 0.069f) );
+    mLauncherDialog.add(new GsButton( "VPad",
+                                      GsRect<float>(0.75f, 0.0f, 0.17f, 0.069f),
+                                      new OpenVGamePadSettingsEvent(),
+                                      -1, 0.75f, 1.0f, 1.0f ) );
 #endif
 
 

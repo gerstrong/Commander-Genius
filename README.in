@@ -362,6 +362,7 @@ together if you want to develop CG further
  * pacman -S ${PACPFIX}-python3
  * pacman -S ${PACPFIX}-gcc
  * pacman -S ${PACPFIX}-make
+ * pacman -S ${PACPFIX}-nsis
  * pacman -S make
  * pacman -S git
 
