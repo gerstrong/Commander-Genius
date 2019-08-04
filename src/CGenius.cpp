@@ -144,8 +144,6 @@ int main(int argc, char *argv[])
         gSettings.saveDrvCfg();
     }
 
-    return 0;
-
     gLogging.textOut(FONTCOLORS::GREEN,"Loading game options...\n");
     if(!gSettings.loadGameOptions())
     {
