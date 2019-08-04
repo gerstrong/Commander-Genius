@@ -56,7 +56,7 @@
 #endif
 
 
-#include "unzip.h"
+#include <unzip.h>
 
 #define CASESENSITIVITY (0)
 #define WRITEBUFFERSIZE (8192)
@@ -64,7 +64,7 @@
 
 #ifdef _WIN32
 #define USEWIN32IOAPI
-#include "iowin32.h"
+#include <iowin32.h>
 #endif
 /*
   mini unzip, demo of unzip package
