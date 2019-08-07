@@ -206,7 +206,7 @@ bool CSettings::loadDrvCfg()
                 CVidConfig::RenderQuality::NEAREST;
 
 #ifdef VIRTUALPAD
-    config.ReadKeyword("Video", "VirtPad", &VidCSettings.cppConf.mVPad, VidConf.mVPad);
+    config.ReadKeyword("Video", "VirtPad", &VidConf.mVPad, VidConf.mVPad);
     config.ReadInteger("Video", "VirtPadSize", &VidConf.mVPadSize, VidConf.mVPadSize);
 #endif
     config.ReadKeyword("Video", "ShowCursor", &VidConf.mShowCursor, true);
