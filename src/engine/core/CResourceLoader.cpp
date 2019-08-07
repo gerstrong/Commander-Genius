@@ -121,6 +121,12 @@ void CResourceLoaderBackground::run(const float)
  */
 void CResourceLoaderBackground::render()
 {
+    if(!mProgressSfc)
+    {
+        const SDL_Rect sdlRect = gVideoDriver.getBlitSurface()->clip_rect;
+        mProgressSfc.create(0, sdlRect.w, sdlRect.h, RES_BPP, 0, 0, 0, 0);
+    }
+
     mProgressSfc.fillRGB(0, 0, 0);
 
     GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
