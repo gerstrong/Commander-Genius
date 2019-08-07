@@ -350,7 +350,8 @@ together if you want to develop CG further
    the installation of dependencies for CG are next.
 
  -> Prepare Environment for CG
- * Set PACPFIX (32-bit):  export PACPFIX=mingw32/mingw-w64-i686
+ * Set PACPFIX (32-bit):  export PACPFIX=mingw64/mingw-w64-x64
+ * pacman -S base-devel
  * pacman -S ${PACPFIX}-SDL2
  * pacman -S ${PACPFIX}-SDL2_image
  * pacman -S ${PACPFIX}-SDL2_mixer
@@ -359,11 +360,8 @@ together if you want to develop CG further
  * pacman -S ${PACPFIX}-curl
  * pacman -S ${PACPFIX}-zlib
  * pacman -S ${PACPFIX}-boost
- * pacman -S ${PACPFIX}-python3
  * pacman -S ${PACPFIX}-gcc
- * pacman -S ${PACPFIX}-make
  * pacman -S ${PACPFIX}-nsis
- * pacman -S make
  * pacman -S git
 
  -> Build CG using MSYS2
