@@ -771,6 +771,8 @@ void CGameLauncher::ponderPatchDialog()
     if(mpPatchDialog)
         mpPatchDialog->processLogic();
 
+    auto &be = gBehaviorEngine;
+
     // Launch the code of the Startmenu here in case a game has been chosen
     if( mDonePatchSelection ) // Means a game has been selected
     {
@@ -783,7 +785,7 @@ void CGameLauncher::ponderPatchDialog()
         // We have to check which Episode will be used
         const int episode = getEpisode( m_chosenGame );
 
-        gBehaviorEngine.mPatchFname = mPatchFilename;
+        be.mPatchFname = mPatchFilename;
 
         if( episode > 0 ) // The game has to have a valid episode!
         {

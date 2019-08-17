@@ -65,7 +65,8 @@ public:
 
     void operator()() const
 	{
-		gInput.resetControls(mSelPlayer);
+        assert(mSelPlayer>0);
+        gInput.resetControls(mSelPlayer-1);
 	}
 
 	int mSelPlayer;

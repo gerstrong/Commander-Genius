@@ -201,7 +201,7 @@ public:
 	bool getPulsedCommand(int player, int command, int msec);
 	bool isJoystickAssgmnt(const int player, const int command);
 	bool getHoldedCommand(int player, int command);
-	int getJoyValue(int player, int command);
+    int getJoyValue(const int player, const int command);
 	bool getHoldedCommand(int command);
 	bool getPressedCommand(int command);
 	bool getPressedCommand(int player, int command);
@@ -252,7 +252,7 @@ public:
 	
 	void setupNewEvent(Uint8 device, int position);
 
-    void setupInputCommand( std::array<stInputCommand, NUM_INPUTS> &input,
+    void setupInputCommand(std::array<stInputCommand, MAX_COMMANDS> &input,
                             int action,
                             const std::string &string );
 
@@ -274,7 +274,8 @@ public:
      */
     void setCommand(const int player, const int command, const bool active)
     {
-        InputCommand[player][command].active = active;
+        auto &input=InputCommand[player];
+        input[command].active = active;
     }
 
 
@@ -342,7 +343,7 @@ private:
 	SDL_Event Event;
 	std::list<SDL_Joystick*> mp_Joysticks;
 
-    std::array< std::array<stInputCommand, NUM_INPUTS>, MAX_COMMANDS > InputCommand;
+    std::array< std::array<stInputCommand, MAX_COMMANDS>, NUM_INPUTS > InputCommand;
 	bool TwoButtonFiring[NUM_INPUTS];
 	bool mAnalogAxesMovement[NUM_INPUTS];
 	bool mSuperPogo[NUM_INPUTS];
