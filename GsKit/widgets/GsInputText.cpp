@@ -50,6 +50,9 @@ GsButton(text,
 
 bool CGUIInputText::sendEvent(const InputCommand command)
 {
+    if(!isEnabled())
+        return false;
+
     if(command == IC_STATUS || command == IC_JUMP)
     {
         mTyping = !mTyping;
