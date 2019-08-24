@@ -503,7 +503,7 @@ void ComputerWrist::renderMainMenu()
 
     // Centered Bitmap to draw
     const auto mainMenu_x = (blitsfc.width()-mMainMenuBmp.width()) / 2;
-    const auto mainMenu_y = mUpperBorderBmp.height();
+    auto mainMenu_y = (mUpperBorderBmp.empty()) ? 0 : mUpperBorderBmp.height();
 
     mMainMenuBmp.draw(mainMenu_x, mainMenu_y);
 
