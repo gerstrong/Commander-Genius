@@ -1,29 +1,14 @@
 find_package(PkgConfig)
 
-if ( PKGCONFIG_FOUND )
+if ( PKGCONFIG_FOUND AND NOT WIN32 )
     pkg_check_modules(ZLIB minizip)
 else ( PKGCONFIG_FOUND )
     unset(ZLIB_FOUND)
 endif ( PKGCONFIG_FOUND )
 
 if ( ZLIB_FOUND )
-
-    if(WIN32)
-        set(CXXSRC
-            miniunz.c
-            ioapi.c
-            iowin32.c
-            unzip.c)
-
-        set(HSRC
-            ioapi.h
-            iowin32.h
-            unzip.h)
-
-    else(WIN32)
-        set(CXXSRC miniunz.c)
-        unset(HSRC)
-    endif(WIN32)
+    set(CXXSRC miniunz.c)
+    unset(HSRC)
 
 else ( ZLIB_FOUND )
     find_package(ZLIB REQUIRED)
