@@ -80,27 +80,6 @@ void GsScrollingFrame::processRender(const GsRect<float> &srcRectFloat,
 void GsScrollingFrame::processRender(const GsRect<float> &rectDispCoordFloat)
 {
     processRender(rectDispCoordFloat, rectDispCoordFloat);
-
-    /*
-    GsWeakSurface blitsfc(gVideoDriver.getBlitSurface());
-
-    // Transform to the display coordinates
-    auto displayRect = getRect();
-
-    displayRect.transform(rectDispCoordFloat);
-
-    auto dim = rectDispCoordFloat.dim;
-
-    displayRect.pos.x +=
-            mScrollX * dim.x;
-    displayRect.pos.y +=
-            mScrollY * dim.y;
-
-    for(auto &widget : mWidgetList)
-    {
-        widget->processRender(displayRect);
-    }
-*/
 }
 
 

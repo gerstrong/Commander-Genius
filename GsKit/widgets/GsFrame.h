@@ -35,10 +35,15 @@ public:
     void enableBackground(const bool value)
     {        mBgEnabled = value;    }
 
+    GsVec2D<float> getOuterbound() const
+    {   return mOuterbound; }
+
 protected:
 
     GsColor mBackgroundColor;
     bool mBgEnabled = true;
+
+    GsVec2D<float> mOuterbound;
 
 private:
 

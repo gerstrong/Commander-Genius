@@ -1056,10 +1056,9 @@ void CInput::pollEvents()
 void CInput::processJoystickAxis(void)
 {
     // Input for player commands
-    for(int j=0 ; j<InputCommand.size() ; j++)
+    for(auto &input : InputCommand)
     {
-        auto &input = InputCommand[j];
-        for(int i=0 ; i<input.size() ; i++)
+        for(unsigned int i=0 ; i<input.size() ; i++)
         {
             if(input[i].joyeventtype == ETYPE_JOYAXIS)
 			{
