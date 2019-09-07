@@ -1,3 +1,8 @@
+v2.3.6:
+-------
+- Scrollbar improvements
+- Crash fixes, bug fixes
+
 v2.3.5:
 -------
 - Search path issues fixed
