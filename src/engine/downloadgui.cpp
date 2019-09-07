@@ -108,7 +108,8 @@ void CGameLauncher::ponderDownloadDialog()
     if(sel == -1)
         return;
 
-    if(mLastStoreSelection != sel)
+    if(mLastStoreSelection != sel &&
+        size_t(sel) < mGameCatalogue.size())
     {        
         auto &gameEntry = mGameCatalogue[size_t(sel)];
 
