@@ -9,9 +9,9 @@ GsScrollbar::GsScrollbar(const GsRect<float> &rect) :
 GsWidgetsManager(rect)
 {
     mpUpButton =
-            add(new GsButton("U", GsRect<float>(0.0f, 0.0f, 1.0f, 0.1f)));
+            add(new GsButton("", GsRect<float>(0.0f, 0.0f, 1.0f, 0.1f)));
     mpDownButton =
-            add(new GsButton("D", GsRect<float>(0.0f, 0.9f, 1.0f, 0.1f)));
+            add(new GsButton("", GsRect<float>(0.0f, 0.9f, 1.0f, 0.1f)));
 }
 
 void GsScrollbar::setScrollDownFn(const std::function <void ()> function)
@@ -42,6 +42,37 @@ void GsScrollbar::processLogic()
     GsWidgetsManager::processLogic();
 }
 
+void GsScrollbar::processPointingStateRel(const GsRect<float> &rect)
+{
+    GsWidgetsManager::processPointingStateRel(rect);
+
+    if(isReleased())
+    {
+        const auto absRect = rect.transformed(getRect());
+
+        GsPointingState &pointingState = gPointDevice.mPointingState;
+
+        const bool hasPoint = absRect.HasPoint(pointingState.mPos);                
+
+        if(hasPoint)
+        {
+            const auto y1 = absRect.pos.y;
+            const auto mouseY = y1 + pointingState.mPos.y;
+            const auto scrollPosY = y1 + mPosRel;
+
+            if(scrollPosY > mouseY)
+            {
+                mpUpButton->activateFunction();
+            }
+
+            if(scrollPosY < mouseY)
+            {
+                mpDownButton->activateFunction();
+            }
+        }
+    }
+
+}
 
 void GsScrollbar::processRender(const GsRect<float> &RectDispCoordFloat)
 {
