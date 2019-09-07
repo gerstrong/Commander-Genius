@@ -24,8 +24,22 @@ bool TouchButton::loadEmdbeddedPicture(const unsigned char *data,
                                        const unsigned int size)
 {
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    return mTexture.loadFromMem(data, size,
-                         gVideoDriver.Renderer());
+
+    const auto ok = mTexture.loadFromMem(data, size,
+                                         gVideoDriver.Renderer());
+
+    if(!ok) return false;
+
+    int h,w;
+
+    SDL_QueryTexture(mTexture.getPtr(),
+                     nullptr, nullptr,
+                     &w, &h);
+
+    this->w = w;    this->h = h;
+
+    return ok;
+
 #else
     return false;
 #endif
