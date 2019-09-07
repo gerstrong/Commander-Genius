@@ -13,7 +13,7 @@
 #include "GsFont2x.xpm"
 #include "GsFont4x.xpm"
 #include "GsFont8x.xpm"
-#include "AlternateFont.xpm"
+//#include "AlternateFont.xpm"
 #include <string.h>
 #include <cstdlib>
 

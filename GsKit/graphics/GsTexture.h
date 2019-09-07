@@ -76,34 +76,7 @@ public:
      */
     bool loadFromMem(const unsigned char *data,
                      const unsigned int size,
-                     SDL_Renderer *renderer)
-    {
-        // Do we have an old texture? Unload it
-        if(mpTexture)
-            unload();
-
-        SDL_RWops *rw = SDL_RWFromMem(reinterpret_cast<void*>
-                                      (const_cast<unsigned char*>(data)),
-                                      int(size));
-
-        // Load image at specified path
-        SDL_Surface* loadedSurface = IMG_Load_RW(rw, 1);
-        if( loadedSurface )
-        {
-            //Create texture from surface pixels
-            mpTexture = SDL_CreateTextureFromSurface( renderer, loadedSurface );
-            if( mpTexture == nullptr )
-            {
-                //printf( "Unable to create texture from %s! SDL Error: %s\n", path.c_str(), SDL_GetError() );
-            }
-
-            // Get rid of old surface
-            SDL_FreeSurface( loadedSurface );
-        }
-
-        return (mpTexture!=nullptr);
-    }
-
+                     SDL_Renderer *renderer);
 
      //Set blending
     void setBlendMode( SDL_BlendMode blending )
@@ -155,12 +128,12 @@ public:
                              const Uint8 b );
 
 
-    bool loadFromMem(const unsigned char *data,
+/*    bool loadFromMem(const unsigned char *data,
                      const unsigned int size,
                      SDL_Renderer *renderer,
-                     const bool dark);
+                     const bool dark);*/
 
-    bool loadFromSurface(const GsSurface &sfc);
+    //bool loadFromSurface(const GsSurface &sfc);
 
 private:
 
