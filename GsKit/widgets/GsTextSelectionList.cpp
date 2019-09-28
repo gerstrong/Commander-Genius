@@ -241,6 +241,26 @@ void CGUITextSelectionList::processLogic()
     auto &controlsList = getControlsList();
     for(auto &widget : controlsList)
     {
+        if( auto frame =
+            std::dynamic_pointer_cast<GsFrame>(widget) )
+        {
+            if( frame->isSelected() )
+            {
+                auto bound = frame->getOuterbound();
+
+                if(bound.y > 0.0f)
+                {
+                    this->moveY(-0.05f);
+                    this->updateScrollBar();
+                }
+                else if(bound.y < 0.0f)
+                {
+                    this->moveY(+0.05f);
+                    this->updateScrollBar();
+                }
+            }
+        }
+
         widget->processLogic();
     }
 }

@@ -301,15 +301,24 @@ GsFontLegacy &GsGraphics::getFontLegacy(Uint8 index)
 GsBitmap *GsGraphics::getBitmapFromStr(const size_t sprVar,
                                        const std::string &name) const
 {
-    const size_t bmpVecIdx = sprVar;
+    int bmpVecIdx = int(sprVar);
+    const int bmpSize = int(mBitmap.size());
 
-    auto it = mBitmapNameToIdx.find(name);
-
-    if(it != mBitmapNameToIdx.end())
+    if(!mBitmap.empty())
     {
-        const int idx = it->second;
-        auto &bitmap = mBitmap[bmpVecIdx][size_t(idx)];
-        return const_cast<GsBitmap*>(&bitmap);
+        auto it = mBitmapNameToIdx.find(name);
+
+        if(it != mBitmapNameToIdx.end())
+        {
+            const int idx = it->second;
+
+            // In case a bitmap for the sprite cannot be found, use a different one
+            while( bmpVecIdx >= bmpSize ) bmpVecIdx--;
+
+            auto &bitmap = mBitmap[size_t(bmpVecIdx)][size_t(idx)];
+
+            return const_cast<GsBitmap*>(&bitmap);
+        }
     }
 
 	std::string error = "Ooops! Wrong TextID ";

@@ -68,6 +68,30 @@ void GsFrame::processRender(const GsRect<float> &backRect,
     auto objBackRect = backRect.transformed(localRect);
     auto objFrontRect = objBackRect.clipped(frontRect);
 
+    const auto objUpperleft = objBackRect.pos;
+    const auto objLoweright = objUpperleft+objBackRect.dim;
+    const auto viewUpperLeft = frontRect.pos;
+    const auto viewLoweright = viewUpperLeft + frontRect.dim;
+
+    mOuterbound = {0.0f, 0.0f};
+
+/*
+    if(getId()==9)
+    {
+        printf("test.");
+    }
+*/
+
+    if(viewLoweright < objLoweright)
+    {
+        mOuterbound = objLoweright - viewLoweright;
+    }
+    else if( viewUpperLeft > objUpperleft )
+    {
+        mOuterbound = objUpperleft - viewUpperLeft;
+    }
+
+
     if(mBgEnabled)
     {
         blitsfc.fill(objFrontRect.SDLRect(), mBackgroundColor);

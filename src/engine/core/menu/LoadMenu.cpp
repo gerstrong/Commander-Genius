@@ -56,22 +56,27 @@ GameMenu( GsRect<float>(0.1f, 0.0f, 0.8f, 1.0f),
 
         auto inputText =
             mpMenuDialog->add( new InputText(text,
-                                             GsRect<float>(
-                                                   0.0f, 0.1f+(i*0.1f),
-                                                   1.0f, 0.1f),style ) );
+                                            GsRect<float>(
+                                                0.0f, 0.1f+(i*0.1f),
+                                                1.0f, 0.1f),style ) );
 
         std::shared_ptr<LoadGameSlotFunctorEvent>
-                loadGameEv(new LoadGameSlotFunctorEvent(i)) ;
+            loadGameEv(new LoadGameSlotFunctorEvent(i)) ;
 
         auto ev = std::static_pointer_cast<CEvent>(loadGameEv);
         inputText->setEvent(ev);
         inputText->enable(false);
     }
 
-	setMenuLabel("LOADMENULABEL");
+    setMenuLabel("LOADMENULABEL");
     select(1);
 }
 
+
+void CLoadMenu::sendEvent(std::shared_ptr<CEvent> &command)
+{
+    mpMenuDialog->sendEvent(command);
+}
 
 
 void CLoadMenu::refresh()

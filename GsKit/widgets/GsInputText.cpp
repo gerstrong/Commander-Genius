@@ -30,8 +30,7 @@ CGUIInputText::CGUIInputText(const std::string& text ,
                              const int fontID) :
 GsButton(text,
          nullptr,
-         fontID),
-mText(text)
+         fontID)
 {
     //mFontID = fontID;
 }
@@ -42,8 +41,7 @@ CGUIInputText::CGUIInputText(const std::string& text,
 GsButton(text,
          rect,
          nullptr,
-         fontID),
-mText(text)
+         fontID)
 {
     //mFontID = fontID;
 }
@@ -52,9 +50,13 @@ mText(text)
 
 bool CGUIInputText::sendEvent(const InputCommand command)
 {
+    if(!isEnabled())
+        return false;
+
     if(command == IC_STATUS || command == IC_JUMP)
     {
         mTyping = !mTyping;
+        GsButton::sendEvent(command);
         return true;
     }
 	return false;

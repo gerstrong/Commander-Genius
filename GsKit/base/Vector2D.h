@@ -123,6 +123,13 @@ struct GsVec2D
     }
 
     template<typename _T2>
+    bool operator>(const GsVec2D<_T2> & op) const
+    {
+        return(op < *this);
+    }
+
+
+    template<typename _T2>
     bool operator==(const GsVec2D<_T2> & op) const
     {
         return (x==op.x && y==op.y);

@@ -136,9 +136,9 @@ void showMsgWithBmp(const int sprVar,
                     CEvent *closeEv)
 {
     CMessageBoxBitmapGalaxy *pMsgBoxBmp =
-                new CMessageBoxBitmapGalaxy( sprVar, text,
-                                             *gGraphics.getBitmapFromStr(sprVar, bmp),
-                                             alignment, animation, closeEv ) ;
+       new CMessageBoxBitmapGalaxy( sprVar, text,
+                                    *gGraphics.getBitmapFromStr(sprVar, bmp),
+                                    alignment, animation, closeEv ) ;
 
     pMsgBoxBmp->init();
 

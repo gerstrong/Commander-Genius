@@ -83,7 +83,7 @@ void CSaveMenu::refresh()
     }
 }
 
-
+/*
 void CSaveMenu::ponder(const float)
 {
     auto &curWidget = mpMenuDialog->CurrentWidget();
@@ -139,6 +139,7 @@ void CSaveMenu::ponder(const float)
     mpMenuDialog->processLogic();
 
 }
+*/
 
 void CSaveMenu::sendEvent(std::shared_ptr<CEvent> &command)
 {

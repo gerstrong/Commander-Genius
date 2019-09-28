@@ -47,7 +47,6 @@ protected:
 	std::string getInputString();
 
 
-    std::string mText;
     bool mTyping = false;
     int mTypeTick = 0;
     bool mTick = false;

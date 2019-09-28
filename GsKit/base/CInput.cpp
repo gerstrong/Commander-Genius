@@ -41,7 +41,7 @@ CInput::CInput()
 #endif
     gLogging.ftextOut("Starting the input driver...<br>");
 
-    for(int c=1 ; c<=NUM_INPUTS ; c++)
+    for(int c=0 ; c<NUM_INPUTS ; c++)
 		resetControls(c);
     memset(&Event, 0, sizeof(Event));
 
@@ -62,10 +62,6 @@ CInput::CInput()
  */
 void CInput::resetControls(int player)
 {
-	int i;
-
-    assert(player > 0);
-
 	m_exit = false;
 
     m_cmdpulse = 0;
@@ -74,76 +70,80 @@ void CInput::resetControls(int player)
 	memset(immediate_keytable,false,KEYTABLE_SIZE);
 	memset(last_immediate_keytable,false,KEYTABLE_SIZE);
 
-	for(i=0 ; i<MAX_COMMANDS ; i++)
-		InputCommand[player][i].active = false;
+    auto &curInput = InputCommand[player];
+
+    for(auto &input : curInput)
+    {
+        input.active = false;
+    }
 
 	// These are the default keyboard commands
-	i=player-1;
-	InputCommand[i][IC_LEFT].keysym = SDLK_LEFT;
-	InputCommand[i][IC_UP].keysym = SDLK_UP;
-	InputCommand[i][IC_RIGHT].keysym = SDLK_RIGHT;
-	InputCommand[i][IC_DOWN].keysym = SDLK_DOWN;
 
-	InputCommand[i][IC_UPPERLEFT].keysym = SDLK_HOME;
-	InputCommand[i][IC_UPPERRIGHT].keysym = SDLK_PAGEUP;
-	InputCommand[i][IC_LOWERLEFT].keysym = SDLK_END;
-	InputCommand[i][IC_LOWERRIGHT].keysym = SDLK_PAGEDOWN;
+    curInput[IC_LEFT].keysym = SDLK_LEFT;
+    curInput[IC_UP].keysym = SDLK_UP;
+    curInput[IC_RIGHT].keysym = SDLK_RIGHT;
+    curInput[IC_DOWN].keysym = SDLK_DOWN;
 
-	InputCommand[i][IC_JUMP].keysym = SDLK_LCTRL;
-	InputCommand[i][IC_POGO].keysym = SDLK_LALT;
-    InputCommand[i][IC_FIRE].keysym = SDLK_SPACE;
-    InputCommand[i][IC_RUN].keysym = SDLK_LSHIFT;
+    curInput[IC_UPPERLEFT].keysym = SDLK_HOME;
+    curInput[IC_UPPERRIGHT].keysym = SDLK_PAGEUP;
+    curInput[IC_LOWERLEFT].keysym = SDLK_END;
+    curInput[IC_LOWERRIGHT].keysym = SDLK_PAGEDOWN;
 
-	InputCommand[i][IC_STATUS].keysym = SDLK_RETURN;
+    curInput[IC_JUMP].keysym = SDLK_LCTRL;
+    curInput[IC_POGO].keysym = SDLK_LALT;
+    curInput[IC_FIRE].keysym = SDLK_SPACE;
+    curInput[IC_RUN].keysym = SDLK_LSHIFT;
 
-	InputCommand[i][IC_CAMLEAD].keysym = SDLK_c;
-	InputCommand[i][IC_HELP].keysym = SDLK_F1;
-	InputCommand[i][IC_BACK].keysym = SDLK_ESCAPE;
+    curInput[IC_STATUS].keysym = SDLK_RETURN;
+
+    curInput[IC_CAMLEAD].keysym = SDLK_c;
+    curInput[IC_HELP].keysym = SDLK_F1;
+    curInput[IC_BACK].keysym = SDLK_ESCAPE;
 
 	// And those are the default joystick handlings, but they are disabled by default
-	InputCommand[i][IC_LEFT].joyeventtype = ETYPE_KEYBOARD;
-	InputCommand[i][IC_LEFT].joyaxis = 0;
-	InputCommand[i][IC_LEFT].joyvalue = -32767;
-	InputCommand[i][IC_LEFT].which = 0;
-	InputCommand[i][IC_UP].joyeventtype = ETYPE_KEYBOARD;
-	InputCommand[i][IC_UP].joyaxis = 1;
-	InputCommand[i][IC_UP].joyvalue = -32767;
-	InputCommand[i][IC_UP].which = 0;
-	InputCommand[i][IC_RIGHT].joyeventtype = ETYPE_KEYBOARD;
-	InputCommand[i][IC_RIGHT].joyaxis = 0;
-	InputCommand[i][IC_RIGHT].joyvalue = 32767;
-	InputCommand[i][IC_RIGHT].which = 0;
-	InputCommand[i][IC_DOWN].joyeventtype = ETYPE_KEYBOARD;
-	InputCommand[i][IC_DOWN].joyaxis = 1;
-	InputCommand[i][IC_DOWN].joyvalue = 32767;
-	InputCommand[i][IC_DOWN].which = 0;
+    curInput[IC_LEFT].joyeventtype = ETYPE_KEYBOARD;
+    curInput[IC_LEFT].joyaxis = 0;
+    curInput[IC_LEFT].joyvalue = -32767;
+    curInput[IC_LEFT].which = 0;
+    curInput[IC_UP].joyeventtype = ETYPE_KEYBOARD;
+    curInput[IC_UP].joyaxis = 1;
+    curInput[IC_UP].joyvalue = -32767;
+    curInput[IC_UP].which = 0;
+    curInput[IC_RIGHT].joyeventtype = ETYPE_KEYBOARD;
+    curInput[IC_RIGHT].joyaxis = 0;
+    curInput[IC_RIGHT].joyvalue = 32767;
+    curInput[IC_RIGHT].which = 0;
+    curInput[IC_DOWN].joyeventtype = ETYPE_KEYBOARD;
+    curInput[IC_DOWN].joyaxis = 1;
+    curInput[IC_DOWN].joyvalue = 32767;
+    curInput[IC_DOWN].which = 0;
 
-	InputCommand[i][IC_JUMP].joyeventtype = ETYPE_KEYBOARD;
-	InputCommand[i][IC_JUMP].joybutton = 0;
-	InputCommand[i][IC_JUMP].which = 0;
-	InputCommand[i][IC_POGO].joyeventtype = ETYPE_KEYBOARD;
-	InputCommand[i][IC_POGO].joybutton = 1;
-	InputCommand[i][IC_POGO].which = 0;
-    InputCommand[i][IC_FIRE].joyeventtype = ETYPE_KEYBOARD;
-    InputCommand[i][IC_FIRE].joybutton = 2;
-    InputCommand[i][IC_FIRE].which = 0;
-    InputCommand[i][IC_RUN].joyeventtype = ETYPE_KEYBOARD;
-    InputCommand[i][IC_RUN].joybutton = 3;
-    InputCommand[i][IC_RUN].which = 0;
-    InputCommand[i][IC_STATUS].joyeventtype = ETYPE_KEYBOARD;
-    InputCommand[i][IC_STATUS].joybutton = 4;
-	InputCommand[i][IC_STATUS].which = 0;
-	InputCommand[i][IC_CAMLEAD].joyeventtype = ETYPE_KEYBOARD;
-    InputCommand[i][IC_CAMLEAD].joybutton = 5;
-	InputCommand[i][IC_CAMLEAD].which = 0;
-	InputCommand[i][IC_HELP].joyeventtype = ETYPE_KEYBOARD;
-    InputCommand[i][IC_HELP].joybutton = 6;
-	InputCommand[i][IC_HELP].which = 0;
-	InputCommand[i][IC_BACK].joyeventtype = ETYPE_KEYBOARD;
-    InputCommand[i][IC_BACK].joybutton = 7;
-	InputCommand[i][IC_BACK].which = 0;
+    curInput[IC_JUMP].joyeventtype = ETYPE_KEYBOARD;
+    curInput[IC_JUMP].joybutton = 0;
+    curInput[IC_JUMP].which = 0;
+    curInput[IC_POGO].joyeventtype = ETYPE_KEYBOARD;
+    curInput[IC_POGO].joybutton = 1;
+    curInput[IC_POGO].which = 0;
+    curInput[IC_FIRE].joyeventtype = ETYPE_KEYBOARD;
+    curInput[IC_FIRE].joybutton = 2;
+    curInput[IC_FIRE].which = 0;
+    curInput[IC_RUN].joyeventtype = ETYPE_KEYBOARD;
+    curInput[IC_RUN].joybutton = 3;
+    curInput[IC_RUN].which = 0;
+    curInput[IC_STATUS].joyeventtype = ETYPE_KEYBOARD;
+    curInput[IC_STATUS].joybutton = 4;
+    curInput[IC_STATUS].which = 0;
+    curInput[IC_CAMLEAD].joyeventtype = ETYPE_KEYBOARD;
+    curInput[IC_CAMLEAD].joybutton = 5;
+    curInput[IC_CAMLEAD].which = 0;
+    curInput[IC_HELP].joyeventtype = ETYPE_KEYBOARD;
+    curInput[IC_HELP].joybutton = 6;
+    curInput[IC_HELP].which = 0;
+    curInput[IC_BACK].joyeventtype = ETYPE_KEYBOARD;
+    curInput[IC_BACK].joybutton = 7;
+    curInput[IC_BACK].which = 0;
 
-	setTwoButtonFiring(i, false);
+    setTwoButtonFiring(player, false);
 }
 
 /**
@@ -204,46 +204,47 @@ void CInput::loadControlconfig(void)
 	if(Configuration.Parse())
 	{
 		std::string section;
-		for(size_t i=0 ; i<NUM_INPUTS ; i++)
+        for(size_t i=0 ; i<InputCommand.size() ; i++)
 		{
 			// setup input from proper string
 			section = "input" + itoa(i);
 
 			std::string value;
+            auto &curInput = InputCommand[i];
             Configuration.ReadString( section, "Left", value, "Left");
-			setupInputCommand( InputCommand[i], IC_LEFT, value );
+            setupInputCommand( curInput, IC_LEFT, value );
             Configuration.ReadString( section, "Up", value, "Up");
-			setupInputCommand( InputCommand[i], IC_UP, value );
+            setupInputCommand( curInput, IC_UP, value );
             Configuration.ReadString( section, "Right", value, "Right");
-			setupInputCommand( InputCommand[i], IC_RIGHT, value );
+            setupInputCommand( curInput, IC_RIGHT, value );
             Configuration.ReadString( section, "Down", value, "Down");
-			setupInputCommand( InputCommand[i], IC_DOWN, value );
+            setupInputCommand( curInput, IC_DOWN, value );
 
             Configuration.ReadString( section, "Lower-Left", value, "End");
-			setupInputCommand( InputCommand[i], IC_LOWERLEFT, value );
+            setupInputCommand( curInput, IC_LOWERLEFT, value );
             Configuration.ReadString( section, "Lower-Right", value, "Page Down");
-			setupInputCommand( InputCommand[i], IC_LOWERRIGHT, value );
+            setupInputCommand( curInput, IC_LOWERRIGHT, value );
             Configuration.ReadString( section, "Upper-Left", value, "Home");
-			setupInputCommand( InputCommand[i], IC_UPPERLEFT, value );
+            setupInputCommand( curInput, IC_UPPERLEFT, value );
             Configuration.ReadString( section, "Upper-Right", value, "Page Up");
-			setupInputCommand( InputCommand[i], IC_UPPERRIGHT, value );
+            setupInputCommand( curInput, IC_UPPERRIGHT, value );
 
             Configuration.ReadString( section, "Jump", value, "Left ctrl");
-			setupInputCommand( InputCommand[i], IC_JUMP, value );
+            setupInputCommand( curInput, IC_JUMP, value );
             Configuration.ReadString( section, "Pogo", value, "Left alt");
-			setupInputCommand( InputCommand[i], IC_POGO, value );
+            setupInputCommand( curInput, IC_POGO, value );
             Configuration.ReadString( section, "Fire", value, "Space");
-            setupInputCommand( InputCommand[i], IC_FIRE, value );
+            setupInputCommand( curInput, IC_FIRE, value );
             Configuration.ReadString( section, "Run", value, "Shift");
-            setupInputCommand( InputCommand[i], IC_RUN, value );
+            setupInputCommand( curInput, IC_RUN, value );
             Configuration.ReadString( section, "Status", value, "Return");
-			setupInputCommand( InputCommand[i], IC_STATUS, value );
+            setupInputCommand( curInput, IC_STATUS, value );
             Configuration.ReadString( section, "Camlead", value, "c");
-			setupInputCommand( InputCommand[i], IC_CAMLEAD, value );
+            setupInputCommand( curInput, IC_CAMLEAD, value );
             Configuration.ReadString( section, "Help", value, "F11");
-			setupInputCommand( InputCommand[i], IC_HELP, value );
+            setupInputCommand( curInput, IC_HELP, value );
             Configuration.ReadString( section, "Back", value, "Escape");
-			setupInputCommand( InputCommand[i], IC_BACK, value );
+            setupInputCommand( curInput, IC_BACK, value );
 
 			Configuration.ReadKeyword( section, "TwoButtonFiring", &TwoButtonFiring[i], false);
 			Configuration.ReadKeyword( section, "Analog", &mAnalogAxesMovement[i], false);
@@ -251,7 +252,7 @@ void CInput::loadControlconfig(void)
 	}
 	else
 	{
-		for(size_t c=1 ; c<= NUM_INPUTS ; c++)
+        for(size_t c=0 ; c< NUM_INPUTS ; c++)
 			resetControls(int(c));
 	}
 }
@@ -364,35 +365,38 @@ void CInput::render()
 std::string CInput::getEventName(int command, unsigned char input)
 {
 	std::string buf;
-	if(InputCommand[input][command].joyeventtype == ETYPE_JOYAXIS)
+
+    auto &curInput = InputCommand[input];
+
+    if(curInput[command].joyeventtype == ETYPE_JOYAXIS)
 	{
-	  buf = "Joy" + itoa(InputCommand[input][command].which) + "-A" + itoa(InputCommand[input][command].joyaxis);
-	  if(InputCommand[input][command].joyvalue < 0)
+      buf = "Joy" + itoa(curInput[command].which) + "-A" + itoa(curInput[command].joyaxis);
+      if(curInput[command].joyvalue < 0)
 	    buf += "-";
 	  else
 	    buf += "+";
 	}
-	else if(InputCommand[input][command].joyeventtype == ETYPE_JOYBUTTON)
+    else if(curInput[command].joyeventtype == ETYPE_JOYBUTTON)
 	{
-	  buf = "Joy" + itoa(InputCommand[input][command].which) + "-B" + itoa(InputCommand[input][command].joybutton);
+      buf = "Joy" + itoa(curInput[command].which) + "-B" + itoa(curInput[command].joybutton);
 	}
-	else if(InputCommand[input][command].joyeventtype == ETYPE_JOYHAT)
+    else if(curInput[command].joyeventtype == ETYPE_JOYHAT)
 	{
-	  buf = "Joy" + itoa(InputCommand[input][command].which) + "-H" + itoa(InputCommand[input][command].joyhatval);
+      buf = "Joy" + itoa(curInput[command].which) + "-H" + itoa(curInput[command].joyhatval);
 	}
 	else // In case only keyboard was triggered
 	{
 	  buf = "Key ";
-	  buf += itoa(InputCommand[input][command].keysym);
+      buf += itoa(curInput[command].keysym);
 	  buf += " (";
-	  buf += SDL_GetKeyName(InputCommand[input][command].keysym);
+      buf += SDL_GetKeyName(curInput[command].keysym);
 	  buf += ")";
 	}
 
 	return buf;
 }
 
-void CInput::setupInputCommand(std::array<stInputCommand, NUM_INPUTS> &input,
+void CInput::setupInputCommand(std::array<stInputCommand, MAX_COMMANDS> &input,
                                int action, const std::string &string )
 {
 	std::string buf = string;
@@ -704,9 +708,15 @@ void CInput::pollEvents()
 	// copy all the input of the last poll to a space for checking pressing or holding a button
 	memcpy(last_immediate_keytable, immediate_keytable, KEYTABLE_SIZE*sizeof(char));
 
-	for(int i=0 ; i<MAX_COMMANDS ; i++)
-		for(int j=0 ; j<NUM_INPUTS ; j++)
-			InputCommand[j][i].lastactive = InputCommand[j][i].active;
+    // Input for player commands
+    for(int j=0 ; j<InputCommand.size() ; j++)
+    {
+        auto &input = InputCommand[j];
+        for(int i=0 ; i<input.size() ; i++)
+        {
+            input[i].lastactive = input[i].active;
+        }
+    }
 
 
     GsRect<Uint16> activeArea = gVideoDriver.mpVideoEngine->getActiveAreaRect();
@@ -985,9 +995,16 @@ void CInput::pollEvents()
 		= !last_immediate_keytable[i] && immediate_keytable[i];
 
 	for(int i=0 ; i<MAX_COMMANDS ; i++)
+    {
 		for(int j=0 ; j<NUM_INPUTS ; j++)
-			InputCommand[j][i].firsttimeactive
-			= !InputCommand[j][i].lastactive && InputCommand[j][i].active;
+        {
+            auto &input = InputCommand[j];
+
+            input[i].firsttimeactive =
+                      !input[i].lastactive &&
+                             input[i].active;
+        }
+    }
 
 #ifndef MOUSEWRAPPER
 
@@ -1038,24 +1055,28 @@ void CInput::pollEvents()
  */
 void CInput::processJoystickAxis(void)
 {
-	for(int j=0 ; j<NUM_INPUTS ; j++)
-	{
-		for(int i=0 ; i<MAX_COMMANDS ; i++)
-		{
-			if(InputCommand[j][i].joyeventtype == ETYPE_JOYAXIS)
+    // Input for player commands
+    for(auto &input : InputCommand)
+    {
+        for(unsigned int i=0 ; i<input.size() ; i++)
+        {
+            if(input[i].joyeventtype == ETYPE_JOYAXIS)
 			{
 				// Axis are configured for this commmand
-				if(Event.jaxis.axis == InputCommand[j][i].joyaxis && Event.jaxis.which == InputCommand[j][i].which )
+                if(Event.jaxis.axis == input[i].joyaxis &&
+                        Event.jaxis.which == input[i].which )
 				{
 					// Deadzone
 					if((Event.jaxis.value > m_joydeadzone && InputCommand[0][i].joyvalue > 0) ||
 					   (Event.jaxis.value < -m_joydeadzone && InputCommand[0][i].joyvalue < 0))
 					{
-						InputCommand[j][i].active = true;
-						InputCommand[j][i].joymotion = Event.jaxis.value;
+                        input[i].active = true;
+                        input[i].joymotion = Event.jaxis.value;
 					}
 					else
-						InputCommand[j][i].active = false;
+                    {
+                        input[i].active = false;
+                    }
 				}
 			}
 		}
@@ -1066,9 +1087,10 @@ void CInput::processJoystickHat()
 {
 	for(int j=0 ; j<NUM_INPUTS ; j++)
 	{
+        auto &input = InputCommand[j];
 		for(int i=0 ; i<MAX_COMMANDS ; i++)
 		{
-			stInputCommand &command = InputCommand[j][i];
+            stInputCommand &command = input[i];
 
 			if( command.joyeventtype == ETYPE_JOYHAT &&
 				command.which == Event.jhat.which )
@@ -1093,16 +1115,20 @@ void CInput::processJoystickButton(int value)
 #if defined(CAANOO) || defined(WIZ) || defined(GP2X)
 	WIZ_EmuKeyboard( Event.jbutton.button, value );
 #else
-	for(int j=0 ; j<NUM_INPUTS ; j++)
+    for(int player=0 ; player<InputCommand.size() ; player++)
 	{
-		for(int i=0 ; i<MAX_COMMANDS ; i++)
+        auto &input = InputCommand[player];
+        for(int i=0 ; i<input.size() ; i++)
 		{
 			// TODO: Check all NUM_INPUTS, if they can be reduced to another variable
-			if(InputCommand[j][i].joyeventtype == ETYPE_JOYBUTTON)
+            if(input[i].joyeventtype == ETYPE_JOYBUTTON)
 			{
 				// Joystick buttons are configured for this event !!
-				if(Event.jbutton.button == InputCommand[j][i].joybutton && Event.jbutton.which == InputCommand[j][i].which )
-					InputCommand[j][i].active = value;
+                if(Event.jbutton.button == input[i].joybutton &&
+                   Event.jbutton.which == input[i].which )
+                {
+                    input[i].active = value;
+                }
 			}
 		}
 	}
@@ -1124,14 +1150,15 @@ bool CInput::processKeys(int keydown)
     bool passSDLEventVec = true;
 
 	// Input for player commands
-    for(int j=0 ; j<NUM_INPUTS ; j++)
-	{
-        for(int i=0 ; i<MAX_COMMANDS ; i++)
-		{
-			if(InputCommand[j][i].keysym == Event.key.keysym.sym &&
-					InputCommand[j][i].joyeventtype == ETYPE_KEYBOARD)
+    for(int j=0 ; j<InputCommand.size() ; j++)
+    {
+        auto &input = InputCommand[j];
+        for(int i=0 ; i<input.size() ; i++)
+        {
+            if(input[i].keysym == Event.key.keysym.sym &&
+                    input[i].joyeventtype == ETYPE_KEYBOARD)
             {
-				InputCommand[j][i].active = (keydown) ? true : false;
+                input[i].active = (keydown) ? true : false;
 
                 if(i == IC_BACK)
                 {
@@ -1471,17 +1498,20 @@ bool CInput::getHoldedCommand(int command)
 
 bool CInput::isJoystickAssgmnt(const int player, const int command)
 {
-	return (InputCommand[player][command].joyeventtype == ETYPE_JOYAXIS);
+    auto &input = InputCommand[player];
+    return (input[command].joyeventtype == ETYPE_JOYAXIS);
 }
 
 bool CInput::getHoldedCommand(int player, int command)
 {
-	return InputCommand[player][command].active;
+    auto &input = InputCommand[player];
+    return input[command].active;
 }
 
-int CInput::getJoyValue(int player, int command)
+int CInput::getJoyValue(const int player, const int command)
 {
-	int newval = InputCommand[player][command].joymotion;
+    auto &input = InputCommand[player];
+    int newval = input[command].joymotion;
 	newval = (newval*101)>>15;
 	if( newval > 100 )
 		newval = 100;
@@ -1503,9 +1533,11 @@ bool CInput::getPressedCommand(int command)
 
 bool CInput::getPressedCommand(int player, int command)
 {
-	if(InputCommand[player][command].firsttimeactive)
+    auto &inputFromPlayer = InputCommand[player];
+
+    if(inputFromPlayer[command].firsttimeactive)
 	{
-		InputCommand[player][command].firsttimeactive = false;
+        inputFromPlayer[command].firsttimeactive = false;
 		return true;
 	}
 
@@ -1522,7 +1554,9 @@ bool CInput::getPulsedCommand(int command, int msec)
 
 bool CInput::getPulsedCommand(int player, int command, int msec)
 {
-	if(InputCommand[player][command].active)
+    auto &input = InputCommand[player];
+
+    if(input[command].active)
 	{
 		bool value = true;
 
@@ -1533,7 +1567,8 @@ bool CInput::getPulsedCommand(int player, int command, int msec)
 		m_cmdpulse++;
 		return value;
 	}
-	if(!InputCommand[player][command].active && InputCommand[player][command].lastactive )
+    if(!input[command].active &&
+            input[command].lastactive )
 		m_cmdpulse = 0;
 
 	return false;
@@ -1605,9 +1640,11 @@ void CInput::flushCommand(int command)
 
 void CInput::flushCommand(int player, int command)
 {
-	InputCommand[player][command].active =
-	InputCommand[player][command].lastactive =
-	InputCommand[player][command].firsttimeactive = false;
+    auto &input = InputCommand[player];
+
+    input[command].active =
+    input[command].lastactive =
+    input[command].firsttimeactive = false;
 }
 
 

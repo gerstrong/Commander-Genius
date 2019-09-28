@@ -48,7 +48,9 @@
 #	include <direct.h>
 // wrappers to provide the standards
 inline int mkdir(const char *path, int mode) { return _mkdir(Utf8ToSystemNative(path).c_str()); }
+#	ifndef stat
 #	define stat _stat
+#   endif
 #ifndef S_ISREG
 #	define S_IFLNK 0120000
 inline bool S_ISREG(unsigned short s)  { return (s & S_IFREG) != 0; }

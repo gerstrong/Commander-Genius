@@ -21,6 +21,8 @@ public:
 
     void processLogic() override;
 
+    void processPointingStateRel(const GsRect<float> &rect) override;
+
     void processRender(const GsRect<float> &RectDispCoordFloat) override;
 
     bool sendEvent(const InputCommand) override;
