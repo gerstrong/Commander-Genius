@@ -49,14 +49,16 @@
 #ifdef _WIN32
 # include <direct.h>
 # include <io.h>
+#include "unzip.h"
 #else
 # include <unistd.h>
 # include <utime.h>
 #include <sys/stat.h>
+#include <unzip.h>
 #endif
 
 
-#include <unzip.h>
+
 
 #define CASESENSITIVITY (0)
 #define WRITEBUFFERSIZE (8192)
