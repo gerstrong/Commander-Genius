@@ -33,7 +33,7 @@ set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${CMAKE_CURRENT_SOURCE_DIR}/GsKit/CM
 # Use COmpile TIme REducer
 include(GsKit/CMake/cotire.cmake)
 
-option(USE_PYTHON3 "Use Python3 scripts" yes)
+option(USE_PYTHON3 "Use Python3 scripts" no)
 
 set (CMAKE_CXX_STANDARD 14)
 
@@ -54,7 +54,7 @@ string(REGEX REPLACE "[\r\n]" "" CG_VERSION "${CG_VERSION}")
 # Since shell script get_version is not processed properly on windows, we have to define manually here.
 # TODO: Better system for defining the version
 IF(WIN32)
-  set(CG_VERSION "2.3.5")
+  set(CG_VERSION "2.3.6")
 endif()
 
 # Generate the README file with the correct version string
