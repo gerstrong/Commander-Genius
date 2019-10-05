@@ -55,8 +55,11 @@
 #include <sys/stat.h>
 #endif
 
-
+#ifdef ANDROID
+#include "unzip.h"
+#else
 #include <unzip.h>
+#endif
 
 #define CASESENSITIVITY (0)
 #define WRITEBUFFERSIZE (8192)
