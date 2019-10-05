@@ -10,6 +10,7 @@
 #ifndef CGUITEXT_H_
 #define CGUITEXT_H_
 
+#include <vector>
 #include <string>
 #include <map>
 #include <memory>
