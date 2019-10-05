@@ -58,7 +58,7 @@ GameMenu(GsRect<float>(0.15f, 0.20f, 0.65f, 0.55f), style )
     mpMenuDialog->add( mpVPadSwitch );
 #endif
 
-    mpBorderColorSwitch = new Switch( "Brdr Color", style );
+    mpBorderColorSwitch = new Switch( "Brdr Co/mnt/bigDrive/gerstrong-big/workspace/Commander-Genius-Android-Kit/app/jni/src/cgSrc/engine/core/menu/CVideoSettings.cpplor", style );
     mpMenuDialog->add( mpBorderColorSwitch );
 
     mpHorizBordersSelection = new NumberControl( "H-Brdr",
@@ -161,7 +161,7 @@ void CVideoSettings::release()
 
 #if defined(CAANOO) || defined(WIZ) || defined(DINGOO) || defined(NANONOTE) || defined(ANDROID)
     mUsersConf.mDisplayRect.dim.x = 320;
-    mUsersConf.mDisplayRect.h = 200;
+    mUsersConf.mDisplayRect.dim.y = 200;
 #endif
 
     // TODO: Find a better way to setup colors in the menu

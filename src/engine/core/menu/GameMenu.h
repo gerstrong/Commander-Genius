@@ -18,14 +18,7 @@ public:
 
     void (GameMenu::*initBackground) ();
 
-    void setProperty( const Property newProperty ) override
-    {
-        mpReturnButton->setText( newProperty == CLOSEABLE ? "close" : "back" );
-        auto rect = mpReturnButton->getRect();
-        rect.dim.x = 0.2f;
-        mpReturnButton->setRect(rect);
-    }
-
+    void setProperty( const Property newProperty ) override;
 
     // Processes the stuff that the menus have in common
     virtual void ponder(const float deltaT) override;

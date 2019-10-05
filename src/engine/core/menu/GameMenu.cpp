@@ -73,6 +73,15 @@ mStyle(style)
     (this->*initBackground)();
 }
 
+void GameMenu::setProperty( const Property newProperty )
+{
+    mpReturnButton->setText( newProperty == CLOSEABLE ? "close" : "back" );
+
+    auto rect = mpReturnButton->getRect();
+    rect.dim.x = 0.2f;
+    mpReturnButton->setRect(rect);
+}
+
 void GameMenu::initGalaxyBackground()
 {
     GsBitmap backgroundBmp( *gGraphics.getBitmapFromStr(0, "KEENSWATCH") );

@@ -4,7 +4,7 @@
  *  Created on: 22.05.2010
  *      Author: gerstrong
  */
-
+/*
 #include <base/video/CVideoDriver.h>
 #include "CameraSettings.h"
 #include "engine/core/CSettings.h"
@@ -74,3 +74,4 @@ void CCameraSettings::release()
 
 	gSettings.saveDrvCfg();
 }
+*/
