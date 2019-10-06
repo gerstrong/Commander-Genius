@@ -68,6 +68,11 @@ GsPython::~GsPython()
 
 void GsPython::init()
 {
+    gLogging.ftextOut("Initializing the python system...\n");
+
+    // TODO: Find a way to setup internal paths in case of missing python like in Windows cases
+    //Py_SetPath(L"C:\\msys64\\mingw64\\lib\\python3.7");
+
     Py_Initialize();
     mActive = true;
 }

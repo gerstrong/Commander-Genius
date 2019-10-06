@@ -33,7 +33,7 @@ set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${CMAKE_CURRENT_SOURCE_DIR}/GsKit/CM
 # Use COmpile TIme REducer
 include(GsKit/CMake/cotire.cmake)
 
-option(USE_PYTHON3 "Use Python3 scripts" yes)
+option(USE_PYTHON3 "Use Python3 scripts" no)
 
 set (CMAKE_CXX_STANDARD 14)
 

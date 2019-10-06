@@ -19,7 +19,7 @@ if(USE_VIRTUALPAD)
     ADD_DEFINITIONS(-DVIRTUALPAD)
 endif(USE_VIRTUALPAD)
 
-option(USE_PYTHON3 "Use Python3 scripts" yes)
+option(USE_PYTHON3 "Use Python3 scripts" no)
 
 option(USE_SDL_TTF "Use true type fonts" yes)
 

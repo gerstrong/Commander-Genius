@@ -49,17 +49,24 @@
 #ifdef _WIN32
 # include <direct.h>
 # include <io.h>
+#include "unzip.h"
 #else
 # include <unistd.h>
 # include <utime.h>
 #include <sys/stat.h>
+#include <unzip.h>
 #endif
 
+<<<<<<< HEAD
 #ifdef ANDROID
 #include "unzip.h"
 #else
 #include <unzip.h>
 #endif
+=======
+
+
+>>>>>>> 84f1461b3c4ae20b5f2d66f602ee31ab072ab499
 
 #define CASESENSITIVITY (0)
 #define WRITEBUFFERSIZE (8192)
