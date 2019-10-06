@@ -2,9 +2,9 @@ find_package(PkgConfig)
 
 if ( PKGCONFIG_FOUND AND NOT WIN32 )
     pkg_check_modules(ZLIB minizip)
-else ( PKGCONFIG_FOUND )
+else ( PKGCONFIG_FOUND AND NOT WIN32 )
     unset(ZLIB_FOUND)
-endif ( PKGCONFIG_FOUND )
+endif ( PKGCONFIG_FOUND AND NOT WIN32 )
 
 if ( ZLIB_FOUND )
     set(CXXSRC miniunz.c)

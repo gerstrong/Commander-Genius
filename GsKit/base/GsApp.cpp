@@ -8,7 +8,7 @@
  * 
  *  It also manages the load of drivers and main game cycle
  */
-
+#include <string>
 #include "GsApp.h"
 
 #include <base/GsTimer.h>

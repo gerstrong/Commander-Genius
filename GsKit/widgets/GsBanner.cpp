@@ -125,13 +125,15 @@ void CGUIBanner::processRender(const GsRect<float> &RectDispCoordFloat)
 */
 #else
     // Transform to the display coordinates
-    GsRect<float> displayRect = mRect;
+    GsRect<float> displayRect = getRect();
     displayRect.transform(RectDispCoordFloat);
     SDL_Rect lRect = displayRect.SDLRect();
 
     // Now lets draw the text of the list control
-    GsFontLegacy &Font = gGraphics.getFont(mFontID);
 
+    GsFontLegacy &Font = gGraphics.getFontLegacy(getFontId());
+
+    /*
     if(mTransition)
     {
         Font.drawFontCenteredAlpha(gVideoDriver.getBlitSurface(), *prevTextIt, lRect.x, lRect.w, lRect.y, 255-alpha);
@@ -141,5 +143,6 @@ void CGUIBanner::processRender(const GsRect<float> &RectDispCoordFloat)
     {
         Font.drawFontCentered(gVideoDriver.getBlitSurface(), *curTextIt, lRect.x, lRect.w, lRect.y, false);
     }
+*/
 #endif
 }

@@ -63,7 +63,7 @@ static const char* ResolutionsList[] =
 "1280x1024",
 "1366x760",
 "1366x768",
-"1400x900",
+"1400x900",/mnt/bigDrive/gerstrong-big/workspace/Commander-Genius-Android-Kit/app/jni/src/GsKit/base/video/CVideoDriver.cpp
 "1400x1050",
 "1440x900",
 "1600x900",
@@ -172,8 +172,8 @@ bool CVideoDriver::initResolutionList()
 #endif
 
 #if defined(ANDROID)
-	resolution.dim.x = 320;
-	resolution.h = 200;
+	resolution.x = 320;
+	resolution.y = 200;
 #endif
 
     GsVec2D<Uint16> desktopResolution(resolution);
@@ -210,11 +210,11 @@ bool CVideoDriver::initResolutionList()
 
 // TODO: Not sure if those defines are really needed anymore.
 #if (TARGET_OS_IPHONE) || (TARGET_IPHONE_SIMULATOR)
-	resolution.dim.x = 320; //  320;
-	resolution.h = 200;//  480;
+	resolution.x = 320; //  320;
+	resolution.y = 200;//  480;
 #elif defined(ANDROID)
-	resolution.dim.x = 320;
-	resolution.h = 200;
+	resolution.x = 320;
+	resolution.y = 200;
 #endif
 
 	// Now on non-handheld devices let's check for more resolutions.

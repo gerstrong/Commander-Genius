@@ -61,6 +61,11 @@ public:
         mFontId = fontId;
     }
 
+    int getFontId() const
+    {
+        return mFontId;
+    }
+
 
 protected:
 
@@ -70,10 +75,7 @@ protected:
 
     std::vector<std::string> mTextVec;
 
-
-#if defined(USE_SDL_TTF)
     std::map< GsColor, std::vector<GsSurface> > mTextSfcVecByColor;
-#endif
 
     GsColor mTextColor;
 	
