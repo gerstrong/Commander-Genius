@@ -60,12 +60,13 @@ void CGUIBanner::processLogic()
 }
 
 void CGUIBanner::processRender(const GsRect<float> &RectDispCoordFloat)
-{ 
+{
 
-#if defined(USE_SDL_TTF)
-
+    // Transform to the display coordinates
     GsRect<float> displayRect = getRect();
     displayRect.transform(RectDispCoordFloat);
+
+#if defined(USE_SDL_TTF)
 
     updateTTFTextSfc(displayRect);
 
@@ -124,9 +125,6 @@ void CGUIBanner::processRender(const GsRect<float> &RectDispCoordFloat)
     }
 */
 #else
-    // Transform to the display coordinates
-    GsRect<float> displayRect = getRect();
-    displayRect.transform(RectDispCoordFloat);
     SDL_Rect lRect = displayRect.SDLRect();
 
     // Now lets draw the text of the list control

@@ -57,16 +57,11 @@
 #include <unzip.h>
 #endif
 
-<<<<<<< HEAD
-#ifdef ANDROID
+#if defined(ANDROID) || defined(_WIN32)
 #include "unzip.h"
 #else
 #include <unzip.h>
 #endif
-=======
-
-
->>>>>>> 84f1461b3c4ae20b5f2d66f602ee31ab072ab499
 
 #define CASESENSITIVITY (0)
 #define WRITEBUFFERSIZE (8192)
