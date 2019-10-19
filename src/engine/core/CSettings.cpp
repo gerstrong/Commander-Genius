@@ -82,7 +82,7 @@ bool CSettings::saveDrvCfg()
         Configuration.WriteString("Video", "OGLfilter", oglFilter );
 
 
-        Configuration.WriteInt("Video", "filter", VidConf.m_ScaleXFilter);
+        Configuration.WriteInt("Video", "filter", int(VidConf.m_ScaleXFilter));
         Configuration.WriteString("Video", "scaletype", VidConf.m_normal_scale ? "normal" : "scalex" );        
 
         const auto fpsi = int(gTimer.FPS());
@@ -181,7 +181,12 @@ bool CSettings::loadDrvCfg()
 
     config.ReadKeyword("Video", "vsync", &VidConf.mVSync, true);
     config.ReadInteger("Video", "filter", &value, 1);
-    VidConf.m_ScaleXFilter = static_cast<filterOptionType>(value);
+
+    // Boundary check
+    if(value <= 4 && value > 0 )
+    {
+        VidConf.m_ScaleXFilter = static_cast<VidFilter>(value);
+    }
 
     std::string scaleType;
     config.ReadString("Video", "scaletype", scaleType, "normal");
@@ -264,7 +269,7 @@ void CSettings::loadDefaultGraphicsCfg() //Loads default graphics
 #else
 	gVideoDriver.setAspectCorrection(4,3);
 #endif
-    gVideoDriver.setFilter(NONE);
+    gVideoDriver.setFilter(VidFilter::NONE);
 	gVideoDriver.setScaleType(true);
 
 }

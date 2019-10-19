@@ -11,7 +11,7 @@
 #include <SDL.h>
 #include <base/utils/Geometry.h>
 
-enum filterOptionType
+enum class VidFilter
 {
     NONE = 1,
     SCALE_2X = 2,
@@ -20,9 +20,9 @@ enum filterOptionType
 };
 
 void blitScaled(SDL_Surface *srcSfc,
-                      SDL_Rect &srGsRect,
-                      SDL_Surface *dstSfc,
-                      SDL_Rect &dstRect,
-                      filterOptionType filter);
+                SDL_Rect &srGsRect,
+                SDL_Surface *dstSfc,
+                SDL_Rect &dstRect,
+                const VidFilter filter);
 
 #endif /* CSCALER_H_ */

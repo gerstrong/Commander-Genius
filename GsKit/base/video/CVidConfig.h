@@ -62,7 +62,7 @@ public:
     int mHorizBorders = 0; // Horizontal border bars for a more CRT feeling
 
     bool mFullscreen = false;
-    filterOptionType m_ScaleXFilter;
+    VidFilter m_ScaleXFilter = VidFilter::NONE;
 	bool m_normal_scale;
 
 	unsigned short Zoom;

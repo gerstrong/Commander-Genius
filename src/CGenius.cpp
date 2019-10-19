@@ -162,7 +162,7 @@ int main(int argc, char *argv[])
     ////////////////////////////////////////////////////
     // Initialize CG and run the main cycle if worthy //
     ////////////////////////////////////////////////////
-	gLogging.textOut(FONTCOLORS::GREEN,"Starting App cycle...\n");        
+    gLogging.textOut(FONTCOLORS::GREEN,"Starting App cycle...\n");
 
     if( gApp.init( argc, argv ) )
     {

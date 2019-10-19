@@ -148,9 +148,9 @@ void DisplaySettings::refresh()
 	mpAspectSelection->setSelection(arcStr);
 
 	
-    mpFilterSelection->setSelection( mMyNewConf.m_ScaleXFilter==1 ? "none" :
+    mpFilterSelection->setSelection( mMyNewConf.m_ScaleXFilter==VidFilter::NONE ? "none" :
                                     (mMyNewConf.m_normal_scale ? "normal" : "scale") +
-                                        itoa(mMyNewConf.m_ScaleXFilter) + "x" );
+                                    itoa(int(mMyNewConf.m_ScaleXFilter)) + "x" );
     mpVSyncSwitch->enable( mMyNewConf.mVSync );
     mpFullScreenSwitch->setText( mMyNewConf.mFullscreen ? "Go Windowed" : "Go Fullscreen" );
 
@@ -207,39 +207,39 @@ void DisplaySettings::release()
 
     // Filter
     {
-        mMyNewConf.m_ScaleXFilter = NONE;
+        mMyNewConf.m_ScaleXFilter = VidFilter::NONE;
 
         const std::string filterText = mpFilterSelection->getSelection();
 
         if(filterText == "normal2x")
         {
             mMyNewConf.m_normal_scale = true;
-            mMyNewConf.m_ScaleXFilter = SCALE_2X;
+            mMyNewConf.m_ScaleXFilter = VidFilter::SCALE_2X;
         }
         if(filterText == "normal3x")
         {
             mMyNewConf.m_normal_scale = true;
-            mMyNewConf.m_ScaleXFilter = SCALE_3X;
+            mMyNewConf.m_ScaleXFilter = VidFilter::SCALE_3X;
         }
         if(filterText == "normal4x")
         {
             mMyNewConf.m_normal_scale = true;
-            mMyNewConf.m_ScaleXFilter = SCALE_4X;
+            mMyNewConf.m_ScaleXFilter = VidFilter::SCALE_4X;
         }
         if(filterText == "scale2x")
         {
             mMyNewConf.m_normal_scale = false;
-            mMyNewConf.m_ScaleXFilter = SCALE_2X;
+            mMyNewConf.m_ScaleXFilter = VidFilter::SCALE_2X;
         }
         if(filterText == "scale3x")
         {
             mMyNewConf.m_normal_scale = false;
-            mMyNewConf.m_ScaleXFilter = SCALE_3X;
+            mMyNewConf.m_ScaleXFilter = VidFilter::SCALE_3X;
         }
         if(filterText == "scale4x")
         {
             mMyNewConf.m_normal_scale = false;
-            mMyNewConf.m_ScaleXFilter = SCALE_4X;
+            mMyNewConf.m_ScaleXFilter = VidFilter::SCALE_4X;
         }
     }
 

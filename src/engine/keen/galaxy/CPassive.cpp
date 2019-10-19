@@ -568,7 +568,8 @@ void CPassiveGalaxy::renderStarWars()
             starwarsRect.y = mStarwarsScrollPos;
         }
 
-        blitScaled( starwarsSfc, starwarsRect, blitSfc, dstRect, NONE );
+        blitScaled( starwarsSfc, starwarsRect,
+                    blitSfc, dstRect, VidFilter::NONE );
     }
 
     lRect.h = sfc.height();    lRect.w = sfc.width();

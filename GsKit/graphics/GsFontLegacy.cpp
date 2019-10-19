@@ -349,7 +349,7 @@ void GsFontLegacy::deriveHighResSurfaces()
                    srcSfc->clip_rect,
                    dstSfc,
                    dstSfc->clip_rect,
-                   filterOptionType(i+1) );
+                   VidFilter(i+1) );
     }
 }
 

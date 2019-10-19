@@ -389,7 +389,7 @@ bool CVideoDriver::applyMode()
         mVidConfig.Zoom--;
 
 	// Check if some zoom/filter modes are illogical and roll them back accordingly
-    if ((mVidConfig.Zoom == 3 && mVidConfig.m_ScaleXFilter == 1)
+    if ((mVidConfig.Zoom == 3 && mVidConfig.m_ScaleXFilter == VidFilter::NONE)
             && !mVidConfig.mOpengl)
         mVidConfig.Zoom = 2;
 
@@ -463,7 +463,7 @@ bool CVideoDriver::start()
 	return retval;
 }
 
-void CVideoDriver::setFilter(const filterOptionType value)
+void CVideoDriver::setFilter(const VidFilter value)
 {
     mVidConfig.m_ScaleXFilter = value;
 } // 1 means no filter

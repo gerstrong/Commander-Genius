@@ -54,14 +54,15 @@
 # include <unistd.h>
 # include <utime.h>
 #include <sys/stat.h>
-#include <unzip.h>
-#endif
 
-#if defined(ANDROID) || defined(_WIN32)
+#if defined(ANDROID)
 #include "unzip.h"
 #else
 #include <unzip.h>
 #endif
+
+#endif
+
 
 #define CASESENSITIVITY (0)
 #define WRITEBUFFERSIZE (8192)

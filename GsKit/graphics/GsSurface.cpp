@@ -248,7 +248,7 @@ void GsSurface::tiltSurface()
 }
 
 
-bool GsSurface::scaleTo(const GsRect<Uint16> &scaledRect, const filterOptionType filter)
+bool GsSurface::scaleTo(const GsRect<Uint16> &scaledRect, const VidFilter filter)
 {
     SDL_Rect newRect = scaledRect.SDLRect();
 

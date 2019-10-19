@@ -185,35 +185,34 @@ void blitScaled(SDL_Surface *srcSfc,
                 SDL_Rect &srGsRect,
                 SDL_Surface *dstSfc,
                 SDL_Rect &dstRect,
-                filterOptionType filter)
+                const VidFilter filter)
 {            
-
-    assert(filter>=NONE && filter<=SCALE_4X);
-
     // First phase: Filter the surface (scaleX)
     SDL_Rect lSrGsRect = srGsRect;
     SDL_Rect lDstRect = dstRect;
 
-    // Find the best filter for current resolution
-    while( filter>NONE )
+    auto iFilter = int(filter);
+
+    // Find the best filter for the current resolution
+    while( iFilter > 1 )
     {
         // Does it fit?
-        if( dstSfc->w >= srcSfc->w*filter &&
-            dstSfc->h >= srcSfc->h*filter )
+        if( dstSfc->w >= srcSfc->w*iFilter &&
+            dstSfc->h >= srcSfc->h*iFilter )
         {
             break;
         }
 
-        filter = (filterOptionType)((int)(filter)-1);
+        iFilter--;
     }
 
     // If there is a chance to scale through filter, do so.
-    if( filter>NONE )
+    if( iFilter>1 )
     {
         SDL_LockSurface( srcSfc );
         SDL_LockSurface( dstSfc );
 
-        scale( filter,
+        scale( iFilter,
                dstSfc->pixels,
                dstSfc->pitch,
                srcSfc->pixels,
@@ -225,8 +224,8 @@ void blitScaled(SDL_Surface *srcSfc,
         SDL_UnlockSurface( dstSfc );
         SDL_UnlockSurface( srcSfc );
 
-        lSrGsRect.w = lSrGsRect.w*filter;
-        lSrGsRect.h = lSrGsRect.h*filter;
+        lSrGsRect.w = lSrGsRect.w*iFilter;
+        lSrGsRect.h = lSrGsRect.h*iFilter;
     }
     else
     {

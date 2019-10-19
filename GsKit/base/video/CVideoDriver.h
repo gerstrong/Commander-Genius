@@ -131,7 +131,7 @@ public:
 	void setVidConfig(const CVidConfig& VidConf);
     void setMode(const int width, const int height);
 	void setMode(const GsRect<Uint16>& res);
-    void setFilter(const filterOptionType value);
+    void setFilter(const VidFilter value);
 	void setScaleType(bool IsNormal);
 	void setZoom(short vale);
 #ifdef USE_OPENGL

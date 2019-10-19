@@ -71,7 +71,7 @@ void CMessageBoxBitmapGalaxy::init()
     const int scaling = gVideoDriver.getOptimalScaling();
     mMBRect.w *= scaling;
     mMBRect.h *= scaling;
-    mMBSurface.scaleTo(mMBRect, filterOptionType(scaling) );
+    mMBSurface.scaleTo(mMBRect, VidFilter(scaling) );
 
     GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
     mMBRect.x = (gameRes.dim.x-mMBRect.w)/2;
