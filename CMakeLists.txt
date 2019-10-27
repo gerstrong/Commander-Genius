@@ -18,6 +18,13 @@ if(USE_VIRTUALPAD)
 endif(USE_VIRTUALPAD)
 
 
+OPTION(DUMP_MTCS "Show Mouse Touch Cursor Position" No)
+
+IF (DUMP_MTCS)
+    ADD_DEFINITIONS(-DDUMP_MTCS)
+endif(DUMP_MTCS)
+
+
 # Add GsKit
 add_subdirectory("GsKit")
 

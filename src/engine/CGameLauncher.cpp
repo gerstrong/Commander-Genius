@@ -9,6 +9,7 @@
 #include <base/GsLogging.h>
 #include <base/video/CVideoDriver.h>
 #include <base/CInput.h>
+#include <base/PointDevice.h>
 #include <base/InputEvents.h>
 #include <base/GsApp.h>
 #include <widgets/GsTextSelectionList.h>
@@ -842,6 +843,7 @@ void CGameLauncher::ponderPatchDialog()
 }
 
 
+
 ////
 // Process Routine
 ////
@@ -930,15 +932,46 @@ void CGameLauncher::ponder(const float deltaT)
     {
         // User chose "exit". So make CG quit...
         gEventManager.add( new GMQuit() );
-    }
+    }    
 }
 
+void CGameLauncher::renderMouseTouchState()
+{
+    GsWeakSurface blit(gVideoDriver.getBlitSurface());
+
+    // Show mouse/touch cursor Pos and actions
+    if(!mMouseTouchCurSfc)
+    {
+        const SDL_Rect sdlRect = gVideoDriver.getBlitSurface()->clip_rect;
+        mMouseTouchCurSfc.create(0, sdlRect.w, sdlRect.h, RES_BPP, 0, 0, 0, 0);
+    }
+
+    mMouseTouchCurSfc.fillRGB(0, 0, 0);
+
+    auto &Font = gGraphics.getFontLegacy(0);
+
+    const auto &pos = gPointDevice.mPointingState.mPos;
+    const auto &act = gPointDevice.mPointingState.mActionButton;
+    std::string tempbuf = "MTC: " + ftoa(pos.x) + "," +
+                          ftoa(pos.y) + "->" + itoa(act);
+    mMouseTouchCurSfc.fillRGB(0, 0, 0);
+    Font.drawFont(mMouseTouchCurSfc.getSDLSurface(),
+                  tempbuf,
+                  0, 0, true);
+
+    // In there is garbage of other drawn stuff clean it up.
+    mMouseTouchCurSfc.blitTo(blit);
+}
 
 void CGameLauncher::render()
 {
     GsWeakSurface blit(gVideoDriver.getBlitSurface());
 
     blit.fillRGB(0, 0, 0);
+
+#ifdef DUMP_MTCS
+    renderMouseTouchState();
+#endif
 
     if(mpMsgDialog)
     {

@@ -335,7 +335,6 @@ std::string CInput::getEventShortName(int command, unsigned char input)
 }
 
 
-
 void CInput::render()
 {
 #ifdef VIRTUALPAD
@@ -357,6 +356,7 @@ void CInput::render()
     GsWeakSurface blit(gVideoDriver.getBlitSurface());
     mpVirtPad->render(blit);
 #endif
+
 }
 
 

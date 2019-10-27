@@ -217,7 +217,7 @@ void GsApp::render()
     if(mpCurEngine)
     {
         mpCurEngine->render();
-    }
+    }       
 
     gMenuController.render();
 

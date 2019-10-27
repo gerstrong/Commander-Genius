@@ -85,6 +85,9 @@ public:
 
     void ponderPatchDialog();
     void ponder(const float deltaT) override;
+
+    void renderMouseTouchState();
+
     void render() override;
 
     int getChosengame()
@@ -127,6 +130,8 @@ private:
     std::shared_ptr<GsButton> mpStartButton;
 
     std::unique_ptr<CGUIDialog> mpPatchDialog;
+
+    GsSurface mMouseTouchCurSfc;
 
     //// Download Dialog Section. TODO: Make it external
     int mLastStoreSelection = -1;
