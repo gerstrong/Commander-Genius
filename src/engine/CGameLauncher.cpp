@@ -943,7 +943,7 @@ void CGameLauncher::renderMouseTouchState()
     if(!mMouseTouchCurSfc)
     {
         const SDL_Rect sdlRect = gVideoDriver.getBlitSurface()->clip_rect;
-        mMouseTouchCurSfc.create(0, sdlRect.w, sdlRect.h, RES_BPP, 0, 0, 0, 0);
+        mMouseTouchCurSfc.create(0, sdlRect.w, 150, RES_BPP, 0, 0, 0, 0);
     }
 
     mMouseTouchCurSfc.fillRGB(0, 0, 0);
@@ -957,7 +957,7 @@ void CGameLauncher::renderMouseTouchState()
     mMouseTouchCurSfc.fillRGB(0, 0, 0);
     Font.drawFont(mMouseTouchCurSfc.getSDLSurface(),
                   tempbuf,
-                  0, 0, true);
+                  0, 100, true);
 
     // In there is garbage of other drawn stuff clean it up.
     mMouseTouchCurSfc.blitTo(blit);
@@ -969,13 +969,13 @@ void CGameLauncher::render()
 
     blit.fillRGB(0, 0, 0);
 
-#ifdef DUMP_MTCS
-    renderMouseTouchState();
-#endif
-
     if(mpMsgDialog)
     {
         mpMsgDialog->processRendering();
+#ifdef DUMP_MTCS
+        renderMouseTouchState();
+#endif
+
         return;
     }
 
