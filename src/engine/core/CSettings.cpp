@@ -164,7 +164,9 @@ bool CSettings::loadDrvCfg()
 
     if(res.dim.x*res.dim.y <= 0)
     {
-        gLogging.ftextOut(FONTCOLORS::RED,"Error reading the configuration file!<br>");
+        gLogging.ftextOut(FONTCOLORS::RED,
+                          "Error reading the configuration file: "
+                          "Window Size does not make sense!<br>");
         return false;
     }
 
@@ -224,6 +226,18 @@ bool CSettings::loadDrvCfg()
     config.ReadInteger("Bound", "up", &CameraBounds.up, 92);
     config.ReadInteger("Bound", "down", &CameraBounds.down, 108);
     config.ReadInteger("Bound", "speed", &CameraBounds.speed, 20);
+
+
+    if(gamesRes.dim.x*gamesRes.dim.y <= 0)
+    {
+        gLogging.ftextOut(FONTCOLORS::PURPLE,
+                          "Error reading the configuration file: "
+                          "Game Resolution does not make sense, resetting.<br>");
+
+        VidConf.reset();
+    }
+
+
     gVideoDriver.setVidConfig(VidConf);
 
     int framerate;

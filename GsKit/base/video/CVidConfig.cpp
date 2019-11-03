@@ -12,7 +12,7 @@
 
 CVidConfig::CVidConfig()
 {
-    //reset();
+    reset();
 }
 
 bool CVidConfig::operator==(const CVidConfig& target)
@@ -27,8 +27,6 @@ bool CVidConfig::operator!=(const CVidConfig& target)
 
 void CVidConfig::reset()
 {
-
-    /*
 	// Default values
     mVSync = true;
 
@@ -50,7 +48,7 @@ void CVidConfig::reset()
     mFullscreen = false;
 #endif
 
-    m_ScaleXFilter = NONE;
+    m_ScaleXFilter = VidFilter::NONE;
     m_normal_scale = true;
     Zoom = 1;
 
@@ -66,10 +64,8 @@ void CVidConfig::reset()
 
     mGameRect.pos.x = 0;
     mGameRect.pos.y = 0;
-    //mGameRect.dim.x = 960;
-    //mGameRect.dim.y = 540;
-    mGameRect.dim.x = 1920;
-    mGameRect.dim.y = 1080;
+    mGameRect.dim.x = 320;
+    mGameRect.dim.y = 200;
 
 #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
     mOpengl = true;
@@ -81,7 +77,7 @@ void CVidConfig::reset()
 	mAspectCorrection.dim.x=0;
 	mAspectCorrection.h=0;
 #endif
-*/
+
 }
 
 
