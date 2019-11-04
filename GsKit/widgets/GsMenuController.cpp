@@ -25,7 +25,7 @@ void drawMenuInGameButton(const SDL_Rect &buttonRect)
     line.y +=2;
 
     // This draws the classical sandwich icon
-    for(;line.y<buttonRect.h-2;line.y+=5)
+    for(;line.y<buttonRect.y+buttonRect.h-2;line.y+=5)
     {
         SDL_FillRect(dst, &line, SDL_MapRGB(dst->format, 255, 255, 255) );
     }

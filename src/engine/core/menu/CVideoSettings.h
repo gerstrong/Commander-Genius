@@ -38,9 +38,6 @@ private:
 
     Switch          *mpTiltScreenSwitch = nullptr;
     Switch          *mpShowCursorSwitch = nullptr;
-#ifdef VIRTUALPAD
-    Switch			*mpVPadSwitch  = nullptr;
-#endif
     std::shared_ptr<NumberControl> mpFPSSelection;
     Switch		    *mpFrameSkip  = nullptr;    
     ComboSelection	*mpGameResSelection = nullptr;        

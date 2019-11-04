@@ -95,6 +95,10 @@ bool CSettings::saveDrvCfg()
                 itoa(VidConf.mAspectCorrection.dim.y);
         Configuration.WriteString("Video", "aspect", arc_str);
 
+        Configuration.WriteInt("Video", "BorderColorsEnabled",
+                               VidConf.mBorderColorsEnabled);
+        Configuration.WriteInt("Video", "HorizBorders", VidConf.mHorizBorders);
+
         st_camera_bounds &CameraBounds = VidConf.m_CameraBounds;
         Configuration.WriteInt("Bound", "left", CameraBounds.left);
         Configuration.WriteInt("Bound", "right", CameraBounds.right);
@@ -147,10 +151,10 @@ bool CSettings::loadDrvCfg()
         return false;
     }    
 
-    CVidConfig VidConf;
+    CVidConfig vidConf;
 
-    GsRect<Uint16> &res = VidConf.mDisplayRect;
-    GsRect<Uint16> &gamesRes = VidConf.mGameRect;
+    GsRect<Uint16> &res = vidConf.mDisplayRect;
+    GsRect<Uint16> &gamesRes = vidConf.mGameRect;
     int value = 0;
     config.ReadInteger("Video", "width", &value, 320);
     res.dim.x = static_cast<unsigned short>(value);
@@ -171,56 +175,63 @@ bool CSettings::loadDrvCfg()
     }
 
 
-    config.ReadKeyword("Video", "fullscreen", &VidConf.mFullscreen, false);
+    config.ReadKeyword("Video", "fullscreen", &vidConf.mFullscreen, false);
     config.ReadInteger("Video", "scale", &value, 1);
-    VidConf.Zoom = static_cast<unsigned short>(value);    
+    vidConf.Zoom = static_cast<unsigned short>(value);
 
     std::string arcStr;
     config.ReadString("Video", "aspect", arcStr, "none");
-    VidConf.mAspectCorrection.dim = 0;
-    sscanf( arcStr.c_str(), "%i:%i", &VidConf.mAspectCorrection.dim.x,
-            &VidConf.mAspectCorrection.dim.y );
+    vidConf.mAspectCorrection.dim = 0;
+    sscanf( arcStr.c_str(), "%i:%i", &vidConf.mAspectCorrection.dim.x,
+            &vidConf.mAspectCorrection.dim.y );
 
-    config.ReadKeyword("Video", "vsync", &VidConf.mVSync, true);
+    config.ReadKeyword("Video", "vsync", &vidConf.mVSync, true);
     config.ReadInteger("Video", "filter", &value, 1);
 
     // Boundary check
     if(value <= 4 && value > 0 )
     {
-        VidConf.m_ScaleXFilter = static_cast<VidFilter>(value);
+        vidConf.m_ScaleXFilter = static_cast<VidFilter>(value);
     }
 
     std::string scaleType;
     config.ReadString("Video", "scaletype", scaleType, "normal");
-    VidConf.m_normal_scale = (scaleType == "normal");
+    vidConf.m_normal_scale = (scaleType == "normal");
 
 
     // if ScaleX is one and scaletype is not at normal, this is wrong.
     // we will change that and force it to normal
     if(scaleType == "normal")
     {
-        VidConf.m_normal_scale = true;
+        vidConf.m_normal_scale = true;
     }
 
-    config.ReadKeyword("Video", "OpenGL", &VidConf.mOpengl, true);
+    config.ReadKeyword("Video", "OpenGL", &vidConf.mOpengl, true);
 
     std::string oglFilter;
     config.ReadString("Video", "OGLfilter", oglFilter, "nearest");
 
-    VidConf.mRenderScQuality =
+    vidConf.mRenderScQuality =
             (oglFilter == "linear") ?
                 CVidConfig::RenderQuality::LINEAR :
                 CVidConfig::RenderQuality::NEAREST;
 
 #ifdef VIRTUALPAD
-    config.ReadKeyword("Video", "VirtPad", &VidConf.mVPad, VidConf.mVPad);
-    config.ReadInteger("Video", "VirtPadSize", &VidConf.mVPadSize, VidConf.mVPadSize);
+    config.ReadKeyword("Video", "VirtPad", &vidConf.mVPad, vidConf.mVPad);
+    config.ReadInteger("Video", "VirtPadSize", &vidConf.mVPadSize, vidConf.mVPadSize);
 #endif
-    config.ReadKeyword("Video", "ShowCursor", &VidConf.mShowCursor, true);
-    config.ReadKeyword("Video", "TiltedScreen", &VidConf.mTiltedScreen, false);
+    config.ReadKeyword("Video", "ShowCursor", &vidConf.mShowCursor, true);
+    config.ReadKeyword("Video", "TiltedScreen", &vidConf.mTiltedScreen, false);
 
 
-    st_camera_bounds &CameraBounds = VidConf.m_CameraBounds;
+    config.ReadKeyword("Video", "BorderColorsEnabled",
+                       &vidConf.mBorderColorsEnabled,
+                       vidConf.mBorderColorsEnabled);
+
+    config.ReadInteger("Video", "HorizBorders", &vidConf.mHorizBorders,
+                                                vidConf.mHorizBorders);
+
+    st_camera_bounds &CameraBounds = vidConf.m_CameraBounds;
     config.ReadInteger("Bound", "left", &CameraBounds.left, 152);
     config.ReadInteger("Bound", "right", &CameraBounds.right, 168);
     config.ReadInteger("Bound", "up", &CameraBounds.up, 92);
@@ -234,11 +245,11 @@ bool CSettings::loadDrvCfg()
                           "Error reading the configuration file: "
                           "Game Resolution does not make sense, resetting.<br>");
 
-        VidConf.reset();
+        vidConf.reset();
     }
 
 
-    gVideoDriver.setVidConfig(VidConf);
+    gVideoDriver.setVidConfig(vidConf);
 
     int framerate;
     config.ReadInteger("Video", "fps", &framerate, 60);

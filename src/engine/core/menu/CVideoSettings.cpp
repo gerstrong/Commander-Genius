@@ -53,12 +53,8 @@ GameMenu(GsRect<float>(0.15f, 0.20f, 0.65f, 0.55f), style )
 	
 #endif
 
-#ifdef VIRTUALPAD
-    mpVPadSwitch  = new Switch( "VirtPad", style );
-    mpMenuDialog->add( mpVPadSwitch );
-#endif
 
-    mpBorderColorSwitch = new Switch( "Brdr Co/mnt/bigDrive/gerstrong-big/workspace/Commander-Genius-Android-Kit/app/jni/src/cgSrc/engine/core/menu/CVideoSettings.cpplor", style );
+    mpBorderColorSwitch = new Switch( "Brdr Color", style );
     mpMenuDialog->add( mpBorderColorSwitch );
 
     mpHorizBordersSelection = new NumberControl( "H-Brdr",
@@ -91,10 +87,6 @@ void CVideoSettings::refresh()
 
     mpShowCursorSwitch->enable( mUsersConf.mShowCursor );
     mpTiltScreenSwitch->enable( mUsersConf.mTiltedScreen );
-
-#ifdef VIRTUALPAD
-    mpVPadSwitch->enable( mUsersConf.mVPad );
-#endif
 
     // TODO: find a way to indicate a color
     mpBorderColorSwitch->enable( mUsersConf.mBorderColorsEnabled );
@@ -132,26 +124,12 @@ void CVideoSettings::release()
         gTimer.setFPS( 0.0 );
     }
 
-#ifdef VIRTUALPAD
-    mUsersConf.mVPad = mpVPadSwitch->isEnabled();
-#endif
-
-
     mUsersConf.mHorizBorders = mpHorizBordersSelection->getSelection();
 
     mUsersConf.mBorderColorsEnabled = mpBorderColorSwitch->isEnabled();
 	
 #if !defined(EMBEDDED)	
 
-#ifdef VIRTUALPAD
-    mUsersConf.mVPad = mpVPadSwitch->isEnabled();
-
-    // Disable OpenGL when using Virtual GL
-    if(mUsersConf.mVPad)
-    {
-        mUsersConf.mOpengl = false;
-    }
-#endif
 
     const std::string GameResStr = mpGameResSelection->getSelection();
     sscanf( GameResStr.c_str(), "%hux%hux",

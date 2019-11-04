@@ -12,6 +12,9 @@
 #include "engine/core/menu/GameMenu.h"
 
 #include "widgets/NumberControl.h"
+#include "widgets/Switch.h"
+
+#include <base/video/CVidConfig.h>
 
 #include <SDL.h>
 #include <string>
@@ -32,6 +35,13 @@ public:
     void refresh() override;
 
 private:
+
+    CVidConfig mUsersConf;
+
+#ifdef VIRTUALPAD
+    Switch			*mpVPadSwitch  = nullptr;
+#endif
+
 
     std::shared_ptr<NumberControl>	mpSize;
 
