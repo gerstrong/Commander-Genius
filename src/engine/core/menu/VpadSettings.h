@@ -33,7 +33,7 @@ public:
 
 private:
 
-    NumberControl	*mpSize;
+    std::shared_ptr<NumberControl>	mpSize;
 
     std::list<std::string> mButtonSizes = { "large", "medium", "small" };
 };
