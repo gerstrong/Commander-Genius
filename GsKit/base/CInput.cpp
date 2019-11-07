@@ -709,10 +709,10 @@ void CInput::pollEvents()
 	memcpy(last_immediate_keytable, immediate_keytable, KEYTABLE_SIZE*sizeof(char));
 
     // Input for player commands
-    for(int j=0 ; j<InputCommand.size() ; j++)
+    for(unsigned int j=0 ; j<InputCommand.size() ; j++)
     {
         auto &input = InputCommand[j];
-        for(int i=0 ; i<input.size() ; i++)
+        for(unsigned int i=0 ; i<input.size() ; i++)
         {
             input[i].lastactive = input[i].active;
         }

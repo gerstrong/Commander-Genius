@@ -376,7 +376,7 @@ void CPlayGameVorticon::ponder(const float deltaT)
     }
 
 
-    // Check if Sandwhich-Menu was clicked
+    // Check if Sandwich Menu was clicked
     GsRect<float> rRect(mMenuButtonRect);
     const float w = gVideoDriver.getBlitSurface()->w;
     const float h = gVideoDriver.getBlitSurface()->h;

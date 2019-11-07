@@ -34,6 +34,10 @@ set(SRCS
     SettingsMenu.h
     VpadSettings.cpp
     VpadSettings.h
+    CameraSettings.h
+    CameraSettings.cpp
+    CConfirmMenu.cpp
+    CConfirmMenu.h
 )
 
 add_library(engine_core_menu STATIC ${SRCS})

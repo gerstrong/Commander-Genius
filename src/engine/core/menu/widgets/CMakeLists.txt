@@ -15,6 +15,7 @@ NumberControl.cpp
 NumberControl.h
 Switch.cpp
 Switch.h
+KeenStyles.h
 )
 
 add_library(engine_core_menu_widgets STATIC ${SRCS})
