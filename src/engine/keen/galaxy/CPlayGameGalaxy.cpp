@@ -695,6 +695,7 @@ void CPlayGameGalaxy::processInput()
 
         assert(vkc);
         vkc->mDPad.invisible = false;
+        vkc->mMenuButton.invisible = false;
 #endif
 #endif
 }

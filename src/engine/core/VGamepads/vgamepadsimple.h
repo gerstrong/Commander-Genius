@@ -122,6 +122,7 @@ public:
     TouchButton mDPad;
     TouchButton mConfirmButton;
     TouchButton mStartButton;
+    TouchButton mMenuButton;
 
     // Control buttons
     TouchButton mJumpButton;

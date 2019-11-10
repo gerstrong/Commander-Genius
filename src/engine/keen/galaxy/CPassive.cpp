@@ -379,6 +379,7 @@ void CPassiveGalaxy::processTitle()
             VirtualKeenControl *vkc = dynamic_cast<VirtualKeenControl*>(gInput.mpVirtPad.get());
             assert(vkc);
             vkc->mDPad.invisible = false;
+            vkc->mMenuButton.invisible = false;
 #endif
 #endif
 
@@ -485,6 +486,7 @@ void CPassiveGalaxy::processStarWars()
             VirtualKeenControl *vkc = dynamic_cast<VirtualKeenControl*>(gInput.mpVirtPad.get());
             assert(vkc);
             vkc->mDPad.invisible = false;
+            vkc->mMenuButton.invisible = false;
 #endif
 #endif
 

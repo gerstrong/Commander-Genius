@@ -293,6 +293,7 @@ void CPlayGameVorticon::ponder(const float deltaT)
 
     assert(vkc);
     vkc->mDPad.invisible = false;
+    vkc->mMenuButton.invisible = false;
 #endif
 
 	if( !mpFinale && !gMenuController.active() ) // Game is not paused, no messages have to be shown and no menu is open

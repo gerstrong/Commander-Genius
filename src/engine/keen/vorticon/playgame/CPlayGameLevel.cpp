@@ -27,6 +27,7 @@ void CPlayGameVorticon::processInLevel()
         vkc->mPogoButton.invisible = false;
         vkc->mShootButton.invisible = false;
         vkc->mStatusButton.invisible = false;
+        vkc->mMenuButton.invisible = false;
     }
 #endif
 

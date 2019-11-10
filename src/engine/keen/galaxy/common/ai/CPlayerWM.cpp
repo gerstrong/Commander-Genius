@@ -501,6 +501,7 @@ void CPlayerWM::processMoving()
             vkc->mDPad.invisible = false;
             vkc->mStatusButton.invisible = false;
             vkc->mStartButton.invisible = true;
+            vkc->mMenuButton.invisible = true;
         }
 #endif
 #endif

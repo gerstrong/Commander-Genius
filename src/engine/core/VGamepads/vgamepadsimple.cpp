@@ -17,6 +17,7 @@
 #include "buttonBg.h"
 #include "buttonConfirm.h"
 #include "buttonStart.h"
+#include "buttonMenu.h"
 
 
 
@@ -127,6 +128,11 @@ bool VirtualKeenControl::init()
 
         if(!mStatusButton.loadEmdbeddedPicture(gButton4Png, sizeof(gButton4Png))) return false;
         mStatusButton.invisible = true;
+
+        if(!mMenuButton.loadEmdbeddedPicture(gButtonMenuPng, sizeof(gButtonMenuPng))) return false;
+        mMenuButton.invisible = true;
+
+
     }
 
 #endif
@@ -181,6 +187,20 @@ bool VirtualKeenControl::ponder()
 
         mConfirmButton.mTexture.setAlpha(uint8_t(255.0f*mTranslucency));
     }
+
+    if(!mMenuButton.invisible)
+    {
+        const float buttonSize = 0.1f*sizeFactor;
+
+        const GsRect<float> menuBtnRect(left+3.5f*buttonSize,
+                                        bottom-1.5f*buttonSize,
+                                        buttonSize, buttonSize);
+
+        mMenuButton.setRect(menuBtnRect);
+
+        mMenuButton.mTexture.setAlpha(uint8_t(255.0f*mTranslucency));
+    }
+
 
     if(!mStatusButton.invisible)
     {
@@ -277,6 +297,7 @@ void VirtualKeenControl::hideEverything()
     mShootButton.invisible = true;
     mPogoButton.invisible = true;
     mStatusButton.invisible = true;
+    mMenuButton.invisible = true;
 #endif
 }
 
@@ -319,6 +340,7 @@ void VirtualKeenControl::render(GsWeakSurface &)
     addTexture(mStartButton);
 
     addTexture(mStatusButton);
+    addTexture(mMenuButton);
     addTexture(mShootButton);
     addTexture(mJumpButton);
     addTexture(mPogoButton);
@@ -333,6 +355,7 @@ void VirtualKeenControl::flush()
     mConfirmButton.clearFingers();
     mStartButton.clearFingers();
     mStatusButton.clearFingers();
+    mMenuButton.clearFingers();
     mShootButton.clearFingers();
     mJumpButton.clearFingers();
     mPogoButton.clearFingers();
@@ -512,6 +535,7 @@ bool VirtualKeenControl::mouseFingerState(const GsVec2D<float> &Pos,
     ok |= bindButtonCommand(mConfirmButton, IC_JUMP);
     ok |= bindButtonCommand(mStartButton, IC_JUMP);
     ok |= bindButtonCommand(mStatusButton, IC_STATUS);
+    ok |= bindButtonCommand(mMenuButton, IC_BACK);
     ok |= bindButtonCommand(mShootButton, IC_FIRE);
     ok |= bindButtonCommand(mJumpButton, IC_JUMP);
     ok |= bindButtonCommand(mPogoButton, IC_POGO);
@@ -638,6 +662,7 @@ bool VirtualKeenControl::mouseState(const GsVec2D<float> &Pos, const bool down)
 
     bindButtonCommand(mConfirmButton, IC_JUMP);
     bindButtonCommand(mStartButton, IC_JUMP);
+    bindButtonCommand(mMenuButton, IC_BACK);
     bindButtonCommand(mStatusButton, IC_STATUS);
     bindButtonCommand(mShootButton, IC_FIRE);
     bindButtonCommand(mJumpButton, IC_JUMP);

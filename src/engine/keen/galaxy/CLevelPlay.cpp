@@ -111,6 +111,7 @@ void CLevelPlay::ponder(const float deltaT)
         vkc->mPogoButton.invisible = false;
         vkc->mShootButton.invisible = false;
         vkc->mStatusButton.invisible = false;
+        vkc->mMenuButton.invisible = false;
     }
 #endif
 #endif

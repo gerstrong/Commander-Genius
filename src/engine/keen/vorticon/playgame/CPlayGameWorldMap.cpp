@@ -107,6 +107,7 @@ void CPlayGameVorticon::processOnWorldMap()
         assert(vkc);
         vkc->hideAllButtons();
         vkc->mDPad.invisible = false;
+        vkc->mMenuButton.invisible = false;
         vkc->mStartButton.invisible = false;
     }
 #endif

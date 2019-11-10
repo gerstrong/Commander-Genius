@@ -90,6 +90,7 @@ void CWorldMap::ponder(const float deltaT)
         vkc->hideAllButtons();
         vkc->mDPad.invisible = false;
         vkc->mStartButton.invisible = false;
+        vkc->mMenuButton.invisible = false;
     }
 #endif
 
