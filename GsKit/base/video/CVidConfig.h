@@ -83,7 +83,7 @@ public:
 #else
     bool mVPad = false;
 #endif
-    int mVPadSize = 100;
+    int mVPadSize = 150;
 #endif
 
 	GsRect<int> mAspectCorrection;
@@ -101,8 +101,6 @@ public:
     enum class RenderQuality
     { NEAREST, LINEAR }
     mRenderScQuality = RenderQuality::LINEAR;
-
-    //std::string mRenderScQuality = "nearest";
 };
 
 #endif /* CVIDCONFIG_H */
