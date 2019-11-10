@@ -46,10 +46,14 @@ GameMenu(GsRect<float>(0.15f, 0.20f, 0.65f, 0.55f), style )
             mpMenuDialog->add( new Switch( "FrameSkip", style ) );
 
 
+#if !defined(EMBEDDED)
+
     mpGameResSelection =
             mpMenuDialog->add( new ComboSelection( "GameRes",
                                                    filledStrList(1, "?x?"),
                                                    style ) );
+#endif
+
 
     mpBorderColorSwitch =
             mpMenuDialog->add( new Switch( "Brdr Color", style ) );
@@ -90,6 +94,7 @@ void CVideoSettings::refresh()
 
     mpHorizBordersSelection->setSelection( mUsersConf.mHorizBorders );
 
+#if !defined(EMBEDDED)
     const auto gamesResSet = gVideoDriver.getGameResStrSet();
     mpGameResSelection->setList( gamesResSet );
 
@@ -98,7 +103,7 @@ void CVideoSettings::refresh()
     resStr += "x";
     resStr += itoa(mUsersConf.mGameRect.dim.y);
     mpGameResSelection->setSelection(resStr);
-
+#endif
 }
 
 
@@ -119,11 +124,13 @@ void CVideoSettings::release()
     mUsersConf.mHorizBorders = mpHorizBordersSelection->getSelection();
 
     mUsersConf.mBorderColorsEnabled = mpBorderColorSwitch->isEnabled();
-	
+
+#if !defined(EMBEDDED)
+
     const std::string GameResStr = mpGameResSelection->getSelection();
     sscanf( GameResStr.c_str(), "%hux%hux",
             &mUsersConf.mGameRect.dim.x, &mUsersConf.mGameRect.dim.y );
-
+#endif
 
 #if defined(CAANOO) || defined(WIZ) || defined(DINGOO) || defined(NANONOTE) || defined(ANDROID)
     mUsersConf.mDisplayRect.dim.x = 320;

@@ -29,11 +29,14 @@ GameMenu( GsRect<float>(0.25f, 0.24f, 0.5f, 0.40f),
           style )
 {
 
+#if !defined(EMBEDDED)
+
     mpMenuDialog->add(
                 new GameButton( "Display",
                                 new OpenMenuEvent(
                                     new DisplaySettings(style) ),
                                 style ) );
+#endif
 
 
     mpMenuDialog->add(
