@@ -16,7 +16,4 @@ public:
 };
 
 
-struct OpenVGamePadSettingsEvent : public CEvent {};
-
-
 #endif /* GALAXY_SETTINGSMENU_H_INCLUDED */

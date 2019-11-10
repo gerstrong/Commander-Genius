@@ -1,3 +1,10 @@
+v2.3.8:
+-------
+- Virtualpad improvements
+- Android improvements
+- Settings improvements for horizontal border size
+- Crash fixes, bug fixes
+
 v2.3.6:
 -------
 - Scrollbar improvements

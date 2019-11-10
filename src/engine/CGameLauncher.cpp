@@ -136,14 +136,6 @@ bool CGameLauncher::setupMenu()
                               -1, 0.75f, 1.0f, 1.0f )  );
 
 
-#ifdef VIRTUALPAD
-    mLauncherDialog.add(new GsButton( "VPad",
-                                      GsRect<float>(0.75f, 0.0f, 0.17f, 0.069f),
-                                      new OpenVGamePadSettingsEvent(),
-                                      -1, 0.75f, 1.0f, 1.0f ) );
-#endif
-
-
     // Create an empty Bitmap control
     mCurrentBmp = mLauncherDialog.add(
                 new GsBitmapBox( GsRect<float>(0.51f, 0.07f, 0.48f, 0.48f) ));
