@@ -36,14 +36,13 @@ public:
 
 private:
 
-    Switch          *mpTiltScreenSwitch = nullptr;
-    Switch          *mpShowCursorSwitch = nullptr;
-    std::shared_ptr<NumberControl> mpFPSSelection;
-    Switch		    *mpFrameSkip  = nullptr;    
-    ComboSelection	*mpGameResSelection = nullptr;        
-    Switch		    *mpBorderColorSwitch = nullptr;
-    NumberControl	*mpHorizBordersSelection = nullptr;
-    
+    std::shared_ptr<Switch>         mpTiltScreenSwitch;
+    std::shared_ptr<Switch>         mpShowCursorSwitch;
+    std::shared_ptr<NumberControl>  mpFPSSelection;
+    std::shared_ptr<Switch>		    mpFrameSkip;
+    std::shared_ptr<ComboSelection>	mpGameResSelection;
+    std::shared_ptr<Switch>		    mpBorderColorSwitch;
+    std::shared_ptr<NumberControl>	mpHorizBordersSelection;
 
 };
 

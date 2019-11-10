@@ -30,7 +30,7 @@ struct KeenFiles : public GsSingleton<KeenFiles>
     std::string gameDir;
     CExeFile exeFile;
 
-	void setupFilenames(const unsigned int episode)
+    void setupFilenames(const int episode)
 	{
 	    const std::string epStr = itoa(episode);
 	    

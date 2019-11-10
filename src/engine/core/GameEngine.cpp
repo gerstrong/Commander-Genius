@@ -18,6 +18,11 @@
 #include "mode/CGameMode.h"
 
 
+GameEngine::~GameEngine()
+{
+
+}
+
 void GameEngine::pumpEvent(const CEvent *evPtr)
 {
     if(mpGameMode) // Otherwise send to the existing created mGameMode Object

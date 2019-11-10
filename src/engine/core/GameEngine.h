@@ -24,6 +24,8 @@ public:
         mDataPath(datapath)
     {}
 
+    virtual ~GameEngine() override;
+
     virtual bool start() override = 0;
 
     void ponder(const float deltaT) override;

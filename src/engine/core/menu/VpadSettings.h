@@ -43,7 +43,7 @@ private:
 #endif
 
 
-    std::shared_ptr<NumberControl>	mpSize;
+    std::shared_ptr<NumberControl>	mpVPadSize;
 
     std::list<std::string> mButtonSizes = { "large", "medium", "small" };
 };

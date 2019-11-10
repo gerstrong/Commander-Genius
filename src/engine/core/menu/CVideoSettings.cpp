@@ -28,11 +28,13 @@ GameMenu(GsRect<float>(0.15f, 0.20f, 0.65f, 0.25f), style )
 GameMenu(GsRect<float>(0.15f, 0.20f, 0.65f, 0.55f), style )
 #endif
 {
-    mpShowCursorSwitch = new Switch("Cursor", style);
-    mpMenuDialog->add( mpShowCursorSwitch );
 
-    mpTiltScreenSwitch = new Switch("TiltedScr", style);
-    mpMenuDialog->add( mpTiltScreenSwitch );    
+
+    mpShowCursorSwitch =
+            mpMenuDialog->add( new Switch("Cursor", style) );
+
+    mpTiltScreenSwitch =
+            mpMenuDialog->add( new Switch("TiltedScr", style) );
 
     mpFPSSelection =
             mpMenuDialog->add(
@@ -40,28 +42,23 @@ GameMenu(GsRect<float>(0.15f, 0.20f, 0.65f, 0.55f), style )
                                    false, style) );
 
 
-    mpFrameSkip = new Switch( "FrameSkip", style );
-    mpMenuDialog->add( mpFrameSkip );
+    mpFrameSkip =
+            mpMenuDialog->add( new Switch( "FrameSkip", style ) );
 
 
-#if !defined(EMBEDDED)
+    mpGameResSelection =
+            mpMenuDialog->add( new ComboSelection( "GameRes",
+                                                   filledStrList(1, "?x?"),
+                                                   style ) );
 
-    mpGameResSelection = new ComboSelection( "GameRes",
-                                             filledStrList(1, "?x?"),
-                                             style );
-    mpMenuDialog->add( mpGameResSelection );
-	
-#endif
+    mpBorderColorSwitch =
+            mpMenuDialog->add( new Switch( "Brdr Color", style ) );
 
-
-    mpBorderColorSwitch = new Switch( "Brdr Color", style );
-    mpMenuDialog->add( mpBorderColorSwitch );
-
-    mpHorizBordersSelection = new NumberControl( "H-Brdr",
-                                                 0, 80, 5, 0,
-                                                 false,
-                                                 style);
-    mpMenuDialog->add( mpHorizBordersSelection );
+    mpHorizBordersSelection =
+            mpMenuDialog->add( new NumberControl( "H-Brdr",
+                                            0, 80, 5, 0,
+                                            false,
+                                            style) );
 
 	setMenuLabel("OPTIONSMENULABEL");
 
@@ -93,9 +90,6 @@ void CVideoSettings::refresh()
 
     mpHorizBordersSelection->setSelection( mUsersConf.mHorizBorders );
 
-#if !defined(EMBEDDED)
-
-
     const auto gamesResSet = gVideoDriver.getGameResStrSet();
     mpGameResSelection->setList( gamesResSet );
 
@@ -104,8 +98,6 @@ void CVideoSettings::refresh()
     resStr += "x";
     resStr += itoa(mUsersConf.mGameRect.dim.y);
     mpGameResSelection->setSelection(resStr);
-
-#endif
 
 }
 
@@ -128,14 +120,10 @@ void CVideoSettings::release()
 
     mUsersConf.mBorderColorsEnabled = mpBorderColorSwitch->isEnabled();
 	
-#if !defined(EMBEDDED)	
-
-
     const std::string GameResStr = mpGameResSelection->getSelection();
     sscanf( GameResStr.c_str(), "%hux%hux",
             &mUsersConf.mGameRect.dim.x, &mUsersConf.mGameRect.dim.y );
 
-#endif
 
 #if defined(CAANOO) || defined(WIZ) || defined(DINGOO) || defined(NANONOTE) || defined(ANDROID)
     mUsersConf.mDisplayRect.dim.x = 320;

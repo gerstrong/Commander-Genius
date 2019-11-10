@@ -13,10 +13,14 @@
 #include <base/video/CVideoDriver.h>
 
 
+KeenEngine::~KeenEngine()
+{
+    gMusicPlayer.stop();
+}
 
 void KeenEngine::switchToGamePlayMode(const int startLevel)
 {
-    const int episode = gBehaviorEngine.getEpisode();
+    const int episode = static_cast<int>(gBehaviorEngine.getEpisode());
 
     std::string DataDirectory = gKeenFiles.gameDir;
     gEventManager.add( new GMSwitchToPlayGameMode( episode,

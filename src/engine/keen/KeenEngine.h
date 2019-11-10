@@ -1,5 +1,5 @@
-#ifndef __KEENENGINE_H__
-#define __KEENENGINE_H__
+#ifndef KEENENGINE_H
+#define KEENENGINE_H
 
 #include "engine/core/GameEngine.h"
 #include "engine/core/CBehaviorEngine.h"
@@ -14,6 +14,8 @@ public:
         GameEngine(openedGamePlay, dataPath),
         mEp(ep),
         mLockedMenu(true) {}
+
+    virtual ~KeenEngine();
 
     void switchToGamePlayMode(const int startLevel = -1);
 
@@ -69,4 +71,4 @@ struct SelectPlayerSpriteVarEvent : CEvent
 
 
 
-#endif /* __KEENENGINE_H__ */
+#endif /* KEENENGINE_H */

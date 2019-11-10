@@ -101,7 +101,7 @@ public:
     //CEventContainer &EventList()
     //{	return gEventManager;	}
 
-    void setEpisode(const size_t Episode)
+    void setEpisode(const int Episode)
     {	mEpisode = Episode;	}
 
     void setDemo(bool demo)

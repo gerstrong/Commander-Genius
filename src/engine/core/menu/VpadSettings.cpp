@@ -20,17 +20,17 @@ GameMenu(GsRect<float>(0.075f, 0.24f, 0.85f, 0.4f), style )
 {    
     setMenuLabel("KEYBMENULABEL");
 
+    mUsersConf = gVideoDriver.getVidConfig();
+
     mpVPadSwitch  = new Switch( "VirtPad", style );
     mpMenuDialog->add( mpVPadSwitch );
 
-    const auto iSizeFac = gVideoDriver.getVidConfig().mVPadSize;
+    const auto iSizeFac = mUsersConf.mVPadSize;
 
-    mpSize =
+    mpVPadSize =
         mpMenuDialog->add(
-            new NumberControl( "Size \%", 100, 400, 10, iSizeFac,
+            new NumberControl( "Size", 100, 400, 10, iSizeFac,
                               false, getStyle() ) );
-
-    mpMenuDialog->add( mpSize );
 
     mpMenuDialog->fit();
     select(1);
@@ -39,7 +39,10 @@ GameMenu(GsRect<float>(0.075f, 0.24f, 0.85f, 0.4f), style )
 
 void VPadSettingsMenu::refresh()
 {
-    mpVPadSwitch->enable( mUsersConf.mVPad );
+    mUsersConf = gVideoDriver.getVidConfig();
+
+    mpVPadSwitch->enable(mUsersConf.mVPad);
+    mpVPadSize->setSelection(mUsersConf.mVPadSize);
 }
 
 
@@ -47,20 +50,16 @@ void VPadSettingsMenu::ponder(const float /*deltaT*/)
 {
     GameMenu::ponder(0);
 
-    if( gVideoDriver.VGamePadEnabled() )
-    {
+    auto &activeCfg = gVideoDriver.getVidConfig();
 
-        const auto iSize = mpSize->getSelection();
-        gVideoDriver.getVidConfig().mVPadSize = iSize;
-    }
+    activeCfg.mVPad = mpVPadSwitch->isEnabled();
+    activeCfg.mVPadSize = mpVPadSize->getSelection();
 }
 
 
 void VPadSettingsMenu::release()
 {
     mUsersConf = gVideoDriver.getVidConfig();
-
-    mUsersConf.mVPad = mpVPadSwitch->isEnabled();
 
     gVideoDriver.setVidConfig(mUsersConf);
 
