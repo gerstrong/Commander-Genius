@@ -180,6 +180,10 @@ void scaleNormal( SDL_Surface *srcSfc,
 	}
 }
 
+int sFiltToNum(const VidFilter filt)
+{
+    return static_cast<int>(filt);
+}
 
 void blitScaled(SDL_Surface *srcSfc,
                 SDL_Rect &srGsRect,

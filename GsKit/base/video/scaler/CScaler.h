@@ -19,6 +19,22 @@ enum class VidFilter
     SCALE_4X = 4
 };
 
+/**
+ * @brief sFiltToNum converts the VidFilter type to a number
+ *        good for cases where you compare or multiply
+ * @param filt filter to convert
+ * @return upscaled result of the filter
+ */
+int sFiltToNum(const VidFilter filt);
+
+/**
+ * @brief blitScaled Blit in with proper scaling
+ * @param srcSfc
+ * @param srGsRect
+ * @param dstSfc
+ * @param dstRect
+ * @param filter
+ */
 void blitScaled(SDL_Surface *srcSfc,
                 SDL_Rect &srGsRect,
                 SDL_Surface *dstSfc,

@@ -28,8 +28,9 @@
 // Structure used for dimensions
 struct stDims{
 	Uint16 w,h;
-	stDims(Uint16 width, Uint16 height) :
-		w(width),h(height){};
+    stDims(Uint16 width,
+           Uint16 height) :
+        w(width),h(height){}
 };
 
 Uint16 getPowerOfTwo(Uint16 value);

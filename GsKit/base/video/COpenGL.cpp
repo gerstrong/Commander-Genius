@@ -21,8 +21,8 @@
 COpenGL::COpenGL(const CVidConfig &VidConfig) :
 CVideoEngine(VidConfig),
 m_texparam(GL_TEXTURE_2D),
-m_GameScaleDim(m_VidConfig.mGameRect.dim.x*m_VidConfig.m_ScaleXFilter,
-               m_VidConfig.mGameRect.dim.y*m_VidConfig.m_ScaleXFilter),
+    m_GameScaleDim(m_VidConfig.mGameRect.dim.x*sFiltToNum(m_VidConfig.m_ScaleXFilter),
+                   m_VidConfig.mGameRect.dim.y*sFiltToNum(m_VidConfig.m_ScaleXFilter)),
 m_GamePOTScaleDim(getPowerOfTwo(m_GameScaleDim.w), getPowerOfTwo(m_GameScaleDim.h))
 {}
 
@@ -184,8 +184,8 @@ bool COpenGL::init()
 
 
     createTexture(m_texture, oglfilter, m_GamePOTScaleDim.w, m_GamePOTScaleDim.h);
-	
-	if(m_VidConfig.m_ScaleXFilter <= 1)
+
+    if(sFiltToNum(m_VidConfig.m_ScaleXFilter) <= 1)
 	{	// In that case we can do a texture based rendering
         createTexture(m_texFX, oglfilter, m_GamePOTScaleDim.w, m_GamePOTScaleDim.h, true);
 	}
