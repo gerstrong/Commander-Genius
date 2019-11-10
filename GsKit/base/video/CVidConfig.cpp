@@ -70,12 +70,12 @@ void CVidConfig::reset()
 #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
     mOpengl = true;
 	mAspectCorrection.dim.x=0;
-	mAspectCorrection.h=0;
+	mAspectCorrection.dim.y=0;
 #endif
 
 #if defined(ANDROID)
 	mAspectCorrection.dim.x=0;
-	mAspectCorrection.h=0;
+	mAspectCorrection.dim.y=0;
 #endif
 
 }
