@@ -43,17 +43,6 @@ mScrollbar(rect)
 
 void CGUITextSelectionList::updateScrollBar()
 {
-    /*
-    if(getScrollY() > mMaxScrollY)
-    {
-        this->setPosY(mMaxScrollY);
-    }
-    else if(getScrollY() < 0.0f)
-    {
-        this->setPosY(0.0f);
-    }
-    */
-
     mScrollbar.updateState(getScrollY(),
                            mMinScrollY,
                            mMaxScrollY);

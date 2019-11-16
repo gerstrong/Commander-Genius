@@ -128,13 +128,14 @@ bool CGameLauncher::setupMenu()
                                new SettingsMenu(Style::NONE) ) );
     };
 
+    /*
     mpOptionButton =
                 mLauncherDialog.add(
                         new GsButton( "O",
                               GsRect<float>(0.93f, 0.0f, 0.069f, 0.069f),
                               openSettingsMenuEvent,
                               -1, 0.75f, 1.0f, 1.0f )  );
-
+*/
 
     // Create an empty Bitmap control
     mCurrentBmp = mLauncherDialog.add(
@@ -148,10 +149,11 @@ bool CGameLauncher::setupMenu()
 
     mpGSSelList->setBackgroundColor( GsColor(0xFF, 0xFF, 0xFF) );
 
+
 	std::vector<GameEntry>::iterator it = m_Entries.begin();
     unsigned int i=0;
     for( ; it != m_Entries.end() ; it++	)
-    {
+    {        
         mpGSSelList->addText(it->name);
 
         // And try to add a preview bitmap
@@ -200,6 +202,7 @@ bool CGameLauncher::setupMenu()
 
     gLogging.ftextOut("Game Autodetection Finished<br>" );
 
+
     mLauncherDialog.add( new CGUIBanner("Commander Genius " CGVERSION "\n"
                                                "by Gerstrong,\n"
                                                "Zilem,\n"
@@ -229,7 +232,8 @@ bool CGameLauncher::setupMenu()
     }
 
     // Set the first game selected and highlight the start button
-    mpGSSelList->setSelection(0);
+    if(mpGSSelList) mpGSSelList->setSelection(0);
+
     mLauncherDialog.setSelection(3);
 
 
@@ -748,7 +752,10 @@ void CGameLauncher::ponderGameSelDialog(const float deltaT)
                     mpDemoText->setText(entry.demo ? "Demo" : "");
 
                     // Now update the bitmap
-                    mCurrentBmp->setBitmapPtr(mPreviewBmpPtrVec[sel]);
+                    if(mCurrentBmp)
+                    {
+                        mCurrentBmp->setBitmapPtr(mPreviewBmpPtrVec[sel]);
+                    }
                 }
             }
         }
@@ -897,7 +904,7 @@ void CGameLauncher::ponder(const float deltaT)
     #endif
 
     // Button should disabled unless a game was selected
-    if(mpStartButton)
+    if(mpStartButton && mpGSSelList)
     {
         const auto selection = mpGSSelList->getSelection();
 
@@ -985,30 +992,6 @@ void CGameLauncher::render()
     }
 
 
-    /*
-    // Test picture code for Screen tilting
-    auto sfc = gVideoDriver.getBlitSurface();
-
-    SDL_Rect borderRect;
-
-    SDL_FillRect(sfc, nullptr, SDL_MapRGB(sfc->format,255,255,0));
-
-    borderRect.x = 0; borderRect.y = 0;
-    borderRect.h = 2; borderRect.dim.x = sfc->w;
-    SDL_FillRect(sfc, &borderRect, SDL_MapRGB(sfc->format,255,0,255));
-
-    borderRect.x = 0; borderRect.y = sfc->h-2;
-    borderRect.h = 2; borderRect.dim.x = sfc->w;
-    SDL_FillRect(sfc, &borderRect, SDL_MapRGB(sfc->format,255,0,255));
-
-    borderRect.x = 0; borderRect.y = 0;
-    borderRect.h = sfc->h; borderRect.dim.x = 2;
-    SDL_FillRect(sfc, &borderRect, SDL_MapRGB(sfc->format,0,255,0));
-
-    borderRect.x = sfc->w-2; borderRect.y = 0;
-    borderRect.h = sfc->h; borderRect.dim.x = 2;
-    SDL_FillRect(sfc, &borderRect, SDL_MapRGB(sfc->format,0,255,0));
-*/
     // Do the rendering of the dialog
     if(mpPatchDialog)
         mpPatchDialog->processRendering();

@@ -258,8 +258,8 @@ void CGUIDialog::processRender(const GsRect<float> &RectDispCoordFloat)
     auto displayRect = rect;
     displayRect.transform(RectDispCoordFloat);
 
-
-    for( auto &it : getWidgetList() )
+    auto &wList = getWidgetList();
+    for( auto &it : wList )
     {
         it->processRender(displayRect);
     }

@@ -31,7 +31,9 @@ void GsScrollbar::updateState(const float posY,
     mpUpButton->enable( (posY >= maxY) ? false : true);
     mpDownButton->enable( (posY <= minY) ? false : true);
 
-    mPosRel = -posY/(maxY-minY);
+    const auto den = maxY-minY;
+
+    mPosRel = (den > 0.0f) ? -posY/den : 0.0f;
 
     mPosRel = std::min(mPosRel, 1.0f);
     mPosRel = std::max(mPosRel, 0.0f);
@@ -48,7 +50,17 @@ void GsScrollbar::processPointingStateRel(const GsRect<float> &rect)
 
     if(isReleased())
     {
-        const auto absRect = rect.transformed(getRect());
+        auto slidingRect = rect;
+
+        // Cut out the area where the scroll buttons are placed
+        const auto upperBtnHeight = mpUpButton->getRect().dim.y;
+        const auto lowerBtnHeight = mpDownButton->getRect().dim.y;
+
+        slidingRect.pos.y += upperBtnHeight;
+        slidingRect.dim.y -= upperBtnHeight;
+        slidingRect.dim.y -= lowerBtnHeight;
+
+        const auto absRect = slidingRect.transformed(getRect());
 
         GsPointingState &pointingState = gPointDevice.mPointingState;
 
@@ -62,12 +74,14 @@ void GsScrollbar::processPointingStateRel(const GsRect<float> &rect)
 
             if(scrollPosY > mouseY)
             {
-                mpUpButton->activateFunction();
+                if(mpUpButton->isEnabled())
+                    mpUpButton->activateFunction();
             }
 
             if(scrollPosY < mouseY)
             {
-                mpDownButton->activateFunction();
+                if(mpDownButton->isEnabled())
+                    mpDownButton->activateFunction();
             }
         }
     }
