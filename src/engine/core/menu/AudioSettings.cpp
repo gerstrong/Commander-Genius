@@ -47,12 +47,12 @@ GameMenu(GsRect<float>(0.075f, 0.24f, 0.85f, 0.4f), style )
                                     style ) );
 
     mpSoundVolume =
-        mpMenuDialog->add( new NumberControl( "Sound Vol", 0, 100, 4, false,
+        mpMenuDialog->add( new NumberControl( "Sound Vol", 0, SDL_MIX_MAXVOLUME, 4, false,
                                               gAudio.getSoundVolume(), style ) );
 
 
     mpMusicVolume =
-        mpMenuDialog->add( new NumberControl( "Music Vol", 0, 100, 4, false,
+        mpMenuDialog->add( new NumberControl( "Music Vol", 0, SDL_MIX_MAXVOLUME, 4, false,
                                               gAudio.getMusicVolume(), style ) );
 
 	setMenuLabel("SNDEFFMENULABEL");
