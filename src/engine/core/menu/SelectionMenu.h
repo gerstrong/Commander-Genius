@@ -28,6 +28,8 @@
 
 struct SelectionEvent : CEvent
 {
+    virtual ~SelectionEvent();
+
     SelectionEvent(const int option) :
         mSelection(option) {}
 
@@ -37,6 +39,8 @@ struct SelectionEvent : CEvent
 // Invoked when New Game -> Players selected
 struct NewGamePlayersEvent : SelectionEvent
 {
+    virtual ~NewGamePlayersEvent();
+
     NewGamePlayersEvent(const int players) :
         SelectionEvent(players) {}
 };
@@ -67,6 +71,8 @@ public:
             mpMenuDialog->add( mpButtonList.back() );
             mpMenuDialog->fit();
         }
+
+        mpMenuDialog->setSelection(0);
     }
 
     std::list<GameButton*> mpButtonList;

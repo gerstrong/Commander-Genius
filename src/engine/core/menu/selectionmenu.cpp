@@ -5,8 +5,16 @@
 #include "graphics/GsGraphics.h"
 
 
+SelectionEvent::~SelectionEvent()
+{}
+
+NewGamePlayersEvent::~NewGamePlayersEvent()
+{}
+
 struct ChangeEvent : InvokeFunctorEvent
 {
+    virtual ~ChangeEvent();
+
     ChangeEvent(CPlayerSpriteVarSelection &selObj):
         mSelObj(selObj) {}
 
@@ -17,6 +25,9 @@ struct ChangeEvent : InvokeFunctorEvent
         mSelObj.changeEvent();
     }
 };
+
+ChangeEvent::~ChangeEvent()
+{}
 
 
 CPlayerSpriteVarSelection::

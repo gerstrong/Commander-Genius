@@ -1,3 +1,7 @@
+v2.3.9:
+-------
+- Removed smaller UI annoyances
+
 v2.3.8:
 -------
 - Virtualpad improvements
