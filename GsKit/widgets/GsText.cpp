@@ -43,7 +43,7 @@ void CGUIText::setText(const std::string& text)
 	std::string buf = "";
 	for( size_t i=0 ; i<text.size() ; i++ )
 	{
-		if( endofText(text.substr(i)) )
+        if( endofLine(text.substr(i)) )
 		{            
             if( mTextDim.dim.x < buf.size() )
                 mTextDim.dim.x = static_cast<unsigned int>(buf.size());
@@ -234,94 +234,64 @@ void CGUIText::processRender(const GsRect<float> &backRect,
 
     auto &textSfcVec = mTextSfcVecByColor[mTextColor];
 
+    unsigned int totTextSfcH = 0;
+
     if(mFontId < 0)
     {        
-
 #if defined(USE_SDL_TTF)        
         updateTTFTextSfc(objBackRect);
 #else
         updateLegacyTextSfc(objBackRect);
 #endif
-
-        unsigned int totTextSfcH = 0;
-        for(auto &textSfc : textSfcVec)
-        {
-            if(textSfc.empty())
-                break;
-
-            const auto textW = textSfc.width();
-            const auto textH = textSfc.height();
-            GsVec2D<int> textSfcDim(textW, textH);
-
-            GsRect<float> blitPos = objFrontRect;
-
-            if(mHCentered)
-            {
-                blitPos.pos = blitPos.pos + (blitPos.dim-textSfcDim)/2;
-            }
-
-            auto textrect = blitPos;
-
-            textrect.pos.y = (objBackRect.pos.y < objFrontRect.pos.y) ?
-                                                                      objBackRect.dim.y - objFrontRect.dim.y : 0;
-            textrect.pos.x = (objBackRect.pos.x < objFrontRect.pos.x) ?
-                                                                      objBackRect.dim.x - objFrontRect.dim.x : 0;
-
-            blitPos.pos.y += totTextSfcH;
-
-            textSfc.blitTo(blit,
-                           textrect.SDLRect(),
-                           blitPos.SDLRect());
-            totTextSfcH += textH;
-        }
-
     }
     else
     {
         updateLegacyTextSfc(objBackRect);
-
-        GsVec2D<unsigned int> totTextSfcDim(0,0);
-
-        // Calculate total text dimension in case we need to center
-        for(auto &textSfc : textSfcVec)
-        {
-            if(textSfc.empty())
-                break;
-
-            totTextSfcDim.x =
-                    std::max(static_cast<unsigned int>(textSfc.width()),
-                             static_cast<unsigned int>(totTextSfcDim.x));
-            totTextSfcDim.y += textSfc.height();
-        }
-
-        // Time to render
-        unsigned int totTextSfcY = 0;
-        for(auto &textSfc : textSfcVec)
-        {
-            if(textSfc.empty())
-                break;
-
-            GsRect<float> blitPos = objBackRect;
-
-            if(mHCentered)
-            {
-                blitPos.pos = blitPos.pos + (blitPos.dim-totTextSfcDim)/2;
-            }
-
-            blitPos.pos.y += totTextSfcY;
-
-            auto textrect = blitPos;
-
-            textrect.pos.y = (objBackRect.pos.y < objFrontRect.pos.y) ?
-                              objBackRect.dim.y - objFrontRect.dim.y : 0;
-            textrect.pos.x = (objBackRect.pos.x < objFrontRect.pos.x) ?
-                              objBackRect.dim.x - objFrontRect.dim.x : 0;
-
-            textSfc.blitTo(blit,
-                           textrect.SDLRect(),
-                           objFrontRect.SDLRect());
-            totTextSfcY += textSfc.height();
-        }
     }
+
+
+    GsVec2D<unsigned int> totTextSfcDim(0,0);
+
+    // Calculate total text dimension in case we need to center
+    for(auto &textSfc : textSfcVec)
+    {
+        if(textSfc.empty())
+            break;
+
+        totTextSfcDim.x =
+            std::max(static_cast<unsigned int>(textSfc.width()),
+                     static_cast<unsigned int>(totTextSfcDim.x));
+        const auto txtHeight = textSfc.height();
+        totTextSfcDim.y += txtHeight;
+    }
+
+    // Time to render
+    for(auto &textSfc : textSfcVec)
+    {
+        if(textSfc.empty())
+            break;
+
+        GsRect<float> blitPos = objFrontRect;
+
+        if(mHCentered)
+        {
+            blitPos.pos = blitPos.pos + (blitPos.dim-totTextSfcDim)/2;
+        }
+
+        auto textrect = blitPos;
+
+        textrect.pos.y = (objBackRect.pos.y < objFrontRect.pos.y) ?
+                                                                  objBackRect.dim.y - objFrontRect.dim.y : 0;
+        textrect.pos.x = (objBackRect.pos.x < objFrontRect.pos.x) ?
+                                                                  objBackRect.dim.x - objFrontRect.dim.x : 0;
+
+        blitPos.pos.y += totTextSfcH;
+
+        textSfc.blitTo(blit,
+                       textrect.SDLRect(),
+                       blitPos.SDLRect());
+        totTextSfcH += textSfc.height();
+    }
+
 }
 

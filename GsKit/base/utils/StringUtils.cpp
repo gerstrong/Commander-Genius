@@ -57,7 +57,7 @@ unsigned int calcNumLines(const std::string& text)
 
 	for( unsigned int i=0 ; i<text.size() ; i++ )
 	{
-		if ( endofText( text.substr(i) ) )
+        if ( endofLine( text.substr(i) ) )
 			numLines++;
 	}
 
@@ -81,7 +81,7 @@ std::string getRightAlignedString(std::string text, size_t size)
 
 ///////////////////
 // Tells whether the given string is a end of line or not.
-bool endofText(const std::string& Text)
+bool endofLine(const std::string& Text)
 {
 	if(!Text.empty())
 	{

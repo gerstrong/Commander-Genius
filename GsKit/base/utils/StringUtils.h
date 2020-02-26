@@ -117,7 +117,7 @@ inline char* itoa(int val, char* buf, int base) {
 const std::list<std::string> filledStrList( const size_t amount, const char *first, ... );
 unsigned int 	calcNumLines(const std::string& text);
 std::string		getRightAlignedString(std::string text, size_t size);
-bool 			endofText(const std::string& Text);
+bool 			endofLine(const std::string& Text);
 void			TrimSpaces(std::string& szLine);
 bool			replace(const std::string& text, const std::string& what, const std::string& with, std::string& result);
 bool			replace(std::string& text, const std::string& what, const std::string& with);

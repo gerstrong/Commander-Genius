@@ -359,7 +359,7 @@ unsigned int GsFontLegacy::calcPixelTextWidth( const std::string& text )
 	unsigned int c = 0, width = 0, len = 0;
 	for( ; c<text.size() ; c++)
 	{
-		if ( endofText( text.substr(c) ) )
+		if ( endofLine( text.substr(c) ) )
 		{
 			if(len > width)
 				width = len;
@@ -455,7 +455,7 @@ void GsFontLegacy::drawFont(SDL_Surface* dst,
     {
         unsigned char c = text[i];
 
-        if ( !endofText( text.substr(i) ) )
+        if ( !endofLine( text.substr(i) ) )
         {
             if(highlight) c |= 128;
 
@@ -484,7 +484,7 @@ void GsFontLegacy::drawFontAlpha(SDL_Surface* dst, const std::string& text, Uint
         {
             unsigned char c = text[i];
 
-            if ( !endofText( text.substr(i) ) )
+            if ( !endofLine( text.substr(i) ) )
             {
                 drawCharacter(dst, c, x, y);
                 x += mWidthtable[c];
@@ -559,7 +559,7 @@ void GsFontLegacy::drawFontCentered(SDL_Surface* dst,
 	{
 		xmidpos += mWidthtable[ static_cast<unsigned int>(text[i]) ];
 
-		if ( endofText( text.substr(i) ) )
+		if ( endofLine( text.substr(i) ) )
 		{
 		    xmidpos = (width-xmidpos)/2+x;
 		    ymidpos = ylineoff + (height - 8)/2;

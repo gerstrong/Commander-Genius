@@ -45,12 +45,14 @@ m_mustclose(false)
 
     auto rect = getRect();
 
+
+    // Put text into relative dimensions
     rect.dim.x = static_cast<float>( (mpTextCtrl->mTextDim.dim.x+4)*8 )/screenW;
     rect.dim.y = static_cast<float>( (mpTextCtrl->mTextDim.dim.y+2)*8 )/screenH;
     rect.pos.x = (1.0f - rect.dim.x)*0.5f;
     rect.pos.y = (1.0f - rect.dim.y)*0.5f;
 
-	// now let's center that long text...
+    // now let's center that long text...
     GsRect<float> textRect;
     textRect.dim.x = ((mpTextCtrl->mTextDim.dim.x*8)/screenW) / rect.dim.x;
     textRect.dim.y = ((mpTextCtrl->mTextDim.dim.y*8)/screenH) / rect.dim.y;
