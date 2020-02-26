@@ -1,3 +1,5 @@
+#ifdef DOWNLOADER
+
 #ifdef WIN32
 #include <winsock2.h>
 #include <windows.h>
@@ -520,3 +522,4 @@ int GameDownloader::handle()
     return res;
 }
 
+#endif

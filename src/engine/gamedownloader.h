@@ -1,6 +1,7 @@
 #ifndef GAMEDOWNLOADER_H
 #define GAMEDOWNLOADER_H
 
+
 #include <base/utils/ThreadPool.h>
 #include <graphics/GsBitmap.h>
 #include <boost/property_tree/ptree_fwd.hpp>
