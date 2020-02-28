@@ -4,6 +4,8 @@
 xcuserdata
 build/Xcode/build
 build/Xcode/DerivedData
+build/Xcode/CommanderGenius/build
+build/Xcode/Libraries
 *.log
 Makefile
 .settings
