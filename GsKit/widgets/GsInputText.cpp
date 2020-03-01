@@ -72,17 +72,21 @@ void CGUIInputText::processLogic()
 	if(mTyping)
 	{
 
+        auto appText = getText();
+
 		if(gInput.getPressedIsTypingKey())
 		{
 			std::string c = gInput.getPressedTypingKey();
 
-			mText.append(c);
+            appText.append(c);
+            GsButton::setText(appText);
 		}
 
-		if(gInput.getPulsedKey(KBCKSPCE, 5) && (mText.length() > 0))
+        if(gInput.getPulsedKey(KBCKSPCE, 5) && (appText.length() > 0))
 		{
-			mText.erase(mText.length()-1);
-		}
+            appText.erase(appText.length()-1);
+            GsButton::setText(appText);
+        }
 	}
 	else
 	{
@@ -99,8 +103,10 @@ void CGUIInputText::processLogic()
     }
 }
 
+/*
 std::string CGUIInputText::getInputString()
 {
+
 	std::string text;
 	text = mText;
 
@@ -117,6 +123,55 @@ std::string CGUIInputText::getInputString()
 
 	return text;
 
+}
+*/
+
+void CGUIInputText::processRender(const GsRect<float> &RectDispCoordFloat)
+{
+    // Transform to the display coordinates
+    auto displayRect = getRect();
+
+    displayRect.transform(RectDispCoordFloat);
+    auto lRect = displayRect.SDLRect();
+
+    drawNoStyle(lRect);
+
+
+    //if(!mTyping)
+    {
+        mTextWidget.processRender(displayRect);
+        return;
+    }
+
+/*    if(mTick)
+    {
+        std::string text;
+        text = getText();
+        auto textWithLine = text + "|";
+
+        setText(textWithLine);
+        mTextWidget.processRender(displayRect);
+        setText(text);
+    }
+
+    if(mTypeTick%MAX_TICK == 0)
+        mTick = !mTick;
+
+    mTypeTick++;
+*/
+}
+
+void CGUIInputText::processRender(const GsRect<float> &backRect,
+                             const GsRect<float> &frontRect)
+{
+    // Transform this object display coordinates
+    auto objBackRect = backRect.transformed(getRect());
+    auto objFrontRect = objBackRect.clipped(frontRect);
+
+    drawNoStyle( objFrontRect.SDLRect() );
+
+    mTextWidget.processRender(objBackRect,
+                              objFrontRect);
 }
 
 void CGUIInputText::setTypeMode( const bool value )

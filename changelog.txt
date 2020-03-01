@@ -1,3 +1,9 @@
+v???:
+-------
+- Fixed problem with some dialogs in vorticon keen engine
+- Improved the code for save game menus
+
+
 v2.3.9:
 -------
 - Removed smaller UI annoyances

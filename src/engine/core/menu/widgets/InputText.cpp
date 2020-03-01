@@ -53,7 +53,7 @@ void InputText::setupStyle()
 
 void InputText::processLogic()
 {
-    GsButton::processLogic();
+    CGUIInputText::processLogic();
 
     mTextWidget.setTextColor( mColorNormal );
 

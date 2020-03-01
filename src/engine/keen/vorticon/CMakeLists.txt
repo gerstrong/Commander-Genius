@@ -1,11 +1,6 @@
 
 include_directories(${SDL_INCLUDE_DIR})
 
-if(NOTYPESAVE)
-    add_definitions(-DNOTYPESAVE)
-endif()
-
-
 
 set(CXXSRC
     CAbout.cpp

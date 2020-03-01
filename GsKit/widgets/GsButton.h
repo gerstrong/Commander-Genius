@@ -154,7 +154,7 @@ public:
         mTextWidget.setFontId(fontId);
     }
 
-protected:
+//private:
 
     std::string mText;
     CGUIText mTextWidget;

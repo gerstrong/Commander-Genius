@@ -1,6 +1,13 @@
 
 include_directories(${SDL_INCLUDE_DIR})
 
+option(NOTYPESAVE "Enable this if you don't want to type names for your savesgames" no)
+
+if(NOTYPESAVE)
+    add_definitions(-DNOTYPESAVE)
+endif()
+
+
 add_subdirectory(widgets)
 
 set(SRCS

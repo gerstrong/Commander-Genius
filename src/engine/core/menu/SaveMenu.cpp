@@ -21,6 +21,12 @@
 
 const std::string EMPTY_TEXT = "EMPTY";
 
+#ifdef NOTYPESAVE
+const bool nontypesaves = true;
+#else
+const bool nontypesaves = false;
+#endif
+
 
 CSaveMenu::CSaveMenu(const Style &style) :
 GameMenu(GsRect<float>(0.1f, 0.0f, 0.8f, 1.0f), style )
@@ -83,63 +89,65 @@ void CSaveMenu::refresh()
     }
 }
 
-/*
-void CSaveMenu::ponder(const float)
+
+void CSaveMenu::ponder(const float deltaT)
 {
     auto &curWidget = mpMenuDialog->CurrentWidget();
     auto pInput = std::dynamic_pointer_cast<InputText>(curWidget);
 
-#if !defined(NOTYPESAVE)
-    int minIC = IC_LEFT;
-
-    if(pInput!=nullptr)
+    if(nontypesaves)
     {
-        if(pInput->Typing())
-            minIC = IC_JUMP;
-    }
-
-    // Command (Keyboard/Joystick) are handled here
-    for( int cmd = minIC ; cmd < MAX_COMMANDS ; cmd++ )
-    {
-        if( gInput.getPressedCommand(cmd) )
-        {
-            std::shared_ptr<CEvent> command(new CommandEvent( static_cast<InputCommand>(cmd) ));
-            sendEvent(command);
-            break;
-        }
-    }
-#else
-
-    auto &list =
+        GameMenu::ponder(deltaT);
+        /*auto &list =
             mpMenuDialog->getWidgetList();
 
-    auto itCtrl = list.begin();
-    itCtrl++;
+        auto itCtrl = list.begin();
+        itCtrl++;
 
-    for(int i=0 ; i<8 ; i++)
-    {
-        auto &ctrl = *itCtrl;
-        InputText *input = dynamic_cast<InputText*>( ctrl.get() );
-
-        if(input->isPressed())
+        for(int i=0 ; i<8 ; i++)
         {
-            mpMenuDialog->setSelection(i+1);
+            auto &ctrl = *itCtrl;
+            InputText *input = dynamic_cast<InputText*>( ctrl.get() );
 
-            std::shared_ptr<CEvent> command(
-                        new CommandEvent( static_cast<InputCommand>(IC_JUMP) ));
-            sendEvent(command);
-            break;
+            if(input->isPressed())
+            {
+                mpMenuDialog->setSelection(i+1);
+
+                std::shared_ptr<CEvent> command(
+                    new CommandEvent( static_cast<InputCommand>(IC_JUMP) ));
+                sendEvent(command);
+                break;
+            }
+
+            itCtrl++;
+        }*/
+    }
+    else
+    {
+        int minIC = IC_LEFT;
+
+        if(pInput!=nullptr)
+        {
+            if(pInput->Typing())
+                minIC = IC_JUMP;
         }
 
-        itCtrl++;
+        // Command (Keyboard/Joystick) are handled here
+        for( int cmd = minIC ; cmd < MAX_COMMANDS ; cmd++ )
+        {
+            if( gInput.getPressedCommand(cmd) )
+            {
+                std::shared_ptr<CEvent> command(new CommandEvent( static_cast<InputCommand>(cmd) ));
+                sendEvent(command);
+                break;
+            }
+        }
+
+        mpMenuDialog->processLogic();
     }
 
-#endif
-
-    mpMenuDialog->processLogic();
-
 }
-*/
+
 
 void CSaveMenu::sendEvent(std::shared_ptr<CEvent> &command)
 {
@@ -155,27 +163,33 @@ void CSaveMenu::sendEvent(std::shared_ptr<CEvent> &command)
 		{            
 			if(ev->mCommand == IC_JUMP || ev->mCommand == IC_STATUS)
             {
-#ifdef NOTYPESAVE
-                const std::string saveText = getTimeStr();
+                if(nontypesaves)
+                {
+                    const std::string saveText = getTimeStr();
 
-#else
-                // we are typing...
-				if(pInput->Typing())
-				{
-                    const std::string saveText = pInput->getText();
-#endif
                     gSaveGameController.prepareSaveGame( sel, saveText );
                     gBehaviorEngine.setPause(false);
-					gEventManager.add( new CloseAllMenusEvent() );
-#ifndef NOTYPESAVE
-				}
-				else
-				{
-					if(pInput->getText() == EMPTY_TEXT)
-						pInput->setText("");
-					pInput->setTypeMode(true);
-				}
-#endif
+                    gEventManager.add( new CloseAllMenusEvent() );
+
+                }
+                else
+                {
+                    // we are typing...
+                    if(pInput->Typing())
+                    {
+                        const std::string saveText = pInput->getText();
+                        gSaveGameController.prepareSaveGame( sel, saveText );
+                        gBehaviorEngine.setPause(false);
+                        gEventManager.add( new CloseAllMenusEvent() );
+                    }
+                    else
+                    {
+                        if(pInput->getText() == EMPTY_TEXT)
+                            pInput->setText("");
+                        pInput->setTypeMode(true);
+                    }
+                }
+
 				return;
 			}
 		}

@@ -25,9 +25,14 @@ public:
                   const int fontID = 0);
 
 
-	bool sendEvent(const InputCommand command);
+    bool sendEvent(const InputCommand command) override;
 
-	void processLogic();
+    void processLogic() override;
+
+    void processRender(const GsRect<float> &RectDispCoordFloat) override;
+
+    void processRender(const GsRect<float> &backRect,
+                       const GsRect<float> &frontRect) override;
 
 
 	void setText(const std::string& text)
@@ -44,7 +49,7 @@ protected:
 	// Returns the string that has to be displayed on the gui
 	// It should say empty if it's so or a character when ticking
 	// while user is typing.
-	std::string getInputString();
+    //std::string getInputString();
 
 
     bool mTyping = false;
