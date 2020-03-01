@@ -70,7 +70,7 @@ void CInput::resetControls(int player)
 	memset(immediate_keytable,false,KEYTABLE_SIZE);
 	memset(last_immediate_keytable,false,KEYTABLE_SIZE);
 
-    auto &curInput = InputCommand[player];
+    auto &curInput = mInputCommands[player];
 
     for(auto &input : curInput)
     {
@@ -204,13 +204,13 @@ void CInput::loadControlconfig(void)
 	if(Configuration.Parse())
 	{
 		std::string section;
-        for(size_t i=0 ; i<InputCommand.size() ; i++)
+        for(size_t i=0 ; i<mInputCommands.size() ; i++)
 		{
 			// setup input from proper string
 			section = "input" + itoa(i);
 
 			std::string value;
-            auto &curInput = InputCommand[i];
+            auto &curInput = mInputCommands[i];
             Configuration.ReadString( section, "Left", value, "Left");
             setupInputCommand( curInput, IC_LEFT, value );
             Configuration.ReadString( section, "Up", value, "Up");
@@ -310,25 +310,25 @@ std::string CInput::getNewMappedEvent(int &rPos, unsigned char &rInp)
 std::string CInput::getEventShortName(int command, unsigned char input)
 {
 	std::string buf;
-	if(InputCommand[input][command].joyeventtype == ETYPE_JOYAXIS)
+    if(mInputCommands[input][command].joyeventtype == ETYPE_JOYAXIS)
 	{
-	  buf = "J" + itoa(InputCommand[input][command].which) + "A" + itoa(InputCommand[input][command].joyaxis);
-	  if(InputCommand[input][command].joyvalue < 0)
+      buf = "J" + itoa(mInputCommands[input][command].which) + "A" + itoa(mInputCommands[input][command].joyaxis);
+      if(mInputCommands[input][command].joyvalue < 0)
 	    buf += "-";
 	  else
 	    buf += "+";
 	}
-	else if(InputCommand[input][command].joyeventtype == ETYPE_JOYBUTTON)
+    else if(mInputCommands[input][command].joyeventtype == ETYPE_JOYBUTTON)
 	{
-	  buf = "J" + itoa(InputCommand[input][command].which) + "B" + itoa(InputCommand[input][command].joybutton);
+      buf = "J" + itoa(mInputCommands[input][command].which) + "B" + itoa(mInputCommands[input][command].joybutton);
 	}
-	else if(InputCommand[input][command].joyeventtype == ETYPE_JOYHAT)
+    else if(mInputCommands[input][command].joyeventtype == ETYPE_JOYHAT)
 	{
-	  buf = "J" + itoa(InputCommand[input][command].which) + "H" + itoa(InputCommand[input][command].joyhatval);
+      buf = "J" + itoa(mInputCommands[input][command].which) + "H" + itoa(mInputCommands[input][command].joyhatval);
 	}
 	else // In case only keyboard was triggered
 	{
-	  buf = SDL_GetKeyName(InputCommand[input][command].keysym);
+      buf = SDL_GetKeyName(mInputCommands[input][command].keysym);
 	}
 
 	return buf;
@@ -366,7 +366,7 @@ std::string CInput::getEventName(int command, unsigned char input)
 {
 	std::string buf;
 
-    auto &curInput = InputCommand[input];
+    auto &curInput = mInputCommands[input];
 
     if(curInput[command].joyeventtype == ETYPE_JOYAXIS)
 	{
@@ -472,7 +472,7 @@ void CInput::setupNewEvent(Uint8 device, int position)
  */
 void CInput::readNewEvent()
 {
-	stInputCommand &lokalInput = InputCommand[remapper.mapDevice][remapper.mapPosition];
+    stInputCommand &lokalInput = mInputCommands[remapper.mapDevice][remapper.mapPosition];
 
 	// This function is used to configure new input keys.
 	// For iPhone, we have emulation via touchpad and we don't want to have custom keys.
@@ -709,9 +709,9 @@ void CInput::pollEvents()
 	memcpy(last_immediate_keytable, immediate_keytable, KEYTABLE_SIZE*sizeof(char));
 
     // Input for player commands
-    for(unsigned int j=0 ; j<InputCommand.size() ; j++)
+    for(unsigned int j=0 ; j<mInputCommands.size() ; j++)
     {
-        auto &input = InputCommand[j];
+        auto &input = mInputCommands[j];
         for(unsigned int i=0 ; i<input.size() ; i++)
         {
             input[i].lastactive = input[i].active;
@@ -998,7 +998,7 @@ void CInput::pollEvents()
     {
 		for(int j=0 ; j<NUM_INPUTS ; j++)
         {
-            auto &input = InputCommand[j];
+            auto &input = mInputCommands[j];
 
             input[i].firsttimeactive =
                       !input[i].lastactive &&
@@ -1056,7 +1056,7 @@ void CInput::pollEvents()
 void CInput::processJoystickAxis(void)
 {
     // Input for player commands
-    for(auto &input : InputCommand)
+    for(auto &input : mInputCommands)
     {
         for(unsigned int i=0 ; i<input.size() ; i++)
         {
@@ -1067,8 +1067,8 @@ void CInput::processJoystickAxis(void)
                         Event.jaxis.which == input[i].which )
 				{
 					// Deadzone
-					if((Event.jaxis.value > m_joydeadzone && InputCommand[0][i].joyvalue > 0) ||
-					   (Event.jaxis.value < -m_joydeadzone && InputCommand[0][i].joyvalue < 0))
+                    if((Event.jaxis.value > m_joydeadzone && mInputCommands[0][i].joyvalue > 0) ||
+                       (Event.jaxis.value < -m_joydeadzone && mInputCommands[0][i].joyvalue < 0))
 					{
                         input[i].active = true;
                         input[i].joymotion = Event.jaxis.value;
@@ -1087,7 +1087,7 @@ void CInput::processJoystickHat()
 {
 	for(int j=0 ; j<NUM_INPUTS ; j++)
 	{
-        auto &input = InputCommand[j];
+        auto &input = mInputCommands[j];
 		for(int i=0 ; i<MAX_COMMANDS ; i++)
 		{
             stInputCommand &command = input[i];
@@ -1115,19 +1115,19 @@ void CInput::processJoystickButton(int value)
 #if defined(CAANOO) || defined(WIZ) || defined(GP2X)
 	WIZ_EmuKeyboard( Event.jbutton.button, value );
 #else
-    for(int player=0 ; player<InputCommand.size() ; player++)
+    for( auto &inputCommand : mInputCommands)
 	{
-        auto &input = InputCommand[player];
-        for(int i=0 ; i<input.size() ; i++)
+        auto &inputs = inputCommand;
+        for( auto &input : inputs)
 		{
 			// TODO: Check all NUM_INPUTS, if they can be reduced to another variable
-            if(input[i].joyeventtype == ETYPE_JOYBUTTON)
+            if(input.joyeventtype == ETYPE_JOYBUTTON)
 			{
 				// Joystick buttons are configured for this event !!
-                if(Event.jbutton.button == input[i].joybutton &&
-                   Event.jbutton.which == input[i].which )
+                if(Event.jbutton.button == input.joybutton &&
+                   Event.jbutton.which == input.which )
                 {
-                    input[i].active = value;
+                    input.active = value;
                 }
 			}
 		}
@@ -1150,9 +1150,9 @@ bool CInput::processKeys(int keydown)
     bool passSDLEventVec = true;
 
 	// Input for player commands
-    for(int j=0 ; j<InputCommand.size() ; j++)
+    for(int j=0 ; j<mInputCommands.size() ; j++)
     {
-        auto &input = InputCommand[j];
+        auto &input = mInputCommands[j];
         for(int i=0 ; i<input.size() ; i++)
         {
             if(input[i].keysym == Event.key.keysym.sym &&
@@ -1498,19 +1498,19 @@ bool CInput::getHoldedCommand(int command)
 
 bool CInput::isJoystickAssgmnt(const int player, const int command)
 {
-    auto &input = InputCommand[player];
+    auto &input = mInputCommands[player];
     return (input[command].joyeventtype == ETYPE_JOYAXIS);
 }
 
 bool CInput::getHoldedCommand(int player, int command)
 {
-    auto &input = InputCommand[player];
+    auto &input = mInputCommands[player];
     return input[command].active;
 }
 
 int CInput::getJoyValue(const int player, const int command)
 {
-    auto &input = InputCommand[player];
+    auto &input = mInputCommands[player];
     int newval = input[command].joymotion;
 	newval = (newval*101)>>15;
 	if( newval > 100 )
@@ -1533,7 +1533,7 @@ bool CInput::getPressedCommand(int command)
 
 bool CInput::getPressedCommand(int player, int command)
 {
-    auto &inputFromPlayer = InputCommand[player];
+    auto &inputFromPlayer = mInputCommands[player];
 
     if(inputFromPlayer[command].firsttimeactive)
 	{
@@ -1554,7 +1554,7 @@ bool CInput::getPulsedCommand(int command, int msec)
 
 bool CInput::getPulsedCommand(int player, int command, int msec)
 {
-    auto &input = InputCommand[player];
+    auto &input = mInputCommands[player];
 
     if(input[command].active)
 	{
@@ -1640,7 +1640,7 @@ void CInput::flushCommand(int command)
 
 void CInput::flushCommand(int player, int command)
 {
-    auto &input = InputCommand[player];
+    auto &input = mInputCommands[player];
 
     input[command].active =
     input[command].lastactive =

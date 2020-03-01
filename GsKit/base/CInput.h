@@ -274,7 +274,7 @@ public:
      */
     void setCommand(const int player, const int command, const bool active)
     {
-        auto &input=InputCommand[player];
+        auto &input=mInputCommands[player];
         input[command].active = active;
     }
 
@@ -343,7 +343,7 @@ private:
 	SDL_Event Event;
 	std::list<SDL_Joystick*> mp_Joysticks;
 
-    std::array< std::array<stInputCommand, MAX_COMMANDS>, NUM_INPUTS > InputCommand;
+    std::array< std::array<stInputCommand, MAX_COMMANDS>, NUM_INPUTS > mInputCommands;
 	bool TwoButtonFiring[NUM_INPUTS];
 	bool mAnalogAxesMovement[NUM_INPUTS];
 	bool mSuperPogo[NUM_INPUTS];

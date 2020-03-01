@@ -48,7 +48,8 @@ void CMessageBoxVort::initVorticonBackground()
     {
         for( int y=8 ; y<sdlRect.h-8 ; y+=8 )
         {
-            Font.drawCharacter( backSfc, 32, x, y );
+            Font.drawCharacter( backSfc, 32,
+                                x, y );
         }
     }
 
@@ -78,16 +79,14 @@ void CMessageBoxVort::addTileAt(Uint16 tile, Uint16 x, Uint16 y)
 
     tilemap.drawTile(bmpSfc.getSDLSurface(), 0, 0, tile);
 
-	rect.x = x;	rect.y = y;
+    rect.x = x+40;	rect.y = y+24;
 
-	GsRect<float> fRect( x, y, 16.0f, 16.0f);
-
-	GsRect<float> gameRect = gVideoDriver.getGameResolution();
-    fRect.transformInverse(gameRect);
+    GsRect<float> fRect(rect);
 
     GsRect<float> scaleRect = getRect();
 
-    scaleRect = 0.0f;
+	GsRect<float> gameRect = gVideoDriver.getGameResolution();
+    fRect.transformInverse(gameRect);    
 
     fRect.transformInverse(scaleRect);
 
