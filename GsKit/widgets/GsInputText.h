@@ -34,31 +34,31 @@ public:
     void processRender(const GsRect<float> &backRect,
                        const GsRect<float> &frontRect) override;
 
-
-	void setText(const std::string& text)
-	{	mText = text;	}
-
-	std::string getText() const
-	{	return mText;	}
-
 	bool Typing() const { return mTyping; }
 	void setTypeMode( const bool value );
+
+    /*
+    void setText(const std::string &text)
+    {
+        mOrigText
+    }
+*/
 
 protected:
 
 	// Returns the string that has to be displayed on the gui
 	// It should say empty if it's so or a character when ticking
 	// while user is typing.
-    //std::string getInputString();
 
+
+    std::string mOrigText;
+    std::string mTextWithCursor;
 
     bool mTyping = false;
     int mTypeTick = 0;
     bool mTick = false;
 
-	std::unique_ptr<SDL_Surface> mpTextSfc;
-
-    //GsButton mInputButton;
+	std::unique_ptr<SDL_Surface> mpTextSfc;    
 };
 
 #endif /* CGUIINPUTTEXT_H_ */

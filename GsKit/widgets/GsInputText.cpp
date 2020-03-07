@@ -26,14 +26,12 @@
 const int MAX_TICK = 8; // Units in a logical loop
 
 
-CGUIInputText::CGUIInputText(const std::string& text ,
+CGUIInputText::CGUIInputText(const std::string& text,
                              const int fontID) :
 GsButton(text,
          nullptr,
          fontID)
-{
-    //mFontID = fontID;
-}
+{}
 
 CGUIInputText::CGUIInputText(const std::string& text,
                              const GsRect<float> &rect,
@@ -42,9 +40,7 @@ GsButton(text,
          rect,
          nullptr,
          fontID)
-{
-    //mFontID = fontID;
-}
+{}
 
 
 
@@ -103,29 +99,6 @@ void CGUIInputText::processLogic()
     }
 }
 
-/*
-std::string CGUIInputText::getInputString()
-{
-
-	std::string text;
-	text = mText;
-
-	if(!mTyping)
-		return text;
-
-	if(mTick)
-		text += "|";
-
-	if(mTypeTick%MAX_TICK == 0)
-		mTick = !mTick;
-
-	mTypeTick++;
-
-	return text;
-
-}
-*/
-
 void CGUIInputText::processRender(const GsRect<float> &RectDispCoordFloat)
 {
     // Transform to the display coordinates
@@ -136,29 +109,44 @@ void CGUIInputText::processRender(const GsRect<float> &RectDispCoordFloat)
 
     drawNoStyle(lRect);
 
-
-    //if(!mTyping)
+    if(!mTyping)
     {
         mTextWidget.processRender(displayRect);
         return;
     }
 
-/*    if(mTick)
-    {
-        std::string text;
-        text = getText();
-        auto textWithLine = text + "|";
-
-        setText(textWithLine);
-        mTextWidget.processRender(displayRect);
-        setText(text);
-    }
-
     if(mTypeTick%MAX_TICK == 0)
+    {
         mTick = !mTick;
 
-    mTypeTick++;
+        const auto oldText = getText();
+        auto text = oldText;
+
+/*
+        mOrigText;
+        mTextWithCursor;
 */
+
+        if(mTick)
+        {
+            text = text + "|";
+        }
+        else
+        {
+
+        }
+
+        setText(text);
+
+        mTextWidget.processRender(displayRect);
+        setText(oldText);
+    }
+    else
+    {
+        mTextWidget.processRender(displayRect);
+    }
+
+    mTypeTick++;
 }
 
 void CGUIInputText::processRender(const GsRect<float> &backRect,

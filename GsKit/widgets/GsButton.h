@@ -106,7 +106,7 @@ public:
     virtual void processRender(const GsRect<float> &srcRectFloat,
                                const GsRect<float> &dstRectFloat) override;
 
-    void setText(const std::string& text)
+    virtual void setText(const std::string& text)
 	{
 		mText = text;
         mTextWidget.setText(text);
@@ -154,12 +154,13 @@ public:
         mTextWidget.setFontId(fontId);
     }
 
-//private:
+protected:
 
-    std::string mText;
     CGUIText mTextWidget;
+    std::string mText;
 
-private:        
+private:    
+
 
 	std::shared_ptr<CEvent> mEvent;
 
