@@ -25,24 +25,21 @@ public:
                   const int fontID = 0);
 
 
+    virtual std::string getText() override
+    {	return mOrigText;	}
+
+
+
     bool sendEvent(const InputCommand command) override;
 
     void processLogic() override;
 
-    void processRender(const GsRect<float> &RectDispCoordFloat) override;
-
-    void processRender(const GsRect<float> &backRect,
-                       const GsRect<float> &frontRect) override;
 
 	bool Typing() const { return mTyping; }
 	void setTypeMode( const bool value );
 
-    /*
-    void setText(const std::string &text)
-    {
-        mOrigText
-    }
-*/
+    virtual void setText(const std::string& text) override;
+
 
 protected:
 

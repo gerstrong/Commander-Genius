@@ -129,7 +129,7 @@ public:
     }
 
 
-	std::string getText()
+    virtual std::string getText()
 	{	return mText;	}
 
     virtual void setupButtonSurface(const std::string &text = "");

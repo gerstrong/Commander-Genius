@@ -11,10 +11,6 @@
 #include <base/video/CVideoDriver.h>
 #include <base/GsTimer.h>
 
-//
-//#include "engine/core/CBehaviorEngine.h"
-//#include "core/mode/CGameMode.h"
-
 #ifdef ANDROID
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 #else
@@ -23,7 +19,7 @@
 #endif
 
 
-const int MAX_TICK = 8; // Units in a logical loop
+const int MAX_TICK = 32; // Units in a logical loop
 
 
 CGUIInputText::CGUIInputText(const std::string& text,
@@ -68,20 +64,20 @@ void CGUIInputText::processLogic()
 	if(mTyping)
 	{
 
-        auto appText = getText();
+        auto appText = mOrigText;
 
 		if(gInput.getPressedIsTypingKey())
 		{
 			std::string c = gInput.getPressedTypingKey();
 
             appText.append(c);
-            GsButton::setText(appText);
+            setText(appText);
 		}
 
         if(gInput.getPulsedKey(KBCKSPCE, 5) && (appText.length() > 0))
 		{
             appText.erase(appText.length()-1);
-            GsButton::setText(appText);
+            setText(appText);
         }
 	}
 	else
@@ -97,70 +93,28 @@ void CGUIInputText::processLogic()
     {
         mTyping = !mTyping;
     }
-}
 
-void CGUIInputText::processRender(const GsRect<float> &RectDispCoordFloat)
-{
-    // Transform to the display coordinates
-    auto displayRect = getRect();
-
-    displayRect.transform(RectDispCoordFloat);
-    auto lRect = displayRect.SDLRect();
-
-    drawNoStyle(lRect);
-
-    if(!mTyping)
+    if(mTyping)
     {
-        mTextWidget.processRender(displayRect);
-        return;
-    }
-
-    if(mTypeTick%MAX_TICK == 0)
-    {
-        mTick = !mTick;
-
-        const auto oldText = getText();
-        auto text = oldText;
-
-/*
-        mOrigText;
-        mTextWithCursor;
-*/
-
-        if(mTick)
+        if(mTypeTick%MAX_TICK == 0)
         {
-            text = text + "|";
-        }
-        else
-        {
-
+            mTick = !mTick;
+            GsButton::setText(mTick ? mOrigText : mTextWithCursor);
         }
 
-        setText(text);
-
-        mTextWidget.processRender(displayRect);
-        setText(oldText);
+        mTypeTick++;
     }
-    else
-    {
-        mTextWidget.processRender(displayRect);
-    }
-
-    mTypeTick++;
 }
 
-void CGUIInputText::processRender(const GsRect<float> &backRect,
-                             const GsRect<float> &frontRect)
+void CGUIInputText::setText(const std::string& text)
 {
-    // Transform this object display coordinates
-    auto objBackRect = backRect.transformed(getRect());
-    auto objFrontRect = objBackRect.clipped(frontRect);
-
-    drawNoStyle( objFrontRect.SDLRect() );
-
-    mTextWidget.processRender(objBackRect,
-                              objFrontRect);
+    mOrigText = text;
+    mTextWithCursor = text + "|";
+    GsButton::setText(text);
 }
+
+
+
 
 void CGUIInputText::setTypeMode( const bool value )
 {
