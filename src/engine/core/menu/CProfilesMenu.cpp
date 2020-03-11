@@ -37,6 +37,7 @@ public:
         options[GameOption::KEYSTACK].value = 0;
         options[GameOption::LVLREPLAYABILITY].value = 0;
         options[GameOption::RISEBONUS].value = 0;
+        options[GameOption::NOTYPING].value = 0;
         options[GameOption::MODERN].value = 1;
         options[GameOption::HUD].value = 0;
         options[GameOption::SPECIALFX].value = 0;

@@ -25,7 +25,7 @@
 
 
 SettingsMenu::SettingsMenu(const Style &style) :
-GameMenu( GsRect<float>(0.25f, 0.24f, 0.5f, 0.40f), 
+GameMenu( GsRect<float>(0.25f, 0.24f, 0.5f, 0.40f),
           style )
 {
 

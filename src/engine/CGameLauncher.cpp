@@ -121,13 +121,14 @@ bool CGameLauncher::setupMenu()
     mLauncherDialog.add(new CGUIText("Pick a Game",
                                       GsRect<float>(0.14f, 0.01f, 0.72f, 0.05f)));
 
+    /*
     const auto openSettingsMenuEvent = [&]()
     {
         mLauncherDialog.enable(false);
         gEventManager.add( new OpenMenuEvent(
                                new SettingsMenu(Style::NONE) ) );
     };
-
+*/
     /*
     mpOptionButton =
                 mLauncherDialog.add(

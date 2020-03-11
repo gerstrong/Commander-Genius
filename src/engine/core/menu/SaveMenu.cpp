@@ -21,12 +21,6 @@
 
 const std::string EMPTY_TEXT = "EMPTY";
 
-#ifdef NOTYPESAVE
-const bool nontypesaves = true;
-#else
-const bool nontypesaves = false;
-#endif
-
 
 CSaveMenu::CSaveMenu(const Style &style) :
 GameMenu(GsRect<float>(0.1f, 0.0f, 0.8f, 1.0f), style )
@@ -95,7 +89,9 @@ void CSaveMenu::ponder(const float deltaT)
     auto &curWidget = mpMenuDialog->CurrentWidget();
     auto pInput = std::dynamic_pointer_cast<InputText>(curWidget);
 
-    if(nontypesaves)
+    const auto noTyping = gBehaviorEngine.mOptions[GameOption::NOTYPING].value;
+
+    if(noTyping)
     {
         GameMenu::ponder(deltaT);
         /*auto &list =
@@ -154,6 +150,8 @@ void CSaveMenu::sendEvent(std::shared_ptr<CEvent> &command)
     auto &curWidget = mpMenuDialog->CurrentWidget();
     auto pInput = std::dynamic_pointer_cast<InputText>(curWidget);
 
+    const auto noTyping = gBehaviorEngine.mOptions[GameOption::NOTYPING].value;
+
 	// Before all events are sent to the dialog which handles selection catch some specific events
 	// required for the saving process.
 	if( CommandEvent *ev = dynamic_cast<CommandEvent*>(command.get()) )
@@ -163,7 +161,7 @@ void CSaveMenu::sendEvent(std::shared_ptr<CEvent> &command)
 		{            
 			if(ev->mCommand == IC_JUMP || ev->mCommand == IC_STATUS)
             {
-                if(nontypesaves)
+                if(noTyping)
                 {
                     const std::string saveText = getTimeStr();
 

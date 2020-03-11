@@ -25,7 +25,7 @@ mStyle(style)
     }
     else if(style == Style::VORTICON)
     {
-        GsRect<float> dlgRect(0.15f, 0.282f, 0.70f, 0.5f);
+        GsRect<float> dlgRect(0.15f, 0.282f, 0.70f, 0.6f);
         mpMenuDialog->setRect(dlgRect);
 
 

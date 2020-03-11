@@ -15,6 +15,7 @@ enum class GameOption
     ALLOWPKING,
     KEYSTACK,
     LVLREPLAYABILITY, RISEBONUS,
+    NOTYPING,
     MODERN,
     HUD,SPECIALFX,
     SHOWFPS,

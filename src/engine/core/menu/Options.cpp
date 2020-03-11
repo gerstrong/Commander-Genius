@@ -19,7 +19,7 @@ GameMenu( GsRect<float>(0.1f, 0.14f, 0.8f,
 	{
         mpOptionList.push_back( new Switch( option.second.menuname, style ) );
 		mpMenuDialog->add( mpOptionList.back() );
-	}    
+    }
 
 	setMenuLabel("OPTIONSMENULABEL");
 
