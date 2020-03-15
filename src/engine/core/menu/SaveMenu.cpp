@@ -38,7 +38,8 @@ GameMenu(GsRect<float>(0.1f, 0.0f, 0.8f, 1.0f), style )
         mpMenuDialog->add( new InputText(
                                       text,
                                       GsRect<float>(
-                                          0.0f, 0.1f+(i*0.1f), 1.0f, 0.1f),
+                                          0.0f, 0.1f+(i*0.1f),
+                                          1.0f, 0.1f),
                                       style ) );
 
 	}
@@ -94,29 +95,6 @@ void CSaveMenu::ponder(const float deltaT)
     if(noTyping)
     {
         GameMenu::ponder(deltaT);
-        /*auto &list =
-            mpMenuDialog->getWidgetList();
-
-        auto itCtrl = list.begin();
-        itCtrl++;
-
-        for(int i=0 ; i<8 ; i++)
-        {
-            auto &ctrl = *itCtrl;
-            InputText *input = dynamic_cast<InputText*>( ctrl.get() );
-
-            if(input->isPressed())
-            {
-                mpMenuDialog->setSelection(i+1);
-
-                std::shared_ptr<CEvent> command(
-                    new CommandEvent( static_cast<InputCommand>(IC_JUMP) ));
-                sendEvent(command);
-                break;
-            }
-
-            itCtrl++;
-        }*/
     }
     else
     {

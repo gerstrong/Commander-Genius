@@ -332,7 +332,7 @@ void CSettings::loadDefaultGameCfg()
     setOption( GameOption::KEYSTACK,		"Keystacking    ", "keystack", 0 );
     setOption( GameOption::LVLREPLAYABILITY,"Replay Levels  ", "level_replayability", 0 );
     setOption( GameOption::RISEBONUS,		"Rising Bonus   ", "rise_bonus", 1 );
-    setOption( GameOption::NOTYPING,		"No Typing      ", "no_typing", 0 );
+    setOption( GameOption::NOTYPING,		"No Typing      ", "no_typing", 1 );
     setOption( GameOption::MODERN,          "Modern Style   ", "modern_style", 1 );
     setOption( GameOption::HUD,				"HUD Display    ", "hud", 1 );
     setOption( GameOption::SPECIALFX,		"Special Effects", "specialfx", 1 );

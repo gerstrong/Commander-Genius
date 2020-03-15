@@ -109,8 +109,7 @@ public:
     virtual void setText(const std::string& text)
 	{
 		mText = text;
-        mTextWidget.setText(text);
-        //setupButtonSurface("  " + mText);
+        mTextWidget.setText(text);        
     }
 
     void setTextColor(const GsColor &color)
@@ -131,8 +130,6 @@ public:
 
     virtual std::string getText()
 	{	return mText;	}
-
-    //virtual void setupButtonSurface(const std::string &text = "");
 
     void enableBorder(const bool value)
     {

@@ -112,6 +112,9 @@ GsButton(text,rect,f,fontId,
 
 bool GsButton::sendEvent(const InputCommand command)
 {
+    if(!mEnabled)
+        return false;
+
     if(command == IC_STATUS || command == IC_JUMP)
     {
         gEventManager.add(mEvent);
@@ -230,10 +233,7 @@ void GsButton::drawNoStyle(const SDL_Rect& lRect)
     }
 }
 
-/*void GsButton::setupButtonSurface(const std::string &text)
-{
-}
-*/
+
 void GsButton::drawEnabledButton(GsWeakSurface &blitsfc,
                                  const SDL_Rect& lRect,
                                  const bool alternate)

@@ -1,10 +1,10 @@
-v???:
+v2.4.0:
 -------
 - Fixed problem with some dialogs in vorticon keen engine
 - Improved the code for save game menus
 - Added option where you can choose whether you type your save game
   or a timestamp is automatically entered instead
-
+- Disabled button cannot be triggered anymore as it should be
 
 v2.3.9:
 -------
