@@ -30,7 +30,7 @@ mStyle(style)
 
 
         GsRect<float> buttonRect(-0.10f, -0.15f,
-                                 0.15f/dlgRect.dim.x,
+                                 0.17f/dlgRect.dim.x,
                                  0.08f/dlgRect.dim.y);
 
         mpReturnButton =
@@ -40,6 +40,7 @@ mStyle(style)
                                                Style::VORTICON) );
         mpReturnButton->enableBackground(true);
         mpReturnButton->enableBorder(true);
+        mpReturnButton->enableCenteringH(true);
     }
     else
     {

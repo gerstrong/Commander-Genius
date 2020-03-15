@@ -230,10 +230,10 @@ void GsButton::drawNoStyle(const SDL_Rect& lRect)
     }
 }
 
-void GsButton::setupButtonSurface(const std::string &text)
+/*void GsButton::setupButtonSurface(const std::string &text)
 {
 }
-
+*/
 void GsButton::drawEnabledButton(GsWeakSurface &blitsfc,
                                  const SDL_Rect& lRect,
                                  const bool alternate)

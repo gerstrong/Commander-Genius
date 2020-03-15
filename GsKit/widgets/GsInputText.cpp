@@ -11,6 +11,7 @@
 #include <base/video/CVideoDriver.h>
 #include <base/GsTimer.h>
 
+
 #ifdef ANDROID
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 #else
@@ -19,7 +20,8 @@
 #endif
 
 
-const int MAX_TICK = 32; // Units in a logical loop
+constexpr int MAX_TICK = 32; // Units in a logical loop
+constexpr int MAX_INPUT_TEXT_SIZE = 20;
 
 
 CGUIInputText::CGUIInputText(const std::string& text,
@@ -55,6 +57,7 @@ bool CGUIInputText::sendEvent(const InputCommand command)
 }
 
 
+
 void CGUIInputText::processLogic()
 {
 	if(!mEnabled)
@@ -63,15 +66,17 @@ void CGUIInputText::processLogic()
 	// process the typing here!
 	if(mTyping)
 	{
-
         auto appText = mOrigText;
 
 		if(gInput.getPressedIsTypingKey())
 		{
-			std::string c = gInput.getPressedTypingKey();
+            if(appText.size() < MAX_INPUT_TEXT_SIZE)
+            {
+                std::string c = gInput.getPressedTypingKey();
 
-            appText.append(c);
-            setText(appText);
+                appText.append(c);
+                setText(appText);
+            }
 		}
 
         if(gInput.getPulsedKey(KBCKSPCE, 5) && (appText.length() > 0))
@@ -112,8 +117,6 @@ void CGUIInputText::setText(const std::string& text)
     mTextWithCursor = text + "|";
     GsButton::setText(text);
 }
-
-
 
 
 void CGUIInputText::setTypeMode( const bool value )

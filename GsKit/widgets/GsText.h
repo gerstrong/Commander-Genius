@@ -36,7 +36,7 @@ public:
              const GsRect<float> &rect,
              const int fontId);
 
-    void setupButtonSurface(const std::string& text = "");
+    //void setupButtonSurface(const std::string& text = "");
 
 	virtual void setText(const std::string& text);
 
