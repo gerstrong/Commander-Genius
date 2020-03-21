@@ -4,6 +4,7 @@ CInventory.cpp
 CMapLoaderGalaxy.cpp
 CStatusScreenGalaxy.cpp
 CWorldMap.cpp
+achievements.cpp
 ai/Autogun.cpp
 ai/CBullet.cpp
 ai/CEnemyShot.cpp
@@ -35,6 +36,7 @@ CInventory.h
 CMapLoaderGalaxy.h
 CStatusScreenGalaxy.h
 CWorldMap.h
+achievements.h
 ai/Autogun.h
 ai/CBullet.h
 ai/CEnemyShot.h

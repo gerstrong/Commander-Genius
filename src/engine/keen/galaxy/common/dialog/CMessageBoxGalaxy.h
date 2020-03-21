@@ -32,11 +32,14 @@ public:
 	 */
     CMessageBoxGalaxy(const int sprVar,
                       const std::string& Text,
-                      CEvent *closeEv = nullptr);
+                      CEvent *closeEv = nullptr,
+                      const bool isModal = true,
+                      const bool alignTop = false,
+                      const int timeout = 0);
 
 	virtual void init();
 
-    virtual void ponder();
+    virtual void ponder(const int deltaT);
     virtual void render();
 
     SDL_Surface *getSfc()
@@ -54,6 +57,9 @@ public:
     void setCloseEvent(std::unique_ptr<CEvent> &ev)
     {  mCloseEv = std::move(ev); }
 
+    bool isModal() const
+    {   return mIsModal;    }
+
 protected:
 
 	void initGalaxyFrame();
@@ -67,13 +73,25 @@ protected:
 	unsigned int mTextHeight;
     std::unique_ptr<CEvent> mCloseEv;
     int mSprVar = 0;
+
+    bool mIsModal = true;
+    int mTimeout = 0; // Timeout in msecs for the non-modal dialog to close itself
 };
 
 
-void showMsg(const int sprVar, const std::string &text, CEvent *closeEv = nullptr);
+void showMsg(const int sprVar, const std::string &text,
+             CEvent *closeEv = nullptr,
+             const bool isModal = true,
+             const bool alignTop = false,
+             const int timeout = 0);
+
+
+
 
 struct EventSendDialog : CEvent
 {
+    ~EventSendDialog();
+
     std::shared_ptr<CMessageBoxGalaxy> mMsgBox;
 
     EventSendDialog(std::shared_ptr<CMessageBoxGalaxy>& msgBox) :
@@ -81,6 +99,7 @@ struct EventSendDialog : CEvent
 
     EventSendDialog(CMessageBoxGalaxy *msgBox) :
         mMsgBox( msgBox ) {}
+
 };
 
 void showMsgVec( std::vector<CMessageBoxGalaxy*> &msgs );

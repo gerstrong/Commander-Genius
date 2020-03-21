@@ -173,6 +173,7 @@ void CInventory::drawStatus()
 	mp_StatusScreen->draw();
 }
 
+
 void CInventory::operator>>(CSaveGameController &savedGame)
 {
 	savedGame.encodeData(Item);
@@ -193,4 +194,9 @@ void CInventory::operator<<(boost::property_tree::ptree &invNode)
     Item << invNode;
 }
 
+void CInventory::addAchievementTask(const std::string which,
+                                    const int numTasks)
+{
+    mAchievements.addTask(which, numTasks);
+}
 

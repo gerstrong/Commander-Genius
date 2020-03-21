@@ -24,24 +24,43 @@ namespace galaxy
 
 const int FONT_ID = 0;
 
+EventSendDialog::~EventSendDialog()
+{
+}
+
 CMessageBoxGalaxy::CMessageBoxGalaxy(const int sprVar,
                                      const std::string& Text,
-                                     CEvent *closeEv) :
+                                     CEvent *closeEv,
+                                     const bool isModal,
+                                     const bool alignTop,
+                                     const int timeout) :
 mMustClose(false),
 mText(Text),
 mCloseEv(closeEv),
-mSprVar(sprVar)
+mSprVar(sprVar),
+mIsModal(isModal),
+mTimeout(timeout)
 {
 	auto &Font = gGraphics.getFontLegacy(FONT_ID);
 
 	mTextHeight = Font.getPixelTextHeight()*calcNumLines(mText);
     GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
 
-	// Create a surface for that
-    mMBRect.w = Font.calcPixelTextWidth(mText)+16*2;
-    mMBRect.h = Font.getPixelTextHeight()*(calcNumLines(mText)+2)+16;
-    mMBRect.x = (gameRes.dim.x-mMBRect.w)/2;
-    mMBRect.y = (gameRes.dim.y-mMBRect.h)/2;
+    // Create a surface for that
+    if(alignTop)
+    {
+        mMBRect.w = Font.calcPixelTextWidth(mText)+16*2;
+        mMBRect.h = Font.getPixelTextHeight()*(calcNumLines(mText)+2)+16;
+        mMBRect.x = (gameRes.dim.x-mMBRect.w)/2;
+        mMBRect.y = 0;
+    }
+    else
+    {
+        mMBRect.w = Font.calcPixelTextWidth(mText)+16*2;
+        mMBRect.h = Font.getPixelTextHeight()*(calcNumLines(mText)+2)+16;
+        mMBRect.x = (gameRes.dim.x-mMBRect.w)/2;
+        mMBRect.y = (gameRes.dim.y-mMBRect.h)/2;
+    }
 }
 
 CMessageBoxGalaxy::~CMessageBoxGalaxy() {}
@@ -125,16 +144,37 @@ void CMessageBoxGalaxy::initText(const SDL_Rect &rect)
     textSfc.blitTo(mbSurface, rect);
 }
 
-void CMessageBoxGalaxy::ponder()
+void CMessageBoxGalaxy::ponder(const int deltaT)
 {
-    // Look, if somebody pressed a button, and close this dialog!
-    if( gInput.getPressedAnyCommand() )
+    if(isModal())
     {
-        std::shared_ptr<CEvent> ev(std::move(mCloseEv));
-        gEventManager.add( ev );
-        mMustClose = true;
-        gInput.flushCommands();
-        return;
+        // Look, if somebody pressed a button, and close this dialog!
+        if( gInput.getPressedAnyCommand() )
+        {
+            std::shared_ptr<CEvent> ev(std::move(mCloseEv));
+            gEventManager.add( ev );
+            mMustClose = true;
+            gInput.flushCommands();
+            return;
+        }
+    }
+    else
+    {
+        if(mTimeout)
+        {
+            mTimeout -= deltaT;
+
+            if(mTimeout <= 0)
+            {
+                mTimeout = 0;
+
+                std::shared_ptr<CEvent> ev(std::move(mCloseEv));
+                gEventManager.add( ev );
+                mMustClose = true;
+            }
+
+            return;
+        }
     }
 }
 
@@ -146,11 +186,24 @@ void CMessageBoxGalaxy::render()
 }
 
 
-void showMsg(const int sprVar, const std::string &text, CEvent *closeEv )
+void showMsg(const int sprVar, const std::string &text,
+             CEvent *closeEv, const bool isModal,
+             const bool alignTop, const int timeout)
 {
-    CMessageBoxGalaxy *msgBox = new CMessageBoxGalaxy(sprVar, text, closeEv);
+    CMessageBoxGalaxy *msgBox = nullptr;
+
+    if(isModal)
+    {
+        msgBox = new CMessageBoxGalaxy(sprVar, text, closeEv);
+    }
+    else
+    {
+        msgBox = new CMessageBoxGalaxy(sprVar, text, nullptr,
+                                       false,alignTop,timeout);
+    }
+
     msgBox->init();
-    gEventManager.add( new EventSendDialog( msgBox ) );    
+    gEventManager.add( new EventSendDialog( msgBox ) );
 }
 
 

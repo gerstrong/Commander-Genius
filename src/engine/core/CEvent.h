@@ -26,23 +26,6 @@
 class CSpriteObject;
 
 
-
-
-
-/*struct EventSendBitmapDialogMsg : EventSendDialog
-{
-	const GsBitmap &BitmapRef;
-	const direction_t Direction;
-	EventSendBitmapDialogMsg(const GsBitmap &lBitmapRef,
-				 const std::string& lMsg,
-				 const direction_t& lDirection = LEFT) :
-				  EventSendDialog(lMsg),
-				  BitmapRef(lBitmapRef),
-				  Direction(lDirection)
-				  {}
-};
-*/
-
 /**
  * This event collects a vector of EventSendBitmapDialogMsg event, so all
  * the message boxes are loading at once and display one by one holding the paused game

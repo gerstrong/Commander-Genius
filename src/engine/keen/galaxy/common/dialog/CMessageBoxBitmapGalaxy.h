@@ -34,7 +34,7 @@ public:
 
     virtual void init() override;
 
-    void ponder() override;
+    void ponder(const int deltaT) override;
     void render() override;
 
 
@@ -53,14 +53,14 @@ private:
     int mShowtime = -1;
 };
 
-void showMsgWithBmp(const int sprVar, const std::string &text,
+void showModalMsgWithBmp(const int sprVar, const std::string &text,
                     const std::string &bmp,
                     const direction_t alignment,
                     const bool animation,
                     CEvent *closeEv);
 
 
-void showMsgWithBmp(const int sprVar, const std::string &text,
+void showModalMsgWithBmp(const int sprVar, const std::string &text,
                     const unsigned int bmpID,
                     const direction_t alignment ,
                     const bool animation,

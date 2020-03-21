@@ -120,7 +120,7 @@ void CMessageBoxSelection::init()
 }
 
 
-void CMessageBoxSelection::ponder()
+void CMessageBoxSelection::ponder(const int deltaT)
 {
 	// Look, if somebody pressed a button, and close this dialog!
 	if(gInput.getPressedCommand(IC_JUMP) || gInput.getPressedKey(KENTER) )

@@ -16,6 +16,7 @@
 #include "../res/ItemsGalaxy.h"
 #include "CStatusScreenGalaxy.h"
 #include "fileio/CSaveGameController.h"
+#include "achievements.h"
 #include <memory>
 #include <string>
 #include <SDL.h>
@@ -55,13 +56,21 @@ public:
 	void operator<<(CSaveGameController &savedGame);
     void operator<<(boost::property_tree::ptree &invNode);
 
+    // If player achieved something, report it.
+    void addAchievementTask(const std::string which,
+                            const int numTasks);
+
 	stItemGalaxy Item;
 
     // Sprite Variation is different than zero when the player wants to use a different set
-    int mSpriteVar = 0;
+    int mSpriteVar = 0;    
 
 	CHUD m_HUD;
 	std::shared_ptr<CStatusScreenGalaxy> mp_StatusScreen;
+
+private:
+
+    Achievements mAchievements;
 };
 
 

@@ -354,8 +354,14 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
     }
     else if( const EventSendDialog *ev = dynamic_cast<const EventSendDialog*>(evPtr) )
     {
-        mMessageBoxes.push_back( ev->mMsgBox );
-        gInput.flushAll();
+        auto &msgBox = ev->mMsgBox;
+
+        mMessageBoxes.push_back( msgBox );
+
+        if(msgBox->isModal())
+        {
+            gInput.flushAll();
+        }
     }
     else if( const EventSendSelectionDialogMsg* ev = dynamic_cast<const EventSendSelectionDialogMsg*>(evPtr) )
     {
@@ -440,7 +446,7 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
 
         const auto sprVar = mInventoryVec[ev->who].mSpriteVar;
 
-        showMsgWithBmp( sprVar, loading_text, "KEENTHUMBSUPLOADING",
+        showModalMsgWithBmp( sprVar, loading_text, "KEENTHUMBSUPLOADING",
                         LEFT, true, nullptr);
 
         const EventExitLevel &evCopy = *ev;
@@ -499,7 +505,7 @@ void CPlayGameGalaxy::ponder(const float deltaT)
 
     processInput();
 
-    // Check if Sandwhich-Menu was clicked
+    // Check if Sandwich-Menu was clicked
     GsRect<float> rRect(mMenuButtonRect);
     const float w = gVideoDriver.getBlitSurface()->w;
     const float h = gVideoDriver.getBlitSurface()->h;
@@ -517,7 +523,13 @@ void CPlayGameGalaxy::ponder(const float deltaT)
         }
     }
 
-    const bool msgboxactive = !mMessageBoxes.empty();
+    bool blockGamePlay = false;
+
+    // if there is one modal message box, block the gameplay
+    for(auto &msgBox : mMessageBoxes)
+    {
+        blockGamePlay |= msgBox->isModal();
+    }
 
     int playerCount = 0;
     for( auto &inv : mInventoryVec )
@@ -533,7 +545,7 @@ void CPlayGameGalaxy::ponder(const float deltaT)
         }
         else
         {
-            if(!msgboxactive && gInput.getPressedCommand(playerCount, IC_STATUS))
+            if(!blockGamePlay && gInput.getPressedCommand(playerCount, IC_STATUS))
             {
                 CMapPlayGalaxy *pMap = &m_WorldMap;
 
@@ -555,30 +567,32 @@ void CPlayGameGalaxy::ponder(const float deltaT)
     // process World Map if active. At the start it's enabled
     if(m_WorldMap.isActive())
     {
-        m_WorldMap.setMsgBoxOpen(msgboxactive);
+        m_WorldMap.setMsgBoxOpen(blockGamePlay);
         m_WorldMap.ponder(deltaT);
     }
 
     // process inlevel play if active. At the start it's disabled, m_WorldMap turns it on.
     if(m_LevelPlay.isActive())
     {
-        m_LevelPlay.setMsgBoxOpen(msgboxactive);
+        m_LevelPlay.setMsgBoxOpen(blockGamePlay);
         m_LevelPlay.ponder(deltaT);
     }
 
-    // Draw some Textboxes with Messages only if one of those is open and needs to be drawn
-    if(msgboxactive)
+    // Do some logic of the message boxes
+    for(auto &msgBox : mMessageBoxes)
     {
-        CMessageBoxGalaxy *pMB = mMessageBoxes.front().get();
-        pMB->ponder();
-
-        if(pMB->isFinished() && !mMessageBoxes.empty())
-        {
-            mMessageBoxes.pop_front();
-        }
-
-        return;
+        msgBox->ponder(deltaT);
     }
+
+    // Remove finished msg boxes from the list
+    mMessageBoxes.remove_if( [](std::shared_ptr<CMessageBoxGalaxy> &msgBox)
+                                {
+                                    return msgBox->isFinished();
+                                }
+                            );
+
+
+    if(blockGamePlay) return;
 
     //// Special Keyboard Input
     /// Cheat Codes
@@ -597,7 +611,7 @@ void CPlayGameGalaxy::ponder(const float deltaT)
             cheat.god = !cheat.god;
             std::string godstring = "God-Mode has been ";
             godstring += ((cheat.god) ? "enabled" : "disabled");
-            showMsg(0, godstring);
+            showMsg(0, godstring);            
         }
         else if(gInput.getHoldedKey(KI))
         {
@@ -656,6 +670,13 @@ void CPlayGameGalaxy::render()
         if( inv.showStatus() )
             inv.drawStatus();
     }
+
+    for(auto &msgBox : mMessageBoxes)
+    {
+        msgBox->render();
+    }
+
+
 
     const bool msgboxactive = !mMessageBoxes.empty();
 

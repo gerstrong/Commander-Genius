@@ -45,7 +45,7 @@ void CSpecialItem::getTouchedBy(CSpriteObject& theObject)
         exitEvent->playSound = true;                
 
         // Show got item message
-        showMsgWithBmp( player->getSpriteVariantIdx(),
+        showModalMsgWithBmp( player->getSpriteVariantIdx(),
                         gBehaviorEngine.getString(answermap[mFoeID-0x63]),
                         30, LEFT, false, exitEvent );
 

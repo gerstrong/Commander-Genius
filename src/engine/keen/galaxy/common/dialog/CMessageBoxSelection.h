@@ -35,14 +35,14 @@ public:
     CMessageBoxSelection( const std::string& Text,
                           const std::list<TextEventMatchOption> &Options );
 	
-	void init();
+    void init() override;
 
 	std::list<TextEventMatchOption> m_Options;
 
 	int m_selection;
 	
-    void ponder();
-    void render();
+    void ponder(const int deltaT) override;
+    void render() override;
 	
 private:
 

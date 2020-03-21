@@ -78,9 +78,9 @@ void CMessageBoxBitmapGalaxy::init()
     mMBRect.y = (gameRes.dim.y-mMBRect.h)/2;
 }
 
-void CMessageBoxBitmapGalaxy::ponder()
+void CMessageBoxBitmapGalaxy::ponder(const int deltaT)
 {
-    CMessageBoxGalaxy::ponder();
+    CMessageBoxGalaxy::ponder(deltaT);
 
     if(!mMBAnimatedSurface.empty() && mAnimFrame < 6)
     {
@@ -128,7 +128,7 @@ void CMessageBoxBitmapGalaxy::render()
 }
 
 
-void showMsgWithBmp(const int sprVar,
+void showModalMsgWithBmp(const int sprVar,
                     const std::string &text,
                     const std::string &bmp,
                     const direction_t alignment,
@@ -145,7 +145,7 @@ void showMsgWithBmp(const int sprVar,
     gEventManager.add( new EventSendDialog( dynamic_cast<CMessageBoxGalaxy*>(pMsgBoxBmp) ) );
 }
 
-void showMsgWithBmp( const int sprVar,
+void showModalMsgWithBmp( const int sprVar,
                      const std::string &text,
                      const unsigned int bmpID,
                      const direction_t alignment,
