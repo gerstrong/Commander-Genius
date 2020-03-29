@@ -32,7 +32,7 @@ CMessageBoxGalaxy::CMessageBoxGalaxy(const int sprVar,
                                      const std::string& Text,
                                      CEvent *closeEv,
                                      const bool isModal,
-                                     const bool alignTop,
+                                     const CMessageBoxGalaxy::Alignment alignment,
                                      const int timeout) :
 mMustClose(false),
 mText(Text),
@@ -47,11 +47,11 @@ mTimeout(timeout)
     GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
 
     // Create a surface for that
-    if(alignTop)
+    if(alignment == Alignment::UPPERRIGHT)
     {
         mMBRect.w = Font.calcPixelTextWidth(mText)+16*2;
         mMBRect.h = Font.getPixelTextHeight()*(calcNumLines(mText)+2)+16;
-        mMBRect.x = (gameRes.dim.x-mMBRect.w)/2;
+        mMBRect.x = (gameRes.dim.x-mMBRect.w)+8;
         mMBRect.y = 0;
     }
     else
@@ -188,7 +188,8 @@ void CMessageBoxGalaxy::render()
 
 void showMsg(const int sprVar, const std::string &text,
              CEvent *closeEv, const bool isModal,
-             const bool alignTop, const int timeout)
+             const CMessageBoxGalaxy::Alignment alignment,
+             const int timeout)
 {
     CMessageBoxGalaxy *msgBox = nullptr;
 
@@ -199,7 +200,7 @@ void showMsg(const int sprVar, const std::string &text,
     else
     {
         msgBox = new CMessageBoxGalaxy(sprVar, text, nullptr,
-                                       false,alignTop,timeout);
+                                       false, alignment,timeout);
     }
 
     msgBox->init();

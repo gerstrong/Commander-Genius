@@ -20,7 +20,9 @@ void Achievements::addTask(const std::string &which,
         {
             curTask = 0;
 
-            galaxy::showMsg(0, which, nullptr, false, true, 10000);
+            galaxy::showMsg(0, which, nullptr, false,
+                            galaxy::CMessageBoxGalaxy::Alignment::UPPERRIGHT,
+                            10000);
         }
     }
 

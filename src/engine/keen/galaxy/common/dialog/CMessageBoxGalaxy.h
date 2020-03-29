@@ -20,9 +20,18 @@ namespace galaxy
 {
 
 
+
 class CMessageBoxGalaxy
 {
 public:
+
+
+    enum class Alignment
+    {
+        CENTER,
+        DOWN,
+        UPPERRIGHT
+    };
 
     virtual ~CMessageBoxGalaxy();
 
@@ -34,7 +43,7 @@ public:
                       const std::string& Text,
                       CEvent *closeEv = nullptr,
                       const bool isModal = true,
-                      const bool alignTop = false,
+                      const Alignment alignment = Alignment::CENTER,
                       const int timeout = 0);
 
 	virtual void init();
@@ -82,7 +91,7 @@ protected:
 void showMsg(const int sprVar, const std::string &text,
              CEvent *closeEv = nullptr,
              const bool isModal = true,
-             const bool alignTop = false,
+             const CMessageBoxGalaxy::Alignment alignment = CMessageBoxGalaxy::Alignment::CENTER,
              const int timeout = 0);
 
 
