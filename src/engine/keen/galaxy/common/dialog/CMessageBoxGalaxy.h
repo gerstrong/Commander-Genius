@@ -15,6 +15,7 @@
 
 #include <base/GsEvent.h>
 #include <graphics/GsSurface.h>
+#include <graphics/GsTexture.h>
 
 namespace galaxy
 {
@@ -48,6 +49,8 @@ public:
 
 	virtual void init();
 
+    bool initWithBgBitmap(const std::string &filename);
+
     virtual void ponder(const int deltaT);
     virtual void render();
 
@@ -72,13 +75,17 @@ public:
 protected:
 
 	void initGalaxyFrame();
+    bool initBitmapFrame(const std::string &filename);
+
 	virtual void initText(const SDL_Rect &rect);
 
 
 	bool mMustClose;
-	SDL_Rect mMBRect;
+	SDL_Rect mMBRect;    
 	std::string mText;
     GsSurface mMBSurface;
+    GsTexture mMBTexture;
+    GsRect<float> mTextureRect;
 	unsigned int mTextHeight;
     std::unique_ptr<CEvent> mCloseEv;
     int mSprVar = 0;
@@ -90,7 +97,7 @@ protected:
 
 void showMsg(const int sprVar, const std::string &text,
              CEvent *closeEv = nullptr,
-             const bool isModal = true,
+             const bool isModal = true, const std::string bmpFilename = "",
              const CMessageBoxGalaxy::Alignment alignment = CMessageBoxGalaxy::Alignment::CENTER,
              const int timeout = 0);
 

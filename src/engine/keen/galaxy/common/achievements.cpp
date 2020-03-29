@@ -20,9 +20,11 @@ void Achievements::addTask(const std::string &which,
         {
             curTask = 0;
 
-            galaxy::showMsg(0, which, nullptr, false,
+            galaxy::showMsg(0, which, nullptr, false, "TrophyMsg.msg",
                             galaxy::CMessageBoxGalaxy::Alignment::UPPERRIGHT,
-                            10000);
+                            1000000);
+
+            //playSound("Trophy_Sound.ogg");
         }
     }
 

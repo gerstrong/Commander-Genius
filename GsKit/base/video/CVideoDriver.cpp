@@ -93,7 +93,8 @@ CVideoDriver::~CVideoDriver()
 }
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-void CVideoDriver::addTextureRefToRender(GsTexture& textureRef, const GsRect<float> &dstRect)
+void CVideoDriver::addTextureRefToRender(GsTexture& textureRef,
+                                         const GsRect<float> &dstRect)
 {
     const GsRect<Uint16> clickGameArea = mpVideoEngine->getActiveAreaRect();
 

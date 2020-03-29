@@ -12,6 +12,8 @@
 #include "CMessageBoxGalaxy.h"
 #include <base/video/CVideoDriver.h>
 #include <base/CInput.h>
+#include <base/utils/FindFile.h>
+#include <base/GsLogging.h>
 #include "graphics/GsGraphics.h"
 
 #include <base/utils/StringUtils.h>
@@ -81,6 +83,51 @@ void CMessageBoxGalaxy::init()
 	initText(rect);
 }
 
+bool CMessageBoxGalaxy::initWithBgBitmap(const std::string &filename)
+{
+    mMBSurface.createRGBSurface(mMBRect);
+    mMBSurface.makeBlitCompatible();
+
+    const auto bmpFileLoaded = initBitmapFrame(filename);
+
+    if(!bmpFileLoaded)
+    {
+        gLogging.ftextOut(FONTCOLORS::PURPLE,
+                         "Could not load picture file %s for msgbox<br>",
+                         filename.c_str());
+    }
+
+    SDL_Rect rect = mMBRect;
+    rect.x = 72;
+    rect.y = 64;
+    rect.w *= 4;
+    rect.h *= 4;
+
+    initText(rect);
+
+    //if(ok)
+    {
+        const auto ok = mMBTexture.loadFromSurface(mMBSurface,
+                                                   gVideoDriver.Renderer());
+
+        if(!ok) return false;
+
+        int h,w;
+
+        SDL_QueryTexture(mMBTexture.getPtr(),
+                         nullptr, nullptr,
+                         &w, &h);
+
+        // I want this msgbox to be shown in the upper right corner as a texture
+        mTextureRect.dim.x = 0.4f;
+        mTextureRect.dim.y = (mTextureRect.dim.x*h)/w;
+        mTextureRect.pos.x = 1.0f - mTextureRect.dim.x;
+        mTextureRect.pos.y = 0.0f;
+    }
+
+    return true;
+}
+
 void CMessageBoxGalaxy::initGalaxyFrame()
 {
     SDL_Surface *dst = mMBSurface.getSDLSurface();
@@ -132,6 +179,17 @@ void CMessageBoxGalaxy::initGalaxyFrame()
     Tilemap.drawTile(dst, rect.w, rect.h, 8);
 }
 
+bool CMessageBoxGalaxy::initBitmapFrame(const std::string &filename)
+{
+    if(mMBSurface.loadImg(GetFullFileName(filename)))
+    {       
+        mMBSurface.makeBlitCompatible();        
+        return true;
+    }
+
+    return false;
+}
+
 void CMessageBoxGalaxy::initText(const SDL_Rect &rect)
 {
 	auto &Font = gGraphics.getFontLegacy(FONT_ID);
@@ -180,14 +238,22 @@ void CMessageBoxGalaxy::ponder(const int deltaT)
 
 void CMessageBoxGalaxy::render()
 {
-    // Just render the MessageBox
-    BlitSurface(mMBSurface.getSDLSurface(), nullptr,
-                gVideoDriver.getBlitSurface(), &mMBRect);
+    if(mMBTexture) // Render message using a texture
+    {
+        gVideoDriver.addTextureRefToRender(mMBTexture, mTextureRect);
+    }
+    else // Just render the MessageBox surface based
+    {
+        BlitSurface(mMBSurface.getSDLSurface(), nullptr,
+                    gVideoDriver.getBlitSurface(), &mMBRect);
+
+    }
 }
 
 
 void showMsg(const int sprVar, const std::string &text,
              CEvent *closeEv, const bool isModal,
+             const std::string bmpFilename,
              const CMessageBoxGalaxy::Alignment alignment,
              const int timeout)
 {
@@ -203,7 +269,16 @@ void showMsg(const int sprVar, const std::string &text,
                                        false, alignment,timeout);
     }
 
-    msgBox->init();
+    if(!bmpFilename.empty())
+    {
+        if(!msgBox->initWithBgBitmap("global/TrophyMsg.png"))
+            msgBox->init();
+    }
+    else
+    {
+        msgBox->init();
+    }
+
     gEventManager.add( new EventSendDialog( msgBox ) );
 }
 

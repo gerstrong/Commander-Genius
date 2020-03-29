@@ -17,7 +17,7 @@
 
 #include "GsWidget.h"
 
-#include <graphics/GsTexture.h>
+//#include <graphics/GsTexture.h>
 #include <graphics/GsSurface.h>
 
 #if defined(USE_SDL_TTF)

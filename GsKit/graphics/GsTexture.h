@@ -133,7 +133,8 @@ public:
                      SDL_Renderer *renderer,
                      const bool dark);*/
 
-    //bool loadFromSurface(const GsSurface &sfc);
+    bool loadFromSurface(const GsSurface &sfc,
+                         SDL_Renderer *renderer);
 
 private:
 
