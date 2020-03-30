@@ -127,9 +127,6 @@ bool GsTexture::loadFromSurface(const GsSurface &sfc,
             gLogging.ftextOut("Unable to create texture! SDL Error: %s\n",
                               SDL_GetError());
         }
-
-        // Get rid of old surface
-        SDL_FreeSurface( loadedSurface );
     }
 
     return (mpTexture!=nullptr);

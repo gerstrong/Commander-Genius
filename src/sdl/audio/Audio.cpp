@@ -271,6 +271,23 @@ void Audio::stopSound(const GameSound snd)
 
 }
 
+void Audio::playSoundFile(const std::string &filename)
+{
+    // New file?
+    if(mSoundFileMap.find(filename) == mSoundFileMap.end())
+    {
+        const auto fullfname = GetFullFileName(filename);
+        mSoundFileMap[filename] = Mix_LoadWAV(fullfname.c_str());
+    }
+
+    auto sample = mSoundFileMap[filename];
+
+    if(Mix_PlayChannel(-1, sample, 0)==-1)
+    {
+        gLogging.ftextOut("Mix_PlayChannel: %s\n",Mix_GetError());
+    }
+}
+
 void Audio::setSoundVolume(const Uint8 volume,
                            const bool updateMixer)
 {
@@ -521,8 +538,3 @@ void Audio::setSettings( const int rate,
 	setSettings(nAudio, useSB);
 
 }
-
-
-
-
-

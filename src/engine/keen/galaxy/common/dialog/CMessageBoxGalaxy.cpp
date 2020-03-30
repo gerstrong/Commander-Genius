@@ -65,7 +65,8 @@ mTimeout(timeout)
     }
 }
 
-CMessageBoxGalaxy::~CMessageBoxGalaxy() {}
+CMessageBoxGalaxy::~CMessageBoxGalaxy()
+{}
 
 void CMessageBoxGalaxy::init()
 {
@@ -105,7 +106,6 @@ bool CMessageBoxGalaxy::initWithBgBitmap(const std::string &filename)
 
     initText(rect);
 
-    //if(ok)
     {
         const auto ok = mMBTexture.loadFromSurface(mMBSurface,
                                                    gVideoDriver.Renderer());
@@ -123,6 +123,8 @@ bool CMessageBoxGalaxy::initWithBgBitmap(const std::string &filename)
         mTextureRect.dim.y = (mTextureRect.dim.x*h)/w;
         mTextureRect.pos.x = 1.0f - mTextureRect.dim.x;
         mTextureRect.pos.y = 0.0f;
+
+        mMBSurface.tryToDestroy();
     }
 
     return true;
@@ -242,7 +244,7 @@ void CMessageBoxGalaxy::render()
     {
         gVideoDriver.addTextureRefToRender(mMBTexture, mTextureRect);
     }
-    else // Just render the MessageBox surface based
+    else if(mMBSurface) // Just render the MessageBox surface based
     {
         BlitSurface(mMBSurface.getSDLSurface(), nullptr,
                     gVideoDriver.getBlitSurface(), &mMBRect);

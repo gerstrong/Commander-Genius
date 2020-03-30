@@ -1,6 +1,7 @@
 #include "achievements.h"
 
 #include "dialog/CMessageBoxGalaxy.h"
+#include "sdl/audio/Audio.h"
 
 Achievements::Achievements()
 {
@@ -22,9 +23,9 @@ void Achievements::addTask(const std::string &which,
 
             galaxy::showMsg(0, which, nullptr, false, "TrophyMsg.msg",
                             galaxy::CMessageBoxGalaxy::Alignment::UPPERRIGHT,
-                            1000000);
+                            10000);
 
-            //playSound("Trophy_Sound.ogg");
+            gAudio.playSoundFile("global/Trophy_Sound.ogg");
         }
     }
 

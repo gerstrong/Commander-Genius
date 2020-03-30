@@ -85,6 +85,8 @@ public:
 	void stopSound(const GameSound snd);
 	void destroy();
 
+    void playSoundFile(const std::string &filename);
+
     /**
      * @brief setSoundVolume    Set Sound effects volume
      * @param volume
@@ -161,6 +163,10 @@ private:
     bool mUseSoundBlaster = false;
 
     std::map<GameSound, int> sndSlotMap;
+
+    std::map<std::string, Mix_Chunk*> mSoundFileMap; // This map holds already
+                                                     // sounds so they can be played
+                                                     // from the buffer
 
     COPLEmulator m_OPL_Player;
     bool mPauseGameplay = false;

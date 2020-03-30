@@ -95,14 +95,14 @@ void CBabobba::processSitting()
     
     if(mGoodFireChance)
     {
-	setAction(A_BABOBBA_SHOOT);
-	playSound(SOUND_BABOBBA_CINDER);
-	
-	// Create cinder
-	CCinder *cinder = new CCinder(mpMap, 0, 
+        setAction(A_BABOBBA_SHOOT);
+        playSound(SOUND_BABOBBA_CINDER);
+
+        // Create cinder
+        CCinder *cinder = new CCinder(mpMap, 0,
         getXMidPos(), getYUpPos(), xDirection, mSprVar);
-	
-	spawnObj( cinder );
+
+        spawnObj( cinder );
     }    
 
     setAction(A_BABOBBA_NAPPING);
