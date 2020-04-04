@@ -49,6 +49,10 @@ public:
 
 	virtual void init();
 
+    bool initWithBgBitmapInternal(const unsigned char *data,
+                                  const std::string &name,
+                                  const int size);
+
     bool initWithBgBitmap(const std::string &filename);
 
     virtual void ponder(const int deltaT);
@@ -76,6 +80,9 @@ protected:
 
 	void initGalaxyFrame();
     bool initBitmapFrame(const std::string &filename);
+    bool initBitmapFrameInternal(const unsigned char *data,
+                                 const std::string &name,
+                                 const int size);
 
 	virtual void initText(const SDL_Rect &rect);
 

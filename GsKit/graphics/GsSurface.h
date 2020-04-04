@@ -460,6 +460,10 @@ public:
      */
     bool loadBmp(const std::string filepath);
 
+    bool loadImgInternal(const unsigned char *data,
+                         const std::string &name,
+                         const int size);
+
     /**
      * @brief loadImg  Load a picture file using SDL_image
      * @param filepath  path the file to load

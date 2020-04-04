@@ -160,6 +160,31 @@ void GsSurface::makeBlitCompatible()
     mpSurface = compatibleSfc;
 }
 
+bool GsSurface::loadImgInternal(const unsigned char *data,
+                                const std::string &name,
+                                const int size)
+{
+
+    SDL_RWops *rw = SDL_RWFromMem(reinterpret_cast<void*>
+                                  (const_cast<unsigned char*>(data)),
+                                  int(size));
+
+    // Load image at specified path
+    auto tempSurface = IMG_Load_RW(rw, 0);
+
+    if (!tempSurface)
+    {
+        return false;
+    }
+
+    if (!createFromSDLSfc(tempSurface))
+    {
+        return false;
+    }
+
+    return true;
+}
+
 bool GsSurface::loadImg(const std::string filepath)
 {
     auto tempSurface = IMG_Load(filepath.c_str());
@@ -176,6 +201,7 @@ bool GsSurface::loadImg(const std::string filepath)
 
     return true;
 }
+
 
 bool GsSurface::loadBmp(const std::string filepath)
 {

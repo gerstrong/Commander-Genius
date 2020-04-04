@@ -15,6 +15,7 @@
 #include <base/utils/FindFile.h>
 #include <base/GsLogging.h>
 #include "graphics/GsGraphics.h"
+#include "../../common/TrophyMsg.h"
 
 #include <base/utils/StringUtils.h>
 #include <memory>
@@ -82,6 +83,56 @@ void CMessageBoxGalaxy::init()
 	rect.h -= 16;
 
 	initText(rect);
+}
+
+bool CMessageBoxGalaxy::initWithBgBitmapInternal(const unsigned char *data,
+                                                 const std::string &name,
+                                                 const int size)
+{
+    mMBSurface.createRGBSurface(mMBRect);
+    mMBSurface.makeBlitCompatible();
+
+    const auto bmpFileLoaded = initBitmapFrameInternal(data,
+                                                       name,
+                                                       size);
+
+    if(!bmpFileLoaded)
+    {
+        gLogging.ftextOut(FONTCOLORS::PURPLE,
+                          "Could not load internal picture %s for msgbox<br>",
+                          name.c_str());
+    }
+
+    SDL_Rect rect = mMBRect;
+    rect.x = 72;
+    rect.y = 64;
+    rect.w *= 4;
+    rect.h *= 4;
+
+    initText(rect);
+
+    {
+        const auto ok = mMBTexture.loadFromSurface(mMBSurface,
+                                                   gVideoDriver.Renderer());
+
+        if(!ok) return false;
+
+        int h,w;
+
+        SDL_QueryTexture(mMBTexture.getPtr(),
+                         nullptr, nullptr,
+                         &w, &h);
+
+        // I want this msgbox to be shown in the upper right corner as a texture
+        mTextureRect.dim.x = 0.4f;
+        mTextureRect.dim.y = (mTextureRect.dim.x*h)/w;
+        mTextureRect.pos.x = 1.0f - mTextureRect.dim.x;
+        mTextureRect.pos.y = 0.0f;
+
+        mMBSurface.tryToDestroy();
+    }
+
+    return true;
 }
 
 bool CMessageBoxGalaxy::initWithBgBitmap(const std::string &filename)
@@ -192,6 +243,20 @@ bool CMessageBoxGalaxy::initBitmapFrame(const std::string &filename)
     return false;
 }
 
+bool CMessageBoxGalaxy::initBitmapFrameInternal(const unsigned char *data,
+                                                const std::string &name,
+                                                const int size)
+{
+    if(mMBSurface.loadImgInternal(data, name, size))
+    {
+        mMBSurface.makeBlitCompatible();
+        return true;
+    }
+
+    return false;
+}
+
+
 void CMessageBoxGalaxy::initText(const SDL_Rect &rect)
 {
 	auto &Font = gGraphics.getFontLegacy(FONT_ID);
@@ -273,7 +338,9 @@ void showMsg(const int sprVar, const std::string &text,
 
     if(!bmpFilename.empty())
     {
-        if(!msgBox->initWithBgBitmap("global/TrophyMsg.png"))
+        if(!msgBox->initWithBgBitmapInternal(gTrophyMsg,
+                                             "TrophyMsg",
+                                              sizeof(gTrophyMsg)))
             msgBox->init();
     }
     else
