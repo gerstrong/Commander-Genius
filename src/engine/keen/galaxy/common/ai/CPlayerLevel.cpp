@@ -325,14 +325,26 @@ void CPlayerLevel::processRunning()
 		{
 			stItemGalaxy &m_Item = m_Inventory.Item;
 
-			if(i == 7 && m_Item.m_gem.red > 0)
-				m_Item.m_gem.red--;
-			else if(i == 8 && m_Item.m_gem.yellow > 0)
-				m_Item.m_gem.yellow--;
-			else if(i == 9 && m_Item.m_gem.blue > 0)
-				m_Item.m_gem.blue--;
-			else if(i == 10 && m_Item.m_gem.green > 0)
-				m_Item.m_gem.green--;
+            if(i == 7 && m_Item.m_gem.red > 0)
+            {
+                m_Item.m_gem.red--;
+                m_Inventory.addAchievementTask("Open Sesame!", 1);
+            }
+            else if(i == 8 && m_Item.m_gem.yellow > 0)
+            {
+                m_Item.m_gem.yellow--;
+                m_Inventory.addAchievementTask("Open Sesame!", 1);
+            }
+            else if(i == 9 && m_Item.m_gem.blue > 0)
+            {
+                m_Item.m_gem.blue--;
+                m_Inventory.addAchievementTask("Open Sesame!", 1);
+            }
+            else if(i == 10 && m_Item.m_gem.green > 0)
+            {
+                m_Item.m_gem.green--;
+                m_Inventory.addAchievementTask("Open Sesame!", 1);
+            }
 			else
 				break;
 
@@ -679,6 +691,7 @@ void CPlayerLevel::tryToShoot( const GsVec2D<int> &pos, const int xDir, const in
     {
         spawnObj(new CBullet(mpMap, 0, pos.x, pos.y, xDir, yDir, mSprVar));
         m_Inventory.Item.m_bullets--;
+        m_Inventory.addAchievementTask("I'm not Duke!", 1);
     }
     else
     {

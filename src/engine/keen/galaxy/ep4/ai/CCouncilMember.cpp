@@ -142,7 +142,7 @@ void CCouncilMember::performJanitorMode()
     msgs.push_back( new CMessageBoxBitmapGalaxy(sprVar, elder_text[3],
                     *gGraphics.getBitmapFromStr(sprVar, "KEENTALKING"), RIGHT, false, nullptr) );
 
-    showMsgVec( msgs );
+    showMsgVec( msgs );        
 
 	rescued = true;
 }
@@ -161,7 +161,8 @@ void CCouncilMember::getTouchedBy(CSpriteObject &theObject)
 		// TODO: In this part we have to check which level we are and send the proper messages
 
 		if(mpMap->isSecret)
-		{
+        {
+            player->m_Inventory.addAchievementTask("Clogged Toilet", 1);
 			performJanitorMode();
 			return;
 		}

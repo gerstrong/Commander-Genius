@@ -45,5 +45,7 @@ int main()
     compileBinIntoCharArray("closeBtn.png","gButtonClosePng", "buttonClose.h");
     compileBinIntoCharArray("menu.png","gButtonMenuPng", "buttonMenu.h");
     compileBinIntoCharArray("cgttf.ttf","gCgTtf", "cgttf.h");
+    compileBinIntoCharArray("TrophyMsg.png","gTrophyMsg", "TrophyMsg.h");
+    compileBinIntoCharArray("Trophy_Sound.ogg","gTrophy_Sound", "Trophy_Sound.h");
     return 0;
 }

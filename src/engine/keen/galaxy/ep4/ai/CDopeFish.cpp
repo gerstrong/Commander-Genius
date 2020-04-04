@@ -79,7 +79,7 @@ bool CDopeFish::isNearby(CSpriteObject &theObject)
 			    absdy < CSF_MIN_DISTANCE_TO_CHARGE )
 			{
 				setAction(A_DOPEFISH_EAT);
-				mp_processState = &CDopeFish::processEat;
+				mp_processState = &CDopeFish::processEat;                
 				m_eatTimer = DOPE_EAT_TIMER;
 			}
 		}
@@ -98,6 +98,7 @@ void CDopeFish::getTouchedBy(CSpriteObject &theObject)
 	{
 		if( getActionNumber(A_DOPEFISH_EAT) )
         {
+            Player->m_Inventory.addAchievementTask("Jonah", 1);
 			Player->getEaten();
         }
 	}

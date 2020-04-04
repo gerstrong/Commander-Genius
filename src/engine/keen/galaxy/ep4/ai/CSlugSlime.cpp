@@ -36,6 +36,7 @@ void CSlugSlime::getTouchedBy(CSpriteObject &theObject)
 	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
 	{
 		player->kill();
+        player->m_Inventory.addAchievementTask("What a poop!", 1);
 	}
 }
 

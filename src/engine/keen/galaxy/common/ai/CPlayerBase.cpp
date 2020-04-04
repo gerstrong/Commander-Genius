@@ -404,6 +404,7 @@ void CPlayerBase::processLevelMiscFlagsCheck()
 	  
 	  if(m_Item.m_drops >= 100)
 	  {
+        m_Inventory.addAchievementTask("Thirsty", 1);
 	    m_Item.m_drops = 0;
 	    getAnotherLife(lc_x, lc_y, true, true);
 	  }
@@ -454,10 +455,18 @@ void CPlayerBase::processLevelMiscFlagsCheck()
             case 24: m_Item.m_points += 1000;	playSound( SOUND_GET_BONUS );	break;
             case 25: m_Item.m_points += 2000;	playSound( SOUND_GET_BONUS );	break;
             case 26: m_Item.m_points += 5000;	playSound( SOUND_GET_BONUS );	break;
-			case 27: getAnotherLife(lc_x, lc_y, true, false);	break;
+            case 27:
+                getAnotherLife(lc_x, lc_y, true, false);
+                m_Inventory.addAchievementTask("More than life", 100);
+                break;
             case 28: m_Item.m_bullets += 5;	playSound( SOUND_GET_AMMO );	break;
 			default: break;
 			}
+
+            if(m_Item.m_points >= 50000)
+            {
+                m_Inventory.addAchievementTask("Still not enough", 50000);
+            }
 
 			if(m_Item.m_points >= m_Item.m_lifeAt)
 			{

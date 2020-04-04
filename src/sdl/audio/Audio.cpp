@@ -271,6 +271,29 @@ void Audio::stopSound(const GameSound snd)
 
 }
 
+void Audio::playInternalSound(const unsigned char *data,
+                              const std::string &name,
+                              const int size)
+{
+    // New file?
+    if(mSoundFileMap.find(name) == mSoundFileMap.end())
+    {
+        const auto fullfname = GetFullFileName(name);
+        mSoundFileMap[name] = Mix_LoadWAV_RW(
+                                    SDL_RWFromConstMem(
+                                            reinterpret_cast<const void*>(data),
+                                                       size), 0);
+    }
+
+    auto sample = mSoundFileMap[name];
+
+    if(Mix_PlayChannel(-1, sample, 0)==-1)
+    {
+        gLogging.ftextOut("Mix_PlayChannel: %s\n",Mix_GetError());
+    }
+}
+
+
 void Audio::playSoundFile(const std::string &filename)
 {
     // New file?

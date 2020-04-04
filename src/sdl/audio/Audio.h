@@ -85,6 +85,10 @@ public:
 	void stopSound(const GameSound snd);
 	void destroy();
 
+    void playInternalSound(const unsigned char *data,
+                           const std::string &name,
+                           const int size);
+
     void playSoundFile(const std::string &filename);
 
     /**

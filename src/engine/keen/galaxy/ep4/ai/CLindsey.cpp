@@ -68,6 +68,7 @@ void CLindsey::getTouchedBy(CSpriteObject &theObject)
         std::array< std::string, 3> lindsey_text;
 
         lindsey_text[0] = gBehaviorEngine.getString(answermap[0]);
+        player->m_Inventory.addAchievementTask("A word of advice", 1);
 
         if(curLevel > 5)
         {
