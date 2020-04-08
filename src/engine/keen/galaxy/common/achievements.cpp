@@ -4,6 +4,8 @@
 #include "sdl/audio/Audio.h"
 #include "Trophy_Sound.h"
 
+#include <boost/property_tree/ptree.hpp>
+
 Achievements::Achievements()
 {
     mTodos["Pesty"] = 100;
@@ -43,6 +45,39 @@ void Achievements::addTask(const std::string &which,
                                      "Trophy_Sound",
                                      sizeof(gTrophy_Sound));
         }
+    }
+
+}
+
+void Achievements::operator>>(boost::property_tree::ptree &invNode)
+{
+    boost::property_tree::ptree achTree;
+
+    for(const auto &todo : mTodos)
+    {
+        auto &todoNode = achTree.add("todo", "");
+
+        todoNode.put("<xmlattr>.name", todo.first);
+        todoNode.put("<xmlattr>.value", std::to_string(todo.second));
+    }
+
+    invNode.add_child("achievements", achTree);
+}
+
+void Achievements::operator<<(boost::property_tree::ptree &invNode)
+{
+    for(auto &node : invNode)
+    {
+        if(node.first == "achievements")
+        {
+            for(auto &v : node.second)
+            {
+                const std::string first = v.second.get<std::string>("<xmlattr>.name");
+                const int second = v.second.get<int>("<xmlattr>.value");
+                mTodos[first] = second;
+            }
+        }
+
     }
 
 }

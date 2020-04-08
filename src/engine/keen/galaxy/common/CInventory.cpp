@@ -182,6 +182,7 @@ void CInventory::operator>>(CSaveGameController &savedGame)
 void CInventory::operator>>(boost::property_tree::ptree &invNode)
 {
     Item >> invNode;
+    mAchievements >> invNode;
 }
 
 void CInventory::operator<<(CSaveGameController &savedGame)
@@ -192,6 +193,7 @@ void CInventory::operator<<(CSaveGameController &savedGame)
 void CInventory::operator<<(boost::property_tree::ptree &invNode)
 {
     Item << invNode;
+    mAchievements << invNode;
 }
 
 void CInventory::addAchievementTask(const std::string which,
