@@ -81,7 +81,7 @@ std::string GsApp::getName()
 void GsApp::cleanup()
 {
     mpSink = nullptr;
-    //gInput.shutdown();
+    //gInput.shutdown();1
 }
 
 GsApp::~GsApp()
@@ -119,6 +119,11 @@ bool GsApp::init(int argc, char *argv[])
 	}
 
     return true;
+}
+
+void GsApp::deinit()
+{
+    unloadDrivers();
 }
 
 
@@ -188,6 +193,10 @@ bool GsApp::loadDrivers()
 	return true;
 }
 
+void GsApp::unloadDrivers()
+{
+    gVideoDriver.stop();
+}
 
 
 ////

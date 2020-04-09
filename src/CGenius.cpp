@@ -175,6 +175,11 @@ int main(int argc, char *argv[])
         // Run the Commander Genius //
         //////////////////////////////
         gApp.runMainCycle();
+
+        ////////////////////////////////
+        // Tear down Commander Genius //
+        ////////////////////////////////
+        gApp.deinit();
     }
 	else
 	{
