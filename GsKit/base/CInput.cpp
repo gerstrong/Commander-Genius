@@ -985,10 +985,10 @@ void CInput::pollEvents()
             mBackEventBuffer.push_back(Event);
         }
 	}
-//#ifdef MOUSEWRAPPER
-//	// Handle mouse emulation layer
-//	processMouse();
-//#endif
+#ifdef MOUSEWRAPPER
+	// Handle mouse emulation layer
+	processMouse();
+#endif
 
 	for(unsigned int i = 0; i < KEYTABLE_SIZE; ++i)
 		firsttime_immediate_keytable[i]
@@ -1307,18 +1307,18 @@ bool CInput::processKeys(int keydown)
 
 }
 
-//#ifdef MOUSEWRAPPER
-//static bool checkMousewrapperKey(int& key);
-//#endif
+#ifdef MOUSEWRAPPER
+static bool checkMousewrapperKey(int& key);
+#endif
 /**
  * \brief	returns if certain key is being held
  * \param	key the key to be held
  */
 bool CInput::getHoldedKey(int key)
 {
-//#ifdef MOUSEWRAPPER
-//	if(!checkMousewrapperKey(key)) return true;
-//#endif
+#ifdef MOUSEWRAPPER
+	if(!checkMousewrapperKey(key)) return true;
+#endif
 	if(immediate_keytable[key])
 		return true;
 
@@ -1331,9 +1331,9 @@ bool CInput::getHoldedKey(int key)
  */
 bool CInput::getPressedKey(int key)
 {
-//#ifdef MOUSEWRAPPER
-//	if(!checkMousewrapperKey(key)) return true;
-//#endif
+#ifdef MOUSEWRAPPER
+	if(!checkMousewrapperKey(key)) return true;
+#endif
 	if(firsttime_immediate_keytable[key])
 	{
 		firsttime_immediate_keytable[key] = false;
@@ -1669,250 +1669,250 @@ void CInput::flushEvents()
 
 #define KSHOWHIDECTRLS	(-10)
 
-//#if defined(MOUSEWRAPPER)
-//#if SDL_VERSION_ATLEAST(2, 0, 0)
-//
-//#if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
-//static const int w = 480, h = 320;
-//static TouchButton* getPhoneButtons(stInputCommand InputCommand[NUM_INPUTS][MAX_COMMANDS]) {
-//
-//	static TouchButton phoneButtons[] = {
-//		{ &InputCommand[0][IC_LEFT],        KLEFT,	0,      h*5/8,  w / 6,  h / 4},
-//        { &InputCommand[0][IC_UPPERLEFT],	-1,     0,      h / 2,  w / 6,  h / 8,  true},
-//		{ &InputCommand[0][IC_UP],          KUP,	w / 6,  h*2/4,  w / 6,  h / 4},
-//        { &InputCommand[0][IC_UPPERRIGHT],	-1,     w / 3,  h / 2,  w / 6,  h / 8,  true},
-//		{ &InputCommand[0][IC_RIGHT],       KRIGHT,	w / 3,  h*5/8,  w / 6,  h / 4},
-//        { &InputCommand[0][IC_LOWERRIGHT],	-1,     w / 3,  h*7/8,  w / 6,  h / 8,  true},
-//		{ &InputCommand[0][IC_DOWN],        KDOWN,	w / 6,  h*3/4,  w / 6,  h / 4},
-//        { &InputCommand[0][IC_LOWERLEFT],	-1,     0,      h*7/8,  w / 6,  h / 8,  true},
-//
-//		{ &InputCommand[0][IC_JUMP],        KCTRL,	w / 2,  h*2/3,  w / 6,  h / 3},
-//		{ &InputCommand[0][IC_POGO],        KALT,	w*2/3,  h*2/3,  w / 6,  h / 3},
-//        { &InputCommand[0][IC_FIRE],        KSPACE,	w*5/6,  h*2/3,  w / 6,  h / 3},
-//        { &InputCommand[0][IC_RUN],         KSHIFT,	w*5/6,  h*2/3,  w / 6,  h / 3},
-//
-//		{ &InputCommand[0][IC_BACK],        KQUIT,	0,      0,      w / 6,  h / 6},
-//		{ &InputCommand[0][IC_STATUS],      KENTER, 5*w/6,  h / 6,  w / 6,  h / 6},
-//        { &InputCommand[0][IC_HELP],        KF1,	0,      h / 6,  w / 6,  h / 6},
-//		{ NULL,                     KSHOWHIDECTRLS,	5*w/6,  0,      w / 6,  h / 6},
-//	};
-//
-//	return phoneButtons;
-//}
-//#endif
-//
-//
-//typedef std::set<int> MouseIndexSet;
-//
-//#if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
-//static const int phoneButtonN = 15;
-//static Uint32 phoneButtonLasttime[phoneButtonN] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-//static MouseIndexSet phoneButton_MouseIndex[phoneButtonN];
-//
-//
-//static TouchButton* getPhoneButton(int x, int y, TouchButton phoneButtons[]) {
-//	for(int i = 0; i < phoneButtonN; ++i) {
-//		TouchButton& b = phoneButtons[i];
-//		if(b.isInside(x, y)) return &b;
-//	}
-//	return NULL;
-//}
-//#endif
-//
-//#ifdef MOUSEWRAPPER
-//static bool checkMousewrapperKey(int& key) {
-//	switch(key) {
-//		case KLEFT: case KRIGHT: case KUP: case KDOWN:
-//		case KENTER: case KSPACE: case KQUIT: case KF3:
-//			return true;
-//	}
-//
-//	if(key == KY) { key = KENTER; return true; }
-//	if(key == KN) { key = KQUIT; return true; }
-//
-//	//errors << "checkMousewrapperKey: key " << key << " not useable for iPhone" << endl;
-//	//return false;
-//	// just too many keys ...
-//	return true;
-//}
-//#endif
-//
-//#ifdef MOUSEWRAPPER
-//void CInput::processMouse()
-//{
-//	TouchButton* phoneButtons = getPhoneButtons(InputCommand);
-//
-//	for(int i = 0; i < phoneButtonN; ++i) {
-//		bool down = phoneButton_MouseIndex[i].size() > 0;
-//
-//		TouchButton& b = phoneButtons[i];
-//
-//		if(b.cmd)
-//			b.cmd->active = down;
-//
-//		// handle immediate keys
-//		if(b.immediateIndex >= 0)
-//			immediate_keytable[b.immediateIndex] = down;
-//	}
-//}
-//#endif
-//
-//void CInput::processMouse(SDL_Event& ev) {
-//
-//	SDL_Rect screenRect;
-//    //SDL_Touch* touch = SDL_GetTouch(ev.tfinger.touchId);
-//    SDL_Finger* touch = SDL_GetTouchFinger(ev.tfinger.touchId, 0);
-//    int x, y, dx, dy, w, h;
-//
-//	if(SDL_GetDisplayBounds(0, &screenRect) == 0) {
-//        w = screenRect.w;
-//        h = screenRect.h;
-//	}
-//
-//    if(touch == nullptr) return; //The touch has been removed
-//
-//    //float fx = ((float)ev.tfinger.x)/touch->xres;
-//    //float fy = ((float)ev.tfinger.y)/touch->yres;
-//    float fx = ((float)ev.tfinger.x)/touch->x;
-//    float fy = ((float)ev.tfinger.y)/touch->y;
-//    x = (int)(fx*w); y = (int)(fy*h);
-//
-//
-//
-//	switch(ev.type) {
-//		case SDL_FINGERDOWN:
-//			processMouse(x, y, true, ev.tfinger.fingerId);
-//			break;
-//
-//		case SDL_FINGERUP:
-//			processMouse(x, y, false, ev.tfinger.fingerId);
-//			break;
-//
-//		case SDL_FINGERMOTION:
-//            //float fdx = ((float)ev.tfinger.dx)/touch->xres;
-//            //float fdy = ((float)ev.tfinger.dy)/touch->yres;
-//            float fdx = (float(ev.tfinger.dx))/touch->x;
-//            float fdy = (float(ev.tfinger.dy))/touch->y;
-//            dx = int(fdx*w); dy = int(fdy*h);
-//			processMouse(x - dx, y - dy, false, ev.tfinger.fingerId);
-//			processMouse(x, y, true, ev.tfinger.fingerId);
-//			break;
-//	}
-//#endif
-//}
-//
-//void CInput::processMouse(int x, int y, bool down, int mouseindex)
-//{
-//    /*
-//    const GsRect<int> pt(x,y);
-//
-//    if(down)
-//        {
-//            // If Virtual gamepad takes control...
-//            if(gVideoDriver.VGamePadEnabled() && mpVirtPad &&
-//               mpVirtPad->active() )
-//            {
-//                transMouseRelCoord(Pos, pt, activeArea, tiltedScreen);
-//
-//                if(!mpVirtPad->mouseDown(Pos))
-//                {
-//                    m_EventList.add( new PointingDevEvent( Pos, PDE_BUTTONDOWN ) );
-//                    gPointDevice.mPointingState.mActionButton = 1;
-//                    gPointDevice.mPointingState.mPos = Pos;
-//                }
-//            }
-//            else
-//            {
-//                transMouseRelCoord(Pos, pt, activeArea, tiltedScreen);
-//                m_EventList.add( new PointingDevEvent( Pos, PDE_BUTTONDOWN ) );
-//                gPointDevice.mPointingState.mActionButton = 1;
-//                gPointDevice.mPointingState.mPos = Pos;
-//            }
-//        }
-//    else
-//    {
-//    if (gVideoDriver.VGamePadEnabled() && mpVirtPad &&
-//            mpVirtPad->active()) {
-//            transMouseRelCoord(Pos, pt, activeArea, tiltedScreen);
-//            if (!mpVirtPad->mouseUp(Pos)) {
-//                passSDLEventVec = true;
-//                m_EventList.add(new PointingDevEvent(Pos, PDE_BUTTONUP));
-//                gPointDevice.mPointingState.mActionButton = 0;
-//                gPointDevice.mPointingState.mPos = Pos;
-//            }
-//        } else {
-//            passSDLEventVec = true;
-//            transMouseRelCoord(Pos, pt, activeArea, tiltedScreen);
-//            m_EventList.add(new PointingDevEvent(Pos, PDE_BUTTONUP));
-//            gPointDevice.mPointingState.mActionButton = 0;
-//            gPointDevice.mPointingState.mPos = Pos;
-//        }
-//
-//    }*/
-//
-//#ifdef MOUSEWRAPPER
-//    TouchButton* phoneButtons = getPhoneButtons(InputCommand);
-//
-//	for(int i = 0; i < phoneButtonN; ++i) {
-//		TouchButton& b = phoneButtons[i];
-//		if(b.isInside(x, y)) {
-//			phoneButtonLasttime[i] = down ? SDL_GetTicks() : 0;
-//			if(down)	phoneButton_MouseIndex[i].insert(mouseindex);
-//			else		phoneButton_MouseIndex[i].erase(mouseindex);
-//
-//			break;
-//		}
-//	}
-//#endif
-//}
-//
-//
-//#ifdef USE_OPENGL
-///*
-//static void drawButton(TouchButton& button, bool down) {
-//	// similar mysterious constant as in renderTexture/initGL
-//	//glViewport(0,255,w,h);
-//
-//	float w = 480.0f, h = 320.0f;
-//
-//	int crop = 2;
-//	float x1 = float(button.x + crop) / w;
-//	float x2 = float(button.x+button.dim.x - crop) / w;
-//	float y1 = float(button.y + crop) / h;
-//	float y2 = float(button.y+button.h - crop) / h;
-//
-//	GLfloat vertices[] =
-//	{
-//		x1, y1,
-//		x2, y1,
-//		x2, y2,
-//		x1, y2,
-//	};
-//
-//	//Render the vertices by pointing to the arrays.
-//    glEnableClientState(GL_VERTEX_ARRAY);
-//
-//	glVertexPointer(2, GL_FLOAT, 0, vertices);
-//
-//	glEnable(GL_BLEND);
-//	if(down)
-//		glColor4f(0,0,0, 0.5);
-//	else
-//		glColor4f(0,0,0, 0.2);
-//
-//	glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
-//	//glBlendFunc(GL_ONE, GL_ZERO);
-//
-//	//Finally draw the arrays.
-//	glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
-//	glDisableClientState(GL_VERTEX_ARRAY);
-//	glDisable(GL_BLEND);
-//
-//}
-//*/
-//#endif
-//
-//#endif
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+
+#if defined(MOUSEWRAPPER)
+#if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
+static const int w = 480, h = 320;
+static TouchButton* getPhoneButtons(stInputCommand InputCommand[NUM_INPUTS][MAX_COMMANDS]) {
+
+	static TouchButton phoneButtons[] = {
+		{ &InputCommand[0][IC_LEFT],        KLEFT,	0,      h*5/8,  w / 6,  h / 4},
+        { &InputCommand[0][IC_UPPERLEFT],	-1,     0,      h / 2,  w / 6,  h / 8,  true},
+		{ &InputCommand[0][IC_UP],          KUP,	w / 6,  h*2/4,  w / 6,  h / 4},
+        { &InputCommand[0][IC_UPPERRIGHT],	-1,     w / 3,  h / 2,  w / 6,  h / 8,  true},
+		{ &InputCommand[0][IC_RIGHT],       KRIGHT,	w / 3,  h*5/8,  w / 6,  h / 4},
+        { &InputCommand[0][IC_LOWERRIGHT],	-1,     w / 3,  h*7/8,  w / 6,  h / 8,  true},
+		{ &InputCommand[0][IC_DOWN],        KDOWN,	w / 6,  h*3/4,  w / 6,  h / 4},
+        { &InputCommand[0][IC_LOWERLEFT],	-1,     0,      h*7/8,  w / 6,  h / 8,  true},
+
+		{ &InputCommand[0][IC_JUMP],        KCTRL,	w / 2,  h*2/3,  w / 6,  h / 3},
+		{ &InputCommand[0][IC_POGO],        KALT,	w*2/3,  h*2/3,  w / 6,  h / 3},
+        { &InputCommand[0][IC_FIRE],        KSPACE,	w*5/6,  h*2/3,  w / 6,  h / 3},
+        { &InputCommand[0][IC_RUN],         KSHIFT,	w*5/6,  h*2/3,  w / 6,  h / 3},
+
+		{ &InputCommand[0][IC_BACK],        KQUIT,	0,      0,      w / 6,  h / 6},
+		{ &InputCommand[0][IC_STATUS],      KENTER, 5*w/6,  h / 6,  w / 6,  h / 6},
+        { &InputCommand[0][IC_HELP],        KF1,	0,      h / 6,  w / 6,  h / 6},
+		{ NULL,                     KSHOWHIDECTRLS,	5*w/6,  0,      w / 6,  h / 6},
+	};
+
+	return phoneButtons;
+}
+#endif
+#endif
+
+
+typedef std::set<int> MouseIndexSet;
+
+#if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
+static const int phoneButtonN = 15;
+static Uint32 phoneButtonLasttime[phoneButtonN] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+static MouseIndexSet phoneButton_MouseIndex[phoneButtonN];
+
+
+static TouchButton* getPhoneButton(int x, int y, TouchButton phoneButtons[]) {
+	for(int i = 0; i < phoneButtonN; ++i) {
+		TouchButton& b = phoneButtons[i];
+		if(b.isInside(x, y)) return &b;
+	}
+	return NULL;
+}
+#endif
+
+#ifdef MOUSEWRAPPER
+static bool checkMousewrapperKey(int& key) {
+	switch(key) {
+		case KLEFT: case KRIGHT: case KUP: case KDOWN:
+		case KENTER: case KSPACE: case KQUIT: case KF3:
+			return true;
+	}
+
+	if(key == KY) { key = KENTER; return true; }
+	if(key == KN) { key = KQUIT; return true; }
+
+	//errors << "checkMousewrapperKey: key " << key << " not useable for iPhone" << endl;
+	//return false;
+	// just too many keys ...
+	return true;
+}
+#endif
+
+#ifdef MOUSEWRAPPER
+void CInput::processMouse()
+{
+	TouchButton* phoneButtons = getPhoneButtons(InputCommand);
+
+	for(int i = 0; i < phoneButtonN; ++i) {
+		bool down = phoneButton_MouseIndex[i].size() > 0;
+
+		TouchButton& b = phoneButtons[i];
+
+		if(b.cmd)
+			b.cmd->active = down;
+
+		// handle immediate keys
+		if(b.immediateIndex >= 0)
+			immediate_keytable[b.immediateIndex] = down;
+	}
+}
+#endif
+
+void CInput::processMouse(SDL_Event& ev) {
+
+	SDL_Rect screenRect;
+    //SDL_Touch* touch = SDL_GetTouch(ev.tfinger.touchId);
+    SDL_Finger* touch = SDL_GetTouchFinger(ev.tfinger.touchId, 0);
+    int x, y, dx, dy, w, h;
+
+	if(SDL_GetDisplayBounds(0, &screenRect) == 0) {
+        w = screenRect.w;
+        h = screenRect.h;
+	}
+
+    if(touch == nullptr) return; //The touch has been removed
+
+    //float fx = ((float)ev.tfinger.x)/touch->xres;
+    //float fy = ((float)ev.tfinger.y)/touch->yres;
+    float fx = ((float)ev.tfinger.x)/touch->x;
+    float fy = ((float)ev.tfinger.y)/touch->y;
+    x = (int)(fx*w); y = (int)(fy*h);
+
+
+
+	switch(ev.type) {
+		case SDL_FINGERDOWN:
+			processMouse(x, y, true, ev.tfinger.fingerId);
+			break;
+
+		case SDL_FINGERUP:
+			processMouse(x, y, false, ev.tfinger.fingerId);
+			break;
+
+		case SDL_FINGERMOTION:
+            //float fdx = ((float)ev.tfinger.dx)/touch->xres;
+            //float fdy = ((float)ev.tfinger.dy)/touch->yres;
+            float fdx = (float(ev.tfinger.dx))/touch->x;
+            float fdy = (float(ev.tfinger.dy))/touch->y;
+            dx = int(fdx*w); dy = int(fdy*h);
+			processMouse(x - dx, y - dy, false, ev.tfinger.fingerId);
+			processMouse(x, y, true, ev.tfinger.fingerId);
+			break;
+	}
+}
+
+void CInput::processMouse(int x, int y, bool down, int mouseindex)
+{
+    /*
+    const GsRect<int> pt(x,y);
+
+    if(down)
+        {
+            // If Virtual gamepad takes control...
+            if(gVideoDriver.VGamePadEnabled() && mpVirtPad &&
+               mpVirtPad->active() )
+            {
+                transMouseRelCoord(Pos, pt, activeArea, tiltedScreen);
+
+                if(!mpVirtPad->mouseDown(Pos))
+                {
+                    m_EventList.add( new PointingDevEvent( Pos, PDE_BUTTONDOWN ) );
+                    gPointDevice.mPointingState.mActionButton = 1;
+                    gPointDevice.mPointingState.mPos = Pos;
+                }
+            }
+            else
+            {
+                transMouseRelCoord(Pos, pt, activeArea, tiltedScreen);
+                m_EventList.add( new PointingDevEvent( Pos, PDE_BUTTONDOWN ) );
+                gPointDevice.mPointingState.mActionButton = 1;
+                gPointDevice.mPointingState.mPos = Pos;
+            }
+        }
+    else
+    {
+    if (gVideoDriver.VGamePadEnabled() && mpVirtPad &&
+            mpVirtPad->active()) {
+            transMouseRelCoord(Pos, pt, activeArea, tiltedScreen);
+            if (!mpVirtPad->mouseUp(Pos)) {
+                passSDLEventVec = true;
+                m_EventList.add(new PointingDevEvent(Pos, PDE_BUTTONUP));
+                gPointDevice.mPointingState.mActionButton = 0;
+                gPointDevice.mPointingState.mPos = Pos;
+            }
+        } else {
+            passSDLEventVec = true;
+            transMouseRelCoord(Pos, pt, activeArea, tiltedScreen);
+            m_EventList.add(new PointingDevEvent(Pos, PDE_BUTTONUP));
+            gPointDevice.mPointingState.mActionButton = 0;
+            gPointDevice.mPointingState.mPos = Pos;
+        }
+
+    }*/
+
+#ifdef MOUSEWRAPPER
+    TouchButton* phoneButtons = getPhoneButtons(InputCommand);
+
+	for(int i = 0; i < phoneButtonN; ++i) {
+		TouchButton& b = phoneButtons[i];
+		if(b.isInside(x, y)) {
+			phoneButtonLasttime[i] = down ? SDL_GetTicks() : 0;
+			if(down)	phoneButton_MouseIndex[i].insert(mouseindex);
+			else		phoneButton_MouseIndex[i].erase(mouseindex);
+
+			break;
+		}
+	}
+#endif
+}
+
+
+#ifdef USE_OPENGL
+/*
+static void drawButton(TouchButton& button, bool down) {
+	// similar mysterious constant as in renderTexture/initGL
+	//glViewport(0,255,w,h);
+
+	float w = 480.0f, h = 320.0f;
+
+	int crop = 2;
+	float x1 = float(button.x + crop) / w;
+	float x2 = float(button.x+button.dim.x - crop) / w;
+	float y1 = float(button.y + crop) / h;
+	float y2 = float(button.y+button.h - crop) / h;
+
+	GLfloat vertices[] =
+	{
+		x1, y1,
+		x2, y1,
+		x2, y2,
+		x1, y2,
+	};
+
+	//Render the vertices by pointing to the arrays.
+    glEnableClientState(GL_VERTEX_ARRAY);
+
+	glVertexPointer(2, GL_FLOAT, 0, vertices);
+
+	glEnable(GL_BLEND);
+	if(down)
+		glColor4f(0,0,0, 0.5);
+	else
+		glColor4f(0,0,0, 0.2);
+
+	glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+	//glBlendFunc(GL_ONE, GL_ZERO);
+
+	//Finally draw the arrays.
+	glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+	glDisableClientState(GL_VERTEX_ARRAY);
+	glDisable(GL_BLEND);
+
+}
+*/
+#endif
+
+#endif
 
 void CInput::renderOverlay()
 {

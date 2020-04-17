@@ -322,9 +322,9 @@ private:
     void processJoystickHat();
     void processJoystickButton(int value);
 
-//    void processMouse();
-//    void processMouse(SDL_Event& ev);
-//    void processMouse(int x, int y, bool down, int index);
+    void processMouse();
+    void processMouse(SDL_Event& ev);
+    void processMouse(int x, int y, bool down, int index);
 
 
     // Input Events

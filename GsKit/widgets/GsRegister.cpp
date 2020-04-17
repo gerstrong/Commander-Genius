@@ -79,8 +79,11 @@ void GsRegister::processRender(const GsRect<float> &rectDispCoordFloat)
 
     leftPaneRect.dim.x = mPaneSize * frontRect.dim.x;
 
-    mpMenu->processRender(leftPaneRect,
-                          leftPaneRect);
+    if(mpMenu)
+    {
+        mpMenu->processRender(leftPaneRect,
+                              leftPaneRect);
+    }
 }
 
 void GsRegister::processRender(const GsRect<float> &srcRectFloat,
