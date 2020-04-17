@@ -81,7 +81,7 @@ std::string GsApp::getName()
 void GsApp::cleanup()
 {
     mpSink = nullptr;
-    //gInput.shutdown();1
+    //gInput.shutdown();
 }
 
 GsApp::~GsApp()

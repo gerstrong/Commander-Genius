@@ -24,31 +24,6 @@
 #include "DisplaySettings.h"
 
 
-
-
-class toggleFullscreenFunctor : public InvokeFunctorEvent
-{
-public:
-	toggleFullscreenFunctor( DisplaySettings& DispSettings ) :
-		mDispSettings(DispSettings) {}
-
-private:
-
-    void operator()() const
-	{
-        mDispSettings.mMyNewConf.mFullscreen = !mDispSettings.mMyNewConf.mFullscreen;
-		mDispSettings.release();
-	}
-
-    virtual ~toggleFullscreenFunctor();
-
-	DisplaySettings& mDispSettings;
-};
-
-toggleFullscreenFunctor::~toggleFullscreenFunctor()
-{}
-
-
 DisplaySettings::DisplaySettings(const Style style) :
 #if defined(EMBEDDED)
 GameMenu(GsRect<float>(0.15f, 0.20f, 0.65f, 0.25f), style )
@@ -83,9 +58,8 @@ GameMenu(GsRect<float>(0.15f, 0.20f, 0.65f, 0.55f), style )
                                                   style) );
 
     mpFullScreenSwitch =
-        mpMenuDialog->add( new GameButton( "Unknown mode",
-                                              new toggleFullscreenFunctor(*this),
-                                               style) );
+        mpMenuDialog->add( new Switch( "Fullscreen", style ) );
+
 #endif
 
 
@@ -152,7 +126,7 @@ void DisplaySettings::refresh()
                                     (mMyNewConf.m_normal_scale ? "normal" : "scale") +
                                     itoa(int(mMyNewConf.m_ScaleXFilter)) + "x" );
     mpVSyncSwitch->enable( mMyNewConf.mVSync );
-    mpFullScreenSwitch->setText( mMyNewConf.mFullscreen ? "Go Windowed" : "Go Fullscreen" );
+    mpFullScreenSwitch->enable(mMyNewConf.mFullscreen);
 
 
     const auto resList = gVideoDriver.getResolutionStrSet();
@@ -247,8 +221,7 @@ void DisplaySettings::release()
     mMyNewConf.mVSync = mpVSyncSwitch->isEnabled();
 
     // Fullscreen
-    const auto fsBtnText = mpFullScreenSwitch->getText();
-    mMyNewConf.mFullscreen = (fsBtnText == "Go Windowed") ? true : false;
+    mMyNewConf.mFullscreen = mpFullScreenSwitch->isEnabled();
 
 
     // Read correct resolution

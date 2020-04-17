@@ -45,6 +45,7 @@ private:
     // Left side button menu where the sub frames can be chosen
     std::shared_ptr<GsScrollingFrame> mpMenu;
 
+    const float mPaneSize = 0.2f;
 };
 
 #endif // GSREGISTER_H

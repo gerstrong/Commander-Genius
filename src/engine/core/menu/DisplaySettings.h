@@ -25,6 +25,7 @@
 class DisplaySettings : public GameMenu
 {
 public:
+
 	DisplaySettings(const Style style);
 
     void refresh();
@@ -44,7 +45,7 @@ private:
     std::shared_ptr<ComboSelection>	mpAspectSelection;
     std::shared_ptr<Switch>		    mpVSyncSwitch;
     std::shared_ptr<ComboSelection>	mpResolutionSelection;
-    std::shared_ptr<GameButton>	    mpFullScreenSwitch;
+    std::shared_ptr<Switch>	    mpFullScreenSwitch;
 
 };
 

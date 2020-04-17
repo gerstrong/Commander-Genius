@@ -111,6 +111,7 @@ void CGUIText::processLogic()
 
 void CGUIText::updateTTFTextSfc(const GsRect<float> &displayRect)
 {
+
 #if defined(USE_SDL_TTF)
     const int reqFontSize = int(displayRect.dim.y*0.75f);
 
