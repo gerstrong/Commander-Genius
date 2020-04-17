@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "235755D0101A5E5900275638"
-               BuildableName = "Commander Genius.app"
-               BlueprintName = "Commander Genius"
+               BlueprintIdentifier = "63B4AE692409BCBC00881BBD"
+               BuildableName = "libGsKit.a"
+               BlueprintName = "GsKit"
                ReferencedContainer = "container:CommanderGenius.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -27,20 +27,11 @@
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "235755D0101A5E5900275638"
-            BuildableName = "Commander Genius.app"
-            BlueprintName = "Commander Genius"
-            ReferencedContainer = "container:CommanderGenius.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
       <Testables>
       </Testables>
    </TestAction>
    <LaunchAction
-      buildConfiguration = "Debug"
+      buildConfiguration = "Release"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
@@ -48,18 +39,7 @@
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
-      allowLocationSimulation = "YES"
-      consoleMode = "1">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "235755D0101A5E5900275638"
-            BuildableName = "Commander Genius.app"
-            BlueprintName = "Commander Genius"
-            ReferencedContainer = "container:CommanderGenius.xcodeproj">
-         </BuildableReference>
-      </BuildableProductRunnable>
+      allowLocationSimulation = "YES">
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -67,16 +47,15 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "235755D0101A5E5900275638"
-            BuildableName = "Commander Genius.app"
-            BlueprintName = "Commander Genius"
+            BlueprintIdentifier = "63B4AE692409BCBC00881BBD"
+            BuildableName = "libGsKit.a"
+            BlueprintName = "GsKit"
             ReferencedContainer = "container:CommanderGenius.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
