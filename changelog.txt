@@ -1,5 +1,9 @@
 v2.4.0:
 -------
+- Added achievements feature. Special thanks to XRackProject for her assets
+
+v2.4.0:
+-------
 - Fixed problem with some dialogs in vorticon keen engine
 - Improved the code for save game menus
 - Added option where you can choose whether you type your save game
