@@ -238,17 +238,16 @@ bool CVideoEngine::createSurfaces(const GsRect<Uint16> &gamerect)
                             RES_BPP, 0, 0, 0, 0);
 
         mpScreenSfc = &mFilteredSfc;
+
+        gLogging.ftextOut("Given a Filter Screen pointer set to filtered surface");
     }
     else
     {
         mpScreenSfc = &mGameSfc;
+        gLogging.ftextOut("Screen pointer set to game surface directly");
     }    
 
-// TODO: Does not work with emscripten yet.
-#if !__EMSCRIPTEN__
-
     initOverlaySurface(Uint16(blit->w), Uint16(blit->h));
-
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 
@@ -265,7 +264,6 @@ bool CVideoEngine::createSurfaces(const GsRect<Uint16> &gamerect)
                                    SDL_TEXTUREACCESS_STREAMING,
                                    texW, texH) );
 
-#endif
 #endif
 
     return true;

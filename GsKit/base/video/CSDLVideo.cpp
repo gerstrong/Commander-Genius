@@ -177,7 +177,6 @@ bool CSDLVideo::initOverlaySurface(const Uint16 width,
                            0,0,0,0);
 
 
-
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     mOverlaySurface.setBlendMode(SDL_BLENDMODE_BLEND);
 #endif
@@ -257,7 +256,6 @@ void CSDLVideo::transformScreenToDisplay()
 #if SDL_VERSION_ATLEAST(2, 0, 0) 
 
     const bool tiltVideo = m_VidConfig.mTiltedScreen;
-
 
     mpScreenSfc->lock();
     SDL_UpdateTexture(mpMainScreenTexture.get(),
@@ -396,28 +394,8 @@ void CSDLVideo::transformScreenToDisplay()
         mRenderTexturePtrs.pop();
     }
 
-   #if __EMSCRIPTEN__
-
-    SDL_Rect r_scr;
-    r_scr.x = 0;
-    r_scr.y = 0;
-    r_scr.w = 200;
-    r_scr.h = 100;
-    //SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF );
-    //SDL_RenderClear(renderer);
-
-    SDL_SetRenderDrawColor(renderer, 0xff, 0xff, 0x00, 0x00);
-    SDL_RenderDrawRect(renderer, &r_scr);
     SDL_RenderPresent(renderer);
 
-    SDL_UpdateWindowSurface(window);
-
-   #else
-
-
-    SDL_RenderPresent(renderer);
-  
-  #endif
 
 #else
 

@@ -450,13 +450,13 @@ void GsApp::runMainCycleEmscripten()
             }
 
             // Now we render the whole GameControl Object to the blit surface
-            //render();
+            render();
 
             // Apply graphical effects if any.
-            //gEffectController.render();
+            gEffectController.render();
 
             // Pass all the surfaces to one. Some special surfaces are used and are collected here
-            //gVideoDriver.collectSurfaces();
+            gVideoDriver.collectSurfaces();
 
             // Now you really render the screen
             // When enabled, it also applies Filters

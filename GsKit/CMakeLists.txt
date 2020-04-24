@@ -25,19 +25,11 @@ if(CMAKE_SYSTEM_NAME MATCHES "Emscripten")
   set(CMAKE_CXX_FLAGS_INIT "-s WASM=1 -s USE_SDL=2 -s USE_SDL_IMAGE=2 -s SDL2_IMAGE_FORMATS='[\"png\"]'")
   set(CMAKE_EXE_LINKER_FLAGS_INIT "-s WASM=1 -s USE_SDL=2 -s USE_SDL_IMAGE=2 -s SDL2_IMAGE_FORMATS='[\"png\"]'")
 
-  option(USE_PYTHON3 "Use Python3 scripts" no)
-
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS_INIT}")
   set(CMAKE_EXE_LINKER "${CMAKE_EXE_LINKER_FLAGS_INIT} -s EXTRA_EXPORTED_RUNTIME_METHODS='[\"ccall\", \"cwrap\"]'")
 
-  option(USE_SDL_TTF "Use true type fonts" yes)
 
   add_library(GsKit STATIC ${ALL_SRCS_GSKIT_BASE})        
-  # From this point files are globbed for compilation and project setup
-  file(GLOB_RECURSE ALL_SRCS_GSKIT_BASE *.c* *.h*)
-  INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})          
-  add_library(GsKit STATIC ${ALL_SRCS_GSKIT_BASE})        
-
 
 else()
     
@@ -54,7 +46,6 @@ else()
     endif(USE_VIRTUALPAD)
     
     option(USE_PYTHON3 "Use Python3 scripts" no)
-
     set (CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${CMAKE_CURRENT_SOURCE_DIR}/CMake")
     
     set(CMAKE_CXX_STANDARD 14)
@@ -161,8 +152,6 @@ else()
         ADD_DEFINITIONS(-DUSE_OPENGL)
     ENDIF (USE_OPENGL)
     
-    file(GLOB_RECURSE ALL_SRCS_GSKIT_BASE *.c* *.h*)
-    INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
     add_library(GsKit STATIC ${ALL_SRCS_GSKIT_BASE})
     
     # The naming with the new Find cmake files related
@@ -178,8 +167,13 @@ else()
         Target_link_libraries(GsKit ${SDL_LIBRARIES})
         Target_link_libraries(GsKit ${SDL_IMAGE_LIBRARY})
         Target_link_libraries(GsKit ${SDL_TTF_LIBRARY})
-
     endif()
-
-ENDIF()
-
+    
+    
+    IF(USE_OPENGL)
+        # OpenGL stuff to link
+        target_link_libraries(GsKit ${OPENGL_LIBRARIES})
+    ENDIF(USE_OPENGL)
+    
+    #cotire(GsKit)
+endif()    
