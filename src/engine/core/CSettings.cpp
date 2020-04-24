@@ -337,7 +337,12 @@ void CSettings::loadDefaultGameCfg()
     setOption( GameOption::HUD,				"HUD Display    ", "hud", 1 );
     setOption( GameOption::SPECIALFX,		"Special Effects", "specialfx", 1 );
     setOption( GameOption::SHOWFPS,			"Show FPS       ", "showfps", 0 );
+
+#if defined(EMBEDDED)
     setOption( GameOption::SANDWICHMENU,    "Menu Button    ", "sandwichbutton", 1 );
+#else
+    setOption( GameOption::SANDWICHMENU,    "SW Button      ", "sandwichbutton", 0 );
+#endif
 
 }
 
