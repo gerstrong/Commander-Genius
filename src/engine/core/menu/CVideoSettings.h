@@ -37,7 +37,6 @@ public:
 private:
 
     std::shared_ptr<Switch>         mpTiltScreenSwitch;
-    std::shared_ptr<Switch>         mpShowCursorSwitch;
     std::shared_ptr<NumberControl>  mpFPSSelection;
     std::shared_ptr<Switch>		    mpFrameSkip;
     std::shared_ptr<ComboSelection>	mpGameResSelection;

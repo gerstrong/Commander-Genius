@@ -15,7 +15,7 @@
 
 #include "CVideoSettings.h"
 #include "DisplaySettings.h"
-#include "VpadSettings.h"
+#include "OverlaySettings.h"
 #include "AudioSettings.h"
 #include "Options.h"
 #include "ControlSettings.h"
@@ -79,8 +79,8 @@ GameMenu( GsRect<float>(0.25f, 0.24f, 0.5f, 0.40f),
     }
 
 #ifdef VIRTUALPAD
-    mpMenuDialog->add(new GameButton( "Virtual Gamepad",
-                                             new OpenMenuEvent( new VPadSettingsMenu(style) ),
+    mpMenuDialog->add(new GameButton( "Overlay",
+                                             new OpenMenuEvent( new OverlaySettings(style) ),
                                              style ) );
 #endif
 

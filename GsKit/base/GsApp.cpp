@@ -126,6 +126,11 @@ bool GsApp::init(int argc, char *argv[])
     return true;
 }
 
+void GsApp::deinit()
+{
+    unloadDrivers();
+}
+
 
 void GsApp::pumpEvent(const CEvent *evPtr)
 {
@@ -193,6 +198,10 @@ bool GsApp::loadDrivers()
 	return true;
 }
 
+void GsApp::unloadDrivers()
+{
+    gVideoDriver.stop();
+}
 
 
 ////

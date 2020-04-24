@@ -1,11 +1,12 @@
 # CMake file for development of Commander Genius (taken from OLX)
 # This CMake file is used under Linux normally. 
-
+    
 cmake_minimum_required(VERSION 3.5)
 
 Project(GsKit)
-
+    
 OPTION(USE_SDL2 "SDL2 support" Yes)
+
 
 if(SDL2)
     OPTION(USE_OPENGL "OpenGL support" No)
@@ -24,12 +25,19 @@ if(CMAKE_SYSTEM_NAME MATCHES "Emscripten")
   set(CMAKE_CXX_FLAGS_INIT "-s WASM=1 -s USE_SDL=2 -s USE_SDL_IMAGE=2 -s SDL2_IMAGE_FORMATS='[\"png\"]'")
   set(CMAKE_EXE_LINKER_FLAGS_INIT "-s WASM=1 -s USE_SDL=2 -s USE_SDL_IMAGE=2 -s SDL2_IMAGE_FORMATS='[\"png\"]'")
 
+  option(USE_PYTHON3 "Use Python3 scripts" no)
 
-option(USE_PYTHON3 "Use Python3 scripts" no)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS_INIT}")
+  set(CMAKE_EXE_LINKER "${CMAKE_EXE_LINKER_FLAGS_INIT} -s EXTRA_EXPORTED_RUNTIME_METHODS='[\"ccall\", \"cwrap\"]'")
 
-option(USE_SDL_TTF "Use true type fonts" yes)
+  option(USE_SDL_TTF "Use true type fonts" yes)
 
-add_library(GsKit STATIC ${ALL_SRCS_GSKIT_BASE})        
+  add_library(GsKit STATIC ${ALL_SRCS_GSKIT_BASE})        
+  # From this point files are globbed for compilation and project setup
+  file(GLOB_RECURSE ALL_SRCS_GSKIT_BASE *.c* *.h*)
+  INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})          
+  add_library(GsKit STATIC ${ALL_SRCS_GSKIT_BASE})        
+
 
 else()
     
@@ -46,7 +54,7 @@ else()
     endif(USE_VIRTUALPAD)
     
     option(USE_PYTHON3 "Use Python3 scripts" no)
-        
+
     set (CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${CMAKE_CURRENT_SOURCE_DIR}/CMake")
     
     set(CMAKE_CXX_STANDARD 14)
@@ -93,7 +101,6 @@ else()
     
             include_directories(${SDL2_INCLUDE_DIR})
             include_directories(${SDL2_NET_INCLUDE_DIRS})
-
             include_directories(${SDL2_IMAGE_INCLUDE_DIRS})
             include_directories(${SDL2_TTF_INCLUDE_DIRS})
             #include_directories(${SDL2_NET_INCLUDE_DIRS})        
@@ -154,6 +161,8 @@ else()
         ADD_DEFINITIONS(-DUSE_OPENGL)
     ENDIF (USE_OPENGL)
     
+    file(GLOB_RECURSE ALL_SRCS_GSKIT_BASE *.c* *.h*)
+    INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
     add_library(GsKit STATIC ${ALL_SRCS_GSKIT_BASE})
     
     # The naming with the new Find cmake files related
@@ -174,61 +183,3 @@ else()
 
 ENDIF()
 
-
-
-
-
-# From this point files are globbed for compilation and project setup
-file(GLOB_RECURSE ALL_SRCS_GSKIT_BASE *.c* *.h*)
-INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
-
-
-if(USE_SDL2)
-
-    find_package(SDL2 REQUIRED)
-
-    if(SDL2_FOUND)
-        find_package(SDL2_image REQUIRED)
-        find_package(SDL2_ttf REQUIRED)
-
-        message(STATUS "Using shared SDL Version 2 for ${PROJECT_NAME}")
-        include_directories(${SDL2_INCLUDE_DIRS})
-        include_directories(${SDL2_TTF_INCLUDE_DIRS})
-        include_directories(${SDL2_IMAGE_INCLUDE_DIRS})
-
-    endif(SDL2_FOUND)
-endif()
-
-
-IF(USE_OPENGL)
-    # OpenGL Parsing
-    set(OpenGL_GL_PREFERENCE GLVND)
-    find_package(OpenGL REQUIRED)    
-
-    ADD_DEFINITIONS(-DGL)
-    ADD_DEFINITIONS(-DUSE_OPENGL)
-ENDIF (USE_OPENGL)
-
-add_library(GsKit STATIC ${ALL_SRCS_GSKIT_BASE})
-
-# The naming with the new Find cmake files related
-# to SDL is not always consistent. Some use the "2" as var name others not.
-if(USE_SDL2)
-    Target_link_libraries(GsKit ${SDL2_LIBRARIES})
-    Target_link_libraries(GsKit ${SDL2_LIBRARY})
-    Target_link_libraries(GsKit ${SDL2IMAGE_LIBRARIES})
-    Target_link_libraries(GsKit ${SDLIMAGE_LIBRARY})
-    Target_link_libraries(GsKit ${SDL2_TTF_LIBRARY})
-else()
-    Target_link_libraries(GsKit ${SDL_LIBRARY})
-    Target_link_libraries(GsKit ${SDL_LIBRARIES})
-    Target_link_libraries(GsKit ${SDL_IMAGE_LIBRARY})
-endif()
-
-
-IF(USE_OPENGL)
-    # OpenGL stuff to link
-    target_link_libraries(GsKit ${OPENGL_LIBRARIES})
-ENDIF(USE_OPENGL)
-
-#cotire(GsKit)

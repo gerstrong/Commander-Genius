@@ -53,7 +53,7 @@ void GsFrame::processRender(const GsRect<float> &rectDispCoordFloat)
 
     for(auto &obj : wList)
     {
-        obj->processRender(rectDispCoordFloat);
+        obj->processRender(displayRect);
     }
 
 }

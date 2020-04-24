@@ -1669,9 +1669,9 @@ void CInput::flushEvents()
 
 #define KSHOWHIDECTRLS	(-10)
 
-//#if defined(MOUSEWRAPPER)
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 
+#if defined(MOUSEWRAPPER)
 #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
 static const int w = 480, h = 320;
 static TouchButton* getPhoneButtons(stInputCommand InputCommand[NUM_INPUTS][MAX_COMMANDS]) {
@@ -1699,6 +1699,7 @@ static TouchButton* getPhoneButtons(stInputCommand InputCommand[NUM_INPUTS][MAX_
 
 	return phoneButtons;
 }
+#endif
 #endif
 
 
@@ -1798,7 +1799,6 @@ void CInput::processMouse(SDL_Event& ev) {
 			processMouse(x, y, true, ev.tfinger.fingerId);
 			break;
 	}
-//#endif
 }
 
 void CInput::processMouse(int x, int y, bool down, int mouseindex)

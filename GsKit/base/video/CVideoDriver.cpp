@@ -346,6 +346,9 @@ std::set<std::string> CVideoDriver::getAspectStrSet()
 void CVideoDriver::setVidConfig(const CVidConfig& VidConf)
 {
     mVidConfig = VidConf;
+
+    SDL_ShowCursor(mVidConfig.mShowCursor ? SDL_ENABLE : SDL_DISABLE);
+
     setMode(mVidConfig.mDisplayRect);
 }
 
@@ -415,10 +418,6 @@ bool CVideoDriver::start()
     SDL_WM_SetCaption(caption.c_str(), caption.c_str());
 #endif
 
-#ifndef WIN32
-	atexit(SDL_Quit);
-#endif	
-
 	gLogging.textOut("Starting graphics driver...<br>");	
 
 #ifdef USE_OPENGL	
@@ -464,12 +463,22 @@ bool CVideoDriver::start()
 	return retval;
 }
 
+void CVideoDriver::stop()
+{
+    if(mpVideoEngine)
+    {
+        mpVideoEngine = nullptr;
+        SDL_Quit();
+    }
+}
+
 void CVideoDriver::setFilter(const VidFilter value)
 {
     mVidConfig.m_ScaleXFilter = value;
 } // 1 means no filter
 
-void CVideoDriver::setZoom(short value) {
+void CVideoDriver::setZoom(short value)
+{
     mVidConfig.Zoom = value;
 }
 

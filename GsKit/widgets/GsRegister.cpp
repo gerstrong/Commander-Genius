@@ -69,25 +69,21 @@ void GsRegister::processRender(const GsRect<float> &rectDispCoordFloat)
     auto pageFrontRect = frontRect;
     auto pageBackRect = frontRect;
 
-    const auto paneSize = 0.2f;
-
-    pageBackRect.pos.x  += paneSize * frontRect.dim.x;
-    pageBackRect.dim.x -= paneSize * frontRect.dim.x;
-
-
     if(mpActivePage)
     {
         mpActivePage->processRender(pageBackRect,
                                     pageFrontRect);
     }
 
-
     auto leftPaneRect = frontRect;
 
-    leftPaneRect.dim.x = paneSize * frontRect.dim.x;
+    leftPaneRect.dim.x = mPaneSize * frontRect.dim.x;
 
-    mpMenu->processRender(leftPaneRect,
-                          leftPaneRect);
+    if(mpMenu)
+    {
+        mpMenu->processRender(leftPaneRect,
+                              leftPaneRect);
+    }
 }
 
 void GsRegister::processRender(const GsRect<float> &srcRectFloat,

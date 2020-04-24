@@ -42,7 +42,10 @@ public:
     ~GsApp();
 	
 	bool init(int argc, char *argv[]);
+    void deinit();
+
     bool loadDrivers();
+    void unloadDrivers();
 
     void setEngine(GsEngine *engPtr);
 	

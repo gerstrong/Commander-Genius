@@ -58,6 +58,7 @@ public:
 
     bool setNativeResolution(const GsRect<Uint16> &dispRect);
 
+    void stop();
 	bool start();
 	void isFullscreen(bool value);
 
