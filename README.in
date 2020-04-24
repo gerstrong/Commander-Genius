@@ -277,7 +277,6 @@ Curl and Zlib, so you can fully use the Game store CG provides.
 
 How to compile it under Ubuntu:
  * Install through Synaptic or "sudo apt install" the following packages:
-   Common dependencies:
         - build-essential
         - libgl1-mesa-dev
         - libcurl4-openssl-dev

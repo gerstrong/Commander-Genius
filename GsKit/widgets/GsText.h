@@ -20,9 +20,7 @@
 //#include <graphics/GsTexture.h>
 #include <graphics/GsSurface.h>
 
-#if defined(USE_SDL_TTF)
 #include <graphics/GsTrueTypeFont.h>
-#endif
 
 
 class CGUIText : public GsWidget
@@ -84,10 +82,7 @@ private:
     float mScrollPos = 0.0f;
     float mScrollVel = 0.3f;
 
-
-#if defined(USE_SDL_TTF)
     GsTrueTypeFont mTrueTypeFont;
-#endif
 
     std::string mText;
     int mFontSize = 0;

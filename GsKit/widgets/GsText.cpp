@@ -111,7 +111,6 @@ void CGUIText::processLogic()
 
 void CGUIText::updateTTFTextSfc(const GsRect<float> &displayRect)
 {
-#if defined(USE_SDL_TTF)
     const int reqFontSize = int(displayRect.dim.y*0.75f);
 
     auto &textSfcVec = mTextSfcVecByColor[mTextColor];
@@ -124,7 +123,7 @@ void CGUIText::updateTTFTextSfc(const GsRect<float> &displayRect)
 
     if(needUpdate)
     {
-        mFontSize = reqFontSize;                
+        mFontSize = reqFontSize;
 
         mTrueTypeFont.openFromMem(gCgTtf, reqFontSize);
 
@@ -138,7 +137,6 @@ void CGUIText::updateTTFTextSfc(const GsRect<float> &displayRect)
 
         mTextChanged = false;
     }
-#endif
 }
 
 void CGUIText::updateLegacyTextSfc(const GsRect<float> &displayRect)
@@ -238,11 +236,7 @@ void CGUIText::processRender(const GsRect<float> &backRect,
 
     if(mFontId < 0)
     {        
-#if defined(USE_SDL_TTF)        
         updateTTFTextSfc(objBackRect);
-#else
-        updateLegacyTextSfc(objBackRect);
-#endif
     }
     else
     {

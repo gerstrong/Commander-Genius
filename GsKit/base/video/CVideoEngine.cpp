@@ -200,6 +200,7 @@ bool CVideoEngine::createSurfaces(const GsRect<Uint16> &gamerect)
                     0x0000FF00,
                     0x000000FF,
                     0xFF000000);
+                    
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     SDL_SetSurfaceBlendMode(mGameSfc.getSDLSurface(), SDL_BLENDMODE_NONE);
@@ -241,9 +242,13 @@ bool CVideoEngine::createSurfaces(const GsRect<Uint16> &gamerect)
     else
     {
         mpScreenSfc = &mGameSfc;
-    }
+    }    
+
+// TODO: Does not work with emscripten yet.
+#if !__EMSCRIPTEN__
 
     initOverlaySurface(Uint16(blit->w), Uint16(blit->h));
+
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 
@@ -261,7 +266,7 @@ bool CVideoEngine::createSurfaces(const GsRect<Uint16> &gamerect)
                                    texW, texH) );
 
 #endif
-
+#endif
 
     return true;
 }

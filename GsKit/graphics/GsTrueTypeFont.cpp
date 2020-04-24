@@ -1,6 +1,4 @@
 
-#if defined(USE_SDL_TTF)
-
 #include "GsTrueTypeFont.h"
 #include <SDL_rwops.h>
 
@@ -92,5 +90,3 @@ void GsTrueTypeFont::close()
     mpFont = nullptr;
 
 }
-#endif
-

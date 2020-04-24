@@ -1,9 +1,7 @@
 #include "GsTTFSystem.h"
 #include <cstdio>
 
-#if defined(USE_SDL_TTF)
 #include <SDL_ttf.h>
-#endif
 
 
 GsTTFSystem::GsTTFSystem()
@@ -16,7 +14,6 @@ bool GsTTFSystem::init()
     //Loading success flag
     bool success = true;
 
-#if defined(USE_SDL_TTF)
     //Initialize SDL_ttf
     if( TTF_Init() == -1 )
     {
@@ -25,7 +22,6 @@ bool GsTTFSystem::init()
     }
 
     mActive = true;
-#endif
 
     return success;
 }
@@ -33,12 +29,10 @@ bool GsTTFSystem::init()
 void GsTTFSystem::cleanup()
 {
 
-#if defined(USE_SDL_TTF)
     if(mActive)
     {
         TTF_Quit();    
     }
-#endif
 
 }
 

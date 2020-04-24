@@ -23,6 +23,11 @@
 #include <base/CInput.h>
 #include <base/GsArguments.h>
 
+#if __EMSCRIPTEN__
+#include <emscripten/emscripten.h>
+#endif
+
+
 
 std::string getArgument( int argc, char *argv[], const std::string& text )
 {
@@ -232,9 +237,16 @@ void GsApp::setEngine(GsEngine *engPtr)
 }
 
 
-///////////////////////
+////////////////////////////
 // This is the main cycle //
-///////////////////////
+////////////////////////////
+
+
+void runMainCycleEmscriptenExtern()
+{
+    gApp.runMainCycleEmscripten();
+}
+
 /**
  * \brief  	This is the main run cycle of the game,
  * 		no matter what happens in the game logic or
@@ -250,7 +262,13 @@ void GsApp::runMainCycle()
         return ;
     }
 
+
     mpCurEngine->start();
+
+#if __EMSCRIPTEN__
+    emscripten_set_main_loop(runMainCycleEmscriptenExtern, -1, 1);        
+#else    
+
 
     float acc = 0.0f;
     float start = 0.0f;
@@ -382,7 +400,72 @@ void GsApp::runMainCycle()
             total_elapsed = 0.0f;
         }
     }
-
+#endif
 
     cleanup();
+}
+
+void GsApp::runMainCycleEmscripten()
+{
+
+    float acc = 0.0f;
+    float start = 0.0f;
+    float elapsed = 0.0f;
+    float total_elapsed = 0.0f;
+    float curr = 0.0f;
+    int counter = 0;
+
+
+    const float logicLatency = gTimer.LogicLatency();
+
+    const  bool vsyncEnabled = gVideoDriver.isVsync();
+
+        curr = timerTicks();
+
+        if(gTimer.resetLogicSignal())
+            start = curr;        
+        
+        {
+            start = timerTicks();
+
+            // Game cycle
+            {                            
+                // Poll Inputs
+                gInput.pollEvents();
+
+                // Process App Events
+                gEventManager.processSinks();
+
+                // Ponder Game Control
+                ponder(logicLatency);
+            }
+
+            // Now we render the whole GameControl Object to the blit surface
+            //render();
+
+            // Apply graphical effects if any.
+            //gEffectController.render();
+
+            // Pass all the surfaces to one. Some special surfaces are used and are collected here
+            //gVideoDriver.collectSurfaces();
+
+            // Now you really render the screen
+            // When enabled, it also applies Filters
+            gVideoDriver.updateDisplay();
+
+            elapsed = timerTicks() - start;
+            total_elapsed += elapsed;
+
+            if( mustShutdown() )
+                return;
+        }    
+
+        // This will refresh the fps display, so it stays readable and calculates an average value.
+        counter++;
+        if(counter >= 100)
+        {
+            counter = 0;
+            gTimer.setTimeforLastLoop(total_elapsed/100.0f);
+            total_elapsed = 0.0f;
+        }    
 }

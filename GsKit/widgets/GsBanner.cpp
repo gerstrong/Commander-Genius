@@ -66,8 +66,6 @@ void CGUIBanner::processRender(const GsRect<float> &RectDispCoordFloat)
     GsRect<float> displayRect = getRect();
     displayRect.transform(RectDispCoordFloat);
 
-#if defined(USE_SDL_TTF)
-
     updateTTFTextSfc(displayRect);
 
     auto &blit = gVideoDriver.gameSfc();
@@ -124,23 +122,5 @@ void CGUIBanner::processRender(const GsRect<float> &RectDispCoordFloat)
         totTextSfcH += textH;
     }
 */
-#else
-    SDL_Rect lRect = displayRect.SDLRect();
 
-    // Now lets draw the text of the list control
-
-    GsFontLegacy &Font = gGraphics.getFontLegacy(getFontId());
-
-    /*
-    if(mTransition)
-    {
-        Font.drawFontCenteredAlpha(gVideoDriver.getBlitSurface(), *prevTextIt, lRect.x, lRect.w, lRect.y, 255-alpha);
-        Font.drawFontCenteredAlpha(gVideoDriver.getBlitSurface(), *curTextIt, lRect.x, lRect.w, lRect.y, alpha);
-    }
-    else
-    {
-        Font.drawFontCentered(gVideoDriver.getBlitSurface(), *curTextIt, lRect.x, lRect.w, lRect.y, false);
-    }
-*/
-#endif
 }

@@ -66,13 +66,22 @@ bool CSDLVideo::init()
 					"%s ...<br>", 
 					gApp.getName().c_str());					
 	
+#if __EMSCRIPTEN__
+    window = SDL_CreateWindow(gApp.getName().c_str(),
+                              SDL_WINDOWPOS_UNDEFINED, 
+                              SDL_WINDOWPOS_UNDEFINED,
+                              m_VidConfig.mDisplayRect.dim.x, 
+                              m_VidConfig.mDisplayRect.dim.y,
+                              SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL);
+#else
     window = SDL_CreateWindow(gApp.getName().c_str(),
                               SDL_WINDOWPOS_CENTERED,
                               SDL_WINDOWPOS_CENTERED,
                               m_VidConfig.mDisplayRect.dim.x,
                               m_VidConfig.mDisplayRect.dim.y,
-                              flags);							 
-		
+                              flags);
+#endif    
+
 	if(!window)
 	{
 		gLogging.textOut(FONTCOLORS::RED,"SDL_CreateWindow(): %s<br>", SDL_GetError());		
@@ -91,7 +100,11 @@ bool CSDLVideo::init()
         rendererFlags |= SDL_RENDERER_PRESENTVSYNC;
     }					
 		
+#if __EMSCRIPTEN__        
     renderer = SDL_CreateRenderer(window, -1, rendererFlags);		
+#else
+    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+#endif
 		
 	if(!renderer)
 	{
@@ -102,6 +115,7 @@ bool CSDLVideo::init()
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
     SDL_RenderPresent(renderer);
+
 	
     const int aspW = m_VidConfig.mAspectCorrection.dim.x;
     const int aspH = m_VidConfig.mAspectCorrection.dim.y;
@@ -161,6 +175,9 @@ bool CSDLVideo::initOverlaySurface(const Uint16 width,
 
     mOverlaySurface.create(m_Mode, width, height, RES_BPP,
                            0,0,0,0);
+
+
+
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     mOverlaySurface.setBlendMode(SDL_BLENDMODE_BLEND);
 #endif
@@ -237,9 +254,10 @@ GsRect<int> tilt(const GsRect<int> &dpadRect,
 void CSDLVideo::transformScreenToDisplay()
 {
 
-#if SDL_VERSION_ATLEAST(2, 0, 0)            
+#if SDL_VERSION_ATLEAST(2, 0, 0) 
 
     const bool tiltVideo = m_VidConfig.mTiltedScreen;
+
 
     mpScreenSfc->lock();
     SDL_UpdateTexture(mpMainScreenTexture.get(),
@@ -313,6 +331,7 @@ void CSDLVideo::transformScreenToDisplay()
         }
     };
 
+
     SDL_RenderClear(renderer);    
 
 
@@ -377,8 +396,28 @@ void CSDLVideo::transformScreenToDisplay()
         mRenderTexturePtrs.pop();
     }
 
+   #if __EMSCRIPTEN__
+
+    SDL_Rect r_scr;
+    r_scr.x = 0;
+    r_scr.y = 0;
+    r_scr.w = 200;
+    r_scr.h = 100;
+    //SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF );
+    //SDL_RenderClear(renderer);
+
+    SDL_SetRenderDrawColor(renderer, 0xff, 0xff, 0x00, 0x00);
+    SDL_RenderDrawRect(renderer, &r_scr);
     SDL_RenderPresent(renderer);
 
+    SDL_UpdateWindowSurface(window);
+
+   #else
+
+
+    SDL_RenderPresent(renderer);
+  
+  #endif
 
 #else
 
@@ -389,5 +428,6 @@ void CSDLVideo::transformScreenToDisplay()
     mDisplaySfc.flip();
 
 #endif
+
 
 }

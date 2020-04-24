@@ -21,11 +21,6 @@
 #include <map>
 #include <memory>
 
-#if defined(USE_SDL_TTF)
-#include <graphics/GsTrueTypeFont.h>
-#endif
-
-
 
 class CGUITextSelectionList : public GsScrollingFrame
 {

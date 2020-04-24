@@ -99,6 +99,7 @@ if(USE_SDL2)
 
       find_package(SDL2 REQUIRED)
       find_package(SDL2_image REQUIRED)
+      find_package(SDL2_ttf REQUIRED)
 
     if(SDL2_FOUND)
         message(STATUS "Using shared SDL Version 2 for Commander Genius")
@@ -111,6 +112,7 @@ else(USE_SDL2)
         # SDL2 not found, try to use SDL1.2
         FIND_PACKAGE( SDL REQUIRED )
         FIND_PACKAGE( SDL_image REQUIRED )
+        find_package( SDL_ttf REQUIRED)
 
         if(NOT ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
                 include(FindSDL OPTIONAL)

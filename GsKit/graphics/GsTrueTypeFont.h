@@ -1,11 +1,12 @@
 #ifndef GSTRUETYPEFONT_H
 #define GSTRUETYPEFONT_H
 
-#include <SDL_ttf.h>
 #include <string>
 #include <vector>
 #include <base/utils/Color.h>
 #include <graphics/GsSurface.h>
+
+#include <SDL_ttf.h>
 
 class GsTrueTypeFont
 {

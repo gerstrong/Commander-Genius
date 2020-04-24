@@ -47,6 +47,7 @@ public:
     void setEngine(GsEngine *engPtr);
 	
     void runMainCycle();
+    void runMainCycleEmscripten();
 	void cleanup();
 
     void pollEvents();
