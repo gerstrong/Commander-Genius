@@ -30,8 +30,6 @@ GameMenu(GsRect<float>(0.15f, 0.20f, 0.65f, 0.55f), style )
 {
 
 
-    mpShowCursorSwitch =
-            mpMenuDialog->add( new Switch("Cursor", style) );
 
     mpTiltScreenSwitch =
             mpMenuDialog->add( new Switch("TiltedScr", style) );
@@ -86,7 +84,6 @@ void CVideoSettings::refresh()
     mpFPSSelection->setSelection( iFPS );
     mpFrameSkip->enable( (iFPS> 0.0) ? true : false );
 
-    mpShowCursorSwitch->enable( mUsersConf.mShowCursor );
     mpTiltScreenSwitch->enable( mUsersConf.mTiltedScreen );
 
     // TODO: find a way to indicate a color
@@ -110,7 +107,6 @@ void CVideoSettings::refresh()
 void CVideoSettings::release()
 {
 	// Save up the changed stuff
-    mUsersConf.mShowCursor = mpShowCursorSwitch->isEnabled();
     mUsersConf.mTiltedScreen = mpTiltScreenSwitch->isEnabled();
 
     const auto fpsf = float(mpFPSSelection->getSelection());

@@ -429,8 +429,7 @@ bool CGameLauncher::start()
     // CRC init when Launcher starts.
     crc32_init();
 
-    // Here it always makes sense to have the mouse cursor active
-    SDL_ShowCursor(SDL_ENABLE);
+    SDL_ShowCursor(gVideoDriver.getVidConfig().mShowCursor ? SDL_ENABLE : SDL_DISABLE);
 
     // Set the native resolution
     gVideoDriver.setNativeResolution(gVideoDriver.getVidConfig().mDisplayRect);

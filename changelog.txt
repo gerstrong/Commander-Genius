@@ -1,4 +1,9 @@
-v2.4.0:
+v2.4.2:
+-------
+- SDL_Cursor now show work as intended
+
+
+v2.4.1:
 -------
 - Added achievements feature. Special thanks to XRackProject for her assets
 

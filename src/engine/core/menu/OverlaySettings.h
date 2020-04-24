@@ -21,10 +21,10 @@
 
 
 
-class VPadSettingsMenu : public GameMenu
+class OverlaySettings : public GameMenu
 {
 public:
-    VPadSettingsMenu(const Style &style);
+    OverlaySettings(const Style &style);
 
     void init();
 
@@ -38,14 +38,15 @@ private:
 
     CVidConfig mUsersConf;
 
+    std::shared_ptr<Switch>         mpShowCursorSwitch;
+
+
 #ifdef VIRTUALPAD
     Switch			*mpVPadSwitch  = nullptr;
 #endif
 
 
     std::shared_ptr<NumberControl>	mpVPadSize;
-
-    std::list<std::string> mButtonSizes = { "large", "medium", "small" };
 };
 
 

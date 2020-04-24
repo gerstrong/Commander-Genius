@@ -346,6 +346,9 @@ std::set<std::string> CVideoDriver::getAspectStrSet()
 void CVideoDriver::setVidConfig(const CVidConfig& VidConf)
 {
     mVidConfig = VidConf;
+
+    SDL_ShowCursor(mVidConfig.mShowCursor ? SDL_ENABLE : SDL_DISABLE);
+
     setMode(mVidConfig.mDisplayRect);
 }
 

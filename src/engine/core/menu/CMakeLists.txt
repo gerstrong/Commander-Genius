@@ -39,8 +39,8 @@ set(SRCS
     SelectionMenu.h
     SettingsMenu.cpp
     SettingsMenu.h
-    VpadSettings.cpp
-    VpadSettings.h
+    OverlaySettings.cpp
+    OverlaySettings.h
     CameraSettings.h
     CameraSettings.cpp
 )

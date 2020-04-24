@@ -5,7 +5,7 @@
  *      Author: gerstrong
  */
 
-#include "VpadSettings.h"
+#include "OverlaySettings.h"
 #include <base/utils/StringUtils.h>
 #include <base/CInput.h>
 #include <base/video/CVideoDriver.h>
@@ -15,12 +15,15 @@
 #include "engine/core/VGamepads/vgamepadsimple.h"
 
 
-VPadSettingsMenu::VPadSettingsMenu(const Style &style) :
+OverlaySettings::OverlaySettings(const Style &style) :
 GameMenu(GsRect<float>(0.075f, 0.24f, 0.85f, 0.4f), style )
 {    
     setMenuLabel("KEYBMENULABEL");
 
     mUsersConf = gVideoDriver.getVidConfig();
+
+    mpShowCursorSwitch =
+            mpMenuDialog->add( new Switch("Cursor", style) );
 
     mpVPadSwitch  = new Switch( "VirtPad", style );
     mpMenuDialog->add( mpVPadSwitch );
@@ -37,16 +40,19 @@ GameMenu(GsRect<float>(0.075f, 0.24f, 0.85f, 0.4f), style )
 }
 
 
-void VPadSettingsMenu::refresh()
+void OverlaySettings::refresh()
 {
     mUsersConf = gVideoDriver.getVidConfig();
+
+    mpShowCursorSwitch->enable( mUsersConf.mShowCursor );
+
 
     mpVPadSwitch->enable(mUsersConf.mVPad);
     mpVPadSize->setSelection(mUsersConf.mVPadSize);
 }
 
 
-void VPadSettingsMenu::ponder(const float /*deltaT*/)
+void OverlaySettings::ponder(const float /*deltaT*/)
 {
     GameMenu::ponder(0);
 
@@ -57,9 +63,11 @@ void VPadSettingsMenu::ponder(const float /*deltaT*/)
 }
 
 
-void VPadSettingsMenu::release()
-{
+void OverlaySettings::release()
+{           
     mUsersConf = gVideoDriver.getVidConfig();
+
+    mUsersConf.mShowCursor = mpShowCursorSwitch->isEnabled();
 
     gVideoDriver.setVidConfig(mUsersConf);
 
