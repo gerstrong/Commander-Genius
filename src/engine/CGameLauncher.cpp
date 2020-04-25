@@ -57,7 +57,7 @@ mGameScanner()
     gMenuController.clearMenuStack();
     letchooseagain();
 
-#ifdef VIRTUALPAD
+#ifdef USE_VIRTUALPAD
     gInput.mpVirtPad.reset(new VirtualKeenControl);
 
     if( !gInput.mpVirtPad->init() )
@@ -656,7 +656,7 @@ void CGameLauncher::pumpEvent(const CEvent *evPtr)
         mpDloadProgressCtrl->setUserAbort(true);
     }
 /*
-#ifdef VIRTUALPAD
+#ifdef USE_VIRTUALPAD
     else if( dynamic_cast<const OpenVGamePadSettingsEvent*>(evPtr) )
     {
         gInput.setInVPadConfigState(true);

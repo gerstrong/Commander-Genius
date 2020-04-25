@@ -1,5 +1,5 @@
 
-#if defined(VIRTUALPAD)
+#if defined(USE_VIRTUALPAD)
 
 #include "vgamepadsimple.h"
 

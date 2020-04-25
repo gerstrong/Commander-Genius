@@ -41,12 +41,10 @@ private:
     std::shared_ptr<Switch>         mpShowCursorSwitch;
 
 
-#ifdef VIRTUALPAD
+#ifdef USE_VIRTUALPAD
     Switch			*mpVPadSwitch  = nullptr;
-#endif
-
-
     std::shared_ptr<NumberControl>	mpVPadSize;
+#endif
 };
 
 

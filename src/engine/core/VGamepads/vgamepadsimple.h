@@ -1,4 +1,4 @@
-#if defined(VIRTUALPAD)
+#if defined(USE_VIRTUALPAD)
 
 #ifndef VGAMEPADSIMPLE_H
 #define VGAMEPADSIMPLE_H

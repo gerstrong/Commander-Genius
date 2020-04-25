@@ -461,7 +461,7 @@ void CPlayerWM::processMoving()
     if(object) // if we found an object
     {
 
-#ifdef VIRTUALPAD
+#ifdef USE_VIRTUALPAD
         if( gVideoDriver.VGamePadEnabled() )
         {
             VirtualKeenControl *vkc = dynamic_cast<VirtualKeenControl*>(gInput.mpVirtPad.get());
@@ -493,7 +493,7 @@ void CPlayerWM::processMoving()
     }
     else
     {
-#ifdef VIRTUALPAD
+#ifdef USE_VIRTUALPAD
 #if SDL_VERSION_ATLEAST(2, 0, 0)
         if( gVideoDriver.VGamePadEnabled() )
         {

@@ -16,7 +16,7 @@
 
 void CPlayGameVorticon::processInLevel()
 {
-#ifdef VIRTUALPAD
+#ifdef USE_VIRTUALPAD
     if( gVideoDriver.VGamePadEnabled() )
     {
         VirtualKeenControl *vkc = dynamic_cast<VirtualKeenControl*>(gInput.mpVirtPad.get());

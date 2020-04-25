@@ -99,7 +99,7 @@ bool CLevelPlay::loadLevel(const int sprVar, const Uint16 level)
 
 void CLevelPlay::ponder(const float deltaT)
 {    
-#ifdef VIRTUALPAD
+#ifdef USE_VIRTUALPAD
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     if( gVideoDriver.VGamePadEnabled() )
     {

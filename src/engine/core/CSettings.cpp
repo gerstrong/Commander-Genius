@@ -58,7 +58,7 @@ bool CSettings::saveDrvCfg()
         CVidConfig &VidConf = gVideoDriver.getVidConfig();
         Configuration.SetKeyword("Video", "fullscreen", VidConf.mFullscreen);
         Configuration.SetKeyword("Video", "OpenGL", VidConf.mOpengl);
-#ifdef VIRTUALPAD
+#ifdef USE_VIRTUALPAD
         Configuration.SetKeyword("Video", "VirtPad", VidConf.mVPad);
         Configuration.WriteInt("Video", "VirtPadSize", VidConf.mVPadSize);
 #endif
@@ -216,7 +216,7 @@ bool CSettings::loadDrvCfg()
                 CVidConfig::RenderQuality::LINEAR :
                 CVidConfig::RenderQuality::NEAREST;
 
-#ifdef VIRTUALPAD
+#ifdef USE_VIRTUALPAD
     config.ReadKeyword("Video", "VirtPad", &vidConf.mVPad, vidConf.mVPad);
     config.ReadInteger("Video", "VirtPadSize", &vidConf.mVPadSize, vidConf.mVPadSize);
 #endif

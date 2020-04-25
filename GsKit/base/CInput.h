@@ -301,7 +301,7 @@ public:
      */
     void pushBackButtonEventExtEng();
 
-#ifdef VIRTUALPAD
+#ifdef USE_VIRTUALPAD
     // One virtual input overlay can be active be processed. This is useful for game to ported on mobile devices
     std::unique_ptr<GsVirtualInput> mpVirtPad;
 

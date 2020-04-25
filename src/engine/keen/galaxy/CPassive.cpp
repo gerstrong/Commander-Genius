@@ -118,7 +118,7 @@ bool CPassiveGalaxy::init()
     SDL_FillRect( blit, nullptr, SDL_MapRGB(blit->format,0,0,0));
     gInput.flushAll();
 
-#ifdef VIRTUALPAD
+#ifdef USE_VIRTUALPAD
     gInput.mpVirtPad.reset(new VirtualKeenControl);
     gInput.mpVirtPad->init();
 
@@ -374,7 +374,7 @@ void CPassiveGalaxy::processTitle()
 		{
             gInput.flushAll();
 
-#ifdef VIRTUALPAD
+#ifdef USE_VIRTUALPAD
 #if SDL_VERSION_ATLEAST(2, 0, 0)
             VirtualKeenControl *vkc = dynamic_cast<VirtualKeenControl*>(gInput.mpVirtPad.get());
             assert(vkc);
@@ -481,7 +481,7 @@ void CPassiveGalaxy::processStarWars()
         {
             gInput.flushAll();
 
-#ifdef VIRTUALPAD
+#ifdef USE_VIRTUALPAD
 #if SDL_VERSION_ATLEAST(2, 0, 0)
             VirtualKeenControl *vkc = dynamic_cast<VirtualKeenControl*>(gInput.mpVirtPad.get());
             assert(vkc);

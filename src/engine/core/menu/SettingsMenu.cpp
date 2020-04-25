@@ -78,12 +78,9 @@ GameMenu( GsRect<float>(0.25f, 0.24f, 0.5f, 0.40f),
 
     }
 
-#ifdef VIRTUALPAD
     mpMenuDialog->add(new GameButton( "Overlay",
                                              new OpenMenuEvent( new OverlaySettings(style) ),
                                              style ) );
-#endif
-
 
     if(style != Style::NONE)
     {

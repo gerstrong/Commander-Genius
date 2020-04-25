@@ -64,7 +64,7 @@ bool CPassiveVort::init()
 		return false;
     }
 
-#ifdef VIRTUALPAD
+#ifdef USE_VIRTUALPAD
     gInput.mpVirtPad.reset(new VirtualKeenControl);
     gInput.mpVirtPad->init();
 #endif

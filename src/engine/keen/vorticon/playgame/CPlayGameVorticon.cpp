@@ -281,7 +281,7 @@ void CPlayGameVorticon::pumpEvent(const CEvent *evPtr)
 ////
 void CPlayGameVorticon::ponder(const float deltaT)
 {
-#ifdef VIRTUALPAD
+#ifdef USE_VIRTUALPAD
     VirtualKeenControl *vkc = dynamic_cast<VirtualKeenControl*>(gInput.mpVirtPad.get());
 
     if(!vkc)

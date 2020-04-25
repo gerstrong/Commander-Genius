@@ -9,10 +9,10 @@
 #include <base/utils/FindFile.h>
 #include <base/video/CVideoDriver.h>
 #include <base/video/scaler/CScaler.h>
-#include "GsFont.xpm"
-#include "GsFont2x.xpm"
-#include "GsFont4x.xpm"
-#include "GsFont8x.xpm"
+//#include "GsFont.xpm"
+//#include "GsFont2x.xpm"
+//#include "GsFont4x.xpm"
+//#include "GsFont8x.xpm"
 //#include "AlternateFont.xpm"
 #include <string.h>
 #include <cstdlib>

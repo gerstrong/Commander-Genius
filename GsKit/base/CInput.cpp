@@ -337,7 +337,7 @@ std::string CInput::getEventShortName(int command, unsigned char input)
 
 void CInput::render()
 {
-#ifdef VIRTUALPAD
+#ifdef USE_VIRTUALPAD
     if(!gVideoDriver.VGamePadEnabled())
         return;
 
@@ -655,7 +655,7 @@ void CInput::transMouseRelCoord(GsVec2D<float> &Pos,
 
 void CInput::ponder()
 {
-#ifdef VIRTUALPAD
+#ifdef USE_VIRTUALPAD
     if(!mpVirtPad)
         return;
 
@@ -670,7 +670,7 @@ void CInput::ponder()
 
 void CInput::flushFingerEvents()
 {
-#ifdef VIRTUALPAD
+#ifdef USE_VIRTUALPAD
     if(!mpVirtPad)
         return;
 
@@ -684,7 +684,7 @@ void CInput::pollEvents()
     // Semaphore
     SDL_SemWait( mpPollSem );
 
-#ifdef VIRTUALPAD
+#ifdef USE_VIRTUALPAD
     if(mpVirtPad && mVPadConfigState)
     {
         mpVirtPad->processConfig();
@@ -764,7 +764,7 @@ void CInput::pollEvents()
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 		case SDL_FINGERDOWN:
         {
-#ifdef VIRTUALPAD
+#ifdef USE_VIRTUALPAD
             // If Virtual gamepad takes control...
             if(gVideoDriver.VGamePadEnabled() && mpVirtPad &&
                mpVirtPad->active() )
@@ -796,7 +796,7 @@ void CInput::pollEvents()
 
         case SDL_FINGERUP:
 
-#ifdef VIRTUALPAD
+#ifdef USE_VIRTUALPAD
             if(gVideoDriver.VGamePadEnabled() && mpVirtPad &&
                mpVirtPad->active())
             {
@@ -834,7 +834,7 @@ void CInput::pollEvents()
                                Event.tfinger.y*float(activeArea.dim.y));
 
             // If Virtual gamepad takes control...
-#ifdef VIRTUALPAD
+#ifdef USE_VIRTUALPAD
             if(gVideoDriver.VGamePadEnabled() && mpVirtPad &&
                mpVirtPad->active() )
             {
@@ -884,7 +884,7 @@ void CInput::pollEvents()
 
             if(Event.button.button <= 3)
             {
-#ifdef VIRTUALPAD
+#ifdef USE_VIRTUALPAD
                 // If Virtual gamepad takes control...
                 if(gVideoDriver.VGamePadEnabled() && mpVirtPad &&
                    mpVirtPad->active() )
@@ -914,7 +914,7 @@ void CInput::pollEvents()
 
 		case SDL_MOUSEBUTTONUP:
 
-#ifdef VIRTUALPAD
+#ifdef USE_VIRTUALPAD
             if(gVideoDriver.VGamePadEnabled() && mpVirtPad &&
                     mpVirtPad->active())
             {
@@ -953,7 +953,7 @@ void CInput::pollEvents()
             const GsVec2D<int> rotPt(Event.motion.x, Event.motion.y);
             transMouseRelCoord(Pos, Event.motion, activeArea, tiltedScreen);
 
-#ifdef VIRTUALPAD
+#ifdef USE_VIRTUALPAD
             if(gVideoDriver.VGamePadEnabled() && mpVirtPad &&
                     mpVirtPad->active())
             {
@@ -1150,10 +1150,10 @@ bool CInput::processKeys(int keydown)
     bool passSDLEventVec = true;
 
 	// Input for player commands
-    for(int j=0 ; j<mInputCommands.size() ; j++)
+    for( auto &input : mInputCommands )
     {
-        auto &input = mInputCommands[j];
-        for(int i=0 ; i<input.size() ; i++)
+        for(decltype(input.size()) i=0 ;
+            i<input.size() ; i++)
         {
             if(input[i].keysym == Event.key.keysym.sym &&
                     input[i].joyeventtype == ETYPE_KEYBOARD)

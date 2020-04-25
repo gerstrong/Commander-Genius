@@ -165,7 +165,7 @@ public:
       mVidConfig.mAspectCorrection.dim.y = h;
 	}
 
-#ifdef VIRTUALPAD
+#ifdef USE_VIRTUALPAD
     bool VGamePadEnabled() { return mVidConfig.mVPad;   }
 #endif
 

@@ -77,7 +77,7 @@ public:
 
 
 
-#ifdef VIRTUALPAD
+#ifdef USE_VIRTUALPAD
 #ifdef ANDROID
     bool mVPad = true;
 #else

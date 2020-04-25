@@ -8,7 +8,7 @@ Project(CommanderGenius)
 option(USE_VIRTUALPAD "Enable Onscreen Virtual Gamepad support " ON)
 
 if(USE_VIRTUALPAD)
-    ADD_DEFINITIONS(-DVIRTUALPAD)
+    ADD_DEFINITIONS(-DUSE_VIRTUALPAD)
 endif(USE_VIRTUALPAD)
 
 
