@@ -35,6 +35,8 @@ void compileBinIntoCharArray(const char *filename,
 int main()
 {
     compileBinIntoCharArray("dpad.png", "gDPadPng", "dpad.h");
+    compileBinIntoCharArray("up.png", "gUp", "up.h");
+    compileBinIntoCharArray("down.png", "gDown", "down.h");
     compileBinIntoCharArray("1.png","gButton1Png", "button1.h");
     compileBinIntoCharArray("2.png","gButton2Png", "button2.h");
     compileBinIntoCharArray("3.png","gButton3Png", "button3.h");
@@ -49,3 +51,4 @@ int main()
     compileBinIntoCharArray("Trophy_Sound.ogg","gTrophy_Sound", "Trophy_Sound.h");
     return 0;
 }
+

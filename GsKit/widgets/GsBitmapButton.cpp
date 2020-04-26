@@ -27,6 +27,22 @@ bool GsBitmapButton::loadBgBitmap(const std::string &filepath)
     return false;
 }
 
+bool GsBitmapButton::loadBgBitmapFromMem(const unsigned char *data,
+                                   const std::string &name,
+                                   const int size)
+{
+    mpBitmap.reset(new GsBitmap);
+    auto ok = mpBitmap->loadImgFromMem(data, name, size);
+
+    if(ok)
+        return true;
+
+    gLogging.ftextOut("Unable to load \"%s\"<br>", name.c_str());
+
+    mpBitmap = nullptr;
+    return false;
+}
+
 void GsBitmapButton::drawNoStyle(const SDL_Rect& lRect)
 {
     if(lRect.h == 0 || lRect.w == 0)

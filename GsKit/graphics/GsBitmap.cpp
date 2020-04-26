@@ -115,13 +115,22 @@ bool GsBitmap::loadImg(const std::string& filename)
         return false;
     }
 
-    //if(mBitmapSurface)
+    if (mBitmapSurface.loadImg(GetFullFileName(filename)))
     {
-        if (mBitmapSurface.loadImg(GetFullFileName(filename)))
-        {
-            mBitmapSurface.makeBlitCompatible();
-            return true;
-        }
+        mBitmapSurface.makeBlitCompatible();
+        return true;
+    }
+    return false;
+}
+
+bool GsBitmap::loadImgFromMem(const unsigned char *data,
+                              const std::string &name,
+                              const int size)
+{
+    if (mBitmapSurface.loadImgInternal(data, name, size))
+    {
+        mBitmapSurface.makeBlitCompatible();
+        return true;
     }
     return false;
 }

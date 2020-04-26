@@ -1,4 +1,6 @@
 #include "GsScrollbar.h"
+#include "up.h"
+#include "down.h"
 
 #include <base/video/CVideoDriver.h>
 #include <base/PointDevice.h>
@@ -9,9 +11,13 @@ GsScrollbar::GsScrollbar(const GsRect<float> &rect) :
 GsWidgetsManager(rect)
 {
     mpUpButton =
-            add(new GsButton("", GsRect<float>(0.0f, 0.0f, 1.0f, 0.1f)));
+            add(new GsBitmapButton("", GsRect<float>(0.0f, 0.0f, 1.0f, 0.1f)));
     mpDownButton =
-            add(new GsButton("", GsRect<float>(0.0f, 0.9f, 1.0f, 0.1f)));
+            add(new GsBitmapButton("", GsRect<float>(0.0f, 0.9f, 1.0f, 0.1f)));
+
+
+    mpUpButton->loadBgBitmapFromMem(gUp, "Up", sizeof(gUp));
+    mpDownButton->loadBgBitmapFromMem(gDown, "Down", sizeof(gDown));
 }
 
 void GsScrollbar::setScrollDownFn(const std::function <void ()> function)

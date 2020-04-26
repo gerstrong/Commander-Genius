@@ -25,6 +25,11 @@ public:
 
     bool loadBgBitmap(const std::string &filepath);
 
+
+    bool loadBgBitmapFromMem(const unsigned char *data,
+                             const std::string &name,
+                             const int size);
+
     void drawNoStyle(const SDL_Rect& lRect) override;
 
     void setAspectRatio(const bool keepAspect)

@@ -2,7 +2,7 @@
 #define GSSCROLLBAR_H
 
 #include "GsWidgetsManager.h"
-#include "GsButton.h"
+#include "GsBitmapButton.h"
 
 #include <functional>
 
@@ -33,8 +33,8 @@ private:
 
     GsColor mBackgroundColor;
 
-    std::shared_ptr<GsButton> mpUpButton;
-    std::shared_ptr<GsButton> mpDownButton;
+    std::shared_ptr<GsBitmapButton> mpUpButton;
+    std::shared_ptr<GsBitmapButton> mpDownButton;
 
     float mPosRel = 0.0f;
 };

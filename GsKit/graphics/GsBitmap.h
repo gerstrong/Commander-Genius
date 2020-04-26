@@ -45,6 +45,10 @@ public:
 
     bool loadImg(const std::string& filename);
 
+    bool loadImgFromMem(const unsigned char *data,
+                        const std::string &name,
+                        const int size);
+
 	bool loadHQBitmap( const std::string& filename );
 
     void exchangeColor( const Uint8 oldR, const Uint8 oldG, const Uint8 oldB,
