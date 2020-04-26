@@ -204,6 +204,11 @@ void GsBitmap::setColorKey(const Uint8 r, const Uint8 g, const Uint8 b)
     mBitmapSurface.setColorKey(colorkey);
 }
 
+bool GsBitmap::requiresScaling(const GsRect<Uint16> &destRes)
+{
+    return mBitmapSurface.requiresScaling(destRes);
+}
+
 bool GsBitmap::scaleTo(const GsRect<Uint16> &destRes)
 {
     CVidConfig &vidConf = gVideoDriver.getVidConfig();

@@ -40,10 +40,28 @@ void GsBitmapButton::drawNoStyle(const SDL_Rect& lRect)
 
     if(mpBitmap)
     {
-        const GsRect<Uint16> bmpRect = {0, 0,
-                                        rect.dim.x, rect.dim.y};
+        GsRect<Uint16> bmpRect = {0, 0,
+                                  rect.dim.x, rect.dim.y};
 
+        if(mKeepAspectRatio)
+        {
+            float resX = rect.dim.x;
+            float resY = rect.dim.y;
+
+            if(rect.dim.x < rect.dim.y)
+            {
+                resY = (resX*float(mpBitmap->height()))/
+                        (float(mpBitmap->width()));
+            }
+            else if(rect.dim.x > rect.dim.y)
+            {
+                resX = (resY*float(mpBitmap->width()))/
+                        (float(mpBitmap->height()));
+            }
+            bmpRect = {0, 0, Uint16(resX), Uint16(resY)};
+        }
         mpBitmap->scaleTo(bmpRect);
+
         mpBitmap->draw(rect.pos.x, rect.pos.y, blitsfc);
     }
 }

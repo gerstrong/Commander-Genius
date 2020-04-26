@@ -81,6 +81,8 @@ public:
     Uint16 height() const { return mBitmapSurface.height(); }
 
     void setColorKey(const Uint8 r, const Uint8 g, const Uint8 b);
+
+    bool requiresScaling(const GsRect<Uint16> &destRes);
     bool scaleTo(const GsRect<Uint16> &destRes);
 
     /**

@@ -522,13 +522,15 @@ public:
 
 
     /// Scale routines
+
+    bool requiresScaling(const GsRect<Uint16> &scaledRect);
+
     /**
      * @brief scaleTo will scale to rect to the given newRect Size
      * @param scaledRect x and y coordinates are ignored. Only w and h will be taken for scaling
      * @return true, if scaling was performed, otherwise false
      */
-    bool scaleTo(const GsRect<Uint16> &scaledRect, const VidFilter filter);
-
+    bool scaleTo(const GsRect<Uint16> &scaledRect, const VidFilter filter);        
 };
 
 

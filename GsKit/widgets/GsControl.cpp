@@ -16,7 +16,7 @@
 
 #include "GsControl.h"
 
-const int BLEND_SPEED = 2;
+const int BLEND_SPEED = 16;
 
 int GsControl::mTwirliconID;
 

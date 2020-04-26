@@ -196,7 +196,7 @@ void GsButton::drawNoStyle(const SDL_Rect& lRect)
                 lightRatio <<= 1;
             }
 
-            // If want to highlight the button set the color
+            // If want to highlight the button set its border color correctly
             borderColor = blitsfc.mapRGBA( red, green, blue, 0xFF);
 
             lComp = 0xFF - (lightRatio*(0xFF-0xCF)/255);

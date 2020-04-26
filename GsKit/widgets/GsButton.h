@@ -97,7 +97,7 @@ public:
 
     virtual void processLogic() override;
 
-    void drawNoStyle(const SDL_Rect &lRect);
+    virtual void drawNoStyle(const SDL_Rect &lRect);
 
 	void drawVorticonStyle(SDL_Rect& lRect);
 

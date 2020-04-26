@@ -273,15 +273,18 @@ void GsSurface::tiltSurface()
     src.unlock();
 }
 
+bool GsSurface::requiresScaling(const GsRect<Uint16> &scaledRect)
+{
+    const SDL_Rect newRect = scaledRect.SDLRect();
+    return !(newRect.w == mpSurface->w && newRect.h == mpSurface->h);
+}
 
 bool GsSurface::scaleTo(const GsRect<Uint16> &scaledRect, const VidFilter filter)
 {
-    SDL_Rect newRect = scaledRect.SDLRect();
-
-    if(newRect.w == mpSurface->w && newRect.h == mpSurface->h)
-    {
+    if(!requiresScaling(scaledRect))
         return true;
-    }
+
+    SDL_Rect newRect = scaledRect.SDLRect();
 
     // Need to do that, otherwise it might not work in some cases
     makeBlitCompatible();

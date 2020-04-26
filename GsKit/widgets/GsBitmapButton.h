@@ -4,13 +4,14 @@
  *  Created on: 26.04.2020
  *      Author: gerstrong
  *
- *  Widget for simple buttons
+ *  Widget for buttons with a bitmap to display
  */
 
 #ifndef GsBitmapButton_H_
 #define GsBitmapButton_H_
 
 #include "GsButton.h"
+#include <graphics/GsBitmap.h>
 
 class GsBitmapButton : public GsButton
 {
@@ -26,9 +27,13 @@ public:
 
     void drawNoStyle(const SDL_Rect& lRect) override;
 
+    void setAspectRatio(const bool keepAspect)
+    {   mKeepAspectRatio = keepAspect;    }
+
 private:
     std::shared_ptr<GsBitmap> mpBitmap; // optional bitmap for the button
 
+    bool mKeepAspectRatio = false;
 };
 
 #endif // GsBitmapButton_H_
