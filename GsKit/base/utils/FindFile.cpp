@@ -103,6 +103,10 @@ void InitSearchPaths(const std::string &cfgFname)
 
 }
 
+void InitSearchPaths()
+{
+    InitSearchPaths(std::string());
+}
 
 
 bool IsFileAvailable(const std::string& f, bool absolute)
@@ -598,23 +602,23 @@ class CheckSearchpathForFile
 std::string GetFullFileName(const std::string& path,
                             std::string* searchpath)
 {
-	if(searchpath) *searchpath = "";
-	if(path == "") return GetFirstSearchPath();
+    if(searchpath) *searchpath = "";
+    if(path == "") return GetFirstSearchPath();
 
-	// Check if we have an absolute path
-	if(IsAbsolutePath(path)) {
-		std::string tmp;
-		GetExactFileName(path, tmp);
-		return tmp;
-	}
+    // Check if we have an absolute path
+    if(IsAbsolutePath(path)) {
+        std::string tmp;
+        GetExactFileName(path, tmp);
+        return tmp;
+    }
 
-	std::string fname;
+    std::string fname;
     CheckSearchpathForFile checker(path,
                                    &fname,
                                    searchpath);
-	ForEachSearchpath(checker);
+    ForEachSearchpath(checker);
 
-	return fname;
+    return fname;
 }
 
 std::string GetWriteFullFileName(const std::string& path, bool create_nes_dirs) {

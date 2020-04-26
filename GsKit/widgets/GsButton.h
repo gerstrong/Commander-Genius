@@ -1,10 +1,10 @@
 /*
- * CGUIText.h
+ * GsButton.h
  *
- *  Created on: 30.10.2011
+ *  Created on: 26.04.2020
  *      Author: gerstrong
  *
- *  This is the text control for our new GUI
+ *  Widget for simple buttons
  */
 
 #ifndef GsButton_H_
@@ -176,4 +176,6 @@ private:
 };
 
 
+
 #endif /* GsButton_H_ */
+

@@ -12,6 +12,7 @@
 #include <widgets/GsMenuController.h>
 #include <base/PointDevice.h>
 #include <base/GsTTFSystem.h>
+#include <base/GsLogging.h>
 
 #include "GsButton.h"
 
@@ -107,6 +108,7 @@ GsButton(text,rect,f,fontId,
          float(color.g)/float(0xFF),
          float(color.b)/float(0xFF))
 {}
+
 
 
 
@@ -231,6 +233,7 @@ void GsButton::drawNoStyle(const SDL_Rect& lRect)
     {
         blitsfc.drawRect( rect, fillColor );
     }
+
 }
 
 
@@ -283,6 +286,7 @@ void GsButton::processRender(const GsRect<float> &backRect,
     auto objFrontRect = objBackRect.clipped(frontRect);
 
     drawNoStyle( objFrontRect.SDLRect() );
+
 
     mTextWidget.processRender(objBackRect,
                               objFrontRect);
