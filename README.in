@@ -524,6 +524,16 @@ A: You can decrease the fps under settings->video. OpenGL may also help on some
    are many things you can do to speed up the program. Also HQP requires more
    resources.
 
+Q: Commander Genius is too fast! Please help!
+A: There have been situations observed where Commander Genius too fast.
+   When the VSync option is enabled there is no special latency running, because
+   it is assumed that the graphics card does the throttling to the amount of fps
+   configured through your hardware and drivers. There are situations where
+   such hardware does not do that but instead tries to render as much as possible,
+   making CGenius run as fast as the CPU. So in a nutshell, enabling or disabling
+   the vsync might help in some ocasions. Also check if OpenGL is enabled or disabled.
+
+
 Q: What about Keen Dreams?
 A: You can already play it through. Never thought we would support that one
    day, but NY00123 made it possible.
