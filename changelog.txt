@@ -4,7 +4,8 @@ v2.4.2:
 - Finally added some scroll arrows to list views
 - More loading feedback especially for galaxy audio
 - Adding some emscripten code so GsKit is compatible with WASM
-
+- Some resolution and rendering improvements
+- Keen dreams freezes less especially when using cheat codes
 
 v2.4.1:
 -------
