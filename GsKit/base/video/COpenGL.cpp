@@ -115,7 +115,7 @@ bool COpenGL::init()
     Uint32 flags = SDL_WINDOW_OPENGL;
 
     if(m_VidConfig.mFullscreen)
-        flags |= SDL_WINDOW_FULLSCREEN;
+        flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
     else
         flags |= (SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
 

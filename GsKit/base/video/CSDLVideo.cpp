@@ -54,7 +54,7 @@ bool CSDLVideo::init()
 
     if(m_VidConfig.mFullscreen)
     {
-        flags |= SDL_WINDOW_FULLSCREEN;
+        flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
     }
     else
     {
@@ -100,11 +100,9 @@ bool CSDLVideo::init()
         rendererFlags |= SDL_RENDERER_PRESENTVSYNC;
     }					
 		
-#if __EMSCRIPTEN__        
-    renderer = SDL_CreateRenderer(window, -1, rendererFlags);		
-#else
-    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-#endif
+    rendererFlags |= SDL_RENDERER_ACCELERATED;
+
+    renderer = SDL_CreateRenderer(window, -1, rendererFlags);
 		
 	if(!renderer)
 	{
