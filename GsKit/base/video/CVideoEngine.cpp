@@ -150,8 +150,11 @@ bool CVideoEngine::init()
 	return true;
 }
 
+const bool INT_SCALE = true;
+
+
 void CVideoEngine::updateActiveArea(const GsRect<Uint16>& displayRes,
-                                   const int aspWidth, const int aspHeight)
+                                    const int aspWidth, const int aspHeight)
 {    
     if (aspWidth == 0 || aspHeight == 0)
     {
@@ -162,8 +165,19 @@ void CVideoEngine::updateActiveArea(const GsRect<Uint16>& displayRes,
 
     if (aspHeight*displayRes.dim.x >= aspWidth*displayRes.dim.y) // Wider than width:height, so shrink width
     {
-        mActiveAreaRect.dim.y = displayRes.dim.y;
-        mActiveAreaRect.dim.x = ((displayRes.dim.y*aspWidth)/aspHeight);
+        int scaleFactor = 0;
+
+        if(INT_SCALE)
+        {
+            scaleFactor = displayRes.dim.y/m_VidConfig.mGameRect.dim.y;
+            mActiveAreaRect.dim.y = scaleFactor*m_VidConfig.mGameRect.dim.y;
+            mActiveAreaRect.dim.x = scaleFactor*m_VidConfig.mGameRect.dim.x;
+        }
+        else
+        {
+            mActiveAreaRect.dim.y = displayRes.dim.y;
+            mActiveAreaRect.dim.x = ((displayRes.dim.y*aspWidth)/aspHeight);
+        }
     }
     else // Taller than width:height so adapt height
     {

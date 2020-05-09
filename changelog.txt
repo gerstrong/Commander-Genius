@@ -1,6 +1,9 @@
 v2.4.2:
 -------
 - SDL_Cursor now show work as intended
+- Finally added some scroll arrows to list views
+- More loading feedback especially for galaxy audio
+- Adding some emscripten code so GsKit is compatible with WASM
 
 
 v2.4.1:

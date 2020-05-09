@@ -251,10 +251,12 @@ void GsApp::setEngine(GsEngine *engPtr)
 ////////////////////////////
 
 
+#if __EMSCRIPTEN__
 void runMainCycleEmscriptenExtern()
 {
     gApp.runMainCycleEmscripten();
 }
+#endif // __EMSCRIPTEN__
 
 /**
  * \brief  	This is the main run cycle of the game,
@@ -414,6 +416,8 @@ void GsApp::runMainCycle()
     cleanup();
 }
 
+
+#if __EMSCRIPTEN__
 void GsApp::runMainCycleEmscripten()
 {
 
@@ -478,3 +482,4 @@ void GsApp::runMainCycleEmscripten()
             total_elapsed = 0.0f;
         }    
 }
+#endif // __EMSCRIPTEN__

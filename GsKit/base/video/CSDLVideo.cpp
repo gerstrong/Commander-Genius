@@ -335,7 +335,9 @@ void CSDLVideo::transformScreenToDisplay()
 
     SDL_Point pt = {mainDstrect.h/2, mainDstrect.w/2};
 
-    RenderCopy(renderer, mpMainScreenTexture.get(), nullptr, &mainDstrect, &pt);
+    RenderCopy(renderer, mpMainScreenTexture.get(),
+               nullptr, &mainDstrect, &pt);
+
 
 
     // Now render the textures which additionally sent over...

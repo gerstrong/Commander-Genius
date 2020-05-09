@@ -16,7 +16,9 @@ class CAudioGalaxy : public CAudioResources
 public:
 
 
-    bool readPCSpeakerSoundintoWaveForm(CSoundSlot &soundslot, const byte *pcsdata, const Uint8 formatsize );
+    bool readPCSpeakerSoundintoWaveForm(CSoundSlot &soundslot,
+                                        const byte *pcsdata,
+                                        const Uint8 formatsize );
 
     /**
      * @brief LoadFromAudioCK   Load audio from the CK files

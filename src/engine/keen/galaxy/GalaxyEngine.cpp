@@ -216,13 +216,13 @@ bool GalaxyEngine::loadResources( const Uint8 flags )
 
             if( (mFlags & LOADSND) == LOADSND )
             {
-                gLogging.ftextOut("Loading audio... <br>");
+                gLogging.ftextOut("Loading sound effects... <br>");
 
                 // Load the sound data
                 setupAudio();
 
                 mLoader.setPermilage(900);
-                gLogging.ftextOut("Done loading audio.<br>");
+                gLogging.ftextOut("Done loading sound effects.<br>");
             }
 
             gLogging.ftextOut("Loading game constants...<br>");

@@ -320,6 +320,7 @@ bool CAudioGalaxy::LoadFromAudioCK(const unsigned int dictOffset)
 {
     const CExeFile &ExeFile = gKeenFiles.exeFile;
 
+    gLogging.ftextOut("CAudioGalaxy::LoadFromAudioCK(): Setting up Audio map... <br>");
     setupAudioMap();
 
     const SDL_AudioSpec &audioSpec = gAudio.getAudioSpec();
@@ -331,6 +332,7 @@ bool CAudioGalaxy::LoadFromAudioCK(const unsigned int dictOffset)
     }
 
     // Open the Huffman dictionary and get AUDIODICT
+    gLogging.ftextOut("CAudioGalaxy::LoadFromAudioCK(): Preparing Huffman decompression...<br>");
     CHuffman Huffman;
 
     std::string audioDictfilename = getResourceFilename( gKeenFiles.audioDictFilename, gKeenFiles.gameDir, false, false);
@@ -353,6 +355,7 @@ bool CAudioGalaxy::LoadFromAudioCK(const unsigned int dictOffset)
 
     std::ifstream AudioFile;
     OpenGameFileR(AudioFile, audiofilename);
+    gLogging.ftextOut("CAudioGalaxy::LoadFromAudioCK(): Reading %s ...<br>", audiofilename.c_str());
 
     // Read File Size and allocate memory so we can read it
     AudioFile.seekg( 0, std::ios::end );
@@ -382,6 +385,7 @@ bool CAudioGalaxy::LoadFromAudioCK(const unsigned int dictOffset)
 
     if(audiohedfilename != "")
     {
+        gLogging.ftextOut("CAudioGalaxy::LoadFromAudioCK(): Using external %s ...<br>", audiohedfilename.c_str());
         std::ifstream File;
         OpenGameFileR(File, audiohedfilename, std::ios::binary);
 
@@ -395,6 +399,8 @@ bool CAudioGalaxy::LoadFromAudioCK(const unsigned int dictOffset)
     }
     else // no file found? Use the embedded one!
     {
+        gLogging.ftextOut("CAudioGalaxy::LoadFromAudioCK(): No header file. Looking for internal audio pointers ...<br>");
+
         uint32_t *audiostarthedptr = reinterpret_cast<uint32_t*>(ExeFile.getHeaderData());
         audioendhedptr = audiostarthedptr + ExeFile.getExeDataSize()/sizeof(uint32_t);
 
@@ -462,6 +468,7 @@ bool CAudioGalaxy::LoadFromAudioCK(const unsigned int dictOffset)
         }
     }
 
+    gLogging.ftextOut("CAudioGalaxy::LoadFromAudioCK(): Found a total of %d sound effects ...<br>", number_of_total_sounds);
     m_soundslot.assign(number_of_total_sounds, CSoundSlot());
 
 
@@ -494,6 +501,8 @@ bool CAudioGalaxy::LoadFromAudioCK(const unsigned int dictOffset)
         }
     }
 
+    int succReadSounds = 0;
+
     for( unsigned int snd=0 ; snd<number_of_total_sounds ; snd++ )
     {
         /// Now we have all the data we need.
@@ -503,7 +512,7 @@ bool CAudioGalaxy::LoadFromAudioCK(const unsigned int dictOffset)
 
         const uint32_t audio_comp_data_start = audio_start+sizeof(uint32_t); // Why this strange offset by 4 bytes?
 
-        std::vector<byte> imfdata;
+        std::vector<byte> imfdata;        
 
         if( audio_comp_data_start < audio_end )
         {
@@ -539,9 +548,9 @@ bool CAudioGalaxy::LoadFromAudioCK(const unsigned int dictOffset)
                                                      imfdataPtr,
                                                      (audioSpec.format == AUDIO_S16) ? 2 : 1 );
                 if(!ok)
-                {
                     gLogging << "Sound " << snd << " could not be read!<br>";
-                }
+                else
+                    succReadSounds++;
             }
             else
             {
@@ -550,12 +559,16 @@ bool CAudioGalaxy::LoadFromAudioCK(const unsigned int dictOffset)
                                                                 (audioSpec.format == AUDIO_S16) ? 2 : 1 );
 
                 if(!ok)
-                {
                     gLogging << "Sound " << snd << " could not be read!<br>";
-                }
+                else
+                    succReadSounds++;
             }
         }
     }
+
+    gLogging.ftextOut("CAudioGalaxy::LoadFromAudioCK(): Finished caching %d "
+                      "sound effect(s) from "
+                      "OPL and PC Speaker Emulator...<br>", succReadSounds);
 
     return true;
 }
@@ -567,9 +580,12 @@ bool CAudioGalaxy::loadSoundData(const unsigned int dictOffset)
 {       
     COPLEmulator &OPLEmulator = gAudio.getOPLEmulatorRef();
 
+
     OPLEmulator.shutdown();
+    gLogging.ftextOut("CAudioGalaxy::loadSoundData(): Initializing OPL Emulator... <br>");
     OPLEmulator.init();
 
+    gLogging.ftextOut("CAudioGalaxy::loadSoundData(): Initializing OPL Emulator... <br>");
     const bool ok = LoadFromAudioCK(dictOffset);
 
 	if(!ok)
