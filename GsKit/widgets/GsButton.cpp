@@ -119,7 +119,12 @@ bool GsButton::sendEvent(const InputCommand command)
 
     if(command == IC_STATUS || command == IC_JUMP)
     {
-        gEventManager.add(mEvent);
+        if(mEvent)
+            gEventManager.add(mEvent);
+
+        if(mFunction)
+            mFunction();
+
         return true;
     }
     return false;
