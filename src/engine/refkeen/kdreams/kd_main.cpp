@@ -252,7 +252,7 @@ id0_int_t DebugKeys (void)
 		playstate = levelcomplete;
 	}
 #endif
-
+    // F10 + ...
 	if (Keyboard[0x22] && ingame)           // G = god mode
 	{
 		VW_FixRefreshBuffer ();

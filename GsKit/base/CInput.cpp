@@ -570,7 +570,7 @@ void CInput::waitForAnyInput()
 
         acc += elapsed;
 
-        // Perform the game cycle
+        // Perform a pseudo game cycle
         while( acc > logicLatency )
         {
             if(getPressedAnyCommand())
@@ -595,6 +595,8 @@ void CInput::waitForAnyInput()
             timerDelay(waitTime);
         }
 
+        // We must poll here, otherwise no new inputs will appear
+        pollEvents();
     }
 
 }
