@@ -559,6 +559,9 @@ void CGameLauncher::showMessageBox(const std::string &text)
 
 void CGameLauncher::setupModsDialog()
 {
+    if(int(m_Entries.size()) <= m_chosenGame)
+        return;
+
     const std::string dataDir = getDirectory( m_chosenGame );
 
     // TODO: fetch the List of available patch files
@@ -899,7 +902,10 @@ void CGameLauncher::ponder(const float deltaT)
                 break;
             }
         }
+    }
 
+    if(mpGameStoreDialog)
+    {
         mpGameStoreDialog->processLogic();
         ponderDownloadDialog();
         return;

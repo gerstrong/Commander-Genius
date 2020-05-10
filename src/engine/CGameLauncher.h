@@ -103,7 +103,8 @@ public:
     }
 
     bool getQuit() const { return m_mustquit; }
-    std::string getDirectory(Uint8 slot) const { return m_Entries.at(slot).path; }
+    std::string getDirectory(Uint8 slot) const
+    {   return m_Entries.at(slot).path; }
     Uint8 getEpisode(Uint8 slot) const { return m_Entries.at(slot).episode; }
     std::string getEP1Directory() const { return m_Entries.at(m_ep1slot).path; }
 
