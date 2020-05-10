@@ -870,7 +870,10 @@ void CGameLauncher::ponder(const float deltaT)
                 break;
             }
         }
+    }
 
+    if(mpMsgDialog)
+    {
         mpMsgDialog->processLogic();
         return;
     }
