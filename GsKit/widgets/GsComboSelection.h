@@ -56,6 +56,7 @@ protected:
     void updateFeatureDim();
 
     GsColor mHoverBgColor;
+    GsColor mSelectedBgColor;
 
 	std::list<std::string> mOptionsList;
 	std::list<std::string>::const_iterator mOLCurrent;

@@ -67,6 +67,7 @@ protected:
     const int mDeltaValue = 0;
 
     GsColor mHoverBgColor;
+    GsColor mSelectedBgColor;
 
     std::string mFeatureText;
 

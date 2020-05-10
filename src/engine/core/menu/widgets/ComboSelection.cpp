@@ -19,7 +19,7 @@ mStyle(style)
         enableBlinker(true);        
         enableHighlightBg(false);
 
-        mHoverBgColor = GsColor(0x66, 0x66, 0x66);
+        mHoverBgColor = GsColor(0x66, 0x66, 0x66);       
 
         mColorNormal   = GsColor(0x26, 0x86, 0x26);
         mColorHovered  = GsColor(0x66, 0xC6, 0x66);

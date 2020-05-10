@@ -21,6 +21,7 @@ CGUIComboSelection( const std::string& text,
                     const std::list<std::string>& optionsList ) :
 GsWidgetsManager(rect),
 mHoverBgColor(0xBB, 0xBB, 0xFF),
+mSelectedBgColor(0xAA, 0xAA, 0xFF),
 mOptionsList( optionsList ),
 mOLCurrent( mOptionsList.begin() ),
 mFeatureText(text)
@@ -136,10 +137,18 @@ void CGUIComboSelection::processRender(const GsRect<float> &RectDispCoordFloat)
     auto displayRect = getRect();
     displayRect.transform(RectDispCoordFloat);
 
-    if(mHovered && mHighlightBg)
+    if(mHighlightBg)
     {
-        blitsfc.fill(displayRect, blitsfc.mapColorAlpha(mHoverBgColor));
-    }    
+        if(mSelected)
+        {
+            blitsfc.fill(displayRect, blitsfc.mapColorAlpha(mSelectedBgColor));
+        }
+        else if(mHovered)
+        {
+            blitsfc.fill(displayRect, blitsfc.mapColorAlpha(mHoverBgColor));
+        }
+    }
+
 
     auto &wList = getWidgetList();
     for(auto &obj : wList)

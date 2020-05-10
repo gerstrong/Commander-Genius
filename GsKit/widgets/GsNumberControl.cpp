@@ -32,6 +32,7 @@ mStartValue(startValue),
 mEndValue(endValue),
 mDeltaValue(deltaValue),
 mHoverBgColor(0xBB, 0xBB, 0xFF),
+mSelectedBgColor(0xAA, 0xAA, 0xFF),
 mFeatureText(text)
 {    
     spawnSubWidgets();
@@ -151,9 +152,16 @@ void CGUINumberControl::processRender(const GsRect<float> &rectDispCoordFloat)
     auto displayRect = getRect();
     displayRect.transform(rectDispCoordFloat);
 
-    if(mHovered && mHighlightBg)
+    if(mHighlightBg)
     {
-        blitsfc.fill(displayRect, blitsfc.mapColorAlpha(mHoverBgColor));
+        if(mSelected)
+        {
+            blitsfc.fill(displayRect, blitsfc.mapColorAlpha(mSelectedBgColor));
+        }
+        else if(mHovered)
+        {
+            blitsfc.fill(displayRect, blitsfc.mapColorAlpha(mHoverBgColor));
+        }
     }
 
     auto &widgetsList = getWidgetList();
