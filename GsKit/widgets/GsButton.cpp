@@ -123,7 +123,7 @@ bool GsButton::sendEvent(const InputCommand command)
             gEventManager.add(mEvent);
 
         if(mFunction)
-            mFunction();
+            gEventManager.add(mFunction);
 
         return true;
     }

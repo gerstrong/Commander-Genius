@@ -873,10 +873,7 @@ void CGameLauncher::ponder(const float deltaT)
                 break;
             }
         }
-    }
 
-    if(mpMsgDialog)
-    {
         mpMsgDialog->processLogic();
         return;
     }
@@ -902,14 +899,12 @@ void CGameLauncher::ponder(const float deltaT)
                 break;
             }
         }
-    }
 
-    if(mpGameStoreDialog)
-    {
         mpGameStoreDialog->processLogic();
         ponderDownloadDialog();
         return;
     }
+
     #endif
 
     // Button should disabled unless a game was selected

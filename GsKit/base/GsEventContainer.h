@@ -50,6 +50,14 @@ public:
         m_EventList.push_back(ev);
     }
 
+    void add(const std::function <void ()> &func)
+    {
+        std::shared_ptr<FunctionToEvent> f2e(
+                    new FunctionToEvent(func) );
+
+        m_EventList.push_back(f2e);
+    }
+
     // template version
     template <class _T>
     void add()

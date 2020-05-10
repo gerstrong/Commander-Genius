@@ -148,9 +148,15 @@ void GsApp::pumpEvent(const CEvent *evPtr)
     {
         mpCurEngine.release();
     }
-    else if( const InvokeFunctorEvent *iEv = dynamic_cast<const InvokeFunctorEvent*>(evPtr) )
+    else if( const InvokeFunctorEvent *iEv =
+             dynamic_cast<const InvokeFunctorEvent*>(evPtr) )
     {
         (*iEv)();
+    }
+    else if( const FunctionToEvent *iEv =
+             dynamic_cast<const FunctionToEvent*>(evPtr)  )
+    {
+        iEv->runFunction();
     }
     else // none of the above, let's see if the children have events to be processed
     {
