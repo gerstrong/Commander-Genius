@@ -860,10 +860,17 @@ void CGameLauncher::ponder(const float deltaT)
         gVideoDriver.setRefreshSignal(false);
     }
 
+    if(gMenuController.active())
+    {
+        mLauncherDialog.enable(false);
+        return;
+    }
+
+
     if(mpMsgDialog)
     {
         // Command (Keyboard/Joystick) events for the game center dialog
-        for( int cmd = IC_JUMP ; cmd < MAX_COMMANDS ; cmd++ )
+        for( int cmd = IC_LEFT ; cmd < MAX_COMMANDS ; cmd++ )
         {
             if( gInput.getPressedCommand(cmd) )
             {
@@ -876,10 +883,9 @@ void CGameLauncher::ponder(const float deltaT)
 
         mpMsgDialog->processLogic();
         return;
-    }
+    }   
 
-
-    if(!gMenuController.active() && !mLauncherDialog.isEnabled())
+    if(!mLauncherDialog.isEnabled())
     {
         mLauncherDialog.enable(true);
     }
@@ -927,13 +933,13 @@ void CGameLauncher::ponder(const float deltaT)
     {
         ponderGameSelDialog(deltaT);
     }
-    else if(m_chosenGame >= 0)
+    else if(m_chosenGame >= 0 && m_chosenGame < m_Entries.size())
     {
         ponderPatchDialog();
     }
     else if(getQuit())
     {
-        // User chose "exit". So make CG quit...
+        // User chose "exit", time to quit CG...
         gEventManager.add( new GMQuit() );
     }    
 }
