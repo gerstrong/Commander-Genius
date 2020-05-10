@@ -83,6 +83,7 @@ bool CGUITextSelectionList::sendEvent(const InputCommand command)
 
             if(ctrl->isSelected())
             {
+                setSelection(-1);
                 ctrl->select(false);
                 lastSelected = it;
                 break;
@@ -120,6 +121,7 @@ bool CGUITextSelectionList::sendEvent(const InputCommand command)
 
             if(ctrl->isSelected())
             {
+                setSelection(-1);
                 ctrl->select(false);
                 lastSelected = it;
                 break;
@@ -148,7 +150,7 @@ bool CGUITextSelectionList::sendEvent(const InputCommand command)
 		if(mConfirmEvent)
 			gEventManager.add(mConfirmEvent);
         if(mConfirmFunction)
-            mConfirmFunction();
+            gEventManager.add(mConfirmFunction);
 		return true;
 	}
 	else if(command == IC_BACK)
