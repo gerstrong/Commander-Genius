@@ -150,7 +150,8 @@ bool CVideoEngine::init()
 	return true;
 }
 
-const bool INT_SCALE = true;
+// TODO: Implement integer scaling
+const bool INT_SCALE = false;
 
 
 void CVideoEngine::updateActiveArea(const GsRect<Uint16>& displayRes,
