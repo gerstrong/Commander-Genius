@@ -918,7 +918,7 @@ void CGameLauncher::ponder(const float deltaT)
     {
         const auto selection = mpGSSelList->getSelection();
 
-        if(selection >= 0)
+        if(selection >= 0 && selection < int(m_Entries.size()))
         {
             mpStartButton->enable(true);
         }

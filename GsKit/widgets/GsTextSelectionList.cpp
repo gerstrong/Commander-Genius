@@ -66,7 +66,6 @@ void CGUITextSelectionList::setBackButtonEvent(CEvent *ev)
 
 bool CGUITextSelectionList::sendEvent(const InputCommand command)
 {
-
     auto &controlsList = getControlsList();
 
 	if(command == IC_UP)
@@ -99,8 +98,14 @@ bool CGUITextSelectionList::sendEvent(const InputCommand command)
         {
             auto ctrl = std::dynamic_pointer_cast<GsControl>(*it);
             ctrl->select(true);
-            setSelection(int(controlsList.size()) -
-                         int(std::distance(controlsList.rbegin(), it)));
+
+            const auto numControls = int(controlsList.size());
+            const auto dist = int(std::distance(controlsList.rbegin(), it));
+            auto selNum = numControls - dist -1;
+
+            // Last selection cannot be larger than number of elements
+            selNum = std::min(selNum, numControls-1);
+            setSelection(selNum);
 
             return true;
         }
