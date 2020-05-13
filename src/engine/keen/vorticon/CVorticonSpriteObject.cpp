@@ -99,11 +99,12 @@ void CVorticonSpriteObject::setupObjectType(const int Episode)
  */
 bool CVorticonSpriteObject::checkforScenario()
 {
+    // The player are handled at another section
 	if ( !exists || m_type==OBJ_PLAYER ) return false;
 
-	if( m_type==OBJ_EXPLOSION || m_type==OBJ_EARTHCHUNK
-            || m_type == OBJ_BRIDGE || m_type == OBJ_NONE
-            || m_type == OBJ_TELEPORTER  ) return true;
+    if( m_type==OBJ_EXPLOSION || m_type==OBJ_EARTHCHUNK ||
+        m_type == OBJ_BRIDGE || m_type == OBJ_NONE ||
+        m_type == OBJ_TELEPORTER || m_type == OBJ_MESSIE  ) return true;
 
 	// Check if enemy is near enough. If he isn't, don't make him perform. Exception is on the map
 	if(!mpMap->m_worldmap)

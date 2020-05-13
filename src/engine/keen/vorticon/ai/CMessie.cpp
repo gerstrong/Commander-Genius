@@ -20,8 +20,7 @@ enum nessie_actions{
 void nessie_find_next_checkpoint(int o);
 
 CMessie::CMessie(CMap *p_map, Uint32 x, Uint32 y) :
-CVorticonSpriteObject(p_map, x, y, OBJ_MESSIE),
-mounted(nullptr)
+CVorticonSpriteObject(p_map, x, y, OBJ_MESSIE)
 {
 	xDirection = LEFT, yDirection = DOWN;
 	onscreen = true;
@@ -39,16 +38,13 @@ mounted(nullptr)
 	inhibitfall = 1;
 	canbezapped = 0;
 
-	for(size_t i=0;i<=NESSIETRAILLEN;i++)
-	{
-		tiletrailX[i] = 0;
-		tiletrailY[i] = 0;
-	}
+    tiletrailX.fill(0);
+    tiletrailY.fill(0);
+
 	// kick nessie into going counter-clockwise
 	// (otherwise she'll go clockwise)
-	int mx, my;
-	mx = getXPosition()>>CSF;
-	my = getYPosition()>>CSF;
+    int mx = getXPosition()>>CSF;
+    int my = getYPosition()>>CSF;
 	tiletrailX[0] = mx;
 	tiletrailY[0] = my;
 	tiletrailX[1] = mx+1;
@@ -127,30 +123,26 @@ bool CMessie::tryToUnmount()
     return false;
 }
 
-void CMessie::process()
-{    
-    auto &evList = gEventManager;
-    
+void CMessie::pumpEvent(const CEvent *evPtr)
+{
     // TODO: Pump should happens to this object as well.
 
-    if( CPlayer::Mount *ev = evList.occurredEvent<CPlayer::Mount>() )
+    if( const CPlayer::Mount *ev = dynamic_cast<const CPlayer::Mount*>(evPtr) )
     {
         // Let's see if he can do that...
         if(tryMounting( const_cast<CPlayer&>(ev->player) ))
         {
-            evList.pop_Event();
             // TODO: Create an Event here that hides all the Players
         }
-        else
-        {
-            evList.pop_Event();
-        }
     }
-    
+}
+
+void CMessie::process()
+{    
     // Search for the next where Messie has to swim
     if(destx == 0 && desty == 0)
     {
-	nessie_find_next_checkpoint();
+        nessie_find_next_checkpoint();
     }
     
     // animation
@@ -258,40 +250,41 @@ void CMessie::nessie_find_next_checkpoint()
 
 	destx = desty = 0;
 
-	for(ya=0;ya<3;ya++)
-	{
-		for(xa=0;xa<3;xa++)
-		{
-			destx = x+xa;
-			desty = y+ya;
+    for(ya=0;ya<3;ya++)
+    {
+        for(xa=0;xa<3;xa++)
+        {
+            destx = x+xa;
+            desty = y+ya;
 
-			int obj = mpMap->getObjectat(destx, desty);
-			if (obj==NESSIE_PATH || obj==NESSIE_WEED)
-			{
-				// find out if this is one of the last tiles we've been to
-				bool oneoflasttiles = false;
-				for(size_t i=0;i<NESSIETRAILLEN;i++)
-				{
-					if (tiletrailX[i]==destx &&
-							tiletrailY[i]==desty)
-					{
-						oneoflasttiles = true;
-						break;
-					}
-				}
+            int obj = mpMap->getObjectat(destx, desty);
 
-				if (!oneoflasttiles)
-				{
-					tiletrailX[tiletrailhead] = destx;
-					tiletrailY[tiletrailhead] = desty;
-					tiletrailhead++;
-					if (tiletrailhead>=NESSIETRAILLEN)
-					{
-						tiletrailhead = 0;
-					}
-					goto foundtile;
-				} // end if (!oneoflasttiles)
-			}  // end if(obj==8192 ...
+            if (obj!=NESSIE_PATH && obj!=NESSIE_WEED)
+                continue;
+
+            // find out if this is one of the last tiles we've been to
+            bool oneoflasttiles = false;
+            for(size_t i=0;i<NESSIETRAILLEN;i++)
+            {
+                if (tiletrailX[i]==destx &&
+                    tiletrailY[i]==desty)
+                {
+                    oneoflasttiles = true;
+                    break;
+                }
+            }
+
+            if (!oneoflasttiles)
+            {
+                tiletrailX[tiletrailhead] = destx;
+                tiletrailY[tiletrailhead] = desty;
+                tiletrailhead++;
+                if (tiletrailhead>=NESSIETRAILLEN)
+                {
+                    tiletrailhead = 0;
+                }
+                goto foundtile;
+            } // end if (!oneoflasttiles)
 
 		} // end for(xa...
 	} // end for(ya...

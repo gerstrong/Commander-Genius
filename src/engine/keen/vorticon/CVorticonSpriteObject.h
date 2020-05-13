@@ -26,6 +26,9 @@ public:
 	
         virtual void getTouchedBy(CSpriteObject &) override {}
 
+        virtual void pumpEvent(const CEvent *evPtr) override
+        { CSpriteObject::pumpEvent(evPtr); }
+
 	object_t m_type;        		// yorp, vorticon, etc.
 
 	unsigned char touchPlayer;      // 1=hit detection with player

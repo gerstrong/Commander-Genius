@@ -76,6 +76,11 @@ void CVorticonSpriteObjectAI::pumpEvent(const CEvent *evPtr)
             }
         }
     }
+
+    for( auto &obj : m_Objvect )
+    {
+        obj->pumpEvent(evPtr);
+    }
 }
 
 //////////////////

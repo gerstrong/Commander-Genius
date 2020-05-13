@@ -11,6 +11,7 @@
 #include "../CVorticonSpriteObject.h"
 #include "CPlayer.h"
 #include <base/GsEvent.h>
+#include <array>
 
 
 
@@ -29,33 +30,38 @@ class CMessie : public CVorticonSpriteObject
 public:     
     
     // Constructor
-	CMessie(CMap *p_map, Uint32 x, Uint32 y);
+    CMessie(CMap *p_map, Uint32 x, Uint32 y);
     void getTouchedBy(CSpriteObject &theObject) override;
     bool tryMounting(CPlayer &player);
-	bool tryToUnmount();
+    bool tryToUnmount();
+
+    virtual void pumpEvent(const CEvent *evPtr) override;
     void process() override;
-	void move_nessie();
-	void nessie_find_next_checkpoint();
+    void move_nessie();
+    void nessie_find_next_checkpoint();
     void processFalling() override {}
-	
+
+
+
 private:
-	char state;
+    char state;
 
-	unsigned int baseframe;
+    unsigned int baseframe;
 
-	unsigned int tiletrailX[NESSIETRAILLEN+1];
-	unsigned int tiletrailY[NESSIETRAILLEN+1];
-	unsigned int tiletrailhead;
 
-	char animframe, animtimer;
+    std::array<unsigned int, NESSIETRAILLEN+1> tiletrailX;
+    std::array<unsigned int, NESSIETRAILLEN+1> tiletrailY;
+    unsigned int tiletrailhead;
+
+    char animframe, animtimer;
     int destx, desty;
 
     int pausetimer;
-//    int pausex, pausey;
+    //    int pausex, pausey;
 
     int mortimer_swim_amt;
-	
-	CPlayer *mounted;
+
+    CPlayer *mounted = nullptr;
 };
 
 #endif /* CMESSIE_H_ */
