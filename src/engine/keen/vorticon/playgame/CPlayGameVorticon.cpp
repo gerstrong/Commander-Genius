@@ -531,6 +531,15 @@ void CPlayGameVorticon::handleFKeys()
 		cycleCamLead();
 	}
 
+    // Quicksave
+    if(gInput.getPressedKey(KF6))
+    {
+        gSaveGameController.prepareSaveGameQuick();
+    }
+    if(gInput.getPressedKey(KF9))
+    {
+        gSaveGameController.prepareLoadGameQuick();
+    }
 
 	// GOD cheat -- toggle god mode
     if ( gInput.getHoldedKey(KG) &&

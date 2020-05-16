@@ -21,6 +21,7 @@
 #include "sdl/audio/music/CMusic.h"
 #include "graphics/effects/CColorMerge.h"
 #include "graphics/effects/CDimDark.h"
+#include "fileio/CSaveGameController.h"
 
 #include "ep4/ai/CInchWorm.h"
 #include "common/ai/CPlayerLevel.h"
@@ -594,9 +595,28 @@ void CPlayGameGalaxy::ponder(const float deltaT)
 
     if(blockGamePlay) return;
 
+
+
     //// Special Keyboard Input
-    /// Cheat Codes
-    auto &cheat = gBehaviorEngine.mCheatmode;
+    // Quicksave
+    if(gInput.getPressedKey(KF6))
+    {
+        gSaveGameController.prepareSaveGameQuick();
+        galaxy::showMsg(0, "Quicksaving ...", nullptr, false, "SaveMsg.msg",
+                        galaxy::CMessageBoxGalaxy::Alignment::UPPERRIGHT,
+                        1000, false);
+    }
+    if(gInput.getPressedKey(KF9))
+    {
+        gSaveGameController.prepareLoadGameQuick();
+        galaxy::showMsg(0, "Quickloading ...", nullptr, false, "LoadMsg.msg",
+                        galaxy::CMessageBoxGalaxy::Alignment::UPPERRIGHT,
+                        1000, false);
+    }
+
+
+    // Cheat Codes
+    auto &cheat = gBehaviorEngine.mCheatmode;    
     if( gInput.getHoldedKey(KF10) )
     {
         if(gInput.getHoldedKey(KJ))

@@ -11,6 +11,7 @@
 #include <base/GsEventContainer.h>
 #include "CSaveGameController.h"
 #include "engine/core/CBehaviorEngine.h"
+#include "engine/BgMsg.h"
 
 #include <ctime>
 #include <boost/property_tree/ptree.hpp>
@@ -132,6 +133,9 @@ bool CSaveGameController::readSlotList(std::vector<std::string> &list)
         if(foundEp == m_Episode)
 		{
             Uint32 pos = getSlotNumber(filename)-1;
+
+            if(pos > gSaveGameController.getMaxNumofSaveSlots())
+                    continue;
 
             const std::string ext = getExtension(filename);
 
@@ -572,27 +576,37 @@ bool CSaveGameController::Fileexists( int SaveSlot )
 	return IsFileAvailable(filename);
 }
 
-// This method is called by the menu. It assures that the
-// PlayGame instance will call save() and get the right data.
-bool CSaveGameController::prepareSaveGame( int SaveSlot, const std::string &Name )
+void CSaveGameController::prepareSaveGameQuick()
 {
-	m_statefilename =  m_savedir + "/cksave"+itoa(SaveSlot)+".ck"+itoa(m_Episode);
+    m_stateXMLfilename = m_savedir + "/cksaveQuick.cx"+itoa(m_Episode);
 
-    m_stateXMLfilename = m_savedir + "/cksave"+itoa(SaveSlot)+".cx"+itoa(m_Episode);
-
-	m_statename = Name;
+    m_statename = "Quicksave";
 	m_datablock.clear();
 
 	m_offset = 0;
 
 	gEventManager.add( new SaveGameEvent() );
-
-	return true;
 }
 
 // This method is called by the menu. It assures that the
+// PlayGame instance will call save() and get the right data.
+void CSaveGameController::prepareSaveGame( int SaveSlot, const std::string &Name )
+{
+    m_statefilename =  m_savedir + "/cksave"+itoa(SaveSlot)+".ck"+itoa(m_Episode);
+    m_stateXMLfilename = m_savedir + "/cksave"+itoa(SaveSlot)+".cx"+itoa(m_Episode);
+
+    m_statename = Name;
+    m_datablock.clear();
+
+    m_offset = 0;
+
+    gEventManager.add( new SaveGameEvent() );
+}
+
+
+// This method is called by the menu. It assures that the
 // PlayGame instance will call load() and get the right data.
-bool CSaveGameController::prepareLoadGame(int SaveSlot)
+bool CSaveGameController::prepareLoadGame(const int SaveSlot)
 {
     const std::string savefile = "cksave" + itoa(SaveSlot) + ".ck"+itoa(m_Episode);
     m_statefilename = JoinPaths(m_savedir, savefile);
@@ -600,11 +614,24 @@ bool CSaveGameController::prepareLoadGame(int SaveSlot)
     const std::string saveXMLfile = "cksave" + itoa(SaveSlot) + ".cx"+itoa(m_Episode);
     m_stateXMLfilename = JoinPaths(m_savedir, saveXMLfile);
 
+
     m_datablock.clear();
 
     gEventManager.add( new LoadGameEvent() );
 
 	return true;
+}
+
+bool CSaveGameController::prepareLoadGameQuick()
+{
+    const std::string saveXMLfile = "cksaveQuick.cx"+itoa(m_Episode);
+    m_stateXMLfilename = JoinPaths(m_savedir, saveXMLfile);
+
+    m_datablock.clear();
+
+    gEventManager.add( new LoadGameEvent() );
+
+    return true;
 }
 
 

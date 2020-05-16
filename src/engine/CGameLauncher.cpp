@@ -594,6 +594,7 @@ void CGameLauncher::setupModsDialog()
     mpPatchSelList = new CGUITextSelectionList(
                                 GsRect<float>(0.01f, 0.07f, 0.49f, 0.87f));
 
+    mpPatchSelList->setBackgroundColor( GsColor(0xFF, 0xFF, 0xFF) );
 
     for( auto &elem : patchlist.list )
     {
@@ -649,8 +650,12 @@ void CGameLauncher::pumpEvent(const CEvent *evPtr)
     else if( dynamic_cast<const GMPatchSelected*>(evPtr) )
     {
         const auto sel = mpPatchSelList->getSelection();
-        mPatchFilename = mPatchStrVec[sel];
-        mDonePatchSelection = true;
+
+        if(sel>0)
+        {
+            mPatchFilename = mPatchStrVec[sel];
+            mDonePatchSelection = true;
+        }
     }
     else if( dynamic_cast<const CancelDownloadEvent*>(evPtr))
     {

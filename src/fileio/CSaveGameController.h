@@ -57,8 +57,10 @@ public:
 	void readData(char *buffer, Uint32 size, std::ifstream &StateFile);
 
 	bool Fileexists( int SaveSlot );
-	bool prepareSaveGame( int SaveSlot, const std::string &Name);
-	bool prepareLoadGame( int SaveSlot );
+    void prepareSaveGameQuick();
+    void prepareSaveGame( int SaveSlot, const std::string &Name);
+    bool prepareLoadGame(const int SaveSlot );
+    bool prepareLoadGameQuick();
 
     bool saveXMLTree(boost::property_tree::ptree &pt);
     bool loadXMLTree(boost::property_tree::ptree &pt);
@@ -91,6 +93,9 @@ public:
 	{ return !m_statefilename.empty(); }
 	
 	std::string getUnnamedSlotName();
+
+    const int getMaxNumofSaveSlots()
+    {   return mMaxNumSaves;    }
 	
 private:
 
@@ -107,6 +112,8 @@ private:
 	Uint32 m_offset;	
 
 	std::vector<byte> m_datablock;
+
+    const int mMaxNumSaves = 8;
 };
 
 

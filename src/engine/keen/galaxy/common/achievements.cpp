@@ -39,7 +39,7 @@ void Achievements::addTask(const std::string &which,
 
             galaxy::showMsg(0, which, nullptr, false, "TrophyMsg.msg",
                             galaxy::CMessageBoxGalaxy::Alignment::UPPERRIGHT,
-                            10000);
+                            10000, true);
 
             gAudio.playInternalSound(gTrophy_Sound,
                                      "Trophy_Sound",

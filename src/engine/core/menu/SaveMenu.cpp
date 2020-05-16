@@ -19,7 +19,7 @@
 
 #include <base/utils/misc.h>
 
-const std::string EMPTY_TEXT = "EMPTY";
+static const std::string EMPTY_TEXT = "EMPTY";
 
 
 CSaveMenu::CSaveMenu(const Style &style) :
@@ -29,7 +29,7 @@ GameMenu(GsRect<float>(0.1f, 0.0f, 0.8f, 1.0f), style )
     std::vector<std::string> StateFileList;
     gSaveGameController.readSlotList(StateFileList);
 
-    for(Uint32 i=0 ; i<8 ; i++)
+    for(int i=0 ; i<int(gSaveGameController.getMaxNumofSaveSlots()) ; i++)
 	{
 		std::string text = EMPTY_TEXT;
         if(i < StateFileList.size())
@@ -62,7 +62,7 @@ void CSaveMenu::refresh()
     itCtrl++;
 
     for( auto i = 0 ;
-         it != StateFileList.end() && i<8 ;
+         it != StateFileList.end() && i<gSaveGameController.getMaxNumofSaveSlots() ;
          i++ )
     {
         const std::string text = *it;

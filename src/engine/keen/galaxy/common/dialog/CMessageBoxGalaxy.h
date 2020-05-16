@@ -106,7 +106,7 @@ void showMsg(const int sprVar, const std::string &text,
              CEvent *closeEv = nullptr,
              const bool isModal = true, const std::string bmpFilename = "",
              const CMessageBoxGalaxy::Alignment alignment = CMessageBoxGalaxy::Alignment::CENTER,
-             const int timeout = 0);
+             const int timeout = 0, const bool trophy = false);
 
 
 

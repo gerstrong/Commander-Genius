@@ -6,6 +6,8 @@ v2.4.2:
 - Adding some emscripten code so GsKit is compatible with WASM
 - Some resolution and rendering improvements
 - Keen dreams freezes less especially when using cheat codes
+- Fixed broken Messie to Player interaction
+- Added Qicksave (F6) and Quickload (F9) so dying is less tedious
 
 v2.4.1:
 -------

@@ -16,6 +16,7 @@
 #include <base/GsLogging.h>
 #include "graphics/GsGraphics.h"
 #include "../../common/TrophyMsg.h"
+#include "engine/BgMsg.h"
 
 #include <base/utils/StringUtils.h>
 #include <memory>
@@ -322,7 +323,7 @@ void showMsg(const int sprVar, const std::string &text,
              CEvent *closeEv, const bool isModal,
              const std::string bmpFilename,
              const CMessageBoxGalaxy::Alignment alignment,
-             const int timeout)
+             const int timeout, const bool trophy)
 {
     CMessageBoxGalaxy *msgBox = nullptr;
 
@@ -338,10 +339,20 @@ void showMsg(const int sprVar, const std::string &text,
 
     if(!bmpFilename.empty())
     {
-        if(!msgBox->initWithBgBitmapInternal(gTrophyMsg,
-                                             "TrophyMsg",
-                                              sizeof(gTrophyMsg)))
-            msgBox->init();
+        if(trophy)
+        {
+            if(!msgBox->initWithBgBitmapInternal(gTrophyMsg,
+                                                 "TrophyMsg",
+                                                  sizeof(gTrophyMsg)))
+                msgBox->init();
+        }
+        else
+        {
+            if(!msgBox->initWithBgBitmapInternal(gBgMsg,
+                                                 "BgMsg",
+                                                  sizeof(gBgMsg)))
+                msgBox->init();
+        }
     }
     else
     {
@@ -371,6 +382,7 @@ void showMsgVec( std::vector<CMessageBoxGalaxy*> &msgs )
 
 
 }
+
 
 
 
