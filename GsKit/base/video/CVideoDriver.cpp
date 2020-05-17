@@ -264,6 +264,7 @@ bool CVideoDriver::initResolutionList()
     {
         {320,200},
         {320,240},
+        {640,360},
         {640,480}
     };
 

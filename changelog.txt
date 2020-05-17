@@ -7,8 +7,9 @@ v2.4.2:
 - Some resolution and rendering improvements
 - Keen dreams freezes less especially when using cheat codes
 - Fixed broken Messie to Player interaction
-- Added Qicksave (F6) and Quickload (F9) so dying is less tedious
+- Added Quicksave (F6) and Quickload (F9) so dying is less tedious
 - Added Integer scaling of video resoltion
+- Added 640x360 game resolution which scales nice to 1920x1080
 
 v2.4.1:
 -------
