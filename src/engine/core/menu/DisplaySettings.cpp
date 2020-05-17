@@ -60,6 +60,9 @@ GameMenu(GsRect<float>(0.15f, 0.20f, 0.65f, 0.55f), style )
     mpFullScreenSwitch =
         mpMenuDialog->add( new Switch( "Fullscreen", style ) );
 
+    mpIntegerScalingSwitch =
+        mpMenuDialog->add( new Switch( "IntScaling", style ) );
+
 #endif
 
 
@@ -127,6 +130,7 @@ void DisplaySettings::refresh()
                                     itoa(int(mMyNewConf.m_ScaleXFilter)) + "x" );
     mpVSyncSwitch->enable( mMyNewConf.mVSync );
     mpFullScreenSwitch->enable(mMyNewConf.mFullscreen);
+    mpIntegerScalingSwitch->enable(mMyNewConf.mIntegerScaling);
 
 
     const auto resList = gVideoDriver.getResolutionStrSet();
@@ -223,6 +227,8 @@ void DisplaySettings::release()
     // Fullscreen
     mMyNewConf.mFullscreen = mpFullScreenSwitch->isEnabled();
 
+    // Integer Scaling
+    mMyNewConf.mIntegerScaling = mpIntegerScalingSwitch->isEnabled();
 
     // Read correct resolution
     {

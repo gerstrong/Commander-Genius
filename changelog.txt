@@ -8,6 +8,7 @@ v2.4.2:
 - Keen dreams freezes less especially when using cheat codes
 - Fixed broken Messie to Player interaction
 - Added Qicksave (F6) and Quickload (F9) so dying is less tedious
+- Added Integer scaling of video resoltion
 
 v2.4.1:
 -------

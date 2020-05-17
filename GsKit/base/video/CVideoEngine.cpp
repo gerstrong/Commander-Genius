@@ -150,9 +150,6 @@ bool CVideoEngine::init()
 	return true;
 }
 
-// TODO: Implement integer scaling
-const bool INT_SCALE = false;
-
 
 void CVideoEngine::updateActiveArea(const GsRect<Uint16>& displayRes,
                                     const int aspWidth, const int aspHeight)
@@ -166,27 +163,48 @@ void CVideoEngine::updateActiveArea(const GsRect<Uint16>& displayRes,
 
     if (aspHeight*displayRes.dim.x >= aspWidth*displayRes.dim.y) // Wider than width:height, so shrink width
     {
-        int scaleFactor = 0;
+        int scaleFactor = displayRes.dim.y/m_VidConfig.mGameRect.dim.y;
 
-        if(INT_SCALE)
+        if(m_VidConfig.mIntegerScaling && scaleFactor > 0)
         {
-            scaleFactor = displayRes.dim.y/m_VidConfig.mGameRect.dim.y;
             mActiveAreaRect.dim.y = scaleFactor*m_VidConfig.mGameRect.dim.y;
             mActiveAreaRect.dim.x = scaleFactor*m_VidConfig.mGameRect.dim.x;
+
+            const auto diff =
+                 (displayRes.dim.x*mActiveAreaRect.dim.y)/displayRes.dim.y-mActiveAreaRect.dim.x;
+            mActiveAreaRect.pos.x = (diff)/2;
+            mActiveAreaRect.pos.y = 0;
         }
         else
         {
             mActiveAreaRect.dim.y = displayRes.dim.y;
             mActiveAreaRect.dim.x = ((displayRes.dim.y*aspWidth)/aspHeight);
+
+            mActiveAreaRect.pos = (displayRes.dim-mActiveAreaRect.dim)/2;
         }
     }
     else // Taller than width:height so adapt height
     {
-        mActiveAreaRect.dim.x = displayRes.dim.x;
-        mActiveAreaRect.dim.y = (displayRes.dim.x*aspHeight)/aspWidth;
-    }
+        int scaleFactor = displayRes.dim.x/m_VidConfig.mGameRect.dim.x;
 
-    mActiveAreaRect.pos = (displayRes.dim-mActiveAreaRect.dim)/2;
+        if(m_VidConfig.mIntegerScaling && scaleFactor > 0)
+        {
+            mActiveAreaRect.dim.y = scaleFactor*m_VidConfig.mGameRect.dim.y;
+            mActiveAreaRect.dim.x = scaleFactor*m_VidConfig.mGameRect.dim.x;
+
+            const auto diff =
+                 (displayRes.dim.y*mActiveAreaRect.dim.x)/displayRes.dim.x-mActiveAreaRect.dim.y;
+            mActiveAreaRect.pos.x = 0;
+            mActiveAreaRect.pos.y = (diff)/2;
+        }
+        else
+        {
+            mActiveAreaRect.dim.x = displayRes.dim.x;
+            mActiveAreaRect.dim.y = (displayRes.dim.x*aspHeight)/aspWidth;
+
+            mActiveAreaRect.pos = (displayRes.dim-mActiveAreaRect.dim)/2;
+        }
+    }    
 }
 
 

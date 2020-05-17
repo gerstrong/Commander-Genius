@@ -57,6 +57,7 @@ bool CSettings::saveDrvCfg()
 
         CVidConfig &VidConf = gVideoDriver.getVidConfig();
         Configuration.SetKeyword("Video", "fullscreen", VidConf.mFullscreen);
+        Configuration.SetKeyword("Video", "integerScaling", VidConf.mIntegerScaling);
         Configuration.SetKeyword("Video", "OpenGL", VidConf.mOpengl);
 #ifdef USE_VIRTUALPAD
         Configuration.SetKeyword("Video", "VirtPad", VidConf.mVPad);
@@ -176,6 +177,7 @@ bool CSettings::loadDrvCfg()
 
 
     config.ReadKeyword("Video", "fullscreen", &vidConf.mFullscreen, false);
+    config.ReadKeyword("Video", "integerScaling", &vidConf.mIntegerScaling, true);
     config.ReadInteger("Video", "scale", &value, 1);
     vidConf.Zoom = static_cast<unsigned short>(value);
 

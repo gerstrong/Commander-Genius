@@ -67,7 +67,7 @@ public:
 
 	unsigned short Zoom;
 
-
+    bool mIntegerScaling = true;
 
 #ifdef USE_OPENGL
     bool mOpengl = true;
