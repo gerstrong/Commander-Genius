@@ -71,6 +71,10 @@ void NumberControl::processLogic()
     {
         setTextColor(mColorHovered);
     }
+    if(mSelected)
+    {
+        setTextColor(mColorSelected);
+    }
 
     CGUINumberControl::processLogic();
 }

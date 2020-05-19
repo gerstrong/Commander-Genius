@@ -79,6 +79,11 @@ void ComboSelection::processLogic()
     {
         setTextColor(mColorHovered);
     }
+    if(mSelected)
+    {
+        setTextColor(mColorSelected);
+    }
+
 
     CGUIComboSelection::processLogic();
 }

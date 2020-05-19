@@ -162,7 +162,8 @@ void CGUIComboSelection::processLogic()
 {
     if(mReleased)
     {
-        mpFeatureValue->activateFunction();
+        // That make the button trigger exaclty once
+        mpFeatureValue->setReleased(true);
     }
 
     GsWidgetsManager::processLogic();
