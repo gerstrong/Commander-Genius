@@ -229,10 +229,6 @@ void DisplaySettings::release()
 
     // Integer Scaling
     mMyNewConf.mIntegerScaling = mpIntegerScalingSwitch->isEnabled();    
-#ifdef WIN32
-    mMyNewConf.mIntegerScaling = false;
-#endif // WIN32
-
 
     // Read correct resolution
     {
