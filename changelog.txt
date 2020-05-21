@@ -1,3 +1,7 @@
+v2.4.3:
+-------
+
+
 v2.4.2:
 -------
 - SDL_Cursor now should work as intended
