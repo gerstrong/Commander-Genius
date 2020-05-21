@@ -228,7 +228,11 @@ void DisplaySettings::release()
     mMyNewConf.mFullscreen = mpFullScreenSwitch->isEnabled();
 
     // Integer Scaling
-    mMyNewConf.mIntegerScaling = mpIntegerScalingSwitch->isEnabled();
+    mMyNewConf.mIntegerScaling = mpIntegerScalingSwitch->isEnabled();    
+#ifdef WIN32
+    mMyNewConf.mIntegerScaling = false;
+#endif // WIN32
+
 
     // Read correct resolution
     {
