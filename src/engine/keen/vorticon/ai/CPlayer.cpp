@@ -774,23 +774,27 @@ void CPlayer::ProcessInput()
 	
 	if(gInput.getHoldedCommand(m_index, IC_LEFT) && playpushed_decreasetimer<=0 )
 	{
-	    const int newval = gInput.isJoystickAssgmnt(m_index, IC_LEFT) && gInput.isAnalog(m_index) ? -gInput.getJoyValue(m_index, IC_LEFT) : 100;
+        const int newval = gInput.isJoystickAssgmnt(m_index, IC_LEFT) && gInput.isAnalog(m_index) ?
+                           -gInput.getJoyValue(m_index, IC_LEFT) : 100;
 	    playcontrol[PA_X] -= newval;
 	}
 	else if(gInput.getHoldedCommand(m_index, IC_RIGHT) && playpushed_decreasetimer>=0 )
 	{
-	    const int newval = gInput.isJoystickAssgmnt(m_index, IC_RIGHT) && gInput.isAnalog(m_index) ? gInput.getJoyValue(m_index, IC_RIGHT) : 100;
+        const int newval = gInput.isJoystickAssgmnt(m_index, IC_RIGHT) && gInput.isAnalog(m_index) ?
+                           gInput.getJoyValue(m_index, IC_RIGHT) : 100;
 	    playcontrol[PA_X] += newval;
 	}
 	
 	if(gInput.getHoldedCommand(m_index, IC_DOWN) )
 	{
-	    const int newval = gInput.isJoystickAssgmnt(m_index, IC_DOWN) && gInput.isAnalog(m_index) ? gInput.getJoyValue(m_index, IC_DOWN) : 100;
+        const int newval = gInput.isJoystickAssgmnt(m_index, IC_DOWN) && gInput.isAnalog(m_index) ?
+                           gInput.getJoyValue(m_index, IC_DOWN) : 100;
 	    playcontrol[PA_Y] += newval;
 	}
 	else if(gInput.getHoldedCommand(m_index, IC_UP))
 	{
-	    const int newval = gInput.isJoystickAssgmnt(m_index, IC_UP) && gInput.isAnalog(m_index) ? -gInput.getJoyValue(m_index, IC_UP) : 100;
+        const int newval = gInput.isJoystickAssgmnt(m_index, IC_UP) && gInput.isAnalog(m_index) ?
+                           -gInput.getJoyValue(m_index, IC_UP) : 100;
 	    playcontrol[PA_Y] -= newval;
 	}	    
 	

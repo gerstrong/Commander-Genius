@@ -297,7 +297,7 @@ void CPlayerWM::processWaving()
 
 
     if( mPlaycontrol[PA_Y] != 0 || mPlaycontrol[PA_X] != 0 ||
-            mPlaycontrol[PA_JUMP] || waveTimer >= (TIME_TO_WAVE/4) )
+        mPlaycontrol[PA_JUMP] || waveTimer >= (TIME_TO_WAVE/4) )
     {
         mProcessPtr = &CPlayerWM::processMoving;
         m_basesprite = walkBaseFrame;
@@ -335,7 +335,7 @@ void CPlayerWM::processMoving()
     else
         movespeed = 0;
 
-    // Running a bist faster on the world map
+    // Running a bit faster on the world map
     if(mPlaycontrol[PA_RUN])
     {
         movespeed = (movespeed*6)/5;
@@ -407,6 +407,9 @@ void CPlayerWM::processMoving()
     {
         if( mPlaycontrol[PA_Y] == 0 )
             yDirection = 0;
+
+        movespeed *= mPlaycontrol[PA_X];
+        movespeed /= (-100);
 	
         moveLeft(movespeed);
         moving = true;
@@ -417,7 +420,10 @@ void CPlayerWM::processMoving()
     {
         if(mPlaycontrol[PA_Y]==0)
             yDirection = 0;
-	
+
+        movespeed *= mPlaycontrol[PA_X];
+        movespeed /= (100);
+
         moveRight(movespeed);
         moving = true;
         xDirection = RIGHT;
@@ -429,6 +435,9 @@ void CPlayerWM::processMoving()
         if(mPlaycontrol[PA_X]==0)
             xDirection = 0;
 
+        movespeed *= mPlaycontrol[PA_Y];
+        movespeed /= (-100);
+
         moveUp(movespeed);
         moving = true;
         yDirection = UP;
@@ -438,6 +447,9 @@ void CPlayerWM::processMoving()
     {
         if(mPlaycontrol[PA_X]==0)
             xDirection = 0;
+
+        movespeed *= mPlaycontrol[PA_Y];
+        movespeed /= (100);
 
         moveDown(movespeed);
         moving = true;
