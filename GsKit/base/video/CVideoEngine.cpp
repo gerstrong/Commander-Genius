@@ -169,15 +169,6 @@ void CVideoEngine::updateActiveArea(const GsRect<Uint16>& displayRes,
         {
             mActiveAreaRect.dim.y = scaleFactor*m_VidConfig.mGameRect.dim.y;
             mActiveAreaRect.dim.x = scaleFactor*m_VidConfig.mGameRect.dim.x;
-
-            const GsVec2D<int> dRes(displayRes.dim);
-            const GsVec2D<int> activeArea(mActiveAreaRect.dim);
-
-            auto diff =
-                 (dRes.x*activeArea.y)/dRes.y-activeArea.x;
-            diff = std::max(diff, 0);
-            mActiveAreaRect.pos.x = (diff)/2;
-            mActiveAreaRect.pos.y = 0;
         }
         else
         {
@@ -195,23 +186,13 @@ void CVideoEngine::updateActiveArea(const GsRect<Uint16>& displayRes,
         {
             mActiveAreaRect.dim.y = scaleFactor*m_VidConfig.mGameRect.dim.y;
             mActiveAreaRect.dim.x = scaleFactor*m_VidConfig.mGameRect.dim.x;
-
-            const GsVec2D<int> dRes(displayRes.dim);
-            const GsVec2D<int> activeArea(mActiveAreaRect.dim);
-
-            auto diff =
-                 (dRes.y*activeArea.x)/dRes.x-activeArea.y;
-            diff = std::max(diff, 0);
-            mActiveAreaRect.pos.x = 0;
-            mActiveAreaRect.pos.y = (diff)/2;
         }
         else
         {
             mActiveAreaRect.dim.x = displayRes.dim.x;
-            mActiveAreaRect.dim.y = (displayRes.dim.x*aspHeight)/aspWidth;
-
-            mActiveAreaRect.pos = (displayRes.dim-mActiveAreaRect.dim)/2;
+            mActiveAreaRect.dim.y = (displayRes.dim.x*aspHeight)/aspWidth;            
         }
+        mActiveAreaRect.pos = (displayRes.dim-mActiveAreaRect.dim)/2;
     }    
 }
 
