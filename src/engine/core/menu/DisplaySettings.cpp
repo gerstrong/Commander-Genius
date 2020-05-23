@@ -228,7 +228,7 @@ void DisplaySettings::release()
     mMyNewConf.mFullscreen = mpFullScreenSwitch->isEnabled();
 
     // Integer Scaling
-    mMyNewConf.mIntegerScaling = mpIntegerScalingSwitch->isEnabled();
+    mMyNewConf.mIntegerScaling = mpIntegerScalingSwitch->isEnabled();    
 
     // Read correct resolution
     {

@@ -178,6 +178,7 @@ bool CSettings::loadDrvCfg()
 
     config.ReadKeyword("Video", "fullscreen", &vidConf.mFullscreen, false);
     config.ReadKeyword("Video", "integerScaling", &vidConf.mIntegerScaling, true);
+
     config.ReadInteger("Video", "scale", &value, 1);
     vidConf.Zoom = static_cast<unsigned short>(value);
 

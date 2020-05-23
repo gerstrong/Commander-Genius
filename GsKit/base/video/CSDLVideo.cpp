@@ -155,7 +155,26 @@ bool CSDLVideo::resizeDisplayScreen(const GsRect<Uint16>& newDim)
                                  mActiveAreaRect.dim.x,
                                  mActiveAreaRect.dim.y);
 
-        SDL_RenderSetViewport(renderer, nullptr);
+
+        if(m_VidConfig.mIntegerScaling)
+        {
+            SDL_RenderSetIntegerScale(renderer, SDL_TRUE);
+        }
+        else
+        {
+            SDL_RenderSetIntegerScale(renderer, SDL_FALSE);
+        }
+
+        //SDL_RenderSetViewport(renderer, nullptr);
+
+        SDL_Rect viewport;
+        SDL_RenderGetViewport(renderer, &viewport);
+
+        int dimx, dimy;
+        SDL_RenderGetLogicalSize(renderer, &dimx, &dimy);
+
+        mActiveAreaRect.pos.x = (viewport.w-dimx)/2;
+        mActiveAreaRect.pos.y = (viewport.h-dimy)/2;
     }
 #else
     mDisplaySfc.setPtr(SDL_SetVideoMode( mActiveAreaRect.dim.x,
@@ -272,11 +291,6 @@ void CSDLVideo::transformScreenToDisplay()
 
 
 
-    const GsVec2D<int> rotPt = mActiveAreaRect.pos + mActiveAreaRect.dim/2;
-
-    SDL_Rect mainDstrect = mActiveAreaRect.SDLRect();
-
-
     auto RenderCopy = [&] (SDL_Renderer * local_renderer,
                            SDL_Texture * local_texture,
                            const SDL_Rect * local_srcrect,
@@ -330,7 +344,9 @@ void CSDLVideo::transformScreenToDisplay()
 
     SDL_RenderClear(renderer);    
 
+    const GsVec2D<int> rotPt = mActiveAreaRect.pos + mActiveAreaRect.dim/2;
 
+    SDL_Rect mainDstrect = mActiveAreaRect.SDLRect();
     SDL_Point pt = {mainDstrect.h/2, mainDstrect.w/2};
 
     RenderCopy(renderer, mpMainScreenTexture.get(),

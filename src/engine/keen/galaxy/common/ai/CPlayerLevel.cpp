@@ -263,7 +263,7 @@ void CPlayerLevel::processRunning()
         else
         {
             xinertia = xDirection * 16;
-        }
+        }                
 
 		yinertia = -90;
         /*nextX = */nextY = 0;

@@ -169,11 +169,6 @@ void CVideoEngine::updateActiveArea(const GsRect<Uint16>& displayRes,
         {
             mActiveAreaRect.dim.y = scaleFactor*m_VidConfig.mGameRect.dim.y;
             mActiveAreaRect.dim.x = scaleFactor*m_VidConfig.mGameRect.dim.x;
-
-            const auto diff =
-                 (displayRes.dim.x*mActiveAreaRect.dim.y)/displayRes.dim.y-mActiveAreaRect.dim.x;
-            mActiveAreaRect.pos.x = (diff)/2;
-            mActiveAreaRect.pos.y = 0;
         }
         else
         {
@@ -191,19 +186,13 @@ void CVideoEngine::updateActiveArea(const GsRect<Uint16>& displayRes,
         {
             mActiveAreaRect.dim.y = scaleFactor*m_VidConfig.mGameRect.dim.y;
             mActiveAreaRect.dim.x = scaleFactor*m_VidConfig.mGameRect.dim.x;
-
-            const auto diff =
-                 (displayRes.dim.y*mActiveAreaRect.dim.x)/displayRes.dim.x-mActiveAreaRect.dim.y;
-            mActiveAreaRect.pos.x = 0;
-            mActiveAreaRect.pos.y = (diff)/2;
         }
         else
         {
             mActiveAreaRect.dim.x = displayRes.dim.x;
-            mActiveAreaRect.dim.y = (displayRes.dim.x*aspHeight)/aspWidth;
-
-            mActiveAreaRect.pos = (displayRes.dim-mActiveAreaRect.dim)/2;
+            mActiveAreaRect.dim.y = (displayRes.dim.x*aspHeight)/aspWidth;            
         }
+        mActiveAreaRect.pos = (displayRes.dim-mActiveAreaRect.dim)/2;
     }    
 }
 

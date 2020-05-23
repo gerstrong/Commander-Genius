@@ -276,42 +276,77 @@ void CPlayerBase::processInput()
 	mPlaycontrol[PA_X] = 0;
 	mPlaycontrol[PA_Y] = 0;
 
+    const auto isAnalog = gInput.isAnalog(mPlayerCtrlNum);
+
+    const int maxMotionVal = 100;
+
+    auto procAnalogMovements = [&](const int player,
+                                   const int command,
+                                   const int maxVal) -> int
+    {
+        if(!isAnalog || !gInput.isJoystickAssgmnt(player, command) )
+            return maxVal;
+
+        return gInput.getJoyValue(player, command);
+    };
+
     if(gInput.getHoldedCommand(mPlayerCtrlNum, IC_LEFT))
-		mPlaycontrol[PA_X] -= 100;
+    {
+        const int newval = procAnalogMovements(mPlayerCtrlNum,
+                                               IC_LEFT, -maxMotionVal);
+        mPlaycontrol[PA_X] += newval;
+    }
     else if(gInput.getHoldedCommand(mPlayerCtrlNum, IC_RIGHT))
-		mPlaycontrol[PA_X] += 100;
+    {
+        const int newval = procAnalogMovements(mPlayerCtrlNum,
+                                               IC_RIGHT, maxMotionVal);
+        mPlaycontrol[PA_X] += newval;
+    }
 
     if(gInput.getHoldedCommand(mPlayerCtrlNum, IC_DOWN))
-		mPlaycontrol[PA_Y] += 100;
+    {
+        const int newval = procAnalogMovements(mPlayerCtrlNum,
+                                               IC_DOWN, maxMotionVal);
+        mPlaycontrol[PA_Y] += newval;
+    }
+
     else if(gInput.getHoldedCommand(mPlayerCtrlNum, IC_UP))
-		mPlaycontrol[PA_Y] -= 100;
+    {
+        const int newval = procAnalogMovements(mPlayerCtrlNum,
+                                               IC_UP, -maxMotionVal);
+        mPlaycontrol[PA_Y] += newval;
+    }
 
     if(gInput.getHoldedCommand(mPlayerCtrlNum, IC_UPPERLEFT))
 	{
-		mPlaycontrol[PA_X] -= 100;
-		mPlaycontrol[PA_Y] -= 100;
+        mPlaycontrol[PA_X] -= maxMotionVal;
+        mPlaycontrol[PA_Y] -= maxMotionVal;
 	}
     else if(gInput.getHoldedCommand(mPlayerCtrlNum, IC_UPPERRIGHT))
 	{
-		mPlaycontrol[PA_X] += 100;
-		mPlaycontrol[PA_Y] -= 100;
+        mPlaycontrol[PA_X] += maxMotionVal;
+        mPlaycontrol[PA_Y] -= maxMotionVal;
 	}
     else if(gInput.getHoldedCommand(mPlayerCtrlNum, IC_LOWERLEFT))
 	{
-		mPlaycontrol[PA_X] -= 100;
-		mPlaycontrol[PA_Y] += 100;
+        mPlaycontrol[PA_X] -= maxMotionVal;
+        mPlaycontrol[PA_Y] += maxMotionVal;
 	}
     else if(gInput.getHoldedCommand(mPlayerCtrlNum, IC_LOWERRIGHT))
 	{
-		mPlaycontrol[PA_X] += 100;
-		mPlaycontrol[PA_Y] += 100;
+        mPlaycontrol[PA_X] += maxMotionVal;
+        mPlaycontrol[PA_Y] += maxMotionVal;
 	}
 
-    mPlaycontrol[PA_JUMP]   = gInput.getHoldedCommand(mPlayerCtrlNum, IC_JUMP)   ? 1 : 0;
-    mPlaycontrol[PA_POGO]   = gInput.getHoldedCommand(mPlayerCtrlNum, IC_POGO)   ? 1 : 0;
-    mPlaycontrol[PA_RUN]  = gInput.getHoldedCommand(mPlayerCtrlNum, IC_RUN)   ? 1 : 0;
+    mPlaycontrol[PA_JUMP] =
+            gInput.getHoldedCommand(mPlayerCtrlNum, IC_JUMP) ? 1 : 0;
+    mPlaycontrol[PA_POGO] =
+            gInput.getHoldedCommand(mPlayerCtrlNum, IC_POGO) ? 1 : 0;
+    mPlaycontrol[PA_RUN]  =
+            gInput.getHoldedCommand(mPlayerCtrlNum, IC_RUN)  ? 1 : 0;
 
-	// The possibility to charge jumps. This is mainly used for the pogo. it is limited to 50
+    // The possibility to charge jumps.
+    // This is mainly used for the pogo. it is limited to 50
 	if( mPlaycontrol[PA_JUMP] > 50) mPlaycontrol[PA_JUMP] = 50;
 
 	// Two button firing process
@@ -337,7 +372,8 @@ void CPlayerBase::processInput()
 	}
 	else
 	{
-        mPlaycontrol[PA_FIRE] = gInput.getHoldedCommand(mPlayerCtrlNum, IC_FIRE) ? 1 : 0;
+        mPlaycontrol[PA_FIRE] =
+                gInput.getHoldedCommand(mPlayerCtrlNum, IC_FIRE) ? 1 : 0;
 	}
 }
 
@@ -478,7 +514,64 @@ void CPlayerBase::processLevelMiscFlagsCheck()
 	}
 }
 
+// This new function will setup the sprite based on the Action format
+bool CPlayerBase::processActionRoutine()
+{
+    mEndOfAction = false;
+    setActionSprite();
 
+    int h_mov = m_Action.h_anim_move<<1;
+
+    const int pax = mPlaycontrol[PA_X];
+
+    if(pax < 0)
+    {
+        h_mov = (h_mov*pax) / -100;
+    }
+    else if(pax > 0)
+    {
+        h_mov = (h_mov*pax) / 100;
+    }
+
+    if( m_Action.movement_param > 0 )
+    {
+        if(xDirection == LEFT )
+            moveLeft( h_mov );
+        else if(xDirection == RIGHT )
+            moveRight( h_mov );
+
+        if(yDirection == UP)
+            moveUp( m_Action.v_anim_move<<1 );
+        else if(yDirection == DOWN)
+            moveDown( m_Action.v_anim_move<<1 );
+    }
+
+    if(mEndOfAction)
+        return false;
+
+
+    // Calculate this timer correctly to the applied LPS value
+    if(m_Action.delay)
+    {
+        if( m_ActionTicker > m_Action.delay )
+        {
+            if(m_Action.Next_action)
+            {
+                m_Action.setNextActionFormat();
+            }
+            else
+            {
+                mEndOfAction = true;
+            }
+
+            m_ActionTicker = 0;
+        }
+
+        m_ActionTicker++;
+    }
+
+    return !mEndOfAction;
+}
 
 void CPlayerBase::guideToTarget(const GsVec2D<int> &speed)
 {

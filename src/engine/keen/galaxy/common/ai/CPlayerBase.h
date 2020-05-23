@@ -189,6 +189,8 @@ namespace galaxy
     void playWalkSound();
 
 
+    bool processActionRoutine() override;
+
     /**
          * Make keen move with x/y speed move towards a target which is held in the variable "mTarget"
          * it only moves towards, this routines is exec'd several times in order achieve a smooth transition.
