@@ -155,7 +155,7 @@ int main(int argc, char *argv[])
     if(!gAudio.init())
 	{
 		gLogging.textOut(FONTCOLORS::RED,"Failed to init the sound system...\n");
-		return 1;
+        //return 1;
 	}
 		
 
