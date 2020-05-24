@@ -194,23 +194,27 @@ bool GalaxyEngine::loadResources( const Uint8 flags )
             if( (mFlags & LOADGFX) == LOADGFX )
             {
                 // Decode the entire graphics for the game (Only EGAGRAPH.CK?)
+                gLogging.ftextOut("Loading graphics...\n<br>");
                 CEGAGraphicsGalaxy graphics;
                 if( !graphics.loadData() )
                 {
-                    gLogging << "Sorry, this graphics file is invalid! Quitting...";
+                    gLogging.ftextOut("Sorry, this graphics file is invalid! Quitting...\n<br>");
                     gEventManager.add( new GMQuit() );
                     return 0;
                 }
 
                 mLoader.setPermilage(400);
+                gLogging.ftextOut("Done Loading graphics...\n<br>");
             }
 
             if( (mFlags & LOADSTR) == LOADSTR )
             {
                 // load the strings.
+                gLogging.ftextOut("Loading game text...\n<br>");
                 CMessages Messages(p_exedata, Episode, ExeFile.isDemo(), version);
                 Messages.extractGlobalStringsUsingExe();
                 mLoader.setPermilage(450);
+                gLogging.ftextOut("Done game text...\n<br>");
             }
 
 

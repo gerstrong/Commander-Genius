@@ -188,6 +188,7 @@ bool CEGAGraphicsGalaxy::loadData()
 
     if(!begin())
     {
+        gLogging.ftextOut("Preparation for graphics decoding failed...\n<br>");
         return false;
     }
 
@@ -197,84 +198,103 @@ bool CEGAGraphicsGalaxy::loadData()
     // Important especially for masks, and later in the game for the behaviours
     // of those objects
     CTileLoader TileLoader;
+    gLogging.ftextOut("Initiating Tileloader...\n<br>");
     if(!TileLoader.load(curEpInfo.Num16Tiles,
                         curEpInfo.Num16MaskedTiles))
     {
+        gLogging.ftextOut("Initiating Tileloader failed.\n<br>");
         return false;
     }
 
-
+    gLogging.ftextOut("Loading EGA table ...\n<br>");
     if(!readTables())
     {
+        gLogging.ftextOut("Loading EGA table failed.\n<br>");
         return false;
     }
 
+    gLogging.ftextOut("Loading fonts ...\n<br>");
     if(!readfonts())
     {
+        gLogging.ftextOut("Loading fonts failed.\n<br>");
         return false;
     }
 
+    gLogging.ftextOut("Loading bitmaps ...\n<br>");
     if(!readBitmaps())
     {
+        gLogging.ftextOut("Loading bitmaps failed.\n<br>");
         return false;
     }
 
+    gLogging.ftextOut("Loading masked bitmaps ...\n<br>");
     if(!readMaskedBitmaps())
     {
+        gLogging.ftextOut("Loading masked bitmaps failed.\n<br>");
         return false;
     }
 
     gGraphics.createEmptyTilemaps(4);
 
+    gLogging.ftextOut("Loading 16x16 tiles ...\n<br>");
     if(!readTilemaps(curEpInfo.Num16Tiles, 4, 18,
                      curEpInfo.Index16Tiles,
                      gGraphics.getTileMap(0), false))
     {
+        gLogging.ftextOut("Loading 16x16 tiles.\n<br>");
         return false;
     }
 
-
+    gLogging.ftextOut("Loading 16x16 masked tiles ...\n<br>");
     if(!readMaskedTilemaps(curEpInfo.Num16MaskedTiles, 4, 18,
                            curEpInfo.Index16MaskedTiles,
                            gGraphics.getTileMap(1), false))
     {
+        gLogging.ftextOut("Loading 16x16 masked tiles failed.\n<br>");
         return false;
     }
 
-
+    gLogging.ftextOut("Loading 8x8 tiles ...\n<br>");
     if(!readTilemaps(curEpInfo.Num8Tiles, 3, 1,
                      curEpInfo.Index8Tiles,
                      gGraphics.getTileMap(2), true))
     {
+        gLogging.ftextOut("Loading 8x8 tiles failed.\n<br>");
         return false;
     }
 
 
+    gLogging.ftextOut("Loading 8x8 masked tiles ...\n<br>");
     if(!readMaskedTilemaps(curEpInfo.Num8MaskedTiles, 3, 1,
                            curEpInfo.Index8MaskedTiles,
                            gGraphics.getTileMap(3), true))
     {
+        gLogging.ftextOut("Loading 8x8 masked tiles failed.\n<br>");
         return false;
     }
 
-
+    gLogging.ftextOut("Loading sprites ...\n<br>");
     if(!readSprites( curEpInfo.NumSprites,
                      curEpInfo.IndexSprites ))
     {
+        gLogging.ftextOut("Loading sprites failed.\n<br>");
         return false;
     }
 
 
+    gLogging.ftextOut("Loading game texts ...\n<br>");
     if(!readTexts())
     {
+        gLogging.ftextOut("Loading game texts failed.\n<br>");
         return false;
     }
 
 
     //k456_export_texts();
-
+    gLogging.ftextOut("Loading misc stuff ...\n<br>");
     if( !readMiscStuff() )
     {
+        gLogging.ftextOut("Loading misc stuff failed.\n<br>");
         return false;
     }
 
@@ -282,11 +302,12 @@ bool CEGAGraphicsGalaxy::loadData()
     //k456_export_end();
 
     // Now try to store a preview if possible
-    // Create an intro in case it does not exist yet
+    // Create an intro in case it does not exist yet    
     const std::string  &path = gKeenFiles.gameDir;
     std::string fullpath = getResourceFilename("preview.bmp", path, false);
     if( fullpath == "" )
     {   // Not found create it
+        gLogging.ftextOut("Extracting preview picture...\n<br>");
         fullpath = JoinPaths(path, "preview.bmp");
         fullpath = GetWriteFullFileName(fullpath, true);
         GsBitmap *pBitmap = gGraphics.getBitmapFromStr(0, "TITLE");
@@ -662,6 +683,7 @@ bool CEGAGraphicsGalaxy::begin()
         filename =  JoinPaths(gamedir, gKeenFiles.egadictFilename);
     }
 
+    gLogging.ftextOut("Loading graphics dictionary ...\n<br>");
 
     if( IsFileAvailable(filename) )
     {
@@ -695,6 +717,7 @@ bool CEGAGraphicsGalaxy::begin()
     }
 
 
+    gLogging.ftextOut("Looking for EGA head ...\n<br>");
     // Now we go for EGAHEAD
     if(!readEGAHead())
     {
@@ -750,6 +773,7 @@ bool CEGAGraphicsGalaxy::begin()
     auto &info = EpisodeInfo[epIdx];
 
     // Now lets decompress the graphics
+    gLogging.ftextOut("Decompressing graphics ...\n<br>");
     auto offPtr = m_egahead.begin();
     for(size_t i = 0 ; offPtr != m_egahead.end() ; offPtr++, i++)
     {
