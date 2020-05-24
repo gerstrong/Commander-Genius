@@ -111,7 +111,7 @@ int ThreadPool::threadWrapper(void* param)
         gLogging.textOut("Running Thread: " + data->name);
 		data->ret = act->handle();
 		delete act;
-        gLogging.textOut( data->name + " [finished]" );
+        gLogging.textOut( data->name + " [finished]\n<br>" );
 		SDL_mutexP(data->pool->mutex);
 		data->finished = true;
 		SDL_CondSignal(data->pool->threadStatusChanged);
