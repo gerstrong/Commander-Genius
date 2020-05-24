@@ -27,17 +27,17 @@
         #endif
 #endif
 
-/*
+
 #if defined(__APPLE__) || defined(IOAPI_NO_64)
 // In darwin and perhaps other BSD variants off_t is a 64 bit value, hence no need for specific 64 bit functions
 #define FOPEN_FUNC(filename, mode) fopen(filename, mode)
 #define FTELLO_FUNC(stream) ftello(stream)
 #define FSEEKO_FUNC(stream, offset, origin) fseeko(stream, offset, origin)
-#else*/
+#else
 #define FOPEN_FUNC(filename, mode) fopen64(filename, mode)
 #define FTELLO_FUNC(stream) ftello64(stream)
 #define FSEEKO_FUNC(stream, offset, origin) fseeko64(stream, offset, origin)
-//#endif
+#endif
 
 
 #include <stdio.h>
@@ -291,11 +291,10 @@ int do_list(unzFile uf)
 }
 
 
-int do_extract_currentfile(uf,popt_extract_without_path,popt_overwrite,password)
-    unzFile uf;
-    const int* popt_extract_without_path;
-    int* popt_overwrite;
-    const char* password;
+int do_extract_currentfile(unzFile uf,
+                           const int* popt_extract_without_path,
+                           int* popt_overwrite,
+                           const char* password)
 {
     char filename_inzip[256];
     char* filename_withoutpath;
@@ -456,13 +455,12 @@ int do_extract_currentfile(uf,popt_extract_without_path,popt_overwrite,password)
 
 int do_extract(unzFile uf,
                const int opt_extract_without_path,
-               const int opt_overwrite,
+               int opt_overwrite,
                const char* password)
 {
     uLong i;
     unz_global_info64 gi;
     int err;
-    //FILE* fout=NULL;
 
     err = unzGetGlobalInfo64(uf,&gi);
     if (err!=UNZ_OK)
@@ -470,9 +468,9 @@ int do_extract(unzFile uf,
 
     for (i=0;i<gi.number_entry;i++)
     {
-        if (do_extract_currentfile(uf,&opt_extract_without_path,
+        if ((err = do_extract_currentfile(uf,&opt_extract_without_path,
                                       &opt_overwrite,
-                                      password) != UNZ_OK)
+                                      password)) != UNZ_OK)
             break;
 
         if ((i+1)<gi.number_entry)
@@ -486,7 +484,7 @@ int do_extract(unzFile uf,
         }
     }
 
-    return 0;
+    return err;
 }
 
 int do_extract_onefile(unzFile uf,
