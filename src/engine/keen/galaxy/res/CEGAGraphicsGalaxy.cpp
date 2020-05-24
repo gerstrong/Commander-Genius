@@ -156,7 +156,9 @@ static EpisodeInfoStruct EpisodeInfo[] =
 
 CEGAGraphicsGalaxy::CEGAGraphicsGalaxy()
 {
+    gLogging.ftextOut("Preparing Bitmap and Sprite IDs ...\n<br>");
     createBitmapsIDs();
+    gLogging.ftextOut("Preparing Preparing Episode offset structure ...\n<br>");
     gBehaviorEngine.setEpisodeInfoStructPtr(EpisodeInfo);
 }
 
@@ -1548,7 +1550,8 @@ bool CEGAGraphicsGalaxy::readSprites( const size_t numSprites,
 
         // Special case for k6demo
         size_t spriteNameOffset = (ep == 4 ? 3 : ep);
-        sprite.setName(m_SpriteNameMap[spriteNameOffset][i]);
+        auto &sprNameRef = m_SpriteNameMap[spriteNameOffset];
+        sprite.setName(sprNameRef[i]);
 
         // std::string filename = std::string("/tmp/read_sprites_") + std::to_string(i) + std::string(".bmp");
         // SDL_SaveBMP(sfc, filename.c_str());

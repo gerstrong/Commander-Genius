@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 #include <array>
+#include <unordered_map>
 #include <map>
 #include <SDL.h>
 #include "fileio/CExeFile.h"
@@ -99,9 +100,8 @@ private:
 	std::vector<unsigned long> m_egahead;
 	std::vector<ChunkStruct> m_egagraph;
 
-
-    std::array<std::array<std::string, 1000>, 4> m_BitmapNameMap;
-    std::array<std::array<std::string, 1000>, 4> m_SpriteNameMap;
+    std::array<std::unordered_map<int, std::string>, 4> m_BitmapNameMap;
+    std::array<std::unordered_map<int, std::string>, 4> m_SpriteNameMap;
 };
 
 }
