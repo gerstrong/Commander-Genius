@@ -27,16 +27,17 @@
         #endif
 #endif
 
+/*
 #if defined(__APPLE__) || defined(IOAPI_NO_64)
 // In darwin and perhaps other BSD variants off_t is a 64 bit value, hence no need for specific 64 bit functions
 #define FOPEN_FUNC(filename, mode) fopen(filename, mode)
 #define FTELLO_FUNC(stream) ftello(stream)
 #define FSEEKO_FUNC(stream, offset, origin) fseeko(stream, offset, origin)
-#else
+#else*/
 #define FOPEN_FUNC(filename, mode) fopen64(filename, mode)
 #define FTELLO_FUNC(stream) ftello64(stream)
 #define FSEEKO_FUNC(stream, offset, origin) fseeko64(stream, offset, origin)
-#endif
+//#endif
 
 
 #include <stdio.h>
@@ -124,93 +125,66 @@ void change_file_date(const char *filename, uLong dosdate, tm_unz tmu_date)
 
 /* createDir and change_file_date are not 100 % portable
    As I don't know well Unix, I wait feedback for the unix portion */
-
-
-int createDir(dirname)
-    const char* dirname;
+int createDir(const char* dirname)
 {
     int ret=0;
 #if defined(WIN32) || defined(_WIN32)
     ret = _mkdir(dirname);
-#endif
-
-#if defined(__linux__) || __linux__
+#else
     ret = mkdir (dirname,0775);
-#endif
-
-#if defined(__APPLE__)
-    ret = mkdir (dirname,0775);
-#endif
+#endif    
     return ret;
 }
 
-int makedir (newdir)
-    char *newdir;
+int makedir (char *newdir)
 {
-  char *buffer ;
-  char *p;
-  int  len = (int)strlen(newdir);
+    char *buffer;
+    char *p;
+    int  len = (int)strlen(newdir);
 
-  if (len <= 0)
-    return 0;
+    if (len <= 0)
+        return 0;
 
-  buffer = (char*)malloc(len+1);
-        if (buffer==NULL)
-        {
-                printf("Error allocating memory\n");
-                return UNZ_INTERNALERROR;
-        }
-  strcpy(buffer,newdir);
-
-  if (buffer[len-1] == '/') {
-    buffer[len-1] = '\0';
-  }
-  if (createDir(buffer) == 0)
+    buffer = (char*)malloc(len+1);
+    if (buffer==NULL)
     {
-      free(buffer);
-      return 1;
+        printf("Error allocating memory\n");
+        return UNZ_INTERNALERROR;
+    }
+    strcpy(buffer,newdir);
+
+    if (buffer[len-1] == '/') {
+        buffer[len-1] = '\0';
+    }
+    if (createDir(buffer) == 0)
+    {
+        free(buffer);
+        return 1;
     }
 
-  p = buffer+1;
-  while (1)
+    p = buffer+1;
+    while (1)
     {
-      char hold;
+        char hold;
 
-      while(*p && *p != '\\' && *p != '/')
-        p++;
-      hold = *p;
-      *p = 0;
-      if ((createDir(buffer) == -1) && (errno == ENOENT))
+        while(*p && *p != '\\' && *p != '/')
+            p++;
+        hold = *p;
+        *p = 0;
+        if ((createDir(buffer) == -1) && (errno == ENOENT))
         {
-          printf("couldn't create directory %s\n",buffer);
-          free(buffer);
-          return 0;
+            printf("couldn't create directory %s\n",buffer);
+            free(buffer);
+            return 0;
         }
-      if (hold == 0)
-        break;
-      *p++ = hold;
+        if (hold == 0)
+            break;
+        *p++ = hold;
     }
-  free(buffer);
-  return 1;
+    free(buffer);
+    return 1;
 }
 
-void do_banner()
-{
-    printf("MiniUnz 1.01b, demo of zLib + Unz package written by Gilles Vollant\n");
-    printf("more info at http://www.winimage.com/zLibDll/unzip.html\n\n");
-}
-
-void do_help()
-{
-    printf("Usage : miniunz [-e] [-x] [-v] [-l] [-o] [-p password] file.zip [file_to_extr.] [-d extractdir]\n\n" \
-           "  -e  Extract without pathname (junk paths)\n" \
-           "  -x  Extract with pathname\n" \
-           "  -v  list files\n" \
-           "  -l  list files\n" \
-           "  -d  directory to extract into\n" \
-           "  -o  overwrite files without prompting\n" \
-           "  -p  extract crypted file using password\n\n");
-}
 
 void Display64BitsSize(ZPOS64_T n, int size_char)
 {
@@ -240,8 +214,7 @@ void Display64BitsSize(ZPOS64_T n, int size_char)
   printf("%s",&number[pos_string]);
 }
 
-int do_list(uf)
-    unzFile uf;
+int do_list(unzFile uf)
 {
     uLong i;
     unz_global_info64 gi;
@@ -481,11 +454,10 @@ int do_extract_currentfile(uf,popt_extract_without_path,popt_overwrite,password)
 }
 
 
-int do_extract(uf,opt_extract_without_path,opt_overwrite,password)
-    unzFile uf;
-    int opt_extract_without_path;
-    int opt_overwrite;
-    const char* password;
+int do_extract(unzFile uf,
+               int opt_extract_without_path,
+               int opt_overwrite,
+               const char* password)
 {
     uLong i;
     unz_global_info64 gi;
@@ -517,12 +489,12 @@ int do_extract(uf,opt_extract_without_path,opt_overwrite,password)
     return 0;
 }
 
-int do_extract_onefile(uf,filename,opt_extract_without_path,opt_overwrite,password)
-    unzFile uf;
-    const char* filename;
-    int opt_extract_without_path;
-    int opt_overwrite;
-    const char* password;
+int do_extract_onefile(unzFile uf,
+                       const char* filename,
+                       const int opt_extract_without_path,
+                       const int opt_overwrite,
+                       const char* password)
+
 {
     //int err = UNZ_OK;
     if (unzLocateFile(uf,filename,CASESENSITIVITY)!=UNZ_OK)
