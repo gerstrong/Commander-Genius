@@ -455,8 +455,8 @@ int do_extract_currentfile(uf,popt_extract_without_path,popt_overwrite,password)
 
 
 int do_extract(unzFile uf,
-               int opt_extract_without_path,
-               int opt_overwrite,
+               const int opt_extract_without_path,
+               const int opt_overwrite,
                const char* password)
 {
     uLong i;
@@ -596,7 +596,8 @@ int unzipFile(const char *input,
         }
 
         if (filename_to_extract == NULL)
-            ret_value = do_extract(uf, opt_do_extract_withoutpath, dirname, opt_overwrite, password);
+            //ret_value = do_extract(uf, opt_do_extract_withoutpath, dirname, opt_overwrite, password);
+            ret_value = do_extract(uf, opt_do_extract_withoutpath,  opt_overwrite, password);
         else
             ret_value = do_extract_onefile(uf, filename_to_extract, opt_do_extract_withoutpath, opt_overwrite, password);
     }
