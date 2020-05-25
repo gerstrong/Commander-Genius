@@ -371,6 +371,23 @@ together if you want to develop CG further
  * make
 
 
+ -> CG using Mac Ports
+ * Install Mac ports: https://www.macports.org/install.php
+ * Open up terminal and execute:
+ * Install dependencies:
+   sudo port libsdl2 libsdl2_mixer libsdl2_image libsdl2_ttf libsdl2_mixer boost curl git cmake
+   You might be asked for the installation of Xcode assets. Please confirm that dialog.
+ * cd into a directory where you want to clone the sources:
+   git clone https://gitlab.com/Dringgstein/Commander-Genius.git
+ * Create your build directory:
+   mkdir CG-Build
+   cd CG-Build
+ * Prepare your Build: cmake ../Commander-Genius
+ * And build it: make
+ * If everything went well, go into src and execute it:
+   cd src
+   ./CGeniusExe
+
 We also provide CMake for Wiz, if you want to compile it for embedded systems.
 We had support for Linux and Win32, but since there is a bug when built for a
 different Linux build (32-bit or 64-bit) we only use it for embedded systems.

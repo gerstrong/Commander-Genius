@@ -93,6 +93,11 @@ if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/GsKit/CMakeLists.txt")
 
 endif()
 
+IF(APPLE)
+    # At least it works with Mac ports
+    # Otherwise SDL2 won't be found
+    link_directories(/opt/local/lib/)
+ENDIF(APPLE)
 
 # And build Commander Genius on top of that!
 add_subdirectory("src")
