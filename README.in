@@ -371,7 +371,7 @@ together if you want to develop CG further
  * make
 
 
- -> CG using Mac Ports
+ -> Build CG using Mac Ports (For MacOS Systems)
  * Install Mac ports. You can download it here: https://www.macports.org/install.php
  * Open up a terminal.
  * Install some dependencies:
