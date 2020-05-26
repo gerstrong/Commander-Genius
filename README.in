@@ -371,21 +371,23 @@ together if you want to develop CG further
  * make
 
 
- -> Build CG using Mac Ports (For MacOS Systems)
- * Install Mac ports. You can download it here: https://www.macports.org/install.php
- * Open up a terminal.
+ -> Build CG using Mac Ports (for MacOS Systems)
+ * Install Mac Ports. You can download it here: https://www.macports.org/install.php
+ * Open up a terminal
  * Install some dependencies:
    sudo port libsdl2 libsdl2_mixer libsdl2_image libsdl2_ttf libsdl2_mixer boost curl git cmake
  * You might get a dialog asking for the installation of Xcode dependencies. Please confirm that dialog.
  * You also will be asked for the installation of more dependencies. You need to confirm all that.
  * cd into a directory where you want to clone the sources:
    git clone https://gitlab.com/Dringgstein/Commander-Genius.git
- * Now you should have a directory called "Commander-Genius". It contains the source code. You can verify that with ls
- * Create your build directory:
+ * Now you should have a directory called "Commander-Genius". It contains the source code. You can verify that with "ls"
+ * Create your build directory and cd into it:
    mkdir CG-Build
    cd CG-Build
- * Prepare your Build: cmake ../Commander-Genius
- * And build it: make
+ * Prepare your build referencing to the sources you cloned:
+   cmake ../Commander-Genius
+ * And build it:
+   make
  * If everything went well, go into src and execute it:
    cd src
    ./CGeniusExe
