@@ -46,9 +46,11 @@ class CExeFile {
      * @brief readData  Attempt to read the data of the given episode
      * @param episode   Episode for which to read for
      * @param datadirectory path where the data is located
+     * @param fileList passing a filelist will only consider
      * @return if everything went well true, otherwise false
      */
-    bool readData(const unsigned int episode, const std::string& datadirectory);
+    bool readData(const unsigned int episode,
+                  const std::string& datadirectory);
 
     /**
      * @brief readMainPythonScript Try to get a main python script load

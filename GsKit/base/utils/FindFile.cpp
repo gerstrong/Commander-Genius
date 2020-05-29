@@ -606,7 +606,8 @@ std::string GetFullFileName(const std::string& path,
     if(path == "") return GetFirstSearchPath();
 
     // Check if we have an absolute path
-    if(IsAbsolutePath(path)) {
+    if(IsAbsolutePath(path))
+    {
         std::string tmp;
         GetExactFileName(path, tmp);
         return tmp;

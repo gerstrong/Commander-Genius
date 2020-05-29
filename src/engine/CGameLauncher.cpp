@@ -351,73 +351,139 @@ std::string CGameLauncher::filterGameName(const std::string &path)
     return text;
 }
 
+struct ExecutableListFiller
+{
+    std::set<std::string> list;
+
+    bool operator() (const std::string& filename) {
+        std::string ext = GetFileExtension(filename);
+        if ( stringcaseequal(ext, "exe") ||
+             stringcaseequal(ext, "py") )
+        {
+            list.insert(stringtolower(filename));
+        }
+
+        return true;
+    }
+};
+
+
 bool CGameLauncher::scanExecutables(const std::string& path)
 {
     bool result = false;
 
     gLogging.ftextOut("Search: %s<br>", path.c_str() );
 
-    // Episode 1-6 and 7 stands for Keen Dreams
-    for(int i = 1; i <= 7; ++i)
+    // First compare which matches are possible,
+    // before you even try to open them in the loop.
+    ExecutableListFiller execlist;
+    FindFiles(execlist, path, false, FM_REG);
+
+    for(const auto &curFname : execlist.list)
     {
-		CExeFile executable;
-        // Load the exe into memory or a python script
-        if(!executable.readData(static_cast<unsigned int>(i), path))
+        int ep = -1;
+        bool isPy = false;
+
+        // Episode 1-6 and 7 stands for Keen Dreams
+        if(curFname.find("kdreams") != curFname.npos)
+            ep = 7;
+
+        for(int i = 1; i <= 6; ++i)
         {
-            if(!executable.readMainPythonScript(static_cast<unsigned int>(i),
-                                                path))
+            std::string keenName = "keen" + itoa(i) + "e.exe";
+            if(curFname.find(keenName) != curFname.npos)
             {
-                continue;
+                ep = i;
+                break;
+            }
+
+            keenName = "keen" + itoa(i) + ".exe";
+            if(curFname.find(keenName) != curFname.npos)
+            {
+                ep = i;
+                break;
+            }
+
+            keenName = "keen" + itoa(i) + ".py";
+            if(curFname.find(keenName) != curFname.npos)
+            {
+                ep = i;
+                isPy = true;
+                break;
+            }
+
+            keenName = "k" + itoa(i) + "demo.exe";
+            if(curFname.find(keenName) != curFname.npos)
+            {
+                ep = i;
+                break;
             }
         }
 
-		// Process the exe for type
-		GameEntry newentry;
-		newentry.crcpass = executable.getEXECrc();
+        if(ep < 0)
+            continue;
+
+        CExeFile executable;
+        // Load the exe into memory or a python script
+        if(isPy)
+        {
+            if(!executable.readMainPythonScript(static_cast<unsigned int>(ep),
+                                                path))
+                continue;
+        }
+        else
+        {
+            if(!executable.readData(static_cast<unsigned int>(ep), path))
+                continue;
+        }
+
+        // Process the exe for type
+        GameEntry newentry;
+        newentry.crcpass = executable.getEXECrc();
         newentry.version = static_cast<short>(executable.getEXEVersion());
-		newentry.supported = executable.Supported();
-        newentry.episode = static_cast<Uint16>(i);
-		newentry.demo = executable.isDemo();
-		newentry.path    = path;
-		newentry.exefilename = executable.getFileName();
-		// Check for an existing custom label for the menu
-		newentry.name    = scanLabels(executable.getFileName());
+        newentry.supported = executable.Supported();
+        newentry.episode = static_cast<Uint16>(ep);
+        newentry.demo = executable.isDemo();
+        newentry.path    = path;
+        newentry.exefilename = executable.getFileName();
+        // Check for an existing custom label for the menu
+        newentry.name    = scanLabels(executable.getFileName());
 
-		std::string verstr;
-		std::string gamespecstring = "Detected game Name: " + executable.getFileName();
-		if( newentry.version<=0 ) // Version couldn't be read!
-		{
-			verstr = "unknown";
-			gamespecstring += " (Unknown Version)<br>";
-		}
-		else
-		{
-			verstr = "v" + itoa(newentry.version/100) + "." + itoa(newentry.version%100);
-			gamespecstring += " Version: ";
-			gamespecstring += verstr;
-			gamespecstring += "<br>";
-		}
+        std::string verstr;
+        std::string gamespecstring = "Detected game Name: " + executable.getFileName();
+        if( newentry.version<=0 ) // Version couldn't be read!
+        {
+            verstr = "unknown";
+            gamespecstring += " (Unknown Version)<br>";
+        }
+        else
+        {
+            verstr = "v" + itoa(newentry.version/100) + "." + itoa(newentry.version%100);
+            gamespecstring += " Version: ";
+            gamespecstring += verstr;
+            gamespecstring += "<br>";
+        }
 
 
 
-		if( newentry.name.length() <= 0 )
-		{
+        if( newentry.name.length() <= 0 )
+        {
             newentry.name = filterGameName(newentry.path);
-		}
+        }
 
-		// Save the type information about the exe
-		m_Entries.push_back(newentry);
+        // Save the type information about the exe
+        m_Entries.push_back(newentry);
 
         gLogging.textOut(gamespecstring);
 
-		// The original episode 1 exe is needed to load gfx's for game launcher menu
-		if ( m_ep1slot <= -1 && newentry.crcpass == true )
-		{
-			m_ep1slot = m_Entries.size()-1;
+        // The original episode 1 exe is needed to load gfx's for game launcher menu
+        if ( m_ep1slot <= -1 && newentry.crcpass == true )
+        {
+            m_ep1slot = m_Entries.size()-1;
             gLogging.ftextOut("   Using for in-game menu resources<br>" );
-		}
-		result = true;
-	}
+        }
+        result = true;
+    }
 
     return result;
 }
@@ -507,8 +573,6 @@ struct PatchListFiller
         return true;
     }
 };
-
-
 
 
 
