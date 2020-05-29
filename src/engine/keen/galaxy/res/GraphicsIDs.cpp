@@ -17,150 +17,161 @@ void CEGAGraphicsGalaxy::createBitmapsIDs()
 {
 	/// Set the bitmap names
 	// Keen 4 Bitmap IDs
-    m_BitmapNameMap[0][74]  = "HELP_UPPERBORDER";
-    m_BitmapNameMap[0][75]  = "HELP_LEFTBORDER";
-    m_BitmapNameMap[0][76]  = "HELP_RIGHTBORDER";
-    m_BitmapNameMap[0][77]  = "HELP_LOWERBORDERCONTROL";
-    m_BitmapNameMap[0][78]  = "HELP_LOWERBORDER";
-    m_BitmapNameMap[0][39]  = "HELPHAND";
-	m_BitmapNameMap[0][97]  = "KEENSWATCH";
-    m_BitmapNameMap[0][102] = "STARWARS";
-	m_BitmapNameMap[0][103] = "TITLE";
-	m_BitmapNameMap[0][105] = "KEENTALKING";
-    m_BitmapNameMap[0][106] = "KEENTHUMBSUP";
-    m_BitmapNameMap[0][109] = "KEENTHUMBSUPLOADING";
-    m_BitmapNameMap[0][110] = "KEENTHUMBSUPLOADING1";
-    m_BitmapNameMap[0][111] = "KEENTHUMBSUPLOADING2";
-    m_BitmapNameMap[0][112] = "KEENTHUMBSUPLOADING3";
-    m_BitmapNameMap[0][113] = "KEENTHUMBSUPLOADING4";
-    m_BitmapNameMap[0][114] = "KEENTHUMBSUPLOADING5";
-    m_SpriteNameMap[0][129] = "HUDBACKGROUND";
+    auto &keen4bmpName = m_BitmapNameMap[0];
+    auto &keen4sprName = m_SpriteNameMap[0];
+
+    keen4bmpName[74]  = "HELP_UPPERBORDER";
+    keen4bmpName[75]  = "HELP_LEFTBORDER";
+    keen4bmpName[76]  = "HELP_RIGHTBORDER";
+    keen4bmpName[77]  = "HELP_LOWERBORDERCONTROL";
+    keen4bmpName[78]  = "HELP_LOWERBORDER";
+    keen4bmpName[39]  = "HELPHAND";
+    keen4bmpName[97]  = "KEENSWATCH";
+    keen4bmpName[102] = "STARWARS";
+    keen4bmpName[103] = "TITLE";
+    keen4bmpName[105] = "KEENTALKING";
+    keen4bmpName[106] = "KEENTHUMBSUP";
+    keen4bmpName[109] = "KEENTHUMBSUPLOADING";
+    keen4bmpName[110] = "KEENTHUMBSUPLOADING1";
+    keen4bmpName[111] = "KEENTHUMBSUPLOADING2";
+    keen4bmpName[112] = "KEENTHUMBSUPLOADING3";
+    keen4bmpName[113] = "KEENTHUMBSUPLOADING4";
+    keen4bmpName[114] = "KEENTHUMBSUPLOADING5";
+    keen4sprName[129] = "HUDBACKGROUND";
 
 	// Menu Labels
-	m_BitmapNameMap[0][82] = "MAINMENULABEL";
-	m_BitmapNameMap[0][83] = "NEWGAMELABEL";
-	m_BitmapNameMap[0][84] = "LOADMENULABEL";
-	m_BitmapNameMap[0][85] = "SAVEMENULABEL";
-	m_BitmapNameMap[0][86] = "CONFIGMENULABEL";
-	m_BitmapNameMap[0][87] = "SNDEFFMENULABEL";
-	m_BitmapNameMap[0][88] = "MUSICMENULABEL";
-	m_BitmapNameMap[0][89] = "KEYBMENULABEL";
-	m_BitmapNameMap[0][90] = "MOVEMENULABEL";
-	m_BitmapNameMap[0][91] = "BUTTONMENULABEL";
-	m_BitmapNameMap[0][92] = "JOYMENULABEL";
-	m_BitmapNameMap[0][93] = "OPTIONSMENULABEL";
-	m_BitmapNameMap[0][94] = "PADDLELABEL";
-	m_BitmapNameMap[0][95] = "QUITLABEL";
+    keen4bmpName[82] = "MAINMENULABEL";
+    keen4bmpName[83] = "NEWGAMELABEL";
+    keen4bmpName[84] = "LOADMENULABEL";
+    keen4bmpName[85] = "SAVEMENULABEL";
+    keen4bmpName[86] = "CONFIGMENULABEL";
+    keen4bmpName[87] = "SNDEFFMENULABEL";
+    keen4bmpName[88] = "MUSICMENULABEL";
+    keen4bmpName[89] = "KEYBMENULABEL";
+    keen4bmpName[90] = "MOVEMENULABEL";
+    keen4bmpName[91] = "BUTTONMENULABEL";
+    keen4bmpName[92] = "JOYMENULABEL";
+    keen4bmpName[93] = "OPTIONSMENULABEL";
+    keen4bmpName[94] = "PADDLELABEL";
+    keen4bmpName[95] = "QUITLABEL";
 
 	/// Keen 5 Image IDs
 	// Bitmaps
-    m_BitmapNameMap[1][22]  = "HELP_UPPERBORDER";
-    m_BitmapNameMap[1][23]  = "HELP_LEFTBORDER";
-    m_BitmapNameMap[1][24]  = "HELP_RIGHTBORDER";
-    m_BitmapNameMap[1][25]  = "HELP_LOWERBORDERCONTROL";
-    m_BitmapNameMap[1][26]  = "HELP_LOWERBORDER";
-    m_BitmapNameMap[1][18] = "HELPHAND";
-    m_BitmapNameMap[1][81] = "STARWARS";
-	m_BitmapNameMap[1][82] = "TITLE";
-	m_BitmapNameMap[1][76] = "KEENSWATCH";
-	m_BitmapNameMap[1][85] = "KEENTHUMBSUP";
-    m_BitmapNameMap[1][86] = "KEENTHUMBSUPLOADING";
-    m_BitmapNameMap[1][87] = "KEENTHUMBSUPLOADING1";
-    m_BitmapNameMap[1][88] = "KEENTHUMBSUPLOADING2";
-    m_BitmapNameMap[1][89] = "KEENTHUMBSUPLOADING3";
-    m_BitmapNameMap[1][90] = "KEENTHUMBSUPLOADING4";
-    m_BitmapNameMap[1][91] = "KEENTHUMBSUPLOADING5";
+    auto &keen5bmpName = m_BitmapNameMap[1];
+    auto &keen5sprName = m_SpriteNameMap[1];
+
+    keen5bmpName[22]  = "HELP_UPPERBORDER";
+    keen5bmpName[23]  = "HELP_LEFTBORDER";
+    keen5bmpName[24]  = "HELP_RIGHTBORDER";
+    keen5bmpName[25]  = "HELP_LOWERBORDERCONTROL";
+    keen5bmpName[26]  = "HELP_LOWERBORDER";
+    keen5bmpName[18] = "HELPHAND";
+    keen5bmpName[81] = "STARWARS";
+    keen5bmpName[82] = "TITLE";
+    keen5bmpName[76] = "KEENSWATCH";
+    keen5bmpName[85] = "KEENTHUMBSUP";
+    keen5bmpName[86] = "KEENTHUMBSUPLOADING";
+    keen5bmpName[87] = "KEENTHUMBSUPLOADING1";
+    keen5bmpName[88] = "KEENTHUMBSUPLOADING2";
+    keen5bmpName[89] = "KEENTHUMBSUPLOADING3";
+    keen5bmpName[90] = "KEENTHUMBSUPLOADING4";
+    keen5bmpName[91] = "KEENTHUMBSUPLOADING5";
 
 	
 	// Sprites
-	m_SpriteNameMap[1][133] = "HUDBACKGROUND";
+    keen5sprName[133] = "HUDBACKGROUND";
 
 	/// Keen 6 Image IDs
 	// Bitmaps
-    m_BitmapNameMap[2][27] = "STARWARS";
-	m_BitmapNameMap[2][28] = "TITLE";
-	m_BitmapNameMap[2][20] = "KEENSWATCH";
-	m_BitmapNameMap[2][29] = "KEENTALKING";
-	m_BitmapNameMap[2][30] = "KEENTHUMBSUP";
-    m_BitmapNameMap[2][31] = "KEENTHUMBSUPLOADING";
-    m_BitmapNameMap[2][32] = "KEENTHUMBSUPLOADING1";
-    m_BitmapNameMap[2][33] = "KEENTHUMBSUPLOADING2";
-    m_BitmapNameMap[2][34] = "KEENTHUMBSUPLOADING3";
-    m_BitmapNameMap[2][35] = "KEENTHUMBSUPLOADING4";
-    m_BitmapNameMap[2][36] = "KEENTHUMBSUPLOADING5";
+    auto &keen6bmpName = m_BitmapNameMap[2];
+    auto &keen6sprName = m_SpriteNameMap[2];
+    keen6bmpName[27] = "STARWARS";
+    keen6bmpName[28] = "TITLE";
+    keen6bmpName[20] = "KEENSWATCH";
+    keen6bmpName[29] = "KEENTALKING";
+    keen6bmpName[30] = "KEENTHUMBSUP";
+    keen6bmpName[31] = "KEENTHUMBSUPLOADING";
+    keen6bmpName[32] = "KEENTHUMBSUPLOADING1";
+    keen6bmpName[33] = "KEENTHUMBSUPLOADING2";
+    keen6bmpName[34] = "KEENTHUMBSUPLOADING3";
+    keen6bmpName[35] = "KEENTHUMBSUPLOADING4";
+    keen6bmpName[36] = "KEENTHUMBSUPLOADING5";
 
-    m_BitmapNameMap[2][0] = "HELPHAND";
+    keen6bmpName[0] = "HELPHAND";
 	
 	// Sprites
-	m_SpriteNameMap[2][129] = "HUDBACKGROUND";
+    keen6sprName[129] = "HUDBACKGROUND";
 
 	/// Keen 6 demo Image IDs
 	// Bitmaps
-    m_BitmapNameMap[3][22] = "STARWARS";
-	m_BitmapNameMap[3][23] = "TITLE";
-	m_BitmapNameMap[3][15] = "KEENSWATCH";
-	m_BitmapNameMap[3][24] = "KEENTALKING";
-	m_BitmapNameMap[3][25] = "KEENTHUMBSUP";
-    m_BitmapNameMap[3][26] = "KEENTHUMBSUPLOADING";
-    m_BitmapNameMap[3][27] = "KEENTHUMBSUPLOADING1";
-    m_BitmapNameMap[3][28] = "KEENTHUMBSUPLOADING2";
-    m_BitmapNameMap[3][29] = "KEENTHUMBSUPLOADING3";
-    m_BitmapNameMap[3][30] = "KEENTHUMBSUPLOADING4";
-    m_BitmapNameMap[3][31] = "KEENTHUMBSUPLOADING5";
+    auto &keen6DemobmpName = m_BitmapNameMap[3];
+    auto &keen6DemosprName = m_SpriteNameMap[3];
+
+    keen6DemobmpName[22] = "STARWARS";
+    keen6DemobmpName[23] = "TITLE";
+    keen6DemobmpName[15] = "KEENSWATCH";
+    keen6DemobmpName[24] = "KEENTALKING";
+    keen6DemobmpName[25] = "KEENTHUMBSUP";
+    keen6DemobmpName[26] = "KEENTHUMBSUPLOADING";
+    keen6DemobmpName[27] = "KEENTHUMBSUPLOADING1";
+    keen6DemobmpName[28] = "KEENTHUMBSUPLOADING2";
+    keen6DemobmpName[29] = "KEENTHUMBSUPLOADING3";
+    keen6DemobmpName[30] = "KEENTHUMBSUPLOADING4";
+    keen6DemobmpName[31] = "KEENTHUMBSUPLOADING5";
 
     // The following is not right for k6demo, but here as a placeholder:
-    m_BitmapNameMap[3][0] = "HELPHAND";
+    keen6DemobmpName[0] = "HELPHAND";
 	
 	// Sprites
-	m_SpriteNameMap[3][129] = "HUDBACKGROUND";
+    keen6DemosprName[129] = "HUDBACKGROUND";
 
 	// Menu Labels
-	m_BitmapNameMap[1][61] = "MAINMENULABEL";
-	m_BitmapNameMap[1][62] = "NEWGAMELABEL";
-	m_BitmapNameMap[1][63] = "LOADMENULABEL";
-	m_BitmapNameMap[1][64] = "SAVEMENULABEL";
-	m_BitmapNameMap[1][65] = "CONFIGMENULABEL";
-	m_BitmapNameMap[1][66] = "SNDEFFMENULABEL";
-	m_BitmapNameMap[1][67] = "MUSICMENULABEL";
-	m_BitmapNameMap[1][68] = "KEYBMENULABEL";
-	m_BitmapNameMap[1][69] = "MOVEMENULABEL";
-	m_BitmapNameMap[1][70] = "BUTTONMENULABEL";
-	m_BitmapNameMap[1][71] = "JOYMENULABEL";
-	m_BitmapNameMap[1][72] = "OPTIONSMENULABEL";
-	m_BitmapNameMap[1][73] = "PADDLELABEL";
-	m_BitmapNameMap[1][74] = "QUITLABEL";
+    keen5bmpName[61] = "MAINMENULABEL";
+    keen5bmpName[62] = "NEWGAMELABEL";
+    keen5bmpName[63] = "LOADMENULABEL";
+    keen5bmpName[64] = "SAVEMENULABEL";
+    keen5bmpName[65] = "CONFIGMENULABEL";
+    keen5bmpName[66] = "SNDEFFMENULABEL";
+    keen5bmpName[67] = "MUSICMENULABEL";
+    keen5bmpName[68] = "KEYBMENULABEL";
+    keen5bmpName[69] = "MOVEMENULABEL";
+    keen5bmpName[70] = "BUTTONMENULABEL";
+    keen5bmpName[71] = "JOYMENULABEL";
+    keen5bmpName[72] = "OPTIONSMENULABEL";
+    keen5bmpName[73] = "PADDLELABEL";
+    keen5bmpName[74] = "QUITLABEL";
 
 	// Menu Labels
-	m_BitmapNameMap[2][5]  = "MAINMENULABEL";
-	m_BitmapNameMap[2][6]  = "NEWGAMELABEL";
-	m_BitmapNameMap[2][7]  = "LOADMENULABEL";
-	m_BitmapNameMap[2][8]  = "SAVEMENULABEL";
-	m_BitmapNameMap[2][9]  = "CONFIGMENULABEL";
-	m_BitmapNameMap[2][10] = "SNDEFFMENULABEL";
-	m_BitmapNameMap[2][11] = "MUSICMENULABEL";
-	m_BitmapNameMap[2][12] = "KEYBMENULABEL";
-	m_BitmapNameMap[2][13] = "MOVEMENULABEL";
-	m_BitmapNameMap[2][14] = "BUTTONMENULABEL";
-	m_BitmapNameMap[2][15] = "JOYMENULABEL";
-	m_BitmapNameMap[2][16] = "OPTIONSMENULABEL";
-	m_BitmapNameMap[2][17] = "PADDLELABEL";
-	m_BitmapNameMap[2][18] = "QUITLABEL";
+    keen6bmpName[5]  = "MAINMENULABEL";
+    keen6bmpName[6]  = "NEWGAMELABEL";
+    keen6bmpName[7]  = "LOADMENULABEL";
+    keen6bmpName[8]  = "SAVEMENULABEL";
+    keen6bmpName[9]  = "CONFIGMENULABEL";
+    keen6bmpName[10] = "SNDEFFMENULABEL";
+    keen6bmpName[11] = "MUSICMENULABEL";
+    keen6bmpName[12] = "KEYBMENULABEL";
+    keen6bmpName[13] = "MOVEMENULABEL";
+    keen6bmpName[14] = "BUTTONMENULABEL";
+    keen6bmpName[15] = "JOYMENULABEL";
+    keen6bmpName[16] = "OPTIONSMENULABEL";
+    keen6bmpName[17] = "PADDLELABEL";
+    keen6bmpName[18] = "QUITLABEL";
 
 	// Menu Labels (demo)
-	m_BitmapNameMap[3][0]  = "MAINMENULABEL";
-	m_BitmapNameMap[3][1]  = "NEWGAMELABEL";
-	m_BitmapNameMap[3][2]  = "LOADMENULABEL";
-	m_BitmapNameMap[3][3]  = "SAVEMENULABEL";
-	m_BitmapNameMap[3][4]  = "CONFIGMENULABEL";
-	m_BitmapNameMap[3][5]  = "SNDEFFMENULABEL";
-	m_BitmapNameMap[3][6]  = "MUSICMENULABEL";
-	m_BitmapNameMap[3][7]  = "KEYBMENULABEL";
-	m_BitmapNameMap[3][8]  = "MOVEMENULABEL";
-	m_BitmapNameMap[3][9]  = "BUTTONMENULABEL";
-	m_BitmapNameMap[3][10] = "JOYMENULABEL";
-	m_BitmapNameMap[3][11] = "OPTIONSMENULABEL";
-	m_BitmapNameMap[3][12] = "PADDLELABEL";
-	m_BitmapNameMap[3][13] = "QUITLABEL";
+    keen6DemobmpName[0]  = "MAINMENULABEL";
+    keen6DemobmpName[1]  = "NEWGAMELABEL";
+    keen6DemobmpName[2]  = "LOADMENULABEL";
+    keen6DemobmpName[3]  = "SAVEMENULABEL";
+    keen6DemobmpName[4]  = "CONFIGMENULABEL";
+    keen6DemobmpName[5]  = "SNDEFFMENULABEL";
+    keen6DemobmpName[6]  = "MUSICMENULABEL";
+    keen6DemobmpName[7]  = "KEYBMENULABEL";
+    keen6DemobmpName[8]  = "MOVEMENULABEL";
+    keen6DemobmpName[9]  = "BUTTONMENULABEL";
+    keen6DemobmpName[10] = "JOYMENULABEL";
+    keen6DemobmpName[11] = "OPTIONSMENULABEL";
+    keen6DemobmpName[12] = "PADDLELABEL";
+    keen6DemobmpName[13] = "QUITLABEL";
 
 }
 

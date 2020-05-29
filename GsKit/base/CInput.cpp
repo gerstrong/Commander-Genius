@@ -23,7 +23,7 @@
 #endif
 
 #if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
-#define MOUSEWRAPPER 1
+//#define MOUSEWRAPPER 1
 #endif
 
 CInput::~CInput()
@@ -1743,7 +1743,8 @@ static bool checkMousewrapperKey(int& key) {
 #ifdef MOUSEWRAPPER
 void CInput::processMouse()
 {
-	TouchButton* phoneButtons = getPhoneButtons(InputCommand);
+    /*
+    TouchButton* phoneButtons = getPhoneButtons(mInputCommands);
 
 	for(int i = 0; i < phoneButtonN; ++i) {
 		bool down = phoneButton_MouseIndex[i].size() > 0;
@@ -1756,7 +1757,7 @@ void CInput::processMouse()
 		// handle immediate keys
 		if(b.immediateIndex >= 0)
 			immediate_keytable[b.immediateIndex] = down;
-	}
+    }*/
 }
 #endif
 

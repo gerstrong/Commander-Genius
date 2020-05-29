@@ -169,6 +169,10 @@ else()
         Target_link_libraries(GsKit ${SDL_TTF_LIBRARY})
     endif()
     
+if(USE_SDL2)
+        message(STATUS "GsKit: SDL2_LIBRARY = ${SDL2_LIBRARY}")
+        message(STATUS "GsKit: SDL2IMAGE_LIBRARY = ${SDL2IMAGE_LIBRARY}")
+endif(USE_SDL2)
     
     IF(USE_OPENGL)
         # OpenGL stuff to link
@@ -176,4 +180,4 @@ else()
     ENDIF(USE_OPENGL)
     
     #cotire(GsKit)
-endif()    
+endif()

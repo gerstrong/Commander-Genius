@@ -6,6 +6,8 @@ else ( PKGCONFIG_FOUND AND NOT WIN32 )
     unset(ZLIB_FOUND)
 endif ( PKGCONFIG_FOUND AND NOT WIN32 )
 
+add_definitions(-DIOAPI_NO_64)
+
 if ( ZLIB_FOUND )
     set(CXXSRC miniunz.c)
     unset(HSRC)
