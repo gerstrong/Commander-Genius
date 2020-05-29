@@ -1,6 +1,9 @@
 v2.4.3:
 -------
 - Finally, loading the game list is much faster. Enjoy!
+- Integer scaling improvements
+- Fixes to the load of high-res tiles in keen5 and 6
+- Some bug fixes
 
 v2.4.2:
 -------

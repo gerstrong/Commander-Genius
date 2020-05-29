@@ -1358,7 +1358,10 @@ bool CEGAGraphicsGalaxy::readTilemaps( const size_t NumTiles, size_t pbasetilesi
     /// Let's see if there is a high colour tilemap we can load instead
     if(pbasetilesize == 4) // Only valid for the 16x16 tiles tilemap!
     {
-        Tilemap.loadHiresTile("gfx/4TIL0000", gamedir);
+        const int  episode = gKeenFiles.exeFile.getEpisode();
+        const std::string tilePath = "gfx/" + itoa(episode) + "TIL0000";
+
+        Tilemap.loadHiresTile(tilePath, gamedir);
     }
 
     // Optimize surfaces for the screen
@@ -1418,8 +1421,11 @@ bool CEGAGraphicsGalaxy::readMaskedTilemaps( size_t NumTiles, size_t pbasetilesi
     /// Let's see if there is a high colour tilemap we can load instead
     if(pbasetilesize == 4) // Only valid for the 16x16 tiles tilemap!
     {
+        const int  episode = gKeenFiles.exeFile.getEpisode();
+        const std::string tilePath = "gfx/" + itoa(episode) + "TIL0001";
+
         // Looking for high color pictures
-        if( Tilemap.loadHiresTile("gfx/4TIL0001", gamedir) )
+        if( Tilemap.loadHiresTile(tilePath, gamedir) )
         {
             Tilemap.applyGalaxyHiColourMask();
         }
