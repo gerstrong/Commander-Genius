@@ -385,7 +385,7 @@ together if you want to develop CG further
    mkdir CG-Build
    cd CG-Build
  * Prepare your build referencing to the sources you cloned:
-   cmake ../Commander-Genius
+   cmake ../Commander-Genius -DUSE_OPENGL=0
  * And build it:
    make
  * If everything went well, go into src and execute it:
