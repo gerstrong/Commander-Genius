@@ -12,6 +12,11 @@
 
 #include <boost/property_tree/ptree.hpp>
 #include <string>
+#include <map>
+
+template<typename T>
+struct identity { typedef T type; };
+
 
 namespace GsKit
 {
@@ -19,6 +24,7 @@ namespace GsKit
 
 /*
     typedef std::string path_type;
+    typedef std::string str_type;
 
     class ptree
     {
@@ -61,70 +67,147 @@ namespace GsKit
 
     public:
 
-        iterator begin()
+        auto begin()
         {
-            return iterator_begin;
-            //return mPtree.begin();
+            return mChildren.begin();
         }
-        const_iterator begin() const
+        auto end()
         {
-            return const_iterator_begin;
-            //return mPtree.begin();
-        }
-        iterator end()
-        {
-            return iterator_end;
-            //return mPtree.end();
-        }
-        const_iterator end() const
-        {
-            return const_iterator_end;
-            //return mPtree.end();
+            return mChildren.end();
         }
 
+        auto begin() const
+        {
+            return mChildren.begin();
+        }
+        auto end() const
+        {
+            return mChildren.end();
+        }
+
+
+        // --------- Add Section ----------
+
         template<class Type>
-        self_type &add(const path_type &path, const Type &value)
+        self_type &add(const path_type &path,
+                       const Type &value)
         {
             return add<Type>(path, value);
         }
 
+        // --------- Put Section ----------
+
+        self_type &put(const path_type &path,
+                       const str_type &value)
+        {
+            (void)path;
+            mData = value;
+            return *this;
+        }
+
+        self_type &put(const path_type &path,
+                       const char *value)
+        {
+            (void)path;
+            mData = value;
+            return *this;
+        }
+
 
         template<class Type>
-        self_type &put(const path_type &path, const Type &value)
+        self_type &put(const path_type &path,
+                       const Type &value)
         {
-            //return mPtree.put<Type>(path, value);
+            return put(path, std::to_string(value));
         }
 
-        template <class Ch>
-        Ch get(const path_type &path, const Ch *default_value) const
-        {
-            //return mPtree.get<Ch>(path, default_value);
-        }
 
-        template <class Ch>
-        Ch get(const path_type &path, const Ch &default_value) const
-        {
-            return mPtree.get<Ch>(path, default_value);
-        }
+        // --------- Get Section ----------
 
         template<class Type>
         Type get(const path_type &path) const
         {
-            return mPtree.get<Type>(path);
+            Type val = get<Type>(path, Type());
+            return val;
         }
 
-        self_type &get_child(const path_type &path)
+        template <class T1, class T2>
+        T1 get(const path_type &path,
+               const T2 &default_value) const
         {
-            return *this;
+            auto val = get<T1>(path, default_value, identity<T2>());
+            return val;
         }
+
+
+
+        template <class T1, class T2>
+        T1 get(const path_type &path,
+               const T2 &default_value,
+               identity<T2>) const
+        {
+            str_type defStr = std::to_string(default_value);
+            const str_type res = get_internal(path, defStr);
+            if(res.empty())
+            {
+                return T1(default_value);
+            }
+            else
+            {
+                return T1(std::stoi(res));
+            }
+        }
+
+
+        template <class T1>
+        T1 get(const path_type &path,
+               const str_type &default_value,
+               identity<str_type>) const
+        {
+            const str_type res = get_internal(path, default_value);
+            //return T1(std::stoi(res));
+            return T1();
+        }
+
+
+        str_type get_internal(const path_type &path,
+                              const str_type &default_value) const
+        {
+            // TODO: Code for the path var
+            if(mData.empty())
+                return default_value;
+            else
+                return mData;
+        }
+
 
         const self_type &get_child(const path_type &path) const
         {
             return *this;
         }
 
+
+        self_type &get_child(const path_type &path)
+        {
+            return mChildren.find(path)->second;
+        }
+
+
+        const self_type &add_child(const path_type &path,
+                                   const self_type &tree)
+        {
+            //mPtree.add_child(path, tree);
+            mChildren[path] = tree;
+            mChildren[path].add_child(path, tree);
+            return mChildren[path];
+        }
+
+
         // TODO: Should maybe become private
         boost::property_tree::ptree mPtree;
+
+        std::map<path_type, self_type> mChildren;
+        std::string mData;
     };
 */
 }

@@ -771,7 +771,7 @@ bool CSaveGameController::saveXMLTree(GsKit::ptree &pt)
         return false;
     }
 
-    write_xml( StateFile, pt, settings );
+    write_xml( StateFile, pt );
 
     return true;
 }
