@@ -2,7 +2,7 @@
 
 #include "../../common/ai/CPlayerBase.h"
 
-#include <boost/property_tree/ptree.hpp>
+#include <base/utils/property_tree/property_tree.h>
 
 /*
 $1B9EW  #Keen throw rope

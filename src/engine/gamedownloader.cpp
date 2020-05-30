@@ -15,8 +15,8 @@
 #include <SDL_image.h>
 #include <fileio/KeenFiles.h>
 
-#include <boost/property_tree/ptree.hpp>
-#include <boost/property_tree/xml_parser.hpp>
+#include <base/utils/property_tree/property_tree.h>
+#include <base/utils/property_tree/xml_parser.h>
 #include "../version.h"
 
 extern "C"

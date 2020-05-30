@@ -19,7 +19,7 @@
 #include <base/GsLogging.h>
 #include <base/video/CVideoDriver.h>
 
-#include <boost/property_tree/ptree.hpp>
+#include <base/utils/property_tree/property_tree.h>
 #include <base/utils/Base64.h>
 
 #include "GalaxyEngine.h"

@@ -7,7 +7,7 @@
 
 #include "CVarPlatform.h"
 
-#include <boost/property_tree/ptree.hpp>
+#include <base/utils/property_tree/property_tree.h>
 
 namespace galaxy {
 

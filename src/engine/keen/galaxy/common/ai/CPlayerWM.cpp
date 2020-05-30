@@ -23,7 +23,7 @@
 
 #include <array>
 
-#include <boost/property_tree/ptree.hpp>
+#include <base/utils/property_tree/property_tree.h>
 
 #include "engine/core/CBehaviorEngine.h"
 

@@ -12,7 +12,7 @@
 
 #include "CPlatform.h"
 
-#include <boost/property_tree/ptree_fwd.hpp>
+#include <base/utils/property_tree/property_tree_fwd.h>
 
 namespace galaxy
 {

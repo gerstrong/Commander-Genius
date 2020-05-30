@@ -14,9 +14,10 @@
 #include "engine/BgMsg.h"
 
 #include <ctime>
-#include <boost/property_tree/ptree.hpp>
-#include <boost/property_tree/xml_parser.hpp>
-#include <boost/version.hpp>
+#include <base/utils/property_tree/property_tree.h>
+
+#include <base/utils/property_tree/xml_parser.h>
+//#include <boost/version.hpp>
 
 #include "fileio/KeenFiles.h"
 

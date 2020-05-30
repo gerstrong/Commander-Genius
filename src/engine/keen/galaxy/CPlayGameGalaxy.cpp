@@ -10,7 +10,8 @@
 #include <base/video/CVideoDriver.h>
 #include <widgets/GsMenuController.h>
 #include <iostream>
-#include <boost/property_tree/ptree.hpp>
+
+#include <base/utils/property_tree/property_tree.h>
 
 #include "CPlayGameGalaxy.h"
 #include "common/CMapLoaderGalaxy.h"
