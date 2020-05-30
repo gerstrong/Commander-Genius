@@ -89,7 +89,7 @@ serialize(CSaveGameController &savedGame)
 
 void
 CPlayerWM::
-serialize(boost::property_tree::ptree &node)
+serialize(GsKit::ptree &node)
 {
     node.put("usedGrapplingHook", mUsedGrapplingHook);
 
@@ -98,7 +98,7 @@ serialize(boost::property_tree::ptree &node)
 }
 void
 CPlayerWM::
-deserialize(boost::property_tree::ptree &node)
+deserialize(GsKit::ptree &node)
 {
     mUsedGrapplingHook = node.get<bool>("usedGrapplingHook", false);
 

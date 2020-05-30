@@ -61,7 +61,7 @@ CGalaxySpriteObject(pmap, foeID, x, y, sprVar)
     performCollisions();
 }
 
-void AutoShot::deserialize(boost::property_tree::ptree &node)
+void AutoShot::deserialize(GsKit::ptree &node)
 {
     mTimer = node.get("<xmlattr>.timer", mTimer);
     auto &posNode = node.put("pos", "");
@@ -72,7 +72,7 @@ void AutoShot::deserialize(boost::property_tree::ptree &node)
     origin.y = originNode.get<Uint32>("<xmlattr>.y", origin.y);
 }
 
-void AutoShot::serialize(boost::property_tree::ptree &node)
+void AutoShot::serialize(GsKit::ptree &node)
 {
     node.put("<xmlattr>.timer", mTimer);
     auto &posNode = node.put("pos", "");

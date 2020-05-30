@@ -23,7 +23,7 @@ bool CPlayGameVorticon::loadXMLGameState()
     cleanup();
 
     /// Create tree
-    using boost::property_tree::ptree;
+    using GsKit::ptree;
     ptree pt;
 
     CSaveGameController &savedGame = gSaveGameController;
@@ -216,7 +216,7 @@ bool CPlayGameVorticon::loadXMLGameState()
 bool CPlayGameVorticon::saveXMLGameState()
 {
     /// Create tree
-    using boost::property_tree::ptree;
+    using GsKit::ptree;
     ptree pt;
 
     /// Create the nodes and store the data as needed

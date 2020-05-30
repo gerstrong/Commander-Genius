@@ -63,10 +63,10 @@ struct stItemGalaxy
 
 
     // Saves the inventory using the Savegamecontroller.
-    void operator>>(boost::property_tree::ptree &invNode);
+    void operator>>(GsKit::ptree &invNode);
 
     // This is for loading the game
-    void operator<<(boost::property_tree::ptree &invNode);
+    void operator<<(GsKit::ptree &invNode);
 
 };
 

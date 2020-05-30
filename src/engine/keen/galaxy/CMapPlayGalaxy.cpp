@@ -429,7 +429,7 @@ bool CMapPlayGalaxy::operator<<(CSaveGameController &savedGame)
 
 
 // Saves the level using the Savegamecontroller in XML.
-void CMapPlayGalaxy::operator>>(boost::property_tree::ptree &levelNode)
+void CMapPlayGalaxy::operator>>(GsKit::ptree &levelNode)
 {
     // Coding here
     const Uint16 level = mMap.getLevel();
@@ -503,7 +503,7 @@ void CMapPlayGalaxy::operator>>(boost::property_tree::ptree &levelNode)
 }
 
 // This is for loading the game
-void CMapPlayGalaxy::operator<<(boost::property_tree::ptree &levelNode)
+void CMapPlayGalaxy::operator<<(GsKit::ptree &levelNode)
 {
     int level = levelNode.get<int>("level", 0);
 

@@ -32,7 +32,7 @@ GameMenu(GsRect<float>(0.1f, 0.0f, 0.8f, 1.0f), style )
     for(int i=0 ; i<int(gSaveGameController.getMaxNumofSaveSlots()) ; i++)
 	{
 		std::string text = EMPTY_TEXT;
-        if(i < StateFileList.size())
+        if(i < int(StateFileList.size()))
             text = StateFileList.at(i);
 
         mpMenuDialog->add( new InputText(

@@ -30,9 +30,9 @@ struct stInventory
 
     bool canlooseitem[4] = {0,0,0,0};
 
-    void serialize(boost::property_tree::ptree &node);
+    void serialize(GsKit::ptree &node);
 
-    void deserialize(boost::property_tree::ptree &node);
+    void deserialize(GsKit::ptree &node);
 
 };
 

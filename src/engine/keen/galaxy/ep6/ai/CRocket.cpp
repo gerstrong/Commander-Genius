@@ -67,7 +67,7 @@ serialize(CSaveGameController &savedGame)
 
 void
 CRocket::
-serialize(boost::property_tree::ptree &node)
+serialize(GsKit::ptree &node)
 {
     auto &posNode = node.put("pos","");
     posNode.put("<xmlattr>.x", m_Pos.x);
@@ -80,7 +80,7 @@ serialize(boost::property_tree::ptree &node)
 
 void
 CRocket::
-deserialize(boost::property_tree::ptree &node)
+deserialize(GsKit::ptree &node)
 {
     auto &posNode = node.put("pos", "");
     m_Pos.x = posNode.get<Uint32>("<xmlattr>.x", m_Pos.x);

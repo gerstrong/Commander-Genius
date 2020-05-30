@@ -72,10 +72,10 @@ public:
 	bool operator<<(CSaveGameController &savedGame);
 
     // Saves the inventory using the Savegamecontroller.
-    void operator>>(boost::property_tree::ptree &levelNode);
+    void operator>>(GsKit::ptree &levelNode);
 
     // This is for loading the game
-    void operator<<(boost::property_tree::ptree &levelNode);
+    void operator<<(GsKit::ptree &levelNode);
 
 
 	CMap &getMapObj()

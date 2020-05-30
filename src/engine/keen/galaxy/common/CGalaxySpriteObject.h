@@ -48,8 +48,8 @@ public:
     virtual void deserialize(CSaveGameController &) {}
     virtual void serialize(CSaveGameController &) {}
 
-    virtual void serialize(boost::property_tree::ptree &) {}
-    virtual void deserialize(boost::property_tree::ptree &) {}
+    virtual void serialize(GsKit::ptree &) {}
+    virtual void deserialize(GsKit::ptree &) {}
 
 	// This is used for action format only
 	uint16_t mFoeID;

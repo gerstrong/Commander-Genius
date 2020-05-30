@@ -15,7 +15,6 @@
 
 #include <ctime>
 #include <base/utils/property_tree/property_tree.h>
-
 #include <base/utils/property_tree/xml_parser.h>
 //#include <boost/version.hpp>
 
@@ -554,7 +553,7 @@ std::string CSaveGameController::getSlotName(const std::string &filename)
 std::string CSaveGameController::getSlotNameXML(const std::string &filename)
 {
     /// Create tree
-    using boost::property_tree::ptree;
+    using GsKit::ptree;
     ptree pt;
 
     m_stateXMLfilename = filename;
@@ -752,15 +751,12 @@ bool CSaveGameController::save()
 
 
 
-bool CSaveGameController::saveXMLTree(boost::property_tree::ptree &pt)
+bool CSaveGameController::saveXMLTree(GsKit::ptree &pt)
 {
     // Write the xml-file
-    using boost::property_tree::ptree;
-#if BOOST_VERSION >= 105600
-    boost::property_tree::xml_writer_settings<std::string> settings('\t', 1);
-#else
-    boost::property_tree::xml_writer_settings<char> settings('\t', 1);
-#endif
+    using GsKit::ptree;
+
+    GsKit::xml_writer_settings settings('\t', 1);
 
     // The savegame internal name
     pt.put("GameState.<xmlattr>.name", m_statename);
@@ -781,10 +777,10 @@ bool CSaveGameController::saveXMLTree(boost::property_tree::ptree &pt)
 }
 
 
-bool CSaveGameController::loadXMLTree(boost::property_tree::ptree &pt)
+bool CSaveGameController::loadXMLTree(GsKit::ptree &pt)
 {
     // load the xml-file
-    using boost::property_tree::ptree;
+    using GsKit::ptree;
 
     std::ifstream StateFile;
     bool open = OpenGameFileR( StateFile, m_stateXMLfilename, std::ofstream::binary );

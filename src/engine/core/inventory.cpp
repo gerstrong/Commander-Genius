@@ -2,7 +2,7 @@
 #include "inventory.h"
 #include <base/utils/property_tree/property_tree.h>
 
-void stInventory::serialize(boost::property_tree::ptree &node)
+void stInventory::serialize(GsKit::ptree &node)
 {
     node.put("score", score);
     node.put("extralifeat", extralifeat);
@@ -27,7 +27,7 @@ void stInventory::serialize(boost::property_tree::ptree &node)
 }
 
 
-void stInventory::deserialize(boost::property_tree::ptree &node)
+void stInventory::deserialize(GsKit::ptree &node)
 {
     score = node.get<unsigned long>("score", 0);
     extralifeat = node.get<unsigned long>("extralifeat", 0);

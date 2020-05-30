@@ -179,7 +179,7 @@ void CInventory::operator>>(CSaveGameController &savedGame)
 	savedGame.encodeData(Item);
 }
 
-void CInventory::operator>>(boost::property_tree::ptree &invNode)
+void CInventory::operator>>(GsKit::ptree &invNode)
 {
     Item >> invNode;
     mAchievements >> invNode;
@@ -190,7 +190,7 @@ void CInventory::operator<<(CSaveGameController &savedGame)
 	savedGame.decodeData(Item);
 }
 
-void CInventory::operator<<(boost::property_tree::ptree &invNode)
+void CInventory::operator<<(GsKit::ptree &invNode)
 {
     Item << invNode;
     mAchievements << invNode;

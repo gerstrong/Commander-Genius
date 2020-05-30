@@ -64,14 +64,14 @@ m_destination(dest)
 
 }
 
-void CFlag::serialize(boost::property_tree::ptree &node)
+void CFlag::serialize(GsKit::ptree &node)
 {
   auto &posNode = node.put("position", "");
   posNode.put("<xmlattr>.x", m_Pos.x);
   posNode.put("<xmlattr>.y", m_Pos.y);
 }
 
-void CFlag::deserialize(boost::property_tree::ptree &node)
+void CFlag::deserialize(GsKit::ptree &node)
 {
     auto &posNode = node.put("position", "");
     m_Pos.x = posNode.get<int>("<xmlattr>.x", m_Pos.x);

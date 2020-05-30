@@ -104,7 +104,7 @@ mObjectPtrs(ObjectPtrs)
 
 void
 CPlayerLevel::
-deserialize(boost::property_tree::ptree &node)
+deserialize(GsKit::ptree &node)
 {
   mIsClimbing = node.get("isClimbing", false);
   mActionState =  KeenState();
@@ -112,7 +112,7 @@ deserialize(boost::property_tree::ptree &node)
 
 void
 CPlayerLevel::
-serialize(boost::property_tree::ptree &node)
+serialize(GsKit::ptree &node)
 {
   node.put("isClimbing", mIsClimbing);
 }

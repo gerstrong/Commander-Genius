@@ -196,7 +196,7 @@ int downloadFile(const std::string &filename, int &progress,
 
 #define TRACE_NODE(x) gLogging << #x"=" << x
 
-bool GameDownloader::readGamesNode(const boost::property_tree::ptree &pt)
+bool GameDownloader::readGamesNode(const GsKit::ptree &pt)
 {
     try
     {
@@ -255,7 +255,7 @@ bool GameDownloader::readGamesNode(const boost::property_tree::ptree &pt)
     return true;
 }
 
-bool GameDownloader::readLegacyCatalogue(const boost::property_tree::ptree &pt)
+bool GameDownloader::readLegacyCatalogue(const GsKit::ptree &pt)
 {
     try
     {
@@ -303,7 +303,7 @@ bool GameDownloader::readLegacyCatalogue(const boost::property_tree::ptree &pt)
 bool GameDownloader::loadCatalogue(const std::string &catalogueFile)
 {
     // Create an empty property tree object
-    using boost::property_tree::ptree;
+    using GsKit::ptree;
     ptree pt;
 
 

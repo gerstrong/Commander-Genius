@@ -49,9 +49,9 @@ void Achievements::addTask(const std::string &which,
 
 }
 
-void Achievements::operator>>(boost::property_tree::ptree &invNode)
+void Achievements::operator>>(GsKit::ptree &invNode)
 {
-    boost::property_tree::ptree achTree;
+    GsKit::ptree achTree;
 
     for(const auto &todo : mTodos)
     {
@@ -64,7 +64,7 @@ void Achievements::operator>>(boost::property_tree::ptree &invNode)
     invNode.add_child("achievements", achTree);
 }
 
-void Achievements::operator<<(boost::property_tree::ptree &invNode)
+void Achievements::operator<<(GsKit::ptree &invNode)
 {
     for(auto &node : invNode)
     {

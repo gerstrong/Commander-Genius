@@ -20,7 +20,7 @@ public:
 
     void serialize(CSaveGameController &savedGame);
 
-    void serialize(boost::property_tree::ptree &node);
+    void serialize(GsKit::ptree &node);
 
     void getTouchedBy(CSpriteObject &theObject);
 

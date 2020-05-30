@@ -50,11 +50,11 @@ public:
 
 	// Saves the inventory using the Savegamecontroller.
 	void operator>>(CSaveGameController &savedGame);
-    void operator>>(boost::property_tree::ptree &invNode);
+    void operator>>(GsKit::ptree &invNode);
 
 	// This is for loading the game
 	void operator<<(CSaveGameController &savedGame);
-    void operator<<(boost::property_tree::ptree &invNode);
+    void operator<<(GsKit::ptree &invNode);
 
     // If player achieved something, report it.
     void addAchievementTask(const std::string which,

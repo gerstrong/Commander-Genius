@@ -78,7 +78,7 @@ m_LevelPlay( mInventoryVec)
 bool CPlayGameGalaxy::loadXMLGameState()
 {            
     /// Create tree for reading
-    using boost::property_tree::ptree;
+    using GsKit::ptree;
     ptree pt;
 
     CSaveGameController &savedGame = gSaveGameController;
@@ -151,7 +151,7 @@ bool CPlayGameGalaxy::loadXMLGameState()
 bool CPlayGameGalaxy::saveXMLGameState()
 {
     /// Create tree
-    using boost::property_tree::ptree;
+    using GsKit::ptree;
     ptree pt;
 
     /// Create the nodes and store the data as needed

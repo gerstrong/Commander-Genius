@@ -51,7 +51,7 @@ public:
      * @param pt    Node ref
      * @return
      */
-    bool readGamesNode(const boost::property_tree::ptree &pt);
+    bool readGamesNode(const GsKit::ptree &pt);
 
 
     /**
@@ -60,7 +60,7 @@ public:
      * @param pt    Node ref
      * @return true if something was read
      */
-    bool readLegacyCatalogue(const boost::property_tree::ptree &pt);
+    bool readLegacyCatalogue(const GsKit::ptree &pt);
 
     /**
      * @brief loadCatalogue     Load the game catalogue

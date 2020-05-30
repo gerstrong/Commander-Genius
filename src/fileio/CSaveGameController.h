@@ -62,8 +62,8 @@ public:
     bool prepareLoadGame(const int SaveSlot );
     bool prepareLoadGameQuick();
 
-    bool saveXMLTree(boost::property_tree::ptree &pt);
-    bool loadXMLTree(boost::property_tree::ptree &pt);
+    bool saveXMLTree(GsKit::ptree &pt);
+    bool loadXMLTree(GsKit::ptree &pt);
 
 	// Encoder/Decoder Classes
 	template <class T>

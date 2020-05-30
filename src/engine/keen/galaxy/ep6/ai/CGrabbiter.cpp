@@ -42,14 +42,14 @@ serialize(CSaveGameController &savedGame)
 
 
 void
-CGrabbiter::serialize(boost::property_tree::ptree &node)
+CGrabbiter::serialize(GsKit::ptree &node)
 {
     auto &posNode = node.put("pos", "");
     posNode.put("<xmlattr>.x", m_Pos.x);
     posNode.put("<xmlattr>.y", m_Pos.y);
 }
 void
-CGrabbiter::deserialize(boost::property_tree::ptree &node)
+CGrabbiter::deserialize(GsKit::ptree &node)
 {
     auto &posNode = node.put("pos", "");
     m_Pos.x = posNode.get<Uint32>("<xmlattr>.x", m_Pos.x);

@@ -40,7 +40,7 @@ mTimer(0)
 
 void
 CRope::
-serialize(boost::property_tree::ptree &node)
+serialize(GsKit::ptree &node)
 {
     auto &posNode = node.put("pos", "");
     posNode.put("<xmlattr>.x", m_Pos.x);

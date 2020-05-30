@@ -48,7 +48,7 @@ public:
     void processInput();
     void processRendering();
 
-    void operator<<(boost::property_tree::ptree &invNode);
+    void operator<<(GsKit::ptree &invNode);
 
     void cleanup() {}
 

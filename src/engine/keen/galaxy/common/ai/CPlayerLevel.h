@@ -36,9 +36,9 @@ public:
                 const int spriteTableIdx);
 
 
-    virtual void serialize(boost::property_tree::ptree &) override;
+    virtual void serialize(GsKit::ptree &) override;
 
-    virtual void deserialize(boost::property_tree::ptree &) override;
+    virtual void deserialize(GsKit::ptree &) override;
 
 
 	void prepareToShoot();

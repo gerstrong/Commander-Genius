@@ -55,7 +55,7 @@ serialize(CSaveGameController &savedGame)
 
 void
 CVarPlatform::
-serialize(boost::property_tree::ptree &node)
+serialize(GsKit::ptree &node)
 {
     auto &posNode = node.put("target", "");
     posNode.put("<xmlattr>.x", target.x);
@@ -64,7 +64,7 @@ serialize(boost::property_tree::ptree &node)
 
 void
 CVarPlatform::
-deserialize(boost::property_tree::ptree &node)
+deserialize(GsKit::ptree &node)
 {
     auto &posNode = node.get_child("target");
     target.x = posNode.get<int>("<xmlattr>.x");

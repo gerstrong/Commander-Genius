@@ -56,7 +56,7 @@ void stItemGalaxy::triggerAllItemsCheat()
 }
 
 // Saves the inventory using the Savegamecontroller.
-void stItemGalaxy::operator>>(boost::property_tree::ptree &invNode)
+void stItemGalaxy::operator>>(GsKit::ptree &invNode)
 {
     invNode.put("lifes", m_lifes);
     invNode.put("score", m_points);
@@ -91,7 +91,7 @@ void stItemGalaxy::operator>>(boost::property_tree::ptree &invNode)
 
 
 // This is for loading the game
-void stItemGalaxy::operator<<(boost::property_tree::ptree &invNode)
+void stItemGalaxy::operator<<(GsKit::ptree &invNode)
 {
     /// Load the nodes and retrieve the data as needed
     m_lifes = invNode.get<int>("lifes", 3);

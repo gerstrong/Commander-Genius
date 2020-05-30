@@ -17,9 +17,9 @@ public:
   
   void getTouchedBy(CSpriteObject &theObject) override;
 
-  void deserialize(boost::property_tree::ptree &node) override;
+  void deserialize(GsKit::ptree &node) override;
 
-  void serialize(boost::property_tree::ptree &node) override;
+  void serialize(GsKit::ptree &node) override;
   
 private:
   

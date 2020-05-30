@@ -18,9 +18,9 @@ public:
 
     void serialize(CSaveGameController &savedGame);
 
-    void serialize(boost::property_tree::ptree &node);
+    void serialize(GsKit::ptree &node);
 
-    void deserialize(boost::property_tree::ptree &node);
+    void deserialize(GsKit::ptree &node);
 
 
 	/**

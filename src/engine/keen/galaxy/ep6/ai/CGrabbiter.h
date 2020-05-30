@@ -16,8 +16,8 @@ public:
     void deserialize(CSaveGameController &savedGame) override;    
     void serialize(CSaveGameController &savedGame) override;
 
-    void serialize(boost::property_tree::ptree &node) override;
-    void deserialize(boost::property_tree::ptree &node) override;
+    void serialize(GsKit::ptree &node) override;
+    void deserialize(GsKit::ptree &node) override;
 
     
     void processHungry();
