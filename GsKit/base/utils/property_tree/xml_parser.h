@@ -25,13 +25,13 @@ namespace GsKit
 #else
     typedef boost::property_tree::xml_writer_settings<char> xml_writer_settings;
 #endif
-/*
+
     void read_xml(const std::string &filename, GsKit::ptree &pt);
 
     void read_xml(std::ifstream &file, GsKit::ptree &pt);
 
     void write_xml(std::ofstream &file, GsKit::ptree &pt);
-*/
+
 };
 
 

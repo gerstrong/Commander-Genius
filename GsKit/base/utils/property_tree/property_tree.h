@@ -20,9 +20,9 @@ struct identity { typedef T type; };
 
 namespace GsKit
 {
-    typedef boost::property_tree::ptree ptree;
+    //typedef boost::property_tree::ptree ptree;
 
-/*
+
     typedef std::string path_type;
     typedef std::string str_type;    
 
@@ -166,7 +166,7 @@ namespace GsKit
         bool convert_from_str(const str_type &str,
                               identity<bool>) const
         {
-            return (str=="true" || str != "0");
+            return (str=="true" || str=="1");
         }
 
 
@@ -222,7 +222,7 @@ namespace GsKit
         children_type mChildren;
         str_type mData;
     };
-*/
+
 }
 
 

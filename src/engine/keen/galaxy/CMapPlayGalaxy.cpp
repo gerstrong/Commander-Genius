@@ -607,6 +607,11 @@ void CMapPlayGalaxy::operator<<(GsKit::ptree &levelNode)
                 std::shared_ptr<CGalaxySpriteObject> newFoe(pNewfoe);
                 mObjectPtr.push_back(newFoe);
             }
+            else
+            {
+                delete pNewfoe;
+                pNewfoe = nullptr;
+            }
         }
     }
 
@@ -622,9 +627,12 @@ void CMapPlayGalaxy::operator<<(GsKit::ptree &levelNode)
         const std::string b64textFG   = mapNode.get<std::string>("fgdata");
         const std::string b64textInfo = mapNode.get<std::string>("infodata");
 
-        base64Decode(reinterpret_cast<byte*>(mMap.getBackgroundData()), b64textBG);
-        base64Decode(reinterpret_cast<byte*>(mMap.getForegroundData()), b64textFG);
-        base64Decode(reinterpret_cast<byte*>(mMap.getInfoData()), b64textInfo);
+        base64Decode(reinterpret_cast<byte*>
+                     (mMap.getBackgroundData()), b64textBG);
+        base64Decode(reinterpret_cast<byte*>
+                     (mMap.getForegroundData()), b64textFG);
+        base64Decode(reinterpret_cast<byte*>
+                     (mMap.getInfoData()), b64textInfo);
     }
 
     if( mMap.m_width * mMap.m_height > 0 )
