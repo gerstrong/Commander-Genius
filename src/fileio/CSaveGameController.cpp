@@ -11,7 +11,7 @@
 #include <base/GsEventContainer.h>
 #include "CSaveGameController.h"
 #include "engine/core/CBehaviorEngine.h"
-#include "engine/BgMsg.h"
+//#include "engine/BgMsg.h"
 
 #include <ctime>
 #include <base/utils/property_tree/property_tree.h>
@@ -116,7 +116,9 @@ struct StateFileListFiller
 bool CSaveGameController::readSlotList(std::vector<std::string> &list)
 {
     if(!list.empty())
+    {
         list.clear();
+    }
 
     //Get the list of ".ck?" and ".cx?" files
 	StateFileListFiller sfilelist;
@@ -132,7 +134,7 @@ bool CSaveGameController::readSlotList(std::vector<std::string> &list)
 		// Check if the file fits to this episode
         if(foundEp == m_Episode)
 		{
-            Uint32 pos = getSlotNumber(filename)-1;
+            int pos = getSlotNumber(filename)-1;
 
             if(pos > gSaveGameController.getMaxNumofSaveSlots())
                     continue;
@@ -144,7 +146,7 @@ bool CSaveGameController::readSlotList(std::vector<std::string> &list)
             else if(ext == "cx")
                 buf = getSlotNameXML(filename);
 
-            if(pos+1 > list.size())
+            if(pos+1 > int(list.size()))
                 list.resize(pos+1);
 
             list.at(pos) = buf;

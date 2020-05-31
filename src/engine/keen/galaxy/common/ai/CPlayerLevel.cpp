@@ -106,7 +106,7 @@ void
 CPlayerLevel::
 deserialize(GsKit::ptree &node)
 {
-  mIsClimbing = node.get("isClimbing", false);
+  mIsClimbing = node.get<bool>("isClimbing", false);
   mActionState =  KeenState();
 }
 

@@ -310,9 +310,6 @@ bool GameDownloader::loadCatalogue(const std::string &catalogueFile)
 
     try
     {
-
-
-
         // Load the XML file into the property tree. If reading fails
         // (cannot open file, parse error), an exception is thrown.
         read_xml(catalogueFile, pt);
@@ -325,7 +322,6 @@ bool GameDownloader::loadCatalogue(const std::string &catalogueFile)
         ok |= readLegacyCatalogue(pt);
 
         return ok;
-
     }
     catch(...)
     {

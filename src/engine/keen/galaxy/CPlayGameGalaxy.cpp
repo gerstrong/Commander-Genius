@@ -122,7 +122,7 @@ bool CPlayGameGalaxy::loadXMLGameState()
         {
             ptree &playerNode = node.second;
             variant = playerNode.get<int>("<xmlattr>.variant");            
-            const int idx = playerNode.get("<xmlattr>.id", 0);
+            const int idx = playerNode.get<int>("<xmlattr>.id", 0);
             auto &invNode = playerNode.get_child("inventory");
             mInventoryVec[idx].setup(idx, variant);
             mInventoryVec[idx] << invNode;

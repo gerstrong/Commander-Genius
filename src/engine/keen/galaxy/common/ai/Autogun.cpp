@@ -63,7 +63,7 @@ CGalaxySpriteObject(pmap, foeID, x, y, sprVar)
 
 void AutoShot::deserialize(GsKit::ptree &node)
 {
-    mTimer = node.get("<xmlattr>.timer", mTimer);
+    mTimer = node.get<int>("<xmlattr>.timer", mTimer);
     auto &posNode = node.put("pos", "");
     m_Pos.x = posNode.get<Uint32>("<xmlattr>.x", m_Pos.x);
     m_Pos.y = posNode.get<Uint32>("<xmlattr>.y", m_Pos.y);
