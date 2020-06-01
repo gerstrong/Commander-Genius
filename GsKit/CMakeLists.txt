@@ -7,6 +7,8 @@ Project(GsKit)
     
 OPTION(USE_SDL2 "SDL2 support" Yes)
 
+OPTION(USE_BOOST "Use Boost for XML" Yes)
+
 
 if(SDL2)
     OPTION(USE_OPENGL "OpenGL support" No)
@@ -15,17 +17,19 @@ else()
 endif()
 
 
-set(Boost_USE_STATIC_LIBS OFF)
-set(Boost_USE_MULTITHREAD ON)
-set(Boost_USE_STATIC OFF)
+if(USE_BOOST)
+    set(Boost_USE_STATIC_LIBS OFF)
+    set(Boost_USE_MULTITHREAD ON)
+    set(Boost_USE_STATIC OFF)
 
-FIND_PACKAGE(Boost)
-IF (Boost_FOUND)
-        INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
-        ADD_DEFINITIONS( "-DHAS_BOOST" )
-ELSE(Boost_FOUND)
-        MESSAGE(FATAL_ERROR "Could not find the Boost libraries")
-ENDIF(Boost_FOUND)
+    FIND_PACKAGE(Boost)
+    IF (Boost_FOUND)
+            INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
+            ADD_DEFINITIONS( "-DBOOST_ENABLED" )
+    ELSE(Boost_FOUND)
+            MESSAGE(FATAL_ERROR "Could not find the Boost libraries")
+    ENDIF(Boost_FOUND)
+endif(USE_BOOST)
 
 
 
