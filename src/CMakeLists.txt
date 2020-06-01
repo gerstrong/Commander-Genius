@@ -80,21 +80,6 @@ ENDIF()
 # Make sure the linker can find the GsKit library once it is built.
 link_directories (${CommanderGenius_BINARY_DIR}/lib/GsKit)
 
-
-set(Boost_USE_STATIC_LIBS OFF)
-set(Boost_USE_MULTITHREAD ON)
-set(Boost_USE_STATIC OFF)
-
-FIND_PACKAGE(Boost)
-IF (Boost_FOUND)
-        INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
-	ADD_DEFINITIONS( "-DHAS_BOOST" )
-ELSE(Boost_FOUND)
-	MESSAGE(FATAL_ERROR "Could not find the Boost libraries")
-ENDIF(Boost_FOUND)
-
-
-
 if(USE_SDL2)
 
       find_package(SDL2 REQUIRED)
