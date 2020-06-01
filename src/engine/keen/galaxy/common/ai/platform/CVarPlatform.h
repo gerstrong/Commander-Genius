@@ -12,7 +12,7 @@
 
 #include "CPlatform.h"
 
-#include <base/utils/property_tree/property_tree_fwd.h>
+#include <base/utils/property_tree/property_tree.h>
 
 namespace galaxy
 {

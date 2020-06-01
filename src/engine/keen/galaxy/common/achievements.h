@@ -3,7 +3,7 @@
 
 #include <map>
 #include <string>
-#include <base/utils/property_tree/property_tree_fwd.h>
+#include <base/utils/property_tree/property_tree.h>
 
 class Achievements
 {

@@ -536,7 +536,8 @@ void CMapPlayGalaxy::operator<<(GsKit::ptree &levelNode)
     // Prepare to load the Background Music
     if( !galaxy::loadLevelMusic(level) )
     {
-        gLogging.textOut("Warning: The music cannot be played. Check that all the files have been correctly copied!");
+        gLogging.textOut("Warning: The music cannot be played. "
+                         "Check that all the files have been correctly copied!");
     }
     else
     {

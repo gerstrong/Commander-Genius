@@ -1002,7 +1002,7 @@ void CGameLauncher::ponder(const float deltaT)
     {
         ponderGameSelDialog(deltaT);
     }
-    else if(m_chosenGame >= 0 && m_chosenGame < m_Entries.size())
+    else if(m_chosenGame >= 0 && m_chosenGame < int(m_Entries.size()) )
     {
         ponderPatchDialog();
     }

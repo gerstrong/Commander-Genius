@@ -10,7 +10,6 @@
 #ifndef GSKIT_PROPERTY_TREE
 #define GSKIT_PROPERTY_TREE
 
-#include <boost/property_tree/ptree.hpp>
 #include <string>
 #include <map>
 
@@ -20,9 +19,6 @@ struct identity { typedef T type; };
 
 namespace GsKit
 {
-    //typedef boost::property_tree::ptree ptree;
-
-
     typedef std::string path_type;
     typedef std::string str_type;    
 
@@ -30,39 +26,6 @@ namespace GsKit
     {
         typedef ptree self_type;
         typedef std::multimap< path_type, self_type > children_type;
-
-        template <class ItType>
-        class iteratorTpl
-        {
-        public:
-
-            bool operator!=(const iteratorTpl &it) const
-            {
-                return (mIterator != it.mIterator);
-            }
-
-            iteratorTpl& operator++()
-            {
-                mIterator++;
-                return *this;
-            }
-
-            iteratorTpl& operator*()
-            {
-                return *this;
-            }
-
-
-            ItType mIterator;
-        };
-
-        typedef iteratorTpl<boost::property_tree::ptree::iterator> iterator;
-        typedef iteratorTpl<boost::property_tree::ptree::const_iterator> const_iterator;
-
-        iterator iterator_begin;
-        iterator iterator_end;
-        const_iterator const_iterator_begin;
-        const_iterator const_iterator_end;
 
     public:
 
@@ -91,35 +54,64 @@ namespace GsKit
         self_type &add(const path_type &path,
                        const Type &value)
         {
-            return add<Type>(path, value);
+            return add<Type>(path, value, identity<Type>());
         }
+
+
+        template<class Type>
+        self_type &add(const path_type &path,
+                       const Type &value,
+                       identity<Type>)
+        {
+            const str_type strVal =
+                    convert_to_str(value, identity<Type>());
+            return add_internal(path, strVal);
+        }
+
+
+        template<class>
+        self_type &add(const path_type &path,
+                       const str_type &value,
+                       identity<str_type>)
+        {
+            return add_internal(path, value);
+        }
+
+        template<class>
+        self_type &add(const path_type &path,
+                       const char *&value,
+                       identity<char*>)
+        {
+            return add_internal(path, value);
+        }
+
 
         // --------- Put Section ----------
 
         self_type &put(const path_type &path,
                        const str_type &value)
         {
-            (void)path;
-            mData = value;
-            return *this;
+            return put_internal(path, value);
         }
 
         self_type &put(const path_type &path,
                        const char *value)
         {
-            (void)path;
-            mData = value;
-            return *this;
+            return put_internal(path, value);
         }
 
+        self_type &put(const path_type &path,
+                       const bool &value)
+        {
+            return put_internal(path, value ? "true" : "false");
+        }
 
         template<class Type>
         self_type &put(const path_type &path,
                        const Type &value)
         {
-            return put(path, std::to_string(value));
+            return put_internal(path, std::to_string(value));
         }
-
 
         // --------- Get Section ----------
 
@@ -155,6 +147,8 @@ namespace GsKit
             }
         }
 
+        // ------------- Converters ---------------------
+
         template <class Type>
         Type convert_from_str(const str_type &str,
                               identity<Type>) const
@@ -169,6 +163,28 @@ namespace GsKit
             return (str=="true" || str=="1");
         }
 
+        str_type convert_to_str(const bool &value,
+                                identity<bool>) const
+        {
+            return value ? "true" : "false";
+        }
+
+        str_type convert_to_str(const str_type &value,
+                                identity<str_type>) const
+        {
+            return value;
+        }
+
+        str_type convert_to_str(const char value[1],
+                                identity<char[1]>) const
+        {
+            return value;
+        }
+
+
+
+        // ---------------- Get --------------------------
+
 
         template <class>
         str_type get(const path_type &path,
@@ -182,7 +198,6 @@ namespace GsKit
         const self_type &get_child(const path_type &path) const;
 
         self_type &get_child(const path_type &path);
-
 
         const self_type &add_child(const path_type &path,
                                    const self_type &tree);
@@ -208,6 +223,13 @@ namespace GsKit
         }
 
     private:
+
+        self_type &add_internal(const path_type &path,
+                                const str_type &value);
+
+        self_type &put_internal(const path_type &path,
+                                const str_type &value);
+
 
         const self_type &get_child_internal(const path_type &path,
                                             const self_type &tree) const;

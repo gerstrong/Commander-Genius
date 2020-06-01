@@ -16,7 +16,6 @@
 #include <ctime>
 #include <base/utils/property_tree/property_tree.h>
 #include <base/utils/property_tree/xml_parser.h>
-//#include <boost/version.hpp>
 
 #include "fileio/KeenFiles.h"
 
@@ -757,8 +756,6 @@ bool CSaveGameController::saveXMLTree(GsKit::ptree &pt)
 {
     // Write the xml-file
     using GsKit::ptree;
-
-    GsKit::xml_writer_settings settings('\t', 1);
 
     // The savegame internal name
     pt.put("GameState.<xmlattr>.name", m_statename);
