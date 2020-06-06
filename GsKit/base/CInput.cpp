@@ -246,8 +246,11 @@ void CInput::loadControlconfig(void)
             Configuration.ReadString( section, "Back", value, "Escape");
             setupInputCommand( curInput, IC_BACK, value );
 
-			Configuration.ReadKeyword( section, "TwoButtonFiring", &TwoButtonFiring[i], false);
-			Configuration.ReadKeyword( section, "Analog", &mAnalogAxesMovement[i], false);
+            Configuration.ReadKeyword( section, "TwoButtonFiring", &TwoButtonFiring[i], false);
+            Configuration.ReadKeyword( section, "Analog", &mAnalogAxesMovement[i], false);
+            Configuration.ReadKeyword( section, "SuperPogo", &mSuperPogo[i], false);
+            Configuration.ReadKeyword( section, "ImpossiblePogo", &mImpPogo[i], false);
+            Configuration.ReadKeyword( section, "AutoFire", &mFullyAutomatic[i], false);
 		}
 	}
 	else
@@ -273,6 +276,7 @@ void CInput::saveControlconfig()
 
 	    const auto inputVal = static_cast<unsigned char>(i);
 
+        // Movement section
 	    Configuration.WriteString(section, "Left", getEventName(IC_LEFT, inputVal));
 	    Configuration.WriteString(section, "Up", getEventName(IC_UP, inputVal));
 	    Configuration.WriteString(section, "Right", getEventName(IC_RIGHT, inputVal));
@@ -281,6 +285,8 @@ void CInput::saveControlconfig()
 	    Configuration.WriteString(section, "Upper-Right", getEventName(IC_UPPERRIGHT, inputVal));
 	    Configuration.WriteString(section, "Lower-Left", getEventName(IC_LOWERLEFT, inputVal));
 	    Configuration.WriteString(section, "Lower-Right", getEventName(IC_LOWERRIGHT, inputVal));
+
+        // Button section
 	    Configuration.WriteString(section, "Jump", getEventName(IC_JUMP, inputVal));
 	    Configuration.WriteString(section, "Pogo", getEventName(IC_POGO, inputVal));
 	    Configuration.WriteString(section, "Fire", getEventName(IC_FIRE, inputVal));
@@ -289,8 +295,13 @@ void CInput::saveControlconfig()
 	    Configuration.WriteString(section, "Camlead", getEventName(IC_CAMLEAD, inputVal));
 	    Configuration.WriteString(section, "Help", getEventName(IC_HELP, inputVal));
 	    Configuration.WriteString(section, "Back", getEventName(IC_BACK, inputVal));
-	    Configuration.SetKeyword(section, "TwoButtonFiring", TwoButtonFiring[i]);
-	    Configuration.SetKeyword(section, "Analog", mAnalogAxesMovement[i]);
+
+        // Optional tweaks
+        Configuration.SetKeyword(section, "TwoButtonFiring", TwoButtonFiring[i]);
+        Configuration.SetKeyword(section, "Analog", mAnalogAxesMovement[i]);
+        Configuration.SetKeyword(section, "SuperPogo", mSuperPogo[i]);
+        Configuration.SetKeyword(section, "ImpossiblePogo", mImpPogo[i]);
+        Configuration.SetKeyword(section, "AutoFire", mFullyAutomatic[i]);
 	}
 
 	Configuration.saveCfgFile();
