@@ -80,32 +80,18 @@ static void write_xml_boost(std::ofstream &file, GsKit::ptree &pt)
     boost::property_tree::xml_parser::write_xml(file, tree, settings);
 }
 
-static void read_xml_tinyxml2(std::ifstream &file, GsKit::ptree &pt)
+static void write_xml_boost(const std::string &filename, GsKit::ptree &pt)
 {
-    /*boost::property_tree::ptree tree;
-
-    boost::property_tree::xml_parser::read_xml(file, tree);
-
-    addNodeFromBoostPTree(pt, tree);
-*/
-}
-
-
-static void write_xml_tinyxml2(std::ofstream &file, GsKit::ptree &pt)
-{
-    /*
     boost::property_tree::ptree tree;
 
     addNodeToBoostPTree(tree, pt);
 
     xml_writer_settings settings('\t', 1);
-    boost::property_tree::xml_parser::write_xml(file, tree, settings);
-    */
+    boost::property_tree::xml_parser::write_xml(
+                filename, tree, std::locale(), settings);
 }
 
-#endif
-
-#include <cstdio>
+#else
 
 static void addNodeFromTinyXML(GsKit::ptree &output,
                                XMLNode *input)
@@ -183,11 +169,6 @@ static void addNodeToTinyXML(GsKit::ptree &input,
         {
             XMLNode * node = doc->NewElement(myFirst.c_str());
 
-            if(myFirst == "lifes")
-            {
-                printf("Stop");
-            }
-
             output->InsertEndChild(node);
 
             addNodeToTinyXML(data.second, node, doc);
@@ -235,7 +216,7 @@ static void write_xml_tinyxml2(const std::string &filename, GsKit::ptree &pt)
     xmlDoc.SaveFile(fullfn.c_str());
 }
 
-
+#endif
 
 void read_xml(const std::string &filename, GsKit::ptree &pt)
 {
@@ -246,25 +227,25 @@ void read_xml(const std::string &filename, GsKit::ptree &pt)
     #endif
 }
 
+void write_xml(const std::string &filename, GsKit::ptree &pt)
+{
+  #ifdef BOOST_ENABLED
+    write_xml_boost(filename, pt);
+  #else
+    write_xml_tinyxml2(filename, pt);
+  #endif
+}
+
 #ifdef BOOST_ENABLED
 void read_xml(std::ifstream &file, GsKit::ptree &pt)
 {  
     read_xml_boost(file, pt);
 }
-#endif
 
-
-#ifdef BOOST_ENABLED
 void write_xml(std::ofstream &file, GsKit::ptree &pt)
 {    
     write_xml_boost(file, pt);
 }
 #endif
-
-void write_xml(const std::string &filename, GsKit::ptree &pt)
-{
-    write_xml_tinyxml2(filename, pt);
-}
-
 
 };
