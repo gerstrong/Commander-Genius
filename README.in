@@ -271,8 +271,6 @@ disable Python Support (cmake -DUSE_PYTHON3=0).
 SDL2, SDL2_Image, SDL2_mixer and SDL2_TTF. There is support for SDL1.2
 but it is getting deprecated and will be removed in future.
 
-Boost libraries. I plan to remove that in future, but right now we need it.
-
 Curl and Zlib, so you can fully use the Game store CG provides.
 
 How to compile it under Ubuntu:
@@ -280,8 +278,7 @@ How to compile it under Ubuntu:
         - build-essential
         - libgl1-mesa-dev
         - libcurl4-openssl-dev
-        - zlib1g-dev
-        - libboost-dev
+        - zlib1g-dev        
         - python3 (python 3.5 recommended)
         - libsdl2-dev
         - libsdl2-image-dev
@@ -306,7 +303,7 @@ How to compile it under Fedora:
 
    dnf install -y \
      SDL2-devel cmake cmake-data gcc-c++ python3-devel \
-     boost-devel mesa-libGL-devel libcurl-devel \
+     mesa-libGL-devel libcurl-devel \
      SDL2_image-devel SDL2_mixer-devel SDL2_ttf-devel
 
  * Extract my source code into the "CGeniusSrc" directory.
@@ -325,7 +322,7 @@ Compiling CG on any Linux/UNIX (other than Ubuntu or Fedora):
  * If you want to compile the game, you need to have all the standard
    development libraries and GNU C Compiler (at least version 4.8) installed
    on your system.
- * You need to install the "SDL_mixer", "SDL_image", "SDL", "curl", "boost" and
+ * You need to install the "SDL_mixer", "SDL_image", "SDL", "curl" and
    "Mesa/OpenGL" development libraries to get it to compile successfully.
  * Extract my source code into the "CGeniusSrc" directory .
  * mkdir -p CGeniusBuild
@@ -358,7 +355,6 @@ together if you want to develop CG further
  * pacman -S ${PACPFIX}-cmake
  * pacman -S ${PACPFIX}-curl
  * pacman -S ${PACPFIX}-zlib
- * pacman -S ${PACPFIX}-boost
  * pacman -S ${PACPFIX}-gcc
  * pacman -S ${PACPFIX}-nsis
  * pacman -S git
@@ -375,7 +371,7 @@ together if you want to develop CG further
  * Install Mac Ports. You can download it here: https://www.macports.org/install.php
  * Open up a terminal
  * Install some dependencies:
-   sudo port install libsdl2 libsdl2_mixer libsdl2_image libsdl2_ttf libsdl2_mixer boost curl git cmake
+   sudo port install libsdl2 libsdl2_mixer libsdl2_image libsdl2_ttf libsdl2_mixer curl git cmake
  * You might get a dialog asking for the installation of Xcode dependencies. Please confirm that dialog.
  * You also will be asked for the installation of more dependencies. You need to confirm all that.
  * cd into a directory where you want to clone the sources:
