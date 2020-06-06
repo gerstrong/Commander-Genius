@@ -362,7 +362,7 @@ void CPlayerLevel::prepareToShoot()
 	// He could shoot
     if( mPlaycontrol[PA_FIRE] && !m_fire_recharge_time )
 	{
-		setAction(A_KEEN_SHOOT);
+        setAction(A_KEEN_SHOOT);
         mReleasedShot = false;
 		mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processShootWhileStanding;
 		m_fire_recharge_time = FIRE_RECHARGE_TIME;
@@ -2500,16 +2500,6 @@ void CPlayerLevel::processPoleSlidingDown()
 
 void CPlayerLevel::processShootWhileStanding()
 {       
-    //mShootTimer--;
-
-    /*if(mShootTimer > 0)
-        return;*/
-
-    // May shoot once!
-    //if(mShootTimer == 0)
-
-    //bool mReleasedShot = false;
-
     if(!mReleasedShot)
     {
         if( getActionNumber(A_KEEN_SHOOT) && !getActionStatus(A_KEEN_SHOOT) )
@@ -2534,8 +2524,8 @@ void CPlayerLevel::processShootWhileStanding()
     }
     else
     {
-        // wait until player releases the button and get back to stand status
-        if( !mPlaycontrol[PA_FIRE] )
+        // wait until player releases the button and get back to stand status        
+        if( !mPlaycontrol[PA_FIRE] || gInput.AutoGun(mPlayerIdx) )
         {
             yDirection = 0;
             if(getActionNumber(A_KEEN_SHOOT_UP))
@@ -2794,11 +2784,17 @@ void CPlayerLevel::process()
 	}
 	    
 
-	// make the fire recharge time decreased if player is not pressing firing button
-    if(m_fire_recharge_time && !mPlaycontrol[PA_FIRE])
-	{
-	    m_fire_recharge_time--;
-	}
+    // Make the fire recharge time decreased if player
+    // is not pressing firing button
+    // or AutoGun feature is enabled
+    if(m_fire_recharge_time)
+    {
+        const auto autofire = gInput.AutoGun(mPlayerIdx);
+        if(!mPlaycontrol[PA_FIRE] || autofire)
+        {
+            m_fire_recharge_time--;
+        }
+    }
 
 	processLevelMiscFlagsCheck();
 
