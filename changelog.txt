@@ -1,7 +1,8 @@
 v2.4.4:
 -------
 - Boost libraries are now optional, thanks to TinyXML2 code
-
+- AutoGun working in Keen 4-6
+- Better Analog controls handling in Keen 4-6
 
 v2.4.3:
 -------

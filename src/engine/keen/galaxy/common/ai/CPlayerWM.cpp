@@ -408,10 +408,11 @@ void CPlayerWM::processMoving()
         if( mPlaycontrol[PA_Y] == 0 )
             yDirection = 0;
 
-        movespeed *= mPlaycontrol[PA_X];
-        movespeed /= (-100);
+        auto movespeedX = movespeed;
+        movespeedX *= mPlaycontrol[PA_X];
+        movespeedX /= (-100);
 	
-        moveLeft(movespeed);
+        moveLeft(movespeedX);
         moving = true;
         xDirection = LEFT;
         waveTimer = 0;
@@ -421,10 +422,11 @@ void CPlayerWM::processMoving()
         if(mPlaycontrol[PA_Y]==0)
             yDirection = 0;
 
-        movespeed *= mPlaycontrol[PA_X];
-        movespeed /= (100);
+        auto movespeedX = movespeed;
+        movespeedX *= mPlaycontrol[PA_X];
+        movespeedX /= (100);
 
-        moveRight(movespeed);
+        moveRight(movespeedX);
         moving = true;
         xDirection = RIGHT;
         waveTimer = 0;
@@ -435,10 +437,11 @@ void CPlayerWM::processMoving()
         if(mPlaycontrol[PA_X]==0)
             xDirection = 0;
 
-        movespeed *= mPlaycontrol[PA_Y];
-        movespeed /= (-100);
+        auto movespeedY = movespeed;
+        movespeedY *= mPlaycontrol[PA_Y];
+        movespeedY /= (-100);
 
-        moveUp(movespeed);
+        moveUp(movespeedY);
         moving = true;
         yDirection = UP;
         waveTimer = 0;
@@ -448,10 +451,11 @@ void CPlayerWM::processMoving()
         if(mPlaycontrol[PA_X]==0)
             xDirection = 0;
 
-        movespeed *= mPlaycontrol[PA_Y];
-        movespeed /= (100);
+        auto movespeedY = movespeed;
+        movespeedY *= mPlaycontrol[PA_Y];
+        movespeedY /= (100);
 
-        moveDown(movespeed);
+        moveDown(movespeedY);
         moving = true;
         yDirection = DOWN;
         waveTimer = 0;
