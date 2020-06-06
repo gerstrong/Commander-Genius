@@ -760,6 +760,7 @@ bool CSaveGameController::saveXMLTree(GsKit::ptree &pt)
     // The savegame internal name
     pt.put("GameState.<xmlattr>.name", m_statename);
 
+#ifdef BOOST_ENABLED
     std::ofstream StateFile;
     bool open = OpenGameFileW( StateFile, m_stateXMLfilename, std::ofstream::binary );
 
@@ -771,6 +772,9 @@ bool CSaveGameController::saveXMLTree(GsKit::ptree &pt)
     }
 
     write_xml( StateFile, pt );
+#else
+    write_xml(m_stateXMLfilename, pt);
+#endif
 
     return true;
 }
@@ -785,9 +789,10 @@ bool CSaveGameController::loadXMLTree(GsKit::ptree &pt)
     bool open = OpenGameFileR( StateFile, m_stateXMLfilename, std::ofstream::binary );
 
     if (!open)
-        return false;
+        return false;    
 
-    read_xml( StateFile, pt );
+    //read_xml( StateFile, pt );
+    read_xml( m_stateXMLfilename, pt );
 
     return true;
 }

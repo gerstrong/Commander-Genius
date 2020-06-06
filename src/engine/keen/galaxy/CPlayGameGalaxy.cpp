@@ -92,7 +92,8 @@ bool CPlayGameGalaxy::loadXMLGameState()
     /// Load the Game in the CSavedGame object
     // Get the episode, and difficulty
     m_Episode = stateNode.get<int>("episode");
-    gBehaviorEngine.mDifficulty = static_cast<Difficulty>(stateNode.get<int>("difficulty", 1));
+    gBehaviorEngine.mDifficulty =
+            static_cast<Difficulty>(stateNode.get<int>("difficulty", 1));
 
     // Get number of Players
     const unsigned int numPlayers = stateNode.get<int>("NumPlayer");

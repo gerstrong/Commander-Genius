@@ -20,9 +20,13 @@ namespace GsKit
 
     void read_xml(const std::string &filename, GsKit::ptree &pt);
 
+    void write_xml(const std::string &filename, GsKit::ptree &pt);
+
+#ifdef BOOST_ENABLED
     void read_xml(std::ifstream &file, GsKit::ptree &pt);
 
     void write_xml(std::ofstream &file, GsKit::ptree &pt);
+#endif
 
 };
 
