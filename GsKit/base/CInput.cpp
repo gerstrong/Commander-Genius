@@ -249,7 +249,7 @@ void CInput::loadControlconfig(void)
             Configuration.ReadKeyword( section, "TwoButtonFiring", &TwoButtonFiring[i], false);
             Configuration.ReadKeyword( section, "Analog", &mAnalogAxesMovement[i], false);
             Configuration.ReadKeyword( section, "SuperPogo", &mSuperPogo[i], false);
-            Configuration.ReadKeyword( section, "ImpossiblePogo", &mImpPogo[i], false);
+            Configuration.ReadKeyword( section, "ImpossiblePogo", &mImpPogo[i], true);
             Configuration.ReadKeyword( section, "AutoFire", &mFullyAutomatic[i], false);
 		}
 	}

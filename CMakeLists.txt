@@ -9,16 +9,7 @@ Project(CommanderGenius)
 
 if (OSXCROSS)
 message(STATUS "OSXCross is enabled")
-#include(${OSXCROSS_TARGET_DIR}/target/toolchain.cmake)
-#add_compile_options( -stdlib=libc++ )
 set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
-#SET(CMAKE_SYSTEM_NAME Darwin)
-#SET(CMAKE_C_COMPILER ${OSXCROSS}/target/bin/o64-clang)
-#SET(CMAKE_CXX_COMPILER ${OSXCROSS}/target/bin/o64-clang++)
-#SET(CMAKE_C_COMPILER_AR ${OSXCROSS}/target/bin/x86_64-apple-darwin19-ar)
-#SET(CMAKE_CXX_COMPILER_AR ${OSXCROSS}/target/bin/x86_64-apple-darwin19-ar)
-#SET(CMAKE_LINKER ${OSXCROSS}/target/bin/x86_64-apple-darwin19-ld)
-#SET(ENV{OSXCROSS_MP_INC} 1)
 endif()
 
 

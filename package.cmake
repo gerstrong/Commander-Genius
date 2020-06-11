@@ -1,5 +1,6 @@
 OPTION(CREATE_DEBS "Will create DEBs" No)
 OPTION(CREATE_RPMS "Will create RPMs" No)
+OPTION(CREATE_BUNDLE "Will create MacOS Bundle" No)
 
 SET(CGENIUS_DESKTOP_DIR "share/applications/")
 
@@ -65,7 +66,7 @@ IF(CREATE_DEBS)
 		ELSEIF(BUILD_ARCH STREQUAL i386)
 			SET(CPACK_DEBIAN_PACKAGE_ARCHITECTURE i386)
 		ENDIF(BUILD_ARCH STREQUAL amd64)
-                SET(CPACK_DEBIAN_PACKAGE_DEPENDS "libsdl2-2.0-0 (>= 2.0.0), libgl1-mesa-glx (>= 7.7.1), libsdl2-image-2.0-0 (>= 2.0), libsdl2-mixer-2.0-0 (>= 2.0), libpython3.5 (>= 3.5.2)")
+                SET(CPACK_DEBIAN_PACKAGE_DEPENDS "libsdl2-2.0-0 (>= 2.0.0), libgl1-mesa-glx (>= 7.7.1), libsdl2-image-2.0-0 (>= 2.0), libsdl2-mixer-2.0-0 (>= 2.0)")
 		SET(CPACK_DEBIAN_PACKAGE_SECTION "games")
 		SET(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION}-${CPACK_DEBIAN_PACKAGE_ARCHITECTURE}")
 	ENDIF(WIN32)
@@ -94,6 +95,15 @@ IF(CREATE_RPMS)
                 SET(CPACK_RPM_PACKAGE_REQUIRES "SDL >= 2.0, SDL_image >= 2.0, SDL_mixer >= 2.0, mesa-libGL >= 7.7")
 	ENDIF(WIN32)
 ENDIF(CREATE_RPMS)
+
+
+IF(CREATE_BUNDLE)
+        SET(CPACK_GENERATOR "Bundle;${CPACK_GENERATOR}") # For Mac OS
+        SET(CPACK_BUNDLE_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/Info.plist")
+        SET(CPACK_BUNDLE_ICON "${CMAKE_CURRENT_SOURCE_DIR}/V0.4.icns")
+        SET(CPACK_BUNDLE_STARTUP_COMMAND "CGeniusExe")
+ENDIF(CREATE_BUNDLE)
+
 
 INCLUDE(CPack)
 

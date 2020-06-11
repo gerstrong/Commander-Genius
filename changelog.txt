@@ -1,7 +1,8 @@
 v2.4.4:
 -------
 - Boost libraries are now optional, thanks to TinyXML2 code
-
+- Added compatibility to the osxcross toolchain so MacOS in future will receive
+  updates
 
 v2.4.3:
 -------
