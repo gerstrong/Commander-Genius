@@ -78,7 +78,7 @@ ENDIF()
 
 
 # Make sure the linker can find the GsKit library once it is built.
-link_directories (${CommanderGenius_BINARY_DIR}/lib/GsKit)
+link_directories (${CMAKE_BINARY_DIR}/GsKit)
 
 if(USE_SDL2)
 
@@ -116,22 +116,20 @@ else(USE_SDL2)
 endif(USE_SDL2)
 
 if(USE_SDL2)
-	find_package(SDL2_mixer REQUIRED)
+        find_package(SDL2_mixer REQUIRED)
 
-	if(SDL2_MIXER_FOUND)
-    		INCLUDE_DIRECTORIES(${SDL2_MIXER_INCLUDE_DIRS})
-	endif()
+        if(SDL2_MIXER_FOUND)
+                INCLUDE_DIRECTORIES(${SDL2_MIXER_INCLUDE_DIRS})
+        endif()
 
 else()
-	find_package(SDL_mixer REQUIRED)
+        find_package(SDL_mixer REQUIRED)
 
-	if(SDL_MIXER_FOUND)
-    		INCLUDE_DIRECTORIES(${SDL_MIXER_INCLUDE_DIRS})
-	endif()
+        if(SDL_MIXER_FOUND)
+                INCLUDE_DIRECTORIES(${SDL_MIXER_INCLUDE_DIRS})
+        endif()
 
 endif()
-
-
 
 
 
@@ -145,6 +143,12 @@ add_subdirectory(graphics)
 
 # Get all the o-files from the different targets and link'em
 get_property(cg_obj_libs GLOBAL PROPERTY CG_OBJ_LIBS)
+
+if(OPT_PATH)
+    MESSAGE(STATUS "OPT_PATH = ${OPT_PATH}")
+    link_directories(${OPT_PATH}/local/lib)
+endif(OPT_PATH)
+
 
 # Add executable Commander Genius
 add_executable (CGeniusExe CGenius.cpp
@@ -164,6 +168,7 @@ target_link_libraries (CGeniusExe engine)
 # Link GsKit
 target_link_libraries (CGeniusExe GsKit)
 
+
 # Link our SDL Extensions
 target_link_libraries(CGeniusExe sdl_extensions_audio sdl_extensions_sys)
 
@@ -171,6 +176,10 @@ target_link_libraries(CGeniusExe sdl_extensions_audio sdl_extensions_sys)
 if(USE_SDL2)
         message(STATUS "SDL2_LIBRARY = ${SDL2_LIBRARY}")
         message(STATUS "SDL2IMAGE_LIBRARY = ${SDL2IMAGE_LIBRARY}")
+
+        set(SDL2_LINK_DIR ${SDL2_INCLUDE_DIR}/../../lib)
+        link_directories(${SDL2_LINK_DIR})
+        message(STATUS SDL2_LINK_DIR = ${SDL2_LINK_DIR})
 endif(USE_SDL2)
 
 
@@ -195,6 +204,7 @@ if(WIN32)
 	target_link_libraries(CGeniusExe Imm32)
 	target_link_libraries(CGeniusExe Version)
 endif(WIN32)
+
 
 target_link_libraries(CGeniusExe ${PYTHON_LIBRARIES})
 

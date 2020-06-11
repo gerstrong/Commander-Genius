@@ -15,7 +15,7 @@
 #if defined(EMBEDDED)
 const std::set<GameOption> filteredOptions = { GameOption::NOTYPING };
 #else
-const std::set<GameOption> filteredOptions = {};
+static const std::set<GameOption> filteredOptions;
 #endif
 
 COptions::COptions(const Style style) :

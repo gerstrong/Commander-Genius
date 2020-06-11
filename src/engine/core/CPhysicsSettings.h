@@ -13,7 +13,6 @@
 #ifndef CPHYSICSSETTINGS_H_
 #define CPHYSICSSETTINGS_H_
 
-#include <SDL.h>
 #include <base/TypeDefinitions.h>
 
 class CPhysicsSettings {

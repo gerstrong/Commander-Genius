@@ -1,10 +1,12 @@
 find_package(PkgConfig)
 
-if ( PKGCONFIG_FOUND AND NOT WIN32 )
-    pkg_check_modules(ZLIB minizip)
-else ( PKGCONFIG_FOUND AND NOT WIN32 )
-    unset(ZLIB_FOUND)
-endif ( PKGCONFIG_FOUND AND NOT WIN32 )
+#if ( PKGCONFIG_FOUND AND NOT WIN32 )
+#    pkg_check_modules(ZLIB minizip)
+#else ( PKGCONFIG_FOUND AND NOT WIN32 )
+#    unset(ZLIB_FOUND)
+#endif ( PKGCONFIG_FOUND AND NOT WIN32 )
+
+
 
 add_definitions(-DIOAPI_NO_64)
 

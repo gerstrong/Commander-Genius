@@ -120,7 +120,7 @@ else()
             include_directories(${SDL2_NET_INCLUDE_DIRS})
             include_directories(${SDL2_IMAGE_INCLUDE_DIRS})
             include_directories(${SDL2_TTF_INCLUDE_DIRS})
-            #include_directories(${SDL2_NET_INCLUDE_DIRS})        
+            #include_directories(${SDL2_NET_INCLUDE_DIRS})
     
         endif(SDL2_FOUND)
     

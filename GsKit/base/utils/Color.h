@@ -78,9 +78,11 @@ inline Uint8 GetA(Uint32 pixel, SDL_PixelFormat *fmt)
 ///////////////
 // Returns true if the two colors are the same, ignoring the alpha
 // HINT: both colors have to be in the same pixelformat
+/*
 inline bool EqualRGB(Uint32 p1, Uint32 p2, SDL_PixelFormat* fmt) {
 	return ((p1|fmt->Amask) == (p2|fmt->Amask));
 }
+*/
 
 ///////////////
 // Creates a int colour based on the 3 components

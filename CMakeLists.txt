@@ -5,6 +5,23 @@ cmake_minimum_required(VERSION 3.5)
 
 Project(CommanderGenius)
 
+
+
+if (OSXCROSS)
+message(STATUS "OSXCross is enabled")
+#include(${OSXCROSS_TARGET_DIR}/target/toolchain.cmake)
+#add_compile_options( -stdlib=libc++ )
+set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
+#SET(CMAKE_SYSTEM_NAME Darwin)
+#SET(CMAKE_C_COMPILER ${OSXCROSS}/target/bin/o64-clang)
+#SET(CMAKE_CXX_COMPILER ${OSXCROSS}/target/bin/o64-clang++)
+#SET(CMAKE_C_COMPILER_AR ${OSXCROSS}/target/bin/x86_64-apple-darwin19-ar)
+#SET(CMAKE_CXX_COMPILER_AR ${OSXCROSS}/target/bin/x86_64-apple-darwin19-ar)
+#SET(CMAKE_LINKER ${OSXCROSS}/target/bin/x86_64-apple-darwin19-ld)
+#SET(ENV{OSXCROSS_MP_INC} 1)
+endif()
+
+
 option(USE_VIRTUALPAD "Enable Onscreen Virtual Gamepad support " ON)
 
 if(USE_VIRTUALPAD)
@@ -72,6 +89,7 @@ configure_file(README.in ${CMAKE_CURRENT_SOURCE_DIR}/debian/README)
 
 set(CMAKE_C_FLAGS "-std=c99")
 
+
 # Pass correct definition for SYSTEM_DATA_DIR so packager or distributors can decide where the app should land in
 if(UNIX)
         if(NOT IS_ABSOLUTE ${GAMES_SHAREDIR})
@@ -92,12 +110,6 @@ if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/GsKit/CMakeLists.txt")
     MESSAGE(FATAL_ERROR "You need to have the sources of GsKit in order to build Commander Genius. ")
 
 endif()
-
-IF(APPLE)
-    # At least it works with Mac ports
-    # Otherwise SDL2 won't be found
-    link_directories(/opt/local/lib/)
-ENDIF(APPLE)
 
 # And build Commander Genius on top of that!
 add_subdirectory("src")

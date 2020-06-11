@@ -30,7 +30,7 @@ timer(0)
 
 void CHUD::createHUDBlit()
 {        
-    mHUDBlit.createRGBSurface(mRenderRect);
+    mHUDBlit.createRGBSurface(mRenderRect.SDLRect());
     mHUDBlit.makeBlitCompatible();
     //mHUDBlit.fillRGB(0,0,0);
 }
@@ -40,35 +40,35 @@ void CHUD::setup(const int playerIdx,
 {
     mId = playerIdx;
 
-    mRenderRect.x = 8;	mRenderRect.y = 4;
+    mRenderRect.pos.x = 8;	mRenderRect.pos.y = 4;
 
     // Start at zero, beacuse we need more room for the HUD Boxes
     if(gBehaviorEngine.numPlayers() > 3)
     {
-        mRenderRect.x = 0;	mRenderRect.y = 0;
+        mRenderRect.pos.x = 0;	mRenderRect.pos.y = 0;
     }
 
     size_t Episode = gBehaviorEngine.getEpisode();
 
     if( Episode >= 1 && Episode <= 3 )
     {
-        mRenderRect.w = 84;	mRenderRect.h = 30;
-        mRenderRect.x += (mRenderRect.w-4)*playerIdx;
+        mRenderRect.dim.x = 84;	mRenderRect.dim.y = 30;
+        mRenderRect.pos.x += (mRenderRect.dim.x-4)*playerIdx;
 
         createHUDBlit();
         CreateVorticonBackground();
     }
     else // Galaxy HUD
     {
-        mRenderRect.w = 80;	mRenderRect.h = 30;
+        mRenderRect.dim.x = 80;	mRenderRect.dim.y = 30;
 
         auto &hudBg = *gGraphics.getSprite(spriteVar, "HUDBACKGROUND");
 
         mHUDBox.copy(hudBg);
 		
-        mRenderRect.h = mHUDBox.getHeight();
-        mRenderRect.w = mHUDBox.getWidth()-7;
-        mRenderRect.x += (mRenderRect.w-2)*playerIdx;
+        mRenderRect.dim.y = mHUDBox.getHeight();
+        mRenderRect.dim.x = mHUDBox.getWidth()-7;
+        mRenderRect.pos.x += (mRenderRect.dim.x-2)*playerIdx;
 
         createHUDBlit();
     }
@@ -81,7 +81,7 @@ void CHUD::setup(const int playerIdx,
 void CHUD::CreateVorticonBackground()
 {
     // Create a surface for the Background
-    mBackground.createRGBSurface(mRenderRect);
+    mBackground.createRGBSurface(mRenderRect.SDLRect());
 
     // This also works better with older SDL versions
     mBackground.applyDisplayFormat();
@@ -227,7 +227,7 @@ void CHUD::renderGalaxy()
   }
 
   auto finalRenderRect = mRenderRect;     // Finally pull it a bit down if there are extra borders.
-  finalRenderRect.y += gVideoDriver.getVidConfig().mHorizBorders;
+  finalRenderRect.pos.y += gVideoDriver.getVidConfig().mHorizBorders;
 
   auto weak = GsWeakSurface(gVideoDriver.getBlitSurface());
 
@@ -277,7 +277,7 @@ void CHUD::renderVorticon()
 
 
     auto finalRenderRect = mRenderRect;     // Finally pull it a bit down if there are extra borders.
-    finalRenderRect.y += gVideoDriver.getVidConfig().mHorizBorders;
+    finalRenderRect.pos.y += gVideoDriver.getVidConfig().mHorizBorders;
 
     GsWeakSurface blit(gVideoDriver.getBlitSurface());
 

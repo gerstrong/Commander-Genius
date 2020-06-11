@@ -10,32 +10,36 @@
 #ifndef TYPEDEFINITIONS_H
 #define TYPEDEFINITIONS_H
 
-// Some good basic types
+#include <sys/types.h>
 
-#include <SDL.h>
+//#include <SDL.h>
 
-typedef uint8_t byte;
-typedef uint16_t word;
-typedef int32_t fixed;
-typedef uint32_t longword;
+// Some good basic types and utilities independent of endianess.
+typedef __uint8_t byte;
+typedef __uint8_t Uint8;
+typedef __uint8_t uint8_t;
+typedef __int8_t Sint8;
+
+typedef __uint16_t word;
+typedef __uint16_t Uint16;
+typedef __uint16_t uint16_t;
+
+typedef __int32_t fixed;
+typedef __uint32_t longword;
+typedef __uint32_t uint32_t;
+
+
 typedef void * memptr;
 
 
 /**
  * @brief GETWORD Extracts a word (16-bit integer) from a byte pointer.
- *                It endian independent, assuming we a reading data from
+ *                It is endian independent, assuming we a reading data from
  *                a little endian system
  * @param ptr     Pointer to data
  * @return        The value
  */
-static inline auto GETWORD(const byte *ptr) -> word
-{
-#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-    return (ptr[0]<<8 | ptr[1]);
-#else
-    return (ptr[0] | ptr[1] << 8);
-#endif
-}
+auto GETWORD(const byte *ptr) -> word;
 
 /**
  * @brief READWORD Like GETWORD but the pointer will also be modified, by
@@ -43,28 +47,14 @@ static inline auto GETWORD(const byte *ptr) -> word
  * @param ptr      reference to pointer (*&) which will be modified
  * @return         the value
  */
-static inline auto READWORD(byte *&ptr) -> word
-{
-    const auto val = GETWORD(ptr);
-    ptr += sizeof(word);
-    return val;
-}
-
+auto READWORD(byte *&ptr) -> word;
 
 /**
  * @brief GETLONGWORD   Like GETWORD but 4 bytes.
  * @param ptr           Pointer to data
  * @return              The value
  */
-static inline auto GETLONGWORD(const byte *ptr) -> longword
-{
-#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-    longword val = ptr[0]<<24 | ptr[1] << 16 | ptr[2] << 8 | ptr[3];
-#else
-    longword val = ptr[0] | ptr[1] << 8 | ptr[2] << 16 | ptr[3] << 24;
-#endif
-    return val;
-}
+auto GETLONGWORD(const byte *ptr) -> longword;
 
 
 /**
@@ -72,12 +62,7 @@ static inline auto GETLONGWORD(const byte *ptr) -> longword
  * @param ptr      reference to pointer (*&) which will be modified
  * @return         the value
  */
-static inline auto READLONGWORD(byte *&ptr) -> longword
-{
-    const auto val = GETLONGWORD(ptr);
-    ptr += 4;
-    return val;
-}
+auto READLONGWORD(byte *&ptr) -> longword;
 
 /**
  * @brief MERGERLOFFSET Strange offset merger.
@@ -86,12 +71,7 @@ static inline auto READLONGWORD(byte *&ptr) -> longword
  * @param levelLongWord word to work on
  * @return tranformed value
  */
-static inline auto MERGERLOFFSET(const unsigned long levelLongWord) ->  unsigned long
-{
-    const unsigned long part1 = levelLongWord >> 12;
-    const unsigned long part2 = levelLongWord & 0xFFF;
-    return part1 + part2;
-};
+auto MERGERLOFFSET(const unsigned long levelLongWord) ->  unsigned long;
 
 
 #endif /* TYPEDEFINITIONS_H */

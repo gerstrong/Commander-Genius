@@ -1,4 +1,3 @@
-
 include_directories(${SDL_INCLUDE_DIR})
 
 add_subdirectory(core)
@@ -7,8 +6,6 @@ add_subdirectory(refkeen)
 
 # Move this to somewhere else
 add_subdirectory(unzip)
-
-
 
 if(DOWNLOADER)
     add_definitions(-DDOWNLOADER)
@@ -25,8 +22,6 @@ if(DOWNLOADER)
     ENDIF()
 
 endif()
-
-
 
 
 set(CXXSRC CGameLauncher.cpp

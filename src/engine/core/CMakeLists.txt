@@ -54,9 +54,9 @@ target_link_libraries(engine_core engine_core_menu)
 target_link_libraries(engine_core engine_core_mode)
 target_link_libraries(engine_core engine_core_vgamepad)
 
-target_link_libraries(engine_core 
-                       sdl_extensions_audio 
-					   sdl_extensions_sys)
+    target_link_libraries(engine_core
+                          sdl_extensions_audio
+                          sdl_extensions_sys)
 
 Target_link_libraries(engine_core SDL2)
 

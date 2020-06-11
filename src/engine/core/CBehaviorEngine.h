@@ -19,7 +19,7 @@
 #include <vector>
 #include <string>
 #include <map>
-#include <SDL.h>
+//#include <SDL.h>
 #include "engine/keen/galaxy/res/EGAStructs.h"
 #include <base/Configurator.h>
 #include "fileio/CTileProperties.h"

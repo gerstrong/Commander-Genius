@@ -15,6 +15,8 @@
 #include <iostream>
 #include <fstream>
 
+static const bool disableFgTile = false;
+
 CMap::CMap():
 m_width(0), m_height(0),
 m_worldmap(false),
@@ -406,7 +408,10 @@ bool CMap::changeTile(Uint16 x, Uint16 y, Uint16 t)
 
 	if( setTile( x, y, t ) )
 	{
-        m_Tilemaps.at(1).drawTile(gVideoDriver.getScrollSurface(), (x<<4)&drawMask, (y<<4)&drawMask, t);
+        if(!disableFgTile)
+        {
+            m_Tilemaps.at(1).drawTile(gVideoDriver.getScrollSurface(), (x<<4)&drawMask, (y<<4)&drawMask, t);
+        }
 		return true;
 	}
 	return false;
@@ -670,8 +675,10 @@ void CMap::redrawAt(const Uint32 mx, const Uint32 my)
         const size_t fg = mPlanes[1].getMapDataAt(mx, my);
 
 		m_Tilemaps.at(0).drawTile(ScrollSurface, loc_x, loc_y, bg);
-		if(fg)
+        if(fg && !disableFgTile)
+        {
 		  m_Tilemaps.at(1).drawTile(ScrollSurface, loc_x, loc_y, fg);
+        }
 	}
 }
 
@@ -707,7 +714,7 @@ void CMap::drawAll()
 
             m_Tilemaps.at(0).drawTile(ScrollSurface, ((x<<4)+m_mapxstripepos)&drawMask,((y<<4)+m_mapystripepos)&drawMask, bg);
 
-            if(fg)
+            if(fg && !disableFgTile)
             {
                m_Tilemaps.at(1).drawTile(ScrollSurface, ((x<<4)+m_mapxstripepos)&drawMask,((y<<4)+m_mapystripepos)&drawMask, fg);
             }
@@ -735,7 +742,7 @@ void CMap::drawHstripe(unsigned int y, unsigned int mpy)
 
       m_Tilemaps.at(0).drawTile(ScrollSurface, ((x<<4)+m_mapxstripepos)&drawMask, y, bg);
 
-	  if(fg)
+      if(fg && !disableFgTile)
       {
         m_Tilemaps.at(1).drawTile(ScrollSurface, ((x<<4)+m_mapxstripepos)&drawMask, y, fg);
       }
@@ -765,7 +772,7 @@ void CMap::drawVstripe(unsigned int x, unsigned int mpx)
 
       m_Tilemaps.at(0).drawTile(ScrollSurface, x, ((y<<4)+m_mapystripepos) & drawMask, bg);
 
-	  if(fg)
+      if(fg && !disableFgTile)
       {
         m_Tilemaps.at(1).drawTile(ScrollSurface, x, ((y<<4)+m_mapystripepos) & drawMask, fg);
       }
@@ -849,6 +856,9 @@ void CMap::_drawForegroundTiles()
 
     auto &tilemap = m_Tilemaps[1];
 
+    if(disableFgTile)
+        return;
+
     for( size_t y=y1 ; y<=y2 ; y++)
     {
         for( size_t x=x1 ; x<=x2 ; x++)
@@ -897,6 +907,9 @@ Uint8 CMap::getAnimtiletimer()
 
 void CMap::drawAnimatedTile(SDL_Surface *dst, Uint16 mx, Uint16 my, Uint16 tile)
 {
+    if(disableFgTile)
+        return;
+
     m_Tilemaps[1].drawTile( gVideoDriver.getBlitSurface(), mx, my, tile);
 }
 
@@ -1001,7 +1014,7 @@ void CMap::animateAllTiles()
 
                 m_Tilemaps[0].drawTile(ScrollSurface, loc_x, loc_y, bgTile);
 
-                if(fgTile)
+                if(fgTile && !disableFgTile)
                 {
                     m_Tilemaps[1].drawTile(ScrollSurface, loc_x, loc_y, fgTile);
                 }
