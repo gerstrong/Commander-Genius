@@ -78,6 +78,13 @@ configure_file(README.in ${CMAKE_BINARY_DIR}/README)
 configure_file(README.in ${CMAKE_CURRENT_SOURCE_DIR}/README)
 configure_file(README.in ${CMAKE_CURRENT_SOURCE_DIR}/debian/README)
 
+if(APPLE)
+    file(COPY cglogo.icns DESTINATION ${CMAKE_BINARY_DIR}/src)
+    file(COPY Info.plist DESTINATION ${CMAKE_BINARY_DIR}/src)
+    file(COPY launchCGonMacOs.sh DESTINATION ${CMAKE_BINARY_DIR})
+    file(COPY buildMacOsBundle.sh DESTINATION ${CMAKE_BINARY_DIR})
+endif(APPLE)
+
 set(CMAKE_C_FLAGS "-std=c99")
 
 
