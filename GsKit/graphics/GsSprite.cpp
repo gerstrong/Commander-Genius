@@ -92,11 +92,11 @@ void GsSprite::copyTilted(const GsSprite& original)
 bool GsSprite::createSurface(Uint32 flags, SDL_Color *Palette)
 {        
     mSurface.create(flags, m_xsize, m_ysize, 8, 0, 0, 0, 0);
-    mSurface.setPaletteColors(Palette);
+    mSurface.setPaletteColors(Palette, 255);
     mSurface.setColorKey(COLORKEY);
 
     mMaskSurface.create(flags, m_xsize, m_ysize, 8, 0, 0, 0, 0);
-    mMaskSurface.setPaletteColors(Palette);
+    mMaskSurface.setPaletteColors(Palette, 255);
     mMaskSurface.setColorKey(COLORKEY);
 
     return ( mSurface.empty() && mMaskSurface.empty() );

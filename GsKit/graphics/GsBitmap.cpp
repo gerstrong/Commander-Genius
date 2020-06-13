@@ -69,7 +69,7 @@ bool GsBitmap::createSurface(Uint32 flags, SDL_Rect rect, SDL_Color *Palette)
 {        
     mBitmapSurface.create( flags, rect.w, rect.h, 8, 0, 0, 0, 0 );
 
-    mBitmapSurface.setPaletteColors(Palette);
+    mBitmapSurface.setPaletteColors(Palette, 255);
     mBitmapSurface.setColorKey(COLORKEY);
 
     if(mBitmapSurface)
