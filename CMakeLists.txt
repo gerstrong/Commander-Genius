@@ -83,6 +83,7 @@ if(APPLE)
     file(COPY Info.plist DESTINATION ${CMAKE_BINARY_DIR}/src)
     file(COPY launchCGonMacOs.sh DESTINATION ${CMAKE_BINARY_DIR})
     file(COPY buildMacOsBundle.sh DESTINATION ${CMAKE_BINARY_DIR})
+    SET(CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -headerpad_max_install_names")
 endif(APPLE)
 
 set(CMAKE_C_FLAGS "-std=c99")

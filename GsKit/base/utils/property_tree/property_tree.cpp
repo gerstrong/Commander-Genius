@@ -100,9 +100,9 @@ ptree::self_type &ptree::get_child_internal(const path_type &path,
 
     // No more of the subpath then this is the last segment
     if(pos == path.npos)
-    {
-        const auto &childPair = tree.children().find(path);
-        return childPair->second;
+    {        
+        const auto childPairIt = tree.children().find(path);
+        return childPairIt->second;
     }
 
     const path_type segment = path.substr(0,pos);

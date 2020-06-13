@@ -4,6 +4,7 @@
 # create bundle structure
 mkdir CGenius.app
 mkdir -p CGenius.app/Contents
+mkdir -p CGenius.app/Contents/libs
 mkdir -p CGenius.app/Contents/MacOS
 mkdir -p CGenius.app/Contents/Resources
 
@@ -28,33 +29,43 @@ cp launchCGonMacOs.sh CGenius.app/Contents/MacOS
 #
 
 # Let's those from the right directory
-cp ${OSXOPT}/local/lib/libSDL2_mixer-2.0.0.dylib CGenius.app/Contents/MacOS
-cp ${OSXOPT}/local/lib/libSDL2-2.0.0.dylib CGenius.app/Contents/MacOS
-cp ${OSXOPT}/local/lib/libSDL2_image-2.0.0.dylib CGenius.app/Contents/MacOS
-cp ${OSXOPT}/local/lib/libSDL2_ttf-2.0.0.dylib CGenius.app/Contents/MacOS
-cp ${OSXCROSSPATH}/target/SDK/MacOSX10.10.sdk/usr/lib/libcurl.4.dylib CGenius.app/Contents/MacOS
-cp ${OSXCROSSPATH}/target/SDK/MacOSX10.10.sdk/usr/lib/libz.1.dylib CGenius.app/Contents/MacOS
-cp ${OSXCROSSPATH}/target/SDK/MacOSX10.10.sdk/usr/lib/libc++.1.dylib CGenius.app/Contents/MacOS
-cp ${OSXCROSSPATH}/target/SDK/MacOSX10.10.sdk/usr/lib/libSystem.B.dylib CGenius.app/Contents/MacOS
+cp -L ${OSXOPT}/local/lib/libSDL2_mixer-2.0.0.dylib CGenius.app/Contents/MacOS
+cp -L ${OSXOPT}/local/lib/libSDL2-2.0.0.dylib CGenius.app/Contents/MacOS
+cp -L ${OSXOPT}/local/lib/libSDL2_image-2.0.0.dylib CGenius.app/Contents/MacOS
+cp -L ${OSXOPT}/local/lib/libSDL2_ttf-2.0.0.dylib CGenius.app/Contents/MacOS
+cp -L ${OSXCROSSPATH}/target/SDK/MacOSX10.10.sdk/usr/lib/libcurl.4.dylib CGenius.app/Contents/MacOS
+cp -L ${OSXCROSSPATH}/target/SDK/MacOSX10.10.sdk/usr/lib/libz.1.dylib CGenius.app/Contents/MacOS
+cp -L ${OSXCROSSPATH}/target/SDK/MacOSX10.10.sdk/usr/lib/libc++.1.dylib CGenius.app/Contents/MacOS
+cp -L ${OSXCROSSPATH}/target/SDK/MacOSX10.10.sdk/usr/lib/libSystem.B.dylib CGenius.app/Contents/MacOS
+
+# Those are loaded at runtime by SDL2_Mixer
+cp -L ${OSXCROSSPATH}/target/macports/pkgs/opt/local/lib/libFLAC.dylib CGenius.app/Contents/MacOS
+cp -L ${OSXCROSSPATH}/target/macports/pkgs/opt/local/lib/libmodplug.dylib CGenius.app/Contents/MacOS
+cp -L ${OSXCROSSPATH}/target/macports/pkgs/opt/local/lib/libmpg123.dylib CGenius.app/Contents/MacOS
+cp -L ${OSXCROSSPATH}/target/macports/pkgs/opt/local/lib/libogg.dylib CGenius.app/Contents/MacOS
+cp -L ${OSXCROSSPATH}/target/macports/pkgs/opt/local/lib/libopus.dylib CGenius.app/Contents/MacOS
+cp -L ${OSXCROSSPATH}/target/macports/pkgs/opt/local/lib/libvorbis.dylib CGenius.app/Contents/MacOS
+cp -L ${OSXCROSSPATH}/target/macports/pkgs/opt/local/lib/libvorbisenc.dylib CGenius.app/Contents/MacOS
+cp -L ${OSXCROSSPATH}/target/macports/pkgs/opt/local/lib/libvorbisfile.dylib CGenius.app/Contents/MacOS
+cp -L ${OSXCROSSPATH}/target/macports/pkgs/opt/local/lib/libopusfile.dylib CGenius.app/Contents/MacOS
+cp -L ${OSXCROSSPATH}/target/macports/pkgs/opt/local/lib/libopusurl.dylib CGenius.app/Contents/MacOS
+
 
 x86_64-apple-darwin14-install_name_tool -change /opt/local/lib/libSDL2-2.0.0.dylib @executable_path/libSDL2-2.0.0.dylib CGenius.app/Contents/MacOS/CGeniusExe
-
 x86_64-apple-darwin14-install_name_tool -change /opt/local/lib/libSDL2_mixer-2.0.0.dylib @executable_path/libSDL2_mixer-2.0.0.dylib CGenius.app/Contents/MacOS/CGeniusExe
-
 x86_64-apple-darwin14-install_name_tool -change /opt/local/lib/libSDL2_image-2.0.0.dylib @executable_path/libSDL2_image-2.0.0.dylib CGenius.app/Contents/MacOS/CGeniusExe
-
 x86_64-apple-darwin14-install_name_tool -change /opt/local/lib/libSDL2_ttf-2.0.0.dylib @executable_path/libSDL2_ttf-2.0.0.dylib CGenius.app/Contents/MacOS/CGeniusExe
-
 x86_64-apple-darwin14-install_name_tool -change /usr/lib/libcurl.4.dylib @executable_path/libcurl.4.dylib CGenius.app/Contents/MacOS/CGeniusExe
-
 x86_64-apple-darwin14-install_name_tool -change /usr/lib/libz.1.dylib @executable_path/libz.1.dylib CGenius.app/Contents/MacOS/CGeniusExe
-
 x86_64-apple-darwin14-install_name_tool -change /usr/lib/libc++.1.dylib @executable_path/libc++.1.dylib CGenius.app/Contents/MacOS/CGeniusExe
-
 x86_64-apple-darwin14-install_name_tool -change /usr/lib/libSystem.B.dylib @executable_path/libSystem.B.dylib CGenius.app/Contents/MacOS/CGeniusExe
 
+#x86_64-apple-darwin14-install_name_tool -add_rpath @executable_path CGenius.app/Contents/MacOS/CGeniusExe
+
+x86_64-apple-darwin14-install_name_tool -add_rpath @executable_path../libs CGenius.app/Contents/MacOS/CGeniusExe
+
 # Pack it to an DMG (10 MB) (Just be sure you have installed hfsprogs)
-dd if=/dev/zero of=/tmp/my_application.dmg bs=1M count=10 status=progress
+dd if=/dev/zero of=/tmp/my_application.dmg bs=1M count=25 status=progress
 mkfs.hfsplus -v Install /tmp/my_application.dmg
 
 # TODO: This should work for a normal user.
@@ -67,5 +78,5 @@ mv /tmp/my_application.dmg ./
 mv my_application.dmg CommanderGenius.dmg
 
 # Cleanups
-rm -rf CGenius.app
+#rm -rf CGenius.app
 
