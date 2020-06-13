@@ -147,7 +147,7 @@ static void addNodeFromTinyXML(GsKit::ptree &output,
 
 static void addNodeToTinyXML(GsKit::ptree &input,
                              XMLNode *output,
-                             XMLDocument *doc)
+                             tinyxml2::XMLDocument *doc)
 {
     for( auto &data : input )
     {
@@ -184,7 +184,7 @@ static void addNodeToTinyXML(GsKit::ptree &input,
 
 static void read_xml_tinyxml2(const std::string &filename, GsKit::ptree &pt)
 {
-    XMLDocument doc;
+    tinyxml2::XMLDocument doc;
 
     auto fullfn = GetFullFileName(filename);
 
@@ -198,7 +198,7 @@ static void read_xml_tinyxml2(const std::string &filename, GsKit::ptree &pt)
 
 static void write_xml_tinyxml2(const std::string &filename, GsKit::ptree &pt)
 {
-    XMLDocument xmlDoc;
+    tinyxml2::XMLDocument xmlDoc;
 
     auto decl = xmlDoc.NewDeclaration(nullptr);
     xmlDoc.InsertEndChild(decl);
