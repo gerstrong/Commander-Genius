@@ -84,7 +84,6 @@ public:
     int mCreditsBmpID;
 
     int mIntroTimer = 0;
-    bool mSwapColors = true;
 
     bool mSkipSection;
 
