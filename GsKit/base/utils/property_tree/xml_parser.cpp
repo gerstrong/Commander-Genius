@@ -6,11 +6,11 @@
 #else
 #include "tinyxml2.h"
 
-#include <base/utils/FindFile.h>
-
 using namespace tinyxml2;
 
 #endif // BOOST_ENABLED
+
+#include <base/utils/FindFile.h>
 
 namespace GsKit
 {
@@ -54,7 +54,9 @@ static void read_xml_boost(const std::string &filename, GsKit::ptree &pt)
 {
     boost::property_tree::ptree tree;
 
-    boost::property_tree::xml_parser::read_xml(filename, tree);
+    const auto fullfn = GetFullFileName(filename);
+
+    boost::property_tree::xml_parser::read_xml(fullfn, tree);
 
     addNodeFromBoostPTree(pt, tree);
 }
@@ -87,8 +89,9 @@ static void write_xml_boost(const std::string &filename, GsKit::ptree &pt)
     addNodeToBoostPTree(tree, pt);
 
     xml_writer_settings settings('\t', 1);
+    const auto fullfn = GetWriteFullFileName(filename, true);
     boost::property_tree::xml_parser::write_xml(
-                filename, tree, std::locale(), settings);
+                fullfn, tree, std::locale(), settings);
 }
 
 #else
