@@ -212,7 +212,7 @@ static void write_xml_tinyxml2(const std::string &filename, GsKit::ptree &pt)
         addNodeToTinyXML(data.second, newElem, &xmlDoc);
     }    
 
-    auto fullfn = GetWriteFullFileName(filename);
+    auto fullfn = GetWriteFullFileName(filename, true);
     xmlDoc.SaveFile(fullfn.c_str());
 }
 

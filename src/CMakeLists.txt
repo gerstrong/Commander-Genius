@@ -199,7 +199,7 @@ endif(WIN32)
 target_link_libraries(CGeniusExe ${PYTHON_LIBRARIES})
 
 
-cotire(CGeniusExe)
+#cotire(CGeniusExe)
 
 # Stuff definitions in case we want to install it
 INCLUDE(install.cmake)
