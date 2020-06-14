@@ -6,7 +6,7 @@
 #include <base/utils/Color.h>
 #include <graphics/GsSurface.h>
 
-#include <SDL_ttf.h>
+typedef struct _TTF_Font TTF_Font;
 
 class GsTrueTypeFont
 {

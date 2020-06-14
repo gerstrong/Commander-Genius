@@ -2,6 +2,8 @@
 #include "GsTrueTypeFont.h"
 #include <SDL_rwops.h>
 
+#include <SDL_ttf.h>
+
 GsTrueTypeFont::GsTrueTypeFont()
 {
 
