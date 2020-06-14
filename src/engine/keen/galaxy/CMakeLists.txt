@@ -35,4 +35,4 @@ target_link_libraries(engine_keen_galaxy
                       engine_keen_galaxy_res
 		      engine_keen)
 
-cotire(engine_keen_galaxy)
+#cotire(engine_keen_galaxy)

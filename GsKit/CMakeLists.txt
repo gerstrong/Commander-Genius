@@ -111,11 +111,6 @@ else()
     
             message(STATUS "Using shared SDL Version 2 for ${PROJECT_NAME}")
     
-            if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-                set(SDL2_INCLUDE_DIRS /Library/Frameworks/SDL2.framework/Headers)
-                set(SDL2_IMAGE_INCLUDE_DIRS /Library/Frameworks/SDL2_image.framework/Headers)
-            endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-    
             include_directories(${SDL2_INCLUDE_DIR})
             include_directories(${SDL2_NET_INCLUDE_DIRS})
             include_directories(${SDL2_IMAGE_INCLUDE_DIRS})

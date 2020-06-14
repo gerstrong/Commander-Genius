@@ -396,6 +396,11 @@ void CPassiveGalaxy::processTitle()
 
         processPonderMode = &CPassiveGalaxy::processStarWars;
         processRenderMode = &CPassiveGalaxy::renderStarWars;
+
+        // Set correct palette for starwars text. Make it white
+        auto &Font = gGraphics.getFontLegacy(1);
+        Font.setupColor(0xFFFFFF);
+
         mBackgroundStarWars = *gGraphics.getBitmapFromStr(0, "STARWARS");
 
         GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
@@ -570,24 +575,14 @@ void CPassiveGalaxy::renderStarWars()
             starwarsRect.y = mStarwarsScrollPos;
         }
 
+
         blitScaled( starwarsSfc, starwarsRect,
                     blitSfc, dstRect, VidFilter::NONE );
+
     }
 
     lRect.h = sfc.height();    lRect.w = sfc.width();
     lRect.x = 0;        lRect.y = lRect.h-20;
-
-    // Draw some text.
-    auto &Font = gGraphics.getFontLegacy(1);
-
-    if(mSwapColors)
-    {
-        Font.setupColor(0xFFFFFF);
-    }
-    else
-    {
-        Font.setupColor(0xFF0000);
-    }
 }
 
 }

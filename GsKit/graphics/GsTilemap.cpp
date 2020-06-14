@@ -25,7 +25,7 @@ bool GsTilemap::CreateSurface(SDL_Color *sdlPalette, Uint32 Flags,
     mTileSurface.create(Flags, m_column<<m_pbasesize,
                         (m_numtiles/m_column)<<m_pbasesize, 8, 0, 0, 0, 0);
 
-    mTileSurface.setPaletteColors(sdlPalette);
+    mTileSurface.setPaletteColors(sdlPalette, 255);
     mTileSurface.setColorKey(COLORKEY);
 
     return !mTileSurface.empty();

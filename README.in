@@ -182,6 +182,20 @@ Windows 7 up to 10 are supported. About older versions, I don't know. On some
 Windows Systems you might need to install the "Microsoft Visual Studio
 Redistributable 2015 (x86)" package in order to get it running.
 
+On MacOS the recent dmg contain a version that is 64-bit only.
+You need to install macports first in order to get it running:
+
+https://www.macports.org/install.php
+
+After you have to install some SDL2 dependencies from the terminal using ports:
+
+sudo port install libsdl2 libsdl2_mixer libsdl2_image libsdl2_ttf libsdl2_mixer curl
+
+I plan to automate that in near future, but for the meanwhile that should do.
+
+After having done that just open the DMG file and drag the Commander Keen Head
+to where you want the App to be installed on your Mac. Have fun!
+
 
 CG-Data locations:
 

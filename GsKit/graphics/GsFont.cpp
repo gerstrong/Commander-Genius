@@ -39,7 +39,7 @@ bool GsFont::CreateSurface(SDL_Color *Palette, Uint32 Flags,
            pFontSurface->create(Flags, width*scale,
                                height*scale, 8, 0, 0, 0, 0);
 
-           pFontSurface->setPaletteColors(Palette);
+           pFontSurface->setPaletteColors(Palette, 255);
            pFontSurface->setColorKey(COLORKEY_4BIT);
            scale++;
     }
@@ -239,7 +239,7 @@ void GsFont::setupColor( const Uint32 fgColor )
             SDL_GetRGB(fgColor, pPixelformat, &color[15].r, &color[15].g, &color[15].b);
 
             // Change palette colors to the one requested
-            pFontSurface->setPaletteColors(color.data());
+            pFontSurface->setPaletteColors(color.data(), color.size());
             pFontSurface->setColorKey(COLORKEY_4BIT);
         }
     }

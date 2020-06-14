@@ -16,7 +16,7 @@ void GsProgressBar::processLogic()
     const float tol = 1.0f; // Tolerance
     const float acc = 0.3f; // Acceleration
 
-    if( abs(diff) > tol )
+    if( std::abs(diff) > tol )
     {
         mProgressToRender = mProgressToRender + diff*acc;
     }

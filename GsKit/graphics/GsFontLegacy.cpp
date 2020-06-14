@@ -39,7 +39,7 @@ bool GsFontLegacy::CreateSurface(SDL_Color *Palette, Uint32 Flags,
            pFontSurface->create(Flags, width*scale,
                                height*scale, 8, 0, 0, 0, 0);
 
-           pFontSurface->setPaletteColors(Palette);
+           pFontSurface->setPaletteColors(Palette, 255);
            pFontSurface->setColorKey(COLORKEY_4BIT);
            scale++;
     }
@@ -254,18 +254,22 @@ void GsFontLegacy::setupColor( const Uint32 fgColor )
 
     for(auto &pFontSurface : mpFontSurface)
     {
+        if(!pFontSurface)
+            return;
+
         auto palette = pFontSurface->getSDLSurface()->format->palette;
 
         SDL_PixelFormat *pPixelformat = gVideoDriver.getBlitSurface()->format;
 
         if(palette)
         {
+
             memcpy( color.data(), palette->colors, 16*sizeof(SDL_Color) );
 
             SDL_GetRGB(fgColor, pPixelformat, &color[15].r, &color[15].g, &color[15].b);
 
             // Change palette colors to the one requested
-            pFontSurface->setPaletteColors(color.data());
+            pFontSurface->setPaletteColors(color.data(), color.size());
             pFontSurface->setColorKey(COLORKEY_4BIT);
         }
     }
