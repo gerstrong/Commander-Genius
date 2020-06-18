@@ -153,11 +153,6 @@ endif(OPT_PATH)
 if(USE_SDL2)
         message(STATUS "SDL2_LIBRARY = ${SDL2_LIBRARY}")
         message(STATUS "SDL2IMAGE_LIBRARY = ${SDL2IMAGE_LIBRARY}")
-
-        # Unfortunately it is required for osxcross, because
-        # it calls just -lSDL2 in the end.
-        set(SDL2_LINK_DIR ${SDL2_INCLUDE_DIR}/../../lib)
-        link_directories(${SDL2_LINK_DIR})
         message(STATUS SDL2_LINK_DIR = ${SDL2_LINK_DIR})
 endif(USE_SDL2)
 

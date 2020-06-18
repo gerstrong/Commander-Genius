@@ -58,6 +58,6 @@ target_link_libraries(engine_core engine_core_vgamepad)
                           sdl_extensions_audio
                           sdl_extensions_sys)
 
-Target_link_libraries(engine_core SDL2)
+#Target_link_libraries(engine_core SDL2)
 
 Target_link_libraries(engine_core GsKit)

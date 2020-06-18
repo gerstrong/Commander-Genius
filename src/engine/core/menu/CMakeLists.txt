@@ -49,9 +49,4 @@ add_library(engine_core_menu STATIC ${SRCS})
 
 Target_link_libraries(engine_core_menu engine_core_menu_widgets)
 
-# TODO: Not sure why Windows requires this yet.
-#if(WIN32)
-#    Target_link_libraries(engine_core SDL2)
-#endif(WIN32)
-
 Target_link_libraries(engine_core_menu GsKit)
