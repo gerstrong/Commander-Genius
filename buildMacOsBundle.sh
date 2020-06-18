@@ -17,8 +17,8 @@ cp launchCGonMacOs.sh CGenius.app/Contents/MacOS
 
 bash makebundleable.sh CGenius.app/Contents/MacOS/CGeniusExe
 
-# Pack it to an DMG (10 MB) (Just be sure you have installed hfsprogs)
-dd if=/dev/zero of=/tmp/my_application.dmg bs=1M count=25 status=progress
+# Pack it to an DMG (15 MB) (Just be sure you have installed hfsprogs)
+dd if=/dev/zero of=/tmp/my_application.dmg bs=1M count=15 status=progress
 mkfs.hfsplus -v Install /tmp/my_application.dmg
 
 # TODO: This should work for a non-root user.
