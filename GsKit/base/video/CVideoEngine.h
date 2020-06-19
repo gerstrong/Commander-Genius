@@ -96,7 +96,7 @@ public:
     virtual void setLightIntensity(const float intensity) = 0;
 
     SDL_Surface *getBlitSurface()
-   {
+    {
         return mGameSfc.getSDLSurface();
     }
 

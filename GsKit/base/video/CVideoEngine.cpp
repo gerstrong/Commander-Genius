@@ -37,6 +37,8 @@ CVideoEngine::~CVideoEngine()
 {
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 
+    mpMainScreenTexture = nullptr;
+
     if(renderer)
     {
         SDL_DestroyRenderer(renderer);

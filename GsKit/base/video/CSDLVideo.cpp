@@ -87,6 +87,8 @@ bool CSDLVideo::init()
 		gLogging.textOut(FONTCOLORS::RED,"SDL_CreateWindow(): %s<br>", SDL_GetError());		
 		return false;
 	}	
+
+    mpMainScreenTexture = nullptr;
 	
     if(renderer)
     {
