@@ -1,5 +1,7 @@
 #include "property_tree.h"
 
+#include <stdexcept>
+
 namespace GsKit
 {
 
@@ -96,39 +98,97 @@ const ptree::self_type &ptree::add_child(const path_type &path,
 ptree::self_type &ptree::get_child_internal(const path_type &path,
                                             self_type &tree)
 {
-    path_type::size_type pos = path.find(".");
+    try {
+        path_type::size_type pos = path.find(".");
 
-    // No more of the subpath then this is the last segment
-    if(pos == path.npos)
+        // No more of the subpath then this is the last segment
+        if(pos == path.npos)
+        {
+            auto &subChildren = tree.children();
+
+            if(subChildren.empty())
+                throw std::runtime_error("no children");
+
+            const auto &childPairIt = subChildren.find(path);
+
+            if(childPairIt == subChildren.end())
+                throw std::runtime_error("children not found");
+
+            return childPairIt->second;
+        }
+
+        const path_type segment = path.substr(0,pos);
+        const path_type left = path.substr(pos+1);
+
+        auto &children = tree.mChildren;
+        if(children.empty())
+            throw;
+
+        auto it = children.find(segment);
+
+        if(it == children.end())
+            throw;
+
+        auto &child = it->second;
+        return get_child_internal(left, child);
+    }
+    catch(std::exception const&  ex)
     {
-        const auto &childPair = tree.children().find(path);
-        return childPair->second;
+        throw ex;
+    }
+    catch (...) {
+        throw;
     }
 
-    const path_type segment = path.substr(0,pos);
-    const path_type left = path.substr(pos+1);
-
-    auto &child = tree.mChildren.find(segment)->second;
-    return get_child_internal(left, child);
 }
 
 const ptree::self_type &ptree::get_child_internal(const path_type &path,
                                                   const self_type &tree) const
 {
-    return const_cast<ptree::self_type&>
-            (*this).get_child_internal(path,
-                                       const_cast<ptree::self_type&>(tree));
+    try {
+        return const_cast<ptree::self_type&>
+                (*this).get_child_internal(path,
+                                           const_cast<ptree::self_type&>(tree));
+
+    }
+    catch(std::exception const&  ex)
+    {
+        throw ex;
+    }
+    catch (...) {
+        throw;
+    }
 }
 
 
 const ptree::self_type &ptree::get_child(const path_type &path) const
 {
-    return get_child_internal(path, *this);
+    try {
+        return get_child_internal(path, *this);
+    }
+    catch(std::exception const&  ex)
+    {
+        throw ex;
+    }
+    catch (...) {
+        throw;
+    }
+
 }
 
 ptree::self_type &ptree::get_child(const path_type &path)
 {
+    try {
     return get_child_internal(path, *this);
+    }
+    catch(std::exception const&  ex)
+    {
+        throw ex;
+    }
+    catch (...) {
+        throw;
+    }
+
 }
 
 
