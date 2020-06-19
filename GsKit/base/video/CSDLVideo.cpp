@@ -88,6 +88,7 @@ bool CSDLVideo::init()
 		return false;
 	}	
 
+    mpMainScreenTexture = nullptr;
 	
     if(renderer)
     {
