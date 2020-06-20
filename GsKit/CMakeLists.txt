@@ -9,6 +9,12 @@ OPTION(USE_SDL2 "SDL2 support" Yes)
 
 OPTION(USE_BOOST "Use Boost for XML" Yes)
 
+option(DISABLE_HOVER "Disables the hover over effect in the menus, useful for touch based devices" OFF)
+
+if(DISABLE_HOVER)
+    ADD_DEFINITIONS(-DDISABLE_HOVER)
+endif()
+
 
 if(SDL2)
     OPTION(USE_OPENGL "OpenGL support" No)

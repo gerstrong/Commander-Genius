@@ -28,7 +28,8 @@ sudo cp -av CGenius.app /mnt/tmp
 sudo umount /mnt/tmp
 mv /tmp/my_application.dmg ./
 # TODO: Here we should have the version passed to the filename
-mv my_application.dmg CommanderGenius.dmg
+VERSION=`bash get_version.sh`
+mv my_application.dmg CommanderGenius-${VERSION}-MacOS.dmg
 
 # Cleanups
 #rm -rf CGenius.app
