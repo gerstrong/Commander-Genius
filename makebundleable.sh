@@ -2,8 +2,6 @@
 # Build script for MacOs Bundle
 # More setup hints here: https://www.steinzone.de/wordpress/cross-building-commander-genius-fuer-macos-using-a-linux-system/
 
-
-
 OTOOL=x86_64-apple-darwin14-otool
 INSTALL_NAME_TOOL=x86_64-apple-darwin14-install_name_tool
 REPLACE=/opt/local/lib
@@ -76,10 +74,4 @@ collect_list_of_dylibs()
 }
 
 collect_list_of_dylibs ${SRC_FILE}
-
-# TODO: process the SET_OF_DYLIBS and ensure that all 
-#       the entries with the match are replaced
-#echo "apply makebundleable.sh to ${BUNDLEPATH}/Contents/libs/${FILENAME}"
-#bash makebundleable.sh ${BUNDLEPATH}/Contents/libs/${FILENAME}
-
 
