@@ -171,6 +171,8 @@ void	InitBaseSearchPaths();
 void	InitSearchPaths(const std::string &cfgFname);
 void    InitSearchPaths();
 
+void    printSearchPaths();
+
 // this does a search on all searchpaths for the file and returns the first one found
 // if none was found, NULL will be returned
 // if searchpath!=NULL, it will place there the searchpath

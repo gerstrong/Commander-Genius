@@ -108,6 +108,11 @@ bool CGameLauncher::setupMenu()
                                         DEPTH_MAX_GAMES,
                                         200, 900);    
 
+    if(gamesDetected)
+    {
+
+    }
+
     // Save any custom labels
     putLabels();
 
@@ -218,7 +223,7 @@ bool CGameLauncher::setupMenu()
         std::stringstream ss;
 
         const auto searchPathGames =
-                JoinPaths(GetFirstSearchPath(),"games");
+                JoinPaths(GetFirstSearchPath(), DIR_GAMES);
 
         ss << "No games detected!\n";
         ss << "You can copy some into:\n";

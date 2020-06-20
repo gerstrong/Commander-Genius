@@ -115,6 +115,8 @@ int main(int argc, char *argv[])
 
 	gLogging.textOut(FONTCOLORS::GREEN,"Created Log file...\n");
 
+    printSearchPaths();
+
     gLogging.textOut(FONTCOLORS::GREEN,"Initializing TTF driver...\n");
 
     if(!gTTFDriver.init())

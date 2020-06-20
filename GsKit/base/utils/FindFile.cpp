@@ -28,6 +28,7 @@
 #include <base/utils/Debug.h>
 #include <base/utils/StringUtils.h>
 #include <base/utils/ConfigHandler.h>
+#include <base/GsLogging.h>
 
 #ifdef WIN32
 #	ifndef _WIN32_IE
@@ -57,6 +58,19 @@
 #endif
 
 searchpathlist tSearchPaths;
+
+void printSearchPaths()
+{
+    // print the searchpaths, this may be very usefull for the user
+    gLogging.textOut(FONTCOLORS::GREEN,"I have now the following searchpaths (in this order):\n");
+    for(auto p2 = tSearchPaths.begin(); p2 != tSearchPaths.end(); p2++)
+    {
+        std::string path = *p2;
+        ReplaceFileVariables(path);
+        gLogging.textOut(FONTCOLORS::GREEN,"  %s\n", path.c_str());
+    }
+    gLogging.textOut(FONTCOLORS::GREEN," And that's all.\n");
+}
 
 void InitSearchPaths(const std::string &cfgFname)
 
@@ -90,17 +104,6 @@ void InitSearchPaths(const std::string &cfgFname)
             AddToFileList(&tSearchPaths, *p1);
         }
     }
-
-	// print the searchpaths, this may be very usefull for the user
-	notes << "I have now the following searchpaths (in this order):\n";
-    for(auto p2 = tSearchPaths.begin(); p2 != tSearchPaths.end(); p2++)
-	{
-		std::string path = *p2;
-		ReplaceFileVariables(path);
-		notes << "  " << path << "\n";
-	}
-	notes << " And that's all." << endl;
-
 }
 
 void InitSearchPaths()
@@ -154,6 +157,8 @@ static void ReplaceSlashes(std::string& path)
 #ifdef WIN32
     for (std::string::iterator it = path.begin(); it != path.end(); it++)
         if (*it == '\\') *it = '/';
+#else
+    (void) path;
 #endif
 }
 

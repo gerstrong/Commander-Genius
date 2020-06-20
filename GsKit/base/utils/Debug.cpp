@@ -556,6 +556,7 @@ static void CoutPrint(const std::string& str) {
 #ifdef ANDROID    
     __android_log_print(ANDROID_LOG_INFO, "Commander Genius","%s", str.c_str());
 #endif
+
 }
 
 int Logger_Verbosity = 0;
