@@ -1435,6 +1435,25 @@ bool CEGAGraphicsGalaxy::readMaskedTilemaps( size_t NumTiles, size_t pbasetilesi
 }
 
 
+struct SpriteFilesFiller
+{
+    std::set<std::string> list;
+
+    bool operator() (const std::string& filename) {
+        std::string ext = GetFileExtension(filename);
+        if ( stringcaseequal(ext, "bmp") ||
+             stringcaseequal(ext, "png") ||
+             stringcaseequal(ext, "jpg") )
+        {
+            list.insert(stringtolower(filename));
+        }
+
+        return true;
+    }
+};
+
+
+
 
 bool CEGAGraphicsGalaxy::readSprites( const size_t numSprites,
                                       const size_t indexSprite )
@@ -1563,8 +1582,43 @@ bool CEGAGraphicsGalaxy::readSprites( const size_t numSprites,
         // SDL_SaveBMP(sfc, filename.c_str());
     }
 
-    // Now let's copy all the sprites. After that some of them are tinted to the proper colors
 
+    const std::string gfxDir = "gfx";
+    const std::string spritesDir = "sprites";
+
+    const std::string spritesPath = JoinPaths(gKeenFiles.gameDir,
+                                              gfxDir, spritesDir);
+
+    SpriteFilesFiller sprList;
+    FindFiles(sprList, spritesPath, false, FM_REG);
+
+    for(const auto &sprFile : sprList.list)
+    {
+        const auto numStr = sprFile.substr(sprFile.length()-8,
+                                           sprFile.length()-4);
+
+        int idx = atoi(numStr.c_str());
+
+        if(idx >= int(gGraphics.getSpriteVec(0).size()))
+        {
+            gLogging << "Warning: Index " << idx << " out of reach.";
+            continue;
+        }
+
+        GsSprite &sprite = gGraphics.getSprite(0, idx);
+
+        if( sprite.loadHQSprite(sprFile) )
+        {
+            sprite.applyTransparency();
+        }
+        else
+        {
+            gLogging << "Warning: " << sprFile << " could not be loaded.";
+        }
+    }
+
+
+    // Now let's copy all the sprites for different players. After that some of them are tinted to the proper colors
     const auto SpriteOrigVec = gGraphics.getSpriteVec(0);
 
     // Copy the sprites
@@ -1625,7 +1679,7 @@ bool CEGAGraphicsGalaxy::readSprites( const size_t numSprites,
         }
     }
 
-    const std::string gfxDir = "gfx";
+
     const std::string playerDir = "player";
     const std::string playersPathList = JoinPaths(gKeenFiles.gameDir,
                                                  gfxDir,
