@@ -377,7 +377,7 @@ bool CGameLauncher::scanExecutables(const std::string& path)
 {
     bool result = false;
 
-    gLogging.ftextOut("Search: %s<br>", path.c_str() );
+    gLogging.ftextOut("Search on vfs: %s<br>", path.c_str() );
 
     // First compare which matches are possible,
     // before you even try to open them in the loop.
@@ -386,6 +386,8 @@ bool CGameLauncher::scanExecutables(const std::string& path)
 
     for(const auto &curFname : execlist.list)
     {
+        gLogging.ftextOut("Scanning %s<br>", curFname.c_str() );
+
         int ep = -1;
         bool isPy = false;
 

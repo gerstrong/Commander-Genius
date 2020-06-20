@@ -106,6 +106,7 @@ int main(int argc, char *argv[])
     const auto cfgFName = gSettings.getConfigFileName();
     notes << "Configuration filename is: " << cfgFName << endl;
     InitSearchPaths(cfgFName);
+    printSearchPaths();
 
     if( !gLogging.CreateLogfile("CGLog.html", appName, CGVERSION) )
     {

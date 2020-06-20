@@ -62,14 +62,14 @@ searchpathlist tSearchPaths;
 void printSearchPaths()
 {
     // print the searchpaths, this may be very usefull for the user
-    gLogging.textOut(FONTCOLORS::GREEN,"I have now the following searchpaths (in this order):\n");
+    gLogging.textOut(FONTCOLORS::BLACK,"I have now the following searchpaths (in this order):\n");
     for(auto p2 = tSearchPaths.begin(); p2 != tSearchPaths.end(); p2++)
     {
         std::string path = *p2;
         ReplaceFileVariables(path);
         gLogging.textOut(FONTCOLORS::GREEN,"  %s\n", path.c_str());
     }
-    gLogging.textOut(FONTCOLORS::GREEN," And that's all.\n");
+    gLogging.textOut(FONTCOLORS::BLACK," And that's all.\n");
 }
 
 void InitSearchPaths(const std::string &cfgFname)
