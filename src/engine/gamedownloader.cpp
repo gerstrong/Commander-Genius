@@ -202,7 +202,6 @@ bool GameDownloader::readGamesNode(const GsKit::ptree &pt)
     {
         for( auto &gameNode : pt.get_child("Games") )
         {
-
             // Filter the comments ...
             if(gameNode.first == "<xmlcomment>")
                 continue;
