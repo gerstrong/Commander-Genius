@@ -48,8 +48,11 @@ void CStunnable::getTouchedBy(CSpriteObject &theObject)
 	CBullet *bullet = dynamic_cast<CBullet*>(&theObject);
     if( theObject.exists && bullet != nullptr )
 	{
-		bullet->setAction(A_KEENSHOT_IMPACT);
-		bullet->playSound( SOUND_SHOT_HIT );
+        if(!bullet->getActionNumber(A_KEENSHOT_IMPACT))
+        {
+            bullet->setAction(A_KEENSHOT_IMPACT);
+            bullet->playSound( SOUND_SHOT_HIT );
+        }
 	}
 }
 

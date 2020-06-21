@@ -8,8 +8,12 @@ void CEventContainer::processSinks()
 
     // Make a copy of that list, because the original
     // could change, while pumping happens
+    // Ticks are converted to milliseconds here.
     for(auto &ev : m_EventList)
     {
+        if(!ev)
+            continue;
+
         mPumpEventPtrs.push_back(ev);
     }
 

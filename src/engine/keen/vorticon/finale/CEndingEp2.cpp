@@ -85,7 +85,7 @@ void CEndingEp2::HeadsForEarth()
 		mpShipFlySys->m_ShipQueuePtr = 0;
 
 		int x, y;
-		mpMap->findTile(593, &x, &y);
+        mpMap->findTile(593, x, y);
 		m_Player[0].moveTo(GsVec2D<int>(x<<CSF, y<<CSF));
 
 		addMsgBoxString("EP2_ESEQ_PART1");

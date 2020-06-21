@@ -67,10 +67,18 @@ public:
     }
 
 
+    /**
+     * @brief add   Adds an event to the queue
+     * @param ev    Event to be pushed to be added
+     */
     void add(CEvent *ev)
     {
-        m_EventList.push_back(std::shared_ptr<CEvent>(ev));
+        std::shared_ptr<CEvent> sharedEvent(ev);
+        m_EventList.push_back(sharedEvent);
     }
+
+
+
 
     void wait(const float time)
     {

@@ -25,13 +25,25 @@ public:
 
     bool loadPythonScripts(const std::string &scriptBaseName);
 
+    bool isNearby(CSpriteObject &theObject) override;
+
 	/**
-	 * What happens if the slug gets touched by another object
+     * What happens if the foe gets touched by another object
 	 */
-	void getTouchedBy(CSpriteObject &theObject);
+    void getTouchedBy(CSpriteObject &theObject) override;
+
+    /**
+     *  Since this class also describes the QED Core, with this flag the whole game can end
+     */
+    void winGame(const int msecs);
 	
 private:
     int mLevelTestBmp = 84; /** Index to use for the hint message (Keen 9 and other mods) */
+
+    uint32_t mGameEndsTime = 0; // Timer to run down, before game ends
+
+    uint32_t mLevelEndsTime = 0; // Timer to run down, before game ends
+
 };
 
 }

@@ -350,10 +350,13 @@ bool CMap::findObject(unsigned int obj, int *xout, int *yout)
 
 
 // searches the map's tile layer for tile TILE.
-// if it is found returns nonzero and places the
+// if it is found returns true and places the
 // coordinates of the first occurance of the tile
 // in (xout,yout)
-bool CMap::findTile(unsigned int tile, int *xout, int *yout, int plane)
+bool CMap::findTile(const unsigned int tile,
+                    int &xout,
+                    int &yout,
+                    const int plane)
 {
 	unsigned int x,y;
 
@@ -363,8 +366,8 @@ bool CMap::findTile(unsigned int tile, int *xout, int *yout, int plane)
 		{
             if (mPlanes[plane].getMapDataAt(x,y) == tile)
 			{
-				*xout = x;
-				*yout = y;
+                xout = x;
+                yout = y;
 				return true;
 			}
 		}
