@@ -39,7 +39,7 @@ void CSpecialItem::getTouchedBy(CSpriteObject& theObject)
 		    default: break;
 		}
 
-        auto exitEvent = new EventExitLevel(mpMap->getLevel(), true, false, player->getSpecialIdx());
+        auto exitEvent = new EventExitLevel(mpMap->getLevel(), true, false, player->getPlayerIdx());
 
         // Play it but afterwards
         exitEvent->playSound = true;                

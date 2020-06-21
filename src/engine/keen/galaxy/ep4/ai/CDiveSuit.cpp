@@ -37,7 +37,7 @@ void CDiveSuit::getTouchedBy(CSpriteObject &theObject)
 		taken = swimsuit = true;
 
         auto evExit = new EventExitLevel(mpMap->getLevel(), true,
-                                         false, player->getSpecialIdx());
+                                         false, player->getPlayerIdx());
         evExit->playSound = true;
 
         showModalMsgWithBmp( 0,

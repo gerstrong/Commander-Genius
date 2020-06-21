@@ -225,7 +225,7 @@ void CPlayerBase::getAnotherLife(const int lc_x, const int lc_y, const bool disp
 
 
 void CPlayerBase::pumpEvent(const CEvent *evPtr)
-{
+{    
     CGalaxySpriteObject::pumpEvent(evPtr);
     m_camera.pumpEvent(evPtr);
 }
@@ -253,6 +253,12 @@ void CPlayerBase::processCamera()
 bool CPlayerBase::calcVisibility()
 {
     return true;
+}
+
+
+void CPlayerBase::moveOtherPlayersTo(const GsVec2D<int> &target)
+{
+    gEventManager.add( new EventMoveAllPlayersBut(this->getPlayerIdx(), target) );
 }
 
 

@@ -49,6 +49,13 @@ struct EventExitLevel : CEvent {
     levelObject(l), sucess(s), teleport(t), who(lWho) {}
 };
 
+struct EventMoveAllPlayersBut : CEvent {
+    EventMoveAllPlayersBut(const int idx, const GsVec2D<int> &target) :
+        mException(idx), mTarget(target) {}
+    const int mException;
+    const GsVec2D<int> mTarget;
+};
+
 struct EventExitLevelWithFoot : CEvent {
   const uint16_t levelObject;
   const int who;
@@ -173,6 +180,8 @@ namespace galaxy
      * @return
      */
     bool calcVisibility() override;
+
+    void moveOtherPlayersTo(const GsVec2D<int> &target);
 
     /**
          * \description Read the Input of the Player and sets the variables accordingly

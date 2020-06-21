@@ -350,7 +350,7 @@ class CSpriteObject
     
     virtual ~CSpriteObject();
     
-    int getSpecialIdx() const
+    int getPlayerIdx() const
     {   return mPlayerIdx;    }
 
     int getSpriteVariantIdx() const

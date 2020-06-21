@@ -97,6 +97,23 @@ void CMapPlayGalaxy::pumpEvent(const CEvent *evPtr)
             mObjectPtr.push_back( foot );
         }
     }
+    else if( const auto *moveBut = dynamic_cast<const EventMoveAllPlayersBut*>(evPtr) )
+    {
+        const auto excp = moveBut->mException;
+        const auto target = moveBut->mTarget;
+
+        for( auto obj = mObjectPtr.begin(); obj != mObjectPtr.end() ; obj++)
+        {
+            if(auto player = dynamic_cast<galaxy::CPlayerBase*>(obj->get()) )
+            {
+                if(player->getPlayerIdx() != excp)
+                {
+                    player->moveToForce(target);
+                    player->m_camera.setPosition(target);
+                }
+            }
+        }
+    }
 
 
     for( auto obj = mObjectPtr.begin(); obj != mObjectPtr.end() ; obj++)

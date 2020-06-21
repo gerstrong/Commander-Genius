@@ -407,8 +407,8 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
     {
         gMusicPlayer.stop();
         m_LevelPlay.reloadLevel();
-    }
-    else if( const EventExitLevel *ev = dynamic_cast<const EventExitLevel*>(evPtr) )
+    }    
+    else if( const auto *ev = dynamic_cast<const EventExitLevel*>(evPtr) )
     {                
         // Ensure no one is dead anymore
         const int numPlayers = gBehaviorEngine.numPlayers();
