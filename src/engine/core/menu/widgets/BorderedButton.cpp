@@ -24,6 +24,8 @@ GameButton(text, rect, ev, style)
 
 void BorderedButton::processRender(const GsRect<float> &rectDispCoordFloat)
 {
+    GameButton::processRender(rectDispCoordFloat);
+
     // Transform to the display coordinates
     GsRect<float> displayRect = getRect();
 
@@ -47,27 +49,5 @@ void BorderedButton::processRender(const GsRect<float> &rectDispCoordFloat)
         newcolor = blitsfc.mapRGB(38, 134, 38);
 
     blitsfc.drawFrameRect( lRect, 1, newcolor);
-
-    lRect.y +=2;
-    lRect.x +=2;
-
-    /*
-    if(!mEnabled)
-    {
-        mTextDisabledSfc.blitTo(blitsfc, lRect);
-    }
-    else*/
-    {
-#ifndef DISABLE_HOVER
-        if(mHovered)
-        {
-            drawEnabledButton(blitsfc, lRect, true);
-        }
-        else
-#endif
-        {
-            drawEnabledButton(blitsfc, lRect, false);
-        }
-    }
 }
 
