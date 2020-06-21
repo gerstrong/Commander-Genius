@@ -453,58 +453,7 @@ void CMineShards::process()
 	{
 	  mXSpeed = -mXSpeed;
 	}
-/*
-	// Special case when a shard touches the Omegamatic Core
-    const int lx = getXMidPos()-(1<<CSF);
-    const int ly = getYDownPos()-(1<<CSF);
 
-	bool coreExplode = false;
-
-    // Coordinate check for potential core destruction.
-    auto corePotExplosion = [&](const int curX, const int curY) -> bool
-    {
-        return (mpMap->getPlaneDataAt(2, curX, curY) == 0x29);
-    };
-
-    for(int j=0 ; j<4*(1<<CSF) ; j+=(1<<CSF))
-    {
-        for(int i=0 ; i<4*(1<<CSF) ; i+=(1<<CSF))
-        {
-            coreExplode |= corePotExplosion(lx+i, ly+j);
-        }
-    }
-
-	if( coreExplode )
-	{
-        int dx=0, dy=0;
-
-        if(!mpMap->findTile(0x29, dx, dy, 2))
-        {
-            gLogging.textOut("Something went wrong while trying to destroy the QED core.");
-            return;
-        }
-
-        // Quickly decorate the rotten QED!
-	    dx--;	dy--;
-
-        playSound( SOUND_FUSE_BREAK, SoundPlayMode::PLAY_FORCE );
-
-        for(int i=0 ; i<4 ; i++)
-        {
-            const int t1 = mpMap->at(i,0);
-            const int t2 = mpMap->at(i,1);
-            const int t3 = mpMap->at(i+4,0);
-            const int t4 = mpMap->at(i+4,1);
-            mpMap->setTile(dx+i, dy,   t1, true, 1);
-            mpMap->setTile(dx+i, dy+1, t2, true, 1);
-            mpMap->setTile(dx+i, dy+2, t3, true, 1);
-            mpMap->setTile(dx+i, dy+3, t4, true, 1);
-        }
-
-		mIsDead = true;
-		return;
-	}
-*/
 	if( blockedd )
 	{
 	  mIsDead = true;
