@@ -108,11 +108,6 @@ bool CGameLauncher::setupMenu()
                                         DEPTH_MAX_GAMES,
                                         200, 900);    
 
-    if(gamesDetected)
-    {
-
-    }
-
     // Save any custom labels
     putLabels();
 
@@ -223,7 +218,7 @@ bool CGameLauncher::setupMenu()
         std::stringstream ss;
 
         const auto searchPathGames =
-                JoinPaths(GetFirstSearchPath(), DIR_GAMES);
+                JoinPaths(GetFirstSearchPath(),"games");
 
         ss << "No games detected!\n";
         ss << "You can copy some into:\n";
@@ -580,6 +575,8 @@ struct PatchListFiller
         return true;
     }
 };
+
+
 
 
 
@@ -1009,7 +1006,7 @@ void CGameLauncher::ponder(const float deltaT)
     {
         ponderGameSelDialog(deltaT);
     }
-    else if(m_chosenGame >= 0 && m_chosenGame < int(m_Entries.size()) )
+    else if(m_chosenGame >= 0 && m_chosenGame < int(m_Entries.size()))
     {
         ponderPatchDialog();
     }
