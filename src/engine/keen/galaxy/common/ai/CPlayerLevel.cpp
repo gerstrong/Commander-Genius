@@ -1662,7 +1662,6 @@ void CPlayerLevel::processPressUp()
 
                 solid = false;
 
-
                 setAction(A_KEEN_ENTER_DOOR);
 
                 setActionSprite();
@@ -1758,7 +1757,6 @@ void CPlayerLevel::processSliding()
     makeHimStand();
 }
 
-
 void CPlayerLevel::processEnterDoor()
 {
 		
@@ -1796,7 +1794,7 @@ void CPlayerLevel::processEnterDoor()
     if( m_Pos.y-mTarget.y > enterDoorSpeedY )
 	    return;
 
-    moveToForce(mTarget);
+    moveToForce(mTarget);    
 	
 	yDirection = 0;
 	setAction(A_KEEN_STAND);
@@ -1893,6 +1891,8 @@ void CPlayerLevel::processEnterDoor()
 	moveToForce(new_pos);
 	new_pos.x += ((m_BBox.x2-m_BBox.x1)/2);
     new_pos.y += ((m_BBox.y2/*-m_BBox.y1*/)/2);
+
+    moveOtherPlayersTo(new_pos);
 
     mpMap->mGamePlayPos = new_pos;
 	m_camera.setPosition(new_pos);    

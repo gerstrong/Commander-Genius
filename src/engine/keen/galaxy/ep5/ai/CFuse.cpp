@@ -7,11 +7,16 @@
 
 
 #include "CFuse.h"
+#include "CShikadiMine.h"
 #include "../../common/ai/CPlayerLevel.h"
 #include "../../common/dialog/CMessageBoxBitmapGalaxy.h"
 #include <base/utils/misc.h>
 #include <sdl/audio/music/CMusic.h>
 #include "../../common/ai/CEnemyShot.h"
+#include "../../menu/ComputerWrist.h"
+#include "engine/core/mode/CGameMode.h"
+
+
 
 /*
 $3186W #QED?
@@ -176,7 +181,52 @@ bool CFuse::loadPythonScripts(const std::string &scriptBaseName)
     return true;
 }
 
+static const int CSF_DISTANCE_TO_EXPLODE = (3<<CSF);
 
+bool CFuse::isNearby(CSpriteObject &theObject)
+{
+
+    if( CMineShards *mineShard = dynamic_cast<CMineShards*>(&theObject) )
+    {
+        const auto shardPos = mineShard->getMidPos();
+        const auto minePos = getMidPos();
+
+        // Chance to explode?
+        if( shardPos.x < minePos.x - CSF_DISTANCE_TO_EXPLODE ||
+            shardPos.x > minePos.x + CSF_DISTANCE_TO_EXPLODE )
+            return false;
+
+        if( shardPos.y < minePos.y - CSF_DISTANCE_TO_EXPLODE ||
+            shardPos.y > minePos.y + CSF_DISTANCE_TO_EXPLODE )
+            return false;
+
+        // Quickly decorate the rotten QED!
+        const int dx = (getXMidPos()>>CSF)-1;
+        const int dy = (getYMidPos()>>CSF)-1;
+
+        playSound( SOUND_FUSE_BREAK, SoundPlayMode::PLAY_FORCE );
+
+        for(int i=0 ; i<4 ; i++)
+        {
+            const int t1 = mpMap->at(i,0);
+            const int t2 = mpMap->at(i,1);
+            const int t3 = mpMap->at(i+4,0);
+            const int t4 = mpMap->at(i+4,1);
+            mpMap->setTile(dx+i, dy,   t1, true, 1);
+            mpMap->setTile(dx+i, dy+1, t2, true, 1);
+            mpMap->setTile(dx+i, dy+2, t3, true, 1);
+            mpMap->setTile(dx+i, dy+3, t4, true, 1);
+        }
+
+        winGame(5000);
+        mineShard->exists = false;
+        mIsDead = true;
+
+        return true;
+    }
+
+    return false;
+}
 
 
 void CFuse::getTouchedBy(CSpriteObject &theObject)
@@ -229,9 +279,15 @@ void CFuse::getTouchedBy(CSpriteObject &theObject)
 
         mIsDead = true;
         theEnemyShot->mIsDead = true;
-    }
+    }        
 
 }
+
+void CFuse::winGame(const int msecs)
+{
+    mGameEndsTime = msecs + timerTicks();
+}
+
 
 
 void CFuse::process()
@@ -239,6 +295,16 @@ void CFuse::process()
     // TODO: We might need a scattermLevelTestBmp effect here
 	//if(!processActionRoutine())
 	  //  exists = false;
+
+    // This is set to true when game can end
+    if(mGameEndsTime)
+    {
+        if(timerTicks() > mGameEndsTime)
+        {
+            gEventManager.add(new OpenComputerWrist(4));
+            gEventManager.add(new EventEndGamePlay());
+        }
+    }
 }
 
 }

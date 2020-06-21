@@ -28,7 +28,7 @@ void CFoot::getTouchedBy(CSpriteObject &theObject)
 	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
 	{
         player->m_Inventory.addAchievementTask("A foot ahead", 1);
-        gEventManager.add( new EventExitLevelWithFoot(mpMap->getLevel(), player->getSpecialIdx()) );
+        gEventManager.add( new EventExitLevelWithFoot(mpMap->getLevel(), player->getPlayerIdx()) );
         player->m_Inventory.Item.m_gem.clear();
 	}
 }

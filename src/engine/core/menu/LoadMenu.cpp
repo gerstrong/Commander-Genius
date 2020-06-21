@@ -18,8 +18,6 @@
 #include "engine/core/CBehaviorEngine.h"
 #include "engine/core/mode/CGameMode.h"
 
-#include "widgets/InputText.h"
-
 #include "widgets/BorderedButton.h"
 
 
@@ -54,18 +52,20 @@ GameMenu( GsRect<float>(0.1f, 0.0f, 0.8f, 1.0f),
         if(i < int(StateFileList.size()))
             text = StateFileList.at(int(i));
 
-        auto inputText =
-            mpMenuDialog->add( new InputText(text,
-                                            GsRect<float>(
-                                                0.0f, 0.1f+(i*0.1f),
-                                                1.0f, 0.1f),style ) );
+        auto borderedButton =
+        mpMenuDialog->add(
+            new BorderedButton(text,
+                               GsRect<float>(
+                                   0.0f, 0.1f+(i*0.1f),
+                                   1.0f, 0.1f),
+                               new LoadGameSlotFunctorEvent(i),
+                               style) );
 
-        std::shared_ptr<LoadGameSlotFunctorEvent>
-            loadGameEv(new LoadGameSlotFunctorEvent(i)) ;
 
-        auto ev = std::static_pointer_cast<CEvent>(loadGameEv);
-        inputText->setEvent(ev);
-        inputText->enable(false);
+        borderedButton->enableCenteringH(true);
+        borderedButton->enableTwirl(false);
+        borderedButton->enableBlinker(false);
+        borderedButton->enable(false);
     }
 
     setMenuLabel("LOADMENULABEL");
@@ -99,6 +99,8 @@ void CLoadMenu::refresh()
 
         auto button =
                 std::static_pointer_cast<GsButton>(*itCtrl);
+
+        const auto slotText = button->getText();
 
         button->setText(EMPTY_TEXT);
         button->enable(false);

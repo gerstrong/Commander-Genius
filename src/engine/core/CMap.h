@@ -104,7 +104,7 @@ public:
 	 * \param y The y coordinate (CSFed) of the row where to look for that blocker
 	 */
 	bool findObject(unsigned int obj, int *xout, int *yout);
-	bool findTile(unsigned int tile, int *xout, int *yout, int plane=1);
+    bool findTile(const unsigned int tile, int &xout, int &yout, const int plane=1);
 
 	bool setTile(Uint16 x, Uint16 y, Uint16 t, Uint16 plane=1);
 

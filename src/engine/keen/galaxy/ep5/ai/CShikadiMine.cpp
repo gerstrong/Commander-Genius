@@ -14,9 +14,7 @@
 #include "../../common/ai/CPlayerLevel.h"
 #include <base/utils/misc.h>
 #include "../../common/dialog/CMessageBoxGalaxy.h"
-#include "../../menu/ComputerWrist.h"
 #include "../../common/ai/CBullet.h"
-#include "engine/core/mode/CGameMode.h"
 
 
 /*
@@ -264,26 +262,26 @@ void CShikadiMine::processChangeDir()
 
     if(updateDir)
     {
-      setEyeCenterOffset(mTargetEyeXOffset, mTargetEyeYOffset);
+        setEyeCenterOffset(mTargetEyeXOffset, mTargetEyeYOffset);
 
-      GsSprite &eyeSprite = gGraphics.getSprite(mSprVar,mEyeSprite);
-      GsSprite &spriteRef = gGraphics.getSprite(mSprVar,mSpriteIdx);
+        GsSprite &eyeSprite = gGraphics.getSprite(mSprVar,mEyeSprite);
+        GsSprite &spriteRef = gGraphics.getSprite(mSprVar,mSpriteIdx);
 
-      if(xDirection == LEFT)
-	mTargetEyeXOffset = 0;
-      if(xDirection == RIGHT)
-	mTargetEyeXOffset = spriteRef.getWidth()-eyeSprite.getWidth();
+        if(xDirection == LEFT)
+            mTargetEyeXOffset = 0;
+        if(xDirection == RIGHT)
+            mTargetEyeXOffset = spriteRef.getWidth()-eyeSprite.getWidth();
 
-      if(yDirection == UP)
-	mTargetEyeYOffset = 0;
-      if(yDirection == DOWN)
-	mTargetEyeYOffset = spriteRef.getHeight()-eyeSprite.getHeight();
+        if(yDirection == UP)
+            mTargetEyeYOffset = 0;
+        if(yDirection == DOWN)
+            mTargetEyeYOffset = spriteRef.getHeight()-eyeSprite.getHeight();
 
-      setAction(A_MINE_SIT);
+        setAction(A_MINE_SIT);
     }
     else
     {
-      setAction(A_MINE_MOVE);
+        setAction(A_MINE_MOVE);
     }
 }
 
@@ -298,31 +296,48 @@ void CShikadiMine::processDetonate()
       const int newX = getXMidPos();
       const int newY = getYUpPos();
 
+
       spawnObj( new CMineShards( getMapPtr(),
-							     0, newX, newY, -100 ) );
+                                 0, newX, newY, -90 ) );
       spawnObj( new CMineShards( getMapPtr(),
-							     0, newX, newY, -50 ) );
+                                 0, newX, newY+(1<<CSF), -30 ) );
       spawnObj( new CMineShards( getMapPtr(),
-							     0, newX, newY, 50 ) );
+                                 0, newX+(1<<CSF), newY, 30 ) );
       spawnObj( new CMineShards( getMapPtr(),
-							     0, newX, newY, 100 ) );
+                                 0, newX+(1<<CSF), newY+(1<<CSF), 90 ) );
 
   }
 }
 
+static const int CSF_DISTANCE_TO_EXPLODE = 4<<CSF;
+
 bool CShikadiMine::isNearby(CSpriteObject &theObject)
 {
+    if(getActionNumber(A_MINE_DETONATE))
+    {
+        return true;
+    }
+
 	if( CPlayerLevel *player = dynamic_cast<CPlayerLevel*>(&theObject) )
 	{
-		if( player->getXMidPos() < getXMidPos() )
-			mKeenAlignmentX = LEFT;
-		else
-			mKeenAlignmentX = RIGHT;
+        const auto playerPos = player->getMidPos();
+        const auto minePos = getMidPos();
 
-		if( player->getYMidPos() < getYMidPos() )
-			mKeenAlignmentY = UP;
-		else
-			mKeenAlignmentY = DOWN;
+        mKeenAlignmentX = playerPos.x < minePos.x ? LEFT : RIGHT;
+        mKeenAlignmentY = playerPos.y < minePos.y ? UP : DOWN;
+
+        // Chance to explode?
+        if( playerPos.x < minePos.x - CSF_DISTANCE_TO_EXPLODE ||
+            playerPos.x > minePos.x + CSF_DISTANCE_TO_EXPLODE )
+            return false;
+
+        if( playerPos.y < minePos.y - CSF_DISTANCE_TO_EXPLODE ||
+            playerPos.y > minePos.y + CSF_DISTANCE_TO_EXPLODE )
+            return false;
+
+        // Player is near enough. Explode!
+        playSound(SOUND_MINEEXPLODE);
+        setAction(A_MINE_DETONATE);
 	}
 
 	return true;
@@ -336,33 +351,13 @@ void CShikadiMine::getTouchedBy(CSpriteObject &theObject)
 	if(getActionNumber(A_MINE_DETONATE))
 		return;
 
-
 	CStunnable::getTouchedBy(theObject);
-
-	// Was it a bullet? Than make it stunned.
-	if( dynamic_cast<CBullet*>(&theObject) )
-	{
-	    theObject.mIsDead = true;
-	    playSound(SOUND_MINEEXPLODE);
-	    setAction(A_MINE_DETONATE);
-	}
-
-	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
-	{
-	    playSound(SOUND_MINEEXPLODE);
-	    setAction(A_MINE_DETONATE);
-        player->kill(false);
-	}
-
 }
 
 
 void CShikadiMine::process()
 {
 	performCollisions();
-
-	//if(!processActionRoutine())
-	//    exists = false;
 
 	(this->*mp_processState)();
 }
@@ -457,63 +452,6 @@ void CMineShards::process()
 	    (blockedr && mXSpeed > 0) )
 	{
 	  mXSpeed = -mXSpeed;
-	}
-
-	// Special case when a shard touches the Omegamatic Core
-	const int lx = getXMidPos();
-	const int ly = getYDownPos();
-
-	bool coreExplode = false;
-
-	int dx=0, dy=0;
-
-	if( mpMap->getPlaneDataAt(2, lx, ly) == 0x29 )
-	{
-	  dx = lx; dy = ly;
-	  coreExplode |= true;
-	}
-	if( mpMap->getPlaneDataAt(2, lx+(1<<CSF), ly) == 0x29 )
-	{
-	  dx = lx+(1<<CSF); dy = ly;
-	  coreExplode |= true;
-	}
-	if( mpMap->getPlaneDataAt(2, lx, ly+(1<<CSF)) == 0x29 )
-	{
-	  dx = lx; dy = ly+(1<<CSF);
-	  coreExplode |= true;
-	}
-	if( mpMap->getPlaneDataAt(2, lx+(1<<CSF), ly+(1<<CSF)) == 0x29 )
-	{
-	  dx = lx+(1<<CSF); dy = ly+(1<<CSF);
-	  coreExplode |= true;
-	}
-
-
-	if( coreExplode )
-	{
-	    // Quikly decorate the rotten QED!
-	    dx >>= CSF; dy >>= CSF;
-	    dx--;	dy--;
-
-        for(int i=0 ; i<4 ; i++)
-        {
-            const int t1 = mpMap->at(i,0);
-            const int t2 = mpMap->at(i,1);
-            const int t3 = mpMap->at(i+4,0);
-            const int t4 = mpMap->at(i+4,1);
-            mpMap->setTile(dx+i, dy,   t1, true, 1);
-            mpMap->setTile(dx+i, dy+1, t2, true, 1);
-            mpMap->setTile(dx+i, dy+2, t3, true, 1);
-            mpMap->setTile(dx+i, dy+3, t4, true, 1);
-        }                
-
-		mIsDead = true;
-		exists = false;
-
-        gEventManager.add(new OpenComputerWrist(4));
-        gEventManager.add(new EventEndGamePlay());
-
-		return;
 	}
 
 	if( blockedd )

@@ -99,7 +99,7 @@ void CCamera::setPosition(const GsVec2D<int>& newpos)
 	moveToForce(newpos);
 
     // Only the lead camera may change the scroll position
-    if(mCamlead != mp_AttachedObject->getSpecialIdx())
+    if(mCamlead != mp_AttachedObject->getPlayerIdx())
     {
         return;
     }
@@ -119,7 +119,7 @@ void CCamera::process()
         cycleCamlead();
     }
 
-    const int playerIdx = mp_AttachedObject->getSpecialIdx();
+    const int playerIdx = mp_AttachedObject->getPlayerIdx();
 
     if(playerIdx != mCamlead)
         return;

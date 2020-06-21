@@ -135,8 +135,11 @@ bool CSaveGameController::readSlotList(std::vector<std::string> &list)
 		{
             int pos = getSlotNumber(filename)-1;
 
+            if(pos < 0)
+                continue;
+
             if(pos > gSaveGameController.getMaxNumofSaveSlots())
-                    continue;
+                continue;
 
             const std::string ext = getExtension(filename);
 

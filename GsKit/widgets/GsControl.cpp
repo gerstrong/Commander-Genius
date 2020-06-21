@@ -12,8 +12,6 @@
 #include <base/GsTimer.h>
 #include <base/PointDevice.h>
 
-
-
 #include "GsControl.h"
 
 const int BLEND_SPEED = 16;

@@ -222,7 +222,7 @@ void CPlayerWM::pumpEvent(const CEvent *evPtr)
             // TODO: This part is only meant for Episode 5. We should catch exception
             // Whenever another episode tries to trigger this call.
             int x,y;
-            mpMap->findTile( 0x1A, &x, &y, 2);
+            mpMap->findTile( 0x1A, x, y, 2);
 
             const int newX = x<<CSF;
             const int newY = y<<CSF;
@@ -489,7 +489,7 @@ void CPlayerWM::processMoving()
             const int shipLevel = (ep < 6) ? 18 : 17;
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-            if(mpMap->findTile(flag_dest, &x, &y, 2) ||
+            if(mpMap->findTile(flag_dest, x, y, 2) ||
                     gBehaviorEngine.mOptions[GameOption::LVLREPLAYABILITY].value ||
                     level >= shipLevel)
             {
@@ -1108,7 +1108,7 @@ void CPlayerWM::startLevel(Uint16 object)
     const Uint16 flag_dest = level + 0xF000;
 
     // Check if there already exists a flag. If that's not the case enter the level
-    if( mpMap->findTile(flag_dest, &x, &y, 2) ||
+    if( mpMap->findTile(flag_dest, x, y, 2) ||
         gBehaviorEngine.mOptions[GameOption::LVLREPLAYABILITY].value ||
         level >= shipLevel)
     {
@@ -1129,7 +1129,7 @@ bool CPlayerWM::finishLevel(const int object)
 	// if a door or other blocker was found remove it
 	int x, y;
 	Uint16 door = object + 0xD000;
-    while( mpMap->findTile(door, &x, &y, 2) )
+    while( mpMap->findTile(door, x, y, 2) )
 	{
         // Remove blocks in case there are
 		mpMap->setTile( x, y, 0, true, 1);
@@ -1138,7 +1138,7 @@ bool CPlayerWM::finishLevel(const int object)
 	}
 
 	Uint16 flag_dest = object + 0xF000;
-    if( mpMap->findTile(flag_dest, &x, &y, 2) )
+    if( mpMap->findTile(flag_dest, x, y, 2) )
 	{
 		// spawn the flag
 		const auto episode = gBehaviorEngine.getEpisode();

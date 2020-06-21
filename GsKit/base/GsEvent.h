@@ -4,13 +4,15 @@
 #include "base/Singleton.h"
 #include <functional>
 
-struct CEvent { virtual ~CEvent(); };
+struct CEvent
+{
+    virtual ~CEvent();
+};
 
 struct GsFunctor
 {
     virtual void operator()() = 0;
 };
-
 
 struct FunctionToEvent : CEvent
 {

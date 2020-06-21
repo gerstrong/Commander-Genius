@@ -31,7 +31,7 @@ public:
 	
 	void setEyeCenterOffset(int &x, int &y);
 	
-	bool isNearby(CSpriteObject &theObject);
+    bool isNearby(CSpriteObject &theObject) override;
 
 	void process();
 	

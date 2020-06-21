@@ -35,7 +35,18 @@ public:
 	int checkSolidU(int x1, int x2, int y1, const bool push_mode=false ) override;
 	int checkSolidD(int x1, int x2, int y2, const bool push_mode=false ) override;
 
+    /**
+     * @brief getActionNumber   Returns what actions was set externally last time
+     * @param ActionNumber
+     * @return
+     */
 	bool getActionNumber(int16_t ActionNumber);
+
+    /**
+     * @brief getActionStatus   Return what action number is currently set.
+     * @param ActionNumber
+     * @return
+     */
 	virtual bool getActionStatus(int16_t ActionNumber);
 	int16_t getActionNumber();
 	virtual void setActionForce(const size_t ActionNumber);
