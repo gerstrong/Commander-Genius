@@ -35,13 +35,43 @@ GameMenu(GsRect<float>(0.1f, 0.0f, 0.8f, 1.0f), style )
         if(i < int(StateFileList.size()))
             text = StateFileList.at(i);
 
+        auto input =
         mpMenuDialog->add( new InputText(
                                       text,
                                       GsRect<float>(
                                           0.0f, 0.1f+(i*0.1f),
-                                          1.0f, 0.1f),
+                                          1.0f, 0.1f), i,
                                       style ) );
 
+        input->setActivationEvent([input]()
+        {
+            const auto noTyping = gBehaviorEngine.mOptions[GameOption::NOTYPING].value;
+            const auto index = input->getIndex();
+
+            if(noTyping)
+            {
+                const std::string saveText = getTimeStr();
+                gSaveGameController.prepareSaveGame( index, saveText );
+                gBehaviorEngine.setPause(false);
+                gEventManager.add( new CloseAllMenusEvent() );
+            }
+            else // If typing option is enabled
+            {
+                if(!input->Typing())
+                { // Not yet typing, so enable it
+                    input->setTypeMode(true);
+                }
+                else
+                { // Here we finished typing. Let's save what user has written
+                    const std::string saveText = input->getText();
+                    gSaveGameController.prepareSaveGame( index, saveText );
+                    gBehaviorEngine.setPause(false);
+                    gEventManager.add( new CloseAllMenusEvent() );
+                }
+            }
+
+            input->setReleased(false);
+        });
 	}
 
 	setMenuLabel("SAVEMENULABEL");
@@ -90,8 +120,11 @@ void CSaveMenu::ponder(const float deltaT)
     auto &curWidget = mpMenuDialog->CurrentWidget();
     auto pInput = std::dynamic_pointer_cast<InputText>(curWidget);
 
-    const auto noTyping = gBehaviorEngine.mOptions[GameOption::NOTYPING].value;
+    //const auto noTyping = gBehaviorEngine.mOptions[GameOption::NOTYPING].value;
 
+    mpMenuDialog->processLogic();
+
+    /*
     if(noTyping)
     {
         GameMenu::ponder(deltaT);
@@ -118,14 +151,14 @@ void CSaveMenu::ponder(const float deltaT)
         }
 
         mpMenuDialog->processLogic();
-    }
+    }*/
 
 }
 
 
 void CSaveMenu::sendEvent(std::shared_ptr<CEvent> &command)
 {
-    auto &curWidget = mpMenuDialog->CurrentWidget();
+/*    auto &curWidget = mpMenuDialog->CurrentWidget();
     auto pInput = std::dynamic_pointer_cast<InputText>(curWidget);
 
     const auto noTyping = gBehaviorEngine.mOptions[GameOption::NOTYPING].value;
@@ -176,7 +209,7 @@ void CSaveMenu::sendEvent(std::shared_ptr<CEvent> &command)
         if(pInput->Typing())
             return;
     }
-
+*/
 
 	mpMenuDialog->sendEvent(command);
 }

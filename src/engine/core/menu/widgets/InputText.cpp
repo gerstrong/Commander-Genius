@@ -8,9 +8,11 @@
 
 InputText::InputText(const std::string &text,
           const GsRect<float> &rect,
+          const int index,
           const Style style) :
 CGUIInputText(text, rect, -1),
-mStyle(style)
+mStyle(style),
+mIndex(index)
 {
     setupStyle();
 }

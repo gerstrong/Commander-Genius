@@ -13,6 +13,10 @@
 #include <string>
 #include <memory>
 
+#include <functional>
+
+
+
 class CGUIInputText : public GsButton
 {
 public:
@@ -46,8 +50,6 @@ protected:
 	// Returns the string that has to be displayed on the gui
 	// It should say empty if it's so or a character when ticking
 	// while user is typing.
-
-
     std::string mOrigText;
     std::string mTextWithCursor;
 

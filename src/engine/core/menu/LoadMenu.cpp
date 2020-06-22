@@ -52,20 +52,37 @@ GameMenu( GsRect<float>(0.1f, 0.0f, 0.8f, 1.0f),
         if(i < int(StateFileList.size()))
             text = StateFileList.at(int(i));
 
-        auto borderedButton =
-        mpMenuDialog->add(
-            new BorderedButton(text,
-                               GsRect<float>(
-                                   0.0f, 0.1f+(i*0.1f),
-                                   1.0f, 0.1f),
-                               new LoadGameSlotFunctorEvent(i),
-                               style) );
+        if(style == Style::GALAXY)
+        {
+            auto borderedButton =
+            mpMenuDialog->add(
+                new BorderedButton(text,
+                                   GsRect<float>(
+                                       0.0f, 0.1f+(i*0.1f),
+                                       1.0f, 0.1f),
+                                   new LoadGameSlotFunctorEvent(i),
+                                   style) );
 
+            borderedButton->enableCenteringH(true);
+            borderedButton->enableBlinker(false);
+            borderedButton->enable(false);
+        }
+        else
+        {
+            auto textButton =
+            mpMenuDialog->add(
+                new GameButton(text,
+                                   GsRect<float>(
+                                       0.00f, 0.1f+(i*0.1f),
+                                       1.00f, 0.1f),
+                                   new LoadGameSlotFunctorEvent(i),
+                                   style) );
 
-        borderedButton->enableCenteringH(true);
-        borderedButton->enableTwirl(false);
-        borderedButton->enableBlinker(false);
-        borderedButton->enable(false);
+            textButton->enableCenteringH(true);
+            textButton->enableTwirl(true);
+            textButton->enable(false);
+        }
+
     }
 
     setMenuLabel("LOADMENULABEL");

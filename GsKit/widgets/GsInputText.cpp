@@ -11,7 +11,6 @@
 #include <base/video/CVideoDriver.h>
 #include <base/GsTimer.h>
 
-
 #ifdef ANDROID
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 #else
@@ -34,10 +33,7 @@ GsButton(text,
 CGUIInputText::CGUIInputText(const std::string& text,
                              const GsRect<float> &rect,
                              const int fontID) :
-GsButton(text,
-         rect,
-         nullptr,
-         fontID)
+GsButton(text,rect, nullptr, fontID)
 {}
 
 
@@ -84,23 +80,8 @@ void CGUIInputText::processLogic()
             appText.erase(appText.length()-1);
             setText(appText);
         }
-	}
-	else
-	{
-		mPressed = false;
-		mReleased = false;
-	}
 
-    processPointingState();
-
-    // If Input Text control was clicked
-    if(mReleased)
-    {
-        mTyping = !mTyping;
-    }
-
-    if(mTyping)
-    {
+        // Ticking cursor
         if(mTypeTick%MAX_TICK == 0)
         {
             mTick = !mTick;
@@ -108,7 +89,25 @@ void CGUIInputText::processLogic()
         }
 
         mTypeTick++;
+	}
+	else
+	{
+        //mPressed = false;
+        //mReleased = false;
+	}
+
+    GsButton::processLogic();
+
+/*
+    processPointingState();
+
+    // If Input Text control was clicked
+    if(mReleased)
+    {
+        mTyping = !mTyping;
     }
+*/
+
 }
 
 void CGUIInputText::setText(const std::string& text)
