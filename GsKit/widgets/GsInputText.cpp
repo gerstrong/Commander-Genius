@@ -42,15 +42,17 @@ bool CGUIInputText::sendEvent(const InputCommand command)
 {
     if(!isEnabled())
         return false;
-
+/*
     if(command == IC_STATUS || command == IC_JUMP)
     {
         mTyping = !mTyping;
         GsButton::sendEvent(command);
         return true;
     }
-	return false;
+    */
+    return true;
 }
+
 
 
 
@@ -75,11 +77,27 @@ void CGUIInputText::processLogic()
             }
 		}
 
-        if(gInput.getPulsedKey(KBCKSPCE, 5) && (appText.length() > 0))
-		{
-            appText.erase(appText.length()-1);
-            setText(appText);
+        if(appText.length() > 0)
+        {
+            if(gInput.getPulsedKey(KBCKSPCE, 5))
+            {
+                appText.erase(appText.length()-1);
+                setText(appText);
+            }
+
+            if(gInput.getPressedCommand(IC_JUMP) ||
+               gInput.getPressedCommand(IC_STATUS))
+            {
+                activateFunction();
+            }
         }
+
+        if(gInput.getPressedCommand(IC_BACK))
+        {
+            setTypeMode(false);
+            mTick = false;
+        }
+
 
         // Ticking cursor
         if(mTypeTick%MAX_TICK == 0)
@@ -90,25 +108,11 @@ void CGUIInputText::processLogic()
 
         mTypeTick++;
 	}
-	else
-	{
-        //mPressed = false;
-        //mReleased = false;
-	}
+
 
     GsButton::processLogic();
-
-/*
-    processPointingState();
-
-    // If Input Text control was clicked
-    if(mReleased)
-    {
-        mTyping = !mTyping;
-    }
-*/
-
 }
+
 
 void CGUIInputText::setText(const std::string& text)
 {

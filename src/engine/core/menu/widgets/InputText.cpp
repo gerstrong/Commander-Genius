@@ -22,7 +22,7 @@ void InputText::setupStyle()
     if(mStyle == Style::GALAXY)
     {
         enableBorder(false);
-        enableCenteringH(false);
+        enableCenteringH(true);
         enableBlinker(true);
 
         mColorNormal   = GsColor(0x26, 0x86, 0x26);
@@ -38,7 +38,7 @@ void InputText::setupStyle()
     else if(mStyle == Style::VORTICON)
     {
         enableBorder(false);
-        enableCenteringH(false);
+        enableCenteringH(true);
         enableTwirl(true);
 
         mColorNormal   = GsColor(0x0, 0x0, 0x0);
@@ -94,19 +94,36 @@ void InputText::processRender(const GsRect<float> &RectDispCoordFloat)
 
     auto controlsRect = RectDispCoordFloat;
 
-    if(mDrawBlinker)
-    {
-        drawBlinker(lRect);
-        controlsRect.pos.x += 11;
-        controlsRect.dim.x -= 11;
-    }
-
     if(mDrawTwirl)
     {
         controlsRect.pos.x += 24;
         controlsRect.dim.x -= 24;
         drawTwirl(lRect);
     }
+    else
+    {
+        controlsRect.pos.x += 5;
+        controlsRect.dim.x -= 5;
+    }
 
     CGUIInputText::processRender(controlsRect);
+
+    GsWeakSurface blitsfc( gVideoDriver.getBlitSurface() );
+
+    Uint32 newcolor;
+
+    if(!mEnabled)
+        newcolor = blitsfc.mapRGB(123, 150, 123);
+#ifndef DISABLE_HOVER
+    else if(mHovered || mPressed)
+        newcolor = blitsfc.mapRGB(84, 234, 84);
+#else
+    else if(mPressed)
+        newcolor = blitsfc.mapRGB(84, 234, 84);
+#endif
+    else
+        newcolor = blitsfc.mapRGB(38, 134, 38);
+
+    blitsfc.drawFrameRect( lRect, 1, newcolor);
+
 }

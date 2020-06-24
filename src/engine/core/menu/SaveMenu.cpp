@@ -60,6 +60,9 @@ GameMenu(GsRect<float>(0.1f, 0.0f, 0.8f, 1.0f), style )
                 if(!input->Typing())
                 { // Not yet typing, so enable it
                     input->setTypeMode(true);
+                    const std::string saveText = input->getText();
+                    if(saveText == EMPTY_TEXT)
+                        input->setText("");
                 }
                 else
                 { // Here we finished typing. Let's save what user has written
@@ -117,100 +120,52 @@ void CSaveMenu::refresh()
 
 void CSaveMenu::ponder(const float deltaT)
 {
+    (void) deltaT;
+
     auto &curWidget = mpMenuDialog->CurrentWidget();
     auto pInput = std::dynamic_pointer_cast<InputText>(curWidget);
 
-    //const auto noTyping = gBehaviorEngine.mOptions[GameOption::NOTYPING].value;
-
     mpMenuDialog->processLogic();
 
-    /*
-    if(noTyping)
+
+    auto &list = mpMenuDialog->getWidgetList();
+    auto itTyping = list.begin();
+
+    int typingIndex = -1;
+
+    for(  ; itTyping != list.end() ; itTyping++ )
     {
-        GameMenu::ponder(deltaT);
+        auto input =
+                dynamic_cast<InputText*>(itTyping->get());
+
+        if(!input)
+            continue;
+
+        if(input->Typing())
+           typingIndex = input->getIndex();
     }
-    else
+
+    // One of inputs is in typing mode
+    for(auto it=list.begin()  ; it != list.end() ; it++ )
     {
-        int minIC = IC_LEFT;
+        auto input =
+                dynamic_cast<InputText*>(it->get());
 
-        if(pInput!=nullptr)
-        {
-            if(pInput->Typing())
-                minIC = IC_JUMP;
-        }
+        if(!input)
+            continue;
 
-        // Command (Keyboard/Joystick) are handled here
-        for( int cmd = minIC ; cmd < MAX_COMMANDS ; cmd++ )
-        {
-            if( gInput.getPressedCommand(cmd) )
-            {
-                std::shared_ptr<CEvent> command(new CommandEvent( static_cast<InputCommand>(cmd) ));
-                sendEvent(command);
-                break;
-            }
-        }
-
-        mpMenuDialog->processLogic();
-    }*/
-
+        if(typingIndex < 0)
+            input->enable(true);
+        else if(typingIndex == input->getIndex())
+            input->enable(true);
+        else
+            input->enable(false);
+    }
 }
 
 
 void CSaveMenu::sendEvent(std::shared_ptr<CEvent> &command)
 {
-/*    auto &curWidget = mpMenuDialog->CurrentWidget();
-    auto pInput = std::dynamic_pointer_cast<InputText>(curWidget);
-
-    const auto noTyping = gBehaviorEngine.mOptions[GameOption::NOTYPING].value;
-
-	// Before all events are sent to the dialog which handles selection catch some specific events
-	// required for the saving process.
-	if( CommandEvent *ev = dynamic_cast<CommandEvent*>(command.get()) )
-	{
-		const int sel = mpMenuDialog->getSelection();
-		if( sel > 0 )
-		{            
-			if(ev->mCommand == IC_JUMP || ev->mCommand == IC_STATUS)
-            {
-                if(noTyping)
-                {
-                    const std::string saveText = getTimeStr();
-
-                    gSaveGameController.prepareSaveGame( sel, saveText );
-                    gBehaviorEngine.setPause(false);
-                    gEventManager.add( new CloseAllMenusEvent() );
-
-                }
-                else
-                {
-                    // we are typing...
-                    if(pInput->Typing())
-                    {
-                        const std::string saveText = pInput->getText();
-                        gSaveGameController.prepareSaveGame( sel, saveText );
-                        gBehaviorEngine.setPause(false);
-                        gEventManager.add( new CloseAllMenusEvent() );
-                    }
-                    else
-                    {
-                        if(pInput->getText() == EMPTY_TEXT)
-                            pInput->setText("");
-                        pInput->setTypeMode(true);
-                    }
-                }
-
-				return;
-			}
-		}
-	}
-
-    if(pInput)
-    {
-        if(pInput->Typing())
-            return;
-    }
-*/
-
 	mpMenuDialog->sendEvent(command);
 }
 
