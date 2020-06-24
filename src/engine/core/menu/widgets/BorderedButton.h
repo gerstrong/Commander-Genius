@@ -16,6 +16,8 @@ public:
                    CEvent *ev,
                    const Style style);
 
+    void renderWithBorder(const GsRect<float> &rectDispCoordFloat);
+
     void processRender(const GsRect<float> &RectDispCoordFloat) override;
 };
 

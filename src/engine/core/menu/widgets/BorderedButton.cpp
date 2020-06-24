@@ -20,9 +20,7 @@ GameButton(text, rect, ev, style)
 
 
 
-
-
-void BorderedButton::processRender(const GsRect<float> &rectDispCoordFloat)
+void BorderedButton::renderWithBorder(const GsRect<float> &rectDispCoordFloat)
 {
     GsRect<float> textRect = rectDispCoordFloat;
 
@@ -54,5 +52,10 @@ void BorderedButton::processRender(const GsRect<float> &rectDispCoordFloat)
         newcolor = blitsfc.mapRGB(38, 134, 38);
 
     blitsfc.drawFrameRect( lRect, 1, newcolor);
+}
+
+void BorderedButton::processRender(const GsRect<float> &rectDispCoordFloat)
+{
+    renderWithBorder(rectDispCoordFloat);
 }
 
