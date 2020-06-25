@@ -133,9 +133,10 @@ bool CSaveGameController::readSlotList(std::vector<std::string> &list)
 		// Check if the file fits to this episode
         if(foundEp == m_Episode)
 		{
-            int pos = getSlotNumber(filename)-1;
+            int pos = getSlotNumber(filename);
 
-            if(pos < 0)
+            // Save number start with "1". Zero is not allowed
+            if(pos <= 0)
                 continue;
 
             if(pos > gSaveGameController.getMaxNumofSaveSlots())
@@ -148,10 +149,12 @@ bool CSaveGameController::readSlotList(std::vector<std::string> &list)
             else if(ext == "cx")
                 buf = getSlotNameXML(filename);
 
-            if(pos+1 > int(list.size()))
-                list.resize(pos+1);
+            const auto index = pos-1;
 
-            list.at(pos) = buf;
+            if(index >= int(list.size()))
+                list.resize(index+1);
+
+            list.at(index) = buf;
 		}
 	}
 
@@ -502,14 +505,33 @@ void CSaveGameController::readOldHeader(FILE *fp, byte *episode, byte *level, by
 
 /* --- Functions for older savegames END --- */
 
+#include <algorithm>
+
+bool is_number(const std::string &s)
+{
+  return !s.empty() && std::all_of(s.begin(), s.end(), ::isdigit);
+}
+
 // From judging the filename it tells you at what position this slot was saved!
 Uint32 CSaveGameController::getSlotNumber(const std::string &filename)
 {
-	int pos = filename.find("cksave") + strlen("cksave");
+    const auto ckSavePos = filename.find("cksave");
+
+    // Filename must contain "cksave"
+    if(ckSavePos == filename.npos)
+        return -1;
+
+    const int pos = ckSavePos + strlen("cksave");
+
 	std::string buf = filename.substr(pos);
 	buf = buf.substr(0, buf.size()-sizeof(".ck"));
 
-	return atoi(buf);
+    if(!is_number(buf))
+    {
+        return -2;
+    }
+
+    return atoi(buf.c_str());
 }
 
 std::string CSaveGameController::getExtension(const std::string &filename)

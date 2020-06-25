@@ -174,8 +174,7 @@ void GameMenu::initBackgroundNoStyle()
 }
 
 // Processes the stuff that the menus have in common
-void
-GameMenu::ponder(const float deltaT)
+void GameMenu::ponder(const float deltaT)
 {
     CBaseMenu::ponder(deltaT);
 }

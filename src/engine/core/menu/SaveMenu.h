@@ -19,6 +19,9 @@ public:
     void ponder(const float deltaT) override;
     void sendEvent(std::shared_ptr<CEvent> &command) override;
     void release() override;
+
+private:
+    bool mIsTyping = false;
 };
 
 #endif /* CSAVEMENU_H_ */

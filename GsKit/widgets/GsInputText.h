@@ -34,7 +34,7 @@ public:
 
 
 
-    bool sendEvent(const InputCommand command) override;
+    //bool sendEvent(const InputCommand command) override;
 
     void processLogic() override;
 

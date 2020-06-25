@@ -46,7 +46,10 @@ GameMenu(GsRect<float>(0.1f, 0.0f, 0.8f, 1.0f), style )
         input->setActivationEvent([input]()
         {
             const auto noTyping = gBehaviorEngine.mOptions[GameOption::NOTYPING].value;
-            const auto index = input->getIndex();
+
+            // The naming of the files start with "1",
+            // meaning "1" is the first element, not 0.
+            const auto index = input->getIndex()+1;
 
             if(noTyping)
             {
@@ -82,6 +85,14 @@ GameMenu(GsRect<float>(0.1f, 0.0f, 0.8f, 1.0f), style )
 }
 
 
+void CSaveMenu::sendEvent(std::shared_ptr<CEvent> &command)
+{
+    if(mIsTyping)
+        return;
+
+    mpMenuDialog->sendEvent(command);
+}
+
 void CSaveMenu::refresh()
 {
     // Load the state-file list
@@ -94,9 +105,12 @@ void CSaveMenu::refresh()
     auto itCtrl = list.begin();
     itCtrl++;
 
-    for( auto i = 0 ;
-         it != StateFileList.end() && i<gSaveGameController.getMaxNumofSaveSlots() ;
-         i++ )
+    int i = 0;
+
+    const auto maxNumSlots = gSaveGameController.getMaxNumofSaveSlots();
+
+    for( ; it != StateFileList.end() &&
+           i<maxNumSlots ; i++ )
     {
         const std::string text = *it;
 
@@ -120,13 +134,7 @@ void CSaveMenu::refresh()
 
 void CSaveMenu::ponder(const float deltaT)
 {
-    (void) deltaT;
-
-    auto &curWidget = mpMenuDialog->CurrentWidget();
-    auto pInput = std::dynamic_pointer_cast<InputText>(curWidget);
-
-    mpMenuDialog->processLogic();
-
+    GameMenu::ponder(deltaT);
 
     auto &list = mpMenuDialog->getWidgetList();
     auto itTyping = list.begin();
@@ -145,7 +153,10 @@ void CSaveMenu::ponder(const float deltaT)
            typingIndex = input->getIndex();
     }
 
-    // One of inputs is in typing mode
+    mIsTyping = (typingIndex != -1);
+
+    // Here we ensure that if in typing mode all the other controls
+    // are disabled and if not all are enabled
     for(auto it=list.begin()  ; it != list.end() ; it++ )
     {
         auto input =
@@ -164,10 +175,6 @@ void CSaveMenu::ponder(const float deltaT)
 }
 
 
-void CSaveMenu::sendEvent(std::shared_ptr<CEvent> &command)
-{
-	mpMenuDialog->sendEvent(command);
-}
 
 void CSaveMenu::release()
 {

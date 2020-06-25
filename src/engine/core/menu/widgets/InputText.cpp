@@ -110,20 +110,22 @@ void InputText::processRender(const GsRect<float> &RectDispCoordFloat)
 
     GsWeakSurface blitsfc( gVideoDriver.getBlitSurface() );
 
-    Uint32 newcolor;
+    if(mStyle == Style::GALAXY)
+    {
+        Uint32 newcolor;
 
-    if(!mEnabled)
-        newcolor = blitsfc.mapRGB(123, 150, 123);
+        if(!mEnabled)
+            newcolor = blitsfc.mapRGB(123, 150, 123);
 #ifndef DISABLE_HOVER
-    else if(mHovered || mPressed)
-        newcolor = blitsfc.mapRGB(84, 234, 84);
+        else if(mHovered || mPressed)
+            newcolor = blitsfc.mapRGB(84, 234, 84);
 #else
-    else if(mPressed)
-        newcolor = blitsfc.mapRGB(84, 234, 84);
+        else if(mPressed)
+            newcolor = blitsfc.mapRGB(84, 234, 84);
 #endif
-    else
-        newcolor = blitsfc.mapRGB(38, 134, 38);
+        else
+            newcolor = blitsfc.mapRGB(38, 134, 38);
 
-    blitsfc.drawFrameRect( lRect, 1, newcolor);
-
+        blitsfc.drawFrameRect( lRect, 1, newcolor);
+    }
 }

@@ -191,7 +191,8 @@ void CGameLauncher::setupDownloadDialog()
     // Title
     mpDloadTitleText = std::dynamic_pointer_cast<CGUIText>(
             mpGameStoreDialog->add(new CGUIText("Select your Game for Download",
-                                                       GsRect<float>(0.0f, 0.0f, 1.0f, 0.05f)))
+                                                       GsRect<float>(0.0f, 0.0f,
+                                                                     1.0f, 0.05f)))
                                                            );
 
     // Create an empty Bitmap control for the preview
@@ -203,7 +204,8 @@ void CGameLauncher::setupDownloadDialog()
     // Description Text Box
     mpDDescriptionText = std::dynamic_pointer_cast<CGUIText>(
             mpGameStoreDialog->add(new CGUIText("Description",
-                                                       GsRect<float>(0.01f, 0.70f, 0.98f, 0.1f))
+                                                       GsRect<float>(0.01f, 0.70f,
+                                                                     0.98f, 0.05f))
                                           ) );
 
 

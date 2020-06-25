@@ -37,25 +37,6 @@ GsButton(text,rect, nullptr, fontID)
 {}
 
 
-
-bool CGUIInputText::sendEvent(const InputCommand command)
-{
-    if(!isEnabled())
-        return false;
-/*
-    if(command == IC_STATUS || command == IC_JUMP)
-    {
-        mTyping = !mTyping;
-        GsButton::sendEvent(command);
-        return true;
-    }
-    */
-    return true;
-}
-
-
-
-
 void CGUIInputText::processLogic()
 {
 	if(!mEnabled)
@@ -85,8 +66,9 @@ void CGUIInputText::processLogic()
                 setText(appText);
             }
 
-            if(gInput.getPressedCommand(IC_JUMP) ||
-               gInput.getPressedCommand(IC_STATUS))
+            if(gInput.getPressedKey(KENTER) ||
+               gInput.getPressedCommand(IC_JUMP) ||
+               gInput.getPressedCommand(IC_STATUS) )
             {
                 activateFunction();
             }

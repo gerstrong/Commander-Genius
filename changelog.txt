@@ -1,6 +1,7 @@
 v2.4.5:
 -------
 - QED Fixes
+- Improved Savegame menu style and overall functionality
 - Minor GUI improvements
 
 v2.4.4:
