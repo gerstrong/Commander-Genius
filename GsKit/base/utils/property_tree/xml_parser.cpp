@@ -6,8 +6,6 @@
 #else
 #include "tinyxml2.h"
 
-using namespace tinyxml2;
-
 #endif // BOOST_ENABLED
 
 #include <base/utils/FindFile.h>
@@ -97,7 +95,7 @@ static void write_xml_boost(const std::string &filename, GsKit::ptree &pt)
 #else
 
 static void addNodeFromTinyXML(GsKit::ptree &output,
-                               XMLNode *input)
+                               tinyxml2::XMLNode *input)
 {
     if(input == nullptr)
         return;
@@ -149,7 +147,7 @@ static void addNodeFromTinyXML(GsKit::ptree &output,
 }
 
 static void addNodeToTinyXML(GsKit::ptree &input,
-                             XMLNode *output,
+                             tinyxml2::XMLNode *output,
                              tinyxml2::XMLDocument *doc)
 {
     for( auto &data : input )
@@ -170,7 +168,7 @@ static void addNodeToTinyXML(GsKit::ptree &input,
         }
         else
         {
-            XMLNode * node = doc->NewElement(myFirst.c_str());
+            tinyxml2::XMLNode * node = doc->NewElement(myFirst.c_str());
 
             output->InsertEndChild(node);
 
@@ -193,7 +191,7 @@ static void read_xml_tinyxml2(const std::string &filename, GsKit::ptree &pt)
 
     doc.LoadFile(fullfn.c_str());
 
-    XMLNode * pRoot = doc.FirstChild();
+    tinyxml2::XMLNode * pRoot = doc.FirstChild();
 
     addNodeFromTinyXML(pt, pRoot);
 }
@@ -209,7 +207,7 @@ static void write_xml_tinyxml2(const std::string &filename, GsKit::ptree &pt)
     for( auto &data : pt )
     {                
         std::string firstStr(data.first);
-        XMLElement * newElem = xmlDoc.NewElement(firstStr.c_str());
+        tinyxml2::XMLElement * newElem = xmlDoc.NewElement(firstStr.c_str());
         xmlDoc.InsertEndChild(newElem);
 
         addNodeToTinyXML(data.second, newElem, &xmlDoc);

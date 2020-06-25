@@ -10,23 +10,23 @@
 #ifndef TYPEDEFINITIONS_H
 #define TYPEDEFINITIONS_H
 
-#include <sys/types.h>
+//#include <sys/types.h>
 
-//#include <SDL.h>
+#include <SDL.h>
 
 // Some good basic types and utilities independent of endianess.
-typedef __uint8_t byte;
-typedef __uint8_t Uint8;
-typedef __uint8_t uint8_t;
-typedef __int8_t Sint8;
+typedef uint8_t byte;
+typedef uint8_t Uint8;
+typedef uint8_t uint8_t;
+typedef int8_t Sint8;
 
-typedef __uint16_t word;
-typedef __uint16_t Uint16;
-typedef __uint16_t uint16_t;
+typedef uint16_t word;
+typedef uint16_t Uint16;
+typedef uint16_t uint16_t;
 
-typedef __int32_t fixed;
-typedef __uint32_t longword;
-typedef __uint32_t uint32_t;
+typedef int32_t fixed;
+typedef uint32_t longword;
+typedef uint32_t uint32_t;
 
 
 typedef void * memptr;
