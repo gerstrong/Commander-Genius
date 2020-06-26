@@ -80,7 +80,7 @@ void CPoisonSlug::processCrawling()
     }
 
     // Chance to poo
-    if( getProbability(30) )
+    if( getProbability(20) )
     {
         m_timer = 0;
         setAction( A_SLUG_POOING );
