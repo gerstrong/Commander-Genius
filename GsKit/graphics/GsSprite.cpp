@@ -254,7 +254,7 @@ bool GsSprite::loadHQSprite( const std::string& filename )
 
     GsSurface bmpSfc;
 
-    if(!bmpSfc.loadBmp(fullpath))
+    if(!bmpSfc.loadImg(fullpath))
     {
         return false;
     }
