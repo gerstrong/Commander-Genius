@@ -37,7 +37,7 @@ public:
 
 private:
 
-	int mSelectedPlayer;
+    int mSelectedPlayer = 0;
 
     std::shared_ptr<Switch> mpTwoButtonSwitch;
     std::shared_ptr<Switch> mpAnalogSwitch;

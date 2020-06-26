@@ -52,27 +52,6 @@ public:
 };
 
 
-/**
- * \brief This sets the default settings for a classic gameplay
- */
-class ResetInputEvent : public InvokeFunctorEvent
-{
-public:
-
-	ResetInputEvent( const int selPlayer ) :
-		mSelPlayer(selPlayer)
-		{}
-
-    void operator()() const
-	{
-        assert(mSelPlayer>0);
-        gInput.resetControls(mSelPlayer-1);
-	}
-
-	int mSelPlayer;
-};
-
-
 
 CControlsettings::CControlsettings(const int selectedPlayer ,
                                    const Style style) :
@@ -120,9 +99,17 @@ mSelectedPlayer(selectedPlayer)
             mpMenuDialog->add( new Switch( "Auto Gun", style ) );
 	mpAutoGunSwitch->enable(gInput.AutoGun(mSelectedPlayer-1));
 
-    mpMenuDialog->add( new GameButton( "Reset Controls",
-                                             new ResetInputEvent(mSelectedPlayer-1),
-                                             style ) );
+    mpMenuDialog->add(
+           new GameButton( "Reset Controls",
+                           [this]()
+                           {
+                               const auto sel =
+                                             this->mSelectedPlayer-1;
+                               assert(sel>=0);
+                               gInput.resetControls(sel);
+                               gEventManager.add( new CloseMenuEvent() );
+                           },
+                           style ) );
     
     setMenuLabel("KEYBMENULABEL");
 

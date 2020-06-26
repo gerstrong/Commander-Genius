@@ -60,7 +60,7 @@ CInput::CInput()
  * 		  is executed
  * \param	player	Number of player of which the controls will be reset (1-4)
  */
-void CInput::resetControls(int player)
+void CInput::resetControls(const int player)
 {
 	m_exit = false;
 
