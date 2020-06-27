@@ -1,3 +1,7 @@
+vX.X.X:
+-------
+- Quickload in the galaxy died dialog ("You didn't make it past...")
+
 v2.4.5:
 -------
 - QED Fixes
