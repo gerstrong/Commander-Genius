@@ -519,6 +519,7 @@ int CreateRecDir(const std::string& abs_filename, bool last_is_dir)
     {
 		mkdir(tmp.c_str(), 0777);
     }
+    return 0;
 }
 
 std::string GetFirstSearchPath()
