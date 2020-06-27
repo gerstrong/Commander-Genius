@@ -8,6 +8,7 @@
 #include <base/GsTimer.h>
 #include "CVideoEngine.h"
 #include <base/GsLogging.h>
+#include <base/utils/ThreadPool.h>
 #include <SDL_syswm.h>
 #include <base/video/scaler/scalebit.h>
 #include <SDL_version.h>

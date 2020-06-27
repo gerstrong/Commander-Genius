@@ -194,7 +194,7 @@ int downloadFile(const std::string &filename, int &progress,
     return int(res);
 }
 
-#define TRACE_NODE(x) gLogging << #x"=" << x
+#define TRACE_NODE(x) gLogging << #x"=" << x << "\n"
 
 bool GameDownloader::readGamesNode(const GsKit::ptree &pt)
 {
@@ -412,7 +412,7 @@ bool GameDownloader::checkForMissingGames( std::vector< std::string > &missingLi
 
         const auto downloadGamePath = JoinPaths(downloadPath, gameFile);
 
-        gLogging << "Scanning \"" << gameEntry.mName << "\"\n";
+        gLogging << "Scanning \"" << gameEntry.mName << "\"<br>\n";
 
         if( !IsFileAvailable(downloadGamePath) )
         {
@@ -465,7 +465,6 @@ int GameDownloader::handle()
         {
             gLogging.ftextOut( FONTCOLORS::GREEN, "Downloading file \"%s\"", gameFileName.c_str());
 
-            // TODO: We also must pass the gamepath and a downloads folder we all the file packages can be set.
             res = downloadFile(gameFileName, mProgress, "downloads");
         }
 

@@ -44,6 +44,8 @@ public:
                          const std::string &appName,
                          const std::string &version);
 
+    void closeIt();
+
 	void WriteTopic		(const char *Topic, int Size);
 	void textOut		(const std::string& Text);
 	void textOut		(FONTCOLORS Color, const std::string& Text);

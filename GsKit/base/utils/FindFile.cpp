@@ -506,7 +506,7 @@ void InitBaseSearchPaths()
 #endif
 }
 
-void CreateRecDir(const std::string& abs_filename, bool last_is_dir)
+int CreateRecDir(const std::string& abs_filename, bool last_is_dir)
 {
 	std::string tmp;
 	std::string::const_iterator f = abs_filename.begin();

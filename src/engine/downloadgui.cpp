@@ -59,7 +59,7 @@ void CGameLauncher::verifyGameStore()
 
     mGameCatalogue = gameDownloader.getGameCatalogue();
 
-    // Try to download the catalogue file, in the background
+    // Try to download the catalogue file in the background
     {
         GameDownloader *pCatalogueDownloader =
                 new GameDownloader(m_DownloadProgress,

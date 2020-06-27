@@ -223,7 +223,8 @@ bool CGameLauncher::setupMenu()
         ss << "No games detected!\n";
         ss << "You can copy some into:\n";
         ss << "\"" << searchPathGames << "\",\n";
-        ss << "or download using \"+ More\" button.\n";
+        ss << "or download using \"+ More\" button\n";
+        ss << "on the next page.\n";
 
         std::string msg(ss.str());
 
@@ -381,7 +382,7 @@ bool CGameLauncher::scanExecutables(const std::string& path)
 
     for(const auto &curFname : execlist.list)
     {
-        gLogging.ftextOut("Scanning %s<br>", curFname.c_str() );
+        gLogging.ftextOut("Scanning %s \n<br>", curFname.c_str() );
 
         int ep = -1;
         bool isPy = false;
@@ -452,7 +453,7 @@ bool CGameLauncher::scanExecutables(const std::string& path)
         newentry.name    = scanLabels(executable.getFileName());
 
         std::string verstr;
-        std::string gamespecstring = "Detected game Name: " + executable.getFileName();
+        std::string gamespecstring = "Detected game file: " + executable.getFileName();
         if( newentry.version<=0 ) // Version couldn't be read!
         {
             verstr = "unknown";
@@ -484,7 +485,7 @@ bool CGameLauncher::scanExecutables(const std::string& path)
             m_ep1slot = m_Entries.size()-1;
             gLogging.ftextOut("   Using for in-game menu resources<br>" );
         }
-        result = true;
+        result |= true;
     }
 
     return result;
@@ -926,7 +927,7 @@ void CGameLauncher::ponder(const float deltaT)
 {
     // In case after display/video setting changes, we need to reset the native resolution
     if(gVideoDriver.getRefreshSignal())
-    {
+    {        
         // Set the native resolution
         gVideoDriver.setNativeResolution(gVideoDriver.getVidConfig().mDisplayRect);
 

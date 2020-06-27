@@ -7,10 +7,10 @@
  created 09-07-2008 by Albert Zeyer
  */
 
-/*#include "CrashHandler.h"
+#include "CrashHandler.h"
 #include <base/utils/StringUtils.h>
 #include <base/utils/Debug.h>
-
+#include <base/GsLogging.h>
 
 #ifndef WIN32
 #include <setjmp.h>
@@ -19,11 +19,12 @@ sigjmp_buf longJumpBuffer;
 
 
 // note: important to have const char* here because std::string is too dynamic, could be screwed up when returning
-void SetCrashHandlerReturnPoint(const char* name) {
+void SetCrashHandlerReturnPoint(const char* name)
+{
 #ifndef WIN32
 	if(sigsetjmp(longJumpBuffer, true) != 0) {
 		hints << "returned from sigsetjmp in " << name << endl;
-        if(*//*tLXOptions->bFullscreen*//* false) {
+        if(/*tLXOptions->bFullscreen*/ false) {
 			notes << "we are in fullscreen, going to window mode now" << endl;
 			//	tLXOptions->bFullscreen = false;
 			//	doSetVideoModeInMainThread();
@@ -66,7 +67,7 @@ public:
 	
 };
 
-extern void OlxWriteCoreDump_Win32(const char* fileName, PEXCEPTION_POINTERS pExInfo);
+//extern void OlxWriteCoreDump_Win32(const char* fileName, PEXCEPTION_POINTERS pExInfo);
 
 ///////////////////
 // This callback function is called whenever an unhandled exception occurs
@@ -173,7 +174,7 @@ LONG WINAPI CustomUnhandledExceptionFilter(PEXCEPTION_POINTERS pExInfo)
 // TODO: why is execinfo needed here? at least on MacOSX, it's not needed here
 //#include <execinfo.h>*/
 /* get REG_EIP / REG_RIP from ucontext.h */
-/*#include <ucontext.h>
+#include <ucontext.h>
 #endif
 
 #ifndef EIP
@@ -183,7 +184,7 @@ LONG WINAPI CustomUnhandledExceptionFilter(PEXCEPTION_POINTERS pExInfo)
 #if (defined (__x86_64__))
 #ifndef REG_RIP
 #define REG_RIP REG_INDEX(rip)*/ /* seems to be 16 */
-/*#endif
+#endif
 #endif
 
 
@@ -233,7 +234,7 @@ static int handlerSignalList[] = {
 
 typedef const char * cchar;
 
-bool CrashHandler_RecoverAfterCrash = false;
+bool CrashHandler_RecoverAfterCrash = true;
 
 class CrashHandlerImpl : public CrashHandler {
 public:
@@ -246,6 +247,8 @@ public:
 		}
 		else
 			notes << "no signal handler with these settings" << endl;
+
+        SetCrashHandlerReturnPoint("main");
 	}
 	
 	
@@ -276,15 +279,15 @@ public:
 			if (signr == signal_data[i].id)
 			{ d = &signal_data[i]; break; }
 		if (d)
-			printf("Got signal 0x%02X (%s): %s\n", signr, d->name, d->description);
+            gLogging.ftextOut("Got signal 0x%02X (%s): %s\n", signr, d->name, d->description);
 		else
-			printf("Got signal 0x%02X\n", signr);
-        */
+            gLogging.ftextOut("Got signal 0x%02X\n", signr);
+
 		/* 
 		 see this article for further details: (thanks also for some code snippets)
 		 http://www.linuxjournal.com/article/6391 */
-        /*
-		void *pnt = NULL;
+
+        void *pnt = nullptr;
 #if defined(__APPLE__)
 #	if defined(__x86_64__)
 		ucontext_t* uc = (ucontext_t*) secret;
@@ -337,14 +340,13 @@ public:
         // Does not work on Android*/
         /*ucontext_t* uc = (ucontext_t*) secret;
         pnt = (void*) uc->uc_mcontext.gregs[REG_EIP] ;*/
-/*#	else
->>>>>>> 8d3e9d573a837c9089046b9938e0ef75f45686d0
+#	else
 #		warning mcontext is not defined for this arch, thus a dumped backtrace could be crippled
 #	endif
 #else
 #	warning mcontest is not defined for this system, thus a dumped backtraced could be crippled
 #endif
-        */
+
 		/* potentially correct for other archs:
 		 * alpha: ucp->m_context.sc_pc
 		 * arm: ucp->m_context.ctx.arm_pc
@@ -352,10 +354,10 @@ public:
 		 * mips: ucp->m_context.sc_pc
 		 * s390: ucp->m_context.sregs->regs.psw.addr
 		 */
-        /*
+
 		if (signr == SIGSEGV || signr == SIGBUS)
-			printf("Faulty address is %p, called from %p\n", info->si_addr, pnt);
-*/
+            gLogging.ftextOut("Faulty address is %p, called from %p\n", info->si_addr, pnt);
+
 		/* The first two entries in the stack frame chain when you
 		 * get into the signal handler contain, respectively, a
 		 * return address inside your signal handler and one inside
@@ -372,7 +374,7 @@ public:
 		// WARNING: dont use cout here in this function, it sometimes screws the cout up
 		// look at signal(2) for a list of safe functions
 		
-        /*DumpCallstackPrintf(pnt);
+        DumpCallstackPrintf(pnt);
 		
 #ifdef DEBUG
 		// commented out for now because it still doesn't work that good
@@ -381,7 +383,8 @@ public:
 		
         if(!CrashHandler_RecoverAfterCrash)
         {
-			fflush(stdout);
+            fflush(stdout);
+            gLogging.closeIt();
 			abort();
 #ifdef DEBUG
 			//        	raise(SIGQUIT);
@@ -391,8 +394,10 @@ public:
 			return;
         }
 		setSignalHandlers(); // reset handler
-		printf("resuming ...\n");
+        gLogging.ftextOut("Trying to resume ...\n<br>");
 		fflush(stdout);
+
+        gLogging.closeIt();
 		
 		setSignalHandlers();
 		siglongjmp(longJumpBuffer, 1); // jump back to main loop, maybe we'll be able to continue somehow
@@ -519,9 +524,9 @@ public:
 
 #endif
 
-CrashHandlerImpl* crashHandlerInstance = NULL;*/
+CrashHandlerImpl* crashHandlerInstance = nullptr;
 
-/*void CrashHandler::init() {
+void CrashHandler::init() {
 	if(crashHandlerInstance) {
 		warnings << "CrashHandler tried to init twice" << endl;
 		return;
@@ -533,11 +538,11 @@ CrashHandlerImpl* crashHandlerInstance = NULL;*/
 void CrashHandler::uninit() {
 	if(crashHandlerInstance) {
 		delete crashHandlerInstance;
-		crashHandlerInstance = NULL;
+        crashHandlerInstance = nullptr;
 	}
 }
 
 CrashHandler* CrashHandler::get() {
 	return crashHandlerInstance;
 }
-*/
+

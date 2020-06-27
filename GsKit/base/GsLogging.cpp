@@ -88,6 +88,11 @@ bool CLogFile::CreateLogfile(const std::string &logFName,
     return true;
 }
 
+void CLogFile::closeIt()
+{
+    mLogStream.close();
+}
+
 // Function for writing the topic
 void CLogFile::WriteTopic(const char *Topic, int Size)
 {    

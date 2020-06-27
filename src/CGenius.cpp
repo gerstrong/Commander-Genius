@@ -39,6 +39,7 @@
 #endif
 
 #include <base/utils/FindFile.h>
+#include <base/utils/CrashHandler.h>
 #include <base/GsApp.h>
 #include <base/GsLogging.h>
 #include <base/GsTTFSystem.h>
@@ -100,6 +101,8 @@ int main(int argc, char *argv[])
     SetBinaryDir( GetAbsolutePath(binary_dir) );    
 
     notes << "Initializing ThreadPool..." << endl;
+
+    CrashHandler::init();
 
     InitThreadPool();
 
@@ -194,5 +197,7 @@ int main(int argc, char *argv[])
 
 	gLogging.textOut(FONTCOLORS::GREEN,"Tearing down thread pool...\n");
     UnInitThreadPool();
+
+    CrashHandler::uninit();
     return 0;
 }
