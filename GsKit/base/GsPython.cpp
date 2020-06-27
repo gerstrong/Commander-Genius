@@ -62,8 +62,10 @@ GsPython::GsPython()
 
 GsPython::~GsPython()
 {
+    /*
     if(mActive)
         Py_Finalize();
+        */
 }
 
 void GsPython::init()

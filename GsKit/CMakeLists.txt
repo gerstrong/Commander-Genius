@@ -77,8 +77,10 @@ else()
         ADD_DEFINITIONS(-DVIRTUALPAD)
     endif(USE_VIRTUALPAD)
     
-    option(USE_PYTHON3 "Use Python3 scripts" no)
+    option(USE_PYTHON3 "Use Python3 scripts (deprecated)" no)
     set (CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${CMAKE_CURRENT_SOURCE_DIR}/CMake")
+
+    option(USE_LUA "Use Lua scripts" no)
     
     set(CMAKE_CXX_STANDARD 14)
     set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -147,6 +149,21 @@ else()
             endif(SDL_FOUND)
     
     endif(USE_SDL2)
+
+    # Use lua for AI scripting and more!
+    IF(USE_LUA)
+            # Look for Lua
+            FIND_PACKAGE(Lua)
+            if(LUA_FOUND)
+                ADD_DEFINITIONS(-DUSE_LUA=1)
+                INCLUDE_DIRECTORIES(${LUA_INCLUDE_DIR})
+                LINK_LIBRARIES(${LUA_LIBRARIES})
+                message(STATUS "LUA_LIBRARIES = ${LUA_LIBRARIES}")
+                message(STATUS "LUA_INCLUDE_DIR = ${LUA_INCLUDE_DIR}")
+            else()
+                message(FATAL_ERROR "Lua not found!")
+            endif()
+    endif()
     
     
     # Use python3 for AI scripting and more!
@@ -202,10 +219,11 @@ if(USE_SDL2)
         message(STATUS "GsKit: SDL2IMAGE_LIBRARY = ${SDL2IMAGE_LIBRARY}")
 endif(USE_SDL2)
     
-    IF(USE_OPENGL)
-        # OpenGL stuff to link
-        target_link_libraries(GsKit ${OPENGL_LIBRARIES})
-    ENDIF(USE_OPENGL)
+IF(USE_OPENGL)
+    # OpenGL stuff to link
+    target_link_libraries(GsKit ${OPENGL_LIBRARIES})
+ENDIF(USE_OPENGL)
     
     #cotire(GsKit)
 endif()
+

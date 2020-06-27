@@ -188,6 +188,59 @@ bool CSpriteObject::loadPythonScripts(const std::string &scriptBaseName)
 }
 #endif
 
+bool CSpriteObject::loadLuaScript(const std::string &scriptBaseName)
+{
+    bool ok = true;
+
+    auto fullFName = JoinPaths(gKeenFiles.gameDir ,"ai");
+    fullFName = JoinPaths(fullFName, scriptBaseName + ".lua");
+
+    ok &= mLua.loadFile( fullFName );
+
+    if(!ok)
+        return false;
+
+    /*
+    mModule.load( scriptBaseName, JoinPaths(gKeenFiles.gameDir ,"ai") );
+
+    if(!mModule)
+        return false;
+
+    loadAiGetterBool("canRecoverFromStun", mRecoverFromStun);
+
+    loadAiGetterBool("turnAroundOnCliff", mTurnAroundOnCliff);
+
+    loadAiGetterBool("endGameOnDefeat", mEndGameOnDefeat);
+
+    loadAiGetterBool("isInvincible", mInvincible);
+
+    loadAiGetterBool("willNeverStop", mNeverStop);
+
+    loadAiGetterBool("isStunnableWithPogo", mPogoStunnable);
+
+    loadAiGetterBool("isStunnableWithJump", mJumpStunnable);
+
+    loadAiGetterBool("mayShoot", mMayShoot);
+
+    auto pModule = mModule.rawPtr();
+    int health = int(mHealthPoints);
+    */
+
+    mLua.runFunctionRetOneBool("mayShoot", mMayShoot);
+
+    int health = int(mHealthPoints);
+    mLua.runFunctionRetOneInt("healthPoints", health);
+    mHealthPoints = static_cast<unsigned int>(health);
+
+    int walksound = mWalkSound;
+    mLua.runFunctionRetOneInt("walkSound", walksound);
+    mWalkSound = GameSound(walksound);
+
+    return true;
+
+}
+
+
 void CSpriteObject::setScrPos( int px, int py )
 {
 	scrx = px;

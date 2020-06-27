@@ -18,6 +18,7 @@
 #include "direction.h"
 #include "CBehaviorEngine.h"
 
+
 // structures for each AI module's data
 #include "CMap.h"
 #include "graphics/GsGraphics.h"
@@ -32,6 +33,7 @@
 #include "fileio/KeenFiles.h"
 
 #include <base/GsPython.h>
+#include <base/GsLua.h>
 
 
 const int COLISION_RES = (1<<STC);
@@ -407,11 +409,21 @@ class CSpriteObject
      */
     virtual bool loadPythonScripts(const std::string &scriptBaseName);
 
+
     GsPythonModule mModule;
     GsPythonFunc mProcessFunc;
     GsPythonFunc mUpdatePlayerCoord;
 
 #endif
+
+    /**
+     * @brief loadLuaScript     Load an external script file which might modify the behaviour of the sprite object
+     * @param scriptBaseName    Basename is the filename with any extension or path. Recommendation: Use the name of the foe
+     * @return if load was successful true, otherwise false.
+     */
+    virtual bool loadLuaScript(const std::string &scriptBaseName);
+
+    GsLua mLua;
     
     CMap *mpMap;
     

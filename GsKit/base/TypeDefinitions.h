@@ -10,7 +10,7 @@
 #ifndef TYPEDEFINITIONS_H
 #define TYPEDEFINITIONS_H
 
-//#include <sys/types.h>
+#include <sys/types.h>
 
 #include <SDL.h>
 

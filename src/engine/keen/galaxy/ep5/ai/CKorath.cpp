@@ -47,6 +47,7 @@ CStunnable(pmap, foeID, x, y)
 
 #if USE_PYTHON3
     loadPythonScripts("korath");
+    loadLuaScript("korath");
 #endif
 }
 

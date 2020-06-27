@@ -248,7 +248,7 @@ public:
 		else
 			notes << "no signal handler with these settings" << endl;
 
-        SetCrashHandlerReturnPoint("main");
+        //SetCrashHandlerReturnPoint("main");
 	}
 	
 	

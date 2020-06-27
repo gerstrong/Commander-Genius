@@ -72,6 +72,7 @@ CAmpton::CAmpton(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y)
     xDirection = LEFT;
 
     loadPythonScripts("ampton");
+    loadLuaScript("ampton");
 
     if(diff > NINJA && foeID == 0x2C)
     {
@@ -95,7 +96,7 @@ bool CAmpton::loadPythonScripts(const std::string &scriptBaseName)
 {
 #if USE_PYTHON3
 
-    mModule.load( scriptBaseName, JoinPaths(gKeenFiles.gameDir ,"ai") );
+    //mModule.load( scriptBaseName, JoinPaths(gKeenFiles.gameDir ,"ai") );
 
     if(!mModule)
         return false;
