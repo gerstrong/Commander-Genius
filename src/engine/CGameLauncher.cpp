@@ -87,9 +87,8 @@ bool CGameLauncher::setupMenu()
     mSelection      = -1;
 
 
-    // TODO: Put that scanning into a separate so we can show a loading menu
+    // TODO: Put that scanning into a separate section so we can show a loading menu
     // Scan for games...
-    m_DirList.clear();
     m_Entries.clear();
 
     gLogging.ftextOut("Game Autodetection Started<br>" );
@@ -925,6 +924,12 @@ void CGameLauncher::ponderPatchDialog()
 ////
 void CGameLauncher::ponder(const float deltaT)
 {
+    if(mGameScanner.isRunning())
+    {
+        mGameScanner.run(deltaT);
+        return;
+    }
+
     // In case after display/video setting changes, we need to reset the native resolution
     if(gVideoDriver.getRefreshSignal())
     {        
