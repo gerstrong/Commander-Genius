@@ -59,6 +59,14 @@ Uint32 CSaveGameController::getDataSize(std::ifstream &StateFile)
 	return size;
 }
 
+bool CSaveGameController::hasQuickloadGame()
+{
+    const std::string saveXMLfile = "cksaveQuick.cx"+itoa(m_Episode);
+    const auto stateXMLfilename = JoinPaths(m_savedir, saveXMLfile);
+    const bool exists = IsFileAvailable(stateXMLfilename);
+    return exists;
+}
+
 // Return a string that just says empty
 std::string CSaveGameController::getUnnamedSlotName()
 {
@@ -816,7 +824,6 @@ bool CSaveGameController::loadXMLTree(GsKit::ptree &pt)
     if (!open)
         return false;    
 
-    //read_xml( StateFile, pt );
     read_xml( m_stateXMLfilename, pt );
 
     return true;

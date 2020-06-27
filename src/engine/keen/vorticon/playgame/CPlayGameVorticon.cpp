@@ -538,7 +538,10 @@ void CPlayGameVorticon::handleFKeys()
     }
     if(gInput.getPressedKey(KF9))
     {
-        gSaveGameController.prepareLoadGameQuick();
+        if(gSaveGameController.hasQuickloadGame())
+        {
+            gSaveGameController.prepareLoadGameQuick();
+        }
     }
 
 	// GOD cheat -- toggle god mode

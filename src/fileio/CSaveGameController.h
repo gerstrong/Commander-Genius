@@ -91,6 +91,8 @@ public:
 	
 	bool busy()
 	{ return !m_statefilename.empty(); }
+
+    bool hasQuickloadGame();
 	
 	std::string getUnnamedSlotName();
 

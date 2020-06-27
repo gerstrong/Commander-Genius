@@ -261,6 +261,14 @@ struct EventSendSelectionDialogMsg : CEvent {
         NewOption.event.reset( levent );
         Options.push_back(NewOption);
     }
+
+    void addOption(const std::string& ltext,
+                   const std::function<void()> &f)
+    {
+        auto *ev = new FunctionToEvent(f);
+        addOption(ltext, ev);
+    }
+
 };
 
 
@@ -318,10 +326,23 @@ void CPlayGameGalaxy::looseManagement( const int playerIdx,
         std::string loosemsg  = "You didn't make it past\n";
         loosemsg += levelName;
         EventSendSelectionDialogMsg *pdialogevent = new EventSendSelectionDialogMsg(loosemsg);
+
+
+        if(gSaveGameController.hasQuickloadGame())
+        {
+            std::string quickloadMsg = "Quickload!";
+            pdialogevent->addOption(quickloadMsg,
+                                    []()
+                                    {
+                                        gSaveGameController.prepareLoadGameQuick();
+                                    } );
+        }
+
         pdialogevent->addOption("Try Again", new EventRestartLevel() );
 
         std::string exitMsg = "Exit to " + gBehaviorEngine.mapLevelName;
         pdialogevent->addOption(exitMsg, new EventExitLevel( levelObj, false, false, playerIdx) );
+
         eventContainer.add( pdialogevent );
 
         for(auto deadIt = mDead.begin() ; deadIt != mDead.end() ; deadIt++ )
@@ -610,10 +631,13 @@ void CPlayGameGalaxy::ponder(const float deltaT)
     }
     if(gInput.getPressedKey(KF9))
     {
-        gSaveGameController.prepareLoadGameQuick();
-        galaxy::showMsg(0, "Quickloading ...", nullptr, false, "LoadMsg.msg",
-                        galaxy::CMessageBoxGalaxy::Alignment::UPPERRIGHT,
-                        1000, false);
+        if(gSaveGameController.hasQuickloadGame())
+        {
+            galaxy::showMsg(0, "Quickloading ...", nullptr, false, "LoadMsg.msg",
+                            galaxy::CMessageBoxGalaxy::Alignment::UPPERRIGHT,
+                            1000, false);
+            gSaveGameController.prepareLoadGameQuick();
+        }
     }
 
 
