@@ -200,44 +200,20 @@ bool CSpriteObject::loadLuaScript(const std::string &scriptBaseName)
     if(!ok)
         return false;
 
-    /*
-    mModule.load( scriptBaseName, JoinPaths(gKeenFiles.gameDir ,"ai") );
-
-    if(!mModule)
-        return false;
-
-    loadAiGetterBool("canRecoverFromStun", mRecoverFromStun);
-
-    loadAiGetterBool("turnAroundOnCliff", mTurnAroundOnCliff);
-
-    loadAiGetterBool("endGameOnDefeat", mEndGameOnDefeat);
-
-    loadAiGetterBool("isInvincible", mInvincible);
-
-    loadAiGetterBool("willNeverStop", mNeverStop);
-
-    loadAiGetterBool("isStunnableWithPogo", mPogoStunnable);
-
-    loadAiGetterBool("isStunnableWithJump", mJumpStunnable);
-
-    loadAiGetterBool("mayShoot", mMayShoot);
-
-    auto pModule = mModule.rawPtr();
-    int health = int(mHealthPoints);
-    */
-
+    mLua.runFunctionRetOneBool("canRecoverFromStun", mRecoverFromStun);
+    mLua.runFunctionRetOneBool("turnAroundOnCliff", mTurnAroundOnCliff);
+    mLua.runFunctionRetOneBool("endGameOnDefeat", mEndGameOnDefeat);
+    mLua.runFunctionRetOneBool("isInvincible", mInvincible);
+    mLua.runFunctionRetOneBool("willNeverStop", mNeverStop);
+    mLua.runFunctionRetOneBool("isStunnableWithPogo", mPogoStunnable);
+    mLua.runFunctionRetOneBool("isStunnableWithJump", mJumpStunnable);
     mLua.runFunctionRetOneBool("mayShoot", mMayShoot);
 
     int health = int(mHealthPoints);
     mLua.runFunctionRetOneInt("healthPoints", health);
     mHealthPoints = static_cast<unsigned int>(health);
 
-    int walksound = mWalkSound;
-    mLua.runFunctionRetOneInt("walkSound", walksound);
-    mWalkSound = GameSound(walksound);
-
     return true;
-
 }
 
 

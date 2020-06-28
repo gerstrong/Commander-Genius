@@ -120,7 +120,32 @@ bool CAmpton::loadPythonScripts(const std::string &scriptBaseName)
     return true;
 }
 
+bool CAmpton::loadLuaScript(const std::string &scriptBaseName)
+{
+    bool ok = true;
 
+    auto fullFName = JoinPaths(gKeenFiles.gameDir ,"ai");
+    fullFName = JoinPaths(fullFName, scriptBaseName + ".lua");
+
+    ok &= mLua.loadFile( fullFName );
+
+    if(!ok)
+        return false;
+
+    mLua.runFunctionRetOneBool("screamAfterShoot", mScreamAfterShoot);
+    mLua.runFunctionRetOneBool("mayShoot", mMayShoot);
+    mLua.runFunctionRetOneBool("allowClimbing", mAllowClimbing);
+
+    int health = int(mHealthPoints);
+    mLua.runFunctionRetOneInt("healthPoints", health);
+    mHealthPoints = static_cast<unsigned int>(health);
+
+    int walksound = mWalkSound;
+    mLua.runFunctionRetOneInt("walkSound", walksound);
+    mWalkSound = GameSound(walksound);
+
+    return true;
+}
 
 void CAmpton::processWalking()
 {

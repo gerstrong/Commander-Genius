@@ -9,7 +9,10 @@
 #define CAUDIOGALAXY_H_
 
 #include <sdl/audio/CAudioResources.h>
+#include <sdl/audio/CAudioResources.h>
 #include "fileio/CExeFile.h"
+
+#include <base/GsLua.h>
 
 class CAudioGalaxy : public CAudioResources
 {
@@ -36,6 +39,7 @@ public:
 private:
 	void setupAudioMap();
 
+    GsLua mLua;
 };
 
 #endif /* CAUDIOGALAXY_H_ */

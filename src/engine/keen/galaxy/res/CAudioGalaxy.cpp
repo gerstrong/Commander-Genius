@@ -81,10 +81,7 @@ bool CAudioGalaxy::readPCSpeakerSoundintoWaveForm(CSoundSlot &soundslot,
  */
 void CAudioGalaxy::setupAudioMap()
 {
-    // Preparation which might help wehn some patches are applied    
-    //byte *ptr = gKeenFiles.exeFile.getRawData();
-    auto episode = gBehaviorEngine.getEpisode();
-    //size_t holder = 0;
+    const auto episode = gBehaviorEngine.getEpisode();
 
     // Episode 4
     sndSlotMapGalaxy[4][SOUND_KEEN_WALK] = 0;
@@ -147,12 +144,7 @@ void CAudioGalaxy::setupAudioMap()
       sndSlotMapGalaxy[5][SOUND_KEEN_WALK] = 0;
       sndSlotMapGalaxy[5][SOUND_KEEN_WALK2] = 1;
       sndSlotMapGalaxy[5][SOUND_KEEN_JUMP] = 2;
-
-      // TODO: I think this came from Keen 9. Needs some rework.
-      //memcpy(&holder, ptr + 0xC87D, 1 );
-      //sndSlotMapGalaxy[5][SOUND_KEEN_LAND] = holder;
       sndSlotMapGalaxy[5][SOUND_KEEN_LAND] = 3;
-
       sndSlotMapGalaxy[5][SOUND_KEEN_FIRE] = 4;
       sndSlotMapGalaxy[5][SOUND_MINEEXPLODE] = 5;
       sndSlotMapGalaxy[5][SOUND_SLICEBUMP] = 6;
@@ -177,11 +169,7 @@ void CAudioGalaxy::setupAudioMap()
       sndSlotMapGalaxy[5][SOUND_SHOT_HIT] = 25;
       sndSlotMapGalaxy[5][SOUND_SCRAMBLE] = 26;
       sndSlotMapGalaxy[5][SOUND_SPIROGRIP] = 27;
-
-      // TODO: I think this came from Keen 9. Needs some rework.
-      //memcpy(&holder, ptr + 0x129FC, 1 );
       sndSlotMapGalaxy[5][SOUND_SPINDREDSLAM] = 28;
-
       sndSlotMapGalaxy[5][SOUND_ROBORED_SHOOT] = 29;
       sndSlotMapGalaxy[5][SOUND_ROBORED_SHOOT2] = 30;
 
@@ -307,6 +295,28 @@ void CAudioGalaxy::setupAudioMap()
         sndSlotMapGalaxy[7][GameSound(i)] = i;
     }
 
+    // Lua script. If you have a snd/sndmap this one will be taken and overwrite
+    // some mappings
+    auto fullFName = JoinPaths(gKeenFiles.gameDir ,"snd");
+    fullFName = JoinPaths(fullFName, "sndmap.lua");
+
+    bool ok = mLua.loadFile( fullFName );
+
+    if(!ok)
+        return;
+
+    auto &slotmap = sndSlotMapGalaxy[episode];
+
+    for(auto &slot : slotmap)
+    {
+        const auto curSnd = int(slot.first);
+        int snd = slot.second;
+        mLua.runFunctionRetOneInt("getSoundMapping", curSnd, snd);
+        if(snd >= 0)
+        {
+            slot.second = snd;
+        }
+    }
 }
 
 

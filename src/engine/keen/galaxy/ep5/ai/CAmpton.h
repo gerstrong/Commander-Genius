@@ -24,6 +24,8 @@ public:
 
     bool loadPythonScripts(const std::string &scriptBaseName);
 
+    bool loadLuaScript(const std::string &scriptBaseName) override;
+
 	/**
      * Action methods
 	 */

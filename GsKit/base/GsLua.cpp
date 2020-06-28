@@ -102,6 +102,41 @@ bool GsLua::loadFile(const std::string &fname)
       return true;
 }
 
+void GsLua::runFunctionRetOneInt(const std::string &fun,
+                                 const int param,
+                                 int &ret)
+{
+    if(!mLuaStatePtr)
+    {
+        gLogging.ftextOut("Lua State not running for %s", fun.c_str());
+        return;
+    }
+
+
+    lua_State *L = (lua_State *)mLuaStatePtr;
+    lua_getfield(L, -1, fun.c_str());
+    lua_pushvalue(L, -2);
+    lua_pushnumber(L, param);
+    if (lua_pcall(L, 2, 1, 0) != 0)
+    {
+        gLogging.ftextOut("Error calling %s with %d", fun.c_str(), param);
+        return;
+    }
+
+    int isnum;
+    int n = lua_tointegerx(L, -1, &isnum);
+    if (!isnum) {
+        gLogging.ftextOut("Error getval didn't return a number");
+        return;
+    }
+    ret = n;
+    gLogging.ftextOut("ret=%d\n", n);
+
+    /* Remove the return value from the stack. */
+    lua_remove(L, -1);
+}
+
+
 void GsLua::runFunctionRetOneInt(const std::string &fun, int &ret)
 {
     if(!mLuaStatePtr)
@@ -123,7 +158,7 @@ void GsLua::runFunctionRetOneInt(const std::string &fun, int &ret)
     int isnum;
     int n = lua_tointegerx(L, -1, &isnum);
     if (!isnum) {
-        gLogging.ftextOut("Error getval didn't return a numbern");
+        gLogging.ftextOut("Error getval didn't return a number");
         return;
     }
     ret = n;
