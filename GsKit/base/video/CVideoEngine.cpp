@@ -164,14 +164,17 @@ void CVideoEngine::updateActiveArea(const GsRect<Uint16>& displayRes,
         return;
     }
 
+    const int scaleFactorY = displayRes.dim.y/m_VidConfig.mGameRect.dim.y;
+    const int scaleFactorX = displayRes.dim.x/m_VidConfig.mGameRect.dim.x;
+
+    const int scaleFactorMin = std::min(scaleFactorY, scaleFactorX);
+
     if (aspHeight*displayRes.dim.x >= aspWidth*displayRes.dim.y) // Wider than width:height, so shrink width
     {
-        int scaleFactor = displayRes.dim.y/m_VidConfig.mGameRect.dim.y;
-
-        if(m_VidConfig.mIntegerScaling && scaleFactor > 0)
+        if(m_VidConfig.mIntegerScaling && scaleFactorMin > 0)
         {
-            mActiveAreaRect.dim.y = scaleFactor*m_VidConfig.mGameRect.dim.y;
-            mActiveAreaRect.dim.x = scaleFactor*m_VidConfig.mGameRect.dim.x;
+            mActiveAreaRect.dim.y = scaleFactorMin*m_VidConfig.mGameRect.dim.y;
+            mActiveAreaRect.dim.x = scaleFactorMin*m_VidConfig.mGameRect.dim.x;
         }
         else
         {
@@ -183,12 +186,10 @@ void CVideoEngine::updateActiveArea(const GsRect<Uint16>& displayRes,
     }
     else // Taller than width:height so adapt height
     {
-        int scaleFactor = displayRes.dim.x/m_VidConfig.mGameRect.dim.x;
-
-        if(m_VidConfig.mIntegerScaling && scaleFactor > 0)
+        if(m_VidConfig.mIntegerScaling && scaleFactorMin > 0)
         {
-            mActiveAreaRect.dim.y = scaleFactor*m_VidConfig.mGameRect.dim.y;
-            mActiveAreaRect.dim.x = scaleFactor*m_VidConfig.mGameRect.dim.x;
+            mActiveAreaRect.dim.y = scaleFactorMin*m_VidConfig.mGameRect.dim.y;
+            mActiveAreaRect.dim.x = scaleFactorMin*m_VidConfig.mGameRect.dim.x;
         }
         else
         {
