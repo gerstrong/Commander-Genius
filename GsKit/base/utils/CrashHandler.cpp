@@ -6,8 +6,8 @@
  code under LGPL
  created 09-07-2008 by Albert Zeyer
  */
-
 #include "CrashHandler.h"
+#ifdef USE_CRASHHANDLER
 #include <base/utils/StringUtils.h>
 #include <base/utils/Debug.h>
 #include <base/GsLogging.h>
@@ -526,23 +526,36 @@ public:
 
 CrashHandlerImpl* crashHandlerInstance = nullptr;
 
+#endif // USE_CRASHHANDLER
+
 void CrashHandler::init() {
+
+#ifdef USE_CRASHHANDLER
+
 	if(crashHandlerInstance) {
 		warnings << "CrashHandler tried to init twice" << endl;
 		return;
 	}
 	notes << "Installing CrashHandler .. ";
 	crashHandlerInstance = new CrashHandlerImpl();
+#endif // USE_CRASHHANDLER
+
 }
 
-void CrashHandler::uninit() {
+void CrashHandler::uninit()
+{
+#ifdef USE_CRASHHANDLER
 	if(crashHandlerInstance) {
 		delete crashHandlerInstance;
         crashHandlerInstance = nullptr;
 	}
+#endif // USE_CRASHHANDLER
 }
+
+#ifdef USE_CRASHHANDLER
 
 CrashHandler* CrashHandler::get() {
 	return crashHandlerInstance;
 }
 
+#endif // USE_CRASHHANDLER
