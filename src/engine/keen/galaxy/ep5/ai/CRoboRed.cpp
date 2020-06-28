@@ -75,6 +75,7 @@ mKeenNearby(false)
 	xDirection = LEFT;
 
     loadPythonScripts("robored");
+    loadLuaScript("robored");
 
 
 }

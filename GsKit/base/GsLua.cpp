@@ -180,16 +180,26 @@ void GsLua::runFunctionRetOneBool(const std::string &fun, bool &ret)
     lua_State *L = (lua_State *)mLuaStatePtr;
     lua_getfield(L, -1, fun.c_str());
 
+    if(lua_isfunction(L, -1) != 1)
+    {
+        lua_remove(L, -1);
+        return;
+    }
+
     lua_pushvalue(L, -2);
     if (lua_pcall(L, 1, 1, 0) != 0)
     {
+        // NOTE: It can be normal not having such function.
+        // Enable this only for debugging purposes
         gLogging.ftextOut("Error calling %s", fun.c_str());
+        lua_remove(L, -1);
         return;
     }
 
     if (lua_isboolean(L, -1) == 0)
     {
         gLogging.ftextOut("Error %s does not return a boolean", fun.c_str());
+        lua_remove(L, -1);
         return;
     }
 

@@ -61,6 +61,7 @@ mTimer(0)
     xDirection = LEFT;
 
     loadPythonScripts("shikadi");
+    loadLuaScript("shikadi");
 }
 
 

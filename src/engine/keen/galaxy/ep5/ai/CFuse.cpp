@@ -40,6 +40,7 @@ CGalaxySpriteObject(pmap, foeID, x, y, sprVar)
 	mpMap->mFuseInLevel = true;
 
     loadPythonScripts("qed");
+    loadLuaScript("qed");
 }
 
 

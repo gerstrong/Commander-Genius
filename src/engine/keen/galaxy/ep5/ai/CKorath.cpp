@@ -45,13 +45,8 @@ CStunnable(pmap, foeID, x, y)
 	
 	xDirection = LEFT;
 
-#if USE_PYTHON3
-    loadPythonScripts("korath");
     loadLuaScript("korath");
-#endif
 }
-
-
 
 void CKorath::processWalking()
 {

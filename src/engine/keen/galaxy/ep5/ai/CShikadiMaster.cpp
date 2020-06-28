@@ -61,6 +61,7 @@ CStunnable(pmap, foeID, x, y)
     mKeenAlignment = LEFT;
 
     loadPythonScripts("shikadimaster");
+    loadLuaScript("shikadimaster");
 }
 
 bool CShikadiMaster::loadPythonScripts(const std::string &scriptBaseName)
