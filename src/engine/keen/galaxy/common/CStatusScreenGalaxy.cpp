@@ -460,7 +460,8 @@ void CStatusScreenGalaxy::GenerateStatusEp5()
     TempRect.w = 8*3; TempRect.h = 10;
     TempRect.x = TempRect.x+8*5;
     SDL_FillRect(mStatusSurface.getSDLSurface(), &TempRect, 0xFF000000);
-    gGraphics.drawDigits(getRightAlignedString(itoa(m_Item.m_bullets), 3), TempRect.x, TempRect.y+1, mStatusSurface.getSDLSurface());
+    gGraphics.drawDigits(getRightAlignedString(itoa(m_Item.m_bullets), 3),
+                         TempRect.x, TempRect.y+1, mStatusSurface.getSDLSurface());
 
     // Keens Box
     TempRect.x = EditRect.x;
@@ -599,7 +600,8 @@ void CStatusScreenGalaxy::GenerateStatusEp6()
     TempRect.w = 8*3; TempRect.h = 10;
     TempRect.x = TempRect.x+8*5;
     SDL_FillRect(mStatusSurface.getSDLSurface(), &TempRect, 0xFF000000);
-    gGraphics.drawDigits(getRightAlignedString(itoa(m_Item.m_bullets), 3), TempRect.x, TempRect.y+1, mStatusSurface.getSDLSurface());
+    gGraphics.drawDigits(getRightAlignedString(itoa(m_Item.m_bullets), 3),
+                         TempRect.x, TempRect.y+1, mStatusSurface.getSDLSurface());
 
     // Keens Box
     TempRect.x = EditRect.x;

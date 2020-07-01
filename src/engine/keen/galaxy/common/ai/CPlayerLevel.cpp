@@ -690,7 +690,11 @@ void CPlayerLevel::tryToShoot( const GsVec2D<int> &pos, const int xDir, const in
     if(m_Inventory.Item.m_bullets > 0)
     {
         spawnObj(new CBullet(mpMap, 0, pos.x, pos.y, xDir, yDir, mSprVar));
-        m_Inventory.Item.m_bullets--;
+
+        CPhysicsSettings &Physics = gBehaviorEngine.getPhysicsSettings();
+        if(!Physics.player.infiniteAmmo)
+            m_Inventory.Item.m_bullets--;
+
         m_Inventory.addAchievementTask("I'm not Duke!", 1);
     }
     else

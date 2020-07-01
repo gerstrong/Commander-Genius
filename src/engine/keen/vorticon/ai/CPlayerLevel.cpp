@@ -755,7 +755,9 @@ void CPlayer::raygun()
 				// In case the player hasn't any direction assigned yet, because he can only shoot in those two directions
 				if(pDir.x != LEFT) pDir.x = RIGHT;
 
-				inventory.charges--;
+                CPhysicsSettings &Physics = gBehaviorEngine.getPhysicsSettings();
+                if(!Physics.player.infiniteAmmo)
+                    inventory.charges--;
 				pShowDir = pDir;
 				
 				playSound( SOUND_KEEN_FIRE );

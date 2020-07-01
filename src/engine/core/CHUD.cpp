@@ -213,7 +213,11 @@ void CHUD::renderGalaxy()
   if(lives >= 0)
   {
     gGraphics.drawDigits(getRightAlignedString(itoa(score),9), 4, 4, hudBlitsfc );
-    gGraphics.drawDigits(getRightAlignedString(itoa(charges),2),60, 20, hudBlitsfc );
+
+    CPhysicsSettings &Physics = gBehaviorEngine.getPhysicsSettings();
+    if(!Physics.player.infiniteAmmo)
+        gGraphics.drawDigits(getRightAlignedString(itoa(charges),2),60, 20, hudBlitsfc );
+
     gGraphics.drawDigits(getRightAlignedString(itoa(lives),2), 20, 20, hudBlitsfc );
 
     if(gBehaviorEngine.numPlayers() > 1 && mId == CCamera::getLead())
@@ -254,7 +258,9 @@ void CHUD::renderVorticon()
     Font.drawFont(mHUDBlit, getRightAlignedString(itoa(lives),2), 15, 15, false);
 
     // Print the charges
-    Font.drawFont(mHUDBlit, getRightAlignedString(itoa(charges),2), 56, 15, false);
+    CPhysicsSettings &Physics = gBehaviorEngine.getPhysicsSettings();
+    if(!Physics.player.infiniteAmmo)
+        Font.drawFont(mHUDBlit, getRightAlignedString(itoa(charges),2), 56, 15, false);
 
     // Print the score
     Font.drawFont(mHUDBlit, getRightAlignedString(itoa(score),8),8, 2, false );

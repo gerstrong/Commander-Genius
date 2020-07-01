@@ -236,7 +236,7 @@ bool GalaxyEngine::loadResources( const Uint8 flags )
             gLogging.ftextOut("Looking for patches...<br>");
 
             // If there are patches left that must be applied later, do it here!
-            Patcher.postProcess();
+            Patcher.postProcess();            
 
             gLogging.ftextOut("Done loading the resources...<br>");
 
@@ -303,14 +303,27 @@ bool GalaxyEngine::loadResources( const Uint8 flags )
 
         int handle()
         {
+            int ok = 0;
+
             if(gKeenFiles.exeFile.isPythonScript())
             {
-                return handlePythonFile();
+                ok = handlePythonFile();
             }
             else
             {
-                return handleExeFile();
+                ok = handleExeFile();
             }
+
+            if(ok)
+            {
+                const auto scriptPath =
+                        JoinPaths(gKeenFiles.gameDir, "gameConsts.lua");
+                gBehaviorEngine.
+                        getPhysicsSettings().
+                            loadGameConstantsFromLua(scriptPath);
+            }
+
+            return ok;
         }
     };
 

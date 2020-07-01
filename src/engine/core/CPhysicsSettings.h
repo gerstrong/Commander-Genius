@@ -14,6 +14,8 @@
 #define CPHYSICSSETTINGS_H_
 
 #include <base/TypeDefinitions.h>
+#include <base/GsLua.h>
+#include <string>
 
 class CPhysicsSettings {
 public:
@@ -24,6 +26,8 @@ public:
 	 * 		  and the values change depending on what is read for the mods
 	 */	
 	void loadGameConstants(int episode, byte* data);
+
+    void loadGameConstantsFromLua(const std::string &filename);
 
 	struct playersettings{
 		int maxjumpspeed;
@@ -37,6 +41,7 @@ public:
 
 		// pogo settings
 		int pogoforce_x;
+        bool infiniteAmmo = false;
 	}player;
 
 	struct vorticonsettings{
@@ -65,6 +70,10 @@ public:
 
 	int max_fallspeed;
 	int fallspeed_increase;
+
+private:
+
+    GsLua mLua;
 };
 
 #endif /* CPHYSICSSETTINGS_H_ */

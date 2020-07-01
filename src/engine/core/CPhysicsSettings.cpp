@@ -7,6 +7,7 @@
 
 #include "CPhysicsSettings.h"
 #include <base/GsTimer.h>
+#include <base/GsLogging.h>
 
 CPhysicsSettings::CPhysicsSettings()
 {
@@ -88,4 +89,18 @@ void CPhysicsSettings::loadGameConstants(int episode, byte* data)
 		}
 
 	}
+}
+
+
+void CPhysicsSettings::loadGameConstantsFromLua(const std::string &filename)
+{
+    if(!mLua.loadFile(filename))
+        return;
+
+    gLogging.ftextOut("Loading more game constants from... %s<br>\n", filename.c_str());
+
+    bool infiniteShots = false;
+    mLua.runFunctionRetOneBool("playerInfiniteShots", infiniteShots);
+
+    player.infiniteAmmo = infiniteShots;
 }
