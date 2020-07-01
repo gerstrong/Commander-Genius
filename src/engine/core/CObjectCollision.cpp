@@ -653,16 +653,29 @@ int CSpriteObject::checkSolidR( int x1, int x2, int y1, int y2)
 	if( (x2>>STC) != ((x2>>CSF)<<TILE_S) )
 		return false;
 
-	// Check for right from the object
+    // Check for solid tile on right side of the sprite
 	if(solid)
 	{
+        const auto h=y2-y1;
+        const auto w=x2-x1;
+        const auto tol_x = (gBlockTolerance*w)/h;
+
 		for(int c=y1 ; c<=y2 ; c += COLISION_RES)
 		{
             blocker = TileProperty[mpMap->at(x2>>CSF, c>>CSF)].bleft;
 
+            // TODO: On Keen 1 level there is a spot where you can jump through
+            // one tile. We need to fix that.
+            // Approach: Check a bit more the X-coordinates
             // Start to really test if we blow up the gBlockTolerance
             if(c-y1 > gBlockTolerance)
             {
+                if(blocker)
+                    return blocker;
+            }
+            else
+            {
+                blocker = TileProperty[mpMap->at((x2-tol_x)>>CSF, c>>CSF)].bleft;
                 if(blocker)
                     return blocker;
             }
@@ -686,6 +699,10 @@ int CSpriteObject::checkSolidL( int x1, int x2, int y1, int y2)
     // Check for right side of the tile
 	if(solid)
 	{
+        const auto h=y2-y1;
+        const auto w=x2-x1;
+        const auto tol_x = (gBlockTolerance*w)/h;
+
 		for(int c=y1 ; c<=y2 ; c += COLISION_RES)
 		{
             blocker = TileProperty[mpMap->at(x1>>CSF, c>>CSF)].bright;
@@ -694,6 +711,18 @@ int CSpriteObject::checkSolidL( int x1, int x2, int y1, int y2)
             // Start to really test if we blow up the gBlockTolerance
             if(c-y1 > gBlockTolerance)
             {
+                if(blocker && !slope)
+                {
+                    return blocker;
+                }
+                else if(slope)
+                {
+                    return 0;
+                }
+            }
+            else
+            {
+                blocker = TileProperty[mpMap->at((x1+tol_x)>>CSF, c>>CSF)].bleft;
                 if(blocker && !slope)
                 {
                     return blocker;
