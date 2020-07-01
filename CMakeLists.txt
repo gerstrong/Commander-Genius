@@ -69,7 +69,7 @@ string(REGEX REPLACE "[\r\n]" "" CG_VERSION "${CG_VERSION}")
 # Since shell script get_version is not processed properly on windows, we have to define manually here.
 # TODO: Better system for defining the version
 IF(WIN32)
-  set(CG_VERSION "2.4.5.1")
+  set(CG_VERSION "2.4.5.2")
 endif()
 
 # Generate the README file with the correct version string

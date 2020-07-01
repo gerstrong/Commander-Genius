@@ -15,6 +15,12 @@ if(DISABLE_HOVER)
     ADD_DEFINITIONS(-DDISABLE_HOVER)
 endif()
 
+option(USE_CRASHHANDLER "Enables the Crash Handler" ON)
+if(USE_CRASHHANDLER)
+    ADD_DEFINITIONS(-DUSE_CRASHHANDLER)
+endif()
+
+
 
 if(SDL2)
     OPTION(USE_OPENGL "OpenGL support" No)

@@ -39,11 +39,6 @@ GameMenu(GsRect<float>(0.15f, 0.20f, 0.65f, 0.55f), style )
                 new NumberControl( "FPS", 10, 120, 10, 60,
                                    false, style) );
 
-
-    mpFrameSkip =
-            mpMenuDialog->add( new Switch( "FrameSkip", style ) );
-
-
 #if !defined(EMBEDDED)
 
     mpGameResSelection =
@@ -82,7 +77,6 @@ void CVideoSettings::refresh()
     mpFPSSelection->enable(!mUsersConf.mVSync);
 
     mpFPSSelection->setSelection( iFPS );
-    mpFrameSkip->enable( (iFPS> 0.0) ? true : false );
 
     mpTiltScreenSwitch->enable( mUsersConf.mTiltedScreen );
 
@@ -111,11 +105,6 @@ void CVideoSettings::release()
 
     const auto fpsf = float(mpFPSSelection->getSelection());
     gTimer.setFPS( fpsf );
-
-    if(!mpFrameSkip->isEnabled())
-    {
-        gTimer.setFPS( 0.0 );
-    }
 
     mUsersConf.mHorizBorders = mpHorizBordersSelection->getSelection();
 
