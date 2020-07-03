@@ -667,7 +667,7 @@ bool CEGAGraphicsGalaxy::begin()
 
     byte *dataPtr = reinterpret_cast<byte*>(exefile.getHeaderData());
 
-    if( !exefile.isPythonScript() )
+    if( !exefile.isLuaScript() )
     {
         //if(m_episode == 7) exeheaderlen = HEADERLEN_KDREAMS;
         if(!exefile.readExeImageSize( dataPtr, &exeimglen, &exeheaderlen))
@@ -702,10 +702,10 @@ bool CEGAGraphicsGalaxy::begin()
     }
     else
     {
-        if(exefile.isPythonScript())
+        if(exefile.isLuaScript())
         {
             gLogging << "You need to provide a dictionary file if you "
-                        "are using a python executable";
+                        "are using a lua executable";
             return false;
         }
         else

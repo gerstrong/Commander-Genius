@@ -140,8 +140,6 @@ add_executable (CGeniusExe CGenius.cpp
                 fileio.cpp misc.cpp
                 CRingBuffer.h
                 fileio.h
-                ${CMAKE_CURRENT_SOURCE_DIR}/../changelog.txt
-                ${CMAKE_CURRENT_SOURCE_DIR}/../README.in
                 ${cg_obj_libs})
 
 # Since some RefKeen is used, we also need C99 Standard

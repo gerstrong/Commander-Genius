@@ -476,7 +476,7 @@ bool CMessages::extractGlobalStringsUsingExe()
 }
 
 
-bool CMessages::extractGlobalStringsUsingPython()
+bool CMessages::extractGlobalStringsUsingLua()
 {
     std::map<std::string, std::string> stringMap; // Structure which stores all the extracted string
 

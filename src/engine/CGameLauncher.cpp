@@ -358,7 +358,7 @@ struct ExecutableListFiller
     bool operator() (const std::string& filename) {
         std::string ext = GetFileExtension(filename);
         if ( stringcaseequal(ext, "exe") ||
-             stringcaseequal(ext, "py") )
+             stringcaseequal(ext, "lua") )
         {
             list.insert(stringtolower(filename));
         }
@@ -426,7 +426,7 @@ bool CGameLauncher::scanExecutables(const std::string& path)
             continue;
 
         CExeFile executable;
-        // Load the exe into memory or a python script
+        // Load the exe into memory or a lua script
         if(isLua)
         {
             if(!executable.readMainLuaScript(static_cast<unsigned int>(ep),

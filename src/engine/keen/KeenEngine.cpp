@@ -36,7 +36,7 @@ bool KeenEngine::start()
 
     CExeFile &ExeFile = gKeenFiles.exeFile;
 
-    if(!ExeFile.isPythonScript())
+    if(!ExeFile.isLuaScript())
     {
         version = ExeFile.getEXEVersion();
 
@@ -53,7 +53,7 @@ bool KeenEngine::start()
     }
     else
     {
-        gLogging << "Commander Keen python based executable detected!<br>";
+        gLogging << "Commander Keen Lua based executable detected!<br>";
     }
 
 

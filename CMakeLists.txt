@@ -117,6 +117,8 @@ ENDIF(APPLE)
 # And build Commander Genius on top of that!
 add_subdirectory("src")
 
+add_custom_target(${PROJECT_NAME} SOURCES changelog.txt README.in)
+
 MESSAGE(STATUS "CG_VERSION = ${CG_VERSION}" )
 
 INCLUDE(package.cmake)

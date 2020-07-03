@@ -26,7 +26,7 @@ public:
 	
     bool extractGlobalStringsUsingExe();
 
-    bool extractGlobalStringsUsingPython();
+    bool extractGlobalStringsUsingLua();
 	
 	void setDecodeOffset(const unsigned int off);
 	

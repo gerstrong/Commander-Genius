@@ -37,7 +37,7 @@ CTileLoader::CTileLoader()
 	m_data = Exefile.getRawData();
 	m_offset = 0;
 
-    if(!Exefile.isPythonScript())
+    if(!Exefile.isLuaScript())
     {
         setupOffsetMap();
     }
@@ -102,7 +102,7 @@ bool CTileLoader::load(const size_t NumUnMaskedTiles,
 
     std::vector<byte> tileData;
 
-    if(gKeenFiles.exeFile.isPythonScript())
+    if(gKeenFiles.exeFile.isLuaScript())
     {
         const auto &gameDir = gKeenFiles.gameDir;
 

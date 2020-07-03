@@ -1099,7 +1099,7 @@ void CPlayerWM::startLevel(Uint16 object)
     {
         shipLevel = 18;
 
-        if(!gKeenFiles.exeFile.isPythonScript())
+        if(!gKeenFiles.exeFile.isLuaScript())
         {
             shipLevel = gKeenFiles.exeFile.getRawData()[0x60FD];
         }

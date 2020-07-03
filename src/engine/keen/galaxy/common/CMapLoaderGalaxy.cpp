@@ -433,7 +433,7 @@ void CMapLoaderGalaxy::spawnFoes(CMap &Map)
 		}
 	}
 
-    // Extra Python spawns
+    // Extra Lua spawns
 
 #if USE_PYTHON3
     auto pModule = gPython.loadModule( "extraSpawn", gKeenFiles.gameDir);

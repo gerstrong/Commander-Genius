@@ -44,7 +44,7 @@ byte *getActionBasePtr()
 {
     auto &exeFile = gKeenFiles.exeFile;
 
-    if(exeFile.isPythonScript())
+    if(exeFile.isLuaScript())
     {
         if(actionFormatData.empty())
         {

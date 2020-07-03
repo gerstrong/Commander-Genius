@@ -198,7 +198,7 @@ bool GalaxyEngine::loadResources( const Uint8 flags )
                 CEGAGraphicsGalaxy graphics;
                 if( !graphics.loadData() )
                 {
-                    gLogging.ftextOut("Sorry, this graphics file is invalid! Quitting...\n<br>");
+                    gLogging.ftextOut("Failed to load graphics data! Quitting...\n<br>");
                     gEventManager.add( new GMQuit() );
                     return 0;
                 }
@@ -249,7 +249,7 @@ bool GalaxyEngine::loadResources( const Uint8 flags )
             return 1;
         }
 
-        int handlePythonFile()
+        int handleLuaFile()
         {
             mLoader.setPermilage(50);
 
@@ -261,7 +261,7 @@ bool GalaxyEngine::loadResources( const Uint8 flags )
                 CEGAGraphicsGalaxy graphics;
                 if( !graphics.loadData() )
                 {
-                    gLogging << "Sorry, this graphics file is invalid! Quitting...";
+                    gLogging << "Failed to load graphics data! Quitting...";
                     gEventManager.add( new GMQuit() );
                     return 0;
                 }
@@ -273,7 +273,7 @@ bool GalaxyEngine::loadResources( const Uint8 flags )
             {
                 // load the strings.
                 CMessages Messages(nullptr, episode, false, 0);
-                Messages.extractGlobalStringsUsingPython();
+                Messages.extractGlobalStringsUsingLua();
             }
 
 
@@ -305,9 +305,9 @@ bool GalaxyEngine::loadResources( const Uint8 flags )
         {
             int ok = 0;
 
-            if(gKeenFiles.exeFile.isPythonScript())
+            if(gKeenFiles.exeFile.isLuaScript())
             {
-                ok = handlePythonFile();
+                ok = handleLuaFile();
             }
             else
             {

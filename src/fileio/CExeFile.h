@@ -84,7 +84,7 @@ class CExeFile {
 
     bool loadMusicTrack(RingBuffer<IMFChunkType> &imfData, const int track) const;
 
-    bool isPythonScript() const
+    bool isLuaScript() const
     {   return mIsLuaScript;   }
 
 

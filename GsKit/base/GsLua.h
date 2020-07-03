@@ -12,6 +12,9 @@ public:
 
     bool loadFile(const std::string &fname);
 
+    bool runFunctionRetOneStr(const std::string &fun,
+                              std::string &ret);
+
     void runFunctionRetOneInt(const std::string &fun, int &ret);
 
     void runFunctionRetOneInt(const std::string &fun,
