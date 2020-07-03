@@ -118,6 +118,10 @@ void change_file_date(const char *filename, uLong dosdate, tm_unz tmu_date)
 
   ut.actime=ut.modtime=mktime(&newdate);
   utime(filename,&ut);
+#else
+    (void) filename;
+    (void) dosdate;
+    (void) tmu_date;
 #endif
 #endif
 }
@@ -136,7 +140,7 @@ int createDir(const char* dirname)
     return ret;
 }
 
-int makedir (char *newdir)
+int makedir (const char *newdir)
 {
     char *buffer;
     char *p;
@@ -494,6 +498,7 @@ int do_extract_onefile(unzFile uf,
                        const char* password)
 
 {
+    int overwrite = opt_overwrite;
     //int err = UNZ_OK;
     if (unzLocateFile(uf,filename,CASESENSITIVITY)!=UNZ_OK)
     {
@@ -502,11 +507,15 @@ int do_extract_onefile(unzFile uf,
     }
 
     if (do_extract_currentfile(uf,&opt_extract_without_path,
-                                      &opt_overwrite,
+                                      &overwrite,
                                       password) == UNZ_OK)
+    {
         return 0;
+    }
     else
+    {
         return 1;
+    }
 }
 
 
