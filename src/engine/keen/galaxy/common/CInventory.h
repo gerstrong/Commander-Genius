@@ -17,6 +17,7 @@
 #include "CStatusScreenGalaxy.h"
 #include "fileio/CSaveGameController.h"
 #include "achievements.h"
+#include <base/GsLua.h>
 #include <memory>
 #include <string>
 #include <SDL.h>
@@ -66,6 +67,7 @@ public:
     int mSpriteVar = 0;    
 
 	CHUD m_HUD;
+    GsLua mLua;
 	std::shared_ptr<CStatusScreenGalaxy> mp_StatusScreen;
 
 private:

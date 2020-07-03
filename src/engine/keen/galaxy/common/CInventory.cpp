@@ -11,6 +11,7 @@
 #include "graphics/GsGraphics.h"
 #include <base/video/CVideoDriver.h>
 #include <base/CInput.h>
+#include <base/utils/FindFile.h>
 #include "graphics/effects/CScrollEffect.h"
 
 #include "fileio/KeenFiles.h"
@@ -38,32 +39,19 @@ m_HUD(Item.m_points, Item.m_lifes, Item.m_bullets,
         mp_StatusScreen.reset(new CStatusScreenGalaxy(Item));
 	}
 
-#if USE_PYTHON3
+    const auto fullFName = JoinPaths(gKeenFiles.gameDir, "player.lua");
+    mLua.loadFile(fullFName);
 
-    GsPythonModule module;
-    module.load("constants", gKeenFiles.gameDir);
-
-    if (module)
+    if(mLua)
     {
-        int startBullets = 0;
-        bool ok;
-        ok = module.loadIntegerFunc("getStartWithNumBullets", startBullets);
-        if(ok)
-        {
-             Item.m_bullets = startBullets;
-        }
+        int startBullets = Item.m_bullets;
+        mLua.runFunctionRetOneInt("getStartWithNumBullets", startBullets);
+        Item.m_bullets = startBullets;
 
-        bool usePogo;
-
-        ok = module.loadBooleanFunc("mayUsePogo", usePogo);
-        if(ok)
-        {
-             Item.m_special.mCanPogo = usePogo;
-        }
-
+        bool usePogo = Item.m_special.mCanPogo;
+        mLua.runFunctionRetOneBool("mayUsePogo", usePogo);
+        Item.m_special.mCanPogo = usePogo;
     }
-
-#endif
 	
 	m_HUD.sync();
 }

@@ -20,6 +20,8 @@ public:
 
     void runFunctionRetOneBool(const std::string &fun, bool &ret);
 
+    operator bool() const;
+
 private:
 
     void *mLuaStatePtr = nullptr;

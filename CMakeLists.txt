@@ -45,11 +45,6 @@ endif()
 # Modules path located at GsKit/CMake
 set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${CMAKE_CURRENT_SOURCE_DIR}/GsKit/CMake")
 
-# Use COmpile TIme REducer (deprecated since it became part of cmake)
-#include(GsKit/CMake/cotire.cmake)
-
-option(USE_PYTHON3 "Use Python3 scripts" no)
-
 set (CMAKE_CXX_STANDARD 14)
 
 #------------------------------------------------------------------------------

@@ -277,10 +277,7 @@ Getting the most recent source code:
 Requirements:
 
 Build Tools. Works best with GNU Compiler and Clang
-which supports at least C++14.
-
-CMake 3.12 or later. If you use an older version of CMake you will have to
-disable Python Support (cmake -DUSE_PYTHON3=0).
+which supports at least C++14 and C99.
 
 SDL2, SDL2_Image, SDL2_mixer and SDL2_TTF. There is support for SDL1.2
 but it is getting deprecated and will be removed in future.

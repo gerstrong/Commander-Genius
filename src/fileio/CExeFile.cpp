@@ -204,10 +204,10 @@ bool CExeFile::readData(const unsigned int episode,
 }
 
 
-bool CExeFile::readMainPythonScript(const unsigned int episode,
+bool CExeFile::readMainLuaScript(const unsigned int episode,
                                     const std::string& datadirectory)
 {
-    std::string filename = datadirectory + "/keen" + itoa(episode) + ".py";
+    std::string filename = datadirectory + "/keen" + itoa(episode) + ".lua";
 
     std::ifstream File;
     OpenGameFileR(File, filename, std::ios::binary);
@@ -229,16 +229,16 @@ bool CExeFile::readMainPythonScript(const unsigned int episode,
     auto &keenFiles = gKeenFiles;
     keenFiles.gameDir = localDataDir;
 
-    gLogging << "Python script \"" << filename << "\" detected!";
+    gLogging << "Lua script \"" << filename << "\" detected!";
 
-    mIsPythonScript = true;
+    mIsLuaScript = true;
 
     return true;
 }
 
 bool CExeFile::Supported()
 {
-    if(mIsPythonScript) return true;
+    if(mIsLuaScript) return true;
 
     if( m_supportmap.find(m_datasize) ==
             m_supportmap.end())

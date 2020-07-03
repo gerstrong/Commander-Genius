@@ -36,30 +36,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror=cast-align")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Werror=cast-align")
 
-# Use python3 for AI scripting and more!
-# Use python3 for AI scripting and more!
-IF(USE_PYTHON3)
-
-    if(${CMAKE_VERSION} VERSION_LESS "3.12.0")
-        FIND_PACKAGE(PythonLibs REQUIRED)
-    else()
-        # Look for Python (Version 3.0 or later is required)
-        FIND_PACKAGE(Python3 COMPONENTS Interpreter Development)
-        if(Python3_FOUND)
-            ADD_DEFINITIONS(-DUSE_PYTHON3=1)
-            INCLUDE_DIRECTORIES(${Python3_INCLUDE_DIRS})
-            LINK_LIBRARIES(${Python3_LIBRARIES})
-            message(STATUS "Python3_LIBRARIES = ${Python3_LIBRARIES}")
-            message(STATUS "Python3_INCLUDE_DIRS = ${Python3_INCLUDE_DIRS}")
-        else()
-            message(FATAL_ERROR " Python3 not found!")
-        endif()
-    endif()
-
-ENDIF()
-
-
-# main includes
+# Main includes
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
 INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/GsKit)
 

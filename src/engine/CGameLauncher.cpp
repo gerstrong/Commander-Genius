@@ -384,7 +384,7 @@ bool CGameLauncher::scanExecutables(const std::string& path)
         gLogging.ftextOut("Scanning %s \n<br>", curFname.c_str() );
 
         int ep = -1;
-        bool isPy = false;
+        bool isLua = false;
 
         // Episode 1-6 and 7 stands for Keen Dreams
         if(curFname.find("kdreams") != curFname.npos)
@@ -406,11 +406,11 @@ bool CGameLauncher::scanExecutables(const std::string& path)
                 break;
             }
 
-            keenName = "keen" + itoa(i) + ".py";
+            keenName = "keen" + itoa(i) + ".lua";
             if(curFname.find(keenName) != curFname.npos)
             {
                 ep = i;
-                isPy = true;
+                isLua = true;
                 break;
             }
 
@@ -427,9 +427,9 @@ bool CGameLauncher::scanExecutables(const std::string& path)
 
         CExeFile executable;
         // Load the exe into memory or a python script
-        if(isPy)
+        if(isLua)
         {
-            if(!executable.readMainPythonScript(static_cast<unsigned int>(ep),
+            if(!executable.readMainLuaScript(static_cast<unsigned int>(ep),
                                                 path))
                 continue;
         }
@@ -872,7 +872,7 @@ void CGameLauncher::ponderPatchDialog()
             {
                ok = true;
             }
-            else if(gKeenFiles.exeFile.readMainPythonScript(episode, DataDirectory))
+            else if(gKeenFiles.exeFile.readMainLuaScript(episode, DataDirectory))
             {
                ok = true;
             }

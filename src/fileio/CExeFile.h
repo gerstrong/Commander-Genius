@@ -58,7 +58,7 @@ class CExeFile {
      * @param datadirectory path where the data is located
      * @return if everything went well true, otherwise false
      */
-    bool readMainPythonScript(const unsigned int episode,
+    bool readMainLuaScript(const unsigned int episode,
                               const std::string& datadirectory);
 
     /**
@@ -85,7 +85,7 @@ class CExeFile {
     bool loadMusicTrack(RingBuffer<IMFChunkType> &imfData, const int track) const;
 
     bool isPythonScript() const
-    {   return mIsPythonScript;   }
+    {   return mIsLuaScript;   }
 
 
 
@@ -131,7 +131,7 @@ private:
 	size_t m_datasize;
 	size_t m_headersize;
 	int m_episode;
-    bool mIsPythonScript = false;
+    bool mIsLuaScript = false;
 	bool m_demo;
 	unsigned int m_crc;
 	std::vector<byte> mData;

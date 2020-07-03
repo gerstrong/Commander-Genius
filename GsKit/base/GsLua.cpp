@@ -211,3 +211,8 @@ void GsLua::runFunctionRetOneBool(const std::string &fun, bool &ret)
     /* Remove the return value from the stack. */
     lua_remove(L, -1);
 }
+
+GsLua::operator bool() const
+{
+    return (mLuaStatePtr != nullptr);
+}
