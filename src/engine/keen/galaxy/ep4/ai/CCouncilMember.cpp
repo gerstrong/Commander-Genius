@@ -226,8 +226,8 @@ void CCouncilMember::getTouchedBy(CSpriteObject &theObject)
                             *gGraphics.getBitmapFromStr(sprVar, "KEENTHUMBSUP"),
                             RIGHT,false, nullptr) );
 
-            gEventManager.add(new OpenComputerWrist(4));
             gEventManager.add(new EventEndGamePlay());
+            gEventManager.add(new OpenComputerWrist(4, 3));
 		}
 		else
 		{
