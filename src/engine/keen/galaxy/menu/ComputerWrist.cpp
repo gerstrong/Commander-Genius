@@ -3,6 +3,7 @@
 #include <base/utils/StringUtils.h>
 #include <graphics/GsGraphics.h>
 #include <graphics/effects/CColorMerge.h>
+#include <sdl/audio/music/CMusic.h>
 #include <engine/core/CBehaviorEngine.h>
 
 #include <sstream>
@@ -80,7 +81,7 @@ ComputerWrist::ComputerWrist(const int ep) :
 
     }
 
-    // NOTE: The index is always at six
+    // NOTE: The index is always six here
     mBmpIndex = 6;
 
     auto &font = gGraphics.getFontLegacy(mFontId);
@@ -120,10 +121,33 @@ ComputerWrist::ComputerWrist(const int ep, const int section) :
     mNumPagesOfThisSection = gGameText.getNumPages(mSection);
 }
 
+ComputerWrist::~ComputerWrist()
+{
+    const auto curStr = mPreviousSong;
 
+    gMusicPlayer.stop();
+    if( gMusicPlayer.load(curStr) )
+        gMusicPlayer.play();
+}
+
+void ComputerWrist::playSong(const int song)
+{
+    auto &musPlayer = gMusicPlayer;
+    if(song >= 0)
+    {
+        const auto curStr = musPlayer.getCurTrackPlaying();
+        mPreviousSong = curStr;
+
+        musPlayer.stop();
+        if( musPlayer.loadTrack(song) )
+           musPlayer.play();
+    }
+}
 
 void ComputerWrist::ponderPage(const float deltaT)
 {
+    (void) deltaT;
+
     if( gInput.getPressedCommand(IC_BACK) )
     {
         mSection = -1;

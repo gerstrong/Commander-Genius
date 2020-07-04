@@ -24,7 +24,7 @@ bool CMusic::loadTrack(const int track)
 
     if(track < 0)
     {
-        gLogging.textOut("The requested Track-Number does not make sense. Music will not be loaded here!");
+        gLogging.textOut("The requested Track-Number does not make sense. Music will not be loaded.");
         return false;
     }
 
@@ -34,6 +34,7 @@ bool CMusic::loadTrack(const int track)
     if(loadIMFTrack(track))
     {
         gAudio.resumeAudio();
+        mCurrentTrack = itoa(track);
         return true;
     }
 
@@ -90,19 +91,49 @@ bool CMusic::load(const std::string &musicfile)
             }
 
         }
+        else if (extension == "")// Maybe the given file is an integer that describes a track number
+        {
+            int songNum = strtol (musicfile.c_str(),NULL,0);
 
+            if(songNum>0)
+            {
+                return loadTrack(songNum);
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            gLogging.ftextOut(FONTCOLORS::PURPLE,"Music Manager: Unknown Track %s", musicfile.c_str());
+            return false;
+        }
 
+        mCurrentTrack = musicfile;
 		return true;
 
 	}
 	else
 	{
-		gLogging.textOut(FONTCOLORS::PURPLE,"Music Manager: I would like to open the music for you. But your Soundcard seems to be disabled!!<br>");
+        gLogging.textOut(FONTCOLORS::PURPLE,"Music Manager: I would like to open the music for you, but your Soundcard seems to be disabled!!<br>");
 	}
 
-    gLogging.textOut(FONTCOLORS::PURPLE,"Music Manager: Got a tune to play");
+    gLogging.ftextOut(FONTCOLORS::PURPLE,"Music Manager: Problems with sudio format of device");
 
 	return false;
+}
+
+std::string CMusic::getCurTrackPlaying()
+{
+    if(playing() || paused())
+    {
+        return mCurrentTrack;
+    }
+    else
+    {
+        return "-1";
+    }
 }
 
 void CMusic::reload()
@@ -118,7 +149,7 @@ void CMusic::reload()
 
 void CMusic::play()
 {
-    Mix_HaltMusic();
+    Mix_HaltMusic(); // TODO: This is strange. Shouldn't it after if mpMixMusic
 
     if(!mpMixMusic)
     {
@@ -197,7 +228,8 @@ bool CMusic::LoadfromSonglist(const std::string &gamepath, const int &level)
     			if( load(filename) )
                 {
     				play();
-                }
+                    mCurrentTrack = filename;
+                }                
 
     			return true;
     		}
@@ -235,6 +267,7 @@ bool CMusic::LoadfromMusicTable(const std::string &gamepath,
             if( load(filename) )
             {
                 play();
+                mCurrentTrack = filename;
                 return true;
             }
             else

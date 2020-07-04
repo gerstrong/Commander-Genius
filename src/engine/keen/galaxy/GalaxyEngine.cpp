@@ -124,6 +124,11 @@ void GalaxyEngine::ponder(const float deltaT)
             gEventManager.add( new CloseAllMenusEvent() );
 
             mpComputerWrist.reset(new ComputerWrist(ep));
+
+            if(ep == 5)
+            {
+                mpComputerWrist->playSong(8);
+            }
         }
     }
 
@@ -469,6 +474,7 @@ void GalaxyEngine::pumpEvent(const CEvent *evPtr)
         const int ep = ExeFile.getEpisode();
 
         mpComputerWrist.reset(new ComputerWrist(ep, ocw->mSection));
+        mpComputerWrist->playSong(ocw->mPlaySong);
     }
 
 }
