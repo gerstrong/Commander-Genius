@@ -40,7 +40,7 @@ if(GIT_FOUND)
     execute_process(COMMAND ${GIT_FOUND} -C ${CMAKE_SOURCE_DIR} rev-parse HEAD
                     OUTPUT_VARIABLE GIT_SHA
                     OUTPUT_STRIP_TRAILING_WHITESPACE)
-    execute_process(COMMAND ${GIT_FOUND} -C ${CMAKE_SOURCE_DIR} branch --show-current
+    execute_process(COMMAND ${GIT_FOUND} -C ${CMAKE_SOURCE_DIR} rev-parse --abbrev-ref HEAD
                     OUTPUT_VARIABLE GIT_BRANCH
                     OUTPUT_STRIP_TRAILING_WHITESPACE)
     ADD_DEFINITIONS(-DGIT_SHA=${GIT_SHA})
