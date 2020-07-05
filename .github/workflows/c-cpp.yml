@@ -33,7 +33,3 @@ jobs:
       run: cmake ./ -DUSE_BOOST=0
     - name: make
       run: make
-    - name: make check
-      run: make check
-    - name: make distcheck
-      run: make distcheck
