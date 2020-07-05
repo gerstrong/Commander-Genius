@@ -470,6 +470,7 @@ void GalaxyEngine::pumpEvent(const CEvent *evPtr)
 
     else if( const auto *ocw = dynamic_cast<const OpenComputerWrist*>(evPtr) )
     {
+        gInput.flushAll();
         CExeFile &ExeFile = gKeenFiles.exeFile;
         const int ep = ExeFile.getEpisode();
 
