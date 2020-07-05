@@ -9,7 +9,7 @@ SET(CGENIUS_DESKTOP_DIR "share/applications/")
 # For Linux it will create Debian Packages and replace the manual script I have been using in the past.
 
 ## Generation of Packages.
-# Generation of Packages. Common stuff and Basic variables
+# Common stuff and Basic variables
 SET(CPACK_PACKAGE_NAME "CGenius")
 SET(CPACK_PACKAGE_DESCRIPTION_SUMMARY "The ultimate Commander Keen interpreter")
 SET(CPACK_PACKAGE_DESCRIPTION "Commander-Genius aka CloneKeenPlus is an engine which interprets Commander Keen 1-6 (Vorticons and Galaxy Series).\n .\n As fans and developers we try to implement new features, improve the gameplay and give the feeling, you are playing the original game.\n .\n Obviously you need the game data of the games to play it.\n Commander Keen 1 and 4 come included in this package.\n Episode 2, 3, 5 and 6 are registered versions which can be purchased by 3D Realms or Apogee, or bought by someone else.\n If you still have the old games of the registered version, then give it a try. You will be surprised, how well they will look!\n")
@@ -24,15 +24,14 @@ IF(WIN32)
 	SET(APPDIR CGenius)
 	SET(CPACK_PACKAGE_INSTALL_DIRECTORY ${APPDIR})
 	SET(CPACK_GENERATOR "ZIP;NSIS")
+        FILE(GLOB CACHE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/vfsroot/cache/*.png")
+        INSTALL(FILES ${CACHE_FILES} DESTINATION ${DOCDIR}/cache)
 ELSE(WIN32)
 	SET(CPACK_PACKAGE_INSTALL_DIRECTORY "/usr/games")
-	SET(CPACK_GENERATOR "TGZ")
-	INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/share/cgenius.desktop DESTINATION ${CGENIUS_DESKTOP_DIR})
+	SET(CPACK_GENERATOR "TGZ")	
 ENDIF(WIN32)
 
-FILE(GLOB CACHE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/vfsroot/cache/*.png")
-INSTALL(FILES ${CACHE_FILES} DESTINATION ${DOCDIR}/cache)
-
+INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/share/cgenius.desktop DESTINATION ${CGENIUS_DESKTOP_DIR})
 
 
 IF(WIN32)
