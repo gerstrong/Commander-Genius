@@ -206,7 +206,16 @@ public:
 	bool getPressedCommand(int command);
 	bool getPressedCommand(int player, int command);
 	bool getPressedAnyCommand(const int player);
-	bool getPressedAnyButtonCommand(const int player);
+
+    /**
+     * @brief getPressedAnyButtonCommand Tells whether one of the player pressed
+     *                                   an action button (Jump, Fire, Pogo, Status, Start)
+     * @param player Player Idx
+     * @return true if the player pressed it, otherwise false
+     */
+	bool getPressedAnyButtonCommand(const int player);    
+    bool getPressedAnyButtonCommand();
+
     bool getExitEvent()
     {  return m_exit;  }
 

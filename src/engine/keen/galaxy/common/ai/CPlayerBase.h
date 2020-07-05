@@ -192,6 +192,14 @@ namespace galaxy
     void processLevelMiscFlagsCheck();
 
     /**
+         * \brief		This function will try to spawn a shot. If Keen has bullets it will spawn
+         * 				otherwise, the empty clicking sound is heard
+         * \param	pos	Coordinates where the shot should be spawned
+         */
+    void tryToShoot( const GsVec2D<int> &pos, const int xDir, const int yDir );
+
+
+    /**
          * Produces the walking sound. To produce that sound correctly, it uses a special timer.
          * That's the reason we need that aiding function
          */
@@ -269,6 +277,9 @@ namespace galaxy
     static const int mEpisodeActionNumMap[3][NUM_KEEN_ACTIONS];
 
     GsVec2D<int> mTarget;
+
+    int m_fire_recharge_time = 0;
+    bool mReleasedShot = false;
 };
 
 }

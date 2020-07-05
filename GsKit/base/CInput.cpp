@@ -1635,6 +1635,15 @@ bool CInput::getPressedAnyButtonCommand(const int player)
 	return false;
 }
 
+bool CInput::getPressedAnyButtonCommand()
+{
+    bool retval = false;
+    for(int player=0 ; player<NUM_INPUTS ; player++)
+        retval |= getPressedAnyButtonCommand(player);
+    return retval;
+}
+
+
 /**
  * \brief	This will forget every command that was triggered
  */

@@ -8,6 +8,7 @@
 #include "CPlayerBase.h"
 #include "CItemEffect.h"
 #include "CSpriteItem.h"
+#include "CBullet.h"
 #include <base/CInput.h>
 #include <base/video/CVideoDriver.h>
 #include "sdl/audio/Audio.h"
@@ -519,6 +520,23 @@ void CPlayerBase::processLevelMiscFlagsCheck()
 		}
 	}
 }
+
+void CPlayerBase::tryToShoot( const GsVec2D<int> &pos, const int xDir, const int yDir )
+{
+    if(m_Inventory.Item.m_bullets > 0)
+    {
+        spawnObj(new CBullet(mpMap, 0, pos.x, pos.y, xDir, yDir, mSprVar));
+        m_Inventory.Item.m_bullets--;
+        m_Inventory.addAchievementTask("I'm not Duke!", 1);
+    }
+    else
+    {
+        playSound( SOUND_GUN_CLICK );
+    }
+
+    mReleasedShot = true;
+}
+
 
 // This new function will setup the sprite based on the Action format
 bool CPlayerBase::processActionRoutine()

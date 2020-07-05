@@ -1356,10 +1356,20 @@ bool CEGAGraphicsGalaxy::readTilemaps( const size_t NumTiles, size_t pbasetilesi
     SDL_UnlockSurface(sfc);
 
     /// Let's see if there is a high colour tilemap we can load instead
-    if(pbasetilesize == 4) // Only valid for the 16x16 tiles tilemap!
+    if(pbasetilesize == 4 || pbasetilesize == 3) // Only valid for the 16x16 tiles tilemap!
     {
         const int  episode = gKeenFiles.exeFile.getEpisode();
-        const std::string tilePath = "gfx/" + itoa(episode) + "TIL0000";
+        const std::string tilePathPrefix = "gfx/" + itoa(episode) + "TIL";
+        std::string tilePath = tilePathPrefix;
+
+        if(pbasetilesize==4)
+        {
+            tilePath += "0000";
+        }
+        else
+        {
+            tilePath += "0002";
+        }
 
         Tilemap.loadHiresTile(tilePath, gamedir);
     }
@@ -1419,10 +1429,20 @@ bool CEGAGraphicsGalaxy::readMaskedTilemaps( size_t NumTiles, size_t pbasetilesi
     SDL_UnlockSurface(sfc);
 
     /// Let's see if there is a high colour tilemap we can load instead
-    if(pbasetilesize == 4) // Only valid for the 16x16 tiles tilemap!
+    if(pbasetilesize == 4 || pbasetilesize == 3) // Only valid for the 16x16 tiles tilemap!
     {
         const int  episode = gKeenFiles.exeFile.getEpisode();
-        const std::string tilePath = "gfx/" + itoa(episode) + "TIL0001";
+        const std::string tilePathPrefix = "gfx/" + itoa(episode) + "TIL";
+        std::string tilePath = tilePathPrefix;
+
+        if(pbasetilesize==4)
+        {
+            tilePath += "0001";
+        }
+        else
+        {
+            tilePath += "0003";
+        }
 
         // Looking for high color pictures
         if( Tilemap.loadHiresTile(tilePath, gamedir) )

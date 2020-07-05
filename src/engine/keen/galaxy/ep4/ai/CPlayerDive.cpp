@@ -14,6 +14,9 @@ namespace galaxy {
 
 const int A_KEENSWIM_MOVE = 0;
 
+static const bool allowKeenShootUnderWater = false;
+
+const int FIRE_RECHARGE_TIME = 5;
 
 CPlayerDive::CPlayerDive(CMap *pmap,
 		const Uint16 foeID,
@@ -66,6 +69,8 @@ const int MAXMOVESPEED = 20;
 const int MOVESPEED = 30;
 const int WATERFALLSPEED = 10;
 const int BREATH_TIME = 60;
+
+
 
 void CPlayerDive::processDiving()
 {
@@ -156,6 +161,28 @@ void CPlayerDive::processDiving()
 	}
 	else
 		m_breathtimer++;
+
+
+    if(allowKeenShootUnderWater)
+    {
+        if( mPlaycontrol[PA_FIRE] && !m_fire_recharge_time )
+        {
+            const GsVec2D<int> newVec(getXPosition() + ((xDirection < 0) ?
+                                                       -(16<<STC) : (16<<STC)),
+                                      getYPosition()+(4<<STC));
+            tryToShoot(newVec, xDirection, 0);
+            m_fire_recharge_time = FIRE_RECHARGE_TIME;
+        }
+
+        if(m_fire_recharge_time)
+        {
+            const auto autofire = gInput.AutoGun(mPlayerIdx);
+            if(!mPlaycontrol[PA_FIRE] || autofire)
+            {
+                m_fire_recharge_time--;
+            }
+        }
+    }
 
     processCamera();
 }
