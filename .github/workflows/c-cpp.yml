@@ -13,6 +13,18 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: Install prerequisites
+      run: |
+           sudo apt-get -y update
+           sudo apt-get -y install \
+                   build-essential \
+                   libgl1-mesa-dev \
+                   libcurl4-openssl-dev \
+                   zlib1g-dev \
+                   libsdl2-dev \
+                   libsdl2-image-dev \
+                   libsdl2-mixer-dev \
+                   libsdl2-ttf-dev 
     - name: create build-dir
       run: mkdir CGenius-Build
     - name: cd build-dir
