@@ -1,4 +1,4 @@
-name: C/C++ CI
+name: Ubuntu_Deb
 
 on:
   push:
