@@ -1,0 +1,47 @@
+name: C/C++ CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install prerequisites
+      run: |
+           sudo apt-get -y update
+           sudo apt-get -y install \
+                   build-essential \
+                   libgl1-mesa-dev \
+                   libcurl4-openssl-dev \
+                   zlib1g-dev \
+                   libsdl2-dev \
+                   libsdl2-image-dev \
+                   libsdl2-mixer-dev \
+                   libsdl2-ttf-dev 
+    - name: create build-dir
+      run: mkdir CGenius-Build
+    - name: cd build-dir
+      run: cd CGenius-Build
+    - name: CMake     
+      run: cmake ./ -DUSE_BOOST=0 -DCREATE_DEBS=1
+    - name: make
+      run: make
+    - name: sudo make package
+      run: sudo make package
+    - name: Upload Release Asset
+      id: upload-release-asset 
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          asset_path: ./CGenius.zip
+          asset_name: CGenius.zip
+          asset_content_type: application/zip
