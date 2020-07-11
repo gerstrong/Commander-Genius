@@ -181,7 +181,7 @@ void CShikadiMine::processChangeDir()
   bool updateDir = false;
 
   // Look at the Player coords and define a direction
-  if(getProbability(500))
+  if(getProbability(600))
   {
     if(xDirection != mKeenAlignmentX)
     {
@@ -309,7 +309,7 @@ void CShikadiMine::processDetonate()
   }
 }
 
-static const int CSF_DISTANCE_TO_EXPLODE = 4<<CSF;
+static const int CSF_DISTANCE_TO_EXPLODE = 2<<CSF;
 
 bool CShikadiMine::isNearby(CSpriteObject &theObject)
 {
