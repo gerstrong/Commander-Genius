@@ -160,7 +160,7 @@ endif(USE_SDL2)
 
 # Add executable Commander Genius
 add_executable (CGeniusExe CGenius.cpp
-                fileio.cpp misc.cpp
+                fileio.cpp misc.cpp switch.c
                 CRingBuffer.h
                 fileio.h
                 ${CMAKE_CURRENT_SOURCE_DIR}/../changelog.txt

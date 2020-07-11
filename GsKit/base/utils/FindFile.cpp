@@ -493,6 +493,9 @@ void InitBaseSearchPaths()
 	AddToFileList(&basesearchpaths, "${HOME}/Commander Genius");
 	AddToFileList(&basesearchpaths, ".");
 	AddToFileList(&basesearchpaths, "${BIN}");
+#elif defined(__SWITCH__)
+	AddToFileList(&basesearchpaths, "/switch/CommanderGenius");
+	AddToFileList(&basesearchpaths, "romfs:/");
 #else // all other systems (Linux, *BSD, OS/2, ...)
 #ifdef ANDROID
 	//AddToFileList(&basesearchpaths, "${HOME}/SaveData");
@@ -799,6 +802,9 @@ std::string GetHomeDir()
 #ifndef WIN32
 #if defined(CAANOO) || defined(WIZ) || defined(GP2X) || defined(DINGOO) || defined(PANDORA)
 	char* home = getenv("PWD");
+#elif defined(__SWITCH__)
+	const char* home = "";
+	return home;
 #else
 	char* home = getenv("HOME");
 #endif
@@ -959,6 +965,8 @@ std::string GetAbsolutePath(const std::string &path) {
 		return SystemNativeToUtf8(buf);
 	else  // Failed
 		return path;
+#elif defined(__SWITCH__)
+	return "";
 #else
 	std::string exactpath;
 	if(GetExactFileName(path, exactpath)) {

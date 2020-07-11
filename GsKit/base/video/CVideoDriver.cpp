@@ -175,6 +175,9 @@ bool CVideoDriver::initResolutionList()
 #if defined(ANDROID)
 	resolution.x = 320;
 	resolution.y = 200;
+#elif defined(__SWITCH__)
+	resolution.x = 1280;
+	resolution.y = 720;
 #endif
 
     GsVec2D<Uint16> desktopResolution(resolution);
