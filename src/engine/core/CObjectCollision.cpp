@@ -657,6 +657,10 @@ int CSpriteObject::checkSolidR( int x1, int x2, int y1, int y2)
 	if(solid)
 	{
         const auto h=y2-y1;
+
+        if(h==0)
+            return 0;
+
         const auto w=x2-x1;
         const auto tol_x = (gBlockTolerance*w)/h;
 
@@ -700,6 +704,10 @@ int CSpriteObject::checkSolidL( int x1, int x2, int y1, int y2)
 	if(solid)
 	{
         const auto h=y2-y1;
+
+        if(h==0)
+            return 0;
+
         const auto w=x2-x1;
         const auto tol_x = (gBlockTolerance*w)/h;
 
