@@ -144,30 +144,53 @@ bool CPlayerLevel::verifyforPole()
 
     const auto firstX = l_x_l-(1<<CSF);
     const auto lastX  = l_x_r+(1<<CSF);
+    bool foundPole = false;
+    auto xTarget = firstX;
+
     for(int x = firstX ; x<=lastX ; x+=(1<<CSF))
-    {
+    {       
         if( ( yDir < 0 && hitdetectWithTileProperty(1, x, l_y_up)  ) ||
             ( yDir > 0 && hitdetectWithTileProperty(1, x, l_y_down)  ) )
         {
-            cancelAllMoveTasks();
+            // first pole found
+            if(!foundPole)
+            {
+                xTarget = x;
+                foundPole = true;
+            }
+            else // Is there another poler closer to the player?
+            {
+                const auto xdiffTarget = std::abs(getXMidPos()-xTarget);
+                const auto xdiffNewTarget = std::abs(getXMidPos()-x);
 
-            // Move to the proper X Coordinates, so Keen really grabs it!
-            const auto polePosX = (x>>CSF)<<CSF;
-            const auto centeredX = polePosX-((1<<CSF)/2);
-            moveTo(GsVec2D<int>(centeredX, getYPosition()));
-
-            xinertia = 0;
-
-            //next.x = 0;
-            //next.y = 64*yDir;
-
-            // Set Keen in climb mode
-            setAction(A_KEEN_POLE);
-            mIsClimbing = true;
-            mClipped = false;
-            solid = false;
-            return true;
+                if(xdiffNewTarget<xdiffTarget)
+                {
+                   xTarget = x;
+                }
+            }
         }
+    }
+
+    if(foundPole)
+    {
+        cancelAllMoveTasks();
+
+        // Move to the proper X Coordinates, so Keen really grabs it!
+        const auto polePosX = (xTarget>>CSF)<<CSF;
+        const auto centeredX = polePosX-((1<<CSF)/2);
+        moveTo(GsVec2D<int>(centeredX, getYPosition()));
+
+        xinertia = 0;
+
+        //next.x = 0;
+        //next.y = 64*yDir;
+
+        // Set Keen in climb mode
+        setAction(A_KEEN_POLE);
+        mIsClimbing = true;
+        mClipped = false;
+        solid = false;
+        return true;
     }
 
 	return false;
