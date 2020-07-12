@@ -730,7 +730,7 @@ int CSpriteObject::checkSolidL( int x1, int x2, int y1, int y2)
             }
             else
             {
-                blocker = TileProperty[mpMap->at((x1+tol_x)>>CSF, c>>CSF)].bleft;
+                blocker = TileProperty[mpMap->at((x1+tol_x)>>CSF, c>>CSF)].bright;
                 if(blocker && !slope)
                 {
                     return blocker;
