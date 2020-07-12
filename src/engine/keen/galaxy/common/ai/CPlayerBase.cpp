@@ -811,6 +811,7 @@ void CPlayerBase::processDead()
         respawnImportantItem(4);
 
     m_Inventory.Item.m_gem.clear();
+    m_Inventory.Item.m_keycards = 0;
 }
 
 
