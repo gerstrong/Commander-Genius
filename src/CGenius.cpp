@@ -27,6 +27,7 @@
  Commander Genius   2010-2012   Lemm, Commander Spleen, Zear, Pelya and FCTW
  Commander Genius   2013-2015   Hagel
  Commander Genius   2018        Zilem
+ Commander Genius   2020        Elias Oenal
  */
 
 #include "../version.h"
@@ -36,6 +37,13 @@
 
 #ifdef ANDROID
 #include <SDL_main.h>
+#endif
+
+#ifdef __SWITCH__
+extern "C" {
+void switch_init();
+void switch_exit();
+}
 #endif
 
 #include <base/utils/FindFile.h>
@@ -70,6 +78,9 @@ int main(int argc, char *argv[])
 #endif
 #endif
 
+#if __SWITCH__
+    switch_init();
+#endif
 
 
     const std::string appName = "Commander Genius";
@@ -198,6 +209,9 @@ int main(int argc, char *argv[])
 	gLogging.textOut(FONTCOLORS::GREEN,"Tearing down thread pool...\n");
     UnInitThreadPool();
 
+#if __SWITCH__
+    switch_exit();
+#endif
     CrashHandler::uninit();
     return 0;
 }

@@ -77,6 +77,47 @@ void CInput::resetControls(const int player)
         input.active = false;
     }
 
+#ifdef __SWITCH__
+	// Switch gamepad mapping using two joycons
+	curInput[IC_LEFT].joyeventtype = ETYPE_JOYBUTTON;
+	curInput[IC_LEFT].joybutton = 12;
+	curInput[IC_LEFT].which = 0;
+	curInput[IC_UP].joyeventtype = ETYPE_JOYBUTTON;
+	curInput[IC_UP].joybutton = 13;
+	curInput[IC_UP].which = 0;
+	curInput[IC_RIGHT].joyeventtype = ETYPE_JOYBUTTON;
+	curInput[IC_RIGHT].joybutton = 14;
+	curInput[IC_RIGHT].which = 0;
+	curInput[IC_DOWN].joyeventtype = ETYPE_JOYBUTTON;
+	curInput[IC_DOWN].joybutton = 15;
+	curInput[IC_DOWN].which = 0;
+
+	curInput[IC_JUMP].joyeventtype = ETYPE_JOYBUTTON;
+	curInput[IC_JUMP].joybutton = 0;
+	curInput[IC_JUMP].which = 0;
+	curInput[IC_POGO].joyeventtype = ETYPE_JOYBUTTON;
+	curInput[IC_POGO].joybutton = 2;
+	curInput[IC_POGO].which = 0;
+	curInput[IC_FIRE].joyeventtype = ETYPE_JOYBUTTON;
+	curInput[IC_FIRE].joybutton = 3;
+	curInput[IC_FIRE].which = 0;
+	curInput[IC_RUN].joyeventtype = ETYPE_JOYBUTTON;
+	curInput[IC_RUN].joybutton = 1;
+	curInput[IC_RUN].which = 0;
+
+	curInput[IC_STATUS].joyeventtype = ETYPE_JOYBUTTON;
+	curInput[IC_STATUS].joybutton = 11;
+	curInput[IC_STATUS].which = 0;
+	curInput[IC_CAMLEAD].joyeventtype = ETYPE_JOYBUTTON;
+	curInput[IC_CAMLEAD].joybutton = 7;
+	curInput[IC_CAMLEAD].which = 0;
+	curInput[IC_HELP].joyeventtype = ETYPE_JOYBUTTON;
+	curInput[IC_HELP].joybutton = 6;
+	curInput[IC_HELP].which = 0;
+	curInput[IC_BACK].joyeventtype = ETYPE_JOYBUTTON;
+	curInput[IC_BACK].joybutton = 10;
+	curInput[IC_BACK].which = 0;
+#else
 	// These are the default keyboard commands
 
     curInput[IC_LEFT].keysym = SDLK_LEFT;
@@ -142,6 +183,7 @@ void CInput::resetControls(const int player)
     curInput[IC_BACK].joyeventtype = ETYPE_KEYBOARD;
     curInput[IC_BACK].joybutton = 7;
     curInput[IC_BACK].which = 0;
+#endif
 
     setTwoButtonFiring(player, false);
 }
