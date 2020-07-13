@@ -209,6 +209,7 @@ bool CGameLauncher::setupMenu()
                                                "Tulip,\n"
                                                "Albert Zeyer,\n"
                                                "Pelya,\n"
+                                               "Elias Oenal,\n"
                                                "and many CG Contributors\n",
                                                GsRect<float>(0.0f, 0.95f, 1.0f, 0.05f) ) );
 

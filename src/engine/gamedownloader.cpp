@@ -477,6 +477,7 @@ int GameDownloader::handle()
         {
             // Create subdirectory
             CreateRecDir( destDir );
+            errors << "GameDownloader destDir: " << destDir << endl;
 
             const std::string fullZipPath = JoinPaths(fullDownloadPath, gameFileName);
 
