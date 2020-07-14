@@ -183,10 +183,15 @@ target_link_libraries(CGeniusExe sdl_extensions_audio sdl_extensions_sys)
 
 # The Windows Version has an icon in the executable
 IF(WIN32)
-	SET_TARGET_PROPERTIES(CGeniusExe PROPERTIES OUTPUT_NAME "CGenius")
-	ADD_CUSTOM_COMMAND(TARGET CGeniusExe PRE_LINK COMMAND windres ${CMAKE_CURRENT_SOURCE_DIR}/CGLogo.rc ${CMAKE_CURRENT_SOURCE_DIR}/CGLogo.o)
-	SET_TARGET_PROPERTIES(CGeniusExe PROPERTIES LINK_FLAGS "-mwindows ${CMAKE_CURRENT_SOURCE_DIR}/CGLogo.o")
-	MESSAGE(STATUS "Will build with the CG-Icon for Windows." )
+	SET_TARGET_PROPERTIES(CGeniusExe PROPERTIES OUTPUT_NAME "CGenius")        
+        find_program(WINDRES_FOUND ${CMAKE_RC_COMPILER})
+        if(WINDRES_FOUND)
+            ADD_CUSTOM_COMMAND(TARGET CGeniusExe PRE_LINK COMMAND ${WINDRES_FOUND} ${CMAKE_CURRENT_SOURCE_DIR}/CGLogo.rc ${CMAKE_CURRENT_SOURCE_DIR}/CGLogo.o)
+            SET_TARGET_PROPERTIES(CGeniusExe PROPERTIES LINK_FLAGS "-mwindows ${CMAKE_CURRENT_SOURCE_DIR}/CGLogo.o")
+            MESSAGE(STATUS "Will build with the CG icon for Windows." )
+        else()
+            SET_TARGET_PROPERTIES(CGeniusExe PROPERTIES LINK_FLAGS "-mwindows")
+        endif(WINDRES_FOUND)
 ENDIF(WIN32)
 
 
