@@ -201,10 +201,10 @@ if(WIN32)
 	target_link_libraries(CGeniusExe mingw32)
 	target_link_libraries(CGeniusExe user32)
 	target_link_libraries(CGeniusExe gdi32)
-        target_link_libraries(CGeniusExe SDL2Main)
+#        target_link_libraries(CGeniusExe SDL2Main)
 	target_link_libraries(CGeniusExe winmm)
-	target_link_libraries(CGeniusExe Imm32)
-	target_link_libraries(CGeniusExe Version)
+        target_link_libraries(CGeniusExe imm32)
+        target_link_libraries(CGeniusExe version)
 endif(WIN32)
 
 
