@@ -463,6 +463,16 @@ void ComputerWrist::parseGraphics()
                             }
                         }
                         */
+                        // Right hand wrap
+                        for(int j=x+bmpW ; j<lRect.w ; j++)
+                        {
+                            auto curMinPos = mMinPos[i/fontHeight];
+
+                            if(curMinPos < j+spaceWidth)
+                            {
+                                mMinPos[i/fontHeight] = j+spaceWidth+8;
+                            }
+                        }
                     }
                 }
 

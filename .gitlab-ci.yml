@@ -1,0 +1,13 @@
+image: "current_cg"
+
+before_script:
+  - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  - wget https://gitlab.com/Dringgstein/cgenius-crossbuild/-/raw/master/win/buildAll.sh
+
+build:
+  script:
+    - docker run cgenius/crossbuild:win -v$(pwd):/workdir/output ./buildAll.sh 
+  artifacts:
+    paths:
+      - *.zip
+    expire_in: 1 week
