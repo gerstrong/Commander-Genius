@@ -1,4 +1,4 @@
-image: cgenius/cross:win
+image: cgenius/crossbuild:win
 
 build:
   stage: build
