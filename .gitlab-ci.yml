@@ -1,16 +1,15 @@
-# use the official gcc image, based on debian
-# can use verions as well, like gcc:5.2
-# see https://hub.docker.com/_/gcc/
-image: gcc
+image: cgenius/cross:win
 
 build:
   stage: build
   # instead of calling g++ directly you can also use some build toolkit like make
   # install the necessary build tools when needed
   before_script:
-    - apt update && apt -y install make autoconf
+    - mkdir -p /tmp
+    - cd /tmp
+    - cmake -DCMAKE_TOOLCHAIN_FILE=../toolchain-mingw.cmake -DUSE_BOOST=0 -DPULL_DLLS=1 -DAPPEND_SHA=1 -DSDL2_MIXER_INCLUDE_DIR=/usr/x86_64-w64-mingw32/include/SDL2 -DSDL2_INCLUDE_DIR=/usr/x86_64-w64-mingw32/include/SDL2 ../Commander-Genius
   script:
-    - g++ helloworld.cpp -o mybinary
+    - make package
   artifacts:
     paths:
       - mybinary
