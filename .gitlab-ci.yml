@@ -9,5 +9,5 @@ build:
     - docker run cgenius/crossbuild:win -v$(pwd):/workdir/output ./buildAll.sh 
   artifacts:
     paths:
-      - *.zip
+      - output/*.zip
     expire_in: 1 week
