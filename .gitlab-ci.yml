@@ -2,16 +2,19 @@ image: "cgenius/crossbuild:win"
 
 before_script:
   - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - mkdir -p /tmp
-    - cd /tmp
+  - mkdir -p /tmp
+  - cd /tmp
 
 prepare:
+  stage: prepare
   script:
     - cmake -DCMAKE_TOOLCHAIN_FILE=../toolchain-mingw.cmake -DUSE_BOOST=0 -DPULL_DLLS=1 -DAPPEND_SHA=1 -DSDL2_MIXER_INCLUDE_DIR=/usr/x86_64-w64-mingw32/include/SDL2 -DSDL2_INCLUDE_DIR=/usr/x86_64-w64-mingw32/include/SDL2 /builds/Dringgstein/Commander-Genius/
 build:
+  stage: build
   script:
     - make package
 cp_pkg:
+  stage: package
   script:
     - mkdir -p /tmp/output
     - cp *.zip /tmp/output
