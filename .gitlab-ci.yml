@@ -6,7 +6,7 @@ before_script:
   - cd /tmp
 
 prepare:
-  stage: prepare
+  stage: .pre
   script:
     - cmake -DCMAKE_TOOLCHAIN_FILE=../toolchain-mingw.cmake -DUSE_BOOST=0 -DPULL_DLLS=1 -DAPPEND_SHA=1 -DSDL2_MIXER_INCLUDE_DIR=/usr/x86_64-w64-mingw32/include/SDL2 -DSDL2_INCLUDE_DIR=/usr/x86_64-w64-mingw32/include/SDL2 /builds/Dringgstein/Commander-Genius/
 build:
@@ -14,7 +14,7 @@ build:
   script:
     - make package
 cp_pkg:
-  stage: package
+  stage: deploy
   script:
     - mkdir -p /tmp/output
     - cp *.zip /tmp/output
