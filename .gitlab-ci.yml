@@ -2,11 +2,14 @@ image: "cgenius/crossbuild:win"
 
 before_script:
   - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-  - wget https://gitlab.com/Dringgstein/cgenius-crossbuild/-/raw/master/win/buildAll.sh
 
 build:
   script:
-    - docker run cgenius/crossbuild:win -v$(pwd):/workdir/output ./buildAll.sh 
+    - mkdir -p /tmp
+    - cd /tmp
+    - cmake -DCMAKE_TOOLCHAIN_FILE=../toolchain-mingw.cmake -DUSE_BOOST=0 -DPULL_DLLS=1 -DAPPEND_SHA=1 -DSDL2_MIXER_INCLUDE_DIR=/usr/x86_64-w64-mingw32/include/SDL2 -DSDL2_INCLUDE_DIR=/usr/x86_64-w64-mingw32/include/SDL2 /builds/Dringgstein/Commander-Genius/
+    - mkdir -p /tmp/output
+    - cp *.zip /tmp/output
   artifacts:
     paths:
       - output/*.zip
