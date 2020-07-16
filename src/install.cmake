@@ -46,10 +46,32 @@ INSTALL(FILES "${CMAKE_BINARY_DIR}/README"
 
 # This will copy the changelog file. 
 INSTALL(FILES "${CMAKE_SOURCE_DIR}/changelog.txt" 
-	DESTINATION ${DOCDIR})
+	DESTINATION ${DOCDIR})        
 
 # Windows might not have those dlls so we ship them with the packages
 IF(WIN32)
-    INSTALL(DIRECTORY "${CMAKE_SOURCE_DIR}/dlls/" DESTINATION "${APPDIR}")
+
+    option(PULL_DLLS "If your host system is some linux system with specific libraries, enable this. Otherwise it will copy the already provided dlls " OFF)
+
+    if(PULL_DLLS)
+        INSTALL(FILES "${CMAKE_FIND_ROOT_PATH}/bin/libcurl-4.dll" DESTINATION "${APPDIR}")
+        INSTALL(FILES "${CMAKE_FIND_ROOT_PATH}/bin/libSDL2.dll" DESTINATION "${APPDIR}")
+
+        INSTALL(FILES "${CMAKE_FIND_ROOT_PATH}/bin/libSDL2_image.dll" DESTINATION "${APPDIR}")
+        INSTALL(FILES "${CMAKE_FIND_ROOT_PATH}/bin/libjpeg-9.dll" DESTINATION "${APPDIR}")
+        INSTALL(FILES "${CMAKE_FIND_ROOT_PATH}/bin/libpng16-16.dll" DESTINATION "${APPDIR}")
+
+        INSTALL(FILES "${CMAKE_FIND_ROOT_PATH}/bin/libSDL2_mixer.dll" DESTINATION "${APPDIR}")
+        INSTALL(FILES "${CMAKE_FIND_ROOT_PATH}/bin/libmpg123-0.dll" DESTINATION "${APPDIR}")
+        INSTALL(FILES "${CMAKE_FIND_ROOT_PATH}/bin/libogg-0.dll" DESTINATION "${APPDIR}")
+        INSTALL(FILES "${CMAKE_FIND_ROOT_PATH}/bin/libvorbis-0.dll" DESTINATION "${APPDIR}")
+        INSTALL(FILES "${CMAKE_FIND_ROOT_PATH}/bin/libvorbisfile-3.dll" DESTINATION "${APPDIR}")
+
+        INSTALL(FILES "${CMAKE_FIND_ROOT_PATH}/bin/libSDL2_ttf.dll" DESTINATION "${APPDIR}")
+
+        INSTALL(FILES "/usr/lib/gcc/x86_64-w64-mingw32/8.3-win32/libgcc_s_seh-1.dll" DESTINATION "${APPDIR}")
+    else()
+        INSTALL(DIRECTORY "${CMAKE_SOURCE_DIR}/dlls/" DESTINATION "${APPDIR}")
+    endif(PULL_DLLS)
 ENDIF(WIN32)   
 
