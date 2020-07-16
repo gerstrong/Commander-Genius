@@ -37,7 +37,7 @@ endif(CCACHE_FOUND)
 find_program(GIT_FOUND git)
 if(GIT_FOUND)
     message(STATUS "Found Git (${GIT_FOUND}), executable will get SHA and branch used")
-    execute_process(COMMAND ${GIT_FOUND} -C ${CMAKE_SOURCE_DIR} rev-parse HEAD
+    execute_process(COMMAND ${GIT_FOUND} -C ${CMAKE_SOURCE_DIR} rev-parse --short HEAD
                     OUTPUT_VARIABLE GIT_SHA
                     OUTPUT_STRIP_TRAILING_WHITESPACE)
     execute_process(COMMAND ${GIT_FOUND} -C ${CMAKE_SOURCE_DIR} rev-parse --abbrev-ref HEAD

@@ -14,7 +14,13 @@ SET(CPACK_PACKAGE_NAME "CGenius")
 SET(CPACK_PACKAGE_DESCRIPTION_SUMMARY "The ultimate Commander Keen interpreter")
 SET(CPACK_PACKAGE_DESCRIPTION "Commander-Genius aka CloneKeenPlus is an engine which interprets Commander Keen 1-6 (Vorticons and Galaxy Series).\n .\n As fans and developers we try to implement new features, improve the gameplay and give the feeling, you are playing the original game.\n .\n Obviously you need the game data of the games to play it.\n Commander Keen 1 and 4 come included in this package.\n Episode 2, 3, 5 and 6 are registered versions which can be purchased by 3D Realms or Apogee, or bought by someone else.\n If you still have the old games of the registered version, then give it a try. You will be surprised, how well they will look!\n")
 SET(CPACK_PACKAGE_VENDOR "The Commmander-Genius Team")
+
 SET(CPACK_PACKAGE_VERSION ${CG_VERSION})
+option(APPEND_SHA "Appends short git SHA to  " OFF)
+if(APPEND_SHA)
+    SET(CPACK_PACKAGE_VERSION ${CPACK_PACKAGE_VERSION}-${GIT_SHA})
+endif(APPEND_SHA)
+
 SET(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_CURRENT_BINARY_DIR}/README")
 SET(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION}-${CMAKE_BUILD_TYPE}")
 SET(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/COPYRIGHT")
