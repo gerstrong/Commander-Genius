@@ -1,14 +1,10 @@
 image: "cgenius/crossbuild:win"
 
-prepare:
-  stage: .pre
-  script:
-    - echo "hello world"
 
 build:
   stage: build
   script:
-    - make package
+    - echo hello
 
 cp_pkg:
   stage: deploy
