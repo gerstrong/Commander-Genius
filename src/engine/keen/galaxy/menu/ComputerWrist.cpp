@@ -400,6 +400,7 @@ void ComputerWrist::parseGraphics()
 
     }
 
+    // Check for colission with bitmaps
     for(const auto &line : mCurrentTextLines)
     {
         if(line[0] == '^')
@@ -435,7 +436,7 @@ void ComputerWrist::parseGraphics()
                 for(int i=minHeight ; i<y+bmpH ; i++)
                 {
                     // Wrap left side text
-                    //if((x+bmpW)/2 < lRect.w/2)
+
                     if((x+bmpW) < lRect.w/2)
                     {
                         // Left hand wrap
@@ -451,6 +452,7 @@ void ComputerWrist::parseGraphics()
                     }                                        
                     else    // Wrap right side text
                     {
+                        /*
                         for(int j=x ; j<x+spaceWidth+bmpW ; j++)
                         {
                             auto curMaxPos = mMaxPos[i/fontHeight];
@@ -460,6 +462,7 @@ void ComputerWrist::parseGraphics()
                                 mMaxPos[i/fontHeight] = j;
                             }
                         }
+                        */
                     }
                 }
 

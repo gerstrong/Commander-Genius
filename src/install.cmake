@@ -55,6 +55,8 @@ IF(WIN32)
 
     if(PULL_DLLS)
         INSTALL(FILES "${CMAKE_FIND_ROOT_PATH}/bin/libcurl-4.dll" DESTINATION "${APPDIR}")
+        INSTALL(FILES "${CMAKE_FIND_ROOT_PATH}/bin/zlib1.dll" DESTINATION "${APPDIR}")
+
         INSTALL(FILES "${CMAKE_FIND_ROOT_PATH}/bin/SDL2.dll" DESTINATION "${APPDIR}")
 
         INSTALL(FILES "${CMAKE_FIND_ROOT_PATH}/bin/SDL2_image.dll" DESTINATION "${APPDIR}")
@@ -68,8 +70,13 @@ IF(WIN32)
         INSTALL(FILES "${CMAKE_FIND_ROOT_PATH}/bin/libvorbisfile-3.dll" DESTINATION "${APPDIR}")
 
         INSTALL(FILES "${CMAKE_FIND_ROOT_PATH}/bin/SDL2_ttf.dll" DESTINATION "${APPDIR}")
+        INSTALL(FILES "${CMAKE_FIND_ROOT_PATH}/bin/libfreetype-6.dll" DESTINATION "${APPDIR}")
+
+        INSTALL(FILES "${CMAKE_FIND_ROOT_PATH}/lib/libwinpthread-1.dll" DESTINATION "${APPDIR}")
 
         INSTALL(FILES "/usr/lib/gcc/x86_64-w64-mingw32/8.3-win32/libgcc_s_seh-1.dll" DESTINATION "${APPDIR}")
+        INSTALL(FILES "/usr/lib/gcc/x86_64-w64-mingw32/8.3-win32/libstdc++-6.dll" DESTINATION "${APPDIR}")
+
     else()
         INSTALL(DIRECTORY "${CMAKE_SOURCE_DIR}/dlls/" DESTINATION "${APPDIR}")
     endif(PULL_DLLS)
