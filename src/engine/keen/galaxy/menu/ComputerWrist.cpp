@@ -96,7 +96,7 @@ ComputerWrist::ComputerWrist(const int ep) :
         for(int i=0 ; i < numLines ; i++)
         {
             mMinPos.push_back(mLeftBorderBmp.width()+2);
-            mMaxPos.push_back(blitsfc.width() - (mLeftBorderBmp.width() + mRightBorderBmp.width() + 9) );
+            mMaxPos.push_back(blitsfc.width() - (mLeftBorderBmp.width() + mRightBorderBmp.width() + 0) );
         }
     }
     else
@@ -342,11 +342,13 @@ void ComputerWrist::parseText()
                 {
                     if(ep != 6)
                     {
-                        Font.drawFont(blitsfc.getSDLSurface(), word, cursorPos.x, cursorPos.y*fontHeight+mUpperBorderBmp.height()+2);
+                        Font.drawFont(blitsfc.getSDLSurface(), word, cursorPos.x,
+                                      cursorPos.y*fontHeight+mUpperBorderBmp.height()+2);
                     }
                     else
                     {
-                        Font.drawFont(blitsfc.getSDLSurface(), word, cursorPos.x, cursorPos.y*fontHeight+2);
+                        Font.drawFont(blitsfc.getSDLSurface(), word,
+                                      cursorPos.x, cursorPos.y*fontHeight+2);
                     }
 
                     cursorPos.x += (wordWidth+Font.getWidthofChar(' '));
@@ -383,7 +385,7 @@ void ComputerWrist::parseGraphics()
 
         for(auto &maxPos : mMaxPos)
         {
-            maxPos = blitsfc.width() - (mLeftBorderBmp.width() + mRightBorderBmp.width() + 9);
+            maxPos = blitsfc.width() - (mLeftBorderBmp.width() + mRightBorderBmp.width() + 0);
         }
     }
     else
@@ -435,22 +437,21 @@ void ComputerWrist::parseGraphics()
 
                 for(int i=minHeight ; i<y+bmpH ; i++)
                 {
-                    // Wrap left side text
+                    auto curMinPos = mMinPos[i/fontHeight];
 
+                    // Wrap left side text
                     if((x+bmpW) < lRect.w/2)
                     {
                         // Left hand wrap
                         for(int j=x ; j<x+bmpW ; j++)
                         {
-                            auto curMinPos = mMinPos[i/fontHeight];
-
                             if(curMinPos < j+spaceWidth)
                             {
                                 mMinPos[i/fontHeight] = j+spaceWidth+8;
                             }
                         }
                     }                                        
-                    else    // Wrap right side text
+                    else // Wrap right side text
                     {
                         /*
                         for(int j=x ; j<x+spaceWidth+bmpW ; j++)
@@ -464,13 +465,12 @@ void ComputerWrist::parseGraphics()
                         }
                         */
                         // Right hand wrap
-                        for(int j=x+bmpW ; j<lRect.w ; j++)
+                        //for(int j=x+bmpW ; j<lRect.w ; j++)
                         {
-                            auto curMinPos = mMinPos[i/fontHeight];
-
-                            if(curMinPos < j+spaceWidth)
+                            if(curMinPos < (x+bmpW))
                             {
-                                mMinPos[i/fontHeight] = j+spaceWidth+8;
+                                mMinPos[i/fontHeight] = (x+bmpW)+spaceWidth;
+                                //mMaxPos[i/fontHeight] = lRect.w - (x+bmpW);
                             }
                         }
                     }
