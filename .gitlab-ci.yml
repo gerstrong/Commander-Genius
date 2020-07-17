@@ -13,4 +13,4 @@ build:
     - cp *.zip $CI_PROJECT_DIR/output
   artifacts:
     paths:
-      - output
+      - output/*
