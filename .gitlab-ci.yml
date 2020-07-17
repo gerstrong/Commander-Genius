@@ -5,22 +5,10 @@ build:
   # instead of calling g++ directly you can also use some build toolkit like make
   # install the necessary build tools when needed
   before_script:
-    - mkdir -p /tmp
-    - cd /tmp
-    - echo "$OLDPWD"
+    - mkdir -p /tmp && cd "$_"
     - cmake -DCMAKE_TOOLCHAIN_FILE="$OLDPWD/toolchains/toolchain-mingw.cmake" -DUSE_BOOST=0 -DPULL_DLLS=1 -DAPPEND_SHA=1 -DSDL2_MIXER_INCLUDE_DIR=/usr/x86_64-w64-mingw32/include/SDL2 -DSDL2_INCLUDE_DIR=/usr/x86_64-w64-mingw32/include/SDL2 "$OLDPWD"
   script:
     - make package
   artifacts:
     paths:
-      - mybinary
-      # depending on your build setup it's most likely a good idea to cache outputs to reduce the build time
-      # cache:
-      #   paths:
-      #     - "*.o"
-
-# run tests using the binary built before
-#test:
-#  stage: test
-#  script:
-#    - ./runmytests.sh
+      - /tmp/*.zip
