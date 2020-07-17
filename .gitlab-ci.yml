@@ -1,4 +1,4 @@
-image: buildpack-deps:buster-curl
+image: cgenius/crossbuildbuildpack:core
 
 build:
   stage: build
