@@ -93,11 +93,19 @@ ComputerWrist::ComputerWrist(const int ep) :
     {
         numLines = (blitsfc.height() - (mUpperBorderBmp.height() + mBottomBorderBmp.height()))/font.getPixelTextHeight();
 
-        for(int i=0 ; i < numLines ; i++)
+        // first line is full, because of upper border line bitmap
+        mMinPos.push_back(mUpperBorderBmp.width());
+        mMaxPos.push_back(mUpperBorderBmp.width());
+
+        for(int i=1 ; i < numLines-1 ; i++)
         {
             mMinPos.push_back(mLeftBorderBmp.width()+2);
             mMaxPos.push_back(blitsfc.width() - (mLeftBorderBmp.width() + mRightBorderBmp.width() + 0) );
         }
+
+        // last line is full, because of lower border line
+        mMinPos.push_back(mBottomBorderBmp.width());
+        mMaxPos.push_back(mBottomBorderBmp.width());
     }
     else
     {
@@ -177,6 +185,8 @@ void ComputerWrist::ponderPage(const float deltaT)
 
 void ComputerWrist::ponderMainMenu(const float deltaT)
 {
+    (void) deltaT;
+
     if( gInput.getPressedCommand(IC_BACK) )
     {
         gEventManager.add( new CloseComputerWrist() );
@@ -224,15 +234,140 @@ void ComputerWrist::ponder(const float deltaT)
     ponderPage(deltaT);
 }
 
+void ComputerWrist::parseGraphics()
+{
+    std::stringstream ss;
+
+    int ep = gBehaviorEngine.getEpisode();
+
+    int x,y,chunk;
+    GsWeakSurface blitsfc(gVideoDriver.getBlitSurface());
+
+    SDL_Rect lRect;
+    lRect.h = blitsfc.height();     lRect.w = blitsfc.width();
+
+    const auto fontHeight = gGraphics.getFontLegacy(mFontId).getPixelTextHeight();
+    const auto spaceWidth = gGraphics.getFontLegacy(mFontId).getWidthofChar(' ');
+
+
+    if(!mMinPos.empty())
+    {
+        if(ep != 6)
+        {
+            mMinPos[0] = mUpperBorderBmp.width();
+            mMaxPos[0] = mUpperBorderBmp.width();
+
+            for(unsigned int i = 1 ; i<mMinPos.size() ; i++)
+            {
+                mMinPos[i] = mLeftBorderBmp.width()+2;
+            }
+
+            for(unsigned int i = 1 ; i<mMaxPos.size() ; i++)
+            {
+                mMaxPos[i] = blitsfc.width() - (mLeftBorderBmp.width() + mRightBorderBmp.width() + 0);
+            }
+        }
+        else
+        {
+            for(auto &minPos : mMinPos)
+            {
+                minPos = 2;
+            }
+
+            for(auto &maxPos : mMaxPos)
+            {
+                maxPos = blitsfc.width();
+            }
+
+        }
+    }
+
+
+    // Check for colission with bitmaps
+    for(const auto &line : mCurrentTextLines)
+    {
+        if(line[0] == '^')
+        {
+            if(line[1] == 'G')
+            {
+                std::string param = line.substr(2);
+
+                char comma;
+
+                ss << param;
+                ss >> y;
+                ss >> comma;
+                ss >> x;
+                ss >> comma;
+                ss >> chunk;
+
+                chunk = chunk - mBmpIndex;
+
+                GsBitmap &bmp = gGraphics.getBitmapFromId(0, chunk);
+                const auto bmpH = bmp.height();
+                const auto bmpW = bmp.width();
+
+                // Got the bitmap, block the matrix at that part
+                int minHeight = y;
+
+                if(minHeight < 0)
+                {
+                    minHeight = 0;
+                }
+
+                for(int i=minHeight ; i<y+bmpH ; i++)
+                {
+                    const auto textYIdx = (i)/fontHeight;
+
+                    auto curMinPos = mMinPos[textYIdx];
+
+                    // Wrap left side text
+                    if((x+bmpW) < lRect.w/2)
+                    {
+                        // Left hand wrap
+                        for(int j=x ; j<x+bmpW ; j++)
+                        {
+                            if(curMinPos < j+spaceWidth)
+                            {                                
+                                mMinPos[textYIdx] = j+spaceWidth+8;
+                            }
+                        }
+                    }                                        
+                    else // Wrap right side text
+                    {
+                        /*
+                        for(int j=x ; j<x+spaceWidth+bmpW ; j++)
+                        {
+                            auto curMaxPos = mMaxPos[textYIdx];
+
+                            if(curMaxPos > j)
+                            {
+                                mMaxPos[textYIdx] = j;
+                            }
+                        }
+                        */
+                        // Right hand wrap
+                        //for(int j=x+bmpW ; j<lRect.w ; j++)
+                        {
+                            if(curMinPos < (x+bmpW))
+                            {
+                                mMinPos[textYIdx] = (x+bmpW)+spaceWidth;
+                            }
+                        }
+                    }
+                }
+
+                bmp.draw(x, y);
+            }
+        }
+    }
+}
+
 void ComputerWrist::parseText()
 {
     GsWeakSurface blitsfc(gVideoDriver.getBlitSurface());
 
     int ep = gBehaviorEngine.getEpisode();
-
-    //SDL_Rect lRect;
-    //lRect.h = blitsfc.height();
-    //lRect.w = blitsfc.width()-(mLeftBorderBmp.width()+mRightBorderBmp.width());
 
     // Draw some text.
     auto &Font = gGraphics.getFontLegacy(mFontId);
@@ -343,7 +478,7 @@ void ComputerWrist::parseText()
                     if(ep != 6)
                     {
                         Font.drawFont(blitsfc.getSDLSurface(), word, cursorPos.x,
-                                      cursorPos.y*fontHeight+mUpperBorderBmp.height()+2);
+                                      cursorPos.y*fontHeight);
                     }
                     else
                     {
@@ -357,127 +492,6 @@ void ComputerWrist::parseText()
 
             cursorPos.y++;
             cursorPos.x = mMinPos[cursorPos.y];
-        }
-    }
-}
-
-void ComputerWrist::parseGraphics()
-{
-    std::stringstream ss;
-
-    int ep = gBehaviorEngine.getEpisode();
-
-    int x,y,chunk;
-    GsWeakSurface blitsfc(gVideoDriver.getBlitSurface());
-
-    SDL_Rect lRect;
-    lRect.h = blitsfc.height();     lRect.w = blitsfc.width();
-
-    const auto fontHeight = gGraphics.getFontLegacy(mFontId).getPixelTextHeight();
-    const auto spaceWidth = gGraphics.getFontLegacy(mFontId).getWidthofChar(' ');
-
-    if(ep != 6)
-    {
-        for(auto &minPos : mMinPos)
-        {
-            minPos = mLeftBorderBmp.width()+2;
-        }
-
-        for(auto &maxPos : mMaxPos)
-        {
-            maxPos = blitsfc.width() - (mLeftBorderBmp.width() + mRightBorderBmp.width() + 0);
-        }
-    }
-    else
-    {
-        for(auto &minPos : mMinPos)
-        {
-            minPos = 2;
-        }
-
-        for(auto &maxPos : mMaxPos)
-        {
-            maxPos = blitsfc.width();
-        }
-
-    }
-
-    // Check for colission with bitmaps
-    for(const auto &line : mCurrentTextLines)
-    {
-        if(line[0] == '^')
-        {
-            if(line[1] == 'G')
-            {
-                std::string param = line.substr(2);
-
-                char comma;
-
-                ss << param;
-                ss >> y;
-                ss >> comma;
-                ss >> x;
-                ss >> comma;
-                ss >> chunk;
-
-                chunk = chunk - mBmpIndex;
-
-                GsBitmap &bmp = gGraphics.getBitmapFromId(0, chunk);
-                const auto bmpH = bmp.height();
-                const auto bmpW = bmp.width();
-
-                // Got the bitmap, block the matrix at that part
-
-                int minHeight = y-fontHeight;
-
-                if(minHeight < 0)
-                {
-                    minHeight = 0;
-                }
-
-                for(int i=minHeight ; i<y+bmpH ; i++)
-                {
-                    auto curMinPos = mMinPos[i/fontHeight];
-
-                    // Wrap left side text
-                    if((x+bmpW) < lRect.w/2)
-                    {
-                        // Left hand wrap
-                        for(int j=x ; j<x+bmpW ; j++)
-                        {
-                            if(curMinPos < j+spaceWidth)
-                            {
-                                mMinPos[i/fontHeight] = j+spaceWidth+8;
-                            }
-                        }
-                    }                                        
-                    else // Wrap right side text
-                    {
-                        /*
-                        for(int j=x ; j<x+spaceWidth+bmpW ; j++)
-                        {
-                            auto curMaxPos = mMaxPos[i/fontHeight];
-
-                            if(curMaxPos > j)
-                            {
-                                mMaxPos[i/fontHeight] = j;
-                            }
-                        }
-                        */
-                        // Right hand wrap
-                        //for(int j=x+bmpW ; j<lRect.w ; j++)
-                        {
-                            if(curMinPos < (x+bmpW))
-                            {
-                                mMinPos[i/fontHeight] = (x+bmpW)+spaceWidth;
-                                //mMaxPos[i/fontHeight] = lRect.w - (x+bmpW);
-                            }
-                        }
-                    }
-                }
-
-                bmp.draw(x, y);
-            }
         }
     }
 }
