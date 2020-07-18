@@ -79,7 +79,7 @@ void CCarrier::draw()
         auto showY = Uint16(scry+Sprite.getYOffset());
         if(m_blinktime > 0)
         {
-            Sprite.drawBlinkingSprite( showX, showY );
+            Sprite.drawBlinkingSprite( showX, showY, false );
             m_blinktime--;
         }
         else

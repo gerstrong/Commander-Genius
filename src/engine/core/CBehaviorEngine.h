@@ -30,7 +30,6 @@
 #include "Cheat.h"
 
 #include <base/GsEvent.h>
-
 #include <base/Singleton.h>
 
 #if defined (SINGLEPLAYER)

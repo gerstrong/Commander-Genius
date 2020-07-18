@@ -550,7 +550,7 @@ void CSpriteObject::draw()
     scrx = (m_Pos.x>>STC)-mpMap->m_scrollx;
     scry = (m_Pos.y>>STC)-mpMap->m_scrolly;
 
-	SDL_Rect gameres = gVideoDriver.getGameResolution().SDLRect();
+	SDL_Rect gameres = gVideoDriver.getGameResolution().SDLRect();    
 
     if( scrx < gameres.w && scry < gameres.h && exists )
 	{
@@ -575,7 +575,8 @@ void CSpriteObject::draw()
 
 		if(m_blinktime > 0)
 		{
-            Sprite.drawBlinkingSprite( showX, showY );
+            const auto engine = gBehaviorEngine.getEngine();
+            Sprite.drawBlinkingSprite( showX, showY, engine != EngineType::ENGINE_VORTICON );
 			m_blinktime--;
 		}
 		else
