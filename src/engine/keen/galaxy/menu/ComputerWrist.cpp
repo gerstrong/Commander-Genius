@@ -199,18 +199,31 @@ void ComputerWrist::ponderMainMenu(const float deltaT)
     // Guarantee the boundaries are never exploited
     mSelection = std::max(mSelection, 0);
     mSelection = std::min(mSelection, mNumOptions-1);
+    const int ep = gBehaviorEngine.getEpisode();
 
     if( gInput.getPressedCommand(IC_JUMP) || gInput.getPressedCommand(IC_STATUS) )
     {
         mSection = mSelection;
 
         // Strange cross mapping of the selection against Section to load
-        switch(mSelection)
+        if(ep == 5)
         {
+            switch(mSelection)
+            {
+            case 3: mSection = 6; break;
+            case 4: mSection = 3; break;
+            default: break;
+            }
+        }
+        else
+        {
+            switch(mSelection)
+            {
             case 1: mSection = 2; break;
             case 2: mSection = 1; break;
             case 4: mSection = 3; break;
             default: break;
+            }
         }
 
         mSectionPage = 0;
@@ -238,7 +251,7 @@ void ComputerWrist::parseGraphics()
 {
     std::stringstream ss;
 
-    int ep = gBehaviorEngine.getEpisode();
+    const int ep = gBehaviorEngine.getEpisode();
 
     int x,y,chunk;
     GsWeakSurface blitsfc(gVideoDriver.getBlitSurface());
