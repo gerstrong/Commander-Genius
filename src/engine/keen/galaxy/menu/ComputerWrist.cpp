@@ -277,7 +277,6 @@ void ComputerWrist::parseGraphics()
 
             for(unsigned int i = 1 ; i<mMaxPos.size() ; i++)
             {
-                //mMaxPos[i] = blitsfc.width() - (mLeftBorderBmp.width() + mRightBorderBmp.width() + 0);
                 mMaxPos[i] = blitsfc.width() - mRightBorderBmp.width();
             }
         }
@@ -329,44 +328,35 @@ void ComputerWrist::parseGraphics()
                     minHeight = 0;
                 }
 
-                for(int i=minHeight ; i<y+bmpH ; i++)
+                for(int i=minHeight ; i<y+bmpH+1 ; i++)
                 {
                     const auto textYIdx = (i)/fontHeight;
 
                     auto curMinPos = mMinPos[textYIdx];
 
-                    // Wrap left side text
-                    if((x+bmpW) < lRect.w/2)
+                    // Whole pic fits to the right side
+                    if(x > lRect.w/2)
+                    {
+                        // Limit max
+                        mMaxPos[textYIdx] = lRect.w/2;
+                    }
+                    // Whole pic fits to the left side
+                    else if((x+bmpW) < lRect.w/2)
                     {
                         // Left hand wrap
                         for(int j=x ; j<x+bmpW ; j++)
                         {
                             if(curMinPos < j+spaceWidth)
-                            {                                
-                                mMinPos[textYIdx] = j+spaceWidth+8;
+                            {
+                                mMinPos[textYIdx] = j+spaceWidth+4;
                             }
                         }
-                    }                                        
-                    else // Wrap right side text
+                    }
+                    else // Pic is both on left and right side
                     {
-                        /*
-                        for(int j=x ; j<x+spaceWidth+bmpW ; j++)
+                        if(curMinPos < (x+bmpW))
                         {
-                            auto curMaxPos = mMaxPos[textYIdx];
-
-                            if(curMaxPos > j)
-                            {
-                                mMaxPos[textYIdx] = j;
-                            }
-                        }
-                        */
-                        // Right hand wrap
-                        //for(int j=x+bmpW ; j<lRect.w ; j++)
-                        {
-                            if(curMinPos < (x+bmpW))
-                            {
-                                mMinPos[textYIdx] = (x+bmpW)+spaceWidth+1;
-                            }
+                            mMinPos[textYIdx] = (x+bmpW)+spaceWidth+1;
                         }
                     }
                 }
@@ -437,7 +427,7 @@ void ComputerWrist::parseText()
                skipmode = true;
                continue;
             }
-            else if(line[1] == 'c')
+            else if(line[1] == 'c' || line[1] == 'C')
             {
                 const char colorCode = line[2];
                 color = wristColorMap[colorCode];
@@ -461,15 +451,33 @@ void ComputerWrist::parseText()
             for(const auto &word : words)
             {
                 // Blank occupied space also, consider it.
-                int wordWidth = Font.getWidthofChar(' ')+1;
+                int wordWidth = Font.getWidthofChar(' ') + 1;
 
-                for(const auto c : word)
+                auto word2Display = word;
+
+                // There might be a change of color.
+                if(word[0] == '^')
+                {
+                    word2Display = word2Display.substr(1);
+
+                    if(word[1] == 'c' || word[1] == 'C')
+                    {
+                        const char colorCode = word[2];
+                        color = wristColorMap[colorCode];
+                        Font.setupColor(color);
+                        word2Display = word2Display.substr(2);
+                    }
+                }
+
+                for(const auto c : word2Display)
                 {
                     wordWidth += Font.getWidthofChar(c);
                 }
 
-                // Right side boundary checks
+                if(!word2Display.empty())
                 {
+                    // Right side boundary checks
+
                     auto maxPosX = mMaxPos[cursorPos.y];
 
                     while(cursorPos.x+wordWidth > maxPosX)
@@ -480,28 +488,15 @@ void ComputerWrist::parseText()
                         cursorPos.x = mMinPos[cursorPos.y];
                         maxPosX = mMaxPos[cursorPos.y];
                     }
-                }
 
-                // There might be a change of color
-                if(word[0] == '^')
-                {
-                    if(word[1] == 'c')
-                    {
-                        const char colorCode = word[2];
-                        color = wristColorMap[colorCode];
-                        Font.setupColor(color);
-                    }
-                }
-                else
-                {
                     if(ep != 6)
                     {
-                        Font.drawFont(blitsfc.getSDLSurface(), word, cursorPos.x,
+                        Font.drawFont(blitsfc.getSDLSurface(), word2Display, cursorPos.x,
                                       cursorPos.y*fontHeight);
                     }
                     else
                     {
-                        Font.drawFont(blitsfc.getSDLSurface(), word,
+                        Font.drawFont(blitsfc.getSDLSurface(), word2Display,
                                       cursorPos.x, cursorPos.y*fontHeight+2);
                     }
 
@@ -513,6 +508,16 @@ void ComputerWrist::parseText()
             cursorPos.x = mMinPos[cursorPos.y];
         }
     }
+
+    // Print the page number
+    const auto pgTextcolor = 0xFC5454;
+    Font.setupColor(pgTextcolor);
+
+    const std::string pgText =
+            "pg " + itoa(mSectionPage+1) +
+            " of " + itoa(mNumPagesOfThisSection+1);
+    Font.drawFont(blitsfc.getSDLSurface(), pgText,
+                  218, 186);
 }
 
 void ComputerWrist::renderPage()
