@@ -277,7 +277,8 @@ void ComputerWrist::parseGraphics()
 
             for(unsigned int i = 1 ; i<mMaxPos.size() ; i++)
             {
-                mMaxPos[i] = blitsfc.width() - (mLeftBorderBmp.width() + mRightBorderBmp.width() + 0);
+                //mMaxPos[i] = blitsfc.width() - (mLeftBorderBmp.width() + mRightBorderBmp.width() + 0);
+                mMaxPos[i] = blitsfc.width() - mRightBorderBmp.width();
             }
         }
         else
@@ -364,7 +365,7 @@ void ComputerWrist::parseGraphics()
                         {
                             if(curMinPos < (x+bmpW))
                             {
-                                mMinPos[textYIdx] = (x+bmpW)+spaceWidth;
+                                mMinPos[textYIdx] = (x+bmpW)+spaceWidth+1;
                             }
                         }
                     }
@@ -459,21 +460,26 @@ void ComputerWrist::parseText()
 
             for(const auto &word : words)
             {
-                int wordWidth = 0;
+                // Blank occupied space also, consider it.
+                int wordWidth = Font.getWidthofChar(' ')+1;
 
                 for(const auto c : word)
                 {
                     wordWidth += Font.getWidthofChar(c);
                 }
 
-                auto maxPosX = mMaxPos[cursorPos.y];
-
-                if(cursorPos.x+wordWidth > maxPosX)
+                // Right side boundary checks
                 {
-                    cursorPos.y++;
+                    auto maxPosX = mMaxPos[cursorPos.y];
 
-                    // Ensure the minimum position is not hindering a picture
-                    cursorPos.x = mMinPos[cursorPos.y];
+                    while(cursorPos.x+wordWidth > maxPosX)
+                    {
+                        cursorPos.y++;
+
+                        // Ensure the minimum position is not hindering a picture
+                        cursorPos.x = mMinPos[cursorPos.y];
+                        maxPosX = mMaxPos[cursorPos.y];
+                    }
                 }
 
                 // There might be a change of color
@@ -499,7 +505,7 @@ void ComputerWrist::parseText()
                                       cursorPos.x, cursorPos.y*fontHeight+2);
                     }
 
-                    cursorPos.x += (wordWidth+Font.getWidthofChar(' '));
+                    cursorPos.x += (wordWidth);
                 }
             }
 
