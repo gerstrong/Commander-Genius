@@ -13,5 +13,6 @@ windows:
     - cp *.zip $CI_PROJECT_DIR/output
   artifacts:
     name: "CGenius-Win-$CI_COMMIT_SHORT_SHA"
+    expire_in: 1 week
     paths:
       - output/*
