@@ -761,10 +761,14 @@ bool CPlayerLevel::checkandtriggerforCliffHanging()
     if( mPlaycontrol[PA_X]<0 && blockedl )
     {
         const int xLeft = (getXLeftPos()>>CSF)-1;
-        const auto mapUpperOff = mpMap->at(xLeft, yUp-1);
 
-        bool check_block = TileProperty[mapUpperOff].bup;
-        check_block |= TileProperty[mapUpperOff].bright;
+        const auto mapUpper1Off = mpMap->at(xLeft, yUp-1);
+        const auto mapUpper2Off = mpMap->at(xLeft, yUp-2);
+
+        bool check_block = TileProperty[mapUpper1Off].bup;
+        check_block |= TileProperty[mapUpper1Off].bright;
+        check_block |= TileProperty[mapUpper2Off].bup;
+        check_block |= TileProperty[mapUpper2Off].bright;
 
         const auto mapLowerOff = mpMap->at(xLeft, yUp);
         const bool check_block_lower = TileProperty[mapLowerOff].bright;
@@ -794,9 +798,19 @@ bool CPlayerLevel::checkandtriggerforCliffHanging()
     else if( mPlaycontrol[PA_X]>0 && blockedr )
     {
         const int xRight = (getXRightPos()>>CSF)+1;
-        bool check_block = TileProperty[mpMap->at(xRight, yUp-1)].bup;
-        check_block |= TileProperty[mpMap->at(xRight, yUp-1)].bleft;
-        bool check_block_lower = TileProperty[mpMap->at(xRight, yUp)].bleft;
+
+        const auto mapUpper1Off = mpMap->at(xRight, yUp-1);
+        const auto mapUpper2Off = mpMap->at(xRight, yUp-2);
+
+        bool check_block = TileProperty[mapUpper1Off].bup;
+        check_block |= TileProperty[mapUpper1Off].bleft;
+        check_block |= TileProperty[mapUpper2Off].bup;
+        check_block |= TileProperty[mapUpper2Off].bleft;
+
+
+        const auto mapLower1Off = mpMap->at(xRight, yUp);
+
+        bool check_block_lower = TileProperty[mapLower1Off].bleft;
 
         if( !check_block && check_block_lower )
         {
