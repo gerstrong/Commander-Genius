@@ -192,6 +192,7 @@ void CInput::resetControls(const int player)
 void CInput::openJoyAndPrintStats(const int idx)
 {
 #if SDL_VERSION_ATLEAST(2, 0, 0)
+    gLogging.ftextOut("New Joystick/Gamepad detected:<br>");
     gLogging.ftextOut("    %s<br>", SDL_JoystickNameForIndex(idx));
 #else
     gLogging.ftextOut("    %s<br>", SDL_JoystickName(idx));
@@ -199,24 +200,33 @@ void CInput::openJoyAndPrintStats(const int idx)
 
     SDL_Joystick *pJoystick = SDL_JoystickOpen(idx);
 
-    if(pJoystick)
+    if(!pJoystick)
     {
         gLogging.ftextOut("     Error adding joystick %i<br>", idx);
+        return;
     }
 
+    char guidStr[64];
+
+    const auto guid = SDL_JoystickGetGUID(pJoystick);
+    SDL_JoystickGetGUIDString(guid, guidStr, sizeof (guidStr));
+
+    const auto id = SDL_JoystickInstanceID(pJoystick);
+    mJoyIdToInputIdx[id] = mp_Joysticks.size();
     mp_Joysticks.push_back(pJoystick);
 
     gLogging.ftextOut("     Axes: %i<br>", SDL_JoystickNumAxes(pJoystick));
     gLogging.ftextOut("     Buttons: %i <br>", SDL_JoystickNumButtons(pJoystick));
     gLogging.ftextOut("     Balls: %i <br>", SDL_JoystickNumBalls(pJoystick));
     gLogging.ftextOut("     Hats: %i<br>", SDL_JoystickNumHats(pJoystick));
+    gLogging.ftextOut("     GUID: %s<br>", guidStr);
 }
 
 void CInput::enableJoysticks()
 {
     SDL_JoystickEventState(SDL_ENABLE);
 
-    const auto joyNum = SDL_NumJoysticks();
+    /*const auto joyNum = SDL_NumJoysticks();
     if( joyNum > int(mp_Joysticks.size()) )
     {
         gLogging.ftextOut("Detected %i joystick(s).<br>\n", joyNum-mp_Joysticks.size() );
@@ -230,7 +240,7 @@ void CInput::enableJoysticks()
     else
     {
         gLogging.ftextOut("No joysticks were found.<br>\n");
-    }
+    }*/
 
 }
 
@@ -243,7 +253,7 @@ bool CInput::startJoyDriver()
 {
     gLogging << "JoyDrv_Start() : ";
 
-    if (SDL_Init( SDL_INIT_JOYSTICK ) < 0)
+    if (SDL_Init( SDL_INIT_JOYSTICK | SDL_INIT_GAMECONTROLLER ) < 0)
     {
         gLogging.ftextOut("JoyDrv_Start() : Couldn't initialize SDL: %s<br>", SDL_GetError());
         return 1;
@@ -582,7 +592,7 @@ void CInput::readNewEvent()
 #else
 				lokalInput.joyeventtype = ETYPE_JOYBUTTON;
 				lokalInput.joybutton = Event.jbutton.button;
-				lokalInput.which = Event.jbutton.which;
+                lokalInput.which = mJoyIdToInputIdx[Event.jbutton.which];
 				remapper.mappingInput = false;
 #endif
 				break;
@@ -596,7 +606,7 @@ void CInput::readNewEvent()
 				{
 					lokalInput.joyeventtype = ETYPE_JOYAXIS;
 					lokalInput.joyaxis = Event.jaxis.axis;
-					lokalInput.which = Event.jaxis.which;
+                    lokalInput.which = mJoyIdToInputIdx[Event.jaxis.which];
 					lokalInput.joyvalue = (Event.jaxis.value>0) ? 32767 : -32767;
 					remapper.mappingInput = false;
 				}
@@ -606,7 +616,7 @@ void CInput::readNewEvent()
 			case SDL_JOYHATMOTION:
 				lokalInput.joyeventtype = ETYPE_JOYHAT;
 				lokalInput.joyhatval = Event.jhat.value;
-				lokalInput.which = Event.jhat.which;
+                lokalInput.which = mJoyIdToInputIdx[Event.jhat.which];
 				remapper.mappingInput = false;
 				break;
 
@@ -812,6 +822,8 @@ void CInput::pollEvents()
 
     const bool tiltedScreen = gVideoDriver.getVidConfig().mTiltedScreen;
 
+    SDL_Joystick *joystick = nullptr;
+
 	// While there's an event to handle
 	while( SDL_PollEvent( &Event ) )
 	{
@@ -847,6 +859,21 @@ void CInput::pollEvents()
             passSDLEventVec = true;
 			processJoystickHat();
 			break;
+
+        case SDL_JOYDEVICEADDED:
+            gLogging << "SDL: A Joystick just got added.";
+            openJoyAndPrintStats(Event.jdevice.which);
+            break;
+        case SDL_JOYDEVICEREMOVED:
+            gLogging << "SDL: A Joystick just got removed.";
+
+            joystick = SDL_JoystickFromInstanceID(Event.jdevice.which);
+            mp_Joysticks.remove_if(
+                        [joystick](SDL_Joystick* curPtr)
+                          { return (curPtr == joystick); } );
+            SDL_JoystickClose(joystick);
+
+            break;
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 		case SDL_FINGERDOWN:
@@ -1142,6 +1169,8 @@ void CInput::pollEvents()
  */
 void CInput::processJoystickAxis(void)
 {
+    const auto evWhich = mJoyIdToInputIdx[Event.jaxis.which];
+
     // Input for player commands
     for(auto &input : mInputCommands)
     {
@@ -1150,8 +1179,8 @@ void CInput::processJoystickAxis(void)
             if(input[i].joyeventtype == ETYPE_JOYAXIS)
 			{
 				// Axis are configured for this commmand
-                if(Event.jaxis.axis == input[i].joyaxis &&
-                        Event.jaxis.which == input[i].which )
+                if( evWhich == input[i].which &&
+                    Event.jaxis.axis == input[i].joyaxis )
 				{
 					// Deadzone
                     if((Event.jaxis.value > m_joydeadzone && mInputCommands[0][i].joyvalue > 0) ||
@@ -1172,6 +1201,8 @@ void CInput::processJoystickAxis(void)
 
 void CInput::processJoystickHat()
 {
+    const auto evWhich = mJoyIdToInputIdx[Event.jhat.which];
+
 	for(int j=0 ; j<NUM_INPUTS ; j++)
 	{
         auto &input = mInputCommands[j];
@@ -1180,7 +1211,7 @@ void CInput::processJoystickHat()
             stInputCommand &command = input[i];
 
 			if( command.joyeventtype == ETYPE_JOYHAT &&
-				command.which == Event.jhat.which )
+                command.which ==  evWhich)
 			{
 				command.active = false;
 				// Check if Joystick hats are configured for this event
@@ -1202,6 +1233,8 @@ void CInput::processJoystickButton(int value)
 #if defined(CAANOO) || defined(WIZ) || defined(GP2X)
 	WIZ_EmuKeyboard( Event.jbutton.button, value );
 #else
+    const auto evWhich = mJoyIdToInputIdx[Event.jbutton.which];
+
     for( auto &inputCommand : mInputCommands)
 	{
         auto &inputs = inputCommand;
@@ -1210,9 +1243,9 @@ void CInput::processJoystickButton(int value)
 			// TODO: Check all NUM_INPUTS, if they can be reduced to another variable
             if(input.joyeventtype == ETYPE_JOYBUTTON)
 			{
-				// Joystick buttons are configured for this event !!
-                if(Event.jbutton.button == input.joybutton &&
-                   Event.jbutton.which == input.which )
+                // Joystick buttons are configured for this event
+                if(evWhich == input.which &&
+                   Event.jbutton.button == input.joybutton )
                 {
                     input.active = value;
                 }

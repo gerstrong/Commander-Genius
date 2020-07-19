@@ -19,6 +19,7 @@
 
 #include <base/Singleton.h>
 #include <base/GsVirtualinput.h>
+#include <map>
 
 
 #define gInput	CInput::get()
@@ -356,7 +357,10 @@ private:
 	std::list<SDL_Joystick*> mp_Joysticks;
 
     std::array< std::array<stInputCommand, MAX_COMMANDS>, NUM_INPUTS > mInputCommands;
-	bool TwoButtonFiring[NUM_INPUTS];
+
+    std::map<int, int> mJoyIdToInputIdx;
+
+	bool TwoButtonFiring[NUM_INPUTS];    
 	bool mAnalogAxesMovement[NUM_INPUTS];
 	bool mSuperPogo[NUM_INPUTS];
 	bool mImpPogo[NUM_INPUTS];
@@ -379,6 +383,7 @@ private:
         Uint8 mapDevice = 0;
         int mapPosition = 0;
 	} remapper;
+
 
     SDL_sem *mpPollSem = nullptr;
 };
