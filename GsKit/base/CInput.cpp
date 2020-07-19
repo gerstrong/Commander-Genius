@@ -188,6 +188,52 @@ void CInput::resetControls(const int player)
     setTwoButtonFiring(player, false);
 }
 
+
+void CInput::openJoyAndPrintStats(const int idx)
+{
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    gLogging.ftextOut("    %s<br>", SDL_JoystickNameForIndex(idx));
+#else
+    gLogging.ftextOut("    %s<br>", SDL_JoystickName(idx));
+#endif
+
+    SDL_Joystick *pJoystick = SDL_JoystickOpen(idx);
+
+    if(pJoystick)
+    {
+        gLogging.ftextOut("     Error adding joystick %i<br>", idx);
+    }
+
+    mp_Joysticks.push_back(pJoystick);
+
+    gLogging.ftextOut("     Axes: %i<br>", SDL_JoystickNumAxes(pJoystick));
+    gLogging.ftextOut("     Buttons: %i <br>", SDL_JoystickNumButtons(pJoystick));
+    gLogging.ftextOut("     Balls: %i <br>", SDL_JoystickNumBalls(pJoystick));
+    gLogging.ftextOut("     Hats: %i<br>", SDL_JoystickNumHats(pJoystick));
+}
+
+void CInput::enableJoysticks()
+{
+    SDL_JoystickEventState(SDL_ENABLE);
+
+    const auto joyNum = SDL_NumJoysticks();
+    if( joyNum > int(mp_Joysticks.size()) )
+    {
+        gLogging.ftextOut("Detected %i joystick(s).<br>\n", joyNum-mp_Joysticks.size() );
+        gLogging << "The names of the joysticks are:<br>";
+
+        for( auto i=int(mp_Joysticks.size()); i < joyNum; i++ )
+        {
+            openJoyAndPrintStats(i);
+        }
+    }
+    else
+    {
+        gLogging.ftextOut("No joysticks were found.<br>\n");
+    }
+
+}
+
 /**
  * \brief	This will start the joystick driver and search for all the controls attached
  * 			to your computer
@@ -198,43 +244,14 @@ bool CInput::startJoyDriver()
     gLogging << "JoyDrv_Start() : ";
 
     if (SDL_Init( SDL_INIT_JOYSTICK ) < 0)
-	{
-		gLogging.ftextOut("JoyDrv_Start() : Couldn't initialize SDL: %s<br>", SDL_GetError());
-		return 1;
-	}
-    else
-	{
-        const auto joyNum = SDL_NumJoysticks();
-		if( joyNum > 0 )
-		{
-			SDL_JoystickEventState(SDL_ENABLE);
-			gLogging.ftextOut("Detected %i joystick(s).<br>\n", joyNum );
-            gLogging << "The names of the joysticks are:<br>";
+    {
+        gLogging.ftextOut("JoyDrv_Start() : Couldn't initialize SDL: %s<br>", SDL_GetError());
+        return 1;
+    }
 
-            for( auto i=0; i < joyNum; i++ )
-			{
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-                gLogging.ftextOut("    %s<br>", SDL_JoystickNameForIndex(i));
-#else
-                gLogging.ftextOut("    %s<br>", SDL_JoystickName(i));
-#endif
+    enableJoysticks();
 
-				SDL_Joystick *pJoystick = SDL_JoystickOpen(i);
-				mp_Joysticks.push_back(pJoystick);
-
-				gLogging.ftextOut("     Axes: %i<br>", SDL_JoystickNumAxes(pJoystick));
-				gLogging.ftextOut("     Buttons: %i <br>", SDL_JoystickNumButtons(pJoystick));
-				gLogging.ftextOut("     Balls: %i <br>", SDL_JoystickNumBalls(pJoystick));
-				gLogging.ftextOut("     Hats: %i<br>", SDL_JoystickNumHats(pJoystick));
-			}
-		}
-		else
-		{
-			gLogging.ftextOut("No joysticks were found.<br>\n");
-		}
-	}
-
-	return 0;
+    return 0;
 }
 
 /**
@@ -592,6 +609,21 @@ void CInput::readNewEvent()
 				lokalInput.which = Event.jhat.which;
 				remapper.mappingInput = false;
 				break;
+
+            case SDL_JOYDEVICEADDED:
+                gLogging << "SDL: A Joystick just got added.";
+                openJoyAndPrintStats(Event.jdevice.which);
+                break;
+            case SDL_JOYDEVICEREMOVED:
+                gLogging << "SDL: A Joystick just got removed.";
+
+                auto joystick = SDL_JoystickFromInstanceID(Event.jdevice.which);
+                mp_Joysticks.remove_if(
+                            [joystick](SDL_Joystick* curPtr)
+                              { return (curPtr == joystick); } );
+                SDL_JoystickClose(joystick);
+
+                break;
 		}
 
         flushAll();

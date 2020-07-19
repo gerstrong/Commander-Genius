@@ -267,6 +267,9 @@ public:
 
 	void loadControlconfig();
 	void resetControls(int player);
+
+    void openJoyAndPrintStats(const int idx);
+    void enableJoysticks();
 	bool startJoyDriver();
 	void saveControlconfig();
 
