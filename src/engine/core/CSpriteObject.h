@@ -34,7 +34,7 @@
 #include <base/GsPython.h>
 
 
-const int COLISION_RES = (1<<STC);
+const int COLLISION_RES = (1<<STC);
 
 // The bouncing box used by the object which is used to determine the collisions
 struct BoundingBox
@@ -296,8 +296,8 @@ class CSpriteObject
     // special functions for sloped tiles
     bool checkslopedU( int c, int y1, Sint8 blocked);
     bool checkslopedD( int c, int y2, Sint8 blocked);
-    void adjustSlopedTiles( int x, int y1, int y2, const int xspeed );
-    bool moveSlopedTileDown( int x, int y, const int xspeed );
+    void adjustSlopedTiles(int x, int y1, int y2, const int xspeed, int &slopeType);
+    bool moveSlopedTileDown(int x, int y, const int xspeed , int &slopeType);
     void moveSlopedTileUp( int x, int y, const int xspeed );
 
     /**
