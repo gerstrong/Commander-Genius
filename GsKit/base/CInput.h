@@ -220,8 +220,11 @@ public:
     bool getExitEvent()
     {  return m_exit;  }
 
-	bool getTwoButtonFiring(int player);
-	void setTwoButtonFiring(int player, bool value);
+    bool isSuperRunEnabled(const int player);
+    void enableSuperRun(const int player, const bool value);
+
+    bool getTwoButtonFiring(const int player);
+    void setTwoButtonFiring(const int player, const bool value);
 
 	bool isAnalog(const int player);
 	void enableAnalog(const int player, const bool value);
@@ -360,6 +363,7 @@ private:
 
     std::map<int, int> mJoyIdToInputIdx;
 
+    std::array<bool, NUM_INPUTS> mSuperRun;
 	bool TwoButtonFiring[NUM_INPUTS];    
 	bool mAnalogAxesMovement[NUM_INPUTS];
 	bool mSuperPogo[NUM_INPUTS];

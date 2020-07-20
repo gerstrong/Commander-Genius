@@ -186,6 +186,7 @@ void CInput::resetControls(const int player)
 #endif
 
     setTwoButtonFiring(player, false);
+    enableSuperRun(player, false);
 }
 
 
@@ -322,8 +323,10 @@ void CInput::loadControlconfig(void)
             Configuration.ReadString( section, "Back", value, "Escape");
             setupInputCommand( curInput, IC_BACK, value );
 
+
             Configuration.ReadKeyword( section, "TwoButtonFiring", &TwoButtonFiring[i], false);
             Configuration.ReadKeyword( section, "Analog", &mAnalogAxesMovement[i], false);
+            Configuration.ReadKeyword( section, "SuperRun", &mSuperRun[i], false);
             Configuration.ReadKeyword( section, "SuperPogo", &mSuperPogo[i], false);
             Configuration.ReadKeyword( section, "ImpossiblePogo", &mImpPogo[i], true);
             Configuration.ReadKeyword( section, "AutoFire", &mFullyAutomatic[i], false);
@@ -376,6 +379,7 @@ void CInput::saveControlconfig()
         Configuration.SetKeyword(section, "TwoButtonFiring", TwoButtonFiring[i]);
         Configuration.SetKeyword(section, "Analog", mAnalogAxesMovement[i]);
         Configuration.SetKeyword(section, "SuperPogo", mSuperPogo[i]);
+        Configuration.SetKeyword(section, "SuperRun", mSuperRun[i]);
         Configuration.SetKeyword(section, "ImpossiblePogo", mImpPogo[i]);
         Configuration.SetKeyword(section, "AutoFire", mFullyAutomatic[i]);
 	}
@@ -704,11 +708,21 @@ void CInput::waitForAnyInput()
 }
 
 
-bool CInput::getTwoButtonFiring(int player) { return TwoButtonFiring[player]; }
-void CInput::setTwoButtonFiring(int player, bool value) { TwoButtonFiring[player]=value; }
+bool CInput::isSuperRunEnabled(const int player)
+{ return mSuperRun[player]; }
+void CInput::enableSuperRun(const int player, const bool value)
+{ mSuperRun[player]=value; }
 
-bool CInput::isAnalog(const int player) { return mAnalogAxesMovement[player]; }
-void CInput::enableAnalog(const int player, const bool value) { mAnalogAxesMovement[player]=value; }
+
+bool CInput::getTwoButtonFiring(const int player)
+{ return TwoButtonFiring[player]; }
+void CInput::setTwoButtonFiring(const int player, const bool value)
+{ TwoButtonFiring[player]=value; }
+
+bool CInput::isAnalog(const int player)
+{ return mAnalogAxesMovement[player]; }
+void CInput::enableAnalog(const int player, const bool value)
+{ mAnalogAxesMovement[player]=value; }
 
 
 GsRect<int> tiltBack(const GsRect<int> &screenRect,

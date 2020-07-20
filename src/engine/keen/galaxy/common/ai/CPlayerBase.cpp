@@ -349,8 +349,12 @@ void CPlayerBase::processInput()
             gInput.getHoldedCommand(mPlayerCtrlNum, IC_JUMP) ? 1 : 0;
     mPlaycontrol[PA_POGO] =
             gInput.getHoldedCommand(mPlayerCtrlNum, IC_POGO) ? 1 : 0;
-    mPlaycontrol[PA_RUN]  =
-            gInput.getHoldedCommand(mPlayerCtrlNum, IC_RUN)  ? 1 : 0;
+
+    if(gInput.isSuperRunEnabled(mPlayerCtrlNum))
+    {
+        mPlaycontrol[PA_RUN]  =
+                gInput.getHoldedCommand(mPlayerCtrlNum, IC_RUN)  ? 1 : 0;
+    }
 
     // The possibility to charge jumps.
     // This is mainly used for the pogo. it is limited to 50

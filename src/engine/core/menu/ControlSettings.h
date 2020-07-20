@@ -41,6 +41,7 @@ private:
 
     std::shared_ptr<Switch> mpTwoButtonSwitch;
     std::shared_ptr<Switch> mpAnalogSwitch;
+    std::shared_ptr<Switch> mpSuperRunSwitch;
     std::shared_ptr<Switch> mpSuperPogoSwitch;
     std::shared_ptr<Switch> mpImpPogoSwitch;
     std::shared_ptr<Switch> mpAutoGunSwitch;
