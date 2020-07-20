@@ -198,6 +198,13 @@ void CInput::openJoyAndPrintStats(const int idx)
     gLogging.ftextOut("    %s<br>", SDL_JoystickName(idx));
 #endif
 
+    for(auto curJoy : mp_Joysticks)
+    {
+        // Is joystick already added?
+        if(SDL_JoystickInstanceID(curJoy) == idx)
+            return;
+    }
+
     SDL_Joystick *pJoystick = SDL_JoystickOpen(idx);
 
     if(!pJoystick)
@@ -209,6 +216,7 @@ void CInput::openJoyAndPrintStats(const int idx)
     char guidStr[64];
 
     const auto guid = SDL_JoystickGetGUID(pJoystick);
+
     SDL_JoystickGetGUIDString(guid, guidStr, sizeof (guidStr));
 
     const auto id = SDL_JoystickInstanceID(pJoystick);
@@ -226,7 +234,7 @@ void CInput::enableJoysticks()
 {
     SDL_JoystickEventState(SDL_ENABLE);
 
-    /*const auto joyNum = SDL_NumJoysticks();
+    const auto joyNum = SDL_NumJoysticks();
     if( joyNum > int(mp_Joysticks.size()) )
     {
         gLogging.ftextOut("Detected %i joystick(s).<br>\n", joyNum-mp_Joysticks.size() );
@@ -240,8 +248,7 @@ void CInput::enableJoysticks()
     else
     {
         gLogging.ftextOut("No joysticks were found.<br>\n");
-    }*/
-
+    }
 }
 
 /**
