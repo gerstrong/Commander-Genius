@@ -679,8 +679,10 @@ void CPlayerBase::getEaten()
 {
 	// Here were prepare Keen to die, setting the action to die
     if(!gBehaviorEngine.mCheatmode.god && !mDying)
-	{
+	{                
 		mDying = true;
+        m_Inventory.Item.m_lifes--;
+
 		yinertia = 0;
 		dontdraw = true;
 		solid = false;
@@ -689,7 +691,7 @@ void CPlayerBase::getEaten()
         playSound( SOUND_KEEN_DIE,
                           SoundPlayMode::PLAY_NORESTART );
 
-		mp_processState = &CPlayerBase::processGetEaten;        
+        mp_processState = &CPlayerBase::processGetEaten;
 	}    
 }
 
