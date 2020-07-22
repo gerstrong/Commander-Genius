@@ -34,7 +34,7 @@ public:
 	void processStopPole();
 	void processFlipSwitch();	
 	
-	bool isNearby(CSpriteObject &theObject);
+    bool isNearby(CSpriteObject &);
 
 	int checkSolidD( int x1, int x2, int y2, const bool push_mode );
 
@@ -56,6 +56,8 @@ private:
     bool mAllowClimbing = true;
 
     bool mScreamAfterShoot = true;
+
+    bool mKillOnPole = true;
 };
 
 }
