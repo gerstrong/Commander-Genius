@@ -434,6 +434,9 @@ finale=<on/off>      If you want to directly show the finale of a game, pass
 level=<level>        Supplying this parameter will directly open the given
                      level. This is useful for testing.
 
+exportGfx=<on/off>   Exports graphics of the loaded game and saves them as BMP
+                     in the gaming directory
+
 
 Example: If you want to start the game with the path "C:\games\keen5", type:
 

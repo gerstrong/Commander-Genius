@@ -23,10 +23,12 @@
 #include <base/GsLogging.h>
 #include <base/utils/StringUtils.h>
 #include <base/video/CVideoDriver.h>
+#include <base/GsArguments.h>
 #include "fileio/CTileLoader.h"
 #include "engine/core/CSpriteObject.h"
 #include "engine/core/CPlanes.h"
 #include <fstream>
+#include <algorithm>
 #include <cstring>
 #include <string>
 #include <SDL.h>
@@ -171,7 +173,7 @@ CEGAGraphicsGalaxy::CEGAGraphicsGalaxy()
 size_t CEGAGraphicsGalaxy::getEpisodeInfoIndex()
 {
   const int  episode = gKeenFiles.exeFile.getEpisode();
-  const bool isDemo    = gKeenFiles.exeFile.isDemo();
+  const bool isDemo  = gKeenFiles.exeFile.isDemo();
   
   if (episode == 6 && isDemo)
     {
@@ -943,6 +945,29 @@ bool CEGAGraphicsGalaxy::readTables()
 }
 
 
+bool exportArgEnabled()
+{
+    std::string exportGfxStr = gArgs.getValue("exportGfx");
+    std::transform(exportGfxStr.begin(), exportGfxStr.end(), exportGfxStr.begin(), ::tolower);
+    return (exportGfxStr == "on");
+}
+
+bool exportGfxToFile(SDL_Surface *sfc,
+                     const std::string &filename)
+{
+    const auto fullpath = GetWriteFullFileName(
+                JoinPaths(gKeenFiles.gameDir, filename) );
+
+    if(SDL_SaveBMP(sfc, fullpath.c_str()) != 0)
+    {
+        // Error saving bitmap
+        gLogging.ftextOut("SDL_SaveBMP failed: %s\n", SDL_GetError());
+        return false;
+    }
+
+    return true;
+}
+
 /**
  * \brief   Read the fonts to the Gfx-Engine
  * \return  returns true, if the fonts were read successfully, else false
@@ -954,7 +979,9 @@ bool CEGAGraphicsGalaxy::readfonts()
     const int ep = getEpisodeInfoIndex();
     SDL_Color *Palette = gGraphics.Palette.m_Palette;
 
-    gGraphics.createEmptyFontmaps(EpisodeInfo[ep].NumFonts+1);
+    gGraphics.createEmptyFontmaps(EpisodeInfo[ep].NumFonts+1);    
+
+    const auto exportGfx = exportArgEnabled();
 
     for(Uint16 i = 0; i < EpisodeInfo[ep].NumFonts; i++)
     {
@@ -1083,6 +1110,13 @@ bool CEGAGraphicsGalaxy::readfonts()
             {
                 return false;
             }
+
+
+            if(exportGfx)
+            {
+                exportGfxToFile(sfc, std::to_string(ep+4) + std::string("FONT") +
+                                std::to_string(i) + std::string(".bmp"));
+            }
         }
 
         font.deriveHighResSurfaces();
@@ -1136,6 +1170,7 @@ bool CEGAGraphicsGalaxy::readBitmaps()
         bitmapNameOffset = 3;
     }
 
+    const auto exportGfx = exportArgEnabled();
     auto &bitmapNamesThisEp = m_BitmapNameMap[bitmapNameOffset];
 
     for(unsigned int i = 0; i < epInfo.NumBitmaps; i++)
@@ -1172,8 +1207,16 @@ bool CEGAGraphicsGalaxy::readBitmaps()
 
         auto &bmpName = bitmapNamesThisEp[i];
 
-        gGraphics.setBitmapNameForIdx(bmpName, i);        
+        gGraphics.setBitmapNameForIdx(bmpName, i);
+
+        if(exportGfx)
+        {
+            exportGfxToFile(bitmap.getSDLSurface(), std::to_string(ep+4) + std::string("BMP") +
+                            std::to_string(i) + std::string(".bmp"));
+        }
+
     }
+
 
 
     // For extra graphics loaded externally
@@ -1272,6 +1315,8 @@ bool CEGAGraphicsGalaxy::readMaskedBitmaps()
     SDL_Rect bmpRect;
     bmpRect.x = bmpRect.y = 0;
 
+    const auto exportGfx = exportArgEnabled();
+
     for(size_t i = 0; i < EpisodeInfo[ep].NumMaskedBitmaps; i++)
     {
         // Use upper limit to protect against overflow.
@@ -1303,6 +1348,13 @@ bool CEGAGraphicsGalaxy::readMaskedBitmaps()
         extractPicture(Bitmap.getSDLSurface(),
                 data,
                 BmpMaskedHead[i].Width, BmpMaskedHead[i].Height, true);
+
+        if(exportGfx)
+        {
+            exportGfxToFile(Bitmap.getSDLSurface(), std::to_string(ep+4) + std::string("MBMP") +
+                            std::to_string(i) + std::string(".bmp"));
+        }
+
     }
     return true;
 }
@@ -1324,6 +1376,8 @@ bool CEGAGraphicsGalaxy::readTilemaps( const size_t NumTiles, size_t pbasetilesi
     const Uint16 size = (1 << pbasetilesize);
 
     const size_t tileSize = 4 * (size / 8) * size;
+
+    const auto exportGfx = exportArgEnabled();
 
     if(tileoff)
     {
@@ -1350,10 +1404,13 @@ bool CEGAGraphicsGalaxy::readTilemaps( const size_t NumTiles, size_t pbasetilesi
         extractTile(sfc, data, size, rowlength, i, tileoff);
     }
 
-    // std::string filename = std::string("/tmp/read_tilemaps_") + std::to_string(NumTiles) + std::string("_") + std::to_string(IndexOfTiles) + std::string(".bmp");
-    // SDL_SaveBMP(sfc, filename.c_str());
-
     SDL_UnlockSurface(sfc);
+
+    if(exportGfx)
+    {
+        exportGfxToFile(sfc, std::to_string(gKeenFiles.exeFile.getEpisode()) + std::string("TIL") +
+                        std::to_string(0) + std::string(".bmp"));
+    }
 
     /// Let's see if there is a high colour tilemap we can load instead
     if(pbasetilesize == 4 || pbasetilesize == 3) // Only valid for the 16x16 tiles tilemap!
@@ -1389,6 +1446,10 @@ bool CEGAGraphicsGalaxy::readMaskedTilemaps( size_t NumTiles, size_t pbasetilesi
     Tilemap.CreateSurface( gGraphics.Palette.m_Palette, SDL_SWSURFACE,
                             NumTiles, pbasetilesize, rowlength );
     SDL_Surface *sfc = Tilemap.getSDLSurface();
+
+    const auto exportGfx = exportArgEnabled();
+
+
     SDL_FillRect(sfc,NULL, 0);
     if(SDL_MUSTLOCK(sfc))   SDL_LockSurface(sfc);
 
@@ -1422,6 +1483,13 @@ bool CEGAGraphicsGalaxy::readMaskedTilemaps( size_t NumTiles, size_t pbasetilesi
 
         extractMaskedTile(sfc, data, size, rowlength, i, tileoff);
     }
+
+    if(exportGfx)
+    {
+        exportGfxToFile(sfc, std::to_string(gKeenFiles.exeFile.getEpisode()) + std::string("TIL") +
+                        std::to_string(0) + std::string(".bmp"));
+    }
+
 
     // std::string filename = std::string("/tmp/read_masked_tilemaps_") + std::to_string(NumTiles) + std::string("_") + std::to_string(IndexOfTiles) + std::string(".bmp");
     // SDL_SaveBMP(sfc, filename.c_str());
@@ -1494,6 +1562,9 @@ bool CEGAGraphicsGalaxy::readSprites( const size_t numSprites,
     // ARM processor requires all ints and structs to be 4-byte aligned, so we're just using memcpy()
     std::vector<SpriteHeadStruct> sprHeads(numSprites, SpriteHeadStruct());
     memcpy( sprHeads.data(), &(headData.at(0)), numSprites*sizeof(SpriteHeadStruct) );
+
+    const auto exportGfx = exportArgEnabled();
+
 
     for(int i = 0; i < int(numSprites); i++)
     {
@@ -1598,8 +1669,12 @@ bool CEGAGraphicsGalaxy::readSprites( const size_t numSprites,
         auto &sprNameRef = m_SpriteNameMap[spriteNameOffset];
         sprite.setName(sprNameRef[i]);
 
-        // std::string filename = std::string("/tmp/read_sprites_") + std::to_string(i) + std::string(".bmp");
-        // SDL_SaveBMP(sfc, filename.c_str());
+        if(exportGfx)
+        {
+            exportGfxToFile(sfc, std::to_string(gKeenFiles.exeFile.getEpisode()) + std::string("SPR") +
+                            std::to_string(0) + std::string(".bmp"));
+        }
+
     }
 
 

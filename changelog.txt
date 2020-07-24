@@ -1,10 +1,14 @@
+v2.4.6:
+-------
+- New Export graphics feature
+- Super Run option. The run button now only works when you enable that option
+
 v2.4.5.3:
 ---------
 - Pole colission detection improvements
 - Story page improvements
 - General collision detection improvement
 - Gamepad now can be connected or disconnected while software is running
-- Super Run option. The run button now only works when you enable that option
 
 v2.4.5:
 -------
