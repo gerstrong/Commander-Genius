@@ -119,6 +119,10 @@ void change_file_date(const char *filename, uLong dosdate, tm_unz tmu_date)
   ut.actime=ut.modtime=mktime(&newdate);
   utime(filename,&ut);
 #endif
+
+  (void) filename;
+  (void) dosdate;
+  (void) tmu_date;
 #endif
 }
 
@@ -340,7 +344,7 @@ int do_extract_currentfile(unzFile uf,
     }
     else
     {
-        const char* write_filename;
+        char* write_filename;
         int skip=0;
 
         if ((*popt_extract_without_path)==0)
@@ -455,7 +459,7 @@ int do_extract_currentfile(unzFile uf,
 
 int do_extract(unzFile uf,
                const int opt_extract_without_path,
-               int opt_overwrite,
+               int *opt_overwrite,
                const char* password)
 {
     uLong i;
@@ -469,7 +473,7 @@ int do_extract(unzFile uf,
     for (i=0;i<gi.number_entry;i++)
     {
         if ((err = do_extract_currentfile(uf,&opt_extract_without_path,
-                                      &opt_overwrite,
+                                      opt_overwrite,
                                       password)) != UNZ_OK)
             break;
 
@@ -490,7 +494,7 @@ int do_extract(unzFile uf,
 int do_extract_onefile(unzFile uf,
                        const char* filename,
                        const int opt_extract_without_path,
-                       const int opt_overwrite,
+                       int *opt_overwrite,
                        const char* password)
 
 {
@@ -502,7 +506,7 @@ int do_extract_onefile(unzFile uf,
     }
 
     if (do_extract_currentfile(uf,&opt_extract_without_path,
-                                      &opt_overwrite,
+                                      opt_overwrite,
                                       password) == UNZ_OK)
         return 0;
     else
@@ -595,9 +599,9 @@ int unzipFile(const char *input,
 
         if (filename_to_extract == NULL)
             //ret_value = do_extract(uf, opt_do_extract_withoutpath, dirname, opt_overwrite, password);
-            ret_value = do_extract(uf, opt_do_extract_withoutpath,  opt_overwrite, password);
+            ret_value = do_extract(uf, opt_do_extract_withoutpath,  &opt_overwrite, password);
         else
-            ret_value = do_extract_onefile(uf, filename_to_extract, opt_do_extract_withoutpath, opt_overwrite, password);
+            ret_value = do_extract_onefile(uf, filename_to_extract, opt_do_extract_withoutpath, &opt_overwrite, password);
     }
 
     unzClose(uf);
