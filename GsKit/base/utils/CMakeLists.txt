@@ -12,15 +12,11 @@ set(HEADERS Base64.h         Event.h       MathLib.h        Ref.h          Utils
 Color.h          EventQueue.h  misc.h           StringBuf.h
 ConfigHandler.h  FindFile.h    Mutex.h          StringUtils.h
 CrashHandler.h   Geometry.h    ReadWriteLock.h  ThreadPool.h
-Debug.h          Iterator.h    RefCounter.h     Unicode.h
-GsDynColor.h
-)
+Debug.h          Iterator.h    RefCounter.h     Unicode.h )
 
 set(SRCS Base64.cpp         CrashHandler.cpp  Geometry.cpp     ThreadPool.cpp
 Color.cpp          Debug.cpp         StringBuf.cpp    Unicode.cpp
-ConfigHandler.cpp  FindFile.cpp      StringUtils.cpp
-GsDynColor.cpp
-)
+ConfigHandler.cpp  FindFile.cpp      StringUtils.cpp )
     
 add_library(${PROJECT_NAME} ${HEADERS} ${SRCS})
 

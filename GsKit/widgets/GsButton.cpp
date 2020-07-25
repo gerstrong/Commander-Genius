@@ -144,6 +144,9 @@ void GsButton::processLogic()
 {
     processBlendEffects();
 
+    mFillColor.ponder(0.0f);
+    mBorderColor.ponder(0.0f);
+
     if(mEnabled)
     {
         // If button was pushed and gets released, trigger the assigned event.
@@ -170,10 +173,10 @@ void GsButton::drawNoStyle(const SDL_Rect& lRect)
 
     GsWeakSurface blitsfc(gVideoDriver.getBlitSurface());
 
-    int lComp = 0xFF;
+    //int lComp = 0xFF;
 
     // Set as default a grey border
-    Uint32 borderColor = blitsfc.mapRGBA( 0xBB, 0xBB, 0xBB, 0xFF);
+    /*Uint32 borderColor = blitsfc.mapRGBA( 0xBB, 0xBB, 0xBB, 0xFF);
 
     if(mEnabled)
     {
@@ -224,9 +227,11 @@ void GsButton::drawNoStyle(const SDL_Rect& lRect)
         redC = 0x8F;
         greenC = 0x8F;
         blueC = 0x8F;
-    }
+    }*/
 
-    const auto fillColor = blitsfc.mapRGBA( redC, greenC, blueC, 0xFF);
+    //const auto fillColor = blitsfc.mapRGBA( redC, greenC, blueC, 0xFF);
+    const auto fillColor = mFillColor.toUint32(blitsfc);
+    const auto borderColor = mBorderColor.toUint32(blitsfc);
 
     GsRect<Uint16> rect(lRect);
 

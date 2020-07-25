@@ -2,6 +2,7 @@
 #define GSDYNCOLOR_H
 
 #include <base/utils/Color.h>
+#include <graphics/GsSurface.h>
 
 /**
  * @brief The GsDynColor class
@@ -19,6 +20,8 @@ public:
     GsDynColor();
 
     void ponder(const float dt);
+
+    Uint32 toUint32(GsWeakSurface &blitsfc) const;
 
 private:
 

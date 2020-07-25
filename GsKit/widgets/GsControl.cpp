@@ -34,7 +34,7 @@ GsControl::~GsControl()
 
 
 void GsControl::processBlendEffects()
-{
+{    
     if(mEnabled)
     {
         // For some nice special effects

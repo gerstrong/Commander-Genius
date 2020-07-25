@@ -16,6 +16,7 @@
 #include <map>
 #include <graphics/GsSurface.h>
 #include <base/utils/Color.h>
+#include <graphics/GsDynColor.h>
 #include <widgets/GsText.h>
 
 #include <functional>
@@ -165,6 +166,9 @@ private:
     const float mRed = 0.322f;
     const float mGreen = 0.984f;
     const float mBlue = 0.322f;
+
+    GsDynColor mFillColor;
+    GsDynColor mBorderColor;
 
 
     std::function <void ()> mFunction;
