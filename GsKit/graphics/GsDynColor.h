@@ -26,6 +26,8 @@ public:
 
     void ponder(const float dt);
 
+    void setTargetColor(const GsColor &newColor);
+
     Uint32 toUint32(GsWeakSurface &blitsfc) const;
 
 private:

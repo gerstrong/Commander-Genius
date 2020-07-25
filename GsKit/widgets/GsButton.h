@@ -162,13 +162,13 @@ private:
 
 	std::shared_ptr<CEvent> mEvent;
 
-    // Default-> Light Green.
-    /*
-    const float mRed = 0.322f;
-    const float mGreen = 0.984f;
-    const float mBlue = 0.322f;
-    */
+    // Different fixed colors to be used for the button
+    GsColor mSelectedColor = GsColor(255, 255, 255);
+    GsColor mEnabledColor = GsColor(224, 224, 244);
+    GsColor mDisabledColor = GsColor(128, 128, 128);
 
+
+    // Current colors used for the Buttons
     GsDynColor mFillColor;
     GsDynColor mBorderColor;
 

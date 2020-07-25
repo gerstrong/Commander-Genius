@@ -29,8 +29,7 @@ mTextWidget(text,
             fontId),
 mText(text),
 mEvent(ev),
-mFillColor(red, green, blue),
-mBorderColor(red, green, blue)
+mSelectedColor(Uint8(red*255.0f), Uint8(green*255.0f), Uint8(blue*255.0f))
 {}
 
 GsButton::GsButton(const std::string& text,
@@ -56,8 +55,7 @@ mTextWidget(text,
             fontId),
 mText(text),
 mEvent(ev),
-mFillColor(red, green, blue),
-mBorderColor(red, green, blue)
+mSelectedColor(red, green, blue)
 {}
 
 GsButton::GsButton(const std::string& text,
@@ -71,8 +69,7 @@ mTextWidget(text,
             GsRect<float>(0.0f, 0.0f, 1.0f, 1.0f),
             fontId),
 mText(text),
-mFillColor(red, green, blue),
-mBorderColor(red, green, blue),
+mSelectedColor(Uint8(red*255.0f), Uint8(green*255.0f), Uint8(blue*255.0f)),
 mFunction(f)
 {}
 
@@ -88,8 +85,7 @@ GsButton::GsButton(const std::string& text,
                 GsRect<float>(0.0f, 0.0f, 1.0f, 1.0f),
                 fontId),
     mText(text),
-    mFillColor(red, green, blue),
-    mBorderColor(red, green, blue),
+    mSelectedColor(Uint8(red*255.0f), Uint8(green*255.0f), Uint8(blue*255.0f)),
     mFunction(f)
 {}
 
@@ -142,6 +138,20 @@ void GsButton::processLogic()
 
     mFillColor.ponder(0.0f);
     mBorderColor.ponder(0.0f);
+
+    if(mSelected)
+    {
+        mFillColor.setTargetColor(mSelectedColor);
+    }
+    else if(mEnabled)
+    {
+        mFillColor.setTargetColor(mEnabledColor);
+    }
+    else
+    {
+        mFillColor.setTargetColor(mDisabledColor);
+    }
+
 
     if(mEnabled)
     {
