@@ -9,6 +9,7 @@
 #include <base/GsLogging.h>
 #include <base/utils/StringUtils.h>
 #include <base/CInput.h>
+#include <base/GsArguments.h>
 
 #include <base/video/GsEffectController.h>
 
@@ -18,6 +19,16 @@
 #include "GsBitmap.h"
 #include "GsPalette.h"
 #include "GsCursor.h"
+
+#include <algorithm>
+
+
+bool exportArgEnabled()
+{
+    std::string exportGfxStr = gArgs.getValue("exportGfx");
+    std::transform(exportGfxStr.begin(), exportGfxStr.end(), exportGfxStr.begin(), ::tolower);
+    return (exportGfxStr == "on");
+}
 
 
 ///

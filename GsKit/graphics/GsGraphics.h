@@ -28,6 +28,11 @@
 #include <base/Singleton.h>
 #define gGraphics GsGraphics::get()
 
+/**
+ * @brief exportArgEnabled Was CG executed with the exportGfx parameter enabled
+ * @return true if it was enabled, otherwise false.
+ */
+bool exportArgEnabled();
 
 class GsFontLegacy;
 
