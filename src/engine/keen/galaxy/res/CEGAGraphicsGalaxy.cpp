@@ -28,7 +28,6 @@
 #include "engine/core/CSpriteObject.h"
 #include "engine/core/CPlanes.h"
 #include <fstream>
-#include <algorithm>
 #include <cstring>
 #include <string>
 #include <SDL.h>
@@ -944,13 +943,6 @@ bool CEGAGraphicsGalaxy::readTables()
     return true;
 }
 
-
-bool exportArgEnabled()
-{
-    std::string exportGfxStr = gArgs.getValue("exportGfx");
-    std::transform(exportGfxStr.begin(), exportGfxStr.end(), exportGfxStr.begin(), ::tolower);
-    return (exportGfxStr == "on");
-}
 
 bool exportGfxToFile(SDL_Surface *sfc,
                      const std::string &filename)
