@@ -9,6 +9,8 @@ add_subdirectory(lua)
 add_subdirectory(utils)
 add_subdirectory(video)
 
+include_directories(lua)
+
 set(HEADERS CInput.h        GsEventContainer.h  GsPython.h        PointDevice.h
 Configurator.h  GsEvent.h           GsTimer.h         Singleton.h
 GsApp.h         GsGear.h            GsTTFSystem.h     TypeDefinitions.h
