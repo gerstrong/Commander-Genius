@@ -29,9 +29,8 @@ mTextWidget(text,
             fontId),
 mText(text),
 mEvent(ev),
-mRed(red),
-mGreen(green),
-mBlue(blue)
+mFillColor(red, green, blue),
+mBorderColor(red, green, blue)
 {}
 
 GsButton::GsButton(const std::string& text,
@@ -57,9 +56,8 @@ mTextWidget(text,
             fontId),
 mText(text),
 mEvent(ev),
-mRed(red),
-mGreen(green),
-mBlue(blue)
+mFillColor(red, green, blue),
+mBorderColor(red, green, blue)
 {}
 
 GsButton::GsButton(const std::string& text,
@@ -73,9 +71,8 @@ mTextWidget(text,
             GsRect<float>(0.0f, 0.0f, 1.0f, 1.0f),
             fontId),
 mText(text),
-mRed(red),
-mGreen(green),
-mBlue(blue),
+mFillColor(red, green, blue),
+mBorderColor(red, green, blue),
 mFunction(f)
 {}
 
@@ -91,9 +88,8 @@ GsButton::GsButton(const std::string& text,
                 GsRect<float>(0.0f, 0.0f, 1.0f, 1.0f),
                 fontId),
     mText(text),
-    mRed(red),
-    mGreen(green),
-    mBlue(blue),
+    mFillColor(red, green, blue),
+    mBorderColor(red, green, blue),
     mFunction(f)
 {}
 

@@ -163,9 +163,11 @@ private:
 	std::shared_ptr<CEvent> mEvent;
 
     // Default-> Light Green.
+    /*
     const float mRed = 0.322f;
     const float mGreen = 0.984f;
     const float mBlue = 0.322f;
+    */
 
     GsDynColor mFillColor;
     GsDynColor mBorderColor;

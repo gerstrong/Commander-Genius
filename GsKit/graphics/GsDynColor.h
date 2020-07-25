@@ -19,6 +19,11 @@ class GsDynColor
 public:
     GsDynColor();
 
+    GsDynColor(const float red,
+               const float green,
+               const float blue);
+
+
     void ponder(const float dt);
 
     Uint32 toUint32(GsWeakSurface &blitsfc) const;
