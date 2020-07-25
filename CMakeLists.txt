@@ -19,6 +19,12 @@ if(USE_VIRTUALPAD)
     ADD_DEFINITIONS(-DUSE_VIRTUALPAD)
 endif(USE_VIRTUALPAD)
 
+# In case you want a switch build
+OPTION(NINTENDO_SWITCH "Build for Nintendo Switch" No)
+
+if(NINTENDO_SWITCH)
+    ADD_DEFINITIONS(-D__SWITCH__)
+endif()
 
 OPTION(DUMP_MTCS "Show Mouse Touch Cursor Position" No)
 

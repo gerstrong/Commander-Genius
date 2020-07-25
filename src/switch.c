@@ -7,7 +7,6 @@
  * Elias Oenal <cg@eliasoenal.com>
  */
 
-#if defined(__SWITCH__)
 #include <stdio.h>
 #include "switch.h"
 
@@ -26,4 +25,3 @@ void switch_exit()
     romfsExit();
     socketExit();
 }
-#endif // defined(__SWITCH__)

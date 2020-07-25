@@ -7,8 +7,9 @@ Project(GsKit_base_lua)
 
 set (CMAKE_C_STANDARD 99)
 
-# TODO: Check if this also works on Windows and MacOS
-add_definitions(-DLUA_USE_POSIX)
+if(UNIX)
+    add_definitions(-DLUA_USE_POSIX)
+endif()
 
 set(HEADERS lapi.h     ldebug.h  llex.h     lopcodes.h  lstring.h  lua.h      lzio.h
 lauxlib.h  ldo.h     llimits.h  lparser.h   ltable.h   lualib.h

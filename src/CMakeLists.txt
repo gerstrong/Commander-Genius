@@ -134,13 +134,19 @@ if(USE_SDL2)
 endif(USE_SDL2)
 
 
+set(CGENIUS_SRC CGenius.cpp
+    fileio.cpp misc.cpp
+    CRingBuffer.h
+    fileio.h
+    ${cg_obj_libs})
+
+if(NINTENDO_SWITCH)
+    set(CGENIUS_SRC ${CGENIUS_SRC} switch.c)
+endif(NINTENDO_SWITCH)
+
 
 # Add executable Commander Genius
-add_executable (CGeniusExe CGenius.cpp
-                fileio.cpp misc.cpp switch.c
-                CRingBuffer.h
-                fileio.h
-                ${cg_obj_libs})
+add_executable (CGeniusExe ${CGENIUS_SRC})
 
 # Since some RefKeen is used, we also need C99 Standard
 set_property(TARGET CGeniusExe PROPERTY C_STANDARD 99)
