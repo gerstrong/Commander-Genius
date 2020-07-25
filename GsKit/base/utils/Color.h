@@ -104,9 +104,10 @@ inline Uint32 MakeColour(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
 // Device-independent color
 struct GsColor
 {
-    GsColor() {}
+    GsColor() {}    
     GsColor(Uint8 _r, Uint8 _g, Uint8 _b) : r(_r), g(_g), b(_b), a(SDL_ALPHA_OPAQUE) {}
     GsColor(Uint8 _r, Uint8 _g, Uint8 _b, Uint8 _a) : r(_r), g(_g), b(_b), a(_a) {}
+
     GsColor(SDL_PixelFormat *f, Uint32 cl) { SDL_GetRGBA(cl, f, &r, &g, &b, &a); }
     //explicit GsColor(Uint32 cl)	{ set(getMainPixelFormat(), cl); }
     GsColor(const SDL_Color& cl) : r(cl.r), g(cl.g), b(cl.b), a(SDL_ALPHA_OPAQUE) {}
