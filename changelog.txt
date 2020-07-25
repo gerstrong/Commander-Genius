@@ -1,4 +1,4 @@
-vX.X.X:
+v2.5.0:
 -------
 - LUA support will replace Python scripting
 - Quickload in the galaxy died dialog ("You didn't make it past...")
