@@ -161,10 +161,10 @@ private:
 
 	std::shared_ptr<CEvent> mEvent;
 
-    // Default-> Light Blue. This will colorize the buttons a bit. Effects continue working.
-    const float mRed = 0.93f;
-    const float mGreen = 0.93f;
-    const float mBlue = 1.0f;
+    // Default-> Light Green.
+    const float mRed = 0.322f;
+    const float mGreen = 0.984f;
+    const float mBlue = 0.322f;
 
 
     std::function <void ()> mFunction;

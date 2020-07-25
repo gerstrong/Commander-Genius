@@ -115,7 +115,7 @@ bool CGameLauncher::setupMenu()
                              GsRect<float>(0.0f, 0.0f, 0.069f, 0.069f),
                              new GMQuit(),
                              -1,
-                             1.0f, 0.75f, 0.75f ) );
+                             GsColor(0x52, 0xfb, 0x52) ) );
 
     mLauncherDialog.add(new CGUIText("Pick a Game",
                                       GsRect<float>(0.14f, 0.01f, 0.72f, 0.05f)));
