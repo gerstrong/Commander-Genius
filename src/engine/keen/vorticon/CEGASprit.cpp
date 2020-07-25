@@ -13,6 +13,7 @@
 #include "engine/core/CPlanes.h"
 #include <base/utils/FindFile.h>
 #include <base/video/CVideoDriver.h>
+#include <base/GsLogging.h>
 #include "engine/core/spritedefines.h"
 #include "fileio/lz.h"
 #include "fileio/KeenFiles.h"
@@ -85,6 +86,24 @@ bool CEGASprit::loadHead(char *data)
     return true;
 }
 
+
+static bool exportGfxToFile(SDL_Surface *sfc,
+                     const std::string &filename)
+{
+    const auto fullpath = GetWriteFullFileName(
+                JoinPaths(gKeenFiles.gameDir, filename) );
+
+    if(SDL_SaveBMP(sfc, fullpath.c_str()) != 0)
+    {
+        // Error saving bitmap
+        gLogging.ftextOut("SDL_SaveBMP failed: %s\n", SDL_GetError());
+        return false;
+    }
+
+    return true;
+}
+
+
 bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 {
     Uint32 percent = 0;
@@ -150,6 +169,7 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 
         percent = (i*50)/mNumsprites;
         mLoader.setPermilage(50+percent);
+
 	}
 
     mLoader.setPermilage(100);
@@ -170,7 +190,23 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
             percent = (s*100)/mNumsprites;
             mLoader.setPermilage(100+percent);
 		}
-	}
+	}    
+
+    // Export those sprites if enabled
+    const auto exportGfx = exportArgEnabled();
+    if(exportGfx)
+    {
+        for(int s=0 ; s<mNumsprites ; s++)
+        {
+            auto &sfc = SpriteVecPlayer1[s].Surface();
+
+            exportGfxToFile(sfc.getSDLSurface(),
+                            std::to_string(m_Episode) + std::string("SPR") +
+                            itoa(s) +
+                            std::string(".bmp"));
+        }
+    }
+
 
     mLoader.setPermilage(200);
 
