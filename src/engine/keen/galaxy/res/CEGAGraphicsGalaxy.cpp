@@ -944,7 +944,7 @@ bool CEGAGraphicsGalaxy::readTables()
 }
 
 
-bool exportGfxToFile(SDL_Surface *sfc,
+static bool exportGfxToFile(SDL_Surface *sfc,
                      const std::string &filename)
 {
     const auto fullpath = GetWriteFullFileName(

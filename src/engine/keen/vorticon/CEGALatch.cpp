@@ -97,6 +97,21 @@ bool CEGALatch::loadHead( char *data, short m_episode )
 }
 
 
+static bool exportGfxToFile(SDL_Surface *sfc,
+                     const std::string &filename)
+{
+    const auto fullpath = GetWriteFullFileName(
+                JoinPaths(gKeenFiles.gameDir, filename) );
+
+    if(SDL_SaveBMP(sfc, fullpath.c_str()) != 0)
+    {
+        // Error saving bitmap
+        gLogging.ftextOut("SDL_SaveBMP failed: %s\n", SDL_GetError());
+        return false;
+    }
+
+    return true;
+}
 
 
 void CEGALatch::loadTilemap(GsTilemap &Tilemap, CPlanes &Planes, const int episode, const std::string &path)
@@ -125,6 +140,8 @@ void CEGALatch::loadTilemap(GsTilemap &Tilemap, CPlanes &Planes, const int episo
 
 
 
+
+
 bool CEGALatch::loadData( const std::string &path,
                           const short episode,
                           const int version,
@@ -136,6 +153,7 @@ bool CEGALatch::loadData( const std::string &path,
     Uint16 width, height;
     SDL_Surface *sfc;
 
+    const auto exportGfx = exportArgEnabled();
 
 	filename = getResourceFilename("egalatch.ck" + itoa(episode), path);
 
@@ -195,7 +213,6 @@ bool CEGALatch::loadData( const std::string &path,
 
 	gGraphics.getFontLegacy(2).loadAlternateFont();
 
-
 	if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
 
 	Uint8 *pixel = (Uint8*) sfc->pixels;
@@ -213,6 +230,13 @@ bool CEGALatch::loadData( const std::string &path,
 					 plane4 + m_tiles16location,
 					 0);
 
+
+    if(exportGfx)
+    {
+        exportGfxToFile(sfc, std::to_string(episode) + std::string("FONTMAP") +
+                        std::string(".bmp"));
+    }
+
 	gGraphics.freeTilemap();
 	gGraphics.createEmptyTilemaps(2);
 	
@@ -226,6 +250,17 @@ bool CEGALatch::loadData( const std::string &path,
 					 0);	
 	
 	loadTilemap(gGraphics.getTileMap(1), Planes, episode, path);
+
+    if(exportGfx)
+    {
+        exportGfxToFile(gGraphics.getTileMap(0).getSDLSurface(),
+                        std::to_string(episode) + std::string("0TILES") +
+                        std::string(".bmp"));
+        exportGfxToFile(gGraphics.getTileMap(1).getSDLSurface(),
+                        std::to_string(episode) + std::string("1TILES") +
+                        std::string(".bmp"));
+    }
+
 
     gGraphics.getTileMap(0).optimizeSurface();
     gGraphics.getTileMap(1).optimizeSurface();
@@ -268,6 +303,19 @@ bool CEGALatch::loadData( const std::string &path,
 			if(SDL_MUSTLOCK(sfc)) SDL_UnlockSurface(sfc);
 		}
 	}
+
+    if(exportGfx)
+    {
+        for(int b=0 ; b<m_bitmaps ; b++)
+        {
+            GsBitmap &bitmap = gGraphics.getBitmapFromId(0, b);
+            exportGfxToFile(bitmap.getSDLSurface(),
+                            std::to_string(episode) + std::string("BMP") +
+                            itoa(b) +
+                            std::string(".bmp"));
+        }
+    }
+
 
 	std::set<std::string> filelist;
 	FileListAdder fileListAdder;
