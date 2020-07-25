@@ -6,7 +6,6 @@
  */
 
 #include "CPlayerLevel.h"
-#include "CBullet.h"
 #include "platform/CPlatform.h"
 #include "../CGalaxySpriteObject.h"
 #include "CSecurityDoor.h"
@@ -145,30 +144,53 @@ bool CPlayerLevel::verifyforPole()
 
     const auto firstX = l_x_l-(1<<CSF);
     const auto lastX  = l_x_r+(1<<CSF);
+    bool foundPole = false;
+    auto xTarget = firstX;
+
     for(int x = firstX ; x<=lastX ; x+=(1<<CSF))
-    {
+    {       
         if( ( yDir < 0 && hitdetectWithTileProperty(1, x, l_y_up)  ) ||
             ( yDir > 0 && hitdetectWithTileProperty(1, x, l_y_down)  ) )
         {
-            cancelAllMoveTasks();
+            // first pole found
+            if(!foundPole)
+            {
+                xTarget = x;
+                foundPole = true;
+            }
+            else // Is there another pole closer to the player?
+            {
+                const auto xdiffTarget = std::abs(getXMidPos()-xTarget);
+                const auto xdiffNewTarget = std::abs(getXMidPos()-x);
 
-            // Move to the proper X Coordinates, so Keen really grabs it!
-            const auto polePosX = (x>>CSF)<<CSF;
-            const auto centeredX = polePosX-((1<<CSF)/2);
-            moveTo(GsVec2D<int>(centeredX, getYPosition()));
-
-            xinertia = 0;
-
-            //next.x = 0;
-            //next.y = 64*yDir;
-
-            // Set Keen in climb mode
-            setAction(A_KEEN_POLE);
-            mIsClimbing = true;
-            mClipped = false;
-            solid = false;
-            return true;
+                if(xdiffNewTarget<xdiffTarget)
+                {
+                   xTarget = x;
+                }
+            }
         }
+    }
+
+    if(foundPole)
+    {
+        cancelAllMoveTasks();
+
+        // Move to the proper X Coordinates, so Keen really grabs it!
+        const auto polePosX = (xTarget>>CSF)<<CSF;
+        const auto centeredX = polePosX-((1<<CSF)/2);
+        moveTo(GsVec2D<int>(centeredX, getYPosition()));
+
+        xinertia = 0;
+
+        //next.x = 0;
+        //next.y = 64*yDir;
+
+        // Set Keen in climb mode
+        setAction(A_KEEN_POLE);
+        mIsClimbing = true;
+        mClipped = false;
+        solid = false;
+        return true;
     }
 
 	return false;
@@ -684,28 +706,6 @@ void CPlayerLevel::processInput()
 }
 
 
-
-void CPlayerLevel::tryToShoot( const GsVec2D<int> &pos, const int xDir, const int yDir )
-{
-    if(m_Inventory.Item.m_bullets > 0)
-    {
-        spawnObj(new CBullet(mpMap, 0, pos.x, pos.y, xDir, yDir, mSprVar));
-
-        CPhysicsSettings &Physics = gBehaviorEngine.getPhysicsSettings();
-        if(!Physics.player.infiniteAmmo)
-            m_Inventory.Item.m_bullets--;
-
-        m_Inventory.addAchievementTask("I'm not Duke!", 1);
-    }
-    else
-    {
-        playSound( SOUND_GUN_CLICK );
-    }
-
-    mReleasedShot = true;
-}
-
-
 void CPlayerLevel::shootInAir()
 {
 	// process simple shooting
@@ -757,76 +757,88 @@ bool CPlayerLevel::checkandtriggerforCliffHanging()
             
     if( mPlaycontrol[PA_X]<0 && blockedl )
     {
-	const int xLeft = (getXLeftPos()>>CSF)-1;
-    bool check_block = TileProperty[mpMap->at(xLeft, yUp-1)].bup;
-    check_block |= TileProperty[mpMap->at(xLeft, yUp-1)].bright;
-    const bool check_block_lower = TileProperty[mpMap->at(xLeft, yUp)].bright;
-	
-	if( !check_block && check_block_lower )
-	{
-	    setAction(A_KEEN_HANG);
-	    setActionSprite();
-	    calcBoundingBoxes();
-	    
-	    Uint32 x = (xLeft+1)<<CSF;
-	    Uint32 y = yUp<<CSF;
-	    
-	    x -= m_BBox.x1;
-	    x -= (4<<STC);
-	    y -= m_BBox.y1;
-	    
-	    moveTo(x,y);
-	    solid = false;
-	    xinertia = 0;
-	    yinertia = 0;
-	    m_hangtime = MAX_CLIFFHANG_TIME;
-	    return true;
-	}
+        const int xLeft = (getXLeftPos()>>CSF)-1;
+
+        const auto mapUpper1Off = mpMap->at(xLeft, yUp-1);
+        const auto mapUpper2Off = mpMap->at(xLeft, yUp-2);
+
+        bool check_block = TileProperty[mapUpper1Off].bup;
+        check_block |= TileProperty[mapUpper1Off].bright;
+        check_block |= TileProperty[mapUpper2Off].bup;
+        check_block |= TileProperty[mapUpper2Off].bright;
+
+        const auto mapLowerOff = mpMap->at(xLeft, yUp);
+        const bool check_block_lower = TileProperty[mapLowerOff].bright;
+
+
+        if( !check_block && check_block_lower )
+        {
+            setAction(A_KEEN_HANG);
+            setActionSprite();
+            calcBoundingBoxes();
+
+            Uint32 x = (xLeft+1)<<CSF;
+            Uint32 y = yUp<<CSF;
+
+            x -= m_BBox.x1;
+            x -= (4<<STC);
+            y -= m_BBox.y1;
+
+            moveTo(x,y);
+            solid = false;
+            xinertia = 0;
+            yinertia = 0;
+            m_hangtime = MAX_CLIFFHANG_TIME;
+            return true;
+        }
     }
     else if( mPlaycontrol[PA_X]>0 && blockedr )
     {
-	const int xRight = (getXRightPos()>>CSF)+1;	
-    bool check_block = TileProperty[mpMap->at(xRight, yUp-1)].bup;
-    check_block |= TileProperty[mpMap->at(xRight, yUp-1)].bleft;
-    bool check_block_lower = TileProperty[mpMap->at(xRight, yUp)].bleft;
-	
-	if( !check_block && check_block_lower )
-	{
-	    setAction(A_KEEN_HANG);
-	    setActionSprite();
-	    calcBoundingBoxes();
-	    
-    	    Uint32 x = (xRight)<<CSF;
-	    Uint32 y = yUp<<CSF;
-	    
-	    x -= m_BBox.x2;
-	    y -= m_BBox.y1;
+        const int xRight = (getXRightPos()>>CSF)+1;
 
-	    
-	    moveTo(x,y);
-	    solid = false;
-	    xinertia = 0;
-	    yinertia = 0;
-	    m_hangtime = MAX_CLIFFHANG_TIME;
-	    return true;
-	}
+        const auto mapUpper1Off = mpMap->at(xRight, yUp-1);
+        const auto mapUpper2Off = mpMap->at(xRight, yUp-2);
+
+        bool check_block = TileProperty[mapUpper1Off].bup;
+        check_block |= TileProperty[mapUpper1Off].bleft;
+        check_block |= TileProperty[mapUpper2Off].bup;
+        check_block |= TileProperty[mapUpper2Off].bleft;
+
+
+        const auto mapLower1Off = mpMap->at(xRight, yUp);
+
+        bool check_block_lower = TileProperty[mapLower1Off].bleft;
+
+        if( !check_block && check_block_lower )
+        {
+            setAction(A_KEEN_HANG);
+            setActionSprite();
+            calcBoundingBoxes();
+
+            Uint32 x = (xRight)<<CSF;
+            Uint32 y = yUp<<CSF;
+
+            x -= m_BBox.x2;
+            y -= m_BBox.y1;
+
+
+            moveTo(x,y);
+            solid = false;
+            xinertia = 0;
+            yinertia = 0;
+            m_hangtime = MAX_CLIFFHANG_TIME;
+            return true;
+        }
     }
     return false;
 }
 
 
-
-
-
-
-
 void CPlayerLevel::processCliffHanging()
 {
-    
-    
-    	const int yUp = (getYUpPos()+(5<<STC))>>CSF;
-	const int xLeft = getXLeftPos()>>CSF;
-	const int xRight = getXRightPos()>>CSF;
+    const int yUp = (getYUpPos()+(5<<STC))>>CSF;
+    const int xLeft = getXLeftPos()>>CSF;
+    const int xRight = getXRightPos()>>CSF;
 
 	std::vector<CTileProperties> &TileProperty = gBehaviorEngine.getTileProperties();
 
@@ -3000,12 +3012,12 @@ int CPlayerLevel::checkSolidU(int x1, int x2, int y1, const bool push_mode )
 {
     if(mDying)  return 0;
 
-	if(hitdetectWithTilePropertyHor(1, x1, x2, y1-COLISION_RES, 1<<CSF))
+	if(hitdetectWithTilePropertyHor(1, x1, x2, y1-COLLISION_RES, 1<<CSF))
 	    return 0;
     
 	std::vector<CTileProperties> &TileProperty = gBehaviorEngine.getTileProperties();
 
-	y1 -= COLISION_RES;
+	y1 -= COLLISION_RES;
 
 	// Check for sloped tiles here. They must be handled differently
 	if(solid)
@@ -3014,11 +3026,11 @@ int CPlayerLevel::checkSolidU(int x1, int x2, int y1, const bool push_mode )
 
         if(mIsClimbing)
 		{
-			x1 += 4*COLISION_RES;
-			x2 -= 4*COLISION_RES;
+			x1 += 4*COLLISION_RES;
+			x2 -= 4*COLLISION_RES;
 		}
 
-		for(int c=x1 ; c<=x2 ; c += COLISION_RES)
+		for(int c=x1 ; c<=x2 ; c += COLLISION_RES)
 		{
             blocked = TileProperty[mpMap->at(c>>CSF, y1>>CSF)].bdown;
 
@@ -3063,7 +3075,7 @@ int CPlayerLevel::checkSolidU(int x1, int x2, int y1, const bool push_mode )
 			return 0;
 	}
 
-	return CSpriteObject::checkSolidU(x1, x2, y1+COLISION_RES, push_mode);
+	return CSpriteObject::checkSolidU(x1, x2, y1+COLLISION_RES, push_mode);
 }
 
 
@@ -3073,7 +3085,7 @@ int CPlayerLevel::checkSolidD( int x1, int x2, int y2, const bool push_mode )
 
     if(mDying)  return 0;
 
-	y2 += COLISION_RES;
+	y2 += COLLISION_RES;
 
 	// Check for sloped tiles here. They must be handled differently
 	if(solid)
@@ -3082,11 +3094,11 @@ int CPlayerLevel::checkSolidD( int x1, int x2, int y2, const bool push_mode )
 
         if(mIsClimbing)
 		{
-			x1 += 4*COLISION_RES;
-			x2 -= 4*COLISION_RES;
+			x1 += 4*COLLISION_RES;
+			x2 -= 4*COLLISION_RES;
 		}
 
-		for(int c=x1 ; c<=x2 ; c += COLISION_RES)
+		for(int c=x1 ; c<=x2 ; c += COLLISION_RES)
 		{
             blockedu = TileProperty[mpMap->at(c>>CSF, y2>>CSF)].bup;
 
@@ -3131,7 +3143,7 @@ int CPlayerLevel::checkSolidD( int x1, int x2, int y2, const bool push_mode )
 	if(solid)
 	{
 		int8_t blocked;
-		for(int c=x1 ; c<=x2 ; c += COLISION_RES)
+		for(int c=x1 ; c<=x2 ; c += COLLISION_RES)
 		{
             blocked = TileProperty[mpMap->at(c>>CSF, y2>>CSF)].bup;
 

@@ -3,11 +3,25 @@ vX.X.X:
 - LUA support will replace Python scripting
 - Quickload in the galaxy died dialog ("You didn't make it past...")
 
+v2.4.6:
+-------
+- New Export graphics feature
+- Super Run option. The run button now only works when you enable that option
+
+
+v2.4.5.3:
+---------
+- Pole colission detection improvements
+- Story page improvements
+- General collision detection improvement
+- Gamepad now can be connected or disconnected while software is running
+
 v2.4.5:
 -------
 - QED Fixes
 - Improved Savegame menu style and overall functionality
 - Minor GUI improvements
+- Ai fixes
 
 v2.4.4:
 -------

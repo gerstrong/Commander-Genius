@@ -209,6 +209,7 @@ bool CGameLauncher::setupMenu()
                                                "Tulip,\n"
                                                "Albert Zeyer,\n"
                                                "Pelya,\n"
+                                               "Elias Oenal,\n"
                                                "and many CG Contributors\n",
                                                GsRect<float>(0.0f, 0.95f, 1.0f, 0.05f) ) );
 
@@ -379,6 +380,7 @@ bool CGameLauncher::scanExecutables(const std::string& path)
     ExecutableListFiller execlist;
     FindFiles(execlist, path, false, FM_REG);
 
+
     for(const auto &curFname : execlist.list)
     {
         gLogging.ftextOut("Scanning %s \n<br>", curFname.c_str() );
@@ -453,6 +455,7 @@ bool CGameLauncher::scanExecutables(const std::string& path)
 
         std::string verstr;
         std::string gamespecstring = "Detected game file: " + executable.getFileName();
+
         if( newentry.version<=0 ) // Version couldn't be read!
         {
             verstr = "unknown";
@@ -484,6 +487,7 @@ bool CGameLauncher::scanExecutables(const std::string& path)
             m_ep1slot = m_Entries.size()-1;
             gLogging.ftextOut("   Using for in-game menu resources<br>" );
         }
+
         result |= true;
     }
 
@@ -575,8 +579,6 @@ struct PatchListFiller
         return true;
     }
 };
-
-
 
 
 

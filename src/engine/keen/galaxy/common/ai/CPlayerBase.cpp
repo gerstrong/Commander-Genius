@@ -8,6 +8,7 @@
 #include "CPlayerBase.h"
 #include "CItemEffect.h"
 #include "CSpriteItem.h"
+#include "CBullet.h"
 #include <base/CInput.h>
 #include <base/video/CVideoDriver.h>
 #include "sdl/audio/Audio.h"
@@ -348,8 +349,12 @@ void CPlayerBase::processInput()
             gInput.getHoldedCommand(mPlayerCtrlNum, IC_JUMP) ? 1 : 0;
     mPlaycontrol[PA_POGO] =
             gInput.getHoldedCommand(mPlayerCtrlNum, IC_POGO) ? 1 : 0;
-    mPlaycontrol[PA_RUN]  =
-            gInput.getHoldedCommand(mPlayerCtrlNum, IC_RUN)  ? 1 : 0;
+
+    if(gInput.isSuperRunEnabled(mPlayerCtrlNum))
+    {
+        mPlaycontrol[PA_RUN]  =
+                gInput.getHoldedCommand(mPlayerCtrlNum, IC_RUN)  ? 1 : 0;
+    }
 
     // The possibility to charge jumps.
     // This is mainly used for the pogo. it is limited to 50
@@ -520,6 +525,29 @@ void CPlayerBase::processLevelMiscFlagsCheck()
 	}
 }
 
+
+
+void CPlayerBase::tryToShoot( const GsVec2D<int> &pos, const int xDir, const int yDir )
+{
+    if(m_Inventory.Item.m_bullets > 0)
+    {
+        spawnObj(new CBullet(mpMap, 0, pos.x, pos.y, xDir, yDir, mSprVar));
+
+        CPhysicsSettings &Physics = gBehaviorEngine.getPhysicsSettings();
+        if(!Physics.player.infiniteAmmo)
+            m_Inventory.Item.m_bullets--;
+
+        m_Inventory.addAchievementTask("I'm not Duke!", 1);
+    }
+    else
+    {
+        playSound( SOUND_GUN_CLICK );
+    }
+
+    mReleasedShot = true;
+}
+
+
 // This new function will setup the sprite based on the Action format
 bool CPlayerBase::processActionRoutine()
 {
@@ -657,8 +685,10 @@ void CPlayerBase::getEaten()
 {
 	// Here were prepare Keen to die, setting the action to die
     if(!gBehaviorEngine.mCheatmode.god && !mDying)
-	{
+	{                
 		mDying = true;
+        m_Inventory.Item.m_lifes--;
+
 		yinertia = 0;
 		dontdraw = true;
 		solid = false;
@@ -667,7 +697,7 @@ void CPlayerBase::getEaten()
         playSound( SOUND_KEEN_DIE,
                           SoundPlayMode::PLAY_NORESTART );
 
-		mp_processState = &CPlayerBase::processGetEaten;        
+        mp_processState = &CPlayerBase::processGetEaten;
 	}    
 }
 
@@ -793,6 +823,7 @@ void CPlayerBase::processDead()
         respawnImportantItem(4);
 
     m_Inventory.Item.m_gem.clear();
+    m_Inventory.Item.m_keycards = 0;
 }
 
 

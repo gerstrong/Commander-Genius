@@ -175,9 +175,13 @@ bool CSettings::loadDrvCfg()
         return false;
     }
 
-
+#ifdef __SWITCH__
+    config.ReadKeyword("Video", "fullscreen", &vidConf.mFullscreen, true);
+    config.ReadKeyword("Video", "integerScaling", &vidConf.mIntegerScaling, false);
+#else
     config.ReadKeyword("Video", "fullscreen", &vidConf.mFullscreen, false);
     config.ReadKeyword("Video", "integerScaling", &vidConf.mIntegerScaling, true);
+#endif
 
     config.ReadInteger("Video", "scale", &value, 1);
     vidConf.Zoom = static_cast<unsigned short>(value);

@@ -33,6 +33,26 @@ if(CCACHE_FOUND)
     message(STATUS "Using ccache for faster builds")
 endif(CCACHE_FOUND)
 
+# Will pass the SHA and branch strings to the executable
+find_program(GIT_FOUND git)
+if(GIT_FOUND)
+    message(STATUS "Found Git (${GIT_FOUND}), executable will get SHA and branch used")
+    execute_process(COMMAND ${GIT_FOUND} -C ${CMAKE_SOURCE_DIR} rev-parse --short HEAD
+                    OUTPUT_VARIABLE GIT_SHA
+                    OUTPUT_STRIP_TRAILING_WHITESPACE)
+    execute_process(COMMAND ${GIT_FOUND} -C ${CMAKE_SOURCE_DIR} rev-parse --abbrev-ref HEAD
+                    OUTPUT_VARIABLE GIT_BRANCH
+                    OUTPUT_STRIP_TRAILING_WHITESPACE)
+    ADD_DEFINITIONS(-DGIT_SHA=${GIT_SHA})
+    ADD_DEFINITIONS(-DGIT_BRANCH=${GIT_BRANCH})
+    message(STATUS "GIT_SHA = ${GIT_SHA}")
+    message(STATUS "GIT_BRANCH = ${GIT_BRANCH}")
+else(GIT_FOUND)
+    ADD_DEFINITIONS(-DGIT_SHA=none)
+    ADD_DEFINITIONS(-DGIT_BRANCH=none)
+endif(GIT_FOUND)
+
+
 # Add GsKit
 add_subdirectory("GsKit")
 
@@ -64,7 +84,7 @@ string(REGEX REPLACE "[\r\n]" "" CG_VERSION "${CG_VERSION}")
 # Since shell script get_version is not processed properly on windows, we have to define manually here.
 # TODO: Better system for defining the version
 IF(WIN32)
-  set(CG_VERSION "2.4.5.2")
+  set(CG_VERSION "2.4.5.3")
 endif()
 
 # Generate the README file with the correct version string

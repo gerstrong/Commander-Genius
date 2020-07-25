@@ -862,7 +862,10 @@ void CPlayer::ProcessInput()
 		playcontrol[PA_FIRE]   = gInput.getHoldedCommand(m_index, IC_FIRE)   ? 1 : 0;
     }
 
-    playcontrol[PA_RUN]   = gInput.getHoldedCommand(m_index, IC_RUN)   ? 1 : 0;
+    if(gInput.isSuperRunEnabled(m_index))
+    {
+         playcontrol[PA_RUN]   = gInput.getHoldedCommand(m_index, IC_RUN)   ? 1 : 0;
+    }
 }
 
 /**

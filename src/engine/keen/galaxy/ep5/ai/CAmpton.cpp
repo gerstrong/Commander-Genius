@@ -341,7 +341,7 @@ void CAmpton::processFlipSwitch()
 }
 
 
-bool CAmpton::isNearby(CSpriteObject &theObject)
+bool CAmpton::isNearby(CSpriteObject &)
 {
     if( !getProbability(10) )
         return false;
@@ -379,11 +379,19 @@ void CAmpton::getTouchedBy(CSpriteObject &theObject)
         }
     }
 
-
-
     if( CPlayerLevel *player = dynamic_cast<CPlayerLevel*>(&theObject) )
     {
-        player->push(*this);
+        // If player is on the pole and the robot also, it will kill keen
+        if(mKillOnPole &&
+           player->onPole() &&
+           getActionNumber(A_AMPTON_POLE_SLIDE) )
+        {
+            player->kill();
+        }
+        else
+        {
+            player->push(*this);
+        }
     }
 }
 

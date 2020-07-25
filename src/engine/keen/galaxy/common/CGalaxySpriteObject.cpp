@@ -129,12 +129,12 @@ void CGalaxySpriteObject::processFalling()
 
 int CGalaxySpriteObject::checkSolidU(int x1, int x2, int y1, const bool push_mode )
 {
-	if(hitdetectWithTilePropertyHor(1, x1, x2, y1-COLISION_RES, 1<<CSF))
+	if(hitdetectWithTilePropertyHor(1, x1, x2, y1-COLLISION_RES, 1<<CSF))
 	    return 0;
     
 	std::vector<CTileProperties> &TileProperty = gBehaviorEngine.getTileProperties();
 
-	y1 -= COLISION_RES;
+	y1 -= COLLISION_RES;
 
 	// Check for sloped tiles here. They must be handled differently
 	if(solid)
@@ -143,11 +143,11 @@ int CGalaxySpriteObject::checkSolidU(int x1, int x2, int y1, const bool push_mod
 
 		if(mIsClimbing)
 		{
-			x1 += 4*COLISION_RES;
-			x2 -= 4*COLISION_RES;
+			x1 += 4*COLLISION_RES;
+			x2 -= 4*COLLISION_RES;
 		}
 
-		for(int c=x1 ; c<=x2 ; c += COLISION_RES)
+		for(int c=x1 ; c<=x2 ; c += COLLISION_RES)
 		{
 			blocked = TileProperty[mpMap->at(c>>CSF, y1>>CSF)].bdown;
 
@@ -166,7 +166,7 @@ int CGalaxySpriteObject::checkSolidU(int x1, int x2, int y1, const bool push_mod
 			return 0;
 	}
 
-	return CSpriteObject::checkSolidU(x1, x2, y1+COLISION_RES, push_mode);
+	return CSpriteObject::checkSolidU(x1, x2, y1+COLLISION_RES, push_mode);
 }
 
 
@@ -174,7 +174,7 @@ int CGalaxySpriteObject::checkSolidD( int x1, int x2, int y2, const bool push_mo
 {
 	std::vector<CTileProperties> &TileProperty = gBehaviorEngine.getTileProperties();
 
-    y2 += COLISION_RES;
+    y2 += COLLISION_RES;
 
 	// Check for sloped tiles here. They must be handled differently
 	if(solid)
@@ -183,11 +183,11 @@ int CGalaxySpriteObject::checkSolidD( int x1, int x2, int y2, const bool push_mo
 
 		if(mIsClimbing)
 		{
-			x1 += 4*COLISION_RES;
-			x2 -= 4*COLISION_RES;
+			x1 += 4*COLLISION_RES;
+			x2 -= 4*COLLISION_RES;
 		}
 
-		for(int c=x1 ; c<=x2 ; c += COLISION_RES)
+		for(int c=x1 ; c<=x2 ; c += COLLISION_RES)
 		{
 			blockedu = TileProperty[mpMap->at(c>>CSF, y2>>CSF)].bup;
 
@@ -223,7 +223,7 @@ int CGalaxySpriteObject::checkSolidD( int x1, int x2, int y2, const bool push_mo
 	if(solid)
 	{
 		int8_t blocked;
-		for(int c=x1 ; c<=x2 ; c += COLISION_RES)
+		for(int c=x1 ; c<=x2 ; c += COLLISION_RES)
 		{
 			blocked = TileProperty[mpMap->at(c>>CSF, y2>>CSF)].bup;
 

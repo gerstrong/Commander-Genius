@@ -23,10 +23,13 @@ struct OpenComputerWrist : CEvent
 {
     OpenComputerWrist() {}
 
-    OpenComputerWrist(const int section) :
-        mSection(section) {}
+    OpenComputerWrist(const int section,
+                      const int playsong = -1) :
+        mSection(section),
+        mPlaySong(playsong){}
 
     const int mSection = -1;
+    const int mPlaySong = -1;
 };
 
 
@@ -47,6 +50,10 @@ public:
      * @brief ComputerWrist A constructor with start section
      */
     ComputerWrist(const int ep, const int section);
+
+    virtual ~ComputerWrist();
+
+    void playSong(const int song);
 
 
     // Processes the stuff that the menus have in common
@@ -131,6 +138,9 @@ private:
 
     std::vector<int> mMinPos;
     std::vector<int> mMaxPos;   
+
+    int mPlaySong = -1;
+    std::string mPreviousSong;
 };
 
 }

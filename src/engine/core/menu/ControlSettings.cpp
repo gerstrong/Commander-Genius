@@ -87,6 +87,10 @@ mSelectedPlayer(selectedPlayer)
             mpMenuDialog->add( new Switch( "Analog Movement", style ) );
 	mpAnalogSwitch->enable(gInput.isAnalog(mSelectedPlayer-1));
 
+    mpSuperRunSwitch =
+            mpMenuDialog->add( new Switch( "Super Run", style ) );
+    mpSuperRunSwitch->enable(gInput.isSuperRunEnabled(mSelectedPlayer-1));
+
     mpSuperPogoSwitch =
             mpMenuDialog->add( new Switch( "Super Pogo", style ) );
 	mpSuperPogoSwitch->enable(gInput.SuperPogo(mSelectedPlayer-1));
@@ -126,6 +130,7 @@ void CControlsettings::release()
 	gInput.setTwoButtonFiring(mSelectedPlayer-1, mpTwoButtonSwitch->isEnabled() );
 	gInput.enableAnalog(mSelectedPlayer-1, mpAnalogSwitch->isEnabled() );
 	gInput.setSuperPogo(mSelectedPlayer-1, mpSuperPogoSwitch->isEnabled() );
+    gInput.enableSuperRun(mSelectedPlayer-1, mpSuperRunSwitch->isEnabled() );
 	gInput.setImpossiblePogo(mSelectedPlayer-1, mpImpPogoSwitch->isEnabled() );
 	gInput.setAutoGun(mSelectedPlayer-1, mpAutoGunSwitch->isEnabled() );
 	gInput.saveControlconfig();

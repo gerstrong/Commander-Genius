@@ -413,12 +413,20 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
 
             const Uint16 newLevel = ev->data - 0xC000;
             if(newLevel < 50)
-            {
-                gMusicPlayer.stop();                
-                m_WorldMap.setActive(false);
-                m_LevelPlay.loadLevel(ev->mSprVar, newLevel);
-                gAudio.playSound( SOUND_ENTER_LEVEL );
-                m_LevelPlay.setActive(true);
+            {                
+                if(m_LevelPlay.loadLevel(ev->mSprVar, newLevel))
+                {
+                    //gMusicPlayer.stop();
+                    m_WorldMap.setActive(false);
+                    gAudio.playSound( SOUND_ENTER_LEVEL );
+                    m_LevelPlay.setActive(true);
+                }
+                else
+                {
+                    m_WorldMap.setActive(true);
+                    showModalMsgWithBmp(0, "This Level seems to be broken",
+                                   105, LEFT, false, nullptr);
+                }
             }
         }
 

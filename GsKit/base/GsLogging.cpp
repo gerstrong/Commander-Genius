@@ -13,6 +13,8 @@
 #include "utils/FindFile.h"
 #include "utils/Debug.h"
 
+#define xstr(s) str(s)
+#define str(s) #s
 
 CLogFile::CLogFile() {}
 
@@ -39,6 +41,9 @@ bool CLogFile::CreateLogfile(const std::string &logFName,
 #else
 	textOut("BUILD: RELEASE<br>");
 #endif
+
+    textOut("GIT_SHA: " xstr(GIT_SHA) "<br>\n");
+    textOut("GIT_BRANCH: " xstr(GIT_BRANCH) "<br>\n");
 	
     std::string platformText = "PLATFORM: ";
 #if SDL_VERSION_ATLEAST(2, 0, 0)

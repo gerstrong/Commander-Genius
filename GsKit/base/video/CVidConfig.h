@@ -61,13 +61,17 @@ public:
 
     int mHorizBorders = 0; // Horizontal border bars for a more CRT feeling
 
+#ifdef __SWITCH__
+    bool mFullscreen = true;
+    bool mIntegerScaling = false;
+#else
     bool mFullscreen = false;
+    bool mIntegerScaling = true;
+#endif
     VidFilter m_ScaleXFilter = VidFilter::NONE;
 	bool m_normal_scale;
 
 	unsigned short Zoom;
-
-    bool mIntegerScaling = true;
 
 #ifdef USE_OPENGL
     bool mOpengl = true;
@@ -100,7 +104,11 @@ public:
 
     enum class RenderQuality
     { NEAREST, LINEAR }
+#ifdef __SWITCH__
+    mRenderScQuality = RenderQuality::NEAREST;
+#else
     mRenderScQuality = RenderQuality::LINEAR;
+#endif
 };
 
 #endif /* CVIDCONFIG_H */

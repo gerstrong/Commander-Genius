@@ -43,7 +43,7 @@ private:
      * @brief loadMap will load the given level
      * @param level level number to load
      */
-	void loadMap(const int level);
+    bool loadMap(const int level);
 
 
 

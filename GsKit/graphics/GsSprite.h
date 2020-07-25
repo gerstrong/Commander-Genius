@@ -90,8 +90,8 @@ public:
 
     void drawSprite(const int x, const int y, const int w, const int h, const Uint8 alpha=255 );
     void drawSprite(SDL_Surface *dst, const int x, const int y , const int w, const int h);
-    void drawBlinkingSprite(const int x, const int y );
-    void _drawBlinkingSprite(SDL_Surface *dst, const int x, const int y );
+    void drawBlinkingSprite(const int x, const int y , const bool useColorMask);
+    void _drawBlinkingSprite(SDL_Surface *dst, const int x, const int y, const bool useColorMask);
 
     Sint16 getXOffset() { return m_xoffset; }
     Sint16 getYOffset() { return m_yoffset; }

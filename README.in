@@ -8,6 +8,7 @@ Resources:
 
 Porting and Support:
     (c)2010-2020          Pelya (Android-Distro)
+    (c)2020               Elias Oenal (Switch port)
 
            Released under GNU/GPL
 
@@ -290,6 +291,7 @@ How to compile it under Ubuntu:
         - libgl1-mesa-dev
         - libcurl4-openssl-dev
         - zlib1g-dev        
+        - python3 (python 3.5 recommended)
         - libsdl2-dev
         - libsdl2-image-dev
         - libsdl2-mixer-dev
@@ -312,7 +314,7 @@ How to compile it under Fedora:
    older):
 
    dnf install -y \
-     SDL2-devel cmake cmake-data gcc-c++ \
+     SDL2-devel cmake cmake-data gcc-c++ python3-devel \
      mesa-libGL-devel libcurl-devel \
      SDL2_image-devel SDL2_mixer-devel SDL2_ttf-devel
 
@@ -428,6 +430,9 @@ finale=<on/off>      If you want to directly show the finale of a game, pass
 
 level=<level>        Supplying this parameter will directly open the given
                      level. This is useful for testing.
+
+exportGfx=<on/off>   Exports graphics of the loaded game and saves them as BMP
+                     in the gaming directory
 
 
 Example: If you want to start the game with the path "C:\games\keen5", type:

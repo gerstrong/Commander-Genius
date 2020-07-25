@@ -71,11 +71,13 @@ public:
         return Mix_PlayingMusic();
     }
 
+    std::string getCurTrackPlaying();
+
 private:
 
     Mix_Music *mpMixMusic = nullptr;
 
-
+    std::string mCurrentTrack = "-1";
 };
 
 struct EventPlayTrack : CEvent {

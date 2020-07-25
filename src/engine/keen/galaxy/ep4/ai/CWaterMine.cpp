@@ -6,6 +6,7 @@
  */
 
 #include "CWaterMine.h"
+#include "../../common/ai/CBullet.h"
 #include "../../common/ai/CPlayerBase.h"
 
 namespace galaxy {
@@ -30,6 +31,20 @@ CGalaxySpriteObject(pmap, foeID, x, y, 0)
 
 void CWaterMine::getTouchedBy(CSpriteObject &theObject)
 {
+    // Bullets under water in Keen 4 not really possible,
+    // since Keen normally does not shoot under water
+    if( dynamic_cast<CBullet*>(&theObject) )
+    {
+        void (CWaterMine::*ExplodeHandler)() = &CWaterMine::processExplode;
+
+        if(mp_processState != ExplodeHandler)
+        {
+            mp_processState = ExplodeHandler;
+            setAction(A_MINE_EXPLODE);
+            playSound(SOUND_MINE_EXPLOSION);
+        }
+    }
+
 	if(CPlayerBase *Player = dynamic_cast<CPlayerBase*>(&theObject))
 	{
 		void (CWaterMine::*ExplodeHandler)() = &CWaterMine::processExplode;

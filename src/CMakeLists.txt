@@ -50,7 +50,7 @@ IF(CMAKE_BUILD_TYPE STREQUAL "Debug")
 	ADD_DEFINITIONS(-Wall)
 ELSEIF(CMAKE_BUILD_TYPE STREQUAL "Release")
 	ADD_DEFINITIONS(-DRELEASE)
-        ADD_DEFINITIONS(-O3)
+        ADD_DEFINITIONS(-O2)
 ENDIF()
 
 
@@ -137,7 +137,7 @@ endif(USE_SDL2)
 
 # Add executable Commander Genius
 add_executable (CGeniusExe CGenius.cpp
-                fileio.cpp misc.cpp
+                fileio.cpp misc.cpp switch.c
                 CRingBuffer.h
                 fileio.h
                 ${cg_obj_libs})
@@ -158,10 +158,15 @@ target_link_libraries(CGeniusExe sdl_extensions_audio sdl_extensions_sys)
 
 # The Windows Version has an icon in the executable
 IF(WIN32)
-	SET_TARGET_PROPERTIES(CGeniusExe PROPERTIES OUTPUT_NAME "CGenius")
-	ADD_CUSTOM_COMMAND(TARGET CGeniusExe PRE_LINK COMMAND windres ${CMAKE_CURRENT_SOURCE_DIR}/CGLogo.rc ${CMAKE_CURRENT_SOURCE_DIR}/CGLogo.o)
-	SET_TARGET_PROPERTIES(CGeniusExe PROPERTIES LINK_FLAGS "-mwindows ${CMAKE_CURRENT_SOURCE_DIR}/CGLogo.o")
-	MESSAGE(STATUS "Will build with the CG-Icon for Windows." )
+	SET_TARGET_PROPERTIES(CGeniusExe PROPERTIES OUTPUT_NAME "CGenius")        
+        find_program(WINDRES_FOUND ${CMAKE_RC_COMPILER})
+        if(WINDRES_FOUND)
+            ADD_CUSTOM_COMMAND(TARGET CGeniusExe PRE_LINK COMMAND ${WINDRES_FOUND} ${CMAKE_CURRENT_SOURCE_DIR}/CGLogo.rc ${CMAKE_CURRENT_SOURCE_DIR}/CGLogo.o)
+            SET_TARGET_PROPERTIES(CGeniusExe PROPERTIES LINK_FLAGS "-mwindows ${CMAKE_CURRENT_SOURCE_DIR}/CGLogo.o")
+            MESSAGE(STATUS "Will build with the CG icon for Windows." )
+        else()
+            SET_TARGET_PROPERTIES(CGeniusExe PROPERTIES LINK_FLAGS "-mwindows")
+        endif(WINDRES_FOUND)
 ENDIF(WIN32)
 
 
@@ -171,10 +176,10 @@ if(WIN32)
 	target_link_libraries(CGeniusExe mingw32)
 	target_link_libraries(CGeniusExe user32)
 	target_link_libraries(CGeniusExe gdi32)
-        target_link_libraries(CGeniusExe SDL2Main)
+#        target_link_libraries(CGeniusExe SDL2Main)
 	target_link_libraries(CGeniusExe winmm)
-	target_link_libraries(CGeniusExe Imm32)
-	target_link_libraries(CGeniusExe Version)
+        target_link_libraries(CGeniusExe imm32)
+        target_link_libraries(CGeniusExe version)
 endif(WIN32)
 
 

@@ -38,7 +38,7 @@ struct stItemGalaxy
 
 	} m_gem;
 
-	int m_keycards;
+        int m_keycards = 0;
     int fuse_levels_completed;
 
     struct

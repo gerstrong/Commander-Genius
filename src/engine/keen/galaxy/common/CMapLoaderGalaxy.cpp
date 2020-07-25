@@ -164,7 +164,15 @@ bool CMapLoaderGalaxy::unpackPlaneData( std::ifstream &mapFile,
     {                  
     	// Now use the RLE Decompression
     	CRLE RLE;
-        size_t derlesize = (RLE_Plane[0]<<8) + RLE_Plane[1];           // Bytes already swapped
+        const size_t derlesize = (RLE_Plane[0]<<8) + RLE_Plane[1];           // Bytes already swapped
+
+        if(derlesize >= 0xffff)
+        {
+            gLogging.textOut( "\nERROR: Map is too tall.");
+            return false;
+        }
+
+
         RLE.expand(plane, RLE_Plane, magic_word);
 
         word *ptr = Map.getData(planeNumber);

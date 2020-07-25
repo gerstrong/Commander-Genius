@@ -187,7 +187,9 @@ void CSpriteObject::performCollisions()
 }
 
 // Basic slope move independent of the left or right move
-void CSpriteObject::adjustSlopedTiles( int x, int y1, int y2, const int xspeed )
+void CSpriteObject::adjustSlopedTiles( int x, int y1, int y2,
+                                       const int xspeed,
+                                       int &slopeType)
 {
 	if(!solid)
 		return;
@@ -195,12 +197,15 @@ void CSpriteObject::adjustSlopedTiles( int x, int y1, int y2, const int xspeed )
 	// process the sloped tiles here. Galaxy only or special patch!!
 	if(gBehaviorEngine.getEpisode() > 3)
 	{
-		if(!moveSlopedTileDown(x, y2, xspeed))
+        if(!moveSlopedTileDown(x, y2, xspeed, slopeType))
+        {
 			moveSlopedTileUp(x, y1, xspeed);
+        }
 	}
 }
 
-bool CSpriteObject::moveSlopedTileDown( int x, int y, const int xspeed )
+bool CSpriteObject::moveSlopedTileDown( int x, int y, const int xspeed,
+                                        int &slopeType )
 {
     if(yinertia != 0)
     {
@@ -209,7 +214,10 @@ bool CSpriteObject::moveSlopedTileDown( int x, int y, const int xspeed )
 
 	std::vector<CTileProperties> &TileProperty = gBehaviorEngine.getTileProperties();
 
-    const Sint8 slope = TileProperty[mpMap->at(x>>CSF, y>>CSF)].bup;
+    const auto mapOff = mpMap->at(x>>CSF, y>>CSF);
+    const Sint8 slope = TileProperty[mapOff].bup;
+
+    slopeType = slope;
 
 	// Check first, if there is a tile on objects level
 	if( slope >=2 && slope<=7 )
@@ -648,19 +656,23 @@ int CSpriteObject::checkSolidR( int x1, int x2, int y1, int y2)
 	std::vector<CTileProperties> &TileProperty = gBehaviorEngine.getTileProperties();
 	int blocker;
 
-	x2 += COLISION_RES;
+    x2 += COLLISION_RES;
 
+    /*
 	if( (x2>>STC) != ((x2>>CSF)<<TILE_S) )
 		return false;
-
+*/
     // Check for solid tile on right side of the sprite
 	if(solid)
 	{
         const auto h=y2-y1;
-        const auto w=x2-x1;
-        const auto tol_x = (gBlockTolerance*w)/h;
 
-		for(int c=y1 ; c<=y2 ; c += COLISION_RES)
+        if(h==0)
+            return 0;
+
+        const auto tol_x = 1<<STC;
+
+        for(int c=y1 ; c<=y2 ; c += COLLISION_RES)
 		{
             blocker = TileProperty[mpMap->at(x2>>CSF, c>>CSF)].bleft;
 
@@ -694,23 +706,29 @@ int CSpriteObject::checkSolidL( int x1, int x2, int y1, int y2)
 	int blocker;
 	std::vector<CTileProperties> &TileProperty = gBehaviorEngine.getTileProperties();
 
-	x1 -= COLISION_RES;
+    x1 -= COLLISION_RES;
 
     // Check for right side of the tile
 	if(solid)
 	{
         const auto h=y2-y1;
-        const auto w=x2-x1;
-        const auto tol_x = (gBlockTolerance*w)/h;
 
-		for(int c=y1 ; c<=y2 ; c += COLISION_RES)
+        if(h==0)
+            return 0;
+
+        const auto tol_x = 1<<STC;
+
+        for(int c=y1 ; c<=y2 ; c += COLLISION_RES)
 		{
-            blocker = TileProperty[mpMap->at(x1>>CSF, c>>CSF)].bright;
-            const bool slope = (TileProperty[mpMap->at(x1>>CSF, c>>CSF)].bup > 1);
+            const auto mapOff = mpMap->at(x1>>CSF, c>>CSF);
+            blocker = TileProperty[mapOff].bright;
+            bool slope = (TileProperty[mapOff].bup > 1);
 
             // Start to really test if we blow up the gBlockTolerance
-            if(c-y1 > gBlockTolerance)
+            if(c-y1 <= gBlockTolerance) // Upper part
             {
+                blocker = TileProperty[mpMap->at((x1+tol_x)>>CSF, c>>CSF)].bright;
+                slope = (TileProperty[mpMap->at((x1+tol_x)>>CSF, c>>CSF)].bup > 1);
                 if(blocker && !slope)
                 {
                     return blocker;
@@ -720,9 +738,8 @@ int CSpriteObject::checkSolidL( int x1, int x2, int y1, int y2)
                     return 0;
                 }
             }
-            else
-            {
-                blocker = TileProperty[mpMap->at((x1+tol_x)>>CSF, c>>CSF)].bleft;
+            else // Lower part
+            {                
                 if(blocker && !slope)
                 {
                     return blocker;
@@ -737,9 +754,13 @@ int CSpriteObject::checkSolidL( int x1, int x2, int y1, int y2)
         blocker = TileProperty[mpMap->at(x1>>CSF, y2>>CSF)].bright;
         const bool slope = (TileProperty[mpMap->at(x1>>CSF, y2>>CSF)].bup > 1);
 		if(blocker && !slope)
+        {
 			return blocker;
+        }
 		else if(slope)
+        {
 			return 0;
+        }
 
         // At this point we can say, no blocking path...
 	}        
@@ -751,15 +772,15 @@ int CSpriteObject::checkSolidU(int x1, int x2, int y1, const bool push_mode )
 {
 	std::vector<CTileProperties> &TileProperty = gBehaviorEngine.getTileProperties();
 
-	y1 -= COLISION_RES;
+    y1 -= COLLISION_RES;
 
-	if( (((y1+COLISION_RES)>>STC) != (((y1+COLISION_RES)>>CSF)<<TILE_S)) && !push_mode )
+    if( (((y1+COLLISION_RES)>>STC) != (((y1+COLLISION_RES)>>CSF)<<TILE_S)) && !push_mode )
 		return 0;
 
 	// Check for right from the object
 	if(solid)
 	{
-		for(int c=x1 ; c<=x2 ; c += COLISION_RES)
+        for(int c=x1 ; c<=x2 ; c += COLLISION_RES)
 		{
             Sint8 blocked = TileProperty[mpMap->at(c>>CSF, y1>>CSF)].bdown;
 
@@ -786,7 +807,7 @@ int CSpriteObject::checkSolidD( int x1, int x2, int y2, const bool push_mode )
 {
 	std::vector<CTileProperties> &TileProperty = gBehaviorEngine.getTileProperties();
 
-	y2 += COLISION_RES;
+    y2 += COLLISION_RES;
 
 	if( ( (y2>>STC) != ((y2>>CSF)<<TILE_S) ) && !push_mode )
 		return 0;
@@ -795,7 +816,7 @@ int CSpriteObject::checkSolidD( int x1, int x2, int y2, const bool push_mode )
 	if(solid)
 	{
 		Sint8 blocked;
-		for(int c=x1 ; c<=x2 ; c += COLISION_RES)
+        for(int c=x1 ; c<=x2 ; c += COLLISION_RES)
 		{
             blocked = TileProperty[mpMap->at(c>>CSF, y2>>CSF)].bup;
 
@@ -866,10 +887,18 @@ void CSpriteObject::processMoveBitLeft()
 	if( (blockedl = checkSolidL(x1, x2, y1, y2)) == true)
 		return;
 
+    int slopeType;
+
 	// if we are here, the tiles aren't blocking us.
 	// TODO: Here we need the Object collision part    
     m_Pos.x -= MOVE_RES;
-	adjustSlopedTiles(x1-(1<<STC), y1, y2, -MOVE_RES);
+    adjustSlopedTiles(x1-(1<<STC), y1, y2, -MOVE_RES, slopeType);
+
+    if(slopeType == 1)
+    {
+        blockedl = true;
+        m_Pos.x += MOVE_RES;
+    }
 }
 
 void CSpriteObject::processMoveBitRight()
@@ -883,10 +912,18 @@ void CSpriteObject::processMoveBitRight()
 	if( (blockedr = checkSolidR(x1, x2, y1, y2)) == true)
 		return;
 
+    int slopeType;
+
 	// if we are here, the tiles aren't blocking us.
 	// TODO: Here we need the Object collision part
     m_Pos.x += MOVE_RES;
-	adjustSlopedTiles(x2+(1<<STC), y1, y2, MOVE_RES);
+    adjustSlopedTiles(x2+(1<<STC), y1, y2, MOVE_RES, slopeType);
+
+    if(slopeType == 1)
+    {
+        m_Pos.x -= MOVE_RES;
+        blockedr = true;
+    }
 }
 
 void CSpriteObject::processMoveBitUp()

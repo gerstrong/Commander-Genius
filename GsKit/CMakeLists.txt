@@ -103,7 +103,7 @@ else()
             ADD_DEFINITIONS(-Wall)
     ELSEIF(CMAKE_BUILD_TYPE STREQUAL "Release")
             ADD_DEFINITIONS(-DRELEASE)
-            ADD_DEFINITIONS(-O3)
+            ADD_DEFINITIONS(-O2)
     ENDIF(CMAKE_BUILD_TYPE STREQUAL "Debug")
     
     

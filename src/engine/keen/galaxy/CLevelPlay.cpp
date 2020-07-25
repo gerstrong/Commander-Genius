@@ -30,7 +30,7 @@ CMapPlayGalaxy(inventory)
 { }
 
 
-void CLevelPlay::loadMap(const int level)
+bool CLevelPlay::loadMap(const int level)
 {      
 	// Load the World map level.
 	std::unique_ptr<CMapLoaderGalaxy> MapLoader;
@@ -55,7 +55,12 @@ void CLevelPlay::loadMap(const int level)
     }
 
 
-	MapLoader->loadMap( mMap, level );
+    if(!MapLoader->loadMap( mMap, level ))
+    {
+        gLogging.ftextOut("Error: Map of level %d could not be loaded.", level);
+        return false;
+    }
+
 
     // Load some new background Music
 	gMusicPlayer.stop();
@@ -68,6 +73,7 @@ void CLevelPlay::loadMap(const int level)
     {
         gLogging.textOut("Warning: The music cannot be played. Check that all the files have been correctly copied!");
     }
+    return true;
 }
 
 
@@ -83,8 +89,11 @@ void CLevelPlay::reloadLevel()
 
 bool CLevelPlay::loadLevel(const int sprVar, const Uint16 level)
 {
-	loadMap( level );
-		
+    if(!loadMap( level ))
+    {
+        return false;
+    }
+
 	// Add the load message
 	const std::string level_text = "LEVEL" + itoa(level) + "_LOAD_TEXT";
     const std::string loading_text = gBehaviorEngine.getString(level_text);

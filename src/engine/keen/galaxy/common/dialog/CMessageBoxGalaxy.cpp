@@ -275,7 +275,7 @@ void CMessageBoxGalaxy::ponder(const int deltaT)
     if(isModal())
     {
         // Look, if somebody pressed a button, and close this dialog!
-        if( gInput.getPressedAnyCommand() )
+        if( gInput.getPressedAnyButtonCommand() )
         {
             std::shared_ptr<CEvent> ev(std::move(mCloseEv));
             gEventManager.add( ev );

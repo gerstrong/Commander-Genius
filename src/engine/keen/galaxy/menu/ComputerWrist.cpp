@@ -3,6 +3,7 @@
 #include <base/utils/StringUtils.h>
 #include <graphics/GsGraphics.h>
 #include <graphics/effects/CColorMerge.h>
+#include <sdl/audio/music/CMusic.h>
 #include <engine/core/CBehaviorEngine.h>
 
 #include <sstream>
@@ -80,7 +81,7 @@ ComputerWrist::ComputerWrist(const int ep) :
 
     }
 
-    // NOTE: The index is always at six
+    // NOTE: The index is always six here
     mBmpIndex = 6;
 
     auto &font = gGraphics.getFontLegacy(mFontId);
@@ -92,11 +93,19 @@ ComputerWrist::ComputerWrist(const int ep) :
     {
         numLines = (blitsfc.height() - (mUpperBorderBmp.height() + mBottomBorderBmp.height()))/font.getPixelTextHeight();
 
-        for(int i=0 ; i < numLines ; i++)
+        // first line is full, because of upper border line bitmap
+        mMinPos.push_back(mUpperBorderBmp.width());
+        mMaxPos.push_back(mUpperBorderBmp.width());
+
+        for(int i=1 ; i < numLines-1 ; i++)
         {
             mMinPos.push_back(mLeftBorderBmp.width()+2);
-            mMaxPos.push_back(blitsfc.width() - (mLeftBorderBmp.width() + mRightBorderBmp.width() + 9) );
+            mMaxPos.push_back(blitsfc.width() - (mLeftBorderBmp.width() + mRightBorderBmp.width() + 0) );
         }
+
+        // last line is full, because of lower border line
+        mMinPos.push_back(mBottomBorderBmp.width());
+        mMaxPos.push_back(mBottomBorderBmp.width());
     }
     else
     {
@@ -120,10 +129,33 @@ ComputerWrist::ComputerWrist(const int ep, const int section) :
     mNumPagesOfThisSection = gGameText.getNumPages(mSection);
 }
 
+ComputerWrist::~ComputerWrist()
+{
+    const auto curStr = mPreviousSong;
 
+    gMusicPlayer.stop();
+    if( gMusicPlayer.load(curStr) )
+        gMusicPlayer.play();
+}
+
+void ComputerWrist::playSong(const int song)
+{
+    auto &musPlayer = gMusicPlayer;
+    if(song >= 0)
+    {
+        const auto curStr = musPlayer.getCurTrackPlaying();
+        mPreviousSong = curStr;
+
+        musPlayer.stop();
+        if( musPlayer.loadTrack(song) )
+           musPlayer.play();
+    }
+}
 
 void ComputerWrist::ponderPage(const float deltaT)
 {
+    (void) deltaT;
+
     if( gInput.getPressedCommand(IC_BACK) )
     {
         mSection = -1;
@@ -153,6 +185,8 @@ void ComputerWrist::ponderPage(const float deltaT)
 
 void ComputerWrist::ponderMainMenu(const float deltaT)
 {
+    (void) deltaT;
+
     if( gInput.getPressedCommand(IC_BACK) )
     {
         gEventManager.add( new CloseComputerWrist() );
@@ -165,18 +199,31 @@ void ComputerWrist::ponderMainMenu(const float deltaT)
     // Guarantee the boundaries are never exploited
     mSelection = std::max(mSelection, 0);
     mSelection = std::min(mSelection, mNumOptions-1);
+    const int ep = gBehaviorEngine.getEpisode();
 
     if( gInput.getPressedCommand(IC_JUMP) || gInput.getPressedCommand(IC_STATUS) )
     {
         mSection = mSelection;
 
         // Strange cross mapping of the selection against Section to load
-        switch(mSelection)
+        if(ep == 5)
         {
+            switch(mSelection)
+            {
+            case 3: mSection = 6; break;
+            case 4: mSection = 3; break;
+            default: break;
+            }
+        }
+        else
+        {
+            switch(mSelection)
+            {
             case 1: mSection = 2; break;
             case 2: mSection = 1; break;
             case 4: mSection = 3; break;
             default: break;
+            }
         }
 
         mSectionPage = 0;
@@ -200,15 +247,131 @@ void ComputerWrist::ponder(const float deltaT)
     ponderPage(deltaT);
 }
 
+void ComputerWrist::parseGraphics()
+{
+    std::stringstream ss;
+
+    const int ep = gBehaviorEngine.getEpisode();
+
+    int x,y,chunk;
+    GsWeakSurface blitsfc(gVideoDriver.getBlitSurface());
+
+    SDL_Rect lRect;
+    lRect.h = blitsfc.height();     lRect.w = blitsfc.width();
+
+    const auto fontHeight = gGraphics.getFontLegacy(mFontId).getPixelTextHeight();
+    const auto spaceWidth = gGraphics.getFontLegacy(mFontId).getWidthofChar(' ');
+
+
+    if(!mMinPos.empty())
+    {
+        if(ep != 6)
+        {
+            mMinPos[0] = mUpperBorderBmp.width();
+            mMaxPos[0] = mUpperBorderBmp.width();
+
+            for(unsigned int i = 1 ; i<mMinPos.size() ; i++)
+            {
+                mMinPos[i] = mLeftBorderBmp.width()+2;
+            }
+
+            for(unsigned int i = 1 ; i<mMaxPos.size() ; i++)
+            {
+                mMaxPos[i] = blitsfc.width() - mRightBorderBmp.width();
+            }
+        }
+        else
+        {
+            for(auto &minPos : mMinPos)
+            {
+                minPos = 2;
+            }
+
+            for(auto &maxPos : mMaxPos)
+            {
+                maxPos = blitsfc.width();
+            }
+
+        }
+    }
+
+
+    // Check for colission with bitmaps
+    for(const auto &line : mCurrentTextLines)
+    {
+        if(line[0] == '^')
+        {
+            if(line[1] == 'G')
+            {
+                std::string param = line.substr(2);
+
+                char comma;
+
+                ss << param;
+                ss >> y;
+                ss >> comma;
+                ss >> x;
+                ss >> comma;
+                ss >> chunk;
+
+                chunk = chunk - mBmpIndex;
+
+                GsBitmap &bmp = gGraphics.getBitmapFromId(0, chunk);
+                const auto bmpH = bmp.height();
+                const auto bmpW = bmp.width();
+
+                // Got the bitmap, block the matrix at that part
+                int minHeight = y;
+
+                if(minHeight < 0)
+                {
+                    minHeight = 0;
+                }
+
+                for(int i=minHeight ; i<y+bmpH+1 ; i++)
+                {
+                    const auto textYIdx = (i)/fontHeight;
+
+                    auto curMinPos = mMinPos[textYIdx];
+
+                    // Whole pic fits to the right side
+                    if(x > lRect.w/2)
+                    {
+                        // Limit max
+                        mMaxPos[textYIdx] = lRect.w/2;
+                    }
+                    // Whole pic fits to the left side
+                    else if((x+bmpW) < lRect.w/2)
+                    {
+                        // Left hand wrap
+                        for(int j=x ; j<x+bmpW ; j++)
+                        {
+                            if(curMinPos < j+spaceWidth)
+                            {
+                                mMinPos[textYIdx] = j+spaceWidth+4;
+                            }
+                        }
+                    }
+                    else // Pic is both on left and right side
+                    {
+                        if(curMinPos < (x+bmpW))
+                        {
+                            mMinPos[textYIdx] = (x+bmpW)+spaceWidth+1;
+                        }
+                    }
+                }
+
+                bmp.draw(x, y);
+            }
+        }
+    }
+}
+
 void ComputerWrist::parseText()
 {
     GsWeakSurface blitsfc(gVideoDriver.getBlitSurface());
 
     int ep = gBehaviorEngine.getEpisode();
-
-    //SDL_Rect lRect;
-    //lRect.h = blitsfc.height();
-    //lRect.w = blitsfc.width()-(mLeftBorderBmp.width()+mRightBorderBmp.width());
 
     // Draw some text.
     auto &Font = gGraphics.getFontLegacy(mFontId);
@@ -264,7 +427,7 @@ void ComputerWrist::parseText()
                skipmode = true;
                continue;
             }
-            else if(line[1] == 'c')
+            else if(line[1] == 'c' || line[1] == 'C')
             {
                 const char colorCode = line[2];
                 color = wristColorMap[colorCode];
@@ -287,45 +450,57 @@ void ComputerWrist::parseText()
 
             for(const auto &word : words)
             {
-                int wordWidth = 0;
+                // Blank occupied space also, consider it.
+                int wordWidth = Font.getWidthofChar(' ') + 1;
 
-                for(const auto c : word)
-                {
-                    wordWidth += Font.getWidthofChar(c);
-                }
+                auto word2Display = word;
 
-                auto maxPosX = mMaxPos[cursorPos.y];
-
-                if(cursorPos.x+wordWidth > maxPosX)
-                {
-                    cursorPos.y++;
-
-                    // Ensure the minimum position is not hindering a picture
-                    cursorPos.x = mMinPos[cursorPos.y];
-                }
-
-                // There might be a change of color
+                // There might be a change of color.
                 if(word[0] == '^')
                 {
-                    if(word[1] == 'c')
+                    word2Display = word2Display.substr(1);
+
+                    if(word[1] == 'c' || word[1] == 'C')
                     {
                         const char colorCode = word[2];
                         color = wristColorMap[colorCode];
                         Font.setupColor(color);
+                        word2Display = word2Display.substr(2);
                     }
                 }
-                else
+
+                for(const auto c : word2Display)
                 {
+                    wordWidth += Font.getWidthofChar(c);
+                }
+
+                if(!word2Display.empty())
+                {
+                    // Right side boundary checks
+
+                    auto maxPosX = mMaxPos[cursorPos.y];
+
+                    while(cursorPos.x+wordWidth > maxPosX)
+                    {
+                        cursorPos.y++;
+
+                        // Ensure the minimum position is not hindering a picture
+                        cursorPos.x = mMinPos[cursorPos.y];
+                        maxPosX = mMaxPos[cursorPos.y];
+                    }
+
                     if(ep != 6)
                     {
-                        Font.drawFont(blitsfc.getSDLSurface(), word, cursorPos.x, cursorPos.y*fontHeight+mUpperBorderBmp.height()+2);
+                        Font.drawFont(blitsfc.getSDLSurface(), word2Display, cursorPos.x,
+                                      cursorPos.y*fontHeight);
                     }
                     else
                     {
-                        Font.drawFont(blitsfc.getSDLSurface(), word, cursorPos.x, cursorPos.y*fontHeight+2);
+                        Font.drawFont(blitsfc.getSDLSurface(), word2Display,
+                                      cursorPos.x, cursorPos.y*fontHeight+2);
                     }
 
-                    cursorPos.x += (wordWidth+Font.getWidthofChar(' '));
+                    cursorPos.x += (wordWidth);
                 }
             }
 
@@ -333,116 +508,16 @@ void ComputerWrist::parseText()
             cursorPos.x = mMinPos[cursorPos.y];
         }
     }
-}
 
-void ComputerWrist::parseGraphics()
-{
-    std::stringstream ss;
+    // Print the page number
+    const auto pgTextcolor = 0xFC5454;
+    Font.setupColor(pgTextcolor);
 
-    int ep = gBehaviorEngine.getEpisode();
-
-    int x,y,chunk;
-    GsWeakSurface blitsfc(gVideoDriver.getBlitSurface());
-
-    SDL_Rect lRect;
-    lRect.h = blitsfc.height();     lRect.w = blitsfc.width();
-
-    const auto fontHeight = gGraphics.getFontLegacy(mFontId).getPixelTextHeight();
-    const auto spaceWidth = gGraphics.getFontLegacy(mFontId).getWidthofChar(' ');
-
-    if(ep != 6)
-    {
-        for(auto &minPos : mMinPos)
-        {
-            minPos = mLeftBorderBmp.width()+2;
-        }
-
-        for(auto &maxPos : mMaxPos)
-        {
-            maxPos = blitsfc.width() - (mLeftBorderBmp.width() + mRightBorderBmp.width() + 9);
-        }
-    }
-    else
-    {
-        for(auto &minPos : mMinPos)
-        {
-            minPos = 2;
-        }
-
-        for(auto &maxPos : mMaxPos)
-        {
-            maxPos = blitsfc.width();
-        }
-
-    }
-
-    for(const auto &line : mCurrentTextLines)
-    {
-        if(line[0] == '^')
-        {
-            if(line[1] == 'G')
-            {
-                std::string param = line.substr(2);
-
-                char comma;
-
-                ss << param;
-                ss >> y;
-                ss >> comma;
-                ss >> x;
-                ss >> comma;
-                ss >> chunk;
-
-                chunk = chunk - mBmpIndex;
-
-                GsBitmap &bmp = gGraphics.getBitmapFromId(0, chunk);
-                const auto bmpH = bmp.height();
-                const auto bmpW = bmp.width();
-
-                // Got the bitmap, block the matrix at that part
-
-                int minHeight = y-fontHeight;
-
-                if(minHeight < 0)
-                {
-                    minHeight = 0;
-                }
-
-                for(int i=minHeight ; i<y+bmpH ; i++)
-                {
-                    // Wrap left side text
-                    //if((x+bmpW)/2 < lRect.w/2)
-                    if((x+bmpW) < lRect.w/2)
-                    {
-                        // Left hand wrap
-                        for(int j=x ; j<x+bmpW ; j++)
-                        {
-                            auto curMinPos = mMinPos[i/fontHeight];
-
-                            if(curMinPos < j+spaceWidth)
-                            {
-                                mMinPos[i/fontHeight] = j+spaceWidth+8;
-                            }
-                        }
-                    }                                        
-                    else    // Wrap right side text
-                    {
-                        for(int j=x ; j<x+spaceWidth+bmpW ; j++)
-                        {
-                            auto curMaxPos = mMaxPos[i/fontHeight];
-
-                            if(curMaxPos > j)
-                            {
-                                mMaxPos[i/fontHeight] = j;
-                            }
-                        }
-                    }
-                }
-
-                bmp.draw(x, y);
-            }
-        }
-    }
+    const std::string pgText =
+            "pg " + itoa(mSectionPage+1) +
+            " of " + itoa(mNumPagesOfThisSection+1);
+    Font.drawFont(blitsfc.getSDLSurface(), pgText,
+                  218, 186);
 }
 
 void ComputerWrist::renderPage()

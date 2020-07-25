@@ -19,6 +19,7 @@
 
 #include <base/Singleton.h>
 #include <base/GsVirtualinput.h>
+#include <map>
 
 
 #define gInput	CInput::get()
@@ -206,12 +207,24 @@ public:
 	bool getPressedCommand(int command);
 	bool getPressedCommand(int player, int command);
 	bool getPressedAnyCommand(const int player);
-	bool getPressedAnyButtonCommand(const int player);
+
+    /**
+     * @brief getPressedAnyButtonCommand Tells whether one of the player pressed
+     *                                   an action button (Jump, Fire, Pogo, Status, Start)
+     * @param player Player Idx
+     * @return true if the player pressed it, otherwise false
+     */
+	bool getPressedAnyButtonCommand(const int player);    
+    bool getPressedAnyButtonCommand();
+
     bool getExitEvent()
     {  return m_exit;  }
 
-	bool getTwoButtonFiring(int player);
-	void setTwoButtonFiring(int player, bool value);
+    bool isSuperRunEnabled(const int player);
+    void enableSuperRun(const int player, const bool value);
+
+    bool getTwoButtonFiring(const int player);
+    void setTwoButtonFiring(const int player, const bool value);
 
 	bool isAnalog(const int player);
 	void enableAnalog(const int player, const bool value);
@@ -258,6 +271,9 @@ public:
 
 	void loadControlconfig();
 	void resetControls(int player);
+
+    void openJoyAndPrintStats(const int idx);
+    void enableJoysticks();
 	bool startJoyDriver();
 	void saveControlconfig();
 
@@ -344,7 +360,11 @@ private:
 	std::list<SDL_Joystick*> mp_Joysticks;
 
     std::array< std::array<stInputCommand, MAX_COMMANDS>, NUM_INPUTS > mInputCommands;
-	bool TwoButtonFiring[NUM_INPUTS];
+
+    std::map<int, int> mJoyIdToInputIdx;
+
+    std::array<bool, NUM_INPUTS> mSuperRun;
+	bool TwoButtonFiring[NUM_INPUTS];    
 	bool mAnalogAxesMovement[NUM_INPUTS];
 	bool mSuperPogo[NUM_INPUTS];
 	bool mImpPogo[NUM_INPUTS];
@@ -367,6 +387,7 @@ private:
         Uint8 mapDevice = 0;
         int mapPosition = 0;
 	} remapper;
+
 
     SDL_sem *mpPollSem = nullptr;
 };
