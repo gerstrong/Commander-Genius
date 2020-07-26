@@ -44,14 +44,6 @@ if(USE_BOOST)
 endif(USE_BOOST)
 
 
-IF (Boost_FOUND)
-    # Remove tinyxml2 if boost will be used
-    list(REMOVE_ITEM ALL_SRCS_GSKIT_BASE
-            ${CMAKE_CURRENT_SOURCE_DIR}/base/utils/property_tree/tinyxml2.h
-            ${CMAKE_CURRENT_SOURCE_DIR}/base/utils/property_tree/tinyxml2.cpp)
-endif(Boost_FOUND)
-
-
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
 
 
