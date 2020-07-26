@@ -139,19 +139,6 @@ void GsButton::processLogic()
     mFillColor.ponder(0.075f);
     mBorderColor.ponder(0.075f);
 
-
-    /*
-    bool mEnabled = true;
-
-    // For mouse/touch we have those
-    bool mHovered  = false;
-    bool mPressed  = false;
-    bool mReleased = false;
-
-    // This is needed for gamepad/keyboard input
-    bool mSelected = false;
-    */
-
     // Color operations
     if(!mEnabled)
     {
@@ -160,23 +147,23 @@ void GsButton::processLogic()
     }
     else
     {
-        GsColor selectFillColor = mSelected ? mSelectedColor : mEnabledColor;
-
-        if(mHovered)
-            selectFillColor.converge(GsColor(255,255,255));
-        if(mPressed)
-            selectFillColor.converge(mSelectedColor);
-        else if(mReleased)
-            selectFillColor = mSelectedColor;
-
-        mFillColor.setTargetColor(selectFillColor);
-
         if(mSelected)
         {
             mBorderColor.setTargetColor(GsColor(0,0,0));
+            mFillColor.setTargetColor(mSelectedColor);
         }
         else
         {
+            GsColor selectFillColor = mEnabledColor;
+
+            if(mHovered)
+                selectFillColor.converge(GsColor(255,255,255));
+            if(mPressed)
+                selectFillColor.converge(mSelectedColor);
+            else if(mReleased)
+                selectFillColor = mSelectedColor;
+
+            mFillColor.setTargetColor(selectFillColor);
             mBorderColor.setTargetColor(mDisabledColor);
         }
 

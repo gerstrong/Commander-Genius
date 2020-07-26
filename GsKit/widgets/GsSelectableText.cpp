@@ -18,10 +18,16 @@ GsFrame(rect)
 
     newTextWidget->enableCenteringH(false);
 
-    mBgColorHovered  = GsColor(0xAF, 0xAF, 0xFF);
-    mBgColorPressed  = GsColor(0x3F, 0x3F, 0xFF);
-    mBgColorReleased = GsColor(0x3F, 0x3F, 0xFF);
-    mBgColorSelected = GsColor(0x3F, 0x3F, 0xFF);
+    mBgColorSelected = GsColor(0x52, 0xfb, 0x52);
+
+    mBgColorReleased = mBgColorSelected;
+    mBgColorReleased.converge(GsColor(0,0,0));
+
+    mBgColorHovered = mBgColorSelected;
+    mBgColorHovered.converge(GsColor(255,255,255));
+
+    mBgColorPressed = mBgColorHovered;
+    mBgColorPressed.converge(mBgColorSelected);
 }
 
 bool GsSelectableText::sendEvent( const std::shared_ptr<CEvent> &event )
@@ -67,7 +73,7 @@ void GsSelectableText::processLogic()
 
     if(mSelected)
     {
-        bgColor.converge(mBgColorSelected);
+        bgColor = mBgColorSelected;
     }
 
     setBackgroundColor(bgColor);
