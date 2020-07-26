@@ -14,6 +14,7 @@
 #include "CInfoScene.h"
 #include "engine/core/CMap.h"
 #include <graphics/GsFont.h>
+#include <array>
 
 class CCredits : public CInfoScene
 {
@@ -25,8 +26,9 @@ public:
 	void teardown();
 	
 private:
-	std::string m_scrolltext[54];
-	int m_mid[54];
+
+    std::array<std::string, 55> m_scrolltext;
+    std::array<int, 55> m_mid;
 	int m_timer;
 	int m_scrolly;
 	

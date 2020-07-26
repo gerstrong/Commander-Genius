@@ -87,9 +87,9 @@ void CCredits::init()
 	m_scrolltext[54] = "the support they give.";
 	
 	m_timer = 0;
-	m_scrolly = -55*8;
+    m_scrolly = -m_scrolltext.size()*8;
 
-	for(int j=0 ; j<55 ; j++)
+    for(size_t j=0 ; j<m_scrolltext.size() ; j++)
     {
 		m_mid[j] = 160-(m_scrolltext[j].size()*4);
     }
@@ -127,9 +127,12 @@ void CCredits::render()
 
     mDrawSfc.fillRGB(0, 0, 0);
 
-    for(int j=0 ; j<54 ; j++)
+    for(size_t j=0 ; j<m_scrolltext.size() ; j++)
     {
-        if(m_scrolly+(j<<3) > -8 && m_scrolly+(j<<3) < gVideoDriver.getGameResolution().dim.y)
+        const int boundary = m_scrolly+(j<<3);
+
+        if(boundary > -8 &&
+           boundary < gVideoDriver.getGameResolution().dim.y)
         {
             creditFont.drawFont( mDrawSfc, m_scrolltext[j],
                                  m_mid[j], m_scrolly+(j<<3), true);
