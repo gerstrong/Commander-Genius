@@ -1,6 +1,5 @@
-build:windowsportable:
-  image: cgenius/crossbuild:win
-  windows:
+windowsportable:
+    image: cgenius/crossbuild:win
     stage: build
     # instead of calling g++ directly you can also use some build toolkit like make
     # install the necessary build tools when needed
@@ -18,10 +17,8 @@ build:windowsportable:
       paths:
         - output/*
         
-        
-build:windowsinstaller:        
-  image: cgenius/crossbuild:winnsis
-  windows:
+windowsinstaller:
+    image: cgenius/crossbuild:winnsis
     stage: build
     # instead of calling g++ directly you can also use some build toolkit like make
     # install the necessary build tools when needed
@@ -37,4 +34,5 @@ build:windowsinstaller:
       name: "CGenius-Win-$CI_COMMIT_SHORT_SHA"
       expire_in: 1 week
       paths:
-        - output/*        
+        - output/*
+              
