@@ -70,8 +70,8 @@ void GsScrollingFrame::processRender(const GsRect<float> &srcRectFloat,
     }
 
     if(mSelected)
-    {
-        GsColor color(0x0, 0x0, 0xFF);
+    {        
+        GsColor color(0x80, 0x80, 0x80);
         const auto colorInt = blitsfc.mapColorAlpha(color);
         blitsfc.drawFrameRect(lRect, 1, colorInt);
     }
