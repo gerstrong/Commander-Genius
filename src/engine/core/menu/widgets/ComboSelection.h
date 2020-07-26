@@ -21,6 +21,11 @@ public:
 
     const Style mStyle;
 
+    void setTextColor(const GsColor &color)
+    {
+        mColorNormal = color;
+    }
+
 private:
 
     GsColor mColorNormal;

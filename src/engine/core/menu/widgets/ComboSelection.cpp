@@ -19,7 +19,7 @@ mStyle(style)
         enableBlinker(true);        
         enableHighlightBg(false);
 
-        mHoverBgColor = GsColor(0x66, 0x66, 0x66);       
+        mEnabledColor = GsColor(0x66, 0x66, 0x66);
 
         mColorNormal   = GsColor(0x26, 0x86, 0x26);
         mColorHovered  = GsColor(0x66, 0xC6, 0x66);
@@ -32,7 +32,6 @@ mStyle(style)
         mpFeatureName->setFontId(1);
         mpFeatureValue->setFontId(1);
     }
-
     if(mStyle == Style::VORTICON)
     {
         enableTwirl(true);
@@ -46,6 +45,10 @@ mStyle(style)
 
         mpFeatureName->setFontId(0);
         mpFeatureValue->setFontId(0);
+    }
+    else // No style, like the game launcher does use
+    {
+        mSelectedColor = GsColor(0x52, 0xfb, 0x52);
     }
 }
 

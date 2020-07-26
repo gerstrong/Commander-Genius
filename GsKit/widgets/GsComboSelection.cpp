@@ -20,8 +20,6 @@ CGUIComboSelection( const std::string& text,
                     const GsRect<float> &rect,
                     const std::list<std::string>& optionsList ) :
 GsWidgetsManager(rect),
-mHoverBgColor(0xBB, 0xBB, 0xFF),
-mSelectedBgColor(0xAA, 0xAA, 0xFF),
 mOptionsList( optionsList ),
 mOLCurrent( mOptionsList.begin() ),
 mFeatureText(text)
@@ -139,23 +137,14 @@ void CGUIComboSelection::processRender(const GsRect<float> &RectDispCoordFloat)
 
     if(mHighlightBg)
     {
-        if(mSelected)
-        {
-            blitsfc.fill(displayRect, blitsfc.mapColorAlpha(mSelectedBgColor));
-        }
-        else if(mHovered)
-        {
-            blitsfc.fill(displayRect, blitsfc.mapColorAlpha(mHoverBgColor));
-        }
+        blitsfc.fill(displayRect, mFillColor.toUint32(blitsfc));
     }
-
 
     auto &wList = getWidgetList();
     for(auto &obj : wList)
     {
         obj->processRender(displayRect);
     }
-
 }
 
 void CGUIComboSelection::processLogic()
@@ -164,6 +153,36 @@ void CGUIComboSelection::processLogic()
     {
         // That make the button trigger exaclty once
         mpFeatureValue->setReleased(true);
+    }
+
+    mFillColor.ponder(0.075f);
+
+    if(mHighlightBg)
+    {
+        if(!mEnabled)
+        {
+            mFillColor.setTargetColor(mDisabledColor);
+        }
+        else
+        {
+            if(mSelected)
+            {
+                mFillColor.setTargetColor(mSelectedColor);
+            }
+            else
+            {
+                GsColor selectFillColor = mEnabledColor;
+
+                if(mHovered)
+                    selectFillColor.converge(GsColor(255,255,255));
+                if(mPressed)
+                    selectFillColor.converge(mSelectedColor);
+                else if(mReleased)
+                    selectFillColor = mSelectedColor;
+
+                mFillColor.setTargetColor(selectFillColor);
+            }
+        }
     }
 
     GsWidgetsManager::processLogic();

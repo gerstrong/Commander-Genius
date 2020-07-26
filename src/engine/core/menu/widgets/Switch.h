@@ -13,6 +13,8 @@ public:
     void enable( const bool sel )
     {	ComboSelection::setSelection( sel ? "on" : "off" );	}
 
+    virtual void processLogic() override;
+
     bool isEnabled()
     {	return getSelection() == "on";	}
     

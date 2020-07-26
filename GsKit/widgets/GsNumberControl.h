@@ -66,8 +66,13 @@ protected:
     const int mEndValue = 0;
     const int mDeltaValue = 0;
 
-    GsColor mHoverBgColor;
-    GsColor mSelectedBgColor;
+    // Different fixed colors to be used for comboselection
+    GsColor mSelectedColor = GsColor(255, 255, 255);
+    GsColor mEnabledColor = GsColor(230, 230, 230);
+    GsColor mDisabledColor = GsColor(128, 128, 128);
+
+     // Current color used the background of the selection
+    GsDynColor mFillColor = GsDynColor(0.5f,0.5f,0.5f);
 
     std::string mFeatureText;
 

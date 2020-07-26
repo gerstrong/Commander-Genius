@@ -12,6 +12,15 @@ ComboSelection( text, filledStrList( 2, "off", "on" ), style )
 {
 }
 
+void Switch::processLogic()
+{
+    ComboSelection::processLogic();
+
+    mpFeatureValue->setEnabledColor( isEnabled() ?
+                                     GsColor(0x00, 0xFF, 0x00) :
+                                     GsColor(0xFF, 0x00, 0x00));
+}
+
 void Switch::drawVorticonStyle(SDL_Rect& lRect)
 {
 	if(!mEnabled)

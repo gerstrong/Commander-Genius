@@ -150,6 +150,11 @@ public:
         mTextWidget.setFontId(fontId);
     }
 
+    void setEnabledColor(GsColor&& color)
+    {
+        mEnabledColor = color;
+    }
+
 protected:
 
     CGUIText mTextWidget;

@@ -31,8 +31,6 @@ mSlider(slider),
 mStartValue(startValue),
 mEndValue(endValue),
 mDeltaValue(deltaValue),
-mHoverBgColor(0xBB, 0xBB, 0xFF),
-mSelectedBgColor(0xAA, 0xAA, 0xFF),
 mFeatureText(text)
 {    
     spawnSubWidgets();
@@ -116,6 +114,36 @@ void CGUINumberControl::setSelection( const int value )
 void CGUINumberControl::processLogic()
 {
     GsWidgetsManager::processLogic();
+
+    mFillColor.ponder(0.075f);
+
+    if(mHighlightBg)
+    {
+        if(!mEnabled)
+        {
+            mFillColor.setTargetColor(mDisabledColor);
+        }
+        else
+        {
+            if(mSelected)
+            {
+                mFillColor.setTargetColor(mSelectedColor);
+            }
+            else
+            {
+                GsColor selectFillColor = mEnabledColor;
+
+                if(mHovered)
+                    selectFillColor.converge(GsColor(255,255,255));
+                if(mPressed)
+                    selectFillColor.converge(mSelectedColor);
+                else if(mReleased)
+                    selectFillColor = mSelectedColor;
+
+                mFillColor.setTargetColor(selectFillColor);
+            }
+        }
+    }
 }
 
 
@@ -154,14 +182,7 @@ void CGUINumberControl::processRender(const GsRect<float> &rectDispCoordFloat)
 
     if(mHighlightBg)
     {
-        if(mSelected)
-        {
-            blitsfc.fill(displayRect, blitsfc.mapColorAlpha(mSelectedBgColor));
-        }
-        else if(mHovered)
-        {
-            blitsfc.fill(displayRect, blitsfc.mapColorAlpha(mHoverBgColor));
-        }
+        blitsfc.fill(displayRect, mFillColor.toUint32(blitsfc));
     }
 
     auto &widgetsList = getWidgetList();
