@@ -113,9 +113,7 @@ bool CGameLauncher::setupMenu()
     mLauncherDialog.add(
                 new GsButton( "x",
                              GsRect<float>(0.0f, 0.0f, 0.069f, 0.069f),
-                             new GMQuit(),
-                             -1,
-                             GsColor(0x52, 0xfb, 0x52) ) );
+                             new GMQuit(), -1 ) );
 
     mLauncherDialog.add(new CGUIText("Pick a Game",
                                       GsRect<float>(0.14f, 0.01f, 0.72f, 0.05f)));
@@ -128,14 +126,10 @@ bool CGameLauncher::setupMenu()
                                new SettingsMenu(Style::NONE) ) );
     };
 
-
-    mpOptionButton =
-                mLauncherDialog.add(
-                        new GsButton( "O",
+    mLauncherDialog.add(
+                new GsButton( "O",
                               GsRect<float>(0.93f, 0.0f, 0.069f, 0.069f),
-                              openSettingsMenuEvent,
-                              -1, 0.75f, 1.0f, 1.0f )  );
-
+                              openSettingsMenuEvent, -1 ) );
 
     // Create an empty Bitmap control
     mCurrentBmp = mLauncherDialog.add(
@@ -182,9 +176,7 @@ bool CGameLauncher::setupMenu()
                    (
                        new GsButton( "Start >",
                                      GsRect<float>(0.60f, 0.865f, 0.25f, 0.07f),
-                                     new GMStart(),
-                                     -1,
-                                     0.675f, 1.0f, 0.675f)
+                                     new GMStart(), -1 )
                    );
 
 

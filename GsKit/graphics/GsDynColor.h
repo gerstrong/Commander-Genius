@@ -24,7 +24,7 @@ public:
                const float blue);
 
 
-    void ponder(const float dt);
+    void ponder(const float amt);
 
     void setTargetColor(const GsColor &newColor);
 
@@ -32,8 +32,11 @@ public:
 
 private:
 
-    GsColor mTargetColor; // Where it blends to
+    GsColor mPrevColor;    // The lastly set color
+    GsColor mTargetColor;  // Where it blends to
     GsColor mCurrentColor; // The color it currently holds
+
+    float mBlendAmount = 0.0f;
 };
 
 #endif // GSDYNCOLOR_H

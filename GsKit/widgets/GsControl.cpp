@@ -35,6 +35,7 @@ GsControl::~GsControl()
 
 void GsControl::processBlendEffects()
 {    
+    /*
     if(mEnabled)
     {
         // For some nice special effects
@@ -68,6 +69,7 @@ void GsControl::processBlendEffects()
                mLightRatio = 0;
         }
     }
+    */
 }
 
 void GsControl::processPointingState(const GsRect<float> &rect)

@@ -177,6 +177,14 @@ struct GsColor
         a = Uint8((Uint16(a) + Uint16(c.a))/2);
     }
 
+    void converge(const GsColor &c, const float amt)
+    {
+        r = Uint8(CLAMP(float(r)*(1.0f-amt) + float(c.r)*amt,0.0f,255.0f));
+        g = Uint8(CLAMP(float(g)*(1.0f-amt) + float(c.g)*amt,0.0f,255.0f));
+        b = Uint8(CLAMP(float(b)*(1.0f-amt) + float(c.b)*amt,0.0f,255.0f));
+        a = Uint8(CLAMP(float(a)*(1.0f-amt) + float(c.a)*amt,0.0f,255.0f));
+    }
+
 
     /*
     Uint8& operator[](int i) { switch(i) { case 0: return r; case 1: return g; case 2: return b; case 3: return a; default: assert(false); } return *(reinterpret_cast<Uint8*>(0)); }

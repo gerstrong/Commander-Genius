@@ -29,7 +29,7 @@ public:
              const GsRect<float> &rect,
              CEvent *ev = nullptr,
              const int fontId = -1,
-             const GsColor &color = GsColor(0xEE, 0xEE, 0xFF));
+             const GsColor &color = GsColor(0x52, 0xfb, 0x52));
 
 
     GsButton(const std::string& text,
@@ -43,23 +43,23 @@ public:
     GsButton(const std::string& text,
              CEvent *ev = nullptr,
              const int fontId = -1,
-             const float red = 0.933f,
-             const float green = 0.933f,
-             const float blue = 1.0f);
+             const float red = 0.32f,
+             const float green = 0.98f,
+             const float blue = 0.32f);
 
     GsButton(const std::string& text,
              const std::function <void ()>& f,
              const int fontId = -1,
-             const float red = 0.933f,
-             const float green = 0.933f,
-             const float blue = 1.0f);
+             const float red = 0.32f,
+             const float green = 0.98f,
+             const float blue = 0.32f);
 
 
     GsButton(const std::string& text,
              const GsRect<float> &rect,
              const std::function <void ()>& f,
              const int fontId = -1,
-             const GsColor &color = GsColor(0xEE, 0xEE, 0xFF));
+             const GsColor &color = GsColor(0x52, 0xfb, 0x52));
 
 
     GsButton(const std::string& text,
@@ -92,9 +92,7 @@ public:
      * @param lRect Coordinates
      * @param alternate Alterante color wanted?
      */
-    void drawEnabledButton(GsWeakSurface &blitsfc,
-                           const SDL_Rect &lRect,
-                           const bool alternate);
+    void drawEnabledButton(GsWeakSurface &, const SDL_Rect &, const bool);
 
     virtual void processLogic() override;
 
@@ -164,13 +162,13 @@ private:
 
     // Different fixed colors to be used for the button
     GsColor mSelectedColor = GsColor(255, 255, 255);
-    GsColor mEnabledColor = GsColor(224, 224, 244);
+    GsColor mEnabledColor = GsColor(230, 230, 230);
     GsColor mDisabledColor = GsColor(128, 128, 128);
 
 
     // Current colors used for the Buttons
-    GsDynColor mFillColor;
-    GsDynColor mBorderColor;
+    GsDynColor mFillColor = GsDynColor(0.5f,0.5f,0.5f);
+    GsDynColor mBorderColor = GsDynColor(0.5f,0.5f,0.5f);
 
 
     std::function <void ()> mFunction;

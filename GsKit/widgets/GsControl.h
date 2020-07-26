@@ -102,8 +102,6 @@ protected:
 
 	static int mTwirliconID;
 
-    int mLightRatio = 128; // This blends between selected and unselected item.
-
     bool mDrawBlinker = false; // Highlighting using the blinker from galaxy games
     bool mDrawTwirl = false;  // Highlighting using the twirl from vorticon games
     bool mHighlightBg = true; // Standard, some controls may be highlighted

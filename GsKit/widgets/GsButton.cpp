@@ -55,7 +55,7 @@ mTextWidget(text,
             fontId),
 mText(text),
 mEvent(ev),
-mSelectedColor(red, green, blue)
+mSelectedColor(Uint8(red*255.0f), Uint8(green*255.0f), Uint8(blue*255.0f))
 {}
 
 GsButton::GsButton(const std::string& text,
@@ -136,23 +136,54 @@ void GsButton::processLogic()
 {
     processBlendEffects();
 
-    mFillColor.ponder(0.0f);
-    mBorderColor.ponder(0.0f);
+    mFillColor.ponder(0.075f);
+    mBorderColor.ponder(0.075f);
 
-    if(mSelected)
+
+    /*
+    bool mEnabled = true;
+
+    // For mouse/touch we have those
+    bool mHovered  = false;
+    bool mPressed  = false;
+    bool mReleased = false;
+
+    // This is needed for gamepad/keyboard input
+    bool mSelected = false;
+    */
+
+    // Color operations
+    if(!mEnabled)
     {
-        mFillColor.setTargetColor(mSelectedColor);
-    }
-    else if(mEnabled)
-    {
-        mFillColor.setTargetColor(mEnabledColor);
+        mFillColor.setTargetColor(mDisabledColor);
+        mBorderColor.setTargetColor(mDisabledColor);
     }
     else
     {
-        mFillColor.setTargetColor(mDisabledColor);
+        GsColor selectFillColor = mSelected ? mSelectedColor : mEnabledColor;
+
+        if(mHovered)
+            selectFillColor.converge(GsColor(255,255,255));
+        if(mPressed)
+            selectFillColor.converge(mSelectedColor);
+        else if(mReleased)
+            selectFillColor = mSelectedColor;
+
+        mFillColor.setTargetColor(selectFillColor);
+
+        if(mSelected)
+        {
+            mBorderColor.setTargetColor(GsColor(0,0,0));
+        }
+        else
+        {
+            mBorderColor.setTargetColor(mDisabledColor);
+        }
+
+
     }
 
-
+    // Functor/event handling
     if(mEnabled)
     {
         // If button was pushed and gets released, trigger the assigned event.
@@ -179,63 +210,6 @@ void GsButton::drawNoStyle(const SDL_Rect& lRect)
 
     GsWeakSurface blitsfc(gVideoDriver.getBlitSurface());
 
-    //int lComp = 0xFF;
-
-    // Set as default a grey border
-    /*Uint32 borderColor = blitsfc.mapRGBA( 0xBB, 0xBB, 0xBB, 0xFF);
-
-    if(mEnabled)
-    {
-        auto lightRatio = mLightRatio;
-
-        if( mPressed || mSelected )
-        {
-            // Try to highlight the border color a bit more
-            // by determing which one dominates the most
-            auto red   = Uint8(mRed*127.0f);
-            auto green = Uint8(mGreen*127.0f);
-            auto blue  = Uint8(mBlue*127.0f);
-
-            if(red > green && red > blue)
-                red <<= 1;
-            else if(green > red  && green > blue)
-                green <<= 1;
-            else if(blue > green && blue > red )
-                blue <<= 1;
-
-            if(mPressed)
-            {
-                red <<= 1;
-                blue >>= 1;
-                lightRatio <<= 1;
-            }
-
-            // If want to highlight the button set its border color correctly
-            borderColor = blitsfc.mapRGBA( red, green, blue, 0xFF);
-
-            lComp = 0xFF - (lightRatio*(0xFF-0xCF)/255);
-        }
-        else
-        {
-            lComp = 0xFF - (lightRatio*(0xFF-0xDF)/255);
-        }
-    }
-
-
-    auto lcompf = float(lComp);
-
-    auto redC   = Uint8(lcompf*mRed);
-    auto greenC = Uint8(lcompf*mGreen);
-    auto blueC  = Uint8(lcompf*mBlue);
-
-    if(!mEnabled)
-    {
-        redC = 0x8F;
-        greenC = 0x8F;
-        blueC = 0x8F;
-    }*/
-
-    //const auto fillColor = blitsfc.mapRGBA( redC, greenC, blueC, 0xFF);
     const auto fillColor = mFillColor.toUint32(blitsfc);
     const auto borderColor = mBorderColor.toUint32(blitsfc);
 
@@ -253,32 +227,10 @@ void GsButton::drawNoStyle(const SDL_Rect& lRect)
 }
 
 
-void GsButton::drawEnabledButton(GsWeakSurface &blitsfc,
-                                 const SDL_Rect& lRect,
-                                 const bool alternate)
-{
-    //mTextLightSfc.setAlpha(mLightRatio);
-    //mTextDarkSfc.setAlpha(255-mLightRatio);
-
-    /*
-    if(mLightRatio > 0)
-    {
-        if(alternate)
-        {
-            mTextRedSfc.blitTo(blitsfc, lRect);
-        }
-        else
-        {
-            mTextLightSfc.blitTo(blitsfc, lRect);
-        }
-    }
-
-    if(mLightRatio < 255)
-    {
-        mTextDarkSfc.blitTo(blitsfc, lRect);
-    }
-    */
-}
+void GsButton::drawEnabledButton(GsWeakSurface &,
+                                 const SDL_Rect&,
+                                 const bool )
+{}
 
 
 void GsButton::processRender(const GsRect<float> &RectDispCoordFloat)
