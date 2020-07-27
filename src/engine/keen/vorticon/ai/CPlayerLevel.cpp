@@ -574,7 +574,7 @@ void CPlayer::JumpAndPogo()
 	{
         boostInertia(1);
 	}
-	
+
     // If we are in Godmode, use the Pogo, and holding the jump button will make the player fly
     if( ppogostick && gBehaviorEngine.mCheatmode.jump )
     {
@@ -582,6 +582,15 @@ void CPlayer::JumpAndPogo()
     	if(playcontrol[PA_X] > 0) xinertia+=3;
     	if(playcontrol[PA_JUMP] && !blockedu)
     		moveUp(PPOGOUP_SPEED);
+
+        if(gBehaviorEngine.mCheatmode.noclipping)
+        {
+            solid = false;
+        }
+        else
+        {
+            solid = true;
+        }
     }
 }
 
