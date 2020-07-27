@@ -6,7 +6,7 @@
  */
 
 #include "CVarPlatform.h"
-
+#include <base/video/CVideoDriver.h>
 #include <base/utils/property_tree/property_tree.h>
 
 namespace galaxy {
@@ -14,13 +14,16 @@ namespace galaxy {
 
 const int MOVE_SPEED = 20;
 
+const int GIK_SPRITE = 379;
+
 CVarPlatform::CVarPlatform(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y,
                            const direction_t horidir,
                            const direction_t vertdir,
                            const int actionOffset, const int sprVar) :
     CGalaxySpriteObject(pmap, foeID, x, y, sprVar),
-    CPlatform(pmap, foeID, x, y),
-    CMoveTarget(m_Pos, xDirection, yDirection)
+    CPlatform(pmap, foeID, x, y),    
+    CMoveTarget(m_Pos, xDirection, yDirection),
+    m_GikSprite(GIK_SPRITE)
 {
     m_ActionBaseOffset = actionOffset;
 
@@ -29,6 +32,13 @@ CVarPlatform::CVarPlatform(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y,
 
     xDirection = horidir;
     yDirection = vertdir;
+
+    const int episode = gBehaviorEngine.getEpisode();
+
+    if(episode == 6)
+        drawGik = true;
+    else
+        drawGik = false;
 
     solid = false; // I think they must be false, because some plats like those in Keen6
     // should only obey to the set markers
@@ -126,6 +136,91 @@ void CVarPlatform::process()
     movePlat(speed);
     
     CPlatform::process();
+}
+
+
+void CVarPlatform::draw()
+{
+    // This draw routine also is able to draw a second object in case it is holding one.
+    if( dontdraw )
+        return;
+
+    GsSprite &Sprite = gGraphics.getSprite(mSprVar,mSpriteIdx);
+
+    const int sprW = Sprite.getWidth();
+    const int sprH = Sprite.getHeight();
+
+    scrx = (m_Pos.x>>STC)-mpMap->m_scrollx;
+    scry = (m_Pos.y>>STC)-mpMap->m_scrolly;
+
+    SDL_Rect gameres = gVideoDriver.getGameResolution().SDLRect();
+
+    if( scrx < gameres.w && scry < gameres.h && exists )
+    {
+        int showX = scrx+Sprite.getXOffset();
+        int showY = scry+Sprite.getYOffset();
+
+        // Only in Episode 6
+        if(drawGik)
+        {
+            auto gikSpr = m_GikSprite;
+
+            if(yDirection == CENTER && xDirection == LEFT)
+                gikSpr = m_GikSprite;
+            else if(yDirection == UP && xDirection == LEFT)
+                gikSpr = m_GikSprite+1;
+            else if(yDirection == UP && xDirection == CENTER)
+                gikSpr = m_GikSprite+2;
+            else if(yDirection == UP && xDirection == RIGHT)
+                gikSpr = m_GikSprite+3;
+            else if(yDirection == CENTER && xDirection == RIGHT)
+                gikSpr = m_GikSprite+4;
+            else if(yDirection == DOWN && xDirection == RIGHT)
+                gikSpr = m_GikSprite+5;
+            else if(yDirection == DOWN && xDirection == CENTER)
+                gikSpr = m_GikSprite+6;
+            else if(yDirection == DOWN && xDirection == LEFT)
+                gikSpr = m_GikSprite+7;
+
+
+            GsSprite &gikSprite = gGraphics.getSprite(mSprVar, gikSpr);
+
+            const int w = gikSprite.getWidth();
+            const int h = gikSprite.getHeight();
+
+            gikSprite.drawSprite(showX+16, showY+16, w, h);
+
+            Sprite.drawSprite( showX, showY, sprW, sprH, (255-transluceny) );
+        }
+        else
+        {
+            Sprite.drawSprite( showX, showY, sprW, sprH, (255-transluceny) );
+        }
+
+
+
+        for( auto &player : mCarriedPlayerVec)
+        {
+            if(!player)
+                continue;
+
+            GsSprite &playSprite = gGraphics.getSprite(player->getSpriteVariantIdx(),player->mSpriteIdx);
+            int distx = player->getXPosition()-getXPosition();
+            int disty = player->getYPosition()-getYPosition();
+
+            distx = (distx>>STC);
+            distx += (playSprite.getXOffset()-Sprite.getXOffset());
+            disty = (disty>>STC);
+            disty += (playSprite.getYOffset()-Sprite.getYOffset());
+
+            const int playW = playSprite.getWidth();
+            const int playH = playSprite.getHeight();
+
+            playSprite.drawSprite( showX+distx, showY+disty, playW, playH );
+        }
+
+        hasbeenonscreen = true;
+    }
 }
 
 }

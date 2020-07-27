@@ -27,6 +27,8 @@ public:
 
     void process();
 
+    void draw();
+
     void deserialize(CSaveGameController &savedGame);
 
     void serialize(CSaveGameController &savedGame);
@@ -34,6 +36,11 @@ public:
     void serialize(GsKit::ptree &node);
 
     void deserialize(GsKit::ptree &node);
+
+private:
+    bool drawGik = false;
+
+    int m_GikSprite;
 	
 };
 
