@@ -1051,7 +1051,10 @@ void CSpriteObject::processPushOutCollision()
 			while( checkSolidD(x1, x2, should_y, true) )
 				should_y--;
 
-			processMove(0, should_y-y2);
+            if(should_y > 0)
+            {
+                processMove(0, should_y-y2);
+            }
 		}
 	}
 	else if(blockedu)
