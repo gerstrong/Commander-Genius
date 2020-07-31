@@ -35,6 +35,9 @@ void CPlayer::processWorldMap()
         if (xinertia < 0 && blockedl) xinertia = 0;
     }
 
+    if(gBehaviorEngine.mCheatmode.noclipping)
+        solid = false;
+
     if(!beingteleported)
     {
     	WalkingAnimation();
@@ -42,9 +45,9 @@ void CPlayer::processWorldMap()
         // check first if the player is not blocked by a level
         verifySolidLevels();
     	InertiaAndFriction_X();
-    	InertiaAndFriction_Y();
+    	InertiaAndFriction_Y();       
 
-    	performCollisions();
+        performCollisions();
 
     	selectFrameOnWorldMap();
     }

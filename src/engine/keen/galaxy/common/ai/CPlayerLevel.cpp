@@ -3083,6 +3083,11 @@ int CPlayerLevel::checkSolidD( int x1, int x2, int y2, const bool push_mode )
 {
 	std::vector<CTileProperties> &TileProperty = gBehaviorEngine.getTileProperties();
 
+    // Negativ values not allowed
+    if(y2 < 0)
+        return 0;
+
+
     if(mDying)  return 0;
 
 	y2 += COLLISION_RES;
@@ -3171,6 +3176,7 @@ int CPlayerLevel::checkSolidD( int x1, int x2, int y2, const bool push_mode )
 				return blocked;
 		}
 	}
+
 
     if( (Uint32)y2 > ((mpMap->m_height)<<CSF) )
     {

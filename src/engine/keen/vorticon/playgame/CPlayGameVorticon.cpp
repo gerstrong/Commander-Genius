@@ -558,9 +558,6 @@ void CPlayGameVorticon::handleFKeys()
             gBehaviorEngine.mCheatmode.jump =
                     !gBehaviorEngine.mCheatmode.jump;
 
-            gBehaviorEngine.mCheatmode.noclipping =
-                    !gBehaviorEngine.mCheatmode.noclipping;
-
             // If player on map, disable the solid property of the players
             if(m_Level == 80)
                 it_player->solid = gBehaviorEngine.mCheatmode.noclipping;
