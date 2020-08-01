@@ -40,148 +40,35 @@ CGalaxySpriteObject(pmap, foeID, x, y, sprVar)
 	mpMap->mNumFuses++;
 	mpMap->mFuseInLevel = true;
 
-    loadPythonScripts("qed");
     loadLuaScript("qed");
 }
 
-
-
-bool CFuse::loadPythonScripts(const std::string &scriptBaseName)
+bool CFuse::loadLuaScript(const std::string &scriptBaseName)
 {
-    #if USE_PYTHON3
-    auto pModule = gPython.loadModule( scriptBaseName, JoinPaths(gKeenFiles.gameDir ,"ai") );
+    bool ok = true;
+
+    auto fullFName = JoinPaths(gKeenFiles.gameDir ,"ai");
+    fullFName = JoinPaths(fullFName, scriptBaseName + ".lua");
+
+    ok &= mLua.loadFile( fullFName );
+
+    if(!ok)
+        return false;
 
     const int level = mpMap->getLevel();
+    std::string text;
+    ok &= mLua.runFunctionRetOneStr("getLevelText", level, text);
 
-    if (pModule != nullptr)
+    if(ok)
     {
-
-        // Change the bounding box, so object are easier to touch
-        m_BBox.x1 = -(1<<CSF);
-        m_BBox.y1 = -(1<<CSF);
-        m_BBox.x2 = (2<<CSF);
-        m_BBox.y2 = (2<<CSF);
-
-        // Level Text
-        {            
-            // pFunc is a new reference
-            PyObject *pFunc = PyObject_GetAttrString(pModule, "getLevelText");
-
-            if (pFunc && PyCallable_Check(pFunc))
-            {
-                PyObject *arglist = Py_BuildValue("(i)", level);
-
-
-                PyObject *pValue = PyObject_CallObject(pFunc, arglist);
-
-
-                if (pValue != nullptr)
-                {                    
-                    PyObject *objectsRepresentation = PyObject_Repr(pValue);
-
-                    auto *str = PyUnicode_AsUTF8(objectsRepresentation) ;
-
-                    if(str)
-                    {
-                        std::string message = str;
-
-                        // Because line breaks are not formatted correctly
-                        fixNewLine(message);
-
-                        if(!message.empty())
-                        {
-                            std::string levelText = "LEVEL_TEXT";
-                            levelText += itoa(level);
-                            gBehaviorEngine.setMessage(levelText, message);
-                        }
-                    }
-
-                    Py_DECREF(pValue);
-                    Py_DECREF(objectsRepresentation);
-                }
-                else
-                {
-
-                    PyErr_Print();
-                    gLogging.ftextOut("Call failed\n");
-                    return false;
-                }
-
-                Py_DECREF(pFunc);
-                Py_DECREF(arglist);
-            }
-            else
-            {
-                if (PyErr_Occurred())
-                {
-                    PyErr_Print();
-                }
-
-                gLogging.ftextOut("Cannot find function \"pyMethodStr\"\n");
-                return false;
-            }
-
-            Py_XDECREF(pFunc);
-
-
-        }
-
-        // The bitmap of the hint message
-        {
-            // pFunc is a new reference
-            PyObject *pFunc = PyObject_GetAttrString(pModule, "getLevelTextBmp");
-
-            if (pFunc && PyCallable_Check(pFunc))
-            {
-                PyObject *arglist = Py_BuildValue("(i)", level);
-
-
-                PyObject *pValue = PyObject_CallObject(pFunc, arglist);
-
-
-                if (pValue != nullptr)
-                {
-                    mLevelTestBmp = PyLong_AsLong(pValue);
-                    Py_DECREF(pValue);
-                }
-                else
-                {
-                    PyErr_Print();
-                    gLogging.ftextOut("Call failed\n");
-                    return false;
-                }
-
-                Py_DECREF(pFunc);
-                Py_DECREF(arglist);
-            }
-            else
-            {
-                if (PyErr_Occurred())
-                {
-                    PyErr_Print();
-                }
-
-                gLogging.ftextOut("Cannot find function \"pyMethodStr\"\n");
-                return false;
-            }
-
-            Py_XDECREF(pFunc);
-
-
-        }
-
-        Py_DECREF(pModule);
+        std::string levelText = "LEVEL_TEXT";
+        levelText += itoa(level);
+        gBehaviorEngine.setMessage(levelText, text);
     }
-    else
-    {
-        return false;
-    }
-
-    //Py_Finalize();
-#endif
 
     return true;
 }
+
 
 static const int CSF_DISTANCE_TO_EXPLODE = (3<<CSF);
 
@@ -247,7 +134,6 @@ void CFuse::getTouchedBy(CSpriteObject &theObject)
 
         if(!msg.empty())
         {
-            thePlayer->m_Inventory.Item.m_gem.clear();
             thePlayer->m_Inventory.Item.fuse_levels_completed++;
             mpMap->mFuseInLevel = false;
 
@@ -259,7 +145,7 @@ void CFuse::getTouchedBy(CSpriteObject &theObject)
                                 msg,
                                 gGraphics.getBitmapFromId(sprVar, mLevelTestBmp),
                                 RIGHT,
-                                true, nullptr) );
+                                false, nullptr) );
 
             showMsgVec( msgs );
             mIsDead = true;

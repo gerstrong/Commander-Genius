@@ -15,6 +15,10 @@ public:
     bool runFunctionRetOneStr(const std::string &fun,
                               std::string &ret);
 
+    bool runFunctionRetOneStr(const std::string &fun,
+                              const int param,
+                              std::string &ret);
+
     void runFunctionRetOneInt(const std::string &fun, int &ret);
 
     void runFunctionRetOneInt(const std::string &fun,

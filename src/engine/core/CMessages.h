@@ -8,6 +8,8 @@
 #ifndef CMESSAGES_H_
 #define CMESSAGES_H_
 
+#include <base/GsLua.h>
+
 #include <string>
 #include <map>
 
@@ -54,6 +56,8 @@ private:
 	int m_version;
 	
 	unsigned int mOffset;
+
+    GsLua mLua;
 };
 
 #endif /* CMESSAGES_H_ */

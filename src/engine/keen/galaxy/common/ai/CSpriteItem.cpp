@@ -108,7 +108,7 @@ void CSpriteItem::getTouchedBy(CSpriteObject &theObject)
             playSound( SOUND_GET_CARD );
 		}
 
-        // Enable pogo if some script would like that
+        // Enable pogo if some script wishes that
 #if USE_PYTHON3
 
         if(!mModule)

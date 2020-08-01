@@ -10,7 +10,6 @@
 #ifndef CPOISONSLUG_H_
 #define CPOISONSLUG_H_
 
-#include <vector>
 #include "../../common/ai/CStunnable.h"
 
 namespace galaxy {

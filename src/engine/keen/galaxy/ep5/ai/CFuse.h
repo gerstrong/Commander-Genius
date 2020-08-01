@@ -23,9 +23,9 @@ public:
 
 	void process();
 
-    bool loadPythonScripts(const std::string &scriptBaseName);
-
     bool isNearby(CSpriteObject &theObject) override;
+
+    bool loadLuaScript(const std::string &scriptBaseName) override;
 
 	/**
      * What happens if the foe gets touched by another object

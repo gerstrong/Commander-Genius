@@ -11,9 +11,12 @@
 
 #include "CMessages.h"
 #include "base/utils/StringUtils.h"
+#include "fileio/KeenFiles.h"
+
 #include <base/GsLogging.h>
 #include <base/GsPython.h>
-#include "fileio/KeenFiles.h"
+#include <base/utils/FindFile.h>
+
 #include "engine/core/CBehaviorEngine.h"
 
 #include <cstring>
@@ -480,18 +483,17 @@ bool CMessages::extractGlobalStringsUsingLua()
 {
     std::map<std::string, std::string> stringMap; // Structure which stores all the extracted string
 
-#if USE_PYTHON3
+    const auto fullFName = JoinPaths(gKeenFiles.gameDir, "messageMap.lua");
+    mLua.loadFile(fullFName);
 
-    auto pModule = gPython.loadModule( "messageMap", gKeenFiles.gameDir );
-
-    if (pModule != nullptr)
+    if(mLua)
     {
         for(int i=0 ; i<=18 ; i++)
         {
             const std::string levelKey = "LEVEL" + to_string(i) + "_LOAD_TEXT";
             std::string value;
 
-            const auto ok = loadStrFunction(pModule, "getLevelLoadMsg", value, i);
+            const auto ok = mLua.runFunctionRetOneStr("getLevelLoadMsg", i, value);
 
             if(ok)
             {
@@ -500,8 +502,6 @@ bool CMessages::extractGlobalStringsUsingLua()
 
         }
     }
-
-#endif
 
     // Now pass all the Map to the global text structure
     if(!stringMap.empty())

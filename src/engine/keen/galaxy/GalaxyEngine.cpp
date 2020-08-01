@@ -218,6 +218,7 @@ bool GalaxyEngine::loadResources( const Uint8 flags )
                 gLogging.ftextOut("Loading game text...\n<br>");
                 CMessages Messages(p_exedata, Episode, ExeFile.isDemo(), version);
                 Messages.extractGlobalStringsUsingExe();
+                Messages.extractGlobalStringsUsingLua();
                 mLoader.setPermilage(450);
                 gLogging.ftextOut("Done game text...\n<br>");
             }

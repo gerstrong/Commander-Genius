@@ -169,6 +169,42 @@ bool GsLua::runFunctionRetOneStr(const std::string &fun,
     return true;
 }
 
+bool GsLua::runFunctionRetOneStr(const std::string &fun,
+                                 const int param,
+                                 std::string &ret)
+{
+    if(!mLuaStatePtr)
+    {
+        gLogging.ftextOut("Lua State not running for %s", fun.c_str());
+        return false;
+    }
+
+
+    lua_State *L = (lua_State *)mLuaStatePtr;
+    lua_getfield(L, -1, fun.c_str());
+    lua_pushvalue(L, -2);
+    lua_pushnumber(L, param);
+    if (lua_pcall(L, 2, 1, 0) != 0)
+    {
+        gLogging.ftextOut("Error calling %s", fun.c_str());
+        return false;
+    }
+
+    const char *retStr = lua_tostring(L, -1);
+    if (!retStr) {
+        gLogging.ftextOut("Error getval didn't return a valid string");
+        return false;
+    }
+    ret = retStr;
+    gLogging.ftextOut("ret=%s\n", retStr);
+
+    /* Remove the return value from the stack. */
+    lua_remove(L, -1);
+
+    return true;
+}
+
+
 void GsLua::runFunctionRetOneInt(const std::string &fun, int &ret)
 {
     if(!mLuaStatePtr)
