@@ -38,11 +38,11 @@ public:
     void winGame(const int msecs);
 	
 private:
-    int mLevelTestBmp = 84; /** Index to use for the hint message (Keen 9 and other mods) */
-
     uint32_t mGameEndsTime = 0; // Timer to run down, before game ends
 
     uint32_t mLevelEndsTime = 0; // Timer to run down, before game ends
+
+    int mBmpIdx = 84; // Portrait for shown messages. May be modified by some mods like Keen 9
 
 };
 

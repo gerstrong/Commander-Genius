@@ -59,12 +59,16 @@ bool CFuse::loadLuaScript(const std::string &scriptBaseName)
     std::string text;
     ok &= mLua.runFunctionRetOneStr("getLevelText", level, text);
 
-    if(ok)
-    {
-        std::string levelText = "LEVEL_TEXT";
-        levelText += itoa(level);
-        gBehaviorEngine.setMessage(levelText, text);
-    }
+    if(!ok)
+        return false;
+
+    std::string levelText = "LEVEL_TEXT";
+    levelText += itoa(level);
+    gBehaviorEngine.setMessage(levelText, text);
+
+    int bmpIdx = mBmpIdx;
+    mLua.runFunctionRetOneInt("getLevelTextBmp", level, bmpIdx);
+    mBmpIdx = bmpIdx;
 
     return true;
 }
@@ -139,11 +143,11 @@ void CFuse::getTouchedBy(CSpriteObject &theObject)
 
             std::vector<CMessageBoxGalaxy*> msgs;
 
-            const int sprVar = thePlayer->getSpriteVariantIdx();
+            int sprVar = thePlayer->getSpriteVariantIdx();
 
             msgs.push_back( new CMessageBoxBitmapGalaxy(sprVar,
                                 msg,
-                                gGraphics.getBitmapFromId(sprVar, mLevelTestBmp),
+                                gGraphics.getBitmapFromId(sprVar, mBmpIdx),
                                 RIGHT,
                                 false, nullptr) );
 
