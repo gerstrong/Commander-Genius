@@ -14,6 +14,7 @@
 #include <base/video/CVideoDriver.h>
 #include <base/CInput.h>
 #include "engine/core/spritedefines.h"
+#include "CBehaviorEngine.h"
 
 int CCamera::mCamlead = 0;
 bool CCamera::mCamLeadChange = false;

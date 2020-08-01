@@ -16,21 +16,21 @@
 #ifndef CBEHAVIORENGINE_H_
 #define CBEHAVIORENGINE_H_
 
-#include <vector>
-#include <string>
-#include <map>
-//#include <SDL.h>
 #include "engine/keen/galaxy/res/EGAStructs.h"
-#include <base/Configurator.h>
 #include "fileio/CTileProperties.h"
 #include "CPhysicsSettings.h"
-#include <base/TypeDefinitions.h>
-#include <base/GsEvent.h>
 #include "engine/core/options.h"
 #include "Cheat.h"
 
+#include <base/Configurator.h>
+#include <base/TypeDefinitions.h>
 #include <base/GsEvent.h>
 #include <base/Singleton.h>
+
+#include <vector>
+#include <string>
+#include <map>
+
 
 #if defined (SINGLEPLAYER)
 const unsigned int MAX_PLAYERS = 1;
@@ -97,9 +97,6 @@ public:
 	std::vector<stTeleporterTable>& getTeleporterTable()
 	{ return m_TeleporterTable; }
 
-    //CEventContainer &EventList()
-    //{	return gEventManager;	}
-
     void setEpisode(const int Episode)
     {	mEpisode = Episode;	}
 
@@ -131,16 +128,6 @@ public:
     void setNumPlayers(const int numPlayers){
         mPlayers = numPlayers;
     }
-/*
-
-    auto numPlayerVariants() const {
-        return mPlayers;
-    }
-
-    void setNumPlayerVariants(const int numPlayerVar){
-        mPlayerVariants = numPlayerVar;
-    }
-*/
 
 	std::string mapLevelName;
 
@@ -153,28 +140,19 @@ private:
      */
     int mPlayers = 1;
 
-    /**
-     * @brief mPlayerVarianst  Number of players that totally are possible.
-     *                         Means not what is currently being played.
-     */
-    //int mPlayerVariants = 1;
-
-
 	std::vector<CTileProperties> m_TileProperties[2];
     CPhysicsSettings m_PhysicsSettings;
 
 	std::map<std::string,std::string> stringmap;
 	std::vector<stTeleporterTable> m_TeleporterTable; // Teleporter table used for the destinations
 													  // used by Episode 1 especially
-//	int numStrings;
+
     size_t mEpisode;
     bool mDemo;
 
     bool mPausedGamePlay = false;
 
     EpisodeInfoStruct *pEpisodeInfo;
-
-//    int mBwbLevel = 99;
 };
 
 #endif /* CBEHAVIORENGINE_H_ */

@@ -26,6 +26,15 @@ if(NINTENDO_SWITCH)
     ADD_DEFINITIONS(-D__SWITCH__)
 endif()
 
+
+# GP2X builds
+OPTION(GP2X "Build for GP2X" No)
+
+if(GP2X)
+    ADD_DEFINITIONS(-D__GP2X__)
+endif()
+
+
 OPTION(DUMP_MTCS "Show Mouse Touch Cursor Position" No)
 
 IF (DUMP_MTCS)

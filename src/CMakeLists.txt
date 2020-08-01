@@ -158,10 +158,6 @@ target_link_libraries (CGeniusExe engine)
 target_link_libraries (CGeniusExe GsKit)
 
 
-# Link our SDL Extensions
-target_link_libraries(CGeniusExe sdl_extensions_audio sdl_extensions_sys)
-
-
 # The Windows Version has an icon in the executable
 IF(WIN32)
 	SET_TARGET_PROPERTIES(CGeniusExe PROPERTIES OUTPUT_NAME "CGenius")        

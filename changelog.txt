@@ -2,12 +2,12 @@ v2.5.0:
 -------
 - LUA support will replace Python scripting
 - Quickload in the galaxy died dialog ("You didn't make it past...")
+- Quicksave and Quickload can be mapped any keyboard and joystick buttons
 
 v2.4.6:
 -------
 - New Export graphics feature
 - Super Run option. The run button now only works when you enable that option
-
 
 v2.4.5.3:
 ---------

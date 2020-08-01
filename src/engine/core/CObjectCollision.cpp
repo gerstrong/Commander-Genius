@@ -10,7 +10,9 @@
 
 #include "CSpriteObject.h"
 #include "engine/core/spritedefines.h"
+#include "CBehaviorEngine.h"
 #include <base/GsTimer.h>
+
 
 int episode = 0;
 int gBlockTolerance = 0;

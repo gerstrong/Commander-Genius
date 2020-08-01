@@ -12,7 +12,6 @@
 #include <string>
 #include <vector>
 #include <list>
-#include <base/GsTimer.h>
 #include <base/Vector2D.h>
 
 

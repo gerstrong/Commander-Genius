@@ -15,6 +15,7 @@
 #include "../../common/ai/CEnemyShot.h"
 #include "../../menu/ComputerWrist.h"
 #include "engine/core/mode/CGameMode.h"
+#include <base/GsTimer.h>
 
 
 

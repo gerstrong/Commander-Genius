@@ -13,26 +13,21 @@
 #define CSpriteObject_H
 
 #include <base/GsEvent.h>
+#include <base/utils/FindFile.h>
 
 #include "ActionFormat.h"
 #include "direction.h"
 #include "CBehaviorEngine.h"
 
-
 // structures for each AI module's data
 #include "CMap.h"
 #include "graphics/GsGraphics.h"
-#include "options.h"
-
 
 // Enumerations are here
 #include "objenums.h"
 
-#include <base/utils/FindFile.h>
-
 #include "fileio/KeenFiles.h"
 
-#include <base/GsPython.h>
 #include <base/GsLua.h>
 
 

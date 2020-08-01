@@ -1,7 +1,6 @@
 #ifndef GSEVENT_H
 #define GSEVENT_H
 
-#include "base/Singleton.h"
 #include <functional>
 
 struct CEvent

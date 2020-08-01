@@ -1,2 +1,5 @@
 add_subdirectory(audio)
-add_subdirectory(sys)
+
+if(GP2X)
+    add_subdirectory(sys)
+endif(GP2X)

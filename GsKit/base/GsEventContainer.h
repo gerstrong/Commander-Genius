@@ -2,6 +2,7 @@
 #define GSEVENTCONTAINER_H
 
 #include "GsEvent.h"
+#include "base/Singleton.h"
 #include <vector>
 #include <deque>
 #include <list>

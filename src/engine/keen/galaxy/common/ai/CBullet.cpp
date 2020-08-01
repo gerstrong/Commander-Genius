@@ -9,6 +9,7 @@
 #include "CPlayerLevel.h"
 #include "sdl/audio/Audio.h"
 
+
 size_t bulletActionMap[] =
 {
     0x1738,

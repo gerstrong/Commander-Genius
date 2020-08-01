@@ -18,6 +18,8 @@
 #include "fileio/KeenFiles.h"
 
 #include "sdl/audio/Audio.h"
+#include "CBehaviorEngine.h"
+
 
 int CSpriteObject::m_number_of_objects = 0; // The current number of total objects we have within the game!
 
