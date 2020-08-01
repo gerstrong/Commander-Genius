@@ -43,8 +43,8 @@ windowsinstaller:
 publish:
     image: inetprocess/gitlab-release
     stage: publish
-#    only:
-#        - tags
+    only:
+        - tags
     dependencies: 
         - windowsportable
         - windowsinstaller
