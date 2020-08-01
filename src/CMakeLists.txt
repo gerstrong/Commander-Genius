@@ -113,7 +113,13 @@ endif()
 MESSAGE( STATUS "Internal Downloader: ${DOWNLOADER}" )
 
 add_subdirectory(engine)
-add_subdirectory(sdl)
+
+add_subdirectory(audio)
+
+if(GP2X)
+    add_subdirectory(sys)
+endif(GP2X)
+
 add_subdirectory(fileio)
 add_subdirectory(dialog)
 add_subdirectory(graphics)

@@ -1,4 +1,4 @@
--- Ampton becomes a Yeti
+-- Shockshound becomes Mortimer McMire
 local M = {}
 local M_mt = { __index = M }
 

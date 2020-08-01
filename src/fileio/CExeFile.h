@@ -17,7 +17,7 @@
 #include "fileio/crc.h"
 #include <base/TypeDefinitions.h>
 
-#include "sdl/audio/music/CIMFPlayer.h"
+#include "audio/music/CIMFPlayer.h"
 
 #include <vector>
 #include <string>
