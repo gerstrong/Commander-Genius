@@ -16,7 +16,7 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#include <sdl/audio/Audio.h>
+#include <audio/Audio.h>
 
 extern "C"
 {

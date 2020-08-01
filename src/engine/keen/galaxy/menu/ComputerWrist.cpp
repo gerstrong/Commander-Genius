@@ -3,7 +3,7 @@
 #include <base/utils/StringUtils.h>
 #include <graphics/GsGraphics.h>
 #include <graphics/effects/CColorMerge.h>
-#include <sdl/audio/music/CMusic.h>
+#include <audio/music/CMusic.h>
 #include <engine/core/CBehaviorEngine.h>
 
 #include <sstream>

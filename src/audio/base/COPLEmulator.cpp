@@ -11,7 +11,7 @@
  */
 
 #include "COPLEmulator.h"
-#include <sdl/audio/Audio.h>
+#include <audio/Audio.h>
 
 #include <fstream>
 #include <cstring>
