@@ -2,16 +2,6 @@ stages:
     - build
     - publish
 
-publish:
-    stage: publish
-    only:
-        - tags
-    dependencies: 
-        - windowsportable
-        - windowsinstaller
-    script:
-        - gitlab-release --message 'Automatic release' ./output
-
 windowsportable:
     image: cgenius/crossbuild:win
     stage: build    
@@ -49,4 +39,15 @@ windowsinstaller:
       expire_in: 1 week
       paths:
         - output/*
+                            
+publish:
+    image: inetprocess/gitlab-release
+    stage: publish
+#    only:
+#        - tags
+    dependencies: 
+        - windowsportable
+        - windowsinstaller
+    script:
+        - gitlab-release --message 'Automatic release' ./output
               
