@@ -372,7 +372,7 @@ bool VirtualKeenControl::mouseFingerState(const GsVec2D<float> &Pos,
 
 /*
     auto unbindButtonCommand = [&](const TouchButton &button,
-            const InputCommand &cmd)
+            const InpCmd &cmd)
     {
         gInput.setCommand(0, cmd, false);
     };
@@ -497,7 +497,7 @@ bool VirtualKeenControl::mouseFingerState(const GsVec2D<float> &Pos,
 
 
     auto bindButtonCommand = [&](TouchButton &button,
-                                 const InputCommand &cmd) -> bool
+                                 const InpCmd &cmd) -> bool
     {
         if(button.invisible)
             return false;
@@ -550,7 +550,7 @@ bool VirtualKeenControl::mouseState(const GsVec2D<float> &Pos, const bool down)
 #if SDL_VERSION_ATLEAST(2, 0, 0)    
 /*
     auto unbindButtonCommand = [&](const TouchButton &button,
-            const InputCommand &cmd)
+            const InpCmd &cmd)
     {
         gInput.setCommand(0, cmd, false);
     };
@@ -576,7 +576,7 @@ bool VirtualKeenControl::mouseState(const GsVec2D<float> &Pos, const bool down)
         return false;
 
     auto bindButtonCommand = [&](const TouchButton &button,
-                                 const InputCommand &cmd)
+                                 const InpCmd &cmd)
     {
         if(button.invisible)
             return;

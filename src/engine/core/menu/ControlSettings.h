@@ -61,7 +61,7 @@ protected:
     int mSelectedPlayer;
 
     std::vector< std::shared_ptr<GameButton> > mpButtonList;
-    std::map<InputCommand, std::string> mCommandName;
+    std::map<InpCmd, std::string> mCommandName;
 
     bool mapping;
 };

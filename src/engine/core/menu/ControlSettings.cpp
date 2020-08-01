@@ -24,7 +24,7 @@ class ReadInputEvent : public InvokeFunctorEvent
 public:
 
 	ReadInputEvent( const int selPlayer,
-			const InputCommand command,
+            const InpCmd command,
 			const std::string &commandName ) :
 		mSelPlayer(selPlayer),
 		mCommand(command),
@@ -46,7 +46,7 @@ public:
 	}
 
 	int mSelPlayer;
-	InputCommand mCommand;
+    InpCmd mCommand;
 	const std::string mCommandName;
     std::shared_ptr<GsButton> mpButton;
 };
@@ -167,7 +167,7 @@ void CControlSettingsBase::ponder(const float deltaT)
 
             int pos; unsigned char input;
             std::string evName = gInput.getNewMappedEvent(pos, input);
-            InputCommand com = static_cast<InputCommand>(pos);
+            InpCmd com = static_cast<InpCmd>(pos);
 
             if(pos >= MID_COMMANDS_OFFSETS)
                 pos -= MID_COMMANDS_OFFSETS;
@@ -204,7 +204,7 @@ void CControlSettingsMovement::refresh()
 	if(!mpButtonList.empty())
 		mpButtonList.clear();
 
-	std::map<InputCommand, std::string>::iterator it = mCommandName.begin();
+    std::map<InpCmd, std::string>::iterator it = mCommandName.begin();
 	for ( ; it != mCommandName.end(); it++ )
 	{
 		const std::string buf = it->second;
@@ -240,19 +240,22 @@ void CControlSettingsMovement::refresh()
 void CControlSettingsButtons::refresh()
 {
     mapping = false;
-	mCommandName[IC_JUMP] 		= "Jump:   ";
-	mCommandName[IC_POGO] 		= "Pogo:   ";
-    mCommandName[IC_FIRE]		= "Fire:   ";
-    mCommandName[IC_RUN]		= "Run:    ";
-    mCommandName[IC_STATUS] 	= "Status: ";
-	mCommandName[IC_CAMLEAD] 	= "Camlead:";
-	mCommandName[IC_HELP] 		= "Help:   ";
-	mCommandName[IC_BACK] 		= "Back:   ";
+    mCommandName[IC_JUMP] 		    = "Jump:     ";
+    mCommandName[IC_POGO] 		    = "Pogo:     ";
+    mCommandName[IC_FIRE]		    = "Fire:     ";
+    mCommandName[IC_RUN]		    = "Run:      ";
+    mCommandName[IC_STATUS] 	    = "Status:   ";
+    mCommandName[IC_CAMLEAD] 	    = "Camlead:  ";
+    mCommandName[IC_HELP] 		    = "Help:     ";
+    mCommandName[IC_BACK] 		    = "Back:     ";
+    mCommandName[IC_QUICKSAVE] 		= "Quicksave:";
+    mCommandName[IC_QUICKLOAD] 		= "Quickload:";
+
 
 	if(!mpButtonList.empty())
 		mpButtonList.clear();
 
-	std::map<InputCommand, std::string>::iterator it = mCommandName.begin();
+    std::map<InpCmd, std::string>::iterator it = mCommandName.begin();
 	for ( ; it != mCommandName.end(); it++ )
 	{
         const std::string buf = it->second;

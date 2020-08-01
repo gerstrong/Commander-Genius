@@ -126,7 +126,7 @@ void GsScrollbar::processRender(const GsRect<float> &RectDispCoordFloat)
     }
 }
 
-bool GsScrollbar::sendEvent(const InputCommand)
+bool GsScrollbar::sendEvent(const InpCmd)
 {
     return false;
 }

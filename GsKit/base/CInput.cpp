@@ -141,6 +141,9 @@ void CInput::resetControls(const int player)
     curInput[IC_HELP].keysym = SDLK_F1;
     curInput[IC_BACK].keysym = SDLK_ESCAPE;
 
+    curInput[IC_QUICKSAVE].keysym = SDLK_F6;
+    curInput[IC_QUICKLOAD].keysym = SDLK_F9;
+
 	// And those are the default joystick handlings, but they are disabled by default
     curInput[IC_LEFT].joyeventtype = ETYPE_KEYBOARD;
     curInput[IC_LEFT].joyaxis = 0;
@@ -183,6 +186,14 @@ void CInput::resetControls(const int player)
     curInput[IC_BACK].joyeventtype = ETYPE_KEYBOARD;
     curInput[IC_BACK].joybutton = 7;
     curInput[IC_BACK].which = 0;
+
+    curInput[IC_QUICKSAVE].joyeventtype = ETYPE_KEYBOARD;
+    curInput[IC_QUICKSAVE].joybutton = 8;
+    curInput[IC_QUICKSAVE].which = 0;
+    curInput[IC_QUICKLOAD].joyeventtype = ETYPE_KEYBOARD;
+    curInput[IC_QUICKLOAD].joybutton = 9;
+    curInput[IC_QUICKLOAD].which = 0;
+
 #endif
 
     setTwoButtonFiring(player, false);
@@ -323,6 +334,10 @@ void CInput::loadControlconfig(void)
             Configuration.ReadString( section, "Back", value, "Escape");
             setupInputCommand( curInput, IC_BACK, value );
 
+            Configuration.ReadString( section, "Quicksave", value, "F6");
+            setupInputCommand( curInput, IC_QUICKSAVE, value );
+            Configuration.ReadString( section, "Quickload", value, "F9");
+            setupInputCommand( curInput, IC_QUICKLOAD, value );
 
             Configuration.ReadKeyword( section, "TwoButtonFiring", &TwoButtonFiring[i], false);
             Configuration.ReadKeyword( section, "Analog", &mAnalogAxesMovement[i], false);
@@ -372,8 +387,10 @@ void CInput::saveControlconfig()
 	    Configuration.WriteString(section, "Run", getEventName(IC_RUN, inputVal));
 	    Configuration.WriteString(section, "Status", getEventName(IC_STATUS, inputVal));
 	    Configuration.WriteString(section, "Camlead", getEventName(IC_CAMLEAD, inputVal));
-	    Configuration.WriteString(section, "Help", getEventName(IC_HELP, inputVal));
-	    Configuration.WriteString(section, "Back", getEventName(IC_BACK, inputVal));
+        Configuration.WriteString(section, "Help", getEventName(IC_HELP, inputVal));
+        Configuration.WriteString(section, "Back", getEventName(IC_BACK, inputVal));
+        Configuration.WriteString(section, "Quicksave", getEventName(IC_QUICKSAVE, inputVal));
+        Configuration.WriteString(section, "Quickload", getEventName(IC_QUICKLOAD, inputVal));
 
         // Optional tweaks
         Configuration.SetKeyword(section, "TwoButtonFiring", TwoButtonFiring[i]);

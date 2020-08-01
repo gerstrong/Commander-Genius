@@ -34,7 +34,7 @@ public:
 
     void setBackButtonEvent(CEvent *ev);
 
-    bool sendEvent(const InputCommand command) override;
+    bool sendEvent(const InpCmd command) override;
 	void addText(const std::string &text);    
 
     void updateSelection();

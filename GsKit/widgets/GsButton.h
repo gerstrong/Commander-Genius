@@ -72,7 +72,7 @@ public:
 
 
 
-    bool sendEvent(const InputCommand command) override;
+    bool sendEvent(const InpCmd command) override;
 
     void updateGraphics() override;
 

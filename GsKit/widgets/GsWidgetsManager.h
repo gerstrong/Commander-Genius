@@ -44,7 +44,7 @@ public:
     // Update all graphics. Happens when Video settings are changed
     void updateGraphics() override;
 
-    bool sendEvent(const InputCommand) override { return false; }
+    bool sendEvent(const InpCmd) override { return false; }
 
     virtual void processPointingStateRel(const GsRect<float> &rect) override;
 

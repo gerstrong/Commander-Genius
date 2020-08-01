@@ -6,7 +6,7 @@
 
 #include <set>
 
-struct stInputCommand;
+//struct stInputCommand;
 
 class TouchButton
 {

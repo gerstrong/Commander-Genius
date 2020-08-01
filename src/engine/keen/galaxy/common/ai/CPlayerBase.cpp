@@ -12,6 +12,7 @@
 #include <base/CInput.h>
 #include <base/video/CVideoDriver.h>
 #include "sdl/audio/Audio.h"
+#include "../../common/dialog/CMessageBoxBitmapGalaxy.h"
 
 namespace galaxy {
 
@@ -386,6 +387,28 @@ void CPlayerBase::processInput()
         mPlaycontrol[PA_FIRE] =
                 gInput.getHoldedCommand(mPlayerCtrlNum, IC_FIRE) ? 1 : 0;
 	}
+
+
+    //// Special Keyboard Input
+    // Quicksave
+    if(gInput.getHoldedCommand(mPlayerCtrlNum, IC_QUICKSAVE) )
+    {
+        gSaveGameController.prepareSaveGameQuick();
+        galaxy::showMsg(0, "Quicksaving ...", nullptr, false, "SaveMsg.msg",
+                        galaxy::CMessageBoxGalaxy::Alignment::UPPERRIGHT,
+                        1000, false);
+    }
+    if(gInput.getHoldedCommand(mPlayerCtrlNum, IC_QUICKLOAD) )
+    {
+        if(gSaveGameController.hasQuickloadGame())
+        {
+            galaxy::showMsg(0, "Quickloading ...", nullptr, false, "LoadMsg.msg",
+                            galaxy::CMessageBoxGalaxy::Alignment::UPPERRIGHT,
+                            1000, false);
+            gSaveGameController.prepareLoadGameQuick();
+        }
+    }
+
 }
 
 

@@ -787,7 +787,7 @@ void CGameLauncher::ponderGameSelDialog(const float deltaT)
         if( gInput.getPressedCommand(cmd) )
         {
             const std::shared_ptr<CEvent> cmdEvent(
-                        new CommandEvent( static_cast<InputCommand>(cmd) ));
+                        new CommandEvent( static_cast<InpCmd>(cmd) ));
             mLauncherDialog.sendEvent(cmdEvent);
             break;
         }
@@ -948,7 +948,7 @@ void CGameLauncher::ponder(const float deltaT)
             if( gInput.getPressedCommand(cmd) )
             {
                 const std::shared_ptr<CEvent> cmdEvent(
-                            new CommandEvent( static_cast<InputCommand>(cmd) ));
+                            new CommandEvent( static_cast<InpCmd>(cmd) ));
                 mpMsgDialog->sendEvent(cmdEvent);
                 break;
             }
@@ -973,7 +973,7 @@ void CGameLauncher::ponder(const float deltaT)
             if( gInput.getPressedCommand(cmd) )
             {
                 const std::shared_ptr<CEvent> cmdEvent(
-                            new CommandEvent( static_cast<InputCommand>(cmd) ));
+                            new CommandEvent( static_cast<InpCmd>(cmd) ));
                 mpGameStoreDialog->sendEvent(cmdEvent);
                 break;
             }

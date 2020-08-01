@@ -25,7 +25,7 @@ public:
 
     void processRender(const GsRect<float> &RectDispCoordFloat) override;
 
-    bool sendEvent(const InputCommand) override;
+    bool sendEvent(const InpCmd) override;
 
     void setBackgroundColor(const GsColor &color);
 

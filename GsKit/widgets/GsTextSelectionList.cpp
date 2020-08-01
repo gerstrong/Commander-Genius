@@ -64,7 +64,7 @@ void CGUITextSelectionList::setBackButtonEvent(CEvent *ev)
 }
 
 
-bool CGUITextSelectionList::sendEvent(const InputCommand command)
+bool CGUITextSelectionList::sendEvent(const InpCmd command)
 {
     auto &controlsList = getControlsList();
 

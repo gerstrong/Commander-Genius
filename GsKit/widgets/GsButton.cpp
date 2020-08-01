@@ -104,7 +104,7 @@ GsButton(text,rect,f,fontId,
 
 
 
-bool GsButton::sendEvent(const InputCommand command)
+bool GsButton::sendEvent(const InpCmd command)
 {
     if(!mEnabled)
         return false;

@@ -14,6 +14,7 @@
 
 #include <base/CInput.h>
 #include "sdl/audio/Audio.h"
+#include "fileio/CSaveGameController.h"
 #include <base/video/CVideoDriver.h>
 #include "graphics/GsGraphics.h"
 #include "engine/core/spritedefines.h"
@@ -765,6 +766,20 @@ void CPlayer::ProcessInput()
 	// Entry for every player
 	playcontrol[PA_X] = 0;
 	playcontrol[PA_Y] = 0;
+
+    // Quicksave
+    if(gInput.getHoldedCommand(m_index, IC_QUICKSAVE))
+    {
+        gSaveGameController.prepareSaveGameQuick();
+    }
+    if(gInput.getHoldedCommand(m_index, IC_QUICKLOAD))
+    {
+        if(gSaveGameController.hasQuickloadGame())
+        {
+            gSaveGameController.prepareLoadGameQuick();
+        }
+    }
+
 
 	if(playpushed_decreasetimer>0)
 	    playpushed_decreasetimer--;

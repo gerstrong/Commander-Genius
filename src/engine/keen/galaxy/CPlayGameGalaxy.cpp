@@ -626,29 +626,6 @@ void CPlayGameGalaxy::ponder(const float deltaT)
 
     if(blockGamePlay) return;
 
-
-
-    //// Special Keyboard Input
-    // Quicksave
-    if(gInput.getPressedKey(KF6))
-    {
-        gSaveGameController.prepareSaveGameQuick();
-        galaxy::showMsg(0, "Quicksaving ...", nullptr, false, "SaveMsg.msg",
-                        galaxy::CMessageBoxGalaxy::Alignment::UPPERRIGHT,
-                        1000, false);
-    }
-    if(gInput.getPressedKey(KF9))
-    {
-        if(gSaveGameController.hasQuickloadGame())
-        {
-            galaxy::showMsg(0, "Quickloading ...", nullptr, false, "LoadMsg.msg",
-                            galaxy::CMessageBoxGalaxy::Alignment::UPPERRIGHT,
-                            1000, false);
-            gSaveGameController.prepareLoadGameQuick();
-        }
-    }
-
-
     // Cheat Codes
     auto &cheat = gBehaviorEngine.mCheatmode;    
     if( gInput.getHoldedKey(KF10) )

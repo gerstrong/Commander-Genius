@@ -53,7 +53,7 @@ void CBaseMenu::ponder(const float)
 		if( gInput.getPressedCommand(cmd) )
 		{
             std::shared_ptr<CEvent> command(
-                        new CommandEvent( static_cast<InputCommand>(cmd) ));
+                        new CommandEvent( static_cast<InpCmd>(cmd) ));
             sendEvent(command);
 		    break;
 		}

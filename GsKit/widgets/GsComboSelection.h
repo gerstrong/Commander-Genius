@@ -33,7 +33,7 @@ public:
 
     virtual void cycleOption();
 
-    bool sendEvent(const InputCommand command) override;
+    bool sendEvent(const InpCmd command) override;
 
     virtual void setSelection( const std::string& selectionText );
 
