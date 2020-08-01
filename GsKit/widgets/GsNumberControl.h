@@ -35,7 +35,7 @@ public:
 	int getSelection();
 	void setSelection( const int value );
 
-    void processLogic();
+    virtual void processLogic() override;
 
     std::string sliderStr();
 

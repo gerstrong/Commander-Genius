@@ -15,9 +15,9 @@ public:
                   const bool slider,
                   const Style style);
 
-    void processLogic() override;
-
     void processRender(const GsRect<float> &RectDispCoordFloat) override;
+
+    virtual void processLogic() override;
 
     const Style mStyle;
 

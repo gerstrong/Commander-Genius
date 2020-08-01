@@ -151,7 +151,7 @@ void CGUIComboSelection::processLogic()
 {
     if(mReleased)
     {
-        // That make the button trigger exaclty once
+        // That makes the button trigger exaclty once
         mpFeatureValue->setReleased(true);
     }
 
