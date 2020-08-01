@@ -8,7 +8,7 @@
  */
 
 #include "CYorp.h"
-#include "sdl/audio/Audio.h"
+#include "audio/Audio.h"
 #include <base/utils/misc.h>
 
 

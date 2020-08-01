@@ -1,4 +1,4 @@
-#include "sdl/audio/Audio.h"
+#include "audio/Audio.h"
 #include "CScrub.h"
 
 // The red creatures that follow the wall (ep2)

@@ -19,7 +19,7 @@
 #include "ep5/CMapLoaderGalaxyEp5.h"
 #include "ep6/CMapLoaderGalaxyEp6.h"
 #include <base/CInput.h>
-#include "sdl/audio/music/CMusic.h"
+#include "audio/music/CMusic.h"
 #include <base/utils/StringUtils.h>
 #include <memory>
 #include <vector>

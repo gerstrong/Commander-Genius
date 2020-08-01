@@ -13,7 +13,7 @@
 
 #include "CPlayerWM.h"
 #include "CFlag.h"
-#include "sdl/audio/Audio.h"
+#include "audio/Audio.h"
 #include "../dialog/CMessageBoxBitmapGalaxy.h"
 #include "graphics/effects/CDimDark.h"
 #include "fileio/KeenFiles.h"

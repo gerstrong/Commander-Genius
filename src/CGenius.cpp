@@ -54,7 +54,7 @@ void switch_exit();
 
 #include "engine/CGameLauncher.h"
 
-#include "sdl/audio/Audio.h"
+#include "audio/Audio.h"
 
 
 /**

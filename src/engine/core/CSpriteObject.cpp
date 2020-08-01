@@ -17,7 +17,7 @@
 
 #include "fileio/KeenFiles.h"
 
-#include "sdl/audio/Audio.h"
+#include "audio/Audio.h"
 #include "CBehaviorEngine.h"
 
 

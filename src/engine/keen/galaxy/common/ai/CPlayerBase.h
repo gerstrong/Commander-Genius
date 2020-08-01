@@ -24,7 +24,7 @@
 #include "engine/core/CCamera.h"
 
 #include "graphics/effects/CDimDark.h"
-#include "sdl/audio/music/CMusic.h"
+#include "audio/music/CMusic.h"
 
 #include <array>
 

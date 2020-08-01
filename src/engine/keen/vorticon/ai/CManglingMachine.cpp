@@ -3,7 +3,7 @@
 #include "CManglingMachine.h"
 
 #include "engine/core/spritedefines.h"
-#include "sdl/audio/Audio.h"
+#include "audio/Audio.h"
 #include <base/GsLogging.h>
 #include "graphics/effects/CVibrate.h"
 #include "engine/core/CBehaviorEngine.h"

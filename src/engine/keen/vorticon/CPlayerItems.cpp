@@ -11,7 +11,7 @@
 
 #include "ai/CPlayer.h"
 
-#include "sdl/audio/Audio.h"
+#include "audio/Audio.h"
 #include "graphics/GsGraphics.h"
 #include "engine/core/spritedefines.h"
 #include "ai/CManglingMachine.h"

@@ -16,7 +16,7 @@
 
 #include <SDL_mixer.h>
 
-#include "sdl/audio/Audio.h"
+#include "audio/Audio.h"
 
 int CSoundChannel::mTotNumChannels = 0;
 

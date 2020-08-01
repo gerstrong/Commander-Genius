@@ -5,9 +5,9 @@
  *      Author: gerstrong
  */
 
-#include "sdl/audio/Audio.h"
-#include "sdl/audio/base/Sampling.h"
-#include "sdl/audio/music/CIMFPlayer.h"
+#include "audio/Audio.h"
+#include "audio/base/Sampling.h"
+#include "audio/music/CIMFPlayer.h"
 #include "CMusic.h"
 #include <base/GsLogging.h>
 #include <base/utils/FindFile.h>

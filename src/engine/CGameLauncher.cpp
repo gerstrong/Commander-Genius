@@ -26,7 +26,7 @@
 #include "core/VGamepads/vgamepadsimple.h"
 #include "core/mode/CGameMode.h"
 #include "core/menu/SettingsMenu.h"
-#include "sdl/audio/Audio.h"
+#include "audio/Audio.h"
 #include "fileio/ResourceMgmt.h"
 #include "fileio/KeenFiles.h"
 

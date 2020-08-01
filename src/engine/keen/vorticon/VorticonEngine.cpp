@@ -17,7 +17,7 @@
 #include "fileio/CPatcher.h"
 #include "fileio/CSaveGameController.h"
 #include "engine/core/CMessages.h"
-#include "sdl/audio/Audio.h"
+#include "audio/Audio.h"
 #include "VorticonEngine.h"
 
 #include "CHelp.h"

@@ -8,7 +8,7 @@
 #include "fileio/CSaveGameController.h"
 #include "fileio/KeenFiles.h"
 
-#include "sdl/audio/music/CMusic.h"
+#include "audio/music/CMusic.h"
 #include <base/CInput.h>
 #include <base/video/CVideoDriver.h>
 

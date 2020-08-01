@@ -1,4 +1,4 @@
-#include "sdl/audio/Audio.h"
+#include "audio/Audio.h"
 
 // raygun blast, shot by keen, and by the tank robots in ep1&2.
 #include "CRay.h"

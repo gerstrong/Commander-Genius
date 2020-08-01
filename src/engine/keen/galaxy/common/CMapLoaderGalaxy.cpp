@@ -17,7 +17,7 @@
 #include "fileio/compression/CRLE.h"
 #include "fileio.h"
 #include <base/video/CVideoDriver.h>
-#include "sdl/audio/music/CMusic.h"
+#include "audio/music/CMusic.h"
 #include <base/GsLogging.h>
 #include "engine/core/CCamera.h"
 #include "fileio/KeenFiles.h"

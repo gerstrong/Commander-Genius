@@ -8,11 +8,11 @@
 #include "CPlayGameVorticon.h"
 #include <base/GsTimer.h>
 #include <base/CInput.h>
-#include "sdl/audio/Audio.h"
+#include "audio/Audio.h"
 #include <base/video/CVideoDriver.h>
 #include "graphics/GsGraphics.h"
 #include "graphics/effects/CColorMerge.h"
-#include "sdl/audio/Audio.h"
+#include "audio/Audio.h"
 #include "engine/core/VGamepads/vgamepadsimple.h"
 #include "../ai/CTeleporter.h"
 #include "../ai/CMessie.h"

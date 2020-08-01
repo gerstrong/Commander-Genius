@@ -14,7 +14,7 @@
 #include <algorithm>
 
 #include "CPlayGameVorticon.h"
-#include "sdl/audio/Audio.h"
+#include "audio/Audio.h"
 #include "engine/core/mode/CGameMode.h"
 #include "engine/core/menu/MainMenu.h"
 #include "engine/core/VGamepads/vgamepadsimple.h"

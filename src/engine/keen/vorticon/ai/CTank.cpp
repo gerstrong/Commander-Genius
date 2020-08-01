@@ -1,6 +1,6 @@
 #include <base/GsEventContainer.h>
 #include "engine/core/spritedefines.h"
-#include "sdl/audio/Audio.h"
+#include "audio/Audio.h"
 #include "CTank.h"
 #include "CRay.h"
 

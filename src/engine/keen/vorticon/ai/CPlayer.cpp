@@ -13,7 +13,7 @@
 #include "CPlayer.h"
 
 #include <base/CInput.h>
-#include "sdl/audio/Audio.h"
+#include "audio/Audio.h"
 #include "fileio/CSaveGameController.h"
 #include <base/video/CVideoDriver.h>
 #include "graphics/GsGraphics.h"

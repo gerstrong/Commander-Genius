@@ -13,8 +13,8 @@
 #include "fileio.h"
 #include "fileio/ResourceMgmt.h"
 #include <base/TypeDefinitions.h>
-#include "sdl/audio/base/Sampling.h"
-#include "sdl/audio/Audio.h"
+#include "audio/base/Sampling.h"
+#include "audio/Audio.h"
 #include <base/utils/FindFile.h>
 
 CSoundSlot::CSoundSlot()

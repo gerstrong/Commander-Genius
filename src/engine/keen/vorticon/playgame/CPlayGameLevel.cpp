@@ -9,7 +9,7 @@
 #include "../ai/CManglingMachine.h"
 #include "engine/core/objenums.h"
 #include "engine/core/VGamepads/vgamepadsimple.h"
-#include "sdl/audio/Audio.h"
+#include "audio/Audio.h"
 #include "../finale/CTantalusRay.h"
 #include <base/video/CVideoDriver.h>
 #include <base/CInput.h>

@@ -10,7 +10,7 @@
 #include "fileio/ResourceMgmt.h"
 #include <base/GsLogging.h>
 #include <base/utils/FindFile.h>
-#include "sdl/audio/music/CMusic.h"
+#include "audio/music/CMusic.h"
 
 #include <SDL_mixer.h>
 

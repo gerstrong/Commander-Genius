@@ -10,7 +10,7 @@
 
 #include "CMusicPlayer.h"
 #include <base/TypeDefinitions.h>
-#include "sdl/audio/Audio.h"
+#include "audio/Audio.h"
 #include "CRingBuffer.h"
 #include <SDL.h>
 #include <string>

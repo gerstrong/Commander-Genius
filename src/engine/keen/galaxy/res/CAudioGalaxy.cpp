@@ -10,7 +10,7 @@
 #include <base/GsLogging.h>
 #include <base/utils/FindFile.h>
 #include "fileio/ResourceMgmt.h"
-#include "sdl/audio/Audio.h"
+#include "audio/Audio.h"
 #include "fileio/compression/CHuffman.h"
 #include "fileio/KeenFiles.h"
 #include "engine/core/CBehaviorEngine.h"

@@ -24,7 +24,7 @@
 #include <fileio/KeenFiles.h>
 #include <base/GsArguments.h>
 
-#include "sdl/audio/Audio.h"
+#include "audio/Audio.h"
 
 namespace galaxy
 {

@@ -10,7 +10,7 @@
 #include "../CGalaxySpriteObject.h"
 #include "CSecurityDoor.h"
 
-#include "sdl/audio/Audio.h"
+#include "audio/Audio.h"
 #include "graphics/effects/CColorMerge.h"
 
 #include <base/CInput.h>

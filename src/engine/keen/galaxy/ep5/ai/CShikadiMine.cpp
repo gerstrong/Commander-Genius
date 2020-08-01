@@ -8,7 +8,7 @@
 #include <base/video/CVideoDriver.h>
 
 
-#include "sdl/audio/music/CMusic.h"
+#include "audio/music/CMusic.h"
 #include "CShikadiMine.h"
 #include "../../common/ai/CPlayerBase.h"
 #include "../../common/ai/CPlayerLevel.h"

@@ -6,7 +6,7 @@
  */
 
 #include "CFlag.h"
-#include "sdl/audio/Audio.h"
+#include "audio/Audio.h"
 
 #include <base/utils/property_tree/property_tree.h>
 
