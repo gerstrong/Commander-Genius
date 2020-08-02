@@ -30,7 +30,13 @@ set(CSRC actor.c
          status.c
          tile.c
          util.c
-         video.c)
+         video.c
+         files/file.c
+         files/vol.c
+         sound/audio.c
+         sound/music.c
+         sound/opl.c
+         sound/sfx.c)
 
 set(HSRC CosmoEngine.h
          actor_collision.h

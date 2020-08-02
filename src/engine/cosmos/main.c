@@ -18,13 +18,15 @@
 
 int cleanup_and_exit();
 
-int start_cosmo(/*int argc, char *argv[]*/) {
+int start_cosmo() {
+
     /*if ( SDL_Init(SDL_INIT_VIDEO) < 0 ) {
         printf("argh!!");
     }
+    */
 
-    load_config_from_command_line(argc, argv);*/
-/*
+    load_config_from_command_line(0, 0);
+
     video_init();
     audio_init();
     input_init();
@@ -64,19 +66,17 @@ int start_cosmo(/*int argc, char *argv[]*/) {
     stop_music();
     display_exit_text();
 
-    return cleanup_and_exit();*/
-    return 0;
+    return cleanup_and_exit();
 }
 
 int cleanup_and_exit()
 {
-    /*
+
     write_config_file();
     config_cleanup();
     video_shutdown();
     audio_shutdown();
     input_shutdown();
-    SDL_Quit();
-*/
+
     return 0;
 }
