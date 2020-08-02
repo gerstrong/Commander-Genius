@@ -383,7 +383,7 @@ void CShikadiMine::draw()
 
 		if(m_blinktime > 0)
 		{
-            Sprite.drawBlinkingSprite( showX, showY, true );
+            Sprite.drawBlinkingSprite( showX, showY );
 			m_blinktime--;
 		}
 		else

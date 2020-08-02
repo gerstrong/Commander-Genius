@@ -656,64 +656,6 @@ void GsSprite::exchangeSpriteColor( const Uint16 find1, const Uint16 find2, Uint
     mSurface.unlock();
 }
 
-
-
-void blitMaskedSprite(SDL_Surface *dst, SDL_Surface *src,
-                      const Uint32 color, const bool useColorKey)
-{
-	if(SDL_MUSTLOCK(dst)) SDL_LockSurface(dst);
-	if(SDL_MUSTLOCK(src)) SDL_LockSurface(src);
-	
-	const int bytePPdst = dst->format->BytesPerPixel;
-	const int pitchdst = dst->pitch;
-	const int bytePPsrc = src->format->BytesPerPixel;
-	const int pitchsrc = src->pitch;
-
-    Uint32 colorkey = 0;
-
-    if(useColorKey)
-    {
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-    SDL_GetColorKey(dst, &colorkey);
-#else
-    colorkey = dst->format->colorkey;
-#endif
-    }
-	
-    Uint8 r,g,b,a;
-    r = g = b = a = 255;
-
-    Uint32 newValue = SDL_MapRGBA(dst->format, r, g, b, a);
-
-    for(int y=0 ; y<dst->h ; y++)
-	{
-        for(int x=0 ; x<dst->w ; x++)
-		{
-			
-			byte *srcPtr = (byte*)src->pixels;
-			srcPtr += (pitchsrc*y+x*bytePPsrc);
-
-            Uint32 curColor;
-            memcpy( &curColor, srcPtr, bytePPdst );
-
-            Uint8 curR, curG, curB, curA;
-
-            SDL_GetRGBA(curColor, src->format, &curR, &curG, &curB, &curA);
-			
-            if(curA > 0x8F  || (useColorKey && colorkey == curColor))
-            {
-                byte *dstPtr = (byte*)dst->pixels;
-                dstPtr += (pitchdst*y+x*bytePPdst);
-
-                memcpy( dstPtr, &newValue, bytePPdst );
-            }
-        }
-	}
-	if(SDL_MUSTLOCK(src)) SDL_UnlockSurface(src);
-	if(SDL_MUSTLOCK(dst)) SDL_UnlockSurface(dst);
-}
-
-
 ///
 // Drawing Routines
 ///
@@ -734,13 +676,27 @@ void GsSprite::drawSprite(const int x,
     drawSprite( gVideoDriver.getBlitSurface(), x, y, w, h );
 }
 
+void drawSprite(SDL_Surface *dst, const int x, const int y , const int w, const int h);
+void _drawSprite(SDL_Surface *dst, SDL_Surface *src, const int x, const int y , const int w, const int h);
+
 void GsSprite::drawSprite( SDL_Surface *dst,
                            const int x,
                            const int y,
                            const int w,
                            const int h )
 {
-    if(mSurface.empty())
+    _drawSprite(dst, mSurface, x,y, w, h);
+}
+
+
+void GsSprite::_drawSprite( SDL_Surface *dst,
+                            GsSurface &src,
+                           const int x,
+                           const int y,
+                           const int w,
+                           const int h )
+{
+    if(src.empty())
     {
         return;
     }
@@ -781,9 +737,7 @@ void GsSprite::drawSprite( SDL_Surface *dst,
     }
 
 
-    SDL_Surface *src = mSurface.getSDLSurface();
-
-	BlitSurface( src, &src_rect, dst, &dst_rect );
+    BlitSurface( src.getSDLSurface(), &src_rect, dst, &dst_rect );
 }
 
 /**
@@ -791,9 +745,9 @@ void GsSprite::drawSprite( SDL_Surface *dst,
  * \param x	X-Coordinate, indicating the position on dst
  * \param y	Y-Coordinate, indicating the position on dst
  */
-void GsSprite::drawBlinkingSprite( const int x, const int y, const bool useColorMask )
+void GsSprite::drawBlinkingSprite( const int x, const int y)
 {
-    _drawBlinkingSprite(gVideoDriver.getBlitSurface(), x, y, useColorMask);
+    _drawBlinkingSprite(gVideoDriver.getBlitSurface(), x, y);
 }
 
 
@@ -805,8 +759,7 @@ void GsSprite::drawBlinkingSprite( const int x, const int y, const bool useColor
  */
 void GsSprite::_drawBlinkingSprite( SDL_Surface *dst,
                                     const int x,
-                                    const int y,
-                                    const bool useColorMask )
+                                    const int y )
 {
     GsWeakSurface blit(dst);
 
@@ -816,9 +769,7 @@ void GsSprite::_drawBlinkingSprite( SDL_Surface *dst,
 
     blankSfc.createCopy(mSurface);
 
-    blitMaskedSprite(blankSfc.getSDLSurface(),
-                     mSurface.getSDLSurface(), 0xFFFFFF,
-                     useColorMask);
+    blankSfc.tintColor( GsColor(0xFF, 0xFF, 0xFF) );
 
-    blankSfc.blitTo(blit, dstRect);
+    _drawSprite( blit.getSDLSurface(), blankSfc, x, y, m_xsize, m_ysize );
 }
