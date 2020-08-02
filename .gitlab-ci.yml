@@ -5,8 +5,40 @@ stages:
 windows-portable:
     image: cgenius/crossbuild:win
     stage: build    
-    # instead of calling g++ directly you can also use some build toolkit like make
-    # install the necessary build tools when needed
+    before_script:
+      - mkdir -p /tmp && cd "$_"
+      - mkdir -p $CI_PROJECT_DIR/output
+      - cmake -DCMAKE_TOOLCHAIN_FILE="$OLDPWD/toolchains/toolchain-mingw.cmake" -DCMAKE_BUILD_TYPE=Release -DUSE_BOOST=0 -DPULL_DLLS=1 -DAPPEND_SHA=1 -DSDL2_MIXER_INCLUDE_DIR=/usr/x86_64-w64-mingw32/include/SDL2 -DSDL2_INCLUDE_DIR=/usr/x86_64-w64-mingw32/include/SDL2 "$CI_PROJECT_DIR"
+    script:
+      - cmake --build .    
+      - cpack -G ZIP
+      - cp *.zip $CI_PROJECT_DIR/output
+    artifacts:
+      name: "CGenius-Win-$CI_COMMIT_SHORT_SHA"
+      expire_in: 1 week
+      paths:
+        - output/*
+        
+windows-installer:
+    image: cgenius/crossbuild:winnsis
+    stage: build
+    before_script:
+      - mkdir -p /tmp && cd "$_"
+      - mkdir -p $CI_PROJECT_DIR/output
+      - cmake -DCMAKE_TOOLCHAIN_FILE="$OLDPWD/toolchains/toolchain-mingw.cmake" -DCMAKE_BUILD_TYPE=Release -DUSE_BOOST=0 -DPULL_DLLS=1 -DAPPEND_SHA=1 -DSDL2_MIXER_INCLUDE_DIR=/usr/x86_64-w64-mingw32/include/SDL2 -DSDL2_INCLUDE_DIR=/usr/x86_64-w64-mingw32/include/SDL2 "$CI_PROJECT_DIR"
+    script:
+      - cmake --build .    
+      - cpack -G NSIS
+      - cp *.exe $CI_PROJECT_DIR/output
+    artifacts:
+      name: "CGenius-Win-$CI_COMMIT_SHORT_SHA"
+      expire_in: 1 week
+      paths:
+        - output/*
+                      
+linux-generic:
+    image: cgenius/crossbuild:linux
+    stage: build
     before_script:
       - mkdir -p /tmp && cd "$_"
       - mkdir -p $CI_PROJECT_DIR/output
@@ -17,45 +49,6 @@ windows-portable:
       - cp *.tar.gz $CI_PROJECT_DIR/output
     artifacts:
       name: "CGenius-Linux-$CI_COMMIT_SHORT_SHA"
-      expire_in: 1 week
-      paths:
-        - output/*
-
-linux-generic:
-    image: cgenius/crossbuild:linux
-    stage: build    
-    # instead of calling g++ directly you can also use some build toolkit like make
-    # install the necessary build tools when needed
-    before_script:
-      - mkdir -p /tmp && cd "$_"
-      - mkdir -p $CI_PROJECT_DIR/output
-      - cmake -DCMAKE_TOOLCHAIN_FILE="$OLDPWD/toolchains/toolchain-mingw.cmake" -DCMAKE_BUILD_TYPE=Release -DUSE_BOOST=0 -DPULL_DLLS=1 -DAPPEND_SHA=1 -DSDL2_MIXER_INCLUDE_DIR=/usr/x86_64-w64-mingw32/include/SDL2 -DSDL2_INCLUDE_DIR=/usr/x86_64-w64-mingw32/include/SDL2 "$OLDPWD"
-    script:
-      - cmake --build .    
-      - cpack -G ZIP
-      - cp *.zip $CI_PROJECT_DIR/output
-    artifacts:
-      name: "CGenius-Win-$CI_COMMIT_SHORT_SHA"
-      expire_in: 1 week
-      paths:
-        - output/*
-
-        
-windows-installer:
-    image: cgenius/crossbuild:winnsis
-    stage: build
-    # instead of calling g++ directly you can also use some build toolkit like make
-    # install the necessary build tools when needed
-    before_script:
-      - mkdir -p /tmp && cd "$_"
-      - mkdir -p $CI_PROJECT_DIR/output
-      - cmake -DCMAKE_TOOLCHAIN_FILE="$OLDPWD/toolchains/toolchain-mingw.cmake" -DCMAKE_BUILD_TYPE=Release -DUSE_BOOST=0 -DPULL_DLLS=1 -DAPPEND_SHA=1 -DSDL2_MIXER_INCLUDE_DIR=/usr/x86_64-w64-mingw32/include/SDL2 -DSDL2_INCLUDE_DIR=/usr/x86_64-w64-mingw32/include/SDL2 "$OLDPWD"
-    script:
-      - cmake --build .    
-      - cpack -G NSIS
-      - cp *.exe $CI_PROJECT_DIR/output
-    artifacts:
-      name: "CGenius-Win-$CI_COMMIT_SHORT_SHA"
       expire_in: 1 week
       paths:
         - output/*
@@ -70,5 +63,5 @@ publish:
         - windows-installer
         - linux-generic
     script:
-        - gitlab-release --message 'Build Artifacts (Windows and Linux)' ./output/*
+        - gitlab-release --message 'Build artifacts (Windows and Linux)' ./output/*
                       
