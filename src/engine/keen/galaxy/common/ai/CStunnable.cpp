@@ -22,123 +22,139 @@ const int TIME_STAR_SHOWN = 20;
 
 namespace galaxy
 {
-  
+
 const unsigned int STARRING_ANIMATION_TIME = 5;
 
 CStunnable::CStunnable(	CMap *pmap,
-			const Uint16 foeID,
-            Uint32 x, Uint32 y ) :
-CGalaxyActionSpriteObject( pmap, foeID, x, y, 0 ),
-m_stunned(false),
-m_animation_timer(0),
-starTimer(TIME_STAR_SHOWN)
+                        const Uint16 foeID,
+                        Uint32 x, Uint32 y ) :
+    CGalaxyActionSpriteObject( pmap, foeID, x, y, 0 ),
+    m_stunned(false),
+    m_animation_timer(0),
+    starTimer(TIME_STAR_SHOWN)
 {
-	mInvincible = false;
-	
-	starSprite = STARRING_SPRITE;
-	
-	if(gBehaviorEngine.getEpisode() == 5)
-	  starSprite = STARRING_SPRITE_EP5;
-	
-	starSpriteBase = starSprite;
+    mInvincible = false;
+
+    starSprite = STARRING_SPRITE;
+
+    if(gBehaviorEngine.getEpisode() == 5)
+        starSprite = STARRING_SPRITE_EP5;
+
+    starSpriteBase = starSprite;
 }
 
 void CStunnable::getTouchedBy(CSpriteObject &theObject)
 {
-	CBullet *bullet = dynamic_cast<CBullet*>(&theObject);
+    CBullet *bullet = dynamic_cast<CBullet*>(&theObject);
     if( theObject.exists && bullet != nullptr )
-	{
+    {
         if(!bullet->getActionNumber(A_KEENSHOT_IMPACT))
         {
             bullet->setAction(A_KEENSHOT_IMPACT);
             bullet->playSound( SOUND_SHOT_HIT );
         }
-	}
+    }
 }
 
 void CStunnable::processGettingStunned()
 {
-  if(blockedd)
-  {
-    if( !mInvincible )
-    {      
-      yinertia = -30; // It gets a small impulse
-      
-      mp_processState = static_cast<GASOFctr>(&CStunnable::processStunned);
-      blockedd = false;
-      
-      moveUp(8<<STC);
+    if(blockedd)
+    {
+        if( !mInvincible )
+        {
+            yinertia = -30; // It gets a small impulse
+
+            mp_processState = static_cast<GASOFctr>(&CStunnable::processStunned);
+            blockedd = false;
+
+            moveUp(8<<STC);
+        }
     }
-  }  
 }
 
 
 void CStunnable::processStunned()
 { }
 
+
+void CStunnable::drawStars()
+{
+
+    if(starTimer > 0)
+    {
+        starTimer--;
+    }
+    else
+    {
+        const unsigned char anim = m_animation_timer % STARRING_ANIMATION_TIME;
+
+        if(anim == 0)
+        {
+            starSprite++;
+
+            if(starSprite > starSpriteBase+2)
+            {
+                starSprite = starSpriteBase;
+                m_animation_timer = 0;
+            }
+        }
+
+        // Animation timer increasing all the time
+        m_animation_timer++;
+
+
+        GsSprite &StarSprite = gGraphics.getSprite(mSprVar, starSprite);
+
+        int yoffset = (StarSprite.getHeight()<<STC);
+        int xoffset = (StarSprite.getWidth()<<STC);
+
+        scrx = ((getXMidPos()-xoffset/2)>>STC)-mpMap->m_scrollx;
+
+        if(mDispStarsBelow)
+        {
+            scry = ((m_Pos.y+(m_BBox.Height()/2)+yoffset)>>STC)-mpMap->m_scrolly;
+        }
+        else
+        {
+            scry = ((m_Pos.y-(m_BBox.Height()/2)-yoffset)>>STC)-mpMap->m_scrolly;
+        }
+
+
+        SDL_Rect gameres = gVideoDriver.getGameResolution().SDLRect();
+
+        if( scrx < gameres.w && scry < gameres.h && exists )
+        {
+            int showX = scrx+StarSprite.getXOffset();
+            int showY = scry+StarSprite.getYOffset();
+            int w = StarSprite.getWidth();
+            int h = StarSprite.getHeight();
+
+            const auto visGA = gVideoDriver.mpVideoEngine->mRelativeVisGameArea;
+
+            if( showX+StarSprite.getWidth() < visGA.pos.x ||
+                    showX > visGA.pos.x+visGA.dim.x )
+                return;
+
+            if( showY+StarSprite.getHeight() < visGA.pos.y ||
+                    showY > visGA.pos.y+visGA.dim.y )
+                return;
+
+            StarSprite.drawSprite( showX, showY, w, h, (255-transluceny) );
+        }
+    }
+}
+
 void CStunnable::draw()
 {
-  if( dontdraw )
-	return;    
-  
-  CGalaxySpriteObject::draw();
-  
-  if(mIsDead && blockedd && yinertia == 0)
-  {
-      if(starTimer > 0)
-      {
-          starTimer--;
-      }
-      else
-      {
-          const unsigned char anim = m_animation_timer % STARRING_ANIMATION_TIME;
+    if( dontdraw )
+        return;
 
-          if(anim == 0)
-          {
-              starSprite++;
+    CGalaxySpriteObject::draw();
 
-              if(starSprite > starSpriteBase+2)
-              {
-                  starSprite = starSpriteBase;
-                  m_animation_timer = 0;
-              }
-          }
-
-          // Animation timer increasing all the time
-          m_animation_timer++;
-
-
-          GsSprite &StarSprite = gGraphics.getSprite(mSprVar, starSprite);
-
-          int yoffset = (StarSprite.getHeight()<<STC);
-          int xoffset = (StarSprite.getWidth()<<STC);
-
-          scrx = ((getXMidPos()-xoffset/2)>>STC)-mpMap->m_scrollx;
-          scry = ((m_Pos.y-(m_BBox.Height()/2)-yoffset)>>STC)-mpMap->m_scrolly;
-
-          SDL_Rect gameres = gVideoDriver.getGameResolution().SDLRect();
-
-          if( scrx < gameres.w && scry < gameres.h && exists )
-          {
-              int showX = scrx+StarSprite.getXOffset();
-              int showY = scry+StarSprite.getYOffset();
-              int w = StarSprite.getWidth();
-              int h = StarSprite.getHeight();
-
-              const auto visGA = gVideoDriver.mpVideoEngine->mRelativeVisGameArea;
-
-              if( showX+StarSprite.getWidth() < visGA.pos.x ||
-                      showX > visGA.pos.x+visGA.dim.x )
-                  return;
-
-              if( showY+StarSprite.getHeight() < visGA.pos.y ||
-                      showY > visGA.pos.y+visGA.dim.y )
-                  return;
-
-              StarSprite.drawSprite( showX, showY, w, h, (255-transluceny) );
-          }
-      }
-  }
+    if(mIsDead && blockedd && yinertia == 0)
+    {
+        drawStars();
+    }
 
 }
 

@@ -16,7 +16,7 @@ A_CEILICK_STUNNED = 21
 };
 
 
-constexpr int X_DIST_TO_LICK = 3<<CSF;
+constexpr int X_DIST_TO_LICK = 2<<CSF;
 constexpr int Y_DIST_TO_LICK = 8<<CSF;
 
 
@@ -34,6 +34,7 @@ mLaughed(false)
 	
     xDirection = LEFT;
     solid = false;
+    mDispStarsBelow = true;
 }
 
 
@@ -51,54 +52,54 @@ void CCeilick::processSleeping()
 
 void CCeilick::processLicking()
 {
-  if( getActionStatus(A_CEILICK_LICK+10) )
-  {
-      // This will show the crawl effect!
-      mCrawlPos = -16;
-  }
+    if( getActionStatus(A_CEILICK_LICK+10) )
+    {
+        // This will show the crawl effect!
+        mCrawlPos = -16;
+    }
 
-  if( getActionStatus(A_CEILICK_LICK+15) )
-  {
-      // This will make him laugh!
-      if(!mLaughed)
-      {
-	playSound(SOUND_CEILICK_LAUGH);
-	mLaughed = true;
-      }
-  }  
-  
+    if( getActionStatus(A_CEILICK_LICK+15) )
+    {
+        // This will make him laugh!
+        if(!mLaughed)
+        {
+            playSound(SOUND_CEILICK_LAUGH);
+            mLaughed = true;
+        }
+    }
 
-  if( getActionStatus(A_CEILICK_LICK+19) )
-  {
-    setAction(A_CEILICK_SLEEP);
-    mLaughed = false;
-  }
-
+    if( getActionStatus(A_CEILICK_LICK+19) )
+    {
+        setAction(A_CEILICK_SLEEP);
+        mLaughed = false;
+    }
 }
 
 
 bool CCeilick::isNearby(CSpriteObject& theObject)
 {
-	if( !getProbability(30) )
-		return false;		
+    /*
+    if( !getProbability(30) )
+        return false;	*/
 
-	if( CPlayerLevel *player = dynamic_cast<CPlayerLevel*>(&theObject) )
+    if( CPlayerLevel *player = dynamic_cast<CPlayerLevel*>(&theObject) )
 	{
+        mChanceToLick = false;
+
 		if( player->getXMidPos() < getXMidPos()-X_DIST_TO_LICK )
-			return true;
+            return false;
 		if( player->getXMidPos() > getXMidPos()+X_DIST_TO_LICK )
-			return true;
+            return false;
 		if( player->getYMidPos() < getYMidPos() )
-			return true;
+            return false;
 		if( player->getYMidPos() > getYMidPos()+Y_DIST_TO_LICK )
-			return true;
+            return false;
 				
 		mChanceToLick = true;
 		return true;
 	}
-	
-	mChanceToLick = false;
-	return true;
+
+    return false;
 }
 
 
@@ -110,7 +111,7 @@ void CCeilick::getTouchedBy(CSpriteObject& theObject)
 	CStunnable::getTouchedBy(theObject);
 
 	// Was it a bullet? Than make it stunned.
-	if( dynamic_cast<CBullet*>(&theObject) )
+    if( dynamic_cast<CBullet*>(&theObject) )
 	{
 		setAction(A_CEILICK_STUNNED);
         mCrawlPos = 0;
@@ -129,7 +130,10 @@ void CCeilick::draw()
     if( mSpriteIdx == BLANKSPRITE || dontdraw )
         return;
 
-    GsSprite &Sprite = gGraphics.getSprite(mSprVar,mSpriteIdx);
+    if(mIsDead)
+        drawStars();
+
+    GsSprite &rSprite = gGraphics.getSprite(mSprVar,mSpriteIdx);
 
     scrx = (m_Pos.x>>STC)-mpMap->m_scrollx;
     scry = (m_Pos.y>>STC)-mpMap->m_scrolly;
@@ -138,24 +142,34 @@ void CCeilick::draw()
 
     if( scrx < gameres.w && scry < gameres.h && exists )
     {
-        int showX = scrx+Sprite.getXOffset();
+        int showX = scrx+rSprite.getXOffset();
 
-        // Here we use the crawl effect to smoothen the movement of the ceilick.
+        // Here we use the crawl effect to smoothen its motion.
         int showY = scry + mCrawlPos;
+
+        const int w = rSprite.getWidth();
+        const int h = rSprite.getHeight();
+
+        /*
+        {
+            m_BBox.x1 = rSprite.m_bboxX1;
+            m_BBox.x2 = rSprite.m_bboxX2;
+            m_BBox.y1 = 0;
+            m_BBox.y2 = (h+mCrawlPos);
+        }
+        */
 
         if(mCrawlPos < 0)
             mCrawlPos++;
 
         if(m_blinktime > 0)
         {
-            Sprite.drawBlinkingSprite( showX, showY, true );
+            rSprite.drawBlinkingSprite( showX, showY, true );
             m_blinktime--;
         }
         else
         {
-            const int w = Sprite.getWidth();
-            const int h = Sprite.getHeight();
-            Sprite.drawSprite( showX, showY, w, h, (255-transluceny) );
+            rSprite.drawSprite( showX, showY, w, h, (255-transluceny) );
         }
         hasbeenonscreen = true;
     }

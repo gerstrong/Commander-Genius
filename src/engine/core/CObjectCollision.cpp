@@ -304,15 +304,15 @@ bool CSpriteObject::hitdetect(CSpriteObject &hitobject)
 	unsigned int rect2x1, rect2y1, rect2x2, rect2y2;
 
 	// get the bounding rectangle of the first object
-	rect1x1 = m_Pos.x + m_BBox.x1;
+	rect1x1 = m_Pos.x + m_BBox.x1;    
 	rect1y1 = m_Pos.y + m_BBox.y1;
 	rect1x2 = m_Pos.x + m_BBox.x2;
 	rect1y2 = m_Pos.y + m_BBox.y2;
 
 	// get the bounding rectangle of the second object
-	rect2x1 = hitobject.getXPosition() + hitobject.m_BBox.x1;
-	rect2y1 = hitobject.getYPosition() + hitobject.m_BBox.y1;
-	rect2x2 = hitobject.getXPosition() + hitobject.m_BBox.x2;
+	rect2x1 = hitobject.getXPosition() + hitobject.m_BBox.x1;    
+	rect2y1 = hitobject.getYPosition() + hitobject.m_BBox.y1;    
+	rect2x2 = hitobject.getXPosition() + hitobject.m_BBox.x2;    
 	rect2y2 = hitobject.getYPosition() + hitobject.m_BBox.y2;
 
 	// find out if the rectangles overlap

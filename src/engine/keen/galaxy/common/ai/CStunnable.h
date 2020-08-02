@@ -37,6 +37,11 @@ public:
 	 */
     virtual void processStunned();
 	
+    /**
+     * @brief drawStars unconditional stars of animated stars
+     */
+    void drawStars();
+
 	/**
 	 * This draw routine might show stars in case the enemies are stunned
 	 */
@@ -50,6 +55,7 @@ protected:
 	int starSpriteBase;
 	unsigned char m_animation_timer;
 	int starTimer;
+    bool mDispStarsBelow = false;
 };
 
 }

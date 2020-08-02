@@ -1585,11 +1585,12 @@ bool CEGAGraphicsGalaxy::readSprites( const size_t numSprites,
         int boxX2 = ((curSprHead.Rx2) << (STC-TILE_S));
         int boxY2 = ((curSprHead.Ry2) << (STC-TILE_S));
 
+        // Negative bounding box fixes. Ceilick in Keen 6 are affected by this.
+        if(boxY1 < 0 )
+            boxY1 = ((curSprHead.Ry1-curSprHead.OrgY) << (STC-TILE_S));
 
-        if(boxY1 < 0 && boxY2 < 0 )
-        {
-            printf("Stop");
-        }
+        if(boxY2 < 0 )
+            boxY2 = ((curSprHead.Ry2-curSprHead.OrgY) << (STC-TILE_S));
 
 
         if(boxX2-boxX1 >= 1<<STC)
