@@ -68,7 +68,11 @@ IF(CREATE_DEBS)
 		ELSEIF(BUILD_ARCH STREQUAL i386)
 			SET(CPACK_DEBIAN_PACKAGE_ARCHITECTURE i386)
 		ENDIF(BUILD_ARCH STREQUAL amd64)
-                SET(CPACK_DEBIAN_PACKAGE_DEPENDS "libsdl2-2.0-0 (>= 2.0.0), libgl1-mesa-glx (>= 7.7.1), libsdl2-image-2.0-0 (>= 2.0), libsdl2-mixer-2.0-0 (>= 2.0)")
+                SET(CPACK_DEBIAN_PACKAGE_DEPENDS "libsdl2-2.0-0 (>= 2.0.0),"
+                                                 "libgl1-mesa-glx (>= 7.7.1),"
+                                                 "libsdl2-image-2.0-0 (>= 2.0),"
+                                                 "libsdl2-mixer-2.0-0 (>= 2.0),"
+                                                 "libsdl2-ttf-2.0-0 (>= 2.0)")
 		SET(CPACK_DEBIAN_PACKAGE_SECTION "games")
 		SET(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION}-${CPACK_DEBIAN_PACKAGE_ARCHITECTURE}")
 	ENDIF(WIN32)
