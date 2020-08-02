@@ -2,8 +2,27 @@ stages:
     - build
     - publish
 
-windowsportable:
+windows-portable:
     image: cgenius/crossbuild:win
+    stage: build    
+    # instead of calling g++ directly you can also use some build toolkit like make
+    # install the necessary build tools when needed
+    before_script:
+      - mkdir -p /tmp && cd "$_"
+      - mkdir -p $CI_PROJECT_DIR/output
+      - cmake -DUSE_BOOST=0 -DAPPEND_SHA=1 $CI_PROJECT_DIR -DCREATE_DEBS=1 "$CI_PROJECT_DIR"
+    script:
+      - cmake --build .    
+      - cpack -G TGZ
+      - cp *.tar.gz $CI_PROJECT_DIR/output
+    artifacts:
+      name: "CGenius-Linux-$CI_COMMIT_SHORT_SHA"
+      expire_in: 1 week
+      paths:
+        - output/*
+
+linux-generic:
+    image: cgenius/crossbuild:linux
     stage: build    
     # instead of calling g++ directly you can also use some build toolkit like make
     # install the necessary build tools when needed
@@ -20,8 +39,9 @@ windowsportable:
       expire_in: 1 week
       paths:
         - output/*
+
         
-windowsinstaller:
+windows-installer:
     image: cgenius/crossbuild:winnsis
     stage: build
     # instead of calling g++ directly you can also use some build toolkit like make
@@ -46,8 +66,9 @@ publish:
     only:
         - tags
     dependencies: 
-        - windowsportable
-        - windowsinstaller
+        - windows-portable
+        - windows-installer
+        - linux-generic
     script:
-        - gitlab-release --message 'Automatic release files' ./output/*
-              
+        - gitlab-release --message 'Build Artifacts (Windows and Linux)' ./output/*
+                      
