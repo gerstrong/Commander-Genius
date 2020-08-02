@@ -42,14 +42,18 @@ class CExeFile {
     void dumpFile(const std::string& filename);
     void dumpDataFile(const std::string& filename);
     
+    bool readGenericExeData(const unsigned int episode,
+                            const std::string& filename,
+                            const std::string& datadirectory);
+
     /**
-     * @brief readData  Attempt to read the data of the given episode
+     * @brief readKeenExeData  Attempt to read the data of the given episode
      * @param episode   Episode for which to read for
      * @param datadirectory path where the data is located
      * @param fileList passing a filelist will only consider
      * @return if everything went well true, otherwise false
      */
-    bool readData(const unsigned int episode,
+    bool readKeenExeData(const unsigned int episode,
                   const std::string& datadirectory);
 
     /**

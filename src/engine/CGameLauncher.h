@@ -99,7 +99,8 @@ public:
     {
         m_chosenGame=-1;
         mDonePatchSelection = false;
-        mPatchFilename = "";
+        mPatchFilename.clear();
+        mExecFilename.clear();
     }
 
     bool getQuit() const { return m_mustquit; }

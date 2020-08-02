@@ -1,8 +1,16 @@
 include_directories(${SDL_INCLUDE_DIR})
 
+option(BUILD_COSMOS "Build Cosmos engine" no)
+
 add_subdirectory(core)
 add_subdirectory(keen)
 add_subdirectory(refkeen)
+
+if(BUILD_COSMOS)
+	add_subdirectory(cosmos)
+        MESSAGE(STATUS "Cosmos build enabled")
+endif(BUILD_COSMOS)
+
 
 # Move this to somewhere else
 add_subdirectory(unzip)
@@ -35,12 +43,20 @@ set(HSRC CGameLauncher.h
 add_library(engine STATIC ${CXXSRC}
                           ${HSRC})
 
+
+
 target_link_libraries(engine 
                       refkeen 
                       engine_keen_galaxy  
 		      engine_keen_vorticon
-		      engine_keen_dreams
-                      engine_core                       
+                      engine_keen_dreams)                  
+
+if(BUILD_COSMOS)
+  target_link_libraries(engine cosmos_engine)
+endif(BUILD_COSMOS)
+
+
+target_link_libraries(engine
                       cg_dialog
                       unzip)
 

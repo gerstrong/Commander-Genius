@@ -8,4 +8,4 @@ add_subdirectory(dreams)
 add_library(engine_keen STATIC KeenEngine.cpp
                                KeenEngine.h)
 
-target_link_libraries(engine_keen fileio)
+target_link_libraries(engine_keen engine_core fileio)

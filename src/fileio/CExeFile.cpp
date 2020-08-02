@@ -80,7 +80,80 @@ void CExeFile::dumpDataFile(const std::string& filename)
 	ofile.write( reinterpret_cast<char*>(m_rawdata), m_datasize - m_headersize);
 }
 
-bool CExeFile::readData(const unsigned int episode,
+
+bool CExeFile::readGenericExeData(const unsigned int episode,
+                                  const std::string& filename,
+                                  const std::string& datadirectory)
+{
+    bool demo = false;
+
+    std::ifstream File;
+    if(!OpenGameFileR(File, filename, std::ios::binary))
+        return false;
+
+
+    // If we still have no file found, the directory with the game cannot be used at all.
+    if(!File)
+    {
+        return false;
+    }
+
+    m_filename = filename;
+    m_episode = episode;
+    m_demo = demo;
+
+    std::string localDataDir = datadirectory;
+    if( localDataDir != "")
+    {
+        if(*(localDataDir.end()-1) != '/')
+            localDataDir += "/";
+    }
+
+    auto &keenFiles = gKeenFiles;
+    keenFiles.gameDir = localDataDir;
+
+    File.seekg(0,std::ios::end);
+    m_datasize = File.tellg();
+    File.seekg(0,std::ios::beg);
+
+    // Read all the file into the memory
+    std::vector<unsigned char> dataTemp(m_datasize);
+    File.read((char*)dataTemp.data(), m_datasize);
+    File.close();
+
+    Cunlzexe UnLZEXE;
+
+    std::vector<unsigned char> decdata;
+    if(UnLZEXE.decompress(dataTemp.data(), decdata))
+    {
+        m_datasize = decdata.size();
+        mData.resize(m_datasize);
+        m_headersize = UnLZEXE.HeaderSize();
+        memcpy(mData.data(), &decdata[0], m_datasize);
+    }
+    else
+    {
+        mData.resize(m_datasize);
+        memcpy(mData.data(), dataTemp.data(),m_datasize);
+    }
+
+    m_headerdata = mData.data();
+    m_headersize = UnLZEXE.HeaderSize();
+    if(!m_headersize)
+    {
+        m_headersize = fetchUncompressedHeaderSize(m_headerdata);
+    }
+
+    m_rawdata = mData.data() + m_headersize;
+    m_crc = getcrc32( mData.data(), m_datasize );
+
+    gLogging.ftextOut( "EXE processed with size of %d and crc of %X\n", m_datasize, m_crc );
+
+    return true;
+}
+
+
+bool CExeFile::readKeenExeData(const unsigned int episode,
                         const std::string& datadirectory)
 {
 	bool demo = false;

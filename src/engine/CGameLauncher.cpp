@@ -39,8 +39,8 @@
 
 #include "keen/vorticon/VorticonEngine.h"
 #include "keen/galaxy/GalaxyEngine.h"
-
 #include "keen/dreams/dreamsengine.h"
+#include "cosmos/CosmoEngine.h"
 
 
 /// Main Class implementation
@@ -360,29 +360,43 @@ struct ExecutableListFiller
     }
 };
 
-
-bool CGameLauncher::scanExecutables(const std::string& path)
+enum class GAME_TYPE
 {
-    bool result = false;
+    COMMANDER_KEEN = 0,
+    COSMO,
+    UNKNOWN,
+    SIZE
+};
 
-    gLogging.ftextOut("Search on vfs: %s<br>", path.c_str() );
-
-    // First compare which matches are possible,
-    // before you even try to open them in the loop.
-    ExecutableListFiller execlist;
-    FindFiles(execlist, path, false, FM_REG);
-
-
-    for(const auto &curFname : execlist.list)
+bool detectCosmoGame(const std::string &curFname,
+                     int &ep, bool &isLua)
+{
+    for(int i = 1; i <= 3; ++i)
     {
-        gLogging.ftextOut("Scanning %s \n<br>", curFname.c_str() );
+        std::string cosmoName = "cosmo" + itoa(i) + ".exe";
+        if(curFname.find(cosmoName) != curFname.npos)
+        {
+            ep = i;
+            return true;
+        }
+    }
 
-        int ep = -1;
-        bool isLua = false;
+    return false;
+}
 
+
+bool detectKeenGame(const std::string &curFname,
+                    int &ep, bool &isLua)
+{
+    ep = -1;
+    isLua = false;
+
+    {
         // Episode 1-6 and 7 stands for Keen Dreams
         if(curFname.find("kdreams") != curFname.npos)
+        {
             ep = 7;
+        }
 
         for(int i = 1; i <= 6; ++i)
         {
@@ -417,20 +431,62 @@ bool CGameLauncher::scanExecutables(const std::string& path)
         }
 
         if(ep < 0)
-            continue;
+            return false;
+    }
+
+    return true;
+}
+
+
+bool CGameLauncher::scanExecutables(const std::string& path)
+{
+    bool result = false;
+
+    gLogging.ftextOut("Search on vfs: %s<br>", path.c_str() );
+
+    // First compare which matches are possible,
+    // before you even try to open them in the loop.
+    ExecutableListFiller execlist;
+    FindFiles(execlist, path, false, FM_REG);
+
+
+    for(const auto &curFname : execlist.list)
+    {
+        gLogging.ftextOut("Scanning %s \n<br>", curFname.c_str() );
+
+        int ep = -1;
+        bool isLua = false;
+
 
         CExeFile executable;
-        // Load the exe into memory or a lua script
-        if(isLua)
+
+        if(detectCosmoGame(curFname, ep, isLua))
         {
-            if(!executable.readMainLuaScript(static_cast<unsigned int>(ep),
-                                                path))
+            gLogging.ftextOut("Cosmo cosmic game detected: %s \n<br>", curFname.c_str() );
+
+            if(!executable.readGenericExeData(ep, curFname, path))
                 continue;
+        }
+        else if(detectKeenGame(curFname, ep, isLua))
+        {
+            gLogging.ftextOut("Commander Keen game detected: %s \n<br>", curFname.c_str() );
+
+            // Load the exe into memory or a lua script
+            if(isLua)
+            {
+                if(!executable.readMainLuaScript(static_cast<unsigned int>(ep),
+                                                    path))
+                    continue;
+            }
+            else
+            {
+                if(!executable.readKeenExeData(static_cast<unsigned int>(ep), path))
+                    continue;
+            }
         }
         else
         {
-            if(!executable.readData(static_cast<unsigned int>(ep), path))
-                continue;
+            continue;
         }
 
         // Process the exe for type
@@ -460,7 +516,6 @@ bool CGameLauncher::scanExecutables(const std::string& path)
             gamespecstring += verstr;
             gamespecstring += "<br>";
         }
-
 
 
         if( newentry.name.length() <= 0 )
@@ -704,6 +759,18 @@ void CGameLauncher::pumpEvent(const CEvent *evPtr)
         const int chosengame = mpGSSelList->getSelection();
         setChosenGame(chosengame);
 
+        // TODO: fetch the List of available patch files
+        // Get the list of ".pat" files
+        ExecutableListFiller exefileslist;
+        const std::string dataDir = getDirectory( m_chosenGame );
+        FindFiles(exefileslist, dataDir, false, FM_REG);
+
+        if( !exefileslist.list.empty() )
+        {
+            mExecFilename = *(exefileslist.list.begin());
+        }
+
+
         if(m_chosenGame >= 0)
         {
             setupModsDialog();
@@ -861,14 +928,24 @@ void CGameLauncher::ponderPatchDialog()
         {
             // Get the EXE-Data of the game and load it into the memory.
             bool ok = false;
+            auto gametype = GAME_TYPE::UNKNOWN;
 
-            if(gKeenFiles.exeFile.readData(episode, DataDirectory))
+            if(gKeenFiles.exeFile.readKeenExeData(episode, DataDirectory))
             {
                ok = true;
+               gametype = GAME_TYPE::COMMANDER_KEEN;
             }
             else if(gKeenFiles.exeFile.readMainLuaScript(episode, DataDirectory))
             {
                ok = true;
+               gametype = GAME_TYPE::COMMANDER_KEEN;
+            }
+            else if(gKeenFiles.exeFile.readGenericExeData(episode,
+                                                          mExecFilename,
+                                                          DataDirectory))
+            {
+               ok = true;
+               gametype = GAME_TYPE::COSMO;
             }
 
             if(!ok)
@@ -879,28 +956,38 @@ void CGameLauncher::ponderPatchDialog()
             {
                 gKeenFiles.gameDir = DataDirectory;
 
-                if(episode >= 1 && episode <= 7)
+                if(gametype == GAME_TYPE::COMMANDER_KEEN)
                 {
-                    // Now let's decide which engine we have to start.
-                    if(episode >= 1 && episode <= 3)
+                    if(episode >= 1 && episode <= 7)
                     {
-                        gEventManager.add( new StartVorticonEngine(false, episode, DataDirectory) );
+                        // Now let's decide which engine we have to start.
+                        if(episode >= 1 && episode <= 3)
+                        {
+                            gEventManager.add( new StartVorticonEngine(false, episode, DataDirectory) );
+                        }
+                        else if(episode >= 4 && episode <= 6)
+                        {
+                            gEventManager.add( new StartGalaxyEngine(false, episode, DataDirectory) );
+                        }
+                        else if(episode == 7)
+                        {
+                            gEventManager.add( new StartDreamsEngine(false, DataDirectory) );
+                        }
                     }
-                    else if(episode >= 4 && episode <= 6)
+                    else // Everything else cannot be
                     {
-                        gEventManager.add( new StartGalaxyEngine(false, episode, DataDirectory) );
+                        gLogging.textOut("Something is wrong with your Episode configuration! Please check the game your chose");
                     }
-                    else if(episode == 7)
-                    {
-                        gEventManager.add( new StartDreamsEngine(false, DataDirectory) );
-                    }
-
+                }
+                else if(gametype == GAME_TYPE::COSMO)
+                {
+                    gEventManager.add( new StartCosmosEngine(false, episode, DataDirectory) );
+                }
+                else
+                {
+                    gLogging.textOut("Unknown Game");
                 }
 
-                else // Everything else cannot be
-                {
-                    gLogging.textOut("Something is wrong with your Episode configuration! Please check the game your chose");
-                }
             }
         }
         else
