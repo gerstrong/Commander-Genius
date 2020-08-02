@@ -4,7 +4,8 @@ v2.5.1:
 - Small bug fix with sprite export in Galaxy Keen.
   Now all of them should be exported correctly
 - Reenabled tar.gz linux generic packaging, this time for automated builds
-- Reenabled debian linux packaging, this time for automated builds
+- Prepared code for debian linux packaging, this time for automated builds.
+  It's disabled because dpkg -i still fails
 
 v2.5.0:
 -------
