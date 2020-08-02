@@ -134,8 +134,6 @@ void GsButton::updateGraphics()
 
 void GsButton::processLogic()
 {
-    processBlendEffects();
-
     mFillColor.ponder(0.075f);
     mBorderColor.ponder(0.075f);
 
@@ -149,8 +147,8 @@ void GsButton::processLogic()
     {
         if(mSelected)
         {
-            mBorderColor.setTargetColor(GsColor(0,0,0));
             mFillColor.setTargetColor(mSelectedColor);
+            mBorderColor.setTargetColor(GsColor(0,0,0));
         }
         else
         {

@@ -26,8 +26,6 @@ public:
     
     virtual ~GsControl() override;
 
-    void processBlendEffects();
-
     void processPointingState() {}
 
     void processPointingState(const GsRect<float> &rect);

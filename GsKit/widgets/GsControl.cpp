@@ -32,46 +32,6 @@ GsControl(GsRect<float>(0.0f, 0.0f, 0.0f, 0.0f))
 GsControl::~GsControl()
 {}
 
-
-void GsControl::processBlendEffects()
-{    
-    /*
-    if(mEnabled)
-    {
-        // For some nice special effects
-        #ifndef DISABLE_HOVER
-        if(mHovered || mSelected)
-        #else
-        if(mSelected || mPressed)
-        #endif
-        {
-            int maxBlend = 224;
-
-            #ifndef DISABLE_HOVER
-            if(mHovered && mSelected)
-            #else
-            if(mSelected)
-            #endif
-            {
-                maxBlend = 255;
-            }
-
-            if(mLightRatio+BLEND_SPEED < maxBlend)
-               mLightRatio += BLEND_SPEED;
-            else
-               mLightRatio = maxBlend;
-        }
-        else // Button is not hovered/pressed
-        {
-            if(mLightRatio-BLEND_SPEED > 0)
-               mLightRatio -= BLEND_SPEED;
-            else
-               mLightRatio = 0;
-        }
-    }
-    */
-}
-
 void GsControl::processPointingState(const GsRect<float> &rect)
 {
     GsPointingState &pointingState = gPointDevice.mPointingState;

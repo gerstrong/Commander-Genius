@@ -65,8 +65,6 @@ bool GsWidgetsManager::sendEvent(const std::shared_ptr<CEvent> & )
 
 void GsWidgetsManager::processLogic()
 {
-    processBlendEffects();
-
     for(auto &obj : mWidgetList)
     {
         obj->processLogic();

@@ -11,8 +11,6 @@ GsWidgetsManager(rect)
 
 void GsFrame::processLogic()
 {    
-    processBlendEffects();
-
     if(mEnabled)
     {
         // If button was pushed and gets released, trigger the assigned event.

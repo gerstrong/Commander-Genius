@@ -42,7 +42,7 @@ linux-generic:
     before_script:
       - mkdir -p /tmp && cd "$_"
       - mkdir -p $CI_PROJECT_DIR/output
-      - cmake -DUSE_BOOST=0 -DAPPEND_SHA=1 $CI_PROJECT_DIR -DCREATE_DEBS=1 "$CI_PROJECT_DIR"
+      - cmake -DUSE_BOOST=0 -DAPPEND_SHA=1 $CI_PROJECT_DIR "$CI_PROJECT_DIR"
     script:
       - cmake --build .    
       - cpack -G TGZ
