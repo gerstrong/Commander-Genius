@@ -1,6 +1,8 @@
 v2.5.1:
 -------
 - Ceilick Ai improvements
+- Small bug fix with sprite export in Galaxy Keen.
+  Now all of them should be exported correctly
 
 v2.5.0:
 -------
