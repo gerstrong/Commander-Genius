@@ -1585,6 +1585,13 @@ bool CEGAGraphicsGalaxy::readSprites( const size_t numSprites,
         int boxX2 = ((curSprHead.Rx2) << (STC-TILE_S));
         int boxY2 = ((curSprHead.Ry2) << (STC-TILE_S));
 
+
+        if(boxY1 < 0 && boxY2 < 0 )
+        {
+            printf("Stop");
+        }
+
+
         if(boxX2-boxX1 >= 1<<STC)
         {
            boxX2 --;
@@ -1664,7 +1671,7 @@ bool CEGAGraphicsGalaxy::readSprites( const size_t numSprites,
         if(exportGfx)
         {
             exportGfxToFile(sfc, std::to_string(gKeenFiles.exeFile.getEpisode()) + std::string("SPR") +
-                            std::to_string(0) + std::string(".bmp"));
+                            std::to_string(i) + std::string(".bmp"));
         }
 
     }
