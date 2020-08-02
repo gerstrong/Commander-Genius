@@ -63,11 +63,7 @@ IF(CREATE_DEBS)
 		SET(CPACK_DEBIAN_PACKAGE_MAINTAINER  "Gerhard Stein <gerstrong@gmail.com>")
 		SET(CPACK_DEBIAN_PACKAGE_DESCRIPTION "${CPACK_PACKAGE_DESCRIPTION_SUMMARY}\n .\n ${CPACK_PACKAGE_DESCRIPTION}")
 
-		IF(BUILD_ARCH STREQUAL amd64)
-			SET(CPACK_DEBIAN_PACKAGE_ARCHITECTURE amd64)
-		ELSEIF(BUILD_ARCH STREQUAL i386)
-			SET(CPACK_DEBIAN_PACKAGE_ARCHITECTURE i386)
-		ENDIF(BUILD_ARCH STREQUAL amd64)
+                SET(CPACK_DEBIAN_PACKAGE_ARCHITECTURE amd64)
                 SET(CPACK_DEBIAN_PACKAGE_DEPENDS "libsdl2-2.0-0 (>= 2.0.0),"
                                                  "libgl1-mesa-glx (>= 7.7.1),"
                                                  "libsdl2-image-2.0-0 (>= 2.0),"
