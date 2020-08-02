@@ -167,7 +167,7 @@ private:
 
     // Different fixed colors to be used for the button
     GsColor mSelectedColor = GsColor(255, 255, 255);
-    GsColor mEnabledColor = GsColor(230, 230, 230);
+    GsColor mEnabledColor  = GsColor(230, 230, 230);
     GsColor mDisabledColor = GsColor(128, 128, 128);
 
 

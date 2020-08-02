@@ -22,6 +22,12 @@ Uint32 GsDynColor::toUint32(GsWeakSurface &blitsfc) const
                             0xFF);
 }
 
+GsColor GsDynColor::getCurColor() const
+{
+    return mCurrentColor;
+}
+
+
 void GsDynColor::setTargetColor(const GsColor &newColor)
 {
     if(newColor == mTargetColor)

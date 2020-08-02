@@ -17,49 +17,51 @@ GsFrame(rect)
             add( new CGUIText(text, textRect) );
 
     newTextWidget->enableCenteringH(false);
-
-    mBgColorSelected = GsColor(0x52, 0xfb, 0x52);
-
-    mBgColorReleased = mBgColorSelected;
-    mBgColorReleased.converge(GsColor(0,0,0));
-
-    mBgColorHovered = mBgColorSelected;
-    mBgColorHovered.converge(GsColor(255,255,255));
-
-    mBgColorPressed = mBgColorHovered;
-    mBgColorPressed.converge(mBgColorSelected);
+    enableBackground(true);
 }
 
-bool GsSelectableText::sendEvent( const std::shared_ptr<CEvent> &event )
+bool GsSelectableText::sendEvent( const std::shared_ptr<CEvent> & )
 {
     return true;
 }
 
 void GsSelectableText::processLogic()
 {
-    enableBackground(false);
+    mBgColor.ponder(0.1f);
 
-    if(mHovered || mPressed || mReleased || mSelected)
-        enableBackground(true);
-    else
-        return;
-
-    GsColor bgColor(0xFF, 0xFF, 0xFF);
-
-    if(mHovered)
+    // Color operations
+    if(!mEnabled)
     {
-        bgColor.converge(mBgColorHovered);
+        mBgColor.setTargetColor(mBgDisabledColor);
     }
-
-    if(mPressed)
+    else
     {
-        bgColor.converge(mBgColorPressed);
+        if(mSelected)
+        {
+            GsColor selectFillColor = mBgSelectedColor;
+
+            if(mPressed)
+                selectFillColor.converge(mBgPressColor);
+
+            mBgColor.setTargetColor(selectFillColor);
+        }
+        else
+        {
+            GsColor selectFillColor = mBgEnabledColor;
+
+            if(mHovered)
+                selectFillColor.converge(mBgSelectedColor);
+            if(mPressed)
+                selectFillColor.converge(mBgPressColor);
+            else if(mReleased)
+                selectFillColor = mBgSelectedColor;
+
+            mBgColor.setTargetColor(selectFillColor);
+        }
     }
 
     if(mReleased)
     {
-        bgColor.converge(mBgColorReleased);
-
         auto parent =
                 dynamic_cast<CGUITextSelectionList*>(getParent());
 
@@ -71,12 +73,7 @@ void GsSelectableText::processLogic()
         mSelected = true;
     }
 
-    if(mSelected)
-    {
-        bgColor = mBgColorSelected;
-    }
-
-    setBackgroundColor(bgColor);
+    setBackgroundColor(mBgColor.getCurColor());
 
     GsFrame::processLogic();
 }

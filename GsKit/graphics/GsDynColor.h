@@ -30,6 +30,8 @@ public:
 
     Uint32 toUint32(GsWeakSurface &blitsfc) const;
 
+    GsColor getCurColor() const;
+
 private:
 
     GsColor mPrevColor;    // The lastly set color
