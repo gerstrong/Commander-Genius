@@ -408,7 +408,6 @@ void CPlayerBase::processInput()
             gSaveGameController.prepareLoadGameQuick();
         }
     }
-
 }
 
 
@@ -710,7 +709,6 @@ void CPlayerBase::getEaten()
     if(!gBehaviorEngine.mCheatmode.god && !mDying)
 	{                
 		mDying = true;
-        m_Inventory.Item.m_lifes--;
 
 		yinertia = 0;
 		dontdraw = true;
@@ -824,11 +822,8 @@ void CPlayerBase::processDead()
 
     m_camera.forbidLead(mPlayerNum);
     m_camera.cycleCamlead();
-
     gEventManager.add( new EventDieKeenPlayer(mPlayerNum,
-                                              m_Inventory.Item.m_lifes<0,
-                                              levelObj, levelName) );
-
+                                              levelObj, levelName) );    
     mIsDead = false;
 	mDying = false;
     exists = false;
@@ -899,9 +894,6 @@ void CPlayerBase::kill(const bool force,
     if(gBehaviorEngine.mCheatmode.god && !force)
         return;
     
-    if(!mDying)
-        m_Inventory.Item.m_lifes--;
-
     mDying = true;    
 
     if(getActionStatus(A_KEEN_DIE))

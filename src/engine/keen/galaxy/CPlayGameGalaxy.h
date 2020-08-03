@@ -36,7 +36,6 @@ public:
     bool init();
 
     void looseManagement(const int playerID,
-                         const bool playerGameOver,
                          const uint16_t levelObj,
                          const std::string &levelName);
 
@@ -64,6 +63,8 @@ private:
 
     // Menu-Button
     SDL_Rect mMenuButtonRect = {0, 0, 24, 16};
+
+    bool mGameOverTriggered = false;
 };
 
 }
