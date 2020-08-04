@@ -1,6 +1,6 @@
 v2.5.X:
 -------
-- Improved blinking sprites for home-made creation
+- Improved blinking sprites for home-made creations
 
 v2.5.1:
 -------

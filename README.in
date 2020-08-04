@@ -568,6 +568,14 @@ A: There have been situations observed where Commander Genius too fast.
    making CGenius run as fast as the CPU. So in a nutshell, enabling or disabling
    the vsync might help in some ocasions. Also check if OpenGL is enabled or disabled.
 
+Q: Strange DPI Setttings on Windows 10?
+a: If you use different DPI Settings and have graphical
+   issues using CG, it's recommended to right click on the executable on CGenius,
+   click Properties, Compatibility, Change high DPI settings,
+   and set High DPI scaling override to Application.
+   Not doing that might result in black screen on CGenius on some screens
+   in fullscreen mode.
+
 
 Q: What about Keen Dreams?
 A: You can already play it through. Never thought we would support that one
@@ -577,6 +585,10 @@ A: You can already play it through. Never thought we would support that one
    If you forget to collect some of the bombs in a level, you can replay that
    level, making the game better to play in my opinion. The support on that game
    is still a WIP but you can finish it already.
+
+Q: Will Commander Genius support more games?
+A: I like the ScummVM approach for adventure games. Maybe one day we do that
+   in CG for other great DOS platformer titles, maybe one day...
 
 
 - BUG! -
