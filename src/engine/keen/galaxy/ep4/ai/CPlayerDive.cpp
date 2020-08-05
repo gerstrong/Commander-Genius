@@ -71,12 +71,9 @@ const int BREATH_TIME = 60;
 
 void CPlayerDive::processDiving()
 {
-	// In case no-clipping was triggered, make it solid, or remove it...
+    // No clipping makes player go through walls etc.
     if(gBehaviorEngine.mCheatmode.noclipping)
-	{
-		solid = !solid;
-        gBehaviorEngine.mCheatmode.noclipping = false;
-	}
+        solid = false;
 
 
     // If Released set to false
