@@ -23,24 +23,6 @@ public:
 
     void GameLoop();
 
-    /**
-     * @brief setScreenMode     Set the screen mode for refkeen which will change the DreamsSurface for different graphics card mode emulations.
-     *                          By setting mChangeMode, applyScreenmode is called whenever before rendering occurs.
-     *                          This is necessary because Dreams uses a second thread. That one must never change the DreamsSurface, because the main
-     *                          thread could be rendering whiletime
-     * @param mode              Mode to be set as supplied by refkeen
-     */
-    void setScreenMode(const int mode)
-    {
-        mChangeMode = mode;
-    }
-
-
-    /**
-     * @brief applyScreenMode
-     */
-    void applyScreenMode();
-
 
     /**
      * @brief start Starts the Dreams engine which refers to accessing RefKeen code
@@ -63,12 +45,6 @@ public:
 
 
 private:
-
-    /**
-     * @brief mChangeMode   An integer that triggers internal resolution change
-     */
-    int mChangeMode = 0; // 0 means nothing, any other value sets the mode before
-
 
     /**
      * @brief mpScene   A flexible pointer to a class instance in which different functionalities can projected

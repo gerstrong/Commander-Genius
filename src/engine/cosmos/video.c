@@ -63,6 +63,7 @@ bool init_surface(VideoSurface *surface, int width, int height)
 
 bool video_init()
 {
+    /*
     window = SDL_CreateWindow("Cosmo Engine", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH*video_scale_factor, SCREEN_HEIGHT*video_scale_factor, 0);
     if(window == NULL)
     {
@@ -81,7 +82,7 @@ bool video_init()
         printf("Error: creating render. %s\n", SDL_GetError());
         return false;
     }
-
+*/
     init_surface(&game_surface, SCREEN_WIDTH, SCREEN_HEIGHT);
     set_palette_on_surface(game_surface.surface);
 
@@ -91,9 +92,9 @@ bool video_init()
 
     set_game_mode();
 
-    SDL_SetRenderDrawColor( renderer, 0, 0, 0, 255 );
-    SDL_RenderClear( renderer );
-    SDL_RenderPresent( renderer);
+//    SDL_SetRenderDrawColor( renderer, 0, 0, 0, 255 );
+//    SDL_RenderClear( renderer );
+//    SDL_RenderPresent( renderer);
 
     video_has_initialised = true;
     return true;
@@ -101,8 +102,8 @@ bool video_init()
 
 void video_shutdown()
 {
-    SDL_DestroyRenderer(renderer);
-    SDL_DestroyWindow(window);
+   // SDL_DestroyRenderer(renderer);
+   // SDL_DestroyWindow(window);
 }
 
 void set_text_mode()

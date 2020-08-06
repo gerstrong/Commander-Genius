@@ -68,6 +68,7 @@ set(HSRC CosmoEngine.h
          video.h)
 
 add_library(cosmos_engine STATIC CosmoEngine.cpp
+                                 cosmosintro.cpp
                                  ${CSRC}
                                  ${HSRC})
 

@@ -18,6 +18,7 @@ AudioConfig audioConfig;
 
 void audio_init()
 {
+    /*
     audioConfig.enabled = false;
     if(SDL_InitSubSystem(SDL_INIT_AUDIO) < 0)
     {
@@ -69,10 +70,10 @@ void audio_init()
     }
 
     music_init();
-    audioConfig.enabled = true;
+    audioConfig.enabled = true;*/
 }
 
 void audio_shutdown()
 {
-    Mix_CloseAudio();
+    //Mix_CloseAudio();
 }

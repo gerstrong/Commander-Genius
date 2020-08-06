@@ -1,5 +1,6 @@
 
 #include "CosmoEngine.h"
+#include "cosmosintro.h"
 
 
 namespace cosmos_engine
@@ -26,6 +27,9 @@ extern "C"
 bool CosmosEngine::start()
 {
     start_cosmo();
+
+    mpScene.reset( new CosmosIntro );
+
     return false;
 }
 
@@ -34,17 +38,47 @@ bool CosmosEngine::start()
  * @param deltaT    timestep
  */
 void CosmosEngine::ponder(const float deltaT)
-{}
+{
+    /*
+    if(!mResourcesLoaded)
+        return;
+
+    std::vector<SDL_Event> evVec;
+    gInput.readSDLEventVec(evVec);
+
+    for(SDL_Event event : evVec)
+    {
+        BE_ST_PollEvents(event);
+    }
+*/
+
+    if(mpScene)
+    {
+        mpScene->ponder(deltaT);
+    }
+}
 
 void CosmosEngine::pumpEvent(const CEvent *evPtr)
-{}
+{
+    if(mpScene)
+    {
+        mpScene->pumpEvent(evPtr);
+    }
+}
 
 
 /**
  * @brief render    Everything to ne drawn here!
  */
 void CosmosEngine::render()
-{}
+{
+    if(mpScene)
+    {
+        mpScene->render();
+    }
+
+    //SDL_Surface *blitSfc = gVideoDriver.getBlitSurface();
+}
 
 
 }
