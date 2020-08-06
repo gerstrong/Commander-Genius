@@ -217,6 +217,7 @@ bool CPlayGameGalaxy::saveXMLGameState()
 bool CPlayGameGalaxy::init()
 {
     // Required to sprites are correctly masked
+    mGameOverTriggered = false;
     gGraphics.optimizeSprites();
 
 	if(m_Level == 0)
@@ -277,7 +278,6 @@ struct EventRestartLevel : CEvent {};
 
 
 void CPlayGameGalaxy::looseManagement( const int playerIdx,
-                                       const bool playerGameOver,
                                        const uint16_t levelObj,
                                        const std::string &levelName )
 {
@@ -294,7 +294,10 @@ void CPlayGameGalaxy::looseManagement( const int playerIdx,
         nextAliveID++;
     }
 
-    mDead[playerIdx] = true;
+    mDead[playerIdx] = true;    
+    mInventoryVec[playerIdx].Item.m_lifes--;
+
+    const bool playerGameOver = (mInventoryVec[playerIdx].Item.m_lifes<0);
 
     if(playerGameOver)
     {
@@ -311,13 +314,8 @@ void CPlayGameGalaxy::looseManagement( const int playerIdx,
         allGameOver &= (*goIt);
     }
 
-    if(allGameOver) // Game over?
-    {
-        const std::string end_text("GAME OVER!\n");
-        showMsg(0, end_text, new EventEndGamePlay());
-        return;
-    }
-    else if(allDead) // not yet!
+
+    if(allDead && !allGameOver) // No, but in the level all are dead!
     {
         // Player should see the dialog first.
         gInput.flushAll();
@@ -352,7 +350,8 @@ void CPlayGameGalaxy::looseManagement( const int playerIdx,
     }
 
     // Now let's check for important items
-    // If one player goes game over on of the other should get the item then.
+    // If one player dies, the next one should inherit some important stuff,
+    // so he can finish the level.
     const unsigned int numDeadPlayers = mDead.size();
     if( numDeadPlayers > 1 && nextAliveID < numDeadPlayers )
     {
@@ -496,7 +495,6 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
     else if( const EventDieKeenPlayer *ev = dynamic_cast<const EventDieKeenPlayer*>(evPtr) )
     {
         looseManagement(ev->playerID,
-                        ev->gameOver,
                         ev->levelObj,
                         ev->levelName);
 
@@ -561,9 +559,11 @@ void CPlayGameGalaxy::ponder(const float deltaT)
     for(auto &msgBox : mMessageBoxes)
     {
         blockGamePlay |= msgBox->isModal();
-    }
+    }                    
 
     int playerCount = 0;
+    bool noLifesLeft = true; // Set gameover and check if player have enough lifes
+                          // to stay in the game
     for( auto &inv : mInventoryVec )
     {
         // Trigger the Status screen here
@@ -591,8 +591,18 @@ void CPlayGameGalaxy::ponder(const float deltaT)
                 inv.toggleStatusScreen();
             }
         }
-
         playerCount++;
+
+        noLifesLeft &= (inv.Item.m_lifes<0);
+    }
+
+
+    if(noLifesLeft && !mGameOverTriggered) // Game over?
+    {
+        mGameOverTriggered = true;
+        const std::string end_text("GAME OVER!\n");
+        showMsg(0, end_text, new EventEndGamePlay());
+        return;
     }
 
 

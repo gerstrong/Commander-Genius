@@ -408,7 +408,6 @@ void CPlayerBase::processInput()
             gSaveGameController.prepareLoadGameQuick();
         }
     }
-
 }
 
 
@@ -710,7 +709,6 @@ void CPlayerBase::getEaten()
     if(!gBehaviorEngine.mCheatmode.god && !mDying)
 	{                
 		mDying = true;
-        m_Inventory.Item.m_lifes--;
 
 		yinertia = 0;
 		dontdraw = true;
@@ -824,11 +822,8 @@ void CPlayerBase::processDead()
 
     m_camera.forbidLead(mPlayerNum);
     m_camera.cycleCamlead();
-
     gEventManager.add( new EventDieKeenPlayer(mPlayerNum,
-                                              m_Inventory.Item.m_lifes<0,
-                                              levelObj, levelName) );
-
+                                              levelObj, levelName) );    
     mIsDead = false;
 	mDying = false;
     exists = false;
@@ -899,9 +894,6 @@ void CPlayerBase::kill(const bool force,
     if(gBehaviorEngine.mCheatmode.god && !force)
         return;
     
-    if(!mDying)
-        m_Inventory.Item.m_lifes--;
-
     mDying = true;    
 
     if(getActionStatus(A_KEEN_DIE))
@@ -937,7 +929,7 @@ void CPlayerBase::kill(const bool force,
 
 bool CPlayerBase::checkMapBoundaryR(const int x2)
 {
-	if( solid && x2 >= (int)((mpMap->m_width-1)<<CSF) )
+    if( solid && !noclipping && x2 >= (int)((mpMap->m_width-1)<<CSF) )
 		return true;
 
 	return false;
@@ -945,7 +937,7 @@ bool CPlayerBase::checkMapBoundaryR(const int x2)
 
 bool CPlayerBase::checkMapBoundaryL(const int x1)
 {
-	if( solid && x1 <= (1<<CSF) )
+    if( solid && !noclipping && x1 <= (1<<CSF) )
 		return true;
 
 	return false;

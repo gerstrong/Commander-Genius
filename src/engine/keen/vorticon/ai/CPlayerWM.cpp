@@ -35,8 +35,7 @@ void CPlayer::processWorldMap()
         if (xinertia < 0 && blockedl) xinertia = 0;
     }
 
-    if(gBehaviorEngine.mCheatmode.noclipping)
-        solid = false;
+    noclipping = gBehaviorEngine.mCheatmode.noclipping;
 
     if(!beingteleported)
     {

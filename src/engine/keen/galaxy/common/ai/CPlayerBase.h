@@ -66,12 +66,11 @@ struct EventExitLevelWithFoot : CEvent {
 struct EventDieKeenPlayer  : CEvent
 {
   const int playerID;
-  const bool gameOver;
   const int levelObj;
   const std::string levelName;
 
-  EventDieKeenPlayer(const int id, const bool go, const int lo, const std::string &ln) :
-    playerID(id), gameOver(go),
+  EventDieKeenPlayer(const int id, const int lo, const std::string &ln) :
+    playerID(id),
     levelObj(lo), levelName(ln){}
 };
 

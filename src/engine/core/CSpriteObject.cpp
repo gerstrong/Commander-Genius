@@ -605,9 +605,8 @@ void CSpriteObject::draw()
             h = h - ((showY+h) - (visGA.pos.y+visGA.dim.y+16));
 
 		if(m_blinktime > 0)
-		{
-            const auto engine = gBehaviorEngine.getEngine();
-            Sprite.drawBlinkingSprite( showX, showY, engine != EngineType::ENGINE_VORTICON );
+		{            
+            Sprite.drawBlinkingSprite( showX, showY );
 			m_blinktime--;
 		}
 		else

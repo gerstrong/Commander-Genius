@@ -164,7 +164,7 @@ void CCeilick::draw()
 
         if(m_blinktime > 0)
         {
-            rSprite.drawBlinkingSprite( showX, showY, true );
+            rSprite.drawBlinkingSprite( showX, showY );
             m_blinktime--;
         }
         else

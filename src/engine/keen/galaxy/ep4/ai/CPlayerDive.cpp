@@ -53,9 +53,6 @@ void CPlayerDive::kill(const bool force,
         playSound( SOUND_KEEN_DIE, SoundPlayMode::PLAY_NORESTART );
 		setupGalaxyObjectOnMap(0x0D2E, (rand()%2));
 
-        if(!mDying)
-            m_Inventory.Item.m_lifes--;
-
 		mDying = true;                
 		yinertia = -DIE_FALL_MAX_INERTIA;
 		solid = false;
@@ -74,13 +71,8 @@ const int BREATH_TIME = 60;
 
 void CPlayerDive::processDiving()
 {
-	// In case no-clipping was triggered, make it solid, or remove it...
-    if(gBehaviorEngine.mCheatmode.noclipping)
-	{
-		solid = !solid;
-        gBehaviorEngine.mCheatmode.noclipping = false;
-	}
-
+    // No clipping makes player go through walls etc.
+    noclipping = gBehaviorEngine.mCheatmode.noclipping;
 
     // If Released set to false
     if(!mPlaycontrol[PA_JUMP])

@@ -2730,12 +2730,8 @@ void CPlayerLevel::process()
 	{
 		processInput();
 
-		// If no clipping was triggered change solid state of keen
-        if(gBehaviorEngine.mCheatmode.noclipping)
-		{
-			solid = !solid;
-            gBehaviorEngine.mCheatmode.noclipping = false;
-		}
+        // If no clipping was triggered change solid state of keen
+        noclipping = gBehaviorEngine.mCheatmode.noclipping;
 
 		if(pSupportedbyobject)
 		{
@@ -3020,7 +3016,7 @@ int CPlayerLevel::checkSolidU(int x1, int x2, int y1, const bool push_mode )
 	y1 -= COLLISION_RES;
 
 	// Check for sloped tiles here. They must be handled differently
-	if(solid)
+    if(solid && !noclipping)
 	{
 		int8_t blocked;
 
@@ -3093,7 +3089,7 @@ int CPlayerLevel::checkSolidD( int x1, int x2, int y2, const bool push_mode )
 	y2 += COLLISION_RES;
 
 	// Check for sloped tiles here. They must be handled differently
-	if(solid)
+    if(solid && !noclipping)
 	{
 		int8_t blockedu;
 
@@ -3145,7 +3141,7 @@ int CPlayerLevel::checkSolidD( int x1, int x2, int y2, const bool push_mode )
 
 
 	// Check for down from the object
-	if(solid)
+    if(solid && !noclipping)
 	{
 		int8_t blocked;
 		for(int c=x1 ; c<=x2 ; c += COLLISION_RES)

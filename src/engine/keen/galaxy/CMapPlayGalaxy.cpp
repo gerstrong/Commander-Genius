@@ -206,6 +206,7 @@ void CMapPlayGalaxy::ponderBase(const float deltaT)
         }
 	}
 
+
 }
 
 void CMapPlayGalaxy::render()

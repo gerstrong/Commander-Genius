@@ -461,13 +461,8 @@ void CPlayerWM::processMoving()
         waveTimer = 0;
     }
     
-    // In case noclipping was triggered, make it solid, or remove it...
-    if(gBehaviorEngine.mCheatmode.noclipping)
-    {
-        solid = !solid;
-        gBehaviorEngine.mCheatmode.noclipping = false;
-    }
-
+    // No clipping makes player go through walls etc.
+    noclipping = gBehaviorEngine.mCheatmode.noclipping;
 
     /// Check if Keen is able to access a level
     // Get the object
