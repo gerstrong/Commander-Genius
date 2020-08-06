@@ -583,14 +583,7 @@ void CPlayer::JumpAndPogo()
     	if(playcontrol[PA_JUMP] && !blockedu)
     		moveUp(PPOGOUP_SPEED);
 
-        if(gBehaviorEngine.mCheatmode.noclipping)
-        {
-            solid = false;
-        }
-        else
-        {
-            solid = true;
-        }
+        noclipping = gBehaviorEngine.mCheatmode.noclipping;
     }
 }
 

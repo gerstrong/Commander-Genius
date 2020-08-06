@@ -929,7 +929,7 @@ void CPlayerBase::kill(const bool force,
 
 bool CPlayerBase::checkMapBoundaryR(const int x2)
 {
-	if( solid && x2 >= (int)((mpMap->m_width-1)<<CSF) )
+    if( solid && !noclipping && x2 >= (int)((mpMap->m_width-1)<<CSF) )
 		return true;
 
 	return false;
@@ -937,7 +937,7 @@ bool CPlayerBase::checkMapBoundaryR(const int x2)
 
 bool CPlayerBase::checkMapBoundaryL(const int x1)
 {
-	if( solid && x1 <= (1<<CSF) )
+    if( solid && !noclipping && x1 <= (1<<CSF) )
 		return true;
 
 	return false;

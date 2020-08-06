@@ -462,12 +462,7 @@ void CPlayerWM::processMoving()
     }
     
     // No clipping makes player go through walls etc.
-    if(gBehaviorEngine.mCheatmode.noclipping)
-    {
-        solid = false;
-    }
-
-
+    noclipping = gBehaviorEngine.mCheatmode.noclipping;
 
     /// Check if Keen is able to access a level
     // Get the object

@@ -72,9 +72,7 @@ const int BREATH_TIME = 60;
 void CPlayerDive::processDiving()
 {
     // No clipping makes player go through walls etc.
-    if(gBehaviorEngine.mCheatmode.noclipping)
-        solid = false;
-
+    noclipping = gBehaviorEngine.mCheatmode.noclipping;
 
     // If Released set to false
     if(!mPlaycontrol[PA_JUMP])

@@ -137,7 +137,7 @@ int CGalaxySpriteObject::checkSolidU(int x1, int x2, int y1, const bool push_mod
 	y1 -= COLLISION_RES;
 
 	// Check for sloped tiles here. They must be handled differently
-	if(solid)
+    if(solid && !noclipping)
 	{
 		int8_t blocked;
 
@@ -177,7 +177,7 @@ int CGalaxySpriteObject::checkSolidD( int x1, int x2, int y2, const bool push_mo
     y2 += COLLISION_RES;
 
 	// Check for sloped tiles here. They must be handled differently
-	if(solid)
+    if(solid && !noclipping)
 	{
 		int8_t blockedu;
 
@@ -220,7 +220,7 @@ int CGalaxySpriteObject::checkSolidD( int x1, int x2, int y2, const bool push_mo
 
 
 	// Check for down from the object
-	if(solid)
+    if(solid && !noclipping)
 	{
 		int8_t blocked;
 		for(int c=x1 ; c<=x2 ; c += COLLISION_RES)

@@ -142,6 +142,7 @@ class CSpriteObject
     bool honorPriority;
     bool dontdraw;	// tells the object whether to get drawn or not. The object is still existent in this while
     bool solid;
+    bool noclipping = false; // Similar to solid, but one is only enabled/disabled by the no clipping cheat
     
     bool canbezapped;         // if 0 ray will not stop on hitdetect
     

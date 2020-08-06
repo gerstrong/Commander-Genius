@@ -193,7 +193,7 @@ void CSpriteObject::adjustSlopedTiles( int x, int y1, int y2,
                                        const int xspeed,
                                        int &slopeType)
 {
-	if(!solid)
+    if(!solid || noclipping)
 		return;
 
 	// process the sloped tiles here. Galaxy only or special patch!!
@@ -665,7 +665,7 @@ int CSpriteObject::checkSolidR( int x1, int x2, int y1, int y2)
 		return false;
 */
     // Check for solid tile on right side of the sprite
-	if(solid)
+    if(solid && !noclipping)
 	{
         const auto h=y2-y1;
 
@@ -711,7 +711,7 @@ int CSpriteObject::checkSolidL( int x1, int x2, int y1, int y2)
     x1 -= COLLISION_RES;
 
     // Check for right side of the tile
-	if(solid)
+    if(solid && !noclipping)
 	{
         const auto h=y2-y1;
 
@@ -780,7 +780,7 @@ int CSpriteObject::checkSolidU(int x1, int x2, int y1, const bool push_mode )
 		return 0;
 
 	// Check for right from the object
-	if(solid)
+    if(solid && !noclipping)
 	{
         for(int c=x1 ; c<=x2 ; c += COLLISION_RES)
 		{
@@ -815,7 +815,7 @@ int CSpriteObject::checkSolidD( int x1, int x2, int y2, const bool push_mode )
 		return 0;
 
 	// Check for down from the object
-	if(solid)
+    if(solid && !noclipping)
 	{
 		Sint8 blocked;
         for(int c=x1 ; c<=x2 ; c += COLLISION_RES)
@@ -1034,7 +1034,7 @@ void CSpriteObject::processMove(const int move_x, const int move_y)
 void CSpriteObject::processPushOutCollision()
 {
 	// If he isn't solid don't even care
-	if(!solid)
+    if(!solid || noclipping)
 		return;
 
 	/// Check if from the lower part (floor) we are blocked
