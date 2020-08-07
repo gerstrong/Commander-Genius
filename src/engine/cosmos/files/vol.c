@@ -55,6 +55,7 @@ uint16 get_index_of_file(File *vol_file, const char *filename)
 
 bool open_vol_file(const char *vol_filename, File *vol_file)
 {
+
     char *fullpath = get_game_dir_full_path(vol_filename);
     if(!file_open(fullpath, "rb", vol_file))
     {

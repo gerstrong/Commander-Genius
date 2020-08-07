@@ -15,8 +15,8 @@ typedef struct VideoSurface {
     SDL_Surface *windowSurface;
 } VideoSurface;
 
-SDL_Window *window;
-SDL_Renderer *renderer;
+//SDL_Window *window;
+SDL_Renderer *renderer = NULL;
 
 VideoSurface game_surface;
 VideoSurface text_surface;
@@ -27,6 +27,11 @@ bool video_has_initialised = false;
 int video_scale_factor = DEFAULT_SCALE_FACTOR;
 
 void video_fill_surface_with_black(SDL_Surface *surface);
+
+void set_renderer(SDL_Renderer *rend)
+{
+    renderer = rend;
+}
 
 void fade_to_black_speed_3()
 {
@@ -426,6 +431,7 @@ void video_draw_text(uint8 character, int fg, int bg, int x, int y)
 
 void video_set_fullscreen(bool new_state)
 {
+/*
     if(new_state == true && !is_fullscreen)
     {
         is_fullscreen = true;
@@ -442,7 +448,7 @@ void video_set_fullscreen(bool new_state)
             SDL_SetWindowFullscreen(window, 0);
         }
     }
-
+*/
 }
 
 void video_set_scale_factor(int scale_factor)

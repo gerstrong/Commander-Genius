@@ -173,7 +173,7 @@ void    InitSearchPaths();
 
 void    printSearchPaths();
 
-// this does a search on all searchpaths for the file and returns the first one found
+// this does a search on all searchpaths for the file or directory and returns the first one found
 // if none was found, NULL will be returned
 // if searchpath!=NULL, it will place there the searchpath
 std::string GetFullFileName(const std::string& path, std::string* searchpath = nullptr);

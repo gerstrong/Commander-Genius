@@ -377,6 +377,14 @@ const char *scancode_to_string(uint8 scan_code)
     return &scancode_string_tbl[scan_code][0];
 }
 
+void set_game_data_dir(const char *dir, const int len)
+{
+    if(!game_data_directory)
+        game_data_directory = SDL_malloc(len+1);
+
+    strcpy(game_data_directory, dir);
+}
+
 void load_config_from_command_line(int argc, char **argv)
 {
     for(int i=1;i<argc; i++)

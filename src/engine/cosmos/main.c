@@ -28,7 +28,7 @@ int start_cosmo() {
     load_config_from_command_line(0, 0);
 
     video_init();
-    //audio_init();
+    audio_init();
     //input_init();
     game_init();
 

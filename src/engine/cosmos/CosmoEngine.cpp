@@ -2,6 +2,18 @@
 #include "CosmoEngine.h"
 #include "cosmosintro.h"
 
+#include <base/video/CVideoDriver.h>
+#include <base/utils/FindFile.h>
+
+
+extern "C"
+{
+    void set_renderer(SDL_Renderer *rend);
+
+    void set_game_data_dir(const char *dir, const int len);
+}
+
+
 
 namespace cosmos_engine
 {
@@ -11,7 +23,9 @@ CosmosEngine::CosmosEngine(const bool openedGamePlay,
                            const std::string &dataPath) :
 GameEngine(openedGamePlay, dataPath),
 mEp(ep)
-{}
+{
+    set_renderer(gVideoDriver.Renderer());
+}
 
 CosmosEngine::~CosmosEngine()
 {}
@@ -26,9 +40,14 @@ extern "C"
  */
 bool CosmosEngine::start()
 {
-    start_cosmo();
-
     mpScene.reset( new CosmosIntro );
+
+    const auto gameDir = GetFullFileName(mDataPath);
+
+    set_game_data_dir(gameDir.c_str(),
+                      gameDir.size());
+
+    start_cosmo();
 
     return false;
 }
