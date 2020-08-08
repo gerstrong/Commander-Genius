@@ -109,27 +109,16 @@ void CSpriteItem::getTouchedBy(CSpriteObject &theObject)
 		}
 
         // Enable pogo if some script wishes that
-#if USE_PYTHON3
+        if(!Item.m_special.mCanPogo)
+        {
+            int enablePogo = 0;
+            pPlayer->m_Inventory.mLua.runFunctionRetOneInt("enablePogo", m_basesprite, enablePogo);
 
-        if(!mModule)
-        {
-            mModule.load("constants", gKeenFiles.gameDir);
-        }
-        else
-        {
-            int value = 0;
-            const auto ok = mModule.loadIntegerFunc("enablePogo", value, m_basesprite);
-            if(ok)
+            if(enablePogo)
             {
-                if(value==1)
-                {
-                    Item.m_special.mCanPogo = true;
-                }
+                Item.m_special.mCanPogo = true;
             }
         }
-
-#endif
-
 
 		// Now add the stuff to the inventory
 		if(ep == 5)
