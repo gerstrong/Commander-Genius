@@ -61,134 +61,6 @@ mSprVar(spriteVar)
     setupCollisionModel();
 }
 
-#if USE_PYTHON3
-
-bool CSpriteObject::loadAiGetterBool(const std::string &pyMethodStr, bool &value)
-{
-    return loadAiGetterBool(mModule.rawPtr(), pyMethodStr, value);
-}
-
-bool CSpriteObject::loadAiGetterBool(PyObject * pModule, const std::string &pyMethodStr, bool &value)
-{
-    // pFunc is a new reference
-    PyObject *pFunc = PyObject_GetAttrString(pModule, pyMethodStr.c_str());
-
-    if (pFunc && PyCallable_Check(pFunc))
-    {
-        PyObject *pValue = PyObject_CallObject(pFunc, nullptr);
-
-        if (pValue != nullptr)
-        {
-            if( PyObject_IsTrue(pValue) )
-            {
-                value = true;
-            }
-            else
-            {
-                value = false;
-            }
-            Py_DECREF(pValue);
-        }
-        else
-        {
-            Py_DECREF(pFunc);
-            PyErr_Print();
-            gLogging.ftextOut("Call failed\n");
-            return false;
-        }
-    }
-    else
-    {
-        if (PyErr_Occurred())
-        {
-            PyErr_Print();
-        }
-
-        gLogging.ftextOut("Cannot find function \"pyMethodStr\"\n");
-        return false;
-    }
-
-    Py_XDECREF(pFunc);
-
-
-    return true;
-}
-
-bool CSpriteObject::loadAiGetterInteger(PyObject * pModule, const std::string &pyMethodStr, int &value)
-{
-    // pFunc is a new reference
-    PyObject *pFunc = PyObject_GetAttrString(pModule, pyMethodStr.c_str());
-
-    if (pFunc && PyCallable_Check(pFunc))
-    {
-        PyObject *pValue = PyObject_CallObject(pFunc, nullptr);
-
-        if (pValue != nullptr)
-        {
-            value = PyLong_AsLong(pValue);
-            Py_DECREF(pValue);
-        }
-        else
-        {
-            Py_DECREF(pFunc);
-            PyErr_Print();
-            gLogging.ftextOut("Call failed\n");
-            return false;
-        }
-    }
-    else
-    {
-        if (PyErr_Occurred())
-        {
-            PyErr_Print();
-        }
-
-        gLogging.ftextOut("Cannot find function \"init\"\n");
-        return false;
-    }
-
-    Py_XDECREF(pFunc);
-
-
-    return true;
-}
-
-bool CSpriteObject::loadPythonScripts(const std::string &scriptBaseName)
-{
-    mModule.load( scriptBaseName, JoinPaths(gKeenFiles.gameDir ,"ai") );
-
-    if(!mModule)
-        return false;
-
-    loadAiGetterBool("canRecoverFromStun", mRecoverFromStun);
-
-    loadAiGetterBool("turnAroundOnCliff", mTurnAroundOnCliff);
-
-    loadAiGetterBool("endGameOnDefeat", mEndGameOnDefeat);
-
-    loadAiGetterBool("isInvincible", mInvincible);
-
-    loadAiGetterBool("willNeverStop", mNeverStop);
-
-    loadAiGetterBool("isStunnableWithPogo", mPogoStunnable);
-
-    loadAiGetterBool("isStunnableWithJump", mJumpStunnable);
-
-    loadAiGetterBool("mayShoot", mMayShoot);
-
-    auto pModule = mModule.rawPtr();
-    int health = int(mHealthPoints);
-    loadAiGetterInteger(pModule, "healthPoints", health);
-    mHealthPoints = static_cast<unsigned int>(health);
-
-    int walksound = mWalkSound;
-    loadAiGetterInteger(pModule, "walkSound", walksound);
-    mWalkSound = GameSound(walksound);
-
-    return true;
-
-}
-#endif
 
 bool CSpriteObject::loadLuaScript(const std::string &scriptBaseName)
 {
@@ -214,6 +86,10 @@ bool CSpriteObject::loadLuaScript(const std::string &scriptBaseName)
     int health = int(mHealthPoints);
     mLua.runFunctionRetOneInt("healthPoints", health);
     mHealthPoints = static_cast<unsigned int>(health);
+
+    int walksound = int(mWalkSound);
+    mLua.runFunctionRetOneInt("walkSound", walksound);
+    mWalkSound = static_cast<GameSound>(walksound);
 
     return true;
 }
