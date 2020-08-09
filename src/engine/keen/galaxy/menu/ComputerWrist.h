@@ -32,7 +32,7 @@ struct OpenComputerWrist : CEvent
 
     const int mSection = -1;
     const int mPlaySong = -1;
-    const bool mGrayMode = false;
+    const bool mGrayMode = false;    
 };
 
 
@@ -146,6 +146,7 @@ private:
     std::string mPreviousSong;
 
     bool mGreyMode = false;
+    int mTime = 0;
 };
 
 }

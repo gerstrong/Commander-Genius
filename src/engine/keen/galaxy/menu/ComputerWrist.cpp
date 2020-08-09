@@ -14,13 +14,13 @@
 
 /*
 
-^P		First command in every file. Defines a page start
-^E		Ends the file
-^Cx		Change font color to $x until next page or ^C command
-^Gx,y,z	Display (unmasked) picture chunk z at location x,y (In pixels)
+^P		    First command in every file. Defines a page start
+^E		    Ends the file
+^Cx		    Change font color to $x until next page or ^C command
+^Gx,y,z	    Display (unmasked) picture chunk z at location x,y (in pixels)
 ^Tx,y,z,t	Display picture chunk z at x,y for z clicks of time
-^Bx,y,z,t,b	?
-^Lx,y		?
+^Bx,y,z,t,b	Fill a width-by-height-pixel rectangle at pixel location x,y (for z clicks of time?) with color $x
+^Lx,y		Start text alignment at pixel location x,y.
 
 */
 
@@ -152,10 +152,13 @@ void ComputerWrist::ponderPage(const float deltaT)
 {
     (void) deltaT;
 
+    mTime++;
+
     if( gInput.getPressedCommand(IC_BACK) )
     {
         mSection = -1;
         mSectionPage = 0;
+        mTime = 0;
     }
 
 
@@ -165,6 +168,7 @@ void ComputerWrist::ponderPage(const float deltaT)
         {
             mSectionPage++;
             mCurrentTextLines = gGameText.readPage(mSection, mSectionPage);
+            mTime = 0;
         }
     }
 
@@ -174,6 +178,7 @@ void ComputerWrist::ponderPage(const float deltaT)
         {
             mSectionPage--;
             mCurrentTextLines = gGameText.readPage(mSection, mSectionPage);
+            mTime = 0;
         }
     }
 
@@ -291,6 +296,8 @@ void ComputerWrist::parseGraphics()
 
 
     // Check for colission with bitmaps
+    int totPicTime = 0;
+
     for(const auto &line : mCurrentTextLines)
     {
         if(line[0] == '^')
@@ -362,7 +369,7 @@ void ComputerWrist::parseGraphics()
                     }
                 }
 
-                bmp.draw(x, y);
+                bmp.draw(x & ~7, y);
             }
             if(line[1] == 'T') // ^Tx,y,z,t	Display picture chunk z at x,y for z clicks of time
             {
@@ -381,8 +388,13 @@ void ComputerWrist::parseGraphics()
 
                 chunk = chunk - mBmpIndex;
 
+                totPicTime += time;
+
                 GsBitmap &bmp = gGraphics.getBitmapFromId(0, chunk);
-                //bmp.draw(x+2, y);
+                if(mTime > totPicTime)
+                {
+                    bmp.draw(x & ~7, y);
+                }
             }
         }
     }
@@ -621,7 +633,7 @@ void ComputerWrist::render()
     GsWeakSurface blitsfc(gVideoDriver.getBlitSurface());
 
     // Typical color code of the background
-    if(!mGreyMode)
+    if(!mGreyMode || mSection == -1)
     {
         blitsfc.fillRGB(0xA8,0,0);
     }
@@ -630,8 +642,6 @@ void ComputerWrist::render()
         blitsfc.fillRGB(0xA8,0xA8,0xA8);
         //0x54, 0x54, 0xfc
     }
-
-
 
     // Main Page?
     if(mSection == -1)
