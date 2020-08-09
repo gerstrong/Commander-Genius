@@ -2317,7 +2317,7 @@ void CPlayerLevel::processPoleClimbingSit()
 	Uint32 l_x_l = getXLeftPos();
 	Uint32 l_x = getXMidPos();
 	Uint32 l_x_r = getXRightPos();
-	Uint32 l_y_up = getYUpPos();
+    Uint32 l_y_up = getYUpPos()-(2<<STC);
 	Uint32 l_y_down = getYDownPos();
 
 
@@ -2393,7 +2393,7 @@ void CPlayerLevel::processPoleClimbingUp()
 	Uint32 l_x_l = getXLeftPos();
 	Uint32 l_x = getXMidPos();
 	Uint32 l_x_r = getXRightPos();
-	Uint32 l_y_up = getYUpPos();	
+    Uint32 l_y_up = getYUpPos()-(2<<STC);
 
 	// Check for the upper side and don't let him move if the pole ends
 	if( hitdetectWithTileProperty(1, l_x_l, l_y_up) ||
