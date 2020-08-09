@@ -107,7 +107,7 @@ ComputerWrist::ComputerWrist(const bool greyMode) :
     {
         for(int i=0 ; i < numLines ; i++)
         {
-            mMinPos.push_back(2);
+            mMinPos.push_back(8);
             mMaxPos.push_back(blitsfc.width());
         }
     }
@@ -247,7 +247,7 @@ void ComputerWrist::parseGraphics()
 {
     std::stringstream ss;
 
-    int x,y,chunk;
+    int x,y,chunk, time;
     GsWeakSurface blitsfc(gVideoDriver.getBlitSurface());
 
     SDL_Rect lRect;
@@ -295,7 +295,7 @@ void ComputerWrist::parseGraphics()
     {
         if(line[0] == '^')
         {
-            if(line[1] == 'G')
+            if(line[1] == 'G') // x,y,z Display (unmasked) picture chunk at location x,y (In pixels)
             {
                 std::string param = line.substr(2);
 
@@ -350,12 +350,39 @@ void ComputerWrist::parseGraphics()
                     {
                         if(curMinPos < (x+bmpW))
                         {
-                            mMinPos[textYIdx] = (x+bmpW)+spaceWidth+1;
+                            if(!mGreyMode)
+                            {
+                                mMinPos[textYIdx] = (x+bmpW)+spaceWidth+1;
+                            }
+                            else
+                            {
+                                mMinPos[textYIdx] = mMaxPos[textYIdx];
+                            }
                         }
                     }
                 }
 
                 bmp.draw(x, y);
+            }
+            if(line[1] == 'T') // ^Tx,y,z,t	Display picture chunk z at x,y for z clicks of time
+            {
+                std::string param = line.substr(2);
+
+                char comma;
+
+                ss << param;
+                ss >> y;
+                ss >> comma;
+                ss >> x;
+                ss >> comma;
+                ss >> chunk;
+                ss >> comma;
+                ss >> time;
+
+                chunk = chunk - mBmpIndex;
+
+                GsBitmap &bmp = gGraphics.getBitmapFromId(0, chunk);
+                //bmp.draw(x+2, y);
             }
         }
     }
@@ -390,6 +417,12 @@ void ComputerWrist::parseText()
 
 
     Uint32 color = 0xFCFC54;
+
+    if(mGreyMode)
+    {
+        color = 0x545454;
+    }
+
 
     // Get the text that is actually used
     for(const auto &line : mCurrentTextLines)
@@ -504,14 +537,17 @@ void ComputerWrist::parseText()
     }
 
     // Print the page number
-    const auto pgTextcolor = 0xFC5454;
-    Font.setupColor(pgTextcolor);
+    if(!mGreyMode)
+    {
+        const auto pgTextcolor = 0xFC5454;
+        Font.setupColor(pgTextcolor);
 
-    const std::string pgText =
-            "pg " + itoa(mSectionPage+1) +
-            " of " + itoa(mNumPagesOfThisSection+1);
-    Font.drawFont(blitsfc.getSDLSurface(), pgText,
-                  218, 186);
+        const std::string pgText =
+                "pg " + itoa(mSectionPage+1) +
+                " of " + itoa(mNumPagesOfThisSection+1);
+        Font.drawFont(blitsfc.getSDLSurface(), pgText,
+                      218, 186);
+    }
 }
 
 void ComputerWrist::renderPage()
@@ -545,8 +581,6 @@ void ComputerWrist::renderPage()
 void ComputerWrist::renderBorders()
 {
     GsWeakSurface blitsfc(gVideoDriver.getBlitSurface());
-
-    int ep = gBehaviorEngine.getEpisode();
 
     if(!mGreyMode)
     {
@@ -587,7 +621,16 @@ void ComputerWrist::render()
     GsWeakSurface blitsfc(gVideoDriver.getBlitSurface());
 
     // Typical color code of the background
-    blitsfc.fillRGB(0xA8,0,0);
+    if(!mGreyMode)
+    {
+        blitsfc.fillRGB(0xA8,0,0);
+    }
+    else
+    {
+        blitsfc.fillRGB(0xA8,0xA8,0xA8);
+        //0x54, 0x54, 0xfc
+    }
+
 
 
     // Main Page?
