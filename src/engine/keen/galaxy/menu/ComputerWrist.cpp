@@ -28,9 +28,10 @@ namespace galaxy
 {
 
 
-ComputerWrist::ComputerWrist(const int ep) :
+ComputerWrist::ComputerWrist(const bool greyMode) :
     mMainMenuBmp(gGraphics.getBitmapFromId(0, 0)), // Zero always seem to be that menu
-    mHandBmp(*gGraphics.getBitmapFromStr(0, "HELPHAND"))
+    mHandBmp(*gGraphics.getBitmapFromStr(0, "HELPHAND")),
+    mGreyMode(greyMode)
 {
     // Prepare the Menu Bmp
     GsRect<Uint16> mainBmpSize;
@@ -43,9 +44,8 @@ ComputerWrist::ComputerWrist(const int ep) :
     mHandBmp.scaleTo(handBmpSize);
 
 
-    if(ep != 6)
+    if(!greyMode)
     {
-
         GsRect<Uint16> upperBorderBmpSize;
         mUpperBorderBmp = *gGraphics.getBitmapFromStr(0, "HELP_UPPERBORDER");
         upperBorderBmpSize.dim.x = mUpperBorderBmp.width();
@@ -64,9 +64,6 @@ ComputerWrist::ComputerWrist(const int ep) :
         rightBorderBmpSize.dim.y = mRightBorderBmp.height();
         mRightBorderBmp.scaleTo(rightBorderBmpSize);
 
-
-
-
         GsRect<Uint16> bottomBorderBmpSize;
         mBottomBorderBmp = *gGraphics.getBitmapFromStr(0, "HELP_LOWERBORDER");
         bottomBorderBmpSize.dim.x = mBottomBorderBmp.width();
@@ -78,7 +75,6 @@ ComputerWrist::ComputerWrist(const int ep) :
         lowerBorderBmpSize.dim.x = mLowerBorderControlBmp.width();
         lowerBorderBmpSize.dim.y = mLowerBorderControlBmp.height();
         mLowerBorderControlBmp.scaleTo(lowerBorderBmpSize);
-
     }
 
     // NOTE: The index is always six here
@@ -89,7 +85,7 @@ ComputerWrist::ComputerWrist(const int ep) :
 
     int numLines = blitsfc.height();
 
-    if( ep != 6 )
+    if( !greyMode )
     {
         numLines = (blitsfc.height() - (mUpperBorderBmp.height() + mBottomBorderBmp.height()))/font.getPixelTextHeight();
 
@@ -120,8 +116,8 @@ ComputerWrist::ComputerWrist(const int ep) :
     gEffectController.setupEffect(pColorMergeFX);
 }
 
-ComputerWrist::ComputerWrist(const int ep, const int section) :
-    ComputerWrist(ep)
+ComputerWrist::ComputerWrist(const bool greyMode, const int section) :
+    ComputerWrist(greyMode)
 {
     mSection = section;
 
@@ -251,8 +247,6 @@ void ComputerWrist::parseGraphics()
 {
     std::stringstream ss;
 
-    const int ep = gBehaviorEngine.getEpisode();
-
     int x,y,chunk;
     GsWeakSurface blitsfc(gVideoDriver.getBlitSurface());
 
@@ -265,7 +259,7 @@ void ComputerWrist::parseGraphics()
 
     if(!mMinPos.empty())
     {
-        if(ep != 6)
+        if(!mGreyMode)
         {
             mMinPos[0] = mUpperBorderBmp.width();
             mMaxPos[0] = mUpperBorderBmp.width();
@@ -554,7 +548,7 @@ void ComputerWrist::renderBorders()
 
     int ep = gBehaviorEngine.getEpisode();
 
-    if(ep != 6)
+    if(!mGreyMode)
     {
         mUpperBorderBmp.draw(0, 0);
         mLeftBorderBmp.draw(0, mUpperBorderBmp.height());

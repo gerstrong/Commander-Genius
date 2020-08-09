@@ -12,7 +12,6 @@
 
 #include <base/GsEvent.h>
 
-//#include "core/LogicDrawSplitter.h"
 #include <string>
 
 ///////////////////////
