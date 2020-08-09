@@ -15,11 +15,11 @@ void struct6_clear_sprites();
 int blow_up_actor_with_bomb(int actorInfoIndex, int frame_num, int x_pos, int y_pos);
 void effect_add_sprite(int actorInfoIndex, int frame_num, int x_pos, int y_pos, int arg_8, int counter);
 
-void effect_update_sprites();
+void effect_update_sprites(const bool draw_only);
 void effect_clear_sprites();
 
 void explode_effect_add_sprite(int actorInfoIndex, int frame_num, int x_pos, int y_pos);
-void explode_effect_update_sprites();
+void explode_effect_update_sprites(const bool draw_only);
 void explode_effect_clear_sprites();
 
 void exploding_balls_effect(int x_pos, int y_pos);

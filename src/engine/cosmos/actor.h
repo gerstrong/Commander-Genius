@@ -73,7 +73,7 @@ void display_actor_sprite_maybe(int actorInfoIndex, int frame_num, int x_pos, in
 
 uint16 sub_1106F();
 
-void actor_update_all();
+void actor_update_all(const bool draw_only);
 
 TileInfo *actor_get_tile_info(int actorInfoIndex, int frame_num);
 

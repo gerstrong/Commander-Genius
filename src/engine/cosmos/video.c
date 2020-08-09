@@ -127,6 +127,11 @@ void set_game_mode()
     is_game_mode = true;
 }
 
+SDL_Surface *get_cur_vid_surface()
+{
+    return is_game_mode ? game_surface.surface : text_surface.surface;
+}
+
 void video_update()
 {
     VideoSurface *s = is_game_mode ? &game_surface : &text_surface;

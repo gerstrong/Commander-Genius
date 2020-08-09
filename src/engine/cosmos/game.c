@@ -146,27 +146,19 @@ void reset_game_state()
 }
 
 int lps_tick = 0;
-const int SKIP_TICKS=8;
+const int SKIP_TICKS=4;
 
-bool executeTick() {
+//const int SKIP_TICKS=8;
 
-    lps_tick++;
-
-    if(lps_tick%SKIP_TICKS == 0)
-        update_palette_anim();
-
-    int input_state = read_input();
-    if (input_state == QUIT) {
-        return false;
-    }
-
-    if (input_state == PAUSED) {
-        return true;
-    }
-
+bool executeLogicsLegacy()
+{
+    /*
+    lps_tick++;       
 
     if(lps_tick%SKIP_TICKS == 0)
     {
+        update_palette_anim();
+
         handle_player_input_maybe();
         if (player_hoverboard_counter != 0)
         {
@@ -194,7 +186,7 @@ bool executeTick() {
 
         display_mud_fountains();
 
-        actor_update_all();
+        actor_update_all(false);
 
         explode_effect_update_sprites();
 
@@ -222,8 +214,6 @@ bool executeTick() {
         display_ingame_hint_dialog();
     }
 
-    video_update();
-
     if(lps_tick%SKIP_TICKS == 0)
     {
         if (finished_level_flag_maybe)
@@ -240,6 +230,114 @@ bool executeTick() {
             return false;
         }
     }
+    */
+    return true;
+}
+
+bool executeLogics()
+{
+    lps_tick++;
+
+
+    const bool draw_only = (lps_tick%SKIP_TICKS != 0);
+
+    {
+        update_palette_anim();
+
+
+        if(!draw_only)
+        {
+            handle_player_input_maybe();
+            if (player_hoverboard_counter != 0)
+            {
+                player_hoverboard_update();
+            }
+        }
+
+        if (word_32EB2 != 0 || player_walk_anim_index != 0)
+        {
+            player_update_walk_anim(); //TODO check name I think this might be fall anim
+        }
+
+        update_moving_platforms();
+
+        update_mud_fountains();
+    }
+
+
+    {
+        map_display();
+
+        if (player_update_sprite() != 0)
+        {
+            return true;
+        }
+
+        display_mud_fountains();
+
+        actor_update_all(draw_only);
+
+        explode_effect_update_sprites(draw_only);
+
+        actor_toss_update();
+
+        update_rain_effect();
+
+        struct6_update_sprites();
+
+        effect_update_sprites(draw_only);
+
+        update_brightness_objs();
+
+        if (game_play_mode != PLAY_GAME)
+        {
+            display_actor_sprite_maybe(0x10a, 0, 17, 4, 6); //DEMO sign.
+        }
+
+        if (show_monster_attack_hint == 1)
+        {
+            show_monster_attack_hint = 2;
+            monster_attack_hint_dialog();
+        }
+
+        display_ingame_hint_dialog();
+    }
+
+    {
+        if (finished_level_flag_maybe)
+        {
+            finished_level_flag_maybe = 0;
+            play_sfx(11);
+            select_next_level();
+            load_level(current_level);
+        }
+
+        if (finished_game_flag_maybe)
+        {
+            end_sequence();
+            return false;
+        }
+    }
+
+    return true;
+}
+
+
+
+bool executeTick()
+{
+    int input_state = read_input();
+
+    if (input_state == QUIT) {
+        return false;
+    }
+
+    if (input_state == PAUSED) {
+        return true;
+    }
+
+    executeLogicsLegacy();
+    video_update();
 
     return true;
 }

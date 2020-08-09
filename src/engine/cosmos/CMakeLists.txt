@@ -2,7 +2,7 @@
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_C_STANDARD 11)
 
 set(CSRC actor.c
@@ -69,6 +69,7 @@ set(HSRC CosmoEngine.h
 
 add_library(cosmos_engine STATIC CosmoEngine.cpp
                                  cosmosintro.cpp
+                                 cosmogameplay.cpp
                                  ${CSRC}
                                  ${HSRC})
 

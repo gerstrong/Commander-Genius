@@ -160,7 +160,7 @@ void effect_add_sprite(int actorInfoIndex, int frame_num, int x_pos, int y_pos, 
     }
 }
 
-void effect_update_sprites()
+void effect_update_sprites(const bool draw_only)
 {
     for(int i=0; i < MAX_EFFECT_SPRITES; i++)
     {
@@ -181,14 +181,20 @@ void effect_update_sprites()
                     display_actor_sprite_maybe(sprite->actorInfoIndex, sprite->currentFrameNum, sprite->x, sprite->y, 0);
                 }
                 
-                if(sprite->actorInfoIndex == 0x1b)
+
+                if(!draw_only)
                 {
-                    sprite->x--;
-                    sprite->y = sprite->y + (rand() % 3);
+                    if(sprite->actorInfoIndex == 0x1b)
+                    {
+                        sprite->x--;
+                        sprite->y = sprite->y + (rand() % 3);
+                    }
+                    sprite->x = sprite->x + player_x_offset_tbl[sprite->field_A];
+                    sprite->y = sprite->y + player_y_offset_tbl[sprite->field_A];
+                    sprite->currentFrameNum++;
                 }
-                sprite->x = sprite->x + player_x_offset_tbl[sprite->field_A];
-                sprite->y = sprite->y + player_y_offset_tbl[sprite->field_A];
-                sprite->currentFrameNum++;
+
+
                 if(sprite->currentFrameNum == sprite->totalNumFrames)
                 {
                     sprite->currentFrameNum = 0;
@@ -291,7 +297,7 @@ void explode_effect_clear_sprites()
     }
 }
 
-void explode_effect_update_sprites()
+void explode_effect_update_sprites(const bool draw_only)
 {
     for(int i=0;i < MAX_EXPLODE_EFFECT_SPRITES; i++)
     {

@@ -1305,7 +1305,7 @@ void display_actor_sprite_maybe(int actorInfoIndex, int frame_num, int x_pos, in
     }
 }
 
-void actor_update(ActorData *actor)
+void actor_update(ActorData *actor, const bool draw_only)
 {
     if (actor->is_deactivated_flag_maybe != 0)
     {
@@ -1386,7 +1386,10 @@ void actor_update(ActorData *actor)
         actor_tile_display_func_index = 0;
     }
 
-    actor->update_function(actor);
+    if(!draw_only)
+    {
+        actor->update_function(actor);
+    }
 
     if (struct6_1B4FC(actor->actorInfoIndex, actor->frame_num, actor->x, actor->y) != 0 &&
             blow_up_actor_with_bomb(actor->actorInfoIndex, actor->frame_num, actor->x, actor->y) != 0)
@@ -1404,13 +1407,13 @@ void actor_update(ActorData *actor)
     return;
 }
 
-void actor_update_all()
+void actor_update_all(const bool draw_only)
 {
     word_32EAC = 0;
 
     for(int i=0;i<total_num_actors;i++)
     {
-        actor_update(&actors[i]);
+        actor_update(&actors[i], draw_only);
     }
 
     if (word_2E17E != 0)

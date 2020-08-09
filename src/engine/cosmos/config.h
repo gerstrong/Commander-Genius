@@ -13,7 +13,7 @@ void write_config_file();
 uint8 keycode_to_scancode(SDL_Keycode keycode);
 const char *scancode_to_string(uint8 scan_code);
 
-void load_config_from_command_line(int argc, char *argv[]);
+void load_gamepaths();
 
 char *get_data_dir_full_path(const char *filename);
 char *get_save_dir_full_path(const char *filename);

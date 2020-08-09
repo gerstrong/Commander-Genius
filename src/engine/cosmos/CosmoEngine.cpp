@@ -4,6 +4,17 @@
 
 #include <base/video/CVideoDriver.h>
 #include <base/utils/FindFile.h>
+#include <base/CInput.h>
+
+#include "cosmogameplay.h"
+
+typedef enum
+{
+    QUIT,
+    PAUSED,
+    CONTINUE
+} input_state_enum;
+
 
 
 extern "C"
@@ -11,6 +22,10 @@ extern "C"
     void set_renderer(SDL_Renderer *rend);
 
     void set_game_data_dir(const char *dir, const int len);
+
+    input_state_enum process_ext_input_one_ev(SDL_Event event);
+
+    SDL_Surface *get_cur_vid_surface();
 }
 
 
@@ -40,6 +55,9 @@ extern "C"
  */
 bool CosmosEngine::start()
 {
+    const GsRect<Uint16> gameRect(320, 200);
+    gVideoDriver.setNativeResolution(gameRect);
+
     mpScene.reset( new CosmosIntro );
 
     const auto gameDir = GetFullFileName(mDataPath);
@@ -49,7 +67,11 @@ bool CosmosEngine::start()
 
     start_cosmo();
 
-    return false;
+    mpScene.reset( new CosmoGameplay );
+    mpScene->start();
+
+
+    return true;
 }
 
 /**
@@ -61,15 +83,15 @@ void CosmosEngine::ponder(const float deltaT)
     /*
     if(!mResourcesLoaded)
         return;
-
+*/
     std::vector<SDL_Event> evVec;
     gInput.readSDLEventVec(evVec);
 
-    for(SDL_Event event : evVec)
+    for(SDL_Event &event : evVec)
     {
-        BE_ST_PollEvents(event);
+        process_ext_input_one_ev(event);
     }
-*/
+
 
     if(mpScene)
     {
@@ -96,7 +118,10 @@ void CosmosEngine::render()
         mpScene->render();
     }
 
-    //SDL_Surface *blitSfc = gVideoDriver.getBlitSurface();
+    SDL_Surface *cur_sfc = get_cur_vid_surface();
+
+    auto dst = gVideoDriver.getBlitSurface();
+    SDL_BlitSurface(cur_sfc, NULL, dst, NULL);
 }
 
 

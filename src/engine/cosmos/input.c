@@ -351,6 +351,39 @@ input_state_enum handle_controller_axis_motion(SDL_Event *event) {
     return CONTINUE;
 }
 
+input_state_enum process_ext_input_one_ev(SDL_Event event)
+{
+    if (event.type == SDL_QUIT)
+    {
+        return QUIT;
+    }
+    else if (event.type == SDL_KEYDOWN)
+    {
+        if(handle_key_down(event.key) == QUIT)
+            return QUIT;
+    }
+    else if (event.type == SDL_KEYUP)
+    {
+        handle_key_up(event.key);
+    }
+    else if (event.type == SDL_CONTROLLERBUTTONDOWN)
+    {
+        if (handle_controller_button_down(&event) == QUIT) {
+            return QUIT;
+        }
+    }
+    else if (event.type == SDL_CONTROLLERBUTTONUP)
+    {
+        handle_controller_button_up(&event);
+    }
+    else if (event.type == SDL_CONTROLLERAXISMOTION)
+    {
+        handle_controller_axis_motion(&event);
+    }
+}
+
+
+
 input_state_enum read_input()
 {
     if(game_play_mode ==  PLAY_DEMO)

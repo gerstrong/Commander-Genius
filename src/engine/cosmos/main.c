@@ -18,14 +18,15 @@
 
 int cleanup_and_exit();
 
-int start_cosmo() {
+int start_cosmo()
+{
 
     /*if ( SDL_Init(SDL_INIT_VIDEO) < 0 ) {
         printf("argh!!");
     }
     */
 
-    load_config_from_command_line(0, 0);
+    load_gamepaths();
 
     video_init();
     audio_init();
@@ -45,6 +46,19 @@ int start_cosmo() {
         game_play_mode = PLAY_GAME;
     }
 
+    // TODO: Fire event for gameplay
+    return 0;
+}
+
+void load_current_level()
+{
+    load_level(current_level);
+}
+
+
+int run_gameplay()
+{
+
     while(game_play_mode != QUIT_GAME)
     {
         load_level(current_level);
@@ -53,6 +67,7 @@ int start_cosmo() {
         {
             load_demo();
         }
+
 
         game_loop();
         stop_music();

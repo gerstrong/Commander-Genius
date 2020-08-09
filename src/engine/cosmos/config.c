@@ -385,8 +385,9 @@ void set_game_data_dir(const char *dir, const int len)
     strcpy(game_data_directory, dir);
 }
 
-void load_config_from_command_line(int argc, char **argv)
+void load_gamepaths()
 {
+    /*
     for(int i=1;i<argc; i++)
     {
         if(!strcmp(argv[i], "-ep1") || !strcmp(argv[i], "1"))
@@ -436,6 +437,7 @@ void load_config_from_command_line(int argc, char **argv)
             strcpy(game_data_directory, argv[i]);
         }
     }
+    */
 
     if(data_directory == NULL)
     {
