@@ -15,6 +15,8 @@ for your enjoyment.  There are also mods that can be downloaded directly.
 ### Main development:
 * (c) 2008-2020          Gerstrong
 
+### Testing
+* (c) 2020               Gagster
 
 ### Porting and Support
 * (c) 2010-2020          Pelya (Android-Distro)

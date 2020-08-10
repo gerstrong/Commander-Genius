@@ -28,6 +28,7 @@
  Commander Genius   2013-2015   Hagel
  Commander Genius   2018        Zilem
  Commander Genius   2020        Elias Oenal
+ Commander Genius   2020        Gagster
  */
 
 #include "../version.h"

@@ -47,6 +47,7 @@ void CCredits::init()
 	m_scrolltext[14] = "Chad Ian Anderson (Pizza2004)";
 	m_scrolltext[15] = "Martin Hauber (Tulip)";
 	m_scrolltext[16] = "Scott Smith (Pickle)";
+    m_scrolltext[16] = "Gagster";
 	m_scrolltext[17] = "";
 	m_scrolltext[18] = "Handheld Devices:";
 	m_scrolltext[19] = "Pelya";
@@ -104,7 +105,7 @@ void CCredits::ponder()
 	else
 	{
 		m_timer=0;
-        if(m_scrolly>-54*8)
+        if(m_scrolly>-(int(m_scrolltext.size()))*8)
         {
             m_scrolly--;
         }

@@ -27,8 +27,8 @@ public:
 	
 private:
 
-    std::array<std::string, 55> m_scrolltext;
-    std::array<int, 55> m_mid;
+    std::array<std::string, 56> m_scrolltext;
+    std::array<int, 56> m_mid;
 	int m_timer;
 	int m_scrolly;
 	
