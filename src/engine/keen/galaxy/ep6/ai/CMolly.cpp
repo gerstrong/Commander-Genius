@@ -51,7 +51,7 @@ void CMolly::getTouchedBy(CSpriteObject& theObject)
 		rescued = true;
 
         gEventManager.add(new EventEndGamePlay());
-        gEventManager.add(new OpenComputerWrist(0, true, 3));
+        gEventManager.add(new OpenComputerWrist(0, true, false, 3));
 	}    
 }
 

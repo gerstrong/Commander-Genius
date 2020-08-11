@@ -123,7 +123,7 @@ void GalaxyEngine::ponder(const float deltaT)
             gBehaviorEngine.setPause(false);
             gEventManager.add( new CloseAllMenusEvent() );
 
-            mpComputerWrist.reset(new ComputerWrist(false));
+            mpComputerWrist.reset(new ComputerWrist(false, true));
 
             if(ep == 5)
             {
@@ -485,7 +485,9 @@ void GalaxyEngine::pumpEvent(const CEvent *evPtr)
     else if( const auto *ocw = dynamic_cast<const OpenComputerWrist*>(evPtr) )
     {
         gInput.flushAll();
-        mpComputerWrist.reset(new ComputerWrist(ocw->mGrayMode, ocw->mSection));
+        mpComputerWrist.reset(new ComputerWrist(ocw->mGrayMode,
+                                                ocw->mShowPageNo,
+                                                ocw->mSection));
         mpComputerWrist->playSong(ocw->mPlaySong);
     }
 

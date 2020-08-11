@@ -241,7 +241,7 @@ void CNospike::getTouchedBy(CSpriteObject& theObject)
         {            
             mIsDead = true;
 
-            gEventManager.add(new OpenComputerWrist(4, true));
+            gEventManager.add(new OpenComputerWrist(4, true, false));
             gEventManager.add(new EventEndGamePlay());
         }
         else

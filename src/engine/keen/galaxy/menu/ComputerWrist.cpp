@@ -28,10 +28,11 @@ namespace galaxy
 {
 
 
-ComputerWrist::ComputerWrist(const bool greyMode) :
+ComputerWrist::ComputerWrist(const bool greyMode, const bool showPageNo) :
     mMainMenuBmp(gGraphics.getBitmapFromId(0, 0)), // Zero always seem to be that menu
     mHandBmp(*gGraphics.getBitmapFromStr(0, "HELPHAND")),
-    mGreyMode(greyMode)
+    mGreyMode(greyMode),
+    mShowPageNo(showPageNo)
 {
     // Prepare the Menu Bmp
     GsRect<Uint16> mainBmpSize;
@@ -70,11 +71,14 @@ ComputerWrist::ComputerWrist(const bool greyMode) :
         bottomBorderBmpSize.dim.y = mBottomBorderBmp.height();
         mBottomBorderBmp.scaleTo(bottomBorderBmpSize);
 
-        GsRect<Uint16> lowerBorderBmpSize;
-        mLowerBorderControlBmp = *gGraphics.getBitmapFromStr(0, "HELP_LOWERBORDERCONTROL");
-        lowerBorderBmpSize.dim.x = mLowerBorderControlBmp.width();
-        lowerBorderBmpSize.dim.y = mLowerBorderControlBmp.height();
-        mLowerBorderControlBmp.scaleTo(lowerBorderBmpSize);
+        if(mShowPageNo)
+        {
+            GsRect<Uint16> lowerBorderBmpSize;
+            mLowerBorderControlBmp = *gGraphics.getBitmapFromStr(0, "HELP_LOWERBORDERCONTROL");
+            lowerBorderBmpSize.dim.x = mLowerBorderControlBmp.width();
+            lowerBorderBmpSize.dim.y = mLowerBorderControlBmp.height();
+            mLowerBorderControlBmp.scaleTo(lowerBorderBmpSize);
+        }
     }
 
     // NOTE: The index is always six here
@@ -116,8 +120,10 @@ ComputerWrist::ComputerWrist(const bool greyMode) :
     gEffectController.setupEffect(pColorMergeFX);
 }
 
-ComputerWrist::ComputerWrist(const bool greyMode, const int section) :
-    ComputerWrist(greyMode)
+ComputerWrist::ComputerWrist(const bool greyMode,
+                             const bool showPageNo,
+                             const int section) :
+    ComputerWrist(greyMode, showPageNo)
 {
     mSection = section;
 
@@ -396,6 +402,29 @@ void ComputerWrist::parseGraphics()
                     bmp.draw(x & ~7, y);
                 }
             }
+            if(line[1] == 'L') // ^Lx,y		Start text alignment at pixel location x,y.
+            {
+                std::string param = line.substr(2);
+
+                char comma;
+
+                ss << param;
+                ss >> y;
+                ss >> comma;
+                ss >> x;
+
+                mTxtWrapLoc = GsVec2D<int>(x, y);
+
+                for(int j=0 ; j<y ; j++)
+                {
+                    mMaxPos[j/8] = mMinPos[j/8] = 320;
+                }
+
+                for( auto &minpos : mMinPos)
+                {
+                    minpos = std::max(x, minpos);
+                }
+            }
         }
     }
 }
@@ -526,7 +555,7 @@ void ComputerWrist::parseText()
                         // Ensure the minimum position is not hindering a picture
                         cursorPos.x = mMinPos[cursorPos.y];
                         maxPosX = mMaxPos[cursorPos.y];
-                    }
+                    }                    
 
                     if(ep != 6)
                     {
@@ -549,7 +578,7 @@ void ComputerWrist::parseText()
     }
 
     // Print the page number
-    if(!mGreyMode)
+    if(mShowPageNo)
     {
         const auto pgTextcolor = 0xFC5454;
         Font.setupColor(pgTextcolor);
@@ -559,6 +588,12 @@ void ComputerWrist::parseText()
                 " of " + itoa(mNumPagesOfThisSection+1);
         Font.drawFont(blitsfc.getSDLSurface(), pgText,
                       218, 186);
+    }
+    else if(mSectionPage < mNumPagesOfThisSection)
+    {
+        const int arrow_pic = ((mTime/50)%2 == 0) ? 41 : 42;
+        GsBitmap &bmp = gGraphics.getBitmapFromId(0, arrow_pic);
+        bmp.draw(0x12A & ~3, 0xB8);
     }
 }
 
@@ -587,7 +622,6 @@ void ComputerWrist::renderPage()
 
     // Now parse/render the text
     parseText();
-
 }
 
 void ComputerWrist::renderBorders()
@@ -602,7 +636,7 @@ void ComputerWrist::renderBorders()
         mRightBorderBmp.draw(blitsfc.width()-mRightBorderBmp.width(), mUpperBorderBmp.height());
         mBottomBorderBmp.draw(mLeftBorderBmp.width(), mLeftBorderBmp.height());
 
-        if(mSection != -1)
+        if(mSection != -1 && !mLowerBorderControlBmp.empty())
         {
             mLowerBorderControlBmp.draw(mLeftBorderBmp.width(), mLeftBorderBmp.height()+mUpperBorderBmp.height()-mLowerBorderControlBmp.height() );
         }
