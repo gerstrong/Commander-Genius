@@ -1,6 +1,7 @@
 v2.5.X:
 -------
 - Improved blinking sprites for home-made creations
+- Keen dreams improvements with level signs
 
 v2.5.1:
 -------
