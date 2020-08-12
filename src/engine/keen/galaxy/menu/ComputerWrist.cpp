@@ -44,6 +44,17 @@ ComputerWrist::ComputerWrist(const bool greyMode, const bool showPageNo) :
     handBmpSize.dim = {mHandBmp.width(), mHandBmp.height()};
     mHandBmp.scaleTo(handBmpSize);
 
+    const int ep = gBehaviorEngine.getEpisode();
+    if(ep==5)
+    {
+        mArrow_Pic_Start = 20;
+    }
+    else if(ep==6)
+    {
+        mArrow_Pic_Start = 21;
+    }
+
+
 
     if(!greyMode)
     {
@@ -591,7 +602,7 @@ void ComputerWrist::parseText()
     }
     else if(mSectionPage < mNumPagesOfThisSection)
     {
-        const int arrow_pic = ((mTime/50)%2 == 0) ? 41 : 42;
+        const int arrow_pic = ((mTime/50)%2 == 0) ? mArrow_Pic_Start  : mArrow_Pic_Start+1;
         GsBitmap &bmp = gGraphics.getBitmapFromId(0, arrow_pic);
         bmp.draw(0x12A & ~3, 0xB8);
     }

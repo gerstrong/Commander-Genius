@@ -153,6 +153,7 @@ private:
     int mTime = 0;
 
     GsVec2D<int> mTxtWrapLoc;
+    int mArrow_Pic_Start = 41;
 };
 
 }
