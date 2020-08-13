@@ -1,4 +1,4 @@
-v2.5.X:
+v2.5.2:
 -------
 - Improved blinking sprites for home-made creations
 - Keen dreams improvements with level signs
