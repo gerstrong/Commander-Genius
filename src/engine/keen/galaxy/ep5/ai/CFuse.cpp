@@ -194,7 +194,7 @@ void CFuse::process()
         if(timerTicks() > mGameEndsTime)
         {
             gEventManager.add(new EventEndGamePlay());
-            gEventManager.add(new OpenComputerWrist(4, false, false, 12));
+            gEventManager.add(new OpenComputerWrist(4, false, false, 12, true));
         }
     }
 }

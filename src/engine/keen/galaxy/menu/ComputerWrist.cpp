@@ -28,11 +28,14 @@ namespace galaxy
 {
 
 
-ComputerWrist::ComputerWrist(const bool greyMode, const bool showPageNo) :
+ComputerWrist::ComputerWrist(const bool greyMode,
+                             const bool showPageNo,
+                             const bool noMainMenu) :
     mMainMenuBmp(gGraphics.getBitmapFromId(0, 0)), // Zero always seem to be that menu
     mHandBmp(*gGraphics.getBitmapFromStr(0, "HELPHAND")),
     mGreyMode(greyMode),
-    mShowPageNo(showPageNo)
+    mShowPageNo(showPageNo),
+    mNoMainMenu(noMainMenu)
 {
     // Prepare the Menu Bmp
     GsRect<Uint16> mainBmpSize;
@@ -133,8 +136,9 @@ ComputerWrist::ComputerWrist(const bool greyMode, const bool showPageNo) :
 
 ComputerWrist::ComputerWrist(const bool greyMode,
                              const bool showPageNo,
+                             const bool noMainMenu,
                              const int section) :
-    ComputerWrist(greyMode, showPageNo)
+    ComputerWrist(greyMode, showPageNo, noMainMenu)
 {
     mSection = section;
 
@@ -176,6 +180,17 @@ void ComputerWrist::ponderPage(const float deltaT)
         mSection = -1;
         mSectionPage = 0;
         mTime = 0;
+    }
+
+    if( gInput.getPressedCommand(IC_JUMP) ||
+        gInput.getPressedCommand(IC_STATUS))
+    {
+        if(mSectionPage < mNumPagesOfThisSection)
+        {
+            mSection = -1;
+            mSectionPage = 0;
+            mTime = 0;
+        }
     }
 
 
@@ -254,10 +269,24 @@ void ComputerWrist::ponderMainMenu(const float deltaT)
 
 void ComputerWrist::ponder(const float deltaT)
 {
-    // Main Page?
+    // Main Page? (Episode 6 does not have that menu)
+    const auto ep = gBehaviorEngine.getEpisode();
     if(mSection == -1)
     {
-        ponderMainMenu(deltaT);
+        if(mNoMainMenu)
+        {
+            gEventManager.add( new CloseComputerWrist() );
+        }
+
+        if(ep < 6)
+        {
+            ponderMainMenu(deltaT);
+        }
+        else
+        {
+            gEventManager.add( new CloseComputerWrist() );
+        }
+
         return;
     }
 
@@ -307,7 +336,7 @@ void ComputerWrist::parseGraphics()
 
             for(auto &maxPos : mMaxPos)
             {
-                maxPos = blitsfc.width();
+                maxPos = blitsfc.width()-8;
             }
 
         }
@@ -358,7 +387,7 @@ void ComputerWrist::parseGraphics()
                     if(x > lRect.w/2)
                     {
                         // Limit max
-                        mMaxPos[textYIdx] = x;
+                        mMaxPos[textYIdx] = std::min(x, mMaxPos[textYIdx]);
                     }
                     // Whole pic fits to the left side
                     else if((x+bmpW) < lRect.w/2)
@@ -526,8 +555,6 @@ void ComputerWrist::parseText()
             std::string theText = line.substr(subPos);
 
             std::vector<std::string> words = explode(theText, " ");
-
-            // TODO: test for pictures. If there is one move cursor forward and adapt the width left
 
             for(const auto &word : words)
             {

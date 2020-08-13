@@ -227,7 +227,7 @@ void CCouncilMember::getTouchedBy(CSpriteObject &theObject)
             auto joinEvents = []()
             {
                 gEventManager.add(new EventEndGamePlay());
-                gEventManager.add(new OpenComputerWrist(4, false, false, 3));
+                gEventManager.add(new OpenComputerWrist(4, false, false, 3, true));
             };
 
             msgs.push_back( new CMessageBoxBitmapGalaxy(sprVar, lastStr,
