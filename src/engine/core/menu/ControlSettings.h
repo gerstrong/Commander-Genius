@@ -41,7 +41,6 @@ private:
 
     std::shared_ptr<Switch> mpTwoButtonSwitch;
     std::shared_ptr<Switch> mpAnalogSwitch;
-    std::shared_ptr<Switch> mpSuperRunSwitch;
     std::shared_ptr<Switch> mpSuperPogoSwitch;
     std::shared_ptr<Switch> mpImpPogoSwitch;
     std::shared_ptr<Switch> mpAutoGunSwitch;
@@ -79,21 +78,45 @@ public:
                              const Style style) :
         CControlSettingsBase(selectedPlayer, style) {}
 
-    void refresh();
+    void refresh() override;
+};
+
+
+// Movement config Part
+class CControlSettingsMoveDiag : public CControlSettingsBase
+{
+public:
+    CControlSettingsMoveDiag(const int selectedPlayer,
+                             const Style style) :
+        CControlSettingsBase(selectedPlayer, style) {}
+
+    void refresh() override;
 };
 
 
 
-// Buttons config Part
-class CControlSettingsButtons : public CControlSettingsBase
+// Game play action config Part
+class CControlSettingsGameplayActions : public CControlSettingsBase
 {
 public:
-    CControlSettingsButtons(const int selectedPlayer,
+    CControlSettingsGameplayActions(const int selectedPlayer,
                             const Style &style) :
         CControlSettingsBase(selectedPlayer, style) {}
 
-    void refresh();
+    void refresh() override;
 };
+
+// Misc config Part
+class CControlSettingsMisc : public CControlSettingsBase
+{
+public:
+    CControlSettingsMisc(const int selectedPlayer,
+                            const Style &style) :
+        CControlSettingsBase(selectedPlayer, style) {}
+
+    void refresh() override;
+};
+
 
 // Create the Control-Menu for the indicated Player
 

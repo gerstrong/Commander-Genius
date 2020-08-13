@@ -539,6 +539,7 @@ On Galaxy and Dreams games it works like usual.
 # FAQ
 
 Q: Where is Commander Keen 2, 3, 5 and 6?
+
 A: Due to legal issues with the Commander Keen games, we are only allowed to
    provide a copy of Keen 1, 4, Dreams and everything mod related to those. This
    is possible because it is shareware. If you happen to have a copy of the
@@ -546,6 +547,7 @@ A: Due to legal issues with the Commander Keen games, we are only allowed to
    will detect them.
 
 Q: Commander Genius is slow! Please help!
+
 A: You can decrease the fps under settings->video. OpenGL may also help on some
    systems with ScaleX disabled.
    Try to lower the resolution, use a lower filter, or decrease some stuff in
@@ -555,6 +557,7 @@ A: You can decrease the fps under settings->video. OpenGL may also help on some
    resources.
 
 Q: Commander Genius is too fast! Please help!
+
 A: There have been situations observed where Commander Genius too fast.
    When the VSync option is enabled there is no special latency running, because
    it is assumed that the graphics card does the throttling to the amount of fps
@@ -564,15 +567,24 @@ A: There have been situations observed where Commander Genius too fast.
    the vsync might help in some ocasions. Also check if OpenGL is enabled or disabled.
 
 Q: Strange DPI Setttings on Windows 10?
-a: If you use different DPI Settings and have graphical
+
+A: If you use different DPI Settings and have graphical
    issues using CG, it's recommended to right click on the executable on CGenius,
    click Properties, Compatibility, Change high DPI settings,
    and set High DPI scaling override to Application.
    Not doing that might result in black screen on CGenius on some screens
    in fullscreen mode.
 
+Q: What about the run actions?
+
+A: It is disabled by default. Feel free to assign it. This action when its
+   button is held down will make Keen run very fast (Only Keen 1-6).
+   It might break some levels though, because these game never were meant
+   to have such feature. It is still cool though.
+
 
 Q: What about Keen Dreams?
+
 A: You can already play it through. Never thought we would support that one
    day, but NY00123 made it possible.
    Not all versions are supported, but the supported version has a few
@@ -582,6 +594,7 @@ A: You can already play it through. Never thought we would support that one
    is still a WIP but you can finish it already.
 
 Q: Will Commander Genius support more games?
+
 A: I like the ScummVM approach for adventure games. Maybe one day we do that
    in CG for other great DOS platformer titles, maybe one day...
 

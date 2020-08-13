@@ -2,6 +2,10 @@ v2.5.X:
 -------
 - Improved blinking sprites for home-made creations
 - Keen dreams improvements with level signs
+- Now you can remove gameplay and menu bindings
+- Collision detection improvements
+- Splitting up the control settings a bit better
+- Since you can unbind Super Run option got removed.
 
 v2.5.1:
 -------

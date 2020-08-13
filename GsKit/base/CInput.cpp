@@ -103,8 +103,8 @@ void CInput::resetControls(const int player)
 	curInput[IC_FIRE].joyeventtype = ETYPE_JOYBUTTON;
 	curInput[IC_FIRE].joybutton = 3;
 	curInput[IC_FIRE].which = 0;
-	curInput[IC_RUN].joyeventtype = ETYPE_JOYBUTTON;
-	curInput[IC_RUN].joybutton = 1;
+    curInput[IC_RUN].joyeventtype = ETYPE_JOYBUTTON;
+    curInput[IC_RUN].joybutton = 1;
 	curInput[IC_RUN].which = 0;
 
 	curInput[IC_STATUS].joyeventtype = ETYPE_JOYBUTTON;
@@ -135,7 +135,7 @@ void CInput::resetControls(const int player)
     curInput[IC_JUMP].keysym = SDLK_LCTRL;
     curInput[IC_POGO].keysym = SDLK_LALT;
     curInput[IC_FIRE].keysym = SDLK_SPACE;
-    curInput[IC_RUN].keysym = SDLK_LSHIFT;
+    curInput[IC_RUN].keysym = SDLK_UNKNOWN;
 
     curInput[IC_STATUS].keysym = SDLK_RETURN;
 
@@ -174,7 +174,7 @@ void CInput::resetControls(const int player)
     curInput[IC_FIRE].joybutton = 2;
     curInput[IC_FIRE].which = 0;
     curInput[IC_RUN].joyeventtype = ETYPE_KEYBOARD;
-    curInput[IC_RUN].joybutton = 3;
+    curInput[IC_RUN].joybutton = 0;
     curInput[IC_RUN].which = 0;
     curInput[IC_STATUS].joyeventtype = ETYPE_KEYBOARD;
     curInput[IC_STATUS].joybutton = 4;
@@ -199,7 +199,6 @@ void CInput::resetControls(const int player)
 #endif
 
     setTwoButtonFiring(player, false);
-    enableSuperRun(player, false);
 }
 
 
@@ -343,7 +342,6 @@ void CInput::loadControlconfig(void)
 
             Configuration.ReadKeyword( section, "TwoButtonFiring", &TwoButtonFiring[i], false);
             Configuration.ReadKeyword( section, "Analog", &mAnalogAxesMovement[i], false);
-            Configuration.ReadKeyword( section, "SuperRun", &mSuperRun[i], false);
             Configuration.ReadKeyword( section, "SuperPogo", &mSuperPogo[i], false);
             Configuration.ReadKeyword( section, "ImpossiblePogo", &mImpPogo[i], true);
             Configuration.ReadKeyword( section, "AutoFire", &mFullyAutomatic[i], false);
@@ -398,7 +396,6 @@ void CInput::saveControlconfig()
         Configuration.SetKeyword(section, "TwoButtonFiring", TwoButtonFiring[i]);
         Configuration.SetKeyword(section, "Analog", mAnalogAxesMovement[i]);
         Configuration.SetKeyword(section, "SuperPogo", mSuperPogo[i]);
-        Configuration.SetKeyword(section, "SuperRun", mSuperRun[i]);
         Configuration.SetKeyword(section, "ImpossiblePogo", mImpPogo[i]);
         Configuration.SetKeyword(section, "AutoFire", mFullyAutomatic[i]);
 	}
@@ -745,12 +742,6 @@ void CInput::waitForAnyInput()
     }
 
 }
-
-
-bool CInput::isSuperRunEnabled(const int player)
-{ return mSuperRun[player]; }
-void CInput::enableSuperRun(const int player, const bool value)
-{ mSuperRun[player]=value; }
 
 
 bool CInput::getTwoButtonFiring(const int player)
