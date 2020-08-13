@@ -91,7 +91,7 @@ bool loadLevelMusic(const int level)
         memcpy( &track, musictable_start+level*sizeof(Uint16), sizeof(Uint16));
     }
 
-    if(track > 20)
+    if(track > 30)
     {
       gLogging.textOut("Sorry, this track is invalid! Please report the developers.");
       return false;
