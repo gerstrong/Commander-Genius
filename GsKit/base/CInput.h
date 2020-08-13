@@ -143,7 +143,7 @@ struct stInputCommand
     bool firsttimeactive = false;
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-	SDL_Keycode 	keysym;
+    SDL_Keycode 	keysym = SDLK_UNKNOWN;
 #else
     SDLKey 	keysym;
 #endif
@@ -390,6 +390,9 @@ private:
 
 
     SDL_sem *mpPollSem = nullptr;
+
+    // If true the event reading will detection an attempt to remove the assigned event.
+    bool mRemovalRunning = false;
 };
 
 

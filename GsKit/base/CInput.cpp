@@ -26,6 +26,7 @@
 //#define MOUSEWRAPPER 1
 #endif
 
+
 CInput::~CInput()
 {
     SDL_DestroySemaphore(mpPollSem);
@@ -53,6 +54,7 @@ CInput::CInput()
     mpPollSem = SDL_CreateSemaphore(1);
 
 }
+
 
 /**
  * \brief This will reset the player controls how they saved before.
@@ -580,7 +582,7 @@ void CInput::setupNewEvent(Uint8 device, int position)
  */
 void CInput::readNewEvent()
 {
-    stInputCommand &lokalInput = mInputCommands[remapper.mapDevice][remapper.mapPosition];
+    stInputCommand &readInput = mInputCommands[remapper.mapDevice][remapper.mapPosition];
 
 	// This function is used to configure new input keys.
 	// For iPhone, we have emulation via touchpad and we don't want to have custom keys.
@@ -590,10 +592,13 @@ void CInput::readNewEvent()
 	return;
 #endif
 
-    lokalInput = stInputCommand();
+    readInput = stInputCommand();
 
     if(!m_EventList.empty())
 		m_EventList.clear();
+
+    const SDL_Keycode removeEvSym1 = SDLK_LALT;
+    const SDL_Keycode removeEvSym2 = SDLK_BACKSPACE;
 
 	while( SDL_PollEvent( &Event ) )
 	{
@@ -608,21 +613,36 @@ void CInput::readNewEvent()
                 break;
 
 			case SDL_KEYDOWN:
-				lokalInput.joyeventtype = ETYPE_KEYBOARD;
-				lokalInput.keysym = Event.key.keysym.sym;
-				remapper.mappingInput = false;
-				break;
+                // Special for removing the assinged event
+                if(mRemovalRunning && Event.key.keysym.sym == removeEvSym2)
+                {
+                    remapper.mappingInput = false;
+                    mRemovalRunning = false;
+                }
+                else if(Event.key.keysym.sym == removeEvSym1)
+                {
+                    mRemovalRunning = true;
+                }
+                else
+                {
+                    readInput.joyeventtype = ETYPE_KEYBOARD;
+                    readInput.keysym = Event.key.keysym.sym;
+                    remapper.mappingInput = false;
+                    mRemovalRunning = false;
+                }
+            break;
 
 			case SDL_JOYBUTTONDOWN:
 #if defined(CAANOO) || defined(WIZ) || defined(GP2X)
 				WIZ_EmuKeyboard( Event.jbutton.button, 1 );
 				return false;
 #else
-				lokalInput.joyeventtype = ETYPE_JOYBUTTON;
-				lokalInput.joybutton = Event.jbutton.button;
-                lokalInput.which = mJoyIdToInputIdx[Event.jbutton.which];
-				remapper.mappingInput = false;
+                readInput.joyeventtype = ETYPE_JOYBUTTON;
+                readInput.joybutton = Event.jbutton.button;
+                readInput.which = mJoyIdToInputIdx[Event.jbutton.which];
+				remapper.mappingInput = false;                
 #endif
+                mRemovalRunning = false;
 				break;
 
 			case SDL_JOYAXISMOTION:
@@ -632,20 +652,22 @@ void CInput::readNewEvent()
 				if( (Event.jaxis.value > 2*m_joydeadzone ) ||
 				    (Event.jaxis.value < -2*m_joydeadzone ) )
 				{
-					lokalInput.joyeventtype = ETYPE_JOYAXIS;
-					lokalInput.joyaxis = Event.jaxis.axis;
-                    lokalInput.which = mJoyIdToInputIdx[Event.jaxis.which];
-					lokalInput.joyvalue = (Event.jaxis.value>0) ? 32767 : -32767;
+                    readInput.joyeventtype = ETYPE_JOYAXIS;
+                    readInput.joyaxis = Event.jaxis.axis;
+                    readInput.which = mJoyIdToInputIdx[Event.jaxis.which];
+                    readInput.joyvalue = (Event.jaxis.value>0) ? 32767 : -32767;
 					remapper.mappingInput = false;
+                    mRemovalRunning = false;
 				}
 
 				break;
 
 			case SDL_JOYHATMOTION:
-				lokalInput.joyeventtype = ETYPE_JOYHAT;
-				lokalInput.joyhatval = Event.jhat.value;
-                lokalInput.which = mJoyIdToInputIdx[Event.jhat.which];
+                readInput.joyeventtype = ETYPE_JOYHAT;
+                readInput.joyhatval = Event.jhat.value;
+                readInput.which = mJoyIdToInputIdx[Event.jhat.which];
 				remapper.mappingInput = false;
+                mRemovalRunning = false;
 				break;
 
             case SDL_JOYDEVICEADDED:
@@ -1969,7 +1991,7 @@ void CInput::processMouse(SDL_Event& ev) {
 	}
 }
 
-void CInput::processMouse(int x, int y, bool down, int mouseindex)
+void CInput::processMouse(int, int, bool, int)
 {
     /*
     const GsRect<int> pt(x,y);

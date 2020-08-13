@@ -179,6 +179,18 @@ void CControlSettingsBase::ponder(const float deltaT)
     GameMenu::ponder(deltaT);
 }
 
+void CControlSettingsBase::addBottomText()
+{
+    auto deleteText =
+        mpMenuDialog->add(
+                new CGUIText("Remove: ALT + BACKSPC",
+                             GsRect<float>(0.0f, 0.85f, 1.0f, 0.1f)) );
+
+    deleteText->setTextColor(GsColor(0xBF, 0x00, 0x00));
+    deleteText->enableCenteringH(false);
+}
+
+
 void CControlSettingsBase::release()
 {
     if(!mCommandName.empty())
@@ -188,7 +200,6 @@ void CControlSettingsBase::release()
 }
 
 
-
 void CControlSettingsMovement::refresh()
 {
     mapping = false;
@@ -196,10 +207,10 @@ void CControlSettingsMovement::refresh()
 	mCommandName[IC_RIGHT]		= "Right:  ";
 	mCommandName[IC_UP]		= "Up:     ";
 	mCommandName[IC_DOWN]		= "Down:   ";
-	mCommandName[IC_UPPERLEFT]	= "U-left: ";
+    mCommandName[IC_UPPERLEFT]	= "U-left: ";
 	mCommandName[IC_UPPERRIGHT] 	= "U-right:";
 	mCommandName[IC_LOWERLEFT] 	= "D-left: ";
-	mCommandName[IC_LOWERRIGHT]	= "D-right:";
+    mCommandName[IC_LOWERRIGHT]	= "D-right:";
 
 	if(!mpButtonList.empty())
 		mpButtonList.clear();
@@ -230,8 +241,8 @@ void CControlSettingsMovement::refresh()
 	}
 
 	setMenuLabel("MOVEMENULABEL");
-
-    mpMenuDialog->fit();
+    mpMenuDialog->fit();    
+    addBottomText();
 }
 
 
@@ -277,9 +288,10 @@ void CControlSettingsButtons::refresh()
         rie->setButtonPtr(
                     std::static_pointer_cast<GsButton>(guiButton)
                          );
-	}
+	}    
 
 	setMenuLabel("BUTTONMENULABEL");
-    mpMenuDialog->fit();
+    mpMenuDialog->fit();    
+    addBottomText();
 }
 

@@ -58,6 +58,10 @@ public:
     virtual void release();
 
 protected:
+
+    void addBottomText();
+
+
     int mSelectedPlayer;
 
     std::vector< std::shared_ptr<GameButton> > mpButtonList;
