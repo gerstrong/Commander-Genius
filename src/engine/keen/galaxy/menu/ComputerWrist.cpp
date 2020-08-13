@@ -300,8 +300,10 @@ void ComputerWrist::parseGraphics()
         {
             for(auto &minPos : mMinPos)
             {
-                minPos = 2;
+                minPos = 8;
             }
+
+            mMinPos[0] = blitsfc.width();
 
             for(auto &maxPos : mMaxPos)
             {
@@ -356,7 +358,7 @@ void ComputerWrist::parseGraphics()
                     if(x > lRect.w/2)
                     {
                         // Limit max
-                        mMaxPos[textYIdx] = lRect.w/2;
+                        mMaxPos[textYIdx] = x;
                     }
                     // Whole pic fits to the left side
                     else if((x+bmpW) < lRect.w/2)
