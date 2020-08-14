@@ -1,3 +1,7 @@
+v2.5.X:
+-------
+- Secret Ending In Keen 5 is unlockable
+
 v2.5.2:
 -------
 - Improved blinking sprites for home-made creations
