@@ -1,6 +1,7 @@
-v2.5.X:
+v2.5.3:
 -------
 - Secret Ending In Keen 5 is unlockable
+- Crash fixes with older save game files
 
 v2.5.2:
 -------

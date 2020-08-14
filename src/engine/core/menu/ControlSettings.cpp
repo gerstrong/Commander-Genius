@@ -179,13 +179,11 @@ void CControlSettingsBase::ponder(const float deltaT)
             mapping = false;
 
             int pos; unsigned char input;
-            std::string evName = gInput.getNewMappedEvent(pos, input);
+            std::string evName = gInput.getNewMappedEvent(pos, input);            
+
             InpCmd com = static_cast<InpCmd>(pos);
 
-            if(pos >= MID_COMMANDS_OFFSETS)
-                pos -= MID_COMMANDS_OFFSETS;
-
-            mpButtonList[static_cast<unsigned int>(pos)]->setText(mCommandName[com] + evName);
+            mpButtonMap[com]->setText(mCommandName[com] + evName);
         }
     }
 
@@ -221,8 +219,8 @@ void CControlSettingsMovement::refresh()
 	mCommandName[IC_UP]		= "Up:     ";
 	mCommandName[IC_DOWN]		= "Down:   ";
 
-	if(!mpButtonList.empty())
-		mpButtonList.clear();
+    if(!mpButtonMap.empty())
+        mpButtonMap.clear();
 
     std::map<InpCmd, std::string>::iterator it = mCommandName.begin();
 	for ( ; it != mCommandName.end(); it++ )
@@ -242,7 +240,7 @@ void CControlSettingsMovement::refresh()
                                     rie,
                                     getStyle() ) );
 
-		mpButtonList.push_back( guiButton );
+        mpButtonMap[it->first] = guiButton;
 
         rie->setButtonPtr(
                     std::static_pointer_cast<GsButton>(guiButton)
@@ -258,12 +256,12 @@ void CControlSettingsMoveDiag::refresh()
 {
     mapping = false;
     mCommandName[IC_UPPERLEFT]	= "U-left: ";
-    mCommandName[IC_UPPERRIGHT] 	= "U-right:";
+    mCommandName[IC_UPPERRIGHT] = "U-right:";
     mCommandName[IC_LOWERLEFT] 	= "D-left: ";
     mCommandName[IC_LOWERRIGHT]	= "D-right:";
 
-    if(!mpButtonList.empty())
-        mpButtonList.clear();
+    if(!mpButtonMap.empty())
+        mpButtonMap.clear();
 
     std::map<InpCmd, std::string>::iterator it = mCommandName.begin();
     for ( ; it != mCommandName.end(); it++ )
@@ -283,7 +281,7 @@ void CControlSettingsMoveDiag::refresh()
                                     rie,
                                     getStyle() ) );
 
-        mpButtonList.push_back( guiButton );
+        mpButtonMap[it->first] = guiButton;
 
         rie->setButtonPtr(
                     std::static_pointer_cast<GsButton>(guiButton)
@@ -307,8 +305,8 @@ void CControlSettingsGameplayActions::refresh()
     mCommandName[IC_STATUS] 	    = "Status:   ";
     mCommandName[IC_CAMLEAD] 	    = "Camlead:  ";
 
-	if(!mpButtonList.empty())
-		mpButtonList.clear();
+    if(!mpButtonMap.empty())
+        mpButtonMap.clear();
 
     std::map<InpCmd, std::string>::iterator it = mCommandName.begin();
 	for ( ; it != mCommandName.end(); it++ )
@@ -327,7 +325,7 @@ void CControlSettingsGameplayActions::refresh()
                                     rie,
                                     getStyle() ) );
 
-        mpButtonList.push_back( guiButton );
+        mpButtonMap[it->first] = guiButton;
 
         rie->setButtonPtr(
                     std::static_pointer_cast<GsButton>(guiButton)
@@ -349,8 +347,8 @@ void CControlSettingsMisc::refresh()
     mCommandName[IC_QUICKLOAD] 		= "Quickload:";
 
 
-    if(!mpButtonList.empty())
-        mpButtonList.clear();
+    if(!mpButtonMap.empty())
+        mpButtonMap.clear();
 
     std::map<InpCmd, std::string>::iterator it = mCommandName.begin();
     for ( ; it != mCommandName.end(); it++ )
@@ -369,7 +367,7 @@ void CControlSettingsMisc::refresh()
                                     rie,
                                     getStyle() ) );
 
-        mpButtonList.push_back( guiButton );
+        mpButtonMap[it->first] = guiButton;
 
         rie->setButtonPtr(
                     std::static_pointer_cast<GsButton>(guiButton)
