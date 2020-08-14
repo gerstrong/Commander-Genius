@@ -2773,13 +2773,21 @@ void CPlayerLevel::process()
 
         bool specialLevel = false;
 
+        const auto level = mpMap->getLevel();
+
+        if(level == 13)
+        {
+            specialLevel = true;
+            m_Inventory.Item.fuse_level_secret_completed = true;
+        }
+
         const std::string fuse_msg = gBehaviorEngine.getString( (specialLevel) ? "FUSE_WONDER" : "FUSE_CASUAL");
 
         playSound( SOUND_FUSE_BREAK, SoundPlayMode::PLAY_PAUSEALL );
 
         gEffectController.setupEffect(new CDimDark(8));
 
-        auto evExit = new EventExitLevel(mpMap->getLevel(), true, false, mPlayerIdx);
+        auto evExit = new EventExitLevel(level, true, false, mPlayerIdx);
         evExit->playSound = true;
 
 

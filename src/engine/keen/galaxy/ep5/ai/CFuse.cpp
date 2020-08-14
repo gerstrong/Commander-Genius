@@ -23,6 +23,7 @@
 $3186W #QED?
  */
 
+const int secretLevel = 13;
 
 namespace galaxy {  
   
@@ -78,6 +79,11 @@ static const int CSF_DISTANCE_TO_EXPLODE = (3<<CSF);
 
 bool CFuse::isNearby(CSpriteObject &theObject)
 {
+    if( auto *thePlayer = dynamic_cast<CPlayerLevel*>(&theObject) )
+    {
+        mSecretFuseBroken = thePlayer->m_Inventory.Item.fuse_level_secret_completed;
+    }
+
 
     if( CMineShards *mineShard = dynamic_cast<CMineShards*>(&theObject) )
     {
@@ -138,6 +144,11 @@ void CFuse::getTouchedBy(CSpriteObject &theObject)
 
         if(!msg.empty())
         {
+            if(level == secretLevel)
+            {
+                thePlayer->m_Inventory.Item.fuse_level_secret_completed = true;
+            }
+
             thePlayer->m_Inventory.Item.fuse_levels_completed++;
             mpMap->mFuseInLevel = false;
 
@@ -194,7 +205,15 @@ void CFuse::process()
         if(timerTicks() > mGameEndsTime)
         {
             gEventManager.add(new EventEndGamePlay());
-            gEventManager.add(new OpenComputerWrist(4, false, false, 12, true));
+
+            if(mSecretFuseBroken)
+            {
+                gEventManager.add(new OpenComputerWrist(5, false, false, 12, true));
+            }
+            else
+            {
+                gEventManager.add(new OpenComputerWrist(4, false, false, 12, true));
+            }
         }
     }
 }

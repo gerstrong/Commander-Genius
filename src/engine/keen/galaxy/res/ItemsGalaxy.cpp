@@ -74,6 +74,7 @@ void stItemGalaxy::operator>>(GsKit::ptree &invNode)
 
     invNode.put("keycards", m_keycards);
     invNode.put("fuse_levels_completed", fuse_levels_completed);
+    invNode.put("fuse_level_secret_completed", fuse_level_secret_completed);
 
     const auto ep = gBehaviorEngine.getEpisode();
     if(ep == 4)
@@ -110,6 +111,8 @@ void stItemGalaxy::operator<<(GsKit::ptree &invNode)
 
     m_keycards = invNode.get<int>("keycards", 0);
     fuse_levels_completed = invNode.get<int>("fuse_levels_completed", 0);
+    fuse_level_secret_completed = invNode.get<bool>("fuse_level_secret_completed", false);
+
 
     const auto ep = gBehaviorEngine.getEpisode();
     if(ep == 4)

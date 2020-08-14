@@ -39,7 +39,8 @@ struct stItemGalaxy
 	} m_gem;
 
         int m_keycards = 0;
-    int fuse_levels_completed;
+        int fuse_levels_completed = 0;
+        bool fuse_level_secret_completed = false;
 
     struct
     {
