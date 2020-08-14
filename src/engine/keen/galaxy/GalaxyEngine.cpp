@@ -123,7 +123,7 @@ void GalaxyEngine::ponder(const float deltaT)
             gBehaviorEngine.setPause(false);
             gEventManager.add( new CloseAllMenusEvent() );
 
-            mpComputerWrist.reset(new ComputerWrist(false, true, true));
+            mpComputerWrist.reset(new ComputerWrist(false, true, false));
 
             if(ep == 5)
             {
