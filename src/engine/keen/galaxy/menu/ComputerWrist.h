@@ -24,12 +24,21 @@ struct OpenComputerWrist : CEvent
     OpenComputerWrist() {}
 
     OpenComputerWrist(const int section,
-                      const int playsong = -1) :
-        mSection(section),
-        mPlaySong(playsong){}
+                      const bool grayMode,
+                      const bool showPageNo,
+                      const int playsong,
+                      const bool noMainMenu) :
+        mSection(section),        
+        mPlaySong(playsong),
+        mGrayMode(grayMode),
+        mShowPageNo(showPageNo),
+        mNoMainMenu(noMainMenu) {}
 
     const int mSection = -1;
     const int mPlaySong = -1;
+    const bool mGrayMode = false;    
+    const bool mShowPageNo = false;
+    const bool mNoMainMenu = false;
 };
 
 
@@ -44,12 +53,17 @@ public:
     /**
      * @brief ComputerWrist A default constructor
      */
-    ComputerWrist(const int ep);
+    ComputerWrist(const bool greyMode,
+                  const bool showPageNo,
+                  const bool noMainMenu);
 
     /**
      * @brief ComputerWrist A constructor with start section
      */
-    ComputerWrist(const int ep, const int section);
+    ComputerWrist(const bool greyMode,
+                  const bool showPageNo,
+                  const bool noMainMenu,
+                  const int section);
 
     virtual ~ComputerWrist();
 
@@ -141,6 +155,14 @@ private:
 
     int mPlaySong = -1;
     std::string mPreviousSong;
+
+    const bool mGreyMode = false;
+    const bool mShowPageNo = false;
+    const bool mNoMainMenu = false;
+    int mTime = 0;
+
+    GsVec2D<int> mTxtWrapLoc;
+    int mArrow_Pic_Start = 41;
 };
 
 }

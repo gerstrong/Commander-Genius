@@ -2317,7 +2317,7 @@ void CPlayerLevel::processPoleClimbingSit()
 	Uint32 l_x_l = getXLeftPos();
 	Uint32 l_x = getXMidPos();
 	Uint32 l_x_r = getXRightPos();
-	Uint32 l_y_up = getYUpPos();
+    Uint32 l_y_up = getYUpPos()-(2<<STC);
 	Uint32 l_y_down = getYDownPos();
 
 
@@ -2393,7 +2393,7 @@ void CPlayerLevel::processPoleClimbingUp()
 	Uint32 l_x_l = getXLeftPos();
 	Uint32 l_x = getXMidPos();
 	Uint32 l_x_r = getXRightPos();
-	Uint32 l_y_up = getYUpPos();	
+    Uint32 l_y_up = getYUpPos()-(2<<STC);
 
 	// Check for the upper side and don't let him move if the pole ends
 	if( hitdetectWithTileProperty(1, l_x_l, l_y_up) ||
@@ -2773,13 +2773,21 @@ void CPlayerLevel::process()
 
         bool specialLevel = false;
 
+        const auto level = mpMap->getLevel();
+
+        if(level == 13)
+        {
+            specialLevel = true;
+            m_Inventory.Item.fuse_level_secret_completed = true;
+        }
+
         const std::string fuse_msg = gBehaviorEngine.getString( (specialLevel) ? "FUSE_WONDER" : "FUSE_CASUAL");
 
         playSound( SOUND_FUSE_BREAK, SoundPlayMode::PLAY_PAUSEALL );
 
         gEffectController.setupEffect(new CDimDark(8));
 
-        auto evExit = new EventExitLevel(mpMap->getLevel(), true, false, mPlayerIdx);
+        auto evExit = new EventExitLevel(level, true, false, mPlayerIdx);
         evExit->playSound = true;
 
 

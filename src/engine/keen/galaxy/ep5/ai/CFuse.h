@@ -41,9 +41,9 @@ private:
     uint32_t mGameEndsTime = 0; // Timer to run down, before game ends
 
     uint32_t mLevelEndsTime = 0; // Timer to run down, before game ends
-
     int mBmpIdx = 84; // Portrait for shown messages. May be modified by some mods like Keen 9
 
+    bool mSecretFuseBroken = false;
 };
 
 }

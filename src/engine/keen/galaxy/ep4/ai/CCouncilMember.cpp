@@ -222,12 +222,17 @@ void CCouncilMember::getTouchedBy(CSpriteObject &theObject)
                                     RIGHT, false, nullptr) );
 
 
-            msgs.push_back( new CMessageBoxBitmapGalaxy(sprVar, gBehaviorEngine.getString(answermap[8]),
-                            *gGraphics.getBitmapFromStr(sprVar, "KEENTHUMBSUP"),
-                            RIGHT,false, nullptr) );
+            const auto lastStr = gBehaviorEngine.getString(answermap[8]);
 
-            gEventManager.add(new EventEndGamePlay());
-            gEventManager.add(new OpenComputerWrist(4, 3));
+            auto joinEvents = []()
+            {
+                gEventManager.add(new EventEndGamePlay());
+                gEventManager.add(new OpenComputerWrist(4, false, false, 3, true));
+            };
+
+            msgs.push_back( new CMessageBoxBitmapGalaxy(sprVar, lastStr,
+                            *gGraphics.getBitmapFromStr(sprVar, "KEENTHUMBSUP"),
+                            RIGHT, false, new FunctionToEvent(joinEvents)) );
 		}
 		else
 		{

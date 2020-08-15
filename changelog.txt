@@ -1,6 +1,16 @@
-v2.5.X:
+v2.5.3:
+-------
+- Secret Ending In Keen 5 is unlockable
+- Crash fixes with older save game files
+
+v2.5.2:
 -------
 - Improved blinking sprites for home-made creations
+- Keen dreams improvements with level signs
+- Now you can remove gameplay and menu bindings
+- Collision detection improvements
+- Splitting up the control settings a bit better
+- Since you can unbind Super Run option got removed.
 
 v2.5.1:
 -------

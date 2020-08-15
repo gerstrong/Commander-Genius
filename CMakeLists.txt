@@ -98,7 +98,7 @@ string(REGEX REPLACE "[\r\n]" "" CG_VERSION "${CG_VERSION}")
 
 # Since shell script get_version is not processed properly on windows, we have to define manually here.
 # TODO: Better system for defining the version
-set(CG_VERSION "2.5.1")
+set(CG_VERSION "2.5.3")
 
 # Generate the README file with the correct version string
 configure_file(README.in README)
@@ -150,7 +150,7 @@ ENDIF(APPLE)
 # And build Commander Genius on top of that!
 add_subdirectory("src")
 
-add_custom_target(${PROJECT_NAME} SOURCES changelog.txt README.in)
+add_custom_target(${PROJECT_NAME} SOURCES changelog.txt README.in README.md)
 
 MESSAGE(STATUS "CG_VERSION = ${CG_VERSION}" )
 

@@ -143,7 +143,7 @@ struct stInputCommand
     bool firsttimeactive = false;
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-	SDL_Keycode 	keysym;
+    SDL_Keycode 	keysym = SDLK_UNKNOWN;
 #else
     SDLKey 	keysym;
 #endif
@@ -219,9 +219,6 @@ public:
 
     bool getExitEvent()
     {  return m_exit;  }
-
-    bool isSuperRunEnabled(const int player);
-    void enableSuperRun(const int player, const bool value);
 
     bool getTwoButtonFiring(const int player);
     void setTwoButtonFiring(const int player, const bool value);
@@ -363,7 +360,6 @@ private:
 
     std::map<int, int> mJoyIdToInputIdx;
 
-    std::array<bool, NUM_INPUTS> mSuperRun;
 	bool TwoButtonFiring[NUM_INPUTS];    
 	bool mAnalogAxesMovement[NUM_INPUTS];
 	bool mSuperPogo[NUM_INPUTS];
@@ -390,6 +386,9 @@ private:
 
 
     SDL_sem *mpPollSem = nullptr;
+
+    // If true the event reading will detection an attempt to remove the assigned event.
+    bool mRemovalRunning = false;
 };
 
 

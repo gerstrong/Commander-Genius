@@ -23,8 +23,10 @@ enum MIMROCK_ACTION
     A_MIMROCK_STUNNED = 12,
 };
 
-const int CSF_DISTANCE_TO_FOLLOW_TOLERANCE = 10<<CSF;
-const int CSF_DISTANCE_TO_JUMP_TOLERANCE = 3<<CSF;
+const int CSF_DISTANCE_TO_FOLLOW_TOLERANCE = 12<<CSF;
+const int CSF_DISTANCE_TO_JUMP_TOLERANCE = 4<<CSF;
+const int CSF_DISTANCE_TOO_NARROW = 3<<CSF;
+
 const int WALK_SPEED = 10;
 const int JUMP_SPEED = 30;
 
@@ -53,29 +55,29 @@ mTimer(0)
 
 void CMimrock::getTouchedBy(CSpriteObject &theObject)
 {
-    if( getActionStatus(A_MIMROCK_SIT) ) 
-	return;
-		
+    if( getActionStatus(A_MIMROCK_SIT) )
+        return;
+
     if(mIsDead || theObject.mIsDead)
-	return;
-			
+        return;
+
     CStunnable::getTouchedBy(theObject);
-			
+
     // Was it a bullet? Than make it stunned.
-    if( dynamic_cast<CBullet*>(&theObject) ) 
+    if( dynamic_cast<CBullet*>(&theObject) )
     {
-	setAction( A_MIMROCK_STUNNED );
-	honorPriority = false;
-	theObject.mIsDead = true;
-	mIsDead = true;
+        setAction( A_MIMROCK_STUNNED );
+        honorPriority = false;
+        theObject.mIsDead = true;
+        mIsDead = true;
     }
 
-			
-		if( getActionNumber(A_MIMROCK_WALK) || getActionNumber(A_MIMROCK_JUMP) || getActionNumber(A_MIMROCK_BOUNCE) ) 
-		{
-			if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) ) 
-				player->kill();
-		}		
+
+    if( getActionNumber(A_MIMROCK_WALK) || getActionNumber(A_MIMROCK_JUMP) || getActionNumber(A_MIMROCK_BOUNCE) )
+    {
+        if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
+            player->kill();
+    }
 }
 
 bool CMimrock::isNearby(CSpriteObject &theObject)
@@ -90,19 +92,13 @@ bool CMimrock::isNearby(CSpriteObject &theObject)
     {
         const int dx = player->getXMidPos() - getXMidPos();
 
-        if( dx>-CSF_DISTANCE_TO_FOLLOW_TOLERANCE &&
-                dx<+CSF_DISTANCE_TO_FOLLOW_TOLERANCE )
+        const int absDx = abs(dx);
+
+        if( absDx < CSF_DISTANCE_TO_FOLLOW_TOLERANCE && absDx > CSF_DISTANCE_TOO_NARROW )
         {
-            if( dx<0 )
-                xDirection = LEFT;
-            else
-                xDirection = RIGHT;
+            xDirection = ( dx<0 ) ? LEFT : RIGHT;
 
-            if( !getProbability(40) )
-                return true;
-
-            if( dx>-CSF_DISTANCE_TO_JUMP_TOLERANCE &&
-                    dx<+CSF_DISTANCE_TO_JUMP_TOLERANCE )
+            if( absDx < CSF_DISTANCE_TO_JUMP_TOLERANCE )
             {
                 if( xDirection == -player->xDirection )
                 {

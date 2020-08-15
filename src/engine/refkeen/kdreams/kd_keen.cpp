@@ -2239,7 +2239,7 @@ void KeenContact (objtype *ob, objtype *hit)
 			hit->shapenum = BONUSBOMBSPR;
 			gamestate.boobusbombs++;
 			gamestate.bombsthislevel++;
-            bombsleftinlevel = 0;
+            bombsleftinlevel--;
 			ChangeState (hit,&s_bonusrise);
 			break;
 		case 11:

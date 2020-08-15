@@ -91,7 +91,7 @@ bool loadLevelMusic(const int level)
         memcpy( &track, musictable_start+level*sizeof(Uint16), sizeof(Uint16));
     }
 
-    if(track > 20)
+    if(track > 30)
     {
       gLogging.textOut("Sorry, this track is invalid! Please report the developers.");
       return false;
@@ -123,7 +123,7 @@ void GalaxyEngine::ponder(const float deltaT)
             gBehaviorEngine.setPause(false);
             gEventManager.add( new CloseAllMenusEvent() );
 
-            mpComputerWrist.reset(new ComputerWrist(ep));
+            mpComputerWrist.reset(new ComputerWrist(false, true, false));
 
             if(ep == 5)
             {
@@ -485,10 +485,10 @@ void GalaxyEngine::pumpEvent(const CEvent *evPtr)
     else if( const auto *ocw = dynamic_cast<const OpenComputerWrist*>(evPtr) )
     {
         gInput.flushAll();
-        CExeFile &ExeFile = gKeenFiles.exeFile;
-        const int ep = ExeFile.getEpisode();
-
-        mpComputerWrist.reset(new ComputerWrist(ep, ocw->mSection));
+        mpComputerWrist.reset(new ComputerWrist(ocw->mGrayMode,
+                                                ocw->mShowPageNo,
+                                                ocw->mNoMainMenu,
+                                                ocw->mSection));
         mpComputerWrist->playSong(ocw->mPlaySong);
     }
 

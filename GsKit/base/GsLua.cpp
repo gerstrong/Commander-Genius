@@ -30,6 +30,17 @@ bool GsLua::loadFile(const std::string &fname)
     if(L)
         return true;
 
+    gLogging.ftextOut("Looking for %s ...", fname.c_str());
+    const auto fullfname = GetFullFileName(fname);
+
+    if(!IsFileAvailable(fullfname, true))
+    {
+        gLogging.ftextOut("File %s not found.", fname.c_str());
+        return false;
+    }
+
+    gLogging.ftextOut("Found a Lua file: %s. Trying to load it...", fullfname.c_str());
+
     L = luaL_newstate();
     if (L == nullptr)
     {
@@ -39,9 +50,7 @@ bool GsLua::loadFile(const std::string &fname)
     mLuaStatePtr = (void*)L;
 
     /* Load the standard Lua libraries. */
-    luaL_openlibs(L);
-
-    const auto fullfname = GetFullFileName(fname);
+    luaL_openlibs(L);    
 
     if (luaL_dofile(L, fullfname.c_str()))
     {

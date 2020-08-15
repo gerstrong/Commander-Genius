@@ -898,8 +898,15 @@ void CSpriteObject::processMoveBitLeft()
 
     if(slopeType == 1)
     {
-        blockedl = true;
-        m_Pos.x += MOVE_RES;
+        std::vector<CTileProperties> &TileProperty = gBehaviorEngine.getTileProperties();
+        const auto mapOff = mpMap->at((x1-(1<<STC))>>CSF, y2>>CSF);
+        const Sint8 bl = TileProperty[mapOff].bleft;
+
+        if(bl)
+        {
+            blockedl = true;
+            m_Pos.x += MOVE_RES;
+        }
     }
 }
 
@@ -923,8 +930,15 @@ void CSpriteObject::processMoveBitRight()
 
     if(slopeType == 1)
     {
-        m_Pos.x -= MOVE_RES;
-        blockedr = true;
+        std::vector<CTileProperties> &TileProperty = gBehaviorEngine.getTileProperties();
+        const auto mapOff = mpMap->at((x2+(1<<STC))>>CSF, y2>>CSF);
+        const Sint8 br = TileProperty[mapOff].bright;
+
+        if(br)
+        {
+            m_Pos.x -= MOVE_RES;
+            blockedr = true;
+        }
     }
 }
 

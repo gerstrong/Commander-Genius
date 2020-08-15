@@ -26,6 +26,7 @@
 //#define MOUSEWRAPPER 1
 #endif
 
+
 CInput::~CInput()
 {
     SDL_DestroySemaphore(mpPollSem);
@@ -53,6 +54,7 @@ CInput::CInput()
     mpPollSem = SDL_CreateSemaphore(1);
 
 }
+
 
 /**
  * \brief This will reset the player controls how they saved before.
@@ -101,8 +103,8 @@ void CInput::resetControls(const int player)
 	curInput[IC_FIRE].joyeventtype = ETYPE_JOYBUTTON;
 	curInput[IC_FIRE].joybutton = 3;
 	curInput[IC_FIRE].which = 0;
-	curInput[IC_RUN].joyeventtype = ETYPE_JOYBUTTON;
-	curInput[IC_RUN].joybutton = 1;
+    curInput[IC_RUN].joyeventtype = ETYPE_JOYBUTTON;
+    curInput[IC_RUN].joybutton = 1;
 	curInput[IC_RUN].which = 0;
 
 	curInput[IC_STATUS].joyeventtype = ETYPE_JOYBUTTON;
@@ -133,7 +135,7 @@ void CInput::resetControls(const int player)
     curInput[IC_JUMP].keysym = SDLK_LCTRL;
     curInput[IC_POGO].keysym = SDLK_LALT;
     curInput[IC_FIRE].keysym = SDLK_SPACE;
-    curInput[IC_RUN].keysym = SDLK_LSHIFT;
+    curInput[IC_RUN].keysym = SDLK_UNKNOWN;
 
     curInput[IC_STATUS].keysym = SDLK_RETURN;
 
@@ -172,7 +174,7 @@ void CInput::resetControls(const int player)
     curInput[IC_FIRE].joybutton = 2;
     curInput[IC_FIRE].which = 0;
     curInput[IC_RUN].joyeventtype = ETYPE_KEYBOARD;
-    curInput[IC_RUN].joybutton = 3;
+    curInput[IC_RUN].joybutton = 0;
     curInput[IC_RUN].which = 0;
     curInput[IC_STATUS].joyeventtype = ETYPE_KEYBOARD;
     curInput[IC_STATUS].joybutton = 4;
@@ -197,7 +199,6 @@ void CInput::resetControls(const int player)
 #endif
 
     setTwoButtonFiring(player, false);
-    enableSuperRun(player, false);
 }
 
 
@@ -341,7 +342,6 @@ void CInput::loadControlconfig(void)
 
             Configuration.ReadKeyword( section, "TwoButtonFiring", &TwoButtonFiring[i], false);
             Configuration.ReadKeyword( section, "Analog", &mAnalogAxesMovement[i], false);
-            Configuration.ReadKeyword( section, "SuperRun", &mSuperRun[i], false);
             Configuration.ReadKeyword( section, "SuperPogo", &mSuperPogo[i], false);
             Configuration.ReadKeyword( section, "ImpossiblePogo", &mImpPogo[i], true);
             Configuration.ReadKeyword( section, "AutoFire", &mFullyAutomatic[i], false);
@@ -396,7 +396,6 @@ void CInput::saveControlconfig()
         Configuration.SetKeyword(section, "TwoButtonFiring", TwoButtonFiring[i]);
         Configuration.SetKeyword(section, "Analog", mAnalogAxesMovement[i]);
         Configuration.SetKeyword(section, "SuperPogo", mSuperPogo[i]);
-        Configuration.SetKeyword(section, "SuperRun", mSuperRun[i]);
         Configuration.SetKeyword(section, "ImpossiblePogo", mImpPogo[i]);
         Configuration.SetKeyword(section, "AutoFire", mFullyAutomatic[i]);
 	}
@@ -580,7 +579,7 @@ void CInput::setupNewEvent(Uint8 device, int position)
  */
 void CInput::readNewEvent()
 {
-    stInputCommand &lokalInput = mInputCommands[remapper.mapDevice][remapper.mapPosition];
+    stInputCommand &readInput = mInputCommands[remapper.mapDevice][remapper.mapPosition];
 
 	// This function is used to configure new input keys.
 	// For iPhone, we have emulation via touchpad and we don't want to have custom keys.
@@ -590,10 +589,13 @@ void CInput::readNewEvent()
 	return;
 #endif
 
-    lokalInput = stInputCommand();
+    readInput = stInputCommand();
 
     if(!m_EventList.empty())
 		m_EventList.clear();
+
+    const SDL_Keycode removeEvSym1 = SDLK_LALT;
+    const SDL_Keycode removeEvSym2 = SDLK_BACKSPACE;
 
 	while( SDL_PollEvent( &Event ) )
 	{
@@ -608,21 +610,36 @@ void CInput::readNewEvent()
                 break;
 
 			case SDL_KEYDOWN:
-				lokalInput.joyeventtype = ETYPE_KEYBOARD;
-				lokalInput.keysym = Event.key.keysym.sym;
-				remapper.mappingInput = false;
-				break;
+                // Special for removing the assinged event
+                if(mRemovalRunning && Event.key.keysym.sym == removeEvSym2)
+                {
+                    remapper.mappingInput = false;
+                    mRemovalRunning = false;
+                }
+                else if(Event.key.keysym.sym == removeEvSym1)
+                {
+                    mRemovalRunning = true;
+                }
+                else
+                {
+                    readInput.joyeventtype = ETYPE_KEYBOARD;
+                    readInput.keysym = Event.key.keysym.sym;
+                    remapper.mappingInput = false;
+                    mRemovalRunning = false;
+                }
+            break;
 
 			case SDL_JOYBUTTONDOWN:
 #if defined(CAANOO) || defined(WIZ) || defined(GP2X)
 				WIZ_EmuKeyboard( Event.jbutton.button, 1 );
 				return false;
 #else
-				lokalInput.joyeventtype = ETYPE_JOYBUTTON;
-				lokalInput.joybutton = Event.jbutton.button;
-                lokalInput.which = mJoyIdToInputIdx[Event.jbutton.which];
-				remapper.mappingInput = false;
+                readInput.joyeventtype = ETYPE_JOYBUTTON;
+                readInput.joybutton = Event.jbutton.button;
+                readInput.which = mJoyIdToInputIdx[Event.jbutton.which];
+				remapper.mappingInput = false;                
 #endif
+                mRemovalRunning = false;
 				break;
 
 			case SDL_JOYAXISMOTION:
@@ -632,20 +649,22 @@ void CInput::readNewEvent()
 				if( (Event.jaxis.value > 2*m_joydeadzone ) ||
 				    (Event.jaxis.value < -2*m_joydeadzone ) )
 				{
-					lokalInput.joyeventtype = ETYPE_JOYAXIS;
-					lokalInput.joyaxis = Event.jaxis.axis;
-                    lokalInput.which = mJoyIdToInputIdx[Event.jaxis.which];
-					lokalInput.joyvalue = (Event.jaxis.value>0) ? 32767 : -32767;
+                    readInput.joyeventtype = ETYPE_JOYAXIS;
+                    readInput.joyaxis = Event.jaxis.axis;
+                    readInput.which = mJoyIdToInputIdx[Event.jaxis.which];
+                    readInput.joyvalue = (Event.jaxis.value>0) ? 32767 : -32767;
 					remapper.mappingInput = false;
+                    mRemovalRunning = false;
 				}
 
 				break;
 
 			case SDL_JOYHATMOTION:
-				lokalInput.joyeventtype = ETYPE_JOYHAT;
-				lokalInput.joyhatval = Event.jhat.value;
-                lokalInput.which = mJoyIdToInputIdx[Event.jhat.which];
+                readInput.joyeventtype = ETYPE_JOYHAT;
+                readInput.joyhatval = Event.jhat.value;
+                readInput.which = mJoyIdToInputIdx[Event.jhat.which];
 				remapper.mappingInput = false;
+                mRemovalRunning = false;
 				break;
 
             case SDL_JOYDEVICEADDED:
@@ -723,12 +742,6 @@ void CInput::waitForAnyInput()
     }
 
 }
-
-
-bool CInput::isSuperRunEnabled(const int player)
-{ return mSuperRun[player]; }
-void CInput::enableSuperRun(const int player, const bool value)
-{ mSuperRun[player]=value; }
 
 
 bool CInput::getTwoButtonFiring(const int player)
@@ -1969,7 +1982,7 @@ void CInput::processMouse(SDL_Event& ev) {
 	}
 }
 
-void CInput::processMouse(int x, int y, bool down, int mouseindex)
+void CInput::processMouse(int, int, bool, int)
 {
     /*
     const GsRect<int> pt(x,y);

@@ -660,8 +660,14 @@ void CPlayGameGalaxy::ponder(const float deltaT)
         }
         else if(gInput.getHoldedKey(KN))
         {
-            cheat.noclipping = true;
-            showMsg(0, "No clipping toggle!");
+            auto &noclip = gBehaviorEngine.mCheatmode.noclipping;
+            noclip = !noclip;
+
+            cheat.noclipping = noclip;
+
+            std::string noclipTxt("No clipping ");
+            noclipTxt += noclip ? "ON" : "OFF";
+            showMsg(0, noclipTxt);
         }
         else if(gInput.getHoldedKey(KS))
         {

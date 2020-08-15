@@ -670,34 +670,31 @@ void ScanInfoPlane (void)
 
 void PatchWorldMap (void)
 {
-	id0_unsigned_t	size,spot,info,foreground;
+    id0_unsigned_t	spot,foreground;
 
-	size = mapwidth*mapheight;
-	spot = 0;
-	do
-	{
-		info = *(mapsegs[2] + spot);
-		// finished a city here?
-		if (info>=3 && info<=18 && gamestate.leveldone[info-2])
-		{
-            if(bombsleftinlevel <= 0)
+    const id0_unsigned_t size = mapwidth*mapheight;
+    spot = 0;
+    do
+    {
+        id0_unsigned_t info = *(mapsegs[2] + spot);
+        // finished a city here?
+        if (info>=3 && info<=18 && gamestate.leveldone[info-2])
+        {
+            *(mapsegs[2] + spot) = 0;
+
+            foreground = *(mapsegs[1] + spot);
+            if (foreground == 130)
+                *(mapsegs[1]+spot) = 0;	// not blocking now
+            else if (foreground == 90)
             {
-                *(mapsegs[2] + spot) = 0;
-
-                foreground = *(mapsegs[1] + spot);
-                if (foreground == 130)
-                    *(mapsegs[1]+spot) = 0;	// not blocking now
-                else if (foreground == 90)
-                {
-                    // plant done flag
-                    *(mapsegs[1]+spot) = 133;
-                    *(mapsegs[1]+(spot-mapwidth-1)) = 131;
-                    *(mapsegs[1]+(spot-mapwidth)) = 132;
-                }
+                // plant done flag
+                *(mapsegs[1]+spot) = 133;
+                *(mapsegs[1]+(spot-mapwidth-1)) = 131;
+                *(mapsegs[1]+(spot-mapwidth)) = 132;
             }
         }
-		spot++;
-	} while (spot<size);
+        spot++;
+    } while (spot<size);
 
     bombsleftinlevel = 0;
 }
@@ -2088,12 +2085,16 @@ void startLevel()
 
 void processLevelcomplete()
 {
-    if (mapon)
+    // A level is truly finished when there are no bombs left
+    if(bombsleftinlevel <= 0)
     {
-        SD_PlaySound (LEVELDONESND);
-    }
+        if (mapon)
+        {
+            SD_PlaySound (LEVELDONESND);
+        }
 
-    gamestate.leveldone[mapon] = true;	// finished the level
+        gamestate.leveldone[mapon] = true;	// finished the level
+    }
 
     if (mapon != 0)
     {

@@ -195,16 +195,25 @@ ptree::self_type &ptree::get_child(const path_type &path)
 str_type ptree::get_internal(const path_type &path,
                              const str_type &default_value) const
 {
-    auto &child = get_child(path);
-    auto &data = child.data();
+    try {
+        auto &child = get_child(path);
+        auto &data = child.data();
 
-    if(data.empty())
+        if(data.empty())
+        {
+            return default_value;
+        }
+        else
+        {
+            return data;
+        }
+    }
+    catch(std::exception const&  ex)
     {
         return default_value;
     }
-    else
-    {
-        return data;
+    catch (...) {
+        throw;
     }
 }
 

@@ -67,14 +67,32 @@ mSelectedPlayer(selectedPlayer)
                                                              this->getStyle()) ) );
                                 },
                                 style )  );
-
-
     mpMenuDialog->add(
-                new GameButton( "Buttons",
+                new GameButton( "Diagonal",
                                 [this]()
                                 {
                                   gEventManager.add( new OpenMenuEvent(
-                                    new CControlSettingsButtons(mSelectedPlayer,
+                                    new CControlSettingsMoveDiag(mSelectedPlayer,
+                                                             this->getStyle()) ) );
+                                },
+                                style )  );
+
+    mpMenuDialog->add(
+                new GameButton( "Action",
+                                [this]()
+                                {
+                                  gEventManager.add( new OpenMenuEvent(
+                                    new CControlSettingsGameplayActions(mSelectedPlayer,
+                                                             this->getStyle()) ) );
+                                },
+                                style ) );
+
+    mpMenuDialog->add(
+                new GameButton( "Misc",
+                                [this]()
+                                {
+                                  gEventManager.add( new OpenMenuEvent(
+                                    new CControlSettingsMisc(mSelectedPlayer,
                                                              this->getStyle()) ) );
                                 },
                                 style ) );
@@ -86,10 +104,6 @@ mSelectedPlayer(selectedPlayer)
     mpAnalogSwitch =
             mpMenuDialog->add( new Switch( "Analog Movement", style ) );
 	mpAnalogSwitch->enable(gInput.isAnalog(mSelectedPlayer-1));
-
-    mpSuperRunSwitch =
-            mpMenuDialog->add( new Switch( "Super Run", style ) );
-    mpSuperRunSwitch->enable(gInput.isSuperRunEnabled(mSelectedPlayer-1));
 
     mpSuperPogoSwitch =
             mpMenuDialog->add( new Switch( "Super Pogo", style ) );
@@ -130,7 +144,6 @@ void CControlsettings::release()
 	gInput.setTwoButtonFiring(mSelectedPlayer-1, mpTwoButtonSwitch->isEnabled() );
 	gInput.enableAnalog(mSelectedPlayer-1, mpAnalogSwitch->isEnabled() );
 	gInput.setSuperPogo(mSelectedPlayer-1, mpSuperPogoSwitch->isEnabled() );
-    gInput.enableSuperRun(mSelectedPlayer-1, mpSuperRunSwitch->isEnabled() );
 	gInput.setImpossiblePogo(mSelectedPlayer-1, mpImpPogoSwitch->isEnabled() );
 	gInput.setAutoGun(mSelectedPlayer-1, mpAutoGunSwitch->isEnabled() );
 	gInput.saveControlconfig();
@@ -166,18 +179,28 @@ void CControlSettingsBase::ponder(const float deltaT)
             mapping = false;
 
             int pos; unsigned char input;
-            std::string evName = gInput.getNewMappedEvent(pos, input);
+            std::string evName = gInput.getNewMappedEvent(pos, input);            
+
             InpCmd com = static_cast<InpCmd>(pos);
 
-            if(pos >= MID_COMMANDS_OFFSETS)
-                pos -= MID_COMMANDS_OFFSETS;
-
-            mpButtonList[static_cast<unsigned int>(pos)]->setText(mCommandName[com] + evName);
+            mpButtonMap[com]->setText(mCommandName[com] + evName);
         }
     }
 
     GameMenu::ponder(deltaT);
 }
+
+void CControlSettingsBase::addBottomText()
+{
+    auto deleteText =
+        mpMenuDialog->add(
+                new CGUIText("Remove: ALT + BACKSPC",
+                             GsRect<float>(0.0f, 0.85f, 1.0f, 0.1f)) );
+
+    deleteText->setTextColor(GsColor(0xBF, 0x00, 0x00));
+    deleteText->enableCenteringH(false);
+}
+
 
 void CControlSettingsBase::release()
 {
@@ -188,7 +211,6 @@ void CControlSettingsBase::release()
 }
 
 
-
 void CControlSettingsMovement::refresh()
 {
     mapping = false;
@@ -196,13 +218,9 @@ void CControlSettingsMovement::refresh()
 	mCommandName[IC_RIGHT]		= "Right:  ";
 	mCommandName[IC_UP]		= "Up:     ";
 	mCommandName[IC_DOWN]		= "Down:   ";
-	mCommandName[IC_UPPERLEFT]	= "U-left: ";
-	mCommandName[IC_UPPERRIGHT] 	= "U-right:";
-	mCommandName[IC_LOWERLEFT] 	= "D-left: ";
-	mCommandName[IC_LOWERRIGHT]	= "D-right:";
 
-	if(!mpButtonList.empty())
-		mpButtonList.clear();
+    if(!mpButtonMap.empty())
+        mpButtonMap.clear();
 
     std::map<InpCmd, std::string>::iterator it = mCommandName.begin();
 	for ( ; it != mCommandName.end(); it++ )
@@ -222,7 +240,7 @@ void CControlSettingsMovement::refresh()
                                     rie,
                                     getStyle() ) );
 
-		mpButtonList.push_back( guiButton );
+        mpButtonMap[it->first] = guiButton;
 
         rie->setButtonPtr(
                     std::static_pointer_cast<GsButton>(guiButton)
@@ -230,14 +248,54 @@ void CControlSettingsMovement::refresh()
 	}
 
 	setMenuLabel("MOVEMENULABEL");
+    mpMenuDialog->fit();    
+    addBottomText();
+}
 
+void CControlSettingsMoveDiag::refresh()
+{
+    mapping = false;
+    mCommandName[IC_UPPERLEFT]	= "U-left: ";
+    mCommandName[IC_UPPERRIGHT] = "U-right:";
+    mCommandName[IC_LOWERLEFT] 	= "D-left: ";
+    mCommandName[IC_LOWERRIGHT]	= "D-right:";
+
+    if(!mpButtonMap.empty())
+        mpButtonMap.clear();
+
+    std::map<InpCmd, std::string>::iterator it = mCommandName.begin();
+    for ( ; it != mCommandName.end(); it++ )
+    {
+        const std::string buf = it->second;
+        const std::string buf2 = gInput.getEventShortName( it->first,
+                                                           mSelectedPlayer-1 );
+
+        ReadInputEvent *rie =
+                new ReadInputEvent(mSelectedPlayer,
+                                   it->first,
+                                   it->second);
+
+        auto guiButton =
+            mpMenuDialog->add(
+                    new GameButton( buf+buf2,
+                                    rie,
+                                    getStyle() ) );
+
+        mpButtonMap[it->first] = guiButton;
+
+        rie->setButtonPtr(
+                    std::static_pointer_cast<GsButton>(guiButton)
+                         );
+    }
+
+    setMenuLabel("MOVEMENULABEL");
     mpMenuDialog->fit();
+    addBottomText();
 }
 
 
-
-// Movements Parts of the Control Settings
-void CControlSettingsButtons::refresh()
+// Action Parts of the Control Settings
+void CControlSettingsGameplayActions::refresh()
 {
     mapping = false;
     mCommandName[IC_JUMP] 		    = "Jump:     ";
@@ -246,14 +304,9 @@ void CControlSettingsButtons::refresh()
     mCommandName[IC_RUN]		    = "Run:      ";
     mCommandName[IC_STATUS] 	    = "Status:   ";
     mCommandName[IC_CAMLEAD] 	    = "Camlead:  ";
-    mCommandName[IC_HELP] 		    = "Help:     ";
-    mCommandName[IC_BACK] 		    = "Back:     ";
-    mCommandName[IC_QUICKSAVE] 		= "Quicksave:";
-    mCommandName[IC_QUICKLOAD] 		= "Quickload:";
 
-
-	if(!mpButtonList.empty())
-		mpButtonList.clear();
+    if(!mpButtonMap.empty())
+        mpButtonMap.clear();
 
     std::map<InpCmd, std::string>::iterator it = mCommandName.begin();
 	for ( ; it != mCommandName.end(); it++ )
@@ -272,14 +325,57 @@ void CControlSettingsButtons::refresh()
                                     rie,
                                     getStyle() ) );
 
-        mpButtonList.push_back( guiButton );
+        mpButtonMap[it->first] = guiButton;
 
         rie->setButtonPtr(
                     std::static_pointer_cast<GsButton>(guiButton)
                          );
-	}
+	}    
 
 	setMenuLabel("BUTTONMENULABEL");
+    mpMenuDialog->fit();    
+    addBottomText();
+}
+
+// Misc Parts of the Control Settings
+void CControlSettingsMisc::refresh()
+{
+    mapping = false;
+    mCommandName[IC_HELP] 		    = "Help:     ";
+    mCommandName[IC_BACK] 		    = "Back:     ";
+    mCommandName[IC_QUICKSAVE] 		= "Quicksave:";
+    mCommandName[IC_QUICKLOAD] 		= "Quickload:";
+
+
+    if(!mpButtonMap.empty())
+        mpButtonMap.clear();
+
+    std::map<InpCmd, std::string>::iterator it = mCommandName.begin();
+    for ( ; it != mCommandName.end(); it++ )
+    {
+        const std::string buf = it->second;
+        const std::string buf2 = gInput.getEventShortName( it->first,
+                                                           mSelectedPlayer-1 );
+
+        ReadInputEvent *rie =
+                new ReadInputEvent(mSelectedPlayer,
+                                   it->first, it->second);
+
+        auto guiButton =
+            mpMenuDialog->add(
+                    new GameButton( buf+buf2,
+                                    rie,
+                                    getStyle() ) );
+
+        mpButtonMap[it->first] = guiButton;
+
+        rie->setButtonPtr(
+                    std::static_pointer_cast<GsButton>(guiButton)
+                         );
+    }
+
+    setMenuLabel("BUTTONMENULABEL");
     mpMenuDialog->fit();
+    addBottomText();
 }
 

@@ -17,7 +17,6 @@
 
 #include "GsWidget.h"
 
-//#include <graphics/GsTexture.h>
 #include <graphics/GsSurface.h>
 
 #include <graphics/GsTrueTypeFont.h>

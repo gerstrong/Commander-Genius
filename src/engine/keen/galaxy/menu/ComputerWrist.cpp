@@ -14,13 +14,13 @@
 
 /*
 
-^P		First command in every file. Defines a page start
-^E		Ends the file
-^Cx		Change font color to $x until next page or ^C command
-^Gx,y,z	Display (unmasked) picture chunk z at location x,y (In pixels)
+^P		    First command in every file. Defines a page start
+^E		    Ends the file
+^Cx		    Change font color to $x until next page or ^C command
+^Gx,y,z	    Display (unmasked) picture chunk z at location x,y (in pixels)
 ^Tx,y,z,t	Display picture chunk z at x,y for z clicks of time
-^Bx,y,z,t,b	?
-^Lx,y		?
+^Bx,y,z,t,b	Fill a width-by-height-pixel rectangle at pixel location x,y (for z clicks of time?) with color $x
+^Lx,y		Start text alignment at pixel location x,y.
 
 */
 
@@ -28,9 +28,14 @@ namespace galaxy
 {
 
 
-ComputerWrist::ComputerWrist(const int ep) :
+ComputerWrist::ComputerWrist(const bool greyMode,
+                             const bool showPageNo,
+                             const bool noMainMenu) :
     mMainMenuBmp(gGraphics.getBitmapFromId(0, 0)), // Zero always seem to be that menu
-    mHandBmp(*gGraphics.getBitmapFromStr(0, "HELPHAND"))
+    mHandBmp(*gGraphics.getBitmapFromStr(0, "HELPHAND")),
+    mGreyMode(greyMode),
+    mShowPageNo(showPageNo),
+    mNoMainMenu(noMainMenu)
 {
     // Prepare the Menu Bmp
     GsRect<Uint16> mainBmpSize;
@@ -42,10 +47,20 @@ ComputerWrist::ComputerWrist(const int ep) :
     handBmpSize.dim = {mHandBmp.width(), mHandBmp.height()};
     mHandBmp.scaleTo(handBmpSize);
 
-
-    if(ep != 6)
+    const int ep = gBehaviorEngine.getEpisode();
+    if(ep==5)
     {
+        mArrow_Pic_Start = 20;
+    }
+    else if(ep==6)
+    {
+        mArrow_Pic_Start = 21;
+    }
 
+
+
+    if(!greyMode)
+    {
         GsRect<Uint16> upperBorderBmpSize;
         mUpperBorderBmp = *gGraphics.getBitmapFromStr(0, "HELP_UPPERBORDER");
         upperBorderBmpSize.dim.x = mUpperBorderBmp.width();
@@ -64,21 +79,20 @@ ComputerWrist::ComputerWrist(const int ep) :
         rightBorderBmpSize.dim.y = mRightBorderBmp.height();
         mRightBorderBmp.scaleTo(rightBorderBmpSize);
 
-
-
-
         GsRect<Uint16> bottomBorderBmpSize;
         mBottomBorderBmp = *gGraphics.getBitmapFromStr(0, "HELP_LOWERBORDER");
         bottomBorderBmpSize.dim.x = mBottomBorderBmp.width();
         bottomBorderBmpSize.dim.y = mBottomBorderBmp.height();
         mBottomBorderBmp.scaleTo(bottomBorderBmpSize);
 
-        GsRect<Uint16> lowerBorderBmpSize;
-        mLowerBorderControlBmp = *gGraphics.getBitmapFromStr(0, "HELP_LOWERBORDERCONTROL");
-        lowerBorderBmpSize.dim.x = mLowerBorderControlBmp.width();
-        lowerBorderBmpSize.dim.y = mLowerBorderControlBmp.height();
-        mLowerBorderControlBmp.scaleTo(lowerBorderBmpSize);
-
+        if(mShowPageNo)
+        {
+            GsRect<Uint16> lowerBorderBmpSize;
+            mLowerBorderControlBmp = *gGraphics.getBitmapFromStr(0, "HELP_LOWERBORDERCONTROL");
+            lowerBorderBmpSize.dim.x = mLowerBorderControlBmp.width();
+            lowerBorderBmpSize.dim.y = mLowerBorderControlBmp.height();
+            mLowerBorderControlBmp.scaleTo(lowerBorderBmpSize);
+        }
     }
 
     // NOTE: The index is always six here
@@ -89,7 +103,7 @@ ComputerWrist::ComputerWrist(const int ep) :
 
     int numLines = blitsfc.height();
 
-    if( ep != 6 )
+    if( !greyMode )
     {
         numLines = (blitsfc.height() - (mUpperBorderBmp.height() + mBottomBorderBmp.height()))/font.getPixelTextHeight();
 
@@ -111,7 +125,7 @@ ComputerWrist::ComputerWrist(const int ep) :
     {
         for(int i=0 ; i < numLines ; i++)
         {
-            mMinPos.push_back(2);
+            mMinPos.push_back(8);
             mMaxPos.push_back(blitsfc.width());
         }
     }
@@ -120,8 +134,11 @@ ComputerWrist::ComputerWrist(const int ep) :
     gEffectController.setupEffect(pColorMergeFX);
 }
 
-ComputerWrist::ComputerWrist(const int ep, const int section) :
-    ComputerWrist(ep)
+ComputerWrist::ComputerWrist(const bool greyMode,
+                             const bool showPageNo,
+                             const bool noMainMenu,
+                             const int section) :
+    ComputerWrist(greyMode, showPageNo, noMainMenu)
 {
     mSection = section;
 
@@ -156,10 +173,24 @@ void ComputerWrist::ponderPage(const float deltaT)
 {
     (void) deltaT;
 
+    mTime++;
+
     if( gInput.getPressedCommand(IC_BACK) )
     {
         mSection = -1;
         mSectionPage = 0;
+        mTime = 0;
+    }
+
+    if( gInput.getPressedCommand(IC_JUMP) ||
+        gInput.getPressedCommand(IC_STATUS))
+    {
+        if(mSectionPage < mNumPagesOfThisSection)
+        {
+            mSection = -1;
+            mSectionPage = 0;
+            mTime = 0;
+        }
     }
 
 
@@ -169,6 +200,7 @@ void ComputerWrist::ponderPage(const float deltaT)
         {
             mSectionPage++;
             mCurrentTextLines = gGameText.readPage(mSection, mSectionPage);
+            mTime = 0;
         }
     }
 
@@ -178,6 +210,7 @@ void ComputerWrist::ponderPage(const float deltaT)
         {
             mSectionPage--;
             mCurrentTextLines = gGameText.readPage(mSection, mSectionPage);
+            mTime = 0;
         }
     }
 
@@ -236,10 +269,24 @@ void ComputerWrist::ponderMainMenu(const float deltaT)
 
 void ComputerWrist::ponder(const float deltaT)
 {
-    // Main Page?
+    // Main Page? (Episode 6 does not have that menu)
+    const auto ep = gBehaviorEngine.getEpisode();
     if(mSection == -1)
     {
-        ponderMainMenu(deltaT);
+        if(mNoMainMenu)
+        {
+            gEventManager.add( new CloseComputerWrist() );
+        }
+
+        if(ep < 6)
+        {
+            ponderMainMenu(deltaT);
+        }
+        else
+        {
+            gEventManager.add( new CloseComputerWrist() );
+        }
+
         return;
     }
 
@@ -251,9 +298,7 @@ void ComputerWrist::parseGraphics()
 {
     std::stringstream ss;
 
-    const int ep = gBehaviorEngine.getEpisode();
-
-    int x,y,chunk;
+    int x,y,chunk, time;
     GsWeakSurface blitsfc(gVideoDriver.getBlitSurface());
 
     SDL_Rect lRect;
@@ -265,7 +310,7 @@ void ComputerWrist::parseGraphics()
 
     if(!mMinPos.empty())
     {
-        if(ep != 6)
+        if(!mGreyMode)
         {
             mMinPos[0] = mUpperBorderBmp.width();
             mMaxPos[0] = mUpperBorderBmp.width();
@@ -284,12 +329,14 @@ void ComputerWrist::parseGraphics()
         {
             for(auto &minPos : mMinPos)
             {
-                minPos = 2;
+                minPos = 8;
             }
+
+            mMinPos[0] = blitsfc.width();
 
             for(auto &maxPos : mMaxPos)
             {
-                maxPos = blitsfc.width();
+                maxPos = blitsfc.width()-8;
             }
 
         }
@@ -297,11 +344,13 @@ void ComputerWrist::parseGraphics()
 
 
     // Check for colission with bitmaps
+    int totPicTime = 0;
+
     for(const auto &line : mCurrentTextLines)
     {
         if(line[0] == '^')
         {
-            if(line[1] == 'G')
+            if(line[1] == 'G') // x,y,z Display (unmasked) picture chunk at location x,y (In pixels)
             {
                 std::string param = line.substr(2);
 
@@ -338,7 +387,7 @@ void ComputerWrist::parseGraphics()
                     if(x > lRect.w/2)
                     {
                         // Limit max
-                        mMaxPos[textYIdx] = lRect.w/2;
+                        mMaxPos[textYIdx] = std::min(x, mMaxPos[textYIdx]);
                     }
                     // Whole pic fits to the left side
                     else if((x+bmpW) < lRect.w/2)
@@ -356,12 +405,67 @@ void ComputerWrist::parseGraphics()
                     {
                         if(curMinPos < (x+bmpW))
                         {
-                            mMinPos[textYIdx] = (x+bmpW)+spaceWidth+1;
+                            if(!mGreyMode)
+                            {
+                                mMinPos[textYIdx] = (x+bmpW)+spaceWidth+1;
+                            }
+                            else
+                            {
+                                mMinPos[textYIdx] = mMaxPos[textYIdx];
+                            }
                         }
                     }
                 }
 
-                bmp.draw(x, y);
+                bmp.draw(x & ~7, y);
+            }
+            if(line[1] == 'T') // ^Tx,y,z,t	Display picture chunk z at x,y for z clicks of time
+            {
+                std::string param = line.substr(2);
+
+                char comma;
+
+                ss << param;
+                ss >> y;
+                ss >> comma;
+                ss >> x;
+                ss >> comma;
+                ss >> chunk;
+                ss >> comma;
+                ss >> time;
+
+                chunk = chunk - mBmpIndex;
+
+                totPicTime += time;
+
+                GsBitmap &bmp = gGraphics.getBitmapFromId(0, chunk);
+                if(mTime > totPicTime)
+                {
+                    bmp.draw(x & ~7, y);
+                }
+            }
+            if(line[1] == 'L') // ^Lx,y		Start text alignment at pixel location x,y.
+            {
+                std::string param = line.substr(2);
+
+                char comma;
+
+                ss << param;
+                ss >> y;
+                ss >> comma;
+                ss >> x;
+
+                mTxtWrapLoc = GsVec2D<int>(x, y);
+
+                for(int j=0 ; j<y ; j++)
+                {
+                    mMaxPos[j/8] = mMinPos[j/8] = 320;
+                }
+
+                for( auto &minpos : mMinPos)
+                {
+                    minpos = std::max(x, minpos);
+                }
             }
         }
     }
@@ -396,6 +500,12 @@ void ComputerWrist::parseText()
 
 
     Uint32 color = 0xFCFC54;
+
+    if(mGreyMode)
+    {
+        color = 0x545454;
+    }
+
 
     // Get the text that is actually used
     for(const auto &line : mCurrentTextLines)
@@ -446,8 +556,6 @@ void ComputerWrist::parseText()
 
             std::vector<std::string> words = explode(theText, " ");
 
-            // TODO: test for pictures. If there is one move cursor forward and adapt the width left
-
             for(const auto &word : words)
             {
                 // Blank occupied space also, consider it.
@@ -487,7 +595,7 @@ void ComputerWrist::parseText()
                         // Ensure the minimum position is not hindering a picture
                         cursorPos.x = mMinPos[cursorPos.y];
                         maxPosX = mMaxPos[cursorPos.y];
-                    }
+                    }                    
 
                     if(ep != 6)
                     {
@@ -510,14 +618,23 @@ void ComputerWrist::parseText()
     }
 
     // Print the page number
-    const auto pgTextcolor = 0xFC5454;
-    Font.setupColor(pgTextcolor);
+    if(mShowPageNo)
+    {
+        const auto pgTextcolor = 0xFC5454;
+        Font.setupColor(pgTextcolor);
 
-    const std::string pgText =
-            "pg " + itoa(mSectionPage+1) +
-            " of " + itoa(mNumPagesOfThisSection+1);
-    Font.drawFont(blitsfc.getSDLSurface(), pgText,
-                  218, 186);
+        const std::string pgText =
+                "pg " + itoa(mSectionPage+1) +
+                " of " + itoa(mNumPagesOfThisSection+1);
+        Font.drawFont(blitsfc.getSDLSurface(), pgText,
+                      218, 186);
+    }
+    else if(mSectionPage < mNumPagesOfThisSection)
+    {
+        const int arrow_pic = ((mTime/50)%2 == 0) ? mArrow_Pic_Start  : mArrow_Pic_Start+1;
+        GsBitmap &bmp = gGraphics.getBitmapFromId(0, arrow_pic);
+        bmp.draw(0x12A & ~3, 0xB8);
+    }
 }
 
 void ComputerWrist::renderPage()
@@ -545,16 +662,13 @@ void ComputerWrist::renderPage()
 
     // Now parse/render the text
     parseText();
-
 }
 
 void ComputerWrist::renderBorders()
 {
     GsWeakSurface blitsfc(gVideoDriver.getBlitSurface());
 
-    int ep = gBehaviorEngine.getEpisode();
-
-    if(ep != 6)
+    if(!mGreyMode)
     {
         mUpperBorderBmp.draw(0, 0);
         mLeftBorderBmp.draw(0, mUpperBorderBmp.height());
@@ -562,7 +676,7 @@ void ComputerWrist::renderBorders()
         mRightBorderBmp.draw(blitsfc.width()-mRightBorderBmp.width(), mUpperBorderBmp.height());
         mBottomBorderBmp.draw(mLeftBorderBmp.width(), mLeftBorderBmp.height());
 
-        if(mSection != -1)
+        if(mSection != -1 && !mLowerBorderControlBmp.empty())
         {
             mLowerBorderControlBmp.draw(mLeftBorderBmp.width(), mLeftBorderBmp.height()+mUpperBorderBmp.height()-mLowerBorderControlBmp.height() );
         }
@@ -593,8 +707,15 @@ void ComputerWrist::render()
     GsWeakSurface blitsfc(gVideoDriver.getBlitSurface());
 
     // Typical color code of the background
-    blitsfc.fillRGB(0xA8,0,0);
-
+    if(!mGreyMode || mSection == -1)
+    {
+        blitsfc.fillRGB(0xA8,0,0);
+    }
+    else
+    {
+        blitsfc.fillRGB(0xA8,0xA8,0xA8);
+        //0x54, 0x54, 0xfc
+    }
 
     // Main Page?
     if(mSection == -1)
