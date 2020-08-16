@@ -55,8 +55,8 @@ public:
     /**
      * @brief setupEmptyDataPlanes  Allocates data for the the planes to be loaded
      * @param numPlanes     Number of planes to setup for the whole map
-     * @param width
-     * @param height
+     * @param width     width in unit of tiles
+     * @param height    height in unit of tiles
      * @return  true if everything went allright, otherwise false
      */
     bool setupEmptyDataPlanes(int numPlanes, Uint32 width, Uint32 height);

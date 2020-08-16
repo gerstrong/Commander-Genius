@@ -280,7 +280,13 @@ void video_draw_highlight_effect(uint16 x, uint16 y, uint8 type)
     }
 }
 
-void video_draw_tile_with_clip_rect(Tile *tile, uint16 x, uint16 y, uint16 clip_x, uint16 clip_y, uint16 clip_w, uint16 clip_h)
+void video_draw_tile_with_clip_rect(Tile *tile,
+                                    uint16 x,
+                                    uint16 y,
+                                    uint16 clip_x,
+                                    uint16 clip_y,
+                                    uint16 clip_w,
+                                    uint16 clip_h)
 {
     uint16 tx = 0;
     uint16 ty = 0;

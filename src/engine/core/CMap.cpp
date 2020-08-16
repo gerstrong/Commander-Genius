@@ -733,7 +733,7 @@ void CMap::drawHstripe(unsigned int y, unsigned int mpy)
     SDL_Surface *ScrollSurface = gVideoDriver.getScrollSurface();
 	Uint32 num_v_tiles= ScrollSurface->w/16;
 
-    const int drawMask = gVideoDriver.getScrollSurface()->w-1;
+    const int drawMask = ScrollSurface->w-1;
 
 	if( num_v_tiles+m_mapx >= m_width )
 		num_v_tiles = m_width-m_mapx;

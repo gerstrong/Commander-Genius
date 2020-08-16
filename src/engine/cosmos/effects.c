@@ -466,9 +466,9 @@ void struct6_update_sprites()
                 effect_add_sprite(0x17, 8, sprite->x + 1 + 1, sprite->y - 2, 0, 1);
             }
 
-            display_actor_sprite_maybe(0x1a, sprite->counter - 1 & 3, sprite->x, sprite->y, 0);
+            display_actor_sprite_maybe(0x1a, sprite->counter - (1 & 3), sprite->x, sprite->y, 0);
 
-            if(player_check_collision_with_actor(0x1a, sprite->counter - 1 & 3, sprite->x, sprite->y) != 0)
+            if(player_check_collision_with_actor(0x1a, sprite->counter - (1 & 3), sprite->x, sprite->y) != 0)
             {
                 player_decrease_health();
             }

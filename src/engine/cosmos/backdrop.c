@@ -45,13 +45,26 @@ const char backdrop_filename_tbl[][13] = {
         "BDCIRCPC.MNI"
 };
 
-Tile *bg_tiles;
+Tile *bg_tiles = NULL;
+uint16 num_bg_tiles = 0;
+
+Tile *getBGTilesPtr()
+{
+    return bg_tiles;
+}
+
+uint16 getNumBGTiles()
+{
+    return num_bg_tiles;
+}
+
 
 void load_backdrop_image(const char *filename)
 {
     uint16 num_tiles;
     bg_tiles = load_tiles(filename, SOLID, &num_tiles);
     printf("Loading %d background tiles.\n", num_tiles);
+    num_bg_tiles = num_tiles;
 }
 
 bool set_backdrop(uint16 new_backdrop_index)
@@ -99,7 +112,13 @@ void backdrop_display()
     {
         for(int x=0; x < MAP_WINDOW_WIDTH + 1; x++)
         {
-            video_draw_tile_with_clip_rect(&bg_tiles[((x+x_offset) % BACKGROUND_WIDTH) + ((y+y_offset) % BACKGROUND_HEIGHT) * BACKGROUND_WIDTH], (x+1)*8 - sub_tile_x, (y+1)*8 - sub_tile_y, 8, 8, 8*MAP_WINDOW_WIDTH, 8*MAP_WINDOW_HEIGHT);
+            video_draw_tile_with_clip_rect(
+                &bg_tiles[((x+x_offset) % BACKGROUND_WIDTH) +
+                          ((y+y_offset) % BACKGROUND_HEIGHT) * BACKGROUND_WIDTH],
+                (x+1)*8 - sub_tile_x, (y+1)*8 - sub_tile_y,
+                 8, 8,
+                 8*MAP_WINDOW_WIDTH,
+                 8*MAP_WINDOW_HEIGHT);
         }
     }
 }

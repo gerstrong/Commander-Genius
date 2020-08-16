@@ -10,6 +10,7 @@
 #define MAP_WINDOW_WIDTH 38
 #define MAP_WINDOW_HEIGHT 18
 
+
 //Data
 extern uint16 current_level;
 extern int map_width_in_tiles;

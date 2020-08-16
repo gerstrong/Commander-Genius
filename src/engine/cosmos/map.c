@@ -166,8 +166,13 @@ const char *get_level_filename(int level_number)
     return NULL;
 }
 
+void set_backdropEv(int backdrop_index);
+void loadLevelEv(int level_number);
+
 void load_level(int level_number)
 {
+    loadLevelEv(level_number);
+
     if (level_number != 0 || show_one_moment_screen_flag == 0) {
         fade_to_black_speed_3();
     } else {
@@ -334,10 +339,11 @@ void map_display() {
     {
         for(int x=0; x < MAP_WINDOW_WIDTH; x++)
         {
-            uint16 map_cell = map_data[(x+mapwindow_x_offset) + (y+mapwindow_y_offset) * map_width_in_tiles];
+            const uint16 map_cell = map_data[(x+mapwindow_x_offset) +
+                                             (y+mapwindow_y_offset) * map_width_in_tiles];
             if(map_cell < 16000)
             {
-                uint16 tile = map_cell/8;
+                const uint16 tile = map_cell/8;
                 if(tile > 9) // The first 10 tiles aren't shown. They are arrows for moving platform debug.
                 {
                     video_draw_tile(&map_bg_tiles[tile], (x+1)*8, (y+1)*8);
@@ -345,7 +351,7 @@ void map_display() {
             }
             else
             {
-                uint16 tile =  ((map_cell/8) - 2000) / 5;
+                const uint16 tile =  ((map_cell/8) - 2000) / 5;
                 video_draw_tile(&map_fg_tiles[tile], (x+1)*8, (y+1)*8);
             }
         }
@@ -378,11 +384,13 @@ void write_tile_row_to_tilemap(uint16 map_tile_cell,
     map_write_tile_cell(map_tile_cell4, x + 3, y);
 }
 
-Tile *map_get_bg_tile(uint16 tile_num) {
+Tile *map_get_bg_tile(uint16 tile_num)
+{
     return &map_bg_tiles[tile_num];
 }
 
-uint8 map_get_tile_attr(int x, int y) {
+uint8 map_get_tile_attr(int x, int y)
+{
 
     if (x < 0 || y < 0 || x >= map_width_in_tiles || x + y * map_width_in_tiles >= MAX_MAP_TILES) {
         return TILE_ATTR_NONE;
@@ -391,7 +399,8 @@ uint8 map_get_tile_attr(int x, int y) {
     return tileattr_mni_data[map_get_tile_cell(x, y) / 8];
 }
 
-bool move_map_window(int dx, int dy) {
+bool move_map_window(int dx, int dy)
+{
     int new_x = mapwindow_x_offset + dx;
     int new_y = mapwindow_y_offset + dy;
 
