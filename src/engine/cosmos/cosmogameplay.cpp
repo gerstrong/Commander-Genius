@@ -164,70 +164,6 @@ bool CosmoGameplay::load_level_data(int level_number)
     return true;
 }
 
-/*
-
-void video_draw_tile_with_clip_rect(Tile *tile,
-                                    uint16 x,
-                                    uint16 y,
-                                    uint16 clip_x,
-                                    uint16 clip_y,
-                                    uint16 clip_w,
-                                    uint16 clip_h)
-{
-    uint16 tx = 0;
-    uint16 ty = 0;
-    uint16 w = TILE_WIDTH;
-    uint16 h = TILE_HEIGHT;
-
-    if (x + w < clip_x ||
-        y + h < clip_y ||
-        x > clip_x + clip_w ||
-        y > clip_y + clip_h)
-    {
-        return;
-    }
-
-    if (x < clip_x)
-    {
-        tx = (clip_x - x);
-        w = TILE_WIDTH - tx;
-        x = clip_x;
-    }
-
-    if (x + w > clip_x + clip_w)
-    {
-        w -= ((x + w) - (clip_x + clip_w));
-    }
-
-    if (y < clip_y)
-    {
-        ty = (clip_y - y);
-        h = TILE_HEIGHT - ty;
-        y = clip_y;
-    }
-
-    if (y + h > clip_y + clip_h)
-    {
-        h -= ((y + h) - (clip_y + clip_h));
-    }
-
-    uint8 *pixel = (uint8 *)game_surface.surface->pixels + x + y * SCREEN_WIDTH;
-    uint8 *tile_pixel = &tile->pixels[tx + ty * TILE_WIDTH];
-        for(int i=0;i<h;i++)
-        {
-            for(int j=0; j < w; j++)
-            {
-                if(tile_pixel[j] != TRANSPARENT_COLOR)
-                {
-                    pixel[j] = tile_pixel[j];
-                }
-            }
-            pixel += SCREEN_WIDTH;
-            tile_pixel += TILE_WIDTH;
-        }
-}
-
-*/
 
 bool CosmoGameplay::setBackdrop(const int index)
 {
@@ -250,16 +186,48 @@ bool CosmoGameplay::setBackdrop(const int index)
 
     //auto dataPtr = mMap.getData(0);
 
+    gGraphics.Palette.setupColorPalettes(nullptr, 0);
+
     GsTilemap &tilemap = gGraphics.getTileMap(0);
     const auto num_bg_Tiles = getNumBGTiles();
     tilemap.CreateSurface( gGraphics.Palette.m_Palette, SDL_SWSURFACE,
-                           num_bg_Tiles, 3, 40);
+                           num_bg_Tiles, 3, 40 );
+
+    Tile *bg_tiles = getBGTilesPtr();
+    SDL_Surface *sfc = tilemap.getSDLSurface();
+    SDL_FillRect(sfc, nullptr, 0);
+    if(SDL_MUSTLOCK(sfc))   SDL_LockSurface(sfc);
 
     for(int t=0 ; t<num_bg_Tiles ; t++)
     {
-        SDL_Surface *sfc = tilemap.getSDLSurface();
-        SDL_FillRect(sfc, nullptr, 0);
-        if(SDL_MUSTLOCK(sfc))   SDL_LockSurface(sfc);
+        Tile *tile = &(bg_tiles[t]);
+
+        const uint16 tx = (t%40);
+        const uint16 ty = (t/40);
+
+        const int x = tx*8;
+        const int y = ty*8;
+
+        uint8 *pixel = (uint8 *)sfc->pixels + x + y * 320;
+        uint8 *tile_pixel = tile->pixels;
+        for(int i=0 ; i<TILE_HEIGHT ; i++)
+        {
+            for(int j=0 ; j < TILE_WIDTH ; j++)
+            {
+                if(tile_pixel[j] != TRANSPARENT_COLOR)
+                {
+                    pixel[j] = tile_pixel[j];
+                }
+            }
+            pixel += 320;
+            tile_pixel += TILE_WIDTH;
+        }
+
+        /*
+        if(exportGfx)
+        {
+            exportGfxToFile(sfc, std::string("BACKDROP") + std::string(".bmp"));
+        }*/
 
 /*
         video_draw_tile_with_clip_rect(
@@ -270,6 +238,7 @@ bool CosmoGameplay::setBackdrop(const int index)
              8*MAP_WINDOW_WIDTH,
              8*MAP_WINDOW_HEIGHT);
 */
+
         /*
         std::vector<unsigned char> &data = m_egagraph.at(IndexOfTiles).data;
 
@@ -288,9 +257,17 @@ bool CosmoGameplay::setBackdrop(const int index)
             }
         }
         */
-
-        if(SDL_MUSTLOCK(sfc))   SDL_UnlockSurface(sfc);
     }
+
+    if(SDL_MUSTLOCK(sfc))   SDL_UnlockSurface(sfc);
+
+    if(SDL_SaveBMP(sfc, "/tmp/backdrop.bmp") != 0)
+    {
+        // Error saving bitmap
+        gLogging.ftextOut("SDL_SaveBMP failed: %s\n", SDL_GetError());
+        return false;
+    }
+
 
     return true;
 }
