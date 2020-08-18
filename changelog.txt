@@ -1,3 +1,8 @@
+v2.5.4:
+-------
+- MacOs Supported and uses Docker. Yay!
+- Level swap when Hardmode in Episode 1 works once again
+
 v2.5.3:
 -------
 - Secret Ending In Keen 5 is unlockable
