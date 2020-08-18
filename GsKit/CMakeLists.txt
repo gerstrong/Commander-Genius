@@ -153,7 +153,10 @@ else()
     ENDIF (USE_OPENGL)
     
 
-    add_library(${PROJECT_NAME} LICENSE)
+    # Hack which on some systems helps linking this lib correctly
+    # (required for mac builds)
+    file(WRITE null.cpp "")
+    add_library(${PROJECT_NAME} LICENSE null.cpp)
 
     add_subdirectory(base)
     add_subdirectory(fileio)
