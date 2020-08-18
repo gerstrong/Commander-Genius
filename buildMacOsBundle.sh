@@ -16,8 +16,10 @@ chmod +x launchCGonMacOs.sh
 cp launchCGonMacOs.sh CGenius.app/Contents/MacOS
 
 bash makebundleable.sh CGenius.app/Contents/MacOS/CGeniusExe
+mkdir macosapp
+mv CGenius.app macosapp
 
 VERSION=`bash get_version.sh`
-genisoimage -V CGenius -D -R -apple -no-pad -o CGenius-${VERSION}-MacOS.dmg CGenius.app
+genisoimage -V CGenius -D -R -apple -no-pad -o CGenius-${VERSION}-MacOS.dmg macosapp
 # Cleanups
-rm -rf CGenius.app
+rm -rf macosapp

@@ -52,6 +52,29 @@ linux-generic:
       expire_in: 1 week
       paths:
         - output/*
+        
+macos-64bit:
+    image: cgenius/crossbuild:mac
+    stage: build
+    before_script:
+      - mkdir -p /tmp && cd "$_"
+      - mkdir -p $CI_PROJECT_DIR/output
+      - mkdir CGBuildMac
+      - cd CGBuildMac
+      - export PATH=$PATH:/tmp/osxcross/target/bin
+      - export CG_SOURCES=${CI_PROJECT_DIR}
+      - export OSXCROSSPATH=/tmp/osxcross
+      - export OSXOPT=${OSXCROSSPATH}/target/macports/pkgs/opt
+      - x86_64-apple-darwin14-cmake -DAPPEND_SHA=1 -DUSE_SDL2=1 -DCMAKE_BUILD_TYPE="Release" -DOSXCROSS=1 -DUSE_OPENGL=0 -DUSE_BOOST=0 -DSDL2_INCLUDE_DIR=${OSXOPT}/local/include/SDL2 -DSDL2_MIXER_INCLUDE_DIR=${OSXOPT}/local/include/SDL2 -DSDL2_INCLUDE_DIR=${OSXOPT}/local/include/SDL2 ${CG_SOURCES}
+    script:
+      - cmake --build .    
+      - bash buildMacOsBundle.sh
+      - cp *.dmg $CI_PROJECT_DIR/output
+    artifacts:
+      name: "CGenius-MacOs-$CI_COMMIT_SHORT_SHA"
+      expire_in: 1 week
+      paths:
+        - output/*
                             
 publish:
     image: inetprocess/gitlab-release
@@ -62,6 +85,7 @@ publish:
         - windows-portable
         - windows-installer
         - linux-generic
+        - macos-64bit
     script:
         - gitlab-release --message 'Build artifacts (Windows and Linux)' ./output/*
                       
