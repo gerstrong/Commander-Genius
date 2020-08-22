@@ -75,6 +75,15 @@ struct EventDieKeenPlayer  : CEvent
 };
 
 
+struct RevivePlayer : CEvent
+{
+    RevivePlayer(const int playerIdx) :
+        mPlayerIdx(playerIdx) {}
+
+    const int mPlayerIdx;
+};
+
+
 namespace galaxy
 {
 
@@ -82,14 +91,14 @@ namespace galaxy
   enum PLAYER_ACTIONS
   {
     A_KEEN_STAND = 0,
-    A_KEEN_ON_PLAT,
-    A_KEEN_BORED,
-    A_KEEN_QUESTION,
-    A_KEEN_MOON,
-    A_KEEN_BOOK_OPEN,
-    A_KEEN_BOOK_READ,
-    A_KEEN_BOOK_CLOSE,
-    A_KEEN_LOOKUP,
+    A_KEEN_ON_PLAT = 1,
+    A_KEEN_BORED = 2,
+    A_KEEN_QUESTION = 3,
+    A_KEEN_MOON = 4,
+    A_KEEN_BOOK_OPEN = 5,
+    A_KEEN_BOOK_READ = 6,
+    A_KEEN_BOOK_CLOSE = 7,
+    A_KEEN_LOOKUP = 8,
     A_KEEN_LOOKDOWN,
     A_KEEN_ACTION_1,
     A_KEEN_ACTION_2,

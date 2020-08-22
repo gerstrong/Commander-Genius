@@ -108,6 +108,15 @@ bool CVorticonMapLoaderBase::loadBase(  Uint8 episode,
 {
     
 	std::vector<Uint16> planeitems;
+
+    // Taken from the original CloneKeen. If hard-mode chosen, swap levels 5 and 9 Episode 1
+    if(episode == 1 && gBehaviorEngine.mDifficulty >= HARD)
+    {
+        if(level == 5)
+            level = 9;
+        else if(level == 9)
+            level = 5;
+    }
     
     std::string levelname = "level";
 	if(level < 10) levelname += "0";
@@ -277,15 +286,6 @@ void CVorticonMapLoaderWithPlayer::addWorldMapObject(unsigned int t, Uint16 x, U
         }
         break;
     default:             // level marker
-
-        // Taken from the original CloneKeen. If hard-mode chosen, swap levels 5 and 9 Episode 1
-        if(episode == 1 && gBehaviorEngine.mDifficulty >= HARD)
-        {
-            if(t == 5)
-                t = 9;
-            else if(t == 9)
-                t = 5;
-        }
 
         if(!mPlayerContainer.empty())
         {

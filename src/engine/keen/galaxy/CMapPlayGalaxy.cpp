@@ -123,6 +123,59 @@ void CMapPlayGalaxy::pumpEvent(const CEvent *evPtr)
     }
 }
 
+CSpriteObject *CMapPlayGalaxy::getNextStandingStillPlayer()
+{
+    CSpriteObject *playerPtr = nullptr;
+
+    for( auto obj = mObjectPtr.begin(); obj != mObjectPtr.end() ; obj++)
+    {
+        if( galaxy::CPlayerBase *player = dynamic_cast<galaxy::CPlayerBase*>(obj->get()) )
+        {
+            // Player must be alive
+            if(!player->exists || player->mIsDead)
+                continue;
+
+            // player must be standing still and do nothing
+            if(player->isOneOfActionNumbers(0, 5))
+            {
+                playerPtr = player;
+                break;
+            }
+        }
+    }
+    return playerPtr;
+}
+
+
+
+void CMapPlayGalaxy::revivePlayerAt(const int playerIdx, const GsVec2D<int> pos)
+{
+    galaxy::CPlayerBase *player = nullptr;
+
+    for( auto obj = mObjectPtr.begin(); obj != mObjectPtr.end() ; obj++)
+    {
+        // If the Player is not only dying, but also lost it's existence, meaning he got out of the screen
+        // show the death-message or go gameover.
+        player = dynamic_cast<galaxy::CPlayerBase*>(obj->get());
+        if( player )
+        {
+            if(player->getSpriteVariantIdx() == playerIdx)
+            {
+                break;
+            }
+        }
+    }
+
+    if(player)
+    {
+        player->moveToForce(pos);
+        player->mIsDead = false;
+        player->resetMainVars();
+        player->setAction(0);
+        player->m_camera.allowLead(playerIdx);
+        player->blockedd = 1;
+    }
+}
 
 
 void CMapPlayGalaxy::ponderBase(const float deltaT)
@@ -198,6 +251,14 @@ void CMapPlayGalaxy::ponderBase(const float deltaT)
                     if( player->mIsDead || (!visibility && player->mDying) )
                     {
                         player->processDead();
+                    }
+                }
+                else
+                {
+                    const auto curPlayerIdx = player->getSpriteVariantIdx();
+                    if(gInput.getPressedCommand(curPlayerIdx, IC_CAMLEAD))
+                    {
+                        gEventManager.add(new RevivePlayer(curPlayerIdx));
                     }
                 }
             }

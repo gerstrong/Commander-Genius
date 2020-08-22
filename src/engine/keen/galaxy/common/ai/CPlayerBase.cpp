@@ -235,7 +235,6 @@ void CPlayerBase::pumpEvent(const CEvent *evPtr)
 
 void CPlayerBase::processCamera()
 {
-
     auto &relVisBlend = gVideoDriver.mpVideoEngine->mRelativeBlendVisGameArea;
 
     relVisBlend = 0;
