@@ -9,6 +9,7 @@ add_subdirectory(refkeen)
 if(BUILD_COSMOS)
 	add_subdirectory(cosmos)
         MESSAGE(STATUS "Cosmos build enabled")
+        add_definitions(-DBUILD_COSMOS)
 endif(BUILD_COSMOS)
 
 

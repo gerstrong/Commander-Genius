@@ -980,10 +980,12 @@ void CGameLauncher::ponderPatchDialog()
                         gLogging.textOut("Something is wrong with your Episode configuration! Please check the game your chose");
                     }
                 }
+#ifdef BUILD_COSMOS
                 else if(gametype == GAME_TYPE::COSMO)
                 {
                     gEventManager.add( new StartCosmosEngine(false, episode, DataDirectory) );
                 }
+#endif // BUILD_COSMOS
                 else
                 {
                     gLogging.textOut("Unknown Game");

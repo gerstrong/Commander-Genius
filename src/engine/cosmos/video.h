@@ -30,6 +30,8 @@ void video_update();
 
 void video_fill_screen_with_black();
 
+void set_colorKey_and_flush_gamesfc();
+
 void video_draw_tile(Tile *tile, uint16 x, uint16 y);
 void video_draw_tile_solid_white(Tile *tile, uint16 x, uint16 y);
 void video_draw_tile_mode3(Tile *tile, uint16 x, uint16 y);

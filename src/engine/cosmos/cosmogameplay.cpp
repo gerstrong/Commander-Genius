@@ -4,6 +4,7 @@
 #include <base/GsEventContainer.h>
 #include <base/GsLogging.h>
 #include <graphics/GsGraphics.h>
+#include <base/video/CVideoDriver.h>
 
 
 typedef unsigned short uint16;
@@ -35,6 +36,8 @@ extern "C"
 
     Tile *getBGTilesPtr();
     uint16 getNumBGTiles();
+
+    extern int mapwindow_x_offset;
 }
 
 struct SetBackdropEvent : public CEvent
@@ -260,14 +263,14 @@ bool CosmoGameplay::setBackdrop(const int index)
     }
 
     if(SDL_MUSTLOCK(sfc))   SDL_UnlockSurface(sfc);
-
+/*
     if(SDL_SaveBMP(sfc, "/tmp/backdrop.bmp") != 0)
     {
         // Error saving bitmap
         gLogging.ftextOut("SDL_SaveBMP failed: %s\n", SDL_GetError());
         return false;
     }
-
+*/
 
     return true;
 }
@@ -387,6 +390,26 @@ void CosmoGameplay::ponder(const float deltaT)
 }
 
 void CosmoGameplay::render()
-{
-    //video_update();
+{    
+    // Render the backdrop
+    if(!gGraphics.getTileMaps().empty())
+    {
+        GsTilemap &tilemap = gGraphics.getTileMap(0);
+        GsWeakSurface weakSfc(tilemap.getSDLSurface());
+        GsWeakSurface blitsfc(gVideoDriver.getBlitSurface());
+
+        GsRect<Uint16> srcRect(weakSfc.width(), weakSfc.height());
+        GsRect<Uint16> dstRect(weakSfc.width(), weakSfc.height());
+
+        // TODO: Need a xwrap and maybe later a ywrap algorithm (Like Scrollsurface methods we already use?)
+
+        srcRect.pos.x = mapwindow_x_offset;
+        dstRect.dim.x -= mapwindow_x_offset;
+
+        weakSfc.blitTo(blitsfc, srcRect.SDLRect(), dstRect.SDLRect());
+
+
+        //video_update();
+    }
+
 }

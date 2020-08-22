@@ -157,10 +157,23 @@ void video_update()
     SDL_RenderPresent(renderer);
 }
 
+void set_colorKey_and_flush_gamesfc()
+{
+    /*
+    SDL_SetSurfaceBlendMode( game_surface.surface, SDL_BLENDMODE_BLEND );
+    SDL_SetSurfaceAlphaMod( game_surface.surface, TRANSPARENT_COLOR);*/
+    SDL_SetColorKey(game_surface.surface, SDL_TRUE, TRANSPARENT_COLOR);
+
+    SDL_FillRect(game_surface.surface, NULL, TRANSPARENT_COLOR);
+}
+
 void video_draw_tile(Tile *tile, uint16 x, uint16 y)
 {
+
+
     uint8 *pixel = (uint8 *)game_surface.surface->pixels + x + y * SCREEN_WIDTH;
     uint8 *tile_pixel = tile->pixels;
+
     if(tile->type == SOLID)
     {
         for(int i=0;i<TILE_HEIGHT;i++)

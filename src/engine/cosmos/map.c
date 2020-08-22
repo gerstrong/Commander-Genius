@@ -334,7 +334,9 @@ void map_display() {
     if(mapwindow_y_offset > map_max_y_offset)
         mapwindow_y_offset = map_max_y_offset;
 
-    backdrop_display();
+    set_colorKey_and_flush_gamesfc();
+
+    //backdrop_display();
     for(int y=0; y < MAP_WINDOW_HEIGHT; y++)
     {
         for(int x=0; x < MAP_WINDOW_WIDTH; x++)
