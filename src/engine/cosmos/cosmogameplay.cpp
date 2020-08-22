@@ -403,8 +403,17 @@ void CosmoGameplay::render()
 
         // TODO: Need a xwrap and maybe later a ywrap algorithm (Like Scrollsurface methods we already use?)
 
-        srcRect.pos.x = mapwindow_x_offset;
-        dstRect.dim.x -= mapwindow_x_offset;
+        const int scroll_offset_x = (mapwindow_x_offset/2) % dstRect.dim.x;
+
+        srcRect.pos.x = scroll_offset_x;
+        dstRect.dim.x -= scroll_offset_x;
+
+        weakSfc.blitTo(blitsfc, srcRect.SDLRect(), dstRect.SDLRect());
+
+        srcRect.pos.x = 0;
+        dstRect.pos.x = dstRect.dim.x;
+
+        dstRect.dim.x = scroll_offset_x;
 
         weakSfc.blitTo(blitsfc, srcRect.SDLRect(), dstRect.SDLRect());
 
