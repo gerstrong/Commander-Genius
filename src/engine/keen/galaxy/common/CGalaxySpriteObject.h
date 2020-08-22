@@ -42,6 +42,8 @@ public:
      */
 	bool getActionNumber(int16_t ActionNumber);
 
+    bool isOneOfActionNumbers(const int from, const int to);
+
     /**
      * @brief getActionStatus   Return what action number is currently set.
      * @param ActionNumber

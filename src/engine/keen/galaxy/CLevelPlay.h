@@ -37,6 +37,8 @@ public:
      */
     void ponder(const float deltaT);
 
+    void revivePlayer(const int playerIdx, const GsVec2D<int> &pos);
+
 private:
 
     /**

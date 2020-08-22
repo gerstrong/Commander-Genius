@@ -158,6 +158,9 @@ void CPlayer::kill(const bool force,
 		pdie_xvect -= DIE_MAX_XVECT;
 		inventory.lives--;
 		SelectFrame();
+
+        mpCamera->forbidLead(getSpriteVariantIdx());
+        mpCamera->cycleCamlead();
         playSound(SOUND_KEEN_DIE, SoundPlayMode::PLAY_NOW);
 
 		if(inventory.canlooseitem[0])	inventory.HasJoystick = false;

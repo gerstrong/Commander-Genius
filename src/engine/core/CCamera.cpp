@@ -114,16 +114,22 @@ void CCamera::setPosition(const GsVec2D<int>& newpos)
 
 void CCamera::process()
 {
-    // Cycle Cam Code
-    if( gInput.getPressedCommand(mCamlead, IC_CAMLEAD) )
+    if(mp_AttachedObject)
     {
-        cycleCamlead();
+        // Cycle Cam Code
+        if( !mp_AttachedObject->mIsDead )
+        {
+            if(gInput.getPressedCommand(mCamlead, IC_CAMLEAD))
+                cycleCamlead();
+        }
+
+        const int playerIdx = mp_AttachedObject->getPlayerIdx();
+
+        if(playerIdx != mCamlead)
+            return;
+
     }
 
-    const int playerIdx = mp_AttachedObject->getPlayerIdx();
-
-    if(playerIdx != mCamlead)
-        return;
 
     if(mCamLeadChange)
     {
@@ -344,3 +350,9 @@ void CCamera::forbidLead(const int id)
 {
     mDontUseThisLead[id] = true;
 }
+
+void CCamera::allowLead(const int id)
+{
+    mDontUseThisLead[id] = false;
+}
+

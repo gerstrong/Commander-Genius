@@ -87,5 +87,5 @@ publish:
         - linux-generic
         - macos-64bit
     script:
-        - gitlab-release --message 'Build artifacts (Windows and Linux)' ./output/*
+        - gitlab-release --message 'Build artifacts (Windows, Linux and MacOS)' ./output/*
                       

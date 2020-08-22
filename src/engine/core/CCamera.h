@@ -81,6 +81,8 @@ public:
 
     void forbidLead(const int id);
 
+    void allowLead(const int id);
+
     static int getLead()
     {
         return mCamlead;
@@ -107,7 +109,7 @@ public:
 
 private:
 
-	CSpriteObject *mp_AttachedObject;
+    CSpriteObject *mp_AttachedObject = nullptr;
 
     static int mCamlead;
     static bool mCamLeadChange;

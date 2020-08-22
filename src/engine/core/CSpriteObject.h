@@ -114,6 +114,8 @@ class CSpriteObject
                   const int y,
                   const int spriteVar);
 
+    void resetMainVars();
+
     int m_index;        	// Like an ID for some objects that need this implementation
     
     
@@ -353,6 +355,8 @@ class CSpriteObject
 
     int getSpriteVariantIdx() const
     {   return mSprVar;    }
+
+    bool revive();
 
     void setSpecialIdx(const int i)
     {   mPlayerIdx = i;    }

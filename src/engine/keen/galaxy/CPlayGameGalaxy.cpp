@@ -277,6 +277,7 @@ struct EventSendSelectionDialogMsg : CEvent {
 struct EventRestartLevel : CEvent {};
 
 
+
 void CPlayGameGalaxy::looseManagement( const int playerIdx,
                                        const uint16_t levelObj,
                                        const std::string &levelName )
@@ -498,6 +499,41 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
                         ev->levelObj,
                         ev->levelName);
 
+    }
+    else if( const RevivePlayer *ev = dynamic_cast<const RevivePlayer*>(evPtr) )
+    {
+        if(m_LevelPlay.isActive())
+        {            
+            // Check for an alive player and get his coordinates
+            if(auto playerPtr =
+                dynamic_cast<CPlayerBase*>( m_LevelPlay.getNextStandingStillPlayer() ))
+            {
+                if(!mGameOver[ev->mPlayerIdx])
+                {
+                    // Revive Player at those coordinates
+                    const auto pos = playerPtr->getPosition();
+                    m_LevelPlay.revivePlayerAt(ev->mPlayerIdx, pos);
+
+                    // Remove dead vector entry
+                    mDead[ev->mPlayerIdx] = false;
+                }
+                else
+                {
+                    gAudio.playSound(SOUND_CANT_DO);
+                    galaxy::showMsg(0, "Game Over!", nullptr, false, "",
+                                    galaxy::CMessageBoxGalaxy::Alignment::UPPERRIGHT,
+                                    1000, false);
+
+                }
+            }
+            else
+            {
+                gAudio.playSound(SOUND_CANT_DO);
+                galaxy::showMsg(0, "For revive one must stand still", nullptr, false, "",
+                                galaxy::CMessageBoxGalaxy::Alignment::UPPERRIGHT,
+                                2000, false);
+            }
+        }
     }
     else if( const EventExitLevelWithFoot *ev = dynamic_cast<const EventExitLevelWithFoot*>(evPtr) )
     {        

@@ -57,6 +57,10 @@ public:
 
     void pumpEvent(const CEvent *evPtr);
 
+    CSpriteObject *getNextStandingStillPlayer();
+
+    void revivePlayerAt(const int playerIdx, const GsVec2D<int> pos);
+
     /**
      * @brief ponderBase Think method
      * @param deltaT for this iteration how much time to think

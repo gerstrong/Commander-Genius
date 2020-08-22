@@ -265,6 +265,16 @@ int CGalaxySpriteObject::checkSolidD( int x1, int x2, int y2, const bool push_mo
 bool CGalaxySpriteObject::getActionNumber(int16_t ActionNumber)
 {	return (m_ActionNumber==ActionNumber);	}
 
+bool CGalaxySpriteObject::isOneOfActionNumbers(const int from, const int to)
+{
+    for(int i=from ; i<to ; i++)
+    {
+        if(m_ActionNumber==i)
+            return true;
+    }
+    return false;
+}
+
 bool CGalaxySpriteObject::getActionStatus(int16_t ActionNumber)
 {	return (m_Action.getActionFormat(m_ActionBaseOffset + 30*ActionNumber));	}
 

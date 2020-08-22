@@ -23,6 +23,32 @@
 
 int CSpriteObject::m_number_of_objects = 0; // The current number of total objects we have within the game!
 
+void CSpriteObject::resetMainVars()
+{
+    exists = true;
+    solid = true;
+    inhibitfall = false;
+    canbezapped = false;
+    onscreen = false;
+    yinertia = 0;
+    xinertia = 0;
+    onslope = false;
+    scrx = scry = 0;
+    mIsDead = false;
+    hasbeenonscreen = false;
+    honorPriority = true;
+    dontdraw = false;
+    cansupportplayer = false;
+    dying = false;
+    yDirection = xDirection = 0;
+    pSupportedbyobject = nullptr;
+
+    blockedd = false;
+    blockedu = false;
+    blockedl = false;
+    blockedr = false;
+}
+
 ///
 // Initialization Routine
 ///
@@ -35,28 +61,8 @@ m_Pos(x,y),
 mSprVar(spriteVar)
 {
 	m_number_of_objects++;
-	exists = true;
-	solid = true;
-	inhibitfall = false;
-	canbezapped = false;
-	onscreen = false;
-	yinertia = 0;
-	xinertia = 0;
-	onslope = false;
-	scrx = scry = 0;
-	mIsDead = false;
-	hasbeenonscreen = false;
-	honorPriority = true;
-	dontdraw = false;
-	cansupportplayer = false;
-	dying = false;
-	yDirection = xDirection = 0;
-	pSupportedbyobject = nullptr;
 
-	blockedd = false;
-	blockedu = false;
-	blockedl = false;
-	blockedr = false;
+    resetMainVars();
 
     setupCollisionModel();
 }
@@ -337,6 +343,13 @@ void CSpriteObject::processFallPhysics(const int boost)
 	// hit floor or ceiling? set inertia to zero
 	if( (blockedd && yinertia>0) || (blockedu && yinertia<0) )
 		yinertia = 0;
+}
+
+bool CSpriteObject::revive()
+{
+    mIsDead = false;
+
+    return true;
 }
 
 void CSpriteObject::processFallPhysics()
