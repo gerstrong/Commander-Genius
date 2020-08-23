@@ -211,12 +211,19 @@ void CInput::openJoyAndPrintStats(const int idx)
     gLogging.ftextOut("    %s<br>", SDL_JoystickName(idx));
 #endif
 
-    for(auto curJoy : mp_Joysticks)
+    for(auto &curJoy : mp_Joysticks)
     {
-        // Is joystick already added?
+        // Is joystick already added? If there is a dead one, remove it correctly.
         if(SDL_JoystickInstanceID(curJoy) == idx)
-            return;
+        {
+            SDL_JoystickClose(curJoy);
+            curJoy = nullptr;
+        }
     }
+
+    mp_Joysticks.remove_if( [](SDL_Joystick* curPtr)
+                            { return (curPtr == nullptr); } );
+
 
     SDL_Joystick *pJoystick = SDL_JoystickOpen(idx);
 
