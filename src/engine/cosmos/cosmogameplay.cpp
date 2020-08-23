@@ -350,6 +350,194 @@ bool CosmoGameplay::loadLevel(const int level_number)
 */
 
 
+        //////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////
+        /// //////////////////////////////////////////////////////////////////
+        /// //////////////////////////////////////////////////////////////////
+        /// //////////////////////////////////////////////////////////////////v
+
+
+
+    /* Here we pass all the from loaded stuff to the Map Object   */
+
+    // TODO: Maybe pass all loaded data to the mMap Object
+    //bool loadMap(CMap &Map, Uint8 level);
+
+    //////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////
+    /// //////////////////////////////////////////////////////////////////
+    /// //////////////////////////////////////////////////////////////////
+    ///
+
+    /*
+
+
+    bool ok = true;
+
+    // Get the MAPHEAD Location from within the Exe File or an external file
+    std::vector<char> mapHeadContainer;
+    const std::string &path = gKeenFiles.gameDir;
+
+    // Set Map position and some flags for the freshly loaded level
+    Map.gotoPos(0,0);
+    Map.setLevel(level);
+    Map.isSecret = false;
+    Map.mNumFuses = 0;
+
+    // In case no external file was read, let's use data from the embedded data
+    byte *Maphead = gKeenFiles.exeFile.getRawData() + getMapheadOffset();
+
+    // In case there is an external file read it into the container and replace the pointer
+    const std::string mapHeadFilename = gKeenFiles.mapheadFilename;
+    std::ifstream MapHeadFile;
+
+    if( OpenGameFileR(MapHeadFile, getResourceFilename(mapHeadFilename,path,false,false), std::ios::binary) )
+    {
+        // get length of file:
+        MapHeadFile.seekg (0, std::ios::end);
+        unsigned int length = MapHeadFile.tellg();
+        MapHeadFile.seekg (0, std::ios::beg);
+        mapHeadContainer.resize(length);
+        MapHeadFile.read(&mapHeadContainer[0],length*sizeof(char));
+        Maphead = reinterpret_cast<byte*>(&mapHeadContainer[0]);
+    }
+
+    word magic_word;
+    longword level_offset;
+
+    // Get the magic number of the level data from MAPHEAD Located in the EXE-File.
+    // This is used for the decompression.
+    magic_word = READWORD(Maphead);
+
+    // Get location of the level data from MAPHEAD Located in the EXE-File.
+    Maphead += level*sizeof(longword);
+    level_offset = READLONGWORD(Maphead);
+
+    // Open the Gamemaps file
+    std::string gamemapfile = gKeenFiles.gamemapsFilename;
+
+    std::ifstream MapFile;
+    if(OpenGameFileR(MapFile,
+                     getResourceFilename(gamemapfile,path,true,false), std::ios::binary))
+    {
+        if(level_offset == 0 && mapHeadContainer.empty())
+        {
+            MapFile.close();
+            gLogging.textOut("This Level doesn't exist in GameMaps");
+            return false;
+        }
+
+        // Then jump to that location and read the level map data
+        MapFile.seekg (level_offset, std::ios::beg);
+
+        int headbegin;
+
+        // Get the level plane header
+        if(gotoNextSignature(MapFile))
+        {
+
+            int jumpback = 3*sizeof(longword) + 3*sizeof(word) +
+                    2*sizeof(word) + 16*sizeof(byte) + 4*sizeof(byte);
+
+            headbegin = static_cast<int>(MapFile.tellg()) - jumpback;
+        }
+        else
+        {
+            MapFile.clear();
+            headbegin =  level_offset;
+        }
+
+        MapFile.seekg( headbegin, std::ios_base::beg);
+
+        // Get the header of level data
+        longword Plane_Offset[3];
+        longword Plane_Length[3];
+        word Width, Height;
+        char name[17];
+
+        // Get the plane offsets
+        Plane_Offset[0] = fgetl(MapFile);
+        Plane_Offset[1] = fgetl(MapFile);
+        Plane_Offset[2] = fgetl(MapFile);
+
+        // Get the dimensions of the level
+        Plane_Length[0] = fgetw(MapFile);
+        Plane_Length[1] = fgetw(MapFile);
+        Plane_Length[2] = fgetw(MapFile);
+
+        Width = fgetw(MapFile);
+        Height = fgetw(MapFile);
+
+
+        if(Width>1024 || Height>1024)
+        {
+            gLogging.textOut("Sorry, but I cannot uncompress this map and must give up."
+                             "Please report this to the developers and send that version to them in order to fix it.<br>" );
+            return false;
+        }
+
+
+        for(int c=0 ; c<16 ; c++)
+        {
+            name[c] = MapFile.get();
+        }
+        name[16] = '\0';
+
+        // Get and check the signature
+        gLogging.textOut("Loading the Level \"" + static_cast<std::string>(name) + "\" (Level No. "+ itoa(level) + ")<br>" );
+        Map.setLevelName(name);
+
+        mLevelName = name;
+
+        // Then decompress the level data using rlew and carmack decompression
+        gLogging.textOut("Allocating memory for the level planes ...<br>" );
+
+        // Start with the Background
+        Map.setupEmptyDataPlanes(3, Width, Height);
+
+        gLogging.textOut("Decompressing the Map... plane 0 (Background)<br>" );
+        ok &= unpackPlaneData(MapFile, Map, 0, Plane_Offset[0], Plane_Length[0], magic_word);
+
+        gLogging.textOut("Decompressing the Map... plane 1 (Foreground)<br>" );
+        ok &= unpackPlaneData(MapFile, Map, 1, Plane_Offset[1], Plane_Length[1], magic_word);
+
+        gLogging.textOut("Decompressing the Map... plane 2 (Infolayer)<br>" );
+        ok &= unpackPlaneData(MapFile, Map, 2, Plane_Offset[2], Plane_Length[2], magic_word);
+
+
+        Map.collectBlockersCoordiantes();
+        Map.setupAnimationTimer();
+
+        // Now that we have all the 3 planes (Background, Foreground, Foes) unpacked...
+        // We only will show the first two of them in the screen, because the Foes one
+        // is the one which will be used for spawning the foes (Keen, platforms, enemies, etc.)
+        gLogging.textOut("Loading the foes ...<br>" );
+        spawnFoes(Map);
+
+        if(!ok)
+        {
+            gLogging.textOut("Something went wrong while loading the map!" );
+            return false;
+        }
+    }
+    else
+    {
+        gLogging.ftextOut("Error while trying to open the \"%s\" file!", gamemapfile.c_str() );
+        return false;
+    }
+
+
+    // Set Scrollbuffer
+    Map.drawAll();
+    gVideoDriver.updateScrollBuffer(Map.m_scrollx, Map.m_scrolly);
+
+    gLogging.textOut("Map got loaded successfully!");
+
+    return true;
+
+*/
+
+
     return true;
 }
 
@@ -391,6 +579,8 @@ void CosmoGameplay::ponder(const float deltaT)
 
 void CosmoGameplay::render()
 {    
+    gVideoDriver.blitScrollSurface();
+
     // Render the backdrop
     if(!gGraphics.getTileMaps().empty())
     {

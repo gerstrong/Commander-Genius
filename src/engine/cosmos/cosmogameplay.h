@@ -42,7 +42,7 @@ public:
     /**
      * @brief render Everything that needs to be rendered representing the current state of the object
      */
-    virtual void render() override;
+    virtual void render() override;            
 
 private:
     CMap mMap;
