@@ -23,6 +23,9 @@ extern int mapwindow_y_offset;
 extern int map_max_y_offset;
 extern uint8 rain_flag;
 
+int getMapWidth();
+int getMapHeight();
+
 uint16 map_get_tile_cell(int x, int y);
 void map_write_tile_cell(uint16 map_tile_cell, int x, int y);
 void map_write_row_of_tiles(uint16 map_tile_cell, uint16 length_in_tiles, int x, int y);

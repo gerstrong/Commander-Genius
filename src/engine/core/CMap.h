@@ -195,8 +195,8 @@ public:
 
 	bool m_animation_enabled;
     bool m_Dark = false;
-	bool isSecret;
-	int mNumFuses;
+    bool isSecret = false;
+    int mNumFuses = 0;
     bool mFuseInLevel;
 
 

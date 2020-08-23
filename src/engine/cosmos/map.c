@@ -41,6 +41,33 @@ uint16 map_data[MAX_MAP_TILES];
 Tile *map_bg_tiles;
 Tile *map_fg_tiles;
 
+uint16 num_bg_tiles = 0;
+uint16 num_fg_tiles = 0;
+
+int getMapWidth()
+{
+    return map_width_in_tiles;
+}
+
+int getMapHeight()
+{
+    return map_height_in_tiles;
+}
+
+uint16 getNumBgFiles()
+{
+    return num_bg_tiles;
+}
+uint16 getNumFgFiles()
+{
+    return num_fg_tiles;
+}
+
+uint16 *map_data_ptr()
+{
+    return map_data;
+}
+
 uint16 map_get_tile_cell(int x, int y) {
     assert(x >= 0);
     assert(y >= 0);
@@ -323,11 +350,10 @@ void load_level_data(int level_number)
 
 void map_load_tiles()
 {
-    uint16 num_tiles;
-    map_bg_tiles = load_tiles("TILES.MNI", SOLID, &num_tiles);
-    printf("Loading %d map bg tiles.\n", num_tiles);
-    map_fg_tiles = load_tiles("MASKTILE.MNI", TRANSPARENT, &num_tiles);
-    printf("Loading %d map fg tiles.\n", num_tiles);
+    map_bg_tiles = load_tiles("TILES.MNI", SOLID, &num_bg_tiles);
+    printf("Loading %d map bg tiles.\n", num_bg_tiles);
+    map_fg_tiles = load_tiles("MASKTILE.MNI", TRANSPARENT, &num_fg_tiles);
+    printf("Loading %d map fg tiles.\n", num_fg_tiles);
 }
 
 void map_display() {
@@ -337,6 +363,7 @@ void map_display() {
     set_colorKey_and_flush_gamesfc();
 
     //backdrop_display();
+    /*
     for(int y=0; y < MAP_WINDOW_HEIGHT; y++)
     {
         for(int x=0; x < MAP_WINDOW_WIDTH; x++)
@@ -358,6 +385,7 @@ void map_display() {
             }
         }
     }
+*/
 }
 
 void map_write_tile_cell(uint16 map_tile_cell, int x, int y)

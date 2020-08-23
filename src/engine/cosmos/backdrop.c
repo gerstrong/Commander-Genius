@@ -46,16 +46,16 @@ const char backdrop_filename_tbl[][13] = {
 };
 
 Tile *bg_tiles = NULL;
-uint16 num_bg_tiles = 0;
+uint16 num_backdrop_tiles = 0;
 
 Tile *getBGTilesPtr()
 {
     return bg_tiles;
 }
 
-uint16 getNumBGTiles()
+uint16 getNumBackdropTiles()
 {
-    return num_bg_tiles;
+    return num_backdrop_tiles;
 }
 
 
@@ -63,8 +63,8 @@ void load_backdrop_image(const char *filename)
 {
     uint16 num_tiles;
     bg_tiles = load_tiles(filename, SOLID, &num_tiles);
-    printf("Loading %d background tiles.\n", num_tiles);
-    num_bg_tiles = num_tiles;
+    printf("Loading %d backdrop tiles.\n", num_tiles);
+    num_backdrop_tiles = num_tiles;
 }
 
 bool set_backdrop(uint16 new_backdrop_index)

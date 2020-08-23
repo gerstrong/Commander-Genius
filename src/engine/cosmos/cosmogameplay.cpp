@@ -3,8 +3,9 @@
 #include <SDL_events.h>
 #include <base/GsEventContainer.h>
 #include <base/GsLogging.h>
-#include <graphics/GsGraphics.h>
 #include <base/video/CVideoDriver.h>
+#include <engine/core/CBehaviorEngine.h>
+#include <graphics/GsGraphics.h>
 
 
 typedef unsigned short uint16;
@@ -35,9 +36,19 @@ extern "C"
 
 
     Tile *getBGTilesPtr();
-    uint16 getNumBGTiles();
+    uint16 getNumBackdropTiles();
 
     extern int mapwindow_x_offset;
+
+    int getMapWidth();
+    int getMapHeight();
+
+    uint16 map_get_tile_cell(int x, int y);
+
+    uint16 getNumBgFiles();
+    uint16 getNumFgFiles();
+
+    uint16 *map_data_ptr();
 }
 
 struct SetBackdropEvent : public CEvent
@@ -192,16 +203,16 @@ bool CosmoGameplay::setBackdrop(const int index)
     gGraphics.Palette.setupColorPalettes(nullptr, 0);
 
     GsTilemap &tilemap = gGraphics.getTileMap(0);
-    const auto num_bg_Tiles = getNumBGTiles();
+    const auto num_backdrop_Tiles = getNumBackdropTiles();
     tilemap.CreateSurface( gGraphics.Palette.m_Palette, SDL_SWSURFACE,
-                           num_bg_Tiles, 3, 40 );
+                           num_backdrop_Tiles, 3, 40 );
 
     Tile *bg_tiles = getBGTilesPtr();
     SDL_Surface *sfc = tilemap.getSDLSurface();
     SDL_FillRect(sfc, nullptr, 0);
     if(SDL_MUSTLOCK(sfc))   SDL_LockSurface(sfc);
 
-    for(int t=0 ; t<num_bg_Tiles ; t++)
+    for(int t=0 ; t<num_backdrop_Tiles ; t++)
     {
         Tile *tile = &(bg_tiles[t]);
 
@@ -369,21 +380,20 @@ bool CosmoGameplay::loadLevel(const int level_number)
     /// //////////////////////////////////////////////////////////////////
     ///
 
-    /*
 
-
-    bool ok = true;
+    //bool ok = true;
 
     // Get the MAPHEAD Location from within the Exe File or an external file
     std::vector<char> mapHeadContainer;
-    const std::string &path = gKeenFiles.gameDir;
+    //const std::string &path = gKeenFiles.gameDir;
 
     // Set Map position and some flags for the freshly loaded level
-    Map.gotoPos(0,0);
-    Map.setLevel(level);
-    Map.isSecret = false;
-    Map.mNumFuses = 0;
+    mMap.gotoPos(0,0);
+    mMap.setLevel(level_number);
+    mMap.isSecret = false;
+    mMap.mNumFuses = 0;
 
+    /*
     // In case no external file was read, let's use data from the embedded data
     byte *Maphead = gKeenFiles.exeFile.getRawData() + getMapheadOffset();
 
@@ -491,27 +501,36 @@ bool CosmoGameplay::loadLevel(const int level_number)
 
         // Then decompress the level data using rlew and carmack decompression
         gLogging.textOut("Allocating memory for the level planes ...<br>" );
-
+*/
         // Start with the Background
-        Map.setupEmptyDataPlanes(3, Width, Height);
 
-        gLogging.textOut("Decompressing the Map... plane 0 (Background)<br>" );
-        ok &= unpackPlaneData(MapFile, Map, 0, Plane_Offset[0], Plane_Length[0], magic_word);
+    CTileProperties emptyTileProperties;
 
-        gLogging.textOut("Decompressing the Map... plane 1 (Foreground)<br>" );
-        ok &= unpackPlaneData(MapFile, Map, 1, Plane_Offset[1], Plane_Length[1], magic_word);
+    std::vector<CTileProperties> &bgTileProperties = gBehaviorEngine.getTileProperties(0);
+    bgTileProperties.assign(getNumBgFiles(), emptyTileProperties);
+    std::vector<CTileProperties> &fgTileProperties = gBehaviorEngine.getTileProperties(1);
+    fgTileProperties.assign(getNumFgFiles(), emptyTileProperties);
 
-        gLogging.textOut("Decompressing the Map... plane 2 (Infolayer)<br>" );
-        ok &= unpackPlaneData(MapFile, Map, 2, Plane_Offset[2], Plane_Length[2], magic_word);
+    const auto width = getMapWidth();
+    const auto height = getMapHeight();
+        mMap.setupEmptyDataPlanes(2, width, height);
 
+        gLogging.textOut("Reading plane 0 (Background)<br>" );
+        //ok &= unpackPlaneData(MapFile, Map, 0, Plane_Offset[0], Plane_Length[0], magic_word);
 
-        Map.collectBlockersCoordiantes();
-        Map.setupAnimationTimer();
+        auto *map_data = mMap.getData(0);
+        memcpy(map_data, map_data_ptr(), width*height*sizeof(uint16));
+
+        //gLogging.textOut("Reading plane 1 (Foreground)<br>" );
+        //ok &= unpackPlaneData(MapFile, Map, 1, Plane_Offset[1], Plane_Length[1], magic_word);
+
+        mMap.collectBlockersCoordiantes();
+        mMap.setupAnimationTimer();
 
         // Now that we have all the 3 planes (Background, Foreground, Foes) unpacked...
         // We only will show the first two of them in the screen, because the Foes one
         // is the one which will be used for spawning the foes (Keen, platforms, enemies, etc.)
-        gLogging.textOut("Loading the foes ...<br>" );
+        /*gLogging.textOut("Loading the foes ...<br>" );
         spawnFoes(Map);
 
         if(!ok)
@@ -525,17 +544,17 @@ bool CosmoGameplay::loadLevel(const int level_number)
         gLogging.ftextOut("Error while trying to open the \"%s\" file!", gamemapfile.c_str() );
         return false;
     }
-
+*/
 
     // Set Scrollbuffer
-    Map.drawAll();
-    gVideoDriver.updateScrollBuffer(Map.m_scrollx, Map.m_scrolly);
+    mMap.drawAll();
+    gVideoDriver.updateScrollBuffer(mMap.m_scrollx, mMap.m_scrolly);
 
     gLogging.textOut("Map got loaded successfully!");
 
     return true;
 
-*/
+
 
 
     return true;
@@ -575,10 +594,12 @@ void CosmoGameplay::ponder(const float deltaT)
 
     executeLogics();
     //run_gameplay();
+
+    mMap.animateAllTiles();
 }
 
 void CosmoGameplay::render()
-{    
+{                
     gVideoDriver.blitScrollSurface();
 
     // Render the backdrop
