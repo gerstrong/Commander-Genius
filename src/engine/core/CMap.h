@@ -59,7 +59,9 @@ public:
      * @param height
      * @return  true if everything went allright, otherwise false
      */
-    bool setupEmptyDataPlanes(int numPlanes, Uint32 width, Uint32 height);
+    bool setupEmptyDataPlanes(const int numPlanes,
+                              const Uint32 width,
+                              const Uint32 height);
 
 	bool gotoPos( int x, int y );
 
@@ -122,28 +124,19 @@ public:
 
 	// Animation methods
 	Uint8 getAnimtiletimer();
-	void drawAnimatedTile(SDL_Surface *dst, Uint16 mx, Uint16 my, Uint16 tile);
+    void drawAnimatedTile(SDL_Surface *dst, const Uint16 mx, const Uint16 my, const Uint16 tile);
 	void animateAllTiles();
 
     auto getlevelat(const int x,
-                    const int y) -> int
-	{
-		return mPlanes[2].getMapDataAt(x>>TILE_S,y>>TILE_S);
-	}
+                    const int y) -> int;
 
     auto getPlaneDataAt(const int plane,
-                          const int x,
-                          const int y) const -> int
-	{
-		return mPlanes[plane].getMapDataAt(x>>CSF, y>>CSF);
-	}
+                        const int x,
+                        const int y) const -> int;
 
-    Uint16 getPlaneDataAt(int plane, GsVec2D<Uint32> pos) const
-	{
-		return mPlanes[plane].getMapDataAt(pos.x>>CSF, pos.y>>CSF);
-	}
+    Uint16 getPlaneDataAt(const int plane, GsVec2D<Uint32> pos) const;
 
-	word *getData(Uint8 PlaneNum);
+    word *getData(const Uint8 PlaneNum);
 	word *getInfoData();
 	word *getForegroundData();
 	word *getBackgroundData();
@@ -170,19 +163,12 @@ public:
     void unlock();
     void lock();
 
-    bool locked()
-    { return mLocked; }
+    bool locked() const;
 
 
-    void setSpriteOrigin(const int sprId, const GsVec2D<int> &origin)
-    {
-        mSpriteOriginList[sprId] = origin;
-    }
+    void setSpriteOrigin(const int sprId, const GsVec2D<int> &origin);
 
-    GsVec2D<int> getSpriteOrigin(const int sprId)
-    {
-        return mSpriteOriginList[sprId];
-    }
+    GsVec2D<int> getSpriteOrigin(const int sprId);
 
 
 	Uint16 m_scrollx;      		// Amount of how much is scrolled on the map relative to (0,0) in X
@@ -221,7 +207,7 @@ private:
 
 	float mAnimtileTimer;
 
-	CPlane mPlanes[3];
+    std::vector<CPlane> mPlanes;
 	Uint16 m_Level;
 	std::string m_LevelName;
 	std::vector<int> scrollBlockX;

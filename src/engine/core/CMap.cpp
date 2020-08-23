@@ -44,14 +44,20 @@ mShakeDir(0)
  * \brief	Create an empty data plane used for the map data
  * \param	blocksize	size in bytes of the datablock that has to be created
  */
-bool CMap::setupEmptyDataPlanes(int numPlanes, Uint32 width, Uint32 height)
+bool CMap::setupEmptyDataPlanes(const int numPlanes,
+                                const Uint32 width,
+                                const Uint32 height)
 {
 	m_width = width;
 	m_height = height;
 
+    mPlanes.clear();
+
     for(int i=0 ; i<numPlanes ; i++)
     {
-        mPlanes[i].createDataMap(m_width, m_height);
+        CPlane plane;
+        plane.createDataMap(m_width, m_height);
+        mPlanes.push_back(plane);
     }
 
 	return true;
@@ -107,23 +113,27 @@ Uint16 CMap::getObjectat(Uint16 x, Uint16 y)
  * \brief	Gets the pointer to the plane data of the map
  * \param	PlaneNum number of the requested Plane
  */
-word *CMap::getData(Uint8 PlaneNum)
+word *CMap::getData(const Uint8 PlaneNum)
 {
+    assert(mPlanes.size() > PlaneNum);
     return mPlanes[PlaneNum].getMapDataPtr();
 }
 
 word *CMap::getInfoData()
 {
+    assert(mPlanes.size() > 2);
     return mPlanes[2].getMapDataPtr();
 }
 
 word *CMap::getForegroundData()
 {
+    assert(mPlanes.size() > 1);
     return mPlanes[1].getMapDataPtr();
 }
 
 word *CMap::getBackgroundData()
 {
+    assert(mPlanes.size() > 0);
     return mPlanes[0].getMapDataPtr();
 }
 
@@ -139,6 +149,7 @@ void CMap::collectBlockersCoordiantes()
 
     if(gBehaviorEngine.getEngine() == ENGINE_GALAXY)
     {
+        assert(mPlanes.size() > 2);
         const word* map_ptr = mPlanes[2].getMapDataPtr();
 
         for(int y=0 ; y<(int)m_height ; y++)
@@ -168,6 +179,8 @@ void CMap::collectBlockersCoordiantes()
 
 void CMap::setupAnimationTimer()
 {
+    assert(mPlanes.size() > 2);
+
     auto &frontTileProperties = gBehaviorEngine.getTileProperties(1);
     word *p_front_tile = mPlanes[1].getMapDataPtr();
 
@@ -331,6 +344,8 @@ bool CMap::findHorizontalScrollBlocker(const int y)
 // in (xout,yout)
 bool CMap::findObject(unsigned int obj, int *xout, int *yout)
 {
+    assert(mPlanes.size() > 2);
+
 	unsigned int x,y;
 
 	for(y=2;y<m_height-2;y++)
@@ -358,6 +373,8 @@ bool CMap::findTile(const unsigned int tile,
                     int &yout,
                     const int plane)
 {
+    assert(int(mPlanes.size()) > plane);
+
 	unsigned int x,y;
 
 	for(y=2;y<m_height-2;y++)
@@ -379,6 +396,7 @@ bool CMap::setTile(Uint16 x, Uint16 y, Uint16 t, Uint16 plane)
 {
 	if( x<m_width && y<m_height )
 	{
+        assert(mPlanes.size() > plane);
 		//mp_foreground_data[y*m_width + x] = t;
         mPlanes[plane].setMapDataAt(t, x, y);
 		return true;
@@ -906,9 +924,14 @@ void CMap::_drawForegroundTiles()
 // Draw an animated tile. If it's not animated draw it anyway
 
 Uint8 CMap::getAnimtiletimer()
-{	return mAnimtileTimer;	}
+{
+    return mAnimtileTimer;
+}
 
-void CMap::drawAnimatedTile(SDL_Surface *dst, Uint16 mx, Uint16 my, Uint16 tile)
+void CMap::drawAnimatedTile(SDL_Surface *dst,
+                            const Uint16 mx,
+                            const Uint16 my,
+                            const Uint16 tile)
 {
     if(disableFgTile)
         return;
@@ -1030,3 +1053,39 @@ void CMap::animateAllTiles()
 }
 
 
+auto CMap::getlevelat(const int x,
+                const int y) -> int
+{
+    assert(mPlanes.size() > 2);
+    return mPlanes[2].getMapDataAt(x>>TILE_S,y>>TILE_S);
+}
+
+auto CMap::getPlaneDataAt(const int plane,
+                      const int x,
+                      const int y) const -> int
+{
+    assert(int(mPlanes.size()) > plane);
+    return mPlanes[plane].getMapDataAt(x>>CSF, y>>CSF);
+}
+
+Uint16 CMap::getPlaneDataAt(const int plane, GsVec2D<Uint32> pos) const
+{
+    assert(int(mPlanes.size()) > plane);
+    return mPlanes[plane].getMapDataAt(pos.x>>CSF, pos.y>>CSF);
+}
+
+bool CMap::locked() const
+{
+    return mLocked;
+}
+
+
+void CMap::setSpriteOrigin(const int sprId, const GsVec2D<int> &origin)
+{
+    mSpriteOriginList[sprId] = origin;
+}
+
+GsVec2D<int> CMap::getSpriteOrigin(const int sprId)
+{
+    return mSpriteOriginList[sprId];
+}
