@@ -20,7 +20,6 @@ static const bool disableFgTile = false;
 CMap::CMap():
 m_width(0), m_height(0),
 m_worldmap(false),
-m_animation_enabled(true),
 mNumFuses(0),
 mFuseInLevel(false),
 m_Tilemaps(gGraphics.getTileMaps()),
@@ -941,6 +940,9 @@ void CMap::drawAnimatedTile(SDL_Surface *dst,
 
 void CMap::animateAllTiles()
 {
+    if(m_height == 0 || m_width == 0)
+        return;
+
     if(!m_animation_enabled)
         return;
 

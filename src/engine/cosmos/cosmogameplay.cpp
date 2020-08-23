@@ -125,7 +125,7 @@ bool CosmoGameplay::load_level_data(int level_number)
     }
 */
 
-
+/*
     uint16 actor_data_size_in_words = file_read2(&map_file);
 
     int total_num_actors = 0;
@@ -147,8 +147,8 @@ bool CosmoGameplay::load_level_data(int level_number)
             //load_actor(total_num_actors, actor_type, x, y);
         }
     }
-
-
+*/
+/*
     const int MAX_MAP_TILES = 32768;
     uint16 map_data[MAX_MAP_TILES];
 
@@ -157,7 +157,7 @@ bool CosmoGameplay::load_level_data(int level_number)
     {
         map_data[i] = file_read2(&map_file);
     }
-
+*/
     // Background stuff
     /*
     word *ptr = mMap.getData(0);
@@ -513,13 +513,16 @@ bool CosmoGameplay::loadLevel(const int level_number)
 
     const auto width = getMapWidth();
     const auto height = getMapHeight();
-        mMap.setupEmptyDataPlanes(2, width, height);
+        mMap.setupEmptyDataPlanes(3, width, height);
 
         gLogging.textOut("Reading plane 0 (Background)<br>" );
         //ok &= unpackPlaneData(MapFile, Map, 0, Plane_Offset[0], Plane_Length[0], magic_word);
 
+
+        /*
         auto *map_data = mMap.getData(0);
         memcpy(map_data, map_data_ptr(), width*height*sizeof(uint16));
+        */
 
         //gLogging.textOut("Reading plane 1 (Foreground)<br>" );
         //ok &= unpackPlaneData(MapFile, Map, 1, Plane_Offset[1], Plane_Length[1], magic_word);
