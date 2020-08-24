@@ -206,7 +206,7 @@ void CInput::openJoyAndPrintStats(const int idx)
 {
     for(auto &curJoy : mp_Joysticks)
     {        
-        // Is joystick already added? If there is a dead one, remove it correctly.
+        // Is joystick already added? If found one, don't readd it.
         if(SDL_JoystickInstanceID(curJoy) == idx)
         {
             return;
