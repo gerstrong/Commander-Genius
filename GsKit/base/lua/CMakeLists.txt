@@ -5,7 +5,9 @@ cmake_minimum_required(VERSION 3.5)
 
 Project(GsKit_base_lua)
 
-set (CMAKE_C_STANDARD 99)
+set(CMAKE_C_STANDARD 99)
+set(CMAKE_C_STANDARD_REQUIRED ON)
+
 
 if(UNIX)
     add_definitions(-DLUA_USE_POSIX)
