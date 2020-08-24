@@ -204,26 +204,21 @@ void CInput::resetControls(const int player)
 
 void CInput::openJoyAndPrintStats(const int idx)
 {
+    for(auto &curJoy : mp_Joysticks)
+    {        
+        // Is joystick already added? If there is a dead one, remove it correctly.
+        if(SDL_JoystickInstanceID(curJoy) == idx)
+        {
+            return;
+        }
+    }
+
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     gLogging.ftextOut("New Joystick/Gamepad detected:<br>");
     gLogging.ftextOut("    %s<br>", SDL_JoystickNameForIndex(idx));
 #else
     gLogging.ftextOut("    %s<br>", SDL_JoystickName(idx));
 #endif
-
-    for(auto &curJoy : mp_Joysticks)
-    {
-        // Is joystick already added? If there is a dead one, remove it correctly.
-        if(SDL_JoystickInstanceID(curJoy) == idx)
-        {
-            SDL_JoystickClose(curJoy);
-            curJoy = nullptr;
-        }
-    }
-
-    mp_Joysticks.remove_if( [](SDL_Joystick* curPtr)
-                            { return (curPtr == nullptr); } );
-
 
     SDL_Joystick *pJoystick = SDL_JoystickOpen(idx);
 
@@ -254,6 +249,7 @@ void CInput::enableJoysticks()
 {
     SDL_JoystickEventState(SDL_ENABLE);
 
+#ifdef LEGACY_JOY_DETECTION
     const auto joyNum = SDL_NumJoysticks();
     if( joyNum > int(mp_Joysticks.size()) )
     {
@@ -269,6 +265,7 @@ void CInput::enableJoysticks()
     {
         gLogging.ftextOut("No joysticks were found.<br>\n");
     }
+#endif // FORCE_EVENT_BASED_JOY_DETECTION
 }
 
 /**
