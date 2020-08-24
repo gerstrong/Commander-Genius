@@ -24,7 +24,8 @@ OPTION(NINTENDO_SWITCH "Build for Nintendo Switch" No)
 
 if(NINTENDO_SWITCH)
     ADD_DEFINITIONS(-D__SWITCH__)
-endif()
+    ADD_DEFINITIONS(-DLEGACY_JOY_DETECTION)
+endif(NINTENDO_SWITCH)
 
 
 # GP2X builds
@@ -117,7 +118,7 @@ if(APPLE)
     SET(CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -headerpad_max_install_names")
 endif(APPLE)
 
-set(CMAKE_C_FLAGS "-std=c99")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99")
 
 
 # Pass correct definition for SYSTEM_DATA_DIR so packager or distributors can decide where the app should land in

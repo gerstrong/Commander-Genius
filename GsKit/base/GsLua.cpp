@@ -1,11 +1,8 @@
 #include "GsLua.h"
 
-extern "C"
-{
-    #include "lualib.h"
-    #include "lauxlib.h"
-    #include "lua.h"
-}
+#include "lua.hpp"
+
+#include <climits>
 
 #include <base/GsLogging.h>
 #include <base/utils/FindFile.h>

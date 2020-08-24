@@ -5,6 +5,12 @@ cmake_minimum_required(VERSION 3.5)
 
 Project(GsKit_base)
 
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_C_STANDARD 99)
+set(CMAKE_C_STANDARD_REQUIRED ON)
+
+
 add_subdirectory(lua)
 add_subdirectory(utils)
 add_subdirectory(video)
