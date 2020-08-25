@@ -204,17 +204,28 @@ void CInput::resetControls(const int player)
 
 void CInput::openJoyAndPrintStats(const int idx)
 {
+
+#ifdef LEGACY_JOY_DETECTION
     for(auto &curJoy : mp_Joysticks)
     {        
-        // Is joystick already added? If found one, don't readd it.
-        if(SDL_JoystickInstanceID(curJoy) == idx)
+        // Is joystick already added? If found one, don't read it.
+        const auto curInstance = SDL_JoystickInstanceID(curJoy);
+        const auto newInstance = SDL_JoystickGetDeviceInstanceID(idx);
+
+        if(newInstance < 0)
+        {
+            break;
+        }
+
+        if(curInstance == newInstance)
         {
             return;
         }
     }
+#endif // LEGACY_JOY_DETECTION
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    gLogging.ftextOut("New Joystick/Gamepad detected:<br>");
+    gLogging.ftextOut("Joystick/Gamepad detected:<br>");
     gLogging.ftextOut("    %s<br>", SDL_JoystickNameForIndex(idx));
 #else
     gLogging.ftextOut("    %s<br>", SDL_JoystickName(idx));
@@ -265,7 +276,7 @@ void CInput::enableJoysticks()
     {
         gLogging.ftextOut("No joysticks were found.<br>\n");
     }
-#endif // FORCE_EVENT_BASED_JOY_DETECTION
+#endif // LEGACY_JOY_DETECTION
 }
 
 /**
@@ -916,12 +927,11 @@ void CInput::pollEvents()
 			break;
 
         case SDL_JOYDEVICEADDED:
-            gLogging << "SDL: A Joystick just got added.";
+            gLogging.ftextOut("SDL: A Joystick just got added: Idx %d<br>\n", Event.jdevice.which);
             openJoyAndPrintStats(Event.jdevice.which);
             break;
         case SDL_JOYDEVICEREMOVED:
-            gLogging << "SDL: A Joystick just got removed.";
-
+            gLogging.ftextOut("SDL: A Joystick just got removed: Idx %d<br>\n", Event.jdevice.which);
             joystick = SDL_JoystickFromInstanceID(Event.jdevice.which);
             mp_Joysticks.remove_if(
                         [joystick](SDL_Joystick* curPtr)
