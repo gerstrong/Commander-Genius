@@ -50,6 +50,8 @@ public:
 
     void applyGalaxyHiColourMask();
 
+    Uint16 getNumColumn() const;
+
 private:
 
     GsSurface mTileSurface;

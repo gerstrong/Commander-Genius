@@ -252,6 +252,11 @@ void GsTilemap::drawTileBlended(SDL_Surface *dst,
 }
 
 
+Uint16 GsTilemap::getNumColumn() const
+{
+    return m_column;
+}
+
 void GsTilemap::applyGalaxyHiColourMask()
 {
 
