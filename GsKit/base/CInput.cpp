@@ -209,7 +209,15 @@ void CInput::openJoyAndPrintStats(const int idx)
     for(auto &curJoy : mp_Joysticks)
     {        
         // Is joystick already added? If found one, don't read it.
-        if(SDL_JoystickInstanceID(curJoy) == idx)
+        const auto curInstance = SDL_JoystickInstanceID(curJoy);
+        const auto newInstance = SDL_JoystickGetDeviceInstanceID(idx);
+
+        if(newInstance < 0)
+        {
+            break;
+        }
+
+        if(curInstance == newInstance)
         {
             return;
         }
@@ -217,7 +225,7 @@ void CInput::openJoyAndPrintStats(const int idx)
 #endif // LEGACY_JOY_DETECTION
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    gLogging.ftextOut("New Joystick/Gamepad detected:<br>");
+    gLogging.ftextOut("Joystick/Gamepad detected:<br>");
     gLogging.ftextOut("    %s<br>", SDL_JoystickNameForIndex(idx));
 #else
     gLogging.ftextOut("    %s<br>", SDL_JoystickName(idx));
@@ -268,7 +276,7 @@ void CInput::enableJoysticks()
     {
         gLogging.ftextOut("No joysticks were found.<br>\n");
     }
-#endif // FORCE_EVENT_BASED_JOY_DETECTION
+#endif // LEGACY_JOY_DETECTION
 }
 
 /**
