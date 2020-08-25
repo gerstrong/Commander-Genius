@@ -519,6 +519,25 @@ bool CosmoGameplay::loadLevel(const int level_number)
         //ok &= unpackPlaneData(MapFile, Map, 0, Plane_Offset[0], Plane_Length[0], magic_word);
 
 
+        auto *map0_data = mMap.getData(0);
+        auto *map1_data = mMap.getData(1);
+
+        auto *cosmo_map_data = map_data_ptr();
+        for(int i = 0 ; i<height*width ; i++)
+        {
+            const auto map_cell = cosmo_map_data[i];
+
+            if(map_cell < bgTileProperties.size())
+            {
+                map0_data[i] = map_cell;
+            }
+
+            if(map_cell < fgTileProperties.size())
+            {
+                map1_data[i] = map_cell;
+            }
+        }
+
         /*
         auto *map_data = mMap.getData(0);
         memcpy(map_data, map_data_ptr(), width*height*sizeof(uint16));
@@ -602,7 +621,9 @@ void CosmoGameplay::ponder(const float deltaT)
 }
 
 void CosmoGameplay::render()
-{                
+{
+    mMap.drawAll();
+
     gVideoDriver.blitScrollSurface();
 
     // Render the backdrop

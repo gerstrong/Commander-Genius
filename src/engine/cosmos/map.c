@@ -363,7 +363,7 @@ void map_display() {
     set_colorKey_and_flush_gamesfc();
 
     //backdrop_display();
-    /*
+
     for(int y=0; y < MAP_WINDOW_HEIGHT; y++)
     {
         for(int x=0; x < MAP_WINDOW_WIDTH; x++)
@@ -385,7 +385,7 @@ void map_display() {
             }
         }
     }
-*/
+
 }
 
 void map_write_tile_cell(uint16 map_tile_cell, int x, int y)
