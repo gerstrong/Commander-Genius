@@ -35,7 +35,7 @@ extern "C"
     bool open_file(const char *filename, File *file);
 
 
-    Tile *getBGTilesPtr();
+    Tile *getBackdropTilesPtr();
     uint16 getNumBackdropTiles();
 
     extern int mapwindow_x_offset;
@@ -45,8 +45,11 @@ extern "C"
 
     uint16 map_get_tile_cell(int x, int y);
 
-    uint16 getNumBgFiles();
-    uint16 getNumFgFiles();
+    uint16 getNumBgTiles();
+    uint16 getNumFgTiles();
+
+    Tile *map_get_bg_tile(uint16 tile_num);
+    Tile *map_get_fg_tile(uint16 tile_num);
 
     uint16 *map_data_ptr();
 }
@@ -179,51 +182,28 @@ bool CosmoGameplay::load_level_data(int level_number)
 }
 
 
-bool CosmoGameplay::setBackdrop(const int index)
+auto extractTilemap(GsTilemap &tilemap,
+                    const Tile *tiles,
+                    const int num_tiles) -> bool
 {
-    /*
-    static uint8 cur_background_x_scroll_flag = 0;
-    static uint8 cur_background_y_scroll_flag = 0;
-
-    if (new_backdrop_index != backdrop_index ||
-            cur_background_x_scroll_flag != background_x_scroll_flag ||
-            cur_background_y_scroll_flag != background_y_scroll_flag)
-    {
-        backdrop_index = new_backdrop_index;
-        cur_background_x_scroll_flag = background_x_scroll_flag;
-        cur_background_y_scroll_flag = background_y_scroll_flag;
-
-        load_backdrop_image(backdrop_filename_tbl[backdrop_index]);
-    }
-
-    */
-
-    //auto dataPtr = mMap.getData(0);
-
-    gGraphics.Palette.setupColorPalettes(nullptr, 0);
-
-    GsTilemap &tilemap = gGraphics.getTileMap(0);
-    const auto num_backdrop_Tiles = getNumBackdropTiles();
-    tilemap.CreateSurface( gGraphics.Palette.m_Palette, SDL_SWSURFACE,
-                           num_backdrop_Tiles, 3, 40 );
-
-    Tile *bg_tiles = getBGTilesPtr();
     SDL_Surface *sfc = tilemap.getSDLSurface();
+    const auto col = tilemap.getNumColumn();
+
     SDL_FillRect(sfc, nullptr, 0);
     if(SDL_MUSTLOCK(sfc))   SDL_LockSurface(sfc);
 
-    for(int t=0 ; t<num_backdrop_Tiles ; t++)
+    for(int t=0 ; t<num_tiles ; t++)
     {
-        Tile *tile = &(bg_tiles[t]);
+        const Tile *tile = &(tiles[t]);
 
-        const uint16 tx = (t%40);
-        const uint16 ty = (t/40);
+        const uint16 tx = (t%col);
+        const uint16 ty = (t/col);
 
         const int x = tx*8;
         const int y = ty*8;
 
         uint8 *pixel = (uint8 *)sfc->pixels + x + y * 320;
-        uint8 *tile_pixel = tile->pixels;
+        const uint8 *tile_pixel = tile->pixels;
         for(int i=0 ; i<TILE_HEIGHT ; i++)
         {
             for(int j=0 ; j < TILE_WIDTH ; j++)
@@ -280,14 +260,51 @@ bool CosmoGameplay::setBackdrop(const int index)
         // Error saving bitmap
         gLogging.ftextOut("SDL_SaveBMP failed: %s\n", SDL_GetError());
         return false;
+    }*/
+
+    return true;
+}
+
+bool CosmoGameplay::setBackdrop(const int index)
+{
+    /*
+    static uint8 cur_background_x_scroll_flag = 0;
+    static uint8 cur_background_y_scroll_flag = 0;
+
+    if (new_backdrop_index != backdrop_index ||
+            cur_background_x_scroll_flag != background_x_scroll_flag ||
+            cur_background_y_scroll_flag != background_y_scroll_flag)
+    {
+        backdrop_index = new_backdrop_index;
+        cur_background_x_scroll_flag = background_x_scroll_flag;
+        cur_background_y_scroll_flag = background_y_scroll_flag;
+
+        load_backdrop_image(backdrop_filename_tbl[backdrop_index]);
     }
-*/
+
+    */
+
+    //auto dataPtr = mMap.getData(0);
+
+    gGraphics.Palette.setupColorPalettes(nullptr, 0);
+
+    GsTilemap &backdroptilemap = gGraphics.getTileMap(0);
+    const auto num_backdrop_Tiles = getNumBackdropTiles();
+    backdroptilemap.CreateSurface( gGraphics.Palette.m_Palette, SDL_SWSURFACE,
+                           num_backdrop_Tiles, 3, 40 );
+
+
+    extractTilemap(backdroptilemap,
+                   getBackdropTilesPtr(),
+                   num_backdrop_Tiles);
+
 
     return true;
 }
 
 bool CosmoGameplay::loadLevel(const int level_number)
 {
+    gGraphics.freeTilemap();
     gGraphics.createEmptyTilemaps(4);
 
     File map_file;
@@ -320,6 +337,26 @@ bool CosmoGameplay::loadLevel(const int level_number)
     load_level_data(level_number);
 
     setBackdrop(backdrop_index);
+
+
+
+    GsTilemap &tilemap1 = gGraphics.getTileMap(1);
+    const auto num_bg_Tiles = getNumBgTiles();
+    tilemap1.CreateSurface( gGraphics.Palette.m_Palette, SDL_SWSURFACE,
+                           num_bg_Tiles, 3, 40 );
+
+    auto *tiles1 = map_get_bg_tile(0);
+    extractTilemap(tilemap1, tiles1, num_bg_Tiles);
+
+
+    GsTilemap &tilemap2 = gGraphics.getTileMap(2);
+    const auto num_fg_Tiles = getNumFgTiles();
+    tilemap2.CreateSurface( gGraphics.Palette.m_Palette, SDL_SWSURFACE,
+                           num_fg_Tiles, 3, 40 );
+
+    auto *tiles2 = map_get_fg_tile(0);
+    extractTilemap(tilemap2, tiles2, num_fg_Tiles);
+
 /*
     if (level_number == 0 && show_one_moment_screen_flag != 0) {
         fade_to_black_speed_3();
@@ -507,9 +544,9 @@ bool CosmoGameplay::loadLevel(const int level_number)
     CTileProperties emptyTileProperties;
 
     std::vector<CTileProperties> &bgTileProperties = gBehaviorEngine.getTileProperties(0);
-    bgTileProperties.assign(getNumBgFiles(), emptyTileProperties);
+    bgTileProperties.assign(getNumBgTiles(), emptyTileProperties);
     std::vector<CTileProperties> &fgTileProperties = gBehaviorEngine.getTileProperties(1);
-    fgTileProperties.assign(getNumFgFiles(), emptyTileProperties);
+    fgTileProperties.assign(getNumFgTiles(), emptyTileProperties);
 
     const auto width = getMapWidth();
     const auto height = getMapHeight();
@@ -529,12 +566,15 @@ bool CosmoGameplay::loadLevel(const int level_number)
 
             if(map_cell < bgTileProperties.size())
             {
-                map0_data[i] = map_cell;
+                const uint16 tile = map_cell/8;
+                map0_data[i] = tile;
             }
+
 
             if(map_cell < fgTileProperties.size())
             {
-                map1_data[i] = map_cell;
+                const uint16 tile =  ((map_cell/8) - 2000) / 5;
+                map1_data[i] = tile;
             }
         }
 

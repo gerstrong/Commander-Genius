@@ -48,7 +48,7 @@ const char backdrop_filename_tbl[][13] = {
 Tile *bg_tiles = NULL;
 uint16 num_backdrop_tiles = 0;
 
-Tile *getBGTilesPtr()
+Tile *getBackdropTilesPtr()
 {
     return bg_tiles;
 }

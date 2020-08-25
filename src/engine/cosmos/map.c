@@ -54,11 +54,11 @@ int getMapHeight()
     return map_height_in_tiles;
 }
 
-uint16 getNumBgFiles()
+uint16 getNumBgTiles()
 {
     return num_bg_tiles;
 }
-uint16 getNumFgFiles()
+uint16 getNumFgTiles()
 {
     return num_fg_tiles;
 }
@@ -363,7 +363,7 @@ void map_display() {
     set_colorKey_and_flush_gamesfc();
 
     //backdrop_display();
-
+/*
     for(int y=0; y < MAP_WINDOW_HEIGHT; y++)
     {
         for(int x=0; x < MAP_WINDOW_WIDTH; x++)
@@ -384,7 +384,7 @@ void map_display() {
                 video_draw_tile(&map_fg_tiles[tile], (x+1)*8, (y+1)*8);
             }
         }
-    }
+    }*/
 
 }
 
@@ -418,6 +418,12 @@ Tile *map_get_bg_tile(uint16 tile_num)
 {
     return &map_bg_tiles[tile_num];
 }
+
+Tile *map_get_fg_tile(uint16 tile_num)
+{
+    return &map_fg_tiles[tile_num];
+}
+
 
 uint8 map_get_tile_attr(int x, int y)
 {
