@@ -786,31 +786,47 @@ void CPlayer::ProcessInput()
 	else if(playpushed_decreasetimer<0)
 	    playpushed_decreasetimer++;
 
+
+    const auto isAnalog = gInput.isAnalog(m_index);
+
+    const int maxMotionVal = 100;
+
+    auto procAnalogMovements = [&](const int player,
+                                   const int command,
+                                   const int maxVal) -> int
+    {
+        if(!isAnalog || !gInput.isJoystickAssgmnt(player, command) )
+            return maxVal;
+
+        return gInput.getJoyValue(player, command, (maxVal<0));
+    };
+
 	
 	if(gInput.getHoldedCommand(m_index, IC_LEFT) && playpushed_decreasetimer<=0 )
 	{
-        const int newval = gInput.isJoystickAssgmnt(m_index, IC_LEFT) && gInput.isAnalog(m_index) ?
-                           -gInput.getJoyValue(m_index, IC_LEFT) : 100;
-	    playcontrol[PA_X] -= newval;
+        const int newval = procAnalogMovements(m_index,
+                                               IC_LEFT, -maxMotionVal);
+
+        playcontrol[PA_X] += newval;
 	}
 	else if(gInput.getHoldedCommand(m_index, IC_RIGHT) && playpushed_decreasetimer>=0 )
 	{
-        const int newval = gInput.isJoystickAssgmnt(m_index, IC_RIGHT) && gInput.isAnalog(m_index) ?
-                           gInput.getJoyValue(m_index, IC_RIGHT) : 100;
+        const int newval = procAnalogMovements(m_index,
+                                               IC_RIGHT, maxMotionVal);
 	    playcontrol[PA_X] += newval;
 	}
 	
 	if(gInput.getHoldedCommand(m_index, IC_DOWN) )
 	{
-        const int newval = gInput.isJoystickAssgmnt(m_index, IC_DOWN) && gInput.isAnalog(m_index) ?
-                           gInput.getJoyValue(m_index, IC_DOWN) : 100;
+        const int newval = procAnalogMovements(m_index,
+                                               IC_DOWN, maxMotionVal);
 	    playcontrol[PA_Y] += newval;
 	}
 	else if(gInput.getHoldedCommand(m_index, IC_UP))
 	{
-        const int newval = gInput.isJoystickAssgmnt(m_index, IC_UP) && gInput.isAnalog(m_index) ?
-                           -gInput.getJoyValue(m_index, IC_UP) : 100;
-	    playcontrol[PA_Y] -= newval;
+        const int newval = procAnalogMovements(m_index,
+                                               IC_UP, -maxMotionVal);
+        playcontrol[PA_Y] += newval;
 	}	    
 	
 	if(gInput.getHoldedCommand(m_index, IC_UPPERLEFT))

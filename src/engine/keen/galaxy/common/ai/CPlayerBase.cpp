@@ -294,7 +294,7 @@ void CPlayerBase::processInput()
         if(!isAnalog || !gInput.isJoystickAssgmnt(player, command) )
             return maxVal;
 
-        return gInput.getJoyValue(player, command);
+        return gInput.getJoyValue(player, command, (maxVal<0) );
     };
 
     if(gInput.getHoldedCommand(mPlayerCtrlNum, IC_LEFT))

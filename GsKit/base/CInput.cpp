@@ -1689,15 +1689,20 @@ bool CInput::getHoldedCommand(int player, int command)
     return input[command].active;
 }
 
-int CInput::getJoyValue(const int player, const int command)
+int CInput::getJoyValue(const int player,
+                        const int command,
+                        const bool negative)
 {
     auto &input = mInputCommands[player];
     int newval = input[command].joymotion;
 	newval = (newval*101)>>15;
-	if( newval > 100 )
-		newval = 100;
-	if( newval < -100 )
-		newval = -100;
+
+    newval = newval<0 ? -newval : newval;
+
+    if( newval > 100 )
+        newval = 100;
+
+    newval = negative ? -newval : newval;
 	return newval;
 }
 
