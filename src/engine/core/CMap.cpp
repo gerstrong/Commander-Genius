@@ -732,14 +732,27 @@ void CMap::drawAll()
             Uint32 bg = mPlanes[0].getMapDataAt(x+m_mapx, y+m_mapy);
             Uint32 fg = mPlanes[1].getMapDataAt(x+m_mapx, y+m_mapy);
 
-            m_Tilemaps.at(0).drawTile(ScrollSurface, ((x<<4)+m_mapxstripepos)&drawMask,((y<<4)+m_mapystripepos)&drawMask, bg);
+            m_Tilemaps.at(0).drawTile(ScrollSurface,
+                                      ((x<<4)+m_mapxstripepos)&drawMask,
+                                      ((y<<4)+m_mapystripepos)&drawMask, bg);
 
             if(fg && !disableFgTile)
             {
-               m_Tilemaps.at(1).drawTile(ScrollSurface, ((x<<4)+m_mapxstripepos)&drawMask,((y<<4)+m_mapystripepos)&drawMask, fg);
+               m_Tilemaps.at(1).drawTile(ScrollSurface,
+                                         ((x<<4)+m_mapxstripepos)&drawMask,
+                                         ((y<<4)+m_mapystripepos)&drawMask, fg);
             }
         }
     }
+
+
+        if(SDL_SaveBMP(ScrollSurface, "/tmp/backdrop.bmp") != 0)
+        {
+            // Error saving bitmap
+            gLogging.ftextOut("SDL_SaveBMP failed: %s\n", SDL_GetError());
+            //return false;
+        }
+
 }
 
 // draw a horizontal stripe, for vertical scrolling

@@ -288,7 +288,7 @@ bool CosmoGameplay::setBackdrop(const int index)
 
     gGraphics.Palette.setupColorPalettes(nullptr, 0);
 
-    GsTilemap &backdroptilemap = gGraphics.getTileMap(0);
+    GsTilemap &backdroptilemap = gGraphics.getTileMap(2);
     const auto num_backdrop_Tiles = getNumBackdropTiles();
     backdroptilemap.CreateSurface( gGraphics.Palette.m_Palette, SDL_SWSURFACE,
                            num_backdrop_Tiles, 3, 40 );
@@ -340,22 +340,22 @@ bool CosmoGameplay::loadLevel(const int level_number)
 
 
 
-    GsTilemap &tilemap1 = gGraphics.getTileMap(1);
+    GsTilemap &tilemap0 = gGraphics.getTileMap(0);
     const auto num_bg_Tiles = getNumBgTiles();
-    tilemap1.CreateSurface( gGraphics.Palette.m_Palette, SDL_SWSURFACE,
+    tilemap0.CreateSurface( gGraphics.Palette.m_Palette, SDL_SWSURFACE,
                            num_bg_Tiles, 3, 40 );
 
     auto *tiles1 = map_get_bg_tile(0);
-    extractTilemap(tilemap1, tiles1, num_bg_Tiles);
+    extractTilemap(tilemap0, tiles1, num_bg_Tiles);
 
 
-    GsTilemap &tilemap2 = gGraphics.getTileMap(2);
+    GsTilemap &tilemap1 = gGraphics.getTileMap(1);
     const auto num_fg_Tiles = getNumFgTiles();
-    tilemap2.CreateSurface( gGraphics.Palette.m_Palette, SDL_SWSURFACE,
+    tilemap1.CreateSurface( gGraphics.Palette.m_Palette, SDL_SWSURFACE,
                            num_fg_Tiles, 3, 40 );
 
     auto *tiles2 = map_get_fg_tile(0);
-    extractTilemap(tilemap2, tiles2, num_fg_Tiles);
+    extractTilemap(tilemap1, tiles2, num_fg_Tiles);
 
 /*
     if (level_number == 0 && show_one_moment_screen_flag != 0) {
@@ -615,11 +615,6 @@ bool CosmoGameplay::loadLevel(const int level_number)
     gLogging.textOut("Map got loaded successfully!");
 
     return true;
-
-
-
-
-    return true;
 }
 
 
@@ -669,7 +664,7 @@ void CosmoGameplay::render()
     // Render the backdrop
     if(!gGraphics.getTileMaps().empty())
     {
-        GsTilemap &tilemap = gGraphics.getTileMap(0);
+        GsTilemap &tilemap = gGraphics.getTileMap(2);
         GsWeakSurface weakSfc(tilemap.getSDLSurface());
         GsWeakSurface blitsfc(gVideoDriver.getBlitSurface());
 
