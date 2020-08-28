@@ -205,7 +205,6 @@ void CInput::resetControls(const int player)
 void CInput::openJoyAndPrintStats(const int idx)
 {
 
-#ifdef LEGACY_JOY_DETECTION
     for(auto &curJoy : mp_Joysticks)
     {        
         // Is joystick already added? If found one, don't read it.
@@ -222,7 +221,6 @@ void CInput::openJoyAndPrintStats(const int idx)
             return;
         }
     }
-#endif // LEGACY_JOY_DETECTION
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     gLogging.ftextOut("Joystick/Gamepad detected:<br>");
@@ -260,7 +258,6 @@ void CInput::enableJoysticks()
 {
     SDL_JoystickEventState(SDL_ENABLE);
 
-#ifdef LEGACY_JOY_DETECTION
     const auto joyNum = SDL_NumJoysticks();
     if( joyNum > int(mp_Joysticks.size()) )
     {
@@ -276,7 +273,6 @@ void CInput::enableJoysticks()
     {
         gLogging.ftextOut("No joysticks were found.<br>\n");
     }
-#endif // LEGACY_JOY_DETECTION
 }
 
 /**
@@ -1693,15 +1689,20 @@ bool CInput::getHoldedCommand(int player, int command)
     return input[command].active;
 }
 
-int CInput::getJoyValue(const int player, const int command)
+int CInput::getJoyValue(const int player,
+                        const int command,
+                        const bool negative)
 {
     auto &input = mInputCommands[player];
     int newval = input[command].joymotion;
 	newval = (newval*101)>>15;
-	if( newval > 100 )
-		newval = 100;
-	if( newval < -100 )
-		newval = -100;
+
+    newval = newval<0 ? -newval : newval;
+
+    if( newval > 100 )
+        newval = 100;
+
+    newval = negative ? -newval : newval;
 	return newval;
 }
 

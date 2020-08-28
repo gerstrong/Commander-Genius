@@ -202,7 +202,7 @@ public:
 	bool getPulsedCommand(int player, int command, int msec);
 	bool isJoystickAssgmnt(const int player, const int command);
 	bool getHoldedCommand(int player, int command);
-    int getJoyValue(const int player, const int command);
+    int getJoyValue(const int player, const int command, const bool negative);
 	bool getHoldedCommand(int command);
 	bool getPressedCommand(int command);
 	bool getPressedCommand(int player, int command);
