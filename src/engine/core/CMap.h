@@ -179,7 +179,7 @@ public:
 
 	std::string m_gamepath;
 
-	bool m_animation_enabled;
+    bool m_animation_enabled = true;
     bool m_Dark = false;
 	bool isSecret;
 	int mNumFuses;
