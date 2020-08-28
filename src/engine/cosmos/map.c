@@ -384,8 +384,8 @@ void map_display() {
                 video_draw_tile(&map_fg_tiles[tile], (x+1)*8, (y+1)*8);
             }
         }
-    }*/
-
+    }
+*/
 }
 
 void map_write_tile_cell(uint16 map_tile_cell, int x, int y)

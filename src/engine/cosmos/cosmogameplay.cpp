@@ -563,18 +563,24 @@ bool CosmoGameplay::loadLevel(const int level_number)
         for(int i = 0 ; i<height*width ; i++)
         {
             const auto map_cell = cosmo_map_data[i];
+            const uint16 tile = map_cell/8;
 
-            if(map_cell < bgTileProperties.size())
+            if(tile < bgTileProperties.size() && tile < 2000)
             {
-                const uint16 tile = map_cell/8;
-                map0_data[i] = tile;
+                if(tile)
+                {
+                    map0_data[i] = tile;
+                }
             }
-
-
-            if(map_cell < fgTileProperties.size())
+            else
             {
-                const uint16 tile =  ((map_cell/8) - 2000) / 5;
-                map1_data[i] = tile;
+                const uint16 fgTile = (tile-2000)/5;
+
+                if(fgTile < fgTileProperties.size())
+                {
+                    map1_data[i] = fgTile;
+                }
+
             }
         }
 
@@ -609,6 +615,7 @@ bool CosmoGameplay::loadLevel(const int level_number)
 */
 
     // Set Scrollbuffer
+    mMap.collectBlockersCoordiantes();
     mMap.drawAll();
     gVideoDriver.updateScrollBuffer(mMap.m_scrollx, mMap.m_scrolly);
 
@@ -651,6 +658,7 @@ void CosmoGameplay::ponder(const float deltaT)
 
     executeLogics();
     //run_gameplay();
+    mMap.scrollDown();
 
     mMap.animateAllTiles();
 }
@@ -658,8 +666,6 @@ void CosmoGameplay::ponder(const float deltaT)
 void CosmoGameplay::render()
 {
     mMap.drawAll();
-
-    gVideoDriver.blitScrollSurface();
 
     // Render the backdrop
     if(!gGraphics.getTileMaps().empty())
@@ -691,4 +697,7 @@ void CosmoGameplay::render()
         //video_update();
     }
 
+    mMap.calcVisibleArea();
+    mMap.refreshVisibleArea();
+    gVideoDriver.blitScrollSurface();
 }
