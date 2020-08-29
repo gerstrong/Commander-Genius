@@ -81,10 +81,25 @@ public:
 
     void calcVisibleArea();
     void refreshVisibleArea();
+
+    void redrawPlaneAt(const int planeIdx, const Uint32 mx, const Uint32 my);
 	void redrawAt(const Uint32 mx, const Uint32 my);
+
+    void drawAllOfPlane(const int planeIdx);
 	void drawAll();
-	void drawHstripe( unsigned int y, unsigned int mpy );
-	void drawVstripe( unsigned int x, unsigned int mpx );
+
+    void drawHstripeOfPlane(const int planeIdx,
+                            const unsigned int y,
+                            const unsigned int mpy);
+
+    void drawHstripe(const unsigned int y, const unsigned int mpy );
+
+
+    void drawVstripeOfPlane(const int planeIdx,
+                            const unsigned int x,
+                            const unsigned int mpx);
+
+    void drawVstripe(const unsigned int x, const unsigned int mpx );
 
     /**
      * @brief shakMap will make the currently running map shake for a certain amount of time
