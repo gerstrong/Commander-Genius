@@ -127,7 +127,7 @@ public:
 
 	// Animation methods
 	Uint8 getAnimtiletimer();
-    void drawAnimatedTile(SDL_Surface *dst, const Uint16 mx, const Uint16 my, const Uint16 tile);
+    //void drawAnimatedTile(SDL_Surface *dst, const Uint16 mx, const Uint16 my, const Uint16 tile);
 	void animateAllTiles();
 
     auto getlevelat(const int x,
@@ -144,6 +144,8 @@ public:
 	word *getForegroundData();
 	word *getBackgroundData();
 
+
+    void setupAnimationTimerOfTile(const int tilemapIdx);
 
     /**
      * @brief setupAnimationTimer   Set the animation timer to the coordinates instead of starting the first time with zero.

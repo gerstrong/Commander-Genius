@@ -187,19 +187,12 @@ void CMap::collectBlockersCoordiantes()
 
 }
 
-void CMap::setupAnimationTimer()
+void CMap::setupAnimationTimerOfTile(const int tilemapIdx)
 {
-    assert(mPlanes.size() > 2);
+    auto &tileProperties = gBehaviorEngine.getTileProperties(tilemapIdx);
+    word *p_back_tile = mPlanes[tilemapIdx].getMapDataPtr();
 
-    auto &frontTileProperties = gBehaviorEngine.getTileProperties(1);
-    word *p_front_tile = mPlanes[1].getMapDataPtr();
-
-    auto &backTileProperties = gBehaviorEngine.getTileProperties(0);
-    word *p_back_tile = mPlanes[0].getMapDataPtr();
-
-    auto &timersBack = mPlanes[0].getTimers();
-    auto &timersFront = mPlanes[1].getTimers();
-
+    auto &timers = mPlanes[tilemapIdx].getTimers();
     for( size_t y=0 ; y<m_height ; y++)
     {
         const size_t stride = m_width*y;
@@ -207,14 +200,18 @@ void CMap::setupAnimationTimer()
         for( size_t x=0 ; x<m_width ; x++)
         {
             const auto offset = stride + x;
-
-            timersBack[offset] = backTileProperties[*p_back_tile].animationTime;
-            timersFront[offset] = frontTileProperties[*p_front_tile].animationTime;
-
+            timers[offset] = tileProperties[*p_back_tile].animationTime;
             p_back_tile++;
-            p_front_tile++;
         }
     }
+}
+
+void CMap::setupAnimationTimer()
+{
+    assert(mPlanes.size() > 2);
+
+    setupAnimationTimerOfTile(0);
+    setupAnimationTimerOfTile(1);
 }
 
 void CMap::fetchNearestVertBlockers(const int x, int &leftCoord, int &rightCoord)
@@ -407,7 +404,6 @@ bool CMap::setTile(Uint16 x, Uint16 y, Uint16 t, Uint16 plane)
 	if( x<m_width && y<m_height )
 	{
         assert(mPlanes.size() > plane);
-		//mp_foreground_data[y*m_width + x] = t;
         mPlanes[plane].setMapDataAt(t, x, y);
 		return true;
 	}
@@ -425,10 +421,8 @@ bool CMap::setTile(Uint16 x, Uint16 y, Uint16 t, bool redraw, Uint16 plane)
 		}
 		return true;
 	}
-    else
-    {
-        return false;
-    }
+
+    return false;
 }
 
 // Called in level. This function does the same as setTile, but also draws directly to the scrollsurface
@@ -445,6 +439,7 @@ bool CMap::changeTile(Uint16 x, Uint16 y, Uint16 t)
         }
 		return true;
 	}
+
 	return false;
 }
 
@@ -460,8 +455,12 @@ void CMap::changeTileArrayY(Uint16 x, Uint16 y, Uint16 h, Uint16 tile)
 	const Uint16 y2 = y+h;
 
 	for(Uint16 c_y=y ; c_y<y2 ; c_y++)
-		for(Uint16 c_x=x ; c_x<x2 ; c_x++)
-			changeTile(c_x, c_y, tile);
+    {
+        for(Uint16 c_x=x ; c_x<x2 ; c_x++)
+        {
+            changeTile(c_x, c_y, tile);
+        }
+    }
 }
 
 ////
@@ -487,15 +486,21 @@ bool CMap::gotoPos(int x, int y)
     }
 
 	if( dx < 0 )
-		for( int scrollx=0 ; scrollx<-dx ; scrollx++) scrollLeft(true);
+    {
+        for( int scrollx=0 ; scrollx<-dx ; scrollx++) scrollLeft(true);
+    }
 	else retval = true;
 
 	if( dy > 0 )
-		for( int scrolly=0 ; scrolly<dy ; scrolly++) scrollDown(true);
+    {
+        for( int scrolly=0 ; scrolly<dy ; scrolly++) scrollDown(true);
+    }
 	else retval = true;
 
 	if( dy < 0 )
-		for( int scrolly=0 ; scrolly<-dy ; scrolly++) scrollUp(true);
+    {
+        for( int scrolly=0 ; scrolly<-dy ; scrolly++) scrollUp(true);
+    }
 	else retval = true;
 
     calcVisibleArea();
@@ -635,23 +640,10 @@ bool CMap::scrollUp(const bool force)
 		} else m_scrollpixy--;
 
         refreshVisibleArea();
-
 		return true;
 	}
 	return false;
 }
-
-
-
-
-//////////////////////
-// Drawing Routines //
-//////////////////////
-// Draws the entire map to the scroll buffer
-// called at start of level to draw the upper-left corner of the map
-// onto the scrollbuffer...from then on the map will only be drawn
-// in stripes as it scrolls around.
-
 
 
 void CMap::calcVisibleArea()
@@ -688,6 +680,16 @@ void CMap::refreshVisibleArea()
 
 
 
+//////////////////////
+// Drawing Routines //
+//////////////////////
+
+
+// It works like this. Normally we draw the entire map to the scroll buffer
+// called at start of level to draw the upper-left corner of the map
+// onto the scrollbuffer...from then on the map will only be drawn
+// in stripes as it scrolls around.
+
 void CMap::redrawAt(const Uint32 mx, const Uint32 my)
 {
     SDL_Surface *ScrollSurface = gVideoDriver.getScrollSurface();
@@ -714,7 +716,8 @@ void CMap::redrawAt(const Uint32 mx, const Uint32 my)
 	}
 }
 
-// draws all the map area. This is used for the title screen, when game starts and other passive scenes.
+// draws all the map area.
+// This also is used for the title screen, when game starts and other passive scenes.
 // Don't use it, when the game is scrolling.
 // For an faster update of tiles use redrawAt instead.
 void CMap::drawAll()
@@ -810,15 +813,18 @@ void CMap::drawVstripe(unsigned int x, unsigned int mpx)
     for(Uint32 y=0 ; y<num_h_tiles ; y++)
 	{
       Uint32 bg = mPlanes[0].getMapDataAt(mpx, y+m_mapy);
-      Uint32 fg = mPlanes[1].getMapDataAt(mpx, y+m_mapy);
-
       m_Tilemaps.at(0).drawTile(ScrollSurface, x, ((y<<mTileSizeBase)+m_mapystripepos) & drawMask, bg);
+	}
+
+    for(Uint32 y=0 ; y<num_h_tiles ; y++)
+    {
+      Uint32 fg = mPlanes[1].getMapDataAt(mpx, y+m_mapy);
 
       if(fg && !disableFgTile)
       {
         m_Tilemaps.at(1).drawTile(ScrollSurface, x, ((y<<mTileSizeBase)+m_mapystripepos) & drawMask, fg);
       }
-	}
+    }
 }
 
 
@@ -940,15 +946,16 @@ void CMap::_drawForegroundTiles()
 /////////////////////////
 // Animation functions //
 /////////////////////////
-// searches for animated tiles at the map position (X,Y) and
+// Searches for animated tiles at the map position (X,Y) and
 // unregisters them from animtiles
-// Draw an animated tile. If it's not animated draw it anyway
+// Draw an animated tile. If it's not animated, draw it anyways
 
 Uint8 CMap::getAnimtiletimer()
 {
     return mAnimtileTimer;
 }
 
+/*
 void CMap::drawAnimatedTile(SDL_Surface *dst,
                             const Uint16 mx,
                             const Uint16 my,
@@ -959,6 +966,7 @@ void CMap::drawAnimatedTile(SDL_Surface *dst,
 
     m_Tilemaps[1].drawTile( gVideoDriver.getBlitSurface(), mx, my, tile);
 }
+*/
 
 void CMap::animateAllTiles()
 {
