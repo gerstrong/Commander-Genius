@@ -343,14 +343,18 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
         // Start with the Background
         Map.setupEmptyDataPlanes(3, 16, Width, Height);
 
+        // Start with the Background
         gLogging.textOut("Decompressing the Map... plane 0 (Background)<br>" );
         ok &= unpackPlaneData(MapFile, Map, 0, Plane_Offset[0], Plane_Length[0], magic_word);
 
+        // Continue with Foreground
         gLogging.textOut("Decompressing the Map... plane 1 (Foreground)<br>" );
         ok &= unpackPlaneData(MapFile, Map, 1, Plane_Offset[1], Plane_Length[1], magic_word);
 
+        // And finish up with the info layer
         gLogging.textOut("Decompressing the Map... plane 2 (Infolayer)<br>" );
         ok &= unpackPlaneData(MapFile, Map, 2, Plane_Offset[2], Plane_Length[2], magic_word);
+        Map.setInfoPlane(2, true);
 
 
         Map.collectBlockersCoordiantes();

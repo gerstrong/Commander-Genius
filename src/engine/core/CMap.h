@@ -190,6 +190,14 @@ public:
 
     GsVec2D<int> getSpriteOrigin(const int sprId);
 
+    /**
+     * @brief setInfoPlane  Sets the info flag to the given plane.
+     *                      This will make the Plane never to be rendered.
+     * @param plane         Plane to set info flags
+     * @param value         true for enabled the flag, false for remove it.
+     */
+    void setInfoPlane(const int plane, const bool value);
+
 
 	Uint16 m_scrollx;      		// Amount of how much is scrolled on the map relative to (0,0) in X
 	Uint16 m_scrolly;    		// Amount of how much is scrolled on the map relative to (0,0) in Y
@@ -204,7 +212,6 @@ public:
 	bool isSecret;
 	int mNumFuses;
     bool mFuseInLevel;
-
 
     GsVec2D<int> mGamePlayPos;
 
@@ -245,7 +252,7 @@ private:
     int mShakeDir;
 
     int mTileSizeBase = 4; // Keen games have 16x16 tile size which is the base of
-                           //
+
 };
 
 

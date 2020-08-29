@@ -699,6 +699,9 @@ void CMap::redrawPlaneAt(const int planeIdx, const Uint32 mx, const Uint32 my)
          mx < m_mapx + num_v_tiles &&
          my < m_mapy + num_h_tiles 	)
     {
+        if(mPlanes[planeIdx].isInfo())
+            return;
+
         const size_t tile = mPlanes[planeIdx].getMapDataAt(mx, my);
 
         if(!tile && planeIdx > 0)
@@ -713,8 +716,10 @@ void CMap::redrawPlaneAt(const int planeIdx, const Uint32 mx, const Uint32 my)
 
 void CMap::redrawAt(const Uint32 mx, const Uint32 my)
 {
-    redrawPlaneAt(0, mx, my);
-    redrawPlaneAt(1, mx, my);
+    for(decltype(mPlanes.size()) i=0 ; i<mPlanes.size() ; i++)
+    {
+        redrawPlaneAt(i, mx, my);
+    }
 }
 
 // draws all the map area.
@@ -740,6 +745,10 @@ void CMap::drawAllOfPlane(const int planeIdx)
         num_h_tiles = m_height-m_mapy;
 
     auto &curPlane = mPlanes[planeIdx];
+
+    if(curPlane.isInfo())
+        return;
+
     auto &curTilemap =  m_Tilemaps.at(planeIdx);
 
     for(Uint32 y=0;y<num_h_tiles;y++)
@@ -763,8 +772,10 @@ void CMap::drawAll()
 {
     refreshVisibleArea();
 
-    drawAllOfPlane(0);
-    drawAllOfPlane(1);
+    for(decltype(mPlanes.size()) i=0 ; i<mPlanes.size() ; i++)
+    {
+        drawAllOfPlane(i);
+    }
 }
 
 void CMap::drawHstripeOfPlane(const int planeIdx,
@@ -781,7 +792,11 @@ void CMap::drawHstripeOfPlane(const int planeIdx,
     if( num_v_tiles+m_mapx >= m_width )
         num_v_tiles = m_width-m_mapx;
 
-    auto &curPlane = mPlanes[planeIdx];
+    const auto &curPlane = mPlanes[planeIdx];
+
+    if(curPlane.isInfo())
+        return;
+
     auto &curTilemap = m_Tilemaps.at(planeIdx);
 
     for(Uint32 x=0;x<num_v_tiles;x++)
@@ -799,8 +814,10 @@ void CMap::drawHstripeOfPlane(const int planeIdx,
 void CMap::drawHstripe(const unsigned int y,
                        const unsigned int mpy)
 {
-    drawHstripeOfPlane(0, y, mpy);
-    drawHstripeOfPlane(1, y, mpy);
+    for(decltype(mPlanes.size()) i=0 ; i<mPlanes.size() ; i++)
+    {
+        drawHstripeOfPlane(i, y, mpy);
+    }
 }
 
 void CMap::drawVstripeOfPlane(const int planeIdx,
@@ -819,6 +836,10 @@ void CMap::drawVstripeOfPlane(const int planeIdx,
     const int drawMask = ScrollSurface->w-1;
 
     auto &curPlane = mPlanes[planeIdx];
+
+    if(curPlane.isInfo())
+        return;
+
     auto &curTilemap = m_Tilemaps.at(planeIdx);
 
     for(Uint32 y=0 ; y<num_h_tiles ; y++)
@@ -835,8 +856,10 @@ void CMap::drawVstripeOfPlane(const int planeIdx,
 // draws a vertical stripe from map position mapx to scrollbuffer position x
 void CMap::drawVstripe(const unsigned int x, const unsigned int mpx)
 {
-    drawVstripeOfPlane(0, x, mpx);
-    drawVstripeOfPlane(1, x, mpx);
+    for(decltype(mPlanes.size()) i=0 ; i<mPlanes.size() ; i++)
+    {
+        drawVstripeOfPlane(i, x, mpx);
+    }
 }
 
 
@@ -1098,7 +1121,8 @@ auto CMap::getlevelat(const int x,
                 const int y) -> int
 {
     assert(mPlanes.size() > 2);
-    return mPlanes[2].getMapDataAt(x>>TILE_S,y>>TILE_S);
+    return mPlanes[2].getMapDataAt(x>>mTileSizeBase,
+                                   y>>mTileSizeBase);
 }
 
 auto CMap::getPlaneDataAt(const int plane,
@@ -1129,4 +1153,10 @@ void CMap::setSpriteOrigin(const int sprId, const GsVec2D<int> &origin)
 GsVec2D<int> CMap::getSpriteOrigin(const int sprId)
 {
     return mSpriteOriginList[sprId];
+}
+
+void CMap::setInfoPlane(const int plane, const bool value)
+{
+    assert(static_cast<decltype (mPlanes.size())>(plane) < mPlanes.size());
+    mPlanes[plane].setInfo(value);
 }
