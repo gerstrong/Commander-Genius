@@ -168,9 +168,9 @@ private:
 
     std::map<GameSound, int> sndSlotMap;
 
-    std::map<std::string, Mix_Chunk*> mSoundFileMap; // This map holds already
-                                                     // sounds so they can be played
-                                                     // from the buffer
+    std::map<std::string, Mix_Chunk*> mSoundFileMap; // This map stores
+                                                     // sounds which are played
+                                                     // directly from the memory
 
     COPLEmulator m_OPL_Player;
     bool mPauseGameplay = false;

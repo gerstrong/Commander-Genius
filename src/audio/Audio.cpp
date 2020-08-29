@@ -287,9 +287,12 @@ void Audio::playInternalSound(const unsigned char *data,
 
     auto sample = mSoundFileMap[name];
 
-    if(Mix_PlayChannel(-1, sample, 0)==-1)
+    const auto chnl = Mix_PlayChannel(-1, sample, 0);
+
+    if( chnl < 0 )
     {
         gLogging.ftextOut("Mix_PlayChannel: %s\n",Mix_GetError());
+        return;
     }
 }
 

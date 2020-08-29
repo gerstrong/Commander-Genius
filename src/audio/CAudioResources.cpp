@@ -18,6 +18,8 @@ CAudioResources::CAudioResources()
 CAudioResources::~CAudioResources()
 {}
 
+static const Sint32 mAmp = 4;
+
 bool CAudioResources::readISFintoWaveForm( CSoundSlot &soundslot,
                                            const byte *imfdata,
                                            const Uint8 formatsize )
@@ -64,7 +66,7 @@ bool CAudioResources::readISFintoWaveForm( CSoundSlot &soundslot,
 
 	OPLEmulator.ALStopSound();
 
-    unsigned long offset = 0;
+    unsigned long offset = 0;    
 
 	for(byte *AL_Sounddata_ptr = (byte*) AL_Sounddata_start ;
 			  AL_Sounddata_ptr < AL_Sounddata_end ;
@@ -81,8 +83,7 @@ bool CAudioResources::readISFintoWaveForm( CSoundSlot &soundslot,
         }
 
    		if(formatsize == 2) // 16-Bit Sound
-   		{
-
+   		{            
    			for( size_t count=0 ; count<waittimes ; count++ )
    			{
                 Sint16 *buffer = (Sint16*) (void*) (&waveform[offset]);
@@ -94,12 +95,15 @@ bool CAudioResources::readISFintoWaveForm( CSoundSlot &soundslot,
    				{
                     for( unsigned int ch=0 ; ch<audioSpec.channels ; ch++ )
 				    {
-                        buffer[i * audioSpec.channels + ch] = (int16_t) (mix_buffer[i]+audioSpec.silence);
+                        const auto mix_elem = mix_buffer[i] * mAmp;
+                        const auto mix_elem_with_sil = mix_elem+Bit32s(audioSpec.silence);
+                        buffer[i * audioSpec.channels + ch] = (int16_t)(mix_elem_with_sil);
 				    }
    				}
 
                 offset += samplesPerMusicTick*audioSpec.channels*formatsize;
    			}
+
    		}
    		else // 8-Bit Sound
    		{
@@ -112,9 +116,11 @@ bool CAudioResources::readISFintoWaveForm( CSoundSlot &soundslot,
    				// Mix into the destination buffer, doubling up into stereo.
    				for (unsigned int i=0; i<samplesPerMusicTick; ++i)
    				{
-                    for( unsigned int ch=0 ; ch<audioSpec.channels ; ch++ )
-				    {
-                    buffer[i * audioSpec.channels + ch] = (Uint8) ((mix_buffer[i]>>8)+audioSpec.silence);
+                    for( unsigned int ch=0 ; ch<audioSpec.channels ; ch++ )				    
+                    {
+                        const auto mix_elem = mix_buffer[i] * mAmp;
+                        const auto mix_elem_with_sil = (mix_elem>>8)+Bit32s(audioSpec.silence);
+                        buffer[i * audioSpec.channels + ch] = (Uint8) (mix_elem_with_sil);
 				    }
    				}
 
