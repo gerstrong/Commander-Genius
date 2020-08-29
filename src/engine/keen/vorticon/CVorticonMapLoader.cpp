@@ -66,7 +66,10 @@ mPlayerContainer(playerContainer)
 
 
 
-void CVorticonMapLoaderBase::blitPlaneToMap(std::vector<Uint16> &planeitems, const Uint16 planesize, const Uint16 planeID, const Uint16 tilemapID)
+void CVorticonMapLoaderBase::blitPlaneToMap(std::vector<Uint16> &planeitems,
+                                            const Uint16 planesize,
+                                            const Uint16 planeID,
+                                            const Uint16 tilemapID)
 {
     unsigned int curmapx = 0, curmapy = 0;
 
@@ -167,7 +170,7 @@ bool CVorticonMapLoaderBase::loadBase(  Uint8 episode,
 	// Here goes the memory allocation function
 	const Uint16 w =  planeitems.at(1);
 	const Uint16 h =  planeitems.at(2);
-    mpMap->setupEmptyDataPlanes(3, w, h);
+    mpMap->setupEmptyDataPlanes(3, 16, w, h);
 
 	unsigned int planesize = 0;
 	planesize = planeitems.at(8);
@@ -176,6 +179,8 @@ bool CVorticonMapLoaderBase::loadBase(  Uint8 episode,
 	blitPlaneToMap( planeitems, planesize, 0, 0);
 	blitPlaneToMap( planeitems, planesize, 0, 1);
 	blitPlaneToMap( planeitems, planesize, 1, 2);
+
+    mpMap->setInfoPlane(2, true);
 	
 	mpMap->collectBlockersCoordiantes();
     mpMap->setupAnimationTimer();

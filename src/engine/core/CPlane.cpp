@@ -20,3 +20,14 @@ void CPlane::createDataMap(const int width, const int height)
     mDataVec.assign(size_t(mWidth*mHeight), 0);
     mTimers.assign(size_t(mWidth*mHeight), 0);
 }
+
+
+void CPlane::setInfo(const bool value)
+{
+    mInfoOnly = value;
+}
+
+bool CPlane::isInfo() const
+{
+    return mInfoOnly;
+}

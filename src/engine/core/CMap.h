@@ -55,11 +55,14 @@ public:
     /**
      * @brief setupEmptyDataPlanes  Allocates data for the the planes to be loaded
      * @param numPlanes     Number of planes to setup for the whole map
-     * @param width     width in unit of tiles
-     * @param height    height in unit of tiles
+     * @param tileSize      Square size of a tile (Keen uses 16x16 by default)
+     *                      (NOTE: Only 16 and 8 are supported)
+     * @param width
+     * @param height
      * @return  true if everything went allright, otherwise false
      */
     bool setupEmptyDataPlanes(const int numPlanes,
+                              const int tileSize,
                               const Uint32 width,
                               const Uint32 height);
 
@@ -78,10 +81,25 @@ public:
 
     void calcVisibleArea();
     void refreshVisibleArea();
+
+    void redrawPlaneAt(const int planeIdx, const Uint32 mx, const Uint32 my);
 	void redrawAt(const Uint32 mx, const Uint32 my);
+
+    void drawAllOfPlane(const int planeIdx);
 	void drawAll();
-	void drawHstripe( unsigned int y, unsigned int mpy );
-	void drawVstripe( unsigned int x, unsigned int mpx );
+
+    void drawHstripeOfPlane(const int planeIdx,
+                            const unsigned int y,
+                            const unsigned int mpy);
+
+    void drawHstripe(const unsigned int y, const unsigned int mpy );
+
+
+    void drawVstripeOfPlane(const int planeIdx,
+                            const unsigned int x,
+                            const unsigned int mpx);
+
+    void drawVstripe(const unsigned int x, const unsigned int mpx );
 
     /**
      * @brief shakMap will make the currently running map shake for a certain amount of time
@@ -124,7 +142,7 @@ public:
 
 	// Animation methods
 	Uint8 getAnimtiletimer();
-    void drawAnimatedTile(SDL_Surface *dst, const Uint16 mx, const Uint16 my, const Uint16 tile);
+    //void drawAnimatedTile(SDL_Surface *dst, const Uint16 mx, const Uint16 my, const Uint16 tile);
 	void animateAllTiles();
 
     auto getlevelat(const int x,
@@ -141,6 +159,8 @@ public:
 	word *getForegroundData();
 	word *getBackgroundData();
 
+
+    void setupAnimationTimerOfTile(const int tilemapIdx);
 
     /**
      * @brief setupAnimationTimer   Set the animation timer to the coordinates instead of starting the first time with zero.
@@ -170,6 +190,14 @@ public:
 
     GsVec2D<int> getSpriteOrigin(const int sprId);
 
+    /**
+     * @brief setInfoPlane  Sets the info flag to the given plane.
+     *                      This will make the Plane never to be rendered.
+     * @param plane         Plane to set info flags
+     * @param value         true for enabled the flag, false for remove it.
+     */
+    void setInfoPlane(const int plane, const bool value);
+
 
 	Uint16 m_scrollx;      		// Amount of how much is scrolled on the map relative to (0,0) in X
 	Uint16 m_scrolly;    		// Amount of how much is scrolled on the map relative to (0,0) in Y
@@ -181,10 +209,9 @@ public:
 
     bool m_animation_enabled = true;
     bool m_Dark = false;
-    bool isSecret = false;
-    int mNumFuses = 0;
+	bool isSecret;
+	int mNumFuses;
     bool mFuseInLevel;
-
 
     GsVec2D<int> mGamePlayPos;
 
@@ -223,6 +250,9 @@ private:
     int mMaxShakeCounter;
     int mMaxShakeVAmt;
     int mShakeDir;
+
+    int mTileSizeBase = 4; // Keen games have 16x16 tile size which is the base of
+
 };
 
 
