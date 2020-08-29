@@ -1073,20 +1073,24 @@ void CMap::animateAllTiles()
 
             const auto offset = stride + x;
 
-            const CTileProperties &back_tile = backTileProperties[*p_back_tile];
-            const CTileProperties &front_tile = frontTileProperties[*p_front_tile];
-
-            if( back_tile.animationTime )
+            if(!backTileProperties.empty())
             {
-                timersBack[offset]--;
+                const CTileProperties &back_tile = backTileProperties[*p_back_tile];
 
-                if(timersBack[offset] == 0)
+                if( back_tile.animationTime )
                 {
-                    *p_back_tile += back_tile.nextTile;
-                    timersBack[offset] = backTileProperties[*p_back_tile].animationTime;
-                    draw = true;
+                    timersBack[offset]--;
+
+                    if(timersBack[offset] == 0)
+                    {
+                        *p_back_tile += back_tile.nextTile;
+                        timersBack[offset] = backTileProperties[*p_back_tile].animationTime;
+                        draw = true;
+                    }
                 }
             }
+
+            const CTileProperties &front_tile = frontTileProperties[*p_front_tile];
 
             if( front_tile.animationTime )
             {

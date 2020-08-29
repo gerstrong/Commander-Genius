@@ -48,7 +48,11 @@ CosmosEngine::~CosmosEngine()
 extern "C"
 {
     int start_cosmo();
+
+    void enable_quick_start_mode();
 }
+
+const bool mQuickstart = true;
 
 /**
  * @brief start Starts the Dreams engine which refers to accessing RefKeen code
@@ -58,7 +62,14 @@ bool CosmosEngine::start()
     const GsRect<Uint16> gameRect(320, 200);
     gVideoDriver.setNativeResolution(gameRect);
 
-    mpScene.reset( new CosmosIntro );
+    if(!mQuickstart)
+    {
+        mpScene.reset( new CosmosIntro );
+    }
+    else
+    {
+        enable_quick_start_mode();
+    }
 
     const auto gameDir = GetFullFileName(mDataPath);
 
@@ -69,7 +80,6 @@ bool CosmosEngine::start()
 
     mpScene.reset( new CosmoGameplay );
     mpScene->start();
-
 
     return true;
 }

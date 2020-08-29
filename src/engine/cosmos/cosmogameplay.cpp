@@ -334,28 +334,37 @@ bool CosmoGameplay::loadLevel(const int level_number)
 */
 
 
+
     load_level_data(level_number);
 
-    setBackdrop(backdrop_index);
-
-
+    //setBackdrop(backdrop_index);
 
     GsTilemap &tilemap0 = gGraphics.getTileMap(0);
-    const auto num_bg_Tiles = getNumBgTiles();
+    const auto num_backdrop_Tiles = getNumBackdropTiles();
     tilemap0.CreateSurface( gGraphics.Palette.m_Palette, SDL_SWSURFACE,
+                           num_backdrop_Tiles, 3, 40 );
+
+/*
+    auto *tiles0 = map_get_back(0);
+    extractTilemap(tilemap0, tiles0, num_backdrop_Tiles);
+*/
+
+    GsTilemap &tilemap1 = gGraphics.getTileMap(1);
+    const auto num_bg_Tiles = getNumBgTiles();
+    tilemap1.CreateSurface( gGraphics.Palette.m_Palette, SDL_SWSURFACE,
                            num_bg_Tiles, 3, 40 );
 
     auto *tiles1 = map_get_bg_tile(0);
-    extractTilemap(tilemap0, tiles1, num_bg_Tiles);
+    extractTilemap(tilemap1, tiles1, num_bg_Tiles);
 
 
-    GsTilemap &tilemap1 = gGraphics.getTileMap(1);
+    GsTilemap &tilemap2 = gGraphics.getTileMap(2);
     const auto num_fg_Tiles = getNumFgTiles();
-    tilemap1.CreateSurface( gGraphics.Palette.m_Palette, SDL_SWSURFACE,
+    tilemap2.CreateSurface( gGraphics.Palette.m_Palette, SDL_SWSURFACE,
                            num_fg_Tiles, 3, 40 );
 
     auto *tiles2 = map_get_fg_tile(0);
-    extractTilemap(tilemap1, tiles2, num_fg_Tiles);
+    extractTilemap(tilemap2, tiles2, num_fg_Tiles);
 
 /*
     if (level_number == 0 && show_one_moment_screen_flag != 0) {
