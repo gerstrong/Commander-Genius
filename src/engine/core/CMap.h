@@ -55,11 +55,14 @@ public:
     /**
      * @brief setupEmptyDataPlanes  Allocates data for the the planes to be loaded
      * @param numPlanes     Number of planes to setup for the whole map
+     * @param tileSize      Square size of a tile (Keen uses 16x16 by default)
+     *                      (NOTE: Only 16 and 8 are supported)
      * @param width
      * @param height
      * @return  true if everything went allright, otherwise false
      */
     bool setupEmptyDataPlanes(const int numPlanes,
+                              const int tileSize,
                               const Uint32 width,
                               const Uint32 height);
 
@@ -223,6 +226,9 @@ private:
     int mMaxShakeCounter;
     int mMaxShakeVAmt;
     int mShakeDir;
+
+    int mTileSizeBase = 4; // Keen games have 16x16 tile size which is the base of
+                           //
 };
 
 

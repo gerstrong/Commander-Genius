@@ -341,7 +341,7 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
         gLogging.textOut("Allocating memory for the level planes ...<br>" );
 
         // Start with the Background
-        Map.setupEmptyDataPlanes(3, Width, Height);
+        Map.setupEmptyDataPlanes(3, 16, Width, Height);
 
         gLogging.textOut("Decompressing the Map... plane 0 (Background)<br>" );
         ok &= unpackPlaneData(MapFile, Map, 0, Plane_Offset[0], Plane_Length[0], magic_word);
