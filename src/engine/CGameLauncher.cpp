@@ -73,6 +73,22 @@ mGameScanner()
 CGameLauncher::~CGameLauncher()
 {}
 
+struct ExecutableListFiller
+{
+    std::set<std::string> list;
+
+    bool operator() (const std::string& filename) {
+        std::string ext = GetFileExtension(filename);
+        if ( stringcaseequal(ext, "exe") ||
+             stringcaseequal(ext, "lua") )
+        {
+            list.insert(stringtolower(filename));
+        }
+
+        return true;
+    }
+};
+
 ////
 // Initialization Routine
 ////
@@ -231,7 +247,6 @@ bool CGameLauncher::setupMenu()
 
     mLauncherDialog.setSelection(3);
 
-
     std::string gameDir = gArgs.getValue("dir");
     gameDir.erase(std::remove(gameDir.begin(), gameDir.end(), '\"'),
                   gameDir.end());
@@ -239,7 +254,7 @@ bool CGameLauncher::setupMenu()
     if(!gameDir.empty())
     {
         int chosenGame = 0;
-        bool found=false;
+        bool found = false;
 
         // Check if the given parameter makes one game start.
         for( GameEntry &entry : m_Entries)
@@ -252,6 +267,17 @@ bool CGameLauncher::setupMenu()
                 gArgs.removeTag("dir");
 
                 setupModsDialog();
+
+                ExecutableListFiller exefileslist;
+                const std::string dataDir = getDirectory( m_chosenGame );
+                FindFiles(exefileslist, dataDir, false, FM_REG);
+
+                if( !exefileslist.list.empty() )
+                {
+                    mExecFilename = *(exefileslist.list.begin());
+                }
+
+
                 // Nothing else to do, break the loop
                 found = true;
                 break;
@@ -345,21 +371,6 @@ std::string CGameLauncher::filterGameName(const std::string &path)
     return text;
 }
 
-struct ExecutableListFiller
-{
-    std::set<std::string> list;
-
-    bool operator() (const std::string& filename) {
-        std::string ext = GetFileExtension(filename);
-        if ( stringcaseequal(ext, "exe") ||
-             stringcaseequal(ext, "lua") )
-        {
-            list.insert(stringtolower(filename));
-        }
-
-        return true;
-    }
-};
 
 enum class GAME_TYPE
 {

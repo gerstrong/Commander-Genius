@@ -29,6 +29,7 @@
 
 #include <vector>
 #include <string>
+#include <array>
 #include <map>
 
 
@@ -140,7 +141,7 @@ private:
      */
     int mPlayers = 1;
 
-	std::vector<CTileProperties> m_TileProperties[2];
+    std::array< std::vector<CTileProperties>, 4 > m_TileProperties;
     CPhysicsSettings m_PhysicsSettings;
 
 	std::map<std::string,std::string> stringmap;

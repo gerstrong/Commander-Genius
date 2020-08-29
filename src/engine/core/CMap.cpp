@@ -188,6 +188,10 @@ void CMap::collectBlockersCoordiantes()
 void CMap::setupAnimationTimerOfTile(const int tilemapIdx)
 {
     auto &tileProperties = gBehaviorEngine.getTileProperties(tilemapIdx);
+
+    if(tileProperties.empty())
+        return;
+
     word *p_back_tile = mPlanes[tilemapIdx].getMapDataPtr();
 
     auto &timers = mPlanes[tilemapIdx].getTimers();
@@ -940,9 +944,6 @@ void CMap::_drawForegroundTiles()
     const int visBlendY2 = visBlendGA.pos.y+visBlendGA.dim.y;
 
     auto &tilemap = m_Tilemaps[1];
-
-    if(disableFgTile)
-        return;
 
     for( size_t y=y1 ; y<=y2 ; y++)
     {
