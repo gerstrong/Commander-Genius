@@ -109,7 +109,7 @@ bool CosmoGameplay::load_level_data(int level_number)
     const auto map_width_in_tiles = file_read2(&map_file);
     const auto map_height_in_tiles = 32768 / map_width_in_tiles - 1;
 
-    mMap.setupEmptyDataPlanes(3, map_width_in_tiles, map_height_in_tiles);
+    mMap.setupEmptyDataPlanes(3, 8, map_width_in_tiles, map_height_in_tiles);
 
     gLogging.ftextOut("map width (in tiles): %d\n", map_width_in_tiles);
 
@@ -543,21 +543,21 @@ bool CosmoGameplay::loadLevel(const int level_number)
 
     CTileProperties emptyTileProperties;
 
-    std::vector<CTileProperties> &bgTileProperties = gBehaviorEngine.getTileProperties(0);
+    std::vector<CTileProperties> &bgTileProperties = gBehaviorEngine.getTileProperties(1);
     bgTileProperties.assign(getNumBgTiles(), emptyTileProperties);
-    std::vector<CTileProperties> &fgTileProperties = gBehaviorEngine.getTileProperties(1);
+    std::vector<CTileProperties> &fgTileProperties = gBehaviorEngine.getTileProperties(2);
     fgTileProperties.assign(getNumFgTiles(), emptyTileProperties);
 
     const auto width = getMapWidth();
     const auto height = getMapHeight();
-        mMap.setupEmptyDataPlanes(3, width, height);
+        mMap.setupEmptyDataPlanes(3, 8, width, height);
 
-        gLogging.textOut("Reading plane 0 (Background)<br>" );
+        gLogging.textOut("Reading plane 0 (Backdrop)<br>" );
         //ok &= unpackPlaneData(MapFile, Map, 0, Plane_Offset[0], Plane_Length[0], magic_word);
 
 
-        auto *map0_data = mMap.getData(0);
         auto *map1_data = mMap.getData(1);
+        auto *map2_data = mMap.getData(2);
 
         auto *cosmo_map_data = map_data_ptr();
         for(int i = 0 ; i<height*width ; i++)
@@ -569,7 +569,7 @@ bool CosmoGameplay::loadLevel(const int level_number)
             {
                 if(tile)
                 {
-                    map0_data[i] = tile;
+                    map1_data[i] = tile;
                 }
             }
             else
@@ -578,7 +578,7 @@ bool CosmoGameplay::loadLevel(const int level_number)
 
                 if(fgTile < fgTileProperties.size())
                 {
-                    map1_data[i] = fgTile;
+                    map2_data[i] = fgTile;
                 }
 
             }
