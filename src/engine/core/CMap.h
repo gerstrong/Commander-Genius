@@ -21,6 +21,7 @@
 #include <base/GsEvent.h>
 #include <base/utils/Geometry.h>
 #include <map>
+#include <set>
 
 // animation rate of animated tiles
 #define ANIM_TILE_TIME      256
@@ -168,13 +169,25 @@ public:
      */
     void setupAnimationTimer();
 
-	/**
-     * This method collects the coordinates in where the blockers are, so the checking routine obtains them at a faster way
-	 */
+    /**
+     * @brief collectBlockersCoordiantes collects all the blocker coordinates in where the blockers are
+     * @note it also clears already existing blocker coordinates
+     */
 	void collectBlockersCoordiantes();
 
+    /**
+     * @brief insertVertBlocker  Insert a horizontal blocker coordinate
+     * @param x CSFed coordinate that would scroll-block
+     */
+    void insertVertBlocker(const int x);
 	void fetchNearestVertBlockers(const int x, int &leftCoord, int &rightCoord);
-	void fetchNearestHorBlockers(const int y, int &upCoord, int &downCoord);
+
+    /**
+     * @brief insertHorBlocker  Insert a horizontal blocker coordinate
+     * @param y CSFed coordinate that would scroll-block
+     */
+    void insertHorBlocker(const int y);
+    void fetchNearestHorBlockers(const int y, int &upCoord, int &downCoord);
 
     /**
      *  Locks the map, the way, no one can switch to a new level. This is important when another player tries to enter
@@ -237,8 +250,8 @@ private:
     std::vector<CPlane> mPlanes;
 	Uint16 m_Level;
 	std::string m_LevelName;
-	std::vector<int> scrollBlockX;
-	std::vector<int> scrollBlockY;
+    std::set<int> scrollBlockX;
+    std::set<int> scrollBlockY;
 
     bool mLocked;
 

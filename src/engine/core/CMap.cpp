@@ -150,8 +150,8 @@ void CMap::collectBlockersCoordiantes()
     scrollBlockX.clear();
     scrollBlockY.clear();
 
-    scrollBlockY.push_back(1<<CSF);
-    scrollBlockX.push_back(1<<CSF);
+    insertVertBlocker(1<<CSF);
+    insertHorBlocker(1<<CSF);
 
     int ep = gBehaviorEngine.getEpisode();
 
@@ -167,22 +167,20 @@ void CMap::collectBlockersCoordiantes()
                 // Check the row for a blocker which has the proper value
                 if(*map_ptr == 0x19)
                 {
-                    scrollBlockY.push_back(y<<(CSF));
+                    insertHorBlocker(y<<(CSF));
                 }
 
                 // In Keen 5 it is only used on the map and stands for an in level teleporter
                 if(*map_ptr == 0x1A && ep != 5)
-                    scrollBlockX.push_back(x<<(CSF));
+                    insertVertBlocker(x<<(CSF));
 
                 map_ptr++;
             }
         }
 
     }
-
-    scrollBlockY.push_back((m_height-2)<<(CSF));
-    scrollBlockX.push_back((m_width-2)<<(CSF));
-
+    insertHorBlocker((m_height+2)<<(CSF));
+    insertVertBlocker((m_width-2)<<(CSF));
 }
 
 void CMap::setupAnimationTimerOfTile(const int tilemapIdx)
@@ -216,6 +214,11 @@ void CMap::setupAnimationTimer()
     setupAnimationTimerOfTile(1);
 }
 
+void CMap::insertVertBlocker(const int x)
+{
+    scrollBlockX.insert(x);
+}
+
 void CMap::fetchNearestVertBlockers(const int x, int &leftCoord, int &rightCoord)
 {
     int blockXleft = 0;
@@ -228,8 +231,8 @@ void CMap::fetchNearestVertBlockers(const int x, int &leftCoord, int &rightCoord
         return;
     }
 
-    std::vector<int>::iterator left  = scrollBlockX.begin();
-    std::vector<int>::iterator right = left;
+    auto left  = scrollBlockX.begin();
+    auto right = left;
     right++;
 
     // Find the vertical edges coordinates
@@ -261,6 +264,11 @@ void CMap::fetchNearestVertBlockers(const int x, int &leftCoord, int &rightCoord
     rightCoord = blockXright;
 }
 
+void CMap::insertHorBlocker(const int y)
+{
+    scrollBlockY.insert(y);
+}
+
 void CMap::fetchNearestHorBlockers(const int y, int &upCoord, int &downCoord)
 {
     int blockYup = 0;
@@ -274,8 +282,8 @@ void CMap::fetchNearestHorBlockers(const int y, int &upCoord, int &downCoord)
     }
 
 
-    std::vector<int>::iterator up = scrollBlockY.begin();
-    std::vector<int>::iterator down= up;
+    auto up = scrollBlockY.begin();
+    auto down = up;
     down++;
 
     blockYup = *up;
@@ -580,21 +588,35 @@ bool CMap::scrollDown(const bool force)
 {
     const int res_height = gVideoDriver.getGameResolution().dim.y;
 
-    if( !force && findHorizontalScrollBlocker((m_scrolly+res_height)<<STC) )
-		return false;
+    if(!force)
+    {
+        const int bottom_y = (m_scrolly+res_height)<<STC;
+        int blockYup = 0;
+        int blockYdown = 0;
+
+        fetchNearestHorBlockers(bottom_y, blockYup, blockYdown);
+
+        if(bottom_y > blockYdown)
+            return false;
+    }
 
     const int squareSize = gVideoDriver.getScrollSurface()->w;
 
-    if(m_scrolly < ((m_height-2)<<mTileSizeBase) - res_height )
+    //if(m_scrolly < ((m_height-2)<<mTileSizeBase) - res_height )
 	{
 		m_scrolly++;
         gVideoDriver.mpVideoEngine->UpdateScrollBufY(m_scrolly, squareSize-1);
 
 		m_scrollpixy++;
         if ( m_scrollpixy >= (1<<mTileSizeBase) )
-		{  // need to draw a new stripe
-            const int totalNumTiles = squareSize>>mTileSizeBase;
-            drawHstripe(m_mapystripepos, m_mapy + totalNumTiles);
+        {
+            if(m_scrolly < ((m_height-2)<<mTileSizeBase) - res_height )
+            {
+                // need to draw a new stripe
+                const int totalNumTiles = squareSize>>mTileSizeBase;
+                drawHstripe(m_mapystripepos, m_mapy + totalNumTiles);
+            }
+
 			m_mapy++;
             m_mapystripepos += (1<<mTileSizeBase);
             if (m_mapystripepos >= squareSize) m_mapystripepos = 0;
@@ -761,7 +783,8 @@ void CMap::drawAllOfPlane(const int planeIdx)
     {
         for(Uint32 x=0;x<num_v_tiles;x++)
         {
-            Uint32 tile = curPlane.getMapDataAt(x+m_mapx, y+m_mapy);
+            Uint32 tile = curPlane.getMapDataAt(x+m_mapx, y+m_mapy);            
+
             if(!tile && planeIdx > 0)
                 continue;
 
