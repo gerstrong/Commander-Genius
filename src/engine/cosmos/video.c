@@ -26,6 +26,7 @@ bool is_fullscreen = false;
 bool video_has_initialised = false;
 int video_scale_factor = DEFAULT_SCALE_FACTOR;
 
+
 void video_fill_surface_with_black(SDL_Surface *surface);
 
 void set_renderer(SDL_Renderer *rend)

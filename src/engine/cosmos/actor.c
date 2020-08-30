@@ -1267,9 +1267,9 @@ void display_actor_sprite_maybe(int actorInfoIndex, int frame_num, int x_pos, in
         return;
     }
 
-    for(int y=0;y < info->height;y++)
+    for(int y=0; y < info->height; y++)
     {
-        for(int x=0;x < info->width; x++)
+        for(int x=0; x < info->width; x++)
         {
             uint16 screen_x = (x_pos - mapwindow_x_offset + x + 1) * 8;
             uint16 screen_y = (y_pos - info->height + 1 - mapwindow_y_offset + y + 1) * 8;

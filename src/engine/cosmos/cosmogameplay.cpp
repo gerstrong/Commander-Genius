@@ -31,14 +31,13 @@ extern "C"
 
 #include "files/file.h"
 #include "tile.h"
+#include "map.h"
 
     bool open_file(const char *filename, File *file);
 
 
     Tile *getBackdropTilesPtr();
     uint16 getNumBackdropTiles();
-
-    extern int mapwindow_x_offset;
 
     int getMapWidth();
     int getMapHeight();
@@ -564,7 +563,6 @@ bool CosmoGameplay::loadLevel(const int level_number)
                 const auto offset = x + y*width;
 
                 auto backdrop_tile = (x%col) + y*col;
-                //const auto backdrop_tile = offset;
                 backdrop_tile = backdrop_tile % num_backdrop_Tiles;
                 map0_data[offset] = backdrop_tile;
             }
@@ -598,14 +596,6 @@ bool CosmoGameplay::loadLevel(const int level_number)
 
             }
         }
-
-        /*
-        auto *map_data = mMap.getData(0);
-        memcpy(map_data, map_data_ptr(), width*height*sizeof(uint16));
-        */
-
-        //gLogging.textOut("Reading plane 1 (Foreground)<br>" );
-        //ok &= unpackPlaneData(MapFile, Map, 1, Plane_Offset[1], Plane_Length[1], magic_word);
 
         mMap.insertHorBlocker(0);
         mMap.insertHorBlocker((height+6)<<8);
@@ -675,7 +665,73 @@ void CosmoGameplay::ponder(const float deltaT)
     }
     */
 
-    mMap.scrollDown();
+
+    // 1 tile = 8px
+    //mapwindow_x_offset
+
+    // mMap.m_scrollx is pixel based
+    const auto mapwindow_x_offset_pix = mapwindow_x_offset*8;
+    const auto mapwindow_y_offset_pix = mapwindow_y_offset*8;
+
+    int scroll_diff_x = (mMap.m_scrollx-mapwindow_x_offset_pix);
+    int scroll_diff_y = (mMap.m_scrolly-mapwindow_y_offset_pix);
+
+    const int DIST_FOR_SLOMO = 2;
+
+    if(scroll_diff_x < 0)
+    {
+        if(scroll_diff_x < -DIST_FOR_SLOMO)
+        {
+            for(int i=0 ; i<-scroll_diff_x ; i++)
+            {
+                scroll_diff_x = (mMap.m_scrollx-mapwindow_x_offset_pix);
+                mMap.scrollRight();
+            }
+        }
+
+        mMap.scrollRight();
+    }
+    else if(scroll_diff_x > 0)
+    {
+        if(scroll_diff_x > DIST_FOR_SLOMO)
+        {
+            for(int i=0 ; i<scroll_diff_x ; i++)
+            {
+                scroll_diff_x = (mMap.m_scrollx-mapwindow_x_offset_pix);
+                mMap.scrollLeft();
+            }
+        }
+
+        mMap.scrollLeft();
+    }
+
+    if(scroll_diff_y < 0)
+    {
+        if(scroll_diff_y < -DIST_FOR_SLOMO)
+        {
+            for(int i=0 ; i<-scroll_diff_y ; i++)
+            {
+                scroll_diff_y = (mMap.m_scrolly-mapwindow_y_offset_pix);
+                mMap.scrollDown();
+            }
+        }
+
+        mMap.scrollDown();
+    }
+    else if(scroll_diff_y > 0)
+    {
+        if(scroll_diff_y > DIST_FOR_SLOMO)
+        {
+            for(int i=0 ; i<scroll_diff_y ; i++)
+            {
+                scroll_diff_y = (mMap.m_scrolly-mapwindow_y_offset_pix);
+                mMap.scrollUp();
+            }
+        }
+
+        mMap.scrollUp();
+    }
+
     executeLogics();
     //run_gameplay();
 
