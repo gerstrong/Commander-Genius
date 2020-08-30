@@ -179,7 +179,8 @@ void CMap::collectBlockersCoordiantes()
         }
 
     }
-    insertHorBlocker((m_height+2)<<(CSF));
+    // There exist end-of-map tiles, we don't want to see
+    insertHorBlocker(((m_height-2)<<(CSF)));
     insertVertBlocker((m_width-2)<<(CSF));
 }
 
@@ -596,37 +597,36 @@ bool CMap::scrollDown(const bool force)
 
         fetchNearestHorBlockers(bottom_y, blockYup, blockYdown);
 
-        if(bottom_y > blockYdown)
+        const int new_bottom_y = ((m_scrolly+1)+res_height)<<STC;
+
+        if(new_bottom_y >= blockYdown)
+        {
             return false;
+        }
     }
 
+    m_scrolly++;
     const int squareSize = gVideoDriver.getScrollSurface()->w;
+    gVideoDriver.mpVideoEngine->UpdateScrollBufY(m_scrolly, squareSize-1);
 
-    //if(m_scrolly < ((m_height-2)<<mTileSizeBase) - res_height )
-	{
-		m_scrolly++;
-        gVideoDriver.mpVideoEngine->UpdateScrollBufY(m_scrolly, squareSize-1);
-
-		m_scrollpixy++;
-        if ( m_scrollpixy >= (1<<mTileSizeBase) )
+    m_scrollpixy++;
+    if ( m_scrollpixy >= (1<<mTileSizeBase) )
+    {
+        if(m_scrolly < ((m_height-2)<<mTileSizeBase) - res_height )
         {
-            if(m_scrolly < ((m_height-2)<<mTileSizeBase) - res_height )
-            {
-                // need to draw a new stripe
-                const int totalNumTiles = squareSize>>mTileSizeBase;
-                drawHstripe(m_mapystripepos, m_mapy + totalNumTiles);
-            }
+            // need to draw a new stripe
+            const int totalNumTiles = squareSize>>mTileSizeBase;
+            drawHstripe(m_mapystripepos, m_mapy + totalNumTiles);
+        }
 
-			m_mapy++;
-            m_mapystripepos += (1<<mTileSizeBase);
-            if (m_mapystripepos >= squareSize) m_mapystripepos = 0;
-			m_scrollpixy = 0;
-		}
+        m_mapy++;
+        m_mapystripepos += (1<<mTileSizeBase);
+        if (m_mapystripepos >= squareSize) m_mapystripepos = 0;
+        m_scrollpixy = 0;
+    }
 
-        refreshVisibleArea();
-		return true;
-	}
-	return false;
+    refreshVisibleArea();
+    return true;
 }
 
 
