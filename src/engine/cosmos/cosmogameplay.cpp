@@ -189,7 +189,8 @@ auto extractTilemap(GsTilemap &tilemap,
     SDL_Surface *sfc = tilemap.getSDLSurface();
     const auto col = tilemap.getNumColumn();
 
-    SDL_FillRect(sfc, nullptr, 0);
+    SDL_FillRect(sfc, nullptr, COLORKEY);
+
     if(SDL_MUSTLOCK(sfc))   SDL_LockSurface(sfc);
 
     for(int t=0 ; t<num_tiles ; t++)
@@ -260,8 +261,8 @@ auto extractTilemap(GsTilemap &tilemap,
         // Error saving bitmap
         gLogging.ftextOut("SDL_SaveBMP failed: %s\n", SDL_GetError());
         return false;
-    }*/
-
+    }
+*/
     return true;
 }
 
@@ -286,17 +287,7 @@ bool CosmoGameplay::setBackdrop(const int index)
 
     //auto dataPtr = mMap.getData(0);
 
-    gGraphics.Palette.setupColorPalettes(nullptr, 0);
 
-    GsTilemap &backdroptilemap = gGraphics.getTileMap(2);
-    const auto num_backdrop_Tiles = getNumBackdropTiles();
-    backdroptilemap.CreateSurface( gGraphics.Palette.m_Palette, SDL_SWSURFACE,
-                           num_backdrop_Tiles, 3, 40 );
-
-
-    extractTilemap(backdroptilemap,
-                   getBackdropTilesPtr(),
-                   num_backdrop_Tiles);
 
 
     return true;
@@ -337,22 +328,23 @@ bool CosmoGameplay::loadLevel(const int level_number)
 
     load_level_data(level_number);
 
-    //setBackdrop(backdrop_index);
+    gGraphics.Palette.setupColorPalettes(nullptr, 0);
 
     GsTilemap &tilemap0 = gGraphics.getTileMap(0);
     const auto num_backdrop_Tiles = getNumBackdropTiles();
     tilemap0.CreateSurface( gGraphics.Palette.m_Palette, SDL_SWSURFACE,
                            num_backdrop_Tiles, 3, 40 );
 
-/*
-    auto *tiles0 = map_get_back(0);
+
+    auto *tiles0 = getBackdropTilesPtr();
     extractTilemap(tilemap0, tiles0, num_backdrop_Tiles);
-*/
+
 
     GsTilemap &tilemap1 = gGraphics.getTileMap(1);
     const auto num_bg_Tiles = getNumBgTiles();
     tilemap1.CreateSurface( gGraphics.Palette.m_Palette, SDL_SWSURFACE,
                            num_bg_Tiles, 3, 40 );
+
 
     auto *tiles1 = map_get_bg_tile(0);
     extractTilemap(tilemap1, tiles1, num_bg_Tiles);
@@ -434,7 +426,7 @@ bool CosmoGameplay::loadLevel(const int level_number)
     //const std::string &path = gKeenFiles.gameDir;
 
     // Set Map position and some flags for the freshly loaded level
-    mMap.gotoPos(0,0);
+    mMap.gotoPos(0, 0);
     mMap.setLevel(level_number);
     mMap.isSecret = false;
     mMap.mNumFuses = 0;
@@ -562,9 +554,23 @@ bool CosmoGameplay::loadLevel(const int level_number)
         mMap.setupEmptyDataPlanes(3, 8, width, height);
 
         gLogging.textOut("Reading plane 0 (Backdrop)<br>" );
-        //ok &= unpackPlaneData(MapFile, Map, 0, Plane_Offset[0], Plane_Length[0], magic_word);
 
+        auto *map0_data = mMap.getData(0);
+        const auto col = tilemap0.getNumColumn();
+        for(int y = 0 ; y<height ; y++)
+        {
+            for(int x = 0 ; x<width ; x++)
+            {
+                const auto offset = x + y*width;
 
+                auto backdrop_tile = (x%col) + y*col;
+                //const auto backdrop_tile = offset;
+                backdrop_tile = backdrop_tile % num_backdrop_Tiles;
+                map0_data[offset] = backdrop_tile;
+            }
+        }
+
+        gLogging.textOut("Reading plane 1 and 2 (Back and Foreground)<br>" );
         auto *map1_data = mMap.getData(1);
         auto *map2_data = mMap.getData(2);
 
@@ -601,7 +607,10 @@ bool CosmoGameplay::loadLevel(const int level_number)
         //gLogging.textOut("Reading plane 1 (Foreground)<br>" );
         //ok &= unpackPlaneData(MapFile, Map, 1, Plane_Offset[1], Plane_Length[1], magic_word);
 
-        mMap.collectBlockersCoordiantes();
+        mMap.insertHorBlocker(0);
+        mMap.insertHorBlocker((height+6)<<8);
+        mMap.insertVertBlocker(0);
+        mMap.insertVertBlocker((width+6)<<8);
         mMap.setupAnimationTimer();
 
         // Now that we have all the 3 planes (Background, Foreground, Foes) unpacked...
@@ -623,8 +632,9 @@ bool CosmoGameplay::loadLevel(const int level_number)
     }
 */
 
+
     // Set Scrollbuffer
-    mMap.collectBlockersCoordiantes();
+    //mMap.gotoPos(0, 36*8); // Works more or less with level 1
     mMap.drawAll();
     gVideoDriver.updateScrollBuffer(mMap.m_scrollx, mMap.m_scrolly);
 
@@ -665,9 +675,9 @@ void CosmoGameplay::ponder(const float deltaT)
     }
     */
 
+    mMap.scrollDown();
     executeLogics();
     //run_gameplay();
-    mMap.scrollDown();
 
     mMap.animateAllTiles();
 }
@@ -675,7 +685,7 @@ void CosmoGameplay::ponder(const float deltaT)
 void CosmoGameplay::render()
 {
     mMap.drawAll();
-
+/*
     // Render the backdrop
     if(!gGraphics.getTileMaps().empty())
     {
@@ -705,7 +715,7 @@ void CosmoGameplay::render()
 
         //video_update();
     }
-
+*/
     mMap.calcVisibleArea();
     mMap.refreshVisibleArea();
     gVideoDriver.blitScrollSurface();
