@@ -110,6 +110,7 @@ void CMapPlayGalaxy::pumpEvent(const CEvent *evPtr)
                 {
                     player->moveToForce(target);
                     player->m_camera.setPosition(target);
+                    player->setAction(0); // Reset what they are doing, so no collision fails and strangeness stuff happens
                 }
             }
         }
