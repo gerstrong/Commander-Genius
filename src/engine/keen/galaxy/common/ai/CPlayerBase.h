@@ -241,7 +241,8 @@ namespace galaxy
     /**
      * @brief kill          Kill Keen.
      * @param force         If true Keen may die even in god mode
-     * @param noDieProcess  Do not show any dying animation kill him directly
+     * @param noDieProcess  Do not show any dying animation, kill him directly!
+     *                      (v.g. got eaten by Dopefish)
      */
     virtual void kill(const bool force = false,
                       const bool noDieProcess = false) override;
