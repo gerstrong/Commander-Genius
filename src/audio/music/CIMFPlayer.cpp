@@ -121,6 +121,8 @@ void CIMFPlayer::OPLUpdate(byte *buffer, const unsigned int length)
 
     const int vol = gAudio.getMusicVolume();
 
+    const auto amp = gAudio.getOplAmp();
+
     if(mMixBuffer.empty())
     {
         gLogging.textOut("Creating enough Audio Buffer for the IMF-Player");
@@ -138,7 +140,7 @@ void CIMFPlayer::OPLUpdate(byte *buffer, const unsigned int length)
 
 		for (unsigned int i=0; i<length; ++i)
 		{
-		    Sint32 mix = mMixBuffer[i];
+            auto mix = (mMixBuffer[i] * amp) / 100;
 		    
 		    if(mix > 32767)
 			    mix = 32767;
@@ -157,7 +159,7 @@ void CIMFPlayer::OPLUpdate(byte *buffer, const unsigned int length)
 	{
 		for (unsigned int i=0; i<length; ++i)
 		{
-		    Sint32 mix = mMixBuffer[i]>>8;
+            auto mix = ((mMixBuffer[i]>>8) * amp) / 100;
 		    
 		    if(mix > 255)
 			    mix = 255;

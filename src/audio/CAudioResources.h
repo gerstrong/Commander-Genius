@@ -232,10 +232,6 @@ private:
                       const unsigned int wavetime,
                       const int frequency);
 
-
-
-
-
 };
 
 #endif /* CAUDIORESOURCES_H_ */
