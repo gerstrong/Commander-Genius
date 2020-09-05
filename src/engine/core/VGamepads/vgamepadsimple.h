@@ -84,6 +84,8 @@ public:
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 
+    bool allInvisible();
+
     bool mouseFingerState(const GsVec2D<float> &Pos,
                           const SDL_TouchFingerEvent &touchFingerEvent,
                           const bool down) override;

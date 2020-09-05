@@ -1135,7 +1135,7 @@ void CInput::pollEvents()
                 if(!mpVirtPad->mouseUp(Pos))
                 {
                     passSDLEventVec = true;
-                    m_EventList.add( new PointingDevEvent( Pos, PDE_BUTTONUP ) );
+                    m_EventList.add( new PointingDevEvent( Pos, PDE_MOVED ) );
                     gPointDevice.mPointingState.mActionButton = 0;
                     gPointDevice.mPointingState.mPos = Pos;
                 }
@@ -1143,7 +1143,9 @@ void CInput::pollEvents()
             else
 #endif
             {
+                passSDLEventVec = true;
                 m_EventList.add( new PointingDevEvent( Pos, PDE_MOVED ) );
+                gPointDevice.mPointingState.mActionButton = 0;
                 gPointDevice.mPointingState.mPos = Pos;
                 break;
             }
