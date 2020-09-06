@@ -55,6 +55,11 @@ GameMenu(GsRect<float>(0.075f, 0.24f, 0.85f, 0.4f), style )
         mpMenuDialog->add( new NumberControl( "Music Vol", 0, SDL_MIX_MAXVOLUME, 4, false,
                                               gAudio.getMusicVolume(), style ) );
 
+    mpOPLAmp =
+        mpMenuDialog->add( new NumberControl( "OPL Amp", 100, 400, 10, false,
+                                              gAudio.getOplAmp(), style ) );
+
+
 	setMenuLabel("SNDEFFMENULABEL");
 
     mpMenuDialog->fit();
@@ -64,13 +69,15 @@ GameMenu(GsRect<float>(0.075f, 0.24f, 0.85f, 0.4f), style )
 
 void CAudioSettings::refresh()
 {
-	mAudioSpec = gAudio.getAudioSpec();
+    mAudioSpec    = gAudio.getAudioSpec();
 	mSoundblaster = gAudio.getSoundBlasterMode();
-	mSoundVolume = mpSoundVolume->getSelection();
-    mMusicVolume = mpMusicVolume->getSelection();
+    mSoundVolume  = mpSoundVolume->getSelection();
+    mMusicVolume  = mpMusicVolume->getSelection();
+    mOplBoost     = mpOPLAmp->getSelection();
 
     mpSoundVolume->setSelection(gAudio.getSoundVolume());
-    mpMusicVolume->setSelection(gAudio.getMusicVolume());        
+    mpMusicVolume->setSelection(gAudio.getMusicVolume());
+    mpOPLAmp->setSelection(gAudio.getOplAmp());
 
 #if !defined(EMBEDDED)
 	mpRate->setSelection( itoa(mAudioSpec.freq) );
@@ -96,9 +103,11 @@ void CAudioSettings::ponder(const float deltaT)
 
 	mSoundVolume = mpSoundVolume->getSelection();
     mMusicVolume = mpMusicVolume->getSelection();
+    mOplBoost    = mpOPLAmp->getSelection();
 
     gAudio.setSoundVolume( mSoundVolume );
     gAudio.setMusicVolume( mMusicVolume );
+    gAudio.setOplAmp( mOplBoost );
 }
 
 

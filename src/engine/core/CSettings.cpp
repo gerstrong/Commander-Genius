@@ -111,8 +111,9 @@ bool CSettings::saveDrvCfg()
         Configuration.WriteInt("Audio", "format", (gAudio.getAudioSpec()).format);
         Configuration.WriteInt("Audio", "rate", (gAudio.getAudioSpec()).freq);
         Configuration.SetKeyword("Audio", "sndblaster", gAudio.getSoundBlasterMode());
-        Configuration.WriteInt("Audio", "musicvol", (gAudio.getMusicVolume()));
         Configuration.WriteInt("Audio", "soundvol", (gAudio.getSoundVolume()));
+        Configuration.WriteInt("Audio", "musicvol", (gAudio.getMusicVolume()));
+        Configuration.WriteInt("Audio", "oplamp", (gAudio.getOplAmp()));
 
     }
     catch(...)
@@ -275,12 +276,14 @@ bool CSettings::loadDrvCfg()
 
     gAudio.setSettings(audio_rate, audio_channels, audio_format, audio_sndblaster);
 
-    int sound_vol, music_vol;
-    config.ReadInteger("Audio", "musicvol", &music_vol, SDL_MIX_MAXVOLUME);
+    int sound_vol, music_vol, opl_amp;
     config.ReadInteger("Audio", "soundvol", &sound_vol, SDL_MIX_MAXVOLUME);
+    config.ReadInteger("Audio", "musicvol", &music_vol, SDL_MIX_MAXVOLUME);
+    config.ReadInteger("Audio", "oplamp", &opl_amp, 400);
 
-    gAudio.setMusicVolume(Uint8(music_vol), false);
     gAudio.setSoundVolume(Uint8(sound_vol), false);
+    gAudio.setMusicVolume(Uint8(music_vol), false);
+    gAudio.setOplAmp(opl_amp);
 
     return true;
 }

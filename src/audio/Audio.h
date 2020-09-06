@@ -146,6 +146,9 @@ public:
 	// Returns as list of strings the frequencies
 	std::list<std::string> getAvailableRateList() const;
 
+    int getOplAmp() const;
+    void setOplAmp(const int percentage);
+
 protected:
 
     bool mCallbackRunning = false;
@@ -174,6 +177,8 @@ private:
 
     COPLEmulator m_OPL_Player;
     bool mPauseGameplay = false;
+
+    Uint32 mOplBoost = 400;
 
 };
 

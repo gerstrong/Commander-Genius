@@ -363,8 +363,26 @@ void VirtualKeenControl::flush()
 #endif
 }
 
-
 #if SDL_VERSION_ATLEAST(2, 0, 0)
+bool VirtualKeenControl::allInvisible()
+{
+    bool allInvisible = true;
+
+    allInvisible &= mPadBackground.invisible;
+    allInvisible &= mDPad.invisible;
+    allInvisible &= mConfirmButton.invisible;
+    allInvisible &= mStartButton.invisible;
+    allInvisible &= mMenuButton.invisible;
+
+    allInvisible &= mJumpButton.invisible;
+    allInvisible &= mShootButton.invisible;
+    allInvisible &= mPogoButton.invisible;
+    allInvisible &= mStatusButton.invisible;
+
+    return allInvisible;
+}
+
+
 bool VirtualKeenControl::mouseFingerState(const GsVec2D<float> &Pos,
                                           const SDL_TouchFingerEvent &touchFingerEvent,
                                           const bool down)
@@ -397,6 +415,9 @@ bool VirtualKeenControl::mouseFingerState(const GsVec2D<float> &Pos,
 /*
     if( !mPadBackground.isInside(Pos.x, Pos.y) )
         return false;*/
+
+    if(allInvisible())
+        return false;
 
     bool ok = false;
 
@@ -531,7 +552,6 @@ bool VirtualKeenControl::mouseFingerState(const GsVec2D<float> &Pos,
         }
     };
 
-
     ok |= bindButtonCommand(mConfirmButton, IC_JUMP);
     ok |= bindButtonCommand(mStartButton, IC_JUMP);
     ok |= bindButtonCommand(mStatusButton, IC_STATUS);
@@ -572,19 +592,26 @@ bool VirtualKeenControl::mouseState(const GsVec2D<float> &Pos, const bool down)
     evUp.key.keysym.sym = SDLK_RIGHT; SDL_PushEvent(&evUp);
     evUp.key.keysym.sym = SDLK_DOWN;  SDL_PushEvent(&evUp);*/
 
+    if(allInvisible())
+        return false;
+
+    bool ok = false;
+
     if( !mPadBackground.isInside(Pos.x, Pos.y) )
         return false;
 
     auto bindButtonCommand = [&](const TouchButton &button,
-                                 const InpCmd &cmd)
+                                 const InpCmd &cmd) -> bool
     {
         if(button.invisible)
-            return;
+            return false;
 
         if( button.Rect().HasPoint(Pos) )
         {
             gInput.setCommand(0, cmd, down);
+            return true;
         }
+        return false;
     };        
 
     SDL_Event ev;
@@ -660,17 +687,17 @@ bool VirtualKeenControl::mouseState(const GsVec2D<float> &Pos, const bool down)
         }
     }
 
-    bindButtonCommand(mConfirmButton, IC_JUMP);
-    bindButtonCommand(mStartButton, IC_JUMP);
-    bindButtonCommand(mMenuButton, IC_BACK);
-    bindButtonCommand(mStatusButton, IC_STATUS);
-    bindButtonCommand(mShootButton, IC_FIRE);
-    bindButtonCommand(mJumpButton, IC_JUMP);
-    bindButtonCommand(mPogoButton, IC_POGO);
+    ok |= bindButtonCommand(mConfirmButton, IC_JUMP);
+    ok |= bindButtonCommand(mStartButton, IC_JUMP);
+    ok |= bindButtonCommand(mMenuButton, IC_BACK);
+    ok |= bindButtonCommand(mStatusButton, IC_STATUS);
+    ok |= bindButtonCommand(mShootButton, IC_FIRE);
+    ok |= bindButtonCommand(mJumpButton, IC_JUMP);
+    ok |= bindButtonCommand(mPogoButton, IC_POGO);
 
 #endif
 
-    return true;
+    return ok;
 
 }
 #endif

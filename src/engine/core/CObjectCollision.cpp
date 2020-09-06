@@ -729,15 +729,16 @@ int CSpriteObject::checkSolidL( int x1, int x2, int y1, int y2)
             // Start to really test if we blow up the gBlockTolerance
             if(c-y1 <= gBlockTolerance) // Upper part
             {
-                blocker = TileProperty[mpMap->at((x1+tol_x)>>CSF, c>>CSF)].bright;
-                slope = (TileProperty[mpMap->at((x1+tol_x)>>CSF, c>>CSF)].bup > 1);
+                const auto mapTile = mpMap->at((x1+tol_x)>>CSF, c>>CSF);
+                blocker = TileProperty[mapTile].bright;
+                slope = (TileProperty[mapTile].bup > 1);
                 if(blocker && !slope)
                 {
                     return blocker;
                 }
                 else if(slope)
                 {
-                    return 0;
+                    return slope;
                 }
             }
             else // Lower part
@@ -889,10 +890,10 @@ void CSpriteObject::processMoveBitLeft()
 	if( (blockedl = checkSolidL(x1, x2, y1, y2)) == true)
 		return;
 
-    int slopeType;
+    int slopeType = 0xFF;
 
 	// if we are here, the tiles aren't blocking us.
-	// TODO: Here we need the Object collision part    
+    // TODO: Here we need the Object collision part?
     m_Pos.x -= MOVE_RES;
     adjustSlopedTiles(x1-(1<<STC), y1, y2, -MOVE_RES, slopeType);
 

@@ -527,6 +527,15 @@ std::list<std::string> Audio::getAvailableRateList() const
     return rateStrList;
 }
 
+int Audio::getOplAmp() const
+{
+    return mOplBoost;
+}
+
+void Audio::setOplAmp(const int percentage)
+{
+    mOplBoost = percentage;
+}
 
 
 void Audio::setSettings( const SDL_AudioSpec& audioSpec,

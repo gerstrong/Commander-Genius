@@ -889,9 +889,10 @@ void CPlayerBase::kill(const bool force,
     
     if(gBehaviorEngine.mCheatmode.god && !force)
         return;
-    
-    mDying = true;    
 
+    const auto firstTime = !mDying;
+
+    mDying = true;
     if(getActionStatus(A_KEEN_DIE))
     {
         setActionForce(A_KEEN_DIE_ALT);
@@ -904,8 +905,8 @@ void CPlayerBase::kill(const bool force,
 
     if(!noDieProcess)
     {
-        // Here were prepare Keen to die, setting the action to die
-        if(mp_processState == &CPlayerBase::processDying && yinertia < 0)
+        if(mp_processState == &CPlayerBase::processDying &&
+           (yinertia < 0 && !firstTime))
             return;
 
         yinertia = -DIE_FALL_MAX_INERTIA;
@@ -914,7 +915,6 @@ void CPlayerBase::kill(const bool force,
     else
     {
         mIsDead = true;
-        honorPriority = true;
     }
 
     solid = false;
