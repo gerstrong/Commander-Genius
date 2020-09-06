@@ -410,7 +410,7 @@ bool CVideoDriver::applyMode()
 }
 
 bool CVideoDriver::setNativeResolution(const GsRect<Uint16> &dispRect)
-{
+{    
     return mpVideoEngine->createSurfaces(dispRect);
 }
 
@@ -591,7 +591,7 @@ unsigned short CVideoDriver::getDepth() const
 
 GsScrollSurface &CVideoDriver::getScrollSurface(const int idx)
 {
-    return mpVideoEngine->getScrollSurface(idx);
+    return mpVideoEngine->getScrollSfc(idx);
 }
 
 st_camera_bounds &CVideoDriver::getCameraBounds()

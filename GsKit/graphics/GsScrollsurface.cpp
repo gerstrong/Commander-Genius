@@ -18,7 +18,7 @@ bool GsScrollSurface::create(const unsigned int mode,
                           0x000000FF,
                           0x00000000);
 
-    return true;
+    return !mScrollSurface.empty();
 }
 
 void GsScrollSurface::resetScrollbuffer()

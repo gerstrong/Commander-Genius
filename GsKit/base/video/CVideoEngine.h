@@ -106,8 +106,6 @@ public:
 
     GsSurface &getScreenSurface() { return *mpScreenSfc; }
 
-    GsScrollSurface &getScrollSurface(const int idx);
-
     GsRect<Uint16> getActiveAreaRect() const;
 
     void drawHorizBorders();

@@ -767,7 +767,6 @@ void CMap::drawAllOfPlane(const int planeIdx)
     auto &scrollSfc = gVideoDriver.getScrollSurface(0);
     const auto dim = scrollSfc.getSquareSize();
 
-    const int drawMask = dim-1;
     scrollSfc.UpdateScrollBufX(m_scrollx);
     scrollSfc.UpdateScrollBufY(m_scrolly);
 
@@ -784,7 +783,7 @@ void CMap::drawAllOfPlane(const int planeIdx)
     if(curPlane.isInfo())
         return;
 
-    auto &curTilemap =  m_Tilemaps.at(planeIdx);
+    auto &curTilemap = m_Tilemaps.at(planeIdx);
 
     for(Uint32 y=0;y<num_h_tiles;y++)
     {
@@ -795,9 +794,9 @@ void CMap::drawAllOfPlane(const int planeIdx)
             if(!tile && planeIdx > 0)
                 continue;
 
-            curTilemap.drawTile(scrollSfc.getScrollSurface(),
-                                ((x<<mTileSizeBase)+m_mapxstripepos)&drawMask,
-                                ((y<<mTileSizeBase)+m_mapystripepos)&drawMask,
+            curTilemap.drawTile(scrollSfc,
+                                ((x<<mTileSizeBase)+m_mapxstripepos),
+                                ((y<<mTileSizeBase)+m_mapystripepos),
                                 tile);
         }
     }

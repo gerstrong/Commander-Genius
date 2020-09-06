@@ -13,6 +13,7 @@
 #include <base/video/scaler/scalebit.h>
 #include <SDL_version.h>
 
+#include "graphics/GsGraphics.h"
 
 // For RefKeen
 /*extern "C"
@@ -240,9 +241,10 @@ bool CVideoEngine::createSurfaces(const GsRect<Uint16> &gamerect)
 
     mScrollSurfaceVec.resize(1);
 
-    auto &scrollSfc = mScrollSurfaceVec.at(0);
-
-    scrollSfc.create(m_Mode, squareSize);
+    {
+        auto &scrollSfc = mScrollSurfaceVec.at(0);
+        scrollSfc.create(m_Mode, squareSize);
+    }
 
     auto blit = mGameSfc.getSDLSurface();
 
@@ -291,11 +293,6 @@ bool CVideoEngine::createSurfaces(const GsRect<Uint16> &gamerect)
 #endif
 
     return true;
-}
-
-GsScrollSurface &CVideoEngine::getScrollSurface(const int idx)
-{
-    return mScrollSurfaceVec.at(idx);
 }
 
 GsRect<Uint16> CVideoEngine::getActiveAreaRect() const
