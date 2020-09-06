@@ -779,7 +779,7 @@ void CMap::drawAllOfPlane(const int planeIdx)
     if(num_h_tiles+m_mapy >= m_height)
         num_h_tiles = m_height-m_mapy;
 
-    auto &curPlane = mPlanes[planeIdx];
+    auto &curPlane = mPlanes.at(planeIdx);
 
     if(curPlane.isInfo())
         return;
@@ -790,7 +790,7 @@ void CMap::drawAllOfPlane(const int planeIdx)
     {
         for(Uint32 x=0;x<num_v_tiles;x++)
         {
-            Uint32 tile = curPlane.getMapDataAt(x+m_mapx, y+m_mapy);            
+            const Uint32 tile = curPlane.getMapDataAt(x+m_mapx, y+m_mapy);
 
             if(!tile && planeIdx > 0)
                 continue;
