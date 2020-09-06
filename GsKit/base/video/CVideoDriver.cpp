@@ -493,16 +493,16 @@ void CVideoDriver::setScaleType(bool IsNormal)
 // it might have when a level-map is loaded.
 void CVideoDriver::updateScrollBuffer(const Sint16 SBufferX, const Sint16 SBufferY)
 {	
-    const int drawMask = getScrollSurface()->w-1;
+    auto &scrollSfc = mpVideoEngine->getScrollSfc(0);
 
-    mpVideoEngine->UpdateScrollBufX(SBufferX, drawMask);
-    mpVideoEngine->UpdateScrollBufY(SBufferY, drawMask);
+    scrollSfc.UpdateScrollBufX(SBufferX);
+    scrollSfc.UpdateScrollBufY(SBufferY);
 }
 
 void CVideoDriver::blitScrollSurface() // This is only for tiles
                                        // Therefore the name should be changed
-{
-	mpVideoEngine->blitScrollSurface();
+{    
+    mpVideoEngine->getScrollSfc(0).blitScrollSurface(gameSfc());
 }
 
 void CVideoDriver::collectSurfaces()
@@ -589,9 +589,9 @@ unsigned short CVideoDriver::getDepth() const
 	return 32;
 }
 
-SDL_Surface *CVideoDriver::getScrollSurface()
+GsScrollSurface &CVideoDriver::getScrollSurface(const int idx)
 {
-	return mpVideoEngine->getScrollSurface();
+    return mpVideoEngine->getScrollSurface(idx);
 }
 
 st_camera_bounds &CVideoDriver::getCameraBounds()

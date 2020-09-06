@@ -123,7 +123,7 @@ public:
 
     bool isVsync(void) { return mVidConfig.mVSync; }
 
-	SDL_Surface *getScrollSurface(void);
+    GsScrollSurface &getScrollSurface(const int idx);
 
     std::set<std::string> getResolutionStrSet();
     std::set<std::string> getGameResStrSet();

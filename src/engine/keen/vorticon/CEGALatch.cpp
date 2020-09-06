@@ -51,6 +51,8 @@ bool CEGALatch::loadHead( char *data, short m_episode )
 
 	data += m_bitmaptablelocation;
 
+    const auto flags = gVideoDriver.getScrollSurface(0).getFlags();
+
     gGraphics.createEmptyBitmaps(1, m_bitmaps);
 	for(int i=0 ; i<m_bitmaps ; i++)
 	{
@@ -88,7 +90,7 @@ bool CEGALatch::loadHead( char *data, short m_episode )
                 gGraphics.setBitmapNameForIdx(default_names[i], i);
 			}
 		}
-		Bitmap.createSurface(gVideoDriver.getScrollSurface()->flags,
+        Bitmap.createSurface(flags,
 							bmpRect,
 							gGraphics.Palette.m_Palette);
 
