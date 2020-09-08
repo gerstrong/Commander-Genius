@@ -75,6 +75,7 @@ void CWorldMap::loadAndPlayMusic()
 	gMusicPlayer.stop();
     if(loadLevelMusic(0))
     {
+        mCurMusicTrack = gMusicPlayer.getCurTrack();
 		gMusicPlayer.play();
     }
 }

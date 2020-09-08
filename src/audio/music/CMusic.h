@@ -71,7 +71,7 @@ public:
         return Mix_PlayingMusic();
     }
 
-    std::string getCurTrackPlaying();
+    std::string getCurTrack();
 
 private:
 

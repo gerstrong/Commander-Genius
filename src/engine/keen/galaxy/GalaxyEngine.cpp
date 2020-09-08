@@ -97,7 +97,7 @@ bool loadLevelMusic(const int level)
       return false;
     }
 
-    return gMusicPlayer.loadTrack(track);
+    return  gMusicPlayer.loadTrack(track);
 }
 
 void GalaxyEngine::ponder(const float deltaT)

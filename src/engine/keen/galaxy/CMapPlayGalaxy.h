@@ -97,6 +97,8 @@ protected:
 	std::vector<CInventory> &mInventoryVec;
 
     bool mMsgBoxOpen;
+
+     std::string mCurMusicTrack = "-1";
 };
 
 #endif /* CMAPPLAYGALAXY_H_ */

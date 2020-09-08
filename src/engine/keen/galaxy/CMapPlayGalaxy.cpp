@@ -183,6 +183,14 @@ void CMapPlayGalaxy::ponderBase(const float deltaT)
 {
     bool oneInvOpen = false;
 
+    const auto curTrack = gMusicPlayer.getCurTrack();
+    if(mCurMusicTrack != curTrack)
+    {
+        gMusicPlayer.load(mCurMusicTrack);
+        gMusicPlayer.play();
+    }
+
+
     // Check if the engine need to be paused
     for( auto &inv : mInventoryVec)
     {
@@ -431,6 +439,7 @@ bool CMapPlayGalaxy::operator<<(CSaveGameController &savedGame)
     }
     else
     {
+        mCurMusicTrack = gMusicPlayer.getCurTrack();
     	gMusicPlayer.play();
     }
 
@@ -621,6 +630,7 @@ void CMapPlayGalaxy::operator<<(GsKit::ptree &levelNode)
     }
     else
     {
+        mCurMusicTrack = gMusicPlayer.getCurTrack();
         gMusicPlayer.play();
     }
 

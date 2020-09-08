@@ -124,16 +124,9 @@ bool CMusic::load(const std::string &musicfile)
 	return false;
 }
 
-std::string CMusic::getCurTrackPlaying()
+std::string CMusic::getCurTrack()
 {
-    if(playing() || paused())
-    {
-        return mCurrentTrack;
-    }
-    else
-    {
-        return "-1";
-    }
+    return mCurrentTrack;
 }
 
 void CMusic::reload()
@@ -183,7 +176,6 @@ void CMusic::stop()
 
     unhookAll();
 }
-
 
 bool CMusic::LoadfromSonglist(const std::string &gamepath, const int &level)
 {

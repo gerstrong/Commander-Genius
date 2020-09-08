@@ -588,6 +588,7 @@ void CPlayGameGalaxy::ponder(const float deltaT)
         }
     }
 
+
     bool blockGamePlay = false;
 
     // if there is one modal message box, block the gameplay

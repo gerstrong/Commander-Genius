@@ -461,16 +461,19 @@ void CPassiveGalaxy::processTitle()
         if(ep == 4)
         {
             gMusicPlayer.loadTrack(2);
+            mCurMusicTrack = gMusicPlayer.getCurTrack();
             gMusicPlayer.play();
         }
         else if(ep == 5)
         {
             gMusicPlayer.loadTrack(2);
+            mCurMusicTrack = gMusicPlayer.getCurTrack();
             gMusicPlayer.play();
         }
         else if(ep == 6)
         {
             gMusicPlayer.loadTrack(4);
+            mCurMusicTrack = gMusicPlayer.getCurTrack();
             gMusicPlayer.play();
         }
 
