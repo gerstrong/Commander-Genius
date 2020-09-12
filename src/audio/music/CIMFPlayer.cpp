@@ -90,8 +90,6 @@ bool CIMFPlayer::loadMusicTrack(const int track)
     return true;
 }
 
-
-
 bool CIMFPlayer::open(const bool lock)
 {
 	m_numreadysamples = m_IMFDelay = 0;
@@ -285,7 +283,6 @@ void imfMusicPlayer(void *udata,
 
     // Fill buffer with music
     memset(stream, 0, static_cast<size_t>(len));
-
     locIMFPlayer.readBuffer(stream,
                             static_cast<Uint32>(len));
     // fill buffer with...uh...music...
@@ -293,6 +290,11 @@ void imfMusicPlayer(void *udata,
     // set udata for next time
     pos+=len;
     *static_cast<int*>(udata) = pos;
+}
+
+void imfPauseMusic(const bool value)
+{
+    locIMFPlayer.play(!value);
 }
 
 // make a music finished function

@@ -223,6 +223,8 @@ bool CPlayGameVorticon::init()
 	    gAudio.playSound(SOUND_MORTIMER);
 	}
 
+    mCurMusicTrack = gMusicPlayer.getCurTrack();
+    gMusicPlayer.play();
 
     return true;
 }
@@ -267,6 +269,11 @@ void CPlayGameVorticon::pumpEvent(const CEvent *evPtr)
         gMenuController.clearMenuStack();
         gEventManager.add<GMSwitchToPassiveMode>();
     }
+    else if( dynamic_cast<const EventReloadMusic*>(evPtr) )
+    {
+        reloadBgMusic();
+        gMusicPlayer.play();
+    }
 
     if(mpObjectAI)
     {
@@ -274,6 +281,12 @@ void CPlayGameVorticon::pumpEvent(const CEvent *evPtr)
     }
 
 }
+
+void CPlayGameVorticon::reloadBgMusic()
+{
+    gMusicPlayer.load(mCurMusicTrack);
+}
+
 
 
 ////
@@ -298,6 +311,13 @@ void CPlayGameVorticon::ponder(const float deltaT)
 
 	if( !mpFinale && !gMenuController.active() ) // Game is not paused, no messages have to be shown and no menu is open
 	{
+        auto &mplayer = gMusicPlayer;
+        const auto curTrack = mplayer.getCurTrack();
+        if(mCurMusicTrack != curTrack)
+        {
+            reloadBgMusic();
+        }
+
 		if(mMessageBoxes.empty() && !StatusScreenOpen())
 		{
 			// Perform AIs

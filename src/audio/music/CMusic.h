@@ -24,7 +24,6 @@
 
 #include <SDL_mixer.h>
 
-
 #define gMusicPlayer CMusic::get()
 
 class CMusic : public GsSingleton<CMusic>
@@ -84,5 +83,7 @@ struct EventPlayTrack : CEvent {
     const uint32_t track;
     EventPlayTrack(const uint16_t t) : track(t) {}
 };
+
+
 
 #endif /* CMUSIC_H_ */

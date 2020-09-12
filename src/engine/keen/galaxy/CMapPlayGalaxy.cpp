@@ -115,6 +115,11 @@ void CMapPlayGalaxy::pumpEvent(const CEvent *evPtr)
             }
         }
     }
+    else if( dynamic_cast<const EventReloadMusic*>(evPtr) )
+    {
+        reloadBgMusic();
+        gMusicPlayer.play();
+    }
 
 
     for( auto obj = mObjectPtr.begin(); obj != mObjectPtr.end() ; obj++)
@@ -178,16 +183,20 @@ void CMapPlayGalaxy::revivePlayerAt(const int playerIdx, const GsVec2D<int> pos)
     }
 }
 
+void CMapPlayGalaxy::reloadBgMusic()
+{
+    gMusicPlayer.load(mCurMusicTrack);
+}
 
 void CMapPlayGalaxy::ponderBase(const float deltaT)
 {
     bool oneInvOpen = false;
 
-    const auto curTrack = gMusicPlayer.getCurTrack();
+    auto &mplayer = gMusicPlayer;
+    const auto curTrack = mplayer.getCurTrack();
     if(mCurMusicTrack != curTrack)
     {
-        gMusicPlayer.load(mCurMusicTrack);
-        gMusicPlayer.play();
+        reloadBgMusic();
     }
 
 

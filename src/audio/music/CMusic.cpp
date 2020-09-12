@@ -93,7 +93,12 @@ bool CMusic::load(const std::string &musicfile)
         }
         else if (extension == "")// Maybe the given file is an integer that describes a track number
         {
-            int songNum = strtol (musicfile.c_str(),NULL,0);
+            if(musicfile == "0")
+            {
+                return loadTrack(0);
+            }
+
+            const int songNum = strtol (musicfile.c_str(),NULL,0);
 
             if(songNum>0)
             {
@@ -157,10 +162,12 @@ void CMusic::play()
     }
 
     Mix_ResumeMusic();
+    imfPauseMusic(false);
 }
 
 void CMusic::pause()
 {
+    imfPauseMusic(true);
     Mix_PauseMusic();
 }
 

@@ -47,6 +47,7 @@ public:
 
     bool loadMusicTrack(const int track) override;
 
+
 private:
 
 		
@@ -61,8 +62,7 @@ private:
     Uint32 m_numreadysamples = 0;
     Uint32 m_samplesPerMusicTick =0;
     unsigned int m_IMFDelay = 0;
-    std::vector<Sint32> mMixBuffer;
-
+    std::vector<Sint32> mMixBuffer;   
 };
 
 
@@ -92,6 +92,8 @@ bool loadIMFTrack(const int track);
 void imfMusicPlayer(void *udata,
                     Uint8 *stream,
                     int len);
+
+void imfPauseMusic(const bool value);
 
 /**
  * @brief musicFinished

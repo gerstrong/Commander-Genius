@@ -151,9 +151,7 @@ void GalaxyEngine::openMainMenu()
 
     if( !gMenuController.empty() )  return;
 
-
-    // Check if music is playing and pause if it is
-    gMusicPlayer.pause();
+    gMusicPlayer.stop();
 
     gEventManager.add( new OpenMenuEvent(
                            new MainMenu(mOpenedGamePlay,
@@ -480,6 +478,7 @@ void GalaxyEngine::pumpEvent(const CEvent *evPtr)
     else if( dynamic_cast<const CloseComputerWrist*>(evPtr) )
     {
         mpComputerWrist = nullptr;
+        gEventManager.add(new EventReloadMusic);
     }
 
     else if( const auto *ocw = dynamic_cast<const OpenComputerWrist*>(evPtr) )

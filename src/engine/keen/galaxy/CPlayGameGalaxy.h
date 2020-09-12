@@ -64,8 +64,6 @@ private:
     // Menu-Button
     SDL_Rect mMenuButtonRect = {0, 0, 24, 16};
 
-
-
     bool mGameOverTriggered = false;
 };
 
