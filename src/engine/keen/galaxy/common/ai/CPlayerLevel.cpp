@@ -326,7 +326,9 @@ void CPlayerLevel::processRunning()
 		xinertia = xDirection * 8;
 		yinertia = 0;
 		setAction(A_KEEN_FALL);
-		playSound( SOUND_KEEN_FALL );
+
+        playSound( SOUND_KEEN_FALL );
+
         mActionState.jumpTimer = 0;
 	}
 
