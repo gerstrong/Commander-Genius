@@ -180,10 +180,15 @@ bool CPlayGameVorticon::loadXMLGameState()
 
 
     // adjust camera settings
+    int p_idx = 0;
     for(auto &player : m_Player)
     {
         player.setupCameraObject();
+        player.setSpriteVariantId(p_idx);
+        player.setSpecialIdx(p_idx);
         player.mpCamera->attachObject(&player);
+        player.mpCamera->allowLead(p_idx);
+        p_idx++;
     }
 
     while(m_Player[0].mpCamera->mMoving)

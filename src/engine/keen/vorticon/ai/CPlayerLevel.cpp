@@ -159,7 +159,7 @@ void CPlayer::kill(const bool force,
 		inventory.lives--;
 		SelectFrame();
 
-        mpCamera->forbidLead(getSpriteVariantIdx());
+        mpCamera->forbidLead(getPlayerIdx());
         mpCamera->cycleCamlead();
         playSound(SOUND_KEEN_DIE, SoundPlayMode::PLAY_NOW);
 

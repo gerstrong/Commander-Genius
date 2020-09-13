@@ -70,7 +70,9 @@ CPlayGame(startlevel)
         player.setDatatoZero();
         player.setupCameraObject();
         player.setSpriteVariantId(i);
+        player.setSpecialIdx(i);        
         player.mpCamera->attachObject(&player);
+        player.mpCamera->allowLead(i);
     }
 
 
@@ -120,6 +122,12 @@ void CPlayGameVorticon::setupPlayers()
 		}
         player.dontdraw = false;
         player.pdie = PDIE_NODIE;
+        const auto p_idx = player.getPlayerIdx();
+
+        if(player.mpCamera)
+        {
+            player.mpCamera->allowLead(p_idx);
+        }
 
 		// Calibrate Player to the right position, so it won't fall when level starts
         GsSprite &sprite = gGraphics.getSprite(i,PSTANDFRAME);
@@ -132,7 +140,7 @@ void CPlayGameVorticon::setupPlayers()
         player.setMapData(mMap.get());
         player.exists = true;
         player.solid = true;
-        //if(player.m_playingmode == CPlayer::WORLDMAP) player.solid = !(player.godmode);
+
 
         stInventory &inventory = m_Player.at(static_cast<unsigned int>(i)).inventory;
 
@@ -546,10 +554,10 @@ void CPlayGameVorticon::handleFKeys()
 	}
 
 	// Cycle Cam Code
-	if( gInput.getPressedCommand(mCamLead, IC_CAMLEAD) )
+    /*if( gInput.getPressedCommand(mCamLead, IC_CAMLEAD) )
 	{
 		cycleCamLead();
-	}
+    }*/
 
 	// GOD cheat -- toggle god mode
     if ( gInput.getHoldedKey(KG) &&
@@ -790,8 +798,7 @@ void CPlayGameVorticon::drawAllElements()
     // Draw masked tiles here!
     mMap->_drawForegroundTiles();
 
-    const size_t numPlayers = size_t(gBehaviorEngine.numPlayers());
-    for( size_t i=0 ; i<numPlayers ; i++ )
+    for( size_t i=0 ; i<m_Player.size() ; i++ )
     {
         m_Player[i].drawStatusScreen();
     }
