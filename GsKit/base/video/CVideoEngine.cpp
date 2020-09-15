@@ -208,6 +208,10 @@ bool CVideoEngine::createSurfaces()
     return createSurfaces(m_VidConfig.mGameRect);
 }
 
+std::vector<GsScrollSurface> &CVideoEngine::getScrollSurfaceVec()
+{
+    return mScrollSurfaceVec;
+}
 
 bool CVideoEngine::createSurfaces(const GsRect<Uint16> &gamerect)
 {
@@ -241,8 +245,8 @@ bool CVideoEngine::createSurfaces(const GsRect<Uint16> &gamerect)
 
     mScrollSurfaceVec.resize(1);
 
+    for( auto &scrollSfc : mScrollSurfaceVec )
     {
-        auto &scrollSfc = mScrollSurfaceVec.at(0);
         scrollSfc.create(m_Mode, squareSize);
     }
 
@@ -351,6 +355,22 @@ void CVideoEngine::scaleAndFilter()
 
         SDL_UnlockSurface( dstSfc );
         SDL_UnlockSurface( srcSfc );
+    }
+}
+
+void CVideoEngine::blitScrollSurfaces(GsWeakSurface &blitSfc)
+{
+    for (auto &scrollSfc : mScrollSurfaceVec)
+    {
+        scrollSfc.blitScrollSurface(blitSfc);
+    }
+}
+
+void CVideoEngine::resetScrollBuffers()
+{
+    for (auto &scrollSfc : mScrollSurfaceVec)
+    {
+        scrollSfc.resetScrollbuffer();
     }
 }
 

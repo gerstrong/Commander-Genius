@@ -162,7 +162,7 @@ void CAbout::render()
 {
     mpMap->animateAllTiles();
 
-    gVideoDriver.blitScrollSurface();
+    gVideoDriver.blitScrollSurfaces();
 
     GsWeakSurface weakBlit(gVideoDriver.getBlitSurface());
 

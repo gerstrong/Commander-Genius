@@ -124,7 +124,7 @@ void CCredits::render()
 {
     auto &creditFont = gGraphics.getFontLegacy(0);
     mpMap->animateAllTiles();
-    gVideoDriver.blitScrollSurface();
+    gVideoDriver.blitScrollSurfaces();
 
     mDrawSfc.fillRGB(0, 0, 0);
 

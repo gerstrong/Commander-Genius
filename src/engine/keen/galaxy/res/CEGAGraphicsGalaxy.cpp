@@ -1146,7 +1146,6 @@ bool CEGAGraphicsGalaxy::readBitmaps()
     const auto &exefile = gKeenFiles.exeFile;
     
     const auto flags = gVideoDriver.getScrollSurface(0).getFlags();
-
     // ARM processor requires all ints and structs to be 4-byte aligned, so we're just using memcpy()
     BitmapHeadStruct BmpHead[epInfo.NumBitmaps];
     memcpy( BmpHead, &(m_egagraph.at(0).data.at(0)), epInfo.NumBitmaps*sizeof(BitmapHeadStruct));

@@ -161,7 +161,7 @@ void COrderingInfo::ponder()
 void COrderingInfo::render()
 {
     mpMap->animateAllTiles();
-    gVideoDriver.blitScrollSurface();
+    gVideoDriver.blitScrollSurfaces();
 
     for(int i=0 ; i<m_numberoflines ; i++)
     {

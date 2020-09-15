@@ -75,7 +75,7 @@ void CMap::resetScrolls()
 {
     m_scrollx = m_scrolly = 0;
 
-    gVideoDriver.getScrollSurface(0).resetScrollbuffer();
+    gVideoDriver.resetScrollBuffers();
 
     m_scrollpix = m_scrollpixy = 0;
     m_mapx = m_mapy = 0;           // map X location shown at scrollbuffer row 0
@@ -84,9 +84,9 @@ void CMap::resetScrolls()
 
 
 void CMap::refreshStripes()
-{
-    const int oldx = m_mapx<<4;
-    const int oldy = m_mapy<<4;
+{    
+    const int oldx = m_mapx<<mTileSizeBase;
+    const int oldy = m_mapy<<mTileSizeBase;
 
     resetScrolls();
 
@@ -432,18 +432,22 @@ bool CMap::setTile(Uint16 x, Uint16 y, Uint16 t, bool redraw, Uint16 plane)
     return false;
 }
 
-// Called in level. This function does the same as setTile, but also draws directly to the scrollsurface
-// used normally, when items are picked up
+// Called in level. This function does the same as setTile, but also draws directly to the scrollsurface.
+// Used normally, when items are picked up
 bool CMap::changeTile(Uint16 x, Uint16 y, Uint16 t)
 {
-    const auto &sfc = gVideoDriver.getScrollSurface(0).getScrollSurface();
+    auto &scrollSfcVec = gVideoDriver.mpVideoEngine->getScrollSurfaceVec();
 
-    const int drawMask = sfc.width()-1;
-
-	if( setTile( x, y, t ) )
+    if( setTile( x, y, t ) )
 	{
-        m_Tilemaps.at(1).drawTile(sfc.getSDLSurface(),
-                                  (x<<4)&drawMask, (y<<4)&drawMask, t);
+        for( auto &scrollSfc : scrollSfcVec )
+        {
+            const int drawMask = scrollSfc.getScrollSurface().width()-1;
+            m_Tilemaps.at(1).drawTile(scrollSfc,
+                                      (x<<mTileSizeBase)&drawMask,
+                                      (y<<mTileSizeBase)&drawMask, t);
+        }
+
 		return true;
 	}
 
@@ -789,7 +793,7 @@ void CMap::drawAllOfPlane(const int planeIdx)
     {
         for(Uint32 x=0;x<num_v_tiles;x++)
         {
-            const Uint32 tile = curPlane.getMapDataAt(x+m_mapx, y+m_mapy);
+            Uint32 tile = curPlane.getMapDataAt(x+m_mapx, y+m_mapy);
 
             if(!tile && planeIdx > 0)
                 continue;
@@ -843,7 +847,9 @@ void CMap::drawHstripeOfPlane(const int planeIdx,
       if(!tile && planeIdx > 0)
           continue;
 
-      curTilemap.drawTile(scrollSfc.getScrollSurface(), ((x<<mTileSizeBase)+m_mapxstripepos)&drawMask, y, tile);
+      curTilemap.drawTile(scrollSfc.getScrollSurface(),
+                          ((x<<mTileSizeBase)+m_mapxstripepos)&drawMask,
+                          y, tile);
     }
 }
 
@@ -1052,7 +1058,7 @@ void CMap::animateAllTiles()
         refreshStripes();
         drawAll();
 
-        gVideoDriver.blitScrollSurface();
+        gVideoDriver.blitScrollSurfaces();
         gVideoDriver.setRefreshSignal(false);
     }
 

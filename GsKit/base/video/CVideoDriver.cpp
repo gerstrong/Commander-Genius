@@ -499,10 +499,10 @@ void CVideoDriver::updateScrollBuffer(const Sint16 SBufferX, const Sint16 SBuffe
     scrollSfc.UpdateScrollBufY(SBufferY);
 }
 
-void CVideoDriver::blitScrollSurface() // This is only for tiles
-                                       // Therefore the name should be changed
+void CVideoDriver::blitScrollSurfaces() // This is only for tiles
+                                                              // Therefore the name should be changed
 {    
-    mpVideoEngine->getScrollSfc(0).blitScrollSurface(gameSfc());
+    mpVideoEngine->blitScrollSurfaces(gameSfc());
 }
 
 void CVideoDriver::collectSurfaces()
@@ -587,6 +587,11 @@ unsigned int CVideoDriver::getHeight() const {
 unsigned short CVideoDriver::getDepth() const
 {
 	return 32;
+}
+
+void CVideoDriver::resetScrollBuffers()
+{
+    mpVideoEngine->resetScrollBuffers();
 }
 
 GsScrollSurface &CVideoDriver::getScrollSurface(const int idx)

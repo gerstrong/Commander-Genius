@@ -290,7 +290,7 @@ void CMapPlayGalaxy::ponderBase(const float deltaT)
 
 void CMapPlayGalaxy::render()
 {
-    gVideoDriver.blitScrollSurface();
+    gVideoDriver.blitScrollSurfaces();
 
     // Draw all the sprites without player
     // The player sprites are drawn at the end. Reverse order of drawing

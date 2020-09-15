@@ -62,7 +62,7 @@ public:
 	bool start();
 	void isFullscreen(bool value);
 
-	void blitScrollSurface();
+	void blitScrollSurfaces();
     void updateScrollBuffer(const Sint16 SBufferX, const Sint16 SBufferY);
 	
 	void collectSurfaces();
@@ -122,6 +122,8 @@ public:
     bool isOpenGL(void) { return mVidConfig.mOpengl; }
 
     bool isVsync(void) { return mVidConfig.mVSync; }
+
+    void resetScrollBuffers();
 
     GsScrollSurface &getScrollSurface(const int idx);
 

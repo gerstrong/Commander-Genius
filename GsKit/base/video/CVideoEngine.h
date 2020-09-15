@@ -112,6 +112,10 @@ public:
 
     void scaleAndFilter();
 
+    void blitScrollSurfaces(GsWeakSurface &blitSfc);
+
+    void resetScrollBuffers();
+
     GsScrollSurface& getScrollSfc(const int idx);
 
 
@@ -132,6 +136,8 @@ public:
 
     GsRect<int> mRelativeVisGameArea;
     GsRect<int> mRelativeBlendVisGameArea;
+
+    std::vector<GsScrollSurface> &getScrollSurfaceVec();
 
 protected:
 

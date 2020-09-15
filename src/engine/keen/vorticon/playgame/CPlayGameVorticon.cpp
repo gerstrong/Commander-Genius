@@ -787,7 +787,7 @@ void CPlayGameVorticon::drawAllElements()
     mMap->animateAllTiles();
 
     // Blit the background
-    gVideoDriver.blitScrollSurface();
+    gVideoDriver.blitScrollSurfaces();
 
     // Draw all objects to the screen
     drawObjects();
