@@ -67,6 +67,7 @@ bool CLevelPlay::loadMap(const int level)
 
     if( loadLevelMusic(level) )
     {
+        mCurMusicTrack = gMusicPlayer.getCurTrack();
         gMusicPlayer.play();
     }
     else

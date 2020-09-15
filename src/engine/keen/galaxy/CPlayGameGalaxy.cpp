@@ -566,7 +566,9 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
 void CPlayGameGalaxy::ponder(const float deltaT)
 {
     if( gMenuController.active() )
+    {
         return;
+    }
 
     processInput();
 
@@ -587,6 +589,7 @@ void CPlayGameGalaxy::ponder(const float deltaT)
             gEventManager.add(new OpenMainMenuEvent());
         }
     }
+
 
     bool blockGamePlay = false;
 
@@ -732,7 +735,9 @@ void CPlayGameGalaxy::ponder(const float deltaT)
 void CPlayGameGalaxy::render()
 {
     if( gMenuController.active() )
+    {
         return;
+    }
 
     // Render World Map
     if(m_WorldMap.isActive())

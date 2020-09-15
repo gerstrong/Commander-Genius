@@ -25,6 +25,7 @@
 #include <vector>
 #include <list>
 
+
 class CMapPlayGalaxy
 {
 public:
@@ -89,6 +90,8 @@ public:
     void setMsgBoxOpen(const bool msgboxactive)
     { mMsgBoxOpen = msgboxactive; }
 
+    void reloadBgMusic();
+
 protected:
 	std::vector< std::shared_ptr<CGalaxySpriteObject> > mObjectPtr;
 	bool mActive;        
@@ -97,6 +100,8 @@ protected:
 	std::vector<CInventory> &mInventoryVec;
 
     bool mMsgBoxOpen;
+
+    std::string mCurMusicTrack = "-1";
 };
 
 #endif /* CMAPPLAYGALAXY_H_ */

@@ -100,7 +100,7 @@ ponder(const float deltaT)
     // If IC_BACK is invoked, make the menu controller close the controller
     if( gInput.getPressedCommand(IC_BACK) )
     {
-        gEventManager.add( new CloseMenuEvent() );
+        gEventManager.add( new CloseMenuEvent(false) );
         return;
     }
 

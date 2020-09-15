@@ -91,6 +91,8 @@ public:
      * @brief mStoryTextVector Vector of story text blocks
      */
     std::vector<std::string> mStoryTextVector;
+
+    std::string mCurMusicTrack = "-1";
 };
 
 }

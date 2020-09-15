@@ -1237,29 +1237,36 @@ void CInput::processJoystickAxis(void)
     // Input for player commands
     for(auto &input : mInputCommands)
     {
-        for(unsigned int i=0 ; i<input.size() ; i++)
+        for(auto &curInput : input)
         {
-            if(input[i].joyeventtype == ETYPE_JOYAXIS)
-			{
-				// Axis are configured for this commmand
-                if( evWhich == input[i].which &&
-                    Event.jaxis.axis == input[i].joyaxis )
-				{
-					// Deadzone
-                    if((Event.jaxis.value > m_joydeadzone && mInputCommands[0][i].joyvalue > 0) ||
-                       (Event.jaxis.value < -m_joydeadzone && mInputCommands[0][i].joyvalue < 0))
-					{
-                        input[i].active = true;
-                        input[i].joymotion = Event.jaxis.value;
-					}
-					else
-                    {
-                        input[i].active = false;
-                    }
-				}
-			}
-		}
-	}
+            // Only axis types
+            if(curInput.joyeventtype != ETYPE_JOYAXIS)
+                continue;
+
+            // Only the right device id
+            if( evWhich != curInput.which )
+                continue;
+
+            // It must match to mapped axis movement
+            if( Event.jaxis.axis != curInput.joyaxis )
+                continue;
+
+
+            // Also respect the Deadzone
+            if((Event.jaxis.value > m_joydeadzone &&
+                curInput.joyvalue > 0) ||
+               (Event.jaxis.value < -m_joydeadzone &&
+                curInput.joyvalue < 0))
+            {
+                curInput.active = true;
+                curInput.joymotion = Event.jaxis.value;
+            }
+            else
+            {
+                curInput.active = false;
+            }
+        }
+    }
 }
 
 void CInput::processJoystickHat()
@@ -1303,7 +1310,6 @@ void CInput::processJoystickButton(int value)
         auto &inputs = inputCommand;
         for( auto &input : inputs)
 		{
-			// TODO: Check all NUM_INPUTS, if they can be reduced to another variable
             if(input.joyeventtype == ETYPE_JOYBUTTON)
 			{
                 // Joystick buttons are configured for this event

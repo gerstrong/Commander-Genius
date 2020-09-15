@@ -220,6 +220,7 @@ void VorticonEngine::switchToPassiveMode()
     }
 }
 
+
 void VorticonEngine::pumpEvent(const CEvent *evPtr)
 {
     KeenEngine::pumpEvent(evPtr);

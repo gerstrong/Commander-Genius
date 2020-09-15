@@ -1,6 +1,7 @@
 v2.5.5:
 -------
 - Improved controller configuration for multiplayer
+- Multiplayer experience
 
 v2.5.4:
 -------

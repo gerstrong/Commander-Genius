@@ -93,7 +93,12 @@ bool CMusic::load(const std::string &musicfile)
         }
         else if (extension == "")// Maybe the given file is an integer that describes a track number
         {
-            int songNum = strtol (musicfile.c_str(),NULL,0);
+            if(musicfile == "0")
+            {
+                return loadTrack(0);
+            }
+
+            const int songNum = strtol (musicfile.c_str(),NULL,0);
 
             if(songNum>0)
             {
@@ -124,16 +129,9 @@ bool CMusic::load(const std::string &musicfile)
 	return false;
 }
 
-std::string CMusic::getCurTrackPlaying()
+std::string CMusic::getCurTrack()
 {
-    if(playing() || paused())
-    {
-        return mCurrentTrack;
-    }
-    else
-    {
-        return "-1";
-    }
+    return mCurrentTrack;
 }
 
 void CMusic::reload()
@@ -164,10 +162,12 @@ void CMusic::play()
     }
 
     Mix_ResumeMusic();
+    imfPauseMusic(false);
 }
 
 void CMusic::pause()
 {
+    imfPauseMusic(true);
     Mix_PauseMusic();
 }
 
@@ -183,7 +183,6 @@ void CMusic::stop()
 
     unhookAll();
 }
-
 
 bool CMusic::LoadfromSonglist(const std::string &gamepath, const int &level)
 {

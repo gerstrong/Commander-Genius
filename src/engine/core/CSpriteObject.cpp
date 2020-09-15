@@ -144,16 +144,23 @@ bool CSpriteObject::verifyForFalling()
 {
 	if( !blockedd )
 	{
-		// This will check three points and avoid that keen falls on sloped tiles
-        const auto fall1 = mpMap->getPlaneDataAt(1, getXMidPos(), getYDownPos());
-        const auto fall2 = mpMap->getPlaneDataAt(1, getXMidPos(), getYDownPos()+(1<<(CSF)));
-        const auto fall3 = mpMap->getPlaneDataAt(1, getXMidPos(), getYDownPos()+(2<<(CSF)));
-		const CTileProperties &TileProp1 = gBehaviorEngine.getTileProperties(1)[fall1];
-		const CTileProperties &TileProp2 = gBehaviorEngine.getTileProperties(1)[fall2];
-		const CTileProperties &TileProp3 = gBehaviorEngine.getTileProperties(1)[fall3];
-		const bool nothing_on_feet = (TileProp1.bup == 0);
-		const bool nothing_below_feet = (TileProp2.bup == 0) && (TileProp3.bup == 0);
-		const bool can_fall = (nothing_on_feet && nothing_below_feet);
+        // This will check three points (below feet) and avoid that foes fall on sloped tiles
+        auto &relTileProp = gBehaviorEngine.getTileProperties(1);
+
+        bool can_fall = true;
+
+        for(int i=0 ; i<3 ; i++)
+        {
+            const auto fallTileL = mpMap->getPlaneDataAt(1, getXLeftPos(), getYDownPos()+(i<<(CSF)));
+            const auto fallTileM = mpMap->getPlaneDataAt(1, getXMidPos(), getYDownPos()+(i<<(CSF)));
+            const auto fallTileR = mpMap->getPlaneDataAt(1, getXRightPos(), getYDownPos()+(i<<(CSF)));
+            const CTileProperties &TilePropL = relTileProp[fallTileL];
+            const CTileProperties &TilePropM = relTileProp[fallTileM];
+            const CTileProperties &TilePropR = relTileProp[fallTileR];
+            can_fall &= (TilePropL.bup == 0);
+            can_fall &= (TilePropM.bup == 0);
+            can_fall &= (TilePropR.bup == 0);
+        }
 
 		if(can_fall)
 		{

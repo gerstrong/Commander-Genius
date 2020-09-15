@@ -125,7 +125,7 @@ mSelectedPlayer(selectedPlayer)
                                              this->mSelectedPlayer-1;
                                assert(sel>=0);
                                gInput.resetControls(sel);
-                               gEventManager.add( new CloseMenuEvent() );
+                               gEventManager.add( new CloseMenuEvent(false) );
                            },
                            style ) );
     

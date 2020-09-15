@@ -19,6 +19,8 @@ public:
     MainMenu(const bool openedGamePlay, const Style style);
 
     void createGameMenu(const bool openedGamePlay , const Style style);
+
+    virtual void ponder(const float dt) override;
 };
 
 struct OpenMainMenuEvent : public CEvent {};

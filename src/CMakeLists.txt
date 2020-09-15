@@ -151,8 +151,15 @@ if(NINTENDO_SWITCH)
 endif(NINTENDO_SWITCH)
 
 
-# Add executable Commander Genius
-add_executable (CGeniusExe ${CGENIUS_SRC})
+if(ANDROID)
+    message(STATUS "Android build enabled. Building CG as Shared Lib")
+    add_library(CGeniusExe SHARED)
+else(ANDROID)
+    # Add executable Commander Genius
+    add_executable (CGeniusExe)
+endif(ANDROID)
+
+target_sources(CGeniusExe PRIVATE ${CGENIUS_SRC})
 
 # Since some RefKeen is used, we also need C99 Standard
 set_property(TARGET CGeniusExe PROPERTY C_STANDARD 99)

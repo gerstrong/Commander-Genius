@@ -6,6 +6,7 @@
  */
 
 #include "MainMenu.h"
+#include <base/CInput.h>
 #include <base/GsApp.h>
 #include <widgets/GsMenuController.h>
 
@@ -105,11 +106,24 @@ void MainMenu::createGameMenu( const bool openedGamePlay,
     select(1);
 }
 
+void MainMenu::ponder(const float dt)
+{
+    // If IC_BACK is invoked, make the menu controller close the controller
+    if( gInput.getPressedCommand(IC_BACK) )
+    {
+        gEventManager.add( new CloseMenuEvent(true) );
 
+        return;
+    }
+
+    handleInput(dt);
+
+    mpMenuDialog->processLogic();
+}
 
 MainMenu::MainMenu( const bool openedGamePlay, 
                     const Style style ) :
-GameMenu( GsRect<float>(0.25f, 0.23f, 0.5f, 0.5f), style )
+GameMenu( GsRect<float>(0.25f, 0.23f, 0.5f, 0.5f), style, true )
 {   
     createGameMenu(openedGamePlay, style);
 }

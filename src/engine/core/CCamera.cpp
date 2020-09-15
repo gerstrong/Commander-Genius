@@ -22,19 +22,14 @@ std::array<bool, 4> CCamera::mDontUseThisLead;
 
 
 CCamera::CCamera(CMap *pmap, Uint32 x, Uint32 y, CSpriteObject *p_attacher) :
-CSpriteObject(pmap, x, y, 0),
-mp_AttachedObject(p_attacher)
+CSpriteObject(pmap, x, y, 0)
 {
 	m_relcam.x = 0;
 	m_relcam.y = 0;
 	mSpriteIdx = BLANKSPRITE;
 	solid = false;
 
-    const int camId = mp_AttachedObject->getSpriteVariantIdx();
-
-    mDontUseThisLead[camId] = false;
-
-    resetCamLead();
+    attachObject(p_attacher);
 }
 
 void CCamera::cycleCamlead()
@@ -65,6 +60,11 @@ void CCamera::cycleCamlead()
 void CCamera::attachObject(CSpriteObject *p_attacher)
 {
 	mp_AttachedObject = p_attacher;
+
+    const int camId = mp_AttachedObject->getSpriteVariantIdx();
+    mDontUseThisLead[camId] = false;
+    resetCamLead();
+
 }
 
 void CCamera::setPosition(const GsVec2D<int>& newpos)

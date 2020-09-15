@@ -30,9 +30,7 @@ pjumpupspeed_decrease(gBehaviorEngine.getPhysicsSettings().player.defaultjumpupd
 mp_levels_completed(mpLevelCompleted)
 {
     canbezapped = true;
-    m_index = 0;
-
-
+    m_index = 0;   
     pjumping = PNOJUMP;
     pfalling = false;
     psemisliding = false;

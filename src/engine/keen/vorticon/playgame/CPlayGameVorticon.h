@@ -57,6 +57,8 @@ public:
     bool loadXMLGameState() override;
     bool saveXMLGameState() override;
 
+    void reloadBgMusic();
+
     void pumpEvent(const CEvent *evPtr) override;
 
     void ponder(const float deltaT) override;
@@ -138,5 +140,7 @@ private:
 
     // Menu-Button
     SDL_Rect mMenuButtonRect = {0, 0, 24, 16};
+
+    std::string mCurMusicTrack = "-1";
 };
 #endif /* CPlayGameVorticon_H_ */

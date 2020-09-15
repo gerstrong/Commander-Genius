@@ -137,7 +137,9 @@ bool CVorticonMapLoaderBase::loadBase(  Uint8 episode,
 		// If no music from the songlist could be loaded try the normal table which
 		// has another format. It is part of HQP
 		if(!gMusicPlayer.LoadfromSonglist(path, level))
-			gMusicPlayer.LoadfromMusicTable(path, levelname);
+        {
+            gMusicPlayer.LoadfromMusicTable(path, levelname);
+        }
 	}
 
 	// decompress map RLEW data

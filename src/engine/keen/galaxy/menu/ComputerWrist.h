@@ -154,7 +154,6 @@ private:
     std::vector<int> mMaxPos;   
 
     int mPlaySong = -1;
-    std::string mPreviousSong;
 
     const bool mGreyMode = false;
     const bool mShowPageNo = false;
