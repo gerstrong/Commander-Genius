@@ -69,6 +69,7 @@ void CMenuController::pumpEvent(const CEvent *evPtr)
     }
     else if( auto *cme = dynamic_cast<const CloseMenuEvent*>(evPtr) )
     {
+        gInput.flushAll();
         popBackMenu();
 
         if(cme->mReplayMusic)

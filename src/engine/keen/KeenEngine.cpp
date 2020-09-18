@@ -99,7 +99,7 @@ void KeenEngine::ponder(const float deltaT)
 
     if( gMusicPlayer.paused())
     {
-       gMusicPlayer.play();
+        gMusicPlayer.play();
     }
 
     // Did the player press the quit/back button

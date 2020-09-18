@@ -544,9 +544,15 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
     }
     else if( const EventPlayTrack *ev =  dynamic_cast<const EventPlayTrack*>(evPtr) )
     {
-        gMusicPlayer.stop();
-        if( gMusicPlayer.loadTrack(ev->track) )
-            gMusicPlayer.play();
+        if(m_LevelPlay.isActive())
+        {
+            m_LevelPlay.playMusic(ev->track);
+        }
+
+        if(m_WorldMap.isActive())
+        {
+            m_WorldMap.playMusic(ev->track);
+        }
     }
     else if(m_WorldMap.isActive())
     {
