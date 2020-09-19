@@ -183,6 +183,28 @@ void CMapPlayGalaxy::revivePlayerAt(const int playerIdx, const GsVec2D<int> pos)
     }
 }
 
+
+void CMapPlayGalaxy::stopMusic()
+{
+    gMusicPlayer.stop();
+    mCurMusicTrack = "-1";
+}
+
+void CMapPlayGalaxy::playMusic(const int track)
+{
+    gMusicPlayer.stop();
+    if( gMusicPlayer.loadTrack(track) )
+    {
+        mCurMusicTrack = gMusicPlayer.getCurTrack();
+        gMusicPlayer.play();
+    }
+    else
+    {
+        gLogging.textOut("Warning: The music cannot be played. Check that all the files have been correctly copied!");
+    }
+}
+
+
 void CMapPlayGalaxy::reloadBgMusic()
 {
     gMusicPlayer.load(mCurMusicTrack);

@@ -139,6 +139,8 @@ bool CPassiveGalaxy::init()
 // Here it will execute the mode we are currently running
 void CPassiveGalaxy::ponder(const float deltaT)
 {		
+    (void) deltaT;
+
     if(gEffectController.runningEffect())
        return;
 
@@ -146,6 +148,7 @@ void CPassiveGalaxy::ponder(const float deltaT)
     {
         mSkipSection = true;
         gMusicPlayer.stop();
+        mCurMusicTrack = "-1";
     }
 
     (this->*processPonderMode)();
@@ -455,33 +458,51 @@ void CPassiveGalaxy::processTitle()
                                            lRect.x, lRect.w, lRect.y, false);
             lRect.y += 20;
         }
-
-        const auto ep = gBehaviorEngine.getEpisode();
-
-        if(ep == 4)
-        {
-            gMusicPlayer.loadTrack(2);
-            mCurMusicTrack = gMusicPlayer.getCurTrack();
-            gMusicPlayer.play();
-        }
-        else if(ep == 5)
-        {
-            gMusicPlayer.loadTrack(2);
-            mCurMusicTrack = gMusicPlayer.getCurTrack();
-            gMusicPlayer.play();
-        }
-        else if(ep == 6)
-        {
-            gMusicPlayer.loadTrack(4);
-            mCurMusicTrack = gMusicPlayer.getCurTrack();
-            gMusicPlayer.play();
-        }
-
     }
 }
 
 void CPassiveGalaxy::processStarWars()
 {
+    auto &mplayer = gMusicPlayer;
+
+    if(!mplayer.playing())
+    {
+        const auto ep = gBehaviorEngine.getEpisode();
+
+        if(ep == 4)
+        {
+            mplayer.loadTrack(2);
+            mCurMusicTrack = mplayer.getCurTrack();
+            mplayer.play();
+        }
+        else if(ep == 5)
+        {
+            mplayer.loadTrack(2);
+            mCurMusicTrack = mplayer.getCurTrack();
+            mplayer.play();
+        }
+        else if(ep == 6)
+        {
+            mplayer.loadTrack(4);
+            mCurMusicTrack = mplayer.getCurTrack();
+            mplayer.play();
+        }
+    }
+    /*
+    const auto curTrack = mplayer.getCurTrack();
+
+    if(!mplayer.playing())
+    {
+        mplayer.load(mCurMusicTrack);
+        mplayer.play();
+    }
+
+    if(mCurMusicTrack != curTrack)
+    {
+        mplayer.load(mCurMusicTrack);
+        mCurMusicTrack = mplayer.getCurTrack();
+    }*/
+
     // If something is pressed at this section, open the menu
     if( !gEffectController.runningEffect() && !gMenuController.active() )
     {
@@ -496,8 +517,7 @@ void CPassiveGalaxy::processStarWars()
             vkc->mDPad.invisible = false;
             vkc->mMenuButton.invisible = false;
 #endif
-#endif
-
+#endif            
             gEventManager.add(new OpenMainMenuEvent());
             mSkipSection = false;
         }

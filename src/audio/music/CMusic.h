@@ -60,15 +60,11 @@ public:
 
 	bool LoadfromSonglist(const std::string &gamepath, const int &level);
 
-    bool paused()
-    {
-        return Mix_PausedMusic();
-    }
+    bool loaded() const;
 
-	bool playing()
-    {
-        return Mix_PlayingMusic();
-    }
+    bool paused();
+
+    bool playing();
 
     std::string getCurTrack();
 

@@ -63,9 +63,8 @@ bool CLevelPlay::loadMap(const int level)
 
 
     // Load some new background Music
-	gMusicPlayer.stop();
-
-    if( loadLevelMusic(level) )
+    gMusicPlayer.stop();
+    if( galaxy::loadLevelMusic(level) )
     {
         mCurMusicTrack = gMusicPlayer.getCurTrack();
         gMusicPlayer.play();
@@ -74,6 +73,7 @@ bool CLevelPlay::loadMap(const int level)
     {
         gLogging.textOut("Warning: The music cannot be played. Check that all the files have been correctly copied!");
     }
+
     return true;
 }
 

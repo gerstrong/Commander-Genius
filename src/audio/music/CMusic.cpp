@@ -180,7 +180,7 @@ void CMusic::stop()
         Mix_FreeMusic(mpMixMusic);
         mpMixMusic = nullptr;
     }
-
+    mCurrentTrack = "-1";
     unhookAll();
 }
 
@@ -235,6 +235,22 @@ bool CMusic::LoadfromSonglist(const std::string &gamepath, const int &level)
     	}
     }
 	return false;
+}
+
+
+bool CMusic::paused()
+{
+    return (Mix_PausedMusic() == 1);
+}
+
+bool CMusic::playing()
+{
+    if(mCurrentTrack == "-1")
+        return false;
+    else
+        return true;
+
+    //return Mix_PlayingMusic();
 }
 
 bool CMusic::LoadfromMusicTable(const std::string &gamepath,

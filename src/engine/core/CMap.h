@@ -228,6 +228,7 @@ public:
 
     GsVec2D<int> mGamePlayPos;
 
+
 private:
 
     bool findVerticalScrollBlocker(const int x);
