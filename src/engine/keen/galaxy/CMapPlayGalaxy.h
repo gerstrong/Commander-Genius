@@ -90,6 +90,8 @@ public:
     void setMsgBoxOpen(const bool msgboxactive)
     { mMsgBoxOpen = msgboxactive; }
 
+    void stopMusic();
+
     void playMusic(const int track);
 
     void reloadBgMusic();

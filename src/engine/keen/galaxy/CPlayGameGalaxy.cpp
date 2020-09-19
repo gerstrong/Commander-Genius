@@ -390,6 +390,8 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
     else if( const EventSendSelectionDialogMsg* ev = dynamic_cast<const EventSendSelectionDialogMsg*>(evPtr) )
     {
         gMusicPlayer.stop();
+        m_LevelPlay.stopMusic();
+
         std::unique_ptr<CMessageBoxSelection> pMsgBox( new CMessageBoxSelection( ev->Message, ev->Options ) );
         pMsgBox->init();
 

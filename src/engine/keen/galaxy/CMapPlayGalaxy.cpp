@@ -183,6 +183,13 @@ void CMapPlayGalaxy::revivePlayerAt(const int playerIdx, const GsVec2D<int> pos)
     }
 }
 
+
+void CMapPlayGalaxy::stopMusic()
+{
+    gMusicPlayer.stop();
+    mCurMusicTrack = "-1";
+}
+
 void CMapPlayGalaxy::playMusic(const int track)
 {
     gMusicPlayer.stop();
