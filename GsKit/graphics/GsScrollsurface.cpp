@@ -90,7 +90,7 @@ void GsScrollSurface::blitScrollSurface(GsWeakSurface &blitSfc) // This is only 
         sbuffery -= scrollSfcSize;
 
     // TODO: Not sure, if we shall do this.
-    blitSfc.fillRGB(0, 0, 0);
+    //blitSfc.fillRGB(0, 0, 0);
 
     srGsRect.x = sbufferx;
     srGsRect.y = sbuffery;

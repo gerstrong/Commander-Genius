@@ -594,8 +594,6 @@ bool CMap::scrollDown(const bool force)
 {
     const int res_height = gVideoDriver.getGameResolution().dim.y;
 
-
-
     if(!force)
     {
         const int bottom_y = (m_scrolly+res_height)<<STC;
@@ -612,29 +610,32 @@ bool CMap::scrollDown(const bool force)
         }
     }
 
-    auto &scrollSfc = gVideoDriver.getScrollSurface(0);
-    const int squareSize = scrollSfc.getSquareSize();
-
     m_scrolly++;
-    scrollSfc.UpdateScrollBufY(m_scrolly);
-
     m_scrollpixy++;
-    if ( m_scrollpixy >= (1<<mTileSizeBase) )
+
+    for(auto &scrollSfc : gVideoDriver.getScrollSurfaceVec() )
     {
-        if(m_scrolly < ((m_height-2)<<mTileSizeBase) - res_height )
+        scrollSfc.UpdateScrollBufY(m_scrolly);
+
+        if ( m_scrollpixy >= (1<<mTileSizeBase) )
         {
-            // need to draw a new stripe
-            const int totalNumTiles = squareSize>>mTileSizeBase;
-            drawHstripe(m_mapystripepos, m_mapy + totalNumTiles);
+            const int squareSize = scrollSfc.getSquareSize();
+
+            if(m_scrolly < ((m_height-2)<<mTileSizeBase) - res_height )
+            {
+                // need to draw a new stripe
+                const int totalNumTiles = squareSize>>mTileSizeBase;
+                drawHstripe(m_mapystripepos, m_mapy + totalNumTiles);
+            }
+
+            m_mapy++;
+            m_mapystripepos += (1<<mTileSizeBase);
+            if (m_mapystripepos >= squareSize) m_mapystripepos = 0;
+            m_scrollpixy = 0;
         }
 
-        m_mapy++;
-        m_mapystripepos += (1<<mTileSizeBase);
-        if (m_mapystripepos >= squareSize) m_mapystripepos = 0;
-        m_scrollpixy = 0;
+        refreshVisibleArea();
     }
-
-    refreshVisibleArea();
     return true;
 }
 
@@ -644,36 +645,41 @@ bool CMap::scrollDown(const bool force)
 bool CMap::scrollUp(const bool force)
 {
     if( !force && findHorizontalScrollBlocker((m_scrolly-1)<<STC) )
-		return false;
+        return false;
 
-    auto &scrollSfc = gVideoDriver.getScrollSurface(0);
-    const int squareSize = scrollSfc.getSquareSize();
+    if( m_scrolly <= 32 )
+        return false;
 
-	if( m_scrolly > 32 )
-	{
-		m_scrolly--;
+    m_scrolly--;
+
+    for(auto &scrollSfc : gVideoDriver.getScrollSurfaceVec() )
+    {
         scrollSfc.UpdateScrollBufY(m_scrolly);
+    }
 
-		if (m_scrollpixy==0)
-		{  // need to draw a new stripe
-			if(m_mapy>0) m_mapy--;
-			if (m_mapystripepos == 0)
-			{
-                m_mapystripepos = (squareSize - (1<<mTileSizeBase));
-			}
-			else
-			{
-                m_mapystripepos -= (1<<mTileSizeBase);
-			}
-			drawHstripe(m_mapystripepos, m_mapy);
+    if (m_scrollpixy==0)
+    {  // need to draw a new stripe
+        if(m_mapy>0) m_mapy--;
 
-            m_scrollpixy = ((1<<mTileSizeBase)-1);
-		} else m_scrollpixy--;
+        if (m_mapystripepos == 0)
+        {
+            // TODO: Problem with different squared sizes here
+            auto &scrollSfc = gVideoDriver.getScrollSurface(0);
+            const int squareSize = scrollSfc.getSquareSize();
+            m_mapystripepos = (squareSize - (1<<mTileSizeBase));
+        }
+        else
+        {
+            m_mapystripepos -= (1<<mTileSizeBase);
+        }
+        drawHstripe(m_mapystripepos, m_mapy);
 
-        refreshVisibleArea();
-		return true;
-	}
-	return false;
+        m_scrollpixy = ((1<<mTileSizeBase)-1);
+    } else m_scrollpixy--;
+
+    refreshVisibleArea();
+
+    return true;
 }
 
 
@@ -723,33 +729,34 @@ void CMap::refreshVisibleArea()
 
 void CMap::redrawPlaneAt(const int planeIdx, const Uint32 mx, const Uint32 my)
 {
-    auto &scrollSfc = gVideoDriver.getScrollSurface(0);
-    SDL_Surface *ScrollSurface = scrollSfc.getScrollSurface().getSDLSurface();
-
-    // Go through the list and just draw all the tiles that need to be animated
-    const Uint32 num_h_tiles = ScrollSurface->h>>mTileSizeBase;
-    const Uint32 num_v_tiles = ScrollSurface->w>>mTileSizeBase;
-
-    const int drawMask = ScrollSurface->w-1;
-
-    if(  mx >= m_mapx &&
-         my >= m_mapy &&
-         mx < m_mapx + num_v_tiles &&
-         my < m_mapy + num_h_tiles 	)
+    for(auto &scrollSfc : gVideoDriver.getScrollSurfaceVec() )
     {
-        if(mPlanes[planeIdx].isInfo())
-            return;
+        SDL_Surface *ScrollSurface = scrollSfc.getScrollSurface().getSDLSurface();
 
-        const size_t tile = mPlanes[planeIdx].getMapDataAt(mx, my);
+        // Go through the list and just draw all the tiles that need to be animated
+        const Uint32 num_h_tiles = ScrollSurface->h>>mTileSizeBase;
+        const Uint32 num_v_tiles = ScrollSurface->w>>mTileSizeBase;
 
-        if(!tile && planeIdx > 0)
-            return;
+        const int drawMask = ScrollSurface->w-1;
 
-        const Uint16 loc_x = (((mx-m_mapx)<<mTileSizeBase)+m_mapxstripepos)&drawMask;
-        const Uint16 loc_y = (((my-m_mapy)<<mTileSizeBase)+m_mapystripepos)&drawMask;
-        m_Tilemaps.at(planeIdx).drawTile(ScrollSurface, loc_x, loc_y, tile);
+        if(  mx >= m_mapx &&
+             my >= m_mapy &&
+             mx < m_mapx + num_v_tiles &&
+             my < m_mapy + num_h_tiles 	)
+        {
+            if(mPlanes[planeIdx].isInfo())
+                return;
+
+            const size_t tile = mPlanes[planeIdx].getMapDataAt(mx, my);
+
+            if(!tile && planeIdx > 0)
+                return;
+
+            const Uint16 loc_x = (((mx-m_mapx)<<mTileSizeBase)+m_mapxstripepos)&drawMask;
+            const Uint16 loc_y = (((my-m_mapy)<<mTileSizeBase)+m_mapystripepos)&drawMask;
+            m_Tilemaps.at(planeIdx).drawTile(ScrollSurface, loc_x, loc_y, tile);
+        }
     }
-
 }
 
 void CMap::redrawAt(const Uint32 mx, const Uint32 my)
@@ -768,43 +775,44 @@ void CMap::redrawAt(const Uint32 mx, const Uint32 my)
 
 void CMap::drawAllOfPlane(const int planeIdx)
 {
-    auto &scrollSfc = gVideoDriver.getScrollSurface(0);
-    const auto dim = scrollSfc.getSquareSize();
-
-    scrollSfc.UpdateScrollBufX(m_scrollx);
-    scrollSfc.UpdateScrollBufY(m_scrolly);
-
-    Uint32 num_v_tiles = dim>>mTileSizeBase;
-    if(num_v_tiles+m_mapx >= m_width)
-        num_v_tiles = m_width-m_mapx;
-
-    Uint32 num_h_tiles = dim>>mTileSizeBase;
-    if(num_h_tiles+m_mapy >= m_height)
-        num_h_tiles = m_height-m_mapy;
-
-    auto &curPlane = mPlanes.at(planeIdx);
-
-    if(curPlane.isInfo())
-        return;
-
-    auto &curTilemap = m_Tilemaps.at(planeIdx);
-
-    for(Uint32 y=0;y<num_h_tiles;y++)
+    for(auto &scrollSfc : gVideoDriver.getScrollSurfaceVec() )
     {
-        for(Uint32 x=0;x<num_v_tiles;x++)
+        const auto dim = scrollSfc.getSquareSize();
+
+        scrollSfc.UpdateScrollBufX(m_scrollx);
+        scrollSfc.UpdateScrollBufY(m_scrolly);
+
+        Uint32 num_v_tiles = dim>>mTileSizeBase;
+        if(num_v_tiles+m_mapx >= m_width)
+            num_v_tiles = m_width-m_mapx;
+
+        Uint32 num_h_tiles = dim>>mTileSizeBase;
+        if(num_h_tiles+m_mapy >= m_height)
+            num_h_tiles = m_height-m_mapy;
+
+        auto &curPlane = mPlanes.at(planeIdx);
+
+        if(curPlane.isInfo())
+            return;
+
+        auto &curTilemap = m_Tilemaps.at(planeIdx);
+
+        for(Uint32 y=0;y<num_h_tiles;y++)
         {
-            Uint32 tile = curPlane.getMapDataAt(x+m_mapx, y+m_mapy);
+            for(Uint32 x=0;x<num_v_tiles;x++)
+            {
+                Uint32 tile = curPlane.getMapDataAt(x+m_mapx, y+m_mapy);
 
-            if(!tile && planeIdx > 0)
-                continue;
+                if(!tile && planeIdx > 0)
+                    continue;
 
-            curTilemap.drawTile(scrollSfc,
-                                ((x<<mTileSizeBase)+m_mapxstripepos),
-                                ((y<<mTileSizeBase)+m_mapystripepos),
-                                tile);
+                curTilemap.drawTile(scrollSfc,
+                                    ((x<<mTileSizeBase)+m_mapxstripepos),
+                                    ((y<<mTileSizeBase)+m_mapystripepos),
+                                    tile);
+            }
         }
     }
-
 }
 
 void CMap::drawAll()
@@ -823,33 +831,35 @@ void CMap::drawHstripeOfPlane(const int planeIdx,
 {
     if(mpy >= m_height) return;
 
-    auto &scrollSfc = gVideoDriver.getScrollSurface(0);
-    const auto dim = scrollSfc.getSquareSize();
-
-    Uint32 num_v_tiles= dim>>mTileSizeBase;
-
-    const int drawMask = dim-1;
-
-    if( num_v_tiles+m_mapx >= m_width )
-        num_v_tiles = m_width-m_mapx;
-
-    const auto &curPlane = mPlanes[planeIdx];
-
-    if(curPlane.isInfo())
-        return;
-
-    auto &curTilemap = m_Tilemaps.at(planeIdx);
-
-    for(Uint32 x=0;x<num_v_tiles;x++)
+    for(auto &scrollSfc : gVideoDriver.getScrollSurfaceVec() )
     {
-      Uint32 tile = curPlane.getMapDataAt(x+m_mapx, mpy);
+        const auto dim = scrollSfc.getSquareSize();
 
-      if(!tile && planeIdx > 0)
-          continue;
+        Uint32 num_v_tiles= dim>>mTileSizeBase;
 
-      curTilemap.drawTile(scrollSfc.getScrollSurface(),
-                          ((x<<mTileSizeBase)+m_mapxstripepos)&drawMask,
-                          y, tile);
+        const int drawMask = dim-1;
+
+        if( num_v_tiles+m_mapx >= m_width )
+            num_v_tiles = m_width-m_mapx;
+
+        const auto &curPlane = mPlanes[planeIdx];
+
+        if(curPlane.isInfo())
+            return;
+
+        auto &curTilemap = m_Tilemaps.at(planeIdx);
+
+        for(Uint32 x=0;x<num_v_tiles;x++)
+        {
+            Uint32 tile = curPlane.getMapDataAt(x+m_mapx, mpy);
+
+            if(!tile && planeIdx > 0)
+                continue;
+
+            curTilemap.drawTile(scrollSfc.getScrollSurface(),
+                                ((x<<mTileSizeBase)+m_mapxstripepos)&drawMask,
+                                y, tile);
+        }
     }
 }
 
@@ -866,18 +876,8 @@ void CMap::drawHstripe(const unsigned int y,
 void CMap::drawVstripeOfPlane(const int planeIdx,
                               const unsigned int x,
                               const unsigned int mpx)
-{
-    auto &scrollSfc = gVideoDriver.getScrollSurface(0);
-    const auto dim = scrollSfc.getSquareSize();
-
+{   
     if(mpx >= m_width) return;
-
-    Uint32 num_h_tiles= dim>>mTileSizeBase;
-
-    if( num_h_tiles+m_mapy >= m_height )
-        num_h_tiles = m_height-m_mapy;
-
-    const int drawMask = dim-1;
 
     auto &curPlane = mPlanes[planeIdx];
 
@@ -886,14 +886,27 @@ void CMap::drawVstripeOfPlane(const int planeIdx,
 
     auto &curTilemap = m_Tilemaps.at(planeIdx);
 
-    for(Uint32 y=0 ; y<num_h_tiles ; y++)
+    for(auto &scrollSfc : gVideoDriver.getScrollSurfaceVec() )
     {
-      Uint32 tile = curPlane.getMapDataAt(mpx, y+m_mapy);
+        const auto dim = scrollSfc.getSquareSize();
 
-      if(!tile && planeIdx > 0)
-          continue;
+        Uint32 num_h_tiles = (dim>>mTileSizeBase);
 
-      curTilemap.drawTile(scrollSfc.getScrollSurface(), x, ((y<<mTileSizeBase)+m_mapystripepos) & drawMask, tile);
+        if( num_h_tiles+m_mapy >= m_height )
+            num_h_tiles = m_height-m_mapy;
+
+        for(Uint32 y=0 ; y<num_h_tiles ; y++)
+        {
+            Uint32 tile = curPlane.getMapDataAt(mpx, y+m_mapy);
+
+            if(!tile && planeIdx > 0)
+                continue;
+
+            const int drawMask = dim-1;
+
+            curTilemap.drawTile(scrollSfc.getScrollSurface(), x,
+                                ((y<<mTileSizeBase)+m_mapystripepos) & drawMask, tile);
+        }
     }
 }
 
@@ -1031,19 +1044,6 @@ Uint8 CMap::getAnimtiletimer()
     return mAnimtileTimer;
 }
 
-/*
-void CMap::drawAnimatedTile(SDL_Surface *dst,
-                            const Uint16 mx,
-                            const Uint16 my,
-                            const Uint16 tile)
-{
-    if(disableFgTile)
-        return;
-
-    m_Tilemaps[1].drawTile( gVideoDriver.getBlitSurface(), mx, my, tile);
-}
-*/
-
 void CMap::animateAllTiles()
 {
     if(m_height == 0 || m_width == 0)
@@ -1063,34 +1063,18 @@ void CMap::animateAllTiles()
     }
 
 
-    auto &scrollSfc = gVideoDriver.getScrollSurface(0);
-    const auto dim = scrollSfc.getSquareSize();
-    const int drawMask = dim-1;
 
     // Tick, tock!!
     mAnimtileTimer += 1.0f;
-
 
     if( mAnimtileTimer > 256.0f )
     {
         mAnimtileTimer = 0.0f;
     }
 
-
     static int animtileTimerInt = 0;
 
     animtileTimerInt++;
-
-
-    // Go through the list and just draw all the tiles that need to be animated
-    Uint32 num_h_tiles = dim/16;
-    Uint32 num_v_tiles = dim/16;
-
-    if(num_v_tiles+m_mapx >= m_width)
-        num_v_tiles = m_width-m_mapx;
-
-    if(num_h_tiles+m_mapy >= m_height)
-        num_h_tiles = m_height-m_mapy;
 
     auto &frontTileProperties = gBehaviorEngine.getTileProperties(1);
     word *p_front_tile = mPlanes[1].getMapDataPtr();
@@ -1100,8 +1084,6 @@ void CMap::animateAllTiles()
 
     auto &timersBack = mPlanes[0].getTimers();
     auto &timersFront = mPlanes[1].getTimers();
-
-    auto &scrollSDLSfc = scrollSfc.getScrollSurface();
 
     for( size_t y=0 ; y<m_height ; y++)
     {
@@ -1140,19 +1122,43 @@ void CMap::animateAllTiles()
                 }
             }
 
-            if( draw && x >= m_mapx && y >= m_mapy &&
-                x < m_mapx + num_v_tiles && y < m_mapy + num_h_tiles )
+
+            if(draw)
             {
-                const Uint16 bgTile = *p_back_tile;
-                const Uint16 fgTile = *p_front_tile;
-                const Uint16 loc_x = (((x-m_mapx)<<mTileSizeBase)+m_mapxstripepos) & drawMask;
-                const Uint16 loc_y = (((y-m_mapy)<<mTileSizeBase)+m_mapystripepos) & drawMask;
-
-                m_Tilemaps[0].drawTile(scrollSDLSfc, loc_x, loc_y, bgTile);
-
-                if(fgTile)
+                for(auto &scrollSfc : gVideoDriver.getScrollSurfaceVec() )
                 {
-                    m_Tilemaps[1].drawTile(scrollSDLSfc, loc_x, loc_y, fgTile);
+                    const auto dim = scrollSfc.getSquareSize();
+                    const int drawMask = dim-1;
+
+                    // Go through the list and just draw all the tiles that need to be animated
+                    Uint32 num_h_tiles = dim/16;
+                    Uint32 num_v_tiles = dim/16;
+
+                    if(num_v_tiles+m_mapx >= m_width)
+                        num_v_tiles = m_width-m_mapx;
+
+                    if(num_h_tiles+m_mapy >= m_height)
+                        num_h_tiles = m_height-m_mapy;
+
+                    if( x >= m_mapx &&
+                        y >= m_mapy &&
+                        x <  m_mapx + num_v_tiles &&
+                        y <  m_mapy + num_h_tiles )
+                    {
+                        const Uint16 bgTile = *p_back_tile;
+                        const Uint16 fgTile = *p_front_tile;
+                        const Uint16 loc_x = (((x-m_mapx)<<mTileSizeBase)+m_mapxstripepos) & drawMask;
+                        const Uint16 loc_y = (((y-m_mapy)<<mTileSizeBase)+m_mapystripepos) & drawMask;
+
+                        auto &scrollSDLSfc = scrollSfc.getScrollSurface();
+
+                        m_Tilemaps[0].drawTile(scrollSDLSfc, loc_x, loc_y, bgTile);
+
+                        if(fgTile)
+                        {
+                            m_Tilemaps[1].drawTile(scrollSDLSfc, loc_x, loc_y, fgTile);
+                        }
+                    }
                 }
             }
 
@@ -1160,6 +1166,7 @@ void CMap::animateAllTiles()
             p_front_tile++;
         }
     }
+
 }
 
 

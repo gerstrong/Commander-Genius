@@ -116,6 +116,8 @@ public:
 
     void resetScrollBuffers();
 
+    void updateScrollBuffers(const Sint16 SBufferX, const Sint16 SBufferY);
+
     GsScrollSurface& getScrollSfc(const int idx);
 
 

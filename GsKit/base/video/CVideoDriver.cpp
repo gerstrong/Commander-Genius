@@ -492,11 +492,8 @@ void CVideoDriver::setScaleType(bool IsNormal)
 // defines the scroll-buffer that is used for blitScrollSurface(). It's normally passed by a CMap Object
 // it might have when a level-map is loaded.
 void CVideoDriver::updateScrollBuffer(const Sint16 SBufferX, const Sint16 SBufferY)
-{	
-    auto &scrollSfc = mpVideoEngine->getScrollSfc(0);
-
-    scrollSfc.UpdateScrollBufX(SBufferX);
-    scrollSfc.UpdateScrollBufY(SBufferY);
+{	   
+    mpVideoEngine->updateScrollBuffers(SBufferX, SBufferY);
 }
 
 void CVideoDriver::blitScrollSurfaces() // This is only for tiles
@@ -592,6 +589,11 @@ unsigned short CVideoDriver::getDepth() const
 void CVideoDriver::resetScrollBuffers()
 {
     mpVideoEngine->resetScrollBuffers();
+}
+
+std::vector<GsScrollSurface> &CVideoDriver::getScrollSurfaceVec()
+{
+    mpVideoEngine->getScrollSurfaceVec();
 }
 
 GsScrollSurface &CVideoDriver::getScrollSurface(const int idx)

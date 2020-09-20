@@ -125,6 +125,7 @@ public:
 
     void resetScrollBuffers();
 
+    std::vector<GsScrollSurface> &getScrollSurfaceVec();
     GsScrollSurface &getScrollSurface(const int idx);
 
     std::set<std::string> getResolutionStrSet();

@@ -243,7 +243,7 @@ bool CVideoEngine::createSurfaces(const GsRect<Uint16> &gamerect)
     gLogging.ftextOut("ScrollSurface creation of %dx%d!\n<br>",
                      squareSize, squareSize );
 
-    mScrollSurfaceVec.resize(1);
+    mScrollSurfaceVec.resize(2);
 
     for( auto &scrollSfc : mScrollSurfaceVec )
     {
@@ -360,8 +360,9 @@ void CVideoEngine::scaleAndFilter()
 
 void CVideoEngine::blitScrollSurfaces(GsWeakSurface &blitSfc)
 {
-    for (auto &scrollSfc : mScrollSurfaceVec)
+    //for (auto &scrollSfc : mScrollSurfaceVec)
     {
+        auto &scrollSfc = mScrollSurfaceVec[0];
         scrollSfc.blitScrollSurface(blitSfc);
     }
 }
@@ -371,6 +372,15 @@ void CVideoEngine::resetScrollBuffers()
     for (auto &scrollSfc : mScrollSurfaceVec)
     {
         scrollSfc.resetScrollbuffer();
+    }
+}
+
+void CVideoEngine::updateScrollBuffers(const Sint16 SBufferX, const Sint16 SBufferY)
+{
+    for (auto &scrollSfc : mScrollSurfaceVec)
+    {
+        scrollSfc.UpdateScrollBufX(SBufferX);
+        scrollSfc.UpdateScrollBufY(SBufferY);
     }
 }
 
