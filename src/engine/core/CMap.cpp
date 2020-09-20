@@ -529,29 +529,35 @@ bool CMap::scrollRight(const bool force)
     if( !force && findVerticalScrollBlocker((m_scrollx+res_width)<<STC) )
 		return false;
 
-    auto &scrollSfc = gVideoDriver.getScrollSurface(0);
-    const int squareSize = scrollSfc.getSquareSize();
+    if(m_scrollx >= ((m_width-2)<<mTileSizeBase) - res_width)
+        return false;
 
-    if(m_scrollx < ((m_width-2)<<mTileSizeBase) - res_width)
-	{
-		m_scrollx++;
+
+    m_scrollx++;
+
+    for(auto &scrollSfc : gVideoDriver.getScrollSurfaceVec() )
+    {
         scrollSfc.UpdateScrollBufX(m_scrollx);
+    }
 
-		m_scrollpix++;
-        if (m_scrollpix >= (1<<mTileSizeBase))
-		{  // need to draw a new stripe
-            const int totalNumTiles = squareSize>>mTileSizeBase;
-            drawVstripe(m_mapxstripepos, m_mapx + totalNumTiles);
-			m_mapx++;
-            m_mapxstripepos += (1<<mTileSizeBase);
-            if (m_mapxstripepos >= squareSize) m_mapxstripepos = 0;
-			m_scrollpix = 0;
-		}
+    m_scrollpix++;
+    if (m_scrollpix >= (1<<mTileSizeBase))
+    {  // need to draw a new stripe
 
-        refreshVisibleArea();
-		return true;
-	}
-	return false;
+        // TODO: Problem with different squared sizes here
+        auto &scrollSfc = gVideoDriver.getScrollSurface(0);
+        const int squareSize = scrollSfc.getSquareSize();
+        const int totalNumTiles = squareSize>>mTileSizeBase;
+        drawVstripe(m_mapxstripepos, m_mapx + totalNumTiles);
+
+        m_mapx++;
+        m_mapxstripepos += (1<<mTileSizeBase);
+        if (m_mapxstripepos >= squareSize) m_mapxstripepos = 0;
+        m_scrollpix = 0;
+    }
+
+    refreshVisibleArea();
+    return true;
 }
 
 // scrolls the map one pixel left
@@ -560,34 +566,39 @@ bool CMap::scrollLeft(const bool force)
     if( !force && findVerticalScrollBlocker((m_scrollx)<<STC) )
         return false;
 
-    auto &scrollSfc = gVideoDriver.getScrollSurface(0);
-    const int squareSize = scrollSfc.getSquareSize();
+    if( m_scrollx <= 32 )
+        return false;
 
-	if( m_scrollx > 32 )
-	{
-		m_scrollx--;
+    m_scrollx--;
+
+    for(auto &scrollSfc : gVideoDriver.getScrollSurfaceVec() )
+    {
         scrollSfc.UpdateScrollBufX(m_scrollx);
+    }
 
-		if (m_scrollpix==0)
-		{  // need to draw a new stripe
-			if(m_mapx>0) m_mapx--;
-			if (m_mapxstripepos == 0)
-			{
-                m_mapxstripepos = (squareSize - (1<<mTileSizeBase));
-			}
-			else
-			{
-                m_mapxstripepos -= (1<<mTileSizeBase);
-			}
-			drawVstripe(m_mapxstripepos, m_mapx);
+    if (m_scrollpix==0)
+    {  // need to draw a new stripe
+        if(m_mapx>0) m_mapx--;
+        if (m_mapxstripepos == 0)
+        {
+            // TODO: Problem with different squared sizes here
+            auto &scrollSfc = gVideoDriver.getScrollSurface(0);
+            const int squareSize = scrollSfc.getSquareSize();
+            m_mapxstripepos = (squareSize - (1<<mTileSizeBase));
+        }
+        else
+        {
+            m_mapxstripepos -= (1<<mTileSizeBase);
+        }
+        drawVstripe(m_mapxstripepos, m_mapx);
 
-            m_scrollpix = (1<<mTileSizeBase)-1;
-		} else m_scrollpix--;
+        m_scrollpix = (1<<mTileSizeBase)-1;
+    } else m_scrollpix--;
 
-        refreshVisibleArea();
-		return true;
-	}
-	return false;
+    refreshVisibleArea();
+
+    return true;
+
 }
 
 bool CMap::scrollDown(const bool force)

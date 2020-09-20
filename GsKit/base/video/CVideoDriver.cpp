@@ -593,7 +593,7 @@ void CVideoDriver::resetScrollBuffers()
 
 std::vector<GsScrollSurface> &CVideoDriver::getScrollSurfaceVec()
 {
-    mpVideoEngine->getScrollSurfaceVec();
+    return mpVideoEngine->getScrollSurfaceVec();
 }
 
 GsScrollSurface &CVideoDriver::getScrollSurface(const int idx)

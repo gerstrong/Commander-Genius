@@ -360,9 +360,9 @@ void CVideoEngine::scaleAndFilter()
 
 void CVideoEngine::blitScrollSurfaces(GsWeakSurface &blitSfc)
 {
-    //for (auto &scrollSfc : mScrollSurfaceVec)
+    for (auto &scrollSfc : mScrollSurfaceVec)
     {
-        auto &scrollSfc = mScrollSurfaceVec[0];
+        //auto &scrollSfc = mScrollSurfaceVec[0];
         scrollSfc.blitScrollSurface(blitSfc);
     }
 }
