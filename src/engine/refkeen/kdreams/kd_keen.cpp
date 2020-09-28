@@ -17,6 +17,7 @@
  */
 
 #include "engine/keen/dreams/dreamsengine.h"
+#include "base/CInput.h"
 
 extern mapfiletype_modern  mapFile;
 
@@ -949,6 +950,7 @@ void	CheckEnterLevel (objtype *ob)
 	id0_int_t	x,y,tile;
 
 	for (y=ob->tiletop;y<=ob->tilebottom;y++)
+    {
 		for (x=ob->tileleft;x<=ob->tileright;x++)
 		{
 			tile = *((id0_unsigned_t id0_seg *)mapsegs[2]+mapbwidthtable[y]/2+x);
@@ -976,10 +978,12 @@ void	CheckEnterLevel (objtype *ob)
 				gamestate.worldx = ob->x;
 				gamestate.worldy = ob->y;
 				gamestate.mapon = tile-2;
-				playstate = levelcomplete;
+                playstate = levelcomplete;
+                gInput.flushAll();
 				SD_PlaySound (ENTERLEVELSND);
 			}
 		}
+    }
 }
 
 
