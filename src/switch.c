@@ -6,7 +6,7 @@
  * Written and placed into the public domain by
  * Elias Oenal <cg@eliasoenal.com>
  */
-
+#ifdef __SWITCH__
 #include <stdio.h>
 #include "switch.h"
 
@@ -25,3 +25,4 @@ void switch_exit()
     romfsExit();
     socketExit();
 }
+#endif // __SWITCH__
