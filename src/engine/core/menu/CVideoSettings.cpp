@@ -30,9 +30,10 @@ GameMenu(GsRect<float>(0.15f, 0.20f, 0.65f, 0.55f), style )
 {
 
 
-
+#if !defined(EMBEDDED)
     mpTiltScreenSwitch =
             mpMenuDialog->add( new Switch("TiltedScr", style) );
+#endif
 
     mpFPSSelection =
             mpMenuDialog->add(
@@ -78,7 +79,9 @@ void CVideoSettings::refresh()
 
     mpFPSSelection->setSelection( iFPS );
 
+#if !defined(EMBEDDED)
     mpTiltScreenSwitch->enable( mUsersConf.mTiltedScreen );
+#endif
 
     // TODO: find a way to indicate a color
     mpBorderColorSwitch->enable( mUsersConf.mBorderColorsEnabled );
@@ -101,7 +104,9 @@ void CVideoSettings::refresh()
 void CVideoSettings::release()
 {
 	// Save up the changed stuff
+#if !defined(EMBEDDED)
     mUsersConf.mTiltedScreen = mpTiltScreenSwitch->isEnabled();
+#endif
 
     const auto fpsf = float(mpFPSSelection->getSelection());
     gTimer.setFPS( fpsf );
