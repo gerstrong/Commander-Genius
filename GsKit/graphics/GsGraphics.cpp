@@ -309,6 +309,11 @@ GsSprite &GsGraphics::getSpecialSpriteRef(const std::string &name)
 GsFontLegacy &GsGraphics::getFontLegacy(Uint8 index)
 {    return mFontLegacyVec.at(index); }
 
+bool GsGraphics::isLegacyFontEmpty()
+{
+    return mFontLegacyVec.empty();
+}
+
 GsBitmap *GsGraphics::getBitmapFromStr(const size_t sprVar,
                                        const std::string &name) const
 {

@@ -133,6 +133,9 @@ void GameMenu::initVorticonBackground()
     mCachedBgRect.dim.y = sdlRect.h;
     mBackground.create(0, sdlRect.w, sdlRect.h, RES_BPP, 0, 0, 0, 0);
 
+    if(gGraphics.isLegacyFontEmpty())
+        return;
+
     // Now lets draw the text of the list control
     auto &Font = gGraphics.getFontLegacy(1);
 

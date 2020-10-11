@@ -160,8 +160,11 @@ void CGUIText::updateLegacyTextSfc(const GsRect<float> &displayRect)
         auto lRect = displayRect.SDLRect();
         lRect.x = lRect.y = 0;
 
+        if(gGraphics.isLegacyFontEmpty())
+           return;
+
         // Now lets draw the text of the list control
-        auto &Font = gGraphics.getFontLegacy(Uint8(mFontId));
+        auto &Font = gGraphics.getFontLegacy( mFontId>0  ? Uint8(mFontId) : 0);
 
         const auto letterHeight = int(Font.getPixelTextHeight());
 
