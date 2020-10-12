@@ -97,6 +97,8 @@ public:
     GsFontLegacy &getFontLegacy(Uint8 index);
 
     bool isLegacyFontEmpty();
+
+    int getNumLegacyFonts();
 	
     GsPalette Palette;
 

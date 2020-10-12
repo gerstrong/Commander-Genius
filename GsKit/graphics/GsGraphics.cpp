@@ -314,6 +314,12 @@ bool GsGraphics::isLegacyFontEmpty()
     return mFontLegacyVec.empty();
 }
 
+int GsGraphics::getNumLegacyFonts()
+{
+    return mFontLegacyVec.size();
+}
+
+
 GsBitmap *GsGraphics::getBitmapFromStr(const size_t sprVar,
                                        const std::string &name) const
 {

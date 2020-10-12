@@ -160,7 +160,7 @@ void CGUIText::updateLegacyTextSfc(const GsRect<float> &displayRect)
         auto lRect = displayRect.SDLRect();
         lRect.x = lRect.y = 0;
 
-        if(gGraphics.isLegacyFontEmpty())
+        if(gGraphics.getNumLegacyFonts() <= mFontId)
            return;
 
         // Now lets draw the text of the list control
