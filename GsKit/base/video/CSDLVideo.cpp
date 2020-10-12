@@ -29,6 +29,7 @@ bool CSDLVideo::init()
 #if SDL_VERSION_ATLEAST(2, 0, 0)    
 
 #ifdef ANDROID
+    SDL_SetHint(SDL_HINT_ACCELEROMETER_AS_JOYSTICK, "0");
     SDL_SetHint(SDL_HINT_ORIENTATIONS, "LandscapeLeft LandscapeRight");
 	gLogging.textOut(FONTCOLORS::BLACK,"Setting orientations: LandscapeLeft LandscapeRight<br>");
 #endif
