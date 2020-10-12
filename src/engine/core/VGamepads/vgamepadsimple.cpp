@@ -436,28 +436,32 @@ bool VirtualKeenControl::mouseFingerState(const GsVec2D<float> &Pos,
         // Up presses
         if(Pos.y<mDPad.y+dpadSizePieceH)
         {
+            ev.key.keysym.scancode = SDL_SCANCODE_UP;
             ev.key.keysym.sym = SDLK_UP;
             SDL_PushEvent(&ev);
 
             if(down)
             {
                 SDL_Event evUp;
-                evUp.type = SDL_KEYUP;
+                evUp.key.keysym.scancode = SDL_SCANCODE_DOWN;
                 evUp.key.keysym.sym = SDLK_DOWN;
+                evUp.type = SDL_KEYUP;
                 SDL_PushEvent(&evUp);                
             }
         }
         // Down presses
         else if(Pos.y>=mDPad.y+mDPad.h-dpadSizePieceH)
         {
+            ev.key.keysym.scancode = SDL_SCANCODE_DOWN;
             ev.key.keysym.sym = SDLK_DOWN;
             SDL_PushEvent(&ev);
 
             if(down)
             {
                 SDL_Event evUp;
-                evUp.type = SDL_KEYUP;
+                evUp.key.keysym.scancode = SDL_SCANCODE_UP;
                 evUp.key.keysym.sym = SDLK_UP;
+                evUp.type = SDL_KEYUP;
                 SDL_PushEvent(&evUp);
             }
         }
@@ -467,12 +471,14 @@ bool VirtualKeenControl::mouseFingerState(const GsVec2D<float> &Pos,
         if(Pos.x<mDPad.x+dpadSizePieceW)
         {
             ev.key.keysym.sym = SDLK_LEFT;
+            ev.key.keysym.scancode = SDL_SCANCODE_LEFT;
             SDL_PushEvent(&ev);
 
             if(down)
             {
                 SDL_Event evUp;
                 evUp.type = SDL_KEYUP;
+                evUp.key.keysym.scancode = SDL_SCANCODE_RIGHT;
                 evUp.key.keysym.sym = SDLK_RIGHT;
                 SDL_PushEvent(&evUp);
             }
@@ -482,12 +488,14 @@ bool VirtualKeenControl::mouseFingerState(const GsVec2D<float> &Pos,
         else if(Pos.x>=mDPad.x+mDPad.w-dpadSizePieceW)
         {
             ev.key.keysym.sym = SDLK_RIGHT;
+            ev.key.keysym.scancode = SDL_SCANCODE_RIGHT;
             SDL_PushEvent(&ev);
 
             if(down)
             {
                 SDL_Event evUp;
                 evUp.type = SDL_KEYUP;
+                evUp.key.keysym.scancode = SDL_SCANCODE_LEFT;
                 evUp.key.keysym.sym = SDLK_LEFT;
                 SDL_PushEvent(&evUp);
             }
@@ -508,10 +516,21 @@ bool VirtualKeenControl::mouseFingerState(const GsVec2D<float> &Pos,
             SDL_Event evUp;
             evUp.type = SDL_KEYUP;
 
-            evUp.key.keysym.sym = SDLK_UP;    SDL_PushEvent(&evUp);
-            evUp.key.keysym.sym = SDLK_LEFT;  SDL_PushEvent(&evUp);
-            evUp.key.keysym.sym = SDLK_RIGHT; SDL_PushEvent(&evUp);
-            evUp.key.keysym.sym = SDLK_DOWN;  SDL_PushEvent(&evUp);
+            evUp.key.keysym.scancode = SDL_SCANCODE_UP;
+            evUp.key.keysym.sym = SDLK_UP;
+            SDL_PushEvent(&evUp);
+
+            evUp.key.keysym.scancode = SDL_SCANCODE_LEFT;
+            evUp.key.keysym.sym = SDLK_LEFT;
+            SDL_PushEvent(&evUp);
+
+            evUp.key.keysym.scancode = SDL_SCANCODE_RIGHT;
+            evUp.key.keysym.sym = SDLK_RIGHT;
+            SDL_PushEvent(&evUp);
+
+            evUp.key.keysym.scancode = SDL_SCANCODE_DOWN;
+            evUp.key.keysym.sym = SDLK_DOWN;
+            SDL_PushEvent(&evUp);
         }
 
     }
@@ -629,6 +648,7 @@ bool VirtualKeenControl::mouseState(const GsVec2D<float> &Pos, const bool down)
         if(Pos.y<mDPad.y+dpadSizePieceH)
         {
             ev.key.keysym.sym = SDLK_UP;
+            ev.key.keysym.scancode = SDL_SCANCODE_UP;
             SDL_PushEvent(&ev);
 
             if(down)
@@ -636,6 +656,7 @@ bool VirtualKeenControl::mouseState(const GsVec2D<float> &Pos, const bool down)
                 SDL_Event evUp;
                 evUp.type = SDL_KEYUP;
                 evUp.key.keysym.sym = SDLK_DOWN;
+                evUp.key.keysym.scancode = SDL_SCANCODE_DOWN;
                 SDL_PushEvent(&evUp);
             }
         }
@@ -643,6 +664,7 @@ bool VirtualKeenControl::mouseState(const GsVec2D<float> &Pos, const bool down)
         else if(Pos.y>=mDPad.y+mDPad.h-dpadSizePieceH)
         {
             ev.key.keysym.sym = SDLK_DOWN;
+            ev.key.keysym.scancode = SDL_SCANCODE_DOWN;
             SDL_PushEvent(&ev);
 
             if(down)
@@ -650,6 +672,7 @@ bool VirtualKeenControl::mouseState(const GsVec2D<float> &Pos, const bool down)
                 SDL_Event evUp;
                 evUp.type = SDL_KEYUP;
                 evUp.key.keysym.sym = SDLK_UP;
+                evUp.key.keysym.scancode = SDL_SCANCODE_UP;
                 SDL_PushEvent(&evUp);
             }
         }
@@ -659,6 +682,7 @@ bool VirtualKeenControl::mouseState(const GsVec2D<float> &Pos, const bool down)
         if(Pos.x<mDPad.x+dpadSizePieceW)
         {
             ev.key.keysym.sym = SDLK_LEFT;
+            ev.key.keysym.scancode = SDL_SCANCODE_LEFT;
             SDL_PushEvent(&ev);
 
             if(down)
@@ -666,6 +690,7 @@ bool VirtualKeenControl::mouseState(const GsVec2D<float> &Pos, const bool down)
                 SDL_Event evUp;
                 evUp.type = SDL_KEYUP;
                 evUp.key.keysym.sym = SDLK_RIGHT;
+                ev.key.keysym.scancode = SDL_SCANCODE_RIGHT;
                 SDL_PushEvent(&evUp);
             }
 
@@ -674,6 +699,7 @@ bool VirtualKeenControl::mouseState(const GsVec2D<float> &Pos, const bool down)
         else if(Pos.x>=mDPad.x+mDPad.w-dpadSizePieceW)
         {
             ev.key.keysym.sym = SDLK_RIGHT;
+            ev.key.keysym.scancode = SDL_SCANCODE_RIGHT;
             SDL_PushEvent(&ev);
 
             if(down)
@@ -681,6 +707,7 @@ bool VirtualKeenControl::mouseState(const GsVec2D<float> &Pos, const bool down)
                 SDL_Event evUp;
                 evUp.type = SDL_KEYUP;
                 evUp.key.keysym.sym = SDLK_LEFT;
+                ev.key.keysym.scancode = SDL_SCANCODE_LEFT;
                 SDL_PushEvent(&evUp);
             }
 
