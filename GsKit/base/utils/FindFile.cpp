@@ -79,6 +79,8 @@ void InitSearchPaths(const std::string &cfgFname)
 	InitBaseSearchPaths();
 
 	int i = 1;
+
+#ifndef ANDROID
 	while(true)
 	{
 
@@ -93,6 +95,7 @@ void InitSearchPaths(const std::string &cfgFname)
 		AddToFileList(&tSearchPaths, value);
 		i++;
 	}
+#endif // ANDROID
 
     // If no search path could be read, pass the base paths
     if(tSearchPaths.empty())

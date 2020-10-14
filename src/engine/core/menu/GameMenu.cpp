@@ -133,7 +133,8 @@ void GameMenu::initVorticonBackground()
     mCachedBgRect.dim.y = sdlRect.h;
     mBackground.create(0, sdlRect.w, sdlRect.h, RES_BPP, 0, 0, 0, 0);
 
-    if(gGraphics.getNumLegacyFonts() <= 1)
+    const auto numLegFonts = gGraphics.getNumLegacyFonts();
+    if(numLegFonts <= 1)
        return;
 
     // Now lets draw the text of the list control
