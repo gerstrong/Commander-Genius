@@ -118,11 +118,22 @@ public:
 };
 
 
-// Presets
-class CControlSettingsPresets : public CControlSettingsBase
+// Load Presets
+class CControlSettingsLoadPreset : public CControlSettingsBase
 {
 public:
-    CControlSettingsPresets(const int selectedPlayer,
+    CControlSettingsLoadPreset(const int selectedPlayer,
+                            const Style &style) :
+        CControlSettingsBase(selectedPlayer, style) {}
+
+    void refresh() override;
+};
+
+// Save Presets
+class CControlSettingsSavePreset : public CControlSettingsBase
+{
+public:
+    CControlSettingsSavePreset(const int selectedPlayer,
                             const Style &style) :
         CControlSettingsBase(selectedPlayer, style) {}
 

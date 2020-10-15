@@ -14,6 +14,8 @@
 
 #include <base/CInput.h>
 
+#include "widgets/InputText.h"
+
 
 
 /**
@@ -63,7 +65,7 @@ mSelectedPlayer(selectedPlayer)
                                 [this]()
                                 {
                                   gEventManager.add( new OpenMenuEvent(
-                                    new CControlSettingsPresets(mSelectedPlayer,
+                                    new CControlSettingsLoadPreset(mSelectedPlayer,
                                                              this->getStyle()) ) );
                                 },
                                 style )  );
@@ -128,13 +130,13 @@ mSelectedPlayer(selectedPlayer)
             mpMenuDialog->add( new Switch( "Auto Gun", style ) );
 	mpAutoGunSwitch->enable(gInput.AutoGun(mSelectedPlayer-1));
 
-    /*
+/*
     mpMenuDialog->add(
                 new GameButton( "Save Preset",
                                 [this]()
                                 {
                                   gEventManager.add( new OpenMenuEvent(
-                                    new CControlSettingsPresets(mSelectedPlayer,
+                                    new CControlSettingsSavePreset(mSelectedPlayer,
                                                              this->getStyle()) ) );
                                 },
                                 style )  );
@@ -391,7 +393,7 @@ void CControlSettingsMisc::refresh()
 }
 
 // Presets part
-void CControlSettingsPresets::refresh()
+void CControlSettingsLoadPreset::refresh()
 {
     auto refreshControlMenus = [this](const int player)
     {
@@ -400,7 +402,7 @@ void CControlSettingsPresets::refresh()
 
         gEventManager.add(new OpenMenuEvent(
                               new CControlsettings(player, getStyle()) ));
-};
+    };
 
 
     mpMenuDialog->add(
@@ -443,3 +445,48 @@ void CControlSettingsPresets::refresh()
     mpMenuDialog->fit();
     addBottomText();
 }
+
+void CControlSettingsSavePreset::refresh()
+{
+     // Load the presets list
+     std::vector<std::string> presetList;
+
+     presetList.push_back("Preset 1");
+     presetList.push_back("Preset 2");
+     presetList.push_back("Preset 3");
+     presetList.push_back("Preset 4");
+     presetList.push_back("Preset 5");
+
+     for(int i=0 ; i<8 ; i++)
+     {
+            std::string text = "<new>";
+            if(i < int(presetList.size()))
+                text = presetList.at(i);
+
+            auto input =
+            mpMenuDialog->add( new InputText(
+                                          text,
+                                          GsRect<float>(
+                                              0.0f, 0.1f+(i*0.1f),
+                                              1.0f, 0.1f), i,
+                                          getStyle() ) );
+
+            input->setActivationEvent([input]()
+            {
+                const auto noTyping = true;
+
+                // The naming of the files start with "1",
+                // meaning "1" is the first element, not 0.
+                const auto index = input->getIndex()+1;
+
+                if(noTyping)
+                {
+                    const std::string saveText = "Preset " + itoa(index);
+                }
+
+                input->setReleased(false);
+            });
+        }
+}
+
+
