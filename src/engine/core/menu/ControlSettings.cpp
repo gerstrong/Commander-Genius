@@ -59,6 +59,17 @@ GameMenu( GsRect<float>(0.1f, 0.25f, 0.8f, 0.5f), style ),
 mSelectedPlayer(selectedPlayer)
 {
     mpMenuDialog->add(
+                new GameButton( "Load Preset",
+                                [this]()
+                                {
+                                  gEventManager.add( new OpenMenuEvent(
+                                    new CControlSettingsPresets(mSelectedPlayer,
+                                                             this->getStyle()) ) );
+                                },
+                                style )  );
+
+
+    mpMenuDialog->add(
                 new GameButton( "Movement",
                                 [this]()
                                 {
@@ -117,17 +128,17 @@ mSelectedPlayer(selectedPlayer)
             mpMenuDialog->add( new Switch( "Auto Gun", style ) );
 	mpAutoGunSwitch->enable(gInput.AutoGun(mSelectedPlayer-1));
 
+    /*
     mpMenuDialog->add(
-           new GameButton( "Reset Controls",
-                           [this]()
-                           {
-                               const auto sel =
-                                             this->mSelectedPlayer-1;
-                               assert(sel>=0);
-                               gInput.resetControls(sel);
-                               gEventManager.add( new CloseMenuEvent(false) );
-                           },
-                           style ) );
+                new GameButton( "Save Preset",
+                                [this]()
+                                {
+                                  gEventManager.add( new OpenMenuEvent(
+                                    new CControlSettingsPresets(mSelectedPlayer,
+                                                             this->getStyle()) ) );
+                                },
+                                style )  );
+*/
     
     setMenuLabel("KEYBMENULABEL");
 
@@ -379,3 +390,56 @@ void CControlSettingsMisc::refresh()
     addBottomText();
 }
 
+// Presets part
+void CControlSettingsPresets::refresh()
+{
+    auto refreshControlMenus = [this](const int player)
+    {
+        gEventManager.add( new CloseMenuEvent(false) );
+        gEventManager.add( new CloseMenuEvent(false) );
+
+        gEventManager.add(new OpenMenuEvent(
+                              new CControlsettings(player, getStyle()) ));
+};
+
+
+    mpMenuDialog->add(
+           new GameButton( "Factory Default",
+                           [this, refreshControlMenus]()
+                           {
+                               const auto sel =
+                                             this->mSelectedPlayer-1;
+                               assert(sel>=0);
+                               gInput.resetControls(sel);
+                               refreshControlMenus(sel+1);
+                           },
+                           getStyle() ) );
+
+    // TODO: Code for Presets here
+/*
+    mpMenuDialog->add(
+           new GameButton( "Pres1",
+                           []()
+                           {},
+                           getStyle() ) );
+    mpMenuDialog->add(
+           new GameButton( "Pres2",
+                           []()
+                           {},
+                           getStyle() ) );
+    mpMenuDialog->add(
+           new GameButton( "Pres3",
+                           []()
+                           {},
+                           getStyle() ) );
+    mpMenuDialog->add(
+           new GameButton( "<new>",
+                           []()
+                           {},
+                           getStyle() ) );
+*/
+
+    setMenuLabel("BUTTONMENULABEL");
+    mpMenuDialog->fit();
+    addBottomText();
+}

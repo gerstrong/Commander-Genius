@@ -118,6 +118,18 @@ public:
 };
 
 
+// Presets
+class CControlSettingsPresets : public CControlSettingsBase
+{
+public:
+    CControlSettingsPresets(const int selectedPlayer,
+                            const Style &style) :
+        CControlSettingsBase(selectedPlayer, style) {}
+
+    void refresh() override;
+};
+
+
 // Create the Control-Menu for the indicated Player
 
 
