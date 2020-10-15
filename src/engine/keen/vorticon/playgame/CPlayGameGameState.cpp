@@ -69,6 +69,8 @@ bool CPlayGameVorticon::loadXMLGameState()
     if(!Maploader.load(m_Episode, m_Level, m_Gamepath, loadmusic, false))
       return false;
 
+    mCurMusicTrack = gMusicPlayer.getCurTrack();
+
     m_level_command = START_LEVEL;
 
 

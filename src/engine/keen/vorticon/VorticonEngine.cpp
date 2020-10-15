@@ -267,7 +267,7 @@ void VorticonEngine::pumpEvent(const CEvent *evPtr)
     {
         std::unique_ptr<CPlayGameVorticon> pgVort(new CPlayGameVorticon());
         pgVort->init();
-        pgVort->loadGame();
+        pgVort->loadGame();        
         mpGameMode = std::move(pgVort);
         mOpenedGamePlay = true;
         gBehaviorEngine.setPause(false);

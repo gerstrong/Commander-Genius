@@ -23,10 +23,10 @@ class CVorticonMapLoaderBase
 public:
 	CVorticonMapLoaderBase(std::shared_ptr<CMap> &map);
 	
-	bool loadBase(  Uint8 episode, 
-			Uint8 level, 
-			const std::string& path, 
-			bool loadNewMusic );
+    bool loadBase(Uint8 episode,
+            Uint8 level,
+            const std::string& path,
+            const bool loadNewMusic );
 	
 	bool load( Uint8 episode, Uint8 level, const std::string& path, bool loadNewMusic=true );
 		
