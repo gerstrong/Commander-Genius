@@ -25,6 +25,8 @@ bool CAudioGalaxy::readPCSpeakerSoundintoWaveForm(CSoundSlot &soundslot,
                                                   const byte *pcsdata,
                                                   const Uint8 formatsize)
 {
+    const auto PC_Speaker_Volume = gAudio.getPCSpeakerVol();
+
     byte *pcsdata_ptr = const_cast<byte*>(pcsdata);
 	const longword size = READLONGWORD(pcsdata_ptr);
 	soundslot.priority = READWORD(pcsdata_ptr);

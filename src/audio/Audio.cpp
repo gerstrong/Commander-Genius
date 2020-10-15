@@ -532,9 +532,19 @@ int Audio::getOplAmp() const
     return mOplBoost;
 }
 
+int Audio::getPCSpeakerVol() const
+{
+    return mPCSpeakerVol;
+}
+
 void Audio::setOplAmp(const int percentage)
 {
     mOplBoost = percentage;
+}
+
+void Audio::setPcSpeakerVol(const int percentage)
+{
+    mPCSpeakerVol = percentage;
 }
 
 

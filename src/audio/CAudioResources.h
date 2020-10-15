@@ -19,7 +19,7 @@
   * Remember, this is relative to the real Sound volume you can toggle in the Audio Settings
   * Menu of CG
   */
-const int PC_Speaker_Volume = 20; // in percent
+//const int PC_Speaker_Volume = 20; // in percent
 
 const Uint64 PCSpeakerTime = 0x1234DD;
 
