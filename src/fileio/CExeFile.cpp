@@ -77,7 +77,8 @@ void CExeFile::dumpFile(const std::string& filename)
 void CExeFile::dumpDataFile(const std::string& filename)
 {
 	std::ofstream ofile( filename.c_str() );
-	ofile.write( reinterpret_cast<char*>(m_rawdata), m_datasize - m_headersize);
+    mRawdataSize = m_datasize - m_headersize;
+    ofile.write( reinterpret_cast<char*>(m_rawdata), mRawdataSize);
 }
 
 bool CExeFile::readData(const unsigned int episode,
@@ -179,6 +180,7 @@ bool CExeFile::readData(const unsigned int episode,
     }
 
 	m_rawdata = mData.data() + m_headersize;
+    mRawdataSize = mData.size() - m_headersize;
 
 	const size_t offset_map[] = {
 			/*Dummy:*/ 0x0,

@@ -1,3 +1,7 @@
+v2.6.1:
+-------
+- More crash fixes, especially for Keen 6 DEMO
+
 v2.6:
 -----
 - Fixing mute music after saving a game

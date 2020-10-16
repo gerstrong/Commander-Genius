@@ -35,7 +35,7 @@ CVarPlatform::CVarPlatform(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y,
 
     const int episode = gBehaviorEngine.getEpisode();
 
-    if(episode == 6)
+    if(episode == 6 && !gKeenFiles.exeFile.isDemo() )
         drawGik = true;
     else
         drawGik = false;

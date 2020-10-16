@@ -139,6 +139,7 @@ bool VorticonEngine::loadResources( const Uint8 flags )
             CExeFile &ExeFile = gKeenFiles.exeFile;
             int version = ExeFile.getEXEVersion();
             unsigned char *p_exedata = ExeFile.getRawData();
+            const auto pexedatasize = ExeFile.getRawDataSize();
 
             if( mEp == 1 && version == 134)
             {
@@ -169,7 +170,7 @@ bool VorticonEngine::loadResources( const Uint8 flags )
             if( (mFlags & LOADSTR) == LOADSTR )
             {
                 // load the strings.
-                CMessages Messages(p_exedata, mEp, false, version);
+                CMessages Messages(p_exedata, pexedatasize, mEp, false, version);
                 Messages.extractGlobalStringsUsingExe();
                 mLoader.setPermilage(500);
             }

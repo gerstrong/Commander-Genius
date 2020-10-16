@@ -76,6 +76,9 @@ class CExeFile {
     byte* getRawData() const
     {	return m_rawdata;	}
 
+    size_t getRawDataSize() const
+    {	return mRawdataSize;	}
+
     void* getHeaderData() const
     {	return m_headerdata;	}
 
@@ -130,6 +133,7 @@ private:
 
 	size_t m_datasize;
 	size_t m_headersize;
+    size_t mRawdataSize;
 	int m_episode;
     bool mIsLuaScript = false;
 	bool m_demo;

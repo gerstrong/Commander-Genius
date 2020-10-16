@@ -184,6 +184,7 @@ bool GalaxyEngine::loadResources( const Uint8 flags )
             CExeFile &ExeFile = gKeenFiles.exeFile;
             int version = ExeFile.getEXEVersion();
             unsigned char *p_exedata = ExeFile.getRawData();
+            const auto pexedatasize = ExeFile.getRawDataSize();
             const int Episode = ExeFile.getEpisode();
 
             mLoader.setPermilage(10);
@@ -214,7 +215,7 @@ bool GalaxyEngine::loadResources( const Uint8 flags )
             {
                 // load the strings.
                 gLogging.ftextOut("Loading game text...\n<br>");
-                CMessages Messages(p_exedata, Episode, ExeFile.isDemo(), version);
+                CMessages Messages(p_exedata, pexedatasize, Episode, ExeFile.isDemo(), version);
                 Messages.extractGlobalStringsUsingExe();
                 Messages.extractGlobalStringsUsingLua();
                 mLoader.setPermilage(450);
@@ -276,7 +277,7 @@ bool GalaxyEngine::loadResources( const Uint8 flags )
             if( (mFlags & LOADSTR) == LOADSTR )
             {
                 // load the strings.
-                CMessages Messages(nullptr, episode, false, 0);
+                CMessages Messages(nullptr, 0, episode, false, 0);
                 Messages.extractGlobalStringsUsingLua();
             }
 
