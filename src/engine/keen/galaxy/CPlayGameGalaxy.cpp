@@ -453,15 +453,15 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
 
         int newLevel = 0;
 
-#if USE_PYTHON3
-        const int oldLevel = m_LevelPlay.getLevelIdx();
-        auto pModule = gPython.loadModule( "exitToLevel", gKeenFiles.gameDir);
+        GsLua lua;
+        const auto ok = lua.loadFile(
+                            JoinPaths(gKeenFiles.gameDir, "exitToLevel.lua"));
 
-        if (pModule != nullptr)
+        if(ok)
         {
-             loadIntegerFunc(pModule, "exitTo", newLevel, oldLevel);
+            const int oldLevel = m_LevelPlay.getLevelIdx();
+            lua.runFunctionRetOneInt("exitTo", oldLevel, newLevel);
         }
-#endif
 
         std::string levelLoadText = "LEVEL";
         levelLoadText += itoa(newLevel);

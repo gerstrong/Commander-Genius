@@ -1,5 +1,6 @@
 v2.6.1:
 -------
+- More lua support. Oblivion v1.4 fully working
 - More crash fixes, especially for Keen 6 DEMO
 
 v2.6:

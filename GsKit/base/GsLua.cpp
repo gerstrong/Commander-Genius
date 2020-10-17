@@ -108,14 +108,14 @@ bool GsLua::loadFile(const std::string &fname)
       return true;
 }
 
-void GsLua::runFunctionRetOneInt(const std::string &fun,
+bool GsLua::runFunctionRetOneInt(const std::string &fun,
                                  const int param,
                                  int &ret)
 {
     if(!mLuaStatePtr)
     {
         gLogging.ftextOut("Lua State not running for %s", fun.c_str());
-        return;
+        return false;
     }
 
 
@@ -126,20 +126,21 @@ void GsLua::runFunctionRetOneInt(const std::string &fun,
     if (lua_pcall(L, 2, 1, 0) != 0)
     {
         gLogging.ftextOut("Error calling %s with %d", fun.c_str(), param);
-        return;
+        return false;
     }
 
     int isnum;
     int n = lua_tointegerx(L, -1, &isnum);
     if (!isnum) {
         gLogging.ftextOut("Error getval didn't return a number");
-        return;
+        return false;
     }
     ret = n;
     gLogging.ftextOut("ret=%d\n", n);
 
     /* Remove the return value from the stack. */
     lua_remove(L, -1);
+    return true;
 }
 
 bool GsLua::runFunctionRetOneStr(const std::string &fun,
@@ -211,12 +212,12 @@ bool GsLua::runFunctionRetOneStr(const std::string &fun,
 }
 
 
-void GsLua::runFunctionRetOneInt(const std::string &fun, int &ret)
+bool GsLua::runFunctionRetOneInt(const std::string &fun, int &ret)
 {
     if(!mLuaStatePtr)
     {
         gLogging.ftextOut("Lua State not running for %s", fun.c_str());
-        return;
+        return false;
     }
 
 
@@ -226,20 +227,21 @@ void GsLua::runFunctionRetOneInt(const std::string &fun, int &ret)
     if (lua_pcall(L, 1, 1, 0) != 0)
     {
         gLogging.ftextOut("Error calling %s", fun.c_str());
-        return;
+        return false;
     }
 
     int isnum;
     int n = lua_tointegerx(L, -1, &isnum);
     if (!isnum) {
         gLogging.ftextOut("Error getval didn't return a number");
-        return;
+        return false;
     }
     ret = n;
     gLogging.ftextOut("ret=%d\n", n);
 
     /* Remove the return value from the stack. */
     lua_remove(L, -1);
+    return true;
 }
 
 void GsLua::runFunctionRetOneBool(const std::string &fun, bool &ret)

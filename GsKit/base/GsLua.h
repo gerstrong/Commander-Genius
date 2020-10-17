@@ -19,9 +19,9 @@ public:
                               const int param,
                               std::string &ret);
 
-    void runFunctionRetOneInt(const std::string &fun, int &ret);
+    bool runFunctionRetOneInt(const std::string &fun, int &ret);
 
-    void runFunctionRetOneInt(const std::string &fun,
+    bool runFunctionRetOneInt(const std::string &fun,
                               const int param,
                               int &ret);
 
