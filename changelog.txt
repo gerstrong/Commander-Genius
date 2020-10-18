@@ -1,3 +1,10 @@
+v2.6.2:
+-------
+- More sounds are now played
+- Collision fixes
+- AI fixes
+- Added 5 control presets which can be saved and loaded. Enjoy :-)
+
 v2.6.1:
 -------
 - More lua support. Oblivion v1.4 fully working
