@@ -130,7 +130,7 @@ mSelectedPlayer(selectedPlayer)
             mpMenuDialog->add( new Switch( "Auto Gun", style ) );
 	mpAutoGunSwitch->enable(gInput.AutoGun(mSelectedPlayer-1));
 
-/*
+
     mpMenuDialog->add(
                 new GameButton( "Save Preset",
                                 [this]()
@@ -140,7 +140,7 @@ mSelectedPlayer(selectedPlayer)
                                                              this->getStyle()) ) );
                                 },
                                 style )  );
-*/
+
     
     setMenuLabel("KEYBMENULABEL");
 
@@ -159,7 +159,7 @@ void CControlsettings::release()
 	gInput.setSuperPogo(mSelectedPlayer-1, mpSuperPogoSwitch->isEnabled() );
 	gInput.setImpossiblePogo(mSelectedPlayer-1, mpImpPogoSwitch->isEnabled() );
 	gInput.setAutoGun(mSelectedPlayer-1, mpAutoGunSwitch->isEnabled() );
-	gInput.saveControlconfig();
+    gInput.saveControlconfig("");
 }
 
 
@@ -220,7 +220,7 @@ void CControlSettingsBase::release()
     if(!mCommandName.empty())
         mCommandName.clear();
 
-    gInput.saveControlconfig();
+    gInput.saveControlconfig("");
 }
 
 
@@ -229,7 +229,7 @@ void CControlSettingsMovement::refresh()
     mapping = false;
 	mCommandName[IC_LEFT]		= "Left:   ";
 	mCommandName[IC_RIGHT]		= "Right:  ";
-	mCommandName[IC_UP]		= "Up:     ";
+    mCommandName[IC_UP]		    = "Up:     ";
 	mCommandName[IC_DOWN]		= "Down:   ";
 
     if(!mpButtonMap.empty())
@@ -417,29 +417,43 @@ void CControlSettingsLoadPreset::refresh()
                            },
                            getStyle() ) );
 
-    // TODO: Code for Presets here
-/*
-    mpMenuDialog->add(
-           new GameButton( "Pres1",
-                           []()
-                           {},
-                           getStyle() ) );
-    mpMenuDialog->add(
-           new GameButton( "Pres2",
-                           []()
-                           {},
-                           getStyle() ) );
-    mpMenuDialog->add(
-           new GameButton( "Pres3",
-                           []()
-                           {},
-                           getStyle() ) );
-    mpMenuDialog->add(
-           new GameButton( "<new>",
-                           []()
-                           {},
-                           getStyle() ) );
-*/
+
+    std::vector<std::string> presetList;
+
+    presetList.push_back("Preset1");
+    presetList.push_back("Preset2");
+    presetList.push_back("Preset3");
+    presetList.push_back("Preset4");
+    presetList.push_back("Preset5");
+
+
+    for(int i=0 ; i<8 ; i++)
+    {
+        std::string text = "<new>";
+        if(i < int(presetList.size()))
+            text = presetList.at(i);
+        else
+            continue;
+
+        auto input =
+                mpMenuDialog->add( new InputText(
+                                       text,
+                                       GsRect<float>(
+                                           0.0f, 0.1f+(i*0.1f),
+                                           1.0f, 0.1f), i,
+                                       getStyle() ) );
+
+        input->setActivationEvent([this, input, text, refreshControlMenus]()
+        {
+            input->setReleased(false);
+            gInput.loadControlconfig(text);
+            gInput.saveControlconfig("");
+
+            const auto sel = this->mSelectedPlayer-1;
+            assert(sel>=0);
+            refreshControlMenus(sel+1);
+        });
+    }
 
     setMenuLabel("BUTTONMENULABEL");
     mpMenuDialog->fit();
@@ -451,42 +465,33 @@ void CControlSettingsSavePreset::refresh()
      // Load the presets list
      std::vector<std::string> presetList;
 
-     presetList.push_back("Preset 1");
-     presetList.push_back("Preset 2");
-     presetList.push_back("Preset 3");
-     presetList.push_back("Preset 4");
-     presetList.push_back("Preset 5");
+     presetList.push_back("Preset1");
+     presetList.push_back("Preset2");
+     presetList.push_back("Preset3");
+     presetList.push_back("Preset4");
+     presetList.push_back("Preset5");
 
      for(int i=0 ; i<8 ; i++)
      {
-            std::string text = "<new>";
-            if(i < int(presetList.size()))
-                text = presetList.at(i);
+         std::string text = "<new>";
+         if(i < int(presetList.size()))
+             text = presetList.at(i);
+         else
+             continue;
 
-            auto input =
-            mpMenuDialog->add( new InputText(
-                                          text,
-                                          GsRect<float>(
-                                              0.0f, 0.1f+(i*0.1f),
-                                              1.0f, 0.1f), i,
-                                          getStyle() ) );
+         auto input =
+                 mpMenuDialog->add( new InputText(
+                                        text,
+                                        GsRect<float>(
+                                            0.0f, 0.1f+(i*0.1f),
+                                            1.0f, 0.1f), i,
+                                        getStyle() ) );
 
-            input->setActivationEvent([input]()
-            {
-                const auto noTyping = true;
-
-                // The naming of the files start with "1",
-                // meaning "1" is the first element, not 0.
-                const auto index = input->getIndex()+1;
-
-                if(noTyping)
-                {
-                    const std::string saveText = "Preset " + itoa(index);
-                }
-
-                input->setReleased(false);
-            });
-        }
+         input->setActivationEvent([text,input]()
+         {
+             input->setReleased(false);
+             gInput.saveControlconfig(text);
+             gEventManager.add( new CloseMenuEvent(false) );
+         });
+     }
 }
-
-

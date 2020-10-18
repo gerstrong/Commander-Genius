@@ -47,7 +47,7 @@ CInput::CInput()
     memset(&Event, 0, sizeof(Event));
 
 #if !TARGET_OS_IPHONE && !TARGET_IPHONE_SIMULATOR
-	loadControlconfig(); // we want to have the default settings in all cases
+    loadControlconfig(""); // we want to have the default settings in all cases
     startJoyDriver(); // not for iPhone for now, could cause trouble (unwanted input events)
 #endif
 
@@ -298,7 +298,7 @@ bool CInput::startJoyDriver()
 /**
  * \brief	This will load input settings that were saved previously by the user at past session.
  */
-void CInput::loadControlconfig(void)
+void CInput::loadControlconfig(const std::string &presetName)
 {
     CConfiguration Configuration;
 	if(Configuration.Parse())
@@ -308,6 +308,12 @@ void CInput::loadControlconfig(void)
 		{
 			// setup input from proper string
 			section = "input" + itoa(i);
+
+            if(!presetName.empty())
+            {
+                section += "-" + presetName;
+            }
+
 
 			std::string value;
             auto &curInput = mInputCommands[i];
@@ -369,15 +375,20 @@ void CInput::loadControlconfig(void)
  * \brief	This will save input settings according to how the user did map the buttons,
  * 			axes or keys to the commands.
  */
-void CInput::saveControlconfig()
+void CInput::saveControlconfig(const std::string &presetName)
 {
     CConfiguration Configuration;
 	Configuration.Parse();
 
 	std::string section;
 	for(size_t i=0 ; i<NUM_INPUTS ; i++)
-	{
+	{        
 	    section = "input" + itoa(i);
+
+        if(!presetName.empty())
+        {
+            section += "-" + presetName;
+        }
 
 	    const auto inputVal = static_cast<unsigned char>(i);
 
