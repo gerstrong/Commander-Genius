@@ -799,7 +799,7 @@ void CPlayerWM::processElevating()
 	else
 	{
 		moveDir(vec_norm*ELEVATOR_SPEED);
-		playSound(SOUND_ELEVATING);
+        this->playSound(SOUND_ELEVATING);
 	}
 }
 

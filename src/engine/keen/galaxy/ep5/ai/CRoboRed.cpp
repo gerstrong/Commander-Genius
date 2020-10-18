@@ -176,7 +176,10 @@ void CRoboRed::processShoot()
       }
       else
       {
-          playSound(SOUND_ROBORED_SHOOT);
+          if(mTimer%32 == 0)
+            this->playSound(SOUND_ROBORED_SHOOT);
+          else
+            this->playSound(SOUND_ROBORED_SHOOT2);
 
           spawnObj( new CRedShot( getMapPtr(),
                                   0,

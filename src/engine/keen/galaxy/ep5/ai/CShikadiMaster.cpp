@@ -169,7 +169,7 @@ void CShikadiMaster::processShooting()
     
     mTimer = 0;
         
-    playSound(SOUND_MASTERSHOT);
+    this->playSound(SOUND_MASTERSHOT);
     setAction(A_MASTER_STAND);        
 }
 
@@ -207,7 +207,7 @@ void CShikadiMaster::processTeleporting()
 	CheckGround(new_object,ACTION_MASTERSPARKS0);
 	*/
 
-	playSound(SOUND_MASTERTELE);
+    this->playSound(SOUND_MASTERTELE);
 
 	int triesLeft = 10;
 

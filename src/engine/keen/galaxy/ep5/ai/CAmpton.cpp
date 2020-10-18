@@ -154,12 +154,12 @@ void CAmpton::processWalking()
     // Play tic toc sound
     if(getActionStatus(A_AMPTON_WALK))
     {
-        playSound(GameSound(walkSound));
+        this->playSound(GameSound(walkSound));
     }
     else if(getActionStatus(A_AMPTON_WALK+2))
     {
         walkSound++;
-        playSound(GameSound(walkSound));
+        this->playSound(GameSound(walkSound));
     }
     
     int l_x_l = getXLeftPos();

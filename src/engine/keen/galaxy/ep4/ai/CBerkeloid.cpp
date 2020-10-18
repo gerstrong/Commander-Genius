@@ -119,7 +119,7 @@ void CBerkeloid::processMoving()
     if( getProbability(45) )
 	{
 		setAction( A_BERKELOID_THROW );
-		playSound( SOUND_BERKELOID_WINDUP );
+        this->playSound( SOUND_BERKELOID_WINDUP );
 		CBerkFlame *flame = new CBerkFlame( getMapPtr(), getXMidPos(), getYUpPos(), xDirection );
 		gEventManager.add( new EventSpawnObject( flame ) );
 		return;
@@ -150,8 +150,6 @@ void CBerkeloid::process()
     blockedl = checkSolidL(abs_x1, abs_x2, abs_y1, abs_y2);
     blockedr = checkSolidR(abs_x1, abs_x2, abs_y1, abs_y2);
 
-	(this->*mpProcessState)();        
-
 	if( blockedl )
     {
 		xDirection = RIGHT;
@@ -160,6 +158,8 @@ void CBerkeloid::process()
     {
 		xDirection = LEFT;
     }
+
+    (this->*mpProcessState)();
 
 	if(!processActionRoutine())
     {
@@ -220,7 +220,10 @@ void CBerkFlame::getTouchedBy(CSpriteObject &theObject)
 void CBerkFlame::processThrown()
 {
 	if(blockedd)
+    {
+        this->playSound(SOUND_BERKELOID_FIREBALL_LANDING);
 		setAction(A_FLAME_LANDED);
+    }
 
 	// Move normally in the direction
 	if( xDirection == RIGHT )

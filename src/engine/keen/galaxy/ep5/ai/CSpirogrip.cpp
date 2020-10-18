@@ -137,14 +137,27 @@ void CSpirogrip::processSpin()
       yDirection = mKeenAlignmentY;
   
   if(xDirection == LEFT)
+  {
+      this->playSound(SOUND_SPIROGRIP);
       setAction(A_GRIP_MOVE_LEFT);
+  }
   else if(xDirection == RIGHT)
+  {
+      this->playSound(SOUND_SPIROGRIP);
       setAction(A_GRIP_MOVE_RIGHT);
+  }
+
 
   if(yDirection == UP)
+  {
+      this->playSound(SOUND_SPIROGRIP);
       setAction(A_GRIP_MOVE_UP);
+  }
   else if(yDirection == DOWN)
+  {
+      this->playSound(SOUND_SPIROGRIP);
       setAction(A_GRIP_MOVE_DOWN);
+  }
   
 }
 
