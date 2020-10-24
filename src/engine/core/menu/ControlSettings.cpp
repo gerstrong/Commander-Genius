@@ -5,6 +5,7 @@
  *      Author: gerstrong
  */
 
+#include "fileio/CConfiguration.h"
 #include <base/utils/StringUtils.h>
 
 
@@ -16,6 +17,19 @@
 
 #include "widgets/InputText.h"
 
+#include <algorithm>
+
+static std::vector<std::string> defaultPresets =
+{
+    "XInput",
+    "DInput",
+    "Keyboard",
+    "ClonePadA",
+    "ClonePadB",
+    "ClonePadC",
+    "ClonePadD",
+    "ClonePadE"
+};
 
 
 /**
@@ -392,9 +406,33 @@ void CControlSettingsMisc::refresh()
     addBottomText();
 }
 
+void readPresetList(std::vector<std::string> &presetList,
+                    const int playerIdx)
+{
+    CConfiguration configuration;
+    if(configuration.Parse())
+    {
+        auto secListUnfiltered = configuration.getSectionList();
+        decltype (secListUnfiltered) secList;
+
+        for( const auto &sec : secListUnfiltered )
+        {
+            const std::string inputStr = "input" + itoa(playerIdx) + "-";
+            const auto pos = sec.find(inputStr);
+
+            if(pos == sec.npos)
+                continue;
+
+            presetList.push_back( sec.substr(inputStr.length()) );
+        }
+    }
+}
+
 // Presets part
 void CControlSettingsLoadPreset::refresh()
 {
+    const auto playerIdx = this->mSelectedPlayer-1;
+
     auto refreshControlMenus = [this](const int player)
     {
         gEventManager.add( new CloseMenuEvent(false) );
@@ -418,14 +456,10 @@ void CControlSettingsLoadPreset::refresh()
                            getStyle() ) );
 
 
+    // Load preset list
     std::vector<std::string> presetList;
 
-    presetList.push_back("Preset1");
-    presetList.push_back("Preset2");
-    presetList.push_back("Preset3");
-    presetList.push_back("Preset4");
-    presetList.push_back("Preset5");
-
+    readPresetList(presetList, playerIdx);
 
     for(int i=0 ; i<8 ; i++)
     {
@@ -463,13 +497,7 @@ void CControlSettingsLoadPreset::refresh()
 void CControlSettingsSavePreset::refresh()
 {
      // Load the presets list
-     std::vector<std::string> presetList;
-
-     presetList.push_back("Preset1");
-     presetList.push_back("Preset2");
-     presetList.push_back("Preset3");
-     presetList.push_back("Preset4");
-     presetList.push_back("Preset5");
+     std::vector<std::string> presetList = defaultPresets;
 
      for(int i=0 ; i<8 ; i++)
      {

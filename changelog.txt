@@ -1,3 +1,8 @@
+v2.6.X:
+-------
+- We have eight control presets which got some standard names.
+  Feel free to save you favorite settings there
+
 v2.6.2:
 -------
 - More sounds are now played
