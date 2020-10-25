@@ -3931,6 +3931,11 @@ US_ControlPanel_Ponder(void)
                 ResumeGame = true;
             }
         }
+        else
+        {
+            ResumeGame = false;
+            done = false;
+        }
 
 		if (QuitToDos)
         {

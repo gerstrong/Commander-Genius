@@ -1758,6 +1758,8 @@ void PlayLoopRun()
 
 void startLevel();
 
+void GameFinale (void);
+
 
 void HandleDeath_Init (void);
 
@@ -1796,6 +1798,21 @@ void PlayLoop()
             GamePlayStartLevel();
         }
     }
+    else if(playstate == victorious)
+    {
+        GameFinale ();
+        playstate = resetgame;
+        gEventManager.add( new dreams::RestartGame );
+
+         /*
+        cities = 0;
+        for (i= 1; i<=16; i++)
+            if (gamestate.leveldone[i])
+                cities++;
+        US_CheckHighScore (gamestate.score,cities);
+        VW_ClearVideo (FIRSTCOLOR);
+        */
+    }
     else
     {
         ingame = false;
@@ -1814,6 +1831,9 @@ void PlayLoopRender()
 }
 
 //==========================================================================
+
+bool mGamePlayRunning = false;
+
 
 /*
 ==========================
@@ -1898,6 +1918,8 @@ void GameFinale (void)
 	VW_WaitVBL(60);
 	IN_ClearKeysDown ();
 	IN_Ack();
+
+    mGamePlayRunning = false;
 }
 
 //==========================================================================
@@ -2025,8 +2047,6 @@ void HandleDeath_Loop (void)
 =
 ============================
 */
-
-bool mGamePlayRunning = false;
 
 void GamePlayStart()
 {
