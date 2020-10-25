@@ -287,7 +287,6 @@ How to compile it under Ubuntu:
         - libgl1-mesa-dev
         - libcurl4-openssl-dev
         - zlib1g-dev        
-        - python3 (python 3.5 recommended)
         - libsdl2-dev
         - libsdl2-image-dev
         - libsdl2-mixer-dev
@@ -310,7 +309,7 @@ How to compile it under Fedora:
    older):
 
    dnf install -y \
-     SDL2-devel cmake cmake-data gcc-c++ python3-devel \
+     SDL2-devel cmake cmake-data gcc-c++ \
      mesa-libGL-devel libcurl-devel \
      SDL2_image-devel SDL2_mixer-devel SDL2_ttf-devel
 

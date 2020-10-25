@@ -2,6 +2,7 @@ v2.6.X:
 -------
 - We have eight control presets which got some standard names.
   Feel free to save you favorite settings there
+- Bug fixes in the Keen dreams engine
 
 v2.6.2:
 -------

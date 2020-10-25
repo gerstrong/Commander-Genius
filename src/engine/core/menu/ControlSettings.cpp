@@ -192,8 +192,18 @@ mSelectedPlayer(selectedPlayer)
 
 }
 
+CControlSettingsBaseWithMapping::
+CControlSettingsBaseWithMapping(const int selectedPlayer,
+                                const Style style) :
+CControlSettingsBase(selectedPlayer, style) {}
+
 
 void CControlSettingsBase::ponder(const float deltaT)
+{
+    GameMenu::ponder(deltaT);
+}
+
+void CControlSettingsBaseWithMapping::ponder(const float deltaT)
 {
     if( !mapping && gInput.MappingInput() ) // mapping changed!
     {
@@ -206,7 +216,7 @@ void CControlSettingsBase::ponder(const float deltaT)
             mapping = false;
 
             int pos; unsigned char input;
-            std::string evName = gInput.getNewMappedEvent(pos, input);            
+            std::string evName = gInput.getNewMappedEvent(pos, input);
 
             InpCmd com = static_cast<InpCmd>(pos);
 
@@ -214,7 +224,7 @@ void CControlSettingsBase::ponder(const float deltaT)
         }
     }
 
-    GameMenu::ponder(deltaT);
+    CControlSettingsBase::ponder(deltaT);
 }
 
 void CControlSettingsBase::addBottomText()
@@ -231,10 +241,15 @@ void CControlSettingsBase::addBottomText()
 
 void CControlSettingsBase::release()
 {
+    gInput.saveControlconfig("");
+}
+
+void CControlSettingsBaseWithMapping::release()
+{
     if(!mCommandName.empty())
         mCommandName.clear();
 
-    gInput.saveControlconfig("");
+    CControlSettingsBase::release();
 }
 
 
