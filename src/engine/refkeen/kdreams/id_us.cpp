@@ -1445,9 +1445,13 @@ typedef	enum
 		{
 			uii_Bad,uii_Button,uii_RadioButton,uii_CheckBox,uii_KeyCap
 		} UIType;
-#define	ui_Normal	0
-#define	ui_Selected	1
-#define	ui_Disabled	2
+
+enum ui_selection
+{
+ui_Normal   = 0,
+ui_Selected = 1,
+ui_Disabled = 2
+};
 
 					// Prototype the custom routines
 static	id0_boolean_t		USL_CtlButtonCustom(UserCall,id0_word_t,id0_word_t),
@@ -2542,6 +2546,13 @@ USL_DoHelpInit(memptr text, id0_long_t len, int &lines)
 }
 
 
+id0_word_t		hiti,hitn,
+            i,n,
+            lasti,lastn,
+            lastx,lasty;
+
+
+
 bool USL_DoHelpPonder(memptr text,id0_long_t len,
                  bool &released, int &lines,
                  bool &done, int &scroll,
@@ -2795,6 +2806,12 @@ bool USL_DoHelpPonder(memptr text,id0_long_t len,
         {
             return false;
         }
+
+        CtlHPanels[0].sel = ui_Normal;
+        CtlHPanels[1].sel = ui_Normal;
+        CtlHPanels[2].sel = ui_Normal;
+
+        USL_DrawItem(hiti, hitn);
 
         IN_ClearKeysDown();
 
@@ -3673,11 +3690,6 @@ USL_TearDownCtlPanel(void)
 	}
 }
 
-
-id0_word_t		hiti,hitn,
-            i,n,
-            lasti,lastn,
-            lastx,lasty;
 
 id0_longword_t	lasttime;
 
