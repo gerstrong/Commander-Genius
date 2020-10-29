@@ -149,14 +149,16 @@ bool VirtualKeenControl::ponder()
     const float left = 0.025f;
     const float right = 0.975f;
 
-    const auto iSize = gVideoDriver.getVidConfig().mVPadSize;
+    const auto iSizeW = gVideoDriver.getVidConfig().mVPadWidth;
+    const auto iSizeH = gVideoDriver.getVidConfig().mVPadHeight;
 
-    float sizeFactor = float(iSize)/200.0f;
+    const float sizeWFactor = float(iSizeW)/200.0f;
+    const float sizeHFactor = float(iSizeH)/200.0f;
 
     if(!mPadBackground.invisible)
     {
-        const GsRect<float> dpadRect(0.0f, bottom-sizeFactor*0.25f,
-                                     1.0f, 0.25f*sizeFactor);
+        const GsRect<float> dpadRect(0.0f, bottom-sizeHFactor*0.25f,
+                                     1.0f, 0.25f*sizeHFactor);
 
         mPadBackground.setRect(dpadRect);
 
@@ -165,10 +167,11 @@ bool VirtualKeenControl::ponder()
 
     if(!mDPad.invisible)
     {
-        const float dpadSize = 0.2f*sizeFactor;
+        const float dpadWSize = 0.2f*sizeWFactor;
+        const float dpadHSize = 0.2f*sizeHFactor;
 
-        const GsRect<float> dpadRect(left, bottom-dpadSize*1.05f,
-                                      dpadSize, dpadSize);
+        const GsRect<float> dpadRect(left, bottom-dpadHSize*1.05f,
+                                      dpadWSize, dpadHSize);
 
         mDPad.setRect(dpadRect);
 
@@ -177,11 +180,12 @@ bool VirtualKeenControl::ponder()
 
     if(!mConfirmButton.invisible)
     {
-        const float buttonSize = 0.1f*sizeFactor;
+        const float buttonSizeW = 0.1f*sizeWFactor;
+        const float buttonSizeH = 0.1f*sizeHFactor;
 
-        const GsRect<float> confirmRect(right-2.0f*buttonSize,
-                                        bottom-2.0f*buttonSize,
-                                         buttonSize, buttonSize);
+        const GsRect<float> confirmRect(right-2.0f*buttonSizeW,
+                                        bottom-2.0f*buttonSizeH,
+                                         buttonSizeW, buttonSizeH);
 
         mConfirmButton.setRect(confirmRect);
 
@@ -190,11 +194,12 @@ bool VirtualKeenControl::ponder()
 
     if(!mMenuButton.invisible)
     {
-        const float buttonSize = 0.1f*sizeFactor;
+        const float buttonWSize = 0.1f*sizeWFactor;
+        const float buttonHSize = 0.1f*sizeHFactor;
 
-        const GsRect<float> menuBtnRect(left+3.5f*buttonSize,
-                                        bottom-1.5f*buttonSize,
-                                        buttonSize, buttonSize);
+        const GsRect<float> menuBtnRect(left+3.5f*buttonWSize,
+                                        bottom-1.5f*buttonHSize,
+                                        buttonWSize, buttonHSize);
 
         mMenuButton.setRect(menuBtnRect);
 
@@ -204,11 +209,12 @@ bool VirtualKeenControl::ponder()
 
     if(!mStatusButton.invisible)
     {
-        const float buttonSize = 0.1f*sizeFactor;
+        const float buttonWSize = 0.1f*sizeWFactor;
+        const float buttonHSize = 0.1f*sizeHFactor;
 
-        const GsRect<float> statusRect(right-3.4f*buttonSize,
-                                       bottom-2.2f*buttonSize,
-                                       buttonSize, buttonSize);
+        const GsRect<float> statusRect(right-3.4f*buttonWSize,
+                                       bottom-2.2f*buttonHSize,
+                                       buttonWSize, buttonHSize);
 
         mStatusButton.setRect(statusRect);
 
@@ -217,11 +223,12 @@ bool VirtualKeenControl::ponder()
 
     if(!mStartButton.invisible)
     {
-        const float buttonSize = 0.1f*sizeFactor;
+        const float buttonWSize = 0.1f*sizeWFactor;
+        const float buttonHSize = 0.1f*sizeHFactor;
 
-        const GsRect<float> startRect(right-3.4f*buttonSize,
-                                      bottom-1.0f*buttonSize,
-                                      buttonSize, buttonSize);
+        const GsRect<float> startRect(right-3.4f*buttonWSize,
+                                      bottom-1.0f*buttonHSize,
+                                      buttonWSize, buttonHSize);
 
         mStartButton.setRect(startRect);
 
@@ -230,11 +237,12 @@ bool VirtualKeenControl::ponder()
 
     if(!mJumpButton.invisible)
     {
-        const float buttonSize = 0.1f*sizeFactor;
+        const float buttonWSize = 0.1f*sizeWFactor;
+        const float buttonHSize = 0.1f*sizeHFactor;
 
-        const GsRect<float> jumpRect(right-2.2f*buttonSize,
-                                     bottom-1.0f*buttonSize,
-                                      buttonSize, buttonSize);
+        const GsRect<float> jumpRect(right-2.2f*buttonWSize,
+                                     bottom-1.0f*buttonHSize,
+                                      buttonWSize, buttonHSize);
 
         mJumpButton.setRect(jumpRect);
 
@@ -243,11 +251,12 @@ bool VirtualKeenControl::ponder()
 
     if(!mPogoButton.invisible)
     {
-        const float buttonSize = 0.1f*sizeFactor;
+        const float buttonWSize = 0.1f*sizeWFactor;
+        const float buttonHSize = 0.1f*sizeHFactor;
 
-        const GsRect<float> pogoRect(right-1.0f*buttonSize,
-                                     bottom-1.0f*buttonSize,
-                                      buttonSize, buttonSize);
+        const GsRect<float> pogoRect(right-1.0f*buttonWSize,
+                                     bottom-1.0f*buttonHSize,
+                                      buttonWSize, buttonHSize);
 
         mPogoButton.setRect(pogoRect);
 
@@ -256,11 +265,12 @@ bool VirtualKeenControl::ponder()
 
     if(!mShootButton.invisible)
     {
-        const float buttonSize = 0.1f*sizeFactor;
+        const float buttonWSize = 0.1f*sizeWFactor;
+        const float buttonHSize = 0.1f*sizeHFactor;
 
-        const GsRect<float> shootRect(right-2.2f*buttonSize,
-                                      bottom-2.2f*buttonSize,
-                                      buttonSize, buttonSize);
+        const GsRect<float> shootRect(right-2.2f*buttonWSize,
+                                      bottom-2.2f*buttonHSize,
+                                      buttonWSize, buttonHSize);
 
         mShootButton.setRect(shootRect);
 

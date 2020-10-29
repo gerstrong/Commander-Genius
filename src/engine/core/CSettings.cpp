@@ -61,7 +61,8 @@ bool CSettings::saveDrvCfg()
         Configuration.SetKeyword("Video", "OpenGL", VidConf.mOpengl);
 #ifdef USE_VIRTUALPAD
         Configuration.SetKeyword("Video", "VirtPad", VidConf.mVPad);
-        Configuration.WriteInt("Video", "VirtPadSize", VidConf.mVPadSize);
+        Configuration.WriteInt("Video", "VirtPadWidth", VidConf.mVPadWidth);
+        Configuration.WriteInt("Video", "VirtPadHeight", VidConf.mVPadHeight);
 #endif
         Configuration.SetKeyword("Video", "ShowCursor", VidConf.mShowCursor);
         Configuration.SetKeyword("Video", "TiltedScreen", VidConf.mTiltedScreen);
@@ -227,7 +228,8 @@ bool CSettings::loadDrvCfg()
 
 #ifdef USE_VIRTUALPAD
     config.ReadKeyword("Video", "VirtPad", &vidConf.mVPad, vidConf.mVPad);
-    config.ReadInteger("Video", "VirtPadSize", &vidConf.mVPadSize, vidConf.mVPadSize);
+    config.ReadInteger("Video", "VirtPadWidth", &vidConf.mVPadWidth, vidConf.mVPadWidth);
+    config.ReadInteger("Video", "VirtPadHeight", &vidConf.mVPadHeight, vidConf.mVPadHeight);
 #endif
     config.ReadKeyword("Video", "ShowCursor", &vidConf.mShowCursor, true);
     config.ReadKeyword("Video", "TiltedScreen", &vidConf.mTiltedScreen, false);

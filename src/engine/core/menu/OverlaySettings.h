@@ -43,7 +43,8 @@ private:
 
 #ifdef USE_VIRTUALPAD
     Switch			*mpVPadSwitch  = nullptr;
-    std::shared_ptr<NumberControl>	mpVPadSize;
+    std::shared_ptr<NumberControl>	mpVPadHeight;
+    std::shared_ptr<NumberControl>	mpVPadWidth;
 #endif
 };
 

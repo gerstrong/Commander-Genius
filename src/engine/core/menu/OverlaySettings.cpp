@@ -28,11 +28,16 @@ GameMenu(GsRect<float>(0.075f, 0.24f, 0.85f, 0.4f), style )
     mpVPadSwitch  = new Switch( "VirtPad", style );
     mpMenuDialog->add( mpVPadSwitch );
 
-    const auto iSizeFac = mUsersConf.mVPadSize;
+    const auto iHeightFac = mUsersConf.mVPadHeight;
+    const auto iWidthFac  = mUsersConf.mVPadWidth;
 
-    mpVPadSize =
+    mpVPadWidth =
         mpMenuDialog->add(
-            new NumberControl( "Size", 100, 400, 10, iSizeFac,
+            new NumberControl( "Width", 100, 400, 10, iWidthFac,
+                              false, getStyle() ) );
+    mpVPadHeight =
+        mpMenuDialog->add(
+            new NumberControl( "Height", 100, 400, 10, iHeightFac,
                               false, getStyle() ) );
 #endif
     mpMenuDialog->fit();
@@ -49,7 +54,8 @@ void OverlaySettings::refresh()
 
 #ifdef USE_VIRTUALPAD
     mpVPadSwitch->enable(mUsersConf.mVPad);
-    mpVPadSize->setSelection(mUsersConf.mVPadSize);
+    mpVPadWidth->setSelection(mUsersConf.mVPadWidth);
+    mpVPadHeight->setSelection(mUsersConf.mVPadHeight);
 #endif
 }
 
@@ -62,7 +68,8 @@ void OverlaySettings::ponder(const float /*deltaT*/)
     auto &activeCfg = gVideoDriver.getVidConfig();
 
     activeCfg.mVPad = mpVPadSwitch->isEnabled();
-    activeCfg.mVPadSize = mpVPadSize->getSelection();
+    activeCfg.mVPadWidth = mpVPadWidth->getSelection();
+    activeCfg.mVPadHeight = mpVPadHeight->getSelection();
 #endif
 }
 
