@@ -48,16 +48,20 @@ CMessages::extractNextString( const std::string matchingstring )
 	std::string Text;
 
     for(unsigned long pos = mOffset ; pos<mp_exe.size() ; pos++)
-	{
+    {
 		if(mp_exe[pos] == 0x0)
 		{
-		    while(mp_exe[pos] == 0x0)
+            while(mp_exe[pos] == 0x0)
+            {
                 pos++;
+
+                if(pos>=mp_exe.size())
+                    break;
+            }
 			
 		    mOffset = pos;
 		    break;
 		}
-
 		Text += static_cast<char>(mp_exe[pos]);
 	}
 

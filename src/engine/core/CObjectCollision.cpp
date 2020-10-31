@@ -733,6 +733,10 @@ int CSpriteObject::checkSolidL( int x1, int x2, int y1, int y2)
         for(int c=y1 ; c<=y2 ; c += COLLISION_RES)
 		{
             const auto mapOff = mpMap->at(x1>>CSF, c>>CSF);
+
+            if( mapOff >= TileProperty.size())
+                continue;
+
             blocker = TileProperty[mapOff].bright;
             bool slope = (TileProperty[mapOff].bup > 1);
 
@@ -740,6 +744,10 @@ int CSpriteObject::checkSolidL( int x1, int x2, int y1, int y2)
             if(c-y1 <= local_block_tol) // Upper part
             {
                 const auto mapTile = mpMap->at((x1+pixel_tol_x)>>CSF, c>>CSF);
+
+                if( mapTile >= TileProperty.size())
+                    continue;
+
                 blocker = TileProperty[mapTile].bright;
                 slope = (TileProperty[mapTile].bup > 1);
                 if(blocker && !slope)
