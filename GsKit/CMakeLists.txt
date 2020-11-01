@@ -103,6 +103,7 @@ else()
     
         find_package(SDL2 REQUIRED)
         find_package(SDL2_image REQUIRED)
+        find_package(SDL2_mixer REQUIRED)
         find_package(SDL2_ttf REQUIRED)
     
         if(SDL2_FOUND)
@@ -113,6 +114,7 @@ else()
     
             include_directories(${SDL2_INCLUDE_DIR})
             include_directories(${SDL2_NET_INCLUDE_DIRS})
+            include_directories(${SDL2_MIXER_INCLUDE_DIRS})
             include_directories(${SDL2_IMAGE_INCLUDE_DIRS})
             include_directories(${SDL2_TTF_INCLUDE_DIRS})
             #include_directories(${SDL2_NET_INCLUDE_DIRS})
@@ -124,6 +126,7 @@ else()
             # SDL2 not found, try to use SDL1.2
             FIND_PACKAGE( SDL REQUIRED )
             FIND_PACKAGE( SDL_image REQUIRED )
+            find_package( SDL_mixer REQUIRED )
             find_package( SDL_ttf REQUIRED )
     
             if(NOT ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
@@ -163,7 +166,6 @@ else()
     add_subdirectory(graphics)
     add_subdirectory(widgets)
 
-
     Target_link_libraries(${PROJECT_NAME} GsKit_base)
     Target_link_libraries(${PROJECT_NAME} GsKit_fileio)
     Target_link_libraries(${PROJECT_NAME} GsKit_widgets)
@@ -175,7 +177,10 @@ else()
         Target_link_libraries(${PROJECT_NAME} ${SDL2_LIBRARY})
         Target_link_libraries(${PROJECT_NAME} ${SDL2IMAGE_LIBRARIES})
         Target_link_libraries(${PROJECT_NAME} ${SDL2IMAGE_LIBRARY})
+        Target_link_libraries(${PROJECT_NAME} ${SDL2MIXER_LIBRARIES})
+        Target_link_libraries(${PROJECT_NAME} ${SDL2MIXER_LIBRARY})
         Target_link_libraries(${PROJECT_NAME} ${SDLIMAGE_LIBRARY})
+        Target_link_libraries(${PROJECT_NAME} ${SDLMIXER_LIBRARY})
         Target_link_libraries(${PROJECT_NAME} ${SDL2_TTF_LIBRARY})
     else()
         Target_link_libraries(${PROJECT_NAME} ${SDL_LIBRARY})
@@ -183,12 +188,7 @@ else()
         Target_link_libraries(${PROJECT_NAME} ${SDL_IMAGE_LIBRARY})
         Target_link_libraries(${PROJECT_NAME} ${SDL_TTF_LIBRARY})
     endif()
-    
-if(USE_SDL2)
-        message(STATUS "${PROJECT_NAME}: SDL2_LIBRARY = ${SDL2_LIBRARY}")
-        message(STATUS "${PROJECT_NAME}: SDL2IMAGE_LIBRARY = ${SDL2IMAGE_LIBRARY}")
-endif(USE_SDL2)
-    
+        
 IF(USE_OPENGL)
     # OpenGL stuff to link
     target_link_libraries(${PROJECT_NAME} ${OPENGL_LIBRARIES})
