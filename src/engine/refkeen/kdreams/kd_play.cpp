@@ -169,7 +169,8 @@ id0_int_t			fadecount;
 id0_boolean_t		bombspresent;
 id0_int_t           bombsleftinlevel = 0;
 
-id0_boolean_t		openedStatusWindow;
+//id0_boolean_t		openedStatusWindow;
+std::function<void()> msgBoxRenderTask;
 
 id0_boolean_t		lumpneeded[NUMLUMPS];
 id0_int_t			lumpstart[NUMLUMPS] =
@@ -262,7 +263,8 @@ void CheckKeys (void)
 //
     if (Keyboard[sc_Space])
 	{
-        openedStatusWindow = true;
+        msgBoxRenderTask = StatusWindow;
+        //openedStatusWindow = StatusWindow;
 		IN_ClearKeysDown();
 		RF_ForceRefresh();
 		lasttimecount = SD_GetTimeCount();
@@ -272,7 +274,7 @@ void CheckKeys (void)
 // pause key wierdness can't be checked as a scan code
 //
 	if (Paused)
-	{
+	{        
 		VW_FixRefreshBuffer ();
 		US_CenterWindow (8,3);
 		US_PrintCentered ("PAUSED");
@@ -774,10 +776,13 @@ void 	SetupGameLevel (id0_boolean_t loadnow)
 	{
 		if (bombspresent)
 		{
-			VW_FixRefreshBuffer ();
-			US_DrawWindow (10,1,20,2);
-			US_PrintCentered ("Boobus Bombs Near!");
-			VW_UpdateScreen ();
+            msgBoxRenderTask = []()
+            {
+                VW_FixRefreshBuffer ();
+                US_DrawWindow (10,1,20,2);
+                US_PrintCentered ("Boobus Bombs Near!");
+                RF_Refresh(false);
+            };
 		}
 #ifdef REFKEEN_VER_KDREAMS_CGA_ALL
 		CA_CacheMarks (levelnames[mapon]);
@@ -1613,14 +1618,13 @@ void PlayLoopRun()
 
     // Status screen code in which you have to press a key to close.
     // Also it will render correctly
-    if(openedStatusWindow)
+    if(msgBoxRenderTask)
     {
-       StatusWindow();
+       msgBoxRenderTask();
 
-       if(c.button0 || c.button1 ||
-          Keyboard[sc_Space] || gInput.getPressedAnyButtonCommand(0))
+       if(Keyboard[sc_Space] || gInput.getPressedAnyButtonCommand(0))
        {
-           openedStatusWindow = false;
+           msgBoxRenderTask = nullptr;
            RF_ForceRefresh();
 
            lasttimecount = SD_GetTimeCount();
@@ -1824,7 +1828,7 @@ void PlayLoop()
 
 void PlayLoopRender()
 {
-    if(!playstate && !openedStatusWindow)
+    if(!playstate && !msgBoxRenderTask)
     {
         RF_Refresh(true);
     }
@@ -2131,9 +2135,6 @@ void GameLoopOpen()
 
     gamestate.difficulty = restartgame;
     restartgame = gd_Continue;
-
-    openedStatusWindow = false;
-
 
     if( gamestate.lives>-1 && playstate!=victorious )
     {

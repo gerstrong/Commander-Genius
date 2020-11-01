@@ -16,6 +16,7 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#include <functional>
 
 extern "C"
 {
@@ -231,6 +232,7 @@ void TestSprites(void)
 
 #endif
 
+extern std::function<void()> msgBoxRenderTask;
 
 /*
 ================
@@ -255,40 +257,59 @@ id0_int_t DebugKeys (void)
     // F10 + ...
 	if (Keyboard[0x22] && ingame)           // G = god mode
 	{
-		VW_FixRefreshBuffer ();
-		US_CenterWindow (12,2);
-		if (godmode)
-		  US_PrintCentered ("God mode OFF");
-		else
-		  US_PrintCentered ("God mode ON");
-		VW_UpdateScreen();
-		IN_Ack();
 		godmode ^= 1;
+
+        msgBoxRenderTask = []()
+        {
+            VW_FixRefreshBuffer ();
+            US_CenterWindow (12,2);
+            if (godmode)
+              US_PrintCentered ("God mode ON");
+            else
+              US_PrintCentered ("God mode OFF");
+            VW_UpdateScreen();
+            RF_Refresh(false);
+        };
+        IN_Ack();
+
 		return 1;
 	}
 	else if (Keyboard[0x17])                        // I = item cheat
 	{
-		VW_FixRefreshBuffer ();
-		US_CenterWindow (12,3);
-		US_PrintCentered ("Free items!");
+        msgBoxRenderTask = []()
+        {
+            VW_FixRefreshBuffer ();
+            US_CenterWindow (12,3);
+            US_PrintCentered ("Free items!");
+
+            VW_UpdateScreen();
+            RF_Refresh(false);
+        };
+
 		gamestate.boobusbombs=99;
 		gamestate.flowerpowers=99;
 		gamestate.keys=99;
-		VW_UpdateScreen();
 		IN_Ack ();
 		return 1;
 	}
 	else if (Keyboard[0x24])                        // J = jump cheat
 	{
 		jumpcheat^=1;
-		VW_FixRefreshBuffer ();
-		US_CenterWindow (18,3);
-		if (jumpcheat)
-			US_PrintCentered ("Jump cheat ON");
-		else
-			US_PrintCentered ("Jump cheat OFF");
-		VW_UpdateScreen();
-		IN_Ack ();
+
+        msgBoxRenderTask = []()
+        {
+            VW_FixRefreshBuffer ();
+            US_CenterWindow (18,3);
+            if (jumpcheat)
+                US_PrintCentered ("Jump cheat ON");
+            else
+                US_PrintCentered ("Jump cheat OFF");
+            VW_UpdateScreen();
+            RF_Refresh(false);
+        };
+
+        IN_Ack ();
+
 		return 1;
 	}
 #if FRILLS
@@ -305,13 +326,19 @@ id0_int_t DebugKeys (void)
 	else if (Keyboard[0x1f] && ingame)      // S = slow motion
 	{
 		singlestep^=1;
-		VW_FixRefreshBuffer ();
-		US_CenterWindow (18,3);
-		if (singlestep)
-			US_PrintCentered ("Slow motion ON");
-		else
-			US_PrintCentered ("Slow motion OFF");
-		VW_UpdateScreen();
+
+        msgBoxRenderTask = []()
+        {
+            VW_FixRefreshBuffer ();
+            US_CenterWindow (18,3);
+            if (singlestep)
+                US_PrintCentered ("Slow motion ON");
+            else
+                US_PrintCentered ("Slow motion OFF");
+            VW_UpdateScreen();
+            RF_Refresh(false);
+        };
+
 		IN_Ack ();
 		return 1;
 	}
@@ -322,14 +349,15 @@ id0_int_t DebugKeys (void)
 		return 1;
 	}
 #endif
-	else if (Keyboard[0x11] && ingame)      // W = warp to level
+    /*else if (Keyboard[0x11] && ingame)      // W = warp to level
 	{
 		VW_FixRefreshBuffer ();
 		US_CenterWindow(26,3);
 		PrintY+=6;
 		US_Print("  Warp to which level(0-16):");
 		VW_UpdateScreen();
-        /*esc = !US_LineInput (px,py,str,NULL,true,2,0);
+
+        esc = !US_LineInput (px,py,str,NULL,true,2,0);
 		if (!esc)
 		{
 			level = atoi (str);
@@ -338,9 +366,9 @@ id0_int_t DebugKeys (void)
 				gamestate.mapon = level;
 				playstate = warptolevel;
 			}
-        }*/
+        }
 		return 1;
-	}
+    }*/
 	return 0;
 }
 

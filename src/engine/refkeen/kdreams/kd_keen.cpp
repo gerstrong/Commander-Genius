@@ -856,6 +856,9 @@ player->temp2 = animation stage
 =============================================================================
 */
 
+
+extern std::function<void()> msgBoxRenderTask;
+
 void	SpawnWorldKeen (id0_int_t tilex, id0_int_t tiley);
 void	KeenWorldThink		(objtype *ob);
 void	KeenWorldWalk		(objtype *ob);
@@ -963,15 +966,22 @@ void	CheckEnterLevel (objtype *ob)
 				{
 					if (gamestate.boobusbombs < 12)
 					{
-						VW_FixRefreshBuffer ();
-						US_CenterWindow (26,6);
-						PrintY+= 8;
-						US_CPrint ("You can't possibly\n"
-								   "defeat King Boobus Tuber\n"
-								   "with less than 12 bombs!");
-						VW_UpdateScreen ();
+
+                        msgBoxRenderTask = []()
+                        {
+                            VW_FixRefreshBuffer ();
+                            US_CenterWindow (26,6);
+                            PrintY+= 8;
+                            US_CPrint ("You can't possibly\n"
+                                       "defeat King Boobus Tuber\n"
+                                       "with less than 12 bombs!");
+                            VW_UpdateScreen ();
+                            RF_Refresh(false);
+                        };
+                        c.button0 = 0;
+                        c.button1 = 0;
+
 						IN_Ack ();
-						RF_ForceRefresh ();
 						return;
 					}
 				}
