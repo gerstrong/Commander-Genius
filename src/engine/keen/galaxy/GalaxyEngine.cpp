@@ -12,7 +12,7 @@
 #include "fileio/CPatcher.h"
 #include "fileio/CSaveGameController.h"
 #include "engine/core/CMessages.h"
-#include "graphics/effects/CColorMerge.h"
+#include <graphics/CColorMerge.h>
 
 #include "CPassive.h"
 #include "CPlayGameGalaxy.h"
@@ -24,7 +24,7 @@
 #include <fileio/KeenFiles.h>
 #include <base/GsArguments.h>
 
-#include "audio/Audio.h"
+#include <base/audio/Audio.h>
 
 namespace galaxy
 {
@@ -41,6 +41,8 @@ const Uint32 GalaxySongAssignments[] =
 
 bool setupAudio()
 {        
+
+    gMusicPlayer.setIMFLoadTrackCallback(imfMusicTrackloader);
     const CExeFile &ExeFile = gKeenFiles.exeFile;
     const auto ep = static_cast<unsigned int>(ExeFile.getEpisode());
 
@@ -73,6 +75,7 @@ bool loadLevelMusic(const int level)
     if(level < 10) levelname += "0";
     levelname += itoa(level) + ".ck" + itoa(episode);
 
+    gMusicPlayer.setIMFLoadTrackCallback(imfMusicTrackloader);
     if(gMusicPlayer.LoadfromMusicTable(path, levelname))
     {
         return true;

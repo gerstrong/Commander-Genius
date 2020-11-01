@@ -6,7 +6,7 @@
  */
 
 #include "CPlayGameVorticon.h"
-#include "graphics/effects/CColorMerge.h"
+#include <graphics/CColorMerge.h>
 #include "../CVorticonMapLoader.h"
 #include <base/utils/Base64.h>
 

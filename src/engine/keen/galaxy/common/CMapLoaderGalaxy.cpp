@@ -12,12 +12,12 @@
 #include "CMapLoaderGalaxy.h"
 #include <base/utils/StringUtils.h>
 #include <base/utils/FindFile.h>
+#include <base/audio/music/CMusic.h>
 #include <fileio/ResourceMgmt.h>
+#include <fileio/fileio.h>
 #include "fileio/compression/CCarmack.h"
 #include "fileio/compression/CRLE.h"
-#include "fileio.h"
 #include <base/video/CVideoDriver.h>
-#include "audio/music/CMusic.h"
 #include <base/GsLogging.h>
 #include "engine/core/CCamera.h"
 #include "fileio/KeenFiles.h"

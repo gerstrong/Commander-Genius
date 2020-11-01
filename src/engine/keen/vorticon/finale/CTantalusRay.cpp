@@ -6,9 +6,9 @@
  */
 
 #include "CTantalusRay.h"
-#include "graphics/effects/CVibrate.h"
-#include "graphics/GsGraphics.h"
-#include "audio/Audio.h"
+#include <graphics/CVibrate.h>
+#include <graphics/GsGraphics.h>
+#include <base/audio/Audio.h>
 #include <base/CInput.h>
 #include "../CVorticonMapLoader.h"
 

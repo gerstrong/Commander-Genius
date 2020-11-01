@@ -5,15 +5,15 @@
  *      Author: gerstrong
  */
 
-#include "audio/Audio.h"
-#include "audio/base/Sampling.h"
-#include "audio/music/CIMFPlayer.h"
+#include <base/audio/Audio.h>
+#include <base/audio/base/Sampling.h>
+#include <base/audio/music/CIMFPlayer.h>
 #include "CMusic.h"
 #include <base/GsLogging.h>
 #include <base/utils/FindFile.h>
 #include "fileio/ResourceMgmt.h"
-#include "fileio/compression/CHuffman.h"
-#include "fileio/KeenFiles.h"
+//#include "fileio/compression/CHuffman.h"
+//#include "fileio/KeenFiles.h"
 #include <fstream>
 #include <limits>
 
@@ -42,10 +42,14 @@ bool CMusic::loadTrack(const int track)
     return false;
 }
 
+void CMusic::setIMFLoadTrackCallback(
+        std::function<bool(RingBuffer<IMFChunkType> &, const int)> fcn)
+{
+    __setIMFLoadTrackCallback(fcn);
+}
 
 bool CMusic::load(const std::string &musicfile)
 {        
-
     Mix_HaltMusic();
 
     if(mpMixMusic)

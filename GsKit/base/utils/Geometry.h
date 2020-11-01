@@ -56,14 +56,14 @@ struct GsRect
         return (dim.y==0 || dim.x==0);
     }
 
-
+/*
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 
 #else
     GsRect( const SDL_VideoInfo* InfoPtr )
 		{ w=InfoPtr->current_w; h=InfoPtr->current_h; };
 #endif
-
+*/
     bool operator==( const GsRect &target )
 	{
         return (target.pos.x == pos.x && target.pos.y == pos.y &&

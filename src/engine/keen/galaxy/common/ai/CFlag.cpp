@@ -6,7 +6,7 @@
  */
 
 #include "CFlag.h"
-#include "audio/Audio.h"
+#include <base/audio/Audio.h>
 
 #include <base/utils/property_tree/property_tree.h>
 #include <fileio/CSaveGameController.h>

@@ -12,10 +12,8 @@
 #include <memory>
 
 #include <base/video/GsEffectController.h>
+#include <base/direction.h>
 #include <graphics/GsSurface.h>
-
-#include "engine/core/direction.h"
-
 
 class CScrollEffect : public CEffects
 {

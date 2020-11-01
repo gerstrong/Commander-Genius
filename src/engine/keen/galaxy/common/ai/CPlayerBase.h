@@ -20,11 +20,11 @@
 
 #include "engine/core/Playerdefines.h"
 #include <base/GsEvent.h>
+#include <graphics/CDimDark.h>
 #include "engine/core/Cheat.h"
 #include "engine/core/CCamera.h"
 
-#include "graphics/effects/CDimDark.h"
-#include "audio/music/CMusic.h"
+#include <base/audio/music/CMusic.h>
 
 #include <array>
 

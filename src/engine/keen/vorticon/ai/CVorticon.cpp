@@ -1,8 +1,8 @@
 #include <base/utils/misc.h>
 
-#include "audio/Audio.h"
-#include "graphics/GsGraphics.h"
-#include "graphics/effects/CFlash.h"
+#include <base/audio/Audio.h>
+#include <graphics/GsGraphics.h>
+#include <graphics/CFlash.h>
 #include "CVorticon.h"
 
 // Vorticon (all Episodes, albeit the behavior changes slightly

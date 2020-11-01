@@ -7,7 +7,7 @@
  the first time you use sgrle_decompress().
  */
 
-#include "../../fileio.h"
+#include <fileio/fileio.h>
 #include <base/GsLogging.h>
 
 #define SGRLE_RLEMARKERNEW         0xFE

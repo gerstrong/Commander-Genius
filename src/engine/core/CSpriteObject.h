@@ -14,9 +14,9 @@
 
 #include <base/GsEvent.h>
 #include <base/utils/FindFile.h>
+#include <base/direction.h>
 
 #include "ActionFormat.h"
-#include "direction.h"
 #include "CBehaviorEngine.h"
 
 // structures for each AI module's data

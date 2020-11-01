@@ -12,7 +12,7 @@
 #include "ai/CPlayer.h"
 #include "engine/core/CSpriteObject.h"
 #include "engine/core/options.h"
-#include "audio/music/CMusic.h"
+#include <base/audio/music/CMusic.h>
 #include "engine/core/CBehaviorEngine.h"
 #include <string>
 #include <vector>

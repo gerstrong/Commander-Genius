@@ -1,5 +1,5 @@
 #include "CTeleporter.h"
-#include "audio/Audio.h"
+#include <base/audio/Audio.h>
 
 // Teleporter on world map
 // (animates the teleporter and moves the player)

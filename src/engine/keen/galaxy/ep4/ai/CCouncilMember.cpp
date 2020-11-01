@@ -10,8 +10,8 @@
 #include "../../common/dialog/CMessageBoxBitmapGalaxy.h"
 #include "engine/core/mode/CGameMode.h"
 #include <base/utils/misc.h>
-#include "audio/Audio.h"
-#include "audio/music/CMusic.h"
+#include <base/audio/Audio.h>
+#include <base/audio/music/CMusic.h>
 #include "fileio/KeenFiles.h"
 #include "../../menu/ComputerWrist.h"
 #include <typeinfo>

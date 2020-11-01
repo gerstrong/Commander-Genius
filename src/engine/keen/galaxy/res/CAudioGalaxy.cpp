@@ -9,8 +9,8 @@
 #include "CAudioGalaxy.h"
 #include <base/GsLogging.h>
 #include <base/utils/FindFile.h>
+#include <base/audio/Audio.h>
 #include "fileio/ResourceMgmt.h"
-#include "audio/Audio.h"
 #include "fileio/compression/CHuffman.h"
 #include "fileio/KeenFiles.h"
 #include "engine/core/CBehaviorEngine.h"

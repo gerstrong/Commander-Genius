@@ -11,7 +11,7 @@
 #include "CBullet.h"
 #include <base/CInput.h>
 #include <base/video/CVideoDriver.h>
-#include "audio/Audio.h"
+#include <base/audio/Audio.h>
 #include "../../common/dialog/CMessageBoxBitmapGalaxy.h"
 
 namespace galaxy {

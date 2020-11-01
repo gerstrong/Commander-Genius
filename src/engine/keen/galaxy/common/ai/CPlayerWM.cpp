@@ -13,9 +13,10 @@
 
 #include "CPlayerWM.h"
 #include "CFlag.h"
-#include "audio/Audio.h"
+#include <base/audio/Audio.h>
 #include "../dialog/CMessageBoxBitmapGalaxy.h"
-#include "graphics/effects/CDimDark.h"
+#include <graphics/CDimDark.h>
+
 #include "fileio/KeenFiles.h"
 #include "engine/core/VGamepads/vgamepadsimple.h"
 

@@ -192,6 +192,7 @@ void CMapPlayGalaxy::stopMusic()
 
 void CMapPlayGalaxy::playMusic(const int track)
 {
+    gMusicPlayer.setIMFLoadTrackCallback(imfMusicTrackloader);
     gMusicPlayer.stop();
     if( gMusicPlayer.loadTrack(track) )
     {
@@ -207,6 +208,7 @@ void CMapPlayGalaxy::playMusic(const int track)
 
 void CMapPlayGalaxy::reloadBgMusic()
 {
+    gMusicPlayer.setIMFLoadTrackCallback(imfMusicTrackloader);
     gMusicPlayer.load(mCurMusicTrack);
 }
 

@@ -16,6 +16,9 @@
 #include "MathLib.h"
 
 
+typedef signed short   Sint16;
+typedef unsigned short Uint16;
+
 ///////////////////
 // If you want to use the adress of some Uint32 directly with memcpy or similar, use this
 /*
@@ -101,30 +104,31 @@ inline Uint32 MakeColour(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
 	return SDL_MapRGBA(getMainPixelFormat(), r, g, b, a);
 }
 */
+
+
 // Device-independent color
 struct GsColor
 {
-    GsColor() {}    
-    GsColor(Uint8 _r, Uint8 _g, Uint8 _b) : r(_r), g(_g), b(_b), a(SDL_ALPHA_OPAQUE) {}
-    GsColor(Uint8 _r, Uint8 _g, Uint8 _b, Uint8 _a) : r(_r), g(_g), b(_b), a(_a) {}
+    GsColor();
+    GsColor(Uint8 _r, Uint8 _g, Uint8 _b);
+    GsColor(Uint8 _r, Uint8 _g, Uint8 _b, Uint8 _a);
 
-    GsColor(SDL_PixelFormat *f, Uint32 cl) { SDL_GetRGBA(cl, f, &r, &g, &b, &a); }
+    //GsColor(SDL_PixelFormat *f, Uint32 cl) { SDL_GetRGBA(cl, f, &r, &g, &b, &a); }
     //explicit GsColor(Uint32 cl)	{ set(getMainPixelFormat(), cl); }
-    GsColor(const SDL_Color& cl) : r(cl.r), g(cl.g), b(cl.b), a(SDL_ALPHA_OPAQUE) {}
+    //GsColor(const SDL_Color& cl) : r(cl.r), g(cl.g), b(cl.b), a(SDL_ALPHA_OPAQUE) {}
 
+    /*
     SDL_Color SDLColor() const
     {
         SDL_Color sdlCol = {r,g,b,a};
         return sdlCol;
     }
+*/
 
-    Uint8 r = 0;
-    Uint8 g = 0;
-    Uint8 b = 0;
-    Uint8 a = SDL_ALPHA_OPAQUE;
+    Uint8 r, g, b, a;
 
     //Uint32 get() const { return get(getMainPixelFormat()); }
-	Uint32 get(SDL_PixelFormat *f) const { return SDL_MapRGBA(f, r, g, b, a); }
+    Uint32 get(SDL_PixelFormat *f) const { return SDL_MapRGBA(f, r, g, b, a); }
 	Uint32 getDefault() const { return (Uint32(r) << 24) | (Uint32(g) << 16) | (Uint32(b) << 8) | Uint32(a); }
     GsColor derived(Sint16 _r, Sint16 _g, Sint16 _b, Sint16 _a) const {
         return GsColor(
@@ -133,7 +137,7 @@ struct GsColor
 					 Uint8(CLAMP(_b + b, 0, 255)),
 					 Uint8(CLAMP(_a + a, 0, 255)));
 	}
-	void set(SDL_PixelFormat *f, Uint32 cl) { SDL_GetRGBA(cl, f, &r, &g, &b, &a); }
+//	void set(SDL_PixelFormat *f, Uint32 cl) { SDL_GetRGBA(cl, f, &r, &g, &b, &a); }
 
     bool operator == ( const GsColor & c ) const { return r == c.r && g == c.g && b == c.b && a == c.a; }
     bool operator != ( const GsColor & c ) const { return ! ( *this == c ); }

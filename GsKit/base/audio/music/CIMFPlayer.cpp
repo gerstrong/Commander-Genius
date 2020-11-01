@@ -9,8 +9,8 @@
 
 #include "CIMFPlayer.h"
 #include "fileio/ResourceMgmt.h"
-#include "fileio/compression/CHuffman.h"
-#include "fileio/KeenFiles.h"
+//#include "fileio/compression/CHuffman.h"
+//#include "fileio/KeenFiles.h"
 #include <base/utils/FindFile.h>
 #include <base/GsLogging.h>
 #include <fstream>
@@ -82,7 +82,12 @@ bool CIMFPlayer::loadMusicTrack(const int track)
         m_IMF_Data.clear();
     }
 
-    if(!gKeenFiles.exeFile.loadMusicTrack(m_IMF_Data, track))
+    if(!IMFLoadTrackCallback)
+    {
+        return false;
+    }
+
+    if(!IMFLoadTrackCallback(m_IMF_Data, track))
     {
         return false;
     }
@@ -224,15 +229,24 @@ void CIMFPlayer::readBuffer(Uint8* buffer,
 }
 
 
+void CIMFPlayer::setIMFLoadTrackCallback(
+        std::function<bool(RingBuffer<IMFChunkType> &, const int)> &fcn)
+{
+    IMFLoadTrackCallback = fcn;
+}
 
 ////// Hooks for SDL_Mixer Only ///////
-
-// We still a local to file declared object from the IMFPlayer class.
-// That one is only used here!
 
 CIMFPlayer locIMFPlayer(gAudio.getOPLEmulatorRef());
 
 int locImfMusPos = 0;
+
+
+void __setIMFLoadTrackCallback(
+        std::function<bool(RingBuffer<IMFChunkType> &, const int)> fcn)
+{
+    locIMFPlayer.setIMFLoadTrackCallback(fcn);
+}
 
 bool loadIMFFile(const std::string &fname)
 {

@@ -10,8 +10,8 @@
 
 #include "engine/core/CBehaviorEngine.h"
 #include "engine/core/CSettings.h"
-#include "audio/music/CMusic.h"
-#include "audio/Audio.h"
+#include <base/audio/music/CMusic.h>
+#include <base/audio/Audio.h>
 
 
 CAudioSettings::CAudioSettings(const Style &style) :

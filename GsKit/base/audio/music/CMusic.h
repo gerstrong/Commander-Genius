@@ -11,7 +11,6 @@
 #ifndef CMUSIC_H_
 #define CMUSIC_H_
 
-#include "fileio/CExeFile.h"
 #include "CMusicPlayer.h"
 
 #include <SDL.h>
@@ -19,6 +18,7 @@
 #include <vector>
 #include <memory>
 #include <base/GsEvent.h>
+#include "CIMFPlayer.h"
 
 #include <base/Singleton.h>
 
@@ -36,6 +36,10 @@ public:
      * Loads given track of the Keen Music
 	 */
     bool loadTrack(const int track);
+
+    void setIMFLoadTrackCallback(
+            std::function<bool(RingBuffer<IMFChunkType> &, const int)> fcn);
+
 
     bool load(const std::string &musicfile);
 

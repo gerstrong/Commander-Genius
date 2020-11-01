@@ -500,10 +500,13 @@ changes are global to all the Keen games.
 
 For mobile users, I added the "sandwich" button which during the gameplay can be
 seen at the top right corner (FONTCOLORS::RED color).
-Click or tap on it to open the main menu.
+Click or tap on it to open the main menu. Also if you don't have a
+special gamepad which is highly recommended for such games, you can enable
+the virtual pad (Configure->Overlay->VirtPad).
 
 Also Quicksave is possible. Just press F6 to save and press F9 to restore your
-quicksave. Since in Keen you have to save a lot this is very convenient.
+quicksave. Since in Keen you have to save a lot in order to advance
+this is very convenient.
 
 
 - CHEAT CODES -

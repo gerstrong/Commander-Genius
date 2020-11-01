@@ -6,7 +6,7 @@
  */
 
 #include "CGamePlayMode.h"
-#include "audio/music/CMusicPlayer.h"
+#include <base/audio/music/CMusicPlayer.h>
 #include <base/GsTimer.h>
 #include <graphics/GsGraphics.h>
 #include <base/video/CVideoDriver.h>

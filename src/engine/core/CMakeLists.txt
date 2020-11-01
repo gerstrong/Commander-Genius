@@ -39,7 +39,6 @@ set(SRCS ActionFormat.cpp
          CResourceLoader.h
          CSettings.h
          CSpriteObject.h
-         direction.h
          GameEngine.h
          inventory.h
          objenums.h

@@ -163,6 +163,7 @@ else()
     add_subdirectory(graphics)
     add_subdirectory(widgets)
 
+
     Target_link_libraries(${PROJECT_NAME} GsKit_base)
     Target_link_libraries(${PROJECT_NAME} GsKit_fileio)
     Target_link_libraries(${PROJECT_NAME} GsKit_widgets)

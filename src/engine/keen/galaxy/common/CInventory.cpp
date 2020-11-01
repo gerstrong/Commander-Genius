@@ -12,7 +12,7 @@
 #include <base/video/CVideoDriver.h>
 #include <base/CInput.h>
 #include <base/utils/FindFile.h>
-#include "graphics/effects/CScrollEffect.h"
+#include <graphics/CScrollEffect.h>
 
 #include "fileio/KeenFiles.h"
 #include <base/GsPython.h>

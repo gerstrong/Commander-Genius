@@ -16,8 +16,7 @@
 
 #include "fileio/crc.h"
 #include <base/TypeDefinitions.h>
-
-#include "audio/music/CIMFPlayer.h"
+#include <base/audio/music/CIMFPlayer.h>
 
 #include <vector>
 #include <string>
@@ -146,5 +145,7 @@ private:
 
 	std::map< size_t, std::map<int , bool> > m_supportmap;
 };
+
+bool imfMusicTrackloader(RingBuffer<IMFChunkType> &imfData, const int track);
 
 #endif /* CEXEFILE_H_ */

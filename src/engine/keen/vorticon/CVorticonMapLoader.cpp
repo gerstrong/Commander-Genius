@@ -12,7 +12,7 @@
 #include <base/utils/FindFile.h>
 #include <base/GsLogging.h>
 #include <base/video/CVideoDriver.h>
-#include "fileio.h"
+#include <fileio/fileio.h>
 #include "fileio/ResourceMgmt.h"
 #include "fileio/compression/CRLE.h"
 #include "engine/core/CBehaviorEngine.h"

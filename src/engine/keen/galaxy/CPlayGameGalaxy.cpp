@@ -18,10 +18,11 @@
 #include "graphics/GsGraphics.h"
 #include "common/dialog/CMessageBoxBitmapGalaxy.h"
 #include "common/dialog/CMessageBoxSelection.h"
-#include "audio/Audio.h"
-#include "audio/music/CMusic.h"
-#include "graphics/effects/CColorMerge.h"
-#include "graphics/effects/CDimDark.h"
+
+#include <base/audio/Audio.h>
+#include <base/audio/music/CMusic.h>
+#include <graphics/CColorMerge.h>
+#include <graphics/CDimDark.h>
 #include "fileio/CSaveGameController.h"
 
 #include "ep4/ai/CInchWorm.h"

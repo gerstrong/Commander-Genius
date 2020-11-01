@@ -720,5 +720,9 @@ bool CExeFile::loadMusicTrack(RingBuffer<IMFChunkType> &imfData,
     return true;
 }
 
+bool imfMusicTrackloader(RingBuffer<IMFChunkType> &imfData, const int track)
+{
+    return gKeenFiles.exeFile.loadMusicTrack(imfData, track);
+}
 
 

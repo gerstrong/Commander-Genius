@@ -21,7 +21,7 @@
 #include "../ai/CVorticonSpriteObjectAI.h"
 #include "../ai/CEGABitmap.h"
 #include "../dialog/CMessageBoxVort.h"
-#include "audio/music/CMusic.h"
+#include <base/audio/music/CMusic.h>
 #include "../CHighScores.h"
 #include "engine/core/mode/CPlayGame.h"
 #include "../finale/CFinale.h"

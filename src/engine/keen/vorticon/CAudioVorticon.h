@@ -8,7 +8,7 @@
 #ifndef CAUDIOVORTICON_H_
 #define CAUDIOVORTICON_H_
 
-#include "audio/CAudioResources.h"
+#include <base/audio/CAudioResources.h>
 #include "fileio/CExeFile.h"
 
 
