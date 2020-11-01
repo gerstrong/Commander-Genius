@@ -1824,7 +1824,7 @@ void PlayLoop()
 
 void PlayLoopRender()
 {
-    if(!playstate)
+    if(!playstate && !openedStatusWindow)
     {
         RF_Refresh(true);
     }
