@@ -1819,8 +1819,6 @@ void PlayLoop()
     }
     else
     {
-        ingame = false;
-
         startLevel();
     }
 }
@@ -1946,7 +1944,9 @@ void HandleDeath_Init (void)
     gamestate.lives--;
     if (gamestate.lives < 0)
     {
-        // Make it to be gameover
+        // Make it to be gameover                
+        ingame = false;
+        GameOver ();
         gEventManager.add( new dreams::SwitchToIntro );
         gInput.flushAll();
         return;
@@ -2192,7 +2192,8 @@ void GameLoopOpen()
     else
     {
 
-    GameOver ();
+
+    gEventManager.add( new dreams::RestartGame );
 
 done: // !!
     cities = 0;

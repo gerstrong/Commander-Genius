@@ -17,6 +17,8 @@ void 	PlayLoopRender();
 
 
 extern bool ResumeGame;
+extern bool	ingame;
+extern bool mGamePlayRunning;
 
 }
 
@@ -72,6 +74,8 @@ void DreamsGamePlay::pumpEvent(const CEvent *evPtr)
         processLevelcomplete();
         mPlayloopPtr = nullptr;
         mPlayloopRenderPtr = nullptr;
+        ingame = false;
+        mGamePlayRunning = false;
         gEventManager.add( new SwitchToIntro );
         gInput.flushAll();
     }
