@@ -30,7 +30,7 @@ int getRessourceID(const std::string& filename, const std::string& namefilter)
 
 bool loadGamefileNames()
 {
-    // Only for python scripts
+    // Only for Lua scripts
     if(!gKeenFiles.exeFile.isLuaScript())
         return true;
 

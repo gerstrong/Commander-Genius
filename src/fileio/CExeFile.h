@@ -52,7 +52,7 @@ class CExeFile {
                   const std::string& datadirectory);
 
     /**
-     * @brief readMainPythonScript Try to get a main python script load
+     * @brief readMainLuaScript Try to get a main Lua script load
      * @param episode Episode for which to read for
      * @param datadirectory path where the data is located
      * @return if everything went well true, otherwise false

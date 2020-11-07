@@ -15,7 +15,6 @@
 #include <graphics/CScrollEffect.h>
 
 #include "fileio/KeenFiles.h"
-#include <base/GsPython.h>
 
 CInventory::CInventory(const int playerIdx,
                        const int spriteVar) :
@@ -39,7 +38,7 @@ m_HUD(Item.m_points, Item.m_lifes, Item.m_bullets,
         mp_StatusScreen.reset(new CStatusScreenGalaxy(Item));
 	}
 
-    const auto fullFName = JoinPaths(gKeenFiles.gameDir, "player.lua");
+    const auto fullFName = JoinPaths(gKeenFiles.gameDir, "inventory.lua");
     mLua.loadFile(fullFName);
 
     if(mLua)

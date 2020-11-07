@@ -60,25 +60,8 @@ CStunnable(pmap, foeID, x, y)
     xDirection = LEFT;
     mKeenAlignment = LEFT;
 
-    loadPythonScripts("shikadimaster");
     loadLuaScript("shikadimaster");
 }
-
-bool CShikadiMaster::loadPythonScripts(const std::string &scriptBaseName)
-{
-#if USE_PYTHON3
-
-    mModule.load( scriptBaseName, JoinPaths(gKeenFiles.gameDir ,"ai") );
-
-    if(!mModule)
-        return false;
-
-    loadAiGetterBool(mModule.rawPtr(), "moreAgressive", mMoreAgressive);
-
-#endif
-    return true;
-}
-
 
 
 void CShikadiMaster::processStanding()

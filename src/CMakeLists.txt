@@ -205,7 +205,6 @@ if(WIN32)
 endif(WIN32)
 
 
-target_link_libraries(CGeniusExe ${PYTHON_LIBRARIES})
 
 
 #cotire(CGeniusExe)

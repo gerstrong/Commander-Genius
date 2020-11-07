@@ -88,6 +88,7 @@ bool CSpriteObject::loadLuaScript(const std::string &scriptBaseName)
     mLua.runFunctionRetOneBool("isStunnableWithPogo", mPogoStunnable);
     mLua.runFunctionRetOneBool("isStunnableWithJump", mJumpStunnable);
     mLua.runFunctionRetOneBool("mayShoot", mMayShoot);
+    mLua.runFunctionRetOneBool("moreAgressice", mMoreAgressive);
 
     int health = int(mHealthPoints);
     mLua.runFunctionRetOneInt("healthPoints", health);

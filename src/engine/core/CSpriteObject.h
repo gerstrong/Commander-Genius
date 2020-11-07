@@ -433,8 +433,10 @@ class CSpriteObject
     bool mNeverStop = false;        /** This will make foe continue walking and never change actions (Keen 9 - Cybloog) */
     bool mPogoStunnable = false;        /** This will make foe continue walking and never change actions (Keen 9 - Cybloog) */
     bool mJumpStunnable = false;
-    bool mMayShoot = false;         /** If enemy if allowed to shoot. Not all of them are able to do that.*/
-    
+    bool mMayShoot = false;         /** If enemy if allowed to shoot. Not all of them are able to do that.*/    
+    bool mMoreAgressive = false; /** In Keen 9 they are more agressive, in hard they also can be */
+
+
     GameSound mWalkSound;
     
     GsVec2D<int> m_Pos; 	// x,y location in map coords, CSFed, represent as 2D Vector

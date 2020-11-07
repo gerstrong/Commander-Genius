@@ -79,9 +79,6 @@ mGoodChargeChance(false)
 
     xDirection = LEFT;
 
-#if USE_PYTHON3
-    loadPythonScripts("sparky");
-#endif
     loadLuaScript("sparky");
 }
 

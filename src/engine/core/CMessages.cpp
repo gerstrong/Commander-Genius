@@ -14,7 +14,6 @@
 #include "fileio/KeenFiles.h"
 
 #include <base/GsLogging.h>
-#include <base/GsPython.h>
 #include <base/utils/FindFile.h>
 
 #include "engine/core/CBehaviorEngine.h"
@@ -522,7 +521,7 @@ bool CMessages::extractGlobalStringsUsingLua()
         {
             gBehaviorEngine.setMessage(i->first, i->second);
         }
-        gLogging.ftextOut("Loaded a total of %d strings using Python.<br>", stringMap.size());
+        gLogging.ftextOut("Loaded a total of %d strings using Lua.<br>", stringMap.size());
         return true;
     }
     return false;

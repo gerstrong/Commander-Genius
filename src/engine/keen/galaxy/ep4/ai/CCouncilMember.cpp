@@ -176,7 +176,7 @@ void CCouncilMember::getTouchedBy(CSpriteObject &theObject)
 
 		std::string elder_text[2];
 
-        // Python3 own dialogs
+        // Lua custom dialogs
         bool customDlgs = false;
 
         if(mLua)

@@ -18,8 +18,8 @@ class CMessages {
 public:	
 
     /**
-     * @brief CMessages NOTE: The parameters are not using when
-     *                  extracting with python
+     * @brief CMessages NOTE: The parameters are not used when
+     *                  extracting with lua scripts
      * @param p_exebuf
      * @param episode
      * @param demo
