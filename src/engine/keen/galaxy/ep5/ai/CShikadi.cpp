@@ -60,83 +60,40 @@ mTimer(0)
     
     xDirection = LEFT;
 
-    loadPythonScripts("shikadi");
     loadLuaScript("shikadi");
 }
 
 
-bool CShikadi::loadPythonScripts(const std::string &scriptBaseName)
+bool CShikadi::processLuaCycle()
 {
-#if USE_PYTHON3
-
-    mModule.load( scriptBaseName, JoinPaths(gKeenFiles.gameDir ,"ai") );
-
-    if(!mModule)
+    if(!mLua)
         return false;
 
-    mp_processState = static_cast<GASOFctr>(&CShikadi::processPython);
-    mProcessFunc.load(mModule, "process");
-    mUpdatePlayerCoord.load(mModule, "updatePlayerCoord");
+    const int x = getXPosition();
+    const int y = getYPosition();
 
-#endif
+    std::vector<int> multiret;
+
+    multiret.resize(3);
+
+    bool ok = mLua.runFunction("process",
+                               {x, y, yinertia},
+                               multiret);
+
+    if(!ok)
+        return false;
+
+    yinertia = multiret[0];
+    const int dir  = multiret[1];
+    const int walk = multiret[2];
+
+    xDirection = dir;
+    moveXDir(walk);
+
+
     return true;
 }
 
-
-void CShikadi::processPython()
-{
-    #if USE_PYTHON3
-    // TODO: Needs to be put into members of class. This part is yet too CPU heavy
-    // NOTE: My tests for using Pyton in CG. These will be forwared to a more common function
-    // The following will atempt to get a walk instruction from Python process.    
-    if (mProcessFunc)
-    {
-        // create arguments for the python function
-        auto args = PyTuple_New(2);
-        auto pValueX = PyLong_FromLong(getPosition().x);
-        auto pValueY = PyLong_FromLong(getPosition().y);
-        PyTuple_SetItem(args, 0, pValueX);
-        PyTuple_SetItem(args, 1, pValueY);
-        PyObject *pDict = mProcessFunc.call(args);
-
-        // Process return a dictionary of tasks to perform with some values
-        if (pDict != nullptr)
-        {
-            // TODO: The commented still crashes. I think it is related to some DECREF
-            PyObject *key, *value;
-            Py_ssize_t pos = 0;
-
-            while (PyDict_Next(pDict, &pos, &key, &value))
-            {
-                PyObject* repr = PyObject_Repr(key);
-                PyObject* str = PyUnicode_AsEncodedString(repr, "utf-8", "~E~");
-                const std::string keyAsStr = PyBytes_AS_STRING(str);
-
-                const long iValue = PyLong_AsLong(value);
-
-                if(keyAsStr == "'walk'")
-                {
-                    moveXDir(iValue);
-                }
-                if(keyAsStr == "'dir'")
-                {
-                    xDirection = iValue;
-                }
-                if(keyAsStr == "'yinertia'")
-                {
-                    yinertia = iValue;
-                }
-
-                Py_XDECREF(repr);
-                Py_XDECREF(str);
-            }
-
-            Py_XDECREF(pDict);
-            Py_XDECREF(args);
-        }
-    }
-    #endif
-}
 
 
 void CShikadi::processStanding()
@@ -210,30 +167,19 @@ void CShikadi::processPoleZaps()
 
 bool CShikadi::isNearby(CSpriteObject &theObject)
 {
-
-#if USE_PYTHON3
-
-    if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
-    {
-        const int x = player->getPosition().x;
-        const int y = player->getPosition().y;
-
-        auto args = PyTuple_New(2);
-        auto pValueX = PyLong_FromLong(x);
-        auto pValueY = PyLong_FromLong(y);
-        PyTuple_SetItem(args, 0, pValueX);
-        PyTuple_SetItem(args, 1, pValueY);
-
-        mUpdatePlayerCoord.call(args);
-
-        Py_XDECREF(args);
-    }
-
-
-#endif
-
     if( !getProbability(10) )
         return false;
+
+    if(mLua)
+    {
+        if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
+        {
+            const int x = player->getPosition().x;
+            const int y = player->getPosition().y;
+
+            mLua.runFunction("updatePlayerCoord", {x, y});
+        }
+    }
 
     return true;
 }
@@ -282,6 +228,9 @@ void CShikadi::process()
     performCollisions();
 
     performGravityMid();
+
+    if(processLuaCycle())
+        return;
 
     if(!processActionRoutine())
         exists = false;

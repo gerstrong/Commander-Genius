@@ -28,6 +28,9 @@ prepareToVanish(false)
 
 	answermap[3] = "LINDSEY_END_TEXT1";
 	answermap[4] = "LINDSEY_END_TEXT2";
+
+    const auto fullFName = JoinPaths(gKeenFiles.gameDir, "lindsey.lua");
+    mLua.loadFile(fullFName);
 }
 
 void CLindsey::process()
@@ -84,27 +87,19 @@ void CLindsey::getTouchedBy(CSpriteObject &theObject)
 
         std::vector<CMessageBoxGalaxy*> msgs;
 
-
-        // Python3 own dialogs
+        // Lua custom dialogs
         bool customDlgs = false;
 
-        #if USE_PYTHON3
-
-        auto pModule = gPython.loadModule( "messageMap", gKeenFiles.gameDir );
-
-        if (pModule != nullptr)
+        if(mLua)
         {
             customDlgs = true;
 
             bool ok = true;
-            ok &= loadStrFunction(pModule, "getLindseyDialog", lindsey_text[0], curLevel);
-            ok &= loadStrFunction(pModule, "getLindseyAnswer", lindsey_text[1], curLevel);
+            ok &= mLua.runFunctionRetOneStr("getLindseyDialog", curLevel, lindsey_text[0]);
+            ok &= mLua.runFunctionRetOneStr("getLindseyAnswer", curLevel, lindsey_text[1]);
         }
 
-        #endif
-
         const int sprVar = player->getSpriteVariantIdx();
-
 
         if(!customDlgs)
         {

@@ -13,8 +13,6 @@
 
 #include <base/utils/FindFile.h>
 
-#include <base/GsPython.h>
-
 #include "fileio/KeenFiles.h"
 
 #include <base/audio/Audio.h>
@@ -88,7 +86,7 @@ bool CSpriteObject::loadLuaScript(const std::string &scriptBaseName)
     mLua.runFunctionRetOneBool("isStunnableWithPogo", mPogoStunnable);
     mLua.runFunctionRetOneBool("isStunnableWithJump", mJumpStunnable);
     mLua.runFunctionRetOneBool("mayShoot", mMayShoot);
-    mLua.runFunctionRetOneBool("moreAgressice", mMoreAgressive);
+    mLua.runFunctionRetOneBool("moreAgressive", mMoreAgressive);
 
     int health = int(mHealthPoints);
     mLua.runFunctionRetOneInt("healthPoints", health);

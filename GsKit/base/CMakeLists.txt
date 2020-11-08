@@ -18,7 +18,7 @@ add_subdirectory(audio)
 
 include_directories(lua)
 
-set(HEADERS CInput.h        GsEventContainer.h  GsPython.h        PointDevice.h
+set(HEADERS CInput.h        GsEventContainer.h       PointDevice.h
 Configurator.h  GsEvent.h           GsTimer.h         Singleton.h
 GsApp.h         GsGear.h            GsTTFSystem.h     TypeDefinitions.h
 GsArguments.h   GsLogging.h         GsVirtualinput.h  Vector2D.h
@@ -27,7 +27,7 @@ direction.h )
 
 set(SRCS CInput.cpp       GsEngine.cpp          GsLogging.cpp  GsTimer.cpp
 GsApp.cpp        GsEventContainer.cpp  GsLua.cpp      GsTTFSystem.cpp
-GsArguments.cpp  GsEvent.cpp           GsPython.cpp   TypeDefinitions.cpp
+GsArguments.cpp  GsEvent.cpp           TypeDefinitions.cpp
 )
     
 add_library(${PROJECT_NAME} ${HEADERS} ${SRCS})

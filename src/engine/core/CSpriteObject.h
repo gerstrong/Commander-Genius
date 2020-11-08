@@ -373,48 +373,6 @@ class CSpriteObject
     // This container will held the triggered events of the object
     // TODO: This create too much fragmentation. Find a way to make this better
     std::vector< ObjMove* > mMoveTasks;
-    
-    
-    
-#if USE_PYTHON3
-
-
-    bool loadAiGetterBool(const std::string &pyMethodStr, bool &value);
-
-    /**
-     * @brief loadAiGetterInteger
-     * @param pModule
-     * @param pyMethodStr
-     * @param value
-     * @return
-     */
-    bool loadAiGetterInteger(PyObject * pModule, const std::string &pyMethodStr, int &value);
-    
-    
-    /**
-     * @brief loadAiGetterBool
-     * @param pModule
-     * @param pyMethodStr
-     * @param value
-     * @return
-     */
-    bool loadAiGetterBool(PyObject * pModule, const std::string &pyMethodStr, bool &value);
-    
-    
-    
-    /**
-     * @brief loadPythonScripts     Load an external script file which might modify the behaviour of the sprite object
-     * @param scriptBaseName        Basename is the filename with any extension or path. Recommendation: Use the name of the foe
-     * @return if load was successful true, otherwise false.
-     */
-    virtual bool loadPythonScripts(const std::string &scriptBaseName);
-
-
-    GsPythonModule mModule;
-    GsPythonFunc mProcessFunc;
-    GsPythonFunc mUpdatePlayerCoord;
-
-#endif
 
     /**
      * @brief loadLuaScript     Load an external script file which might modify the behaviour of the sprite object

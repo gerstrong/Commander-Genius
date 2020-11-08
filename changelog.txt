@@ -1,7 +1,7 @@
 v2.7.0:
 -------
 - More Keen Dreams fixes
-- More Lua support and a lot of removed python code
+- More Lua support and remaining python code is now completely removed
 
 v2.6.3:
 -------

@@ -2,6 +2,8 @@
 #define GSLUA_H
 
 #include <string>
+#include <initializer_list>
+#include <vector>
 
 class GsLua
 {
@@ -24,6 +26,15 @@ public:
     bool runFunctionRetOneInt(const std::string &fun,
                               const int param,
                               int &ret);
+
+    bool runFunction(const std::string &fun,
+                     std::initializer_list<const int> list,
+                     std::vector<int> &multiRet);
+
+    bool runFunction(const std::string &fun,
+                     std::initializer_list<const int> list);
+
+
 
     void runFunctionRetOneBool(const std::string &fun, bool &ret);
 
