@@ -17,6 +17,7 @@
  */
 
 #include <functional>
+#include <list>
 
 extern "C"
 {
@@ -232,7 +233,7 @@ void TestSprites(void)
 
 #endif
 
-extern std::function<void()> msgBoxRenderTask;
+extern std::list< std::function<void()> > msgBoxRenderTaskList;
 
 /*
 ================
@@ -259,7 +260,7 @@ id0_int_t DebugKeys (void)
 	{
 		godmode ^= 1;
 
-        msgBoxRenderTask = []()
+        msgBoxRenderTaskList.push_back([]()
         {
             VW_FixRefreshBuffer ();
             US_CenterWindow (12,2);
@@ -269,14 +270,14 @@ id0_int_t DebugKeys (void)
               US_PrintCentered ("God mode OFF");
             VW_UpdateScreen();
             RF_Refresh(false);
-        };
+        });
         IN_Ack();
 
 		return 1;
 	}
 	else if (Keyboard[0x17])                        // I = item cheat
 	{
-        msgBoxRenderTask = []()
+        msgBoxRenderTaskList.push_back( []()
         {
             VW_FixRefreshBuffer ();
             US_CenterWindow (12,3);
@@ -284,7 +285,7 @@ id0_int_t DebugKeys (void)
 
             VW_UpdateScreen();
             RF_Refresh(false);
-        };
+        });
 
 		gamestate.boobusbombs=99;
 		gamestate.flowerpowers=99;
@@ -296,7 +297,7 @@ id0_int_t DebugKeys (void)
 	{
 		jumpcheat^=1;
 
-        msgBoxRenderTask = []()
+        msgBoxRenderTaskList.push_back( []()
         {
             VW_FixRefreshBuffer ();
             US_CenterWindow (18,3);
@@ -306,7 +307,7 @@ id0_int_t DebugKeys (void)
                 US_PrintCentered ("Jump cheat OFF");
             VW_UpdateScreen();
             RF_Refresh(false);
-        };
+        });
 
         IN_Ack ();
 
@@ -327,7 +328,7 @@ id0_int_t DebugKeys (void)
 	{
 		singlestep^=1;
 
-        msgBoxRenderTask = []()
+        msgBoxRenderTaskList.push_back([]()
         {
             VW_FixRefreshBuffer ();
             US_CenterWindow (18,3);
@@ -337,7 +338,7 @@ id0_int_t DebugKeys (void)
                 US_PrintCentered ("Slow motion OFF");
             VW_UpdateScreen();
             RF_Refresh(false);
-        };
+        });
 
 		IN_Ack ();
 		return 1;

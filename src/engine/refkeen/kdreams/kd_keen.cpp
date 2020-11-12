@@ -18,6 +18,7 @@
 
 #include "engine/keen/dreams/dreamsengine.h"
 #include "base/CInput.h"
+#include <list>
 
 extern mapfiletype_modern  mapFile;
 
@@ -857,7 +858,7 @@ player->temp2 = animation stage
 */
 
 
-extern std::function<void()> msgBoxRenderTask;
+extern std::list< std::function<void()> > msgBoxRenderTaskList;
 
 void	SpawnWorldKeen (id0_int_t tilex, id0_int_t tiley);
 void	KeenWorldThink		(objtype *ob);
@@ -966,8 +967,7 @@ void	CheckEnterLevel (objtype *ob)
 				{
 					if (gamestate.boobusbombs < 12)
 					{
-
-                        msgBoxRenderTask = []()
+                        msgBoxRenderTaskList.push_back( []()
                         {
                             VW_FixRefreshBuffer ();
                             US_CenterWindow (26,6);
@@ -977,7 +977,7 @@ void	CheckEnterLevel (objtype *ob)
                                        "with less than 12 bombs!");
                             VW_UpdateScreen ();
                             RF_Refresh(false);
-                        };
+                        });
                         c.button0 = 0;
                         c.button1 = 0;
 
