@@ -1947,6 +1947,7 @@ void GameFinale (void)
         mGamePlayRunning = false;
         playstate = resetgame;
         gEventManager.add( new dreams::RestartGame );
+        msgBoxRenderTaskList.pop_back();
     });
 }
 
