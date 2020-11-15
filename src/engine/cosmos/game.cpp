@@ -69,7 +69,7 @@ void game_init()
 
     status_load_tiles();
     tile_attr_load();
-    player_load_tiles();
+    gCosmoPlayer.loadTiles();
     actor_load_tiles();
     map_load_tiles();
     load_cartoon_images();
@@ -116,7 +116,7 @@ void reset_game_state()
     energy_beam_enabled_flag = 1;
     byte_2E17C = 0;
 
-    sub_11062();
+    gCosmoPlayer.resetWalkCycle();
 
     hide_player_sprite = 0;
     move_platform_flag = 1;
@@ -247,10 +247,10 @@ bool executeLogics()
 
         if(!draw_only)
         {
-            handle_player_input_maybe();
+            gCosmoPlayer.handleInput();
             if (player_hoverboard_counter != 0)
             {
-                player_hoverboard_update();
+                gCosmoPlayer.updateHoverboard();
             }
         }
 
@@ -268,7 +268,7 @@ bool executeLogics()
     {
         map_display();
 
-        if (player_update_sprite() != 0)
+        if (gCosmoPlayer.updateSprite() != 0)
         {
             return true;
         }

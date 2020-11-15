@@ -146,7 +146,8 @@ void display_dialog_text_with_color(uint16 x_pos, uint16 y_pos, const char *text
                     typewriter_keys_count = frame_num;
                     typewriter_delay_counter = frame_num;
                     break;
-                case 0xfd : display_player_sprite(frame_num, x_pos + x, y_pos, 6); break;
+                case 0xfd :
+                    gCosmoPlayer.displaySprite(frame_num, x_pos + x, y_pos, 6); break;
                 case 0xfe :
                     display_actor_sprite_maybe(frame_num, dialog_text_extract_num(&text[i+4]), x_pos + x - 1, y_pos, 6);
                     i += 3;

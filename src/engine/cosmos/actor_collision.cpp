@@ -725,7 +725,7 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
                 player_x_pos = actor->x;
                 word_32EB2 = 1;
                 player_in_pneumatic_tube_flag = 0;
-                player_reset_push_variables();
+                gCosmoPlayer.resetPushVariables();
                 if (!speech_bubble_pipe_shown_flag)
                 {
                     speech_bubble_pipe_shown_flag = true;
@@ -786,7 +786,7 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
             }
             player_hoverboard_counter = 4;
             play_sfx(3);
-            player_reset_push_variables();
+            gCosmoPlayer.resetPushVariables();
             byte_2E2E4 = 0;
             word_2E180 = 0;
             player_bounce_flag_maybe = 0;
@@ -990,7 +990,7 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
                 return 0;
             }
             byte_2E2E4 = 1;
-            sub_11062();
+            gCosmoPlayer.resetWalkCycle();
             player_bounce_in_the_air(3);
 
             actor->data_1 = actor->data_1 + 1;

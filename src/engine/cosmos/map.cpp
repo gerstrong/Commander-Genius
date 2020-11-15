@@ -262,7 +262,7 @@ void load_level(int level_number)
     explode_effect_clear_sprites();
     struct6_clear_sprites();
     effect_clear_sprites();
-    player_reset_push_variables();
+    gCosmoPlayer.resetPushVariables();
     actor_toss_clear_all();
     status_panel_init();
 

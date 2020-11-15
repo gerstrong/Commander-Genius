@@ -279,7 +279,7 @@ input_state_enum handle_key_down(SDL_KeyboardEvent event)
             hack_mover_toggle_dialog();
             break;
         case SDLK_i : //FIXME testing code
-            printf("player info x_pos =%d; y_pos = %d;\n", player_x_pos, player_y_pos);
+            //printf("player info x_pos =%d; y_pos = %d;\n", player_x_pos, player_y_pos);
             break;
         default : break;
     }
@@ -380,6 +380,8 @@ input_state_enum process_ext_input_one_ev(SDL_Event event)
     {
         handle_controller_axis_motion(&event);
     }
+
+    return CONTINUE;
 }
 
 

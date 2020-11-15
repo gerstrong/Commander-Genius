@@ -192,7 +192,10 @@ BlockingType player_check_movement(int direction, int x_pos, int y_pos)
     return NOT_BLOCKED;
 }
 
-void push_player()
+namespace cosmos_engine
+{
+
+void Player::push()
 {
     int di = 0;
     if(player_is_being_pushed_flag == di)
@@ -237,19 +240,19 @@ void push_player()
         player_y_pos = player_y_pos - player_y_offset_tbl[player_push_direction];
         mapwindow_x_offset = mapwindow_x_offset - player_x_offset_tbl[player_push_direction];
         mapwindow_y_offset = mapwindow_y_offset - player_y_offset_tbl[player_push_direction];
-        player_reset_push_variables();
+        resetPushVariables();
         return;
     }
     player_push_anim_counter++;
     if(player_push_anim_counter >= player_push_anim_duration_maybe)
     {
-        player_reset_push_variables();
+        resetPushVariables();
     }
 }
 
 sint16 word_28F80[10] = {-2, -1, -1, -1, -1, -1, -1, 0, 0, 0};
 
-void handle_player_input_maybe()
+void Player::handleInput()
 {
     static int local_bomb_key_counter = 0;
     BlockingType player_movement_status = NOT_BLOCKED;
@@ -261,12 +264,13 @@ void handle_player_input_maybe()
 
     int si = 0;
     player_is_grabbing_wall_flag = false;
-    if(player_death_counter != 0 || teleporter_state_maybe != 0 || player_hoverboard_counter != 0 || player_walk_anim_index != 0 || hide_player_sprite != 0)
+    if(player_death_counter != 0 || teleporter_state_maybe != 0 ||
+       player_hoverboard_counter != 0 || player_walk_anim_index != 0 || hide_player_sprite != 0)
     {
         return;
     }
     word_28F94 = word_28F94 + 1;
-    push_player();
+    push();
     if(player_is_being_pushed_flag != 0)
     {
         player_hanging_on_wall_direction = 0;
@@ -283,7 +287,8 @@ void handle_player_input_maybe()
         {
             tile_attr = map_get_tile_attr(player_x_pos - 1, player_y_pos - 2);
         }
-        if((tile_attr & TILE_ATTR_SLIPPERY) != 0 && (tile_attr & TILE_ATTR_CAN_GRAB_WALL) != 0)
+        if((tile_attr & TILE_ATTR_SLIPPERY) != 0 &&
+           (tile_attr & TILE_ATTR_CAN_GRAB_WALL) != 0)
         {
             if(player_check_movement(1, player_x_pos, player_y_pos + 1) == NOT_BLOCKED)
             {
@@ -422,7 +427,9 @@ void handle_player_input_maybe()
             bomb_key_pressed = 0;
         }
     }
-    if(byte_2E182 != 0 || bomb_key_pressed == 0 || byte_2E2E4 != 0 || player_hanging_on_wall_direction != 0 || (jump_key_pressed != 0 && player_input_jump_related_flag == 0))
+    if(byte_2E182 != 0 || bomb_key_pressed == 0 || byte_2E2E4 != 0 ||
+       player_hanging_on_wall_direction != 0 ||
+       (jump_key_pressed != 0 && player_input_jump_related_flag == 0))
     {
         word_2E214 = 0;
         //ax = player_check_movement(1, player_x_pos, player_y_pos + 1);
@@ -1036,13 +1043,21 @@ void handle_player_input_maybe()
     }
 }
 
-void sub_11062()
+};
+
+
+
+namespace cosmos_engine
+{
+
+void Player::resetWalkCycle()
 {
     word_32EB2 = 0;
     player_walk_anim_index = 0;
 }
 
-void player_reset_push_variables()
+
+void Player::resetPushVariables()
 {
     player_is_being_pushed_flag = 0;
     player_push_direction = 0;
@@ -1057,7 +1072,8 @@ void player_reset_push_variables()
     word_2E180 = 0;
 }
 
-void player_load_tiles()
+
+void Player::loadTiles()
 {
 	uint16 num_tile_info_records;
     uint16 num_tiles;
@@ -1068,26 +1084,26 @@ void player_load_tiles()
     printf("Loading %d, player tile info records.\n", num_tile_info_records);
 }
 
-void display_player_sprite_mode_6(uint8 frame_num, int x_pos, int y_pos)
-{
-    TileInfo *info = &player_sprites[0].frames[frame_num];
-    Tile *tile = &player_tiles[info->tile_num];
 
-    for(int y=0;y < info->height;y++)
-    {
-        for (int x = 0; x < info->width; x++)
-        {
-            video_draw_tile(tile, (x_pos + x) * 8, (y_pos + y - (info->height - 1)) * 8);
-            tile++;
-        }
-    }
-}
-
-void display_player_sprite(uint8 frame_num, int x_pos, int y_pos, int tile_display_func_index)
+void Player::displaySprite(const uint8 frame_num,
+                           const int x_pos,
+                           const int y_pos,
+                           const int tile_display_func_index)
 {
     if(tile_display_func_index == 6)
     {
-        display_player_sprite_mode_6(frame_num, x_pos, y_pos);
+        TileInfo *info = &player_sprites[0].frames[frame_num];
+        Tile *tile = &player_tiles[info->tile_num];
+
+        for(int y=0;y < info->height;y++)
+        {
+            for (int x = 0; x < info->width; x++)
+            {
+                video_draw_tile(tile, (x_pos + x) * 8, (y_pos + y - (info->height - 1)) * 8);
+                tile++;
+            }
+        }
+
         return;
     }
 
@@ -1124,7 +1140,9 @@ void display_player_sprite(uint8 frame_num, int x_pos, int y_pos, int tile_displ
     }
 }
 
-int player_update_sprite()
+
+
+int Player::updateSprite()
 {
     static uint8 byte_28FAC = 0;
 
@@ -1186,12 +1204,12 @@ int player_update_sprite()
             {
                 if (player_invincibility_counter > 0x28)
                 {
-                    display_player_sprite(player_direction + 15, player_x_pos, player_y_pos, 0);
+                    displaySprite(player_direction + 15, player_x_pos, player_y_pos, 0);
                 }
             }
             else
             {
-                display_player_sprite(player_direction + 15, player_x_pos, player_y_pos, 2);
+                displaySprite(player_direction + 15, player_x_pos, player_y_pos, 2);
             }
             if (player_invincibility_counter != 0)
             {
@@ -1201,11 +1219,13 @@ int player_update_sprite()
             {
                 if (player_is_being_pushed_flag != 0)
                 {
-                    display_player_sprite((uint8)player_push_frame_num, player_x_pos, player_y_pos, 0);
+                    displaySprite((uint8)player_push_frame_num, player_x_pos, player_y_pos, 0);
                 }
                 else
                 {
-                    display_player_sprite(player_direction + player_sprite_dir_frame_offset, player_x_pos, player_y_pos,
+                    displaySprite(player_direction + player_sprite_dir_frame_offset,
+                                          player_x_pos,
+                                          player_y_pos,
                                           0);
                 }
             }
@@ -1227,7 +1247,7 @@ int player_update_sprite()
                     player_y_pos = player_y_pos - 1;
                     player_death_counter = player_death_counter + 1;
 
-                    display_player_sprite((player_death_counter & 1u) + 0x2e, player_x_pos - 1, player_y_pos, 5);
+                    displaySprite((player_death_counter & 1u) + 0x2e, player_x_pos - 1, player_y_pos, 5);
                     if (player_death_counter > 0x24)
                     {
                         load_savegame_file('T');
@@ -1244,13 +1264,15 @@ int player_update_sprite()
                 }
                 player_death_counter = player_death_counter + 1;
 
-                display_player_sprite((player_death_counter & 1u) + 0x2e, player_x_pos - 1, player_y_pos, 5);
+                displaySprite((player_death_counter & 1u) + 0x2e, player_x_pos - 1, player_y_pos, 5);
             }
         }
     }
 
     return 0;
 }
+
+};
 
 const uint8 player_walk_frame_tbl_maybe[] = {
         0x13, 0x14, 0x15,
@@ -1278,7 +1300,7 @@ void player_update_walk_anim()
         byte_2E2E4 = 0;
         if(player_walk_anim_index > 8)
         {
-            sub_11062();
+            gCosmoPlayer.resetWalkCycle();
         }
     }
 }
@@ -1320,7 +1342,7 @@ int player_bounce_in_the_air(int bounce_height)
         player_bounce_height_counter = bounce_height + 1;
         word_2CAF6 = bounce_height + 1;
         player_bounce_flag_maybe = 1;
-        sub_11062();
+        gCosmoPlayer.resetWalkCycle();
         if(bounce_height <= 0x12)
         {
             player_spring_jump_flag = 0;
@@ -1364,7 +1386,7 @@ int player_bounce_in_the_air(int bounce_height)
             }
             else
             {
-                sub_11062();
+                gCosmoPlayer.resetWalkCycle();
                 if(player_bounce_height_counter <= 0x12)
                 {
                     player_spring_jump_flag = 0;
@@ -1518,14 +1540,17 @@ void push_player_around(int push_direction, int push_anim_duration, int push_dur
     player_push_check_blocking_flag = check_for_blocking_flag;
     player_bounce_flag_maybe = 0;
     player_bounce_height_counter = 0;
-    sub_11062();
+    gCosmoPlayer.resetWalkCycle();
 }
 
-void player_hoverboard_update()
+namespace cosmos_engine
+{
+
+void Player::updateHoverboard()
 {
     static uint16 drop_bomb_state = 0;
 
-    sub_11062();
+    resetWalkCycle();
     word_2E1E8 = 0;
     player_bounce_height_counter = 0;
     byte_2E2E4 = 0;
@@ -1729,6 +1754,8 @@ void player_hoverboard_update()
     }
 }
 
+};
+
 void player_move_on_platform(int platform_x_left, int platform_x_right, int x_offset_tbl_index, int y_offset_tbl_index)
 {
     if(player_hoverboard_counter != 0)
@@ -1858,7 +1885,8 @@ void player_update_idle_anim() {
     }
 }
 
-void player_add_speech_bubble(SpeechBubbleType type) {
+void player_add_speech_bubble(SpeechBubbleType type)
+{
     actor_add_new(type, player_x_pos - 1, player_y_pos - 5);
 }
 

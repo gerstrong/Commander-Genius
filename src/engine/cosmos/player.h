@@ -2,6 +2,8 @@
 #ifndef COSMO_ENGINE_PLAYER_H
 #define COSMO_ENGINE_PLAYER_H
 
+#include <base/Singleton.h>
+
 extern const sint16 player_x_offset_tbl[];
 extern const sint16 player_y_offset_tbl[];
 
@@ -71,18 +73,46 @@ typedef enum SpeechBubbleType {
     OUCH = 0xeb
 } SpeechBubbleType;
 
-void handle_player_input_maybe();
-void player_hoverboard_update();
+#define gCosmoPlayer cosmos_engine::Player::get()
 
-void sub_11062(); //resets variables
+namespace cosmos_engine
+{
 
-void player_reset_push_variables();
+class Player : public GsSingleton<Player>
+{
+public:
 
-void player_load_tiles();
+    /**
+     * @brief handleInput Some input and responding logic
+     */
+    void handleInput();
 
-void display_player_sprite(uint8 frame_num, int x_pos, int y_pos, int tile_display_func_index);
+    /**
+     * @brief updateHoverboard
+     */
+    void updateHoverboard();
 
-int player_update_sprite();
+    void resetWalkCycle();
+
+    void resetPushVariables();
+
+    void displaySprite(const uint8 frame_num,
+                       const int x_pos,
+                       const int y_pos,
+                       const int tile_display_func_index);
+
+    int updateSprite();
+
+    void loadTiles();
+
+private:
+
+    void push();
+
+};
+
+};
+
 
 void player_update_walk_anim();
 

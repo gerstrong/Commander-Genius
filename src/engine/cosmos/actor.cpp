@@ -1147,7 +1147,7 @@ void load_actor(int actor_num, int actorType, int x_pos, int y_pos)
     {
         switch (actorType)
         {
-            case 0:
+            case 0: // The player
                 if (map_width_in_tiles - 15 >= x_pos)
                 {
                     if (map_stride_bit_shift_amt <= 5 || x_pos - 15 < 0)
@@ -1177,13 +1177,13 @@ void load_actor(int actor_num, int actorType, int x_pos, int y_pos)
                 player_y_pos = y_pos;
                 break;
 
-            case 1:
+            case 1: // Platform
                 moving_platform_tbl[num_moving_platforms].x = x_pos;
                 moving_platform_tbl[num_moving_platforms].y = y_pos;
                 num_moving_platforms++;
                 break;
 
-            case 2:
+            case 2: // Fountains
             case 3:
             case 4:
             case 5:
