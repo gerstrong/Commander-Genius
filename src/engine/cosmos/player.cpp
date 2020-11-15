@@ -258,7 +258,7 @@ void Player::handleInput()
     BlockingType player_movement_status = NOT_BLOCKED;
 
     if (cheat_hack_mover_enabled) {
-        player_hack_mover_update();
+        hackMoverUpdate();
         return;
     }
 
@@ -895,7 +895,7 @@ void Player::handleInput()
                             player_sprite_dir_frame_offset = 4;
                             if(left_key_pressed == 0 && right_key_pressed == 0 && byte_2E2E4 == 0)
                             {
-                                player_update_idle_anim();
+                                updateIdleAnim();
                             }
                             if(player_sprite_dir_frame_offset != 5 && player_sprite_dir_frame_offset != 6 && (rvalue == 0 || rvalue == 0x1f))
                             {
@@ -1272,16 +1272,15 @@ int Player::updateSprite()
     return 0;
 }
 
-};
 
-const uint8 player_walk_frame_tbl_maybe[] = {
-        0x13, 0x14, 0x15,
-        0x14, 0x13, 0x14,
-        0x15, 0x14, 0x13
-};
-
-void player_update_walk_anim()
+void Player::updateWalkAnim()
 {
+    const uint8 player_walk_frame_tbl_maybe[] = {
+            0x13, 0x14, 0x15,
+            0x14, 0x13, 0x14,
+            0x15, 0x14, 0x13
+    };
+
     if(player_hanging_on_wall_direction != 0)
     {
         word_32EB2 = 0;
@@ -1305,7 +1304,13 @@ void player_update_walk_anim()
     }
 }
 
-int player_check_collision_with_actor(int actorInfoIndex, int frame_num, int x_pos, int y_pos) {
+
+
+int Player::checkCollisionWithActor(const int actorInfoIndex,
+                                    const int frame_num,
+                                    int x_pos,
+                                    const int y_pos)
+{
     if(player_death_counter == 0)
     {
         TileInfo *tileInfo = actor_get_tile_info(actorInfoIndex, frame_num);
@@ -1326,7 +1331,9 @@ int player_check_collision_with_actor(int actorInfoIndex, int frame_num, int x_p
     return 0;
 }
 
-int player_bounce_in_the_air(int bounce_height)
+
+
+int Player::bounceInAir(int bounce_height)
 {
     static int word_2CAF6 = 0;
 
@@ -1362,7 +1369,7 @@ int player_bounce_in_the_air(int bounce_height)
             if(num_hits_since_touching_ground == 10)
             {
                 num_hits_since_touching_ground = 0;
-                player_add_speech_bubble(POINTS_50000);
+                gCosmoPlayer.addSpeechBubble(POINTS_50000);
             }
         }
         return 1;
@@ -1403,60 +1410,62 @@ int player_bounce_in_the_air(int bounce_height)
     return 1;
 }
 
-void player_add_to_score(uint32 amount_to_add_low)
+
+
+void Player::addToScore(const uint32 amount_to_add_low)
 {
     add_to_score_update_on_display(amount_to_add_low, 9, 0x16);
 }
 
-void player_add_score_for_actor(int actorInfoIndex)
+void Player::addScoreForActor(int actorInfoIndex)
 {
     switch (actorInfoIndex)
     {
         case 46:
-            player_add_to_score(0x320);
+            addToScore(0x320);
             break;
 
         case 51:
         case 54:
         case 78:
         case 80:
-            player_add_to_score(0x190);
+            addToScore(0x190);
             break;
 
         case 20:
-            player_add_to_score(0xc80);
+            addToScore(0xc80);
             break;
 
         case 41:
         case 47:
         case 86:
-            player_add_to_score(0x640);
+            addToScore(0x640);
             break;
 
         case 92:
         case 101:
-            player_add_to_score(0x1900);
+            addToScore(0x1900);
             break;
 
         case 17:
         case 18:
         case 87:
         case 89:
-            player_add_to_score(0xfa);
+            addToScore(0xfa);
             break;
 
         case 106:
         case 113:
-            player_add_to_score(0x3e8);
+            addToScore(0x3e8);
             break;
 
         case 69:
         case 125:
-            player_add_to_score(0x3200);
+            addToScore(0x3200);
             break;
 
         case 126:
-            player_add_to_score(0x7d0);
+            addToScore(0x7d0);
             break;
 
         case 3:
@@ -1466,11 +1475,11 @@ void player_add_score_for_actor(int actorInfoIndex)
         case 112:
         case 118:
         case 127:
-            player_add_to_score(0x1f4);
+            addToScore(0x1f4);
             break;
 
         case 129:
-            player_add_to_score(0xc350);
+            addToScore(0xc350);
             break;
 
         case 74:
@@ -1479,7 +1488,7 @@ void player_add_score_for_actor(int actorInfoIndex)
         case 96:
         case 128:
         case 187:
-            player_add_to_score(0x64);
+            addToScore(0x64);
             break;
 
         case 1:
@@ -1490,14 +1499,15 @@ void player_add_score_for_actor(int actorInfoIndex)
         case 84:
         case 124:
         case 188:
-            player_add_to_score(0xc8);
+            addToScore(0xc8);
             break;
 
         default: break;
     }
 }
 
-void player_decrease_health()
+
+void Player::decreaseHealth()
 {
     if(player_death_counter == 0 && !god_mode_flag && hide_player_sprite == 0 && teleporter_state_maybe == 0 && byte_32EB8 == 0 && player_in_pneumatic_tube_flag == 0 && player_invincibility_counter == 0)
     {
@@ -1505,7 +1515,7 @@ void player_decrease_health()
         if(player_has_shown_ouch_bubble_flag == 0)
         {
             player_has_shown_ouch_bubble_flag = 1;
-            player_add_speech_bubble(OUCH);
+            gCosmoPlayer.addSpeechBubble(OUCH);
             if(show_monster_attack_hint == 0)
             {
                 show_monster_attack_hint = 1;
@@ -1526,8 +1536,12 @@ void player_decrease_health()
     }
 }
 
-void push_player_around(int push_direction, int push_anim_duration, int push_duration, int player_frame_num,
-                        uint8 dont_push_while_jumping_flag, int check_for_blocking_flag)
+void Player::pushAround(int push_direction,
+                int push_anim_duration,
+                int push_duration,
+                int player_frame_num,
+                uint8 dont_push_while_jumping_flag,
+                int check_for_blocking_flag)
 {
     player_push_direction = push_direction;
     player_push_anim_duration_maybe = push_anim_duration;
@@ -1542,9 +1556,6 @@ void push_player_around(int push_direction, int push_anim_duration, int push_dur
     player_bounce_height_counter = 0;
     gCosmoPlayer.resetWalkCycle();
 }
-
-namespace cosmos_engine
-{
 
 void Player::updateHoverboard()
 {
@@ -1569,7 +1580,7 @@ void Player::updateHoverboard()
             word_2E180 = 1;
             player_bounce_flag_maybe = 0;
             word_2E1E8 = 1;
-            player_bounce_in_the_air(9);
+            bounceInAir(9);
             player_bounce_height_counter -= 2;
             play_sfx(2);
             return;
@@ -1754,9 +1765,11 @@ void Player::updateHoverboard()
     }
 }
 
-};
 
-void player_move_on_platform(int platform_x_left, int platform_x_right, int x_offset_tbl_index, int y_offset_tbl_index)
+void Player::moveOnPlatform(int platform_x_left,
+                            int platform_x_right,
+                            int x_offset_tbl_index,
+                            int y_offset_tbl_index)
 {
     if(player_hoverboard_counter != 0)
     {
@@ -1825,7 +1838,10 @@ void player_move_on_platform(int platform_x_left, int platform_x_right, int x_of
     }
 }
 
-void player_update_idle_anim() {
+
+
+void Player::updateIdleAnim()
+{
     player_idle_counter++;
     if(player_idle_counter <= 0x64 || player_idle_counter >= 0x6e)
     {
@@ -1885,12 +1901,15 @@ void player_update_idle_anim() {
     }
 }
 
-void player_add_speech_bubble(SpeechBubbleType type)
+
+
+void Player::addSpeechBubble(const SpeechBubbleType type)
 {
     actor_add_new(type, player_x_pos - 1, player_y_pos - 5);
 }
 
-void player_hack_mover_update() {
+void Player::hackMoverUpdate()
+{
     if (left_key_pressed) {
         if (player_x_pos > 0) {
             player_x_pos = player_x_pos - 1;
@@ -1918,3 +1937,5 @@ void player_hack_mover_update() {
         move_map_window(0, 1);
     }
 }
+
+};

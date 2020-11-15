@@ -25,6 +25,8 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
     uint16 sprite_width = actor_get_tile_info(actorInfoIndex, frame_num)->width;
 
     word_2E1E8 = 0;
+
+    auto &thePlayer = gCosmoPlayer;
     if (actorInfoIndex != 0x66)
     {
         int ax = word_2E180 <= 3 ? 0 : 1;
@@ -50,13 +52,13 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
         case 2: //33 PLAT:   Floor Spring
             if (actor->data_5 == 0)
             {
-                if (actor->count_down_timer == 0 && player_bounce_in_the_air(0x28) != 0)
+                if (actor->count_down_timer == 0 && thePlayer.bounceInAir(0x28) != 0)
                 {
                     play_sfx(6);
                     if (!speech_bubble_floor_spring_shown_flag)
                     {
                         speech_bubble_floor_spring_shown_flag = true;
-                        player_add_speech_bubble(WHOA);
+                        gCosmoPlayer.addSpeechBubble(WHOA);
                     }
                     actor->data_1 = 3;
                 }
@@ -65,7 +67,7 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
             break;
 
         case 16: //47 OBJECT: Blue Mobile Trampoline Car
-            if (actor->count_down_timer == 0 && player_bounce_in_the_air(0x14) != 0)
+            if (actor->count_down_timer == 0 && thePlayer.bounceInAir(0x14) != 0)
             {
                 play_sfx(0x2b);
                 actor->data_1 = 3;
@@ -73,7 +75,7 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
             return 0;
 
         case 25: //56 HAZARD: Green Pruny Cabbage Ball
-            if (actor->count_down_timer == 0 && player_bounce_in_the_air(7) != 0)
+            if (actor->count_down_timer == 0 && thePlayer.bounceInAir(7) != 0)
             {
                 actor->count_down_timer = 5;
                 play_sfx(6);
@@ -83,7 +85,7 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
                 if (actor->data_1 == 0)
                 {
                     actor->is_deactivated_flag_maybe = 1;
-                    player_add_score_for_actor(0x19);
+                    gCosmoPlayer.addScoreForActor(0x19);
 
                     exploding_balls_effect(actor->x, actor->y);
                     return 1;
@@ -92,19 +94,19 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
             else
             {
                 if (actor->count_down_timer == 0 &&
-                    player_check_collision_with_actor(actorInfoIndex, frame_num, x_pos, y_pos) != 0)
+                    gCosmoPlayer.checkCollisionWithActor(actorInfoIndex, frame_num, x_pos, y_pos) != 0)
                 {
-                    player_decrease_health();
+                    gCosmoPlayer.decreaseHealth();
                 }
             }
             return 0;
 
         case 0:  //31 Unknown.
         case 29: //60 BARREL: Power Up    (health/12800)
-            if (actor->count_down_timer == 0 && player_bounce_in_the_air(5) != 0)
+            if (actor->count_down_timer == 0 && thePlayer.bounceInAir(5) != 0)
             {
                 actor_explode_container(actor);
-                player_add_to_score(0x64);
+                thePlayer.addToScore(0x64);
 
                 actor_add_new(0xb1, actor->x, actor->y);
                 return 1;
@@ -113,7 +115,7 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
 
         case 51: // 82 ENEMY:  Ghost
         case 54: // 85 ENEMY:  Angry Moon (blue floating characters)
-            if (actor->count_down_timer == 0 && player_bounce_in_the_air(7) != 0)
+            if (actor->count_down_timer == 0 && thePlayer.bounceInAir(7) != 0)
             {
                 actor->count_down_timer = 3;
                 play_sfx(6);
@@ -131,15 +133,15 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
                 }
 
                 exploding_balls_effect(actor->x - 1, actor->y + 1);
-                player_add_score_for_actor(0x33);
+                gCosmoPlayer.addScoreForActor(0x33);
                 return 1;
             }
             else
             {
                 if (actor->count_down_timer == 0 &&
-                    player_check_collision_with_actor(actorInfoIndex, frame_num, x_pos, y_pos) != 0)
+                    gCosmoPlayer.checkCollisionWithActor(actorInfoIndex, frame_num, x_pos, y_pos) != 0)
                 {
-                    player_decrease_health();
+                    gCosmoPlayer.decreaseHealth();
                 }
             }
             return 0;
@@ -147,21 +149,21 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
         case 65: // 96 ENEMY:  Mini Ghost (jumps)
         case 106: // 137 ENEMY:  Suction-Cup-Legged Alien
         case 187: // 218 ENEMY:  Blue Bird
-            if (actor->count_down_timer == 0 && player_bounce_in_the_air(7) != 0)
+            if (actor->count_down_timer == 0 && thePlayer.bounceInAir(7) != 0)
             {
                 play_sfx(6);
 
                 actor->is_deactivated_flag_maybe = 1;
                 exploding_balls_effect(actor->x, actor->y);
-                player_add_score_for_actor(actor->actorInfoIndex);
+                gCosmoPlayer.addScoreForActor(actor->actorInfoIndex);
                 return 1;
             }
             else
             {
                 if (actor->count_down_timer == 0 &&
-                    player_check_collision_with_actor(actorInfoIndex, frame_num, x_pos, y_pos) != 0)
+                    gCosmoPlayer.checkCollisionWithActor(actorInfoIndex, frame_num, x_pos, y_pos) != 0)
                 {
-                    player_decrease_health();
+                    gCosmoPlayer.decreaseHealth();
                 }
             }
             return 0;
@@ -172,7 +174,7 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
             {
                 return 0;
             }
-            if (player_bounce_in_the_air(7) == 0)
+            if (thePlayer.bounceInAir(7) == 0)
             {
                 return 0;
             }
@@ -189,7 +191,7 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
             return 0;
 
         case 86: // 117 ENEMY:  Blue Ball
-            if (actor->count_down_timer == 0 && player_bounce_in_the_air(7) != 0)
+            if (actor->count_down_timer == 0 && thePlayer.bounceInAir(7) != 0)
             {
                 play_sfx(6);
 
@@ -208,18 +210,18 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
                     actor->is_deactivated_flag_maybe = 1;
                     if (actor->data_1 > 0)
                     {
-                        player_add_to_score(0xc80);
+                        thePlayer.addToScore(0xc80);
 
                         actor_add_new(0xb6, actor->x, actor->y);
                         return 0;
                     }
                     if (actor->falling_counter == 0)
                     {
-                        player_add_to_score(0x320);
+                        thePlayer.addToScore(0x320);
                     }
                     else
                     {
-                        player_add_to_score(0x3200);
+                        thePlayer.addToScore(0x3200);
 
                         actor_add_new(0xb8, actor->x, actor->y);
                     }
@@ -238,15 +240,15 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
             else
             {
                 if (actor->count_down_timer == 0 &&
-                    player_check_collision_with_actor(actorInfoIndex, frame_num, x_pos, y_pos) != 0)
+                    gCosmoPlayer.checkCollisionWithActor(actorInfoIndex, frame_num, x_pos, y_pos) != 0)
                 {
-                    player_decrease_health();
+                    gCosmoPlayer.decreaseHealth();
                 }
             }
             return 0;
 
         case 101: // 132 ENEMY:  Big Red Jumper FIXME might need new logic from COSMO2 or 3 EXEs
-            if (actor->count_down_timer == 0 && player_bounce_in_the_air(15) != 0)
+            if (actor->count_down_timer == 0 && thePlayer.bounceInAir(15) != 0)
             {
                 play_sfx(6);
 
@@ -268,9 +270,9 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
             else
             {
                 if (actor->count_down_timer == 0 &&
-                    player_check_collision_with_actor(actorInfoIndex, frame_num, x_pos, y_pos) != 0)
+                    gCosmoPlayer.checkCollisionWithActor(actorInfoIndex, frame_num, x_pos, y_pos) != 0)
                 {
-                    player_decrease_health();
+                    gCosmoPlayer.decreaseHealth();
                 }
             }
             return 0;
@@ -278,7 +280,7 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
         case 113: // 144 ENEMY:  Blue Turret Alien
         case 118: // 149 ENEMY:  Red Chomper Alien
         case 126: // 157 ENEMY:  Silver Robot (pushes player around)
-            if (actor->count_down_timer == 0 && player_bounce_in_the_air(7) != 0)
+            if (actor->count_down_timer == 0 && thePlayer.bounceInAir(7) != 0)
             {
                 actor->count_down_timer = 3;
                 play_sfx(6);
@@ -291,7 +293,7 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
                 {
 
                     actor->is_deactivated_flag_maybe = 1;
-                    player_add_score_for_actor(actor->actorInfoIndex);
+                    gCosmoPlayer.addScoreForActor(actor->actorInfoIndex);
 
                     exploding_balls_effect(actor->x, actor->y);
                     return 1;
@@ -300,17 +302,17 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
             else
             {
                 if (actor->count_down_timer == 0 &&
-                    player_check_collision_with_actor(actorInfoIndex, frame_num, x_pos, y_pos) != 0)
+                    gCosmoPlayer.checkCollisionWithActor(actorInfoIndex, frame_num, x_pos, y_pos) != 0)
                 {
-                    player_decrease_health();
+                    gCosmoPlayer.decreaseHealth();
                 }
             }
             return 0;
 
         case 124: // 155 CREATURE/HAZARD:    Pink slug/Worm
-            if (actor->count_down_timer == 0 && player_bounce_in_the_air(7) != 0)
+            if (actor->count_down_timer == 0 && thePlayer.bounceInAir(7) != 0)
             {
-                player_add_score_for_actor(0x7c);
+                gCosmoPlayer.addScoreForActor(0x7c);
                 play_sfx(6);
 
                 exploding_balls_effect(actor->x, actor->y);
@@ -323,7 +325,7 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
 
         case 127: // 158 ENEMY:  Security Robot (shoots flashing bullet, can act as moving floor spring)
             if (((brightness_effect_enabled_flag == 0 && obj_switch_151_flag != 0) || (brightness_effect_enabled_flag != 0 && obj_switch_151_flag == 0)) &&
-                actor->count_down_timer == 0 && player_bounce_in_the_air(15) != 0)
+                actor->count_down_timer == 0 && thePlayer.bounceInAir(15) != 0)
             {
                 actor->count_down_timer = 3;
                 play_sfx(6);
@@ -340,16 +342,16 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
             else
             {
                 if (actor->count_down_timer == 0 &&
-                    player_check_collision_with_actor(actorInfoIndex, frame_num, x_pos, y_pos) != 0)
+                    gCosmoPlayer.checkCollisionWithActor(actorInfoIndex, frame_num, x_pos, y_pos) != 0)
                 {
-                    player_decrease_health();
+                    gCosmoPlayer.decreaseHealth();
                 }
             }
             return 0;
 
         case 129: // 160 PLAT/HAZARD:    Dragonfly
         case 145: // 176 ENEMY:  Green Plant
-            if (actor->count_down_timer == 0 && player_bounce_in_the_air(7) != 0)
+            if (actor->count_down_timer == 0 && thePlayer.bounceInAir(7) != 0)
             {
                 num_hits_since_touching_ground = 0;
                 play_sfx(6);
@@ -358,15 +360,15 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
             else
             {
                 if (actor->count_down_timer == 0 &&
-                    player_check_collision_with_actor(actorInfoIndex, frame_num, x_pos, y_pos) != 0)
+                    gCosmoPlayer.checkCollisionWithActor(actorInfoIndex, frame_num, x_pos, y_pos) != 0)
                 {
-                    player_decrease_health();
+                    gCosmoPlayer.decreaseHealth();
                 }
             }
             return 0;
 
         case 188: // 219 OBJECT: Rocket
-            if (actor->x == player_x_pos && actor->count_down_timer == 0 && player_bounce_in_the_air(5) != 0)
+            if (actor->x == player_x_pos && actor->count_down_timer == 0 && thePlayer.bounceInAir(5) != 0)
             {
                 play_sfx(6);
             }
@@ -383,7 +385,7 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
                 }
                 byte_2E2E4 = 1;
                 word_2E1E8 = 1;
-                if (actor->count_down_timer != 0 || player_bounce_in_the_air(0x14) == 0)
+                if (actor->count_down_timer != 0 || thePlayer.bounceInAir(0x14) == 0)
                 {//FIXME is this correct?
                 }
                 play_sfx(6);
@@ -398,7 +400,7 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
                 if (!speech_bubble_red_plant_shown_flag)
                 {
                     speech_bubble_red_plant_shown_flag = true;
-                    player_add_speech_bubble(WHOA);
+                    gCosmoPlayer.addSpeechBubble(WHOA);
                 }
                 return 0;
             }
@@ -446,7 +448,7 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
             {
                 return 1;
             }
-            if (actor->count_down_timer == 0 && player_bounce_in_the_air(7) != 0)
+            if (actor->count_down_timer == 0 && thePlayer.bounceInAir(7) != 0)
             {
                 play_sfx(6);
 
@@ -476,16 +478,16 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
             else
             {
                 if (actor->count_down_timer == 0 &&
-                    player_check_collision_with_actor(actorInfoIndex, frame_num, x_pos, y_pos) != 0)
+                    gCosmoPlayer.checkCollisionWithActor(actorInfoIndex, frame_num, x_pos, y_pos) != 0)
                 {
-                    player_decrease_health();
+                    gCosmoPlayer.decreaseHealth();
                 }
             }
             return 1;
     }
 
 
-    if (player_check_collision_with_actor(actorInfoIndex, frame_num, x_pos, y_pos) == 0)
+    if (gCosmoPlayer.checkCollisionWithActor(actorInfoIndex, frame_num, x_pos, y_pos) == 0)
     {
         return 0;
     }
@@ -510,7 +512,9 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
         case 77:
         case 79:
         case 91:
-        case 150:player_decrease_health();
+        case 150:
+
+            gCosmoPlayer.decreaseHealth();
 
             if (actor->actorInfoIndex == 0x44)
             {
@@ -524,7 +528,7 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
         case 233: // 265 DANGER: Flame (->)
             if (actor->frame_num > 1)
             {
-                player_decrease_health();
+                gCosmoPlayer.decreaseHealth();
             }
             return 0;
 
@@ -538,7 +542,7 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
                 actor->data_4 = 0;
                 if (actor->y > player_y_pos - 4 || actor->frame_num == 6)
                 {
-                    player_decrease_health();
+                    gCosmoPlayer.decreaseHealth();
                 }
 
                 actor->frame_num = 0;
@@ -546,7 +550,7 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
             }
             if (actor->y > player_y_pos - 4)
             {
-                player_decrease_health();
+                gCosmoPlayer.decreaseHealth();
             }
             return 0;
 
@@ -554,7 +558,7 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
         case 83: // 115 Unknown
             if (actor->frame_num != 0)
             {
-                player_decrease_health();
+                gCosmoPlayer.decreaseHealth();
             }
             return 0;
 
@@ -577,7 +581,7 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
         case 88: // 120 ENEMY:  Spikes (on right wall)
             if (actor->frame_num <= 1)
             {
-                player_decrease_health();
+                gCosmoPlayer.decreaseHealth();
                 return 0;
             }
             return 1;
@@ -594,7 +598,7 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
             }
             if (health > num_health_bars)
             {
-                player_add_to_score(0x3200);
+                thePlayer.addToScore(0x3200);
 
                 actor_add_new(0xb8, actor->x, actor->y);
             }
@@ -603,7 +607,7 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
                 health = health + 1;
                 update_health_bar_display();
 
-                player_add_to_score(0x64);
+                thePlayer.addToScore(0x64);
 
                 actor_add_new(0xb1, actor->x, actor->y);
             }
@@ -630,12 +634,12 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
         case 231:actor->is_deactivated_flag_maybe = 1;
             if (actorInfoIndex != 0x92 && actorInfoIndex != 0xdf && actorInfoIndex != 0x55 && actorInfoIndex != 0x8d)
             {
-                player_add_to_score(0x190);
+                thePlayer.addToScore(0x190);
                 actor_add_new(0xb3, x_pos, y_pos);
             }
             else
             {
-                player_add_to_score(0x320);
+                thePlayer.addToScore(0x320);
                 actor_add_new(0xb4, x_pos, y_pos);
             }
             effect_add_sprite(15, 4, actor->x, actor->y, 0, 3);
@@ -648,7 +652,7 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
                 actor->is_deactivated_flag_maybe = 1;
                 num_bombs++;
                 has_had_bomb_flag = 1;
-                player_add_to_score(0x64);
+                thePlayer.addToScore(0x64);
 
                 actor_add_new(0xb1, actor->x, actor->y);
                 display_num_bombs_left();
@@ -666,7 +670,7 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
             }
 
             actor->count_down_timer = 10;
-            if (player_bounce_in_the_air(7) == 0)
+            if (thePlayer.bounceInAir(7) == 0)
             {
                 player_hanging_on_wall_direction = 0;
             }
@@ -698,16 +702,16 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
 
             switch (actorInfoIndex - 0x46)
             {
-                case 0:push_player_around(1, 0x64, 2, 0xff, 0, 0);
+                case 0: gCosmoPlayer.pushAround(1, 0x64, 2, 0xff, 0, 0);
                     break;
 
-                case 1:push_player_around(5, 0x64, 2, 0xff, 0, 0);
+                case 1: gCosmoPlayer.pushAround(5, 0x64, 2, 0xff, 0, 0);
                     break;
 
-                case 2:push_player_around(7, 0x64, 2, 0xff, 0, 0);
+                case 2: gCosmoPlayer.pushAround(7, 0x64, 2, 0xff, 0, 0);
                     break;
 
-                case 3:push_player_around(3, 0x64, 2, 0xff, 0, 0);
+                case 3: gCosmoPlayer.pushAround(3, 0x64, 2, 0xff, 0, 0);
                     break;
             }
 
@@ -729,7 +733,7 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
                 if (!speech_bubble_pipe_shown_flag)
                 {
                     speech_bubble_pipe_shown_flag = true;
-                    player_add_speech_bubble(WHOA);
+                    gCosmoPlayer.addSpeechBubble(WHOA);
                 }
                 return 0;
             }
@@ -796,7 +800,7 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
             if (!speech_bubble_hoverboard_shown_flag)
             {
                 speech_bubble_hoverboard_shown_flag = true;
-                player_add_speech_bubble(WHOA);
+                gCosmoPlayer.addSpeechBubble(WHOA);
             }
             return 0;
 
@@ -846,7 +850,7 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
                 if (!speech_bubble_clam_trap_shown_flag)
                 {
                     speech_bubble_clam_trap_shown_flag = true;
-                    player_add_speech_bubble(UMPH);
+                    gCosmoPlayer.addSpeechBubble(UMPH);
                 }
                 return 0;
             }
@@ -889,14 +893,14 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
             num_stars_collected++;
             actor->is_deactivated_flag_maybe = 1;
             play_sfx(1);
-            player_add_score_for_actor(actorInfoIndex);
+            gCosmoPlayer.addScoreForActor(actorInfoIndex);
             actor_add_new(0xb2, x_pos, y_pos);
             display_num_stars_collected();
             return 1;
 
         case 81: // 113 Hamburger
             actor->is_deactivated_flag_maybe = 1;
-            player_add_to_score(0x3200);
+            thePlayer.addToScore(0x3200);
             actor_add_new(0xb8, x_pos, y_pos);
 
             effect_add_sprite(15, 4, actor->x, actor->y, 0, 3);
@@ -907,7 +911,7 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
             }
             if (!speech_bubble_hamburger_shown_flag)
             {
-                player_add_speech_bubble(WHOA);
+                gCosmoPlayer.addSpeechBubble(WHOA);
                 speech_bubble_hamburger_shown_flag = true;
             }
             update_health_bar_display();
@@ -918,7 +922,7 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
         case 35: // 67 BONUS:  Yellow/Cyan Fruit (falling)
         case 37: // 69 Unknown
             actor->is_deactivated_flag_maybe = 1;
-            player_add_to_score(0xc8);
+            thePlayer.addToScore(0xc8);
             actor_add_new(0xb2, x_pos, y_pos);
 
             effect_add_sprite(15, 4, actor->x, actor->y, 0, 3);
@@ -938,7 +942,7 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
         case 175: // 207 BONUS:  Diamond
             actor->is_deactivated_flag_maybe = 1;
             effect_add_sprite(15, 4, actor->x, actor->y, 0, 3);
-            player_add_to_score(0xc80);
+            thePlayer.addToScore(0xc80);
             actor_add_new(0xb6, x_pos, y_pos);
             play_sfx(13);
             return 1;
@@ -947,7 +951,7 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
         case 154: // 186 BONUS:  Red Crystal (on ground)
             actor->is_deactivated_flag_maybe = 1;
             effect_add_sprite(15, 4, actor->x, actor->y, 0, 3);
-            player_add_to_score(0x640);
+            thePlayer.addToScore(0x640);
             actor_add_new(0xb5, x_pos, y_pos);
             play_sfx(13);
             return 1;
@@ -959,7 +963,7 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
         case 219: // 251 BONUS:  Headphones (falling)
             actor->is_deactivated_flag_maybe = 1;
             effect_add_sprite(15, 4, actor->x, actor->y, 0, 3);
-            player_add_to_score(0x320);
+            thePlayer.addToScore(0x320);
             actor_add_new(0xb4, x_pos, y_pos);
             play_sfx(13);
             return 1;
@@ -990,8 +994,8 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
                 return 0;
             }
             byte_2E2E4 = 1;
-            gCosmoPlayer.resetWalkCycle();
-            player_bounce_in_the_air(3);
+            thePlayer.resetWalkCycle();
+            thePlayer.bounceInAir(3);
 
             actor->data_1 = actor->data_1 + 1;
             if (actor->data_2 != 0)
@@ -1010,7 +1014,7 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
             if (!speech_bubble_rubber_wall_shown_flag)
             {
                 speech_bubble_rubber_wall_shown_flag = true;
-                player_add_speech_bubble(UMPH);
+                gCosmoPlayer.addSpeechBubble(UMPH);
             }
             if (actor->x != player_x_pos + 2)
             {
@@ -1018,11 +1022,11 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
                 {
                     return 0;
                 }
-                push_player_around(3, 5, 2, 0x11, 0, 1);
+                gCosmoPlayer.pushAround(3, 5, 2, 0x11, 0, 1);
             }
             else
             {
-                push_player_around(7, 5, 2, 0x28, 0, 1);
+                gCosmoPlayer.pushAround(7, 5, 2, 0x28, 0, 1);
             }
             play_sfx(0x14);
             return 0;
@@ -1031,12 +1035,13 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
         case 110:
         case 111:
         case 127:
-        case 201:player_decrease_health();
+        case 201:
+            gCosmoPlayer.decreaseHealth();
             return 0;
 
         case 54: // 86  ENEMY:  Small Red Plant
             actor->data_1 = 1;
-            player_decrease_health();
+            gCosmoPlayer.decreaseHealth();
             return 0;
 
         case 246:
@@ -1093,7 +1098,7 @@ void actor_explode_container(ActorData *actor)
     actor_toss_add_new(actor->data_1, actor->x + 1, actor->y);
     if(num_containers == 1)
     {
-        player_add_speech_bubble(POINTS_50000);
+        gCosmoPlayer.addSpeechBubble(POINTS_50000);
     }
     num_containers--;
     return ;

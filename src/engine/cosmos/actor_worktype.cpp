@@ -24,7 +24,7 @@ void actor_wt_133_boss_purple_15411(ActorData *actor)
     if(!speech_bubble_purple_boss_shown_flag)
     {
         speech_bubble_purple_boss_shown_flag = true;
-        player_add_speech_bubble(WHOA);
+        gCosmoPlayer.addSpeechBubble(WHOA);
         stop_music();
         load_music(2);
     }
@@ -46,7 +46,7 @@ void actor_wt_133_boss_purple_15411(ActorData *actor)
             } else {
                 finished_level_flag_maybe = 1;
             }
-            player_add_to_score(0x186a0);
+            gCosmoPlayer.addToScore(0x186a0);
         }
 
         if(actor->has_moved_right_flag < 0x28 && actor->has_moved_right_flag != 0)
@@ -835,7 +835,7 @@ void actor_wt_big_yellow_spike(ActorData *actor)
         {
             struct6_add_sprite(actor->x - 1, actor->y + 1);
             actor->is_deactivated_flag_maybe = 1;
-            player_add_to_score(0xc8);
+            gCosmoPlayer.addToScore(0xc8);
             
             explode_effect_add_sprite(actor->actorInfoIndex, 0, actor->x, actor->y);
         }
@@ -1467,7 +1467,7 @@ void actor_wt_clam_trap(ActorData *actor)
         
         if(struct6_1B4FC(actor->actorInfoIndex, actor->frame_num, actor->x, actor->y) != 0)
         {
-            player_add_to_score(0xfa);
+            gCosmoPlayer.addToScore(0xfa);
             
             explode_effect_add_sprite(actor->actorInfoIndex, actor->frame_num, actor->x, actor->y);
             actor->is_deactivated_flag_maybe = 1;
@@ -1478,7 +1478,7 @@ void actor_wt_clam_trap(ActorData *actor)
     {
         if(struct6_1B4FC(actor->actorInfoIndex, actor->frame_num, actor->x, actor->y) != 0)
         {
-            player_add_to_score(0xfa);
+            gCosmoPlayer.addToScore(0xfa);
             
             explode_effect_add_sprite(actor->actorInfoIndex, actor->frame_num, actor->x, actor->y);
             actor->is_deactivated_flag_maybe = 1;
@@ -1491,7 +1491,7 @@ void actor_wt_container(ActorData *actor)
     if(struct6_1B4FC(0x1d, 0, actor->x, actor->y) != 0)
     {
         actor_explode_container(actor);
-        player_add_to_score(0x640);
+        gCosmoPlayer.addToScore(0x640);
         
         actor_add_new(0xb5, actor->x, actor->y);
     }
@@ -1782,9 +1782,9 @@ void actor_wt_energy_beam(ActorData *actor)
     {
         for(;;actor->data_1++)
         {
-            if(player_check_collision_with_actor(actor->actorInfoIndex, 0, actor->x + actor->data_1, actor->y) != 0)
+            if(gCosmoPlayer.checkCollisionWithActor(actor->actorInfoIndex, 0, actor->x + actor->data_1, actor->y) != 0)
             {
-                player_decrease_health();
+                gCosmoPlayer.decreaseHealth();
                 break;
             }
 
@@ -1800,9 +1800,9 @@ void actor_wt_energy_beam(ActorData *actor)
     {
         for(;;actor->data_1++)
         {
-            if (player_check_collision_with_actor(actor->actorInfoIndex, 0, actor->x, actor->y - actor->data_1) != 0)
+            if (gCosmoPlayer.checkCollisionWithActor(actor->actorInfoIndex, 0, actor->x, actor->y - actor->data_1) != 0)
             {
-                player_decrease_health();
+                gCosmoPlayer.decreaseHealth();
                 break;
             }
 
@@ -2306,7 +2306,7 @@ void actor_wt_hint_dialog(ActorData *actor)
     display_actor_sprite_maybe(0x7d, actor->data_2, actor->x, actor->y, 0);
     actor_tile_display_func_index = 1;
 
-    if(player_check_collision_with_actor(0x7d, 0, actor->x, actor->y - 2) != 0)
+    if(gCosmoPlayer.checkCollisionWithActor(0x7d, 0, actor->x, actor->y - 2) != 0)
     {
         word_32EAC = 1;
         if(game_play_mode != 0)
@@ -3111,9 +3111,9 @@ void actor_wt_robot_with_blue_arc(ActorData *actor)
 
         display_actor_sprite_maybe(0x5a, actor->data_5, actor->x, actor->y, 0);
 
-        if(player_check_collision_with_actor(0x5a, 0, actor->x, actor->y) != 0)
+        if(gCosmoPlayer.checkCollisionWithActor(0x5a, 0, actor->x, actor->y) != 0)
         {
-            player_decrease_health();
+            gCosmoPlayer.decreaseHealth();
         }
         spark_frame_num++;
 
@@ -3122,16 +3122,16 @@ void actor_wt_robot_with_blue_arc(ActorData *actor)
         {
             display_actor_sprite_maybe(0x5a, (spark_frame_num & 3) + 4, actor->x + 1, actor->y - si, 0);
 
-            if(player_check_collision_with_actor(0x5a, 4, actor->x + 1, actor->y - si) != 0)
+            if(gCosmoPlayer.checkCollisionWithActor(0x5a, 4, actor->x + 1, actor->y - si) != 0)
             {
-                player_decrease_health();
+                gCosmoPlayer.decreaseHealth();
             }
         }
         display_actor_sprite_maybe(0x5a, actor->data_5 + 1 + 1, actor->x + 1, actor->y - si + 1, 0);
 
-        if(player_check_collision_with_actor(0x5a, 0, actor->x, actor->y + 1) != 0)
+        if(gCosmoPlayer.checkCollisionWithActor(0x5a, 0, actor->x, actor->y + 1) != 0)
         {
-            player_decrease_health();
+            gCosmoPlayer.decreaseHealth();
         }
 
         if(struct6_1B4FC(actor->actorInfoIndex, actor->frame_num, actor->x, actor->y) != 0)
@@ -3330,9 +3330,9 @@ void actor_wt_rocket(ActorData *actor)
             actor->data_4 = (actor->data_4 ? -1 : 0) + 1;
             display_actor_sprite_maybe(0xbc, actor->data_4 + 4, actor->x, actor->y + 6, 0);
 
-            if(player_check_collision_with_actor(0xbc, 4, actor->x, actor->y + 6) != 0)
+            if(gCosmoPlayer.checkCollisionWithActor(0xbc, 4, actor->x, actor->y + 6) != 0)
             {
-                player_decrease_health();
+                gCosmoPlayer.decreaseHealth();
             }
 
             if(actor->data_4 != 0)
@@ -3415,7 +3415,7 @@ void actor_wt_rubber_wall(ActorData *actor)
         effect_add_sprite(0x61, 6, actor->x, actor->y, 8, 2);
 
         effect_add_sprite(0x61, 6, actor->x, actor->y - 4, 1, 3);
-        player_add_to_score(0x6400);
+        gCosmoPlayer.addToScore(0x6400);
 
         actor_add_new(0xb8, actor->x - 2, actor->y - 9);
 
@@ -3661,7 +3661,7 @@ void actor_wt_silver_robot(ActorData *actor)
             {
                 actor->frame_num = 2;
                 actor->data_2 = 8;
-                push_player_around(7, 5, 2, 0x28, 0, 1);
+                gCosmoPlayer.pushAround(7, 5, 2, 0x28, 0, 1);
                 play_sfx(0x14);
                 player_direction = 0x17;
                 actor->data_4 = 3;
@@ -3669,7 +3669,7 @@ void actor_wt_silver_robot(ActorData *actor)
                 if(!speech_bubble_silver_robot_shown_flag)
                 {
                     speech_bubble_silver_robot_shown_flag = true;
-                    player_add_speech_bubble(UMPH);
+                    gCosmoPlayer.addSpeechBubble(UMPH);
                 }
                 return;
             }
@@ -3701,7 +3701,7 @@ void actor_wt_silver_robot(ActorData *actor)
             {
                 actor->frame_num = 5;
                 actor->data_2 = 8;
-                push_player_around(3, 5, 2, 0x11, 0, 1);
+                gCosmoPlayer.pushAround(3, 5, 2, 0x11, 0, 1);
                 play_sfx(0x14);
                 player_direction = 0;
                 actor->data_4 = 3;
@@ -3709,7 +3709,7 @@ void actor_wt_silver_robot(ActorData *actor)
                 if(!speech_bubble_silver_robot_shown_flag)
                 {
                     speech_bubble_silver_robot_shown_flag = true;
-                    player_add_speech_bubble(UMPH);
+                    gCosmoPlayer.addSpeechBubble(UMPH);
                 }
                 return;
             }
@@ -4424,7 +4424,7 @@ void actor_wt_switch_multi_use(ActorData *actor)
                     if(!speech_bubble_switch_61_shown_flag)
                     {
                         speech_bubble_switch_61_shown_flag = true;
-                        player_add_speech_bubble(WHOA);
+                        gCosmoPlayer.addSpeechBubble(WHOA);
                     }
                     break;
 
@@ -4545,7 +4545,7 @@ void actor_wt_teleporter(ActorData *actor)
     if(!speech_bubble_teleporter_shown_flag)
     {
         speech_bubble_teleporter_shown_flag = true;
-        player_add_speech_bubble(WHOA);
+        gCosmoPlayer.addSpeechBubble(WHOA);
     }
     return;
 }
@@ -4634,9 +4634,9 @@ void actor_wt_two_tons(ActorData *actor)
         }
     }
     
-    if(player_check_collision_with_actor(0x2d, 4, actor->x - 1, actor->y + 3) != 0)
+    if(gCosmoPlayer.checkCollisionWithActor(0x2d, 4, actor->x - 1, actor->y + 3) != 0)
     {
-        player_decrease_health();
+        gCosmoPlayer.decreaseHealth();
         return;
     }
     
@@ -4681,7 +4681,7 @@ void actor_wt_speech_bubble(ActorData *actor)
         play_sfx(0x39);
         if(actor->actorInfoIndex == 0xf6)
         {
-            player_add_to_score(0xc350);
+            gCosmoPlayer.addToScore(0xc350);
         }
     }
 

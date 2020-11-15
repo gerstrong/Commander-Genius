@@ -120,12 +120,12 @@ int blow_up_actor_with_bomb(int actorInfoIndex, int frame_num, int x_pos, int y_
             else
             {
                 explode_effect_add_sprite(actorInfoIndex, frame_num, x_pos, y_pos);
-                player_add_score_for_actor(actorInfoIndex);
+                gCosmoPlayer.addScoreForActor(actorInfoIndex);
                 if(actorInfoIndex == 0x5f)
                 {
                     if(num_eye_plants_remaining_to_blow_up == 1)
                     {
-                        player_add_speech_bubble(POINTS_50000);
+                        gCosmoPlayer.addSpeechBubble(POINTS_50000);
                     }
                     effect_add_sprite(0x17, 8, x_pos, y_pos, 0, 1);
                     actor_toss_add_new(0x39, x_pos, y_pos);
@@ -468,9 +468,9 @@ void struct6_update_sprites()
 
             display_actor_sprite_maybe(0x1a, sprite->counter - (1 & 3), sprite->x, sprite->y, 0);
 
-            if(player_check_collision_with_actor(0x1a, sprite->counter - (1 & 3), sprite->x, sprite->y) != 0)
+            if(gCosmoPlayer.checkCollisionWithActor(0x1a, sprite->counter - (1 & 3), sprite->x, sprite->y) != 0)
             {
-                player_decrease_health();
+                gCosmoPlayer.decreaseHealth();
             }
 
             sprite->counter++;

@@ -256,7 +256,7 @@ bool executeLogics()
 
         if (word_32EB2 != 0 || player_walk_anim_index != 0)
         {
-            player_update_walk_anim(); //TODO check name I think this might be fall anim
+            gCosmoPlayer.updateWalkAnim(); //TODO check name I think this might be fall anim
         }
 
         update_moving_platforms();

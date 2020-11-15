@@ -105,33 +105,45 @@ public:
 
     void loadTiles();
 
+    void updateWalkAnim();
+
+    int checkCollisionWithActor(const int actorInfoIndex,
+                                const int frame_num,
+                                int x_pos,
+                                const int y_pos);
+
+    int bounceInAir(int bounce_height);
+
+    void addScoreForActor(int actorInfoIndex);
+
+    void addToScore(const uint32 amount_to_add_low);
+
+    void decreaseHealth();
+
+    void pushAround(int push_direction,
+                    int push_anim_duration,
+                    int push_duration,
+                    int player_frame_num,
+                    uint8 dont_push_while_jumping_flag,
+                    int check_for_blocking_flag);
+
+    void moveOnPlatform(int platform_x_left,
+                        int platform_x_right,
+                        int x_offset_tbl_index,
+                        int y_offset_tbl_index);
+
+    void addSpeechBubble(const SpeechBubbleType type);
+
 private:
 
-    void push();
+    void push();    
+
+    void updateIdleAnim();
+
+    void hackMoverUpdate();
 
 };
 
 };
 
-
-void player_update_walk_anim();
-
-int player_check_collision_with_actor(int actorInfoIndex, int frame_num, int x_pos, int y_pos);
-
-int player_bounce_in_the_air(int bounce_height);
-
-void player_add_score_for_actor(int actorInfoIndex);
-void player_add_to_score(uint32 amount_to_add_low);
-
-void player_decrease_health();
-
-void push_player_around(int push_direction, int push_anim_duration, int push_duration, int player_frame_num, uint8 dont_push_while_jumping_flag, int check_for_blocking_flag);
-
-void player_move_on_platform(int platform_x_left, int platform_x_right, int x_offset_tbl_index, int y_offset_tbl_index);
-
-void player_update_idle_anim();
-
-void player_add_speech_bubble(SpeechBubbleType type);
-
-void player_hack_mover_update();
 #endif //COSMO_ENGINE_PLAYER_H

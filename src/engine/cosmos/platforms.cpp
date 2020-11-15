@@ -31,11 +31,11 @@ void update_mud_fountains()
                     {
                         if(mud_fountain->direction == 0)
                         {
-                            player_move_on_platform(mud_fountain->x, mud_fountain->x + 2, 0, 1);
+                            gCosmoPlayer.moveOnPlatform(mud_fountain->x, mud_fountain->x + 2, 0, 1);
                         }
                         else
                         {
-                            player_move_on_platform(mud_fountain->x, mud_fountain->x + 2, 0, 5);
+                            gCosmoPlayer.moveOnPlatform(mud_fountain->x, mud_fountain->x + 2, 0, 5);
                         }
                     }
                 }
@@ -89,9 +89,9 @@ void display_mud_fountains()
         {
             display_actor_sprite_maybe(0x4f, (frame_num & 1) + 1 + 1, mud_fountain->x + 1, mud_fountain->y + j + 1, 0);
 
-            if (player_check_collision_with_actor(0x4f, 2, mud_fountain->x + 1, mud_fountain->y + j + 1) != 0)
+            if (gCosmoPlayer.checkCollisionWithActor(0x4f, 2, mud_fountain->x + 1, mud_fountain->y + j + 1) != 0)
             {
-                player_decrease_health();
+                gCosmoPlayer.decreaseHealth();
             }
         }
     }
@@ -110,7 +110,7 @@ void update_moving_platforms() {
         uint16 map_tile_num = (uint16) (map_get_tile_cell(platform->x, platform->y) / 8);
         if (player_death_counter == 0) {
             if (platform->y - 1 == player_y_pos && move_platform_flag != 0) {
-                player_move_on_platform(platform->x - 2, platform->x + 2, map_tile_num, map_tile_num);
+                gCosmoPlayer.moveOnPlatform(platform->x - 2, platform->x + 2, map_tile_num, map_tile_num);
             }
         }
         if (move_platform_flag != 0) {
