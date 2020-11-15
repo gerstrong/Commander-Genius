@@ -12,7 +12,7 @@
 #include <base/utils/FindFile.h>
 #include <base/GsLogging.h>
 #include <base/video/CVideoDriver.h>
-#include "fileio.h"
+#include <fileio/fileio.h>
 #include "fileio/ResourceMgmt.h"
 #include "fileio/compression/CRLE.h"
 #include "engine/core/CBehaviorEngine.h"
@@ -107,7 +107,7 @@ void CVorticonMapLoaderBase::blitPlaneToMap(std::vector<Uint16> &planeitems,
 bool CVorticonMapLoaderBase::loadBase(  Uint8 episode, 
 					Uint8 level, 
 					const std::string& path, 
-					bool loadNewMusic )
+                    const bool loadNewMusic )
 {
     
 	std::vector<Uint16> planeitems;
@@ -129,16 +129,18 @@ bool CVorticonMapLoaderBase::loadBase(  Uint8 episode,
 	mpMap->m_gamepath = path;
 	mpMap->m_worldmap = (level == 80);
 
+    auto &musPlayer = gMusicPlayer;
+
 	// HQ Music. Load Music for a level if you have HQP
 	if(loadNewMusic)
 	{
-		gMusicPlayer.stop();
+        musPlayer.stop();
 
 		// If no music from the songlist could be loaded try the normal table which
 		// has another format. It is part of HQP
-		if(!gMusicPlayer.LoadfromSonglist(path, level))
+        if(!musPlayer.LoadfromSonglist(path, level))
         {
-            gMusicPlayer.LoadfromMusicTable(path, levelname);
+            musPlayer.LoadfromMusicTable(path, levelname);
         }
 	}
 

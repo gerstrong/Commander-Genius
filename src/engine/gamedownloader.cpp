@@ -102,7 +102,11 @@ int downloadFile(const std::string &filename, int &progress,
 {
     progressPtr = &progress;
 
-    const std::string urlString = "http://downloads.sourceforge.net/project/clonekeenplus/Downloads/" + filename;    
+#ifdef FORCE_HTTPS
+    const std::string urlString = "https://downloads.sourceforge.net/project/clonekeenplus/Downloads/" + filename;
+#else
+    const std::string urlString = "http://downloads.sourceforge.net/project/clonekeenplus/Downloads/" + filename;
+#endif // FORCE_HTTPS
     const std::string outputPathTemp = JoinPaths(downloadDirPath, "temp" + filename);
     const std::string outputPath = JoinPaths(downloadDirPath, filename);
 

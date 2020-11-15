@@ -30,7 +30,7 @@ public:
 	void increment();
 	void decrement();
 
-	bool sendEvent(const InpCmd command);
+    bool sendEvent(const InpCmd command) override;
 
 	int getSelection();
 	void setSelection( const int value );
@@ -39,7 +39,7 @@ public:
 
     std::string sliderStr();
 
-	void processRender(const GsRect<float> &RectDispCoordFloat);
+    void processRender(const GsRect<float> &RectDispCoordFloat) override;
 
     void setTextColor(const GsColor &color);
 

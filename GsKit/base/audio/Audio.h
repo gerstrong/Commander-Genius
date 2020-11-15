@@ -147,7 +147,9 @@ public:
 	std::list<std::string> getAvailableRateList() const;
 
     int getOplAmp() const;
+    int getPCSpeakerVol() const;
     void setOplAmp(const int percentage);
+    void setPcSpeakerVol(const int percentage);
 
 protected:
 
@@ -179,6 +181,7 @@ private:
     bool mPauseGameplay = false;
 
     Uint32 mOplBoost = 400;
+    Uint32 mPCSpeakerVol = 20;
 
 };
 

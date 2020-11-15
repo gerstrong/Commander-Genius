@@ -25,6 +25,8 @@
 #include "engine/keen/dreams/dreamscontrolpanel.h"
 #include "engine/keen/dreams/dreamsintro.h"
 
+#include <list>
+
 extern mapfiletype_modern  mapFile;
 
 extern "C"
@@ -169,7 +171,8 @@ id0_int_t			fadecount;
 id0_boolean_t		bombspresent;
 id0_int_t           bombsleftinlevel = 0;
 
-id0_boolean_t		openedStatusWindow;
+//id0_boolean_t		openedStatusWindow;
+std::list< std::function<void()> > msgBoxRenderTaskList;
 
 id0_boolean_t		lumpneeded[NUMLUMPS];
 id0_int_t			lumpstart[NUMLUMPS] =
@@ -262,7 +265,8 @@ void CheckKeys (void)
 //
     if (Keyboard[sc_Space])
 	{
-        openedStatusWindow = true;
+        msgBoxRenderTaskList.push_back(StatusWindow);
+        //openedStatusWindow = StatusWindow;
 		IN_ClearKeysDown();
 		RF_ForceRefresh();
 		lasttimecount = SD_GetTimeCount();
@@ -272,7 +276,7 @@ void CheckKeys (void)
 // pause key wierdness can't be checked as a scan code
 //
 	if (Paused)
-	{
+	{        
 		VW_FixRefreshBuffer ();
 		US_CenterWindow (8,3);
 		US_PrintCentered ("PAUSED");
@@ -774,10 +778,13 @@ void 	SetupGameLevel (id0_boolean_t loadnow)
 	{
 		if (bombspresent)
 		{
-			VW_FixRefreshBuffer ();
-			US_DrawWindow (10,1,20,2);
-			US_PrintCentered ("Boobus Bombs Near!");
-			VW_UpdateScreen ();
+            msgBoxRenderTaskList.push_back([]()
+            {
+                VW_FixRefreshBuffer ();
+                US_DrawWindow (10,1,20,2);
+                US_PrintCentered ("Boobus Bombs Near!");
+                RF_Refresh(false);
+            });
 		}
 #ifdef REFKEEN_VER_KDREAMS_CGA_ALL
 		CA_CacheMarks (levelnames[mapon]);
@@ -1600,6 +1607,34 @@ void PlayLoopInit()
     VW_UpdateScreen();
 }
 
+static bool displayDialogCycle()
+{
+    // Status screen code in which you have to press a key to close.
+    // Also it will render correctly
+    if(!msgBoxRenderTaskList.empty())
+    {
+       auto &msgBoxRenderTask = msgBoxRenderTaskList.front();
+
+       msgBoxRenderTask();
+
+       if(Keyboard[sc_Space] || gInput.getPressedAnyButtonCommand(0))
+       {
+           RF_ForceRefresh();
+
+           lasttimecount = SD_GetTimeCount();
+           IN_ClearKeysDown();
+           gInput.flushAll();
+
+           msgBoxRenderTaskList.pop_front();
+       }
+
+       RF_Refresh(false);
+
+       return false;
+    }
+
+    return true;
+}
 
 void PlayLoopRun()
 {
@@ -1610,30 +1645,8 @@ void PlayLoopRun()
     if (!c.button1)
         button1held = 0;
 
-
-    // Status screen code in which you have to press a key to close.
-    // Also it will render correctly
-    if(openedStatusWindow)
-    {
-       StatusWindow();
-
-       if(c.button0 || c.button1 ||
-          Keyboard[sc_Space] || gInput.getPressedAnyButtonCommand(0))
-       {
-           openedStatusWindow = false;
-           RF_ForceRefresh();
-
-           lasttimecount = SD_GetTimeCount();
-           IN_ClearKeysDown();
-           gInput.flushAll();
-       }
-
-       RF_Refresh(false);
-
-       return;
-    }
-
-
+    if(!displayDialogCycle())
+        return;
 
 //
 // go through state changes and propose movements
@@ -1758,6 +1771,8 @@ void PlayLoopRun()
 
 void startLevel();
 
+void GameFinale (void);
+
 
 void HandleDeath_Init (void);
 
@@ -1796,10 +1811,23 @@ void PlayLoop()
             GamePlayStartLevel();
         }
     }
+    else if(playstate == victorious)
+    {
+        if(!displayDialogCycle())
+            return;
+
+        GameFinale ();
+         /*
+        cities = 0;
+        for (i= 1; i<=16; i++)
+            if (gamestate.leveldone[i])
+                cities++;
+        US_CheckHighScore (gamestate.score,cities);
+        VW_ClearVideo (FIRSTCOLOR);
+        */
+    }
     else
     {
-        ingame = false;
-
         startLevel();
     }
 }
@@ -1807,13 +1835,16 @@ void PlayLoop()
 
 void PlayLoopRender()
 {
-    if(!playstate)
+    if(!playstate && msgBoxRenderTaskList.empty())
     {
         RF_Refresh(true);
     }
 }
 
 //==========================================================================
+
+bool mGamePlayRunning = false;
+
 
 /*
 ==========================
@@ -1829,75 +1860,95 @@ void GameFinale (void)
 
 	VW_FixRefreshBuffer ();
 
-/* screen 1 of finale text (16 lines) */
-	US_CenterWindow (30,21);
-	PrintY += 4;
-	US_CPrint (
-"Yes!  Boobus Tuber's hash-brown-\n"
-"like remains rained down from\n"
-"the skies as Commander Keen\n"
-"walked up to the Dream Machine.\n"
-"He analyzed all the complex\n"
-"controls and readouts on it, then\n"
-"pulled down a huge red lever\n"
-"marked \"On/Off Switch.\"  The\n"
-"machine clanked and rattled,\n"
-"then went silent. He had freed\n"
-"all the children from their\n"
-"vegetable-enforced slavery!\n"
-"Everything around Keen wobbled\n"
-"in a disconcerting manner, his\n"
-"eyelids grew heavy, and he\n"
-"fell asleep....\n"
-	);
-	VW_UpdateScreen();
-	VW_WaitVBL(60);
-	SD_WaitSoundDone ();
-	IN_ClearKeysDown ();
-	IN_Ack();
+    msgBoxRenderTaskList.push_back( []()
+    {
+        /* screen 1 of finale text (16 lines) */
+        US_CenterWindow (30,21);
+        PrintY += 4;
+        US_CPrint (
+                    "Yes!  Boobus Tuber's hash-brown-\n"
+                    "like remains rained down from\n"
+                    "the skies as Commander Keen\n"
+                    "walked up to the Dream Machine.\n"
+                    "He analyzed all the complex\n"
+                    "controls and readouts on it, then\n"
+                    "pulled down a huge red lever\n"
+                    "marked \"On/Off Switch.\"  The\n"
+                    "machine clanked and rattled,\n"
+                    "then went silent. He had freed\n"
+                    "all the children from their\n"
+                    "vegetable-enforced slavery!\n"
+                    "Everything around Keen wobbled\n"
+                    "in a disconcerting manner, his\n"
+                    "eyelids grew heavy, and he\n"
+                    "fell asleep....\n"
+                    );
+        VW_UpdateScreen();
+        VW_WaitVBL(60);
+        SD_WaitSoundDone ();
+        IN_ClearKeysDown ();
+        IN_Ack();
+    }
+    );
 
-/* screen 2 of finale (15 lines) */
-	US_CenterWindow (30,21);
-	PrintY += 9;
-	US_CPrint (
-"Billy woke up, looking around the\n"
-"room, the early morning sun\n"
-"shining in his face.  Nothing.\n"
-"No vegetables to be seen.  Was it\n"
-"all just a dream?\n\n"
-"Billy's mom entered the room.\n\n"
-"\"Good morning, dear. I heard some\n"
-"news on TV that you'd be\n"
-"interested in,\" she said, sitting\n"
-"by him on the bed.\n\n"
-"\"What news?\" Billy asked,\n"
-"still groggy.\n\n"
-	);
-	VW_UpdateScreen();
-	VW_WaitVBL(60);
-	IN_ClearKeysDown ();
-	IN_Ack();
+    msgBoxRenderTaskList.push_back( []()
+    {
+        /* screen 2 of finale (15 lines) */
+        US_CenterWindow (30,21);
+        PrintY += 9;
+        US_CPrint (
+                    "Billy woke up, looking around the\n"
+                    "room, the early morning sun\n"
+                    "shining in his face.  Nothing.\n"
+                    "No vegetables to be seen.  Was it\n"
+                    "all just a dream?\n\n"
+                    "Billy's mom entered the room.\n\n"
+                    "\"Good morning, dear. I heard some\n"
+                    "news on TV that you'd be\n"
+                    "interested in,\" she said, sitting\n"
+                    "by him on the bed.\n\n"
+                    "\"What news?\" Billy asked,\n"
+                    "still groggy.\n\n"
+                    );
+        VW_UpdateScreen();
+        VW_WaitVBL(60);
+        IN_ClearKeysDown ();
+        IN_Ack();
+    });
 
-/* screen 3 of finale (12 lines)*/
-	US_CenterWindow (30,21);
-	PrintY += 23;
-	US_CPrint (
-"\"The President declared today\n"
-"National 'I Hate Broccoli' Day.\n"
-"He said kids are allowed to pick\n"
-"one vegetable today, and they\n"
-"don't have to eat it.\"\n\n"
-"\"Aw, mom, I'm not afraid of any\n"
-"stupid vegetables,\" Billy said.\n"
-"\"But if it's okay with you, I'd\n"
-"rather not have any french fries\n"
-"for awhile.\"\n\n"
-"THE END"
-	);
-	VW_UpdateScreen();
-	VW_WaitVBL(60);
-	IN_ClearKeysDown ();
-	IN_Ack();
+    msgBoxRenderTaskList.push_back( []()
+    {
+
+        /* screen 3 of finale (12 lines)*/
+        US_CenterWindow (30,21);
+        PrintY += 23;
+        US_CPrint (
+                    "\"The President declared today\n"
+                    "National 'I Hate Broccoli' Day.\n"
+                    "He said kids are allowed to pick\n"
+                    "one vegetable today, and they\n"
+                    "don't have to eat it.\"\n\n"
+                    "\"Aw, mom, I'm not afraid of any\n"
+                    "stupid vegetables,\" Billy said.\n"
+                    "\"But if it's okay with you, I'd\n"
+                    "rather not have any french fries\n"
+                    "for awhile.\"\n\n"
+                    "THE END"
+                    );
+        VW_UpdateScreen();
+        VW_WaitVBL(60);
+        IN_ClearKeysDown ();
+        IN_Ack();
+    });
+
+
+    msgBoxRenderTaskList.push_back( []()
+    {
+        mGamePlayRunning = false;
+        playstate = resetgame;
+        gEventManager.add( new dreams::RestartGame );
+        msgBoxRenderTaskList.pop_back();
+    });
 }
 
 //==========================================================================
@@ -1920,7 +1971,9 @@ void HandleDeath_Init (void)
     gamestate.lives--;
     if (gamestate.lives < 0)
     {
-        // Make it to be gameover
+        // Make it to be gameover                
+        ingame = false;
+        GameOver ();
         gEventManager.add( new dreams::SwitchToIntro );
         gInput.flushAll();
         return;
@@ -2026,8 +2079,6 @@ void HandleDeath_Loop (void)
 ============================
 */
 
-bool mGamePlayRunning = false;
-
 void GamePlayStart()
 {
     VW_SetScreenMode (GRMODE);
@@ -2112,9 +2163,6 @@ void GameLoopOpen()
     gamestate.difficulty = restartgame;
     restartgame = gd_Continue;
 
-    openedStatusWindow = false;
-
-
     if( gamestate.lives>-1 && playstate!=victorious )
     {
 
@@ -2171,7 +2219,8 @@ void GameLoopOpen()
     else
     {
 
-    GameOver ();
+
+    gEventManager.add( new dreams::RestartGame );
 
 done: // !!
     cities = 0;

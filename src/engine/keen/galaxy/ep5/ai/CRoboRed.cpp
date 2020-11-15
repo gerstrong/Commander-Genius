@@ -74,26 +74,21 @@ mKeenNearby(false)
 	
 	xDirection = LEFT;
 
-    loadPythonScripts("robored");
     loadLuaScript("robored");
 
 
 }
 
-bool CRoboRed::loadPythonScripts(const std::string &scriptBaseName)
+bool CRoboRed::loadLuaScript(const std::string &scriptBaseName)
 {
-#if USE_PYTHON3
-    mModule.load( scriptBaseName, JoinPaths(gKeenFiles.gameDir ,"ai") );
+    CSpriteObject::loadLuaScript(scriptBaseName);
 
-    if(!mModule)
+    if(!mLua)
         return false;
 
-    loadAiGetterBool("isInvincible", mInvincible);
-    loadAiGetterBool("willNeverStop", mNeverStop);
-    loadAiGetterBool("alternateShoot", mAlternateShot);
-    loadAiGetterBool("mayJiggle", mJiggle);
+    mLua.runFunctionRetOneBool("alternateShoot", mAlternateShot);
+    mLua.runFunctionRetOneBool("mayJiggle", mJiggle);
 
-#endif
     return true;
 
 }
@@ -176,7 +171,10 @@ void CRoboRed::processShoot()
       }
       else
       {
-          playSound(SOUND_ROBORED_SHOOT);
+          if(mTimer%32 == 0)
+            this->playSound(SOUND_ROBORED_SHOOT);
+          else
+            this->playSound(SOUND_ROBORED_SHOOT2);
 
           spawnObj( new CRedShot( getMapPtr(),
                                   0,

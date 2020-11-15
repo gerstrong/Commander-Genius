@@ -12,6 +12,7 @@
 
 #include <base/utils/StringUtils.h>
 #include <map>
+#include <set>
 
 struct GsColor;
 
@@ -94,6 +95,8 @@ public:
 
 	// Keyword
 	std::string getFileName() const { return m_filename; }
+
+    std::set<std::string> getSectionList();
 
 	static KeywordList DefaultKeywords;
 protected:

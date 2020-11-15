@@ -14,7 +14,7 @@
 #include <algorithm>
 
 #include "CPlayGameVorticon.h"
-#include "audio/Audio.h"
+#include <base/audio/Audio.h>
 #include "engine/core/mode/CGameMode.h"
 #include "engine/core/menu/MainMenu.h"
 #include "engine/core/VGamepads/vgamepadsimple.h"
@@ -26,7 +26,7 @@
 #include "../finale/CEndingEp2.h"
 #include "../finale/CEndingEp3.h"
 
-#include "graphics/effects/CColorMerge.h"
+#include <graphics/CColorMerge.h>
 
 #include <fileio/KeenFiles.h>
 
@@ -290,8 +290,11 @@ void CPlayGameVorticon::pumpEvent(const CEvent *evPtr)
 
 }
 
+
+
 void CPlayGameVorticon::reloadBgMusic()
 {
+    gMusicPlayer.setIMFLoadTrackCallback(imfMusicTrackloader);
     gMusicPlayer.load(mCurMusicTrack);
 }
 

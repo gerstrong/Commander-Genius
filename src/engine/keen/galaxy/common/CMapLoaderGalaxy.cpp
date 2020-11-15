@@ -12,12 +12,12 @@
 #include "CMapLoaderGalaxy.h"
 #include <base/utils/StringUtils.h>
 #include <base/utils/FindFile.h>
+#include <base/audio/music/CMusic.h>
 #include <fileio/ResourceMgmt.h>
+#include <fileio/fileio.h>
 #include "fileio/compression/CCarmack.h"
 #include "fileio/compression/CRLE.h"
-#include "fileio.h"
 #include <base/video/CVideoDriver.h>
-#include "audio/music/CMusic.h"
 #include <base/GsLogging.h>
 #include "engine/core/CCamera.h"
 #include "fileio/KeenFiles.h"
@@ -446,28 +446,30 @@ void CMapLoaderGalaxy::spawnFoes(CMap &Map)
 	}
 
     // Extra Lua spawns
+    GsLua lua;
+    auto ok = lua.loadFile(
+                        JoinPaths(gKeenFiles.gameDir, "extraSpawn.lua"));
 
-#if USE_PYTHON3
-    auto pModule = gPython.loadModule( "extraSpawn", gKeenFiles.gameDir);
-
-    if (pModule != nullptr)
+    if(ok)
     {
         int forLevel = -1;
-        bool ok = loadIntegerFunc(pModule, "spawnForLevel", forLevel);
 
+        ok = lua.runFunctionRetOneInt("spawnForLevel", forLevel);
         if(ok && forLevel == Map.getLevel())
         {
             int numFoes = 0;
-            ok = loadIntegerFunc(pModule, "howMany", numFoes);
 
-            for(int i=0 ; i<numFoes ; i++)
+            ok = lua.runFunctionRetOneInt("howMany", numFoes);
+
+
+            for(int i=1 ; i<=numFoes ; i++)
             {
                 int foeIdx = -1;
                 std::array<int,2> coordArray;
 
-                loadIntegerFunc(pModule, "who", foeIdx, i);
-                loadIntegerFunc(pModule, "where_x", coordArray[0], i);
-                loadIntegerFunc(pModule, "where_y", coordArray[1], i);
+                lua.runFunctionRetOneInt("who", i, foeIdx);
+                lua.runFunctionRetOneInt("where_x", i, coordArray[0]);
+                lua.runFunctionRetOneInt("where_y", i, coordArray[1]);
 
                 std::shared_ptr<CGalaxySpriteObject> pNewfoe(
                             addFoe(Map, foeIdx,
@@ -480,7 +482,6 @@ void CMapLoaderGalaxy::spawnFoes(CMap &Map)
             }
         }
     }
-#endif
 
 
 

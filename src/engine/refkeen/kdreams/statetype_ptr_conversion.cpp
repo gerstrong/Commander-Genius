@@ -2018,6 +2018,7 @@ statetype* RefKeen_GetObjStatePtrFromDOSPointer_KDreamsE120(uint_fast32_t dosptr
 	case 0x278C: return &s_deathboom4;
 	case 0x27AA: return &s_deathboom5;
 	case 0x27C8: return &s_deathboom6;
+    default: break;
 	}
 	return NULL;
 }

@@ -11,7 +11,6 @@
 #include "../../common/ai/CEnemyShot.h"
 #include "../../common/ai/CBullet.h"
 #include <base/utils/misc.h>
-#include <base/GsPython.h>
 
 
 namespace galaxy {  
@@ -71,7 +70,6 @@ CAmpton::CAmpton(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y)
 
     xDirection = LEFT;
 
-    loadPythonScripts("ampton");
     loadLuaScript("ampton");
 
     if(diff > NINJA && foeID == 0x2C)
@@ -89,35 +87,6 @@ CAmpton::CAmpton(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y)
         mSprVar = 1;
         mHealthPoints += 1;
     }
-}
-
-
-bool CAmpton::loadPythonScripts(const std::string &scriptBaseName)
-{
-#if USE_PYTHON3
-
-    //mModule.load( scriptBaseName, JoinPaths(gKeenFiles.gameDir ,"ai") );
-
-    if(!mModule)
-        return false;
-
-
-    loadAiGetterBool("screamAfterShoot", mScreamAfterShoot);
-    loadAiGetterBool("mayShoot", mMayShoot);
-    loadAiGetterBool("allowClimbing", mAllowClimbing);
-
-    auto pModule = mModule.rawPtr();
-    int health = mHealthPoints;
-    loadAiGetterInteger(pModule, "healthPoints", health);
-    mHealthPoints = health;
-
-    int walksound = mWalkSound;
-    loadAiGetterInteger(pModule, "walkSound", walksound);
-    mWalkSound = GameSound(walksound);
-
-#endif
-
-    return true;
 }
 
 bool CAmpton::loadLuaScript(const std::string &scriptBaseName)
@@ -154,12 +123,12 @@ void CAmpton::processWalking()
     // Play tic toc sound
     if(getActionStatus(A_AMPTON_WALK))
     {
-        playSound(GameSound(walkSound));
+        this->playSound(GameSound(walkSound));
     }
     else if(getActionStatus(A_AMPTON_WALK+2))
     {
         walkSound++;
-        playSound(GameSound(walkSound));
+        this->playSound(GameSound(walkSound));
     }
     
     int l_x_l = getXLeftPos();

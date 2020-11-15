@@ -60,8 +60,19 @@ protected:
 
     void addBottomText();
 
-
     int mSelectedPlayer;
+};
+
+class CControlSettingsBaseWithMapping : public CControlSettingsBase
+{
+public:
+    CControlSettingsBaseWithMapping(const int selectedPlayer,
+                                    const Style style);
+
+    virtual void ponder(const float deltaT);
+    virtual void release();
+
+protected:
 
     std::map<InpCmd, std::shared_ptr<GameButton> > mpButtonMap;
     std::map<InpCmd, std::string> mCommandName;
@@ -70,25 +81,26 @@ protected:
 };
 
 
+
 // Movement config Part
-class CControlSettingsMovement : public CControlSettingsBase
+class CControlSettingsMovement : public CControlSettingsBaseWithMapping
 {
 public:
     CControlSettingsMovement(const int selectedPlayer,
                              const Style style) :
-        CControlSettingsBase(selectedPlayer, style) {}
+        CControlSettingsBaseWithMapping(selectedPlayer, style) {}
 
     void refresh() override;
 };
 
 
-// Movement config Part
-class CControlSettingsMoveDiag : public CControlSettingsBase
+// Movement config Part (Diagonal part)
+class CControlSettingsMoveDiag : public CControlSettingsBaseWithMapping
 {
 public:
     CControlSettingsMoveDiag(const int selectedPlayer,
                              const Style style) :
-        CControlSettingsBase(selectedPlayer, style) {}
+        CControlSettingsBaseWithMapping(selectedPlayer, style) {}
 
     void refresh() override;
 };
@@ -96,21 +108,44 @@ public:
 
 
 // Game play action config Part
-class CControlSettingsGameplayActions : public CControlSettingsBase
+class CControlSettingsGameplayActions : public CControlSettingsBaseWithMapping
 {
 public:
     CControlSettingsGameplayActions(const int selectedPlayer,
+                            const Style &style) :
+        CControlSettingsBaseWithMapping(selectedPlayer, style) {}
+
+    void refresh() override;
+};
+
+// Misc config Part
+class CControlSettingsMisc : public CControlSettingsBaseWithMapping
+{
+public:
+    CControlSettingsMisc(const int selectedPlayer,
+                            const Style &style) :
+        CControlSettingsBaseWithMapping(selectedPlayer, style) {}
+
+    void refresh() override;
+};
+
+
+// Load Presets
+class CControlSettingsLoadPreset : public CControlSettingsBase
+{
+public:
+    CControlSettingsLoadPreset(const int selectedPlayer,
                             const Style &style) :
         CControlSettingsBase(selectedPlayer, style) {}
 
     void refresh() override;
 };
 
-// Misc config Part
-class CControlSettingsMisc : public CControlSettingsBase
+// Save Presets
+class CControlSettingsSavePreset : public CControlSettingsBase
 {
 public:
-    CControlSettingsMisc(const int selectedPlayer,
+    CControlSettingsSavePreset(const int selectedPlayer,
                             const Style &style) :
         CControlSettingsBase(selectedPlayer, style) {}
 

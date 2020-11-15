@@ -10,8 +10,8 @@
 
 #include "engine/core/CBehaviorEngine.h"
 #include "engine/core/CSettings.h"
-#include "audio/music/CMusic.h"
-#include "audio/Audio.h"
+#include <base/audio/music/CMusic.h>
+#include <base/audio/Audio.h>
 
 
 CAudioSettings::CAudioSettings(const Style &style) :
@@ -59,6 +59,10 @@ GameMenu(GsRect<float>(0.075f, 0.24f, 0.85f, 0.4f), style )
         mpMenuDialog->add( new NumberControl( "OPL Amp", 100, 400, 10, false,
                                               gAudio.getOplAmp(), style ) );
 
+    mpPCSpeakerAmp =
+        mpMenuDialog->add( new NumberControl( "PC Speaker Vol", 0, 100, 10, false,
+                                              gAudio.getPCSpeakerVol(), style ) );
+
 
 	setMenuLabel("SNDEFFMENULABEL");
 
@@ -69,15 +73,17 @@ GameMenu(GsRect<float>(0.075f, 0.24f, 0.85f, 0.4f), style )
 
 void CAudioSettings::refresh()
 {
-    mAudioSpec    = gAudio.getAudioSpec();
-	mSoundblaster = gAudio.getSoundBlasterMode();
-    mSoundVolume  = mpSoundVolume->getSelection();
-    mMusicVolume  = mpMusicVolume->getSelection();
-    mOplBoost     = mpOPLAmp->getSelection();
+    mAudioSpec       = gAudio.getAudioSpec();
+    mSoundblaster    = gAudio.getSoundBlasterMode();
+    mSoundVolume     = mpSoundVolume->getSelection();
+    mMusicVolume     = mpMusicVolume->getSelection();
+    mOplBoost        = mpOPLAmp->getSelection();
+    mPcSpeakerVolume = mpPCSpeakerAmp->getSelection();
 
     mpSoundVolume->setSelection(gAudio.getSoundVolume());
     mpMusicVolume->setSelection(gAudio.getMusicVolume());
     mpOPLAmp->setSelection(gAudio.getOplAmp());
+    mpPCSpeakerAmp->setSelection(gAudio.getPCSpeakerVol());
 
 #if !defined(EMBEDDED)
 	mpRate->setSelection( itoa(mAudioSpec.freq) );
@@ -101,13 +107,15 @@ void CAudioSettings::ponder(const float deltaT)
 		gAudio.playSound(SOUND_GET_ITEM);
     }
 
-	mSoundVolume = mpSoundVolume->getSelection();
-    mMusicVolume = mpMusicVolume->getSelection();
-    mOplBoost    = mpOPLAmp->getSelection();
+    mSoundVolume     = mpSoundVolume->getSelection();
+    mMusicVolume     = mpMusicVolume->getSelection();
+    mOplBoost        = mpOPLAmp->getSelection();
+    mPcSpeakerVolume = mpPCSpeakerAmp->getSelection();
 
     gAudio.setSoundVolume( mSoundVolume );
     gAudio.setMusicVolume( mMusicVolume );
     gAudio.setOplAmp( mOplBoost );
+    gAudio.setPcSpeakerVol( mPcSpeakerVolume );
 }
 
 

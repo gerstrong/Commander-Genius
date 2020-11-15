@@ -10,8 +10,8 @@
 #include "../../common/dialog/CMessageBoxBitmapGalaxy.h"
 #include "engine/core/mode/CGameMode.h"
 #include <base/utils/misc.h>
-#include "audio/Audio.h"
-#include "audio/music/CMusic.h"
+#include <base/audio/Audio.h>
+#include <base/audio/music/CMusic.h>
 #include "fileio/KeenFiles.h"
 #include "../../menu/ComputerWrist.h"
 #include <typeinfo>
@@ -51,6 +51,9 @@ m_timer(0)
     byte *ptr = gKeenFiles.exeFile.getRawData();
 	ptr += 0x6AE6;
 	memcpy(&NumberToRescue, ptr, 1 );
+
+    const auto fullFName = JoinPaths(gKeenFiles.gameDir, "council.lua");
+    mLua.loadFile(fullFName);
 }
 
 
@@ -173,24 +176,24 @@ void CCouncilMember::getTouchedBy(CSpriteObject &theObject)
 
 		std::string elder_text[2];
 
-        // Python3 own dialogs
+        // Lua custom dialogs
         bool customDlgs = false;
 
-        #if USE_PYTHON3
-
-        auto pModule = gPython.loadModule( "messageMap", gKeenFiles.gameDir );
-
-        if (pModule != nullptr)
+        if(mLua)
         {
+            std::string value;
             customDlgs = true;
 
             int level = mpMap->getLevel();
-            bool ok = true;
-            ok &= loadStrFunction(pModule, "getMemberDialog", elder_text[0], level);
-            ok &= loadStrFunction(pModule, "getMemberAnswer", elder_text[1], level);
-        }
 
-        #endif
+            auto ok = mLua.runFunctionRetOneStr("getMemberDialog", level, value);
+
+            if(ok) elder_text[0] = value;
+
+            ok = mLua.runFunctionRetOneStr("getMemberAnswer", level, value);
+
+            if(ok) elder_text[1] = value;
+        }
 
         if(!customDlgs)
         {

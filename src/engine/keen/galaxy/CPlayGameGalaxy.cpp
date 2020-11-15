@@ -18,10 +18,11 @@
 #include "graphics/GsGraphics.h"
 #include "common/dialog/CMessageBoxBitmapGalaxy.h"
 #include "common/dialog/CMessageBoxSelection.h"
-#include "audio/Audio.h"
-#include "audio/music/CMusic.h"
-#include "graphics/effects/CColorMerge.h"
-#include "graphics/effects/CDimDark.h"
+
+#include <base/audio/Audio.h>
+#include <base/audio/music/CMusic.h>
+#include <graphics/CColorMerge.h>
+#include <graphics/CDimDark.h>
 #include "fileio/CSaveGameController.h"
 
 #include "ep4/ai/CInchWorm.h"
@@ -453,15 +454,15 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
 
         int newLevel = 0;
 
-#if USE_PYTHON3
-        const int oldLevel = m_LevelPlay.getLevelIdx();
-        auto pModule = gPython.loadModule( "exitToLevel", gKeenFiles.gameDir);
+        GsLua lua;
+        const auto ok = lua.loadFile(
+                            JoinPaths(gKeenFiles.gameDir, "exitToLevel.lua"));
 
-        if (pModule != nullptr)
+        if(ok)
         {
-             loadIntegerFunc(pModule, "exitTo", newLevel, oldLevel);
+            const int oldLevel = m_LevelPlay.getLevelIdx();
+            lua.runFunctionRetOneInt("exitTo", oldLevel, newLevel);
         }
-#endif
 
         std::string levelLoadText = "LEVEL";
         levelLoadText += itoa(newLevel);

@@ -79,6 +79,8 @@ void InitSearchPaths(const std::string &cfgFname)
 	InitBaseSearchPaths();
 
 	int i = 1;
+
+#ifndef ANDROID
 	while(true)
 	{
 
@@ -93,6 +95,7 @@ void InitSearchPaths(const std::string &cfgFname)
 		AddToFileList(&tSearchPaths, value);
 		i++;
 	}
+#endif // ANDROID
 
     // If no search path could be read, pass the base paths
     if(tSearchPaths.empty())
@@ -499,8 +502,9 @@ void InitBaseSearchPaths()
 #else // all other systems (Linux, *BSD, OS/2, ...)
 #ifdef ANDROID
 	//AddToFileList(&basesearchpaths, "${HOME}/SaveData");
-	AddToFileList(&basesearchpaths, SDL_AndroidGetInternalStoragePath());
-	AddToFileList(&basesearchpaths, "/storage/emulated/0/Android/data/net.sourceforge.clonekeenplus/files/SaveData");
+    AddToFileList(&basesearchpaths, SDL_AndroidGetExternalStoragePath());
+    AddToFileList(&basesearchpaths, SDL_AndroidGetInternalStoragePath());
+    AddToFileList(&basesearchpaths, "/storage/emulated/0/Android/data/net.sourceforge.clonekeenplus/files/SaveData");
 #else
 	AddToFileList(&basesearchpaths, "${HOME}/.CommanderGenius");
 #endif

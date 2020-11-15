@@ -2,8 +2,8 @@
 include_directories(${SDL_INCLUDE_DIR})
 
 
-add_library(sdl_extensions_audio_music STATIC CIMFPlayer.cpp CIMFPlayer.h
-                                              CMusic.cpp CMusic.h
+add_library(sdl_extensions_audio_music STATIC CMusic.cpp CMusic.h
+                                              CIMFPlayer.cpp  CIMFPlayer.h
                                               CMusicPlayer.cpp CMusicPlayer.h)
 
 if(USE_SDL2)

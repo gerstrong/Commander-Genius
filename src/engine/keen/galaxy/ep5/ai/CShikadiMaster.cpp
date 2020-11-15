@@ -60,25 +60,8 @@ CStunnable(pmap, foeID, x, y)
     xDirection = LEFT;
     mKeenAlignment = LEFT;
 
-    loadPythonScripts("shikadimaster");
     loadLuaScript("shikadimaster");
 }
-
-bool CShikadiMaster::loadPythonScripts(const std::string &scriptBaseName)
-{
-#if USE_PYTHON3
-
-    mModule.load( scriptBaseName, JoinPaths(gKeenFiles.gameDir ,"ai") );
-
-    if(!mModule)
-        return false;
-
-    loadAiGetterBool(mModule.rawPtr(), "moreAgressive", mMoreAgressive);
-
-#endif
-    return true;
-}
-
 
 
 void CShikadiMaster::processStanding()
@@ -169,7 +152,7 @@ void CShikadiMaster::processShooting()
     
     mTimer = 0;
         
-    playSound(SOUND_MASTERSHOT);
+    this->playSound(SOUND_MASTERSHOT);
     setAction(A_MASTER_STAND);        
 }
 
@@ -207,7 +190,7 @@ void CShikadiMaster::processTeleporting()
 	CheckGround(new_object,ACTION_MASTERSPARKS0);
 	*/
 
-	playSound(SOUND_MASTERTELE);
+    this->playSound(SOUND_MASTERTELE);
 
 	int triesLeft = 10;
 

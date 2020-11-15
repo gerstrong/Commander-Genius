@@ -8,8 +8,8 @@
 #include "CEndingEp3.h"
 #include <base/utils/StringUtils.h>
 #include <base/CInput.h>
-#include "graphics/effects/CFlash.h"
-#include "graphics/GsGraphics.h"
+#include <graphics/CFlash.h>
+#include <graphics/GsGraphics.h>
 #include "../CVorticonMapLoader.h"
 #include "engine/core/Playerdefines.h"
 

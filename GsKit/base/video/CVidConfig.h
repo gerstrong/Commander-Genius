@@ -87,7 +87,8 @@ public:
 #else
     bool mVPad = false;
 #endif
-    int mVPadSize = 150;
+    int mVPadWidth = 150;
+    int mVPadHeight = 150;
 #endif
 
 	GsRect<int> mAspectCorrection;

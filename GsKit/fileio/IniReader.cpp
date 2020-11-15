@@ -125,6 +125,18 @@ parseCleanup:
 	return res;
 }
 
+std::set<std::string> IniReader::getSectionList()
+{
+    std::set<std::string> mySet;
+
+    for(auto &secPair : m_sections)
+    {
+        mySet.insert(secPair.first);
+    }
+
+    return mySet;
+}
+
 void IniReader::NewSection(const std::string& name)
 {
 	m_curSection = &m_sections[name];

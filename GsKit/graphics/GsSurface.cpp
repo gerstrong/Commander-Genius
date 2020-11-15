@@ -353,6 +353,35 @@ setAlpha(const unsigned char alpha)
 #endif
 }
 
+
+void
+GsWeakSurface::
+setColorMask(const unsigned char r,
+                  const unsigned char g,
+                  const unsigned char b)
+{
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    SDL_SetColorKey(mpSurface, SDL_TRUE, mapRGB(r, g, b));
+    SDL_SetSurfaceBlendMode(mpSurface, SDL_BLENDMODE_BLEND);
+#else
+    SDL_SetColorKey( mpSurface, SDL_SRCCOLORKEY, mapRGB(r, g, b) );
+#endif
+}
+
+
+void
+GsWeakSurface::
+setPaletteColors(void *Palette, const int numColors)
+{
+    auto *pal = reinterpret_cast<SDL_Color *>(Palette);
+
+    #if SDL_VERSION_ATLEAST(2, 0, 0)
+        SDL_SetPaletteColors(mpSurface->format->palette, pal, 0, numColors);
+    #else
+        SDL_SetColors(mpSurface, pal, 0, numColors);
+    #endif
+}
+
 void
 GsWeakSurface::
 setColorKey(unsigned int key)
@@ -396,6 +425,43 @@ readColorKey(Uint8 &r,
 #endif
 
 
+
+Uint8
+GsWeakSurface::
+getAlpha()
+{
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    Uint8 alpha = 0;
+    SDL_GetSurfaceAlphaMod(mpSurface, &alpha);
+    return alpha;
+#else
+    return mpSurface->format->alpha;
+#endif
+}
+
+
+void
+GsWeakSurface::
+setBlendMode(const int mode)
+{
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    SDL_SetSurfaceBlendMode( mpSurface, SDL_BlendMode(mode) );
+#endif
+}
+
+
+int
+GsWeakSurface::
+getBlendMode() const
+{
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    SDL_BlendMode blend;
+    SDL_GetSurfaceBlendMode( mpSurface, &blend );
+    return int(blend);
+#else
+    return 0;
+#endif
+}
 
 void
 GsWeakSurface::

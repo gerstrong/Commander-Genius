@@ -1,4 +1,5 @@
 #include "dreamsgameplay.h"
+#include "dreamsintro.h"
 
 #include <base/CInput.h>
 
@@ -14,7 +15,10 @@ void 	PlayLoop();
 void 	PlayLoopRender();
 
 
+
 extern bool ResumeGame;
+extern bool	ingame;
+extern bool mGamePlayRunning;
 
 }
 
@@ -55,6 +59,7 @@ void DreamsGamePlay::pumpEvent(const CEvent *evPtr)
 
         mPlayloopPtr = &PlayLoop;
         mPlayloopRenderPtr = &PlayLoopRender;        
+        gInput.flushAll();
     }
     if( dynamic_cast<const CompleteLevel*>(evPtr) )
     {
@@ -62,11 +67,18 @@ void DreamsGamePlay::pumpEvent(const CEvent *evPtr)
         mPlayloopPtr = nullptr;
         mPlayloopRenderPtr = nullptr;        
         GamePlayStartLevel();
+        gInput.flushAll();
     }
-    /*if( dynamic_cast<const RestartGame*>(evPtr) )
+    if( dynamic_cast<const RestartGame*>(evPtr) )
     {
-
-    }*/
+        processLevelcomplete();
+        mPlayloopPtr = nullptr;
+        mPlayloopRenderPtr = nullptr;
+        ingame = false;
+        mGamePlayRunning = false;
+        gEventManager.add( new SwitchToIntro );
+        gInput.flushAll();
+    }
 }
 
 

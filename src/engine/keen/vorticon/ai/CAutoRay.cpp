@@ -7,7 +7,7 @@
  */
 
 #include "engine/core/spritedefines.h"
-#include "audio/Audio.h"
+#include <base/audio/Audio.h>
 #include "engine/core/CBehaviorEngine.h"
 #include "CRay.h"
 #include "CAutoRay.h"

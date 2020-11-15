@@ -20,13 +20,15 @@
 #include <graphics/GsGraphics.h>
 #include <base/utils/FindFile.h>
 #include <base/utils/StringUtils.h>
-#include <widgets/GsMenuController.h>
+#include <base/audio/Audio.h>
 #include <base/GsArguments.h>
+
+#include <widgets/GsMenuController.h>
 
 #include "core/VGamepads/vgamepadsimple.h"
 #include "core/mode/CGameMode.h"
 #include "core/menu/SettingsMenu.h"
-#include "audio/Audio.h"
+
 #include "fileio/ResourceMgmt.h"
 #include "fileio/KeenFiles.h"
 

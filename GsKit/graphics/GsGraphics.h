@@ -94,7 +94,11 @@ public:
     
     void optimizeSprites();
 
-    GsFontLegacy &getFontLegacy(Uint8 index);
+    GsFontLegacy &getFontLegacy(const int index);
+
+    bool isLegacyFontEmpty();
+
+    int getNumLegacyFonts();
 	
     GsPalette Palette;
 

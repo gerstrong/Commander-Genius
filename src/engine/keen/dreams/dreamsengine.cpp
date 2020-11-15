@@ -1,6 +1,7 @@
 #include "dreamsengine.h"
 
 #include "engine/core/CBehaviorEngine.h"
+#include "engine/core/VGamepads/vgamepadsimple.h"
 #include "engine/keen/KeenEngine.h"
 #include <base/GsLogging.h>
 #include <base/GsTimer.h>
@@ -403,6 +404,26 @@ void DreamsEngine::applyScreenMode()
 bool DreamsEngine::start()
 {
     CExeFile &ExeFile = gKeenFiles.exeFile;
+
+#ifdef USE_VIRTUALPAD
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    gInput.mpVirtPad.reset(new VirtualKeenControl);
+    gInput.mpVirtPad->init();
+
+    if( gVideoDriver.VGamePadEnabled() )
+    {
+        VirtualKeenControl *vkc = dynamic_cast<VirtualKeenControl*>(gInput.mpVirtPad.get());
+        assert(vkc);
+        vkc->hideAllButtons();
+        vkc->mDPad.invisible = false;
+        vkc->mJumpButton.invisible = false;
+        vkc->mPogoButton.invisible = false;
+        vkc->mShootButton.invisible = false;
+        vkc->mStatusButton.invisible = false;
+        vkc->mMenuButton.invisible = false;
+    }
+#endif
+#endif
 
     //mLoader.setPermilage(10);
 

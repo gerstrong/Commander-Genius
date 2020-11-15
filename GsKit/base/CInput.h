@@ -266,13 +266,13 @@ public:
                             int action,
                             const std::string &string );
 
-	void loadControlconfig();
+    void loadControlconfig(const std::string &presetName);
 	void resetControls(int player);
 
     void openJoyAndPrintStats(const int idx);
     void enableJoysticks();
 	bool startJoyDriver();
-	void saveControlconfig();
+    void saveControlconfig(const std::string &presetName);
 
     void flushCommands();
 	void flushCommand(int command);

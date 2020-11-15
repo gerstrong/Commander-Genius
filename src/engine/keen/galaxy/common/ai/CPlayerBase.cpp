@@ -11,7 +11,7 @@
 #include "CBullet.h"
 #include <base/CInput.h>
 #include <base/video/CVideoDriver.h>
-#include "audio/Audio.h"
+#include <base/audio/Audio.h>
 #include "../../common/dialog/CMessageBoxBitmapGalaxy.h"
 
 namespace galaxy {
@@ -181,7 +181,8 @@ CPlayerBase(CMap *pmap,
     mpMap->calcVisibleArea();
     mpMap->refreshVisibleArea();
 
-    //mModule.load("constants", gKeenFiles.gameDir);
+    const auto fullFName = JoinPaths(gKeenFiles.gameDir, "player.lua");
+    mLua.loadFile(fullFName);
 }
 
 
@@ -477,28 +478,29 @@ void CPlayerBase::processLevelMiscFlagsCheck()
       playSound( SOUND_GET_DROP );
 	}
 
-#if USE_PYTHON3
 
-        int value = 0;
-
-        if (mModule)
+    if(mLua)
+    {
+        for( Uint32 i=21 ; i<=28 ; i++ )
         {
-            for( Uint32 i=21 ; i<=28 ; i++ )
+            if(hitdetectWithTilePropertyRect(i, l_x, l_y, l_w, l_h, 2<<STC))
             {
-                if(hitdetectWithTilePropertyRect(i, l_x, l_y, l_w, l_h, 2<<STC))
-                {
-                    mModule.loadIntegerFunc("defineSlipperyTile", value, int(i));
+                int value = 0;
+                mLua.runFunctionRetOneInt("defineSlipperyTile",
+                                          int(i),
+                                          value);
 
-                    if(value>0)
-                    {
-                        xinertia = xDirection * 16;
-                        moveXDir(xinertia*5);
-                        return;
-                    }
+                if(value>0)
+                {
+                    xinertia = xDirection * 16;
+                    moveXDir(xinertia*5);
+                    return;
                 }
             }
         }
-#endif
+
+
+    }
 
 	/// Tile Items (Sprite-Items are handled in the CSpriteItem Class)
 	// All the collectable items go from 21 to 28

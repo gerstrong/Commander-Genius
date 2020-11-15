@@ -13,10 +13,9 @@
 #include <cassert>
 
 #include <base/GsLogging.h>
+#include <base/audio/Audio.h>
 
 #include <SDL_mixer.h>
-
-#include "audio/Audio.h"
 
 int CSoundChannel::mTotNumChannels = 0;
 

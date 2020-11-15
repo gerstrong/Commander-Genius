@@ -13,8 +13,8 @@
 #include "CRay.h"
 #include "CBridges.h"
 #include "engine/core/spritedefines.h"
-#include "audio/Audio.h"
-#include "audio/music/CMusic.h"
+#include <base/audio/Audio.h>
+#include <base/audio/music/CMusic.h>
 #include "graphics/GsGraphics.h"
 #include "engine/core/CPhysicsSettings.h"
 
