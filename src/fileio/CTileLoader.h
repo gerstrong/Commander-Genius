@@ -49,7 +49,7 @@ private:
 	void assignChangeTileAttribute(std::vector<CTileProperties> &TilePropertiesVec);
 
     /**
-     * @brief readOffsetMapfromFile If python script is given, a tli file.
+     * @brief readOffsetMapfromFile If lua script is given, a tli file.
      * @param tileFname Tileset file to consider.
      * @param tileData vector of bytes where the loaded data is stored.
      * @return true if everything went fine. otherwise false

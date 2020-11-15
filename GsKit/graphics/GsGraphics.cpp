@@ -306,8 +306,19 @@ std::vector<GsSprite> &GsGraphics::getSpriteVec(const int var)
 GsSprite &GsGraphics::getSpecialSpriteRef(const std::string &name)
 {   return mSpecialSpriteMap[name];    }
 
-GsFontLegacy &GsGraphics::getFontLegacy(Uint8 index)
+GsFontLegacy &GsGraphics::getFontLegacy(const int index)
 {    return mFontLegacyVec.at(index); }
+
+bool GsGraphics::isLegacyFontEmpty()
+{
+    return mFontLegacyVec.empty();
+}
+
+int GsGraphics::getNumLegacyFonts()
+{
+    return mFontLegacyVec.size();
+}
+
 
 GsBitmap *GsGraphics::getBitmapFromStr(const size_t sprVar,
                                        const std::string &name) const

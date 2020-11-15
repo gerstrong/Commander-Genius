@@ -8,7 +8,8 @@
 #include "CSpriteItem.h"
 #include "CItemEffect.h"
 #include "CPlayerBase.h"
-#include "audio/Audio.h"
+
+#include <base/audio/Audio.h>
 
 namespace galaxy {
 

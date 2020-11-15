@@ -5,6 +5,7 @@
  *      Author: gerstrong
  */
 
+#include "fileio/CConfiguration.h"
 #include <base/utils/StringUtils.h>
 
 
@@ -14,6 +15,21 @@
 
 #include <base/CInput.h>
 
+#include "widgets/InputText.h"
+
+#include <algorithm>
+
+static std::vector<std::string> defaultPresets =
+{
+    "XInput",
+    "DInput",
+    "Keyboard",
+    "ClonePadA",
+    "ClonePadB",
+    "ClonePadC",
+    "ClonePadD",
+    "ClonePadE"
+};
 
 
 /**
@@ -58,6 +74,17 @@ CControlsettings::CControlsettings(const int selectedPlayer ,
 GameMenu( GsRect<float>(0.1f, 0.25f, 0.8f, 0.5f), style ),
 mSelectedPlayer(selectedPlayer)
 {
+    mpMenuDialog->add(
+                new GameButton( "Load Preset",
+                                [this]()
+                                {
+                                  gEventManager.add( new OpenMenuEvent(
+                                    new CControlSettingsLoadPreset(mSelectedPlayer,
+                                                             this->getStyle()) ) );
+                                },
+                                style )  );
+
+
     mpMenuDialog->add(
                 new GameButton( "Movement",
                                 [this]()
@@ -117,17 +144,17 @@ mSelectedPlayer(selectedPlayer)
             mpMenuDialog->add( new Switch( "Auto Gun", style ) );
 	mpAutoGunSwitch->enable(gInput.AutoGun(mSelectedPlayer-1));
 
+
     mpMenuDialog->add(
-           new GameButton( "Reset Controls",
-                           [this]()
-                           {
-                               const auto sel =
-                                             this->mSelectedPlayer-1;
-                               assert(sel>=0);
-                               gInput.resetControls(sel);
-                               gEventManager.add( new CloseMenuEvent() );
-                           },
-                           style ) );
+                new GameButton( "Save Preset",
+                                [this]()
+                                {
+                                  gEventManager.add( new OpenMenuEvent(
+                                    new CControlSettingsSavePreset(mSelectedPlayer,
+                                                             this->getStyle()) ) );
+                                },
+                                style )  );
+
     
     setMenuLabel("KEYBMENULABEL");
 
@@ -146,7 +173,7 @@ void CControlsettings::release()
 	gInput.setSuperPogo(mSelectedPlayer-1, mpSuperPogoSwitch->isEnabled() );
 	gInput.setImpossiblePogo(mSelectedPlayer-1, mpImpPogoSwitch->isEnabled() );
 	gInput.setAutoGun(mSelectedPlayer-1, mpAutoGunSwitch->isEnabled() );
-	gInput.saveControlconfig();
+    gInput.saveControlconfig("");
 }
 
 
@@ -165,8 +192,18 @@ mSelectedPlayer(selectedPlayer)
 
 }
 
+CControlSettingsBaseWithMapping::
+CControlSettingsBaseWithMapping(const int selectedPlayer,
+                                const Style style) :
+CControlSettingsBase(selectedPlayer, style) {}
+
 
 void CControlSettingsBase::ponder(const float deltaT)
+{
+    GameMenu::ponder(deltaT);
+}
+
+void CControlSettingsBaseWithMapping::ponder(const float deltaT)
 {
     if( !mapping && gInput.MappingInput() ) // mapping changed!
     {
@@ -179,7 +216,7 @@ void CControlSettingsBase::ponder(const float deltaT)
             mapping = false;
 
             int pos; unsigned char input;
-            std::string evName = gInput.getNewMappedEvent(pos, input);            
+            std::string evName = gInput.getNewMappedEvent(pos, input);
 
             InpCmd com = static_cast<InpCmd>(pos);
 
@@ -187,7 +224,7 @@ void CControlSettingsBase::ponder(const float deltaT)
         }
     }
 
-    GameMenu::ponder(deltaT);
+    CControlSettingsBase::ponder(deltaT);
 }
 
 void CControlSettingsBase::addBottomText()
@@ -204,10 +241,15 @@ void CControlSettingsBase::addBottomText()
 
 void CControlSettingsBase::release()
 {
+    gInput.saveControlconfig("");
+}
+
+void CControlSettingsBaseWithMapping::release()
+{
     if(!mCommandName.empty())
         mCommandName.clear();
 
-    gInput.saveControlconfig();
+    CControlSettingsBase::release();
 }
 
 
@@ -216,7 +258,7 @@ void CControlSettingsMovement::refresh()
     mapping = false;
 	mCommandName[IC_LEFT]		= "Left:   ";
 	mCommandName[IC_RIGHT]		= "Right:  ";
-	mCommandName[IC_UP]		= "Up:     ";
+    mCommandName[IC_UP]		    = "Up:     ";
 	mCommandName[IC_DOWN]		= "Down:   ";
 
     if(!mpButtonMap.empty())
@@ -379,3 +421,120 @@ void CControlSettingsMisc::refresh()
     addBottomText();
 }
 
+void readPresetList(std::vector<std::string> &presetList,
+                    const int playerIdx)
+{
+    CConfiguration configuration;
+    if(configuration.Parse())
+    {
+        auto secListUnfiltered = configuration.getSectionList();
+        decltype (secListUnfiltered) secList;
+
+        for( const auto &sec : secListUnfiltered )
+        {
+            const std::string inputStr = "input" + itoa(playerIdx) + "-";
+            const auto pos = sec.find(inputStr);
+
+            if(pos == sec.npos)
+                continue;
+
+            presetList.push_back( sec.substr(inputStr.length()) );
+        }
+    }
+}
+
+// Presets part
+void CControlSettingsLoadPreset::refresh()
+{
+    const auto playerIdx = this->mSelectedPlayer-1;
+
+    auto refreshControlMenus = [this](const int player)
+    {
+        gEventManager.add( new CloseMenuEvent(false) );
+        gEventManager.add( new CloseMenuEvent(false) );
+
+        gEventManager.add(new OpenMenuEvent(
+                              new CControlsettings(player, getStyle()) ));
+    };
+
+
+    mpMenuDialog->add(
+           new GameButton( "Factory Default",
+                           [this, refreshControlMenus]()
+                           {
+                               const auto sel =
+                                             this->mSelectedPlayer-1;
+                               assert(sel>=0);
+                               gInput.resetControls(sel);
+                               refreshControlMenus(sel+1);
+                           },
+                           getStyle() ) );
+
+
+    // Load preset list
+    std::vector<std::string> presetList;
+
+    readPresetList(presetList, playerIdx);
+
+    for(int i=0 ; i<8 ; i++)
+    {
+        std::string text = "<new>";
+        if(i < int(presetList.size()))
+            text = presetList.at(i);
+        else
+            continue;
+
+        auto input =
+                mpMenuDialog->add( new InputText(
+                                       text,
+                                       GsRect<float>(
+                                           0.0f, 0.1f+(i*0.1f),
+                                           1.0f, 0.1f), i,
+                                       getStyle() ) );
+
+        input->setActivationEvent([this, input, text, refreshControlMenus]()
+        {
+            input->setReleased(false);
+            gInput.loadControlconfig(text);
+            gInput.saveControlconfig("");
+
+            const auto sel = this->mSelectedPlayer-1;
+            assert(sel>=0);
+            refreshControlMenus(sel+1);
+        });
+    }
+
+    setMenuLabel("BUTTONMENULABEL");
+    mpMenuDialog->fit();
+    addBottomText();
+}
+
+void CControlSettingsSavePreset::refresh()
+{
+     // Load the presets list
+     std::vector<std::string> presetList = defaultPresets;
+
+     for(int i=0 ; i<8 ; i++)
+     {
+         std::string text = "<new>";
+         if(i < int(presetList.size()))
+             text = presetList.at(i);
+         else
+             continue;
+
+         auto input =
+                 mpMenuDialog->add( new InputText(
+                                        text,
+                                        GsRect<float>(
+                                            0.0f, 0.1f+(i*0.1f),
+                                            1.0f, 0.1f), i,
+                                        getStyle() ) );
+
+         input->setActivationEvent([text,input]()
+         {
+             input->setReleased(false);
+             gInput.saveControlconfig(text);
+             gEventManager.add( new CloseMenuEvent(false) );
+         });
+     }
+}

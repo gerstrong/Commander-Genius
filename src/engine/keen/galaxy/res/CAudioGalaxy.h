@@ -8,8 +8,7 @@
 #ifndef CAUDIOGALAXY_H_
 #define CAUDIOGALAXY_H_
 
-#include <audio/CAudioResources.h>
-#include <audio/CAudioResources.h>
+#include <base/audio/CAudioResources.h>
 #include "fileio/CExeFile.h"
 
 #include <base/GsLua.h>

@@ -40,10 +40,12 @@ public:
 	 */
 	void getTouchedBy(CSpriteObject &theObject);
 
-    void processPython();
+    /**
+     * @brief processLuaCycle
+     * @return true if the Lua cycle was run successfully, otherwise false
+     */
+    bool processLuaCycle();
 
-    bool loadPythonScripts(const std::string &scriptBaseName);
-	
 private:
     int mHealth;
     int mTimer;

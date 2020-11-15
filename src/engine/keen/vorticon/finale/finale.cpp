@@ -4,7 +4,7 @@
  the decompression algorithm.
  */
 
-#include "fileio.h"
+#include <fileio/fileio.h>
 #include "fileio/ResourceMgmt.h"
 #include <base/utils/FindFile.h>
 

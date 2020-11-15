@@ -143,7 +143,6 @@ public:
 
 	// Animation methods
 	Uint8 getAnimtiletimer();
-    //void drawAnimatedTile(SDL_Surface *dst, const Uint16 mx, const Uint16 my, const Uint16 tile);
 	void animateAllTiles();
 
     auto getlevelat(const int x,
@@ -227,6 +226,7 @@ public:
     bool mFuseInLevel;
 
     GsVec2D<int> mGamePlayPos;
+
 
 private:
 

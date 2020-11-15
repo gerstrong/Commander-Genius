@@ -47,7 +47,7 @@ CInput::CInput()
     memset(&Event, 0, sizeof(Event));
 
 #if !TARGET_OS_IPHONE && !TARGET_IPHONE_SIMULATOR
-	loadControlconfig(); // we want to have the default settings in all cases
+    loadControlconfig(""); // we want to have the default settings in all cases
     startJoyDriver(); // not for iPhone for now, could cause trouble (unwanted input events)
 #endif
 
@@ -298,7 +298,7 @@ bool CInput::startJoyDriver()
 /**
  * \brief	This will load input settings that were saved previously by the user at past session.
  */
-void CInput::loadControlconfig(void)
+void CInput::loadControlconfig(const std::string &presetName)
 {
     CConfiguration Configuration;
 	if(Configuration.Parse())
@@ -308,6 +308,12 @@ void CInput::loadControlconfig(void)
 		{
 			// setup input from proper string
 			section = "input" + itoa(i);
+
+            if(!presetName.empty())
+            {
+                section += "-" + presetName;
+            }
+
 
 			std::string value;
             auto &curInput = mInputCommands[i];
@@ -369,15 +375,20 @@ void CInput::loadControlconfig(void)
  * \brief	This will save input settings according to how the user did map the buttons,
  * 			axes or keys to the commands.
  */
-void CInput::saveControlconfig()
+void CInput::saveControlconfig(const std::string &presetName)
 {
     CConfiguration Configuration;
 	Configuration.Parse();
 
 	std::string section;
 	for(size_t i=0 ; i<NUM_INPUTS ; i++)
-	{
+	{        
 	    section = "input" + itoa(i);
+
+        if(!presetName.empty())
+        {
+            section += "-" + presetName;
+        }
 
 	    const auto inputVal = static_cast<unsigned char>(i);
 
@@ -1237,29 +1248,36 @@ void CInput::processJoystickAxis(void)
     // Input for player commands
     for(auto &input : mInputCommands)
     {
-        for(unsigned int i=0 ; i<input.size() ; i++)
+        for(auto &curInput : input)
         {
-            if(input[i].joyeventtype == ETYPE_JOYAXIS)
-			{
-				// Axis are configured for this commmand
-                if( evWhich == input[i].which &&
-                    Event.jaxis.axis == input[i].joyaxis )
-				{
-					// Deadzone
-                    if((Event.jaxis.value > m_joydeadzone && mInputCommands[0][i].joyvalue > 0) ||
-                       (Event.jaxis.value < -m_joydeadzone && mInputCommands[0][i].joyvalue < 0))
-					{
-                        input[i].active = true;
-                        input[i].joymotion = Event.jaxis.value;
-					}
-					else
-                    {
-                        input[i].active = false;
-                    }
-				}
-			}
-		}
-	}
+            // Only axis types
+            if(curInput.joyeventtype != ETYPE_JOYAXIS)
+                continue;
+
+            // Only the right device id
+            if( evWhich != curInput.which )
+                continue;
+
+            // It must match to mapped axis movement
+            if( Event.jaxis.axis != curInput.joyaxis )
+                continue;
+
+
+            // Also respect the Deadzone
+            if((Event.jaxis.value > m_joydeadzone &&
+                curInput.joyvalue > 0) ||
+               (Event.jaxis.value < -m_joydeadzone &&
+                curInput.joyvalue < 0))
+            {
+                curInput.active = true;
+                curInput.joymotion = Event.jaxis.value;
+            }
+            else
+            {
+                curInput.active = false;
+            }
+        }
+    }
 }
 
 void CInput::processJoystickHat()
@@ -1303,7 +1321,6 @@ void CInput::processJoystickButton(int value)
         auto &inputs = inputCommand;
         for( auto &input : inputs)
 		{
-			// TODO: Check all NUM_INPUTS, if they can be reduced to another variable
             if(input.joyeventtype == ETYPE_JOYBUTTON)
 			{
                 // Joystick buttons are configured for this event

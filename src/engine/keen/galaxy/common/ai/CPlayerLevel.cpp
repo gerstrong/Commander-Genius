@@ -10,8 +10,8 @@
 #include "../CGalaxySpriteObject.h"
 #include "CSecurityDoor.h"
 
-#include "audio/Audio.h"
-#include "graphics/effects/CColorMerge.h"
+#include <base/audio/Audio.h>
+#include <graphics/CColorMerge.h>
 
 #include <base/CInput.h>
 #include <base/GsTimer.h>
@@ -326,7 +326,9 @@ void CPlayerLevel::processRunning()
 		xinertia = xDirection * 8;
 		yinertia = 0;
 		setAction(A_KEEN_FALL);
-		playSound( SOUND_KEEN_FALL );
+
+        playSound( SOUND_KEEN_FALL );
+
         mActionState.jumpTimer = 0;
 	}
 

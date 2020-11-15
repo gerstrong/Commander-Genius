@@ -13,8 +13,8 @@
 #include "CRay.h"
 #include "CBridges.h"
 #include "engine/core/spritedefines.h"
-#include "audio/Audio.h"
-#include "audio/music/CMusic.h"
+#include <base/audio/Audio.h>
+#include <base/audio/music/CMusic.h>
 #include "graphics/GsGraphics.h"
 #include "engine/core/CPhysicsSettings.h"
 
@@ -159,7 +159,7 @@ void CPlayer::kill(const bool force,
 		inventory.lives--;
 		SelectFrame();
 
-        mpCamera->forbidLead(getSpriteVariantIdx());
+        mpCamera->forbidLead(getPlayerIdx());
         mpCamera->cycleCamlead();
         playSound(SOUND_KEEN_DIE, SoundPlayMode::PLAY_NOW);
 

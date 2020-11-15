@@ -2,8 +2,8 @@
 #include <base/CInput.h>
 #include <base/utils/StringUtils.h>
 #include <graphics/GsGraphics.h>
-#include <graphics/effects/CColorMerge.h>
-#include <audio/music/CMusic.h>
+#include <graphics/CColorMerge.h>
+#include <base/audio/music/CMusic.h>
 #include <engine/core/CBehaviorEngine.h>
 
 #include <sstream>
@@ -148,11 +148,7 @@ ComputerWrist::ComputerWrist(const bool greyMode,
 
 ComputerWrist::~ComputerWrist()
 {
-    const auto curStr = mPreviousSong;
-
     gMusicPlayer.stop();
-    if( gMusicPlayer.load(curStr) )
-        gMusicPlayer.play();
 }
 
 void ComputerWrist::playSong(const int song)
@@ -160,8 +156,8 @@ void ComputerWrist::playSong(const int song)
     auto &musPlayer = gMusicPlayer;
     if(song >= 0)
     {
-        const auto curStr = musPlayer.getCurTrackPlaying();
-        mPreviousSong = curStr;
+        //const auto curStr = musPlayer.getCurTrack();
+        //mPreviousSong = curStr;
 
         musPlayer.stop();
         if( musPlayer.loadTrack(song) )

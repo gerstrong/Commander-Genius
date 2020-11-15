@@ -1,5 +1,10 @@
 #include "cosmogameplay.h"
 
+#include "files/file.h"
+#include "tile.h"
+#include "map.h"
+
+
 #include <SDL_events.h>
 #include <base/GsEventContainer.h>
 #include <base/GsLogging.h>
@@ -11,8 +16,6 @@
 typedef unsigned short uint16;
 typedef unsigned char  uint8;
 
-extern "C"
-{
     int run_gameplay();
     void load_current_level();
     void load_level(int level_number);
@@ -28,10 +31,6 @@ extern "C"
     uint8 get_episode_number();
 
     const char *get_level_filename(int level_number);
-
-#include "files/file.h"
-#include "tile.h"
-#include "map.h"
 
     bool open_file(const char *filename, File *file);
 
@@ -51,7 +50,7 @@ extern "C"
     Tile *map_get_fg_tile(uint16 tile_num);
 
     uint16 *map_data_ptr();
-}
+
 
 struct SetBackdropEvent : public CEvent
 {
@@ -303,14 +302,14 @@ bool CosmoGameplay::loadLevel(const int level_number)
         gLogging.ftextOut("Error: loading level data. %s\n", get_level_filename(level_number));
         return false;
     }
-    const uint16 level_flags = file_read2(&map_file);
+    //const uint16 level_flags = file_read2(&map_file);
     file_close(&map_file);
 
 /*
     stop_music();
     rain_flag = (uint8)(level_flags & 0x20);
     */
-    const uint16 backdrop_index = (uint16)(level_flags & 0x1f);
+   // const uint16 backdrop_index = (uint16)(level_flags & 0x1f);
     /*
     background_x_scroll_flag = (uint8)(level_flags & 0x40);
     background_y_scroll_flag = (uint8)(level_flags & 0x80);
@@ -539,10 +538,12 @@ bool CosmoGameplay::loadLevel(const int level_number)
         // Then decompress the level data using rlew and carmack decompression
         gLogging.textOut("Allocating memory for the level planes ...<br>" );
 */
-        // Start with the Background
+    // Create empty tileproperties map
 
     CTileProperties emptyTileProperties;
 
+    std::vector<CTileProperties> &bdTileProperties = gBehaviorEngine.getTileProperties(0);
+    bdTileProperties.assign(getNumBackdropTiles(), emptyTileProperties);
     std::vector<CTileProperties> &bgTileProperties = gBehaviorEngine.getTileProperties(1);
     bgTileProperties.assign(getNumBgTiles(), emptyTileProperties);
     std::vector<CTileProperties> &fgTileProperties = gBehaviorEngine.getTileProperties(2);
@@ -667,7 +668,6 @@ void CosmoGameplay::ponder(const float deltaT)
 
 
     // 1 tile = 8px
-    //mapwindow_x_offset
 
     // mMap.m_scrollx is pixel based
     const auto mapwindow_x_offset_pix = mapwindow_x_offset*8;
@@ -774,5 +774,5 @@ void CosmoGameplay::render()
 */
     mMap.calcVisibleArea();
     mMap.refreshVisibleArea();
-    gVideoDriver.blitScrollSurface();
+    gVideoDriver.blitScrollSurfaces();
 }

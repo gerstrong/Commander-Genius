@@ -75,15 +75,17 @@ void CSpindred::process()
 	    if( (blockedu && mInverseGravity) || 
 		(blockedd && !mInverseGravity) )
 	    {
-		mBounces++;
-		yinertia = (mInverseGravity) ? MAX_BOUNCE_INERTIA : -MAX_BOUNCE_INERTIA;
+            mBounces++;
+            yinertia = (mInverseGravity) ? MAX_BOUNCE_INERTIA : -MAX_BOUNCE_INERTIA;
+            this->playSound(SOUND_SPINDREDSLAM);
 	    }
 	    
 	    
 	    if(mBounces >= MAX_BOUNCES)
 	    {
-		mBounces = 0;
-		mInverseGravity = !mInverseGravity;
+            mBounces = 0;
+            mInverseGravity = !mInverseGravity;
+            this->playSound(SOUND_SPINDREDFLYDOWN);
 	    }	    
 	}
 	

@@ -13,7 +13,7 @@
 #include "CPlayer.h"
 
 #include <base/CInput.h>
-#include "audio/Audio.h"
+#include <base/audio/Audio.h>
 #include "fileio/CSaveGameController.h"
 #include <base/video/CVideoDriver.h>
 #include "graphics/GsGraphics.h"
@@ -30,9 +30,7 @@ pjumpupspeed_decrease(gBehaviorEngine.getPhysicsSettings().player.defaultjumpupd
 mp_levels_completed(mpLevelCompleted)
 {
     canbezapped = true;
-    m_index = 0;
-
-
+    m_index = 0;   
     pjumping = PNOJUMP;
     pfalling = false;
     psemisliding = false;

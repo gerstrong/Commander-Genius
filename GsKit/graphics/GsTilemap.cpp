@@ -213,6 +213,16 @@ void GsTilemap::drawTile(GsWeakSurface &dst,
     drawTile(dst.getSDLSurface(), x, y, t);
 }
 
+void GsTilemap::drawTile(GsScrollSurface &scrollSfc,
+                         const int x,
+                         const int y,
+                         const Uint16 t)
+{
+    const auto dim = scrollSfc.getSquareSize();
+    const int drawMask = dim-1;
+    drawTile(scrollSfc.getScrollSurface(), x&drawMask, y&drawMask, t);
+}
+
 
 void GsTilemap::drawTileBlended(SDL_Surface *dst,
                                 const int x, const int y,

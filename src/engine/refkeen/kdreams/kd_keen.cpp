@@ -17,6 +17,8 @@
  */
 
 #include "engine/keen/dreams/dreamsengine.h"
+#include "base/CInput.h"
+#include <list>
 
 extern mapfiletype_modern  mapFile;
 
@@ -855,6 +857,9 @@ player->temp2 = animation stage
 =============================================================================
 */
 
+
+extern std::list< std::function<void()> > msgBoxRenderTaskList;
+
 void	SpawnWorldKeen (id0_int_t tilex, id0_int_t tiley);
 void	KeenWorldThink		(objtype *ob);
 void	KeenWorldWalk		(objtype *ob);
@@ -949,6 +954,7 @@ void	CheckEnterLevel (objtype *ob)
 	id0_int_t	x,y,tile;
 
 	for (y=ob->tiletop;y<=ob->tilebottom;y++)
+    {
 		for (x=ob->tileleft;x<=ob->tileright;x++)
 		{
 			tile = *((id0_unsigned_t id0_seg *)mapsegs[2]+mapbwidthtable[y]/2+x);
@@ -961,25 +967,33 @@ void	CheckEnterLevel (objtype *ob)
 				{
 					if (gamestate.boobusbombs < 12)
 					{
-						VW_FixRefreshBuffer ();
-						US_CenterWindow (26,6);
-						PrintY+= 8;
-						US_CPrint ("You can't possibly\n"
-								   "defeat King Boobus Tuber\n"
-								   "with less than 12 bombs!");
-						VW_UpdateScreen ();
+                        msgBoxRenderTaskList.push_back( []()
+                        {
+                            VW_FixRefreshBuffer ();
+                            US_CenterWindow (26,6);
+                            PrintY+= 8;
+                            US_CPrint ("You can't possibly\n"
+                                       "defeat King Boobus Tuber\n"
+                                       "with less than 12 bombs!");
+                            VW_UpdateScreen ();
+                            RF_Refresh(false);
+                        });
+                        c.button0 = 0;
+                        c.button1 = 0;
+
 						IN_Ack ();
-						RF_ForceRefresh ();
 						return;
 					}
 				}
 				gamestate.worldx = ob->x;
 				gamestate.worldy = ob->y;
 				gamestate.mapon = tile-2;
-				playstate = levelcomplete;
+                playstate = levelcomplete;
+                gInput.flushAll();
 				SD_PlaySound (ENTERLEVELSND);
 			}
 		}
+    }
 }
 
 

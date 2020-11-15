@@ -57,6 +57,7 @@ GameMenu(GsRect<float>(0.1f, 0.0f, 0.8f, 1.0f), style )
                 gSaveGameController.prepareSaveGame( index, saveText );
                 gBehaviorEngine.setPause(false);
                 gEventManager.add( new CloseAllMenusEvent() );
+                gEventManager.add(new EventReloadMusic);
             }
             else // If typing option is enabled
             {
@@ -73,6 +74,7 @@ GameMenu(GsRect<float>(0.1f, 0.0f, 0.8f, 1.0f), style )
                     gSaveGameController.prepareSaveGame( index, saveText );
                     gBehaviorEngine.setPause(false);
                     gEventManager.add( new CloseAllMenusEvent() );
+                    gEventManager.add(new EventReloadMusic);
                 }
             }
 

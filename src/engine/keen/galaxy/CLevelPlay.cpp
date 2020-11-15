@@ -11,8 +11,8 @@
 #include "ep4/CMapLoaderGalaxyEp4.h"
 #include "ep5/CMapLoaderGalaxyEp5.h"
 #include <base/CInput.h>
-#include "audio/music/CMusic.h"
-#include "graphics/effects/CDimDark.h"
+#include <base/audio/music/CMusic.h>
+#include <graphics/CDimDark.h>
 #include <base/GsLogging.h>
 #include <base/video/CVideoDriver.h>
 
@@ -63,16 +63,17 @@ bool CLevelPlay::loadMap(const int level)
 
 
     // Load some new background Music
-	gMusicPlayer.stop();
-
-    if( loadLevelMusic(level) )
+    gMusicPlayer.stop();
+    if( galaxy::loadLevelMusic(level) )
     {
+        mCurMusicTrack = gMusicPlayer.getCurTrack();
         gMusicPlayer.play();
     }
     else
     {
         gLogging.textOut("Warning: The music cannot be played. Check that all the files have been correctly copied!");
     }
+
     return true;
 }
 

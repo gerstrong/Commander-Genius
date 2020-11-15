@@ -1183,8 +1183,6 @@ void VW_UpdateScreen (void)
 	VW_CGAFullUpdate();
 #endif
 
-
-
 }
 
 

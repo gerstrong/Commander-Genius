@@ -5,15 +5,15 @@
  *      Author: gerstrong
  */
 
-#include "audio/Audio.h"
-#include "audio/base/Sampling.h"
-#include "audio/music/CIMFPlayer.h"
+#include <base/audio/Audio.h>
+#include <base/audio/base/Sampling.h>
+#include <base/audio/music/CIMFPlayer.h>
 #include "CMusic.h"
 #include <base/GsLogging.h>
 #include <base/utils/FindFile.h>
 #include "fileio/ResourceMgmt.h"
-#include "fileio/compression/CHuffman.h"
-#include "fileio/KeenFiles.h"
+//#include "fileio/compression/CHuffman.h"
+//#include "fileio/KeenFiles.h"
 #include <fstream>
 #include <limits>
 
@@ -42,10 +42,14 @@ bool CMusic::loadTrack(const int track)
     return false;
 }
 
+void CMusic::setIMFLoadTrackCallback(
+        std::function<bool(RingBuffer<IMFChunkType> &, const int)> fcn)
+{
+    __setIMFLoadTrackCallback(fcn);
+}
 
 bool CMusic::load(const std::string &musicfile)
 {        
-
     Mix_HaltMusic();
 
     if(mpMixMusic)
@@ -93,7 +97,12 @@ bool CMusic::load(const std::string &musicfile)
         }
         else if (extension == "")// Maybe the given file is an integer that describes a track number
         {
-            int songNum = strtol (musicfile.c_str(),NULL,0);
+            if(musicfile == "0")
+            {
+                return loadTrack(0);
+            }
+
+            const int songNum = strtol (musicfile.c_str(),NULL,0);
 
             if(songNum>0)
             {
@@ -124,16 +133,9 @@ bool CMusic::load(const std::string &musicfile)
 	return false;
 }
 
-std::string CMusic::getCurTrackPlaying()
+std::string CMusic::getCurTrack()
 {
-    if(playing() || paused())
-    {
-        return mCurrentTrack;
-    }
-    else
-    {
-        return "-1";
-    }
+    return mCurrentTrack;
 }
 
 void CMusic::reload()
@@ -164,10 +166,12 @@ void CMusic::play()
     }
 
     Mix_ResumeMusic();
+    imfPauseMusic(false);
 }
 
 void CMusic::pause()
 {
+    imfPauseMusic(true);
     Mix_PauseMusic();
 }
 
@@ -180,10 +184,9 @@ void CMusic::stop()
         Mix_FreeMusic(mpMixMusic);
         mpMixMusic = nullptr;
     }
-
+    mCurrentTrack = "-1";
     unhookAll();
 }
-
 
 bool CMusic::LoadfromSonglist(const std::string &gamepath, const int &level)
 {
@@ -236,6 +239,22 @@ bool CMusic::LoadfromSonglist(const std::string &gamepath, const int &level)
     	}
     }
 	return false;
+}
+
+
+bool CMusic::paused()
+{
+    return (Mix_PausedMusic() == 1);
+}
+
+bool CMusic::playing()
+{
+    if(mCurrentTrack == "-1")
+        return false;
+    else
+        return true;
+
+    //return Mix_PlayingMusic();
 }
 
 bool CMusic::LoadfromMusicTable(const std::string &gamepath,

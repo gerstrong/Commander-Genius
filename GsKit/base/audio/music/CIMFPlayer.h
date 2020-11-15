@@ -8,12 +8,13 @@
 #ifndef CIMFPLAYER_H_
 #define CIMFPLAYER_H_
 
-#include "CMusicPlayer.h"
+#include <base/audio/music/CMusicPlayer.h>
 #include <base/TypeDefinitions.h>
-#include "audio/Audio.h"
-#include "CRingBuffer.h"
+#include <base/audio/Audio.h>
+#include <base/CRingBuffer.h>
 #include <SDL.h>
 #include <string>
+#include <functional>
 
 #include <SDL_mixer.h>
 
@@ -44,8 +45,11 @@ public:
     void close(const bool lock) override;
 	void readBuffer(Uint8* buffer, Uint32 length) override;
 
+    void setIMFLoadTrackCallback(
+            std::function<bool(RingBuffer<IMFChunkType> &, const int)> &fcn);
 
     bool loadMusicTrack(const int track) override;
+
 
 private:
 
@@ -61,14 +65,20 @@ private:
     Uint32 m_numreadysamples = 0;
     Uint32 m_samplesPerMusicTick =0;
     unsigned int m_IMFDelay = 0;
-    std::vector<Sint32> mMixBuffer;
+    std::vector<Sint32> mMixBuffer;   
 
+    std::function<bool(RingBuffer<IMFChunkType>&, const int)> IMFLoadTrackCallback;
 };
 
 
 // External Music hooks for the imf player
 
-
+/**
+ * @brief setIMFLoadTrackCallback
+ * @param fcn
+ */
+void __setIMFLoadTrackCallback(
+        std::function<bool(RingBuffer<IMFChunkType> &, const int)> fcn);
 /**
  * @brief loadIMFFile
  * @param fname
@@ -92,6 +102,8 @@ bool loadIMFTrack(const int track);
 void imfMusicPlayer(void *udata,
                     Uint8 *stream,
                     int len);
+
+void imfPauseMusic(const bool value);
 
 /**
  * @brief musicFinished

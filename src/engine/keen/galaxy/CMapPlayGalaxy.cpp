@@ -115,6 +115,11 @@ void CMapPlayGalaxy::pumpEvent(const CEvent *evPtr)
             }
         }
     }
+    else if( dynamic_cast<const EventReloadMusic*>(evPtr) )
+    {
+        reloadBgMusic();
+        gMusicPlayer.play();
+    }
 
 
     for( auto obj = mObjectPtr.begin(); obj != mObjectPtr.end() ; obj++)
@@ -179,9 +184,45 @@ void CMapPlayGalaxy::revivePlayerAt(const int playerIdx, const GsVec2D<int> pos)
 }
 
 
+void CMapPlayGalaxy::stopMusic()
+{
+    gMusicPlayer.stop();
+    mCurMusicTrack = "-1";
+}
+
+void CMapPlayGalaxy::playMusic(const int track)
+{
+    gMusicPlayer.setIMFLoadTrackCallback(imfMusicTrackloader);
+    gMusicPlayer.stop();
+    if( gMusicPlayer.loadTrack(track) )
+    {
+        mCurMusicTrack = gMusicPlayer.getCurTrack();
+        gMusicPlayer.play();
+    }
+    else
+    {
+        gLogging.textOut("Warning: The music cannot be played. Check that all the files have been correctly copied!");
+    }
+}
+
+
+void CMapPlayGalaxy::reloadBgMusic()
+{
+    gMusicPlayer.setIMFLoadTrackCallback(imfMusicTrackloader);
+    gMusicPlayer.load(mCurMusicTrack);
+}
+
 void CMapPlayGalaxy::ponderBase(const float deltaT)
 {
     bool oneInvOpen = false;
+
+    auto &mplayer = gMusicPlayer;
+    const auto curTrack = mplayer.getCurTrack();
+    if(mCurMusicTrack != curTrack)
+    {
+        reloadBgMusic();
+    }
+
 
     // Check if the engine need to be paused
     for( auto &inv : mInventoryVec)
@@ -273,7 +314,7 @@ void CMapPlayGalaxy::ponderBase(const float deltaT)
 
 void CMapPlayGalaxy::render()
 {
-    gVideoDriver.blitScrollSurface();
+    gVideoDriver.blitScrollSurfaces();
 
     // Draw all the sprites without player
     // The player sprites are drawn at the end. Reverse order of drawing
@@ -431,6 +472,7 @@ bool CMapPlayGalaxy::operator<<(CSaveGameController &savedGame)
     }
     else
     {
+        mCurMusicTrack = gMusicPlayer.getCurTrack();
     	gMusicPlayer.play();
     }
 
@@ -621,6 +663,7 @@ void CMapPlayGalaxy::operator<<(GsKit::ptree &levelNode)
     }
     else
     {
+        mCurMusicTrack = gMusicPlayer.getCurTrack();
         gMusicPlayer.play();
     }
 

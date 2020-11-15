@@ -6,7 +6,7 @@
  */
 
 #include "CPlayGameVorticon.h"
-#include "graphics/effects/CColorMerge.h"
+#include <graphics/CColorMerge.h>
 #include "../CVorticonMapLoader.h"
 #include <base/utils/Base64.h>
 
@@ -68,6 +68,8 @@ bool CPlayGameVorticon::loadXMLGameState()
 
     if(!Maploader.load(m_Episode, m_Level, m_Gamepath, loadmusic, false))
       return false;
+
+    mCurMusicTrack = gMusicPlayer.getCurTrack();
 
     m_level_command = START_LEVEL;
 
@@ -180,10 +182,15 @@ bool CPlayGameVorticon::loadXMLGameState()
 
 
     // adjust camera settings
+    int p_idx = 0;
     for(auto &player : m_Player)
     {
         player.setupCameraObject();
+        player.setSpriteVariantId(p_idx);
+        player.setSpecialIdx(p_idx);
         player.mpCamera->attachObject(&player);
+        player.mpCamera->allowLead(p_idx);
+        p_idx++;
     }
 
     while(m_Player[0].mpCamera->mMoving)

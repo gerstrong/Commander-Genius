@@ -108,14 +108,14 @@ bool GsLua::loadFile(const std::string &fname)
       return true;
 }
 
-void GsLua::runFunctionRetOneInt(const std::string &fun,
+bool GsLua::runFunctionRetOneInt(const std::string &fun,
                                  const int param,
                                  int &ret)
 {
     if(!mLuaStatePtr)
     {
         gLogging.ftextOut("Lua State not running for %s", fun.c_str());
-        return;
+        return false;
     }
 
 
@@ -126,21 +126,85 @@ void GsLua::runFunctionRetOneInt(const std::string &fun,
     if (lua_pcall(L, 2, 1, 0) != 0)
     {
         gLogging.ftextOut("Error calling %s with %d", fun.c_str(), param);
-        return;
+        return false;
     }
 
     int isnum;
     int n = lua_tointegerx(L, -1, &isnum);
     if (!isnum) {
         gLogging.ftextOut("Error getval didn't return a number");
-        return;
+        return false;
     }
     ret = n;
     gLogging.ftextOut("ret=%d\n", n);
 
     /* Remove the return value from the stack. */
     lua_remove(L, -1);
+    return true;
 }
+
+bool GsLua::runFunction(const std::string &fun,
+                        std::initializer_list<const int> list,
+                        std::vector<int> &multiRet)
+{
+    if(!mLuaStatePtr)
+    {
+        gLogging.ftextOut("Lua State not running for %s", fun.c_str());
+        return false;
+    }
+
+
+    lua_State *L = (lua_State *)mLuaStatePtr;
+    lua_getfield(L, -1, fun.c_str());
+
+    if(lua_isfunction(L, -1) != 1)
+    {
+        lua_remove(L, -1);
+        return false;
+    }
+
+    lua_pushvalue(L, -2);
+
+    for( auto elem : list )
+    {
+        lua_pushnumber(L, elem);
+    }
+
+    const int nargs = list.size();
+    const int nret = multiRet.size()>1 ? LUA_MULTRET : (multiRet.empty() ? 0 : 1);
+
+    if (lua_pcall(L, nargs+1, nret, 0) != 0)
+    {
+        gLogging.ftextOut("Error calling %s.", fun.c_str());
+        return false;
+    }
+
+    for(auto &ret : multiRet)
+    {
+        int isnum;
+        int n = lua_tointegerx(L, -1, &isnum);
+        if (!isnum) {
+            gLogging.ftextOut("Error getval didn't return a number");
+            return false;
+        }
+        ret = n;
+        gLogging.ftextOut("ret=%d\n", n);
+
+        // Remove the return value from the stack.
+        lua_remove(L, -1);
+    }
+
+
+    return true;
+}
+
+bool GsLua::runFunction(const std::string &fun,
+                        std::initializer_list<const int> list)
+{
+    std::vector<int> multiRet;
+    return runFunction(fun, list, multiRet);
+}
+
 
 bool GsLua::runFunctionRetOneStr(const std::string &fun,
                                  std::string &ret)
@@ -188,6 +252,13 @@ bool GsLua::runFunctionRetOneStr(const std::string &fun,
 
     lua_State *L = (lua_State *)mLuaStatePtr;
     lua_getfield(L, -1, fun.c_str());
+
+    if(lua_isfunction(L, -1) != 1)
+    {
+        lua_remove(L, -1);
+        return false;
+    }
+
     lua_pushvalue(L, -2);
     lua_pushnumber(L, param);
     if (lua_pcall(L, 2, 1, 0) != 0)
@@ -211,35 +282,42 @@ bool GsLua::runFunctionRetOneStr(const std::string &fun,
 }
 
 
-void GsLua::runFunctionRetOneInt(const std::string &fun, int &ret)
+bool GsLua::runFunctionRetOneInt(const std::string &fun, int &ret)
 {
     if(!mLuaStatePtr)
     {
         gLogging.ftextOut("Lua State not running for %s", fun.c_str());
-        return;
+        return false;
     }
-
 
     lua_State *L = (lua_State *)mLuaStatePtr;
     lua_getfield(L, -1, fun.c_str());
+
+    if(lua_isfunction(L, -1) != 1)
+    {
+        lua_remove(L, -1);
+        return false;
+    }
+
     lua_pushvalue(L, -2);
     if (lua_pcall(L, 1, 1, 0) != 0)
     {
         gLogging.ftextOut("Error calling %s", fun.c_str());
-        return;
+        return false;
     }
 
     int isnum;
     int n = lua_tointegerx(L, -1, &isnum);
     if (!isnum) {
         gLogging.ftextOut("Error getval didn't return a number");
-        return;
+        return false;
     }
     ret = n;
     gLogging.ftextOut("ret=%d\n", n);
 
     /* Remove the return value from the stack. */
     lua_remove(L, -1);
+    return true;
 }
 
 void GsLua::runFunctionRetOneBool(const std::string &fun, bool &ret)

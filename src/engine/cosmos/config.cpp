@@ -380,7 +380,7 @@ const char *scancode_to_string(uint8 scan_code)
 void set_game_data_dir(const char *dir, const int len)
 {
     if(!game_data_directory)
-        game_data_directory = SDL_malloc(len+1);
+        game_data_directory = (char *)SDL_malloc(len+1);
 
     strcpy(game_data_directory, dir);
 }

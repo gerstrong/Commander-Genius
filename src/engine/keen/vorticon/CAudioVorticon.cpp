@@ -81,6 +81,7 @@ template <typename T>
 bool CAudioVorticon::loadPCSpeakerSound(std::vector<T> &waveform, const std::string& searchname,
 									bool IsSigned, Uint16& Priority)
 {
+    const auto PC_Speaker_Volume = gAudio.getPCSpeakerVol();
 	int curheader = 0x10;
 	word offset;
 	//int garbage,

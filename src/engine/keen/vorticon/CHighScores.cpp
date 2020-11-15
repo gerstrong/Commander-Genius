@@ -177,7 +177,7 @@ void CHighScores::render()
     mpMap->animateAllTiles();
 
     // Blit the background
-    gVideoDriver.blitScrollSurface();
+    gVideoDriver.blitScrollSurfaces();
 
     // draw the Bitmaps
     std::vector<stBitmap>::iterator it_bmp = m_Bitmaps.begin();

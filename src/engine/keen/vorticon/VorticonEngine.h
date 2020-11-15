@@ -34,7 +34,6 @@ public:
 
 private:
     std::shared_ptr<CInfoScene> mpInfoScene;
-
 };
 
 }

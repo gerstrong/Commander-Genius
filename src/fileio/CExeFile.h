@@ -16,8 +16,7 @@
 
 #include "fileio/crc.h"
 #include <base/TypeDefinitions.h>
-
-#include "audio/music/CIMFPlayer.h"
+#include <base/audio/music/CIMFPlayer.h>
 
 #include <vector>
 #include <string>
@@ -57,7 +56,7 @@ class CExeFile {
                   const std::string& datadirectory);
 
     /**
-     * @brief readMainPythonScript Try to get a main python script load
+     * @brief readMainLuaScript Try to get a main Lua script load
      * @param episode Episode for which to read for
      * @param datadirectory path where the data is located
      * @return if everything went well true, otherwise false
@@ -79,6 +78,9 @@ class CExeFile {
 
     byte* getRawData() const
     {	return m_rawdata;	}
+
+    size_t getRawDataSize() const
+    {	return mRawdataSize;	}
 
     void* getHeaderData() const
     {	return m_headerdata;	}
@@ -134,6 +136,7 @@ private:
 
 	size_t m_datasize;
 	size_t m_headersize;
+    size_t mRawdataSize;
 	int m_episode;
     bool mIsLuaScript = false;
 	bool m_demo;
@@ -146,5 +149,7 @@ private:
 
 	std::map< size_t, std::map<int , bool> > m_supportmap;
 };
+
+bool imfMusicTrackloader(RingBuffer<IMFChunkType> &imfData, const int track);
 
 #endif /* CEXEFILE_H_ */

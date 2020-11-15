@@ -62,7 +62,7 @@ public:
 	bool start();
 	void isFullscreen(bool value);
 
-	void blitScrollSurface();
+	void blitScrollSurfaces();
     void updateScrollBuffer(const Sint16 SBufferX, const Sint16 SBufferY);
 	
 	void collectSurfaces();
@@ -123,7 +123,10 @@ public:
 
     bool isVsync(void) { return mVidConfig.mVSync; }
 
-	SDL_Surface *getScrollSurface(void);
+    void resetScrollBuffers();
+
+    std::vector<GsScrollSurface> &getScrollSurfaceVec();
+    GsScrollSurface &getScrollSurface(const int idx);
 
     std::set<std::string> getResolutionStrSet();
     std::set<std::string> getGameResStrSet();

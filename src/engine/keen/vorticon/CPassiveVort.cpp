@@ -137,7 +137,7 @@ void CPassiveVort::render()
     mpMap->animateAllTiles();
 
     // Blit the background
-    gVideoDriver.blitScrollSurface();
+    gVideoDriver.blitScrollSurfaces();
 
     GsWeakSurface weakBlit(gVideoDriver.getBlitSurface());
     mTextSfc.blitTo(weakBlit);

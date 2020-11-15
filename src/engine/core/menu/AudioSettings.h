@@ -45,14 +45,16 @@ private:
     std::shared_ptr <NumberControl>     mpSoundVolume;
     std::shared_ptr <NumberControl>     mpMusicVolume;
     std::shared_ptr <NumberControl>     mpOPLAmp;
+    std::shared_ptr <NumberControl>     mpPCSpeakerAmp;
 
 	SDL_AudioSpec	mAudioSpec;
 	bool mSoundblaster;
 
 	// This one does not really set the volume at all, it only verifies, if it changed...
-    int mSoundVolume = 0;
-    int mMusicVolume = 0;
-    int mOplBoost    = 0;
+    int mSoundVolume     = 0;
+    int mMusicVolume     = 0;
+    int mOplBoost        = 0;
+    int mPcSpeakerVolume = 0;
 };
 
 

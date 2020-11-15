@@ -16,10 +16,12 @@
 
 #include "CVidConfig.h"
 #include <graphics/GsSurface.h>
+#include <graphics/GsScrollsurface.h>
 #include <graphics/GsTexture.h>
 #include <base/utils/Color.h>
 #include <memory>
 #include <queue>
+#include <vector>
 
 
 struct SDL_Surface_Deleter
@@ -90,8 +92,8 @@ public:
 	void fetchStartScreenPixelPtrs(Uint8 *&ScreenPtr, Uint8 *&BlitPtr, unsigned int &width, unsigned int &height);
 	virtual void collectSurfaces() = 0;
 	virtual void clearSurfaces() = 0;
-	void blitScrollSurface();
-	void stop();
+
+    void stop();
 
     virtual void setLightIntensity(const float intensity) = 0;
 
@@ -104,29 +106,21 @@ public:
 
     GsSurface &getScreenSurface() { return *mpScreenSfc; }
 
-    // TODO: Dangerous method. Must be removed in future
-    SDL_Surface *getScrollSurface() { return mScrollSurface.getSDLSurface(); }
-
-    GsRect<Uint16> getActiveAreaRect() const { return mActiveAreaRect; }
-
-	void resetScrollbuffer()
-	{
-		mSbufferx = 0;
-		mSbuffery = 0;
-	}
+    GsRect<Uint16> getActiveAreaRect() const;
 
     void drawHorizBorders();
 
     void scaleAndFilter();
 
-    inline void UpdateScrollBufX(const Sint16 SBufferX, const int drawMask)
-    {		mSbufferx = SBufferX&drawMask;	}
+    void blitScrollSurfaces(GsWeakSurface &blitSfc);
 
-    inline void UpdateScrollBufY(const Sint16 SBufferY, const int drawMask)
-    {		mSbuffery = SBufferY&drawMask;	}
+    void resetScrollBuffers();
 
-	void readScrollBuffer(Sint16 &x, Sint16 &y)
-	{	x = mSbufferx; y = mSbuffery;}
+    void updateScrollBuffers(const Sint16 SBufferX, const Sint16 SBufferY);
+
+    GsScrollSurface& getScrollSfc(const int idx);
+
+
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     SDL_Window *window = nullptr;
@@ -144,6 +138,8 @@ public:
 
     GsRect<int> mRelativeVisGameArea;
     GsRect<int> mRelativeBlendVisGameArea;
+
+    std::vector<GsScrollSurface> &getScrollSurfaceVec();
 
 protected:
 
@@ -175,12 +171,10 @@ protected:
     GsSurface *mpScreenSfc = nullptr;
 
 
-    GsSurface mScrollSurface;       	// Squared scroll buffer
+    std::vector<GsScrollSurface> mScrollSurfaceVec;       	// Squared scroll buffer
 
 	const CVidConfig &m_VidConfig;
 
-    Sint16 mSbufferx = 0;
-    Sint16 mSbuffery = 0;
 
     unsigned int m_Mode = 0;
 

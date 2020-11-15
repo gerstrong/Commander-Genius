@@ -43,9 +43,35 @@ struct OpenMenuEvent : CEvent
 };
 
 struct CloseMenuEvent : CEvent
+{
+    /**
+     * @brief CloseMenuEvent
+     * @param replayMusic   If menu are closed so it goes back to the title
+     *                      or gameplay whatever is open, trigger a ReplayMusic
+     *                      Event
+     */
+    CloseMenuEvent(const bool replayMusic) :
+        mReplayMusic(replayMusic) {}
+
+    const bool mReplayMusic;
+};
+
+/**
+ * @brief The EventReloadMusic struct
+ *        Menu controller decides when closing for gameplay/title,
+ *        if lastly playing tracks may replay.
+ */
+struct EventReloadMusic : CEvent
 {};
 
+
 struct CloseAllMenusEvent : CEvent
+{};
+
+/**
+ * @brief Sent when all the menus are closed
+ */
+struct EventAllMenusClosed : CEvent
 {};
 
 /**

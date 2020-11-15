@@ -1023,7 +1023,9 @@ void handle_player_input_maybe()
     {
         mapwindow_y_offset = mapwindow_y_offset + 1;
     }
-    if(player_x_pos - mapwindow_x_offset > 0x17 && map_width_in_tiles - 38 > mapwindow_x_offset && map_stride_bit_shift_amt > 5)
+    if(player_x_pos - mapwindow_x_offset > 0x17 &&
+       map_width_in_tiles - 38 > mapwindow_x_offset &&
+       map_stride_bit_shift_amt > 5)
     {
         mapwindow_x_offset = mapwindow_x_offset + 1;
         return;

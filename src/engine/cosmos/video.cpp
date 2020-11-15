@@ -355,7 +355,7 @@ void video_draw_tile_with_clip_rect(Tile *tile,
         }
 }
 
-void video_draw_tile_flipped(Tile *tile, uint16 x, uint16 y)
+void video_draw_tile_flipped(Tile *tile, const uint16 x, const uint16 y)
 {
     uint8 *pixel = (uint8 *)game_surface.surface->pixels + x + (y+TILE_HEIGHT-1) * SCREEN_WIDTH;
     uint8 *tile_pixel = tile->pixels;

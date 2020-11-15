@@ -11,7 +11,7 @@
 #include <base/CInput.h>
 #include "CSettings.h"
 #include <base/GsTimer.h>
-#include "audio/Audio.h"
+#include <base/audio/Audio.h>
 #include <base/video/CVideoDriver.h>
 #include "options.h"
 #include "CBehaviorEngine.h"
@@ -61,7 +61,8 @@ bool CSettings::saveDrvCfg()
         Configuration.SetKeyword("Video", "OpenGL", VidConf.mOpengl);
 #ifdef USE_VIRTUALPAD
         Configuration.SetKeyword("Video", "VirtPad", VidConf.mVPad);
-        Configuration.WriteInt("Video", "VirtPadSize", VidConf.mVPadSize);
+        Configuration.WriteInt("Video", "VirtPadWidth", VidConf.mVPadWidth);
+        Configuration.WriteInt("Video", "VirtPadHeight", VidConf.mVPadHeight);
 #endif
         Configuration.SetKeyword("Video", "ShowCursor", VidConf.mShowCursor);
         Configuration.SetKeyword("Video", "TiltedScreen", VidConf.mTiltedScreen);
@@ -114,6 +115,7 @@ bool CSettings::saveDrvCfg()
         Configuration.WriteInt("Audio", "soundvol", (gAudio.getSoundVolume()));
         Configuration.WriteInt("Audio", "musicvol", (gAudio.getMusicVolume()));
         Configuration.WriteInt("Audio", "oplamp", (gAudio.getOplAmp()));
+        Configuration.WriteInt("Audio", "pcspeakvol", (gAudio.getPCSpeakerVol()));
 
     }
     catch(...)
@@ -226,7 +228,8 @@ bool CSettings::loadDrvCfg()
 
 #ifdef USE_VIRTUALPAD
     config.ReadKeyword("Video", "VirtPad", &vidConf.mVPad, vidConf.mVPad);
-    config.ReadInteger("Video", "VirtPadSize", &vidConf.mVPadSize, vidConf.mVPadSize);
+    config.ReadInteger("Video", "VirtPadWidth", &vidConf.mVPadWidth, vidConf.mVPadWidth);
+    config.ReadInteger("Video", "VirtPadHeight", &vidConf.mVPadHeight, vidConf.mVPadHeight);
 #endif
     config.ReadKeyword("Video", "ShowCursor", &vidConf.mShowCursor, true);
     config.ReadKeyword("Video", "TiltedScreen", &vidConf.mTiltedScreen, false);
@@ -276,14 +279,16 @@ bool CSettings::loadDrvCfg()
 
     gAudio.setSettings(audio_rate, audio_channels, audio_format, audio_sndblaster);
 
-    int sound_vol, music_vol, opl_amp;
+    int sound_vol, music_vol, opl_amp, pc_speak;
     config.ReadInteger("Audio", "soundvol", &sound_vol, SDL_MIX_MAXVOLUME);
     config.ReadInteger("Audio", "musicvol", &music_vol, SDL_MIX_MAXVOLUME);
     config.ReadInteger("Audio", "oplamp", &opl_amp, 400);
+    config.ReadInteger("Audio", "pcspeakvol", &pc_speak, 20);
 
     gAudio.setSoundVolume(Uint8(sound_vol), false);
     gAudio.setMusicVolume(Uint8(music_vol), false);
     gAudio.setOplAmp(opl_amp);
+    gAudio.setPcSpeakerVol(pc_speak);
 
     return true;
 }

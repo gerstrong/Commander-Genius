@@ -1,6 +1,6 @@
-#include "graphics/effects/CVibrate.h"
+#include <graphics/CVibrate.h>
 #include "engine/core/spritedefines.h"
-#include "audio/Audio.h"
+#include <base/audio/Audio.h>
 #include "CVorticon.h"
 #include "CRope.h"
 

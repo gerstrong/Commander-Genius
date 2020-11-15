@@ -14,9 +14,9 @@
 
 #include <base/GsEvent.h>
 #include <base/utils/FindFile.h>
+#include <base/direction.h>
 
 #include "ActionFormat.h"
-#include "direction.h"
 #include "CBehaviorEngine.h"
 
 // structures for each AI module's data
@@ -373,48 +373,6 @@ class CSpriteObject
     // This container will held the triggered events of the object
     // TODO: This create too much fragmentation. Find a way to make this better
     std::vector< ObjMove* > mMoveTasks;
-    
-    
-    
-#if USE_PYTHON3
-
-
-    bool loadAiGetterBool(const std::string &pyMethodStr, bool &value);
-
-    /**
-     * @brief loadAiGetterInteger
-     * @param pModule
-     * @param pyMethodStr
-     * @param value
-     * @return
-     */
-    bool loadAiGetterInteger(PyObject * pModule, const std::string &pyMethodStr, int &value);
-    
-    
-    /**
-     * @brief loadAiGetterBool
-     * @param pModule
-     * @param pyMethodStr
-     * @param value
-     * @return
-     */
-    bool loadAiGetterBool(PyObject * pModule, const std::string &pyMethodStr, bool &value);
-    
-    
-    
-    /**
-     * @brief loadPythonScripts     Load an external script file which might modify the behaviour of the sprite object
-     * @param scriptBaseName        Basename is the filename with any extension or path. Recommendation: Use the name of the foe
-     * @return if load was successful true, otherwise false.
-     */
-    virtual bool loadPythonScripts(const std::string &scriptBaseName);
-
-
-    GsPythonModule mModule;
-    GsPythonFunc mProcessFunc;
-    GsPythonFunc mUpdatePlayerCoord;
-
-#endif
 
     /**
      * @brief loadLuaScript     Load an external script file which might modify the behaviour of the sprite object
@@ -433,8 +391,10 @@ class CSpriteObject
     bool mNeverStop = false;        /** This will make foe continue walking and never change actions (Keen 9 - Cybloog) */
     bool mPogoStunnable = false;        /** This will make foe continue walking and never change actions (Keen 9 - Cybloog) */
     bool mJumpStunnable = false;
-    bool mMayShoot = false;         /** If enemy if allowed to shoot. Not all of them are able to do that.*/
-    
+    bool mMayShoot = false;         /** If enemy if allowed to shoot. Not all of them are able to do that.*/    
+    bool mMoreAgressive = false; /** In Keen 9 they are more agressive, in hard they also can be */
+
+
     GameSound mWalkSound;
     
     GsVec2D<int> m_Pos; 	// x,y location in map coords, CSFed, represent as 2D Vector

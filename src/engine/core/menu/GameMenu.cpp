@@ -4,7 +4,8 @@
 
 
 GameMenu::GameMenu( const GsRect<float>& rect,
-                    const Style &style ) :
+                    const Style &style,
+                    const bool replayMusicAfterClose ) :
 CBaseMenu( rect, CGUIDialog::FXKind(0) ),
 mStyle(style)
 {
@@ -15,7 +16,7 @@ mStyle(style)
 
         mpReturnButton =
             mpMenuDialog->add( new GameButton( "close",
-                                               new CloseMenuEvent(),
+                                               new CloseMenuEvent(replayMusicAfterClose),
                                                style) );
 
         mpReturnButton->setRect(GsRect<float>(0.01f, 0.01f,
@@ -36,7 +37,7 @@ mStyle(style)
         mpReturnButton =
             mpMenuDialog->add( new GameButton( "close",
                                                buttonRect,
-                                               new CloseMenuEvent(),
+                                               new CloseMenuEvent(replayMusicAfterClose),
                                                Style::VORTICON) );
         mpReturnButton->enableBackground(true);
         mpReturnButton->enableBorder(true);
@@ -52,7 +53,7 @@ mStyle(style)
                                   GsRect<float>(-0.05f, -0.05f,
                                                 0.06f/localRect.dim.x,
                                                 0.06f/localRect.dim.y),
-                                                new CloseMenuEvent()) );
+                                                new CloseMenuEvent(replayMusicAfterClose)) );
     }
 
 
@@ -131,6 +132,10 @@ void GameMenu::initVorticonBackground()
     mCachedBgRect.dim.x = sdlRect.w;
     mCachedBgRect.dim.y = sdlRect.h;
     mBackground.create(0, sdlRect.w, sdlRect.h, RES_BPP, 0, 0, 0, 0);
+
+    const auto numLegFonts = gGraphics.getNumLegacyFonts();
+    if(numLegFonts <= 1)
+       return;
 
     // Now lets draw the text of the list control
     auto &Font = gGraphics.getFontLegacy(1);

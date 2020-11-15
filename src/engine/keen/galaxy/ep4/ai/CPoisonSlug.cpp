@@ -80,7 +80,7 @@ void CPoisonSlug::processCrawling()
     }
 
     // Chance to poo
-    if( getProbability(20) )
+    if( getProbability(10) )
     {
         m_timer = 0;
         setAction( A_SLUG_POOING );
@@ -161,15 +161,17 @@ void CPoisonSlug::process()
 	
 	performGravityMid();			
 
-	if( blockedl )
-		xDirection = RIGHT;
-	else if(blockedr)
-		xDirection = LEFT;
+    if(!processActionRoutine())
+        exists = false;
 
-	if(!processActionRoutine())
-	    exists = false;
 	
-	(this->*mp_processState)();	
+    (this->*mp_processState)();
+
+    if( blockedl )
+        xDirection = RIGHT;
+    else if(blockedr)
+        xDirection = LEFT;
+
 }
 
 }

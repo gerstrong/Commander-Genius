@@ -189,7 +189,11 @@ extern	void		IN_Startup(void),IN_Shutdown(void),
 								id0_word_t miny,id0_word_t maxy),
 					IN_StartDemoPlayback(id0_byte_t id0_seg *buffer,id0_word_t bufsize),
 					IN_StopDemo(void),IN_FreeDemoBuffer(void),
-					IN_Ack(void),IN_AckBack(void);
+                    IN_Ack(void),IN_AckBack(void),
+                    IN_Ack_wait();
+
+
+
 extern	id0_boolean_t		IN_UserInput(id0_longword_t delay,id0_boolean_t clear),
 					IN_IsUserInput(void),
 					IN_StartDemoRecord(id0_word_t bufsize);

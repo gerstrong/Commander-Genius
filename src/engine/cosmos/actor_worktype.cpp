@@ -1867,6 +1867,7 @@ void actor_wt_extending_arrow(ActorData *actor)
 void actor_wt_frozen_duke_nukum(ActorData *actor)
 {
     actor_tile_display_func_index = 1;
+    int data_5;
     switch (actor->data_1) {
         case 0:
             if (!struct6_1B4FC(0xdd, 0, actor->x, actor->y)) {
@@ -1888,7 +1889,7 @@ void actor_wt_frozen_duke_nukum(ActorData *actor)
             if (actor->data_2 & 1) {
                 actor->y--;
             }
-            int data_5 = actor->data_5;
+            data_5 = actor->data_5;
             actor->data_5++;
             display_actor_sprite_maybe(0xdd, (data_5 & 1) + 4, actor->x, actor->y + 5, 0);
             display_actor_sprite_maybe(0xdd, 2, actor->x, actor->y, 0);

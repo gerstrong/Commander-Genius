@@ -139,6 +139,7 @@ GameOver (void)
 	IN_ClearKeysDown ();
 	IN_Ack ();
 
+    ingame = false;
 }
 
 

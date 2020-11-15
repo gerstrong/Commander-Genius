@@ -14,17 +14,23 @@
 #include "fileio/KeenFiles.h"
 
 #include <base/GsLogging.h>
-#include <base/GsPython.h>
 #include <base/utils/FindFile.h>
 
 #include "engine/core/CBehaviorEngine.h"
 
 #include <cstring>
 
-CMessages::CMessages(unsigned char *p_exebuf, int episode, bool demo, int version) :
-	mp_exe(p_exebuf),
-	mOffset(0)
+CMessages::CMessages(unsigned char *p_exebuf,
+                     const unsigned int exebufSize,
+                     const int episode,
+                     const bool demo,
+                     const int version)
 {
+    if(exebufSize>0 && p_exebuf!=nullptr)
+    {
+        mp_exe.resize(exebufSize);
+        memcpy(mp_exe.data(), p_exebuf, exebufSize);
+    }
 	m_episode = episode;
 	m_demo = demo;
 	m_version = version;
@@ -40,17 +46,21 @@ CMessages::extractNextString( const std::string matchingstring )
 {
 	std::string Text;
 
-    for(unsigned long pos = mOffset ; ; pos++)
-	{
+    for(unsigned long pos = mOffset ; pos<mp_exe.size() ; pos++)
+    {
 		if(mp_exe[pos] == 0x0)
 		{
-		    while(mp_exe[pos] == 0x0)
+            while(mp_exe[pos] == 0x0)
+            {
                 pos++;
+
+                if(pos>=mp_exe.size())
+                    break;
+            }
 			
 		    mOffset = pos;
 		    break;
 		}
-
 		Text += static_cast<char>(mp_exe[pos]);
 	}
 
@@ -91,7 +101,7 @@ CMessages::extractStringOff( const std::string matchingstring, unsigned long sta
 {
 	std::string Text;
 
-    for(unsigned long pos=start ; ; pos++)
+    for(unsigned long pos=start ; pos<mp_exe.size() ; pos++)
 	{
 		while(mp_exe[pos] == 0xA)
 		{
@@ -511,7 +521,7 @@ bool CMessages::extractGlobalStringsUsingLua()
         {
             gBehaviorEngine.setMessage(i->first, i->second);
         }
-        gLogging.ftextOut("Loaded a total of %d strings using Python.<br>", stringMap.size());
+        gLogging.ftextOut("Loaded a total of %d strings using Lua.<br>", stringMap.size());
         return true;
     }
     return false;

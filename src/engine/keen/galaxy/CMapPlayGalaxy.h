@@ -18,12 +18,15 @@
 #include "ep4/CMapLoaderGalaxyEp4.h"
 #include "ep5/CMapLoaderGalaxyEp5.h"
 #include "ep6/CMapLoaderGalaxyEp6.h"
+
 #include <base/CInput.h>
-#include "audio/music/CMusic.h"
+#include <base/audio/music/CMusic.h>
 #include <base/utils/StringUtils.h>
+
 #include <memory>
 #include <vector>
 #include <list>
+
 
 class CMapPlayGalaxy
 {
@@ -89,6 +92,12 @@ public:
     void setMsgBoxOpen(const bool msgboxactive)
     { mMsgBoxOpen = msgboxactive; }
 
+    void stopMusic();
+
+    void playMusic(const int track);
+
+    void reloadBgMusic();
+
 protected:
 	std::vector< std::shared_ptr<CGalaxySpriteObject> > mObjectPtr;
 	bool mActive;        
@@ -97,6 +106,8 @@ protected:
 	std::vector<CInventory> &mInventoryVec;
 
     bool mMsgBoxOpen;
+
+    std::string mCurMusicTrack = "-1";
 };
 
 #endif /* CMAPPLAYGALAXY_H_ */

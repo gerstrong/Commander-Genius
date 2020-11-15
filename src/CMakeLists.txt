@@ -114,7 +114,7 @@ MESSAGE( STATUS "Internal Downloader: ${DOWNLOADER}" )
 
 add_subdirectory(engine)
 
-add_subdirectory(audio)
+#add_subdirectory(audio)
 
 if(GP2X)
     add_subdirectory(sys)
@@ -122,7 +122,7 @@ endif(GP2X)
 
 add_subdirectory(fileio)
 add_subdirectory(dialog)
-add_subdirectory(graphics)
+#add_subdirectory(graphics)
 
 # Get all the o-files from the different targets and link'em
 get_property(cg_obj_libs GLOBAL PROPERTY CG_OBJ_LIBS)
@@ -141,18 +141,32 @@ endif(USE_SDL2)
 
 
 set(CGENIUS_SRC CGenius.cpp
-    fileio.cpp misc.cpp
-    CRingBuffer.h
-    fileio.h
+    misc.cpp
     ${cg_obj_libs})
 
 if(NINTENDO_SWITCH)
     set(CGENIUS_SRC ${CGENIUS_SRC} switch.c)
 endif(NINTENDO_SWITCH)
 
+if(${CMAKE_VERSION} VERSION_LESS "3.11.0")
+    if(ANDROID)
+        message(STATUS "Android build enabled. Building CG as Shared Lib")
+        add_library(CGeniusExe SHARED ${CGENIUS_SRC})
+    else(ANDROID)
+        # Add executable Commander Genius
+        add_executable (CGeniusExe ${CGENIUS_SRC})
+    endif(ANDROID)
+else()
+    if(ANDROID)
+        message(STATUS "Android build enabled. Building CG as Shared Lib")
+        add_library(CGeniusExe SHARED)
+    else(ANDROID)
+        # Add executable Commander Genius
+        add_executable (CGeniusExe)
+    endif(ANDROID)
 
-# Add executable Commander Genius
-add_executable (CGeniusExe ${CGENIUS_SRC})
+    target_sources(CGeniusExe PRIVATE ${CGENIUS_SRC})
+endif()
 
 # Since some RefKeen is used, we also need C99 Standard
 set_property(TARGET CGeniusExe PROPERTY C_STANDARD 99)
@@ -191,7 +205,6 @@ if(WIN32)
 endif(WIN32)
 
 
-target_link_libraries(CGeniusExe ${PYTHON_LIBRARIES})
 
 
 #cotire(CGeniusExe)

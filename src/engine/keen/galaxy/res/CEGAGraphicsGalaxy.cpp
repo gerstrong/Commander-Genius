@@ -971,6 +971,8 @@ bool CEGAGraphicsGalaxy::readfonts()
     const int ep = getEpisodeInfoIndex();
     SDL_Color *Palette = gGraphics.Palette.m_Palette;
 
+    const auto flags = gVideoDriver.getScrollSurface(0).getFlags();
+
     gGraphics.createEmptyFontmaps(EpisodeInfo[ep].NumFonts+1);    
 
     const auto exportGfx = exportArgEnabled();
@@ -1007,7 +1009,8 @@ bool CEGAGraphicsGalaxy::readfonts()
                     maxwidth = FontHead->Width[j];
             }
 
-            font.CreateSurface(Palette, gVideoDriver.getScrollSurface()->flags, maxwidth*16, FontHead->Height * 16);
+            font.CreateSurface(Palette, flags,
+                               maxwidth*16, FontHead->Height * 16);
 
             auto sfc = font.SDLSurfacePtr();
 
@@ -1142,7 +1145,7 @@ bool CEGAGraphicsGalaxy::readBitmaps()
     
     const auto &exefile = gKeenFiles.exeFile;
     
-
+    const auto flags = gVideoDriver.getScrollSurface(0).getFlags();
     // ARM processor requires all ints and structs to be 4-byte aligned, so we're just using memcpy()
     BitmapHeadStruct BmpHead[epInfo.NumBitmaps];
     memcpy( BmpHead, &(m_egagraph.at(0).data.at(0)), epInfo.NumBitmaps*sizeof(BitmapHeadStruct));
@@ -1190,8 +1193,7 @@ bool CEGAGraphicsGalaxy::readBitmaps()
         GsBitmap &bitmap = gGraphics.getBitmapFromId(0, i);
         bmpRect.w = BmpHead[i].Width*8;
         bmpRect.h = BmpHead[i].Height;
-        bitmap.createSurface(gVideoDriver.getScrollSurface()->flags,
-                             bmpRect, Palette);
+        bitmap.createSurface(flags, bmpRect, Palette);
 
         extractPicture(bitmap.getSDLSurface(),
                 data,
@@ -1309,6 +1311,8 @@ bool CEGAGraphicsGalaxy::readMaskedBitmaps()
 
     const auto exportGfx = exportArgEnabled();
 
+    const auto flags = gVideoDriver.getScrollSurface(0).getFlags();
+
     for(size_t i = 0; i < EpisodeInfo[ep].NumMaskedBitmaps; i++)
     {
         // Use upper limit to protect against overflow.
@@ -1335,7 +1339,7 @@ bool CEGAGraphicsGalaxy::readMaskedBitmaps()
         bmpRect.w = BmpMaskedHead[i].Width*8;
         bmpRect.h = BmpMaskedHead[i].Height;
 
-        Bitmap.createSurface(gVideoDriver.getScrollSurface()->flags, bmpRect, Palette);
+        Bitmap.createSurface(flags, bmpRect, Palette);
 
         extractPicture(Bitmap.getSDLSurface(),
                 data,

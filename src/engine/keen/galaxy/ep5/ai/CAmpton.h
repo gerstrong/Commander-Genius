@@ -22,8 +22,6 @@ public:
 	CAmpton(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y);
 
 
-    bool loadPythonScripts(const std::string &scriptBaseName);
-
     bool loadLuaScript(const std::string &scriptBaseName) override;
 
 	/**

@@ -100,6 +100,7 @@ private:
     int mHeight = 0;
 
     bool mInfoOnly = false;
+
 };
 
 #endif /* CPLANE_H_ */

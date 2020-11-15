@@ -18,10 +18,11 @@
 #include "graphics/GsGraphics.h"
 #include "common/dialog/CMessageBoxBitmapGalaxy.h"
 #include "common/dialog/CMessageBoxSelection.h"
-#include "audio/Audio.h"
-#include "audio/music/CMusic.h"
-#include "graphics/effects/CColorMerge.h"
-#include "graphics/effects/CDimDark.h"
+
+#include <base/audio/Audio.h>
+#include <base/audio/music/CMusic.h>
+#include <graphics/CColorMerge.h>
+#include <graphics/CDimDark.h>
 #include "fileio/CSaveGameController.h"
 
 #include "ep4/ai/CInchWorm.h"
@@ -390,6 +391,8 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
     else if( const EventSendSelectionDialogMsg* ev = dynamic_cast<const EventSendSelectionDialogMsg*>(evPtr) )
     {
         gMusicPlayer.stop();
+        m_LevelPlay.stopMusic();
+
         std::unique_ptr<CMessageBoxSelection> pMsgBox( new CMessageBoxSelection( ev->Message, ev->Options ) );
         pMsgBox->init();
 
@@ -451,15 +454,15 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
 
         int newLevel = 0;
 
-#if USE_PYTHON3
-        const int oldLevel = m_LevelPlay.getLevelIdx();
-        auto pModule = gPython.loadModule( "exitToLevel", gKeenFiles.gameDir);
+        GsLua lua;
+        const auto ok = lua.loadFile(
+                            JoinPaths(gKeenFiles.gameDir, "exitToLevel.lua"));
 
-        if (pModule != nullptr)
+        if(ok)
         {
-             loadIntegerFunc(pModule, "exitTo", newLevel, oldLevel);
+            const int oldLevel = m_LevelPlay.getLevelIdx();
+            lua.runFunctionRetOneInt("exitTo", oldLevel, newLevel);
         }
-#endif
 
         std::string levelLoadText = "LEVEL";
         levelLoadText += itoa(newLevel);
@@ -544,9 +547,15 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
     }
     else if( const EventPlayTrack *ev =  dynamic_cast<const EventPlayTrack*>(evPtr) )
     {
-        gMusicPlayer.stop();
-        if( gMusicPlayer.loadTrack(ev->track) )
-            gMusicPlayer.play();
+        if(m_LevelPlay.isActive())
+        {
+            m_LevelPlay.playMusic(ev->track);
+        }
+
+        if(m_WorldMap.isActive())
+        {
+            m_WorldMap.playMusic(ev->track);
+        }
     }
     else if(m_WorldMap.isActive())
     {
@@ -566,7 +575,9 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
 void CPlayGameGalaxy::ponder(const float deltaT)
 {
     if( gMenuController.active() )
+    {
         return;
+    }
 
     processInput();
 
@@ -587,6 +598,7 @@ void CPlayGameGalaxy::ponder(const float deltaT)
             gEventManager.add(new OpenMainMenuEvent());
         }
     }
+
 
     bool blockGamePlay = false;
 
@@ -732,7 +744,9 @@ void CPlayGameGalaxy::ponder(const float deltaT)
 void CPlayGameGalaxy::render()
 {
     if( gMenuController.active() )
+    {
         return;
+    }
 
     // Render World Map
     if(m_WorldMap.isActive())

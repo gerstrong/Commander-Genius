@@ -7,6 +7,8 @@
 #include <SDL_keycode.h>
 #include "defines.h"
 
+int start_cosmo();
+
 void load_config_file();
 void write_config_file();
 

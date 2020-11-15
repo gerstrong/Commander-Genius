@@ -1068,8 +1068,7 @@ IN_Ack(void)
                 BE_ST_ShortSleep();
 			}
 
-*/
-    gInput.waitForAnyInput();
+*/    
 
     //IN_AckBack();
 }

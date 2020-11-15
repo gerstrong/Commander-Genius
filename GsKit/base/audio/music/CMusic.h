@@ -11,7 +11,6 @@
 #ifndef CMUSIC_H_
 #define CMUSIC_H_
 
-#include "fileio/CExeFile.h"
 #include "CMusicPlayer.h"
 
 #include <SDL.h>
@@ -19,11 +18,11 @@
 #include <vector>
 #include <memory>
 #include <base/GsEvent.h>
+#include "CIMFPlayer.h"
 
 #include <base/Singleton.h>
 
 #include <SDL_mixer.h>
-
 
 #define gMusicPlayer CMusic::get()
 
@@ -37,6 +36,10 @@ public:
      * Loads given track of the Keen Music
 	 */
     bool loadTrack(const int track);
+
+    void setIMFLoadTrackCallback(
+            std::function<bool(RingBuffer<IMFChunkType> &, const int)> fcn);
+
 
     bool load(const std::string &musicfile);
 
@@ -61,17 +64,13 @@ public:
 
 	bool LoadfromSonglist(const std::string &gamepath, const int &level);
 
-    bool paused()
-    {
-        return Mix_PausedMusic();
-    }
+    bool loaded() const;
 
-	bool playing()
-    {
-        return Mix_PlayingMusic();
-    }
+    bool paused();
 
-    std::string getCurTrackPlaying();
+    bool playing();
+
+    std::string getCurTrack();
 
 private:
 
@@ -84,5 +83,7 @@ struct EventPlayTrack : CEvent {
     const uint32_t track;
     EventPlayTrack(const uint16_t t) : track(t) {}
 };
+
+
 
 #endif /* CMUSIC_H_ */

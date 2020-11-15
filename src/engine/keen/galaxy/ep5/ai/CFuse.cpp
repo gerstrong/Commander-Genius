@@ -11,7 +11,7 @@
 #include "../../common/ai/CPlayerLevel.h"
 #include "../../common/dialog/CMessageBoxBitmapGalaxy.h"
 #include <base/utils/misc.h>
-#include <audio/music/CMusic.h>
+#include <base/audio/music/CMusic.h>
 #include "../../common/ai/CEnemyShot.h"
 #include "../../menu/ComputerWrist.h"
 #include "engine/core/mode/CGameMode.h"

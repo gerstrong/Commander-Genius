@@ -49,7 +49,7 @@ bool input_init() {
     int numMappings = SDL_GameControllerAddMappingsFromFile(mappingFilename);
     SDL_Log("Game controllers found: %d Mappings: \'%s\' Count: %d", SDL_NumJoysticks(), mappingFilename, numMappings);
     free(mappingFilename);
-
+/*
     for (int i = 0; i < SDL_NumJoysticks(); ++i) {
         if (SDL_IsGameController(i)) {
             char *mapping;
@@ -68,7 +68,7 @@ bool input_init() {
             SDL_Log("Index \'%i\' is not a compatible controller.", i);
         }
     }
-
+*/
     return false;
 }
 

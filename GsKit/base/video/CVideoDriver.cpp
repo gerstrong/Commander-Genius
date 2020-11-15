@@ -410,7 +410,7 @@ bool CVideoDriver::applyMode()
 }
 
 bool CVideoDriver::setNativeResolution(const GsRect<Uint16> &dispRect)
-{
+{    
     return mpVideoEngine->createSurfaces(dispRect);
 }
 
@@ -492,17 +492,14 @@ void CVideoDriver::setScaleType(bool IsNormal)
 // defines the scroll-buffer that is used for blitScrollSurface(). It's normally passed by a CMap Object
 // it might have when a level-map is loaded.
 void CVideoDriver::updateScrollBuffer(const Sint16 SBufferX, const Sint16 SBufferY)
-{	
-    const int drawMask = getScrollSurface()->w-1;
-
-    mpVideoEngine->UpdateScrollBufX(SBufferX, drawMask);
-    mpVideoEngine->UpdateScrollBufY(SBufferY, drawMask);
+{	   
+    mpVideoEngine->updateScrollBuffers(SBufferX, SBufferY);
 }
 
-void CVideoDriver::blitScrollSurface() // This is only for tiles
-                                       // Therefore the name should be changed
-{
-	mpVideoEngine->blitScrollSurface();
+void CVideoDriver::blitScrollSurfaces() // This is only for tiles
+                                                              // Therefore the name should be changed
+{    
+    mpVideoEngine->blitScrollSurfaces(gameSfc());
 }
 
 void CVideoDriver::collectSurfaces()
@@ -589,9 +586,19 @@ unsigned short CVideoDriver::getDepth() const
 	return 32;
 }
 
-SDL_Surface *CVideoDriver::getScrollSurface()
+void CVideoDriver::resetScrollBuffers()
 {
-	return mpVideoEngine->getScrollSurface();
+    mpVideoEngine->resetScrollBuffers();
+}
+
+std::vector<GsScrollSurface> &CVideoDriver::getScrollSurfaceVec()
+{
+    return mpVideoEngine->getScrollSurfaceVec();
+}
+
+GsScrollSurface &CVideoDriver::getScrollSurface(const int idx)
+{
+    return mpVideoEngine->getScrollSfc(idx);
 }
 
 st_camera_bounds &CVideoDriver::getCameraBounds()

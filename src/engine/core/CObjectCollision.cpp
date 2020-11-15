@@ -710,6 +710,16 @@ int CSpriteObject::checkSolidL( int x1, int x2, int y1, int y2)
 
     x1 -= COLLISION_RES;
 
+    // Block tolerance: If sprite see a slope
+    // and is tall enought, the slope uses a slope tolerance,
+    // where we check how far the slope is from the feet
+    // otherwise, the object may not use that value at all (-1)
+    int local_block_tol = gBlockTolerance;
+
+    // Not tall enough?
+    if((y2-y1) < (1<<CSF))
+        local_block_tol = -1;
+
     // Check for right side of the tile
     if(solid && !noclipping)
 	{
@@ -718,18 +728,26 @@ int CSpriteObject::checkSolidL( int x1, int x2, int y1, int y2)
         if(h==0)
             return 0;
 
-        const auto tol_x = 1<<STC;
+        const auto pixel_tol_x = 1<<STC;
 
         for(int c=y1 ; c<=y2 ; c += COLLISION_RES)
 		{
             const auto mapOff = mpMap->at(x1>>CSF, c>>CSF);
+
+            if( mapOff >= TileProperty.size())
+                continue;
+
             blocker = TileProperty[mapOff].bright;
             bool slope = (TileProperty[mapOff].bup > 1);
 
-            // Start to really test if we blow up the gBlockTolerance
-            if(c-y1 <= gBlockTolerance) // Upper part
+            // Start to really test if we blow up the local_block_tol
+            if(c-y1 <= local_block_tol) // Upper part
             {
-                const auto mapTile = mpMap->at((x1+tol_x)>>CSF, c>>CSF);
+                const auto mapTile = mpMap->at((x1+pixel_tol_x)>>CSF, c>>CSF);
+
+                if( mapTile >= TileProperty.size())
+                    continue;
+
                 blocker = TileProperty[mapTile].bright;
                 slope = (TileProperty[mapTile].bup > 1);
                 if(blocker && !slope)

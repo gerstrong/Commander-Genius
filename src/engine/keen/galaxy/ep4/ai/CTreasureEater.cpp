@@ -174,7 +174,8 @@ void CTreasureEater::processHopping()
 		{
 			if(mStolen)
 			{
-			      setAction( A_SMIRKY_TELEPORT );
+                setAction( A_SMIRKY_TELEPORT );
+                this->playSound(SOUND_TRESURE_STEALER_TELEPORT);
 				lookForNextDestination();
 				mTeleported = true;
 			}

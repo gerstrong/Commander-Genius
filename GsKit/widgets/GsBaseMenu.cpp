@@ -37,27 +37,32 @@ void CBaseMenu::setMenuLabel(const std::string &label)
     mpMenuDialog->add( new GsBitmapBox(label, rect) );
 }
 
+void CBaseMenu::handleInput(const float)
+{
+    // Command (Keyboard/Joystick) are handled here
+    for( int cmd = IC_LEFT ; cmd < MAX_COMMANDS ; cmd++ )
+    {
+        if( gInput.getPressedCommand(cmd) )
+        {
+            std::shared_ptr<CEvent> command(
+                        new CommandEvent( static_cast<InpCmd>(cmd) ));
+            sendEvent(command);
+            break;
+        }
+    }
+}
 
-void CBaseMenu::ponder(const float)
+void CBaseMenu::ponder(const float dt)
 {
     // If IC_BACK is invoked, make the menu controller close the controller
     if( gInput.getPressedCommand(IC_BACK) )
     {
-        gEventManager.add( new CloseMenuEvent() );
+        gEventManager.add( new CloseMenuEvent(false) );
+
         return;
     }
 
-	// Command (Keyboard/Joystick) are handled here
-	for( int cmd = IC_LEFT ; cmd < MAX_COMMANDS ; cmd++ )
-	{
-		if( gInput.getPressedCommand(cmd) )
-		{
-            std::shared_ptr<CEvent> command(
-                        new CommandEvent( static_cast<InpCmd>(cmd) ));
-            sendEvent(command);
-		    break;
-		}
-	}
+    handleInput(dt);
 
 	mpMenuDialog->processLogic();
 }

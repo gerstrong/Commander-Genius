@@ -103,7 +103,7 @@ void CStory::ponder()
 void CStory::render()
 {
     mpMap->animateAllTiles();
-    gVideoDriver.blitScrollSurface();
+    gVideoDriver.blitScrollSurfaces();
 
     if(mpTextViewer)
     {

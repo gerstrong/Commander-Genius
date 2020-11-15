@@ -8,14 +8,15 @@
 #include <string.h>
 #include <fstream>
 #include <vector>
-#include "CSoundSlot.h"
 #include <base/GsLogging.h>
-#include "fileio.h"
-#include "fileio/ResourceMgmt.h"
+#include <fileio/fileio.h>
+#include <fileio/ResourceMgmt.h>
 #include <base/TypeDefinitions.h>
-#include "audio/base/Sampling.h"
-#include "audio/Audio.h"
+#include <base/audio/base/Sampling.h>
+#include <base/audio/Audio.h>
 #include <base/utils/FindFile.h>
+
+#include "CSoundSlot.h"
 
 CSoundSlot::CSoundSlot()
 {}

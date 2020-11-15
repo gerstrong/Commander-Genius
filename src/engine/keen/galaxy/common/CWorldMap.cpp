@@ -7,7 +7,8 @@
 
 #include "CWorldMap.h"
 #include "fileio/CSaveGameController.h"
-#include "graphics/effects/CColorMerge.h"
+#include <graphics/CColorMerge.h>
+
 #include "engine/core/VGamepads/vgamepadsimple.h"
 
 #include "../GalaxyEngine.h"
@@ -75,6 +76,7 @@ void CWorldMap::loadAndPlayMusic()
 	gMusicPlayer.stop();
     if(loadLevelMusic(0))
     {
+        mCurMusicTrack = gMusicPlayer.getCurTrack();
 		gMusicPlayer.play();
     }
 }

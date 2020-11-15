@@ -135,23 +135,23 @@ void CMimrock::processSit()
 {
     // When sitting the rock doesn't do any thing, so this stays empty.
     if(mTimer > 0)
-	mTimer--;
+        mTimer--;
 }
 
 void CMimrock::processWalk()
 {
     if(xDirection == LEFT)
     {
-	moveLeft(WALK_SPEED);
+        moveLeft(WALK_SPEED);
     }
     else
     {
-	moveRight(WALK_SPEED);
+        moveRight(WALK_SPEED);
     }
     
     if(getActionStatus(A_MIMROCK_SIT))
     {
-	setAction(A_MIMROCK_SIT);
+        setAction(A_MIMROCK_SIT);
     }
     
 }
@@ -160,50 +160,49 @@ void CMimrock::processJump()
 {
     if(xDirection == LEFT)
     {
-	moveLeft(JUMP_SPEED);
+        moveLeft(JUMP_SPEED);
     }
     else
     {
-	moveRight(JUMP_SPEED);
+        moveRight(JUMP_SPEED);
     }
     
     mTimer--;
     
     if(blockedd && yinertia>=0)
     {
-	mTimer = BOUNCE_TIME;
-	yinertia = -BOUNCE_HEIGHT;
-	setAction(A_MIMROCK_BOUNCE);
-	playSound( SOUND_KEEN_BUMPHEAD );
+        mTimer = BOUNCE_TIME;
+        yinertia = -BOUNCE_HEIGHT;
+        setAction(A_MIMROCK_BOUNCE);
+        this->playSound( SOUND_MIMROCK_BOUNCE );
     }
-    
 }
 
 void CMimrock::processBounce()
 {
     if(xDirection == LEFT)
     {
-	moveLeft(JUMP_SPEED);
+        moveLeft(JUMP_SPEED);
     }
     else
     {
-	moveRight(JUMP_SPEED);
+        moveRight(JUMP_SPEED);
     }
     
     if(mTimer>0)
-	mTimer--;
+        mTimer--;
     
     if(mTimer == 0 && blockedd)
     {
-	mTimer = TIME_UNTIL_LOOK;
-	setAction(A_MIMROCK_SIT);	
+        mTimer = TIME_UNTIL_LOOK;
+        setAction(A_MIMROCK_SIT);
     }
 }
 
 void CMimrock::process()
 {       
-    performCollisions();
-    performGravityMid();    
+    performGravityMid();
+    performCollisionsSameBox();
 	
     processActionRoutine();
         

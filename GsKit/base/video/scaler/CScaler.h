@@ -8,7 +8,7 @@
 #ifndef CSCALER_H_
 #define CSCALER_H_
 
-#include <SDL.h>
+//#include <SDL.h>
 #include <base/utils/Geometry.h>
 
 enum class VidFilter
@@ -35,6 +35,7 @@ int sFiltToNum(const VidFilter filt);
  * @param dstRect
  * @param filter
  */
+
 void blitScaled(SDL_Surface *srcSfc,
                 SDL_Rect &srGsRect,
                 SDL_Surface *dstSfc,

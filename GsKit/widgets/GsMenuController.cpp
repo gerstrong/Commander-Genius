@@ -67,9 +67,15 @@ void CMenuController::pumpEvent(const CEvent *evPtr)
 
         mMenuStack.push_back( openMenu->mMenuDialogPointer );
     }
-    else if( dynamic_cast<const CloseMenuEvent*>(evPtr) )
+    else if( auto *cme = dynamic_cast<const CloseMenuEvent*>(evPtr) )
     {
+        gInput.flushAll();
         popBackMenu();
+
+        if(cme->mReplayMusic)
+        {
+            gEventManager.add(new EventReloadMusic);
+        }
     }
     else if( dynamic_cast<const CloseAllMenusEvent*>(evPtr) )
     {
@@ -93,7 +99,7 @@ void CMenuController::popBackMenu()
     assert(!mMenuStack.empty());
 
     mMenuStack.back()->release();
-    mMenuStack.pop_back();    
+    mMenuStack.pop_back();
 }
 
 

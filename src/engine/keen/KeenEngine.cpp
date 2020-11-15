@@ -8,7 +8,7 @@
 #include "fileio/CSaveGameController.h"
 #include "fileio/KeenFiles.h"
 
-#include "audio/music/CMusic.h"
+#include <base/audio/music/CMusic.h>
 #include <base/CInput.h>
 #include <base/video/CVideoDriver.h>
 
@@ -99,7 +99,7 @@ void KeenEngine::ponder(const float deltaT)
 
     if( gMusicPlayer.paused())
     {
-       gMusicPlayer.play();
+        gMusicPlayer.play();
     }
 
     // Did the player press the quit/back button

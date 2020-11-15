@@ -7,6 +7,8 @@
 #include <base/CInput.h>
 
 #include "cosmogameplay.h"
+#include "game.h"
+#include "config.h"
 
 typedef enum
 {
@@ -17,16 +19,13 @@ typedef enum
 
 
 
-extern "C"
-{
-    void set_renderer(SDL_Renderer *rend);
+void set_renderer(SDL_Renderer *rend);
 
-    void set_game_data_dir(const char *dir, const int len);
+void set_game_data_dir(const char *dir, const int len);
 
-    input_state_enum process_ext_input_one_ev(SDL_Event event);
+input_state_enum process_ext_input_one_ev(SDL_Event event);
 
-    SDL_Surface *get_cur_vid_surface();
-}
+SDL_Surface *get_cur_vid_surface();
 
 
 
@@ -45,12 +44,6 @@ mEp(ep)
 CosmosEngine::~CosmosEngine()
 {}
 
-extern "C"
-{
-    int start_cosmo();
-
-    void enable_quick_start_mode();
-}
 
 const bool mQuickstart = true;
 

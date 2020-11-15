@@ -6,11 +6,12 @@
  */
 
 #include "Audio.h"
-#include "fileio.h"
-#include "fileio/ResourceMgmt.h"
+#include <fileio/fileio.h>
 #include <base/GsLogging.h>
 #include <base/utils/FindFile.h>
-#include "audio/music/CMusic.h"
+#include <base/audio/music/CMusic.h>
+
+#include "fileio/ResourceMgmt.h"
 
 #include <SDL_mixer.h>
 
@@ -532,9 +533,19 @@ int Audio::getOplAmp() const
     return mOplBoost;
 }
 
+int Audio::getPCSpeakerVol() const
+{
+    return mPCSpeakerVol;
+}
+
 void Audio::setOplAmp(const int percentage)
 {
     mOplBoost = percentage;
+}
+
+void Audio::setPcSpeakerVol(const int percentage)
+{
+    mPCSpeakerVol = percentage;
 }
 
 

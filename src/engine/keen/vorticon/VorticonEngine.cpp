@@ -17,7 +17,7 @@
 #include "fileio/CPatcher.h"
 #include "fileio/CSaveGameController.h"
 #include "engine/core/CMessages.h"
-#include "audio/Audio.h"
+#include <base/audio/Audio.h>
 #include "VorticonEngine.h"
 
 #include "CHelp.h"
@@ -43,6 +43,8 @@ namespace vorticon
 bool setupAudio()
 {
     CAudioVorticon *audio = new CAudioVorticon;
+
+    gMusicPlayer.setIMFLoadTrackCallback(imfMusicTrackloader);
 
     if(audio->loadSoundData(0))
     {
@@ -139,6 +141,7 @@ bool VorticonEngine::loadResources( const Uint8 flags )
             CExeFile &ExeFile = gKeenFiles.exeFile;
             int version = ExeFile.getEXEVersion();
             unsigned char *p_exedata = ExeFile.getRawData();
+            const auto pexedatasize = ExeFile.getRawDataSize();
 
             if( mEp == 1 && version == 134)
             {
@@ -169,7 +172,7 @@ bool VorticonEngine::loadResources( const Uint8 flags )
             if( (mFlags & LOADSTR) == LOADSTR )
             {
                 // load the strings.
-                CMessages Messages(p_exedata, mEp, false, version);
+                CMessages Messages(p_exedata, pexedatasize, mEp, false, version);
                 Messages.extractGlobalStringsUsingExe();
                 mLoader.setPermilage(500);
             }
@@ -220,6 +223,7 @@ void VorticonEngine::switchToPassiveMode()
     }
 }
 
+
 void VorticonEngine::pumpEvent(const CEvent *evPtr)
 {
     KeenEngine::pumpEvent(evPtr);
@@ -266,7 +270,7 @@ void VorticonEngine::pumpEvent(const CEvent *evPtr)
     {
         std::unique_ptr<CPlayGameVorticon> pgVort(new CPlayGameVorticon());
         pgVort->init();
-        pgVort->loadGame();
+        pgVort->loadGame();        
         mpGameMode = std::move(pgVort);
         mOpenedGamePlay = true;
         gBehaviorEngine.setPause(false);

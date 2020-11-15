@@ -1,7 +1,7 @@
 #include "achievements.h"
 
 #include "dialog/CMessageBoxGalaxy.h"
-#include "audio/Audio.h"
+#include <base/audio/Audio.h>
 #include "Trophy_Sound.h"
 
 #include <base/utils/property_tree/property_tree.h>
