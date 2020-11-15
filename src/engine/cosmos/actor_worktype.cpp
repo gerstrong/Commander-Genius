@@ -203,9 +203,9 @@ void actor_wt_133_boss_purple_15411(ActorData *actor)
                             actor->can_fall_down_flag = 1;
                             if(sprite_blocking_check(1, 0x66, 0, actor->x, actor->y + 1) == 0)
                             {
-                                if(actor->x + 1 <= player_x_pos)
+                                if(actor->x + 1 <= gCosmoPlayer.xPos())
                                 {
-                                    if(actor->x + 3 < player_x_pos)
+                                    if(actor->x + 3 < gCosmoPlayer.xPos())
                                     {
                                         if(sprite_blocking_check(3, 0x66, 0, actor->x + 1, actor->y) == NOT_BLOCKED)
                                         {
@@ -310,13 +310,13 @@ void actor_wt_133_boss_purple_15411(ActorData *actor)
         return;
     }
 
-    if(actor->x + 1 > player_x_pos)
+    if(actor->x + 1 > gCosmoPlayer.xPos())
     {
         display_actor_sprite_maybe(0x66, 2, actor->x + 1, actor->y - 4, 0);
         return;
     }
 
-    if(actor->x + 1 + 1 >= player_x_pos)
+    if(actor->x + 1 + 1 >= gCosmoPlayer.xPos())
     {
         display_actor_sprite_maybe(0x66, 3, actor->x + 1, actor->y - 4, 0);
     }
@@ -446,7 +446,7 @@ void actor_wt_angry_moon(ActorData *actor)
     if(actor->data_3 == 0)
     {
         actor->data_2++;
-        if(actor->x >= player_x_pos)
+        if(actor->x >= gCosmoPlayer.xPos())
         {
             actor->frame_num = actor->data_2 & 1;
         }
@@ -494,7 +494,7 @@ void actor_wt_big_red_jumper(ActorData *actor)
     }
     else
     {
-        if(actor->x <= player_x_pos)
+        if(actor->x <= gCosmoPlayer.xPos())
         {
             actor->data_1 = 3;
         }
@@ -801,11 +801,11 @@ void actor_wt_big_yellow_spike(ActorData *actor)
         }
         else
         {
-            if(actor->y < player_y_pos)
+            if(actor->y < gCosmoPlayer.yPos())
             {
-                if(actor->x <= player_x_pos + 6)
+                if(actor->x <= gCosmoPlayer.xPos() + 6)
                 {
-                    if(actor->x + 5 > player_x_pos)
+                    if(actor->x + 5 > gCosmoPlayer.xPos())
                     {
                         actor->data_1 = 1;
                         actor->can_fall_down_flag = 1;
@@ -883,11 +883,11 @@ void actor_wt_blue_ball(ActorData *actor)
         if (actor->data_2 == 0x1a)
         {
             actor->data_2 = 0;
-            if (actor->y == player_y_pos || (sub_1106F() & 1) == 0)
+            if (actor->y == gCosmoPlayer.yPos() || (sub_1106F() & 1) == 0)
             {
-                if(actor->x < player_x_pos + 1 + 1)
+                if(actor->x < gCosmoPlayer.xPos() + 1 + 1)
                 {
-                    if(actor->x + 2 <= player_x_pos)
+                    if(actor->x + 2 <= gCosmoPlayer.xPos())
                     {
                         actor->data_1 = 2;
                         actor->data_2 = 0;
@@ -972,7 +972,7 @@ void actor_wt_blue_bird(ActorData *actor)
 {
     if(actor->data_1 == 0)
     {
-        if(actor->x + 1 <= player_x_pos)
+        if(actor->x + 1 <= gCosmoPlayer.xPos())
         {
             if(rand() % 10 != 0)
             {
@@ -1018,7 +1018,7 @@ void actor_wt_blue_bird(ActorData *actor)
             {
                 actor->data_3 = 0;
                 actor->data_1 = 2;
-                if(actor->x + 1 <= player_x_pos)
+                if(actor->x + 1 <= gCosmoPlayer.xPos())
                 {
                     actor->data_4 = 1;
                 }
@@ -1028,7 +1028,7 @@ void actor_wt_blue_bird(ActorData *actor)
                 }
             }
 
-            if(actor->x + 1 <= player_x_pos)
+            if(actor->x + 1 <= gCosmoPlayer.xPos())
             {
                 actor->frame_num = (actor->data_3 & 1) + 6;
             }
@@ -1087,11 +1087,11 @@ void actor_wt_blue_cube_platform(ActorData *actor)
         actor->data_1 = 1;
     }
     
-    if(actor->y - 2 == player_y_pos)
+    if(actor->y - 2 == gCosmoPlayer.yPos())
     {
-        if(actor->x <= player_x_pos + 1 + 1)
+        if(actor->x <= gCosmoPlayer.xPos() + 1 + 1)
         {
-            if(actor->x + 1 >= player_x_pos)
+            if(actor->x + 1 >= gCosmoPlayer.xPos())
             {
                 actor->data_2 = 7;
             }
@@ -1161,7 +1161,7 @@ void actor_wt_blue_platform(ActorData *actor)
     }
     else
     {
-        if (actor->data_1 != 1 || actor->y - 2 != player_y_pos)
+        if (actor->data_1 != 1 || actor->y - 2 != gCosmoPlayer.yPos())
         {
             if (actor->data_1 == 2)
             {
@@ -1192,11 +1192,12 @@ void actor_wt_blue_platform(ActorData *actor)
         }
         else
         {
-            if (actor->x > player_x_pos || actor->x + 3 < player_x_pos)
+            if (actor->x > gCosmoPlayer.xPos() ||
+                actor->x + 3 < gCosmoPlayer.xPos())
             {
-                if (actor->x <= player_x_pos + 2)
+                if (actor->x <= gCosmoPlayer.xPos() + 2)
                 {
-                    if (actor->x + 3 >= player_x_pos + 2)
+                    if (actor->x + 3 >= gCosmoPlayer.xPos() + 2)
                     {
                         actor->data_1 = 2;
                         actor->data_2 = 0;
@@ -1274,15 +1275,16 @@ void actor_wt_blue_turret_alien(ActorData *actor)
 
     if(actor->data_1 == 0)
     {
-        if(actor->y < player_y_pos - 2)
+        if(actor->y < gCosmoPlayer.yPos() - 2)
         {
-            if(actor->y < player_y_pos - 2)
+            if(actor->y < gCosmoPlayer.yPos() - 2)
             {
-                if(actor->x - 2 <= player_x_pos)
+                if(actor->x - 2 <= gCosmoPlayer.xPos())
                 {
-                    if(actor->x + 3 >= player_x_pos)
+                    if(actor->x + 3 >= gCosmoPlayer.xPos())
                     {
-                        if(actor->x - 2 < player_x_pos && actor->x + 3 >= player_x_pos)
+                        if(actor->x - 2 < gCosmoPlayer.xPos() &&
+                           actor->x + 3 >= gCosmoPlayer.xPos())
                         {
                             actor->frame_num = 6;
                             actor->x = actor->data_3 + 1;
@@ -1300,7 +1302,7 @@ void actor_wt_blue_turret_alien(ActorData *actor)
                     actor->x = actor->data_3;
                 }
 
-                if(actor->x - 2 == player_x_pos)
+                if(actor->x - 2 == gCosmoPlayer.xPos())
                 {
                     actor->frame_num = 6;
                     actor->x = actor->data_3 + 1;
@@ -1309,9 +1311,9 @@ void actor_wt_blue_turret_alien(ActorData *actor)
         }
         else
         {
-            if(actor->x + 1 <= player_x_pos)
+            if(actor->x + 1 <= gCosmoPlayer.xPos())
             {
-                if(actor->x + 2 <= player_x_pos)
+                if(actor->x + 2 <= gCosmoPlayer.xPos())
                 {
                     actor->frame_num = 12;
                     actor->x = actor->data_3 + 1;
@@ -1712,11 +1714,11 @@ void actor_wt_egg_head(ActorData *actor)
 
     if(actor->data_5 == 0 && actor->data_1 == 0)
     {
-        if(actor->y <= player_y_pos)
+        if(actor->y <= gCosmoPlayer.yPos())
         {
-            if(actor->x - 6 < player_x_pos)
+            if(actor->x - 6 < gCosmoPlayer.xPos())
             {
-                if(actor->x + 4 > player_x_pos)
+                if(actor->x + 4 > gCosmoPlayer.xPos())
                 {
                     actor->data_1 = 1;
                     actor->data_2 = 0x14;
@@ -1748,13 +1750,13 @@ void actor_wt_egg_head(ActorData *actor)
 
 void actor_wt_end_of_level_marker(ActorData *actor)
 {
-    if(actor->y <= player_y_pos && actor->data_1 == 0)
+    if(actor->y <= gCosmoPlayer.yPos() && actor->data_1 == 0)
     {
         finished_level_flag_maybe = 1;
     }
     else
     {
-        if(actor->y >= player_y_pos && actor->data_1 != 0)
+        if(actor->y >= gCosmoPlayer.yPos() && actor->data_1 != 0)
         {
             finished_game_flag_maybe = 1;
         }
@@ -1963,9 +1965,10 @@ void actor_wt_ghost(ActorData *actor)
     }
     if (player_direction == 0)
     {
-        if (actor->x <= player_x_pos + 1 + 1 || player_hanging_on_wall_direction != 2 || right_key_pressed == 0)
+        if (actor->x <= gCosmoPlayer.xPos() + 1 + 1 ||
+            player_hanging_on_wall_direction != 2 || right_key_pressed == 0)
         {
-            if (actor->x <= player_x_pos)
+            if (actor->x <= gCosmoPlayer.xPos())
             {
                 if(cosmo_rand() % 0x23 != 0)
                 {
@@ -1985,13 +1988,13 @@ void actor_wt_ghost(ActorData *actor)
                     return;
                 }
                 actor->x = actor->x - 1;
-                if(actor->y < player_y_pos)
+                if(actor->y < gCosmoPlayer.yPos())
                 {
                     actor->y = actor->y + 1;
                     return;
                 }
 
-                if(actor->y > player_y_pos)
+                if(actor->y > gCosmoPlayer.yPos())
                 {
                     actor->y = actor->y - 1;
                 }
@@ -2013,9 +2016,9 @@ void actor_wt_ghost(ActorData *actor)
     }
     else
     {
-        if (actor->x >= player_x_pos || player_hanging_on_wall_direction != 3 || left_key_pressed == 0)
+        if (actor->x >= gCosmoPlayer.xPos() || player_hanging_on_wall_direction != 3 || left_key_pressed == 0)
         {
-            if (actor->x >= player_x_pos)
+            if (actor->x >= gCosmoPlayer.xPos())
             {
                 if(cosmo_rand() % 0x23 != 0)
                 {
@@ -2032,13 +2035,13 @@ void actor_wt_ghost(ActorData *actor)
                 if (actor->data_1 == 0)
                 {
                     actor->x = actor->x + 1;
-                    if(actor->y < player_y_pos)
+                    if(actor->y < gCosmoPlayer.yPos())
                     {
                         actor->y = actor->y + 1;
                         return;
                     }
 
-                    if(actor->y > player_y_pos)
+                    if(actor->y > gCosmoPlayer.yPos())
                     {
                         actor->y = actor->y - 1;
                     }
@@ -2131,7 +2134,7 @@ void actor_wt_green_pruny_cabbage_ball(ActorData *actor)
         {
 
             actor->data_2 = actor->data_2 + 1;
-            if(actor->x <= player_x_pos)
+            if(actor->x <= gCosmoPlayer.xPos())
             {
                 actor->frame_num = 2;
                 actor->data_4 = 2;
@@ -2173,7 +2176,7 @@ void actor_wt_green_pruny_cabbage_ball(ActorData *actor)
 
     actor->data_2 = 0;
     actor->data_3 = 0;
-    if(actor->x <= player_x_pos)
+    if(actor->x <= gCosmoPlayer.xPos())
     {
         actor->frame_num = 2;
         actor->data_4 = 2;
@@ -2357,8 +2360,8 @@ void actor_wt_hoverboard(ActorData *actor)
     actor->frame_num = actor->frame_num & 3;
     if(player_hoverboard_counter != 0)
     {
-        actor->x = player_x_pos;
-        actor->y = player_y_pos + 1;
+        actor->x = gCosmoPlayer.xPos();
+        actor->y = gCosmoPlayer.yPos() + 1;
         return;
     }
     
@@ -2385,7 +2388,7 @@ void actor_wt_hoverboard(ActorData *actor)
 
 void actor_wt_invisible_exit_marker_right(ActorData *actor)
 {
-    if(actor->x <= player_x_pos + 3)
+    if(actor->x <= gCosmoPlayer.xPos() + 3)
     {
         finished_level_flag_maybe = 1;
         return;
@@ -2541,13 +2544,13 @@ void actor_wt_pink_eye_plant(ActorData *actor)
         actor->data_2 = 3;
     }
 
-    if(actor->x - 2 > player_x_pos)
+    if(actor->x - 2 > gCosmoPlayer.xPos())
     {
         actor->frame_num = actor->data_2;
         return;
     }
 
-    if(actor->x + 1 >= player_x_pos)
+    if(actor->x + 1 >= gCosmoPlayer.xPos())
     {
         actor->frame_num = actor->data_2 + 1;
     }
@@ -2957,7 +2960,7 @@ void actor_wt_red_chomper_alien(ActorData *actor)
             return;
         }
 
-        if(actor->x < player_x_pos)
+        if(actor->x < gCosmoPlayer.xPos())
         {
             actor->data_1 = 1;
         }
@@ -3341,27 +3344,31 @@ void actor_wt_rocket(ActorData *actor)
             }
         }
 
-        if(actor->x == player_x_pos)
+        if(actor->x == gCosmoPlayer.xPos())
         {
-            if(actor->y - 7 <= player_y_pos)
+            if(actor->y - 7 <= gCosmoPlayer.yPos())
             {
-                if(actor->y - 4 >= player_y_pos)
+                if(actor->y - 4 >= gCosmoPlayer.yPos())
                 {
                     player_bounce_height_counter = 0x10;
                     player_bounce_flag_maybe = 1;
                     gCosmoPlayer.resetWalkCycle();
                     player_spring_jump_flag = 0;
-                    if(actor->y - 7 == player_y_pos)
-                    {
-                        player_y_pos = player_y_pos + 1;
+
+                    const int playerX = gCosmoPlayer.xPos();
+                    const int playerY = gCosmoPlayer.yPos();
+
+                    if(actor->y - 7 == gCosmoPlayer.yPos())
+                    {                        
+                        gCosmoPlayer.setPos(playerX, playerY+1);
                     }
-                    if(actor->y - 6 == player_y_pos)
+                    if(actor->y - 6 == gCosmoPlayer.yPos())
                     {
-                        player_y_pos = player_y_pos + 1;
+                        gCosmoPlayer.setPos(playerX, playerY+1);
                     }
-                    if(actor->y - 4 == player_y_pos)
+                    if(actor->y - 4 == gCosmoPlayer.yPos())
                     {
-                        player_y_pos = player_y_pos - 1;
+                        gCosmoPlayer.setPos(playerX, playerY-1);
                     }
                 }
             }
@@ -3539,7 +3546,7 @@ void actor_wt_security_robot(ActorData *actor)
         actor->data_4--;
         if(actor->data_4 == 1)
         {
-            if(actor->x + 1 <= player_x_pos)
+            if(actor->x + 1 <= gCosmoPlayer.xPos())
             {
                 actor->data_1 = 1;
             }
@@ -3621,9 +3628,9 @@ void actor_wt_short_dialog(ActorData *actor)
     actor_tile_display_func_index = 1;
     if(actor->data_2 == 0)
     {
-        if(actor->y <= player_y_pos)
+        if(actor->y <= gCosmoPlayer.yPos())
         {
-            if(actor->y >= player_y_pos - 4)
+            if(actor->y >= gCosmoPlayer.yPos() - 4)
             {
                 end_game_dialog(actor->data_1);
                 actor->data_2 = 1;
@@ -3655,9 +3662,9 @@ void actor_wt_silver_robot(ActorData *actor)
     actor->data_3 = (actor->data_3 ? -1 : 0) + 1;
     if(actor->data_1 == 0)
     {
-        if(actor->y == player_y_pos)
+        if(actor->y == gCosmoPlayer.yPos())
         {
-            if(actor->x - 3 == player_x_pos && actor->data_4 == 0)
+            if(actor->x - 3 == gCosmoPlayer.xPos() && actor->data_4 == 0)
             {
                 actor->frame_num = 2;
                 actor->data_2 = 8;
@@ -3695,9 +3702,9 @@ void actor_wt_silver_robot(ActorData *actor)
     else
     {
         
-        if(actor->y == player_y_pos)
+        if(actor->y == gCosmoPlayer.yPos())
         {
-            if(actor->x + 4 == player_x_pos && actor->data_4 == 0)
+            if(actor->x + 4 == gCosmoPlayer.xPos() && actor->data_4 == 0)
             {
                 actor->frame_num = 5;
                 actor->data_2 = 8;
@@ -3748,9 +3755,9 @@ void actor_wt_small_red_plant(ActorData *actor)
 {
     if(actor->data_1 == 0)
     {
-        if(actor->y > player_y_pos)
+        if(actor->y > gCosmoPlayer.yPos())
         {
-            if(actor->x == player_x_pos)
+            if(actor->x == gCosmoPlayer.xPos())
             {
                 actor->data_1 = 1;
             }
@@ -3937,11 +3944,11 @@ void actor_wt_stone_head(ActorData *actor)
     actor->data_4 = (actor->data_4 ? -1 : 0) + 1;
     if(actor->data_1 == 0)
     {
-        if(actor->y < player_y_pos)
+        if(actor->y < gCosmoPlayer.yPos())
         {
-            if(actor->x <= player_x_pos + 6)
+            if(actor->x <= gCosmoPlayer.xPos() + 6)
             {
-                if(actor->x + 7 > player_x_pos)
+                if(actor->x + 7 > gCosmoPlayer.xPos())
                 {
                     actor->data_1 = 1;
                     actor->data_2 = actor->y;
@@ -4481,11 +4488,11 @@ void actor_wt_teleporter(ActorData *actor)
     }
     if(teleporter_counter == 15)
     {
-        effect_add_sprite(15, 4, player_x_pos - 1, player_y_pos, 0, 1);
-        effect_add_sprite(15, 4, player_x_pos + 1, player_y_pos, 0, 1);
-        effect_add_sprite(15, 4, player_x_pos - 1, player_y_pos - 3, 0, 2);
-        effect_add_sprite(15, 4, player_x_pos, player_y_pos - 2, 0, 3);
-        effect_add_sprite(15, 4, player_x_pos + 1, player_y_pos - 3, 0, 3);
+        effect_add_sprite(15, 4, gCosmoPlayer.xPos() - 1, gCosmoPlayer.yPos(), 0, 1);
+        effect_add_sprite(15, 4, gCosmoPlayer.xPos() + 1, gCosmoPlayer.yPos(), 0, 1);
+        effect_add_sprite(15, 4, gCosmoPlayer.xPos() - 1, gCosmoPlayer.yPos() - 3, 0, 2);
+        effect_add_sprite(15, 4, gCosmoPlayer.xPos(), gCosmoPlayer.yPos() - 2, 0, 3);
+        effect_add_sprite(15, 4, gCosmoPlayer.xPos() + 1, gCosmoPlayer.yPos() - 3, 0, 3);
         play_sfx(0x17);
     }
     if(teleporter_counter > 1)
@@ -4507,13 +4514,13 @@ void actor_wt_teleporter(ActorData *actor)
     {
         return;
     }
-    player_x_pos = actor->x + 1;
-    player_y_pos = actor->y;
-    if(player_x_pos - 14 >= 0)
+
+    gCosmoPlayer.setPos(actor->x + 1, actor->y);
+    if(gCosmoPlayer.xPos() - 14 >= 0)
     {
-        if(player_x_pos - 14 <= map_width_in_tiles - 38)
+        if(gCosmoPlayer.xPos() - 14 <= map_width_in_tiles - 38)
         {
-            mapwindow_x_offset = player_x_pos - 14;
+            mapwindow_x_offset = gCosmoPlayer.xPos() - 14;
         }
         else
         {
@@ -4524,11 +4531,11 @@ void actor_wt_teleporter(ActorData *actor)
     {
         mapwindow_x_offset = 0;
     }
-    if(player_y_pos - 12 >= 0)
+    if(gCosmoPlayer.yPos() - 12 >= 0)
     {
-        if(player_y_pos - 12 <= map_max_y_offset)
+        if(gCosmoPlayer.yPos() - 12 <= map_max_y_offset)
         {
-            mapwindow_y_offset = player_y_pos - 12;
+            mapwindow_y_offset = gCosmoPlayer.yPos() - 12;
         }
         else
         {
@@ -4688,7 +4695,7 @@ void actor_wt_speech_bubble(ActorData *actor)
     actor->data_1++;
     if(actor->data_1 != 0x14)
     {
-        display_actor_sprite_maybe(actor->actorInfoIndex, 0, player_x_pos - 1, player_y_pos - 5, 5);
+        display_actor_sprite_maybe(actor->actorInfoIndex, 0, gCosmoPlayer.xPos() - 1, gCosmoPlayer.yPos() - 5, 5);
     }
     else
     {
@@ -4713,8 +4720,8 @@ void actor_wt_unknown_232(ActorData *actor)
     if(actor->data_1 != 0xf0)
     {
         
-        actor->x = player_x_pos - 1;
-        actor->y = player_y_pos + 1;
+        actor->x = gCosmoPlayer.xPos() - 1;
+        actor->y = gCosmoPlayer.yPos() + 1;
     }
     else
     {

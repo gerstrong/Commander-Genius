@@ -3,21 +3,18 @@
 #define COSMO_ENGINE_PLAYER_H
 
 #include <base/Singleton.h>
+#include "defines.h"
 
 extern const sint16 player_x_offset_tbl[];
 extern const sint16 player_y_offset_tbl[];
 
 //Data
-extern bool player_is_grabbing_wall_flag;
 extern uint16 player_death_counter;
 extern int player_walk_anim_index;
 extern int player_is_being_pushed_flag;
 extern int player_hanging_on_wall_direction;
 
-extern int player_y_pos;
-extern int player_x_pos;
 extern int player_direction;
-extern int player_direction_related_32E98;
 
 extern uint16 player_sprite_dir_frame_offset;
 extern int player_input_jump_related_flag;
@@ -92,11 +89,13 @@ public:
      */
     void updateHoverboard();
 
+    void resetState();
+
     void resetWalkCycle();
 
     void resetPushVariables();
 
-    void displaySprite(const uint8 frame_num,
+    void displaySprite(const int frame_num,
                        const int x_pos,
                        const int y_pos,
                        const int tile_display_func_index);
@@ -116,7 +115,7 @@ public:
 
     void addScoreForActor(int actorInfoIndex);
 
-    void addToScore(const uint32 amount_to_add_low);
+    void addToScore(const int amount_to_add_low);
 
     void decreaseHealth();
 
@@ -124,7 +123,7 @@ public:
                     int push_anim_duration,
                     int push_duration,
                     int player_frame_num,
-                    uint8 dont_push_while_jumping_flag,
+                    int dont_push_while_jumping_flag,
                     int check_for_blocking_flag);
 
     void moveOnPlatform(int platform_x_left,
@@ -134,7 +133,15 @@ public:
 
     void addSpeechBubble(const SpeechBubbleType type);
 
+
+    int xPos();
+    int yPos();
+
+    void setPos(const int x, const int y);
+
 private:
+
+    BlockingType checkMovement(int direction, int x_pos, int y_pos);
 
     void push();    
 
@@ -142,6 +149,11 @@ private:
 
     void hackMoverUpdate();
 
+    bool mIsGrabbingWall = false;
+    int mWatchingDirection = 3;
+
+    int player_y_pos = 0;
+    int player_x_pos = 0;
 };
 
 };

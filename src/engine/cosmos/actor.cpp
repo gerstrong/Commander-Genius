@@ -72,7 +72,8 @@ uint16 sub_1106F()
     {
         word_32EC2 = 0;
     }
-    return word_28D9C[word_32EC2] + mapwindow_x_offset + mapwindow_y_offset + word_32EC2 + player_x_pos + player_y_pos;
+    return word_28D9C[word_32EC2] + mapwindow_x_offset + mapwindow_y_offset + word_32EC2
+            + gCosmoPlayer.xPos() + gCosmoPlayer.yPos();
 }
 
 void actor_add_new(int image_index, int x_pos, int y_pos)
@@ -1173,8 +1174,7 @@ void load_actor(int actor_num, int actorType, int x_pos, int y_pos)
                     mapwindow_y_offset = y_pos - 10;
                 }
 
-                player_x_pos = x_pos;
-                player_y_pos = y_pos;
+                gCosmoPlayer.setPos(x_pos, y_pos);
                 break;
 
             case 1: // Platform

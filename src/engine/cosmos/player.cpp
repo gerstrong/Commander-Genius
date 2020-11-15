@@ -20,10 +20,8 @@ int player_walk_anim_index = 0;
 int player_is_being_pushed_flag = 0;
 int player_hanging_on_wall_direction = 0;
 
-int player_y_pos = 0;
-int player_x_pos = 0;
 int player_direction = 0;
-int player_direction_related_32E98 = 0;
+int watchingDirection = 0;
 
 uint16 player_sprite_dir_frame_offset = 0;
 int player_input_jump_related_flag = 0;
@@ -81,7 +79,11 @@ bool cheat_hack_mover_enabled = false;
 Tile *player_tiles;
 Sprite *player_sprites;
 
-BlockingType player_check_movement(int direction, int x_pos, int y_pos)
+namespace cosmos_engine
+{
+
+
+BlockingType Player::checkMovement(int direction, int x_pos, int y_pos)
 {
     is_standing_slipry_slope_left_flg = 0;
     is_standing_slipry_slope_right_flg = 0;
@@ -192,8 +194,6 @@ BlockingType player_check_movement(int direction, int x_pos, int y_pos)
     return NOT_BLOCKED;
 }
 
-namespace cosmos_engine
-{
 
 void Player::push()
 {
@@ -227,7 +227,7 @@ void Player::push()
         {
             mapwindow_y_offset = mapwindow_y_offset + player_y_offset_tbl[player_push_direction];
         }
-        if(player_push_check_blocking_flag != 0 && (player_check_movement(2, player_x_pos, player_y_pos) != NOT_BLOCKED || player_check_movement(3, player_x_pos, player_y_pos) != NOT_BLOCKED || player_check_movement(0, player_x_pos, player_y_pos) != NOT_BLOCKED || player_check_movement(1, player_x_pos, player_y_pos) != NOT_BLOCKED))
+        if(player_push_check_blocking_flag != 0 && (checkMovement(2, player_x_pos, player_y_pos) != NOT_BLOCKED || checkMovement(3, player_x_pos, player_y_pos) != NOT_BLOCKED || checkMovement(0, player_x_pos, player_y_pos) != NOT_BLOCKED || checkMovement(1, player_x_pos, player_y_pos) != NOT_BLOCKED))
         {
             di = 1;
             break;
@@ -263,7 +263,7 @@ void Player::handleInput()
     }
 
     int si = 0;
-    player_is_grabbing_wall_flag = false;
+    mIsGrabbingWall = false;
     if(player_death_counter != 0 || teleporter_state_maybe != 0 ||
        player_hoverboard_counter != 0 || player_walk_anim_index != 0 || hide_player_sprite != 0)
     {
@@ -290,7 +290,7 @@ void Player::handleInput()
         if((tile_attr & TILE_ATTR_SLIPPERY) != 0 &&
            (tile_attr & TILE_ATTR_CAN_GRAB_WALL) != 0)
         {
-            if(player_check_movement(1, player_x_pos, player_y_pos + 1) == NOT_BLOCKED)
+            if(checkMovement(1, player_x_pos, player_y_pos + 1) == NOT_BLOCKED)
             {
                 player_y_pos = player_y_pos + 1;
                 si = 1;
@@ -432,7 +432,7 @@ void Player::handleInput()
        (jump_key_pressed != 0 && player_input_jump_related_flag == 0))
     {
         word_2E214 = 0;
-        //ax = player_check_movement(1, player_x_pos, player_y_pos + 1);
+        //ax = checkMovement(1, player_x_pos, player_y_pos + 1);
         if(is_standing_slipry_slope_left_flg == 0 || is_standing_slipry_slope_right_flg == 0)
         {
             if(is_standing_slipry_slope_right_flg != 0)
@@ -441,7 +441,7 @@ void Player::handleInput()
                 {
                     player_x_pos = player_x_pos - 1;
                 }
-                if(player_check_movement(1, player_x_pos, player_y_pos + 1) == 0 && player_hanging_on_wall_direction == 0)
+                if(checkMovement(1, player_x_pos, player_y_pos + 1) == 0 && player_hanging_on_wall_direction == 0)
                 {
                     player_y_pos = player_y_pos + 1;
                 }
@@ -459,11 +459,11 @@ void Player::handleInput()
             {
                 if(player_hanging_on_wall_direction == 0)
                 {
-                    player_x_pos = player_x_pos + 1;
+                    player_x_pos++;
                 }
-                if(player_check_movement(1, player_x_pos, player_y_pos + 1) == 0 && player_hanging_on_wall_direction == 0)
+                if(checkMovement(1, player_x_pos, player_y_pos + 1) == 0 && player_hanging_on_wall_direction == 0)
                 {
-                    player_y_pos = player_y_pos + 1;
+                    player_y_pos++;
                 }
                 if(player_y_pos - mapwindow_y_offset > 14)
                 {
@@ -481,11 +481,11 @@ void Player::handleInput()
         }
         if(left_key_pressed != 0 && player_hanging_on_wall_direction == 0 && right_key_pressed == 0)
         {
-            BlockingType di = player_check_movement(1, player_x_pos, player_y_pos + 1);
+            BlockingType di = checkMovement(1, player_x_pos, player_y_pos + 1);
 
-            if(player_direction_related_32E98 != 2)
+            if(mWatchingDirection != 2)
             {
-                player_direction_related_32E98 = 2;
+                mWatchingDirection = 2;
             }
             else
             {
@@ -494,11 +494,11 @@ void Player::handleInput()
             player_direction = 0;
             if(player_x_pos >= 1)
             {
-                player_movement_status = player_check_movement(2, player_x_pos, player_y_pos);
+                player_movement_status = checkMovement(2, player_x_pos, player_y_pos);
                 if(player_movement_status == BLOCKED)
                 {
                     player_x_pos = player_x_pos + 1;
-                    if(player_check_movement(1, player_x_pos, player_y_pos + 1) == NOT_BLOCKED && player_is_grabbing_wall_flag)
+                    if(checkMovement(1, player_x_pos, player_y_pos + 1) == NOT_BLOCKED && mIsGrabbingWall)
                     {
                         player_hanging_on_wall_direction = 2;
                         player_bounce_flag_maybe = 0;
@@ -526,25 +526,25 @@ void Player::handleInput()
             {
                 if(di == SLOPE)
                 {
-                    if(player_check_movement(1, player_x_pos, player_y_pos + 1) == NOT_BLOCKED)
+                    if(checkMovement(1, player_x_pos, player_y_pos + 1) == NOT_BLOCKED)
                     {
                         byte_2E2E4 = 0;
                         byte_2E182 = 0;
-                        player_y_pos = player_y_pos + 1;
+                        player_y_pos++;
                     }
                 }
             }
             else
             {
-                player_y_pos = player_y_pos - 1;
+                player_y_pos--;
             }
         }
         if(right_key_pressed != 0 && player_hanging_on_wall_direction == 0 && left_key_pressed == 0)
         {
-            BlockingType di = player_check_movement(1, player_x_pos, player_y_pos + 1);
-            if(player_direction_related_32E98 != 3)
+            BlockingType di = checkMovement(1, player_x_pos, player_y_pos + 1);
+            if(mWatchingDirection != 3)
             {
-                player_direction_related_32E98 = 3;
+                mWatchingDirection = 3;
             }
             else
             {
@@ -553,11 +553,11 @@ void Player::handleInput()
             player_direction = 0x17;
             if(map_width_in_tiles - 4 >= player_x_pos)
             {
-                player_movement_status = player_check_movement(3, player_x_pos, player_y_pos);
+                player_movement_status = checkMovement(3, player_x_pos, player_y_pos);
                 if(player_movement_status == BLOCKED)
                 {
                     player_x_pos = player_x_pos - 1;
-                    if(player_check_movement(1, player_x_pos, player_y_pos + 1) == NOT_BLOCKED && player_is_grabbing_wall_flag)
+                    if(checkMovement(1, player_x_pos, player_y_pos + 1) == NOT_BLOCKED && mIsGrabbingWall)
                     {
                         player_hanging_on_wall_direction = 3;
                         player_bounce_flag_maybe = 0;
@@ -585,17 +585,17 @@ void Player::handleInput()
             {
                 if(di == SLOPE)
                 {
-                    if(player_check_movement(1, player_x_pos, player_y_pos + 1) == NOT_BLOCKED)
+                    if(checkMovement(1, player_x_pos, player_y_pos + 1) == NOT_BLOCKED)
                     {
                         byte_2E2E4 = 0;
                         word_2E180 = 0;
-                        player_y_pos = player_y_pos + 1;
+                        player_y_pos++;
                     }
                 }
             }
             else
             {
-                player_y_pos = player_y_pos - 1;
+                player_y_pos--;
             }
         }
         if(player_hanging_on_wall_direction != 0 && player_input_jump_related_flag != 0 && jump_key_pressed == 0)
@@ -621,7 +621,7 @@ void Player::handleInput()
                 if(player_bounce_height_counter > 13)
                 {
                     player_bounce_height_counter = player_bounce_height_counter - 1;
-                    if(player_check_movement(0, player_x_pos, player_y_pos) != 0)
+                    if(checkMovement(0, player_x_pos, player_y_pos) != 0)
                     {
                         player_spring_jump_flag = 0;
                     }
@@ -671,17 +671,17 @@ void Player::handleInput()
                 }
                 if(player_hanging_on_wall_direction == 0)
                 {
-                    player_y_pos = player_y_pos + word_28F80[byte_2E182];
+                    player_y_pos += word_28F80[byte_2E182];
                 }
-                if(byte_2E182 == 0 && player_check_movement(0, player_x_pos, player_y_pos + 1) != 0)
+                if(byte_2E182 == 0 && checkMovement(0, player_x_pos, player_y_pos + 1) != 0)
                 {
-                    player_y_pos = player_y_pos + 1;
+                    player_y_pos++;
                 }
                 player_bounce_flag_maybe = 0;
                 var_4 = true;
             }
             player_hanging_on_wall_direction = 0;
-            BlockingType blockingCheck = player_check_movement(0, player_x_pos, player_y_pos);
+            BlockingType blockingCheck = checkMovement(0, player_x_pos, player_y_pos);
             if(blockingCheck == NOT_BLOCKED)
             {
                 if(var_4 && byte_2E182 == 0)
@@ -698,12 +698,12 @@ void Player::handleInput()
                 }
                 player_bounce_height_counter = 0;
                 player_bounce_flag_maybe = 0;
-                blockingCheck = player_check_movement(0, player_x_pos, player_y_pos + 1);
+                blockingCheck = checkMovement(0, player_x_pos, player_y_pos + 1);
                 if(blockingCheck != NOT_BLOCKED)
                 {
-                    player_y_pos = player_y_pos + 1;
+                    player_y_pos++;
                 }
-                player_y_pos = player_y_pos + 1;
+                player_y_pos++;
                 byte_2E2E4 = 1;
                 if(jump_key_pressed != 0)
                 {
@@ -739,15 +739,15 @@ void Player::handleInput()
             }
             if(byte_2E2E4 != 0 && player_bounce_flag_maybe == 0)
             {
-                player_y_pos = player_y_pos + 1;
-                if(player_check_movement(1, player_x_pos, player_y_pos) != NOT_BLOCKED)
+                player_y_pos++;
+                if(checkMovement(1, player_x_pos, player_y_pos) != NOT_BLOCKED)
                 {
                     if(word_2E180 != 0)
                     {
                         play_sfx(3);
                     }
                     byte_2E2E4 = 0;
-                    player_y_pos = player_y_pos - 1;
+                    player_y_pos--;
                     byte_2E182 = 0;
                     if(jump_key_pressed == 0)
                     {
@@ -761,13 +761,13 @@ void Player::handleInput()
                 }
                 if(word_2E180 > 3)
                 {
-                    player_y_pos = player_y_pos + 1;
+                    player_y_pos++;
                     mapwindow_y_offset = mapwindow_y_offset + 1;
-                    if(player_check_movement(1, player_x_pos, player_y_pos) != NOT_BLOCKED)
+                    if(checkMovement(1, player_x_pos, player_y_pos) != NOT_BLOCKED)
                     {
                         play_sfx(3);
                         byte_2E2E4 = 0;
-                        player_y_pos = player_y_pos - 1;
+                        player_y_pos--;
                         mapwindow_y_offset = mapwindow_y_offset - 1;
                         byte_2E182 = 0;
                         if(jump_key_pressed == 0)
@@ -787,7 +787,7 @@ void Player::handleInput()
                 }
             }
             if(byte_2E2E4 != 0 && word_2E180 == 1 && player_bounce_flag_maybe == 0)
-            {
+            {                
                 player_y_pos = player_y_pos - 1;
             }
         }
@@ -798,9 +798,9 @@ void Player::handleInput()
         {
             if(right_key_pressed == 0)
             {
-                if(player_direction_related_32E98 != 2)
+                if(mWatchingDirection != 2)
                 {
-                    if(player_direction_related_32E98 == 3)
+                    if(mWatchingDirection == 3)
                     {
                         word_2E214 = 3;
                     }
@@ -812,14 +812,14 @@ void Player::handleInput()
             }
             else
             {
-                player_direction_related_32E98 = 3;
+                mWatchingDirection = 3;
                 word_2E214 = 3;
                 player_direction = 0x17;
             }
         }
         else
         {
-            player_direction_related_32E98 = 2;
+            mWatchingDirection = 2;
             word_2E214 = 2;
             player_direction = 0;
         }
@@ -1050,6 +1050,22 @@ void Player::handleInput()
 namespace cosmos_engine
 {
 
+void Player::resetState()
+{
+    mWatchingDirection = 3;
+    player_input_jump_related_flag = 1;
+    player_hanging_on_wall_direction = 0;
+    player_bounce_flag_maybe = 0;
+    player_bounce_height_counter = 0;
+    player_sprite_dir_frame_offset = 0;
+    player_direction = 0x17;
+    player_death_counter = 0;
+    player_invincibility_counter = 0x28;
+    player_hoverboard_counter = 0;
+    player_is_teleporting_flag = 0;
+    player_in_pneumatic_tube_flag = 0;
+}
+
 void Player::resetWalkCycle()
 {
     word_32EB2 = 0;
@@ -1085,7 +1101,7 @@ void Player::loadTiles()
 }
 
 
-void Player::displaySprite(const uint8 frame_num,
+void Player::displaySprite(const int frame_num,
                            const int x_pos,
                            const int y_pos,
                            const int tile_display_func_index)
@@ -1286,7 +1302,7 @@ void Player::updateWalkAnim()
         word_32EB2 = 0;
         player_walk_anim_index = 0;
     }
-    if(word_32EB2 != 0 && player_check_movement(1, player_x_pos, player_y_pos + 1) != 0)
+    if(word_32EB2 != 0 && checkMovement(1, player_x_pos, player_y_pos + 1) != 0)
     {
         word_32EB2 = 0;
         player_walk_anim_index = 8;
@@ -1412,7 +1428,7 @@ int Player::bounceInAir(int bounce_height)
 
 
 
-void Player::addToScore(const uint32 amount_to_add_low)
+void Player::addToScore(const int amount_to_add_low)
 {
     add_to_score_update_on_display(amount_to_add_low, 9, 0x16);
 }
@@ -1540,7 +1556,7 @@ void Player::pushAround(int push_direction,
                 int push_anim_duration,
                 int push_duration,
                 int player_frame_num,
-                uint8 dont_push_while_jumping_flag,
+                int dont_push_while_jumping_flag,
                 int check_for_blocking_flag)
 {
     player_push_direction = push_direction;
@@ -1606,8 +1622,8 @@ void Player::updateHoverboard()
             player_x_pos++;
         }
 
-        if (player_check_movement(2, player_x_pos, player_y_pos) != 0 ||
-            player_check_movement(2, player_x_pos, player_y_pos + 1) != 0)
+        if (checkMovement(2, player_x_pos, player_y_pos) != 0 ||
+            checkMovement(2, player_x_pos, player_y_pos + 1) != 0)
         {
             player_x_pos++;
         }
@@ -1633,8 +1649,8 @@ void Player::updateHoverboard()
             player_x_pos--;
         }
 
-        if (player_check_movement(3, player_x_pos, player_y_pos) != 0 ||
-            player_check_movement(3, player_x_pos, player_y_pos + 1) != 0)
+        if (checkMovement(3, player_x_pos, player_y_pos) != 0 ||
+            checkMovement(3, player_x_pos, player_y_pos + 1) != 0)
         {
             player_x_pos--;
         }
@@ -1658,7 +1674,7 @@ void Player::updateHoverboard()
             {
                 player_y_pos++;
             }
-            if (player_check_movement(1, player_x_pos, player_y_pos + 1) != 0)
+            if (checkMovement(1, player_x_pos, player_y_pos + 1) != 0)
             {
                 player_y_pos--;
             }
@@ -1671,7 +1687,7 @@ void Player::updateHoverboard()
         {
             player_y_pos--;
         }
-        if (player_check_movement(0, player_x_pos, player_y_pos) != 0)
+        if (checkMovement(0, player_x_pos, player_y_pos) != 0)
         {
             player_y_pos++;
         }
@@ -1778,7 +1794,7 @@ void Player::moveOnPlatform(int platform_x_left,
 
     int player_right_x_pos = player_sprites[0].frames[0].width + player_x_pos - 1;
 
-    if(player_hanging_on_wall_direction != 0 && player_check_movement(DOWN, player_x_pos, player_y_pos + 1) != 0)
+    if(player_hanging_on_wall_direction != 0 && checkMovement(DOWN, player_x_pos, player_y_pos + 1) != 0)
     {
         player_hanging_on_wall_direction = 0;
     }
@@ -1901,7 +1917,21 @@ void Player::updateIdleAnim()
     }
 }
 
+int Player::xPos()
+{
+    return player_x_pos;
+}
 
+int Player::yPos()
+{
+    return player_y_pos;
+}
+
+void Player::setPos(const int x, const int y)
+{
+    player_x_pos = x;
+    player_y_pos = y;
+}
 
 void Player::addSpeechBubble(const SpeechBubbleType type)
 {

@@ -30,9 +30,12 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
     if (actorInfoIndex != 0x66)
     {
         int ax = word_2E180 <= 3 ? 0 : 1;
-
-        if (ax + y_pos - sprite_height + 1 >= player_y_pos && y_pos - sprite_height <= player_y_pos &&
-            player_x_pos + 1 + 1 >= x_pos && x_pos + sprite_width - 1 >= player_x_pos && player_hoverboard_counter == 0)
+;
+        if (ax + y_pos - sprite_height + 1 >= thePlayer.yPos() &&
+            y_pos - sprite_height <= thePlayer.yPos() &&
+            thePlayer.xPos() + 1 + 1 >= x_pos &&
+            thePlayer.xPos() + sprite_width - 1 >= thePlayer.xPos() &&
+            player_hoverboard_counter == 0)
         {
             word_2E1E8 = 1;
         }
@@ -40,8 +43,10 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
     else
     {
         sprite_height = 7;
-        if (y_pos - sprite_height + 5 >= player_y_pos && y_pos - sprite_height <= player_y_pos &&
-            player_x_pos + 1 + 1 >= x_pos && x_pos + sprite_width - 1 >= player_x_pos)
+        if (y_pos - sprite_height + 5 >= thePlayer.yPos() &&
+                y_pos - sprite_height <= thePlayer.yPos() &&
+            thePlayer.xPos() + 1 + 1 >= x_pos &&
+                x_pos + sprite_width - 1 >= thePlayer.xPos())
         {
             word_2E1E8 = 1;
         }
@@ -368,7 +373,7 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
             return 0;
 
         case 188: // 219 OBJECT: Rocket
-            if (actor->x == player_x_pos && actor->count_down_timer == 0 && thePlayer.bounceInAir(5) != 0)
+            if (actor->x == thePlayer.xPos() && actor->count_down_timer == 0 && thePlayer.bounceInAir(5) != 0)
             {
                 play_sfx(6);
             }
@@ -396,7 +401,8 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
                 actor->has_moved_left_flag = 1;
                 actor->data_2 = 0;
                 actor->data_1 = 1;
-                player_y_pos = player_y_pos - 2;
+
+                thePlayer.setPos(thePlayer.xPos(), thePlayer.yPos()-2);
                 if (!speech_bubble_red_plant_shown_flag)
                 {
                     speech_bubble_red_plant_shown_flag = true;
@@ -409,15 +415,16 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
             {
                 return 0;
             }
-            if (actor->x + 1 > player_x_pos)
+            if (actor->x + 1 > thePlayer.xPos())
             {
                 return 0;
             }
-            if (actor->x + 5 < player_x_pos + 1 + 1)
+            if (actor->x + 5 < thePlayer.xPos() + 1 + 1)
             {
                 return 0;
             }
-            if (actor->y - 1 != player_y_pos && actor->y - 2 != player_y_pos)
+            if (actor->y - 1 != thePlayer.yPos() &&
+                actor->y - 2 != thePlayer.yPos())
             {
                 return 0;
             }
@@ -540,7 +547,7 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
             {
                 actor->y = actor->data_2;
                 actor->data_4 = 0;
-                if (actor->y > player_y_pos - 4 || actor->frame_num == 6)
+                if (actor->y > thePlayer.yPos() - 4 || actor->frame_num == 6)
                 {
                     gCosmoPlayer.decreaseHealth();
                 }
@@ -548,7 +555,7 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
                 actor->frame_num = 0;
                 return 0;
             }
-            if (actor->y > player_y_pos - 4)
+            if (actor->y > thePlayer.yPos() - 4)
             {
                 gCosmoPlayer.decreaseHealth();
             }
@@ -720,13 +727,14 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
 
         case 104: // 136: pneumatic pipe entrance
 
-            if (actor->data_2 == 0 && (actor->y + 3 == player_y_pos || actor->y + 2 == player_y_pos))
+            if (actor->data_2 == 0 &&
+                (actor->y + 3 == thePlayer.yPos() || actor->y + 2 == thePlayer.yPos()))
             {
                 if (player_is_being_pushed_flag == 0)
                 {
                     return 0;
                 }
-                player_x_pos = actor->x;
+                thePlayer.setPos(actor->x, thePlayer.yPos());
                 word_32EB2 = 1;
                 player_in_pneumatic_tube_flag = 0;
                 gCosmoPlayer.resetPushVariables();
@@ -746,11 +754,12 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
                 return 0;
             }
 
-            if (actor->x != player_x_pos)
+            if (actor->x != thePlayer.xPos())
             {
                 return 0;
             }
-            if (actor->y + 3 == player_y_pos || actor->y + 2 == player_y_pos)
+            if (actor->y + 3 == thePlayer.yPos() ||
+                actor->y + 2 == thePlayer.yPos())
             {
                 player_in_pneumatic_tube_flag = 1;
             }
@@ -762,7 +771,9 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
                 return 1;
             }
 
-            if (actor->x > player_x_pos || actor->x + 4 < player_x_pos + 1 + 1 || actor->y != player_y_pos)
+            if (actor->x > thePlayer.xPos() ||
+                actor->x + 4 < thePlayer.xPos() + 1 + 1 ||
+                actor->y != thePlayer.yPos())
             {
                 player_is_teleporting_flag = 0;
             }
@@ -784,13 +795,14 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
                 return 0;
             }
 
-            if (actor->y != player_y_pos && actor->y + 1 != player_y_pos)
+            if (actor->y != thePlayer.yPos() &&
+                actor->y + 1 != thePlayer.yPos())
             {
                 return 0;
             }
             player_hoverboard_counter = 4;
             play_sfx(3);
-            gCosmoPlayer.resetPushVariables();
+            thePlayer.resetPushVariables();
             byte_2E2E4 = 0;
             word_2E180 = 0;
             player_bounce_flag_maybe = 0;
@@ -826,11 +838,11 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
             {
                 return 1;
             }
-            if (actor->y != player_y_pos)
+            if (actor->y != thePlayer.yPos())
             {
                 return 1;
             }
-            if (actor->x <= player_x_pos)
+            if (actor->x <= thePlayer.xPos())
             {
                 actor->frame_num = 0;
                 actor->data_5 = 0;
@@ -843,7 +855,9 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
 
         case 161: // 193 HAZARD: Clamp Trap
 
-            if (actor->data_2 == 0 && actor->x == player_x_pos && actor->y == player_y_pos)
+            if (actor->data_2 == 0 &&
+                actor->x == thePlayer.xPos() &&
+                actor->y == thePlayer.yPos())
             {
                 actor->data_2 = 1;
                 byte_2E17C = 1;
@@ -862,19 +876,19 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
             {
                 return 0;
             }
-            if (actor->x >= player_x_pos)
+            if (actor->x >= thePlayer.xPos())
             {
                 return 0;
             }
-            if (actor->x + 5 <= player_x_pos)
+            if (actor->x + 5 <= thePlayer.xPos())
             {
                 return 0;
             }
-            if (actor->y - 2 <= player_y_pos)
+            if (actor->y - 2 <= thePlayer.yPos())
             {
                 return 0;
             }
-            if (actor->y - 5 >= player_y_pos)
+            if (actor->y - 5 >= thePlayer.yPos())
             {
                 return 0;
             }
@@ -931,7 +945,7 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
 
         case 188: // 220 BONUS:  Invincibility Cube
             actor->is_deactivated_flag_maybe = 1;
-            actor_add_new(0xc9, player_x_pos - 1, player_y_pos + 1);
+            actor_add_new(0xc9, thePlayer.xPos() - 1, thePlayer.yPos() + 1);
             effect_add_sprite(0x17, 8, x_pos, y_pos, 0, 1);
             actor_add_new(0xb8, x_pos, y_pos);
             play_sfx(1);
@@ -1016,9 +1030,9 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
                 speech_bubble_rubber_wall_shown_flag = true;
                 gCosmoPlayer.addSpeechBubble(UMPH);
             }
-            if (actor->x != player_x_pos + 2)
+            if (actor->x != thePlayer.xPos() + 2)
             {
-                if (actor->x + 2 != player_x_pos)
+                if (actor->x + 2 != thePlayer.xPos())
                 {
                     return 0;
                 }
@@ -1063,7 +1077,7 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
                 }
                 if (actor->data_1 > 1)
                 {
-                    player_y_pos = actor->y;
+                    thePlayer.setPos(thePlayer.xPos(), actor->y);
                     byte_2E2E4 = 0;
                 }
                 return 0;

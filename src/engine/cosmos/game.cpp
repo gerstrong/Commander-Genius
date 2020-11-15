@@ -94,28 +94,17 @@ void set_initial_game_state()
 void reset_game_state()
 {
     finished_game_flag_maybe = 0;
-    player_hanging_on_wall_direction = 0;
     byte_2E2E4 = 1;
-    player_input_jump_related_flag = 1;
     byte_2E182 = 0;
     word_2E180 = 1;
-    player_bounce_flag_maybe = 0;
-    player_bounce_height_counter = 0;
-    player_direction_related_32E98 = 3;
-    player_sprite_dir_frame_offset = 0;
-    player_direction = 0x17;
-    player_death_counter = 0;
     finished_level_flag_maybe = 0;
-    player_invincibility_counter = 0x28;
     teleporter_counter = 0;
     teleporter_state_maybe = 0;
-    player_in_pneumatic_tube_flag = 0;
-    player_hoverboard_counter = 0;
-    player_is_teleporting_flag = 0;
     word_32EAC = 0;
     energy_beam_enabled_flag = 1;
     byte_2E17C = 0;
 
+    gCosmoPlayer.resetState();
     gCosmoPlayer.resetWalkCycle();
 
     hide_player_sprite = 0;

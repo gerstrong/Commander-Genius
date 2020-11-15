@@ -27,7 +27,7 @@ void update_mud_fountains()
                 map_write_tile_cell(0, mud_fountain->x + 1 + 1, mud_fountain->y);
                 if(player_death_counter == 0)
                 {
-                    if(mud_fountain->y - 1 == player_y_pos)
+                    if(mud_fountain->y - 1 == gCosmoPlayer.yPos())
                     {
                         if(mud_fountain->direction == 0)
                         {
@@ -109,7 +109,7 @@ void update_moving_platforms() {
 
         uint16 map_tile_num = (uint16) (map_get_tile_cell(platform->x, platform->y) / 8);
         if (player_death_counter == 0) {
-            if (platform->y - 1 == player_y_pos && move_platform_flag != 0) {
+            if (platform->y - 1 == gCosmoPlayer.yPos() && move_platform_flag != 0) {
                 gCosmoPlayer.moveOnPlatform(platform->x - 2, platform->x + 2, map_tile_num, map_tile_num);
             }
         }
