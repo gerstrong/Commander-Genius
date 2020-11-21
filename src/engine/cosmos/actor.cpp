@@ -1248,7 +1248,7 @@ void display_actor_sprite_flipped(TileInfo *info, int x_pos, int y_pos)
     }
 }
 
-void display_actor_sprite_maybe(int actorInfoIndex, int frame_num, int x_pos, int y_pos, int tile_display_func_index)
+void display_actor_sprite_maybe(int actorInfoIndex, int frame_num, float x_pos, float y_pos, int tile_display_func_index)
 {
     //FIXME
 

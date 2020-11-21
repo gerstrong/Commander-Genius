@@ -30,7 +30,7 @@ uint16 current_level;
 int map_width_in_tiles = 0;
 int map_height_in_tiles = 0;
 int map_stride_bit_shift_amt;
-int mapwindow_x_offset = 0;
+float mapwindow_x_offset = 0;
 int mapwindow_y_offset = 0;
 int map_max_y_offset = 0;
 

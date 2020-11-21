@@ -489,7 +489,7 @@ void Player::handleInput()
             }
             else
             {
-                player_x_pos = player_x_pos - 1;
+                player_x_pos = player_x_pos - 1.0f;
             }
             player_direction = 0;
             if(player_x_pos >= 1)
@@ -548,7 +548,7 @@ void Player::handleInput()
             }
             else
             {
-                player_x_pos = player_x_pos + 1;
+                player_x_pos = player_x_pos + 1.0f;
             }
             player_direction = 0x17;
             if(map_width_in_tiles - 4 >= player_x_pos)
@@ -1034,12 +1034,12 @@ void Player::handleInput()
        map_width_in_tiles - 38 > mapwindow_x_offset &&
        map_stride_bit_shift_amt > 5)
     {
-        mapwindow_x_offset = mapwindow_x_offset + 1;
+        mapwindow_x_offset = mapwindow_x_offset + 0.1f;
         return;
     }
     if(player_x_pos - mapwindow_x_offset < 12 && mapwindow_x_offset > 0)
     {
-        mapwindow_x_offset = mapwindow_x_offset - 1;
+        mapwindow_x_offset = mapwindow_x_offset - 0.1f;
     }
 }
 
@@ -1102,8 +1102,8 @@ void Player::loadTiles()
 
 
 void Player::displaySprite(const int frame_num,
-                           const int x_pos,
-                           const int y_pos,
+                           const float x_pos,
+                           const float y_pos,
                            const int tile_display_func_index)
 {
     if(tile_display_func_index == 6)
@@ -1115,7 +1115,8 @@ void Player::displaySprite(const int frame_num,
         {
             for (int x = 0; x < info->width; x++)
             {
-                video_draw_tile(tile, (x_pos + x) * 8, (y_pos + y - (info->height - 1)) * 8);
+                video_draw_tile(tile, (x_pos + float(x)) * 8,
+                                (y_pos + (y - float(info->height - 1))) * 8);
                 tile++;
             }
         }
@@ -1628,7 +1629,7 @@ void Player::updateHoverboard()
             player_x_pos++;
         }
 
-        if ((player_x_pos & 1) != 0)
+        if ((static_cast<int>(player_x_pos) & 1) != 0)
         {
             effect_add_sprite(0x13, 4, player_x_pos + 3, player_y_pos + 1, 3, 1);
             play_sfx(0x18);
@@ -1654,7 +1655,7 @@ void Player::updateHoverboard()
         {
             player_x_pos--;
         }
-        if ((player_x_pos & 1) != 0)
+        if ((static_cast<int>(player_x_pos) & 1) != 0)
         {
             effect_add_sprite(0x13, 4, player_x_pos - 1, player_y_pos + 1, 7, 1);
             play_sfx(0x18);
@@ -1691,7 +1692,7 @@ void Player::updateHoverboard()
         {
             player_y_pos++;
         }
-        if ((player_y_pos & 1) != 0)
+        if ((static_cast<int>(player_y_pos) & 1) != 0)
         {
             effect_add_sprite(0x13, 4, player_x_pos + 1, player_y_pos + 1, 5, 1);
             play_sfx(0x18);

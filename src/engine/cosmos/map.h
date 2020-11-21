@@ -17,7 +17,7 @@ extern int map_width_in_tiles;
 extern int map_height_in_tiles;
 extern int map_stride_bit_shift_amt;
 
-extern int mapwindow_x_offset;
+extern float mapwindow_x_offset;
 extern int mapwindow_y_offset;
 
 extern int map_max_y_offset;

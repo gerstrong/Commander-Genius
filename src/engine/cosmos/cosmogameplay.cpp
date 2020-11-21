@@ -670,8 +670,8 @@ void CosmoGameplay::ponder(const float deltaT)
     // 1 tile = 8px
 
     // mMap.m_scrollx is pixel based
-    const auto mapwindow_x_offset_pix = mapwindow_x_offset;
-    const auto mapwindow_y_offset_pix = mapwindow_y_offset;
+    const auto mapwindow_x_offset_pix = mapwindow_x_offset*8.0f;
+    const auto mapwindow_y_offset_pix = mapwindow_y_offset*8.0f;
 
     int scroll_diff_x = (mMap.m_scrollx-mapwindow_x_offset_pix);
     int scroll_diff_y = (mMap.m_scrolly-mapwindow_y_offset_pix);

@@ -96,8 +96,8 @@ public:
     void resetPushVariables();
 
     void displaySprite(const int frame_num,
-                       const int x_pos,
-                       const int y_pos,
+                       const float x_pos,
+                       const float y_pos,
                        const int tile_display_func_index);
 
     int updateSprite();
@@ -152,8 +152,8 @@ private:
     bool mIsGrabbingWall = false;
     int mWatchingDirection = 3;
 
-    int player_y_pos = 0;
-    int player_x_pos = 0;
+    float player_y_pos = 0.0f;
+    float player_x_pos = 0.0f;
 };
 
 };
