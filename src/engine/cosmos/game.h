@@ -19,7 +19,6 @@ typedef enum {
 extern game_play_mode_enum game_play_mode;
 extern uint8 finished_level_flag_maybe;
 extern uint8 finished_game_flag_maybe;
-extern uint32 num_stars_collected;
 extern uint8 knows_about_powerups_flag;
 extern uint32 score;
 extern uint8 cheat_mode_flag;

@@ -255,7 +255,7 @@ input_state_enum handle_key_down(SDL_KeyboardEvent event)
     {
         case SDLK_b : //FIXME testing code
             num_bombs++;
-            display_num_bombs_left();
+            gStatus.displayNumBombsLeft();
             break;
         case SDLK_g :
             god_mode_toggle_dialog(); //TODO should be protected by cheat mode

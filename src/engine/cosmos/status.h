@@ -1,28 +1,48 @@
-//
-// Created by Eric Fry on 8/11/2017.
-//
-
 #ifndef COSMO_ENGINE_STATUS_H
 #define COSMO_ENGINE_STATUS_H
 
-#include "defines.h"
+#include <base/Vector2D.h>
+#include <base/Singleton.h>
 
-#define STATUS_BAR_HEIGHT 6
+#define gStatus cosmos_engine::Status::get()
 
-#define STATUS_BAR_WIDTH 38
+namespace cosmos_engine
+{
 
-void status_load_tiles();
+class Status : public GsSingleton<Status>
+{
+public:
 
-void status_panel_init();
+    void loadTiles();
 
-void status_display();
+    void init();
 
-void add_to_score_update_on_display(uint32 amount_to_add_low, int x_pos, int y_pos);
+    void initPanel();
 
-void update_health_bar_display();
+    void display();
 
-void display_num_stars_collected();
+    void addToScoreUpdateOnDisplay(const int amount_to_add_low,
+                                   const GsVec2D<int> pos);
 
-void display_num_bombs_left();
+    void updateHealthBarDisplay();
+
+    void displayNumStarsCollected();
+
+    void displayNumBombsLeft();
+
+    void setNumStartsCollected(const int value);
+    int numStartsCollected() const ;
+
+    void addStar();
+
+private:
+
+    int numStarsCollected = 0;
+
+};
+
+};
+
+
 
 #endif //COSMO_ENGINE_STATUS_H

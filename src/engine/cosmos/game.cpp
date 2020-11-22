@@ -33,7 +33,7 @@
 //Data
 game_play_mode_enum game_play_mode = PLAY_GAME;
 uint32 score;
-uint32 num_stars_collected;
+//uint32 num_stars_collected;
 extern uint8 cheats_used_flag;
 uint8 knows_about_powerups_flag;
 uint8 finished_game_flag_maybe = 0;
@@ -67,7 +67,7 @@ void game_init()
 
     load_config_file();
 
-    status_load_tiles();
+    gStatus.loadTiles();
     tile_attr_load();
     gCosmoPlayer.loadTiles();
     actor_load_tiles();
@@ -84,7 +84,7 @@ void set_initial_game_state()
     num_health_bars = 3;
     current_level = 0;
     num_bombs = 0;
-    num_stars_collected = 0;
+    gStatus.init();
     cheats_used_flag = 0;
     has_had_bomb_flag = 0;
     knows_about_powerups_flag = 0;
@@ -376,7 +376,7 @@ void game_wait()
 
 void select_next_level()
 {
-    uint32 tmp_num_stars_collected = num_stars_collected;
+    uint32 tmp_num_stars_collected = gStatus.numStartsCollected();
     if (game_play_mode == PLAY_GAME)
     {
         switch (current_level)

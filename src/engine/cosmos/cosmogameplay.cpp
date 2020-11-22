@@ -676,60 +676,45 @@ void CosmoGameplay::ponder(const float deltaT)
     int scroll_diff_x = (mMap.m_scrollx-mapwindow_x_offset_pix);
     int scroll_diff_y = (mMap.m_scrolly-mapwindow_y_offset_pix);
 
-    const int DIST_FOR_SLOMO = 2;
+    const int DIST_FOR_SLOMO = 8;
 
     if(scroll_diff_x < 0)
     {
-        if(scroll_diff_x < -DIST_FOR_SLOMO)
+        do
         {
-            for(int i=0 ; i<-scroll_diff_x ; i++)
-            {
-                scroll_diff_x = (mMap.m_scrollx-mapwindow_x_offset_pix);
-                mMap.scrollRight();
-            }
-        }
-
-        mMap.scrollRight();
+            scroll_diff_x = (mMap.m_scrollx-mapwindow_x_offset_pix);
+            if(!mMap.scrollRight())
+                break;
+        } while(scroll_diff_x <= -DIST_FOR_SLOMO);
     }
     else if(scroll_diff_x > 0)
     {
-        if(scroll_diff_x > DIST_FOR_SLOMO)
+        do
         {
-            for(int i=0 ; i<scroll_diff_x ; i++)
-            {
-                scroll_diff_x = (mMap.m_scrollx-mapwindow_x_offset_pix);
-                mMap.scrollLeft();
-            }
-        }
-
-        mMap.scrollLeft();
+            scroll_diff_x = (mMap.m_scrollx-mapwindow_x_offset_pix);
+            if(!mMap.scrollLeft())
+                break;
+        } while(scroll_diff_x >= DIST_FOR_SLOMO);
     }
+
 
     if(scroll_diff_y < 0)
     {
-        if(scroll_diff_y < -DIST_FOR_SLOMO)
+        do
         {
-            for(int i=0 ; i<-scroll_diff_y ; i++)
-            {
-                scroll_diff_y = (mMap.m_scrolly-mapwindow_y_offset_pix);
-                mMap.scrollDown();
-            }
-        }
-
-        mMap.scrollDown();
+            scroll_diff_y = (mMap.m_scrolly-mapwindow_y_offset_pix);
+            if(!mMap.scrollDown())
+                break;
+        } while(scroll_diff_y <= -DIST_FOR_SLOMO);
     }
     else if(scroll_diff_y > 0)
     {
-        if(scroll_diff_y > DIST_FOR_SLOMO)
+        do
         {
-            for(int i=0 ; i<scroll_diff_y ; i++)
-            {
-                scroll_diff_y = (mMap.m_scrolly-mapwindow_y_offset_pix);
-                mMap.scrollUp();
-            }
-        }
-
-        mMap.scrollUp();
+            scroll_diff_y = (mMap.m_scrolly-mapwindow_y_offset_pix);
+            if(!mMap.scrollUp())
+                break;
+        } while(scroll_diff_y >= DIST_FOR_SLOMO);
     }
 
     executeLogics();

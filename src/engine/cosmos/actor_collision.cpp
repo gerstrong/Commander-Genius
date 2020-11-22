@@ -612,7 +612,7 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
             else
             {
                 health = health + 1;
-                update_health_bar_display();
+                gStatus.updateHealthBarDisplay();
 
                 thePlayer.addToScore(0x64);
 
@@ -662,7 +662,7 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
                 thePlayer.addToScore(0x64);
 
                 actor_add_new(0xb1, actor->x, actor->y);
-                display_num_bombs_left();
+                gStatus.displayNumBombsLeft();
 
                 effect_add_sprite(15, 4, actor->x, actor->y, 0, 3);
                 play_sfx(13);
@@ -904,12 +904,12 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
 
         case 0: // 32: bonus star
             effect_add_sprite(0x17, 8, x_pos, y_pos, 0, 1);
-            num_stars_collected++;
+            gStatus.addStar();
             actor->is_deactivated_flag_maybe = 1;
             play_sfx(1);
             gCosmoPlayer.addScoreForActor(actorInfoIndex);
             actor_add_new(0xb2, x_pos, y_pos);
-            display_num_stars_collected();
+            gStatus.displayNumStarsCollected();
             return 1;
 
         case 81: // 113 Hamburger
@@ -928,7 +928,7 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
                 gCosmoPlayer.addSpeechBubble(WHOA);
                 speech_bubble_hamburger_shown_flag = true;
             }
-            update_health_bar_display();
+            gStatus.updateHealthBarDisplay();
             return 1;
 
         case 31: // 63 BONUS:  Green Tomato (falling)

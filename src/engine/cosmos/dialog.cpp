@@ -15,6 +15,7 @@
 #include "player.h"
 #include "actor.h"
 #include "save.h"
+#include "status.h"
 #include "fullscreen_image.h"
 #include "cartoon.h"
 #include "high_scores.h"
@@ -1118,7 +1119,7 @@ void display_score_from_level()
 {
     stop_music();
 
-    if(num_stars_collected == 0)
+    if(gStatus.numStartsCollected() == 0)
     {
         fade_in_from_black_with_delay_3();
         return;
@@ -1132,7 +1133,7 @@ void display_score_from_level()
 
     display_dialog_text(0xe, 7, "X 1000 =");
 
-    display_number(0x1b, 7, num_stars_collected * 1000);
+    display_number(0x1b, 7, gStatus.numStartsCollected() * 1000);
 
     cosmo_wait(0x32);
     display_dialog_text(0xa, 0xc, "YOUR SCORE =  ");
@@ -1143,7 +1144,7 @@ void display_score_from_level()
     cosmo_wait(0x64);
 
     int star_counter = 0;
-    for(int i=num_stars_collected; i > 0; i--)
+    for(int i = gStatus.numStartsCollected(); i > 0; i--)
     {
         score += 1000;
         cosmo_wait(0xf);
@@ -1193,7 +1194,7 @@ void display_score_from_level()
     }
 
     cosmo_wait(0x190);
-    num_stars_collected = 0;
+    gStatus.setNumStartsCollected(0);
 }
 
 void display_end_of_level_score_dialog(const char *header_text, const char *footer_text)
@@ -1352,7 +1353,7 @@ void savegame_dialog()
     {
         display_char(x + 0x18, 3, keycode, FONT_WHITE);
         uint16 tmp_num_bombs = num_bombs;
-        uint32 tmp_num_stars_collected = num_stars_collected;
+        uint32 tmp_num_stars_collected = gStatus.numStartsCollected();
         uint16 tmp_current_level = current_level;
         uint8 tmp_num_health_bars = num_health_bars;
         uint32 tmp_score = score;
@@ -1363,7 +1364,7 @@ void savegame_dialog()
 
         health = tmp_health;
         num_bombs = tmp_num_bombs;
-        num_stars_collected = tmp_num_stars_collected;
+        gStatus.setNumStartsCollected(tmp_num_stars_collected);
         current_level = tmp_current_level;
         score = tmp_score;
         num_health_bars = tmp_num_health_bars;

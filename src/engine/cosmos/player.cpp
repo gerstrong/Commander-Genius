@@ -370,7 +370,7 @@ void Player::handleInput()
                                 {
                                     actor_add_new(0x18, player_x_pos - 2, player_y_pos - 2);
                                     num_bombs = num_bombs - 1;
-                                    display_num_bombs_left();
+                                    gStatus.displayNumBombsLeft();
                                     play_sfx(0x1d);
                                 }
                             }
@@ -406,7 +406,7 @@ void Player::handleInput()
                             {
                                 actor_add_new(0x18, player_x_pos + 3, player_y_pos - 2);
                                 num_bombs = num_bombs - 1;
-                                display_num_bombs_left();
+                                gStatus.displayNumBombsLeft();
                                 play_sfx(0x1d);
                             }
                             else
@@ -1034,21 +1034,15 @@ void Player::handleInput()
        map_width_in_tiles - 38 > mapwindow_x_offset &&
        map_stride_bit_shift_amt > 5)
     {
-        mapwindow_x_offset = mapwindow_x_offset + 0.1f;
+        mapwindow_x_offset = mapwindow_x_offset + 1.0f;
         return;
     }
     if(player_x_pos - mapwindow_x_offset < 12 && mapwindow_x_offset > 0)
     {
-        mapwindow_x_offset = mapwindow_x_offset - 0.1f;
+        mapwindow_x_offset = mapwindow_x_offset - 1.0f;
     }
 }
 
-};
-
-
-
-namespace cosmos_engine
-{
 
 void Player::resetState()
 {
@@ -1431,7 +1425,7 @@ int Player::bounceInAir(int bounce_height)
 
 void Player::addToScore(const int amount_to_add_low)
 {
-    add_to_score_update_on_display(amount_to_add_low, 9, 0x16);
+    gStatus.addToScoreUpdateOnDisplay(amount_to_add_low, GsVec2D<int>(9, 0x16) );
 }
 
 void Player::addScoreForActor(int actorInfoIndex)
@@ -1541,7 +1535,7 @@ void Player::decreaseHealth()
         health--;
         if(health != 0)
         {
-            update_health_bar_display();
+            gStatus.updateHealthBarDisplay();
             player_invincibility_counter = 0x2c;
             play_sfx(14);
         }
@@ -1726,7 +1720,7 @@ void Player::updateHoverboard()
                 {
                     actor_add_new(0x18, player_x_pos - 2, player_y_pos - 2);
                     num_bombs = num_bombs - 1;
-                    display_num_bombs_left();
+                    gStatus.displayNumBombsLeft();
                     play_sfx(0x1d);
                 }
                 else
@@ -1742,7 +1736,7 @@ void Player::updateHoverboard()
                 {
                     actor_add_new(0x18, player_x_pos + 3, player_y_pos - 2);
                     num_bombs = num_bombs - 1;
-                    display_num_bombs_left();
+                    gStatus.displayNumBombsLeft();
                     play_sfx(0x1d);
                 }
                 else

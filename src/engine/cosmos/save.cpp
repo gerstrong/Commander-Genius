@@ -10,6 +10,7 @@
 #include "map.h"
 #include "dialog.h"
 #include "config.h"
+#include "status.h"
 
 int cleanup_and_exit();
 
@@ -23,7 +24,7 @@ void write_savegame_file(char suffix)
     {
         temp_save.health = health;
         temp_save.score = score;
-        temp_save.num_stars_collected = num_stars_collected;
+        temp_save.num_stars_collected = gStatus.numStartsCollected();
         temp_save.current_level = current_level;
         temp_save.num_bombs = num_bombs;
         temp_save.num_health_bars = num_health_bars;
@@ -49,7 +50,7 @@ void write_savegame_file(char suffix)
 
         file_write2(health, &savefile);
         file_write4(score, &savefile);
-        file_write2(num_stars_collected, &savefile);
+        file_write2(gStatus.numStartsCollected(), &savefile);
         file_write2(current_level, &savefile);
         file_write2(num_bombs, &savefile);
         file_write2(num_health_bars, &savefile);
@@ -57,7 +58,7 @@ void write_savegame_file(char suffix)
         file_write2(has_had_bomb_flag, &savefile);
         file_write2(show_monster_attack_hint, &savefile);
         file_write2(knows_about_powerups_flag, &savefile);
-        uint16 checksum = (uint16)(health + num_stars_collected + current_level + num_bombs + num_health_bars);
+        uint16 checksum = (uint16)(health + gStatus.numStartsCollected() + current_level + num_bombs + num_health_bars);
         file_write2(checksum, &savefile);
 
         file_close(&savefile);
@@ -70,7 +71,7 @@ bool load_savegame_file(char suffix)
     {
          health = temp_save.health;
          score = temp_save.score;
-         num_stars_collected = temp_save.num_stars_collected;
+         gStatus.setNumStartsCollected(temp_save.num_stars_collected);
          current_level = temp_save.current_level;
          num_bombs = temp_save.num_bombs;
          num_health_bars = temp_save.num_health_bars;
@@ -97,7 +98,7 @@ bool load_savegame_file(char suffix)
 
         health = data.health;
         score = data.score;
-        num_stars_collected = data.num_stars_collected;
+        gStatus.setNumStartsCollected(data.num_stars_collected);
         current_level = data.current_level;
         num_bombs = data.num_bombs;
         num_health_bars = data.num_health_bars;

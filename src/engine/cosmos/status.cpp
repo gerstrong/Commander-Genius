@@ -1,7 +1,3 @@
-//
-// Created by Eric Fry on 8/11/2017.
-//
-
 #include <stdio.h>
 #include "status.h"
 #include "defines.h"
@@ -14,13 +10,37 @@
 
 Tile *status_tiles;
 
-void status_load_tiles() {
+const int  STATUS_BAR_HEIGHT = 6;
+const int  STATUS_BAR_WIDTH = 38;
+
+
+namespace cosmos_engine
+{
+
+void Status::loadTiles()
+{
     uint16 num_tiles;
     status_tiles = load_tiles("STATUS.MNI", SOLID, &num_tiles);
     printf("Loading %d status tiles.\n", num_tiles);
 }
 
-void status_display()
+void Status::init()
+{
+    numStarsCollected = 0;
+}
+
+void Status::initPanel()
+{
+    video_fill_screen_with_black();
+    display();
+    addToScoreUpdateOnDisplay(0, GsVec2D<int>(9, 0x16));
+    updateHealthBarDisplay();
+    displayNumStarsCollected();
+    displayNumBombsLeft();
+}
+
+
+void Status::display()
 {
     for(int y=0; y < STATUS_BAR_HEIGHT; y++)
     {
@@ -31,13 +51,14 @@ void status_display()
     }
 }
 
-void add_to_score_update_on_display(uint32 amount_to_add_low, int x_pos, int y_pos)
+void Status::addToScoreUpdateOnDisplay(const int amount_to_add_low,
+                                       const GsVec2D<int> pos)
 {
     score += amount_to_add_low;
-    display_number(x_pos, y_pos, score);
+    display_number(pos.x, pos.y, score);
 }
 
-void update_health_bar_display()
+void Status::updateHealthBarDisplay()
 {
     int x = 0x11;
     int y = 0x16;
@@ -56,23 +77,32 @@ void update_health_bar_display()
     }
 }
 
-void display_num_stars_collected()
+void Status::displayNumStarsCollected()
 {
-    display_number(0x23,0x16,num_stars_collected);
+    display_number(0x23,0x16, numStarsCollected);
 }
 
-void status_panel_init()
-{
-    video_fill_screen_with_black();
-    status_display();
-    add_to_score_update_on_display(0, 9, 0x16);
-    update_health_bar_display();
-    display_num_stars_collected();
-    display_num_bombs_left();
-}
 
-void display_num_bombs_left()
+void Status::displayNumBombsLeft()
 {
     video_draw_tile(&font_tiles[97], 0x18 * TILE_WIDTH, 0x17 * TILE_HEIGHT);
     display_number(0x18, 0x17, num_bombs);
 }
+
+int Status::numStartsCollected() const
+{
+    return numStarsCollected;
+}
+
+void Status::setNumStartsCollected(const int value)
+{
+    numStarsCollected = value;
+}
+
+void Status::addStar()
+{
+    numStarsCollected++;
+}
+
+};
+

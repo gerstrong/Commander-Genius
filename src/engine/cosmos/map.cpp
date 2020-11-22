@@ -264,7 +264,7 @@ void load_level(int level_number)
     effect_clear_sprites();
     gCosmoPlayer.resetPushVariables();
     actor_toss_clear_all();
-    status_panel_init();
+    gStatus.initPanel();
 
     write_savegame_file('T');
     load_music(music_index);
