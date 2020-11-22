@@ -79,6 +79,7 @@ void CStunnable::processStunned()
 
 void CStunnable::drawStars()
 {
+    auto &scroll = mpMap->getScrollCoords().at(0);
 
     if(starTimer > 0)
     {
@@ -108,15 +109,15 @@ void CStunnable::drawStars()
         int yoffset = (StarSprite.getHeight()<<STC);
         int xoffset = (StarSprite.getWidth()<<STC);
 
-        scrx = ((getXMidPos()-xoffset/2)>>STC)-mpMap->m_scrollx;
+        scrx = ((getXMidPos()-xoffset/2)>>STC)-scroll.x;
 
         if(mDispStarsBelow)
         {
-            scry = ((m_Pos.y+(m_BBox.Height()/2)+yoffset)>>STC)-mpMap->m_scrolly;
+            scry = ((m_Pos.y+(m_BBox.Height()/2)+yoffset)>>STC)-scroll.y;
         }
         else
         {
-            scry = ((m_Pos.y-(m_BBox.Height()/2)-yoffset)>>STC)-mpMap->m_scrolly;
+            scry = ((m_Pos.y-(m_BBox.Height()/2)-yoffset)>>STC)-scroll.y;
         }
 
 

@@ -200,15 +200,14 @@ void CCamera::process()
 	}
 
 
-    const Uint16 &scroll_x = mpMap->m_scrollx;
-    const Uint16 &scroll_y = mpMap->m_scrolly;
+    const auto &scroll = mpMap->getScrollCoords().at(0);
 
     const auto xPosStc = getXPosition()>>STC;
     const auto yPosStc = getYPosition()>>STC;
 
     // delta is how much we need to scroll in order to get the camera stalled
-    int delta_x = xPosStc-scroll_x;
-    int delta_y = yPosStc-scroll_y;
+    int delta_x = xPosStc-scroll.x;
+    int delta_y = yPosStc-scroll.y;
 
 
 
@@ -227,7 +226,7 @@ void CCamera::process()
     auto smoothScrollRight = [&](const int target_x)
     {
         do{
-            delta_x = target_x-scroll_x;
+            delta_x = target_x-scroll.x;
             if(!mpMap->scrollRight())
                 break;
         }while(delta_x > right+speed);
@@ -237,19 +236,19 @@ void CCamera::process()
     int leftSideLimit, rightSideLimit;
     mpMap->fetchNearestVertBlockers(getXPosition(), leftSideLimit, rightSideLimit);
 
-    if( (scroll_x<<STC) < leftSideLimit)
+    if( (scroll.x<<STC) < leftSideLimit)
     {
         mpMap->scrollRight();
     }
 
-	if(delta_x > right && scroll_x < maxscrollx)
+    if(delta_x > right && scroll.x < maxscrollx)
 	{
         smoothScrollRight(xPosStc);
 	}
-    else if(delta_x < left && scroll_x > 32)
+    else if(delta_x < left && scroll.x > 32)
 	{
 		do{
-            delta_x = xPosStc-scroll_x;
+            delta_x = xPosStc-scroll.x;
             if(!mpMap->scrollLeft())
 			    break;
 		}while(delta_x < left-speed);
@@ -259,27 +258,27 @@ void CCamera::process()
     auto smoothScrollUp = [&](const int max_y)
     {
         do{
-            delta_y = max_y-scroll_y;
+            delta_y = max_y-scroll.y;
             if(!mpMap->scrollUp())
                 break;
         }while(delta_y < up-speed);
     };
 
     // For cases the camera forces too much to the bottom
-    if ( scroll_y > maxscrolly )
+    if ( scroll.y > maxscrolly )
     {
         smoothScrollUp(maxscrolly);
     }
 
-    if (delta_y > down && scroll_y < maxscrolly)
+    if (delta_y > down && scroll.y < maxscrolly)
 	{
 		do{
-			delta_y = (getYPosition()>>STC)-scroll_y;
+            delta_y = (getYPosition()>>STC)-scroll.y;
             if(!mpMap->scrollDown())
 				break;
 		}while(delta_y > down+speed);
 	}
-    else if ( delta_y < up && scroll_y > 32 )
+    else if ( delta_y < up && scroll.y > 32 )
 	{
         smoothScrollUp((getYPosition()>>STC));
 	}
@@ -290,8 +289,8 @@ void CCamera::reAdjust()
 {
     SDL_Rect gameRes = gVideoDriver.getGameResolution().SDLRect();
   
-    Uint16 &scroll_x = mpMap->m_scrollx;
-    Uint16 &scroll_y = mpMap->m_scrolly;
+    const auto scroll = mpMap->getScrollCoords().at(0);
+
 	const int x = getXPosition();
 	const int y = getYPosition();
 
@@ -315,28 +314,28 @@ void CCamera::reAdjust()
     }
 
 	// This will always snap correctly to the edges
-    if(scroll_x < blockXleft)
+    if(scroll.x < blockXleft)
 	{
         for(int amt=0 ; amt<gameRes.w ; amt++ )
             mpMap->scrollRight();
         for(int amt=0 ; amt<gameRes.w ; amt++ )
             mpMap->scrollLeft();
 	}
-    if(scroll_x > blockXright - gameRes.w)
+    if(scroll.x > blockXright - gameRes.w)
 	{
             for(int amt=0 ; amt<gameRes.w ; amt++ )
             mpMap->scrollLeft();
         for(int amt=0 ; amt<gameRes.w ; amt++ )
             mpMap->scrollRight();
 	}	
-	if(scroll_y < blockYup)
+    if(scroll.y < blockYup)
 	{
         for(int amt=0 ; amt<gameRes.h ; amt++ )
             mpMap->scrollDown();
         for(int amt=0 ; amt<gameRes.h ; amt++ )
             mpMap->scrollUp();
 	}
-    if(scroll_y > blockYdown - gameRes.h)
+    if(scroll.y > blockYdown - gameRes.h)
 	{
         for(int amt=0 ; amt<gameRes.h ; amt++ )
             mpMap->scrollUp();

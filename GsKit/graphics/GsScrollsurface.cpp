@@ -27,6 +27,12 @@ void GsScrollSurface::resetScrollbuffer()
     mSbuffery = 0;
 }
 
+void GsScrollSurface::updateScrollBuf(const GsVec2D<int> SBuffer)
+{
+    const int drawMask = getSquareSize()-1;
+    mSbufferx = SBuffer.x&drawMask;
+    mSbuffery = SBuffer.y&drawMask;
+}
 
 void GsScrollSurface::UpdateScrollBufX(const Sint16 SBufferX)
 {

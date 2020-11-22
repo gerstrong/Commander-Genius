@@ -28,6 +28,10 @@ mMaxShakeCounter(0),
 mMaxShakeVAmt(0),
 mShakeDir(0)
 {
+    auto &scrollSfcVec = gVideoDriver.getScrollSurfaceVec();
+    const int numSfcs = scrollSfcVec.size();
+    mScrollCoords.resize(numSfcs);
+
 	resetScrolls();
 	m_Level = 0;
 	isSecret = false;
@@ -73,7 +77,10 @@ bool CMap::setupEmptyDataPlanes(const int numPlanes,
 
 void CMap::resetScrolls()
 {
-    m_scrollx = m_scrolly = 0;
+    for( auto &scroll :  mScrollCoords)
+    {
+        scroll.x = scroll.y = 0;
+    }
 
     gVideoDriver.resetScrollBuffers();
 
@@ -481,8 +488,11 @@ bool CMap::gotoPos(int x, int y)
 {
 	int dx,dy;
 	bool retval = false;
-	dx = x - m_scrollx;
-	dy = y - m_scrolly;
+
+    auto &scroll =  mScrollCoords.at(0);
+
+    dx = x - scroll.x;
+    dy = y - scroll.y;
 
 	if( dx > 0 )
     {
@@ -515,7 +525,10 @@ bool CMap::gotoPos(int x, int y)
 	else retval = true;
 
     calcVisibleArea();
-    refreshVisibleArea();
+    for(auto &scrollCoord : mScrollCoords)
+    {
+        refreshVisibleArea(scrollCoord);
+    }
 
 	return retval;
 }
@@ -526,18 +539,27 @@ bool CMap::scrollRight(const bool force)
 {
     const int res_width = gVideoDriver.getGameResolution().dim.x;
 
-    if( !force && findVerticalScrollBlocker((m_scrollx+res_width)<<STC) )
-		return false;
+    const auto numPlanes = mScrollCoords.size();
 
-    if(m_scrollx >= ((m_width-2)<<mTileSizeBase) - res_width)
-        return false;
+    auto &scrollSfcVec = gVideoDriver.getScrollSurfaceVec();
 
+    assert(numPlanes == scrollSfcVec.size());
 
-    m_scrollx++;
-
-    for(auto &scrollSfc : gVideoDriver.getScrollSurfaceVec() )
+    for(auto idx=0 ; idx<int(numPlanes) ; idx++)
     {
-        scrollSfc.UpdateScrollBufX(m_scrollx);
+        auto &scroll = mScrollCoords.at(idx);
+
+        if( !force && findVerticalScrollBlocker((scroll.x+res_width)<<STC) )
+            return false;
+
+        if(scroll.x >= int(((m_width-2)<<mTileSizeBase) - res_width))
+            return false;
+
+
+        scroll.x++;
+
+        auto &scrollSfc = scrollSfcVec.at(idx);
+        scrollSfc.UpdateScrollBufX(scroll.x);
     }
 
     m_scrollpix++;
@@ -556,25 +578,37 @@ bool CMap::scrollRight(const bool force)
         m_scrollpix = 0;
     }
 
-    refreshVisibleArea();
+    for(auto &scrollCoord : mScrollCoords)
+    {
+        refreshVisibleArea(scrollCoord);
+    }
     return true;
 }
 
 // scrolls the map one pixel left
 bool CMap::scrollLeft(const bool force)
 {
-    if( !force && findVerticalScrollBlocker((m_scrollx)<<STC) )
-        return false;
+    const auto numPlanes = mScrollCoords.size();
 
-    if( m_scrollx <= 32 )
-        return false;
+    auto &scrollSfcVec = gVideoDriver.getScrollSurfaceVec();
 
-    m_scrollx--;
+    assert(numPlanes == scrollSfcVec.size());
 
-    for(auto &scrollSfc : gVideoDriver.getScrollSurfaceVec() )
+    for(auto idx=0 ; idx<int(numPlanes) ; idx++)
     {
-        scrollSfc.UpdateScrollBufX(m_scrollx);
+        auto &scroll = mScrollCoords.at(idx);
+        if( !force && findVerticalScrollBlocker((scroll.x)<<STC) )
+            return false;
+
+        if( scroll.x <= 32 )
+            return false;
+
+        scroll.x--;
+
+        auto &scrollSfc = scrollSfcVec.at(idx);
+        scrollSfc.UpdateScrollBufX(scroll.x);
     }
+
 
     if (m_scrollpix==0)
     {  // need to draw a new stripe
@@ -595,7 +629,10 @@ bool CMap::scrollLeft(const bool force)
         m_scrollpix = (1<<mTileSizeBase)-1;
     } else m_scrollpix--;
 
-    refreshVisibleArea();
+    for(auto &scrollCoord : mScrollCoords)
+    {
+        refreshVisibleArea(scrollCoord);
+    }
 
     return true;
 
@@ -605,34 +642,50 @@ bool CMap::scrollDown(const bool force)
 {
     const int res_height = gVideoDriver.getGameResolution().dim.y;
 
-    if(!force)
+    const auto numPlanes = mScrollCoords.size();
+
+    auto &scrollSfcVec = gVideoDriver.getScrollSurfaceVec();
+
+    assert(numPlanes == scrollSfcVec.size());
+
+    for(auto idx=0 ; idx<int(numPlanes) ; idx++)
     {
-        const int bottom_y = (m_scrolly+res_height)<<STC;
-        int blockYup = 0;
-        int blockYdown = 0;
+        auto &scroll = mScrollCoords.at(idx);
 
-        fetchNearestHorBlockers(bottom_y, blockYup, blockYdown);
-
-        const int new_bottom_y = ((m_scrolly+1)+res_height)<<STC;
-
-        if(new_bottom_y >= blockYdown)
+        if(!force)
         {
-            return false;
+            const int bottom_y = (scroll.y+res_height)<<STC;
+            int blockYup = 0;
+            int blockYdown = 0;
+
+            fetchNearestHorBlockers(bottom_y, blockYup, blockYdown);
+
+            const int new_bottom_y = ((scroll.y+1)+res_height)<<STC;
+
+            if(new_bottom_y >= blockYdown)
+            {
+                return false;
+            }
         }
+
+        scroll.y++;
     }
 
-    m_scrolly++;
+
     m_scrollpixy++;
 
-    for(auto &scrollSfc : gVideoDriver.getScrollSurfaceVec() )
+    for(auto idx=0 ; idx<int(numPlanes) ; idx++)
     {
-        scrollSfc.UpdateScrollBufY(m_scrolly);
+        auto &scroll = mScrollCoords.at(idx);
+        auto &scrollSfc = scrollSfcVec.at(idx);
+
+        scrollSfc.UpdateScrollBufY(scroll.y);
 
         if ( m_scrollpixy >= (1<<mTileSizeBase) )
         {
             const int squareSize = scrollSfc.getSquareSize();
 
-            if(m_scrolly < ((m_height-2)<<mTileSizeBase) - res_height )
+            if( scroll.y < int(((m_height-2)<<mTileSizeBase) - res_height) )
             {
                 // need to draw a new stripe
                 const int totalNumTiles = squareSize>>mTileSizeBase;
@@ -645,8 +698,10 @@ bool CMap::scrollDown(const bool force)
             m_scrollpixy = 0;
         }
 
-        refreshVisibleArea();
+        refreshVisibleArea(scroll);
     }
+
+
     return true;
 }
 
@@ -655,18 +710,28 @@ bool CMap::scrollDown(const bool force)
 
 bool CMap::scrollUp(const bool force)
 {
-    if( !force && findHorizontalScrollBlocker((m_scrolly-1)<<STC) )
-        return false;
+    const auto numPlanes = mScrollCoords.size();
 
-    if( m_scrolly <= 32 )
-        return false;
+    auto &scrollSfcVec = gVideoDriver.getScrollSurfaceVec();
 
-    m_scrolly--;
+    assert(numPlanes == scrollSfcVec.size());
 
-    for(auto &scrollSfc : gVideoDriver.getScrollSurfaceVec() )
+    for(auto idx=0 ; idx<int(numPlanes) ; idx++)
     {
-        scrollSfc.UpdateScrollBufY(m_scrolly);
+        auto &scroll = mScrollCoords.at(idx);
+        auto &scrollSfc = scrollSfcVec.at(idx);
+
+        if( !force && findHorizontalScrollBlocker((scroll.y-1)<<STC) )
+            return false;
+
+        if( scroll.y <= 32 )
+            return false;
+
+        scroll.y--;
+
+        scrollSfc.UpdateScrollBufY(scroll.y);
     }
+
 
     if (m_scrollpixy==0)
     {  // need to draw a new stripe
@@ -688,7 +753,11 @@ bool CMap::scrollUp(const bool force)
         m_scrollpixy = ((1<<mTileSizeBase)-1);
     } else m_scrollpixy--;
 
-    refreshVisibleArea();
+    for(auto idx=0 ; idx<int(numPlanes) ; idx++)
+    {
+        auto &scroll = mScrollCoords.at(idx);
+        refreshVisibleArea(scroll);
+    }
 
     return true;
 }
@@ -709,10 +778,18 @@ void CMap::calcVisibleArea()
 
 void CMap::refreshVisibleArea()
 {
+    for(auto &scroll : mScrollCoords)
+    {
+        refreshVisibleArea(scroll);
+    }
+}
+
+void CMap::refreshVisibleArea(GsVec2D<int> &scroll)
+{
     GsRect<int> relativeVisGameArea;
 
-    relativeVisGameArea.pos.x = (mVisArea.pos.x>>STC)-m_scrollx;
-    relativeVisGameArea.pos.y = (mVisArea.pos.y>>STC)-m_scrolly;
+    relativeVisGameArea.pos.x = (mVisArea.pos.x>>STC)-scroll.x;
+    relativeVisGameArea.pos.y = (mVisArea.pos.y>>STC)-scroll.y;
     relativeVisGameArea.dim.x = (mVisArea.dim.x>>STC)-16;
     relativeVisGameArea.dim.y = (mVisArea.dim.y>>STC)-16;
 
@@ -786,12 +863,21 @@ void CMap::redrawAt(const Uint32 mx, const Uint32 my)
 
 void CMap::drawAllOfPlane(const int planeIdx)
 {
-    for(auto &scrollSfc : gVideoDriver.getScrollSurfaceVec() )
+    const auto numPlanes = mScrollCoords.size();
+
+    auto &scrollSfcVec = gVideoDriver.getScrollSurfaceVec();
+
+    assert(numPlanes == scrollSfcVec.size());
+
+
+    for(auto idx=0 ; idx<int(numPlanes) ; idx++)
     {
+        auto &scroll = mScrollCoords.at(idx);
+        auto &scrollSfc = scrollSfcVec.at(idx);
+
         const auto dim = scrollSfc.getSquareSize();
 
-        scrollSfc.UpdateScrollBufX(m_scrollx);
-        scrollSfc.UpdateScrollBufY(m_scrolly);
+        scrollSfc.updateScrollBuf(scroll);
 
         Uint32 num_v_tiles = dim>>mTileSizeBase;
         if(num_v_tiles+m_mapx >= m_width)
@@ -828,8 +914,10 @@ void CMap::drawAllOfPlane(const int planeIdx)
 
 void CMap::drawAll()
 {
-    refreshVisibleArea();
-
+    for(auto &scrollCoord : mScrollCoords)
+    {
+        refreshVisibleArea(scrollCoord);
+    }
     for(decltype(mPlanes.size()) i=0 ; i<mPlanes.size() ; i++)
     {
         drawAllOfPlane(i);
@@ -980,14 +1068,16 @@ void CMap::renderShaking()
  */
 void CMap::_drawForegroundTiles()
 {
+    const auto numPlanes = mScrollCoords.size();
+    auto &scroll = mScrollCoords.at(1);
 
     SDL_Surface *surface = gVideoDriver.getBlitSurface();
 	const Uint16 num_h_tiles = surface->h;
     const Uint16 num_v_tiles = surface->w;
-    Uint16 x1 = m_scrollx>>mTileSizeBase;
-    Uint16 y1 = m_scrolly>>mTileSizeBase;
-    Uint16 x2 = (m_scrollx+num_v_tiles)>>mTileSizeBase;
-    Uint16 y2 = (m_scrolly+num_h_tiles)>>mTileSizeBase;
+    Uint16 x1 = scroll.x>>mTileSizeBase;
+    Uint16 y1 = scroll.y>>mTileSizeBase;
+    Uint16 x2 = (scroll.x+num_v_tiles)>>mTileSizeBase;
+    Uint16 y2 = (scroll.y+num_h_tiles)>>mTileSizeBase;
 
 	std::vector<CTileProperties> &TileProperties =
 			gBehaviorEngine.getTileProperties(1);
@@ -1013,8 +1103,8 @@ void CMap::_drawForegroundTiles()
         {
             const auto fg = mPlanes[1].getMapDataAt(x,y);
 
-            const int loc_x = (x<<mTileSizeBase)-m_scrollx;
-            const int loc_y = (y<<mTileSizeBase)-m_scrolly;
+            const int loc_x = (x<<mTileSizeBase)-scroll.x;
+            const int loc_y = (y<<mTileSizeBase)-scroll.y;
 
             if( loc_x+16 < visX1 || loc_x > visX2 )
                 continue;
@@ -1223,4 +1313,9 @@ void CMap::setInfoPlane(const int plane, const bool value)
 {
     assert(static_cast<decltype (mPlanes.size())>(plane) < mPlanes.size());
     mPlanes[plane].setInfo(value);
+}
+
+std::vector< GsVec2D<int> > &CMap::getScrollCoords()
+{
+    return mScrollCoords;
 }

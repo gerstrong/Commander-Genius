@@ -153,8 +153,10 @@ void CPlatformVertical::draw()
     
     GsSprite &Sprite = gGraphics.getSprite(mSprVar,mSpriteIdx);
 
-    scrx = (m_Pos.x>>STC)-mpMap->m_scrollx;
-    scry = (m_Pos.y>>STC)-mpMap->m_scrolly;
+    auto &scroll = mpMap->getScrollCoords().at(0);
+
+    scrx = (m_Pos.x>>STC)-scroll.x;
+    scry = (m_Pos.y>>STC)-scroll.y;
     
     SDL_Rect gameres = gVideoDriver.getGameResolution().SDLRect();
     
