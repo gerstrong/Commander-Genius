@@ -119,19 +119,22 @@ endif(APPLE)
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99")
 
-
 # Pass correct definition for SYSTEM_DATA_DIR so packager or distributors can decide where the app should land in
+
+SET(SYSTEM_DATA_DIR "${SHAREDIR}/applications" CACHE PATH "Application installation dir")
+
 if(UNIX)
         if(NOT IS_ABSOLUTE ${GAMES_SHAREDIR})
-                set(FULL_GAMES_SHAREDIR "${CMAKE_INSTALL_PREFIX}/${GAMES_SHAREDIR}")
+                set(FULL_GAMES_SHAREDIR "${CMAKE_INSTALL_PREFIX}/${GAMES_SHAREDIR}" CACHE PATH "Full where the games will be stored")
         else()
-                set(FULL_GAMES_SHAREDIR ${GAMES_SHAREDIR})
+                set(FULL_GAMES_SHAREDIR ${GAMES_SHAREDIR} CACHE PATH "Full where the games will be stored")
         endif()
-
-        MESSAGE(STATUS "Setting SYSTEM_DATA_DIR to ${FULL_GAMES_SHAREDIR}" )
-
-        add_definitions(-DSYSTEM_DATA_DIR="${FULL_GAMES_SHAREDIR}")
 endif(UNIX)
+
+set(SYSTEM_DATA_DIR "${FULL_GAMES_SHAREDIR}" CACHE PATH "System data where CG will access to" )
+MESSAGE(STATUS "Setting SYSTEM_DATA_DIR to ${SYSTEM_DATA_DIR}" )
+add_definitions(-DSYSTEM_DATA_DIR=${SYSTEM_DATA_DIR})
+
 
 
 # Check that GsKit also has been loaded
