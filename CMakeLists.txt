@@ -5,7 +5,20 @@ cmake_minimum_required(VERSION 3.5)
 
 Project(CommanderGenius)
 
-
+IF(WIN32)
+SET(DATADIR CGenius)
+SET(APPDIR CGenius)
+SET(GAMES_SHAREDIR "${APPDIR}" CACHE PATH "Game data root dir")
+SET(DOCDIR ${DATADIR} CACHE PATH "Docs destination")
+ELSE(WIN32)
+SET(SHAREDIR "/usr/share" CACHE PATH "System share dir location")
+SET(GAMES_SHAREDIR "${SHAREDIR}/games/" CACHE PATH "Game data root dir")
+SET(DATADIR "${GAMES_SHAREDIR}/commandergenius")
+SET(APPDIR games CACHE PATH "Binary destination")
+SET(DOCDIR ${DATADIR} CACHE PATH "Docs destination")
+SET(ICONDIR "${SHAREDIR}/icons/hicolor" CACHE PATH "Standard icon installation dir")
+SET(DESKTOPFILESDIR "${SHAREDIR}/applications" CACHE PATH "Application installation dir")
+ENDIF(WIN32)
 
 if (OSXCROSS)
 message(STATUS "OSXCross is enabled")
@@ -120,9 +133,6 @@ endif(APPLE)
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99")
 
 # Pass correct definition for SYSTEM_DATA_DIR so packager or distributors can decide where the app should land in
-
-SET(SYSTEM_DATA_DIR "${SHAREDIR}/applications" CACHE PATH "Application installation dir")
-
 if(UNIX)
         if(NOT IS_ABSOLUTE ${GAMES_SHAREDIR})
                 set(FULL_GAMES_SHAREDIR "${CMAKE_INSTALL_PREFIX}/${GAMES_SHAREDIR}" CACHE PATH "Full where the games will be stored")

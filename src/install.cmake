@@ -1,21 +1,6 @@
 ########################################################################
 ############### Prepare the installation of the compiled stuff here!
 
-IF(WIN32)
-SET(DATADIR CGenius)
-SET(APPDIR CGenius)
-SET(GAMES_SHAREDIR "${APPDIR}" CACHE PATH "Game data root dir")
-SET(DOCDIR ${DATADIR} CACHE PATH "Docs destination")
-ELSE(WIN32)
-SET(SHAREDIR "/usr/share" CACHE PATH "System share dir location")
-SET(GAMES_SHAREDIR "${SHAREDIR}/games/" CACHE PATH "Game data root dir")
-SET(DATADIR "${GAMES_SHAREDIR}/commandergenius")
-SET(APPDIR games CACHE PATH "Binary destination")
-SET(DOCDIR ${DATADIR} CACHE PATH "Docs destination")
-SET(ICONDIR "${SHAREDIR}/icons/hicolor" CACHE PATH "Standard icon installation dir")
-SET(DESKTOPFILESDIR "${SHAREDIR}/applications" CACHE PATH "Application installation dir")
-ENDIF(WIN32)
-
 # This will install the application itself
 INSTALL(TARGETS CGeniusExe 
 	DESTINATION ${APPDIR})
