@@ -91,7 +91,7 @@ endif(UNIX)
 
 set(SYSTEM_DATA_DIR "${FULL_GAMES_SHAREDIR}" CACHE PATH "System data where CG will access to" )
 MESSAGE(STATUS "Setting SYSTEM_DATA_DIR to ${SYSTEM_DATA_DIR}" )
-add_definitions(-DSYSTEM_DATA_DIR=${SYSTEM_DATA_DIR})
+add_definitions(-DSYSTEM_DATA_DIR="${SYSTEM_DATA_DIR}")
 
 
 # Add GsKit
