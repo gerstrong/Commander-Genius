@@ -381,7 +381,18 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
 
     // Set Scrollbuffer
     Map.drawAll();
-    gVideoDriver.updateScrollBuffer(Map.m_scrollx, Map.m_scrolly);
+    auto &scrollSfcVec = gVideoDriver.getScrollSurfaceVec();
+    auto &scrollCoords = Map.getScrollCoords();
+    const auto numPlanes = scrollSfcVec.size();
+
+    assert( numPlanes == scrollCoords.size() );
+
+    for( int i =0 ; i<int(numPlanes) ; i++ )
+    {
+        const auto &scrollCoord = scrollCoords.at(i);
+        auto &scrollSfc = scrollSfcVec.at(i);
+        scrollSfc.updateScrollBuf(scrollCoord);
+    }
 
     gLogging.textOut("Map got loaded successfully!");
 

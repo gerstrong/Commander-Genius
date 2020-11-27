@@ -126,12 +126,14 @@ bool CSpriteObject::calcVisibility()
 
 	SDL_Rect gameres = gVideoDriver.getGameResolution().SDLRect();
 
-    const int left = (((mpMap->m_scrollx<<STC)-(visibility<<CSF))<0) ? 0 :
-                       (mpMap->m_scrollx<<STC)-(visibility<<CSF);
-    const int right = ((mpMap->m_scrollx+gameres.w)<<STC)+(visibility<<CSF);
-    const int up = (((mpMap->m_scrolly<<STC)-(visibility<<CSF))<0) ? 0 :
-                            (mpMap->m_scrolly<<STC)-(visibility<<CSF);
-    const int down = ((mpMap->m_scrolly+gameres.h)<<STC)+(visibility<<CSF);
+    const auto scroll = mpMap->getScrollCoords().at(0);
+
+    const int left = (((scroll.x<<STC)-(visibility<<CSF))<0) ? 0 :
+                       (scroll.x<<STC)-(visibility<<CSF);
+    const int right = ((scroll.x+gameres.w)<<STC)+(visibility<<CSF);
+    const int up = (((scroll.y<<STC)-(visibility<<CSF))<0) ? 0 :
+                            (scroll.y<<STC)-(visibility<<CSF);
+    const int down = ((scroll.y+gameres.h)<<STC)+(visibility<<CSF);
 
 	return ( right > m_Pos.x && left < m_Pos.x && down > m_Pos.y && up < m_Pos.y );
 }
@@ -473,8 +475,10 @@ void CSpriteObject::draw()
         return;
     }
 
-    scrx = (m_Pos.x>>STC)-mpMap->m_scrollx;
-    scry = (m_Pos.y>>STC)-mpMap->m_scrolly;
+    const auto scroll = mpMap->getScrollCoords().at(0);
+
+    scrx = (m_Pos.x>>STC)-scroll.x;
+    scry = (m_Pos.y>>STC)-scroll.y;
 
 	SDL_Rect gameres = gVideoDriver.getGameResolution().SDLRect();    
 

@@ -266,7 +266,8 @@ void CPlayGameVorticon::pumpEvent(const CEvent *evPtr)
         if(mMap)
         {
             mMap->drawAll();
-            gVideoDriver.updateScrollBuffer(mMap->m_scrollx, mMap->m_scrolly);
+            const auto scroll = mMap->getScrollCoords().at(0);
+            gVideoDriver.updateScrollBuffer( scroll.x, scroll.y );
             return;
         }
     }

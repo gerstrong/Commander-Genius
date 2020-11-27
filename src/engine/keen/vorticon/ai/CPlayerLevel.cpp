@@ -199,7 +199,10 @@ void CPlayer::dieanim() // Bad word for that. It's the entire die code
 	// is it time to start flying off the screen?
 	if (!pdietillfly)
 	{  // time to fly off the screen
-		if (((getYPosition()>>STC)+128 > mpMap->m_scrolly) && (getYPosition()>(48<<STC)))
+
+        const auto scroll = mpMap->getScrollCoords().at(0);
+
+        if (((getYPosition()>>STC)+128 > scroll.y) && (getYPosition()>(48<<STC)))
 		{   // player has not reached top of screen
 			// make player fly up
 			moveUp(-PDIE_RISE_SPEED);

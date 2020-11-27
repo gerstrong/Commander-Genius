@@ -179,6 +179,7 @@ CPlayerBase(CMap *pmap,
 	m_camera.setPosition(m_Pos);
 
     mpMap->calcVisibleArea();
+
     mpMap->refreshVisibleArea();
 
     const auto fullFName = JoinPaths(gKeenFiles.gameDir, "player.lua");

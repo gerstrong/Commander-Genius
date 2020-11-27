@@ -81,7 +81,9 @@ public:
 	bool scrollDown(const bool force=false);
 
     void calcVisibleArea();
+
     void refreshVisibleArea();
+    void refreshVisibleArea(GsVec2D<int> &scrollCoord);
 
     void redrawPlaneAt(const int planeIdx, const Uint32 mx, const Uint32 my);
 	void redrawAt(const Uint32 mx, const Uint32 my);
@@ -210,10 +212,12 @@ public:
      */
     void setInfoPlane(const int plane, const bool value);
 
+    std::vector< GsVec2D<int> > &getScrollCoords();
 
-	Uint16 m_scrollx;      		// Amount of how much is scrolled on the map relative to (0,0) in X
-	Uint16 m_scrolly;    		// Amount of how much is scrolled on the map relative to (0,0) in Y
-
+/*
+    Uint16 m_scrollx = 0;      		// Amount of how much is scrolled on the map relative to (0,0) in X
+    Uint16 m_scrolly = 0;    		// Amount of how much is scrolled on the map relative to (0,0) in Y
+*/
     Uint32 m_width, m_height;            // size of the map (in tile units)
 	bool m_worldmap;             // if 1, this is the world map
 
@@ -226,6 +230,7 @@ public:
     bool mFuseInLevel;
 
     GsVec2D<int> mGamePlayPos;
+
 
 
 private:
@@ -247,7 +252,9 @@ private:
 
 	float mAnimtileTimer;
 
-    std::vector<CPlane> mPlanes;
+    std::vector<CPlane> mPlanes;    
+    std::vector< GsVec2D<int> > mScrollCoords; // Amount of how much is scrolled on the map relative to (0,0) and per plane index
+
 	Uint16 m_Level;
 	std::string m_LevelName;
     std::set<int> scrollBlockX;

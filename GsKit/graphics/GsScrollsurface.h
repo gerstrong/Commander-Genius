@@ -21,6 +21,8 @@ public:
 
     void resetScrollbuffer();
 
+    void updateScrollBuf(const GsVec2D<int> SBuffer);
+
     void UpdateScrollBufX(const Sint16 SBufferX);
     void UpdateScrollBufY(const Sint16 SBufferY);
     void readScrollBuffer(Sint16 &x, Sint16 &y) const;

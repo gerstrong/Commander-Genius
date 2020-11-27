@@ -38,7 +38,8 @@ void CMapPlayGalaxy::setActive(const bool value)
 	if(mActive)
 	{
         mMap.drawAll();
-        gVideoDriver.updateScrollBuffer(mMap.m_scrollx, mMap.m_scrolly);
+        const auto scroll = mMap.getScrollCoords().at(0);
+        gVideoDriver.updateScrollBuffer( scroll.x, scroll.y );
         gVideoDriver.setRefreshSignal(true);
 	}
 }
