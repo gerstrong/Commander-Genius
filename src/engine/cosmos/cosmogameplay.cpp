@@ -627,7 +627,10 @@ bool CosmoGameplay::loadLevel(const int level_number)
     // Set Scrollbuffer
     //mMap.gotoPos(0, 36*8); // Works more or less with level 1
     mMap.drawAll();
-    gVideoDriver.updateScrollBuffer(mMap.m_scrollx, mMap.m_scrolly);
+
+    auto &frontCoords = mMap.getScrollCoords().at(1);
+
+    gVideoDriver.updateScrollBuffer(frontCoords.x, frontCoords.y);
 
     gLogging.textOut("Map got loaded successfully!");
 
@@ -673,8 +676,10 @@ void CosmoGameplay::ponder(const float deltaT)
     const auto mapwindow_x_offset_pix = mapwindow_x_offset*8.0f;
     const auto mapwindow_y_offset_pix = mapwindow_y_offset*8.0f;
 
-    int scroll_diff_x = (mMap.m_scrollx-mapwindow_x_offset_pix);
-    int scroll_diff_y = (mMap.m_scrolly-mapwindow_y_offset_pix);
+    auto &frontCoords = mMap.getScrollCoords().at(1);
+
+    int scroll_diff_x = (frontCoords.x-mapwindow_x_offset_pix);
+    int scroll_diff_y = (frontCoords.y-mapwindow_y_offset_pix);
 
     const int DIST_FOR_SLOMO = 8;
 
@@ -682,7 +687,7 @@ void CosmoGameplay::ponder(const float deltaT)
     {
         do
         {
-            scroll_diff_x = (mMap.m_scrollx-mapwindow_x_offset_pix);
+            scroll_diff_x = (frontCoords.x-mapwindow_x_offset_pix);
             if(!mMap.scrollRight())
                 break;
         } while(scroll_diff_x <= -DIST_FOR_SLOMO);
@@ -691,7 +696,7 @@ void CosmoGameplay::ponder(const float deltaT)
     {
         do
         {
-            scroll_diff_x = (mMap.m_scrollx-mapwindow_x_offset_pix);
+            scroll_diff_x = (frontCoords.x-mapwindow_x_offset_pix);
             if(!mMap.scrollLeft())
                 break;
         } while(scroll_diff_x >= DIST_FOR_SLOMO);
@@ -702,7 +707,7 @@ void CosmoGameplay::ponder(const float deltaT)
     {
         do
         {
-            scroll_diff_y = (mMap.m_scrolly-mapwindow_y_offset_pix);
+            scroll_diff_y = (frontCoords.y-mapwindow_y_offset_pix);
             if(!mMap.scrollDown())
                 break;
         } while(scroll_diff_y <= -DIST_FOR_SLOMO);
@@ -711,7 +716,7 @@ void CosmoGameplay::ponder(const float deltaT)
     {
         do
         {
-            scroll_diff_y = (mMap.m_scrolly-mapwindow_y_offset_pix);
+            scroll_diff_y = (frontCoords.y-mapwindow_y_offset_pix);
             if(!mMap.scrollUp())
                 break;
         } while(scroll_diff_y >= DIST_FOR_SLOMO);
