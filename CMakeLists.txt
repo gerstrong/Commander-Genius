@@ -5,7 +5,20 @@ cmake_minimum_required(VERSION 3.5)
 
 Project(CommanderGenius)
 
-
+IF(WIN32)
+SET(DATADIR CGenius)
+SET(APPDIR CGenius)
+SET(GAMES_SHAREDIR "${APPDIR}" CACHE PATH "Game data root dir")
+SET(DOCDIR ${DATADIR} CACHE PATH "Docs destination")
+ELSE(WIN32)
+SET(SHAREDIR "/usr/share" CACHE PATH "System share dir location")
+SET(GAMES_SHAREDIR "${SHAREDIR}/games/" CACHE PATH "Game data root dir")
+SET(DATADIR "${GAMES_SHAREDIR}/commandergenius")
+SET(APPDIR games CACHE PATH "Binary destination")
+SET(DOCDIR ${DATADIR} CACHE PATH "Docs destination")
+SET(ICONDIR "${SHAREDIR}/icons/hicolor" CACHE PATH "Standard icon installation dir")
+SET(DESKTOPFILESDIR "${SHAREDIR}/applications" CACHE PATH "Application installation dir")
+ENDIF(WIN32)
 
 if (OSXCROSS)
 message(STATUS "OSXCross is enabled")
@@ -67,6 +80,19 @@ else(GIT_FOUND)
     ADD_DEFINITIONS(-DGIT_BRANCH=none)
 endif(GIT_FOUND)
 
+# Pass correct definition for SYSTEM_DATA_DIR so packager or distributors can decide where the app should land in
+if(UNIX)
+        if(NOT IS_ABSOLUTE ${GAMES_SHAREDIR})
+                set(FULL_GAMES_SHAREDIR "${CMAKE_INSTALL_PREFIX}/${GAMES_SHAREDIR}" CACHE PATH "Full where the games will be stored")
+        else()
+                set(FULL_GAMES_SHAREDIR ${GAMES_SHAREDIR} CACHE PATH "Full where the games will be stored")
+        endif()
+endif(UNIX)
+
+set(SYSTEM_DATA_DIR "${FULL_GAMES_SHAREDIR}" CACHE PATH "System data where CG will access to" )
+MESSAGE(STATUS "Setting SYSTEM_DATA_DIR to ${SYSTEM_DATA_DIR}" )
+add_definitions(-DSYSTEM_DATA_DIR="${SYSTEM_DATA_DIR}")
+
 
 # Add GsKit
 add_subdirectory("GsKit")
@@ -118,20 +144,6 @@ if(APPLE)
 endif(APPLE)
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99")
-
-
-# Pass correct definition for SYSTEM_DATA_DIR so packager or distributors can decide where the app should land in
-if(UNIX)
-        if(NOT IS_ABSOLUTE ${GAMES_SHAREDIR})
-                set(FULL_GAMES_SHAREDIR "${CMAKE_INSTALL_PREFIX}/${GAMES_SHAREDIR}")
-        else()
-                set(FULL_GAMES_SHAREDIR ${GAMES_SHAREDIR})
-        endif()
-
-        MESSAGE(STATUS "Setting SYSTEM_DATA_DIR to ${FULL_GAMES_SHAREDIR}" )
-
-        add_definitions(-DSYSTEM_DATA_DIR="${FULL_GAMES_SHAREDIR}")
-endif(UNIX)
 
 
 # Check that GsKit also has been loaded
