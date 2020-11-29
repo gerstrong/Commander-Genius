@@ -68,7 +68,7 @@ void CCarrier::draw()
     
     GsSprite &Sprite = gGraphics.getSprite(mSprVar,mSpriteIdx);
     
-    const auto scroll = mpMap->getScrollCoords().at(0);
+    const auto scroll = mpMap->getMainScrollCoords();
 
     scrx = (m_Pos.x>>STC)-scroll.x;
     scry = (m_Pos.y>>STC)-scroll.y;

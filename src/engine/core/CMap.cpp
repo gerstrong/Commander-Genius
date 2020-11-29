@@ -1315,7 +1315,7 @@ void CMap::setInfoPlane(const int plane, const bool value)
     mPlanes[plane].setInfo(value);
 }
 
-std::vector< GsVec2D<int> > &CMap::getScrollCoords()
+const GsVec2D<int> &CMap::getMainScrollCoords()
 {
-    return mScrollCoords;
+    return mScrollCoords.at(0);
 }

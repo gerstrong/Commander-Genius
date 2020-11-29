@@ -212,7 +212,7 @@ public:
      */
     void setInfoPlane(const int plane, const bool value);
 
-    std::vector< GsVec2D<int> > &getScrollCoords();
+    const GsVec2D<int> &getMainScrollCoords();
 
 /*
     Uint16 m_scrollx = 0;      		// Amount of how much is scrolled on the map relative to (0,0) in X
