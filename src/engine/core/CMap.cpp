@@ -28,10 +28,11 @@ mMaxShakeCounter(0),
 mMaxShakeVAmt(0),
 mShakeDir(0)
 {
+    /*
     auto &scrollSfcVec = gVideoDriver.getScrollSurfaceVec();
     const int numSfcs = scrollSfcVec.size();
     mScrollCoords.resize(numSfcs);
-
+*/
 	resetScrolls();
 	m_Level = 0;
 	isSecret = false;
@@ -64,6 +65,11 @@ bool CMap::setupEmptyDataPlanes(const int numPlanes,
 	m_height = height;
 
     mPlanes.clear();
+
+    mScrollCoords.clear();
+
+    auto &scrollSfcVec = gVideoDriver.mpVideoEngine->getScrollSurfaceVec();
+    mScrollCoords.resize( scrollSfcVec.size() );
 
     for(int i=0 ; i<numPlanes ; i++)
     {
