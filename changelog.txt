@@ -1,3 +1,7 @@
+v2.7.1:
+-------
+- Added sound buffer amplifier for improving the sound/music quality hopefully on certain systems
+
 v2.7.0:
 -------
 - More Keen Dreams fixes
