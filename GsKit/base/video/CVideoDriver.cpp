@@ -93,6 +93,12 @@ CVideoDriver::~CVideoDriver()
 }
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
+
+void CVideoDriver::addTextureRefToRender(GsTextureElem& textureElemRef)
+{
+    addTextureRefToRender(textureElemRef.Texture(), textureElemRef.Rect());
+}
+
 void CVideoDriver::addTextureRefToRender(GsTexture& textureRef,
                                          const GsRect<float> &dstRect)
 {

@@ -3,6 +3,8 @@
 #ifndef VGAMEPADSIMPLE_H
 #define VGAMEPADSIMPLE_H
 
+#include "graphics/GsTextureElem.h"
+
 #include <base/GsVirtualinput.h>
 #include <base/CInput.h>
 #include <utility>
@@ -125,7 +127,7 @@ public:
     TouchButton mPadBackground;
     TouchButton mDPad;
 
-    GsTexture mDiscTexture;
+    //GsTextureElem mDiscTexture;
 
 
     TouchButton mConfirmButton;

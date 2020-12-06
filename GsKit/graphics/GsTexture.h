@@ -1,8 +1,6 @@
 #ifndef GSTEXTURE_H
 #define GSTEXTURE_H
 
-#include <base/Vector2D.h>
-
 #include <SDL.h>
 #include <SDL_image.h>
 #include <cstdio>
@@ -13,7 +11,7 @@
 /**
  * @brief The GsTexture class is a wrapper for SDL Textures introduced in SDL 2.0. It can be used extended with other libraries, OpenGL maybe, but
  *        this wrapper manages the texture memory a bit more C++ like, so trouble with managing it's pointer
- * @note: This is SDL 2.0 or above only right now
+ * @note: This is SDL 2.0 or above only
  */
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)

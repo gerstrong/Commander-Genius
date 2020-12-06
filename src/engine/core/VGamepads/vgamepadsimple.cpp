@@ -95,15 +95,9 @@ bool VirtualKeenControl::init()
 {
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     // Check if the virtual game pad image exist. If not download the picture package
+    //mDiscTexture.createCircle(0.1, 10);
 
-    /*if(!checkVPadImage())
-    {
-        downloadVPadImages();
-        extractVPadImages();
-    }
-*/
-
-    mDiscTexture.fillRGB(gVideoDriver.Renderer(), 100, 0, 0);
+    const GsRect<float> discRect(0.0f,0.0f,0.1f,0.1f);
 
     /// Load The buttons images
     {
@@ -330,7 +324,6 @@ void VirtualKeenControl::hideAllButtons()
 void VirtualKeenControl::render(GsWeakSurface &)
 {
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    //GsRect<Uint16> clickGameArea = gVideoDriver.mpVideoEngine->getActiveAreaRect();
 
     auto addTexture = [](TouchButton &button) -> void
     {
@@ -355,10 +348,8 @@ void VirtualKeenControl::render(GsWeakSurface &)
     addTexture(mJumpButton);
     addTexture(mPogoButton);    
 
-/*
-    const GsRect<float> discRect(0.0f,0.0f,0.1f,0.1f);
-    gVideoDriver.addTextureRefToRender(mDiscTexture, discRect);
-*/
+    //gVideoDriver.addTextureRefToRender(mDiscTexture);
+
 #endif
 }
 
@@ -438,8 +429,10 @@ bool VirtualKeenControl::mouseFingerState(const GsVec2D<float> &Pos,
                 evUp.key.keysym.scancode = SDL_SCANCODE_DOWN;
                 evUp.key.keysym.sym = SDLK_DOWN;
                 evUp.type = SDL_KEYUP;
-                SDL_PushEvent(&evUp);                
+                SDL_PushEvent(&evUp);
             }
+
+            //mDiscTexture.setPos(Pos);
         }
         // Down presses
         else if(Pos.y>=mDPad.y+mDPad.h-dpadSizePieceH)
@@ -456,6 +449,8 @@ bool VirtualKeenControl::mouseFingerState(const GsVec2D<float> &Pos,
                 evUp.type = SDL_KEYUP;
                 SDL_PushEvent(&evUp);
             }
+
+            //mDiscTexture.setPos(Pos);
         }
 
         // X-Direction
@@ -475,6 +470,7 @@ bool VirtualKeenControl::mouseFingerState(const GsVec2D<float> &Pos,
                 SDL_PushEvent(&evUp);
             }
 
+            //mDiscTexture.setPos(Pos);
         }
         // Right presses
         else if(Pos.x>=mDPad.x+mDPad.w-dpadSizePieceW)
@@ -492,7 +488,8 @@ bool VirtualKeenControl::mouseFingerState(const GsVec2D<float> &Pos,
                 SDL_PushEvent(&evUp);
             }
 
-        }
+            //mDiscTexture.setPos(Pos);
+        }                
 
         if(isFinger)
         {
