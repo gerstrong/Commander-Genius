@@ -24,7 +24,7 @@ class GsTextureElem
      * @return true, if the circle could be created, otherwise false.
      */
     bool createCircle(const float radius,
-                      const int res);
+                      const int res, const Uint8 r, const Uint8 g, const Uint8 b);
 
     /**
      * @brief setPos    Sets thje position of the texture element

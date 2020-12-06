@@ -73,6 +73,12 @@ public:
     void drawRect(const GsRect<Uint16> &rect,
                   const Uint32 fillColor);
 
+    /**
+     * @brief drawCircle draws of a given surface a circle
+     * @param fillColor  Color to use for filling the circle
+     */
+    void drawCircle(const Uint32 fillColor);
+
 
     /**
      * \brief Draws the countour of the given rect and thickness

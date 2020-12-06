@@ -15,6 +15,35 @@ GsTexture::~GsTexture()
 #endif
 }
 
+bool GsTexture::createCircle(SDL_Renderer *renderer,
+                             const Uint8 r,
+                             const Uint8 g,
+                             const Uint8 b,
+                             const float radius,
+                             const int res)
+{
+    GsSurface sfc;
+
+    sfc.create(0, 512, 512, 32,
+               0, 0, 0, 0);
+
+    sfc.setColorMask(0, 255, 255);
+    sfc.fillRGB(0, 255, 255);
+
+    const auto color = sfc.mapRGB(r, g, b);
+    sfc.drawCircle( color );
+
+    if(mpTexture)
+        unload();
+
+    mpTexture = SDL_CreateTextureFromSurface(renderer, sfc.getSDLSurface());
+
+    SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+    SDL_SetTextureBlendMode(mpTexture, SDL_BLENDMODE_BLEND);
+
+    return true;
+}
+
 void GsTexture::fillRGB( SDL_Renderer *renderer,
                          const Uint8 r,
                          const Uint8 g,

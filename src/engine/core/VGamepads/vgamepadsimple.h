@@ -127,7 +127,7 @@ public:
     TouchButton mPadBackground;
     TouchButton mDPad;
 
-    //GsTextureElem mDiscTexture;
+    GsTextureElem mDiscTexture;
 
 
     TouchButton mConfirmButton;

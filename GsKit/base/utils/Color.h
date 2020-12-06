@@ -188,12 +188,6 @@ struct GsColor
         b = Uint8(CLAMP(float(b)*(1.0f-amt) + float(c.b)*amt,0.0f,255.0f));
         a = Uint8(CLAMP(float(a)*(1.0f-amt) + float(c.a)*amt,0.0f,255.0f));
     }
-
-
-    /*
-    Uint8& operator[](int i) { switch(i) { case 0: return r; case 1: return g; case 2: return b; case 3: return a; default: assert(false); } return *(reinterpret_cast<Uint8*>(0)); }
-    Uint8 operator[](int i) const { switch(i) { case 0: return r; case 1: return g; case 2: return b; case 3: return a; default: assert(false); } return 0; }
-    */
 };
 
 #endif // COLOR_H

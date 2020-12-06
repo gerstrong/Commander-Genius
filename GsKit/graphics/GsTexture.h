@@ -121,6 +121,13 @@ public:
         return mpTexture;
     }
 
+    bool createCircle( SDL_Renderer *renderer,
+                       const Uint8 r,
+                       const Uint8 g,
+                       const Uint8 b,
+                       const float radius,
+                       const int res );
+
     void fillRGB( SDL_Renderer *renderer,
                              const Uint8 r,
                              const Uint8 g,
