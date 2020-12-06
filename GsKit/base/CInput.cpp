@@ -1143,7 +1143,14 @@ void CInput::pollEvents()
             if(gVideoDriver.VGamePadEnabled() && mpVirtPad &&
                     mpVirtPad->active())
             {
-                if(!mpVirtPad->mouseUp(Pos))
+                bool ok;
+
+                if(Event.motion.state & SDL_BUTTON_LMASK)
+                    ok = mpVirtPad->mouseDown(Pos);
+                else
+                    ok = mpVirtPad->mouseUp(Pos);
+
+                if(!ok)
                 {
                     passSDLEventVec = true;
                     m_EventList.add( new PointingDevEvent( Pos, PDE_MOVED ) );
