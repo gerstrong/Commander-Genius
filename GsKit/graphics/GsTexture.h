@@ -1,6 +1,8 @@
 #ifndef GSTEXTURE_H
 #define GSTEXTURE_H
 
+#include <base/Vector2D.h>
+
 #include <SDL.h>
 #include <SDL_image.h>
 #include <cstdio>
@@ -25,7 +27,6 @@ public:
      * @brief GsTexture Simple constructor for GsTextures
      */
     GsTexture() {}
-
 
     /**
      * @brief ~GsTexture Standard constructor
@@ -127,11 +128,6 @@ public:
                              const Uint8 g,
                              const Uint8 b );
 
-
-/*    bool loadFromMem(const unsigned char *data,
-                     const unsigned int size,
-                     SDL_Renderer *renderer,
-                     const bool dark);*/
 
     bool loadFromSurface(const GsSurface &sfc,
                          SDL_Renderer *renderer);

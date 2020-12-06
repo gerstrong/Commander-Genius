@@ -960,7 +960,7 @@ void CInput::pollEvents()
 
 	    		transMouseRelCoord(Pos, rotPt, activeArea, tiltedScreen);
 
-                if(!mpVirtPad->mouseFingerState(Pos, Event.tfinger, true))
+                if(!mpVirtPad->mouseFingerState(Pos, true, Event.tfinger, true))
                 {
                     m_EventList.add( new PointingDevEvent( Pos, PDE_BUTTONDOWN ) );
                     gPointDevice.mPointingState.mActionButton = 1;
@@ -990,7 +990,7 @@ void CInput::pollEvents()
                                    Event.tfinger.y*float(activeArea.dim.y));
 
                 transMouseRelCoord(Pos, rotPt, activeArea, tiltedScreen);
-                if(!mpVirtPad->mouseFingerState(Pos, Event.tfinger, false))
+                if(!mpVirtPad->mouseFingerState(Pos, true, Event.tfinger, false))
                 {
                     passSDLEventVec = true;
                     m_EventList.add( new PointingDevEvent( Pos, PDE_BUTTONUP ) );
@@ -1026,7 +1026,7 @@ void CInput::pollEvents()
             {
                 transMouseRelCoord(Pos, rotPt, activeArea, tiltedScreen);
 
-                if(!mpVirtPad->mouseFingerState(Pos, Event.tfinger, true))
+                if(!mpVirtPad->mouseFingerState(Pos, true, Event.tfinger, true))
                 {
                     m_EventList.add( new PointingDevEvent( Pos, PDE_BUTTONDOWN ) );
                     gPointDevice.mPointingState.mActionButton = 1;

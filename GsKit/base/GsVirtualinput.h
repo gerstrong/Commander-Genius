@@ -6,8 +6,6 @@
 
 #include <set>
 
-//struct stInputCommand;
-
 class TouchButton
 {
 
@@ -168,6 +166,7 @@ public:
      * @return true if something was processed here
      */
     virtual bool mouseFingerState(const GsVec2D<float> &Pos,
+                                  const bool isFinger,
                                   const SDL_TouchFingerEvent &touchFingerEvent,
                                   const bool down) = 0;
 

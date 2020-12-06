@@ -103,6 +103,8 @@ bool VirtualKeenControl::init()
     }
 */
 
+    mDiscTexture.fillRGB(gVideoDriver.Renderer(), 100, 0, 0);
+
     /// Load The buttons images
     {
         // Start with the Background for the gamepad
@@ -131,8 +133,6 @@ bool VirtualKeenControl::init()
 
         if(!mMenuButton.loadEmdbeddedPicture(gButtonMenuPng, sizeof(gButtonMenuPng))) return false;
         mMenuButton.invisible = true;
-
-
     }
 
 #endif
@@ -353,8 +353,12 @@ void VirtualKeenControl::render(GsWeakSurface &)
     addTexture(mMenuButton);
     addTexture(mShootButton);
     addTexture(mJumpButton);
-    addTexture(mPogoButton);
+    addTexture(mPogoButton);    
 
+/*
+    const GsRect<float> discRect(0.0f,0.0f,0.1f,0.1f);
+    gVideoDriver.addTextureRefToRender(mDiscTexture, discRect);
+*/
 #endif
 }
 
@@ -394,42 +398,20 @@ bool VirtualKeenControl::allInvisible()
 
 
 bool VirtualKeenControl::mouseFingerState(const GsVec2D<float> &Pos,
+                                          const bool isFinger,
                                           const SDL_TouchFingerEvent &touchFingerEvent,
                                           const bool down)
 {
-
-/*
-    auto unbindButtonCommand = [&](const TouchButton &button,
-            const InpCmd &cmd)
-    {
-        gInput.setCommand(0, cmd, false);
-    };
-
-    unbindButtonCommand(mConfirmButton, IC_JUMP);
-    unbindButtonCommand(mStartButton, IC_JUMP);
-    unbindButtonCommand(mStatusButton, IC_STATUS);
-    unbindButtonCommand(mShootButton, IC_FIRE);
-    unbindButtonCommand(mJumpButton, IC_JUMP);
-    unbindButtonCommand(mPogoButton, IC_POGO);
-
-
-    // Always sent released first, better for VPads
-    SDL_Event evUp;
-    evUp.type = SDL_KEYUP;
-
-    evUp.key.keysym.sym = SDLK_UP;    SDL_PushEvent(&evUp);
-    evUp.key.keysym.sym = SDLK_LEFT;  SDL_PushEvent(&evUp);
-    evUp.key.keysym.sym = SDLK_RIGHT; SDL_PushEvent(&evUp);
-    evUp.key.keysym.sym = SDLK_DOWN;  SDL_PushEvent(&evUp);*/
-
-/*
-    if( !mPadBackground.isInside(Pos.x, Pos.y) )
-        return false;*/
-
     if(allInvisible())
         return false;
 
     bool ok = false;
+
+    if(!isFinger)
+    {
+        if( !mPadBackground.isInside(Pos.x, Pos.y) )
+            return false;
+    }
 
 
     SDL_Event ev;
@@ -512,10 +494,13 @@ bool VirtualKeenControl::mouseFingerState(const GsVec2D<float> &Pos,
 
         }
 
-        mDPad.insertFingerId(touchFingerEvent.fingerId);
-        ok |= true;
+        if(isFinger)
+        {
+            mDPad.insertFingerId(touchFingerEvent.fingerId);
+            ok |= true;
+        }
     }
-    else
+    else if(isFinger)
     {
         auto it = mDPad.mFingerSet.find(touchFingerEvent.fingerId);
 
@@ -556,18 +541,21 @@ bool VirtualKeenControl::mouseFingerState(const GsVec2D<float> &Pos,
         {
             gInput.setCommand(0, cmd, down);
 
-            if(down)
+            if(isFinger)
             {
-                button.insertFingerId(touchFingerEvent.fingerId);
-            }
-            else
-            {
-                button.removeFingerId(touchFingerEvent.fingerId);
+                if(down)
+                {
+                    button.insertFingerId(touchFingerEvent.fingerId);
+                }
+                else
+                {
+                    button.removeFingerId(touchFingerEvent.fingerId);
+                }
             }
 
             return true;
         }
-        else
+        else if(isFinger)
         {
             auto it = button.mFingerSet.find(touchFingerEvent.fingerId);
 
@@ -575,10 +563,10 @@ bool VirtualKeenControl::mouseFingerState(const GsVec2D<float> &Pos,
             {
                 gInput.setCommand(0, cmd, false);
                 button.mFingerSet.erase(it);
-            }
-
-            return false;
+            }            
         }
+
+        return false;
     };
 
     ok |= bindButtonCommand(mConfirmButton, IC_JUMP);
@@ -596,145 +584,6 @@ bool VirtualKeenControl::mouseFingerState(const GsVec2D<float> &Pos,
 
 bool VirtualKeenControl::mouseState(const GsVec2D<float> &Pos, const bool down)
 {
-#if SDL_VERSION_ATLEAST(2, 0, 0)    
-/*
-    auto unbindButtonCommand = [&](const TouchButton &button,
-            const InpCmd &cmd)
-    {
-        gInput.setCommand(0, cmd, false);
-    };
-
-    unbindButtonCommand(mConfirmButton, IC_JUMP);
-    unbindButtonCommand(mStartButton, IC_JUMP);
-    unbindButtonCommand(mStatusButton, IC_STATUS);
-    unbindButtonCommand(mShootButton, IC_FIRE);
-    unbindButtonCommand(mJumpButton, IC_JUMP);
-    unbindButtonCommand(mPogoButton, IC_POGO);
-
-
-    // Always sent released first, better for VPads
-    SDL_Event evUp;
-    evUp.type = SDL_KEYUP;
-
-    evUp.key.keysym.sym = SDLK_UP;    SDL_PushEvent(&evUp);
-    evUp.key.keysym.sym = SDLK_LEFT;  SDL_PushEvent(&evUp);
-    evUp.key.keysym.sym = SDLK_RIGHT; SDL_PushEvent(&evUp);
-    evUp.key.keysym.sym = SDLK_DOWN;  SDL_PushEvent(&evUp);*/
-
-    if(allInvisible())
-        return false;
-
-    bool ok = false;
-
-    if( !mPadBackground.isInside(Pos.x, Pos.y) )
-        return false;
-
-    auto bindButtonCommand = [&](const TouchButton &button,
-                                 const InpCmd &cmd) -> bool
-    {
-        if(button.invisible)
-            return false;
-
-        if( button.Rect().HasPoint(Pos) )
-        {
-            gInput.setCommand(0, cmd, down);
-            return true;
-        }
-        return false;
-    };        
-
-    SDL_Event ev;
-    ev.type = (down ? SDL_KEYDOWN : SDL_KEYUP);
-
-    if( !mDPad.invisible &&
-        mDPad.isInside(Pos.x, Pos.y) )
-    {
-        // Size of the buttons on the dpad
-        const float dpadSizePieceW = 0.4f*mDPad.w;
-        const float dpadSizePieceH = 0.4f*mDPad.h;
-
-        // Y-Direction
-        // Up presses
-        if(Pos.y<mDPad.y+dpadSizePieceH)
-        {
-            ev.key.keysym.sym = SDLK_UP;
-            ev.key.keysym.scancode = SDL_SCANCODE_UP;
-            SDL_PushEvent(&ev);
-
-            if(down)
-            {
-                SDL_Event evUp;
-                evUp.type = SDL_KEYUP;
-                evUp.key.keysym.sym = SDLK_DOWN;
-                evUp.key.keysym.scancode = SDL_SCANCODE_DOWN;
-                SDL_PushEvent(&evUp);
-            }
-        }
-        // Down presses
-        else if(Pos.y>=mDPad.y+mDPad.h-dpadSizePieceH)
-        {
-            ev.key.keysym.sym = SDLK_DOWN;
-            ev.key.keysym.scancode = SDL_SCANCODE_DOWN;
-            SDL_PushEvent(&ev);
-
-            if(down)
-            {
-                SDL_Event evUp;
-                evUp.type = SDL_KEYUP;
-                evUp.key.keysym.sym = SDLK_UP;
-                evUp.key.keysym.scancode = SDL_SCANCODE_UP;
-                SDL_PushEvent(&evUp);
-            }
-        }
-
-        // X-Direction
-        // Left presses
-        if(Pos.x<mDPad.x+dpadSizePieceW)
-        {
-            ev.key.keysym.sym = SDLK_LEFT;
-            ev.key.keysym.scancode = SDL_SCANCODE_LEFT;
-            SDL_PushEvent(&ev);
-
-            if(down)
-            {
-                SDL_Event evUp;
-                evUp.type = SDL_KEYUP;
-                evUp.key.keysym.sym = SDLK_RIGHT;
-                ev.key.keysym.scancode = SDL_SCANCODE_RIGHT;
-                SDL_PushEvent(&evUp);
-            }
-
-        }
-        // Right presses
-        else if(Pos.x>=mDPad.x+mDPad.w-dpadSizePieceW)
-        {
-            ev.key.keysym.sym = SDLK_RIGHT;
-            ev.key.keysym.scancode = SDL_SCANCODE_RIGHT;
-            SDL_PushEvent(&ev);
-
-            if(down)
-            {
-                SDL_Event evUp;
-                evUp.type = SDL_KEYUP;
-                evUp.key.keysym.sym = SDLK_LEFT;
-                ev.key.keysym.scancode = SDL_SCANCODE_LEFT;
-                SDL_PushEvent(&evUp);
-            }
-
-        }
-    }
-
-    ok |= bindButtonCommand(mConfirmButton, IC_JUMP);
-    ok |= bindButtonCommand(mStartButton, IC_JUMP);
-    ok |= bindButtonCommand(mMenuButton, IC_BACK);
-    ok |= bindButtonCommand(mStatusButton, IC_STATUS);
-    ok |= bindButtonCommand(mShootButton, IC_FIRE);
-    ok |= bindButtonCommand(mJumpButton, IC_JUMP);
-    ok |= bindButtonCommand(mPogoButton, IC_POGO);
-
-#endif
-
-    return ok;
-
+    return mouseFingerState(Pos, false, SDL_TouchFingerEvent(), down);
 }
 #endif

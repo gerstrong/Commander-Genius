@@ -87,6 +87,7 @@ public:
     bool allInvisible();
 
     bool mouseFingerState(const GsVec2D<float> &Pos,
+                          const bool isFinger,
                           const SDL_TouchFingerEvent &touchFingerEvent,
                           const bool down) override;
 
@@ -120,8 +121,13 @@ public:
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 
+    // Control disc
     TouchButton mPadBackground;
     TouchButton mDPad;
+
+    GsTexture mDiscTexture;
+
+
     TouchButton mConfirmButton;
     TouchButton mStartButton;
     TouchButton mMenuButton;
@@ -135,6 +141,7 @@ public:
     std::set< SDL_FingerID > mFingerSet;
 
 #endif    
+
 
 };
 
