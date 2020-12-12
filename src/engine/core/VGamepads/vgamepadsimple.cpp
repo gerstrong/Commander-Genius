@@ -562,6 +562,12 @@ bool VirtualKeenControl::mouseFingerState(const GsVec2D<float> &Pos,
             releaseAllDir();
         }
 
+        discPos.x = std::min(discPos.x, mDPad.x+mDPad.w-discW);
+        discPos.x = std::max(discPos.x, mDPad.x);
+        discPos.y = std::min(discPos.y, mDPad.y+mDPad.h-discH);
+        discPos.y = std::max(discPos.y, mDPad.y);
+
+
         mDiscTexture.setPos(discPos);
     }
 
@@ -571,7 +577,20 @@ bool VirtualKeenControl::mouseFingerState(const GsVec2D<float> &Pos,
         if(button.invisible)
             return false;
 
-        if(button.Rect().HasPoint(Pos))
+
+        bool stateChanged = false;
+        if(button.Rect().HasPoint(Pos) && down && !button.isDown)
+        {
+           button.isDown = true;
+           stateChanged = true;
+        }
+        else if(!down && button.isDown)
+        {
+            button.isDown = false;
+            stateChanged = true;
+        }
+
+        if(stateChanged)
         {
             gInput.setCommand(0, cmd, down);
 

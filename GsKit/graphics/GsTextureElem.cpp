@@ -3,7 +3,7 @@
 
 #include "base/video/CVideoDriver.h"
 
-bool GsTextureElem::createCircle(const float radius,                                 
+bool GsTextureElem::createCircle(const float radius,
                                  const int res,
                                  const Uint8 r,
                                  const Uint8 g,
@@ -12,6 +12,7 @@ bool GsTextureElem::createCircle(const float radius,
 {
     mRect.dim.x = 2.0f*radius;
     mRect.dim.y = 2.0f*radius;
+
     return mTexture.createCircle(gVideoDriver.Renderer(),
                                  r,g,b, radius, 100);
 }
