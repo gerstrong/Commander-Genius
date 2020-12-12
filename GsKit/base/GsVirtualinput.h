@@ -54,11 +54,11 @@ public:
 
 
 
-    //stInputCommand* cmd = nullptr;
     int immediateIndex = 0;
 
     float x = 0.0f, y = 0.0f, w = 0.0f, h = 0.0f;
     bool invisible = true;
+    bool isDown = false;
 
     GsTexture mTexture;
 
