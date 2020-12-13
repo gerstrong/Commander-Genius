@@ -198,6 +198,7 @@ bool GsSurface::loadImgInternal(const unsigned char *data,
                                 const std::string &name,
                                 const int size)
 {
+    (void) name; // unused, maybe for later stuff
 
     SDL_RWops *rw = SDL_RWFromMem(reinterpret_cast<void*>
                                   (const_cast<unsigned char*>(data)),
@@ -208,11 +209,16 @@ bool GsSurface::loadImgInternal(const unsigned char *data,
 
     if (!tempSurface)
     {
+        gLogging.ftextOut("Unable to load surface! SDL Error: %s\n",
+                          SDL_GetError());
         return false;
     }
 
     if (!createFromSDLSfc(tempSurface))
     {
+        gLogging.ftextOut("Unable to create GsSurface! SDL Error: %s\n",
+                          SDL_GetError());
+
         return false;
     }
 

@@ -19,25 +19,33 @@
 #include "buttonStart.h"
 #include "buttonMenu.h"
 
-
+////////////// TouchButton Implementation part /////////////////////
 
 bool TouchButton::loadEmdbeddedPicture(const unsigned char *data,
                                        const unsigned int size)
 {
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 
-    const auto ok = mTexture.loadFromMem(data, size,
-                                         gVideoDriver.Renderer());
+    const auto &renderer = gVideoDriver.Renderer();
+
+    const auto ok = mTexture.loadFromMem(data, size, renderer);
 
     if(!ok) return false;
 
-    int h,w;
+    int h, w;
 
     SDL_QueryTexture(mTexture.getPtr(),
                      nullptr, nullptr,
                      &w, &h);
 
     this->w = w;    this->h = h;
+
+    // Now derive a picture which would be seen upon interaction
+    GsSurface negSfc;
+    negSfc.loadImgInternal(data, "", size);
+    negSfc.tintColor( GsColor(0xFF, 0xFF, 0xFF) );
+
+    mHighlightTexture.loadFromSurface(negSfc, renderer);
 
     return ok;
 
@@ -52,12 +60,12 @@ void TouchButton::clearFingers()
     mFingerSet.clear();
 }
 
-void TouchButton::insertFingerId(const SDL_FingerID fid)
+void TouchButton::insertFingerId(const Sint64 fid)
 {
     mFingerSet.insert(fid);
 }
 
-void TouchButton::removeFingerId(const SDL_FingerID fid)
+void TouchButton::removeFingerId(const Sint64 fid)
 {
     auto it = mFingerSet.find(fid);
     if(it != mFingerSet.end())
@@ -88,6 +96,48 @@ bool TouchButton::loadPicture(const std::string &picFile)
 #endif
 }
 
+bool TouchButton::handleFingerEvent(const GsVec2D<float> &Pos,
+                                    const Sint64 fingerID,
+                                    const bool fingerDown)
+{
+    if(invisible) // Because we don't see it, it won't interact
+        return false;
+
+
+    // Decide how to handle that finger/mouse cursor press/release
+    if(fingerDown)
+    {
+        if(mFingerSet.find(fingerID) == mFingerSet.end())
+        {
+            if(!isInside(Pos))
+                return false;
+
+            mFingerSet.insert(fingerID);
+        }
+
+        isDown = true;
+    }
+    else
+    {
+        if(mFingerSet.find(fingerID) == mFingerSet.end())
+            return false;
+
+        auto it = mFingerSet.find(fingerID);
+        if(it != mFingerSet.end())
+        {
+            mFingerSet.erase(fingerID);
+        }
+
+        if(mFingerSet.empty())
+            isDown = false;
+    }
+
+    return true;
+}
+
+////////////// VirtualKeenControl Implementation part /////////////////////
+
+
 VirtualKeenControl::~VirtualKeenControl()
 {}
 
@@ -95,9 +145,9 @@ bool VirtualKeenControl::init()
 {
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     // Check if the virtual game pad image exist. If not download the picture package
-    mDiscTexture.createCircle(0.05, 10, 128, 128, 128);
+    mDiscTexture.createCircle(0.05, 10, 0xFF, 0xFF, 0xFF);
 
-    const GsRect<float> discRect(0.0f,0.0f,0.1f,0.1f);
+    const GsRect<float> discRect(0.0f, 0.0f, 0.1f, 0.1f);
 
     /// Load The buttons images
     {
@@ -133,6 +183,7 @@ bool VirtualKeenControl::init()
 
     return true;
 }
+
 
 bool VirtualKeenControl::ponder()
 {
@@ -324,18 +375,27 @@ void VirtualKeenControl::render(GsWeakSurface &)
 {
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 
-    auto addTexture = [](TouchButton &button) -> void
+    auto &vidDrv = gVideoDriver;
+
+    auto addTexture = [&vidDrv](TouchButton &button) -> void
     {
         if(!button.invisible &&
             button.w > 0.0f && button.h > 0.0f)
         {
-            gVideoDriver.addTextureRefToRender(button.mTexture, button.Rect());
+            if(button.isDown)
+                vidDrv.addTextureRefToRender(button.mHighlightTexture, button.Rect());
+            else
+                vidDrv.addTextureRefToRender(button.mTexture, button.Rect());
         }
     };
 
     addTexture(mPadBackground);
 
-    addTexture(mDPad);
+    if(!mDPad.invisible &&
+        mDPad.w > 0.0f && mDPad.h > 0.0f)
+    {
+        vidDrv.addTextureRefToRender(mDPad.mTexture, mDPad.Rect());
+    }
 
     addTexture(mConfirmButton);
     addTexture(mStartButton);
@@ -391,6 +451,153 @@ bool VirtualKeenControl::allInvisible()
 }
 
 
+bool VirtualKeenControl::handleDPad(const GsVec2D<float> &Pos,
+                                    const Sint64 fingerID,
+                                    const bool fingerDown)
+{
+    SDL_Event ev;
+    ev.type = (fingerDown ? SDL_KEYDOWN : SDL_KEYUP);
+
+    const auto discW = mDiscTexture.Rect().dim.x;
+    const auto discH = mDiscTexture.Rect().dim.y;
+
+    bool ok = false;
+
+
+    if(!mDPad.handleFingerEvent(Pos, fingerID, fingerDown))
+        return false;
+
+
+    bool discCentered = true;
+    GsVec2D<float> discPos(mDPad.x+(mDPad.w-discW)*0.5f,
+                           mDPad.y+(mDPad.h-discH)*0.5f);
+
+    auto releaseAllDir = [&]() // Release all dpad direction presses
+    {
+        SDL_Event evUp;
+        evUp.type = SDL_KEYUP;
+
+        evUp.key.keysym.scancode = SDL_SCANCODE_UP;
+        evUp.key.keysym.sym = SDLK_UP;
+        SDL_PushEvent(&evUp);
+
+        evUp.key.keysym.scancode = SDL_SCANCODE_LEFT;
+        evUp.key.keysym.sym = SDLK_LEFT;
+        SDL_PushEvent(&evUp);
+
+        evUp.key.keysym.scancode = SDL_SCANCODE_RIGHT;
+        evUp.key.keysym.sym = SDLK_RIGHT;
+        SDL_PushEvent(&evUp);
+
+        evUp.key.keysym.scancode = SDL_SCANCODE_DOWN;
+        evUp.key.keysym.sym = SDLK_DOWN;
+        SDL_PushEvent(&evUp);
+
+        mDPad.isDown = false;
+    };
+
+    if( mDPad.isDown )
+    {
+        // Size of the buttons on the dpad
+        const float dpadSizePieceW = 0.4f*mDPad.w;
+        const float dpadSizePieceH = 0.4f*mDPad.h;
+
+        // Y-Direction
+        // Up presses
+        if(Pos.y<mDPad.y+dpadSizePieceH)
+        {
+            ev.key.keysym.scancode = SDL_SCANCODE_UP;
+            ev.key.keysym.sym = SDLK_UP;
+            SDL_PushEvent(&ev);
+
+            discPos.x = Pos.x - discW*0.5;
+            discPos.y = Pos.y - discH*0.5;
+            discCentered = false;
+
+            {
+                SDL_Event evUp;
+                evUp.key.keysym.scancode = SDL_SCANCODE_DOWN;
+                evUp.key.keysym.sym = SDLK_DOWN;
+                evUp.type = SDL_KEYUP;
+                SDL_PushEvent(&evUp);
+            }
+        }
+        // Down presses
+        else if(Pos.y>=mDPad.y+mDPad.h-dpadSizePieceH)
+        {
+
+            ev.key.keysym.scancode = SDL_SCANCODE_DOWN;
+            ev.key.keysym.sym = SDLK_DOWN;
+            SDL_PushEvent(&ev);
+
+            discCentered = false;
+
+            {
+                SDL_Event evUp;
+                evUp.key.keysym.scancode = SDL_SCANCODE_UP;
+                evUp.key.keysym.sym = SDLK_UP;
+                evUp.type = SDL_KEYUP;
+                SDL_PushEvent(&evUp);
+            }
+        }
+
+        // X-Direction
+        // Left presses
+        if(Pos.x<mDPad.x+dpadSizePieceW)
+        {
+            ev.key.keysym.sym = SDLK_LEFT;
+            ev.key.keysym.scancode = SDL_SCANCODE_LEFT;
+            SDL_PushEvent(&ev);
+
+            discCentered = false;
+
+            {
+                SDL_Event evUp;
+                evUp.type = SDL_KEYUP;
+                evUp.key.keysym.scancode = SDL_SCANCODE_RIGHT;
+                evUp.key.keysym.sym = SDLK_RIGHT;
+                SDL_PushEvent(&evUp);
+            }
+        }
+        // Right presses
+        else if(Pos.x>=mDPad.x+mDPad.w-dpadSizePieceW)
+        {
+            ev.key.keysym.sym = SDLK_RIGHT;
+            ev.key.keysym.scancode = SDL_SCANCODE_RIGHT;
+            SDL_PushEvent(&ev);
+
+            discCentered = false;
+
+            {
+                SDL_Event evUp;
+                evUp.type = SDL_KEYUP;
+                evUp.key.keysym.scancode = SDL_SCANCODE_LEFT;
+                evUp.key.keysym.sym = SDLK_LEFT;
+                SDL_PushEvent(&evUp);
+            }
+        }
+    }
+
+    if(!discCentered)
+    {
+        discPos.x = Pos.x - discW*0.5;
+        discPos.y = Pos.y - discH*0.5;
+    }
+    else
+    {
+        releaseAllDir();
+    }
+
+    discPos.x = std::min(discPos.x, mDPad.x+mDPad.w-discW);
+    discPos.x = std::max(discPos.x, mDPad.x);
+    discPos.y = std::min(discPos.y, mDPad.y+mDPad.h-discH);
+    discPos.y = std::max(discPos.y, mDPad.y);
+
+    mDiscTexture.setPos(discPos);
+
+    return ok;
+}
+
 bool VirtualKeenControl::mouseFingerState(const GsVec2D<float> &Pos,
                                           const bool isFinger,
                                           const SDL_TouchFingerEvent &touchFingerEvent,
@@ -401,175 +608,12 @@ bool VirtualKeenControl::mouseFingerState(const GsVec2D<float> &Pos,
 
     bool ok = false;
 
-    /*
-    if(!isFinger)
-    {
-        if( !mPadBackground.isInside(Pos.x, Pos.y) && !down )
-            return false;
-    }*/
+    // If it is the mouse cursor the simulated finger gets a simple zero value.
+    const Sint64 fingerID = isFinger ? touchFingerEvent.fingerId : 0;
 
+    if(handleDPad(Pos, fingerID, down))
+        return false;
 
-    SDL_Event ev;
-    ev.type = (down ? SDL_KEYDOWN : SDL_KEYUP);
-
-    const auto discW = mDiscTexture.Rect().dim.x;
-    const auto discH = mDiscTexture.Rect().dim.y;
-
-
-    if(!mDPad.invisible)
-    {
-        bool discCentered = true;
-        GsVec2D<float> discPos(mDPad.x+(mDPad.w-discW)*0.5f,
-                               mDPad.y+(mDPad.h-discH)*0.5f);
-
-        auto releaseAllDir = [&]() // Release all dpad direction presses
-        {
-            SDL_Event evUp;
-            evUp.type = SDL_KEYUP;
-
-            evUp.key.keysym.scancode = SDL_SCANCODE_UP;
-            evUp.key.keysym.sym = SDLK_UP;
-            SDL_PushEvent(&evUp);
-
-            evUp.key.keysym.scancode = SDL_SCANCODE_LEFT;
-            evUp.key.keysym.sym = SDLK_LEFT;
-            SDL_PushEvent(&evUp);
-
-            evUp.key.keysym.scancode = SDL_SCANCODE_RIGHT;
-            evUp.key.keysym.sym = SDLK_RIGHT;
-            SDL_PushEvent(&evUp);
-
-            evUp.key.keysym.scancode = SDL_SCANCODE_DOWN;
-            evUp.key.keysym.sym = SDLK_DOWN;
-            SDL_PushEvent(&evUp);
-
-            mDPad.isDown = false;
-        };
-
-        if( mDPad.isInside(Pos.x, Pos.y) || mDPad.isDown )
-        {
-            // Size of the buttons on the dpad
-            const float dpadSizePieceW = 0.4f*mDPad.w;
-            const float dpadSizePieceH = 0.4f*mDPad.h;
-
-
-            // Y-Direction
-            // Up presses
-            if(Pos.y<mDPad.y+dpadSizePieceH)
-            {
-                ev.key.keysym.scancode = SDL_SCANCODE_UP;
-                ev.key.keysym.sym = SDLK_UP;
-                SDL_PushEvent(&ev);
-
-                if(down)
-                {
-                    SDL_Event evUp;
-                    evUp.key.keysym.scancode = SDL_SCANCODE_DOWN;
-                    evUp.key.keysym.sym = SDLK_DOWN;
-                    evUp.type = SDL_KEYUP;
-                    SDL_PushEvent(&evUp);
-                    discPos.x = Pos.x - discW*0.5;
-                    discPos.y = Pos.y - discH*0.5;
-                    discCentered = false;
-                    mDPad.isDown = true;
-                }
-            }
-            // Down presses
-            else if(Pos.y>=mDPad.y+mDPad.h-dpadSizePieceH)
-            {
-                ev.key.keysym.scancode = SDL_SCANCODE_DOWN;
-                ev.key.keysym.sym = SDLK_DOWN;
-                SDL_PushEvent(&ev);
-
-                if(down)
-                {
-                    SDL_Event evUp;
-                    evUp.key.keysym.scancode = SDL_SCANCODE_UP;
-                    evUp.key.keysym.sym = SDLK_UP;
-                    evUp.type = SDL_KEYUP;
-                    SDL_PushEvent(&evUp);
-                    discPos.x = Pos.x - discW*0.5;
-                    discPos.y = Pos.y - discH*0.5;
-                    discCentered = false;
-                    mDPad.isDown = true;
-                }
-            }
-
-            // X-Direction
-            // Left presses
-            if(Pos.x<mDPad.x+dpadSizePieceW)
-            {
-                ev.key.keysym.sym = SDLK_LEFT;
-                ev.key.keysym.scancode = SDL_SCANCODE_LEFT;
-                SDL_PushEvent(&ev);
-
-                if(down)
-                {
-                    SDL_Event evUp;
-                    evUp.type = SDL_KEYUP;
-                    evUp.key.keysym.scancode = SDL_SCANCODE_RIGHT;
-                    evUp.key.keysym.sym = SDLK_RIGHT;
-                    SDL_PushEvent(&evUp);
-
-                    discPos.x = Pos.x - discW*0.5;
-                    discPos.y = Pos.y - discH*0.5;
-                    discCentered = false;
-                    mDPad.isDown = true;
-                }
-            }
-            // Right presses
-            else if(Pos.x>=mDPad.x+mDPad.w-dpadSizePieceW)
-            {
-                ev.key.keysym.sym = SDLK_RIGHT;
-                ev.key.keysym.scancode = SDL_SCANCODE_RIGHT;
-                SDL_PushEvent(&ev);
-
-                if(down)
-                {
-                    SDL_Event evUp;
-                    evUp.type = SDL_KEYUP;
-                    evUp.key.keysym.scancode = SDL_SCANCODE_LEFT;
-                    evUp.key.keysym.sym = SDLK_LEFT;
-                    SDL_PushEvent(&evUp);
-
-                    discPos.x = Pos.x - discW*0.5;
-                    discPos.y = Pos.y - discH*0.5;
-                    discCentered = false;
-                    mDPad.isDown = true;
-                }
-            }
-
-            if(isFinger)
-            {
-                mDPad.insertFingerId(touchFingerEvent.fingerId);
-                ok |= true;
-            }
-        }
-        else if(isFinger)
-        {
-            auto it = mDPad.mFingerSet.find(touchFingerEvent.fingerId);
-
-            if( it != mDPad.mFingerSet.end() )
-            {
-                mDPad.mFingerSet.erase(it);
-                releaseAllDir();
-            }
-
-        }
-
-        if(discCentered)
-        {
-            releaseAllDir();
-        }
-
-        discPos.x = std::min(discPos.x, mDPad.x+mDPad.w-discW);
-        discPos.x = std::max(discPos.x, mDPad.x);
-        discPos.y = std::min(discPos.y, mDPad.y+mDPad.h-discH);
-        discPos.y = std::max(discPos.y, mDPad.y);
-
-
-        mDiscTexture.setPos(discPos);
-    }
 
     auto bindButtonCommand = [&](TouchButton &button,
                                  const InpCmd &cmd) -> bool
@@ -608,6 +652,7 @@ bool VirtualKeenControl::mouseFingerState(const GsVec2D<float> &Pos,
 
             return true;
         }
+        /*
         else if(isFinger)
         {
             auto it = button.mFingerSet.find(touchFingerEvent.fingerId);
@@ -618,7 +663,7 @@ bool VirtualKeenControl::mouseFingerState(const GsVec2D<float> &Pos,
                 button.mFingerSet.erase(it);
             }            
         }
-
+*/
         return false;
     };
 

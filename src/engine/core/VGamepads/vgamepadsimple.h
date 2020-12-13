@@ -88,6 +88,10 @@ public:
 
     bool allInvisible();
 
+    bool handleDPad(const GsVec2D<float> &Pos,
+                    const Sint64 fingerID,
+                    const bool down);
+
     bool mouseFingerState(const GsVec2D<float> &Pos,
                           const bool isFinger,
                           const SDL_TouchFingerEvent &touchFingerEvent,

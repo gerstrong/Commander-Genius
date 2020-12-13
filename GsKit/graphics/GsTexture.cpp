@@ -74,26 +74,9 @@ bool GsTexture::loadFromMem(const unsigned char *data,
     if(mpTexture)
         unload();
 
-    SDL_RWops *rw = SDL_RWFromMem(reinterpret_cast<void*>
-                                  (const_cast<unsigned char*>(data)),
-                                  int(size));
-
-    // Load image at specified path
-    SDL_Surface* loadedSurface = IMG_Load_RW(rw, 1);
-
-    if( loadedSurface )
-    {
-        //Create texture from surface pixels
-        mpTexture = SDL_CreateTextureFromSurface( renderer, loadedSurface );
-        if( mpTexture == nullptr )
-        {
-            gLogging.ftextOut("Unable to create texture! SDL Error: %s\n",
-                              SDL_GetError());
-        }
-
-        // Get rid of old surface
-        SDL_FreeSurface( loadedSurface );
-    }
+    GsSurface loadedSurface;
+    loadedSurface.loadImgInternal(data, "", size);
+    loadFromSurface(loadedSurface, renderer);
 
     return (mpTexture!=nullptr);
 }
