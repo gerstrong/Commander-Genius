@@ -103,10 +103,11 @@ public:
      * @brief active    Checks if click events happened in the virtual dpad
      * @return
      */
+
     bool isInside(const GsVec2D<float> &Pos) const override
     {
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-        return mPadBackground.isInside(Pos.x, Pos.y);
+        return true;
 #else
         return false;
 #endif
@@ -127,23 +128,22 @@ public:
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 
-    // Control disc
-    TouchButton mPadBackground;
+    // Directional pad with control disc on top
     TouchButton mDPad;
-
     GsTextureElem mDiscTexture;
 
-
+    // Misc buttons for menu, etc
     TouchButton mConfirmButton;
     TouchButton mStartButton;
     TouchButton mMenuButton;
 
-    // Control buttons
+    // Usual keen action buttons
     TouchButton mJumpButton;
     TouchButton mShootButton;
     TouchButton mPogoButton;
     TouchButton mStatusButton;        
 
+    // Tracking set for used fingers or the mouse cursor
     std::set< SDL_FingerID > mFingerSet;
 
 #endif    

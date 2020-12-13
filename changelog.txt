@@ -1,3 +1,10 @@
+v2.7.2:
+-------
+- Disc color now is white
+- Touch buttons give feedback when pressed/touched
+- Improved overall direction and buttons control
+- No more ugly vpad background
+
 v2.7.1:
 -------
 - Added disc to the virtual dpad and improved overlay controls

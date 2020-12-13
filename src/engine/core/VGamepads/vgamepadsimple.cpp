@@ -14,7 +14,6 @@
 #include "button2.h"
 #include "button3.h"
 #include "button4.h"
-#include "buttonBg.h"
 #include "buttonConfirm.h"
 #include "buttonStart.h"
 #include "buttonMenu.h"
@@ -151,9 +150,6 @@ bool VirtualKeenControl::init()
 
     /// Load The buttons images
     {
-        // Start with the Background for the gamepad
-        if(!mPadBackground.loadEmdbeddedPicture(gButtonBgPng, sizeof(gButtonBgPng))) return false;
-
         // Directional pad
         if(!mDPad.loadEmdbeddedPicture(gDPadPng, sizeof(gDPadPng))) return false;
 
@@ -200,16 +196,6 @@ bool VirtualKeenControl::ponder()
     const float sizeWFactor = float(iSizeW)/200.0f;
     const float sizeHFactor = float(iSizeH)/200.0f;
 
-    if(!mPadBackground.invisible)
-    {
-        const GsRect<float> dpadRect(0.0f, bottom-sizeHFactor*0.25f,
-                                     1.0f, 0.25f*sizeHFactor);
-
-        mPadBackground.setRect(dpadRect);
-
-        mPadBackground.mTexture.setAlpha(uint8_t(255.0f*mTranslucency));
-    }
-
     if(!mDPad.invisible)
     {
         const float dpadWSize = 0.2f*sizeWFactor;
@@ -220,6 +206,17 @@ bool VirtualKeenControl::ponder()
 
         mDPad.setRect(dpadRect);
         mDPad.mTexture.setAlpha(uint8_t(255.0f*mTranslucency));
+
+        // Ensure that the disc is positioned to the dpad correctly
+        auto discRect = mDiscTexture.Rect();
+        if(discRect.pos < dpadRect.pos ||
+           discRect.pos > dpadRect.pos+dpadRect.dim-discRect.dim )
+        {
+            GsVec2D<float> centDiscPos(dpadRect.pos +
+                                       (dpadRect.dim-discRect.dim)*0.5f);
+
+            mDiscTexture.setPos(centDiscPos);
+        }
     }
 
     if(!mConfirmButton.invisible)
@@ -342,7 +339,6 @@ void VirtualKeenControl::renderConfig()
 void VirtualKeenControl::hideEverything()
 {
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    mPadBackground.invisible = true;
     mDPad.invisible = true;
     mConfirmButton.invisible = true;
     mStartButton.invisible = true;
@@ -358,7 +354,6 @@ void VirtualKeenControl::hideEverything()
 void VirtualKeenControl::hideAllButtons()
 {
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    mPadBackground.invisible = false;
     mConfirmButton.invisible = true;
     mStartButton.invisible = true;
 
@@ -388,8 +383,6 @@ void VirtualKeenControl::render(GsWeakSurface &)
                 vidDrv.addTextureRefToRender(button.mTexture, button.Rect());
         }
     };
-
-    addTexture(mPadBackground);
 
     if(!mDPad.invisible &&
         mDPad.w > 0.0f && mDPad.h > 0.0f)
@@ -436,7 +429,6 @@ bool VirtualKeenControl::allInvisible()
 {
     bool allInvisible = true;
 
-    allInvisible &= mPadBackground.invisible;
     allInvisible &= mDPad.invisible;
     allInvisible &= mConfirmButton.invisible;
     allInvisible &= mStartButton.invisible;
