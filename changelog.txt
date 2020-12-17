@@ -1,3 +1,7 @@
+v2.7.3:
+-------
+- Smarter Game store. Catalogue entries can be read later at runtime and in the background
+
 v2.7.2:
 -------
 - Disc color now is white

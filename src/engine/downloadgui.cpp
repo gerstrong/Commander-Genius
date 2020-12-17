@@ -15,7 +15,7 @@
 // Here we take a look at the game the user still does not
 // have and decide if the "New Stuff" will become selectable.
 // If he has all the games, the button won't be shown.
-void CGameLauncher::verifyGameStore()
+void CGameLauncher::verifyGameStore(const bool noCatalogDownloads)
 {
     m_DownloadProgress = 0;
     m_DownloadCancel = false;
@@ -50,23 +50,43 @@ void CGameLauncher::verifyGameStore()
     }
 
 
-    if(!missingList.empty())
+    if(!mpPlusMorebutton)
     {
-        mLauncherDialog.add( new GsButton( "+ More",
-                                                 GsRect<float>(0.125f, 0.865f, 0.25f, 0.07f),
-                                                 new GMDownloadDlgOpen() ) );
+        mpPlusMorebutton =
+            mLauncherDialog.add(
+                    new GsButton( "+ More",
+                                  GsRect<float>(0.125f, 0.865f, 0.25f, 0.07f),
+                                  new GMDownloadDlgOpen() ) );
+    }
+
+    mpPlusMorebutton->enable(false);
+
+    // If no games in the store found and you don't yet have games, gray button out
+    if(missingList.empty())
+    {
+        if(!m_Entries.empty())
+        {
+            mpPlusMorebutton->setText("Empty Store");
+        }
+    }
+    else
+    {
+        mpPlusMorebutton->setText("+ More");
+        mpPlusMorebutton->enable(true);
     }
 
     mGameCatalogue = gameDownloader.getGameCatalogue();
 
     // Try to download the catalogue file in the background
+    if(!noCatalogDownloads)
     {
         GameDownloader *pCatalogueDownloader =
                 new GameDownloader(m_DownloadProgress,
                                    m_DownloadProgressError,
                                    m_DownloadCancel);
         pCatalogueDownloader->setupDownloadCatalogue(true);
-        threadPool->start(pCatalogueDownloader,
+
+        mpCatalogDownloadThread = threadPool->start(pCatalogueDownloader,
                           "Loading catalogue file in the background");
     }
 }
