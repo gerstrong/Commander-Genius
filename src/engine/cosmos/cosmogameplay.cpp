@@ -629,8 +629,7 @@ bool CosmoGameplay::loadLevel(const int level_number)
     mMap.drawAll();
 
 
-    //auto &frontCoords = mMap.getScrollCoords().at(1);
-    auto &frontCoords = mMap.getMainScrollCoords();
+    auto &frontCoords = mMap.getScrollCoords(1);
 
     gVideoDriver.updateScrollBuffer(frontCoords.x, frontCoords.y);
 
@@ -678,8 +677,7 @@ void CosmoGameplay::ponder(const float deltaT)
     const auto mapwindow_x_offset_pix = mapwindow_x_offset*8.0f;
     const auto mapwindow_y_offset_pix = mapwindow_y_offset*8.0f;
 
-    //auto &frontCoords = mMap.getScrollCoords().at(1);
-    auto &frontCoords = mMap.getMainScrollCoords();
+    auto &frontCoords = mMap.getScrollCoords(1);
 
     int scroll_diff_x = (frontCoords.x-mapwindow_x_offset_pix);
     int scroll_diff_y = (frontCoords.y-mapwindow_y_offset_pix);
