@@ -53,6 +53,8 @@ public:
     }
 
 
+    bool isEmpty() const;
+
     /**
      * @brief setupEmptyDataPlanes  Allocates data for the the planes to be loaded
      * @param numPlanes     Number of planes to setup for the whole map
