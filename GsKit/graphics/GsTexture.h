@@ -11,7 +11,7 @@
 /**
  * @brief The GsTexture class is a wrapper for SDL Textures introduced in SDL 2.0. It can be used extended with other libraries, OpenGL maybe, but
  *        this wrapper manages the texture memory a bit more C++ like, so trouble with managing it's pointer
- * @note: This is SDL 2.0 or above only right now
+ * @note: This is SDL 2.0 or above only
  */
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
@@ -25,7 +25,6 @@ public:
      * @brief GsTexture Simple constructor for GsTextures
      */
     GsTexture() {}
-
 
     /**
      * @brief ~GsTexture Standard constructor
@@ -122,16 +121,18 @@ public:
         return mpTexture;
     }
 
+    bool createCircle( SDL_Renderer *renderer,
+                       const Uint8 r,
+                       const Uint8 g,
+                       const Uint8 b,
+                       const float radius,
+                       const int res );
+
     void fillRGB( SDL_Renderer *renderer,
                              const Uint8 r,
                              const Uint8 g,
                              const Uint8 b );
 
-
-/*    bool loadFromMem(const unsigned char *data,
-                     const unsigned int size,
-                     SDL_Renderer *renderer,
-                     const bool dark);*/
 
     bool loadFromSurface(const GsSurface &sfc,
                          SDL_Renderer *renderer);

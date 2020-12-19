@@ -200,7 +200,7 @@ void CPlatform::draw()
         return;
     
     GsSprite &Sprite = gGraphics.getSprite(mSprVar,mSpriteIdx);
-    auto &scroll = mpMap->getScrollCoords().at(0);
+    auto &scroll = mpMap->getMainScrollCoords();
     
     scrx = (m_Pos.x>>STC)-scroll.x;
     scry = (m_Pos.y>>STC)-scroll.y;

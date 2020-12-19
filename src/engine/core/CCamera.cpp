@@ -200,7 +200,7 @@ void CCamera::process()
 	}
 
 
-    const auto &scroll = mpMap->getScrollCoords().at(0);
+    const auto &scroll = mpMap->getMainScrollCoords();
 
     const auto xPosStc = getXPosition()>>STC;
     const auto yPosStc = getYPosition()>>STC;
@@ -208,7 +208,6 @@ void CCamera::process()
     // delta is how much we need to scroll in order to get the camera stalled
     int delta_x = xPosStc-scroll.x;
     int delta_y = yPosStc-scroll.y;
-
 
 
     // The bounds are relatively scaled for bigger game resolutions
@@ -289,7 +288,7 @@ void CCamera::reAdjust()
 {
     SDL_Rect gameRes = gVideoDriver.getGameResolution().SDLRect();
   
-    const auto scroll = mpMap->getScrollCoords().at(0);
+    const auto scroll = mpMap->getMainScrollCoords();
 
 	const int x = getXPosition();
 	const int y = getYPosition();

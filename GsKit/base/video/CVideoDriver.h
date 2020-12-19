@@ -15,6 +15,7 @@
 #include <base/Singleton.h>
 #include <base/video/CVideoEngine.h>
 #include <base/GsEvent.h>
+#include <graphics/GsTextureElem.h>
 #include <graphics/GsTexture.h>
 #include <queue>
 #include <set>
@@ -199,6 +200,8 @@ public:
         mpVideoEngine->mRenderTexturePtrs.push(triple);
     }
 
+
+    void addTextureRefToRender(GsTextureElem& textureElemRef);
 
     /**
      * @brief addTextureRefToRender add texture ptr to the that will be renderered

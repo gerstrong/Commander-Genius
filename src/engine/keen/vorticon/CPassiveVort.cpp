@@ -81,7 +81,7 @@ void CPassiveVort::pumpEvent(const CEvent *evPtr)
         if(mpMap)
         {
             mpMap->drawAll();
-            const auto scroll = mpMap->getScrollCoords().at(0);
+            const auto scroll = mpMap->getMainScrollCoords();
             gVideoDriver.updateScrollBuffer( scroll.x, scroll.y );
             return;
         }

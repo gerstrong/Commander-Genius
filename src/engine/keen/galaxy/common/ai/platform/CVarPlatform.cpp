@@ -150,7 +150,7 @@ void CVarPlatform::draw()
     const int sprW = Sprite.getWidth();
     const int sprH = Sprite.getHeight();
 
-    const auto scroll = mpMap->getScrollCoords().at(0);
+    const auto scroll = mpMap->getMainScrollCoords();
 
     scrx = (m_Pos.x>>STC)-scroll.x;
     scry = (m_Pos.y>>STC)-scroll.y;

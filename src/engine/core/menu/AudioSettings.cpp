@@ -63,6 +63,10 @@ GameMenu(GsRect<float>(0.075f, 0.24f, 0.85f, 0.4f), style )
         mpMenuDialog->add( new NumberControl( "PC Speaker Vol", 0, 100, 10, false,
                                               gAudio.getPCSpeakerVol(), style ) );
 
+    mpBufferAmp =
+        mpMenuDialog->add( new NumberControl( "Buffer Amp", 1, 10, 1, false,
+                                              gAudio.getBufferAmp(), style ) );
+
 
 	setMenuLabel("SNDEFFMENULABEL");
 
@@ -84,6 +88,7 @@ void CAudioSettings::refresh()
     mpMusicVolume->setSelection(gAudio.getMusicVolume());
     mpOPLAmp->setSelection(gAudio.getOplAmp());
     mpPCSpeakerAmp->setSelection(gAudio.getPCSpeakerVol());
+    mpBufferAmp->setSelection(gAudio.getBufferAmp());
 
 #if !defined(EMBEDDED)
 	mpRate->setSelection( itoa(mAudioSpec.freq) );
@@ -111,11 +116,13 @@ void CAudioSettings::ponder(const float deltaT)
     mMusicVolume     = mpMusicVolume->getSelection();
     mOplBoost        = mpOPLAmp->getSelection();
     mPcSpeakerVolume = mpPCSpeakerAmp->getSelection();
+    mBufferAmp       = mpBufferAmp->getSelection();
 
     gAudio.setSoundVolume( mSoundVolume );
     gAudio.setMusicVolume( mMusicVolume );
     gAudio.setOplAmp( mOplBoost );
     gAudio.setPcSpeakerVol( mPcSpeakerVolume );
+    gAudio.setBufferAmp( mBufferAmp );
 }
 
 

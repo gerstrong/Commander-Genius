@@ -186,7 +186,7 @@ bool CGameLauncher::setupMenu()
 
 
     #ifdef DOWNLOADER
-    verifyGameStore();
+    verifyGameStore(false);
     #endif
 
     mpStartButton =
@@ -660,15 +660,15 @@ void CGameLauncher::showMessageBox(const std::string &text)
         yStart += 0.05f;
     }
 
-
+/*
     mpMsgDialog->add(
                 new GsButton("Retry",
                              GsRect<float>(0.2f, 0.85f, 0.2f, 0.05f),
                              new GMSwitchToGameLauncher()));
-
+*/
     auto pOkButton = mpMsgDialog->add(
                         new GsButton("Ok",
-                                   GsRect<float>(0.6f, 0.85f,
+                                   GsRect<float>(0.4f, 0.85f,
                                                  0.2f, 0.05f),
                                    [&]()
                                    {
@@ -1085,6 +1085,13 @@ void CGameLauncher::ponder(const float deltaT)
         mpGameStoreDialog->processLogic();
         ponderDownloadDialog();
         return;
+    }
+
+    int ret;
+    if(threadPool->finalizeIfReady(mpCatalogDownloadThread, &ret))
+    {
+        verifyGameStore(true);
+        mpCatalogDownloadThread = nullptr;
     }
 
     #endif

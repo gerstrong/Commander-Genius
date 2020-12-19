@@ -148,8 +148,10 @@ public:
 
     int getOplAmp() const;
     int getPCSpeakerVol() const;
+    int getBufferAmp() const;
     void setOplAmp(const int percentage);
     void setPcSpeakerVol(const int percentage);
+    void setBufferAmp(const int value);
 
 protected:
 
@@ -183,6 +185,7 @@ private:
     Uint32 mOplBoost = 400;
     Uint32 mPCSpeakerVol = 20;
 
+    int mBufferAmp = 1;
 };
 
 #endif /* SDL_AUDIO_EXTENSION_H */

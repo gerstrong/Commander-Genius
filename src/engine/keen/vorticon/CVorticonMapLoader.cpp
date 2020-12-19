@@ -230,7 +230,7 @@ bool CVorticonMapLoaderBase::load( Uint8 episode,
 	
 	// Set Map Delegation Object and refresh whole level
     mpMap->drawAll();
-    const auto scroll = mpMap->getScrollCoords().at(0);
+    const auto scroll = mpMap->getMainScrollCoords();
     gVideoDriver.updateScrollBuffer( scroll.x, scroll.y );
 
 	return true;
@@ -254,7 +254,7 @@ bool CVorticonMapLoaderWithPlayer::load( Uint8 episode,
 
     // Set Map Delegation Object and refresh whole level
     mpMap->drawAll();
-    const auto scroll = mpMap->getScrollCoords().at(0);
+    const auto scroll = mpMap->getMainScrollCoords();
     gVideoDriver.updateScrollBuffer( scroll.x, scroll.y );
 
     return true;

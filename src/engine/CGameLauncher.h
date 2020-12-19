@@ -80,7 +80,7 @@ public:
     void pumpEvent(const CEvent *evPtr) override;
     void ponderGameSelDialog(const float deltaT);
 
-    void verifyGameStore();
+    void verifyGameStore(const bool noCatalogDownloads);
     void ponderDownloadDialog();
 
     void ponderPatchDialog();
@@ -125,8 +125,6 @@ private:
 	std::vector<std::string> m_Names;
     CGUIDialog mLauncherDialog;
 
-    //std::shared_ptr<GsButton> mpOptionButton;
-
     // The Start-Button should change depending on the taken actions
     std::shared_ptr<GsButton> mpStartButton;
 
@@ -147,6 +145,9 @@ private:
     std::vector< std::shared_ptr<GsBitmap> > mpDownloadPrevievBmpVec;
     std::vector<GameCatalogueEntry> mGameCatalogue;
 
+    std::shared_ptr<GsButton> mpPlusMorebutton;
+
+    ThreadPoolItem *mpCatalogDownloadThread = nullptr;
 
     // This dialog is used for some messages serving as some sort of feedback
     std::unique_ptr<CGUIDialog> mpMsgDialog;
