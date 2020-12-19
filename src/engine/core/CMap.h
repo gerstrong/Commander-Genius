@@ -204,6 +204,8 @@ public:
 
     GsVec2D<int> getSpriteOrigin(const int sprId);
 
+    const GsVec2D<int> &getScrollCoords(const unsigned int idx);
+
     /**
      * @brief setInfoPlane  Sets the info flag to the given plane.
      *                      This will make the Plane never to be rendered.
