@@ -218,10 +218,6 @@ public:
 
     const GsVec2D<int> &getMainScrollCoords();
 
-/*
-    Uint16 m_scrollx = 0;      		// Amount of how much is scrolled on the map relative to (0,0) in X
-    Uint16 m_scrolly = 0;    		// Amount of how much is scrolled on the map relative to (0,0) in Y
-*/
     Uint32 m_width, m_height;            // size of the map (in tile units)
 	bool m_worldmap;             // if 1, this is the world map
 
