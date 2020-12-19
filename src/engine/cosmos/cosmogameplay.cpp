@@ -93,9 +93,6 @@ bool CosmoGameplay::start()
 
 bool CosmoGameplay::load_level_data(int level_number)
 {
-
-    //byte_28BE3 = 0;
-
     File map_file;
     if(!open_file(get_level_filename(level_number), &map_file))
     {
@@ -677,6 +674,9 @@ void CosmoGameplay::ponder(const float deltaT)
     const auto mapwindow_x_offset_pix = mapwindow_x_offset*8.0f;
     const auto mapwindow_y_offset_pix = mapwindow_y_offset*8.0f;
 
+    if(mMap.isEmpty())
+        return;
+
     auto &frontCoords = mMap.getScrollCoords(1);
 
     int scroll_diff_x = (frontCoords.x-mapwindow_x_offset_pix);
@@ -724,7 +724,6 @@ void CosmoGameplay::ponder(const float deltaT)
     }
 
     executeLogics();
-    //run_gameplay();
 
     mMap.animateAllTiles();
 }
