@@ -46,6 +46,7 @@ private:
     std::shared_ptr <NumberControl>     mpMusicVolume;
     std::shared_ptr <NumberControl>     mpOPLAmp;
     std::shared_ptr <NumberControl>     mpPCSpeakerAmp;
+    std::shared_ptr <NumberControl>     mpBufferAmp;
 
 	SDL_AudioSpec	mAudioSpec;
 	bool mSoundblaster;
@@ -55,6 +56,7 @@ private:
     int mMusicVolume     = 0;
     int mOplBoost        = 0;
     int mPcSpeakerVolume = 0;
+    int mBufferAmp       = 1;
 };
 
 

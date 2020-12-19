@@ -46,7 +46,7 @@ Audio::Audio()
 {
 
 	mAudioSpec.channels = 2; // Stereo Sound
-	mAudioSpec.format = AUDIO_S16; // 16-bit sound
+    mAudioSpec.format = MIX_DEFAULT_FORMAT; // 16-bit sound
 	mAudioSpec.freq = 44100; // high quality
 
     updateFuncPtrs();
@@ -66,8 +66,6 @@ bool Audio::init()
 
 	gLogging.ftextOut("Starting the sound driver...<br>");
 
-    //SDL_AudioSpec obtained;
-
     // now start up the SDL sound system
 	mAudioSpec.silence = 0;
 
@@ -75,8 +73,11 @@ bool Audio::init()
 	{
 		case 11025: mAudioSpec.samples = 256; break;
 		case 22050: mAudioSpec.samples = 512; break;
-        default: mAudioSpec.samples = 1024; break;
-	}
+        case 44100: mAudioSpec.samples = 1024; break;
+        default: mAudioSpec.samples = 2048; break;
+    }
+
+    mAudioSpec.samples = mAudioSpec.samples * mBufferAmp;
 
     mAudioSpec.userdata = nullptr;
 
@@ -88,11 +89,12 @@ bool Audio::init()
              << "mAudioSpec.samples = " << mAudioSpec.samples << "\n";
 
 
-    // Initialize audio system
-    if( Mix_OpenAudio(mAudioSpec.freq,
-                      mAudioSpec.format,
-                      mAudioSpec.channels,
-                      mAudioSpec.samples) < 0 )
+    // Initialize audio system    
+    if( Mix_OpenAudioDevice(mAudioSpec.freq,
+                            mAudioSpec.format,
+                            mAudioSpec.channels,
+                            mAudioSpec.samples,
+                            nullptr, SDL_AUDIO_ALLOW_ANY_CHANGE) < 0 )
     {
         gLogging << "Mix_OpenAudio: " << Mix_GetError() << "\n";
         return false;
@@ -147,8 +149,6 @@ bool Audio::init()
 
     Mix_VolumeMusic(m_MusicVolume);
     Mix_Volume(-1, m_SoundVolume);
-
-
 
     gLogging << "Sound System: SDL sound system initialized.<br>";
 
@@ -538,6 +538,12 @@ int Audio::getPCSpeakerVol() const
     return mPCSpeakerVol;
 }
 
+int Audio::getBufferAmp() const
+{
+    return mBufferAmp;
+}
+
+
 void Audio::setOplAmp(const int percentage)
 {
     mOplBoost = percentage;
@@ -548,11 +554,16 @@ void Audio::setPcSpeakerVol(const int percentage)
     mPCSpeakerVol = percentage;
 }
 
+void Audio::setBufferAmp(const int value)
+{
+    assert(value >= 1 && value <= 10);
+    mBufferAmp = value;
+}
+
 
 void Audio::setSettings( const SDL_AudioSpec& audioSpec,
 	 	  	  	  	  	  const bool useSB )
 {
-
     mUseSoundBlaster = useSB;
 
 	// Check if rate matches to those available in the system

@@ -134,6 +134,40 @@ void GsWeakSurface::drawRect(const GsRect<Uint16> &rect,
 }
 
 
+void GsWeakSurface::drawCircle(const Uint32 fillColor)
+{
+    const auto w = width();
+    const auto h = height();
+
+    assert(h == w && (w%2==0));
+
+    const auto radius = float(w/2);
+    const auto radiusSq = radius*radius;
+    const auto dia = 2*radius;
+
+
+    GsRect<Uint16> rect;
+    rect.dim.x = 1;
+
+    for(int x = 0 ; x<dia ; x++)
+    {
+        const float midX = (float(2*x) + 1.0f) * 0.5f;
+
+        // Apply function for circle.
+        // We have to a higher and lower point between which
+        // we draw the slice (thin rectangle)
+        const auto sqrtPart = sqrt(radiusSq-((midX-radius)*(midX-radius)));
+        const float midyUpper = radius - sqrtPart;
+        const float midyLower = radius + sqrtPart;
+
+        rect.pos.x = Uint16(midX);
+        rect.pos.y = Uint16(midyUpper);
+        rect.dim.y = Uint16(midyLower-midyUpper);
+
+        fill(rect, fillColor);
+    }
+}
+
 
 void GsSurface::createRGBSurface( const SDL_Rect &rect )
 {
@@ -164,6 +198,7 @@ bool GsSurface::loadImgInternal(const unsigned char *data,
                                 const std::string &name,
                                 const int size)
 {
+    (void) name; // unused, maybe for later stuff
 
     SDL_RWops *rw = SDL_RWFromMem(reinterpret_cast<void*>
                                   (const_cast<unsigned char*>(data)),
@@ -174,11 +209,16 @@ bool GsSurface::loadImgInternal(const unsigned char *data,
 
     if (!tempSurface)
     {
+        gLogging.ftextOut("Unable to load surface! SDL Error: %s\n",
+                          SDL_GetError());
         return false;
     }
 
     if (!createFromSDLSfc(tempSurface))
     {
+        gLogging.ftextOut("Unable to create GsSurface! SDL Error: %s\n",
+                          SDL_GetError());
+
         return false;
     }
 

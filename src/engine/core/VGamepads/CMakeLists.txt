@@ -7,7 +7,6 @@ button1.h
 button2.h
 button3.h
 button4.h
-buttonBg.h
 buttonClose.h
 buttonConfirm.h
 buttonStart.h

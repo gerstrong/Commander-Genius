@@ -31,8 +31,7 @@ timer(0)
 void CHUD::createHUDBlit()
 {        
     mHUDBlit.createRGBSurface(mRenderRect.SDLRect());
-    mHUDBlit.makeBlitCompatible();
-    //mHUDBlit.fillRGB(0,0,0);
+    mHUDBlit.makeBlitCompatible();    
 }
 
 void CHUD::setup(const int playerIdx,

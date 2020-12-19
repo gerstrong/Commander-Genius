@@ -11,7 +11,7 @@ set(HEADERS cgttf.h   GsFont.h     GsGraphics.h    GsSurface.h
 
 set(SRCS cgttf.cpp     GsFontLegacy.cpp  GsSprite.cpp   GsTrueTypeFont.cpp
     GsBitmap.cpp       GsGametext.cpp    GsSurface.cpp
-    GsCursor.cpp       GsGraphics.cpp    GsTexture.cpp
+    GsCursor.cpp       GsGraphics.cpp    GsTexture.cpp GsTextureElem.cpp
     GsFont.cpp         GsPalette.cpp     GsTilemap.cpp GsDynColor.cpp
     CColorMerge.cpp    CDimDark.cpp      CPixelate.cpp CFlash.cpp
     GsScrollsurface.cpp

@@ -1,7 +1,24 @@
+v2.7.3:
+-------
+- Smarter Game store. Catalogue entries can be read later at runtime and in the background
+
+v2.7.2:
+-------
+- Disc color now is white
+- Touch buttons give feedback when pressed/touched
+- Improved overall direction and buttons control
+- No more ugly vpad background
+
+v2.7.1:
+-------
+- Added disc to the virtual dpad and improved overlay controls
+- Using a newer SDL2 mixer function for creating the audio device
+
 v2.7.0:
 -------
 - More Keen Dreams fixes
 - More Lua support and remaining python code is now completely removed
+- Added sound buffer amplifier for improving the sound/music quality hopefully on certain systems
 
 v2.6.3:
 -------

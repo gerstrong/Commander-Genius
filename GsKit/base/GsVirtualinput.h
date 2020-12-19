@@ -3,10 +3,9 @@
 
 #include "graphics/GsSurface.h"
 #include "graphics/GsTexture.h"
+#include "base/Vector2D.h"
 
 #include <set>
-
-//struct stInputCommand;
 
 class TouchButton
 {
@@ -23,6 +22,13 @@ public:
         x <= _x && _x < x + w &&
         y <= _y && _y < y + h;
     }
+
+    template<class T>
+    bool isInside(const GsVec2D<T> _pos) const
+    {
+        return isInside(_pos.x, _pos.y);
+    }
+
 
     /**
      * @brief setRect   set coordinates and dimensions of the loaded texture
@@ -55,31 +61,42 @@ public:
                               const unsigned int size);
 
 
-
-    //stInputCommand* cmd = nullptr;
-    int immediateIndex = 0;
-
-    float x = 0.0f, y = 0.0f, w = 0.0f, h = 0.0f;
-    bool invisible = true;
-
-    GsTexture mTexture;
-
-#if SDL_VERSION_ATLEAST(2, 0, 0)        
+    /**
+     * @brief handleFingerEvent handle finger event (down/up)
+     *                          and decide the state of the touch button
+     * @param Pos
+     * @param fingerID
+     * @param fingerDown
+     * @return false if the touch button is not affected otherwise true.
+     */
+    bool handleFingerEvent(const GsVec2D<float> &Pos,
+                           const Sint64 fingerID,
+                           const bool fingerDown);
 
     void clearFingers();
 
-    void insertFingerId(const SDL_FingerID fid);
+    void insertFingerId(const Sint64 fid);
 
-    void removeFingerId(const SDL_FingerID fid);
+    void removeFingerId(const Sint64 fid);
 
     bool hasFingers() const
     {
         return !mFingerSet.empty();
     }
 
-    std::set<SDL_FingerID> mFingerSet;
 
-#endif
+    int immediateIndex = 0;
+
+    float x = 0.0f, y = 0.0f, w = 0.0f, h = 0.0f;
+    bool invisible = true;
+    bool isDown = false;
+
+    GsTexture mTexture;
+    GsTexture mHighlightTexture;
+
+private:
+
+    std::set<Sint64> mFingerSet;
 };
 
 /**
@@ -168,6 +185,7 @@ public:
      * @return true if something was processed here
      */
     virtual bool mouseFingerState(const GsVec2D<float> &Pos,
+                                  const bool isFinger,
                                   const SDL_TouchFingerEvent &touchFingerEvent,
                                   const bool down) = 0;
 
