@@ -38,6 +38,12 @@ mShakeDir(0)
 	isSecret = false;
 }
 
+
+bool CMap::isEmpty() const
+{
+    return mPlanes.empty();
+}
+
 ////////////////////////////
 // Initialization Routine //
 ////////////////////////////
