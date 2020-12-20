@@ -85,7 +85,10 @@ void CVorticonMapLoaderBase::blitPlaneToMap(std::vector<Uint16> &planeitems,
     {
         int t = planeitems.at(startOffest+c);
 
-        mpMap->setTile(curmapx, curmapy, t, false, tilemapID);
+        if(tilemapID == 2)
+            mpMap->setInfoTile(curmapx, curmapy, t);
+        else
+            mpMap->setTile(curmapx, curmapy, t, false, tilemapID);
 
         curmapx++;
         if (curmapx >= mpMap->m_width)
@@ -174,7 +177,7 @@ bool CVorticonMapLoaderBase::loadBase(  Uint8 episode,
 	// Here goes the memory allocation function
 	const Uint16 w =  planeitems.at(1);
 	const Uint16 h =  planeitems.at(2);
-    mpMap->setupEmptyDataPlanes(3, 16, w, h);
+    mpMap->setupEmptyDataPlanes(2, 16, w, h);
 
 	unsigned int planesize = 0;
 	planesize = planeitems.at(8);
@@ -184,8 +187,6 @@ bool CVorticonMapLoaderBase::loadBase(  Uint8 episode,
 	blitPlaneToMap( planeitems, planesize, 0, 1);
 	blitPlaneToMap( planeitems, planesize, 1, 2);
 
-    mpMap->setInfoPlane(2, true);
-	
 	mpMap->collectBlockersCoordiantes();
     mpMap->setupAnimationTimer();
 	return true;
@@ -203,7 +204,7 @@ void CVorticonMapLoaderWithPlayer::loadSprites( Uint8 episode,
 	{
         for( size_t curmapy = 0; curmapy<mpMap->m_height ; curmapy++ )
         {
-            const size_t t = mpMap->getPlaneDataAt(2, curmapx<<CSF, curmapy<<CSF);
+            const size_t t = mpMap->getInfoData( GsVec2D<Uint32>(curmapx<<CSF, curmapy<<CSF) );
 
             if (mpMap->m_worldmap)
                 addWorldMapObject(t, curmapx, curmapy,  episode );

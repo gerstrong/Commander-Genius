@@ -3,6 +3,8 @@
  *
  *  Created on: 12.07.2009
  *      Author: gerstrong
+ *
+ *   Old class only used by vorticon keen engine
  */
 
 #include <base/TypeDefinitions.h>

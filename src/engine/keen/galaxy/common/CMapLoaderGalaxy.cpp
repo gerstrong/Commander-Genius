@@ -175,7 +175,9 @@ bool CMapLoaderGalaxy::unpackPlaneData( std::ifstream &mapFile,
 
         RLE.expand(plane, RLE_Plane, magic_word);
 
-        word *ptr = Map.getData(planeNumber);
+        word *ptr = (planeNumber == 2) ?
+                          Map.getInfoData() : Map.getData(planeNumber);
+
         for(size_t y=0; y<Map.m_height ; ++y)
     	{
             const int stride = y*Map.m_width;
@@ -344,7 +346,7 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
     gLogging.textOut("Allocating memory for the level planes ...<br>" );
 
     // Start with the Background
-    Map.setupEmptyDataPlanes(3, 16, Width, Height);
+    Map.setupEmptyDataPlanes(2, 16, Width, Height);
 
     // Start with the Background
     gLogging.textOut("Decompressing the Map... plane 0 (Background)<br>" );
@@ -357,7 +359,6 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
     // And finish up with the info layer
     gLogging.textOut("Decompressing the Map... plane 2 (Infolayer)<br>" );
     ok &= unpackPlaneData(MapFile, Map, 2, Plane_Offset[2], Plane_Length[2], magic_word);
-    Map.setInfoPlane(2, true);
 
     Map.gotoPos(0,0);
 
@@ -405,7 +406,7 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
  */
 void CMapLoaderGalaxy::spawnFoes(CMap &Map)
 {
-	word *start_data = Map.getData(2);
+    word *start_data = Map.getInfoData();
 	word *data_ptr;
 	word width = Map.m_width;
 	word height = Map.m_height;

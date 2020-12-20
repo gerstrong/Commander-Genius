@@ -18,6 +18,7 @@
 #include "graphics/GsTilemap.h"
 #include <base/TypeDefinitions.h>
 #include "CPlane.h"
+#include "scrollingplane.h"
 #include <base/GsEvent.h>
 #include <base/utils/Geometry.h>
 #include <map>
@@ -57,14 +58,15 @@ public:
 
     /**
      * @brief setupEmptyDataPlanes  Allocates data for the the planes to be loaded
-     * @param numPlanes     Number of planes to setup for the whole map
+     * @param numScrollingPlanes    Number of scrolling planes to setup for the whole map
+     *                              One Infomap is always allocated
      * @param tileSize      Square size of a tile (Keen uses 16x16 by default)
      *                      (NOTE: Only 16 and 8 are supported)
      * @param width
      * @param height
      * @return  true if everything went allright, otherwise false
      */
-    bool setupEmptyDataPlanes(const int numPlanes,
+    bool setupEmptyDataPlanes(const unsigned int numScrollingPlanes,
                               const int tileSize,
                               const Uint32 width,
                               const Uint32 height);
@@ -120,7 +122,7 @@ public:
 	void _drawForegroundTiles();
 
     Uint16 at(int x, int y, int t=1);
-	Uint16 getObjectat(Uint16 x, Uint16 y);
+    Uint16 getObjectat(const Uint16 x, const Uint16 y);
 	/*
 	 * \brief
 	 * This will check in horizontal direction if there is a scroll blocker.
@@ -130,7 +132,8 @@ public:
 	bool findObject(unsigned int obj, int *xout, int *yout);
     bool findTile(const unsigned int tile, int &xout, int &yout, const int plane=1);
 
-	bool setTile(Uint16 x, Uint16 y, Uint16 t, Uint16 plane=1);
+    bool setInfoTile(const Uint16 x, const Uint16 y, const Uint16 t);
+    bool setTile(const Uint16 x, const Uint16 y, const Uint16 t, const Uint16 plane=1);
 
     /**
      * @brief setTile   Sets the tile index t
@@ -160,6 +163,7 @@ public:
 
     word *getData(const Uint8 PlaneNum);
 	word *getInfoData();
+    Uint16 getInfoData(const GsVec2D<Uint32> pos) const;
 	word *getForegroundData();
 	word *getBackgroundData();
 
@@ -208,14 +212,6 @@ public:
 
     const GsVec2D<int> &getScrollCoords(const unsigned int idx);
 
-    /**
-     * @brief setInfoPlane  Sets the info flag to the given plane.
-     *                      This will make the Plane never to be rendered.
-     * @param plane         Plane to set info flags
-     * @param value         true for enabled the flag, false for remove it.
-     */
-    void setInfoPlane(const int plane, const bool value);
-
     const GsVec2D<int> &getMainScrollCoords();
 
     Uint32 m_width, m_height;            // size of the map (in tile units)
@@ -252,7 +248,10 @@ private:
 
 	float mAnimtileTimer;
 
-    std::vector<CPlane> mPlanes;    
+    //std::vector<CPlane> mPlanes;
+    CPlane mInfoPlane;
+    std::vector<ScrollingPlane> mScrollingPlanes;
+
     std::vector< GsVec2D<int> > mScrollCoords; // Amount of how much is scrolled on the map relative to (0,0) and per plane index
 
 	Uint16 m_Level;
