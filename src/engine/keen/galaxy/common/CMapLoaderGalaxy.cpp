@@ -362,7 +362,8 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
 
     Map.gotoPos(0,0);
 
-    Map.collectBlockersCoordiantes();
+    assert(0);
+    //Map.collectBlockersCoordiantes();
     Map.setupAnimationTimer();
 
     // Now that we have all the 3 planes (Background, Foreground, Foes) unpacked...

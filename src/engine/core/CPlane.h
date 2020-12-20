@@ -12,6 +12,7 @@
 #define CPLANE_H_
 
 #include <base/TypeDefinitions.h>
+#include <base/Vector2D.h>
 #include <SDL.h>
 #include <vector>
 
@@ -84,7 +85,7 @@ public:
     }
 
 
-private:
+protected:
     std::vector<word> mDataVec; // the map data of plane
 
     // In animation cycles the time when something needs to be changed

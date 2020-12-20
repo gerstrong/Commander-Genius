@@ -233,7 +233,8 @@ void CCamera::process()
 
     // For cases the camera faces too much to the left (First level Keen 8 mod)
     int leftSideLimit, rightSideLimit;
-    mpMap->fetchNearestVertBlockers(getXPosition(), leftSideLimit, rightSideLimit);
+    assert(0);
+    //mpMap->fetchNearestVertBlockers(getXPosition(), leftSideLimit, rightSideLimit);
 
     if( (scroll.x<<STC) < leftSideLimit)
     {
@@ -296,6 +297,8 @@ void CCamera::reAdjust()
 	// Check for the nearest vertical edges	
 	int blockYup, blockYdown, blockXleft, blockXright;
 	
+    assert(0);
+    /*
     mpMap->fetchNearestVertBlockers(x, blockXleft, blockXright);
     mpMap->fetchNearestHorBlockers(y, blockYup, blockYdown);
 	
@@ -344,6 +347,7 @@ void CCamera::reAdjust()
 
     mpMap->calcVisibleArea();
     mpMap->refreshVisibleArea();
+    */
 }
 
 

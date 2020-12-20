@@ -24,13 +24,6 @@
 #include <map>
 #include <set>
 
-// animation rate of animated tiles
-#define ANIM_TILE_TIME      256
-
-#define CSF    9
-#define TILE_S			4
-#define STC (CSF-TILE_S)
-
 
 class CMap
 {
@@ -87,7 +80,7 @@ public:
     void calcVisibleArea();
 
     void refreshVisibleArea();
-    void refreshVisibleArea(GsVec2D<int> &scrollCoord);
+    void refreshVisibleArea(const GsVec2D<int> scrollCoord);
 
     void redrawPlaneAt(const int planeIdx, const Uint32 mx, const Uint32 my);
 	void redrawAt(const Uint32 mx, const Uint32 my);
@@ -177,26 +170,6 @@ public:
     void setupAnimationTimer();
 
     /**
-     * @brief collectBlockersCoordiantes collects all the blocker coordinates in where the blockers are
-     * @note it also clears already existing blocker coordinates
-     */
-	void collectBlockersCoordiantes();
-
-    /**
-     * @brief insertVertBlocker  Insert a horizontal blocker coordinate
-     * @param x CSFed coordinate that would scroll-block
-     */
-    void insertVertBlocker(const int x);
-	void fetchNearestVertBlockers(const int x, int &leftCoord, int &rightCoord);
-
-    /**
-     * @brief insertHorBlocker  Insert a horizontal blocker coordinate
-     * @param y CSFed coordinate that would scroll-block
-     */
-    void insertHorBlocker(const int y);
-    void fetchNearestHorBlockers(const int y, int &upCoord, int &downCoord);
-
-    /**
      *  Locks the map, the way, no one can switch to a new level. This is important when another player tries to enter
      *  a level, and the other hasn't even thrown the Flag (Galaxy)
      */
@@ -214,16 +187,16 @@ public:
 
     const GsVec2D<int> &getMainScrollCoords();
 
-    Uint32 m_width, m_height;            // size of the map (in tile units)
-	bool m_worldmap;             // if 1, this is the world map
+    Uint32 m_width = 0, m_height = 0;            // size of the map (in tile units)
+    bool m_worldmap = false;             // if 1, this is the world map
 
 	std::string m_gamepath;
 
     bool m_animation_enabled = true;
     bool m_Dark = false;
 	bool isSecret;
-	int mNumFuses;
-    bool mFuseInLevel;
+    int mNumFuses = 0;
+    bool mFuseInLevel = false;
 
     GsVec2D<int> mGamePlayPos;
 
@@ -235,43 +208,27 @@ private:
     bool findHorizontalScrollBlocker(const int y);
 
 
-
-	Uint8 m_scrollpix;     	// (0-7) for tracking when to draw a stripe
-	Uint16 m_mapx;           	// map X location shown at scrollbuffer row 0
-	Uint16 m_mapxstripepos;  	// X pixel position of next stripe row
-
-	Uint8 m_scrollpixy;    	// (0-7) for tracking when to draw a stripe
-	Uint16 m_mapy;         	// map Y location shown at scrollbuffer column 0
-	Uint16 m_mapystripepos;  	// Y pixel position of next stripe column
-
 	std::vector<GsTilemap> &m_Tilemaps;
 
-	float mAnimtileTimer;
+    float mAnimtileTimer = 0.0f;
 
     //std::vector<CPlane> mPlanes;
     CPlane mInfoPlane;
     std::vector<ScrollingPlane> mScrollingPlanes;
 
-    std::vector< GsVec2D<int> > mScrollCoords; // Amount of how much is scrolled on the map relative to (0,0) and per plane index
-
 	Uint16 m_Level;
 	std::string m_LevelName;
-    std::set<int> scrollBlockX;
-    std::set<int> scrollBlockY;
 
-    bool mLocked;
+    bool mLocked = false;
 
     GsRect<int> mVisArea;
 
     std::map< int, GsVec2D<int> > mSpriteOriginList;
 
-    int mShakeCounter;
-    int mMaxShakeCounter;
-    int mMaxShakeVAmt;
-    int mShakeDir;
-
-    int mTileSizeBase = 4; // Keen games have 16x16 tile size which is the base of
-
+    int mShakeCounter = 0;
+    int mMaxShakeCounter = 0;
+    int mMaxShakeVAmt = 0;
+    int mShakeDir = 0;
 };
 
 
