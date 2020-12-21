@@ -82,7 +82,6 @@ public:
     void refreshVisibleArea();
     void refreshVisibleArea(const GsVec2D<int> scrollCoord);
 
-    void redrawPlaneAt(const int planeIdx, const Uint32 mx, const Uint32 my);
 	void redrawAt(const Uint32 mx, const Uint32 my);
 
     void drawAllOfPlane(const int planeIdx);
@@ -161,6 +160,16 @@ public:
 	word *getBackgroundData();
 
 
+
+    void fetchNearestVertBlockers(const int x,
+                                  int &leftCoord,
+                                  int &rightCoord);
+
+    void fetchNearestHorBlockers(const int y,
+                                 int &upCoord,
+                                 int &downCoord);
+
+
     void setupAnimationTimerOfTile(const int tilemapIdx);
 
     /**
@@ -198,8 +207,7 @@ public:
     int mNumFuses = 0;
     bool mFuseInLevel = false;
 
-    GsVec2D<int> mGamePlayPos;
-
+    GsVec2D<int> mGamePlayPos;    
 
 
 private:

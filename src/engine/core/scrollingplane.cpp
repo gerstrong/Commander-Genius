@@ -8,14 +8,14 @@ ScrollingPlane::ScrollingPlane()
 }
 
 
-void ScrollingPlane::refreshStripes()
+void ScrollingPlane::refreshStripes(GsTilemap &tilemap)
 {
     const int oldx = m_mapx<<mTileSizeBase;
     const int oldy = m_mapy<<mTileSizeBase;
 
     resetScrolling();
 
-    gotoPos({oldx, oldy});
+    gotoPos(tilemap, {oldx, oldy});
 }
 
 void ScrollingPlane::createDataMap(const int width,
@@ -138,17 +138,51 @@ bool ScrollingPlane::scrollRight(GsTilemap &tilemap)
     return true;
 }
 
+bool ScrollingPlane::scrollUp(GsTilemap &tilemap, const bool force)
+{
+    auto &scrollSfc = gVideoDriver.getScrollSurfaceVec().at(mScrollSfcIdx);
+    {
+        auto &scroll = mScrollCoords;
+
+        if( scroll.y <= 32 )
+            return false;
+
+        scroll.y--;
+
+        scrollSfc.UpdateScrollBufY(scroll.y);
+    }
+
+
+    if (m_scrollpixy==0)
+    {  // need to draw a new stripe
+        if(m_mapy>0) m_mapy--;
+
+        if (m_mapystripepos == 0)
+        {
+            // TODO: Problem with different squared sizes here
+            auto &scrollSfc = gVideoDriver.getScrollSurface(mScrollSfcIdx);
+            const int squareSize = scrollSfc.getSquareSize();
+            m_mapystripepos = (squareSize - (1<<mTileSizeBase));
+        }
+        else
+        {
+            m_mapystripepos -= (1<<mTileSizeBase);
+        }
+        drawHstripe(tilemap, m_mapystripepos, m_mapy);
+
+        m_scrollpixy = ((1<<mTileSizeBase)-1);
+    } else m_scrollpixy--;
+
+    return true;
+}
+
 bool ScrollingPlane::scrollDown(GsTilemap &tilemap, const bool force)
 {
-    bool ok = true;
-
     const int res_height = gVideoDriver.getGameResolution().dim.y;
 
     auto &scrollSfc = gVideoDriver.getScrollSurfaceVec().at(mScrollSfcIdx);
     auto &scroll = mScrollCoords;
     {
-
-
         if(!force)
         {
             const int bottom_y = (scroll.y+res_height)<<STC;
@@ -189,14 +223,13 @@ bool ScrollingPlane::scrollDown(GsTilemap &tilemap, const bool force)
         m_scrollpixy = 0;
     }
 
-    assert(0);
-    //refreshVisibleArea(scroll);
+    return true;
 }
 
 
 void ScrollingPlane::drawHstripe(GsTilemap &tilemap,
-                                const unsigned int y,
-                                const unsigned int mpy)
+                                 const unsigned int y,
+                                 const unsigned int mpy)
 {
     if(mpy >= mHeight) return;
 
@@ -258,7 +291,44 @@ void ScrollingPlane::drawVstripe(GsTilemap &tilemap,
 }
 
 
-bool ScrollingPlane::gotoPos(const GsVec2D<int> pos)
+void ScrollingPlane::drawAll(GsTilemap &tilemap)
+{
+    auto &scroll = mScrollCoords;
+    auto &scrollSfc = gVideoDriver.getScrollSurfaceVec().at(mScrollSfcIdx);
+
+    const auto dim = scrollSfc.getSquareSize();
+
+    scrollSfc.updateScrollBuf(scroll);
+
+    Uint32 num_v_tiles = dim>>mTileSizeBase;
+    if(num_v_tiles+m_mapx >= mWidth)
+        num_v_tiles = mWidth-m_mapx;
+
+    Uint32 num_h_tiles = dim>>mTileSizeBase;
+    if(num_h_tiles+m_mapy >= mHeight)
+        num_h_tiles = mHeight-m_mapy;
+
+    for(Uint32 y=0;y<num_h_tiles;y++)
+    {
+        for(Uint32 x=0;x<num_v_tiles;x++)
+        {
+            Uint32 tile = getMapDataAt(x+m_mapx, y+m_mapy);
+
+            //TODO: Consider 0th always to be transparent, except for the first one
+            //if(!tile && planeIdx > 0)
+//                continue;
+
+            tilemap.drawTile(scrollSfc,
+                                ((x<<mTileSizeBase)+m_mapxstripepos),
+                                ((y<<mTileSizeBase)+m_mapystripepos),
+                                tile);
+        }
+    }
+
+}
+
+bool ScrollingPlane::gotoPos(GsTilemap &tilemap,
+                             const GsVec2D<int> pos)
 {
     bool retval = false;
 
@@ -267,14 +337,9 @@ bool ScrollingPlane::gotoPos(const GsVec2D<int> pos)
     int dx = pos.x - scroll.x;
     int dy = pos.y - scroll.y;
 
-    assert(0);
-/*
     if( dx > 0 )
     {
-        for( int scrollx=0 ; scrollx<dx ; scrollx++)
-        {
-            scrollRight(true);
-        }
+        for( int scrollx=0 ; scrollx<dx ; scrollx++) scrollRight(tilemap);
     }
     else
     {
@@ -283,22 +348,22 @@ bool ScrollingPlane::gotoPos(const GsVec2D<int> pos)
 
     if( dx < 0 )
     {
-        for( int scrollx=0 ; scrollx<-dx ; scrollx++) scrollLeft(true);
+        for( int scrollx=0 ; scrollx<-dx ; scrollx++) scrollLeft(tilemap);
     }
     else retval = true;
 
     if( dy > 0 )
     {
-        for( int scrolly=0 ; scrolly<dy ; scrolly++) scrollDown(true);
+        for( int scrolly=0 ; scrolly<dy ; scrolly++) scrollDown(tilemap, true);
     }
     else retval = true;
 
     if( dy < 0 )
     {
-        for( int scrolly=0 ; scrolly<-dy ; scrolly++) scrollUp(true);
+        for( int scrolly=0 ; scrolly<-dy ; scrolly++) scrollUp(tilemap, true);
     }
     else retval = true;
-*/
+
     return retval;
 }
 
@@ -403,7 +468,9 @@ void ScrollingPlane::insertHorBlocker(const int y)
     scrollBlockY.insert(y);
 }
 
-void ScrollingPlane::fetchNearestHorBlockers(const int y, int &upCoord, int &downCoord)
+void ScrollingPlane::fetchNearestHorBlockers(const int y,
+                                             int &upCoord,
+                                             int &downCoord)
 {
     int blockYup = 0;
     int blockYdown = 0;
@@ -454,3 +521,33 @@ void ScrollingPlane::fetchNearestHorBlockers(const int y, int &upCoord, int &dow
     */
 }
 
+
+void ScrollingPlane::redrawPlaneAt(GsTilemap &tilemap,
+                                   const Uint32 mx,
+                                   const Uint32 my)
+{
+    auto &scrollSfc = gVideoDriver.getScrollSurfaceVec().at(mScrollSfcIdx);
+    SDL_Surface *ScrollSurface = scrollSfc.getScrollSurface().getSDLSurface();
+
+    // Go through the list and just draw all the tiles that need to be animated
+    const Uint32 num_h_tiles = ScrollSurface->h>>mTileSizeBase;
+    const Uint32 num_v_tiles = ScrollSurface->w>>mTileSizeBase;
+
+    const int drawMask = ScrollSurface->w-1;
+
+    if(  mx >= m_mapx &&
+         my >= m_mapy &&
+         mx < m_mapx + num_v_tiles &&
+         my < m_mapy + num_h_tiles 	)
+    {
+        const size_t tile = getMapDataAt(mx, my);
+
+        // TODO: Check cases of transparent 0th tile here
+        //if(!tile && planeIdx > 0)
+          //  return;
+
+        const Uint16 loc_x = (((mx-m_mapx)<<mTileSizeBase)+m_mapxstripepos)&drawMask;
+        const Uint16 loc_y = (((my-m_mapy)<<mTileSizeBase)+m_mapystripepos)&drawMask;
+        tilemap.drawTile(ScrollSurface, loc_x, loc_y, tile);
+    }
+}

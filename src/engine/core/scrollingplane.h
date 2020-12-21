@@ -48,6 +48,7 @@ public:
 
     bool scrollLeft(GsTilemap &tilemap);
     bool scrollRight(GsTilemap &tilemap);
+    bool scrollUp(GsTilemap &tilemap, const bool force);
     bool scrollDown(GsTilemap &tilemap, const bool force);
 
     void drawHstripe(GsTilemap &tilemap,
@@ -59,9 +60,11 @@ public:
                      const unsigned int x,
                      const unsigned int mpx);
 
-    bool gotoPos(GsVec2D<int> pos);
+    void drawAll(GsTilemap &tilemap);
 
-    void refreshStripes();
+    bool gotoPos(GsTilemap &tilemap, GsVec2D<int> pos);
+
+    void refreshStripes(GsTilemap &tilemap);
 
     /**
      * @brief collectBlockersCoordiantes collects all the blocker coordinates in where the blockers are
@@ -83,6 +86,10 @@ public:
     void insertHorBlocker(const int y);
     void fetchNearestHorBlockers(const int y, int &upCoord, int &downCoord);
 
+
+    void redrawPlaneAt(GsTilemap &tilemap,
+                       const Uint32 mx,
+                       const Uint32 my);
 
 private:
 

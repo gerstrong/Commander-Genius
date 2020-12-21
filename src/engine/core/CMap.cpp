@@ -70,7 +70,8 @@ void CMap::refreshStripes()
 {    
     for( auto &plane : mScrollingPlanes )
     {
-        plane.refreshStripes();
+        GsTilemap &tilemap = m_Tilemaps.at(plane.getTilemapIdx());
+        plane.refreshStripes(tilemap);
     }
 }
 
@@ -172,14 +173,33 @@ void CMap::lock()
     mLocked = true;
 }
 
+void CMap::fetchNearestVertBlockers(const int x,
+                                    int &leftCoord,
+                                    int &rightCoord)
+{
+    for(auto &plane: mScrollingPlanes)
+    {
+        plane.fetchNearestVertBlockers(x, leftCoord, rightCoord);
+    }
+}
+
+void CMap::fetchNearestHorBlockers(const int y,
+                                   int &upCoord,
+                                   int &downCoord)
+{
+    for(auto &plane: mScrollingPlanes)
+    {
+        plane.fetchNearestHorBlockers(y, upCoord, downCoord);
+    }
+}
+
 
 bool CMap::findVerticalScrollBlocker(const int x)
 {
     int blockXleft = 0;
     int blockXright = 0;
 
-    assert(0);
-    //fetchNearestVertBlockers(x, blockXleft, blockXright);
+    fetchNearestVertBlockers(x, blockXleft, blockXright);
 
     if(x < blockXleft)
         return true;
@@ -192,8 +212,7 @@ bool CMap::findHorizontalScrollBlocker(const int y)
     int blockYup = 0;
     int blockYdown = 0;
 
-    assert(0);
-    //fetchNearestHorBlockers(y, blockYup, blockYdown);
+    fetchNearestHorBlockers(y, blockYup, blockYdown);
 
     if(y < blockYup)
         return true;
@@ -336,7 +355,8 @@ bool CMap::gotoPos(int x, int y)
 
     for(auto &plane : mScrollingPlanes)
     {
-        retval = plane.gotoPos( {x,y} );
+        retval = plane.gotoPos(m_Tilemaps.at(plane.getTilemapIdx()),
+                               {x,y} );
 
         calcVisibleArea();
 
@@ -423,58 +443,24 @@ bool CMap::scrollDown(const bool force)
 
 bool CMap::scrollUp(const bool force)
 {
-    assert(0);
-    /*
-    const auto numPlanes = mScrollCoords.size();
+    bool ok = true;
 
-    auto &scrollSfcVec = gVideoDriver.getScrollSurfaceVec();
-
-    assert(numPlanes == scrollSfcVec.size());
-
-    for(auto idx=0 ; idx<int(numPlanes) ; idx++)
+    for(auto &plane : mScrollingPlanes)
     {
-        auto &scroll = mScrollCoords.at(idx);
-        auto &scrollSfc = scrollSfcVec.at(idx);
+        const auto scroll = plane.getScrollCoords();
 
         if( !force && findHorizontalScrollBlocker((scroll.y-1)<<STC) )
             return false;
 
-        if( scroll.y <= 32 )
-            return false;
-
-        scroll.y--;
-
-        scrollSfc.UpdateScrollBufY(scroll.y);
+        ok &= plane.scrollUp(m_Tilemaps.at(plane.getTilemapIdx()), force);
+        refreshVisibleArea(plane.getScrollCoords());
     }
 
-
-    if (m_scrollpixy==0)
-    {  // need to draw a new stripe
-        if(m_mapy>0) m_mapy--;
-
-        if (m_mapystripepos == 0)
-        {
-            // TODO: Problem with different squared sizes here
-            auto &scrollSfc = gVideoDriver.getScrollSurface(0);
-            const int squareSize = scrollSfc.getSquareSize();
-            m_mapystripepos = (squareSize - (1<<mTileSizeBase));
-        }
-        else
-        {
-            m_mapystripepos -= (1<<mTileSizeBase);
-        }
-        drawHstripe(m_mapystripepos, m_mapy);
-
-        m_scrollpixy = ((1<<mTileSizeBase)-1);
-    } else m_scrollpixy--;
-
-    for(auto idx=0 ; idx<int(numPlanes) ; idx++)
+    for(auto &scrollPlane : mScrollingPlanes)
     {
-        auto &scroll = mScrollCoords.at(idx);
-        refreshVisibleArea(scroll);
+        refreshVisibleArea(scrollPlane.getScrollCoords());
     }
-*/
-    return true;
+    return ok;
 }
 
 
@@ -483,10 +469,9 @@ void CMap::calcVisibleArea()
     // Here we need to get the scroll boundaries and
     // derive the rect from it.
     int x2, y2;
-    assert(0);
-    /*fetchNearestVertBlockers( mGamePlayPos.x, mVisArea.pos.x, x2);
+    fetchNearestVertBlockers( mGamePlayPos.x, mVisArea.pos.x, x2);
     fetchNearestHorBlockers( mGamePlayPos.y, mVisArea.pos.y, y2);
-*/
+
     mVisArea.dim.x = x2 - mVisArea.pos.x;
     mVisArea.dim.y = y2 - mVisArea.pos.y;
 }
@@ -531,44 +516,13 @@ void CMap::refreshVisibleArea(const GsVec2D<int> scroll)
 // onto the scrollbuffer...from then on the map will only be drawn
 // in stripes as it scrolls around.
 
-void CMap::redrawPlaneAt(const int planeIdx, const Uint32 mx, const Uint32 my)
-{
-    assert(0);
-
-    /*
-    for(auto &scrollSfc : gVideoDriver.getScrollSurfaceVec() )
-    {
-        SDL_Surface *ScrollSurface = scrollSfc.getScrollSurface().getSDLSurface();
-
-        // Go through the list and just draw all the tiles that need to be animated
-        const Uint32 num_h_tiles = ScrollSurface->h>>mTileSizeBase;
-        const Uint32 num_v_tiles = ScrollSurface->w>>mTileSizeBase;
-
-        const int drawMask = ScrollSurface->w-1;
-
-        if(  mx >= m_mapx &&
-             my >= m_mapy &&
-             mx < m_mapx + num_v_tiles &&
-             my < m_mapy + num_h_tiles 	)
-        {
-            const size_t tile = mScrollingPlanes[planeIdx].getMapDataAt(mx, my);
-
-            if(!tile && planeIdx > 0)
-                return;
-
-            const Uint16 loc_x = (((mx-m_mapx)<<mTileSizeBase)+m_mapxstripepos)&drawMask;
-            const Uint16 loc_y = (((my-m_mapy)<<mTileSizeBase)+m_mapystripepos)&drawMask;
-            m_Tilemaps.at(planeIdx).drawTile(ScrollSurface, loc_x, loc_y, tile);
-        }
-    }
-    */
-}
-
 void CMap::redrawAt(const Uint32 mx, const Uint32 my)
 {
     for(decltype(mScrollingPlanes.size()) i=0 ; i<mScrollingPlanes.size() ; i++)
     {
-        redrawPlaneAt(i, mx, my);
+        auto &plane = mScrollingPlanes.at(i);
+        auto &tilemap = m_Tilemaps.at(i);
+        plane.redrawPlaneAt(tilemap, mx, my);
     }
 }
 
@@ -579,108 +533,30 @@ void CMap::redrawAt(const Uint32 mx, const Uint32 my)
 
 
 void CMap::drawAllOfPlane(const int planeIdx)
-{
-    assert(0);
-
-    /*const auto numPlanes = mScrollCoords.size();
-
+{    
     auto &scrollSfcVec = gVideoDriver.getScrollSurfaceVec();
+    assert(planeIdx < scrollSfcVec.size());
 
-    assert(numPlanes == scrollSfcVec.size());
-
-
-    for(auto idx=0 ; idx<int(numPlanes) ; idx++)
-    {
-        auto &scroll = mScrollCoords.at(idx);
-        auto &scrollSfc = scrollSfcVec.at(idx);
-
-        const auto dim = scrollSfc.getSquareSize();
-
-        scrollSfc.updateScrollBuf(scroll);
-
-        Uint32 num_v_tiles = dim>>mTileSizeBase;
-        if(num_v_tiles+m_mapx >= m_width)
-            num_v_tiles = m_width-m_mapx;
-
-        Uint32 num_h_tiles = dim>>mTileSizeBase;
-        if(num_h_tiles+m_mapy >= m_height)
-            num_h_tiles = m_height-m_mapy;
-
-        auto &curPlane = mScrollingPlanes.at(planeIdx);
-
-        auto &curTilemap = m_Tilemaps.at(planeIdx);
-
-        for(Uint32 y=0;y<num_h_tiles;y++)
-        {
-            for(Uint32 x=0;x<num_v_tiles;x++)
-            {
-                Uint32 tile = curPlane.getMapDataAt(x+m_mapx, y+m_mapy);
-
-                if(!tile && planeIdx > 0)
-                    continue;
-
-                curTilemap.drawTile(scrollSfc,
-                                    ((x<<mTileSizeBase)+m_mapxstripepos),
-                                    ((y<<mTileSizeBase)+m_mapystripepos),
-                                    tile);
-            }
-        }
-    }
-    */
+    auto &plane = mScrollingPlanes.at(planeIdx);
+    auto &tilemap = m_Tilemaps.at(planeIdx);
+    plane.drawAll(tilemap);
 }
 
 void CMap::drawAll()
 {
-    assert(0);
-
-    /*
-    for(auto &scrollCoord : mScrollCoords)
-    {
-        refreshVisibleArea(scrollCoord);
-    }
     for(decltype(mScrollingPlanes.size()) i=0 ; i<mScrollingPlanes.size() ; i++)
     {
         drawAllOfPlane(i);
     }
-    */
 }
 
 void CMap::drawHstripeOfPlane(const int planeIdx,
                               const unsigned int y,
                               const unsigned int mpy)
 {
-    assert(0);
-    /*
-    if(mpy >= m_height) return;
-
-    for(auto &scrollSfc : gVideoDriver.getScrollSurfaceVec() )
-    {
-        const auto dim = scrollSfc.getSquareSize();
-
-        Uint32 num_v_tiles= dim>>mTileSizeBase;
-
-        const int drawMask = dim-1;
-
-        if( num_v_tiles+m_mapx >= m_width )
-            num_v_tiles = m_width-m_mapx;
-
-        const auto &curPlane = mScrollingPlanes[planeIdx];
-
-        auto &curTilemap = m_Tilemaps.at(planeIdx);
-
-        for(Uint32 x=0;x<num_v_tiles;x++)
-        {
-            Uint32 tile = curPlane.getMapDataAt(x+m_mapx, mpy);
-
-            if(!tile && planeIdx > 0)
-                continue;
-
-            curTilemap.drawTile(scrollSfc.getScrollSurface(),
-                                ((x<<mTileSizeBase)+m_mapxstripepos)&drawMask,
-                                y, tile);
-        }
-    }
-    */
+    auto &plane = mScrollingPlanes.at(planeIdx);
+    auto &tilemap = m_Tilemaps.at(plane.getTilemapIdx());
+    plane.drawHstripe(tilemap, y, mpy);
 }
 
 // draw a horizontal stripe, for vertical scrolling
@@ -699,16 +575,14 @@ void CMap::drawVstripeOfPlane(const int planeIdx,
 {   
     if(mpx >= m_width) return;
 
-    assert(0);
-    /*
-    for(auto &plane : mScrollingPlanes )
-    {        
-        plane.drawVstripe(x, mpx);
-    }*/
+    auto &plane = mScrollingPlanes.at(planeIdx);
+    auto &tilemap = m_Tilemaps.at(plane.getTilemapIdx());
+    plane.drawVstripe(tilemap, x, mpx);
 }
 
 // draws a vertical stripe from map position mapx to scrollbuffer position x
-void CMap::drawVstripe(const unsigned int x, const unsigned int mpx)
+void CMap::drawVstripe(const unsigned int x,
+                       const unsigned int mpx)
 {
     for(auto &plane : mScrollingPlanes)
     {
@@ -1017,8 +891,7 @@ GsVec2D<int> CMap::getSpriteOrigin(const int sprId)
 
 const GsVec2D<int> &CMap::getScrollCoords(const unsigned int idx)
 {
-    assert(0);
-    //return mScrollCoords.at(idx);
+    return mScrollingPlanes.at(idx).getScrollCoords();
 }
 
 

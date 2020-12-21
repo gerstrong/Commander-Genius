@@ -233,8 +233,8 @@ void CCamera::process()
 
     // For cases the camera faces too much to the left (First level Keen 8 mod)
     int leftSideLimit, rightSideLimit;
-    assert(0);
-    //mpMap->fetchNearestVertBlockers(getXPosition(), leftSideLimit, rightSideLimit);
+
+    mpMap->fetchNearestVertBlockers(getXPosition(), leftSideLimit, rightSideLimit);
 
     if( (scroll.x<<STC) < leftSideLimit)
     {
