@@ -37,7 +37,6 @@ public:
                        const int height,
                        const int tileSize);
 
-    void setScrollSfcIdx(unsigned int i);
 
     GsVec2D<int> getScrollCoords() const;
 
