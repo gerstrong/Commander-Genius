@@ -513,6 +513,23 @@ void CMap::refreshVisibleArea(const GsVec2D<int> scroll)
 }
 
 
+void CMap::insertHorBlocker(const int y)
+{
+      for(auto &plane : mScrollingPlanes)
+      {
+          plane.insertHorBlocker(y);
+      }
+}
+
+void CMap::insertVertBlocker(const int x)
+{
+    for(auto &plane : mScrollingPlanes)
+    {
+        plane.insertVertBlocker(x);
+    }
+}
+
+
 void CMap::resetScrollBlocker()
 {
     for(auto &plane : mScrollingPlanes)
