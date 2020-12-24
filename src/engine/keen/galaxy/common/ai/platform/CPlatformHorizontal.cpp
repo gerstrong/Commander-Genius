@@ -104,7 +104,7 @@ void CPlatformHorizontal::draw()
     
     GsSprite &Sprite = gGraphics.getSprite(mSprVar,mSpriteIdx);
 
-    auto &scroll = mpMap->getMainScrollCoords();
+    const auto scroll = mpMap->getMainScrollCoords();
 
 
     const int sprW = Sprite.getWidth();

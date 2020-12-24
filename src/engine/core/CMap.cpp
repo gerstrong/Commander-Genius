@@ -45,8 +45,8 @@ bool CMap::setupEmptyDataPlanes(const unsigned int numScrollingPlanes,
 
     for(unsigned int i=0 ; i<numScrollingPlanes ; i++)
     {
-        ScrollingPlane plane;
-        plane.createDataMap(m_width, m_height, tileSize);
+        ScrollingPlane plane(i);
+        plane.createDataMap(m_width, m_height, tileSize);        
         mScrollingPlanes.push_back(plane);
     }
 
@@ -119,6 +119,13 @@ Uint16 CMap::getInfoData(const GsVec2D<Uint32> pos) const
 {
     return mInfoPlane.getMapDataAt(pos.x,pos.y);
 }
+
+void CMap::setInfoTile(const GsVec2D<Uint32> pos,
+                       const Uint8 object)
+{
+    mInfoPlane.setMapDataAt(object, pos.x, pos.y);
+}
+
 
 word *CMap::getForegroundData()
 {
@@ -270,12 +277,12 @@ bool CMap::findTile(const unsigned int tile,
 	return false;
 }
 
-bool CMap::setInfoTile(const Uint16 x, const Uint16 y,
+bool CMap::setInfoTile(const GsVec2D<Uint16> pos,
                        const Uint16 t)
 {
-    if( x<m_width && y<m_height )
+    if( pos.x<m_width && pos.y<m_height )
     {
-        mInfoPlane.setMapDataAt(t, x, y);
+        mInfoPlane.setMapDataAt(t, pos.x, pos.y);
         return true;
     }
     else
@@ -295,7 +302,8 @@ bool CMap::setTile(const Uint16 x, const Uint16 y,
 		return false;
 }
 
-bool CMap::setTile(Uint16 x, Uint16 y, Uint16 t, bool redraw, Uint16 plane)
+bool CMap::setTile(Uint16 x, Uint16 y, Uint16 t,
+                   bool redraw, Uint16 plane)
 {
 	if(setTile( x, y, t, plane))
 	{
@@ -505,6 +513,53 @@ void CMap::refreshVisibleArea(const GsVec2D<int> scroll)
 }
 
 
+void CMap::resetScrollBlocker()
+{
+    for(auto &plane : mScrollingPlanes)
+    {
+        plane.resetScrollBlocker();
+    }
+}
+
+void CMap::collectBlockersCoordiantes()
+{
+    for(auto &plane : mScrollingPlanes)
+    {
+        plane.insertVertBlocker(1<<CSF);
+        plane.insertHorBlocker(1<<CSF);
+
+        int ep = gBehaviorEngine.getEpisode();
+
+        if(gBehaviorEngine.getEngine() == ENGINE_GALAXY)
+        {
+            const word* map_ptr = mInfoPlane.getMapDataPtr();
+
+            for(int y=0 ; y<(int)m_height ; y++)
+            {
+                for(int x=0 ; x<(int)m_width ; x++)
+                {
+                    // Check the row for a blocker which has the proper value
+                    if(*map_ptr == 0x19)
+                    {
+                        plane.insertHorBlocker(y<<(CSF));
+                    }
+
+                    // In Keen 5 it is only used on the map and stands for an in level teleporter
+                    if(*map_ptr == 0x1A && ep != 5)
+                        plane.insertVertBlocker(x<<(CSF));
+
+                    map_ptr++;
+                }
+            }
+
+        }
+        // There exist end-of-map tiles, we don't want to see
+        plane.insertHorBlocker(((m_height-2)<<(CSF)));
+        plane.insertVertBlocker((m_width-2)<<(CSF));
+    }
+}
+
+
 
 //////////////////////
 // Drawing Routines //
@@ -637,76 +692,13 @@ void CMap::renderShaking()
 
 
 /**
- * \brief This function draws all the masked and foreground tiles
+ * \brief This function draws all the masked and
+ *        foreground tiles to the blit surface directly
 
  */
 void CMap::_drawForegroundTiles()
 {
-    assert(0);
-    /*
-    auto &scroll = mScrollCoords.at(1);
-
-    SDL_Surface *surface = gVideoDriver.getBlitSurface();
-	const Uint16 num_h_tiles = surface->h;
-    const Uint16 num_v_tiles = surface->w;
-    Uint16 x1 = scroll.x>>mTileSizeBase;
-    Uint16 y1 = scroll.y>>mTileSizeBase;
-    Uint16 x2 = (scroll.x+num_v_tiles)>>mTileSizeBase;
-    Uint16 y2 = (scroll.y+num_h_tiles)>>mTileSizeBase;
-
-	std::vector<CTileProperties> &TileProperties =
-			gBehaviorEngine.getTileProperties(1);
-
-    const auto &visGA = gVideoDriver.mpVideoEngine->mRelativeVisGameArea;
-    const auto &visBlendGA = gVideoDriver.mpVideoEngine->mRelativeBlendVisGameArea;
-
-    const int visX1 = visGA.pos.x;
-    const int visX2 = visGA.pos.x+visGA.dim.x;
-    const int visY1 = visGA.pos.y;
-    const int visY2 = visGA.pos.y+visGA.dim.y;
-
-    const int visBlendX1 = visBlendGA.pos.x;
-    const int visBlendX2 = visBlendGA.pos.x+visBlendGA.dim.x;
-    const int visBlendY1 = visBlendGA.pos.y;
-    const int visBlendY2 = visBlendGA.pos.y+visBlendGA.dim.y;
-
-    auto &tilemap = m_Tilemaps[1];
-
-    for( size_t y=y1 ; y<=y2 ; y++)
-    {
-        for( size_t x=x1 ; x<=x2 ; x++)
-        {
-            const auto fg = mScrollingPlanes[1].getMapDataAt(x,y);
-
-            const int loc_x = (x<<mTileSizeBase)-scroll.x;
-            const int loc_y = (y<<mTileSizeBase)-scroll.y;
-
-            if( loc_x+16 < visX1 || loc_x > visX2 )
-                continue;
-
-            if( loc_y+16 < visY1 || loc_y > visY2 )
-                continue;
-
-            if(fg != 0)
-            {
-                if(TileProperties[fg].behaviour < 0)
-                {
-#if !defined(EMBEDDED)
-                    if( ( loc_x > visBlendX1 && loc_x < visBlendX2 ) &&
-                        ( loc_y > visBlendY1 && loc_y < visBlendY2 ) )
-                    {
-                        tilemap.drawTileBlended(surface, loc_x, loc_y, fg, 192 );
-                    }
-                    else
-#endif
-                    {
-                        tilemap.drawTile(surface, loc_x, loc_y, fg );
-                    }
-                }
-            }
-        }
-    }
-    */
+    mScrollingPlanes.at(1)._drawForegroundTiles(m_Tilemaps[1]);
 }
 
 /////////////////////////
@@ -762,8 +754,6 @@ void CMap::animateAllTiles()
     auto &timersBack = mScrollingPlanes[0].getTimers();
     auto &timersFront = mScrollingPlanes[1].getTimers();
 
-    assert(0);
-/*
     for( size_t y=0 ; y<m_height ; y++)
     {
         const int stride = m_width*y;
@@ -804,6 +794,24 @@ void CMap::animateAllTiles()
 
             if(draw)
             {
+                assert(mScrollingPlanes.size() >= 2);
+
+                const GsVec2D<Uint16> pos(x,y);
+                const Uint16 bgTile = *p_back_tile;
+                const Uint16 fgTile = *p_front_tile;
+
+                auto &planeBg = mScrollingPlanes.at(0);
+
+                planeBg.drawTile(m_Tilemaps.at(0), pos, bgTile);
+
+                if(fgTile)
+                {
+                    auto &planeFg = mScrollingPlanes.at(1);
+                    planeFg.drawTile(m_Tilemaps.at(1), pos, fgTile);
+                }
+
+
+                /*
                 for(auto &scrollSfc : gVideoDriver.getScrollSurfaceVec() )
                 {
                     const auto dim = scrollSfc.getSquareSize();
@@ -838,14 +846,13 @@ void CMap::animateAllTiles()
                             m_Tilemaps[1].drawTile(scrollSDLSfc, loc_x, loc_y, fgTile);
                         }
                     }
-                }
+                }*/
             }
 
             p_back_tile++;
             p_front_tile++;
         }
     }
-*/
 }
 
 
@@ -889,13 +896,13 @@ GsVec2D<int> CMap::getSpriteOrigin(const int sprId)
     return mSpriteOriginList[sprId];
 }
 
-const GsVec2D<int> &CMap::getScrollCoords(const unsigned int idx)
+GsVec2D<int> CMap::getScrollCoords(const unsigned int idx) const
 {
     return mScrollingPlanes.at(idx).getScrollCoords();
 }
 
 
-const GsVec2D<int> &CMap::getMainScrollCoords()
+GsVec2D<int> CMap::getMainScrollCoords() const
 {
     return getScrollCoords(0);
 }

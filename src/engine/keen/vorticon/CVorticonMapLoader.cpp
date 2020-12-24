@@ -71,7 +71,7 @@ void CVorticonMapLoaderBase::blitPlaneToMap(std::vector<Uint16> &planeitems,
                                             const Uint16 planeID,
                                             const Uint16 tilemapID)
 {
-    unsigned int curmapx = 0, curmapy = 0;
+    Uint32 curmapx = 0, curmapy = 0;
 
     const unsigned int startOffest = planesize*planeID+17;
 
@@ -85,8 +85,10 @@ void CVorticonMapLoaderBase::blitPlaneToMap(std::vector<Uint16> &planeitems,
     {
         int t = planeitems.at(startOffest+c);
 
+        const GsVec2D<Uint32> pos(curmapx, curmapy);
+
         if(tilemapID == 2)
-            mpMap->setInfoTile(curmapx, curmapy, t);
+            mpMap->setInfoTile( pos, t);
         else
             mpMap->setTile(curmapx, curmapy, t, false, tilemapID);
 
@@ -187,8 +189,8 @@ bool CVorticonMapLoaderBase::loadBase(  Uint8 episode,
 	blitPlaneToMap( planeitems, planesize, 0, 1);
 	blitPlaneToMap( planeitems, planesize, 1, 2);
 
-    assert(0);
-//	mpMap->collectBlockersCoordiantes();
+    mpMap->resetScrollBlocker();
+    mpMap->collectBlockersCoordiantes();
     mpMap->setupAnimationTimer();
 	return true;
 }

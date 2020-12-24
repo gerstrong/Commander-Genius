@@ -1,21 +1,11 @@
 
 #include "scrollingplane.h"
 #include <base/video/CVideoDriver.h>
+#include <engine/core/CBehaviorEngine.h>
 
-ScrollingPlane::ScrollingPlane()
+ScrollingPlane::ScrollingPlane(const int scrollSfcIdx) :
+    mScrollSfcIdx(scrollSfcIdx)
 {
-
-}
-
-
-void ScrollingPlane::refreshStripes(GsTilemap &tilemap)
-{
-    const int oldx = m_mapx<<mTileSizeBase;
-    const int oldy = m_mapy<<mTileSizeBase;
-
-    resetScrolling();
-
-    gotoPos(tilemap, {oldx, oldy});
 }
 
 void ScrollingPlane::createDataMap(const int width,
@@ -32,8 +22,23 @@ void ScrollingPlane::createDataMap(const int width,
     {
         mTileSizeBase = 4;
     }
-
 }
+
+void ScrollingPlane::setScrollSfcIdx(unsigned int i)
+{
+    mScrollCoords = i;
+}
+
+void ScrollingPlane::refreshStripes(GsTilemap &tilemap)
+{
+    const int oldx = m_mapx<<mTileSizeBase;
+    const int oldy = m_mapy<<mTileSizeBase;
+
+    resetScrolling();
+
+    gotoPos(tilemap, {oldx, oldy});
+}
+
 
 GsVec2D<int> ScrollingPlane::getScrollCoords() const
 {
@@ -367,50 +372,19 @@ bool ScrollingPlane::gotoPos(GsTilemap &tilemap,
     return retval;
 }
 
-void ScrollingPlane::collectBlockersCoordiantes()
-{
-    scrollBlockX.clear();
-    scrollBlockY.clear();
 
-    insertVertBlocker(1<<CSF);
-    insertHorBlocker(1<<CSF);
-    assert(0);
-/*
-    int ep = gBehaviorEngine.getEpisode();
-
-    if(gBehaviorEngine.getEngine() == ENGINE_GALAXY)
-    {
-        const word* map_ptr = mInfoPlane.getMapDataPtr();
-
-        for(int y=0 ; y<(int)m_height ; y++)
-        {
-            for(int x=0 ; x<(int)m_width ; x++)
-            {
-                // Check the row for a blocker which has the proper value
-                if(*map_ptr == 0x19)
-                {
-                    insertHorBlocker(y<<(CSF));
-                }
-
-                // In Keen 5 it is only used on the map and stands for an in level teleporter
-                if(*map_ptr == 0x1A && ep != 5)
-                    insertVertBlocker(x<<(CSF));
-
-                map_ptr++;
-            }
-        }
-
-    }
-    // There exist end-of-map tiles, we don't want to see
-    insertHorBlocker(((m_height-2)<<(CSF)));
-    insertVertBlocker((m_width-2)<<(CSF));
-    */
-}
 
 
 void ScrollingPlane::insertVertBlocker(const int x)
 {
     scrollBlockX.insert(x);
+}
+
+
+void ScrollingPlane::resetScrollBlocker()
+{
+    scrollBlockX.clear();
+    scrollBlockY.clear();
 }
 
 void ScrollingPlane::fetchNearestVertBlockers(const int x,
@@ -420,8 +394,6 @@ void ScrollingPlane::fetchNearestVertBlockers(const int x,
     int blockXleft = 0;
     int blockXright = 0;
 
-    assert(0);
-/*
     if(scrollBlockX.empty())
     {
         leftCoord = blockXleft;
@@ -443,7 +415,7 @@ void ScrollingPlane::fetchNearestVertBlockers(const int x,
         {
             leftCoord = blockXleft;
 
-            if(leftCoord > (2<<CSF) &&  gBehaviorEngine.getEngine() == ENGINE_GALAXY)
+            if(leftCoord > (2<<CSF)/* &&  gBehaviorEngine.getEngine() == ENGINE_GALAXY*/)
             {
                 // This will hide even more level blockers in Galaxy.
                 // In the vorticon games not required
@@ -460,7 +432,6 @@ void ScrollingPlane::fetchNearestVertBlockers(const int x,
 
     leftCoord = blockXleft;
     rightCoord = blockXright;
-    */
 }
 
 void ScrollingPlane::insertHorBlocker(const int y)
@@ -474,9 +445,6 @@ void ScrollingPlane::fetchNearestHorBlockers(const int y,
 {
     int blockYup = 0;
     int blockYdown = 0;
-
-    assert(0);
-    /*
 
     if(scrollBlockY.empty())
     {
@@ -502,7 +470,7 @@ void ScrollingPlane::fetchNearestHorBlockers(const int y,
         {
             upCoord = blockYup;
 
-            if(gBehaviorEngine.getEngine() == ENGINE_GALAXY)
+            /*if(gBehaviorEngine.getEngine() == ENGINE_GALAXY)*/
             {
                 // This will hide even more level blockers in Galaxy. In Vorticon
                 // this is not needed
@@ -518,7 +486,6 @@ void ScrollingPlane::fetchNearestHorBlockers(const int y,
     }
     upCoord = blockYup;
     downCoord = blockYdown;
-    */
 }
 
 
@@ -550,4 +517,70 @@ void ScrollingPlane::redrawPlaneAt(GsTilemap &tilemap,
         const Uint16 loc_y = (((my-m_mapy)<<mTileSizeBase)+m_mapystripepos)&drawMask;
         tilemap.drawTile(ScrollSurface, loc_x, loc_y, tile);
     }
+}
+
+
+void ScrollingPlane::_drawForegroundTiles(GsTilemap &tilemap)
+{
+    auto &scroll = mScrollCoords;
+
+    SDL_Surface *surface = gVideoDriver.getBlitSurface();
+    const Uint16 num_h_tiles = surface->h;
+    const Uint16 num_v_tiles = surface->w;
+    Uint16 x1 = scroll.x>>mTileSizeBase;
+    Uint16 y1 = scroll.y>>mTileSizeBase;
+    Uint16 x2 = (scroll.x+num_v_tiles)>>mTileSizeBase;
+    Uint16 y2 = (scroll.y+num_h_tiles)>>mTileSizeBase;
+
+    std::vector<CTileProperties> &TileProperties =
+            gBehaviorEngine.getTileProperties(1);
+
+    const auto &visGA = gVideoDriver.mpVideoEngine->mRelativeVisGameArea;
+    const auto &visBlendGA = gVideoDriver.mpVideoEngine->mRelativeBlendVisGameArea;
+
+    const int visX1 = visGA.pos.x;
+    const int visX2 = visGA.pos.x+visGA.dim.x;
+    const int visY1 = visGA.pos.y;
+    const int visY2 = visGA.pos.y+visGA.dim.y;
+
+    const int visBlendX1 = visBlendGA.pos.x;
+    const int visBlendX2 = visBlendGA.pos.x+visBlendGA.dim.x;
+    const int visBlendY1 = visBlendGA.pos.y;
+    const int visBlendY2 = visBlendGA.pos.y+visBlendGA.dim.y;
+
+    for( size_t y=y1 ; y<=y2 ; y++)
+    {
+        for( size_t x=x1 ; x<=x2 ; x++)
+        {
+            const auto fg = getMapDataAt(x,y);
+
+            const int loc_x = (x<<mTileSizeBase)-scroll.x;
+            const int loc_y = (y<<mTileSizeBase)-scroll.y;
+
+            if( loc_x+16 < visX1 || loc_x > visX2 )
+                continue;
+
+            if( loc_y+16 < visY1 || loc_y > visY2 )
+                continue;
+
+            if(fg != 0)
+            {
+                if(TileProperties[fg].behaviour < 0)
+                {
+#if !defined(EMBEDDED)
+                    if( ( loc_x > visBlendX1 && loc_x < visBlendX2 ) &&
+                        ( loc_y > visBlendY1 && loc_y < visBlendY2 ) )
+                    {
+                        tilemap.drawTileBlended(surface, loc_x, loc_y, fg, 192 );
+                    }
+                    else
+#endif
+                    {
+                        tilemap.drawTile(surface, loc_x, loc_y, fg );
+                    }
+                }
+            }
+        }
+    }
+
 }

@@ -79,8 +79,17 @@ public:
 
     void calcVisibleArea();
 
+    void resetScrollBlocker();
+
     void refreshVisibleArea();
     void refreshVisibleArea(const GsVec2D<int> scrollCoord);
+
+    /**
+     * @brief collectBlockersCoordiantes collects all the blocker coordinates in where the blockers are
+     * @note it also clears already existing blocker coordinates
+     */
+    void collectBlockersCoordiantes();
+
 
 	void redrawAt(const Uint32 mx, const Uint32 my);
 
@@ -124,8 +133,8 @@ public:
 	bool findObject(unsigned int obj, int *xout, int *yout);
     bool findTile(const unsigned int tile, int &xout, int &yout, const int plane=1);
 
-    bool setInfoTile(const Uint16 x, const Uint16 y, const Uint16 t);
-    bool setTile(const Uint16 x, const Uint16 y, const Uint16 t, const Uint16 plane=1);
+    bool setInfoTile( const GsVec2D<Uint16> pos, const Uint16 t);
+    bool setTile( const Uint16 x, const Uint16 y, const Uint16 t, const Uint16 plane=1);
 
     /**
      * @brief setTile   Sets the tile index t
@@ -155,7 +164,10 @@ public:
 
     word *getData(const Uint8 PlaneNum);
 	word *getInfoData();
-    Uint16 getInfoData(const GsVec2D<Uint32> pos) const;
+    Uint16 getInfoData(const GsVec2D<Uint32> pos) const;    
+    void setInfoTile(const GsVec2D<Uint32> pos,
+                     const Uint8 object);
+
 	word *getForegroundData();
 	word *getBackgroundData();
 
@@ -192,9 +204,9 @@ public:
 
     GsVec2D<int> getSpriteOrigin(const int sprId);
 
-    const GsVec2D<int> &getScrollCoords(const unsigned int idx);
+    GsVec2D<int> getScrollCoords(const unsigned int idx) const;
 
-    const GsVec2D<int> &getMainScrollCoords();
+    GsVec2D<int> getMainScrollCoords() const;
 
     Uint32 m_width = 0, m_height = 0;            // size of the map (in tile units)
     bool m_worldmap = false;             // if 1, this is the world map

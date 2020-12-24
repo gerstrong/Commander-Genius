@@ -25,7 +25,7 @@
 class ScrollingPlane : public CPlane
 {
 public:
-    ScrollingPlane();
+    ScrollingPlane(const int scrollSfcIdx);
 
     /**
      * @brief creates a plane of data.
@@ -35,6 +35,8 @@ public:
     void createDataMap(const int width,
                        const int height,
                        const int tileSize);
+
+    void setScrollSfcIdx(unsigned int i);
 
     GsVec2D<int> getScrollCoords() const;
 
@@ -66,11 +68,8 @@ public:
 
     void refreshStripes(GsTilemap &tilemap);
 
-    /**
-     * @brief collectBlockersCoordiantes collects all the blocker coordinates in where the blockers are
-     * @note it also clears already existing blocker coordinates
-     */
-    void collectBlockersCoordiantes();
+
+    void resetScrollBlocker();
 
     /**
      * @brief insertVertBlocker  Insert a horizontal blocker coordinate
@@ -91,6 +90,8 @@ public:
                        const Uint32 mx,
                        const Uint32 my);
 
+    void _drawForegroundTiles(GsTilemap &tilemap);
+
 private:
 
     GsVec2D<int> mScrollCoords; // Amount of how much is scrolled on the map relative to (0,0) and per plane index
@@ -99,13 +100,13 @@ private:
 
     int mScrollSfcIdx = -1;
 
-    Uint8 m_scrollpix;     	// (0-7) for tracking when to draw a stripe
-    Uint16 m_mapx;           	// map X location shown at scrollbuffer row 0
-    Uint16 m_mapxstripepos;  	// X pixel position of next stripe row
+    Uint8 m_scrollpix = 0;     	// (0-7) for tracking when to draw a stripe
+    Uint16 m_mapx = 0;           	// map X location shown at scrollbuffer row 0
+    Uint16 m_mapxstripepos = 0;  	// X pixel position of next stripe row
 
-    Uint8 m_scrollpixy;    	// (0-7) for tracking when to draw a stripe
-    Uint16 m_mapy;         	// map Y location shown at scrollbuffer column 0
-    Uint16 m_mapystripepos;  	// Y pixel position of next stripe column
+    Uint8 m_scrollpixy = 0;    	// (0-7) for tracking when to draw a stripe
+    Uint16 m_mapy = 0;         	// map Y location shown at scrollbuffer column 0
+    Uint16 m_mapystripepos = 0;  	// Y pixel position of next stripe column
 
     std::set<int> scrollBlockX;
     std::set<int> scrollBlockY;

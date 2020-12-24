@@ -47,8 +47,8 @@ void CMiragia::process()
 					const Uint16 where_y = (getYPosition()>>CSF)+y;
 					const Uint16 tile = mpMap->getPlaneDataAt( 1, l_x, l_y );
 					mpMap->setTile(where_x, where_y, tile, true, 1);
-					const Uint16 object = mpMap->getPlaneDataAt( 2, l_x, l_y );
-					mpMap->setTile(where_x, where_y, object, false, 2);
+                    const Uint16 object = mpMap->getInfoData({l_x, l_y});
+                    mpMap->setInfoTile( {where_x, where_y}, object);
 					m_empty = false;
 				}
 			}
