@@ -625,11 +625,6 @@ bool CosmoGameplay::loadLevel(const int level_number)
     //mMap.gotoPos(0, 36*8); // Works more or less with level 1
     mMap.drawAll();
 
-
-    auto &frontCoords = mMap.getScrollCoords(1);
-
-    gVideoDriver.updateScrollBuffer(frontCoords.x, frontCoords.y);
-
     gLogging.textOut("Map got loaded successfully!");
 
     return true;
@@ -677,7 +672,7 @@ void CosmoGameplay::ponder(const float deltaT)
     if(mMap.isEmpty())
         return;
 
-    auto &frontCoords = mMap.getScrollCoords(1);
+    auto frontCoords = mMap.getMainScrollCoords();
 
     int scroll_diff_x = (frontCoords.x-mapwindow_x_offset_pix);
     int scroll_diff_y = (frontCoords.y-mapwindow_y_offset_pix);
@@ -691,6 +686,8 @@ void CosmoGameplay::ponder(const float deltaT)
             scroll_diff_x = (frontCoords.x-mapwindow_x_offset_pix);
             if(!mMap.scrollRight())
                 break;
+
+            frontCoords = mMap.getMainScrollCoords();
         } while(scroll_diff_x <= -DIST_FOR_SLOMO);
     }
     else if(scroll_diff_x > 0)
@@ -700,6 +697,8 @@ void CosmoGameplay::ponder(const float deltaT)
             scroll_diff_x = (frontCoords.x-mapwindow_x_offset_pix);
             if(!mMap.scrollLeft())
                 break;
+
+            frontCoords = mMap.getMainScrollCoords();
         } while(scroll_diff_x >= DIST_FOR_SLOMO);
     }
 
@@ -711,6 +710,8 @@ void CosmoGameplay::ponder(const float deltaT)
             scroll_diff_y = (frontCoords.y-mapwindow_y_offset_pix);
             if(!mMap.scrollDown())
                 break;
+
+            frontCoords = mMap.getMainScrollCoords();
         } while(scroll_diff_y <= -DIST_FOR_SLOMO);
     }
     else if(scroll_diff_y > 0)
@@ -720,6 +721,8 @@ void CosmoGameplay::ponder(const float deltaT)
             scroll_diff_y = (frontCoords.y-mapwindow_y_offset_pix);
             if(!mMap.scrollUp())
                 break;
+
+            frontCoords = mMap.getMainScrollCoords();
         } while(scroll_diff_y >= DIST_FOR_SLOMO);
     }
 
