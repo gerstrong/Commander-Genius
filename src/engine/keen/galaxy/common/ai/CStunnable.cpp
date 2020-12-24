@@ -79,7 +79,7 @@ void CStunnable::processStunned()
 
 void CStunnable::drawStars()
 {
-    auto &scroll = mpMap->getMainScrollCoords();
+    const auto scroll = mpMap->getMainScrollCoords();
 
     if(starTimer > 0)
     {

@@ -469,7 +469,7 @@ void CPlayerWM::processMoving()
     // Get the object
     int x = getXMidPos();
     int y = getYMidPos();
-    Uint16 object = mpMap->getPlaneDataAt(2, x, y);
+    Uint16 object = mpMap->getInfoData(GsVec2D<Uint32>(x,y));
     if(object) // if we found an object
     {
 
@@ -1257,7 +1257,7 @@ bool CPlayerWM::checkforClimbing(direction_t &climbDir)
 	const int y = getYMidPos();
 	const int x = getXMidPos();
 	
-	const int info = mpMap->getPlaneDataAt(2, x, y);
+    const auto info = mpMap->getInfoData(GsVec2D<Uint32>(x,y));
 
 	// from top
 	if(info == 0x0F)

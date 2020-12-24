@@ -3,12 +3,16 @@
  *
  *  Created on: 10.06.2010
  *      Author: gerstrong
+ *
+ * NOTE: Use ScrollingPlane for graphical rendering voodoo.
+ *       This class is best used for informational invisible stuff
  */
 
 #ifndef CPLANE_H_
 #define CPLANE_H_
 
 #include <base/TypeDefinitions.h>
+#include <base/Vector2D.h>
 #include <SDL.h>
 #include <vector>
 
@@ -80,27 +84,14 @@ public:
         return mDataVec.empty();
     }
 
-    /**
-     * @brief setInfo   Set this to true if the plane is only used for information
-     *                      purposes. If won't rendered.
-     *                      In Keen Galaxy Plane 0 is Background, 1 is foreground,
-     *                      2 also exists and only has information,
-     *                      like enemy start locations
-     */
-    void setInfo(const bool value);
 
-    bool isInfo() const;
-
-private:
+protected:
     std::vector<word> mDataVec; // the map data of plane
 
     // In animation cycles the time when something needs to be changed
     std::vector<int> mTimers;
     int mWidth = 0;
     int mHeight = 0;
-
-    bool mInfoOnly = false;
-
 };
 
 #endif /* CPLANE_H_ */

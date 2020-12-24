@@ -23,6 +23,9 @@ set(SRCS ActionFormat.cpp
          GameEngine.cpp
          inventory.cpp
          textmode.cpp
+         scrollingplane.cpp
+
+
          ActionFormat.h
          CBehaviorEngine.h
          CCamera.h
@@ -45,7 +48,8 @@ set(SRCS ActionFormat.cpp
          options.h
          Playerdefines.h
          spritedefines.h
-         textmode.h)
+         textmode.h
+         scrollingplane.h)
 
 add_library(engine_core STATIC ${SRCS})
 

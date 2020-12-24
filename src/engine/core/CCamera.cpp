@@ -199,13 +199,11 @@ void CCamera::process()
 		}
 	}
 
-
-    const auto &scroll = mpMap->getMainScrollCoords();
-
     const auto xPosStc = getXPosition()>>STC;
     const auto yPosStc = getYPosition()>>STC;
 
     // delta is how much we need to scroll in order to get the camera stalled
+    auto scroll = mpMap->getMainScrollCoords();
     int delta_x = xPosStc-scroll.x;
     int delta_y = yPosStc-scroll.y;
 
@@ -227,12 +225,17 @@ void CCamera::process()
         do{
             delta_x = target_x-scroll.x;
             if(!mpMap->scrollRight())
+            {
                 break;
+            }
+
+            scroll = mpMap->getMainScrollCoords();
         }while(delta_x > right+speed);
     };
 
     // For cases the camera faces too much to the left (First level Keen 8 mod)
     int leftSideLimit, rightSideLimit;
+
     mpMap->fetchNearestVertBlockers(getXPosition(), leftSideLimit, rightSideLimit);
 
     if( (scroll.x<<STC) < leftSideLimit)
@@ -249,7 +252,12 @@ void CCamera::process()
 		do{
             delta_x = xPosStc-scroll.x;
             if(!mpMap->scrollLeft())
-			    break;
+            {
+                break;
+            }
+
+            scroll = mpMap->getMainScrollCoords();
+
 		}while(delta_x < left-speed);
 	}
 
@@ -259,7 +267,12 @@ void CCamera::process()
         do{
             delta_y = max_y-scroll.y;
             if(!mpMap->scrollUp())
+            {
                 break;
+            }
+
+            scroll = mpMap->getMainScrollCoords();
+
         }while(delta_y < up-speed);
     };
 
@@ -274,7 +287,12 @@ void CCamera::process()
 		do{
             delta_y = (getYPosition()>>STC)-scroll.y;
             if(!mpMap->scrollDown())
-				break;
+            {
+                break;
+            }
+
+            scroll = mpMap->getMainScrollCoords();
+
 		}while(delta_y > down+speed);
 	}
     else if ( delta_y < up && scroll.y > 32 )
@@ -288,8 +306,6 @@ void CCamera::reAdjust()
 {
     SDL_Rect gameRes = gVideoDriver.getGameResolution().SDLRect();
   
-    const auto scroll = mpMap->getMainScrollCoords();
-
 	const int x = getXPosition();
 	const int y = getYPosition();
 
@@ -313,6 +329,7 @@ void CCamera::reAdjust()
     }
 
 	// This will always snap correctly to the edges
+    auto scroll = mpMap->getMainScrollCoords();
     if(scroll.x < blockXleft)
 	{
         for(int amt=0 ; amt<gameRes.w ; amt++ )
@@ -320,6 +337,8 @@ void CCamera::reAdjust()
         for(int amt=0 ; amt<gameRes.w ; amt++ )
             mpMap->scrollLeft();
 	}
+
+    scroll = mpMap->getMainScrollCoords();
     if(scroll.x > blockXright - gameRes.w)
 	{
             for(int amt=0 ; amt<gameRes.w ; amt++ )
@@ -327,6 +346,8 @@ void CCamera::reAdjust()
         for(int amt=0 ; amt<gameRes.w ; amt++ )
             mpMap->scrollRight();
 	}	
+
+    scroll = mpMap->getMainScrollCoords();
     if(scroll.y < blockYup)
 	{
         for(int amt=0 ; amt<gameRes.h ; amt++ )
@@ -334,6 +355,8 @@ void CCamera::reAdjust()
         for(int amt=0 ; amt<gameRes.h ; amt++ )
             mpMap->scrollUp();
 	}
+
+    scroll = mpMap->getMainScrollCoords();
     if(scroll.y > blockYdown - gameRes.h)
 	{
         for(int amt=0 ; amt<gameRes.h ; amt++ )
