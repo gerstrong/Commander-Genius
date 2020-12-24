@@ -25,7 +25,8 @@
 class ScrollingPlane : public CPlane
 {
 public:
-    ScrollingPlane(const int scrollSfcIdx);
+    ScrollingPlane(const int scrollSfcIdx,
+                   const bool transparent);
 
     /**
      * @brief creates a plane of data.
@@ -110,6 +111,9 @@ private:
 
     std::set<int> scrollBlockX;
     std::set<int> scrollBlockY;
+
+    // Will make the the 0th tile transparent. Common in foreground planes
+    bool mHasTransparentTile = false;
 };
 
 #endif // SCROLLINGPLANE_H

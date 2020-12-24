@@ -45,7 +45,7 @@ bool CMap::setupEmptyDataPlanes(const unsigned int numScrollingPlanes,
 
     for(unsigned int i=0 ; i<numScrollingPlanes ; i++)
     {
-        ScrollingPlane plane(i);
+        ScrollingPlane plane(i, (i>0));
         plane.createDataMap(m_width, m_height, tileSize);        
         mScrollingPlanes.push_back(plane);
     }

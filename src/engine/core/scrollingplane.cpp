@@ -3,8 +3,10 @@
 #include <base/video/CVideoDriver.h>
 #include <engine/core/CBehaviorEngine.h>
 
-ScrollingPlane::ScrollingPlane(const int scrollSfcIdx) :
-    mScrollSfcIdx(scrollSfcIdx)
+ScrollingPlane::ScrollingPlane(const int scrollSfcIdx,
+                               const bool transparent) :
+    mScrollSfcIdx(scrollSfcIdx),
+    mHasTransparentTile(transparent)
 {
 }
 
@@ -93,8 +95,6 @@ bool ScrollingPlane::scrollLeft(GsTilemap &tilemap)
         if(m_mapx>0) m_mapx--;
         if (m_mapxstripepos == 0)
         {
-            // TODO: Problem with different squared sizes here
-            auto &scrollSfc = gVideoDriver.getScrollSurface(0);
             const int squareSize = scrollSfc.getSquareSize();
             m_mapxstripepos = (squareSize - (1<<mTileSizeBase));
         }
@@ -165,7 +165,6 @@ bool ScrollingPlane::scrollUp(GsTilemap &tilemap, const bool force)
         if (m_mapystripepos == 0)
         {
             // TODO: Problem with different squared sizes here
-            auto &scrollSfc = gVideoDriver.getScrollSurface(mScrollSfcIdx);
             const int squareSize = scrollSfc.getSquareSize();
             m_mapystripepos = (squareSize - (1<<mTileSizeBase));
         }
@@ -254,9 +253,8 @@ void ScrollingPlane::drawHstripe(GsTilemap &tilemap,
         {
             Uint32 tile = getMapDataAt(x+m_mapx, mpy);
 
-            //TODO: Consider 0th always to be transparent, except for the first one
-            //if(!tile && planeIdx > 0)
-            //    continue;
+            if(tile == 0 && mHasTransparentTile)
+                continue;
 
             tilemap.drawTile(scrollSfc.getScrollSurface(),
                                 ((x<<mTileSizeBase)+m_mapxstripepos)&drawMask,
@@ -281,13 +279,10 @@ void ScrollingPlane::drawVstripe(GsTilemap &tilemap,
     {
         Uint32 tile = getMapDataAt(mpx, y+m_mapy);
 
-        //TODO: Consider 0th always to be transparent, except for the first one
-        //if(tile == 0 && planeIdx > 0)
-        //    continue;
+        if(tile == 0 && mHasTransparentTile)
+            continue;
 
-        // TODO: Do we really need to apply AND operation with drawMask? Check!
         const int drawMask = dim-1;
-
         tilemap.drawTile(scrollSfc.getScrollSurface(),
                             x,
                             ((y<<mTileSizeBase)+m_mapystripepos) & drawMask, tile);
@@ -319,9 +314,8 @@ void ScrollingPlane::drawAll(GsTilemap &tilemap)
         {
             Uint32 tile = getMapDataAt(x+m_mapx, y+m_mapy);
 
-            //TODO: Consider 0th always to be transparent, except for the first one
-            //if(!tile && planeIdx > 0)
-//                continue;
+            if(tile == 0 && mHasTransparentTile)
+                continue;
 
             tilemap.drawTile(scrollSfc,
                                 ((x<<mTileSizeBase)+m_mapxstripepos),
@@ -509,15 +503,15 @@ void ScrollingPlane::redrawPlaneAt(GsTilemap &tilemap,
     {
         const size_t tile = getMapDataAt(mx, my);
 
-        // TODO: Check cases of transparent 0th tile here
-        //if(!tile && planeIdx > 0)
-          //  return;
-
-        const Uint16 loc_x = (((mx-m_mapx)<<mTileSizeBase)+m_mapxstripepos)&drawMask;
-        const Uint16 loc_y = (((my-m_mapy)<<mTileSizeBase)+m_mapystripepos)&drawMask;
-        tilemap.drawTile(ScrollSurface, loc_x, loc_y, tile);
+        if( tile != 0 || !mHasTransparentTile )
+        {
+            const Uint16 loc_x = (((mx-m_mapx)<<mTileSizeBase)+m_mapxstripepos)&drawMask;
+            const Uint16 loc_y = (((my-m_mapy)<<mTileSizeBase)+m_mapystripepos)&drawMask;
+            tilemap.drawTile(ScrollSurface, loc_x, loc_y, tile);
+        }
     }
 }
+
 
 
 void ScrollingPlane::_drawForegroundTiles(GsTilemap &tilemap)
