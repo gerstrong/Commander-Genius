@@ -79,6 +79,10 @@ public:
 
     void calcVisibleArea();
 
+    void insertHorBlocker(const int y);
+    void insertVertBlocker(const int x);
+
+
     void resetScrollBlocker();
 
     void refreshVisibleArea();
