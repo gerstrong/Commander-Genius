@@ -157,7 +157,7 @@ bool CPlayGameVorticon::init()
     gGraphics.optimizeSprites();
 
     const GsRect<Uint16> gameRect = gVideoDriver.getVidConfig().mGameRect;
-    gVideoDriver.setNativeResolution(gameRect);
+    gVideoDriver.setNativeResolution(gameRect, 2);
 
     // Create the special merge effect (Fadeout)
     CColorMerge *pColorMergeFX = new CColorMerge(8);

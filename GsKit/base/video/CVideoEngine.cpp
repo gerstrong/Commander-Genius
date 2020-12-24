@@ -205,7 +205,7 @@ void CVideoEngine::updateActiveArea(const GsRect<Uint16>& displayRes,
 
 bool CVideoEngine::createSurfaces()
 {
-    return createSurfaces(m_VidConfig.mGameRect);
+    return createSurfaces(m_VidConfig.mGameRect, mScrollSurfaceVec.size());
 }
 
 std::vector<GsScrollSurface> &CVideoEngine::getScrollSurfaceVec()
@@ -239,7 +239,8 @@ bool CVideoEngine::allocateScrollSurfaces(const unsigned int numSfc)
     return ok;
 }
 
-bool CVideoEngine::createSurfaces(const GsRect<Uint16> &gamerect)
+bool CVideoEngine::createSurfaces(const GsRect<Uint16> &gamerect,
+                                  const unsigned int numScrollSfcs)
 {
     int borderHUpper = 0;
     int borderHBottom = 0;
@@ -263,7 +264,7 @@ bool CVideoEngine::createSurfaces(const GsRect<Uint16> &gamerect)
     SDL_SetSurfaceBlendMode(mGameSfc.getSDLSurface(), SDL_BLENDMODE_NONE);
 #endif
 
-    allocateScrollSurfaces(2);
+    allocateScrollSurfaces(numScrollSfcs);
 
     auto blit = mGameSfc.getSDLSurface();
 

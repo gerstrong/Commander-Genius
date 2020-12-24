@@ -82,10 +82,10 @@ public:
     virtual void transformScreenToDisplay() = 0;
 	virtual void shutdown();
 
-    bool allocateScrollSurfaces(const unsigned int numSfc);
 
     bool createSurfaces();
-    bool createSurfaces(const GsRect<Uint16> &gamerect);
+    bool createSurfaces(const GsRect<Uint16> &gamerect,
+                        const unsigned int numScrollSfcs);
 
     virtual bool initOverlaySurface(const Uint16 width,
                                     const Uint16 height ) { return true; }
@@ -144,6 +144,8 @@ public:
     std::vector<GsScrollSurface> &getScrollSurfaceVec();
 
 protected:
+
+    bool allocateScrollSurfaces(const unsigned int numSfc);
 
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
