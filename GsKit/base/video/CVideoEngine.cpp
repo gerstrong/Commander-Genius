@@ -213,6 +213,32 @@ std::vector<GsScrollSurface> &CVideoEngine::getScrollSurfaceVec()
     return mScrollSurfaceVec;
 }
 
+
+bool CVideoEngine::allocateScrollSurfaces(const unsigned int numSfc)
+{
+    GsRect<Uint16> gamerect;
+
+    gamerect.dim.x = mGameSfc.width();
+    gamerect.dim.y = mGameSfc.height();
+
+    const int squareSize = getPowerOfTwo( gamerect.dim.y > gamerect.dim.x ?
+                                          gamerect.dim.y : gamerect.dim.x );
+
+    gLogging.ftextOut("ScrollSurface creation of %dx%d!\n<br>",
+                     squareSize, squareSize );
+
+    mScrollSurfaceVec.resize(numSfc);
+
+    bool ok = true;
+
+    for( auto &scrollSfc : mScrollSurfaceVec )
+    {
+        ok &= scrollSfc.create(m_Mode, squareSize);
+    }
+
+    return ok;
+}
+
 bool CVideoEngine::createSurfaces(const GsRect<Uint16> &gamerect)
 {
     int borderHUpper = 0;
@@ -237,18 +263,7 @@ bool CVideoEngine::createSurfaces(const GsRect<Uint16> &gamerect)
     SDL_SetSurfaceBlendMode(mGameSfc.getSDLSurface(), SDL_BLENDMODE_NONE);
 #endif
 
-    const int squareSize = getPowerOfTwo( gamerect.dim.y > gamerect.dim.x ?
-                                          gamerect.dim.y : gamerect.dim.x );
-
-    gLogging.ftextOut("ScrollSurface creation of %dx%d!\n<br>",
-                     squareSize, squareSize );
-
-    mScrollSurfaceVec.resize(2);
-
-    for( auto &scrollSfc : mScrollSurfaceVec )
-    {
-        scrollSfc.create(m_Mode, squareSize);
-    }
+    allocateScrollSurfaces(2);
 
     auto blit = mGameSfc.getSDLSurface();
 
@@ -362,7 +377,6 @@ void CVideoEngine::blitScrollSurfaces(GsWeakSurface &blitSfc)
 {
     for (auto &scrollSfc : mScrollSurfaceVec)
     {
-        //auto &scrollSfc = mScrollSurfaceVec[0];
         scrollSfc.blitScrollSurface(blitSfc);
     }
 }
