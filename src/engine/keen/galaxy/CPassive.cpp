@@ -40,7 +40,7 @@ mKeenTextSfc(gGraphics.getMiscGsBitmap(1)),
 mSkipSection(false)
 {
     const GsRect<Uint16> gameRect = gVideoDriver.getVidConfig().mGameRect;
-    gVideoDriver.setNativeResolution(gameRect);
+    gVideoDriver.setNativeResolution(gameRect, 2);
 
     const auto episode = gBehaviorEngine.getEpisode();
 

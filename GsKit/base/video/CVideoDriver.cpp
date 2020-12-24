@@ -415,9 +415,10 @@ bool CVideoDriver::applyMode()
 	return true;
 }
 
-bool CVideoDriver::setNativeResolution(const GsRect<Uint16> &dispRect)
+bool CVideoDriver::setNativeResolution(const GsRect<Uint16> &dispRect,
+                                       const unsigned int numScrollSfcs)
 {    
-    return mpVideoEngine->createSurfaces(dispRect);
+    return mpVideoEngine->createSurfaces(dispRect, numScrollSfcs);
 }
 
 bool CVideoDriver::start()

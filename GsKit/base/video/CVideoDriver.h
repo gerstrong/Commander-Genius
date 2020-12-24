@@ -57,7 +57,8 @@ public:
         return scaledDownRect;
     }
 
-    bool setNativeResolution(const GsRect<Uint16> &dispRect);
+    bool setNativeResolution(const GsRect<Uint16> &dispRect,
+                             const unsigned int numScrollSfcs);
 
     void stop();
 	bool start();

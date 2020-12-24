@@ -394,7 +394,7 @@ void DreamsEngine::applyScreenMode()
     }
 
     const GsRect<Uint16> gameRect(sdlTexWidth, sdlTexHeight);
-    gVideoDriver.setNativeResolution(gameRect);
+    gVideoDriver.setNativeResolution(gameRect, 2);
 
     // Mode changed, set it to zero
     mChangeMode = 0;

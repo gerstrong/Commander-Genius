@@ -74,7 +74,6 @@ bool KeenEngine::start()
         return false;
     }
 
-    eng->allocateScrollSurfaces(2);
     // Load the Resources
     if( !loadResources( LOADALL ) )
     {
