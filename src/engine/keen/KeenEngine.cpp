@@ -66,6 +66,15 @@ bool KeenEngine::start()
 
     gBehaviorEngine.setEpisode(mEp);
 
+    auto &&eng = gVideoDriver.mpVideoEngine;
+
+    if(!eng)
+    {
+        gLogging << "Broken Video Engine!!<br>";
+        return false;
+    }
+
+    eng->allocateScrollSurfaces(2);
     // Load the Resources
     if( !loadResources( LOADALL ) )
     {
