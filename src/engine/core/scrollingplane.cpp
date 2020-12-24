@@ -268,24 +268,25 @@ void ScrollingPlane::drawVstripe(GsTilemap &tilemap,
                                  const unsigned int mpx)
 {
     auto &scrollSfc = gVideoDriver.getScrollSurfaceVec().at(mScrollSfcIdx);
-    const auto dim = scrollSfc.getSquareSize();
+    const auto dim = scrollSfc.getSquareSize();    
 
     int num_h_tiles = (dim>>mTileSizeBase);
 
     if( num_h_tiles+m_mapy >= mHeight )
         num_h_tiles = mHeight-m_mapy;
 
+    auto &sfc = scrollSfc.getScrollSurface();
+
     for(int y=0 ; y<num_h_tiles ; y++)
     {
-        Uint32 tile = getMapDataAt(mpx, y+m_mapy);
+        const Uint32 tile = getMapDataAt(mpx, y+m_mapy);
 
         if(tile == 0 && mHasTransparentTile)
             continue;
 
         const int drawMask = dim-1;
-        tilemap.drawTile(scrollSfc.getScrollSurface(),
-                            x,
-                            ((y<<mTileSizeBase)+m_mapystripepos) & drawMask, tile);
+        tilemap.drawTile(sfc, x,
+                         ((y<<mTileSizeBase)+m_mapystripepos) & drawMask, tile);
     }
 
 }

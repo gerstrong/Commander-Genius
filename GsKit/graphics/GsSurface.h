@@ -399,13 +399,7 @@ public:
     }
 
     void create(Uint32 flags, int width, int height, int depth,
-                Uint32 Rmask, Uint32 Gmask, Uint32 Bmask, Uint32 Amask)
-    {
-        tryToDestroy();
-
-        mpSurface = SDL_CreateRGBSurface(flags, width, height, depth,
-                                         Rmask, Gmask, Bmask, Amask);
-    }
+                Uint32 Rmask, Uint32 Gmask, Uint32 Bmask, Uint32 Amask);
 
     /**
      * @brief createRGBSurface  Just create a simple RGB Surface

@@ -615,7 +615,7 @@ void CMap::drawAllOfPlane(const int planeIdx)
 }
 
 void CMap::drawAll()
-{
+{    
     for(decltype(mScrollingPlanes.size()) i=0 ; i<mScrollingPlanes.size() ; i++)
     {
         drawAllOfPlane(i);
