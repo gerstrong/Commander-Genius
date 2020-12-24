@@ -53,7 +53,7 @@ const bool mQuickstart = true;
 bool CosmosEngine::start()
 {
     const GsRect<Uint16> gameRect(320, 200);
-    gVideoDriver.setNativeResolution(gameRect);
+    gVideoDriver.setNativeResolution(gameRect, 3);
 
     if(!mQuickstart)
     {
