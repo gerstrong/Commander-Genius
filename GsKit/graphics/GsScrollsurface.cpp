@@ -16,7 +16,7 @@ bool GsScrollSurface::create(const unsigned int mode,
                           0x00FF0000,
                           0x0000FF00,
                           0x000000FF,
-                          0x00000000);
+                          0xFF000000);
 
     return !mScrollSurface.empty();
 }

@@ -26,11 +26,6 @@ void ScrollingPlane::createDataMap(const int width,
     }
 }
 
-void ScrollingPlane::setScrollSfcIdx(unsigned int i)
-{
-    mScrollCoords = i;
-}
-
 void ScrollingPlane::refreshStripes(GsTilemap &tilemap)
 {
     const int oldx = m_mapx<<mTileSizeBase;
@@ -78,16 +73,21 @@ void ScrollingPlane::drawTile(GsTilemap &tilemap,
 bool ScrollingPlane::scrollLeft(GsTilemap &tilemap)
 {
     auto &scrollSfc = gVideoDriver.getScrollSurfaceVec().at(mScrollSfcIdx);
+    auto &scroll = mScrollCoords;
+
+    if( scroll.x <= 32 )
+        return false;
+
+    if(mSubscrollCoords.x > 0)
     {
-        auto &scroll = mScrollCoords;
-
-        if( scroll.x <= 32 )
-            return false;
-
-        scroll.x--;
-
-        scrollSfc.UpdateScrollBufX(scroll.x);
+        mSubscrollCoords.x--;
+        return true;
     }
+
+    mSubscrollCoords.x = mSubscrollUnits;
+
+    scroll.x--;
+    scrollSfc.UpdateScrollBufX(scroll.x);
 
 
     if (m_scrollpix==0)
@@ -115,16 +115,22 @@ bool ScrollingPlane::scrollRight(GsTilemap &tilemap)
     const int res_width = gVideoDriver.getGameResolution().dim.x;
 
     auto &scrollSfc = gVideoDriver.getScrollSurfaceVec().at(mScrollSfcIdx);
+    auto &scroll = mScrollCoords;
+
+    if(scroll.x >= int(((mWidth-2)<<mTileSizeBase) - res_width))
+        return false;
+
+    if(mSubscrollCoords.x < mSubscrollUnits)
     {
-        auto &scroll = mScrollCoords;
-
-        if(scroll.x >= int(((mWidth-2)<<mTileSizeBase) - res_width))
-            return false;
-
-        scroll.x++;
-
-        scrollSfc.UpdateScrollBufX(scroll.x);
+        mSubscrollCoords.x++;
+        return true;
     }
+
+    mSubscrollCoords.x = 0;
+
+    scroll.x++;
+
+    scrollSfc.UpdateScrollBufX(scroll.x);
 
     m_scrollpix++;
     if (m_scrollpix >= (1<<mTileSizeBase))
@@ -146,16 +152,23 @@ bool ScrollingPlane::scrollRight(GsTilemap &tilemap)
 bool ScrollingPlane::scrollUp(GsTilemap &tilemap, const bool force)
 {
     auto &scrollSfc = gVideoDriver.getScrollSurfaceVec().at(mScrollSfcIdx);
+    auto &scroll = mScrollCoords;
+
+    if( scroll.y <= 32 )
+        return false;
+
+    if(mSubscrollCoords.y > 0)
     {
-        auto &scroll = mScrollCoords;
-
-        if( scroll.y <= 32 )
-            return false;
-
-        scroll.y--;
-
-        scrollSfc.UpdateScrollBufY(scroll.y);
+        mSubscrollCoords.y--;
+        return true;
     }
+
+    mSubscrollCoords.y = mSubscrollUnits;
+
+    scroll.y--;
+
+    scrollSfc.UpdateScrollBufY(scroll.y);
+
 
 
     if (m_scrollpixy==0)
@@ -186,25 +199,33 @@ bool ScrollingPlane::scrollDown(GsTilemap &tilemap, const bool force)
 
     auto &scrollSfc = gVideoDriver.getScrollSurfaceVec().at(mScrollSfcIdx);
     auto &scroll = mScrollCoords;
+
+    if(!force)
     {
-        if(!force)
+        const int bottom_y = (scroll.y+res_height)<<STC;
+        int blockYup = 0;
+        int blockYdown = 0;
+
+        fetchNearestHorBlockers(bottom_y, blockYup, blockYdown);
+
+        const int new_bottom_y = ((scroll.y+1)+res_height)<<STC;
+
+        if(new_bottom_y >= blockYdown)
         {
-            const int bottom_y = (scroll.y+res_height)<<STC;
-            int blockYup = 0;
-            int blockYdown = 0;
-
-            fetchNearestHorBlockers(bottom_y, blockYup, blockYdown);
-
-            const int new_bottom_y = ((scroll.y+1)+res_height)<<STC;
-
-            if(new_bottom_y >= blockYdown)
-            {
-                return false;
-            }
+            return false;
         }
-
-        scroll.y++;
     }
+
+    if(mSubscrollCoords.y < mSubscrollUnits)
+    {
+        mSubscrollCoords.y++;
+        return true;
+    }
+
+    mSubscrollCoords.y = 0;
+
+    scroll.y++;
+
 
     m_scrollpixy++;
 
@@ -257,8 +278,8 @@ void ScrollingPlane::drawHstripe(GsTilemap &tilemap,
                 continue;
 
             tilemap.drawTile(scrollSfc.getScrollSurface(),
-                                ((x<<mTileSizeBase)+m_mapxstripepos)&drawMask,
-                                y, tile);
+                             ((x<<mTileSizeBase)+m_mapxstripepos)&drawMask,
+                             y, tile);
         }
     }
 }
@@ -275,17 +296,18 @@ void ScrollingPlane::drawVstripe(GsTilemap &tilemap,
     if( num_h_tiles+m_mapy >= mHeight )
         num_h_tiles = mHeight-m_mapy;
 
+    auto &sfc = scrollSfc.getScrollSurface();
+
     for(int y=0 ; y<num_h_tiles ; y++)
     {
-        Uint32 tile = getMapDataAt(mpx, y+m_mapy);
+        const Uint32 tile = getMapDataAt(mpx, y+m_mapy);
 
         if(tile == 0 && mHasTransparentTile)
             continue;
 
         const int drawMask = dim-1;
-        tilemap.drawTile(scrollSfc.getScrollSurface(),
-                            x,
-                            ((y<<mTileSizeBase)+m_mapystripepos) & drawMask, tile);
+        tilemap.drawTile(sfc, x,
+                         ((y<<mTileSizeBase)+m_mapystripepos) & drawMask, tile);
     }
 
 }
@@ -318,9 +340,9 @@ void ScrollingPlane::drawAll(GsTilemap &tilemap)
                 continue;
 
             tilemap.drawTile(scrollSfc,
-                                ((x<<mTileSizeBase)+m_mapxstripepos),
-                                ((y<<mTileSizeBase)+m_mapystripepos),
-                                tile);
+                             ((x<<mTileSizeBase)+m_mapxstripepos),
+                             ((y<<mTileSizeBase)+m_mapystripepos),
+                             tile);
         }
     }
 
@@ -331,7 +353,7 @@ bool ScrollingPlane::gotoPos(GsTilemap &tilemap,
 {
     bool retval = false;
 
-    auto &scroll =  mScrollCoords;
+    const auto scroll = mScrollCoords;
 
     int dx = pos.x - scroll.x;
     int dy = pos.y - scroll.y;
@@ -382,8 +404,8 @@ void ScrollingPlane::resetScrollBlocker()
 }
 
 void ScrollingPlane::fetchNearestVertBlockers(const int x,
-                                    int &leftCoord,
-                                    int &rightCoord)
+                                              int &leftCoord,
+                                              int &rightCoord)
 {
     int blockXleft = 0;
     int blockXright = 0;
@@ -563,7 +585,7 @@ void ScrollingPlane::_drawForegroundTiles(GsTilemap &tilemap)
                 {
 #if !defined(EMBEDDED)
                     if( ( loc_x > visBlendX1 && loc_x < visBlendX2 ) &&
-                        ( loc_y > visBlendY1 && loc_y < visBlendY2 ) )
+                            ( loc_y > visBlendY1 && loc_y < visBlendY2 ) )
                     {
                         tilemap.drawTileBlended(surface, loc_x, loc_y, fg, 192 );
                     }
@@ -577,4 +599,12 @@ void ScrollingPlane::_drawForegroundTiles(GsTilemap &tilemap)
         }
     }
 
+}
+
+
+void ScrollingPlane::setSubscrollUnits(const int subscrollUnits)
+{
+    assert(subscrollUnits > 0);
+
+    mSubscrollUnits = subscrollUnits;
 }

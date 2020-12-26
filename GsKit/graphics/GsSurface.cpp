@@ -168,6 +168,21 @@ void GsWeakSurface::drawCircle(const Uint32 fillColor)
     }
 }
 
+void GsSurface::create(Uint32 flags, int width, int height, int depth,
+                       Uint32 Rmask, Uint32 Gmask, Uint32 Bmask, Uint32 Amask)
+{
+    tryToDestroy();
+
+    mpSurface = SDL_CreateRGBSurface(flags, width, height, depth,
+                                     Rmask, Gmask, Bmask, Amask);
+
+    if(!mpSurface)
+    {
+        gLogging.ftextOut("Unable to create surface! SDL Error: %s\n",
+                          SDL_GetError());
+    }
+}
+
 
 void GsSurface::createRGBSurface( const SDL_Rect &rect )
 {
