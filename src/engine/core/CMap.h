@@ -79,6 +79,8 @@ public:
 
     void calcVisibleArea();
 
+    void setSubscrollUnits(const int plane, const int subscrollUnits);
+
     void insertHorBlocker(const int y);
     void insertVertBlocker(const int x);
 

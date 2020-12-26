@@ -92,6 +92,8 @@ public:
 
     void _drawForegroundTiles(GsTilemap &tilemap);
 
+    void setSubscrollUnits(const int subscrollUnits);
+
 private:
 
     GsVec2D<int> mScrollCoords; // Amount of how much is scrolled on the map relative to (0,0) and per plane index
@@ -113,6 +115,9 @@ private:
 
     // Will make the the 0th tile transparent. Common in foreground planes
     bool mHasTransparentTile = false;
+
+    int mSubscrollUnits = 0;
+    GsVec2D<int> mSubscrollCoords;
 };
 
 #endif // SCROLLINGPLANE_H

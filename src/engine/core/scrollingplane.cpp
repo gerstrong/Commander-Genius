@@ -73,16 +73,21 @@ void ScrollingPlane::drawTile(GsTilemap &tilemap,
 bool ScrollingPlane::scrollLeft(GsTilemap &tilemap)
 {
     auto &scrollSfc = gVideoDriver.getScrollSurfaceVec().at(mScrollSfcIdx);
+    auto &scroll = mScrollCoords;
+
+    if( scroll.x <= 32 )
+        return false;
+
+    if(mSubscrollCoords.x > 0)
     {
-        auto &scroll = mScrollCoords;
-
-        if( scroll.x <= 32 )
-            return false;
-
-        scroll.x--;
-
-        scrollSfc.UpdateScrollBufX(scroll.x);
+        mSubscrollCoords.x--;
+        return true;
     }
+
+    mSubscrollCoords.x = mSubscrollUnits;
+
+    scroll.x--;
+    scrollSfc.UpdateScrollBufX(scroll.x);
 
 
     if (m_scrollpix==0)
@@ -110,16 +115,22 @@ bool ScrollingPlane::scrollRight(GsTilemap &tilemap)
     const int res_width = gVideoDriver.getGameResolution().dim.x;
 
     auto &scrollSfc = gVideoDriver.getScrollSurfaceVec().at(mScrollSfcIdx);
-
     auto &scroll = mScrollCoords;
 
     if(scroll.x >= int(((mWidth-2)<<mTileSizeBase) - res_width))
         return false;
 
+    if(mSubscrollCoords.x < mSubscrollUnits)
+    {
+        mSubscrollCoords.x++;
+        return true;
+    }
+
+    mSubscrollCoords.x = 0;
+
     scroll.x++;
 
     scrollSfc.UpdateScrollBufX(scroll.x);
-
 
     m_scrollpix++;
     if (m_scrollpix >= (1<<mTileSizeBase))
@@ -141,11 +152,18 @@ bool ScrollingPlane::scrollRight(GsTilemap &tilemap)
 bool ScrollingPlane::scrollUp(GsTilemap &tilemap, const bool force)
 {
     auto &scrollSfc = gVideoDriver.getScrollSurfaceVec().at(mScrollSfcIdx);
-
     auto &scroll = mScrollCoords;
 
     if( scroll.y <= 32 )
         return false;
+
+    if(mSubscrollCoords.y > 0)
+    {
+        mSubscrollCoords.y--;
+        return true;
+    }
+
+    mSubscrollCoords.y = mSubscrollUnits;
 
     scroll.y--;
 
@@ -197,6 +215,14 @@ bool ScrollingPlane::scrollDown(GsTilemap &tilemap, const bool force)
             return false;
         }
     }
+
+    if(mSubscrollCoords.y < mSubscrollUnits)
+    {
+        mSubscrollCoords.y++;
+        return true;
+    }
+
+    mSubscrollCoords.y = 0;
 
     scroll.y++;
 
@@ -327,7 +353,7 @@ bool ScrollingPlane::gotoPos(GsTilemap &tilemap,
 {
     bool retval = false;
 
-    auto &scroll =  mScrollCoords;
+    const auto scroll = mScrollCoords;
 
     int dx = pos.x - scroll.x;
     int dy = pos.y - scroll.y;
@@ -573,4 +599,12 @@ void ScrollingPlane::_drawForegroundTiles(GsTilemap &tilemap)
         }
     }
 
+}
+
+
+void ScrollingPlane::setSubscrollUnits(const int subscrollUnits)
+{
+    assert(subscrollUnits > 0);
+
+    mSubscrollUnits = subscrollUnits;
 }

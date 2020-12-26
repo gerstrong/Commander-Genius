@@ -484,6 +484,13 @@ void CMap::calcVisibleArea()
     mVisArea.dim.y = y2 - mVisArea.pos.y;
 }
 
+void CMap::setSubscrollUnits(const int plane, const int subscrollUnits)
+{
+    assert(plane < int(mScrollingPlanes.size()));
+    assert(plane >= 0);
+    assert(subscrollUnits >= 0);
+    mScrollingPlanes.at(plane).setSubscrollUnits(subscrollUnits);
+}
 
 void CMap::refreshVisibleArea()
 {
