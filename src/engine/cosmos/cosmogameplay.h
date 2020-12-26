@@ -45,8 +45,8 @@ public:
     virtual void render() override;            
 
 private:
-    CMap mMap;
 
+    std::shared_ptr<CMap> mpMap;
 };
 
 #endif // COSMOGAMEPLAY_H

@@ -69,7 +69,11 @@ int actor_init(int actor_num, int image_index, int x_pos1, int y_pos1);
 void load_actor(int actor_num, int actorType, int x_pos, int y_pos);
 void actor_load_tiles();
 
-void display_actor_sprite_maybe(int actorInfoIndex, int frame_num, float x_pos, float y_pos, int tile_display_func_index);
+void display_actor_sprite_maybe(const int actorInfoIndex,
+                                const int frame_num,
+                                const float x_pos,
+                                const float y_pos,
+                                const int tile_display_func_index);
 
 uint16 sub_1106F();
 

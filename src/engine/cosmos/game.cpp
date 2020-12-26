@@ -312,7 +312,6 @@ bool executeLogics()
 }
 
 
-
 bool executeTick()
 {
     int input_state = read_input();
@@ -331,26 +330,13 @@ bool executeTick()
     return true;
 }
 
-#ifdef __EMSCRIPTEN__
-void emScriptenGameLoop() {
-    if (!executeTick()) {
-        emscripten_cancel_main_loop();
-    }
-}
-#endif
-
 void game_loop()
 {
-#ifdef __EMSCRIPTEN__
-    emscripten_set_main_loop(emScriptenGameLoop, 10, 1);
-#else
     for(;executeTick();)
     {
         game_wait();
         //lock to 10 FPS here.
     }
-#endif
-
 }
 
 uint32 time_left()

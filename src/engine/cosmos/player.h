@@ -2,7 +2,9 @@
 #ifndef COSMO_ENGINE_PLAYER_H
 #define COSMO_ENGINE_PLAYER_H
 
+#include <memory>
 #include <base/Singleton.h>
+#include <engine/core/CMap.h>
 #include "defines.h"
 
 extern const sint16 player_x_offset_tbl[];
@@ -79,6 +81,9 @@ class Player : public GsSingleton<Player>
 {
 public:
 
+    void setMapPtr(std::shared_ptr<CMap> &mapPtr);
+
+
     /**
      * @brief handleInput Some input and responding logic
      */
@@ -154,6 +159,8 @@ private:
 
     float player_y_pos = 0.0f;
     float player_x_pos = 0.0f;
+
+    std::shared_ptr<CMap> mpMap;
 };
 
 };

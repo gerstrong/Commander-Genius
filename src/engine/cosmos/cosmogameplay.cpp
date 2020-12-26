@@ -3,7 +3,7 @@
 #include "files/file.h"
 #include "tile.h"
 #include "map.h"
-
+#include "player.h"
 
 #include <SDL_events.h>
 #include <base/GsEventContainer.h>
@@ -78,14 +78,16 @@ void set_backdropEv(int backdrop_index)
     gEventManager.add( new SetBackdropEvent(backdrop_index) );
 }
 
-CosmoGameplay::CosmoGameplay()
+CosmoGameplay::CosmoGameplay() :
+    mpMap(new CMap)
 {
-
 }
 
 
 bool CosmoGameplay::start()
 {
+    gCosmoPlayer.setMapPtr(mpMap);
+
     load_current_level();
     return true;
 }
@@ -104,7 +106,7 @@ bool CosmoGameplay::load_level_data(int level_number)
     const auto map_width_in_tiles = file_read2(&map_file);
     const auto map_height_in_tiles = 32768 / map_width_in_tiles - 1;
 
-    mMap.setupEmptyDataPlanes(3, 8, map_width_in_tiles, map_height_in_tiles);
+    mpMap->setupEmptyDataPlanes(3, 8, map_width_in_tiles, map_height_in_tiles);
 
     gLogging.ftextOut("map width (in tiles): %d\n", map_width_in_tiles);
 
@@ -158,7 +160,7 @@ bool CosmoGameplay::load_level_data(int level_number)
 */
     // Background stuff
     /*
-    word *ptr = mMap.getData(0);
+    word *ptr = mpMap->getData(0);
 
     for(int i=0;i<num_moving_platforms;i++)
     {
@@ -212,79 +214,15 @@ auto extractTilemap(GsTilemap &tilemap,
             pixel += 320;
             tile_pixel += TILE_WIDTH;
         }
-
-        /*
-        if(exportGfx)
-        {
-            exportGfxToFile(sfc, std::string("BACKDROP") + std::string(".bmp"));
-        }*/
-
-/*
-        video_draw_tile_with_clip_rect(
-            &bg_tiles[((x+x_offset) % BACKGROUND_WIDTH) +
-                      ((y+y_offset) % BACKGROUND_HEIGHT) * BACKGROUND_WIDTH],
-            (x+1)*8 - sub_tile_x, (y+1)*8 - sub_tile_y,
-             8, 8,
-             8*MAP_WINDOW_WIDTH,
-             8*MAP_WINDOW_HEIGHT);
-*/
-
-        /*
-        std::vector<unsigned char> &data = m_egagraph.at(IndexOfTiles).data;
-
-        const Uint16 size = (1 << pbasetilesize);
-
-        const size_t tileSize = 4 * (size / 8) * size;
-
-        const auto exportGfx = exportArgEnabled();
-
-        if(tileoff)
-        {
-            size_t expectedSize = NumTiles * rowlength * tileSize;
-            if(!data.empty() && data.size() != expectedSize)
-            {
-                gLogging.ftextOut("bad tile offset data expected size=%u data size=%u", expectedSize, data.size());
-            }
-        }
-        */
     }
 
     if(SDL_MUSTLOCK(sfc))   SDL_UnlockSurface(sfc);
-/*
-    if(SDL_SaveBMP(sfc, "/tmp/backdrop.bmp") != 0)
-    {
-        // Error saving bitmap
-        gLogging.ftextOut("SDL_SaveBMP failed: %s\n", SDL_GetError());
-        return false;
-    }
-*/
+
     return true;
 }
 
 bool CosmoGameplay::setBackdrop(const int index)
 {
-    /*
-    static uint8 cur_background_x_scroll_flag = 0;
-    static uint8 cur_background_y_scroll_flag = 0;
-
-    if (new_backdrop_index != backdrop_index ||
-            cur_background_x_scroll_flag != background_x_scroll_flag ||
-            cur_background_y_scroll_flag != background_y_scroll_flag)
-    {
-        backdrop_index = new_backdrop_index;
-        cur_background_x_scroll_flag = background_x_scroll_flag;
-        cur_background_y_scroll_flag = background_y_scroll_flag;
-
-        load_backdrop_image(backdrop_filename_tbl[backdrop_index]);
-    }
-
-    */
-
-    //auto dataPtr = mMap.getData(0);
-
-
-
-
     return true;
 }
 
@@ -421,10 +359,10 @@ bool CosmoGameplay::loadLevel(const int level_number)
     //const std::string &path = gKeenFiles.gameDir;
 
     // Set Map position and some flags for the freshly loaded level
-    mMap.gotoPos(0, 0);
-    mMap.setLevel(level_number);
-    mMap.isSecret = false;
-    mMap.mNumFuses = 0;
+    mpMap->gotoPos(0, 0);
+    mpMap->setLevel(level_number);
+    mpMap->isSecret = false;
+    mpMap->mNumFuses = 0;
 
     /*
     // In case no external file was read, let's use data from the embedded data
@@ -548,11 +486,11 @@ bool CosmoGameplay::loadLevel(const int level_number)
 
     const auto width = getMapWidth();
     const auto height = getMapHeight();
-        mMap.setupEmptyDataPlanes(3, 8, width, height);
+        mpMap->setupEmptyDataPlanes(3, 8, width, height);
 
         gLogging.textOut("Reading plane 0 (Backdrop)<br>" );
 
-        auto *map0_data = mMap.getData(0);
+        auto *map0_data = mpMap->getData(0);
         const auto col = tilemap0.getNumColumn();
         for(int y = 0 ; y<height ; y++)
         {
@@ -567,8 +505,8 @@ bool CosmoGameplay::loadLevel(const int level_number)
         }
 
         gLogging.textOut("Reading plane 1 and 2 (Back and Foreground)<br>" );
-        auto *map1_data = mMap.getData(1);
-        auto *map2_data = mMap.getData(2);
+        auto *map1_data = mpMap->getData(1);
+        auto *map2_data = mpMap->getData(2);
 
         auto *cosmo_map_data = map_data_ptr();
         for(int i = 0 ; i<height*width ; i++)
@@ -595,11 +533,11 @@ bool CosmoGameplay::loadLevel(const int level_number)
             }
         }
 
-        mMap.insertHorBlocker(0);
-        mMap.insertHorBlocker((height+6)<<8);
-        mMap.insertVertBlocker(0);
-        mMap.insertVertBlocker((width+6)<<8);
-        mMap.setupAnimationTimer();
+        mpMap->insertHorBlocker(0);
+        mpMap->insertHorBlocker((height+6)<<8);
+        mpMap->insertVertBlocker(0);
+        mpMap->insertVertBlocker((width+6)<<8);
+        mpMap->setupAnimationTimer();
 
         // Now that we have all the 3 planes (Background, Foreground, Foes) unpacked...
         // We only will show the first two of them in the screen, because the Foes one
@@ -622,8 +560,8 @@ bool CosmoGameplay::loadLevel(const int level_number)
 
 
     // Set Scrollbuffer
-    //mMap.gotoPos(0, 36*8); // Works more or less with level 1
-    mMap.drawAll();
+    //mpMap->gotoPos(0, 36*8); // Works more or less with level 1
+    mpMap->drawAll();
 
     gLogging.textOut("Map got loaded successfully!");
 
@@ -665,14 +603,14 @@ void CosmoGameplay::ponder(const float deltaT)
 
     // 1 tile = 8px
 
-    // mMap.m_scrollx is pixel based
+    // mpMap->m_scrollx is pixel based
     const auto mapwindow_x_offset_pix = mapwindow_x_offset*8.0f;
     const auto mapwindow_y_offset_pix = mapwindow_y_offset*8.0f;
 
-    if(mMap.isEmpty())
+    if(mpMap->isEmpty())
         return;
 
-    auto frontCoords = mMap.getMainScrollCoords();
+    auto frontCoords = mpMap->getMainScrollCoords();
 
     int scroll_diff_x = (frontCoords.x-mapwindow_x_offset_pix);
     int scroll_diff_y = (frontCoords.y-mapwindow_y_offset_pix);
@@ -684,10 +622,10 @@ void CosmoGameplay::ponder(const float deltaT)
         do
         {
             scroll_diff_x = (frontCoords.x-mapwindow_x_offset_pix);
-            if(!mMap.scrollRight())
+            if(!mpMap->scrollRight())
                 break;
 
-            frontCoords = mMap.getMainScrollCoords();
+            frontCoords = mpMap->getMainScrollCoords();
         } while(scroll_diff_x <= -DIST_FOR_SLOMO);
     }
     else if(scroll_diff_x > 0)
@@ -695,10 +633,10 @@ void CosmoGameplay::ponder(const float deltaT)
         do
         {
             scroll_diff_x = (frontCoords.x-mapwindow_x_offset_pix);
-            if(!mMap.scrollLeft())
+            if(!mpMap->scrollLeft())
                 break;
 
-            frontCoords = mMap.getMainScrollCoords();
+            frontCoords = mpMap->getMainScrollCoords();
         } while(scroll_diff_x >= DIST_FOR_SLOMO);
     }
 
@@ -708,10 +646,10 @@ void CosmoGameplay::ponder(const float deltaT)
         do
         {
             scroll_diff_y = (frontCoords.y-mapwindow_y_offset_pix);
-            if(!mMap.scrollDown())
+            if(!mpMap->scrollDown())
                 break;
 
-            frontCoords = mMap.getMainScrollCoords();
+            frontCoords = mpMap->getMainScrollCoords();
         } while(scroll_diff_y <= -DIST_FOR_SLOMO);
     }
     else if(scroll_diff_y > 0)
@@ -719,53 +657,21 @@ void CosmoGameplay::ponder(const float deltaT)
         do
         {
             scroll_diff_y = (frontCoords.y-mapwindow_y_offset_pix);
-            if(!mMap.scrollUp())
+            if(!mpMap->scrollUp())
                 break;
 
-            frontCoords = mMap.getMainScrollCoords();
+            frontCoords = mpMap->getMainScrollCoords();
         } while(scroll_diff_y >= DIST_FOR_SLOMO);
     }
 
     executeLogics();
 
-    mMap.animateAllTiles();
+    mpMap->animateAllTiles();
 }
 
 void CosmoGameplay::render()
 {
-    mMap.drawAll();
-/*
-    // Render the backdrop
-    if(!gGraphics.getTileMaps().empty())
-    {
-        GsTilemap &tilemap = gGraphics.getTileMap(2);
-        GsWeakSurface weakSfc(tilemap.getSDLSurface());
-        GsWeakSurface blitsfc(gVideoDriver.getBlitSurface());
-
-        GsRect<Uint16> srcRect(weakSfc.width(), weakSfc.height());
-        GsRect<Uint16> dstRect(weakSfc.width(), weakSfc.height());
-
-        // TODO: Need a xwrap and maybe later a ywrap algorithm (Like Scrollsurface methods we already use?)
-
-        const int scroll_offset_x = (mapwindow_x_offset/2) % dstRect.dim.x;
-
-        srcRect.pos.x = scroll_offset_x;
-        dstRect.dim.x -= scroll_offset_x;
-
-        weakSfc.blitTo(blitsfc, srcRect.SDLRect(), dstRect.SDLRect());
-
-        srcRect.pos.x = 0;
-        dstRect.pos.x = dstRect.dim.x;
-
-        dstRect.dim.x = scroll_offset_x;
-
-        weakSfc.blitTo(blitsfc, srcRect.SDLRect(), dstRect.SDLRect());
-
-
-        //video_update();
-    }
-*/
-    mMap.calcVisibleArea();
-    mMap.refreshVisibleArea();
+    mpMap->calcVisibleArea();
+    mpMap->refreshVisibleArea();
     gVideoDriver.blitScrollSurfaces();
 }

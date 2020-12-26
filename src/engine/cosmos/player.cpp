@@ -250,6 +250,11 @@ void Player::push()
     }
 }
 
+void Player::setMapPtr(std::shared_ptr<CMap> &mapPtr)
+{
+    mpMap = mapPtr;
+}
+
 sint16 word_28F80[10] = {-2, -1, -1, -1, -1, -1, -1, 0, 0, 0};
 
 void Player::handleInput()
@@ -1100,6 +1105,8 @@ void Player::displaySprite(const int frame_num,
                            const float y_pos,
                            const int tile_display_func_index)
 {
+    const auto scroll = mpMap->getMainScrollCoords();
+
     if(tile_display_func_index == 6)
     {
         TileInfo *info = &player_sprites[0].frames[frame_num];
@@ -1107,10 +1114,11 @@ void Player::displaySprite(const int frame_num,
 
         for(int y=0;y < info->height;y++)
         {
+            const uint16 screen_y = (y_pos + (y - float(info->height - 1))) * 8;
             for (int x = 0; x < info->width; x++)
             {
-                video_draw_tile(tile, (x_pos + float(x)) * 8,
-                                (y_pos + (y - float(info->height - 1))) * 8);
+                const uint16 screen_x = (x_pos + float(x)) * 8;
+                video_draw_tile(tile, screen_x, screen_y);
                 tile++;
             }
         }
@@ -1128,10 +1136,11 @@ void Player::displaySprite(const int frame_num,
 
     for(int y=0;y < info->height;y++)
     {
+        const uint16 screen_y = (y_pos - info->height + 1 + y) * 8 - scroll.y;
+
         for(int x=0;x < info->width; x++)
         {
-            uint16 screen_x = (x_pos - mapwindow_x_offset + x + 1) * 8;
-            uint16 screen_y = (y_pos - info->height + 1 - mapwindow_y_offset + y + 1) * 8;
+            const uint16 screen_x = (x_pos + x) * 8 - scroll.x;
 
             if(screen_x >= 8 && screen_x <= 304 && //FIXME need a better way of making sure we draw in the borders.
                                  screen_y >= 8 && screen_y < 152 &&

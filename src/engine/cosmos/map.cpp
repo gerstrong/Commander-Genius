@@ -361,31 +361,6 @@ void map_display() {
         mapwindow_y_offset = map_max_y_offset;
 
     set_colorKey_and_flush_gamesfc();
-
-    //backdrop_display();
-/*
-    for(int y=0; y < MAP_WINDOW_HEIGHT; y++)
-    {
-        for(int x=0; x < MAP_WINDOW_WIDTH; x++)
-        {
-            const uint16 map_cell = map_data[(x+mapwindow_x_offset) +
-                                             (y+mapwindow_y_offset) * map_width_in_tiles];
-            if(map_cell < 16000)
-            {
-                const uint16 tile = map_cell/8;
-                if(tile > 9) // The first 10 tiles aren't shown. They are arrows for moving platform debug.
-                {
-                    video_draw_tile(&map_bg_tiles[tile], (x+1)*8, (y+1)*8);
-                }
-            }
-            else
-            {
-                const uint16 tile =  ((map_cell/8) - 2000) / 5;
-                video_draw_tile(&map_fg_tiles[tile], (x+1)*8, (y+1)*8);
-            }
-        }
-    }
-*/
 }
 
 void map_write_tile_cell(uint16 map_tile_cell, int x, int y)
