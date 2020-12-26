@@ -347,7 +347,6 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
 
     // Start with the Background
     Map.setupEmptyDataPlanes(2, 16, Width, Height);
-    //Map.setSubscrollUnits(0, 1);
 
     // Start with the Background
     gLogging.textOut("Decompressing the Map... plane 0 (Background)<br>" );
