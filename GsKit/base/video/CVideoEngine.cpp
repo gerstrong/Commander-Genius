@@ -227,6 +227,8 @@ bool CVideoEngine::allocateScrollSurfaces(const unsigned int numSfc)
     gLogging.ftextOut("ScrollSurface creation of %dx%d!\n<br>",
                      squareSize, squareSize );
 
+
+    mScrollSurfaceVec.clear();
     mScrollSurfaceVec.resize(numSfc);
 
     bool ok = true;
