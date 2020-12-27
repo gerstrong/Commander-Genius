@@ -249,6 +249,8 @@ bool CMap::findObject(unsigned int obj, int *xout, int *yout)
 }
 
 
+
+
 // searches the map's tile layer for tile TILE.
 // if it is found returns true and places the
 // coordinates of the first occurance of the tile
@@ -258,23 +260,17 @@ bool CMap::findTile(const unsigned int tile,
                     int &yout,
                     const int plane)
 {
-    assert(int(mScrollingPlanes.size()) > plane);
+    assert(int(mScrollingPlanes.size()+1) > plane);
 
-	unsigned int x,y;
-
-	for(y=2;y<m_height-2;y++)
-	{
-		for(x=2;x<m_width-2;x++)
-		{
-            if (mScrollingPlanes[plane].getMapDataAt(x,y) == tile)
-			{
-                xout = x;
-                yout = y;
-				return true;
-			}
-		}
-	}
-	return false;
+    // The last plane is seen by many engines as the info. Should be changed in future
+    if(int(mScrollingPlanes.size()) == 2)
+    {
+        return mInfoPlane.findTile(tile, xout, yout);
+    }
+    else
+    {
+        return mScrollingPlanes.at(plane).findTile(tile, xout, yout);
+    }
 }
 
 bool CMap::setInfoTile(const GsVec2D<Uint16> pos,
@@ -894,14 +890,30 @@ auto CMap::getPlaneDataAt(const int plane,
                       const int x,
                       const int y) const -> int
 {
-    assert(int(mScrollingPlanes.size()) > plane);
-    return mScrollingPlanes[plane].getMapDataAt(x>>CSF, y>>CSF);
+    assert(int(mScrollingPlanes.size()+1) > plane);
+
+    if(int(mScrollingPlanes.size()))
+    {
+        return mInfoPlane.getMapDataAt(x>>CSF, y>>CSF);
+    }
+    else
+    {
+        return mScrollingPlanes[plane].getMapDataAt(x>>CSF, y>>CSF);
+    }
 }
 
 Uint16 CMap::getPlaneDataAt(const int plane, GsVec2D<Uint32> pos) const
 {
-    assert(int(mScrollingPlanes.size()) > plane);
-    return mScrollingPlanes[plane].getMapDataAt(pos.x>>CSF, pos.y>>CSF);
+    assert(int(mScrollingPlanes.size()+1) > plane);
+
+    if(int(mScrollingPlanes.size()))
+    {
+        return mInfoPlane.getMapDataAt(pos.x>>CSF, pos.y>>CSF);
+    }
+    else
+    {
+        return mScrollingPlanes[plane].getMapDataAt(pos.x>>CSF, pos.y>>CSF);
+    }
 }
 
 bool CMap::locked() const

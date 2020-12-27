@@ -27,6 +27,8 @@ public:
      */
     void createDataMap(const int width, const int height);
 
+    bool findTile(const unsigned int tile, int &xout, int &yout);
+
     /**
      * @brief setMapDataAt  Set a tile at the plane
      * @param t the tile index to set

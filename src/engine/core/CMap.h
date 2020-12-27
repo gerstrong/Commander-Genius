@@ -238,7 +238,6 @@ private:
 
     float mAnimtileTimer = 0.0f;
 
-    //std::vector<CPlane> mPlanes;
     CPlane mInfoPlane;
     std::vector<ScrollingPlane> mScrollingPlanes;
 

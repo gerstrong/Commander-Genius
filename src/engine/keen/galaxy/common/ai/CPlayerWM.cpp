@@ -469,7 +469,7 @@ void CPlayerWM::processMoving()
     // Get the object
     int x = getXMidPos();
     int y = getYMidPos();
-    Uint16 object = mpMap->getInfoData(GsVec2D<Uint32>(x,y));
+    const Uint16 object = mpMap->getInfoData(GsVec2D<Uint32>(x>>CSF,y>>CSF));
     if(object) // if we found an object
     {
 
