@@ -95,25 +95,25 @@ public:
     void makeHimSwim(const bool value);
 
 private:
-	Uint16 m_basesprite;
-	Uint16 m_teleportanibasetile;
-    Uint16 m_teleportoldtile;
-	Uint16 walkBaseFrame;
+    Uint16 m_basesprite = 0;
+    Uint16 m_teleportanibasetile = 0;
+    Uint16 m_teleportoldtile = 0;
+    Uint16 walkBaseFrame = 0;
 	Uint16 climbBaseFrame;
 	Uint16 wavingBaseFrame;
 	Uint16 swimBaseFrame;
 
-	Uint8 m_animation;
-	Uint8 m_animation_time;
-	Uint8 m_animation_ticker;
-	bool m_cantswim;
+    Uint8 m_animation = 0;
+    Uint8 m_animation_time = 1;
+    Uint8 m_animation_ticker = 0;
+    bool m_cantswim = false;
     GsVec2D<int> target;
 	int elevator_close_timer;
 	int elevator_frames;
-	int waveTimer;
-	bool swimming;
-	bool mUsedGrapplingHook;
-	bool mounted;
+    int waveTimer = 0;
+    bool swimming = false;
+    bool mUsedGrapplingHook = false;
+    bool mounted = false;
 
 	std::vector<bool> mLevelDone;	
 
