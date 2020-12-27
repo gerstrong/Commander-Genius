@@ -817,11 +817,16 @@ void CMap::animateAllTiles()
                 assert(mScrollingPlanes.size() >= 2);
 
                 const GsVec2D<Uint16> pos(x,y);
+
+                //const Uint16 loc_x = (((x-m_mapx)<<mTileSizeBase)+m_mapxstripepos) & drawMask;
+                //const Uint16 loc_y = (((y-m_mapy)<<mTileSizeBase)+m_mapystripepos) & drawMask;
+
+
                 const Uint16 bgTile = *p_back_tile;
                 const Uint16 fgTile = *p_front_tile;
 
                 auto &planeBg = mScrollingPlanes.at(0);
-
+/*
                 planeBg.drawTile(m_Tilemaps.at(0), pos, bgTile);
 
                 if(fgTile)
@@ -829,7 +834,7 @@ void CMap::animateAllTiles()
                     auto &planeFg = mScrollingPlanes.at(1);
                     planeFg.drawTile(m_Tilemaps.at(1), pos, fgTile);
                 }
-
+*/
 
                 /*
                 for(auto &scrollSfc : gVideoDriver.getScrollSurfaceVec() )
