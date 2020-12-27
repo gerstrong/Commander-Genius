@@ -449,9 +449,6 @@ bool VirtualKeenControl::handleDPad(const GsVec2D<float> &Pos,
                                     const Sint64 fingerID,
                                     const bool fingerDown)
 {
-    SDL_Event ev;
-    ev.type = (fingerDown ? SDL_KEYDOWN : SDL_KEYUP);
-
     const auto discW = mDiscTexture.Rect().dim.x;
     const auto discH = mDiscTexture.Rect().dim.y;
 
@@ -468,96 +465,28 @@ bool VirtualKeenControl::handleDPad(const GsVec2D<float> &Pos,
     GsVec2D<float> discPos(dPadCenter.x-(discW*0.5f),
                            dPadCenter.y-(discH*0.5f));
 
+    auto fingerEv = [](const bool fingerDown,
+                       const SDL_Scancode scan,
+                       const  SDL_Keycode sym)
+    {
+        SDL_Event ev;
+        ev.type = (fingerDown ? SDL_KEYDOWN : SDL_KEYUP);
+        ev.key.keysym.scancode = scan;
+        ev.key.keysym.sym = sym;
+        SDL_PushEvent(&ev);
+    };
+
     auto releaseAllDir = [&]() // Release all dpad direction presses
     {
-        SDL_Event evUp;
-        evUp.type = SDL_KEYUP;
-
-        evUp.key.keysym.scancode = SDL_SCANCODE_UP;
-        evUp.key.keysym.sym = SDLK_UP;
-        SDL_PushEvent(&evUp);
-
-        evUp.key.keysym.scancode = SDL_SCANCODE_LEFT;
-        evUp.key.keysym.sym = SDLK_LEFT;
-        SDL_PushEvent(&evUp);
-
-        evUp.key.keysym.scancode = SDL_SCANCODE_RIGHT;
-        evUp.key.keysym.sym = SDLK_RIGHT;
-            SDL_PushEvent(&evUp);
-
-            evUp.key.keysym.scancode = SDL_SCANCODE_DOWN;
-            evUp.key.keysym.sym = SDLK_DOWN;
-            SDL_PushEvent(&evUp);
-
+            fingerEv(false, SDL_SCANCODE_UP, SDLK_UP);
+            fingerEv(false, SDL_SCANCODE_DOWN, SDLK_DOWN);
+            fingerEv(false, SDL_SCANCODE_LEFT, SDLK_LEFT);
+            fingerEv(false, SDL_SCANCODE_RIGHT, SDLK_RIGHT);
             mDPad.isDown = false;
     };
 
     if( mDPad.isDown )
     {
-        auto triggerUpDir = [&]()
-        {
-            discCentered = false;
-            ev.key.keysym.scancode = SDL_SCANCODE_UP;
-            ev.key.keysym.sym = SDLK_UP;
-            SDL_PushEvent(&ev);
-
-            SDL_Event evUp;
-            evUp.key.keysym.scancode = SDL_SCANCODE_DOWN;
-            evUp.key.keysym.sym = SDLK_DOWN;
-            evUp.type = SDL_KEYUP;
-            SDL_PushEvent(&evUp);
-        };
-
-        auto triggerDownDir = [&]()
-        {
-            discCentered = false;
-            ev.key.keysym.scancode = SDL_SCANCODE_DOWN;
-            ev.key.keysym.sym = SDLK_DOWN;
-            SDL_PushEvent(&ev);
-
-
-            SDL_Event evUp;
-            evUp.key.keysym.scancode = SDL_SCANCODE_UP;
-            evUp.key.keysym.sym = SDLK_UP;
-            evUp.type = SDL_KEYUP;
-            SDL_PushEvent(&evUp);
-
-        };
-
-        auto triggerLeftDir = [&]()
-        {
-            discCentered = false;
-            ev.key.keysym.scancode = SDL_SCANCODE_LEFT;
-            ev.key.keysym.sym = SDLK_LEFT;
-            SDL_PushEvent(&ev);
-
-
-
-            SDL_Event evUp;
-            evUp.key.keysym.scancode = SDL_SCANCODE_RIGHT;
-            evUp.key.keysym.sym = SDLK_RIGHT;
-            evUp.type = SDL_KEYUP;
-            SDL_PushEvent(&evUp);
-
-        };
-
-        auto triggerRightDir = [&]()
-        {
-            discCentered = false;
-            ev.key.keysym.sym = SDLK_RIGHT;
-            ev.key.keysym.scancode = SDL_SCANCODE_RIGHT;
-            SDL_PushEvent(&ev);
-
-
-
-            SDL_Event evUp;
-            evUp.key.keysym.scancode = SDL_SCANCODE_LEFT;
-            evUp.key.keysym.sym = SDLK_LEFT;
-            evUp.type = SDL_KEYUP;
-            SDL_PushEvent(&evUp);
-
-        };
-
         const auto relPos = Pos - dPadCenter;
         const auto hTol = std::fabs(relPos.x * tanTol);
         const auto wTol = std::fabs(relPos.y * tanTol);
@@ -566,24 +495,50 @@ bool VirtualKeenControl::handleDPad(const GsVec2D<float> &Pos,
         // Up presses        
         if(relPos.y < -hTol )
         {
-            triggerUpDir();
+            discCentered = false;
+            fingerEv(true, SDL_SCANCODE_UP, SDLK_UP);
+            fingerEv(false, SDL_SCANCODE_DOWN, SDLK_DOWN);
         }
-        // Down presses
-        else if(relPos.y > hTol)
+        else
         {
-            triggerDownDir();
+            fingerEv(false, SDL_SCANCODE_UP, SDLK_UP);
+        }
+
+        // Down presses
+        if(relPos.y > hTol)
+        {
+            discCentered = false;
+            fingerEv(true, SDL_SCANCODE_DOWN, SDLK_DOWN);
+            fingerEv(false, SDL_SCANCODE_UP, SDLK_UP);
+        }
+        else
+        {
+            fingerEv(false, SDL_SCANCODE_DOWN, SDLK_DOWN);
         }
 
         // X-Direction
         // Left presses
         if(relPos.x < -wTol)
         {
-            triggerLeftDir();
+            discCentered = false;
+            fingerEv(true, SDL_SCANCODE_LEFT, SDLK_LEFT);
+            fingerEv(false, SDL_SCANCODE_RIGHT, SDLK_RIGHT);
         }
-        // Right presses
-        else if(relPos.x > wTol)
+        else
         {
-            triggerRightDir();
+            fingerEv(false, SDL_SCANCODE_LEFT, SDLK_LEFT);
+        }
+
+        // Right presses
+        if(relPos.x > wTol)
+        {
+            discCentered = false;
+            fingerEv(true, SDL_SCANCODE_RIGHT, SDLK_RIGHT);
+            fingerEv(false, SDL_SCANCODE_LEFT, SDLK_LEFT);
+        }
+        else
+        {
+            fingerEv(false, SDL_SCANCODE_RIGHT, SDLK_RIGHT);
         }
     }
 
