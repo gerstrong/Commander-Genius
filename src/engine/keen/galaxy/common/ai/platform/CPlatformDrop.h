@@ -31,8 +31,8 @@ public:
 	void process();
 
 private:
-	int m_delay_for_drop;
-	int m_drop_speed;
+    int m_delay_for_drop = 0;
+    int m_drop_speed = 0;
 
     // Times the cycle has to run through until Speed is raised
     int dropSpeedAcc;
@@ -42,7 +42,7 @@ private:
 
     const GsVec2D<int> m_Origin;
 
-    bool mAllowReturn;
+    bool mAllowReturn = false;
 };
 
 }

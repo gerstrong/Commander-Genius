@@ -44,19 +44,7 @@ CPlayerBase(pmap, foeID, x, y,
 		    LEFT,
             l_Inventory,
             playerIdx,
-            spriteTableIdx),
-m_basesprite(0),
-m_teleportanibasetile(0),
-  m_teleportoldtile(0),
-walkBaseFrame(0),
-m_animation(0),
-m_animation_time(1),
-m_animation_ticker(0),
-m_cantswim(false),
-waveTimer(0),
-swimming(false),
-mUsedGrapplingHook(false),
-mounted(false)
+            spriteTableIdx)
 {
 	m_ActionBaseOffset = actionoffset;
 
