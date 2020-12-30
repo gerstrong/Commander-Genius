@@ -742,8 +742,6 @@ void CMap::animateAllTiles()
         gVideoDriver.setRefreshSignal(false);
     }
 
-
-
     // Tick, tock!!
     mAnimtileTimer += 1.0f;
 
@@ -756,118 +754,10 @@ void CMap::animateAllTiles()
 
     animtileTimerInt++;
 
-    auto &frontTileProperties = gBehaviorEngine.getTileProperties(1);
-    word *p_front_tile = mScrollingPlanes[1].getMapDataPtr();
-
-    auto &backTileProperties = gBehaviorEngine.getTileProperties(0);
-    word *p_back_tile = mScrollingPlanes[0].getMapDataPtr();
-
-    auto &timersBack = mScrollingPlanes[0].getTimers();
-    auto &timersFront = mScrollingPlanes[1].getTimers();
-
-    for( size_t y=0 ; y<m_height ; y++)
+    for(auto &plane : mScrollingPlanes)
     {
-        const int stride = m_width*y;
-
-        for( size_t x=0 ; x<m_width ; x++)
-        {
-            bool draw = false;
-
-            const auto offset = stride + x;
-
-            const CTileProperties &back_tile = backTileProperties[*p_back_tile];
-            const CTileProperties &front_tile = frontTileProperties[*p_front_tile];
-
-            if( back_tile.animationTime )
-            {
-                timersBack[offset]--;
-
-                if(timersBack[offset] == 0)
-                {
-                    *p_back_tile += back_tile.nextTile;
-                    timersBack[offset] = backTileProperties[*p_back_tile].animationTime;
-                    draw = true;
-                }
-            }
-
-            if( front_tile.animationTime )
-            {
-                timersFront[offset]--;
-
-                if(timersFront[offset] == 0)
-                {
-                    *p_front_tile += front_tile.nextTile;
-                    timersFront[offset] = frontTileProperties[*p_front_tile].animationTime;
-                    draw = true;
-                }
-            }
-
-
-            if(draw)
-            {
-                assert(mScrollingPlanes.size() >= 2);
-
-                const GsVec2D<Uint16> pos(x,y);
-
-                //const Uint16 loc_x = (((x-m_mapx)<<mTileSizeBase)+m_mapxstripepos) & drawMask;
-                //const Uint16 loc_y = (((y-m_mapy)<<mTileSizeBase)+m_mapystripepos) & drawMask;
-
-
-                const Uint16 bgTile = *p_back_tile;
-                const Uint16 fgTile = *p_front_tile;
-
-                auto &planeBg = mScrollingPlanes.at(0);
-/*
-                planeBg.drawTile(m_Tilemaps.at(0), pos, bgTile);
-
-                if(fgTile)
-                {
-                    auto &planeFg = mScrollingPlanes.at(1);
-                    planeFg.drawTile(m_Tilemaps.at(1), pos, fgTile);
-                }
-*/
-
-                /*
-                for(auto &scrollSfc : gVideoDriver.getScrollSurfaceVec() )
-                {
-                    const auto dim = scrollSfc.getSquareSize();
-                    const int drawMask = dim-1;
-
-                    // Go through the list and just draw all the tiles that need to be animated
-                    Uint32 num_h_tiles = dim/16;
-                    Uint32 num_v_tiles = dim/16;
-
-                    if(num_v_tiles+m_mapx >= m_width)
-                        num_v_tiles = m_width-m_mapx;
-
-                    if(num_h_tiles+m_mapy >= m_height)
-                        num_h_tiles = m_height-m_mapy;
-
-                    if( x >= m_mapx &&
-                        y >= m_mapy &&
-                        x <  m_mapx + num_v_tiles &&
-                        y <  m_mapy + num_h_tiles )
-                    {
-                        const Uint16 bgTile = *p_back_tile;
-                        const Uint16 fgTile = *p_front_tile;
-                        const Uint16 loc_x = (((x-m_mapx)<<mTileSizeBase)+m_mapxstripepos) & drawMask;
-                        const Uint16 loc_y = (((y-m_mapy)<<mTileSizeBase)+m_mapystripepos) & drawMask;
-
-                        auto &scrollSDLSfc = scrollSfc.getScrollSurface();
-
-                        m_Tilemaps[0].drawTile(scrollSDLSfc, loc_x, loc_y, bgTile);
-
-                        if(fgTile)
-                        {
-                            m_Tilemaps[1].drawTile(scrollSDLSfc, loc_x, loc_y, fgTile);
-                        }
-                    }
-                }*/
-            }
-
-            p_back_tile++;
-            p_front_tile++;
-        }
+        auto &tilemap = m_Tilemaps.at(plane.getTilemapIdx());
+        plane.animateAllTiles(tilemap);
     }
 }
 

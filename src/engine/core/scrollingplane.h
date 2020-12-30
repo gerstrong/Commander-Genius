@@ -64,6 +64,8 @@ public:
 
     void drawAll(GsTilemap &tilemap);
 
+    void animateAllTiles(GsTilemap &tilemap);
+
     bool gotoPos(GsTilemap &tilemap, GsVec2D<int> pos);
 
     void refreshStripes(GsTilemap &tilemap);
@@ -93,6 +95,7 @@ public:
     void _drawForegroundTiles(GsTilemap &tilemap);
 
     void setSubscrollUnits(const int subscrollUnits);
+
 
 private:
 

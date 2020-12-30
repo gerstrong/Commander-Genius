@@ -369,6 +369,65 @@ void ScrollingPlane::drawAll(GsTilemap &tilemap)
 
 }
 
+void ScrollingPlane::animateAllTiles(GsTilemap &tilemap)
+{
+    auto &scrollSfc = gVideoDriver.getScrollSurfaceVec().at(mScrollSfcIdx);
+    auto &tileProperties = gBehaviorEngine.getTileProperties(mScrollSfcIdx);
+    word *tilePtr = getMapDataPtr();
+
+    auto &timers = getTimers();
+
+    const auto dim = scrollSfc.getSquareSize();
+    const int drawMask = dim-1;
+    Uint16 num_v_tiles = dim>>mTileSizeBase;
+    Uint16 num_h_tiles = dim>>mTileSizeBase;
+
+    for( int y=0 ; y<mHeight ; y++)
+    {
+        const int stride = mWidth*y;
+
+        for( int x=0 ; x<mWidth ; x++)
+        {
+            bool draw = false;
+
+            const auto offset = stride + x;
+
+            const CTileProperties &tileProp = tileProperties[*tilePtr];
+
+            if( tileProp.animationTime )
+            {
+                timers[offset]--;
+
+                if(timers[offset] == 0)
+                {
+                    *tilePtr += tileProp.nextTile;
+                    timers[offset] = tileProperties[*tilePtr].animationTime;
+                    draw = true;
+                }
+            }
+
+
+            if(draw && x >= m_mapx && y >= m_mapy &&
+               x < m_mapx + num_v_tiles && y < m_mapy + num_h_tiles)
+            {
+
+                const Uint16 loc_x = (((x-m_mapx)<<mTileSizeBase)+m_mapxstripepos) & drawMask;
+                const Uint16 loc_y = (((y-m_mapy)<<mTileSizeBase)+m_mapystripepos) & drawMask;
+
+
+                const Uint16 tile = *tilePtr;
+
+                tilemap.drawTransparentTile(scrollSfc, loc_x, loc_y);
+                tilemap.drawTile(scrollSfc, loc_x, loc_y, tile);
+
+            }
+            tilePtr++;
+        }
+    }
+
+}
+
+
 bool ScrollingPlane::gotoPos(GsTilemap &tilemap,
                              const GsVec2D<int> pos)
 {
@@ -629,3 +688,4 @@ void ScrollingPlane::setSubscrollUnits(const int subscrollUnits)
 
     mSubscrollUnits = subscrollUnits;
 }
+
