@@ -268,18 +268,24 @@ void ScrollingPlane::drawHstripe(GsTilemap &tilemap,
     if( int(num_v_tiles+m_mapx) >= mWidth )
         num_v_tiles = mWidth-m_mapx;
 
-    auto &sfc = scrollSfc.getScrollSurface();
-
     for(Uint32 x=0;x<num_v_tiles;x++)
     {
         Uint32 tile = getMapDataAt(x+m_mapx, mpy);
 
-        if(tile == 0 && mHasTransparentTile)
-            continue;
-
-        tilemap.drawTile(sfc,
+        tilemap.drawTransparentTile(scrollSfc,
                          ((x<<mTileSizeBase)+m_mapxstripepos)&drawMask,
-                         y, tile);
+                         y);
+
+        if(tile == 0 && mHasTransparentTile)
+        {
+            continue;
+        }
+        else
+        {
+            tilemap.drawTile(scrollSfc,
+                             ((x<<mTileSizeBase)+m_mapxstripepos)&drawMask,
+                             y, tile);
+        }
     }
 }
 
@@ -295,18 +301,24 @@ void ScrollingPlane::drawVstripe(GsTilemap &tilemap,
     if( num_h_tiles+m_mapy >= mHeight )
         num_h_tiles = mHeight-m_mapy;
 
-    auto &sfc = scrollSfc.getScrollSurface();
-
     for(int y=0 ; y<num_h_tiles ; y++)
     {
         Uint32 tile = getMapDataAt(mpx, y+m_mapy);
 
-        if(tile == 0 && mHasTransparentTile)
-            continue;
-
         const int drawMask = dim-1;
-        tilemap.drawTile(sfc, x,
-                         ((y<<mTileSizeBase)+m_mapystripepos) & drawMask, tile);
+
+        tilemap.drawTransparentTile(scrollSfc, x,
+                         ((y<<mTileSizeBase)+m_mapystripepos) & drawMask);
+
+        if(tile == 0 && mHasTransparentTile)
+        {
+            continue;
+        }
+        else
+        {
+            tilemap.drawTile(scrollSfc, x,
+                             ((y<<mTileSizeBase)+m_mapystripepos) & drawMask, tile);
+        }
     }
 
 }
@@ -329,19 +341,29 @@ void ScrollingPlane::drawAll(GsTilemap &tilemap)
     if(int(num_h_tiles+m_mapy) >= mHeight)
         num_h_tiles = mHeight-m_mapy;
 
+
     for(Uint32 y=0;y<num_h_tiles;y++)
     {
         for(Uint32 x=0;x<num_v_tiles;x++)
         {
             Uint32 tile = getMapDataAt(x+m_mapx, y+m_mapy);
 
-            if(tile == 0 && mHasTransparentTile)
-                continue;
-
-            tilemap.drawTile(scrollSfc,
+            tilemap.drawTransparentTile(scrollSfc,
                              ((x<<mTileSizeBase)+m_mapxstripepos),
-                             ((y<<mTileSizeBase)+m_mapystripepos),
-                             tile);
+                             ((y<<mTileSizeBase)+m_mapystripepos));
+
+            if(tile == 0 && mHasTransparentTile)
+            {
+                continue;
+            }
+            else
+            {
+                tilemap.drawTile(scrollSfc,
+                                 ((x<<mTileSizeBase)+m_mapxstripepos),
+                                 ((y<<mTileSizeBase)+m_mapystripepos),
+                                 tile);
+            }
+
         }
     }
 

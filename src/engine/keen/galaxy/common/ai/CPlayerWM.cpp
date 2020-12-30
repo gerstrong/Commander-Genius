@@ -1117,7 +1117,7 @@ bool CPlayerWM::finishLevel(const int object)
 	{
         // Remove blocks in case there are
 		mpMap->setTile( x, y, 0, true, 1);
-		mpMap->setTile( x, y, 0, true, 2);
+        mpMap->setInfoTile( {x, y}, 0 );
 		mpMap->redrawAt( x, y);
 	}
 

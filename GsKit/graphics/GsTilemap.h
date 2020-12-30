@@ -39,6 +39,11 @@ public:
                   const int y,
                   const Uint16 t);
 
+    void drawTransparentTile(GsScrollSurface &dst,
+                             const int x,
+                             const int y);
+
+
     void drawTile(GsWeakSurface &dst,
                   const int x,
                   const int y,

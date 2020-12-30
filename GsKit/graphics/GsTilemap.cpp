@@ -205,6 +205,19 @@ void GsTilemap::drawTile(SDL_Surface *dst,
 
 }
 
+void GsTilemap::drawTransparentTile(GsScrollSurface &dst,
+                                    const int x,
+                                    const int y)
+{
+    SDL_Rect rect;
+
+    const int size = 1<<m_pbasesize;
+    rect.w = rect.h = size;
+    rect.x = x;		rect.y = y;
+
+    dst.getScrollSurface().fillRGBA(rect, 0,0,0,0);
+}
+
 void GsTilemap::drawTile(GsWeakSurface &dst,
                          const int x,
                          const int y,

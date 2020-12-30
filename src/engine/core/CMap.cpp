@@ -120,13 +120,6 @@ Uint16 CMap::getInfoData(const GsVec2D<Uint32> pos) const
     return mInfoPlane.getMapDataAt(pos.x,pos.y);
 }
 
-void CMap::setInfoTile(const GsVec2D<Uint32> pos,
-                       const Uint8 object)
-{
-    mInfoPlane.setMapDataAt(object, pos.x, pos.y);
-}
-
-
 word *CMap::getForegroundData()
 {
     assert(mScrollingPlanes.size() > 1);
@@ -273,16 +266,14 @@ bool CMap::findTile(const unsigned int tile,
     }
 }
 
-bool CMap::setInfoTile(const GsVec2D<Uint16> pos,
-                       const Uint16 t)
+bool CMap::setInfoTile(const GsVec2D<Uint32> pos,
+                       const Uint16 tile)
 {
-    if( pos.x<m_width && pos.y<m_height )
-    {
-        mInfoPlane.setMapDataAt(t, pos.x, pos.y);
-        return true;
-    }
-    else
+    if( pos.x>=m_width || pos.y>=m_height )
         return false;
+
+    mInfoPlane.setMapDataAt(tile, pos.x, pos.y);
+    return true;
 }
 
 bool CMap::setTile(const Uint16 x, const Uint16 y,
