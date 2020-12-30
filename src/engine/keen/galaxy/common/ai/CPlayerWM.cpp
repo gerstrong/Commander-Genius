@@ -1162,7 +1162,7 @@ bool CPlayerWM::finishLevel(const int object)
         // Mark the tileinfo on the map as level finished,
         // so player cannot just re-enter. Exception: If option "replayability" is enabled,
         // or any special level like the bwb rocket, which can be accessed at any time
-		mpMap->setTile( x, y, 0, true, 2);
+        mpMap->setInfoTile( {x, y}, 0 );
 
         return true;
 	}
