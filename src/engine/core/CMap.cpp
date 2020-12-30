@@ -154,7 +154,7 @@ void CMap::setupAnimationTimerOfTile(const int tilemapIdx)
 
 void CMap::setupAnimationTimer()
 {
-    assert(mScrollingPlanes.size() == 2);
+    assert(mScrollingPlanes.size() >= 2);
 
     setupAnimationTimerOfTile(0);
     setupAnimationTimerOfTile(1);
