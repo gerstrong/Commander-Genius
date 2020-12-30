@@ -1,3 +1,7 @@
+v2.7.4:
+-------
+- Virtual pad control improvements
+
 v2.7.3:
 -------
 - Smarter Game store. Catalogue entries can be read later at runtime and in the background

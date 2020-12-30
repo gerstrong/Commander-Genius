@@ -11,6 +11,7 @@
 const int DROP_MAX_SPEED_LIMIT = 65;
 
 const int BLOCKSPRITEID = 0x1F;
+const int START_DELAY_FOR_DROP = 6;
 
 namespace galaxy {
 
@@ -18,11 +19,10 @@ CPlatformDrop::CPlatformDrop(CMap *pmap, const Uint16 foeID,
                  const Uint32 x, const Uint32 y, const int actionOff, const int sprVar) :
 CGalaxySpriteObject(pmap, foeID, x, y, sprVar),
 CPlatform(pmap, foeID, x, y),
-m_delay_for_drop(0),
-m_drop_speed(0),
-m_Origin(m_Pos),
-mAllowReturn(false)
-{
+m_Origin(m_Pos)
+{    
+    m_delay_for_drop = START_DELAY_FOR_DROP;
+
 	m_ActionBaseOffset = actionOff;
 	xDirection = 0;
 	yDirection = 0;
@@ -101,22 +101,27 @@ void CPlatformDrop::process()
 
         if(!player->m_jumpdownfromobject)
 	    {
+            if(m_delay_for_drop > 0)
+                m_delay_for_drop--;
             drop = true;
             break;
 	    }
 	}
 	
 	// Player is standing on the platform or the platform is already falling too fast
-	if(drop)
+    if(drop)
 	{
-        if(!blockerDetected)
+        if( m_delay_for_drop == 0 )
         {
-            procPlatdrop();
+            if(!blockerDetected)
+            {
+                procPlatdrop();
+            }
         }
 	}
     else if(mAllowReturn) // Player is not on the platform and may return
 	{        
-		m_delay_for_drop = 0;
+        m_delay_for_drop = START_DELAY_FOR_DROP;
 		m_drop_speed = 0;
 
         if(m_Origin.y < m_Pos.y)

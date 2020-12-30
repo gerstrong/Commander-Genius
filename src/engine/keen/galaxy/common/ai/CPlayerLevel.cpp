@@ -2062,7 +2062,7 @@ void CPlayerLevel::PressPlatformSwitch(const Uint32 lx, const Uint32 ly)
     newTile = 31;
   }
   
-  mpMap->setTile(newX, newY, newTile, true, 2);
+  mpMap->setInfoTile({newX, newY}, newTile);
   
   return;
 }

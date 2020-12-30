@@ -44,19 +44,7 @@ CPlayerBase(pmap, foeID, x, y,
 		    LEFT,
             l_Inventory,
             playerIdx,
-            spriteTableIdx),
-m_basesprite(0),
-m_teleportanibasetile(0),
-  m_teleportoldtile(0),
-walkBaseFrame(0),
-m_animation(0),
-m_animation_time(1),
-m_animation_ticker(0),
-m_cantswim(false),
-waveTimer(0),
-swimming(false),
-mUsedGrapplingHook(false),
-mounted(false)
+            spriteTableIdx)
 {
 	m_ActionBaseOffset = actionoffset;
 
@@ -469,7 +457,7 @@ void CPlayerWM::processMoving()
     // Get the object
     int x = getXMidPos();
     int y = getYMidPos();
-    Uint16 object = mpMap->getInfoData(GsVec2D<Uint32>(x,y));
+    const Uint16 object = mpMap->getInfoData(GsVec2D<Uint32>(x>>CSF,y>>CSF));
     if(object) // if we found an object
     {
 
@@ -1129,7 +1117,7 @@ bool CPlayerWM::finishLevel(const int object)
 	{
         // Remove blocks in case there are
 		mpMap->setTile( x, y, 0, true, 1);
-		mpMap->setTile( x, y, 0, true, 2);
+        mpMap->setInfoTile( {x, y}, 0 );
 		mpMap->redrawAt( x, y);
 	}
 
@@ -1174,7 +1162,7 @@ bool CPlayerWM::finishLevel(const int object)
         // Mark the tileinfo on the map as level finished,
         // so player cannot just re-enter. Exception: If option "replayability" is enabled,
         // or any special level like the bwb rocket, which can be accessed at any time
-		mpMap->setTile( x, y, 0, true, 2);
+        mpMap->setInfoTile( {x, y}, 0 );
 
         return true;
 	}

@@ -139,7 +139,6 @@ public:
 	bool findObject(unsigned int obj, int *xout, int *yout);
     bool findTile(const unsigned int tile, int &xout, int &yout, const int plane=1);
 
-    bool setInfoTile( const GsVec2D<Uint16> pos, const Uint16 t);
     bool setTile( const Uint16 x, const Uint16 y, const Uint16 t, const Uint16 plane=1);
 
     /**
@@ -171,8 +170,8 @@ public:
     word *getData(const Uint8 PlaneNum);
 	word *getInfoData();
     Uint16 getInfoData(const GsVec2D<Uint32> pos) const;    
-    void setInfoTile(const GsVec2D<Uint32> pos,
-                     const Uint8 object);
+    bool setInfoTile(const GsVec2D<Uint32> pos,
+                     const Uint16 tile);
 
 	word *getForegroundData();
 	word *getBackgroundData();
@@ -238,7 +237,6 @@ private:
 
     float mAnimtileTimer = 0.0f;
 
-    //std::vector<CPlane> mPlanes;
     CPlane mInfoPlane;
     std::vector<ScrollingPlane> mScrollingPlanes;
 

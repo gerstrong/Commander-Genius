@@ -20,3 +20,23 @@ void CPlane::createDataMap(const int width, const int height)
     mDataVec.assign(size_t(mWidth*mHeight), 0);
     mTimers.assign(size_t(mWidth*mHeight), 0);
 }
+
+
+bool CPlane::findTile(const unsigned int tile,
+                      int &xout,
+                      int &yout)
+{
+    for(int y=2;y<mHeight-2;y++)
+    {
+        for(int x=2;x<mWidth-2;x++)
+        {
+            if (getMapDataAt(x,y) == tile)
+            {
+                xout = x;
+                yout = y;
+                return true;
+            }
+        }
+    }
+    return false;
+}
