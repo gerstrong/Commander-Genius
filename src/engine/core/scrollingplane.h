@@ -96,6 +96,9 @@ public:
 
     void setSubscrollUnits(const int subscrollUnits);
 
+    void lockAxisY(const bool value);
+    bool isAxisYLocked();
+
 
 private:
 
@@ -121,6 +124,8 @@ private:
 
     int mSubscrollUnits = 0;
     GsVec2D<int> mSubscrollCoords;
+
+    bool mLockAxisY = false;
 };
 
 #endif // SCROLLINGPLANE_H

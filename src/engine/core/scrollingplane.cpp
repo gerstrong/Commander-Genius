@@ -151,6 +151,9 @@ bool ScrollingPlane::scrollRight(GsTilemap &tilemap)
 
 bool ScrollingPlane::scrollUp(GsTilemap &tilemap, [[maybe_unused]] const bool force)
 {
+    if(mLockAxisY)
+        return true;
+
     auto &scrollSfc = gVideoDriver.getScrollSurfaceVec().at(mScrollSfcIdx);
     auto &scroll = mScrollCoords;
 
@@ -193,6 +196,9 @@ bool ScrollingPlane::scrollUp(GsTilemap &tilemap, [[maybe_unused]] const bool fo
 
 bool ScrollingPlane::scrollDown(GsTilemap &tilemap, const bool force)
 {
+    if(mLockAxisY)
+        return true;
+
     const int res_height = gVideoDriver.getGameResolution().dim.y;
 
     auto &scrollSfc = gVideoDriver.getScrollSurfaceVec().at(mScrollSfcIdx);
@@ -689,3 +695,12 @@ void ScrollingPlane::setSubscrollUnits(const int subscrollUnits)
     mSubscrollUnits = subscrollUnits;
 }
 
+void ScrollingPlane::lockAxisY(const bool value)
+{
+    mLockAxisY = value;
+}
+
+bool ScrollingPlane::isAxisYLocked()
+{
+    return mLockAxisY;
+}
