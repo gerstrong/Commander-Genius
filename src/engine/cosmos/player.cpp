@@ -1105,7 +1105,7 @@ void Player::displaySprite(const int frame_num,
                            const float y_pos,
                            const int tile_display_func_index)
 {
-    const auto scroll = mpMap->getMainScrollCoords();
+    const auto scroll = mpMap->getScrollCoords(1);
 
     if(tile_display_func_index == 6)
     {

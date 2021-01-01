@@ -559,6 +559,9 @@ bool CosmoGameplay::loadLevel(const int level_number)
 */
 
 
+    mpMap->setSubscrollUnits(0, 2);
+    mpMap->lockAxisY(0, true);
+
     // Set Scrollbuffer
     //mpMap->gotoPos(0, 36*8); // Works more or less with level 1
     mpMap->drawAll();
@@ -610,7 +613,7 @@ void CosmoGameplay::ponder(const float deltaT)
     if(mpMap->isEmpty())
         return;
 
-    auto frontCoords = mpMap->getMainScrollCoords();
+    auto frontCoords = mpMap->getScrollCoords(1);
 
     int scroll_diff_x = (frontCoords.x-mapwindow_x_offset_pix);
     int scroll_diff_y = (frontCoords.y-mapwindow_y_offset_pix);
@@ -625,7 +628,7 @@ void CosmoGameplay::ponder(const float deltaT)
             if(!mpMap->scrollRight())
                 break;
 
-            frontCoords = mpMap->getMainScrollCoords();
+            frontCoords = mpMap->getScrollCoords(1);
         } while(scroll_diff_x <= -DIST_FOR_SLOMO);
     }
     else if(scroll_diff_x > 0)
@@ -636,7 +639,7 @@ void CosmoGameplay::ponder(const float deltaT)
             if(!mpMap->scrollLeft())
                 break;
 
-            frontCoords = mpMap->getMainScrollCoords();
+            frontCoords = mpMap->getScrollCoords(1);
         } while(scroll_diff_x >= DIST_FOR_SLOMO);
     }
 
@@ -649,7 +652,7 @@ void CosmoGameplay::ponder(const float deltaT)
             if(!mpMap->scrollDown())
                 break;
 
-            frontCoords = mpMap->getMainScrollCoords();
+            frontCoords = mpMap->getScrollCoords(1);
         } while(scroll_diff_y <= -DIST_FOR_SLOMO);
     }
     else if(scroll_diff_y > 0)
@@ -660,7 +663,7 @@ void CosmoGameplay::ponder(const float deltaT)
             if(!mpMap->scrollUp())
                 break;
 
-            frontCoords = mpMap->getMainScrollCoords();
+            frontCoords = mpMap->getScrollCoords(1);
         } while(scroll_diff_y >= DIST_FOR_SLOMO);
     }
 
