@@ -191,7 +191,7 @@ bool executeLogicsLegacy()
 
         if (game_play_mode != PLAY_GAME)
         {
-            display_actor_sprite_maybe(0x10a, 0, 17, 4, 6); //DEMO sign.
+            actorMan.display_sprite_maybe(0x10a, 0, 17, 4, 6); //DEMO sign.
         }
 
         if (show_monster_attack_hint == 1)
@@ -227,6 +227,7 @@ bool executeLogics()
 {
     lps_tick++;
 
+    auto &actorMan = gActorMan;
 
     const bool draw_only = (lps_tick%SKIP_TICKS != 0);
 
@@ -280,7 +281,7 @@ bool executeLogics()
 
         if (game_play_mode != PLAY_GAME)
         {
-            display_actor_sprite_maybe(0x10a, 0, 17, 4, 6); //DEMO sign.
+            actorMan.display_sprite_maybe(0x10a, 0, 17, 4, 6); //DEMO sign.
         }
 
         if (show_monster_attack_hint == 1)

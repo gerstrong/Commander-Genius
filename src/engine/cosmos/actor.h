@@ -1,6 +1,9 @@
 #ifndef COSMO_ENGINE_ACTOR_H
 #define COSMO_ENGINE_ACTOR_H
 
+#include <memory>
+#include <base/Singleton.h>
+#include <engine/core/CMap.h>
 #include "defines.h"
 #include "tile.h"
 
@@ -69,7 +72,34 @@ int actor_init(int actor_num, int image_index, int x_pos1, int y_pos1);
 void load_actor(int actor_num, int actorType, int x_pos, int y_pos);
 void actor_load_tiles();
 
-void display_actor_sprite_maybe(const int actorInfoIndex,
+
+#define gActorMan cosmos_engine::ActorManager::get()
+
+namespace cosmos_engine
+{
+
+
+class ActorManager : public GsSingleton<ActorManager>
+{
+public:
+
+    void setMapPtr(std::shared_ptr<CMap> &mapPtr);
+
+
+    void display_sprite_maybe(const int actorInfoIndex,
+                              const int frame_num,
+                              const float x_pos,
+                              const float y_pos,
+                              const int tile_display_func_index);
+
+private:
+
+    std::shared_ptr<CMap> mpMap;
+};
+
+};
+
+void display_sprite_maybe(const int actorInfoIndex,
                                 const int frame_num,
                                 const float x_pos,
                                 const float y_pos,

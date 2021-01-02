@@ -20,6 +20,8 @@
 static const sint16 purple_boss_y_offset_tbl[] = {2, 2, 1, 0, -1, -2, -2, -2, -2, -1, 0, 1, 2, 2};
 void actor_wt_133_boss_purple_15411(ActorData *actor)
 {
+    auto &actorMan = gActorMan;
+
     actor_tile_display_func_index = 1;
     if(!speech_bubble_purple_boss_shown_flag)
     {
@@ -61,13 +63,13 @@ void actor_wt_133_boss_purple_15411(ActorData *actor)
 
         if((actor->has_moved_right_flag & 1) == 0)
         {
-            display_actor_sprite_maybe(0x66, 0, actor->x, actor->y, 0);
-            display_actor_sprite_maybe(0x66, 5, actor->x, actor->y - 4, 0);
+            actorMan.display_sprite_maybe(0x66, 0, actor->x, actor->y, 0);
+            actorMan.display_sprite_maybe(0x66, 5, actor->x, actor->y - 4, 0);
         }
         else
         {
-            display_actor_sprite_maybe(0x66, 0, actor->x, actor->y, 2);
-            display_actor_sprite_maybe(0x66, 5, actor->x, actor->y - 4, 2);
+            actorMan.display_sprite_maybe(0x66, 0, actor->x, actor->y, 2);
+            actorMan.display_sprite_maybe(0x66, 5, actor->x, actor->y - 4, 2);
 
             if(actor->has_moved_right_flag > 0x27)
             {
@@ -85,13 +87,13 @@ void actor_wt_133_boss_purple_15411(ActorData *actor)
             actor->y = actor->y + 1;
             if((actor->y & 1) == 0)
             {
-                display_actor_sprite_maybe(0x66, 0, actor->x, actor->y, 0);
-                display_actor_sprite_maybe(0x66, 5, actor->x, actor->y - 4, 0);
+                actorMan.display_sprite_maybe(0x66, 0, actor->x, actor->y, 0);
+                actorMan.display_sprite_maybe(0x66, 5, actor->x, actor->y - 4, 0);
             }
             else
             {
-                display_actor_sprite_maybe(0x66, 0, actor->x, actor->y, 2);
-                display_actor_sprite_maybe(0x66, 5, actor->x, actor->y - 4, 2);
+                actorMan.display_sprite_maybe(0x66, 0, actor->x, actor->y, 2);
+                actorMan.display_sprite_maybe(0x66, 5, actor->x, actor->y - 4, 2);
             }
         }
 
@@ -109,13 +111,13 @@ void actor_wt_133_boss_purple_15411(ActorData *actor)
         actor->has_moved_left_flag = actor->has_moved_left_flag - 1;
         if((actor->has_moved_left_flag & 1) == 0)
         {
-            display_actor_sprite_maybe(0x66, 0, actor->x, actor->y, 0);
-            display_actor_sprite_maybe(0x66, frame_num, actor->x, actor->y - 4, 0);
+            actorMan.display_sprite_maybe(0x66, 0, actor->x, actor->y, 0);
+            actorMan.display_sprite_maybe(0x66, frame_num, actor->x, actor->y - 4, 0);
         }
         else
         {
-            display_actor_sprite_maybe(0x66, 0, actor->x, actor->y, 2);
-            display_actor_sprite_maybe(0x66, frame_num, actor->x, actor->y - 4, 2);
+            actorMan.display_sprite_maybe(0x66, 0, actor->x, actor->y, 2);
+            actorMan.display_sprite_maybe(0x66, frame_num, actor->x, actor->y - 4, 2);
         }
     }
     
@@ -302,27 +304,27 @@ void actor_wt_133_boss_purple_15411(ActorData *actor)
     {
         return;
     }
-    display_actor_sprite_maybe(0x66, 0, actor->x, actor->y, 0);
+    actorMan.display_sprite_maybe(0x66, 0, actor->x, actor->y, 0);
 
     if(actor->data_5 < 4)
     {
-        display_actor_sprite_maybe(0x66, 1, actor->x, actor->y - 4, 0);
+        actorMan.display_sprite_maybe(0x66, 1, actor->x, actor->y - 4, 0);
         return;
     }
 
     if(actor->x + 1 > gCosmoPlayer.xPos())
     {
-        display_actor_sprite_maybe(0x66, 2, actor->x + 1, actor->y - 4, 0);
+        actorMan.display_sprite_maybe(0x66, 2, actor->x + 1, actor->y - 4, 0);
         return;
     }
 
     if(actor->x + 1 + 1 >= gCosmoPlayer.xPos())
     {
-        display_actor_sprite_maybe(0x66, 3, actor->x + 1, actor->y - 4, 0);
+        actorMan.display_sprite_maybe(0x66, 3, actor->x + 1, actor->y - 4, 0);
     }
     else
     {
-        display_actor_sprite_maybe(0x66, 4, actor->x + 1, actor->y - 4, 0);
+        actorMan.display_sprite_maybe(0x66, 4, actor->x + 1, actor->y - 4, 0);
     }
 }
 
@@ -401,6 +403,8 @@ const static uint8 alien_eating_space_plant_f_num_2_tbl[] = {
 };
 void actor_wt_alien_eating_space_plant(ActorData *actor)
 {
+    auto &actorMan = gActorMan;
+
     if(actor->data_3 != 0)
     {
         actor->data_3--;
@@ -414,7 +418,7 @@ void actor_wt_alien_eating_space_plant(ActorData *actor)
     
     if(actor->frame_num == 0 && actor->data_5 == 0)
     {
-        display_actor_sprite_maybe(0xba, alien_eating_space_plant_f_num_tbl[actor->data_1 & 3], actor->x + 1 + 1, actor->y - 3, 0);
+        auto &actorMan = gActorMan;(0xba, alien_eating_space_plant_f_num_tbl[actor->data_1 & 3], actor->x + 1 + 1, actor->y - 3, 0);
         actor->data_1++;
     }
     
@@ -852,6 +856,8 @@ const static uint8 blue_ball_moving_right_frame_num_tbl[] = {4, 5, 6, 7};
 
 void actor_wt_blue_ball(ActorData *actor)
 {
+    auto &actorMan = gActorMan;
+
     if(actor->falling_counter != 0)
     {
         actor->data_1 = 0;
@@ -865,12 +871,12 @@ void actor_wt_blue_ball(ActorData *actor)
         if(actor->falling_counter < 2 || actor->falling_counter > 4)
         {
             actor->y = actor->y - 1;
-            display_actor_sprite_maybe(0x56, 9, actor->x, actor->y - 2, 0);
+            auto &actorMan = gActorMan;(0x56, 9, actor->x, actor->y - 2, 0);
             actor->frame_num = 10;
         }
         else
         {
-            display_actor_sprite_maybe(0x56, 8, actor->x, actor->y - 2, 0);
+            auto &actorMan = gActorMan;(0x56, 8, actor->x, actor->y - 2, 0);
             actor->frame_num = 10;
         }
         return;
@@ -1153,6 +1159,8 @@ void actor_wt_blue_mobile_trampoline_car(ActorData *actor)
 
 void actor_wt_blue_platform(ActorData *actor)
 {
+    auto &actorMan = gActorMan;
+
     actor->has_moved_left_flag = actor->has_moved_left_flag + 1;
     if(actor->data_1 == 0)
     {
@@ -1178,9 +1186,9 @@ void actor_wt_blue_platform(ActorData *actor)
                 if (actor->data_2 >= 5 && actor->data_2 < 8)
                 {
                     actor_tile_display_func_index = 1;
-                    display_actor_sprite_maybe(0x5b, 1, actor->x - (actor->data_2 - 5), actor->y, 0);
+                    actorMan.display_sprite_maybe(0x5b, 1, actor->x - (actor->data_2 - 5), actor->y, 0);
 
-                    display_actor_sprite_maybe(0x5b, 2, actor->x + actor->data_2 - 3, actor->y, 0);
+                    actorMan.display_sprite_maybe(0x5b, 2, actor->x + actor->data_2 - 3, actor->y, 0);
                 }
 
                 if (actor->data_2 == 7)
@@ -1219,9 +1227,9 @@ void actor_wt_blue_platform(ActorData *actor)
         return;
     }
     actor_tile_display_func_index = 1;
-    display_actor_sprite_maybe(0x5b, 1, actor->x + actor->data_2 - 2, actor->y, 0);
+    actorMan.display_sprite_maybe(0x5b, 1, actor->x + actor->data_2 - 2, actor->y, 0);
     
-    display_actor_sprite_maybe(0x5b, 2, actor->x + 4 - actor->data_2, actor->y, 0);
+    actorMan.display_sprite_maybe(0x5b, 2, actor->x + 4 - actor->data_2, actor->y, 0);
     
     if((actor->has_moved_left_flag & 1) != 0)
     {
@@ -1343,6 +1351,8 @@ void actor_wt_blue_turret_alien(ActorData *actor)
 
 void actor_wt_bomb(ActorData *actor)
 {
+    auto &actorMan = gActorMan;
+
     if(actor->frame_num == 3)
     {
         actor->data_2 = actor->data_2 + 1;
@@ -1362,7 +1372,7 @@ void actor_wt_bomb(ActorData *actor)
 
             if((actor->data_1 & 1) != 0 && actor->frame_num == 3)
             {
-                display_actor_sprite_maybe(0x18, actor->frame_num, actor->x, actor->y, 2);
+                actorMan.display_sprite_maybe(0x18, actor->frame_num, actor->x, actor->y, 2);
             }
         }
     }
@@ -1593,14 +1603,16 @@ void actor_wt_cyan_spitting_plant(ActorData *actor)
 
 void actor_wt_destructable_pedestal(ActorData *actor)
 {
+    auto &actorMan = gActorMan;
+
     actor_tile_display_func_index = 1;
     int i=0;
     for(; i < actor->data_1;i++)
     {
-        display_actor_sprite_maybe(0xc0, 1, actor->x, actor->y - i, 0);
+        actorMan.display_sprite_maybe(0xc0, 1, actor->x, actor->y - i, 0);
     }
 
-    display_actor_sprite_maybe(0xc0, 0, actor->x - 2, actor->y - i, 0);
+    actorMan.display_sprite_maybe(0xc0, 0, actor->x - 2, actor->y - i, 0);
 
     map_write_row_of_tiles(0x48, 5, actor->x - 2, actor->y - i);
 
@@ -1768,6 +1780,8 @@ void actor_wt_end_of_level_marker(ActorData *actor)
 
 void actor_wt_energy_beam(ActorData *actor)
 {
+    auto &actorMan = gActorMan;
+
     actor->data_1 = 0;
     actor->data_4++;
     if(actor->data_4 == 3)
@@ -1795,7 +1809,7 @@ void actor_wt_energy_beam(ActorData *actor)
                 break;
             }
 
-            display_actor_sprite_maybe(actor->actorInfoIndex, actor->data_4, actor->x + actor->data_1, actor->y, 0);
+            actorMan.display_sprite_maybe(actor->actorInfoIndex, actor->data_4, actor->x + actor->data_1, actor->y, 0);
         }
     }
     else
@@ -1813,7 +1827,7 @@ void actor_wt_energy_beam(ActorData *actor)
                 break;
             }
 
-            display_actor_sprite_maybe(actor->actorInfoIndex, actor->data_4, actor->x, actor->y - actor->data_1, 0);
+            actorMan.display_sprite_maybe(actor->actorInfoIndex, actor->data_4, actor->x, actor->y - actor->data_1, 0);
         }
     }
 }
@@ -1868,12 +1882,14 @@ void actor_wt_extending_arrow(ActorData *actor)
 
 void actor_wt_frozen_duke_nukum(ActorData *actor)
 {
+    auto &actorMan = gActorMan;
+
     actor_tile_display_func_index = 1;
     int data_5;
     switch (actor->data_1) {
         case 0:
             if (!struct6_1B4FC(0xdd, 0, actor->x, actor->y)) {
-                display_actor_sprite_maybe(0xdd, 0, actor->x, actor->y, 0);
+                actorMan.display_sprite_maybe(0xdd, 0, actor->x, actor->y, 0);
             } else {
                 explode_effect_add_sprite(0xdd, 6, actor->x, actor->y - 6);
                 explode_effect_add_sprite(0xdd, 7, actor->x + 4, actor->y);
@@ -1893,8 +1909,8 @@ void actor_wt_frozen_duke_nukum(ActorData *actor)
             }
             data_5 = actor->data_5;
             actor->data_5++;
-            display_actor_sprite_maybe(0xdd, (data_5 & 1) + 4, actor->x, actor->y + 5, 0);
-            display_actor_sprite_maybe(0xdd, 2, actor->x, actor->y, 0);
+            actorMan.display_sprite_maybe(0xdd, (data_5 & 1) + 4, actor->x, actor->y + 5, 0);
+            actorMan.display_sprite_maybe(0xdd, 2, actor->x, actor->y, 0);
             effect_add_sprite(0x61, 6, actor->x, actor->y + 6, 5, 1);
 
             if (actor->data_2 == 10) {
@@ -1903,8 +1919,8 @@ void actor_wt_frozen_duke_nukum(ActorData *actor)
             }
             break;
         case 2:
-            display_actor_sprite_maybe(0xdd, (actor->data_5 & 1) + 4, actor->x, actor->y + 5, 0);
-            display_actor_sprite_maybe(0xdd, 1, actor->x, actor->y, 0);
+            actorMan.display_sprite_maybe(0xdd, (actor->data_5 & 1) + 4, actor->x, actor->y + 5, 0);
+            actorMan.display_sprite_maybe(0xdd, 1, actor->x, actor->y, 0);
             actor->data_5++;
             actor->data_2++;
             if (actor->data_2 == 0x1e) {
@@ -1914,13 +1930,13 @@ void actor_wt_frozen_duke_nukum(ActorData *actor)
             }
             break;
         case 3:
-            display_actor_sprite_maybe(0xdd, (actor->data_5 & 1) + 4, actor->x, actor->y + 5, 0);
+            actorMan.display_sprite_maybe(0xdd, (actor->data_5 & 1) + 4, actor->x, actor->y + 5, 0);
             actor->data_5++;
             actor->data_2++;
             if (actor->data_2 < 10) {
-                display_actor_sprite_maybe(0xdd, 1, actor->x, actor->y, 0);
+                actorMan.display_sprite_maybe(0xdd, 1, actor->x, actor->y, 0);
             } else {
-                display_actor_sprite_maybe(0xdd, 2, actor->x, actor->y, 0);
+                actorMan.display_sprite_maybe(0xdd, 2, actor->x, actor->y, 0);
                 effect_add_sprite(0x61, 6, actor->x, actor->y + 6, 5, 1);
             }
             if (actor->data_2 == 0xf) {
@@ -1937,8 +1953,8 @@ void actor_wt_frozen_duke_nukum(ActorData *actor)
             if (actor->data_2 < 0x33 && is_sprite_on_screen(0xdd, 2, actor->x, actor->y)) {
                 int data_5 = actor->data_5;
                 actor->data_5++;
-                display_actor_sprite_maybe(0xdd, (data_5 & 1) + 4, actor->x, actor->y + 5, 0);
-                display_actor_sprite_maybe(0xdd, 2, actor->x, actor->y, 0);
+                actorMan.display_sprite_maybe(0xdd, (data_5 & 1) + 4, actor->x, actor->y + 5, 0);
+                actorMan.display_sprite_maybe(0xdd, 2, actor->x, actor->y, 0);
                 effect_add_sprite(0x61, 6, actor->x, actor->y + 6, 5, 1);
                 play_sfx(0x31);
             } else {
@@ -2292,13 +2308,15 @@ const uint8 byte_28EFE[] = { 0, 4, 5, 6, 5, 4};
 
 void actor_wt_hint_dialog(ActorData *actor)
 {
+    auto &actorMan = gActorMan;
+
     actor->data_4 = (actor->data_4 ? -1 : 0) + 1;
     if(actor->data_4 != 0)
     {
         actor->data_3 = actor->data_3 + 1;
     }
 
-    display_actor_sprite_maybe(0x7d, byte_28EFE[actor->data_3 % 6], actor->x, actor->y - 2, 0);
+    actorMan.display_sprite_maybe(0x7d, byte_28EFE[actor->data_3 % 6], actor->x, actor->y - 2, 0);
 
     actor->data_2 = actor->data_2 + 1;
     if(actor->data_2 == 4)
@@ -2306,7 +2324,7 @@ void actor_wt_hint_dialog(ActorData *actor)
         actor->data_2 = 1;
     }
 
-    display_actor_sprite_maybe(0x7d, actor->data_2, actor->x, actor->y, 0);
+    actorMan.display_sprite_maybe(0x7d, actor->data_2, actor->x, actor->y, 0);
     actor_tile_display_func_index = 1;
 
     if(gCosmoPlayer.checkCollisionWithActor(0x7d, 0, actor->x, actor->y - 2) != 0)
@@ -2400,6 +2418,8 @@ void actor_wt_invisible_exit_marker_right(ActorData *actor)
 const static uint8 jaws_and_tongue_frame_num_tbl[] = {2, 3, 4, 3};
 void actor_wt_jaws_and_tongue(ActorData *actor)
 {
+    auto &actorMan = gActorMan;
+
     if(actor->data_1 == 0)
     {
         actor->data_2++;
@@ -2416,7 +2436,7 @@ void actor_wt_jaws_and_tongue(ActorData *actor)
 
     if(actor->frame_num != 0)
     {
-        display_actor_sprite_maybe(0x95, jaws_and_tongue_frame_num_tbl[actor->data_3 & 3], actor->x + 6 - actor->data_5, actor->y - 3, 0);
+        actorMan.display_sprite_maybe(0x95, jaws_and_tongue_frame_num_tbl[actor->data_3 & 3], actor->x + 6 - actor->data_5, actor->y - 3, 0);
         actor->data_3++;
     }
 
@@ -2430,7 +2450,7 @@ void actor_wt_jaws_and_tongue(ActorData *actor)
     }
     actor_tile_display_func_index = 1;
     
-    display_actor_sprite_maybe(actor->actorInfoIndex, 1, actor->x, actor->y, 0);
+    actorMan.display_sprite_maybe(actor->actorInfoIndex, 1, actor->x, actor->y, 0);
     
     if(actor->data_5 != 0 && actor->data_5 < 4)
     {
@@ -2438,7 +2458,7 @@ void actor_wt_jaws_and_tongue(ActorData *actor)
         return;
     }
 
-    display_actor_sprite_maybe(actor->actorInfoIndex, 0, actor->x, actor->y - 1 - actor->data_5, 0);
+    actorMan.display_sprite_maybe(actor->actorInfoIndex, 0, actor->x, actor->y - 1 - actor->data_5, 0);
     return;
 }
 const static sint16 bullet_head_y_tbl[] = {-2, -2, -2, -2, -1, -1, -1, 0, 0, 1, 1, 1, 2, 2, 2, 2};
@@ -2747,6 +2767,8 @@ void actor_wt_plasma_fireball(ActorData *actor)
 
 void actor_wt_pneumatic_pipe(ActorData *actor)
 {
+    auto &actorMan = gActorMan;
+
     if(actor->data_2 != 0)
     {
         actor->data_1++;
@@ -2765,7 +2787,7 @@ void actor_wt_pneumatic_pipe(ActorData *actor)
             actor->data_1 = 1;
         }
         
-        display_actor_sprite_maybe(0x69, actor->data_1, actor->x, actor->y + 3, 0);
+        actorMan.display_sprite_maybe(0x69, actor->data_1, actor->x, actor->y + 3, 0);
         return;
     }
     return;
@@ -3077,6 +3099,8 @@ void actor_wt_retracting_spikes(ActorData *actor)
 
 void actor_wt_robot_with_blue_arc(ActorData *actor)
 {
+    auto &actorMan = gActorMan;
+
     static uint16 spark_frame_num = 0;
 
     actor_tile_display_func_index = 1;
@@ -3112,7 +3136,7 @@ void actor_wt_robot_with_blue_arc(ActorData *actor)
             }
         }
 
-        display_actor_sprite_maybe(0x5a, actor->data_5, actor->x, actor->y, 0);
+        actorMan.display_sprite_maybe(0x5a, actor->data_5, actor->x, actor->y, 0);
 
         if(gCosmoPlayer.checkCollisionWithActor(0x5a, 0, actor->x, actor->y) != 0)
         {
@@ -3123,14 +3147,14 @@ void actor_wt_robot_with_blue_arc(ActorData *actor)
         int si;
         for(si=2; si < 21 && sprite_blocking_check(0, 0x5a, 2, actor->x + 1, actor->y - si) == NOT_BLOCKED; si++)
         {
-            display_actor_sprite_maybe(0x5a, (spark_frame_num & 3) + 4, actor->x + 1, actor->y - si, 0);
+            actorMan.display_sprite_maybe(0x5a, (spark_frame_num & 3) + 4, actor->x + 1, actor->y - si, 0);
 
             if(gCosmoPlayer.checkCollisionWithActor(0x5a, 4, actor->x + 1, actor->y - si) != 0)
             {
                 gCosmoPlayer.decreaseHealth();
             }
         }
-        display_actor_sprite_maybe(0x5a, actor->data_5 + 1 + 1, actor->x + 1, actor->y - si + 1, 0);
+        actorMan.display_sprite_maybe(0x5a, actor->data_5 + 1 + 1, actor->x + 1, actor->y - si + 1, 0);
 
         if(gCosmoPlayer.checkCollisionWithActor(0x5a, 0, actor->x, actor->y + 1) != 0)
         {
@@ -3268,6 +3292,8 @@ void actor_wt_robotic_spike_ground(ActorData *actor)
 
 void actor_wt_rocket(ActorData *actor)
 {
+    auto &actorMan = gActorMan;
+
     if(actor->data_1 != 0)
     {
         actor->data_1--;
@@ -3331,7 +3357,7 @@ void actor_wt_rocket(ActorData *actor)
             }
 
             actor->data_4 = (actor->data_4 ? -1 : 0) + 1;
-            display_actor_sprite_maybe(0xbc, actor->data_4 + 4, actor->x, actor->y + 6, 0);
+            actorMan.display_sprite_maybe(0xbc, actor->data_4 + 4, actor->x, actor->y + 6, 0);
 
             if(gCosmoPlayer.checkCollisionWithActor(0xbc, 4, actor->x, actor->y + 6) != 0)
             {
@@ -4471,20 +4497,21 @@ void actor_wt_switch_multi_use(ActorData *actor)
 
 void actor_wt_teleporter(ActorData *actor)
 {
+    auto &actorMan = gActorMan;
+
     actor_tile_display_func_index = 1;
     if(teleporter_counter == 0 || (cosmo_rand() & 1) == 0)
-    {
-        
-        display_actor_sprite_maybe(0x6b, 0, actor->x, actor->y, 0);
+    {        
+        actorMan.display_sprite_maybe(0x6b, 0, actor->x, actor->y, 0);
     }
     else
     {
         
-        display_actor_sprite_maybe(0x6b, 0, actor->x, actor->y, 2);
+        actorMan.display_sprite_maybe(0x6b, 0, actor->x, actor->y, 2);
     }
     if((sub_1106F() & 1) != 0)
     {
-        display_actor_sprite_maybe(0x6b, (cosmo_rand() & 1) + 1, actor->x, actor->y, 0);
+        actorMan.display_sprite_maybe(0x6b, (cosmo_rand() & 1) + 1, actor->x, actor->y, 0);
     }
     if(teleporter_counter == 15)
     {
@@ -4559,6 +4586,8 @@ void actor_wt_teleporter(ActorData *actor)
 
 void actor_wt_two_tons(ActorData *actor)
 {
+    auto &actorMan = gActorMan;
+
     if(actor->data_1 < 0x14)
     {
         actor->data_1++;
@@ -4647,7 +4676,7 @@ void actor_wt_two_tons(ActorData *actor)
         return;
     }
     
-    display_actor_sprite_maybe(0x2d, 4, actor->x - 1, actor->y + 3, 0);
+    actorMan.display_sprite_maybe(0x2d, 4, actor->x - 1, actor->y + 3, 0);
     return;
 }
 
@@ -4656,6 +4685,8 @@ const sint8 score_effect_x_tbl[] = {
 };
 void actor_wt_floating_score_effect(ActorData *actor)
 {
+    auto &actorMan = gActorMan;
+
     actor_tile_display_func_index = 1;
     actor->data_1++;
     actor->frame_num = (actor->frame_num ? -1 : 0) + 1;
@@ -4676,12 +4707,14 @@ void actor_wt_floating_score_effect(ActorData *actor)
         actor_tile_display_func_index = 1;
     }
 
-    display_actor_sprite_maybe(actor->actorInfoIndex, actor->frame_num, actor->x, actor->y, 5);
+    actorMan.display_sprite_maybe(actor->actorInfoIndex, actor->frame_num, actor->x, actor->y, 5);
     return;
 }
 
 void actor_wt_speech_bubble(ActorData *actor)
 {
+    auto &actorMan = gActorMan;
+
     actor_tile_display_func_index = 1;
     if(actor->data_1 == 0)
     {
@@ -4695,7 +4728,7 @@ void actor_wt_speech_bubble(ActorData *actor)
     actor->data_1++;
     if(actor->data_1 != 0x14)
     {
-        display_actor_sprite_maybe(actor->actorInfoIndex, 0, gCosmoPlayer.xPos() - 1, gCosmoPlayer.yPos() - 5, 5);
+        actorMan.display_sprite_maybe(actor->actorInfoIndex, 0, gCosmoPlayer.xPos() - 1, gCosmoPlayer.yPos() - 5, 5);
     }
     else
     {

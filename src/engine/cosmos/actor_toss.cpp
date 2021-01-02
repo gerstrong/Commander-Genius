@@ -31,7 +31,10 @@ void actor_toss_add_new(int actorInfoIndex, int x_pos, int y_pos) {
     }
 }
 
-void actor_toss_update() {
+void actor_toss_update()
+{
+    auto &actorMan = gActorMan;
+
     for(int i=0;i<MAX_TOSSED_ACTORS;i++)
     {
         ActorToss *at = &actorToss[i];
@@ -46,26 +49,26 @@ void actor_toss_update() {
             {
                 if(at->counter != 11)
                 {
-                    display_actor_sprite_maybe(at->actorInfoIndex, 0, at->x, at->y, 4);
+                    actorMan.display_sprite_maybe(at->actorInfoIndex, 0, at->x, at->y, 4);
                 }
                 else
                 {
                     actor_add_new(at->actorInfoIndex, at->x, at->y);
-                    display_actor_sprite_maybe(at->actorInfoIndex, 0, at->x, at->y, 4);
+                    actorMan.display_sprite_maybe(at->actorInfoIndex, 0, at->x, at->y, 4);
                     at->actorInfoIndex = 0;
                 }
             }
             else
             {
                 actor_add_new(at->actorInfoIndex, at->x, at->y + 1);
-                display_actor_sprite_maybe(at->actorInfoIndex, 0, at->x, at->y + 1, 0);
+                actorMan.display_sprite_maybe(at->actorInfoIndex, 0, at->x, at->y + 1, 0);
                 at->actorInfoIndex = 0;
             }
         }
         else
         {
             actor_add_new(at->actorInfoIndex, at->x, at->y + 1);
-            display_actor_sprite_maybe(at->actorInfoIndex, 0, at->x, at->y + 1, 0);
+            actorMan.display_sprite_maybe(at->actorInfoIndex, 0, at->x, at->y + 1, 0);
             at->actorInfoIndex = 0;
         }
     }

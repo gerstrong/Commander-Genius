@@ -162,6 +162,8 @@ void effect_add_sprite(int actorInfoIndex, int frame_num, int x_pos, int y_pos, 
 
 void effect_update_sprites(const bool draw_only)
 {
+    auto &actorMan = gActorMan;
+
     for(int i=0; i < MAX_EFFECT_SPRITES; i++)
     {
         effect_sprite *sprite = &static_effect_sprites[i];
@@ -174,11 +176,11 @@ void effect_update_sprites(const bool draw_only)
                 if(sprite->actorInfoIndex == 0x63)
                 {
                     
-                    display_actor_sprite_maybe(sprite->actorInfoIndex, sprite->currentFrameNum, sprite->x, sprite->y, 5);
+                    actorMan.display_sprite_maybe(sprite->actorInfoIndex, sprite->currentFrameNum, sprite->x, sprite->y, 5);
                 }
                 else
                 {
-                    display_actor_sprite_maybe(sprite->actorInfoIndex, sprite->currentFrameNum, sprite->x, sprite->y, 0);
+                    actorMan.display_sprite_maybe(sprite->actorInfoIndex, sprite->currentFrameNum, sprite->x, sprite->y, 0);
                 }
                 
 
@@ -299,6 +301,8 @@ void explode_effect_clear_sprites()
 
 void explode_effect_update_sprites(const bool draw_only)
 {
+    auto &actorMan = gActorMan;
+
     for(int i=0;i < MAX_EXPLODE_EFFECT_SPRITES; i++)
     {
         explode_effect_sprite *sprite = &explode_effect_sprites[i];
@@ -363,11 +367,11 @@ void explode_effect_update_sprites(const bool draw_only)
             {
                 if(sprite->counter == 1)
                 {
-                    display_actor_sprite_maybe(sprite->actorInfoIndex, sprite->frame_num, sprite->x, sprite->y, 2);
+                    actorMan.display_sprite_maybe(sprite->actorInfoIndex, sprite->frame_num, sprite->x, sprite->y, 2);
                 }
                 else
                 {
-                    display_actor_sprite_maybe(sprite->actorInfoIndex, sprite->frame_num, sprite->x, sprite->y, 4);
+                    actorMan.display_sprite_maybe(sprite->actorInfoIndex, sprite->frame_num, sprite->x, sprite->y, 4);
                 }
                 sprite->counter++;
                 if(sprite->counter > 40)
@@ -390,11 +394,11 @@ void explode_effect_update_sprites(const bool draw_only)
                 {
                     if(sprite->counter == 1)
                     {
-                        display_actor_sprite_maybe(sprite->actorInfoIndex, sprite->frame_num, sprite->x, sprite->y, 2);
+                        actorMan.display_sprite_maybe(sprite->actorInfoIndex, sprite->frame_num, sprite->x, sprite->y, 2);
                     }
                     else
                     {
-                        display_actor_sprite_maybe(sprite->actorInfoIndex, sprite->frame_num, sprite->x, sprite->y, 4);
+                        actorMan.display_sprite_maybe(sprite->actorInfoIndex, sprite->frame_num, sprite->x, sprite->y, 4);
                     }
                     sprite->counter++;
                     if(sprite->counter > 40)
@@ -456,6 +460,8 @@ int struct6_1B4FC(int actorInfoIndex, int frame_num, int x_pos, int y_pos)
 
 void struct6_update_sprites()
 {
+    auto &actorMan = gActorMan;
+
     for(int i=0; i < MAX_STRUCT6_SPRITES; i++)
     {
         struc_6 *sprite = &struc6_sprites[i];
@@ -466,7 +472,7 @@ void struct6_update_sprites()
                 effect_add_sprite(0x17, 8, sprite->x + 1 + 1, sprite->y - 2, 0, 1);
             }
 
-            display_actor_sprite_maybe(0x1a, sprite->counter - (1 & 3), sprite->x, sprite->y, 0);
+            actorMan.display_sprite_maybe(0x1a, sprite->counter - (1 & 3), sprite->x, sprite->y, 0);
 
             if(gCosmoPlayer.checkCollisionWithActor(0x1a, sprite->counter - (1 & 3), sprite->x, sprite->y) != 0)
             {

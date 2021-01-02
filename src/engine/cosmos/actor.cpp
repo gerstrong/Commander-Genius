@@ -64,6 +64,8 @@ const uint16 word_28D9C[] = {
         79, 46, 1, 98
 };
 
+
+
 //TODO work out what this should be called.
 uint16 sub_1106F()
 {
@@ -1248,69 +1250,10 @@ void display_actor_sprite_flipped(TileInfo *info, int x_pos, int y_pos)
     }
 }
 
-void display_actor_sprite_maybe(const int actorInfoIndex,
-                                const int frame_num,
-                                const float x_pos,
-                                const float y_pos,
-                                const int tile_display_func_index)
-{
-    //FIXME
-
-    if(actor_sprites[actorInfoIndex].num_frames==0)
-    {
-        //printf("WARN: actorInfoIndex %d has no frames!. Wanted frame_num: %d\n", actorInfoIndex, frame_num);
-        return;
-    }
-
-    TileInfo *info = &actor_sprites[actorInfoIndex].frames[frame_num];
-    Tile *tile = &actor_tiles[info->tile_num];
-
-    if(tile_display_func_index == 4)
-    {
-        display_actor_sprite_flipped(info, x_pos, y_pos);
-        return;
-    }
-
-    for(int y=0; y < info->height; y++)
-    {
-        for(int x=0; x < info->width; x++)
-        {
-            uint16 screen_x = (x_pos - mapwindow_x_offset + x + 1) * 8;
-            uint16 screen_y = (y_pos - info->height + 1 - mapwindow_y_offset + y + 1) * 8;
-            uint16 tile_attr = map_get_tile_attr(x_pos+x,y_pos - info->height + y + 1);
-            if(tile_display_func_index == 6) //FIXME
-            {
-                screen_x = (x_pos + x + 1) * 8;
-                screen_y = (y_pos - info->height + y + 1) * 8;
-                video_draw_tile(tile, screen_x, screen_y);
-            }
-            else
-            {
-                if(screen_x >= 8 && screen_x <= 304 && //FIXME need a better way of making sure we draw in the borders.
-                   screen_y >= 8 && screen_y < 152 &&
-                   (!(tile_attr & TILE_ATTR_IN_FRONT) || tile_display_func_index == 5 || tile_display_func_index == 6))
-                {
-                    if (tile_display_func_index == 2)
-                    {
-                        video_draw_tile_solid_white(tile, screen_x, screen_y);
-                    }
-                    else if(tile_display_func_index == 3)
-                    {
-                        video_draw_tile_mode3(tile, screen_x, screen_y);
-                    }
-                    else
-                    {
-                        video_draw_tile(tile, screen_x, screen_y);
-                    }
-                }
-            }
-            tile++;
-        }
-    }
-}
-
 void actor_update(ActorData *actor, const bool draw_only)
 {
+    auto &actorMan = gActorMan;
+
     if (actor->is_deactivated_flag_maybe != 0)
     {
         return;
@@ -1404,8 +1347,7 @@ void actor_update(ActorData *actor, const bool draw_only)
 
     if (actor_update_impl(actor, actor->actorInfoIndex, actor->frame_num, actor->x, actor->y) == 0 && actor_tile_display_func_index != 1)
     {
-
-        display_actor_sprite_maybe(actor->actorInfoIndex, actor->frame_num, actor->x, actor->y, actor_tile_display_func_index);
+        actorMan.display_sprite_maybe(actor->actorInfoIndex, actor->frame_num, actor->x, actor->y, actor_tile_display_func_index);
     }
 
     return;
@@ -1533,3 +1475,81 @@ ActorData *get_actor(uint16 actor_num) {
     assert(actor_num < MAX_ACTORS);
     return &actors[actor_num];
 }
+
+
+namespace cosmos_engine
+{
+
+
+void ActorManager::setMapPtr(std::shared_ptr<CMap> &mapPtr)
+{
+    mpMap = mapPtr;
+}
+
+void ActorManager::display_sprite_maybe(const int actorInfoIndex,
+                         const int frame_num,
+                         const float x_pos,
+                         const float y_pos,
+                         const int tile_display_func_index)
+{
+    const auto scroll = mpMap->getScrollCoords(1);
+
+    //FIXME
+
+    if(actor_sprites[actorInfoIndex].num_frames==0)
+    {
+        //printf("WARN: actorInfoIndex %d has no frames!. Wanted frame_num: %d\n", actorInfoIndex, frame_num);
+        return;
+    }
+
+    TileInfo *info = &actor_sprites[actorInfoIndex].frames[frame_num];
+    Tile *tile = &actor_tiles[info->tile_num];
+
+    if(tile_display_func_index == 4)
+    {
+        display_actor_sprite_flipped(info, x_pos, y_pos);
+        return;
+    }
+
+    for(int y=0; y < info->height; y++)
+    {
+        uint16 screen_y = (y_pos - info->height + 1 + y) * 8 - scroll.y;
+
+        for(int x=0; x < info->width; x++)
+        {
+
+            uint16 screen_x = (x_pos + x) * 8 - scroll.x;
+            uint16 tile_attr = map_get_tile_attr(x_pos+x,y_pos - info->height + y + 1);
+            if(tile_display_func_index == 6) //FIXME
+            {
+                screen_x = (x_pos + x + 1) * 8;
+                screen_y = (y_pos - info->height + y + 1) * 8;
+                video_draw_tile(tile, screen_x, screen_y);
+            }
+            else
+            {
+                if(screen_x >= 8 && screen_x <= 304 && //FIXME need a better way of making sure we draw in the borders.
+                   screen_y >= 8 && screen_y < 152 &&
+                   (!(tile_attr & TILE_ATTR_IN_FRONT) || tile_display_func_index == 5 || tile_display_func_index == 6))
+                {
+                    if (tile_display_func_index == 2)
+                    {
+                        video_draw_tile_solid_white(tile, screen_x, screen_y);
+                    }
+                    else if(tile_display_func_index == 3)
+                    {
+                        video_draw_tile_mode3(tile, screen_x, screen_y);
+                    }
+                    else
+                    {
+                        video_draw_tile(tile, screen_x, screen_y);
+                    }
+                }
+            }
+            tile++;
+        }
+    }
+}
+
+};
+

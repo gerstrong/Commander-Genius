@@ -1166,6 +1166,8 @@ int Player::updateSprite()
 {
     static uint8 byte_28FAC = 0;
 
+    auto &actorMan = gActorMan;
+
     if (map_max_y_offset + 0x15 < player_y_pos && player_death_counter == 0)
     {
         player_fall_off_map_bottom_counter = 1;
@@ -1201,12 +1203,12 @@ int Player::updateSprite()
         }
         if (player_fall_off_map_bottom_counter > 12 && player_fall_off_map_bottom_counter < 0x13)
         {
-            display_actor_sprite_maybe(0xde, byte_28FAC, player_x_pos - 1,
+            actorMan.display_sprite_maybe(0xde, byte_28FAC, player_x_pos - 1,
                                        player_y_pos - player_fall_off_map_bottom_counter + 13, 5);
         }
         if (player_fall_off_map_bottom_counter > 0x12)
         {
-            display_actor_sprite_maybe(0xde, byte_28FAC, player_x_pos - 1, player_y_pos - 6, 5);
+            actorMan.display_sprite_maybe(0xde, byte_28FAC, player_x_pos - 1, player_y_pos - 6, 5);
         }
         if (player_fall_off_map_bottom_counter > 0x1e)
         {

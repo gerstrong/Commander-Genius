@@ -87,6 +87,8 @@ uint16 dialog_text_extract_num(const char *text)
 
 void display_dialog_text_with_color(uint16 x_pos, uint16 y_pos, const char *text, uint8 text_color)
 {
+    auto &actorMan = gActorMan;
+
     HintDialogInput input = NO_INPUT;
     uint16 typewriter_keys_count = 0;
     uint16 typewriter_delay_counter = 0;
@@ -150,7 +152,7 @@ void display_dialog_text_with_color(uint16 x_pos, uint16 y_pos, const char *text
                 case 0xfd :
                     gCosmoPlayer.displaySprite(frame_num, x_pos + x, y_pos, 6); break;
                 case 0xfe :
-                    display_actor_sprite_maybe(frame_num, dialog_text_extract_num(&text[i+4]), x_pos + x - 1, y_pos, 6);
+                    actorMan.display_sprite_maybe(frame_num, dialog_text_extract_num(&text[i+4]), x_pos + x - 1, y_pos, 6);
                     i += 3;
                     break;
             }
@@ -1117,6 +1119,8 @@ static const char score_text_tbl[][17] = {
 
 void display_score_from_level()
 {
+    auto &actorMan = gActorMan;
+
     stop_music();
 
     if(gStatus.numStartsCollected() == 0)
@@ -1129,7 +1133,7 @@ void display_score_from_level()
     video_fill_screen_with_black();
     create_text_dialog_box(2, 0xe, 0x1e, "Super Star Bonus!!!!", "");
 
-    display_actor_sprite_maybe(1, 2, 8, 8, 6);
+    actorMan.display_sprite_maybe(1, 2, 8, 8, 6);
 
     display_dialog_text(0xe, 7, "X 1000 =");
 

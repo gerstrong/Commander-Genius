@@ -4,6 +4,7 @@
 #include "tile.h"
 #include "map.h"
 #include "player.h"
+#include "actor.h"
 
 #include <SDL_events.h>
 #include <base/GsEventContainer.h>
@@ -87,6 +88,7 @@ CosmoGameplay::CosmoGameplay() :
 bool CosmoGameplay::start()
 {
     gCosmoPlayer.setMapPtr(mpMap);
+    gActorMan.setMapPtr(mpMap);
 
     load_current_level();
     return true;
@@ -618,7 +620,7 @@ void CosmoGameplay::ponder(const float deltaT)
     int scroll_diff_x = (frontCoords.x-mapwindow_x_offset_pix);
     int scroll_diff_y = (frontCoords.y-mapwindow_y_offset_pix);
 
-    const int DIST_FOR_SLOMO = 8;
+    const int DIST_FOR_SLOMO = 16;
 
     if(scroll_diff_x < 0)
     {
@@ -670,6 +672,8 @@ void CosmoGameplay::ponder(const float deltaT)
     executeLogics();
 
     mpMap->animateAllTiles();
+
+
 }
 
 void CosmoGameplay::render()
@@ -677,4 +681,11 @@ void CosmoGameplay::render()
     mpMap->calcVisibleArea();
     mpMap->refreshVisibleArea();
     gVideoDriver.blitScrollSurfaces();
+
+    GsWeakSurface blitSfc(gVideoDriver.getBlitSurface());
+
+    const GsRect<Uint16> rect(0, 144, 320, 56);
+
+    GsColor color(0, 0, 0);
+    blitSfc.fill(rect, color);
 }

@@ -76,6 +76,9 @@ void display_mud_fountains()
     static uint16 frame_counter = 0;
     static uint16 frame_num = 0;
     frame_counter++;
+
+    auto &actorMan = gActorMan;
+
     if ((frame_counter & 1) != 0)
     {
         frame_num++;
@@ -83,11 +86,11 @@ void display_mud_fountains()
     for (int i = 0; i < num_mud_fountains; i++)
     {
         MudFountain *mud_fountain = &mud_fountain_tbl[i];
-        display_actor_sprite_maybe(0x4f, frame_num & 1, mud_fountain->x, mud_fountain->y + 1, 0);
+        actorMan.display_sprite_maybe(0x4f, frame_num & 1, mud_fountain->x, mud_fountain->y + 1, 0);
 
         for (int j = 0; j < mud_fountain->current_height + 1; j++)
         {
-            display_actor_sprite_maybe(0x4f, (frame_num & 1) + 1 + 1, mud_fountain->x + 1, mud_fountain->y + j + 1, 0);
+            actorMan.display_sprite_maybe(0x4f, (frame_num & 1) + 1 + 1, mud_fountain->x + 1, mud_fountain->y + j + 1, 0);
 
             if (gCosmoPlayer.checkCollisionWithActor(0x4f, 2, mud_fountain->x + 1, mud_fountain->y + j + 1) != 0)
             {
