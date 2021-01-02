@@ -75,7 +75,7 @@ bool ScrollingPlane::scrollLeft(GsTilemap &tilemap)
     auto &scrollSfc = gVideoDriver.getScrollSurfaceVec().at(mScrollSfcIdx);
     auto &scroll = mScrollCoords;
 
-    if( scroll.x <= 32 )
+    if( scroll.x <= 0 )
         return false;
 
     if(mSubscrollCoords.x > 0)
@@ -157,7 +157,7 @@ bool ScrollingPlane::scrollUp(GsTilemap &tilemap, [[maybe_unused]] const bool fo
     auto &scrollSfc = gVideoDriver.getScrollSurfaceVec().at(mScrollSfcIdx);
     auto &scroll = mScrollCoords;
 
-    if( scroll.y <= 32 )
+    if( scroll.y <= 0 )
         return false;
 
     if(mSubscrollCoords.y > 0)
