@@ -417,8 +417,11 @@ bool CMap::scrollDown(const bool force)
     {
         const auto scroll = plane.getScrollCoords();
 
-        if( !force && findVerticalScrollBlocker((scroll.x)<<STC) )
-            return false;
+        if(!plane.isAxisYLocked())
+        {
+            if( !force && findVerticalScrollBlocker((scroll.x)<<STC) )
+                return false;
+        }
 
         ok &= plane.scrollDown(m_Tilemaps.at(plane.getTilemapIdx()), force);
         refreshVisibleArea(plane.getScrollCoords());
@@ -442,8 +445,12 @@ bool CMap::scrollUp(const bool force)
     {
         const auto scroll = plane.getScrollCoords();
 
-        if( !force && findHorizontalScrollBlocker((scroll.y-1)<<STC) )
-            return false;
+        if(!plane.isAxisYLocked())
+        {
+            if( !force && findHorizontalScrollBlocker((scroll.y-1)<<STC) )
+                return false;
+        }
+
 
         ok &= plane.scrollUp(m_Tilemaps.at(plane.getTilemapIdx()), force);
         refreshVisibleArea(plane.getScrollCoords());
@@ -825,4 +832,11 @@ GsVec2D<int> CMap::getScrollCoords(const unsigned int idx) const
 GsVec2D<int> CMap::getMainScrollCoords() const
 {
     return getScrollCoords(0);
+}
+
+void CMap::lockAxisY(const unsigned int idx, const bool value)
+{
+    assert(idx < mScrollingPlanes.size());
+
+    return mScrollingPlanes.at(idx).lockAxisY(value);
 }
