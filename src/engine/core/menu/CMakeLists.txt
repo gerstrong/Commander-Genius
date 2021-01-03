@@ -45,6 +45,8 @@ set(SRCS
     OverlaySettings.h
     CameraSettings.h
     CameraSettings.cpp
+    achievementmenu.cpp
+    achievementmenu.h
 )
 
 add_library(engine_core_menu STATIC ${SRCS})

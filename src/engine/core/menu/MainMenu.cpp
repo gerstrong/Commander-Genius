@@ -15,6 +15,7 @@
 #include "SelectionMenu.h"
 #include "LoadMenu.h"
 #include "SaveMenu.h"
+#include "achievementmenu.h"
 #include "QuitMenu.h"
 #include "engine/core/CBehaviorEngine.h"
 
@@ -73,6 +74,16 @@ void MainMenu::createGameMenu( const bool openedGamePlay,
         mpMenuDialog->add( infoButton );
         infoButton->enable(false);
     }*/
+
+    if(style == Style::GALAXY)
+    {
+
+        mpMenuDialog->add(
+                    new GameButton( "Achievements",
+                                    new OpenMenuEvent(
+                                        new AchievementMenu(0, style) ),
+                                    style) );
+    }
 
 
     if(style == Style::VORTICON)

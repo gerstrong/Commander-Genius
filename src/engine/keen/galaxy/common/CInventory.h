@@ -69,10 +69,6 @@ public:
 	CHUD m_HUD;
     GsLua mLua;
 	std::shared_ptr<CStatusScreenGalaxy> mp_StatusScreen;
-
-private:
-
-    Achievements mAchievements;
 };
 
 

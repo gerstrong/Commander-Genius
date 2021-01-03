@@ -12,10 +12,6 @@ QuitMenu::QuitMenu(const bool openedGamePlay,
                    const Style style) :
 GameMenu( GsRect<float>(0.25f, 0.23f, 0.5f, 0.5f), style, true )
 {
-    const std::string endGamePlayTest =
-            openedGamePlay ? "End Game" : "Quit to Launcher";
-
-
     auto endGameBtn =
          mpMenuDialog->add(
                 new GameButton( "End Game",
