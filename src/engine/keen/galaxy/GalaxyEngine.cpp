@@ -406,7 +406,7 @@ void GalaxyEngine::pumpEvent(const CEvent *evPtr)
         }
         else
         {
-            gEventManager.add(new GMSwitchToGameLauncher);
+            assert(0);
         }
     }
     else if( const NewGamePlayersEvent* pNewGame =

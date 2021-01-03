@@ -4,21 +4,24 @@
 #include <map>
 #include <string>
 #include <base/utils/property_tree/property_tree.h>
+#include <base/Singleton.h>
 
-class Achievements
+#define gAchievements Achievements::get()
+
+class Achievements : public GsSingleton<Achievements>
 {
-
-
 public:
     Achievements();
 
-    void addTask(const std::string &which, const int numTasks);
+    void addTaskCompletion(const std::string &which, const int numTasks);
 
     // Saves the inventory using the Savegamecontroller.
     void operator>>(GsKit::ptree &invNode);
 
     // This is for loading the game
     void operator<<(GsKit::ptree &invNode);
+
+    std::map<std::string, int> getTodoMap();
 
 private:
 

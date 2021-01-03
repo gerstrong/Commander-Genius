@@ -168,8 +168,10 @@ void CInventory::operator>>(CSaveGameController &savedGame)
 
 void CInventory::operator>>(GsKit::ptree &invNode)
 {
+    auto &achieve = gAchievements;
+
     Item >> invNode;
-    mAchievements >> invNode;
+    achieve >> invNode;
 }
 
 void CInventory::operator<<(CSaveGameController &savedGame)
@@ -179,13 +181,16 @@ void CInventory::operator<<(CSaveGameController &savedGame)
 
 void CInventory::operator<<(GsKit::ptree &invNode)
 {
+    auto &achieve = gAchievements;
+
     Item << invNode;
-    mAchievements << invNode;
+    achieve << invNode;
 }
 
 void CInventory::addAchievementTask(const std::string which,
                                     const int numTasks)
 {
-    mAchievements.addTask(which, numTasks);
+    auto &achieve = gAchievements;
+    achieve.addTaskCompletion(which, numTasks);
 }
 

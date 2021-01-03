@@ -31,6 +31,8 @@ set(SRCS
     LoadMenu.h
     MainMenu.cpp
     MainMenu.h
+    QuitMenu.cpp
+    QuitMenu.h
     Options.cpp
     Options.h
     SaveMenu.cpp
@@ -43,6 +45,8 @@ set(SRCS
     OverlaySettings.h
     CameraSettings.h
     CameraSettings.cpp
+    achievementmenu.cpp
+    achievementmenu.h
 )
 
 add_library(engine_core_menu STATIC ${SRCS})
