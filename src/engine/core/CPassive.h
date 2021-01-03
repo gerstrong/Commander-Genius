@@ -48,7 +48,7 @@ public:
 	char getDifficulty() { return m_Difficulty; }
 	std::string getGamePath() { return m_DataDirectory; }
 	
-    bool getchooseGame() { return mEndEpisode; }
+    bool goBackToLauncherSet() { return mBackToGameLauncher; }
 	bool mustStartGame() { return (m_mode==STARTGAME); }
 	bool getExitEvent() { return (m_mode==SHUTDOWN); }
 	
@@ -63,7 +63,7 @@ protected:
 	char m_Difficulty;
 	
 	// TODO: Bad variable name. Think about something better
-    bool mEndEpisode;
+    bool mBackToGameLauncher;
 	std::string m_DataDirectory;
 	CSaveGameController m_SavedGame;
     GsSurface mTextSfc;

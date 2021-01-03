@@ -31,6 +31,8 @@ set(SRCS
     LoadMenu.h
     MainMenu.cpp
     MainMenu.h
+    QuitMenu.cpp
+    QuitMenu.h
     Options.cpp
     Options.h
     SaveMenu.cpp

@@ -15,6 +15,7 @@
 #include "SelectionMenu.h"
 #include "LoadMenu.h"
 #include "SaveMenu.h"
+#include "QuitMenu.h"
 #include "engine/core/CBehaviorEngine.h"
 
 #include "widgets/Button.h"
@@ -81,24 +82,10 @@ void MainMenu::createGameMenu( const bool openedGamePlay,
                                           style) );
     }
 
-
-    const std::string endGamePlayTest =
-            openedGamePlay ? "End Game" : "Quit to Launcher";
-
-#if !defined(EMBEDDED)
-
-    mpMenuDialog->add(new GameButton( endGamePlayTest, new EventEndGamePlay(), style ) );
-
-#else
-
-    if(openedGamePlay)
-    {
-        mpMenuDialog->add(new GameButton( endGamePlayTest, new EventEndGamePlay(), style ) );
-    }
-
-#endif
-
-    mpMenuDialog->add(new GameButton( "Quit", new GMQuit(), style ) );
+    mpMenuDialog->add(new GameButton( "Quit",
+                                      new OpenMenuEvent(
+                                          new QuitMenu(openedGamePlay, style) ),
+                                      style ) );
 
     setMenuLabel("MAINMENULABEL");
 
@@ -112,7 +99,6 @@ void MainMenu::ponder(const float dt)
     if( gInput.getPressedCommand(IC_BACK) )
     {
         gEventManager.add( new CloseMenuEvent(true) );
-
         return;
     }
 

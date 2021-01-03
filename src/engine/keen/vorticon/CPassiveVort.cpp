@@ -93,7 +93,7 @@ void CPassiveVort::pumpEvent(const CEvent *evPtr)
 
 void CPassiveVort::ponder(const float)
 {
-    if(!mEndEpisode)
+    if(!mBackToGameLauncher)
     {
         // Modes. We have three: Intro, Main-tile and Demos. We could add more.
         if( m_mode == INTRO )
@@ -121,7 +121,7 @@ void CPassiveVort::ponder(const float)
         }
     }
 
-    if(getchooseGame())
+    if(goBackToLauncherSet())
     {
         // TODO: Some of game resources are still not cleaned up here!
         gEventManager.add( new GMSwitchToGameLauncher() );
