@@ -170,8 +170,6 @@ void set_colorKey_and_flush_gamesfc()
 
 void video_draw_tile(Tile *tile, uint16 x, uint16 y)
 {
-
-
     uint8 *pixel = (uint8 *)game_surface.surface->pixels + x + y * SCREEN_WIDTH;
     uint8 *tile_pixel = tile->pixels;
 
@@ -429,7 +427,8 @@ void video_fill_surface_with_black(SDL_Surface *surface)
     SDL_FillRect(surface, &rect, 0);
 }
 
-void video_fill_screen_with_black() {
+void video_fill_screen_with_black()
+{
     video_fill_surface_with_black(game_surface.surface);
 }
 

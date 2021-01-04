@@ -5,6 +5,7 @@
 #include "map.h"
 #include "player.h"
 #include "actor.h"
+#include "status.h"
 
 #include <SDL_events.h>
 #include <base/GsEventContainer.h>
@@ -672,20 +673,12 @@ void CosmoGameplay::ponder(const float deltaT)
     executeLogics();
 
     mpMap->animateAllTiles();
-
-
 }
 
 void CosmoGameplay::render()
 {
     mpMap->calcVisibleArea();
     mpMap->refreshVisibleArea();
-    gVideoDriver.blitScrollSurfaces();
-
-    GsWeakSurface blitSfc(gVideoDriver.getBlitSurface());
-
-    const GsRect<Uint16> rect(0, 144, 320, 56);
-
-    GsColor color(0, 0, 0);
-    blitSfc.fill(rect, color);
+    gVideoDriver.blitScrollSurfaces();    
+    gStatus.displayEverything();
 }

@@ -19,6 +19,11 @@ public:
 
     void initPanel();
 
+    void displayEverything();
+
+    /**
+     * @brief display Displays background
+     */
     void display();
 
     void addToScoreUpdateOnDisplay(const int amount_to_add_low,

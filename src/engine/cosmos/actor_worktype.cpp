@@ -418,7 +418,7 @@ void actor_wt_alien_eating_space_plant(ActorData *actor)
     
     if(actor->frame_num == 0 && actor->data_5 == 0)
     {
-        auto &actorMan = gActorMan;(0xba, alien_eating_space_plant_f_num_tbl[actor->data_1 & 3], actor->x + 1 + 1, actor->y - 3, 0);
+        actorMan.display_sprite_maybe(0xba, alien_eating_space_plant_f_num_tbl[actor->data_1 & 3], actor->x + 1 + 1, actor->y - 3, 0);
         actor->data_1++;
     }
     
@@ -871,12 +871,12 @@ void actor_wt_blue_ball(ActorData *actor)
         if(actor->falling_counter < 2 || actor->falling_counter > 4)
         {
             actor->y = actor->y - 1;
-            auto &actorMan = gActorMan;(0x56, 9, actor->x, actor->y - 2, 0);
+            actorMan.display_sprite_maybe(0x56, 9, actor->x, actor->y - 2, 0);
             actor->frame_num = 10;
         }
         else
         {
-            auto &actorMan = gActorMan;(0x56, 8, actor->x, actor->y - 2, 0);
+            actorMan.display_sprite_maybe(0x56, 8, actor->x, actor->y - 2, 0);
             actor->frame_num = 10;
         }
         return;

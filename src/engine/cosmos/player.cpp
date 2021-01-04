@@ -1126,7 +1126,8 @@ void Player::displaySprite(const int frame_num,
         return;
     }
 
-    if(player_push_frame_num == 0xff || teleporter_state_maybe || (player_invincibility_counter & 1u) || hide_player_sprite)
+    if( player_push_frame_num == 0xff || teleporter_state_maybe ||
+       (player_invincibility_counter & 1u) || hide_player_sprite)
     {
         return;
     }
@@ -1142,9 +1143,9 @@ void Player::displaySprite(const int frame_num,
         {
             const uint16 screen_x = (x_pos + x) * 8 - scroll.x;
 
-            if(screen_x >= 8 && screen_x <= 304 && //FIXME need a better way of making sure we draw in the borders.
-                                 screen_y >= 8 && screen_y < 152 &&
-                    !(map_get_tile_attr(x_pos+x,y_pos - info->height + y + 1) & TILE_ATTR_IN_FRONT))
+            if(screen_x >= 0 && screen_x <= 320 && //FIXME need a better way of making sure we draw in the borders.
+               screen_y >= 0 && screen_y < 160 &&
+               !(map_get_tile_attr(x_pos+x,y_pos - info->height + y + 1) & TILE_ATTR_IN_FRONT))
             {
                 if(tile_display_func_index == 2)
                 {

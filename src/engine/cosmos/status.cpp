@@ -8,7 +8,9 @@
 #include "font.h"
 #include "player.h"
 
-Tile *status_tiles;
+#include <base/video/CVideoDriver.h>
+
+Tile *status_tiles = nullptr;
 
 const int  STATUS_BAR_HEIGHT = 6;
 const int  STATUS_BAR_WIDTH = 38;
@@ -49,6 +51,21 @@ void Status::display()
             video_draw_tile(&status_tiles[x + y * STATUS_BAR_WIDTH], (x + 1) * TILE_WIDTH, (y+MAP_WINDOW_HEIGHT+1) * TILE_HEIGHT);
         }
     }
+}
+
+void Status::displayEverything()
+{
+    GsWeakSurface blitSfc(gVideoDriver.getBlitSurface());
+    const GsRect<Uint16> rect(0, 144, 320, 56);
+
+    GsColor color(0, 0, 0);
+    blitSfc.fill(rect, color);
+
+    display();
+    addToScoreUpdateOnDisplay(0, GsVec2D<int>(9, 0x16));
+    updateHealthBarDisplay();
+    displayNumStarsCollected();
+    displayNumBombsLeft();
 }
 
 void Status::addToScoreUpdateOnDisplay(const int amount_to_add_low,

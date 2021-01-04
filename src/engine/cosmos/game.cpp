@@ -234,7 +234,6 @@ bool executeLogics()
     {
         update_palette_anim();
 
-
         if(!draw_only)
         {
             gCosmoPlayer.handleInput();
