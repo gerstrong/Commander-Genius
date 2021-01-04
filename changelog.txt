@@ -1,3 +1,9 @@
+v2.7.5:
+-------
+- Achivement System improved. Now you can see what achivements you got
+  and how much is yet missing
+- Quit Menu now shows three ways to quit your current game
+
 v2.7.4:
 -------
 - Virtual pad control improvements

@@ -11,7 +11,7 @@ Achievements::Achievements()
     mTodos["Pesty"] = 100;
     mTodos["Clogged Toilet"] = 1;
     mTodos["A foot ahead"] = 1;
-    mTodos["What a find"] = 0;
+    //mTodos["What a find"] = 0;
     mTodos["Well hidden"] = 10;
     mTodos["For a good start"] = 10;
     mTodos["To save the world"] = 10;
@@ -24,8 +24,8 @@ Achievements::Achievements()
     mTodos["More than life"] = 10;
 }
 
-void Achievements::addTask(const std::string &which,
-                           const int numTasks)
+void Achievements::addTaskCompletion(const std::string &which,
+                                     const int numTasks)
 {
     auto &curTask = mTodos[which];
 
@@ -77,7 +77,11 @@ void Achievements::operator<<(GsKit::ptree &invNode)
                 mTodos[first] = second;
             }
         }
-
     }
+}
 
+
+std::map<std::string, int> Achievements::getTodoMap()
+{
+    return mTodos;
 }

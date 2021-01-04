@@ -660,12 +660,6 @@ void CGameLauncher::showMessageBox(const std::string &text)
         yStart += 0.05f;
     }
 
-/*
-    mpMsgDialog->add(
-                new GsButton("Retry",
-                             GsRect<float>(0.2f, 0.85f, 0.2f, 0.05f),
-                             new GMSwitchToGameLauncher()));
-*/
     auto pOkButton = mpMsgDialog->add(
                         new GsButton("Ok",
                                    GsRect<float>(0.4f, 0.85f,

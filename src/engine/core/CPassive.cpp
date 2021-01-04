@@ -8,6 +8,7 @@
 
 #include "CPassive.h"
 #include "engine/core/CBehaviorEngine.h"
+#include "engine/CGameLauncher.h"
 #include <base/video/CVideoDriver.h>
 #include <widgets/GsMenuController.h>
 
@@ -20,7 +21,7 @@ CPassive::CPassive()
 {
     auto &keenFiles = gKeenFiles;
     CExeFile &ExeFile = keenFiles.exeFile;
-    mEndEpisode = false;
+    mBackToGameLauncher = false;
 	m_mode = INTRO;
 	m_Episode = ExeFile.getEpisode();
     m_DataDirectory = gKeenFiles.gameDir;
@@ -37,12 +38,12 @@ CPassive::~CPassive()
 
 void CPassive::pumpEvent(const CEvent *evPtr)
 {
-    if( dynamic_cast<const EventEndGamePlay*>(evPtr) )
+    if( dynamic_cast<const GMSwitchToGameLauncher*>(evPtr) )
     {
         // The last menu has been removed. Restore back the game status
         gBehaviorEngine.setPause(false);
         gMenuController.clearMenuStack();
-        mEndEpisode = true;
+        mBackToGameLauncher = true;
     }
 }
 
