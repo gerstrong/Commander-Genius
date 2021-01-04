@@ -45,7 +45,7 @@ uint16 obj_switch_151_flag = 0;
 
 
 uint8 move_platform_flag = 0;
-uint16 actor_tile_display_func_index = 0;
+DrawMode actor_tile_display_func_index = DrawMode::NORMAL;
 
 
 Tile *actor_tiles;
@@ -1265,7 +1265,7 @@ void actor_update(ActorData *actor, const bool draw_only)
         return;
     }
 
-    actor_tile_display_func_index = 0;
+    actor_tile_display_func_index = DrawMode::NORMAL;
     if (actor->count_down_timer != 0)
     {
         actor->count_down_timer = actor->count_down_timer - 1;
@@ -1330,7 +1330,7 @@ void actor_update(ActorData *actor, const bool draw_only)
 
     if (is_sprite_on_screen(actor->actorInfoIndex, actor->frame_num, actor->x, actor->y) != 0)
     {
-        actor_tile_display_func_index = 0;
+        actor_tile_display_func_index = DrawMode::NORMAL;
     }
 
     if(!draw_only)
@@ -1347,7 +1347,10 @@ void actor_update(ActorData *actor, const bool draw_only)
 
     if (actor_update_impl(actor, actor->actorInfoIndex, actor->frame_num, actor->x, actor->y) == 0 && actor_tile_display_func_index != 1)
     {
-        actorMan.display_sprite_maybe(actor->actorInfoIndex, actor->frame_num, actor->x, actor->y, actor_tile_display_func_index);
+        actorMan.display_sprite_maybe(actor->actorInfoIndex,
+                                      actor->frame_num,
+                                      actor->x, actor->y,
+                                      actor_tile_display_func_index);
     }
 
     return;
@@ -1486,11 +1489,13 @@ void ActorManager::setMapPtr(std::shared_ptr<CMap> &mapPtr)
     mpMap = mapPtr;
 }
 
+
+
 void ActorManager::display_sprite_maybe(const int actorInfoIndex,
                          const int frame_num,
                          const float x_pos,
                          const float y_pos,
-                         const int tile_display_func_index)
+                         const DrawMode draw_mode)
 {
     const auto scroll = mpMap->getScrollCoords(1);
 
@@ -1505,7 +1510,7 @@ void ActorManager::display_sprite_maybe(const int actorInfoIndex,
     TileInfo *info = &actor_sprites[actorInfoIndex].frames[frame_num];
     Tile *tile = &actor_tiles[info->tile_num];
 
-    if(tile_display_func_index == 4)
+    if(draw_mode == DrawMode::FLIPPED)
     {
         display_actor_sprite_flipped(info, x_pos, y_pos);
         return;
@@ -1520,23 +1525,23 @@ void ActorManager::display_sprite_maybe(const int actorInfoIndex,
 
             uint16 screen_x = (x_pos + x) * 8 - scroll.x;
             uint16 tile_attr = map_get_tile_attr(x_pos+x,y_pos - info->height + y + 1);
-            if(tile_display_func_index == 6) //FIXME
+            if(draw_mode == DrawMode::ON_DIALOG)
             {
+                screen_y = (y_pos - info->height + 1 + y) * 8;
                 screen_x = (x_pos + x + 1) * 8;
-                screen_y = (y_pos - info->height + y + 1) * 8;
                 video_draw_tile(tile, screen_x, screen_y);
             }
             else
             {
-                if(screen_x >= 8 && screen_x <= 304 && //FIXME need a better way of making sure we draw in the borders.
-                   screen_y >= 8 && screen_y < 152 &&
-                   (!(tile_attr & TILE_ATTR_IN_FRONT) || tile_display_func_index == 5 || tile_display_func_index == 6))
+                if(screen_x >= 0 && screen_x <= 320 && //FIXME need a better way of making sure we draw in the borders.
+                   screen_y >= 0 && screen_y < 160 &&
+                   (!(tile_attr & TILE_ATTR_IN_FRONT) || draw_mode == 5 || draw_mode == DrawMode::ON_DIALOG))
                 {
-                    if (tile_display_func_index == 2)
+                    if (draw_mode == DrawMode::SOLID_WHITE)
                     {
                         video_draw_tile_solid_white(tile, screen_x, screen_y);
                     }
-                    else if(tile_display_func_index == 3)
+                    else if(draw_mode == 3)
                     {
                         video_draw_tile_mode3(tile, screen_x, screen_y);
                     }

@@ -1147,7 +1147,7 @@ void Player::displaySprite(const int frame_num,
                screen_y >= 0 && screen_y < 160 &&
                !(map_get_tile_attr(x_pos+x,y_pos - info->height + y + 1) & TILE_ATTR_IN_FRONT))
             {
-                if(tile_display_func_index == 2)
+                if(tile_display_func_index == DrawMode::SOLID_WHITE)
                 {
                     video_draw_tile_solid_white(tile, screen_x, screen_y);
                 }

@@ -49,26 +49,26 @@ void actor_toss_update()
             {
                 if(at->counter != 11)
                 {
-                    actorMan.display_sprite_maybe(at->actorInfoIndex, 0, at->x, at->y, 4);
+                    actorMan.display_sprite_maybe(at->actorInfoIndex, 0, at->x, at->y, DrawMode::FLIPPED);
                 }
                 else
                 {
                     actor_add_new(at->actorInfoIndex, at->x, at->y);
-                    actorMan.display_sprite_maybe(at->actorInfoIndex, 0, at->x, at->y, 4);
+                    actorMan.display_sprite_maybe(at->actorInfoIndex, 0, at->x, at->y, DrawMode::FLIPPED);
                     at->actorInfoIndex = 0;
                 }
             }
             else
             {
                 actor_add_new(at->actorInfoIndex, at->x, at->y + 1);
-                actorMan.display_sprite_maybe(at->actorInfoIndex, 0, at->x, at->y + 1, 0);
+                actorMan.display_sprite_maybe(at->actorInfoIndex, 0, at->x, at->y + 1, DrawMode::NORMAL);
                 at->actorInfoIndex = 0;
             }
         }
         else
         {
             actor_add_new(at->actorInfoIndex, at->x, at->y + 1);
-            actorMan.display_sprite_maybe(at->actorInfoIndex, 0, at->x, at->y + 1, 0);
+            actorMan.display_sprite_maybe(at->actorInfoIndex, 0, at->x, at->y + 1, DrawMode::NORMAL);
             at->actorInfoIndex = 0;
         }
     }

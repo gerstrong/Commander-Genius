@@ -180,7 +180,7 @@ void effect_update_sprites(const bool draw_only)
                 }
                 else
                 {
-                    actorMan.display_sprite_maybe(sprite->actorInfoIndex, sprite->currentFrameNum, sprite->x, sprite->y, 0);
+                    actorMan.display_sprite_maybe(sprite->actorInfoIndex, sprite->currentFrameNum, sprite->x, sprite->y, DrawMode::NORMAL);
                 }
                 
 

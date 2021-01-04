@@ -62,7 +62,7 @@ extern uint16 obj_switch_151_flag;
 
 
 extern uint8 move_platform_flag;
-extern uint16 actor_tile_display_func_index;
+extern DrawMode actor_tile_display_func_index;
 
 int is_sprite_on_screen(int actorInfoIndex, int frame_num, int x_pos, int y_pos);
 BlockingType sprite_blocking_check(int blocking_dir, int actorInfoIndex, int frame_num, int x_pos, int y_pos);
@@ -90,7 +90,7 @@ public:
                               const int frame_num,
                               const float x_pos,
                               const float y_pos,
-                              const int tile_display_func_index);
+                              const DrawMode draw_mode);
 
 private:
 

@@ -84,7 +84,7 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
             {
                 actor->count_down_timer = 5;
                 play_sfx(6);
-                actor_tile_display_func_index = 2;
+                actor_tile_display_func_index = DrawMode::SOLID_WHITE;
 
                 actor->data_1 = actor->data_1 - 1;
                 if (actor->data_1 == 0)
@@ -126,7 +126,7 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
                 play_sfx(6);
 
                 actor->data_5 = actor->data_5 - 1;
-                actor_tile_display_func_index = 2;
+                actor_tile_display_func_index = DrawMode::SOLID_WHITE;
                 if (actor->data_5 != 0)
                 {
                     return 0;
@@ -233,7 +233,7 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
                 }
                 else
                 {
-                    actor_tile_display_func_index = 2;
+                    actor_tile_display_func_index = DrawMode::SOLID_WHITE;
 
                     if (actor->data_1 == 0)
                     {
@@ -261,7 +261,7 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
                 actor->data_5 = actor->data_5 - 1;
                 if (actor->data_5 != 0)
                 {
-                    actor_tile_display_func_index = 2;
+                    actor_tile_display_func_index = DrawMode::SOLID_WHITE;
                 }
                 else
                 {
@@ -289,7 +289,7 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
             {
                 actor->count_down_timer = 3;
                 play_sfx(6);
-                actor_tile_display_func_index = 2;
+                actor_tile_display_func_index = DrawMode::SOLID_WHITE;
                 if (actorInfoIndex != 0x76)
                 {
                     actor->data_5 = actor->data_5 - 1;
@@ -688,7 +688,7 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
 
             actor_toss_add_new(green_roamer_worm_tbl[sub_1106F() & 3], actor->x, actor->y + 1);
             play_sfx(0x11);
-            actor_tile_display_func_index = 2;
+            actor_tile_display_func_index = DrawMode::SOLID_WHITE;
 
             actor->data_2 = actor->data_2 - 1;
             if (actor->data_2 == 0)

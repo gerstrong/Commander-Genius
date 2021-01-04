@@ -26,6 +26,16 @@ typedef enum {
     DOWN  = 1,
     LEFT  = 2,
     RIGHT = 3
+
 } Direction;
+
+enum class DrawMode
+{
+    NORMAL = 0,
+    INVISIBLE = 1,
+    SOLID_WHITE = 2,
+    FLIPPED = 4,
+    ON_DIALOG = 6
+};
 
 #endif //COSMO_ENGINE_DEFINES_H
