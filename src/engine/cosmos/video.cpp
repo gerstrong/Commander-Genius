@@ -251,7 +251,7 @@ void video_draw_tile_solid_white(Tile *tile, uint16 x, uint16 y)
     }
 }
 
-void video_draw_tile_mode3(Tile *tile, uint16 x, uint16 y)
+void video_draw_tile_light(Tile *tile, uint16 x, uint16 y)
 {
     uint8 *pixel = (uint8 *)game_surface.surface->pixels + x + y * SCREEN_WIDTH;
     uint8 *tile_pixel = tile->pixels;

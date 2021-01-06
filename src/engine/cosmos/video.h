@@ -34,7 +34,7 @@ void set_colorKey_and_flush_gamesfc();
 
 void video_draw_tile(Tile *tile, uint16 x, uint16 y);
 void video_draw_tile_solid_white(Tile *tile, uint16 x, uint16 y);
-void video_draw_tile_mode3(Tile *tile, uint16 x, uint16 y);
+void video_draw_tile_light(Tile *tile, uint16 x, uint16 y);
 void video_draw_tile_with_clip_rect(Tile *tile, uint16 x, uint16 y, uint16 clip_x, uint16 clip_y, uint16 clip_w, uint16 clip_h);
 void video_draw_tile_flipped(Tile *tile, const uint16 x, const uint16 y);
 void video_draw_font_tile(Tile *tile, uint16 x, uint16 y, uint8 font_color);

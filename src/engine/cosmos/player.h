@@ -103,7 +103,7 @@ public:
     void displaySprite(const int frame_num,
                        const float x_pos,
                        const float y_pos,
-                       const int tile_display_func_index);
+                       const DrawMode tile_display_func_index);
 
     int updateSprite();
 

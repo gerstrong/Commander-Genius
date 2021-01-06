@@ -140,7 +140,10 @@ int blow_up_actor_with_bomb(int actorInfoIndex, int frame_num, int x_pos, int y_
     return 0;
 }
 
-void effect_add_sprite(int actorInfoIndex, int frame_num, int x_pos, int y_pos, int arg_8, int counter)
+void effect_add_sprite(int actorInfoIndex,
+                       int frame_num,
+                       int x_pos,
+                       int y_pos, int arg_8, int counter)
 {
     for(int i=0;i<MAX_EFFECT_SPRITES;i++)
     {
@@ -174,9 +177,8 @@ void effect_update_sprites(const bool draw_only)
             {
 
                 if(sprite->actorInfoIndex == 0x63)
-                {
-                    
-                    actorMan.display_sprite_maybe(sprite->actorInfoIndex, sprite->currentFrameNum, sprite->x, sprite->y, 5);
+                {                    
+                    actorMan.display_sprite_maybe(sprite->actorInfoIndex, sprite->currentFrameNum, sprite->x, sprite->y, DrawMode::SOLID);
                 }
                 else
                 {
@@ -367,11 +369,11 @@ void explode_effect_update_sprites(const bool draw_only)
             {
                 if(sprite->counter == 1)
                 {
-                    actorMan.display_sprite_maybe(sprite->actorInfoIndex, sprite->frame_num, sprite->x, sprite->y, 2);
+                    actorMan.display_sprite_maybe(sprite->actorInfoIndex, sprite->frame_num, sprite->x, sprite->y, DrawMode::SOLID_WHITE);
                 }
                 else
                 {
-                    actorMan.display_sprite_maybe(sprite->actorInfoIndex, sprite->frame_num, sprite->x, sprite->y, 4);
+                    actorMan.display_sprite_maybe(sprite->actorInfoIndex, sprite->frame_num, sprite->x, sprite->y, DrawMode::FLIPPED);
                 }
                 sprite->counter++;
                 if(sprite->counter > 40)
@@ -394,11 +396,15 @@ void explode_effect_update_sprites(const bool draw_only)
                 {
                     if(sprite->counter == 1)
                     {
-                        actorMan.display_sprite_maybe(sprite->actorInfoIndex, sprite->frame_num, sprite->x, sprite->y, 2);
+                        actorMan.display_sprite_maybe(sprite->actorInfoIndex,
+                                                      sprite->frame_num,
+                                                      sprite->x, sprite->y, DrawMode::SOLID_WHITE);
                     }
                     else
                     {
-                        actorMan.display_sprite_maybe(sprite->actorInfoIndex, sprite->frame_num, sprite->x, sprite->y, 4);
+                        actorMan.display_sprite_maybe(sprite->actorInfoIndex,
+                                                      sprite->frame_num,
+                                                      sprite->x, sprite->y, DrawMode::FLIPPED);
                     }
                     sprite->counter++;
                     if(sprite->counter > 40)
@@ -472,9 +478,13 @@ void struct6_update_sprites()
                 effect_add_sprite(0x17, 8, sprite->x + 1 + 1, sprite->y - 2, 0, 1);
             }
 
-            actorMan.display_sprite_maybe(0x1a, sprite->counter - (1 & 3), sprite->x, sprite->y, 0);
+            actorMan.display_sprite_maybe(0x1a,
+                                          sprite->counter - (1 & 3),
+                                          sprite->x, sprite->y, DrawMode::NORMAL);
 
-            if(gCosmoPlayer.checkCollisionWithActor(0x1a, sprite->counter - (1 & 3), sprite->x, sprite->y) != 0)
+            if(gCosmoPlayer.checkCollisionWithActor(0x1a,
+                                                    sprite->counter - (1 & 3),
+                                                    sprite->x, sprite->y) != 0)
             {
                 gCosmoPlayer.decreaseHealth();
             }

@@ -73,8 +73,8 @@ void actor_wt_133_boss_purple_15411(ActorData *actor)
 
             if(actor->has_moved_right_flag > 0x27)
             {
-                effect_add_sprite(0x61, 6, actor->x, actor->y, 8, DrawMode(1));
-                effect_add_sprite(0x61, 6, actor->x + 3, actor->y, 2, DrawMode(1));
+                effect_add_sprite(0x61, 6, actor->x, actor->y, 8, 1);
+                effect_add_sprite(0x61, 6, actor->x + 3, actor->y, 2, 1);
             }
         }
         return;
@@ -800,7 +800,7 @@ void actor_wt_big_yellow_spike(ActorData *actor)
                 actor->is_deactivated_flag_maybe = 1;
                 effect_add_sprite(0x61, 6, actor->x, actor->y, 1, 3);
                 play_sfx(0x1b);
-                actor_tile_display_func_index = 1;
+                actor_tile_display_func_index = DrawMode::INVISIBLE;
             }
         }
         else
@@ -1185,7 +1185,7 @@ void actor_wt_blue_platform(ActorData *actor)
 
                 if (actor->data_2 >= 5 && actor->data_2 < 8)
                 {
-                    actor_tile_display_func_index = 1;
+                    actor_tile_display_func_index = DrawMode::INVISIBLE;
                     actorMan.display_sprite_maybe(0x5b, 1, actor->x - (actor->data_2 - 5), actor->y, DrawMode::NORMAL);
 
                     actorMan.display_sprite_maybe(0x5b, 2, actor->x + actor->data_2 - 3, actor->y, DrawMode::NORMAL);
@@ -1226,7 +1226,7 @@ void actor_wt_blue_platform(ActorData *actor)
     {
         return;
     }
-    actor_tile_display_func_index = 1;
+    actor_tile_display_func_index = DrawMode::INVISIBLE;
     actorMan.display_sprite_maybe(0x5b, 1, actor->x + actor->data_2 - 2, actor->y, DrawMode::NORMAL);
     
     actorMan.display_sprite_maybe(0x5b, 2, actor->x + 4 - actor->data_2, actor->y, DrawMode::NORMAL);
@@ -1366,13 +1366,16 @@ void actor_wt_bomb(ActorData *actor)
         {
             actor->is_deactivated_flag_maybe = 1;
             exploding_balls_effect(actor->x - 2, actor->y + 1 + 1);
-            actor_tile_display_func_index = 1;
+            actor_tile_display_func_index = DrawMode::INVISIBLE;
 
             struct6_add_sprite(actor->x - 2, actor->y);
 
             if((actor->data_1 & 1) != 0 && actor->frame_num == 3)
             {
-                actorMan.display_sprite_maybe(0x18, actor->frame_num, actor->x, actor->y, 2);
+                actorMan.display_sprite_maybe(0x18,
+                                              actor->frame_num,
+                                              actor->x, actor->y,
+                                              DrawMode::SOLID_WHITE);
             }
         }
     }
@@ -1605,14 +1608,16 @@ void actor_wt_destructable_pedestal(ActorData *actor)
 {
     auto &actorMan = gActorMan;
 
-    actor_tile_display_func_index = 1;
+    actor_tile_display_func_index = DrawMode::INVISIBLE;
     int i=0;
     for(; i < actor->data_1;i++)
     {
-        actorMan.display_sprite_maybe(0xc0, 1, actor->x, actor->y - i, 0);
+        actorMan.display_sprite_maybe(0xc0, 1,
+                                      actor->x, actor->y - i, DrawMode::NORMAL);
     }
 
-    actorMan.display_sprite_maybe(0xc0, 0, actor->x - 2, actor->y - i, 0);
+    actorMan.display_sprite_maybe(0xc0, 0,
+                                  actor->x - 2, actor->y - i, DrawMode::NORMAL);
 
     map_write_row_of_tiles(0x48, 5, actor->x - 2, actor->y - i);
 
@@ -1749,7 +1754,7 @@ void actor_wt_egg_head(ActorData *actor)
     if(actor->data_2 == 1)
     {
         actor->is_deactivated_flag_maybe = 1;
-        actor_tile_display_func_index = 1;
+        actor_tile_display_func_index = DrawMode::INVISIBLE;
         actor_add_new(0x41, actor->x, actor->y);
 
         effect_add_sprite(0x4c, 1, actor->x, actor->y - 1, 8, 5);
@@ -1774,7 +1779,7 @@ void actor_wt_end_of_level_marker(ActorData *actor)
         }
     }
 
-    actor_tile_display_func_index = 1;
+    actor_tile_display_func_index = DrawMode::INVISIBLE;
     return;
 }
 
@@ -1788,7 +1793,7 @@ void actor_wt_energy_beam(ActorData *actor)
     {
         actor->data_4 = 0;
     }
-    actor_tile_display_func_index = 1;
+    actor_tile_display_func_index = DrawMode::INVISIBLE;
     if(energy_beam_enabled_flag == 0)
     {
         actor->is_deactivated_flag_maybe = 1;
@@ -1809,7 +1814,10 @@ void actor_wt_energy_beam(ActorData *actor)
                 break;
             }
 
-            actorMan.display_sprite_maybe(actor->actorInfoIndex, actor->data_4, actor->x + actor->data_1, actor->y, 0);
+            actorMan.display_sprite_maybe(actor->actorInfoIndex,
+                                          actor->data_4,
+                                          actor->x + actor->data_1,
+                                          actor->y, DrawMode::NORMAL);
         }
     }
     else
@@ -1827,7 +1835,10 @@ void actor_wt_energy_beam(ActorData *actor)
                 break;
             }
 
-            actorMan.display_sprite_maybe(actor->actorInfoIndex, actor->data_4, actor->x, actor->y - actor->data_1, 0);
+            actorMan.display_sprite_maybe(actor->actorInfoIndex,
+                                          actor->data_4,
+                                          actor->x, actor->y - actor->data_1,
+                                          DrawMode::NORMAL);
         }
     }
 }
@@ -1884,12 +1895,12 @@ void actor_wt_frozen_duke_nukum(ActorData *actor)
 {
     auto &actorMan = gActorMan;
 
-    actor_tile_display_func_index = 1;
+    actor_tile_display_func_index = DrawMode::INVISIBLE;
     int data_5;
     switch (actor->data_1) {
         case 0:
             if (!struct6_1B4FC(0xdd, 0, actor->x, actor->y)) {
-                actorMan.display_sprite_maybe(0xdd, 0, actor->x, actor->y, 0);
+                actorMan.display_sprite_maybe(0xdd, 0, actor->x, actor->y, DrawMode::NORMAL);
             } else {
                 explode_effect_add_sprite(0xdd, 6, actor->x, actor->y - 6);
                 explode_effect_add_sprite(0xdd, 7, actor->x + 4, actor->y);
@@ -1962,7 +1973,7 @@ void actor_wt_frozen_duke_nukum(ActorData *actor)
             }
             break;
         default:
-            actor_tile_display_func_index = 1;
+            actor_tile_display_func_index = DrawMode::INVISIBLE;
             break;
     }
 }
@@ -2325,7 +2336,7 @@ void actor_wt_hint_dialog(ActorData *actor)
     }
 
     actorMan.display_sprite_maybe(0x7d, actor->data_2, actor->x, actor->y, DrawMode::NORMAL);
-    actor_tile_display_func_index = 1;
+    actor_tile_display_func_index = DrawMode::INVISIBLE;
 
     if(gCosmoPlayer.checkCollisionWithActor(0x7d, 0, actor->x, actor->y - 2) != 0)
     {
@@ -2352,7 +2363,7 @@ void actor_wt_horizontal_flame(ActorData *actor)
     if(actor->data_1 != 0)
     {
         actor->data_1--;
-        actor_tile_display_func_index = 1;
+        actor_tile_display_func_index = DrawMode::INVISIBLE;
     }
     else
     {
@@ -2411,7 +2422,7 @@ void actor_wt_invisible_exit_marker_right(ActorData *actor)
         finished_level_flag_maybe = 1;
         return;
     }
-    actor_tile_display_func_index = 1;
+    actor_tile_display_func_index = DrawMode::INVISIBLE;
     return;
 }
 
@@ -2448,7 +2459,7 @@ void actor_wt_jaws_and_tongue(ActorData *actor)
         actor->data_1 = 0;
         actor->data_5 = 0;
     }
-    actor_tile_display_func_index = 1;
+    actor_tile_display_func_index = DrawMode::INVISIBLE;
     
     actorMan.display_sprite_maybe(actor->actorInfoIndex, 1, actor->x, actor->y, DrawMode::NORMAL);
     
@@ -2553,7 +2564,7 @@ void actor_wt_mini_ghost(ActorData *actor)
 
 void actor_wt_pink_eye_plant(ActorData *actor)
 {
-    actor_tile_display_func_index = actor->data_5;
+    actor_tile_display_func_index = DrawMode(actor->data_5);
     actor->data_2 = rand() % 0x28;
     if(actor->data_2 <= 0x25)
     {
@@ -2665,7 +2676,7 @@ void actor_wt_pink_slug(ActorData *actor)
 
 void actor_wt_pipe_transit_direction(ActorData *actor)
 {
-    actor_tile_display_func_index = 1;
+    actor_tile_display_func_index = DrawMode::INVISIBLE;
 }
 
 void actor_wt_plasma_energy_blue_sprite(ActorData *actor)
@@ -2884,7 +2895,7 @@ void actor_wt_question_mark_block(ActorData *actor)
 
 void actor_wt_red_blue_plant(ActorData *actor)
 {
-    actor_tile_display_func_index = actor->data_5;
+    actor_tile_display_func_index = DrawMode(actor->data_5);
     if(actor->data_2 == 1)
     {
         actor->frame_num = actor->frame_num + 1;
@@ -3081,7 +3092,7 @@ void actor_wt_retracting_spikes(ActorData *actor)
         {
             actor->data_1 = 1;
             play_sfx(9);
-            actor_tile_display_func_index = 1;
+            actor_tile_display_func_index = DrawMode::INVISIBLE;
         }
     }
     else
@@ -3091,7 +3102,7 @@ void actor_wt_retracting_spikes(ActorData *actor)
     }
     if(actor->frame_num == 2)
     {
-        actor_tile_display_func_index = 1;
+        actor_tile_display_func_index = DrawMode::INVISIBLE;
         return;
     }
     return;
@@ -3103,7 +3114,7 @@ void actor_wt_robot_with_blue_arc(ActorData *actor)
 
     static uint16 spark_frame_num = 0;
 
-    actor_tile_display_func_index = 1;
+    actor_tile_display_func_index = DrawMode::INVISIBLE;
     if (actor->data_2 == 0)
     {
         actor->data_5 = (actor->data_5 ? -1 : 0) + 1;
@@ -3428,7 +3439,7 @@ void actor_wt_rubber_wall(ActorData *actor)
     if (actor->data_2 != 0)
     {
         actor->is_deactivated_flag_maybe = 1;
-        actor_tile_display_func_index = 1;
+        actor_tile_display_func_index = DrawMode::INVISIBLE;
         explode_effect_add_sprite(0x40, 3, actor->x, actor->y - 8);
 
         explode_effect_add_sprite(0x40, 3, actor->x, actor->y - 7);
@@ -3651,7 +3662,7 @@ void actor_wt_security_robot(ActorData *actor)
 
 void actor_wt_short_dialog(ActorData *actor)
 {
-    actor_tile_display_func_index = 1;
+    actor_tile_display_func_index = DrawMode::INVISIBLE;
     if(actor->data_2 == 0)
     {
         if(actor->y <= gCosmoPlayer.yPos())
@@ -3667,7 +3678,7 @@ void actor_wt_short_dialog(ActorData *actor)
 
 void actor_wt_silver_robot(ActorData *actor)
 {
-    actor_tile_display_func_index = 3;
+    actor_tile_display_func_index = DrawMode::SOLID_LIGHT;
     if(actor->data_5 == 1)
     {
         actor_tile_display_func_index = DrawMode::NORMAL;
@@ -3820,7 +3831,7 @@ void actor_wt_small_red_plant(ActorData *actor)
 
 void actor_wt_smoke_rising(ActorData *actor)
 {
-    actor_tile_display_func_index = 1;
+    actor_tile_display_func_index = DrawMode::INVISIBLE;
     
     actor->data_1 = (uint16)(sub_1106F() & 0x1f);
     if(actor->data_1 == 0)
@@ -4499,7 +4510,7 @@ void actor_wt_teleporter(ActorData *actor)
 {
     auto &actorMan = gActorMan;
 
-    actor_tile_display_func_index = 1;
+    actor_tile_display_func_index = DrawMode::INVISIBLE;
     if(teleporter_counter == 0 || (cosmo_rand() & 1) == 0)
     {        
         actorMan.display_sprite_maybe(0x6b, 0, actor->x, actor->y, DrawMode::NORMAL);
@@ -4507,7 +4518,7 @@ void actor_wt_teleporter(ActorData *actor)
     else
     {
         
-        actorMan.display_sprite_maybe(0x6b, 0, actor->x, actor->y, 2);
+        actorMan.display_sprite_maybe(0x6b, 0, actor->x, actor->y, DrawMode::SOLID_WHITE);
     }
     if((sub_1106F() & 1) != 0)
     {
@@ -4687,7 +4698,7 @@ void actor_wt_floating_score_effect(ActorData *actor)
 {
     auto &actorMan = gActorMan;
 
-    actor_tile_display_func_index = 1;
+    actor_tile_display_func_index = DrawMode::INVISIBLE;
     actor->data_1++;
     actor->frame_num = (actor->frame_num ? -1 : 0) + 1;
     if(actor->data_1 > 0x1f)
@@ -4704,10 +4715,11 @@ void actor_wt_floating_score_effect(ActorData *actor)
     if(actor->data_1 == 0x64 || is_sprite_on_screen(actor->actorInfoIndex, actor->frame_num, actor->x, actor->y) == 0)
     {
         actor->is_deactivated_flag_maybe = 1;
-        actor_tile_display_func_index = 1;
+        actor_tile_display_func_index = DrawMode::INVISIBLE;
     }
 
-    actorMan.display_sprite_maybe(actor->actorInfoIndex, actor->frame_num, actor->x, actor->y, 5);
+    actorMan.display_sprite_maybe(actor->actorInfoIndex,
+                                  actor->frame_num, actor->x, actor->y, DrawMode::SOLID);
     return;
 }
 
@@ -4715,7 +4727,7 @@ void actor_wt_speech_bubble(ActorData *actor)
 {
     auto &actorMan = gActorMan;
 
-    actor_tile_display_func_index = 1;
+    actor_tile_display_func_index = DrawMode::INVISIBLE;
     if(actor->data_1 == 0)
     {
         play_sfx(0x39);
@@ -4728,7 +4740,10 @@ void actor_wt_speech_bubble(ActorData *actor)
     actor->data_1++;
     if(actor->data_1 != 0x14)
     {
-        actorMan.display_sprite_maybe(actor->actorInfoIndex, 0, gCosmoPlayer.xPos() - 1, gCosmoPlayer.yPos() - 5, 5);
+        actorMan.display_sprite_maybe(actor->actorInfoIndex, 0,
+                                      gCosmoPlayer.xPos() - 1,
+                                      gCosmoPlayer.yPos() - 5,
+                                      DrawMode::SOLID);
     }
     else
     {
@@ -4747,7 +4762,7 @@ void actor_wt_unknown_232(ActorData *actor)
     actor->frame_num = unk_232_frame_num_tbl[actor->data_1 & 3];
     if(actor->data_1 > 0xc8 && (actor->data_1 & 1) != 0)
     {
-        actor_tile_display_func_index = 1;
+        actor_tile_display_func_index = DrawMode::INVISIBLE;
     }
     
     if(actor->data_1 != 0xf0)
@@ -4759,7 +4774,7 @@ void actor_wt_unknown_232(ActorData *actor)
     else
     {
         actor->is_deactivated_flag_maybe = 1;
-        actor_tile_display_func_index = 1;
+        actor_tile_display_func_index = DrawMode::INVISIBLE;
         byte_32EB8 = 0;
     }
 }

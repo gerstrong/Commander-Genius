@@ -34,7 +34,9 @@ enum class DrawMode
     NORMAL = 0,
     INVISIBLE = 1,
     SOLID_WHITE = 2,
+    SOLID_LIGHT = 3,
     FLIPPED = 4,
+    SOLID = 5,
     ON_DIALOG = 6
 };
 

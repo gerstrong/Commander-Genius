@@ -280,7 +280,7 @@ bool executeLogics()
 
         if (game_play_mode != PLAY_GAME)
         {
-            actorMan.display_sprite_maybe(0x10a, 0, 17, 4, 6); //DEMO sign.
+            actorMan.display_sprite_maybe(0x10a, 0, 17, 4, DrawMode::ON_DIALOG); //DEMO sign.
         }
 
         if (show_monster_attack_hint == 1)

@@ -86,11 +86,11 @@ void display_mud_fountains()
     for (int i = 0; i < num_mud_fountains; i++)
     {
         MudFountain *mud_fountain = &mud_fountain_tbl[i];
-        actorMan.display_sprite_maybe(0x4f, frame_num & 1, mud_fountain->x, mud_fountain->y + 1, 0);
+        actorMan.display_sprite_maybe(0x4f, frame_num & 1, mud_fountain->x, mud_fountain->y + 1, DrawMode::NORMAL);
 
         for (int j = 0; j < mud_fountain->current_height + 1; j++)
         {
-            actorMan.display_sprite_maybe(0x4f, (frame_num & 1) + 1 + 1, mud_fountain->x + 1, mud_fountain->y + j + 1, 0);
+            actorMan.display_sprite_maybe(0x4f, (frame_num & 1) + 1 + 1, mud_fountain->x + 1, mud_fountain->y + j + 1, DrawMode::NORMAL);
 
             if (gCosmoPlayer.checkCollisionWithActor(0x4f, 2, mud_fountain->x + 1, mud_fountain->y + j + 1) != 0)
             {

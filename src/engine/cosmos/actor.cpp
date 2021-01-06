@@ -1277,7 +1277,7 @@ void actor_update(ActorData *actor, const bool draw_only)
         {
             return;
         }
-        actor_tile_display_func_index = 1;
+        actor_tile_display_func_index = DrawMode::INVISIBLE;
     }
     else
     {
@@ -1345,7 +1345,8 @@ void actor_update(ActorData *actor, const bool draw_only)
         return;
     }
 
-    if (actor_update_impl(actor, actor->actorInfoIndex, actor->frame_num, actor->x, actor->y) == 0 && actor_tile_display_func_index != 1)
+    if (actor_update_impl(actor, actor->actorInfoIndex, actor->frame_num, actor->x, actor->y) == 0 &&
+            actor_tile_display_func_index != DrawMode::INVISIBLE)
     {
         actorMan.display_sprite_maybe(actor->actorInfoIndex,
                                       actor->frame_num,
@@ -1535,15 +1536,15 @@ void ActorManager::display_sprite_maybe(const int actorInfoIndex,
             {
                 if(screen_x >= 0 && screen_x <= 320 && //FIXME need a better way of making sure we draw in the borders.
                    screen_y >= 0 && screen_y < 160 &&
-                   (!(tile_attr & TILE_ATTR_IN_FRONT) || draw_mode == 5 || draw_mode == DrawMode::ON_DIALOG))
+                   (!(tile_attr & TILE_ATTR_IN_FRONT) || draw_mode == DrawMode::SOLID || draw_mode == DrawMode::ON_DIALOG))
                 {
                     if (draw_mode == DrawMode::SOLID_WHITE)
                     {
                         video_draw_tile_solid_white(tile, screen_x, screen_y);
                     }
-                    else if(draw_mode == 3)
+                    else if(draw_mode == DrawMode::SOLID_LIGHT)
                     {
-                        video_draw_tile_mode3(tile, screen_x, screen_y);
+                        video_draw_tile_light(tile, screen_x, screen_y);
                     }
                     else
                     {

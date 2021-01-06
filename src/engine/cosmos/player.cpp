@@ -1103,11 +1103,11 @@ void Player::loadTiles()
 void Player::displaySprite(const int frame_num,
                            const float x_pos,
                            const float y_pos,
-                           const int tile_display_func_index)
+                           const DrawMode tile_display_func_index)
 {
     const auto scroll = mpMap->getScrollCoords(1);
 
-    if(tile_display_func_index == 6)
+    if(tile_display_func_index == DrawMode::ON_DIALOG)
     {
         TileInfo *info = &player_sprites[0].frames[frame_num];
         Tile *tile = &player_tiles[info->tile_num];
@@ -1205,11 +1205,11 @@ int Player::updateSprite()
         if (player_fall_off_map_bottom_counter > 12 && player_fall_off_map_bottom_counter < 0x13)
         {
             actorMan.display_sprite_maybe(0xde, byte_28FAC, player_x_pos - 1,
-                                       player_y_pos - player_fall_off_map_bottom_counter + 13, 5);
+                                       player_y_pos - player_fall_off_map_bottom_counter + 13, DrawMode::SOLID);
         }
         if (player_fall_off_map_bottom_counter > 0x12)
         {
-            actorMan.display_sprite_maybe(0xde, byte_28FAC, player_x_pos - 1, player_y_pos - 6, 5);
+            actorMan.display_sprite_maybe(0xde, byte_28FAC, player_x_pos - 1, player_y_pos - 6, DrawMode::SOLID);
         }
         if (player_fall_off_map_bottom_counter > 0x1e)
         {
@@ -1227,12 +1227,14 @@ int Player::updateSprite()
             {
                 if (player_invincibility_counter > 0x28)
                 {
-                    displaySprite(player_direction + 15, player_x_pos, player_y_pos, 0);
+                    displaySprite(player_direction + 15,
+                                  player_x_pos, player_y_pos, DrawMode::NORMAL);
                 }
             }
             else
             {
-                displaySprite(player_direction + 15, player_x_pos, player_y_pos, 2);
+                displaySprite(player_direction + 15,
+                              player_x_pos, player_y_pos, DrawMode::SOLID_WHITE);
             }
             if (player_invincibility_counter != 0)
             {
@@ -1242,14 +1244,15 @@ int Player::updateSprite()
             {
                 if (player_is_being_pushed_flag != 0)
                 {
-                    displaySprite((uint8)player_push_frame_num, player_x_pos, player_y_pos, 0);
+                    displaySprite((uint8)player_push_frame_num,
+                                  player_x_pos, player_y_pos, DrawMode::NORMAL);
                 }
                 else
                 {
                     displaySprite(player_direction + player_sprite_dir_frame_offset,
                                           player_x_pos,
                                           player_y_pos,
-                                          0);
+                                          DrawMode::NORMAL);
                 }
             }
         }
@@ -1270,7 +1273,8 @@ int Player::updateSprite()
                     player_y_pos = player_y_pos - 1;
                     player_death_counter = player_death_counter + 1;
 
-                    displaySprite((player_death_counter & 1u) + 0x2e, player_x_pos - 1, player_y_pos, 5);
+                    displaySprite((player_death_counter & 1u) + 0x2e,
+                                  player_x_pos - 1, player_y_pos, DrawMode::SOLID);
                     if (player_death_counter > 0x24)
                     {
                         load_savegame_file('T');
@@ -1287,7 +1291,8 @@ int Player::updateSprite()
                 }
                 player_death_counter = player_death_counter + 1;
 
-                displaySprite((player_death_counter & 1u) + 0x2e, player_x_pos - 1, player_y_pos, 5);
+                displaySprite((player_death_counter & 1u) + 0x2e,
+                              player_x_pos - 1, player_y_pos, DrawMode::SOLID);
             }
         }
     }
