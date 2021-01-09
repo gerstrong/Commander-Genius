@@ -16,7 +16,8 @@ const int green_roamer_worm_tbl[] = {0xAC, 0x22, 0xB0, 0xAE};
 
 int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x_pos, int y_pos)
 {
-    if (is_sprite_on_screen(actorInfoIndex, frame_num, x_pos, y_pos) == 0 || actorInfoIndex == 0xdd) //duke nukum
+    if (!is_sprite_on_screen(actorInfoIndex, frame_num, x_pos, y_pos)
+            || actorInfoIndex == 0xdd) //duke nukum
     {
         return 1;
     }

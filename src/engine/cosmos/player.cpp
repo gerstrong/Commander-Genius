@@ -503,7 +503,8 @@ void Player::handleInput()
                 if(player_movement_status == BLOCKED)
                 {
                     player_x_pos = player_x_pos + 1;
-                    if(checkMovement(1, player_x_pos, player_y_pos + 1) == NOT_BLOCKED && mIsGrabbingWall)
+                    if(checkMovement(1, player_x_pos, player_y_pos + 1) == NOT_BLOCKED &&
+                            mIsGrabbingWall)
                     {
                         player_hanging_on_wall_direction = 2;
                         player_bounce_flag_maybe = 0;
@@ -1363,7 +1364,7 @@ int Player::checkCollisionWithActor(const int actorInfoIndex,
 
 int Player::bounceInAir(int bounce_height)
 {
-    static int word_2CAF6 = 0;
+    static int player_bounce_height_counter_in_air = 0;
 
     if(player_death_counter != 0 || player_walk_anim_index != 0)
     {
@@ -1375,7 +1376,7 @@ int Player::bounceInAir(int bounce_height)
             word_2E1E8 != 0)
     {
         player_bounce_height_counter = bounce_height + 1;
-        word_2CAF6 = bounce_height + 1;
+        player_bounce_height_counter_in_air = player_bounce_height_counter;
         player_bounce_flag_maybe = 1;
         gCosmoPlayer.resetWalkCycle();
         if(bounce_height <= 0x12)
@@ -1393,7 +1394,7 @@ int Player::bounceInAir(int bounce_height)
         }
         else
         {
-            num_hits_since_touching_ground = num_hits_since_touching_ground + 1;
+            num_hits_since_touching_ground++;
             if(num_hits_since_touching_ground == 10)
             {
                 num_hits_since_touching_ground = 0;
@@ -1403,7 +1404,7 @@ int Player::bounceInAir(int bounce_height)
         return 1;
     }
 
-    if(word_2CAF6 - 2 >= player_bounce_height_counter)
+    if(player_bounce_height_counter_in_air - 2 >= player_bounce_height_counter)
     {
         return 0;
     }

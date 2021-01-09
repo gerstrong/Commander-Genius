@@ -6,11 +6,13 @@
 #define COSMO_ENGINE_TILE_H
 
 #include "defines.h"
-typedef enum {
+
+enum TileType
+{
     SOLID,
     TRANSPARENT,
     FONT
-} TileType;
+} ;
 
 enum TileAttr
 {
@@ -24,21 +26,24 @@ enum TileAttr
     CAN_GRAB_WALL = 0x80,
 };
 
-typedef struct {
+struct Tile
+{
     TileType type;
     uint8 pixels[64];
-} Tile;
+};
 
-typedef struct {
+struct TileInfo
+{
     uint16 height;
     uint16 width;
     uint16 tile_num;
-} TileInfo;
+};
 
-typedef struct {
+typedef struct Sprite
+{
     uint16 num_frames;
     TileInfo *frames;
-} Sprite;
+};
 
 #define TILE_ATTR_NONE              0u
 #define TILE_ATTR_BLOCK_DOWN      0x1u
