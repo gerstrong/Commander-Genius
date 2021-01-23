@@ -59,12 +59,22 @@ Audio::~Audio()
     // Wait until callback function finishes its calls
     while(mCallbackRunning);
 
+    Mix_Quit();
 }
 
 bool Audio::init()
 {
 
-	gLogging.ftextOut("Starting the sound driver...<br>");
+    gLogging.ftextOut("Starting the audio driver...<br>");
+
+    // load support for the OGG and MOD sample/music formats
+    int initted=Mix_Init(MIX_INIT_OGG);
+    if( (initted & MIX_INIT_OGG) != MIX_INIT_OGG)
+    {
+        gLogging << "Mix_Init: failed to init ogg support. "
+                    "You might not heard certain music tracks or sounds"
+                    "if you are using HQP and special mods: " << Mix_GetError() << "\n";
+    }
 
     // now start up the SDL sound system
 	mAudioSpec.silence = 0;
@@ -104,7 +114,7 @@ bool Audio::init()
     {
         int n = Mix_GetNumChunkDecoders();
 
-        gLogging << "There are "<< n << " available chunk(sample) decoders" << "\n";
+        gLogging << "There are "<< n << " available chunk(sample) decoder(s):" << "\n";
 
         for(int i=0; i<n; ++i)
         {
@@ -113,7 +123,7 @@ bool Audio::init()
 
         n = Mix_GetNumMusicDecoders();
 
-        gLogging << "There are " << n << "available music decoders:" << "\n";
+        gLogging << "There are " << n << " available music decoder(s):" << "\n";
 
         for(int i=0; i<n; ++i)
         {
