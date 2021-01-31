@@ -79,7 +79,20 @@ public:
     }
 
 
+    template<typename T>
+    bool find()
+    {
+        for(auto &eventShr : m_EventList)
+        {
+            const auto *raw = dynamic_cast<T*>(eventShr.get());
+            if(raw)
+            {
+                return true;
+            }
+        }
 
+        return false;
+    }
 
     void wait(const float time)
     {

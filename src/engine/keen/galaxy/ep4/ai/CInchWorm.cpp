@@ -20,7 +20,7 @@ mInchWormContacts(0)
 	setupGalaxyObjectOnMap(0x2E9A, 0);
 	xDirection = LEFT;
 
-	performCollisions();
+    //performCollisions();
 	
 	processMove(0,-(1<<CSF));
 	processMove(0,1<<CSF);
@@ -50,11 +50,10 @@ bool CInchWorm::isNearby(CSpriteObject &theObject)
 	}
     else if( CInchWorm *inchworm = dynamic_cast<CInchWorm*>(&theObject) )
 	{
-        const int dx = inchworm->getXMidPos() - getXMidPos();
-		const int dy = inchworm->getYMidPos() - getYMidPos();
+        const auto delta = inchworm->getMidPos() - getMidPos();
 
-		int absdx = (dx<0) ? -dx : dx;
-		int absdy = (dy<0) ? -dy : dy;
+        int absdx = (delta.x<0) ? -delta.x : delta.x;
+        int absdy = (delta.y<0) ? -delta.y : delta.y;
 
 		if( absdx < CSF_DISTANCE_TO_FOLLOW_TOLERANCE &&
 		    absdy < CSF_DISTANCE_TO_FOLLOW_TOLERANCE )
@@ -62,9 +61,13 @@ bool CInchWorm::isNearby(CSpriteObject &theObject)
 			mInchWormContacts++;
 		}
 
+
 		if(mInchWormContacts >= 11)
 		{
-            gEventManager.add( new EventSpawnFoot(  getXMidPos(), getYUpPos(), 67 ) );
+            if(!gEventManager.find<EventSpawnFoot>())
+            {
+                gEventManager.add( new EventSpawnFoot(  getXMidPos(), getYUpPos(), 67 ) );
+            }
         }
     }
 
