@@ -783,7 +783,7 @@ auto CMap::getPlaneDataAt(const int plane,
 {
     assert(int(mScrollingPlanes.size()+1) > plane);
 
-    if(int(mScrollingPlanes.size()))
+    if(plane > 1)
     {
         return mInfoPlane.getMapDataAt(x>>CSF, y>>CSF);
     }

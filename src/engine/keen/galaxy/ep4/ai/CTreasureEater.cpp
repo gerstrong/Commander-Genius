@@ -146,8 +146,8 @@ bool CTreasureEater::lookForNextDestination()
 	const unsigned int low = 61;
 	const unsigned int high = 76;
 	for( unsigned int item = low ; item <= high ; item++ )
-	{
-	   if(mpMap->at(x,y,2) == item)
+	{        
+       if(mpMap->getInfoData({x,y}) == item)
 	   {
 	     unsigned int newY = getYPosition()>>CSF;
 	      if(mpMap->at(x,newY,1) == 0)

@@ -596,13 +596,13 @@ void ScrollingPlane::redrawPlaneAt(GsTilemap &tilemap,
                                    const Uint32 my)
 {
     auto &scrollSfc = gVideoDriver.getScrollSurfaceVec().at(mScrollSfcIdx);
-    SDL_Surface *ScrollSurface = scrollSfc.getScrollSurface().getSDLSurface();
+    SDL_Surface *ScrollSurfaceRaw = scrollSfc.getScrollSurface().getSDLSurface();
 
     // Go through the list and just draw all the tiles that need to be animated
-    const Uint32 num_h_tiles = ScrollSurface->h>>mTileSizeBase;
-    const Uint32 num_v_tiles = ScrollSurface->w>>mTileSizeBase;
+    const Uint32 num_h_tiles = ScrollSurfaceRaw->h>>mTileSizeBase;
+    const Uint32 num_v_tiles = ScrollSurfaceRaw->w>>mTileSizeBase;
 
-    const int drawMask = ScrollSurface->w-1;
+    const int drawMask = ScrollSurfaceRaw->w-1;
 
     if(  mx >= m_mapx &&
          my >= m_mapy &&
@@ -611,11 +611,16 @@ void ScrollingPlane::redrawPlaneAt(GsTilemap &tilemap,
     {
         const size_t tile = getMapDataAt(mx, my);
 
+        const Uint16 loc_x = (((mx-m_mapx)<<mTileSizeBase)+m_mapxstripepos)&drawMask;
+        const Uint16 loc_y = (((my-m_mapy)<<mTileSizeBase)+m_mapystripepos)&drawMask;
+
         if( tile != 0 || !mHasTransparentTile )
         {
-            const Uint16 loc_x = (((mx-m_mapx)<<mTileSizeBase)+m_mapxstripepos)&drawMask;
-            const Uint16 loc_y = (((my-m_mapy)<<mTileSizeBase)+m_mapystripepos)&drawMask;
-            tilemap.drawTile(ScrollSurface, loc_x, loc_y, tile);
+            tilemap.drawTile(ScrollSurfaceRaw, loc_x, loc_y, tile);
+        }
+        else if(tile == 0 || mHasTransparentTile)
+        {
+            tilemap.drawTransparentTile(scrollSfc, loc_x, loc_y);
         }
     }
 }
