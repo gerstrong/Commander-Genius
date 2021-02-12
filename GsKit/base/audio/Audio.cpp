@@ -72,7 +72,7 @@ bool Audio::init()
     if( (initted & MIX_INIT_OGG) != MIX_INIT_OGG)
     {
         gLogging << "Mix_Init: failed to init ogg support. "
-                    "You might not heard certain music tracks or sounds"
+                    "You might not hear certain music tracks or sounds"
                     "if you are using HQP and special mods: " << Mix_GetError() << "\n";
     }
 

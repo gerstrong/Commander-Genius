@@ -1,3 +1,7 @@
+v2.7.6:
+-------
+- Foot improvement on some mods. With Eight Accumlators now it works correclty.
+
 v2.7.5:
 -------
 - Achivement System improved. Now you can see what achivements you got
