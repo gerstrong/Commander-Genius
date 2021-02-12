@@ -14,7 +14,9 @@
 
 const int green_roamer_worm_tbl[] = {0xAC, 0x22, 0xB0, 0xAE};
 
-int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x_pos, int y_pos)
+int actor_update_impl(ActorData *actor, int actorInfoIndex,
+                      int frame_num,
+                      int x_pos, int y_pos)
 {
     if (!is_sprite_on_screen(actorInfoIndex, frame_num, x_pos, y_pos)
             || actorInfoIndex == 0xdd) //duke nukum
@@ -25,31 +27,35 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
     uint16 sprite_height = actor_get_tile_info(actorInfoIndex, frame_num)->height;
     uint16 sprite_width = actor_get_tile_info(actorInfoIndex, frame_num)->width;
 
-    word_2E1E8 = 0;
+    hitDetectionWithPlayer = false;
 
     auto &thePlayer = gCosmoPlayer;
+
+    const auto player_x = thePlayer.xPos();
+    const auto player_y = thePlayer.yPos();
+
     if (actorInfoIndex != 0x66)
     {
         int ax = word_2E180 <= 3 ? 0 : 1;
-;
-        if (ax + y_pos - sprite_height + 1 >= thePlayer.yPos() &&
-            y_pos - sprite_height <= thePlayer.yPos() &&
-            thePlayer.xPos() + 1 + 1 >= x_pos &&
-            thePlayer.xPos() + sprite_width - 1 >= thePlayer.xPos() &&
+
+        if (y_pos - sprite_height + 1 + ax >= player_y &&
+            y_pos - sprite_height <= player_y &&
+            player_x + 1 + 1 >= x_pos &&
+            x_pos + sprite_width - 1 >= player_x &&
             player_hoverboard_counter == 0)
         {
-            word_2E1E8 = 1;
+            hitDetectionWithPlayer = true;
         }
     }
     else
     {
         sprite_height = 7;
-        if (y_pos - sprite_height + 5 >= thePlayer.yPos() &&
-                y_pos - sprite_height <= thePlayer.yPos() &&
-            thePlayer.xPos() + 1 + 1 >= x_pos &&
-                x_pos + sprite_width - 1 >= thePlayer.xPos())
+        if ( y_pos - sprite_height + 5 >= player_y &&
+             y_pos - sprite_height     <= player_y &&
+             player_x + 1 + 1 >= x_pos &&
+             x_pos + sprite_width - 1 >= player_x)
         {
-            word_2E1E8 = 1;
+            hitDetectionWithPlayer = true;
         }
     }
 
@@ -390,7 +396,7 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
                     return 0;
                 }
                 byte_2E2E4 = 1;
-                word_2E1E8 = 1;
+                hitDetectionWithPlayer = true;
                 if (actor->count_down_timer != 0 || thePlayer.bounceInAir(0x14) == 0)
                 {//FIXME is this correct?
                 }
@@ -433,7 +439,7 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
             {
 
                 actor->has_moved_right_flag = 0x14;
-                word_2E1E8 = 0;
+                hitDetectionWithPlayer = false;
                 player_bounce_height_counter = 0;
                 byte_2E2E4 = 0;
                 byte_2E17C = 1;
@@ -807,7 +813,7 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex, int frame_num, int x
             byte_2E2E4 = 0;
             word_2E180 = 0;
             player_bounce_flag_maybe = 0;
-            word_2E1E8 = 0;
+            hitDetectionWithPlayer = false;
             player_bounce_height_counter = 0;
             num_hits_since_touching_ground = 0;
             if (!speech_bubble_hoverboard_shown_flag)

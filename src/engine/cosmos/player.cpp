@@ -61,7 +61,7 @@ uint8 player_has_shown_ouch_bubble_flag;
 int player_idle_counter;
 uint16 word_28F94;
 int word_2E180;
-int word_2E1E8;
+bool hitDetectionWithPlayer;
 int hide_player_sprite;
 int player_spring_jump_flag;
 int word_2E214;
@@ -1373,7 +1373,7 @@ int Player::bounceInAir(int bounce_height)
 
     if((player_bounce_flag_maybe == 0 || player_bounce_height_counter < 2) &&
             ((byte_2E2E4 != 0 && word_2E180 >= 0) || byte_2E182 > 6) &&
-            word_2E1E8 != 0)
+            hitDetectionWithPlayer)
     {
         player_bounce_height_counter = bounce_height + 1;
         player_bounce_height_counter_in_air = player_bounce_height_counter;
@@ -1410,7 +1410,7 @@ int Player::bounceInAir(int bounce_height)
     }
     else
     {
-        if(word_2E1E8 == 0)
+        if(!hitDetectionWithPlayer)
         {
             return 0;
         }
@@ -1591,7 +1591,7 @@ void Player::updateHoverboard()
     static uint16 drop_bomb_state = 0;
 
     resetWalkCycle();
-    word_2E1E8 = 0;
+    hitDetectionWithPlayer = false;
     player_bounce_height_counter = 0;
     byte_2E2E4 = 0;
     if (player_death_counter != 0)
@@ -1608,7 +1608,7 @@ void Player::updateHoverboard()
             byte_2E2E4 = 1;
             word_2E180 = 1;
             player_bounce_flag_maybe = 0;
-            word_2E1E8 = 1;
+            hitDetectionWithPlayer = true;
             bounceInAir(9);
             player_bounce_height_counter -= 2;
             play_sfx(2);
