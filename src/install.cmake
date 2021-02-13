@@ -39,6 +39,11 @@ IF(WIN32)
     option(PULL_DLLS "If your host system is some linux system with specific libraries, enable this. Otherwise it will copy the already provided dlls " OFF)
 
     if(PULL_DLLS)
+
+        # OpenSSL 1.1
+        INSTALL(FILES "${CMAKE_FIND_ROOT_PATH}/bin/libcrypto-1_1-x64.dll" DESTINATION "${APPDIR}")
+        INSTALL(FILES "${CMAKE_FIND_ROOT_PATH}/bin/libssl-1_1-x64.dll" DESTINATION "${APPDIR}")
+
         INSTALL(FILES "${CMAKE_FIND_ROOT_PATH}/bin/libcurl-4.dll" DESTINATION "${APPDIR}")
         INSTALL(FILES "${CMAKE_FIND_ROOT_PATH}/bin/zlib1.dll" DESTINATION "${APPDIR}")
 

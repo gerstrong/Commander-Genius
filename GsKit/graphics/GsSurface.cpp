@@ -200,9 +200,9 @@ bool GsSurface::loadImgInternal(const unsigned char *data,
 {
     (void) name; // unused, maybe for later stuff
 
-    SDL_RWops *rw = SDL_RWFromMem(reinterpret_cast<void*>
-                                  (const_cast<unsigned char*>(data)),
-                                  int(size));
+    SDL_RWops *rw = SDL_RWFromConstMem(reinterpret_cast<void*>
+                                      (const_cast<unsigned char*>(data)),
+                                       int(size));
 
     // Load image at specified path
     auto tempSurface = IMG_Load_RW(rw, 0);

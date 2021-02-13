@@ -16,8 +16,6 @@
 class CEffects
 {
 public:
-	CEffects() :
-	mFinished(false) {}
 
     virtual void ponder(const float deltaT) = 0;
 
@@ -29,7 +27,7 @@ public:
 	virtual ~CEffects() {}
 
 protected:
-	bool mFinished;
+    bool mFinished = false;
 };
 
 #endif /* CEFFECTS_H_ */

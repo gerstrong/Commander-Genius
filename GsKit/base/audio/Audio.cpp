@@ -147,7 +147,7 @@ bool Audio::init()
     gLogging << "Opened audio at " << audio_rate << " Hz "
              << bits << " bit "
              << (audio_channels>1?"stereo":"mono")
-             << ", " << static_cast<int>(mAudioSpec.size) << " bytes audio buffer.\n";
+             << ", " << static_cast<int>(mAudioSpec.samples) << " bytes audio samples.\n";
 
     const unsigned int channels = 32;
     Mix_AllocateChannels(channels);

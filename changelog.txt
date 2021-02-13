@@ -2,6 +2,8 @@ v2.7.7:
 -------
 - Now you can configure the base url. If http does not work on your side,
   feel free to set it to https.
+- Update to SDL 2.0.14 for Windows builds
+- Some Memory cleanups
 
 v2.7.6:
 -------
