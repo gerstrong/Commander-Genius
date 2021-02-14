@@ -104,7 +104,9 @@ bool Audio::init()
                             mAudioSpec.format,
                             mAudioSpec.channels,
                             mAudioSpec.samples,
-                            nullptr, SDL_AUDIO_ALLOW_ANY_CHANGE) < 0 )
+                            nullptr,
+                            SDL_AUDIO_ALLOW_FREQUENCY_CHANGE |
+                            SDL_AUDIO_ALLOW_CHANNELS_CHANGE) < 0 )
     {
         gLogging << "Mix_OpenAudio: " << Mix_GetError() << "\n";
         return false;
