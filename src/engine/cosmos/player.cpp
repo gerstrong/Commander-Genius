@@ -150,7 +150,8 @@ BlockingType Player::checkMovement(int direction, int x_pos, int y_pos)
             {
                 tile_attr = map_get_tile_attr(x_pos, y_pos - i);
                 if (tile_attr & TILE_ATTR_BLOCK_LEFT)
-                {
+                {                    
+                    mIsGrabbingWall = true;
                     return BLOCKED;
                 }
 
@@ -174,6 +175,7 @@ BlockingType Player::checkMovement(int direction, int x_pos, int y_pos)
                 tile_attr = map_get_tile_attr(x_pos + 2, y_pos - i);
                 if (tile_attr & TILE_ATTR_BLOCK_RIGHT)
                 {
+                    mIsGrabbingWall = true;
                     return BLOCKED;
                 }
 
@@ -563,7 +565,8 @@ void Player::handleInput()
                 if(player_movement_status == BLOCKED)
                 {
                     player_x_pos = player_x_pos - 1;
-                    if(checkMovement(1, player_x_pos, player_y_pos + 1) == NOT_BLOCKED && mIsGrabbingWall)
+                    if(checkMovement(1, player_x_pos, player_y_pos + 1) == NOT_BLOCKED &&
+                            mIsGrabbingWall)
                     {
                         player_hanging_on_wall_direction = 3;
                         player_bounce_flag_maybe = 0;
