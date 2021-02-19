@@ -17,6 +17,9 @@
 
 #include <base/utils/property_tree/property_tree.h>
 #include <base/utils/property_tree/xml_parser.h>
+
+#include <fileio/CConfiguration.h>
+
 #include "../version.h"
 
 extern "C"
@@ -102,11 +105,33 @@ int downloadFile(const std::string &filename, int &progress,
 {
     progressPtr = &progress;
 
+    CConfiguration config;
+
+    if(!config.Parse())
+    {
+        return false;
+    }
+
+    std::string urlString;
+
 #ifdef FORCE_HTTPS
-    const std::string urlString = "https://downloads.sourceforge.net/project/clonekeenplus/Downloads/" + filename;
+    config.ReadString("store", "base-url", urlString, "https://downloads.sourceforge.net/project/clonekeenplus/Downloads");
 #else
-    const std::string urlString = "http://downloads.sourceforge.net/project/clonekeenplus/Downloads/" + filename;
+    config.ReadString("store", "base-url", urlString, "http://downloads.sourceforge.net/project/clonekeenplus/Downloads");
 #endif // FORCE_HTTPS
+
+    config.WriteString("store", "base-url", urlString);
+
+    gLogging.ftextOut( FONTCOLORS::GREEN, "base-url: %s<br>", urlString.c_str());
+
+    if(!config.saveCfgFile())
+    {
+        gLogging.ftextOut( FONTCOLORS::RED, "Error saving the configuration of base-url.<br>");
+    }
+
+
+    urlString = urlString + "/" + filename;
+
     const std::string outputPathTemp = JoinPaths(downloadDirPath, "temp" + filename);
     const std::string outputPath = JoinPaths(downloadDirPath, filename);
 

@@ -940,7 +940,7 @@ void CSpriteObject::processMoveBitRight()
 	if( (blockedr = checkSolidR(x1, x2, y1, y2)) == true)
 		return;
 
-    int slopeType;
+    int slopeType = 0;
 
 	// if we are here, the tiles aren't blocking us.
 	// TODO: Here we need the Object collision part

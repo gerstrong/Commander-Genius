@@ -53,8 +53,8 @@ public:
      */
     void renderStarWars();
 
-    void (CPassiveGalaxy::*processPonderMode)();
-    void (CPassiveGalaxy::*processRenderMode)();
+    void (CPassiveGalaxy::*processPonderMode)() = nullptr;
+    void (CPassiveGalaxy::*processRenderMode)() = nullptr;
 
     GsBitmap mBackgroundTitle;
     GsBitmap mBackgroundStarWars;
