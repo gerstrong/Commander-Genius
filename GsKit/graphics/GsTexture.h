@@ -109,6 +109,7 @@ public:
     {
         assert(mpTexture != nullptr);
         SDL_DestroyTexture( mpTexture );
+        mpTexture = nullptr;
     }
 
 

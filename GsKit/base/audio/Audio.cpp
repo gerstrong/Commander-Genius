@@ -104,7 +104,9 @@ bool Audio::init()
                             mAudioSpec.format,
                             mAudioSpec.channels,
                             mAudioSpec.samples,
-                            nullptr, SDL_AUDIO_ALLOW_ANY_CHANGE) < 0 )
+                            nullptr,
+                            SDL_AUDIO_ALLOW_FREQUENCY_CHANGE |
+                            SDL_AUDIO_ALLOW_CHANNELS_CHANGE) < 0 )
     {
         gLogging << "Mix_OpenAudio: " << Mix_GetError() << "\n";
         return false;
@@ -147,7 +149,7 @@ bool Audio::init()
     gLogging << "Opened audio at " << audio_rate << " Hz "
              << bits << " bit "
              << (audio_channels>1?"stereo":"mono")
-             << ", " << static_cast<int>(mAudioSpec.size) << " bytes audio buffer.\n";
+             << ", " << static_cast<int>(mAudioSpec.samples) << " bytes audio samples.\n";
 
     const unsigned int channels = 32;
     Mix_AllocateChannels(channels);

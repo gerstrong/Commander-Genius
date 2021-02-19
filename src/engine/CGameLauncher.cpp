@@ -816,7 +816,11 @@ void CGameLauncher::ponderGameSelDialog(const float deltaT)
                     fVer /= 100.0f;
                     mpVersionText->setText("Version: " + ftoa(fVer));
 
-                    mpDemoText->setText(entry.demo ? "Demo" : "");
+                    if(mpDemoText)
+                    {
+                        mpDemoText->setText(entry.demo ? "Demo" : "");
+                    }
+
 
                     // Now update the bitmap
                     if(mCurrentBmp)

@@ -12,7 +12,7 @@ GsTrueTypeFont::GsTrueTypeFont()
 
 GsTrueTypeFont::~GsTrueTypeFont()
 {
-    //close();
+    close();
 }
 
 bool GsTrueTypeFont::open(const std::string &fontName,
@@ -47,7 +47,7 @@ bool GsTrueTypeFont::openFromMem(const unsigned char *src,
 
     // Open the font
     auto voidPtr = reinterpret_cast<void*>(const_cast<unsigned char*>(src));
-    SDL_RWops *rw = SDL_RWFromMem( voidPtr, memSize );
+    SDL_RWops *rw = SDL_RWFromConstMem( voidPtr, memSize );
     mpFont = TTF_OpenFontRW( rw, 1, fontSize );
     if( mpFont == nullptr )
     {
@@ -82,7 +82,6 @@ void GsTrueTypeFont::render(GsSurface &sfc,
 
 void GsTrueTypeFont::close()
 {
-
     if(!mpFont)
         return;
 

@@ -201,7 +201,7 @@ void GsBitmap::setPerSurfaceAlpha(const Uint8 alpha)
 {
     mBitmapSurface.setAlpha(alpha);
 
-    Uint8 r, g, b;
+    Uint8 r=0, g=0, b=0;
     mBitmapSurface.readColorKey(r, g, b);
     mBitmapSurface.applyDisplayFormat();
     mBitmapSurface.setColorKey( r, g, b );
