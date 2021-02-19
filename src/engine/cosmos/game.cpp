@@ -112,7 +112,7 @@ void reset_game_state()
     byte_32EB8 = 0;
     palette_2E1EE = 0;
     palette_index = 0;
-    word_32EC2 = 0;
+    rnd_index = 0;
     player_fall_off_map_bottom_counter = 0;
     player_has_shown_ouch_bubble_flag = 0;
     byte_2E21C = 0;
@@ -123,7 +123,7 @@ void reset_game_state()
     //Actor values
     speech_bubble_hamburger_shown_flag = false;
     speech_bubble_red_plant_shown_flag = false;
-    speech_bubble_switch_61_shown_flag = false;
+    speech_bubble_special_switch_shown_flag = false;
     speech_bubble_clam_trap_shown_flag = false;
     speech_bubble_silver_robot_shown_flag = false;
     speech_bubble_purple_boss_shown_flag = false;

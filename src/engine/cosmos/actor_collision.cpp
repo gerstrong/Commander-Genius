@@ -245,7 +245,7 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex,
                     if (actor->data_1 == 0)
                     {
                         actor->data_2 = 0;
-                        actor->data_1 = (sub_1106F() & 1) + 1;
+                        actor->data_1 = (cosmo_random() & 1) + 1;
                     }
                 }
             }
@@ -693,7 +693,7 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex,
                 play_sfx(6);
             }
 
-            actor_toss_add_new(green_roamer_worm_tbl[sub_1106F() & 3], actor->x, actor->y + 1);
+            actor_toss_add_new(green_roamer_worm_tbl[cosmo_random() & 3], actor->x, actor->y + 1);
             play_sfx(0x11);
             actor_tile_display_func_index = DrawMode::SOLID_WHITE;
 
@@ -1107,7 +1107,7 @@ void actor_explode_container(ActorData *actor)
     explode_effect_add_sprite(actor->data_2, 2, actor->x + 3, actor->y);
 
     explode_effect_add_sprite(actor->data_2, 3, actor->x + 1 + 1, actor->y + 2);
-    if((sub_1106F() & 1) == 0)
+    if((cosmo_random() & 1) == 0)
     {
         play_sfx(0x3d);
     }

@@ -15,10 +15,10 @@
 ActorData actors[MAX_ACTORS];
 int total_num_actors = 0;
 
-uint16 word_2E17E = 0;
+uint16 question_mark_code = 0;
 bool speech_bubble_hamburger_shown_flag = false;
 bool speech_bubble_red_plant_shown_flag = false;
-bool speech_bubble_switch_61_shown_flag = false;
+bool speech_bubble_special_switch_shown_flag = false;
 bool speech_bubble_clam_trap_shown_flag = false;
 bool speech_bubble_silver_robot_shown_flag = false;
 bool speech_bubble_purple_boss_shown_flag = false;
@@ -30,7 +30,7 @@ bool speech_bubble_floor_spring_shown_flag = false;
 
 uint8 byte_32EB8 = 0;
 
-uint16 word_32EC2 = 0; //range 0 - 35
+uint16 rnd_index = 0; //range 0 - 35
 
 uint8 energy_beam_enabled_flag = 0;
 
@@ -52,7 +52,7 @@ Tile *actor_tiles;
 Sprite *actor_sprites;
 
 
-const uint16 word_28D9C[] = {
+const uint16 cosmo_rnd_seed[] = {
         31, 12, 17, 233,
         99, 8, 64, 12,
         199, 49, 5, 6,
@@ -67,14 +67,16 @@ const uint16 word_28D9C[] = {
 
 
 //TODO work out what this should be called.
-uint16 sub_1106F()
+uint16 cosmo_random()
 {
-    word_32EC2++;
-    if(word_32EC2 > 0x23)
+    rnd_index++;
+    if(rnd_index > 0x23)
     {
-        word_32EC2 = 0;
+        rnd_index = 0;
     }
-    return word_28D9C[word_32EC2] + mapwindow_x_offset + mapwindow_y_offset + word_32EC2
+
+    return cosmo_rnd_seed[rnd_index] +
+            mapwindow_x_offset + mapwindow_y_offset + rnd_index
             + gCosmoPlayer.xPos() + gCosmoPlayer.yPos();
 }
 
@@ -368,7 +370,7 @@ int actor_init(int actor_num, int image_index, int x_pos, int y_pos)
 
         case 62:
             actor_init_struct(actor_num, 0x3e, x_pos, y_pos, 1, 0, 0, 0, actor_wt_question_mark_block, 0, 0, 0, 0, 0);
-            word_2E17E = 0;
+            question_mark_code = 0;
             break;
 
         case 65:
@@ -595,7 +597,7 @@ int actor_init(int actor_num, int image_index, int x_pos, int y_pos)
             break;
 
         case 130:
-            actor_init_struct(actor_num, 0x82, x_pos, y_pos, 1, 0, 0, 0, actor_wt_crate_bomb_box, 0, 0, 0, 0, (sub_1106F() % 0x14) * 5 + 0x32);
+            actor_init_struct(actor_num, 0x82, x_pos, y_pos, 1, 0, 0, 0, actor_wt_crate_bomb_box, 0, 0, 0, 0, (cosmo_random() % 0x14) * 5 + 0x32);
             break;
 
         case 134:
@@ -1366,9 +1368,9 @@ void actor_update_all(const bool draw_only)
         actor_update(&actors[i], draw_only);
     }
 
-    if (word_2E17E != 0)
+    if (question_mark_code != 0)
     {
-        word_2E17E = 0;
+        question_mark_code = 0;
     }
     return;
 }

@@ -34,10 +34,10 @@ typedef struct ActorData
 
 //Data
 extern int total_num_actors;
-extern uint16 word_2E17E;
+extern uint16 question_mark_code;
 extern bool speech_bubble_hamburger_shown_flag;
 extern bool speech_bubble_red_plant_shown_flag;
-extern bool speech_bubble_switch_61_shown_flag;
+extern bool speech_bubble_special_switch_shown_flag;
 extern bool speech_bubble_clam_trap_shown_flag;
 extern bool speech_bubble_silver_robot_shown_flag;
 extern bool speech_bubble_purple_boss_shown_flag;
@@ -49,7 +49,7 @@ extern bool speech_bubble_floor_spring_shown_flag;
 
 extern uint8 byte_32EB8;
 
-extern uint16 word_32EC2;
+extern uint16 rnd_index;
 
 extern uint8 energy_beam_enabled_flag;
 
@@ -105,7 +105,7 @@ void display_sprite_maybe(const int actorInfoIndex,
                                 const float y_pos,
                                 const int tile_display_func_index);
 
-uint16 sub_1106F();
+uint16 cosmo_random();
 
 void actor_update_all(const bool draw_only);
 

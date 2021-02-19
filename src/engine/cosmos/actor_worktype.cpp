@@ -889,7 +889,7 @@ void actor_wt_blue_ball(ActorData *actor)
         if (actor->data_2 == 0x1a)
         {
             actor->data_2 = 0;
-            if (actor->y == gCosmoPlayer.yPos() || (sub_1106F() & 1) == 0)
+            if (actor->y == gCosmoPlayer.yPos() || (cosmo_random() & 1) == 0)
             {
                 if(actor->x < gCosmoPlayer.xPos() + 1 + 1)
                 {
@@ -1709,7 +1709,7 @@ void actor_wt_egg_head(ActorData *actor)
 {
     if(actor->data_2 == 0)
     {
-        if(sub_1106F() % 0x46 == 0 && actor->data_3 == 0)
+        if(cosmo_random() % 0x46 == 0 && actor->data_3 == 0)
         {
             actor->data_3 = 2;
         }
@@ -2219,7 +2219,7 @@ void actor_wt_green_roamer_worm(ActorData *actor)
 {
     if(actor->data_5 != 0)
     {
-        int si = sub_1106F() & 3;
+        int si = cosmo_random() & 3;
         if(si == 0)
         {
             if(sprite_blocking_check(0, 0x45, 0, actor->x, actor->y - 1) == 0)
@@ -2850,7 +2850,7 @@ void actor_wt_projectile_flashing_ball(ActorData *actor)
 
 void actor_wt_question_mark_block(ActorData *actor)
 {
-    if(word_2E17E != 0)
+    if(question_mark_code != 0)
     {
         actor->data_1 = 1;
         actor->update_while_off_screen_flag = 1;
@@ -2949,9 +2949,9 @@ void actor_wt_red_chomper_alien(ActorData *actor)
 {
     actor->data_4 = (actor->data_4 ? -1 : 0) + 1;
 
-    if(sub_1106F() % 0x5f != 0)
+    if(cosmo_random() % 0x5f != 0)
     {
-        if(sub_1106F() % 0x64 == 0)
+        if(cosmo_random() % 0x64 == 0)
         {
             actor->data_5 = 11;
         }
@@ -2988,7 +2988,7 @@ void actor_wt_red_chomper_alien(ActorData *actor)
             return;
         }
 
-        if((sub_1106F() & 1) == 0)
+        if((cosmo_random() & 1) == 0)
         {
             return;
         }
@@ -3568,7 +3568,7 @@ void actor_wt_security_robot(ActorData *actor)
     }
     if(brightness_effect_enabled_flag != 0)
     {
-        if(sub_1106F() % 0x32 > 0x30)
+        if(cosmo_random() % 0x32 > 0x30)
         {
             if(actor->data_4 == 0)
             {
@@ -3833,7 +3833,7 @@ void actor_wt_smoke_rising(ActorData *actor)
 {
     actor_tile_display_func_index = DrawMode::INVISIBLE;
     
-    actor->data_1 = (uint16)(sub_1106F() & 0x1f);
+    actor->data_1 = (uint16)(cosmo_random() & 0x1f);
     if(actor->data_1 == 0)
     {
         if(actor->data_5 == 0)
@@ -4054,7 +4054,7 @@ void actor_wt_stone_head(ActorData *actor)
 
 uint8 suction_cup_enemy_check_if_blocked(ActorData *actor, uint8 blocking_check)
 {
-    if ((sub_1106F() & 1) == 0)
+    if ((cosmo_random() & 1) == 0)
     {
         return 0;
     }
@@ -4116,7 +4116,7 @@ void actor_wt_suction_cup_alien_enemy(ActorData *actor)
             }
             else
             {
-                if (sub_1106F() % 0x32 == 0)
+                if (cosmo_random() % 0x32 == 0)
                 {
                     if (suction_cup_enemy_check_if_blocked(actor, 0) == 0)
                     {
@@ -4222,7 +4222,7 @@ void actor_wt_suction_cup_alien_enemy(ActorData *actor)
             }
             else
             {
-                if (sub_1106F() % 0x32 != 0)
+                if (cosmo_random() % 0x32 != 0)
                 {
                     if(actor->data_4 != 0)
                     {
@@ -4275,7 +4275,7 @@ void actor_wt_suction_cup_alien_enemy(ActorData *actor)
             }
             else
             {
-                if (sub_1106F() % 0x32 != 0)
+                if (cosmo_random() % 0x32 != 0)
                 {
                     if(actor->data_4 != 0)
                     {
@@ -4367,7 +4367,7 @@ void actor_wt_suction_cup_alien_enemy(ActorData *actor)
             }
             else
             {
-                if (sub_1106F() % 0x32 == 0)
+                if (cosmo_random() % 0x32 == 0)
                 {
                     if(suction_cup_enemy_check_if_blocked(actor, 1) == 0)
                     {
@@ -4464,10 +4464,10 @@ void actor_wt_switch_multi_use(ActorData *actor)
                     break;
 
                 case 61:
-                    word_2E17E = 4;
-                    if(!speech_bubble_switch_61_shown_flag)
+                    question_mark_code = 4;
+                    if(!speech_bubble_special_switch_shown_flag)
                     {
-                        speech_bubble_switch_61_shown_flag = true;
+                        speech_bubble_special_switch_shown_flag = true;
                         gCosmoPlayer.addSpeechBubble(WHOA);
                     }
                     break;
@@ -4520,7 +4520,7 @@ void actor_wt_teleporter(ActorData *actor)
         
         actorMan.display_sprite_maybe(0x6b, 0, actor->x, actor->y, DrawMode::SOLID_WHITE);
     }
-    if((sub_1106F() & 1) != 0)
+    if((cosmo_random() & 1) != 0)
     {
         actorMan.display_sprite_maybe(0x6b, (cosmo_rand() & 1) + 1, actor->x, actor->y, DrawMode::NORMAL);
     }
