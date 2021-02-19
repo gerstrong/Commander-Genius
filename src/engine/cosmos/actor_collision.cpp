@@ -395,7 +395,7 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex,
                 {
                     return 0;
                 }
-                byte_2E2E4 = 1;
+                riding_hoverboard = 1;
                 hitDetectionWithPlayer = true;
                 if (actor->count_down_timer != 0 || thePlayer.bounceInAir(0x14) == 0)
                 {//FIXME is this correct?
@@ -435,13 +435,13 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex,
             {
                 return 0;
             }
-            if (byte_2E2E4 != 0)
+            if (riding_hoverboard != 0)
             {
 
                 actor->has_moved_right_flag = 0x14;
                 hitDetectionWithPlayer = false;
                 player_bounce_height_counter = 0;
-                byte_2E2E4 = 0;
+                riding_hoverboard = 0;
                 byte_2E17C = 1;
                 hide_player_sprite = 1;
                 actor->has_moved_left_flag = 1;
@@ -752,7 +752,7 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex,
                 }
                 return 0;
             }
-            if (byte_2E2E4 != 0 && player_bounce_flag_maybe == 0)
+            if (riding_hoverboard != 0 && player_bounce_flag_maybe == 0)
             {
                 return 0;
             }
@@ -790,14 +790,14 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex,
                 {
                     teleporter_state_maybe = actor->data_5;
                     teleporter_counter = 15;
-                    byte_2E2E4 = 0;
+                    riding_hoverboard = 0;
                 }
                 player_is_teleporting_flag = 1;
             }
             return 1;
 
         case 113: // 145 PLAT:   Hoverboard
-            if (byte_2E2E4 == 0)
+            if (riding_hoverboard == 0)
             {
                 return 0;
             }
@@ -810,7 +810,7 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex,
             player_hoverboard_counter = 4;
             play_sfx(3);
             thePlayer.resetPushVariables();
-            byte_2E2E4 = 0;
+            riding_hoverboard = 0;
             word_2E180 = 0;
             player_bounce_flag_maybe = 0;
             hitDetectionWithPlayer = false;
@@ -899,7 +899,7 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex,
             {
                 return 0;
             }
-            if (byte_2E2E4 != 0)
+            if (riding_hoverboard != 0)
             {
                 actor->data_5 = 1;
                 byte_2E17C = 1;
@@ -991,14 +991,14 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex,
 
         case 1: // 33: floor spring
             if (actor->data_5 != 0 && actor->count_down_timer == 0 && player_hoverboard_counter == 0 &&
-                (byte_2E2E4 == 0 || player_bounce_flag_maybe != 0))
+                (riding_hoverboard == 0 || player_bounce_flag_maybe != 0))
             {
                 actor->count_down_timer = 2;
                 play_sfx(6);
                 actor->data_1 = 3;
                 player_bounce_height_counter = 0;
                 player_bounce_flag_maybe = 0;
-                byte_2E2E4 = 1;
+                riding_hoverboard = 1;
                 word_2E180 = 4;
                 byte_2E182 = 0;
             }
@@ -1014,7 +1014,7 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex,
             {
                 return 0;
             }
-            byte_2E2E4 = 1;
+            riding_hoverboard = 1;
             thePlayer.resetWalkCycle();
             thePlayer.bounceInAir(3);
 
@@ -1085,7 +1085,7 @@ int actor_update_impl(ActorData *actor, int actorInfoIndex,
                 if (actor->data_1 > 1)
                 {
                     thePlayer.setPos(thePlayer.xPos(), actor->y);
-                    byte_2E2E4 = 0;
+                    riding_hoverboard = 0;
                 }
                 return 0;
             }

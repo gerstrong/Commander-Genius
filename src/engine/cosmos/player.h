@@ -59,7 +59,7 @@ extern int word_32EAC;
 extern int word_32EB2;
 
 extern unsigned char byte_2E182;
-extern unsigned char byte_2E2E4;
+extern unsigned char riding_hoverboard;
 
 extern bool god_mode_flag;
 

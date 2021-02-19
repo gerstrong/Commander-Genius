@@ -94,7 +94,7 @@ void set_initial_game_state()
 void reset_game_state()
 {
     finished_game_flag_maybe = 0;
-    byte_2E2E4 = 1;
+    riding_hoverboard = 1;
     byte_2E182 = 0;
     word_2E180 = 1;
     finished_level_flag_maybe = 0;

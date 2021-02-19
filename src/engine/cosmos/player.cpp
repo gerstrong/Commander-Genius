@@ -70,7 +70,7 @@ int word_32EAC;
 int word_32EB2;
 
 unsigned char byte_2E182;
-unsigned char byte_2E2E4;
+unsigned char riding_hoverboard;
 
 bool god_mode_flag = false;
 uint8 show_monster_attack_hint = 0;
@@ -434,7 +434,7 @@ void Player::handleInput()
             bomb_key_pressed = 0;
         }
     }
-    if(byte_2E182 != 0 || bomb_key_pressed == 0 || byte_2E2E4 != 0 ||
+    if(byte_2E182 != 0 || bomb_key_pressed == 0 || riding_hoverboard != 0 ||
        player_hanging_on_wall_direction != 0 ||
        (jump_key_pressed != 0 && player_input_jump_related_flag == 0))
     {
@@ -512,7 +512,7 @@ void Player::handleInput()
                         player_bounce_flag_maybe = 0;
                         player_bounce_height_counter = 0;
                         play_sfx(4);
-                        byte_2E2E4 = 0;
+                        riding_hoverboard = 0;
                         byte_2E182 = 0;
                         word_2E180 = 0;
                         if(jump_key_pressed == 0)
@@ -536,7 +536,7 @@ void Player::handleInput()
                 {
                     if(checkMovement(1, player_x_pos, player_y_pos + 1) == NOT_BLOCKED)
                     {
-                        byte_2E2E4 = 0;
+                        riding_hoverboard = 0;
                         byte_2E182 = 0;
                         player_y_pos++;
                     }
@@ -573,7 +573,7 @@ void Player::handleInput()
                         player_bounce_height_counter = 0;
                         play_sfx(4);
                         byte_2E182 = 0;
-                        byte_2E2E4 = 0;
+                        riding_hoverboard = 0;
                         word_2E180 = 0;
                         if(jump_key_pressed == 0)
                         {
@@ -596,7 +596,7 @@ void Player::handleInput()
                 {
                     if(checkMovement(1, player_x_pos, player_y_pos + 1) == NOT_BLOCKED)
                     {
-                        byte_2E2E4 = 0;
+                        riding_hoverboard = 0;
                         word_2E180 = 0;
                         player_y_pos++;
                     }
@@ -612,7 +612,7 @@ void Player::handleInput()
             player_input_jump_related_flag = 0;
         }
         if(player_bounce_height_counter != 0 ||
-                (jump_key_pressed != 0 && byte_2E2E4 == 0 && player_input_jump_related_flag == 0) ||
+                (jump_key_pressed != 0 && riding_hoverboard == 0 && player_input_jump_related_flag == 0) ||
                 (player_hanging_on_wall_direction != 0 && jump_key_pressed != 0 && player_input_jump_related_flag == 0))
         {
             bool var_4 = false;
@@ -702,7 +702,6 @@ void Player::handleInput()
             {
                 if(byte_2E182 > 0 || player_bounce_flag_maybe != 0)
                 {
-                    //loc_1E420:
                     play_sfx(5);
                 }
                 player_bounce_height_counter = 0;
@@ -713,7 +712,7 @@ void Player::handleInput()
                     player_y_pos++;
                 }
                 player_y_pos++;
-                byte_2E2E4 = 1;
+                riding_hoverboard = 1;
                 if(jump_key_pressed != 0)
                 {
                     player_input_jump_related_flag = 1;
@@ -725,7 +724,7 @@ void Player::handleInput()
             {
                 if(byte_2E182 > 6)
                 {
-                    byte_2E2E4 = 1;
+                    riding_hoverboard = 1;
                     if(jump_key_pressed != 0)
                     {
                         player_input_jump_related_flag = 1;
@@ -737,16 +736,16 @@ void Player::handleInput()
         }
         if(player_hanging_on_wall_direction == 0)
         {
-            if(byte_2E2E4 != 0 && jump_key_pressed != 0)
+            if(riding_hoverboard != 0 && jump_key_pressed != 0)
             {
                 player_input_jump_related_flag = 1;
             }
-            if((jump_key_pressed == 0 || player_input_jump_related_flag != 0) && byte_2E2E4 == 0)
+            if((jump_key_pressed == 0 || player_input_jump_related_flag != 0) && riding_hoverboard == 0)
             {
-                byte_2E2E4 = 1;
+                riding_hoverboard = 1;
                 word_2E180 = 0;
             }
-            if(byte_2E2E4 != 0 && player_bounce_flag_maybe == 0)
+            if(riding_hoverboard != 0 && player_bounce_flag_maybe == 0)
             {
                 player_y_pos++;
                 if(checkMovement(1, player_x_pos, player_y_pos) != NOT_BLOCKED)
@@ -755,7 +754,7 @@ void Player::handleInput()
                     {
                         play_sfx(3);
                     }
-                    byte_2E2E4 = 0;
+                    riding_hoverboard = 0;
                     player_y_pos--;
                     byte_2E182 = 0;
                     if(jump_key_pressed == 0)
@@ -775,7 +774,7 @@ void Player::handleInput()
                     if(checkMovement(1, player_x_pos, player_y_pos) != NOT_BLOCKED)
                     {
                         play_sfx(3);
-                        byte_2E2E4 = 0;
+                        riding_hoverboard = 0;
                         player_y_pos--;
                         mapwindow_y_offset = mapwindow_y_offset - 1;
                         byte_2E182 = 0;
@@ -795,7 +794,7 @@ void Player::handleInput()
                     word_2E180 = word_2E180 + 1;
                 }
             }
-            if(byte_2E2E4 != 0 && word_2E180 == 1 && player_bounce_flag_maybe == 0)
+            if(riding_hoverboard != 0 && word_2E180 == 1 && player_bounce_flag_maybe == 0)
             {                
                 player_y_pos = player_y_pos - 1;
             }
@@ -838,7 +837,7 @@ void Player::handleInput()
 // node 0001e5dc-0001e5e1 #insn=2 use={} def={} in={ax, si, al, dl} out={ax, si, al, dl} pred={ 1DC0F} CONDJUMP target=0001e615 follow=0001e6bd
         //loc_1E5DC:
         if ((up_key_pressed != 0 || down_key_pressed != 0) && left_key_pressed == 0 && right_key_pressed == 0 &&
-            byte_2E2E4 == 0 && jump_key_pressed == 0)
+            riding_hoverboard == 0 && jump_key_pressed == 0)
         {
 // node 0001e615-0001e6a9 #insn=6 use={} def={} in={} out={} pred={ 1E5DC} FALLTHROUGH follow=0001e96f
             //loc_1E615:
@@ -893,7 +892,7 @@ void Player::handleInput()
         {
             if(player_hanging_on_wall_direction != 3)
             {
-                if((byte_2E2E4 == 0 || player_bounce_flag_maybe != 0) && (byte_2E182 <= 6 || byte_2E2E4 != 0))
+                if((riding_hoverboard == 0 || player_bounce_flag_maybe != 0) && (byte_2E182 <= 6 || riding_hoverboard != 0))
                 {
                     if((jump_key_pressed == 0 || player_input_jump_related_flag != 0) && player_bounce_flag_maybe == 0)
                     {
@@ -902,7 +901,7 @@ void Player::handleInput()
                             uint8 rvalue = (uint8)(cosmo_rand() % 0x32);
 
                             player_sprite_dir_frame_offset = 4;
-                            if(left_key_pressed == 0 && right_key_pressed == 0 && byte_2E2E4 == 0)
+                            if(left_key_pressed == 0 && right_key_pressed == 0 && riding_hoverboard == 0)
                             {
                                 updateIdleAnim();
                             }
@@ -915,7 +914,7 @@ void Player::handleInput()
                         }
                         else
                         {
-                            if(byte_2E2E4 == 0)
+                            if(riding_hoverboard == 0)
                             {
                                 player_idle_counter = 0;
                                 if((word_28F94 & 1u) != 0)
@@ -950,13 +949,13 @@ void Player::handleInput()
                 else
                 {
                     player_idle_counter = 0;
-                    if(player_bounce_flag_maybe != 0 || byte_2E2E4 != 0 || byte_2E182 <= 6)
+                    if(player_bounce_flag_maybe != 0 || riding_hoverboard != 0 || byte_2E182 <= 6)
                     {
                         if(word_2E180 < 10 || word_2E180 >= 0x19)
                         {
                             if(word_2E180 != 0x19)
                             {
-                                if(byte_2E2E4 != 0)
+                                if(riding_hoverboard != 0)
                                 {
                                     player_sprite_dir_frame_offset = 8;
                                 }
@@ -1087,7 +1086,7 @@ void Player::resetPushVariables()
     player_dont_push_while_jumping_flag = 0;
     player_bounce_flag_maybe = 0;
     player_bounce_height_counter = 0;
-    byte_2E2E4 = 1;
+    riding_hoverboard = 1;
     word_2E180 = 0;
 }
 
@@ -1328,7 +1327,7 @@ void Player::updateWalkAnim()
     {
         player_sprite_dir_frame_offset = player_walk_frame_tbl_maybe[player_walk_anim_index];// * ((player_walk_anim_index << 1) + player_walk_frame_tbl_maybe);
         player_walk_anim_index = player_walk_anim_index - 1;
-        byte_2E2E4 = 0;
+        riding_hoverboard = 0;
         if(player_walk_anim_index > 8)
         {
             gCosmoPlayer.resetWalkCycle();
@@ -1375,7 +1374,7 @@ int Player::bounceInAir(int bounce_height)
     }
 
     if((player_bounce_flag_maybe == 0 || player_bounce_height_counter < 2) &&
-            ((byte_2E2E4 != 0 && word_2E180 >= 0) || byte_2E182 > 6) &&
+            ((riding_hoverboard != 0 && word_2E180 >= 0) || byte_2E182 > 6) &&
             hitDetectionWithPlayer)
     {
         player_bounce_height_counter = bounce_height + 1;
@@ -1602,7 +1601,7 @@ void Player::updateHoverboard()
     resetWalkCycle();
     hitDetectionWithPlayer = false;
     player_bounce_height_counter = 0;
-    byte_2E2E4 = 0;
+    riding_hoverboard = 0;
     if (player_death_counter != 0)
     {
         return;
@@ -1614,7 +1613,7 @@ void Player::updateHoverboard()
         {
             player_input_jump_related_flag = 1;
             player_hoverboard_counter = 0;
-            byte_2E2E4 = 1;
+            riding_hoverboard = 1;
             word_2E180 = 1;
             player_bounce_flag_maybe = 0;
             hitDetectionWithPlayer = true;
