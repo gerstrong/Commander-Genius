@@ -34,7 +34,14 @@ is there.
 
 Keen Dreams is starting to work but still might have some issues.
 So far, you can play it to the end. Also the menu lacks of a lot of features.
-Please configure input and sounds using the other games.
+Please configure input and sounds using the other games. 
+
+Cosmo's Cosmic Adventure: Forbidden Planet is integrated into Commander Genius. 
+The engine for that game is somewhat playable and the levels with the 
+enemies work so far, but there is a lot do in order to get it working much better.
+At some point CG will fully support that game and provide smoother experience 
+with many more fps compared to the original. 
+Special Thanks to Eric Fry for his code!
 
 There is an alternative called Reflection Keen which supports Keen Dreams, on
 which the code is based.
@@ -50,7 +57,7 @@ The main goal of Commander Genius is to copy the original gameplay feeling as
 much as possible, and extend it further so you get a native implementation with
 even more features like:
 
-- Mod Support with nice extras
+- Mod Support with some extras using Lua
 - OpenGL Acceleration
 - SDL 2.0 Support
 - New graphical effects
@@ -80,21 +87,18 @@ Now modern hardware offers much more than what we had back in the 90s.
 Commander Genius tries to take advantage of that modern hardware and bring a bit
 of old school experience to the Commander Keen games.
 
-Because Keen was made for DOS, and we thought Linux could have more nice
+Because Keen was made for DOS and we thought Linux could have more nice
 platform games, here is an alternative for you.
-With mod support and more extensions for those, because DOS is not required, a
-lot more can be done.
 
-Yes, there also exists DOSBox, but this is a more native port without emulation.
-We want to get out of that DOS limit era.
-
-Imagine Commander Genius like a platform base for the Keen games how it would be
+Yes, there also exists DOSBox, but this is a native port without any emulation.
+We want to get out of that DOS limit era. Imagine Commander Genius like 
+a platform base for the Keen games how it would be
 on modern hardware. That means there are some differences. The physics are close
 to the original, but you might notice some of the details if you are an
 elite expert on original Keen games.  I think CG delivers a faster gameplay than
 the original ones.  Since the framerate for graphics is higher, it feels a bit
-more like that. Some people might not like that, so I recommend them to stick
-with DOSBox.
+more like that. Some people might not like that, for those I recommend sticking
+to DOSBox.
 
 Now, it is a bit hard to define what that experience is obviously, because many
 people experienced that gameplay differently in the past. Some people had
@@ -110,10 +114,7 @@ firing as an option.
 All buttons can be mapped to any input device in Commander Genius.
 Also the mouse can be used to some extent.
 
-Why did Gerstrong do that? Because he was bored some years ago. Similar to how
-some other projects get done and maintained by fans.
-
-The original Keen games also have some bugs, and given that the hardware was
+The original Keen games also have some bugs and given that the hardware was
 very limited back then, it has some weird frameskips too. There are many details
 that are different when playing Keen with Commander Genius. So the conclusion is
 as follows.
@@ -122,8 +123,11 @@ If you really want a vanilla feeling, even feel the lack of hardware support and
 eventual slowdowns, we encourage you to play Commander Keen on DOSBox.
 Many people are out there that think that to be the right way to play it.
 Also for some mods it might be the only way.
-Still, though, Commander Genius has a patching system in which some mods run
-very well.
+
+Still though, Commander Genius has a patching system in which some mods run
+very well. If you want to create a mod that is not cryptic with
+machine code based patches, use CG with Lua scripts. 
+It will make you more productive.
 
 Commander Genius wants to be more like a new jump'n'run game that interprets
 Commander Keen. Billy Blaze visits all the levels you played before in the
@@ -137,8 +141,7 @@ to experience Commander Keen in some new ways, then this software is for you!
 The first engine was CloneKeen by a developer named Caitlin Shaw.  Since the
 engine was left abandoned for the most part, Gerstrong took it and created the
 fork called CloneKeenPlus and fixed some problems CloneKeen had. This fork comes
-from the 0.83 Version. A 0.84 version has been released since. That code was
-never incorporated here, because it was never required.
+from the 0.83 Version.
 
 After CloneKeenPlus, Commander Genius was born.
 It is a complete rewrite of the engine in C++. The transition to Commander
@@ -650,6 +653,7 @@ suggestions:
 * Alexandre Detiste
 * Zear
 * Oet
+* Eric Fry (Cosmos engine)
 * Napalm (More Keen data structure information)
 * Malvineous
 * Clobber

@@ -42,7 +42,10 @@
 #include "keen/vorticon/VorticonEngine.h"
 #include "keen/galaxy/GalaxyEngine.h"
 #include "keen/dreams/dreamsengine.h"
+
+#ifdef BUILD_COSMOS
 #include "cosmos/CosmoEngine.h"
+#endif // BUILD_COSMOS
 
 
 /// Main Class implementation
