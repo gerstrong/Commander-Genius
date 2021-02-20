@@ -207,7 +207,8 @@ void CVorticonMapLoaderWithPlayer::loadSprites( Uint8 episode,
 	{
         for( size_t curmapy = 0; curmapy<mpMap->m_height ; curmapy++ )
         {
-            const size_t t = mpMap->getInfoData( GsVec2D<Uint32>(curmapx<<CSF, curmapy<<CSF) );
+            const size_t t = mpMap->getInfoData(
+                        GsVec2D<Uint32>(curmapx, curmapy) );
 
             if (mpMap->m_worldmap)
                 addWorldMapObject(t, curmapx, curmapy,  episode );
@@ -271,7 +272,7 @@ void CVorticonMapLoaderWithPlayer::addWorldMapObject(unsigned int t, Uint16 x, U
     switch(t)
     {
     case 0: break;       // blank
-    case 255:            // player start
+    case 0xFF:            // player start point
         if(!m_checkpointset)
         {
             for( auto &player : mPlayerContainer )
