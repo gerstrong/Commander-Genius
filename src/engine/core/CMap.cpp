@@ -737,7 +737,7 @@ void CMap::animateAllTiles()
     if(!m_animation_enabled)
         return;
 
-    // Some refreshes need to be forced. In this case everything is redrawn
+    // Some refreshes need to be forced. In such case everything is redrawn
     if(gVideoDriver.getRefreshSignal())
     {
         refreshStripes();

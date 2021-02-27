@@ -488,20 +488,6 @@ void CPassiveGalaxy::processStarWars()
             mplayer.play();
         }
     }
-    /*
-    const auto curTrack = mplayer.getCurTrack();
-
-    if(!mplayer.playing())
-    {
-        mplayer.load(mCurMusicTrack);
-        mplayer.play();
-    }
-
-    if(mCurMusicTrack != curTrack)
-    {
-        mplayer.load(mCurMusicTrack);
-        mCurMusicTrack = mplayer.getCurTrack();
-    }*/
 
     // If something is pressed at this section, open the menu
     if( !gEffectController.runningEffect() && !gMenuController.active() )

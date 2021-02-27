@@ -233,6 +233,7 @@ void GsApp::ponder(const float deltaT)
 
 void GsApp::render()
 {
+    gVideoDriver.clearSurfaces();
 
     if(mpCurEngine)
     {
