@@ -560,25 +560,13 @@ bool IsAbsolutePath(const std::string& path)
     // Not only windows uses : as separator, there are other OSes which use something
     // like sd:/ or mmc:/
 
+    if(path.empty())
+        return false;
+
     if(path.find(":") != path.npos)
         return true;
 
     return path[0] == '/';
-/*
-#ifdef WIN32
-	// The path must start with a drive letter
-	if (path.size() < 2)
-		return false;
-
-	return (isalpha((uchar)path[0]) && path[1] == ':');
-#else
-	// Must start with a slash
-	if (!path.size())
-		return false;
-
-	return path[0] == '/';
-#endif
-*/
 }
 
 
