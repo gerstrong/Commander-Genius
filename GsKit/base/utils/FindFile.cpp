@@ -128,13 +128,13 @@ bool IsFileAvailable(const std::string& f, bool absolute)
 	}
 
 	// remove trailing slashes
-	// don't remove them on WIN, if it is a drive-letter
+    // don't remove them if we have drive letters (C: or sd://)
 	while(abs_f.size() > 0 && (abs_f[abs_f.size()-1] == '\\' || abs_f[abs_f.size()-1] == '/'))
 	{
-#ifdef WIN32
-		if(abs_f.size() > 2 && abs_f[abs_f.size()-2] == ':') break;
-#endif
-		abs_f.erase(abs_f.size()-1);
+        if(abs_f.find(":") != abs_f.npos)
+            break;
+
+        abs_f.erase(abs_f.size()-1);
 	}
 
 	abs_f = Utf8ToSystemNative(abs_f);
@@ -216,7 +216,7 @@ drive_list GetDrives()
 	// perhaps not the best way
 	// home-dir of user is in other applications the default
 	// but it's always possible to read most other stuff
-	// and it's not uncommon that a user hase a shared dir like /mp3s
+    // and it's not uncommon that a user has a shared dir like /mp3s
 	drive_t tmp;
 	tmp.name = "/";
 	tmp.type = 0;
@@ -240,11 +240,12 @@ bool IsPathStatable(const std::string& f)
 	std::string abs_f = f;
 
 	// remove trailing slashes
-	// don't remove them on WIN, if it is a drive-letter
+    // don't remove them if there are drive letters involved ":"
 	while(abs_f.size() > 0 && (abs_f[abs_f.size()-1] == '\\' || abs_f[abs_f.size()-1] == '/')) {
-#ifdef WIN32
-		if(abs_f.size() > 2 && abs_f[abs_f.size()-2] == ':') break;
-#endif
+
+        if(abs_f.find(":") != abs_f.npos)
+            break;
+
 		abs_f.erase(abs_f.size()-1);
 	}
 
@@ -391,14 +392,12 @@ bool GetExactFileName(const std::string& abs_searchname,
 
 	std::string nextname = "";
 	std::string nextexactname = "";
-	size_t pos;
-
 	bool first_iter = true; // this is used in the bottom loop
 
 	// search in cache
 
 	// sname[0..pos-1] is left rest, excluding the /
-	pos = sname.size();
+    size_t pos = sname.size();
 	std::string rest;
 	while(true) {
 		rest = sname.substr(0,pos);
@@ -557,6 +556,15 @@ size_t FileSize(const std::string& path)
 // Checks if the given path is absolute
 bool IsAbsolutePath(const std::string& path)
 {
+    // Any path with with either ":" is absolute, or a slash at start is absolute
+    // Not only windows uses : as separator, there are other OSes which use something
+    // like sd:/ or mmc:/
+
+    if(path.find(":") != path.npos)
+        return true;
+
+    return path[0] == '/';
+/*
 #ifdef WIN32
 	// The path must start with a drive letter
 	if (path.size() < 2)
@@ -570,6 +578,7 @@ bool IsAbsolutePath(const std::string& path)
 
 	return path[0] == '/';
 #endif
+*/
 }
 
 
@@ -963,7 +972,8 @@ std::string GetAbsolutePath(const std::string &path) {
 		exactpath = path;
 
 	char buf[2048];
-	int len = GetFullPathName(Utf8ToSystemNative(exactpath).c_str(), sizeof(buf), buf, NULL);
+    int len = GetFullPathName(Utf8ToSystemNative(exactpath).c_str(),
+                              sizeof(buf), buf, nullptr);
 	fix_markend(buf);
 	if (len)
 		return SystemNativeToUtf8(buf);
@@ -1003,7 +1013,7 @@ bool PathListIncludes(const std::list<std::string>& pathlist, const std::string&
 // Returns the file contents as a string
 std::string GetFileContents(const std::string& path, bool absolute)
 {
-	FILE *fp = NULL;
+    FILE *fp = nullptr;
 	if (absolute)
 		fp = fopen(/*Utf8ToSystemNative(path)*/path.c_str(), "rb");
 	else
@@ -1161,22 +1171,7 @@ static int stdio_close(SDL_RWops *context)
 ////////////////
 // Creates SDL_RWops from a file pointer
 SDL_RWops *RWopsFromFP(FILE *fp, bool autoclose)  {
-/*#ifdef WIN32
-	// Taken from SDL code
-	SDL_RWops *rwops = SDL_AllocRW();
-	if ( rwops != NULL ) {
-		rwops->seek = stdio_seek;
-		rwops->read = stdio_read;
-		rwops->write = stdio_write;
-		rwops->close = stdio_close;
-		rwops->hidden.stdio.fp = fp;
-		rwops->hidden.stdio.autoclose = (int)autoclose;
-	}
-	return(rwops);
-
-#else*/
 	return SDL_RWFromFP(fp, (SDL_bool)autoclose);
-//#endif
 }
 
 bool Rename(const std::string& oldpath, const std::string& newpath) {

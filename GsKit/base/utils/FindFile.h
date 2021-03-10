@@ -84,8 +84,7 @@ inline bool S_ISLNK(unsigned short d)  { return (d & S_IFLNK) != 0; }
 
 struct drive_t {
 	std::string name;
-	unsigned int type;
-	drive_t() : type(0) {}
+    unsigned int type = 0;
 };
 
 typedef std::vector<drive_t> drive_list;
