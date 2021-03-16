@@ -90,7 +90,14 @@ public:
 
     void drawSprite(const int x, const int y, const int w, const int h, const Uint8 alpha=255 );
 
+    void drawSprite(const int x, const int y);
+
     void drawSprite(SDL_Surface *dst, const int x, const int y , const int w, const int h);
+
+    void drawSprite( SDL_Surface *dst,
+                               const int x,
+                               const int y );
+
     void _drawSprite(SDL_Surface *dst, GsSurface &src, const int x, const int y , const int w, const int h);
 
     void drawBlinkingSprite(const int x, const int y );

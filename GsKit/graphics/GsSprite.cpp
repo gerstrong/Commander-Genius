@@ -676,6 +676,11 @@ void GsSprite::drawSprite(const int x,
     drawSprite( gVideoDriver.getBlitSurface(), x, y, w, h );
 }
 
+void GsSprite::drawSprite(const int x, const int y)
+{
+    drawSprite( gVideoDriver.getBlitSurface(), x, y );
+}
+
 void drawSprite(SDL_Surface *dst, const int x, const int y , const int w, const int h);
 void _drawSprite(SDL_Surface *dst, SDL_Surface *src, const int x, const int y , const int w, const int h);
 
@@ -686,6 +691,13 @@ void GsSprite::drawSprite( SDL_Surface *dst,
                            const int h )
 {
     _drawSprite(dst, mSurface, x,y, w, h);
+}
+
+void GsSprite::drawSprite( SDL_Surface *dst,
+                           const int x,
+                           const int y )
+{
+    _drawSprite(dst, mSurface, x,y, getWidth(), getHeight());
 }
 
 
