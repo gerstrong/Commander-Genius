@@ -81,42 +81,42 @@ void CInput::resetControls(const int player)
 
 #ifdef __SWITCH__
 	// Switch gamepad mapping using two joycons
-	curInput[IC_LEFT].joyeventtype = ETYPE_JOYBUTTON;
+    curInput[IC_LEFT].joyeventtype = EType::JOYBUTTON;
 	curInput[IC_LEFT].joybutton = 12;
 	curInput[IC_LEFT].which = 0;
-	curInput[IC_UP].joyeventtype = ETYPE_JOYBUTTON;
+    curInput[IC_UP].joyeventtype = EType::JOYBUTTON;
 	curInput[IC_UP].joybutton = 13;
 	curInput[IC_UP].which = 0;
-	curInput[IC_RIGHT].joyeventtype = ETYPE_JOYBUTTON;
+    curInput[IC_RIGHT].joyeventtype = EType::JOYBUTTON;
 	curInput[IC_RIGHT].joybutton = 14;
 	curInput[IC_RIGHT].which = 0;
-	curInput[IC_DOWN].joyeventtype = ETYPE_JOYBUTTON;
+    curInput[IC_DOWN].joyeventtype = EType::JOYBUTTON;
 	curInput[IC_DOWN].joybutton = 15;
 	curInput[IC_DOWN].which = 0;
 
-	curInput[IC_JUMP].joyeventtype = ETYPE_JOYBUTTON;
+    curInput[IC_JUMP].joyeventtype = EType::JOYBUTTON;
 	curInput[IC_JUMP].joybutton = 0;
 	curInput[IC_JUMP].which = 0;
-	curInput[IC_POGO].joyeventtype = ETYPE_JOYBUTTON;
+    curInput[IC_POGO].joyeventtype = EType::JOYBUTTON;
 	curInput[IC_POGO].joybutton = 2;
 	curInput[IC_POGO].which = 0;
-	curInput[IC_FIRE].joyeventtype = ETYPE_JOYBUTTON;
+    curInput[IC_FIRE].joyeventtype = EType::JOYBUTTON;
 	curInput[IC_FIRE].joybutton = 3;
 	curInput[IC_FIRE].which = 0;
-    curInput[IC_RUN].joyeventtype = ETYPE_JOYBUTTON;
+    curInput[IC_RUN].joyeventtype = EType::JOYBUTTON;
     curInput[IC_RUN].joybutton = 1;
 	curInput[IC_RUN].which = 0;
 
-	curInput[IC_STATUS].joyeventtype = ETYPE_JOYBUTTON;
+    curInput[IC_STATUS].joyeventtype = EType::JOYBUTTON;
 	curInput[IC_STATUS].joybutton = 11;
 	curInput[IC_STATUS].which = 0;
-	curInput[IC_CAMLEAD].joyeventtype = ETYPE_JOYBUTTON;
+    curInput[IC_CAMLEAD].joyeventtype = EType::JOYBUTTON;
 	curInput[IC_CAMLEAD].joybutton = 7;
 	curInput[IC_CAMLEAD].which = 0;
-	curInput[IC_HELP].joyeventtype = ETYPE_JOYBUTTON;
+    curInput[IC_HELP].joyeventtype = EType::JOYBUTTON;
 	curInput[IC_HELP].joybutton = 6;
 	curInput[IC_HELP].which = 0;
-	curInput[IC_BACK].joyeventtype = ETYPE_JOYBUTTON;
+    curInput[IC_BACK].joyeventtype = EType::JOYBUTTON;
 	curInput[IC_BACK].joybutton = 10;
 	curInput[IC_BACK].which = 0;
 #else
@@ -147,53 +147,71 @@ void CInput::resetControls(const int player)
     curInput[IC_QUICKLOAD].keysym = SDLK_F9;
 
 	// And those are the default joystick handlings, but they are disabled by default
-    curInput[IC_LEFT].joyeventtype = ETYPE_KEYBOARD;
+    curInput[IC_LEFT].joyeventtype = (unsigned int)EType::KEYBOARD;
     curInput[IC_LEFT].joyaxis = 0;
     curInput[IC_LEFT].joyvalue = -32767;
+    curInput[IC_LEFT].ctlraxis = 0;
+    curInput[IC_LEFT].ctlraxisvalue = -32767;
     curInput[IC_LEFT].which = 0;
-    curInput[IC_UP].joyeventtype = ETYPE_KEYBOARD;
+    curInput[IC_UP].joyeventtype = (unsigned int)EType::KEYBOARD;
     curInput[IC_UP].joyaxis = 1;
     curInput[IC_UP].joyvalue = -32767;
+    curInput[IC_UP].ctlraxis = 1;
+    curInput[IC_UP].ctlraxisvalue = -32767;
     curInput[IC_UP].which = 0;
-    curInput[IC_RIGHT].joyeventtype = ETYPE_KEYBOARD;
+    curInput[IC_RIGHT].joyeventtype = (unsigned int)EType::KEYBOARD;
     curInput[IC_RIGHT].joyaxis = 0;
     curInput[IC_RIGHT].joyvalue = 32767;
+    curInput[IC_RIGHT].ctlraxis = 0;
+    curInput[IC_RIGHT].ctlraxisvalue = 32767;
     curInput[IC_RIGHT].which = 0;
-    curInput[IC_DOWN].joyeventtype = ETYPE_KEYBOARD;
+    curInput[IC_DOWN].joyeventtype = (unsigned int)EType::KEYBOARD;
     curInput[IC_DOWN].joyaxis = 1;
     curInput[IC_DOWN].joyvalue = 32767;
+    curInput[IC_DOWN].ctlraxis = 1;
+    curInput[IC_DOWN].ctlraxisvalue = 32767;
     curInput[IC_DOWN].which = 0;
 
-    curInput[IC_JUMP].joyeventtype = ETYPE_KEYBOARD;
+    curInput[IC_JUMP].joyeventtype = (unsigned int)EType::KEYBOARD;
     curInput[IC_JUMP].joybutton = 0;
+    curInput[IC_JUMP].ctlrbutton = 0;
     curInput[IC_JUMP].which = 0;
-    curInput[IC_POGO].joyeventtype = ETYPE_KEYBOARD;
+    curInput[IC_POGO].joyeventtype = (unsigned int)EType::KEYBOARD;
     curInput[IC_POGO].joybutton = 1;
+    curInput[IC_POGO].ctlrbutton = 1;
     curInput[IC_POGO].which = 0;
-    curInput[IC_FIRE].joyeventtype = ETYPE_KEYBOARD;
+    curInput[IC_FIRE].joyeventtype = (unsigned int)EType::KEYBOARD;
     curInput[IC_FIRE].joybutton = 2;
+    curInput[IC_FIRE].ctlrbutton = 2;
     curInput[IC_FIRE].which = 0;
-    curInput[IC_RUN].joyeventtype = ETYPE_KEYBOARD;
+    curInput[IC_RUN].joyeventtype = (unsigned int)EType::KEYBOARD;
     curInput[IC_RUN].joybutton = 0;
-    curInput[IC_RUN].which = 0;
-    curInput[IC_STATUS].joyeventtype = ETYPE_KEYBOARD;
+    curInput[IC_RUN].ctlrbutton = 0;
+    curInput[IC_RUN].which = 0;    
+    curInput[IC_STATUS].joyeventtype = (unsigned int)EType::KEYBOARD;
     curInput[IC_STATUS].joybutton = 4;
+    curInput[IC_STATUS].ctlrbutton = 4;
     curInput[IC_STATUS].which = 0;
-    curInput[IC_CAMLEAD].joyeventtype = ETYPE_KEYBOARD;
+    curInput[IC_CAMLEAD].joyeventtype = (unsigned int)EType::KEYBOARD;
     curInput[IC_CAMLEAD].joybutton = 5;
+    curInput[IC_CAMLEAD].ctlrbutton = 5;
     curInput[IC_CAMLEAD].which = 0;
-    curInput[IC_HELP].joyeventtype = ETYPE_KEYBOARD;
+    curInput[IC_HELP].joyeventtype = (unsigned int)EType::KEYBOARD;
     curInput[IC_HELP].joybutton = 6;
+    curInput[IC_HELP].ctlrbutton = 6;
     curInput[IC_HELP].which = 0;
-    curInput[IC_BACK].joyeventtype = ETYPE_KEYBOARD;
+    curInput[IC_BACK].joyeventtype = (unsigned int)EType::KEYBOARD;
     curInput[IC_BACK].joybutton = 7;
+    curInput[IC_BACK].ctlrbutton = 7;
     curInput[IC_BACK].which = 0;
 
-    curInput[IC_QUICKSAVE].joyeventtype = ETYPE_KEYBOARD;
+    curInput[IC_QUICKSAVE].joyeventtype = (unsigned int)EType::KEYBOARD;
     curInput[IC_QUICKSAVE].joybutton = 8;
+    curInput[IC_QUICKSAVE].ctlrbutton = 8;
     curInput[IC_QUICKSAVE].which = 0;
-    curInput[IC_QUICKLOAD].joyeventtype = ETYPE_KEYBOARD;
+    curInput[IC_QUICKLOAD].joyeventtype = (unsigned int)EType::KEYBOARD;
     curInput[IC_QUICKLOAD].joybutton = 9;
+    curInput[IC_QUICKLOAD].ctlrbutton = 9;
     curInput[IC_QUICKLOAD].which = 0;
 
 #endif
@@ -223,17 +241,17 @@ void CInput::openJoyAndPrintStats(const int idx)
     }
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    gLogging.ftextOut("Joystick/Gamepad detected:<br>");
-    gLogging.ftextOut("    %s<br>", SDL_JoystickNameForIndex(idx));
+    gLogging << "Joystick/Gamepad detected:" << CLogFile::endl;
+    gLogging << "    " << SDL_JoystickNameForIndex(idx) << CLogFile::endl;
 #else
-    gLogging.ftextOut("    %s<br>", SDL_JoystickName(idx));
+    gLogging << "    " << SDL_JoystickName(idx) << CLogFile::endl;
 #endif
 
     SDL_Joystick *pJoystick = SDL_JoystickOpen(idx);
 
     if(!pJoystick)
     {
-        gLogging.ftextOut("     Error adding joystick %i<br>", idx);
+        gLogging << "     Error adding joystick " << idx << CLogFile::endl;
         return;
     }
 
@@ -247,11 +265,11 @@ void CInput::openJoyAndPrintStats(const int idx)
     mJoyIdToInputIdx[id] = mp_Joysticks.size();
     mp_Joysticks.push_back(pJoystick);
 
-    gLogging.ftextOut("     Axes: %i<br>", SDL_JoystickNumAxes(pJoystick));
-    gLogging.ftextOut("     Buttons: %i <br>", SDL_JoystickNumButtons(pJoystick));
-    gLogging.ftextOut("     Balls: %i <br>", SDL_JoystickNumBalls(pJoystick));
-    gLogging.ftextOut("     Hats: %i<br>", SDL_JoystickNumHats(pJoystick));
-    gLogging.ftextOut("     GUID: %s<br>", guidStr);
+    gLogging << "     Axes: " << SDL_JoystickNumAxes(pJoystick) << CLogFile::endl;
+    gLogging << "     Buttons: " << SDL_JoystickNumButtons(pJoystick) << CLogFile::endl;
+    gLogging << "     Balls: " << SDL_JoystickNumBalls(pJoystick) << CLogFile::endl;
+    gLogging << "     Hats: " << SDL_JoystickNumHats(pJoystick) << CLogFile::endl;
+    gLogging << "     GUID: " << guidStr << CLogFile::endl;
 }
 
 void CInput::enableJoysticks()
@@ -261,8 +279,8 @@ void CInput::enableJoysticks()
     const auto joyNum = SDL_NumJoysticks();
     if( joyNum > int(mp_Joysticks.size()) )
     {
-        gLogging.ftextOut("Detected %i joystick(s).<br>\n", joyNum-mp_Joysticks.size() );
-        gLogging << "The names of the joysticks are:<br>";
+        gLogging << "Detected " << joyNum-mp_Joysticks.size() << " joystick(s)." << CLogFile::endl;
+        gLogging << "The names of the joysticks are:" << CLogFile::endl;
 
         for( auto i=int(mp_Joysticks.size()); i < joyNum; i++ )
         {
@@ -271,7 +289,7 @@ void CInput::enableJoysticks()
     }
     else
     {
-        gLogging.ftextOut("No joysticks were found.<br>\n");
+        gLogging << "No joysticks were found." << CLogFile::endl;
     }
 }
 
@@ -282,11 +300,10 @@ void CInput::enableJoysticks()
  */
 bool CInput::startJoyDriver()
 {
-    gLogging << "JoyDrv_Start() : ";
-
     if (SDL_Init( SDL_INIT_JOYSTICK | SDL_INIT_GAMECONTROLLER ) < 0)
     {
-        gLogging.ftextOut("JoyDrv_Start() : Couldn't initialize SDL: %s<br>", SDL_GetError());
+        gLogging << "JoyDrv_Start() : Couldn't initialize SDL: "
+                 << SDL_GetError() << CLogFile::endl;
         return 1;
     }
 
@@ -441,26 +458,35 @@ std::string CInput::getNewMappedEvent(int &rPos, unsigned char &rInp)
 std::string CInput::getEventShortName(int command, unsigned char input)
 {
 	std::string buf;
-    if(mInputCommands[input][command].joyeventtype == ETYPE_JOYAXIS)
-	{
-      buf = "J" + itoa(mInputCommands[input][command].which) + "A" + itoa(mInputCommands[input][command].joyaxis);
-      if(mInputCommands[input][command].joyvalue < 0)
-	    buf += "-";
-	  else
-	    buf += "+";
-	}
-    else if(mInputCommands[input][command].joyeventtype == ETYPE_JOYBUTTON)
-	{
-      buf = "J" + itoa(mInputCommands[input][command].which) + "B" + itoa(mInputCommands[input][command].joybutton);
-	}
-    else if(mInputCommands[input][command].joyeventtype == ETYPE_JOYHAT)
-	{
-      buf = "J" + itoa(mInputCommands[input][command].which) + "H" + itoa(mInputCommands[input][command].joyhatval);
-	}
-	else // In case only keyboard was triggered
-	{
-      buf = SDL_GetKeyName(mInputCommands[input][command].keysym);
-	}
+
+    const auto &cmd = mInputCommands[input][command];
+    const auto &evType = cmd.joyeventtype;
+
+    switch(evType)
+    {
+    case (unsigned int)EType::JOYAXIS:
+        buf = "J" + itoa(cmd.which) + "A" + itoa(cmd.joyaxis);
+        if(mInputCommands[input][command].joyvalue < 0)
+          buf += "-";
+        else
+          buf += "+";
+        break;
+    case (unsigned int)EType::JOYBUTTON:
+        buf = "J" + itoa(cmd.which) + "B" + itoa(cmd.joybutton);
+        break;
+    case (unsigned int)EType::JOYHAT:
+      buf = "J" + itoa(cmd.which) + "H" + itoa(cmd.joyhatval);
+        break;
+    case (unsigned int)EType::CTRLAXIS:
+        buf = "C" + itoa(cmd.which) + "A" + itoa(cmd.ctlraxis);
+        break;
+    case (unsigned int)EType::CTRLBUTTON:
+        buf = "C" + itoa(cmd.which) + "B" + itoa(cmd.ctlrbutton);
+        break;
+    case (unsigned int)EType::KEYBOARD:
+        buf = SDL_GetKeyName(cmd.keysym);
+        break;
+    }
 
 	return buf;
 }
@@ -490,41 +516,47 @@ void CInput::render()
 
 }
 
+static std::string getEventNameOneCmd(const stInputCommand cmd)
+{
+    std::string buf;
 
+    switch(cmd.joyeventtype)
+    {
+    case (unsigned int)EType::JOYAXIS:
+        buf = "Joy" + itoa(cmd.which) + "-A" + itoa(cmd.joyaxis);
+        if(cmd.joyvalue < 0)
+          buf += "-";
+        else
+          buf += "+";
+        break;
+    case (unsigned int)EType::JOYBUTTON:
+        buf = "Joy" + itoa(cmd.which) + "-B" + itoa(cmd.joybutton);
+        break;
+    case (unsigned int)EType::JOYHAT:
+        buf = "Joy" + itoa(cmd.which) + "-H" + itoa(cmd.joyhatval);
+        break;
+    case (unsigned int)EType::KEYBOARD:
+        buf = "Key ";
+        buf += itoa(cmd.keysym);
+        buf += " (";
+        buf += SDL_GetKeyName(cmd.keysym);
+        buf += ")";
+        break;
+    default:
+        buf = "Unknown Ev";
+        buf += itoa(cmd.joyeventtype);
 
+        break;
+    }
+
+    return buf;
+}
 
 std::string CInput::getEventName(int command, unsigned char input)
 {
 	std::string buf;
-
     auto &curInput = mInputCommands[input];
-
-    if(curInput[command].joyeventtype == ETYPE_JOYAXIS)
-	{
-      buf = "Joy" + itoa(curInput[command].which) + "-A" + itoa(curInput[command].joyaxis);
-      if(curInput[command].joyvalue < 0)
-	    buf += "-";
-	  else
-	    buf += "+";
-	}
-    else if(curInput[command].joyeventtype == ETYPE_JOYBUTTON)
-	{
-      buf = "Joy" + itoa(curInput[command].which) + "-B" + itoa(curInput[command].joybutton);
-	}
-    else if(curInput[command].joyeventtype == ETYPE_JOYHAT)
-	{
-      buf = "Joy" + itoa(curInput[command].which) + "-H" + itoa(curInput[command].joyhatval);
-	}
-	else // In case only keyboard was triggered
-	{
-	  buf = "Key ";
-      buf += itoa(curInput[command].keysym);
-	  buf += " (";
-      buf += SDL_GetKeyName(curInput[command].keysym);
-	  buf += ")";
-	}
-
-	return buf;
+    return getEventNameOneCmd(curInput[command]);
 }
 
 void CInput::setupInputCommand(std::array<stInputCommand, MAX_COMMANDS> &input,
@@ -548,7 +580,7 @@ void CInput::setupInputCommand(std::array<stInputCommand, MAX_COMMANDS> &input,
 
 		if(buf2 == "A")
 		{
-            input[action].joyeventtype = ETYPE_JOYAXIS;
+            input[action].joyeventtype = (unsigned int)EType::JOYAXIS;
 			pos = buf.size()-1;
 			buf2 = buf.substr(0,pos);
             input[action].joyaxis = atoi(buf2);
@@ -557,12 +589,12 @@ void CInput::setupInputCommand(std::array<stInputCommand, MAX_COMMANDS> &input,
 		}
 		else if(buf2 == "B")
 		{
-            input[action].joyeventtype = ETYPE_JOYBUTTON;
+            input[action].joyeventtype = (unsigned int)EType::JOYBUTTON;
             input[action].joybutton = atoi(buf);
 		}
 		else // Should normally be H
 		{
-            input[action].joyeventtype = ETYPE_JOYHAT;
+            input[action].joyeventtype = (unsigned int)EType::JOYHAT;
             input[action].joyhatval = atoi(buf);
 		}
 		return;
@@ -570,7 +602,7 @@ void CInput::setupInputCommand(std::array<stInputCommand, MAX_COMMANDS> &input,
 
 	if(strCaseStartsWith(string, "Key"))
 	{
-        input[action].joyeventtype = ETYPE_KEYBOARD;
+        input[action].joyeventtype = (unsigned int)EType::KEYBOARD;
 		buf = buf.substr(3);
 		TrimSpaces(buf);
 #if SDL_VERSION_ATLEAST(2, 0, 0)
@@ -643,60 +675,74 @@ void CInput::readNewEvent()
                 else if(Event.key.keysym.sym == removeEvSym1)
                 {
                     mRemovalRunning = true;
+                    gLogging << "Removed "
+                             << getEventNameOneCmd(readInput)
+                             << CLogFile::endl;
                 }
                 else
                 {
-                    readInput.joyeventtype = ETYPE_KEYBOARD;
+                    readInput.joyeventtype = (unsigned int)EType::KEYBOARD;
                     readInput.keysym = Event.key.keysym.sym;
+                    gLogging << "Set "
+                             << getEventNameOneCmd(readInput)
+                             << CLogFile::endl;
                     remapper.mappingInput = false;
                     mRemovalRunning = false;
                 }
             break;
+
+            case SDL_JOYAXISMOTION:
+
+            // Deadzone check. Double, because being a
+            // new event to be read it should make better to configure
+            if( (Event.jaxis.value > 2*m_joydeadzone ) ||
+                (Event.jaxis.value < -2*m_joydeadzone ) )
+            {
+                readInput.joyeventtype = (unsigned int)EType::JOYAXIS;
+                readInput.joyaxis = Event.jaxis.axis;
+                readInput.which = mJoyIdToInputIdx[Event.jaxis.which];
+                readInput.joyvalue = (Event.jaxis.value>0) ? 32767 : -32767;
+                gLogging << "Set "
+                         << getEventNameOneCmd(readInput)
+                         << CLogFile::endl;
+                remapper.mappingInput = false;
+                mRemovalRunning = false;
+            }
+            break;
+
+            case SDL_JOYHATMOTION:
+                readInput.joyeventtype = (unsigned int)EType::JOYHAT;
+                readInput.joyhatval = Event.jhat.value;
+                readInput.which = mJoyIdToInputIdx[Event.jhat.which];
+                gLogging << "Set "
+                         << getEventNameOneCmd(readInput)
+                         << CLogFile::endl;
+                remapper.mappingInput = false;
+                mRemovalRunning = false;
+                break;
 
 			case SDL_JOYBUTTONDOWN:
 #if defined(CAANOO) || defined(WIZ) || defined(GP2X)
 				WIZ_EmuKeyboard( Event.jbutton.button, 1 );
 				return false;
 #else
-                readInput.joyeventtype = ETYPE_JOYBUTTON;
+                readInput.joyeventtype = (unsigned int)EType::JOYBUTTON;
                 readInput.joybutton = Event.jbutton.button;
                 readInput.which = mJoyIdToInputIdx[Event.jbutton.which];
+                gLogging << "Set "
+                         << getEventNameOneCmd(readInput)
+                         << CLogFile::endl;
 				remapper.mappingInput = false;                
 #endif
                 mRemovalRunning = false;
 				break;
 
-			case SDL_JOYAXISMOTION:
-
-				// Deadzone check. Double, because being a
-				// new event to be read it should make better to configure
-				if( (Event.jaxis.value > 2*m_joydeadzone ) ||
-				    (Event.jaxis.value < -2*m_joydeadzone ) )
-				{
-                    readInput.joyeventtype = ETYPE_JOYAXIS;
-                    readInput.joyaxis = Event.jaxis.axis;
-                    readInput.which = mJoyIdToInputIdx[Event.jaxis.which];
-                    readInput.joyvalue = (Event.jaxis.value>0) ? 32767 : -32767;
-					remapper.mappingInput = false;
-                    mRemovalRunning = false;
-				}
-
-				break;
-
-			case SDL_JOYHATMOTION:
-                readInput.joyeventtype = ETYPE_JOYHAT;
-                readInput.joyhatval = Event.jhat.value;
-                readInput.which = mJoyIdToInputIdx[Event.jhat.which];
-				remapper.mappingInput = false;
-                mRemovalRunning = false;
-				break;
-
             case SDL_JOYDEVICEADDED:
-                gLogging << "SDL: A Joystick just got added.";
+                gLogging << "SDL: A Joystick just got added." << CLogFile::endl;;
                 openJoyAndPrintStats(Event.jdevice.which);
                 break;
             case SDL_JOYDEVICEREMOVED:
-                gLogging << "SDL: A Joystick just got removed.";
+                gLogging << "SDL: A Joystick just got removed." << CLogFile::endl;;
 
                 auto joystick = SDL_JoystickFromInstanceID(Event.jdevice.which);
                 mp_Joysticks.remove_if(
@@ -921,6 +967,10 @@ void CInput::pollEvents()
             passSDLEventVec = true;
 			processJoystickAxis();
 			break;
+        case SDL_JOYHATMOTION:
+            passSDLEventVec = true;
+            processJoystickHat();
+            break;
 		case SDL_JOYBUTTONDOWN:
             passSDLEventVec = true;
 			processJoystickButton(1);
@@ -928,11 +978,6 @@ void CInput::pollEvents()
 		case SDL_JOYBUTTONUP:
             passSDLEventVec = true;
 			processJoystickButton(0);
-			break;
-
-		case SDL_JOYHATMOTION:
-            passSDLEventVec = true;
-			processJoystickHat();
 			break;
 
         case SDL_JOYDEVICEADDED:
@@ -1260,7 +1305,7 @@ void CInput::processJoystickAxis(void)
         for(auto &curInput : input)
         {
             // Only axis types
-            if(curInput.joyeventtype != ETYPE_JOYAXIS)
+            if(curInput.joyeventtype != (unsigned int)EType::JOYAXIS)
                 continue;
 
             // Only the right device id
@@ -1300,7 +1345,7 @@ void CInput::processJoystickHat()
 		{
             stInputCommand &command = input[i];
 
-			if( command.joyeventtype == ETYPE_JOYHAT &&
+            if( command.joyeventtype == (unsigned int)EType::JOYHAT &&
                 command.which ==  evWhich)
 			{
 				command.active = false;
@@ -1330,7 +1375,7 @@ void CInput::processJoystickButton(int value)
         auto &inputs = inputCommand;
         for( auto &input : inputs)
 		{
-            if(input.joyeventtype == ETYPE_JOYBUTTON)
+            if(input.joyeventtype == (unsigned int)EType::JOYBUTTON)
 			{
                 // Joystick buttons are configured for this event
                 if(evWhich == input.which &&
@@ -1365,7 +1410,7 @@ bool CInput::processKeys(int keydown)
             i<input.size() ; i++)
         {
             if(input[i].keysym == Event.key.keysym.sym &&
-                    input[i].joyeventtype == ETYPE_KEYBOARD)
+                    input[i].joyeventtype == (unsigned int)EType::KEYBOARD)
             {
                 input[i].active = (keydown) ? true : false;
 
@@ -1708,7 +1753,7 @@ bool CInput::getHoldedCommand(int command)
 bool CInput::isJoystickAssgmnt(const int player, const int command)
 {
     auto &input = mInputCommands[player];
-    return (input[command].joyeventtype == ETYPE_JOYAXIS);
+    return (input[command].joyeventtype == (unsigned int)EType::JOYAXIS);
 }
 
 bool CInput::getHoldedCommand(int player, int command)

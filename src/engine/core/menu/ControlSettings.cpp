@@ -205,18 +205,20 @@ void CControlSettingsBase::ponder(const float deltaT)
 
 void CControlSettingsBaseWithMapping::ponder(const float deltaT)
 {
-    if( !mapping && gInput.MappingInput() ) // mapping changed!
+    auto &input = gInput;
+
+    if( !mapping && input.MappingInput() ) // mapping changed!
     {
         mapping = true;
     }
-    else if( !gInput.MappingInput() )
+    else if( !input.MappingInput() )
     {
         if(mapping) // mapping changed!
         {
             mapping = false;
 
-            int pos; unsigned char input;
-            std::string evName = gInput.getNewMappedEvent(pos, input);
+            int pos; unsigned char inputVal;
+            std::string evName = input.getNewMappedEvent(pos, inputVal);
 
             InpCmd com = static_cast<InpCmd>(pos);
 
