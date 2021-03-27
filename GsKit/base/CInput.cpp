@@ -423,6 +423,8 @@ void CInput::saveControlconfig(const std::string &presetName)
 	}
 
 	Configuration.saveCfgFile();
+
+    gLogging << "Just saved the config file!" << CLogFile::endl;
 }
 
 /**

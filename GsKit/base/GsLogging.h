@@ -57,7 +57,9 @@ public:
 
     CLogFile & operator << (const char *txt);
     CLogFile & operator << (const std::string &str);
-    CLogFile & operator << (const int val);
+    CLogFile & operator << (const int val);    
+
+    static const char *endl;
 
 private:
 
@@ -65,5 +67,6 @@ private:
 	
     std::string removeHTML(const std::string& input);
 };
+
 
 #endif /* CLOGFILE_H_ */

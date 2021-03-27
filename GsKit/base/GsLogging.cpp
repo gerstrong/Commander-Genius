@@ -18,6 +18,8 @@
 
 CLogFile::CLogFile() {}
 
+const char *CLogFile::endl = "<br>\n";
+
 bool CLogFile::CreateLogfile(const std::string &logFName,
                              const std::string &appName,
                              const std::string &version)
