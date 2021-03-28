@@ -86,6 +86,8 @@ void CGameLauncher::verifyGameStore(const bool noCatalogDownloads)
                                    m_DownloadCancel);
         pCatalogueDownloader->setupDownloadCatalogue(true);
 
+        mpPlusMorebutton->setText("Scanning...");
+
         mpCatalogDownloadThread = threadPool->start(pCatalogueDownloader,
                           "Loading catalogue file in the background");
     }
