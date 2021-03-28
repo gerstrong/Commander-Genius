@@ -181,34 +181,35 @@ int main(int argc, char *argv[])
     ////////////////////////////////////////////////////
     gLogging.textOut(FONTCOLORS::GREEN,"Starting App cycle...\n");
 
-    if( gApp.init( argc, argv ) )
+    if( !gApp.init( argc, argv ) )
     {
-        ////////////////////////////////
-        // Set GameLauncher as Engine //
-        ////////////////////////////////
-        gApp.setEngine(new CGameLauncher());
-
-        //////////////////////////////
-        // Run the Commander Genius //
-        //////////////////////////////
-        gApp.runMainCycle();
-
-        ////////////////////////////////
-        // Tear down Commander Genius //
-        ////////////////////////////////
-        gApp.deinit();
+        gLogging.textOut(FONTCOLORS::RED,"Failed to init the app cycle ...\n");
+        gLogging.closeIt();
+        return 1;
     }
-	else
-	{
-		gLogging.textOut(FONTCOLORS::RED,"Failed to init the app cycle ...\n");
-		return 1;
-    }
+
+    ////////////////////////////////
+    // Set GameLauncher as Engine //
+    ////////////////////////////////
+    gApp.setEngine(new CGameLauncher());
+
+    //////////////////////////////
+    // Run the Commander Genius //
+    //////////////////////////////
+    gApp.runMainCycle();
+
+    ////////////////////////////////
+    // Tear down Commander Genius //
+    ////////////////////////////////
+    gApp.deinit();
 
 	gLogging.textOut(FONTCOLORS::GREEN,"Saving Display settings...\n");
     gSettings.saveDispCfg();
 
 	gLogging.textOut(FONTCOLORS::GREEN,"Tearing down thread pool...\n");
     UnInitThreadPool();
+
+    gLogging.closeIt();
 
 #if __SWITCH__
     switch_exit();
