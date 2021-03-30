@@ -665,8 +665,8 @@ void CGameLauncher::showMessageBox(const std::string &text)
 
     auto pOkButton = mpMsgDialog->add(
                         new GsButton("Ok",
-                                   GsRect<float>(0.4f, 0.85f,
-                                                 0.2f, 0.05f),
+                                   GsRect<float>(0.4f, 0.80f,
+                                                 0.2f, 0.15f),
                                    [&]()
                                    {
                                        if(mpMsgDialog)

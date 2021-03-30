@@ -127,7 +127,7 @@ bool GsApp::init(int argc, char *argv[])
 }
 
 void GsApp::deinit()
-{
+{    
     unloadDrivers();
 }
 

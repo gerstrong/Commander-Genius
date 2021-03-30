@@ -130,10 +130,14 @@ const unsigned int KEYTABLE_SIZE = 160;
 
 #define NUM_INPUTS			4
 
-enum EType
+enum class EType
 {
-	ETYPE_KEYBOARD, ETYPE_JOYAXIS,
-	ETYPE_JOYBUTTON, ETYPE_JOYHAT,
+    KEYBOARD,
+    JOYAXIS,
+    JOYBUTTON,
+    JOYHAT,
+    CTRLAXIS,
+    CTRLBUTTON,
 };
 
 struct stInputCommand
@@ -154,7 +158,10 @@ struct stInputCommand
     unsigned short joybutton = 0;
     int joyvalue = 0;	// in which direction the axis needs to be moved
     int joymotion = 0;	// in which direction the axis is really moved
-    int joyhatval = 0;	// in which direction the hat is really moved
+    int joyhatval = 0;	// in which direction the hat is really moved    
+    int ctlraxis = 0;  // Controller Axis
+    int ctlrbutton = 0; // Controller Button
+    int ctlraxisvalue = 0;  // Controller Axis
 };
 
 class CInput : public GsSingleton<CInput>

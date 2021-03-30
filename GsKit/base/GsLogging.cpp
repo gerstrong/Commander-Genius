@@ -18,6 +18,8 @@
 
 CLogFile::CLogFile() {}
 
+const char *CLogFile::endl = "<br>\n";
+
 bool CLogFile::CreateLogfile(const std::string &logFName,
                              const std::string &appName,
                              const std::string &version)
@@ -95,6 +97,7 @@ bool CLogFile::CreateLogfile(const std::string &logFName,
 
 void CLogFile::closeIt()
 {
+    *this << "<br><br>End of logfile</font></body></html>";
     mLogStream.close();
 }
 
@@ -265,6 +268,8 @@ void CLogFile::FunctionResult (const char *Name,bool Result)
 
 CLogFile::~CLogFile()
 {
+    if(mLogStream.is_open())
+        closeIt();
 	// Logfile End
-	textOut ("<br><br>End of logfile</font></body></html>");
+    //textOut ("<br><br>End of logfile</font></body></html>");
 }
