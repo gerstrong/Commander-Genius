@@ -376,7 +376,16 @@ bool CMap::scrollRight(const bool force)
         if( !force && findVerticalScrollBlocker((scroll.x+res_width)<<STC) )
             return false;
 
-        ok &= plane.scrollRight(m_Tilemaps.at(plane.getTilemapIdx()));
+        ok &= plane.scrollRightTest();
+    }
+
+    if(!ok)
+        return false;
+
+    for(auto &plane : mScrollingPlanes)
+    {
+        auto &tilemap = m_Tilemaps.at(plane.getTilemapIdx());
+        ok &= plane.scrollRight(tilemap);
     }
 
     for(auto &scrollPlane : mScrollingPlanes)
@@ -398,8 +407,16 @@ bool CMap::scrollLeft(const bool force)
         if( !force && findVerticalScrollBlocker((scroll.x)<<STC) )
             return false;
 
+        ok &= plane.scrollLeftTest();
+    }
 
-        ok &= plane.scrollLeft(m_Tilemaps.at(plane.getTilemapIdx()));
+    if(!ok)
+        return false;
+
+    for(auto &plane : mScrollingPlanes)
+    {
+        auto &tilemap = m_Tilemaps.at(plane.getTilemapIdx());
+        ok &= plane.scrollLeft(tilemap);
     }
 
     for(auto &scrollPlane : mScrollingPlanes)

@@ -69,14 +69,16 @@ void ScrollingPlane::drawTile(GsTilemap &tilemap,
 
 }
 
+bool ScrollingPlane::scrollLeftTest()
+{
+    auto &scroll = mScrollCoords;
+    return ( scroll.x <= 0 ) ? true : false;
+}
 
 bool ScrollingPlane::scrollLeft(GsTilemap &tilemap)
 {
     auto &scrollSfc = gVideoDriver.getScrollSurfaceVec().at(mScrollSfcIdx);
     auto &scroll = mScrollCoords;
-
-    if( scroll.x <= 0 )
-        return false;
 
     if(mSubscrollCoords.x > 0)
     {
@@ -109,16 +111,23 @@ bool ScrollingPlane::scrollLeft(GsTilemap &tilemap)
 
     return true;
 }
-// scrolls the map one pixel right
-bool ScrollingPlane::scrollRight(GsTilemap &tilemap)
+
+bool ScrollingPlane::scrollRightTest()
 {
     const int res_width = gVideoDriver.getGameResolution().dim.x;
-
-    auto &scrollSfc = gVideoDriver.getScrollSurfaceVec().at(mScrollSfcIdx);
     auto &scroll = mScrollCoords;
 
     if(scroll.x >= int(((mWidth-2)<<mTileSizeBase) - res_width))
         return false;
+
+    return true;
+}
+
+// scrolls the map one pixel right
+bool ScrollingPlane::scrollRight(GsTilemap &tilemap)
+{
+    auto &scrollSfc = gVideoDriver.getScrollSurfaceVec().at(mScrollSfcIdx);
+    auto &scroll = mScrollCoords;
 
     if(mSubscrollCoords.x < mSubscrollUnits)
     {

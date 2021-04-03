@@ -48,6 +48,19 @@ public:
                   const GsVec2D<Uint16> pos,
                   const Uint16 t);
 
+    /**
+     * @brief scrollRightTest Check if scrolling is possible.
+     * @param tilemap
+     * @return
+     */
+    bool scrollRightTest();
+    bool scrollLeftTest();
+
+    /**
+     * @brief scroll(...) Scrolls to the direction given by one pixel
+     * @param tilemap
+     * @return false if the scrolling space reached end of map, otherwise true
+     */
     bool scrollLeft(GsTilemap &tilemap);
     bool scrollRight(GsTilemap &tilemap);
     bool scrollUp(GsTilemap &tilemap, const bool force);
