@@ -72,7 +72,7 @@ void ScrollingPlane::drawTile(GsTilemap &tilemap,
 bool ScrollingPlane::scrollLeftTest()
 {
     auto &scroll = mScrollCoords;
-    return ( scroll.x <= 0 ) ? true : false;
+    return ( scroll.x <= 0 ) ? false : true;
 }
 
 bool ScrollingPlane::scrollLeft(GsTilemap &tilemap)
