@@ -13,17 +13,17 @@ for your enjoyment.  There are also mods that can be downloaded directly.
 # Authors
 
 ### Main development:
-* (c) 2008-2020          Gerstrong
+* (c) 2008-2021          Gerstrong
 
 ### Testing
-* (c) 2020               Gagster
+* (c) 2020-2021          Gagster
 
 ### Porting and Support
-* (c) 2010-2020          Pelya (Android-Distro)
-* (c) 2020               Elias Oenal (Switch port)
+* (c) 2010-2021          Pelya (Android-Distro)
+* (c) 2020-2021          Elias Oenal (Switch port)
 
 ### Resources
-* (c) 2018-2020          Zilem
+* (c) 2018-2021          Zilem
 
 
 # About
