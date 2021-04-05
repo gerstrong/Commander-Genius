@@ -9,8 +9,10 @@ INSTALL(TARGETS CGeniusExe
 IF(WIN32)
 ELSE(WIN32)
 # Install desktop icon and file
-INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/CGLogo.png
-        DESTINATION "${ICONDIR}/512x512/apps")
+foreach(X IN ITEMS 16 32 48 64 128 256 512)
+   INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/../share/cg.${X}.png
+                 DESTINATION "${ICONDIR}/${X}x${X}/apps/")
+endforeach()
 
 INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/../share/cgenius.desktop
 	DESTINATION "${DESKTOPFILESDIR}")
