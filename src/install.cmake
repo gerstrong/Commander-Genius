@@ -17,7 +17,7 @@ endforeach()
 INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/../share/cgenius.desktop
 	DESTINATION "${DESKTOPFILESDIR}")
 
-INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/../share/metainfo/io.sourceforge.clonekeenplus.xml
+INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/../share/metainfo/io.sourceforge.clonekeenplus.appdata.xml
         DESTINATION "${SHAREDIR}/metainfo")
 
 ENDIF(WIN32)
