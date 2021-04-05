@@ -45,7 +45,7 @@
   <releases>
     <release version="2.7.9" date="2021-04-05">
       <description>
-        <p>First Release as Snappak</p>
+        <p>First release as a Flatpak</p>
       </description>
     </release>
   </releases>
