@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<application>
+  <id type="desktop">openttd.desktop</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <license>GPL-2.0</license>
+  <summary>An Engine used to play the "Commander Keen" game series</summary>
+  <description>
+  <p>
+ Commander-Genius aka CloneKeenPlus is an engine which interprets
+ Commander Keen 1-6 (Vorticons and Galaxy Series and Dreams).
+    </p>
+  <p>
+  But there is more, how about 4 Player Coop, VGA graphics, remastered Music and 
+  great mods. There even exists the unoffical trilogy that was planned back then
+  (Keen 7-9) which is fully supported by CG.
+  </p>
+  <p>
+ Obviously you need the game data of the games to play it.
+ No worries, we provide an integrated stores where you download
+ them automatically and let CG configure everything for you.
+ Episode 2, 3, 5 and 6 are registered versions which can be
+ purchased by 3D Realms or Apogee, or bought by someone else.
+ If you still have the old games of the registered version,
+ then copy those into a reachable directory and give it a try.
+   </p>  
+  </description>
+  <url type="homepage">https://clonekeenplus.sourceforge.io</url>
+  <screenshots>
+    <screenshot>https://clonekeenplus.sourceforge.io/img/Keen4HQP2020.png</screenshot>
+    <screenshot>https://clonekeenplus.sourceforge.io/img/SecondplayerHelpsFirst.png</screenshot>
+    <screenshot>https://clonekeenplus.sourceforge.io/img/multiplayerVoritcon.png</screenshot>
+  </screenshots>
+    <updatecontact>gerstrong@gmail.com</updatecontact>
+</application>
+
