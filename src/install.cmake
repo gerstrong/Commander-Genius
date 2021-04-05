@@ -11,7 +11,7 @@ ELSE(WIN32)
 # Install desktop icon and file
 foreach(X IN ITEMS 16 32 48 64 128 256 512)
    INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/../share/cg.${X}.png
-                 DESTINATION "${ICONDIR}/${X}x${X}/apps/")
+                 DESTINATION "${ICONDIR}/${X}x${X}/apps/cg.png")
 endforeach()
 
 INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/../share/cgenius.desktop
