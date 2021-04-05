@@ -9,11 +9,15 @@ INSTALL(TARGETS CGeniusExe
 IF(WIN32)
 ELSE(WIN32)
 # Install desktop icon and file
-INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/CGLogo.png 
-	DESTINATION "${ICONDIR}/512x512/apps")
+INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/CGLogo.png
+        DESTINATION "${ICONDIR}/512x512/apps")
 
 INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/../share/cgenius.desktop
 	DESTINATION "${DESKTOPFILESDIR}")
+
+INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/../share/metainfo/io.sourceforge.clonekeenplus.xml
+        DESTINATION "${SHAREDIR}/metainfo")
+
 ENDIF(WIN32)
 
 	

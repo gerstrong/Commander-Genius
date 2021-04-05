@@ -1,3 +1,7 @@
+v2.7.9:
+-------
+- Added support for Flatpak
+
 v2.7.8:
 -------
 - More logging. Code cleanups

@@ -3,12 +3,12 @@ Section: contrib/games
 Priority: extra
 Maintainer: Gerhard Stein <gerstrong@gmail.com>
 Build-Depends: cmake, libsdl2-dev, libsdl2mixer-dev,libsdl2ttf-dev, libboost1.58-dev, libsdl2-image-dev, libcurl4-openssl-dev, debhelper (>= 9), python3-dev (>= 3.5)
-Homepage: http://clonekeenplus.sourceforge.net
+Homepage: https://clonekeenplus.sourceforge.io
 
 Package: commandergenius
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: engine used to play the "Commander Keen" game series
+Description: Engine used to play the "Commander Keen" game series
  Commander-Genius aka CloneKeenPlus is an engine which interprets
  Commander Keen 1-6 (Vorticons and Galaxy Series).
  .
@@ -16,8 +16,9 @@ Description: engine used to play the "Commander Keen" game series
  gameplay and give the feeling, you are playing the original game.
  .
  Obviously you need the game data of the games to play it.
- Commander Keen 1 and 4 come included in this package.
+ No worries, we provide an integrated stores where you download
+ them automatically and let CG configure everything for you.
  Episode 2, 3, 5 and 6 are registered versions which can be
  purchased by 3D Realms or Apogee, or bought by someone else.
  If you still have the old games of the registered version,
- then give it a try. You will be surprised, how well they will look!
+ then copy those into a reachable directory and give it a try.
