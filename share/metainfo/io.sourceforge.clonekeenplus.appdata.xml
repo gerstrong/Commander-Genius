@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<application>
-  <id type="desktop">openttd.desktop</id>
-  <metadata_license>CC0-1.0</metadata_license>
-  <license>GPL-2.0</license>
+<!-- Copyright 2021 Gerhard Stein <gerstrong@gmail.com> -->
+<component type="desktop-application">
+  <id>io.sourceforge.clonekeenplus</id>
+  <metadata_license>FSFAP</metadata_license>
+  <project_license>GPL-2.0+</project_license>
+  <name>Commander Genius</name>
+    
   <summary>An Engine used to play the "Commander Keen" game series</summary>
-  <description>
+  
+    <description>
   <p>
  Commander-Genius aka CloneKeenPlus is an engine which interprets
  Commander Keen 1-6 (Vorticons and Galaxy Series and Dreams).
@@ -24,12 +28,34 @@
  then copy those into a reachable directory and give it a try.
    </p>  
   </description>
-  <url type="homepage">https://clonekeenplus.sourceforge.io</url>
+  
+  <launchable type="desktop-id">io.sourceforge.clonekeenplus.desktop</launchable>
+  
   <screenshots>
     <screenshot>https://clonekeenplus.sourceforge.io/img/Keen4HQP2020.png</screenshot>
     <screenshot>https://clonekeenplus.sourceforge.io/img/SecondplayerHelpsFirst.png</screenshot>
     <screenshot>https://clonekeenplus.sourceforge.io/img/multiplayerVoritcon.png</screenshot>
-  </screenshots>
+  </screenshots>  
+
+  <url type="homepage">https://clonekeenplus.sourceforge.io</url>
+  <categories>
+    <category>Games</category>
+</categories>
+
+  <releases>
+    <release version="2.7.9" date="2021-04-05">
+      <description>
+        <p>First Release as Snappak</p>
+      </description>
+    </release>
+  </releases>
+  
+
+  <content_rating type="oars-1.0">
+    <content_attribute id="violence-cartoon">mild</content_attribute>
+    <content_attribute id="violence-fantasy">mild</content_attribute>
+  </content_rating>
+
     <updatecontact>gerstrong@gmail.com</updatecontact>
-</application>
+</component>
 
