@@ -763,7 +763,7 @@ bool CPlayerLevel::checkandtriggerforCliffHanging()
         const int xMid = (getXMidPos()>>CSF)-1;
 
         bool check_block = false;
-        for(int i=1 ; i<6 ; i++)
+        for(int i=1 ; i<3 ; i++)
         {
             const auto left = mpMap->at(xLeft, yUp-i);
             check_block |= TileProperty[left].bup;
