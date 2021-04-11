@@ -72,7 +72,6 @@ bool CVideoEngine::init()
     updateActiveArea(m_VidConfig.mDisplayRect, asp);
 
 	#ifdef _WIN32 // So far this only works under windows
-    else
     {
         SDL_SysWMinfo info;
         SDL_VERSION(&info.version);
