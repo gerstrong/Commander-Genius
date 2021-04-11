@@ -80,7 +80,7 @@ public:
      * @param aspWidth wished aspect width
      * @param aspHeight wished aspect height
      */
-    void updateActiveArea(const GsRect<Uint16>& displayRes, const int aspWidth, const int aspHeight);
+    void updateActiveArea(const GsRect<Uint16>& displayRes, const GsVec2D<int> asp);
 
     virtual void transformScreenToDisplay() = 0;
 	virtual void shutdown();

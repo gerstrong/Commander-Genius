@@ -57,64 +57,27 @@ ENDIF()
 # Make sure the linker can find the GsKit library once it is built.
 link_directories (${CMAKE_BINARY_DIR}/GsKit)
 
-if(USE_SDL2)
+find_package(SDL2 REQUIRED)
+find_package(SDL2_image REQUIRED)
+find_package(SDL2_ttf REQUIRED)
 
-      find_package(SDL2 REQUIRED)
-      find_package(SDL2_image REQUIRED)
-      find_package(SDL2_ttf REQUIRED)
+if(SDL2_FOUND)
+    message(STATUS "Using shared SDL Version 2 for Commander Genius")
+    include_directories(${SDL2_INCLUDE_DIR})
+    include_directories(${SDL2_IMAGE_INCLUDE_DIR})
+endif(SDL2_FOUND)
 
-    if(SDL2_FOUND)
-        message(STATUS "Using shared SDL Version 2 for Commander Genius")
-        include_directories(${SDL2_INCLUDE_DIR})
-        include_directories(${SDL2_IMAGE_INCLUDE_DIR})
-    endif(SDL2_FOUND)
 
-else(USE_SDL2)
-        INCLUDE(FindPkgConfig)
-        # SDL2 not found, try to use SDL1.2
-        FIND_PACKAGE( SDL REQUIRED )
-        FIND_PACKAGE( SDL_image REQUIRED )
-        find_package( SDL_ttf REQUIRED)
 
-        if(NOT ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-                include(FindSDL OPTIONAL)
-        endif()
-        if(SDL_FOUND)
-                message(STATUS "Using shared SDL Version 1.2")
-                include_directories(${SDL_INCLUDE_DIR})
-                #INCLUDE_DIRECTORIES(${SDL_INCLUDE_DIRS})
-        else(SDL_FOUND)
-                # TODO: Use the prebuilt one on Windows
-                message("Using static SDL from Externals")
-                include_directories(Externals/SDL Externals/SDL/include)
-                add_subdirectory(Externals/SDL)
-        endif(SDL_FOUND)
+find_package(SDL2_mixer REQUIRED)
 
-endif(USE_SDL2)
-
-if(USE_SDL2)
-        find_package(SDL2_mixer REQUIRED)
-
-        if(SDL2_MIXER_FOUND)
-                INCLUDE_DIRECTORIES(${SDL2_MIXER_INCLUDE_DIRS})
-        endif()
-
-else()
-        find_package(SDL_mixer REQUIRED)
-
-        if(SDL_MIXER_FOUND)
-                INCLUDE_DIRECTORIES(${SDL_MIXER_INCLUDE_DIRS})
-        endif()
-
+if(SDL2_MIXER_FOUND)
+   INCLUDE_DIRECTORIES(${SDL2_MIXER_INCLUDE_DIRS})
 endif()
-
-
 
 MESSAGE( STATUS "Internal Downloader: ${DOWNLOADER}" )
 
 add_subdirectory(engine)
-
-#add_subdirectory(audio)
 
 if(GP2X)
     add_subdirectory(sys)
@@ -122,7 +85,6 @@ endif(GP2X)
 
 add_subdirectory(fileio)
 add_subdirectory(dialog)
-#add_subdirectory(graphics)
 
 # Get all the o-files from the different targets and link'em
 get_property(cg_obj_libs GLOBAL PROPERTY CG_OBJ_LIBS)
@@ -133,12 +95,9 @@ if(OPT_PATH)
 endif(OPT_PATH)
 
 
-if(USE_SDL2)
-        message(STATUS "SDL2_LIBRARY = ${SDL2_LIBRARY}")
-        message(STATUS "SDL2IMAGE_LIBRARY = ${SDL2IMAGE_LIBRARY}")
-        message(STATUS SDL2_LINK_DIR = ${SDL2_LINK_DIR})
-endif(USE_SDL2)
-
+message(STATUS "SDL2_LIBRARY = ${SDL2_LIBRARY}")
+message(STATUS "SDL2IMAGE_LIBRARY = ${SDL2IMAGE_LIBRARY}")
+message(STATUS SDL2_LINK_DIR = ${SDL2_LINK_DIR})
 
 set(CGENIUS_SRC CGenius.cpp
     misc.cpp

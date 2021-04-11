@@ -5,9 +5,7 @@ cmake_minimum_required(VERSION 3.5)
 
 Project(GsKit)
     
-OPTION(USE_SDL2 "SDL2 support" Yes)
-
-OPTION(USE_BOOST "Use Boost for XML" Yes)
+OPTION(USE_BOOST "Use Boost for XML" No)
 
 option(DISABLE_HOVER "Disables the hover over effect in the menus, useful for touch based devices" OFF)
 
@@ -20,14 +18,7 @@ if(USE_CRASHHANDLER)
     ADD_DEFINITIONS(-DUSE_CRASHHANDLER)
 endif()
 
-
-
-if(SDL2)
-    OPTION(USE_OPENGL "OpenGL support" No)
-else()
-    OPTION(USE_OPENGL "OpenGL support" Yes)
-endif()
-
+OPTION(USE_OPENGL "OpenGL support" No)
 
 if(USE_BOOST)
     set(Boost_USE_STATIC_LIBS OFF)
@@ -74,7 +65,7 @@ else()
     
     set (CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${CMAKE_CURRENT_SOURCE_DIR}/CMake")
 
-    set(CMAKE_CXX_STANDARD 14)
+    set(CMAKE_CXX_STANDARD 17)
     set(CMAKE_CXX_STANDARD_REQUIRED ON)
     
     IF(WIN32)
@@ -98,53 +89,25 @@ else()
             ADD_DEFINITIONS(-O2)
     ENDIF(CMAKE_BUILD_TYPE STREQUAL "Debug")
     
+    find_package(SDL2 REQUIRED)
+    find_package(SDL2_image REQUIRED)
+    find_package(SDL2_mixer REQUIRED)
+    find_package(SDL2_ttf REQUIRED)
     
-    if(USE_SDL2)
+    if(SDL2_FOUND)
+        message(STATUS "Using shared SDL Version 2 for ${PROJECT_NAME}")
+        include_directories(${SDL2_INCLUDE_DIRS})
     
-        find_package(SDL2 REQUIRED)
-        find_package(SDL2_image REQUIRED)
-        find_package(SDL2_mixer REQUIRED)
-        find_package(SDL2_ttf REQUIRED)
+        message(STATUS "Using shared SDL Version 2 for ${PROJECT_NAME}")
     
-        if(SDL2_FOUND)
-            message(STATUS "Using shared SDL Version 2 for ${PROJECT_NAME}")
-            include_directories(${SDL2_INCLUDE_DIRS})
-    
-            message(STATUS "Using shared SDL Version 2 for ${PROJECT_NAME}")
-    
-            include_directories(${SDL2_INCLUDE_DIR})
-            include_directories(${SDL2_NET_INCLUDE_DIRS})
-            include_directories(${SDL2_MIXER_INCLUDE_DIRS})
-            include_directories(${SDL2_IMAGE_INCLUDE_DIRS})
-            include_directories(${SDL2_TTF_INCLUDE_DIRS})
-            #include_directories(${SDL2_NET_INCLUDE_DIRS})
-    
-        endif(SDL2_FOUND)
-    
-    else(USE_SDL2)
-            INCLUDE(FindPkgConfig)
-            # SDL2 not found, try to use SDL1.2
-            FIND_PACKAGE( SDL REQUIRED )
-            FIND_PACKAGE( SDL_image REQUIRED )
-            find_package( SDL_mixer REQUIRED )
-            find_package( SDL_ttf REQUIRED )
-    
-            if(NOT ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-                    include(FindSDL OPTIONAL)
-            endif()
-            if(SDL_FOUND)
-                    message(STATUS "Using shared SDL Version 1.2")
-                    include_directories(${SDL_INCLUDE_DIR})
-                    INCLUDE_DIRECTORIES(${SDL_INCLUDE_DIRS})
-            else(SDL_FOUND)
-                    # TODO: Use the prebuilt one on Windows
-                    message("Using static SDL from Externals")
-                    include_directories(Externals/SDL Externals/SDL/include)
-                    add_subdirectory(Externals/SDL)
-            endif(SDL_FOUND)
-    
-    endif(USE_SDL2)    
-    
+        include_directories(${SDL2_INCLUDE_DIR})
+        include_directories(${SDL2_NET_INCLUDE_DIRS})
+        include_directories(${SDL2_MIXER_INCLUDE_DIRS})
+        include_directories(${SDL2_IMAGE_INCLUDE_DIRS})
+        include_directories(${SDL2_TTF_INCLUDE_DIRS})
+
+    endif(SDL2_FOUND)
+
     
     IF(USE_OPENGL)
         # OpenGL Parsing
@@ -172,22 +135,15 @@ else()
     
     # The naming with the new Find cmake files related
     # to SDL is not always consistent. Some use the "2" as var name others not.
-    if(USE_SDL2)
-        Target_link_libraries(${PROJECT_NAME} ${SDL2_LIBRARIES})
-        Target_link_libraries(${PROJECT_NAME} ${SDL2_LIBRARY})
-        Target_link_libraries(${PROJECT_NAME} ${SDL2IMAGE_LIBRARIES})
-        Target_link_libraries(${PROJECT_NAME} ${SDL2IMAGE_LIBRARY})
-        Target_link_libraries(${PROJECT_NAME} ${SDL2MIXER_LIBRARIES})
-        Target_link_libraries(${PROJECT_NAME} ${SDL2MIXER_LIBRARY})
-        Target_link_libraries(${PROJECT_NAME} ${SDLIMAGE_LIBRARY})
-        Target_link_libraries(${PROJECT_NAME} ${SDLMIXER_LIBRARY})
-        Target_link_libraries(${PROJECT_NAME} ${SDL2_TTF_LIBRARY})
-    else()
-        Target_link_libraries(${PROJECT_NAME} ${SDL_LIBRARY})
-        Target_link_libraries(${PROJECT_NAME} ${SDL_LIBRARIES})
-        Target_link_libraries(${PROJECT_NAME} ${SDL_IMAGE_LIBRARY})
-        Target_link_libraries(${PROJECT_NAME} ${SDL_TTF_LIBRARY})
-    endif()
+    Target_link_libraries(${PROJECT_NAME} ${SDL2_LIBRARIES})
+    Target_link_libraries(${PROJECT_NAME} ${SDL2_LIBRARY})
+    Target_link_libraries(${PROJECT_NAME} ${SDL2IMAGE_LIBRARIES})
+    Target_link_libraries(${PROJECT_NAME} ${SDL2IMAGE_LIBRARY})
+    Target_link_libraries(${PROJECT_NAME} ${SDL2MIXER_LIBRARIES})
+    Target_link_libraries(${PROJECT_NAME} ${SDL2MIXER_LIBRARY})
+    Target_link_libraries(${PROJECT_NAME} ${SDLIMAGE_LIBRARY})
+    Target_link_libraries(${PROJECT_NAME} ${SDLMIXER_LIBRARY})
+    Target_link_libraries(${PROJECT_NAME} ${SDL2_TTF_LIBRARY})
         
 IF(USE_OPENGL)
     # OpenGL stuff to link

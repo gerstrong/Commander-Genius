@@ -16,12 +16,7 @@
 
 #include <SDL.h>
 
-//#if (TARGET_OS_IPHONE) || (TARGET_IPHONE_SIMULATOR)
-//#include <OpenGLES/ES1/gl.h>
-//#include <OpenGLES/ES1/glext.h>
-//#else
 #include <SDL_opengl.h>
-//#endif
 
 #include <base/video/CVideoEngine.h>
 
@@ -40,8 +35,8 @@ class COpenGL : public CVideoEngine
 public:
 	COpenGL(const CVidConfig &VidConfig);
 
-	void setUpViewPort(const GsRect<Uint16> &newDim);
-    void resizeDisplayScreen(const GsRect<Uint16>& newDim);
+    void setUpViewPort(const GsRect<Uint16> &viewRect);
+    void resizeDisplayScreen(const GsRect<Uint16>& newRect);
 	void loadSurface(GLuint texture, SDL_Surface* surface);
 	void collectSurfaces();
 	void clearSurfaces();

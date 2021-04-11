@@ -22,11 +22,7 @@ CVideoEngine(VidConfig)
 bool CSDLVideo::init()
 {	
     if( !CVideoEngine::init() )
-    {
         return false;
-    }	
-
-#if SDL_VERSION_ATLEAST(2, 0, 0)    
 
 #ifdef ANDROID
     SDL_SetHint(SDL_HINT_ACCELEROMETER_AS_JOYSTICK, "0");
@@ -117,26 +113,7 @@ bool CSDLVideo::init()
     SDL_RenderClear(renderer);
     SDL_RenderPresent(renderer);
 
-	
-    const int aspW = m_VidConfig.mAspectCorrection.dim.x;
-    const int aspH = m_VidConfig.mAspectCorrection.dim.y;
-
-    updateActiveArea(m_VidConfig.mDisplayRect, aspW, aspH);
-
     resizeDisplayScreen(m_VidConfig.mDisplayRect);
-
-#else
-
-    mDisplaySfc.setPtr(SDL_SetVideoMode( m_VidConfig.mDisplayRect.dim.x, m_VidConfig.mDisplayRect.h, 32, m_Mode ));
-
-    if (mDisplaySfc.empty())
-	{
-		gLogging.textOut(FONTCOLORS::RED,"VidDrv_Start(): Couldn't create a SDL surface: %s<br>", SDL_GetError());
-		return false;
-	}
-
-
-#endif
 
 	return true;
 }
@@ -145,30 +122,22 @@ bool CSDLVideo::init()
 
 void CSDLVideo::resizeDisplayScreen(const GsRect<Uint16>& newDim)
 {
-    const int w = m_VidConfig.mAspectCorrection.dim.x;
-    const int h = m_VidConfig.mAspectCorrection.dim.y;
+    auto &log = gLogging;
 
-    updateActiveArea(newDim, w, h);
-
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-    if(renderer != nullptr)
+    try
     {
+        const auto &asp = m_VidConfig.mAspectCorrection.dim;
+        updateActiveArea(newDim, asp);
+
+        if(renderer == nullptr)
+            throw "Error. Renderer not inited.";
 
         SDL_RenderSetLogicalSize(renderer,
                                  mActiveAreaRect.dim.x,
                                  mActiveAreaRect.dim.y);
 
-
-        if(m_VidConfig.mIntegerScaling)
-        {
-            SDL_RenderSetIntegerScale(renderer, SDL_TRUE);
-        }
-        else
-        {
-            SDL_RenderSetIntegerScale(renderer, SDL_FALSE);
-        }
-
-        //SDL_RenderSetViewport(renderer, nullptr);
+        SDL_RenderSetIntegerScale(renderer,
+                    (m_VidConfig.mIntegerScaling) ? SDL_TRUE : SDL_FALSE);
 
         SDL_Rect viewport;
         SDL_RenderGetViewport(renderer, &viewport);
@@ -179,11 +148,14 @@ void CSDLVideo::resizeDisplayScreen(const GsRect<Uint16>& newDim)
         mActiveAreaRect.pos.x = (viewport.w-dimx)/2;
         mActiveAreaRect.pos.y = (viewport.h-dimy)/2;
     }
-#else
-    mDisplaySfc.setPtr(SDL_SetVideoMode( mActiveAreaRect.dim.x,
-                                         mActiveAreaRect.dim.y,
-                                         32, m_Mode ));
-#endif
+    catch (const char* msg)
+    {
+        log << msg << CLogFile::endl;
+    }
+    catch (...)
+    {
+        log << "unhandled exception." << CLogFile::endl;
+    }
 }
 
 

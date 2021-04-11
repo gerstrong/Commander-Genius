@@ -26,42 +26,39 @@ m_texparam(GL_TEXTURE_2D),
 m_GamePOTScaleDim(getPowerOfTwo(m_GameScaleDim.w), getPowerOfTwo(m_GameScaleDim.h))
 {}
 
-void COpenGL::setUpViewPort(const GsRect<Uint16> &newDim)
+void COpenGL::setUpViewPort(const GsRect<Uint16> &viewRect)
 {
-    const auto width = static_cast<GLsizei>(newDim.dim.x);
-    const auto height = static_cast<GLsizei>(newDim.dim.y);
-    const auto ypos = static_cast<GLint>(newDim.pos.y);
-    const auto xpos = static_cast<GLint>(newDim.pos.x);
+    const auto displayRect = m_VidConfig.mDisplayRect;
+    glViewport(displayRect.pos.x, displayRect.pos.y,
+               displayRect.dim.x, displayRect.dim.y);
 
-    glViewport(xpos, ypos, width, height);
+    const auto width = static_cast<GLsizei>(viewRect.dim.x);
+    const auto height = static_cast<GLsizei>(viewRect.dim.y);
+    const auto xpos = static_cast<GLint>(viewRect.pos.x);
+    const auto ypos = static_cast<GLint>(viewRect.pos.y);
+    glOrtho(xpos, ypos, width, height, -1, 1);
 }
 
-void COpenGL::resizeDisplayScreen(const GsRect<Uint16>& newDim)
+void COpenGL::resizeDisplayScreen(const GsRect<Uint16>& newRect)
 {
-	// NOTE: try not to free the last SDL_Surface of the screen, this is freed automatically by SDL		  
-    const int w = m_VidConfig.mAspectCorrection.dim.x;
-    const int h = m_VidConfig.mAspectCorrection.dim.y;
+    auto &log = gLogging;
 
-#if SDL_VERSION_ATLEAST(2, 0, 0)        
-  
-    updateActiveArea(newDim, w, h);
+    try
+    {
+        const auto &asp = m_VidConfig.mAspectCorrection.dim;
+        updateActiveArea(newRect, asp);
 
-    setUpViewPort(mActiveAreaRect);
+        const auto &viewport = m_VidConfig.mDisplayRect.dim;
 
-#else
-    mDisplaySfc.setPtr(SDL_SetVideoMode( newDim.dim.x, newDim.h, 32, m_Mode ));
+        mActiveAreaRect.pos.x = (viewport.x-newRect.dim.x)/2;
+        mActiveAreaRect.pos.y = (viewport.y-newRect.dim.y)/2;
 
-    if (mDisplaySfc.empty())
-	{
-		gLogging.textOut(FONTCOLORS::RED,"VidDrv_Start(): Couldn't create a SDL surface: %s<br>", SDL_GetError());
-		return false;
-	}
-
-    updateActiveArea(newDim, w, h);
-
-    setUpViewPort(mActiveAreaRect);
-
-#endif
+        setUpViewPort(mActiveAreaRect);
+    }
+    catch (...)
+    {
+        log << "unhandled exception." << CLogFile::endl;
+    }
 }
 
 void COpenGL::collectSurfaces()
@@ -96,9 +93,11 @@ static void createTexture(GLuint& tex, GLint oglfilter, GLsizei potwidth, GLsize
 }
 
 bool COpenGL::init()
-{
+{    
     if(!CVideoEngine::init())
         return false;
+
+    auto &log = gLogging;
 
     // Set by user the chosen filter
     GLint oglfilter = GL_LINEAR;
@@ -106,8 +105,6 @@ bool COpenGL::init()
     {
         oglfilter = GL_NEAREST;
     }
-
-#if SDL_VERSION_ATLEAST(2, 0, 0)    
 
     Uint32 flags = SDL_WINDOW_OPENGL;
 
@@ -119,7 +116,7 @@ bool COpenGL::init()
 
     // set the opengl context version
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
 
     // turn on double buffering set the depth buffer to 24 bits
     // you may need to change this to 16 or 32 for your system
@@ -137,8 +134,16 @@ bool COpenGL::init()
 
     glcontext = SDL_GL_CreateContext(window);
 
-    // sync buffer swap with monitor's vertical refresh rate
-    SDL_GL_SetSwapInterval(1);
+    // Sync buffer swap with monitor's vertical refresh rate
+    if(m_VidConfig.mVSync)
+    {
+        if( SDL_GL_SetSwapInterval( 1 ) < 0 )
+        {
+            log << "Warning: Unable to set VSync! SDL Error: "
+                     << SDL_GetError()
+                     << CLogFile::endl;
+        }
+    }
     
 	// Set clear colour
 	glClearColor(0,0,0,0);
@@ -146,6 +151,13 @@ bool COpenGL::init()
 	// Set projection
 	glMatrixMode( GL_PROJECTION );
 	glLoadIdentity();
+
+    auto error = glGetError();
+    if( error != GL_NO_ERROR )
+    {
+        log << "OpenGL Init(): "<< error << CLogFile::endl;
+        return false;
+    }
     
 #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR	// TODO: dont check for iphone but for opengles
 #define glOrtho glOrthof
@@ -156,12 +168,20 @@ bool COpenGL::init()
 	glMatrixMode( GL_MODELVIEW );
 	glLoadIdentity();
 
+    error = glGetError();
+    if( error != GL_NO_ERROR )
+    {
+        log << "OpenGL Init(): "<< error << CLogFile::endl;
+        return false;
+    }
+
     // Setup the view port for the first time
 #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
-	glViewport(0, 0, 480, 320);
+    m_VidConfig.mDisplayRect.pos= {0,0};
+    m_VidConfig.mDisplayRect.pos= {480,320};
 #else
-    setUpViewPort(mActiveAreaRect);
 #endif
+    resizeDisplayScreen(m_VidConfig.mDisplayRect);
 
     /*Using the standard OpenGL API for specifying a 2D texture
      image: glTexImage2D, glSubTexImage2D, glCopyTexImage2D,
@@ -178,72 +198,24 @@ bool COpenGL::init()
 	// Enable Texture loading for the blit screen
 	glEnable(m_texparam);
 
-
-
     createTexture(m_texture, oglfilter, m_GamePOTScaleDim.w, m_GamePOTScaleDim.h);
 
     if(sFiltToNum(m_VidConfig.m_ScaleXFilter) <= 1)
 	{	// In that case we can do a texture based rendering
         createTexture(m_texFX, oglfilter, m_GamePOTScaleDim.w, m_GamePOTScaleDim.h, true);
 	}
-#else // not SDL 2.0
-	// Setup the view port for the first time
-    setUpViewPort(mActiveAreaRect);
-
-	// Set clear colour
-	glClearColor(0,0,0,0);
-	
-	// Set projection
-	glMatrixMode( GL_PROJECTION );
-	glLoadIdentity();
-
-    #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR	// TODO: dont check for iphone but for opengles
-	#define glOrtho glOrthof
-	#endif
-	glOrtho( 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f );
-
-	// Now Initialize modelview matrix
-	glMatrixMode( GL_MODELVIEW );
-	glLoadIdentity();
-    /*Using the standard OpenGL API for specifying a 2D texture
-    image: glTexImage2D, glSubTexImage2D, glCopyTexImage2D,
-    and glCopySubTexImage2D.  The target for these commands is
-    GL_TEXTURE_RECTANGLE_ARB though.
-
-    This is similar to how the texture cube map functionality uses the 2D
-    texture image specification API though with its own texture target.
-
-    The texture target GL_TEXTURE_RECTANGLE_ARB should also
-    be used for glGetTexImage, glGetTexLevelParameteriv, and
-    glGetTexLevelParameterfv.*/
-
-	// Enable Texture loading for the blit screen
-	glEnable(m_texparam);
-	
-	createTexture(m_texture, oglfilter, m_GamePOTScaleDim.dim.x, m_GamePOTScaleDim.h);
-	
-    //if(m_VidConfig.m_ScaleXFilter <= 1)
-	{ // In that case we can do a texture based rendering
-	  createTexture(m_texFX, oglfilter, m_GamePOTScaleDim.dim.x, m_GamePOTScaleDim.h, true);
-	} 
-
-#endif
 	
 	// If there were any errors
-    //int error;
-    auto error = glGetError();
+    error = glGetError();
 	if( error != GL_NO_ERROR)
 	{
-		gLogging.ftextOut("OpenGL Init(): %d<br>",error);
-#if SDL_VERSION_ATLEAST(2, 0, 0)
+        log << "OpenGL Init(): "<< error << CLogFile::endl;
         SDL_DestroyWindow(window);
         SDL_GL_DeleteContext(glcontext);
-#endif
 		return false;
 	}
 
-    gLogging.ftextOut("OpenGL Init(): Interface successfully opened!<br>");
-
+    log << "OpenGL Init(): Interface successfully opened!" << CLogFile::endl;
 
     GLfloat light_ambient[] = { 1.0, 1.0, 1.0, 1.0 };
     GLfloat light_diffuse[] = { 1.0, 1.0, 1.0, 1.0 };

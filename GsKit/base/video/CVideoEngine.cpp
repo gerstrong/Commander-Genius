@@ -55,59 +55,21 @@ bool CVideoEngine::init()
 #elif defined(GP2X)
 	m_Mode = SDL_HWSURFACE;
 #else
-	// Support for double-buffering
-    #if SDL_VERSION_ATLEAST(2, 0, 0)
-    #else
-        m_Mode = SDL_HWPALETTE;
-    #endif
 #endif
 
-	// Enable OpenGL
 #ifdef USE_OPENGL
-    if(m_VidConfig.mOpengl)
+    // Enable OpenGL if selected
+    if(m_VidConfig.mOpengl && m_VidConfig.mVSync)
 	{
-        if(m_VidConfig.mVSync)
-		{
-			SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
-            SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-	#if SDL_VERSION_ATLEAST(2, 0, 0)
-	#else
-		SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, 1);
-	#endif
-		}
-
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-
-#else
-        m_Mode |= SDL_OPENGL;
-#endif
+        SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
+        SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 	}
-	else
-#endif
-	{
-        if(m_VidConfig.mVSync)
-		{
-#if SDL_VERSION_ATLEAST(2, 0, 0)
+#endif // USE_OPENGL
 
-#else
-            m_Mode |= (SDL_DOUBLEBUF | SDL_HWSURFACE);
-#endif
-		}
-	}
-
-	// Now we decide if it will be fullscreen or windowed mode.
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-
-#else
-    if(m_VidConfig.mFullscreen)
-		m_Mode |= SDL_FULLSCREEN;
-	else
-		m_Mode |= SDL_RESIZABLE;
-#endif
-
-	// And set the proper Display Dimensions
-	// The screen is also setup in this function
-    resizeDisplayScreen(m_VidConfig.mDisplayRect);
+    // Although no real screen setup has happened yet
+    // some initialization of active display can already be prepared
+    const auto &asp = m_VidConfig.mAspectCorrection.dim;
+    updateActiveArea(m_VidConfig.mDisplayRect, asp);
 
 	#ifdef _WIN32 // So far this only works under windows
     else
@@ -115,27 +77,18 @@ bool CVideoEngine::init()
         SDL_SysWMinfo info;
         SDL_VERSION(&info.version);
 
-    #if SDL_VERSION_ATLEAST(2, 0, 0)
         int ok = SDL_GetWindowWMInfo(window,&info);
-    #else
-        int ok = SDL_GetWMInfo(&info);
-    #endif
 
         if( ok )
         {
             if(ok > 0)
             {
-                #if SDL_VERSION_ATLEAST(2, 0, 0)
                     SDL_ShowWindow(window);
-                #else
-                    ShowWindow(info.window, SW_SHOWNORMAL);
-                #endif
             }
         }
 
     }
 	#endif
-
 
     mClearColor = m_VidConfig.mBorderColors;
 
@@ -144,8 +97,11 @@ bool CVideoEngine::init()
 
 
 void CVideoEngine::updateActiveArea(const GsRect<Uint16>& displayRes,
-                                    const int aspWidth, const int aspHeight)
+                                    const GsVec2D<int> asp)
 {    
+    const int aspWidth  = asp.x;
+    const int aspHeight = asp.y;
+
     if (aspWidth == 0 || aspHeight == 0)
     {
         mActiveAreaRect.pos = {0, 0};

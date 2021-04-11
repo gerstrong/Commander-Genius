@@ -6,8 +6,6 @@ find_package(PkgConfig)
 #    unset(ZLIB_FOUND)
 #endif ( PKGCONFIG_FOUND AND NOT WIN32 )
 
-
-
 add_definitions(-DIOAPI_NO_64)
 
 if ( ZLIB_FOUND )

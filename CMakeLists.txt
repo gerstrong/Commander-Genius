@@ -106,7 +106,7 @@ endif()
 # Modules path located at GsKit/CMake
 set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${CMAKE_CURRENT_SOURCE_DIR}/GsKit/CMake")
 
-set (CMAKE_CXX_STANDARD 14)
+set (CMAKE_CXX_STANDARD 17)
 
 #------------------------------------------------------------------------------
 # Set a default build type if none was specified
@@ -124,7 +124,7 @@ string(REGEX REPLACE "[\r\n]" "" CG_VERSION "${CG_VERSION}")
 
 # Since shell script get_version is not processed properly on windows, we have to define manually here.
 # TODO: Better system for defining the version
-set(CG_VERSION "2.7.9.2")
+set(CG_VERSION "2.8.0")
 
 # Generate the README file with the correct version string
 configure_file(README.in README)
