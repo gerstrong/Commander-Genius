@@ -41,7 +41,7 @@ public:
 	COpenGL(const CVidConfig &VidConfig);
 
 	void setUpViewPort(const GsRect<Uint16> &newDim);
-	bool resizeDisplayScreen(const GsRect<Uint16>& newDim);
+    void resizeDisplayScreen(const GsRect<Uint16>& newDim);
 	void loadSurface(GLuint texture, SDL_Surface* surface);
 	void collectSurfaces();
 	void clearSurfaces();

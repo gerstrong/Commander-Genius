@@ -66,7 +66,12 @@ public:
 
 	virtual bool init();
 
-	virtual bool resizeDisplayScreen(const GsRect<Uint16>& newDim) = 0;
+    /**
+     * @brief resizeDisplayScreen Resize the display screen so it fits
+     *                            to the given Dimensions.
+     * @param newDim Display screen dimensions to consider
+     */
+    virtual void resizeDisplayScreen(const GsRect<Uint16>& newDim) = 0;
 
 
     /**

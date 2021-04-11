@@ -13,14 +13,6 @@
 #include <base/video/scaler/scalebit.h>
 #include <SDL_version.h>
 
-
-// For RefKeen
-/*extern "C"
-{
-    extern SDL_Texture *g_sdlTexture;
-}*/
-
-
 Uint16 getPowerOfTwo(const Uint16 value)
 {
     Uint16 output = 1;
@@ -115,10 +107,7 @@ bool CVideoEngine::init()
 
 	// And set the proper Display Dimensions
 	// The screen is also setup in this function
-	if( !resizeDisplayScreen(m_VidConfig.mDisplayRect) )
-	{
-		return false;
-	}
+    resizeDisplayScreen(m_VidConfig.mDisplayRect);
 
 	#ifdef _WIN32 // So far this only works under windows
     else

@@ -423,45 +423,51 @@ bool CVideoDriver::setNativeResolution(const GsRect<Uint16> &dispRect)
 bool CVideoDriver::start()
 {
 	bool retval;
+
+    auto &log = gLogging;
+
     const std::string caption = gApp.getName();
 #if !SDL_VERSION_ATLEAST(2, 0, 0)
     SDL_WM_SetCaption(caption.c_str(), caption.c_str());
 #endif
 
-	gLogging.textOut("Starting graphics driver...<br>");	
+    log << "Starting graphics driver..." << CLogFile::endl;
 
 #ifdef USE_OPENGL	
     if (mVidConfig.mOpengl) // Try to use OpenGL if enabled by the user
 	{		
-		gLogging.textOut("Trying OpenGL...<br>");
+        log << "Trying OpenGL... " ;
         mpVideoEngine.reset(new COpenGL(mVidConfig));
 		retval = mpVideoEngine->init();
 
 		if (!retval)
 		{
+            log << "failed." << CLogFile::endl;
+
             mVidConfig.mOpengl = false;
 			applyMode();
             mpVideoEngine.reset(new CSDLVideo(mVidConfig));
 			retval = mpVideoEngine->init();
-            gLogging.textOut("will be using SDL Video...<br>");
+            log << "Falling back to SDL Video...";
         }
         else
         {
-            gLogging.textOut("will be using OpenGL...<br>");
+            log << " ok." << CLogFile::endl;
         }
     }
     else
 #endif
     {
-		gLogging.textOut("Starting without OpenGL<br>");
+        log << "Trying full SDL Video...";
         CSDLVideo *sdlVideoPtr = new CSDLVideo(mVidConfig);
         mpVideoEngine.reset(sdlVideoPtr);				
-		retval = mpVideoEngine->init();		
+        retval = mpVideoEngine->init();
 	}
 		
 	if(!retval)
 	{
-		gLogging.textOut("Error creating Video subsystem for the application...<br>");
+        log << "failed." << CLogFile::endl;
+        log << "Error creating a Video subsystem for the app." << CLogFile::endl;
 		return false;
 	}
 	

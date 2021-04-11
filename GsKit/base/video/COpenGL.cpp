@@ -36,7 +36,7 @@ void COpenGL::setUpViewPort(const GsRect<Uint16> &newDim)
     glViewport(xpos, ypos, width, height);
 }
 
-bool COpenGL::resizeDisplayScreen(const GsRect<Uint16>& newDim)
+void COpenGL::resizeDisplayScreen(const GsRect<Uint16>& newDim)
 {
 	// NOTE: try not to free the last SDL_Surface of the screen, this is freed automatically by SDL		  
     const int w = m_VidConfig.mAspectCorrection.dim.x;
@@ -62,9 +62,6 @@ bool COpenGL::resizeDisplayScreen(const GsRect<Uint16>& newDim)
     setUpViewPort(mActiveAreaRect);
 
 #endif
-
-
-	return true;
 }
 
 void COpenGL::collectSurfaces()
@@ -264,7 +261,7 @@ bool COpenGL::init()
 	return true;
 }
 
-static void renderTexture(GLuint texture, bool withAlpha = false)
+static void renderTexture([[maybe_unused]]GLuint texture, bool withAlpha = false)
 {
 	if(withAlpha)
 	{

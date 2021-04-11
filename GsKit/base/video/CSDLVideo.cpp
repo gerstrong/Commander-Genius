@@ -143,7 +143,7 @@ bool CSDLVideo::init()
 
 
 
-bool CSDLVideo::resizeDisplayScreen(const GsRect<Uint16>& newDim)
+void CSDLVideo::resizeDisplayScreen(const GsRect<Uint16>& newDim)
 {
     const int w = m_VidConfig.mAspectCorrection.dim.x;
     const int h = m_VidConfig.mAspectCorrection.dim.y;
@@ -184,8 +184,6 @@ bool CSDLVideo::resizeDisplayScreen(const GsRect<Uint16>& newDim)
                                          mActiveAreaRect.dim.y,
                                          32, m_Mode ));
 #endif
-
-    return true;
 }
 
 
