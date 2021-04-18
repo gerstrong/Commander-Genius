@@ -20,7 +20,7 @@ public:
 
     bool init();
 
-	bool resizeDisplayScreen(const GsRect<Uint16>& newDim);
+    void resizeDisplayScreen(const GsRect<Uint16>& newDim);
 	void collectSurfaces();
 	void clearSurfaces();
 

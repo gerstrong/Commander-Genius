@@ -743,35 +743,38 @@ const int MAX_CLIFFHANG_TIME = 10;
 bool CPlayerLevel::checkandtriggerforCliffHanging()
 {    
     if(PoleCollision())
-	return false;
+        return false;
     
     if(mp_processState == (void (CPlayerBase::*)()) &CPlayerLevel::processPogo)
-	return false;
+        return false;
     
     std::vector<CTileProperties> &TileProperty = gBehaviorEngine.getTileProperties();
             
     const bool floorNearBy = TileProperty[mpMap->at((getXMidPos()>>CSF), (getYDownPos()>>CSF)+1)].bup;
     
     if(floorNearBy)
-	return false;
+        return false;
     
     const int yUp = getYUpPos()>>CSF;
             
     if( mPlaycontrol[PA_X]<0 && blockedl )
     {
         const int xLeft = (getXLeftPos()>>CSF)-1;
+        const int xMid = (getXMidPos()>>CSF)-1;
 
-        const auto mapUpper1Off = mpMap->at(xLeft, yUp-1);
-        const auto mapUpper2Off = mpMap->at(xLeft, yUp-2);
-
-        bool check_block = TileProperty[mapUpper1Off].bup;
-        check_block |= TileProperty[mapUpper1Off].bright;
-        check_block |= TileProperty[mapUpper2Off].bup;
-        check_block |= TileProperty[mapUpper2Off].bright;
+        bool check_block = false;
+        for(int i=1 ; i<3 ; i++)
+        {
+            const auto left = mpMap->at(xLeft, yUp-i);
+            check_block |= TileProperty[left].bup;
+            check_block |= TileProperty[left].bright;
+            const auto middle = mpMap->at(xMid, yUp-i);
+            check_block |= TileProperty[middle].bup;
+            check_block |= TileProperty[middle].bright;
+        }
 
         const auto mapLowerOff = mpMap->at(xLeft, yUp);
         const bool check_block_lower = TileProperty[mapLowerOff].bright;
-
 
         if( !check_block && check_block_lower )
         {
@@ -798,17 +801,15 @@ bool CPlayerLevel::checkandtriggerforCliffHanging()
     {
         const int xRight = (getXRightPos()>>CSF)+1;
 
-        const auto mapUpper1Off = mpMap->at(xRight, yUp-1);
-        const auto mapUpper2Off = mpMap->at(xRight, yUp-2);
-
-        bool check_block = TileProperty[mapUpper1Off].bup;
-        check_block |= TileProperty[mapUpper1Off].bleft;
-        check_block |= TileProperty[mapUpper2Off].bup;
-        check_block |= TileProperty[mapUpper2Off].bleft;
-
+        bool check_block = false;
+        for(int i=1 ; i<3 ; i++)
+        {
+            const auto mapUpperOff = mpMap->at(xRight, yUp-i);
+            check_block |= TileProperty[mapUpperOff].bup;
+            check_block |= TileProperty[mapUpperOff].bleft;
+        }
 
         const auto mapLower1Off = mpMap->at(xRight, yUp);
-
         bool check_block_lower = TileProperty[mapLower1Off].bleft;
 
         if( !check_block && check_block_lower )

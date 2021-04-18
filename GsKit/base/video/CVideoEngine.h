@@ -68,7 +68,12 @@ public:
 
 	virtual bool init();
 
-	virtual bool resizeDisplayScreen(const GsRect<Uint16>& newDim) = 0;
+    /**
+     * @brief resizeDisplayScreen Resize the display screen so it fits
+     *                            to the given Dimensions.
+     * @param newDim Display screen dimensions to consider
+     */
+    virtual void resizeDisplayScreen(const GsRect<Uint16>& newDim) = 0;
 
 
     /**
@@ -77,7 +82,7 @@ public:
      * @param aspWidth wished aspect width
      * @param aspHeight wished aspect height
      */
-    void updateActiveArea(const GsRect<Uint16>& displayRes, const int aspWidth, const int aspHeight);
+    void updateActiveArea(const GsRect<Uint16>& displayRes, const GsVec2D<int> asp);
 
     virtual void transformScreenToDisplay() = 0;
 	virtual void shutdown();
