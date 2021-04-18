@@ -117,7 +117,8 @@ bool ScrollingPlane::scrollRightTest()
     const int res_width = gVideoDriver.getGameResolution().dim.x;
     auto &scroll = mScrollCoords;
 
-    if(scroll.x >= int(((mWidth-2)<<mTileSizeBase) - res_width))
+
+    if(scroll.x >= int((mWidth<<mTileSizeBase) - res_width))
         return false;
 
     return true;
