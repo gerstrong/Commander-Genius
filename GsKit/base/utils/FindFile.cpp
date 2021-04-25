@@ -589,8 +589,8 @@ class CheckSearchpathForFile
 {
 	public:
 		const std::string& filename;
-		std::string* result;
-		std::string* searchpath;
+        std::string* result = nullptr;
+        std::string* searchpath = nullptr;
 		CheckSearchpathForFile(const std::string& f, std::string* r, std::string* s) :
 			filename(f), result(r), searchpath(s) {}
 

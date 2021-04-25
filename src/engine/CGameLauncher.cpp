@@ -477,6 +477,7 @@ bool CGameLauncher::scanExecutables(const std::string& path)
 
         CExeFile executable;
 
+#ifdef BUILD_COSMOS
         if(detectCosmoGame(curFname, ep, isLua))
         {
             gLogging.ftextOut("Cosmo cosmic game detected: %s \n<br>", curFname.c_str() );
@@ -484,7 +485,9 @@ bool CGameLauncher::scanExecutables(const std::string& path)
             if(!executable.readGenericExeData(ep, curFname, path))
                 continue;
         }
-        else if(detectKeenGame(curFname, ep, isLua))
+        else
+#endif // BUILD_COSMOS
+            if(detectKeenGame(curFname, ep, isLua))
         {
             gLogging.ftextOut("Commander Keen game detected: %s \n<br>", curFname.c_str() );
 

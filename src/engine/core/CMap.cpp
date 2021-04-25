@@ -783,17 +783,17 @@ void CMap::animateAllTiles()
     }
 }
 
-
+/*
 auto CMap::getlevelat(const int x,
                 const int y) -> int
 {
     assert(0);
-    /*
+
     return mInfoPlane.getMapDataAt(x>>mTileSizeBase,
                                    y>>mTileSizeBase);
-                                   */
-}
 
+}
+*/
 auto CMap::getPlaneDataAt(const int plane,
                       const int x,
                       const int y) const -> int
