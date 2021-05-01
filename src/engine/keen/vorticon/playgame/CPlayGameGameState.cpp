@@ -173,12 +173,12 @@ bool CPlayGameVorticon::loadXMLGameState()
             mMap->m_height = mapNode.get<int>("height");
 
             const std::string b64text = mapNode.get<std::string>("fgdata");
-            base64Decode( reinterpret_cast<byte*>(mMap->getForegroundData()), b64text);
+            base64Decode( reinterpret_cast<gs_byte*>(mMap->getForegroundData()), b64text);
         }
     }
 
     const std::string b64text = stateNode.get<std::string>("complete");
-    base64Decode( reinterpret_cast<byte*>(mpLevelCompleted), b64text);
+    base64Decode( reinterpret_cast<gs_byte*>(mpLevelCompleted), b64text);
 
 
     // adjust camera settings
@@ -300,13 +300,13 @@ bool CPlayGameVorticon::saveXMLGameState()
         mapNode.put("width", mMap->m_width);
         mapNode.put("height", mMap->m_height);
 
-        const std::string b64text = base64Encode( reinterpret_cast<byte*>(mMap->getForegroundData()),
+        const std::string b64text = base64Encode( reinterpret_cast<gs_byte*>(mMap->getForegroundData()),
                                                     2*mMap->m_width*mMap->m_height);
 
         mapNode.put("fgdata", b64text);
     }
 
-    stateNode.put("complete", base64Encode( (byte*)(mpLevelCompleted), MAX_LEVELS_VORTICON) );    
+    stateNode.put("complete", base64Encode( (gs_byte*)(mpLevelCompleted), MAX_LEVELS_VORTICON) );    
 
     CSaveGameController &savedGame = gSaveGameController;
     savedGame.saveXMLTree(pt);
@@ -381,11 +381,11 @@ bool CPlayGameVorticon::saveGameState()
 	// Save the map_data as it is left
 	savedGame.encodeData(mMap->m_width);
 	savedGame.encodeData(mMap->m_height);
-	savedGame.addData( reinterpret_cast<byte*>(mMap->getForegroundData()),
+	savedGame.addData( reinterpret_cast<gs_byte*>(mMap->getForegroundData()),
 													2*mMap->m_width*mMap->m_height );
 
 	// store completed levels
-	savedGame.addData( (byte*)(mpLevelCompleted), MAX_LEVELS_VORTICON );
+	savedGame.addData( (gs_byte*)(mpLevelCompleted), MAX_LEVELS_VORTICON );
 
     return savedGame.save();
 }

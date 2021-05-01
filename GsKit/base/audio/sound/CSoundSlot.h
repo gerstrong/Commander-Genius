@@ -31,7 +31,7 @@ public:
 		
 	unsigned int getSoundlength() const { return m_soundlength; }
 
-    byte *getSoundData()
+    gs_byte *getSoundData()
     {
         return mSounddata.data();
     }
@@ -44,7 +44,7 @@ public:
 	word priority;
 
 private:
-    std::vector<byte> mSounddata;
+    std::vector<gs_byte> mSounddata;
     unsigned int m_soundlength = 0;
     Mix_Chunk *mpWaveChunk = nullptr;
 };

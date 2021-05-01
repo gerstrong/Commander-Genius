@@ -117,7 +117,7 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 	
     mLoader.setPermilage(10);
 
-    byte RawData[m_planesize * 5];
+    gs_byte RawData[m_planesize * 5];
     // get the data out of the file into the memory, decompressing it if necessary.
     if (compresseddata)
     {

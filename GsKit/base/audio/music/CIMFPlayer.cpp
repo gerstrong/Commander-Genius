@@ -118,7 +118,7 @@ void CIMFPlayer::close(const bool lock)
 
 
 
-void CIMFPlayer::OPLUpdate(byte *buffer, const unsigned int length)
+void CIMFPlayer::OPLUpdate(gs_byte *buffer, const unsigned int length)
 {    
     auto &audioSpec = gAudio.getAudioSpec();
 

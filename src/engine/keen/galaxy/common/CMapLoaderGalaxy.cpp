@@ -123,11 +123,11 @@ bool CMapLoaderGalaxy::unpackPlaneData( std::ifstream &mapFile,
 
     mapFile.seekg(offset);
 
-	std::vector<byte> Carmack_Plane;	
+	std::vector<gs_byte> Carmack_Plane;	
 
 	for(size_t i=0 ; i<length ; i++)
     {
-        const byte value = mapFile.get();
+        const gs_byte value = mapFile.get();
         Carmack_Plane.push_back( value );
     }
 
@@ -143,7 +143,7 @@ bool CMapLoaderGalaxy::unpackPlaneData( std::ifstream &mapFile,
       
 	// Now use the Carmack Decompression
 	CCarmack Carmack;
-    std::vector<byte> RLE_Plane;
+    std::vector<gs_byte> RLE_Plane;
 
 	Carmack.expand(RLE_Plane, Carmack_Plane);
 	
@@ -223,7 +223,7 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
     Map.mNumFuses = 0;
 
     // In case no external file was read, let's use data from the embedded data
-    byte *Maphead = gKeenFiles.exeFile.getRawData() + getMapheadOffset();
+    gs_byte *Maphead = gKeenFiles.exeFile.getRawData() + getMapheadOffset();
 
     // In case there is an external file read it into the container and replace the pointer
     const std::string mapHeadFilename = gKeenFiles.mapheadFilename;
@@ -237,7 +237,7 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
         MapHeadFile.seekg (0, std::ios::beg);
         mapHeadContainer.resize(length);
         MapHeadFile.read(&mapHeadContainer[0],length*sizeof(char));
-        Maphead = reinterpret_cast<byte*>(&mapHeadContainer[0]);
+        Maphead = reinterpret_cast<gs_byte*>(&mapHeadContainer[0]);
     }
 
     word magic_word;
@@ -285,7 +285,7 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
      *			  Signature:      Byte[4]   Marks the end of the Level Header.  Always "!ID!".
      */
             int jumpback = 3*sizeof(longword) + 3*sizeof(word) +
-                    2*sizeof(word) + 16*sizeof(byte) + 4*sizeof(byte);
+                    2*sizeof(word) + 16*sizeof(gs_byte) + 4*sizeof(gs_byte);
 
             headbegin = static_cast<int>(MapFile.tellg()) - jumpback;
         }

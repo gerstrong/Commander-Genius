@@ -22,12 +22,12 @@
  * This function loads the PC Speaker sounds to CG (Galaxy Version, similar to Vorticon Version but not equal.)
  */
 bool CAudioGalaxy::readPCSpeakerSoundintoWaveForm(CSoundSlot &soundslot,
-                                                  const byte *pcsdata,
+                                                  const gs_byte *pcsdata,
                                                   const Uint8 formatsize)
 {
     const auto PC_Speaker_Volume = gAudio.getPCSpeakerVol();
 
-    byte *pcsdata_ptr = const_cast<byte*>(pcsdata);
+    gs_byte *pcsdata_ptr = const_cast<gs_byte*>(pcsdata);
 	const longword size = READLONGWORD(pcsdata_ptr);
 	soundslot.priority = READWORD(pcsdata_ptr);
 
@@ -54,7 +54,7 @@ bool CAudioGalaxy::readPCSpeakerSoundintoWaveForm(CSoundSlot &soundslot,
     {
         waveform.assign(audioSpec.channels*wavetime*numBeeps, audioSpec.silence);
 
-        generateWave((byte*)waveform.data(), sizeof(Sint16), wavetime, pcsdata_ptr, numBeeps, false, AMP, audioSpec);
+        generateWave((gs_byte*)waveform.data(), sizeof(Sint16), wavetime, pcsdata_ptr, numBeeps, false, AMP, audioSpec);
 
         if(formatsize == 1)
         {
@@ -524,7 +524,7 @@ bool CAudioGalaxy::LoadFromAudioCK(const unsigned int dictOffset)
 
         const uint32_t audio_comp_data_start = audio_start+sizeof(uint32_t); // Why this strange offset by 4 bytes?
 
-        std::vector<byte> imfdata;        
+        std::vector<gs_byte> imfdata;        
 
         if( audio_comp_data_start < audio_end )
         {
@@ -534,7 +534,7 @@ bool CAudioGalaxy::LoadFromAudioCK(const unsigned int dictOffset)
             outsize = *AudioCompFileData32;
             imfdata.resize(outsize);
 
-            byte *imfdataPtr = reinterpret_cast<byte *>(imfdata.data());
+            gs_byte *imfdataPtr = reinterpret_cast<gs_byte *>(imfdata.data());
 
             const unsigned long insize = audio_end-audio_comp_data_start;
 
@@ -542,12 +542,12 @@ bool CAudioGalaxy::LoadFromAudioCK(const unsigned int dictOffset)
             if(!mustDehuffman)
             {
                 memcpy(imfdataPtr,
-                       reinterpret_cast<byte*>(&AudioCompFileData[audio_comp_data_start]),
+                       reinterpret_cast<gs_byte*>(&AudioCompFileData[audio_comp_data_start]),
                        insize);
             }
             else // uncompress!
             {
-                Huffman.expand( reinterpret_cast<byte*>(&AudioCompFileData[audio_comp_data_start]),
+                Huffman.expand( reinterpret_cast<gs_byte*>(&AudioCompFileData[audio_comp_data_start]),
                                 imfdataPtr,
                                 insize,
                                 outsize);

@@ -36,7 +36,7 @@ private:
                    const std::string& searchname,
                    unsigned int loadnum);
 
-    std::vector<byte> mFileBuffer;
+    std::vector<gs_byte> mFileBuffer;
 };
 
 #endif /* CAUDIOVORTICON_H_ */

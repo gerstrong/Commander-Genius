@@ -13,7 +13,7 @@
  * \brief	Constructor initializes the positions,getbit will retrieve data from
  * \param	dataptr	Pointer to the data where the bit plane will be read.
  */
-CPlanes::CPlanes(byte *dataptr) :
+CPlanes::CPlanes(gs_byte *dataptr) :
 m_dataptr(dataptr)
 {}
 

@@ -66,14 +66,14 @@ mCanFinishGame(false)
     xDirection = LEFT;
     
 
-    byte *ptr = gKeenFiles.exeFile.getRawData();
+    gs_byte *ptr = gKeenFiles.exeFile.getRawData();
     ptr += 0x10D35;
     memcpy(&mHealth, ptr, 1 );
     
     ptr = gKeenFiles.exeFile.getRawData();
     ptr += 0x1256C;
     
-    const byte endpattern[] =
+    const gs_byte endpattern[] =
     { 0x02, 0x75, 0x30, 0xC7, 0x06, 0xAC, 0x75, 
       0x0C, 0x00, 0x5F, 0x5E, 0x5D, 0xCB };
               

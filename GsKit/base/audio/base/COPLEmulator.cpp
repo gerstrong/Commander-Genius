@@ -31,7 +31,7 @@ COPLEmulator::~COPLEmulator()
 
 void COPLEmulator::AlSetFXInst(Instrument &inst)
 {
-    byte c,m;
+    gs_byte c,m;
 
     m = 0;      // modulator cell for channel 0
     c = 3;      // carrier cell for channel 0

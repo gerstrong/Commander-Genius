@@ -30,7 +30,7 @@
 
 typedef struct
 {
-    byte    mChar,cChar,
+    gs_byte    mChar,cChar,
             mScale,cScale,
             mAttack,cAttack,
             mSus,cSus,
@@ -40,7 +40,7 @@ typedef struct
             // These are only for Muse - these bytes are really unused
             voice,
             mode;
-    byte    unused[3];
+    gs_byte    unused[3];
 } Instrument;
 
 class COPLEmulator

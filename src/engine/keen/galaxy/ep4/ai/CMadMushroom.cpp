@@ -30,7 +30,7 @@ jumpcounter(0)
 	
 	bounceAmount = 0;
 
-    byte *ptr = gKeenFiles.exeFile.getRawData();
+    gs_byte *ptr = gKeenFiles.exeFile.getRawData();
 	ptr += 0xFF90;
 	memcpy(&bounceAmount, ptr, 1 );
 }

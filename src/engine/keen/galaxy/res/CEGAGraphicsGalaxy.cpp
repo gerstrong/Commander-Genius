@@ -517,7 +517,7 @@ bool CEGAGraphicsGalaxy::readEGAHead()
     const int ep = getEpisodeInfoIndex();
 
     std::ifstream File; OpenGameFileR(File, filename, std::ios::binary);
-    byte *headPtr = nullptr;
+    gs_byte *headPtr = nullptr;
 
     std::vector<char> egaHeadData;
 
@@ -543,12 +543,12 @@ bool CEGAGraphicsGalaxy::readEGAHead()
                 egaHeadData.push_back(b);
             }
 
-            headPtr = reinterpret_cast<byte*>(&egaHeadData.front());
+            headPtr = reinterpret_cast<gs_byte*>(&egaHeadData.front());
         }
     } // no external file. Read it from the exe then
     else
     {
-        byte *p_data = reinterpret_cast<byte*>(exefile.getHeaderData());
+        gs_byte *p_data = reinterpret_cast<gs_byte*>(exefile.getHeaderData());
 
         // The stuff is Huffman compressed. Use an instance for that
         unsigned long exeheaderlen = 0;
@@ -666,7 +666,7 @@ bool CEGAGraphicsGalaxy::begin()
     const std::string &gamedir = gKeenFiles.gameDir;
     
 
-    byte *dataPtr = reinterpret_cast<byte*>(exefile.getHeaderData());
+    gs_byte *dataPtr = reinterpret_cast<gs_byte*>(exefile.getHeaderData());
 
     if( !exefile.isLuaScript() )
     {
@@ -861,8 +861,8 @@ bool CEGAGraphicsGalaxy::begin()
             m_egagraph[i].len = outlen;
             m_egagraph[i].data.assign(outlen, 0);
 
-            byte *in = &CompEgaGraphData[offset];
-            byte *out = &m_egagraph[i].data[0];
+            gs_byte *in = &CompEgaGraphData[offset];
+            gs_byte *out = &m_egagraph[i].data[0];
 
             Huffman.expand(in, out, inlen, outlen);
         }

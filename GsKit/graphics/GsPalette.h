@@ -31,9 +31,9 @@ public:
 	void fadeto(Uint8 alpha, Uint8 fadespeed);
 	void applyFade();
 
-	bool patchedPalette(byte *p_exedata, int m_episode);
-	void setupPatchedPalette(byte *p_exedata, int m_episode);
-	void setupColorPalettes(byte *p_exedata, int m_episode);
+	bool patchedPalette(gs_byte *p_exedata, int m_episode);
+	void setupPatchedPalette(gs_byte *p_exedata, int m_episode);
+	void setupColorPalettes(gs_byte *p_exedata, int m_episode);
 	void setPaletteColour( Uint8 c, Uint8 r, Uint8 g, Uint8 b);
     void setdark(const bool dark);
 	void setdarkness(Uint8 darkness);

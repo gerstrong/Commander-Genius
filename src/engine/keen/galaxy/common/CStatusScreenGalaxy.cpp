@@ -214,7 +214,7 @@ void CStatusScreenGalaxy::GenerateStatusEp4()
                          TempRect.x, TempRect.y+2,
                          mStatusSurface.getSDLSurface());
 
-    byte *ptr = gKeenFiles.exeFile.getRawData();
+    gs_byte *ptr = gKeenFiles.exeFile.getRawData();
 
     std::string rescLine = "RESCUED           LEVEL";
     std::string dropsLine;

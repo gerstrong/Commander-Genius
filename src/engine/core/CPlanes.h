@@ -12,7 +12,7 @@
 
 class CPlanes {
 public:
-	CPlanes(byte *dataptr);
+	CPlanes(gs_byte *dataptr);
 
 	unsigned char getbit(unsigned char plane);
 	void setOffsets(unsigned long p1, unsigned long p2, unsigned long p3,
@@ -25,7 +25,7 @@ private:
 	unsigned long getbit_bytepos[5];
 	unsigned char getbit_bitmask[5];
 	
-	byte *m_dataptr;
+	gs_byte *m_dataptr;
 };
 
 #endif /* CPLANES_H_ */

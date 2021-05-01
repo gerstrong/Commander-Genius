@@ -19,7 +19,7 @@ public:
 
 
     bool readPCSpeakerSoundintoWaveForm(CSoundSlot &soundslot,
-                                        const byte *pcsdata,
+                                        const gs_byte *pcsdata,
                                         const Uint8 formatsize );
 
     /**

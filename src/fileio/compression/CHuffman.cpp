@@ -41,7 +41,7 @@ bool CHuffman::readDictionaryNumber( const CExeFile& ExeFile,
     }
     else // Otherwise copy the dictionary normally
     {
-        uint8_t *dictdata = (byte*)(ExeFile.getHeaderData())+dictOffset;
+        uint8_t *dictdata = (gs_byte*)(ExeFile.getHeaderData())+dictOffset;
         memcpy(reinterpret_cast<char*>(m_nodes), dictdata, DICT_SIZE*sizeof(nodestruct));
         return true;
     }
@@ -92,7 +92,7 @@ bool CHuffman::readDictionaryFromFile( const std::string &filename )
 
 
 
-void CHuffman::readDictionaryAt( byte *p_exedata, unsigned long offset)
+void CHuffman::readDictionaryAt( gs_byte *p_exedata, unsigned long offset)
 {
 	p_exedata += offset;
 	const Uint32 size = DICT_SIZE*sizeof(nodestruct);
@@ -101,7 +101,7 @@ void CHuffman::readDictionaryAt( byte *p_exedata, unsigned long offset)
 
 
 /* Expand huffman-compressed input file into output buffer */
-void CHuffman::expand(byte *pin, byte *pout,
+void CHuffman::expand(gs_byte *pin, gs_byte *pout,
                       const unsigned long inlen,
                       const unsigned long outlen)
 {

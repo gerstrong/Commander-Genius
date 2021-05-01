@@ -18,7 +18,7 @@
 #include <fstream>
 #include <vector>
 
-std::vector<byte> actionFormatData;
+std::vector<gs_byte> actionFormatData;
 
 bool loadActionFile(const std::string &actFilePath)
 {
@@ -40,7 +40,7 @@ bool loadActionFile(const std::string &actFilePath)
     return true;
 }
 
-byte *getActionBasePtr()
+gs_byte *getActionBasePtr()
 {
     auto &exeFile = gKeenFiles.exeFile;
 
@@ -76,7 +76,7 @@ byte *getActionBasePtr()
 
 void ActionFormatType::setActionFormat( const size_t sprite_offset )
 {
-    byte *ptr = getActionBasePtr();
+    gs_byte *ptr = getActionBasePtr();
 	ptr += sprite_offset;
 	memcpy( this, ptr, 15*sizeof(int16_t) );	
 }
@@ -94,7 +94,7 @@ void ActionFormatType::setNextActionFormat()
 
 bool ActionFormatType::getActionFormat( const size_t sprite_offset )
 {
-    byte *ptr = getActionBasePtr();
+    gs_byte *ptr = getActionBasePtr();
 	ptr += sprite_offset;
 	return (memcmp( this, ptr, 15*sizeof(int16_t) ) == 0);
 }
@@ -103,10 +103,10 @@ bool ActionFormatType::getActionFormat( const size_t sprite_offset )
 bool dumpActionFormatToFile(const std::string &fileName,
                             const size_t numChunks)
 {
-    byte *ptr = getActionBasePtr();
+    gs_byte *ptr = getActionBasePtr();
 
     //std::vector<byte> actionData(numChunks*30, 0);
-    std::vector<byte> actionData;
+    std::vector<gs_byte> actionData;
     actionData.resize(numChunks*30);
 
     memcpy( actionData.data(), ptr, 30*numChunks );

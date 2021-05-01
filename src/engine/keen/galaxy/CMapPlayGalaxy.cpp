@@ -411,9 +411,9 @@ void CMapPlayGalaxy::operator>>(CSaveGameController &savedGame)
 
 	const Uint32 mapSize = mMap.m_width*mMap.m_height*sizeof(word);
 
-	savedGame.addData( reinterpret_cast<byte*>(mMap.getBackgroundData()), mapSize );
-	savedGame.addData( reinterpret_cast<byte*>(mMap.getForegroundData()), mapSize );
-	savedGame.addData( reinterpret_cast<byte*>(mMap.getInfoData()), mapSize );
+	savedGame.addData( reinterpret_cast<gs_byte*>(mMap.getBackgroundData()), mapSize );
+	savedGame.addData( reinterpret_cast<gs_byte*>(mMap.getForegroundData()), mapSize );
+	savedGame.addData( reinterpret_cast<gs_byte*>(mMap.getInfoData()), mapSize );
 }
 
 
@@ -522,9 +522,9 @@ bool CMapPlayGalaxy::operator<<(CSaveGameController &savedGame)
 	savedGame.decodeData(mMap.m_width);
 	savedGame.decodeData(mMap.m_height);
 
-	savedGame.readDataBlock( reinterpret_cast<byte*>(mMap.getBackgroundData()) );
-	savedGame.readDataBlock( reinterpret_cast<byte*>(mMap.getForegroundData()) );
-	savedGame.readDataBlock( reinterpret_cast<byte*>(mMap.getInfoData()) );
+	savedGame.readDataBlock( reinterpret_cast<gs_byte*>(mMap.getBackgroundData()) );
+	savedGame.readDataBlock( reinterpret_cast<gs_byte*>(mMap.getForegroundData()) );
+	savedGame.readDataBlock( reinterpret_cast<gs_byte*>(mMap.getInfoData()) );
 
 	if( mMap.m_width * mMap.m_height > 0 )
 	{
@@ -599,9 +599,9 @@ void CMapPlayGalaxy::operator>>(GsKit::ptree &levelNode)
 
         const Uint32 mapSize = mMap.m_width*mMap.m_height*sizeof(word);
 
-        const std::string b64textBG   = base64Encode( reinterpret_cast<byte*>(mMap.getBackgroundData()), mapSize);
-        const std::string b64textFG   = base64Encode( reinterpret_cast<byte*>(mMap.getForegroundData()), mapSize);
-        const std::string b64textInfo = base64Encode( reinterpret_cast<byte*>(mMap.getInfoData()), mapSize);
+        const std::string b64textBG   = base64Encode( reinterpret_cast<gs_byte*>(mMap.getBackgroundData()), mapSize);
+        const std::string b64textFG   = base64Encode( reinterpret_cast<gs_byte*>(mMap.getForegroundData()), mapSize);
+        const std::string b64textInfo = base64Encode( reinterpret_cast<gs_byte*>(mMap.getInfoData()), mapSize);
 
         mapNode.put("bgdata", b64textBG);
         mapNode.put("fgdata", b64textFG);
@@ -736,11 +736,11 @@ void CMapPlayGalaxy::operator<<(GsKit::ptree &levelNode)
         const std::string b64textFG   = mapNode.get<std::string>("fgdata");
         const std::string b64textInfo = mapNode.get<std::string>("infodata");
 
-        base64Decode(reinterpret_cast<byte*>
+        base64Decode(reinterpret_cast<gs_byte*>
                      (mMap.getBackgroundData()), b64textBG);
-        base64Decode(reinterpret_cast<byte*>
+        base64Decode(reinterpret_cast<gs_byte*>
                      (mMap.getForegroundData()), b64textFG);
-        base64Decode(reinterpret_cast<byte*>
+        base64Decode(reinterpret_cast<gs_byte*>
                      (mMap.getInfoData()), b64textInfo);
     }
 

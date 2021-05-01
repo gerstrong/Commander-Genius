@@ -17,7 +17,7 @@
  * This function checks whether the palette is patched or not.
  * It has to look for a certain binary code, to know that...
  */
-bool GsPalette::patchedPalette(byte *p_exedata, int m_episode)
+bool GsPalette::patchedPalette(gs_byte *p_exedata, int m_episode)
 {
     if(p_exedata == nullptr)
     {
@@ -32,7 +32,7 @@ bool GsPalette::patchedPalette(byte *p_exedata, int m_episode)
 	else if(m_episode == 3)
 		p_exedata += 0x153B;
 
-	const byte palette_patch_array[] =
+	const gs_byte palette_patch_array[] =
 	{ 0xB8, 0x0D, 0x00, 0xCD,
       0x10, 0xB8, 0x12, 0x10, 0xB9, 0x08, 0x00, 0xBB,
       0x00, 0x00, 0x8C, 0xDA, 0x8E, 0xC2, 0xBA, 0x04,
@@ -45,7 +45,7 @@ bool GsPalette::patchedPalette(byte *p_exedata, int m_episode)
 /**
  * Reads the patched code and sets it up...
  */
-void GsPalette::setupPatchedPalette(byte *p_exedata, int m_episode)
+void GsPalette::setupPatchedPalette(gs_byte *p_exedata, int m_episode)
 {
 	if(m_episode == 1)
 		p_exedata += 0x13054;
@@ -68,7 +68,7 @@ void GsPalette::setupPatchedPalette(byte *p_exedata, int m_episode)
 	setPaletteColour(16, 0x00, 0xff, 0xff);
 }
 
-void GsPalette::setupColorPalettes(byte *p_exedata, int m_episode)
+void GsPalette::setupColorPalettes(gs_byte *p_exedata, int m_episode)
 {
     // Here it will check, if the exe was patched with that code.
 	if(patchedPalette(p_exedata, m_episode))

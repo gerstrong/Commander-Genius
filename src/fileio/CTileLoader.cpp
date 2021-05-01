@@ -44,7 +44,7 @@ CTileLoader::CTileLoader()
 }
 
 bool CTileLoader::readOffsetMapfromFile(const std::string &tliFname,
-                                        std::vector<byte> &tileData)
+                                        std::vector<gs_byte> &tileData)
 {
     std::ifstream tliFile(tliFname.c_str());
 
@@ -98,9 +98,9 @@ bool CTileLoader::load(const size_t NumUnMaskedTiles,
 	bool success = false;
     bool isTiledataLoaded = false;
 
-    byte *data = nullptr;
+    gs_byte *data = nullptr;
 
-    std::vector<byte> tileData;
+    std::vector<gs_byte> tileData;
 
     if(gKeenFiles.exeFile.isLuaScript())
     {
@@ -156,7 +156,7 @@ bool CTileLoader::load(const size_t NumUnMaskedTiles,
  * \brief This function assings the tileinfo data block previously read to the internal TileProperties
  * 		  structure in CG.
  */
-bool CTileLoader::readVorticonTileinfo(byte *data,
+bool CTileLoader::readVorticonTileinfo(gs_byte *data,
                                        std::vector<CTileProperties> &TileProperties)
 {
 	const size_t NumTiles = TileProperties.size();
@@ -229,7 +229,7 @@ bool CTileLoader::readVorticonTileinfo(byte *data,
 	return true;
 }
 
-bool CTileLoader::readGalaxyTileinfo(byte *data,
+bool CTileLoader::readGalaxyTileinfo(gs_byte *data,
                                      const size_t NumUnMaskedTiles,
                                      const size_t NumMaskedTiles)
 {
@@ -341,9 +341,9 @@ bool CTileLoader::isaDoor(const signed char behaviour)
  */
 bool CTileLoader::smartTileChangerEnabled()
 {
-	byte *pointertocode = m_data+0x4409;
+	gs_byte *pointertocode = m_data+0x4409;
 
-	byte comparecode[] =
+	gs_byte comparecode[] =
 	{
 			0x26, 0x8B, 0x07, 0xB6, 0x0D, 0xF6, 0xFE,
 			0xF6, 0xEE, 0x26, 0x89, 0x07, 0xE9, 0x60, 0x01
