@@ -32,7 +32,7 @@ CPhysicsSettings::CPhysicsSettings()
 
 
 
-void CPhysicsSettings::loadGameConstants(int episode, byte* data)
+void CPhysicsSettings::loadGameConstants(int episode, gs_byte* data)
 {
 
 	if(episode >= 4 && episode <= 6 )
@@ -53,7 +53,7 @@ void CPhysicsSettings::loadGameConstants(int episode, byte* data)
 		{	// Code for Episode 1.
 
 			// player
-			byte pogo = *(data+0x900E);
+			gs_byte pogo = *(data+0x900E);
 			player.pogostickonstart = pogo;
 			player.start_with_shots = *(data+0x9008);
 

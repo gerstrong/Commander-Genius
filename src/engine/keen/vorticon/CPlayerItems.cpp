@@ -86,7 +86,7 @@ void CPlayer::procGoodie(int tile, int mpx, int mpy)
     }
 	
 	char shotInc = 5;     
-    byte *exeptr = gKeenFiles.exeFile.getRawData();
+    gs_byte *exeptr = gKeenFiles.exeFile.getRawData();
 	
 	switch(behaviour)
 	{

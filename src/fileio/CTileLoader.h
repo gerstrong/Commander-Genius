@@ -27,7 +27,7 @@ private:
 	bool m_demo;
 	int m_version;
 	long m_offset;
-	byte *m_data;
+	gs_byte *m_data;
 
 	//std::map<std::map<int,int>, long> m_offsetMap;
 	typedef std::map<int,long> VersionMap;
@@ -39,10 +39,10 @@ private:
      * @param TileProperties
      * @return
      */
-    bool readVorticonTileinfo(byte *data,
+    bool readVorticonTileinfo(gs_byte *data,
                               std::vector<CTileProperties> &TileProperties);
 
-    bool readGalaxyTileinfo(byte *data,
+    bool readGalaxyTileinfo(gs_byte *data,
                             const size_t NumUnMaskedTiles,
                             const size_t NumMaskedTiles);
 
@@ -55,7 +55,7 @@ private:
      * @return true if everything went fine. otherwise false
      */
     bool readOffsetMapfromFile(const std::string &tliFname,
-                               std::vector<byte> &tileData);
+                               std::vector<gs_byte> &tileData);
 
 	void setupOffsetMap();
 	bool canbePickedup(const signed char behaviour);

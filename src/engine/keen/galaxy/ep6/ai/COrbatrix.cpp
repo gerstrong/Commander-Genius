@@ -71,10 +71,10 @@ mGivesKey(false)
 
     xDirection = LEFT;        
     
-    byte *ptr = gKeenFiles.exeFile.getRawData();
+    gs_byte *ptr = gKeenFiles.exeFile.getRawData();
     ptr += 0x114F2;
     
-    const byte endpattern[] =
+    const gs_byte endpattern[] =
     { 0x05, 0x00 };
               
     if(memcmp(endpattern, ptr, 2) == 0)

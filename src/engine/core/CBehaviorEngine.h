@@ -79,7 +79,7 @@ public:
 	void setMessage(const std::string &name,
 					const std::string &message);
 
-	bool readTeleporterTable(byte *p_exedata);
+	bool readTeleporterTable(gs_byte *p_exedata);
 
 	std::vector<CTileProperties> &getTileProperties(size_t tmnum = 1);
     CPhysicsSettings &getPhysicsSettings()

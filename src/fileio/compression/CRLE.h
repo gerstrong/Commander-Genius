@@ -15,8 +15,8 @@ class CRLE
 {
 public:
 	CRLE();
-	void expand( std::vector<word>& dst, std::vector<byte>& src, word key );
-	void expandSwapped( std::vector<word>& dst, std::vector<byte>& src, word key );
+	void expand( std::vector<word>& dst, std::vector<gs_byte>& src, word key );
+	void expandSwapped( std::vector<word>& dst, std::vector<gs_byte>& src, word key );
 };
 
 #endif /* CRLE_H_ */

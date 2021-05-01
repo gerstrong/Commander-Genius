@@ -502,7 +502,7 @@ bool CSaveGameController::convertOldFormat(size_t slot)
 
 // this is seperated out of game_load for modularity because menumanager.c
 // also uses it, in it's save-game "preview" menu on the load game screen
-void CSaveGameController::readOldHeader(FILE *fp, byte *episode, byte *level, byte *lives, byte *num_players)
+void CSaveGameController::readOldHeader(FILE *fp, gs_byte *episode, gs_byte *level, gs_byte *lives, gs_byte *num_players)
 {
 	fseek(fp, SG_HEADERSIZE, SEEK_SET);		// skip past the CKSAVE%c
 	*episode = fgetc(fp);
@@ -760,7 +760,7 @@ bool CSaveGameController::save()
 	}
 
 	// Write the collected data block
-	std::vector<byte>::iterator pos = m_datablock.begin();
+    std::vector<gs_byte>::iterator pos = m_datablock.begin();
 	for( size_t i=0; i<m_datablock.size() ; i++ )
 	{
 		primitive_buffer[offset++] = *pos;
@@ -834,21 +834,21 @@ bool CSaveGameController::loadXMLTree(GsKit::ptree &pt)
 
 
 // Adds data of size to the main data block
-void CSaveGameController::addData(byte *data, Uint32 size)
+void CSaveGameController::addData(gs_byte *data, Uint32 size)
 {
 	for(Uint32 i=0 ; i<sizeof(Uint32) ; i++ )
 	{
 		Uint32 datasize;
 		datasize = size & ( 0xFF<<(i*8) );
 		datasize >>= (i*8);
-		m_datablock.push_back( static_cast<byte>(datasize) );
+        m_datablock.push_back( static_cast<gs_byte>(datasize) );
 	}
 	for(Uint32 i=0 ; i<size ; i++ )
 		m_datablock.push_back(data[i]);
 }
 
 // Read data of size from the main data block
-bool CSaveGameController::readDataBlock(byte *data)
+bool CSaveGameController::readDataBlock(gs_byte *data)
 {
     if(m_offset+sizeof(Uint32) > m_datablock.size())
 	    return false;

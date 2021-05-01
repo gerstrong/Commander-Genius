@@ -151,7 +151,7 @@ bool CEGALatch::loadData( const std::string &path,
                           const bool compresseddata )
 {
 	std::string filename;
-	byte *RawData;
+	gs_byte *RawData;
     Uint16 width, height;
     SDL_Surface *sfc;
 
@@ -164,7 +164,7 @@ bool CEGALatch::loadData( const std::string &path,
 	if(!latchfile)
 		return false;
 
-	RawData = new byte[m_latchplanesize * 4];
+	RawData = new gs_byte[m_latchplanesize * 4];
     // get the data out of the file into the memory, decompressing it if necessary.
     if (compresseddata)
     {

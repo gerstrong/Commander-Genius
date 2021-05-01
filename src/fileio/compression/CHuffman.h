@@ -35,8 +35,8 @@ public:
                               const unsigned int dictOffset);
 	bool readDictionaryNumberfromEnd( const CExeFile& ExeFile );
 	bool readDictionaryFromFile( const std::string &filename );
-	void readDictionaryAt( byte *p_exedata, unsigned long offset);
-    void expand(byte *pin, byte *pout, const unsigned long inlen, const unsigned long outlen);
+	void readDictionaryAt( gs_byte *p_exedata, unsigned long offset);
+    void expand(gs_byte *pin, gs_byte *pout, const unsigned long inlen, const unsigned long outlen);
 
 private:
 

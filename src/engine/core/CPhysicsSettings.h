@@ -25,7 +25,7 @@ public:
 	 * \brief This function loads some constants, this normally happens when the game is loaded
 	 * 		  and the values change depending on what is read for the mods
 	 */	
-	void loadGameConstants(int episode, byte* data);
+	void loadGameConstants(int episode, gs_byte* data);
 
     void loadGameConstantsFromLua(const std::string &filename);
 

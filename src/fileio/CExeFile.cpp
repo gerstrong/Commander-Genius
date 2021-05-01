@@ -56,7 +56,7 @@ m_rawdata(NULL)
 
 unsigned long CExeFile::fetchUncompressedHeaderSize(void *m_headerdata)
 {
-	byte *hdata = reinterpret_cast<byte*>(m_headerdata);
+	gs_byte *hdata = reinterpret_cast<gs_byte*>(m_headerdata);
 	for( unsigned long c=0 ; c<m_datasize ; c++)
 	{
 		if( hdata[c] == 0xBA && c % 0x200 == 0 )
@@ -547,8 +547,8 @@ bool CExeFile::unpackAudioInterval( RingBuffer<IMFChunkType> &imfData,
         uint32_t emb_file_data_size;
         memcpy( &emb_file_data_size, &AudioCompFileData[audio_start], sizeof(uint32_t) );
 
-        byte imfDataPrim[emb_file_data_size];
-        byte *imfDataPtr = imfDataPrim;
+        gs_byte imfDataPrim[emb_file_data_size];
+        gs_byte *imfDataPtr = imfDataPrim;
 
 
         const unsigned long insize = audio_end-audio_comp_data_start;
@@ -558,12 +558,12 @@ bool CExeFile::unpackAudioInterval( RingBuffer<IMFChunkType> &imfData,
         if(emb_file_data_size == insize)
         {
             memcpy(imfDataPrim,
-                    (byte*)(&AudioCompFileData[audio_comp_data_start]),
+                    (gs_byte*)(&AudioCompFileData[audio_comp_data_start]),
                     insize);
         }
         else
         {
-            Huffman.expand( (byte*)(&AudioCompFileData[audio_comp_data_start]),
+            Huffman.expand( (gs_byte*)(&AudioCompFileData[audio_comp_data_start]),
                             imfDataPrim,
                             insize,
                             emb_file_data_size);

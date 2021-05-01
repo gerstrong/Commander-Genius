@@ -31,7 +31,7 @@
  * \param	dest	pointer to the data that will be the output
  * \param	length	length of the EXPANDED data
  */
-void CCarmack::expand( std::vector<byte>& dst, std::vector<byte>& src )
+void CCarmack::expand( std::vector<gs_byte>& dst, std::vector<gs_byte>& src )
 {
 	uint32_t i, j, offset, length, inc;
 

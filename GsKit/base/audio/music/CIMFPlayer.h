@@ -20,8 +20,8 @@
 
 struct IMFChunkType
 {
-	byte al_reg;
-	byte al_dat;
+	gs_byte al_reg;
+	gs_byte al_dat;
 	word Delay;
 };
 
@@ -39,7 +39,7 @@ public:
 	 */
     bool loadMusicFromFile(const std::string& filename) override;
 
-	void OPLUpdate(byte *buffer, const unsigned int length);
+	void OPLUpdate(gs_byte *buffer, const unsigned int length);
 
     bool open(const bool lock) override;
     void close(const bool lock) override;

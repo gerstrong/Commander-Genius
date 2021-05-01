@@ -31,7 +31,7 @@ void CBehaviorEngine::setMessage(const std::string &name, const std::string &mes
  * 						Episode 3 uses another algorithm for the teleporters.
  * \param	p_exedata	pointer to the data where the exe is located at.
  */
-bool CBehaviorEngine::readTeleporterTable(byte *p_exedata)
+bool CBehaviorEngine::readTeleporterTable(gs_byte *p_exedata)
 {
     if(mEpisode == 1)
 	{

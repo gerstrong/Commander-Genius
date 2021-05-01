@@ -26,7 +26,7 @@ const Uint64 PCSpeakerTime = 0x1234DD;
 typedef struct
 {
     Instrument      inst;
-    byte            block;
+    gs_byte            block;
 } AdLibSound;
 
 // Game Sounds
@@ -176,7 +176,7 @@ public:
     virtual bool loadSoundData(const unsigned int dictOffset) = 0;
 	virtual void unloadSound() = 0;
 
-    bool readISFintoWaveForm(CSoundSlot &soundslot, const byte *imfdata, const Uint8 formatsize );
+    bool readISFintoWaveForm(CSoundSlot &soundslot, const gs_byte *imfdata, const Uint8 formatsize );
 	
 	CSoundSlot *getSlotPtr(){	return &m_soundslot[0];	}
 	CSoundSlot *getSlotPtrAt(const unsigned int idx){	return &m_soundslot[idx];	}
@@ -197,10 +197,10 @@ protected:
      * @param AMP               Amplitude
      * @param audioSpec         SDL_Structure used for the waveform
      */
-    void generateWave(byte* waveform,
+    void generateWave(gs_byte* waveform,
                       const int waveSampleSize,
                       const unsigned int wavetime,
-                      byte *inBuffer,
+                      gs_byte *inBuffer,
                       unsigned int numOfBeeps,
                       bool isVorticons,
                       const int& AMP,
@@ -221,7 +221,7 @@ private:
      * @param wavetime          time in frames the beep has to run
      * @param frequency         Frequency of the waveform
      */
-    void generateBeep(byte *waveform,
+    void generateBeep(gs_byte *waveform,
                       word sample,
                       word sampleSize,
                       int wavesample,

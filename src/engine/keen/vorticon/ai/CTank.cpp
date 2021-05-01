@@ -24,7 +24,7 @@ CVorticonSpriteObject(p_map, x, y, objtype, 0)
 	
 	// Read this from the Exe-File. Patchwork Mod 1 uses different one!
 	shotHeight = 0; 
-    byte *ptr = gKeenFiles.exeFile.getRawData();
+    gs_byte *ptr = gKeenFiles.exeFile.getRawData();
 	ptr += 0x4900;
 	memcpy(&shotHeight, ptr, 1 );	
 	shotHeight <<= STC;

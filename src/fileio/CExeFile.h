@@ -76,7 +76,7 @@ class CExeFile {
     bool isDemo() const
     {	return m_demo;	}
 
-    byte* getRawData() const
+    gs_byte* getRawData() const
     {	return m_rawdata;	}
 
     size_t getRawDataSize() const
@@ -85,7 +85,7 @@ class CExeFile {
     void* getHeaderData() const
     {	return m_headerdata;	}
 
-    byte* getDSegPtr() const
+    gs_byte* getDSegPtr() const
     {	return m_data_segment; }
 
     bool loadMusicTrack(RingBuffer<IMFChunkType> &imfData, const int track) const;
@@ -141,10 +141,10 @@ private:
     bool mIsLuaScript = false;
 	bool m_demo;
 	unsigned int m_crc;
-	std::vector<byte> mData;
+	std::vector<gs_byte> mData;
 	void *m_headerdata;
-	byte *m_rawdata;
-	byte *m_data_segment;
+	gs_byte *m_rawdata;
+	gs_byte *m_data_segment;
 	std::string m_filename;
 
 	std::map< size_t, std::map<int , bool> > m_supportmap;

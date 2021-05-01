@@ -48,7 +48,7 @@ public:
 
     //bool convertOldFormat(size_t slot);
     //void convertAllOldFormats();
-	void readOldHeader(FILE *fp, byte *episode, byte *level, byte *lives, byte *num_players);
+	void readOldHeader(FILE *fp, gs_byte *episode, gs_byte *level, gs_byte *lives, gs_byte *num_players);
 	Uint32 getSlotNumber(const std::string &filename);
     std::string getExtension(const std::string &filename);
 	std::string getSlotName(const std::string &filename);
@@ -75,8 +75,8 @@ public:
 	template <class S>
 	bool decodeData(S &structure);
 
-	void addData(byte *data, Uint32 size);
-	bool readDataBlock(byte *data);
+	void addData(gs_byte *data, Uint32 size);
+	bool readDataBlock(gs_byte *data);
 
     /**
      * @brief save  This function writes all the data from the CPlayGame and CMenu Instances to a file,
@@ -113,7 +113,7 @@ private:
 	int m_Level;
 	Uint32 m_offset;	
 
-	std::vector<byte> m_datablock;
+	std::vector<gs_byte> m_datablock;
 
     const int mMaxNumSaves = 8;
 };
@@ -131,8 +131,8 @@ void CSaveGameController::encodeData(const S structure)
 {
     const size_t size = sizeof(S);
 
-    byte sizebuf[sizeof(size_t)];
-    byte databuf[sizeof(S)];
+    gs_byte sizebuf[sizeof(size_t)];
+    gs_byte databuf[sizeof(S)];
 
     memcpy(sizebuf, &size, sizeof(size_t));
     for( Uint32 i=0 ; i<sizeof(size_t) ; i++ )

@@ -106,7 +106,7 @@ GsVec2D<int> CPlayerWM::fetchFootDestCoord()
     GsVec2D<int> location2;
 	int coordData;
 
-    const byte *dataPtr = gKeenFiles.exeFile.getRawData();
+    const gs_byte *dataPtr = gKeenFiles.exeFile.getRawData();
 	//const byte *dataPtr = gBehaviorEngine.m_ExeFile.getDSegPtr(); // only Zeros here!
 	//const byte *dataPtr = (byte*) gBehaviorEngine.m_ExeFile.getHeaderData();
 

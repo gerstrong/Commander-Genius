@@ -2,7 +2,7 @@
 #include <SDL.h>
 
 
-auto GETWORD(const byte *ptr) -> word
+auto GETWORD(const gs_byte *ptr) -> word
 {
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
     return (ptr[0]<<8 | ptr[1]);
@@ -17,7 +17,7 @@ auto GETWORD(const byte *ptr) -> word
  * @param ptr      reference to pointer (*&) which will be modified
  * @return         the value
  */
-auto READWORD(byte *&ptr) -> word
+auto READWORD(gs_byte *&ptr) -> word
 {
     const auto val = GETWORD(ptr);
     ptr += sizeof(word);
@@ -30,7 +30,7 @@ auto READWORD(byte *&ptr) -> word
  * @param ptr           Pointer to data
  * @return              The value
  */
-auto GETLONGWORD(const byte *ptr) -> longword
+auto GETLONGWORD(const gs_byte *ptr) -> longword
 {
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
     longword val = ptr[0]<<24 | ptr[1] << 16 | ptr[2] << 8 | ptr[3];
@@ -46,7 +46,7 @@ auto GETLONGWORD(const byte *ptr) -> longword
  * @param ptr      reference to pointer (*&) which will be modified
  * @return         the value
  */
-auto READLONGWORD(byte *&ptr) -> longword
+auto READLONGWORD(gs_byte *&ptr) -> longword
 {
     const auto val = GETLONGWORD(ptr);
     ptr += 4;

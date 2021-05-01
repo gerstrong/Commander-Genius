@@ -15,7 +15,7 @@
 #include <SDL.h>
 
 // Some good basic types and utilities independent of endianess.
-typedef uint8_t byte;
+typedef uint8_t gs_byte;
 typedef uint8_t Uint8;
 typedef uint8_t uint8_t;
 typedef int8_t Sint8;
@@ -39,7 +39,7 @@ typedef void * memptr;
  * @param ptr     Pointer to data
  * @return        The value
  */
-auto GETWORD(const byte *ptr) -> word;
+auto GETWORD(const gs_byte *ptr) -> word;
 
 /**
  * @brief READWORD Like GETWORD but the pointer will also be modified, by
@@ -47,14 +47,14 @@ auto GETWORD(const byte *ptr) -> word;
  * @param ptr      reference to pointer (*&) which will be modified
  * @return         the value
  */
-auto READWORD(byte *&ptr) -> word;
+auto READWORD(gs_byte *&ptr) -> word;
 
 /**
  * @brief GETLONGWORD   Like GETWORD but 4 bytes.
  * @param ptr           Pointer to data
  * @return              The value
  */
-auto GETLONGWORD(const byte *ptr) -> longword;
+auto GETLONGWORD(const gs_byte *ptr) -> longword;
 
 
 /**
@@ -62,7 +62,7 @@ auto GETLONGWORD(const byte *ptr) -> longword;
  * @param ptr      reference to pointer (*&) which will be modified
  * @return         the value
  */
-auto READLONGWORD(byte *&ptr) -> longword;
+auto READLONGWORD(gs_byte *&ptr) -> longword;
 
 /**
  * @brief MERGERLOFFSET Strange offset merger.

@@ -27,9 +27,18 @@ SET(USRDIR /usr)
 
 include(oldArch.cmake)
 
-
-set(CMAKE_CXX_STANDARD 14)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
+if(${CMAKE_VERSION} VERSION_GREATER "3.8.0")
+    set(CMAKE_CXX_STANDARD 17)
+    set(CMAKE_CXX_STANDARD_REQUIRED ON)
+else()
+    if (NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS 8.0)
+      set(CMAKE_CXX17_STANDARD_COMPILE_OPTION "-std=c++17")
+      set(CMAKE_CXX17_EXTENSION_COMPILE_OPTION "-std=gnu++17")
+    elseif (NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS 5.1)
+      set(CMAKE_CXX17_STANDARD_COMPILE_OPTION "-std=c++1z")
+      set(CMAKE_CXX17_EXTENSION_COMPILE_OPTION "-std=gnu++1z")
+    endif()
+endif()
 
 
 #Alignment error report is important for android builds

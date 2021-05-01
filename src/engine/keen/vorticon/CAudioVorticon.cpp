@@ -90,8 +90,8 @@ bool CAudioVorticon::loadPCSpeakerSound(std::vector<T> &waveform, const std::str
 
 	memset(name,0,12);
     const Uint32 buf_size = mFileBuffer.size();
-    byte *buffer = mFileBuffer.data();
-    byte *buf_ptr = buffer+0x6;
+    gs_byte *buffer = mFileBuffer.data();
+    gs_byte *buf_ptr = buffer+0x6;
 
     const auto &audioSpec = gAudio.getAudioSpec();
 
@@ -134,7 +134,7 @@ bool CAudioVorticon::loadPCSpeakerSound(std::vector<T> &waveform, const std::str
             // Allocate the required memory for the Wave
             waveform.assign(audioSpec.channels*wavetime*numBeeps, audioSpec.silence);
 
-            generateWave((byte*)waveform.data(), sizeof(T), wavetime, buf_ptr, numBeeps, true, AMP, audioSpec);
+            generateWave((gs_byte*)waveform.data(), sizeof(T), wavetime, buf_ptr, numBeeps, true, AMP, audioSpec);
             gLogging.ftextOut("CAudioVorticon::loadSound: loaded sound %s into the waveform.<br>", searchname.c_str());
 
 			return true;

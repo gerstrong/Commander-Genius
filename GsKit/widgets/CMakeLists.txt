@@ -1,7 +1,6 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.7)
 
 Project(GsKit_widgets)
-
 
 set(HEADERS down.h            GsComboSelection.h  GsMiniTextViewer.h  GsSelectableText.h
     GsBanner.h        GsControl.h         GsNumberControl.h   GsText.h

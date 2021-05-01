@@ -43,7 +43,7 @@ CRLE::CRLE()
 #define COPY_BYTE1  j
 #define COPY_BYTE2  j+1
 
-void CRLE::expandSwapped( std::vector<word>& dst, std::vector<byte>& src, word key )
+void CRLE::expandSwapped( std::vector<word>& dst, std::vector<gs_byte>& src, word key )
 {
     std::size_t finsize, howmany;
 	word value;
@@ -78,12 +78,12 @@ void CRLE::expandSwapped( std::vector<word>& dst, std::vector<byte>& src, word k
     }
 }
 
-void CRLE::expand( std::vector<word> &dst, std::vector<byte> &src, word key )
+void CRLE::expand( std::vector<word> &dst, std::vector<gs_byte> &src, word key )
 {
     uint16_t word, count, inc;
 
     std::size_t finsize;
-    byte high_byte, low_byte;
+    gs_byte high_byte, low_byte;
 
     low_byte = src.at(1);
     high_byte = src.at(0);

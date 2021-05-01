@@ -19,10 +19,10 @@ CAudioResources::~CAudioResources()
 {}
 
 bool CAudioResources::readISFintoWaveForm( CSoundSlot &soundslot,
-                                           const byte *imfdata,
+                                           const gs_byte *imfdata,
                                            const Uint8 formatsize )
 {
-	byte *imfdata_ptr = (byte*)imfdata;
+	gs_byte *imfdata_ptr = (gs_byte*)imfdata;
 	const longword size = READLONGWORD(imfdata_ptr);
 
     const auto amp = gAudio.getOplAmp();
@@ -40,8 +40,8 @@ bool CAudioResources::readISFintoWaveForm( CSoundSlot &soundslot,
 	AdLibSound AL_Sound = *((AdLibSound*) imfdata_ptr);
 	imfdata_ptr += sizeof(AdLibSound);
 	const unsigned int data_size = size;
-	const byte *AL_Sounddata_start = imfdata_ptr;
-	const byte *AL_Sounddata_end = AL_Sounddata_start+data_size;
+	const gs_byte *AL_Sounddata_start = imfdata_ptr;
+	const gs_byte *AL_Sounddata_end = AL_Sounddata_start+data_size;
 
 	OPLEmulator.ShutAL();
 	Bit8u alBlock = ((AL_Sound.block & 7) << 2) | 0x20;
@@ -58,7 +58,7 @@ bool CAudioResources::readISFintoWaveForm( CSoundSlot &soundslot,
     const unsigned int samplesPerMusicTick = audioSpec.freq/OPLEmulator.getIMFClockRate();
 	const unsigned waittimes = 4;
     const unsigned int wavesize = (data_size*waittimes*samplesPerMusicTick*audioSpec.channels*formatsize );
-    std::vector<byte> waveform;
+    std::vector<gs_byte> waveform;
     waveform.resize(wavesize, 0);
 
     std::vector<Bit32s> mix_buffer;
@@ -68,7 +68,7 @@ bool CAudioResources::readISFintoWaveForm( CSoundSlot &soundslot,
 
     unsigned long offset = 0;    
 
-	for(byte *AL_Sounddata_ptr = (byte*) AL_Sounddata_start ;
+	for(gs_byte *AL_Sounddata_ptr = (gs_byte*) AL_Sounddata_start ;
 			  AL_Sounddata_ptr < AL_Sounddata_end ;
 			  AL_Sounddata_ptr++ )
 	{
@@ -136,7 +136,7 @@ bool CAudioResources::readISFintoWaveForm( CSoundSlot &soundslot,
 
 
 
-void CAudioResources::generateBeep(byte *waveform,
+void CAudioResources::generateBeep(gs_byte *waveform,
                                    word sample,
                                    word sampleSize,
                                    int wavesample,
@@ -178,10 +178,10 @@ void CAudioResources::generateBeep(byte *waveform,
 }
 
 
-void CAudioResources::generateWave(byte* waveform,
+void CAudioResources::generateWave(gs_byte* waveform,
                                    const int waveSampleSize,
                                    const unsigned int wavetime,
-                                   byte *inBuffer,
+                                   gs_byte *inBuffer,
                                    unsigned int numOfBeeps,
                                    bool isVorticons,
                                    const int& AMP,
