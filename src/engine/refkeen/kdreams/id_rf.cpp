@@ -108,20 +108,20 @@ typedef	struct spriteliststruct
 	id0_unsigned_t	tilex,tiley,tilewide,tilehigh;
 	id0_int_t			priority,updatecount;
 	struct spriteliststruct **prevptr,*nextsprite;
-} __attribute__((__packed__)) spritelisttype;
+} /*__attribute__((__packed__))*/ spritelisttype;
 
 
 typedef struct
 {
 	id0_int_t			screenx,screeny;
 	id0_int_t			width,height;
-} __attribute__((__packed__)) eraseblocktype;
+} /*__attribute__((__packed__))*/ eraseblocktype;
 
 typedef struct
 {
 	id0_unsigned_t	current;		// foreground tiles have high bit set
 	id0_int_t			count;
-} __attribute__((__packed__)) tiletype;
+} /*__attribute__((__packed__))*/ tiletype;
 
 typedef struct animtilestruct
 {
@@ -129,7 +129,7 @@ typedef struct animtilestruct
 	tiletype	*chain;
 	id0_unsigned_t	id0_far *mapplane;
 	struct animtilestruct **prevptr,*nexttile;
-} __attribute__((__packed__)) animtiletype;
+} /*__attribute__((__packed__))*/ animtiletype;
 
 /*
 =============================================================================
@@ -902,7 +902,8 @@ void RF_SetRefreshHook (void (*func) (void) )
 
 void	RFL_NewRow (id0_int_t dir)
 {
-	id0_unsigned_t count,updatespot,updatestep;
+    id0_unsigned_t count = 0;
+    id0_unsigned_t updatespot,updatestep;
 	id0_int_t		x,y,xstep,ystep;
 
 	switch (dir)
@@ -1267,7 +1268,7 @@ void RF_Scroll (id0_int_t x, id0_int_t y)
 void RF_PlaceSprite (void **user,id0_unsigned_t globalx,id0_unsigned_t globaly,
 	id0_unsigned_t spritenumber, drawtype draw, id0_int_t priority)
 {
-	spritelisttype	register *sprite,*next;
+    spritelisttype	*sprite,*next;
 	spritetabletype id0_far *spr;
 	spritetype id0_seg	*block;
 	id0_unsigned_t	shift,pixx;
@@ -1988,7 +1989,7 @@ void RF_Scroll (id0_int_t x, id0_int_t y)
 void RF_PlaceSprite (void **user,id0_unsigned_t globalx,id0_unsigned_t globaly,
 	id0_unsigned_t spritenumber, drawtype draw, id0_int_t priority)
 {
-	spritelisttype	register *sprite,*next;
+    spritelisttype	*sprite,*next;
 	spritetabletype id0_far *spr;
 	spritetype id0_seg	*block;
 	//id0_unsigned_t	shift,pixx;
