@@ -122,7 +122,7 @@ ptree::self_type &ptree::get_child_internal(const path_type &path,
 
         auto &children = tree.mChildren;
         if(children.empty())
-            throw "childen is empty.";
+            throw "no children at this point.";
 
         auto it = children.find(segment);
 
