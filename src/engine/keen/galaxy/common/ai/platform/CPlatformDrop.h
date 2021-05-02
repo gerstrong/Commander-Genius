@@ -30,6 +30,11 @@ public:
 	 */
 	void process();
 
+    void deserialize(GsKit::ptree &node) override;
+
+    void serialize(GsKit::ptree &node) override;
+
+
 private:
     int m_delay_for_drop = 0;
     int m_drop_speed = 0;
@@ -40,7 +45,7 @@ private:
     // Speed at what the Platform might return to the original position
     int hoverSpeed;
 
-    const GsVec2D<int> m_Origin;
+    GsVec2D<int> m_Origin;
 
     bool mAllowReturn = false;
 };
