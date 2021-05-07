@@ -141,4 +141,34 @@ void CPlatformDrop::process()
 	CPlatform::process();
 }
 
+void CPlatformDrop::deserialize(GsKit::ptree &node)
+{
+    try
+    {
+        mAllowReturn = node.get<bool>("<xmlattr>.allowReturn", mAllowReturn);
+        auto &posNode = node.put("pos", "");
+        m_Pos.x = posNode.get<Uint32>("<xmlattr>.x", m_Pos.x);
+        m_Pos.y = posNode.get<Uint32>("<xmlattr>.y", m_Pos.y);
+        auto &originNode = node.put("origin", "");
+        m_Origin.x = originNode.get<Uint32>("<xmlattr>.x", m_Origin.x);
+        m_Origin.y = originNode.get<Uint32>("<xmlattr>.y", m_Origin.y);
+    }
+    catch(...)
+    {
+        gLogging << "Some data is missing in the save." << CLogFile::endl;
+    }
+}
+
+void CPlatformDrop::serialize(GsKit::ptree &node)
+{
+    node.put("<xmlattr>.allowReturn", mAllowReturn);
+    auto &posNode = node.put("pos", "");
+    posNode.put("<xmlattr>.x", m_Pos.x);
+    posNode.put("<xmlattr>.y", m_Pos.y);
+    auto &originNode = node.put("origin", "");
+    originNode.put("<xmlattr>.x", m_Origin.x);
+    originNode.put("<xmlattr>.y", m_Origin.y);
+}
+
+
 }
