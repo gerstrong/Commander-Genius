@@ -111,21 +111,21 @@ struct GsColor
 {
     GsColor();
     GsColor(Uint8 _r, Uint8 _g, Uint8 _b);
-    GsColor(Uint8 _r, Uint8 _g, Uint8 _b, Uint8 _a);
+    GsColor(Uint8 _r, Uint8 _g, Uint8 _b, Uint8 _a);        
 
     //GsColor(SDL_PixelFormat *f, Uint32 cl) { SDL_GetRGBA(cl, f, &r, &g, &b, &a); }
     //explicit GsColor(Uint32 cl)	{ set(getMainPixelFormat(), cl); }
     //GsColor(const SDL_Color& cl) : r(cl.r), g(cl.g), b(cl.b), a(SDL_ALPHA_OPAQUE) {}
 
-    /*
     SDL_Color SDLColor() const
     {
         SDL_Color sdlCol = {r,g,b,a};
         return sdlCol;
     }
-*/
 
     Uint8 r, g, b, a;
+
+    void readFromEGA(const Uint8 value);
 
     //Uint32 get() const { return get(getMainPixelFormat()); }
     Uint32 get(SDL_PixelFormat *f) const { return SDL_MapRGBA(f, r, g, b, a); }
