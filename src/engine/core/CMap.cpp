@@ -455,7 +455,7 @@ bool CMap::scrollDown(const bool force)
 
 
 bool CMap::scrollUp(const bool force)
-{
+{        
     bool ok = true;
 
     for(auto &plane : mScrollingPlanes)

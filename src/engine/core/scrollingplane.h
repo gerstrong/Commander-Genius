@@ -112,6 +112,9 @@ public:
     void lockAxisY(const bool value);
     bool isAxisYLocked();
 
+    void enableTransparentTile(const bool value);
+    void setTransparentTile(const word tile);
+    word getTransparentTile();
 
 private:
 
@@ -134,6 +137,7 @@ private:
 
     // Will make the the 0th tile transparent. Common in foreground planes
     bool mHasTransparentTile = false;
+    word mTransparentTile = 0;
 
     int mSubscrollUnits = 0;
     GsVec2D<int> mSubscrollCoords;

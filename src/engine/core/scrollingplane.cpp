@@ -292,7 +292,7 @@ void ScrollingPlane::drawHstripe(GsTilemap &tilemap,
                          ((x<<mTileSizeBase)+m_mapxstripepos)&drawMask,
                          y);
 
-        if(tile == 0 && mHasTransparentTile)
+        if(tile == mTransparentTile && mHasTransparentTile)
         {
             continue;
         }
@@ -326,7 +326,7 @@ void ScrollingPlane::drawVstripe(GsTilemap &tilemap,
         tilemap.drawTransparentTile(scrollSfc, x,
                          ((y<<mTileSizeBase)+m_mapystripepos) & drawMask);
 
-        if(tile == 0 && mHasTransparentTile)
+        if(tile == mTransparentTile && mHasTransparentTile)
         {
             continue;
         }
@@ -368,7 +368,7 @@ void ScrollingPlane::drawAll(GsTilemap &tilemap)
                              ((x<<mTileSizeBase)+m_mapxstripepos),
                              ((y<<mTileSizeBase)+m_mapystripepos));
 
-            if(tile == 0 && mHasTransparentTile)
+            if(tile == mTransparentTile && mHasTransparentTile)
             {
                 continue;
             }
@@ -624,11 +624,11 @@ void ScrollingPlane::redrawPlaneAt(GsTilemap &tilemap,
         const Uint16 loc_x = (((mx-m_mapx)<<mTileSizeBase)+m_mapxstripepos)&drawMask;
         const Uint16 loc_y = (((my-m_mapy)<<mTileSizeBase)+m_mapystripepos)&drawMask;
 
-        if( tile != 0 || !mHasTransparentTile )
+        if( tile != mTransparentTile || !mHasTransparentTile )
         {
             tilemap.drawTile(ScrollSurfaceRaw, loc_x, loc_y, tile);
         }
-        else if(tile == 0 || mHasTransparentTile)
+        else if(tile == mTransparentTile || mHasTransparentTile)
         {
             tilemap.drawTransparentTile(scrollSfc, loc_x, loc_y);
         }
@@ -719,3 +719,19 @@ bool ScrollingPlane::isAxisYLocked()
 {
     return mLockAxisY;
 }
+
+void ScrollingPlane::enableTransparentTile(const bool value)
+{
+    mHasTransparentTile = value;
+}
+
+void ScrollingPlane::setTransparentTile(const word tile)
+{
+    mTransparentTile = tile;
+}
+
+word ScrollingPlane::getTransparentTile()
+{
+    return mTransparentTile;
+}
+

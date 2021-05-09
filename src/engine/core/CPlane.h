@@ -86,6 +86,8 @@ public:
         return mDataVec.empty();
     }
 
+    void dump();
+
 
 protected:
     std::vector<word> mDataVec; // the map data of plane

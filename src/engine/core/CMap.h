@@ -215,6 +215,12 @@ public:
 
     void lockAxisY(const unsigned int idx, const bool value);
 
+    ScrollingPlane &getScrollingPlane(const int idx)
+    {
+        return mScrollingPlanes[idx];
+    }
+
+
     Uint32 m_width = 0, m_height = 0;            // size of the map (in tile units)
     bool m_worldmap = false;             // if 1, this is the world map
 
@@ -227,6 +233,7 @@ public:
     bool mFuseInLevel = false;
 
     GsVec2D<int> mGamePlayPos;    
+
 
 
 private:

@@ -8,6 +8,7 @@
 #include "CPlane.h"
 
 #include <cassert>
+//#include <fstream>
 
 void CPlane::createDataMap(const int width, const int height)
 {
@@ -19,6 +20,23 @@ void CPlane::createDataMap(const int width, const int height)
 
     mDataVec.assign(size_t(mWidth*mHeight), 0);
     mTimers.assign(size_t(mWidth*mHeight), 0);
+}
+
+void CPlane::dump()
+{
+    /*
+    std::ofstream file("/tmp/dumpplane.txt");
+
+    for(int j=0 ; j < mWidth ; j++)
+    {
+        for(int i=0 ; i < mWidth ; i++)
+        {
+               const auto tile = getMapDataAt(i,j);
+               file << tile << "\t";
+        }
+
+        file << std::endl;
+    }*/
 }
 
 
