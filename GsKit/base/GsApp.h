@@ -49,7 +49,10 @@ public:
 
     void setEngine(GsEngine *engPtr);
 	
+    void runMainCycleNonThreaded();
+
     void runMainCycle();
+
     void runMainCycleEmscripten();
 	void cleanup();
 

@@ -27,6 +27,8 @@
 #include <emscripten/emscripten.h>
 #endif
 
+#include <thread>
+#include <mutex>
 
 
 std::string getArgument( int argc, char *argv[], const std::string& text )
@@ -213,9 +215,11 @@ void GsApp::unloadDrivers()
 ////
 // Process Routine
 ////
+
+
 // This function is run every time, the Timer says so, through.
 void GsApp::ponder(const float deltaT)
-{
+{    
     gInput.ponder();
     pollEvents();
 
@@ -243,6 +247,16 @@ void GsApp::render()
     gMenuController.render();
 
     gInput.render();
+
+    // Apply graphical effects if any.
+    gEffectController.render();
+
+    // Pass all the surfaces to one. Some special surfaces are used and are collected here
+    gVideoDriver.collectSurfaces();
+
+    // Now you really render the screen
+    // When enabled, it also applies Filters
+    gVideoDriver.updateDisplay();
 }
 
 
@@ -265,28 +279,8 @@ void runMainCycleEmscriptenExtern()
 }
 #endif // __EMSCRIPTEN__
 
-/**
- * \brief  	This is the main run cycle of the game,
- * 		no matter what happens in the game logic or
- * 		which engine is chosen, it always get to this point
- * 		Mainly timer and logic processes are performed here.
- */
-void GsApp::runMainCycle()
+void GsApp::runMainCycleNonThreaded()
 {
-    // I hope the engine has been set. Otherwise quit the app
-    if(!mpCurEngine)
-    {
-        gLogging << "No Engine set. This should not happen. Please report this the developers";
-        return ;
-    }
-
-
-    mpCurEngine->start();
-
-#if __EMSCRIPTEN__
-    emscripten_set_main_loop(runMainCycleEmscriptenExtern, -1, 1);        
-#else    
-
 
     float acc = 0.0f;
     float start = 0.0f;
@@ -305,14 +299,14 @@ void GsApp::runMainCycle()
         curr = timerTicks();
 
         if(gTimer.resetLogicSignal())
-            start = curr;        
+            start = curr;
 
         if(vsyncEnabled)
         {
             start = timerTicks();
 
             // Game cycle
-            {                            
+            {
                 // Poll Inputs
                 gInput.pollEvents();
 
@@ -368,21 +362,9 @@ void GsApp::runMainCycle()
                 acc -= logicLatency;
             }
 
+
             // Now we render the whole GameControl Object to the blit surface
             render();
-
-            // Apply graphical effects if any.
-            gEffectController.render();
-
-            // Pass all the surfaces to one. Some special surfaces are used and are collected here
-            gVideoDriver.collectSurfaces();
-
-
-
-            // Now you really render the screen
-            // When enabled, it also applies Filters
-            gVideoDriver.updateDisplay();
-
 
             elapsed = timerTicks() - start;
             total_elapsed += elapsed;
@@ -418,6 +400,31 @@ void GsApp::runMainCycle()
             total_elapsed = 0.0f;
         }
     }
+}
+
+/**
+ * \brief  	This is the main run cycle of the game,
+ * 		no matter what happens in the game logic or
+ * 		which engine is chosen, it always get to this point
+ * 		Mainly timer and logic processes are performed here.
+ */
+void GsApp::runMainCycle()
+{
+    // I hope the engine has been set. Otherwise quit the app
+    if(!mpCurEngine)
+    {
+        gLogging << "No Engine set. This should never happen. Please report this issue to the developers";
+        return ;
+    }
+
+
+    mpCurEngine->start();
+
+#if __EMSCRIPTEN__
+    emscripten_set_main_loop(runMainCycleEmscriptenExtern, -1, 1);        
+#else    
+
+    runMainCycleNonThreaded();
 #endif
 
     cleanup();
