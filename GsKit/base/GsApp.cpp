@@ -338,7 +338,6 @@ void GsApp::runMainCycleNonThreaded()
         }
         else
         {
-
             const float renderLatency = gTimer.RenderLatency();
 
             elapsed = curr - start;

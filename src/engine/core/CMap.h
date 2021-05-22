@@ -220,6 +220,11 @@ public:
         return mScrollingPlanes[idx];
     }
 
+    auto getNumScrollingPlanes() const
+    {
+        return mScrollingPlanes.size();
+    }
+
 
     Uint32 m_width = 0, m_height = 0;            // size of the map (in tile units)
     bool m_worldmap = false;             // if 1, this is the world map

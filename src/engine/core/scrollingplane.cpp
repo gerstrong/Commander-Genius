@@ -124,7 +124,7 @@ bool ScrollingPlane::scrollRightTest()
     return true;
 }
 
-// scrolls the map one pixel right
+// scrolls the map one pixel to the right
 bool ScrollingPlane::scrollRight(GsTilemap &tilemap)
 {
     auto &scrollSfc = gVideoDriver.getScrollSurfaceVec().at(mScrollSfcIdx);
