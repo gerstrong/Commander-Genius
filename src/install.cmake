@@ -32,7 +32,7 @@ ELSE(IS_DIRECTORY "${CMAKE_SOURCE_DIR}/vfsroot")
 ENDIF(IS_DIRECTORY "${CMAKE_SOURCE_DIR}/vfsroot")
 
 # This will copy the readme file. 
-INSTALL(FILES "${CMAKE_BINARY_DIR}/README"
+INSTALL(FILES "${CMAKE_BINARY_DIR}/README.md"
 	DESTINATION ${DOCDIR})
 
 # This will copy the changelog file. 
