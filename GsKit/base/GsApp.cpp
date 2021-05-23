@@ -74,6 +74,11 @@ std::string GsApp::getName()
     return mAppName;
 }
 
+void GsApp::ignoreLogicCounter()
+{
+    mIgnoreLogicCounterOnce = true;
+}
+
 
 ///////////////////////////////
 // Cleanup Game Engine here! //
@@ -359,8 +364,15 @@ void GsApp::runMainCycleNonThreaded()
                 ponder(logicLatency);
 
                 acc -= logicLatency;
+
+                if(mIgnoreLogicCounterOnce)
+                {
+                    start = timerTicks();
+                    break;
+                }
             }
 
+            mIgnoreLogicCounterOnce = false;
 
             // Now we render the whole GameControl Object to the blit surface
             render();

@@ -69,12 +69,24 @@ public:
     void setName(const std::string &appName);
     std::string getName();
 
+    /**
+     * @brief ignoreLogicCounter    Some engine parts coming from legacy code have the issues,
+     *                              that they like to hang for certain section (v.g. text printing)
+     *                              and require a quick rendering. If that happens you should call this function
+     *                              so the App engine does not think there was a intensive computational operation going on.
+     *                              The ignore Logic Counter breaks only once per call.
+     *                              NOTE: Does not work when vsync is enabled
+     */
+    void ignoreLogicCounter();
+
 private:
 
     std::unique_ptr<GsEngine> mpCurEngine;
     std::shared_ptr<GsAppEventSink> mpSink;
 
     std::string mAppName;
+
+    bool mIgnoreLogicCounterOnce = false;
 };
 
 // It's a simple quit event which will force CG to close the App
