@@ -427,7 +427,12 @@ finale=<on/off>      If you want to directly show the finale of a game, pass
                      E.g.: "CGenius.exe finale=on"
 
 level=<level>        Supplying this parameter will directly open the given
-                     level. This is useful for testing.
+                     level; very useful for testing.
+                     Note about Cosmos Cosmic Adventure: The level number 
+                     is the map passed. This means for example that level 6 
+                     might become level 5. The reason for that are the 
+                     bonus levels which occupy some slots in between the maps.
+                     
 
 exportGfx=<on/off>   Exports graphics of the loaded game and saves them as BMP
                      in the gaming directory
@@ -540,7 +545,7 @@ On Galaxy and Dreams games it works like usual.
 
 # FAQ
 
-Q: Where is Commander Keen 2, 3, 5 and 6?
+Q: Where are Commander Keen 2, 3, 5 and 6?
 
 A: Due to legal issues with the Commander Keen games, we are only allowed to
    provide a copy of Keen 1, 4, Dreams and everything mod related to those. This
@@ -603,14 +608,12 @@ A: I like the ScummVM approach for adventure games. Maybe one day we do that
 
 # BUG! 
 
-So you really found one or more bugs? Please report those to use via GitLab
+So you found one or more bugs? Please report those to use via GitLab
 issues and they might get fixed.
 Depending on the priority, we are going to fix them as soon as possible.
-Sending us the "CGLog.html" or "CGLog.txt" file might help with tracking down
-the error.
+Sending us the "CGLog.html" file helps with tracking down issues.
 Also remember to test using the latest version from the testing repo we
-sometimes provide. Your error might have been already fixed there.
-If there is no testing version after the release, just report it. ;-)
+provide. Your error might have been already fixed there.
 
 Of course you can send an email, but GitLab is more useful to me:
 
@@ -720,7 +723,3 @@ For questions, comments, or updates to the source tree
 please contact: gerstrong@gmail.com or go through
 SourceForge at http://clonekeenplus.sourceforge.net/
 
-
-# Legacy Readme file here:
-
-[Commander Genius Readme File](https://github.com/gerstrong/Commander-Genius/blob/master/README.in)

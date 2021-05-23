@@ -138,10 +138,9 @@ string(REGEX REPLACE "[\r\n]" "" CG_VERSION "${CG_VERSION}")
 set(CG_VERSION "2.8.0")
 
 # Generate the README file with the correct version string
-configure_file(README.in README)
-configure_file(README.in ${CMAKE_BINARY_DIR}/README)
-configure_file(README.in ${CMAKE_CURRENT_SOURCE_DIR}/README)
-configure_file(README.in ${CMAKE_CURRENT_SOURCE_DIR}/debian/README)
+configure_file(README.md ${CMAKE_BINARY_DIR}/README.md COPYONLY)
+configure_file(README.md ${CMAKE_CURRENT_SOURCE_DIR}/README.md COPYONLY)
+configure_file(README.md ${CMAKE_CURRENT_SOURCE_DIR}/debian/README.md COPYONLY)
 
 if(APPLE)
     file(COPY cglogo.icns DESTINATION ${CMAKE_BINARY_DIR}/src)
@@ -173,7 +172,7 @@ ENDIF(APPLE)
 # And build Commander Genius on top of that!
 add_subdirectory("src")
 
-add_custom_target(${PROJECT_NAME} SOURCES changelog.txt README.in README.md)
+add_custom_target(${PROJECT_NAME} SOURCES changelog.txt README.md)
 
 MESSAGE(STATUS "CG_VERSION = ${CG_VERSION}" )
 
