@@ -198,7 +198,7 @@ void CSDLVideo::clearSurfaces()
 {
     // TODO: Clear color here!
     mOverlaySurface.fillRGB(0,0,0);
-    mGameSfc.fillRGB(0,0,0);
+    mGameSfc.fillRGB(mClearColor.r, mClearColor.g, mClearColor.b);
 }
 
 

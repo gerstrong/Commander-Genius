@@ -121,10 +121,7 @@ void GsPalette::setdark(bool dark)
 {
 	m_dark = dark;
 
-    if(dark)
-        gVideoDriver.setLightIntensity(0.1f);
-    else
-        gVideoDriver.setLightIntensity(1.0f);
+    gVideoDriver.setLightIntensity( dark ? 0.1f : 1.0f );
 
 	fadeto( m_dark ? m_darkness : 0, FADE_SPEED_SLOW);
 }

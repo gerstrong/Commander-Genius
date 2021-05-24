@@ -26,12 +26,18 @@ bool GsTilemap::CreateSurface(SDL_Color *sdlPalette, Uint32 Flags,
                         (m_numtiles/m_column)<<m_pbasesize, 8, 0, 0, 0, 0);
 
     mTileSurface.setPaletteColors(sdlPalette, 255);
-    mTileSurface.setColorKey(COLORKEY);
+
+    setColorKey(COLORKEY);
 
     return !mTileSurface.empty();
 }
 
 std::string exts[] = { "png", "bmp", "tif", "jpg" };
+
+void GsTilemap::setColorKey(const unsigned int key)
+{
+    mTileSurface.setColorKey(key);
+}
 
 bool GsTilemap::loadHiresTile( const std::string& filename, const std::string& path )
 {  

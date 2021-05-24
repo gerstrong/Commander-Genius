@@ -623,7 +623,7 @@ void CMap::redrawAt(const Uint32 mx, const Uint32 my)
 void CMap::drawAllOfPlane(const int planeIdx)
 {    
     auto &scrollSfcVec = gVideoDriver.getScrollSurfaceVec();
-    assert(planeIdx < scrollSfcVec.size());
+    assert(planeIdx < int(scrollSfcVec.size()));
 
     auto &plane = mScrollingPlanes.at(planeIdx);
     auto &tilemap = m_Tilemaps.at(planeIdx);

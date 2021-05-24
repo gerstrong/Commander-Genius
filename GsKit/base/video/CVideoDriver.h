@@ -188,6 +188,11 @@ public:
         return mpVideoEngine->renderer;
     }
 
+    void setClearColor(const GsColor &color)
+    {
+        mpVideoEngine->setClearColor(color);
+    }
+
 
     /**
      * @brief addTextureToRender add texture ptr to the that will be renderered

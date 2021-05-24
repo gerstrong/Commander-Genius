@@ -145,6 +145,11 @@ public:
     GsRect<int> mRelativeVisGameArea;
     GsRect<int> mRelativeBlendVisGameArea;
 
+    void setClearColor(const GsColor &color)
+    {
+        mClearColor = color;
+    }
+
 
     std::vector<GsScrollSurface> &getScrollSurfaceVec();
 
@@ -197,7 +202,7 @@ protected:
      *                      0 means black, but through a config the use might change this
      */
 
-    GsColor mClearColor;
+    GsColor mClearColor = { 0x00, 0x00, 0x00};
 };
 
 #endif /* CVIDEOENGINE_H_ */

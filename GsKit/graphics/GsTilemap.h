@@ -23,6 +23,8 @@ public:
     bool CreateSurface(SDL_Color *sdlPalette, Uint32 Flags,
             Uint16 numtiles, Uint16 pbasesize, Uint16 column);
 
+    void setColorKey(const unsigned int key);
+
     bool loadHiresTile( const std::string& filename,
                         const std::string& path );
 
