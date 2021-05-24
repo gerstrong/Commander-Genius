@@ -458,9 +458,15 @@ public:
 
     /**
      * @brief tiltSurface rotate by 90 degree or tilt
-     * @param orig
      */
     void tiltSurface();
+
+    /**
+     * @brief mirrorSurfaceHoriz mirrors the surface
+     *        at horizontal axis
+     */
+    void mirrorSurfaceHoriz();
+
 
     /**
      * @brief createCopy will create a copy of another surface

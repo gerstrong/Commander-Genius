@@ -276,10 +276,7 @@ bool GsSurface::loadBmp(const std::string filepath)
     return true;
 }
 
-/**
- * @brief tiltSurface rotate by 90 degree or tilt
- * @param orig
- */
+
 void GsSurface::tiltSurface()
 {
     GsSurface src;
@@ -321,6 +318,44 @@ void GsSurface::tiltSurface()
             dstPx += bpp;
         }
 
+        dstPxY += mpSurface->pitch;
+    }
+
+    unlock();
+    src.unlock();
+}
+
+void GsSurface::mirrorSurfaceHoriz()
+{
+    GsSurface src;
+
+    src.createCopy(*this);
+
+    auto format = mpSurface->format;
+
+    create(mpSurface->flags,
+           mpSurface->h, mpSurface->w,
+           format->BitsPerPixel,
+           format->Rmask,
+           format->Gmask,
+           format->Bmask,
+           format->Amask);
+
+    src.lock();
+    lock();
+
+    SDL_Surface *srcSfc = src.getSDLSurface();
+    Uint8 *srcPxY = static_cast<Uint8*>(srcSfc->pixels);
+    Uint8 *dstPxY = static_cast<Uint8*>(mpSurface->pixels);
+
+    for( int y = mpSurface->h-1 ; y>=0 ; y-- )
+    {
+        const int line = mpSurface->format->BytesPerPixel*mpSurface->w;
+
+        Uint8 *srcPx = srcPxY +
+                y*(srcSfc->format->BytesPerPixel)*mpSurface->w;
+
+        memcpy(dstPxY, srcPx, line);
         dstPxY += mpSurface->pitch;
     }
 
