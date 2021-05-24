@@ -254,7 +254,7 @@ Setting up the data for the game:
    Be aware that CG handles global HQ files and per-game files, depending on
    where the resources get extracted.
    Read the HQP readme for more information on how to use those resources.
-   Using HQP, you might have to copy some resources to the specific game
+   Using HQP, you might have to copy some resources to thespecific game
    directory so that CG can detect it. For example, you might want to copy
    ck1tiles.bmp to <CG-Data>/games/keen1/.
    I'm thinking of making HQPs deprecated and providing special versions of the
@@ -306,11 +306,9 @@ sudo apt install build-essential libgl1-mesa-dev libcurl4-openssl-dev zlib1g-dev
 How to compile it under Fedora:
  * Install using the package manager (replace "dnf" with "yum" for Fedora 21 or
    older):
-
-   dnf install -y \
-     SDL2-devel cmake cmake-data gcc-c++ \
-     mesa-libGL-devel libcurl-devel \
-     SDL2_image-devel SDL2_mixer-devel SDL2_ttf-devel
+```
+   dnf install -y SDL2-devel cmake cmake-data gcc-c++ mesa-libGL-devel libcurl-devel SDL2_image-devel SDL2_mixer-devel SDL2_ttf-devel
+```
 
  * Extract my source code into the "CGeniusSrc" directory.
  * mkdir -p CGeniusBuild
