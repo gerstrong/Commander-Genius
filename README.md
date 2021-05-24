@@ -57,17 +57,17 @@ The main goal of Commander Genius is to copy the original gameplay feeling as
 much as possible, and extend it further so you get a native implementation with
 even more features like:
 
-- Mod Support with some extras using Lua
-- OpenGL Acceleration
-- SDL 2.0 Support
-- New graphical effects
-- Multiplayer Support (Up to four players)
-- High Quality Packs which make the game look better, provide better sounds and
+* Mod Support with some extras using Lua
+* OpenGL Acceleration
+* SDL 2.0 Support
+* New graphical effects
+* Multiplayer Support (Up to four players)
+* High Quality Packs which make the game look better, provide better sounds and
   even music you might never have known existed in the original games
-- In-game Menu for Vorticons Keen as well as a new HUD
-- Named save slots
-- Unrestricted Joystick Support
-- and much more
+* In-game Menu for Vorticons Keen as well as a new HUD
+* Named save slots
+* Unrestricted Joystick Support
+* and much more
 
 
 # Our Mission
@@ -285,15 +285,11 @@ but it is getting deprecated and will be removed in future.
 Curl and Zlib, so you can fully use the Game store CG provides.
 
 How to compile it under Ubuntu:
- * Install through Synaptic or "sudo apt install" the following packages:
-        - build-essential
-        - libgl1-mesa-dev
-        - libcurl4-openssl-dev
-        - zlib1g-dev        
-        - libsdl2-dev
-        - libsdl2-image-dev
-        - libsdl2-mixer-dev
-        - libsdl2-ttf-dev
+ * Install through Synaptic like this:
+ 
+```
+sudo apt install build-essential libgl1-mesa-dev libcurl4-openssl-dev zlib1g-dev libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev
+```
 
  * Create an empty build Dir: mkdir -p CGeniusBuild
  * Extract my source code into the "CGeniusSrc" directory.
