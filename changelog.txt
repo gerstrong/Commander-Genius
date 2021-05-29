@@ -1,6 +1,8 @@
 v2.8.0:
 -------
-- Remove legacy SDL 1.2 code at many parts
+- More Keen Galaxy engine fixes
+- Menu fixes
+- Removed legacy SDL 1.2 code at many parts
 - More stable graphics engine
 - SDL2 is not an option anymore
 - Improved logging

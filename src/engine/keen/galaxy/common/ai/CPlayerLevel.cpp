@@ -1926,18 +1926,12 @@ void CPlayerLevel::processEnterDoor()
 
 }
 
-
-
-
-
-
-
 void CPlayerLevel::toggleBridge(const Uint32 newX, const Uint32 newY)
 {
     const int start_tile = mpMap->getPlaneDataAt(1, newX<<CSF, newY<<CSF)-1;
 
     // This is usual for Keen 4. The last tile comes three tiles later
-	int end_tile = start_tile+3;
+    int end_tile = start_tile+3;
 	
     const int ep = gBehaviorEngine.getEpisode();
     std::vector<CTileProperties> &tileProp = gBehaviorEngine.getTileProperties(1);
@@ -1959,9 +1953,16 @@ void CPlayerLevel::toggleBridge(const Uint32 newX, const Uint32 newY)
     }
 
 
+    if(mLua)
+    {
+        int value = 0;
+        mLua.runFunctionRetOneInt("defineEndBridgeTile", value);
+        end_tile = start_tile+value;
+    }
+
     x = newX-1;
 
-    for(int t = start_tile ;  ; x++ )
+    for(int t = start_tile ; mpMap->m_width  ; x++ )
     {
         // Now decide whether the tile is a piece or borders of the bridge
         t = mpMap->getPlaneDataAt(1, x<<CSF, newY<<CSF);
@@ -2007,10 +2008,10 @@ void CPlayerLevel::PressBridgeSwitch(const Uint32 lx, const Uint32 ly)
 {
     Uint32 targetXY = mpMap->getPlaneDataAt(2, lx, ly);
 
-	Uint32 newX = targetXY >> 8;
-	Uint32 newY = targetXY & 0xFF;
-	
-	toggleBridge(newX, newY);
+    Uint32 startX = targetXY >> 8;
+    Uint32 startY = targetXY & 0xFF;
+
+    toggleBridge(startX, startY);
 }
 
 
