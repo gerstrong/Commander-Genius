@@ -331,8 +331,7 @@ void CPlayerLevel::processRunning()
 
         mActionState.jumpTimer = 0;
 	}
-
-	if ( (blockedl && xDirection == -1) || (blockedr && xDirection == 1))
+    else if ( (blockedl && xDirection == -1) || (blockedr && xDirection == 1))
 	{
 		makeHimStand();
 		yDirection = 0;
