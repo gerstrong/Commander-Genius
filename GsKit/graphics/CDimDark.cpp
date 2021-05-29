@@ -19,8 +19,6 @@ dimDark(true)
 // get the Snapshot of the old surface, so the the effect can be applied on it!
 void CDimDark::getSnapshot()
 {
-    gApp.render();
-
     GsWeakSurface blitSfc(gVideoDriver.getBlitSurface());
 
     auto blitFormat = blitSfc.getSDLSurface()->format;
