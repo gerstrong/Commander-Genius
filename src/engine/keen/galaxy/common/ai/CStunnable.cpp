@@ -79,7 +79,6 @@ void CStunnable::processStunned()
 
 void CStunnable::drawStars()
 {
-
     if(starTimer > 0)
     {
         starTimer--;
@@ -103,20 +102,29 @@ void CStunnable::drawStars()
         m_animation_timer++;
 
 
+        GsSprite &foeSprite = gGraphics.getSprite(mSprVar, mSpriteIdx);
+
+        if(foeSprite.empty())
+        {
+            return;
+        }
+
         GsSprite &StarSprite = gGraphics.getSprite(mSprVar, starSprite);
+        const auto midXPt = ((foeSprite.getWidth()-StarSprite.getWidth())/2);
+        scrx = (m_Pos.x>>STC)-mpMap->m_scrollx+midXPt;
+        scry = (m_Pos.y>>STC)-mpMap->m_scrolly;
+        int showY = scry+foeSprite.getYOffset();
+        int showX = scrx+foeSprite.getXOffset();
 
-        int yoffset = (StarSprite.getHeight()<<STC);
-        int xoffset = (StarSprite.getWidth()<<STC);
-
-        scrx = ((getXMidPos()-xoffset/2)>>STC)-mpMap->m_scrollx;
+        scrx = showX;
 
         if(mDispStarsBelow)
         {
-            scry = ((m_Pos.y+(m_BBox.Height()/2)+yoffset)>>STC)-mpMap->m_scrolly;
+            scry = showY+StarSprite.getHeight()+foeSprite.getHeight();
         }
         else
         {
-            scry = ((m_Pos.y-(m_BBox.Height()/2)-yoffset)>>STC)-mpMap->m_scrolly;
+            scry = showY-StarSprite.getHeight();
         }
 
 
