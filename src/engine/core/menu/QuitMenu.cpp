@@ -49,7 +49,7 @@ void QuitMenu::ponder(const float dt)
     // If IC_BACK is invoked, make the menu controller close the controller
     if( gInput.getPressedCommand(IC_BACK) )
     {
-        gEventManager.add( new CloseMenuEvent(true) );
+        gEventManager.add( new CloseMenuEvent(false) );
         return;
     }
 
