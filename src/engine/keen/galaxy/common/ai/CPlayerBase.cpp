@@ -499,8 +499,6 @@ void CPlayerBase::processLevelMiscFlagsCheck()
                 }
             }
         }
-
-
     }
 
 	/// Tile Items (Sprite-Items are handled in the CSpriteItem Class)

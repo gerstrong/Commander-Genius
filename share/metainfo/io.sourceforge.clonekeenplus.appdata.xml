@@ -46,7 +46,13 @@
 </categories>
 
   <releases>
-      <release version="2.8.0" date="2021-04-11">
+    <release version="2.8.1" date="2021-05-29">
+      <description>
+        <p>More Keen Galaxy engine and mod fixes</p>
+        <p>Some Menu fixes</p>
+      </description>  
+    </release>
+    <release version="2.8.0" date="2021-04-11">
       <description>
         <p>More stable graphics engine</p>
         <p>Improved logging</p>

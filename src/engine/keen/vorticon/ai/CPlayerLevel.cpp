@@ -632,7 +632,9 @@ void CPlayer::Playerfalling()
 		if (plastfalling == 0)
 		{
 			if (!pjustjumped)
+            {
 				playSound( SOUND_KEEN_FALL );
+            }
 		}
 	}
 

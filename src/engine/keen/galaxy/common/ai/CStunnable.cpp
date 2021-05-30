@@ -104,20 +104,30 @@ void CStunnable::drawStars()
         m_animation_timer++;
 
 
+        GsSprite &foeSprite = gGraphics.getSprite(mSprVar, mSpriteIdx);
+
+        if(foeSprite.empty())
+        {
+            return;
+        }
+
         GsSprite &StarSprite = gGraphics.getSprite(mSprVar, starSprite);
+        const auto midXPt = ((foeSprite.getWidth()-StarSprite.getWidth())/2);
+        scrx = (m_Pos.x>>STC)-scroll.x+midXPt;
+        scry = (m_Pos.y>>STC)-scroll.y;
+        int showY = scry+foeSprite.getYOffset();
+        int showX = scrx+foeSprite.getXOffset();
 
-        int yoffset = (StarSprite.getHeight()<<STC);
-        int xoffset = (StarSprite.getWidth()<<STC);
 
-        scrx = ((getXMidPos()-xoffset/2)>>STC)-scroll.x;
+        scrx = showX;
 
         if(mDispStarsBelow)
         {
-            scry = ((m_Pos.y+(m_BBox.Height()/2)+yoffset)>>STC)-scroll.y;
+            scry = showY+StarSprite.getHeight()+foeSprite.getHeight();
         }
         else
         {
-            scry = ((m_Pos.y-(m_BBox.Height()/2)-yoffset)>>STC)-scroll.y;
+            scry = showY-StarSprite.getHeight();
         }
 
 

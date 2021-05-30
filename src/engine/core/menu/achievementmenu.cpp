@@ -6,7 +6,7 @@
 
 AchievementMenu::AchievementMenu(const int page,
                                  const Style style) :
-GameMenu( GsRect<float>(0.25f, 0.23f, 0.5f, 0.5f), style, true )
+GameMenu( GsRect<float>(0.25f, 0.23f, 0.5f, 0.5f), style )
 {
     // TODO: Need a dialog which shows a bit more.
     auto achievementFcn = []()
@@ -65,7 +65,7 @@ void AchievementMenu::ponder(const float dt)
     // If IC_BACK is invoked, make the menu controller close the controller
     if( gInput.getPressedCommand(IC_BACK) )
     {
-        gEventManager.add( new CloseMenuEvent(true) );
+        gEventManager.add( new CloseMenuEvent(false) );
         return;
     }
 
