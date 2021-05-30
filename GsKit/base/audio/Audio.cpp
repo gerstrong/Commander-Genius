@@ -93,10 +93,11 @@ bool Audio::init()
 
 
     gLogging << "Mix_OpenAudio: "
-             << "mAudioSpec.freq = " << mAudioSpec.freq
-             << "mAudioSpec.format = " << mAudioSpec.format
-             << "mAudioSpec.channels = " << mAudioSpec.channels
-             << "mAudioSpec.samples = " << mAudioSpec.samples << "\n";
+             << "mAudioSpec.freq = " << mAudioSpec.freq << CLogFile::endl
+             << "mAudioSpec.format = " << mAudioSpec.format << CLogFile::endl
+             << "mAudioSpec.channels = " << mAudioSpec.channels << CLogFile::endl
+             << "mAudioSpec.samples = " << mAudioSpec.samples << CLogFile::endl
+             << CLogFile::endl;
 
 
     // Initialize audio system    
