@@ -53,7 +53,7 @@ bool Title::init(int Episode)
 	}
 
 
-    GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
+    const GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
 
     if(gameRes.dim.x == 320 && gameRes.dim.y == 200 )
     {
