@@ -9,6 +9,7 @@
 class GameMenu : public CBaseMenu
 {
 public:
+
     GameMenu( const GsRect<float>& rect, 
               const Style &style,
               const bool replayMusicAfterClose = false);

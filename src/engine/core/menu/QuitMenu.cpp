@@ -10,7 +10,7 @@
 
 QuitMenu::QuitMenu(const bool openedGamePlay,
                    const Style style) :
-GameMenu( GsRect<float>(0.25f, 0.23f, 0.5f, 0.5f), style, true )
+GameMenu( GsRect<float>(0.25f, 0.23f, 0.5f, 0.5f), style, false )
 {
     auto endGameBtn =
          mpMenuDialog->add(
