@@ -16,9 +16,13 @@
 class MainMenu : public GameMenu
 {
 public:
-    MainMenu(const bool openedGamePlay, const Style style);
+    MainMenu(const bool openedGamePlay,
+             const Style style,
+             const bool singlePlayer);
 
-    void createGameMenu(const bool openedGamePlay , const Style style);
+    void createGameMenu(const bool openedGamePlay,
+                        const Style style,
+                        const bool singlePlayer);
 
     virtual void ponder(const float dt) override;
 };

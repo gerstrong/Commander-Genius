@@ -103,9 +103,16 @@ void VorticonEngine::openMainMenu()
 
     gMusicPlayer.pause();
 
+    #if defined (SINGLEPLAYER)
+    const bool singlePlayer = true;
+    #else
+    const bool singlePlayer = false;
+    #endif
+
     gEventManager.add( new OpenMenuEvent(
                            new MainMenu(mOpenedGamePlay,
-                                        Style::VORTICON) ) );
+                                        Style::VORTICON,
+                                        singlePlayer) ) );
 }
 
 
@@ -228,6 +235,7 @@ void VorticonEngine::pumpEvent(const CEvent *evPtr)
 {
     KeenEngine::pumpEvent(evPtr);
 
+
     if( dynamic_cast<const FinishedLoadingResources*>(evPtr) )
     {        
         switchToPassiveMode();
@@ -278,8 +286,16 @@ void VorticonEngine::pumpEvent(const CEvent *evPtr)
     }
     else if( dynamic_cast<const OpenMainMenuEvent*>(evPtr) )
     {
+#if defined (SINGLEPLAYER)
+        const bool singlePlayer = true;
+#else
+        const bool singlePlayer = false;
+#endif
+
+
         gEventManager.add( new OpenMenuEvent( new MainMenu(mOpenedGamePlay,
-                                                           Style::VORTICON) ) );
+                                                           Style::VORTICON,
+                                                           singlePlayer) ) );
     }
     else if( const StartInfoSceneEvent *scene =
              dynamic_cast<const StartInfoSceneEvent*>(evPtr) )

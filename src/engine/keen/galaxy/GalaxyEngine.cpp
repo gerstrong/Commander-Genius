@@ -156,9 +156,16 @@ void GalaxyEngine::openMainMenu()
 
     gMusicPlayer.stop();
 
+#if defined (SINGLEPLAYER)
+const bool singlePlayer = true;
+#else
+const bool singlePlayer = false;
+#endif
+
+
     gEventManager.add( new OpenMenuEvent(
                            new MainMenu(mOpenedGamePlay,
-                                        Style::GALAXY) ) );
+                                        Style::GALAXY, singlePlayer) ) );
 
     gEffectController.setupEffect( new CColorMerge(16) );
 }
@@ -434,7 +441,7 @@ void GalaxyEngine::pumpEvent(const CEvent *evPtr)
                                    new CPlayerSpriteVarSelection(Style::GALAXY)) );
         }
         return;
-    }        
+    }
     else if( const SelectPlayerSpriteVarEvent* pStart =
              dynamic_cast<const SelectPlayerSpriteVarEvent*>(evPtr) )
     {

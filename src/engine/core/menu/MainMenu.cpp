@@ -25,19 +25,25 @@
 #include "CHelpMenu.h"
 
 void MainMenu::createGameMenu( const bool openedGamePlay, 
-                               const Style style )
+                               const Style style,
+                               const bool singlePlayer )
 {
 
-#if defined (SINGLEPLAYER)
-    gBehaviorEngine.setNumPlayers(1);
+    GsButton *button = nullptr;
 
-    GsButton *button = new GameButton( "New Game",
-                                       new NewGamePlayersEvent(1), style );
-#else
-    GsButton *button = new GameButton( "New Game",
-             new OpenMenuEvent(
-                 new CPlayersSelection<NewGamePlayersEvent>(true, style) ), style );
-#endif
+    if(singlePlayer)
+    {
+        gBehaviorEngine.setNumPlayers(1);
+
+        button = new GameButton( "New Game",
+                                           new NewGamePlayersEvent(1), style );
+    }
+    else
+    {
+        button = new GameButton( "New Game",
+                 new OpenMenuEvent(
+                     new CPlayersSelection<NewGamePlayersEvent>(true, style) ), style );
+    }
 
 	mpMenuDialog->add( button );
 
@@ -119,9 +125,10 @@ void MainMenu::ponder(const float dt)
 }
 
 MainMenu::MainMenu( const bool openedGamePlay, 
-                    const Style style ) :
+                    const Style style,
+                    const bool singlePlayer ) :
 GameMenu( GsRect<float>(0.25f, 0.23f, 0.5f, 0.5f), style, true )
 {   
-    createGameMenu(openedGamePlay, style);
+    createGameMenu(openedGamePlay, style, singlePlayer);
 }
 
