@@ -93,9 +93,9 @@ void GsControl::drawTwirl( const SDL_Rect& lRect )
 	{
 		mTwirliconID++;
 
-		if(mTwirliconID == 15)
-			mTwirliconID = 9;
-	}
+        if(mTwirliconID == 15)
+            mTwirliconID = 9;
+    }
 
     if( mPressed )
 	{

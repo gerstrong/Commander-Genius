@@ -281,9 +281,9 @@ void CGUIText::processRender(const GsRect<float> &backRect,
         auto textrect = blitPos;
 
         textrect.pos.y = (objBackRect.pos.y < objFrontRect.pos.y) ?
-                                                                  objBackRect.dim.y - objFrontRect.dim.y : 0;
+                          objBackRect.dim.y - objFrontRect.dim.y : 0;
         textrect.pos.x = (objBackRect.pos.x < objFrontRect.pos.x) ?
-                                                                  objBackRect.dim.x - objFrontRect.dim.x : 0;
+                          objBackRect.dim.x - objFrontRect.dim.x : 0;
 
         blitPos.pos.y += totTextSfcH;
 

@@ -135,12 +135,6 @@ void GsGraphics::createEmptyFontmaps(Uint8 num_fonts)
     mFontLegacyVec.assign(num_fonts, GsFontLegacy());
 }
 
-/*void GsGraphics::createEmptyCursorMap(SDL_Surface *surface)
-{
-	freeCursor();
-    mpCursor.reset(new GsCursor(surface));
-}*/
-
 /**
  * Draws some digits using galaxy style
  */

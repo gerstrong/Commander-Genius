@@ -434,10 +434,10 @@ void GsFontLegacy::drawCharacter(SDL_Surface* dst, Uint16 character,
     {
         const auto fontSfcHeight = pFontSurface->height();
         const auto fontSfcwidth = pFontSurface->width();
-        scrrect.x = (fontSfcwidth/16)*(character%16);
-        scrrect.y = (fontSfcHeight/16)*(character/16);
+        scrrect.x = (fontSfcwidth/mNumColumns)*(character%mNumColumns);
+        scrrect.y = (fontSfcHeight/mNumRows)*(character/mNumRows);
         scrrect.w = dstrect.w = (mWidthtable[character]*scale);
-        scrrect.h = dstrect.h = (fontSfcHeight/16);
+        scrrect.h = dstrect.h = (fontSfcHeight/mNumRows);
         dstrect.x = xoff;	dstrect.y = yoff;
 
         BlitSurface(pFontSurface->getSDLSurface(), &scrrect, dst, &dstrect);
@@ -453,7 +453,7 @@ void GsFontLegacy::drawFont(SDL_Surface* dst,
 {
     unsigned int x = xoff, y = yoff;
 
-    const int scale = mFontSize;
+    const int fontsize = mFontSize;
 
     for( unsigned int i=0 ; i<text.size() ; i++)
     {
@@ -463,14 +463,14 @@ void GsFontLegacy::drawFont(SDL_Surface* dst,
         {
             if(highlight) c |= 128;
 
-            drawCharacter(dst, c, x, y, scale);
+            drawCharacter(dst, c, x, y, fontsize);
 
-            x += (mWidthtable[c]*scale);
+            x += (mWidthtable[c]*fontsize);
         }
         else
         {
             x = xoff;
-            y += 8*scale;
+            y += 8*fontsize;
         }
     }
 

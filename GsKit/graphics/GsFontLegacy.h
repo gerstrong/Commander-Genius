@@ -159,8 +159,8 @@ public:
 	 */
     unsigned int getPixelTextHeight() const
     {
-        const auto height = mpFontSurface[0]->getSDLSurface()->h;
-        return height / 16;
+        const auto height = mpFontSurface[0]->getSDLSurface()->h;        
+        return height / mNumRows;
     }
 
 	/**
@@ -253,6 +253,16 @@ public:
         mFontSize = fontSize;
     }
 
+    void setColumns(int cols)
+    {
+        mNumColumns = cols;
+    }
+
+    void setRows(int rows)
+    {
+        mNumRows = rows;
+    }
+
 
 private:
 
@@ -261,6 +271,9 @@ private:
     std::array<Uint8, 256> mWidthtable;    
 
     int mFontSize = 1;
+
+    int mNumColumns = 16;
+    int mNumRows = 16;
 };
 
 #endif /* GsFontLegacy_H_ */
