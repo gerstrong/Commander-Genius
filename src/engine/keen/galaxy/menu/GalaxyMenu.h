@@ -14,13 +14,7 @@ public:
 
     GalaxyMenu( const GsRect<float>& rect );
 
-    void initGalaxyBackground();
-
     void render();
-
-private:
-    GsSurface mBackground;
-
 };
 
 #endif /* GALAXYMENU_H */

@@ -142,7 +142,6 @@ void GameMenu::initVorticonBackground()
 
     SDL_Surface *backSfc = mBackground.getSDLSurface();
 
-
     // Draw the characters for the classical vorticon menu
 
     // Start with the blank space (normally it's white. Might be different in some mods)

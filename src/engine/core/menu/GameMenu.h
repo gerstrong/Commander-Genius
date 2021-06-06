@@ -32,8 +32,10 @@ public:
     Style getStyle()
     {   return mStyle;   }
 
-private:
+protected:
     GsSurface mBackground;
+
+private:    
     GsRect<int> mCachedBgRect;
     
     const Style mStyle;
