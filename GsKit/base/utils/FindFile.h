@@ -244,9 +244,18 @@ bool	IsAbsolutePath(const std::string& path);
 // IMPORTANT: filenames are absolute; no game-path!
 bool	FileCopy(const std::string& src, const std::string& dest);
 
-// returns true, if we can write to the dir
+/**
+ * @brief CanWriteToDir
+ * @param dir
+ * @return true, if we can write to the dir
+ */
 bool	CanWriteToDir(const std::string& dir);
 
+/**
+ * @brief FileSize
+ * @param path
+ * @return Size of the file
+ */
 size_t	FileSize(const std::string& path);
 
 // returns the home-directory (used by ReplaceFileVariables)

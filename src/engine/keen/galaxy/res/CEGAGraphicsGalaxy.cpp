@@ -788,10 +788,9 @@ bool CEGAGraphicsGalaxy::begin()
         // Make sure the chunk is valid
         if(offset < offset_limit && offset + 4 <= dataSize)
         {
-
             // Get the expanded length of the chunk
             if(i >= info.Index8Tiles && 
-	       i < info.Index16MaskedTiles + info.Num16MaskedTiles)
+               i < info.Index16MaskedTiles + info.Num16MaskedTiles)
             {
                 // Expanded sizes of 8, 16,and 32 tiles are implicit
                 if(i >= info.Index16MaskedTiles) // 16x16 tiles are one/chunk
@@ -813,8 +812,9 @@ bool CEGAGraphicsGalaxy::begin()
             // on bad input data.
             if(outlen > 100000)
             {
-                gLogging.ftextOut("outlen too big at i=%u offset=%x outlen=%u",
-                                  i, offset, outlen);
+                gLogging << "outlen too big at i=" << i
+                         << "offset=" << offset
+                         << "outlen=" << outlen << CLogFile::endl;
                 return false;
             }
 
