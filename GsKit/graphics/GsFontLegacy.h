@@ -263,6 +263,25 @@ public:
         mNumRows = rows;
     }
 
+    void setTintingAllowed(const bool value)
+    {
+        mTintingAllowed = value;
+    }
+
+    auto tintingAllowed() const -> auto
+    {
+        return mTintingAllowed;
+    }
+
+    void setLetterAsciiOffset(const int value)
+    {
+        mAsciiOffset = value;
+    }
+
+    void setLowerCaseLetterOffset(const int value)
+    {
+        mLowerCaseOffset = value;
+    }
 
 private:
 
@@ -274,6 +293,10 @@ private:
 
     int mNumColumns = 16;
     int mNumRows = 16;
+    int mAsciiOffset = 0;
+    int mLowerCaseOffset = 'a'-'A';
+
+    bool mTintingAllowed = true;
 };
 
 #endif /* GsFontLegacy_H_ */

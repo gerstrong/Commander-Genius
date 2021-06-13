@@ -1,18 +1,20 @@
 #ifndef GameMenu_H_INCLUDED
 #define GameMenu_H_INCLUDED
 
+#include "widgets/Button.h"
+
 #include <widgets/GsBaseMenu.h>
 #include <widgets/GsMenuController.h>
 
-#include "widgets/Button.h"
+#include <functional>
 
 class GameMenu : public CBaseMenu
 {
 public:
 
-    GameMenu( const GsRect<float>& rect, 
+    GameMenu(const GsRect<float>& rect,
               const Style &style,
-              const bool replayMusicAfterClose = false);
+              const bool replayMusicAfterClose = false );
 
     void initGalaxyBackground();
     void initVorticonBackground();
@@ -34,6 +36,7 @@ public:
 
 protected:
     GsSurface mBackground;
+
 
 private:    
     GsRect<int> mCachedBgRect;

@@ -2,10 +2,11 @@
 #include <graphics/GsGraphics.h>
 #include <base/video/CVideoDriver.h>
 
+#include <widgets/GsMenuController.h>
 
 GameMenu::GameMenu( const GsRect<float>& rect,
                     const Style &style,
-                    const bool replayMusicAfterClose ) :
+                    const bool replayMusicAfterClose) :
 CBaseMenu( rect, CGUIDialog::FXKind(0) ),
 mStyle(style)
 {
@@ -59,17 +60,26 @@ mStyle(style)
 
     mpReturnButton->setHovered(true);
 
-    if(style == Style::GALAXY)
+    const auto & backgndFnc = gMenuController.mBackroundDrawFcn;
+
+    if(backgndFnc)
     {
-        initBackground = &GameMenu::initGalaxyBackground;
-    }
-    else if(style == Style::VORTICON)
-    {
-        initBackground = &GameMenu::initVorticonBackground;
+        initBackground = &GameMenu::initBackgroundNoStyle;
     }
     else
     {
-        initBackground = &GameMenu::initBackgroundNoStyle;
+        if(style == Style::GALAXY)
+        {
+            initBackground = &GameMenu::initGalaxyBackground;
+        }
+        else if(style == Style::VORTICON)
+        {
+            initBackground = &GameMenu::initVorticonBackground;
+        }
+        else
+        {
+            initBackground = &GameMenu::initBackgroundNoStyle;
+        }
     }
 
     (this->*initBackground)();
@@ -175,6 +185,11 @@ void GameMenu::initBackgroundNoStyle()
     mBackground.fillRGBA(GsRect<Uint16>(0, 0, 1, sdlRect.h), borderColor);
     mBackground.fillRGBA(GsRect<Uint16>(0, sdlRect.h-1, sdlRect.w, 1 ), borderColor);
     mBackground.fillRGBA(GsRect<Uint16>(sdlRect.w-1, 0, 1, sdlRect.h), borderColor);
+
+    const auto & backgndFnc = gMenuController.mBackroundDrawFcn;
+
+    if(backgndFnc)
+        backgndFnc(mBackground);
 }
 
 // Processes the stuff that the menus have in common
@@ -216,15 +231,10 @@ void GameMenu::render()
         {
             mBackground.blitTo(blit);
         }
-        else if(mStyle == Style::VORTICON)
-        {
-            mBackground.blitTo(blit, sdlRect);
-        }
         else
         {
             mBackground.blitTo(blit, sdlRect);
         }
-
     }
 
     CBaseMenu::render();

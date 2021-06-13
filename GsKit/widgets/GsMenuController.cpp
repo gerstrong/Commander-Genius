@@ -46,7 +46,11 @@ bool checkSandwichMenuClicked(GsRect<float> &rRect)
 void CMenuController::clearMenuStack()
 {
 	while(!mMenuStack.empty())
-		popBackMenu();
+    {
+        popBackMenu();
+        mBackroundDrawFcn = nullptr;
+    }
+
 }
 
 

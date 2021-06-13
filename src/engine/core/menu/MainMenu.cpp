@@ -28,7 +28,6 @@ void MainMenu::createGameMenu( const bool openedGamePlay,
                                const Style style,
                                const bool singlePlayer )
 {
-
     GsButton *button = nullptr;
 
     if(singlePlayer)
@@ -36,7 +35,7 @@ void MainMenu::createGameMenu( const bool openedGamePlay,
         gBehaviorEngine.setNumPlayers(1);
 
         button = new GameButton( "New Game",
-                                           new NewGamePlayersEvent(1), style );
+                                 new NewGamePlayersEvent(1), style );
     }
     else
     {
@@ -106,7 +105,7 @@ void MainMenu::createGameMenu( const bool openedGamePlay,
 
     setMenuLabel("MAINMENULABEL");
 
-    mpMenuDialog->fit();        
+    mpMenuDialog->fit();
     select(1);
 }
 
@@ -126,8 +125,9 @@ void MainMenu::ponder(const float dt)
 
 MainMenu::MainMenu( const bool openedGamePlay, 
                     const Style style,
-                    const bool singlePlayer ) :
-GameMenu( GsRect<float>(0.25f, 0.23f, 0.5f, 0.5f), style, true )
+                    const bool singlePlayer) :
+GameMenu( GsRect<float>(0.25f, 0.23f, 0.5f, 0.5f),
+          style, true)
 {   
     createGameMenu(openedGamePlay, style, singlePlayer);
 }

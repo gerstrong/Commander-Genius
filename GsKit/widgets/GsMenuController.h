@@ -112,6 +112,8 @@ public:
 
 	bool mOpenedGamePlay;
 
+    std::function<void(GsWeakSurface&)> mBackroundDrawFcn;
+
     void updateGraphics();
 
 private:

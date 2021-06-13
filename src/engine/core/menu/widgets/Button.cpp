@@ -57,7 +57,7 @@ void GameButton::setupStyle()
         enableCenteringH(false);
         enableTwirl(true);
 
-        mColorNormal   = GsColor(0x0, 0x0, 0x0);
+        mColorNormal   = GsColor(0x00, 0x00, 0x00);
         mColorHovered  = GsColor(0x11, 0x11, 0x11);
         mColorPressed  = GsColor(0x44, 0x44, 0x44);
         mColorReleased = GsColor(0x33, 0x33, 0x33);

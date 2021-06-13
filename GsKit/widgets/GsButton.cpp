@@ -208,7 +208,6 @@ void GsButton::drawNoStyle(const SDL_Rect& lRect)
     {
         blitsfc.drawRect( rect, fillColor );
     }
-
 }
 
 

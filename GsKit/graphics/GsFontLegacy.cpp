@@ -428,21 +428,26 @@ void GsFontLegacy::setOptimalFontSize()
 void GsFontLegacy::drawCharacter(SDL_Surface* dst, Uint16 character,
                            Uint16 xoff, Uint16 yoff, const int scale)
 {
-	SDL_Rect scrrect, dstrect;
+    SDL_Rect scrrect, dstrect;
 
-    auto &pFontSurface =  mpFontSurface[scale-1];
+    if(character >= 'a')
     {
-        const auto fontSfcHeight = pFontSurface->height();
-        const auto fontSfcwidth = pFontSurface->width();
-        scrrect.x = (fontSfcwidth/mNumColumns)*(character%mNumColumns);
-        scrrect.y = (fontSfcHeight/mNumRows)*(character/mNumRows);
-        scrrect.w = dstrect.w = (mWidthtable[character]*scale);
-        scrrect.h = dstrect.h = (fontSfcHeight/mNumRows);
-        dstrect.x = xoff;	dstrect.y = yoff;
-
-        BlitSurface(pFontSurface->getSDLSurface(), &scrrect, dst, &dstrect);
+        character = character + 'A' - 'a' + mLowerCaseOffset;
     }
 
+    character = character + mAsciiOffset;
+
+    const auto &pFontSurface =  mpFontSurface[scale-1];
+    const auto fontSfcHeight = pFontSurface->height();
+    const auto fontSfcwidth = pFontSurface->width();
+    scrrect.x = (fontSfcwidth/mNumColumns)*(character%mNumColumns);
+    scrrect.y = (fontSfcHeight/mNumRows)*(character/mNumRows);
+    scrrect.w = dstrect.w = (mWidthtable[character]*scale);
+    scrrect.h = dstrect.h = (fontSfcHeight/mNumRows);
+    dstrect.x = xoff;	dstrect.y = yoff;
+
+    auto src = pFontSurface->getSDLSurface();
+    BlitSurface(src, &scrrect, dst, &dstrect);
 }
 
 void GsFontLegacy::drawFont(SDL_Surface* dst,

@@ -586,7 +586,7 @@ void GsWeakSurface::tintColor(const GsColor &fgColor)
     if(SDL_MUSTLOCK(sfc))
         SDL_LockSurface(sfc);
 
-    // This makes the white pixel transparent
+    // Following section makes the white pixel transparent
     Uint8 *pixel = static_cast<Uint8*>(sfc->pixels);
 
     for( Uint16 y=0 ; y<sfc->h ; y++ )

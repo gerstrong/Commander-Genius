@@ -191,7 +191,8 @@ void CGUIText::updateLegacyTextSfc(const GsRect<float> &displayRect)
                               0, 0,
                               false);
 
-                textSfc.tintColor( color );
+                if(Font.tintingAllowed())
+                    textSfc.tintColor( color );
             }
         }
 
