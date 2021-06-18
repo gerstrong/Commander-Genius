@@ -31,6 +31,8 @@ typedef uint32_t uint32_t;
 
 typedef void * memptr;
 
+auto GETBYTE(const gs_byte *ptr) -> gs_byte;
+
 
 /**
  * @brief GETWORD Extracts a word (16-bit integer) from a byte pointer.

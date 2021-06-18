@@ -9,7 +9,6 @@
 #include <base/GsLogging.h>
 #include <base/utils/StringUtils.h>
 
-
 #define NEARTAG     0xA7
 #define FARTAG      0xA8
 #define WORDSIZE    2
@@ -24,6 +23,7 @@
 #define COPY_BYTE1  j
 #define COPY_BYTE2  j+1
 
+
 /**
  * \brief			This function expands data using carmack
  * 					decompression algorithm
@@ -31,9 +31,11 @@
  * \param	dest	pointer to the data that will be the output
  * \param	length	length of the EXPANDED data
  */
-void CCarmack::expand( std::vector<gs_byte>& dst, std::vector<gs_byte>& src )
+void CCarmack::expand( std::vector<gs_byte>& dst,
+                       std::vector<gs_byte>& src )
 {
-	uint32_t i, j, offset, length, inc;
+    uint32_t i, j, length, offset;
+    uint32_t inc = 0;
 
 	dst.clear();
 
@@ -47,13 +49,13 @@ void CCarmack::expand( std::vector<gs_byte>& dst, std::vector<gs_byte>& src )
             return;
         }
 
+
 		switch( src.at(TAG) )
 		{
 		case NEARTAG:
-			if( src.at(COUNT)==0x00 && src.at(OFFSET_MSB)==0x00 )
+            if( src.at(COUNT)==0x00 /*&& src.at(OFFSET_MSB)==0x00*/ )
 			{
 				dst.push_back(NEARTAG);
-				inc = WORDSIZE+1;
 			}
 			else
 			{
@@ -69,7 +71,7 @@ void CCarmack::expand( std::vector<gs_byte>& dst, std::vector<gs_byte>& src )
 			inc = WORDSIZE+1;
 			break;
 		case FARTAG:
-			if( src.at(COUNT)==0x00 && src.at(OFFSET_MSB)==0x00 )
+            if( src.at(COUNT)==0x00 /*&& src.at(OFFSET_MSB)==0x00*/ )
 			{
 				dst.push_back(FARTAG);
 				inc = WORDSIZE+1;
@@ -92,8 +94,8 @@ void CCarmack::expand( std::vector<gs_byte>& dst, std::vector<gs_byte>& src )
 						return;
 					}
 				}
-			}
-			inc = WORDSIZE+2;
+                inc = WORDSIZE+2;
+            }
 			break;
 		default:
 			// Swap the bytes for the word
@@ -101,6 +103,6 @@ void CCarmack::expand( std::vector<gs_byte>& dst, std::vector<gs_byte>& src )
 			dst.push_back(src.at(COUNT));
 			inc = WORDSIZE;
 			break;
-		}
-	}
+		}        
+    }
 }

@@ -2,6 +2,13 @@
 #include <SDL.h>
 
 
+auto GETBYTE(const gs_byte *offset) -> gs_byte
+{
+    return *((gs_byte *)(offset));
+}
+
+
+
 auto GETWORD(const gs_byte *ptr) -> word
 {
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN

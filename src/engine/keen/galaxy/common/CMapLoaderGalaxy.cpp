@@ -145,7 +145,7 @@ bool CMapLoaderGalaxy::unpackPlaneData( std::ifstream &mapFile,
 	CCarmack Carmack;
     std::vector<gs_byte> RLE_Plane;
 
-	Carmack.expand(RLE_Plane, Carmack_Plane);
+    Carmack.expand(RLE_Plane, Carmack_Plane);
 	
     if( decarmacksize > RLE_Plane.size() )
     {
