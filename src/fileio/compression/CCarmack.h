@@ -16,7 +16,9 @@
 class CCarmack
 {
 public:	
-    void expand(std::vector<gs_byte>& dst, std::vector<gs_byte>& src );
+    void expand(std::vector<gs_byte>& dst,
+                std::vector<gs_byte>& src ,
+                const size_t decarmacksize);
 };
 
 #endif /* CCARMACK_H_ */

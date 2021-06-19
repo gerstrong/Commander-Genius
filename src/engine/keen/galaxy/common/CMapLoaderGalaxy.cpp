@@ -107,7 +107,7 @@ bool CMapLoaderGalaxy::gotoNextSignature(std::ifstream &MapFile)
 	return false;	
 }
 
-// never allow more than 100 bytes of uncompressed data. Anything larger is assumed to de too large
+// never allow more than 100 MB of uncompressed data. Anything larger is assumed too large
 const size_t fileSizeLimit = 100 * 1024 * 1024;
 
 bool CMapLoaderGalaxy::unpackPlaneData( std::ifstream &mapFile,
@@ -145,26 +145,13 @@ bool CMapLoaderGalaxy::unpackPlaneData( std::ifstream &mapFile,
 	CCarmack Carmack;
     std::vector<gs_byte> RLE_Plane;
 
-    Carmack.expand(RLE_Plane, Carmack_Plane);
-	
-    if( decarmacksize > RLE_Plane.size() )
-    {
-        gLogging.textOut( "\nWARNING Plane Uncompress Carmack Size differs to the one of the headers: Actual " + itoa(RLE_Plane.size()) +
-                     " bytes Expected " + itoa(decarmacksize) + " bytes. Trying to reconstruct level anyway!<br>");
-	  
-        // Fill it up with zeroes...
-        while( decarmacksize > RLE_Plane.size() )
-        {
-          RLE_Plane.push_back(0);
-        }
-    }
-		
+    Carmack.expand(RLE_Plane, Carmack_Plane, decarmacksize);
 	
     if( decarmacksize >= RLE_Plane.size() )
     {                  
     	// Now use the RLE Decompression
     	CRLE RLE;
-        const size_t derlesize = (RLE_Plane[0]<<8) + RLE_Plane[1];           // Bytes already swapped
+        const size_t derlesize = (RLE_Plane[0]<<8) + RLE_Plane[1];
 
         if(derlesize >= 0xffff)
         {
@@ -175,7 +162,7 @@ bool CMapLoaderGalaxy::unpackPlaneData( std::ifstream &mapFile,
 
         RLE.expand(plane, RLE_Plane, magic_word);
 
-        word *ptr = Map.getData(planeNumber);
+        word *mapPtr = Map.getData(planeNumber);
         for(size_t y=0; y<Map.m_height ; ++y)
     	{
             const int stride = y*Map.m_width;
@@ -185,8 +172,8 @@ bool CMapLoaderGalaxy::unpackPlaneData( std::ifstream &mapFile,
                 const int offset = stride+x;
                 const word tile = plane.at(offset);
 
-                *ptr = tile;
-    			ptr++;
+                *mapPtr = tile;
+                mapPtr++;
     		}
     	}
 

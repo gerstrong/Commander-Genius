@@ -8,21 +8,86 @@
 #include "CCarmack.h"
 #include <base/GsLogging.h>
 #include <base/utils/StringUtils.h>
+#include <base/TypeDefinitions.h>
 
-#define NEARTAG     0xA7
-#define FARTAG      0xA8
 #define WORDSIZE    2
 
-#define COUNT       i
-#define TAG         i+1
-#define OFFSET      i+2
+#define CARMACK_NEARTAG 0xA700
+#define CARMACK_FARTAG 0xA800
 
-#define OFFSET_MSB  i+3 // Fartag Offset
-#define OFFSET_LSB  i+2
+static void CarmackExpand(void *src, void *dest, int expLength)
+{
+    uint16_t *srcptr = (uint16_t *)src;
+    uint16_t *dstptr = (uint16_t *)dest;
+    uint16_t *runptr;
+    uint16_t ch, count, offset;
+    expLength /= WORDSIZE; // Number of words to deal with
 
-#define COPY_BYTE1  j
-#define COPY_BYTE2  j+1
+    srcptr++;
 
+    while (expLength > 0)
+    {
+        ch = GETWORD(reinterpret_cast<gs_byte*>(srcptr));
+        srcptr++;
+
+        const auto tag = ch & 0xFF00;
+        count = ch & 0xFF;
+
+        if (tag == CARMACK_NEARTAG)
+        {
+            if (!count)
+            {
+                // Makes an output starting with A7
+                ch &= 0xFF00;
+                ch |= GETBYTE(reinterpret_cast<gs_byte*>(srcptr));
+                srcptr = reinterpret_cast<uint16_t *>(
+                            reinterpret_cast<uint8_t *>(srcptr) + 1);
+
+                *(dstptr++) = ch;
+                expLength--;
+            }
+            else
+            {
+                offset = GETBYTE(reinterpret_cast<gs_byte*>(srcptr));
+                srcptr = reinterpret_cast<uint16_t *>(
+                            reinterpret_cast<uint8_t *>(srcptr) + 1);
+
+                runptr = dstptr - offset;
+                expLength -= count;
+                while (count--)
+                    *(dstptr++) = *(runptr++);
+            }
+        }
+        else if (tag == CARMACK_FARTAG)
+        {
+            if (!count)
+            {
+                // Makes an output starting with A8
+                ch &= 0xFF00;
+                ch |= GETBYTE(reinterpret_cast<gs_byte*>(srcptr));
+                srcptr = reinterpret_cast<uint16_t *>(
+                            reinterpret_cast<uint8_t *>(srcptr) + 1);
+
+                *(dstptr++) = ch;
+                expLength--;
+            }
+            else
+            {
+                offset = GETWORD(reinterpret_cast<gs_byte*>(srcptr));
+                srcptr++;
+                runptr = (uint16_t *)dest + offset;;
+                expLength -= count;
+                while (count--)
+                    *(dstptr++) = *(runptr++);
+            }
+        }
+        else
+        {
+            *(dstptr++) = ch;
+            --expLength;
+        }
+    }
+}
 
 /**
  * \brief			This function expands data using carmack
@@ -32,77 +97,19 @@
  * \param	length	length of the EXPANDED data
  */
 void CCarmack::expand( std::vector<gs_byte>& dst,
-                       std::vector<gs_byte>& src )
+                       std::vector<gs_byte>& src,
+                       const size_t decarmacksize)
 {
-    uint32_t i, j, length, offset;
-    uint32_t inc = 0;
+    dst.assign(decarmacksize, 0);
+    void *srcRaw = src.data();
+    void *destRaw = dst.data();
 
-	dst.clear();
+    CarmackExpand(srcRaw, destRaw, decarmacksize);
 
-    const unsigned int srcSize = src.size();
-
-    for( i=WORDSIZE ; i<srcSize ; i+=inc )
-	{
-        if(TAG >= srcSize)
-        {
-            gLogging.textOut("Something went wrong with the Carmack compression!\n");
-            return;
-        }
-
-
-		switch( src.at(TAG) )
-		{
-		case NEARTAG:
-            if( src.at(COUNT)==0x00 /*&& src.at(OFFSET_MSB)==0x00*/ )
-			{
-				dst.push_back(NEARTAG);
-			}
-			else
-			{
-				offset = dst.size()-(WORDSIZE*src.at(OFFSET));
-				length = WORDSIZE*src.at(COUNT);
-				for( j=offset; j<offset+length; j+=WORDSIZE )
-				{
-					// Word is already swapped in the destination vector
-					dst.push_back(dst.at(COPY_BYTE1));
-					dst.push_back(dst.at(COPY_BYTE2));
-				}
-			}
-			inc = WORDSIZE+1;
-			break;
-		case FARTAG:
-            if( src.at(COUNT)==0x00 /*&& src.at(OFFSET_MSB)==0x00*/ )
-			{
-				dst.push_back(FARTAG);
-				inc = WORDSIZE+1;
-			}
-			else
-			{
-				offset = WORDSIZE*((src.at(OFFSET_MSB)<<8)+src.at(OFFSET_LSB));
-				length = WORDSIZE*src.at(COUNT);
-				for( j=offset; j<offset+length; j+=WORDSIZE )
-				{
-					if( j+src.at(COUNT)<dst.size() )
-					{
-						// Word is already swapped in the destination vector
-						dst.push_back(dst.at(COPY_BYTE1));
-						dst.push_back(dst.at(COPY_BYTE2));
-					}
-					else
-					{
-						gLogging.textOut("ERROR Offset overflow offset="+ itoa(j) +", actual size="+itoa(dst.size())+"\n");
-						return;
-					}
-				}
-                inc = WORDSIZE+2;
-            }
-			break;
-		default:
-			// Swap the bytes for the word
-			dst.push_back(src.at(TAG));
-			dst.push_back(src.at(COUNT));
-			inc = WORDSIZE;
-			break;
-		}        
+    for(decltype(dst.size()) i=0 ; i<dst.size() ; i+=2)
+    {
+        const auto temp = dst[i];
+        dst[i] = dst[i+1];
+        dst[i+1] = temp;
     }
 }
