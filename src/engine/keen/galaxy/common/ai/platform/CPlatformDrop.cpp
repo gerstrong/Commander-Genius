@@ -11,7 +11,8 @@
 const int DROP_MAX_SPEED_LIMIT = 65;
 
 const int BLOCKSPRITEID = 0x1F;
-const int START_DELAY_FOR_DROP = 6;
+//const int START_DELAY_FOR_DROP = 6;
+const int START_DELAY_FOR_DROP = 12;
 
 namespace galaxy {
 
@@ -117,6 +118,10 @@ void CPlatformDrop::process()
             {
                 procPlatdrop();
             }
+        }
+        else
+        {
+            movePlatDown(DROP_MAX_SPEED_LIMIT/2);
         }
 	}
     else if(mAllowReturn) // Player is not on the platform and may return
