@@ -1609,7 +1609,7 @@ void CPlayerLevel::processPressUp()
         if(entranceDetected)
         {
             int x_entr_left  = x_pos_door;
-            int x_entr_right = x_pos_door;
+            int x_entr_right = x_pos_door+(1<<CSF);
 
             // Calculate entrace width so player will be centered appropiately
             for(int i=0 ; i<10 ; i++)
@@ -1618,7 +1618,7 @@ void CPlayerLevel::processPressUp()
                 int entr_flag  = Tile[entr_tile].behaviour;
 
                 if(entr_flag == MISCFLAG_DOOR || entr_flag == MISCFLAG_KEYCARDDOOR )
-                    x_entr_right = x_pos_door+(i<<CSF);
+                    x_entr_right = x_pos_door+((i+1)<<CSF);
                 else
                     break;
             }
