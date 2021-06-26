@@ -4,6 +4,8 @@
 
 #include "Button.h"
 
+#include "widgets/GsMenuController.h"
+
 
 GameButton::GameButton(const std::string& text,
                        CEvent *ev,
@@ -67,6 +69,10 @@ void GameButton::setupStyle()
         setFontId(0);
         setText(mText);
     }
+    else
+    {
+        enableTwirl(gMenuController.mEnableTwirl);
+    }
 }
 
 void GameButton::processLogic()
@@ -108,14 +114,14 @@ void GameButton::processRender(const GsRect<float> &RectDispCoordFloat)
     displayRect.transform(RectDispCoordFloat);
     SDL_Rect lRect = displayRect.SDLRect();    
         
-    auto controlsRect = RectDispCoordFloat;
+    auto controlsRect = RectDispCoordFloat;    
 
     if(mDrawBlinker)
     {
         drawBlinker(lRect);
         controlsRect.pos.x += 11;
         controlsRect.dim.x -= 11;
-    }
+    }    
 
     if(mDrawTwirl)
     {

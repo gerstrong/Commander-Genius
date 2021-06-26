@@ -42,8 +42,8 @@ struct GsRect
         {}
 
     GsRect( const SDL_Rect &sdlRect ) :
-        pos(sdlRect.x, sdlRect.y),
-        dim(sdlRect.w, sdlRect.h)
+        pos(T(sdlRect.x), T(sdlRect.y)),
+        dim(T(sdlRect.w), T(sdlRect.h))
     {}
 
 

@@ -113,6 +113,9 @@ public:
 	bool mOpenedGamePlay;
 
     std::function<void(GsWeakSurface&)> mBackroundDrawFcn;
+    std::function<void(GsWeakSurface&, const GsRect<int>)> mDrawTwirlFcn;
+
+    bool mEnableTwirl = false;
 
     void updateGraphics();
 

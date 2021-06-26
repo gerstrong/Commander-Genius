@@ -3,6 +3,7 @@
 #include <graphics/GsGraphics.h>
 #include <base/video/CVideoDriver.h>
 
+#include "widgets/GsMenuController.h"
 
 ComboSelection::ComboSelection(const std::string& text,
                                const std::list<std::string>& optionsList,
@@ -49,7 +50,8 @@ mStyle(style)
     else // No style, like the game launcher does use
     {
         mSelectedColor = GsColor(0x52, 0xfb, 0x52);
-    }
+        enableTwirl(gMenuController.mEnableTwirl);
+    }    
 }
 
 void ComboSelection::cycleOption()

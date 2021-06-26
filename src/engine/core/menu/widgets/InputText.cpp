@@ -4,7 +4,7 @@
 #include <graphics/GsFont.h>
 #include <graphics/GsGraphics.h>
 
-
+#include "widgets/GsMenuController.h"
 
 InputText::InputText(const std::string &text,
           const GsRect<float> &rect,
@@ -50,6 +50,10 @@ void InputText::setupStyle()
 
         setFontId(0);
         setText(mText);
+    }
+    else
+    {
+        enableTwirl(gMenuController.mEnableTwirl);
     }
 }
 

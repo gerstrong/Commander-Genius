@@ -5,7 +5,7 @@
 #include <base/utils/StringUtils.h>
 #include <graphics/GsGraphics.h>
 
-
+#include "widgets/GsMenuController.h"
 
 NumberControl::NumberControl(const std::string &text,
                              const int startValue,
@@ -61,6 +61,7 @@ mStyle(style)
     else // No style, like the game launcher does use
     {
         mSelectedColor = GsColor(0x52, 0xfb, 0x52);
+        enableTwirl(gMenuController.mEnableTwirl);
     }
 }
 

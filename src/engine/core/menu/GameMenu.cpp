@@ -43,6 +43,7 @@ mStyle(style)
         mpReturnButton->enableBackground(true);
         mpReturnButton->enableBorder(true);
         mpReturnButton->enableCenteringH(true);
+        mpReturnButton->setEnabledColor(GsColor(0xCF,0x1F,0x1F));
     }
     else
     {

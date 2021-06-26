@@ -14,6 +14,8 @@
 
 #include "GsControl.h"
 
+#include "widgets/GsMenuController.h"
+
 const int BLEND_SPEED = 16;
 
 int GsControl::mTwirliconID;
@@ -86,31 +88,55 @@ void GsControl::drawTwirl( const SDL_Rect& lRect )
 {
     GsWeakSurface blit(gVideoDriver.getBlitSurface());
 
-	// Now lets draw the text of the list control
+    const auto &mc = gMenuController;
+
+    // Now lets draw the text of the list control
     GsFontLegacy &Font = gGraphics.getFontLegacy(0);
 
-	if( gTimer.HasTimeElapsed(100) )
-	{
-		mTwirliconID++;
+    std::function<void(GsWeakSurface&, const GsRect<int>)> localDrawFcn =
+            [&](GsWeakSurface &blit, const GsRect<int> rect)
+    {
+        const auto lRect = rect.SDLRect();
+        Font.drawCharacter( blit.getSDLSurface(), mTwirliconID, lRect.x, lRect.y );
+    };
 
-        if(mTwirliconID == 15)
-            mTwirliconID = 9;
+
+    if(mc.mDrawTwirlFcn)
+    {
+        localDrawFcn = mc.mDrawTwirlFcn;
+    }
+    else
+    {
+        if( gTimer.HasTimeElapsed(100) )
+        {
+            mTwirliconID++;
+
+            if(mTwirliconID == 15)
+                mTwirliconID = 9;
+        }
     }
 
     if( mPressed )
 	{
-        Font.drawCharacter( blit.getSDLSurface(), mTwirliconID, lRect.x+12, lRect.y );
+        GsRect<int> rect(lRect);
+        rect.pos.x += 12;
+        localDrawFcn(blit, rect);
 	}
     else if( mSelected )
 	{
-        Font.drawCharacter( blit.getSDLSurface(), mTwirliconID, lRect.x+8, lRect.y );
+        GsRect<int> rect(lRect); rect.pos.x += 8;
+        localDrawFcn(blit, rect);
 	}
 
-    // Now lets draw the text of the button
 #ifndef DISABLE_HOVER
-    if(mHovered)
+    // Now lets draw the text of the button
+    else if(mHovered)
     {
-        Font.drawCharacter( blit.getSDLSurface(), 127, lRect.x+16, lRect.y );
+        const auto twirlTemp = mTwirliconID;
+        mTwirliconID = 127;
+        GsRect<int> rect(lRect); rect.pos.x += 16;
+        localDrawFcn(blit, rect);
+        mTwirliconID = twirlTemp;
     }
 #endif
 

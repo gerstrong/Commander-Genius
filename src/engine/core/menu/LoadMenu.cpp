@@ -67,7 +67,7 @@ GameMenu( GsRect<float>(0.1f, 0.0f, 0.8f, 1.0f),
             borderedButton->enableBlinker(false);
             borderedButton->enable(false);
         }
-        else
+        else if(style == Style::VORTICON)
         {
             auto textButton =
             mpMenuDialog->add(
@@ -80,6 +80,21 @@ GameMenu( GsRect<float>(0.1f, 0.0f, 0.8f, 1.0f),
 
             textButton->enableCenteringH(true);
             textButton->enableTwirl(true);
+            textButton->enable(false);
+        }
+        else
+        {
+            auto textButton =
+            mpMenuDialog->add(
+                new GameButton(text,
+                                   GsRect<float>(
+                                       0.00f, 0.1f+(i*0.1f),
+                                       1.00f, 0.1f),
+                                   new LoadGameSlotFunctorEvent(i),
+                                   style) );
+
+            textButton->enableCenteringH(true);
+            textButton->enableTwirl(gMenuController.mEnableTwirl);
             textButton->enable(false);
         }
 

@@ -31,10 +31,15 @@ void Switch::drawVorticonStyle(SDL_Rect& lRect)
 	drawTwirl(lRect);
 }
 
-void Switch::drawNoStyle(SDL_Rect& )
+void Switch::drawNoStyle(SDL_Rect& lRect)
 {
     if(!mEnabled)
     {
         return;
+    }
+
+    if(mDrawTwirl)
+    {
+        drawTwirl(lRect);
     }
 }
