@@ -46,6 +46,13 @@
 </categories>
 
   <releases>
+    <release version="2.8.2" date="2021-06-20">
+      <description>
+        <p>Improved decarmack</p>
+        <p>AI fixes, dropping platform fixes in Galaxy games</p>
+        <p>Some engine preparation for cosmos cosmic adventure</p>
+      </description>  
+    </release>
     <release version="2.8.1" date="2021-05-29">
       <description>
         <p>More Keen Galaxy engine and mod fixes</p>

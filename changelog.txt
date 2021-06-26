@@ -1,4 +1,9 @@
-v2.8.0:
+v2.8.2:
+-------
+- Improved carmack decompression routine.
+- Sliding through entrances/doors improved
+
+v2.8.1:
 -------
 - More Keen Galaxy engine fixes
 - Menu fixes

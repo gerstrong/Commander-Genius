@@ -1568,7 +1568,7 @@ void CPlayerLevel::processPressUp()
 	const int x_mid = (x_left+x_right)/2;
 	const int up_y = getYUpPos()+(3<<STC);
 
-    int flag = 0;
+    int entranceFlag = 0;
 
     if ( !m_EnterDoorAttempt )
     {
@@ -1584,47 +1584,58 @@ void CPlayerLevel::processPressUp()
 
         auto tile_no = tile_from_right;
 
-        bool checkDoor = false;
+        bool entranceDetected = false;
         auto x_pos_door = x_mid;
 
         if ( flag_left == MISCFLAG_DOOR || flag_left == MISCFLAG_KEYCARDDOOR )
         {
             x_pos_door = x_left;
             tile_no = tile_from_left;
-            flag = flag_left;
-            checkDoor = true;
+            entranceFlag = flag_left;
+            entranceDetected = true;
         }
 
         if ( flag_right == MISCFLAG_DOOR || flag_right == MISCFLAG_KEYCARDDOOR )
         {            
             x_pos_door = x_right;
             tile_no = tile_from_right;
-            flag = flag_right;
-            checkDoor = true;
+            entranceFlag = flag_right;
+            entranceDetected = true;
         }
 
         const int info = mpMap->getPlaneDataAt(2, x_pos_door, up_y);
 
 
-        if(checkDoor)
+        if(entranceDetected)
         {
-            // Here the Player will be snapped to the center
-            const auto myTile  = mpMap->getPlaneDataAt(2, x_pos_door, up_y);
-            const auto myTileL = mpMap->getPlaneDataAt(2, x_pos_door-(1<<CSF), up_y);
-            const auto myTileR = mpMap->getPlaneDataAt(2, x_pos_door+(1<<CSF), up_y);
+            int x_entr_left  = x_pos_door;
+            int x_entr_right = x_pos_door+(1<<CSF);
 
-            // Get the center of that entrance
-            if( myTile == myTileR ) // There is a tile to the right
+            // Calculate entrace width so player will be centered appropiately
+            for(int i=0 ; i<10 ; i++)
             {
-                x_pos_door = x_pos_door+(1<<CSF);
+                const size_t entr_tile  = mpMap->getPlaneDataAt(1, x_pos_door+(i<<CSF), up_y);
+                int entr_flag  = Tile[entr_tile].behaviour;
+
+                if(entr_flag == MISCFLAG_DOOR || entr_flag == MISCFLAG_KEYCARDDOOR )
+                    x_entr_right = x_pos_door+((i+1)<<CSF);
+                else
+                    break;
             }
-            else if( myTile != myTileL )
+            for(int i=0 ; i<10 ; i++)
             {
-                x_pos_door = x_pos_door+((1<<CSF)/2);
+                const size_t entr_tile  = mpMap->getPlaneDataAt(1, x_pos_door-(i<<CSF), up_y);
+                int entr_flag  = Tile[entr_tile].behaviour;
+
+                if(entr_flag == MISCFLAG_DOOR || entr_flag == MISCFLAG_KEYCARDDOOR )
+                    x_entr_left = x_pos_door-(i<<CSF);
+                else
+                    break;
             }
 
+            x_pos_door = (x_entr_right+x_entr_left) / 2;
 
-            if (flag == MISCFLAG_KEYCARDDOOR)
+            if (entranceFlag == MISCFLAG_KEYCARDDOOR)
             {
                 if (m_Inventory.Item.m_keycards)
                 {
@@ -1684,7 +1695,8 @@ void CPlayerLevel::processPressUp()
 
                 setActionSprite();
                 GsSprite &rSprite = gGraphics.getSprite(mSprVar,mSpriteIdx);
-                const auto xPosCenteredKeen = x_pos_door - ((rSprite.getWidth()<<STC)/2);
+                const auto sprHalfWidth = ((rSprite.getWidth()<<STC)/2);
+                const auto xPosCenteredKeen = x_pos_door - sprHalfWidth;
 
                 //moveToHorizontal(xPosCenteredKeen);
                 mTarget.x = xPosCenteredKeen;
@@ -1799,7 +1811,6 @@ void CPlayerLevel::processEnterDoor()
         return;
     }
 
-
     // This happens in Keen 5 when Players enters the exit door and it still has to open.
     if(mExitDoorTimer > 0)
     {
@@ -1825,18 +1836,20 @@ void CPlayerLevel::processEnterDoor()
 
     Uint32 t = mpMap->getPlaneDataAt(2, xmid, y1);
 	
-	if(t==0)
-        t = mpMap->getPlaneDataAt(2, xmid, y1-(1<<CSF));
+    for(int x = -(2<<CSF) ; x<=(2<<CSF) ; x+=(1<<CSF))
+    {
+        if(t==0)
+            t = mpMap->getPlaneDataAt(2, xmid+x, y1-(1<<CSF));
 
-	if(t==0)
-        t = mpMap->getPlaneDataAt(2, xmid, y1-(2<<CSF));
-	
-	if(t==0)
-        t = mpMap->getPlaneDataAt(2, xmid, y1-(3<<CSF));
+        if(t==0)
+            t = mpMap->getPlaneDataAt(2, xmid+x, y1-(2<<CSF));
+
+        if(t==0)
+            t = mpMap->getPlaneDataAt(2, xmid+x, y1-(3<<CSF));
+    }
 	
 	if (t == 0) 
-	{	  
-	  
+	{	  	  
 	  bool mustTeleportOnMap = false;
 
       auto &frontTileProperties = gBehaviorEngine.getTileProperties(1);
@@ -1902,8 +1915,8 @@ void CPlayerLevel::processEnterDoor()
 		return;
 	}
 
-	const int ypos = ((t%256 - 1))<<CSF;
-	const int xpos = (t >> 8)<<CSF;
+    const int ypos = (t &  0xFF)<<CSF;
+    const int xpos = (t >> 0x08)<<CSF;
 
     GsVec2D<int> new_pos(xpos, ypos);
 	moveToForce(new_pos);
