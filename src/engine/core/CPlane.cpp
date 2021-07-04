@@ -8,7 +8,6 @@
 #include "CPlane.h"
 
 #include <cassert>
-//#include <fstream>
 
 void CPlane::createDataMap(const int width, const int height)
 {
@@ -18,8 +17,10 @@ void CPlane::createDataMap(const int width, const int height)
     mWidth = width;
     mHeight = height;
 
-    mDataVec.assign(size_t(mWidth*mHeight), 0);
-    mTimers.assign(size_t(mWidth*mHeight), 0);
+    const auto area = width*height;
+
+    mDataVec.assign(size_t(area), 0);
+    mTimers.assign(size_t(area), 0);
 }
 
 void CPlane::dump()

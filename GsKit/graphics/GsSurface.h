@@ -111,7 +111,7 @@ public:
         return SDL_BlitSurface(mpSurface, nullptr, sfc.mpSurface, nullptr);
     }
 
-    int blitTo(GsWeakSurface &sfc, GsRect<Uint16> &dstRect)
+    int blitTo(GsWeakSurface &sfc, const GsRect<Uint16> &dstRect) const
     {
         assert(mpSurface);
         assert(sfc.mpSurface);
@@ -368,7 +368,7 @@ public:
     }        
 
     /**
-     * @brief operator = will set the pass the an existing sfc to this one,
+     * @brief operator = will pass the an existing sfc to this one,
      *        the other one gets emptied in this process
      * @param sfc
      */

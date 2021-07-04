@@ -127,6 +127,9 @@ bool ScrollingPlane::scrollRightTest()
 // scrolls the map one pixel to the right
 bool ScrollingPlane::scrollRight(GsTilemap &tilemap)
 {
+    if(gVideoDriver.getScrollSurfaceVec().empty())
+        return false;
+
     auto &scrollSfc = gVideoDriver.getScrollSurfaceVec().at(mScrollSfcIdx);
     auto &scroll = mScrollCoords;
 
@@ -211,7 +214,9 @@ bool ScrollingPlane::scrollDown(GsTilemap &tilemap, const bool force)
 
     const int res_height = gVideoDriver.getGameResolution().dim.y;
 
-    auto &scrollSfc = gVideoDriver.getScrollSurfaceVec().at(mScrollSfcIdx);
+    auto &scrollSfcVec = gVideoDriver.getScrollSurfaceVec();
+
+    auto &scrollSfc = scrollSfcVec.at(mScrollSfcIdx);
     auto &scroll = mScrollCoords;
 
     if(!force)
@@ -387,6 +392,9 @@ void ScrollingPlane::drawAll(GsTilemap &tilemap)
 
 void ScrollingPlane::animateAllTiles(GsTilemap &tilemap)
 {
+    if(mScrollSfcIdx<0 || mScrollSfcIdx>3)
+        return;
+
     auto &scrollSfc = gVideoDriver.getScrollSurfaceVec().at(mScrollSfcIdx);
     auto &tileProperties = gBehaviorEngine.getTileProperties(mScrollSfcIdx);
     word *tilePtr = getMapDataPtr();
@@ -408,7 +416,12 @@ void ScrollingPlane::animateAllTiles(GsTilemap &tilemap)
 
             const auto offset = stride + x;
 
-            const CTileProperties &tileProp = tileProperties[*tilePtr];
+            const auto tileIdx = *tilePtr;
+
+            if(tileIdx >= tileProperties.size())
+                continue;
+
+            const CTileProperties &tileProp = tileProperties[tileIdx];
 
             if( tileProp.animationTime )
             {

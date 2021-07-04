@@ -188,17 +188,19 @@ const int MAX_BUFFER = 1024;
 
 void CLogFile::ftextOut(const char *Text, ...)
 {
-	char buffer[MAX_BUFFER];
+    if(Text == nullptr)
+        return;
 
-    memset(buffer, 0, MAX_BUFFER);
+    std::array<char, MAX_BUFFER> buffer;
+    buffer.fill(0);
 
 	va_list pArgList;
 	
 	va_start(pArgList, Text);
-	vsprintf(buffer, Text, pArgList);
+    vsprintf(buffer.data(), Text, pArgList);
 	va_end(pArgList);
 	
-	textOut(buffer);
+    textOut(buffer.data());
 }
 
 void CLogFile::fltextOut(FONTCOLORS Color, bool List, const char *Text, ...)
