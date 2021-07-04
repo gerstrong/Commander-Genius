@@ -11,6 +11,7 @@
 #include <base/Singleton.h>
 #include <string>
 #include <fstream>
+#include <array>
 
 // Singleton macro
 #define  gLogging (CLogFile::get())
@@ -66,6 +67,8 @@ private:
     std::ofstream mLogStream;
 	
     std::string removeHTML(const std::string& input);
+
+    std::array<char, 1024> buffer;
 };
 
 

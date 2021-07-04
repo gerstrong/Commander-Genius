@@ -184,14 +184,12 @@ void CLogFile::textOut(const std::string& text)
     mLogStream << text;
 }
 
-const int MAX_BUFFER = 1024;
 
 void CLogFile::ftextOut(const char *Text, ...)
 {
     if(Text == nullptr)
         return;
 
-    std::array<char, MAX_BUFFER> buffer;
     buffer.fill(0);
 
 	va_list pArgList;
@@ -205,14 +203,14 @@ void CLogFile::ftextOut(const char *Text, ...)
 
 void CLogFile::fltextOut(FONTCOLORS Color, bool List, const char *Text, ...)
 {
-	char buffer[MAX_BUFFER];
+    buffer.fill(0);
 	va_list pArgList;
 	
 	va_start(pArgList, Text);
-	vsprintf(buffer, Text, pArgList);
+    vsprintf(buffer.data(), Text, pArgList);
 	va_end(pArgList);
 	
-	textOut(Color, List, buffer);
+    textOut(Color, List, buffer.data());
 }
 
 
@@ -220,11 +218,11 @@ void CLogFile::fltextOut(FONTCOLORS Color, bool List, const char *Text, ...)
 
 void CLogFile::ftextOut(FONTCOLORS Color, const char *Text, ...)
 {
-	char buffer[MAX_BUFFER];
+    buffer.fill(0);
 	va_list pArgList;
 	va_start(pArgList, Text);
-	vsprintf(buffer, Text, pArgList);
-	textOut(Color, buffer);
+    vsprintf(buffer.data(), Text, pArgList);
+    textOut(Color, buffer.data());
 	va_end(pArgList);
 }
 
