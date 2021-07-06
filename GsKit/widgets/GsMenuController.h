@@ -114,6 +114,7 @@ public:
 
     std::function<void(GsWeakSurface&)> mBackroundDrawFcn;
     std::function<void(GsWeakSurface&, const GsRect<int>)> mDrawTwirlFcn;
+    std::function<void()> mExecAfterClose;
 
     bool mEnableTwirl = false;
 

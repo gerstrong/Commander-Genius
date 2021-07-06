@@ -104,6 +104,13 @@ void CMenuController::popBackMenu()
 
     mMenuStack.back()->release();
     mMenuStack.pop_back();
+
+    if(mMenuStack.empty())
+    {
+        if(mExecAfterClose)
+            mExecAfterClose();
+    }
+
 }
 
 
