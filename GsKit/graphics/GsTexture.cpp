@@ -8,11 +8,28 @@
 
 GsTexture::~GsTexture()
 {
-#if SDL_VERSION_ATLEAST(2, 0, 0)
+    if(mpTexture)
+    {
+        unload();
+        mSfc.tryToDestroy();
+    }
+}
 
-        if(mpTexture)
-            unload();
-#endif
+GsTexture::operator bool()
+{
+    return (mpTexture!=nullptr);
+}
+
+void GsTexture::unload()
+{
+    assert(mpTexture != nullptr);
+    SDL_DestroyTexture( mpTexture );
+    mpTexture = nullptr;
+}
+
+SDL_Texture* GsTexture::getPtr()
+{
+    return mpTexture;
 }
 
 bool GsTexture::createCircle(SDL_Renderer *renderer,
@@ -22,7 +39,7 @@ bool GsTexture::createCircle(SDL_Renderer *renderer,
                              const float radius,
                              const int res)
 {
-    GsSurface sfc;
+    GsSurface &sfc = mSfc;
 
     sfc.create(0, 512, 512, 32,
                0, 0, 0, 0);
@@ -39,7 +56,7 @@ bool GsTexture::createCircle(SDL_Renderer *renderer,
     mpTexture = SDL_CreateTextureFromSurface(renderer, sfc.getSDLSurface());
 
     SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
-    SDL_SetTextureBlendMode(mpTexture, SDL_BLENDMODE_BLEND);
+    SDL_SetTextureBlendMode(mpTexture, SDL_BLENDMODE_BLEND);    
 
     return true;
 }
@@ -81,6 +98,20 @@ bool GsTexture::loadFromMem(const unsigned char *data,
     return (mpTexture!=nullptr);
 }
 
+void GsTexture::setBlendMode( SDL_BlendMode blending )
+{
+   assert(mpTexture);
+    //Set blending function
+   SDL_SetTextureBlendMode( mpTexture, blending );
+}
+
+void GsTexture::setAlpha( const Uint8 alpha )
+{
+   assert(mpTexture);
+
+   // Modulate texture alpha
+   SDL_SetTextureAlphaMod( mpTexture, alpha );
+}
 
 bool GsTexture::loadFromSurface(const GsSurface &sfc,
                                 SDL_Renderer *renderer)
@@ -90,9 +121,8 @@ bool GsTexture::loadFromSurface(const GsSurface &sfc,
         unload();
 
     // Load image at specified path
-    GsSurface copySfc;
-    copySfc.createCopy(sfc);
-    SDL_Surface* loadedSurface = copySfc.getSDLSurface();
+    mSfc.createCopy(sfc);
+    SDL_Surface* loadedSurface = mSfc.getSDLSurface();
 
     if( loadedSurface )
     {

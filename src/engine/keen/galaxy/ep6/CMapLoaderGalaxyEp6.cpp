@@ -145,8 +145,11 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp6::addFoe(CMap &Map, word foe, size_t x, 
                                       m_demo ? 0x1446 : 0x13E0,
                                       mNumLoadedPlayers,
                                       inventory.mSpriteVar );
-        }
+        }                
+
         mNumLoadedPlayers++;
+
+        gLogging << "Player " << mNumLoadedPlayers << " set on world map." << CLogFile::endl;
         break;
 
 	case 0x06: if( difficulty < HARD ) break;

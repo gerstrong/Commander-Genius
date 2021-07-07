@@ -177,6 +177,7 @@ bool VirtualKeenControl::init()
 
         if(!mMenuButton.loadEmdbeddedPicture(gButtonMenuPng, sizeof(gButtonMenuPng))) return false;
         mMenuButton.invisible = true;
+
     }
 
 #endif
@@ -200,7 +201,7 @@ bool VirtualKeenControl::ponder()
     const float sizeWFactor = float(iSizeW)/200.0f;
     const float sizeHFactor = float(iSizeH)/200.0f;
 
-    if(!mDPad.invisible)
+    if(mDPad.mTexture && !mDPad.invisible)
     {
         const float dpadWSize = 0.2f*sizeWFactor;
         const float dpadHSize = 0.2f*sizeHFactor;
@@ -223,7 +224,7 @@ bool VirtualKeenControl::ponder()
         }
     }
 
-    if(!mConfirmButton.invisible)
+    if(mConfirmButton.mTexture && !mConfirmButton.invisible)
     {
         const float buttonSizeW = 0.1f*sizeWFactor;
         const float buttonSizeH = 0.1f*sizeHFactor;
@@ -237,7 +238,7 @@ bool VirtualKeenControl::ponder()
         mConfirmButton.mTexture.setAlpha(uint8_t(255.0f*mTranslucency));
     }
 
-    if(!mMenuButton.invisible)
+    if(mMenuButton.mTexture && !mMenuButton.invisible)
     {
         const float buttonWSize = 0.1f*sizeWFactor;
         const float buttonHSize = 0.1f*sizeHFactor;
@@ -247,12 +248,11 @@ bool VirtualKeenControl::ponder()
                                         buttonWSize, buttonHSize);
 
         mMenuButton.setRect(menuBtnRect);
-
         mMenuButton.mTexture.setAlpha(uint8_t(255.0f*mTranslucency));
     }
 
 
-    if(!mStatusButton.invisible)
+    if(mStatusButton.mTexture && !mStatusButton.invisible)
     {
         const float buttonWSize = 0.1f*sizeWFactor;
         const float buttonHSize = 0.1f*sizeHFactor;
@@ -266,7 +266,7 @@ bool VirtualKeenControl::ponder()
         mStatusButton.mTexture.setAlpha(uint8_t(255.0f*mTranslucency));
     }
 
-    if(!mStartButton.invisible)
+    if(mStartButton.mTexture && !mStartButton.invisible)
     {
         const float buttonWSize = 0.1f*sizeWFactor;
         const float buttonHSize = 0.1f*sizeHFactor;
@@ -280,7 +280,7 @@ bool VirtualKeenControl::ponder()
         mStartButton.mTexture.setAlpha(uint8_t(255.0f*mTranslucency));
     }
 
-    if(!mJumpButton.invisible)
+    if(mJumpButton.mTexture && !mJumpButton.invisible)
     {
         const float buttonWSize = 0.1f*sizeWFactor;
         const float buttonHSize = 0.1f*sizeHFactor;
@@ -294,7 +294,7 @@ bool VirtualKeenControl::ponder()
         mJumpButton.mTexture.setAlpha(uint8_t(255.0f*mTranslucency));
     }
 
-    if(!mPogoButton.invisible)
+    if(mPogoButton.mTexture && !mPogoButton.invisible)
     {
         const float buttonWSize = 0.1f*sizeWFactor;
         const float buttonHSize = 0.1f*sizeHFactor;
@@ -308,7 +308,7 @@ bool VirtualKeenControl::ponder()
         mPogoButton.mTexture.setAlpha(uint8_t(255.0f*mTranslucency));
     }
 
-    if(!mShootButton.invisible)
+    if(mShootButton.mTexture && !mShootButton.invisible)
     {
         const float buttonWSize = 0.1f*sizeWFactor;
         const float buttonHSize = 0.1f*sizeHFactor;
@@ -402,6 +402,7 @@ void VirtualKeenControl::render(GsWeakSurface &)
     addTexture(mShootButton);
     addTexture(mJumpButton);
     addTexture(mPogoButton);    
+
 
     if(!mDPad.invisible &&
         mDPad.x > 0.0f && mDPad.y > 0.0f )

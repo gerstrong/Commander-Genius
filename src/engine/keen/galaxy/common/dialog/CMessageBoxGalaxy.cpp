@@ -123,7 +123,7 @@ bool CMessageBoxGalaxy::initWithBgBitmapInternal(const unsigned char *data,
         auto *texture = mMBTexture.getPtr();
         assert(texture);
 
-        SDL_QueryTexture(mMBTexture.getPtr(),
+        SDL_QueryTexture(texture,
                          nullptr, nullptr,
                          &w, &h);
 

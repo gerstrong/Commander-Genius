@@ -8,6 +8,8 @@
 
 #include <cassert>
 
+#include "GsSurface.h"
+
 /**
  * @brief The GsTexture class is a wrapper for SDL Textures introduced in SDL 2.0. It can be used extended with other libraries, OpenGL maybe, but
  *        this wrapper manages the texture memory a bit more C++ like, so trouble with managing it's pointer
@@ -32,7 +34,6 @@ public:
     virtual ~GsTexture();
 
 
-    #if SDL_VERSION_ATLEAST(2, 0, 0)
     /**
      * @brief loadTexture   Will try to load the texture
      * @param fname filename to load
@@ -52,52 +53,31 @@ public:
                      SDL_Renderer *renderer);
 
      //Set blending
-    void setBlendMode( SDL_BlendMode blending )
-    {
-        assert(mpTexture);
-         //Set blending function
-        SDL_SetTextureBlendMode( mpTexture, blending );
-    }
+    void setBlendMode( SDL_BlendMode blending );
+
 
     /**
      * @brief setAlpha Set alpha modulation
      * @param alpha translucency 0-255 from transparent to opaque
      */
-    void setAlpha( const Uint8 alpha )
-    {        
-        assert(mpTexture);
-
-        // Modulate texture alpha
-        SDL_SetTextureAlphaMod( mpTexture, alpha );
-    }
+    void setAlpha( const Uint8 alpha );
 
     /**
      * @brief operator bool For testing the object itself, if the texture is loaded
      */
-    operator bool()
-    {
-        return (mpTexture!=nullptr);
-    }
+    operator bool();
 
     /**
      * @brief unload Will unload the texture
      */
-    void unload()
-    {
-        assert(mpTexture != nullptr);
-        SDL_DestroyTexture( mpTexture );
-        mpTexture = nullptr;
-    }
+    void unload();
 
 
     /**
      * @brief getPtr getter to the raw pointer of the texture.
      * @return Pointer to the texture object is returned
      */
-    SDL_Texture* getPtr()
-    {
-        return mpTexture;
-    }
+    SDL_Texture* getPtr();
 
     bool createCircle( SDL_Renderer *renderer,
                        const Uint8 r,
@@ -118,8 +98,8 @@ public:
 private:
 
     SDL_Texture* mpTexture = nullptr;
+    GsSurface mSfc;
 
-#endif
 };
 
 #endif

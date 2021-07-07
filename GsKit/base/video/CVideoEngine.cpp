@@ -372,6 +372,5 @@ void CVideoEngine::scaleAndFilter()
 }
 
 void CVideoEngine::shutdown()
-{
-
+{    
 }
