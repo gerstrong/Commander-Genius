@@ -117,7 +117,7 @@ private:
 
 	std::vector<bool> mLevelDone;	
 
-	void (CPlayerWM::*mProcessPtr)();
+    void (CPlayerWM::*mProcessPtr)() = nullptr;
 };
 
 }

@@ -48,8 +48,10 @@ CPlayerBase(pmap, foeID, x, y,
 {
 	m_ActionBaseOffset = actionoffset;
 
-	CGalaxySpriteObject::setActionForce(0);
-	setActionSprite();
+    mEndOfAction = false;
+    m_ActionNumber = 0;
+    m_Action.setActionFormat(m_ActionBaseOffset);
+    setActionSprite();
 
     walkBaseFrame = Uint16(mSpriteIdx);
 	wavingBaseFrame = walkBaseFrame + 22;

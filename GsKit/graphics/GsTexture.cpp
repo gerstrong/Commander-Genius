@@ -90,7 +90,9 @@ bool GsTexture::loadFromSurface(const GsSurface &sfc,
         unload();
 
     // Load image at specified path
-    SDL_Surface* loadedSurface = sfc.getSDLSurface();
+    GsSurface copySfc;
+    copySfc.createCopy(sfc);
+    SDL_Surface* loadedSurface = copySfc.getSDLSurface();
 
     if( loadedSurface )
     {
@@ -101,6 +103,36 @@ bool GsTexture::loadFromSurface(const GsSurface &sfc,
             gLogging.ftextOut("Unable to create texture! SDL Error: %s\n",
                               SDL_GetError());
         }
+    }
+
+    return (mpTexture!=nullptr);
+}
+
+bool GsTexture::load(const std::string &fname, SDL_Renderer *renderer)
+{
+    // Do we have an old texture? Unload it
+    if(mpTexture)
+        unload();
+
+    // Load image at specified path
+    SDL_Surface* loadedSurface = IMG_Load( fname.c_str() );
+    if( loadedSurface == nullptr )
+    {
+        gLogging << "Unable to load image " <<
+                    fname << ". Error: " << IMG_GetError() <<  CLogFile::endl;
+    }
+    else
+    {
+        // Create texture from surface pixels
+        mpTexture = SDL_CreateTextureFromSurface( renderer, loadedSurface );
+        if( mpTexture == nullptr )
+        {
+            gLogging << "Unable to create texture from " <<
+                        fname << ". Error: " << SDL_GetError() <<  CLogFile::endl;
+        }
+
+        // Get rid of old loaded surface
+        SDL_FreeSurface( loadedSurface );
     }
 
     return (mpTexture!=nullptr);

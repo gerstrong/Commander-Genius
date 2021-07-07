@@ -39,33 +39,7 @@ public:
      * @renderer renderer on which the texture will be drawn
      * @return true if it was loaded, otherwise false
      */
-    bool load(const std::string &fname, SDL_Renderer *renderer)
-    {
-        // Do we have an old texture? Unload it
-        if(mpTexture)
-            unload();
-
-        // Load image at specified path
-        SDL_Surface* loadedSurface = IMG_Load( fname.c_str() );
-        if( loadedSurface == nullptr )
-        {
-            //printf( "Unable to load image %s! SDL_image Error: %s\n", path.c_str(), IMG_GetError() );
-        }
-        else
-        {
-            //Create texture from surface pixels
-            mpTexture = SDL_CreateTextureFromSurface( renderer, loadedSurface );
-            if( mpTexture == nullptr )
-            {
-                //printf( "Unable to create texture from %s! SDL Error: %s\n", path.c_str(), SDL_GetError() );
-            }
-
-            //Get rid of old loaded surface
-            SDL_FreeSurface( loadedSurface );
-        }
-
-        return (mpTexture!=nullptr);
-    }
+    bool load(const std::string &fname, SDL_Renderer *renderer);
 
     /**
      * @brief loadFromMem   Will try to load the texture
@@ -80,6 +54,7 @@ public:
      //Set blending
     void setBlendMode( SDL_BlendMode blending )
     {
+        assert(mpTexture);
          //Set blending function
         SDL_SetTextureBlendMode( mpTexture, blending );
     }
@@ -89,7 +64,9 @@ public:
      * @param alpha translucency 0-255 from transparent to opaque
      */
     void setAlpha( const Uint8 alpha )
-    {
+    {        
+        assert(mpTexture);
+
         // Modulate texture alpha
         SDL_SetTextureAlphaMod( mpTexture, alpha );
     }

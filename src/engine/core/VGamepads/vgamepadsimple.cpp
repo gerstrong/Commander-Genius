@@ -33,7 +33,11 @@ bool TouchButton::loadEmdbeddedPicture(const unsigned char *data,
 
     int h, w;
 
-    SDL_QueryTexture(mTexture.getPtr(),
+    auto *texture = mTexture.getPtr();
+
+    assert(texture);
+
+    SDL_QueryTexture(texture,
                      nullptr, nullptr,
                      &w, &h);
 
