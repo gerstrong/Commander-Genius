@@ -46,6 +46,11 @@
 </categories>
 
   <releases>
+    <release version="2.8.2.1" date="2021-07-07">
+      <description>
+        <p>Memory fixes</p>
+      </description>  
+    </release>  
     <release version="2.8.2" date="2021-06-20">
       <description>
         <p>Improved decarmack</p>
