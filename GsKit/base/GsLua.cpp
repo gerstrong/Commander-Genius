@@ -32,8 +32,7 @@ bool GsLua::loadFile(const std::string &fname)
 
     if(!IsFileAvailable(fullfname, true))
     {
-        gLogging << "Error." << CLogFile::endl;
-        gLogging << "File " << fname << " not found." << CLogFile::endl;
+        gLogging << "Not found." << CLogFile::endl;
         return false;
     }
     gLogging << "Ok." << CLogFile::endl;

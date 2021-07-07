@@ -370,7 +370,7 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
     Map.drawAll();
     gVideoDriver.updateScrollBuffer(Map.m_scrollx, Map.m_scrolly);
 
-    gLogging.textOut("Map got loaded successfully!");
+    gLogging << "Map got loaded successfully!" << CLogFile::endl;
 
     return true;
 }
