@@ -1,6 +1,15 @@
 stages:
     - build
-    - publish
+    - upload
+    - release
+    
+variables:
+    ARTIFACT_LINUX: "CGenius-Linux-${CI_COMMIT_SHORT_SHA}"
+    ARTIFACT_WIN_EXE: "CGenius-WinExe-${CI_COMMIT_SHORT_SHA}"
+    ARTIFACT_WIN_ZIP: "CGenius-WinZip-${CI_COMMIT_SHORT_SHA}"    
+    ARTIFACT_MACOS: "CGenius-MacOS-${CI_COMMIT_SHORT_SHA}"
+    PACKAGE_REGISTRY_URL: "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/cgenius"
+    
 
 windows-portable:
     image: cgenius/crossbuild:win
@@ -48,7 +57,7 @@ linux-generic:
       - cpack -G TGZ
       - cp *.tar.gz $CI_PROJECT_DIR/output
     artifacts:
-      name: "CGenius-Linux-$CI_COMMIT_SHORT_SHA"
+      name: "$ARTIFACT_LINUX"
       expire_in: 1 week
       paths:
         - output/*
@@ -67,7 +76,7 @@ macos-64bit:
       - export OSXOPT=${OSXCROSSPATH}/target/macports/pkgs/opt
       - x86_64-apple-darwin14-cmake -DAPPEND_SHA=1 -DUSE_SDL2=1 -DCMAKE_BUILD_TYPE="Release" -DOSXCROSS=1 -DUSE_OPENGL=0 -DUSE_BOOST=0 -DSDL2_INCLUDE_DIR=${OSXOPT}/local/include/SDL2 -DSDL2_MIXER_INCLUDE_DIR=${OSXOPT}/local/include/SDL2 -DSDL2_INCLUDE_DIR=${OSXOPT}/local/include/SDL2 ${CG_SOURCES}
     script:
-      - cmake --build .    
+      - cmake --build .
       - bash buildMacOsBundle.sh
       - cp *.dmg $CI_PROJECT_DIR/output
     artifacts:
@@ -75,17 +84,25 @@ macos-64bit:
       expire_in: 1 week
       paths:
         - output/*
-                            
-publish:
-    image: inetprocess/gitlab-release
-    stage: publish
-    only:
-        - tags
-    dependencies: 
-        - windows-portable
-        - windows-installer
-        - linux-generic
-        - macos-64bit
-    script:
-        - gitlab-release --message 'Build artifacts (Windows, Linux and MacOS)' $CI_PROJECT_DIR/output/*
-                      
+
+upload:
+     stage: upload
+     image: curlimages/curl:latest
+     script:
+        - "curl --header \"JOB-TOKEN: ${CI_JOB_TOKEN}\" --upload-file \"`ls -1 output/* | grep Release-generic.tar.gz`\" ${PACKAGE_REGISTRY_URL}/${ARTIFACT_LINUX}.tar.gz"
+        - "curl --header \"JOB-TOKEN: ${CI_JOB_TOKEN}\" --upload-file \"`ls -1 output/* | grep Release-win32.exe`\" ${PACKAGE_REGISTRY_URL}/${ARTIFACT_WIN_EXE}.exe"
+        - "curl --header \"JOB-TOKEN: ${CI_JOB_TOKEN}\" --upload-file \"`ls -1 output/* | grep Release-win32.zip`\" ${PACKAGE_REGISTRY_URL}/${ARTIFACT_WIN_ZIP}.zip"
+        - "curl --header \"JOB-TOKEN: ${CI_JOB_TOKEN}\" --upload-file \"`ls -1 output/* | grep Release-MacOS.dmg`\" ${PACKAGE_REGISTRY_URL}/${ARTIFACT_MACOS}.dmg"
+
+release:
+     stage: release
+     image: registry.gitlab.com/gitlab-org/release-cli:latest
+     only:
+     - tags
+     script:
+       - release-cli create --name "Release $CI_COMMIT_TAG" --tag-name $CI_COMMIT_TAG \
+        --assets-link "{\"name\":\"${ARTIFACT_LINUX}\",\"url\":\"${PACKAGE_REGISTRY_URL}/${ARTIFACT_LINUX}.tar.gz\"}" \            
+        --assets-link "{\"name\":\"${ARTIFACT_WIN_EXE}\",\"url\":\"${PACKAGE_REGISTRY_URL}/${ARTIFACT_WIN_EXE}.exe\"}" \            
+        --assets-link "{\"name\":\"${ARTIFACT_WIN_ZIP}\",\"url\":\"${PACKAGE_REGISTRY_URL}/${ARTIFACT_WIN_ZIP}.zip\"}" \            
+        --assets-link "{\"name\":\"${ARTIFACT_MACOS}\",\"url\":\"${PACKAGE_REGISTRY_URL}/${ARTIFACT_MACOS}.dmg\"}"
+        
