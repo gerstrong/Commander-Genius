@@ -4,14 +4,18 @@ stages:
     - release
     
 variables:
-    ARTIFACT_LINUX: "CGenius-Linux-${CI_COMMIT_SHORT_SHA}"
-    ARTIFACT_WIN_EXE: "CGenius-WinExe-${CI_COMMIT_SHORT_SHA}"
-    ARTIFACT_WIN_ZIP: "CGenius-WinZip-${CI_COMMIT_SHORT_SHA}"    
-    ARTIFACT_MACOS: "CGenius-MacOS-${CI_COMMIT_SHORT_SHA}"
-    PACKAGE_REGISTRY_URL: "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/cgenius"
+    ARTIFACT_LINUX: "cgenius-linux-${CI_COMMIT_SHORT_SHA}"
+    ARTIFACT_WIN_EXE: "cgenius-winexe-${CI_COMMIT_SHORT_SHA}"
+    ARTIFACT_WIN_ZIP: "cgenius-winzip-${CI_COMMIT_SHORT_SHA}"    
+    ARTIFACT_MACOS: "cgenius-macos-${CI_COMMIT_SHORT_SHA}"
+    ARTIFACT_LINUX_FILE: "cgenius-linux-${CI_COMMIT_SHORT_SHA}.tar.gz"
+    ARTIFACT_WIN_EXE_FILE: "${ARTIFACT_WIN_EXE}.exe"
+    ARTIFACT_WIN_ZIP_FILE: "${ARTIFACT_WIN_ZIP}.zip"    
+    ARTIFACT_MACOS_FILE: "${ARTIFACT_MACOS}.dmg"    
+    PACKAGE_REGISTRY_URL: "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/cgenius/daily"
     
 
-windows-portable:
+build:windows-portable:
     image: cgenius/crossbuild:win
     stage: build    
     before_script:
@@ -28,7 +32,16 @@ windows-portable:
       paths:
         - output/*
         
-windows-installer:
+upload:windows-portable:
+    stage: upload
+    image: curlimages/curl:latest
+    script:
+        - "curl --header \"JOB-TOKEN: ${CI_JOB_TOKEN}\" --upload-file \"`ls -1 output/* | grep Release-win32.zip`\" \"${PACKAGE_REGISTRY_URL}/${ARTIFACT_WIN_ZIP_FILE}\""
+        
+    dependencies:
+        - build:windows-portable              
+        
+build:windows-installer:
     image: cgenius/crossbuild:winnsis
     stage: build
     before_script:
@@ -44,8 +57,17 @@ windows-installer:
       expire_in: 1 week
       paths:
         - output/*
+        
+upload:windows-installer:
+    stage: upload
+    image: curlimages/curl:latest
+    script:
+        - "curl --header \"JOB-TOKEN: ${CI_JOB_TOKEN}\" --upload-file \"`ls -1 output/* | grep Release-win32.exe`\" \"${PACKAGE_REGISTRY_URL}/${ARTIFACT_WIN_EXE_FILE}\""
+        
+    dependencies:
+        - build:windows-installer           
                       
-linux-generic:
+build:linux-generic:
     image: cgenius/crossbuild:linux
     stage: build
     before_script:
@@ -61,8 +83,17 @@ linux-generic:
       expire_in: 1 week
       paths:
         - output/*
+
+upload:linux-generic:
+    stage: upload
+    image: curlimages/curl:latest
+    script:
+        - "curl --header \"JOB-TOKEN: ${CI_JOB_TOKEN}\" --upload-file \"`ls -1 output/* | grep Release-generic.tar.gz`\" \"${PACKAGE_REGISTRY_URL}/${ARTIFACT_LINUX_FILE}\""
         
-macos-64bit:
+    dependencies:
+        - build:linux-generic        
+        
+build:macos-64bit:
     image: cgenius/crossbuild:mac
     stage: build
     before_script:
@@ -80,19 +111,19 @@ macos-64bit:
       - bash buildMacOsBundle.sh
       - cp *.dmg $CI_PROJECT_DIR/output
     artifacts:
-      name: "CGenius-MacOs-$CI_COMMIT_SHORT_SHA"
+      name: "$ARTIFACT_MACOS"
       expire_in: 1 week
       paths:
         - output/*
 
-upload:
-     stage: upload
-     image: curlimages/curl:latest
-     script:
-        - "curl --header \"JOB-TOKEN: ${CI_JOB_TOKEN}\" --upload-file \"`ls -1 output/* | grep Release-generic.tar.gz`\" ${PACKAGE_REGISTRY_URL}/${ARTIFACT_LINUX}.tar.gz"
-        - "curl --header \"JOB-TOKEN: ${CI_JOB_TOKEN}\" --upload-file \"`ls -1 output/* | grep Release-win32.exe`\" ${PACKAGE_REGISTRY_URL}/${ARTIFACT_WIN_EXE}.exe"
-        - "curl --header \"JOB-TOKEN: ${CI_JOB_TOKEN}\" --upload-file \"`ls -1 output/* | grep Release-win32.zip`\" ${PACKAGE_REGISTRY_URL}/${ARTIFACT_WIN_ZIP}.zip"
-        - "curl --header \"JOB-TOKEN: ${CI_JOB_TOKEN}\" --upload-file \"`ls -1 output/* | grep Release-MacOS.dmg`\" ${PACKAGE_REGISTRY_URL}/${ARTIFACT_MACOS}.dmg"
+upload:macos-64bit:
+    stage: upload
+    image: curlimages/curl:latest
+    script:
+        - "curl --header \"JOB-TOKEN: ${CI_JOB_TOKEN}\" --upload-file \"`ls -1 output/* | grep Release-MacOS.dmg`\" \"${PACKAGE_REGISTRY_URL}/${ARTIFACT_MACOS}\""
+        
+    dependencies:
+        - build:macos-64bit   
 
 release:
      stage: release
@@ -101,8 +132,8 @@ release:
      - tags
      script:
        - release-cli create --name "Release $CI_COMMIT_TAG" --tag-name $CI_COMMIT_TAG \
-        --assets-link "{\"name\":\"${ARTIFACT_LINUX}\",\"url\":\"${PACKAGE_REGISTRY_URL}/${ARTIFACT_LINUX}.tar.gz\"}" \            
-        --assets-link "{\"name\":\"${ARTIFACT_WIN_EXE}\",\"url\":\"${PACKAGE_REGISTRY_URL}/${ARTIFACT_WIN_EXE}.exe\"}" \            
-        --assets-link "{\"name\":\"${ARTIFACT_WIN_ZIP}\",\"url\":\"${PACKAGE_REGISTRY_URL}/${ARTIFACT_WIN_ZIP}.zip\"}" \            
-        --assets-link "{\"name\":\"${ARTIFACT_MACOS}\",\"url\":\"${PACKAGE_REGISTRY_URL}/${ARTIFACT_MACOS}.dmg\"}"
+        --assets-link "{\"name\":\"${ARTIFACT_LINUX}\",\"url\":\"${PACKAGE_REGISTRY_URL}/${ARTIFACT_LINUX_FILE}\"}"  \
+        --assets-link "{\"name\":\"${ARTIFACT_WIN_EXE}\",\"url\":\"${PACKAGE_REGISTRY_URL}/${ARTIFACT_WIN_EXE_FILE}\"}" \
+        --assets-link "{\"name\":\"${ARTIFACT_WIN_ZIP}\",\"url\":\"${PACKAGE_REGISTRY_URL}/${ARTIFACT_WIN_ZIPFILE}\"}" \
+        --assets-link "{\"name\":\"${ARTIFACT_MACOS}\",\"url\":\"${PACKAGE_REGISTRY_URL}/${ARTIFACT_MACOS_FILE}\"}"
         
