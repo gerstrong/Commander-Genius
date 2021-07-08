@@ -35,6 +35,8 @@ build:windows-portable:
 upload:windows-portable:
     stage: upload
     image: curlimages/curl:latest
+    only:
+    - tags        
     script:
         - "curl --header \"JOB-TOKEN: ${CI_JOB_TOKEN}\" --upload-file \"`ls -1 output/* | grep Release-win32.zip`\" \"${PACKAGE_REGISTRY_URL}/${ARTIFACT_WIN_ZIP_FILE}\""
         
@@ -61,6 +63,8 @@ build:windows-installer:
 upload:windows-installer:
     stage: upload
     image: curlimages/curl:latest
+    only:
+    - tags        
     script:
         - "curl --header \"JOB-TOKEN: ${CI_JOB_TOKEN}\" --upload-file \"`ls -1 output/* | grep Release-win32.exe`\" \"${PACKAGE_REGISTRY_URL}/${ARTIFACT_WIN_EXE_FILE}\""
         
@@ -87,7 +91,10 @@ build:linux-generic:
 upload:linux-generic:
     stage: upload
     image: curlimages/curl:latest
+    only:
+    - tags        
     script:
+        - "echo \"curl --header \"JOB-TOKEN: ${CI_JOB_TOKEN}\" --upload-file \"`ls -1 output/* | grep Release-generic.tar.gz`\" \"${PACKAGE_REGISTRY_URL}/${ARTIFACT_LINUX_FILE}\"\""
         - "curl --header \"JOB-TOKEN: ${CI_JOB_TOKEN}\" --upload-file \"`ls -1 output/* | grep Release-generic.tar.gz`\" \"${PACKAGE_REGISTRY_URL}/${ARTIFACT_LINUX_FILE}\""
         
     dependencies:
@@ -95,7 +102,7 @@ upload:linux-generic:
         
 build:macos-64bit:
     image: cgenius/crossbuild:mac
-    stage: build
+    stage: build    
     before_script:
       - mkdir -p /tmp && cd "$_"
       - mkdir -p $CI_PROJECT_DIR/output
@@ -119,8 +126,10 @@ build:macos-64bit:
 upload:macos-64bit:
     stage: upload
     image: curlimages/curl:latest
+    only:
+    - tags    
     script:
-        - "curl --header \"JOB-TOKEN: ${CI_JOB_TOKEN}\" --upload-file \"`ls -1 output/* | grep Release-MacOS.dmg`\" \"${PACKAGE_REGISTRY_URL}/${ARTIFACT_MACOS}\""
+        - "curl --header \"JOB-TOKEN: ${CI_JOB_TOKEN}\" --upload-file \"`ls -1 output/* | grep Release-MacOS.dmg`\" \"${PACKAGE_REGISTRY_URL}/${ARTIFACT_MACOS_FILE}\""
         
     dependencies:
         - build:macos-64bit   
@@ -131,9 +140,10 @@ release:
      only:
      - tags
      script:
-       - release-cli create --name "Release $CI_COMMIT_TAG" --tag-name $CI_COMMIT_TAG \
-        --assets-link "{\"name\":\"${ARTIFACT_LINUX}\",\"url\":\"${PACKAGE_REGISTRY_URL}/${ARTIFACT_LINUX_FILE}\"}"  \
-        --assets-link "{\"name\":\"${ARTIFACT_WIN_EXE}\",\"url\":\"${PACKAGE_REGISTRY_URL}/${ARTIFACT_WIN_EXE_FILE}\"}" \
-        --assets-link "{\"name\":\"${ARTIFACT_WIN_ZIP}\",\"url\":\"${PACKAGE_REGISTRY_URL}/${ARTIFACT_WIN_ZIPFILE}\"}" \
+       - "echo \"Linux-generic url: ${PACKAGE_REGISTRY_URL}/${ARTIFACT_LINUX_FILE}\""
+       - release-cli create --name "Release $CI_COMMIT_TAG" --tag-name "$CI_COMMIT_TAG" 
+        --assets-link "{\"name\":\"${ARTIFACT_LINUX}\",\"url\":\"${PACKAGE_REGISTRY_URL}/${ARTIFACT_LINUX_FILE}\"}" 
+        --assets-link "{\"name\":\"${ARTIFACT_WIN_EXE}\",\"url\":\"${PACKAGE_REGISTRY_URL}/${ARTIFACT_WIN_EXE_FILE}\"}" 
+        --assets-link "{\"name\":\"${ARTIFACT_WIN_ZIP}\",\"url\":\"${PACKAGE_REGISTRY_URL}/${ARTIFACT_WIN_ZIP_FILE}\"}" 
         --assets-link "{\"name\":\"${ARTIFACT_MACOS}\",\"url\":\"${PACKAGE_REGISTRY_URL}/${ARTIFACT_MACOS_FILE}\"}"
         
