@@ -344,9 +344,9 @@ void CMapPlayGalaxy::render()
 
     if( optHUD.value )
     {
-        for( int pId = mInventoryVec.size()-1 ; pId>=0 ; pId-- )
+        for(auto &inv : mInventoryVec)
         {
-            mInventoryVec[pId].drawHUD();
+            inv.drawHUD();
         }
     }
 

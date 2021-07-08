@@ -56,6 +56,7 @@ bool CWorldMap::init()
 	
 	if(!gSaveGameController.busy())
 	{
+        assert(0 < mInventoryVec.size());
         showModalMsgWithBmp(mInventoryVec[0].mSpriteVar,
                         loading_text,
                         "KEENTHUMBSUPLOADING",
