@@ -473,7 +473,7 @@ int do_extract(unzFile uf,
     for (i=0;i<gi.number_entry;i++)
     {
         if ((err = do_extract_currentfile(uf,&opt_extract_without_path,
-                                      &opt_overwrite,
+                                      opt_overwrite,
                                       password)) != UNZ_OK)
             break;
 
@@ -506,7 +506,7 @@ int do_extract_onefile(unzFile uf,
     }
 
     if (do_extract_currentfile(uf,&opt_extract_without_path,
-                                      &opt_overwrite,
+                                      opt_overwrite,
                                       password) == UNZ_OK)
     {
         return 0;

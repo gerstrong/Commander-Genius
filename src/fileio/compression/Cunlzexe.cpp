@@ -376,8 +376,10 @@ int Cunlzexe::unpack(BYTE *p_input, std::vector<BYTE> &outdata)
         memcpy(&outdata[0]+outpos, data, size);
         outpos += size;
     }
-    loadsize=outpos-initial_outpos;
+
+    loadsize = outpos-initial_outpos;
     printf("end\n");
+
     return(SUCCESS);
 }
 
