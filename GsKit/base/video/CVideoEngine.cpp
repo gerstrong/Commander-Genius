@@ -351,6 +351,5 @@ GsScrollSurface& CVideoEngine::getScrollSfc(const int idx)
 }
 
 void CVideoEngine::shutdown()
-{
-
+{    
 }

@@ -13,8 +13,11 @@ bool GsTextureElem::createCircle(const float radius,
     mRect.dim.x = 2.0f*radius;
     mRect.dim.y = 2.0f*radius;
 
-    return mTexture.createCircle(gVideoDriver.Renderer(),
-                                 r,g,b, radius, 100);
+    if(!mTexture.createCircle(gVideoDriver.Renderer(),
+                             r,g,b, radius, 100))
+        return false;
+
+    return true;
 }
 
 void GsTextureElem::setPos(const GsVec2D<float> pos)

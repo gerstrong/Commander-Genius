@@ -74,8 +74,6 @@ m_LevelPlay( mInventoryVec)
 }
 
 
-
-
 bool CPlayGameGalaxy::loadXMLGameState()
 {            
     /// Create tree for reading

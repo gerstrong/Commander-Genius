@@ -120,7 +120,10 @@ bool CMessageBoxGalaxy::initWithBgBitmapInternal(const unsigned char *data,
 
         int h,w;
 
-        SDL_QueryTexture(mMBTexture.getPtr(),
+        auto *texture = mMBTexture.getPtr();
+        assert(texture);
+
+        SDL_QueryTexture(texture,
                          nullptr, nullptr,
                          &w, &h);
 
@@ -166,7 +169,10 @@ bool CMessageBoxGalaxy::initWithBgBitmap(const std::string &filename)
 
         int h,w;
 
-        SDL_QueryTexture(mMBTexture.getPtr(),
+        auto *texture = mMBTexture.getPtr();
+        assert(texture);
+
+        SDL_QueryTexture(texture,
                          nullptr, nullptr,
                          &w, &h);
 

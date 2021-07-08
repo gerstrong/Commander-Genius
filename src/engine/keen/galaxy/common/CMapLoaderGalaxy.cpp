@@ -376,14 +376,8 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
 
     assert( numPlanes == scrollCoords.size() );
 
-    for( int i =0 ; i<int(numPlanes) ; i++ )
-    {
-        const auto &scrollCoord = scrollCoords.at(i);
-        auto &scrollSfc = scrollSfcVec.at(i);
-        scrollSfc.updateScrollBuf(scrollCoord);
-    }
 */
-    gLogging.textOut("Map got loaded successfully!");
+    gLogging << "Map got loaded successfully!" << CLogFile::endl;
 
     return true;
 }

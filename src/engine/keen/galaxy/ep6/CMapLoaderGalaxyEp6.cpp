@@ -60,6 +60,8 @@ bool CMapLoaderGalaxyEp6::isKeenPlayer(const int foeID)
 CGalaxySpriteObject* CMapLoaderGalaxyEp6::addFoe(CMap &Map, word foe, size_t x, size_t y)
 {
 	CGalaxySpriteObject* p_newfoe = nullptr;
+
+    const int totalNumPlayer = int(mInventoryVec.size());
 	
 	// Gems
 	for( Uint32 i=0x39 ; i<=0x3C ; i++ )
@@ -107,19 +109,21 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp6::addFoe(CMap &Map, word foe, size_t x, 
 	const Difficulty difficulty = gBehaviorEngine.mDifficulty;
 
 	// otherwise look for special foe.
-	GsVec2D<Uint32> loc(x,y);	
-    auto &inventory = mInventoryVec[mNumLoadedPlayers];
+    GsVec2D<Uint32> loc(x,y);
 
 
-	switch(foe)
-	{
-	case 0x01:
-	case 0x02:
+    auto addPlayerInLevel = [&]()
+    {
+        if(totalNumPlayer <= mNumLoadedPlayers)
+            return;
+
+        assert(mNumLoadedPlayers < int(mInventoryVec.size()));
+        auto &inventory = mInventoryVec[mNumLoadedPlayers];
 
         if(inventory.Item.m_lifes >= 0)
         {
 
-			// This is the player on the map in one level
+            // This is the player on the map in one level
             inventory.Item.mLevelName = Map.getLevelName();
             p_newfoe = new galaxy::CPlayerLevel(&Map, foe,
                                                 x, y, m_ObjectPtr,
@@ -130,15 +134,21 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp6::addFoe(CMap &Map, word foe, size_t x, 
                                                 inventory.mSpriteVar);
         }
         mNumLoadedPlayers++;
-        break;
+    };
 
-	case 0x03:
+    auto addPlayerOnWM = [&]()
+    {
+        if(totalNumPlayer <= mNumLoadedPlayers)
+            return;
+
+        assert(mNumLoadedPlayers < int(mInventoryVec.size()));
+        auto &inventory = mInventoryVec[mNumLoadedPlayers];
 
         if(inventory.Item.m_lifes >= 0)
         {
 
-			// This is the player on the world map
-			// Add the Camera into the game scene and attach it to this player
+            // This is the player on the world map
+            // Add the Camera into the game scene and attach it to this player
             inventory.Item.mLevelName = Map.getLevelName();
             p_newfoe =
                 new galaxy::CPlayerWM(&Map,foe, x, y, inventory,
@@ -146,7 +156,19 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp6::addFoe(CMap &Map, word foe, size_t x, 
                                       mNumLoadedPlayers,
                                       inventory.mSpriteVar );
         }
+
         mNumLoadedPlayers++;
+    };
+
+	switch(foe)
+	{
+	case 0x01:
+    case 0x02:
+        addPlayerInLevel();
+        break;
+
+	case 0x03:
+        addPlayerOnWM();
         break;
 
 	case 0x06: if( difficulty < HARD ) break;

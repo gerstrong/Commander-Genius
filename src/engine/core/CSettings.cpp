@@ -97,7 +97,7 @@ bool CSettings::saveDrvCfg()
                 itoa(VidConf.mAspectCorrection.dim.y);
         Configuration.WriteString("Video", "aspect", arc_str);
 
-        Configuration.WriteInt("Video", "BorderColorsEnabled",
+        Configuration.SetKeyword("Video", "BorderColorsEnabled",
                                VidConf.mBorderColorsEnabled);
         Configuration.WriteInt("Video", "HorizBorders", VidConf.mHorizBorders);
 

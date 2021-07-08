@@ -422,7 +422,7 @@ bool CVideoDriver::start()
 void CVideoDriver::stop()
 {
     if(mpVideoEngine)
-    {
+    {      
         mpVideoEngine = nullptr;
         SDL_Quit();
     }
