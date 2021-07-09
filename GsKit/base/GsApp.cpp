@@ -311,7 +311,7 @@ void GsApp::runMainCycleNonThreaded()
         {
             start = timerTicks();
 
-            // Game cycle
+            // Logic cycle
             {
                 // Poll Inputs
                 gInput.pollEvents();
@@ -323,18 +323,11 @@ void GsApp::runMainCycleNonThreaded()
                 ponder(logicLatency);
             }
 
+
+            mIgnoreLogicCounterOnce = false;
+
             // Now we render the whole GameControl Object to the blit surface
             render();
-
-            // Apply graphical effects if any.
-            gEffectController.render();
-
-            // Pass all the surfaces to one. Some special surfaces are used and are collected here
-            gVideoDriver.collectSurfaces();
-
-            // Now you really render the screen
-            // When enabled, it also applies Filters
-            gVideoDriver.updateDisplay();
 
             elapsed = timerTicks() - start;
             total_elapsed += elapsed;
@@ -352,7 +345,7 @@ void GsApp::runMainCycleNonThreaded()
 
             acc += elapsed;
 
-            // Perform the game cycle
+            // Logic cycle
             while( acc > logicLatency )
             {
                 // Poll Inputs
