@@ -231,12 +231,12 @@ bool CVideoEngine::createSurfaces(const GsRect<Uint16> &gamerect,
 
         mpScreenSfc = &mFilteredSfc;
 
-        gLogging.ftextOut("Given a Filter Screen pointer set to filtered surface");
+        gLogging << "Given a Filter Screen pointer set to filtered surface" << CLogFile::endl;
     }
     else
     {
         mpScreenSfc = &mGameSfc;
-        gLogging.ftextOut("Screen pointer set to game surface directly");
+        gLogging << "Screen pointer set to game surface directly" << CLogFile::endl;
     }    
 
     initOverlaySurface(Uint16(blit->w), Uint16(blit->h));
@@ -248,8 +248,8 @@ bool CVideoEngine::createSurfaces(const GsRect<Uint16> &gamerect,
     const auto texW = gamerect.dim.x*iScale;
     const auto texH = gamerect.dim.y*iScale;
 
-    gLogging.ftextOut("Creation of main screen texture %dx%d!\n<br>",
-                      blit->w, blit->h );
+    gLogging << "Creation of main screen texture " <<
+                      blit->w << "x" << blit->h << CLogFile::endl;
 
     mpMainScreenTexture.reset( SDL_CreateTexture(renderer,
                                    SDL_PIXELFORMAT_ARGB8888,
