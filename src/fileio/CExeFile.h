@@ -41,8 +41,8 @@ class CExeFile {
     void dumpFile(const std::string& filename);
     void dumpDataFile(const std::string& filename);
     
-    bool readGenericExeData(const unsigned int episode,
-                            const std::string& filename,
+    bool readGenericExeData(const std::string &name,
+                            const unsigned int episode,
                             const std::string& datadirectory);
 
     /**
@@ -93,7 +93,8 @@ class CExeFile {
     bool isLuaScript() const
     {   return mIsLuaScript;   }
 
-
+    auto getBasename() const
+    {  return mBasename; }
 
 private:
 
@@ -137,6 +138,7 @@ private:
 	size_t m_datasize;
 	size_t m_headersize;
     size_t mRawdataSize;
+    std::string mBasename;
 	int m_episode;
     bool mIsLuaScript = false;
 	bool m_demo;

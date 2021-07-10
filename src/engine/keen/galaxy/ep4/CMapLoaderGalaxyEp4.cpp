@@ -128,7 +128,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 
         if(totalNumPlayer > mNumLoadedPlayers)
         {
-            assert(mNumLoadedPlayers < mInventoryVec.size());
+            assert(mNumLoadedPlayers < int(mInventoryVec.size()));
             auto &inventory = mInventoryVec[mNumLoadedPlayers];
             if(inventory.Item.m_lifes >= 0)
             {
@@ -149,7 +149,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 
         if(totalNumPlayer > mNumLoadedPlayers)
         {
-            assert(mNumLoadedPlayers < mInventoryVec.size());
+            assert(mNumLoadedPlayers < int(mInventoryVec.size()));
             auto &inventory = mInventoryVec[mNumLoadedPlayers];
 
             if(inventory.Item.m_lifes >= 0)
@@ -325,7 +325,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 
         if(totalNumPlayer > mNumLoadedPlayers )
         {
-            assert(mNumLoadedPlayers < mInventoryVec.size());
+            assert(mNumLoadedPlayers < int(mInventoryVec.size()));
             auto &inventory = mInventoryVec[mNumLoadedPlayers];
 
             if(inventory.Item.m_lifes >= 0)

@@ -82,11 +82,12 @@ void CExeFile::dumpDataFile(const std::string& filename)
 }
 
 
-bool CExeFile::readGenericExeData(const unsigned int episode,
-                                  const std::string& filename,
+bool CExeFile::readGenericExeData(const std::string &name,
+                                  const unsigned int episode,
                                   const std::string& datadirectory)
 {
-    bool demo = false;
+    std::string filename =  JoinPaths(datadirectory,
+                                      name + itoa(episode) + ".exe" );
 
     std::ifstream File;
     if(!OpenGameFileR(File, filename, std::ios::binary))
@@ -99,9 +100,10 @@ bool CExeFile::readGenericExeData(const unsigned int episode,
         return false;
     }
 
+    mBasename = name;
     m_filename = filename;
     m_episode = episode;
-    m_demo = demo;
+    m_demo = false;
 
     std::string localDataDir = datadirectory;
     if( localDataDir != "")

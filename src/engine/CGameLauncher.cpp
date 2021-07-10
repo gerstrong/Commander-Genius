@@ -480,9 +480,9 @@ bool CGameLauncher::scanExecutables(const std::string& path)
 #ifdef BUILD_COSMOS
         if(detectCosmoGame(curFname, ep, isLua))
         {
-            gLogging.ftextOut("Cosmo cosmic game detected: %s \n<br>", curFname.c_str() );
+            gLogging << "Cosmo's Cosmic Adventure game detected: " << curFname.c_str() << CLogFile::endl;
 
-            if(!executable.readGenericExeData(ep, curFname, path))
+            if(!executable.readGenericExeData("cosmo", ep, path))
                 continue;
         }
         else
@@ -958,8 +958,8 @@ void CGameLauncher::ponderPatchDialog()
                ok = true;
                gametype = GAME_TYPE::COMMANDER_KEEN;
             }
-            else if(gKeenFiles.exeFile.readGenericExeData(episode,
-                                                          mExecFilename,
+            else if(gKeenFiles.exeFile.readGenericExeData("cosmo",
+                                                          episode,
                                                           DataDirectory))
             {
                ok = true;
@@ -1006,8 +1006,8 @@ void CGameLauncher::ponderPatchDialog()
                 else
                 {
                     gLogging.textOut("Unknown Game");
+                    letchooseagain();
                 }
-
             }
         }
         else
