@@ -141,6 +141,7 @@ set(CG_VERSION "2.8.2")
 configure_file(README.md ${CMAKE_BINARY_DIR}/README.md COPYONLY)
 configure_file(README.md ${CMAKE_CURRENT_SOURCE_DIR}/README.md COPYONLY)
 configure_file(README.md ${CMAKE_CURRENT_SOURCE_DIR}/debian/README.md COPYONLY)
+configure_file(GsKit/LICENSE ${CMAKE_BINARY_DIR}/LICENSE COPYONLY)
 
 if(APPLE)
     file(COPY cglogo.icns DESTINATION ${CMAKE_BINARY_DIR}/src)
@@ -172,7 +173,7 @@ ENDIF(APPLE)
 # And build Commander Genius on top of that!
 add_subdirectory("src")
 
-add_custom_target(${PROJECT_NAME} SOURCES changelog.txt README.md)
+add_custom_target(${PROJECT_NAME} SOURCES changelog.txt README.md GsKit/LICENSE)
 
 MESSAGE(STATUS "CG_VERSION = ${CG_VERSION}" )
 
