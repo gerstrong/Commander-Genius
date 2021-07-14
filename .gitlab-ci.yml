@@ -9,9 +9,9 @@ variables:
     ARTIFACT_WIN_ZIP: "cgenius-winzip-${CI_COMMIT_SHORT_SHA}"    
     ARTIFACT_MACOS: "cgenius-macos-${CI_COMMIT_SHORT_SHA}"
     ARTIFACT_LINUX_FILE: "cgenius-linux-${CI_COMMIT_SHORT_SHA}.tar.gz"
-    ARTIFACT_WIN_EXE_FILE: "${ARTIFACT_WIN_EXE}.exe"
-    ARTIFACT_WIN_ZIP_FILE: "${ARTIFACT_WIN_ZIP}.zip"    
-    ARTIFACT_MACOS_FILE: "${ARTIFACT_MACOS}.dmg"    
+    ARTIFACT_WIN_EXE_FILE: "cgenius-winexe-${CI_COMMIT_SHORT_SHA}.exe"
+    ARTIFACT_WIN_ZIP_FILE: "cgenius-winzip-${CI_COMMIT_SHORT_SHA}.zip"    
+    ARTIFACT_MACOS_FILE: "cgenius-macos-${CI_COMMIT_SHORT_SHA}.dmg"    
     PACKAGE_REGISTRY_URL: "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/cgenius/daily"
     
 
