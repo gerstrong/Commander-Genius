@@ -213,7 +213,9 @@ bool GsApp::loadDrivers()
 
 void GsApp::unloadDrivers()
 {
+#ifdef USE_VIRTUALPAD
     gInput.mpVirtPad = nullptr;
+#endif // USE_VIRTUALPAD
     gVideoDriver.stop();
 }
 
