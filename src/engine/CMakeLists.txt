@@ -1,10 +1,20 @@
 include_directories(${SDL_INCLUDE_DIR})
 
-option(BUILD_COSMOS "Build Cosmos engine" no)
+option(BUILD_COSMOS  "Build Cosmos engine" no)
+option(BUILD_KEEN    "Build Keen engine" yes)
+option(BUILD_REFKEEN "Build RefKeen engine" yes)
 
 add_subdirectory(core)
-add_subdirectory(keen)
-add_subdirectory(refkeen)
+
+if(BUILD_KEEN)
+    add_subdirectory(keen)
+    MESSAGE(STATUS "Keen engine build enabled")
+endif(BUILD_KEEN)
+
+if(BUILD_REFKEEN)
+    add_subdirectory(refkeen)
+    MESSAGE(STATUS "Refkeen engine build enabled")
+endif(BUILD_REFKEEN)
 
 if(BUILD_COSMOS)
         add_definitions(-DBUILD_COSMOS)
@@ -44,13 +54,13 @@ set(HSRC CGameLauncher.h
 add_library(engine STATIC ${CXXSRC}
                           ${HSRC})
 
+if(BUILD_KEEN)
+  target_link_libraries(engine engine_keen_galaxy engine_keen_vorticon)
+endif(BUILD_KEEN)
 
-
-target_link_libraries(engine 
-                      refkeen 
-                      engine_keen_galaxy  
-		      engine_keen_vorticon
-                      engine_keen_dreams)                  
+if(BUILD_REFKEEN)
+  target_link_libraries(engine refkeen engine_keen_dreams)
+endif(BUILD_REFKEEN)
 
 if(BUILD_COSMOS)
   target_link_libraries(engine cosmos_engine)

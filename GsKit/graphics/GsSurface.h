@@ -207,7 +207,7 @@ public:
 
     void fillRGBA(const GsRect<Uint16> &rect, const GsColor &color)
     {
-        fill( rect, mapRGBA(color.r, color.g, color.b,color.a) );
+        fill( rect, mapRGBA(color.r, color.g, color.b, color.a) );
     }
 
     void fillRGBA(const Uint8 r, const Uint8 g, const Uint8 b, const Uint8 a)

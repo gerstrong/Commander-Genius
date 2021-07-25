@@ -498,11 +498,14 @@ setColorKey(const Uint8 r, const Uint8 g, const Uint8 b)
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 void GsWeakSurface::
-readColorKey(Uint8 &,
-             Uint8 &,
-             Uint8 &)
+readColorKey(Uint8 &r,
+             Uint8 &g,
+             Uint8 &b)
 {
-    // Does not work in later versions of SDL.
+    Uint32 key;
+    const auto ret = SDL_GetColorKey(mpSurface, &key);
+    assert(ret == 0);
+    SDL_GetRGB(key, mpSurface->format, &r, &g, &b);
 }
 #else
 void GsWeakSurface::
