@@ -32,6 +32,13 @@ public:
     GsWeakSurface(SDL_Surface *sfc) :
         mpSurface(sfc) {}
 
+    VidFilter mFilter = VidFilter::NONE;
+
+    void setFilter(const VidFilter filter)
+    {
+        mFilter = filter;
+    }
+
     /**
      * @brief setPtr    Sets the pointer of the surface.
      *                  This should only be used, if you set the Video Mode through SDL_VideoMode
@@ -152,6 +159,36 @@ public:
                    dst->clip_rect,
                    VidFilter::NONE);
     }
+
+    void blitScaledTo(GsWeakSurface &sfc,
+                      SDL_Rect &sdlSrcRect,
+                      SDL_Rect &sdlDstRect) const
+    {
+        SDL_Surface *dst = sfc.getSDLSurface();
+        assert(dst);
+        assert(mpSurface);
+        blitScaled(mpSurface,
+                   sdlSrcRect,
+                   dst,
+                   sdlDstRect,
+                   mFilter);
+    }
+
+    void blitScaledToWithFilter(GsWeakSurface &sfc,
+                      SDL_Rect &sdlSrcRect,
+                      SDL_Rect &sdlDstRect,
+                      const VidFilter filter) const
+    {
+        SDL_Surface *dst = sfc.getSDLSurface();
+        assert(dst);
+        assert(mpSurface);
+        blitScaled(mpSurface,
+                   sdlSrcRect,
+                   dst,
+                   sdlDstRect,
+                   filter);
+    }
+
 
     // TODO: We still need a blit scaled operation here!
 
@@ -496,7 +533,7 @@ public:
      * @param scaledRect x and y coordinates are ignored. Only w and h will be taken for scaling
      * @return true, if scaling was performed, otherwise false
      */
-    bool scaleTo(const GsRect<Uint16> &scaledRect, const VidFilter filter);        
+    bool scaleTo(const GsRect<Uint16> &scaledRect, const VidFilter filter);
 };
 
 

@@ -46,6 +46,15 @@ struct GsRect
         dim(T(sdlRect.w), T(sdlRect.h))
     {}
 
+    template <typename T2>
+    GsRect operator/(const T2 scale) const
+    {
+        GsRect rect;
+        rect.dim = this->dim / scale;
+        rect.pos = this->pos / scale;
+        return rect;
+    }
+
 
     /**
      * @brief empty if rect is empty nothing need to be drawn
@@ -234,9 +243,6 @@ struct GsRect
         result.intersect(other);
         return result;
     }
-
-
-
 
     GsVec2D<T> pos, dim;
 };

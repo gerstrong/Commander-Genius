@@ -35,6 +35,8 @@ public:
 
     Uint32 getFlags() const;
 
+    void setScale(const float scale);
+
 private:
 
     GsSurface   mScrollSurface; // Squared scroll buffer
@@ -42,6 +44,7 @@ private:
     Sint16 mSbufferx = 0;
     Sint16 mSbuffery = 0;
 
+    float mScale = 1.0f;
 };
 
 #endif // GSSCROLLSURFACE_H

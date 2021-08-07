@@ -68,9 +68,14 @@ Uint32 GsScrollSurface::getFlags() const
     return mScrollSurface.getSDLSurface()->flags;
 }
 
+void GsScrollSurface::setScale(const float scale)
+{
+    mScale = scale;
+}
+
 void GsScrollSurface::blitScrollSurface(GsWeakSurface &blitSfc) // This is only for tiles
 {									                            // The name should be changed
-    SDL_Rect srGsRect, dstrect;
+    SDL_Rect srcRect, dstRect;
     int sbufferx, sbuffery;
 
     CVidConfig &vidConf = gVideoDriver.getVidConfig();
@@ -84,10 +89,13 @@ void GsScrollSurface::blitScrollSurface(GsWeakSurface &blitSfc) // This is only 
     Gamerect.w = visGA.dim.x+16;
     Gamerect.h = visGA.dim.y+16;
 
-    dstrect.x = Gamerect.x;
-    dstrect.y = Gamerect.y;
-    sbufferx = mSbufferx + dstrect.x;
-    sbuffery = mSbuffery + dstrect.y;
+    dstRect.x = Gamerect.x;
+    dstRect.y = Gamerect.y;
+    //dstRect.w = Gamerect.w;
+    //dstRect.h = Gamerect.h;
+
+    sbufferx = mSbufferx + dstRect.x;
+    sbuffery = mSbuffery + dstRect.y;
 
     // Clip the scrollbuffer correctly
     if(sbufferx > scrollSfcSize)
@@ -95,55 +103,59 @@ void GsScrollSurface::blitScrollSurface(GsWeakSurface &blitSfc) // This is only 
     if(sbuffery > scrollSfcSize)
         sbuffery -= scrollSfcSize;
 
-    // TODO: Not sure, if we should do this.
-    //blitSfc.fillRGB(0, 0, 0);
-
-    srGsRect.x = sbufferx;
-    srGsRect.y = sbuffery;
+    srcRect.x = sbufferx;
+    srcRect.y = sbuffery;
 
     const bool wraphoz = (sbufferx+Gamerect.w > scrollSfcSize);
     const bool wrapvrt = (sbuffery+Gamerect.h > scrollSfcSize);
 
     // Upper-Left Part to draw from the Scrollbuffer
-    srGsRect.w = wraphoz ? (scrollSfcSize-sbufferx) : Gamerect.w;
-    srGsRect.h = wrapvrt ? (scrollSfcSize-sbuffery) : Gamerect.h;
+    srcRect.w = wraphoz ? (scrollSfcSize-sbufferx) : Gamerect.w;
+    srcRect.h = wrapvrt ? (scrollSfcSize-sbuffery) : Gamerect.h;
 
-    mScrollSurface.blitTo(blitSfc, srGsRect, dstrect);
+    dstRect.w = srcRect.w*mScale;
+    dstRect.h = srcRect.h*mScale;
 
-    const Uint16 upperLeftW = srGsRect.w;
-    const Uint16 upperLeftH = srGsRect.h;
+    mScrollSurface.blitScaledTo(blitSfc, srcRect, dstRect);
+
+    const Uint16 upperLeftW = srcRect.w;
+    const Uint16 upperLeftH = srcRect.h;
 
     // upper-right part
     if (wraphoz)
     {
-        srGsRect.w = Gamerect.w - upperLeftW;
-        srGsRect.x = 0;
-        dstrect.x = Gamerect.x + upperLeftW;
+        srcRect.w = Gamerect.w - upperLeftW;
+        srcRect.x = 0;
+        dstRect.x = (Gamerect.x + upperLeftW)*mScale;
+        dstRect.w = srcRect.w*mScale;
 
-        mScrollSurface.blitTo(blitSfc, srGsRect, dstrect);
+        mScrollSurface.blitScaledTo(blitSfc, srcRect, dstRect);
     }
 
     // lower-right part
     if (wrapvrt)
     {
-        srGsRect.h = Gamerect.h - upperLeftH;
-        srGsRect.y = 0;
-        dstrect.y = Gamerect.y + upperLeftH;
+        srcRect.h = Gamerect.h - upperLeftH;
+        srcRect.y = 0;
+        dstRect.y = Gamerect.y + upperLeftH;
+        dstRect.h = srcRect.h*mScale;
 
-        mScrollSurface.blitTo(blitSfc, srGsRect, dstrect);
+        mScrollSurface.blitScaledTo(blitSfc, srcRect, dstRect);
     }
 
     if(!wraphoz || !wrapvrt)
         return;
 
     // and lower-left part
-    srGsRect.x = sbufferx;
-    srGsRect.y = 0;
-    srGsRect.w = upperLeftW;
+    srcRect.x = sbufferx;
+    srcRect.y = 0;
+    srcRect.w = upperLeftW;
 
-    dstrect.x = Gamerect.x;
-    dstrect.y = Gamerect.y+upperLeftH;
+    dstRect.x = Gamerect.x;
+    dstRect.y = Gamerect.y+upperLeftH;
+    dstRect.w = srcRect.w*mScale;
+    dstRect.h = srcRect.h*mScale;
 
-    mScrollSurface.blitTo(blitSfc, srGsRect, dstrect);
+    mScrollSurface.blitScaledTo(blitSfc, srcRect, dstRect);
 }
 
