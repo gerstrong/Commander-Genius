@@ -134,16 +134,23 @@ namespace GsKit
         Type get(const path_type &path,
                  const Type &default_value,
                  identity<Type>) const
-        {
-            str_type defStr = std::to_string(default_value);
-            const str_type res = get_internal(path, defStr);
-            if(res.empty())
+        {    
+            try
+            {
+                str_type defStr = std::to_string(default_value);
+                const str_type res = get_internal(path, defStr);
+                if(res.empty())
+                {
+                    return default_value;
+                }
+                else
+                {
+                    return convert_from_str<Type>(res, identity<Type>());
+                }
+            }
+            catch (...)
             {
                 return default_value;
-            }
-            else
-            {
-                return convert_from_str<Type>(res, identity<Type>());
             }
         }
 
