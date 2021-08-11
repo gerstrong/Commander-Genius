@@ -1,3 +1,7 @@
+v2.8.3:
+-------
+- Added option for turning of logfile
+
 v2.8.2:
 -------
 - Improved carmack decompression routine.

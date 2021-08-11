@@ -123,7 +123,12 @@ int main(int argc, char *argv[])
     InitSearchPaths(cfgFName);
     printSearchPaths();
 
-    if( !gLogging.CreateLogfile("CGLog.html", appName, CGVERSION) )
+
+    bool enableLogfile;
+    gSettings.loadGenerals(enableLogfile);
+
+
+    if( !gLogging.initLogSystem("CGLog.html", appName, CGVERSION, enableLogfile) )
     {
         errors << "Not even able to create \"CGLog.html\"." << endl;
         return 1;

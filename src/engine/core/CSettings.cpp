@@ -141,6 +141,23 @@ bool CSettings::saveDrvCfg()
 
 }
 
+bool CSettings::loadGenerals(bool &enableLogfile)
+{
+    CConfiguration config;
+
+    if(!config.Parse())
+        return false;
+
+    if(!config.ReadKeyword("FileHandling", "EnableLogfile", &enableLogfile, true))
+    {
+        config.SetKeyword("FileHandling", "EnableLogfile", enableLogfile);
+        config.saveCfgFile();
+    }
+
+    return true;
+}
+
+
 /**
  * \brief	It loads the whole configuration from the settings file.
  * 			NOTE: Also take a look at CConfiguration.

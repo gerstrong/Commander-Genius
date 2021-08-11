@@ -38,11 +38,13 @@ public:
      * @param logFName          Name of the log file
      * @param appName           Name of the application
      * @param version           Version of the application
+     * @param noFile            if true
      * @return                  true if everything went fine, otherwise false
      */
-    bool CreateLogfile	(const std::string &logFName,
+    bool initLogSystem	(const std::string &logFName,
                          const std::string &appName,
-                         const std::string &version);
+                         const std::string &version,
+                         const bool noFile);
 
     void closeIt();
 
