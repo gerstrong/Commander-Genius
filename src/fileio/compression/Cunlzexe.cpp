@@ -48,6 +48,8 @@ v0.81 Embedded Version for CG by gerstrong. This version only does
 #include <string.h>
 #include <string>
 
+#include <base/GsLogging.h>
+
 #define FAILURE 1
 #define SUCCESS 0
 
@@ -313,7 +315,11 @@ int Cunlzexe::unpack(BYTE *p_input, std::vector<BYTE> &outdata)
     inpos = ((long)ihead[0x0b]-(long)inf[4]+(long)ihead[4])<<4;
     initial_outpos = outpos = (long)ohead[4]<<4;
     initbits(&bits, p_input, inpos);
-    printf(" unpacking.");
+
+    auto &log = gLogging;
+
+    log << " unpacking.";
+
     for(;;)
     {
         if(p-data>0x4000)
@@ -323,9 +329,8 @@ int Cunlzexe::unpack(BYTE *p_input, std::vector<BYTE> &outdata)
         	memcpy(&outdata[0]+outpos, data, (sizeof data[0])*0x2000);
         	outpos += 0x2000;
             p-=0x2000;
-            //memcpy(data,data+0x2000,p-data);
             memmove(data,data+0x2000,p-data);
-            putchar('.');
+            log << ".";
         }
         if(getbit(&bits, inpos))
         {
@@ -378,7 +383,7 @@ int Cunlzexe::unpack(BYTE *p_input, std::vector<BYTE> &outdata)
     }
 
     loadsize = outpos-initial_outpos;
-    printf("end\n");
+    log << "end" << CLogFile::endl;
 
     return(SUCCESS);
 }

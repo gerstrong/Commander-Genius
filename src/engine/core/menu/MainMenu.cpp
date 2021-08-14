@@ -91,11 +91,11 @@ void MainMenu::createGameMenu( const bool openedGamePlay,
     }
 
 
-    if(style == Style::VORTICON)
+    if(style == Style::VORTICON || style == Style::NONE)
     {
         mpMenuDialog->add(new GameButton( "Info",
                                           new OpenMenuEvent( new CHelpMenu(style) ),
-                                          style) );
+                                          style) );        
     }
 
     mpMenuDialog->add(new GameButton( "Quit",
