@@ -23,6 +23,7 @@ public:
     bool saveDispCfg();
 	bool saveDrvCfg();
 	bool loadDrvCfg();
+    bool loadGenerals(bool &enableLogfile);
 	void loadDefaultGraphicsCfg();
 	bool loadGameOptions();
 	bool saveGameOptions();

@@ -10,6 +10,8 @@ original data files are required to do so, however, we conveniently provide a
 store where you can get some of the games, including Episode 1, 4, and Dreams,
 for your enjoyment.  There are also mods that can be downloaded directly.
 
+![Commander Genius](https://clonekeenplus.sourceforge.io/img/galaxyMultiplayer.png "Keen 4 and 4 players at the same time")
+
 # Authors
 
 ### Main development:

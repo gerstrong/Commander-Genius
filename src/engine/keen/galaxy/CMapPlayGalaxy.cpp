@@ -683,8 +683,8 @@ void CMapPlayGalaxy::operator<<(GsKit::ptree &levelNode)
 
             foeID = spriteNode.get<int>("<xmlattr>.id");
             int sprVarID = spriteNode.get<int>("<xmlattr>.variant", 0);
-            x = spriteNode.get<int>("<xmlattr>.x");;
-            y = spriteNode.get<int>("<xmlattr>.y");;
+            x = spriteNode.get<int>("<xmlattr>.x");
+            y = spriteNode.get<int>("<xmlattr>.y");
 
             CGalaxySpriteObject *pNewfoe = mapLoader->addFoe(mMap, foeID, x, y);
 

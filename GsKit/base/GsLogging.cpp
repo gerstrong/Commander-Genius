@@ -20,14 +20,18 @@ CLogFile::CLogFile() {}
 
 const char *CLogFile::endl = "<br>\n";
 
-bool CLogFile::CreateLogfile(const std::string &logFName,
+bool CLogFile::initLogSystem(const std::string &logFName,
                              const std::string &appName,
-                             const std::string &version)
+                             const std::string &version,
+                             const bool noFile)
 {
-	// Open and empty the log file
-    if( !OpenGameFileW(mLogStream, logFName) )
+    if(noFile)
     {
-        return false;
+        // Open and empty the log file
+        if( !OpenGameFileW(mLogStream, logFName) )
+        {
+            return false;
+        }
     }
 	
 	// Write the head
@@ -86,11 +90,16 @@ bool CLogFile::CreateLogfile(const std::string &logFName,
 	// Show my e-mail adress
 	textOut("<a href='mailto:gerstrong@gmail.com?subject=CG Logfile'>");
 	textOut("Send E-Mail to me</a><br><br>");
-	
-    mLogStream.close();
 
-    // Reopen it in append mode for further writing.
-    OpenGameFileW(mLogStream, logFName, std::ios_base::app);
+    if(mLogStream.is_open())
+        mLogStream.close();
+
+    if(noFile)
+    {
+        // Reopen it in append mode for further writing.
+        OpenGameFileW(mLogStream, logFName, std::ios_base::app);
+    }
+
 
     return true;
 }
@@ -98,7 +107,8 @@ bool CLogFile::CreateLogfile(const std::string &logFName,
 void CLogFile::closeIt()
 {
     *this << "<br><br>End of logfile</font></body></html>";
-    mLogStream.close();
+    if(mLogStream.is_open())
+        mLogStream.close();
 }
 
 // Function for writing the topic
@@ -181,7 +191,8 @@ void CLogFile::textOut(const std::string& text)
         notes << output << endl;
     }
 
-    mLogStream << text;
+    if(mLogStream.is_open())
+        mLogStream << text;
 }
 
 
@@ -270,6 +281,4 @@ CLogFile::~CLogFile()
 {
     if(mLogStream.is_open())
         closeIt();
-	// Logfile End
-    //textOut ("<br><br>End of logfile</font></body></html>");
 }
