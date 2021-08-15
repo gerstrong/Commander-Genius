@@ -116,6 +116,8 @@ public:
     void setTransparentTile(const word tile);
     word getTransparentTile();
 
+    void setPaddingBottom(const int value);
+
 private:
 
     GsVec2D<int> mScrollCoords; // Amount of how much is scrolled on the map relative to (0,0) and per plane index
@@ -143,6 +145,8 @@ private:
     GsVec2D<int> mSubscrollCoords;
 
     bool mLockAxisY = false;
+
+    int mPaddingBottom = 0;
 };
 
 #endif // SCROLLINGPLANE_H

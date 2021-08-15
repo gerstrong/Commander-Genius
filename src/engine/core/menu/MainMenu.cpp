@@ -64,14 +64,18 @@ void MainMenu::createGameMenu( const bool openedGamePlay,
                                              new OpenMenuEvent( new SettingsMenu(style) ),
                                              style) );
 
-/*
+    if(style == Style::VORTICON || style == Style::NONE)
     {
         GsButton *highscoreButton = new GameButton( "High Scores",
-                                                    new StartInfoSceneEvent( new CHighScores(style) ),
+                                                    new EventHighScores(),
                                                     style);
 
         mpMenuDialog->add( highscoreButton );
-        highscoreButton->enable(false);
+        highscoreButton->enable(true);
+    }
+
+/*
+    {
 
 
         GsButton *infoButton = new GameButton( "Info",

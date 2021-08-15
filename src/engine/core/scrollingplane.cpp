@@ -212,7 +212,7 @@ bool ScrollingPlane::scrollDown(GsTilemap &tilemap, const bool force)
     if(mLockAxisY)
         return true;
 
-    const int res_height = gVideoDriver.getGameResolution().dim.y;
+    const int res_height = gVideoDriver.getGameResolution().dim.y - mPaddingBottom;
 
     auto &scrollSfcVec = gVideoDriver.getScrollSurfaceVec();
 
@@ -746,5 +746,10 @@ void ScrollingPlane::setTransparentTile(const word tile)
 word ScrollingPlane::getTransparentTile()
 {
     return mTransparentTile;
+}
+
+void ScrollingPlane::setPaddingBottom(const int value)
+{
+    mPaddingBottom = value;
 }
 

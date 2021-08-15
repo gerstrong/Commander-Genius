@@ -50,6 +50,10 @@ struct GMPatchSelected : CEvent {};
 // the finale
 struct EventEndGamePlay : CEvent {};
 
+
+// When user wants to see the high scores
+struct EventHighScores : CEvent {};
+
 ///////
 // Base Class for game modes
 //////
