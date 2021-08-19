@@ -393,11 +393,34 @@ together if you want to develop CG further
  * If everything went well, go into src and execute it:
    cd src
    ./CGeniusExe
+  
 
 We also provide CMake for Wiz, if you want to compile it for embedded systems.
 We had support for Linux and Win32, but since there is a bug when built for a
 different Linux build (32-bit or 64-bit) we only use it for embedded systems.
 Also check out the CMakeLists.txt for more information.
+
+## BUILDING THE COSMOS ENGINE
+
+If you also want to play Cosmos Cosmic Adventure, you can build the engine part for that now.
+
+The module code for that is separate directory. In order to get do the following:
+
+```
+cd <CG-Sources>
+git clone https://gitlab.com/Dringgstein/cosmos.git src/engine/cosmos
+```
+
+Now tell CMake that you also want to build Cosmos engine support:
+
+```
+cd <you CG-Build-Dir>
+cmake -DBUILD_COSMOS=1 <CG-Sources>
+```
+
+Now you can build CG normally as described above.
+
+NOTE: Currently the cosmos engine is highly experimental. Feel free to report bugs here: https://gitlab.com/Dringgstein/cosmos/-/issues
 
 
 # STARTING A GAME IN CG
