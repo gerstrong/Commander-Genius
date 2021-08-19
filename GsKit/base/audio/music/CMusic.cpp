@@ -12,8 +12,6 @@
 #include <base/GsLogging.h>
 #include <base/utils/FindFile.h>
 #include "fileio/ResourceMgmt.h"
-//#include "fileio/compression/CHuffman.h"
-//#include "fileio/KeenFiles.h"
 #include <fstream>
 #include <limits>
 
@@ -177,7 +175,7 @@ void CMusic::pause()
 
 void CMusic::stop()
 {
-    Mix_HaltMusic();
+    Mix_HaltMusic();    
 
     if(mpMixMusic)
     {

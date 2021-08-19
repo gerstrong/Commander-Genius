@@ -100,7 +100,7 @@ void CPlayer::touchedExit(int mpx)
 		
 		ppogostick = false;
 		
-		gMusicPlayer.stop();
+
         playSound(SOUND_LEVEL_DONE, SoundPlayMode::PLAY_NOW);
 		level_done = LEVEL_DONE_WALK;
 		solid = false;

@@ -350,7 +350,6 @@ void CPlayGameVorticon::ponder(const float deltaT)
 
               if(m_Player.size() > static_cast<unsigned int>(mCamLead) )
               {
-
                   if(m_Player[static_cast<unsigned int>(mCamLead)].pdie)
                   {
                       const int numPlayers = gBehaviorEngine.numPlayers();
@@ -375,6 +374,11 @@ void CPlayGameVorticon::ponder(const float deltaT)
             {
                 // Process Players' Events
                 player.processEvents();
+                if(player.level_done == LEVEL_DONE_WALK)
+                {
+                    mCurMusicTrack = "-1";
+                    gMusicPlayer.stop();
+                }
             }
 
 
