@@ -72,11 +72,14 @@ void CCamera::setPosition(const GsVec2D<int>& newpos)
 
     const auto gameRes = gVideoDriver.getGameResolution();
 
-    int cam_x = newpos.x-((gameRes.dim.x/2)<<STC);
-    int cam_y = newpos.y-((gameRes.dim.y/2)<<STC);
+    const auto screenWidth = ((gameRes.dim.x)<<STC);
+    const auto screenHeight = ((gameRes.dim.y)<<STC);
+
+    int cam_x = newpos.x-screenWidth/2;
+    int cam_y = newpos.y-screenHeight/2;
 
     const int minimumEdgeDist = (2<<CSF)+1;
-    const int maxWidth = (mpMap->m_width<<CSF)-1;
+    const int mapWidth = (mpMap->m_width<<CSF)-1;
     const int maxHeight = (mpMap->m_height<<CSF)-1;
 
     if(cam_x<minimumEdgeDist)
@@ -89,14 +92,14 @@ void CCamera::setPosition(const GsVec2D<int>& newpos)
         cam_y = minimumEdgeDist;
     }
 
-    if(cam_x>maxWidth)
+    if(cam_x+screenWidth>mapWidth)
     {
-        cam_x = maxWidth;
+        cam_x = mapWidth-screenWidth;
     }
 
-    if(cam_y>maxHeight)
+    if(cam_y+screenHeight>maxHeight)
     {
-        cam_y = maxHeight;
+        cam_y = maxHeight-screenHeight;
     }
 
 	moveToForce(newpos);

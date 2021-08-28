@@ -176,7 +176,7 @@ CPlayerBase(CMap *pmap,
 	xDirection = facedir;
 
     mPlaycontrol.fill(0);
-	m_camera.setPosition(m_Pos);
+    m_camera.setPosition(m_Pos);
 
     mpMap->calcVisibleArea();
 
