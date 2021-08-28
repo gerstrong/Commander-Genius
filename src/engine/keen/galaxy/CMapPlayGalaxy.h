@@ -100,12 +100,12 @@ public:
 
 protected:
 	std::vector< std::shared_ptr<CGalaxySpriteObject> > mObjectPtr;
-	bool mActive;        
+    bool mActive = false;
 
 	CMap mMap;
 	std::vector<CInventory> &mInventoryVec;
 
-    bool mMsgBoxOpen;
+    bool mMsgBoxOpen = false;
 
     std::string mCurMusicTrack = "-1";
 };

@@ -91,14 +91,14 @@ public:
     
 private:
     
-    float mRenderLatency;
-    float mLogicLatency;
+    float mRenderLatency = 0.0f;
+    float mLogicLatency = 0.0f;
     
-    float mtotalElapsed;
+    float mtotalElapsed = 0.0f;
   
-    ulong m_LastSecTime;
+    ulong m_LastSecTime = 0;
     
-    bool resetLogic;
+    bool resetLogic = false;
 };
 
 #endif /* CTIMER_H_ */

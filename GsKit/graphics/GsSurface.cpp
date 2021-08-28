@@ -504,7 +504,13 @@ readColorKey(Uint8 &r,
 {
     Uint32 key;
     const auto ret = SDL_GetColorKey(mpSurface, &key);
-    assert(ret == 0);
+
+    if(ret < 0)
+    {
+        gLogging << "Can't set colorkey: " << SDL_GetError() << CLogFile::endl;
+        return;
+    }
+
     SDL_GetRGB(key, mpSurface->format, &r, &g, &b);
 }
 #else

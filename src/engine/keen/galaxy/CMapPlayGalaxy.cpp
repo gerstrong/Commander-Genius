@@ -25,9 +25,7 @@
 #include "GalaxyEngine.h"
 
 CMapPlayGalaxy::CMapPlayGalaxy(std::vector<CInventory> &inventoryVec) :
-mActive(false),
-mInventoryVec(inventoryVec),
-mMsgBoxOpen(false)
+mInventoryVec(inventoryVec)
 {}
 
 
