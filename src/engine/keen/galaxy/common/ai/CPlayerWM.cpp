@@ -1112,6 +1112,8 @@ void CPlayerWM::startLevel(Uint16 object)
  */
 bool CPlayerWM::finishLevel(const int object)
 {
+    mpMap->refreshVisibleArea();
+
 	// if a door or other blocker was found remove it
 	int x, y;
 	Uint16 door = object + 0xD000;

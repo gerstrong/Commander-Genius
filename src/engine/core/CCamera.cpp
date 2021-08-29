@@ -69,7 +69,6 @@ void CCamera::attachObject(CSpriteObject *p_attacher)
 
 void CCamera::setPosition(const GsVec2D<int>& newpos)
 {
-
     const auto gameRes = gVideoDriver.getGameResolution();
 
     const auto screenWidth = gameRes.dim.x<<STC;
@@ -86,18 +85,16 @@ void CCamera::setPosition(const GsVec2D<int>& newpos)
     {
         cam_x = minimumEdgeDist;
     }
+    else if(cam_x+screenWidth>mapWidth)
+    {
+        cam_x = mapWidth-screenWidth;
+    }
 
     if(cam_y<minimumEdgeDist)
     {
         cam_y = minimumEdgeDist;
     }
-
-    if(cam_x+screenWidth>mapWidth)
-    {
-        cam_x = mapWidth-screenWidth;
-    }
-
-    if(cam_y+screenHeight>maxHeight)
+    else if(cam_y+screenHeight>maxHeight)
     {
         cam_y = maxHeight-screenHeight;
     }

@@ -353,10 +353,7 @@ bool CMap::gotoPos(const int x, const int y)
 
         calcVisibleArea();
 
-        for( auto &plane : mScrollingPlanes )
-        {
-            refreshVisibleArea( plane.getScrollCoords() );
-        }
+        refreshVisibleArea();
     }
 
 	return retval;
