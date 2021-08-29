@@ -342,7 +342,7 @@ void CMap::changeTileArrayY(Uint16 x, Uint16 y, Uint16 h, Uint16 tile)
 ////
 // Scrolling Routines
 ////
-bool CMap::gotoPos(int x, int y)
+bool CMap::gotoPos(const int x, const int y)
 {
 	bool retval = false;
 
@@ -511,19 +511,19 @@ void CMap::refreshVisibleArea()
 
 void CMap::refreshVisibleArea(const GsVec2D<int> scroll)
 {
-    GsRect<int> relativeVisGameArea;
+    GsRect<int> relVisGameArea;
 
-    relativeVisGameArea.pos.x = (mVisArea.pos.x>>STC)-scroll.x;
-    relativeVisGameArea.pos.y = (mVisArea.pos.y>>STC)-scroll.y;
-    relativeVisGameArea.dim.x = (mVisArea.dim.x>>STC)-16;
-    relativeVisGameArea.dim.y = (mVisArea.dim.y>>STC)-16;
+    relVisGameArea.pos.x = (mVisArea.pos.x>>STC)-scroll.x;
+    relVisGameArea.pos.y = (mVisArea.pos.y>>STC)-scroll.y;
+    relVisGameArea.dim.x = (mVisArea.dim.x>>STC)-16;
+    relVisGameArea.dim.y = (mVisArea.dim.y>>STC)-16;
 
     GsRect<int> gameResolution(gVideoDriver.getGameResolution());
 
     // Using the GameResolution to intersect the
     // calculated visible area we get another one
     // which is the rect allowed for blit operations
-    gameResolution.intersect(relativeVisGameArea);
+    gameResolution.intersect(relVisGameArea);
 
     gVideoDriver.mpVideoEngine->mRelativeVisGameArea = gameResolution;
 }

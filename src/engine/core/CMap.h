@@ -64,7 +64,7 @@ public:
                               const Uint32 width,
                               const Uint32 height);
 
-	bool gotoPos( int x, int y );
+    bool gotoPos(const int x, const int y);
 
 
 	void resetScrolls();

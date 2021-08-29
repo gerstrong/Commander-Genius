@@ -72,15 +72,15 @@ void CCamera::setPosition(const GsVec2D<int>& newpos)
 
     const auto gameRes = gVideoDriver.getGameResolution();
 
-    const auto screenWidth = ((gameRes.dim.x)<<STC);
-    const auto screenHeight = ((gameRes.dim.y)<<STC);
+    const auto screenWidth = gameRes.dim.x<<STC;
+    const auto screenHeight = gameRes.dim.y<<STC;
 
-    int cam_x = newpos.x-screenWidth/2;
-    int cam_y = newpos.y-screenHeight/2;
+    int cam_x = newpos.x-(screenWidth/2);
+    int cam_y = newpos.y-(screenHeight/2);
 
     const int minimumEdgeDist = (2<<CSF)+1;
-    const int mapWidth = (mpMap->m_width<<CSF)-1;
-    const int maxHeight = (mpMap->m_height<<CSF)-1;
+    const int mapWidth = ((mpMap->m_width-1)<<CSF);
+    const int maxHeight = ((mpMap->m_height-1)<<CSF);
 
     if(cam_x<minimumEdgeDist)
     {
