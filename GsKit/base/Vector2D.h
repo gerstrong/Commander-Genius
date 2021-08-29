@@ -71,12 +71,12 @@ struct GsVec2D
 
     template <typename T2>
     GsVec2D operator*(const T2 scalar) const {
-        return GsVec2D(T2(x)*scalar,T2(y)*scalar);
+        return GsVec2D(x*scalar,y*scalar);
     }
 
     template <typename T2>
     GsVec2D operator/(const T2 scalar) const {
-        return GsVec2D(T2(x)/scalar, T2(y)/scalar);
+        return GsVec2D(x/scalar, y/scalar);
     }
 
     GsVec2D operator+(const GsVec2D& vec) const {

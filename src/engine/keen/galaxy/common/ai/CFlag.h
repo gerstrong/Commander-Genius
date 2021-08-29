@@ -13,8 +13,6 @@
 
 #include "../CGalaxySpriteObject.h"
 
-//#include <base/utils/CVec.h>
-
 const Uint16 WAVING_BASEFRAME = 181;
 const Uint16 WAVING_BASEFRAME_DEMO = 175;
 
@@ -58,7 +56,6 @@ namespace galaxy  {
   private:
     // Where the flag/sign will pop in
     GsVec2D<Uint32> m_destination;
-//    Uint16 m_baseframe;
     void (CFlag::*processState)();	
     std::map< size_t, void (CFlag::*)() > mActionMap;
 
@@ -67,6 +64,7 @@ namespace galaxy  {
      */
     bool mPlayMapSound = true;
     
+    const Uint16 mSpeed = 64;
   };
   
 }

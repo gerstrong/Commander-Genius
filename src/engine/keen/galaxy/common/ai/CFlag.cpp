@@ -24,14 +24,13 @@ A_FLAG_FLIP = 4
 //const Uint16 FLYING_BASEFRAME_EP5 = 173;
 
 //const Uint16 ANIMATION_TIME = 8;
-const Uint16 SPEED = 64;
+
 
 CFlag::CFlag(CMap *pmap, const GsVec2D<Uint32> &Location,
             const GsVec2D<Uint32> &dest,
             const int sprVar, bool newAction, const bool canLock ) :
 CGalaxySpriteObject(pmap, FOE_ID, Location.x, Location.y, sprVar),
 m_destination(dest)
-//m_baseframe(0)
 {
 	solid = false;
 	honorPriority = false;
@@ -143,13 +142,14 @@ void CFlag::processFlipping()
         const float length = dir.GetLength();
         GsVec2D<float> base_dir( dir.x/length, dir.y/length );
 
-		if( fabs(length) < SPEED )
+        if( fabs(length) < mSpeed )
 		{
 			moveTo(m_destination);
 		}
 		else
 		{
-			moveDir(base_dir*SPEED);
+            const auto moveAmt = base_dir*float(mSpeed);
+            moveDir(moveAmt);
 		}
 	}
 	else
