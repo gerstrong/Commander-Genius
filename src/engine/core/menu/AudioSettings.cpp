@@ -112,6 +112,11 @@ void CAudioSettings::ponder(const float deltaT)
 		gAudio.playSound(SOUND_GET_ITEM);
     }
 
+    if( mPcSpeakerVolume != mpPCSpeakerAmp->getSelection() )
+    {
+        gAudio.playSound(SOUND_GET_ITEM);
+    }
+
     mSoundVolume     = mpSoundVolume->getSelection();
     mMusicVolume     = mpMusicVolume->getSelection();
     mOplBoost        = mpOPLAmp->getSelection();
