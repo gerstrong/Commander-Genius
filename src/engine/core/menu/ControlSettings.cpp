@@ -231,10 +231,19 @@ void CControlSettingsBaseWithMapping::ponder(const float deltaT)
 
 void CControlSettingsBase::addBottomText()
 {
-    auto deleteText =
-        mpMenuDialog->add(
-                new CGUIText("Remove: ALT + BACKSPC",
-                             GsRect<float>(0.0f, 0.85f, 1.0f, 0.1f)) );
+    GsRect<float> rect;
+
+    if(getStyle() == Style::GALAXY )
+    {
+        rect = GsRect<float>(0.0f, 0.85f, 1.0f, 0.1f);
+    }
+    else
+    {
+        rect = GsRect<float>(0.05f, 0.85f, 1.0f, 0.1f);
+    }
+
+    auto deleteText = mpMenuDialog->add(
+                new CGUIText("Remove: ALT + BACKSPC", rect) );
 
     deleteText->setTextColor(GsColor(0xBF, 0x00, 0x00));
     deleteText->enableCenteringH(false);
@@ -508,7 +517,6 @@ void CControlSettingsLoadPreset::refresh()
 
     setMenuLabel("BUTTONMENULABEL");
     mpMenuDialog->fit();
-    addBottomText();
 }
 
 void CControlSettingsSavePreset::refresh()
