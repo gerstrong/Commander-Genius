@@ -170,8 +170,10 @@ void CGUIText::updateLegacyTextSfc(const GsRect<float> &displayRect)
         auto &Font = gGraphics.getFontLegacy( mFontId );
 
         const auto letterHeight = int(Font.getPixelTextHeight());
+        const auto letterWidth = int(Font.calcPixelTextWidth(mText));
 
         lRect.h = letterHeight;
+        lRect.w = letterWidth;
 
         for(auto &textSfcVecPair : mTextSfcVecByColor)
         {
@@ -253,16 +255,19 @@ void CGUIText::processRender(const GsRect<float> &backRect,
     GsVec2D<unsigned int> totTextSfcDim(0,0);
 
     // Calculate total text dimension in case we need to center
-    for(auto &textSfc : textSfcVec)
+    if(mHCentered)
     {
-        if(textSfc.empty())
-            break;
+        for(auto &textSfc : textSfcVec)
+        {
+            if(textSfc.empty())
+                break;
 
-        totTextSfcDim.x =
-            std::max(static_cast<unsigned int>(textSfc.width()),
-                     static_cast<unsigned int>(totTextSfcDim.x));
-        const auto txtHeight = textSfc.height();
-        totTextSfcDim.y += txtHeight;
+            totTextSfcDim.x =
+                    std::max(static_cast<unsigned int>(textSfc.width()),
+                             static_cast<unsigned int>(totTextSfcDim.x));
+            const auto txtHeight = textSfc.height();
+            totTextSfcDim.y += txtHeight;
+        }
     }
 
     // Time to render
