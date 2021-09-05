@@ -599,6 +599,8 @@ Q: Will Commander Genius support more games?
 A: I like the ScummVM approach for adventure games. Maybe one day we do that
    in CG for other great DOS platformer titles, maybe one day...
 
+Q: The log file annoys me, how can I disable it?
+A: Under section "FileHandling" (You might want to create it), add the line "EnableLogfile = false".
 
 # BUG! 
 
