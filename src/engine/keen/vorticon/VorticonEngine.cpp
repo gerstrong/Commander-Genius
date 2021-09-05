@@ -188,6 +188,7 @@ bool VorticonEngine::loadResources( const Uint8 flags )
             {
                 // Load the sound data
                 setupAudio();
+                gAudio.setLoadAudioResourcesFcn(setupAudio);
                 mLoader.setPermilage(800);
             }
 

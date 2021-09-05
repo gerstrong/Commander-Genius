@@ -20,6 +20,7 @@
 #include <vector>
 #include <list>
 #include <memory>
+#include <functional>
 
 #include "sound/CSoundChannel.h"
 #include "CAudioResources.h"
@@ -153,6 +154,8 @@ public:
     void setPcSpeakerVol(const int percentage);
     void setBufferAmp(const int value);
 
+    void setLoadAudioResourcesFcn(const std::function<bool()> loadAudioResourcesFcn);
+
 protected:
 
     bool mCallbackRunning = false;
@@ -186,6 +189,8 @@ private:
     Uint32 mPCSpeakerVol = 20;
 
     int mBufferAmp = 1;
+
+    std::function<bool()> mLoadAudioResourcesFcn;
 };
 
 #endif /* SDL_AUDIO_EXTENSION_H */

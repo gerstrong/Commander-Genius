@@ -239,6 +239,7 @@ bool GalaxyEngine::loadResources( const Uint8 flags )
 
                 // Load the sound data
                 setupAudio();
+                gAudio.setLoadAudioResourcesFcn(setupAudio);
 
                 mLoader.setPermilage(900);
                 gLogging.ftextOut("Done loading sound effects.<br>");
@@ -298,6 +299,7 @@ bool GalaxyEngine::loadResources( const Uint8 flags )
 
                 // Load the sound data
                 setupAudio();
+                gAudio.setLoadAudioResourcesFcn(setupAudio);
 
                 mLoader.setPermilage(900);
                 gLogging.ftextOut("Done loading audio.<br>");

@@ -592,7 +592,6 @@ bool CAudioGalaxy::loadSoundData(const unsigned int dictOffset)
 {       
     COPLEmulator &OPLEmulator = gAudio.getOPLEmulatorRef();
 
-
     OPLEmulator.shutdown();
     gLogging.ftextOut("CAudioGalaxy::loadSoundData(): Initializing OPL Emulator... <br>");
     OPLEmulator.init();

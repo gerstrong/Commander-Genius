@@ -64,7 +64,6 @@ Audio::~Audio()
 
 bool Audio::init()
 {
-
     gLogging.ftextOut("Starting the audio driver...<br>");
 
     // load support for the OGG and MOD sample/music formats
@@ -91,14 +90,12 @@ bool Audio::init()
 
     mAudioSpec.userdata = nullptr;
 
-
     gLogging << "Mix_OpenAudio: "
              << "mAudioSpec.freq = " << mAudioSpec.freq << CLogFile::endl
              << "mAudioSpec.format = " << mAudioSpec.format << CLogFile::endl
              << "mAudioSpec.channels = " << mAudioSpec.channels << CLogFile::endl
              << "mAudioSpec.samples = " << mAudioSpec.samples << CLogFile::endl
              << CLogFile::endl;
-
 
     // Initialize audio system    
     if( Mix_OpenAudioDevice(mAudioSpec.freq,
@@ -112,7 +109,6 @@ bool Audio::init()
         gLogging << "Mix_OpenAudio: " << Mix_GetError() << "\n";
         return false;
     }
-
 
     {
         int n = Mix_GetNumChunkDecoders();
@@ -169,6 +165,12 @@ bool Audio::init()
 	m_OPL_Player.init();
 
     updateFuncPtrs();
+
+    // TODO: We need a Hook where already loaded sound resources get reloaded again.
+    if(mLoadAudioResourcesFcn)
+    {
+        mLoadAudioResourcesFcn();
+    }
 
 	return true;
 }
@@ -503,12 +505,10 @@ void Audio::playStereosoundSlot(unsigned char slotplay,
 void Audio::setupSoundData(const std::map<GameSound, int> &slotMap,
                            CAudioResources *audioResPtr)
 {
-
     assert(audioResPtr);
 
     sndSlotMap = slotMap;
     mpAudioRessources.reset(audioResPtr);
-
 }
 
 void Audio::unloadSoundData()
@@ -573,6 +573,11 @@ void Audio::setBufferAmp(const int value)
     mBufferAmp = value;
 }
 
+void Audio::setLoadAudioResourcesFcn(const std::function<bool ()> loadAudioResourcesFcn)
+{
+    mLoadAudioResourcesFcn = loadAudioResourcesFcn;
+}
+
 
 void Audio::setSettings( const SDL_AudioSpec& audioSpec,
 	 	  	  	  	  	  const bool useSB )
@@ -606,5 +611,4 @@ void Audio::setSettings( const int rate,
     nAudio.format = SDL_AudioFormat(format);
 
 	setSettings(nAudio, useSB);
-
 }

@@ -60,7 +60,7 @@ GameMenu(GsRect<float>(0.075f, 0.24f, 0.85f, 0.4f), style )
                                               gAudio.getOplAmp(), style ) );
 
     mpPCSpeakerAmp =
-        mpMenuDialog->add( new NumberControl( "PC Speaker Vol", 0, 100, 10, false,
+        mpMenuDialog->add( new NumberControl( "PC Spk Amp", 0, 100, 10, false,
                                               gAudio.getPCSpeakerVol(), style ) );
 
     mpBufferAmp =

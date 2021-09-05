@@ -91,7 +91,6 @@ void GameMenu::setProperty( const Property newProperty )
     mpReturnButton->setText( newProperty == CLOSEABLE ? "close" : "back" );
 
     auto rect = mpReturnButton->getRect();
-    rect.dim.x = 0.2f;
     mpReturnButton->setRect(rect);
 }
 
