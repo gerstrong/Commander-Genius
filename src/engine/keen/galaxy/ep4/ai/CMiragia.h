@@ -33,10 +33,10 @@ public:
 	void getTouchedBy(CSpriteObject &theObject);
 
 private:
-	Uint8 m_step;
+    Uint8 m_step = 0;
 	enum {FADE_IN, FADE_OUT} m_fade;
-	Uint8 m_waittime;
-	bool m_empty;
+    Uint8 m_waittime;
+    bool m_empty = true;
 };
 
 }

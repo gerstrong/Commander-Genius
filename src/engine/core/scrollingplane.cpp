@@ -634,14 +634,16 @@ void ScrollingPlane::redrawPlaneAt(GsTilemap &tilemap,
         const Uint16 loc_x = (((mx-m_mapx)<<mTileSizeBase)+m_mapxstripepos)&drawMask;
         const Uint16 loc_y = (((my-m_mapy)<<mTileSizeBase)+m_mapystripepos)&drawMask;
 
-        if( tile != mTransparentTile || !mHasTransparentTile )
-        {
-            tilemap.drawTile(ScrollSurfaceRaw, loc_x, loc_y, tile);
-        }
-        else if(tile == mTransparentTile || mHasTransparentTile)
+        if(mHasTransparentTile)
         {
             tilemap.drawTransparentTile(scrollSfc, loc_x, loc_y);
         }
+
+        if(tile != mTransparentTile)
+        {
+            tilemap.drawTile(ScrollSurfaceRaw, loc_x, loc_y, tile);
+        }
+
     }
 }
 

@@ -1249,7 +1249,7 @@ bool CPlayerWM::checkforClimbing(direction_t &climbDir)
 	const int y = getYMidPos();
 	const int x = getXMidPos();
 	
-    const auto info = mpMap->getInfoData(GsVec2D<Uint32>(x,y));
+    const auto info = mpMap->getInfoData(GsVec2D<Uint32>(x>>CSF,y>>CSF));
 
 	// from top
 	if(info == 0x0F)
