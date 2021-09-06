@@ -183,6 +183,12 @@ void ComputerWrist::ponderPage(const float deltaT)
     {
         if(mSectionPage < mNumPagesOfThisSection)
         {
+            mSectionPage++;
+            mCurrentTextLines = gGameText.readPage(mSection, mSectionPage);
+            mTime = 0;
+        }
+        else
+        {
             mSection = -1;
             mSectionPage = 0;
             mTime = 0;
