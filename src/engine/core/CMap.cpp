@@ -811,7 +811,7 @@ Uint16 CMap::getPlaneDataAt(const int plane, GsVec2D<Uint32> pos) const
 {
     assert(int(mScrollingPlanes.size()+1) > plane);
 
-    if(int(mScrollingPlanes.size()))
+    if(plane >= int(mScrollingPlanes.size()))
     {
         return mInfoPlane.getMapDataAt(pos.x>>CSF, pos.y>>CSF);
     }

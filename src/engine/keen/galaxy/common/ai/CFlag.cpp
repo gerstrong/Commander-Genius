@@ -165,7 +165,7 @@ void CFlag::processFlipping()
 
             tilePos.y = getYDownPos();
 
-            Uint32 new_tile_no = mpMap->getPlaneDataAt(0, tilePos)+1;
+            Uint32 new_tile_no = mpMap->getPlaneDataAt(1, tilePos)+1;
             tilePos = tilePos>>CSF;
             mpMap->setTile(tilePos.x, tilePos.y, new_tile_no, true);
         }
