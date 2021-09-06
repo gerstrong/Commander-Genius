@@ -2676,7 +2676,8 @@ void CPlayerLevel::push(CGalaxySpriteObject& theObject)
 {
   if(dying ||
      m_EnterDoorAttempt ||
-     getActionStatus(A_KEEN_SLIDE) )
+     getActionStatus(A_KEEN_SLIDE) ||
+     getActionStatus(A_KEEN_ENTER_DOOR) )
     return;
   
   CPlayerBase::push(theObject);
