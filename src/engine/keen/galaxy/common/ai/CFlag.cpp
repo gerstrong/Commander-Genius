@@ -15,8 +15,8 @@ namespace galaxy {
 
 enum FLAGACTIONS
 {
-A_FLAG_WAVE = 0,
-A_FLAG_FLIP = 4
+    A_FLAG_WAVE = 0,
+    A_FLAG_FLIP = 4
 };
     
 
@@ -47,7 +47,7 @@ m_destination(dest)
 
 	if(episode == 6)
 	{
-            setupGalaxyObjectOnMap(gBehaviorEngine.isDemo() ? 0x145A : 0x13F4, A_FLAG_FLIP);
+        setupGalaxyObjectOnMap(gBehaviorEngine.isDemo() ? 0x145A : 0x13F4, A_FLAG_FLIP);
 	}
 	else if(episode == 5)
 	{
@@ -165,7 +165,7 @@ void CFlag::processFlipping()
 
             tilePos.y = getYDownPos();
 
-            Uint32 new_tile_no = mpMap->getPlaneDataAt(1, tilePos)+1;
+            Uint32 new_tile_no = mpMap->getPlaneDataAt(0, tilePos)+1;
             tilePos = tilePos>>CSF;
             mpMap->setTile(tilePos.x, tilePos.y, new_tile_no, true);
         }
