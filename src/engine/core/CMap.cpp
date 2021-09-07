@@ -553,6 +553,8 @@ void CMap::resetScrollBlocker()
 
 void CMap::collectBlockersCoordiantes()
 {
+    const auto engine = gBehaviorEngine.getEngine();
+
     for(auto &plane : mScrollingPlanes)
     {
         plane.insertVertBlocker(1<<CSF);
@@ -560,7 +562,7 @@ void CMap::collectBlockersCoordiantes()
 
         int ep = gBehaviorEngine.getEpisode();
 
-        if(gBehaviorEngine.getEngine() == ENGINE_GALAXY)
+        if(engine == ENGINE_GALAXY)
         {
             const word* map_ptr = mInfoPlane.getMapDataPtr();
 
@@ -581,9 +583,15 @@ void CMap::collectBlockersCoordiantes()
                     map_ptr++;
                 }
             }
-
         }
-        // There exist end-of-map tiles, we don't want to see
+        if(engine == ENGINE_VORTICON)
+        {
+            // The first row and column in vorticon keen should not be seen
+            plane.insertHorBlocker(2<<CSF);
+            plane.insertVertBlocker(2<<CSF);
+        }
+
+        // There exist end-of-map tiles we don't want to see
         plane.insertHorBlocker(((m_height-2)<<(CSF)));
         plane.insertVertBlocker((m_width-2)<<(CSF));
     }

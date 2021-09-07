@@ -129,7 +129,6 @@ void CCamera::process()
 
         if(playerIdx != mCamlead)
             return;
-
     }
 
 
