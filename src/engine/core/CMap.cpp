@@ -400,7 +400,6 @@ bool CMap::scrollLeft(const bool force)
     for(auto &plane : mScrollingPlanes)
     {
         const auto scroll = plane.getScrollCoords();
-
         if( !force && findVerticalScrollBlocker((scroll.x)<<STC) )
             return false;
 
@@ -412,8 +411,12 @@ bool CMap::scrollLeft(const bool force)
 
     for(auto &plane : mScrollingPlanes)
     {
+        auto scroll = plane.getScrollCoords();
+
         auto &tilemap = m_Tilemaps.at(plane.getTilemapIdx());
         ok &= plane.scrollLeft(tilemap);
+
+        scroll = plane.getScrollCoords();
     }
 
     for(auto &scrollPlane : mScrollingPlanes)
@@ -564,6 +567,9 @@ void CMap::collectBlockersCoordiantes()
 
         if(engine == ENGINE_GALAXY)
         {
+            plane.insertVertBlocker(2<<CSF);
+            plane.insertHorBlocker(2<<CSF);
+
             const word* map_ptr = mInfoPlane.getMapDataPtr();
 
             for(int y=0 ; y<(int)m_height ; y++)
@@ -586,7 +592,7 @@ void CMap::collectBlockersCoordiantes()
         }
         if(engine == ENGINE_VORTICON)
         {
-            // The first row and column in vorticon keen should not be seen
+            // The first two rows and columns in vorticon keen should not be seen
             plane.insertHorBlocker(2<<CSF);
             plane.insertVertBlocker(2<<CSF);
         }

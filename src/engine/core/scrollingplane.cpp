@@ -536,14 +536,6 @@ void ScrollingPlane::fetchNearestVertBlockers(const int x,
         if( x > blockXleft && x < blockXright )
         {
             leftCoord = blockXleft;
-
-            if(leftCoord > (2<<CSF)/* &&  gBehaviorEngine.getEngine() == ENGINE_GALAXY*/)
-            {
-                // This will hide even more level blockers in Galaxy.
-                // In the vorticon games not required
-                leftCoord += (1<<CSF);
-            }
-
             rightCoord = blockXright;
             return;
         }
@@ -591,14 +583,6 @@ void ScrollingPlane::fetchNearestHorBlockers(const int y,
         if( y > blockYup && y < blockYdown )
         {
             upCoord = blockYup;
-
-            /*if(gBehaviorEngine.getEngine() == ENGINE_GALAXY)*/
-            {
-                // This will hide even more level blockers in Galaxy. In Vorticon
-                // this is not needed
-                upCoord += (1<<CSF);
-            }
-
             downCoord = blockYdown;
             return;
         }

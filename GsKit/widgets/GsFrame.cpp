@@ -73,13 +73,6 @@ void GsFrame::processRender(const GsRect<float> &backRect,
 
     mOuterbound = {0.0f, 0.0f};
 
-/*
-    if(getId()==9)
-    {
-        printf("test.");
-    }
-*/
-
     if(viewLoweright < objLoweright)
     {
         mOuterbound = objLoweright - viewLoweright;
