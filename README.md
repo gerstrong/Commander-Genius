@@ -270,8 +270,10 @@ How to launch Commander Genius (if you didn't compile it):
 Getting the most recent source code:
  * The most recent version is hosted at GitLab.
  * From the Linux command line, type:
+``` 
    git clone https://gitlab.com/Dringgstein/commandergenius.git
    cd Commander-Genius
+```   
  * I recommend you using the master branch. I might create a more stable one
    later.
 
@@ -352,47 +354,64 @@ together if you want to develop CG further
    the installation of dependencies for CG are next.
 
  -> Prepare Environment for CG
- * Set PACPFIX (32-bit):  export PACPFIX=mingw64/mingw-w64-x64
- * pacman -S base-devel
- * pacman -S ${PACPFIX}-SDL2
- * pacman -S ${PACPFIX}-SDL2_image
- * pacman -S ${PACPFIX}-SDL2_mixer
- * pacman -S ${PACPFIX}-SDL2_ttf
- * pacman -S ${PACPFIX}-cmake
- * pacman -S ${PACPFIX}-curl
- * pacman -S ${PACPFIX}-zlib
- * pacman -S ${PACPFIX}-gcc
- * pacman -S ${PACPFIX}-nsis
- * pacman -S git
+ * Set PACPFIX (32-bit):  
+``` 
+ export PACPFIX=mingw64/mingw-w64-x64
+ pacman -S base-devel
+ pacman -S ${PACPFIX}-SDL2
+ pacman -S ${PACPFIX}-SDL2_image
+ pacman -S ${PACPFIX}-SDL2_mixer
+ pacman -S ${PACPFIX}-SDL2_ttf
+ pacman -S ${PACPFIX}-cmake
+ pacman -S ${PACPFIX}-curl
+ pacman -S ${PACPFIX}-zlib
+ pacman -S ${PACPFIX}-gcc
+ pacman -S ${PACPFIX}-nsis
+ pacman -S git
+``` 
 
  -> Build CG using MSYS2
- * git clone https://gitlab.com/Dringgstein/commandergenius.git
- * mkdir cgenius_build
- * cd cgenius_build
- * cmake -G "Unix Makefiles" ../Commander-Genius
- * make
+``` 
+ git clone https://gitlab.com/Dringgstein/commandergenius.git
+ mkdir cgenius_build
+ cd cgenius_build
+ cmake -G "Unix Makefiles" ../Commander-Genius
+ make
+```
 
 
  -> Build CG using Mac Ports (for MacOS Systems)
  * Install Mac Ports. You can download it here: https://www.macports.org/install.php
  * Open up a terminal
  * Install some dependencies:
+``` 
    sudo port install libsdl2 libsdl2_mixer libsdl2_image libsdl2_ttf libsdl2_mixer curl git cmake
+```   
  * You might get a dialog asking for the installation of Xcode dependencies. Please confirm that dialog.
  * You also will be asked for the installation of more dependencies. You need to confirm all that.
  * cd into a directory where you want to clone the sources:
+``` 
    git clone https://gitlab.com/Dringgstein/Commander-Genius.git
+```
  * Now you should have a directory called "Commander-Genius". It contains the source code. You can verify that with "ls"
  * Create your build directory and cd into it:
+``` 
    mkdir CG-Build
    cd CG-Build
+```   
  * Prepare your build referencing to the sources you cloned:
+``` 
    cmake ../Commander-Genius -DUSE_OPENGL=0
+```   
  * And build it:
+``` 
    make
+```   
  * If everything went well, go into src and execute it:
+``` 
    cd src
    ./CGeniusExe
+```
   
 
 We also provide CMake for Wiz, if you want to compile it for embedded systems.
