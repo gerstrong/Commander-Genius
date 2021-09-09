@@ -37,7 +37,7 @@ bool CMap::setupEmptyDataPlanes(const unsigned int numScrollingPlanes,
                                 const int tileSize,
                                 const Uint32 width,
                                 const Uint32 height)
-{    
+{
 	m_width = width;
 	m_height = height;
 
@@ -183,6 +183,66 @@ void CMap::fetchNearestVertBlockers(const int x,
     }
 }
 
+bool CMap::detectTopBlocker(const int y)
+{
+    int blockYup1 = 0;
+    int blockYdown1 = 0;
+    int blockYup2 = 0;
+    int blockYdown2 = 0;
+
+    fetchNearestHorBlockers((y<<STC)-(1<<CSF), blockYup1, blockYdown1);
+    fetchNearestHorBlockers(y<<STC, blockYup2, blockYdown2);
+
+    if( blockYup1 != blockYup2 || blockYdown1 != blockYdown2 )
+        return false;
+    return true;
+}
+
+bool CMap::detectBottomBlocker(const int y)
+{
+    int blockYup1 = 0;
+    int blockYdown1 = 0;
+    int blockYup2 = 0;
+    int blockYdown2 = 0;
+
+    fetchNearestHorBlockers(y<<STC, blockYup1, blockYdown1);
+    fetchNearestHorBlockers((y<<STC)+(1<<CSF), blockYup2, blockYdown2);
+
+    if( blockYup1 != blockYup2 || blockYdown1 != blockYdown2 )
+        return false;
+    return true;
+}
+
+bool CMap::detectLeftBlocker(const int x)
+{
+    int blockXleft1 = 0;
+    int blockXright1 = 0;
+    int blockXleft2 = 0;
+    int blockXright2 = 0;
+
+    fetchNearestVertBlockers((x<<STC)-(1<<CSF), blockXleft1, blockXright1);
+    fetchNearestVertBlockers(x<<STC, blockXleft2, blockXright2);
+
+    if( blockXleft1 != blockXleft2 || blockXright1 != blockXright2 )
+        return false;
+    return true;
+}
+
+bool CMap::detectRightBlocker(const int x)
+{
+    int blockXleft1 = 0;
+    int blockXright1 = 0;
+    int blockXleft2 = 0;
+    int blockXright2 = 0;
+
+    fetchNearestVertBlockers(x<<STC, blockXleft1, blockXright1);
+    fetchNearestVertBlockers((x<<STC)+(1<<CSF), blockXleft2, blockXright2);
+
+    if( blockXleft1 != blockXleft2 || blockXright1 != blockXright2 )
+        return false;
+    return true;
+}
+
 void CMap::fetchNearestHorBlockers(const int y,
                                    int &upCoord,
                                    int &downCoord)
@@ -191,32 +251,6 @@ void CMap::fetchNearestHorBlockers(const int y,
     {
         plane.fetchNearestHorBlockers(y, upCoord, downCoord);
     }
-}
-
-
-bool CMap::findVerticalScrollBlocker(const int x)
-{
-    int blockXleft = 0;
-    int blockXright = 0;
-
-    fetchNearestVertBlockers(x, blockXleft, blockXright);
-
-    if(x < blockXleft)
-        return true;
-    return false;
-}
-
-
-bool CMap::findHorizontalScrollBlocker(const int y)
-{
-    int blockYup = 0;
-    int blockYdown = 0;
-
-    fetchNearestHorBlockers(y, blockYup, blockYdown);
-
-    if(y < blockYup)
-        return true;
-    return false;
 }
 
 
@@ -370,7 +404,7 @@ bool CMap::scrollRight(const bool force)
     {
         const auto scroll = plane.getScrollCoords();
 
-        if( !force && findVerticalScrollBlocker((scroll.x+res_width)<<STC) )
+        if( !force && !detectRightBlocker(scroll.x+res_width))
             return false;
 
         ok &= plane.scrollRightTest();
@@ -400,7 +434,7 @@ bool CMap::scrollLeft(const bool force)
     for(auto &plane : mScrollingPlanes)
     {
         const auto scroll = plane.getScrollCoords();
-        if( !force && findVerticalScrollBlocker((scroll.x)<<STC) )
+        if( !force && !detectLeftBlocker(scroll.x-1) )
             return false;
 
         ok &= plane.scrollLeftTest();
@@ -434,10 +468,10 @@ bool CMap::scrollDown(const bool force)
     {
         const auto scroll = plane.getScrollCoords();
 
-        if(!plane.isAxisYLocked())
+        if(!plane.isAxisYLocked() &&
+           !force && !detectBottomBlocker(scroll.y) )
         {
-            if( !force && findVerticalScrollBlocker((scroll.x)<<STC) )
-                return false;
+            return false;
         }
 
         ok &= plane.scrollDown(m_Tilemaps.at(plane.getTilemapIdx()), force);
@@ -462,12 +496,11 @@ bool CMap::scrollUp(const bool force)
     {
         const auto scroll = plane.getScrollCoords();
 
-        if(!plane.isAxisYLocked())
+        if(!plane.isAxisYLocked() &&
+           !force && !detectTopBlocker(scroll.y-1))
         {
-            if( !force && findHorizontalScrollBlocker((scroll.y-1)<<STC) )
-                return false;
+            return false;
         }
-
 
         ok &= plane.scrollUp(m_Tilemaps.at(plane.getTilemapIdx()), force);
         refreshVisibleArea(plane.getScrollCoords());

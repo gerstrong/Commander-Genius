@@ -177,7 +177,6 @@ public:
 	word *getBackgroundData();
 
 
-
     void fetchNearestVertBlockers(const int x,
                                   int &leftCoord,
                                   int &rightCoord);
@@ -243,8 +242,10 @@ public:
 
 private:
 
-    bool findVerticalScrollBlocker(const int x);
-    bool findHorizontalScrollBlocker(const int y);
+    bool detectTopBlocker(const int y);
+    bool detectBottomBlocker(const int y);
+    bool detectLeftBlocker(const int x);
+    bool detectRightBlocker(const int x);
 
 
 	std::vector<GsTilemap> &m_Tilemaps;
