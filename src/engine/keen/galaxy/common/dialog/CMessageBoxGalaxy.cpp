@@ -53,14 +53,14 @@ mTimeout(timeout)
     // Create a surface for that
     if(alignment == Alignment::UPPERRIGHT)
     {
-        mMBRect.w = Font.calcPixelTextWidth(mText)+16*2;
+        mMBRect.w = Font.calcPixelTextWidth(mText)+16*2+8;
         mMBRect.h = Font.getPixelTextHeight()*(calcNumLines(mText)+2)+16;
         mMBRect.x = (gameRes.dim.x-mMBRect.w)+8;
         mMBRect.y = 0;
     }
     else
     {
-        mMBRect.w = Font.calcPixelTextWidth(mText)+16*2;
+        mMBRect.w = Font.calcPixelTextWidth(mText)+16*2+8;
         mMBRect.h = Font.getPixelTextHeight()*(calcNumLines(mText)+2)+16;
         mMBRect.x = (gameRes.dim.x-mMBRect.w)/2;
         mMBRect.y = (gameRes.dim.y-mMBRect.h)/2;

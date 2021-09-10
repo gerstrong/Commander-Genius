@@ -170,10 +170,10 @@ void CGUIText::updateLegacyTextSfc(const GsRect<float> &displayRect)
         auto &Font = gGraphics.getFontLegacy( mFontId );
 
         const auto letterHeight = int(Font.getPixelTextHeight());
-        const auto letterWidth = int(Font.calcPixelTextWidth(mText));
+        const auto textWidth = int(Font.calcPixelTextWidth(mText));
 
         lRect.h = letterHeight;
-        lRect.w = letterWidth;
+        lRect.w = textWidth;
 
         for(auto &textSfcVecPair : mTextSfcVecByColor)
         {

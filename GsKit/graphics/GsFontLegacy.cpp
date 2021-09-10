@@ -372,7 +372,8 @@ unsigned int GsFontLegacy::calcPixelTextWidth( const std::string& text )
 		else
 		{
 			const int e = text[c];
-            len += (mWidthtable[e]+1);
+            //len += (mWidthtable[e]+1);
+            len += (mWidthtable[e]);
 		}
 	}
 
