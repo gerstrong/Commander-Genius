@@ -18,9 +18,9 @@
 CMap::CMap():
 m_Tilemaps(gGraphics.getTileMaps())
 {
-	resetScrolls();
-	m_Level = 0;
-	isSecret = false;
+    resetScrolls();
+    m_Level = 0;
+    isSecret = false;
 }
 
 
@@ -38,21 +38,21 @@ bool CMap::setupEmptyDataPlanes(const unsigned int numScrollingPlanes,
                                 const Uint32 width,
                                 const Uint32 height)
 {
-	m_width = width;
-	m_height = height;
+    m_width = width;
+    m_height = height;
 
     mScrollingPlanes.clear();
 
     for(unsigned int i=0 ; i<numScrollingPlanes ; i++)
     {
         ScrollingPlane plane(i, (i>0));
-        plane.createDataMap(m_width, m_height, tileSize);        
+        plane.createDataMap(m_width, m_height, tileSize);
         mScrollingPlanes.push_back(plane);
     }
 
     mInfoPlane.createDataMap(m_width, m_height);
 
-	return true;
+    return true;
 }
 
 void CMap::resetScrolls()
@@ -67,7 +67,7 @@ void CMap::resetScrolls()
 
 
 void CMap::refreshStripes()
-{    
+{
     for( auto &plane : mScrollingPlanes )
     {
         GsTilemap &tilemap = m_Tilemaps.at(plane.getTilemapIdx());
@@ -86,9 +86,9 @@ Uint16 CMap::at(int x, int y, int t)
     {
         return mScrollingPlanes[t].getMapDataAt(x,y);
     }
-	else
+    else
     {
-		return 0;
+        return 0;
     }
 }
 
@@ -210,7 +210,7 @@ bool CMap::detectBottomBlocker(const int y)
     int blockYup2 = 0;
     int blockYdown2 = 0;
 
-    fetchNearestHorBlockers(y<<STC, blockYup1, blockYdown1);
+    fetchNearestHorBlockers((y<<STC), blockYup1, blockYdown1);
 
     if( y > int((m_height-2)<<TILE_S) ) // Not enough space to compare two blockers!
     {
@@ -218,7 +218,7 @@ bool CMap::detectBottomBlocker(const int y)
     }
     else
     {
-        fetchNearestHorBlockers((y<<STC)+(1<<CSF), blockYup2, blockYdown2);
+        fetchNearestHorBlockers((y<<STC)-(1<<CSF), blockYup2, blockYdown2);
         return ( blockYup1 != blockYup2 || blockYdown1 != blockYdown2 );
     }
 }
@@ -259,7 +259,7 @@ bool CMap::detectRightBlocker(const int x)
     }
     else
     {
-        fetchNearestVertBlockers((x<<STC)+(1<<CSF), blockXleft2, blockXright2);
+        fetchNearestVertBlockers((x<<STC)-(1<<CSF), blockXleft2, blockXright2);
         return ( blockXleft1 != blockXleft2 || blockXright1 != blockXright2 );
     }
 }
@@ -282,18 +282,18 @@ void CMap::fetchNearestHorBlockers(const int y,
 bool CMap::findObject(unsigned int obj, int *xout, int *yout)
 {
     for(unsigned int y=2 ; y<m_height-2 ; y++)
-	{
+    {
         for(unsigned int x=2 ; x<m_width-2 ; x++)
-		{
+        {
             if (mInfoPlane.getMapDataAt(x,y)==obj)
-			{
-				*xout = x;
-				*yout = y;
-				return true;
-			}
-		}
-	}
-	return false;
+            {
+                *xout = x;
+                *yout = y;
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 
@@ -332,27 +332,27 @@ bool CMap::setInfoTile(const GsVec2D<Uint32> pos,
 bool CMap::setTile(const Uint16 x, const Uint16 y,
                    const Uint16 t, const Uint16 plane)
 {
-	if( x<m_width && y<m_height )
-	{
+    if( x<m_width && y<m_height )
+    {
         assert(mScrollingPlanes.size() > plane);
         mScrollingPlanes[plane].setMapDataAt(t, x, y);
-		return true;
-	}
-	else
-		return false;
+        return true;
+    }
+    else
+        return false;
 }
 
 bool CMap::setTile(Uint16 x, Uint16 y, Uint16 t,
                    bool redraw, Uint16 plane)
 {
-	if(setTile( x, y, t, plane))
-	{
+    if(setTile( x, y, t, plane))
+    {
         if( redraw )
-		{
-			redrawAt(x,y);
-		}
-		return true;
-	}
+        {
+            redrawAt(x,y);
+        }
+        return true;
+    }
 
     return false;
 }
@@ -362,16 +362,16 @@ bool CMap::setTile(Uint16 x, Uint16 y, Uint16 t,
 bool CMap::changeTile(Uint16 x, Uint16 y, Uint16 t)
 {
     if( setTile( x, y, t ) )
-	{
+    {
         for( auto &plane : mScrollingPlanes )
         {
             plane.drawTile(m_Tilemaps.at(1), {x, y}, t);
         }
 
-		return true;
-	}
+        return true;
+    }
 
-	return false;
+    return false;
 }
 
 
@@ -383,9 +383,9 @@ void CMap::changeTileArrayY(Uint16 x, Uint16 y, Uint16 h, Uint16 tile)
 {
     SDL_Rect gameres = gVideoDriver.getGameResolution().SDLRect();
     const Uint16 x2 = x+gameres.w/16;
-	const Uint16 y2 = y+h;
+    const Uint16 y2 = y+h;
 
-	for(Uint16 c_y=y ; c_y<y2 ; c_y++)
+    for(Uint16 c_y=y ; c_y<y2 ; c_y++)
     {
         for(Uint16 c_x=x ; c_x<x2 ; c_x++)
         {
@@ -399,7 +399,7 @@ void CMap::changeTileArrayY(Uint16 x, Uint16 y, Uint16 h, Uint16 tile)
 ////
 bool CMap::gotoPos(const int x, const int y)
 {
-	bool retval = false;
+    bool retval = false;
 
     for(auto &plane : mScrollingPlanes)
     {
@@ -411,7 +411,7 @@ bool CMap::gotoPos(const int x, const int y)
         refreshVisibleArea();
     }
 
-	return retval;
+    return retval;
 }
 
 
@@ -484,13 +484,14 @@ bool CMap::scrollLeft(const bool force)
 bool CMap::scrollDown(const bool force)
 {
     bool ok = true;
+    const int res_height = gVideoDriver.getGameResolution().dim.y;
 
     for(auto &plane : mScrollingPlanes)
     {
         const auto scroll = plane.getScrollCoords();
 
         if(!plane.isAxisYLocked() &&
-           !force && detectBottomBlocker(scroll.y) )
+           !force && detectBottomBlocker(scroll.y+res_height) )
         {
             return false;
         }
@@ -510,7 +511,7 @@ bool CMap::scrollDown(const bool force)
 
 
 bool CMap::scrollUp(const bool force)
-{        
+{
     bool ok = true;
 
     for(auto &plane : mScrollingPlanes)
@@ -645,8 +646,8 @@ void CMap::collectBlockersCoordiantes()
             }
 
             // There exist end-of-map tiles we don't want to see
-            //plane.insertHorBlocker(((m_height-1)<<(CSF)));
-            //plane.insertVertBlocker((m_width-1)<<(CSF));
+            plane.insertHorBlocker(((m_height-1)<<(CSF)));
+            plane.insertVertBlocker((m_width-1)<<(CSF));
             plane.insertHorBlocker(((m_height-2)<<(CSF)));
             plane.insertVertBlocker((m_width-2)<<(CSF));
         }
@@ -696,7 +697,7 @@ void CMap::redrawAt(const Uint32 mx, const Uint32 my)
 
 
 void CMap::drawAllOfPlane(const int planeIdx)
-{    
+{
     auto &scrollSfcVec = gVideoDriver.getScrollSurfaceVec();
     assert(planeIdx < int(scrollSfcVec.size()));
 
@@ -706,7 +707,7 @@ void CMap::drawAllOfPlane(const int planeIdx)
 }
 
 void CMap::drawAll()
-{    
+{
     for(decltype(mScrollingPlanes.size()) i=0 ; i<mScrollingPlanes.size() ; i++)
     {
         drawAllOfPlane(i);
@@ -735,7 +736,7 @@ void CMap::drawHstripe(const unsigned int y,
 void CMap::drawVstripeOfPlane(const int planeIdx,
                               const unsigned int x,
                               const unsigned int mpx)
-{   
+{
     if(mpx >= m_width) return;
 
     auto &plane = mScrollingPlanes.at(planeIdx);
