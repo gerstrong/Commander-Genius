@@ -513,8 +513,8 @@ void ScrollingPlane::fetchNearestVertBlockers(const int x,
                                               int &leftCoord,
                                               int &rightCoord)
 {
-    int blockXleft = 0;
-    int blockXright = 0;
+    int blockXleft = -1;
+    int blockXright = -1;
 
     if(scrollBlockX.empty())
     {
@@ -527,7 +527,7 @@ void ScrollingPlane::fetchNearestVertBlockers(const int x,
     auto right = left;
     right++;
 
-    // Find the vertical edges coordinates
+    // Find the vertical edge coordinates
     for( ; right != scrollBlockX.end() ; )
     {
         blockXleft = *left;
@@ -557,8 +557,8 @@ void ScrollingPlane::fetchNearestHorBlockers(const int y,
                                              int &upCoord,
                                              int &downCoord)
 {
-    int blockYup = 0;
-    int blockYdown = 0;
+    int blockYup = -1;
+    int blockYdown = -1;
 
     if(scrollBlockY.empty())
     {

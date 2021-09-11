@@ -190,12 +190,17 @@ bool CMap::detectTopBlocker(const int y)
     int blockYup2 = 0;
     int blockYdown2 = 0;
 
-    fetchNearestHorBlockers((y<<STC)-(1<<CSF), blockYup1, blockYdown1);
     fetchNearestHorBlockers(y<<STC, blockYup2, blockYdown2);
 
-    if( blockYup1 != blockYup2 || blockYdown1 != blockYdown2 )
-        return false;
-    return true;
+    if( y < (3<<TILE_S) ) // Not enough space to compare two blockers!
+    {
+        return ( (y>>TILE_S)<=(blockYup2>>CSF) );
+    }
+    else
+    {
+        fetchNearestHorBlockers((y<<STC)-(1<<CSF), blockYup1, blockYdown1);
+        return ( blockYup1 != blockYup2 || blockYdown1 != blockYdown2 );
+    }
 }
 
 bool CMap::detectBottomBlocker(const int y)
@@ -206,11 +211,16 @@ bool CMap::detectBottomBlocker(const int y)
     int blockYdown2 = 0;
 
     fetchNearestHorBlockers(y<<STC, blockYup1, blockYdown1);
-    fetchNearestHorBlockers((y<<STC)+(1<<CSF), blockYup2, blockYdown2);
 
-    if( blockYup1 != blockYup2 || blockYdown1 != blockYdown2 )
-        return false;
-    return true;
+    if( y > int((m_height-2)<<TILE_S) ) // Not enough space to compare two blockers!
+    {
+        return ( (y>>TILE_S)>=(blockYdown1>>CSF) );
+    }
+    else
+    {
+        fetchNearestHorBlockers((y<<STC)+(1<<CSF), blockYup2, blockYdown2);
+        return ( blockYup1 != blockYup2 || blockYdown1 != blockYdown2 );
+    }
 }
 
 bool CMap::detectLeftBlocker(const int x)
@@ -220,12 +230,17 @@ bool CMap::detectLeftBlocker(const int x)
     int blockXleft2 = 0;
     int blockXright2 = 0;
 
-    fetchNearestVertBlockers((x<<STC)-(1<<CSF), blockXleft1, blockXright1);
     fetchNearestVertBlockers(x<<STC, blockXleft2, blockXright2);
 
-    if( blockXleft1 != blockXleft2 || blockXright1 != blockXright2 )
-        return false;
-    return true;
+    if( x < (3<<TILE_S) ) // Not enough space for comparing two blockers!
+    {
+        return ( (x>>TILE_S)<=(blockXleft2>>CSF) );
+    }
+    else
+    {
+        fetchNearestVertBlockers((x<<STC)-(1<<CSF), blockXleft1, blockXright1);
+        return ( blockXleft1 != blockXleft2 || blockXright1 != blockXright2 );
+    }
 }
 
 bool CMap::detectRightBlocker(const int x)
@@ -236,11 +251,17 @@ bool CMap::detectRightBlocker(const int x)
     int blockXright2 = 0;
 
     fetchNearestVertBlockers(x<<STC, blockXleft1, blockXright1);
-    fetchNearestVertBlockers((x<<STC)+(1<<CSF), blockXleft2, blockXright2);
 
-    if( blockXleft1 != blockXleft2 || blockXright1 != blockXright2 )
-        return false;
-    return true;
+
+    if( x > int((m_width-2)<<TILE_S) ) // Not enough space to compare two blockers!
+    {
+        return ( (x>>TILE_S)>=(blockXright1>>CSF) );
+    }
+    else
+    {
+        fetchNearestVertBlockers((x<<STC)+(1<<CSF), blockXleft2, blockXright2);
+        return ( blockXleft1 != blockXleft2 || blockXright1 != blockXright2 );
+    }
 }
 
 void CMap::fetchNearestHorBlockers(const int y,
@@ -404,7 +425,7 @@ bool CMap::scrollRight(const bool force)
     {
         const auto scroll = plane.getScrollCoords();
 
-        if( !force && !detectRightBlocker(scroll.x+res_width))
+        if( !force && detectRightBlocker(scroll.x+res_width))
             return false;
 
         ok &= plane.scrollRightTest();
@@ -434,7 +455,7 @@ bool CMap::scrollLeft(const bool force)
     for(auto &plane : mScrollingPlanes)
     {
         const auto scroll = plane.getScrollCoords();
-        if( !force && !detectLeftBlocker(scroll.x-1) )
+        if( !force && detectLeftBlocker(scroll.x-1) )
             return false;
 
         ok &= plane.scrollLeftTest();
@@ -469,7 +490,7 @@ bool CMap::scrollDown(const bool force)
         const auto scroll = plane.getScrollCoords();
 
         if(!plane.isAxisYLocked() &&
-           !force && !detectBottomBlocker(scroll.y) )
+           !force && detectBottomBlocker(scroll.y) )
         {
             return false;
         }
@@ -497,7 +518,7 @@ bool CMap::scrollUp(const bool force)
         const auto scroll = plane.getScrollCoords();
 
         if(!plane.isAxisYLocked() &&
-           !force && !detectTopBlocker(scroll.y-1))
+           !force && detectTopBlocker(scroll.y-1))
         {
             return false;
         }
@@ -593,15 +614,15 @@ void CMap::collectBlockersCoordiantes()
 
     for(auto &plane : mScrollingPlanes)
     {
-        plane.insertVertBlocker(1<<CSF);
-        plane.insertHorBlocker(1<<CSF);
-
         int ep = gBehaviorEngine.getEpisode();
 
         if(engine == ENGINE_GALAXY)
         {
-            plane.insertVertBlocker(2<<CSF);
-            plane.insertHorBlocker(2<<CSF);
+            // The first two rows and columns should not be seen
+            plane.insertVertBlocker(0);
+            plane.insertHorBlocker(0);
+            plane.insertVertBlocker(1<<CSF);
+            plane.insertHorBlocker(1<<CSF);
 
             const word* map_ptr = mInfoPlane.getMapDataPtr();
 
@@ -622,17 +643,27 @@ void CMap::collectBlockersCoordiantes()
                     map_ptr++;
                 }
             }
+
+            // There exist end-of-map tiles we don't want to see
+            //plane.insertHorBlocker(((m_height-1)<<(CSF)));
+            //plane.insertVertBlocker((m_width-1)<<(CSF));
+            plane.insertHorBlocker(((m_height-2)<<(CSF)));
+            plane.insertVertBlocker((m_width-2)<<(CSF));
         }
         if(engine == ENGINE_VORTICON)
         {
-            // The first two rows and columns in vorticon keen should not be seen
-            plane.insertHorBlocker(2<<CSF);
-            plane.insertVertBlocker(2<<CSF);
-        }
+            // The first two rows and columns should not be seen. Is this correct for all maps?
+            plane.insertVertBlocker(0);
+            plane.insertHorBlocker(0);
+            plane.insertVertBlocker(1<<CSF);
+            plane.insertHorBlocker(1<<CSF);
 
-        // There exist end-of-map tiles we don't want to see
-        plane.insertHorBlocker(((m_height-2)<<(CSF)));
-        plane.insertVertBlocker((m_width-2)<<(CSF));
+            // There exist end-of-map tiles we don't want to see
+            //plane.insertHorBlocker(((m_height-1)<<(CSF)));
+            //plane.insertVertBlocker((m_width-1)<<(CSF));
+            plane.insertHorBlocker(((m_height-2)<<(CSF)));
+            plane.insertVertBlocker((m_width-2)<<(CSF));
+        }
     }
 }
 
