@@ -9,26 +9,25 @@
 #include <base/video/CVideoDriver.h>
 
 
-CFlash::CFlash(Uint32 msecs, Uint8 speed, Uint32 color) :
+CFlash::CFlash(Uint32 msecs, Uint8 speed,
+               const GsColor color) :
     m_StartTime(gTimer.getTicks()),
     m_RunTime(msecs),
-    m_Speed(speed),
-    m_Color(color)
+    m_Speed(speed)
 {
-    mFadeSurface.createFromSDLSfc(gVideoDriver.getBlitSurface());
-    mFadeSurface.fill(m_Color);
+    mFadeSurface.createCopy(gVideoDriver.getBlitSurface());
+    mFadeSurface.fillRGBA(color);
 }
 
-CFlash::CFlash(Uint32 msecs, Uint8 speed, Uint32 color, Uint8 m_maxalpha) :
+CFlash::CFlash(Uint32 msecs, Uint8 speed, const GsColor color, Uint8 m_maxalpha) :
     m_StartTime(gTimer.getTicks()),
     m_RunTime(msecs),
     m_Speed(speed),
-    m_Color(color),
     m_Style(FADE_NORMAL),
     m_MaxAlpha(m_maxalpha)
 {
-    mFadeSurface.createFromSDLSfc(gVideoDriver.getBlitSurface());
-    mFadeSurface.fill(m_Color);
+    mFadeSurface.createCopy(gVideoDriver.getBlitSurface());
+    mFadeSurface.fillRGBA(color);
 }
 
 // Process the flashing effect here
@@ -70,4 +69,5 @@ void CFlash::render()
     // Blit it and free temp surface
     GsWeakSurface blit(gVideoDriver.getBlitSurface());
     mFadeSurface.blitTo(blit);
+    //blit.fillRGB(0xFF,0xFF,0xFF);
 }

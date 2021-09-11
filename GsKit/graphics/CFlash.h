@@ -17,28 +17,29 @@
 #include <graphics/GsSurface.h>
 
 #include <base/GsTimer.h>
+#include <base/utils/Color.h>
 
 class CFlash : public CEffects
 {
 public:
 
-	enum fade_styles{ FADE_NORMAL, FADE_PULSE };
+    enum fade_styles{ FADE_NORMAL, FADE_PULSE };
 
-	CFlash(Uint32 msecs, Uint8 speed=1,Uint32 color=0xFFFFFF );
-	CFlash(Uint32 msecs, Uint8 speed=1,Uint32 color=0xFFFFFF, Uint8 m_maxalpha=128 );
+    CFlash(Uint32 msecs, Uint8 speed=1, const GsColor color=GsColor(0xFF, 0xFF, 0xFF) );
+    CFlash(Uint32 msecs, Uint8 speed=1, const GsColor color=GsColor(0xFF, 0xFF, 0xFF), Uint8 m_maxalpha=128 );
 
     void ponder(const float deltaT);
     void render();
 
 private:
 
-	enum fade_dir{ FADE_IN, FADE_OUT };
+    enum fade_dir{ FADE_IN, FADE_OUT };
 
-	Uint32 m_StartTime;
-	Uint32 m_RunTime;
+    Uint32 m_StartTime;
+    Uint32 m_RunTime;
 
-	Uint8 m_Speed;
-	Uint32 m_Color;
+    Uint8 m_Speed;
+    GsColor m_Color;
     Uint8 m_Alpha = 0;
     fade_dir m_FadeDir = FADE_IN;
     Uint8 m_Style = FADE_PULSE;
