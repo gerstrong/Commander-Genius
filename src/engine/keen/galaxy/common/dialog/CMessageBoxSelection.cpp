@@ -23,29 +23,26 @@ const int BLEND_SPEED = 10;
 CMessageBoxSelection::CMessageBoxSelection( const std::string& Text,
                                             const std::list<TextEventMatchOption> &Options) :
 CMessageBoxGalaxy(0, Text, nullptr),
-m_Options(Options),
-m_selection(0),
-blend(0),
-blendup(true)
+m_Options(Options)
 {
-	mText += "\n";
-	// Center that dialog box	
-	for( auto &op : m_Options )
-	{
-	    mText += "\n";
-	    mText += op.text;	    
-	}
-	
-	mText += "\n\n";
-	
-	auto &Font = gGraphics.getFontLegacy(FONT_ID);
+    mText += "\n";
+    // Center that dialog box
+    for( auto &op : m_Options )
+    {
+        mText += "\n";
+        mText += op.text;
+    }
 
-	mTextHeight = Font.getPixelTextHeight()*calcNumLines(mText);
+    mText += "\n\n";
 
-	// Create a surface for that
+    auto &Font = gGraphics.getFontLegacy(FONT_ID);
+
+    mTextHeight = Font.getPixelTextHeight()*calcNumLines(mText);
+
+    // Create a surface for that
     GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
-    mMBRect.w = Font.calcPixelTextWidth(mText)+16;
-	mMBRect.h = Font.getPixelTextHeight()*(calcNumLines(mText)+1)+16;
+    mMBRect.w = Font.calcPixelTextWidth(mText,1);
+    mMBRect.h = Font.getPixelTextHeight()*(calcNumLines(mText)+1)+16;
     mMBRect.x = (gameRes.dim.x-mMBRect.w)/2;
     mMBRect.y = (gameRes.dim.y-mMBRect.h)/2;
 }
@@ -58,50 +55,50 @@ void CMessageBoxSelection::init()
     mMBSurface.createRGBSurface(mMBRect);
     mMBSurface.makeBlitCompatible();
 
-	initGalaxyFrame();
+    initGalaxyFrame();
 
-	SDL_Rect rect = mMBRect;
-	rect.x = 8;
-	rect.y = 10;
+    SDL_Rect rect = mMBRect;
+    rect.x = 8;
+    rect.y = 10;
     rect.w -= 16;
-	rect.h -= 16;
-    
-	auto &Font = gGraphics.getFontLegacy(FONT_ID);
+    rect.h -= 16;
+
+    auto &Font = gGraphics.getFontLegacy(FONT_ID);
 
     GsSurface coloredTextSurface;
     coloredTextSurface.createRGBSurface(rect);
 
-	const Uint32 oldColor = Font.getFGColor();
+    const Uint32 oldColor = Font.getFGColor();
 
     Font.setupColor( weakBlit.mapRGB(0,0,0) );
 
-	auto textList = explode(mText, "\n");
-	
-	int yoff = 0;
-	for( auto &it : textList  )
-	{	    
-        int xmid = (rect.w-Font.calcPixelTextWidth(it))/2+rect.x;
+    auto textList = explode(mText, "\n");
+
+    int yoff = 0;
+    for( auto &it : textList  )
+    {
+        int xmid = (rect.w-Font.calcPixelTextWidth(it,1))/2+rect.x;
         Font.drawFont( coloredTextSurface, it, xmid, yoff, false);
-	    yoff += 12;
-	}	
+        yoff += 12;
+    }
 
     coloredTextSurface.makeBlitCompatible();
 
-	Font.setupColor( oldColor );
+    Font.setupColor( oldColor );
 
     coloredTextSurface.blitTo(mMBSurface, rect);
-	
-	// Create the Border and with two Surfaces of different colors create the rectangle
-	SDL_Rect selRect;
-	SDL_Rect cutRect;
-	selRect.x = selRect.y = 0;
+
+    // Create the Border and with two Surfaces of different colors create the rectangle
+    SDL_Rect selRect;
+    SDL_Rect cutRect;
+    selRect.x = selRect.y = 0;
     selRect.w = rect.w-rect.x;
-	selRect.h = 14;
-	cutRect = selRect;
-	cutRect.x += 2;
-	cutRect.y += 2;
+    selRect.h = 14;
+    cutRect = selRect;
+    cutRect.x += 2;
+    cutRect.y += 2;
     cutRect.w -= 4;
-	cutRect.h -= 4;
+    cutRect.h -= 4;
 
     mSelSurface1.createRGBSurface(selRect);
     mSelSurface2.createRGBSurface(selRect);
@@ -123,42 +120,42 @@ void CMessageBoxSelection::init()
 
 void CMessageBoxSelection::ponder(const int deltaT)
 {
-	// Look, if somebody pressed a button, and close this dialog!
-	if(gInput.getPressedCommand(IC_JUMP) || gInput.getPressedKey(KENTER) )
-	{
-		for( int c=0 ; c<m_selection ; c++ )
+    // Look, if somebody pressed a button, and close this dialog!
+    if(gInput.getPressedCommand(IC_JUMP) || gInput.getPressedKey(KENTER) )
+    {
+        for( int c=0 ; c<m_selection ; c++ )
         {
-			m_Options.pop_front();
+            m_Options.pop_front();
         }
 
         gEventManager.add( m_Options.front().event );
 
-		mMustClose = true;
-		gInput.flushCommands();
-		return;
-	}
-	else if(gInput.getPressedCommand(IC_DOWN))
-	{
-		if(m_selection >= ((int)m_Options.size()-1) )
+        mMustClose = true;
+        gInput.flushCommands();
+        return;
+    }
+    else if(gInput.getPressedCommand(IC_DOWN))
+    {
+        if(m_selection >= ((int)m_Options.size()-1) )
         {
             m_selection = 0;
         }
-		else
+        else
         {
-			m_selection++;
+            m_selection++;
         }
-	}
-	else if(gInput.getPressedCommand(IC_UP))
-	{
-		if(m_selection <= 0 )
+    }
+    else if(gInput.getPressedCommand(IC_UP))
+    {
+        if(m_selection <= 0 )
         {
-			m_selection = m_Options.size()-1;
+            m_selection = m_Options.size()-1;
         }
-		else
+        else
         {
-			m_selection--;
+            m_selection--;
         }
-	}
+    }
 
     // Smooth animation of the rectangle
     if(mSmoothCursor < 12*m_selection)

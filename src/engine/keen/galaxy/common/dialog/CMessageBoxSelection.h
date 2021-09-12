@@ -27,29 +27,29 @@ namespace galaxy
 class CMessageBoxSelection : public CMessageBoxGalaxy
 {
 public:
-	/**
-	 * \brief This constructor creates a typical Keen 4 Message Box with some
-	 * 		  Options that can be selected
-	 * \param Text 				Message to be shown
-	 */
+    /**
+     * \brief This constructor creates a typical Keen 4 Message Box with some
+     * 		  Options that can be selected
+     * \param Text 				Message to be shown
+     */
     CMessageBoxSelection( const std::string& Text,
                           const std::list<TextEventMatchOption> &Options );
-	
+
     void init() override;
 
-	std::list<TextEventMatchOption> m_Options;
+    std::list<TextEventMatchOption> m_Options;
 
-	int m_selection;
-	
+    int m_selection = 0;
+
     void ponder(const int deltaT) override;
     void render() override;
-	
+
 private:
 
     GsSurface mSelSurface1, mSelSurface2;
 
-	int blend;
-	bool blendup;
+    int blend = 0;
+    bool blendup = true;
 
     int mSmoothCursor = 0; /** Smooth animation of the cursor*/
 };
