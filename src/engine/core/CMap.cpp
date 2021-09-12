@@ -309,7 +309,7 @@ bool CMap::findTile(const unsigned int tile,
     assert(int(mScrollingPlanes.size()+1) > plane);
 
     // The last plane is seen by many engines as the info. Should be changed in future
-    if(int(mScrollingPlanes.size()) == 2)
+    if(plane >= int(mScrollingPlanes.size()))
     {
         return mInfoPlane.findTile(tile, xout, yout);
     }
