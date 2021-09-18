@@ -1,5 +1,5 @@
 # CMake file for development of Commander Genius (taken from OLX)
-# This CMake file is used under Linux normally. 
+# This CMake file is used under Linux normally.
 
 cmake_minimum_required(VERSION 3.7)
 
@@ -36,7 +36,7 @@ endif(USE_VIRTUALPAD)
 OPTION(NINTENDO_SWITCH "Build for Nintendo Switch" No)
 
 if(NINTENDO_SWITCH)
-    ADD_DEFINITIONS(-D__SWITCH__)    
+    ADD_DEFINITIONS(-D__SWITCH__)
 endif(NINTENDO_SWITCH)
 
 
@@ -106,7 +106,7 @@ endif()
 # Modules path located at GsKit/CMake
 set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${CMAKE_CURRENT_SOURCE_DIR}/GsKit/CMake")
 
-if(${CMAKE_VERSION} VERSION_GREATER "3.8.0")
+if(${CMAKE_VERSION} VERSION_GREATER "3.0.0")
     set(CMAKE_CXX_STANDARD 17)
     set(CMAKE_CXX_STANDARD_REQUIRED ON)
 else()
