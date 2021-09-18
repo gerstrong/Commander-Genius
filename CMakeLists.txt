@@ -106,7 +106,7 @@ endif()
 # Modules path located at GsKit/CMake
 set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${CMAKE_CURRENT_SOURCE_DIR}/GsKit/CMake")
 
-if(${CMAKE_VERSION} VERSION_GREATER "3.0.0")
+if(${CMAKE_VERSION} VERSION_GREATER "3.8.0")
     set(CMAKE_CXX_STANDARD 17)
     set(CMAKE_CXX_STANDARD_REQUIRED ON)
 else()
@@ -135,7 +135,7 @@ string(REGEX REPLACE "[\r\n]" "" CG_VERSION "${CG_VERSION}")
 
 # Since shell script get_version is not processed properly on windows, we have to define manually here.
 # TODO: Better system for defining the version
-set(CG_VERSION "2.8.3")
+set(CG_VERSION "3.0.0")
 
 # Generate the README file with the correct version string
 configure_file(README.md ${CMAKE_BINARY_DIR}/README.md COPYONLY)
