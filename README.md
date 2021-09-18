@@ -659,6 +659,10 @@ Of course you can send an email, but GitLab is more useful to me:
 
 https://gitlab.com/Dringgstein/Commander-Genius/issues
 
+For the Cosmos Engine please use this page:
+
+https://gitlab.com/Dringgstein/cosmos/-/issues
+
 
 # ACKNOWLEDGEMENTS
 

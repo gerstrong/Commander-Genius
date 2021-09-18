@@ -77,7 +77,12 @@ bool ScrollingPlane::scrollLeftTest()
 
 bool ScrollingPlane::scrollLeft(GsTilemap &tilemap)
 {
-    auto &scrollSfc = gVideoDriver.getScrollSurfaceVec().at(mScrollSfcIdx);
+    auto &scrollSfcVec = gVideoDriver.getScrollSurfaceVec();
+
+    if(scrollSfcVec.size()<=mScrollSfcIdx)
+        return false;
+
+    auto &scrollSfc = scrollSfcVec.at(mScrollSfcIdx);
     auto &scroll = mScrollCoords;
 
     if(mSubscrollCoords.x > 0)
@@ -126,11 +131,16 @@ bool ScrollingPlane::scrollRightTest()
 
 // scrolls the map one pixel to the right
 bool ScrollingPlane::scrollRight(GsTilemap &tilemap)
-{   
+{
     if(gVideoDriver.getScrollSurfaceVec().empty())
         return false;
 
-    auto &scrollSfc = gVideoDriver.getScrollSurfaceVec().at(mScrollSfcIdx);
+    auto &scrollSfcVec = gVideoDriver.getScrollSurfaceVec();
+
+    if(scrollSfcVec.size()<=mScrollSfcIdx)
+        return false;
+
+    auto &scrollSfc = scrollSfcVec.at(mScrollSfcIdx);
     auto &scroll = mScrollCoords;
 
     if(mSubscrollCoords.x < mSubscrollUnits)
@@ -167,7 +177,12 @@ bool ScrollingPlane::scrollUp(GsTilemap &tilemap, [[maybe_unused]] const bool fo
     if(mLockAxisY)
         return true;
 
-    auto &scrollSfc = gVideoDriver.getScrollSurfaceVec().at(mScrollSfcIdx);
+    auto &scrollSfcVec = gVideoDriver.getScrollSurfaceVec();
+
+    if(scrollSfcVec.size()<=mScrollSfcIdx)
+        return false;
+
+    auto &scrollSfc = scrollSfcVec.at(mScrollSfcIdx);
     auto &scroll = mScrollCoords;
 
     if( scroll.y <= 0 )
@@ -215,6 +230,9 @@ bool ScrollingPlane::scrollDown(GsTilemap &tilemap, const bool force)
     const int res_height = gVideoDriver.getGameResolution().dim.y - mPaddingBottom;
 
     auto &scrollSfcVec = gVideoDriver.getScrollSurfaceVec();
+
+    if(scrollSfcVec.size()<=mScrollSfcIdx)
+        return false;
 
     auto &scrollSfc = scrollSfcVec.at(mScrollSfcIdx);
     auto &scroll = mScrollCoords;
@@ -313,7 +331,7 @@ void ScrollingPlane::drawHstripe(GsTilemap &tilemap,
 void ScrollingPlane::drawVstripe(GsTilemap &tilemap,
                                  const unsigned int x,
                                  const unsigned int mpx)
-{        
+{
     auto &scrollSfc = gVideoDriver.getScrollSurfaceVec().at(mScrollSfcIdx);
     const auto dim = scrollSfc.getSquareSize();
 
@@ -395,7 +413,12 @@ void ScrollingPlane::animateAllTiles(GsTilemap &tilemap)
     if(mScrollSfcIdx<0 || mScrollSfcIdx>3)
         return;
 
-    auto &scrollSfc = gVideoDriver.getScrollSurfaceVec().at(mScrollSfcIdx);
+    auto &scrollSfcVec = gVideoDriver.getScrollSurfaceVec();
+
+    if(scrollSfcVec.size()<=mScrollSfcIdx)
+        return;
+
+    auto &scrollSfc = scrollSfcVec.at(mScrollSfcIdx);
     auto &tileProperties = gBehaviorEngine.getTileProperties(mScrollSfcIdx);
     word *tilePtr = getMapDataPtr();
 
@@ -599,7 +622,12 @@ void ScrollingPlane::redrawPlaneAt(GsTilemap &tilemap,
                                    const Uint32 mx,
                                    const Uint32 my)
 {
-    auto &scrollSfc = gVideoDriver.getScrollSurfaceVec().at(mScrollSfcIdx);
+    auto &scrollSfcVec = gVideoDriver.getScrollSurfaceVec();
+
+    if(scrollSfcVec.size()<mScrollSfcIdx)
+        return;
+
+    auto &scrollSfc = scrollSfcVec.at(mScrollSfcIdx);
     SDL_Surface *ScrollSurfaceRaw = scrollSfc.getScrollSurface().getSDLSurface();
 
     // Go through the list and just draw all the tiles that need to be animated
