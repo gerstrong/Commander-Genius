@@ -74,35 +74,49 @@ void CCamera::setPosition(const GsVec2D<int>& newpos)
     const auto screenWidth = gameRes.dim.x<<STC;
     const auto screenHeight = gameRes.dim.y<<STC;
 
+    // Upper-left corner where the screen rendering start point
     int cam_x = newpos.x-(screenWidth/2);
     int cam_y = newpos.y-(screenHeight/2);
 
-    const int minimumEdgeDist = (2<<CSF)+1;
-    const int mapWidth = ((mpMap->m_width-1)<<CSF);
-    const int maxHeight = ((mpMap->m_height-1)<<CSF);
+    int upCoord, downCoord, leftCoord, rightCoord;
+    mpMap->fetchNearestHorBlockers(newpos.y, upCoord, downCoord);
+    mpMap->fetchNearestVertBlockers(newpos.x, leftCoord, rightCoord);
 
-    if(cam_x<minimumEdgeDist)
+    const int minimumEdgeDistX = leftCoord+(1<<CSF)+1;
+    const int minimumEdgeDistY = upCoord+(1<<CSF)+1;
+    const int maxWidth = rightCoord-(leftCoord+(1<<CSF));
+    const int maxHeight = downCoord-(upCoord+(1<<CSF));
+
+    if(cam_x<minimumEdgeDistX)
     {
-        cam_x = minimumEdgeDist;
+        cam_x = minimumEdgeDistX;
     }
-    else if(cam_x+screenWidth>mapWidth)
+    else if(cam_x+screenWidth>rightCoord)
     {
-        cam_x = mapWidth-screenWidth;
+        cam_x = rightCoord-screenWidth;
+    }
+    else if(cam_x+maxWidth>rightCoord)
+    {
+        cam_y = rightCoord-screenWidth;
     }
 
-    if(cam_y<minimumEdgeDist)
+    if(maxHeight < screenHeight)
     {
-        cam_y = minimumEdgeDist;
+        cam_y = minimumEdgeDistY;
     }
-    else if(cam_y+screenHeight>maxHeight)
+    else if(cam_y<minimumEdgeDistY)
     {
-        cam_y = maxHeight-screenHeight;
+        cam_y = minimumEdgeDistY;
+    }
+    else if(cam_y+screenHeight>downCoord)
+    {
+        cam_y = downCoord-screenHeight;
     }
 
     moveToForce(newpos);
 
     // Only the lead camera may change the scroll position
-    if(mCamlead != mp_AttachedObject->getPlayerIdx())
+    if(mp_AttachedObject && mCamlead != mp_AttachedObject->getPlayerIdx())
     {
         return;
     }
