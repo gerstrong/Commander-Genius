@@ -46,6 +46,13 @@
 </categories>
 
   <releases>
+    <release version="3.0.2" date="2021-09-19">
+      <description>
+        <p>Added Cosmos Cosmic Adventure</p>      
+        <p>Improved compatibility</p>
+        <p>More memory fixes</p>        
+      </description>  
+    </release>    
     <release version="2.8.2.5" date="2021-07-08">
       <description>
         <p>More memory fixes</p>
