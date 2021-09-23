@@ -40,8 +40,9 @@ static void CarmackExpand(void *src, void *dest, int expLength)
                 // Makes an output starting with A7
                 ch &= 0xFF00;
                 ch |= GETBYTE(reinterpret_cast<gs_byte*>(srcptr));
-                srcptr = reinterpret_cast<uint16_t *>(
-                            reinterpret_cast<uint8_t *>(srcptr) + 1);
+
+                uint8_t *srcptr_8 = (uint8_t *)(srcptr) + 1;
+                memcpy(&srcptr, &srcptr_8, sizeof(uint8_t *));
 
                 *(dstptr++) = ch;
                 expLength--;
@@ -49,8 +50,9 @@ static void CarmackExpand(void *src, void *dest, int expLength)
             else
             {
                 offset = GETBYTE(reinterpret_cast<gs_byte*>(srcptr));
-                srcptr = reinterpret_cast<uint16_t *>(
-                            reinterpret_cast<uint8_t *>(srcptr) + 1);
+
+                uint8_t *srcptr_8 = (uint8_t *)(srcptr) + 1;
+                memcpy(&srcptr, &srcptr_8, sizeof(uint8_t *));
 
                 runptr = dstptr - offset;
                 expLength -= count;
@@ -65,8 +67,9 @@ static void CarmackExpand(void *src, void *dest, int expLength)
                 // Makes an output starting with A8
                 ch &= 0xFF00;
                 ch |= GETBYTE(reinterpret_cast<gs_byte*>(srcptr));
-                srcptr = reinterpret_cast<uint16_t *>(
-                            reinterpret_cast<uint8_t *>(srcptr) + 1);
+
+                uint8_t *srcptr_8 = (uint8_t *)(srcptr) + 1;
+                memcpy(&srcptr, &srcptr_8, sizeof(uint8_t *));
 
                 *(dstptr++) = ch;
                 expLength--;
