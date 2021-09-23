@@ -135,7 +135,7 @@ string(REGEX REPLACE "[\r\n]" "" CG_VERSION "${CG_VERSION}")
 
 # Since shell script get_version is not processed properly on windows, we have to define manually here.
 # TODO: Better system for defining the version
-set(CG_VERSION "3.0.0")
+set(CG_VERSION "3.0.3")
 
 # Generate the README file with the correct version string
 configure_file(README.md ${CMAKE_BINARY_DIR}/README.md COPYONLY)
