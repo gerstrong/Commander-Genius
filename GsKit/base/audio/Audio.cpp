@@ -24,20 +24,20 @@
 static const unsigned int numAvailableRates = 3;
 static const int availableRates[numAvailableRates]=
 {
-		11025,
-		22050,
-		44100
+        11025,
+        22050,
+        44100
 };
 
 #else
 static const unsigned int numAvailableRates = 5;
 static const int availableRates[numAvailableRates]=
 {
-		11025,
-		22050,
-		44100,
-		48000,
-		49716
+        11025,
+        22050,
+        44100,
+        48000,
+        49716
 };
 #endif
 
@@ -45,9 +45,9 @@ static const int availableRates[numAvailableRates]=
 Audio::Audio()
 {
 
-	mAudioSpec.channels = 2; // Stereo Sound
+    mAudioSpec.channels = 2; // Stereo Sound
     mAudioSpec.format = MIX_DEFAULT_FORMAT; // 16-bit sound
-	mAudioSpec.freq = 44100; // high quality
+    mAudioSpec.freq = 44100; // high quality
 
     updateFuncPtrs();
 
@@ -76,12 +76,12 @@ bool Audio::init()
     }
 
     // now start up the SDL sound system
-	mAudioSpec.silence = 0;
+    mAudioSpec.silence = 0;
 
-	switch (mAudioSpec.freq)
-	{
-		case 11025: mAudioSpec.samples = 256; break;
-		case 22050: mAudioSpec.samples = 512; break;
+    switch (mAudioSpec.freq)
+    {
+        case 11025: mAudioSpec.samples = 256; break;
+        case 22050: mAudioSpec.samples = 512; break;
         case 44100: mAudioSpec.samples = 1024; break;
         default: mAudioSpec.samples = 2048; break;
     }
@@ -97,7 +97,7 @@ bool Audio::init()
              << "mAudioSpec.samples = " << mAudioSpec.samples << CLogFile::endl
              << CLogFile::endl;
 
-    // Initialize audio system    
+    // Initialize audio system
     if( Mix_OpenAudioDevice(mAudioSpec.freq,
                             mAudioSpec.format,
                             mAudioSpec.channels,
@@ -113,7 +113,7 @@ bool Audio::init()
     {
         int n = Mix_GetNumChunkDecoders();
 
-        gLogging << "There are "<< n << " available chunk(sample) decoder(s):" << "\n";
+        gLogging << "There are "<< n << " available chunk(sample) decoder(s):" << CLogFile::endl;
 
         for(int i=0; i<n; ++i)
         {
@@ -122,7 +122,7 @@ bool Audio::init()
 
         n = Mix_GetNumMusicDecoders();
 
-        gLogging << "There are " << n << " available music decoder(s):" << "\n";
+        gLogging << "There are " << n << " available music decoder(s):" << CLogFile::endl;
 
         for(int i=0; i<n; ++i)
         {
@@ -146,7 +146,8 @@ bool Audio::init()
     gLogging << "Opened audio at " << audio_rate << " Hz "
              << bits << " bit "
              << (audio_channels>1?"stereo":"mono")
-             << ", " << static_cast<int>(mAudioSpec.samples) << " bytes audio samples.\n";
+             << ", " << static_cast<int>(mAudioSpec.samples)
+             << " bytes audio samples." << CLogFile::endl;
 
     const unsigned int channels = 32;
     Mix_AllocateChannels(channels);
@@ -159,10 +160,10 @@ bool Audio::init()
     Mix_VolumeMusic(m_MusicVolume);
     Mix_Volume(-1, m_SoundVolume);
 
-    gLogging << "Sound System: SDL sound system initialized.<br>";
+    gLogging << "Sound System: SDL sound system initialized." << CLogFile::endl;
 
     // Let's initialize the OPL Emulator here!
-	m_OPL_Player.init();
+    m_OPL_Player.init();
 
     updateFuncPtrs();
 
@@ -172,7 +173,7 @@ bool Audio::init()
         mLoadAudioResourcesFcn();
     }
 
-	return true;
+    return true;
 }
 
 
@@ -204,7 +205,7 @@ void Audio::updateFuncPtrs()
 void Audio::destroy()
 {
 
-	stopAllSounds();
+    stopAllSounds();
 
     Mix_HaltChannel(-1);
 
@@ -213,10 +214,10 @@ void Audio::destroy()
         mSndChnlVec.clear();
     }
 
-	// Shutdown the OPL Emulator here!
-	gLogging.ftextOut("SoundDrv_Stop(): shut down.<br>");
+    // Shutdown the OPL Emulator here!
+    gLogging << "SoundDrv_Stop(): shut down." << CLogFile::endl;
 
-	m_OPL_Player.shutdown();
+    m_OPL_Player.shutdown();
 
     Mix_CloseAudio();
 
@@ -228,7 +229,7 @@ void Audio::stopAllSounds()
 
     for( auto &snd_chnl : mSndChnlVec )
     {
-		snd_chnl.stopSound();
+        snd_chnl.stopSound();
     }
 
 }
@@ -257,15 +258,15 @@ bool Audio::isPlaying(const GameSound snd)
 
     std::vector<CSoundChannel>::iterator snd_chnl = mSndChnlVec.begin();
     for( ; snd_chnl != mSndChnlVec.end() ; snd_chnl++ )
-	{
-		if (snd_chnl->isPlaying())
-		{
-			CSoundSlot *pSlotToStop = mpAudioRessources->getSlotPtrAt(snd);
-			if (snd_chnl->getCurrentSoundPtr() == pSlotToStop)
-				return true;
-		}
+    {
+        if (snd_chnl->isPlaying())
+        {
+            CSoundSlot *pSlotToStop = mpAudioRessources->getSlotPtrAt(snd);
+            if (snd_chnl->getCurrentSoundPtr() == pSlotToStop)
+                return true;
+        }
     }
-	return false;
+    return false;
 }
 
 // if sound snd is currently playing, stop it immediately
@@ -274,16 +275,16 @@ void Audio::stopSound(const GameSound snd)
 
     std::vector<CSoundChannel>::iterator snd_chnl = mSndChnlVec.begin();
     for( ; snd_chnl != mSndChnlVec.end() ; snd_chnl++)
-	{
-		if (snd_chnl->isPlaying())
-		{
+    {
+        if (snd_chnl->isPlaying())
+        {
             CSoundSlot *pSlotToStop =  mpAudioRessources->getSlotPtrAt(snd);
             if( snd_chnl->getCurrentSoundPtr() == pSlotToStop )
             {
                 snd_chnl->stopSound();
             }
         }
-	}
+    }
 
 }
 
@@ -307,7 +308,8 @@ void Audio::playInternalSound(const unsigned char *data,
 
     if( chnl < 0 )
     {
-        gLogging.ftextOut("Mix_PlayChannel: %s\n",Mix_GetError());
+        gLogging << "Mix_PlayChannel: " << Mix_GetError()
+            << CLogFile::endl;
         return;
     }
 }
@@ -326,7 +328,8 @@ void Audio::playSoundFile(const std::string &filename)
 
     if(Mix_PlayChannel(-1, sample, 0)==-1)
     {
-        gLogging.ftextOut("Mix_PlayChannel: %s\n",Mix_GetError());
+        gLogging << "Mix_PlayChannel: " << Mix_GetError()
+                 << CLogFile::endl;
     }
 }
 
@@ -345,14 +348,12 @@ void Audio::setSoundVolume(const Uint8 volume,
 void Audio::setMusicVolume(const Uint8 volume,
                            const bool updateMixer)
 {
-
     m_MusicVolume = volume;
 
     if(updateMixer)
     {
         Mix_VolumeMusic(volume);
     }
-
 }
 
 
@@ -363,29 +364,26 @@ bool Audio::forcedisPlaying()
     std::vector<CSoundChannel>::iterator snd_chnl = mSndChnlVec.begin();
     for( ; snd_chnl != mSndChnlVec.end() ; snd_chnl++)
     {
-		if(snd_chnl->isForcedPlaying())
+        if(snd_chnl->isForcedPlaying())
         {
-			return true;
+            return true;
         }
     }
 
-	return false;
+    return false;
 }
 
 
 void Audio::playSound(const GameSound snd,
                       const SoundPlayMode mode )
 {
-
-	playStereosound(snd, mode, 0);
-
+    playStereosound(snd, mode, 0);
 }
 
 void Audio::playStereofromCoord(const GameSound snd,
                                 const SoundPlayMode mode,
                                 const int xCoord )
 {
-
     if(mAudioSpec.channels == 2)
     {
         int bal = (xCoord - (320>>1));	// Faster calculation of balance transformation
@@ -405,36 +403,34 @@ void Audio::playStereofromCoord(const GameSound snd,
     {
         playSound(snd, mode);
     }
-
 }
 
 void Audio::playStereosound(const GameSound snd,
                             const SoundPlayMode mode,
                             const short balance)
-{   
-
+{
     if( mSndChnlVec.empty() ) return;
 
     if( !mpAudioRessources ) return;
 
-	CSoundSlot *mp_Slots = mpAudioRessources->getSlotPtr();
+    CSoundSlot *mp_Slots = mpAudioRessources->getSlotPtr();
     int slotplay = sndSlotMap[snd];
 
-	const int speaker_snds_end_off = mpAudioRessources->getNumberofSounds()/2;
+    const int speaker_snds_end_off = mpAudioRessources->getNumberofSounds()/2;
 
     if (slotplay >= speaker_snds_end_off)
     {
-		return;
+        return;
     }
 
     if (mUseSoundBlaster && mp_Slots[slotplay+speaker_snds_end_off].getSoundData())
     {
-		slotplay += speaker_snds_end_off;
+        slotplay += speaker_snds_end_off;
     }
 
     if (mode == SoundPlayMode::PLAY_NORESTART && isPlaying(snd))
     {
-		return;
+        return;
     }
 
     playStereosoundSlot(static_cast<unsigned char>(slotplay), mode, balance);
@@ -455,16 +451,16 @@ void Audio::playStereosoundSlot(unsigned char slotplay,
         mPauseGameplay = true;
     }
 
-	// stop all other sounds if this sound has maximum priority
+    // stop all other sounds if this sound has maximum priority
     if ( mode == SoundPlayMode::PLAY_FORCE )
     {
-		stopAllSounds();
+        stopAllSounds();
     }
 
 
-	// first try to find an empty channel
+    // first try to find an empty channel
     for( auto &sndChnl : mSndChnlVec)
-	{
+    {
         // check if channel is still playing
 
         auto slotPtr = sndChnl.getCurrentSoundPtr();
@@ -533,10 +529,10 @@ bool Audio::pauseGamePlay()
 std::list<std::string> Audio::getAvailableRateList() const
 {
 
-	std::list<std::string> rateStrList;
+    std::list<std::string> rateStrList;
 
-	for( unsigned int i=0 ; i<numAvailableRates ; i++ )
-		rateStrList.push_back( itoa(availableRates[i]) );
+    for( unsigned int i=0 ; i<numAvailableRates ; i++ )
+        rateStrList.push_back( itoa(availableRates[i]) );
 
     return rateStrList;
 }
@@ -580,19 +576,19 @@ void Audio::setLoadAudioResourcesFcn(const std::function<bool ()> loadAudioResou
 
 
 void Audio::setSettings( const SDL_AudioSpec& audioSpec,
-	 	  	  	  	  	  const bool useSB )
+                          const bool useSB )
 {
     mUseSoundBlaster = useSB;
 
-	// Check if rate matches to those available in the system
-	for( unsigned int i=0 ; i<numAvailableRates ; i++ )
-	{
-		if( availableRates[i] == audioSpec.freq )
-		{
-			mAudioSpec = audioSpec;
-			break;
-		}
-	}
+    // Check if rate matches to those available in the system
+    for( unsigned int i=0 ; i<numAvailableRates ; i++ )
+    {
+        if( availableRates[i] == audioSpec.freq )
+        {
+            mAudioSpec = audioSpec;
+            break;
+        }
+    }
 
     updateFuncPtrs();
 
@@ -602,13 +598,13 @@ void Audio::setSettings( const int rate,
                          const int channels,
                          const int format,
                          const bool useSB )
-{    
+{
 
-	SDL_AudioSpec nAudio = mAudioSpec;
+    SDL_AudioSpec nAudio = mAudioSpec;
 
-	nAudio.freq = rate;
+    nAudio.freq = rate;
     nAudio.channels = Uint8(channels);
     nAudio.format = SDL_AudioFormat(format);
 
-	setSettings(nAudio, useSB);
+    setSettings(nAudio, useSB);
 }

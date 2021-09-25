@@ -136,7 +136,7 @@ int downloadFile(const std::string &filename, int &progress,
     const std::string outputPath = JoinPaths(downloadDirPath, filename);
 
     CURLcode res = CURLE_OK;
-    struct myprogress prog;                    
+    struct myprogress prog;
 
     CURL *curl = curl_easy_init();
 
@@ -189,7 +189,7 @@ int downloadFile(const std::string &filename, int &progress,
           progress = 1000;
       }
       else
-      {                    
+      {
           /* always cleanup */
           curl_easy_cleanup(curl);
 
@@ -198,7 +198,7 @@ int downloadFile(const std::string &filename, int &progress,
       }
 
       // output any error to the central CG Log
-      if(res != CURLE_OK)          
+      if(res != CURLE_OK)
       {
           gLogging.textOut(FONTCOLORS::RED,"%s<br>", curl_easy_strerror(res));
       }
@@ -223,7 +223,7 @@ int downloadFile(const std::string &filename, int &progress,
     return int(res);
 }
 
-#define TRACE_NODE(x) gLogging << #x"=" << x << "\n"
+#define TRACE_NODE(x) gLogging << #x"=" << x << CLogFile::endl;
 
 bool GameDownloader::readGamesNode(const GsKit::ptree &pt)
 {
@@ -235,7 +235,7 @@ bool GameDownloader::readGamesNode(const GsKit::ptree &pt)
             if(gameNode.first == "<xmlcomment>")
                 continue;
 
-            GameCatalogueEntry gce;            
+            GameCatalogueEntry gce;
 
             gce.mVersionCode = gameNode.second.get<int>("<xmlattr>.versioncode");
             TRACE_NODE(gce.mVersionCode);
@@ -248,8 +248,9 @@ bool GameDownloader::readGamesNode(const GsKit::ptree &pt)
 
             if(gce.mVersionCode > CGVERSIONCODE)
             {
-                gLogging.ftextOut("Game %s not supported. Required Version code %d, got %d.\n<br>",
+                gLogging.ftextOut("Game %s not supported. Required Version code %d, got %d.",
                                   gce.mName.c_str(), CGVERSIONCODE, gce.mVersionCode );
+                gLogging << CLogFile::endl;
                 continue;
             }
 
@@ -344,9 +345,9 @@ bool GameDownloader::loadCatalogue(const std::string &catalogueFile)
 
         bool ok = false;
 
-        gLogging << "Reading Games from Store...\n" ;
+        gLogging << "Reading Games from Store." << CLogFile::endl;
         ok |= readGamesNode(pt);
-        gLogging << "Reading Games from Store (Legacy)...\n" ;
+        gLogging << "Reading Games from Store (Legacy)..." << CLogFile::endl ;
         ok |= readLegacyCatalogue(pt);
 
         return ok;
@@ -359,12 +360,12 @@ bool GameDownloader::loadCatalogue(const std::string &catalogueFile)
 
 bool GameDownloader::downloadCatalogue()
 {
-    pCancelDownload = &mCancelDownload;    
+    pCancelDownload = &mCancelDownload;
 
     const int res = downloadFile(mCatalogFName, mProgress, "");
 
     if(res==0)
-    {                
+    {
         return true;
     }
 

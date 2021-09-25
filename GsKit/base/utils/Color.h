@@ -25,9 +25,9 @@ typedef unsigned short Uint16;
 inline Uint32 SDLColourToNativeColour(Uint32 pixel, short bpp)
 {
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
-	return (pixel << (32 - 8 * bpp));
+    return (pixel << (32 - 8 * bpp));
 #else
-	return pixel;
+    return pixel;
 #endif
 }
 */
@@ -37,9 +37,9 @@ inline Uint32 SDLColourToNativeColour(Uint32 pixel, short bpp)
 inline Uint32 NativeColourToSDLColour(Uint32 pixel, short bpp)
 {
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
-	return (pixel >> (32 - 8 * bpp));
+    return (pixel >> (32 - 8 * bpp));
 #else
-	return pixel;
+    return pixel;
 #endif
 }
 */
@@ -49,33 +49,33 @@ inline Uint32 NativeColourToSDLColour(Uint32 pixel, short bpp)
 /*
 inline Uint8 GetR(Uint32 pixel, SDL_PixelFormat *fmt)
 {
-	return  (Uint8)((((pixel & fmt->Rmask) >> fmt->Rshift) << fmt->Rloss) +
-					(((pixel & fmt->Rmask) >> fmt->Rshift) >> (8 - (fmt->Rloss << 1))));
+    return  (Uint8)((((pixel & fmt->Rmask) >> fmt->Rshift) << fmt->Rloss) +
+                    (((pixel & fmt->Rmask) >> fmt->Rshift) >> (8 - (fmt->Rloss << 1))));
 }
 
 inline Uint8 GetG(Uint32 pixel, SDL_PixelFormat *fmt)
 {
-	return  (Uint8)((((pixel & fmt->Gmask) >> fmt->Gshift) << fmt->Gloss) +
-					(((pixel & fmt->Gmask) >> fmt->Gshift) >> (8 - (fmt->Gloss << 1))));
+    return  (Uint8)((((pixel & fmt->Gmask) >> fmt->Gshift) << fmt->Gloss) +
+                    (((pixel & fmt->Gmask) >> fmt->Gshift) >> (8 - (fmt->Gloss << 1))));
 }
 
 inline Uint8 GetB(Uint32 pixel, SDL_PixelFormat *fmt)
 {
-	return  (Uint8)((((pixel & fmt->Bmask) >> fmt->Bshift) << fmt->Bloss) +
-					(((pixel & fmt->Bmask) >> fmt->Bshift) >> (8 - (fmt->Bloss << 1))));
+    return  (Uint8)((((pixel & fmt->Bmask) >> fmt->Bshift) << fmt->Bloss) +
+                    (((pixel & fmt->Bmask) >> fmt->Bshift) >> (8 - (fmt->Bloss << 1))));
 }
 
 inline Uint8 GetA(Uint32 pixel, SDL_PixelFormat *fmt)
 {
-	return  (Uint8)((((pixel & fmt->Amask) >> fmt->Ashift) << fmt->Aloss) +
-					(((pixel & fmt->Amask) >> fmt->Ashift) >> (8 - (fmt->Aloss << 1))));
+    return  (Uint8)((((pixel & fmt->Amask) >> fmt->Ashift) << fmt->Aloss) +
+                    (((pixel & fmt->Amask) >> fmt->Ashift) >> (8 - (fmt->Aloss << 1))));
 }
 */
 //extern SDL_PixelFormat* mainPixelFormat;
 
 /*inline SDL_PixelFormat* getMainPixelFormat()
 {
-	return mainPixelFormat;
+    return mainPixelFormat;
 }*/
 
 ///////////////
@@ -83,7 +83,7 @@ inline Uint8 GetA(Uint32 pixel, SDL_PixelFormat *fmt)
 // HINT: both colors have to be in the same pixelformat
 /*
 inline bool EqualRGB(Uint32 p1, Uint32 p2, SDL_PixelFormat* fmt) {
-	return ((p1|fmt->Amask) == (p2|fmt->Amask));
+    return ((p1|fmt->Amask) == (p2|fmt->Amask));
 }
 */
 
@@ -93,7 +93,7 @@ inline bool EqualRGB(Uint32 p1, Uint32 p2, SDL_PixelFormat* fmt) {
 /*
 inline Uint32 MakeColour(Uint8 r, Uint8 g, Uint8 b)
 {
-	return SDL_MapRGB(getMainPixelFormat(), r, g, b);
+    return SDL_MapRGB(getMainPixelFormat(), r, g, b);
 }
 
 ///////////////
@@ -101,7 +101,7 @@ inline Uint32 MakeColour(Uint8 r, Uint8 g, Uint8 b)
 // HINT: format is that one from videosurface!
 inline Uint32 MakeColour(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
 {
-	return SDL_MapRGBA(getMainPixelFormat(), r, g, b, a);
+    return SDL_MapRGBA(getMainPixelFormat(), r, g, b, a);
 }
 */
 
@@ -111,7 +111,7 @@ struct GsColor
 {
     GsColor();
     GsColor(Uint8 _r, Uint8 _g, Uint8 _b);
-    GsColor(Uint8 _r, Uint8 _g, Uint8 _b, Uint8 _a);        
+    GsColor(Uint8 _r, Uint8 _g, Uint8 _b, Uint8 _a);
 
     //GsColor(SDL_PixelFormat *f, Uint32 cl) { SDL_GetRGBA(cl, f, &r, &g, &b, &a); }
     //explicit GsColor(Uint32 cl)	{ set(getMainPixelFormat(), cl); }
@@ -129,14 +129,14 @@ struct GsColor
 
     //Uint32 get() const { return get(getMainPixelFormat()); }
     Uint32 get(SDL_PixelFormat *f) const { return SDL_MapRGBA(f, r, g, b, a); }
-	Uint32 getDefault() const { return (Uint32(r) << 24) | (Uint32(g) << 16) | (Uint32(b) << 8) | Uint32(a); }
+    Uint32 getDefault() const { return (Uint32(r) << 24) | (Uint32(g) << 16) | (Uint32(b) << 8) | Uint32(a); }
     GsColor derived(Sint16 _r, Sint16 _g, Sint16 _b, Sint16 _a) const {
         return GsColor(
-					 Uint8(CLAMP(_r + r, 0, 255)),
-					 Uint8(CLAMP(_g + g, 0, 255)),
-					 Uint8(CLAMP(_b + b, 0, 255)),
-					 Uint8(CLAMP(_a + a, 0, 255)));
-	}
+                     Uint8(CLAMP(_r + r, 0, 255)),
+                     Uint8(CLAMP(_g + g, 0, 255)),
+                     Uint8(CLAMP(_b + b, 0, 255)),
+                     Uint8(CLAMP(_a + a, 0, 255)));
+    }
 //	void set(SDL_PixelFormat *f, Uint32 cl) { SDL_GetRGBA(cl, f, &r, &g, &b, &a); }
 
     bool operator == ( const GsColor & c ) const { return r == c.r && g == c.g && b == c.b && a == c.a; }
@@ -155,25 +155,17 @@ struct GsColor
 
     bool operator<(const GsColor& c) const
     {
-		if(r != c.r) return r < c.r;
-		if(g != c.g) return g < c.g;
-		if(b != c.b) return b < c.b;
-		return a < c.a;
-	}
+        if(r != c.r) return r < c.r;
+        if(g != c.g) return g < c.g;
+        if(b != c.b) return b < c.b;
+        return a < c.a;
+    }
 
     /**
      * @brief converge  get closer to a color
      * @param c the other color to get close
      */
     void converge(GsColor &&c)
-    {
-        r = Uint8((Uint16(r) + Uint16(c.r))/2);
-        g = Uint8((Uint16(g) + Uint16(c.g))/2);
-        b = Uint8((Uint16(b) + Uint16(c.b))/2);
-        a = Uint8((Uint16(a) + Uint16(c.a))/2);
-    }
-
-    void converge(const GsColor &c)
     {
         r = Uint8((Uint16(r) + Uint16(c.r))/2);
         g = Uint8((Uint16(g) + Uint16(c.g))/2);
@@ -188,6 +180,12 @@ struct GsColor
         b = Uint8(CLAMP(float(b)*(1.0f-amt) + float(c.b)*amt,0.0f,255.0f));
         a = Uint8(CLAMP(float(a)*(1.0f-amt) + float(c.a)*amt,0.0f,255.0f));
     }
+
+    void converge(const GsColor &c)
+    {
+        converge(c, 0.5f);
+    }
+
 };
 
 #endif // COLOR_H

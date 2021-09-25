@@ -44,11 +44,12 @@ void GameButton::setupStyle()
         enableBlinker(true);
 
         mColorNormal   = GsColor(0x26, 0x86, 0x26);
+        mColorDisabled = GsColor(0xA6, 0xA6, 0xA6);
+
         mColorHovered  = GsColor(0x66, 0xC6, 0x66);
         mColorPressed  = GsColor(0x66, 0xF6, 0x66);
         mColorReleased = GsColor(0x46, 0xF6, 0x56);
         mColorSelected = GsColor(0xA6, 0xC6, 0x66);
-        mColorDisabled = GsColor(0xA6, 0xA6, 0xA6);
 
         setFontId(1);
         setText(mText);
@@ -79,31 +80,29 @@ void GameButton::processLogic()
 {
     GsButton::processLogic();
 
-    mTextWidget.setTextColor( mColorNormal );
+    GsColor color = mEnabled ? mColorNormal : mColorDisabled;
 
     if(mHovered)
     {
-        mTextWidget.setTextColor( mColorHovered );
+        color.converge(mColorHovered);
     }
 
     if(mPressed)
     {
-        mTextWidget.setTextColor( mColorPressed );
+        color.converge(mColorPressed);
     }
 
     if(mReleased)
     {
-        mTextWidget.setTextColor( mColorReleased );
+        color.converge(mColorReleased);
     }
 
     if(mSelected)
     {
-        mTextWidget.setTextColor( mColorSelected );
+        color.converge(mColorSelected);
     }
-    if(!mEnabled)
-    {
-        mTextWidget.setTextColor( mColorDisabled );
-    }
+
+    mTextWidget.setTextColor( color );
 }
 
 
@@ -112,16 +111,16 @@ void GameButton::processRender(const GsRect<float> &RectDispCoordFloat)
     // Transform to the display coordinates
     GsRect<float> displayRect = getRect();
     displayRect.transform(RectDispCoordFloat);
-    SDL_Rect lRect = displayRect.SDLRect();    
-        
-    auto controlsRect = RectDispCoordFloat;    
+    SDL_Rect lRect = displayRect.SDLRect();
+
+    auto controlsRect = RectDispCoordFloat;
 
     if(mDrawBlinker)
     {
         drawBlinker(lRect);
         controlsRect.pos.x += 11;
         controlsRect.dim.x -= 11;
-    }    
+    }
 
     if(mDrawTwirl)
     {
