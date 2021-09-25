@@ -24,11 +24,11 @@ m_restartVideo(false)
 {
     m_NumSprites = gGraphics.getNumSprites(int(0));
     m_Gamepath = gKeenFiles.gameDir;
-	m_alldead = false;
-	m_hideobjects = false;
-	m_checkpoint_x = m_checkpoint_y = 0;
-	m_checkpointset = false;
-	mCamLead = 0;
+    m_alldead = false;
+    m_hideobjects = false;
+    m_checkpoint_x = m_checkpoint_y = 0;
+    m_checkpointset = false;
+    mCamLead = 0;
 }
 
 void CPlayGame::pumpEvent(const CEvent *evPtr)

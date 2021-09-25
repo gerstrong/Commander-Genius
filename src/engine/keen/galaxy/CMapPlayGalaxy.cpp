@@ -31,16 +31,16 @@ mInventoryVec(inventoryVec)
 
 void CMapPlayGalaxy::setActive(const bool value)
 {
-	mActive = value;
+    mActive = value;
 
-	if(mActive)
-	{
+    if(mActive)
+    {
         mMap.drawAll();
 
         /*const auto scroll = mMap.getMainScrollCoords();
         gVideoDriver.updateScrollBuffer( scroll.x, scroll.y );*/
         gVideoDriver.setRefreshSignal(true);
-	}
+    }
 }
 
 
@@ -292,7 +292,7 @@ void CMapPlayGalaxy::ponderBase(const float deltaT)
 
             objRef.processEvents();
         }
-	}
+    }
 
 
 }
@@ -358,63 +358,63 @@ void CMapPlayGalaxy::render()
 
 void CMapPlayGalaxy::operator>>(CSaveGameController &savedGame)
 {
-	const Uint16 level = mMap.getLevel();
-	savedGame.encodeData( level );
+    const Uint16 level = mMap.getLevel();
+    savedGame.encodeData( level );
 
-	std::vector< std::shared_ptr<CGalaxySpriteObject> > filteredObjects;
+    std::vector< std::shared_ptr<CGalaxySpriteObject> > filteredObjects;
 
-	// let's filter the Foe out that won't do any good!
-	for( auto &it : mObjectPtr )
-	{
-	    if( it->mFoeID != 0 )
-	    {
+    // let's filter the Foe out that won't do any good!
+    for( auto &it : mObjectPtr )
+    {
+        if( it->mFoeID != 0 )
+        {
             filteredObjects.push_back( it );
-	    }
-	}
+        }
+    }
 
-	const size_t size = filteredObjects.size();
+    const size_t size = filteredObjects.size();
 
-	// save the number of objects on screen
-	savedGame.encodeData(size);
+    // save the number of objects on screen
+    savedGame.encodeData(size);
 
-	for( auto &it : filteredObjects )
-	{
-		// save all the objects states
-		unsigned int newYpos = it->getYPosition();
-		unsigned int newXpos = it->getXPosition();
+    for( auto &it : filteredObjects )
+    {
+        // save all the objects states
+        unsigned int newYpos = it->getYPosition();
+        unsigned int newXpos = it->getXPosition();
 
-		savedGame.encodeData( it->mFoeID );
-		savedGame.encodeData( newXpos );
-		savedGame.encodeData( newYpos );
-		savedGame.encodeData( it->mIsDead );
-		savedGame.encodeData( it->onscreen );
-		savedGame.encodeData( it->hasbeenonscreen );
-		savedGame.encodeData( it->exists );
-		savedGame.encodeData( it->blockedd );
-		savedGame.encodeData( it->blockedu );
-		savedGame.encodeData( it->blockedl );
-		savedGame.encodeData( it->blockedr );
-		savedGame.encodeData( it->xDirection );
-		savedGame.encodeData( it->yDirection );
-		savedGame.encodeData( it->mHealthPoints );
-		savedGame.encodeData( it->canbezapped );
-		savedGame.encodeData( it->cansupportplayer );
-		savedGame.encodeData( it->inhibitfall );
-		savedGame.encodeData( it->honorPriority );
-		savedGame.encodeData( it->mSpriteIdx );
-		savedGame.encodeData( it->m_ActionNumber );
+        savedGame.encodeData( it->mFoeID );
+        savedGame.encodeData( newXpos );
+        savedGame.encodeData( newYpos );
+        savedGame.encodeData( it->mIsDead );
+        savedGame.encodeData( it->onscreen );
+        savedGame.encodeData( it->hasbeenonscreen );
+        savedGame.encodeData( it->exists );
+        savedGame.encodeData( it->blockedd );
+        savedGame.encodeData( it->blockedu );
+        savedGame.encodeData( it->blockedl );
+        savedGame.encodeData( it->blockedr );
+        savedGame.encodeData( it->xDirection );
+        savedGame.encodeData( it->yDirection );
+        savedGame.encodeData( it->mHealthPoints );
+        savedGame.encodeData( it->canbezapped );
+        savedGame.encodeData( it->cansupportplayer );
+        savedGame.encodeData( it->inhibitfall );
+        savedGame.encodeData( it->honorPriority );
+        savedGame.encodeData( it->mSpriteIdx );
+        savedGame.encodeData( it->m_ActionNumber );
         it->serialize(savedGame);
-	}
+    }
 
-	// Save the map_data as it is left
-	savedGame.encodeData(mMap.m_width);
-	savedGame.encodeData(mMap.m_height);
+    // Save the map_data as it is left
+    savedGame.encodeData(mMap.m_width);
+    savedGame.encodeData(mMap.m_height);
 
-	const Uint32 mapSize = mMap.m_width*mMap.m_height*sizeof(word);
+    const Uint32 mapSize = mMap.m_width*mMap.m_height*sizeof(word);
 
-	savedGame.addData( reinterpret_cast<gs_byte*>(mMap.getBackgroundData()), mapSize );
-	savedGame.addData( reinterpret_cast<gs_byte*>(mMap.getForegroundData()), mapSize );
-	savedGame.addData( reinterpret_cast<gs_byte*>(mMap.getInfoData()), mapSize );
+    savedGame.addData( reinterpret_cast<gs_byte*>(mMap.getBackgroundData()), mapSize );
+    savedGame.addData( reinterpret_cast<gs_byte*>(mMap.getForegroundData()), mapSize );
+    savedGame.addData( reinterpret_cast<gs_byte*>(mMap.getInfoData()), mapSize );
 }
 
 
@@ -422,117 +422,117 @@ void CMapPlayGalaxy::operator>>(CSaveGameController &savedGame)
 // This is for loading the game
 bool CMapPlayGalaxy::operator<<(CSaveGameController &savedGame)
 {
-	Uint16 level;
-	savedGame.decodeData( level );
+    Uint16 level;
+    savedGame.decodeData( level );
 
-	std::unique_ptr<galaxy::CMapLoaderGalaxy> mapLoader;
+    std::unique_ptr<galaxy::CMapLoaderGalaxy> mapLoader;
     const auto episode = gBehaviorEngine.getEpisode();
 
-	if(episode == 4)
-	{
+    if(episode == 4)
+    {
         mapLoader.reset( new galaxy::CMapLoaderGalaxyEp4( mObjectPtr, mInventoryVec) );
-	}
-	else if(episode == 5)
-	{
+    }
+    else if(episode == 5)
+    {
         mapLoader.reset( new galaxy::CMapLoaderGalaxyEp5( mObjectPtr, mInventoryVec) );
-	}
-	else if(episode == 6)
-	{
+    }
+    else if(episode == 6)
+    {
         mapLoader.reset( new galaxy::CMapLoaderGalaxyEp6( mObjectPtr, mInventoryVec, gBehaviorEngine.isDemo()) );
-	}
-	else
-	{
-		gLogging.textOut("Error loading the file. This game is not supported!");
-		return false;
-	}
+    }
+    else
+    {
+        gLogging.textOut("Error loading the file. This game is not supported!");
+        return false;
+    }
 
-	// Load the World map level.
-	mapLoader->loadMap( mMap, level );
+    // Load the World map level.
+    mapLoader->loadMap( mMap, level );
 
     // Load the Background Music
-	gMusicPlayer.stop();
+    gMusicPlayer.stop();
 
     if( !galaxy::loadLevelMusic(level) )
     {
-    	gLogging.textOut("Warning: The music cannot be played. Check that all the files have been correctly copied!");
+        gLogging.textOut("Warning: The music cannot be played. Check that all the files have been correctly copied!");
     }
     else
     {
         mCurMusicTrack = gMusicPlayer.getCurTrack();
-    	gMusicPlayer.play();
+        gMusicPlayer.play();
     }
 
 
-	// load the number of objects on screen
-	Uint32 size;
-	Uint32 x, y;
-	Uint16 foeID;
-	uint16_t actionNumber;
-	savedGame.decodeData(size);
+    // load the number of objects on screen
+    Uint32 size;
+    Uint32 x, y;
+    Uint16 foeID;
+    uint16_t actionNumber;
+    savedGame.decodeData(size);
 
-	// Now load the previously created objects
+    // Now load the previously created objects
 
-	if(!mObjectPtr.empty())
-		mObjectPtr.clear();
+    if(!mObjectPtr.empty())
+        mObjectPtr.clear();
 
-	mMap.mNumFuses = 0;
-	mMap.mFuseInLevel = false;
+    mMap.mNumFuses = 0;
+    mMap.mFuseInLevel = false;
 
-	for( Uint32 i=0 ; i<size ; i++ )
-	{
-		savedGame.decodeData(foeID);
-		savedGame.decodeData(x);
-		savedGame.decodeData(y);
+    for( Uint32 i=0 ; i<size ; i++ )
+    {
+        savedGame.decodeData(foeID);
+        savedGame.decodeData(x);
+        savedGame.decodeData(y);
 
-		CGalaxySpriteObject *pNewfoe = mapLoader->addFoe(mMap, foeID, x, y);
+        CGalaxySpriteObject *pNewfoe = mapLoader->addFoe(mMap, foeID, x, y);
 
-		// TODO: Be careful here is a bad Null Pointer inside that structure
+        // TODO: Be careful here is a bad Null Pointer inside that structure
         if(pNewfoe == nullptr)
-		{
+        {
             pNewfoe = new CGalaxySpriteObject(&mMap, foeID, x, y, 0);
-		}
+        }
 
-		savedGame.decodeData( pNewfoe->mIsDead );
-		savedGame.decodeData( pNewfoe->onscreen );
-		savedGame.decodeData( pNewfoe->hasbeenonscreen );
-		savedGame.decodeData( pNewfoe->exists );
-		savedGame.decodeData( pNewfoe->blockedd );
-		savedGame.decodeData( pNewfoe->blockedu );
-		savedGame.decodeData( pNewfoe->blockedl );
-		savedGame.decodeData( pNewfoe->blockedr );
-		savedGame.decodeData( pNewfoe->xDirection );
-		savedGame.decodeData( pNewfoe->yDirection );
-		savedGame.decodeData( pNewfoe->mHealthPoints );
-		savedGame.decodeData( pNewfoe->canbezapped );
-		savedGame.decodeData( pNewfoe->cansupportplayer );
-		savedGame.decodeData( pNewfoe->inhibitfall );
-		savedGame.decodeData( pNewfoe->honorPriority );
-		savedGame.decodeData( pNewfoe->mSpriteIdx );
-		savedGame.decodeData( actionNumber );
-		pNewfoe->deserialize(savedGame);
+        savedGame.decodeData( pNewfoe->mIsDead );
+        savedGame.decodeData( pNewfoe->onscreen );
+        savedGame.decodeData( pNewfoe->hasbeenonscreen );
+        savedGame.decodeData( pNewfoe->exists );
+        savedGame.decodeData( pNewfoe->blockedd );
+        savedGame.decodeData( pNewfoe->blockedu );
+        savedGame.decodeData( pNewfoe->blockedl );
+        savedGame.decodeData( pNewfoe->blockedr );
+        savedGame.decodeData( pNewfoe->xDirection );
+        savedGame.decodeData( pNewfoe->yDirection );
+        savedGame.decodeData( pNewfoe->mHealthPoints );
+        savedGame.decodeData( pNewfoe->canbezapped );
+        savedGame.decodeData( pNewfoe->cansupportplayer );
+        savedGame.decodeData( pNewfoe->inhibitfall );
+        savedGame.decodeData( pNewfoe->honorPriority );
+        savedGame.decodeData( pNewfoe->mSpriteIdx );
+        savedGame.decodeData( actionNumber );
+        pNewfoe->deserialize(savedGame);
 
-		if(pNewfoe->exists)
-		{
-		    pNewfoe->setActionForce(actionNumber);
-		    std::shared_ptr<CGalaxySpriteObject> newFoe(pNewfoe);
-		    mObjectPtr.push_back(newFoe);
-		}
-	}
+        if(pNewfoe->exists)
+        {
+            pNewfoe->setActionForce(actionNumber);
+            std::shared_ptr<CGalaxySpriteObject> newFoe(pNewfoe);
+            mObjectPtr.push_back(newFoe);
+        }
+    }
 
-	// Save the map_data as it is left
-	savedGame.decodeData(mMap.m_width);
-	savedGame.decodeData(mMap.m_height);
+    // Save the map_data as it is left
+    savedGame.decodeData(mMap.m_width);
+    savedGame.decodeData(mMap.m_height);
 
-	savedGame.readDataBlock( reinterpret_cast<gs_byte*>(mMap.getBackgroundData()) );
-	savedGame.readDataBlock( reinterpret_cast<gs_byte*>(mMap.getForegroundData()) );
-	savedGame.readDataBlock( reinterpret_cast<gs_byte*>(mMap.getInfoData()) );
+    savedGame.readDataBlock( reinterpret_cast<gs_byte*>(mMap.getBackgroundData()) );
+    savedGame.readDataBlock( reinterpret_cast<gs_byte*>(mMap.getForegroundData()) );
+    savedGame.readDataBlock( reinterpret_cast<gs_byte*>(mMap.getInfoData()) );
 
-	if( mMap.m_width * mMap.m_height > 0 )
-	{
-		mMap.drawAll();
-	}
+    if( mMap.m_width * mMap.m_height > 0 )
+    {
+        mMap.drawAll();
+    }
 
-	return true;
+    return true;
 }
 
 
@@ -653,14 +653,9 @@ void CMapPlayGalaxy::operator<<(GsKit::ptree &levelNode)
         gMusicPlayer.play();
     }
 
-
     // load the number of objects on screen
     Uint32 x, y;
     Uint16 foeID;
-
-    // Now load the previously created objects
-
-    //const size_t size = levelNode.get<int>("NumSprites", 0);
 
     // Now load the previously created objects
     if(!mObjectPtr.empty())
@@ -671,7 +666,7 @@ void CMapPlayGalaxy::operator<<(GsKit::ptree &levelNode)
     mMap.mNumFuses = 0;
     mMap.mFuseInLevel = false;
 
-    gLogging.textOut("Restoring enemies status");
+    gLogging << "Restoring enemies status." << CLogFile::endl;
 
     for( auto &levelItem : levelNode )
     {

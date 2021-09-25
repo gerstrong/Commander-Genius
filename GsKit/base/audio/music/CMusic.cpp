@@ -19,6 +19,7 @@
 bool CMusic::loadTrack(const int track)
 {
     gLogging.textOut("Load track number " + itoa(track) + "");
+    gLogging.textOut("\n");
 
     if(track < 0)
     {
@@ -47,7 +48,7 @@ void CMusic::setIMFLoadTrackCallback(
 }
 
 bool CMusic::load(const std::string &musicfile)
-{        
+{
     Mix_HaltMusic();
 
     if(mpMixMusic)
@@ -62,25 +63,25 @@ bool CMusic::load(const std::string &musicfile)
 
     const SDL_AudioSpec &audioSpec = gAudio.getAudioSpec();
 
-	if(audioSpec.format != 0)
-	{
-		std::string extension = GetFileExtension(musicfile);
+    if(audioSpec.format != 0)
+    {
+        std::string extension = GetFileExtension(musicfile);
 
         stop();
 
-		stringlwr(extension);
+        stringlwr(extension);
 
-		if( extension == "imf" )
-		{
+        if( extension == "imf" )
+        {
 
             if(!loadIMFFile(musicfile))
             {
                 return false;
             }
 
-		}
+        }
         else if( extension == "ogg" )
-		{
+        {
 
             const auto fullFname = GetFullFileName(musicfile);
             mpMixMusic = Mix_LoadMUS(fullFname.c_str());
@@ -118,17 +119,17 @@ bool CMusic::load(const std::string &musicfile)
         }
 
         mCurrentTrack = musicfile;
-		return true;
+        return true;
 
-	}
-	else
-	{
+    }
+    else
+    {
         gLogging.textOut(FONTCOLORS::PURPLE,"Music Manager: I would like to open the music for you, but your Soundcard seems to be disabled!!<br>");
-	}
+    }
 
     gLogging.ftextOut(FONTCOLORS::PURPLE,"Music Manager: Problems with sudio format of device");
 
-	return false;
+    return false;
 }
 
 std::string CMusic::getCurTrack()
@@ -175,7 +176,7 @@ void CMusic::pause()
 
 void CMusic::stop()
 {
-    Mix_HaltMusic();    
+    Mix_HaltMusic();
 
     if(mpMixMusic)
     {
@@ -194,49 +195,49 @@ bool CMusic::LoadfromSonglist(const std::string &gamepath, const int &level)
     std::string musicpath = getResourceFilename("songlist.lst", gamepath, false, false);
 
     if(musicpath != "")
-    	fileloaded = OpenGameFileR(Tablefile, musicpath);
+        fileloaded = OpenGameFileR(Tablefile, musicpath);
 
     if(fileloaded)
     {
-    	std::string str_buf;
-    	std::string music_filename;
-    	int detected_level=-1;
-    	size_t next_pos = 0;
+        std::string str_buf;
+        std::string music_filename;
+        int detected_level=-1;
+        size_t next_pos = 0;
 
-    	while(!Tablefile.eof())
-    	{
-    		getline(Tablefile, str_buf);
+        while(!Tablefile.eof())
+        {
+            getline(Tablefile, str_buf);
 
-        	next_pos = str_buf.find(' ')+1;
-        	str_buf = str_buf.substr(next_pos);
-        	next_pos = str_buf.find(' ');
+            next_pos = str_buf.find(' ')+1;
+            str_buf = str_buf.substr(next_pos);
+            next_pos = str_buf.find(' ');
 
-        	// Get level number            
+            // Get level number
             detected_level = atoi(str_buf.substr(0, next_pos).c_str());
 
-        	str_buf = str_buf.substr(next_pos);
-        	next_pos = str_buf.find('"')+1;
-        	str_buf = str_buf.substr(next_pos);
-        	next_pos = str_buf.find('"');
+            str_buf = str_buf.substr(next_pos);
+            next_pos = str_buf.find('"')+1;
+            str_buf = str_buf.substr(next_pos);
+            next_pos = str_buf.find('"');
 
-        	// Get the music filename to be read
-        	music_filename = str_buf.substr(0, next_pos);
+            // Get the music filename to be read
+            music_filename = str_buf.substr(0, next_pos);
 
-    		if( detected_level == level )	// found the level! Load the song!
-    		{
-    			// Get the song filename and load it!
-    			std::string filename = getResourceFilename( music_filename, gamepath, false, true);
-    			if( load(filename) )
+            if( detected_level == level )	// found the level! Load the song!
+            {
+                // Get the song filename and load it!
+                std::string filename = getResourceFilename( music_filename, gamepath, false, true);
+                if( load(filename) )
                 {
-    				play();
+                    play();
                     mCurrentTrack = filename;
-                }                
+                }
 
-    			return true;
-    		}
-    	}
+                return true;
+            }
+        }
     }
-	return false;
+    return false;
 }
 
 
@@ -336,6 +337,6 @@ int CMusic::readTrackNofromMusicTable(const std::string &gamepath,
 
 CMusic::~CMusic()
 {
-	stop();
+    stop();
 }
 

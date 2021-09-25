@@ -29,19 +29,19 @@ m_opl_emulator(opl_emulator)
 
 
 bool CIMFPlayer::loadMusicFromFile(const std::string& filename)
-{    
+{
     // Open the IMF File
     FILE *fp;
     word data_size;
     bool ok = false;
-    
+
     if( ( fp = OpenGameFile(filename, "rb") ) == nullptr )
     {
         return false;
     }
-    
+
     int read_first = fread( &data_size, sizeof(word), 1, fp);
-    
+
     if( read_first == 0)
     {
         return false;
@@ -53,13 +53,13 @@ bool CIMFPlayer::loadMusicFromFile(const std::string& filename)
         data_size = ftell(fp);
         fseek(fp, 0, SEEK_SET);
     }
-    
+
     if(!m_IMF_Data.empty())
         m_IMF_Data.clear();
 
     const word imf_chunks = (data_size/sizeof(IMFChunkType));
     m_IMF_Data.resize(imf_chunks);
-    
+
     if( imf_chunks != fread( m_IMF_Data.getStartPtr(), sizeof(IMFChunkType), imf_chunks, fp ) )
     {
         gLogging.textOut("The IMF-File seems to be corrupt.");
@@ -68,9 +68,9 @@ bool CIMFPlayer::loadMusicFromFile(const std::string& filename)
     {
         ok = true;
     }
-    
+
     fclose(fp);
-    
+
     return ok;
 }
 
@@ -97,29 +97,29 @@ bool CIMFPlayer::loadMusicTrack(const int track)
 
 bool CIMFPlayer::open(const bool lock)
 {
-	m_numreadysamples = m_IMFDelay = 0;
+    m_numreadysamples = m_IMFDelay = 0;
     m_samplesPerMusicTick = gAudio.getAudioSpec().freq / m_opl_emulator.getIMFClockRate();
-	
-	m_opl_emulator.setup();
 
-	return !m_IMF_Data.empty();
+    m_opl_emulator.setup();
+
+    return !m_IMF_Data.empty();
 }
 
 void CIMFPlayer::close(const bool lock)
 {
-	play(false);
-	m_IMF_Data.gotoStart();	
-	m_numreadysamples = m_IMFDelay = 0;	
-	m_opl_emulator.ShutAL();
-	m_opl_emulator.shutdown();
+    play(false);
+    m_IMF_Data.gotoStart();
+    m_numreadysamples = m_IMFDelay = 0;
+    m_opl_emulator.ShutAL();
+    m_opl_emulator.shutdown();
 
-	return;
+    return;
 }
 
 
 
 void CIMFPlayer::OPLUpdate(gs_byte *buffer, const unsigned int length)
-{    
+{
     auto &audioSpec = gAudio.getAudioSpec();
 
     const int vol = gAudio.getMusicVolume();
@@ -128,55 +128,55 @@ void CIMFPlayer::OPLUpdate(gs_byte *buffer, const unsigned int length)
 
     if(mMixBuffer.empty())
     {
-        gLogging.textOut("Creating enough Audio Buffer for the IMF-Player");
+        gLogging << "Creating enough Audio Buffer for the IMF-Player" << CLogFile::endl;
         mMixBuffer.assign(audioSpec.samples, 0);
-    }        
+    }
 
     m_opl_emulator.Chip__GenerateBlock2( length, mMixBuffer.data() );
 
     // Mix into the destination buffer, doubling up into stereo.
     if(audioSpec.format == AUDIO_S16)
-	{
+    {
         Sint16 *buf16 = static_cast<Sint16*>(
                                 static_cast<void*>(buffer)
                                             );
 
-		for (unsigned int i=0; i<length; ++i)
-		{
+        for (unsigned int i=0; i<length; ++i)
+        {
             auto mix = (mMixBuffer[i] * amp) / 100;
-		    
-		    if(mix > 32767)
-			    mix = 32767;
-		    else if(mix < -32768)
-			    mix = -32768;
-		    
+
+            if(mix > 32767)
+                mix = 32767;
+            else if(mix < -32768)
+                mix = -32768;
+
             for (unsigned int j=0; j<audioSpec.channels; j++)
-			{
+            {
                 int val = mix + audioSpec.silence;
                 *buf16 = static_cast<Sint16>((val*vol)/MIX_MAX_VOLUME);
-				buf16++;
-			}
-		}
-	}
+                buf16++;
+            }
+        }
+    }
     else if(audioSpec.format == AUDIO_U8)
-	{
-		for (unsigned int i=0; i<length; ++i)
-		{
+    {
+        for (unsigned int i=0; i<length; ++i)
+        {
             auto mix = ((mMixBuffer[i]>>8) * amp) / 100;
-		    
-		    if(mix > 255)
-			    mix = 255;
-		    else if(mix < 0)
-			    mix = 0;
-		    
+
+            if(mix > 255)
+                mix = 255;
+            else if(mix < 0)
+                mix = 0;
+
             for (unsigned int j=0; j<audioSpec.channels; j++)
-			{
+            {
                 int val = mix + audioSpec.silence;
                 *buffer = static_cast<Sint16>((val*vol)/MIX_MAX_VOLUME);
-				buffer++;
-			}
-		}
-	}
+                buffer++;
+            }
+        }
+    }
 }
 
 void CIMFPlayer::readBuffer(Uint8* buffer,
@@ -186,16 +186,16 @@ void CIMFPlayer::readBuffer(Uint8* buffer,
         return;
 
     auto &audioSpec = gAudio.getAudioSpec();
-    
+
     /// if a delay of the instruments is pending, play it
     //Uint32 sampleslen = audioSpec.samples;
     Uint32 sample_mult = audioSpec.channels;
     sample_mult = (audioSpec.format == AUDIO_S16) ?
                 sample_mult*sizeof(Sint16) : sample_mult*sizeof(Uint8) ;
-	
+
     Uint32 sampleslen = length/sample_mult;
 
-	// while the waveform is not filled
+    // while the waveform is not filled
     while(1)
     {
         while( m_IMFDelay == 0 )
@@ -277,7 +277,7 @@ bool loadIMFTrack(const int track)
     }
 
     if(locIMFPlayer.loadMusicTrack(track))
-    {        
+    {
         locIMFPlayer.open(false);
         Mix_HookMusic(imfMusicPlayer, &locImfMusPos);
         Mix_HookMusicFinished(musicFinished);

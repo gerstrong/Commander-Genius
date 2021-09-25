@@ -34,12 +34,12 @@ m_offset(0)
     auto &keenFiles = gKeenFiles;
 
     setGameDirectory(keenFiles.gameDir);
-	setEpisode(gBehaviorEngine.getEpisode());
+    setEpisode(gBehaviorEngine.getEpisode());
 }
 
 void CSaveGameController::setGameDirectory(const std::string& game_directory)
 {
-	m_savedir = JoinPaths("save", game_directory);
+    m_savedir = JoinPaths("save", game_directory);
 }
 
 void CSaveGameController::setEpisode(const int Episode)
@@ -51,12 +51,12 @@ void CSaveGameController::setLevel(int Level)
 // Retrieves the data size of the next block
 Uint32 CSaveGameController::getDataSize(std::ifstream &StateFile)
 {
-	Uint32 size=0;
-	for(Uint32 i=0 ; i<sizeof(Uint32) ; i++)
-	{
-		size += StateFile.get() << (i*8);
-	}
-	return size;
+    Uint32 size=0;
+    for(Uint32 i=0 ; i<sizeof(Uint32) ; i++)
+    {
+        size += StateFile.get() << (i*8);
+    }
+    return size;
 }
 
 bool CSaveGameController::hasQuickloadGame()
@@ -70,38 +70,38 @@ bool CSaveGameController::hasQuickloadGame()
 // Return a string that just says empty
 std::string CSaveGameController::getUnnamedSlotName()
 {
-	std::string text;
-	time_t rawtime;
-  	struct tm * timeinfo;
+    std::string text;
+    time_t rawtime;
+    struct tm * timeinfo;
 
-   	time ( &rawtime );
-	timeinfo = localtime ( &rawtime );
+    time ( &rawtime );
+    timeinfo = localtime ( &rawtime );
 
-	if(m_Level == 80)
-		text = "MAP";
-	else
-		text = "L" + itoa(m_Level);
-	text += "-";
-	text += asctime (timeinfo);
-	return text;
+    if(m_Level == 80)
+        text = "MAP";
+    else
+        text = "L" + itoa(m_Level);
+    text += "-";
+    text += asctime (timeinfo);
+    return text;
 }
 
 // Read the data of size and stores it in the buffer
 void CSaveGameController::readData(char *buffer, Uint32 size, std::ifstream &StateFile)
 {
-	for(Uint32 i=0 ; i<size ; i++) {
-		buffer[i] = StateFile.get();
-	}
+    for(Uint32 i=0 ; i<size ; i++) {
+        buffer[i] = StateFile.get();
+    }
 }
 
 // Used here for filtering the filetypes
 struct StateFileListFiller
 {
-	std::set<std::string> list;
+    std::set<std::string> list;
 
     bool operator() (const std::string& filename)
     {
-		std::string ext = GetFileExtension(filename);
+        std::string ext = GetFileExtension(filename);
 
         bool canBeadded = false;
 
@@ -112,10 +112,10 @@ struct StateFileListFiller
         }
 
         if ( canBeadded )
-			list.insert(filename);
+            list.insert(filename);
 
-		return true;
-	}
+        return true;
+    }
 };
 // This method returns the the list of files we can use for the menu
 // It will filter by episode and sort the list by number of slot
@@ -128,10 +128,10 @@ bool CSaveGameController::readSlotList(std::vector<std::string> &list)
     }
 
     //Get the list of ".ck?" and ".cx?" files
-	StateFileListFiller sfilelist;
-    gLogging.ftextOut("Reading savegames from \"%s\"", m_savedir.c_str());
+    StateFileListFiller sfilelist;
+    gLogging.ftextOut("Reading savegames from \"%s\".", m_savedir.c_str());
     gLogging << CLogFile::endl;
-	FindFiles(sfilelist, m_savedir, false, FM_REG);
+    FindFiles(sfilelist, m_savedir, false, FM_REG);
 
     for( const std::string &filename : sfilelist.list )
     {
@@ -139,9 +139,9 @@ bool CSaveGameController::readSlotList(std::vector<std::string> &list)
 
         const int foundEp = atoi(buf.c_str());
 
-		// Check if the file fits to this episode
+        // Check if the file fits to this episode
         if(foundEp == m_Episode)
-		{
+        {
             int pos = getSlotNumber(filename);
 
             // Save number start with "1". Zero is not allowed
@@ -164,10 +164,8 @@ bool CSaveGameController::readSlotList(std::vector<std::string> &list)
                 list.resize(index+1);
 
             list.at(index) = buf;
-		}
-	}
-
-    gLogging.ftextOut("Done");
+        }
+    }
 
     return !list.empty();
 }
@@ -176,39 +174,39 @@ bool CSaveGameController::readSlotList(std::vector<std::string> &list)
 
 bool CSaveGameController::IsOldSGVersion5(const std::string& fname)
 {
-	const char *verify = "CKSAVE";
-	FILE* fp = OpenGameFile(fname, "rb");
-	if (!fp) return false;
+    const char *verify = "CKSAVE";
+    FILE* fp = OpenGameFile(fname, "rb");
+    if (!fp) return false;
 
-	for(size_t i=0; i < strlen(verify); i++)
-	{
-		char c = fgetc(fp);
-		if (c != verify[i])
-		{
-			fclose(fp);
-			return false;
-		}
-		printf("%c", c);
-	}
-	if (fgetc(fp) != OLDSAVEGAMEVERSION5)
-	{
-		fclose(fp);
-		return false;
-	}
-	fclose(fp);
-	return true;
+    for(size_t i=0; i < strlen(verify); i++)
+    {
+        char c = fgetc(fp);
+        if (c != verify[i])
+        {
+            fclose(fp);
+            return false;
+        }
+        printf("%c", c);
+    }
+    if (fgetc(fp) != OLDSAVEGAMEVERSION5)
+    {
+        fclose(fp);
+        return false;
+    }
+    fclose(fp);
+    return true;
 }
 
 bool CSaveGameController::IsOldSGVersion4(const std::string& fname)
 {
-	FILE* fp = OpenGameFile(fname, "rb");
-	if (!fp) return false;
+    FILE* fp = OpenGameFile(fname, "rb");
+    if (!fp) return false;
 
-	if (fgetc(fp) != 'S') { fclose(fp); return false; }
-	if (fgetc(fp) != OLDSAVEGAMEVERSION4) { fclose(fp); return false; }
+    if (fgetc(fp) != 'S') { fclose(fp); return false; }
+    if (fgetc(fp) != OLDSAVEGAMEVERSION4) { fclose(fp); return false; }
 
-	fclose(fp);
-	return true;
+    fclose(fp);
+    return true;
 }
 
 /**
@@ -216,12 +214,12 @@ bool CSaveGameController::IsOldSGVersion4(const std::string& fname)
  */
 int CSaveGameController::getOldSGVersion(const std::string& fname)
 {
-	if(IsOldSGVersion5(fname))
-		return 5;
-	if(IsOldSGVersion4(fname))
-		return 4;
-	else
-		return 0;
+    if(IsOldSGVersion5(fname))
+        return 5;
+    if(IsOldSGVersion4(fname))
+        return 4;
+    else
+        return 0;
 }
 
 // This function converts savegame all files from old versions of CG to the new format
@@ -229,8 +227,8 @@ int CSaveGameController::getOldSGVersion(const std::string& fname)
 {
 
 #ifndef ANDROID
-	for(size_t slot=0 ; slot<=9 ; slot++ )
-		convertOldFormat(slot);
+    for(size_t slot=0 ; slot<=9 ; slot++ )
+        convertOldFormat(slot);
 #endif
 
 }*/
@@ -241,263 +239,263 @@ int CSaveGameController::getOldSGVersion(const std::string& fname)
 /*
 bool CSaveGameController::loadSaveGameVersion5(const std::string &fname, OldSaveGameFormatV5& old)
 {
-	FILE *fp;
-	unsigned char episode, level, lives, numplayers;
+    FILE *fp;
+    unsigned char episode, level, lives, numplayers;
 
-	gLogging.ftextOut("Loading game from file %s\n", fname.c_str());
-	fp = OpenGameFile(fname, "rb");
-	if (!fp) { gLogging.ftextOut("unable to open %s\n",fname.c_str()); return false; }
+    gLogging.ftextOut("Loading game from file %s\n", fname.c_str());
+    fp = OpenGameFile(fname, "rb");
+    if (!fp) { gLogging.ftextOut("unable to open %s\n",fname.c_str()); return false; }
 
-	readOldHeader(fp, &episode, &level, &lives, &numplayers);
+    readOldHeader(fp, &episode, &level, &lives, &numplayers);
 
-	gLogging.ftextOut("game_load: restoring structures...\n");
+    gLogging.ftextOut("game_load: restoring structures...\n");
     / fgetc(fp); // primary player doesn't exist anymore! Jump that!
 
-	sgrle_compress(fp, (unsigned char *) &old.LevelControl, sizeof(old.LevelControl));
+    sgrle_compress(fp, (unsigned char *) &old.LevelControl, sizeof(old.LevelControl));
 
-	// note that we don't have to load the LEVEL, because the state
-	// of the map is already saved inside the save-game.
-	sgrle_initdecompression();
-	if (sgrle_decompressV2(fp, (unsigned char *) &old.LevelControl, sizeof(old.LevelControl))) return false;
+    // note that we don't have to load the LEVEL, because the state
+    // of the map is already saved inside the save-game.
+    sgrle_initdecompression();
+    if (sgrle_decompressV2(fp, (unsigned char *) &old.LevelControl, sizeof(old.LevelControl))) return false;
 
-	if (sgrle_decompressV2(fp, (unsigned char *)&old.scroll_x, sizeof(old.scroll_x))) return false;
-	if (sgrle_decompressV2(fp, (unsigned char *)&old.scrollx_buf, sizeof(old.scrollx_buf))) return false;
-	if (sgrle_decompressV2(fp, (unsigned char *)&old.scrollpix, sizeof(old.scrollpix))) return false;
-	if (sgrle_decompressV2(fp, (unsigned char *)&old.mapx, sizeof(old.mapx))) return false;
-	if (sgrle_decompressV2(fp, (unsigned char *)&old.mapxstripepos, sizeof(old.mapxstripepos))) return false;
+    if (sgrle_decompressV2(fp, (unsigned char *)&old.scroll_x, sizeof(old.scroll_x))) return false;
+    if (sgrle_decompressV2(fp, (unsigned char *)&old.scrollx_buf, sizeof(old.scrollx_buf))) return false;
+    if (sgrle_decompressV2(fp, (unsigned char *)&old.scrollpix, sizeof(old.scrollpix))) return false;
+    if (sgrle_decompressV2(fp, (unsigned char *)&old.mapx, sizeof(old.mapx))) return false;
+    if (sgrle_decompressV2(fp, (unsigned char *)&old.mapxstripepos, sizeof(old.mapxstripepos))) return false;
 
-	if (sgrle_decompressV2(fp, (unsigned char *)&old.scroll_y, sizeof(old.scroll_y))) return false;
-	if (sgrle_decompressV2(fp, (unsigned char *)&old.scrolly_buf, sizeof(old.scrolly_buf))) return false;
-	if (sgrle_decompressV2(fp, (unsigned char *)&old.scrollpixy, sizeof(old.scrollpixy))) return false;
-	if (sgrle_decompressV2(fp, (unsigned char *)&old.mapy, sizeof(old.mapy))) return false;
-	if (sgrle_decompressV2(fp, (unsigned char *)&old.mapystripepos, sizeof(old.mapystripepos))) return false;
+    if (sgrle_decompressV2(fp, (unsigned char *)&old.scroll_y, sizeof(old.scroll_y))) return false;
+    if (sgrle_decompressV2(fp, (unsigned char *)&old.scrolly_buf, sizeof(old.scrolly_buf))) return false;
+    if (sgrle_decompressV2(fp, (unsigned char *)&old.scrollpixy, sizeof(old.scrollpixy))) return false;
+    if (sgrle_decompressV2(fp, (unsigned char *)&old.mapy, sizeof(old.mapy))) return false;
+    if (sgrle_decompressV2(fp, (unsigned char *)&old.mapystripepos, sizeof(old.mapystripepos))) return false;
 
-	if (sgrle_decompressV2(fp, (unsigned char *)&old.max_scroll_x, sizeof(old.max_scroll_x))) return false;
-	if (sgrle_decompressV2(fp, (unsigned char *)&old.max_scroll_y, sizeof(old.max_scroll_y))) return false;
+    if (sgrle_decompressV2(fp, (unsigned char *)&old.max_scroll_x, sizeof(old.max_scroll_x))) return false;
+    if (sgrle_decompressV2(fp, (unsigned char *)&old.max_scroll_y, sizeof(old.max_scroll_y))) return false;
 
-	if (sgrle_decompressV2(fp, (unsigned char *)&old.map, sizeof(old.map))) return false;
+    if (sgrle_decompressV2(fp, (unsigned char *)&old.map, sizeof(old.map))) return false;
 
-	unsigned char *tempbuf;
+    unsigned char *tempbuf;
 
-	tempbuf = new unsigned char[22624];
+    tempbuf = new unsigned char[22624];
 
     fgetc(fp); fgetc(fp); // Not used anymore since objects are held in an vector.
-	if (sgrle_decompressV2(fp, (unsigned char *)tempbuf, 22624)) return false;
-	if (sgrle_decompressV2(fp, (unsigned char *)tempbuf, 9612)) return false;
+    if (sgrle_decompressV2(fp, (unsigned char *)tempbuf, 22624)) return false;
+    if (sgrle_decompressV2(fp, (unsigned char *)tempbuf, 9612)) return false;
 
-	delete [] tempbuf;
+    delete [] tempbuf;
 
-	if (sgrle_decompressV2(fp, (unsigned char *)&old.Player, sizeof(old.Player))) return false;
+    if (sgrle_decompressV2(fp, (unsigned char *)&old.Player, sizeof(old.Player))) return false;
 
-	fclose(fp);
+    fclose(fp);
 
-	return true;
+    return true;
 }
 */
 /*
 bool CSaveGameController::loadSaveGameVersion4(const std::string &fname, OldSaveGameFormatV4& old)
 {
-	FILE *fp;
-	//unsigned char episode, level, lives;
-	unsigned int numplayers;
+    FILE *fp;
+    //unsigned char episode, level, lives;
+    unsigned int numplayers;
 
-	gLogging.ftextOut("Loading game from file %s\n", fname.c_str());
-	fp = OpenGameFile(fname, "rb");
-	if (!fp) { gLogging.ftextOut("unable to open %s\n",fname.c_str()); return false; }
+    gLogging.ftextOut("Loading game from file %s\n", fname.c_str());
+    fp = OpenGameFile(fname, "rb");
+    if (!fp) { gLogging.ftextOut("unable to open %s\n",fname.c_str()); return false; }
 
-	gLogging.ftextOut("game_load: restoring structures...\n");
-	if (fgetc(fp) != 'S') { fclose(fp); return false; }
-	if (fgetc(fp) != OLDSAVEGAMEVERSION4) { fclose(fp); return false; }
-	fgetc(fp);
+    gLogging.ftextOut("game_load: restoring structures...\n");
+    if (fgetc(fp) != 'S') { fclose(fp); return false; }
+    if (fgetc(fp) != OLDSAVEGAMEVERSION4) { fclose(fp); return false; }
+    fgetc(fp);
 
-	// load all structures from the file
-	sgrle_initdecompression();
-	sgrle_decompressV1(fp, (unsigned char *)&numplayers, sizeof(numplayers));
-	sgrle_decompressV1(fp, (unsigned char *)&old.LevelControl, sizeof(old.LevelControl));
-	sgrle_decompressV1(fp, (unsigned char *)&old.scroll_x, sizeof(old.scroll_x));
-	sgrle_decompressV1(fp, (unsigned char *)&old.scroll_y, sizeof(old.scroll_y));
-	sgrle_decompressV1(fp, (unsigned char *)&old.max_scroll_x, sizeof(old.max_scroll_x));
-	sgrle_decompressV1(fp, (unsigned char *)&old.max_scroll_y, sizeof(old.max_scroll_y));
-	sgrle_decompressV1(fp, (unsigned char *)&old.map, sizeof(old.map));
+    // load all structures from the file
+    sgrle_initdecompression();
+    sgrle_decompressV1(fp, (unsigned char *)&numplayers, sizeof(numplayers));
+    sgrle_decompressV1(fp, (unsigned char *)&old.LevelControl, sizeof(old.LevelControl));
+    sgrle_decompressV1(fp, (unsigned char *)&old.scroll_x, sizeof(old.scroll_x));
+    sgrle_decompressV1(fp, (unsigned char *)&old.scroll_y, sizeof(old.scroll_y));
+    sgrle_decompressV1(fp, (unsigned char *)&old.max_scroll_x, sizeof(old.max_scroll_x));
+    sgrle_decompressV1(fp, (unsigned char *)&old.max_scroll_y, sizeof(old.max_scroll_y));
+    sgrle_decompressV1(fp, (unsigned char *)&old.map, sizeof(old.map));
 
-	//initgame( &(pCKP->Control.levelcontrol) ); // reset scroll
-	//drawmap();
-	//for(i=0;i<scrx;i++) map_scroll_right();
-	//for(i=0;i<scry;i++) map_scroll_down();
+    //initgame( &(pCKP->Control.levelcontrol) ); // reset scroll
+    //drawmap();
+    //for(i=0;i<scrx;i++) map_scroll_right();
+    //for(i=0;i<scry;i++) map_scroll_down();
 
-	sgrle_decompressV1(fp, (unsigned char *)&old.Player, sizeof(old.Player));
+    sgrle_decompressV1(fp, (unsigned char *)&old.Player, sizeof(old.Player));
 
-	//sgrle_decompress(fp, (unsigned char *)&objects[0], sizeof(objects));
-	//sgrle_decompress(fp, (unsigned char *)&tiles[0], sizeof(tiles));
+    //sgrle_decompress(fp, (unsigned char *)&objects[0], sizeof(objects));
+    //sgrle_decompress(fp, (unsigned char *)&tiles[0], sizeof(tiles));
 
-	fclose(fp);
+    fclose(fp);
 
-	return true;
+    return true;
 }
 
 // Converts one old savegame file to the new format...
 bool CSaveGameController::convertOldFormat(size_t slot)
 {
-	// TODO: Old CG 0.3.0.4 Code Handle with care
-	std::string fname;
-	int version;
+    // TODO: Old CG 0.3.0.4 Code Handle with care
+    std::string fname;
+    int version;
 
-	fname = "ep";
-	fname += itoa(m_Episode);
-	fname += "save";
-	fname += itoa(slot);
-	fname += ".dat";
+    fname = "ep";
+    fname += itoa(m_Episode);
+    fname += "save";
+    fname += itoa(slot);
+    fname += ".dat";
 
-	if ( (version = getOldSGVersion(fname)) == 0 )
-		return false;
+    if ( (version = getOldSGVersion(fname)) == 0 )
+        return false;
 
-	size_t newslot = slot;
-	while(Fileexists(newslot))
-		newslot++;
+    size_t newslot = slot;
+    while(Fileexists(newslot))
+        newslot++;
 
-	prepareSaveGame(newslot, "oldsave"+itoa(slot));
+    prepareSaveGame(newslot, "oldsave"+itoa(slot));
 
-	if(alreadyExits())
-	{
-		gLogging.textOut("You already have \""+m_statefilename+"\". If you want to export an old savegame erase it, or erase the old savegame if it's already exported!" );
-		return false;
-	}
+    if(alreadyExits())
+    {
+        gLogging.textOut("You already have \""+m_statefilename+"\". If you want to export an old savegame erase it, or erase the old savegame if it's already exported!" );
+        return false;
+    }
 
-	if(version == 5)
-	{
-		OldSaveGameFormatV5 old;
+    if(version == 5)
+    {
+        OldSaveGameFormatV5 old;
 
-		if(!loadSaveGameVersion5(fname, old)) return false;
+        if(!loadSaveGameVersion5(fname, old)) return false;
 
-		// Rename the old save game to the extension bak, so it won't be converted again
-		std::string newfname = fname.substr(0,fname.size()-3) + "bak";
-		Rename(fname, newfname);
+        // Rename the old save game to the extension bak, so it won't be converted again
+        std::string newfname = fname.substr(0,fname.size()-3) + "bak";
+        Rename(fname, newfname);
 
-		//
-		// Now let's save it into a new format
-		//
-		/// Save the Game in the CSaveGameController object
-		// store the episode, level and difficulty
-		encodeData(old.LevelControl.episode);
-		encodeData(old.LevelControl.curlevel);
-		encodeData(old.LevelControl.hardmode ? 2 : 1);
+        //
+        // Now let's save it into a new format
+        //
+        /// Save the Game in the CSaveGameController object
+        // store the episode, level and difficulty
+        encodeData(old.LevelControl.episode);
+        encodeData(old.LevelControl.curlevel);
+        encodeData(old.LevelControl.hardmode ? 2 : 1);
 
-		// Also the last checkpoint is stored. This is the level entered from map
-		// in Commander Keen games
-		encodeData(false); // No checkpoint set
-		encodeData(0); // Checkpoint X set to zero
-		encodeData(0); // Checkpoint Y set to zero
-		encodeData(old.LevelControl.dark);
+        // Also the last checkpoint is stored. This is the level entered from map
+        // in Commander Keen games
+        encodeData(false); // No checkpoint set
+        encodeData(0); // Checkpoint X set to zero
+        encodeData(0); // Checkpoint Y set to zero
+        encodeData(old.LevelControl.dark);
 
-		// Save number of Players
-		encodeData(1);
+        // Save number of Players
+        encodeData(1);
 
-		// Now save the inventory of every player
-		encodeData(old.Player.x);
-		encodeData(old.Player.y);
-		encodeData(old.Player.blockedd);
-		encodeData(old.Player.blockedu);
-		encodeData(old.Player.blockedl);
-		encodeData(old.Player.blockedr);
-		encodeData(old.Player.inventory);
+        // Now save the inventory of every player
+        encodeData(old.Player.x);
+        encodeData(old.Player.y);
+        encodeData(old.Player.blockedd);
+        encodeData(old.Player.blockedu);
+        encodeData(old.Player.blockedl);
+        encodeData(old.Player.blockedr);
+        encodeData(old.Player.inventory);
 
-		// save the number of objects on screen.
-		encodeData(0);
+        // save the number of objects on screen.
+        encodeData(0);
 
-		// Save the map_data as it is left
-		encodeData(old.map.xsize);
-		encodeData(old.map.ysize);
+        // Save the map_data as it is left
+        encodeData(old.map.xsize);
+        encodeData(old.map.ysize);
 
-		word *mapdata = new word[old.map.xsize*old.map.ysize];
-		for( size_t x=0 ; x<old.map.xsize ; x++ )
-		{
-			for( size_t y=0 ; y<old.map.ysize ; y++ )
-			{
-				mapdata[y*old.map.xsize+x] = old.map.mapdata[x][y];
-			}
-		}
-		addData( (byte*)(mapdata), 2*old.map.xsize*old.map.ysize );
+        word *mapdata = new word[old.map.xsize*old.map.ysize];
+        for( size_t x=0 ; x<old.map.xsize ; x++ )
+        {
+            for( size_t y=0 ; y<old.map.ysize ; y++ )
+            {
+                mapdata[y*old.map.xsize+x] = old.map.mapdata[x][y];
+            }
+        }
+        addData( (byte*)(mapdata), 2*old.map.xsize*old.map.ysize );
 
-		delete [] mapdata;
+        delete [] mapdata;
 
-		// store completed levels
-		addData( (byte*)(old.LevelControl.levels_completed), MAX_LEVELS_VORTICON );
+        // store completed levels
+        addData( (byte*)(old.LevelControl.levels_completed), MAX_LEVELS_VORTICON );
 
-		gLogging.ftextOut("Structures restored: map size: %d,%d and saved\n", old.map.xsize, old.map.ysize);
-	}
-	else if(version == 4)
-	{
-		OldSaveGameFormatV4 old;
+        gLogging.ftextOut("Structures restored: map size: %d,%d and saved\n", old.map.xsize, old.map.ysize);
+    }
+    else if(version == 4)
+    {
+        OldSaveGameFormatV4 old;
 
-		if(!loadSaveGameVersion4(fname, old)) return false;
+        if(!loadSaveGameVersion4(fname, old)) return false;
 
-		// Rename the old save game to the extension bak, so it won't be converted again
-		std::string newfname = fname.substr(0,fname.size()-3) + "bak";
-		Rename(fname, newfname);
+        // Rename the old save game to the extension bak, so it won't be converted again
+        std::string newfname = fname.substr(0,fname.size()-3) + "bak";
+        Rename(fname, newfname);
 
-		//
-		// Now let's save it into a new format
-		//
-		/// Save the Game in the CSaveGameController object
-		// store the episode, level and difficulty
-		encodeData(old.LevelControl.episode);
-		encodeData(old.LevelControl.curlevel);
-		encodeData(old.LevelControl.hardmode ? 2 : 1);
+        //
+        // Now let's save it into a new format
+        //
+        /// Save the Game in the CSaveGameController object
+        // store the episode, level and difficulty
+        encodeData(old.LevelControl.episode);
+        encodeData(old.LevelControl.curlevel);
+        encodeData(old.LevelControl.hardmode ? 2 : 1);
 
-		// Also the last checkpoint is stored. This is the level entered from map
-		// in Commander Keen games
-		encodeData(false); // No checkpoint set
-		encodeData(0); // Checkpoint X set to zero
-		encodeData(0); // Checkpoint Y set to zero
-		encodeData(old.LevelControl.dark);
+        // Also the last checkpoint is stored. This is the level entered from map
+        // in Commander Keen games
+        encodeData(false); // No checkpoint set
+        encodeData(0); // Checkpoint X set to zero
+        encodeData(0); // Checkpoint Y set to zero
+        encodeData(old.LevelControl.dark);
 
-		// Save number of Players
-		encodeData(1);
+        // Save number of Players
+        encodeData(1);
 
-		// Now save the inventory of every player
-		encodeData(old.Player.x);
-		encodeData(old.Player.y);
-		encodeData(old.Player.blockedd);
-		encodeData(old.Player.blockedu);
-		encodeData(old.Player.blockedl);
-		encodeData(old.Player.blockedr);
-		encodeData(old.Player.inventory);
+        // Now save the inventory of every player
+        encodeData(old.Player.x);
+        encodeData(old.Player.y);
+        encodeData(old.Player.blockedd);
+        encodeData(old.Player.blockedu);
+        encodeData(old.Player.blockedl);
+        encodeData(old.Player.blockedr);
+        encodeData(old.Player.inventory);
 
-		// save the number of objects on screen.
-		encodeData(0);
+        // save the number of objects on screen.
+        encodeData(0);
 
-		// Save the map_data as it is left
-		encodeData(old.map.xsize);
-		encodeData(old.map.ysize);
+        // Save the map_data as it is left
+        encodeData(old.map.xsize);
+        encodeData(old.map.ysize);
 
-		word *mapdata = new word[old.map.xsize*old.map.ysize];
-		for( size_t x=0 ; x<old.map.xsize ; x++ )
-		{
-			for( size_t y=0 ; y<old.map.ysize ; y++ )
-			{
-				mapdata[y*old.map.xsize+x] = old.map.mapdata[x][y];
-			}
-		}
-		addData( (byte*)(mapdata), 2*old.map.xsize*old.map.ysize );
+        word *mapdata = new word[old.map.xsize*old.map.ysize];
+        for( size_t x=0 ; x<old.map.xsize ; x++ )
+        {
+            for( size_t y=0 ; y<old.map.ysize ; y++ )
+            {
+                mapdata[y*old.map.xsize+x] = old.map.mapdata[x][y];
+            }
+        }
+        addData( (byte*)(mapdata), 2*old.map.xsize*old.map.ysize );
 
-		delete [] mapdata;
+        delete [] mapdata;
 
-		// store completed levels
-		addData( (byte*)(old.LevelControl.levels_completed), MAX_LEVELS_VORTICON );
+        // store completed levels
+        addData( (byte*)(old.LevelControl.levels_completed), MAX_LEVELS_VORTICON );
 
-		gLogging.ftextOut("Structures restored: map size: %d,%d and saved\n", old.map.xsize, old.map.ysize);
-	}
-	else
-	{
-		gLogging.ftextOut("Sorry, but the old save game format is unknown\n");
-		return false;
-	}
+        gLogging.ftextOut("Structures restored: map size: %d,%d and saved\n", old.map.xsize, old.map.ysize);
+    }
+    else
+    {
+        gLogging.ftextOut("Sorry, but the old save game format is unknown\n");
+        return false;
+    }
 
-	save();
+    save();
 
-	gLogging.ftextOut("The old savegame has been converted successfully OK\n");
+    gLogging.ftextOut("The old savegame has been converted successfully OK\n");
 
-	return true;
+    return true;
 }
 */
 
@@ -505,11 +503,11 @@ bool CSaveGameController::convertOldFormat(size_t slot)
 // also uses it, in it's save-game "preview" menu on the load game screen
 void CSaveGameController::readOldHeader(FILE *fp, gs_byte *episode, gs_byte *level, gs_byte *lives, gs_byte *num_players)
 {
-	fseek(fp, SG_HEADERSIZE, SEEK_SET);		// skip past the CKSAVE%c
-	*episode = fgetc(fp);
-	*level = fgetc(fp);
-	*lives = fgetc(fp);
-	*num_players = fgetc(fp);
+    fseek(fp, SG_HEADERSIZE, SEEK_SET);		// skip past the CKSAVE%c
+    *episode = fgetc(fp);
+    *level = fgetc(fp);
+    *lives = fgetc(fp);
+    *num_players = fgetc(fp);
 }
 
 /* --- Functions for older savegames END --- */
@@ -532,8 +530,8 @@ Uint32 CSaveGameController::getSlotNumber(const std::string &filename)
 
     const int pos = ckSavePos + strlen("cksave");
 
-	std::string buf = filename.substr(pos);
-	buf = buf.substr(0, buf.size()-sizeof(".ck"));
+    std::string buf = filename.substr(pos);
+    buf = buf.substr(0, buf.size()-sizeof(".ck"));
 
     if(!is_number(buf))
     {
@@ -607,8 +605,8 @@ std::string CSaveGameController::getSlotNameXML(const std::string &filename)
  */
 bool CSaveGameController::Fileexists( int SaveSlot )
 {
-	std::string filename = m_savedir + "/cksave"+itoa(SaveSlot)+".ck"+itoa(m_Episode);
-	return IsFileAvailable(filename);
+    std::string filename = m_savedir + "/cksave"+itoa(SaveSlot)+".ck"+itoa(m_Episode);
+    return IsFileAvailable(filename);
 }
 
 void CSaveGameController::prepareSaveGameQuick()
@@ -616,11 +614,11 @@ void CSaveGameController::prepareSaveGameQuick()
     m_stateXMLfilename = m_savedir + "/cksaveQuick.cx"+itoa(m_Episode);
 
     m_statename = "Quicksave";
-	m_datablock.clear();
+    m_datablock.clear();
 
-	m_offset = 0;
+    m_offset = 0;
 
-	gEventManager.add( new SaveGameEvent() );
+    gEventManager.add( new SaveGameEvent() );
 }
 
 // This method is called by the menu. It assures that the
@@ -649,18 +647,22 @@ bool CSaveGameController::prepareLoadGame(const int SaveSlot)
     const std::string saveXMLfile = "cksave" + itoa(SaveSlot) + ".cx"+itoa(m_Episode);
     m_stateXMLfilename = JoinPaths(m_savedir, saveXMLfile);
 
+    gLogging << "Trying to load legacy savegame file: " << m_statefilename << CLogFile::endl;
+    gLogging << "Trying to load xml savegame file: " << m_stateXMLfilename << CLogFile::endl;
 
     m_datablock.clear();
 
     gEventManager.add( new LoadGameEvent() );
 
-	return true;
+    return true;
 }
 
 bool CSaveGameController::prepareLoadGameQuick()
 {
     const std::string saveXMLfile = "cksaveQuick.cx"+itoa(m_Episode);
     m_stateXMLfilename = JoinPaths(m_savedir, saveXMLfile);
+
+    gLogging << "Trying to load quicksave file: " << m_stateXMLfilename << CLogFile::endl;
 
     m_datablock.clear();
 
@@ -672,15 +674,15 @@ bool CSaveGameController::prepareLoadGameQuick()
 
 bool CSaveGameController::load()
 {
-	Uint32 size;
-	std::ifstream StateFile;
-	std::string fullpath = GetFullFileName(m_statefilename);
-	OpenGameFileR( StateFile, m_statefilename, std::ofstream::binary );
+    Uint32 size;
+    std::ifstream StateFile;
+    std::string fullpath = GetFullFileName(m_statefilename);
+    OpenGameFileR( StateFile, m_statefilename, std::ofstream::binary );
 
     if (!StateFile.is_open())
     {
-    	gLogging.textOut("Error loading \"" + fullpath + "\". Please check the status of that file.\n" );
-    	return false;
+        gLogging.textOut("Error loading \"" + fullpath + "\". Please check the status of that file.\n" );
+        return false;
     }
 
     // Skip the header as we already chose the game
@@ -688,100 +690,100 @@ bool CSaveGameController::load()
     size = StateFile.get(); // get the size of the slotname and...
     for(Uint32 i=0 ; i<size ; i++)	// skip that name string
     {
-    	StateFile.get();
+        StateFile.get();
     }
 
     while(!StateFile.eof())
     {   // read it everything in
-    	m_datablock.push_back(StateFile.get());
+        m_datablock.push_back(StateFile.get());
     }
 
-	// TODO: Decompression has still to be done!
+    // TODO: Decompression has still to be done!
 
-	// Now write all the data to the file
-	StateFile.close();
+    // Now write all the data to the file
+    StateFile.close();
 
-	// Done!
-	gLogging.textOut("File \""+ fullpath +"\" was successfully loaded. Size: "+itoa(m_datablock.size())+"\n");
-	m_offset = 0;
-	m_statefilename.clear();
-	m_statename.clear();
+    // Done!
+    gLogging.textOut("File \""+ fullpath +"\" was successfully loaded. Size: "+itoa(m_datablock.size())+"\n");
+    m_offset = 0;
+    m_statefilename.clear();
+    m_statename.clear();
 
-	return true;
+    return true;
 }
 
 // This function checks if the file we want to read or save already exists
 bool CSaveGameController::alreadyExits()
 {
-	std::ifstream StateFile;
-	std::string fullpath = GetFullFileName(m_statefilename);
-	OpenGameFileR( StateFile, m_statefilename, std::ofstream::binary );
+    std::ifstream StateFile;
+    std::string fullpath = GetFullFileName(m_statefilename);
+    OpenGameFileR( StateFile, m_statefilename, std::ofstream::binary );
 
     if (!StateFile.is_open())
-    	return false;
+        return false;
     else
     {
-    	StateFile.close();
-    	return true;
+        StateFile.close();
+        return true;
     }
 }
 
 
 bool CSaveGameController::save()
 {
-	std::ofstream StateFile;
-	std::string fullpath = GetFullFileName(m_statefilename);
-	bool open = OpenGameFileW( StateFile, m_statefilename, std::ofstream::binary );
+    std::ofstream StateFile;
+    std::string fullpath = GetFullFileName(m_statefilename);
+    bool open = OpenGameFileW( StateFile, m_statefilename, std::ofstream::binary );
 
     if (!open)
     {
-    	gLogging.textOut("Error saving \"" + fullpath + "\". Please check the status of that path.\n" );
-    	return false;
+        gLogging.textOut("Error saving \"" + fullpath + "\". Please check the status of that path.\n" );
+        return false;
     }
 
-	// Convert everything to a primitive data structure
-	// First pass the header, which is only version,
-	// sizeofname and name of slot itself
-	Uint32 offset = 0;
-	Uint32 size = sizeof(SAVEGAMEVERSION)
-				+ sizeof(char)
-				+ m_statename.size()*sizeof(char);
+    // Convert everything to a primitive data structure
+    // First pass the header, which is only version,
+    // sizeofname and name of slot itself
+    Uint32 offset = 0;
+    Uint32 size = sizeof(SAVEGAMEVERSION)
+                + sizeof(char)
+                + m_statename.size()*sizeof(char);
 
-	size += m_datablock.size();
-	// Headersize + Datablock size
-	std::vector<char> primitive_buffer(size);
+    size += m_datablock.size();
+    // Headersize + Datablock size
+    std::vector<char> primitive_buffer(size);
 
-	// Write the header
-	primitive_buffer[offset++] = SAVEGAMEVERSION;
-	primitive_buffer[offset++] = m_statename.size();
+    // Write the header
+    primitive_buffer[offset++] = SAVEGAMEVERSION;
+    primitive_buffer[offset++] = m_statename.size();
 
-	for( Uint32 i=0; i<m_statename.size() ; i++ )
-	{
-		primitive_buffer[offset++] = m_statename[i];
-	}
+    for( Uint32 i=0; i<m_statename.size() ; i++ )
+    {
+        primitive_buffer[offset++] = m_statename[i];
+    }
 
-	// Write the collected data block
+    // Write the collected data block
     std::vector<gs_byte>::iterator pos = m_datablock.begin();
-	for( size_t i=0; i<m_datablock.size() ; i++ )
-	{
-		primitive_buffer[offset++] = *pos;
-		pos++;
-	}
+    for( size_t i=0; i<m_datablock.size() ; i++ )
+    {
+        primitive_buffer[offset++] = *pos;
+        pos++;
+    }
 
-	// TODO: Compression has still to be done!
+    // TODO: Compression has still to be done!
 
-	// Now write all the data to the file
+    // Now write all the data to the file
     StateFile.write( &primitive_buffer[0], size );
-	StateFile.close();
+    StateFile.close();
 
-	m_datablock.clear();
+    m_datablock.clear();
 
-	// Done!
-	gLogging.textOut("File \""+ fullpath +"\" was successfully saved. Size: "+itoa(size)+"\n");
-	m_statefilename.clear();
-	m_statename.clear();
+    // Done!
+    gLogging.textOut("File \""+ fullpath +"\" was successfully saved. Size: "+itoa(size)+"\n");
+    m_statefilename.clear();
+    m_statename.clear();
 
-	return true;
+    return true;
 }
 
 
@@ -823,7 +825,7 @@ bool CSaveGameController::loadXMLTree(GsKit::ptree &pt)
     bool open = OpenGameFileR( StateFile, m_stateXMLfilename, std::ofstream::binary );
 
     if (!open)
-        return false;    
+        return false;
 
     read_xml( m_stateXMLfilename, pt );
 
@@ -837,33 +839,33 @@ bool CSaveGameController::loadXMLTree(GsKit::ptree &pt)
 // Adds data of size to the main data block
 void CSaveGameController::addData(gs_byte *data, Uint32 size)
 {
-	for(Uint32 i=0 ; i<sizeof(Uint32) ; i++ )
-	{
-		Uint32 datasize;
-		datasize = size & ( 0xFF<<(i*8) );
-		datasize >>= (i*8);
+    for(Uint32 i=0 ; i<sizeof(Uint32) ; i++ )
+    {
+        Uint32 datasize;
+        datasize = size & ( 0xFF<<(i*8) );
+        datasize >>= (i*8);
         m_datablock.push_back( static_cast<gs_byte>(datasize) );
-	}
-	for(Uint32 i=0 ; i<size ; i++ )
-		m_datablock.push_back(data[i]);
+    }
+    for(Uint32 i=0 ; i<size ; i++ )
+        m_datablock.push_back(data[i]);
 }
 
 // Read data of size from the main data block
 bool CSaveGameController::readDataBlock(gs_byte *data)
 {
     if(m_offset+sizeof(Uint32) > m_datablock.size())
-	    return false;
+        return false;
 
-	Uint32 datasize=0;
-	memcpy(&datasize, &m_datablock[m_offset], sizeof(Uint32) );
-	m_offset += sizeof(Uint32);
+    Uint32 datasize=0;
+    memcpy(&datasize, &m_datablock[m_offset], sizeof(Uint32) );
+    m_offset += sizeof(Uint32);
 
     if(datasize > m_datablock.size()-m_offset)
         return false;
 
     if(datasize > 0)
-		memcpy(data, &m_datablock[m_offset], datasize);
+        memcpy(data, &m_datablock[m_offset], datasize);
 
-	m_offset += datasize;
-	return true;
+    m_offset += datasize;
+    return true;
 }
