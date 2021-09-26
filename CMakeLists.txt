@@ -129,13 +129,13 @@ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
     "MinSizeRel" "RelWithDebInfo")
 endif()
 
+# Since shell script get_version is not processed properly on windows, we have to define manually here.
+# TODO: Better system for defining the version
+set(CG_VERSION "3.0.5")
+
 MESSAGE(STATUS "Preparing the Build-System for Commander Genius" )
 execute_process(COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/get_version.sh OUTPUT_VARIABLE CG_VERSION)
 string(REGEX REPLACE "[\r\n]" "" CG_VERSION "${CG_VERSION}")
-
-# Since shell script get_version is not processed properly on windows, we have to define manually here.
-# TODO: Better system for defining the version
-set(CG_VERSION "3.0.4")
 
 # Generate the README file with the correct version string
 configure_file(README.md ${CMAKE_BINARY_DIR}/README.md COPYONLY)

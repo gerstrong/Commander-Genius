@@ -6,7 +6,7 @@
   <project_license>GPL-2.0+</project_license>
   <name>Commander Genius</name>
     
-  <summary>An Engine used to play the "Commander Keen" game series</summary>
+  <summary>An Engine used to play the "Commander Keen" and "Cosmos the Cosmic Adventure" game series</summary>
   
     <description>
   <p>
@@ -46,11 +46,16 @@
 </categories>
 
   <releases>
+    <release version="3.0.5" date="2021-09-26">
+      <description>
+        <p>More memory fixes</p>
+      </description>
+    </release>
     <release version="3.0.2" date="2021-09-19">
       <description>
-        <p>Added Cosmos Cosmic Adventure</p>      
+        <p>Added Cosmos Cosmic Adventure</p>
         <p>Improved compatibility</p>
-        <p>More memory fixes</p>        
+        <p>More memory fixes</p>
       </description>  
     </release>    
     <release version="2.8.2.5" date="2021-07-08">
