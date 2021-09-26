@@ -20,7 +20,7 @@ struct identity { typedef T type; };
 namespace GsKit
 {
     typedef std::string path_type;
-    typedef std::string str_type;    
+    typedef std::string str_type;
 
     class ptree
     {
@@ -126,15 +126,22 @@ namespace GsKit
         Type get(const path_type &path,
                  const Type &default_value) const
         {
-            auto val = get<Type>(path, default_value, identity<Type>());
-            return val;
+            try
+            {
+                auto val = get<Type>(path, default_value, identity<Type>());
+                return val;
+            }
+            catch (...)
+            {
+                return default_value;
+            }
         }
 
         template <class Type>
         Type get(const path_type &path,
                  const Type &default_value,
                  identity<Type>) const
-        {    
+        {
             try
             {
                 str_type defStr = std::to_string(default_value);
