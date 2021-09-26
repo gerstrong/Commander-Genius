@@ -37,13 +37,13 @@ CInput::CInput()
 
 #if defined(WIZ) || defined(GP2X)
     volume_direction = VOLUME_NOCHG;
-	volume = 60-VOLUME_CHANGE_RATE;
-	WIZ_AdjustVolume(VOLUME_UP);
+    volume = 60-VOLUME_CHANGE_RATE;
+    WIZ_AdjustVolume(VOLUME_UP);
 #endif
     gLogging.ftextOut("Starting the input driver...<br>");
 
     for(int c=0 ; c<NUM_INPUTS ; c++)
-		resetControls(c);
+        resetControls(c);
     memset(&Event, 0, sizeof(Event));
 
 #if !TARGET_OS_IPHONE && !TARGET_IPHONE_SIMULATOR
@@ -64,13 +64,13 @@ CInput::CInput()
  */
 void CInput::resetControls(const int player)
 {
-	m_exit = false;
+    m_exit = false;
 
     m_cmdpulse = 0;
-	m_joydeadzone = 1024;
+    m_joydeadzone = 1024;
 
-	memset(immediate_keytable,false,KEYTABLE_SIZE);
-	memset(last_immediate_keytable,false,KEYTABLE_SIZE);
+    memset(immediate_keytable,false,KEYTABLE_SIZE);
+    memset(last_immediate_keytable,false,KEYTABLE_SIZE);
 
     auto &curInput = mInputCommands[player];
 
@@ -80,47 +80,47 @@ void CInput::resetControls(const int player)
     }
 
 #ifdef __SWITCH__
-	// Switch gamepad mapping using two joycons
+    // Switch gamepad mapping using two joycons
     curInput[IC_LEFT].joyeventtype = (unsigned int)EType::JOYBUTTON;
-	curInput[IC_LEFT].joybutton = 12;
-	curInput[IC_LEFT].which = 0;
+    curInput[IC_LEFT].joybutton = 12;
+    curInput[IC_LEFT].which = 0;
     curInput[IC_UP].joyeventtype = (unsigned int)EType::JOYBUTTON;
-	curInput[IC_UP].joybutton = 13;
-	curInput[IC_UP].which = 0;
+    curInput[IC_UP].joybutton = 13;
+    curInput[IC_UP].which = 0;
     curInput[IC_RIGHT].joyeventtype = (unsigned int)EType::JOYBUTTON;
-	curInput[IC_RIGHT].joybutton = 14;
-	curInput[IC_RIGHT].which = 0;
+    curInput[IC_RIGHT].joybutton = 14;
+    curInput[IC_RIGHT].which = 0;
     curInput[IC_DOWN].joyeventtype = (unsigned int)EType::JOYBUTTON;
-	curInput[IC_DOWN].joybutton = 15;
-	curInput[IC_DOWN].which = 0;
+    curInput[IC_DOWN].joybutton = 15;
+    curInput[IC_DOWN].which = 0;
 
     curInput[IC_JUMP].joyeventtype = (unsigned int)EType::JOYBUTTON;
-	curInput[IC_JUMP].joybutton = 0;
-	curInput[IC_JUMP].which = 0;
+    curInput[IC_JUMP].joybutton = 0;
+    curInput[IC_JUMP].which = 0;
     curInput[IC_POGO].joyeventtype = (unsigned int)EType::JOYBUTTON;
-	curInput[IC_POGO].joybutton = 2;
-	curInput[IC_POGO].which = 0;
+    curInput[IC_POGO].joybutton = 2;
+    curInput[IC_POGO].which = 0;
     curInput[IC_FIRE].joyeventtype = (unsigned int)EType::JOYBUTTON;
-	curInput[IC_FIRE].joybutton = 3;
-	curInput[IC_FIRE].which = 0;
+    curInput[IC_FIRE].joybutton = 3;
+    curInput[IC_FIRE].which = 0;
     curInput[IC_RUN].joyeventtype = (unsigned int)EType::JOYBUTTON;
     curInput[IC_RUN].joybutton = 1;
-	curInput[IC_RUN].which = 0;
+    curInput[IC_RUN].which = 0;
 
     curInput[IC_STATUS].joyeventtype = (unsigned int)EType::JOYBUTTON;
-	curInput[IC_STATUS].joybutton = 11;
-	curInput[IC_STATUS].which = 0;
+    curInput[IC_STATUS].joybutton = 11;
+    curInput[IC_STATUS].which = 0;
     curInput[IC_CAMLEAD].joyeventtype = (unsigned int)EType::JOYBUTTON;
-	curInput[IC_CAMLEAD].joybutton = 7;
-	curInput[IC_CAMLEAD].which = 0;
+    curInput[IC_CAMLEAD].joybutton = 7;
+    curInput[IC_CAMLEAD].which = 0;
     curInput[IC_HELP].joyeventtype = (unsigned int)EType::JOYBUTTON;
-	curInput[IC_HELP].joybutton = 6;
-	curInput[IC_HELP].which = 0;
+    curInput[IC_HELP].joybutton = 6;
+    curInput[IC_HELP].which = 0;
     curInput[IC_BACK].joyeventtype = (unsigned int)EType::JOYBUTTON;
-	curInput[IC_BACK].joybutton = 10;
-	curInput[IC_BACK].which = 0;
+    curInput[IC_BACK].joybutton = 10;
+    curInput[IC_BACK].which = 0;
 #else
-	// These are the default keyboard commands
+    // These are the default keyboard commands
 
     curInput[IC_LEFT].keysym = SDLK_LEFT;
     curInput[IC_UP].keysym = SDLK_UP;
@@ -146,7 +146,7 @@ void CInput::resetControls(const int player)
     curInput[IC_QUICKSAVE].keysym = SDLK_F6;
     curInput[IC_QUICKLOAD].keysym = SDLK_F9;
 
-	// And those are the default joystick handlings, but they are disabled by default
+    // And those are the default joystick handlings, but they are disabled by default
     curInput[IC_LEFT].joyeventtype = (unsigned int)EType::KEYBOARD;
     curInput[IC_LEFT].joyaxis = 0;
     curInput[IC_LEFT].joyvalue = -32767;
@@ -187,7 +187,7 @@ void CInput::resetControls(const int player)
     curInput[IC_RUN].joyeventtype = (unsigned int)EType::KEYBOARD;
     curInput[IC_RUN].joybutton = 0;
     curInput[IC_RUN].ctlrbutton = 0;
-    curInput[IC_RUN].which = 0;    
+    curInput[IC_RUN].which = 0;
     curInput[IC_STATUS].joyeventtype = (unsigned int)EType::KEYBOARD;
     curInput[IC_STATUS].joybutton = 4;
     curInput[IC_STATUS].ctlrbutton = 4;
@@ -224,7 +224,7 @@ void CInput::openJoyAndPrintStats(const int idx)
 {
 
     for(auto &curJoy : mp_Joysticks)
-    {        
+    {
         // Is joystick already added? If found one, don't read it.
         const auto curInstance = SDL_JoystickInstanceID(curJoy);
         const auto newInstance = SDL_JoystickGetDeviceInstanceID(idx);
@@ -318,13 +318,13 @@ bool CInput::startJoyDriver()
 void CInput::loadControlconfig(const std::string &presetName)
 {
     CConfiguration Configuration;
-	if(Configuration.Parse())
-	{
-		std::string section;
+    if(Configuration.Parse())
+    {
+        std::string section;
         for(size_t i=0 ; i<mInputCommands.size() ; i++)
-		{
-			// setup input from proper string
-			section = "input" + itoa(i);
+        {
+            // setup input from proper string
+            section = "input" + itoa(i);
 
             if(!presetName.empty())
             {
@@ -332,7 +332,7 @@ void CInput::loadControlconfig(const std::string &presetName)
             }
 
 
-			std::string value;
+            std::string value;
             auto &curInput = mInputCommands[i];
             Configuration.ReadString( section, "Left", value, "Left");
             setupInputCommand( curInput, IC_LEFT, value );
@@ -379,13 +379,13 @@ void CInput::loadControlconfig(const std::string &presetName)
             Configuration.ReadKeyword( section, "SuperPogo", &mSuperPogo[i], false);
             Configuration.ReadKeyword( section, "ImpossiblePogo", &mImpPogo[i], true);
             Configuration.ReadKeyword( section, "AutoFire", &mFullyAutomatic[i], false);
-		}
-	}
-	else
-	{
+        }
+    }
+    else
+    {
         for(size_t c=0 ; c< NUM_INPUTS ; c++)
-			resetControls(int(c));
-	}
+            resetControls(int(c));
+    }
 }
 
 /**
@@ -395,37 +395,37 @@ void CInput::loadControlconfig(const std::string &presetName)
 void CInput::saveControlconfig(const std::string &presetName)
 {
     CConfiguration Configuration;
-	Configuration.Parse();
+    Configuration.Parse();
 
-	std::string section;
-	for(size_t i=0 ; i<NUM_INPUTS ; i++)
-	{        
-	    section = "input" + itoa(i);
+    std::string section;
+    for(size_t i=0 ; i<NUM_INPUTS ; i++)
+    {
+        section = "input" + itoa(i);
 
         if(!presetName.empty())
         {
             section += "-" + presetName;
         }
 
-	    const auto inputVal = static_cast<unsigned char>(i);
+        const auto inputVal = static_cast<unsigned char>(i);
 
         // Movement section
-	    Configuration.WriteString(section, "Left", getEventName(IC_LEFT, inputVal));
-	    Configuration.WriteString(section, "Up", getEventName(IC_UP, inputVal));
-	    Configuration.WriteString(section, "Right", getEventName(IC_RIGHT, inputVal));
-	    Configuration.WriteString(section, "Down", getEventName(IC_DOWN, inputVal));
-	    Configuration.WriteString(section, "Upper-Left", getEventName(IC_UPPERLEFT, inputVal));
-	    Configuration.WriteString(section, "Upper-Right", getEventName(IC_UPPERRIGHT, inputVal));
-	    Configuration.WriteString(section, "Lower-Left", getEventName(IC_LOWERLEFT, inputVal));
-	    Configuration.WriteString(section, "Lower-Right", getEventName(IC_LOWERRIGHT, inputVal));
+        Configuration.WriteString(section, "Left", getEventName(IC_LEFT, inputVal));
+        Configuration.WriteString(section, "Up", getEventName(IC_UP, inputVal));
+        Configuration.WriteString(section, "Right", getEventName(IC_RIGHT, inputVal));
+        Configuration.WriteString(section, "Down", getEventName(IC_DOWN, inputVal));
+        Configuration.WriteString(section, "Upper-Left", getEventName(IC_UPPERLEFT, inputVal));
+        Configuration.WriteString(section, "Upper-Right", getEventName(IC_UPPERRIGHT, inputVal));
+        Configuration.WriteString(section, "Lower-Left", getEventName(IC_LOWERLEFT, inputVal));
+        Configuration.WriteString(section, "Lower-Right", getEventName(IC_LOWERRIGHT, inputVal));
 
         // Button section
-	    Configuration.WriteString(section, "Jump", getEventName(IC_JUMP, inputVal));
-	    Configuration.WriteString(section, "Pogo", getEventName(IC_POGO, inputVal));
-	    Configuration.WriteString(section, "Fire", getEventName(IC_FIRE, inputVal));
-	    Configuration.WriteString(section, "Run", getEventName(IC_RUN, inputVal));
-	    Configuration.WriteString(section, "Status", getEventName(IC_STATUS, inputVal));
-	    Configuration.WriteString(section, "Camlead", getEventName(IC_CAMLEAD, inputVal));
+        Configuration.WriteString(section, "Jump", getEventName(IC_JUMP, inputVal));
+        Configuration.WriteString(section, "Pogo", getEventName(IC_POGO, inputVal));
+        Configuration.WriteString(section, "Fire", getEventName(IC_FIRE, inputVal));
+        Configuration.WriteString(section, "Run", getEventName(IC_RUN, inputVal));
+        Configuration.WriteString(section, "Status", getEventName(IC_STATUS, inputVal));
+        Configuration.WriteString(section, "Camlead", getEventName(IC_CAMLEAD, inputVal));
         Configuration.WriteString(section, "Help", getEventName(IC_HELP, inputVal));
         Configuration.WriteString(section, "Back", getEventName(IC_BACK, inputVal));
         Configuration.WriteString(section, "Quicksave", getEventName(IC_QUICKSAVE, inputVal));
@@ -437,9 +437,9 @@ void CInput::saveControlconfig(const std::string &presetName)
         Configuration.SetKeyword(section, "SuperPogo", mSuperPogo[i]);
         Configuration.SetKeyword(section, "ImpossiblePogo", mImpPogo[i]);
         Configuration.SetKeyword(section, "AutoFire", mFullyAutomatic[i]);
-	}
+    }
 
-	Configuration.saveCfgFile();
+    Configuration.saveCfgFile();
 
     gLogging << "Just saved the config file!" << CLogFile::endl;
 }
@@ -457,7 +457,7 @@ std::string CInput::getNewMappedEvent(int &rPos, unsigned char &rInp)
 
 std::string CInput::getEventShortName(int command, unsigned char input)
 {
-	std::string buf;
+    std::string buf;
 
     const auto &cmd = mInputCommands[input][command];
     const auto &evType = cmd.joyeventtype;
@@ -488,7 +488,7 @@ std::string CInput::getEventShortName(int command, unsigned char input)
         break;
     }
 
-	return buf;
+    return buf;
 }
 
 
@@ -554,7 +554,7 @@ static std::string getEventNameOneCmd(const stInputCommand cmd)
 
 std::string CInput::getEventName(int command, unsigned char input)
 {
-	std::string buf;
+    std::string buf;
     auto &curInput = mInputCommands[input];
     return getEventNameOneCmd(curInput[command]);
 }
@@ -562,56 +562,56 @@ std::string CInput::getEventName(int command, unsigned char input)
 void CInput::setupInputCommand(std::array<stInputCommand, MAX_COMMANDS> &input,
                                int action, const std::string &string )
 {
-	std::string buf = string;
+    std::string buf = string;
 
-	TrimSpaces(buf);
-	if(buf == "") return;
+    TrimSpaces(buf);
+    if(buf == "") return;
 
-	if(strCaseStartsWith(string, "Joy"))
-	{
-		std::string buf2;
-		buf = buf.substr(3);
-		size_t pos = buf.find('-');
-		buf2 = buf.substr(0, pos);
+    if(strCaseStartsWith(string, "Joy"))
+    {
+        std::string buf2;
+        buf = buf.substr(3);
+        size_t pos = buf.find('-');
+        buf2 = buf.substr(0, pos);
         input[action].which = atoi(buf2);
-		buf = buf.substr(pos+1);
-		buf2 = buf.substr(0,1);
-		buf = buf.substr(1);
+        buf = buf.substr(pos+1);
+        buf2 = buf.substr(0,1);
+        buf = buf.substr(1);
 
-		if(buf2 == "A")
-		{
+        if(buf2 == "A")
+        {
             input[action].joyeventtype = (unsigned int)EType::JOYAXIS;
-			pos = buf.size()-1;
-			buf2 = buf.substr(0,pos);
+            pos = buf.size()-1;
+            buf2 = buf.substr(0,pos);
             input[action].joyaxis = atoi(buf2);
-			buf2 = buf.substr(pos);
+            buf2 = buf.substr(pos);
             input[action].joyvalue = (buf2 == "+") ? +1 : -1;
-		}
-		else if(buf2 == "B")
-		{
+        }
+        else if(buf2 == "B")
+        {
             input[action].joyeventtype = (unsigned int)EType::JOYBUTTON;
             input[action].joybutton = atoi(buf);
-		}
-		else // Should normally be H
-		{
+        }
+        else // Should normally be H
+        {
             input[action].joyeventtype = (unsigned int)EType::JOYHAT;
             input[action].joyhatval = atoi(buf);
-		}
-		return;
-	}
+        }
+        return;
+    }
 
-	if(strCaseStartsWith(string, "Key"))
-	{
+    if(strCaseStartsWith(string, "Key"))
+    {
         input[action].joyeventtype = (unsigned int)EType::KEYBOARD;
-		buf = buf.substr(3);
-		TrimSpaces(buf);
+        buf = buf.substr(3);
+        TrimSpaces(buf);
 #if SDL_VERSION_ATLEAST(2, 0, 0)
         input[action].keysym = (SDL_Keycode) atoi(buf);
 #else
         input[action].keysym = (SDLKey) atoi(buf);
 #endif
-		return;
-	}
+        return;
+    }
 }
 
 /**
@@ -637,35 +637,35 @@ void CInput::readNewEvent()
 {
     stInputCommand &readInput = mInputCommands[remapper.mapDevice][remapper.mapPosition];
 
-	// This function is used to configure new input keys.
-	// For iPhone, we have emulation via touchpad and we don't want to have custom keys.
-	// We should fix the menu for iPhone so that this function doesn't get called.
+    // This function is used to configure new input keys.
+    // For iPhone, we have emulation via touchpad and we don't want to have custom keys.
+    // We should fix the menu for iPhone so that this function doesn't get called.
 #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
-	printf("WARNING: called readNewEvent on iphone\n");
-	return;
+    printf("WARNING: called readNewEvent on iphone\n");
+    return;
 #endif
 
     readInput = stInputCommand();
 
     if(!m_EventList.empty())
-		m_EventList.clear();
+        m_EventList.clear();
 
     const SDL_Keycode removeEvSym1 = SDLK_LALT;
     const SDL_Keycode removeEvSym2 = SDLK_BACKSPACE;
 
-	while( SDL_PollEvent( &Event ) )
-	{
-		switch ( Event.type )
-		{
-			case SDL_QUIT:
-                gLogging << "SDL: Got quit event in readNewEvent!";
+    while( SDL_PollEvent( &Event ) )
+    {
+        switch ( Event.type )
+        {
+            case SDL_QUIT:
+                gLogging << "SDL: Got quit event in readNewEvent!" << CLogFile::endl;
 #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
-				// on iPhone, we just want to quit in this case
-				exit(0);
+                // on iPhone, we just want to quit in this case
+                exit(0);
 #endif
                 break;
 
-			case SDL_KEYDOWN:
+            case SDL_KEYDOWN:
                 // Special for removing the assinged event
                 if(mRemovalRunning && Event.key.keysym.sym == removeEvSym2)
                 {
@@ -721,10 +721,10 @@ void CInput::readNewEvent()
                 mRemovalRunning = false;
                 break;
 
-			case SDL_JOYBUTTONDOWN:
+            case SDL_JOYBUTTONDOWN:
 #if defined(CAANOO) || defined(WIZ) || defined(GP2X)
-				WIZ_EmuKeyboard( Event.jbutton.button, 1 );
-				return false;
+                WIZ_EmuKeyboard( Event.jbutton.button, 1 );
+                return false;
 #else
                 readInput.joyeventtype = (unsigned int)EType::JOYBUTTON;
                 readInput.joybutton = Event.jbutton.button;
@@ -732,10 +732,10 @@ void CInput::readNewEvent()
                 gLogging << "Set "
                          << getEventNameOneCmd(readInput)
                          << CLogFile::endl;
-				remapper.mappingInput = false;                
+                remapper.mappingInput = false;
 #endif
                 mRemovalRunning = false;
-				break;
+                break;
 
             case SDL_JOYDEVICEADDED:
                 gLogging << "SDL: A Joystick just got added." << CLogFile::endl;;
@@ -751,7 +751,7 @@ void CInput::readNewEvent()
                 SDL_JoystickClose(joystick);
 
                 break;
-		}
+        }
 
         flushAll();
     }
@@ -923,8 +923,8 @@ void CInput::pollEvents()
     GsRect<Uint16> Res(SDL_GetVideoSurface()->w, SDL_GetVideoSurface()->h);
 #endif
 
-	// copy all the input of the last poll to a space for checking pressing or holding a button
-	memcpy(last_immediate_keytable, immediate_keytable, KEYTABLE_SIZE*sizeof(char));
+    // copy all the input of the last poll to a space for checking pressing or holding a button
+    memcpy(last_immediate_keytable, immediate_keytable, KEYTABLE_SIZE*sizeof(char));
 
     // Input for player commands
     for(unsigned int j=0 ; j<mInputCommands.size() ; j++)
@@ -945,40 +945,40 @@ void CInput::pollEvents()
 
     SDL_Joystick *joystick = nullptr;
 
-	// While there's an event to handle
-	while( SDL_PollEvent( &Event ) )
-	{
+    // While there's an event to handle
+    while( SDL_PollEvent( &Event ) )
+    {
         bool passSDLEventVec = true;
 
-		switch( Event.type )
-		{
-		case SDL_QUIT:
-            gLogging << "SDL: Got quit event!";
-			m_exit = true;
+        switch( Event.type )
+        {
+        case SDL_QUIT:
+            gLogging << "SDL: Got quit event!" << CLogFile::endl;
+            m_exit = true;
 
-			break;
+            break;
         case SDL_KEYDOWN:
             passSDLEventVec = processKeys(1);
-			break;
-		case SDL_KEYUP:
+            break;
+        case SDL_KEYUP:
             passSDLEventVec = processKeys(0);
             break;
-		case SDL_JOYAXISMOTION:
+        case SDL_JOYAXISMOTION:
             passSDLEventVec = true;
-			processJoystickAxis();
-			break;
+            processJoystickAxis();
+            break;
         case SDL_JOYHATMOTION:
             passSDLEventVec = true;
             processJoystickHat();
             break;
-		case SDL_JOYBUTTONDOWN:
+        case SDL_JOYBUTTONDOWN:
             passSDLEventVec = true;
-			processJoystickButton(1);
-			break;
-		case SDL_JOYBUTTONUP:
+            processJoystickButton(1);
+            break;
+        case SDL_JOYBUTTONUP:
             passSDLEventVec = true;
-			processJoystickButton(0);
-			break;
+            processJoystickButton(0);
+            break;
 
         case SDL_JOYDEVICEADDED:
             gLogging.ftextOut("SDL: A Joystick just got added: Idx %d<br>\n", Event.jdevice.which);
@@ -995,7 +995,7 @@ void CInput::pollEvents()
             break;
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-		case SDL_FINGERDOWN:
+        case SDL_FINGERDOWN:
         {
 #ifdef USE_VIRTUALPAD
             // If Virtual gamepad takes control...
@@ -1005,7 +1005,7 @@ void CInput::pollEvents()
                 GsVec2D<int> rotPt(Event.tfinger.x*float(activeArea.dim.x),
                                    Event.tfinger.y*float(activeArea.dim.y));
 
-	    		transMouseRelCoord(Pos, rotPt, activeArea, tiltedScreen);
+                transMouseRelCoord(Pos, rotPt, activeArea, tiltedScreen);
 
                 if(!mpVirtPad->mouseFingerState(Pos, true, Event.tfinger, true))
                 {
@@ -1091,7 +1091,7 @@ void CInput::pollEvents()
                 //processMouse(Event);
             }
         }
-		break;
+        break;
 
         case SDL_WINDOWEVENT:
             if(Event.window.event == SDL_WINDOWEVENT_RESIZED)
@@ -1104,16 +1104,16 @@ void CInput::pollEvents()
             }
             break;
 #else
-		case SDL_VIDEORESIZE:
+        case SDL_VIDEORESIZE:
             gVideoDriver.mpVideoEngine->resizeDisplayScreen(
-					GsRect<Uint16>(Event.resize.w, Event.resize.h) );
+                    GsRect<Uint16>(Event.resize.w, Event.resize.h) );
             dispRect.w = Event.resize.w;
             dispRect.h = Event.resize.h;
-			break;
+            break;
 #endif
 
 #ifndef ANDROID
-		case SDL_MOUSEBUTTONDOWN:
+        case SDL_MOUSEBUTTONDOWN:
 
             if(Event.button.button <= 3)
             {
@@ -1143,9 +1143,9 @@ void CInput::pollEvents()
                 }
             }
 
-			break;
+            break;
 
-		case SDL_MOUSEBUTTONUP:
+        case SDL_MOUSEBUTTONUP:
 
 #ifdef USE_VIRTUALPAD
             if(gVideoDriver.VGamePadEnabled() && mpVirtPad &&
@@ -1172,7 +1172,7 @@ void CInput::pollEvents()
                 gPointDevice.mPointingState.mPos = Pos;
             }
 
-			break;
+            break;
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
         case SDL_MOUSEWHEEL:
@@ -1181,7 +1181,7 @@ void CInput::pollEvents()
             break;
 #endif
 
-		case SDL_MOUSEMOTION:
+        case SDL_MOUSEMOTION:
 
             const GsVec2D<int> rotPt(Event.motion.x, Event.motion.y);
             transMouseRelCoord(Pos, Event.motion, activeArea, tiltedScreen);
@@ -1216,7 +1216,7 @@ void CInput::pollEvents()
             }
 
 #endif
-		}
+        }
 
         if(passSDLEventVec)
         {
@@ -1226,19 +1226,19 @@ void CInput::pollEvents()
         {
             mBackEventBuffer.push_back(Event);
         }
-	}
+    }
 #ifdef MOUSEWRAPPER
-	// Handle mouse emulation layer
-	processMouse();
+    // Handle mouse emulation layer
+    processMouse();
 #endif
 
-	for(unsigned int i = 0; i < KEYTABLE_SIZE; ++i)
-		firsttime_immediate_keytable[i]
-		= !last_immediate_keytable[i] && immediate_keytable[i];
+    for(unsigned int i = 0; i < KEYTABLE_SIZE; ++i)
+        firsttime_immediate_keytable[i]
+        = !last_immediate_keytable[i] && immediate_keytable[i];
 
-	for(int i=0 ; i<MAX_COMMANDS ; i++)
+    for(int i=0 ; i<MAX_COMMANDS ; i++)
     {
-		for(int j=0 ; j<NUM_INPUTS ; j++)
+        for(int j=0 ; j<NUM_INPUTS ; j++)
         {
             auto &input = mInputCommands[j];
 
@@ -1250,43 +1250,43 @@ void CInput::pollEvents()
 
 #ifndef MOUSEWRAPPER
 
-	// TODO: I'm not sure, if that should go here...
-	// Check, if LALT+ENTER was pressed
-	if((getHoldedKey(KALT)) && getPressedKey(KENTER))
-	{
-		bool value;
+    // TODO: I'm not sure, if that should go here...
+    // Check, if LALT+ENTER was pressed
+    if((getHoldedKey(KALT)) && getPressedKey(KENTER))
+    {
+        bool value;
         value = gVideoDriver.getFullscreen();
-		value = !value;
-		gLogging.textOut(FONTCOLORS::GREEN,"Fullscreen mode triggered by user!<br>");
+        value = !value;
+        gLogging.textOut(FONTCOLORS::GREEN,"Fullscreen mode triggered by user!<br>");
         gVideoDriver.isFullscreen(value);
 
-		// initialize/activate all drivers
-		gLogging.ftextOut("Restarting graphics driver...<br>");
+        // initialize/activate all drivers
+        gLogging.ftextOut("Restarting graphics driver...<br>");
         if ( gVideoDriver.applyMode() && gVideoDriver.start() )
-		{
-			gLogging.ftextOut(FONTCOLORS::PURPLE, "Toggled Fullscreen quick shortcut...<br>");
-		}
-		else
-		{
-			value = !value;
-			gLogging.ftextOut(FONTCOLORS::PURPLE, "Couldn't change the resolution, Rolling back...<br>");
+        {
+            gLogging.ftextOut(FONTCOLORS::PURPLE, "Toggled Fullscreen quick shortcut...<br>");
+        }
+        else
+        {
+            value = !value;
+            gLogging.ftextOut(FONTCOLORS::PURPLE, "Couldn't change the resolution, Rolling back...<br>");
             gVideoDriver.applyMode();
             gVideoDriver.start();
-		}
+        }
 
-		gInput.flushAll();
-	}
+        gInput.flushAll();
+    }
 
-	// Check, if LALT+Q or LALT+F4 was pressed
-	if(getHoldedKey(KALT) && (getPressedKey(KF4) || getPressedKey(KQ)) )
-	{
+    // Check, if LALT+Q or LALT+F4 was pressed
+    if(getHoldedKey(KALT) && (getPressedKey(KF4) || getPressedKey(KQ)) )
+    {
         gLogging << "User exit request!";
-		m_exit = true;
-	}
+        m_exit = true;
+    }
 #endif
 
 #if defined(WIZ) || defined(GP2X)
-	WIZ_AdjustVolume( volume_direction );
+    WIZ_AdjustVolume( volume_direction );
 #endif
 
     SDL_SemPost( mpPollSem );
@@ -1338,26 +1338,26 @@ void CInput::processJoystickHat()
 {
     const auto evWhich = mJoyIdToInputIdx[Event.jhat.which];
 
-	for(int j=0 ; j<NUM_INPUTS ; j++)
-	{
+    for(int j=0 ; j<NUM_INPUTS ; j++)
+    {
         auto &input = mInputCommands[j];
-		for(int i=0 ; i<MAX_COMMANDS ; i++)
-		{
+        for(int i=0 ; i<MAX_COMMANDS ; i++)
+        {
             stInputCommand &command = input[i];
 
             if( command.joyeventtype == (unsigned int)EType::JOYHAT &&
                 command.which ==  evWhich)
-			{
-				command.active = false;
-				// Check if Joystick hats are configured for this event
-				if(
-					(Event.jhat.value & command.joyhatval) )
-				{
-					command.active = true;
-				}
-			}
-		}
-	}
+            {
+                command.active = false;
+                // Check if Joystick hats are configured for this event
+                if(
+                    (Event.jhat.value & command.joyhatval) )
+                {
+                    command.active = true;
+                }
+            }
+        }
+    }
 }
 
 /**
@@ -1366,26 +1366,26 @@ void CInput::processJoystickHat()
 void CInput::processJoystickButton(int value)
 {
 #if defined(CAANOO) || defined(WIZ) || defined(GP2X)
-	WIZ_EmuKeyboard( Event.jbutton.button, value );
+    WIZ_EmuKeyboard( Event.jbutton.button, value );
 #else
     const auto evWhich = mJoyIdToInputIdx[Event.jbutton.which];
 
     for( auto &inputCommand : mInputCommands)
-	{
+    {
         auto &inputs = inputCommand;
         for( auto &input : inputs)
-		{
+        {
             if(input.joyeventtype == (unsigned int)EType::JOYBUTTON)
-			{
+            {
                 // Joystick buttons are configured for this event
                 if(evWhich == input.which &&
                    Event.jbutton.button == input.joybutton )
                 {
                     input.active = value;
                 }
-			}
-		}
-	}
+            }
+        }
+    }
 #endif
 }
 
@@ -1403,7 +1403,7 @@ bool CInput::processKeys(int keydown)
 {
     bool passSDLEventVec = true;
 
-	// Input for player commands
+    // Input for player commands
     for( auto &input : mInputCommands )
     {
         for(decltype(input.size()) i=0 ;
@@ -1419,143 +1419,143 @@ bool CInput::processKeys(int keydown)
                     passSDLEventVec = false;
                 }
             }
-		}
-	}
+        }
+    }
 
 
 
 
-	// ... and for general keys
+    // ... and for general keys
     switch(Event.key.keysym.sym)
-	{
-			// These are only used for ingame stuff or menu, but not for controlling the player anymore
-		case SDLK_LEFT: 	immediate_keytable[KLEFT]	= keydown;  break;
-		case SDLK_UP:	immediate_keytable[KUP]		= keydown;  break;
-		case SDLK_RIGHT:	immediate_keytable[KRIGHT]	= keydown;  break;
-		case SDLK_DOWN:	immediate_keytable[KDOWN]	= keydown;  break;
+    {
+            // These are only used for ingame stuff or menu, but not for controlling the player anymore
+        case SDLK_LEFT: 	immediate_keytable[KLEFT]	= keydown;  break;
+        case SDLK_UP:	immediate_keytable[KUP]		= keydown;  break;
+        case SDLK_RIGHT:	immediate_keytable[KRIGHT]	= keydown;  break;
+        case SDLK_DOWN:	immediate_keytable[KDOWN]	= keydown;  break;
 
-			// Page Keys
-		case SDLK_PAGEUP:	immediate_keytable[KPGUP]	= keydown;  break;
-		case SDLK_PAGEDOWN:	immediate_keytable[KPGDN]		= keydown;  break;
+            // Page Keys
+        case SDLK_PAGEUP:	immediate_keytable[KPGUP]	= keydown;  break;
+        case SDLK_PAGEDOWN:	immediate_keytable[KPGDN]		= keydown;  break;
 
-		case SDLK_RETURN:immediate_keytable[KENTER]	= keydown;  break;
-		case SDLK_RCTRL:immediate_keytable[KCTRL]	= keydown;  break;
-		case SDLK_LCTRL:immediate_keytable[KCTRL]	= keydown;  break;
-		case SDLK_SPACE:immediate_keytable[KSPACE]	= keydown;  break;
-		case SDLK_RALT:immediate_keytable[KALT]		= keydown;  break;
-		case SDLK_LALT:immediate_keytable[KALT]		= keydown;  break;
-		case SDLK_TAB:immediate_keytable[KTAB]		= keydown;  break;
-		case SDLK_LSHIFT:immediate_keytable[KSHIFT]	= keydown;  break;
-		case SDLK_RSHIFT:immediate_keytable[KSHIFT]	= keydown;  break;
-		case SDLK_ESCAPE:immediate_keytable[KQUIT]	= keydown;  break;
+        case SDLK_RETURN:immediate_keytable[KENTER]	= keydown;  break;
+        case SDLK_RCTRL:immediate_keytable[KCTRL]	= keydown;  break;
+        case SDLK_LCTRL:immediate_keytable[KCTRL]	= keydown;  break;
+        case SDLK_SPACE:immediate_keytable[KSPACE]	= keydown;  break;
+        case SDLK_RALT:immediate_keytable[KALT]		= keydown;  break;
+        case SDLK_LALT:immediate_keytable[KALT]		= keydown;  break;
+        case SDLK_TAB:immediate_keytable[KTAB]		= keydown;  break;
+        case SDLK_LSHIFT:immediate_keytable[KSHIFT]	= keydown;  break;
+        case SDLK_RSHIFT:immediate_keytable[KSHIFT]	= keydown;  break;
+        case SDLK_ESCAPE:immediate_keytable[KQUIT]	= keydown;  break;
 
-		case SDLK_BACKSPACE:immediate_keytable[KBCKSPCE] = keydown; break;
+        case SDLK_BACKSPACE:immediate_keytable[KBCKSPCE] = keydown; break;
 
-		case SDLK_QUOTE:immediate_keytable[KQUOTE]	= keydown;  break;
-		case SDLK_COMMA:immediate_keytable[KCOMMA]	= keydown;  break;
-		case SDLK_PERIOD:immediate_keytable[KPERIOD]	= keydown;  break;
-		case SDLK_SLASH:immediate_keytable[KSLASH]	= keydown;  break;
-		case SDLK_SEMICOLON:immediate_keytable[KSEMICOLON]	= keydown;  break;
-		case SDLK_EQUALS:immediate_keytable[KEQUAL]	= keydown;  break;
-		case SDLK_LEFTBRACKET:immediate_keytable[KLEFTBRACKET]	= keydown;  break;
-		case SDLK_BACKSLASH:immediate_keytable[KBACKSLASH]	= keydown;  break;
-		case SDLK_RIGHTBRACKET:immediate_keytable[KRIGHTBRACKET]	= keydown;  break;
-		case SDLK_BACKQUOTE:immediate_keytable[KBACKQUOTE]	= keydown;  break;
+        case SDLK_QUOTE:immediate_keytable[KQUOTE]	= keydown;  break;
+        case SDLK_COMMA:immediate_keytable[KCOMMA]	= keydown;  break;
+        case SDLK_PERIOD:immediate_keytable[KPERIOD]	= keydown;  break;
+        case SDLK_SLASH:immediate_keytable[KSLASH]	= keydown;  break;
+        case SDLK_SEMICOLON:immediate_keytable[KSEMICOLON]	= keydown;  break;
+        case SDLK_EQUALS:immediate_keytable[KEQUAL]	= keydown;  break;
+        case SDLK_LEFTBRACKET:immediate_keytable[KLEFTBRACKET]	= keydown;  break;
+        case SDLK_BACKSLASH:immediate_keytable[KBACKSLASH]	= keydown;  break;
+        case SDLK_RIGHTBRACKET:immediate_keytable[KRIGHTBRACKET]	= keydown;  break;
+        case SDLK_BACKQUOTE:immediate_keytable[KBACKQUOTE]	= keydown;  break;
 
-		case SDLK_a:immediate_keytable[KA]	= keydown;  break;
-		case SDLK_b:immediate_keytable[KB]	= keydown;  break;
-		case SDLK_c:immediate_keytable[KC]	= keydown;  break;
-		case SDLK_d:immediate_keytable[KD]	= keydown;  break;
-		case SDLK_e:immediate_keytable[KE]	= keydown;  break;
-		case SDLK_f:immediate_keytable[KF]	= keydown;  break;
-		case SDLK_g:immediate_keytable[KG]	= keydown;  break;
-		case SDLK_h:immediate_keytable[KH]	= keydown;  break;
-		case SDLK_i:immediate_keytable[KI]	= keydown;  break;
-		case SDLK_j:immediate_keytable[KJ]	= keydown;  break;
-		case SDLK_k:immediate_keytable[KK]	= keydown;  break;
-		case SDLK_l:immediate_keytable[KL]	= keydown;  break;
-		case SDLK_m:immediate_keytable[KM]	= keydown;  break;
-		case SDLK_n:immediate_keytable[KN]	= keydown;  break;
-		case SDLK_o:immediate_keytable[KO]	= keydown;  break;
-		case SDLK_p:immediate_keytable[KP]	= keydown;  break;
-		case SDLK_q:immediate_keytable[KQ]	= keydown;  break;
-		case SDLK_r:immediate_keytable[KR]	= keydown;  break;
-		case SDLK_s:immediate_keytable[KS]	= keydown;  break;
-		case SDLK_t:immediate_keytable[KT]	= keydown;  break;
-		case SDLK_u:immediate_keytable[KU]	= keydown;  break;
-		case SDLK_v:immediate_keytable[KV]	= keydown;  break;
-		case SDLK_w:immediate_keytable[KW]	= keydown;  break;
-		case SDLK_x:immediate_keytable[KX]	= keydown;  break;
-		case SDLK_y:immediate_keytable[KY]	= keydown;  break;
-		case SDLK_z:immediate_keytable[KZ]	= keydown;  break;
+        case SDLK_a:immediate_keytable[KA]	= keydown;  break;
+        case SDLK_b:immediate_keytable[KB]	= keydown;  break;
+        case SDLK_c:immediate_keytable[KC]	= keydown;  break;
+        case SDLK_d:immediate_keytable[KD]	= keydown;  break;
+        case SDLK_e:immediate_keytable[KE]	= keydown;  break;
+        case SDLK_f:immediate_keytable[KF]	= keydown;  break;
+        case SDLK_g:immediate_keytable[KG]	= keydown;  break;
+        case SDLK_h:immediate_keytable[KH]	= keydown;  break;
+        case SDLK_i:immediate_keytable[KI]	= keydown;  break;
+        case SDLK_j:immediate_keytable[KJ]	= keydown;  break;
+        case SDLK_k:immediate_keytable[KK]	= keydown;  break;
+        case SDLK_l:immediate_keytable[KL]	= keydown;  break;
+        case SDLK_m:immediate_keytable[KM]	= keydown;  break;
+        case SDLK_n:immediate_keytable[KN]	= keydown;  break;
+        case SDLK_o:immediate_keytable[KO]	= keydown;  break;
+        case SDLK_p:immediate_keytable[KP]	= keydown;  break;
+        case SDLK_q:immediate_keytable[KQ]	= keydown;  break;
+        case SDLK_r:immediate_keytable[KR]	= keydown;  break;
+        case SDLK_s:immediate_keytable[KS]	= keydown;  break;
+        case SDLK_t:immediate_keytable[KT]	= keydown;  break;
+        case SDLK_u:immediate_keytable[KU]	= keydown;  break;
+        case SDLK_v:immediate_keytable[KV]	= keydown;  break;
+        case SDLK_w:immediate_keytable[KW]	= keydown;  break;
+        case SDLK_x:immediate_keytable[KX]	= keydown;  break;
+        case SDLK_y:immediate_keytable[KY]	= keydown;  break;
+        case SDLK_z:immediate_keytable[KZ]	= keydown;  break;
 
-		case SDLK_F1:immediate_keytable[KF1]	= keydown;  break;
-		case SDLK_F2:immediate_keytable[KF2]	= keydown;  break;
+        case SDLK_F1:immediate_keytable[KF1]	= keydown;  break;
+        case SDLK_F2:immediate_keytable[KF2]	= keydown;  break;
         case SDLK_F3:immediate_keytable[KF3]	= keydown;  break;
-		case SDLK_F4:immediate_keytable[KF4]	= keydown;  break;
-		case SDLK_F5:immediate_keytable[KF5]	= keydown;  break;
-		case SDLK_F6:immediate_keytable[KF6]	= keydown;  break;
-		case SDLK_F7:immediate_keytable[KF7]	= keydown;  break;
-		case SDLK_F8:immediate_keytable[KF8]	= keydown;  break;
-		case SDLK_F9:immediate_keytable[KF9]	= keydown;  break;
-		case SDLK_F10:immediate_keytable[KF10]	= keydown;  break;
+        case SDLK_F4:immediate_keytable[KF4]	= keydown;  break;
+        case SDLK_F5:immediate_keytable[KF5]	= keydown;  break;
+        case SDLK_F6:immediate_keytable[KF6]	= keydown;  break;
+        case SDLK_F7:immediate_keytable[KF7]	= keydown;  break;
+        case SDLK_F8:immediate_keytable[KF8]	= keydown;  break;
+        case SDLK_F9:immediate_keytable[KF9]	= keydown;  break;
+        case SDLK_F10:immediate_keytable[KF10]	= keydown;  break;
 
-		case SDLK_0:immediate_keytable[KNUM0] = keydown;  break;
-		case SDLK_1:immediate_keytable[KNUM1] = keydown;  break;
-		case SDLK_2:immediate_keytable[KNUM2] = keydown;  break;
-		case SDLK_3:immediate_keytable[KNUM3] = keydown;  break;
-		case SDLK_4:immediate_keytable[KNUM4] = keydown;  break;
-		case SDLK_5:immediate_keytable[KNUM5] = keydown;  break;
-		case SDLK_6:immediate_keytable[KNUM6] = keydown;  break;
-		case SDLK_7:immediate_keytable[KNUM7] = keydown;  break;
-		case SDLK_8:immediate_keytable[KNUM8] = keydown;  break;
-		case SDLK_9:immediate_keytable[KNUM9] = keydown;  break;
+        case SDLK_0:immediate_keytable[KNUM0] = keydown;  break;
+        case SDLK_1:immediate_keytable[KNUM1] = keydown;  break;
+        case SDLK_2:immediate_keytable[KNUM2] = keydown;  break;
+        case SDLK_3:immediate_keytable[KNUM3] = keydown;  break;
+        case SDLK_4:immediate_keytable[KNUM4] = keydown;  break;
+        case SDLK_5:immediate_keytable[KNUM5] = keydown;  break;
+        case SDLK_6:immediate_keytable[KNUM6] = keydown;  break;
+        case SDLK_7:immediate_keytable[KNUM7] = keydown;  break;
+        case SDLK_8:immediate_keytable[KNUM8] = keydown;  break;
+        case SDLK_9:immediate_keytable[KNUM9] = keydown;  break;
 
-		case SDLK_EXCLAIM:immediate_keytable[KEXCLAIM]	= keydown;  break;
-		case SDLK_QUOTEDBL:immediate_keytable[KDBLQUOTE]	= keydown;  break;
-		case SDLK_HASH:immediate_keytable[KHASH]	= keydown;  break;
-		case SDLK_DOLLAR:immediate_keytable[KDOLLAR]	= keydown;  break;
-		case SDLK_AMPERSAND:immediate_keytable[KAMPERSAND]	= keydown;  break;
-		case SDLK_ASTERISK:immediate_keytable[KAST]	= keydown;  break;
-		case SDLK_LEFTPAREN:immediate_keytable[KLEFTPAREN]	= keydown;  break;
-		case SDLK_RIGHTPAREN:immediate_keytable[KRIGHTPAREN]	= keydown;  break;
-		case SDLK_COLON:immediate_keytable[KCOLON]	= keydown;  break;
-		case SDLK_LESS:immediate_keytable[KLESS]	= keydown;  break;
-		case SDLK_GREATER:immediate_keytable[KGREATER]	= keydown;  break;
-		case SDLK_QUESTION:immediate_keytable[KQUESTION]	= keydown;  break;
-		case SDLK_AT:immediate_keytable[KAT]	= keydown;  break;
-		case SDLK_CARET:immediate_keytable[KCARET]	= keydown;  break;
-		case SDLK_UNDERSCORE:immediate_keytable[KUNDERSCORE]	= keydown;  break;
-		case SDLK_MINUS:immediate_keytable[KMINUS]	= keydown;  break;
-		case SDLK_PLUS:immediate_keytable[KPLUS]	= keydown;  break;
+        case SDLK_EXCLAIM:immediate_keytable[KEXCLAIM]	= keydown;  break;
+        case SDLK_QUOTEDBL:immediate_keytable[KDBLQUOTE]	= keydown;  break;
+        case SDLK_HASH:immediate_keytable[KHASH]	= keydown;  break;
+        case SDLK_DOLLAR:immediate_keytable[KDOLLAR]	= keydown;  break;
+        case SDLK_AMPERSAND:immediate_keytable[KAMPERSAND]	= keydown;  break;
+        case SDLK_ASTERISK:immediate_keytable[KAST]	= keydown;  break;
+        case SDLK_LEFTPAREN:immediate_keytable[KLEFTPAREN]	= keydown;  break;
+        case SDLK_RIGHTPAREN:immediate_keytable[KRIGHTPAREN]	= keydown;  break;
+        case SDLK_COLON:immediate_keytable[KCOLON]	= keydown;  break;
+        case SDLK_LESS:immediate_keytable[KLESS]	= keydown;  break;
+        case SDLK_GREATER:immediate_keytable[KGREATER]	= keydown;  break;
+        case SDLK_QUESTION:immediate_keytable[KQUESTION]	= keydown;  break;
+        case SDLK_AT:immediate_keytable[KAT]	= keydown;  break;
+        case SDLK_CARET:immediate_keytable[KCARET]	= keydown;  break;
+        case SDLK_UNDERSCORE:immediate_keytable[KUNDERSCORE]	= keydown;  break;
+        case SDLK_MINUS:immediate_keytable[KMINUS]	= keydown;  break;
+        case SDLK_PLUS:immediate_keytable[KPLUS]	= keydown;  break;
 
-		default: break;
-	}
+        default: break;
+    }
 
-	if(getHoldedKey(KSHIFT))
-	{
-		if(getPressedKey(KBACKQUOTE)) immediate_keytable[KTILDE] = keydown;
-		if(getPressedKey(KNUM1)) immediate_keytable[KEXCLAIM] = keydown;
-		if(getPressedKey(KNUM2)) immediate_keytable[KAT] = keydown;
-		if(getPressedKey(KNUM3)) immediate_keytable[KHASH] = keydown;
-		if(getPressedKey(KNUM4)) immediate_keytable[KDOLLAR] = keydown;
-		if(getPressedKey(KNUM5)) immediate_keytable[KPERCENT] = keydown;
-		if(getPressedKey(KNUM6)) immediate_keytable[KCARET] = keydown;
-		if(getPressedKey(KNUM7)) immediate_keytable[KAMPERSAND] = keydown;
-		if(getPressedKey(KNUM8)) immediate_keytable[KAST] = keydown;
-		if(getPressedKey(KNUM9)) immediate_keytable[KLEFTPAREN] = keydown;
-		if(getPressedKey(KNUM0)) immediate_keytable[KRIGHTPAREN] = keydown;
-		if(getPressedKey(KMINUS)) immediate_keytable[KUNDERSCORE] = keydown;
-		if(getPressedKey(KEQUAL)) immediate_keytable[KPLUS] = keydown;
-		if(getPressedKey(KBACKSLASH)) immediate_keytable[KLINE] = keydown;
-		if(getPressedKey(KLEFTBRACKET)) immediate_keytable[KLEFTBRACE] = keydown;
-		if(getPressedKey(KRIGHTBRACKET)) immediate_keytable[KRIGHTBRACE] = keydown;
-		if(getPressedKey(KSEMICOLON)) immediate_keytable[KCOLON] = keydown;
-		if(getPressedKey(KQUOTE)) immediate_keytable[KDBLQUOTE] = keydown;
-		if(getPressedKey(KCOMMA)) immediate_keytable[KLESS] = keydown;
-		if(getPressedKey(KPERIOD)) immediate_keytable[KGREATER] = keydown;
-		if(getPressedKey(KSLASH)) immediate_keytable[KQUESTION] = keydown;
-	}
+    if(getHoldedKey(KSHIFT))
+    {
+        if(getPressedKey(KBACKQUOTE)) immediate_keytable[KTILDE] = keydown;
+        if(getPressedKey(KNUM1)) immediate_keytable[KEXCLAIM] = keydown;
+        if(getPressedKey(KNUM2)) immediate_keytable[KAT] = keydown;
+        if(getPressedKey(KNUM3)) immediate_keytable[KHASH] = keydown;
+        if(getPressedKey(KNUM4)) immediate_keytable[KDOLLAR] = keydown;
+        if(getPressedKey(KNUM5)) immediate_keytable[KPERCENT] = keydown;
+        if(getPressedKey(KNUM6)) immediate_keytable[KCARET] = keydown;
+        if(getPressedKey(KNUM7)) immediate_keytable[KAMPERSAND] = keydown;
+        if(getPressedKey(KNUM8)) immediate_keytable[KAST] = keydown;
+        if(getPressedKey(KNUM9)) immediate_keytable[KLEFTPAREN] = keydown;
+        if(getPressedKey(KNUM0)) immediate_keytable[KRIGHTPAREN] = keydown;
+        if(getPressedKey(KMINUS)) immediate_keytable[KUNDERSCORE] = keydown;
+        if(getPressedKey(KEQUAL)) immediate_keytable[KPLUS] = keydown;
+        if(getPressedKey(KBACKSLASH)) immediate_keytable[KLINE] = keydown;
+        if(getPressedKey(KLEFTBRACKET)) immediate_keytable[KLEFTBRACE] = keydown;
+        if(getPressedKey(KRIGHTBRACKET)) immediate_keytable[KRIGHTBRACE] = keydown;
+        if(getPressedKey(KSEMICOLON)) immediate_keytable[KCOLON] = keydown;
+        if(getPressedKey(KQUOTE)) immediate_keytable[KDBLQUOTE] = keydown;
+        if(getPressedKey(KCOMMA)) immediate_keytable[KLESS] = keydown;
+        if(getPressedKey(KPERIOD)) immediate_keytable[KGREATER] = keydown;
+        if(getPressedKey(KSLASH)) immediate_keytable[KQUESTION] = keydown;
+    }
 
     return passSDLEventVec;
 
@@ -1571,12 +1571,12 @@ static bool checkMousewrapperKey(int& key);
 bool CInput::getHoldedKey(int key)
 {
 #ifdef MOUSEWRAPPER
-	if(!checkMousewrapperKey(key)) return true;
+    if(!checkMousewrapperKey(key)) return true;
 #endif
-	if(immediate_keytable[key])
-		return true;
+    if(immediate_keytable[key])
+        return true;
 
-	return false;
+    return false;
 }
 
 /**
@@ -1586,15 +1586,15 @@ bool CInput::getHoldedKey(int key)
 bool CInput::getPressedKey(int key)
 {
 #ifdef MOUSEWRAPPER
-	if(!checkMousewrapperKey(key)) return true;
+    if(!checkMousewrapperKey(key)) return true;
 #endif
-	if(firsttime_immediate_keytable[key])
-	{
-		firsttime_immediate_keytable[key] = false;
-		return true;
-	}
+    if(firsttime_immediate_keytable[key])
+    {
+        firsttime_immediate_keytable[key] = false;
+        return true;
+    }
 
-	return false;
+    return false;
 }
 
 /**
@@ -1605,21 +1605,21 @@ bool CInput::getPressedKey(int key)
 
 bool CInput::getPulsedKey(int key, int msec)
 {
-	if(immediate_keytable[key])
-	{
-		bool value = true;
+    if(immediate_keytable[key])
+    {
+        bool value = true;
 
-		if(m_cmdpulse % msec != 0)
-		{
-			value = false;
-		}
-		m_cmdpulse++;
-		return value;
-	}
-	if(!immediate_keytable[key] && last_immediate_keytable[key])
-		m_cmdpulse = 0;
+        if(m_cmdpulse % msec != 0)
+        {
+            value = false;
+        }
+        m_cmdpulse++;
+        return value;
+    }
+    if(!immediate_keytable[key] && last_immediate_keytable[key])
+        m_cmdpulse = 0;
 
-	return false;
+    return false;
 }
 
 /**
@@ -1628,47 +1628,47 @@ bool CInput::getPulsedKey(int key, int msec)
  */
 std::string CInput::getPressedTypingKey(void)
 {
-	int i;
-	std::string buf;
+    int i;
+    std::string buf;
 
-	for(i=KA ; i<=KZ ; i++)
-	{
-		if (getHoldedKey(KSHIFT) && getPressedKey(i))
-		{
-			buf = 'A' + i - KA;
-			return buf;
-		}
-		else if(getPressedKey(i))
-		{
-			buf = 'a' + i - KA;
-			return buf;
-		}
-	}
-	for(i=KSPACE ; i<=KAT ; i++)
-	{
-		if(getPressedKey(i))
-		{
-			buf = 32 + i - KSPACE;
-			return buf;
-		}
-	}
-		for(i=KLEFTBRACKET ; i<=KBACKQUOTE ; i++)
-	{
-		if(getPressedKey(i))
-		{
-			buf = '[' + i - KLEFTBRACKET;
-			return buf;
-		}
-	}
-		for(i=KLEFTBRACE ; i<=KTILDE ; i++)
-	{
-		if(getPressedKey(i))
-		{
-			buf = '{' + i - KLEFTBRACE;
-			return buf;
-		}
-	}
-	return buf;
+    for(i=KA ; i<=KZ ; i++)
+    {
+        if (getHoldedKey(KSHIFT) && getPressedKey(i))
+        {
+            buf = 'A' + i - KA;
+            return buf;
+        }
+        else if(getPressedKey(i))
+        {
+            buf = 'a' + i - KA;
+            return buf;
+        }
+    }
+    for(i=KSPACE ; i<=KAT ; i++)
+    {
+        if(getPressedKey(i))
+        {
+            buf = 32 + i - KSPACE;
+            return buf;
+        }
+    }
+        for(i=KLEFTBRACKET ; i<=KBACKQUOTE ; i++)
+    {
+        if(getPressedKey(i))
+        {
+            buf = '[' + i - KLEFTBRACKET;
+            return buf;
+        }
+    }
+        for(i=KLEFTBRACE ; i<=KTILDE ; i++)
+    {
+        if(getPressedKey(i))
+        {
+            buf = '{' + i - KLEFTBRACE;
+            return buf;
+        }
+    }
+    return buf;
 }
 
 /**
@@ -1677,18 +1677,18 @@ std::string CInput::getPressedTypingKey(void)
  */
 std::string CInput::getPressedNumKey(void)
 {
-	int i;
-	std::string buf;
+    int i;
+    std::string buf;
 
-	for(i=KNUM0 ; i<=KNUM9 ; i++)
-	{
-		if(getPressedKey(i))
-		{
-			buf = '0' + i - KNUM0;
-			return buf;
-		}
-	}
-	return buf;
+    for(i=KNUM0 ; i<=KNUM9 ; i++)
+    {
+        if(getPressedKey(i))
+        {
+            buf = '0' + i - KNUM0;
+            return buf;
+        }
+    }
+    return buf;
 }
 
 /**
@@ -1697,57 +1697,57 @@ std::string CInput::getPressedNumKey(void)
  */
 bool CInput::getPressedIsTypingKey(void)
 {
-	int i;
+    int i;
 
-	if(getHoldedKey(KSHIFT))
-		return true;
-	else
-	{
-		for(i=KSPACE ; i<=KAT ; i++)
-		{
-			if(getHoldedKey(i))
-				return true;
-		}
-		for(i=KLEFTBRACKET ; i<=KTILDE ; i++)
-		{
-			if(getHoldedKey(i))
-				return true;
-		}
-		return false;
-	}
+    if(getHoldedKey(KSHIFT))
+        return true;
+    else
+    {
+        for(i=KSPACE ; i<=KAT ; i++)
+        {
+            if(getHoldedKey(i))
+                return true;
+        }
+        for(i=KLEFTBRACKET ; i<=KTILDE ; i++)
+        {
+            if(getHoldedKey(i))
+                return true;
+        }
+        return false;
+    }
 }
 
 bool CInput::getPressedIsNumKey(void)
 {
-	int i;
+    int i;
 
-		for(i=KNUM0 ; i<=KNUM9 ; i++)
-		{
-			if(getHoldedKey(i))
-				return true;
-		}
-		return false;
+        for(i=KNUM0 ; i<=KNUM9 ; i++)
+        {
+            if(getHoldedKey(i))
+                return true;
+        }
+        return false;
 }
 
 bool CInput::getPressedAnyKey(void)
 {
-	for(unsigned int key=0 ; key<KEYTABLE_SIZE ; key++)
-	{
-		if(firsttime_immediate_keytable[key])
-		{
-			firsttime_immediate_keytable[key] = false;
-			return true;
-		}
-	}
-	return false;
+    for(unsigned int key=0 ; key<KEYTABLE_SIZE ; key++)
+    {
+        if(firsttime_immediate_keytable[key])
+        {
+            firsttime_immediate_keytable[key] = false;
+            return true;
+        }
+    }
+    return false;
 }
 
 bool CInput::getHoldedCommand(int command)
 {
-	bool retval = false;
-	for( int player=0; player<NUM_INPUTS ; player++ )
-		retval |= getHoldedCommand(player, command);
-	return retval;
+    bool retval = false;
+    for( int player=0; player<NUM_INPUTS ; player++ )
+        retval |= getHoldedCommand(player, command);
+    return retval;
 }
 
 bool CInput::isJoystickAssgmnt(const int player, const int command)
@@ -1768,7 +1768,7 @@ int CInput::getJoyValue(const int player,
 {
     auto &input = mInputCommands[player];
     int newval = input[command].joymotion;
-	newval = (newval*101)>>15;
+    newval = (newval*101)>>15;
 
     newval = newval<0 ? -newval : newval;
 
@@ -1776,18 +1776,18 @@ int CInput::getJoyValue(const int player,
         newval = 100;
 
     newval = negative ? -newval : newval;
-	return newval;
+    return newval;
 }
 
 
 bool CInput::getPressedCommand(int command)
 {
-	bool retval = false;
-	for(int player=0; player<NUM_INPUTS ; player++ )
+    bool retval = false;
+    for(int player=0; player<NUM_INPUTS ; player++ )
     {
-		retval |= getPressedCommand(player, command);
+        retval |= getPressedCommand(player, command);
     }
-	return retval;
+    return retval;
 }
 
 bool CInput::getPressedCommand(int player, int command)
@@ -1795,20 +1795,20 @@ bool CInput::getPressedCommand(int player, int command)
     auto &inputFromPlayer = mInputCommands[player];
 
     if(inputFromPlayer[command].firsttimeactive)
-	{
+    {
         inputFromPlayer[command].firsttimeactive = false;
-		return true;
-	}
+        return true;
+    }
 
-	return false;
+    return false;
 }
 
 bool CInput::getPulsedCommand(int command, int msec)
 {
-	bool retval = false;
-	for(int player=0; player<NUM_INPUTS ; player++ )
-		retval |= getPulsedCommand(player, command, msec);
-	return retval;
+    bool retval = false;
+    for(int player=0; player<NUM_INPUTS ; player++ )
+        retval |= getPulsedCommand(player, command, msec);
+    return retval;
 }
 
 bool CInput::getPulsedCommand(int player, int command, int msec)
@@ -1816,69 +1816,69 @@ bool CInput::getPulsedCommand(int player, int command, int msec)
     auto &input = mInputCommands[player];
 
     if(input[command].active)
-	{
-		bool value = true;
+    {
+        bool value = true;
 
-		if(m_cmdpulse % msec != 0)
-		{
-			value = false;
-		}
-		m_cmdpulse++;
-		return value;
-	}
+        if(m_cmdpulse % msec != 0)
+        {
+            value = false;
+        }
+        m_cmdpulse++;
+        return value;
+    }
     if(!input[command].active &&
             input[command].lastactive )
-		m_cmdpulse = 0;
+        m_cmdpulse = 0;
 
-	return false;
+    return false;
 }
 
 
 bool CInput::mouseClicked()
 {
     // Check event queue for the clicked button
-	std::deque< std::shared_ptr<CEvent> >::iterator it = m_EventList.begin();
+    std::deque< std::shared_ptr<CEvent> >::iterator it = m_EventList.begin();
 
-	for( ; it != m_EventList.end() ; it++ )
-	{
+    for( ; it != m_EventList.end() ; it++ )
+    {
         if( PointingDevEvent *mouseevent = dynamic_cast<PointingDevEvent*> (it->get()) )
-		{
-			// Here we check if the mouse-cursor/Touch entry clicked on our Button
+        {
+            // Here we check if the mouse-cursor/Touch entry clicked on our Button
             if(mouseevent->Type == PDE_BUTTONUP)
-			{
-				m_EventList.erase(it);
-				return true;
-			}
-		}
-	}
-	return false;
+            {
+                m_EventList.erase(it);
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 
 bool CInput::getPressedAnyCommand()
 {
-	bool retval = false;
-	for(int player=0 ; player<NUM_INPUTS ; player++)
-		retval |= getPressedAnyCommand(player);
-	return retval;
+    bool retval = false;
+    for(int player=0 ; player<NUM_INPUTS ; player++)
+        retval |= getPressedAnyCommand(player);
+    return retval;
 }
 
 bool CInput::getPressedAnyCommand(int player)
 {
-	for(int i=0 ; i<MAX_COMMANDS ; i++)
-		if(getPressedCommand(player,i))
-			return true;
+    for(int i=0 ; i<MAX_COMMANDS ; i++)
+        if(getPressedCommand(player,i))
+            return true;
 
-	return false;
+    return false;
 }
 
 bool CInput::getPressedAnyButtonCommand(const int player)
 {
-	for(int i=IC_JUMP ; i<MAX_COMMANDS ; i++)
-		if(getPressedCommand(player,i))
-			return true;
+    for(int i=IC_JUMP ; i<MAX_COMMANDS ; i++)
+        if(getPressedCommand(player,i))
+            return true;
 
-	return false;
+    return false;
 }
 
 bool CInput::getPressedAnyButtonCommand()
@@ -1895,15 +1895,15 @@ bool CInput::getPressedAnyButtonCommand()
  */
 void CInput::flushCommands(void)
 {
-	for(int i=0 ; i<NUM_INPUTS ; i++)
-		for(int j=0 ; j<MAX_COMMANDS ; j++)
-			flushCommand( i, j );
+    for(int i=0 ; i<NUM_INPUTS ; i++)
+        for(int j=0 ; j<MAX_COMMANDS ; j++)
+            flushCommand( i, j );
 }
 
 void CInput::flushCommand(int command)
 {
-	for( int player=0; player<NUM_INPUTS ; player++ )
-		flushCommand(player, command);
+    for( int player=0; player<NUM_INPUTS ; player++ )
+        flushCommand(player, command);
 }
 
 void CInput::flushCommand(int player, int command)
@@ -1922,9 +1922,9 @@ void CInput::flushCommand(int player, int command)
  */
 void CInput::flushKeys(void)
 {
-	memset(immediate_keytable,false,KEYTABLE_SIZE);
-	memset(last_immediate_keytable,false,KEYTABLE_SIZE);
-	memset(firsttime_immediate_keytable,false,KEYTABLE_SIZE);
+    memset(immediate_keytable,false,KEYTABLE_SIZE);
+    memset(last_immediate_keytable,false,KEYTABLE_SIZE);
+    memset(firsttime_immediate_keytable,false,KEYTABLE_SIZE);
 }
 
 /**
@@ -1944,28 +1944,28 @@ void CInput::flushEvents()
 static const int w = 480, h = 320;
 static TouchButton* getPhoneButtons(stInputCommand InputCommand[NUM_INPUTS][MAX_COMMANDS]) {
 
-	static TouchButton phoneButtons[] = {
-		{ &InputCommand[0][IC_LEFT],        KLEFT,	0,      h*5/8,  w / 6,  h / 4},
+    static TouchButton phoneButtons[] = {
+        { &InputCommand[0][IC_LEFT],        KLEFT,	0,      h*5/8,  w / 6,  h / 4},
         { &InputCommand[0][IC_UPPERLEFT],	-1,     0,      h / 2,  w / 6,  h / 8,  true},
-		{ &InputCommand[0][IC_UP],          KUP,	w / 6,  h*2/4,  w / 6,  h / 4},
+        { &InputCommand[0][IC_UP],          KUP,	w / 6,  h*2/4,  w / 6,  h / 4},
         { &InputCommand[0][IC_UPPERRIGHT],	-1,     w / 3,  h / 2,  w / 6,  h / 8,  true},
-		{ &InputCommand[0][IC_RIGHT],       KRIGHT,	w / 3,  h*5/8,  w / 6,  h / 4},
+        { &InputCommand[0][IC_RIGHT],       KRIGHT,	w / 3,  h*5/8,  w / 6,  h / 4},
         { &InputCommand[0][IC_LOWERRIGHT],	-1,     w / 3,  h*7/8,  w / 6,  h / 8,  true},
-		{ &InputCommand[0][IC_DOWN],        KDOWN,	w / 6,  h*3/4,  w / 6,  h / 4},
+        { &InputCommand[0][IC_DOWN],        KDOWN,	w / 6,  h*3/4,  w / 6,  h / 4},
         { &InputCommand[0][IC_LOWERLEFT],	-1,     0,      h*7/8,  w / 6,  h / 8,  true},
 
-		{ &InputCommand[0][IC_JUMP],        KCTRL,	w / 2,  h*2/3,  w / 6,  h / 3},
-		{ &InputCommand[0][IC_POGO],        KALT,	w*2/3,  h*2/3,  w / 6,  h / 3},
+        { &InputCommand[0][IC_JUMP],        KCTRL,	w / 2,  h*2/3,  w / 6,  h / 3},
+        { &InputCommand[0][IC_POGO],        KALT,	w*2/3,  h*2/3,  w / 6,  h / 3},
         { &InputCommand[0][IC_FIRE],        KSPACE,	w*5/6,  h*2/3,  w / 6,  h / 3},
         { &InputCommand[0][IC_RUN],         KSHIFT,	w*5/6,  h*2/3,  w / 6,  h / 3},
 
-		{ &InputCommand[0][IC_BACK],        KQUIT,	0,      0,      w / 6,  h / 6},
-		{ &InputCommand[0][IC_STATUS],      KENTER, 5*w/6,  h / 6,  w / 6,  h / 6},
+        { &InputCommand[0][IC_BACK],        KQUIT,	0,      0,      w / 6,  h / 6},
+        { &InputCommand[0][IC_STATUS],      KENTER, 5*w/6,  h / 6,  w / 6,  h / 6},
         { &InputCommand[0][IC_HELP],        KF1,	0,      h / 6,  w / 6,  h / 6},
-		{ NULL,                     KSHOWHIDECTRLS,	5*w/6,  0,      w / 6,  h / 6},
-	};
+        { NULL,                     KSHOWHIDECTRLS,	5*w/6,  0,      w / 6,  h / 6},
+    };
 
-	return phoneButtons;
+    return phoneButtons;
 }
 #endif
 #endif
@@ -1980,29 +1980,29 @@ static MouseIndexSet phoneButton_MouseIndex[phoneButtonN];
 
 
 static TouchButton* getPhoneButton(int x, int y, TouchButton phoneButtons[]) {
-	for(int i = 0; i < phoneButtonN; ++i) {
-		TouchButton& b = phoneButtons[i];
-		if(b.isInside(x, y)) return &b;
-	}
-	return NULL;
+    for(int i = 0; i < phoneButtonN; ++i) {
+        TouchButton& b = phoneButtons[i];
+        if(b.isInside(x, y)) return &b;
+    }
+    return NULL;
 }
 #endif
 
 #ifdef MOUSEWRAPPER
 static bool checkMousewrapperKey(int& key) {
-	switch(key) {
-		case KLEFT: case KRIGHT: case KUP: case KDOWN:
-		case KENTER: case KSPACE: case KQUIT: case KF3:
-			return true;
-	}
+    switch(key) {
+        case KLEFT: case KRIGHT: case KUP: case KDOWN:
+        case KENTER: case KSPACE: case KQUIT: case KF3:
+            return true;
+    }
 
-	if(key == KY) { key = KENTER; return true; }
-	if(key == KN) { key = KQUIT; return true; }
+    if(key == KY) { key = KENTER; return true; }
+    if(key == KN) { key = KQUIT; return true; }
 
-	//errors << "checkMousewrapperKey: key " << key << " not useable for iPhone" << endl;
-	//return false;
-	// just too many keys ...
-	return true;
+    //errors << "checkMousewrapperKey: key " << key << " not useable for iPhone" << endl;
+    //return false;
+    // just too many keys ...
+    return true;
 }
 #endif
 
@@ -2012,32 +2012,32 @@ void CInput::processMouse()
     /*
     TouchButton* phoneButtons = getPhoneButtons(mInputCommands);
 
-	for(int i = 0; i < phoneButtonN; ++i) {
-		bool down = phoneButton_MouseIndex[i].size() > 0;
+    for(int i = 0; i < phoneButtonN; ++i) {
+        bool down = phoneButton_MouseIndex[i].size() > 0;
 
-		TouchButton& b = phoneButtons[i];
+        TouchButton& b = phoneButtons[i];
 
-		if(b.cmd)
-			b.cmd->active = down;
+        if(b.cmd)
+            b.cmd->active = down;
 
-		// handle immediate keys
-		if(b.immediateIndex >= 0)
-			immediate_keytable[b.immediateIndex] = down;
+        // handle immediate keys
+        if(b.immediateIndex >= 0)
+            immediate_keytable[b.immediateIndex] = down;
     }*/
 }
 #endif
 
 void CInput::processMouse(SDL_Event& ev) {
 
-	SDL_Rect screenRect;
+    SDL_Rect screenRect;
     //SDL_Touch* touch = SDL_GetTouch(ev.tfinger.touchId);
     SDL_Finger* touch = SDL_GetTouchFinger(ev.tfinger.touchId, 0);
     int x, y, dx, dy, w, h;
 
-	if(SDL_GetDisplayBounds(0, &screenRect) == 0) {
+    if(SDL_GetDisplayBounds(0, &screenRect) == 0) {
         w = screenRect.w;
         h = screenRect.h;
-	}
+    }
 
     if(touch == nullptr) return; //The touch has been removed
 
@@ -2049,25 +2049,25 @@ void CInput::processMouse(SDL_Event& ev) {
 
 
 
-	switch(ev.type) {
-		case SDL_FINGERDOWN:
-			processMouse(x, y, true, ev.tfinger.fingerId);
-			break;
+    switch(ev.type) {
+        case SDL_FINGERDOWN:
+            processMouse(x, y, true, ev.tfinger.fingerId);
+            break;
 
-		case SDL_FINGERUP:
-			processMouse(x, y, false, ev.tfinger.fingerId);
-			break;
+        case SDL_FINGERUP:
+            processMouse(x, y, false, ev.tfinger.fingerId);
+            break;
 
-		case SDL_FINGERMOTION:
+        case SDL_FINGERMOTION:
             //float fdx = ((float)ev.tfinger.dx)/touch->xres;
             //float fdy = ((float)ev.tfinger.dy)/touch->yres;
             float fdx = (float(ev.tfinger.dx))/touch->x;
             float fdy = (float(ev.tfinger.dy))/touch->y;
             dx = int(fdx*w); dy = int(fdy*h);
-			processMouse(x - dx, y - dy, false, ev.tfinger.fingerId);
-			processMouse(x, y, true, ev.tfinger.fingerId);
-			break;
-	}
+            processMouse(x - dx, y - dy, false, ev.tfinger.fingerId);
+            processMouse(x, y, true, ev.tfinger.fingerId);
+            break;
+    }
 }
 
 void CInput::processMouse(int, int, bool, int)
@@ -2122,16 +2122,16 @@ void CInput::processMouse(int, int, bool, int)
 #ifdef MOUSEWRAPPER
     TouchButton* phoneButtons = getPhoneButtons(InputCommand);
 
-	for(int i = 0; i < phoneButtonN; ++i) {
-		TouchButton& b = phoneButtons[i];
-		if(b.isInside(x, y)) {
-			phoneButtonLasttime[i] = down ? SDL_GetTicks() : 0;
-			if(down)	phoneButton_MouseIndex[i].insert(mouseindex);
-			else		phoneButton_MouseIndex[i].erase(mouseindex);
+    for(int i = 0; i < phoneButtonN; ++i) {
+        TouchButton& b = phoneButtons[i];
+        if(b.isInside(x, y)) {
+            phoneButtonLasttime[i] = down ? SDL_GetTicks() : 0;
+            if(down)	phoneButton_MouseIndex[i].insert(mouseindex);
+            else		phoneButton_MouseIndex[i].erase(mouseindex);
 
-			break;
-		}
-	}
+            break;
+        }
+    }
 #endif
 }
 
@@ -2139,43 +2139,43 @@ void CInput::processMouse(int, int, bool, int)
 #ifdef USE_OPENGL
 /*
 static void drawButton(TouchButton& button, bool down) {
-	// similar mysterious constant as in renderTexture/initGL
-	//glViewport(0,255,w,h);
+    // similar mysterious constant as in renderTexture/initGL
+    //glViewport(0,255,w,h);
 
-	float w = 480.0f, h = 320.0f;
+    float w = 480.0f, h = 320.0f;
 
-	int crop = 2;
-	float x1 = float(button.x + crop) / w;
-	float x2 = float(button.x+button.dim.x - crop) / w;
-	float y1 = float(button.y + crop) / h;
-	float y2 = float(button.y+button.h - crop) / h;
+    int crop = 2;
+    float x1 = float(button.x + crop) / w;
+    float x2 = float(button.x+button.dim.x - crop) / w;
+    float y1 = float(button.y + crop) / h;
+    float y2 = float(button.y+button.h - crop) / h;
 
-	GLfloat vertices[] =
-	{
-		x1, y1,
-		x2, y1,
-		x2, y2,
-		x1, y2,
-	};
+    GLfloat vertices[] =
+    {
+        x1, y1,
+        x2, y1,
+        x2, y2,
+        x1, y2,
+    };
 
-	//Render the vertices by pointing to the arrays.
+    //Render the vertices by pointing to the arrays.
     glEnableClientState(GL_VERTEX_ARRAY);
 
-	glVertexPointer(2, GL_FLOAT, 0, vertices);
+    glVertexPointer(2, GL_FLOAT, 0, vertices);
 
-	glEnable(GL_BLEND);
-	if(down)
-		glColor4f(0,0,0, 0.5);
-	else
-		glColor4f(0,0,0, 0.2);
+    glEnable(GL_BLEND);
+    if(down)
+        glColor4f(0,0,0, 0.5);
+    else
+        glColor4f(0,0,0, 0.2);
 
-	glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
-	//glBlendFunc(GL_ONE, GL_ZERO);
+    glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+    //glBlendFunc(GL_ONE, GL_ZERO);
 
-	//Finally draw the arrays.
-	glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
-	glDisableClientState(GL_VERTEX_ARRAY);
-	glDisable(GL_BLEND);
+    //Finally draw the arrays.
+    glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+    glDisableClientState(GL_VERTEX_ARRAY);
+    glDisable(GL_BLEND);
 
 }
 */
@@ -2187,14 +2187,14 @@ void CInput::renderOverlay()
 {
 #ifdef USE_OPENGL // only ogl supported yet (and probably worth)
 #if defined(MOUSEWRAPPER)
-	static bool showControls = true;
-	static bool buttonShowHideCtrlWasDown = false;
+    static bool showControls = true;
+    static bool buttonShowHideCtrlWasDown = false;
 
-	TouchButton* phoneButtons = getPhoneButtons(InputCommand);
+    TouchButton* phoneButtons = getPhoneButtons(InputCommand);
 
-	for(int i = phoneButtonN - 1; i >= 0; --i) {
-		TouchButton& b = phoneButtons[i];
-		bool down = phoneButton_MouseIndex[i].size() > 0;
+    for(int i = phoneButtonN - 1; i >= 0; --i) {
+        TouchButton& b = phoneButtons[i];
+        bool down = phoneButton_MouseIndex[i].size() > 0;
         if(i==0)
         {
             if (phoneButton_MouseIndex[1].size() > 0 || phoneButton_MouseIndex[7].size() > 0)
@@ -2205,14 +2205,14 @@ void CInput::renderOverlay()
             if (phoneButton_MouseIndex[i-1].size() > 0 || phoneButton_MouseIndex[i+1].size() > 0)
                 down = true;
         }
-		if((showControls && !b.invisible) || b.immediateIndex == KSHOWHIDECTRLS) drawButton(b, down);
+        if((showControls && !b.invisible) || b.immediateIndex == KSHOWHIDECTRLS) drawButton(b, down);
 
-		if(b.immediateIndex == KSHOWHIDECTRLS) {
-			if(buttonShowHideCtrlWasDown && !down)
-				showControls = !showControls;
-			buttonShowHideCtrlWasDown = down;
-		}
-	}
+        if(b.immediateIndex == KSHOWHIDECTRLS) {
+            if(buttonShowHideCtrlWasDown && !down)
+                showControls = !showControls;
+            buttonShowHideCtrlWasDown = down;
+        }
+    }
 #endif
 #endif
 }
@@ -2233,12 +2233,12 @@ void CInput::flushAll()
  */
 void CInput::shutdown()
 {
-	// Shutdown Joysticks
-	while(!mp_Joysticks.empty())
-	{
-		SDL_JoystickClose(mp_Joysticks.back());
-		mp_Joysticks.pop_back();
-	}
+    // Shutdown Joysticks
+    while(!mp_Joysticks.empty())
+    {
+        SDL_JoystickClose(mp_Joysticks.back());
+        mp_Joysticks.pop_back();
+    }
 }
 
 bool CInput::readSDLEventVec(std::vector<SDL_Event> &evVec)
