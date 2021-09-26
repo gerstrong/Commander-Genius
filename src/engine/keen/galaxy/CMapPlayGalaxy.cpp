@@ -380,8 +380,8 @@ void CMapPlayGalaxy::operator>>(CSaveGameController &savedGame)
     for( auto &it : filteredObjects )
     {
         // save all the objects states
-        unsigned int newYpos = it->getYPosition();
-        unsigned int newXpos = it->getXPosition();
+        int newYpos = it->getYPosition();
+        int newXpos = it->getXPosition();
 
         savedGame.encodeData( it->mFoeID );
         savedGame.encodeData( newXpos );
@@ -564,8 +564,8 @@ void CMapPlayGalaxy::operator>>(GsKit::ptree &levelNode)
         auto &spriteNode = levelNode.add("Sprite", "");
 
         // save all the objects states
-        unsigned int newYpos = it->getYPosition();
-        unsigned int newXpos = it->getXPosition();
+        const auto newYpos = it->getYPosition();
+        const auto newXpos = it->getXPosition();
 
         spriteNode.put("<xmlattr>.id", it->mFoeID);
         spriteNode.put("<xmlattr>.variant", it->getSpriteVariantIdx());
@@ -654,7 +654,6 @@ void CMapPlayGalaxy::operator<<(GsKit::ptree &levelNode)
     }
 
     // load the number of objects on screen
-    Uint32 x, y;
     Uint16 foeID;
 
     // Now load the previously created objects
@@ -676,8 +675,16 @@ void CMapPlayGalaxy::operator<<(GsKit::ptree &levelNode)
 
             foeID = spriteNode.get<int>("<xmlattr>.id");
             int sprVarID = spriteNode.get<int>("<xmlattr>.variant", 0);
-            x = spriteNode.get<int>("<xmlattr>.x");
-            y = spriteNode.get<int>("<xmlattr>.y");
+            const auto x = spriteNode.get<int>("<xmlattr>.x", 0);
+            const auto y = spriteNode.get<int>("<xmlattr>.y", 0);
+
+            if(x <= 0 || y <= 0)
+            {
+                gLogging << "Warning: Ignoring Position (" << x << ","
+                         << y << ") of foe " << foeID << "." << CLogFile::endl;
+
+                continue;
+            }
 
             CGalaxySpriteObject *pNewfoe = mapLoader->addFoe(mMap, foeID, x, y);
 
@@ -720,7 +727,7 @@ void CMapPlayGalaxy::operator<<(GsKit::ptree &levelNode)
         }
     }
 
-    gLogging.textOut("Restoring map status");
+    gLogging << "Restoring World Map status." << CLogFile::endl;
 
     // Save the map_data as it is left
     {

@@ -47,7 +47,7 @@ void CPlayGame::loadGame()
     // This is for the new xml based savegame format since version 1.6.0
     if(loadXMLGameState())
     {
-        gLogging.textOut("XML based save state loaded successfully!");
+        gLogging << "XML based save state loaded successfully." << CLogFile::endl;
         return;
     }
 }
