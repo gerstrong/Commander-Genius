@@ -529,10 +529,12 @@ void GsFontLegacy::drawFontCentered(SDL_Surface* dst, const std::string& text, U
 {
     Uint16 xmidpos = 0;
 
-    for( unsigned int i=0 ; i<text.size() ; i++)
-        xmidpos += mWidthtable[ static_cast<unsigned int>(text[i]) ];
+    for( const auto c : text )
+    {
+        xmidpos += mWidthtable[ static_cast<unsigned int>(c) ];
+    }
 
-    xmidpos = (width-xmidpos)/2+x;
+    xmidpos = x+(width-xmidpos)/2;
 
     drawFont(dst, text, xmidpos, yoff, highlight);
 }
