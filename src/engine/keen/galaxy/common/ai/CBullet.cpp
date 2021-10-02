@@ -21,22 +21,20 @@ size_t bulletActionMap[] =
 namespace galaxy
 {
 
-//const Uint32 speed = 10;
-//const Uint32 hittime = 100;
-
 CBullet::CBullet(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y,
                  const int xDir, const int yDir, const int sprVar) :
 CGalaxySpriteObject(pmap, foeID, x, y, sprVar),
 mReversed(false)
 {
-	xDirection = xDir;
-	yDirection = yDir;
+    mIgnoreSlope = true;
+    xDirection = xDir;
+    yDirection = yDir;
 
-	const size_t offsetIndex = gBehaviorEngine.isDemo() ? 3 : gBehaviorEngine.getEpisode() - 4;
+    const size_t offsetIndex = gBehaviorEngine.isDemo() ? 3 : gBehaviorEngine.getEpisode() - 4;
 
-	setupGalaxyObjectOnMap(bulletActionMap[offsetIndex], A_KEENSHOT_MOVING);
-	setActionSprite();
-	calcBoundingBoxes();
+    setupGalaxyObjectOnMap(bulletActionMap[offsetIndex], A_KEENSHOT_MOVING);
+    setActionSprite();
+    calcBoundingBoxes();
     playSound( SOUND_KEEN_FIRE );
 }
 
@@ -59,9 +57,7 @@ void CBullet::getTouchedBy(CSpriteObject& theObject)
         const auto optFFire = gBehaviorEngine.mOptions[GameOption::ALLOWPKING];
 
         if(!optFFire.value)
-        {
             return;
-        }
 
         if( player->getSpriteVariantIdx() != getSpriteVariantIdx() )
         {
@@ -79,17 +75,17 @@ bool CBullet::calcVisibility()
 
 
 void CBullet::process()
-{    
-	if( !getActionNumber(A_KEENSHOT_IMPACT) && (blockedd || blockedu || blockedl || blockedr || onslope) )
-	{
-		setAction(A_KEENSHOT_IMPACT);
-		playSound( SOUND_SHOT_HIT );
-		mIsDead = true;
-	}
-
-	if(!processActionRoutine())
+{
+    if( !getActionNumber(A_KEENSHOT_IMPACT) && (blockedd || blockedu || blockedl || blockedr || onslope) )
     {
-			exists = false;
+        setAction(A_KEENSHOT_IMPACT);
+        playSound( SOUND_SHOT_HIT );
+        mIsDead = true;
+    }
+
+    if(!processActionRoutine())
+    {
+            exists = false;
     }
 }
 

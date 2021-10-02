@@ -197,7 +197,7 @@ void CSpriteObject::adjustSlopedTiles( int x, int y1, int y2,
         return;
 
     // process the sloped tiles here. Galaxy only or special patch!!
-    if(gBehaviorEngine.getEpisode() > 3)
+    if(gBehaviorEngine.getEpisode() > 3 && mIgnoreSlope)
     {
         if(!moveSlopedTileDown(x, y2, xspeed, slopeType))
         {
@@ -265,7 +265,7 @@ void CSpriteObject::moveSlopedTileUp( int x, int y, const int xspeed )
     std::vector<CTileProperties> &TileProperty = gBehaviorEngine.getTileProperties();
     const Sint8 slope = TileProperty[mpMap->at(x>>CSF, y>>CSF)].bdown;
 
-    // Check first, if there is a tile on players level
+    // Check first, if there is a tile on sprite level
     if( slope >=2 && slope<=7 )
     {
         int yb1, yb2;
@@ -719,53 +719,55 @@ int CSpriteObject::checkSolidL( int x1, int x2, int y1, int y2)
     // Not tall enough?
     if((y2-y1) < (1<<CSF))
         local_block_tol = -1;
+    else
+        local_block_tol = y2-y1;
 
     // Check for right side of the tile
     if(solid && !noclipping)
     {
         const auto h=y2-y1;
 
-        if(h==0)
-            return 0;
+        if(h==0) return 0;
 
         const auto pixel_tol_x = 1<<STC;
 
         for(int c=y1 ; c<=y2 ; c += COLLISION_RES)
         {
-            const auto mapOff = mpMap->at(x1>>CSF, c>>CSF);
+            auto mapTile = mpMap->at(x1>>CSF, c>>CSF);
 
-            if( mapOff >= TileProperty.size())
+            if( mapTile >= TileProperty.size())
                 continue;
 
-            blocker = TileProperty[mapOff].bright;
-            bool slope = (TileProperty[mapOff].bup > 1);
+            blocker = TileProperty[mapTile].bright;
 
             // Start to really test if we blow up the local_block_tol
             if(c-y1 <= local_block_tol) // Upper part
             {
-                const auto mapTile = mpMap->at((x1+pixel_tol_x)>>CSF, c>>CSF);
+                mapTile = mpMap->at((x1+pixel_tol_x)>>CSF, c>>CSF);
 
                 if( mapTile >= TileProperty.size())
                     continue;
 
                 blocker = TileProperty[mapTile].bright;
-                slope = (TileProperty[mapTile].bup > 1);
-                if(blocker && !slope)
+                bool curSlopeLower = (TileProperty[mapTile].bdown > 1);
+                if(blocker && !curSlopeLower)
                 {
                     return blocker;
                 }
-                else if(slope)
+                else if(curSlopeLower)
                 {
-                    return slope;
+                    return curSlopeLower;
                 }
             }
             else // Lower part
             {
-                if(blocker && !slope)
+                bool curSlopeUpper = (TileProperty[mapTile].bup > 1);
+
+                if(blocker && !curSlopeUpper)
                 {
                     return blocker;
                 }
-                else if(slope)
+                else if(curSlopeUpper)
                 {
                     return 0;
                 }
@@ -990,6 +992,7 @@ void CSpriteObject::processMoveBitUp()
     }
 
     // If we are here, the tiles aren't blocking us.
+    // We can move according to the slopes
     m_Pos.y -= MOVE_RES;
 }
 
@@ -1006,9 +1009,10 @@ void CSpriteObject::processMoveBitDown()
     if(blockedd)
         return;
 
-    // if we are here, the tiles aren't blocking us.
-    // TODO: Here we need the Object collision part
-    m_Pos.y+=MOVE_RES;
+
+    // If we are here, the tiles aren't blocking us.
+    // We can move according to the slopes
+    m_Pos.y += MOVE_RES;
 }
 
 
