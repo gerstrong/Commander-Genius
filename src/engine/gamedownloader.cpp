@@ -520,8 +520,8 @@ int GameDownloader::handle()
             // If unpacking files fails, we should delete it.
             if(retVal != 0)
             {
-                gLogging.ftextOut( FONTCOLORS::RED, "Error: Trying to remove broken file \"%s\"", downloadGamePath.c_str());
-                remove( GetFullFileName(downloadGamePath).c_str() );
+                gLogging.ftextOut( FONTCOLORS::RED, "Error unpacking Zip-file: Trying to remove broken file at \"%s\"", fullZipPath.c_str());
+                remove( fullZipPath.c_str() );
             }
             else
             {
