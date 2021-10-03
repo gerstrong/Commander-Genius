@@ -714,13 +714,7 @@ int CSpriteObject::checkSolidL( int x1, int x2, int y1, int y2)
     // and is tall enought, the slope uses a slope tolerance,
     // where we check how far the slope is from the feet
     // otherwise, the object may not use that value at all (-1)
-    int local_block_tol = gBlockTolerance;
-
-    // Not tall enough?
-    if((y2-y1) < (1<<CSF))
-        local_block_tol = -1;
-    else
-        local_block_tol = y2-y1;
+    const int local_block_tol = ((y2-y1) < (4<<STC)) ? -1 : y2-y1;
 
     // Check for right side of the tile
     if(solid && !noclipping)
