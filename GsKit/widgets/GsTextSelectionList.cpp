@@ -29,11 +29,13 @@ mScrollbar(rect)
 
     mScrollbar.setScrollUpFn([this]
                                {
+                                mFollowSelectedItem = false;
                                 this->moveY(0.05f);
                                 this->updateScrollBar();
                                });
     mScrollbar.setScrollDownFn([this]
                                {
+                                mFollowSelectedItem = false;
                                 this->moveY(-0.05f);
                                 this->updateScrollBar();
                                });
@@ -50,7 +52,7 @@ void CGUITextSelectionList::updateScrollBar()
 
 void CGUITextSelectionList::setConfirmButtonEvent(CEvent *ev)
 {
-	mConfirmEvent.reset(ev);
+    mConfirmEvent.reset(ev);
 }
 
 void CGUITextSelectionList::setConfirmButtonEvent(const std::function <void ()>& f)
@@ -60,7 +62,7 @@ void CGUITextSelectionList::setConfirmButtonEvent(const std::function <void ()>&
 
 void CGUITextSelectionList::setBackButtonEvent(CEvent *ev)
 {
-	mBackEvent.reset(ev);
+    mBackEvent.reset(ev);
 }
 
 
@@ -68,8 +70,9 @@ bool CGUITextSelectionList::sendEvent(const InpCmd command)
 {
     auto &controlsList = getControlsList();
 
-	if(command == IC_UP)
-	{
+    if(command == IC_UP)
+    {
+        mFollowSelectedItem = true;
         auto it = controlsList.rbegin();
         auto lastSelected = controlsList.rend();
 
@@ -112,8 +115,9 @@ bool CGUITextSelectionList::sendEvent(const InpCmd command)
 
         return false;
     }
-	else if(command == IC_DOWN)
-	{
+    else if(command == IC_DOWN)
+    {
+        mFollowSelectedItem = true;
         auto it = controlsList.begin();
         auto lastSelected = controlsList.end();
 
@@ -147,31 +151,31 @@ bool CGUITextSelectionList::sendEvent(const InpCmd command)
         }
 
         return false;
-	}
-	else if(command == IC_STATUS || command == IC_JUMP ||
+    }
+    else if(command == IC_STATUS || command == IC_JUMP ||
             command == IC_POGO || command == IC_FIRE ||
             command == IC_RUN)
-	{
-		if(mConfirmEvent)
-			gEventManager.add(mConfirmEvent);
+    {
+        if(mConfirmEvent)
+            gEventManager.add(mConfirmEvent);
         if(mConfirmFunction)
             gEventManager.add(mConfirmFunction);
-		return true;
-	}
-	else if(command == IC_BACK)
-	{
-		if(mBackEvent)
-			gEventManager.add(mBackEvent);
-		return true;
-	}
-	else
+        return true;
+    }
+    else if(command == IC_BACK)
     {
-		return false;
+        if(mBackEvent)
+            gEventManager.add(mBackEvent);
+        return true;
+    }
+    else
+    {
+        return false;
     }
 }
 
 void CGUITextSelectionList::addText(const std::string &text)
-{    
+{
     const auto numElem = mItemList.size();
 
     mItemList.push_back( item(text) );
@@ -237,22 +241,25 @@ void CGUITextSelectionList::processLogic()
     auto &controlsList = getControlsList();
     for(auto &widget : controlsList)
     {
-        if( auto frame =
-            std::dynamic_pointer_cast<GsFrame>(widget) )
+        if(mFollowSelectedItem)
         {
-            if( frame->isSelected() )
+            if( auto frame =
+                    std::dynamic_pointer_cast<GsFrame>(widget) )
             {
-                auto bound = frame->getOuterbound();
+                if( frame->isSelected() )
+                {
+                    auto bound = frame->getOuterbound();
 
-                if(bound.y > 0.0f)
-                {
-                    this->moveY(-0.05f);
-                    this->updateScrollBar();
-                }
-                else if(bound.y < 0.0f)
-                {
-                    this->moveY(+0.05f);
-                    this->updateScrollBar();
+                    if(bound.y > 0.0f)
+                    {
+                        this->moveY(-0.05f);
+                        this->updateScrollBar();
+                    }
+                    else if(bound.y < 0.0f)
+                    {
+                        this->moveY(+0.05f);
+                        this->updateScrollBar();
+                    }
                 }
             }
         }
@@ -263,7 +270,7 @@ void CGUITextSelectionList::processLogic()
 
 
 void CGUITextSelectionList::processPointingStateRel(const GsRect<float> &rect)
-{  
+{
     GsScrollingFrame::processPointingStateRel(rect);
 
     auto absRect = rect.transformed(getRect());

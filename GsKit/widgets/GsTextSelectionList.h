@@ -35,7 +35,7 @@ public:
     void setBackButtonEvent(CEvent *ev);
 
     bool sendEvent(const InpCmd command) override;
-	void addText(const std::string &text);    
+    void addText(const std::string &text);
 
     void updateSelection();
 
@@ -67,14 +67,18 @@ private:
     GsScrollbar mScrollbar;
     float mMaxScrollY = 0.0f;
     float mMinScrollY = 0.0f;
-	
-	std::shared_ptr<CEvent> mConfirmEvent;
-	std::shared_ptr<CEvent> mBackEvent;
+
+    std::shared_ptr<CEvent> mConfirmEvent;
+    std::shared_ptr<CEvent> mBackEvent;
 
     std::function <void ()> mConfirmFunction;
     std::function <void ()> mBackFunction;
 
     std::list< std::shared_ptr<GsControl> > mControlsList;
+
+    // If enabled, the scroll position follows the selected item.
+    // (Useful when browsing the list using keys)
+    bool mFollowSelectedItem = false;
 };
 
 #endif /* CGUITEXTSELECTIONLIST_H */
