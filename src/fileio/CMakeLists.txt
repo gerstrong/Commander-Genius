@@ -21,4 +21,6 @@ add_library(fileio STATIC CExeFile.cpp
     lz.h
     Oldsavegamestructs.h)
 
+target_link_libraries(fileio GsKit)
+
 target_link_libraries(fileio fileio_compression)
