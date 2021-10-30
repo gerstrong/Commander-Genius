@@ -1210,7 +1210,7 @@ void CInput::pollEvents()
             {
                 passSDLEventVec = true;
                 m_EventList.add( new PointingDevEvent( Pos, PDE_MOVED ) );
-                gPointDevice.mPointingState.mActionButton = 0;
+                gPointDevice.mPointingState.mActionButton = Event.motion.state & SDL_BUTTON_LMASK;
                 gPointDevice.mPointingState.mPos = Pos;
                 break;
             }

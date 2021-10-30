@@ -15,7 +15,7 @@ mTargetColor(Uint8(red*255.0f), Uint8(green*255.0f), Uint8(blue*255.0f))
 
 
 Uint32 GsDynColor::toUint32(GsWeakSurface &blitsfc) const
-{    
+{
     return blitsfc.mapRGBA( mCurrentColor.r,
                             mCurrentColor.g,
                             mCurrentColor.b,
@@ -39,7 +39,7 @@ void GsDynColor::setTargetColor(const GsColor &newColor)
 }
 
 void GsDynColor::ponder(const float amt)
-{    
+{
     if(mBlendAmount < 1.0f)
     {
         mCurrentColor = mPrevColor;

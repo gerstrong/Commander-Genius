@@ -80,7 +80,7 @@ GsButton::GsButton(const std::string& text,
          const float red,
          const float green,
          const float blue) :
-    GsControl(rect),    
+    GsControl(rect),
     mTextWidget(text,
                 GsRect<float>(0.0f, 0.0f, 1.0f, 1.0f),
                 fontId),
@@ -134,8 +134,8 @@ void GsButton::updateGraphics()
 
 void GsButton::processLogic()
 {
-    mFillColor.ponder(0.075f);
-    mBorderColor.ponder(0.075f);
+    mFillColor.ponder(0.05f);
+    mBorderColor.ponder(0.05f);
 
     // Color operations
     if(!mEnabled)
@@ -145,34 +145,48 @@ void GsButton::processLogic()
     }
     else
     {
+        GsColor selectFillColor = mSelected ? mSelectedColor : mEnabledColor;
+        GsColor selectFillColorDark = selectFillColor;
+        GsColor selectFillColorLight = selectFillColor;
+
         if(mSelected)
         {
-            mFillColor.setTargetColor(mSelectedColor);
-            mBorderColor.setTargetColor(GsColor(0,0,0));
+            selectFillColorLight = selectFillColor * 2.0f;
+            selectFillColorDark = selectFillColor * 0.5f;
         }
         else
         {
-            GsColor selectFillColor = mEnabledColor;
-
-            if(mHovered)
-                selectFillColor.converge(GsColor(255,255,255));
-            if(mPressed)
-                selectFillColor.converge(mSelectedColor);
-            else if(mReleased)
-                selectFillColor = mSelectedColor;
-
-            mFillColor.setTargetColor(selectFillColor);
-            mBorderColor.setTargetColor(mDisabledColor);
+            selectFillColorLight.converge(GsColor(255,255,255));
+            selectFillColorDark.converge(mSelectedColor);
         }
 
+        if(mHovered && mPressed)
+        {
+            selectFillColor = selectFillColorDark;
+        }
+        else if(mHovered)
+        {
+            selectFillColor = selectFillColorLight;
+        }
+        else if(mPressed)
+        {
+            selectFillColor = selectFillColorDark;
+            selectFillColor.converge(selectFillColorLight);
+        }
+        else if(mReleased)
+        {
+            selectFillColor = mSelectedColor;
+        }
 
+        mFillColor.setTargetColor(selectFillColor);
+        mBorderColor.setTargetColor(mSelected ? GsColor(0,0,0) : mDisabledColor);
     }
 
     // Functor/event handling
     if(mEnabled)
     {
         // If button was pushed and gets released, trigger the assigned event.
-        if( mReleased )
+        if(mReleased)
         {
             if(mFunction)
             {
@@ -183,7 +197,7 @@ void GsButton::processLogic()
                 gEventManager.add(mEvent);
             }
         }
-    }   
+    }
 
     mTextWidget.processLogic();
 }
@@ -203,7 +217,7 @@ void GsButton::drawNoStyle(const SDL_Rect& lRect)
     if(mShowBorders)
     {
         blitsfc.drawRect( rect, 2, borderColor, fillColor );
-    }    
+    }
     else if(mUseBackground)
     {
         blitsfc.drawRect( rect, fillColor );
@@ -218,7 +232,7 @@ void GsButton::drawEnabledButton(GsWeakSurface &,
 
 
 void GsButton::processRender(const GsRect<float> &RectDispCoordFloat)
-{       
+{
     // Transform to the display coordinates
     auto displayRect = getRect();
 
@@ -232,7 +246,7 @@ void GsButton::processRender(const GsRect<float> &RectDispCoordFloat)
 
 void GsButton::processRender(const GsRect<float> &backRect,
                              const GsRect<float> &frontRect)
-{    
+{
     // Transform this object display coordinates
     auto objBackRect = backRect.transformed(getRect());
     auto objFrontRect = objBackRect.clipped(frontRect);
