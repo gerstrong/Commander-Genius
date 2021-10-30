@@ -24,8 +24,8 @@ std::array<bool, 4> CCamera::mDontUseThisLead;
 CCamera::CCamera(CMap *pmap, Uint32 x, Uint32 y, CSpriteObject *p_attacher) :
 CSpriteObject(pmap, x, y, 0)
 {
-    m_relcam.x = 0;
-    m_relcam.y = 0;
+    mRelcam.x = 0;
+    mRelcam.y = 0;
     mSpriteIdx = BLANKSPRITE;
     solid = false;
 
@@ -182,8 +182,8 @@ void CCamera::process()
 
         mpMap->mGamePlayPos = mp_AttachedObject->getMidPos();
 
-        const Uint32 attached_x = mp_AttachedObject->getXPosition() + m_relcam.x;
-        const Uint32 attached_y = mp_AttachedObject->getYPosition() + m_relcam.y;
+        const Uint32 attached_x = mp_AttachedObject->getXPosition() + mRelcam.x;
+        const Uint32 attached_y = mp_AttachedObject->getYPosition() + mRelcam.y;
         const Uint32 local_x = getXPosition();
         const Uint32 local_y = getYPosition();
 

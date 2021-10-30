@@ -1,6 +1,6 @@
 # CMake file for development of Commander Genius (taken from OLX)
-# This CMake file is used under Linux normally. 
-    
+# This CMake file is used under Linux normally.
+
 cmake_minimum_required(VERSION 3.7)
 
 Project(GsKit_base)
@@ -41,7 +41,7 @@ set(SRCS CInput.cpp       GsEngine.cpp          GsLogging.cpp  GsTimer.cpp
 GsApp.cpp        GsEventContainer.cpp  GsLua.cpp      GsTTFSystem.cpp
 GsArguments.cpp  GsEvent.cpp           TypeDefinitions.cpp
 )
-    
+
 add_library(${PROJECT_NAME} ${HEADERS} ${SRCS})
 
 target_link_libraries(${PROJECT_NAME} GsKit_base_lua)

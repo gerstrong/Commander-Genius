@@ -29,46 +29,46 @@ public:
      */
     void cycleCamlead();
 
-	/**
-	 * \brief Whenever the object where the camera has to follow up is created it needs to be attached
-	 *        in order to follow it.
-	 * \return p_attacher Object Pointer like the player to which the camera will follow.
-	 */
-	void attachObject(CSpriteObject *p_attacher);
+    /**
+     * \brief Whenever the object where the camera has to follow up is created it needs to be attached
+     *        in order to follow it.
+     * \return p_attacher Object Pointer like the player to which the camera will follow.
+     */
+    void attachObject(CSpriteObject *p_attacher);
 
-	/**
-	 * \brief This will put the camera to the given coordinate
-	 * Normally the camera moves the player and it's not necessary to move it here normally
-	 * but in some cases, when the player is teleported (or going a door) and appears at another place
-	 * the camera might not be able to follow him (reason can be scroll-blocking). This
-	 * function can resolve such issues
-	 * \param newpos New Position for the camera as math vector
-	 */
+    /**
+     * \brief This will put the camera to the given coordinate
+     * Normally the camera moves the player and it's not necessary to move it here normally
+     * but in some cases, when the player is teleported (or going a door) and appears at another place
+     * the camera might not be able to follow him (reason can be scroll-blocking). This
+     * function can resolve such issues
+     * \param newpos New Position for the camera as math vector
+     */
     void setPosition(const GsVec2D<int>& newpos);
 
-	/**
-	 * \brief
-	 * This is main cycle which will be called every Logic loop
-	 * Here it moves automatically, performs the smooth scrolling
-	 * and gets the controls to move when it's not attached to an object
-	 *
-	 * \param force If on the map are scrollblockers, they will be ignored when this is enabled
-	 */
+    /**
+     * \brief
+     * This is main cycle which will be called every Logic loop
+     * Here it moves automatically, performs the smooth scrolling
+     * and gets the controls to move when it's not attached to an object
+     *
+     * \param force If on the map are scrollblockers, they will be ignored when this is enabled
+     */
     void process();
 
 
-	/**
-	 * \brief
-	 * This function tells if the attached object is out of the camera view
-	 *
-	 * \return true if the Attached object is outside the camera, else false
-	 */
+    /**
+     * \brief
+     * This function tells if the attached object is out of the camera view
+     *
+     * \return true if the Attached object is outside the camera, else false
+     */
 
-	/**
-	 * in case the map is loaded or the player warped to another point,
-	 * this function will adjust the camera to the proper edges in the level
-	 */
-	void reAdjust();
+    /**
+     * in case the map is loaded or the player warped to another point,
+     * this function will adjust the camera to the proper edges in the level
+     */
+    void reAdjust();
 
     /**
      * @brief shakeVertView This will make the camera shake a bit.
@@ -77,7 +77,7 @@ public:
      */
     void shakeVertView( const unsigned int time, const unsigned int vAmount );
 
-	bool outOfSight();
+    bool outOfSight();
 
     void forbidLead(const int id);
 
@@ -99,13 +99,14 @@ public:
     bool mMoving = true;
 
 
-	/**
-	 *	Just relative structure to the camera position. This is used when the player tries to look up or down
-	 */
-	struct
-	{
-		int x, y;
-	}m_relcam;
+    /**
+     *	Just relative structure to the camera position. This is used when the player tries to look up or down
+     */
+    struct
+    {
+        int x = 0;
+        int y = 0;
+    } mRelcam;
 
 private:
 

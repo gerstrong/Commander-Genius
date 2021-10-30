@@ -637,8 +637,8 @@ void CPlayerLevel::processLookingDown()
             }
         }
 
-        if( m_camera.m_relcam.y < MAX_SCROLL_VIEW )
-            m_camera.m_relcam.y += (2<<STC);
+        if( m_camera.mRelcam.y < MAX_SCROLL_VIEW )
+            m_camera.mRelcam.y += (2<<STC);
 
         return;
     }
@@ -1494,8 +1494,8 @@ void CPlayerLevel::processLookingUp()
         return;
     }
 
-    if( m_camera.m_relcam.y > -MAX_SCROLL_VIEW )
-        m_camera.m_relcam.y -= (2<<STC);
+    if( m_camera.mRelcam.y > -MAX_SCROLL_VIEW )
+        m_camera.mRelcam.y -= (2<<STC);
 
     if( mPlaycontrol[PA_Y]<0 )
         return;
@@ -2671,17 +2671,17 @@ void CPlayerLevel::processFalling()
 void CPlayerLevel::centerView()
 {
     // If keen looked up or down, this will return the camera to initial position
-    if( m_camera.m_relcam.y < 0 )
+    if( m_camera.mRelcam.y < 0 )
     {
-        m_camera.m_relcam.y += (4<<STC);
-        if( m_camera.m_relcam.y > 0 )
-            m_camera.m_relcam.y = 0;
+        m_camera.mRelcam.y += (4<<STC);
+        if( m_camera.mRelcam.y > 0 )
+            m_camera.mRelcam.y = 0;
     }
-    else if( m_camera.m_relcam.y > 0 )
+    else if( m_camera.mRelcam.y > 0 )
     {
-        m_camera.m_relcam.y -= (4<<STC);
-        if( m_camera.m_relcam.y < 0 )
-            m_camera.m_relcam.y = 0;
+        m_camera.mRelcam.y -= (4<<STC);
+        if( m_camera.mRelcam.y < 0 )
+            m_camera.mRelcam.y = 0;
     }
 }
 
