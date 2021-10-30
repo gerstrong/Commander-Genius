@@ -11,7 +11,6 @@
 #include <base/GsEventContainer.h>
 #include "CSaveGameController.h"
 #include "engine/core/CBehaviorEngine.h"
-//#include "engine/BgMsg.h"
 
 #include <ctime>
 #include <base/utils/property_tree/property_tree.h>
