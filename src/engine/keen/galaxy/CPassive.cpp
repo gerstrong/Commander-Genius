@@ -5,20 +5,21 @@
  *      Author: gerstrong
  */
 
+#include "CPassive.h"
+#include "engine/core/VGamepads/vgamepadsimple.h"
+#include "engine/core/menu/MainMenu.h"
+
 #include <base/video/CVideoDriver.h>
 #include <base/CInput.h>
 #include <base/video/GsEffectController.h>
 #include <widgets/GsMenuController.h>
-
-
-#include "CPassive.h"
+#include <engine/core/GameEngine.h>
 #include <graphics/GsGraphics.h>
 #include <graphics/CPixelate.h>
+#include <memory>
 
 #include <base/audio/music/CMusic.h>
 
-#include "engine/core/VGamepads/vgamepadsimple.h"
-#include "engine/core/menu/MainMenu.h"
 
 // 10 Seconds are for 1200 logic cycles
 const int INTRO_TIME = 1200;
@@ -39,8 +40,7 @@ mCommanderTextSfc(gGraphics.getMiscGsBitmap(0)),
 mKeenTextSfc(gGraphics.getMiscGsBitmap(1)),
 mSkipSection(false)
 {
-    const GsRect<Uint16> gameRect = gVideoDriver.getVidConfig().mGameRect;
-    gVideoDriver.setNativeResolution(gameRect, 2);
+    gEventManager.add( new SetNativeResolutionEv() );
 
     const auto episode = gBehaviorEngine.getEpisode();
 
@@ -138,7 +138,7 @@ bool CPassiveGalaxy::init()
 // This function is always called from the base class.
 // Here it will execute the mode we are currently running
 void CPassiveGalaxy::ponder(const float deltaT)
-{		
+{
     (void) deltaT;
 
     if(gEffectController.runningEffect())
@@ -187,7 +187,7 @@ void CPassiveGalaxy::renderIntro()
 // TODO: This will show the animation of the intro you see in every galaxy game...
 // Letters are big and scrolling around the screen...
 void CPassiveGalaxy::processIntro()
-{	       
+{
     GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
 
     const int logoMidPosY = mLogoPosY+mCurrentLogoBmp.height()/2;
@@ -227,7 +227,7 @@ void CPassiveGalaxy::processIntro()
             logoBmpRect.pos = 0;
             logoBmpRect.dim *= mScaleFactor;
 
-            mCurrentLogoBmp.scaleTo(logoBmpRect);            
+            mCurrentLogoBmp.scaleTo(logoBmpRect);
             mCurrentLogoBmp.setColorKey( 0, 0, 0 );
             mCurrentLogoBmp.optimizeSurface();
             mCurrentLogoBmp.exchangeColor( 0x00, 0xa8, 0x00,
@@ -238,7 +238,7 @@ void CPassiveGalaxy::processIntro()
     const int textSeparation = (mCommanderTextPos.x+mCommanderTextSfc.width()) - mKeenTextPos.x;
 
     if(textSeparation <= -mMaxSeparationWidth || mSkipSection)
-    {        
+    {
         mZoomSfcPos.x = (gameRes.dim.x-mZoomSurface.width())/2;
         mZoomSfcZoom.x = mZoomSurface.width();
         mZoomSfcZoom.y = mZoomSurface.height();
@@ -372,9 +372,9 @@ void CPassiveGalaxy::processTitle()
 {
     // If something is pressed at this section, open the menu
     if( !gEffectController.runningEffect() && !gMenuController.active() )
-	{
+    {
         if( mSkipSection )
-		{
+        {
             gInput.flushAll();
 
 #ifdef USE_VIRTUALPAD
@@ -388,7 +388,7 @@ void CPassiveGalaxy::processTitle()
 
             gEventManager.add(new OpenMainMenuEvent());
             mSkipSection = false;
-		}	    
+        }
     }
 
     mIntroTimer--;
@@ -503,7 +503,7 @@ void CPassiveGalaxy::processStarWars()
             vkc->mDPad.invisible = false;
             vkc->mMenuButton.invisible = false;
 #endif
-#endif            
+#endif
             gEventManager.add(new OpenMainMenuEvent());
             mSkipSection = false;
         }

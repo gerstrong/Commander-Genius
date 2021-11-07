@@ -92,7 +92,7 @@ void KeenEngine::pumpEvent(const CEvent *evPtr)
         gBehaviorEngine.mDifficulty = pStart->mDifficulty;
         switchToGamePlayMode(pStart->mStartLevel);
         return;
-    }                    
+    }
 }
 
 void KeenEngine::ponder(const float deltaT)

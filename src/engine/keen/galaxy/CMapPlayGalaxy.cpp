@@ -303,7 +303,7 @@ void CMapPlayGalaxy::render()
     vidDrv.blitScrollSurfaces();
 
     // Draw all the sprites without player
-    // The player sprites are drawn at the end. Reverse order of drawing
+    // The player sprites are drawn at the end (Reverse order of drawing)
     galaxy::CPlayerBase* player[] = {nullptr, nullptr, nullptr, nullptr};
 
     int pIt = 0;

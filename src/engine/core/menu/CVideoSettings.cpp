@@ -10,10 +10,11 @@
 #include <base/video/CVideoDriver.h>
 #include <base/utils/StringUtils.h>
 #include <widgets/GsMenuController.h>
+#include <base/utils/Utils.h>
+#include <engine/core/GameEngine.h>
 
 #include "engine/core/CBehaviorEngine.h"
 #include "CVideoSettings.h"
-#include <base/utils/Utils.h>
 
 #include "widgets/NumberControl.h"
 #include "widgets/ComboSelection.h"
@@ -58,7 +59,7 @@ GameMenu(GsRect<float>(0.15f, 0.20f, 0.65f, 0.55f), style )
                                             false,
                                             style) );
 
-	setMenuLabel("OPTIONSMENULABEL");
+    setMenuLabel("OPTIONSMENULABEL");
 
     mpMenuDialog->fit();
 
@@ -69,9 +70,9 @@ GameMenu(GsRect<float>(0.15f, 0.20f, 0.65f, 0.55f), style )
 void CVideoSettings::refresh()
 {
     mUsersConf = gVideoDriver.getVidConfig();
-    
-	// Load the config into the GUI
-	// TODO: Temporary. This must become a float later...
+
+    // Load the config into the GUI
+    // TODO: Temporary. This must become a float later...
     const auto iFPS = static_cast<int>( gTimer.FPS() );
 
     // Only enable this option when VSync is turned off
@@ -103,7 +104,7 @@ void CVideoSettings::refresh()
 
 void CVideoSettings::release()
 {
-	// Save up the changed stuff
+    // Save up the changed stuff
 #if !defined(EMBEDDED)
     mUsersConf.mTiltedScreen = mpTiltScreenSwitch->isEnabled();
 #endif
@@ -139,26 +140,28 @@ void CVideoSettings::release()
 
     mUsersConf.mHorizBorders = mpHorizBordersSelection->getSelection();
 
-	// In case the user changed something in the camera settings, reload that.
+    // In case the user changed something in the camera settings, reload that.
     mUsersConf.m_CameraBounds = gVideoDriver.getCameraBounds();
 
-	CVidConfig oldVidConf = gVideoDriver.getVidConfig();
+    CVidConfig oldVidConf = gVideoDriver.getVidConfig();
     gVideoDriver.setVidConfig(mUsersConf);
 
-	// At this point we also must apply and save the settings
-	if( !gVideoDriver.applyMode() )
-	{
+    // At this point we also must apply and save the settings
+    if( !gVideoDriver.applyMode() )
+    {
         gSettings.loadDrvCfg(); // If it fails load the old settings
-		return;
-	}		
+        return;
+    }
 
     if( !gVideoDriver.start() ) // Here the same situation
-	{
-		gVideoDriver.setVidConfig(oldVidConf);
-		gVideoDriver.start();
-	}
-	
-	gSettings.saveDrvCfg();
+    {
+        gVideoDriver.setVidConfig(oldVidConf);
+        gVideoDriver.start();
+    }
+
+    gEventManager.add( new SetNativeResolutionEv() );
+
+    gSettings.saveDrvCfg();
     gMenuController.updateGraphics();
     gVideoDriver.setRefreshSignal(true);
 }

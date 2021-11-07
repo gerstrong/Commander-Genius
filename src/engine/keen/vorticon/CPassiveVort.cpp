@@ -10,58 +10,58 @@
 #include "graphics/GsGraphics.h"
 #include "CVorticonMapLoader.h"
 #include "fileio/CTileProperties.h"
-#include <base/video/CVideoDriver.h>
-#include <base/CInput.h>
 #include "engine/CGameLauncher.h"
 
-#include "engine/core/mode/CGameMode.h"
-
-#include "engine/core/VGamepads/vgamepadsimple.h"
+#include <base/video/CVideoDriver.h>
+#include <base/CInput.h>
+#include <engine/core/GameEngine.h>
+#include <engine/core/mode/CGameMode.h>
+#include <engine/core/VGamepads/vgamepadsimple.h>
 
 namespace vorticon
 {
 
 bool CPassiveVort::init()
-{    
+{
     const GsRect<Uint16> gameRect(320, 200);
     gVideoDriver.setNativeResolution(gameRect, 2);
 
     mTextSfc.createRGBSurface(gVideoDriver.getGameResolution().SDLRect());
     mTextSfc.makeBlitCompatible();
 
-	if( m_mode == INTRO )
-	{
-		mpIntroScreen.reset(new CIntro());
-		mpMap.reset(new CMap);
-		CVorticonMapLoaderBase MapLoader( mpMap );
+    if( m_mode == INTRO )
+    {
+        mpIntroScreen.reset(new CIntro());
+        mpMap.reset(new CMap);
+        CVorticonMapLoaderBase MapLoader( mpMap );
 
         if(!MapLoader.load( m_Episode, 90, m_DataDirectory))
         {
             gEventManager.add(new EventEndGamePlay);
         }
 
-		mpMap->gotoPos( 64+5*320, 32); // Coordinates of star sky
-		mpMap->drawAll();
-		mpIntroScreen->init();
-		mpMap->changeTileArrayY(8, 15, 2, 560);
-	}
-	else if( m_mode == TITLE )
-	{
-		mpMap.reset(new CMap);
-		CVorticonMapLoaderBase MapLoader( mpMap );
-		MapLoader.load( m_Episode, 90, m_DataDirectory);
-		mpMap->gotoPos( 32, 32 ); // Coordinates of title screen
-		mpMap->drawAll();
+        mpMap->gotoPos( 64+5*320, 32); // Coordinates of star sky
+        mpMap->drawAll();
+        mpIntroScreen->init();
+        mpMap->changeTileArrayY(8, 15, 2, 560);
+    }
+    else if( m_mode == TITLE )
+    {
+        mpMap.reset(new CMap);
+        CVorticonMapLoaderBase MapLoader( mpMap );
+        MapLoader.load( m_Episode, 90, m_DataDirectory);
+        mpMap->gotoPos( 32, 32 ); // Coordinates of title screen
+        mpMap->drawAll();
         mpTitleScreen.reset( new Title( *mpMap.get() ) );
         mpTitleScreen->init(m_Episode);
-	}
-	else if( m_mode == DEMO )
-	{
-		// TODO: Setup the demo environment
-	}
-	else
+    }
+    else if( m_mode == DEMO )
     {
-		return false;
+        // TODO: Setup the demo environment
+    }
+    else
+    {
+        return false;
     }
 
 #ifdef USE_VIRTUALPAD
@@ -71,7 +71,7 @@ bool CPassiveVort::init()
 
     gInput.flushAll();
 
-	return true;
+    return true;
 }
 
 void CPassiveVort::pumpEvent(const CEvent *evPtr)
@@ -90,6 +90,11 @@ void CPassiveVort::pumpEvent(const CEvent *evPtr)
     {
         CPassive::pumpEvent(evPtr);
     }
+}
+
+void CPassiveVort::redrawMap()
+{
+    mpMap->drawAll();
 }
 
 void CPassiveVort::ponder(const float)

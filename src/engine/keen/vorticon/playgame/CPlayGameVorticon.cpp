@@ -50,12 +50,12 @@ CPlayGame(startlevel)
         m_Level = WORLD_MAP_LEVEL_VORTICON;
     }
 
-	mMap.reset(new CMap());
+    mMap.reset(new CMap());
     m_level_command = (m_Level==WORLD_MAP_LEVEL_VORTICON) ? GOTO_WORLD_MAP : START_LEVEL;
 
-	if(!m_Player.empty())
+    if(!m_Player.empty())
     {
-		m_Player.clear();
+        m_Player.clear();
     }
 
     const int numPlayers = gBehaviorEngine.numPlayers();
@@ -70,35 +70,35 @@ CPlayGame(startlevel)
         player.setDatatoZero();
         player.setupCameraObject();
         player.setSpriteVariantId(i);
-        player.setSpecialIdx(i);        
+        player.setSpecialIdx(i);
         player.mpCamera->attachObject(&player);
         player.mpCamera->allowLead(i);
     }
 
 
-	// Set the whole completed level list to false
-	memset( mpLevelCompleted, false, MAX_LEVELS_VORTICON*sizeof(bool));
+    // Set the whole completed level list to false
+    memset( mpLevelCompleted, false, MAX_LEVELS_VORTICON*sizeof(bool));
 
-	m_showPauseDialog = false;
+    m_showPauseDialog = false;
 
-	if(gBehaviorEngine.mDifficulty==EASY)
+    if(gBehaviorEngine.mDifficulty==EASY)
     {
-		gGraphics.Palette.setdarkness(FADE_DARKNESS_EASY);
+        gGraphics.Palette.setdarkness(FADE_DARKNESS_EASY);
     }
-	else if(gBehaviorEngine.mDifficulty==NORMAL)
+    else if(gBehaviorEngine.mDifficulty==NORMAL)
     {
-		gGraphics.Palette.setdarkness(FADE_DARKNESS);
+        gGraphics.Palette.setdarkness(FADE_DARKNESS);
     }
-	else
+    else
     {
-		gGraphics.Palette.setdarkness(FADE_DARKNESS_HARD);
+        gGraphics.Palette.setdarkness(FADE_DARKNESS_HARD);
     }
 }
 
 // Setup all the players, when one level is started
 void CPlayGameVorticon::setupPlayers()
 {
-	m_showKeensLeft=false;
+    m_showKeensLeft=false;
 
     if(!mpHUDVec.empty())
         mpHUDVec.clear();
@@ -106,20 +106,20 @@ void CPlayGameVorticon::setupPlayers()
     const auto numPlayers = gBehaviorEngine.numPlayers();
 
     for (auto i=0 ; i<numPlayers ; i++)
-	{
+    {
         auto &player = m_Player[static_cast<unsigned int>(i)];
 
-		if( m_Level == WORLD_MAP_LEVEL_VORTICON )
-		{
+        if( m_Level == WORLD_MAP_LEVEL_VORTICON )
+        {
             player.m_playingmode = CPlayer::WORLDMAP;
             m_showKeensLeft |= ( player.pdie == PDIE_DEAD );
-		}
-		else
-		{
+        }
+        else
+        {
             player.m_playingmode = CPlayer::LEVELPLAY;
             player.mSpriteIdx = PSTANDFRAME;
             player.solid=true;
-		}
+        }
         player.dontdraw = false;
         player.pdie = PDIE_NODIE;
         const auto p_idx = player.getPlayerIdx();
@@ -129,14 +129,14 @@ void CPlayGameVorticon::setupPlayers()
             player.mpCamera->allowLead(p_idx);
         }
 
-		// Calibrate Player to the right position, so it won't fall when level starts
+        // Calibrate Player to the right position, so it won't fall when level starts
         GsSprite &sprite = gGraphics.getSprite(i,PSTANDFRAME);
         player.w = sprite.getWidth()<<STC;
         player.h = sprite.getHeight();
-		mMap->m_Dark = false;
-		gGraphics.Palette.setdark(mMap->m_Dark);
+        mMap->m_Dark = false;
+        gGraphics.Palette.setdark(mMap->m_Dark);
 
-		// Set the pointers to the map and object data
+        // Set the pointers to the map and object data
         player.setMapData(mMap.get());
         player.exists = true;
         player.solid = true;
@@ -147,7 +147,7 @@ void CPlayGameVorticon::setupPlayers()
         mpHUDVec.push_back( std::unique_ptr<CHUD>(new CHUD(inventory.score, inventory.lives,
                                                                 inventory.charges, i,
                                                                 i)) );
-	}
+    }
 
 }
 
@@ -164,41 +164,41 @@ bool CPlayGameVorticon::init()
     gEffectController.setupEffect(pColorMergeFX);
 
 
-	CVorticonMapLoaderWithPlayer MapLoader( mMap, m_Player, mSpriteObjectContainer );
-	MapLoader.m_checkpointset = m_checkpointset;
+    CVorticonMapLoaderWithPlayer MapLoader( mMap, m_Player, mSpriteObjectContainer );
+    MapLoader.m_checkpointset = m_checkpointset;
     const int numPlayers = gBehaviorEngine.numPlayers();
 
-	// load level map
+    // load level map
     if( !MapLoader.load( m_Episode, m_Level, m_Gamepath ) )
         return false;
 
     gSaveGameController.setLevel(m_Level);
     mMap->setLevel(m_Level);
 
-	//// If those worked fine, continue the initialization
-	// draw level map
-	mMap->drawAll();
+    //// If those worked fine, continue the initialization
+    // draw level map
+    mMap->drawAll();
 
-	// Now Scroll to the position of the player and center him
+    // Now Scroll to the position of the player and center him
     mMap->gotoPos( 32, 64 ); // Ensure that the edges are never seen
 
-	setupPlayers();
+    setupPlayers();
 
-	// Well, all players are living because they were newly spawn.
-	gTimer.ResetSecondsTimer();
+    // Well, all players are living because they were newly spawn.
+    gTimer.ResetSecondsTimer();
 
-	gInput.flushAll();
+    gInput.flushAll();
 
-	// Initialize the AI
-	mpObjectAI.reset( new CVorticonSpriteObjectAI(mMap.get(), mSpriteObjectContainer, m_Player,
+    // Initialize the AI
+    mpObjectAI.reset( new CVorticonSpriteObjectAI(mMap.get(), mSpriteObjectContainer, m_Player,
             numPlayers, m_Episode, m_Level,
-			mMap->m_Dark) );
+            mMap->m_Dark) );
 
     // Check if Player meets the conditions to show a cutscene. This also happens, when finale of episode is reached
-	verifyFinales();
+    verifyFinales();
 
-	// When Level starts it's never dark!
-	gGraphics.Palette.setdark(false);
+    // When Level starts it's never dark!
+    gGraphics.Palette.setdark(false);
 
     std::string finaleStr = gArgs.getValue("finale");
     std::transform(finaleStr.begin(), finaleStr.end(), finaleStr.begin(), ::tolower);
@@ -210,26 +210,26 @@ bool CPlayGameVorticon::init()
 
     if(m_showKeensLeft)
     {
-	  gAudio.playSound(SOUND_KEENSLEFT, SoundPlayMode::PLAY_NOW);
+      gAudio.playSound(SOUND_KEENSLEFT, SoundPlayMode::PLAY_NOW);
     }
 
-	// In the case that we are in Episode 3 last Level, show Mortimer Messages
-	if( m_Episode == 3 && m_Level == 16 )
-	{
-	    std::unique_ptr<CMessageBoxVort> msg1(new CMessageBoxVort(gBehaviorEngine.getString("EP3_MORTIMER"),false, true));
-	    std::unique_ptr<CMessageBoxVort> msg2(new CMessageBoxVort(gBehaviorEngine.getString("EP3_MORTIMER2"),false, true));
-	    std::unique_ptr<CMessageBoxVort> msg3(new CMessageBoxVort(gBehaviorEngine.getString("EP3_MORTIMER3"),false, true));
-	    std::unique_ptr<CMessageBoxVort> msg4(new CMessageBoxVort(gBehaviorEngine.getString("EP3_MORTIMER4"),false, true));
-	    std::unique_ptr<CMessageBoxVort> msg5(new CMessageBoxVort(gBehaviorEngine.getString("EP3_MORTIMER5"),false, true));
-	    std::unique_ptr<CMessageBoxVort> msg6(new CMessageBoxVort(gBehaviorEngine.getString("EP3_MORTIMER6"),false, true));
-	    mMessageBoxes.push_back(move(msg1));
-	    mMessageBoxes.push_back(move(msg2));
-	    mMessageBoxes.push_back(move(msg3));
-	    mMessageBoxes.push_back(move(msg4));
-	    mMessageBoxes.push_back(move(msg5));
-	    mMessageBoxes.push_back(move(msg6));
-	    gAudio.playSound(SOUND_MORTIMER);
-	}
+    // In the case that we are in Episode 3 last Level, show Mortimer Messages
+    if( m_Episode == 3 && m_Level == 16 )
+    {
+        std::unique_ptr<CMessageBoxVort> msg1(new CMessageBoxVort(gBehaviorEngine.getString("EP3_MORTIMER"),false, true));
+        std::unique_ptr<CMessageBoxVort> msg2(new CMessageBoxVort(gBehaviorEngine.getString("EP3_MORTIMER2"),false, true));
+        std::unique_ptr<CMessageBoxVort> msg3(new CMessageBoxVort(gBehaviorEngine.getString("EP3_MORTIMER3"),false, true));
+        std::unique_ptr<CMessageBoxVort> msg4(new CMessageBoxVort(gBehaviorEngine.getString("EP3_MORTIMER4"),false, true));
+        std::unique_ptr<CMessageBoxVort> msg5(new CMessageBoxVort(gBehaviorEngine.getString("EP3_MORTIMER5"),false, true));
+        std::unique_ptr<CMessageBoxVort> msg6(new CMessageBoxVort(gBehaviorEngine.getString("EP3_MORTIMER6"),false, true));
+        mMessageBoxes.push_back(move(msg1));
+        mMessageBoxes.push_back(move(msg2));
+        mMessageBoxes.push_back(move(msg3));
+        mMessageBoxes.push_back(move(msg4));
+        mMessageBoxes.push_back(move(msg5));
+        mMessageBoxes.push_back(move(msg6));
+        gAudio.playSound(SOUND_MORTIMER);
+    }
 
     mCurMusicTrack = gMusicPlayer.getCurTrack();
     gMusicPlayer.play();
@@ -241,17 +241,21 @@ bool CPlayGameVorticon::StatusScreenOpen()
 {
     const int numPlayers = gBehaviorEngine.numPlayers();
     for( unsigned short i=0 ; i<numPlayers ; i++ )
-	{
+    {
         if(m_Player[i].m_showStatusScreen)
         {
             m_Player[i].processStatusScreen();
             return true;
         }
-	}
+    }
 
     return false;
 }
 
+void CPlayGameVorticon::redrawMap()
+{
+    mMap->drawAll();
+}
 
 void CPlayGameVorticon::pumpEvent(const CEvent *evPtr)
 {
@@ -321,8 +325,8 @@ void CPlayGameVorticon::ponder(const float deltaT)
     vkc->mMenuButton.invisible = false;
 #endif
 
-	if( !mpFinale && !gMenuController.active() ) // Game is not paused, no messages have to be shown and no menu is open
-	{
+    if( !mpFinale && !gMenuController.active() ) // Game is not paused, no messages have to be shown and no menu is open
+    {
         auto &mplayer = gMusicPlayer;
         const auto curTrack = mplayer.getCurTrack();
         if(mCurMusicTrack != curTrack)
@@ -330,22 +334,22 @@ void CPlayGameVorticon::ponder(const float deltaT)
             reloadBgMusic();
         }
 
-		if(mMessageBoxes.empty() && !StatusScreenOpen())
-		{
-			// Perform AIs
-			mpObjectAI->process();
+        if(mMessageBoxes.empty() && !StatusScreenOpen())
+        {
+            // Perform AIs
+            mpObjectAI->process();
 
-			if( !gBehaviorEngine.paused() )
-			{
-			  // The following functions must be worldmap dependent
-			  if( m_Level == WORLD_MAP_LEVEL_VORTICON )
-			  {
+            if( !gBehaviorEngine.paused() )
+            {
+              // The following functions must be worldmap dependent
+              if( m_Level == WORLD_MAP_LEVEL_VORTICON )
+              {
                 processOnWorldMap(); // TODO: I think the main loop of that should be here!
-			  }
-			  else
-			  {
+              }
+              else
+              {
                 processInLevel(); // TODO: I think the main loop of that should be here!
-			  }
+              }
 
 
 
@@ -368,7 +372,7 @@ void CPlayGameVorticon::ponder(const float deltaT)
                           player.processCamera();
                       }
                   }
-              }                            
+              }
             }
 
             for(auto &player : m_Player)
@@ -383,8 +387,8 @@ void CPlayGameVorticon::ponder(const float deltaT)
             }
 
 
-		}
-	}
+        }
+    }
 
     if(mpFinale) // Finale processing if it is opened
     {
@@ -432,40 +436,40 @@ void CPlayGameVorticon::ponder(const float deltaT)
     }
 
 
-	// Check if we are in gameover mode. If yes, than show the bitmaps and block the FKeys().
+    // Check if we are in gameover mode. If yes, than show the bitmaps and block the FKeys().
     // Only confirmation button is allowed
-	if(m_gameover && !mpFinale) // game over mode
-	{
-		if( mpGameoverBmp )
-		{
-			if( gInput.getPressedAnyCommand() )
-			{
-				CHighScores *pHighScores = new CHighScores();
-				pHighScores->init();
-				collectHighScoreInfo(*pHighScores);
+    if(m_gameover && !mpFinale) // game over mode
+    {
+        if( mpGameoverBmp )
+        {
+            if( gInput.getPressedAnyCommand() )
+            {
+                CHighScores *pHighScores = new CHighScores();
+                pHighScores->init();
+                collectHighScoreInfo(*pHighScores);
                 gEventManager.add(new GMSwitchToPassiveMode());
-				gEventManager.add(new StartInfoSceneEvent( pHighScores ));
-			}
-		}
-		else // Bitmap must first be created
-		{
+                gEventManager.add(new StartInfoSceneEvent( pHighScores ));
+            }
+        }
+        else // Bitmap must first be created
+        {
             GsBitmap *pBitmap = gGraphics.getBitmapFromStr(0, "GAMEOVER");
-			gAudio.playSound(SOUND_GAME_OVER, SoundPlayMode::PLAY_NOW);
-			mpGameoverBmp.reset( new CEGABitmap( mMap.get() , gVideoDriver.getBlitSurface(), pBitmap) );
+            gAudio.playSound(SOUND_GAME_OVER, SoundPlayMode::PLAY_NOW);
+            mpGameoverBmp.reset( new CEGABitmap( mMap.get() , gVideoDriver.getBlitSurface(), pBitmap) );
 
             GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
 
             mpGameoverBmp->setScrPos( (gameRes.dim.x/2) -(pBitmap->width()/2),
                                       (gameRes.dim.y/2) -(pBitmap->height()/2) );
-		}
-	}
-	else // No game over
-	{
-		// Handle special functional keys for paused game, F1 Help, god mode, all items, etc.
-		handleFKeys();
+        }
+    }
+    else // No game over
+    {
+        // Handle special functional keys for paused game, F1 Help, god mode, all items, etc.
+        handleFKeys();
         verifyMultiplayerConsistency();
-	}
-	
+    }
+
 }
 
 void CPlayGameVorticon::render()
@@ -507,74 +511,74 @@ void CPlayGameVorticon::render()
 
 void CPlayGameVorticon::cycleCamLead()
 {
-	mCamLead++;
+    mCamLead++;
 
     const int numPlayers = gBehaviorEngine.numPlayers();
     if( mCamLead >= numPlayers  )
-		mCamLead = 0;
+        mCamLead = 0;
 }
 
 
 void CPlayGameVorticon::handleFKeys()
 {
-	// CTSpace Cheat
+    // CTSpace Cheat
     if ((gInput.getHoldedKey(KC) &&
          gInput.getHoldedKey(KT) &&
          gInput.getHoldedKey(KSPACE)) ||
          gBehaviorEngine.mCheatmode.items)
-	{
+    {
         gBehaviorEngine.mCheatmode.items = false;
-		gInput.flushAll();
+        gInput.flushAll();
         const size_t numPlayers = size_t(gBehaviorEngine.numPlayers());
         for(size_t i=0;i<numPlayers;i++)
-		{
-			m_Player[i].pfiring = false;
-			if (m_Player[i].m_playingmode)
-			{
-				CPhysicsSettings &Phy = gBehaviorEngine.getPhysicsSettings();
+        {
+            m_Player[i].pfiring = false;
+            if (m_Player[i].m_playingmode)
+            {
+                CPhysicsSettings &Phy = gBehaviorEngine.getPhysicsSettings();
 
-				if(Phy.misc.ctspace_keys)
-				{
-					m_Player[i].give_keycard(DOOR_YELLOW);
-					m_Player[i].give_keycard(DOOR_RED);
-					m_Player[i].give_keycard(DOOR_GREEN);
-					m_Player[i].give_keycard(DOOR_BLUE);
-				}
-				else
-				{
-					m_Player[i].take_keycard(DOOR_YELLOW);
-					m_Player[i].take_keycard(DOOR_RED);
-					m_Player[i].take_keycard(DOOR_GREEN);
-					m_Player[i].take_keycard(DOOR_BLUE);
-				}
+                if(Phy.misc.ctspace_keys)
+                {
+                    m_Player[i].give_keycard(DOOR_YELLOW);
+                    m_Player[i].give_keycard(DOOR_RED);
+                    m_Player[i].give_keycard(DOOR_GREEN);
+                    m_Player[i].give_keycard(DOOR_BLUE);
+                }
+                else
+                {
+                    m_Player[i].take_keycard(DOOR_YELLOW);
+                    m_Player[i].take_keycard(DOOR_RED);
+                    m_Player[i].take_keycard(DOOR_GREEN);
+                    m_Player[i].take_keycard(DOOR_BLUE);
+                }
 
-				m_Player[i].inventory.charges = Phy.misc.ctspace_ammo;
-				m_Player[i].inventory.HasPogo = true;
-				m_Player[i].inventory.lives += 5;
+                m_Player[i].inventory.charges = Phy.misc.ctspace_ammo;
+                m_Player[i].inventory.HasPogo = true;
+                m_Player[i].inventory.lives += 5;
 
-				std::string Text = gBehaviorEngine.getString("CTSPACECHEAT");
+                std::string Text = gBehaviorEngine.getString("CTSPACECHEAT");
 
-				std::unique_ptr<CMessageBoxVort> msg(new CMessageBoxVort(Text));
-				
-				mMessageBoxes.push_back( move(msg) );
-			}
-		}
-	}
+                std::unique_ptr<CMessageBoxVort> msg(new CMessageBoxVort(Text));
 
-	// Cycle Cam Code
+                mMessageBoxes.push_back( move(msg) );
+            }
+        }
+    }
+
+    // Cycle Cam Code
     /*if( gInput.getPressedCommand(mCamLead, IC_CAMLEAD) )
-	{
-		cycleCamLead();
+    {
+        cycleCamLead();
     }*/
 
-	// GOD cheat -- toggle god mode
+    // GOD cheat -- toggle god mode
     if ( gInput.getHoldedKey(KG) &&
          gInput.getHoldedKey(KO) &&
          gInput.getHoldedKey(KD) )
-	{
-		std::vector<CPlayer>::iterator it_player = m_Player.begin();
-		for( ; it_player != m_Player.end() ; it_player++)
-		{
+    {
+        std::vector<CPlayer>::iterator it_player = m_Player.begin();
+        for( ; it_player != m_Player.end() ; it_player++)
+        {
             gBehaviorEngine.mCheatmode.god =
                     !gBehaviorEngine.mCheatmode.god;
 
@@ -588,27 +592,27 @@ void CPlayGameVorticon::handleFKeys()
                 it_player->noclipping = gBehaviorEngine.mCheatmode.noclipping;
             }
 
-			it_player->performCollisions();
-		}
+            it_player->performCollisions();
+        }
 
         gAudio.playSound(SOUND_GUN_CLICK, SoundPlayMode::PLAY_FORCE);
 
-		// Show a message like in the original game
+        // Show a message like in the original game
         std::unique_ptr<CMessageBoxVort> msg(
                     new CMessageBoxVort(
                         gBehaviorEngine.mCheatmode.god ?
                             gBehaviorEngine.getString("GODMODEON") :
                             gBehaviorEngine.getString("GODMODEOFF")));
-		mMessageBoxes.push_back(move(msg));
-		gInput.flushKeys();
-	}
+        mMessageBoxes.push_back(move(msg));
+        gInput.flushKeys();
+    }
 
-	if(gInput.getPressedKey(KP) && mMessageBoxes.empty())
-	{
+    if(gInput.getPressedKey(KP) && mMessageBoxes.empty())
+    {
         gAudio.playSound(SOUND_GUN_CLICK, SoundPlayMode::PLAY_FORCE);
-		std::unique_ptr<CMessageBoxVort> msg( new CMessageBoxVort("Game Paused") );
-		mMessageBoxes.push_back(move(msg));
-	}
+        std::unique_ptr<CMessageBoxVort> msg( new CMessageBoxVort("Game Paused") );
+        mMessageBoxes.push_back(move(msg));
+    }
 
     if(m_Player.empty())
         return;
@@ -651,67 +655,67 @@ void CPlayGameVorticon::verifyMultiplayerConsistency()
 // The Ending and mortimer cutscenes for example
 void CPlayGameVorticon::verifyFinales()
 {
-	// first we need to know which Episode we were on
-	if(m_Episode == 1)
-	{
-		bool hasBattery, hasWiskey, hasJoystick, hasVaccum;
-		hasBattery = hasWiskey = hasJoystick = hasVaccum = false;
+    // first we need to know which Episode we were on
+    if(m_Episode == 1)
+    {
+        bool hasBattery, hasWiskey, hasJoystick, hasVaccum;
+        hasBattery = hasWiskey = hasJoystick = hasVaccum = false;
 
-		// Check if one of the Players has the items
+        // Check if one of the Players has the items
         const unsigned int numPlayers = gBehaviorEngine.numPlayers();
         for( size_t i=0 ;i < numPlayers ; i++)
-		{
-			hasBattery |= m_Player[i].inventory.HasBattery;
-			hasWiskey |= m_Player[i].inventory.HasWiskey;
-			hasJoystick |= m_Player[i].inventory.HasJoystick;
-			hasVaccum |= m_Player[i].inventory.HasVacuum;
-		}
+        {
+            hasBattery |= m_Player[i].inventory.HasBattery;
+            hasWiskey |= m_Player[i].inventory.HasWiskey;
+            hasJoystick |= m_Player[i].inventory.HasJoystick;
+            hasVaccum |= m_Player[i].inventory.HasVacuum;
+        }
 
-		// If they have have the items, we can go home
-		if(hasBattery && hasWiskey && hasJoystick && hasVaccum)
-			createFinale();
-	}
-	else if(m_Episode == 2)
-	{
-		bool allCitiesSaved;
-		allCitiesSaved = mpLevelCompleted[4];
-		allCitiesSaved &= mpLevelCompleted[6];
-		allCitiesSaved &= mpLevelCompleted[7];
-		allCitiesSaved &= mpLevelCompleted[9];
-		allCitiesSaved &= mpLevelCompleted[11];
-		allCitiesSaved &= mpLevelCompleted[13];
-		allCitiesSaved &= mpLevelCompleted[15];
-		allCitiesSaved &= mpLevelCompleted[16];
+        // If they have have the items, we can go home
+        if(hasBattery && hasWiskey && hasJoystick && hasVaccum)
+            createFinale();
+    }
+    else if(m_Episode == 2)
+    {
+        bool allCitiesSaved;
+        allCitiesSaved = mpLevelCompleted[4];
+        allCitiesSaved &= mpLevelCompleted[6];
+        allCitiesSaved &= mpLevelCompleted[7];
+        allCitiesSaved &= mpLevelCompleted[9];
+        allCitiesSaved &= mpLevelCompleted[11];
+        allCitiesSaved &= mpLevelCompleted[13];
+        allCitiesSaved &= mpLevelCompleted[15];
+        allCitiesSaved &= mpLevelCompleted[16];
 
-		if(allCitiesSaved)
-			createFinale();
-	}
-	else if(m_Episode == 3)
-	{
-		if(mpLevelCompleted[16] == true) // If this level is completed, Mortimer has been killed!
-			createFinale();
-	}
+        if(allCitiesSaved)
+            createFinale();
+    }
+    else if(m_Episode == 3)
+    {
+        if(mpLevelCompleted[16] == true) // If this level is completed, Mortimer has been killed!
+            createFinale();
+    }
 }
 
 void CPlayGameVorticon::createFinale()
 {
-	if(m_Episode == 1)
-	{
-		mpFinale.reset(new CEndingEp1(mMessageBoxes, mMap, m_Player, m_hideobjects, mSpriteObjectContainer));
-	}
-	else if(m_Episode == 2)
-	{
-		mpFinale.reset(new CEndingEp2(mMessageBoxes, mMap, m_Player, mSpriteObjectContainer));
-	}
-	else if(m_Episode == 3)
-	{
-		mpFinale.reset(new CEndingEp3(mMessageBoxes, mMap, m_Player, mSpriteObjectContainer));
-	}
+    if(m_Episode == 1)
+    {
+        mpFinale.reset(new CEndingEp1(mMessageBoxes, mMap, m_Player, m_hideobjects, mSpriteObjectContainer));
+    }
+    else if(m_Episode == 2)
+    {
+        mpFinale.reset(new CEndingEp2(mMessageBoxes, mMap, m_Player, mSpriteObjectContainer));
+    }
+    else if(m_Episode == 3)
+    {
+        mpFinale.reset(new CEndingEp3(mMessageBoxes, mMap, m_Player, mSpriteObjectContainer));
+    }
 }
 
 void CPlayGameVorticon::teleportPlayerFromLevel(CPlayer &player, int origx, int origy)
 {
-	int destx, desty;
+    int destx, desty;
 
     std::unique_ptr<CTeleporter> teleporter(
                 new CTeleporter(mMap.get(),
@@ -719,73 +723,73 @@ void CPlayGameVorticon::teleportPlayerFromLevel(CPlayer &player, int origx, int 
                                 Uint32(origx),
                                 Uint32(origy))
                 );
-	player.beingteleported = true;
-	player.solid = false;
-	destx = gBehaviorEngine.getTeleporterTableAt(5).x;
-	desty = gBehaviorEngine.getTeleporterTableAt(5).y;
-	teleporter->solid = false;
-	teleporter->direction = TELEPORTING_SCROLL;
+    player.beingteleported = true;
+    player.solid = false;
+    destx = gBehaviorEngine.getTeleporterTableAt(5).x;
+    desty = gBehaviorEngine.getTeleporterTableAt(5).y;
+    teleporter->solid = false;
+    teleporter->direction = TELEPORTING_SCROLL;
     teleporter->destx = destx>>TILE_S;
     teleporter->desty = desty>>TILE_S;
     teleporter->whichplayer = int(player.m_index);
-	mSpriteObjectContainer.push_back(move(teleporter));
+    mSpriteObjectContainer.push_back(move(teleporter));
 }
 
 void CPlayGameVorticon::collectHighScoreInfo(CHighScores &highScores)
 {
-	highScores.fetchScoreTable();
+    highScores.fetchScoreTable();
 
-	if(m_Episode == 1)
-	{
-		bool extra[4];
+    if(m_Episode == 1)
+    {
+        bool extra[4];
 
-		extra[0] = m_Player[0].inventory.HasJoystick;
-		extra[1] = m_Player[0].inventory.HasBattery;
-		extra[2] = m_Player[0].inventory.HasVacuum;
-		extra[3] = m_Player[0].inventory.HasWiskey;
+        extra[0] = m_Player[0].inventory.HasJoystick;
+        extra[1] = m_Player[0].inventory.HasBattery;
+        extra[2] = m_Player[0].inventory.HasVacuum;
+        extra[3] = m_Player[0].inventory.HasWiskey;
 
-		highScores.writeEP1HighScore(m_Player[0].inventory.score, extra);
-	}
-	else if(m_Episode == 2)
-	{
-		// episode 2: game is won when all cities are saved
-		int saved_cities=0;
-		if (mpLevelCompleted[4]) saved_cities++;
-		if (mpLevelCompleted[6]) saved_cities++;
-		if (mpLevelCompleted[7]) saved_cities++;
-		if (mpLevelCompleted[13]) saved_cities++;
-		if (mpLevelCompleted[11]) saved_cities++;
-		if (mpLevelCompleted[9]) saved_cities++;
-		if (mpLevelCompleted[15]) saved_cities++;
-		if (mpLevelCompleted[16]) saved_cities++;
+        highScores.writeEP1HighScore(m_Player[0].inventory.score, extra);
+    }
+    else if(m_Episode == 2)
+    {
+        // episode 2: game is won when all cities are saved
+        int saved_cities=0;
+        if (mpLevelCompleted[4]) saved_cities++;
+        if (mpLevelCompleted[6]) saved_cities++;
+        if (mpLevelCompleted[7]) saved_cities++;
+        if (mpLevelCompleted[13]) saved_cities++;
+        if (mpLevelCompleted[11]) saved_cities++;
+        if (mpLevelCompleted[9]) saved_cities++;
+        if (mpLevelCompleted[15]) saved_cities++;
+        if (mpLevelCompleted[16]) saved_cities++;
 
         highScores.writeEP2HighScore(int(m_Player[0].inventory.score),
                                      saved_cities);
-	}
-	else
-	{
+    }
+    else
+    {
         highScores.writeHighScoreCommon(int(m_Player[0].inventory.score));
-	}
+    }
 }
 
 // This function draws the objects that need to be seen on the screen
 void CPlayGameVorticon::drawObjects()
 {
-	if(m_hideobjects) return;
+    if(m_hideobjects) return;
 
-	for( auto &obj : mSpriteObjectContainer )
-		obj->draw();
+    for( auto &obj : mSpriteObjectContainer )
+        obj->draw();
 
-	// We draw the Player as last, because we want to see him in front of the other objects
-	std::vector<CPlayer>::iterator it_player = m_Player.begin();
-	std::vector<CPlayer>::iterator it_end = m_Player.end();
-	for (; it_player != it_end ; it_player++)
-	{
-		if(!it_player->beingteleported)
+    // We draw the Player as last, because we want to see him in front of the other objects
+    std::vector<CPlayer>::iterator it_player = m_Player.begin();
+    std::vector<CPlayer>::iterator it_end = m_Player.end();
+    for (; it_player != it_end ; it_player++)
+    {
+        if(!it_player->beingteleported)
         {
-			it_player->draw();
+            it_player->draw();
         }
-	}
+    }
 
 }
 
@@ -816,7 +820,7 @@ void CPlayGameVorticon::drawAllElements()
     if(mpFinale) // Finale processing if it is opened
     {
         mpFinale->render();
-    }        
+    }
     else if(options[GameOption::HUD].value ) // Draw the HUD
     {
         for( auto &hud : mpHUDVec )

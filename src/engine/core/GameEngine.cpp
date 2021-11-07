@@ -85,7 +85,7 @@ void GameEngine::renderFPSDisplay()
             mFPSSurface.createRGBSurface(rect);
         }
 
-        std::string tempbuf = "FPS: " + ftoa(gTimer.LastFPS());                
+        std::string tempbuf = "FPS: " + ftoa(gTimer.LastFPS());
 
         mFPSSurface.fillRGBA(0x88, 0x88, 0x88, 0x88);
 

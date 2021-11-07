@@ -23,14 +23,16 @@ public:
 
     bool init();
 
+    void redrawMap();
+
     void pumpEvent(const CEvent *evPtr);
     void ponder(const float);
     void render();
 
 private:
-	std::unique_ptr<CIntro> mpIntroScreen;
+    std::unique_ptr<CIntro> mpIntroScreen;
     std::unique_ptr<Title> mpTitleScreen;
-	std::shared_ptr<CMap> mpMap;
+    std::shared_ptr<CMap> mpMap;
 };
 
 }

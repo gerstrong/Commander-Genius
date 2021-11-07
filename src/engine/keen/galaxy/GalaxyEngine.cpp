@@ -3,6 +3,12 @@
 #include <base/GsApp.h>
 #include <base/utils/StringUtils.h>
 #include <widgets/GsMenuController.h>
+#include <graphics/CColorMerge.h>
+#include <base/video/CVideoDriver.h>
+#include <fileio/KeenFiles.h>
+#include <base/GsArguments.h>
+
+#include <base/audio/Audio.h>
 
 #include "GalaxyEngine.h"
 #include "engine/core/CResourceLoader.h"
@@ -12,7 +18,6 @@
 #include "fileio/CPatcher.h"
 #include "fileio/CSaveGameController.h"
 #include "engine/core/CMessages.h"
-#include <graphics/CColorMerge.h>
 
 #include "CPassive.h"
 #include "CPlayGameGalaxy.h"
@@ -20,11 +25,6 @@
 #include "engine/core/menu/ControlSettings.h"
 #include "menu/ComputerWrist.h"
 #include "res/CAudioGalaxy.h"
-#include <base/video/CVideoDriver.h>
-#include <fileio/KeenFiles.h>
-#include <base/GsArguments.h>
-
-#include <base/audio/Audio.h>
 
 namespace galaxy
 {
@@ -40,7 +40,7 @@ const Uint32 GalaxySongAssignments[] =
 
 
 bool setupAudio()
-{        
+{
 
     gMusicPlayer.setIMFLoadTrackCallback(imfMusicTrackloader);
     const CExeFile &ExeFile = gKeenFiles.exeFile;
@@ -149,7 +149,7 @@ void GalaxyEngine::render()
 
 
 void GalaxyEngine::openMainMenu()
-{    
+{
     if( mpComputerWrist ) return;
 
     if( !gMenuController.empty() )  return;
@@ -252,7 +252,7 @@ bool GalaxyEngine::loadResources( const Uint8 flags )
             gLogging.ftextOut("Looking for patches...<br>");
 
             // If there are patches left that must be applied later, do it here!
-            Patcher.postProcess();            
+            Patcher.postProcess();
 
             gLogging.ftextOut("Done loading the resources...<br>");
 
@@ -383,7 +383,12 @@ void GalaxyEngine::pumpEvent(const CEvent *evPtr)
 
     const auto style = Style::GALAXY;
 
-    if( dynamic_cast<const FinishedLoadingResources*>(evPtr) )
+    if( dynamic_cast<const SetNativeResolutionEv*>(evPtr) )
+    {
+        const GsRect<Uint16> gameRect = gVideoDriver.getVidConfig().mGameRect;
+        gVideoDriver.setNativeResolution(gameRect, 2);
+    }
+    else if( dynamic_cast<const FinishedLoadingResources*>(evPtr) )
     {
         const auto argLevel = gArgs.getValue("level");
 
@@ -465,7 +470,7 @@ void GalaxyEngine::pumpEvent(const CEvent *evPtr)
     {
         const GMSwitchToPlayGameMode &playGame = const_cast<GMSwitchToPlayGameMode&>(*pPlayGame);
         switchToGameplay(playGame.m_startlevel, mSpriteVars);
-    }    
+    }
     else if( dynamic_cast<const LoadGameEvent*>(evPtr) ) // If GamePlayMode is not running but loading is requested...
     {
         // Ensure the Sprite variations are correctly setup
@@ -487,7 +492,7 @@ void GalaxyEngine::pumpEvent(const CEvent *evPtr)
     else if( dynamic_cast<const OpenMainMenuEvent*>(evPtr) )
     {
         openMainMenu();
-    }    
+    }
     else if( dynamic_cast<const CloseComputerWrist*>(evPtr) )
     {
         mpComputerWrist = nullptr;

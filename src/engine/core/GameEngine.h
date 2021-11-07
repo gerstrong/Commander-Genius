@@ -7,6 +7,7 @@
 
 #include "mode/CGameMode.h"
 #include "CResourceLoader.h"
+#include "CEvent.h"
 
 #include <base/GsEngine.h>
 #include <graphics/GsSurface.h>
@@ -39,7 +40,7 @@ public:
 
 protected:
 
-    CResourceLoaderBackground mEngineLoader;	
+    CResourceLoaderBackground mEngineLoader;
 
     std::unique_ptr<CGameMode> mpGameMode;
 
@@ -51,6 +52,9 @@ private:
 
     GsSurface mFPSSurface;
 };
+
+struct SetNativeResolutionEv : CEvent
+{};
 
 
 #endif /* GAMEENGINE_H */

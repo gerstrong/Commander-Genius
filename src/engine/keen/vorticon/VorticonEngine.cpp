@@ -3,9 +3,11 @@
 #include <base/GsApp.h>
 #include <base/utils/StringUtils.h>
 #include <base/CInput.h>
+#include <base/audio/Audio.h>
 
 #include <widgets/GsMenuController.h>
 #include <base/GsArguments.h>
+#include <base/video/CVideoDriver.h>
 
 #include "engine/core/CResourceLoader.h"
 #include "engine/core/CBehaviorEngine.h"
@@ -17,7 +19,6 @@
 #include "fileio/CPatcher.h"
 #include "fileio/CSaveGameController.h"
 #include "engine/core/CMessages.h"
-#include <base/audio/Audio.h>
 #include "VorticonEngine.h"
 
 #include "CHelp.h"
@@ -236,9 +237,22 @@ void VorticonEngine::pumpEvent(const CEvent *evPtr)
 {
     KeenEngine::pumpEvent(evPtr);
 
+    if( dynamic_cast<const SetNativeResolutionEv*>(evPtr) )
+    {
+        const GsRect<Uint16> gameRect = gVideoDriver.getVidConfig().mGameRect;
+        gVideoDriver.setNativeResolution(gameRect, 2);
 
-    if( dynamic_cast<const FinishedLoadingResources*>(evPtr) )
-    {        
+        if( auto *playgame = dynamic_cast<CPlayGameVorticon*>(mpGameMode.get()))
+        {
+            playgame->redrawMap();
+        }
+        else if( auto *passive = dynamic_cast<vorticon::CPassiveVort*>(mpGameMode.get()))
+        {
+            passive->redrawMap();
+        }
+    }
+    else if( dynamic_cast<const FinishedLoadingResources*>(evPtr) )
+    {
         switchToPassiveMode();
         //gSaveGameController.convertAllOldFormats();
     }
@@ -268,7 +282,7 @@ void VorticonEngine::pumpEvent(const CEvent *evPtr)
         mpGameMode->init();
         mOpenedGamePlay = true;
         gBehaviorEngine.setPause(false);
-        gEventManager.add( new CloseAllMenusEvent() );        
+        gEventManager.add( new CloseAllMenusEvent() );
     }
     else if( dynamic_cast<const GMSwitchToPassiveMode*>(evPtr) )
     {
@@ -279,7 +293,7 @@ void VorticonEngine::pumpEvent(const CEvent *evPtr)
     {
         std::unique_ptr<CPlayGameVorticon> pgVort(new CPlayGameVorticon());
         pgVort->init();
-        pgVort->loadGame();        
+        pgVort->loadGame();
         mpGameMode = std::move(pgVort);
         mOpenedGamePlay = true;
         gBehaviorEngine.setPause(false);
@@ -305,7 +319,7 @@ void VorticonEngine::pumpEvent(const CEvent *evPtr)
         gMenuController.hide(true);
         mpInfoScene = scene->mpScene;
         mpInfoScene->init();
-    }    
+    }
     else if( const StartHelpEv *scene =
              dynamic_cast<const StartHelpEv*>(evPtr) )
     {
