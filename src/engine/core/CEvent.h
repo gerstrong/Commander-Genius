@@ -15,7 +15,6 @@
 #include <cstdint>
 #include <string>
 #include <list>
-#include <base/direction.h>
 #include <vector>
 #include <memory>
 
