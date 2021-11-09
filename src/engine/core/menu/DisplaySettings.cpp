@@ -11,6 +11,7 @@
 #include <base/video/CVideoDriver.h>
 #include <base/utils/StringUtils.h>
 #include <widgets/GsMenuController.h>
+#include <engine/core/GameEngine.h>
 
 #include "engine/core/CBehaviorEngine.h"
 #include "CVideoSettings.h"
@@ -34,7 +35,7 @@ GameMenu(GsRect<float>(0.15f, 0.20f, 0.65f, 0.55f), style )
 
 #if !defined(EMBEDDED)
 
-	
+
     mpAspectSelection =
             mpMenuDialog->add( new ComboSelection( "Aspect",
                                                           filledStrList(1, "disabled"),
@@ -86,10 +87,10 @@ GameMenu(GsRect<float>(0.15f, 0.20f, 0.65f, 0.55f), style )
                                                           style) );
 #endif
 
-	setMenuLabel("OPTIONSMENULABEL");
+    setMenuLabel("OPTIONSMENULABEL");
 
     mpMenuDialog->fit();
-    refresh();        
+    refresh();
     select(1);
 }
 
@@ -114,17 +115,17 @@ void DisplaySettings::refresh()
 
     const auto aspSet = gVideoDriver.getAspectStrSet();
     mpAspectSelection->setList( aspSet );
-	std::string arcStr;
+    std::string arcStr;
     arcStr = itoa(mMyNewConf.mAspectCorrection.dim.x);
-	arcStr += ":";
+    arcStr += ":";
     arcStr += itoa(mMyNewConf.mAspectCorrection.dim.y);
-	
-	if( arcStr == "0:0")
-	  arcStr = "disabled";
-	
-	mpAspectSelection->setSelection(arcStr);
 
-	
+    if( arcStr == "0:0")
+      arcStr = "disabled";
+
+    mpAspectSelection->setSelection(arcStr);
+
+
     mpFilterSelection->setSelection( mMyNewConf.m_ScaleXFilter==VidFilter::NONE ? "none" :
                                     (mMyNewConf.m_normal_scale ? "normal" : "scale") +
                                     itoa(int(mMyNewConf.m_ScaleXFilter)) + "x" );
@@ -136,12 +137,12 @@ void DisplaySettings::refresh()
     const auto resList = gVideoDriver.getResolutionStrSet();
     mpResolutionSelection->setList( resList );
 
-	std::string resStr;
+    std::string resStr;
 
     resStr = itoa(mMyNewConf.mDisplayRect.dim.x);
-	resStr += "x";
+    resStr += "x";
     resStr += itoa(mMyNewConf.mDisplayRect.dim.y);
-	mpResolutionSelection->setSelection(resStr);        
+    mpResolutionSelection->setSelection(resStr);
 
 #endif
 
@@ -228,7 +229,7 @@ void DisplaySettings::release()
     mMyNewConf.mFullscreen = mpFullScreenSwitch->isEnabled();
 
     // Integer Scaling
-    mMyNewConf.mIntegerScaling = mpIntegerScalingSwitch->isEnabled();    
+    mMyNewConf.mIntegerScaling = mpIntegerScalingSwitch->isEnabled();
 
     // Read correct resolution
     {
@@ -243,12 +244,12 @@ void DisplaySettings::release()
         }
     }
 
-	// In case the user changed something in the camera settings, reload that.
+    // In case the user changed something in the camera settings, reload that.
     mMyNewConf.m_CameraBounds = gVideoDriver.getCameraBounds();
 
 #endif
 
-	CVidConfig oldVidConf = gVideoDriver.getVidConfig();
+    CVidConfig oldVidConf = gVideoDriver.getVidConfig();
 
     if(oldVidConf == mMyNewConf)
     {
@@ -258,22 +259,22 @@ void DisplaySettings::release()
     gVideoDriver.setVidConfig(mMyNewConf);
 
 
-
-
-	// At this point we also must apply and save the settings
-	if( !gVideoDriver.applyMode() )
-	{
+    // At this point we also must apply and save the settings
+    if( !gVideoDriver.applyMode() )
+    {
         gSettings.loadDrvCfg(); // If it fails load the old settings
-		return;
-	}		
+        return;
+    }
 
     if( !gVideoDriver.start() ) // Here the same situation
-	{
-		gVideoDriver.setVidConfig(oldVidConf);
-		gVideoDriver.start();
-	}
-	
-	gSettings.saveDrvCfg();
+    {
+        gVideoDriver.setVidConfig(oldVidConf);
+        gVideoDriver.start();
+    }
+
+    gEventManager.add( new SetNativeResolutionEv() );
+
+    gSettings.saveDrvCfg();
 
     gMenuController.updateGraphics();
 }
