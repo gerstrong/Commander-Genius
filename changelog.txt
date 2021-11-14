@@ -1,3 +1,9 @@
+v3.0.9:
+-------
+- Bug fixes with changed aspect ratio and resolutions
+- Multiplayer fixes
+- Many gameplay bug fixes
+
 v3.0.0:
 -------
 - New Engine with parallax scrolling feature
