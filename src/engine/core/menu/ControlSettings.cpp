@@ -39,31 +39,31 @@ class ReadInputEvent : public InvokeFunctorEvent
 {
 public:
 
-	ReadInputEvent( const int selPlayer,
+    ReadInputEvent( const int selPlayer,
             const InpCmd command,
-			const std::string &commandName ) :
-		mSelPlayer(selPlayer),
-		mCommand(command),
+            const std::string &commandName ) :
+        mSelPlayer(selPlayer),
+        mCommand(command),
         mCommandName(commandName)
-		{}
+        {}
 
     void setButtonPtr(std::shared_ptr<GsButton> button)
-	{
-		mpButton = button;
-	}
+    {
+        mpButton = button;
+    }
 
     void operator()() const
-	{
+    {
         gInput.setupNewEvent(Uint8(mSelPlayer-1),
                              mCommand);
 
-		const std::string buf = mCommandName;		
-		mpButton->setText(buf + "=Reading=");
-	}
+        const std::string buf = mCommandName;
+        mpButton->setText(buf + "=Reading=");
+    }
 
-	int mSelPlayer;
+    int mSelPlayer;
     InpCmd mCommand;
-	const std::string mCommandName;
+    const std::string mCommandName;
     std::shared_ptr<GsButton> mpButton;
 };
 
@@ -126,23 +126,23 @@ mSelectedPlayer(selectedPlayer)
 
     mpTwoButtonSwitch =
             mpMenuDialog->add( new Switch( "Two Button Fire", style ) );
-	mpTwoButtonSwitch->enable(gInput.getTwoButtonFiring(mSelectedPlayer-1));
+    mpTwoButtonSwitch->enable(gInput.getTwoButtonFiring(mSelectedPlayer-1));
 
     mpAnalogSwitch =
             mpMenuDialog->add( new Switch( "Analog Movement", style ) );
-	mpAnalogSwitch->enable(gInput.isAnalog(mSelectedPlayer-1));
+    mpAnalogSwitch->enable(gInput.isAnalog(mSelectedPlayer-1));
 
     mpSuperPogoSwitch =
             mpMenuDialog->add( new Switch( "Super Pogo", style ) );
-	mpSuperPogoSwitch->enable(gInput.SuperPogo(mSelectedPlayer-1));
+    mpSuperPogoSwitch->enable(gInput.SuperPogo(mSelectedPlayer-1));
 
     mpImpPogoSwitch =
             mpMenuDialog->add( new Switch( "Impossible Pogo", style ) );
-	mpImpPogoSwitch->enable(gInput.ImpossiblePogo(mSelectedPlayer-1));
+    mpImpPogoSwitch->enable(gInput.ImpossiblePogo(mSelectedPlayer-1));
 
     mpAutoGunSwitch =
             mpMenuDialog->add( new Switch( "Auto Gun", style ) );
-	mpAutoGunSwitch->enable(gInput.AutoGun(mSelectedPlayer-1));
+    mpAutoGunSwitch->enable(gInput.AutoGun(mSelectedPlayer-1));
 
 
     mpMenuDialog->add(
@@ -155,7 +155,7 @@ mSelectedPlayer(selectedPlayer)
                                 },
                                 style )  );
 
-    
+
     setMenuLabel("KEYBMENULABEL");
 
     mpMenuDialog->fit();
@@ -168,11 +168,11 @@ void CControlsettings::refresh()
 
 void CControlsettings::release()
 {
-	gInput.setTwoButtonFiring(mSelectedPlayer-1, mpTwoButtonSwitch->isEnabled() );
-	gInput.enableAnalog(mSelectedPlayer-1, mpAnalogSwitch->isEnabled() );
-	gInput.setSuperPogo(mSelectedPlayer-1, mpSuperPogoSwitch->isEnabled() );
-	gInput.setImpossiblePogo(mSelectedPlayer-1, mpImpPogoSwitch->isEnabled() );
-	gInput.setAutoGun(mSelectedPlayer-1, mpAutoGunSwitch->isEnabled() );
+    gInput.setTwoButtonFiring(mSelectedPlayer-1, mpTwoButtonSwitch->isEnabled() );
+    gInput.enableAnalog(mSelectedPlayer-1, mpAnalogSwitch->isEnabled() );
+    gInput.setSuperPogo(mSelectedPlayer-1, mpSuperPogoSwitch->isEnabled() );
+    gInput.setImpossiblePogo(mSelectedPlayer-1, mpImpPogoSwitch->isEnabled() );
+    gInput.setAutoGun(mSelectedPlayer-1, mpAutoGunSwitch->isEnabled() );
     gInput.saveControlconfig("");
 }
 
@@ -267,18 +267,18 @@ void CControlSettingsBaseWithMapping::release()
 void CControlSettingsMovement::refresh()
 {
     mapping = false;
-	mCommandName[IC_LEFT]		= "Left:   ";
-	mCommandName[IC_RIGHT]		= "Right:  ";
+    mCommandName[IC_LEFT]		= "Left:   ";
+    mCommandName[IC_RIGHT]		= "Right:  ";
     mCommandName[IC_UP]		    = "Up:     ";
-	mCommandName[IC_DOWN]		= "Down:   ";
+    mCommandName[IC_DOWN]		= "Down:   ";
 
     if(!mpButtonMap.empty())
         mpButtonMap.clear();
 
     std::map<InpCmd, std::string>::iterator it = mCommandName.begin();
-	for ( ; it != mCommandName.end(); it++ )
-	{
-		const std::string buf = it->second;
+    for ( ; it != mCommandName.end(); it++ )
+    {
+        const std::string buf = it->second;
         const std::string buf2 = gInput.getEventShortName( it->first,
                                                            mSelectedPlayer-1 );
 
@@ -298,10 +298,10 @@ void CControlSettingsMovement::refresh()
         rie->setButtonPtr(
                     std::static_pointer_cast<GsButton>(guiButton)
                          );
-	}
+    }
 
-	setMenuLabel("MOVEMENULABEL");
-    mpMenuDialog->fit();    
+    setMenuLabel("MOVEMENULABEL");
+    mpMenuDialog->fit();
     addBottomText();
 }
 
@@ -351,19 +351,19 @@ void CControlSettingsMoveDiag::refresh()
 void CControlSettingsGameplayActions::refresh()
 {
     mapping = false;
-    mCommandName[IC_JUMP] 		    = "Jump:     ";
-    mCommandName[IC_POGO] 		    = "Pogo:     ";
-    mCommandName[IC_FIRE]		    = "Fire:     ";
-    mCommandName[IC_RUN]		    = "Run:      ";
-    mCommandName[IC_STATUS] 	    = "Status:   ";
-    mCommandName[IC_CAMLEAD] 	    = "Camlead:  ";
+    mCommandName[IC_JUMP] 		    = "Jump:      ";
+    mCommandName[IC_POGO] 		    = "Pogo:      ";
+    mCommandName[IC_FIRE]		    = "Fire:      ";
+    mCommandName[IC_RUN]		    = "Run:       ";
+    mCommandName[IC_STATUS] 	    = "Status:    ";
+    mCommandName[IC_CAMLEAD] 	    = "Cam/Revive:";
 
     if(!mpButtonMap.empty())
         mpButtonMap.clear();
 
     std::map<InpCmd, std::string>::iterator it = mCommandName.begin();
-	for ( ; it != mCommandName.end(); it++ )
-	{
+    for ( ; it != mCommandName.end(); it++ )
+    {
         const std::string buf = it->second;
         const std::string buf2 = gInput.getEventShortName( it->first,
                                                            mSelectedPlayer-1 );
@@ -383,10 +383,10 @@ void CControlSettingsGameplayActions::refresh()
         rie->setButtonPtr(
                     std::static_pointer_cast<GsButton>(guiButton)
                          );
-	}    
+    }
 
-	setMenuLabel("BUTTONMENULABEL");
-    mpMenuDialog->fit();    
+    setMenuLabel("BUTTONMENULABEL");
+    mpMenuDialog->fit();
     addBottomText();
 }
 

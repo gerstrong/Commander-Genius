@@ -130,8 +130,6 @@ bool CPlayerLevel::verifyforPole()
 
     auto l_x_r = getXRightPos();
     auto l_x_l = getXLeftPos();
-    auto l_x = ( l_x_l + l_x_r ) / 2;
-    l_x = (l_x>>CSF)<<CSF;
     const int l_y_up = ( getYUpPos() ) + (4<<STC);
     const int l_y_down = ( ( getYDownPos() >> CSF ) + 1 ) << CSF;
 
@@ -569,7 +567,6 @@ void CPlayerLevel::processLookingDown()
     {
         mActionState.jumpWasPressed = true;
 
-        //printf("Tryin' to jump down\n");
         //If the tiles below the player are blocking on any side but the top, they cannot be jumped through
         /*int tile1 = CA_TileAtPos(obj->clipRects.tileXmid, obj->clipRects.tileY2, 1);
         int tile2 = CA_TileAtPos(obj->clipRects.tileXmid, obj->clipRects.tileY2+1, 1);
@@ -609,7 +606,6 @@ void CPlayerLevel::processLookingDown()
 
     if( mPlaycontrol[PA_Y]>0 )
     {
-
         if ( mPlaycontrol[PA_JUMP] > 0 && !onslope  )
         {
             const bool jumpdowntile = canFallThroughTile();
@@ -685,10 +681,6 @@ void CPlayerLevel::getTouchedBy(CSpriteObject &theObject)
         }
     }
 }
-
-
-
-
 
 
 void CPlayerLevel::processInput()
@@ -1581,10 +1573,8 @@ void CPlayerLevel::processPressUp()
 
     if ( !m_EnterDoorAttempt )
     {
-
         /// Test if keen may enter a door.
         /// Note: They are usually larger
-
         const size_t tile_from_left  = mpMap->getPlaneDataAt(1, x_left, up_y);
         const size_t tile_from_right = mpMap->getPlaneDataAt(1, x_right, up_y);
 
@@ -1703,7 +1693,7 @@ void CPlayerLevel::processPressUp()
                 setAction(A_KEEN_ENTER_DOOR);
 
                 setActionSprite();
-                GsSprite &rSprite = gGraphics.getSprite(mSprVar,mSpriteIdx);
+                GsSprite &rSprite = gGraphics.getSprite(mSprVar, mSpriteIdx);
                 const auto sprHalfWidth = ((rSprite.getWidth()<<STC)/2);
                 const auto xPosCenteredKeen = x_pos_door - sprHalfWidth;
 
@@ -1798,7 +1788,6 @@ void CPlayerLevel::processSliding()
 
 void CPlayerLevel::processEnterDoor()
 {
-
     playWalkSound();
 
     if( getActionStatus(A_KEEN_STAND) )
@@ -1809,7 +1798,7 @@ void CPlayerLevel::processEnterDoor()
     const int enterDoorSpeedX = 64;
     const int enterDoorSpeedY = 16;
 
-    if( xdiff >  enterDoorSpeedX )
+    if( xdiff > enterDoorSpeedX )
     {
         moveLeft(enterDoorSpeedX);
         return;
@@ -1859,36 +1848,36 @@ void CPlayerLevel::processEnterDoor()
 
     if (t == 0)
     {
-      bool mustTeleportOnMap = false;
+        bool mustTeleportOnMap = false;
 
-      auto &frontTileProperties = gBehaviorEngine.getTileProperties(1);
+        auto &frontTileProperties = gBehaviorEngine.getTileProperties(1);
 
-      // Check if there is a teleporter. In Keen 5 there might be one!
-      if(gBehaviorEngine.getEpisode() == 5)
-      {
-        Uint32 teletile = mpMap->getPlaneDataAt(1, xmid, y1);
-
-        if(teletile==0)
-          teletile = mpMap->getPlaneDataAt(1, xmid, y1-(1<<CSF));
-
-        if(teletile==0)
-          teletile = mpMap->getPlaneDataAt(1, xmid, y1-(2<<CSF));
-
-        if(teletile==0)
-          teletile = mpMap->getPlaneDataAt(1, xmid, y1-(3<<CSF));
-
-        // Code for the teleport tile
-        //if(teletile == 0x0401)
-        const auto &tile = frontTileProperties[teletile];
-
-        // Teleport to the secret level
-        if(tile.behaviour == 0x02)
+        // Check if there is a teleporter. In Keen 5 there might be one!
+        if(gBehaviorEngine.getEpisode() == 5)
         {
-          // There is one!
-          mustTeleportOnMap = true;
-        }
+            Uint32 teletile = mpMap->getPlaneDataAt(1, xmid, y1);
 
-      }
+            if(teletile==0)
+                teletile = mpMap->getPlaneDataAt(1, xmid, y1-(1<<CSF));
+
+            if(teletile==0)
+                teletile = mpMap->getPlaneDataAt(1, xmid, y1-(2<<CSF));
+
+            if(teletile==0)
+                teletile = mpMap->getPlaneDataAt(1, xmid, y1-(3<<CSF));
+
+            // Code for the teleport tile
+            //if(teletile == 0x0401)
+            const auto &tile = frontTileProperties[teletile];
+
+            // Teleport to the secret level
+            if(tile.behaviour == 0x02)
+            {
+                // There is one!
+                mustTeleportOnMap = true;
+            }
+
+        }
 
         //level_state = 13;
         //o->action = ACTION_KEENENTEREDDOOR;
@@ -1929,10 +1918,10 @@ void CPlayerLevel::processEnterDoor()
 
     GsVec2D<int> new_pos(xpos, ypos);
     moveToForce(new_pos);
+    moveOtherPlayersTo(new_pos);
+
     new_pos.x += ((m_BBox.x2-m_BBox.x1)/2);
     new_pos.y += ((m_BBox.y2/*-m_BBox.y1*/)/2);
-
-    moveOtherPlayersTo(new_pos);
 
     mpMap->mGamePlayPos = new_pos;
     m_camera.setPosition(new_pos);
@@ -1945,7 +1934,6 @@ void CPlayerLevel::processEnterDoor()
     //o->clipping = 1;
     //sub_183F1(o);
     return;
-
 }
 
 void CPlayerLevel::toggleBridge(const Uint32 newX, const Uint32 newY)

@@ -566,10 +566,10 @@ void CPlayGameVorticon::handleFKeys()
     }
 
     // Cycle Cam Code
-    /*if( gInput.getPressedCommand(mCamLead, IC_CAMLEAD) )
+    if( gInput.getPressedCommand(mCamLead, IC_CAMLEAD) )
     {
         cycleCamLead();
-    }*/
+    }
 
     // GOD cheat -- toggle god mode
     if ( gInput.getHoldedKey(KG) &&
@@ -615,7 +615,9 @@ void CPlayGameVorticon::handleFKeys()
     }
 
     if(m_Player.empty())
+    {
         return;
+    }
 }
 
 
