@@ -79,7 +79,7 @@ bool ScrollingPlane::scrollLeft(GsTilemap &tilemap)
 {
     auto &scrollSfcVec = gVideoDriver.getScrollSurfaceVec();
 
-    if(scrollSfcVec.size()<=mScrollSfcIdx)
+    if(int(scrollSfcVec.size())<=mScrollSfcIdx)
         return false;
 
     auto &scrollSfc = scrollSfcVec.at(mScrollSfcIdx);
@@ -137,7 +137,7 @@ bool ScrollingPlane::scrollRight(GsTilemap &tilemap)
 
     auto &scrollSfcVec = gVideoDriver.getScrollSurfaceVec();
 
-    if(scrollSfcVec.size()<=mScrollSfcIdx)
+    if(int(scrollSfcVec.size())<=mScrollSfcIdx)
         return false;
 
     auto &scrollSfc = scrollSfcVec.at(mScrollSfcIdx);
@@ -179,7 +179,7 @@ bool ScrollingPlane::scrollUp(GsTilemap &tilemap, [[maybe_unused]] const bool fo
 
     auto &scrollSfcVec = gVideoDriver.getScrollSurfaceVec();
 
-    if(scrollSfcVec.size()<=mScrollSfcIdx)
+    if(int(scrollSfcVec.size())<=mScrollSfcIdx)
         return false;
 
     auto &scrollSfc = scrollSfcVec.at(mScrollSfcIdx);
@@ -231,7 +231,7 @@ bool ScrollingPlane::scrollDown(GsTilemap &tilemap, const bool force)
 
     auto &scrollSfcVec = gVideoDriver.getScrollSurfaceVec();
 
-    if(scrollSfcVec.size()<=mScrollSfcIdx)
+    if(int(scrollSfcVec.size())<=mScrollSfcIdx)
         return false;
 
     auto &scrollSfc = scrollSfcVec.at(mScrollSfcIdx);
@@ -415,7 +415,7 @@ void ScrollingPlane::animateAllTiles(GsTilemap &tilemap)
 
     auto &scrollSfcVec = gVideoDriver.getScrollSurfaceVec();
 
-    if(scrollSfcVec.size()<=mScrollSfcIdx)
+    if(int(scrollSfcVec.size())<=mScrollSfcIdx)
         return;
 
     auto &scrollSfc = scrollSfcVec.at(mScrollSfcIdx);
@@ -624,7 +624,7 @@ void ScrollingPlane::redrawPlaneAt(GsTilemap &tilemap,
 {
     auto &scrollSfcVec = gVideoDriver.getScrollSurfaceVec();
 
-    if(scrollSfcVec.size()<mScrollSfcIdx)
+    if(int(scrollSfcVec.size())<mScrollSfcIdx)
         return;
 
     auto &scrollSfc = scrollSfcVec.at(mScrollSfcIdx);
