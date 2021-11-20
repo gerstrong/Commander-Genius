@@ -40,7 +40,8 @@ mCommanderTextSfc(gGraphics.getMiscGsBitmap(0)),
 mKeenTextSfc(gGraphics.getMiscGsBitmap(1)),
 mSkipSection(false)
 {
-    gEventManager.add( new SetNativeResolutionEv() );
+    const GsRect<Uint16> gameRect = gVideoDriver.getVidConfig().mGameRect;
+    gVideoDriver.setNativeResolution(gameRect, 2);
 
     const auto episode = gBehaviorEngine.getEpisode();
 
@@ -56,7 +57,6 @@ mSkipSection(false)
     GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
 
     mScaleFactor = gameRes.dim.y/mCommanderTextSfc.height();
-
     mLogoPosY = gameRes.dim.y;
 
     mMaxSeparationWidth = 60*mScaleFactor;
