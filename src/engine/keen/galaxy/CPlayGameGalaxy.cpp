@@ -30,7 +30,6 @@
 #include "common/ai/CPlayerWM.h"
 #include "engine/core/VGamepads/vgamepadsimple.h"
 #include "engine/core/menu/MainMenu.h"
-//#include "menu/MainMenu.h"
 
 #include <fileio/KeenFiles.h>
 #include <base/GsArguments.h>
@@ -75,7 +74,7 @@ m_LevelPlay( mInventoryVec)
 
 
 bool CPlayGameGalaxy::loadXMLGameState()
-{            
+{
     /// Create tree for reading
     using GsKit::ptree;
     ptree pt;
@@ -121,7 +120,7 @@ bool CPlayGameGalaxy::loadXMLGameState()
         if(node.first == "Player")
         {
             ptree &playerNode = node.second;
-            variant = playerNode.get<int>("<xmlattr>.variant");            
+            variant = playerNode.get<int>("<xmlattr>.variant");
             const int idx = playerNode.get<int>("<xmlattr>.id", 0);
             auto &invNode = playerNode.get_child("inventory");
             mInventoryVec[idx].setup(idx, variant);
@@ -159,7 +158,7 @@ bool CPlayGameGalaxy::saveXMLGameState()
     ptree &stateNode = pt.add("GameState", "");
 
     /// Save the Game in the CSavedGame object
-    // store the episode, level and difficulty    
+    // store the episode, level and difficulty
     stateNode.put("episode", int(m_Episode));
 
 
@@ -220,17 +219,17 @@ bool CPlayGameGalaxy::init()
     mGameOverTriggered = false;
     gGraphics.optimizeSprites();
 
-	if(m_Level == 0)
-	{
-		m_WorldMap.setActive(true);
-		m_WorldMap.loadAndPlayMusic();
-	}
-	else
-	{
-		// manually a level has been loaded
+    if(m_Level == 0)
+    {
+        m_WorldMap.setActive(true);
+        m_WorldMap.loadAndPlayMusic();
+    }
+    else
+    {
+        // manually a level has been loaded
         m_LevelPlay.loadLevel(0, m_Level);
-		m_LevelPlay.setActive(true);
-	}
+        m_LevelPlay.setActive(true);
+    }
 
     const int numPlayers = gBehaviorEngine.numPlayers();
     mDead.assign(numPlayers, false);
@@ -295,7 +294,7 @@ void CPlayGameGalaxy::looseManagement( const int playerIdx,
         nextAliveID++;
     }
 
-    mDead[playerIdx] = true;    
+    mDead[playerIdx] = true;
     mInventoryVec[playerIdx].Item.m_lifes--;
 
     const bool playerGameOver = (mInventoryVec[playerIdx].Item.m_lifes<0);
@@ -415,7 +414,7 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
 
             const Uint16 newLevel = ev->data - 0xC000;
             if(newLevel < 50)
-            {                
+            {
                 if(m_LevelPlay.loadLevel(ev->mSprVar, newLevel))
                 {
                     m_WorldMap.setActive(false);
@@ -437,9 +436,9 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
     {
         gMusicPlayer.stop();
         m_LevelPlay.reloadLevel();
-    }    
+    }
     else if( const auto *ev = dynamic_cast<const EventExitLevel*>(evPtr) )
-    {                
+    {
         // Ensure no one is dead anymore
         const int numPlayers = gBehaviorEngine.numPlayers();
         mDead.assign(numPlayers, false);
@@ -504,7 +503,7 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
     else if( const RevivePlayer *ev = dynamic_cast<const RevivePlayer*>(evPtr) )
     {
         if(m_LevelPlay.isActive())
-        {            
+        {
             // Check for an alive player and get his coordinates
             if(auto playerPtr =
                 dynamic_cast<CPlayerBase*>( m_LevelPlay.getNextStandingStillPlayer() ))
@@ -537,7 +536,7 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
         }
     }
     else if( const EventExitLevelWithFoot *ev = dynamic_cast<const EventExitLevelWithFoot*>(evPtr) )
-    {        
+    {
         gMusicPlayer.stop();
         m_LevelPlay.setActive(false);
         m_WorldMap.setActive(true);
@@ -605,7 +604,7 @@ void CPlayGameGalaxy::ponder(const float deltaT)
     for(auto &msgBox : mMessageBoxes)
     {
         blockGamePlay |= msgBox->isModal();
-    }                    
+    }
 
     int playerCount = 0;
     bool noLifesLeft = true; // Set gameover and check if player have enough lifes
@@ -683,7 +682,7 @@ void CPlayGameGalaxy::ponder(const float deltaT)
     if(blockGamePlay) return;
 
     // Cheat Codes
-    auto &cheat = gBehaviorEngine.mCheatmode;    
+    auto &cheat = gBehaviorEngine.mCheatmode;
     if( gInput.getHoldedKey(KF10) )
     {
         if(gInput.getHoldedKey(KJ))
@@ -698,7 +697,7 @@ void CPlayGameGalaxy::ponder(const float deltaT)
             cheat.god = !cheat.god;
             std::string godstring = "God-Mode has been ";
             godstring += ((cheat.god) ? "enabled" : "disabled");
-            showMsg(0, godstring);            
+            showMsg(0, godstring);
         }
         else if(gInput.getHoldedKey(KI))
         {
