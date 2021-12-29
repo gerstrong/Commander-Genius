@@ -12,30 +12,33 @@
 #include <SDL.h>
 #include "../Vector2D.h"
 
+#include <string>
+#include <sstream>
+
 /**
  * This structure defines the resolution composed of width height and depth
  */
 template <typename T>
 struct GsRect
 {
-	template <typename T2>
+    template <typename T2>
     GsRect( GsRect<T2> rect )
-	{
+    {
         pos.x = rect.pos.x;		pos.y = rect.pos.y;
         dim.x = rect.dim.x;		dim.y = rect.dim.y;
-	}
+    }
 
 
     GsRect( const T lwidth = 0,
-		   const T lheight = 0 )
-		{
+           const T lheight = 0 )
+        {
             pos.x=0 ; pos.y=0;
             dim.x=lwidth; dim.y=lheight;
         }
 
     GsRect( const T lx,
-		   const T ly,
-		   const T lw,
+           const T ly,
+           const T lw,
            const T lh ) :
         pos(lx,ly),
         dim(lw,lh)
@@ -45,6 +48,18 @@ struct GsRect
         pos(T(sdlRect.x), T(sdlRect.y)),
         dim(T(sdlRect.w), T(sdlRect.h))
     {}
+
+    GsRect( const std::string &value )
+    {
+        std::stringstream ss;
+
+        ss << value;
+        ss >> pos.x;
+        ss >> pos.y;
+        ss >> dim.x;
+        ss >> dim.y;
+    }
+
 
     template <typename T2>
     GsRect operator/(const T2 scale) const
@@ -70,53 +85,53 @@ struct GsRect
 
 #else
     GsRect( const SDL_VideoInfo* InfoPtr )
-		{ w=InfoPtr->current_w; h=InfoPtr->current_h; };
+        { w=InfoPtr->current_w; h=InfoPtr->current_h; };
 #endif
 */
     bool operator==( const GsRect &target )
-	{
+    {
         return (target.pos.x == pos.x && target.pos.y == pos.y &&
                 target.dim.x == dim.x && target.dim.y == dim.y);
-	}
+    }
 
-	float aspectRatio() const
-	{
+    float aspectRatio() const
+    {
         return (float(dim.x)/float(dim.y));
-	}
+    }
 
-	template <typename T2>
+    template <typename T2>
     GsRect<T>& operator=( const GsRect<T2> &newRect )
-	{
+    {
         GsRect<T> retRect;
         pos.x = static_cast<T>(newRect.pos.x);
         pos.y = static_cast<T>(newRect.pos.y);
         dim.x = static_cast<T>(newRect.dim.x);
         dim.y = static_cast<T>(newRect.dim.y);
-		return *this;
-	}
+        return *this;
+    }
 
-	SDL_Rect SDLRect() const
-	{
-		SDL_Rect Rect;
+    SDL_Rect SDLRect() const
+    {
+        SDL_Rect Rect;
         Rect.x = pos.x;
         Rect.y = pos.y;
         Rect.w = dim.x;
         Rect.h = dim.y;
-		return Rect;
-	}
+        return Rect;
+    }
 
     void transformInverse(const GsRect &scaleRect)
-	{
+    {
         pos.x /= scaleRect.dim.x;
         pos.x -= scaleRect.pos.x;
         pos.y /= scaleRect.dim.y;
         pos.y -= scaleRect.pos.y;
         dim.x /= scaleRect.dim.x;
         dim.y /= scaleRect.dim.y;
-	}
+    }
 
     void transform(const GsRect &scaleRect)
-	{
+    {
         pos.x *= scaleRect.dim.x;
         pos.y *= scaleRect.dim.y;
 
@@ -124,7 +139,7 @@ struct GsRect
 
         dim.x *= scaleRect.dim.x;
         dim.y *= scaleRect.dim.y;
-	}
+    }
 
     GsRect transformed(const GsRect &scaleRect) const
     {
@@ -139,38 +154,38 @@ struct GsRect
 
 
 
-	template <typename T2>
+    template <typename T2>
     void transform(const GsRect<T2> &scaleRect)
-	{
+    {
         GsRect<T> TRect;
-		TRect = scaleRect;
-		transform(TRect);
-	}
+        TRect = scaleRect;
+        transform(TRect);
+    }
 
 
-	// Check whether a point given by a Vector is with that Rect.
-	// The operation is simple but very often used.
+    // Check whether a point given by a Vector is with that Rect.
+    // The operation is simple but very often used.
     bool _HasPoint(const GsVec2D<T>& Pos) const
-	{
-		// check X coordinate. is it outside, return false
+    {
+        // check X coordinate. is it outside, return false
         if( Pos.x < pos.x || Pos.x >= pos.x+dim.x )
-			return false;
+            return false;
 
-		// check Y coordinate. is it outside, return false
+        // check Y coordinate. is it outside, return false
         if( Pos.y < pos.y || Pos.y >= pos.y+dim.y )
-			return false;
+            return false;
 
-		return true;
-	}
+        return true;
+    }
 
-	template <typename T2>
+    template <typename T2>
     bool HasPoint(const GsVec2D<T2>& Pos) const
-	{
+    {
         GsVec2D<T> NewPos;
-		NewPos.x = static_cast<T>(Pos.x);
-		NewPos.y = static_cast<T>(Pos.y);
+        NewPos.x = static_cast<T>(Pos.x);
+        NewPos.y = static_cast<T>(Pos.y);
         return _HasPoint(NewPos);
-	}
+    }
 
 
 
@@ -258,9 +273,9 @@ struct GsRect
  * \param ContourColor Color of the contour
  */
 void drawRect( SDL_Surface *sfc,
-			   SDL_Rect *rect,
-			   const int thickness,
-			   const Uint32 &ContourColor );
+               SDL_Rect *rect,
+               const int thickness,
+               const Uint32 &ContourColor );
 
 /**
  * \brief Draws rect different than the SDL_Fillrect, because it has a contour and is filled
