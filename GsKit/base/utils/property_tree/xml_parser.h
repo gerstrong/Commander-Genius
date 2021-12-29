@@ -19,6 +19,7 @@ namespace GsKit
 {
 
     void read_xml(const std::string &filename, GsKit::ptree &pt);
+    void read_xml(const unsigned char *mem, const int memSize, GsKit::ptree &pt);
 
     void write_xml(const std::string &filename, GsKit::ptree &pt);
 

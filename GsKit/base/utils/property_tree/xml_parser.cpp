@@ -196,6 +196,20 @@ static void read_xml_tinyxml2(const std::string &filename, GsKit::ptree &pt)
     addNodeFromTinyXML(pt, pRoot);
 }
 
+static void read_xml_tinyxml2_from_mem(const unsigned char *mem,
+                                       const int memSize,
+                                       GsKit::ptree &pt)
+{
+    tinyxml2::XMLDocument doc;
+
+    doc.LoadFromMemory(mem, memSize);
+
+    tinyxml2::XMLNode * pRoot = doc.FirstChild();
+
+    addNodeFromTinyXML(pt, pRoot);
+}
+
+
 
 static void write_xml_tinyxml2(const std::string &filename, GsKit::ptree &pt)
 {
@@ -205,13 +219,13 @@ static void write_xml_tinyxml2(const std::string &filename, GsKit::ptree &pt)
     xmlDoc.InsertEndChild(decl);
 
     for( auto &data : pt )
-    {                
+    {
         std::string firstStr(data.first);
         tinyxml2::XMLElement * newElem = xmlDoc.NewElement(firstStr.c_str());
         xmlDoc.InsertEndChild(newElem);
 
         addNodeToTinyXML(data.second, newElem, &xmlDoc);
-    }    
+    }
 
     auto fullfn = GetWriteFullFileName(filename, true);
     xmlDoc.SaveFile(fullfn.c_str());
@@ -228,6 +242,19 @@ void read_xml(const std::string &filename, GsKit::ptree &pt)
     #endif
 }
 
+void read_xml(const unsigned char *mem,
+              const int memSize,
+              GsKit::ptree &pt)
+{
+    #ifdef BOOST_ENABLED
+        # error Don't use Boost. It is deprecated and will be removed soon!
+    #else
+        read_xml_tinyxml2_from_mem(mem, memSize, pt);
+    #endif
+}
+
+
+
 void write_xml(const std::string &filename, GsKit::ptree &pt)
 {
   #ifdef BOOST_ENABLED
@@ -239,12 +266,12 @@ void write_xml(const std::string &filename, GsKit::ptree &pt)
 
 #ifdef BOOST_ENABLED
 void read_xml(std::ifstream &file, GsKit::ptree &pt)
-{  
+{
     read_xml_boost(file, pt);
 }
 
 void write_xml(std::ofstream &file, GsKit::ptree &pt)
-{    
+{
     write_xml_boost(file, pt);
 }
 #endif
