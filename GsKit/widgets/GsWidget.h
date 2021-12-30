@@ -60,14 +60,25 @@ public:
         return mpParent;
     }
 
+    std::string getTag()
+    {
+        return mTag;
+    }
+
+    const void setTag(const std::string &tag)
+    {
+        mTag = tag;
+    }
+
 private:
 
     GsWidget *mpParent = nullptr;
 
-    // The relative rect describes the rect which is normally tied to its parent.
-    GsRect<float> mRect;        
+    // This relative rect describes the rect which is normally tied to its parent.
+    GsRect<float> mRect;
 
     unsigned int mId;
+    std::string mTag;
     static unsigned int mNumWidgets;
 };
 

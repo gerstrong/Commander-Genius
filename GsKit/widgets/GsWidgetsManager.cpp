@@ -18,7 +18,7 @@ void GsWidgetsManager::fit(const float padding,
     size_t c = 1;
 
     for( ; it != mWidgetList.end() ; it++ )
-    {        
+    {
         GsRect<float> rect( padding,
                    charHeight*(static_cast<float>(c)+0.25f),
                    width,
@@ -58,7 +58,7 @@ void GsWidgetsManager::updateGraphics()
 
 
 bool GsWidgetsManager::sendEvent(const std::shared_ptr<CEvent> & )
-{    
+{
     return false;
 }
 
@@ -68,7 +68,7 @@ void GsWidgetsManager::processLogic()
     for(auto &obj : mWidgetList)
     {
         obj->processLogic();
-    }        
+    }
 }
 
 
@@ -110,7 +110,6 @@ void GsWidgetsManager::selectNextItem()
 
     applySelection();
 }
-
 
 std::shared_ptr<GsWidget>
 GsWidgetsManager::add(std::shared_ptr<GsWidget> &widget )

@@ -3,6 +3,8 @@
 
 #include <list>
 #include <memory>
+#include <map>
+#include <functional>
 
 #include "GsControl.h"
 
@@ -94,13 +96,12 @@ protected:
     void clear()
     {
         mWidgetList.clear();
-    }    
+    }
 
     auto &getControlsList()
     {
         return mControlsList;
     }
-
 
 private:
 
