@@ -21,6 +21,9 @@
 
 #include <functional>
 
+#include <base/utils/property_tree/property_tree.h>
+
+
 class GsButton : public GsControl
 {
 public:
@@ -98,7 +101,7 @@ public:
 
     virtual void drawNoStyle(const SDL_Rect &lRect);
 
-	void drawVorticonStyle(SDL_Rect& lRect);
+    void drawVorticonStyle(SDL_Rect& lRect);
 
     virtual void processRender(const GsRect<float> &RectDispCoordFloat) override;
 
@@ -106,9 +109,9 @@ public:
                                const GsRect<float> &dstRectFloat) override;
 
     virtual void setText(const std::string& text)
-	{
-		mText = text;
-        mTextWidget.setText(text);        
+    {
+        mText = text;
+        mTextWidget.setText(text);
     }
 
     void setTextColor(const GsColor &color)
@@ -128,7 +131,7 @@ public:
 
 
     virtual std::string getText()
-	{	return mText;	}
+    {	return mText;	}
 
     void enableBorder(const bool value)
     {
@@ -160,10 +163,10 @@ protected:
     CGUIText mTextWidget;
     std::string mText;
 
-private:    
+private:
 
 
-	std::shared_ptr<CEvent> mEvent;
+    std::shared_ptr<CEvent> mEvent;
 
     // Different fixed colors to be used for the button
     GsColor mSelectedColor = GsColor(255, 255, 255);
@@ -184,7 +187,7 @@ private:
                                  // if hovered or selected
 };
 
-
+std::shared_ptr<GsButton> createButtonFrom(const GsKit::ptree &node);
 
 #endif /* GsButton_H_ */
 
