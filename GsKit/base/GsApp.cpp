@@ -5,7 +5,7 @@
  *      Author: gerstrong
  *  This Game-engine stripes down the main function
  *  and provides more dynamic control over the game engine itself
- * 
+ *
  *  It also manages the load of drivers and main game cycle
  */
 #include <string>
@@ -29,7 +29,6 @@
 
 #include <thread>
 #include <mutex>
-
 
 std::string getArgument( int argc, char *argv[], const std::string& text )
 {
@@ -117,24 +116,24 @@ GsApp::~GsApp()
  * 					will be false.
  */
 bool GsApp::init(int argc, char *argv[])
-{	
+{
     // Pass all the arguments
     gArgs.passArgs(argc, argv);
 
-	// Setup the Hardware using the settings we have loaded
-	gLogging.textOut(FONTCOLORS::GREEN,"Loading hardware settings...<br>");
-		
+    // Setup the Hardware using the settings we have loaded
+    gLogging.textOut(FONTCOLORS::GREEN,"Loading hardware settings...<br>");
+
     if(!loadDrivers())
-	{
+    {
         gLogging.textOut(FONTCOLORS::RED,"The program cannot start, because you do not meet the hardware requirements.<br>");
-		return false;
-	}
+        return false;
+    }
 
     return true;
 }
 
 void GsApp::deinit()
-{    
+{
     unloadDrivers();
 }
 
@@ -180,9 +179,9 @@ void GsAppEventSink::pumpEvent(const CEvent *evPtr)
 
 
 void GsApp::pollEvents()
-{        
+{
     if( gInput.getExitEvent() )
-    {        
+    {
       mpCurEngine.release();
       return;
     }
@@ -204,11 +203,11 @@ void GsApp::pollEvents()
 // Load the driver needed to start the game
 bool GsApp::loadDrivers()
 {
-	// Init graphics
-    if (!gVideoDriver.start()) 
-		return false;
-		
-	return true;
+    // Init graphics
+    if (!gVideoDriver.start())
+        return false;
+
+    return true;
 }
 
 void GsApp::unloadDrivers()
@@ -227,7 +226,7 @@ void GsApp::unloadDrivers()
 
 // This function is run every time, the Timer says so, through.
 void GsApp::ponder(const float deltaT)
-{    
+{
     gInput.ponder();
     pollEvents();
 
@@ -250,7 +249,7 @@ void GsApp::render()
     if(mpCurEngine)
     {
         mpCurEngine->render();
-    }       
+    }
 
     gMenuController.render();
 
@@ -428,8 +427,8 @@ void GsApp::runMainCycle()
     mpCurEngine->start();
 
 #if __EMSCRIPTEN__
-    emscripten_set_main_loop(runMainCycleEmscriptenExtern, -1, 1);        
-#else    
+    emscripten_set_main_loop(runMainCycleEmscriptenExtern, -1, 1);
+#else
 
     runMainCycleNonThreaded();
 #endif
@@ -457,13 +456,13 @@ void GsApp::runMainCycleEmscripten()
         curr = timerTicks();
 
         if(gTimer.resetLogicSignal())
-            start = curr;        
-        
+            start = curr;
+
         {
             start = timerTicks();
 
             // Game cycle
-            {                            
+            {
                 // Poll Inputs
                 gInput.pollEvents();
 
@@ -492,7 +491,7 @@ void GsApp::runMainCycleEmscripten()
 
             if( mustShutdown() )
                 return;
-        }    
+        }
 
         // This will refresh the fps display, so it stays readable and calculates an average value.
         counter++;
@@ -501,6 +500,6 @@ void GsApp::runMainCycleEmscripten()
             counter = 0;
             gTimer.setTimeforLastLoop(total_elapsed/100.0f);
             total_elapsed = 0.0f;
-        }    
+        }
 }
 #endif // __EMSCRIPTEN__

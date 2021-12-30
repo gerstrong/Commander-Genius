@@ -40,21 +40,21 @@ class GsApp : public GsSingleton<GsApp>
 public:
     GsApp();
     ~GsApp();
-	
-	bool init(int argc, char *argv[]);
+
+    bool init(int argc, char *argv[]);
     void deinit();
 
     bool loadDrivers();
     void unloadDrivers();
 
     void setEngine(GsEngine *engPtr);
-	
+
     void runMainCycleNonThreaded();
 
     void runMainCycle();
 
     void runMainCycleEmscripten();
-	void cleanup();
+    void cleanup();
 
     void pollEvents();
 
@@ -88,6 +88,8 @@ private:
 
     bool mIgnoreLogicCounterOnce = false;
 };
+
+#include <base/GsEventContainer.h>
 
 // It's a simple quit event which will force CG to close the App
 struct GMQuit : CEvent {};
