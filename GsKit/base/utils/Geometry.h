@@ -14,6 +14,7 @@
 
 #include <string>
 #include <sstream>
+#include <algorithm>
 
 /**
  * This structure defines the resolution composed of width height and depth
@@ -51,9 +52,14 @@ struct GsRect
 
     GsRect( const std::string &value )
     {
+        std::string s = value;
+        s.erase( std::remove(s.begin(), s.end(), ','), s.end() );
+        s.erase( std::remove(s.begin(), s.end(), 'f'), s.end() );
+
         std::stringstream ss;
 
-        ss << value;
+        ss << s;
+
         ss >> pos.x;
         ss >> pos.y;
         ss >> dim.x;
