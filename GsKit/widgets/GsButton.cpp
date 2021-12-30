@@ -16,6 +16,52 @@
 
 #include "GsButton.h"
 
+std::shared_ptr<GsButton> createButtonFrom(const GsKit::ptree &node)
+{
+    GsRect<float> dim;
+    std::string name;
+    std::string event;
+    std::string id;
+    std::string tag;
+
+    try
+    {
+        for( auto &item : node )
+        {
+            if(item.first == "<xmlattr>")
+            {
+                dim = GsRect<float>
+                      (item.second.get<std::string>("dim"));
+                name = item.second.get<std::string>("name");
+                event = item.second.get<std::string>("event");
+                id = item.second.get<std::string>("id");
+                tag = item.second.get<std::string>("tag");
+            }
+        }
+    }
+    catch(std::exception const& ex)
+    {
+        gLogging << "Exception while building button: "
+                 << ex.what() << "\n";
+        return nullptr;
+    }
+    catch(...)
+    {
+        gLogging << "Unknown Exception while reading menu node."
+                 << CLogFile::endl;
+        return nullptr;
+    }
+
+
+
+    std::shared_ptr<GsButton> btn
+        (new GsButton( name, dim,
+                       [](){ gEventManager.add("GMQuit"); }, -1 ));
+
+    return btn;
+}
+
+
 GsButton::GsButton(const std::string& text,
                    const GsRect<float> &rect,
             CEvent *ev,
