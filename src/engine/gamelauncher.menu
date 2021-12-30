@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Dialog>
+  <Button
+     tag="closeButton"
+     name="x"
+     dim="0.0f, 0.0f, 0.069f, 0.069f"
+     event="GMQuit">
+  </Button>
+
+  <Text
+     name="Pick a Game"
+     dim="0.14f, 0.01f, 0.72f, 0.05f">
+  </Text>
+
+  <Button
+     tag="settingsButton"
+     name="O"
+     dim="0.93f, 0.0f, 0.069f, 0.069f"
+     event="openSettingsMenuEvent">
+  </Button>
+  <BitmapBox
+     tag="currentBitmapBox"
+     dim="0.51f, 0.07f, 0.48f, 0.48f">
+  </BitmapBox>
+
+  <GUITextSelectionList
+     tag="GSSelList"
+     dim="0.01f, 0.07f, 0.49f, 0.79f">
+  </GUITextSelectionList>
+
+  <Button
+     tag="startButton"
+     name="Start >"
+     dim="0.60f, 0.865f, 0.25f, 0.07f"
+     event="GMStart">
+  </Button>
+
+  <Text
+     name="Episode"
+     tag="EpisodeText"
+     dim="0.5f, 0.70f, 0.5f, 0.05f">
+  </Text>
+  <Text
+     name="Version"
+     tag="VersionText"
+     dim="0.5f, 0.75f, 0.5f, 0.05f">
+  </Text>
+  <Text
+     name="Demo"
+     tag="DemoText"
+     dim="0.5f, 0.80f, 0.5f, 0.05f">
+  </Text>
+
+  <GUIBanner
+     name="Banner"
+     tag="GUIBannerText"
+     dim="0.0f, 0.95f, 1.0f, 0.05f">
+  </GUIBanner>
+
+
+</Dialog>
+

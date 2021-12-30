@@ -47,13 +47,14 @@
 #include "cosmos/CosmoEngine.h"
 #endif // BUILD_COSMOS
 
+#include <base/utils/property_tree/xml_parser.h>
 
 /// Main Class implementation
 CGameLauncher::CGameLauncher() :
 mLauncherDialog(CGUIDialog(GsRect<float>(0.1f, 0.1f, 0.8f, 0.85f),
                            CGUIDialog::FXKind::EXPAND)),
 mGameScanner()
-{	
+{
 /*
     gAudio.unloadSoundData();
     // The last menu has been removed. Restore back the game status
@@ -94,6 +95,76 @@ struct ExecutableListFiller
     }
 };
 
+
+#include "gamelauncher.menu.h"
+
+bool buildDialogWidgetsFrom(CGUIDialog &dlg,
+                            const GsKit::ptree &tree)
+{
+    try
+    {
+        for( auto &node : tree )
+        {
+            // Filter the comments ...
+            if(node.first == "<xmlcomment>")
+                continue;
+
+            const auto key = node.first;
+            const auto subtree = node.second;
+
+            auto switchStr = [&](const std::string &text,
+                                  auto func)
+            { if(key == text)  dlg.add(func(subtree)); };
+
+            switchStr("Button", createButtonFrom);
+            switchStr("Text", createTextFrom);
+            switchStr("BitmapBox", createBitmapBoxFrom);
+            switchStr("GUITextSelectionList", createGUITextSelectionListFrom);
+            switchStr("GUIBanner", createGUIBannerFrom);
+        }
+    }
+    catch(std::exception const& ex)
+    {
+        gLogging << "Exception while reading menu node: " << ex.what() << "\n";
+        return false;
+    }
+    catch(...)
+    {
+        gLogging << "Unknown Exception while reading menu node\n.";
+        return false;
+    }
+
+    return true;
+}
+
+bool buildWidgets(CGUIDialog &dlg)
+{
+    // Create an empty property tree object
+    using GsKit::ptree;
+    ptree pt;
+
+    try
+    {
+        // Load the XML file into the property tree. If reading fails
+        // (cannot open file, parse error), an exception is thrown.
+        read_xml(gamelauncher_menu, gamelauncher_menu_len, pt);
+
+        gLogging << "Build Widgets." << CLogFile::endl;
+
+        return buildDialogWidgetsFrom(dlg, pt.get_child("Dialog"));
+    }
+    catch(std::exception const& ex)
+    {
+        gLogging << "Exception while reading menu node: " << ex.what() << "\n";
+        return false;
+    }
+    catch(...)
+    {
+        gLogging << "Unknown Exception while reading menu node\n.";
+        return false;
+    }
+}
+
 ////
 // Initialization Routine
 ////
@@ -126,19 +197,60 @@ bool CGameLauncher::setupMenu()
     // Recursivly scan into DIR_GAMES subdir's for exe's
     gamesDetected |= scanSubDirectories(DIR_GAMES,
                                         DEPTH_MAX_GAMES,
-                                        200, 900);    
+                                        200, 900);
 
     // Save any custom labels
     putLabels();
 
-    mLauncherDialog.add(
-                new GsButton( "x",
-                             GsRect<float>(0.0f, 0.0f, 0.069f, 0.069f),
-                             new GMQuit(), -1 ) );
+    try
+    {
+        /*
+        GameCatalogueEntry gce;
 
-    mLauncherDialog.add(new CGUIText("Pick a Game",
-                                      GsRect<float>(0.14f, 0.01f, 0.72f, 0.05f)));
+        gce.mVersionCode = gameNode.second.get<int>("<xmlattr>.versioncode");
+        TRACE_NODE(gce.mVersionCode);
 
+        gce.mName = gameNode.second.get<std::string>("<xmlattr>.name");
+        TRACE_NODE(gce.mName);
+        gce.mLink = gameNode.second.get<std::string>("<xmlattr>.link");
+        TRACE_NODE(gce.mLink);
+
+
+        if(gce.mVersionCode > CGVERSIONCODE)
+        {
+            gLogging.ftextOut("Game %s not supported. Required Version code %d, got %d.",
+                              gce.mName.c_str(), CGVERSIONCODE, gce.mVersionCode );
+            gLogging << CLogFile::endl;
+            continue;
+        }
+
+
+        gce.mDescription = gameNode.second.get<std::string>("<xmlattr>.description");
+        TRACE_NODE(gce.mDescription);
+        gce.mPictureFile = gameNode.second.get<std::string>("<xmlattr>.picture");
+        TRACE_NODE(gce.mPictureFile);
+
+        const auto filePath = JoinPaths("cache", gce.mPictureFile);
+
+        const auto fullfname = GetFullFileName(filePath);
+
+        gce.mBmpPtr.reset(new GsBitmap);
+
+        gce.mBmpPtr->loadImg(fullfname);
+
+        mGameCatalogue.push_back(gce);
+*/
+    }
+    catch(std::exception const& ex)
+    {
+        gLogging << "Exception while reading menu node: " << ex.what() << "\n";
+        return false;
+    }
+    catch(...)
+    {
+        gLogging << "Unknown Exception while reading menu node\n.";
+        return false;
+    }
 
     const auto openSettingsMenuEvent = [&]()
     {
@@ -147,28 +259,33 @@ bool CGameLauncher::setupMenu()
                                new SettingsMenu(Style::NONE) ) );
     };
 
-    mLauncherDialog.add(
-                new GsButton( "O",
-                              GsRect<float>(0.93f, 0.0f, 0.069f, 0.069f),
-                              openSettingsMenuEvent, -1 ) );
+    REGISTER_EV_FUNC(openSettingsMenuEvent);
 
-    // Create an empty Bitmap control
-    mCurrentBmp = mLauncherDialog.add(
-                new GsBitmapBox( GsRect<float>(0.51f, 0.07f, 0.48f, 0.48f) ));
+    try
+    {
+        if(!buildWidgets(mLauncherDialog))
+            return false;
+    }
+    catch(...)
+    {
+        return false;
+    }
+
+
+    // Get instance to Bitmap Control for game preview pictures
+    mLauncherDialog.passTagToRef("currentBitmapBox", mCurrentBmp);
 
     mPreviewBmpPtrVec.resize(m_Entries.size());
 
-    mpGSSelList =
-            mLauncherDialog.add(
-                new CGUITextSelectionList(GsRect<float>(0.01f, 0.07f, 0.49f, 0.79f)));
+    mLauncherDialog.passTagToRef("GSSelList", mpGSSelList);
 
     mpGSSelList->setBackgroundColor( GsColor(0xFF, 0xFF, 0xFF) );
 
 
-	std::vector<GameEntry>::iterator it = m_Entries.begin();
+    std::vector<GameEntry>::iterator it = m_Entries.begin();
     unsigned int i=0;
     for( ; it != m_Entries.end() ; it++	)
-    {        
+    {
         mpGSSelList->addText(it->name);
 
         // And try to add a preview bitmap
@@ -192,21 +309,13 @@ bool CGameLauncher::setupMenu()
     verifyGameStore(false);
     #endif
 
-    mpStartButton =
-                mLauncherDialog.add
-                   (
-                       new GsButton( "Start >",
-                                     GsRect<float>(0.60f, 0.865f, 0.25f, 0.07f),
-                                     new GMStart(), -1 )
-                   );
+    REGISTER_EV_FACTORY(GMStart);
+    mLauncherDialog.passTagToRef("startButton", mpStartButton);
 
+    mLauncherDialog.passTagToRef("EpisodeText", mpEpisodeText);
+    mLauncherDialog.passTagToRef("VersionText", mpVersionText);
+    mLauncherDialog.passTagToRef("DemoText", mpDemoText);
 
-    mpEpisodeText = mLauncherDialog.add(
-                new CGUIText("Game", GsRect<float>(0.5f, 0.70f, 0.5f, 0.05f)) );
-    mpVersionText = mLauncherDialog.add(
-                new CGUIText("Version", GsRect<float>(0.5f, 0.75f, 0.5f, 0.05f)) );
-    mpDemoText = mLauncherDialog.add(
-                new CGUIText("Demo", GsRect<float>(0.5f, 0.80f, 0.5f, 0.05f)) );
 
     // This way it goes right to the selection list.
     mLauncherDialog.setSelection(2);
@@ -215,17 +324,18 @@ bool CGameLauncher::setupMenu()
 
     gLogging.ftextOut("Game Autodetection Finished<br>" );
 
+    std::shared_ptr<CGUIBanner> guiBanner;
+    mLauncherDialog.passTagToRef("GUIBannerText", guiBanner);
 
-    mLauncherDialog.add( new CGUIBanner("Commander Genius " CGVERSION "\n"
-                                               "by Gerstrong,\n"
-                                               "Zilem,\n"
-                                               "Tulip,\n"
-                                               "Albert Zeyer,\n"
-                                               "Pelya,\n"
-                                               "Elias Oenal,\n"
-                                               "Gagster,\n"
-                                               "and many CG Contributors\n",
-                                               GsRect<float>(0.0f, 0.95f, 1.0f, 0.05f) ) );
+    guiBanner->setText("Commander Genius " CGVERSION "\n"
+                       "by Gerstrong,\n"
+                       "Zilem,\n"
+                       "Tulip,\n"
+                       "Albert Zeyer,\n"
+                       "Pelya,\n"
+                       "Elias Oenal,\n"
+                       "Gagster,\n"
+                       "and many CG Contributors\n");
 
     if(!gamesDetected)
     {
@@ -312,8 +422,8 @@ bool CGameLauncher::scanSubDirectories(const std::string& path,
 {
     bool gamesDetected = false;
 
-	std::set<std::string> dirs;
-	FileListAdder fileListAdder;
+    std::set<std::string> dirs;
+    FileListAdder fileListAdder;
     GetFileList(dirs, fileListAdder,
                 path, false, FM_DIR);
 
@@ -331,7 +441,7 @@ bool CGameLauncher::scanSubDirectories(const std::string& path,
     mGameScanner.setPermilage(int(startPermil));
 
     for( const auto &subdir : dirs )
-	{
+    {
         std::string newpath = JoinPaths(path, subdir);
 
         gamesDetected |= scanExecutables(newpath);
@@ -347,7 +457,7 @@ bool CGameLauncher::scanSubDirectories(const std::string& path,
 
         permil = lastPermil;
         mGameScanner.setPermilage(int(permil));
-	}
+    }
 
     mGameScanner.setPermilage(int(endPermil));
 
@@ -622,7 +732,7 @@ bool CGameLauncher::start()
 
             return 1;
         }
-    };        
+    };
 
     mGameScanner.setStyle(PROGRESS_STYLE_TEXT);
     mGameScanner.RunLoadActionBackground(new GamesScan(*this));
@@ -883,7 +993,7 @@ void CGameLauncher::ponderGameSelDialog(const float deltaT)
             mSelection = mpGSSelList->getSelection();
 
             if(mSelection != -1)
-            {                                
+            {
                 const auto sel = static_cast<unsigned int>(mSelection);
 
                 // In case another list loaded, but we have an old selection
@@ -1033,7 +1143,7 @@ void CGameLauncher::ponder(const float deltaT)
 
     // In case after display/video setting changes, we need to reset the native resolution
     if(gVideoDriver.getRefreshSignal())
-    {        
+    {
         // Set the native resolution
         gVideoDriver.setNativeResolution(gVideoDriver.getVidConfig().mDisplayRect, 2);
 
@@ -1063,7 +1173,7 @@ void CGameLauncher::ponder(const float deltaT)
 
         mpMsgDialog->processLogic();
         return;
-    }   
+    }
 
     if(!mLauncherDialog.isEnabled())
     {
@@ -1128,7 +1238,7 @@ void CGameLauncher::ponder(const float deltaT)
     {
         // User chose "exit", time to quit CG...
         gEventManager.add( new GMQuit() );
-    }    
+    }
 }
 
 void CGameLauncher::renderMouseTouchState()

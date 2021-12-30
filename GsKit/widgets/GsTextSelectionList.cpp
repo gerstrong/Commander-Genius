@@ -15,9 +15,50 @@
 #include <base/CInput.h>
 #include <base/PointDevice.h>
 #include <base/utils/Color.h>
-
+#include <base/GsLogging.h>
 
 #include <algorithm>
+
+std::shared_ptr<CGUITextSelectionList> createGUITextSelectionListFrom(const GsKit::ptree &node)
+{
+    GsRect<float> dim;
+    std::string name, tag;
+
+    try
+    {
+        for( auto &item : node )
+        {
+            if(item.first == "<xmlattr>")
+            {
+                dim = GsRect<float>
+                      (item.second.get<std::string>("dim"));
+                tag = item.second.get<std::string>("tag");
+            }
+        }
+    }
+    catch(std::exception const& ex)
+    {
+        gLogging << "Exception while building CGUITextSelectionList: "
+                 << ex.what() << "\n";
+        return nullptr;
+    }
+    catch(...)
+    {
+        gLogging << "Unknown Exception while reading CGUITextSelectionList node."
+                 << CLogFile::endl;
+        return nullptr;
+    }
+
+
+
+    std::shared_ptr<CGUITextSelectionList> w
+        (new CGUITextSelectionList( dim ));
+
+    w->setTag(tag);
+
+    return w;
+}
+
 
 CGUITextSelectionList::
 CGUITextSelectionList(const GsRect<float> &rect)  :

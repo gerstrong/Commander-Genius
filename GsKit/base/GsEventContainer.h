@@ -156,8 +156,22 @@ struct EventFactory
     }
 };
 
+struct FuncFactory
+{
+    static void create(const std::string &name,
+                       std::function<void()> func)
+    {
+        gEventManager.bind(name,
+            [func]() -> CEvent* { return new FunctionToEvent(func); });
+    }
+};
+
+
 #define REGISTER_EV_FACTORY(x) \
     EventFactory<x>::create(#x)
+
+#define REGISTER_EV_FUNC(x) \
+    FuncFactory::create(#x, x)
 
 
 #endif /* GSEVENTCONTAINER_H */

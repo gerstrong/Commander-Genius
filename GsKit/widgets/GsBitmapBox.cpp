@@ -8,8 +8,48 @@
 
 #include <graphics/GsGraphics.h>
 #include <base/video/CVideoDriver.h>
+#include <base/GsLogging.h>
 
 #include "GsBitmapBox.h"
+
+std::shared_ptr<GsBitmapBox> createBitmapBoxFrom(const GsKit::ptree &node)
+{
+    GsRect<float> dim;
+    std::string tag;
+
+    try
+    {
+        for( auto &item : node )
+        {
+            if(item.first == "<xmlattr>")
+            {
+                dim = GsRect<float>
+                      (item.second.get<std::string>("dim"));
+                tag = item.second.get<std::string>("tag");
+            }
+        }
+    }
+    catch(std::exception const& ex)
+    {
+        gLogging << "Exception while building bitmapbox: "
+                 << ex.what() << CLogFile::endl;
+        return nullptr;
+    }
+    catch(...)
+    {
+        gLogging << "Unknown Exception while reading node."
+                 << CLogFile::endl;
+        return nullptr;
+    }
+
+    std::shared_ptr<GsBitmapBox> w
+        (new GsBitmapBox( dim ));
+
+    w->setTag(tag);
+
+    return w;
+}
+
 
 
 GsBitmapBox::GsBitmapBox(const GsRect<float> &rect) :
@@ -93,7 +133,7 @@ void GsBitmapBox::processLogic()
 
 
 void GsBitmapBox::processRender(const GsRect<float> &RectDispCoordFloat)
-{    
+{
     // Check for loaded and valid bitmap object data
     if(!mScaledBitmapPtr)
         return;
@@ -107,7 +147,7 @@ void GsBitmapBox::processRender(const GsRect<float> &RectDispCoordFloat)
     displayRect.transform(RectDispCoordFloat);
     auto lRect = displayRect.SDLRect();
 
-	// Transform to the display coordinates
+    // Transform to the display coordinates
     /*GsRect<float> displayRect = mRect;
     displayRect.transform(RectDispCoordFloat);
     GsRect<Uint16> lRect = displayRect.SDLRect();*/

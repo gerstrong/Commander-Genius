@@ -54,13 +54,14 @@ std::shared_ptr<GsButton> createButtonFrom(const GsKit::ptree &node)
 
 
 
-    std::shared_ptr<GsButton> btn
+    std::shared_ptr<GsButton> w
         (new GsButton( name, dim,
-                       [](){ gEventManager.add("GMQuit"); }, -1 ));
+                       [event](){ gEventManager.add(event); }, -1 ));
 
-    return btn;
+    w->setTag(tag);
+
+    return w;
 }
-
 
 GsButton::GsButton(const std::string& text,
                    const GsRect<float> &rect,

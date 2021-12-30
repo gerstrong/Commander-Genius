@@ -111,10 +111,18 @@ void GsWidgetsManager::selectNextItem()
     applySelection();
 }
 
+std::shared_ptr<GsWidget> GsWidgetsManager::getWidgetByTag(const std::string &tag)
+{
+    return mTagToWidget[tag];
+}
+
+
 std::shared_ptr<GsWidget>
-GsWidgetsManager::add(std::shared_ptr<GsWidget> &widget )
+GsWidgetsManager::addWidget(std::shared_ptr<GsWidget> &widget )
 {
     mWidgetList.push_back(widget);
+    const auto tag = widget->getTag();
+    mTagToWidget[tag] = widget;
     return widget;
 }
 

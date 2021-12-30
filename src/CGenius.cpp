@@ -57,6 +57,15 @@ void switch_exit();
 
 #include <base/audio/Audio.h>
 
+/**
+ * @brief registerEvents Register all events, which are
+ *        identified through strings mostly using XML data
+ */
+void registerEvents()
+{
+    REGISTER_EV_FACTORY(GMQuit);
+}
+
 
 /**
  * @brief  This is the function where CG beings
@@ -85,7 +94,7 @@ int main(int argc, char *argv[])
 
 
     const std::string appName = "Commander Genius";
-    gApp.setName(appName);    
+    gApp.setName(appName);
 
     // Check if CG should look into a given directory
     std::string binary_dir;
@@ -108,15 +117,17 @@ int main(int argc, char *argv[])
     {
         warnings << "Binary-argument not given, assuming current dir" << endl;
         binary_dir = ".";
-    }    
+    }
 
-    SetBinaryDir( GetAbsolutePath(binary_dir) );    
+    SetBinaryDir( GetAbsolutePath(binary_dir) );
 
     notes << "Initializing ThreadPool..." << endl;
 
     CrashHandler::init();
 
     InitThreadPool();
+
+    registerEvents();
 
     const auto cfgFName = gSettings.getConfigFileName();
     notes << "Configuration filename is: " << cfgFName << endl;
@@ -134,7 +145,7 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-	gLogging.textOut(FONTCOLORS::GREEN,"Created Log file...\n");
+    gLogging.textOut(FONTCOLORS::GREEN,"Created Log file...\n");
 
     printSearchPaths();
 
@@ -142,8 +153,8 @@ int main(int argc, char *argv[])
 
     if(!gTTFDriver.init())
     {
-		errors << "Failed loading the TTF Driver." << endl;
-		gLogging.textOut(FONTCOLORS::RED,"Failed loading the TTF Driver.\n");
+        errors << "Failed loading the TTF Driver." << endl;
+        gLogging.textOut(FONTCOLORS::RED,"Failed loading the TTF Driver.\n");
         return 1;
     }
 
@@ -152,12 +163,12 @@ int main(int argc, char *argv[])
     // Init Video Driver with SDL all together
     if( !gVideoDriver.init() )
     {
-		errors << "Failed loading the Video Driver." << endl;
-		gLogging.textOut(FONTCOLORS::RED,"Failed loading the Video Driver.\n");
+        errors << "Failed loading the Video Driver." << endl;
+        gLogging.textOut(FONTCOLORS::RED,"Failed loading the Video Driver.\n");
         return 1;
-    }	
+    }
 
-    gLogging.textOut(FONTCOLORS::GREEN, "Loading driver settings...\n");    
+    gLogging.textOut(FONTCOLORS::GREEN, "Loading driver settings...\n");
 
     // Check if there are settings on the PC, otherwise use defaults.
     if( !gSettings.loadDrvCfg() )
@@ -172,14 +183,14 @@ int main(int argc, char *argv[])
     {
         gLogging.textOut(FONTCOLORS::RED,"Cannot load defaults...\n");
         gSettings.loadDefaultGameCfg();
-    }	
+    }
 
-	gLogging.textOut(FONTCOLORS::GREEN,"Initializing the Sound system...\n");
+    gLogging.textOut(FONTCOLORS::GREEN,"Initializing the Sound system...\n");
     if(!gAudio.init())
-	{
-		gLogging.textOut(FONTCOLORS::RED,"Failed to init the sound system...\n");
-	}
-		
+    {
+        gLogging.textOut(FONTCOLORS::RED,"Failed to init the sound system...\n");
+    }
+
 
     ////////////////////////////////////////////////////
     // Initialize CG and run the main cycle if worthy //
@@ -208,10 +219,10 @@ int main(int argc, char *argv[])
     ////////////////////////////////
     gApp.deinit();
 
-	gLogging.textOut(FONTCOLORS::GREEN,"Saving Display settings...\n");
+    gLogging.textOut(FONTCOLORS::GREEN,"Saving Display settings...\n");
     gSettings.saveDispCfg();
 
-	gLogging.textOut(FONTCOLORS::GREEN,"Tearing down thread pool...\n");
+    gLogging.textOut(FONTCOLORS::GREEN,"Tearing down thread pool...\n");
     UnInitThreadPool();
 
     gLogging.closeIt();

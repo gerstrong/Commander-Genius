@@ -2,11 +2,49 @@
 
 #include <graphics/GsGraphics.h>
 #include <base/video/CVideoDriver.h>
-
+#include <base/GsLogging.h>
 
 const int TIME_UNTIL_CHANGE = 180;
 const int TIME_TRANSITION = 30;
 
+std::shared_ptr<CGUIBanner> createGUIBannerFrom(const GsKit::ptree &node)
+{
+    GsRect<float> dim;
+    std::string name, tag;
+
+    try
+    {
+        for( auto &item : node )
+        {
+            if(item.first == "<xmlattr>")
+            {
+                dim = GsRect<float>
+                        (item.second.get<std::string>("dim"));
+                name = item.second.get<std::string>("name");
+                tag = item.second.get<std::string>("tag");
+            }
+        }
+    }
+    catch(std::exception const& ex)
+    {
+        gLogging << "Exception while building CGUIBanner: "
+                 << ex.what() << "\n";
+        return nullptr;
+    }
+    catch(...)
+    {
+        gLogging << "Unknown Exception while reading CGUIBanner node."
+                 << CLogFile::endl;
+        return nullptr;
+    }
+
+    std::shared_ptr<CGUIBanner> w
+            (new CGUIBanner( name, dim ));
+
+    w->setTag(tag);
+
+    return w;
+}
 
 CGUIBanner::CGUIBanner(const std::string& text, const GsRect<float> &rect) :
 CGUIText(text, rect)
@@ -21,7 +59,7 @@ void CGUIBanner::setText(const std::string& text)
 }
 
 void CGUIBanner::processLogic()
-{        
+{
     if(mTransition)
     {
         if(timer >= TIME_TRANSITION)
@@ -52,11 +90,11 @@ void CGUIBanner::processLogic()
             return;
         }
     }
-    
+
     alpha = uint8_t((255*timer)/TIME_TRANSITION);
-    
+
     timer++;
-    
+
 }
 
 void CGUIBanner::processRender(const GsRect<float> &RectDispCoordFloat)

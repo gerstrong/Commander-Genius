@@ -46,12 +46,12 @@ std::shared_ptr<CGUIText> createTextFrom(const GsKit::ptree &node)
         return nullptr;
     }
 
-
-
-    std::shared_ptr<CGUIText> text
+    std::shared_ptr<CGUIText> w
         (new CGUIText( name, dim ) );
 
-    return text;
+    w->setTag(tag);
+
+    return w;
 }
 
 

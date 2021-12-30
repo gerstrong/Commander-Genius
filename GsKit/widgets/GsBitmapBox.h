@@ -15,6 +15,8 @@
 #include "GsWidget.h"
 #include "graphics/GsBitmap.h"
 
+#include <base/utils/property_tree/property_tree.h>
+
 class GsBitmapBox : public GsWidget
 {
 public:
@@ -35,15 +37,15 @@ public:
     // Sets another Bitmap Pointer
     void setBitmapPtr(std::shared_ptr<GsBitmap> &bmpPtr);
 
-	// Load an Bitmap using an internal string ID of all the loaded Bitmaps
+    // Load an Bitmap using an internal string ID of all the loaded Bitmaps
     GsBitmapBox(const std::string &text,
                 const GsRect<float> &rect);
 
     void updateGraphics();
 
-	void processLogic();
+    void processLogic();
 
-	void processRender(const GsRect<float> &RectDispCoordFloat);
+    void processRender(const GsRect<float> &RectDispCoordFloat);
 
 private:
 
@@ -51,5 +53,7 @@ private:
     std::shared_ptr<GsBitmap> mScaledBitmapPtr;
     std::string mTextID;
 };
+
+std::shared_ptr<GsBitmapBox> createBitmapBoxFrom(const GsKit::ptree &node);
 
 #endif /* GsBitmapBox_H_ */

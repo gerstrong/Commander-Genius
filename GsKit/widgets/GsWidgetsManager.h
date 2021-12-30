@@ -30,6 +30,9 @@ public:
     std::shared_ptr<T> add( std::shared_ptr<T> &ctrl );
 
     template <class T>
+    std::shared_ptr<T> add( std::shared_ptr<T> &&ctrl );
+
+    template <class T>
     std::shared_ptr<T> add( T *newWidget );
 
     std::list< std::shared_ptr<GsWidget> >& getWidgetList()
@@ -39,6 +42,18 @@ public:
     {
         return *mWidgetList.rbegin();
     }
+
+    template<class T>
+    void
+    passTagToRef(const std::string &tag,
+                 std::shared_ptr<T> &ref)
+    {
+        std::shared_ptr<GsWidget> w = getWidgetByTag(tag);
+        ref = std::dynamic_pointer_cast<T>(w);
+    }
+
+    std::shared_ptr<GsWidget>
+    getWidgetByTag(const std::string &tag);
 
     virtual bool sendEvent(const std::shared_ptr<CEvent> &);
 
@@ -109,7 +124,7 @@ private:
 
     void applySelection();
 
-    std::shared_ptr<GsWidget> add( std::shared_ptr<GsWidget> &widget );
+    std::shared_ptr<GsWidget> addWidget( std::shared_ptr<GsWidget> &widget );
 
     std::shared_ptr<GsControl> addControl( std::shared_ptr<GsControl> &ctrl );
 
@@ -121,16 +136,23 @@ private:
 
     // List of Controls
     std::list< std::shared_ptr<GsControl> > mControlsList;
-};
 
+    std::map<std::string, std::shared_ptr<GsWidget> > mTagToWidget;
+};
 
 template <class T>
 std::shared_ptr<T> GsWidgetsManager::add( std::shared_ptr<T> &ctrl )
 {
+    return add( std::move(ctrl) );
+}
+
+template <class T>
+std::shared_ptr<T> GsWidgetsManager::add( std::shared_ptr<T> &&ctrl )
+{
     std::shared_ptr<GsWidget> widget =
             std::static_pointer_cast< GsWidget >(ctrl);
 
-    add( widget );
+    addWidget( widget );
 
     // Test if that it also is a GsControl
     std::shared_ptr<GsControl> control =

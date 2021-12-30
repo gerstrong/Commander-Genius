@@ -21,6 +21,7 @@
 #include <map>
 #include <memory>
 
+#include <base/utils/property_tree/property_tree.h>
 
 class CGUITextSelectionList : public GsScrollingFrame
 {
@@ -80,5 +81,7 @@ private:
     // (Useful when browsing the list using keys)
     bool mFollowSelectedItem = false;
 };
+
+std::shared_ptr<CGUITextSelectionList> createGUITextSelectionListFrom(const GsKit::ptree &node);
 
 #endif /* CGUITEXTSELECTIONLIST_H */

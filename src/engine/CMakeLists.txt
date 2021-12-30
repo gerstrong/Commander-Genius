@@ -18,7 +18,7 @@ endif(BUILD_REFKEEN)
 
 if(BUILD_COSMOS)
         add_definitions(-DBUILD_COSMOS)
-	add_subdirectory(cosmos)
+        add_subdirectory(cosmos)
         MESSAGE(STATUS "Cosmos build enabled")
 endif(BUILD_COSMOS)
 
@@ -52,7 +52,28 @@ set(HSRC CGameLauncher.h
          gamedownloader.h)
 
 add_library(engine STATIC ${CXXSRC}
-                          ${HSRC})
+                          ${HSRC}
+                          gamelauncher.menu)
+
+find_program(XXD_FOUND xxd)
+if(XXD_FOUND)
+    message(STATUS "Found xxd (${XXD_FOUND})")
+#    execute_process(COMMAND ${XXD_FOUND} -C -i gamelauncher.menu
+#                    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+#                    OUTPUT_FILE ${CMAKE_CURRENT_BINARY_DIR}/gamelauncher.menu.h)
+else(XXD_FOUND)
+    message(FATAL_ERROR "xxd not found. It is required for building Commander Genius")
+endif(XXD_FOUND)
+
+add_custom_target(
+  createGameLauncherMenu
+  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+  COMMAND ${XXD_FOUND} -i gamelauncher.menu ${CMAKE_CURRENT_BINARY_DIR}/gamelauncher.menu.h
+)
+
+add_dependencies(engine createGameLauncherMenu)
+
+target_include_directories(engine PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
 
 if(BUILD_KEEN)
   target_link_libraries(engine engine_keen_galaxy engine_keen_vorticon)
