@@ -1,5 +1,30 @@
 #include "GsEventContainer.h"
 
+#include <functional>
+#include <string>
+#include <map>
+
+void
+CEventContainer::bind(const std::string &name,
+                       const std::function<CEvent*()> &fun)
+{
+    mCreateEventFrom[name] = fun;
+}
+
+void CEventContainer::add(const std::string &evName)
+{
+    std::shared_ptr<CEvent> sharedEvent(
+                mCreateEventFrom[evName]());
+    m_EventList.push_back(sharedEvent);
+}
+
+void CEventContainer::add(CEvent *ev)
+{
+    std::shared_ptr<CEvent> sharedEvent(ev);
+    m_EventList.push_back(sharedEvent);
+}
+
+
 void CEventContainer::processSinks()
 {
     // First check if there are pendingEvents to be processed
