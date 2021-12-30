@@ -8,6 +8,7 @@
 #include <list>
 #include <memory>
 #include <ctime>
+#include <map>
 
 #define gEventManager CEventContainer::get()
 
@@ -46,6 +47,16 @@ public:
         mFlush = true;
     }
 
+    /**
+     * @brief bind bind a string to a function
+     *             that creates an event
+     * @param name Name of the event
+     * @param fun function that creates the event
+     *            and returns a CEvent* type address
+     */
+    void bind(const std::string &name,
+              const std::function<CEvent*()> &fun);
+
     void add(std::shared_ptr<CEvent>& ev)
     {
         m_EventList.push_back(ev);
@@ -72,11 +83,13 @@ public:
      * @brief add   Adds an event to the queue
      * @param ev    Event to be pushed to be added
      */
-    void add(CEvent *ev)
-    {
-        std::shared_ptr<CEvent> sharedEvent(ev);
-        m_EventList.push_back(sharedEvent);
-    }
+    void add(CEvent *ev);
+
+    /**
+     * @brief add   Adds a known event by a given name
+     * @param evName Name of the event to be added
+     */
+    void add(const std::string &evName);
 
 
     template<typename T>
@@ -119,6 +132,9 @@ private:
     clock_t timepoint = 0;
 
     bool mFlush = false;
+
+    // Map which contains functions that create the event
+    std::map< std::string, std::function<CEvent*()> > mCreateEventFrom;
 };
 
 template<typename T>
@@ -129,6 +145,19 @@ T* CEventContainer::occurredEvent()
 
     return dynamic_cast<T*> (m_EventList.front().get());
 }
+
+template <class _EVENT>
+struct EventFactory
+{
+    static void create(const std::string &name)
+    {
+        gEventManager.bind(name,
+           []() -> CEvent* { return new _EVENT(); });
+    }
+};
+
+#define REGISTER_EV_FACTORY(x) \
+    EventFactory<x>::create(#x)
 
 
 #endif /* GSEVENTCONTAINER_H */
