@@ -21,6 +21,7 @@
 
 #include <graphics/GsTrueTypeFont.h>
 
+#include <base/utils/property_tree/property_tree.h>
 
 class CGUIText : public GsWidget
 {
@@ -33,17 +34,17 @@ public:
              const GsRect<float> &rect,
              const int fontId);
 
-	virtual void setText(const std::string& text);
+    virtual void setText(const std::string& text);
 
     void setTextColor(const GsColor &color);
 
-	virtual void processLogic();
+    virtual void processLogic();
     virtual void processRender(const GsRect<float> &RectDispCoordFloat);
 
     virtual void processRender(const GsRect<float> &backRect,
                                const GsRect<float> &frontRect);
 
-	// Defines in character units how tall and wide the entire text is.
+    // Defines in character units how tall and wide the entire text is.
     GsRect<unsigned int> mTextDim;
 
     void enableCenteringH(const bool value)
@@ -73,7 +74,7 @@ protected:
     std::map< GsColor, std::vector<GsSurface> > mTextSfcVecByColor;
 
     GsColor mTextColor;
-	
+
 private:
 
     /// Automatic horizontal scrolling in case the text is too big
@@ -94,9 +95,11 @@ private:
         NONE,
         LEFT,
         RIGHT
-    } mScrollDir = ScrollDir::NONE;        
+    } mScrollDir = ScrollDir::NONE;
 
     int mFontId = -1;
 };
+
+std::shared_ptr<CGUIText> createTextFrom(const GsKit::ptree &node);
 
 #endif /* CGUITEXT_H_ */

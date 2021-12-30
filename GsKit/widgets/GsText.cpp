@@ -8,10 +8,52 @@
 #include <graphics/GsGraphics.h>
 #include <base/video/CVideoDriver.h>
 #include <base/utils/StringUtils.h>
+#include <base/GsLogging.h>
 
 #include "GsText.h"
 
 #include <graphics/cgttf.h>
+
+std::shared_ptr<CGUIText> createTextFrom(const GsKit::ptree &node)
+{
+    GsRect<float> dim;
+    std::string name;
+    std::string tag;
+
+    try
+    {
+        for( auto &item : node )
+        {
+            if(item.first == "<xmlattr>")
+            {
+                dim = GsRect<float>
+                      (item.second.get<std::string>("dim"));
+                name = item.second.get<std::string>("name");
+                tag = item.second.get<std::string>("tag");
+            }
+        }
+    }
+    catch(std::exception const& ex)
+    {
+        gLogging << "Exception while building button: "
+                 << ex.what() << "\n";
+        return nullptr;
+    }
+    catch(...)
+    {
+        gLogging << "Unknown Exception while reading menu node."
+                 << CLogFile::endl;
+        return nullptr;
+    }
+
+
+
+    std::shared_ptr<CGUIText> text
+        (new CGUIText( name, dim ) );
+
+    return text;
+}
+
 
 CGUIText::CGUIText(const std::string &text,
                    const GsRect<float> &rect) :
@@ -32,37 +74,37 @@ mFontId(fontId)
 
 
 void CGUIText::setText(const std::string& text)
-{    
+{
     if(!mTextVec.empty())
         mTextVec.clear();
 
-	// Split up the text in lines
+    // Split up the text in lines
     mTextDim.dim.x = 0;
 
-	// TODO: I think there is a more elegant way to achieve this!
-	std::string buf = "";
-	for( size_t i=0 ; i<text.size() ; i++ )
-	{
+    // TODO: I think there is a more elegant way to achieve this!
+    std::string buf = "";
+    for( size_t i=0 ; i<text.size() ; i++ )
+    {
         if( endofLine(text.substr(i)) )
-		{            
+        {
             if( mTextDim.dim.x < buf.size() )
                 mTextDim.dim.x = static_cast<unsigned int>(buf.size());
 
             mTextVec.push_back(buf);
-			buf.clear();
-		}
-		else
-        {
-			buf += text[i];
+            buf.clear();
         }
-	}
+        else
+        {
+            buf += text[i];
+        }
+    }
 
-	size_t pos = 0;
-	if(!buf.empty())
-	{
-		while( (pos = buf.find('\n')) != std::string::npos )
-			buf.erase(pos,1);
-	}
+    size_t pos = 0;
+    if(!buf.empty())
+    {
+        while( (pos = buf.find('\n')) != std::string::npos )
+            buf.erase(pos,1);
+    }
     mTextVec.push_back(buf);
 
     if( mTextDim.dim.x < buf.size() )
@@ -154,8 +196,8 @@ void CGUIText::updateLegacyTextSfc(const GsRect<float> &displayRect)
     const auto numTexLines = mTextVec.size();
 
     if(needUpdate)
-    {                
-        mFontSize = reqFontSize;                
+    {
+        mFontSize = reqFontSize;
 
         auto lRect = displayRect.SDLRect();
         lRect.x = lRect.y = 0;
@@ -244,7 +286,7 @@ void CGUIText::processRender(const GsRect<float> &backRect,
     unsigned int totTextSfcH = 0;
 
     if(mFontId < 0)
-    {        
+    {
         updateTTFTextSfc(objBackRect);
     }
     else
