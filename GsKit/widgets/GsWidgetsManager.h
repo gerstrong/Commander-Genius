@@ -15,8 +15,15 @@
 class GsWidgetsManager : public GsControl
 {
 public:
+
+    friend class GsSelectionList;
+
     GsWidgetsManager(const GsRect<float> &SrGsRect);
 
+
+    virtual void fitWithHeight(const float padding,
+                       const float width,
+                       const float height);
     /**
      * @brief fit   ensure that the added controls fit well into
      *              control manager
@@ -55,7 +62,7 @@ public:
     std::shared_ptr<GsWidget>
     getWidgetByTag(const std::string &tag);
 
-    virtual bool sendEvent(const std::shared_ptr<CEvent> &);
+    virtual bool sendEvent(const std::shared_ptr<CEvent> &evPtr);
 
 
     // Update all graphics. Happens when Video settings are changed

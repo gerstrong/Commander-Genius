@@ -13,6 +13,7 @@
 #define GsControl_H_
 
 #include <base/InputEvents.h>
+#include <memory>
 
 #include "GsWidget.h"
 
@@ -23,7 +24,7 @@ public:
     GsControl(const GsRect<float> &rect);
 
     GsControl();
-    
+
     virtual ~GsControl() override;
 
     void processPointingState() {}
@@ -58,9 +59,11 @@ public:
 
     virtual bool sendEvent(const InpCmd) { return false; }
 
-	void drawTwirl( const SDL_Rect& lRect );
+    virtual bool sendEvent(const std::shared_ptr<CEvent> &evPtr) { return false; }
 
-	void drawBlinker( const SDL_Rect& lRect );
+    void drawTwirl( const SDL_Rect& lRect );
+
+    void drawBlinker( const SDL_Rect& lRect );
 
     void enableBlinker(const bool value)
     {   mDrawBlinker = value; }
@@ -89,7 +92,7 @@ protected:
     bool mEnabled = true;
 
     // For mouse/touch we have those
-	bool mHovered  = false;
+    bool mHovered  = false;
     bool mPressed  = false;
     bool mReleased = false;
 
@@ -98,7 +101,7 @@ protected:
 
 
 
-	static int mTwirliconID;
+    static int mTwirliconID;
 
     bool mDrawBlinker = false; // Highlighting using the blinker from galaxy games
     bool mDrawTwirl = false;  // Highlighting using the twirl from vorticon games

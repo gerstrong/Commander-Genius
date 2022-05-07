@@ -30,7 +30,7 @@ public:
 
     void switchToPassiveMode();
 
-    void pumpEvent(const CEvent *evPtr);
+    void pumpEvent(const std::shared_ptr<CEvent> &evPtr);
 
 private:
     std::shared_ptr<CInfoScene> mpInfoScene;

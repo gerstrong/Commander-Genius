@@ -65,7 +65,7 @@ bool CVideoDriver::init()
 {
     mVidConfig.reset();
 
-	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_AUDIO) < 0)
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_AUDIO) < 0)
     {
         gLogging.textOut(FONTCOLORS::RED, "Could not initialize SDL: %s<br>", SDL_GetError());
         return false;
@@ -73,28 +73,28 @@ bool CVideoDriver::init()
 
     gLogging.textOut(FONTCOLORS::GREEN, "SDL was successfully initialized!<br>");
 
-	initResolutionList();
+    initResolutionList();
 
 
-	if(!mSDLImageInUse)
-	{
-	  // load support for the JPG and PNG image formats
+    if(!mSDLImageInUse)
+    {
+      // load support for the JPG and PNG image formats
       const int flags = IMG_INIT_JPG|IMG_INIT_PNG;
       const int inittedFlags = IMG_Init(flags);
       if( (inittedFlags & flags) != flags)
-	  {
-	      gLogging.textOut(FONTCOLORS::RED, "IMG_Init: Failed to init required jpg and png support!\n");
-	      gLogging.textOut(FONTCOLORS::RED, "IMG_Init: %s\n", IMG_GetError());
+      {
+          gLogging.textOut(FONTCOLORS::RED, "IMG_Init: Failed to init required jpg and png support!\n");
+          gLogging.textOut(FONTCOLORS::RED, "IMG_Init: %s\n", IMG_GetError());
           gLogging.textOut(FONTCOLORS::RED, "IMG_Init: CG will continue without it.\n");
-	  }
-	  else
-	  {
-	    mSDLImageInUse = true;
-	  }
-	}
+      }
+      else
+      {
+        mSDLImageInUse = true;
+      }
+    }
 
-	// take the first default resolution. It might be changed if there is a config file already created
-	// If there are at least two possible resolutions choose the second one, as this is normally one basic small resolution
+    // take the first default resolution. It might be changed if there is a config file already created
+    // If there are at least two possible resolutions choose the second one, as this is normally one basic small resolution
     GsRect<Uint16> myMode;
     myMode.dim = *(mResolutionSet.begin());
     setMode(myMode);
@@ -107,27 +107,27 @@ bool CVideoDriver::init()
 // TODO: This should return something!
 bool CVideoDriver::initResolutionList()
 {
-	// This call will get the resolution we have right now and set it up for the system
+    // This call will get the resolution we have right now and set it up for the system
     // On Handheld devices this means they will only take that resolution and that would it be.
     // On the PC, this is the current resolution but we add some more.
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    GsVec2D<Uint16> resolution = {800, 600};
+    GsVec2D<Uint16> resolution = {1920, 1080};
 #else
     GsRect<Uint16> resolution(SDL_GetVideoInfo());
 #endif
 
 #if defined(ANDROID)
-	resolution.x = 320;
-	resolution.y = 200;
+    resolution.x = 320;
+    resolution.y = 200;
 #elif defined(__SWITCH__)
-	resolution.x = 1280;
-	resolution.y = 720;
+    resolution.x = 1280;
+    resolution.y = 720;
 #endif
 
     GsVec2D<Uint16> desktopResolution(resolution);
 
-	// We have a resolution list, clear it and create a new one.
+    // We have a resolution list, clear it and create a new one.
     if(!mResolutionSet.empty())
     {
         mResolutionSet.clear();
@@ -159,41 +159,41 @@ bool CVideoDriver::initResolutionList()
 
 // TODO: Not sure if those defines are really needed anymore.
 #if (TARGET_OS_IPHONE) || (TARGET_IPHONE_SIMULATOR)
-	resolution.x = 320; //  320;
-	resolution.y = 200;//  480;
+    resolution.x = 320; //  320;
+    resolution.y = 200;//  480;
 #elif defined(ANDROID)
-	resolution.x = 320;
-	resolution.y = 200;
+    resolution.x = 320;
+    resolution.y = 200;
 #endif
 
-	// Now on non-handheld devices let's check for more resolutions.
+    // Now on non-handheld devices let's check for more resolutions.
 #if !defined(EMBEDDED)
-	for (unsigned int c = 0; c < NUM_MAIN_RESOLUTIONS; c++) {
-		// Depth won't be read anymore! Take the one the system is using actually
-		if (sscanf(ResolutionsList[c], "%hux%hu", &resolution.dim.x, &resolution.h)
-				>= 2) {
-			// Now check if it's possible to use this resolution
-			verifyResolution(resolution, SDL_FULLSCREEN);
-		}
-	}
+    for (unsigned int c = 0; c < NUM_MAIN_RESOLUTIONS; c++) {
+        // Depth won't be read anymore! Take the one the system is using actually
+        if (sscanf(ResolutionsList[c], "%hux%hu", &resolution.dim.x, &resolution.h)
+                >= 2) {
+            // Now check if it's possible to use this resolution
+            verifyResolution(resolution, SDL_FULLSCREEN);
+        }
+    }
 
-	// In case there is no fullscreen, we will adapt the resolution it fits best to the window
+    // In case there is no fullscreen, we will adapt the resolution it fits best to the window
     if (!mVidConfig.mFullscreen) {
-		int e = 1;
-		resolution.dim.x = 320;
-		resolution.h = 200;
+        int e = 1;
+        resolution.dim.x = 320;
+        resolution.h = 200;
 
-		int maxwidth = SDL_GetVideoInfo()->current_w;
+        int maxwidth = SDL_GetVideoInfo()->current_w;
 
-		while (resolution.dim.x < maxwidth) {
-			resolution.dim.x = 320 * e;
-			resolution.h = 200 * e;
+        while (resolution.dim.x < maxwidth) {
+            resolution.dim.x = 320 * e;
+            resolution.h = 200 * e;
 
-			// Now check if it's possible to use this resolution
-			verifyResolution(resolution, 0);
-			e++;
-		}
-	}
+            // Now check if it's possible to use this resolution
+            verifyResolution(resolution, 0);
+            e++;
+        }
+    }
 #endif
 
 
@@ -236,20 +236,20 @@ void CVideoDriver::verifyResolution(GsVec2D<Uint16> &resolution,
 
 #else
     if (SDL_VideoModeOK(resolution.dim.x, resolution.h, 32, flags)) {
-		std::list< GsRect<Uint16> >::iterator i;
+        std::list< GsRect<Uint16> >::iterator i;
         for (i = mResolutionSet.begin(); i != mResolutionSet.end(); i++) {
-			if (*i == resolution)
-				break;
-		}
+            if (*i == resolution)
+                break;
+        }
 
         if (i == mResolutionSet.end()) {
 #ifdef DEBUG
-			gLogging.ftextOut(FONTCOLORS::BLUE, "Resolution %ix%ix%i %X added\n",
-					resolution.dim.x, resolution.h, 32);
+            gLogging.ftextOut(FONTCOLORS::BLUE, "Resolution %ix%ix%i %X added\n",
+                    resolution.dim.x, resolution.h, 32);
 #endif
             mResolutionSet.push_back(resolution);
-		}
-	}
+        }
+    }
 #endif
 }
 
@@ -306,7 +306,7 @@ void CVideoDriver::setMode(const int width, const int height)
     GsRect<Uint16> res{ 0,0,
                         static_cast<unsigned short>(width),
                         static_cast<unsigned short>(height) };
-	setMode(res);
+    setMode(res);
 }
 
 void CVideoDriver::setMode(const GsRect<Uint16>& res)
@@ -314,20 +314,20 @@ void CVideoDriver::setMode(const GsRect<Uint16>& res)
     mVidConfig.setResolution(res.dim);
 
     // Cycle through the list until the matching resolution is matched. If it doesn't exist
-	// add it;
+    // add it;
     for (mResolutionPos = mResolutionSet.begin();
          mResolutionPos != mResolutionSet.end();
          mResolutionPos++)
     {
         if (*mResolutionPos == res.dim)
-			break;
+            break;
     }
 
     if (mResolutionPos == mResolutionSet.end())
     {
         mResolutionSet.insert(res.dim);
         mResolutionPos--;
-	}
+    }
 }
 
 bool CVideoDriver::applyMode()
@@ -335,13 +335,13 @@ bool CVideoDriver::applyMode()
     const GsRect<Uint16> &Res = mVidConfig.mDisplayRect;
     const GsRect<Uint16> &GameRect = mVidConfig.mGameRect;
 
-	// Before the resolution is set, check, if the zoom factor is too high!
+    // Before the resolution is set, check, if the zoom factor is too high!
     while (((Res.dim.x / GameRect.dim.x) < mVidConfig.Zoom
             || (Res.dim.y / GameRect.dim.y) < mVidConfig.Zoom)
             && (mVidConfig.Zoom > 1))
         mVidConfig.Zoom--;
 
-	// Check if some zoom/filter modes are illogical and roll them back accordingly
+    // Check if some zoom/filter modes are illogical and roll them back accordingly
     if ((mVidConfig.Zoom == 3 && mVidConfig.m_ScaleXFilter == VidFilter::NONE)
             && !mVidConfig.mOpengl)
         mVidConfig.Zoom = 2;
@@ -351,18 +351,18 @@ bool CVideoDriver::applyMode()
 
     mVidConfig.mDisplayRect.dim = *mResolutionPos;
 
-	return true;
+    return true;
 }
 
 bool CVideoDriver::setNativeResolution(const GsRect<Uint16> &dispRect,
                                        const unsigned int numScrollSfcs)
-{    
+{
     return mpVideoEngine->createSurfaces(dispRect, numScrollSfcs);
 }
 
 bool CVideoDriver::start()
 {
-	bool retval;
+    bool retval;
 
     auto &log = gLogging;
 
@@ -373,21 +373,21 @@ bool CVideoDriver::start()
 
     log << "Starting graphics driver..." << CLogFile::endl;
 
-#ifdef USE_OPENGL	
+#ifdef USE_OPENGL
     if (mVidConfig.mOpengl) // Try to use OpenGL if enabled by the user
-	{		
+    {
         log << "Trying OpenGL... " ;
         mpVideoEngine.reset(new COpenGL(mVidConfig));
-		retval = mpVideoEngine->init();
+        retval = mpVideoEngine->init();
 
-		if (!retval)
-		{
+        if (!retval)
+        {
             log << "failed." << CLogFile::endl;
 
             mVidConfig.mOpengl = false;
-			applyMode();
+            applyMode();
             mpVideoEngine.reset(new CSDLVideo(mVidConfig));
-			retval = mpVideoEngine->init();
+            retval = mpVideoEngine->init();
             log << "Falling back to SDL Video...";
         }
         else
@@ -400,29 +400,29 @@ bool CVideoDriver::start()
     {
         log << "Trying full SDL Video...";
         CSDLVideo *sdlVideoPtr = new CSDLVideo(mVidConfig);
-        mpVideoEngine.reset(sdlVideoPtr);				
+        mpVideoEngine.reset(sdlVideoPtr);
         retval = mpVideoEngine->init();
-	}
-		
-	if(!retval)
-	{
+    }
+
+    if(!retval)
+    {
         log << "failed." << CLogFile::endl;
         log << "Error creating a Video subsystem for the app." << CLogFile::endl;
-		return false;
-	}
-	
-	// Now SDL will tell if the bpp works or changes it, if not supported.
-	// this value is updated here!
-	retval &= mpVideoEngine->createSurfaces();
-	m_mustrefresh = true;
+        return false;
+    }
 
-	return retval;
+    // Now SDL will tell if the bpp works or changes it, if not supported.
+    // this value is updated here!
+    retval &= mpVideoEngine->createSurfaces();
+    m_mustrefresh = true;
+
+    return retval;
 }
 
 void CVideoDriver::stop()
 {
     if(mpVideoEngine)
-    {      
+    {
         mpVideoEngine = nullptr;
         SDL_Quit();
     }
@@ -444,24 +444,24 @@ void CVideoDriver::setScaleType(bool IsNormal)
 // defines the scroll-buffer that is used for blitScrollSurface(). It's normally passed by a CMap Object
 // it might have when a level-map is loaded.
 void CVideoDriver::updateScrollBuffer(const Sint16 SBufferX, const Sint16 SBufferY)
-{	   
+{
     mpVideoEngine->updateScrollBuffers(SBufferX, SBufferY);
 }
 
 void CVideoDriver::blitScrollSurfaces() // This is only for tiles
                                                               // Therefore the name should be changed
-{    
+{
     mpVideoEngine->blitScrollSurfaces(gameSfc());
 }
 
 void CVideoDriver::collectSurfaces()
 {
-	mpVideoEngine->collectSurfaces();
+    mpVideoEngine->collectSurfaces();
 }
 
 void CVideoDriver::clearSurfaces()
 {
-	mpVideoEngine->clearSurfaces();
+    mpVideoEngine->clearSurfaces();
 }
 
 void CVideoDriver::updateDisplay()
@@ -477,38 +477,38 @@ void CVideoDriver::updateDisplay()
 
 void CVideoDriver::saveCameraBounds(st_camera_bounds &CameraBounds)
 {
-	int &left = CameraBounds.left;
-	int &up = CameraBounds.up;
-	int &right = CameraBounds.right;
-	int &down = CameraBounds.down;
-	int &speed = CameraBounds.speed;
+    int &left = CameraBounds.left;
+    int &up = CameraBounds.up;
+    int &right = CameraBounds.right;
+    int &down = CameraBounds.down;
+    int &speed = CameraBounds.speed;
 
-	if (left > right) {
-		const int halfWidth = (left - right) / 2;
-		left -= halfWidth;
-		right += halfWidth;
-		if (left > right)
-			left--;
-	}
+    if (left > right) {
+        const int halfWidth = (left - right) / 2;
+        left -= halfWidth;
+        right += halfWidth;
+        if (left > right)
+            left--;
+    }
 
-	if (up > down) {
-		const int halfHeight = (up - down) / 2;
-		up -= halfHeight;
-		down += halfHeight;
-		if (up > down)
-			up--;
-	}
+    if (up > down) {
+        const int halfHeight = (up - down) / 2;
+        up -= halfHeight;
+        down += halfHeight;
+        if (up > down)
+            up--;
+    }
 
-	bool invalid_value = (left < 50) || (up < 50) || (right < 50) || (down < 50)
-			|| (speed < 1) || (left > 270) || (up > 150) || (right > 270)
-			|| (down > 150) || (speed > 50);
+    bool invalid_value = (left < 50) || (up < 50) || (right < 50) || (down < 50)
+            || (speed < 1) || (left > 270) || (up > 150) || (right > 270)
+            || (down > 150) || (speed > 50);
 
     st_camera_bounds &cam = mVidConfig.m_CameraBounds;
 
-	if (invalid_value)
-		cam.reset();
-	else
-		cam = CameraBounds;
+    if (invalid_value)
+        cam.reset();
+    else
+        cam = CameraBounds;
 }
 
 CVidConfig &CVideoDriver::getVidConfig()
@@ -535,7 +535,7 @@ unsigned int CVideoDriver::getHeight() const {
 
 unsigned short CVideoDriver::getDepth() const
 {
-	return 32;
+    return 32;
 }
 
 void CVideoDriver::resetScrollBuffers()
@@ -563,9 +563,9 @@ st_camera_bounds &CVideoDriver::getCameraBounds()
 ////
 SDL_Rect CVideoDriver::toBlitRect(const GsRect<float> &rect)
 {
-	GsRect<Uint16> GameRes = getGameResolution();
+    GsRect<Uint16> GameRes = getGameResolution();
     GsRect<float> screenRect(0, 0, GameRes.dim.x, GameRes.dim.y);
-	GsRect<float> RectDispCoordFloat = rect;
+    GsRect<float> RectDispCoordFloat = rect;
 
     // Limit the boundaries
     RectDispCoordFloat.pos.x = std::max(RectDispCoordFloat.pos.x, 0.0f);
@@ -573,12 +573,12 @@ SDL_Rect CVideoDriver::toBlitRect(const GsRect<float> &rect)
     RectDispCoordFloat.dim.x = std::min(RectDispCoordFloat.dim.x, 1.0f);
     RectDispCoordFloat.dim.y = std::min(RectDispCoordFloat.dim.y, 1.0f);
 
-	// Transform to the blit coordinates
-	RectDispCoordFloat.transform(screenRect);
+    // Transform to the blit coordinates
+    RectDispCoordFloat.transform(screenRect);
 
-	GsRect<Uint16> RectDispCoord;
-	RectDispCoord = RectDispCoordFloat;
-	return RectDispCoord.SDLRect();
+    GsRect<Uint16> RectDispCoord;
+    RectDispCoord = RectDispCoordFloat;
+    return RectDispCoord.SDLRect();
 }
 
 

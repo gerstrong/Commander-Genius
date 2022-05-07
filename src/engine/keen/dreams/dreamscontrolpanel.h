@@ -133,7 +133,7 @@ public:
      *                  If there are underlying objects using events, they are passed
      * @param evPtr
      */
-    void pumpEvent(const CEvent *evPtr) override;
+    void pumpEvent(const std::shared_ptr<CEvent> &evPtr) override;
 
     /**
      * @brief ponder

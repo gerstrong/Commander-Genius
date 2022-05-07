@@ -21,5 +21,9 @@ set(SRCS cgttf.cpp     GsFontLegacy.cpp  GsSprite.cpp   GsTrueTypeFont.cpp
 
 
 #include_directories(${SDL_INCLUDE_DIR})
-    
+
+
 add_library(${PROJECT_NAME} ${HEADERS} ${SRCS})
+
+target_link_libraries(${PROJECT_NAME} GsKit_fileio)
+target_link_libraries(${PROJECT_NAME} GsKit_base)

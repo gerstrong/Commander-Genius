@@ -6,16 +6,22 @@ GsControl(SrGsRect)
 }
 
 
-void GsWidgetsManager::fit(const float padding,
-                           const float width)
+
+
+void GsWidgetsManager::fitWithHeight(const float padding,
+                                     const float width,
+                                     const float height)
 {
+    if(mWidgetList.empty())
+        return;
+
     auto it = mWidgetList.begin();
-    it++;
 
-    size_t numControls = mWidgetList.size();
-    const float charHeight = ( 1.0f/static_cast<float>(numControls+1) );
+    const float charHeight = height;
 
-    size_t c = 1;
+    size_t c = 0;
+
+    float maxHeight = 0.0f;
 
     for( ; it != mWidgetList.end() ; it++ )
     {
@@ -24,10 +30,20 @@ void GsWidgetsManager::fit(const float padding,
                    width,
                    charHeight-0.01f );
 
+        if( charHeight*(static_cast<float>(c)+0.25f) > maxHeight )
+            maxHeight = charHeight*(static_cast<float>(c)+0.25f);
+
         (*it)->setRect( rect );
         c++;
     }
+}
 
+void GsWidgetsManager::fit(const float padding,
+                           const float width)
+{
+    const size_t numControls = mWidgetList.size();
+    const float charHeight = ( 1.0f/static_cast<float>(numControls+1) );
+    fitWithHeight(padding, width, charHeight);
 }
 
 
@@ -57,8 +73,12 @@ void GsWidgetsManager::updateGraphics()
 
 
 
-bool GsWidgetsManager::sendEvent(const std::shared_ptr<CEvent> & )
+bool GsWidgetsManager::sendEvent(const std::shared_ptr<CEvent> &evPtr )
 {
+    for(auto &control : mControlsList)
+    {
+        control->sendEvent(evPtr);
+    }
     return false;
 }
 

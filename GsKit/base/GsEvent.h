@@ -2,6 +2,7 @@
 #define GSEVENT_H
 
 #include <functional>
+#include <memory>
 
 struct CEvent
 {
@@ -43,7 +44,7 @@ public:
 
     virtual ~GsEventSink();
 
-    virtual void pumpEvent(const CEvent *ev) = 0;
+    virtual void pumpEvent(const std::shared_ptr<CEvent> &evPtr) = 0;
 };
 
 

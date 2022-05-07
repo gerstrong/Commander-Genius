@@ -32,7 +32,7 @@ public:
      * @brief pumpEvent Events like user closes windows or mouse presses are processed here.
      * @param evPtr
      */
-    virtual void pumpEvent(const CEvent *evPtr) = 0;
+    virtual void pumpEvent(const std::shared_ptr<CEvent> &evPtr) = 0;
 
     /**
      * @brief ponder    Logic cycle run usually at 120 LPS

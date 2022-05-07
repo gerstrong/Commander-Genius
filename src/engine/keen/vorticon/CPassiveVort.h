@@ -25,7 +25,7 @@ public:
 
     void redrawMap();
 
-    void pumpEvent(const CEvent *evPtr);
+    void pumpEvent(const std::shared_ptr<CEvent> &evPtr);
     void ponder(const float);
     void render();
 

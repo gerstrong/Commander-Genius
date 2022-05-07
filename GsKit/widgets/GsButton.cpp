@@ -263,13 +263,36 @@ void GsButton::drawNoStyle(const SDL_Rect& lRect)
 
     if(mShowBorders)
     {
-        blitsfc.drawRect( rect, 2, borderColor, fillColor );
+        blitsfc.drawRect( rect, 1, borderColor, fillColor );
     }
     else if(mUseBackground)
     {
         blitsfc.drawRect( rect, fillColor );
     }
 }
+
+void GsButton::drawRoundedStyle(const SDL_Rect& lRect)
+{
+    if(lRect.h == 0 || lRect.w == 0)
+        return;
+
+    GsWeakSurface blitsfc(gVideoDriver.getBlitSurface());
+
+    const auto fillColor = mFillColor.toUint32(blitsfc);
+    const auto borderColor = mBorderColor.toUint32(blitsfc);
+
+    GsRect<Uint16> rect(lRect);
+
+    if(mShowBorders)
+    {
+        blitsfc.drawRectRounded( rect, 20, borderColor, fillColor );
+    }
+    else if(mUseBackground)
+    {
+        blitsfc.drawRect( rect, fillColor );
+    }
+}
+
 
 
 void GsButton::drawEnabledButton(GsWeakSurface &,
@@ -287,6 +310,7 @@ void GsButton::processRender(const GsRect<float> &RectDispCoordFloat)
     auto lRect = displayRect.SDLRect();
 
     drawNoStyle(lRect);
+    //drawRoundedStyle( lRect );
 
     mTextWidget.processRender(displayRect);
 }
@@ -299,6 +323,7 @@ void GsButton::processRender(const GsRect<float> &backRect,
     auto objFrontRect = objBackRect.clipped(frontRect);
 
     drawNoStyle( objFrontRect.SDLRect() );
+    //drawRoundedStyle( objFrontRect.SDLRect() );
 
 
     mTextWidget.processRender(objBackRect,

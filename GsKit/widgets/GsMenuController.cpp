@@ -45,7 +45,7 @@ bool checkSandwichMenuClicked(GsRect<float> &rRect)
 
 void CMenuController::clearMenuStack()
 {
-	while(!mMenuStack.empty())
+    while(!mMenuStack.empty())
     {
         popBackMenu();
         mBackroundDrawFcn = nullptr;
@@ -54,9 +54,9 @@ void CMenuController::clearMenuStack()
 }
 
 
-void CMenuController::pumpEvent(const CEvent *evPtr)
+void CMenuController::pumpEvent(const std::shared_ptr<CEvent> &evPtr)
 {
-    if( const OpenMenuEvent* openMenu = dynamic_cast<const OpenMenuEvent*>(evPtr) )
+    if( const OpenMenuEvent* openMenu = dynamic_cast<const OpenMenuEvent*>(evPtr.get()) )
     {
         CBaseMenu &menu = *openMenu->mMenuDialogPointer.get();
         menu.refresh();
@@ -71,7 +71,7 @@ void CMenuController::pumpEvent(const CEvent *evPtr)
 
         mMenuStack.push_back( openMenu->mMenuDialogPointer );
     }
-    else if( auto *cme = dynamic_cast<const CloseMenuEvent*>(evPtr) )
+    else if( auto *cme = dynamic_cast<const CloseMenuEvent*>(evPtr.get()) )
     {
         gInput.flushAll();
         popBackMenu();
@@ -81,20 +81,20 @@ void CMenuController::pumpEvent(const CEvent *evPtr)
             gEventManager.add(new EventReloadMusic);
         }
     }
-    else if( dynamic_cast<const CloseAllMenusEvent*>(evPtr) )
+    else if( dynamic_cast<const CloseAllMenusEvent*>(evPtr.get()) )
     {
         clearMenuStack();
-    }          
+    }
 }
 
 
 void CMenuController::ponder(const float deltaT)
 {
     // Process Menu if open
-	if( !mMenuStack.empty() )
-	{
+    if( !mMenuStack.empty() )
+    {
         mMenuStack.back()->ponder(deltaT);
-	}
+    }
 }
 
 void CMenuController::popBackMenu()

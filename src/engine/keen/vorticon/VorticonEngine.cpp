@@ -233,11 +233,11 @@ void VorticonEngine::switchToPassiveMode()
 }
 
 
-void VorticonEngine::pumpEvent(const CEvent *evPtr)
+void VorticonEngine::pumpEvent(const std::shared_ptr<CEvent> &evPtr)
 {
     KeenEngine::pumpEvent(evPtr);
 
-    if( dynamic_cast<const SetNativeResolutionEv*>(evPtr) )
+    if( std::dynamic_pointer_cast<const SetNativeResolutionEv>(evPtr) )
     {
         const GsRect<Uint16> gameRect = gVideoDriver.getVidConfig().mGameRect;
         gVideoDriver.setNativeResolution(gameRect, 2);
@@ -251,27 +251,27 @@ void VorticonEngine::pumpEvent(const CEvent *evPtr)
             passive->redrawMap();
         }
     }
-    else if( dynamic_cast<const FinishedLoadingResources*>(evPtr) )
+    else if( std::dynamic_pointer_cast<const FinishedLoadingResources>(evPtr) )
     {
         switchToPassiveMode();
         //gSaveGameController.convertAllOldFormats();
     }
-    else if( const NewGamePlayersEvent* pNewGame = dynamic_cast<const NewGamePlayersEvent*>(evPtr) )
+    else if( const auto pNewGame = std::dynamic_pointer_cast<const NewGamePlayersEvent>(evPtr) )
     {
         gBehaviorEngine.setNumPlayers(pNewGame->mSelection);
         gEventManager.add( new OpenMenuEvent(new CDifficultySelection(Style::VORTICON)) );
         return;
     }
     // Control Menu Events
-    else if( const OpenControlMenuEvent* ctrlMenu =
-             dynamic_cast<const OpenControlMenuEvent*>(evPtr) )
+    else if( const auto ctrlMenu =
+             std::dynamic_pointer_cast<const OpenControlMenuEvent>(evPtr) )
     {
         const int players = ctrlMenu->mSelection;
         gEventManager.add( new OpenMenuEvent(
                                 new CControlsettings(players,
                                                      Style::VORTICON) ) );
     }
-    else if( const GMSwitchToPlayGameMode* pPlayGame = dynamic_cast<const GMSwitchToPlayGameMode*>(evPtr) )
+    else if( const auto pPlayGame = std::dynamic_pointer_cast<const GMSwitchToPlayGameMode>(evPtr) )
     {
         const GMSwitchToPlayGameMode &playGame = *pPlayGame;
         mpGameMode.reset( new CPlayGameVorticon(playGame.m_startlevel) );
@@ -284,12 +284,12 @@ void VorticonEngine::pumpEvent(const CEvent *evPtr)
         gBehaviorEngine.setPause(false);
         gEventManager.add( new CloseAllMenusEvent() );
     }
-    else if( dynamic_cast<const GMSwitchToPassiveMode*>(evPtr) )
+    else if( std::dynamic_pointer_cast<const GMSwitchToPassiveMode>(evPtr) )
     {
         mpGameMode.reset( new vorticon::CPassiveVort() );
         mpGameMode->init();
     }
-    else if( dynamic_cast<const LoadGameEvent*>(evPtr) ) // If GamePlayMode is not running but loading is requested...
+    else if( std::dynamic_pointer_cast<const LoadGameEvent>(evPtr) ) // If GamePlayMode is not running but loading is requested...
     {
         std::unique_ptr<CPlayGameVorticon> pgVort(new CPlayGameVorticon());
         pgVort->init();
@@ -299,7 +299,7 @@ void VorticonEngine::pumpEvent(const CEvent *evPtr)
         gBehaviorEngine.setPause(false);
         gEventManager.add( new CloseAllMenusEvent() );
     }
-    else if( dynamic_cast<const OpenMainMenuEvent*>(evPtr) )
+    else if( std::dynamic_pointer_cast<const OpenMainMenuEvent>(evPtr) )
     {
 #if defined (SINGLEPLAYER)
         const bool singlePlayer = true;
@@ -312,16 +312,16 @@ void VorticonEngine::pumpEvent(const CEvent *evPtr)
                                                            Style::VORTICON,
                                                            singlePlayer) ) );
     }
-    else if( const StartInfoSceneEvent *scene =
-             dynamic_cast<const StartInfoSceneEvent*>(evPtr) )
+    else if( const auto scene =
+             std::dynamic_pointer_cast<const StartInfoSceneEvent>(evPtr) )
     {
         gMenuController.lock(true);
         gMenuController.hide(true);
         mpInfoScene = scene->mpScene;
         mpInfoScene->init();
     }
-    else if( const StartHelpEv *scene =
-             dynamic_cast<const StartHelpEv*>(evPtr) )
+    else if( const auto scene =
+             std::dynamic_pointer_cast<const StartHelpEv>(evPtr) )
     {
         gMenuController.lock(true);
         gMenuController.hide(true);

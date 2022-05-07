@@ -228,7 +228,7 @@ void CPlayerBase::getAnotherLife(const int lc_x, const int lc_y, const bool disp
 
 
 
-void CPlayerBase::pumpEvent(const CEvent *evPtr)
+void CPlayerBase::pumpEvent(const std::shared_ptr<CEvent> &evPtr)
 {
     CGalaxySpriteObject::pumpEvent(evPtr);
     m_camera.pumpEvent(evPtr);

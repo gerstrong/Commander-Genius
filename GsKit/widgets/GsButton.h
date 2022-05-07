@@ -101,6 +101,8 @@ public:
 
     virtual void drawNoStyle(const SDL_Rect &lRect);
 
+    virtual void drawRoundedStyle(const SDL_Rect &lRect);
+
     void drawVorticonStyle(SDL_Rect& lRect);
 
     virtual void processRender(const GsRect<float> &RectDispCoordFloat) override;
@@ -160,7 +162,7 @@ public:
 
 protected:
 
-    CGUIText mTextWidget;
+    GsText mTextWidget;
     std::string mText;
 
 private:

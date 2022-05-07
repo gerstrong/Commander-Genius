@@ -70,7 +70,7 @@ public:
     void switchToGameplay(const int startLevel,
                           const std::vector<int> &spriteVars);
 
-    void pumpEvent(const CEvent *evPtr);
+    void pumpEvent(const std::shared_ptr<CEvent> &evPtr);
 
     std::unique_ptr<ComputerWrist> mpComputerWrist;
 

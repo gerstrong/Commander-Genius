@@ -1,5 +1,5 @@
 /*
- * CGUIText.h
+ * GsText.h
  *
  *  Created on: 30.10.2011
  *      Author: gerstrong
@@ -7,8 +7,8 @@
  *  This is the text control for our new GUI
  */
 
-#ifndef CGUITEXT_H_
-#define CGUITEXT_H_
+#ifndef GsText_H_
+#define GsText_H_
 
 #include <vector>
 #include <string>
@@ -23,14 +23,14 @@
 
 #include <base/utils/property_tree/property_tree.h>
 
-class CGUIText : public GsWidget
+class GsText : public GsWidget
 {
 public:
 
-    CGUIText(const std::string &text,
+    GsText(const std::string &text,
              const GsRect<float> &rect);
 
-    CGUIText(const std::string &text,
+    GsText(const std::string &text,
              const GsRect<float> &rect,
              const int fontId);
 
@@ -41,6 +41,11 @@ public:
     virtual void processLogic();
     virtual void processRender(const GsRect<float> &RectDispCoordFloat);
 
+    /**
+     * @brief processRender
+     * @param backRect or content is stuff hidden behind front rect
+     * @param frontRect or viewRect is the parent rect or what mostly is seen by the user
+     */
     virtual void processRender(const GsRect<float> &backRect,
                                const GsRect<float> &frontRect);
 
@@ -60,6 +65,11 @@ public:
     int getFontId() const
     {
         return mFontId;
+    }
+
+    auto getBlitRect() -> auto
+    {
+        return mTextBlitRect;
     }
 
 
@@ -98,8 +108,12 @@ private:
     } mScrollDir = ScrollDir::NONE;
 
     int mFontId = -1;
+
+    // Temporary calculated rect used externally
+    // (Useful for blinking cursors)
+    GsRect<float> mTextBlitRect;
 };
 
-std::shared_ptr<CGUIText> createTextFrom(const GsKit::ptree &node);
+std::shared_ptr<GsText> createTextFrom(const GsKit::ptree &node);
 
-#endif /* CGUITEXT_H_ */
+#endif /* GsText_H_ */

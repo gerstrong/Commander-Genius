@@ -16,7 +16,7 @@ Debug.h          Iterator.h    RefCounter.h     Unicode.h )
 
 set(SRCS Base64.cpp         CrashHandler.cpp  Geometry.cpp     ThreadPool.cpp
 Color.cpp          Debug.cpp         StringBuf.cpp    Unicode.cpp
-ConfigHandler.cpp  FindFile.cpp      StringUtils.cpp )
+ConfigHandler.cpp  FindFile.cpp      StringUtils.cpp  MathLib.cpp)
 
 add_library(${PROJECT_NAME} ${HEADERS} ${SRCS})
 

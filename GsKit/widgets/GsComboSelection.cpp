@@ -52,7 +52,7 @@ void CGUIComboSelection::updateFeatureDim()
 void CGUIComboSelection::spawnSubWidgets()
 {
     mpFeatureName =
-            add(new CGUIText(mFeatureText,
+            add(new GsText(mFeatureText,
                                 GsRect<float>(0.0f, 0.0f, 0.5f, 1.0f)));
 
     mpFeatureValue =

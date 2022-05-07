@@ -47,3 +47,6 @@ add_library(${PROJECT_NAME} ${HEADERS} ${SRCS})
 target_link_libraries(${PROJECT_NAME} GsKit_base_lua)
 target_link_libraries(${PROJECT_NAME} GsKit_base_utils)
 target_link_libraries(${PROJECT_NAME} GsKit_base_video)
+
+target_link_libraries(${PROJECT_NAME} GsKit_widgets)
+

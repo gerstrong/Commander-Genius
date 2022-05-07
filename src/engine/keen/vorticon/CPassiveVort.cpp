@@ -74,9 +74,9 @@ bool CPassiveVort::init()
     return true;
 }
 
-void CPassiveVort::pumpEvent(const CEvent *evPtr)
+void CPassiveVort::pumpEvent(const std::shared_ptr<CEvent> &evPtr)
 {
-    if( dynamic_cast<const ResetScrollSurface*>(evPtr) )
+    if( std::dynamic_pointer_cast<const ResetScrollSurface>(evPtr) )
     {
         if(mpMap)
         {

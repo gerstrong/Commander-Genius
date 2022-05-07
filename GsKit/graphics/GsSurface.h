@@ -81,11 +81,45 @@ public:
                   const Uint32 fillColor);
 
     /**
+     * @brief drawRectRounded
+     * @param rect
+     * @param roundRadius
+     * @param contourColor
+     * @param fillColor
+     */
+    void drawRectRounded(const GsRect<Uint16> &rect,
+                         const int roundRadius,
+                         const Uint32 contourColor,
+                         const Uint32 fillColor );
+
+    /**
      * @brief drawCircle draws of a given surface a circle
      * @param fillColor  Color to use for filling the circle
      */
     void drawCircle(const Uint32 fillColor);
 
+    /**
+     * @brief drawCircle
+     * @param pos
+     * @param radius
+     * @param fillColor
+     */
+    void drawCircle(const GsVec2D<Uint16> pos, const int radius, const Uint32 fillColor);
+
+    /**
+     * @brief drawCirclePart
+     * @param pos
+     * @param radius
+     * @param fillColor
+     * @param corner 0b00=UpperLeft,
+     *               0b01=UpperRight,
+     *               0b10=BottomLeft,
+     *               0b11=Bottomight,
+     */
+    void drawCircleQuart(const GsVec2D<Uint16> pos,
+                        const int radius,
+                        const Uint32 fillColor,
+                        const char corner);
 
     /**
      * \brief Draws the countour of the given rect and thickness
@@ -149,7 +183,7 @@ public:
 
 
     void blitScaledTo(GsWeakSurface &sfc)
-    {        
+    {
         SDL_Surface *dst = sfc.getSDLSurface();
         assert(dst);
         assert(mpSurface);
@@ -402,7 +436,7 @@ public:
         GsWeakSurface(sfc->getSDLSurface())
     {
         sfc->disownSfc();
-    }        
+    }
 
     /**
      * @brief operator = will pass the an existing sfc to this one,

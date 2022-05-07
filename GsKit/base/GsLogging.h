@@ -34,7 +34,7 @@ public:
     virtual ~CLogFile();
 
     /**
-     * @brief CreateLogfile     Open the file for creating some content of general information like
+     * @brief initLogSystem     Open the file for creating some content of general information like
      *                          about the system and the application.
      * @param logFName          Name of the log file
      * @param appName           Name of the application

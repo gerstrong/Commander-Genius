@@ -60,7 +60,7 @@ void GsScrollingFrame::processRender(const GsRect<float> &srcRectFloat,
     auto frontRect = displayDstRect;
 
     backRect.pos.x += mScrollX * frontRect.dim.x;
-    backRect.pos.y += mScrollY * frontRect.dim.y;        
+    backRect.pos.y += mScrollY * frontRect.dim.y;
 
     auto &wList = getWidgetList();
 
@@ -70,7 +70,7 @@ void GsScrollingFrame::processRender(const GsRect<float> &srcRectFloat,
     }
 
     if(mSelected)
-    {        
+    {
         GsColor color(0x80, 0x80, 0x80);
         const auto colorInt = blitsfc.mapColorAlpha(color);
         blitsfc.drawFrameRect(lRect, 1, colorInt);
@@ -101,4 +101,10 @@ void GsScrollingFrame::moveX(const float dx)
 void GsScrollingFrame::moveY(const float dy)
 {
     mScrollY += dy;
+}
+
+
+void GsScrollingFrame::setBackgroundColor(const GsColor &color)
+{
+    mBackgroundColor = color;
 }

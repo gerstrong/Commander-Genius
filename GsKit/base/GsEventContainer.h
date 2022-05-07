@@ -26,12 +26,12 @@ public:
      *        Otherwise app might crash.
      * @param pSink pointer to the sink to be registered
      */
-    void regSink(std::shared_ptr<GsEventSink> pSink)
+    void regSink(std::shared_ptr<GsEventSink> &&pSink)
     {
         mSinkPtrList.push_back(pSink);
     }
 
-    void unregSink(std::shared_ptr<GsEventSink> pSink)
+    void unregSink(std::shared_ptr<GsEventSink> &&pSink)
     {
         mSinkPtrList.remove(pSink);
     }
@@ -60,6 +60,11 @@ public:
     void add(std::shared_ptr<CEvent>& ev)
     {
         m_EventList.push_back(ev);
+    }
+
+    void add(std::unique_ptr<CEvent> &&ev)
+    {
+        m_EventList.push_back(std::move(ev));
     }
 
     void add(const std::function <void ()> &func)

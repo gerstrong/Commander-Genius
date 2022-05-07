@@ -41,12 +41,12 @@ CPlayerWM::CPlayerWM(CMap *pmap,
         const int playerIdx,
         const int spriteTableIdx):
 CPlayerBase(pmap, foeID, x, y,
-		    LEFT,
+            LEFT,
             l_Inventory,
             playerIdx,
             spriteTableIdx)
 {
-	m_ActionBaseOffset = actionoffset;
+    m_ActionBaseOffset = actionoffset;
 
     mEndOfAction = false;
     m_ActionNumber = 0;
@@ -54,13 +54,13 @@ CPlayerBase(pmap, foeID, x, y,
     setActionSprite();
 
     walkBaseFrame = Uint16(mSpriteIdx);
-	wavingBaseFrame = walkBaseFrame + 22;
-	swimBaseFrame = walkBaseFrame + 24;
-	climbBaseFrame = walkBaseFrame + (gBehaviorEngine.isDemo() ? 26 : 37);
-	m_basesprite = walkBaseFrame;
+    wavingBaseFrame = walkBaseFrame + 22;
+    swimBaseFrame = walkBaseFrame + 24;
+    climbBaseFrame = walkBaseFrame + (gBehaviorEngine.isDemo() ? 26 : 37);
+    m_basesprite = walkBaseFrame;
 
-	performCollisions();
-	mProcessPtr = &CPlayerWM::processMoving;
+    performCollisions();
+    mProcessPtr = &CPlayerWM::processMoving;
 }
 
 
@@ -106,68 +106,68 @@ GsVec2D<int> CPlayerWM::fetchFootDestCoord()
 {
     GsVec2D<int> location1;
     GsVec2D<int> location2;
-	int coordData;
+    int coordData;
 
     const gs_byte *dataPtr = gKeenFiles.exeFile.getRawData();
-	//const byte *dataPtr = gBehaviorEngine.m_ExeFile.getDSegPtr(); // only Zeros here!
-	//const byte *dataPtr = (byte*) gBehaviorEngine.m_ExeFile.getHeaderData();
+    //const byte *dataPtr = gBehaviorEngine.m_ExeFile.getDSegPtr(); // only Zeros here!
+    //const byte *dataPtr = (byte*) gBehaviorEngine.m_ExeFile.getHeaderData();
 
-	memcpy(&coordData, dataPtr+0xDE43, sizeof(int));
-	location1.x = coordData & 0xFF;
-	memcpy(&coordData, dataPtr+0xDE58, sizeof(int));
-	location1.y = coordData & 0xFF;
+    memcpy(&coordData, dataPtr+0xDE43, sizeof(int));
+    location1.x = coordData & 0xFF;
+    memcpy(&coordData, dataPtr+0xDE58, sizeof(int));
+    location1.y = coordData & 0xFF;
 
-	memcpy(&coordData, dataPtr+0xDE78, sizeof(int));
-	location2.x = coordData & 0xFF;
-	memcpy(&coordData, dataPtr+0xDE8C, sizeof(int));
-	location2.y = coordData & 0xFF;
+    memcpy(&coordData, dataPtr+0xDE78, sizeof(int));
+    location2.x = coordData & 0xFF;
+    memcpy(&coordData, dataPtr+0xDE8C, sizeof(int));
+    location2.y = coordData & 0xFF;
 
 
-	// Check for the first location
+    // Check for the first location
     GsVec2D<int> vec1;
     GsVec2D<int> vec2;
 
     GsVec2D<int> levelCoord;
 
-	levelCoord = getPosition();
+    levelCoord = getPosition();
 
-	levelCoord.x >>= CSF;
-	levelCoord.y >>= CSF;
+    levelCoord.x >>= CSF;
+    levelCoord.y >>= CSF;
 
-	vec1.x = levelCoord.x - location1.x;
-	vec1.y = levelCoord.y - location1.y;
-	vec2.x = levelCoord.x - location2.x;
-	vec2.y = levelCoord.y - location2.y;
+    vec1.x = levelCoord.x - location1.x;
+    vec1.y = levelCoord.y - location1.y;
+    vec2.x = levelCoord.x - location2.x;
+    vec2.y = levelCoord.y - location2.y;
 
-	const int dist1 = vec1.GetLength2();
-	const int dist2 = vec2.GetLength2();
+    const int dist1 = vec1.GetLength2();
+    const int dist2 = vec2.GetLength2();
 
     GsVec2D<int> newCoord;
 
-	if(dist2 > dist1)
-		newCoord = location2;
-	else
-		newCoord = location1;
+    if(dist2 > dist1)
+        newCoord = location2;
+    else
+        newCoord = location1;
 
-	newCoord.x <<= CSF;
-	newCoord.y <<= CSF;
-	return newCoord;
+    newCoord.x <<= CSF;
+    newCoord.y <<= CSF;
+    return newCoord;
 }
 
 
 
-void CPlayerWM::pumpEvent(const CEvent *evPtr)
+void CPlayerWM::pumpEvent(const std::shared_ptr<CEvent> &evPtr)
 {
     CSpriteObject::pumpEvent(evPtr);
 
     // Events for the Player are processed here.
-    if( const EventPlayerEndLevel* ev = dynamic_cast<const EventPlayerEndLevel*>(evPtr) )
+    if( const auto ev = std::dynamic_pointer_cast<const EventPlayerEndLevel>(evPtr) )
     {
         if(ev->who == mPlayerIdx)
-        {            
+        {
             gEventManager.flush();
             if(ev->sucess)
-            {                
+            {
                 finishLevel(ev->levelObject);
 
                 if(gBehaviorEngine.getEpisode() == 5)
@@ -224,8 +224,7 @@ void CPlayerWM::pumpEvent(const CEvent *evPtr)
             m_camera.setPosition(m_Pos);
         }
     }
-
-    else if( const EventPlayerRideFoot* ev = dynamic_cast<const EventPlayerRideFoot*>(evPtr) )
+    else if( const auto ev = std::dynamic_pointer_cast<const EventPlayerRideFoot>(evPtr) )
     {
         if(ev->who == mPlayerIdx)
         {
@@ -256,15 +255,15 @@ void CPlayerWM::process()
 
     processInput();
 
-	// Perform animation cycle
-	if(m_animation_ticker >= m_animation_time)
-	{
-		m_animation++;
-		m_animation_ticker = 0;
-	}
-	else m_animation_ticker++;
+    // Perform animation cycle
+    if(m_animation_ticker >= m_animation_time)
+    {
+        m_animation++;
+        m_animation_ticker = 0;
+    }
+    else m_animation_ticker++;
 
-	(this->*mProcessPtr)();
+    (this->*mProcessPtr)();
 
 
     processCamera();
@@ -283,7 +282,7 @@ void CPlayerWM::processWaving()
         waveTimer = 0;
         return;
     }
-    
+
     waveTimer++;
 
 
@@ -315,8 +314,8 @@ void CPlayerWM::processMoving()
         mSpriteIdx = 181;
         return;
     }
-    
-    
+
+
     // Check if the player is swimming or walking and setup the proper speed
     int movespeed;
     if(m_basesprite == swimBaseFrame)
@@ -332,11 +331,11 @@ void CPlayerWM::processMoving()
         movespeed = (movespeed*6)/5;
     }
 
-    
+
     bool moving = false;
-    
+
     bool bleft, bright, bup, bdown;
-    
+
     // This will trigger between swim and walkmode
     checkforSwimming(bleft, bright, bup, bdown);
 
@@ -369,7 +368,7 @@ void CPlayerWM::processMoving()
             }
             else
             {
-                // Tell the player he cannot climb yet                
+                // Tell the player he cannot climb yet
                 showModalMsgWithBmp(mSprVar, gBehaviorEngine.getString("KEEN_ROPE_REQUIRED"),
                                "KEENTALKING", RIGHT, false, nullptr);
                 moveYDir(-(climbDir<<CSF)/2);
@@ -387,11 +386,11 @@ void CPlayerWM::processMoving()
             return;
         }
     }
-    
+
     // In Episode 5 and 6 there are teleporters. Verify those teleporters and elevators
     if(gBehaviorEngine.getEpisode() >= 5)
         verifyTeleportation();
-    
+
     // Normal walking
 
     if( mPlaycontrol[PA_X]<0 && !bleft)
@@ -402,7 +401,7 @@ void CPlayerWM::processMoving()
         auto movespeedX = movespeed;
         movespeedX *= mPlaycontrol[PA_X];
         movespeedX /= (-100);
-	
+
         moveLeft(movespeedX);
         moving = true;
         xDirection = LEFT;
@@ -422,7 +421,7 @@ void CPlayerWM::processMoving()
         xDirection = RIGHT;
         waveTimer = 0;
     }
-        
+
     if(mPlaycontrol[PA_Y]<0 && !bup)
     {
         if(mPlaycontrol[PA_X]==0)
@@ -451,7 +450,7 @@ void CPlayerWM::processMoving()
         yDirection = DOWN;
         waveTimer = 0;
     }
-    
+
     // No clipping makes player go through walls etc.
     noclipping = gBehaviorEngine.mCheatmode.noclipping;
 
@@ -509,7 +508,7 @@ void CPlayerWM::processMoving()
 #endif
     }
 
-    
+
     // If keen is just walking on the map or swimming in the sea. Do the proper animation for it.
     if(m_basesprite == walkBaseFrame)
     {
@@ -552,24 +551,24 @@ void CPlayerWM::processMoving()
 void CPlayerWM::processClimbing()
 {
     moveYDir(yDirection*30);
-    
+
     mSpriteIdx = m_basesprite + m_animation%2;
 
     direction_t climbDir;
-    
+
     if( checkforClimbing(climbDir) )
-    {	    	    
-	if(yDirection != climbDir)
-	{	    
-	    mProcessPtr = &CPlayerWM::processMoving;
-	    m_basesprite = walkBaseFrame;
-	    waveTimer = 0;
-	    solid = true;
-	    moveYDir(-climbDir<<CSF);
-	    return;
-	}
+    {
+    if(yDirection != climbDir)
+    {
+        mProcessPtr = &CPlayerWM::processMoving;
+        m_basesprite = walkBaseFrame;
+        waveTimer = 0;
+        solid = true;
+        moveYDir(-climbDir<<CSF);
+        return;
     }
-    
+    }
+
 }
 
 
@@ -578,80 +577,80 @@ const int RIDE_SPEED = 32;
 
 void CPlayerWM::processRiding()
 {
-	// Ride while trying to reach the destination coords
-	// Move the player to the target
+    // Ride while trying to reach the destination coords
+    // Move the player to the target
     GsVec2D<int> pos(getXPosition(), getYPosition());
     GsVec2D<int> vec = target-pos;
 
     GsVec2D<int> vec_norm = vec;
 
-	const int dist_x = abs(vec.x);
-	const int dist_y = abs(vec.y);
+    const int dist_x = abs(vec.x);
+    const int dist_y = abs(vec.y);
 
-	if(dist_x != 0)
-		vec_norm.x = vec.x/dist_x;
-	if(dist_y != 0)
-		vec_norm.y = vec.y/dist_y;
+    if(dist_x != 0)
+        vec_norm.x = vec.x/dist_x;
+    if(dist_y != 0)
+        vec_norm.y = vec.y/dist_y;
 
-	if( dist_x < RIDE_SPEED &&	dist_y < RIDE_SPEED)
-	{
-		// When he reaches the target. make him visible and start opening the elevator
-		moveDir(vec);
-		setAction(0);
-		mProcessPtr = &CPlayerWM::processMoving;
-		solid = true;
-	}
-	else
-	{
-		moveDir(vec_norm*RIDE_SPEED);
-		processActionRoutine();
-	}
+    if( dist_x < RIDE_SPEED &&	dist_y < RIDE_SPEED)
+    {
+        // When he reaches the target. make him visible and start opening the elevator
+        moveDir(vec);
+        setAction(0);
+        mProcessPtr = &CPlayerWM::processMoving;
+        solid = true;
+    }
+    else
+    {
+        moveDir(vec_norm*RIDE_SPEED);
+        processActionRoutine();
+    }
 }
 
 
 void CPlayerWM::verifyTeleportation()
 {
-	//target -> change it when the touched tile is known
-	int x = getXMidPos();
-	int y = getYUpPos();
+    //target -> change it when the touched tile is known
+    int x = getXMidPos();
+    int y = getYUpPos();
 
-	// Check if Keen touches a teleporter or elevator
-	const Uint16 object = mpMap->getPlaneDataAt( 2, x, y );
-	if(object < 0xC000 && object > 0x100)
-	{
-		x = (x >> CSF);
-		y = (y >> CSF);
+    // Check if Keen touches a teleporter or elevator
+    const Uint16 object = mpMap->getPlaneDataAt( 2, x, y );
+    if(object < 0xC000 && object > 0x100)
+    {
+        x = (x >> CSF);
+        y = (y >> CSF);
 
-		bool isElevator = false;
-		
-		std::vector<CTileProperties> &Tile = gBehaviorEngine.getTileProperties(1);
-		Uint16 behav = Tile[mpMap->at( x, y, 1)].behaviour;
-			
-		// Elevator are double the size. Check that! Else it must be an teleporter		
-		if( behav==33 || behav==34 )
-		{		
-		  if(object == mpMap->getPlaneDataAt( 2, (x-1) << CSF, y << CSF ))
-		  {
-		    isElevator |= true;
-		  }
-		  if(object == mpMap->getPlaneDataAt( 2, (x+1) << CSF, y << CSF ))
-		  {
-		    x = x + 1;
-		    isElevator |= true;
-		  }
-		}
+        bool isElevator = false;
 
-		x = (x << CSF);
-		y = (y << CSF);
+        std::vector<CTileProperties> &Tile = gBehaviorEngine.getTileProperties(1);
+        Uint16 behav = Tile[mpMap->at( x, y, 1)].behaviour;
 
-		target.x = x;
-		target.y = y;
+        // Elevator are double the size. Check that! Else it must be an teleporter
+        if( behav==33 || behav==34 )
+        {
+          if(object == mpMap->getPlaneDataAt( 2, (x-1) << CSF, y << CSF ))
+          {
+            isElevator |= true;
+          }
+          if(object == mpMap->getPlaneDataAt( 2, (x+1) << CSF, y << CSF ))
+          {
+            x = x + 1;
+            isElevator |= true;
+          }
+        }
 
-		// In that case get the tile where to go and make him move or ...
-		if(isElevator)
-		{
-			mProcessPtr = &CPlayerWM::processEnteringElevator;
-		}
+        x = (x << CSF);
+        y = (y << CSF);
+
+        target.x = x;
+        target.y = y;
+
+        // In that case get the tile where to go and make him move or ...
+        if(isElevator)
+        {
+            mProcessPtr = &CPlayerWM::processEnteringElevator;
+        }
         else // ... make him move until teleporter hides him.
         {
             mProcessPtr = &CPlayerWM::processEnteringTeleporter;
@@ -674,131 +673,131 @@ const int ELEVATOR_CLOSE_TIME = 5;
 
 void CPlayerWM::processEnteringElevator()
 {
-	// Move him to the target
+    // Move him to the target
     GsVec2D<int> pos(getXPosition(), getYPosition());
     GsVec2D<int> vec = target-pos;
 
 
     GsVec2D<int> vec_norm = vec;
 
-	const int dist_x = abs(vec.x);
-	const int dist_y = abs(vec.y);
+    const int dist_x = abs(vec.x);
+    const int dist_y = abs(vec.y);
 
-	if(dist_x != 0)
-		vec_norm.x = vec.x/dist_x;
-	if(dist_y != 0)
-		vec_norm.y = vec.y/dist_y;
+    if(dist_x != 0)
+        vec_norm.x = vec.x/dist_x;
+    if(dist_y != 0)
+        vec_norm.y = vec.y/dist_y;
 
-	yDirection = vec_norm.y;
+    yDirection = vec_norm.y;
 
 
-	if( dist_x < SLOW_TELEPORT_WALK_SPEED &&
-		dist_y < SLOW_TELEPORT_WALK_SPEED)
-	{
-		moveDir(vec);
-		mProcessPtr = &CPlayerWM::processClosingElevator;
-		performWalkingAnimation(false);
-		elevator_frames = 5;
-		elevator_close_timer = 0;
-	}
-	else
-	{
-		moveDir(vec_norm*SLOW_TELEPORT_WALK_SPEED);
-	}
+    if( dist_x < SLOW_TELEPORT_WALK_SPEED &&
+        dist_y < SLOW_TELEPORT_WALK_SPEED)
+    {
+        moveDir(vec);
+        mProcessPtr = &CPlayerWM::processClosingElevator;
+        performWalkingAnimation(false);
+        elevator_frames = 5;
+        elevator_close_timer = 0;
+    }
+    else
+    {
+        moveDir(vec_norm*SLOW_TELEPORT_WALK_SPEED);
+    }
 
-	performWalkingAnimation(true);
+    performWalkingAnimation(true);
 }
 
 void CPlayerWM::processClosingElevator()
 {
-	const int x = getXMidPos() >> CSF;
-	const int y = getYMidPos() >> CSF;
-	const Uint16 tile1 = mpMap->getPlaneDataAt( 1, x<<CSF, y<<CSF );
-	const Uint16 tile2 = mpMap->getPlaneDataAt( 1, (x-1)<<CSF, y<<CSF );
-	const Uint16 tile3 = mpMap->getPlaneDataAt( 1, (x-1)<<CSF, (y-1)<<CSF );
-	const Uint16 tile4 = mpMap->getPlaneDataAt( 1, x<<CSF, (y-1)<<CSF );
+    const int x = getXMidPos() >> CSF;
+    const int y = getYMidPos() >> CSF;
+    const Uint16 tile1 = mpMap->getPlaneDataAt( 1, x<<CSF, y<<CSF );
+    const Uint16 tile2 = mpMap->getPlaneDataAt( 1, (x-1)<<CSF, y<<CSF );
+    const Uint16 tile3 = mpMap->getPlaneDataAt( 1, (x-1)<<CSF, (y-1)<<CSF );
+    const Uint16 tile4 = mpMap->getPlaneDataAt( 1, x<<CSF, (y-1)<<CSF );
 
-	elevator_close_timer++;
-	if(elevator_close_timer >= ELEVATOR_CLOSE_TIME)
-	{
-		elevator_close_timer = 0;
+    elevator_close_timer++;
+    if(elevator_close_timer >= ELEVATOR_CLOSE_TIME)
+    {
+        elevator_close_timer = 0;
 
-		// Make the player close the elevator
-		mpMap->setTile(x, y, tile1-2, true);
-		mpMap->setTile(x-1, y, tile2-2, true);
-		mpMap->setTile(x-1, y-1, tile3-2, true);
-		mpMap->setTile(x, y-1, tile4-2, true);
+        // Make the player close the elevator
+        mpMap->setTile(x, y, tile1-2, true);
+        mpMap->setTile(x-1, y, tile2-2, true);
+        mpMap->setTile(x-1, y-1, tile3-2, true);
+        mpMap->setTile(x, y-1, tile4-2, true);
 
-		playSound(SOUND_ELEVATOR_OPEN);
+        playSound(SOUND_ELEVATOR_OPEN);
 
-		elevator_frames--;
+        elevator_frames--;
 
-		if(elevator_frames == 0)
-		{
-			// If done make him invisible and transport him through the level. !solid
+        if(elevator_frames == 0)
+        {
+            // If done make him invisible and transport him through the level. !solid
 
-			//target -> change it when the touched tile is known
-			const int x = getXMidPos();
-			const int y = getYMidPos();
+            //target -> change it when the touched tile is known
+            const int x = getXMidPos();
+            const int y = getYMidPos();
 
-			// Check if Keen touches a teleporter or elevator
-			const Uint16 object = mpMap->getPlaneDataAt( 2, x, y );
-			const Uint32 filter = object & 0xFFFF;
-			const Uint32 newPosX = (filter & 0xFF00) >> 8;
-			const Uint32 newPosY = (filter & 0x00FF);
+            // Check if Keen touches a teleporter or elevator
+            const Uint16 object = mpMap->getPlaneDataAt( 2, x, y );
+            const Uint32 filter = object & 0xFFFF;
+            const Uint32 newPosX = (filter & 0xFF00) >> 8;
+            const Uint32 newPosY = (filter & 0x00FF);
 
-			// Set new target
-			target.x = ((newPosX+1)<<CSF);
-			target.y = (newPosY<<CSF);
+            // Set new target
+            target.x = ((newPosX+1)<<CSF);
+            target.y = (newPosY<<CSF);
 
-			// make him invisible
-			solid = false;
-			dontdraw = true;
+            // make him invisible
+            solid = false;
+            dontdraw = true;
 
-			// change process
-			mProcessPtr = &CPlayerWM::processElevating;
-		}
-	}
+            // change process
+            mProcessPtr = &CPlayerWM::processElevating;
+        }
+    }
 }
 
 void CPlayerWM::processElevating()
 {
-	// Move the player to the target
+    // Move the player to the target
     GsVec2D<int> pos(getXPosition(), getYPosition());
     GsVec2D<int> vec = target-pos;
 
 
     GsVec2D<int> vec_norm = vec;
 
-	const int dist_x = abs(vec.x);
-	const int dist_y = abs(vec.y);
+    const int dist_x = abs(vec.x);
+    const int dist_y = abs(vec.y);
 
-	if(dist_x != 0)
-		vec_norm.x = vec.x/dist_x;
-	if(dist_y != 0)
-		vec_norm.y = vec.y/dist_y;
+    if(dist_x != 0)
+        vec_norm.x = vec.x/dist_x;
+    if(dist_y != 0)
+        vec_norm.y = vec.y/dist_y;
 
-	if( dist_x < SLOW_TELEPORT_WALK_SPEED &&
-		dist_y < SLOW_TELEPORT_WALK_SPEED)
-	{
-		moveDir(vec);
-		mProcessPtr = &CPlayerWM::processOpeningElevator;
-		performWalkingAnimation(false);
-		elevator_frames = 5;
-		elevator_close_timer = 0;
-	}
-	else
-	{
-		moveDir(vec_norm*ELEVATOR_SPEED);
+    if( dist_x < SLOW_TELEPORT_WALK_SPEED &&
+        dist_y < SLOW_TELEPORT_WALK_SPEED)
+    {
+        moveDir(vec);
+        mProcessPtr = &CPlayerWM::processOpeningElevator;
+        performWalkingAnimation(false);
+        elevator_frames = 5;
+        elevator_close_timer = 0;
+    }
+    else
+    {
+        moveDir(vec_norm*ELEVATOR_SPEED);
         this->playSound(SOUND_ELEVATING);
-	}
+    }
 }
 
 void CPlayerWM::processOpeningElevator()
 {
-	// Open until it's wide open
-	const int x = getXMidPos() >> CSF;
-	const int y = getYMidPos() >> CSF;
+    // Open until it's wide open
+    const int x = getXMidPos() >> CSF;
+    const int y = getYMidPos() >> CSF;
 
     std::array<Uint16,4> curTile;
 
@@ -815,69 +814,69 @@ void CPlayerWM::processOpeningElevator()
     const auto &prop3 = tileProp[ curTile[3] ];
 
     elevator_close_timer++;
-	if(elevator_close_timer >= ELEVATOR_CLOSE_TIME)
-	{
-		elevator_close_timer = 0;
+    if(elevator_close_timer >= ELEVATOR_CLOSE_TIME)
+    {
+        elevator_close_timer = 0;
 
-		// Make the player close the elevator
+        // Make the player close the elevator
         mpMap->setTile(x,   y,   curTile[0] + prop0.nextTile, true);
         mpMap->setTile(x-1, y,   curTile[1] + prop1.nextTile, true);
         mpMap->setTile(x-1, y-1, curTile[2] + prop2.nextTile, true);
         mpMap->setTile(x,   y-1, curTile[3] + prop3.nextTile, true);
 
-		playSound(SOUND_ELEVATOR_OPEN);
+        playSound(SOUND_ELEVATOR_OPEN);
 
-		elevator_frames--;
+        elevator_frames--;
 
-		if(elevator_frames == 0)
-		{
-			// make him visible
-			dontdraw = false;
+        if(elevator_frames == 0)
+        {
+            // make him visible
+            dontdraw = false;
 
-			target.y += (1<<CSF);
+            target.y += (1<<CSF);
 
-			// and walk out
-			mProcessPtr = &CPlayerWM::processLeavingElevator;
-		}
-	}
+            // and walk out
+            mProcessPtr = &CPlayerWM::processLeavingElevator;
+        }
+    }
 }
 
 void CPlayerWM::processLeavingElevator()
 {
-	// Move him to the target
+    // Move him to the target
     GsVec2D<int> pos(getXPosition(), getYPosition());
     GsVec2D<int> vec = target-pos;
 
     GsVec2D<int> vec_norm = vec;
 
-	const int dist_x = abs(vec.x);
-	const int dist_y = abs(vec.y);
+    const int dist_x = abs(vec.x);
+    const int dist_y = abs(vec.y);
 
-	if(dist_x != 0)
+    if(dist_x != 0)
     {
-		vec_norm.x = vec.x/dist_x;
+        vec_norm.x = vec.x/dist_x;
     }
-	if(dist_y != 0)
+    if(dist_y != 0)
     {
-		vec_norm.y = vec.y/dist_y;
+        vec_norm.y = vec.y/dist_y;
     }
 
-	yDirection = vec_norm.y;
+    yDirection = vec_norm.y;
 
-	if( dist_x < SLOW_TELEPORT_WALK_SPEED &&
-		dist_y < SLOW_TELEPORT_WALK_SPEED)
-	{
+    if( dist_x < SLOW_TELEPORT_WALK_SPEED &&
+        dist_y < SLOW_TELEPORT_WALK_SPEED)
+    {
         // When done set player to solid state
-		solid = true;
-		moveDir(vec);
-		mProcessPtr = &CPlayerWM::processMoving;
-	}
-	else
-	{
-		moveDir(vec_norm*SLOW_TELEPORT_WALK_SPEED);
-	}
+        solid = true;
+        moveDir(vec);
+        mProcessPtr = &CPlayerWM::processMoving;
+    }
+    else
+    {
+        moveDir(vec_norm*SLOW_TELEPORT_WALK_SPEED);
+    }
 
-	performWalkingAnimation(true);
+    performWalkingAnimation(true);
 }
 
 
@@ -908,134 +907,134 @@ void CPlayerWM::setupTeleportAnimation(const bool unset, const GsVec2D<int> &pos
 
 void CPlayerWM::processEnteringTeleporter()
 {
-	// Move him to the target
+    // Move him to the target
     GsVec2D<int> pos(getXPosition(), getYPosition());
     GsVec2D<int> vec = target-pos;
 
 
     GsVec2D<int> vec_norm = vec;
 
-	const int dist_x = abs(vec.x);
-	const int dist_y = abs(vec.y);
+    const int dist_x = abs(vec.x);
+    const int dist_y = abs(vec.y);
 
-	if(dist_x != 0)
-		vec_norm.x = vec.x/dist_x;
-	if(dist_y != 0)
-		vec_norm.y = vec.y/dist_y;
+    if(dist_x != 0)
+        vec_norm.x = vec.x/dist_x;
+    if(dist_y != 0)
+        vec_norm.y = vec.y/dist_y;
 
-	yDirection = vec_norm.y;
+    yDirection = vec_norm.y;
 
     // if Keen reached target
-	if( dist_x < SLOW_TELEPORT_WALK_SPEED &&
-		dist_y < SLOW_TELEPORT_WALK_SPEED)
-	{
-		moveDir(vec);
+    if( dist_x < SLOW_TELEPORT_WALK_SPEED &&
+        dist_y < SLOW_TELEPORT_WALK_SPEED)
+    {
+        moveDir(vec);
 
         // If done make him invisible and transport him through the map. !solid
 
-		//target -> change it when the touched tile is known
-		const int x = getXMidPos();
-		const int y = getYMidPos();
+        //target -> change it when the touched tile is known
+        const int x = getXMidPos();
+        const int y = getYMidPos();
 
         setupTeleportAnimation(true, target);
 
-		// Get the destination
-		const Uint16 object = mpMap->getPlaneDataAt( 2, x, y );
-		const Uint32 filter = object & 0xFFFF;
-		const Uint32 newPosX = (filter & 0xFF00) >> 8;
-		const Uint32 newPosY = (filter & 0x00FF);                
+        // Get the destination
+        const Uint16 object = mpMap->getPlaneDataAt( 2, x, y );
+        const Uint32 filter = object & 0xFFFF;
+        const Uint32 newPosX = (filter & 0xFF00) >> 8;
+        const Uint32 newPosY = (filter & 0x00FF);
 
-		// Set new target
-		target.x = (newPosX<<CSF);
-		target.y = (newPosY<<CSF);       
+        // Set new target
+        target.x = (newPosX<<CSF);
+        target.y = (newPosY<<CSF);
 
-		// make him invisible
-		solid = false;
-		dontdraw = true;
-		mProcessPtr = &CPlayerWM::processWarpInTeleporter;		
-		performWalkingAnimation(false);
-	}
-	else
-	{
-	  const int x = target.x;
-	  const int y = target.y;
+        // make him invisible
+        solid = false;
+        dontdraw = true;
+        mProcessPtr = &CPlayerWM::processWarpInTeleporter;
+        performWalkingAnimation(false);
+    }
+    else
+    {
+      const int x = target.x;
+      const int y = target.y;
 
       const int ep = gBehaviorEngine.getEpisode();
 
       // Amount of animation tiles.
       const int teleportAnimTiles = (ep==5) ? 1 : 3;
 
-	  Uint16 aniTile = mpMap->getPlaneDataAt( 1, x, y ) + 1;
+      Uint16 aniTile = mpMap->getPlaneDataAt( 1, x, y ) + 1;
 
       if(m_teleportanibasetile + teleportAnimTiles < aniTile)
-	  {
-	    aniTile = m_teleportanibasetile;
-	  }
+      {
+        aniTile = m_teleportanibasetile;
+      }
 
-	  mpMap->setTile(x>>CSF, y>>CSF, aniTile, true);
+      mpMap->setTile(x>>CSF, y>>CSF, aniTile, true);
 
-	  moveDir(vec_norm*SLOW_TELEPORT_WALK_SPEED);
-	}
+      moveDir(vec_norm*SLOW_TELEPORT_WALK_SPEED);
+    }
 
-	performWalkingAnimation(true);
+    performWalkingAnimation(true);
 
 }
 
 
 void CPlayerWM::processWarpInTeleporter()
 {
-	// Move the player to the target directly
+    // Move the player to the target directly
     GsVec2D<int> new_pos(target);
-	moveToForce(target);
-	new_pos.x += ((m_BBox.x2-m_BBox.x1)/2);
-	new_pos.y += ((m_BBox.y2-m_BBox.y1)/2);
-	m_camera.setPosition(new_pos);
+    moveToForce(target);
+    new_pos.x += ((m_BBox.x2-m_BBox.x1)/2);
+    new_pos.y += ((m_BBox.y2-m_BBox.y1)/2);
+    m_camera.setPosition(new_pos);
 
     mpMap->mGamePlayPos = new_pos;
     mpMap->calcVisibleArea();
     mpMap->refreshVisibleArea();
 
-	mProcessPtr = &CPlayerWM::processLeavingTeleporter;
-	playSound(SOUND_TELEPORT);
+    mProcessPtr = &CPlayerWM::processLeavingTeleporter;
+    playSound(SOUND_TELEPORT);
 
     setupTeleportAnimation(false, new_pos);
 
-	target.y += (1<<CSF);
-	dontdraw = false;
+    target.y += (1<<CSF);
+    dontdraw = false;
 }
 
 void CPlayerWM::processLeavingTeleporter()
 {
-	// Move him to the target
+    // Move him to the target
     GsVec2D<int> pos(getXPosition(), getYPosition());
     GsVec2D<int> vec = target-pos;
 
     GsVec2D<int> vec_norm = vec;
 
-	const int dist_x = abs(vec.x);
-	const int dist_y = abs(vec.y);
+    const int dist_x = abs(vec.x);
+    const int dist_y = abs(vec.y);
 
-	if(dist_x != 0)
-		vec_norm.x = vec.x/dist_x;
-	if(dist_y != 0)
-		vec_norm.y = vec.y/dist_y;
+    if(dist_x != 0)
+        vec_norm.x = vec.x/dist_x;
+    if(dist_y != 0)
+        vec_norm.y = vec.y/dist_y;
 
-	yDirection = vec_norm.y;
+    yDirection = vec_norm.y;
 
-	if( dist_x < SLOW_TELEPORT_WALK_SPEED &&
-		dist_y < SLOW_TELEPORT_WALK_SPEED)
-	{
-		// When done set him solid
-		solid = true;
-		moveDir(vec);
+    if( dist_x < SLOW_TELEPORT_WALK_SPEED &&
+        dist_y < SLOW_TELEPORT_WALK_SPEED)
+    {
+        // When done set him solid
+        solid = true;
+        moveDir(vec);
 
         GsVec2D<int> animTilePos = target;
         animTilePos.y -= (1<<CSF);
         setupTeleportAnimation(true, animTilePos);
-		mProcessPtr = &CPlayerWM::processMoving;
-	}
-	else
-	{        
+        mProcessPtr = &CPlayerWM::processMoving;
+    }
+    else
+    {
         const int x = pos.x;
         const int y = pos.y;
 
@@ -1053,10 +1052,10 @@ void CPlayerWM::processLeavingTeleporter()
 
         mpMap->setTile(x>>CSF, y>>CSF, aniTile, true);
 
-		moveDir(vec_norm*SLOW_TELEPORT_WALK_SPEED);
-	}
+        moveDir(vec_norm*SLOW_TELEPORT_WALK_SPEED);
+    }
 
-	performWalkingAnimation(true);
+    performWalkingAnimation(true);
 }
 
 
@@ -1114,29 +1113,29 @@ bool CPlayerWM::finishLevel(const int object)
 {
     mpMap->refreshVisibleArea();
 
-	// if a door or other blocker was found remove it
-	int x, y;
-	Uint16 door = object + 0xD000;
+    // if a door or other blocker was found remove it
+    int x, y;
+    Uint16 door = object + 0xD000;
     while( mpMap->findTile(door, x, y, 2) )
-	{
+    {
         // Remove blocks in case there are
-		mpMap->setTile( x, y, 0, true, 1);
+        mpMap->setTile( x, y, 0, true, 1);
         mpMap->setInfoTile( {x, y}, 0 );
-		mpMap->redrawAt( x, y);
-	}
+        mpMap->redrawAt( x, y);
+    }
 
-	Uint16 flag_dest = object + 0xF000;
+    Uint16 flag_dest = object + 0xF000;
     if( mpMap->findTile(flag_dest, x, y, 2) )
-	{
-		// spawn the flag
-		const auto episode = gBehaviorEngine.getEpisode();
+    {
+        // spawn the flag
+        const auto episode = gBehaviorEngine.getEpisode();
         GsVec2D<Uint32> src(getXPosition(), getYPosition());
 
         // Here we move the coordinates for the correction position of the done flag/sign
         GsSprite &FlagSprite = gGraphics.getSprite(mSprVar, gBehaviorEngine.isDemo() ? WAVING_BASEFRAME_DEMO : WAVING_BASEFRAME);
 
-		unsigned int csfX = (x<<CSF);
-		unsigned int csfY = (y<<CSF);
+        unsigned int csfX = (x<<CSF);
+        unsigned int csfY = (y<<CSF);
 
         csfX += (7<<STC);
         csfY += (2<<STC);
@@ -1160,7 +1159,7 @@ bool CPlayerWM::finishLevel(const int object)
         GsVec2D<Uint32> dst(csfX, csfY);
 
         CFlag *pFlag = new CFlag(mpMap, src, dst, mSprVar, true, true);
-		spawnObj(pFlag);
+        spawnObj(pFlag);
 
 
         // Mark the tileinfo on the map as level finished,
@@ -1169,7 +1168,7 @@ bool CPlayerWM::finishLevel(const int object)
         mpMap->setInfoTile( {x, y}, 0 );
 
         return true;
-	}
+    }
 
     return false;
 }
@@ -1184,86 +1183,86 @@ bool CPlayerWM::finishLevel(const int object)
  */
 void CPlayerWM::checkforSwimming(bool &bleft, bool &bright, bool &bup, bool &bdown)
 {
-	Uint16 left, right, up, down;
-	std::vector<CTileProperties> &Tile = gBehaviorEngine.getTileProperties(1);
+    Uint16 left, right, up, down;
+    std::vector<CTileProperties> &Tile = gBehaviorEngine.getTileProperties(1);
 
-	bleft = bright = bup = bdown = false;
+    bleft = bright = bup = bdown = false;
 
-	left = Tile[mpMap->at( getXLeftPos()>>CSF, getYMidPos()>>CSF, 1)].behaviour;
-	right = Tile[mpMap->at( getXRightPos()>>CSF, getYMidPos()>>CSF, 1)].behaviour;
-	up = Tile[mpMap->at( getXMidPos()>>CSF, getYUpPos()>>CSF, 1)].behaviour;
-	down = Tile[mpMap->at( getXMidPos()>>CSF, getYDownPos()>>CSF, 1)].behaviour;
+    left = Tile[mpMap->at( getXLeftPos()>>CSF, getYMidPos()>>CSF, 1)].behaviour;
+    right = Tile[mpMap->at( getXRightPos()>>CSF, getYMidPos()>>CSF, 1)].behaviour;
+    up = Tile[mpMap->at( getXMidPos()>>CSF, getYUpPos()>>CSF, 1)].behaviour;
+    down = Tile[mpMap->at( getXMidPos()>>CSF, getYDownPos()>>CSF, 1)].behaviour;
 
-	// from top
-	if(up == 11)
-	{
-		bdown = true;
+    // from top
+    if(up == 11)
+    {
+        bdown = true;
         makeHimSwim(true);
-	}
-	else if(down == 11)
-	{
+    }
+    else if(down == 11)
+    {
         makeHimSwim(false);
-	}
+    }
 
-	// from right
-	if(right == 12)
-	{
-		bleft = true;
+    // from right
+    if(right == 12)
+    {
+        bleft = true;
         makeHimSwim(true);
-	}
-	else if(left == 12)
-	{
+    }
+    else if(left == 12)
+    {
         makeHimSwim(false);
-	}
+    }
 
-	// from bottom
-	if(down == 13)
-	{
-		bup = true;
+    // from bottom
+    if(down == 13)
+    {
+        bup = true;
         makeHimSwim(true);
-	}
-	else if(up == 13)
-	{
+    }
+    else if(up == 13)
+    {
         makeHimSwim(false);
-	}
+    }
 
-	// from left
-	if(left == 14)
-	{
-		bright = true;
+    // from left
+    if(left == 14)
+    {
+        bright = true;
         makeHimSwim(true);
-	}
-	else if(right == 14)
-	{
+    }
+    else if(right == 14)
+    {
         makeHimSwim(false);
-	}
+    }
 
     if(m_Inventory.Item.m_special.swimsuit)
-	{
-		bleft = bright = bup = bdown = false;
-	}
+    {
+        bleft = bright = bup = bdown = false;
+    }
 }
 
 bool CPlayerWM::checkforClimbing(direction_t &climbDir)
 {
-	const int y = getYMidPos();
-	const int x = getXMidPos();
-	
+    const int y = getYMidPos();
+    const int x = getXMidPos();
+
     const auto info = mpMap->getInfoData(GsVec2D<Uint32>(x>>CSF,y>>CSF));
 
-	// from top
-	if(info == 0x0F)
-	{
-		climbDir = UP;
-		return true;
-	}
-	else if(info == 0x10)
-	{
-		climbDir = DOWN;
-		return true;
-	}
-	
-	return false;
+    // from top
+    if(info == 0x0F)
+    {
+        climbDir = UP;
+        return true;
+    }
+    else if(info == 0x10)
+    {
+        climbDir = DOWN;
+        return true;
+    }
+
+    return false;
 }
 
 
@@ -1272,37 +1271,37 @@ bool CPlayerWM::checkforClimbing(direction_t &climbDir)
  */
 void CPlayerWM::performWalkingAnimation(bool walking)
 {
-	if(xDirection == RIGHT && yDirection == 0)
-		mSpriteIdx = m_basesprite + 1;
-	else if(xDirection == 0 && yDirection == UP)
-		mSpriteIdx = m_basesprite + 4;
-	else if(xDirection == 0 && yDirection == DOWN)
-		mSpriteIdx = m_basesprite + 7;
-	else if(xDirection == RIGHT && yDirection == DOWN)
-		mSpriteIdx = m_basesprite + 10;
-	else if(xDirection == LEFT && yDirection == DOWN)
-		mSpriteIdx = m_basesprite + 13;
-	else if(xDirection == LEFT && yDirection == UP)
-		mSpriteIdx = m_basesprite + 16;
-	else if(xDirection == RIGHT && yDirection == UP)
-		mSpriteIdx = m_basesprite + 19;
-	else
-		mSpriteIdx = m_basesprite - 2;
+    if(xDirection == RIGHT && yDirection == 0)
+        mSpriteIdx = m_basesprite + 1;
+    else if(xDirection == 0 && yDirection == UP)
+        mSpriteIdx = m_basesprite + 4;
+    else if(xDirection == 0 && yDirection == DOWN)
+        mSpriteIdx = m_basesprite + 7;
+    else if(xDirection == RIGHT && yDirection == DOWN)
+        mSpriteIdx = m_basesprite + 10;
+    else if(xDirection == LEFT && yDirection == DOWN)
+        mSpriteIdx = m_basesprite + 13;
+    else if(xDirection == LEFT && yDirection == UP)
+        mSpriteIdx = m_basesprite + 16;
+    else if(xDirection == RIGHT && yDirection == UP)
+        mSpriteIdx = m_basesprite + 19;
+    else
+        mSpriteIdx = m_basesprite - 2;
 
-	if(walking)
-	{
-		m_animation_time = 5;
-		mSpriteIdx +=  m_animation%3;
-		playWalkSound();
-	}
-	else
-		mSpriteIdx +=  2;
+    if(walking)
+    {
+        m_animation_time = 5;
+        mSpriteIdx +=  m_animation%3;
+        playWalkSound();
+    }
+    else
+        mSpriteIdx +=  2;
 
-	if(swimming)
-	{
-	    playSound(SOUND_KEEN_SWIM_TO_LAND);
-	    swimming = false;
-	}
+    if(swimming)
+    {
+        playSound(SOUND_KEEN_SWIM_TO_LAND);
+        swimming = false;
+    }
 
 }
 
@@ -1311,31 +1310,31 @@ void CPlayerWM::performWalkingAnimation(bool walking)
  */
 void CPlayerWM::performSwimmingAnimation(const bool moving)
 {
-	if(xDirection == RIGHT && yDirection == 0)
-		mSpriteIdx = m_basesprite + 2;
-	else if(xDirection == 0 && yDirection == DOWN)
-		mSpriteIdx = m_basesprite + 4;
-	else if(xDirection == LEFT && yDirection == 0)
-		mSpriteIdx = m_basesprite + 6;
-	else if(xDirection == RIGHT && yDirection == UP)
-		mSpriteIdx = m_basesprite + 8;
-	else if(xDirection == RIGHT && yDirection == DOWN)
-		mSpriteIdx = m_basesprite + 10;
-	else if(xDirection == LEFT && yDirection == DOWN)
-		mSpriteIdx = m_basesprite + 12;
-	else if(xDirection == LEFT && yDirection == UP)
-		mSpriteIdx = m_basesprite + 14;
-	else
-		mSpriteIdx = m_basesprite;
+    if(xDirection == RIGHT && yDirection == 0)
+        mSpriteIdx = m_basesprite + 2;
+    else if(xDirection == 0 && yDirection == DOWN)
+        mSpriteIdx = m_basesprite + 4;
+    else if(xDirection == LEFT && yDirection == 0)
+        mSpriteIdx = m_basesprite + 6;
+    else if(xDirection == RIGHT && yDirection == UP)
+        mSpriteIdx = m_basesprite + 8;
+    else if(xDirection == RIGHT && yDirection == DOWN)
+        mSpriteIdx = m_basesprite + 10;
+    else if(xDirection == LEFT && yDirection == DOWN)
+        mSpriteIdx = m_basesprite + 12;
+    else if(xDirection == LEFT && yDirection == UP)
+        mSpriteIdx = m_basesprite + 14;
+    else
+        mSpriteIdx = m_basesprite;
 
-	if(!swimming)
-	{
-	    playSound(SOUND_KEEN_SWIM_TO_LAND);
-	    swimming = true;
-	}
+    if(!swimming)
+    {
+        playSound(SOUND_KEEN_SWIM_TO_LAND);
+        swimming = true;
+    }
 
-	m_animation_time = 5;
-	mSpriteIdx +=  m_animation%2;
+    m_animation_time = 5;
+    mSpriteIdx +=  m_animation%2;
 
     playSwimSound(moving);
 }

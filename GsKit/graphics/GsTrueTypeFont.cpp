@@ -74,9 +74,8 @@ void GsTrueTypeFont::render(GsSurface &sfc,
     assert(mpFont != nullptr);
 
     SDL_Color sdlColor = {color.r, color.g, color.b, color.a};
-
     sfc.createFromSDLSfc(
-                TTF_RenderText_Blended( mpFont, text.c_str(), sdlColor ));
+                TTF_RenderUTF8_Blended( mpFont, text.c_str(), sdlColor ));
 }
 
 

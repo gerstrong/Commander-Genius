@@ -257,15 +257,15 @@ void CPlayGameVorticon::redrawMap()
     mMap->drawAll();
 }
 
-void CPlayGameVorticon::pumpEvent(const CEvent *evPtr)
+void CPlayGameVorticon::pumpEvent(const std::shared_ptr<CEvent> &evPtr)
 {
     // Process Related Events.
-    if( dynamic_cast<const SaveGameEvent*>(evPtr) )
+    if( std::dynamic_pointer_cast<const SaveGameEvent>(evPtr) )
     {
         saveXMLGameState();
         gInput.flushAll();
     }
-    else if( dynamic_cast<const ResetScrollSurface*>(evPtr) )
+    else if( std::dynamic_pointer_cast<const ResetScrollSurface>(evPtr) )
     {
         if(mMap)
         {
@@ -275,14 +275,14 @@ void CPlayGameVorticon::pumpEvent(const CEvent *evPtr)
             return;
         }
     }
-    else if( dynamic_cast<const EventEndGamePlay*>(evPtr) )
+    else if( std::dynamic_pointer_cast<const EventEndGamePlay>(evPtr) )
     {
         // The last menu has been removed. Restore back the game status
         gBehaviorEngine.setPause(false);
         gMenuController.clearMenuStack();
         gEventManager.add<GMSwitchToPassiveMode>();
     }
-    else if( dynamic_cast<const EventReloadMusic*>(evPtr) )
+    else if( std::dynamic_pointer_cast<const EventReloadMusic>(evPtr) )
     {
         reloadBgMusic();
         gMusicPlayer.play();

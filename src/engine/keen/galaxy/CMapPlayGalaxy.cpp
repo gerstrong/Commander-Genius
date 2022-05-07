@@ -46,15 +46,15 @@ void CMapPlayGalaxy::setActive(const bool value)
 
 
 
-void CMapPlayGalaxy::pumpEvent(const CEvent *evPtr)
+void CMapPlayGalaxy::pumpEvent(const std::shared_ptr<CEvent> &evPtr)
 {
-    if( const EventSpawnObject *ev = dynamic_cast<const EventSpawnObject*>(evPtr) )
+    if( const auto ev = std::dynamic_pointer_cast<const EventSpawnObject>(evPtr) )
     {
         std::shared_ptr<CGalaxySpriteObject> obj( static_cast<CGalaxySpriteObject*>(
                             const_cast<CSpriteObject*>(ev->pObject) ) );
         mObjectPtr.push_back( move(obj) );
     }
-    else if( const EventSpawnFoot *ev = dynamic_cast<const EventSpawnFoot*>(evPtr) ) // Special Case where the Foot is created
+    else if( const auto ev = std::dynamic_pointer_cast<const EventSpawnFoot>(evPtr) ) // Special Case where the Foot is created
     {                                                                                // Episode 4 Secret level
         // kill all the InchWorms in that case, so they can't do any spawning
         for( auto obj=mObjectPtr.rbegin() ; obj!=mObjectPtr.rend() ; obj++ )
@@ -82,7 +82,7 @@ void CMapPlayGalaxy::pumpEvent(const CEvent *evPtr)
         std::shared_ptr<CGalaxySpriteObject> foot(new galaxy::CFoot( &mMap, ev->foeID, 0x2EF4, posX, posY));
         mObjectPtr.push_back( foot );
     }
-    else if( const auto *moveBut = dynamic_cast<const EventMoveAllPlayersBut*>(evPtr) )
+    else if( const auto moveBut = std::dynamic_pointer_cast<const EventMoveAllPlayersBut>(evPtr) )
     {
         const auto excp = moveBut->mException;
         const auto target = moveBut->mTarget;
@@ -100,7 +100,7 @@ void CMapPlayGalaxy::pumpEvent(const CEvent *evPtr)
             }
         }
     }
-    else if( dynamic_cast<const EventReloadMusic*>(evPtr) )
+    else if( std::dynamic_pointer_cast<const EventReloadMusic>(evPtr) )
     {
         reloadBgMusic();
         gMusicPlayer.play();

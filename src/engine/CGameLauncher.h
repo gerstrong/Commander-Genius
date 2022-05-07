@@ -17,6 +17,7 @@
 #include <widgets/GsDialog.h>
 #include <widgets/GsText.h>
 #include <widgets/GsButton.h>
+#include <widgets/GsBitmapBox.h>
 #include <widgets/GsTextSelectionList.h>
 #include <widgets/GsProgressbar.h>
 
@@ -77,7 +78,7 @@ public:
 
     void setupModsDialog();
 
-    void pumpEvent(const CEvent *evPtr) override;
+    void pumpEvent(const std::shared_ptr<CEvent> &evPtr) override;
     void ponderGameSelDialog(const float deltaT);
 
     void verifyGameStore(const bool noCatalogDownloads);
@@ -94,7 +95,7 @@ public:
     { return m_chosenGame; }
 
     bool setChosenGame(const int chosengame);
-	bool waschosen(){ return (m_chosenGame>=0); }
+    bool waschosen(){ return (m_chosenGame>=0); }
     void letchooseagain()
     {
         m_chosenGame=-1;
@@ -118,11 +119,11 @@ private:
 
     int m_chosenGame = -1;
 
-	Uint8 m_episode;
-	Sint8 m_ep1slot;
-	std::vector<GameEntry> m_Entries;
-	std::vector<std::string> m_Paths;
-	std::vector<std::string> m_Names;
+    Uint8 m_episode;
+    Sint8 m_ep1slot;
+    std::vector<GameEntry> m_Entries;
+    std::vector<std::string> m_Paths;
+    std::vector<std::string> m_Names;
     CGUIDialog mLauncherDialog;
 
     // The Start-Button should change depending on the taken actions
@@ -135,8 +136,8 @@ private:
     //// Download Dialog Section. TODO: Make it external
     int mLastStoreSelection = -1;
     std::unique_ptr<CGUIDialog> mpGameStoreDialog;
-    std::shared_ptr<CGUIText> mpDloadTitleText;
-    std::shared_ptr<CGUIText> mpDDescriptionText;
+    std::shared_ptr<GsText> mpDloadTitleText;
+    std::shared_ptr<GsText> mpDDescriptionText;
     std::shared_ptr<GsButton> mpDloadBack;
     std::shared_ptr<GsButton> mpDloadCancel;
     std::shared_ptr<GsButton> mpDloadDownload;
@@ -156,14 +157,14 @@ private:
     std::shared_ptr<GsBitmapBox> mCurrentBmp;
     std::vector< std::shared_ptr<GsBitmap> > mPreviewBmpPtrVec;
 
-    std::shared_ptr<CGUIText> mpEpisodeText;
-    std::shared_ptr<CGUIText> mpDemoText;
-    std::shared_ptr<CGUIText> mpVersionText;
+    std::shared_ptr<GsText> mpEpisodeText;
+    std::shared_ptr<GsText> mpDemoText;
+    std::shared_ptr<GsText> mpVersionText;
 
-    std::shared_ptr<CGUITextSelectionList> mpGSSelList;
+    std::shared_ptr<GsTextSelectionList> mpGSSelList;
 
-    CGUITextSelectionList *mpPatchSelList;
-    CGUITextSelectionList *mpDosExecSelList;
+    GsTextSelectionList *mpPatchSelList;
+    GsTextSelectionList *mpDosExecSelList;
 
     std::vector<std::string> mPatchStrVec;
 
@@ -184,7 +185,7 @@ private:
 
     std::string filterGameName(const std::string &path);
 
-	bool scanExecutables(const std::string& path);
+    bool scanExecutables(const std::string& path);
 
     void getLabels();
     std::string scanLabels(const std::string& path);

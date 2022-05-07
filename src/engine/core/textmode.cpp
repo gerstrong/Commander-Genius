@@ -13,7 +13,7 @@ bool Textmode::start()
  * @brief pumpEvent Events like user closes windows or mouse presses are processed here.
  * @param evPtr
  */
-void Textmode::pumpEvent(const CEvent *evPtr)
+void Textmode::pumpEvent(const std::shared_ptr<CEvent> &evPtr)
 {}
 
 /**

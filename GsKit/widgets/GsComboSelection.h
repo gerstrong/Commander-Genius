@@ -68,7 +68,7 @@ protected:
 
     std::string mFeatureText;
 
-    std::shared_ptr<CGUIText> mpFeatureName;
+    std::shared_ptr<GsText> mpFeatureName;
     std::shared_ptr<GsButton> mpFeatureValue;
 };
 

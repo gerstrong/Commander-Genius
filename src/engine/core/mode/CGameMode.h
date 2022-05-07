@@ -24,17 +24,17 @@ struct GMSwitchToPassiveMode : CEvent
 // This event switches to the PlayGameMode
 struct GMSwitchToPlayGameMode : CEvent
 {
-	const int m_Episode;
-	const std::string m_DataDirectory;
-	const int m_startlevel;
+    const int m_Episode;
+    const std::string m_DataDirectory;
+    const int m_startlevel;
 
     GMSwitchToPlayGameMode( const int Episode,
                 const std::string& DataDirectory,
                             const int startlevel = -1 ) :
-				m_Episode(Episode),
-				m_DataDirectory(DataDirectory),
-				m_startlevel(startlevel)
-				{}
+                m_Episode(Episode),
+                m_DataDirectory(DataDirectory),
+                m_startlevel(startlevel)
+                {}
 };
 
 // Event for opening the download Dialog
@@ -60,10 +60,10 @@ struct EventHighScores : CEvent {};
 class CGameMode
 {
 public:
-	CGameMode() {}
-	virtual ~CGameMode() {}
+    CGameMode() {}
+    virtual ~CGameMode() {}
 
-    virtual void pumpEvent(const CEvent *evPtr) = 0;
+    virtual void pumpEvent(const std::shared_ptr<CEvent> &evPtr) = 0;
 
     virtual bool init() = 0;
     virtual void ponder(const float deltaT) = 0;

@@ -47,14 +47,14 @@ std::shared_ptr<CGUIBanner> createGUIBannerFrom(const GsKit::ptree &node)
 }
 
 CGUIBanner::CGUIBanner(const std::string& text, const GsRect<float> &rect) :
-CGUIText(text, rect)
+GsText(text, rect)
 {
 }
 
 
 void CGUIBanner::setText(const std::string& text)
 {
-    CGUIText::setText(text);
+    GsText::setText(text);
     mCurLineIdx = 0;
 }
 

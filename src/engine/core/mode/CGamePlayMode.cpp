@@ -29,38 +29,38 @@ m_DataDirectory(gpmode.m_DataDirectory)
 {}
 
 
-void CGamePlayMode::pumpEvent(const CEvent *evPtr)
+void CGamePlayMode::pumpEvent(const std::shared_ptr<CEvent> &evPtr)
 {
     mp_PlayGame->pumpEvent(evPtr);
 }
 
 void CGamePlayMode::ponder(const float deltaT)
 {
-	// The player is playing the game. It also includes scenes like ending
+    // The player is playing the game. It also includes scenes like ending
     CEventContainer& EventContainer = gEventManager;
 
     mp_PlayGame->ponder(deltaT);
 
-	if( mp_PlayGame->getEndGame() )
-	{
-		m_startLevel = 0;
+    if( mp_PlayGame->getEndGame() )
+    {
+        m_startLevel = 0;
         EventContainer.add( new GMSwitchToPassiveMode() );
-	}
-	else if( mp_PlayGame->getStartGame() )
-	{ // Start another new game
+    }
+    else if( mp_PlayGame->getStartGame() )
+    { // Start another new game
         EventContainer.add( new GMSwitchToPlayGameMode(m_Episode,
                                                        m_DataDirectory) );
-	}
-	else if( mp_PlayGame->getExitEvent() )
-	{
-		EventContainer.add( new GMQuit() );
-	}
+    }
+    else if( mp_PlayGame->getExitEvent() )
+    {
+        EventContainer.add( new GMQuit() );
+    }
 
 }
 
 
 void CGamePlayMode::render()
 {
-    mp_PlayGame->render();    
+    mp_PlayGame->render();
 
 }

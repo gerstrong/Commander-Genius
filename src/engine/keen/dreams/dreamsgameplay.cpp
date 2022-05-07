@@ -43,33 +43,33 @@ bool DreamsGamePlay::start()
     if(!ResumeGame)
     {
         GamePlayStart();
-        GamePlayStartLevel();                
-    }    
+        GamePlayStartLevel();
+    }
 
     return true;
 }
 
 
 
-void DreamsGamePlay::pumpEvent(const CEvent *evPtr)
+void DreamsGamePlay::pumpEvent(const std::shared_ptr<CEvent> &evPtr)
 {
-    if( dynamic_cast<const GoIntoPlayLoop*>(evPtr) )
+    if( std::dynamic_pointer_cast<const GoIntoPlayLoop>(evPtr) )
     {
         PlayLoopInit();
 
         mPlayloopPtr = &PlayLoop;
-        mPlayloopRenderPtr = &PlayLoopRender;        
+        mPlayloopRenderPtr = &PlayLoopRender;
         gInput.flushAll();
     }
-    if( dynamic_cast<const CompleteLevel*>(evPtr) )
+    if( std::dynamic_pointer_cast<const CompleteLevel>(evPtr) )
     {
         processLevelcomplete();
         mPlayloopPtr = nullptr;
-        mPlayloopRenderPtr = nullptr;        
+        mPlayloopRenderPtr = nullptr;
         GamePlayStartLevel();
         gInput.flushAll();
     }
-    if( dynamic_cast<const RestartGame*>(evPtr) )
+    if( std::dynamic_pointer_cast<const RestartGame>(evPtr) )
     {
         processLevelcomplete();
         mPlayloopPtr = nullptr;

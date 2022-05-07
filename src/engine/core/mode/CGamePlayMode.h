@@ -18,23 +18,23 @@ class CGamePlayMode : public CGameMode
 {
 public:
     CGamePlayMode( const int Episode,
-			const std::string& DataDirectory,
-			const int startLevel = -1);
+            const std::string& DataDirectory,
+            const int startLevel = -1);
 
-	CGamePlayMode( GMSwitchToPlayGameMode &gpmode );
+    CGamePlayMode( GMSwitchToPlayGameMode &gpmode );
 
-	
 
-    void pumpEvent(const CEvent *evPtr) override;
+
+    void pumpEvent(const std::shared_ptr<CEvent> &evPtr) override;
     void ponder(const float deltaT) override;
     void render() override;
 
 private:
-	int m_startLevel;
-	int m_Episode;
-	std::string m_DataDirectory;
-	CSaveGameController m_SavedGame;
-	std::unique_ptr<CPlayGame> mp_PlayGame;
+    int m_startLevel;
+    int m_Episode;
+    std::string m_DataDirectory;
+    CSaveGameController m_SavedGame;
+    std::unique_ptr<CPlayGame> mp_PlayGame;
 };
 
 #endif /* CGAMEPLAYMODE_H_ */

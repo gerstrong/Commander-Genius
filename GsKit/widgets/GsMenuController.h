@@ -39,7 +39,7 @@ struct OpenMenuEvent : CEvent
     OpenMenuEvent(CBaseMenu* menuDlgPtr) :
         mMenuDialogPointer(menuDlgPtr) {}
 
-	std::shared_ptr<CBaseMenu> mMenuDialogPointer;
+    std::shared_ptr<CBaseMenu> mMenuDialogPointer;
 };
 
 struct CloseMenuEvent : CEvent
@@ -83,20 +83,20 @@ class CMenuController : public GsSingleton<CMenuController>
 {
 
 public:
-	CMenuController() : mOpenedGamePlay(false),
+    CMenuController() : mOpenedGamePlay(false),
                           mLocked(false),
                           mHidden(false) {}
 
     void clearMenuStack();
 
-    void pumpEvent(const CEvent *evPtr);
+    void pumpEvent(const std::shared_ptr<CEvent> &evPtr);
 
     void ponder(const float deltaT);
 
     void render();
 
-	bool active()
-	{	return	!mMenuStack.empty();	}
+    bool active()
+    {	return	!mMenuStack.empty();	}
 
     void lock(const bool value)
     {	mLocked = value;	}
@@ -110,7 +110,7 @@ public:
     bool empty()
     {   return mMenuStack.empty();    }
 
-	bool mOpenedGamePlay;
+    bool mOpenedGamePlay;
 
     std::function<void(GsWeakSurface&)> mBackroundDrawFcn;
     std::function<void(GsWeakSurface&, const GsRect<int>)> mDrawTwirlFcn;
@@ -122,9 +122,9 @@ public:
 
 private:
 
-	void popBackMenu();
-	
-	std::list< std::shared_ptr<CBaseMenu> > mMenuStack;
+    void popBackMenu();
+
+    std::list< std::shared_ptr<CBaseMenu> > mMenuStack;
 
     bool mLocked;
     bool mHidden;

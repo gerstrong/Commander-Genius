@@ -132,7 +132,7 @@ class CSpriteObject
 
     int scrx, scry;           		// x,y pixel position on screen
 
-    virtual void pumpEvent(const CEvent *evPtr);
+    virtual void pumpEvent(const std::shared_ptr<CEvent> &evPtr);
 
     virtual void processEvents();
 

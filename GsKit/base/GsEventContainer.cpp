@@ -49,7 +49,7 @@ void CEventContainer::processSinks()
     {
         for( auto &event : mPumpEventPtrs )
         {
-            sink->pumpEvent( event.get() );
+            sink->pumpEvent( event );
 
             if(mFlush)
                 break;

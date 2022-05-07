@@ -20,7 +20,7 @@
 const unsigned int RES_BPP = 32;
 
 #ifdef USE_OPENGL
-	#include <SDL_opengl.h>
+    #include <SDL_opengl.h>
 //#if (TARGET_OS_IPHONE) || (TARGET_IPHONE_SIMULATOR)
 //    #include <SDL_opengles.h>
 //#endif
@@ -30,27 +30,26 @@ const unsigned int RES_BPP = 32;
 
 struct st_camera_bounds
 {
-	int left, right, down, up, speed;
+    int left, right, down, up, speed;
 
-	void reset()
-	{
-		// Default camera settings
-		left = 140;		up = 50;
-		right = 180;	down = 130;
-		speed = 5;
-	}
+    void reset()
+    {
+        // Default camera settings
+        left = 140;		up = 50;
+        right = 180;	down = 130;
+        speed = 5;
+    }
 };
 
 class CVidConfig
 {
 public:
 
-	CVidConfig();
-	bool operator==(const CVidConfig& target);
-	bool operator!=(const CVidConfig& target);
+    CVidConfig();
+    bool operator==(const CVidConfig& target);
+    bool operator!=(const CVidConfig& target);
     void reset();
 
-	void setResolution(const int width, const int height, const int depth);
     void setResolution(const GsVec2D<Uint16> &res);
 
     GsRect<Uint16> mGameRect;	// Also called Screenspace.
@@ -69,9 +68,9 @@ public:
     bool mIntegerScaling = true;
 #endif
     VidFilter m_ScaleXFilter = VidFilter::NONE;
-	bool m_normal_scale;
+    bool m_normal_scale;
 
-	unsigned short Zoom;
+    unsigned short Zoom;
 
 #ifdef USE_OPENGL
     bool mOpengl = true;
@@ -91,14 +90,14 @@ public:
     int mVPadHeight = 150;
 #endif
 
-	GsRect<int> mAspectCorrection;
+    GsRect<int> mAspectCorrection;
 
 
     bool mVSync = false;
 
     bool mShowCursor = true;
 
-	st_camera_bounds m_CameraBounds;
+    st_camera_bounds m_CameraBounds;
 
     bool mTiltedScreen = false;
 

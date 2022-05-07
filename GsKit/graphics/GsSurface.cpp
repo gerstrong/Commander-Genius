@@ -127,6 +127,42 @@ void GsWeakSurface::drawRect(const GsRect<Uint16> &rect,
     fill(fillRect, fillColor);
 }
 
+void GsWeakSurface::drawRectRounded(const GsRect<Uint16> &rect,
+                         const int roundRadius,
+                         const Uint32 contourColor,
+                         const Uint32 fillColor )
+{
+    // Start with rounded corners
+    auto roundedRect = rect;
+    roundedRect.pos.x += roundRadius;
+    roundedRect.pos.y += roundRadius;
+    drawCircleQuart(roundedRect.pos, roundRadius, fillColor, 0b00);
+    roundedRect.pos.x = rect.pos.x+rect.dim.x-roundRadius;
+    drawCircleQuart(roundedRect.pos, roundRadius, fillColor, 0b01);
+    roundedRect.pos.y = rect.pos.y+rect.dim.y-roundRadius;
+    drawCircleQuart(roundedRect.pos, roundRadius, fillColor, 0b11);
+    roundedRect.pos.x = rect.pos.x+roundRadius;
+    drawCircleQuart(roundedRect.pos, roundRadius, fillColor, 0b10);
+
+    // Continue with small side rectangles
+    GsRect<Uint16> fillRect = rect;
+    fillRect.pos.x += roundRadius;
+    fillRect.dim.x = rect.dim.x-2*roundRadius;
+    fillRect.dim.y = roundRadius;
+    fill(fillRect, fillColor);
+
+    fillRect.pos.y = rect.pos.y + rect.dim.y - roundRadius;
+    fill(fillRect, fillColor);
+
+    // End with a back rectangle in the center
+    fillRect.pos.x = rect.pos.x;
+    fillRect.pos.y = rect.pos.y + 1*roundRadius - 1;
+    fillRect.dim.x = rect.dim.x + 1;
+    fillRect.dim.y = rect.dim.y - 2*roundRadius + 1;
+    fill(fillRect, fillColor);
+}
+
+
 void GsWeakSurface::drawRect(const GsRect<Uint16> &rect,
                              const Uint32 fillColor )
 {
@@ -167,6 +203,42 @@ void GsWeakSurface::drawCircle(const Uint32 fillColor)
         fill(rect, fillColor);
     }
 }
+
+void GsWeakSurface::drawCircleQuart(const GsVec2D<Uint16> pos,
+                                    const int radius,
+                                    const Uint32 fillColor,
+                                    const char corner)
+{
+    GsRect<Uint16> rect;
+    rect.dim.x = 1;
+
+    const int x1 = (corner & 0b01) == 0b00 ? -radius : 0;
+    const int x2 = (corner & 0b01) == 0b01 ?  radius : 0;
+
+    for(int i = x1 ; i<x2 ; i++)
+    {
+        const float frac = float(abs(i))/float(radius);
+        const auto y = radius*normCircleFcn(frac);
+        rect.pos.x = Uint16(pos.x+i);
+        rect.pos.y = (corner & 0b10) == 0b10 ?
+                     Uint16(pos.y) : Uint16(pos.y-y);
+        rect.dim.y = Uint16(y);
+
+        fill(rect, fillColor);
+    }
+}
+
+
+void GsWeakSurface::drawCircle(const GsVec2D<Uint16> pos,
+                               const int radius,
+                               const Uint32 fillColor)
+{
+    drawCircleQuart(pos, radius, fillColor, 0b00);
+    drawCircleQuart(pos, radius, fillColor, 0b01);
+    drawCircleQuart(pos, radius, fillColor, 0b10);
+    drawCircleQuart(pos, radius, fillColor, 0b11);
+}
+
 
 void GsSurface::create(Uint32 flags, int width, int height, int depth,
                        Uint32 Rmask, Uint32 Gmask, Uint32 Bmask, Uint32 Amask)

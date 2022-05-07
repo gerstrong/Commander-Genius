@@ -76,9 +76,9 @@ protected:
 
     std::string mFeatureText;
 
-    std::shared_ptr<CGUIText> mpCtrlName;
+    std::shared_ptr<GsText> mpCtrlName;
     std::shared_ptr<GsButton> mpLeftButton;
-    std::shared_ptr<CGUIText> mpCtrlValue;
+    std::shared_ptr<GsText> mpCtrlValue;
     std::shared_ptr<GsButton> mpRightButton;
 
 };

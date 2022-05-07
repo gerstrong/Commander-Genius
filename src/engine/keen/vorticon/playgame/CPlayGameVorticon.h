@@ -61,7 +61,7 @@ public:
 
     void redrawMap();
 
-    void pumpEvent(const CEvent *evPtr) override;
+    void pumpEvent(const std::shared_ptr<CEvent> &evPtr) override;
 
     void ponder(const float deltaT) override;
     void processOnWorldMap();

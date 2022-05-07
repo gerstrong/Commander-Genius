@@ -1,5 +1,5 @@
 /*
- * CGUIText.cpp
+ * GsText.cpp
  *
  *  Created on: 30.10.2011
  *      Author: gerstrong
@@ -14,7 +14,7 @@
 
 #include <graphics/cgttf.h>
 
-std::shared_ptr<CGUIText> createTextFrom(const GsKit::ptree &node)
+std::shared_ptr<GsText> createTextFrom(const GsKit::ptree &node)
 {
     GsRect<float> dim;
     std::string name;
@@ -46,8 +46,8 @@ std::shared_ptr<CGUIText> createTextFrom(const GsKit::ptree &node)
         return nullptr;
     }
 
-    std::shared_ptr<CGUIText> w
-        (new CGUIText( name, dim ) );
+    std::shared_ptr<GsText> w
+        (new GsText( name, dim ) );
 
     w->setTag(tag);
 
@@ -55,14 +55,14 @@ std::shared_ptr<CGUIText> createTextFrom(const GsKit::ptree &node)
 }
 
 
-CGUIText::CGUIText(const std::string &text,
+GsText::GsText(const std::string &text,
                    const GsRect<float> &rect) :
 GsWidget(rect)
 {
     setText(text);
 }
 
-CGUIText::CGUIText(const std::string &text,
+GsText::GsText(const std::string &text,
          const GsRect<float> &rect,
          const int fontId) :
 GsWidget(rect),
@@ -73,7 +73,7 @@ mFontId(fontId)
 
 
 
-void CGUIText::setText(const std::string& text)
+void GsText::setText(const std::string& text)
 {
     if(!mTextVec.empty())
         mTextVec.clear();
@@ -116,12 +116,12 @@ void CGUIText::setText(const std::string& text)
     mText = text;
 }
 
-void CGUIText::setTextColor(const GsColor &color)
+void GsText::setTextColor(const GsColor &color)
 {
     mTextColor = color;
 }
 
-void CGUIText::processLogic()
+void GsText::processLogic()
 {
     // Horizontal scrolling.
     // If Max is zero, nothing need to be scrolled
@@ -151,7 +151,7 @@ void CGUIText::processLogic()
     }
 }
 
-void CGUIText::updateTTFTextSfc(const GsRect<float> &displayRect)
+void GsText::updateTTFTextSfc(const GsRect<float> &displayRect)
 {
     const int reqFontSize = int(displayRect.dim.y*0.75f);
 
@@ -181,7 +181,7 @@ void CGUIText::updateTTFTextSfc(const GsRect<float> &displayRect)
     }
 }
 
-void CGUIText::updateLegacyTextSfc(const GsRect<float> &displayRect)
+void GsText::updateLegacyTextSfc(const GsRect<float> &displayRect)
 {
     const int reqFontSize = int(displayRect.dim.y*0.75f);
 
@@ -267,19 +267,17 @@ void CGUIText::updateLegacyTextSfc(const GsRect<float> &displayRect)
 
 }
 
-void CGUIText::processRender(const GsRect<float> &RectDispCoordFloat)
+void GsText::processRender(const GsRect<float> &RectDispCoordFloat)
 {
     processRender(RectDispCoordFloat, RectDispCoordFloat);
 }
 
-void CGUIText::processRender(const GsRect<float> &backRect,
-                             const GsRect<float> &frontRect)
+void GsText::processRender(const GsRect<float> &backRect,
+                           const GsRect<float> &frontRect)
 {
-    // Transform this object display coordinates
+    // Transform this text onto given rect
     auto objBackRect = backRect.transformed(getRect());
     auto objFrontRect = objBackRect.clipped(frontRect);
-
-    auto &blit = gVideoDriver.gameSfc();
 
     auto &textSfcVec = mTextSfcVecByColor[mTextColor];
 
@@ -314,30 +312,47 @@ void CGUIText::processRender(const GsRect<float> &backRect,
     }
 
     // Time to render
+    auto &blit = gVideoDriver.gameSfc();
+
     for(auto &textSfc : textSfcVec)
     {
         if(textSfc.empty())
             break;
 
-        GsRect<float> blitPos = objFrontRect;
+        GsRect<float> blitRect = objFrontRect;
 
         if(mHCentered)
         {
-            blitPos.pos = blitPos.pos + (blitPos.dim-totTextSfcDim)/2;
+            blitRect.pos.x = blitRect.pos.x + (blitRect.dim.x-totTextSfcDim.x)/2;
         }
 
-        auto textrect = blitPos;
+        decltype (blitRect) textrect = blitRect;
+
+        if(textrect.pos.x < 0)
+        {
+            textrect.pos.x = -blitRect.pos.x;
+            blitRect.pos.x = objFrontRect.pos.x;
+        }
+        else
+        {
+            textrect.pos.x = (objBackRect.pos.x < objFrontRect.pos.x) ?
+                              objBackRect.dim.x - objFrontRect.dim.x : 0;
+        }
 
         textrect.pos.y = (objBackRect.pos.y < objFrontRect.pos.y) ?
                           objBackRect.dim.y - objFrontRect.dim.y : 0;
-        textrect.pos.x = (objBackRect.pos.x < objFrontRect.pos.x) ?
-                          objBackRect.dim.x - objFrontRect.dim.x : 0;
 
-        blitPos.pos.y += totTextSfcH;
+        blitRect.pos.y += totTextSfcH;
+
+
 
         textSfc.blitTo(blit,
                        textrect.SDLRect(),
-                       blitPos.SDLRect());
+                       blitRect.SDLRect());
+
+        mTextBlitRect = blitRect;
+        mTextBlitRect.dim = totTextSfcDim;
+
         totTextSfcH += textSfc.height();
     }
 

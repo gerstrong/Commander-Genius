@@ -32,24 +32,33 @@ public:
     virtual std::string getText() override
     {	return mOrigText;	}
 
-
-
-    //bool sendEvent(const InputCommand command) override;
-
     void processLogic() override;
 
+    bool Typing() const { return mTyping; }
 
-	bool Typing() const { return mTyping; }
-	void setTypeMode( const bool value );
+
+    /**
+     * @brief setTypeMode   when passing true,
+     *                      the control will received keyboard inputs
+     * @param value
+     */
+    void setTypeMode( const bool value );
+
+    void toggleTypeMode();
 
     virtual void setText(const std::string& text) override;
+
+    virtual void processRender(const GsRect<float> &RectDispCoordFloat) override;
+
+    virtual void processRender(const GsRect<float> &srcRectFloat,
+                               const GsRect<float> &dstRectFloat) override;
 
 
 protected:
 
-	// Returns the string that has to be displayed on the gui
-	// It should say empty if it's so or a character when ticking
-	// while user is typing.
+    // Returns the string that has to be displayed on the gui
+    // It should say empty if it's so or a character when ticking
+    // while user is typing.
     std::string mOrigText;
     std::string mTextWithCursor;
 
@@ -57,7 +66,7 @@ protected:
     int mTypeTick = 0;
     bool mTick = false;
 
-	std::unique_ptr<SDL_Surface> mpTextSfc;    
+    std::unique_ptr<SDL_Surface> mpTextSfc;
 };
 
 #endif /* CGUIINPUTTEXT_H_ */

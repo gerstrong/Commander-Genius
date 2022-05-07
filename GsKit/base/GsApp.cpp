@@ -60,7 +60,7 @@ bool getBooleanArgument( int argc, char *argv[], const std::string& text )
 GsApp::GsApp()
 {
     mpSink.reset(new GsAppEventSink(this));
-    gEventManager.regSink(mpSink);
+    gEventManager.regSink(std::move(mpSink));
 }
 
 
@@ -138,9 +138,9 @@ void GsApp::deinit()
 }
 
 
-void GsApp::pumpEvent(const CEvent *evPtr)
+void GsApp::pumpEvent(const std::shared_ptr<CEvent> &evPtr)
 {
-    if( const SwitchEngineEvent *swEng = dynamic_cast<const SwitchEngineEvent*>(evPtr) )
+    if( const SwitchEngineEvent *swEng = dynamic_cast<const SwitchEngineEvent*>(evPtr.get()) )
     {
         SwitchEngineEvent *swEngVar = const_cast<SwitchEngineEvent*>(swEng);
         mpCurEngine.swap( swEngVar->mpEnginePtr );
@@ -150,17 +150,17 @@ void GsApp::pumpEvent(const CEvent *evPtr)
             gEventManager.add( new GMQuit() );
         }
     }
-    else if( dynamic_cast<const GMQuit*>(evPtr) )
+    else if( dynamic_cast<const GMQuit*>(evPtr.get()) )
     {
         mpCurEngine.release();
     }
     else if( const InvokeFunctorEvent *iEv =
-             dynamic_cast<const InvokeFunctorEvent*>(evPtr) )
+             dynamic_cast<const InvokeFunctorEvent*>(evPtr.get()) )
     {
         (*iEv)();
     }
     else if( const FunctionToEvent *iEv =
-             dynamic_cast<const FunctionToEvent*>(evPtr)  )
+             dynamic_cast<const FunctionToEvent*>(evPtr.get())  )
     {
         iEv->runFunction();
     }
@@ -172,7 +172,7 @@ void GsApp::pumpEvent(const CEvent *evPtr)
 }
 
 
-void GsAppEventSink::pumpEvent(const CEvent *evPtr)
+void GsAppEventSink::pumpEvent(const std::shared_ptr<CEvent> &evPtr)
 {
     mpApp->pumpEvent(evPtr);
 }

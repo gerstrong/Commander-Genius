@@ -40,7 +40,7 @@ mFeatureText(text)
 void CGUINumberControl::spawnSubWidgets()
 {
     mpCtrlName =
-            add(new CGUIText(mFeatureText,
+            add(new GsText(mFeatureText,
                                 GsRect<float>(0.0f, 0.0f, 0.5f, 1.0f)));
 
     mpLeftButton =
@@ -49,7 +49,7 @@ void CGUINumberControl::spawnSubWidgets()
                                 [&]{this->decrement();}));
 
     mpCtrlValue =
-            add(new CGUIText("?",
+            add(new GsText("?",
                                 GsRect<float>(0.6f, 0.0f, 0.3f, 1.0f)));
 
 

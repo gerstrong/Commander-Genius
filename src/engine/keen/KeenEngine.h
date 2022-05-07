@@ -23,7 +23,7 @@ public:
 
     bool start() override;
 
-    virtual void pumpEvent(const CEvent *evPtr) override;
+    virtual void pumpEvent(const std::shared_ptr<CEvent> &evPtr) override;
 
     virtual void ponder(const float deltaT) override;
 

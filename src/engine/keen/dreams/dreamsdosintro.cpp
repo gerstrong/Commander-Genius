@@ -160,7 +160,7 @@ bool DreamsDosIntro::start()
     return true;
 }
 
-void DreamsDosIntro::pumpEvent(const CEvent *evPtr)
+void DreamsDosIntro::pumpEvent(const std::shared_ptr<CEvent> &evPtr)
 {
 
 }

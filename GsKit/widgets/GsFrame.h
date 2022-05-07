@@ -27,7 +27,7 @@ public:
     virtual void processRender(const GsRect<float> &backRect,
                                const GsRect<float> &frontRect) override;
 
-    void setBackgroundColor(const GsColor &color);
+    virtual void setBackgroundColor(const GsColor &color);
 
     void setActivationEvent(const std::function <void ()>& f)
     {        mFunction = f;    }

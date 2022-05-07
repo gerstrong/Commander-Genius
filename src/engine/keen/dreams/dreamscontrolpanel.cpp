@@ -31,6 +31,8 @@ extern bool USL_DoHelpPonder(memptr text,id0_long_t len,
 }
 
 
+using namespace std;
+
 namespace dreams
 {
 
@@ -76,40 +78,38 @@ DreamsControlPanel::~DreamsControlPanel()
 
 bool DreamsControlPanel::start()
 {
-    US_ControlPanel_Init();    
+    US_ControlPanel_Init();
     return true;
 }
 
 
-void DreamsControlPanel::pumpEvent(const CEvent *evPtr)
+void DreamsControlPanel::pumpEvent(const std::shared_ptr<CEvent> &ev)
 {
-    if( const OpenLineInput* openLineInput = dynamic_cast<const OpenLineInput*>(evPtr) )
+    if(const auto openLineInput =
+            std::dynamic_pointer_cast<const OpenLineInput>(ev))
     {
-        mpLineInput.reset(new LineInput);                
+        mpLineInput.reset(new LineInput);
         mpLineInput->start(openLineInput->x, openLineInput->y,
                            openLineInput->buf, openLineInput->def,
                            openLineInput->escok,
                            openLineInput->maxchars, openLineInput->maxwidth,
                            openLineInput->mN);
-    }            
-    else if( auto pDoHelp = dynamic_cast<const DoHelp*>(evPtr) )
+    }
+    else if( const auto pDoHelp = dynamic_pointer_cast<const DoHelp>(ev) )
     {
         DoHelp *pDoHelpNoConst = new DoHelp(pDoHelp->mText.c_str(), pDoHelp->mLen);
 
         mpDoHelpEvent.reset( pDoHelpNoConst );
         mpDoHelpEvent->init();
     }
-    else if( dynamic_cast<const CloseLineInput*>(evPtr) )
+    else if( dynamic_pointer_cast<const CloseLineInput>(ev) )
     {
         mpLineInput = nullptr;
     }
-    else if( auto savegame = dynamic_cast<const SaveGameEvent*>(evPtr) )
+    else if( auto savegame = dynamic_pointer_cast<const SaveGameEvent>(ev) )
     {
         savegame->save();
     }
-
-
-
 }
 
 void DreamsControlPanel::ponder(const float deltaT)
@@ -254,7 +254,7 @@ void LineInput::ponder()
             break;
         case sc_Delete:
             if (mStr[mCursor])
-            {                
+            {
                 auto sCur = mStr.substr(mCursor+1);
                 mStr.replace (mCursor,  sCur.size(),  sCur);
                 mRedraw = true;
@@ -339,7 +339,7 @@ void LineInput::ponder()
             mCursorMoved = false;
         }
         if (SD_GetTimeCount() - mLasttime > TickBase / 2)
-        {            
+        {
             mLasttime = SD_GetTimeCount();
 
             mCursorvis ^= true;
@@ -362,7 +362,7 @@ void LineInput::ponder()
         IN_ClearKeysDown();
 
 
-        gEventManager.add(new CloseLineInput);        
+        gEventManager.add(new CloseLineInput);
 
 
         gEventManager.add(new SaveGameEvent(mStr, true, true, mN) );

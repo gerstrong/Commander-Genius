@@ -14,6 +14,7 @@
 #include <widgets/GsMenuController.h>
 
 #include "widgets/Button.h"
+#include "widgets/GsBitmapBox.h"
 #include "widgets/ComboSelection.h"
 #include "engine/core/CBehaviorEngine.h"
 #include "engine/core/menu/GameMenu.h"
@@ -52,9 +53,9 @@ class CPlayersSelection : public GameMenu
 {
 
 public:
-    CPlayersSelection(bool numFirst, 
+    CPlayersSelection(bool numFirst,
                       const Style style) :
-        GameMenu( GsRect<float>(0.25f, 0.35f, 0.5f, 0.3f), 
+        GameMenu( GsRect<float>(0.25f, 0.35f, 0.5f, 0.3f),
                   style )
     {
         std::string	playerStr;
@@ -98,7 +99,7 @@ public:
         mpMenuDialog->setSelection(1);
 
         mpMenuDialog->fit();
-    }        
+    }
 };
 
 

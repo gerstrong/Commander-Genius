@@ -15,7 +15,56 @@
 #include <graphics/GsGraphics.h>
 #include <base/GsLogging.h>
 
+#include "GsButton.h"
+#include "GsBitmapBox.h"
+#include "GsTextSelectionList.h"
+#include "GsSelectionList.h"
+#include "GsBanner.h"
+
+
 const unsigned int MAX_STEPS = 20;
+
+bool buildDialogWidgetsFrom(CGUIDialog &dlg,
+                            const GsKit::ptree &tree)
+{
+    try
+    {
+        for( auto &node : tree )
+        {
+            // Filter the comments ...
+            if(node.first == "<xmlcomment>")
+                continue;
+
+            const auto key = node.first;
+            const auto subtree = node.second;
+
+            auto switchStr = [&](const std::string &text,
+                                  auto func)
+            { if(key == text)  dlg.add(func(subtree)); };
+
+            switchStr("Button", createButtonFrom);
+            switchStr("Text", createTextFrom);
+            switchStr("BitmapBox", createBitmapBoxFrom);
+            switchStr("GsSelectionList", createSelectionListFrom);
+            switchStr("GUITextSelectionList", createGUITextSelectionListFrom);
+            switchStr("GUIBanner", createGUIBannerFrom);
+
+        }
+    }
+    catch(std::exception const& ex)
+    {
+        gLogging << "Exception while reading menu node: " << ex.what() << "\n";
+        return false;
+    }
+    catch(...)
+    {
+        gLogging << "Unknown Exception while reading menu node\n.";
+        return false;
+    }
+
+    return true;
+}
+
 
 
 CGUIDialog::CGUIDialog(const GsRect<float> &SrGsRect,
@@ -31,13 +80,13 @@ mFXSetup(fx)
 }
 
 
-bool CGUIDialog::sendEvent(const std::shared_ptr<CEvent> &event )
+bool CGUIDialog::sendEvent(const std::shared_ptr<CEvent> &evPtr)
 {
     auto &ctrlList = getControlsList();
 
-    if( CommandEvent *ev = dynamic_cast<CommandEvent*>(event.get()) )
-	{
-		// Send all the other events the active control element
+    if( CommandEvent *ev = dynamic_cast<CommandEvent*>(evPtr.get()) )
+    {
+        // Send all the other events the active control element
         for( auto &control : ctrlList )
         {
             if( control->isSelected() )
@@ -58,18 +107,22 @@ bool CGUIDialog::sendEvent(const std::shared_ptr<CEvent> &event )
         }
 
         if(ev->mCommand == IC_DOWN || ev->mCommand == IC_RIGHT)
-		{
-			selectNextItem();
-			return true;
-		}
+        {
+            selectNextItem();
+            return true;
+        }
         else if(ev->mCommand == IC_UP || ev->mCommand == IC_LEFT)
-		{
-			selectPrevItem();
-			return true;
-		}
-	}
+        {
+            selectPrevItem();
+            return true;
+        }
+    }
+    else
+    {
+        return GsWidgetsManager::sendEvent(evPtr);
+    }
 
-	return false;
+    return false;
 }
 
 
@@ -114,7 +167,7 @@ void CGUIDialog::drawBorderRect(SDL_Surface *backSfc, const SDL_Rect &Rect)
 }
 
 void CGUIDialog::processLogic()
-{        
+{
     // For the special effect not used in the galaxy engine
     if( mFXSetup == FXKind::EXPAND )
     {
@@ -138,7 +191,7 @@ void CGUIDialog::processLogic()
     // Try to get a control that is waiting for input to be typed
     std::shared_ptr<CGUIInputText> pInputCtrl;
     for( auto &it : getWidgetList() )
-    {                
+    {
         pInputCtrl =
              std::dynamic_pointer_cast<CGUIInputText>(it);
         if(pInputCtrl)
@@ -180,7 +233,7 @@ void CGUIDialog::processRender(const GsRect<float> &RectDispCoordFloat)
     SDL_Rect lRect = gVideoDriver.toBlitRect(rect);
 
     if(mBackgroundSfc)
-    {        
+    {
         // Check if the dimension are still correct.
         // They might be wrong when the resolution changed.
 
@@ -206,7 +259,7 @@ void CGUIDialog::processRender(const GsRect<float> &RectDispCoordFloat)
                 mBackgroundSfc.blitTo(weakBlit, lRect);
             }
             else
-            {                                
+            {
                 GsRect<float> fxRect = rect;
 
                 if( mFXhStep > 0 )
@@ -253,7 +306,7 @@ void CGUIDialog::processRender(const GsRect<float> &RectDispCoordFloat)
 
     }
 
-    
+
     auto displayRect = rect;
     displayRect.transform(RectDispCoordFloat);
 
@@ -272,7 +325,7 @@ void CGUIDialog::processRender(const GsRect<float> &RectDispCoordFloat)
         if(!mDarkOverlaySfc ||
             (mDarkOverlaySfc.height() != lRect.h ||
              mDarkOverlaySfc.width() != lRect.w)  )
-        {                                    
+        {
             mDarkOverlaySfc.create(0, lRect.w, lRect.h, RES_BPP, 0, 0, 0, 0);
             mDarkOverlaySfc.fillRGB(0, 0, 0);
             mDarkOverlaySfc.setAlpha(128);

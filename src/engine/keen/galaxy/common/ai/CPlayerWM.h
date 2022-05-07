@@ -48,46 +48,46 @@ public:
 
     GsVec2D<int> fetchFootDestCoord();
 
-    void pumpEvent(const CEvent *evPtr);
-	
+    void pumpEvent(const std::shared_ptr<CEvent> &evPtr);
+
     void deserialize(CSaveGameController &savedGame);
     void serialize(CSaveGameController &savedGame);
 
     void serialize(GsKit::ptree &node);
     void deserialize(GsKit::ptree &node);
 
-	void process();
-	void processMoving();
-	void processClimbing();
-	void processWaving();
+    void process();
+    void processMoving();
+    void processClimbing();
+    void processWaving();
 
-	// Episode 4 only. When Keen is riding on the foot
-	void processRiding();
+    // Episode 4 only. When Keen is riding on the foot
+    void processRiding();
 
-	// Episode 5 and 6: Those processes make Keen walk through elevators and teleporters
-	void verifyTeleportation();
-	void processEnteringElevator();
-	void processClosingElevator();
-	void processElevating();
-	void processOpeningElevator();
-	void processLeavingElevator();
+    // Episode 5 and 6: Those processes make Keen walk through elevators and teleporters
+    void verifyTeleportation();
+    void processEnteringElevator();
+    void processClosingElevator();
+    void processElevating();
+    void processOpeningElevator();
+    void processLeavingElevator();
 
     void setupTeleportAnimation(const bool unset, const GsVec2D<int> &pos);
-	void processEnteringTeleporter();
-	void processWarpInTeleporter();
-	void processLeavingTeleporter();
+    void processEnteringTeleporter();
+    void processWarpInTeleporter();
+    void processLeavingTeleporter();
 
-	void startLevel(Uint16 object);
+    void startLevel(Uint16 object);
     bool finishLevel(const int object);
-	
-	// Checks if Keen in CK6 can climb
-	bool checkforClimbing(direction_t &climbDir);
-	void checkforSwimming(bool &bleft, bool &bright, bool &bup, bool &bdown);
 
-	void performWalkingAnimation(bool walking);
+    // Checks if Keen in CK6 can climb
+    bool checkforClimbing(direction_t &climbDir);
+    void checkforSwimming(bool &bleft, bool &bright, bool &bup, bool &bdown);
+
+    void performWalkingAnimation(bool walking);
     void performSwimmingAnimation(const bool moving);
-	
-	void setMounted(const bool value);
+
+    void setMounted(const bool value);
 
     void processMoveBitDown();
 
@@ -99,23 +99,23 @@ private:
     Uint16 m_teleportanibasetile = 0;
     Uint16 m_teleportoldtile = 0;
     Uint16 walkBaseFrame = 0;
-	Uint16 climbBaseFrame;
-	Uint16 wavingBaseFrame;
-	Uint16 swimBaseFrame;
+    Uint16 climbBaseFrame;
+    Uint16 wavingBaseFrame;
+    Uint16 swimBaseFrame;
 
     Uint8 m_animation = 0;
     Uint8 m_animation_time = 1;
     Uint8 m_animation_ticker = 0;
     bool m_cantswim = false;
     GsVec2D<int> target;
-	int elevator_close_timer;
-	int elevator_frames;
+    int elevator_close_timer;
+    int elevator_frames;
     int waveTimer = 0;
     bool swimming = false;
     bool mUsedGrapplingHook = false;
     bool mounted = false;
 
-	std::vector<bool> mLevelDone;	
+    std::vector<bool> mLevelDone;
 
     void (CPlayerWM::*mProcessPtr)() = nullptr;
 };

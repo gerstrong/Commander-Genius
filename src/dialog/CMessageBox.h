@@ -24,13 +24,13 @@
 class CMessageBox : public CGUIDialog
 {
 public:
-	// Init functions
+    // Init functions
     CMessageBox(const std::string& Text,
                 const bool lower,
                 const bool keymsg,
                 const bool leftbound,
                 const FXKind fx = FXKind::NONE);
-	virtual ~CMessageBox() {}
+    virtual ~CMessageBox() {}
 
     /**
      * @brief processLogic There are dialog boxes in both engines.
@@ -43,17 +43,17 @@ public:
 
 
 
-	/// Getters
-	/*
-	 * \brief Indicates whether Dialog is ready to be closed
-	 * \return true means yes, it is ready
-	 */
-	bool isFinished();
+    /// Getters
+    /*
+     * \brief Indicates whether Dialog is ready to be closed
+     * \return true means yes, it is ready
+     */
+    bool isFinished();
 
 protected:
-	bool m_mustclose;
+    bool m_mustclose;
 
-    std::shared_ptr<CGUIText> mpTextCtrl;
+    std::shared_ptr<GsText> mpTextCtrl;
 };
 
 

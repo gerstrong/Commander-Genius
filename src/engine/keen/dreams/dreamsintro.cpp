@@ -64,7 +64,7 @@ bool DreamsIntro::start()
     return true;
 }
 
-void DreamsIntro::pumpEvent(const CEvent *evPtr)
+void DreamsIntro::pumpEvent(const std::shared_ptr<CEvent> &evPtr)
 {
 
 }

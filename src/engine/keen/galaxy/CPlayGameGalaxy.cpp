@@ -364,18 +364,18 @@ void CPlayGameGalaxy::looseManagement( const int playerIdx,
 }
 
 
-void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
+void CPlayGameGalaxy::pumpEvent(const std::shared_ptr<CEvent> &evPtr)
 {
     // In this part we will poll all the relevant Events that are important for the
     // Galaxy Main Engine itself. For example, load map, setup world map, show Highscore
     // are some of those events.
 
-    if( dynamic_cast<const SaveGameEvent*>(evPtr) )
+    if( std::dynamic_pointer_cast<const SaveGameEvent>(evPtr) )
     {
         saveXMLGameState();
         gInput.flushAll();
     }
-    else if( const EventSendDialog *ev = dynamic_cast<const EventSendDialog*>(evPtr) )
+    else if( const auto ev = std::dynamic_pointer_cast<const EventSendDialog>(evPtr) )
     {
         auto &msgBox = ev->mMsgBox;
 
@@ -386,7 +386,7 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
             gInput.flushAll();
         }
     }
-    else if( const EventSendSelectionDialogMsg* ev = dynamic_cast<const EventSendSelectionDialogMsg*>(evPtr) )
+    else if( const auto ev = std::dynamic_pointer_cast<const EventSendSelectionDialogMsg>(evPtr) )
     {
         gMusicPlayer.stop();
         m_LevelPlay.stopMusic();
@@ -396,14 +396,14 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
 
         mMessageBoxes.push_back( move(pMsgBox) );
     }
-    else if( dynamic_cast<const EventEndGamePlay*>(evPtr) )
+    else if( std::dynamic_pointer_cast<const EventEndGamePlay>(evPtr) )
     {
         m_endgame = true;
         // The last menu has been removed. Restore back the game status
         gBehaviorEngine.setPause(false);
         gMenuController.clearMenuStack();
     }
-    else if( const EventEnterLevel *ev = dynamic_cast<const EventEnterLevel*>(evPtr) )
+    else if( const auto ev = std::dynamic_pointer_cast<const EventEnterLevel>(evPtr) )
     {
         if(ev->data >= 0xC000)	// Start a new level!
         {
@@ -432,12 +432,12 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
 
         gInput.flushFingerEvents();
     }
-    else if( dynamic_cast<const EventRestartLevel*>(evPtr) )
+    else if( std::dynamic_pointer_cast<const EventRestartLevel>(evPtr) )
     {
         gMusicPlayer.stop();
         m_LevelPlay.reloadLevel();
     }
-    else if( const auto *ev = dynamic_cast<const EventExitLevel*>(evPtr) )
+    else if( const auto ev = std::dynamic_pointer_cast<const EventExitLevel>(evPtr) )
     {
         // Ensure no one is dead anymore
         const int numPlayers = gBehaviorEngine.numPlayers();
@@ -493,14 +493,14 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
             m_LevelPlay.setActive(true);
         }
     }
-    else if( const EventDieKeenPlayer *ev = dynamic_cast<const EventDieKeenPlayer*>(evPtr) )
+    else if( const auto ev = std::dynamic_pointer_cast<const EventDieKeenPlayer>(evPtr) )
     {
         looseManagement(ev->playerID,
                         ev->levelObj,
                         ev->levelName);
 
     }
-    else if( const RevivePlayer *ev = dynamic_cast<const RevivePlayer*>(evPtr) )
+    else if( const auto ev = std::dynamic_pointer_cast<const RevivePlayer>(evPtr) )
     {
         if(m_LevelPlay.isActive())
         {
@@ -535,7 +535,7 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
             }
         }
     }
-    else if( const EventExitLevelWithFoot *ev = dynamic_cast<const EventExitLevelWithFoot*>(evPtr) )
+    else if( const auto ev = std::dynamic_pointer_cast<const EventExitLevelWithFoot>(evPtr) )
     {
         gMusicPlayer.stop();
         m_LevelPlay.setActive(false);
@@ -543,7 +543,7 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
         m_WorldMap.loadAndPlayMusic();
         gEventManager.add( new EventPlayerRideFoot(*ev) );
     }
-    else if( const EventPlayTrack *ev =  dynamic_cast<const EventPlayTrack*>(evPtr) )
+    else if( const auto ev =  std::dynamic_pointer_cast<const EventPlayTrack>(evPtr) )
     {
         if(m_LevelPlay.isActive())
         {

@@ -23,7 +23,7 @@ GameEngine::~GameEngine()
 
 }
 
-void GameEngine::pumpEvent(const CEvent *evPtr)
+void GameEngine::pumpEvent(const std::shared_ptr<CEvent> &evPtr)
 {
     if(mpGameMode) // Otherwise send to the existing created mGameMode Object
     {

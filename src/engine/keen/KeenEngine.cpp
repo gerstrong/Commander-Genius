@@ -83,11 +83,12 @@ bool KeenEngine::start()
     return true;
 }
 
-void KeenEngine::pumpEvent(const CEvent *evPtr)
+void KeenEngine::pumpEvent(const std::shared_ptr<CEvent> &evPtr)
 {
     GameEngine::pumpEvent(evPtr);
 
-    if( const StartNewGameEvent* pStart = dynamic_cast<const StartNewGameEvent*>(evPtr) )
+    if( const std::shared_ptr<StartNewGameEvent> pStart =
+        std::dynamic_pointer_cast<StartNewGameEvent>(evPtr) )
     {
         gBehaviorEngine.mDifficulty = pStart->mDifficulty;
         switchToGamePlayMode(pStart->mStartLevel);

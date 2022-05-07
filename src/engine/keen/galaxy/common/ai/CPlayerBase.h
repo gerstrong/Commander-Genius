@@ -176,7 +176,7 @@ namespace galaxy
      */
     void getAnotherLife(const int lc_x, const int lc_y, const bool display, const bool alt);
 
-    virtual void pumpEvent(const CEvent *evPtr) override;
+    virtual void pumpEvent(const std::shared_ptr<CEvent> &evPtr) override;
 
     /**
      * \description Camera of the player gets performed here...

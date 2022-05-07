@@ -39,11 +39,11 @@ public:
     }
 
 
-	void setActive(const bool value);
+    void setActive(const bool value);
 
-	/*
-	 * \brief Just tells the name of the level. Every Galaxy Level with a name
-	 */
+    /*
+     * \brief Just tells the name of the level. Every Galaxy Level with a name
+     */
     std::string getLevelName() const
     {
         return mMap.getLevelName();
@@ -58,7 +58,7 @@ public:
         return mMap.getLevel();
     }
 
-    void pumpEvent(const CEvent *evPtr);
+    void pumpEvent(const std::shared_ptr<CEvent> &evPtr);
 
     CSpriteObject *getNextStandingStillPlayer();
 
@@ -72,11 +72,11 @@ public:
 
     void render();
 
-	// Push data to Savegame-Controller
-	void operator>>(CSaveGameController &savedGame);
+    // Push data to Savegame-Controller
+    void operator>>(CSaveGameController &savedGame);
 
-	// This is for loading the game
-	bool operator<<(CSaveGameController &savedGame);
+    // This is for loading the game
+    bool operator<<(CSaveGameController &savedGame);
 
     // Saves the inventory using the Savegamecontroller.
     void operator>>(GsKit::ptree &levelNode);
@@ -85,8 +85,8 @@ public:
     void operator<<(GsKit::ptree &levelNode);
 
 
-	CMap &getMapObj()
-	{	return mMap	;}
+    CMap &getMapObj()
+    {	return mMap	;}
 
 
     void setMsgBoxOpen(const bool msgboxactive)
@@ -99,11 +99,11 @@ public:
     void reloadBgMusic();
 
 protected:
-	std::vector< std::shared_ptr<CGalaxySpriteObject> > mObjectPtr;
+    std::vector< std::shared_ptr<CGalaxySpriteObject> > mObjectPtr;
     bool mActive = false;
 
-	CMap mMap;
-	std::vector<CInventory> &mInventoryVec;
+    CMap mMap;
+    std::vector<CInventory> &mInventoryVec;
 
     bool mMsgBoxOpen = false;
 

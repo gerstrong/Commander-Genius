@@ -14,12 +14,12 @@
 // This is a local functor that is invoked when the dialog has be closed
 struct CloseDialog : public InvokeFunctorEvent
 {
-	CloseDialog(bool &mustClose) : mMustClose(mustClose) {}
+    CloseDialog(bool &mustClose) : mMustClose(mustClose) {}
 
     void operator()() const
-	{		mMustClose = true;	}
+    {		mMustClose = true;	}
 
-	bool &mMustClose;
+    bool &mMustClose;
 };
 
 CMessageBox::CMessageBox(const std::string& text,
@@ -35,11 +35,12 @@ m_mustclose(false)
     GsRect<float> facRect( gVideoDriver.getGameResFactors() );
     closeButtonRect.transformInverse(facRect);
 
-    mpTextCtrl =
-            add( new CGUIText( text, GsRect<float>(0.05f, 0.0f, 0.90f, 1.0f) ) );
 
-	// Those formulas work well with our constellation but I don't think they are perfect.
-	// They transform the Message Box the way the text fits perfectly in.
+    mpTextCtrl =
+            add( new GsText( text, GsRect<float>(0.05f, 0.0f, 0.90f, 1.0f) ) );
+
+    // Those formulas work well with our constellation but I don't think they are perfect.
+    // They transform the Message Box the way the text fits perfectly in.
     const float screenW = gVideoDriver.getGameResolution().dim.x;
     const float screenH = gVideoDriver.getGameResolution().dim.y;
 
@@ -68,12 +69,12 @@ m_mustclose(false)
     textRect.pos.y = (1.0f*textRect.dim.y)/
                          (static_cast<float>(mpTextCtrl->mTextDim.dim.y));
 
-	if(lower) // if lower is enabled, try to snap the Dlg to the bottom off the screen.
-	{
+    if(lower) // if lower is enabled, try to snap the Dlg to the bottom off the screen.
+    {
         rect.pos.y = 1.0f - rect.dim.y;
-	}
+    }
 
-    setRect(rect);    
+    setRect(rect);
 
     initEmptyBackground();
 }
@@ -82,16 +83,16 @@ void CMessageBox::processLogic()
 {
     if( gInput.getPressedCommand(IC_STATUS) || gInput.mouseClicked() )
     {
-		m_mustclose = true;
+        m_mustclose = true;
     }
 
-	CGUIDialog::processLogic();
+    CGUIDialog::processLogic();
     render();
 }
 
 void CMessageBox::render()
 {
-    CGUIDialog::processRendering();    
+    CGUIDialog::processRendering();
 }
 
 

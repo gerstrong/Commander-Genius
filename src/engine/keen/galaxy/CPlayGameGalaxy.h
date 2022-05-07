@@ -39,7 +39,7 @@ public:
                          const uint16_t levelObj,
                          const std::string &levelName);
 
-    void pumpEvent(const CEvent *evPtr);
+    void pumpEvent(const std::shared_ptr<CEvent> &evPtr);
 
     void ponder(const float deltaT);
     void render();

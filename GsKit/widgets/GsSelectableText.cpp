@@ -2,6 +2,7 @@
 #include "GsSelectableText.h"
 #include "GsTextSelectionList.h"
 #include "GsText.h"
+#include <base/GsLogging.h>
 
 GsSelectableText::
 GsSelectableText(const GsRect<float> &rect,
@@ -14,7 +15,7 @@ GsFrame(rect)
                            0.8f, 0.8f);
 
     auto newTextWidget =
-            add( new CGUIText(text, textRect) );
+            add( new GsText(text, textRect) );
 
     newTextWidget->enableCenteringH(false);
     enableBackground(true);
@@ -63,7 +64,7 @@ void GsSelectableText::processLogic()
     if(mReleased)
     {
         auto parent =
-                dynamic_cast<CGUITextSelectionList*>(getParent());
+                dynamic_cast<GsTextSelectionList*>(getParent());
 
         if(parent)
         {

@@ -226,7 +226,7 @@ std::map< std::string, unsigned int > gOffsetMap;
 bool extractEmbeddedFilesIntoMemory(const BE_GameVerDetails_T &gameVerDetails)
 {
 
-    std::map< std::string, uint8_t **> dataMap;    
+    std::map< std::string, uint8_t **> dataMap;
 
     std::map< std::string, uint32_t> dataSizes;
 
@@ -272,7 +272,7 @@ bool extractEmbeddedFilesIntoMemory(const BE_GameVerDetails_T &gameVerDetails)
 
         // Legacy C implementation
         {
-            uint8_t **data = it->second;            
+            uint8_t **data = it->second;
 
             *data = (uint8_t*) malloc(dataSize);
 
@@ -345,7 +345,7 @@ bool DreamsEngine::loadResources()
     };
 
     mEngineLoader.RunLoadActionBackground(new DreamsDataLoad(mEngineLoader));
-    mEngineLoader.start();    
+    mEngineLoader.start();
 
     return true;
 }
@@ -436,7 +436,7 @@ bool DreamsEngine::start()
     extractEmbeddedFilesIntoMemory(g_be_gamever_kdreamse113);
 
     // Global for the legacy refkeen code.
-    gDreamsEngine = this;    
+    gDreamsEngine = this;
     //gpRenderLock = SDL_CreateSemaphore(1);
 
     gKeenFiles.setupFilenames(7);
@@ -465,31 +465,31 @@ bool DreamsEngine::start()
 
 bool mResourcesLoaded = false;
 
-void DreamsEngine::pumpEvent(const CEvent *evPtr)
+void DreamsEngine::pumpEvent(const std::shared_ptr<CEvent> &evPtr)
 {
     GameEngine::pumpEvent(evPtr);
 
-    if( dynamic_cast<const FinishedLoadingResources*>(evPtr) )
+    if( std::dynamic_pointer_cast<const FinishedLoadingResources>(evPtr) )
     {
         mResourcesLoaded = true;
     }
 
-    if( dynamic_cast<const SwitchToIntro*>(evPtr) )
+    if( std::dynamic_pointer_cast<const SwitchToIntro>(evPtr) )
     {
         mpScene.reset( new DreamsIntro );
         gGameStateChange = GSS_NONE;
     }
 
 
-    if( dynamic_cast<const LaunchControlPanel*>(evPtr) )
+    if( std::dynamic_pointer_cast<const LaunchControlPanel>(evPtr) )
     {
         mpScene.reset( new DreamsControlPanel );
         mpScene->start();
         gGameStateChange = GSS_NONE;
         gInput.flushAll();
         IN_ClearKeysDown();
-    }   
-    if( dynamic_cast<const SwitchToGamePlay*>(evPtr) )
+    }
+    if( std::dynamic_pointer_cast<const SwitchToGamePlay>(evPtr) )
     {
         mpScene.reset( new DreamsGamePlay );
         mpScene->start();
@@ -497,7 +497,7 @@ void DreamsEngine::pumpEvent(const CEvent *evPtr)
         gInput.flushAll();
         IN_ClearKeysDown();
     }
-    /*if( dynamic_cast<const NullifyScene*>(evPtr) )
+    /*if( std::dynamic_pointer_cast<const NullifyScene>(evPtr) )
     {
         mpScene = nullptr;
         gGameStateChange = GSS_NONE;
@@ -523,7 +523,7 @@ void DreamsEngine::ponder(const float deltaT)
     for(SDL_Event event : evVec)
     {
         BE_ST_PollEvents(event);
-    }        
+    }
 
 
     if(mpScene)

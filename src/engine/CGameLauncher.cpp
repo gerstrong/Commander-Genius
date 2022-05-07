@@ -98,45 +98,6 @@ struct ExecutableListFiller
 
 #include "gamelauncher.menu.h"
 
-bool buildDialogWidgetsFrom(CGUIDialog &dlg,
-                            const GsKit::ptree &tree)
-{
-    try
-    {
-        for( auto &node : tree )
-        {
-            // Filter the comments ...
-            if(node.first == "<xmlcomment>")
-                continue;
-
-            const auto key = node.first;
-            const auto subtree = node.second;
-
-            auto switchStr = [&](const std::string &text,
-                                  auto func)
-            { if(key == text)  dlg.add(func(subtree)); };
-
-            switchStr("Button", createButtonFrom);
-            switchStr("Text", createTextFrom);
-            switchStr("BitmapBox", createBitmapBoxFrom);
-            switchStr("GUITextSelectionList", createGUITextSelectionListFrom);
-            switchStr("GUIBanner", createGUIBannerFrom);
-        }
-    }
-    catch(std::exception const& ex)
-    {
-        gLogging << "Exception while reading menu node: " << ex.what() << "\n";
-        return false;
-    }
-    catch(...)
-    {
-        gLogging << "Unknown Exception while reading menu node\n.";
-        return false;
-    }
-
-    return true;
-}
-
 bool buildWidgets(CGUIDialog &dlg)
 {
     // Create an empty property tree object
@@ -771,7 +732,7 @@ void CGameLauncher::showMessageBox(const std::string &text)
     float yStart = 0.1f;
     for( auto &txtItem : strVec)
     {
-        mpMsgDialog->add(new CGUIText(txtItem,
+        mpMsgDialog->add(new GsText(txtItem,
                                    GsRect<float>(0.1f, yStart, 0.8f, 0.05f)));
         yStart += 0.05f;
     }
@@ -832,7 +793,7 @@ void CGameLauncher::setupModsDialog()
     if(!mPatchStrVec.empty())
         mPatchStrVec.clear();
 
-    mpPatchSelList = new CGUITextSelectionList(
+    mpPatchSelList = new GsTextSelectionList(
                                 GsRect<float>(0.01f, 0.07f, 0.49f, 0.87f));
 
     mpPatchSelList->setBackgroundColor( GsColor(0xFF, 0xFF, 0xFF) );
@@ -849,7 +810,7 @@ void CGameLauncher::setupModsDialog()
     mpPatchSelList->setConfirmButtonEvent(new GMPatchSelected());
     mpPatchSelList->setBackButtonEvent(new GMQuit());
 
-    mpPatchDialog->add(new CGUIText("Choose your patch:",
+    mpPatchDialog->add(new GsText("Choose your patch:",
                                     GsRect<float>(0.0f, 0.0f, 1.0f, 0.05f)));
     mpPatchDialog->add(mpPatchSelList);
 
@@ -868,17 +829,17 @@ bool CGameLauncher::setChosenGame(const int chosengame)
 }
 
 
-void CGameLauncher::pumpEvent(const CEvent *evPtr)
+void CGameLauncher::pumpEvent(const std::shared_ptr<CEvent> &evPtr)
 {
     #ifdef DOWNLOADER
-    if( dynamic_cast<const GMDownloadDlgOpen*>(evPtr) )
+    if( std::dynamic_pointer_cast<const GMDownloadDlgOpen>(evPtr) )
     {
         setupDownloadDialog();
     }
     #endif
 
 
-    if( dynamic_cast<const GMStart*>(evPtr) )
+    if( std::dynamic_pointer_cast<const GMStart>(evPtr) )
     {
         const int chosengame = mpGSSelList->getSelection();
         setChosenGame(chosengame);
@@ -900,7 +861,7 @@ void CGameLauncher::pumpEvent(const CEvent *evPtr)
             setupModsDialog();
         }
     }
-    else if( dynamic_cast<const GMPatchSelected*>(evPtr) )
+    else if( std::dynamic_pointer_cast<const GMPatchSelected>(evPtr) )
     {
         const auto sel = mpPatchSelList->getSelection();
 
@@ -910,7 +871,7 @@ void CGameLauncher::pumpEvent(const CEvent *evPtr)
             mDonePatchSelection = true;
         }
     }
-    else if( dynamic_cast<const CancelDownloadEvent*>(evPtr))
+    else if( std::dynamic_pointer_cast<const CancelDownloadEvent>(evPtr))
     {
         mCancelDownload = true;
         mpDloadCancel->enable(false);
@@ -928,7 +889,7 @@ void CGameLauncher::pumpEvent(const CEvent *evPtr)
 
 
     // Check Scroll events happening on this Launcher
-    if( const MouseWheelEvent *mwe = dynamic_cast<const MouseWheelEvent*>(evPtr) )
+    if( const auto mwe = std::dynamic_pointer_cast<const MouseWheelEvent>(evPtr) )
     {
         // Wrapper for the simple mouse scroll event
         if(mwe->amount.y > 0.0f)

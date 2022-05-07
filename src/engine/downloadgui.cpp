@@ -189,7 +189,7 @@ void CGameLauncher::setupDownloadDialog()
     // Selection List
     mpGSSelList =
             mpGameStoreDialog->add(
-                new CGUITextSelectionList(
+                new GsTextSelectionList(
                           GsRect<float>(0.01f, 0.04f, 0.50f, 0.65f) ) );
 
     mpGSSelList->setBackgroundColor( GsColor(0xFF, 0xFF, 0xFF) );
@@ -211,8 +211,8 @@ void CGameLauncher::setupDownloadDialog()
     mpGSSelList->setBackButtonEvent(new GMQuit());
 
     // Title
-    mpDloadTitleText = std::dynamic_pointer_cast<CGUIText>(
-            mpGameStoreDialog->add(new CGUIText("Select your Game for Download",
+    mpDloadTitleText = std::dynamic_pointer_cast<GsText>(
+            mpGameStoreDialog->add(new GsText("Select your Game for Download",
                                                        GsRect<float>(0.0f, 0.0f,
                                                                      1.0f, 0.05f)))
                                                            );
@@ -224,8 +224,8 @@ void CGameLauncher::setupDownloadDialog()
 
 
     // Description Text Box
-    mpDDescriptionText = std::dynamic_pointer_cast<CGUIText>(
-            mpGameStoreDialog->add(new CGUIText("Description",
+    mpDDescriptionText = std::dynamic_pointer_cast<GsText>(
+            mpGameStoreDialog->add(new GsText("Description",
                                                        GsRect<float>(0.01f, 0.70f,
                                                                      0.98f, 0.05f))
                                           ) );

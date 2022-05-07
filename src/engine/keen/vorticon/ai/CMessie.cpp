@@ -3,7 +3,7 @@
 
 // Nessie (in ep3) (on the world map)
 enum nessie_actions{
-	NESSIE_SWIMNORMAL, NESSIE_PAUSE
+    NESSIE_SWIMNORMAL, NESSIE_PAUSE
 };
 
 #define NESSIE_PAUSE_TIME       250
@@ -22,34 +22,34 @@ void nessie_find_next_checkpoint(int o);
 CMessie::CMessie(CMap *p_map, Uint32 x, Uint32 y) :
 CVorticonSpriteObject(p_map, x, y, OBJ_MESSIE)
 {
-	xDirection = LEFT, yDirection = DOWN;
-	onscreen = true;
-	solid = false;
+    xDirection = LEFT, yDirection = DOWN;
+    onscreen = true;
+    solid = false;
 
-	baseframe = NESSIE_DOWNLEFT_FRAME;
+    baseframe = NESSIE_DOWNLEFT_FRAME;
 
-	animframe = 0;
-	animtimer = 0;
-	state = NESSIE_SWIMNORMAL;
-	pausetimer = 0;
-	mortimer_swim_amt = 0;
-	destx = 0;
-	desty = 0;
-	inhibitfall = 1;
-	canbezapped = 0;
+    animframe = 0;
+    animtimer = 0;
+    state = NESSIE_SWIMNORMAL;
+    pausetimer = 0;
+    mortimer_swim_amt = 0;
+    destx = 0;
+    desty = 0;
+    inhibitfall = 1;
+    canbezapped = 0;
 
     tiletrailX.fill(0);
     tiletrailY.fill(0);
 
-	// kick nessie into going counter-clockwise
-	// (otherwise she'll go clockwise)
+    // kick nessie into going counter-clockwise
+    // (otherwise she'll go clockwise)
     int mx = getXPosition()>>CSF;
     int my = getYPosition()>>CSF;
-	tiletrailX[0] = mx;
-	tiletrailY[0] = my;
-	tiletrailX[1] = mx+1;
-	tiletrailY[1] = my;
-	tiletrailhead = 2;
+    tiletrailX[0] = mx;
+    tiletrailY[0] = my;
+    tiletrailX[1] = mx+1;
+    tiletrailY[1] = my;
+    tiletrailhead = 2;
 }
 
 
@@ -58,21 +58,21 @@ void CMessie::getTouchedBy(CSpriteObject &theObject)
     // This is not valid. Only if nessie is mounted or unmounted
     if(CPlayer *Player = dynamic_cast<CPlayer*>(&theObject))
     {
-	if (mounted)
-	    Player->moveTo(m_Pos);
+    if (mounted)
+        Player->moveTo(m_Pos);
     }
 }
 
 bool CMessie::tryMounting(CPlayer &player)
 {
     const int dist = 2<<CSF;
-	const int nessie_x = getXPosition();
-	const int nessie_y = getYPosition();
-	
-	// Look if Messie is nearby
-	const int x = player.getXPosition();
-	const int y = player.getYPosition();
-	
+    const int nessie_x = getXPosition();
+    const int nessie_y = getYPosition();
+
+    // Look if Messie is nearby
+    const int x = player.getXPosition();
+    const int y = player.getYPosition();
+
     if( x >= nessie_x-dist+m_BBox.x1 and x <= nessie_x+dist+m_BBox.x2 )
     {
         if( y >= nessie_y-dist+m_BBox.y1 and y <= nessie_y+dist+m_BBox.y2 )
@@ -83,7 +83,7 @@ bool CMessie::tryMounting(CPlayer &player)
             return true;
         }
     }
-	return false;
+    return false;
 }
 
 bool CMessie::tryToUnmount()
@@ -107,7 +107,7 @@ bool CMessie::tryToUnmount()
                 if( !Tile.bdown and !Tile.bup and
                         !Tile.bleft and !Tile.bright )
                 {
-                    // unmount Messie!                    
+                    // unmount Messie!
                     mounted->solid = !gBehaviorEngine.mCheatmode.god;
                     mounted->beingteleported = false;
 
@@ -123,11 +123,11 @@ bool CMessie::tryToUnmount()
     return false;
 }
 
-void CMessie::pumpEvent(const CEvent *evPtr)
+void CMessie::pumpEvent(const std::shared_ptr<CEvent> &evPtr)
 {
     // TODO: Pump should happens to this object as well.
 
-    if( const CPlayer::Mount *ev = dynamic_cast<const CPlayer::Mount*>(evPtr) )
+    if( const auto ev = std::dynamic_pointer_cast<const CPlayer::Mount>(evPtr) )
     {
         // Let's see if he can do that...
         if(tryMounting( const_cast<CPlayer&>(ev->player) ))
@@ -138,117 +138,117 @@ void CMessie::pumpEvent(const CEvent *evPtr)
 }
 
 void CMessie::process()
-{    
+{
     // Search for the next where Messie has to swim
     if(destx == 0 && desty == 0)
     {
         nessie_find_next_checkpoint();
     }
-    
+
     // animation
-	mSpriteIdx = baseframe + animframe;
-	
-	// Did player try to mount Messie?
-	if (mounted)
-	{
-	    // Move mounted object with Messie. It still should be hidden at this point.
-	    mounted->moveTo(m_Pos);
-	    mSpriteIdx += 8;
-	    
-	    // If first Player pushes the first button, unmount!
+    mSpriteIdx = baseframe + animframe;
+
+    // Did player try to mount Messie?
+    if (mounted)
+    {
+        // Move mounted object with Messie. It still should be hidden at this point.
+        mounted->moveTo(m_Pos);
+        mSpriteIdx += 8;
+
+        // If first Player pushes the first button, unmount!
         if(gInput.getPressedCommand(IC_JUMP))
-	    {
+        {
             tryToUnmount();
             gInput.flushAll();
-	    }	    
-	}
-	
-	if (animtimer > NESSIE_ANIM_RATE)
-	{
-	    animframe ^= 1;
-	    animtimer = 0;
-	}
-	else animtimer++;
-	
-	switch(state)
-	{
-	    case NESSIE_SWIMNORMAL:
-		// arrived at destination?
-		if ( getXPosition() > (destx-NESSIE_SPEED/2)  &&
-		    getXPosition() < (destx+NESSIE_SPEED/2) )
-		{
-		    if ( getYPosition() > (desty-NESSIE_SPEED/2)  &&
+        }
+    }
+
+    if (animtimer > NESSIE_ANIM_RATE)
+    {
+        animframe ^= 1;
+        animtimer = 0;
+    }
+    else animtimer++;
+
+    switch(state)
+    {
+        case NESSIE_SWIMNORMAL:
+        // arrived at destination?
+        if ( getXPosition() > (destx-NESSIE_SPEED/2)  &&
+            getXPosition() < (destx+NESSIE_SPEED/2) )
+        {
+            if ( getYPosition() > (desty-NESSIE_SPEED/2)  &&
                 getYPosition() < (desty+NESSIE_SPEED/2) )
-		    {
-			nessie_find_next_checkpoint();
-			
-			// set up/down and left/right direction flags for frame selection
-			bool goleft = (destx < getXPosition());
-			bool godown = (desty > getYPosition());
-			
-			if(goleft && !godown)
-			    xDirection = LEFT, yDirection = UP;
-			else if(goleft && godown)
-			    xDirection = LEFT, yDirection = DOWN;
-			else if(!goleft && !godown)
-			    xDirection = RIGHT, yDirection = UP;
-			else if(!goleft && godown)
-			    xDirection = RIGHT, yDirection = DOWN;
-		    }
-		}
-		move_nessie();
-		break;
-	    case NESSIE_PAUSE:
-		if(pausetimer)
-		{
-		    pausetimer--;
-		}
-		else
-		{
-		    state = NESSIE_SWIMNORMAL;
-		    move_nessie();
-		}
-		break;
-	}
+            {
+            nessie_find_next_checkpoint();
+
+            // set up/down and left/right direction flags for frame selection
+            bool goleft = (destx < getXPosition());
+            bool godown = (desty > getYPosition());
+
+            if(goleft && !godown)
+                xDirection = LEFT, yDirection = UP;
+            else if(goleft && godown)
+                xDirection = LEFT, yDirection = DOWN;
+            else if(!goleft && !godown)
+                xDirection = RIGHT, yDirection = UP;
+            else if(!goleft && godown)
+                xDirection = RIGHT, yDirection = DOWN;
+            }
+        }
+        move_nessie();
+        break;
+        case NESSIE_PAUSE:
+        if(pausetimer)
+        {
+            pausetimer--;
+        }
+        else
+        {
+            state = NESSIE_SWIMNORMAL;
+            move_nessie();
+        }
+        break;
+    }
 }
 
 void CMessie::move_nessie()
 {
-	// select proper frame based on up/down and left/right direction flags
-	if (xDirection == LEFT && yDirection == DOWN)
-		baseframe = NESSIE_DOWNLEFT_FRAME;
-	else if (xDirection == RIGHT && yDirection == DOWN)
-		baseframe = NESSIE_DOWNRIGHT_FRAME;
-	else if (xDirection == LEFT && yDirection == UP)
-		baseframe = NESSIE_UPLEFT_FRAME;
-	else if (xDirection == RIGHT && yDirection == UP)
-		baseframe = NESSIE_UPRIGHT_FRAME;
+    // select proper frame based on up/down and left/right direction flags
+    if (xDirection == LEFT && yDirection == DOWN)
+        baseframe = NESSIE_DOWNLEFT_FRAME;
+    else if (xDirection == RIGHT && yDirection == DOWN)
+        baseframe = NESSIE_DOWNRIGHT_FRAME;
+    else if (xDirection == LEFT && yDirection == UP)
+        baseframe = NESSIE_UPLEFT_FRAME;
+    else if (xDirection == RIGHT && yDirection == UP)
+        baseframe = NESSIE_UPRIGHT_FRAME;
 
-	// head to destination
-	if (getXPosition() < destx)
-		moveRight(NESSIE_SPEED);
-	else if (getXPosition() > destx)
-		moveLeft(NESSIE_SPEED);
+    // head to destination
+    if (getXPosition() < destx)
+        moveRight(NESSIE_SPEED);
+    else if (getXPosition() > destx)
+        moveLeft(NESSIE_SPEED);
 
-	if (getYPosition() < desty)
-		moveDown(NESSIE_SPEED);
-	else if (getYPosition() > desty)
-		moveUp(NESSIE_SPEED);
+    if (getYPosition() < desty)
+        moveDown(NESSIE_SPEED);
+    else if (getYPosition() > desty)
+        moveUp(NESSIE_SPEED);
 }
 
 void CMessie::nessie_find_next_checkpoint()
 {
-	int x,y;
-	int xa,ya;
-	unsigned int destx, desty;
+    int x,y;
+    int xa,ya;
+    unsigned int destx, desty;
 
-	// search in the 8 surrounding tiles and head to the first pathtile
-	// we find that's not one of the last 5 we've been to
+    // search in the 8 surrounding tiles and head to the first pathtile
+    // we find that's not one of the last 5 we've been to
 
-	x = ((getXPosition())>>CSF)-1;
-	y = ((getYPosition()+(8<<STC))>>CSF)-1;
+    x = ((getXPosition())>>CSF)-1;
+    y = ((getYPosition()+(8<<STC))>>CSF)-1;
 
-	destx = desty = 0;
+    destx = desty = 0;
 
     for(ya=0;ya<3;ya++)
     {
@@ -286,22 +286,22 @@ void CMessie::nessie_find_next_checkpoint()
                 goto foundtile;
             } // end if (!oneoflasttiles)
 
-		} // end for(xa...
-	} // end for(ya...
+        } // end for(xa...
+    } // end for(ya...
 
-	// If Nessie went to an dead end. Go back!
-	tiletrailhead = 0;
-	return;
+    // If Nessie went to an dead end. Go back!
+    tiletrailhead = 0;
+    return;
 
-	foundtile: ;
+    foundtile: ;
 
-	this->destx = (destx<<CSF);
-	this->desty = (desty<<CSF)-(8<<STC);
+    this->destx = (destx<<CSF);
+    this->desty = (desty<<CSF)-(8<<STC);
 
-	int obj = mpMap->getObjectat(destx, desty);
-	if(obj == NESSIE_WEED || obj == NESSIE_LAND)
-	{
-		state = NESSIE_PAUSE;
-		pausetimer = NESSIE_PAUSE_TIME;
-	}
+    int obj = mpMap->getObjectat(destx, desty);
+    if(obj == NESSIE_WEED || obj == NESSIE_LAND)
+    {
+        state = NESSIE_PAUSE;
+        pausetimer = NESSIE_PAUSE_TIME;
+    }
 }

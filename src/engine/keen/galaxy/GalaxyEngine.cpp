@@ -377,18 +377,18 @@ void GalaxyEngine::switchToGameplay(const int startLevel,
 }
 
 
-void GalaxyEngine::pumpEvent(const CEvent *evPtr)
+void GalaxyEngine::pumpEvent(const std::shared_ptr<CEvent> &evPtr)
 {
     KeenEngine::pumpEvent(evPtr);
 
     const auto style = Style::GALAXY;
 
-    if( dynamic_cast<const SetNativeResolutionEv*>(evPtr) )
+    if( std::dynamic_pointer_cast<const SetNativeResolutionEv>(evPtr) )
     {
         const GsRect<Uint16> gameRect = gVideoDriver.getVidConfig().mGameRect;
         gVideoDriver.setNativeResolution(gameRect, 2);
     }
-    else if( dynamic_cast<const FinishedLoadingResources*>(evPtr) )
+    else if( std::dynamic_pointer_cast<const FinishedLoadingResources>(evPtr) )
     {
         const auto argLevel = gArgs.getValue("level");
 
@@ -412,7 +412,7 @@ void GalaxyEngine::pumpEvent(const CEvent *evPtr)
         }
         //gSaveGameController.convertAllOldFormats();
     }
-    else if( dynamic_cast<const EventEndGamePlay*>(evPtr) )
+    else if( std::dynamic_pointer_cast<const EventEndGamePlay>(evPtr) )
     {
         if( dynamic_cast<CPlayGameGalaxy*>(mpGameMode.get()) )
         {
@@ -423,8 +423,8 @@ void GalaxyEngine::pumpEvent(const CEvent *evPtr)
             assert(0);
         }
     }
-    else if( const NewGamePlayersEvent* pNewGame =
-             dynamic_cast<const NewGamePlayersEvent*>(evPtr) )
+    else if( const auto pNewGame =
+             std::dynamic_pointer_cast<const NewGamePlayersEvent>(evPtr) )
     {
         const auto numPlayerVars = pNewGame->mSelection;
         gBehaviorEngine.setNumPlayers(numPlayerVars);
@@ -449,8 +449,8 @@ void GalaxyEngine::pumpEvent(const CEvent *evPtr)
         }
         return;
     }
-    else if( const SelectPlayerSpriteVarEvent* pStart =
-             dynamic_cast<const SelectPlayerSpriteVarEvent*>(evPtr) )
+    else if( const auto pStart =
+             std::dynamic_pointer_cast<const SelectPlayerSpriteVarEvent>(evPtr) )
     {
         mSpriteVars.assign(1, pStart->mSpecialIdx);
         gEventManager.add( new OpenMenuEvent(
@@ -458,20 +458,20 @@ void GalaxyEngine::pumpEvent(const CEvent *evPtr)
         return;
     }
     // Control Menu Events
-    else if( const OpenControlMenuEvent* ctrlMenu =
-             dynamic_cast<const OpenControlMenuEvent*>(evPtr) )
+    else if( const auto ctrlMenu =
+             std::dynamic_pointer_cast<const OpenControlMenuEvent>(evPtr) )
     {
         const int players = ctrlMenu->mSelection;
         gEventManager.add( new OpenMenuEvent(
                                 new CControlsettings(players, style) ) );
     }
-    else if( const GMSwitchToPlayGameMode* pPlayGame =
-             dynamic_cast<const GMSwitchToPlayGameMode*>(evPtr) )
+    else if( const auto pPlayGame =
+             std::dynamic_pointer_cast<const GMSwitchToPlayGameMode>(evPtr) )
     {
         const GMSwitchToPlayGameMode &playGame = const_cast<GMSwitchToPlayGameMode&>(*pPlayGame);
         switchToGameplay(playGame.m_startlevel, mSpriteVars);
     }
-    else if( dynamic_cast<const LoadGameEvent*>(evPtr) ) // If GamePlayMode is not running but loading is requested...
+    else if( std::dynamic_pointer_cast<const LoadGameEvent>(evPtr) ) // If GamePlayMode is not running but loading is requested...
     {
         // Ensure the Sprite variations are correctly setup
         mSpriteVars.clear();
@@ -489,17 +489,18 @@ void GalaxyEngine::pumpEvent(const CEvent *evPtr)
         gEventManager.add( new CloseAllMenusEvent() );
         gInput.flushAll();
     }
-    else if( dynamic_cast<const OpenMainMenuEvent*>(evPtr) )
+    else if( std::dynamic_pointer_cast<const OpenMainMenuEvent>(evPtr) )
     {
         openMainMenu();
     }
-    else if( dynamic_cast<const CloseComputerWrist*>(evPtr) )
+    else if( std::dynamic_pointer_cast<const CloseComputerWrist>(evPtr) )
     {
         mpComputerWrist = nullptr;
         gEventManager.add(new EventReloadMusic);
     }
 
-    else if( const auto *ocw = dynamic_cast<const OpenComputerWrist*>(evPtr) )
+    else if( const auto ocw =
+             std::dynamic_pointer_cast<const OpenComputerWrist>(evPtr) )
     {
         gInput.flushAll();
         mpComputerWrist.reset(new ComputerWrist(ocw->mGrayMode,

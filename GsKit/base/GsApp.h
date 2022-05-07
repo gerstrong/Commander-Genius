@@ -28,7 +28,7 @@ public:
     GsAppEventSink(GsApp* pApp) :
         mpApp(pApp) {}
 
-    void pumpEvent(const CEvent *ev) override;
+    void pumpEvent(const std::shared_ptr<CEvent> &ev) override;
 
 private:
     GsApp* mpApp;
@@ -64,7 +64,7 @@ public:
 
     bool mustShutdown(){ return (mpCurEngine==nullptr); }
 
-    void pumpEvent(const CEvent *evPtr);
+    void pumpEvent(const std::shared_ptr<CEvent> &evPtr);
 
     void setName(const std::string &appName);
     std::string getName();
@@ -82,7 +82,7 @@ public:
 private:
 
     std::unique_ptr<GsEngine> mpCurEngine;
-    std::shared_ptr<GsAppEventSink> mpSink;
+    std::unique_ptr<GsAppEventSink> mpSink;
 
     std::string mAppName;
 

@@ -11,19 +11,17 @@
 #ifndef CGUIDIALOG_H_
 #define CGUIDIALOG_H_
 
+#include "GsControl.h"
+#include "GsWidgetsManager.h"
+
+#include <graphics/GsSurface.h>
+#include <base/utils/property_tree/xml_parser.h>
+
 #include <list>
 #include <memory>
 
-//#include <engine/CEvent.h>
-#include <graphics/GsSurface.h>
-
-#include "GsControl.h"
-#include "GsBitmapBox.h"
-
-#include "GsWidgetsManager.h"
-
 class CGUIDialog : public GsWidgetsManager
-{    
+{
 
 public:
 
@@ -34,29 +32,29 @@ public:
     };
 
 
-	// Constructor which needs the Rect for the placement of the Dialog
+    // Constructor which needs the Rect for the placement of the Dialog
     CGUIDialog(const GsRect<float> &NewRect, const FXKind fx = FXKind::NONE);
 
-    bool sendEvent(const std::shared_ptr<CEvent> &event ) override;
+    bool sendEvent(const std::shared_ptr<CEvent> &evPtr ) override;
 
-	// Empty Background draw function. Just fills the Rect with a standard gray color
+    // Empty Background draw function. Just fills the Rect with a standard gray color
     void initEmptyBackground();
 
-	// Vorticon Menu draw function
+    // Vorticon Menu draw function
     void initVorticonBackground();
 
     // This draws the borders around the dialog
     void drawBorderRect(SDL_Surface *backSfc, const SDL_Rect &Rect);
 
-	// processes the whole logic of the Dialog
+    // processes the whole logic of the Dialog
     virtual void processLogic() override;
 
     // processes the whole rendering of theCGUIDialog Dialog
-    void processRendering();    
+    void processRendering();
 
     void processRender(const GsRect<float> &RectDispCoordFloat) override;
 
-	// processes the whole rendering of the Dialog
+    // processes the whole rendering of the Dialog
     void processRendering(SDL_Surface*);
 
     void setRect(const GsRect<float> &rect)
@@ -72,7 +70,7 @@ protected:
 
 private:
 
-	// SDL_Surface of the Background
+    // SDL_Surface of the Background
     GsSurface mTempSfc;
 
     // Unused in Galaxy,
@@ -81,10 +79,10 @@ private:
     FXKind mFXSetup = FXKind::NONE;
     int mFXhStep = 0;
     int mFXvStep = 0;
-
-
 };
 
 
+bool buildDialogWidgetsFrom(CGUIDialog &dlg,
+                            const GsKit::ptree &tree);
 
 #endif /* CGUIDIALOG_H_ */

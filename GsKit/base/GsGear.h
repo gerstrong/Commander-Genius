@@ -11,11 +11,12 @@
 */
 
 #include <base/GsEvent.h>
+#include <memory>
 
 class GsGear
 {
 public:
-    virtual void pumpEvent(const CEvent *) {}
+    virtual void pumpEvent(const std::shared_ptr<CEvent>) {}
     virtual void run(const float deltaT) = 0;
     virtual void render() {}
 };

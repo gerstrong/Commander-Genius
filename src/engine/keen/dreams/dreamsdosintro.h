@@ -23,7 +23,7 @@ class DreamsDosIntro : public GsEngine
      * @brief pumpEvent Events like user closes windows or mouse presses are processed here.
      * @param evPtr
      */
-    void pumpEvent(const CEvent *evPtr) override;
+    void pumpEvent(const std::shared_ptr<CEvent> &evPtr) override;
 
     /**
      * @brief ponder    Logic cycle run usually at 120 LPS

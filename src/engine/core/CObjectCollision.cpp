@@ -1150,7 +1150,7 @@ void CSpriteObject::processPushOutCollision()
     }
 }
 
-void CSpriteObject::pumpEvent(const CEvent *evPtr)
+void CSpriteObject::pumpEvent(const std::shared_ptr<CEvent> &evPtr)
 {
     /*if( ObjMove* pObjMove = dynamic_cast<ObjMove>(evPtr))
     {

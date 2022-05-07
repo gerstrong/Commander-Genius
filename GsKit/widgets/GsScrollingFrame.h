@@ -29,10 +29,10 @@ public:
     void moveX(const float dx);
     void moveY(const float dy);
 
-protected:
-
     float getScrollX() {return mScrollX;}
     float getScrollY() {return mScrollY;}
+
+    void setBackgroundColor(const GsColor &color) override;
 
 private:
 

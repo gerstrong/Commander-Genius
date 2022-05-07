@@ -5,7 +5,7 @@
 
 #include <base/utils/property_tree/property_tree.h>
 
-class CGUIBanner : public CGUIText
+class CGUIBanner : public GsText
 {
 public:
     CGUIBanner(const std::string& text,

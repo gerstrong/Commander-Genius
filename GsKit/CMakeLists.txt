@@ -1,10 +1,11 @@
 # CMake file for development of Commander Genius (taken from OLX)
-# This CMake file is used under Linux normally. 
-    
+# This CMake file is used under Linux normally.
+
 cmake_minimum_required(VERSION 3.7)
 
 Project(GsKit)
-    
+
+
 OPTION(USE_BOOST "Use Boost for XML" No)
 
 option(DISABLE_HOVER "Disables the hover over effect in the menus, useful for touch based devices" OFF)
@@ -19,6 +20,7 @@ if(USE_CRASHHANDLER)
 endif()
 
 OPTION(USE_OPENGL "OpenGL support" No)
+
 
 if(USE_BOOST)
     set(Boost_USE_STATIC_LIBS OFF)
@@ -47,22 +49,22 @@ if(CMAKE_SYSTEM_NAME MATCHES "Emscripten")
   set(CMAKE_EXE_LINKER "${CMAKE_EXE_LINKER_FLAGS_INIT} -s EXTRA_EXPORTED_RUNTIME_METHODS='[\"ccall\", \"cwrap\"]'")
 
   # TODO: Needs rework
-  add_library(GsKit STATIC ${ALL_SRCS_GSKIT_BASE})        
+  add_library(GsKit STATIC ${ALL_SRCS_GSKIT_BASE})
 
 else()
-    
+
     if(SDL2)
         OPTION(USE_OPENGL "OpenGL support" No)
     else()
         OPTION(USE_OPENGL "OpenGL support" Yes)
     endif()
-    
+
     option(USE_VIRTUALPAD "Enable Onscreen Virtual Gamepad support " ON)
-    
+
     if(USE_VIRTUALPAD)
         ADD_DEFINITIONS(-DVIRTUALPAD)
     endif(USE_VIRTUALPAD)
-    
+
     set (CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${CMAKE_CURRENT_SOURCE_DIR}/CMake")
 
     if(${CMAKE_VERSION} VERSION_GREATER "3.8.0")
@@ -77,17 +79,17 @@ else()
           set(CMAKE_CXX17_EXTENSION_COMPILE_OPTION "-std=gnu++1z")
         endif()
     endif()
-    
+
     IF(WIN32)
-    	ADD_DEFINITIONS(-DWIN32)
+        ADD_DEFINITIONS(-DWIN32)
     ENDIF(WIN32)
-    
+
     IF (USE_OPENGL)
             ADD_DEFINITIONS(-DGL)
             ADD_DEFINITIONS(-DUSE_OPENGL)
     ENDIF (USE_OPENGL)
-    
-    
+
+
     # If we want to debug set the proper flags or have release etc.
     IF(CMAKE_BUILD_TYPE STREQUAL "Debug")
             ADD_DEFINITIONS(-DDEBUG)
@@ -98,18 +100,18 @@ else()
             ADD_DEFINITIONS(-DRELEASE)
             ADD_DEFINITIONS(-O2)
     ENDIF(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    
+
     find_package(SDL2 REQUIRED)
     find_package(SDL2_image REQUIRED)
     find_package(SDL2_mixer REQUIRED)
     find_package(SDL2_ttf REQUIRED)
-    
+
     if(SDL2_FOUND)
         message(STATUS "Using shared SDL Version 2 for ${PROJECT_NAME}")
         include_directories(${SDL2_INCLUDE_DIRS})
-    
+
         message(STATUS "Using shared SDL Version 2 for ${PROJECT_NAME}")
-    
+
         include_directories(${SDL2_INCLUDE_DIR})
         include_directories(${SDL2_NET_INCLUDE_DIRS})
         include_directories(${SDL2_MIXER_INCLUDE_DIRS})
@@ -118,31 +120,32 @@ else()
 
     endif(SDL2_FOUND)
 
-    
+
     IF(USE_OPENGL)
         # OpenGL Parsing
         set(OpenGL_GL_PREFERENCE GLVND)
-        find_package(OpenGL REQUIRED)    
-    
+        find_package(OpenGL REQUIRED)
+
         ADD_DEFINITIONS(-DGL)
         ADD_DEFINITIONS(-DUSE_OPENGL)
     ENDIF (USE_OPENGL)
-    
+
 
     # Hack which on some systems helps linking this lib correctly
     # (required for mac builds)
     file(WRITE null.cpp "")
     add_library(${PROJECT_NAME} LICENSE null.cpp)
 
-    add_subdirectory(base)
     add_subdirectory(fileio)
     add_subdirectory(graphics)
     add_subdirectory(widgets)
 
+    add_subdirectory(base)
+
     Target_link_libraries(${PROJECT_NAME} GsKit_base)
     Target_link_libraries(${PROJECT_NAME} GsKit_fileio)
     Target_link_libraries(${PROJECT_NAME} GsKit_widgets)
-    
+
     # The naming with the new Find cmake files related
     # to SDL is not always consistent. Some use the "2" as var name others not.
     Target_link_libraries(${PROJECT_NAME} ${SDL2_LIBRARIES})
@@ -154,11 +157,12 @@ else()
     Target_link_libraries(${PROJECT_NAME} ${SDLIMAGE_LIBRARY})
     Target_link_libraries(${PROJECT_NAME} ${SDLMIXER_LIBRARY})
     Target_link_libraries(${PROJECT_NAME} ${SDL2_TTF_LIBRARY})
-        
+
 IF(USE_OPENGL)
     # OpenGL stuff to link
     target_link_libraries(${PROJECT_NAME} ${OPENGL_LIBRARIES})
 ENDIF(USE_OPENGL)
+
 
 endif()
 

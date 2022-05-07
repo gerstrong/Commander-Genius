@@ -17,17 +17,17 @@ CVidConfig::CVidConfig()
 
 bool CVidConfig::operator==(const CVidConfig& target)
 {
-	return ( memcmp( &target, this, sizeof(CVidConfig)) == 0);
+    return ( memcmp( &target, this, sizeof(CVidConfig)) == 0);
 }
 
 bool CVidConfig::operator!=(const CVidConfig& target)
 {
-	return !(*this == target);
+    return !(*this == target);
 }
 
 void CVidConfig::reset()
 {
-	// Default values
+    // Default values
     mVSync = true;
 
     mDisplayRect.pos.x = 0;
@@ -37,14 +37,14 @@ void CVidConfig::reset()
     mDisplayRect.dim.x=320;
     mDisplayRect.h=240;
 #if defined(GP2X) || defined(NANONOTE)
-	//m_Resolution.depth=32;
+    //m_Resolution.depth=32;
 #else
-	//m_Resolution.depth=16;
+    //m_Resolution.depth=16;
 #endif
-	Fullscreen=true;
+    Fullscreen=true;
 #else
-    mDisplayRect.dim.x = 800;
-    mDisplayRect.dim.y = 600;
+    mDisplayRect.dim.x = 1920;
+    mDisplayRect.dim.y = 1080;
     mFullscreen = false;
 #endif
 
@@ -60,33 +60,24 @@ void CVidConfig::reset()
 
     mAspectCorrection.dim.x = 4;
     mAspectCorrection.dim.y = 3;
-	m_CameraBounds.reset();
+    m_CameraBounds.reset();
 
     mGameRect.pos.x = 0;
     mGameRect.pos.y = 0;
-    mGameRect.dim.x = 320;
-    mGameRect.dim.y = 200;
+    mGameRect.dim.x = 1920;
+    mGameRect.dim.y = 1080;
 
 #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
     mOpengl = true;
-	mAspectCorrection.dim.x=0;
-	mAspectCorrection.dim.y=0;
+    mAspectCorrection.dim.x=0;
+    mAspectCorrection.dim.y=0;
 #endif
 
 #if defined(ANDROID)
-	mAspectCorrection.dim.x=0;
-	mAspectCorrection.dim.y=0;
+    mAspectCorrection.dim.x=0;
+    mAspectCorrection.dim.y=0;
 #endif
 
-}
-
-
-void CVidConfig::setResolution(const int width, const int height, const int depth)
-{
-    /*
-	const GsRect<Uint16> res(width, height);
-	setResolution(res);
-    */
 }
 
 void CVidConfig::setResolution(const GsVec2D<Uint16>& res)

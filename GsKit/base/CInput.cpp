@@ -69,8 +69,8 @@ void CInput::resetControls(const int player)
     m_cmdpulse = 0;
     m_joydeadzone = 1024;
 
-    memset(immediate_keytable,false,KEYTABLE_SIZE);
-    memset(last_immediate_keytable,false,KEYTABLE_SIZE);
+    immediate_keytable.fill(false);
+    last_immediate_keytable.fill(false);
 
     auto &curInput = mInputCommands[player];
 
@@ -924,7 +924,7 @@ void CInput::pollEvents()
 #endif
 
     // copy all the input of the last poll to a space for checking pressing or holding a button
-    memcpy(last_immediate_keytable, immediate_keytable, KEYTABLE_SIZE*sizeof(char));
+    last_immediate_keytable = immediate_keytable;
 
     // Input for player commands
     for(unsigned int j=0 ; j<mInputCommands.size() ; j++)
@@ -1422,13 +1422,19 @@ bool CInput::processKeys(int keydown)
         }
     }
 
-
-
+    // Detect Key modifier
+    switch(Event.key.keysym.scancode)
+    {
+    case SDL_SCANCODE_LSHIFT: immediate_keytable[KSHIFT] = keydown;
+    default: break;
+    }
 
     // ... and for general keys
-    switch(Event.key.keysym.sym)
+    if(Event.key.keysym.sym < 160)
     {
-            // These are only used for ingame stuff or menu, but not for controlling the player anymore
+        switch(Event.key.keysym.sym)
+        {
+        // These are only used for ingame stuff or menu, but not for controlling the player anymore
         case SDLK_LEFT: 	immediate_keytable[KLEFT]	= keydown;  break;
         case SDLK_UP:	immediate_keytable[KUP]		= keydown;  break;
         case SDLK_RIGHT:	immediate_keytable[KRIGHT]	= keydown;  break;
@@ -1530,6 +1536,11 @@ bool CInput::processKeys(int keydown)
         case SDLK_PLUS:immediate_keytable[KPLUS]	= keydown;  break;
 
         default: break;
+        }
+    }
+    else if(Event.key.keysym.sym < immediate_keytable.size())
+    {
+        immediate_keytable[Event.key.keysym.sym] = keydown;
     }
 
     if(getHoldedKey(KSHIFT))
@@ -1644,6 +1655,17 @@ std::string CInput::getPressedTypingKey(void)
             return buf;
         }
     }
+
+    for(i=160 ; i<256 ; i++)
+    {
+        if(getPressedKey(i))
+        {
+            buf = i;
+            return buf;
+        }
+    }
+
+
     for(i=KSPACE ; i<=KAT ; i++)
     {
         if(getPressedKey(i))
@@ -1713,6 +1735,12 @@ bool CInput::getPressedIsTypingKey(void)
             if(getHoldedKey(i))
                 return true;
         }
+        for(i=160 ; i<256 ; i++)
+        {
+            if(getHoldedKey(i))
+                return true;
+        }
+
         return false;
     }
 }
@@ -1922,9 +1950,9 @@ void CInput::flushCommand(int player, int command)
  */
 void CInput::flushKeys(void)
 {
-    memset(immediate_keytable,false,KEYTABLE_SIZE);
-    memset(last_immediate_keytable,false,KEYTABLE_SIZE);
-    memset(firsttime_immediate_keytable,false,KEYTABLE_SIZE);
+    immediate_keytable.fill(false);
+    last_immediate_keytable.fill(false);
+    firsttime_immediate_keytable.fill(false);
 }
 
 /**

@@ -243,7 +243,7 @@ void CControlSettingsBase::addBottomText()
     }
 
     auto deleteText = mpMenuDialog->add(
-                new CGUIText("Remove: ALT + BACKSPC", rect) );
+                new GsText("Remove: ALT + BACKSPC", rect) );
 
     deleteText->setTextColor(GsColor(0xBF, 0x00, 0x00));
     deleteText->enableCenteringH(false);
