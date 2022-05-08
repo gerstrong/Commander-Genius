@@ -50,21 +50,21 @@ CVideoEngine::~CVideoEngine()
 
 bool CVideoEngine::init()
 {
-	// Setup mode depends on some systems.
-#if defined(CAANOO) || defined(WIZ) || defined(DINGOO) || defined(NANONOTE) || defined(ANDROID) || (TARGET_OS_IPHONE) || (TARGET_IPHONE_SIMULATOR)
-	m_Mode = SDL_SWSURFACE;
+    // Setup mode depends on some systems.
+#if defined(CAANOO) || defined(WIZ) || defined(DINGOO) || defined(NANONOTE) || defined(ANDROID) || defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
+    m_Mode = SDL_SWSURFACE;
 #elif defined(GP2X)
-	m_Mode = SDL_HWSURFACE;
+    m_Mode = SDL_HWSURFACE;
 #else
 #endif
 
 #ifdef USE_OPENGL
     // Enable OpenGL if selected
     if(m_VidConfig.mOpengl && m_VidConfig.mVSync)
-	{
+    {
         SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
         SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-	}
+    }
 #endif // USE_OPENGL
 
     // Although no real screen setup has happened yet
@@ -72,7 +72,7 @@ bool CVideoEngine::init()
     const auto &asp = m_VidConfig.mAspectCorrection.dim;
     updateActiveArea(m_VidConfig.mDisplayRect, asp);
 
-	#ifdef _WIN32 // So far this only works under windows
+    #ifdef _WIN32 // So far this only works under windows
     {
         SDL_SysWMinfo info;
         SDL_VERSION(&info.version);
@@ -88,17 +88,17 @@ bool CVideoEngine::init()
         }
 
     }
-	#endif
+    #endif
 
     mClearColor = m_VidConfig.mBorderColors;
 
-	return true;
+    return true;
 }
 
 
 void CVideoEngine::updateActiveArea(const GsRect<Uint16>& displayRes,
                                     const GsVec2D<int> asp)
-{    
+{
     const int aspWidth  = asp.x;
     const int aspHeight = asp.y;
 
@@ -139,10 +139,10 @@ void CVideoEngine::updateActiveArea(const GsRect<Uint16>& displayRes,
         else
         {
             mActiveAreaRect.dim.x = displayRes.dim.x;
-            mActiveAreaRect.dim.y = (displayRes.dim.x*aspHeight)/aspWidth;            
+            mActiveAreaRect.dim.y = (displayRes.dim.x*aspHeight)/aspWidth;
         }
         mActiveAreaRect.pos = (displayRes.dim-mActiveAreaRect.dim)/2;
-    }    
+    }
 }
 
 
@@ -204,7 +204,7 @@ bool CVideoEngine::createSurfaces(const GsRect<Uint16> &gamerect,
                     0x0000FF00,
                     0x000000FF,
                     0xFF000000);
-                    
+
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     SDL_SetSurfaceBlendMode(mGameSfc.getSDLSurface(), SDL_BLENDMODE_NONE);
@@ -237,7 +237,7 @@ bool CVideoEngine::createSurfaces(const GsRect<Uint16> &gamerect,
     {
         mpScreenSfc = &mGameSfc;
         gLogging << "Screen pointer set to game surface directly" << CLogFile::endl;
-    }    
+    }
 
     initOverlaySurface(Uint16(blit->w), Uint16(blit->h));
 
@@ -267,7 +267,7 @@ GsRect<Uint16> CVideoEngine::getActiveAreaRect() const
 }
 
 void CVideoEngine::drawHorizBorders()
-{   
+{
     int borderHUpper = m_VidConfig.mHorizBorders;
     int borderHBottom = m_VidConfig.mHorizBorders;
 
@@ -351,5 +351,5 @@ GsScrollSurface& CVideoEngine::getScrollSfc(const int idx)
 }
 
 void CVideoEngine::shutdown()
-{    
+{
 }

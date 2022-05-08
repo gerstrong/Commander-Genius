@@ -14,12 +14,12 @@
 
 
 #if defined(ANDROID)
-	#define EMBEDDED
-	#undef USE_OPENGL
+    #define EMBEDDED
+    #undef USE_OPENGL
 #endif
 
-#if defined(EMBEDDED) || TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
-	#define SINGLEPLAYER
+#if defined(EMBEDDED) || defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
+    #define SINGLEPLAYER
 #endif
 
 

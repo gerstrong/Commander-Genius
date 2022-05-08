@@ -158,7 +158,7 @@ bool CVideoDriver::initResolutionList()
 #else
 
 // TODO: Not sure if those defines are really needed anymore.
-#if (TARGET_OS_IPHONE) || (TARGET_IPHONE_SIMULATOR)
+#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
     resolution.x = 320; //  320;
     resolution.y = 200;//  480;
 #elif defined(ANDROID)
