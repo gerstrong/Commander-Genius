@@ -124,7 +124,7 @@ void GsSelectionList::processLogic()
     mScrollingFrame.processLogic();
     mScrollbar.processLogic();
 
-    auto &controlsList = getControlsList();
+    auto &controlsList = mScrollingFrame.getControlsList();
     for(auto &widget : controlsList)
     {
         if(mFollowSelectedItem)

@@ -85,7 +85,7 @@ void GsTextSelectionList::setBackButtonEvent(CEvent *ev)
 
 bool GsTextSelectionList::sendEvent(const InpCmd command)
 {
-    auto &controlsList = getControlsList();
+    auto &controlsList = mScrollingFrame.getControlsList();
 
     if(command == IC_UP)
     {
@@ -130,7 +130,7 @@ bool GsTextSelectionList::sendEvent(const InpCmd command)
             return true;
         }
 
-        return false;
+        return ScrollingFrame().sendEvent(command);
     }
     else if(command == IC_DOWN)
     {
@@ -185,10 +185,8 @@ bool GsTextSelectionList::sendEvent(const InpCmd command)
             gEventManager.add(std::move(mBackEvent));
         return true;
     }
-    else
-    {
-        return false;
-    }
+
+    return false;
 }
 
 void GsTextSelectionList::addText(const std::string &text)
@@ -202,8 +200,9 @@ void GsTextSelectionList::addText(const std::string &text)
     GsRect<float> frameRect(0.1f, txtYPos,
                             0.9f, 0.1f);
 
-    auto selectionFrame =
-            add( new GsSelectableText(frameRect, text) );
+    auto selTextPtr = new GsSelectableText(frameRect, text);
+
+    auto selectionFrame = mScrollingFrame.add( selTextPtr );
 
     selectionFrame->setParent(this);
 
@@ -226,7 +225,7 @@ void GsTextSelectionList::addText(const std::string &text)
 
 void GsTextSelectionList::updateSelection()
 {
-    auto &controlsList = getControlsList();
+    auto &controlsList = mScrollingFrame.getControlsList();
     int idx = 0;
     for(auto &control : controlsList)
     {
@@ -257,7 +256,7 @@ GsTextSelectionList::getItemString(const unsigned int sel) const
 
 void GsTextSelectionList::unselectAll()
 {
-    auto &controlsList = getControlsList();
+    auto &controlsList = mScrollingFrame.getControlsList();
     for(auto &widget : controlsList)
     {
         auto ctrl = std::dynamic_pointer_cast<GsSelectableText>(widget);

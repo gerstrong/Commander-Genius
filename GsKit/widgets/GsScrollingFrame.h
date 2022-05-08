@@ -22,7 +22,6 @@ public:
     virtual void processRender(const GsRect<float> &srcRectFloat,
                                const GsRect<float> &dstRectFloat) override;
 
-
     void setPosX(const float x);
     void setPosY(const float y);
 

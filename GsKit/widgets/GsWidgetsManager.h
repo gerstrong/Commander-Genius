@@ -17,6 +17,7 @@ class GsWidgetsManager : public GsControl
 public:
 
     friend class GsSelectionList;
+    friend class GsTextSelectionList;
 
     GsWidgetsManager(const GsRect<float> &SrGsRect);
 
@@ -94,10 +95,6 @@ public:
         mSelection = sel;
     }
 
-    /*
-    void setCurrentControl(std::shared_ptr<GsWidget> &widget)
-    {	mpCurWidget = widget;	}
-*/
     template <class T>
     void setCurrentControl(std::shared_ptr<T> &control)
     {

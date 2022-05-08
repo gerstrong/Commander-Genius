@@ -262,6 +262,8 @@ bool CGameLauncher::setupMenu()
         i++;
     }
 
+    mpGSSelList->fitWithHeight(0.0f, 1.0f, 0.2f);
+
     mpGSSelList->setConfirmButtonEvent(new GMStart());
     mpGSSelList->setBackButtonEvent(new GMQuit());
 

@@ -82,7 +82,6 @@ void GsScrollingFrame::processRender(const GsRect<float> &rectDispCoordFloat)
     processRender(rectDispCoordFloat, rectDispCoordFloat);
 }
 
-
 void GsScrollingFrame::setPosX(const float x)
 {
     mScrollX = x;
