@@ -7,7 +7,7 @@ add_subdirectory(sound)
 include_directories(${SDL_INCLUDE_DIR})
 
 
-add_library(sdl_extensions_audio STATIC Audio.cpp Audio.h								 
+add_library(sdl_extensions_audio STATIC Audio.cpp Audio.h
                                  Mixer.cpp
                                  CAudioResources.cpp CAudioResources.h)
 
@@ -20,4 +20,5 @@ target_link_libraries(sdl_extensions_audio
 
 LINK_DIRECTORIES(${SDL2_MIXER_LIBRARY_DIRS})
 target_link_libraries(sdl_extensions_audio
-                      ${SDL2_MIXER_LIBRARY})
+                      ${SDL2_MIXER_LIBRARY}
+                      ${SDL2MIXER_LIBRARIES})
