@@ -2,8 +2,8 @@
 ############### Prepare the installation of the compiled stuff here!
 
 # This will install the application itself
-INSTALL(TARGETS CGeniusExe 
-	DESTINATION ${APPDIR})
+INSTALL(TARGETS CGeniusExe
+    DESTINATION ${APPDIR})
 
 
 IF(WIN32)
@@ -15,29 +15,29 @@ foreach(X IN ITEMS 16 32 48 64 128 256 512)
 endforeach()
 
 INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/../share/cgenius.desktop
-	DESTINATION "${DESKTOPFILESDIR}")
+    DESTINATION "${DESKTOPFILESDIR}")
 
 INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/../share/metainfo/io.sourceforge.clonekeenplus.appdata.xml
         DESTINATION "${SHAREDIR}/metainfo")
 
 ENDIF(WIN32)
 
-	
+
 # This will copy the resources files to the proper directory
 IF(IS_DIRECTORY "${CMAKE_SOURCE_DIR}/vfsroot")
-	INSTALL(DIRECTORY "${CMAKE_SOURCE_DIR}/vfsroot/"
-		DESTINATION ${DATADIR})
+    INSTALL(DIRECTORY "${CMAKE_SOURCE_DIR}/vfsroot/"
+        DESTINATION ${DATADIR})
 ELSE(IS_DIRECTORY "${CMAKE_SOURCE_DIR}/vfsroot")
-	Message ("Error: Missing ${CMAKE_SOURCE_DIR}/vfsroot")
+    Message ("Error: Missing ${CMAKE_SOURCE_DIR}/vfsroot")
 ENDIF(IS_DIRECTORY "${CMAKE_SOURCE_DIR}/vfsroot")
 
-# This will copy the readme file. 
+# This will copy the readme file.
 INSTALL(FILES "${CMAKE_BINARY_DIR}/README.md"
-	DESTINATION ${DOCDIR})
+    DESTINATION ${DOCDIR})
 
-# This will copy the changelog file. 
-INSTALL(FILES "${CMAKE_SOURCE_DIR}/changelog.txt" 
-	DESTINATION ${DOCDIR})        
+# This will copy the changelog file.
+INSTALL(FILES "${CMAKE_SOURCE_DIR}/changelog.txt"
+    DESTINATION ${DOCDIR})
 
 # Windows might not have those dlls so we ship them with the packages
 IF(WIN32)
@@ -70,11 +70,11 @@ IF(WIN32)
 
         INSTALL(FILES "${CMAKE_FIND_ROOT_PATH}/lib/libwinpthread-1.dll" DESTINATION "${APPDIR}")
 
-        INSTALL(FILES "/usr/lib/gcc/x86_64-w64-mingw32/8.3-win32/libgcc_s_seh-1.dll" DESTINATION "${APPDIR}")
-        INSTALL(FILES "/usr/lib/gcc/x86_64-w64-mingw32/8.3-win32/libstdc++-6.dll" DESTINATION "${APPDIR}")
+        INSTALL(FILES "/usr/lib/gcc/x86_64-w64-mingw32/10-win32/libgcc_s_seh-1.dll" DESTINATION "${APPDIR}")
+        INSTALL(FILES "/usr/lib/gcc/x86_64-w64-mingw32/10-win32/libstdc++-6.dll" DESTINATION "${APPDIR}")
 
     else()
         INSTALL(DIRECTORY "${CMAKE_SOURCE_DIR}/dlls/" DESTINATION "${APPDIR}")
     endif(PULL_DLLS)
-ENDIF(WIN32)   
+ENDIF(WIN32)
 
