@@ -86,11 +86,13 @@ public:
      * @param roundRadius
      * @param contourColor
      * @param fillColor
+     * @param borderColor
      */
     void drawRectRounded(const GsRect<Uint16> &rect,
                          const int roundRadius,
                          const Uint32 contourColor,
-                         const Uint32 fillColor );
+                         const Uint32 fillColor,
+                         const Uint32 borderColor);
 
     /**
      * @brief drawCircle draws of a given surface a circle
@@ -103,14 +105,19 @@ public:
      * @param pos
      * @param radius
      * @param fillColor
+     * @param borderColor
      */
-    void drawCircle(const GsVec2D<Uint16> pos, const int radius, const Uint32 fillColor);
+    void drawCircle(const GsVec2D<Uint16> pos,
+                    const int radius,
+                    const Uint32 fillColor,
+                    const Uint32 borderColor);
 
     /**
      * @brief drawCirclePart
      * @param pos
      * @param radius
      * @param fillColor
+     * @param borderColor
      * @param corner 0b00=UpperLeft,
      *               0b01=UpperRight,
      *               0b10=BottomLeft,
@@ -119,6 +126,7 @@ public:
     void drawCircleQuart(const GsVec2D<Uint16> pos,
                         const int radius,
                         const Uint32 fillColor,
+                        const Uint32 borderColor,
                         const char corner);
 
     /**

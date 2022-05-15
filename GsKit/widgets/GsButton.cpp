@@ -23,6 +23,7 @@ std::shared_ptr<GsButton> createButtonFrom(const GsKit::ptree &node)
     std::string event;
     std::string id;
     std::string tag;
+    bool rounded = false;
 
     try
     {
@@ -36,6 +37,7 @@ std::shared_ptr<GsButton> createButtonFrom(const GsKit::ptree &node)
                 event = item.second.get<std::string>("event");
                 id = item.second.get<std::string>("id");
                 tag = item.second.get<std::string>("tag");
+                rounded = item.second.get<bool>("rounded", rounded);
             }
         }
     }
@@ -59,6 +61,7 @@ std::shared_ptr<GsButton> createButtonFrom(const GsKit::ptree &node)
                        [event](){ gEventManager.add(event); }, -1 ));
 
     w->setTag(tag);
+    w->setRounded(rounded);
 
     return w;
 }
@@ -285,7 +288,7 @@ void GsButton::drawRoundedStyle(const SDL_Rect& lRect)
 
     if(mShowBorders)
     {
-        blitsfc.drawRectRounded( rect, 20, borderColor, fillColor );
+        blitsfc.drawRectRounded( rect, 20, borderColor, fillColor, borderColor );
     }
     else if(mUseBackground)
     {
@@ -309,8 +312,10 @@ void GsButton::processRender(const GsRect<float> &RectDispCoordFloat)
     displayRect.transform(RectDispCoordFloat);
     auto lRect = displayRect.SDLRect();
 
-    drawNoStyle(lRect);
-    //drawRoundedStyle( lRect );
+    if(!mRounded)
+        drawNoStyle(lRect);
+    else
+        drawRoundedStyle( lRect );
 
     mTextWidget.processRender(displayRect);
 }
@@ -322,8 +327,10 @@ void GsButton::processRender(const GsRect<float> &backRect,
     auto objBackRect = backRect.transformed(getRect());
     auto objFrontRect = objBackRect.clipped(frontRect);
 
-    drawNoStyle( objFrontRect.SDLRect() );
-    //drawRoundedStyle( objFrontRect.SDLRect() );
+    if(!mRounded)
+        drawNoStyle( objFrontRect.SDLRect() );
+    else
+        drawRoundedStyle( objFrontRect.SDLRect() );
 
 
     mTextWidget.processRender(objBackRect,

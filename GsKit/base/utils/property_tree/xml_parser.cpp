@@ -247,7 +247,7 @@ void read_xml(const unsigned char *mem,
               GsKit::ptree &pt)
 {
     #ifdef BOOST_ENABLED
-        # error Don't use Boost. It is deprecated and will be removed soon!
+        # error Do not use Boost. It is deprecated and will be removed soon!
     #else
         read_xml_tinyxml2_from_mem(mem, memSize, pt);
     #endif

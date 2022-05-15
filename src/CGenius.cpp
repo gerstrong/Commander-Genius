@@ -33,7 +33,8 @@
 
 #include "../version.h"
 #include "engine/core/CSettings.h"
-#include "base/video/CVideoDriver.h"
+#include <base/video/CVideoDriver.h>
+#include <base/utils/MathLib.h>
 
 
 #ifdef ANDROID
@@ -203,6 +204,8 @@ int main(int argc, char *argv[])
         gLogging.closeIt();
         return 1;
     }
+
+    setupLookupTables();
 
     ////////////////////////////////
     // Set GameLauncher as Engine //

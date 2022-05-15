@@ -160,6 +160,12 @@ public:
         mEnabledColor = color;
     }
 
+    void setRounded(const bool rounded)
+    {
+        mRounded = rounded;
+    }
+
+
 protected:
 
     GsText mTextWidget;
@@ -187,6 +193,8 @@ private:
 
     bool mUseBackground = false; // Standard, some controls may be highlighted
                                  // if hovered or selected
+
+    bool mRounded = false;
 };
 
 std::shared_ptr<GsButton> createButtonFrom(const GsKit::ptree &node);

@@ -26,7 +26,7 @@ void CGameLauncher::verifyGameStore(const bool noCatalogDownloads)
 
     std::vector< std::string > missingList;
 
-    // First try    
+    // First try
     gameDownloader.checkForMissingGames( missingList );
 
     if(!gameDownloader.hasCatalog())
@@ -46,7 +46,7 @@ void CGameLauncher::verifyGameStore(const bool noCatalogDownloads)
 
         std::string msg(ss.str());
 
-        showMessageBox(msg);                
+        showMessageBox(msg);
     }
 
 
@@ -57,6 +57,7 @@ void CGameLauncher::verifyGameStore(const bool noCatalogDownloads)
                     new GsButton( "+ More",
                                   GsRect<float>(0.125f, 0.865f, 0.25f, 0.07f),
                                   new GMDownloadDlgOpen() ) );
+        mpPlusMorebutton->setRounded(true);
     }
 
     mpPlusMorebutton->enable(false);
@@ -132,7 +133,7 @@ void CGameLauncher::ponderDownloadDialog()
 
     if(mLastStoreSelection != sel &&
         size_t(sel) < mGameCatalogue.size())
-    {        
+    {
         auto &gameEntry = mGameCatalogue[size_t(sel)];
 
         mpDDescriptionText->setText(gameEntry.mDescription);
@@ -161,7 +162,7 @@ void CGameLauncher::ponderDownloadDialog()
     if( mFinishedDownload &&
         mpGameDownloadThread->finished &&
         mpDloadProgressCtrl->finished() )
-    {        
+    {
         mpGameStoreDialog = nullptr;
         gEventManager.add(new GMSwitchToGameLauncher() );
     }
