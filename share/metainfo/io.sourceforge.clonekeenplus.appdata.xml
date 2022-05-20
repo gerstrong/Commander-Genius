@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Copyright 2021 Gerhard Stein <gerstrong@gmail.com> -->
+<!-- Copyright 2022 Gerhard Stein <gerstrong@gmail.com> -->
 <component type="desktop-application">
   <id>io.sourceforge.clonekeenplus</id>
   <metadata_license>FSFAP</metadata_license>
@@ -46,6 +46,13 @@
 </categories>
 
   <releases>
+    <release version="3.1.0" date="2022-05-20">
+      <description>
+        <p>New main menu theme</p>
+        <p>Collision fixes</p>
+        <p>Updated runtime</p>
+      </description>
+    </release>  
     <release version="3.0.5" date="2021-09-26">
       <description>
         <p>More memory fixes</p>
