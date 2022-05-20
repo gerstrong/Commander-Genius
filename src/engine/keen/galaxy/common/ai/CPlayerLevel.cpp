@@ -288,7 +288,7 @@ void CPlayerLevel::processRunning()
         yinertia = -90;
         /*nextX = */nextY = 0;
         mActionState.jumpTimer = 18;
-        mIgnoreSlope = true;
+        mMustHandleSlope = true;
         setAction(A_KEEN_JUMP);
         playSound( SOUND_KEEN_JUMP );
         return;
@@ -313,7 +313,7 @@ void CPlayerLevel::processRunning()
             yinertia = evalVertPogoInertia();
             //		nextX = 0;
             mActionState.jumpTimer = 24;
-            mIgnoreSlope = true;
+            mMustHandleSlope = true;
             playSound( SOUND_KEEN_POGO );
             setAction(A_KEEN_POGO_START);
             return;
@@ -330,7 +330,7 @@ void CPlayerLevel::processRunning()
         playSound( SOUND_KEEN_FALL );
 
         mActionState.jumpTimer = 0;
-        mIgnoreSlope = true;
+        mMustHandleSlope = true;
     }
     else if ( (blockedl && xDirection == -1) || (blockedr && xDirection == 1))
     {
@@ -416,7 +416,7 @@ void CPlayerLevel::handleInputOnGround()
         yinertia = -90;
         nextY = 0;
         mActionState.jumpTimer = 18;
-        mIgnoreSlope = true;
+        mMustHandleSlope = true;
         setAction(A_KEEN_JUMP);
         playSound( SOUND_KEEN_JUMP );
         return;
@@ -433,7 +433,7 @@ void CPlayerLevel::handleInputOnGround()
             playSound( SOUND_KEEN_POGO );
             nextY = 0;
             mActionState.jumpTimer = 24;
-            mIgnoreSlope = true;
+            mMustHandleSlope = true;
             return;
         }
     }
@@ -1270,7 +1270,7 @@ void CPlayerLevel::verifyJumpAndFall()
                     yinertia = 0;
             }
             mActionState.jumpTimer = 0;
-            mIgnoreSlope = false;
+            mMustHandleSlope = false;
         }
     }
 
@@ -1292,7 +1292,7 @@ void CPlayerLevel::verifyJumpAndFall()
 
         //TODO: Check if fuse.
 
-        mIgnoreSlope = false;
+        mMustHandleSlope = false;
 
         if (mActionState.jumpTimer == 0) // Or standing on a platform.
         {
@@ -1381,7 +1381,7 @@ void CPlayerLevel::processJumping()
         if (!mActionState.jumpIsPressed)
         {
             mActionState.jumpTimer = 0;
-            mIgnoreSlope = false;
+            mMustHandleSlope = false;
         }
 
         moveYDir(yinertia);
@@ -1430,7 +1430,7 @@ void CPlayerLevel::processJumping()
             mActionState.pogoWasPressed = true;
             setAction(A_KEEN_POGO_UP);
             mActionState.jumpTimer = 0;
-            mIgnoreSlope = false;
+            mMustHandleSlope = false;
             return;
         }
     }
@@ -1446,7 +1446,7 @@ void CPlayerLevel::processJumping()
         mActionState.jumpWasPressed = true;
         yinertia = -90;
         mActionState.jumpTimer = 18;
-        mIgnoreSlope = true;
+        mMustHandleSlope = true;
         setAction(A_KEEN_JUMP);
         return;
     }
@@ -2308,7 +2308,7 @@ void CPlayerLevel::performPoleHandleInput()
 
         yinertia = -80;
         mActionState.jumpTimer = 10;
-        mIgnoreSlope = true;
+        mMustHandleSlope = true;
         setAction(A_KEEN_JUMP);
         playSound( SOUND_KEEN_JUMP );
         yDirection = 1;
@@ -2384,7 +2384,7 @@ void CPlayerLevel::processPoleClimbingSit()
             xinertia = 8*dir;
             yinertia = -20;
             mActionState.jumpTimer = 10;
-            mIgnoreSlope = false;
+            mMustHandleSlope = false;
             solid = true;
             setAction(A_KEEN_JUMP);
             yDirection = 1;
@@ -2484,7 +2484,7 @@ void CPlayerLevel::processPoleSlidingDown()
         if( !blockedd && !down )
         {
             mActionState.jumpTimer = 0;
-            mIgnoreSlope = false;
+            mMustHandleSlope = false;
             xinertia = 8*xDirection;
             yinertia = 0;
 
@@ -2581,7 +2581,7 @@ void CPlayerLevel::verifyFalling()
         setAction(A_KEEN_FALL);
         playSound( SOUND_KEEN_FALL );
         mActionState.jumpTimer = 0;
-        mIgnoreSlope = false;
+        mMustHandleSlope = false;
     }
 }
 
@@ -3076,7 +3076,7 @@ int CPlayerLevel::checkSolidU(int x1, int x2, int y1, const bool push_mode )
                             yinertia = 0;
                     }
                     mActionState.jumpTimer = 0;
-                    mIgnoreSlope = false;
+                    mMustHandleSlope = false;
                 }
 
                 return 1;
@@ -3141,7 +3141,7 @@ int CPlayerLevel::checkSolidD( int x1, int x2, int y2, const bool push_mode )
                     yinertia = evalVertPogoInertia();
                     playSound( SOUND_KEEN_POGO );
                     mActionState.jumpTimer = 24;
-                    mIgnoreSlope = true;
+                    mMustHandleSlope = true;
                     setAction(A_KEEN_POGO_UP);
                     return 1;
                 }

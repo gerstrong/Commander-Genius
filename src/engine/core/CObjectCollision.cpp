@@ -197,7 +197,7 @@ void CSpriteObject::adjustSlopedTiles( int x, int y1, int y2,
         return;
 
     // process the sloped tiles here. Galaxy only or special patch!!
-    if(gBehaviorEngine.getEpisode() > 3 && mIgnoreSlope)
+    if(gBehaviorEngine.getEpisode() > 3 && mMustHandleSlope)
     {
         if(!moveSlopedTileDown(x, y2, xspeed, slopeType))
         {
@@ -206,7 +206,7 @@ void CSpriteObject::adjustSlopedTiles( int x, int y1, int y2,
     }
 }
 
-bool CSpriteObject::moveSlopedTileDown( int x, int y, const int xspeed,
+bool CSpriteObject::moveSlopedTileDown( const int x, const int y, const int xspeed,
                                         int &slopeType )
 {
     if(yinertia != 0)
@@ -257,7 +257,7 @@ bool CSpriteObject::moveSlopedTileDown( int x, int y, const int xspeed,
     return onslope;
 }
 
-void CSpriteObject::moveSlopedTileUp( int x, int y, const int xspeed )
+void CSpriteObject::moveSlopedTileUp(const int x, const int y, const int xspeed )
 {
     if(yinertia!=0)
         return;

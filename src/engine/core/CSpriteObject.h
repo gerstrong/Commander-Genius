@@ -162,7 +162,7 @@ class CSpriteObject
 
     bool m_jumpdownfromobject  = false;
 
-    bool mIgnoreSlope = false;
+    bool mMustHandleSlope = true;
 
     /*
      * \brief Calculate Bounding Boxes fro collision
@@ -297,8 +297,8 @@ class CSpriteObject
     bool checkslopedU( int c, int y1, Sint8 blocked);
     bool checkslopedD( int c, int y2, Sint8 blocked);
     void adjustSlopedTiles(int x, int y1, int y2, const int xspeed, int &slopeType);
-    bool moveSlopedTileDown(int x, int y, const int xspeed , int &slopeType);
-    void moveSlopedTileUp( int x, int y, const int xspeed );
+    bool moveSlopedTileDown(const int x, const int y, const int xspeed , int &slopeType);
+    void moveSlopedTileUp( const int x, const int y, const int xspeed );
 
     /**
      *  \description plays certain sound of an object. Stereo will automatically applied when used

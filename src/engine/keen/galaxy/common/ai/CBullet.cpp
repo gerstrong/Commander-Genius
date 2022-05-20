@@ -26,7 +26,7 @@ CBullet::CBullet(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y,
 CGalaxySpriteObject(pmap, foeID, x, y, sprVar),
 mReversed(false)
 {
-    mIgnoreSlope = true;
+    mMustHandleSlope = true;
     xDirection = xDir;
     yDirection = yDir;
 
