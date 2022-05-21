@@ -63,10 +63,8 @@ add_executable(xxd xxd.c)
 add_custom_target(
   createGameLauncherMenu
   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-  COMMAND ${CMAKE_CURRENT_BINARY_DIR}/xxd -i gamelauncher.menu ${CMAKE_CURRENT_BINARY_DIR}/gamelauncher.menu.h
+  COMMAND xxd -i gamelauncher.menu ${CMAKE_CURRENT_BINARY_DIR}/gamelauncher.menu.h
 )
-
-add_dependencies(createGameLauncherMenu xxd)
 
 add_dependencies(engine createGameLauncherMenu)
 
