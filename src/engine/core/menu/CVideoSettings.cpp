@@ -34,20 +34,17 @@ GameMenu(GsRect<float>(0.15f, 0.20f, 0.65f, 0.55f), style )
 #if !defined(EMBEDDED)
     mpTiltScreenSwitch =
             mpMenuDialog->add( new Switch("TiltedScr", style) );
-#endif
-
-    mpFPSSelection =
-            mpMenuDialog->add(
-                new NumberControl( "FPS", 10, 120, 10, 60,
-                                   false, style) );
-
-#if !defined(EMBEDDED)
 
     mpGameResSelection =
             mpMenuDialog->add( new ComboSelection( "GameRes",
                                                    filledStrList(1, "?x?"),
                                                    style ) );
-#endif
+#endif // !defined(EMBEDDED)
+
+    mpFPSSelection =
+            mpMenuDialog->add(
+                new NumberControl( "FPS", 10, 120, 10, 60,
+                                   false, style) );
 
 
     mpBorderColorSwitch =
@@ -80,9 +77,6 @@ void CVideoSettings::refresh()
 
     mpFPSSelection->setSelection( iFPS );
 
-#if !defined(EMBEDDED)
-    mpTiltScreenSwitch->enable( mUsersConf.mTiltedScreen );
-#endif
 
     // TODO: find a way to indicate a color
     mpBorderColorSwitch->enable( mUsersConf.mBorderColorsEnabled );
@@ -90,6 +84,9 @@ void CVideoSettings::refresh()
     mpHorizBordersSelection->setSelection( mUsersConf.mHorizBorders );
 
 #if !defined(EMBEDDED)
+    mpTiltScreenSwitch->enable( mUsersConf.mTiltedScreen );
+
+
     const auto gamesResSet = gVideoDriver.getGameResStrSet();
     mpGameResSelection->setList( gamesResSet );
 
@@ -98,16 +95,13 @@ void CVideoSettings::refresh()
     resStr += "x";
     resStr += itoa(mUsersConf.mGameRect.dim.y);
     mpGameResSelection->setSelection(resStr);
-#endif
+#endif // !defined(EMBEDDED)
 }
 
 
 void CVideoSettings::release()
 {
     // Save up the changed stuff
-#if !defined(EMBEDDED)
-    mUsersConf.mTiltedScreen = mpTiltScreenSwitch->isEnabled();
-#endif
 
     const auto fpsf = float(mpFPSSelection->getSelection());
     gTimer.setFPS( fpsf );
@@ -117,11 +111,12 @@ void CVideoSettings::release()
     mUsersConf.mBorderColorsEnabled = mpBorderColorSwitch->isEnabled();
 
 #if !defined(EMBEDDED)
+    mUsersConf.mTiltedScreen = mpTiltScreenSwitch->isEnabled();
 
     const std::string GameResStr = mpGameResSelection->getSelection();
     sscanf( GameResStr.c_str(), "%hux%hux",
             &mUsersConf.mGameRect.dim.x, &mUsersConf.mGameRect.dim.y );
-#endif
+#endif // !defined(EMBEDDED)
 
 #if defined(CAANOO) || defined(WIZ) || defined(DINGOO) || defined(NANONOTE) || defined(ANDROID)
     mUsersConf.mDisplayRect.dim.x = 320;

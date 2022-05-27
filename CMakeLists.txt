@@ -28,6 +28,12 @@ endif()
 
 option(USE_VIRTUALPAD "Enable Onscreen Virtual Gamepad support " ON)
 
+option(EMBEDDED "Set this to yes, if you want a build for embedded systems" OFF)
+
+if(EMBEDDED)
+    ADD_DEFINITIONS(-DEMBEDDED)
+endif(EMBEDDED)
+
 if(USE_VIRTUALPAD)
     ADD_DEFINITIONS(-DUSE_VIRTUALPAD)
 endif(USE_VIRTUALPAD)

@@ -33,13 +33,15 @@ GameMenu(GsRect<float>(0.15f, 0.20f, 0.65f, 0.55f), style )
 #endif
 {
 
-#if !defined(EMBEDDED)
 
+
+#if !defined(EMBEDDED)
 
     mpAspectSelection =
             mpMenuDialog->add( new ComboSelection( "Aspect",
                                                           filledStrList(1, "disabled"),
                                                           style ) );
+
 
     mpFilterSelection =
             mpMenuDialog->add( new ComboSelection( "Filter",
@@ -50,21 +52,22 @@ GameMenu(GsRect<float>(0.15f, 0.20f, 0.65f, 0.55f), style )
                                                                  "scale4x" ),
                                                   style ) );
 
-    mpVSyncSwitch =
-        mpMenuDialog->add( new Switch( "VSync", style ) );
-
     mpResolutionSelection =
         mpMenuDialog->add( new ComboSelection( "Size",
                                                   filledStrList(1, "?x?"),
                                                   style) );
-
     mpFullScreenSwitch =
         mpMenuDialog->add( new Switch( "Fullscreen", style ) );
+
 
     mpIntegerScalingSwitch =
         mpMenuDialog->add( new Switch( "IntScaling", style ) );
 
 #endif
+
+    mpVSyncSwitch =
+        mpMenuDialog->add( new Switch( "VSync", style ) );
+
 
 
 #if defined(USE_OPENGL)
@@ -100,18 +103,19 @@ void DisplaySettings::refresh()
     // The change are taken from the menu settings
     mMyNewConf = gVideoDriver.getVidConfig();
 
-
-#if !defined(EMBEDDED)
-
-#if defined(USE_OPENGL)
-    mpOpenGLSwitch->enable( mMyNewConf.mOpengl );
-#endif
-
     const std::string oglFilter =
             (mMyNewConf.mRenderScQuality == CVidConfig::RenderQuality::LINEAR) ?
             "linear" : "nearest";
 
     mpRenderScaleQualitySel->setSelection(oglFilter);
+
+#if !defined(EMBEDDED)
+
+
+#if defined(USE_OPENGL)
+    mpOpenGLSwitch->enable( mMyNewConf.mOpengl );
+#endif
+
 
     const auto aspSet = gVideoDriver.getAspectStrSet();
     mpAspectSelection->setList( aspSet );
@@ -129,7 +133,6 @@ void DisplaySettings::refresh()
     mpFilterSelection->setSelection( mMyNewConf.m_ScaleXFilter==VidFilter::NONE ? "none" :
                                     (mMyNewConf.m_normal_scale ? "normal" : "scale") +
                                     itoa(int(mMyNewConf.m_ScaleXFilter)) + "x" );
-    mpVSyncSwitch->enable( mMyNewConf.mVSync );
     mpFullScreenSwitch->enable(mMyNewConf.mFullscreen);
     mpIntegerScalingSwitch->enable(mMyNewConf.mIntegerScaling);
 
@@ -146,11 +149,22 @@ void DisplaySettings::refresh()
 
 #endif
 
+    mpVSyncSwitch->enable( mMyNewConf.mVSync );
+
 }
 
 
 void DisplaySettings::release()
 {
+
+    // Render Quality
+    const std::string oglFilter = mpRenderScaleQualitySel->getSelection();
+
+    mMyNewConf.mRenderScQuality =
+            (oglFilter == "linear") ?
+                CVidConfig::RenderQuality::LINEAR :
+                CVidConfig::RenderQuality::NEAREST;
+
 
 #if !defined(EMBEDDED)
 
@@ -161,13 +175,7 @@ void DisplaySettings::release()
     mMyNewConf.mOpengl = false;
 #endif
 
-    // Render Quality
-    const std::string oglFilter = mpRenderScaleQualitySel->getSelection();
 
-    mMyNewConf.mRenderScQuality =
-            (oglFilter == "linear") ?
-                CVidConfig::RenderQuality::LINEAR :
-                CVidConfig::RenderQuality::NEAREST;
 
     // Read Aspect correction string
     {
@@ -222,9 +230,6 @@ void DisplaySettings::release()
         }
     }
 
-    // Vsync
-    mMyNewConf.mVSync = mpVSyncSwitch->isEnabled();
-
     // Fullscreen
     mMyNewConf.mFullscreen = mpFullScreenSwitch->isEnabled();
 
@@ -248,6 +253,9 @@ void DisplaySettings::release()
     mMyNewConf.m_CameraBounds = gVideoDriver.getCameraBounds();
 
 #endif
+
+    // Vsync
+    mMyNewConf.mVSync = mpVSyncSwitch->isEnabled();
 
     CVidConfig oldVidConf = gVideoDriver.getVidConfig();
 

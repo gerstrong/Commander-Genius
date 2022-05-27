@@ -677,17 +677,21 @@ void ScrollingPlane::_drawForegroundTiles(GsTilemap &tilemap)
             gBehaviorEngine.getTileProperties(1);
 
     const auto &visGA = gVideoDriver.mpVideoEngine->mRelativeVisGameArea;
+#if !defined(EMBEDDED)
     const auto &visBlendGA = gVideoDriver.mpVideoEngine->mRelativeBlendVisGameArea;
+#endif // !defined(EMBEDDED)
 
     const int visX1 = visGA.pos.x;
     const int visX2 = visGA.pos.x+visGA.dim.x;
     const int visY1 = visGA.pos.y;
     const int visY2 = visGA.pos.y+visGA.dim.y;
 
+#if !defined(EMBEDDED)
     const int visBlendX1 = visBlendGA.pos.x;
     const int visBlendX2 = visBlendGA.pos.x+visBlendGA.dim.x;
     const int visBlendY1 = visBlendGA.pos.y;
     const int visBlendY2 = visBlendGA.pos.y+visBlendGA.dim.y;
+#endif //defined(EMBEDDED)
 
     for( size_t y=y1 ; y<=y2 ; y++)
     {
