@@ -15,8 +15,8 @@
 GsSprite::GsSprite()
 {
     m_bboxX1 = m_bboxY1 = 0;
-	m_bboxX2 = m_bboxY2 = 0;
-	m_xoffset = m_yoffset = 0;
+    m_bboxX2 = m_bboxY2 = 0;
+    m_xoffset = m_yoffset = 0;
 }
 
 GsSprite::GsSprite(const GsSprite& original)
@@ -47,15 +47,22 @@ void GsSprite::copy(const GsSprite& original)
 
     // If the sprites are not yet loaded, the surfaces
     // do not exist yet. Only copy those if they exist
+    //const auto &renderer = gVideoDriver.Renderer();
     if(origSfc)
     {
         mSurface.createCopy(origSfc);
+/*
+        mTexture.loadFromSurface(origSfc, renderer);
+        SDL_Texture *texture = mTexture.getPtr();
+
+        assert(texture);*/
     }
 
     if(origMaskSfc)
     {
         mMaskSurface.createCopy(origMaskSfc);
     }
+
 }
 
 void GsSprite::copyTilted(const GsSprite& original)
@@ -89,7 +96,7 @@ void GsSprite::copyTilted(const GsSprite& original)
 
 
 bool GsSprite::createSurface(Uint32 flags, SDL_Color *Palette)
-{        
+{
     mSurface.create(flags, m_xsize, m_ysize, 8, 0, 0, 0, 0);
     mSurface.setPaletteColors(Palette, 255);
     mSurface.setColorKey(COLORKEY);
@@ -139,9 +146,9 @@ bool GsSprite::empty()
 
 void GsSprite::generateSprite( const int points )
 {
-	Uint32 color = 0;
-	Uint8 r,g,b,a;
-	std::string pointStr = itoa(points);
+    Uint32 color = 0;
+    Uint8 r,g,b,a;
+    std::string pointStr = itoa(points);
 
     // +2 for the outline
     setSize( (pointStr.size()*8)+2, 8+2);
@@ -155,15 +162,15 @@ void GsSprite::generateSprite( const int points )
 
     mSurface.createRGBSurface(rect);
 
-	GsFontLegacy &smallFont = gGraphics.getFontLegacy(2);
+    GsFontLegacy &smallFont = gGraphics.getFontLegacy(2);
 
-	// Create Text Borders TODO: Make this code to draw better looking fonts
+    // Create Text Borders TODO: Make this code to draw better looking fonts
     smallFont.drawFont( mSurface, pointStr,  0, 1, false );
     smallFont.drawFont( mSurface, pointStr,  1, 0, false );
     smallFont.drawFont( mSurface, pointStr,  2, 1, false );
     smallFont.drawFont( mSurface, pointStr,  1, 2, false );
 
-	// Now draw the alternate font. It just has another color.
+    // Now draw the alternate font. It just has another color.
     smallFont.drawFont( mSurface, pointStr, 1,  1, true );
 
     mSurface.lock();
@@ -174,30 +181,30 @@ void GsSprite::generateSprite( const int points )
     const size_t bpp = format->BytesPerPixel;
 
     for( Uint8 y=0 ; y<mSurface.height() ; y++ )
-	{
+    {
         for( Uint8 x=0 ; x<mSurface.width() ; x++ )
-		{
+        {
             memcpy( &color, pixel, bpp );
 
             mSurface.getRGBA(color, r, g, b, a);
 
-			if( color == 0xFFFFFFFF ) // White
-				a = 0;
+            if( color == 0xFFFFFFFF ) // White
+                a = 0;
 
             color = mSurface.mapRGBA(r, g, b, a);
             memcpy( pixel, &color, bpp );
 
             pixel += bpp;
-		}
-	}
+        }
+    }
 
     mSurface.unlock();
 
 
-	m_bboxX1=0;
-	m_bboxY1=0;
-	m_bboxX2=getWidth();
-	m_bboxY2=getHeight();
+    m_bboxX1=0;
+    m_bboxY1=0;
+    m_bboxX2=getWidth();
+    m_bboxY2=getHeight();
 }
 
 void GsSprite::detectFoldness()
@@ -417,7 +424,7 @@ void GsSprite::readMask(SDL_Surface *srcSfc)
  */
 void GsSprite::readBBox(SDL_Surface *displaysurface)
 {
-	// TODO: That code need to be implemented
+    // TODO: That code need to be implemented
 }
 
 void GsSprite::applyTransparency2Fold()
@@ -531,54 +538,54 @@ void GsSprite::applyTransparency()
 
 void GsSprite::applyTranslucency(Uint8 value)
 {
-	Uint32 colour = 0;
-	Uint8 r,g,b,a;
+    Uint32 colour = 0;
+    Uint8 r,g,b,a;
 
-	r = g = b = a = 0;		
-	
+    r = g = b = a = 0;
+
     if( !mSurface || gVideoDriver.getZoomValue() > 1)
-	    return;
+        return;
 
-	if(m_alpha == value)
-		return;	
-	
-	
+    if(m_alpha == value)
+        return;
+
+
     SDL_PixelFormat *format = mSurface.getSDLSurface()->format;
-	
-	if(format->BitsPerPixel < 24)
-	{
+
+    if(format->BitsPerPixel < 24)
+    {
         mSurface.makeBlitCompatible();
         mSurface.setAlpha(value);
-	    m_alpha = value;
-	    return;
-	}
-	
+        m_alpha = value;
+        return;
+    }
+
     mSurface.lock();
 
 
-	for( Uint8 y=0 ; y<m_ysize ; y++ )
-	{
+    for( Uint8 y=0 ; y<m_ysize ; y++ )
+    {
         auto pixel = mSurface.PixelPtr() + y*mSurface.getSDLSurface()->pitch;
 
-		for( Uint8 x=0 ; x<m_xsize ; x++ )
-		{
-			memcpy( &colour, pixel, format->BytesPerPixel );
+        for( Uint8 x=0 ; x<m_xsize ; x++ )
+        {
+            memcpy( &colour, pixel, format->BytesPerPixel );
 
-			SDL_GetRGBA( colour, format, &r, &g, &b, &a );
+            SDL_GetRGBA( colour, format, &r, &g, &b, &a );
 
-			if(a!=0) a = value;
+            if(a!=0) a = value;
 
-			colour = SDL_MapRGBA( format, r, g, b, a );
+            colour = SDL_MapRGBA( format, r, g, b, a );
 
-			memcpy( pixel, &colour, format->BytesPerPixel );
+            memcpy( pixel, &colour, format->BytesPerPixel );
 
-			pixel += format->BytesPerPixel;
-		}
-	}
+            pixel += format->BytesPerPixel;
+        }
+    }
 
     mSurface.unlock();
 
-	m_alpha = value;
+    m_alpha = value;
 }
 
 ///
@@ -586,20 +593,20 @@ void GsSprite::applyTranslucency(Uint8 value)
 ///
 void GsSprite::setBoundingBoxCoordinates( Sint32 bboxx1, Sint32 bboxy1, Sint32 bboxx2, Sint32 bboxy2 )
 {
-	m_bboxX1 = bboxx1;
-	m_bboxY1 = bboxy1;
-	m_bboxX2 = bboxx2;
-	m_bboxY2 = bboxy2;
+    m_bboxX1 = bboxx1;
+    m_bboxY1 = bboxy1;
+    m_bboxX2 = bboxx2;
+    m_bboxY2 = bboxy2;
 }
 
 void GsSprite::copy( GsSprite &Destination, SDL_Color *Palette )
 {
-	Destination.m_bboxX1 = m_bboxX1;
-	Destination.m_bboxY1 = m_bboxY1;
-	Destination.m_bboxX2 = m_bboxX2;
-	Destination.m_bboxY2 = m_bboxY2;
-	Destination.setSize(m_xsize, m_ysize);
-	
+    Destination.m_bboxX1 = m_bboxX1;
+    Destination.m_bboxY1 = m_bboxY1;
+    Destination.m_bboxX2 = m_bboxX2;
+    Destination.m_bboxY2 = m_bboxY2;
+    Destination.setSize(m_xsize, m_ysize);
+
     Destination.createSurface( mSurface.getSDLSurface()->flags, Palette );
 
     auto &destSfc = Destination.Surface();
@@ -618,15 +625,15 @@ void GsSprite::replaceSpriteColor( Uint16 find, Uint16 replace, Uint16 miny )
     const auto pixel = mSurface.PixelPtr();
 
     for(Uint16  y=miny ; y<m_ysize ; y++)
-	{
+    {
         for(Uint16  x=0 ; x<m_xsize ; x++)
-		{
+        {
             if (pixel[y*m_xsize + x] == find)
             {
-				pixel[y*m_xsize + x] = replace;
+                pixel[y*m_xsize + x] = replace;
             }
-		}
-	}
+        }
+    }
 
     mSurface.unlock();
 }
@@ -634,7 +641,7 @@ void GsSprite::replaceSpriteColor( Uint16 find, Uint16 replace, Uint16 miny )
 
 
 void GsSprite::exchangeSpriteColor( const Uint16 find1, const Uint16 find2, Uint16 miny )
-{        
+{
     mSurface.lock();
 
     auto pixel = mSurface.PixelPtr();
@@ -713,22 +720,22 @@ void GsSprite::_drawSprite( SDL_Surface *dst,
         return;
     }
 
-	SDL_Rect dst_rect, src_rect;
+    SDL_Rect dst_rect, src_rect;
 
     src_rect.x = 0;	        src_rect.y = 0;
-	dst_rect.x = x;			dst_rect.y = y;
+    dst_rect.x = x;			dst_rect.y = y;
     dst_rect.w = w;	        dst_rect.h = w;
 
 
     const auto &gameRes = gVideoDriver.getGameResolution();
-	
+
     const int max_width  = gameRes.dim.x;
     const int max_height = gameRes.dim.y;
 
-	if( m_xsize + x > max_width )
+    if( m_xsize + x > max_width )
         dst_rect.w = max_width - x;
 
-	if( m_ysize + y > max_height )
+    if( m_ysize + y > max_height )
         dst_rect.h = max_height - y;
 
     src_rect.w = dst_rect.w = w;
@@ -748,8 +755,21 @@ void GsSprite::_drawSprite( SDL_Surface *dst,
         dst_rect.y = 0;
     }
 
+    auto &vidDrv = gVideoDriver;
 
-    BlitSurface( src.getSDLSurface(), &src_rect, dst, &dst_rect );
+    // Load texture on demand
+    bool showTexture = true;
+
+    if(!mTexture)
+    {
+        showTexture = mTexture.loadFromSurface(src, vidDrv.Renderer());
+    }
+
+    if(showTexture)
+    {
+        vidDrv.pushTextureRef(mTexture, src_rect, dst_rect);
+    }
+
 }
 
 /**

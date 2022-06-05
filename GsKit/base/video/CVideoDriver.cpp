@@ -33,12 +33,35 @@ CVideoDriver::~CVideoDriver()
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 
-void CVideoDriver::addTextureRefToRender(GsTextureElem& textureElemRef)
+void CVideoDriver::addTextureRefToVirtPadRender(GsTextureElem& textureElemRef)
 {
-    addTextureRefToRender(textureElemRef.Texture(), textureElemRef.Rect());
+    addTextureRefToVirtPadRender(textureElemRef.Texture(), textureElemRef.Rect());
 }
 
-void CVideoDriver::addTextureRefToRender(GsTexture& textureRef,
+void CVideoDriver::pushTextureRef(GsTexture& textureRef,
+                                  const SDL_Rect &src_rect,
+                                  const SDL_Rect &dst_rect)
+{
+    SDL_Rect src_rect_final = src_rect;
+    SDL_Rect dst_rect_final = dst_rect;
+
+    const auto &gameSfc = mpVideoEngine->gameSfc();
+
+    const auto gameRect = gameSfc.getSDLSurface()->clip_rect;
+    const auto activeArea = mpVideoEngine->getActiveAreaRect();
+
+    dst_rect_final.x = (dst_rect_final.x*activeArea.dim.x)/gameRect.w;
+    dst_rect_final.y = (dst_rect_final.y*activeArea.dim.y)/gameRect.h;
+    dst_rect_final.w = (dst_rect_final.w*activeArea.dim.x)/gameRect.w;
+    dst_rect_final.h = (dst_rect_final.h*activeArea.dim.y)/gameRect.h;
+
+    std::tuple< GsTexture&, const GsRect<Uint16>, const GsRect<Uint16> >
+            triple( textureRef, src_rect_final, dst_rect_final );
+
+    mpVideoEngine->mRenderTexturePtrs.push(triple);
+}
+
+void CVideoDriver::addTextureRefToVirtPadRender(GsTexture& textureRef,
                                          const GsRect<float> &dstRect)
 {
     const GsRect<Uint16> clickGameArea = mpVideoEngine->getActiveAreaRect();

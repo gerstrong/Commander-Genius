@@ -382,16 +382,16 @@ void VirtualKeenControl::render(GsWeakSurface &)
             button.w > 0.0f && button.h > 0.0f)
         {
             if(button.isDown)
-                vidDrv.addTextureRefToRender(button.mHighlightTexture, button.Rect());
+                vidDrv.addTextureRefToVirtPadRender(button.mHighlightTexture, button.Rect());
             else
-                vidDrv.addTextureRefToRender(button.mTexture, button.Rect());
+                vidDrv.addTextureRefToVirtPadRender(button.mTexture, button.Rect());
         }
     };
 
     if(!mDPad.invisible &&
         mDPad.w > 0.0f && mDPad.h > 0.0f)
     {
-        vidDrv.addTextureRefToRender(mDPad.mTexture, mDPad.Rect());
+        vidDrv.addTextureRefToVirtPadRender(mDPad.mTexture, mDPad.Rect());
     }
 
     addTexture(mConfirmButton);
@@ -407,7 +407,7 @@ void VirtualKeenControl::render(GsWeakSurface &)
     if(!mDPad.invisible &&
         mDPad.x > 0.0f && mDPad.y > 0.0f )
     {
-        gVideoDriver.addTextureRefToRender(mDiscTexture);
+        gVideoDriver.addTextureRefToVirtPadRender(mDiscTexture);
     }
 
 

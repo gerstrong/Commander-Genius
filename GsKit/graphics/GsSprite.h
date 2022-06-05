@@ -14,6 +14,7 @@
 #include <memory>
 
 #include "graphics/GsSurface.h"
+#include "graphics/GsTexture.h"
 
 class GsBitmap;
 
@@ -24,7 +25,7 @@ public:
 
 
     GsSprite(const GsSprite& original);
-    GsSprite operator=(const GsSprite& original);    
+    GsSprite operator=(const GsSprite& original);
 
     /**
      * @brief copy  Copy the whole sprite including the surface
@@ -38,7 +39,7 @@ public:
      */
     void copyTilted(const GsSprite& original);
 
-	bool createSurface(Uint32 flags, SDL_Color *Palette);
+    bool createSurface(Uint32 flags, SDL_Color *Palette);
 
     GsBitmap exportBitmap();
 
@@ -46,7 +47,7 @@ public:
      * @brief optimizeSurface
      * @return
      */
-	bool optimizeSurface();
+    bool optimizeSurface();
 
     /**
      * @brief empty If there is no surface allocated,
@@ -62,25 +63,25 @@ public:
      * \brief Reads the mask of a created modkeen style bitmap und converts that mask to 8-bit
      * 		  so it can be applied to the others. This is for HQ Sprites, the other ones have an internal algorithm
      */
-	void readMask(SDL_Surface *displaysurface);
-	void readBBox(SDL_Surface *displaysurface);
+    void readMask(SDL_Surface *displaysurface);
+    void readBBox(SDL_Surface *displaysurface);
 
     void applyTransparency2Fold();
     void applyTransparency3Fold();
-	void applyTransparency();
-	void applyTranslucency(Uint8 value);
-	void copy( GsSprite &Destination, SDL_Color *Palette );
+    void applyTransparency();
+    void applyTranslucency(Uint8 value);
+    void copy( GsSprite &Destination, SDL_Color *Palette );
     void replaceSpriteColor( const Uint16 find, const Uint16 replace, const Uint16 miny );
     void exchangeSpriteColor(const Uint16 find1, const Uint16 find2, const Uint16 miny );
 
-	void generateSprite( const int points );
+    void generateSprite( const int points );
 
     void detectFoldness();
-	bool loadHQSprite( const std::string& filename );
-	
-	void setSize(Uint8 w, Uint8 h) { m_xsize = w; m_ysize = h; }
-	void setOffset(Sint16 x, Sint16 y) { m_xoffset = x; m_yoffset = y; }
-	void setBoundingBoxCoordinates( Sint32 bboxx1, Sint32 bboxy1, Sint32 bboxx2, Sint32 bboxy2 );
+    bool loadHQSprite( const std::string& filename );
+
+    void setSize(Uint8 w, Uint8 h) { m_xsize = w; m_ysize = h; }
+    void setOffset(Sint16 x, Sint16 y) { m_xoffset = x; m_yoffset = y; }
+    void setBoundingBoxCoordinates( Sint32 bboxx1, Sint32 bboxy1, Sint32 bboxx2, Sint32 bboxy2 );
 
     GsSurface & Surface()  { return mSurface; }
     GsSurface & MaskSurface()   { return mMaskSurface; }
@@ -106,14 +107,14 @@ public:
     Sint16 getXOffset() { return m_xoffset; }
     Sint16 getYOffset() { return m_yoffset; }
 
-    Uint8 getWidth() { return m_xsize; }    
+    Uint8 getWidth() { return m_xsize; }
     Uint8 getHeight() { return m_ysize; }
 
     void setWidth(Uint8 w) { m_xsize=w; }
     void setHeight(Uint8 h) { m_ysize=h; }
 
-	std::string getName() const { return mName; }
-	void setName(const std::string &name) { mName = name; }
+    std::string getName() const { return mName; }
+    void setName(const std::string &name) { mName = name; }
 
     Uint8 getAlpha() const
     { return m_alpha; }
@@ -133,21 +134,22 @@ public:
         xoffset = m_xoffset ; yoffset = m_yoffset;
     }
 
-	// bounding box for hit detection
-	Sint32 m_bboxX1, m_bboxY1;
-	Sint32 m_bboxX2, m_bboxY2;
+    // bounding box for hit detection
+    Sint32 m_bboxX1, m_bboxY1;
+    Sint32 m_bboxX2, m_bboxY2;
 
 private:
 
 
     GsSurface mSurface;
     GsSurface mMaskSurface;
+    GsTexture mTexture;
 
-	std::string mName;
+    std::string mName;
     Uint8 m_xsize = 0;
     Uint8 m_ysize = 0;
-	Sint16 m_xoffset, m_yoffset;
-    Uint8 m_alpha = 255;    
+    Sint16 m_xoffset, m_yoffset;
+    Uint8 m_alpha = 255;
 
     // Some pictures for sprites have three sections,
     // but there have been arising some which only use two and the mask is a special odd color

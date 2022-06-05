@@ -5,8 +5,8 @@
  *      Author: gerstrong
  *
  *  This is the play base class for Commander Keen Galaxy when the player
- *  has started the game. It is overloaded with CLevelPlay and CWorldMap to distinguish
- *  the play scenes. If those classes get to small due the common stuff they might get reduced
+ *  has started the game. It is overloaded by CLevelPlay and CWorldMap to distinguish
+ *  the play scenes.
  */
 
 #ifndef CMAPPLAYGALAXY_H_

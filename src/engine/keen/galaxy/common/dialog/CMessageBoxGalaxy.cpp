@@ -314,7 +314,7 @@ void CMessageBoxGalaxy::render()
 {
     if(mMBTexture) // Render message using a texture
     {
-        gVideoDriver.addTextureRefToRender(mMBTexture, mTextureRect);
+        gVideoDriver.addTextureRefToVirtPadRender(mMBTexture, mTextureRect);
     }
     else if(mMBSurface) // Just render the MessageBox surface based
     {

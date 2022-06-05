@@ -56,7 +56,7 @@ bool GsTexture::createCircle(SDL_Renderer *renderer,
     mpTexture = SDL_CreateTextureFromSurface(renderer, sfc.getSDLSurface());
 
     SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
-    SDL_SetTextureBlendMode(mpTexture, SDL_BLENDMODE_BLEND);    
+    SDL_SetTextureBlendMode(mpTexture, SDL_BLENDMODE_BLEND);
 
     return true;
 }
