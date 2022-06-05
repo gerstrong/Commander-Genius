@@ -710,8 +710,8 @@ int CSpriteObject::checkSolidL( int x1, int x2, int y1, int y2)
 
     x1 -= COLLISION_RES;
 
-    // Block tolerance: If sprite see a slope
-    // and is tall enought, the slope uses a slope tolerance,
+    // Block tolerance: If sprite sees a slope
+    // and is tall enough, the slope uses a slope tolerance,
     // where we check how far the slope is from the feet
     // otherwise, the object may not use that value at all (-1)
     const int local_block_tol = ((y2-y1) < (4<<STC)) ? -1 : y2-y1;
@@ -750,7 +750,19 @@ int CSpriteObject::checkSolidL( int x1, int x2, int y1, int y2)
                 }
                 else if(curSlopeLower)
                 {
-                    return curSlopeLower;
+                    int yb1, yb2;
+                    getSlopePointsUpperTile(curSlopeLower, yb1, yb2);
+
+                    // Get relative position of the X corner
+                    const int L = 512;
+                    const int x_r = (x1%L);
+
+                    const auto y_s = yb1 - (x_r*(yb1-yb2))/L;
+
+                    if(c < y_s)
+                        return curSlopeLower;
+                    else
+                        continue;
                 }
             }
             else // Lower part
