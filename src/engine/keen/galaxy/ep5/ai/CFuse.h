@@ -36,6 +36,10 @@ public:
      *  Since this class also describes the QED Core, with this flag the whole game can end
      */
     void winGame(const int msecs);
+
+    void deserialize(GsKit::ptree &node) override;
+
+    void serialize(GsKit::ptree &node) override;
 	
 private:
     uint32_t mGameEndsTime = 0; // Timer to run down, before game ends
