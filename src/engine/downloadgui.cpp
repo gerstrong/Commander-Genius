@@ -57,7 +57,7 @@ void CGameLauncher::verifyGameStore(const bool noCatalogDownloads)
                     new GsButton( "+ More",
                                   GsRect<float>(0.125f, 0.865f, 0.25f, 0.07f),
                                   new GMDownloadDlgOpen() ) );
-        mpPlusMorebutton->setRounded(true);
+        mpPlusMorebutton->setRounded(false);
     }
 
     mpPlusMorebutton->enable(false);
