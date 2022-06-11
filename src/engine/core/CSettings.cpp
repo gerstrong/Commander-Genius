@@ -371,12 +371,13 @@ void CSettings::loadDefaultGameCfg()
     setOption( GameOption::MODERN,          "Modern Style   ", "modern_style", 1 );
     setOption( GameOption::HUD,				"HUD Display    ", "hud", 1 );
     setOption( GameOption::SPECIALFX,		"Special Effects", "specialfx", 1 );
-    setOption( GameOption::SHOWFPS,			"Show FPS       ", "showfps", 0 );
+    setOption( GameOption::SHOWFPS,			"Show FPS       ", "showfps", 0 );    
 #if defined(EMBEDDED)
     setOption( GameOption::SANDWICHMENU,    "SW Button      ", "sandwichbutton", 1 );
 #else
     setOption( GameOption::SANDWICHMENU,    "SW Button      ", "sandwichbutton", 0 );
 #endif
+    setOption( GameOption::SHOWACHV,			"Achv. display  ", "showachv", 1 );
 
 }
 

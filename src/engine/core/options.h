@@ -18,8 +18,9 @@ enum class GameOption
     NOTYPING,
     MODERN,
     HUD,SPECIALFX,
-    SHOWFPS,
-    SANDWICHMENU
+    SHOWFPS,    
+    SANDWICHMENU,
+    SHOWACHV
 };
 
 struct stOption

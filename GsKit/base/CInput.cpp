@@ -1538,7 +1538,7 @@ bool CInput::processKeys(int keydown)
         default: break;
         }
     }
-    else if(Event.key.keysym.sym < immediate_keytable.size())
+    else if(Event.key.keysym.sym < int(immediate_keytable.size()))
     {
         immediate_keytable[Event.key.keysym.sym] = keydown;
     }
