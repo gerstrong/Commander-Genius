@@ -1542,6 +1542,13 @@ bool CInput::processKeys(int keydown)
     {
         immediate_keytable[Event.key.keysym.sym] = keydown;
     }
+    else // For some special keys
+    {
+        if(Event.key.keysym.scancode == SDL_SCANCODE_F10)
+        {
+            immediate_keytable[KF10] = keydown;
+        }
+    }
 
     if(getHoldedKey(KSHIFT))
     {
