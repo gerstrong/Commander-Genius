@@ -34,9 +34,6 @@ GameMenu(GsRect<float>(0.15f, 0.20f, 0.65f, 0.55f), style )
 {
 
 
-
-#if !defined(EMBEDDED)
-
     mpAspectSelection =
             mpMenuDialog->add( new ComboSelection( "Aspect",
                                                           filledStrList(1, "disabled"),
@@ -55,15 +52,17 @@ GameMenu(GsRect<float>(0.15f, 0.20f, 0.65f, 0.55f), style )
     mpResolutionSelection =
         mpMenuDialog->add( new ComboSelection( "Size",
                                                   filledStrList(1, "?x?"),
-                                                  style) );
+
+                                               style) );
+#if !defined(EMBEDDED)
     mpFullScreenSwitch =
         mpMenuDialog->add( new Switch( "Fullscreen", style ) );
-
+#endif
 
     mpIntegerScalingSwitch =
         mpMenuDialog->add( new Switch( "IntScaling", style ) );
 
-#endif
+
 
     mpVSyncSwitch =
         mpMenuDialog->add( new Switch( "VSync", style ) );
@@ -109,7 +108,7 @@ void DisplaySettings::refresh()
 
     mpRenderScaleQualitySel->setSelection(oglFilter);
 
-#if !defined(EMBEDDED)
+
 
 
 #if defined(USE_OPENGL)
@@ -133,7 +132,11 @@ void DisplaySettings::refresh()
     mpFilterSelection->setSelection( mMyNewConf.m_ScaleXFilter==VidFilter::NONE ? "none" :
                                     (mMyNewConf.m_normal_scale ? "normal" : "scale") +
                                     itoa(int(mMyNewConf.m_ScaleXFilter)) + "x" );
+
+#if !defined(EMBEDDED)
     mpFullScreenSwitch->enable(mMyNewConf.mFullscreen);
+#endif
+
     mpIntegerScalingSwitch->enable(mMyNewConf.mIntegerScaling);
 
 
@@ -147,7 +150,7 @@ void DisplaySettings::refresh()
     resStr += itoa(mMyNewConf.mDisplayRect.dim.y);
     mpResolutionSelection->setSelection(resStr);
 
-#endif
+
 
     mpVSyncSwitch->enable( mMyNewConf.mVSync );
 
@@ -166,7 +169,6 @@ void DisplaySettings::release()
                 CVidConfig::RenderQuality::NEAREST;
 
 
-#if !defined(EMBEDDED)
 
 #if defined(USE_OPENGL)
     // OpenGL Flag
@@ -230,8 +232,10 @@ void DisplaySettings::release()
         }
     }
 
+#if !defined(EMBEDDED)
     // Fullscreen
     mMyNewConf.mFullscreen = mpFullScreenSwitch->isEnabled();
+#endif
 
     // Integer Scaling
     mMyNewConf.mIntegerScaling = mpIntegerScalingSwitch->isEnabled();
@@ -252,17 +256,13 @@ void DisplaySettings::release()
     // In case the user changed something in the camera settings, reload that.
     mMyNewConf.m_CameraBounds = gVideoDriver.getCameraBounds();
 
-#endif
-
     // Vsync
     mMyNewConf.mVSync = mpVSyncSwitch->isEnabled();
 
     CVidConfig oldVidConf = gVideoDriver.getVidConfig();
 
     if(oldVidConf == mMyNewConf)
-    {
         return;
-    }
 
     gVideoDriver.setVidConfig(mMyNewConf);
 

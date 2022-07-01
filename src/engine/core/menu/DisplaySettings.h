@@ -45,7 +45,11 @@ private:
     std::shared_ptr<ComboSelection>	mpAspectSelection;
     std::shared_ptr<Switch>		    mpVSyncSwitch;
     std::shared_ptr<ComboSelection>	mpResolutionSelection;
+
+#if !defined(EMBEDDED)
     std::shared_ptr<Switch>	        mpFullScreenSwitch;
+#endif
+
     std::shared_ptr<Switch>         mpIntegerScalingSwitch;
 
 };
