@@ -191,7 +191,17 @@ void CFuse::winGame(const int msecs)
     mGameEndsTime = msecs + timerTicks();
 }
 
+void CFuse::deserialize(GsKit::ptree &node)
+{
+    mpMap->mNumFuses = node.get<int>("<xmlattr>.numFuses", mpMap->mNumFuses);
+    mpMap->mFuseInLevel = node.get<bool>("<xmlattr>.fuseInLevel", mpMap->mFuseInLevel);
+}
 
+void CFuse::serialize(GsKit::ptree &node)
+{
+    node.put("<xmlattr>.numFuses", mpMap->mNumFuses);
+    node.put("<xmlattr>.fuseInLevel", mpMap->mFuseInLevel);
+}
 
 void CFuse::process()
 {

@@ -6,6 +6,8 @@
 
 #include <base/utils/property_tree/property_tree.h>
 
+#include <engine/core/CBehaviorEngine.h>
+
 Achievements::Achievements()
 {
     mTodos["Pesty"] = 100;
@@ -37,6 +39,8 @@ void Achievements::addTaskCompletion(const std::string &which,
         {
             curTask = 0;
 
+            if(gBehaviorEngine.mOptions[GameOption::SHOWACHV].value)
+            {
             galaxy::showMsg(0, which, nullptr, false, "TrophyMsg.msg",
                             galaxy::CMessageBoxGalaxy::Alignment::UPPERRIGHT,
                             10000, true);
@@ -44,6 +48,7 @@ void Achievements::addTaskCompletion(const std::string &which,
             gAudio.playInternalSound(gTrophy_Sound,
                                      "Trophy_Sound",
                                      sizeof(gTrophy_Sound));
+            }
         }
     }
 

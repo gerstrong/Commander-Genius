@@ -369,14 +369,6 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
 
     // Set Scrollbuffer
     Map.drawAll();
-    /*
-    auto &scrollSfcVec = gVideoDriver.getScrollSurfaceVec();
-    auto &scrollCoords = Map.getScrollCoords();
-    const auto numPlanes = scrollSfcVec.size();
-
-    assert( numPlanes == scrollCoords.size() );
-
-*/
     gLogging << "Map got loaded successfully!" << CLogFile::endl;
 
     return true;
@@ -401,7 +393,7 @@ void CMapLoaderGalaxy::spawnFoes(CMap &Map)
 
     const int numPlayers = gBehaviorEngine.numPlayers();
 
-	// he we go to the adding objects
+    // Time to add the foe objects
 	Map.mNumFuses = 0;
 	Map.mFuseInLevel = false;		
 	data_ptr = start_data;
@@ -477,55 +469,6 @@ void CMapLoaderGalaxy::spawnFoes(CMap &Map)
         }
     }
 
-
-
-    /// Only for testing loaded Objects
-	/*std::ofstream File("objlayer.txt");
-
-	// Note: This is just for tracing stuff from the level maps
-	data_ptr = start_data;
-	for(size_t y=0 ; y<height ; y++)
-	{
-		for(size_t x=0 ; x<width ; x++)
-		{
-			File << *data_ptr++ << " ";
-		}
-		File << std::endl;
-	}
-
-	File.close();*/
-
-
-	// Print out information about first plane of the map
-	/*std::ofstream FileTile("tilelayer1.txt");
-
-	// he we go to the adding objects
-	data_ptr = Map.getData(1);
-	for(size_t y=0 ; y<height ; y++)
-	{
-		for(size_t x=0 ; x<width ; x++)
-		{
-			data_ptr++;
-			FileTile << *data_ptr << " ";
-		}
-		FileTile << std::endl;
-	}*/
-
-	/*std::ofstream FileTile0("tilelayer0.txt");
-
-	// he we go to the adding objects
-	data_ptr = Map.getData(0);
-	for(size_t y=0 ; y<height ; y++)
-	{
-		for(size_t x=0 ; x<width ; x++)
-		{
-			data_ptr++;
-			FileTile0 << *data_ptr << " ";
-		}
-		FileTile0 << std::endl;
-	}
-
-	FileTile0.close();*/
 }
 
 }

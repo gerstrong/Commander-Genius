@@ -73,7 +73,7 @@ void GameButton::setupStyle()
     else
     {
         enableTwirl(gMenuController.mEnableTwirl);
-        setRounded(true);
+        setRounded(false);
     }
 }
 

@@ -34,12 +34,12 @@ GameMenu(GsRect<float>(0.15f, 0.20f, 0.65f, 0.55f), style )
 #if !defined(EMBEDDED)
     mpTiltScreenSwitch =
             mpMenuDialog->add( new Switch("TiltedScr", style) );
+#endif // !defined(EMBEDDED)
 
     mpGameResSelection =
             mpMenuDialog->add( new ComboSelection( "GameRes",
                                                    filledStrList(1, "?x?"),
                                                    style ) );
-#endif // !defined(EMBEDDED)
 
     mpFPSSelection =
             mpMenuDialog->add(
@@ -85,7 +85,7 @@ void CVideoSettings::refresh()
 
 #if !defined(EMBEDDED)
     mpTiltScreenSwitch->enable( mUsersConf.mTiltedScreen );
-
+#endif // !defined(EMBEDDED)
 
     const auto gamesResSet = gVideoDriver.getGameResStrSet();
     mpGameResSelection->setList( gamesResSet );
@@ -95,7 +95,6 @@ void CVideoSettings::refresh()
     resStr += "x";
     resStr += itoa(mUsersConf.mGameRect.dim.y);
     mpGameResSelection->setSelection(resStr);
-#endif // !defined(EMBEDDED)
 }
 
 
@@ -112,11 +111,12 @@ void CVideoSettings::release()
 
 #if !defined(EMBEDDED)
     mUsersConf.mTiltedScreen = mpTiltScreenSwitch->isEnabled();
+#endif // !defined(EMBEDDED)
 
     const std::string GameResStr = mpGameResSelection->getSelection();
     sscanf( GameResStr.c_str(), "%hux%hux",
             &mUsersConf.mGameRect.dim.x, &mUsersConf.mGameRect.dim.y );
-#endif // !defined(EMBEDDED)
+
 
 #if defined(CAANOO) || defined(WIZ) || defined(DINGOO) || defined(NANONOTE) || defined(ANDROID)
     mUsersConf.mDisplayRect.dim.x = 320;
@@ -139,6 +139,10 @@ void CVideoSettings::release()
     mUsersConf.m_CameraBounds = gVideoDriver.getCameraBounds();
 
     CVidConfig oldVidConf = gVideoDriver.getVidConfig();
+
+    if(oldVidConf == mUsersConf)
+        return;
+
     gVideoDriver.setVidConfig(mUsersConf);
 
     // At this point we also must apply and save the settings

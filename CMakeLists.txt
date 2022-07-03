@@ -133,11 +133,13 @@ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
   # Set the possible values of build type for cmake-gui
   set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release"
     "MinSizeRel" "RelWithDebInfo")
+else()
+  message(STATUS "CMAKE_BUILD_TYPE = ${CMAKE_BUILD_TYPE}")
 endif()
 
 # Since shell script get_version is not processed properly on windows, we have to define manually here.
 # TODO: Better system for defining the version
-set(CG_VERSION "3.1.0")
+set(CG_VERSION "3.1.3")
 
 MESSAGE(STATUS "Preparing the Build-System for Commander Genius" )
 execute_process(COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/get_version.sh OUTPUT_VARIABLE CG_VERSION)

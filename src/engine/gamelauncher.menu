@@ -5,7 +5,7 @@
      name="x"
      dim="0.0f, 0.0f, 0.069f, 0.069f"
      event="GMQuit"
-     rounded="true">
+     rounded="false">
   </Button>
 
   <Text
@@ -18,7 +18,7 @@
      name="O"
      dim="0.93f, 0.0f, 0.069f, 0.069f"
      event="openSettingsMenuEvent"
-     rounded="true">
+     rounded="false">
   </Button>
   <BitmapBox
      tag="currentBitmapBox"
@@ -35,7 +35,7 @@
      name="Start >"
      dim="0.60f, 0.865f, 0.25f, 0.07f"
      event="GMStart"
-     rounded="true">
+     rounded="false">
   </Button>
 
   <Text

@@ -1538,9 +1538,16 @@ bool CInput::processKeys(int keydown)
         default: break;
         }
     }
-    else if(Event.key.keysym.sym < immediate_keytable.size())
+    else if(Event.key.keysym.sym < int(immediate_keytable.size()))
     {
         immediate_keytable[Event.key.keysym.sym] = keydown;
+    }
+    else // For some special keys
+    {
+        if(Event.key.keysym.scancode == SDL_SCANCODE_F10)
+        {
+            immediate_keytable[KF10] = keydown;
+        }
     }
 
     if(getHoldedKey(KSHIFT))

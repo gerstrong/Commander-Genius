@@ -1,3 +1,13 @@
+v3.1.2:
+-------
+- Added option for showing/hiding achievements
+
+v3.1.1:
+-------
+- Colission fixes
+- F10 is working again
+
+
 v3.0.9:
 -------
 - Bug fixes with changed aspect ratio and resolutions

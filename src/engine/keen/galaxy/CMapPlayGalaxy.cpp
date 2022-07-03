@@ -678,7 +678,7 @@ void CMapPlayGalaxy::operator<<(GsKit::ptree &levelNode)
             const auto x = spriteNode.get<int>("<xmlattr>.x", 0);
             const auto y = spriteNode.get<int>("<xmlattr>.y", 0);
 
-            if(x <= 0 || y <= 0)
+            if(x < 0 || y < 0)
             {
                 gLogging << "Warning: Ignoring Position (" << x << ","
                          << y << ") of foe " << foeID << "." << CLogFile::endl;
@@ -733,7 +733,7 @@ void CMapPlayGalaxy::operator<<(GsKit::ptree &levelNode)
     {
         auto &mapNode = levelNode.get_child("Map");
         mMap.m_width = mapNode.get<int>("width");
-        mMap.m_height = mapNode.get<int>("height");
+        mMap.m_height = mapNode.get<int>("height");        
 
         const std::string b64textBG   = mapNode.get<std::string>("bgdata");
         const std::string b64textFG   = mapNode.get<std::string>("fgdata");
