@@ -17,7 +17,7 @@
 #include "CStatusScreen.h"
 #include "graphics/GsGraphics.h"
 
-#include "engine/core/Playerdefines.h"
+//#include "engine/core/Playerdefines.h"
 #include "engine/core/CBehaviorEngine.h"
 #include "ai/CAnkhShield.h"
 
@@ -59,11 +59,18 @@ void CStatusScreen::draw()
 
 	if(!m_closed)
 	{
+        auto &vidDrv = gVideoDriver;
+
+        // Load texture on demand
+        mTexture.loadFromSurface(mStatusSfc, vidDrv.Renderer());
         auto weak = GsWeakSurface(gVideoDriver.getBlitSurface());
 
         m_StatusRect.x = (weak.width()-m_StatusRect.w)/2;
         m_StatusRect.y = (weak.height()-m_StatusRect.h)/2;
-        mStatusSfc.blitTo(weak, m_StatusRect);
+
+        const SDL_Rect src_rect {0, 0, m_StatusRect.w, m_StatusRect.h};
+        const SDL_Rect dst_rect = m_StatusRect;
+        vidDrv.pushTextureRef(mTexture, src_rect, dst_rect);
 	}
 }
 
@@ -245,17 +252,17 @@ void CStatusScreen::createInventorySfcEp2(const int varSpr)
 	SDL_Rect rect;
     rect.x = (0+1)*8;	rect.w = 12*8; // Score
 	rect.y = (0+2)*8;	rect.h = 1*8;
-	SDL_FillRect(p_surface,&rect, Font.getBGColour(false));
+    SDL_FillRect(p_surface, &rect, Font.getBGColour(false));
 
     rect.x = 0*8+14*8;	rect.w = 15*8; // Extra keen at
-	SDL_FillRect(p_surface,&rect, Font.getBGColour(false));
+    SDL_FillRect(p_surface, &rect, Font.getBGColour(false));
 
     rect.x = (0+1)*8;	rect.w = 18*8; // Keens
 	rect.y = (0+4)*8;	rect.h = 3*8;
-	SDL_FillRect(p_surface,&rect, Font.getBGColour(false));
+    SDL_FillRect(p_surface, &rect, Font.getBGColour(false));
 
     rect.x = (0+20)*8;	rect.w = 9*8; // Pistol
-	SDL_FillRect(p_surface,&rect, Font.getBGColour(false));
+    SDL_FillRect(p_surface, &rect, Font.getBGColour(false));
 
     rect.x = (0+1)*8;	rect.w = 18*8; // Targets Saved
 	rect.y = (0+8)*8;	rect.h = 4*8;

@@ -11,6 +11,7 @@
 #include <SDL.h>
 #include "engine/core/inventory.h"
 #include "graphics/GsSurface.h"
+#include "graphics/GsTexture.h"
 
 class CStatusScreen
 {
@@ -40,6 +41,8 @@ private:
 
     GsSurface mStatusSfc;
 	SDL_Rect m_StatusRect;
+
+    GsTexture mTexture;
 };
 
 #endif /* CSTATUSSCREEN_H_ */

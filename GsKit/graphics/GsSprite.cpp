@@ -707,21 +707,9 @@ void GsSprite::drawSprite( SDL_Surface *dst,
     _drawSprite(dst, mSurface, x,y, getWidth(), getHeight());
 }
 
-
-void GsSprite::_drawSprite( SDL_Surface *dst,
-                            GsSurface &src,
-                           const int x,
-                           const int y,
-                           const int w,
-                           const int h )
+void GsSprite::clipRect( SDL_Rect &dst_rect, SDL_Rect &src_rect,
+               const int x, const int y, const int w, const int h)
 {
-    if(src.empty())
-    {
-        return;
-    }
-
-    SDL_Rect dst_rect, src_rect;
-
     src_rect.x = 0;	        src_rect.y = 0;
     dst_rect.x = x;			dst_rect.y = y;
     dst_rect.w = w;	        dst_rect.h = w;
@@ -754,22 +742,44 @@ void GsSprite::_drawSprite( SDL_Surface *dst,
         src_rect.h += y;
         dst_rect.y = 0;
     }
+}
+
+void GsSprite::renderTexture( const int x,
+                              const int y,
+                              const int w,
+                              const int h )
+{
+    if(mSurface.empty())
+        return;
+
+    SDL_Rect dst_rect, src_rect;
+    clipRect(dst_rect, src_rect, x, y, w, h);
 
     auto &vidDrv = gVideoDriver;
 
-    // Load texture on demand
-    bool showTexture = true;
-
+    // Load textures always on demand
     if(!mTexture)
     {
-        showTexture = mTexture.loadFromSurface(src, vidDrv.Renderer());
+        mTexture.loadFromSurface(mSurface, vidDrv.Renderer());
     }
 
-    if(showTexture)
-    {
-        vidDrv.pushTextureRef(mTexture, src_rect, dst_rect);
-    }
+    vidDrv.pushTextureRef(mTexture, src_rect, dst_rect);
+}
 
+void GsSprite::_drawSprite( SDL_Surface *dst,
+                            GsSurface &src,
+                           const int x,
+                           const int y,
+                           const int w,
+                           const int h )
+{
+    if(src.empty())
+        return;
+
+    SDL_Rect dst_rect, src_rect;
+    clipRect(dst_rect, src_rect, x, y, w, h);
+
+    BlitSurface( src.getSDLSurface(), &src_rect, dst, &dst_rect );
 }
 
 /**

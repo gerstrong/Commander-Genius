@@ -316,7 +316,7 @@ void CGUIDialog::processRender(const GsRect<float> &RectDispCoordFloat)
         it->processRender(displayRect);
     }
 
-    // If Dialog is disabled, make everthing within a bit darker.
+    // If Dialog is disabled, make all included items a bit darker.
     if(!mEnabled)
     {
         const SDL_Rect lRect = gVideoDriver.toBlitRect(rect);

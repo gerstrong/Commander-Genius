@@ -512,7 +512,11 @@ void CSpriteObject::draw()
 		{
             if (w && h)
             {
-                Sprite.drawSprite( showX, showY, w, h, (255-transluceny) );
+                // Only draw textures, when some translucency applied.
+                if( (255-transluceny) == 255 )
+                    Sprite.renderTexture( showX, showY, w, h );
+                else
+                    Sprite.drawSprite( showX, showY, w, h, (255-transluceny) );
             }
             else
             {

@@ -99,6 +99,9 @@ public:
                                const int x,
                                const int y );
 
+    void renderTexture(const int x, const int y,
+                        const int w, const int h );
+
     void _drawSprite(SDL_Surface *dst, GsSurface &src, const int x, const int y , const int w, const int h);
 
     void drawBlinkingSprite(const int x, const int y );
@@ -139,6 +142,9 @@ public:
     Sint32 m_bboxX2, m_bboxY2;
 
 private:
+
+    void clipRect( SDL_Rect &dst_rect, SDL_Rect &src_rect,
+                   const int x, const int y, const int w, const int h);
 
 
     GsSurface mSurface;
