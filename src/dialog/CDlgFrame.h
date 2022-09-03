@@ -15,7 +15,9 @@
 class CDlgFrame
 {
 public:
-	CDlgFrame(int x, int y, int w, int h, int tilewidth = 8, int tileheight = 8);
+    CDlgFrame(const int x, const int y,
+              const int w, const int h,
+              const int tilewidth = 8, const int tileheight = 8);
 
     void draw(GsSurface &dst);
 
@@ -24,14 +26,16 @@ public:
 	 * \param width New width of the box
 	 * \param height New height of the box
 	 */
-    void resize(const int width, const int height);
+    void resize(const int width,
+                const int height);
 
 	/**
 	 * \brief Sets the Position of dialog box
 	 * \param x New x Position of the box
 	 * \param y New y Position of the box
 	 */
-    void setPos(const int x, const int y);
+    void setPos(const int x,
+                const int y);
 
 	/**
 	 * Getter for Tile width

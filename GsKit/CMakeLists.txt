@@ -134,7 +134,7 @@ else()
     # Hack which on some systems helps linking this lib correctly
     # (required for mac builds)
     file(WRITE null.cpp "")
-    add_library(${PROJECT_NAME} LICENSE null.cpp)
+    add_library(${PROJECT_NAME} LICENSE null.cpp LICENSE)
 
     add_subdirectory(fileio)
     add_subdirectory(graphics)

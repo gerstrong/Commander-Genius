@@ -8,7 +8,9 @@
 #include "CDlgFrame.h"
 #include "graphics/GsGraphics.h"
 
-CDlgFrame::CDlgFrame(int x, int y, int w, int h, int tilewidth, int tileheight)
+CDlgFrame::CDlgFrame(const int x, const int y,
+                     const int w, const int h,
+                     const int tilewidth, const int tileheight)
 {
 	
 	m_8x8tileheight = tilewidth;

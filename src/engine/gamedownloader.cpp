@@ -29,7 +29,7 @@ int unzipFile(const char *input,
 }
 
 // Limit to max 1 GB
-const curl_off_t  STOP_DOWNLOAD_AFTER_THIS_MANY_BYTES = 1024 * 1024 * 1024;
+const curl_off_t  STOP_DOWNLOAD_AFTER_THESE_MANY_BYTES = 1024 * 1024 * 1024;
 #define MINIMAL_PROGRESS_FUNCTIONALITY_INTERVAL     3
 
 struct myprogress {
@@ -72,7 +72,7 @@ static int xferinfo(void *p,
         *progressPtr = newProgress;
     }
 
-    if(dlnow > STOP_DOWNLOAD_AFTER_THIS_MANY_BYTES)
+    if(dlnow > STOP_DOWNLOAD_AFTER_THESE_MANY_BYTES)
     {
         return 1;
     }
