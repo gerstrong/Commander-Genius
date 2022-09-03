@@ -16,7 +16,7 @@ mStyle(style)
         mpMenuDialog->setRect(dlgRect);
 
         mpReturnButton =
-            mpMenuDialog->add( new GameButton( "close",
+            mpMenuDialog->add( new GameButton( "< back",
                                                new CloseMenuEvent(replayMusicAfterClose),
                                                style) );
 
@@ -36,7 +36,7 @@ mStyle(style)
                                  0.08f/dlgRect.dim.y);
 
         mpReturnButton =
-            mpMenuDialog->add( new GameButton( "close",
+            mpMenuDialog->add( new GameButton( "< back",
                                                buttonRect,
                                                new CloseMenuEvent(replayMusicAfterClose),
                                                Style::VORTICON) );
@@ -51,7 +51,7 @@ mStyle(style)
 
         mpReturnButton =
             mpMenuDialog->add(
-                    new GsButton( "x",
+                    new GsButton( "< back",
                                   GsRect<float>(-0.05f, -0.05f,
                                                 0.06f/localRect.dim.x,
                                                 0.06f/localRect.dim.y),
