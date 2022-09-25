@@ -17,7 +17,8 @@
 #include "engine/core/mode/CGameMode.h"
 #include <base/GsTimer.h>
 
-
+#include <engine/core/CBehaviorEngine.h>
+#include <fileio/KeenFiles.h>
 
 /*
 $3186W #QED?
@@ -103,7 +104,7 @@ bool CFuse::isNearby(CSpriteObject &theObject)
         const int dx = (getXMidPos()>>CSF)-1;
         const int dy = (getYMidPos()>>CSF)-1;
 
-        playSound( SOUND_FUSE_BREAK, SoundPlayMode::PLAY_FORCE );
+        playSound( GameSound::FUSE_BREAK, SoundPlayMode::PLAY_FORCE );
 
         for(int i=0 ; i<4 ; i++)
         {

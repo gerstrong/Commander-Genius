@@ -93,7 +93,7 @@ void CVortiNinja::process()
 	{
 		dying = true;
 		dietimer = 0;
-		playSound(SOUND_VORT_DIE);
+        playSound(GameSound::VORT_DIE);
 	}
 
 

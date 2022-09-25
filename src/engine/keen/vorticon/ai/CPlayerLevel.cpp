@@ -101,7 +101,7 @@ void CPlayer::touchedExit(int mpx)
 		ppogostick = false;
 		
 
-        playSound(SOUND_LEVEL_DONE, SoundPlayMode::PLAY_NOW);
+        playSound(GameSound::LEVEL_DONE, SoundPlayMode::PLAY_NOW);
 		level_done = LEVEL_DONE_WALK;
 		solid = false;
 		inhibitfall = true;
@@ -161,7 +161,7 @@ void CPlayer::kill(const bool force,
 
         mpCamera->forbidLead(getPlayerIdx());
         mpCamera->cycleCamlead();
-        playSound(SOUND_KEEN_DIE, SoundPlayMode::PLAY_NOW);
+        playSound(GameSound::KEEN_DIE, SoundPlayMode::PLAY_NOW);
 
 		if(inventory.canlooseitem[0])	inventory.HasJoystick = false;
 		if(inventory.canlooseitem[1])	inventory.HasBattery = false;
@@ -180,7 +180,7 @@ void CPlayer::dieanim() // Bad word for that. It's the entire die code
 	if (pdie==PDIE_FELLOFFMAP)
 	{
 		// wait for falling sound to complete, then kill the player
-		if (!gAudio.isPlaying(SOUND_KEEN_FALL))
+        if (!gAudio.isPlaying(int(GameSound::KEEN_FALL)))
 		{
 			pdie = 0;
 			kill();
@@ -323,7 +323,7 @@ void CPlayer::TogglePogo_and_Switches()
 			if ( TileProperty[t].behaviour == 25  ||  TileProperty[t].behaviour == 26 || TileProperty[t].behaviour == 23 )
 			{
 				// Flip the switch!
-				playSound(SOUND_SWITCH_TOGGLE);
+                playSound(GameSound::SWITCH_TOGGLE);
 				if ( TileProperty[t].behaviour == 26 && t == TILE_SWITCH_DOWN )
 					mpMap->changeTile(mx, my, TILE_SWITCH_UP);
 				else if ( TileProperty[t].behaviour == 25 && t == TILE_SWITCH_UP )
@@ -411,7 +411,7 @@ void CPlayer::JumpAndPogo()
 					pjumping = PPOGOING;
 
 					// continously bounce while pogo stick is out
-					playSound(SOUND_KEEN_JUMP);
+                    playSound(GameSound::KEEN_JUMP);
 
 					// jump high if JUMP key down, else bounce low
 					if (playcontrol[PA_JUMP])
@@ -468,7 +468,7 @@ void CPlayer::JumpAndPogo()
 						pjumpupspeed = (PhysicsSettings.player.maxjumpspeed*(pjumpframe-PPREPAREJUMPFRAME))/5;
 					
 					pjumpframe = PJUMP_PREPARE_LAST_FRAME;
-					playSound(SOUND_KEEN_JUMP);
+                    playSound(GameSound::KEEN_JUMP);
 					pjumping = PJUMPUP;
 					
 					// make so if we're jumping left or right
@@ -501,7 +501,7 @@ void CPlayer::JumpAndPogo()
         	{  // immediatly abort the jump
         		if(!bumped)
         		{
-        			playSound(SOUND_KEEN_BUMPHEAD);
+                    playSound(GameSound::KEEN_BUMPHEAD);
             		bumped = true;
         		}
         		pjumpupspeed /= 2;
@@ -633,7 +633,7 @@ void CPlayer::Playerfalling()
 		{
 			if (!pjustjumped)
             {
-				playSound( SOUND_KEEN_FALL );
+                playSound( GameSound::KEEN_FALL );
             }
 		}
 	}
@@ -705,10 +705,10 @@ void CPlayer::Playerfalling()
 		if (plastfalling)
 		{  // just now stopped falling
 			if (pdie != PDIE_FELLOFFMAP)
-				gAudio.stopSound(SOUND_KEEN_FALL);  // terminate fall noise
+                gAudio.stopSound(int(GameSound::KEEN_FALL));  // terminate fall noise
 			// thud noise
 			if (!ppogostick)
-				playSound( SOUND_KEEN_LAND );
+                playSound( GameSound::KEEN_LAND );
 			// fix "sliding" effect when you fall, go one way, then
 			// before you land turn around and as you hit the ground
 			// you're starting to move the other direction
@@ -770,7 +770,7 @@ void CPlayer::raygun()
                     inventory.charges--;
 				pShowDir = pDir;
 				
-				playSound( SOUND_KEEN_FIRE );
+                playSound( GameSound::KEEN_FIRE );
 				
 				ydir = getYPosition()+(9<<STC);
 				if (pDir.x == RIGHT) xdir = getXRightPos()+xinertia;
@@ -787,7 +787,7 @@ void CPlayer::raygun()
 			else
 			{ // uh oh, out of bullets
 				// click!
-				playSound( SOUND_GUN_CLICK );
+                playSound( GameSound::GUN_CLICK );
 				
 			}  // end "do we have charges?"
 		} // end "limit how quickly shots can be fired"
@@ -866,7 +866,7 @@ void CPlayer::bump( const direction_t direction )
 	if( pjumping == PPREPAREJUMP || pjumping == PPREPAREPOGO || mIsDead || level_done!=LEVEL_NOT_DONE )
 		return;
 
-	playSound( SOUND_YORP_BUMP, SoundPlayMode::PLAY_NORESTART );
+    playSound( GameSound::YORP_BUMP, SoundPlayMode::PLAY_NORESTART );
 
 	if(!pfiring)
 		pShowDir.x = pDir.x = direction;
@@ -882,7 +882,7 @@ void CPlayer::bump(const direction_t direction, const int amount )
     if( pjumping == PPREPAREJUMP || pjumping == PPREPAREPOGO || mIsDead || level_done!=LEVEL_NOT_DONE )
         return;
 
-    playSound( SOUND_YORP_BUMP, SoundPlayMode::PLAY_NORESTART );
+    playSound( GameSound::YORP_BUMP, SoundPlayMode::PLAY_NORESTART );
 
     if(!pfiring)
         pShowDir.x = pDir.x = direction;

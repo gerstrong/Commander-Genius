@@ -174,7 +174,7 @@ void CMimrock::processJump()
         mTimer = BOUNCE_TIME;
         yinertia = -BOUNCE_HEIGHT;
         setAction(A_MIMROCK_BOUNCE);
-        this->playSound( SOUND_MIMROCK_BOUNCE );
+        this->playSound( GameSound::MIMROCK_BOUNCE );
     }
 }
 

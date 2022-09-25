@@ -2,6 +2,8 @@
 #include "../../common/ai/CPlayerBase.h"
 #include "../../common/dialog/CMessageBoxBitmapGalaxy.h"
 
+#include <engine/core/CBehaviorEngine.h>
+
 namespace galaxy 
 {
     
@@ -29,7 +31,7 @@ void CSpecialItem::getTouchedBy(CSpriteObject& theObject)
 		auto &item = player->m_Inventory.Item.m_special;
 
 		// Sound play
-        playSound(SOUND_GET_SPECIAL_ITEM, SoundPlayMode::PLAY_PAUSEALL);
+        playSound(GameSound::GET_SPECIAL_ITEM, SoundPlayMode::PLAY_PAUSEALL);
 
 		switch(mFoeID)
 		{

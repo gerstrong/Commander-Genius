@@ -61,7 +61,7 @@ void CIceCannon::process()
 		CIceChunk *chunk = new CIceChunk(mpMap, newpos_x, newpos_y,vector_x, vector_y);
 		if(!silent)
 		{
-		    playSound(SOUND_CANNONFIRE);
+            playSound(GameSound::CANNONFIRE);
 		    silent = true;
 		}
 
@@ -188,7 +188,7 @@ void CIceChunk::smash()
 	if (onscreen)
 	{
 	    if(!silent)
-		playSound(SOUND_CHUNKSMASH);
+        playSound(GameSound::CHUNKSMASH);
 	    
 	    silent = true;
 	    CIceBit *chunk;

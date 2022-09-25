@@ -3,6 +3,7 @@
 #include "../../common/ai/CPlayerBase.h"
 
 #include <base/utils/property_tree/property_tree.h>
+#include <engine/core/CBehaviorEngine.h>
 
 /*
 $1B9EW  #Keen throw rope

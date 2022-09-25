@@ -72,7 +72,7 @@ void CAutoRay::process()
 
 		if(!silent)
 		{
-		    playSound(SOUND_TANK_FIRE);
+            playSound(GameSound::TANK_FIRE);
 		    silent = true;
 		}		
 	}

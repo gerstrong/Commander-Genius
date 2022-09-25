@@ -35,7 +35,7 @@ void CFireBall::process()
 	if (mHealthPoints <= 0 && state == RAY_STATE_FLY)
 	{
 		if (onscreen)
-			playSound(SOUND_SHOT_HIT);
+            playSound(GameSound::SHOT_HIT);
 		m_type = OBJ_RAY;
 		state = RAY_STATE_SETZAPZOT;
 		inhibitfall = 1;

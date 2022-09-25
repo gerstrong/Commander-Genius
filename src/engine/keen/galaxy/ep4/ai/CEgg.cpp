@@ -71,7 +71,7 @@ void CEgg::getTouchedBy(CSpriteObject &theObject)
 	if( CBullet *bullet = dynamic_cast<CBullet*>(&theObject) )
 	{
 		bullet->setAction(A_KEENSHOT_IMPACT);
-		bullet->playSound( SOUND_SHOT_HIT );
+        bullet->playSound( GameSound::SHOT_HIT );
 		bullet->mIsDead = true;
 		hatch();
 	}

@@ -13,7 +13,9 @@
 #include "CStunnable.h"
 #include "CBullet.h"
 #include "engine/core/CBehaviorEngine.h"
+
 #include <base/video/CVideoDriver.h>
+#include <graphics/GsGraphics.h>
 
 const int STARRING_SPRITE = 40;
 const int STARRING_SPRITE_EP5 = 41;
@@ -51,7 +53,7 @@ void CStunnable::getTouchedBy(CSpriteObject &theObject)
         if(!bullet->getActionNumber(A_KEENSHOT_IMPACT))
         {
             bullet->setAction(A_KEENSHOT_IMPACT);
-            bullet->playSound( SOUND_SHOT_HIT );
+            bullet->playSound( GameSound::SHOT_HIT );
         }
     }
 }

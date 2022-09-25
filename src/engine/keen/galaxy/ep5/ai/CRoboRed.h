@@ -28,24 +28,24 @@ public:
 	void processPauseBeforeShoot();	
 	void processShoot();	
 	
-	bool isNearby(CSpriteObject &theObject);
+    bool isNearby(CSpriteObject &theObject) override;
 
-	int checkSolidD( int x1, int x2, int y2, const bool push_mode );
+    int checkSolidD( int x1, int x2, int y2, const bool push_mode ) override;
 
     bool loadLuaScript(const std::string &scriptBaseName) override;
 
-	void process();
+    void process() override;
 
 	/**
 	 * What happens if the slug gets touched by another object
 	 */
-	void getTouchedBy(CSpriteObject &theObject);
+    void getTouchedBy(CSpriteObject &theObject) override;
 	
 private:
-	int mTimer;
-	int mLookTimer;
+    int mTimer = 0;
+    int mLookTimer = 0;
     bool swapYDir = false;
-	bool mKeenNearby;
+    bool mKeenNearby = false;
 
     int moveHorizSpeed;
 

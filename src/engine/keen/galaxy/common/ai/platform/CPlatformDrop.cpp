@@ -6,6 +6,7 @@
  */
 
 #include "CPlatformDrop.h"
+#include <engine/core/CBehaviorEngine.h>
 
 // If the max Speed is reached, the platform won't return.
 const int DROP_MAX_SPEED_LIMIT = 65;
@@ -25,9 +26,6 @@ m_Origin(m_Pos)
     m_delay_for_drop = START_DELAY_FOR_DROP;
 
 	m_ActionBaseOffset = actionOff;
-	xDirection = 0;
-	yDirection = 0;
-    solid = false;
 
     dropSpeedAcc = 5;
     hoverSpeed = DROP_MAX_SPEED_LIMIT;

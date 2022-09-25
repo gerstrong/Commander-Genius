@@ -9,8 +9,10 @@
 #include "CBloog.h"
 #include "../../common/ai/CPlayerLevel.h"
 #include "../../common/ai/CBullet.h"
-#include <base/utils/misc.h>
 
+#include <base/utils/misc.h>
+#include <engine/core/CBehaviorEngine.h>
+#include <graphics/GsGraphics.h>
 
 namespace galaxy {
   

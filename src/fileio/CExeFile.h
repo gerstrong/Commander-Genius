@@ -14,7 +14,6 @@
 #ifndef CEXEFILE_H_
 #define CEXEFILE_H_
 
-#include "fileio/crc.h"
 #include <base/TypeDefinitions.h>
 #include <base/audio/music/CIMFPlayer.h>
 
@@ -135,18 +134,18 @@ private:
 		unsigned short overlay_num;
 	};
 
-	size_t m_datasize;
-	size_t m_headersize;
-    size_t mRawdataSize;
+    size_t m_datasize = 0;
+    size_t m_headersize = 0;
+    size_t mRawdataSize = 0;
     std::string mBasename;
-	int m_episode;
+    int m_episode = 0;
     bool mIsLuaScript = false;
 	bool m_demo;
-	unsigned int m_crc;
+    unsigned int m_crc = 0;
 	std::vector<gs_byte> mData;
-	void *m_headerdata;
-	gs_byte *m_rawdata;
-	gs_byte *m_data_segment;
+    void *m_headerdata = nullptr;
+    gs_byte *m_rawdata = nullptr;
+    gs_byte *m_data_segment = nullptr;
 	std::string m_filename;
 
 	std::map< size_t, std::map<int , bool> > m_supportmap;

@@ -64,7 +64,7 @@ void CBlooglet::getTouchedBy(CSpriteObject &theObject)
       auto *gem = new CSpriteItem(mpMap, mFoeID+0x2E, newX, newY, newSprite, 0,true);
       gem->honorPriority = false;
       spawnObj( gem );
-      playSound(SOUND_JUMPED_GEM);
+      playSound(GameSound::JUMPED_GEM);
     }
     
     setAction(A_BLOOGLET_STUNNED);

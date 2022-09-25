@@ -9,6 +9,7 @@
 #include "../../common/ai/CPlayerLevel.h"
 #include "../../common/ai/CBullet.h"
 #include <base/utils/misc.h>
+#include <graphics/GsGraphics.h>
 
 
 namespace galaxy
@@ -56,7 +57,7 @@ void CArachnut::getTouchedBy(CSpriteObject &theObject)
 	if( CBullet *bullet = dynamic_cast<CBullet*>(&theObject) )
 	{
 		bullet->setAction(A_KEENSHOT_IMPACT);
-		bullet->playSound( SOUND_SHOT_HIT );
+        bullet->playSound( GameSound::SHOT_HIT );
 		setAction(A_ARACHNUT_STUNNED);
 	}
 	

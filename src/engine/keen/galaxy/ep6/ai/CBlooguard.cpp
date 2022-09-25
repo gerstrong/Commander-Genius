@@ -3,6 +3,8 @@
 #include "../../common/ai/CPlayerLevel.h"
 #include "../../common/ai/CBullet.h"
 
+#include <engine/core/CBehaviorEngine.h>
+
 namespace galaxy {
   
         
@@ -64,7 +66,7 @@ void CBlooguard::processClubbing()
         // At this point Keen must get stunned!
         mStubPlayer = true;
         setAction(A_BLOOGUARD_WALK);
-        playSound(SOUND_BLOOGGUARD_STUB);
+        playSound(GameSound::BLOOGGUARD_STUB);
     }
 }
 

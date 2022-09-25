@@ -8,6 +8,7 @@
 #include "CVorticonSpriteObject.h"
 #include "engine/core/spritedefines.h"
 
+#include <engine/core/CBehaviorEngine.h>
 
 CVorticonSpriteObject::CVorticonSpriteObject(CMap *pmap,
                                              const int x, const int y,

@@ -56,7 +56,7 @@ void CScrub::process()
 			dietimer = 0;
 			moveUp(10);
 			scrubdie_inertia_y = SCRUBDIE_START_INERTIA;
-			playSound(SOUND_SHOT_HIT);
+            playSound(GameSound::SHOT_HIT);
 		}
 	}
 

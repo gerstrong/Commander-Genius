@@ -77,12 +77,12 @@ void CPlayer::procGoodie(int tile, int mpx, int mpy)
 	std::vector<CTileProperties> &TileProperty = gBehaviorEngine.getTileProperties();
 	Uint8 behaviour = TileProperty[tile].behaviour;
 	if ( (behaviour > 5 && behaviour < 11) || (behaviour > 17 && behaviour < 22) )
-	{
-		playSound(SOUND_GET_BONUS);
+	{        
+        playSound(GameSound::GET_BONUS);
 	}
 	else if (behaviour > 10 && behaviour < 16)
     {
-		playSound(SOUND_GET_ITEM);
+        playSound(GameSound::GET_ITEM);
     }
 	
 	char shotInc = 5;     
@@ -151,31 +151,31 @@ void CPlayer::procGoodie(int tile, int mpx, int mpy)
 			break;
 		case 16:           // the Holy Pogo Stick
 			inventory.HasPogo = 1;
-			playSound(SOUND_GET_PART);
+            playSound(GameSound::GET_PART);
 			break;
 			
 		case 11:
 			inventory.canlooseitem[0] = !(inventory.HasJoystick);
 			inventory.HasJoystick = true;
-			playSound(SOUND_GET_PART);
+            playSound(GameSound::GET_PART);
 			getBonuspoints(10000, mpx, mpy);
 			break;
 		case 12:
 			inventory.canlooseitem[1] = !(inventory.HasBattery);
 			inventory.HasBattery = true;
-			playSound(SOUND_GET_PART);
+            playSound(GameSound::GET_PART);
 			getBonuspoints(10000, mpx, mpy);
 			break;
 		case 13:
 			inventory.canlooseitem[2] = !(inventory.HasVacuum);
 			inventory.HasVacuum = true;
-			playSound(SOUND_GET_PART);
+            playSound(GameSound::GET_PART);
 			getBonuspoints(10000, mpx, mpy);
 			break;
 		case 14:
 			inventory.canlooseitem[3] = !(inventory.HasWiskey);
 			inventory.HasWiskey = true;
-			playSound(SOUND_GET_PART);
+            playSound(GameSound::GET_PART);
 			getBonuspoints(10000, mpx, mpy);
 			break;
 			
@@ -196,7 +196,7 @@ void CPlayer::procGoodie(int tile, int mpx, int mpy)
 
 		case 28:
 			inventory.charges++;
-			playSound(SOUND_GET_ITEM);
+            playSound(GameSound::GET_ITEM);
 			riseBonus(SHOTUP_SPRITE, mpx, mpy );
 			break;
 			
@@ -234,7 +234,7 @@ void CPlayer::riseBonus(int spr, int x, int y)
 void CPlayer::give_keycard(const int doortile)
 {
     size_t maxkeycards = (gBehaviorEngine.mOptions[GameOption::KEYSTACK].value) ? 9 : 1;
-	playSound(SOUND_GET_CARD);
+    playSound(GameSound::GET_CARD);
 
 	if (doortile==DOOR_YELLOW && inventory.HasCardYellow < maxkeycards)
 		inventory.HasCardYellow++;
@@ -332,7 +332,7 @@ std::string CPlayer::pollHintMessage()
 
 void CPlayer::getBonuspoints(int numpts, int mpx, int mpy)
 {
-	playSound(SOUND_GET_BONUS);
+    playSound(GameSound::GET_BONUS);
 	incScore(numpts);
 
 	int spr;
@@ -359,8 +359,8 @@ void CPlayer::incScore(int numpts)
 	// check if score is > than "extra life at"
 	if (inventory.score >= inventory.extralifeat)
 	{
-		gAudio.stopSound(SOUND_GET_BONUS);
-		playSound(SOUND_EXTRA_LIFE);
+        gAudio.stopSound(int(GameSound::GET_BONUS));
+        playSound(GameSound::EXTRA_LIFE);
 		inventory.lives++;
 		inventory.extralifeat += 20000;
 	}
@@ -375,7 +375,7 @@ void CPlayer::openDoor(int doortile, int doorsprite, int mpx, int mpy)
 	short tilefix=0;
 	std::vector<CTileProperties> &TileProperty = gBehaviorEngine.getTileProperties();
 
-	playSound(SOUND_DOOR_OPEN);
+    playSound(GameSound::DOOR_OPEN);
 	take_keycard(doortile);
 
     const int ep = gBehaviorEngine.getEpisode();
@@ -410,7 +410,7 @@ void CPlayer::openDoor(int doortile, int doorsprite, int mpx, int mpy)
 
 void CPlayer::giveAnkh()
 {
-	playSound(SOUND_ANKH);
+    playSound(GameSound::ANKH);
 	if(ankhtime == 0)
 	{
 	    gEventManager.add(new EventSpawnObject(new CAnkhShield(*this)) );

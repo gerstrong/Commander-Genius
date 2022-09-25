@@ -8,7 +8,9 @@
 #include "CWormmouth.h"
 #include "../../common/ai/CPlayerBase.h"
 #include "../../common/ai/CBullet.h"
+
 #include <base/utils/misc.h>
+#include <engine/core/CBehaviorEngine.h>
 
 namespace galaxy {
 
@@ -95,7 +97,7 @@ bool CWormmouth::isNearby(CSpriteObject &theObject)
           !getActionNumber(A_WORMMOUTH_EAT) )
       {
           setAction(A_WORMMOUTH_EAT);
-          playSound( SOUND_WORMOUTH_STRIKE );
+          playSound( GameSound::WORMOUTH_STRIKE );
       }
       
   }

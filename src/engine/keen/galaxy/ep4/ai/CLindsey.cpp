@@ -9,6 +9,9 @@
 #include "../../common/ai/CPlayerLevel.h"
 #include "../../common/dialog/CMessageBoxBitmapGalaxy.h"
 
+#include <engine/core/CBehaviorEngine.h>
+#include <fileio/KeenFiles.h>
+
 namespace galaxy {
 
 const int LINDSEY_MOVE_SPEED = 20;
@@ -66,7 +69,7 @@ void CLindsey::getTouchedBy(CSpriteObject &theObject)
     // When Keen touches the pincess give that hint
     if( auto *player =  dynamic_cast<CPlayerLevel*>(&theObject) )
     {
-        playSound(SOUND_GET_WETSUIT, SoundPlayMode::PLAY_PAUSEALL);
+        playSound(GameSound::GET_WETSUIT, SoundPlayMode::PLAY_PAUSEALL);
 
         std::array< std::string, 3> lindsey_text;
 

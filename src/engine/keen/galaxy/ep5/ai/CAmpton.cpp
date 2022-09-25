@@ -10,8 +10,10 @@
 #include "../../common/ai/CPlayerLevel.h"
 #include "../../common/ai/CEnemyShot.h"
 #include "../../common/ai/CBullet.h"
-#include <base/utils/misc.h>
 
+#include <base/utils/misc.h>
+#include <engine/core/CBehaviorEngine.h>
+#include <fileio/KeenFiles.h>
 
 namespace galaxy {  
 
@@ -65,7 +67,7 @@ CAmpton::CAmpton(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y)
 
     auto diff = gBehaviorEngine.mDifficulty;
 
-    mWalkSound = SOUND_AMPTONWALK0;
+    mWalkSound = GameSound::AMPTONWALK0;
 
 
     xDirection = LEFT;
@@ -109,7 +111,7 @@ bool CAmpton::loadLuaScript(const std::string &scriptBaseName)
     mLua.runFunctionRetOneInt("healthPoints", health);
     mHealthPoints = static_cast<unsigned int>(health);
 
-    int walksound = mWalkSound;
+    int walksound = int(mWalkSound);
     mLua.runFunctionRetOneInt("walkSound", walksound);
     mWalkSound = GameSound(walksound);
 
@@ -335,7 +337,7 @@ void CAmpton::getTouchedBy(CSpriteObject &theObject)
         {
             if(mScreamAfterShoot)
             {
-                playSound(SOUND_ROBO_STUN);
+                playSound(GameSound::ROBO_STUN);
             }
 
             setAction(A_AMPTON_STUNNED);

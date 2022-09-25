@@ -85,23 +85,23 @@ void CSlicestar::process()
 	
 	if( blockedl && xDirection == LEFT )
 	{
-	  playSound(SOUND_SLICEBUMP);
+      playSound(GameSound::SLICEBUMP);
 	  xDirection = RIGHT;
 	}
 	else if(blockedr && xDirection == RIGHT)
 	{
-	  playSound(SOUND_SLICEBUMP);
+      playSound(GameSound::SLICEBUMP);
 	  xDirection = LEFT;
 	}
 
 	if( blockedu && yDirection == UP )
 	{
-	  playSound(SOUND_SLICEBUMP);
+      playSound(GameSound::SLICEBUMP);
 	  yDirection = DOWN;
 	}
 	else if(blockedd && yDirection == DOWN)
 	{
-	  playSound(SOUND_SLICEBUMP);
+      playSound(GameSound::SLICEBUMP);
 	  yDirection = UP;
 	}
 }

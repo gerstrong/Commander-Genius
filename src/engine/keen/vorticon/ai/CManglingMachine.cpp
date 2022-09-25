@@ -348,7 +348,7 @@ void CManglingMachine::se_mortimer_spark()
 	case MSPARK_DESTROYARMS:
 		if (!timer)
 		{
-			playSound(SOUND_SHOT_HIT);
+            playSound(GameSound::SHOT_HIT);
 			for(int x=0;x<3;x++)
 			{
 				int mx = MORTIMER_LEFT_ARM_X+x;
@@ -529,7 +529,7 @@ void CManglingMachine::se_mortimer_zapsup()
 
 	if (!timer)
 	{
-		playSound(SOUND_SHOT_HIT);
+        playSound(GameSound::SHOT_HIT);
 		for(x=MORTIMER_MACHINE_XSTART;x<MORTIMER_MACHINE_XEND;x++)
 		{
 			// spawn a ZAP! or a ZOT!
@@ -588,7 +588,7 @@ void CManglingMachine::se_mortimer_leg_left()
 				{
 					timer = 0;
 					state = LEG_WAIT;
-					playSound(SOUND_FOOTSLAM);
+                    playSound(GameSound::FOOTSLAM);
 				}
 				else
 				{
@@ -683,7 +683,7 @@ void CManglingMachine::se_mortimer_leg_right()
 				{
 					timer = 0;
 					state = LEG_WAIT;
-					playSound(SOUND_FOOTSLAM);
+                    playSound(GameSound::FOOTSLAM);
 				}
 				else
 				{

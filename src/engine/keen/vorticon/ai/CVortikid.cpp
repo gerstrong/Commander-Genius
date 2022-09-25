@@ -97,13 +97,10 @@ void CVortikid::process()
 		state = BABY_DYING;
 		dying = true;
 		mSpriteIdx = BABY_FRY_FRAME - ep3;
-		if (onscreen && !gAudio.isPlaying(SOUND_VORT_DIE))
-			playSound(SOUND_VORT_DIE);
+        if (onscreen && !gAudio.isPlaying(int(GameSound::VORT_DIE)))
+            playSound(GameSound::VORT_DIE);
 
-		if (dir == RIGHT)
-			xinertia = BABY_DIE_INERTIA;
-		else
-			xinertia = -BABY_DIE_INERTIA;
+        xinertia = (dir == RIGHT) ? BABY_DIE_INERTIA : -BABY_DIE_INERTIA;
 	}
 
 

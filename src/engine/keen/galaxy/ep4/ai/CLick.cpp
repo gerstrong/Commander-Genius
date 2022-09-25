@@ -11,6 +11,8 @@
 #include "../../common/ai/CBullet.h"
 #include <base/utils/misc.h>
 
+#include <engine/core/CBehaviorEngine.h>
+
 namespace galaxy {
 
 enum LICK_ACTIONS
@@ -141,7 +143,7 @@ bool CLick::isNearby(CSpriteObject &theObject)
             if( absdx < CSF_MIN_DISTANCE_TO_BREATHE && odd )
             {
                 setAction(A_LICK_BREATHE);
-                playSound(SOUND_LICK_FIREBREATH);
+                playSound(GameSound::LICK_FIREBREATH);
                 m_timer = LICK_BREATHE_TIMER;
             }
         }

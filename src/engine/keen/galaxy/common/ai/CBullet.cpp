@@ -8,7 +8,7 @@
 #include "CBullet.h"
 #include "CPlayerLevel.h"
 #include <base/audio/Audio.h>
-
+#include <engine/core/CBehaviorEngine.h>
 
 size_t bulletActionMap[] =
 {
@@ -30,12 +30,15 @@ mReversed(false)
     xDirection = xDir;
     yDirection = yDir;
 
-    const size_t offsetIndex = gBehaviorEngine.isDemo() ? 3 : gBehaviorEngine.getEpisode() - 4;
+    const auto isDemo = gBehaviorEngine.isDemo();
+    const auto ep = gBehaviorEngine.getEpisode();
+
+    const size_t offsetIndex = isDemo ? 3 : ep - 4;
 
     setupGalaxyObjectOnMap(bulletActionMap[offsetIndex], A_KEENSHOT_MOVING);
     setActionSprite();
     calcBoundingBoxes();
-    playSound( SOUND_KEEN_FIRE );
+    playSound( GameSound::KEEN_FIRE );
 }
 
 
@@ -79,7 +82,7 @@ void CBullet::process()
     if( !getActionNumber(A_KEENSHOT_IMPACT) && (blockedd || blockedu || blockedl || blockedr || onslope) )
     {
         setAction(A_KEENSHOT_IMPACT);
-        playSound( SOUND_SHOT_HIT );
+        playSound( GameSound::SHOT_HIT );
         mIsDead = true;
     }
 

@@ -61,7 +61,7 @@ void CBerkeloid::getTouchedBy(CSpriteObject &theObject)
     if( auto *bullet = dynamic_cast<CBullet*>(&theObject) )
 	{
 		bullet->setAction(A_KEENSHOT_IMPACT);
-		bullet->playSound( SOUND_SHOT_HIT );
+        bullet->playSound( GameSound::SHOT_HIT );
 		bullet->mIsDead = true;
 	}
 
@@ -119,7 +119,7 @@ void CBerkeloid::processMoving()
     if( getProbability(45) )
 	{
 		setAction( A_BERKELOID_THROW );
-        this->playSound( SOUND_BERKELOID_WINDUP );
+        this->playSound( GameSound::BERKELOID_WINDUP );
 		CBerkFlame *flame = new CBerkFlame( getMapPtr(), getXMidPos(), getYUpPos(), xDirection );
 		gEventManager.add( new EventSpawnObject( flame ) );
 		return;
@@ -221,7 +221,7 @@ void CBerkFlame::processThrown()
 {
 	if(blockedd)
     {
-        this->playSound(SOUND_BERKELOID_FIREBALL_LANDING);
+        this->playSound(GameSound::BERKELOID_FIREBALL_LANDING);
 		setAction(A_FLAME_LANDED);
     }
 

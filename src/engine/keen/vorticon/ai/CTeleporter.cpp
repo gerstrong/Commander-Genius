@@ -46,7 +46,7 @@ m_Player(mp_vec_Player)
 	
 	reset();
 	
-	playSound(SOUND_TELEPORT);
+    playSound(GameSound::TELEPORT);
 }
 
 
@@ -154,7 +154,7 @@ void CTeleporter::process()
 				
 				reset();
 
-				playSound(SOUND_TELEPORT);
+                playSound(GameSound::TELEPORT);
 			}
 		} break;
 

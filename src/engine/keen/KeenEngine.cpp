@@ -32,13 +32,11 @@ void KeenEngine::switchToGamePlayMode(const int startLevel)
 
 bool KeenEngine::start()
 {
-    int version;
-
     CExeFile &ExeFile = gKeenFiles.exeFile;
 
     if(!ExeFile.isLuaScript())
     {
-        version = ExeFile.getEXEVersion();
+        const int version = ExeFile.getEXEVersion();
 
         gLogging.ftextOut("Commander Keen Episode %d (Version %d.%d) was detected.<br>", mEp, version/100, version%100);
 

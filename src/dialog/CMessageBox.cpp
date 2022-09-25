@@ -96,4 +96,6 @@ void CMessageBox::render()
 }
 
 bool CMessageBox::isFinished()
-{ return m_mustclose; }
+{
+    return m_mustclose;
+}

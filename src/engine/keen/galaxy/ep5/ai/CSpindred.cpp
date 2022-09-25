@@ -45,7 +45,7 @@ void CSpindred::getTouchedBy(CSpriteObject &theObject)
 	// Was it a bullet? Than make it stunned.
 	/*if( dynamic_cast<CBullet*>(&theObject) )
 	{
-		playSound(SOUND_ROBO_STUN);
+        playSound(GameSound::ROBO_STUN);
 		dead = true;
 		theObject.dead = true;
 	}*/
@@ -77,7 +77,7 @@ void CSpindred::process()
 	    {
             mBounces++;
             yinertia = (mInverseGravity) ? MAX_BOUNCE_INERTIA : -MAX_BOUNCE_INERTIA;
-            this->playSound(SOUND_SPINDREDSLAM);
+            this->playSound(GameSound::SPINDREDSLAM);
 	    }
 	    
 	    
@@ -85,7 +85,7 @@ void CSpindred::process()
 	    {
             mBounces = 0;
             mInverseGravity = !mInverseGravity;
-            this->playSound(SOUND_SPINDREDFLYDOWN);
+            this->playSound(GameSound::SPINDREDFLYDOWN);
 	    }	    
 	}
 	

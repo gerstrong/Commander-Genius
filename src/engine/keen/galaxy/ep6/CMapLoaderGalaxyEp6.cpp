@@ -36,6 +36,8 @@
 #include "../common/ai/platform/CPlatformSit.h"
 #include "../common/ai/Autogun.h"
 
+#include <engine/core/CBehaviorEngine.h>
+
 namespace galaxy
 {
 

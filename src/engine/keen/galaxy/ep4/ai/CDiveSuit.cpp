@@ -9,6 +9,8 @@
 #include "../../common/ai/CPlayerLevel.h"
 #include "../../common/dialog/CMessageBoxBitmapGalaxy.h"
 
+#include <engine/core/CBehaviorEngine.h>
+
 namespace galaxy {
 
 CDiveSuit::CDiveSuit(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y, const int sprVar) :
@@ -33,7 +35,7 @@ void CDiveSuit::getTouchedBy(CSpriteObject &theObject)
 	{
 		bool &swimsuit = player->m_Inventory.Item.m_special.swimsuit;
 
-        playSound( SOUND_GET_WETSUIT, SoundPlayMode::PLAY_PAUSEALL );
+        playSound( GameSound::GET_WETSUIT, SoundPlayMode::PLAY_PAUSEALL );
 		taken = swimsuit = true;
 
         auto evExit = new EventExitLevel(mpMap->getLevel(), true,

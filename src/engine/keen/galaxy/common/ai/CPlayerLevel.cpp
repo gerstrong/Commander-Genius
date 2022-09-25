@@ -16,8 +16,9 @@
 #include <base/CInput.h>
 #include <base/GsTimer.h>
 #include <base/GsLogging.h>
-
 #include <base/utils/property_tree/property_tree.h>
+#include <engine/core/CBehaviorEngine.h>
+
 
 #include "../dialog/CMessageBoxBitmapGalaxy.h"
 
@@ -197,7 +198,8 @@ bool CPlayerLevel::verifyforPole()
 
 void CPlayerLevel::makeHimStand()
 {
-    if(pSupportedbyobject && gBehaviorEngine.getEpisode() == 5)
+    const auto ep = gBehaviorEngine.getEpisode();
+    if(pSupportedbyobject && ep == 5)
         setAction(A_KEEN_ON_PLAT);
     else
         setAction(A_KEEN_STAND);
@@ -290,7 +292,7 @@ void CPlayerLevel::processRunning()
         mActionState.jumpTimer = 18;
         mMustHandleSlope = true;
         setAction(A_KEEN_JUMP);
-        playSound( SOUND_KEEN_JUMP );
+        playSound( GameSound::KEEN_JUMP );
         return;
     }
 
@@ -314,7 +316,7 @@ void CPlayerLevel::processRunning()
             //		nextX = 0;
             mActionState.jumpTimer = 24;
             mMustHandleSlope = true;
-            playSound( SOUND_KEEN_POGO );
+            playSound( GameSound::KEEN_POGO );
             setAction(A_KEEN_POGO_START);
             return;
         }
@@ -327,7 +329,7 @@ void CPlayerLevel::processRunning()
         yinertia = 0;
         setAction(A_KEEN_FALL);
 
-        playSound( SOUND_KEEN_FALL );
+        playSound( GameSound::KEEN_FALL );
 
         mActionState.jumpTimer = 0;
         mMustHandleSlope = true;
@@ -418,7 +420,7 @@ void CPlayerLevel::handleInputOnGround()
         mActionState.jumpTimer = 18;
         mMustHandleSlope = true;
         setAction(A_KEEN_JUMP);
-        playSound( SOUND_KEEN_JUMP );
+        playSound( GameSound::KEEN_JUMP );
         return;
     }
 
@@ -430,7 +432,7 @@ void CPlayerLevel::handleInputOnGround()
             xinertia = 0;
             yinertia = evalVertPogoInertia();
             setAction(A_KEEN_POGO_START);
-            playSound( SOUND_KEEN_POGO );
+            playSound( GameSound::KEEN_POGO );
             nextY = 0;
             mActionState.jumpTimer = 24;
             mMustHandleSlope = true;
@@ -589,7 +591,7 @@ void CPlayerLevel::processLookingDown()
         nextY = 0;
         setAction(A_KEEN_FALL);
         xinertia = yinertia = 0;*/
-        //playSound( SOUND_KEEN_FALL );
+        //playSound( GameSound::KEEN_FALL );
         return;
     }
 
@@ -629,7 +631,7 @@ void CPlayerLevel::processLookingDown()
 
                 pSupportedbyobject = nullptr;
                 setAction( A_KEEN_JUMP_DOWN );
-                playSound( SOUND_KEEN_FALL );
+                playSound( GameSound::KEEN_FALL );
             }
         }
 
@@ -763,6 +765,7 @@ bool CPlayerLevel::checkandtriggerforCliffHanging()
             const auto left = mpMap->at(xLeft, yUp-i);
             check_block |= TileProperty[left].bup;
             check_block |= TileProperty[left].bright;
+
             const auto middle = mpMap->at(xMid, yUp-i);
             check_block |= TileProperty[middle].bup;
             check_block |= TileProperty[middle].bright;
@@ -848,7 +851,7 @@ void CPlayerLevel::processCliffHanging()
         if( !check_block )
         {
             setAction(A_KEEN_FALL);
-            playSound( SOUND_KEEN_FALL );
+            playSound( GameSound::KEEN_FALL );
             solid = true;
             return;
         }
@@ -861,7 +864,7 @@ void CPlayerLevel::processCliffHanging()
         if( !check_block )
         {
             setAction(A_KEEN_FALL);
-            playSound( SOUND_KEEN_FALL );
+            playSound( GameSound::KEEN_FALL );
             solid = true;
             return;
         }
@@ -896,7 +899,7 @@ void CPlayerLevel::processCliffHanging()
         ((xDirection == RIGHT) && (mPlaycontrol[PA_X] < 0))  )
     {
         setAction( A_KEEN_FALL );
-        playSound( SOUND_KEEN_FALL );
+        playSound( GameSound::KEEN_FALL );
         solid = true;
         const int dx = 8<<STC;
         moveXDir( (xDirection == LEFT) ? dx : -dx, true);
@@ -1010,7 +1013,7 @@ bool CPlayerLevel::stun()
         return false;
 
     setAction(A_KEEN_STUNNED);
-    playSound(SOUND_KEEN_STUNNED);
+    playSound(GameSound::KEEN_STUNNED);
 
     mEndOfAction = false;
     m_Action.setActionFormat(gBehaviorEngine.isDemo() ? 0x1862 : 0x1868);
@@ -1065,7 +1068,7 @@ void CPlayerLevel::processPogoCommon()
         }
         else
         {
-            playSound( SOUND_KEEN_BUMPHEAD );
+            playSound( GameSound::KEEN_BUMPHEAD );
             if (blockedu > 1)
             {
                 yinertia += 16;
@@ -1094,7 +1097,7 @@ void CPlayerLevel::processPogoCommon()
             if (mActionState.jumpTimer == 0)
             {
                 yinertia = evalVertPogoInertia();
-                playSound( SOUND_KEEN_POGO );
+                playSound( GameSound::KEEN_POGO );
                 mActionState.jumpTimer = 24;
                 setAction(A_KEEN_POGO_UP);
             }
@@ -1256,7 +1259,7 @@ void CPlayerLevel::verifyJumpAndFall()
         }
         else if(!gBehaviorEngine.mCheatmode.jump)
         {
-            playSound( SOUND_KEEN_BUMPHEAD );
+            playSound( GameSound::KEEN_BUMPHEAD );
 
             if (blockedu > 1)
             {
@@ -1298,7 +1301,7 @@ void CPlayerLevel::verifyJumpAndFall()
         {
             user1 = user2 = 0;	// Being on the ground is boring.
             yDirection = 0;
-            playSound( SOUND_KEEN_LAND );
+            playSound( GameSound::KEEN_LAND );
 
             //TODO: Finish these
             if( mPlaycontrol[PA_X] != 0 )
@@ -1523,7 +1526,7 @@ bool CPlayerLevel::verifySwitches()
         flag == MISCFLAG_SWITCHPLATOFF ||
         flag == MISCFLAG_SWITCHBRIDGE)
     {
-      playSound( SOUND_GUN_CLICK );
+      playSound( GameSound::GUN_CLICK );
 
       auto newtile = tile_no-1;
 
@@ -1639,7 +1642,7 @@ void CPlayerLevel::processPressUp()
                 if (m_Inventory.Item.m_keycards)
                 {
                     m_Inventory.Item.m_keycards = 0;
-                    playSound(SOUND_OPEN_EXIT_DOOR);
+                    playSound(GameSound::OPEN_EXIT_DOOR);
                     //GetNewObj(0);
                     //new_object->xpos = o->boxTXmid-2;
                     //new_object->ypos = o->boxTY2-4;
@@ -1671,8 +1674,8 @@ void CPlayerLevel::processPressUp()
                 }
                 else
                 {
-                    playSound(SOUND_CANT_DO);
-                    //SD_PlaySound(SOUND_NOOPENSECURITYDOOR);
+                    playSound(GameSound::CANT_DO);
+                    //SD_PlaySound(GameSound::NOOPENSECURITYDOOR);
                     setAction(A_KEEN_STAND);
                     m_EnterDoorAttempt = true;
                     return;
@@ -1771,7 +1774,7 @@ void CPlayerLevel::processSliding()
                 {
                     mpMap->setTile(x>>CSF, y>>CSF, tile_no+18, true, 1);
                     mPlacingGem = false;
-                    playSound( SOUND_DOOR_OPEN );
+                    playSound( GameSound::DOOR_OPEN );
 
                     foundHolder = true;
                     break;
@@ -2310,7 +2313,7 @@ void CPlayerLevel::performPoleHandleInput()
         mActionState.jumpTimer = 10;
         mMustHandleSlope = true;
         setAction(A_KEEN_JUMP);
-        playSound( SOUND_KEEN_JUMP );
+        playSound( GameSound::KEEN_JUMP );
         yDirection = 1;
         mIsClimbing = false;
         m_jumped = true;
@@ -2489,7 +2492,7 @@ void CPlayerLevel::processPoleSlidingDown()
             yinertia = 0;
 
             setAction(A_KEEN_FALL);
-            playSound( SOUND_KEEN_FALL );
+            playSound( GameSound::KEEN_FALL );
         }
         else
         {
@@ -2579,7 +2582,7 @@ void CPlayerLevel::verifyFalling()
         xinertia = xDirection * 16;
         yinertia = 0;
         setAction(A_KEEN_FALL);
-        playSound( SOUND_KEEN_FALL );
+        playSound( GameSound::KEEN_FALL );
         mActionState.jumpTimer = 0;
         mMustHandleSlope = false;
     }
@@ -2607,7 +2610,7 @@ void CPlayerLevel::processFalling()
 
     if(blockedd)
     {
-        playSound( SOUND_KEEN_LAND );
+        playSound( GameSound::KEEN_LAND );
         makeHimStand();
         yDirection = 0;
     }
@@ -2801,7 +2804,7 @@ void CPlayerLevel::process()
 
         const std::string fuse_msg = gBehaviorEngine.getString( (specialLevel) ? "FUSE_WONDER" : "FUSE_CASUAL");
 
-        playSound( SOUND_FUSE_BREAK, SoundPlayMode::PLAY_PAUSEALL );
+        playSound( GameSound::FUSE_BREAK, SoundPlayMode::PLAY_PAUSEALL );
 
         gEffectController.setupEffect(new CDimDark(8));
 
@@ -2962,7 +2965,7 @@ void CPlayerLevel::TurnGiantSwitchOff(const int x, const int y)
     int flag = Tile[tile_no].behaviour;
 
     // pressing a switch
-    playSound( SOUND_GUN_CLICK );
+    playSound( GameSound::GUN_CLICK );
 
     if(flag == 18)
     {
@@ -2991,7 +2994,7 @@ void CPlayerLevel::TurnGiantSwitchOn(const int x, const int y)
     if(tile != 0x439 || yinertia < 0)
     return;
 
-    playSound( SOUND_GUN_CLICK );
+    playSound( GameSound::GUN_CLICK );
 
     for(int i=-1 ; i<=0 ; i++)
     {
@@ -3010,7 +3013,7 @@ void CPlayerLevel::TurnGiantSwitchOn(const int x, const int y)
     int flag = Tile[tile_no].behaviour;
 
     // pressing a switch
-    playSound( SOUND_GUN_CLICK );
+    playSound( GameSound::GUN_CLICK );
 
     if(flag == 18 )
     {
@@ -3062,7 +3065,7 @@ int CPlayerLevel::checkSolidU(int x1, int x2, int y1, const bool push_mode )
 
                 if(!gBehaviorEngine.mCheatmode.jump)
                 {
-                    playSound( SOUND_KEEN_BUMPHEAD );
+                    playSound( GameSound::KEEN_BUMPHEAD );
 
                     if (blockedu > 1)
                     {
@@ -3139,7 +3142,7 @@ int CPlayerLevel::checkSolidD( int x1, int x2, int y2, const bool push_mode )
                 if ( action >= A_KEEN_POGO_START && action <= A_KEEN_POGO_HIGH && mActionState.jumpTimer == 0)
                 {
                     yinertia = evalVertPogoInertia();
-                    playSound( SOUND_KEEN_POGO );
+                    playSound( GameSound::KEEN_POGO );
                     mActionState.jumpTimer = 24;
                     mMustHandleSlope = true;
                     setAction(A_KEEN_POGO_UP);

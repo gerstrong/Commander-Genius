@@ -3,6 +3,7 @@
 #include "../../common/dialog/CMessageBoxBitmapGalaxy.h"
 
 #include <base/utils/property_tree/property_tree.h>
+#include <engine/core/CBehaviorEngine.h>
 
 namespace galaxy
 {
@@ -114,7 +115,7 @@ void CRocket::processFlying()
 	
 	GsVec2D<int> speed(xBlockPos, yBlockPos);	    
 	moveDir(speed);
-	playSound(SOUND_ROCKET_DRIVE);
+    playSound(GameSound::ROCKET_DRIVE);
 	
 	// Happens when the rocket find a place where to stop
 	if(object == 0x6A || object == 0x69)
@@ -179,7 +180,7 @@ void CRocket::getTouchedBy(CSpriteObject& theObject)
         if(player->m_Inventory.Item.m_special.rocketKeycard > 0)
         {
             setAction(A_ROCKET_FLY);
-            playSound(SOUND_ROCKET_LAUNCH);
+            playSound(GameSound::ROCKET_LAUNCH);
             mpCarriedPlayer = player;
             mpCarriedPlayer->solid = false;
             mpCarriedPlayer->dontdraw = true;

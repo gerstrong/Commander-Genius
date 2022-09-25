@@ -82,7 +82,7 @@ void CBip::getTouchedBy(CSpriteObject& theObject)
 	// Was it a bullet? Than make it stunned.
 	if( dynamic_cast<CPlayerLevel*>(&theObject) )
 	{
-		playSound(SOUND_SQUISH);
+        playSound(GameSound::SQUISH);
 		setAction(A_BIP_SQUISHED);
 		mIsDead = true;
 	}

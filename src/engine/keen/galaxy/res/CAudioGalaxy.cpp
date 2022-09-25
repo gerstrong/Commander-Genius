@@ -5,17 +5,17 @@
  *      Author: gerstrong
  */
 
-#include <fstream>
 #include "CAudioGalaxy.h"
-#include <base/GsLogging.h>
-#include <base/utils/FindFile.h>
-#include <base/audio/Audio.h>
 #include "fileio/ResourceMgmt.h"
 #include "fileio/compression/CHuffman.h"
 #include "fileio/KeenFiles.h"
 #include "engine/core/CBehaviorEngine.h"
 
-
+#include <engine/keen/GameSound.h>
+#include <base/GsLogging.h>
+#include <base/utils/FindFile.h>
+#include <base/audio/Audio.h>
+#include <fstream>
 
 /**
  * Caution: This is Galaxy only and will be replaced some time
@@ -85,216 +85,216 @@ void CAudioGalaxy::setupAudioMap()
 {
     const auto episode = gBehaviorEngine.getEpisode();
 
+    auto mapIt = [&](const int ep, const GameSound snd, const int value) {
+        sndSlotMapGalaxy[ep][int(snd)] = value;
+    };
+
     // Episode 4
-    sndSlotMapGalaxy[4][SOUND_KEEN_WALK] = 0;
-    sndSlotMapGalaxy[4][SOUND_KEEN_WALK2] = 1;
-    sndSlotMapGalaxy[4][SOUND_KEEN_JUMP] = 2;
-    sndSlotMapGalaxy[4][SOUND_KEEN_LAND] = 3;
-    sndSlotMapGalaxy[4][SOUND_KEEN_FIRE] = 4;
-    sndSlotMapGalaxy[4][SOUND_WORMOUTH_STRIKE] = 5;
-    // sndSlotMapGalaxy[4][?] = 6; // This sounds like alternative breathe under water. not sure
-    sndSlotMapGalaxy[4][SOUND_KEEN_POGO] = 7;
-    sndSlotMapGalaxy[4][SOUND_GET_BONUS] = 8;
-    sndSlotMapGalaxy[4][SOUND_GET_AMMO] = 9;
-    sndSlotMapGalaxy[4][SOUND_GET_DROP] = 10;
-    sndSlotMapGalaxy[4][SOUND_GET_ITEM] = 11;
-    sndSlotMapGalaxy[4][SOUND_ENTER_LEVEL] = 12;
-    sndSlotMapGalaxy[4][SOUND_LEVEL_DONE] = 13;
-    sndSlotMapGalaxy[4][SOUND_CANT_DO] = 14;
-    sndSlotMapGalaxy[4][SOUND_KEEN_BUMPHEAD] = 15;
-    sndSlotMapGalaxy[4][SOUND_BOUNCE_HIGH] = 16;
-    sndSlotMapGalaxy[4][SOUND_EXTRA_LIFE] = 17;
-    sndSlotMapGalaxy[4][SOUND_DOOR_OPEN] = 18;
-    sndSlotMapGalaxy[4][SOUND_GET_GEM] = 19;
-    sndSlotMapGalaxy[4][SOUND_KEEN_FALL] = 20;
-    sndSlotMapGalaxy[4][SOUND_GUN_CLICK] = 21;
-    sndSlotMapGalaxy[4][SOUND_SQUISH_SKYPEST] = 22;
-    sndSlotMapGalaxy[4][SOUND_KEEN_DIE] = 23;
-    //sndSlotMapGalaxy[4][?] = 24;
-    sndSlotMapGalaxy[4][SOUND_SHOT_HIT] = 25;
-    sndSlotMapGalaxy[4][SOUND_KEEN_SWIM] = 26;
-    sndSlotMapGalaxy[4][SOUND_KEEN_SWIM_TO_LAND] = 27;
-    sndSlotMapGalaxy[4][SOUND_BOUNCE_LOW] = 28;
-    //sndSlotMapGalaxy[4][?] = 29;
-    sndSlotMapGalaxy[4][SOUND_TRESURE_STEALER_TELEPORT] = 30;
-    sndSlotMapGalaxy[4][SOUND_RESCUE_COUNCIL_MEMBER] = 31;
-    sndSlotMapGalaxy[4][SOUND_LICK_FIREBREATH] = 32;
-    sndSlotMapGalaxy[4][SOUND_BERKELOID_WINDUP] = 33;
-    sndSlotMapGalaxy[4][SOUND_STATUS_SLIDE_IN] = 34;
-    sndSlotMapGalaxy[4][SOUND_STATUS_SLIDE_OUT] = 35;
-    sndSlotMapGalaxy[4][SOUND_BUBBLE] = 36;
-    sndSlotMapGalaxy[4][SOUND_MINE_EXPLOSION] = 37;
-    sndSlotMapGalaxy[4][SOUND_SPRITE_SHOT] = 38;
-    sndSlotMapGalaxy[4][SOUND_THUNDERCLOUD_STRIKE] = 39;
-    sndSlotMapGalaxy[4][SOUND_BERKELOID_FIREBALL_LANDING] = 40;
-    sndSlotMapGalaxy[4][SOUND_DARTGUN_SHOOT] = 41;
-    sndSlotMapGalaxy[4][SOUND_DOPEFISH_BURP] = 42;
-    sndSlotMapGalaxy[4][SOUND_FLAG_APPEAR] = 43;
-    sndSlotMapGalaxy[4][SOUND_FLAG_LAND] = 44;
-    sndSlotMapGalaxy[4][SOUND_GET_WETSUIT] = 45;
-    sndSlotMapGalaxy[4][SOUND_SLUG_DEFECATE] = 46;
-    sndSlotMapGalaxy[4][SOUND_PLAYER_PADDLE] = 47;
-    sndSlotMapGalaxy[4][SOUND_COMPUTER_PADDLE] = 48;
-    sndSlotMapGalaxy[4][SOUND_HIT_SIDEWALL] = 49;
-    sndSlotMapGalaxy[4][SOUND_COMPUTER_POINT] = 50;
-    sndSlotMapGalaxy[4][SOUND_PLAYER_POINT] = 51;
-
-
+    mapIt(4, GameSound::KEEN_WALK, 0);
+    mapIt(4, GameSound::KEEN_WALK2, 1);
+    mapIt(4, GameSound::KEEN_JUMP, 2);
+    mapIt(4, GameSound::KEEN_LAND, 3);
+    mapIt(4, GameSound::KEEN_FIRE, 4);
+    mapIt(4, GameSound::WORMOUTH_STRIKE, 5);
+    //mapIt(4, ???, 6);
+    mapIt(4, GameSound::KEEN_POGO, 7);
+    mapIt(4, GameSound::GET_BONUS, 8);
+    mapIt(4, GameSound::GET_AMMO, 9);
+    mapIt(4, GameSound::GET_DROP, 10);
+    mapIt(4, GameSound::GET_ITEM, 11);
+    mapIt(4, GameSound::ENTER_LEVEL, 12);
+    mapIt(4, GameSound::LEVEL_DONE, 13);
+    mapIt(4, GameSound::CANT_DO, 14);
+    mapIt(4, GameSound::KEEN_BUMPHEAD, 15);
+    mapIt(4, GameSound::BOUNCE_HIGH, 16);
+    mapIt(4, GameSound::EXTRA_LIFE, 17);
+    mapIt(4, GameSound::DOOR_OPEN, 18);
+    mapIt(4, GameSound::GET_GEM, 19);
+    mapIt(4, GameSound::KEEN_FALL, 20);
+    mapIt(4, GameSound::GUN_CLICK, 21);
+    mapIt(4, GameSound::SQUISH_SKYPEST, 22);
+    mapIt(4, GameSound::KEEN_DIE, 23);
+    //mapIt(4, , 24);
+    mapIt(4, GameSound::SHOT_HIT, 25);
+    mapIt(4, GameSound::KEEN_SWIM, 26);
+    mapIt(4, GameSound::KEEN_SWIM_TO_LAND, 27);
+    mapIt(4, GameSound::BOUNCE_LOW, 28);
+    //mapIt(4, , 29);
+    mapIt(4, GameSound::TRESURE_STEALER_TELEPORT, 30);
+    mapIt(4, GameSound::RESCUE_COUNCIL_MEMBER, 31);
+    mapIt(4, GameSound::LICK_FIREBREATH, 32);
+    mapIt(4, GameSound::BERKELOID_WINDUP, 33);
+    mapIt(4, GameSound::STATUS_SLIDE_IN, 34);
+    mapIt(4, GameSound::STATUS_SLIDE_OUT, 35);
+    mapIt(4, GameSound::BUBBLE, 36);
+    mapIt(4, GameSound::MINE_EXPLOSION, 37);
+    mapIt(4, GameSound::SPRITE_SHOT, 38);
+    mapIt(4, GameSound::THUNDERCLOUD_STRIKE, 39);
+    mapIt(4, GameSound::BERKELOID_FIREBALL_LANDING, 40);
+    mapIt(4, GameSound::DARTGUN_SHOOT, 41);
+    mapIt(4, GameSound::DOPEFISH_BURP, 42);
+    mapIt(4, GameSound::FLAG_APPEAR, 43);
+    mapIt(4, GameSound::FLAG_LAND, 44);
+    mapIt(4, GameSound::GET_WETSUIT, 45);
+    mapIt(4, GameSound::SLUG_DEFECATE, 46);
+    mapIt(4, GameSound::PLAYER_PADDLE, 47);
+    mapIt(4, GameSound::COMPUTER_PADDLE, 48);
+    mapIt(4, GameSound::HIT_SIDEWALL, 49);
+    mapIt(4, GameSound::COMPUTER_POINT, 50);
+    mapIt(4, GameSound::PLAYER_POINT, 51);
 
     if(episode == 5) // Episode 5
     {
-      sndSlotMapGalaxy[5][SOUND_KEEN_WALK] = 0;
-      sndSlotMapGalaxy[5][SOUND_KEEN_WALK2] = 1;
-      sndSlotMapGalaxy[5][SOUND_KEEN_JUMP] = 2;
-      sndSlotMapGalaxy[5][SOUND_KEEN_LAND] = 3;
-      sndSlotMapGalaxy[5][SOUND_KEEN_FIRE] = 4;
-      sndSlotMapGalaxy[5][SOUND_MINEEXPLODE] = 5;
-      sndSlotMapGalaxy[5][SOUND_SLICEBUMP] = 6;
-      sndSlotMapGalaxy[5][SOUND_KEEN_POGO] = 7;
-      sndSlotMapGalaxy[5][SOUND_GET_BONUS] = 8;
-      sndSlotMapGalaxy[5][SOUND_GET_AMMO] = 9;
-      sndSlotMapGalaxy[5][SOUND_GET_DROP] = 10;
-      sndSlotMapGalaxy[5][SOUND_GET_ITEM] = 11;
-      sndSlotMapGalaxy[5][SOUND_ENTER_LEVEL] = 12;
-      sndSlotMapGalaxy[5][SOUND_LEVEL_DONE] = 13;
-      sndSlotMapGalaxy[5][SOUND_CANT_DO] = 14;
-      sndSlotMapGalaxy[5][SOUND_KEEN_BUMPHEAD] = 15;
-      sndSlotMapGalaxy[5][SOUND_SPINDREDFLYUP] = 16;
-      sndSlotMapGalaxy[5][SOUND_EXTRA_LIFE] = 17;
-      sndSlotMapGalaxy[5][SOUND_OPEN_EXIT_DOOR] = 18;
-      sndSlotMapGalaxy[5][SOUND_GET_GEM] = 19;
-      sndSlotMapGalaxy[5][SOUND_KEEN_FALL] = 20;
-      sndSlotMapGalaxy[5][SOUND_GUN_CLICK] = 21;
-      sndSlotMapGalaxy[5][SOUND_SCREAM_LOUD] = 22;
-      sndSlotMapGalaxy[5][SOUND_KEEN_DIE] = 23;
-      sndSlotMapGalaxy[5][SOUND_SCREAM_LESS] = 24;
-      sndSlotMapGalaxy[5][SOUND_SHOT_HIT] = 25;
-      sndSlotMapGalaxy[5][SOUND_SCRAMBLE] = 26;
-      sndSlotMapGalaxy[5][SOUND_SPIROGRIP] = 27;
-      sndSlotMapGalaxy[5][SOUND_SPINDREDSLAM] = 28;
-      sndSlotMapGalaxy[5][SOUND_ROBORED_SHOOT] = 29;
-      sndSlotMapGalaxy[5][SOUND_ROBORED_SHOOT2] = 30;
-
+        mapIt(5, GameSound::KEEN_WALK, 0);
+        mapIt(5, GameSound::KEEN_WALK2, 1);
+        mapIt(5, GameSound::KEEN_JUMP, 2);
+        mapIt(5, GameSound::KEEN_LAND, 3);
+        mapIt(5, GameSound::KEEN_FIRE, 4);
+        mapIt(5, GameSound::MINEEXPLODE, 5);
+        mapIt(5, GameSound::SLICEBUMP, 6);
+        mapIt(5, GameSound::KEEN_POGO, 7);
+        mapIt(5, GameSound::GET_BONUS, 8);
+        mapIt(5, GameSound::GET_AMMO, 9);
+        mapIt(5, GameSound::GET_DROP, 10);
+        mapIt(5, GameSound::GET_ITEM, 11);
+        mapIt(5, GameSound::ENTER_LEVEL, 12);
+        mapIt(5, GameSound::LEVEL_DONE, 13);
+        mapIt(5, GameSound::CANT_DO, 14);
+        mapIt(5, GameSound::KEEN_BUMPHEAD, 15);
+        mapIt(5, GameSound::SPINDREDFLYUP, 16);
+        mapIt(5, GameSound::EXTRA_LIFE, 17);
+        mapIt(5, GameSound::OPEN_EXIT_DOOR, 18);
+        mapIt(5, GameSound::GET_GEM, 19);
+        mapIt(5, GameSound::KEEN_FALL, 20);
+        mapIt(5, GameSound::GUN_CLICK, 21);
+        mapIt(5, GameSound::SCREAM_LOUD, 22);
+        mapIt(5, GameSound::KEEN_DIE, 23);
+        mapIt(5, GameSound::SCREAM_LESS, 24);
+        mapIt(5, GameSound::SHOT_HIT, 25);
+        mapIt(5, GameSound::SCRAMBLE, 26);
+        mapIt(5, GameSound::SPIROGRIP, 27);
+        mapIt(5, GameSound::SPINDREDSLAM, 28);
+        mapIt(5, GameSound::ROBORED_SHOOT, 29);
+        mapIt(5, GameSound::ROBORED_SHOOT2, 30);
 
       // TODO: I think this came from Keen 9. Needs some rework.
       //memcpy(&holder, ptr + 0x112DE, 1 );
-      //sndSlotMapGalaxy[5][SOUND_AMPTONWALK0] = holder;
-      sndSlotMapGalaxy[5][SOUND_AMPTONWALK0] = 31;
+        //mapIt(5, GameSound::AMPTONWALK0, holder);
+        mapIt(5, GameSound::AMPTONWALK0, 31);
 
       // TODO: I think this came from Keen 9. Needs some rework.
       //memcpy(&holder, ptr + 0x112F3, 1 );
-      //sndSlotMapGalaxy[5][SOUND_AMPTONWALK1] = holder;
-      sndSlotMapGalaxy[5][SOUND_AMPTONWALK1] = 32;
+        //mapIt(5, GameSound::AMPTONWALK1, holder);
+        mapIt(5, GameSound::AMPTONWALK1, 32);
 
-      sndSlotMapGalaxy[5][SOUND_ROBO_STUN] = 33;
-      sndSlotMapGalaxy[5][SOUND_STATUS_SLIDE_IN] = 34;
-      sndSlotMapGalaxy[5][SOUND_STATUS_SLIDE_OUT] = 35;
-      sndSlotMapGalaxy[5][SOUND_SPARKY_CHARGE] = 36;
+        mapIt(5, GameSound::ROBO_STUN, 33);
+        mapIt(5, GameSound::STATUS_SLIDE_IN, 34);
+        mapIt(5, GameSound::STATUS_SLIDE_OUT, 35);
+        mapIt(5, GameSound::SPARKY_CHARGE, 36);
 
       // TODO: I think this came from Keen 9. Needs some rework.
       //memcpy(&holder, ptr + 0x10F93, 1 );
-      //sndSlotMapGalaxy[5][SOUND_SPINDREDFLYDOWN] = holder;
-      sndSlotMapGalaxy[5][SOUND_SPINDREDFLYDOWN] = 37;
+        //mapIt(5, GameSound::SPINDREDFLYDOWN, holder);
+        mapIt(5, GameSound::SPINDREDFLYDOWN, 37);
+        mapIt(5, GameSound::MASTERSHOT, 38);
+        mapIt(5, GameSound::MASTERTELE, 39);
+        mapIt(5, GameSound::POLEZAP, 40);
+        mapIt(5, GameSound::TELEPORT, 41);
+        mapIt(5, GameSound::SHOCKSUNDBARK, 42);
+        mapIt(5, GameSound::FLAG_APPEAR, 43);
+        mapIt(5, GameSound::FLAG_LAND, 44);
 
-      sndSlotMapGalaxy[5][SOUND_MASTERSHOT] = 38;
-      sndSlotMapGalaxy[5][SOUND_MASTERTELE] = 39;
-      sndSlotMapGalaxy[5][SOUND_POLEZAP] = 40;
-      sndSlotMapGalaxy[5][SOUND_TELEPORT] = 41;
-      sndSlotMapGalaxy[5][SOUND_SHOCKSUNDBARK] = 42;
-      sndSlotMapGalaxy[5][SOUND_FLAG_APPEAR] = 43;
-      sndSlotMapGalaxy[5][SOUND_FLAG_LAND] = 44;
-      //sndSlotMapGalaxy[5][ACTION_BARKSHOTDIE0] = 45;
-      //sndSlotMapGalaxy[5][SOUND_PLAYER_PADDLE] = 46;
-      sndSlotMapGalaxy[5][SOUND_COMPUTER_PADDLE] = 47;
-      sndSlotMapGalaxy[5][SOUND_HIT_SIDEWALL] = 48;
-      sndSlotMapGalaxy[5][SOUND_COMPUTER_POINT] = 49;
-      sndSlotMapGalaxy[5][SOUND_PLAYER_POINT] = 50;
-      //sndSlotMapGalaxy[5][?] = 51;
-      sndSlotMapGalaxy[5][SOUND_FUSE_BREAK] = 52;
-      sndSlotMapGalaxy[5][SOUND_BIG_GAMEOVER] = 53;
-      //sndSlotMapGalaxy[5][?] = 54;
-      sndSlotMapGalaxy[5][SOUND_GET_CARD] = 55;
+        //mapIt(5, ACTION_BARKSHOTDIE0, 45);
+        //mapIt(5, GameSound::PLAYER_PADDLE, 46);
+        mapIt(5, GameSound::COMPUTER_PADDLE, 47);
+        mapIt(5, GameSound::HIT_SIDEWALL, 48);
+        mapIt(5, GameSound::COMPUTER_POINT, 49);
+        mapIt(5, GameSound::PLAYER_POINT, 50);
+        //mapIt(5, ?, 51);
+        mapIt(5, GameSound::FUSE_BREAK, 52);
+        mapIt(5, GameSound::BIG_GAMEOVER, 53);
+        //mapIt(5, ?, 54);
+        mapIt(5, GameSound::GET_CARD, 55);
 
       // TODO: I think this came from Keen 9. Needs some rework.
       //memcpy(&holder, ptr + 0x13784, 1 );
-      //sndSlotMapGalaxy[5][SOUND_ELEVATING] = holder;
-      sndSlotMapGalaxy[5][SOUND_ELEVATING] = 56;
-      //sndSlotMapGalaxy[5][SOUND_ELEVATOR_OPEN] = 57;
-      //sndSlotMapGalaxy[5][?] = 58;
-      sndSlotMapGalaxy[5][SOUND_SPHEREFULCEILING] = 59;
-
-      sndSlotMapGalaxy[5][SOUND_DOOR_OPEN] = 60;
-      sndSlotMapGalaxy[5][SOUND_SPIROFLY] = 61;
-      //sndSlotMapGalaxy[5][?] = 62;
-      sndSlotMapGalaxy[5][SOUND_ELEVATOR_OPEN] = 63;
+        //mapIt(5, GameSound::ELEVATING, holder);
+        mapIt(5, GameSound::ELEVATING, 56);
+        //mapIt(5, GameSound::ELEVATOR_OPEN, 57);
+        //mapIt(5, GameSound::ELEVATOR_OPEN, 58);
+        mapIt(5, GameSound::SPHEREFULCEILING, 59);
+        mapIt(5, GameSound::DOOR_OPEN, 60);
+        mapIt(5, GameSound::SPIROFLY, 61);
+        //mapIt(5, ?, 62);
+        mapIt(5, GameSound::ELEVATOR_OPEN, 63);
     }
 
     // Episode 6
-    sndSlotMapGalaxy[6][SOUND_KEEN_WALK] = 0;
-    sndSlotMapGalaxy[6][SOUND_KEEN_WALK2] = 1;
-    sndSlotMapGalaxy[6][SOUND_KEEN_JUMP] = 2;
-    sndSlotMapGalaxy[6][SOUND_KEEN_LAND] = 3;
-    sndSlotMapGalaxy[6][SOUND_KEEN_FIRE] = 4;
-    sndSlotMapGalaxy[6][SOUND_JUMPED_GEM] = 5;
-    sndSlotMapGalaxy[6][SOUND_KEEN_LAND_ALT] = 6;     
-    sndSlotMapGalaxy[6][SOUND_KEEN_POGO] = 7;
-    sndSlotMapGalaxy[6][SOUND_GET_BONUS] = 8;
-    sndSlotMapGalaxy[6][SOUND_GET_AMMO] = 9;
-    sndSlotMapGalaxy[6][SOUND_GET_DROP] = 10;
-    sndSlotMapGalaxy[6][SOUND_GET_ITEM] = 11;
-    sndSlotMapGalaxy[6][SOUND_ENTER_LEVEL] = 12;
-    sndSlotMapGalaxy[6][SOUND_LEVEL_DONE] = 13;
-    sndSlotMapGalaxy[6][SOUND_CANT_DO] = 14;
-    sndSlotMapGalaxy[6][SOUND_KEEN_BUMPHEAD] = 15;
-    sndSlotMapGalaxy[6][SOUND_BOUNCE_HIGH] = 16;
-    sndSlotMapGalaxy[6][SOUND_EXTRA_LIFE] = 17;
-    sndSlotMapGalaxy[6][SOUND_DOOR_OPEN] = 18;
-    sndSlotMapGalaxy[6][SOUND_GET_GEM] = 19;
-    sndSlotMapGalaxy[6][SOUND_KEEN_FALL] = 20;
-    sndSlotMapGalaxy[6][SOUND_GUN_CLICK] = 21;
-    sndSlotMapGalaxy[6][SOUND_SQUISH] = 22;
-    sndSlotMapGalaxy[6][SOUND_KEEN_DIE] = 23;
-    sndSlotMapGalaxy[6][SOUND_BIP_SHIP_CRASH] = 24;
-    sndSlotMapGalaxy[6][SOUND_SHOT_HIT] = 25;
-    sndSlotMapGalaxy[6][SOUND_CEILICK_LICK] = 26;
-    sndSlotMapGalaxy[6][SOUND_BABOBBA_JUMP] = 27;
-    sndSlotMapGalaxy[6][SOUND_BABOBBA_LAND] = 28;
-    sndSlotMapGalaxy[6][SOUND_AUTOGUN] = 29;
-    //sndSlotMapGalaxy[6][?] = 30;
-    sndSlotMapGalaxy[6][SOUND_BOBBA_LAND] = 31;
-    sndSlotMapGalaxy[6][SOUND_BOBBA_SHOOT] = 32;
-    sndSlotMapGalaxy[6][SOUND_SATELITE_MOUNT] = 33;
-    sndSlotMapGalaxy[6][SOUND_STATUS_SLIDE_IN] = 34;
-    sndSlotMapGalaxy[6][SOUND_STATUS_SLIDE_OUT] = 35;
-    //sndSlotMapGalaxy[6][SOUND_GIK_JUMP] = 36;
-    //sndSlotMapGalaxy[6][SOUND_GIK_LAND] = 37;
-    sndSlotMapGalaxy[6][SOUND_ORBATRIX_BUMP] = 38;
-    //sndSlotMapGalaxy[6][SOUND_LASER_SHOT] = 39;
-    //sndSlotMapGalaxy[6][SOUND_BIG_LASER_SHOT] = 40;
-    sndSlotMapGalaxy[6][SOUND_TELEPORT] = 41;
-    //sndSlotMapGalaxy[6][SOUND_SPRING] = 42;
-    sndSlotMapGalaxy[6][SOUND_FLAG_APPEAR] = 43;
-    sndSlotMapGalaxy[6][SOUND_FLAG_LAND] = 44;
-    sndSlotMapGalaxy[6][SOUND_GET_SPECIAL_ITEM] = 45;
-    sndSlotMapGalaxy[6][SOUND_PLAYER_PADDLE] = 46;
-    sndSlotMapGalaxy[6][SOUND_COMPUTER_PADDLE] = 47;
-    sndSlotMapGalaxy[6][SOUND_HIT_SIDEWALL] = 48;
-    sndSlotMapGalaxy[6][SOUND_COMPUTER_POINT] = 49;
-    sndSlotMapGalaxy[6][SOUND_PLAYER_POINT] = 50;
-    sndSlotMapGalaxy[6][SOUND_GRABBITER_SLEEP] = 51;
-    sndSlotMapGalaxy[6][SOUND_KEEN_STUNNED] = 52;
-    sndSlotMapGalaxy[6][SOUND_ROPE_THROW] = 53;    
-    sndSlotMapGalaxy[6][SOUND_ROCKET_DRIVE] = 54;
-    sndSlotMapGalaxy[6][SOUND_CEILICK_LAUGH] = 55;
-    sndSlotMapGalaxy[6][SOUND_ROCKET_LAUNCH] = 56;
-    sndSlotMapGalaxy[6][SOUND_GRABBITER_HUNGRY] = 57;
-    sndSlotMapGalaxy[6][SOUND_BLOOGGUARD_STUB] = 58;
-    sndSlotMapGalaxy[6][SOUND_BABOBBA_CINDER] = 59;
-    
+    mapIt(6, GameSound::KEEN_WALK, 0);
+    mapIt(6, GameSound::KEEN_WALK2, 1);
+    mapIt(6, GameSound::KEEN_JUMP, 2);
+    mapIt(6, GameSound::KEEN_LAND, 3);
+    mapIt(6, GameSound::KEEN_FIRE, 4);
+    mapIt(6, GameSound::JUMPED_GEM, 5);
+    mapIt(6, GameSound::KEEN_LAND_ALT, 6);
+    mapIt(6, GameSound::KEEN_POGO, 7);
+    mapIt(6, GameSound::GET_BONUS, 8);
+    mapIt(6, GameSound::GET_AMMO, 9);
+    mapIt(6, GameSound::GET_DROP, 10);
+    mapIt(6, GameSound::GET_ITEM, 11);
+    mapIt(6, GameSound::ENTER_LEVEL, 12);
+    mapIt(6, GameSound::LEVEL_DONE, 13);
+    mapIt(6, GameSound::CANT_DO, 14);
+    mapIt(6, GameSound::KEEN_BUMPHEAD, 15);
+    mapIt(6, GameSound::BOUNCE_HIGH, 16);
+    mapIt(6, GameSound::EXTRA_LIFE, 17);
+    mapIt(6, GameSound::DOOR_OPEN, 18);
+    mapIt(6, GameSound::GET_GEM, 19);
+    mapIt(6, GameSound::KEEN_FALL, 20);
+    mapIt(6, GameSound::GUN_CLICK, 21);
+    mapIt(6, GameSound::SQUISH, 22);
+    mapIt(6, GameSound::KEEN_DIE, 23);
+    mapIt(6, GameSound::BIP_SHIP_CRASH, 24);
+    mapIt(6, GameSound::SHOT_HIT, 25);
+    mapIt(6, GameSound::CEILICK_LICK, 26);
+    mapIt(6, GameSound::BABOBBA_JUMP, 27);
+    mapIt(6, GameSound::BABOBBA_LAND, 28);
+    mapIt(6, GameSound::AUTOGUN, 29);
+    //mapIt(6, ?, 30);
+    mapIt(6, GameSound::BOBBA_LAND, 31);
+    mapIt(6, GameSound::BOBBA_SHOOT, 32);
+    mapIt(6, GameSound::SATELITE_MOUNT, 33);
+    mapIt(6, GameSound::STATUS_SLIDE_IN, 34);
+    mapIt(6, GameSound::STATUS_SLIDE_OUT, 35);
+    //mapIt(6, ?, 36);
+    //mapIt(6, ?, 37);
+    mapIt(6, GameSound::ORBATRIX_BUMP, 38);
+//    mapIt(6, GameSound::LASER_SHOT, 39);
+//    mapIt(6, GameSound::BIG_LASER_SHOT, 40);
+    mapIt(6, GameSound::TELEPORT, 41);
+//    mapIt(6, GameSound::SPRING, 42);
+    mapIt(6, GameSound::FLAG_APPEAR, 43);
+    mapIt(6, GameSound::FLAG_LAND, 44);
+    mapIt(6, GameSound::GET_SPECIAL_ITEM, 45);
+    mapIt(6, GameSound::PLAYER_PADDLE, 46);
+    mapIt(6, GameSound::COMPUTER_PADDLE, 47);
+    mapIt(6, GameSound::HIT_SIDEWALL, 48);
+    mapIt(6, GameSound::COMPUTER_POINT, 49);
+    mapIt(6, GameSound::PLAYER_POINT, 50);
+    mapIt(6, GameSound::GRABBITER_SLEEP, 51);
+    mapIt(6, GameSound::KEEN_STUNNED, 52);
+    mapIt(6, GameSound::ROPE_THROW, 53);
+    mapIt(6, GameSound::ROCKET_DRIVE, 54);
+    mapIt(6, GameSound::CEILICK_LAUGH, 55);
+    mapIt(6, GameSound::ROCKET_LAUNCH, 56);
+    mapIt(6, GameSound::GRABBITER_HUNGRY, 57);
+    mapIt(6, GameSound::BLOOGGUARD_STUB, 58);
+    mapIt(6, GameSound::BABOBBA_CINDER, 59);
+
     // Keen Dreams. Refkeen has predefined placeholder, so we just set counter for now...
     for(int i=0 ; i<28 ; i++)
     {
-        sndSlotMapGalaxy[7][GameSound(i)] = i;
+        mapIt(7, GameSound(i), i);
     }
 
     // Lua script. If you have a snd/sndmap this one will be taken and overwrite

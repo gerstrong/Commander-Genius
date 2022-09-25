@@ -8,6 +8,8 @@
 #include "CBounder.h"
 #include "../../common/ai/CBullet.h"
 
+#include <engine/core/CBehaviorEngine.h>
+
 namespace galaxy
 {
 
@@ -137,7 +139,7 @@ void CBounder::processOnFloor()
         yinertia = MAX_BOUNCE_BOOST;
     }
 
-    playSound( SOUND_BOUNCE_LOW );
+    playSound( GameSound::BOUNCE_LOW );
 
 	// Decide whether go left, right or just bounce up.
     switch( rand() % 5 )

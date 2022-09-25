@@ -12,24 +12,21 @@
 #ifndef CSpriteObject_H
 #define CSpriteObject_H
 
-#include <base/GsEvent.h>
-#include <base/utils/FindFile.h>
-#include <base/direction.h>
-
 #include "ActionFormat.h"
-#include "CBehaviorEngine.h"
 
-// structures for each AI module's data
+// Structures for each AI module's data
 #include "CMap.h"
-#include "graphics/GsGraphics.h"
 
 // Enumerations are here
 #include "objenums.h"
 
-#include "fileio/KeenFiles.h"
+#include "engine/keen/GameSound.h"
 
 #include <base/GsLua.h>
-
+#include <base/GsEvent.h>
+#include <base/utils/FindFile.h>
+#include <base/direction.h>
+#include <base/audio/sound/CSoundChannel.h>
 
 const int COLLISION_RES = (1<<STC);
 
@@ -65,19 +62,19 @@ class CSpriteObject;
 // Event that will be used to move the objects in the game
 struct ObjMove
 {
-    GsVec2D<int> m_Vec;
-
     ObjMove(const GsVec2D<int>& Vector) : m_Vec(Vector) {}
     ObjMove(const int offx, const int offy) : m_Vec(offx, offy) {}
 
     virtual ~ObjMove();
+
+    GsVec2D<int> m_Vec;
+
 };
 
 // Event that will be used to move the objects in the game together with another object.
 // This is applied for example whenever keen is being moved on the platform
 struct ObjMoveCouple : ObjMove
 {
-    CSpriteObject &mSecond;
     ObjMoveCouple(const GsVec2D<int>& vec,
           CSpriteObject &second) :
       ObjMove(vec), mSecond(second)  {}
@@ -85,14 +82,15 @@ struct ObjMoveCouple : ObjMove
     ObjMoveCouple(const int offx, const int offy,
           CSpriteObject &second) :
       ObjMove(offx, offy), mSecond(second) {}
+
+    CSpriteObject &mSecond;
+
 };
 
 // Same as above but for multiple couples
 
 struct ObjMoveCouples : ObjMove
 {
-    std::vector<CSpriteObject*> mCarriedObjVec;
-
     ObjMoveCouples(const GsVec2D<int>& Vector,
            std::vector<CSpriteObject*> &carriedObjVec) :
       ObjMove(Vector), mCarriedObjVec(carriedObjVec)  {}
@@ -100,6 +98,9 @@ struct ObjMoveCouples : ObjMove
     ObjMoveCouples(const int offx, const int offy,
            std::vector<CSpriteObject*> &carriedObjVec) :
       ObjMove(offx, offy), mCarriedObjVec(carriedObjVec) {}
+
+    std::vector<CSpriteObject*> mCarriedObjVec;
+
 };
 
 
@@ -123,14 +124,14 @@ class CSpriteObject
     unsigned int mHealthPoints = 1;              // episode 1 style four-shots-to-kill
     bool mTurnAroundOnCliff = false;    // Can enemy turn around if there is a cliff
     bool mEndGameOnDefeat = false;    // End game if enemy is defeated. Useful for the last boss in some mods
-    bool exists;
-    bool onscreen;    				// true=(scrx,scry) position is visible onscreen
-    bool hasbeenonscreen;
+    bool exists = false;
+    bool onscreen = false;    				// true=(scrx,scry) position is visible onscreen
+    bool hasbeenonscreen = false;
     int mSpriteIdx = -1;      		// which sprite should this object be drawn with
-    int xDirection;					// the direction to where the object is looking/heading to
-    int yDirection;					// same for vertical
+    int xDirection = 0;					// the direction to where the object is looking/heading to
+    int yDirection = 0;					// same for vertical
 
-    int scrx, scry;           		// x,y pixel position on screen
+    int scrx = 0, scry = 0;           		// x,y pixel position on screen
 
     virtual void pumpEvent(const std::shared_ptr<CEvent> &evPtr);
 
@@ -143,7 +144,7 @@ class CSpriteObject
     // appear in front of the background
     bool honorPriority;
     bool dontdraw;	// tells the object whether to get drawn or not. The object is still existent in this while
-    bool solid;
+    bool solid = false;
     bool noclipping = false; // Similar to solid, but one is only enabled/disabled by the no clipping cheat
 
     bool canbezapped;         // if 0 ray will not stop on hitdetect

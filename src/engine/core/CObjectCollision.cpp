@@ -11,6 +11,8 @@
 #include "CSpriteObject.h"
 #include "engine/core/spritedefines.h"
 #include "CBehaviorEngine.h"
+#include <graphics/GsSprite.h>
+#include <graphics/GsGraphics.h>
 #include <base/GsTimer.h>
 
 

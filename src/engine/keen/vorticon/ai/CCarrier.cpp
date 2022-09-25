@@ -1,6 +1,8 @@
 #include "CCarrier.h"
 #include <base/video/CVideoDriver.h>
 
+#include <graphics/GsGraphics.h>
+
 CCarrier::CCarrier(CMap* pmap, Uint32 x, Uint32 y, object_t type) : 
 CVorticonSpriteObject(pmap, x, y, type, 0)
 {}

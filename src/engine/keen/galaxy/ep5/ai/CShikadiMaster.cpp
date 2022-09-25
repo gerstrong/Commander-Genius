@@ -9,7 +9,9 @@
 #include "../../common/ai/CEnemyShot.h"
 #include "../../common/ai/CBullet.h"
 #include "CRedShot.h"
+
 #include <base/utils/misc.h>
+#include <engine/core/CBehaviorEngine.h>
 
 /*
 $2AF4W #Shikadi master stand
@@ -122,7 +124,7 @@ void CShikadiMaster::processShootingAgressive()
       int newX = 	xDirection == RIGHT ? getXRightPos() : getXLeftPos();
       int newY = 	getYPosition() + 0x300;
 
-          playSound(SOUND_ROBORED_SHOOT);
+          playSound(GameSound::ROBORED_SHOOT);
 
           spawnObj( new CRedShot( getMapPtr(),
                                   0,
@@ -152,7 +154,7 @@ void CShikadiMaster::processShooting()
     
     mTimer = 0;
         
-    this->playSound(SOUND_MASTERSHOT);
+    this->playSound(GameSound::MASTERSHOT);
     setAction(A_MASTER_STAND);        
 }
 
@@ -190,7 +192,7 @@ void CShikadiMaster::processTeleporting()
 	CheckGround(new_object,ACTION_MASTERSPARKS0);
 	*/
 
-    this->playSound(SOUND_MASTERTELE);
+    this->playSound(GameSound::MASTERTELE);
 
 	int triesLeft = 10;
 

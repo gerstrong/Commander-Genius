@@ -14,6 +14,9 @@
 #include <base/audio/music/CMusic.h>
 #include "fileio/KeenFiles.h"
 #include "../../menu/ComputerWrist.h"
+
+#include <engine/core/CBehaviorEngine.h>
+
 #include <typeinfo>
 
 namespace galaxy {
@@ -171,7 +174,7 @@ void CCouncilMember::getTouchedBy(CSpriteObject &theObject)
 		}
 
 
-        playSound(SOUND_RESCUE_COUNCIL_MEMBER, SoundPlayMode::PLAY_PAUSEALL);
+        playSound(GameSound::RESCUE_COUNCIL_MEMBER, SoundPlayMode::PLAY_PAUSEALL);
         gEventManager.add( new EventPlayTrack(5) );        
 
 		std::string elder_text[2];

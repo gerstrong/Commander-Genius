@@ -10,8 +10,9 @@
 #include "CSlugSlime.h"
 #include "../../common/ai/CPlayerBase.h"
 #include "../../common/ai/CBullet.h"
-#include <base/utils/misc.h>
 
+#include <engine/core/CBehaviorEngine.h>
+#include <base/utils/misc.h>
 
 namespace galaxy {
 
@@ -84,7 +85,7 @@ void CPoisonSlug::processCrawling()
     {
         m_timer = 0;
         setAction( A_SLUG_POOING );
-        playSound( SOUND_SLUG_DEFECATE );
+        playSound( GameSound::SLUG_DEFECATE );
         CSlugSlime *slime = new CSlugSlime(mpMap, 0,
                                            getXMidPos(),
                                            getYDownPos()-(1<<(CSF-1)), 0);

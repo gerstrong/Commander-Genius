@@ -82,7 +82,7 @@ void CPlayGameVorticon::processOnWorldMap()
 							m_level_command = START_LEVEL;
 							m_Level = useobject & 0x7fff;
 							gMusicPlayer.stop();
-							player.playSound(SOUND_ENTER_LEVEL);
+                            player.playSound(GameSound::ENTER_LEVEL);
 							// save where on the map, the player entered. This is a checkpoint!
 							m_checkpoint_x = player.getXPosition();
 							m_checkpoint_y = player.getYPosition();

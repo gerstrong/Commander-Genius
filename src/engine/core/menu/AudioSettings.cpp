@@ -109,7 +109,7 @@ void CAudioSettings::ponder(const float deltaT)
 
 	if( mSoundVolume != mpSoundVolume->getSelection() )
     {
-		gAudio.playSound(SOUND_GET_ITEM);
+        gAudio.playSound(12);
     }
 
     mSoundVolume     = mpSoundVolume->getSelection();

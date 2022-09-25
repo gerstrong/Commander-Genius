@@ -18,6 +18,8 @@
 #include "engine/core/menu/MainMenu.h"
 #include "ai/CEGABitmap.h"
 
+#include <engine/core/CBehaviorEngine.h>
+
 namespace vorticon
 {
 
@@ -25,7 +27,6 @@ namespace vorticon
 // Creation Routine
 ////
 Title::Title( CMap &map ) :
-mTime(0),
 mMap(map)
 {}
 

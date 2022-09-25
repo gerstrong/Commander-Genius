@@ -418,7 +418,7 @@ void CPlayGameGalaxy::pumpEvent(const std::shared_ptr<CEvent> &evPtr)
                 if(m_LevelPlay.loadLevel(ev->mSprVar, newLevel))
                 {
                     m_WorldMap.setActive(false);
-                    gAudio.playSound( SOUND_ENTER_LEVEL );
+                    gAudio.playSound( int(GameSound::ENTER_LEVEL) );
                     m_LevelPlay.setActive(true);
                 }
                 else
@@ -447,7 +447,7 @@ void CPlayGameGalaxy::pumpEvent(const std::shared_ptr<CEvent> &evPtr)
 
         if( ev->playSound )
         {
-            gAudio.playSound( SOUND_LEVEL_DONE );
+            gAudio.playSound( int(GameSound::LEVEL_DONE) );
         }
 
         int newLevel = 0;
@@ -519,7 +519,7 @@ void CPlayGameGalaxy::pumpEvent(const std::shared_ptr<CEvent> &evPtr)
                 }
                 else
                 {
-                    gAudio.playSound(SOUND_CANT_DO);
+                    gAudio.playSound(int(GameSound::CANT_DO));
                     galaxy::showMsg(0, "Game Over!", nullptr, false, "",
                                     galaxy::CMessageBoxGalaxy::Alignment::UPPERRIGHT,
                                     1000, false);
@@ -528,7 +528,7 @@ void CPlayGameGalaxy::pumpEvent(const std::shared_ptr<CEvent> &evPtr)
             }
             else
             {
-                gAudio.playSound(SOUND_CANT_DO);
+                gAudio.playSound(int(GameSound::CANT_DO));
                 galaxy::showMsg(0, "For revive one must stand still", nullptr, false, "",
                                 galaxy::CMessageBoxGalaxy::Alignment::UPPERRIGHT,
                                 2000, false);
@@ -616,7 +616,7 @@ void CPlayGameGalaxy::ponder(const float deltaT)
         {
             if( gInput.getPressedAnyButtonCommand(playerCount) )
             {
-                gAudio.playSound(SOUND_STATUS_SLIDE_OUT);
+                gAudio.playSound(int(GameSound::STATUS_SLIDE_OUT));
                 inv.toggleStatusScreen();
             }
         }
@@ -631,7 +631,7 @@ void CPlayGameGalaxy::ponder(const float deltaT)
 
                 inv.Item.mLevelName = pMap->getLevelName();
 
-                gAudio.playSound(SOUND_STATUS_SLIDE_IN);
+                gAudio.playSound(int(GameSound::STATUS_SLIDE_IN));
 
                 inv.toggleStatusScreen();
             }

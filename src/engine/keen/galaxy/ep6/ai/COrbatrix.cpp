@@ -143,7 +143,7 @@ void COrbatrix::processBounce()
     {
         yinertia = MAX_BOUNCE_BOOST;
         xDirection = -xDirection;
-        playSound(SOUND_ORBATRIX_BUMP);
+        playSound(GameSound::ORBATRIX_BUMP);
     }
     
     mTimer++;

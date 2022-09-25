@@ -9,8 +9,9 @@
 #define CAUDIOVORTICON_H_
 
 #include <base/audio/CAudioResources.h>
-#include "fileio/CExeFile.h"
+#include <map>
 
+enum class GameSound;
 
 class CAudioVorticon : public CAudioResources
 {
@@ -19,7 +20,7 @@ public:
     bool loadSoundData(const unsigned int dictOffset);
 	void unloadSound();
 	
-	std::map<GameSound, int> sndSlotMap;
+    std::map<int, int> sndSlotMap;
 
 private:
 	void setupAudioMap();
@@ -34,7 +35,7 @@ private:
 
     bool loadSound(const std::string& path,
                    const std::string& searchname,
-                   unsigned int loadnum);
+                   const GameSound loadnum);
 
     std::vector<gs_byte> mFileBuffer;
 };

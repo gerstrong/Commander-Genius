@@ -59,7 +59,7 @@ void CBobba::processJumping()
 	if(blockedd && yinertia >= 0)
 	{
 	    setAction(A_BOBBA_SIT);
-	    playSound(SOUND_BOBBA_LAND);
+        playSound(GameSound::BOBBA_LAND);
 	}
 }
 
@@ -74,7 +74,7 @@ void CBobba::processSitting()
     mTimer = 0;
     
     setAction(A_BOBBA_SHOOT);
-    playSound(SOUND_BOBBA_SHOOT);    
+    playSound(GameSound::BOBBA_SHOOT);
     int x_coord = getXMidPos();
     x_coord += (xDirection == LEFT) ? -(8<<STC) : +(8<<STC);
     

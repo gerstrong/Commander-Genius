@@ -19,7 +19,7 @@
 #include <memory>
 
 #include <base/audio/music/CMusic.h>
-
+#include <engine/core/CBehaviorEngine.h>
 
 // 10 Seconds are for 1200 logic cycles
 const int INTRO_TIME = 1200;

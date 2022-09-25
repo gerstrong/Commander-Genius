@@ -71,7 +71,7 @@ void CBipShip::processMoving()
 	
 	if(mKeenIsNear)
 	{
-  		playSound(SOUND_BIPSHIP_SHOOT);
+        playSound(GameSound::BIPSHIP_SHOOT);
 		int x_coord = getXMidPos();
 		x_coord += (xDirection == LEFT) ? -(8<<STC) : +(8<<STC);
 
@@ -119,7 +119,7 @@ void CBipShip::processWreckage()
   if(blockedd)
   {
     setAction(A_BIPSHIP_CRASH);
-    playSound(SOUND_BIP_SHIP_CRASH);
+    playSound(GameSound::BIP_SHIP_CRASH);
   }
 }
 
@@ -176,7 +176,7 @@ void CBipShip::getTouchedBy(CSpriteObject& theObject)
 		setAction(A_BIPSHIP_HIT);
 		mIsDead = true;
 		theObject.mIsDead = true;
-		playSound(SOUND_BIP_SHIP_LAND);		
+        playSound(GameSound::BIP_SHIP_LAND);
 	}
 
 	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )

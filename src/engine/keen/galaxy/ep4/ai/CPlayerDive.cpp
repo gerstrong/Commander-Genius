@@ -6,9 +6,10 @@
  */
 
 #include "CPlayerDive.h"
-#include <base/CInput.h>
 #include "CBubbles.h"
 
+#include <engine/core/CBehaviorEngine.h>
+#include <base/CInput.h>
 
 namespace galaxy {
 
@@ -50,7 +51,7 @@ void CPlayerDive::kill(const bool force,
 		if(mp_processState == &CPlayerBase::processDying && yinertia < 0)
 			return;
 
-        playSound( SOUND_KEEN_DIE, SoundPlayMode::PLAY_NORESTART );
+        playSound( GameSound::KEEN_DIE, SoundPlayMode::PLAY_NORESTART );
 		setupGalaxyObjectOnMap(0x0D2E, (rand()%2));
 
 		mDying = true;                
@@ -145,7 +146,7 @@ void CPlayerDive::processDiving()
 
 	if( m_breathtimer >= BREATH_TIME )
 	{
-		playSound(SOUND_BUBBLE);
+        playSound(GameSound::BUBBLE);
 		int dir_offset = (xDirection==RIGHT) ? +(1<<CSF) : -(1<<CSF) ;
 		CBubbles *Bubble = new CBubbles(mpMap, 0, getXMidPos()+dir_offset, getYMidPos(), false);
 		gEventManager.add( new EventSpawnObject( Bubble ) );

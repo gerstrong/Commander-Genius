@@ -144,7 +144,7 @@ void CShikadi::processWalking()
                                      0x2E5A, 0, UP,
                                      150, mSprVar, true) );
             setAction(A_SHIKADI_POLE_ZAPS);
-            playSound(SOUND_POLEZAP);
+            playSound(GameSound::POLEZAP);
             return;
         }
     }

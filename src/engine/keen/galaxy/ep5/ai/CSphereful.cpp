@@ -84,23 +84,23 @@ void CSphereful::processMoving()
   
   if( blockedl && xDirection == LEFT )
   {
-      playSound(SOUND_SPHEREFULCEILING);
+      playSound(GameSound::SPHEREFULCEILING);
       xDirection = RIGHT;      
   }
   else if(blockedr && xDirection == RIGHT)
   {
-      playSound(SOUND_SPHEREFULCEILING);
+      playSound(GameSound::SPHEREFULCEILING);
       xDirection = LEFT;
   }
   
   if( blockedu && yDirection == UP )
   {
-      playSound(SOUND_SPHEREFULCEILING);
+      playSound(GameSound::SPHEREFULCEILING);
       yDirection = DOWN;
   }
   else if(blockedd && yDirection == DOWN)
   {
-      playSound(SOUND_SPINDREDFLYUP);
+      playSound(GameSound::SPINDREDFLYUP);
       yDirection = UP;
   }
   

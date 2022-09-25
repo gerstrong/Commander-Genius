@@ -8,6 +8,8 @@
 #include "CPlatform.h"
 #include <base/GsLogging.h>
 #include <base/video/CVideoDriver.h>
+#include <graphics/GsGraphics.h>
+#include <engine/core/CBehaviorEngine.h>
 
 namespace galaxy {
 

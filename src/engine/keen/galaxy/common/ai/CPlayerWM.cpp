@@ -7,26 +7,25 @@
  *  The code for the player when he is shown on the map...
  */
 
-#include <base/CInput.h>
 
 #include "../../ep6/ai/CRope.h"
 
 #include "CPlayerWM.h"
 #include "CFlag.h"
-#include <base/audio/Audio.h>
+
 #include "../dialog/CMessageBoxBitmapGalaxy.h"
-#include <graphics/CDimDark.h>
 
 #include "fileio/KeenFiles.h"
 #include "engine/core/VGamepads/vgamepadsimple.h"
 
-#include <base/video/CVideoDriver.h>
-
-#include <array>
-
-#include <base/utils/property_tree/property_tree.h>
-
 #include "engine/core/CBehaviorEngine.h"
+
+#include <graphics/CDimDark.h>
+#include <base/video/CVideoDriver.h>
+#include <base/utils/property_tree/property_tree.h>
+#include <base/audio/Audio.h>
+#include <base/CInput.h>
+#include <array>
 
 const int TIME_TO_WAVE = 400;
 
@@ -364,7 +363,7 @@ void CPlayerWM::processMoving()
                     y = (y+climbDir)<<CSF;
 
                 spawnObj(new CRope(mpMap, x, y));
-                playSound(SOUND_ROPE_THROW);
+                playSound(GameSound::ROPE_THROW);
             }
             else
             {
@@ -534,7 +533,7 @@ void CPlayerWM::processMoving()
         {
             if( !m_cantswim )
             {
-                playSound( SOUND_CANT_DO, SoundPlayMode::PLAY_PAUSEALL );
+                playSound( GameSound::CANT_DO, SoundPlayMode::PLAY_PAUSEALL );
                 showModalMsgWithBmp(mSprVar,
                                gBehaviorEngine.getString("CANT_SWIM_TEXT"),
                                105, LEFT, false, nullptr);
@@ -657,7 +656,7 @@ void CPlayerWM::verifyTeleportation()
 
             setupTeleportAnimation(false, target);
 
-            playSound(SOUND_TELEPORT);
+            playSound(GameSound::TELEPORT);
 
             solid = false;
         }
@@ -728,7 +727,7 @@ void CPlayerWM::processClosingElevator()
         mpMap->setTile(x-1, y-1, tile3-2, true);
         mpMap->setTile(x, y-1, tile4-2, true);
 
-        playSound(SOUND_ELEVATOR_OPEN);
+        playSound(GameSound::ELEVATOR_OPEN);
 
         elevator_frames--;
 
@@ -789,7 +788,7 @@ void CPlayerWM::processElevating()
     else
     {
         moveDir(vec_norm*ELEVATOR_SPEED);
-        this->playSound(SOUND_ELEVATING);
+        this->playSound(GameSound::ELEVATING);
     }
 }
 
@@ -824,7 +823,7 @@ void CPlayerWM::processOpeningElevator()
         mpMap->setTile(x-1, y-1, curTile[2] + prop2.nextTile, true);
         mpMap->setTile(x,   y-1, curTile[3] + prop3.nextTile, true);
 
-        playSound(SOUND_ELEVATOR_OPEN);
+        playSound(GameSound::ELEVATOR_OPEN);
 
         elevator_frames--;
 
@@ -995,7 +994,7 @@ void CPlayerWM::processWarpInTeleporter()
     mpMap->refreshVisibleArea();
 
     mProcessPtr = &CPlayerWM::processLeavingTeleporter;
-    playSound(SOUND_TELEPORT);
+    playSound(GameSound::TELEPORT);
 
     setupTeleportAnimation(false, new_pos);
 
@@ -1299,7 +1298,7 @@ void CPlayerWM::performWalkingAnimation(bool walking)
 
     if(swimming)
     {
-        playSound(SOUND_KEEN_SWIM_TO_LAND);
+        playSound(GameSound::KEEN_SWIM_TO_LAND);
         swimming = false;
     }
 
@@ -1329,7 +1328,7 @@ void CPlayerWM::performSwimmingAnimation(const bool moving)
 
     if(!swimming)
     {
-        playSound(SOUND_KEEN_SWIM_TO_LAND);
+        playSound(GameSound::KEEN_SWIM_TO_LAND);
         swimming = true;
     }
 

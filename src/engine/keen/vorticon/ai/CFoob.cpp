@@ -32,7 +32,7 @@ void CFoob::process()
 			animframe = 0;
 			animtimer = 0;
 			state = FOOB_EXPLODE;
-			playSound(SOUND_YORP_DIE);
+            playSound(GameSound::YORP_DIE);
 		}
 	}
 
@@ -47,7 +47,7 @@ void CFoob::process()
 				state = FOOB_SPOOK;
 				spooktimer = 0;
 				if (onscreen)
-					playSound(SOUND_YORP_DIE);
+                    playSound(GameSound::YORP_DIE);
 			}
 			else OnSameLevelTime++;
 		}

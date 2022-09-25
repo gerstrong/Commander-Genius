@@ -155,7 +155,7 @@ int makedir (char *newdir)
         printf("Error allocating memory\n");
         return UNZ_INTERNALERROR;
     }
-    strcpy(buffer,newdir);
+    strncpy(buffer, newdir, len);
 
     if (buffer[len-1] == '/') {
         buffer[len-1] = '\0';

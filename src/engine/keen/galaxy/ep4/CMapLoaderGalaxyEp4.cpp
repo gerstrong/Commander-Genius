@@ -35,10 +35,16 @@
 #include "ai/CInchWorm.h"
 #include "ai/CFoot.h"
 
-#include "../common/ai/platforms.h"
+#include "engine/keen/galaxy/common/ai/platform/CPlatformHorizontal.h"
+#include "engine/keen/galaxy/common/ai/platform/CPlatformVertical.h"
+#include "engine/keen/galaxy/common/ai/platform/CPlatformDrop.h"
+
 #include "../common/ai/CFlag.h"
 #include "../common/ai/Autogun.h"
 #include "../common/ai/CSpriteItem.h"
+
+#include <engine/core/CBehaviorEngine.h>
+#include <graphics/GsGraphics.h>
 
 namespace galaxy
 {

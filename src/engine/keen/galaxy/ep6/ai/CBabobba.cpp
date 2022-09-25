@@ -3,7 +3,9 @@
 #include "../../common/ai/CPlayerBase.h"
 #include "../../common/ai/CPlayerLevel.h"
 #include "../../common/ai/CBullet.h"
+
 #include <base/utils/misc.h>
+#include <engine/core/CBehaviorEngine.h>
 
 namespace galaxy 
 {
@@ -80,7 +82,7 @@ void CBabobba::processJumping()
 	if(blockedd && yinertia >= 0)
 	{
 	    setAction(A_BABOBBA_SIT);
-	    playSound(SOUND_BABOBBA_LAND);
+        playSound(GameSound::BABOBBA_LAND);
 	}
 }
 
@@ -96,7 +98,7 @@ void CBabobba::processSitting()
     if(mGoodFireChance)
     {
         setAction(A_BABOBBA_SHOOT);
-        playSound(SOUND_BABOBBA_CINDER);
+        playSound(GameSound::BABOBBA_CINDER);
 
         // Create cinder
         CCinder *cinder = new CCinder(mpMap, 0,
@@ -137,7 +139,7 @@ void CBabobba::processNapping()
     yinertia = MAX_JUMP_INERTIA;
 
     setAction(A_BABOBBA_JUMP);
-    playSound(SOUND_BABOBBA_JUMP);
+    playSound(GameSound::BABOBBA_JUMP);
 }
 
 bool CBabobba::isNearby(CSpriteObject &theObject)

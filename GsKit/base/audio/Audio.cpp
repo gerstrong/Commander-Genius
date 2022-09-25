@@ -11,7 +11,7 @@
 #include <base/utils/FindFile.h>
 #include <base/audio/music/CMusic.h>
 
-#include "fileio/ResourceMgmt.h"
+//#include "fileio/ResourceMgmt.h"
 
 #include <SDL_mixer.h>
 
@@ -253,7 +253,7 @@ void Audio::resumeAudio()
 }
 
 // returns true if sound snd is currently playing
-bool Audio::isPlaying(const GameSound snd)
+bool Audio::isPlaying(const int snd)
 {
 
     std::vector<CSoundChannel>::iterator snd_chnl = mSndChnlVec.begin();
@@ -270,7 +270,7 @@ bool Audio::isPlaying(const GameSound snd)
 }
 
 // if sound snd is currently playing, stop it immediately
-void Audio::stopSound(const GameSound snd)
+void Audio::stopSound(const int snd)
 {
 
     std::vector<CSoundChannel>::iterator snd_chnl = mSndChnlVec.begin();
@@ -374,13 +374,13 @@ bool Audio::forcedisPlaying()
 }
 
 
-void Audio::playSound(const GameSound snd,
-                      const SoundPlayMode mode )
+void Audio::playSound(const int snd,
+                      const SoundPlayMode mode)
 {
     playStereosound(snd, mode, 0);
 }
 
-void Audio::playStereofromCoord(const GameSound snd,
+void Audio::playStereofromCoord(const int snd,
                                 const SoundPlayMode mode,
                                 const int xCoord )
 {
@@ -405,7 +405,7 @@ void Audio::playStereofromCoord(const GameSound snd,
     }
 }
 
-void Audio::playStereosound(const GameSound snd,
+void Audio::playStereosound(const int snd,
                             const SoundPlayMode mode,
                             const short balance)
 {
@@ -498,7 +498,7 @@ void Audio::playStereosoundSlot(unsigned char slotplay,
 
 }
 
-void Audio::setupSoundData(const std::map<GameSound, int> &slotMap,
+void Audio::setupSoundData(const std::map<int, int> &slotMap,
                            CAudioResources *audioResPtr)
 {
     assert(audioResPtr);

@@ -59,7 +59,7 @@ void CSpark::process()
 
 		if ( mHealthPoints <= 0 && state == SPARK_ANIMATE )
 		{
-			playSound(SOUND_SHOT_HIT);
+            playSound(GameSound::SHOT_HIT);
 
 			// break the glass and blow out the electric arcs
 			mpMap->setTile(mx - 2, my, 492, true);
@@ -93,7 +93,7 @@ void CSpark::process()
 			newobject->setOwner(m_type, m_index);
 			gEventManager.add( new EventSpawnObject(newobject) );
             gEventManager.add( new AddPointsToAllPlayers(10000) );
-			playSound(SOUND_SHOT_HIT);
+            playSound(GameSound::SHOT_HIT);
 
 			blowy++;
 			if (blowy >= 3)
@@ -136,7 +136,7 @@ void CSpark::process()
                 CRay *newobject = new CRay(mpMap, mx<<CSF, (my+y)<<CSF, CENTER, DOWN, getSpriteVariantIdx());
 				newobject->setOwner(m_type ,m_index);
 				newobject->state = CRay::RAY_STATE_SETZAPZOT;
-				playSound(SOUND_SHOT_HIT);
+                playSound(GameSound::SHOT_HIT);
 				gEventManager.add(new EventSpawnObject(newobject));
 			}
 

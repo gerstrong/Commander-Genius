@@ -5,24 +5,24 @@
  *      Author: gerstrong
  */
 
+#include "fileio/crc.h"
+
 #include "CExeFile.h"
 #include "compression/Cunlzexe.h"
-#include <cstring>
-#include <iostream>
-#include <fstream>
-#include <base/utils/FindFile.h>
-#include <base/GsLogging.h>
 #include "fileio/ResourceMgmt.h"
 #include "fileio/KeenFiles.h"
 #include "fileio/compression/CHuffman.h"
 
-CExeFile::CExeFile() :
-m_datasize(0),
-m_headersize(0),
-m_episode(0),
-m_crc(0),
-m_headerdata(NULL),
-m_rawdata(NULL)
+
+#include <base/utils/FindFile.h>
+#include <base/GsLogging.h>
+
+#include <cstring>
+#include <iostream>
+#include <fstream>
+
+
+CExeFile::CExeFile()
 {
 
 	// Setup support map

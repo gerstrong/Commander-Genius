@@ -10,6 +10,7 @@
 
 #include <base/utils/property_tree/property_tree.h>
 #include <fileio/CSaveGameController.h>
+#include <engine/core/CBehaviorEngine.h>
 
 namespace galaxy {    
 
@@ -122,7 +123,7 @@ void CFlag::process()
 {
     if(mPlayMapSound)
     {
-        playSound( SOUND_FLAG_APPEAR );
+        playSound( GameSound::FLAG_APPEAR );
         mPlayMapSound = false;
     }
 
@@ -156,7 +157,7 @@ void CFlag::processFlipping()
 	{
 	    setAction(A_FLAG_WAVE);        
 	    setActionSprite();
-        playSound( SOUND_FLAG_LAND );
+        playSound( GameSound::FLAG_LAND );
 	    
 	    const auto episode = gBehaviorEngine.getEpisode();
         if(episode == 6)

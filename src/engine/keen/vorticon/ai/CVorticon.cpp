@@ -161,7 +161,7 @@ void CVorticon::process()
             dying = true;
         }
 
-        playSound(SOUND_VORT_DIE);
+        playSound(GameSound::VORT_DIE);
     }
 
     vort_reprocess: ;

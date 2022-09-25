@@ -145,7 +145,7 @@ void CDopeFish::processBurp()
 {
 	if(!m_burped && getActionStatus(A_DOPEFISH_BURPING))
 	{
-        playSound(SOUND_DOPEFISH_BURP);
+        playSound(GameSound::DOPEFISH_BURP);
 		CBubbles *Bubble = new CBubbles(mpMap, 0, getXMidPos()+(1<<CSF), getYMidPos()+(1<<CSF), true);
 		gEventManager.add( new EventSpawnObject( Bubble ) );
 		m_burped = true;

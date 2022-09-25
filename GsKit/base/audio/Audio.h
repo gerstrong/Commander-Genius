@@ -25,6 +25,8 @@
 #include "sound/CSoundChannel.h"
 #include "CAudioResources.h"
 
+enum class GameSound;
+
 class Audio : public GsSingleton<Audio>
 {
     friend class CIMFPlayer;
@@ -49,7 +51,7 @@ public:
      * @param mode
      * @return nonzero return value indicates a higher priority sound is playing.
      */
-	void playSound(	const GameSound snd,
+    void playSound(	const int snd,
                     const SoundPlayMode mode = SoundPlayMode::PLAY_NOW );
 
     /**
@@ -58,7 +60,7 @@ public:
      * @param mode      how to play
      * @param xCoord    X Coordinate in relative to the listening object
      */
-    void playStereofromCoord(const GameSound snd,
+    void playStereofromCoord(const int snd,
                              const SoundPlayMode mode,
                              const int xCoord);
 
@@ -68,7 +70,7 @@ public:
      * @param mode  How to play it
      * @param balance between -127(left) to 127(right)
      */
-    void playStereosound(const GameSound snd,
+    void playStereosound(const int snd,
                          const SoundPlayMode mode,
                          const short balance);
 
@@ -82,8 +84,8 @@ public:
                              const SoundPlayMode mode,
                              const short balance);
 
-	bool isPlaying(const GameSound snd);
-	void stopSound(const GameSound snd);
+    bool isPlaying(const int snd);
+    void stopSound(const int snd);
 	void destroy();
 
     void playInternalSound(const unsigned char *data,
@@ -135,7 +137,7 @@ public:
 
 	bool loadSoundData();
 
-    void setupSoundData(const std::map<GameSound, int> &slotMap,
+    void setupSoundData(const std::map<int, int> &slotMap,
                                CAudioResources *audioResPtr);
 
 	void unloadSoundData();
@@ -176,7 +178,7 @@ private:
     // Boolean that holds if the Soundblaster is to be used. If set false it will use the PC Speaker emulation
     bool mUseSoundBlaster = false;
 
-    std::map<GameSound, int> sndSlotMap;
+    std::map<int, int> sndSlotMap;
 
     std::map<std::string, Mix_Chunk*> mSoundFileMap; // This map stores
                                                      // sounds which are played

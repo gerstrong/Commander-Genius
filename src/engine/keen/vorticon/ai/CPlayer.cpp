@@ -523,23 +523,23 @@ void CPlayer::WalkingAnimation()
             {
                 if (!pfrozentime && pwalking)
                 {
-                    playSound((m_playingmode == WORLDMAP) ? SOUND_KEEN_WALK : SOUND_KEEN_WALK2 );
+                    playSound((m_playingmode == WORLDMAP) ? GameSound::KEEN_WALK : GameSound::KEEN_WALK2 );
 
                     if( m_playingmode != WORLDMAP )
                     {
                         // Play walking sound in level.
                         // It sounds very similar to the one of the map, only similar
-                        playSound( SOUND_KEEN_WALK2 );
+                        playSound( GameSound::KEEN_WALK2 );
 
                         // It is not bumping a head, but walking in some direction and being blocked.
                         // The same sound for that is played
                         if(blockedr || blockedl)
-                            playSound( SOUND_KEEN_BUMPHEAD );
+                            playSound( GameSound::KEEN_BUMPHEAD );
                     }
                     else
                     {
                         // Play walking sound on map
-                        playSound(SOUND_KEEN_WALK);
+                        playSound(GameSound::KEEN_WALK);
 
                         // Check if the player walking against walls (solid tiles)
                         bool obs=false;
@@ -549,7 +549,7 @@ void CPlayer::WalkingAnimation()
                         obs |= (blockedr && pDir.x == RIGHT);
 
                         if (obs)
-                            playSound(SOUND_KEEN_BUMPHEAD);
+                            playSound(GameSound::KEEN_BUMPHEAD);
                     }
 
                 }

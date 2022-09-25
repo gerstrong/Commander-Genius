@@ -50,7 +50,8 @@ bool setupAudio()
 
     if(audio->loadSoundData(0))
     {
-        gAudio.setupSoundData(audio->sndSlotMapGalaxy[ep], audio);
+        const std::map<int, int> &slotMap = audio->sndSlotMapGalaxy[ep];
+        gAudio.setupSoundData(slotMap, audio);
         return true;
     }
 

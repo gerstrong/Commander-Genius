@@ -1,10 +1,11 @@
 #include <base/audio/Audio.h>
 
-// raygun blast, shot by keen, and by the tank robots in ep1&2.
+// Raygun blast, shot by keen, and by the tank robots in ep1&2.
 #include "CRay.h"
 #include "engine/core/spritedefines.h"
 #include "engine/core/CBehaviorEngine.h"
-//#include "sdl/CVideoDriver.h"
+
+#include <graphics/GsGraphics.h>
 
 #define Sprite gGraphics.Sprite
 
@@ -121,7 +122,7 @@ void CRay::moveinAir()
 			state = RAY_STATE_SETZAPZOT;
 			canbezapped = false;
 			if (onscreen)
-				playSound(SOUND_SHOT_HIT);
+                playSound(GameSound::SHOT_HIT);
 		}
 		moveRight(m_speed);
 	}
@@ -139,7 +140,7 @@ void CRay::moveinAir()
 			state = RAY_STATE_SETZAPZOT;
 			canbezapped = false;
 			if (onscreen)
-				playSound(SOUND_SHOT_HIT);
+                playSound(GameSound::SHOT_HIT);
 		}
 		moveLeft(m_speed);
 	}
@@ -150,7 +151,7 @@ void CRay::moveinAir()
 			state = RAY_STATE_SETZAPZOT;
 			canbezapped = false;
 			if (onscreen)
-				playSound(SOUND_SHOT_HIT);
+                playSound(GameSound::SHOT_HIT);
 		}
 		moveDown(m_speed);
 	}

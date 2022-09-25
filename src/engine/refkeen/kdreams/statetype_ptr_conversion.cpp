@@ -1131,6 +1131,8 @@ void RefKeen_FillObjStatesWithDOSPointers(void)
 
 		break;
 #endif // EGA/CGA
+
+    case BE_GAMEVER_LAST: break;
 	}
 }
 

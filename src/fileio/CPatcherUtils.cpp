@@ -8,11 +8,11 @@
  */
 
 #include "CPatcher.h"
-#include <string.h>
-#include <fstream>
 
 #include <base/utils/FindFile.h>
 #include <base/GsLogging.h>
+#include <cstring>
+#include <fstream>
 
 /**
  * \brief   given a text line(string) with various items to patch, it will read of those

@@ -7,11 +7,14 @@
 
 #include "engine/core/spritedefines.h"
 #include "CSpriteObject.h"
+
 #include <base/GsLogging.h>
 #include <base/GsEventContainer.h>
 #include <base/video/CVideoDriver.h>
 
 #include <base/utils/FindFile.h>
+#include <graphics/GsSprite.h>
+#include <graphics/GsGraphics.h>
 
 #include "fileio/KeenFiles.h"
 
@@ -453,7 +456,7 @@ void CSpriteObject::blink(Uint16 frametime)
 void CSpriteObject::playSound(const GameSound snd,
                               const SoundPlayMode mode )
 {
-	gAudio.playStereofromCoord(snd, mode, scrx);
+    gAudio.playStereofromCoord(static_cast<const int>(snd), mode, scrx);
 }
 
 

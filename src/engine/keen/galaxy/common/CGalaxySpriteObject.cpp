@@ -10,6 +10,9 @@
 
 #include "../res/EGAStructs.h"
 
+#include <graphics/GsSprite.h>
+#include <graphics/GsGraphics.h>
+
 static int spriteOffset = 0;
 
 CGalaxySpriteObject::CGalaxySpriteObject(CMap *pmap, const Uint16 foeID,

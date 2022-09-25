@@ -2,6 +2,8 @@
 #include "../../common/ai/CPlayerBase.h"
 #include "../../common/dialog/CMessageBoxGalaxy.h"
 
+#include <engine/core/CBehaviorEngine.h>
+
 namespace galaxy
 {
     
@@ -93,12 +95,12 @@ void CGrabbiter::getTouchedBy(CSpriteObject& theObject)
             showMsg(sprVar, gBehaviorEngine.getString("KEEN_GRABBITER_SLEEPY") );
 
             setAction(A_GRABBITER_NAPPING);
-            playSound(SOUND_GRABBITER_SLEEP);
+            playSound(GameSound::GRABBITER_SLEEP);
         }
         else
         {
             // Sound play
-            playSound(SOUND_GRABBITER_HUNGRY, SoundPlayMode::PLAY_PAUSEALL);
+            playSound(GameSound::GRABBITER_HUNGRY, SoundPlayMode::PLAY_PAUSEALL);
 
             // Show grabbiter message
             showMsg(sprVar, gBehaviorEngine.getString("KEEN_GRABBITER_HUNGRY") );

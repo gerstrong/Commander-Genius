@@ -2,6 +2,7 @@
 #include "CPlayerBase.h"
 
 #include <base/utils/property_tree/property_tree.h>
+#include <engine/core/CBehaviorEngine.h>
 
 namespace galaxy
 {  
@@ -85,7 +86,7 @@ void AutoShot::serialize(GsKit::ptree &node)
 
 void AutoShot::waiting()
 {
-    const int ep = gBehaviorEngine.getEpisode();
+    const auto ep = gBehaviorEngine.getEpisode();
     if(ep > 4)
     {
         if(mSpriteIdx < mBaseSprite + mNumAnimSprites + 1)
@@ -116,15 +117,15 @@ void AutoShot::waiting()
 
     if(ep == 4)
     {
-        playSound(SOUND_DARTGUN_SHOOT);
+        playSound(GameSound::DARTGUN_SHOOT);
     }
     else if(ep == 5)
     {
-        playSound(SOUND_ROBORED_SHOOT); // Yeah, it is the same sound!
+        playSound(GameSound::ROBORED_SHOOT); // Yeah, it is the same sound!
     }
     else // keen 6
     {
-        playSound(SOUND_AUTOGUN);
+        playSound(GameSound::AUTOGUN);
     }
 
     dontdraw = false;

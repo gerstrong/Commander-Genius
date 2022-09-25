@@ -54,7 +54,7 @@ void CSkypest::getTouchedBy(CSpriteObject &theObject)
 		if( getActionNumber(A_SKYPEST_LICKEYES) && Player->isPogoing() )
 		{
 			mIsDead = true;
-			playSound(SOUND_SQUISH_SKYPEST);
+            playSound(GameSound::SQUISH_SKYPEST);
 			setAction(A_SKYPEST_SQUISHED);
 
             Player->m_Inventory.addAchievementTask("Pesty", 1);

@@ -154,7 +154,7 @@ void CVortiMom::process()
 			gEventManager.add(new EventSpawnObject(newobject));
 
 			if (onscreen)
-				playSound(SOUND_TANK_FIRE);
+                playSound(GameSound::TANK_FIRE);
 
 			state = MOTHER_WALK;
 		}
@@ -169,7 +169,7 @@ void CVortiMom::process()
 		    mIsDead = true;
 		    timer = 0;
 
-		    playSound(SOUND_VORT_DIE);
+            playSound(GameSound::VORT_DIE);
 		    
 		    return;
 		}

@@ -77,7 +77,7 @@ void CTantalusRay::shootray()
 		shootObject->solid = false;
 		shootObject->exists = shootObject->onscreen = true;
 		m_Object.push_back( move(shootObject) );
-        gAudio.playSound(SOUND_KEEN_FIRE, SoundPlayMode::PLAY_NOW);
+        gAudio.playSound(int(GameSound::KEEN_FIRE), SoundPlayMode::PLAY_NOW);
 
 		m_mustsetup = false;
 	}

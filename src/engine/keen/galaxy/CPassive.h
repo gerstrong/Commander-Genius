@@ -9,6 +9,7 @@
 #define CPASSIVE_GALAXY_H_
 
 #include "engine/core/CPassive.h"
+#include <graphics/GsBitmap.h>
 #include <string>
 
 namespace galaxy

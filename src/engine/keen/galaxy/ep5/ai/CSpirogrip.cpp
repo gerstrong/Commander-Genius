@@ -127,7 +127,7 @@ void CSpirogrip::processSpin()
   
   mTimer = 0;
 
-  playSound(SOUND_SPIROFLY);
+  playSound(GameSound::SPIROFLY);
   
   // Look at the Player coords and define a direction
   xDirection = yDirection = CENTER;
@@ -138,24 +138,24 @@ void CSpirogrip::processSpin()
   
   if(xDirection == LEFT)
   {
-      this->playSound(SOUND_SPIROGRIP);
+      this->playSound(GameSound::SPIROGRIP);
       setAction(A_GRIP_MOVE_LEFT);
   }
   else if(xDirection == RIGHT)
   {
-      this->playSound(SOUND_SPIROGRIP);
+      this->playSound(GameSound::SPIROGRIP);
       setAction(A_GRIP_MOVE_RIGHT);
   }
 
 
   if(yDirection == UP)
   {
-      this->playSound(SOUND_SPIROGRIP);
+      this->playSound(GameSound::SPIROGRIP);
       setAction(A_GRIP_MOVE_UP);
   }
   else if(yDirection == DOWN)
   {
-      this->playSound(SOUND_SPIROGRIP);
+      this->playSound(GameSound::SPIROGRIP);
       setAction(A_GRIP_MOVE_DOWN);
   }
   

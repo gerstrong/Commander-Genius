@@ -58,7 +58,7 @@ void CYorp::process()
 		dietimer = 0;
 		mSpriteIdx = YORP_DYING_FRAME;
 		yinertia = YORPDIE_START_INERTIA;
-		playSound(SOUND_YORP_DIE);
+        playSound(GameSound::YORP_DIE);
 	}
 
 	switch(state)
@@ -236,7 +236,7 @@ void CYorp::getTouchedBy(CSpriteObject &theObject)
 			{
                 if (!m_hardmode || (deadly && diff<ELITE) )
 				{
-					playSound(SOUND_YORP_STUN);
+                    playSound(GameSound::YORP_STUN);
 					state = YORP_STUNNED;
 					looktimes = 0;
 					timer = 0;

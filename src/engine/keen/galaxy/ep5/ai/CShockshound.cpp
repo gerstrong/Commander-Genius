@@ -88,7 +88,7 @@ void CShockshound::processSit()
     
     // If Mortimer do not bark.
     setAction(A_HOUND_BARK);
-    playSound(SOUND_SHOCKSUNDBARK);
+    playSound(GameSound::SHOCKSUNDBARK);
 }
 
 
@@ -123,7 +123,7 @@ void CShockshound::processBark()
                                  newX, getYUpPos()-(8<<STC),
                                  0x2FC2, xDirection, CENTER,  150, mSprVar) );
 
-        // SD_PlaySound(SOUND_BARKSHOTDIE); This must be used in the Enemyshot class, but can't because it's too general
+        // SD_PlaySound(GameSound::BARKSHOTDIE); This must be used in the Enemyshot class, but can't because it's too general
     }
 
 }

@@ -19,59 +19,66 @@
 #include "../CInventory.h"
 
 #include "engine/core/Playerdefines.h"
-#include <base/GsEvent.h>
-#include <graphics/CDimDark.h>
-#include "engine/core/Cheat.h"
 #include "engine/core/CCamera.h"
 
 #include <base/audio/music/CMusic.h>
+#include <base/GsEvent.h>
+#include <graphics/CDimDark.h>
 
 #include <array>
 
 struct EventEnterLevel : CEvent {
-  uint16_t data;
-  int mSprVar = 0;
   EventEnterLevel(const int sprVar,
                   const uint16_t d) : data(d),
     mSprVar(sprVar) {}
+
+  uint16_t data = 0;
+  int mSprVar = 0;
+
 };
 
 
 
 
 struct EventExitLevel : CEvent {
+  EventExitLevel(const uint16_t l, const bool s, const bool t, const bool lWho) :
+    levelObject(l), sucess(s), teleport(t), who(lWho) {}
+
   const uint16_t levelObject;
   const bool sucess;
   const bool teleport;
   const int who;
   bool playSound = false;
-  EventExitLevel(const uint16_t l, const bool s, const bool t, const bool lWho) :
-    levelObject(l), sucess(s), teleport(t), who(lWho) {}
+
 };
 
 struct EventMoveAllPlayersBut : CEvent {
     EventMoveAllPlayersBut(const int idx, const GsVec2D<int> &target) :
         mException(idx), mTarget(target) {}
+
     const int mException;
     const GsVec2D<int> mTarget;
 };
 
 struct EventExitLevelWithFoot : CEvent {
+  EventExitLevelWithFoot(const uint16_t l, const int lWho) : levelObject(l), who(lWho) {}
+
   const uint16_t levelObject;
   const int who;
-  EventExitLevelWithFoot(const uint16_t l, const int lWho) : levelObject(l), who(lWho) {}
+
 };
 
 
 struct EventDieKeenPlayer  : CEvent
 {
+  EventDieKeenPlayer(const int id, const int lo, const std::string &ln) :
+    playerID(id),
+    levelObj(lo), levelName(ln){}
+
   const int playerID;
   const int levelObj;
   const std::string levelName;
 
-  EventDieKeenPlayer(const int id, const int lo, const std::string &ln) :
-    playerID(id),
-    levelObj(lo), levelName(ln){}
 };
 
 

@@ -31,6 +31,7 @@
 
 #include "fileio/ResourceMgmt.h"
 #include "fileio/KeenFiles.h"
+#include "fileio/crc.h"
 
 #include "../version.h"
 

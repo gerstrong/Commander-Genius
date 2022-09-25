@@ -41,7 +41,7 @@ void CWaterMine::getTouchedBy(CSpriteObject &theObject)
         {
             mp_processState = ExplodeHandler;
             setAction(A_MINE_EXPLODE);
-            playSound(SOUND_MINE_EXPLOSION);
+            playSound(GameSound::MINE_EXPLOSION);
         }
     }
 
@@ -54,7 +54,7 @@ void CWaterMine::getTouchedBy(CSpriteObject &theObject)
 		{
 			mp_processState = ExplodeHandler;
 			setAction(A_MINE_EXPLODE);
-			playSound(SOUND_MINE_EXPLOSION);
+            playSound(GameSound::MINE_EXPLOSION);
 		}
 	}
 }

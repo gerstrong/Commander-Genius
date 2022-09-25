@@ -10,22 +10,24 @@
  */
 
 #include "CMapLoaderGalaxy.h"
+#include "engine/core/CCamera.h"
+#include "fileio/KeenFiles.h"
+#include <engine/core/CBehaviorEngine.h>
+#include <fileio/ResourceMgmt.h>
+#include <fileio/fileio.h>
+#include <fileio/compression/CCarmack.h>
+#include <fileio/compression/CRLE.h>
+#include <base/video/CVideoDriver.h>
+#include <base/GsLogging.h>
 #include <base/utils/StringUtils.h>
 #include <base/utils/FindFile.h>
 #include <base/audio/music/CMusic.h>
-#include <fileio/ResourceMgmt.h>
-#include <fileio/fileio.h>
-#include "fileio/compression/CCarmack.h"
-#include "fileio/compression/CRLE.h"
-#include <base/video/CVideoDriver.h>
-#include <base/GsLogging.h>
-#include "engine/core/CCamera.h"
-#include "fileio/KeenFiles.h"
+
 
 /// AI Headers
 
 // General stuff
-#include "../common/ai/CSpriteItem.h"
+//#include "../common/ai/CSpriteItem.h"
 
 #include <fstream>
 

@@ -74,7 +74,7 @@ void CFlect::getTouchedBy(CSpriteObject& theObject)
     }
     else
     {
-      bullet->playSound( SOUND_SHOT_HIT );
+      bullet->playSound( GameSound::SHOT_HIT );
       bullet->xDirection = -bullet->xDirection;	    
       xDirection = bullet->xDirection;
       bullet->moveXDir(xDirection<<CSF);

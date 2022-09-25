@@ -16,12 +16,14 @@
 #ifndef __VORTICON_TITLE_H__
 #define __VORTICON_TITLE_H__
 
-#include <SDL.h>
-#include <vector>
-#include <memory>
 #include "graphics/GsGraphics.h"
 #include "engine/core/CSpriteObject.h"
 #include "engine/core/CMap.h"
+
+#include <SDL.h>
+#include <vector>
+#include <memory>
+
 
 namespace vorticon
 {
@@ -42,7 +44,7 @@ public:
 private:
 	std::vector< std::unique_ptr<CSpriteObject> > mObjects;
 	bool mFinished;
-	unsigned int mTime;
+    unsigned int mTime = 0;
 	CMap &mMap;
 };
 

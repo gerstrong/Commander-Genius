@@ -9,12 +9,14 @@
 #include "CPassive.h"
 #include "engine/core/CBehaviorEngine.h"
 #include "engine/CGameLauncher.h"
-#include <base/video/CVideoDriver.h>
-#include <widgets/GsMenuController.h>
 
 #include "fileio/KeenFiles.h"
 #include "base/CInput.h"
-#include "base/video/GsEffectController.h"
+//#include "base/video/GsEffectController.h"
+
+#include <graphics/GsGraphics.h>
+#include <base/video/CVideoDriver.h>
+#include <widgets/GsMenuController.h>
 
 
 CPassive::CPassive()

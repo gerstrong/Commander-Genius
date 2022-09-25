@@ -159,7 +159,7 @@ void CTank::process()
 		{
 			CRay *newobject;
 			if (onscreen)
-				playSound(SOUND_TANK_FIRE);
+                playSound(GameSound::TANK_FIRE);
 			if (movedir==RIGHT)
                 newobject = new CRay(mpMap, getXMidPos(), getYUpPos()+height_top, RIGHT, CENTER, getSpriteVariantIdx());
 			else

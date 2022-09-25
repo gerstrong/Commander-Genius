@@ -2,6 +2,8 @@
 #include "../../common/ai/CPlayerLevel.h"
 #include <base/utils/misc.h>
 
+#include <engine/core/CBehaviorEngine.h>
+
 
 namespace galaxy
 {

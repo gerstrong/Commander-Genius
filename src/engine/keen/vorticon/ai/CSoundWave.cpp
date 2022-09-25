@@ -1,5 +1,7 @@
 #include "CSoundWave.h"
 
+#include <graphics/GsGraphics.h>
+
 // Sound Wave projectile, emitted by Meeps (ep3)
 
 #define SNDWAVE_SPEED         62

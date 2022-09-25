@@ -10,6 +10,8 @@
  */
 
 #include "CItemEffect.h"
+#include <graphics/GsSprite.h>
+#include <graphics/GsGraphics.h>
 
 namespace galaxy {
 

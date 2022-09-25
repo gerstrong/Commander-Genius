@@ -5,6 +5,9 @@
 #include "../../common/ai/CPlayerLevel.h"
 #include "../../common/ai/CBullet.h"
 
+#include <engine/core/CBehaviorEngine.h>
+#include <graphics/GsGraphics.h>
+
 namespace galaxy
 {
   
@@ -43,7 +46,7 @@ void CCeilick::processSleeping()
   if(mChanceToLick)
   {
     setAction(A_CEILICK_LICK);
-    playSound(SOUND_CEILICK_LICK);
+    playSound(GameSound::CEILICK_LICK);
     mChanceToLick = false;
     return;
   }
@@ -63,7 +66,7 @@ void CCeilick::processLicking()
         // This will make him laugh!
         if(!mLaughed)
         {
-            playSound(SOUND_CEILICK_LAUGH);
+            playSound(GameSound::CEILICK_LAUGH);
             mLaughed = true;
         }
     }

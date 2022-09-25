@@ -16,6 +16,7 @@
 #include "../../common/dialog/CMessageBoxGalaxy.h"
 #include "../../common/ai/CBullet.h"
 
+#include <graphics/GsGraphics.h>
 
 /*
 $2608W #Shikadi mine sit 0
@@ -122,7 +123,7 @@ void CShikadiMine::processSit()
 	dely = o->ypos - player->ypos;
 
 	if (delX < 0x200 && delX > -0x500 && delY < 0x300 && delY > -0x50) {
-		SD_PlaySound(SOUND_MINEEXPLODE);
+        SD_PlaySound(GameSound::MINEEXPLODE);
 		o->action = ACTION_MINEEXPLODE0;
 		RF_18(&o->int34);
 		return;
@@ -336,7 +337,7 @@ bool CShikadiMine::isNearby(CSpriteObject &theObject)
             return false;
 
         // Player is near enough. Explode!
-        playSound(SOUND_MINEEXPLODE);
+        playSound(GameSound::MINEEXPLODE);
         setAction(A_MINE_DETONATE);
 	}
 

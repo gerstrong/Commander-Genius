@@ -12,6 +12,8 @@
 #include "../../common/ai/CItemEffect.h"
 #include <base/utils/misc.h>
 
+#include <engine/core/CBehaviorEngine.h>
+#include <graphics/GsGraphics.h>
 
 namespace galaxy {
 
@@ -175,7 +177,7 @@ void CTreasureEater::processHopping()
 			if(mStolen)
 			{
                 setAction( A_SMIRKY_TELEPORT );
-                this->playSound(SOUND_TRESURE_STEALER_TELEPORT);
+                this->playSound(GameSound::TRESURE_STEALER_TELEPORT);
 				lookForNextDestination();
 				mTeleported = true;
 			}

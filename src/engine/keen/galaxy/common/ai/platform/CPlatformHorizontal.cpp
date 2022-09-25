@@ -8,6 +8,7 @@
 #include "CPlatformHorizontal.h"
 #include "engine/core/CBehaviorEngine.h"
 #include <base/video/CVideoDriver.h>
+#include <graphics/GsGraphics.h>
 
 const int FIRE_CHANGE_TIME = 5;
 const int FIRE_SPRITE = 361;

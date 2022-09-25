@@ -100,7 +100,7 @@ bool CThunderCloud::isNearby(CSpriteObject &theObject)
 				mTimer = 0;
 				mSecondTry = !mSecondTry;
 				setAction(A_CLOUD_STRIKING);
-				playSound(SOUND_THUNDERCLOUD_STRIKE);
+                playSound(GameSound::THUNDERCLOUD_STRIKE);
                 mpBolt = new CThunderBolt( mpMap, getXLeftPos() + (12<<STC), getYDownPos() - (8<<STC), mSprVar );
 				spawnObj( mpBolt );
 			}

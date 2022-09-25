@@ -12,7 +12,10 @@
 #include <base/CInput.h>
 #include <base/video/CVideoDriver.h>
 #include <base/audio/Audio.h>
+#include <engine/core/CBehaviorEngine.h>
+#include <fileio/KeenFiles.h>
 #include "../../common/dialog/CMessageBoxBitmapGalaxy.h"
+
 
 namespace galaxy {
 
@@ -216,7 +219,7 @@ void CPlayerBase::processExiting()
 void CPlayerBase::getAnotherLife(const int lc_x, const int lc_y, const bool display, const bool alt)
 {
     m_Inventory.Item.m_lifes++;
-    playSound( SOUND_EXTRA_LIFE );
+    playSound( GameSound::EXTRA_LIFE );
     if(display)
     {
         const int ep = gBehaviorEngine.getEpisode();
@@ -476,7 +479,7 @@ void CPlayerBase::processLevelMiscFlagsCheck()
         getAnotherLife(lc_x, lc_y, true, true);
       }
 
-      playSound( SOUND_GET_DROP );
+      playSound( GameSound::GET_DROP );
     }
 
 
@@ -514,18 +517,18 @@ void CPlayerBase::processLevelMiscFlagsCheck()
             mpMap->setTile( lc_x, lc_y, 0, true, 1 );
             spawnObj( new CItemEffect(mpMap, 0, lc_x<<CSF, lc_y<<CSF, got_sprite_item_pics[ep-4][4+i-21], FADEOUT) );
             switch(i)
-            {
-            case 21: m_Item.m_points += 100;	playSound( SOUND_GET_BONUS );	break;
-            case 22: m_Item.m_points += 200;	playSound( SOUND_GET_BONUS );	break;
-            case 23: m_Item.m_points += 500;	playSound( SOUND_GET_BONUS );	break;
-            case 24: m_Item.m_points += 1000;	playSound( SOUND_GET_BONUS );	break;
-            case 25: m_Item.m_points += 2000;	playSound( SOUND_GET_BONUS );	break;
-            case 26: m_Item.m_points += 5000;	playSound( SOUND_GET_BONUS );	break;
+            {            
+            case 21: m_Item.m_points += 100;	playSound( GameSound::GET_BONUS );	break;
+            case 22: m_Item.m_points += 200;	playSound( GameSound::GET_BONUS );	break;
+            case 23: m_Item.m_points += 500;	playSound( GameSound::GET_BONUS );	break;
+            case 24: m_Item.m_points += 1000;	playSound( GameSound::GET_BONUS );	break;
+            case 25: m_Item.m_points += 2000;	playSound( GameSound::GET_BONUS );	break;
+            case 26: m_Item.m_points += 5000;	playSound( GameSound::GET_BONUS );	break;
             case 27:
                 getAnotherLife(lc_x, lc_y, true, false);
                 m_Inventory.addAchievementTask("More than life", 100);
                 break;
-            case 28: m_Item.m_bullets += 5;	playSound( SOUND_GET_AMMO );	break;
+            case 28: m_Item.m_bullets += 5;	playSound( GameSound::GET_AMMO );	break;
             default: break;
             }
 
@@ -560,7 +563,7 @@ void CPlayerBase::tryToShoot( const GsVec2D<int> &pos, const int xDir, const int
     }
     else
     {
-        playSound( SOUND_GUN_CLICK );
+        playSound( GameSound::GUN_CLICK );
     }
 
     mReleasedShot = true;
@@ -661,9 +664,9 @@ void CPlayerBase::playWalkSound()
 
     // Process walk timer. This is only for the walking sound
     if( time == MAX_WALKSOUNDTIMER/3 || time == (2*MAX_WALKSOUNDTIMER)/3 )
-        playSound( SOUND_KEEN_WALK );
+        playSound( GameSound::KEEN_WALK );
     else if( time == 0 )
-        playSound( SOUND_KEEN_WALK2 );
+        playSound( GameSound::KEEN_WALK2 );
 
     m_walktimer++;
 }
@@ -687,7 +690,7 @@ void CPlayerBase::playSwimSound(const bool moving)
     // Process walk timer. This is only for the walking sound
     if( time == 0 )
     {
-        playSound( SOUND_KEEN_SWIM );
+        playSound( GameSound::KEEN_SWIM );
     }
 
     m_walktimer++;
@@ -710,7 +713,7 @@ void CPlayerBase::getEaten()
         solid = false;
         honorPriority = false;
         m_timer = 0;
-        playSound( SOUND_KEEN_DIE,
+        playSound( GameSound::KEEN_DIE,
                           SoundPlayMode::PLAY_NORESTART );
 
         mp_processState = &CPlayerBase::processGetEaten;
@@ -918,7 +921,7 @@ void CPlayerBase::kill(const bool force,
 
     solid = false;
     honorPriority = false;
-    playSound( SOUND_KEEN_DIE, SoundPlayMode::PLAY_NORESTART );
+    playSound( GameSound::KEEN_DIE, SoundPlayMode::PLAY_NORESTART );
 }
 
 

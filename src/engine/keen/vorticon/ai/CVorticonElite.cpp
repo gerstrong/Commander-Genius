@@ -172,7 +172,7 @@ void CVorticonElite::process()
 		dying = true;
 
 		if (onscreen)
-			playSound(SOUND_VORT_DIE);
+            playSound(GameSound::VORT_DIE);
 	}
 
 	if(state == VORTELITE_CHARGE)
@@ -284,7 +284,7 @@ void CVorticonElite::process()
 			spawnObj(newobject);
 
 			if (onscreen)
-				playSound(SOUND_KEEN_FIRE);
+                playSound(GameSound::KEEN_FIRE);
 		}
 		else timer++;
 		break;

@@ -10,6 +10,7 @@
 #include "CPlayerBase.h"
 
 #include <base/audio/Audio.h>
+#include <engine/core/CBehaviorEngine.h>
 
 namespace galaxy {
 
@@ -84,7 +85,7 @@ void CSpriteItem::getTouchedBy(CSpriteObject &theObject)
 			case 113: Item.m_points += 5000;	break;
 			default: break;
 			}
-            playSound( SOUND_GET_BONUS );
+            playSound( GameSound::GET_BONUS );
 		}
 
         if(Item.m_points >= Item.m_lifeAt)
@@ -98,7 +99,7 @@ void CSpriteItem::getTouchedBy(CSpriteObject &theObject)
 		{
 			newanimsprite = got_sprite_item_pics[ep-4][10];
 			Item.m_lifes++;
-            playSound( SOUND_EXTRA_LIFE );
+            playSound( GameSound::EXTRA_LIFE );
 		}		
 		
 		// keycard (Keen 5 only)
@@ -106,7 +107,7 @@ void CSpriteItem::getTouchedBy(CSpriteObject &theObject)
 		{
 			Item.m_keycards++;
 			newanimsprite = 231;
-            playSound( SOUND_GET_CARD );
+            playSound( GameSound::GET_CARD );
 		}
 
         // Enable pogo if some script wishes that
@@ -138,7 +139,7 @@ void CSpriteItem::getTouchedBy(CSpriteObject &theObject)
 		{
 			Item.m_bullets += 5;
 			newanimsprite = got_sprite_item_pics[ep-4][11];
-            playSound( SOUND_GET_AMMO );
+            playSound( GameSound::GET_AMMO );
 		}
 		
 
@@ -161,7 +162,7 @@ void CSpriteItem::getTouchedBy(CSpriteObject &theObject)
 			default:
 				break;
 			}
-            playSound( SOUND_GET_GEM );
+            playSound( GameSound::GET_GEM );
 		}
 		
         spawnObj(new CItemEffect(mpMap, 0, getXPosition(), getYPosition(), newanimsprite, FADEOUT));

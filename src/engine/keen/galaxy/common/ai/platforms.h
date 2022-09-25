@@ -14,8 +14,9 @@
 
 #include "platform/CPlatformHorizontal.h"
 #include "platform/CPlatformVertical.h"
-#include "platform/CVarPlatform.h"
-#include "platform/CPlatformMoveAway.h"
 #include "platform/CPlatformDrop.h"
+#include "platform/CPlatformMoveAway.h"
+#include "platform/CVarPlatform.h"
+
 
 #endif /* PLATFORMS_H_ */

@@ -12,23 +12,27 @@
 
 
 struct EventPlayerEndLevel : CEvent {
-    const uint16_t levelObject;
-    const bool sucess;
-    const int who;
-    const bool teleport;
     EventPlayerEndLevel(const EventExitLevel &ev) :
                     levelObject(ev.levelObject),
                     sucess(ev.sucess),
                     who(ev.who),
                     teleport(ev.teleport){}
+
+    const uint16_t levelObject;
+    const bool sucess;
+    const int who;
+    const bool teleport;
+
 };
 
 struct EventPlayerRideFoot : CEvent {
-    const uint16_t levelObject;
-    const int who;
     EventPlayerRideFoot(const EventExitLevelWithFoot &ev) :
                     levelObject(ev.levelObject),
                     who(ev.who) {}
+
+    const uint16_t levelObject;
+    const int who;
+
 };
 
 
@@ -108,8 +112,8 @@ private:
     Uint8 m_animation_ticker = 0;
     bool m_cantswim = false;
     GsVec2D<int> target;
-    int elevator_close_timer;
-    int elevator_frames;
+    int elevator_close_timer = 0;
+    int elevator_frames = 0;
     int waveTimer = 0;
     bool swimming = false;
     bool mUsedGrapplingHook = false;

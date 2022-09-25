@@ -14,7 +14,7 @@
 #include "../../common/ai/CBullet.h"
 #include <base/utils/misc.h>
 
-
+#include <engine/core/CBehaviorEngine.h>
 
 
 /*
@@ -40,11 +40,7 @@ constexpr int CSF_DISTANCE_TO_SHOOT = 8<<CSF;
 
   
 CRoboRed::CRoboRed(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
-CStunnable(pmap, foeID, x, y),
-mTimer(0),
-mLookTimer(0),
-swapYDir(false),
-mKeenNearby(false)
+CStunnable(pmap, foeID, x, y)
 {
 	mActionMap[A_RED_MOVE] = (GASOFctr) &CRoboRed::processMoving;
 	mActionMap[A_RED_PAUSE] = (GASOFctr) &CRoboRed::processPauseBeforeShoot;
@@ -160,7 +156,7 @@ void CRoboRed::processShoot()
 
       if(mAlternateShot)
       {
-          playSound(SOUND_POLEZAP);
+          playSound(GameSound::POLEZAP);
 
           spawnObj( new CEnemyShot(getMapPtr(), 0,
                                    newX, getYUpPos(),
@@ -172,9 +168,9 @@ void CRoboRed::processShoot()
       else
       {
           if(mTimer%32 == 0)
-            this->playSound(SOUND_ROBORED_SHOOT);
+            this->playSound(GameSound::ROBORED_SHOOT);
           else
-            this->playSound(SOUND_ROBORED_SHOOT2);
+            this->playSound(GameSound::ROBORED_SHOOT2);
 
           spawnObj( new CRedShot( getMapPtr(),
                                   0,

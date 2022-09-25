@@ -210,7 +210,7 @@ bool CPlayGameVorticon::init()
 
     if(m_showKeensLeft)
     {
-      gAudio.playSound(SOUND_KEENSLEFT, SoundPlayMode::PLAY_NOW);
+      gAudio.playSound(int(GameSound::KEENSLEFT), SoundPlayMode::PLAY_NOW);
     }
 
     // In the case that we are in Episode 3 last Level, show Mortimer Messages
@@ -228,7 +228,7 @@ bool CPlayGameVorticon::init()
         mMessageBoxes.push_back(move(msg4));
         mMessageBoxes.push_back(move(msg5));
         mMessageBoxes.push_back(move(msg6));
-        gAudio.playSound(SOUND_MORTIMER);
+        gAudio.playSound(int(GameSound::MORTIMER));
     }
 
     mCurMusicTrack = gMusicPlayer.getCurTrack();
@@ -454,7 +454,7 @@ void CPlayGameVorticon::ponder(const float deltaT)
         else // Bitmap must first be created
         {
             GsBitmap *pBitmap = gGraphics.getBitmapFromStr(0, "GAMEOVER");
-            gAudio.playSound(SOUND_GAME_OVER, SoundPlayMode::PLAY_NOW);
+            gAudio.playSound(int(GameSound::GAME_OVER), SoundPlayMode::PLAY_NOW);
             mpGameoverBmp.reset( new CEGABitmap( mMap.get() , gVideoDriver.getBlitSurface(), pBitmap) );
 
             GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
@@ -595,7 +595,7 @@ void CPlayGameVorticon::handleFKeys()
             it_player->performCollisions();
         }
 
-        gAudio.playSound(SOUND_GUN_CLICK, SoundPlayMode::PLAY_FORCE);
+        gAudio.playSound(int(GameSound::GUN_CLICK), SoundPlayMode::PLAY_FORCE);
 
         // Show a message like in the original game
         std::unique_ptr<CMessageBoxVort> msg(
@@ -609,7 +609,7 @@ void CPlayGameVorticon::handleFKeys()
 
     if(gInput.getPressedKey(KP) && mMessageBoxes.empty())
     {
-        gAudio.playSound(SOUND_GUN_CLICK, SoundPlayMode::PLAY_FORCE);
+        gAudio.playSound(int(GameSound::GUN_CLICK), SoundPlayMode::PLAY_FORCE);
         std::unique_ptr<CMessageBoxVort> msg( new CMessageBoxVort("Game Paused") );
         mMessageBoxes.push_back(move(msg));
     }

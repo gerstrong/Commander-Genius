@@ -33,7 +33,7 @@ public:
 
     void unloadSound() {}
 	
-	std::map< unsigned int, std::map<GameSound, int> > sndSlotMapGalaxy;
+    std::map< unsigned int, std::map<int, int> > sndSlotMapGalaxy;
 	
 private:
 	void setupAudioMap();

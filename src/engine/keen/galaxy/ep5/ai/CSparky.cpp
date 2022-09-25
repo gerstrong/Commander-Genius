@@ -11,6 +11,7 @@
 #include "../../common/ai/CBullet.h"
 #include <base/utils/misc.h>
 
+#include <engine/core/CBehaviorEngine.h>
 
 namespace galaxy {  
   
@@ -117,7 +118,7 @@ void CSparky::processLook()
     {
       xDirection = mKeenAlignment;
       setAction(A_SPARKY_CHARGE);
-      playSound(SOUND_SPARKY_CHARGE);
+      playSound(GameSound::SPARKY_CHARGE);
     }
     else if(mKeenAlignment != xDirection)
       setAction(A_SPARKY_TURN);
@@ -140,7 +141,7 @@ void CSparky::processCharge()
     moveLeft( CHARGE_SPEED );    
   }
   
-  playSound(SOUND_KEEN_WALK);
+  playSound(GameSound::KEEN_WALK);
   
   mTimer = 0;
   

@@ -37,8 +37,8 @@ void CCamera::cycleCamlead()
     const int numPlayers = gBehaviorEngine.numPlayers();
 
     if( numPlayers == 1 ) // For one player this doesn't make sense to change
-    {
-        playSound(SOUND_CANT_DO);
+    {        
+        playSound(GameSound::CANT_DO);
         return;
     }
 

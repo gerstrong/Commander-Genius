@@ -59,7 +59,7 @@ void CMadMushroom::getTouchedBy(CSpriteObject &theObject)
 	if( CBullet *bullet = dynamic_cast<CBullet*>(&theObject) )
 	{
 		bullet->setAction(A_KEENSHOT_IMPACT);
-		bullet->playSound( SOUND_SHOT_HIT );
+        bullet->playSound( GameSound::SHOT_HIT );
 		bullet->mIsDead = true;
 	}
 
@@ -91,11 +91,11 @@ void CMadMushroom::process()
 		{
 			yinertia = -MUSHROOM_HIGH_INERTIA;
 			jumpcounter = 0;
-			playSound( SOUND_BOUNCE_HIGH );
+            playSound( GameSound::BOUNCE_HIGH );
 		}
 		else
 		{
-			playSound( SOUND_BOUNCE_LOW );
+            playSound( GameSound::BOUNCE_LOW );
 		}
 
 		m_jumped = true;
