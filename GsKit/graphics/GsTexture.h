@@ -95,6 +95,9 @@ public:
     bool loadFromSurface(const GsSurface &sfc,
                          SDL_Renderer *renderer);
 
+    GsSurface &Surface();
+
+
 private:
 
     SDL_Texture* mpTexture = nullptr;

@@ -493,9 +493,7 @@ bool GsSurface::scaleTo(const GsRect<Uint16> &scaledRect, const VidFilter filter
                                  sfcFormat->Amask  );
 
     if(!newSfc)
-    {
       return false;
-    }
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 

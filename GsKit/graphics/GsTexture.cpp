@@ -138,6 +138,11 @@ bool GsTexture::loadFromSurface(const GsSurface &sfc,
     return (mpTexture!=nullptr);
 }
 
+GsSurface& GsTexture::Surface()
+{
+    return mSfc;
+}
+
 bool GsTexture::load(const std::string &fname, SDL_Renderer *renderer)
 {
     // Do we have an old texture? Unload it

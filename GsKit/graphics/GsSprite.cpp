@@ -756,13 +756,28 @@ void GsSprite::renderTexture( const int x,
     clipRect(dst_rect, src_rect, x, y, w, h);
 
     auto &vidDrv = gVideoDriver;
+    const auto vidConf = vidDrv.getVidConfig();
+    const int scaleUp = int(vidConf.m_ScaleXFilter);
+    int scaleY = 1;
 
     // Load textures always on demand
     if(!mTexture)
     {
-        mTexture.loadFromSurface(mSurface, vidDrv.Renderer());
+        GsSurface copySfc;
+        copySfc.createCopy(mSurface);
+
+        GsRect<Uint16> scaledRect(copySfc.getSDLSurface()->clip_rect);
+        scaledRect.dim *= scaleUp;
+        copySfc.scaleTo(scaledRect, vidConf.m_ScaleXFilter);
+
+        mTexture.loadFromSurface(copySfc, vidDrv.Renderer());
     }
 
+
+    scaleY = src_rect.h ? mTexture.Surface().getSDLSurface()->clip_rect.h / src_rect.h : scaleY;
+
+    src_rect.w = src_rect.w*scaleY;
+    src_rect.h = src_rect.h*scaleY;
     vidDrv.pushTextureRef(mTexture, src_rect, dst_rect);
 }
 
