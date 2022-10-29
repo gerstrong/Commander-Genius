@@ -13,7 +13,6 @@
 
 #include <base/TypeDefinitions.h>
 #include <base/Vector2D.h>
-#include <SDL.h>
 #include <vector>
 
 class CPlane

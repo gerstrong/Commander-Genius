@@ -52,7 +52,7 @@ public:
                      SDL_Renderer *renderer);
 
      //Set blending
-    void setBlendMode( SDL_BlendMode blending );
+    void setBlendMode( SDL_BlendMode mode );
 
 
     /**

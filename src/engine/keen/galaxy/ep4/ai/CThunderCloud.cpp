@@ -7,25 +7,24 @@
 
 #include "CThunderCloud.h"
 #include "../../common/ai/CPlayerLevel.h"
-#include "../../common/ai/CBullet.h"
 #include <base/utils/misc.h>
 
 
 namespace galaxy {
 
-const int A_CLOUD_ASLEEP = 0;
-const int A_CLOUD_WAKING = 1;
-const int A_CLOUD_MOVING = 2;
-const int A_CLOUD_STRIKING = 5;
+constexpr int A_CLOUD_ASLEEP = 0;
+constexpr int A_CLOUD_WAKING = 1;
+constexpr int A_CLOUD_MOVING = 2;
+constexpr int A_CLOUD_STRIKING = 5;
 
-const unsigned int DIST_TO_STRIKE = 1<<CSF;
-const unsigned int DIST_TO_AWAKE = 7<<CSF;
+constexpr unsigned int DIST_TO_STRIKE = 1<<CSF;
+constexpr unsigned int DIST_TO_AWAKE = 7<<CSF;
 
-const int MOVE_SPEED = 26;
-const int STRIKE_TIME = 120;
+constexpr int MOVE_SPEED = 26;
+constexpr int STRIKE_TIME = 120;
 
-const int TIME_TO_STRIKE_1 = 30;
-const int TIME_TO_STRIKE_2 = 90;
+constexpr int TIME_TO_STRIKE_1 = 30;
+constexpr int TIME_TO_STRIKE_2 = 90;
 
 CThunderCloud::CThunderCloud(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y, const int sprVar) :
 CGalaxySpriteObject(pmap, foeID, x, y, sprVar)

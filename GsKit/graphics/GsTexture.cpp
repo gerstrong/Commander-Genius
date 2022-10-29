@@ -98,11 +98,11 @@ bool GsTexture::loadFromMem(const unsigned char *data,
     return (mpTexture!=nullptr);
 }
 
-void GsTexture::setBlendMode( SDL_BlendMode blending )
+void GsTexture::setBlendMode( SDL_BlendMode mode )
 {
    assert(mpTexture);
     //Set blending function
-   SDL_SetTextureBlendMode( mpTexture, blending );
+   SDL_SetTextureBlendMode( mpTexture, mode );
 }
 
 void GsTexture::setAlpha( const Uint8 alpha )

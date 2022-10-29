@@ -1,5 +1,5 @@
-#ifndef GAMEH
-#define GAMEH
+#ifndef GAMESOUND_H
+#define GAMESOUND_H
 
 // Game Sounds
 enum class GameSound
@@ -139,4 +139,4 @@ enum class GameSound
     NUM_SOUNDS
 };
 
-#endif // GAMEH
+#endif // GAMESOUND_H

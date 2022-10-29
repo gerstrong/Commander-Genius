@@ -15,8 +15,8 @@
 #ifndef ACTIONFORMAT_H_
 #define ACTIONFORMAT_H_
 
-#include <stdint.h>
-#include <stdio.h>
+#include <cstdint>
+#include <cstdio>
 #include <string>
 
 enum GalaxyActionType

@@ -156,9 +156,10 @@ class CSpriteObject
     unsigned char blockedl, blockedr, blockedu, blockedd;
     bool onslope;
     signed int xinertia, yinertia;
-    CSpriteObject *pSupportedbyobject;
+    CSpriteObject *pSupportedbyobject = nullptr;
 
-    bool mIsDead, dying;
+    bool mIsDead = false;
+    bool dying = false;
 
 
     bool m_jumpdownfromobject  = false;

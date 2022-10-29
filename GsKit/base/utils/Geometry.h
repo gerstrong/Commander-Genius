@@ -9,12 +9,14 @@
 #ifndef GEOMETRY_H_
 #define GEOMETRY_H_
 
-#include <SDL.h>
 #include "../Vector2D.h"
 
+#include <SDL_rect.h>
 #include <string>
 #include <sstream>
 #include <algorithm>
+
+struct SDL_Surface;
 
 /**
  * This structure defines the resolution composed of width height and depth
@@ -86,14 +88,6 @@ struct GsRect
         return (dim.y==0 || dim.x==0);
     }
 
-/*
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-
-#else
-    GsRect( const SDL_VideoInfo* InfoPtr )
-        { w=InfoPtr->current_w; h=InfoPtr->current_h; };
-#endif
-*/
     bool operator==( const GsRect &target )
     {
         return (target.pos.x == pos.x && target.pos.y == pos.y &&
@@ -282,6 +276,7 @@ void drawRect( SDL_Surface *sfc,
                SDL_Rect *rect,
                const int thickness,
                const Uint32 &ContourColor );
+
 
 /**
  * \brief Draws rect different than the SDL_Fillrect, because it has a contour and is filled

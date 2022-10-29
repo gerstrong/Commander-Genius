@@ -8,9 +8,10 @@
 #include "GsSprite.h"
 #include "GsPalette.h"
 #include <base/utils/FindFile.h>
-#include <string.h>
 #include <base/video/CVideoDriver.h>
 #include "graphics/GsGraphics.h"
+
+#include <string.h>
 
 GsSprite::GsSprite()
 {
@@ -772,7 +773,6 @@ void GsSprite::renderTexture( const int x,
 
         mTexture.loadFromSurface(copySfc, vidDrv.Renderer());
     }
-
 
     scaleY = src_rect.h ? mTexture.Surface().getSDLSurface()->clip_rect.h / src_rect.h : scaleY;
 

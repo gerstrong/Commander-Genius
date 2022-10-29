@@ -8,22 +8,20 @@
 #ifndef CMAP_H_
 #define CMAP_H_
 
-#include <SDL.h>
+#include "graphics/GsTilemap.h"
+#include "CPlane.h"
+#include "scrollingplane.h"
+
+#include <base/Vector2D.h>
+#include <base/TypeDefinitions.h>
+#include <base/utils/Geometry.h>
+#include <base/GsEvent.h>
+
+#include <map>
+#include <set>
 #include <string>
 #include <vector>
 #include <list>
-#include <base/Vector2D.h>
-
-
-#include "graphics/GsTilemap.h"
-#include <base/TypeDefinitions.h>
-#include "CPlane.h"
-#include "scrollingplane.h"
-#include <base/GsEvent.h>
-#include <base/utils/Geometry.h>
-#include <map>
-#include <set>
-
 
 class CMap
 {

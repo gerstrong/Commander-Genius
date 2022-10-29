@@ -10,7 +10,7 @@
 
 #define MAX_TILES    800
 
-#include <SDL.h>
+#include <SDL_pixels.h>
 #include <string>
 
 #include <graphics/GsSurface.h>

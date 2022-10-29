@@ -7,7 +7,7 @@
 
 #include "Geometry.h"
 
-
+#include <SDL_surface.h>
 
 void drawRect( SDL_Surface *sfc,
 			   SDL_Rect *rect,
