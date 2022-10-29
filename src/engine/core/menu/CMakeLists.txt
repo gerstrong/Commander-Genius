@@ -51,6 +51,8 @@ set(SRCS
 
 add_library(engine_core_menu STATIC ${SRCS})
 
+target_compile_features(engine_core_menu PRIVATE cxx_std_17)
+
 Target_link_libraries(engine_core_menu engine_core_menu_widgets)
 
 Target_link_libraries(engine_core_menu GsKit)
