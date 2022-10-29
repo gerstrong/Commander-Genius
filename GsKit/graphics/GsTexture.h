@@ -3,6 +3,7 @@
 
 #include <SDL.h>
 #include <SDL_image.h>
+#include <SDL_render.h>
 #include <cstdio>
 #include <string>
 
@@ -18,7 +19,6 @@
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 
-class GsSurface;
 
 class GsTexture
 {

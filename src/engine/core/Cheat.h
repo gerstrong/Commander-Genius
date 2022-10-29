@@ -5,8 +5,8 @@
  * can be triggered and by the player where the AI will know what do depending on what is done
  */
 
-#ifndef __CHEAT_STRUCT__
-#define __CHEAT_STRUCT__
+#ifndef CHEAT_STRUCT
+#define CHEAT_STRUCT
 
 struct stCheat
 {

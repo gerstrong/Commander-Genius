@@ -9,7 +9,7 @@
 
 #include <cassert>
 
-#include <SDL.h>
+#include <SDL_surface.h>
 
 static inline int BlitSurface(SDL_Surface *src, SDL_Rect *srcrect,
                               SDL_Surface *dst, SDL_Rect *dstrect)

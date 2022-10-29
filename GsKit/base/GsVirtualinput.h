@@ -202,7 +202,6 @@ protected:
 
     bool mEnabled = true;
 
-
     float mTranslucency = 0.5f;
 
 };

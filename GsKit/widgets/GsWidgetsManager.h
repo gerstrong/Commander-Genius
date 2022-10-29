@@ -63,10 +63,12 @@ public:
     std::shared_ptr<GsWidget>
     getWidgetByTag(const std::string &tag);
 
-    virtual bool sendEvent(const std::shared_ptr<CEvent> &evPtr);
+    virtual bool sendEvent(const std::shared_ptr<CEvent> &evPtr) override;
 
 
-    // Update all graphics. Happens when Video settings are changed
+    /**
+     * @brief updateGraphics Update all graphics. This is triggered when Video settings were changed.
+     */
     void updateGraphics() override;
 
     bool sendEvent(const InpCmd) override { return false; }

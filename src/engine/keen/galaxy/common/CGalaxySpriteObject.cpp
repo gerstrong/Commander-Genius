@@ -13,7 +13,6 @@
 #include <graphics/GsSprite.h>
 #include <graphics/GsGraphics.h>
 
-static int spriteOffset = 0;
 
 CGalaxySpriteObject::CGalaxySpriteObject(CMap *pmap, const Uint16 foeID,
                                          const int x, const int y, const int sprVar) :
@@ -21,7 +20,7 @@ CSpriteObject(pmap, x, y, sprVar),
 mFoeID(foeID)
 {
     EpisodeInfoStruct* eiStructPtr = gBehaviorEngine.getEpisodeInfoStructRef();
-    spriteOffset = int(eiStructPtr->IndexSprites);
+    mSpriteOffset = int(eiStructPtr->IndexSprites);
 }
 
 void CGalaxySpriteObject::setupGalaxyObjectOnMap(const size_t ActionBaseOffset,
@@ -260,13 +259,15 @@ int CGalaxySpriteObject::checkSolidD( int x1, int x2, int y2, const bool push_mo
 
 
 ////
-// Action format (Galaxy only now...)
+// Action format (Keen Galaxy only)
 ////
 /**
  * So far only used in Galaxy. Here we performs some stuff for the Action format
  */
 bool CGalaxySpriteObject::getActionNumber(int16_t ActionNumber)
-{	return (m_ActionNumber==ActionNumber);	}
+{
+    return (m_ActionNumber==ActionNumber);
+}
 
 bool CGalaxySpriteObject::isOneOfActionNumbers(const int from, const int to)
 {
@@ -278,11 +279,15 @@ bool CGalaxySpriteObject::isOneOfActionNumbers(const int from, const int to)
     return false;
 }
 
-bool CGalaxySpriteObject::getActionStatus(int16_t ActionNumber)
-{	return (m_Action.getActionFormat(m_ActionBaseOffset + 30*ActionNumber));	}
+bool CGalaxySpriteObject::getActionStatus(const int16_t ActionNumber)
+{
+    return (m_Action.getActionFormat(m_ActionBaseOffset + 30*ActionNumber));
+}
 
 int16_t CGalaxySpriteObject::getActionNumber()
-{	return int16_t(m_ActionNumber);	}
+{
+    return int16_t(m_ActionNumber);
+}
 
 
 void CGalaxySpriteObject::setActionForce(const size_t ActionNumber)
@@ -292,7 +297,7 @@ void CGalaxySpriteObject::setActionForce(const size_t ActionNumber)
 	m_Action.setActionFormat(m_ActionBaseOffset + 30*m_ActionNumber);
 }
 
-void CGalaxySpriteObject::setAction(size_t ActionNumber)
+void CGalaxySpriteObject::setAction(const size_t ActionNumber)
 {
 	if(m_ActionNumber == ActionNumber) return;
 	setActionForce(ActionNumber);
@@ -312,9 +317,9 @@ void CGalaxySpriteObject::setActionSprite()
 	}
     
 	if(xDirection == LEFT || xDirection == 0)
-		mSpriteIdx = m_Action.spriteLeft-spriteOffset;
+        mSpriteIdx = m_Action.spriteLeft-mSpriteOffset;
 	else if(xDirection == RIGHT)
-		mSpriteIdx = m_Action.spriteRight-spriteOffset;
+        mSpriteIdx = m_Action.spriteRight-mSpriteOffset;
 	
 	
 	// Check the lower box for better collisions and move the sprite whether needed

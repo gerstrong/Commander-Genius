@@ -12,7 +12,7 @@
 
 #include <sys/types.h>
 
-#include <SDL.h>
+#include <SDL_stdinc.h>
 
 // Some good basic types and utilities independent of endianess.
 typedef uint8_t gs_byte;

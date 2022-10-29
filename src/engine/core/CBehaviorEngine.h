@@ -41,6 +41,7 @@ const unsigned int MAX_PLAYERS = 4;
 
 #define gBehaviorEngine CBehaviorEngine::get()
 
+
 /*
  * This enumerator will hold and tell what engine we are using.
  * As some Vorticon and Galaxy classes are shared together, that variable is used to get them created correctly.
@@ -82,6 +83,7 @@ public:
 	bool readTeleporterTable(gs_byte *p_exedata);
 
 	std::vector<CTileProperties> &getTileProperties(size_t tmnum = 1);
+
     CPhysicsSettings &getPhysicsSettings()
     {
         return m_PhysicsSettings;
@@ -153,7 +155,7 @@ private:
 
     bool mPausedGamePlay = false;
 
-    EpisodeInfoStruct *pEpisodeInfo;
+    EpisodeInfoStruct *pEpisodeInfo = nullptr;
 };
 
 #endif /* CBEHAVIORENGINE_H_ */

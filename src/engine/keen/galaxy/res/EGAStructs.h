@@ -13,6 +13,7 @@
 
 #include <vector>
 
+
 struct EpisodeInfoStruct
 {
 	unsigned long ExeImageSize;
@@ -58,8 +59,8 @@ struct SpriteHeadStruct
 struct FontHeadStruct
 {
 	unsigned short Height;
-	unsigned short Offset[256];
-	unsigned char Width[256];
+    unsigned short Offset[256];
+    unsigned char Width[256];
 };
 
 #endif /* EGASTRUCTS_H_ */

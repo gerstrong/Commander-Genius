@@ -8,17 +8,22 @@
 #ifndef CINPUT_H_
 #define CINPUT_H_
 
-#include <SDL.h>
-#include <string>
-#include <list>
-#include <vector>
-#include <array>
 #include <base/utils/Geometry.h>
 #include <base/GsEventContainer.h>
 #include <base/InputEvents.h>
 
 #include <base/Singleton.h>
 #include <base/GsVirtualinput.h>
+
+#include <SDL_mutex.h>
+#include <SDL_joystick.h>
+#include <SDL_keycode.h>
+#include <SDL_events.h>
+
+#include <string>
+#include <list>
+#include <vector>
+#include <array>
 #include <map>
 
 
@@ -308,7 +313,9 @@ public:
     void shutdown();
 
     bool MappingInput()
-    { return remapper.mappingInput; }
+    {
+        return remapper.mappingInput;
+    }
 
     /**
      * @brief readSDLEventVec Use this for engine which want to access the SDL Events directly

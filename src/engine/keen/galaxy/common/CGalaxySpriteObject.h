@@ -49,10 +49,10 @@ public:
      * @param ActionNumber
      * @return
      */
-	virtual bool getActionStatus(int16_t ActionNumber);
+    virtual bool getActionStatus(const int16_t ActionNumber);
 	int16_t getActionNumber();
 	virtual void setActionForce(const size_t ActionNumber);
-	void setAction(size_t ActionNumber);
+    void setAction(const size_t ActionNumber);
 	void setActionSprite();
     virtual bool processActionRoutine();
 	
@@ -65,7 +65,7 @@ public:
     virtual void deserialize(GsKit::ptree &) {}
 
 	// This is used for action format only
-	uint16_t mFoeID;
+    uint16_t mFoeID = 0;
     uint16_t m_ActionTicker = 0;
     uint16_t m_ActionNumber = 0;
     size_t m_ActionBaseOffset = 0x0;
@@ -90,6 +90,8 @@ public:
     bool mClipped = false;
     bool m_jumpdown = false;
     bool mEndOfAction = false;
+
+    int mSpriteOffset = 0;
 };
 
 #endif /* CGALAXYSPRITEOBJECT_H_ */
