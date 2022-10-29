@@ -10,7 +10,6 @@
 
 #include "GameMenu.h"
 
-
 class CLoadMenu : public GameMenu
 {
 public:

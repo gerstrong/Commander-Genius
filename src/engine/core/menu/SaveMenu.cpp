@@ -20,11 +20,9 @@
 #include <base/utils/misc.h>
 #include <base/audio/music/CMusicPlayer.h>
 
-#include <string_view>
+#include <string>
 
-constexpr std::string_view EMPTY_TEXT {"EMPTY"};
-
-//constexpr std::string EMPTY_TEXT = "EMPTY";
+static const char *EMPTY_TEXT = "EMPTY";
 
 
 CSaveMenu::CSaveMenu(const Style &style) :

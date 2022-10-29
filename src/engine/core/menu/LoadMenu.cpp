@@ -16,12 +16,10 @@
 
 #include "fileio/CSaveGameController.h"
 #include "engine/core/CBehaviorEngine.h"
-#include "engine/core/mode/CGameMode.h"
 
 #include "widgets/BorderedButton.h"
 
-
-const std::string EMPTY_TEXT = "EMPTY";
+static const char *EMPTY_TEXT = "EMPTY";
 
 struct LoadGameSlotFunctorEvent : public InvokeFunctorEvent
 {
