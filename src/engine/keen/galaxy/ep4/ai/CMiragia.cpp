@@ -8,6 +8,9 @@
 #include "CMiragia.h"
 #include "../../common/ai/CPlayerWM.h"
 
+#include "engine/core/spritedefines.h"
+
+
 namespace galaxy
 {
 

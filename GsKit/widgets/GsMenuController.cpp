@@ -9,6 +9,7 @@
 #include <base/CInput.h>
 #include <base/PointDevice.h>
 #include <base/video/CVideoDriver.h>
+#include <base/audio/music/CMusicPlayer.h>
 #include <cassert>
 
 void drawMenuInGameButton(const SDL_Rect &buttonRect)

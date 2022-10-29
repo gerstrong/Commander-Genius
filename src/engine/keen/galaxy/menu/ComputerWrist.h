@@ -1,9 +1,8 @@
 #ifndef COMPUTERWRIST_H
 #define COMPUTERWRIST_H
 
-#include "GalaxyMenu.h"
-
 #include <graphics/GsBitmap.h>
+#include <base/GsEvent.h>
 
 namespace galaxy
 {

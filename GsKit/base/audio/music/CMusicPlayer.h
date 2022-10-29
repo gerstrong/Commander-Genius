@@ -15,6 +15,16 @@
 #include <SDL.h>
 #include <string>
 
+#include <base/GsEvent.h>
+
+/**
+ * @brief The EventReloadMusic struct
+ *        Menu controller decides when closing for gameplay/title,
+ *        if lastly playing tracks may replay.
+ */
+struct EventReloadMusic : CEvent
+{};
+
 
 class CMusicPlayer
 {

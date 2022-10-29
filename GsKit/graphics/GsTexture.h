@@ -1,15 +1,14 @@
 #ifndef GSTEXTURE_H
 #define GSTEXTURE_H
 
+#include "GsSurface.h"
+
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_render.h>
 #include <cstdio>
 #include <string>
-
 #include <cassert>
-
-#include "GsSurface.h"
 
 /**
  * @brief The GsTexture class is a wrapper for SDL Textures introduced in SDL 2.0. It can be used extended with other libraries, OpenGL maybe, but
@@ -87,9 +86,9 @@ public:
                        const int res );
 
     void fillRGB( SDL_Renderer *renderer,
-                             const Uint8 r,
-                             const Uint8 g,
-                             const Uint8 b );
+                  const Uint8 r,
+                  const Uint8 g,
+                  const Uint8 b );
 
 
     bool loadFromSurface(const GsSurface &sfc,

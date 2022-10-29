@@ -6,6 +6,9 @@
  */
 
 #include "CPlatform.h"
+
+#include "engine/core/spritedefines.h"
+
 #include <base/GsLogging.h>
 #include <base/video/CVideoDriver.h>
 #include <graphics/GsGraphics.h>

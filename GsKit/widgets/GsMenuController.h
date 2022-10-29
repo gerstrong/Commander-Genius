@@ -56,14 +56,6 @@ struct CloseMenuEvent : CEvent
     const bool mReplayMusic;
 };
 
-/**
- * @brief The EventReloadMusic struct
- *        Menu controller decides when closing for gameplay/title,
- *        if lastly playing tracks may replay.
- */
-struct EventReloadMusic : CEvent
-{};
-
 
 struct CloseAllMenusEvent : CEvent
 {};

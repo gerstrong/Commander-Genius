@@ -8,9 +8,9 @@
 #ifndef CSOUNDCHANNEL_H_
 #define CSOUNDCHANNEL_H_
 
-#include <SDL.h>
-#include <map>
 #include "CSoundSlot.h"
+
+#include <map>
 
 // sound play modes
 // start playing sound now, unless a higher priority sound is playing

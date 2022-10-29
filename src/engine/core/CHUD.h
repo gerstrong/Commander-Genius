@@ -19,10 +19,6 @@
 #include <graphics/GsSurface.h>
 #include <base/utils/Geometry.h>
 
-#include "Playerdefines.h"
-#include "engine/core/spritedefines.h"
-
-
 class CHUD
 {
 public:
@@ -75,7 +71,7 @@ private:
     GsSurface mHUDBlit;
     int mId;
 
-	int timer;
+    int timer = 0;
 
     GsSprite mKeenHeadSprite;
     GsSprite mKeenGunSprite;

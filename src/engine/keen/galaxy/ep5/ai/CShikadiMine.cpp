@@ -13,8 +13,9 @@
 #include "../../common/ai/CPlayerBase.h"
 #include "../../common/ai/CPlayerLevel.h"
 #include <base/utils/misc.h>
-#include "../../common/dialog/CMessageBoxGalaxy.h"
-#include "../../common/ai/CBullet.h"
+
+#include "engine/core/spritedefines.h"
+
 
 #include <graphics/GsGraphics.h>
 
@@ -30,8 +31,6 @@ $26DAW #Shikadi mine detonate
 $26F8W #Shikadi mine detonate
 $2716W #Shikadi mine fragments
  */
-
-// TODO: Overload the draw function, because the mine has an eye which moves around in the sprite
 
 namespace galaxy {
 

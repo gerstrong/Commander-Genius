@@ -4,6 +4,7 @@
 #include "CCeilick.h"
 #include "../../common/ai/CPlayerLevel.h"
 #include "../../common/ai/CBullet.h"
+#include "engine/core/spritedefines.h"
 
 #include <engine/core/CBehaviorEngine.h>
 #include <graphics/GsGraphics.h>

@@ -18,8 +18,13 @@
 #include "widgets/InputText.h"
 
 #include <base/utils/misc.h>
+#include <base/audio/music/CMusicPlayer.h>
 
-static const std::string EMPTY_TEXT = "EMPTY";
+#include <string_view>
+
+constexpr std::string_view EMPTY_TEXT {"EMPTY"};
+
+//constexpr std::string EMPTY_TEXT = "EMPTY";
 
 
 CSaveMenu::CSaveMenu(const Style &style) :
@@ -31,7 +36,7 @@ GameMenu(GsRect<float>(0.1f, 0.0f, 0.8f, 1.0f), style )
 
     for(int i=0 ; i<int(gSaveGameController.getMaxNumofSaveSlots()) ; i++)
 	{
-		std::string text = EMPTY_TEXT;
+        std::string text(EMPTY_TEXT);
         if(i < int(StateFileList.size()))
             text = StateFileList.at(i);
 
@@ -57,7 +62,7 @@ GameMenu(GsRect<float>(0.1f, 0.0f, 0.8f, 1.0f), style )
                 gSaveGameController.prepareSaveGame( index, saveText );
                 gBehaviorEngine.setPause(false);
                 gEventManager.add( new CloseAllMenusEvent() );
-                gEventManager.add(new EventReloadMusic);
+                gEventManager.add( new EventReloadMusic );
             }
             else // If typing option is enabled
             {
@@ -119,7 +124,7 @@ void CSaveMenu::refresh()
         auto button =
                 std::static_pointer_cast<GsButton>(*itCtrl);
 
-        button->setText(EMPTY_TEXT);
+        button->setText(std::string(EMPTY_TEXT));
         button->enable(true);
 
         if( !text.empty() )

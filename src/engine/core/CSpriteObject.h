@@ -28,7 +28,7 @@
 #include <base/direction.h>
 #include <base/audio/sound/CSoundChannel.h>
 
-const int COLLISION_RES = (1<<STC);
+constexpr int COLLISION_RES = (1<<STC);
 
 // The bouncing box used by the object which is used to determine the collisions
 struct BoundingBox

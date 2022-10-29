@@ -8,8 +8,11 @@
 #include "CHUD.h"
 #include "engine/core/CCamera.h"
 #include "engine/core/CBehaviorEngine.h"
-#include <base/video/CVideoDriver.h>
+#include "engine/core/Playerdefines.h"
+#include "engine/core/spritedefines.h"
 #include "graphics/GsGraphics.h"
+
+#include <base/video/CVideoDriver.h>
 #include <base/utils/StringUtils.h>
 
 const int EFFECT_TIME = 10;
@@ -22,8 +25,7 @@ m_score(score),
 mLives(lives),
 m_charges(charges),
 mOldScore(score),
-mOldCharges(charges),
-timer(0)
+mOldCharges(charges)
 {
     setup(playerIdx, spriteVar);
 }

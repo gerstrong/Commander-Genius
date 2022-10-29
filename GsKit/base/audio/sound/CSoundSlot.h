@@ -11,7 +11,6 @@
 #include <base/TypeDefinitions.h>
 #include <string>
 #include <vector>
-#include <SDL.h>
 
 #include <SDL_mixer.h>
 
