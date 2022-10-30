@@ -94,7 +94,7 @@ public:
         mCamLeadChange = false;
     }
 
-    bool mAttached = true;
+    const bool mAttached = true;
     bool mFreeze = false;
     bool mMoving = true;
 

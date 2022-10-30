@@ -14,7 +14,7 @@
 #include "engine/core/CResourceLoader.h"
 #include "engine/core/CBehaviorEngine.h"
 #include "engine/core/menu/MainMenu.h"
-#include "engine/CGameLauncher.h"
+//#include "engine/CGameLauncher.h"
 #include "fileio/CPatcher.h"
 #include "fileio/CSaveGameController.h"
 #include "engine/core/CMessages.h"
@@ -37,6 +37,7 @@ const Uint32 GalaxySongAssignments[] =
     0x03103E,  // Keen 6
     0x02A872   // Keen 6 Demo
 };
+
 
 
 bool setupAudio()
@@ -102,6 +103,16 @@ bool loadLevelMusic(const int level)
     }
 
     return  gMusicPlayer.loadTrack(track);
+}
+
+GalaxyEngine::GalaxyEngine(const bool openedGamePlay,
+             const int ep,
+             const std::string &dataPath) :
+    KeenEngine(openedGamePlay, ep, dataPath),
+    mEp(ep)
+{
+    const GsRect<Uint16> gameRect = gVideoDriver.getVidConfig().mGameRect;
+    gVideoDriver.setNativeResolution(gameRect, 2);
 }
 
 void GalaxyEngine::ponder(const float deltaT)

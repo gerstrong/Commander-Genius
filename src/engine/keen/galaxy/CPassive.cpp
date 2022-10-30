@@ -37,11 +37,10 @@ processRenderMode(&CPassiveGalaxy::renderIntro),
 mBackgroundTitle(*gGraphics.getBitmapFromStr(0, "TITLE")),
 mBackgroundStarWars(*gGraphics.getBitmapFromStr(0, "STARWARS")),
 mCommanderTextSfc(gGraphics.getMiscGsBitmap(0)),
-mKeenTextSfc(gGraphics.getMiscGsBitmap(1)),
-mSkipSection(false)
+mKeenTextSfc(gGraphics.getMiscGsBitmap(1))
 {
-    const GsRect<Uint16> gameRect = gVideoDriver.getVidConfig().mGameRect;
-    gVideoDriver.setNativeResolution(gameRect, 2);
+//    const GsRect<Uint16> gameRect = gVideoDriver.getVidConfig().mGameRect;
+//    gVideoDriver.setNativeResolution(gameRect, 2);
 
     const auto episode = gBehaviorEngine.getEpisode();
 

@@ -14,6 +14,7 @@
 #include <string>
 
 #include <graphics/GsSurface.h>
+#include <graphics/GsTexture.h>
 #include <graphics/GsScrollsurface.h>
 
 class GsTilemap
@@ -54,6 +55,9 @@ public:
     void drawTile(GsScrollSurface &scrollSfc,
                   const int x, const int y, const Uint16 t);
 
+    void renderTile(const int x,
+                    const int y,
+                    const Uint16 t);
 
     void drawTileBlended(SDL_Surface *dst,
                          const int x, const int y,
@@ -67,6 +71,8 @@ private:
 
     GsSurface mTileSurface;
     GsSurface mTileSurfaceAlpha;
+
+    GsTexture   mTilemapTexture;
 
     int m_EmptyBackgroundTile = 143;
     Uint16 m_numtiles = 0;

@@ -77,17 +77,15 @@ bool GsTilemap::loadHiresTile( const std::string& filename, const std::string& p
 
 bool GsTilemap::optimizeSurface()
 {
-    if(!mTileSurface.empty())
-	{
-        SDL_Surface *temp_surface = gVideoDriver.convertThroughBlitSfc(mTileSurface.getSDLSurface());
-        mTileSurface.createFromSDLSfc(temp_surface);
+    if(mTileSurface.empty())
+        return false;
 
-		return true;
-	}
-	else
-    {
-		return false;
-    }
+    SDL_Surface *temp_surface = gVideoDriver.convertThroughBlitSfc(mTileSurface.getSDLSurface());
+    mTileSurface.createFromSDLSfc(temp_surface);
+
+    mTilemapTexture.loadFromSurface(mTileSurface, gVideoDriver.Renderer());
+
+    return true;
 }
 
 ///////////////////////////////////
@@ -204,6 +202,7 @@ void GsTilemap::drawTile(SDL_Surface *dst,
     auto rawSDLSfc = mTileSurface.getSDLSurface();
     BlitSurface(rawSDLSfc, &src_rect, dst, &dst_rect);
 
+
 #ifdef DEBUG_COLLISION
 	//std::vector<CTileProperties> &TileProp = gBehaviorEngine.getTileProperties(1);
 	//FillSlopeRect(dst, dst_rect, 0xFFFFFFFF, TileProp[t].bup);
@@ -241,6 +240,19 @@ void GsTilemap::drawTile(GsScrollSurface &scrollSfc,
     const int drawMask = dim-1;
     drawTile(scrollSfc.getScrollSurface(), x&drawMask, y&drawMask, t);
 }
+
+void GsTilemap::renderTile(const int x,
+                           const int y,
+                           const Uint16 t)
+{
+    /*const auto dim = scrollSfc.getSquareSize();
+    const int drawMask = dim-1;
+    drawTile(scrollSfc.getScrollSurface(), x&drawMask, y&drawMask, t);*/
+    SDL_Rect src_rect, dst_rect;
+    //gVideoDriver.pushTextureRef(mTexture, srcRect, dstRect);
+}
+
+
 
 
 void GsTilemap::drawTileBlended(SDL_Surface *dst,

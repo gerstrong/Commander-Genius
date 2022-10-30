@@ -65,8 +65,7 @@ void ScrollingPlane::drawTile(GsTilemap &tilemap,
 
     tilemap.drawTile(scrollSfc,
                      (pos.x<<mTileSizeBase)&drawMask,
-                     (pos.y<<mTileSizeBase)&drawMask, t);
-
+                     (pos.y<<mTileSizeBase)&drawMask, t);    
 }
 
 bool ScrollingPlane::scrollLeftTest()

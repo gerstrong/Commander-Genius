@@ -26,9 +26,7 @@ public:
 
     GalaxyEngine(const bool openedGamePlay,
                  const int ep,
-                 const std::string &dataPath) :
-        KeenEngine(openedGamePlay, ep, dataPath),
-        mEp(ep) {}
+                 const std::string &dataPath);
 
     /**
      * @brief ponder    Ponder cycle of the Galaxy Engine

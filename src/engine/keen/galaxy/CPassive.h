@@ -86,7 +86,7 @@ public:
 
     int mIntroTimer = 0;
 
-    bool mSkipSection;
+    bool mSkipSection = false;
 
     /**
      * @brief mStoryTextVector Vector of story text blocks

@@ -48,15 +48,9 @@ void GsSprite::copy(const GsSprite& original)
 
     // If the sprites are not yet loaded, the surfaces
     // do not exist yet. Only copy those if they exist
-    //const auto &renderer = gVideoDriver.Renderer();
     if(origSfc)
     {
         mSurface.createCopy(origSfc);
-/*
-        mTexture.loadFromSurface(origSfc, renderer);
-        SDL_Texture *texture = mTexture.getPtr();
-
-        assert(texture);*/
     }
 
     if(origMaskSfc)

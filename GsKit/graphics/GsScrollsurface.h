@@ -31,6 +31,8 @@ public:
 
     void blitScrollSurface(GsWeakSurface &blitSfc);
 
+    void renderScrollSurface();
+
     GsSurface &getScrollSurface();
 
     Uint32 getFlags() const;
