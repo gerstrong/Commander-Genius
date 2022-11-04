@@ -166,6 +166,7 @@ void GsScrollSurface::renderScrollSurface()
 {
     // TODO: iterate through a list of texture tiles to update and send those to the rendering engine
 
+    //std::vector<std::tuple< GsTexture&, const GsRect<Uint16>, const GsRect<Uint16> >> mTriples;
     /*
     SDL_Rect srcRect, dstRect;
     int sbufferx, sbuffery;

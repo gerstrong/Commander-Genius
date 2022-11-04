@@ -326,6 +326,11 @@ void CVideoEngine::blitScrollSurfaces(GsWeakSurface &blitSfc)
     {
         scrollSfc.blitScrollSurface(blitSfc);
     }
+
+    for(auto &triple : mScrollbufferTextures)
+    {
+        mRenderTexturePtrs.push(triple);
+    }
 }
 
 void CVideoEngine::resetScrollBuffers()

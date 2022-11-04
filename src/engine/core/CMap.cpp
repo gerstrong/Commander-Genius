@@ -733,7 +733,7 @@ void CMap::drawHstripe(const unsigned int y,
         drawHstripeOfPlane(i, y, mpy);
     }
 }
-
+/*
 void CMap::drawVstripeOfPlane(const int planeIdx,
                               const unsigned int x,
                               const unsigned int mpx)
@@ -744,7 +744,7 @@ void CMap::drawVstripeOfPlane(const int planeIdx,
     auto &tilemap = m_Tilemaps.at(plane.getTilemapIdx());
     plane.drawVstripe(tilemap, x, mpx);
 }
-
+*/
 // draws a vertical stripe from map position mapx to scrollbuffer position x
 void CMap::drawVstripe(const unsigned int x,
                        const unsigned int mpx)

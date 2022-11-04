@@ -12,7 +12,7 @@
 #include <base/video/CSDLVideo.h>
 #include <base/video/COpenGL.h>
 
-#include "graphics/GsGraphics.h"
+//#include "graphics/GsGraphics.h"
 #include <base/GsLogging.h>
 #include <base/GsApp.h>
 #include <base/utils/FindFile.h>
@@ -472,7 +472,7 @@ void CVideoDriver::updateScrollBuffer(const Sint16 SBufferX, const Sint16 SBuffe
 }
 
 void CVideoDriver::blitScrollSurfaces() // This is only for tiles
-                                                              // Therefore the name should be changed
+                                        // Therefore the name should be changed
 {
     mpVideoEngine->blitScrollSurfaces(gameSfc());
 }

@@ -153,6 +153,9 @@ public:
 
     std::vector<GsScrollSurface> &getScrollSurfaceVec();
 
+    std::vector<std::tuple< GsTexture&, const GsRect<Uint16>, const GsRect<Uint16> >> mScrollbufferTextures;
+
+
 protected:
 
     bool allocateScrollSurfaces(const unsigned int numSfc);

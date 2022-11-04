@@ -108,7 +108,7 @@ bool ScrollingPlane::scrollLeft(GsTilemap &tilemap)
         {
             m_mapxstripepos -= (1<<mTileSizeBase);
         }
-        drawVstripe(tilemap, m_mapxstripepos, m_mapx);
+        //drawVstripe(tilemap, m_mapxstripepos, m_mapx);
 
         m_scrollpix = (1<<mTileSizeBase)-1;
     } else m_scrollpix--;
@@ -161,7 +161,7 @@ bool ScrollingPlane::scrollRight(GsTilemap &tilemap)
         // TODO: Problem with different squared sizes here
         const int squareSize = scrollSfc.getSquareSize();
         const int totalNumTiles = squareSize>>mTileSizeBase;
-        drawVstripe(tilemap, m_mapxstripepos, m_mapx + totalNumTiles);
+        //drawVstripe(tilemap, m_mapxstripepos, m_mapx + totalNumTiles);
 
         m_mapx++;
         m_mapxstripepos += (1<<mTileSizeBase);
@@ -213,7 +213,7 @@ bool ScrollingPlane::scrollUp(GsTilemap &tilemap, [[maybe_unused]] const bool fo
         {
             m_mapystripepos -= (1<<mTileSizeBase);
         }
-        drawHstripe(tilemap, m_mapystripepos, m_mapy);
+        //drawHstripe(tilemap, m_mapystripepos, m_mapy);
 
         m_scrollpixy = ((1<<mTileSizeBase)-1);
     } else m_scrollpixy--;
@@ -275,7 +275,7 @@ bool ScrollingPlane::scrollDown(GsTilemap &tilemap, const bool force)
         {
             // need to draw a new stripe
             const int totalNumTiles = squareSize>>mTileSizeBase;
-            drawHstripe(tilemap, m_mapystripepos, m_mapy + totalNumTiles);
+            //drawHstripe(tilemap, m_mapystripepos, m_mapy + totalNumTiles);
         }
 
         m_mapy++;
@@ -396,10 +396,16 @@ void ScrollingPlane::drawAll(GsTilemap &tilemap)
             }
             else
             {
+                /*
                 tilemap.drawTile(scrollSfc,
                                  ((x<<mTileSizeBase)+m_mapxstripepos),
                                  ((y<<mTileSizeBase)+m_mapystripepos),
                                  tile);
+                */
+
+                gVideoDriver.mpVideoEngine->mScrollbufferTextures.push_back(tilemap.renderTile(((x<<mTileSizeBase)+m_mapxstripepos),
+                                   ((y<<mTileSizeBase)+m_mapystripepos),
+                                   tile));
             }
 
         }

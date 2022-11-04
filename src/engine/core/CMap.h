@@ -106,10 +106,11 @@ public:
 
     void drawHstripe(const unsigned int y, const unsigned int mpy );
 
-
+/*
     void drawVstripeOfPlane(const int planeIdx,
                             const unsigned int x,
                             const unsigned int mpx);
+                            */
 
     void drawVstripe(const unsigned int x, const unsigned int mpx );
 

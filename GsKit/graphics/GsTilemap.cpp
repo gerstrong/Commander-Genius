@@ -241,15 +241,36 @@ void GsTilemap::drawTile(GsScrollSurface &scrollSfc,
     drawTile(scrollSfc.getScrollSurface(), x&drawMask, y&drawMask, t);
 }
 
-void GsTilemap::renderTile(const int x,
+std::tuple< GsTexture&, const GsRect<Uint16>, const GsRect<Uint16> > GsTilemap::renderTile(
+                           const int x,
                            const int y,
                            const Uint16 t)
 {
     /*const auto dim = scrollSfc.getSquareSize();
     const int drawMask = dim-1;
     drawTile(scrollSfc.getScrollSurface(), x&drawMask, y&drawMask, t);*/
+
     SDL_Rect src_rect, dst_rect;
-    //gVideoDriver.pushTextureRef(mTexture, srcRect, dstRect);
+
+    src_rect.x = (t%m_column)<<m_pbasesize;
+    src_rect.y = (t/m_column)<<m_pbasesize;
+    const int size = 1<<m_pbasesize;
+    src_rect.w = src_rect.h = dst_rect.w = dst_rect.h = size;
+
+    dst_rect.x = x;		dst_rect.y = y;
+/*
+    if( dst_rect.y + src_rect.h > dst->h )
+    {
+        src_rect.h = dst->h - dst_rect.y;
+    }
+
+    if( dst_rect.x + src_rect.w > dst->w )
+    {
+        src_rect.w = dst->w - dst_rect.x;
+    }
+*/
+    return std::tuple< GsTexture&, const GsRect<Uint16>, const GsRect<Uint16> >( mTilemapTexture, src_rect, dst_rect );
+    //gVideoDriver.pushTextureRef(mTilemapTexture, src_rect, dst_rect);
 }
 
 

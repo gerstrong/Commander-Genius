@@ -55,7 +55,7 @@ public:
     void drawTile(GsScrollSurface &scrollSfc,
                   const int x, const int y, const Uint16 t);
 
-    void renderTile(const int x,
+    std::tuple<GsTexture &, const GsRect<Uint16>, const GsRect<Uint16> > renderTile(const int x,
                     const int y,
                     const Uint16 t);
 
