@@ -34,6 +34,13 @@ public:
 
     VidFilter mFilter = VidFilter::NONE;
 
+    /**
+     * @brief saveBMP   Saves bitmap of current surface
+     * @param filename  where goes the bmp file?
+     * @return true if everything went well otherwise false
+     */
+    bool saveBMP(const char *filename);
+
     void setFilter(const VidFilter filter)
     {
         mFilter = filter;

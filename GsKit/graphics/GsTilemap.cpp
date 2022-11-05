@@ -83,7 +83,13 @@ bool GsTilemap::optimizeSurface()
     SDL_Surface *temp_surface = gVideoDriver.convertThroughBlitSfc(mTileSurface.getSDLSurface());
     mTileSurface.createFromSDLSfc(temp_surface);    
 
+
+
     mTilemapTexture.loadFromSurface(mTileSurface, gVideoDriver.Renderer());
+    static int counter = 1;
+    std::string fname = "/tmp/texel" + itoa(counter++) + ".bmp";
+//    mTilemapTexture.saveTexture(fname.c_str());
+
 
     return true;
 }
@@ -284,7 +290,6 @@ std::tuple< GsTexture&, const GsRect<Uint16>, const GsRect<Uint16> > GsTilemap::
         src_rect.w = maxW - dst_rect.x;
     }
 */
-    mTilemapTexture.saveTexture("/tmp/texel.bmp");
 
     return std::tuple< GsTexture&, const GsRect<Uint16>, const GsRect<Uint16> >( mTilemapTexture, src_rect, dst_rect );
     //gVideoDriver.pushTextureRef(mTilemapTexture, src_rect, dst_rect);        

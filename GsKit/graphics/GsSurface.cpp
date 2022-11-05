@@ -7,6 +7,18 @@
 #include <cstring>
 
 
+bool GsWeakSurface::saveBMP(const char *filename)
+{
+    assert(mpSurface);
+    if(SDL_SaveBMP(mpSurface,filename) != 0)
+    {
+        SDL_Log("Failed saving bmp: %s\n", SDL_GetError());
+        return false;
+    }
+
+    return true;
+}
+
 Uint32 GsWeakSurface::getPixel(const int x, const int y)
 {
     SDL_LockSurface(mpSurface);

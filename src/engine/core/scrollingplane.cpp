@@ -409,7 +409,7 @@ void ScrollingPlane::drawAll(GsTilemap &tilemap)
                                        ((x<<mTileSizeBase)+m_mapxstripepos),
                                        ((y<<mTileSizeBase)+m_mapystripepos),
                                        tile));
-                    break;
+                    //break;
                 }
             }
 
