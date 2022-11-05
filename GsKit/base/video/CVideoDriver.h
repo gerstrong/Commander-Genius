@@ -32,6 +32,7 @@
 #include <list>
 #include <memory>
 #include <tuple>
+#include <functional>
 
 class CVideoDriver : public GsSingleton<CVideoDriver>
 {
@@ -43,6 +44,8 @@ public:
     bool applyMode();
     SDL_Surface* createSurface( std::string name, bool alpha, int width, int height, int bpp, int mode, SDL_PixelFormat* format );
 
+
+    void addVideoTask(const std::function<void()> &task);
 
     /**
      * @brief getGameResFactors return scale dimesions relative to the original resolution
@@ -232,7 +235,7 @@ public:
 
     std::set< GsVec2D<Uint16> > mGameReslist;
 
-    std::set<std::string> mAspectSet;
+    std::set<std::string> mAspectSet;        
 
 private:
 

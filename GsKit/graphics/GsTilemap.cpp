@@ -13,7 +13,6 @@
 #include "GsPalette.h"
 #include <base/GsLogging.h>
 #include <stdlib.h>
-#include <SDL_image.h>
 
 
 bool GsTilemap::CreateSurface(SDL_Color *sdlPalette, Uint32 Flags,
@@ -83,13 +82,20 @@ bool GsTilemap::optimizeSurface()
     SDL_Surface *temp_surface = gVideoDriver.convertThroughBlitSfc(mTileSurface.getSDLSurface());
     mTileSurface.createFromSDLSfc(temp_surface);    
 
+    auto vidTask = [&](){
+        GsSurface scaledSfc;
+        scaledSfc.createCopy(mTileSurface);
 
+        auto w = mTileSurface.width();
+        auto h = mTileSurface.height();
 
-    mTilemapTexture.loadFromSurface(mTileSurface, gVideoDriver.Renderer());
-    static int counter = 1;
-    std::string fname = "/tmp/texel" + itoa(counter++) + ".bmp";
-//    mTilemapTexture.saveTexture(fname.c_str());
+        GsRect<Uint16> scaledRect {0, 0, w, h};
+        scaledSfc.scaleTo(scaledRect);
 
+        mTilemapTexture.loadFromSurface(scaledSfc, gVideoDriver.Renderer());
+    };
+
+    gVideoDriver.addVideoTask(vidTask);
 
     return true;
 }
@@ -258,7 +264,7 @@ std::tuple< GsTexture&, const GsRect<Uint16>, const GsRect<Uint16> > GsTilemap::
     drawTile(scrollSfc.getScrollSurface(), x&drawMask, y&drawMask, t);*/
 
     SDL_Rect src_rect, dst_rect;
-
+/*
     src_rect.x = 0;
     src_rect.y = 0;
     src_rect.w = mTilemapTexture.Surface().width();
@@ -267,15 +273,14 @@ std::tuple< GsTexture&, const GsRect<Uint16>, const GsRect<Uint16> > GsTilemap::
     dst_rect.y = 0;
     dst_rect.w = src_rect.w;
     dst_rect.h = src_rect.h;
-    //dst_rect.h = mTilemapTexture.Surface().height();
-/*
+*/
     src_rect.x = (t%m_column)<<m_pbasesize;
     src_rect.y = (t/m_column)<<m_pbasesize;
     const int size = 1<<m_pbasesize;
     src_rect.w = src_rect.h = dst_rect.w = dst_rect.h = size;
 
     dst_rect.x = x;		dst_rect.y = y;
-*/
+
 /*
     const int maxH = 100;
     const int maxW = 100;

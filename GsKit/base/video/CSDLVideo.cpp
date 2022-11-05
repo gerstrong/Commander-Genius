@@ -239,6 +239,7 @@ GsRect<int> tilt(const GsRect<int> &dpadRect,
                         dpadRect.dim.x, dpadRect.dim.y);
 }
 
+extern GsTexture testTex;
 
 void CSDLVideo::transformScreenToDisplay()
 {
@@ -324,7 +325,6 @@ void CSDLVideo::transformScreenToDisplay()
 
     RenderCopy(renderer, mpMainScreenTexture.get(),
                nullptr, &mainDstrect, &pt);
-
 
 
     // Now render the textures which additionally sent over...

@@ -11,8 +11,6 @@
 #ifndef CVIDEOENGINE_H_
 #define CVIDEOENGINE_H_
 
-#include <SDL.h>
-#include <string>
 
 #include "CVidConfig.h"
 #include <graphics/GsSurface.h>
@@ -22,6 +20,10 @@
 #include <memory>
 #include <queue>
 #include <vector>
+#include <string>
+#include <functional>
+
+#include <SDL.h>
 
 
 struct SDL_Surface_Deleter
@@ -99,6 +101,8 @@ public:
 	virtual void collectSurfaces() = 0;
 	virtual void clearSurfaces() = 0;
 
+    void processVideoTasks();
+
     void stop();
 
     virtual void setLightIntensity(const float intensity) = 0;
@@ -156,6 +160,8 @@ public:
     std::vector<std::tuple< GsTexture&, const GsRect<Uint16>, const GsRect<Uint16> >> mScrollbufferTextures;
 
 
+    void addVideoTask(const std::function<void()> &task);
+
 protected:
 
     bool allocateScrollSurfaces(const unsigned int numSfc);
@@ -206,6 +212,8 @@ protected:
      */
 
     GsColor mClearColor = { 0x00, 0x00, 0x00};
+
+    std::queue< std::function<void()> > mVideoTasks;
 };
 
 #endif /* CVIDEOENGINE_H_ */

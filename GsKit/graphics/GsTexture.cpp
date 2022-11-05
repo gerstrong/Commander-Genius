@@ -107,6 +107,7 @@ void GsTexture::saveTexture(const char *filename)
     }
 
     SDL_Log("Saved texture as BMP to \"%s\"\n", filename);
+    defer();
 }
 
 

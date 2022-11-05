@@ -400,21 +400,21 @@ void ScrollingPlane::drawAll(GsTilemap &tilemap)
                 tilemap.drawTile(scrollSfc,
                                  ((x<<mTileSizeBase)+m_mapxstripepos),
                                  ((y<<mTileSizeBase)+m_mapystripepos),
-                                 tile);
-*/
+                                 tile);*/
 
-                if(tilemap.hasTexture() && gVideoDriver.mpVideoEngine->mScrollbufferTextures.empty())
+                if(tilemap.hasTexture())
                 {
-                    gVideoDriver.mpVideoEngine->mScrollbufferTextures.push_back(tilemap.renderTile(
-                                       ((x<<mTileSizeBase)+m_mapxstripepos),
-                                       ((y<<mTileSizeBase)+m_mapystripepos),
-                                       tile));
-                    //break;
+                    gVideoDriver.mpVideoEngine->mScrollbufferTextures.push_back(
+                                tilemap.renderTile( ((x<<mTileSizeBase)+m_mapxstripepos),
+                                                    ((y<<mTileSizeBase)+m_mapystripepos),
+                                                     tile));
                 }
+
             }
 
         }
     }
+
 
 }
 

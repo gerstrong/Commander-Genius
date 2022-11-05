@@ -479,12 +479,18 @@ void CVideoDriver::blitScrollSurfaces() // This is only for tiles
 
 void CVideoDriver::collectSurfaces()
 {
+    mpVideoEngine->processVideoTasks();
     mpVideoEngine->collectSurfaces();
 }
 
 void CVideoDriver::clearSurfaces()
 {
     mpVideoEngine->clearSurfaces();
+}
+
+void CVideoDriver::addVideoTask(const std::function<void()> &task)
+{
+    mpVideoEngine->addVideoTask(task);
 }
 
 void CVideoDriver::updateDisplay()
@@ -496,6 +502,7 @@ void CVideoDriver::updateDisplay()
 
     mpVideoEngine->scaleAndFilter();
     mpVideoEngine->transformScreenToDisplay();
+
 }
 
 void CVideoDriver::saveCameraBounds(st_camera_bounds &CameraBounds)

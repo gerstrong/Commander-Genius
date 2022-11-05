@@ -157,6 +157,10 @@ std::vector<GsScrollSurface> &CVideoEngine::getScrollSurfaceVec()
     return mScrollSurfaceVec;
 }
 
+void CVideoEngine::addVideoTask(const std::function<void()> &task)
+{
+    mVideoTasks.push(task);
+}
 
 bool CVideoEngine::allocateScrollSurfaces(const unsigned int numSfc)
 {
@@ -288,6 +292,16 @@ void CVideoEngine::drawHorizBorders()
     // Lower Part
     mGameSfc.fillRGB( rect, color.r, color.g, color.b );
 
+}
+
+void CVideoEngine::processVideoTasks()
+{
+    while(!mVideoTasks.empty())
+    {
+        const auto &f = mVideoTasks.front();
+        f();
+        mVideoTasks.pop();
+    }
 }
 
 void CVideoEngine::scaleAndFilter()
