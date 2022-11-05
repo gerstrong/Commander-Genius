@@ -55,6 +55,8 @@ public:
     void drawTile(GsScrollSurface &scrollSfc,
                   const int x, const int y, const Uint16 t);
 
+    void saveTexture(const char *filename);
+
     std::tuple<GsTexture &, const GsRect<Uint16>, const GsRect<Uint16> > renderTile(const int x,
                     const int y,
                     const Uint16 t);
@@ -66,6 +68,8 @@ public:
     void applyGalaxyHiColourMask();
 
     Uint16 getNumColumn() const;
+
+    bool hasTexture() { if(mTilemapTexture) return true; else return false; }
 
 private:
 

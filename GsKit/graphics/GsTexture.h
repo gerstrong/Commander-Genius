@@ -71,6 +71,12 @@ public:
      */
     void unload();
 
+    /**
+     * @brief saveTexture   save texture as a bitmap file
+     * @param filename
+     */
+    void saveTexture(const char *filename);
+
 
     /**
      * @brief getPtr getter to the raw pointer of the texture.

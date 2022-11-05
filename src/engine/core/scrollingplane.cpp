@@ -361,7 +361,6 @@ void ScrollingPlane::drawVstripe(GsTilemap &tilemap,
 
 }
 
-
 void ScrollingPlane::drawAll(GsTilemap &tilemap)
 {
     auto &scroll = mScrollCoords;
@@ -390,22 +389,28 @@ void ScrollingPlane::drawAll(GsTilemap &tilemap)
                              ((x<<mTileSizeBase)+m_mapxstripepos),
                              ((y<<mTileSizeBase)+m_mapystripepos));
 
+
             if(tile == mTransparentTile && mHasTransparentTile)
             {
                 continue;
             }
             else
             {
-                /*
+/*
                 tilemap.drawTile(scrollSfc,
                                  ((x<<mTileSizeBase)+m_mapxstripepos),
                                  ((y<<mTileSizeBase)+m_mapystripepos),
                                  tile);
-                */
+*/
 
-                gVideoDriver.mpVideoEngine->mScrollbufferTextures.push_back(tilemap.renderTile(((x<<mTileSizeBase)+m_mapxstripepos),
-                                   ((y<<mTileSizeBase)+m_mapystripepos),
-                                   tile));
+                if(tilemap.hasTexture() && gVideoDriver.mpVideoEngine->mScrollbufferTextures.empty())
+                {
+                    gVideoDriver.mpVideoEngine->mScrollbufferTextures.push_back(tilemap.renderTile(
+                                       ((x<<mTileSizeBase)+m_mapxstripepos),
+                                       ((y<<mTileSizeBase)+m_mapystripepos),
+                                       tile));
+                    break;
+                }
             }
 
         }

@@ -1,5 +1,6 @@
 #include "GsTexture.h"
 #include "GsSurface.h"
+#include "base/video/CVideoDriver.h"
 
 #include <base/GsLogging.h>
 
@@ -26,6 +27,88 @@ void GsTexture::unload()
     SDL_DestroyTexture( mpTexture );
     mpTexture = nullptr;
 }
+
+void GsTexture::saveTexture(const char *filename)
+{
+    SDL_Texture *ren_tex = nullptr;
+    SDL_Surface *surf = nullptr;
+    int st;
+    int w;
+    int h;
+    int format;
+    void *pixels = nullptr;
+
+    format  = SDL_PIXELFORMAT_RGBA32;
+
+    const auto defer = [&](){
+        SDL_FreeSurface(surf);
+        free(pixels);
+        SDL_DestroyTexture(ren_tex);
+    };
+
+    /* Get information about texture we want to save */
+    auto *ren = &(gVideoDriver.getRendererRef());
+    st = SDL_QueryTexture(mpTexture, NULL, NULL, &w, &h);
+    if (st != 0) {
+        SDL_Log("Failed querying texture: %s\n", SDL_GetError());
+        defer(); return;
+    }
+
+    ren_tex = SDL_CreateTexture(ren, format, SDL_TEXTUREACCESS_TARGET, w, h);
+    if (!ren_tex) {
+        SDL_Log("Failed creating render texture: %s\n", SDL_GetError());
+        defer(); return;
+    }
+
+    /*
+     * Initialize our canvas, then copy texture to a target whose pixel data we
+     * can access
+     */
+    st = SDL_SetRenderTarget(ren, ren_tex);
+    if (st != 0) {
+        SDL_Log("Failed setting render target: %s\n", SDL_GetError());
+        defer(); return;
+    }
+
+    SDL_SetRenderDrawColor(ren, 0x00, 0x00, 0x00, 0x00);
+    SDL_RenderClear(ren);
+
+    st = SDL_RenderCopy(ren, mpTexture, NULL, NULL);
+    if (st != 0) {
+        SDL_Log("Failed copying texture data: %s\n", SDL_GetError());
+        defer(); return;
+    }
+
+    /* Create buffer to hold texture data and load it */
+    pixels = malloc(w * h * SDL_BYTESPERPIXEL(format));
+    if (!pixels) {
+        SDL_Log("Failed allocating memory\n");
+        defer(); return;
+    }
+
+    st = SDL_RenderReadPixels(ren, NULL, format, pixels, w * SDL_BYTESPERPIXEL(format));
+    if (st != 0) {
+        SDL_Log("Failed reading pixel data: %s\n", SDL_GetError());
+        defer(); return;
+    }
+
+    /* Copy pixel data over to surface */
+    surf = SDL_CreateRGBSurfaceWithFormatFrom(pixels, w, h, SDL_BITSPERPIXEL(format), w * SDL_BYTESPERPIXEL(format), format);
+    if (!surf) {
+        SDL_Log("Failed creating new surface: %s\n", SDL_GetError());
+        defer(); return;
+    }
+
+    /* Save result to an image */
+    st = SDL_SaveBMP(surf, filename);
+    if (st != 0) {
+        SDL_Log("Failed saving image: %s\n", SDL_GetError());
+        defer(); return;
+    }
+
+    SDL_Log("Saved texture as BMP to \"%s\"\n", filename);
+}
+
 
 SDL_Texture* GsTexture::getPtr()
 {
