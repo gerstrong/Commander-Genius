@@ -255,48 +255,35 @@ void GsTilemap::drawTile(GsScrollSurface &scrollSfc,
 
 
 std::tuple< GsTexture&, const GsRect<Uint16>, const GsRect<Uint16> > GsTilemap::renderTile(
-                           const int x,
-                           const int y,
-                           const Uint16 t)
+                           const int x, const int y, const Uint16 t)
 {   
     /*const auto dim = scrollSfc.getSquareSize();
     const int drawMask = dim-1;
     drawTile(scrollSfc.getScrollSurface(), x&drawMask, y&drawMask, t);*/
 
     SDL_Rect src_rect, dst_rect;
-/*
-    src_rect.x = 0;
-    src_rect.y = 0;
-    src_rect.w = mTilemapTexture.Surface().width();
-    src_rect.h = mTilemapTexture.Surface().height();
-    dst_rect.x = 0;
-    dst_rect.y = 0;
-    dst_rect.w = src_rect.w;
-    dst_rect.h = src_rect.h;
-*/
+
     src_rect.x = (t%m_column)<<m_pbasesize;
     src_rect.y = (t/m_column)<<m_pbasesize;
     const int size = 1<<m_pbasesize;
-    src_rect.w = src_rect.h = dst_rect.w = dst_rect.h = size;
+    src_rect.w = src_rect.h = size;
+    dst_rect.w = dst_rect.h = size;
 
     dst_rect.x = x;		dst_rect.y = y;
-
 /*
-    const int maxH = 100;
-    const int maxW = 100;
-
-    if( dst_rect.y + src_rect.h > maxH )
+ * dst = scrollsfc
+    if( dst_rect.y + src_rect.h > dst->h )
     {
-        src_rect.h = maxH - dst_rect.y;
+        src_rect.h = dst->h - dst_rect.y;
     }
 
-    if( dst_rect.x + src_rect.w > maxW )
+    if( dst_rect.x + src_rect.w > dst->w )
     {
-        src_rect.w = maxW - dst_rect.x;
+        src_rect.w = dst->w - dst_rect.x;
     }
 */
-
-    return std::tuple< GsTexture&, const GsRect<Uint16>, const GsRect<Uint16> >( mTilemapTexture, src_rect, dst_rect );
+    return std::tuple< GsTexture&, const GsRect<Uint16>, const GsRect<Uint16> >
+            ( mTilemapTexture, src_rect, dst_rect );
     //gVideoDriver.pushTextureRef(mTilemapTexture, src_rect, dst_rect);        
 }
 

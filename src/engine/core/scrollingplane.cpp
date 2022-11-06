@@ -108,7 +108,7 @@ bool ScrollingPlane::scrollLeft(GsTilemap &tilemap)
         {
             m_mapxstripepos -= (1<<mTileSizeBase);
         }
-        //drawVstripe(tilemap, m_mapxstripepos, m_mapx);
+        drawVstripe(tilemap, m_mapxstripepos, m_mapx);
 
         m_scrollpix = (1<<mTileSizeBase)-1;
     } else m_scrollpix--;
@@ -161,7 +161,7 @@ bool ScrollingPlane::scrollRight(GsTilemap &tilemap)
         // TODO: Problem with different squared sizes here
         const int squareSize = scrollSfc.getSquareSize();
         const int totalNumTiles = squareSize>>mTileSizeBase;
-        //drawVstripe(tilemap, m_mapxstripepos, m_mapx + totalNumTiles);
+        drawVstripe(tilemap, m_mapxstripepos, m_mapx + totalNumTiles);
 
         m_mapx++;
         m_mapxstripepos += (1<<mTileSizeBase);
@@ -367,6 +367,7 @@ void ScrollingPlane::drawAll(GsTilemap &tilemap)
     auto &scrollSfc = gVideoDriver.getScrollSurfaceVec().at(mScrollSfcIdx);
 
     const auto dim = scrollSfc.getSquareSize();
+    const int drawMask = dim-1;
 
     scrollSfc.updateScrollBuf(scroll);
 
@@ -396,17 +397,37 @@ void ScrollingPlane::drawAll(GsTilemap &tilemap)
             }
             else
             {
-/*
+
                 tilemap.drawTile(scrollSfc,
                                  ((x<<mTileSizeBase)+m_mapxstripepos),
                                  ((y<<mTileSizeBase)+m_mapystripepos),
-                                 tile);*/
+                                 tile);
+
+            }
+
+        }
+    }
+
+
+
+    for(Uint32 y=0;y<num_h_tiles;y++)
+    {
+        for(Uint32 x=0;x<num_v_tiles;x++)
+        {
+            Uint32 tile = getMapDataAt(x+m_mapx, y+m_mapy);
+
+            if(tile == mTransparentTile && mHasTransparentTile)
+            {
+                continue;
+            }
+            else
+            {
 
                 if(tilemap.hasTexture())
                 {
                     gVideoDriver.mpVideoEngine->mScrollbufferTextures.push_back(
-                                tilemap.renderTile( ((x<<mTileSizeBase)+m_mapxstripepos),
-                                                    ((y<<mTileSizeBase)+m_mapystripepos),
+                                tilemap.renderTile( ((x<<mTileSizeBase)+m_mapxstripepos)&drawMask,
+                                                    ((y<<mTileSizeBase)+m_mapystripepos)&drawMask,
                                                      tile));
                 }
 

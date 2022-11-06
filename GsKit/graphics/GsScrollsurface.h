@@ -29,9 +29,9 @@ public:
 
     int getSquareSize() const;
 
-    void blitScrollSurface(GsWeakSurface &blitSfc);
+    void blitScrollTextures();
 
-    void renderScrollSurface();
+    void blitScrollSurface(GsWeakSurface &blitSfc);
 
     GsSurface &getScrollSurface();
 
