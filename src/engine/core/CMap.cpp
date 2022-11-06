@@ -466,12 +466,12 @@ bool CMap::scrollLeft(const bool force)
 
     for(auto &plane : mScrollingPlanes)
     {
-        auto scroll = plane.getScrollCoords();
+        //auto scroll = plane.getScrollCoords();
 
         auto &tilemap = m_Tilemaps.at(plane.getTilemapIdx());
         ok &= plane.scrollLeft(tilemap);
 
-        scroll = plane.getScrollCoords();
+        //scroll = plane.getScrollCoords();
     }
 
     for(auto &scrollPlane : mScrollingPlanes)
@@ -525,7 +525,7 @@ bool CMap::scrollUp(const bool force)
         }
 
         ok &= plane.scrollUp(m_Tilemaps.at(plane.getTilemapIdx()), force);
-        refreshVisibleArea(plane.getScrollCoords());
+        //refreshVisibleArea(plane.getScrollCoords());
     }
 
     for(auto &scrollPlane : mScrollingPlanes)

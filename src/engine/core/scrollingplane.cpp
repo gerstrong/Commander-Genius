@@ -3,6 +3,8 @@
 #include <base/video/CVideoDriver.h>
 #include <engine/core/CBehaviorEngine.h>
 
+const auto useScrollTexels = true;
+
 ScrollingPlane::ScrollingPlane(const int scrollSfcIdx,
                                const bool transparent) :
     mScrollSfcIdx(scrollSfcIdx),
@@ -99,6 +101,7 @@ bool ScrollingPlane::scrollLeft(GsTilemap &tilemap)
     if (m_scrollpix==0)
     {  // need to draw a new stripe
         if(m_mapx>0) m_mapx--;
+
         if (m_mapxstripepos == 0)
         {
             const int squareSize = scrollSfc.getSquareSize();
@@ -196,7 +199,6 @@ bool ScrollingPlane::scrollUp(GsTilemap &tilemap, [[maybe_unused]] const bool fo
     mSubscrollCoords.y = mSubscrollUnits;
 
     scroll.y--;
-
     scrollSfc.UpdateScrollBufY(scroll.y);
 
     if (m_scrollpixy==0)
@@ -213,7 +215,7 @@ bool ScrollingPlane::scrollUp(GsTilemap &tilemap, [[maybe_unused]] const bool fo
         {
             m_mapystripepos -= (1<<mTileSizeBase);
         }
-        //drawHstripe(tilemap, m_mapystripepos, m_mapy);
+        drawHstripe(tilemap, m_mapystripepos, m_mapy);
 
         m_scrollpixy = ((1<<mTileSizeBase)-1);
     } else m_scrollpixy--;
@@ -275,7 +277,7 @@ bool ScrollingPlane::scrollDown(GsTilemap &tilemap, const bool force)
         {
             // need to draw a new stripe
             const int totalNumTiles = squareSize>>mTileSizeBase;
-            //drawHstripe(tilemap, m_mapystripepos, m_mapy + totalNumTiles);
+            drawHstripe(tilemap, m_mapystripepos, m_mapy + totalNumTiles);
         }
 
         m_mapy++;
@@ -287,6 +289,32 @@ bool ScrollingPlane::scrollDown(GsTilemap &tilemap, const bool force)
     return true;
 }
 
+
+void ScrollingPlane::drawHTexels(GsTilemap &tilemap, const unsigned int mpy, Uint32 num_v_tiles, const unsigned int y, const int drawMask)
+{
+    if(useScrollTexels)
+    {
+        for(Uint32 x=0;x<num_v_tiles;x++)
+        {
+            Uint32 tile = getMapDataAt(x+m_mapx, mpy);
+
+            if(tile == mTransparentTile && mHasTransparentTile)
+            {
+                continue;
+            }
+            else
+            {
+                if(tilemap.hasTexture())
+                {
+                    gVideoDriver.mpVideoEngine->mScrollbufferTextures.push_back(
+                                tilemap.renderTile( ((x<<mTileSizeBase)+m_mapxstripepos)&drawMask,
+                                                    y,
+                                                    tile));
+                }
+            }
+        }
+    }
+}
 
 void ScrollingPlane::drawHstripe(GsTilemap &tilemap,
                                  const unsigned int y,
@@ -325,6 +353,35 @@ void ScrollingPlane::drawHstripe(GsTilemap &tilemap,
                              y, tile);
         }
     }
+
+    drawHTexels(tilemap, mpy, num_v_tiles, y, drawMask);
+}
+
+void ScrollingPlane::drawVTexels(GsTilemap &tilemap, int num_h_tiles, const unsigned int x, const int drawMask, const unsigned int mpx)
+{
+    if(useScrollTexels)
+    {
+        for(Uint32 y=0;y<num_h_tiles;y++)
+        {
+            Uint32 tile = getMapDataAt(mpx, y+m_mapy);
+
+            if(tile == mTransparentTile && mHasTransparentTile)
+            {
+                continue;
+            }
+            else
+            {
+                if(tilemap.hasTexture())
+                {
+                    gVideoDriver.mpVideoEngine->mScrollbufferTextures.push_back(
+                                tilemap.renderTile( x,
+                                                    ((y<<mTileSizeBase)+m_mapystripepos)&drawMask,
+                                                    tile));
+                }
+            }
+
+        }
+    }
 }
 
 void ScrollingPlane::drawVstripe(GsTilemap &tilemap,
@@ -339,11 +396,11 @@ void ScrollingPlane::drawVstripe(GsTilemap &tilemap,
     if( num_h_tiles+m_mapy >= mHeight )
         num_h_tiles = mHeight-m_mapy;
 
+    const int drawMask = dim-1;
+
     for(int y=0 ; y<num_h_tiles ; y++)
     {
         Uint32 tile = getMapDataAt(mpx, y+m_mapy);
-
-        const int drawMask = dim-1;
 
         tilemap.drawTransparentTile(scrollSfc, x,
                          ((y<<mTileSizeBase)+m_mapystripepos) & drawMask);
@@ -359,6 +416,41 @@ void ScrollingPlane::drawVstripe(GsTilemap &tilemap,
         }
     }
 
+
+    drawVTexels(tilemap, num_h_tiles, x, drawMask, mpx);
+
+}
+
+void ScrollingPlane::drawAllTexels(const int drawMask,
+                                   const Uint32 num_v_tiles,
+                                   GsTilemap &tilemap,
+                                   const Uint32 num_h_tiles)
+{
+    if(useScrollTexels)
+    {
+        for(Uint32 y=0;y<num_h_tiles;y++)
+        {
+            for(Uint32 x=0;x<num_v_tiles;x++)
+            {
+                Uint32 tile = getMapDataAt(x+m_mapx, y+m_mapy);
+
+                if(tile == mTransparentTile && mHasTransparentTile)
+                {
+                    continue;
+                }
+                else
+                {
+                    if(tilemap.hasTexture())
+                    {
+                        gVideoDriver.mpVideoEngine->mScrollbufferTextures.push_back(
+                                    tilemap.renderTile( ((x<<mTileSizeBase)+m_mapxstripepos)&drawMask,
+                                                        ((y<<mTileSizeBase)+m_mapystripepos)&drawMask,
+                                                         tile));
+                    }
+                }
+            }
+        }
+    }
 }
 
 void ScrollingPlane::drawAll(GsTilemap &tilemap)
@@ -408,35 +500,7 @@ void ScrollingPlane::drawAll(GsTilemap &tilemap)
         }
     }
 
-
-
-    for(Uint32 y=0;y<num_h_tiles;y++)
-    {
-        for(Uint32 x=0;x<num_v_tiles;x++)
-        {
-            Uint32 tile = getMapDataAt(x+m_mapx, y+m_mapy);
-
-            if(tile == mTransparentTile && mHasTransparentTile)
-            {
-                continue;
-            }
-            else
-            {
-
-                if(tilemap.hasTexture())
-                {
-                    gVideoDriver.mpVideoEngine->mScrollbufferTextures.push_back(
-                                tilemap.renderTile( ((x<<mTileSizeBase)+m_mapxstripepos)&drawMask,
-                                                    ((y<<mTileSizeBase)+m_mapystripepos)&drawMask,
-                                                     tile));
-                }
-
-            }
-
-        }
-    }
-
-
+    drawAllTexels(drawMask, num_v_tiles, tilemap, num_h_tiles);
 }
 
 void ScrollingPlane::animateAllTiles(GsTilemap &tilemap)
