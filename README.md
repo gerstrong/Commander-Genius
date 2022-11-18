@@ -4,11 +4,14 @@
 
 Welcome to Commander Genius!
 
-Commander Genius is an open-source clone of Commander Keen (1-6, Dreams) which
-allows you to play these episodes and some of the mods made for them. All of the
+Commander Genius is an open-source interpreter for the 
+Commander Keen (1-6, Dreams) and Cosmos Cosmic series 
+which allows you to play the original episodes and 
+some of the mods made for them. All of the
 original data files are required to do so, however, we conveniently provide a
-store where you can get some of the games, including Episode 1, 4, and Dreams,
+online store where you can get some of the games, including Keen 1, 4, Dreams and Cosmos 1
 for your enjoyment.  There are also mods that can be downloaded directly.
+Of course you still have the option to use your old original DOS versions of the game
 
 ![Commander Genius](https://clonekeenplus.sourceforge.io/img/galaxyMultiplayer.png "Keen 4 and 4 players at the same time")
 
@@ -30,13 +33,9 @@ for your enjoyment.  There are also mods that can be downloaded directly.
 
 # About
 
-So far, Commander Keen 1-6 are fully supported.
+Commander Keen 1-6 and Dreams are fully supported.
 There are some smaller missing features like PaddleWar, but the whole gameplay
 is there.
-
-Keen Dreams is starting to work but still might have some issues.
-So far, you can play it to the end. Also the menu lacks of a lot of features.
-Please configure input and sounds using the other games. 
 
 Cosmo's Cosmic Adventure: Forbidden Planet is integrated into Commander Genius. 
 The engine for that game is somewhat playable and the levels with the 
@@ -48,8 +47,8 @@ Special Thanks to Eric Fry for his code!
 There is an alternative called Reflection Keen which supports Keen Dreams, on
 which the code is based.
 
-Commander Genius runs on Linux/X11, Windows, Android, with plans to release on
-other platforms in the future. If you think you would like to port it, please
+Commander Genius runs on Linux/X11/Wayland, Windows, MacOs, Android, Switch
+with some more unofficial ports. If you think you would like to port it, please
 send us a message and we will do our best to help you.
 
 
