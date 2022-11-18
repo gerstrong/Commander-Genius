@@ -1515,6 +1515,9 @@ bool CEGAGraphicsGalaxy::readMaskedTilemaps( size_t NumTiles, size_t pbasetilesi
         }
     }
 
+    // Optimize surfaces for the screen
+    Tilemap.optimizeSurface();
+
     return true;
 }
 

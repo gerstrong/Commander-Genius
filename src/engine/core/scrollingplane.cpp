@@ -292,25 +292,24 @@ bool ScrollingPlane::scrollDown(GsTilemap &tilemap, const bool force)
 
 void ScrollingPlane::drawHTexels(GsTilemap &tilemap, const unsigned int mpy, Uint32 num_v_tiles, const unsigned int y, const int drawMask)
 {
-    if(useScrollTexels)
-    {
-        for(Uint32 x=0;x<num_v_tiles;x++)
-        {
-            Uint32 tile = getMapDataAt(x+m_mapx, mpy);
+    auto &scrollBuf = gVideoDriver.mpVideoEngine->mScrollbufferTextures;
 
-            if(tile == mTransparentTile && mHasTransparentTile)
+    for(Uint32 x=0;x<num_v_tiles;x++)
+    {
+        Uint32 tile = getMapDataAt(x+m_mapx, mpy);
+
+        if(tile == mTransparentTile && mHasTransparentTile)
+        {
+            continue;
+        }
+        else
+        {
+            if(tilemap.hasTexture())
             {
-                continue;
-            }
-            else
-            {
-                if(tilemap.hasTexture())
-                {
-                    gVideoDriver.mpVideoEngine->mScrollbufferTextures.push_back(
-                                tilemap.renderTile( ((x<<mTileSizeBase)+m_mapxstripepos)&drawMask,
-                                                    y,
-                                                    tile));
-                }
+                scrollBuf.push_back(
+                            tilemap.renderTile( ((x<<mTileSizeBase)+m_mapxstripepos)&drawMask,
+                                                y,
+                                                tile));
             }
         }
     }
@@ -334,6 +333,12 @@ void ScrollingPlane::drawHstripe(GsTilemap &tilemap,
     if( int(num_v_tiles+m_mapx) >= mWidth )
         num_v_tiles = mWidth-m_mapx;
 
+    if(useScrollTexels)
+    {
+        drawHTexels(tilemap, mpy, num_v_tiles, y, drawMask);
+        return;
+    }
+
     for(Uint32 x=0;x<num_v_tiles;x++)
     {
         Uint32 tile = getMapDataAt(x+m_mapx, mpy);
@@ -353,33 +358,29 @@ void ScrollingPlane::drawHstripe(GsTilemap &tilemap,
                              y, tile);
         }
     }
-
-    drawHTexels(tilemap, mpy, num_v_tiles, y, drawMask);
 }
 
 void ScrollingPlane::drawVTexels(GsTilemap &tilemap, int num_h_tiles, const unsigned int x, const int drawMask, const unsigned int mpx)
 {
-    if(useScrollTexels)
+    auto &scrollBuf = gVideoDriver.mpVideoEngine->mScrollbufferTextures;
+
+    for(Uint32 y=0;y<num_h_tiles;y++)
     {
-        for(Uint32 y=0;y<num_h_tiles;y++)
+        Uint32 tile = getMapDataAt(mpx, y+m_mapy);
+
+        if(tile == mTransparentTile && mHasTransparentTile)
         {
-            Uint32 tile = getMapDataAt(mpx, y+m_mapy);
-
-            if(tile == mTransparentTile && mHasTransparentTile)
+            continue;
+        }
+        else
+        {
+            if(tilemap.hasTexture())
             {
-                continue;
+                scrollBuf.push_back(
+                            tilemap.renderTile( x,
+                                                ((y<<mTileSizeBase)+m_mapystripepos)&drawMask,
+                                                tile));
             }
-            else
-            {
-                if(tilemap.hasTexture())
-                {
-                    gVideoDriver.mpVideoEngine->mScrollbufferTextures.push_back(
-                                tilemap.renderTile( x,
-                                                    ((y<<mTileSizeBase)+m_mapystripepos)&drawMask,
-                                                    tile));
-                }
-            }
-
         }
     }
 }
@@ -398,6 +399,12 @@ void ScrollingPlane::drawVstripe(GsTilemap &tilemap,
 
     const int drawMask = dim-1;
 
+    if(useScrollTexels)
+    {
+        drawVTexels(tilemap, num_h_tiles, x, drawMask, mpx);
+        return;
+    }
+
     for(int y=0 ; y<num_h_tiles ; y++)
     {
         Uint32 tile = getMapDataAt(mpx, y+m_mapy);
@@ -415,10 +422,6 @@ void ScrollingPlane::drawVstripe(GsTilemap &tilemap,
                              ((y<<mTileSizeBase)+m_mapystripepos) & drawMask, tile);
         }
     }
-
-
-    drawVTexels(tilemap, num_h_tiles, x, drawMask, mpx);
-
 }
 
 void ScrollingPlane::drawAllTexels(const int drawMask,
@@ -426,27 +429,26 @@ void ScrollingPlane::drawAllTexels(const int drawMask,
                                    GsTilemap &tilemap,
                                    const Uint32 num_h_tiles)
 {
-    if(useScrollTexels)
-    {
-        for(Uint32 y=0;y<num_h_tiles;y++)
-        {
-            for(Uint32 x=0;x<num_v_tiles;x++)
-            {
-                Uint32 tile = getMapDataAt(x+m_mapx, y+m_mapy);
+    auto &scrollBuf = gVideoDriver.mpVideoEngine->mScrollbufferTextures;
 
-                if(tile == mTransparentTile && mHasTransparentTile)
+    for(Uint32 y=0;y<num_h_tiles;y++)
+    {
+        for(Uint32 x=0;x<num_v_tiles;x++)
+        {
+            Uint32 tile = getMapDataAt(x+m_mapx, y+m_mapy);
+
+            if(tile == mTransparentTile && mHasTransparentTile)
+            {
+                continue;
+            }
+            else
+            {
+                if(tilemap.hasTexture())
                 {
-                    continue;
-                }
-                else
-                {
-                    if(tilemap.hasTexture())
-                    {
-                        gVideoDriver.mpVideoEngine->mScrollbufferTextures.push_back(
-                                    tilemap.renderTile( ((x<<mTileSizeBase)+m_mapxstripepos)&drawMask,
-                                                        ((y<<mTileSizeBase)+m_mapystripepos)&drawMask,
-                                                         tile));
-                    }
+                    scrollBuf.push_back(
+                                tilemap.renderTile( ((x<<mTileSizeBase)+m_mapxstripepos)&drawMask,
+                                                    ((y<<mTileSizeBase)+m_mapystripepos)&drawMask,
+                                                    tile));
                 }
             }
         }
@@ -471,6 +473,11 @@ void ScrollingPlane::drawAll(GsTilemap &tilemap)
     if(int(num_h_tiles+m_mapy) >= mHeight)
         num_h_tiles = mHeight-m_mapy;
 
+    if(useScrollTexels)
+    {
+        drawAllTexels(drawMask, num_v_tiles, tilemap, num_h_tiles);
+        return;
+    }
 
     for(Uint32 y=0;y<num_h_tiles;y++)
     {
@@ -479,8 +486,8 @@ void ScrollingPlane::drawAll(GsTilemap &tilemap)
             Uint32 tile = getMapDataAt(x+m_mapx, y+m_mapy);
 
             tilemap.drawTransparentTile(scrollSfc,
-                             ((x<<mTileSizeBase)+m_mapxstripepos),
-                             ((y<<mTileSizeBase)+m_mapystripepos));
+                                        ((x<<mTileSizeBase)+m_mapxstripepos),
+                                        ((y<<mTileSizeBase)+m_mapystripepos));
 
 
             if(tile == mTransparentTile && mHasTransparentTile)
@@ -499,8 +506,6 @@ void ScrollingPlane::drawAll(GsTilemap &tilemap)
 
         }
     }
-
-    drawAllTexels(drawMask, num_v_tiles, tilemap, num_h_tiles);
 }
 
 void ScrollingPlane::animateAllTiles(GsTilemap &tilemap)

@@ -123,7 +123,7 @@ void GsScrollSurface::blitScrollTextures()
     dstRect.w = srcRect.w*mScale;
     dstRect.h = srcRect.h*mScale;
 
-    return;
+    //return;
 
     for(auto &triple : scrollbufs)
     {
@@ -195,7 +195,6 @@ void GsScrollSurface::blitScrollTextures()
 
             vidDrv.pushTextureRef(tex, tripSrc.SDLRect(), tripDst.SDLRect());
         }
-
     }
 
     if(!wraphoz || !wrapvrt)

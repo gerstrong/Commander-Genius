@@ -94,7 +94,7 @@ public:
         mCamLeadChange = false;
     }
 
-    const bool mAttached = false; //  Set to false, if you just want to scroll freely the map
+    const bool mAttached = true; //  Set to false, if you just want to scroll freely the map
     bool mFreeze = false;
     bool mMoving = true;
 

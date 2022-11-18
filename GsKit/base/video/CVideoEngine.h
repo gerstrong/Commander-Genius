@@ -157,7 +157,9 @@ public:
 
     std::vector<GsScrollSurface> &getScrollSurfaceVec();
 
-    std::vector<std::tuple< GsTexture&, const GsRect<Uint16>, const GsRect<Uint16> >> mScrollbufferTextures;
+    typedef std::tuple< GsTexture&, const GsRect<Uint16>, const GsRect<Uint16> > targetedTexture;
+
+    std::vector< targetedTexture > mScrollbufferTextures;
 
 
     void addVideoTask(const std::function<void()> &task);
