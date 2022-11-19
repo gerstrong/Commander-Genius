@@ -22,6 +22,7 @@
 #include <vector>
 #include <string>
 #include <functional>
+#include <map>
 
 #include <SDL.h>
 
@@ -160,6 +161,7 @@ public:
     typedef std::tuple< GsTexture&, const GsRect<Uint16>, const GsRect<Uint16> > targetedTexture;
 
     std::vector< targetedTexture > mScrollbufferTextures;
+    //std::map< unsigned int, std::map< unsigned int, targetedTexture >  > mScrollbufferTextures;
 
 
     void addVideoTask(const std::function<void()> &task);

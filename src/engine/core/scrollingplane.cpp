@@ -306,10 +306,14 @@ void ScrollingPlane::drawHTexels(GsTilemap &tilemap, const unsigned int mpy, Uin
         {
             if(tilemap.hasTexture())
             {
-                scrollBuf.push_back(
-                            tilemap.renderTile( ((x<<mTileSizeBase)+m_mapxstripepos)&drawMask,
-                                                y,
-                                                tile));
+                const auto coordX = ((x<<mTileSizeBase)+m_mapxstripepos)&drawMask;
+                const auto coordY = y;
+                auto texelTile = tilemap.renderTile(coordX,coordY,tile);
+                /*
+                const auto texelPair = std::make_pair(coordX, texelTile);
+                scrollBuf[coordY].insert(texelPair);
+*/
+                scrollBuf.push_back(texelTile);
             }
         }
     }
@@ -376,10 +380,15 @@ void ScrollingPlane::drawVTexels(GsTilemap &tilemap, int num_h_tiles, const unsi
         {
             if(tilemap.hasTexture())
             {
-                scrollBuf.push_back(
-                            tilemap.renderTile( x,
-                                                ((y<<mTileSizeBase)+m_mapystripepos)&drawMask,
-                                                tile));
+                const auto coordX = x;
+                const auto coordY = ((y<<mTileSizeBase)+m_mapystripepos)&drawMask;
+
+                auto texelTile = tilemap.renderTile(coordX,coordY,tile);
+/*
+                const auto texelPair = std::make_pair(coordX, texelTile);
+                scrollBuf[coordY].insert(texelPair);
+*/
+                scrollBuf.push_back(texelTile);
             }
         }
     }
@@ -445,10 +454,15 @@ void ScrollingPlane::drawAllTexels(const int drawMask,
             {
                 if(tilemap.hasTexture())
                 {
-                    scrollBuf.push_back(
-                                tilemap.renderTile( ((x<<mTileSizeBase)+m_mapxstripepos)&drawMask,
-                                                    ((y<<mTileSizeBase)+m_mapystripepos)&drawMask,
-                                                    tile));
+                    const auto coordX = ((x<<mTileSizeBase)+m_mapxstripepos)&drawMask;
+                    const auto coordY = ((y<<mTileSizeBase)+m_mapystripepos)&drawMask;
+
+                    auto texelTile = tilemap.renderTile(coordX,coordY,tile);
+/*
+                    const auto texelPair = std::make_pair(coordX, texelTile);
+                    scrollBuf[coordY].insert(texelPair);
+*/
+                    scrollBuf.push_back(texelTile);
                 }
             }
         }

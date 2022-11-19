@@ -125,7 +125,8 @@ void GsScrollSurface::blitScrollTextures()
 
     //return;
 
-    auto renderTexture = [&](){
+    auto renderTexture = [&]()
+    {
         for(auto &triple : scrollbufs)
         {
             GsTexture &tex = std::get<0>(triple);
@@ -142,6 +143,28 @@ void GsScrollSurface::blitScrollTextures()
 
             vidDrv.pushTextureRef(tex, tripSrc.SDLRect(), tripDst.SDLRect());
         }
+
+/*
+        for(auto &stripe : scrollbufs)
+        {
+            for(auto &texpair : stripe.second)
+            {
+                GsTexture &tex = std::get<0>(texpair.second);
+                auto tripSrc = std::get<1>(texpair.second);
+                auto tripDst = std::get<2>(texpair.second);
+
+                if(tripDst.pos.x < srcRect.x)
+                    continue;
+                if(tripDst.pos.y < srcRect.y)
+                    continue;
+
+                tripDst.pos.x -= srcRect.x;
+                tripDst.pos.y -= srcRect.y;
+
+                vidDrv.pushTextureRef(tex, tripSrc.SDLRect(), tripDst.SDLRect());
+            }
+        }
+        */
     };
 
     renderTexture();
