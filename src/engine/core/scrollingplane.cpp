@@ -309,11 +309,15 @@ void ScrollingPlane::drawHTexels(GsTilemap &tilemap, const unsigned int mpy, Uin
                 const auto coordX = ((x<<mTileSizeBase)+m_mapxstripepos)&drawMask;
                 const auto coordY = y;
                 auto texelTile = tilemap.renderTile(coordX,coordY,tile);
-/*
-                const auto texelPair = std::make_pair(coordX, texelTile);
-                scrollBuf[coordY].insert(texelPair);
-*/
-                scrollBuf.push_back(texelTile);
+
+                auto &scrollstripe = scrollBuf[coordY];
+                auto texIt = scrollstripe.find(coordX);
+                if(texIt != scrollstripe.end())
+                    scrollstripe.erase(texIt);
+
+                scrollstripe.insert(std::make_pair(coordX, texelTile));
+
+                //scrollBuf.push_back(texelTile);
             }
         }
     }
@@ -368,7 +372,7 @@ void ScrollingPlane::drawVTexels(GsTilemap &tilemap, int num_h_tiles, const unsi
 {
     auto &scrollBuf = gVideoDriver.mpVideoEngine->mScrollbufferTextures.at(mScrollSfcIdx);
 
-    for(Uint32 y=0;y<num_h_tiles;y++)
+    for(int y=0;y<num_h_tiles;y++)
     {
         Uint32 tile = getMapDataAt(mpx, y+m_mapy);
 
@@ -384,11 +388,15 @@ void ScrollingPlane::drawVTexels(GsTilemap &tilemap, int num_h_tiles, const unsi
                 const auto coordY = ((y<<mTileSizeBase)+m_mapystripepos)&drawMask;
 
                 auto texelTile = tilemap.renderTile(coordX,coordY,tile);
-/*
-                const auto texelPair = std::make_pair(coordX, texelTile);
-                scrollBuf[coordY].insert(texelPair);
-*/
-                scrollBuf.push_back(texelTile);
+
+                auto &scrollstripe = scrollBuf[coordY];
+                auto texIt = scrollstripe.find(coordX);
+                if(texIt != scrollstripe.end())
+                    scrollstripe.erase(texIt);
+
+                scrollstripe.insert(std::make_pair(coordX, texelTile));
+
+                //scrollBuf.push_back(texelTile);
             }
         }
     }
@@ -458,11 +466,15 @@ void ScrollingPlane::drawAllTexels(const int drawMask,
                     const auto coordY = ((y<<mTileSizeBase)+m_mapystripepos)&drawMask;
 
                     auto texelTile = tilemap.renderTile(coordX,coordY,tile);
-/*
-                    const auto texelPair = std::make_pair(coordX, texelTile);
-                    scrollBuf[coordY].insert(texelPair);
-*/
-                    scrollBuf.push_back(texelTile);
+
+                    auto &scrollstripe = scrollBuf[coordY];
+                    auto texIt = scrollstripe.find(coordX);
+                    if(texIt != scrollstripe.end())
+                        scrollstripe.erase(texIt);
+
+                    scrollstripe.insert(std::make_pair(coordX, texelTile));
+
+                    //scrollBuf.push_back(texelTile);
                 }
             }
         }

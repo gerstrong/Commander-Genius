@@ -343,9 +343,11 @@ void CVideoEngine::blitScrollSurfaces(GsWeakSurface &blitSfc)
         scrollSfc.blitScrollSurface(blitSfc);
     }
 
-    if(!mScrollSurfaceVec.empty())
+    int i=0;
+    for (auto &scrollSfc : mScrollSurfaceVec)
     {
-        mScrollSurfaceVec[0].blitScrollTextures();
+        scrollSfc.blitScrollTextures(i);
+        i++;
     }
 }
 

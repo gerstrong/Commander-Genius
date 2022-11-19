@@ -29,7 +29,7 @@ public:
 
     int getSquareSize() const;
 
-    void blitScrollTextures();
+    void blitScrollTextures(const unsigned int scrollBufIdx);
 
     void blitScrollSurface(GsWeakSurface &blitSfc);
 
