@@ -125,22 +125,26 @@ void GsScrollSurface::blitScrollTextures()
 
     //return;
 
-    for(auto &triple : scrollbufs)
-    {
-        GsTexture &tex = std::get<0>(triple);
-        auto tripSrc = std::get<1>(triple);
-        auto tripDst = std::get<2>(triple);
+    auto renderTexture = [&](){
+        for(auto &triple : scrollbufs)
+        {
+            GsTexture &tex = std::get<0>(triple);
+            auto tripSrc = std::get<1>(triple);
+            auto tripDst = std::get<2>(triple);
 
-        if(tripDst.pos.x < srcRect.x)
-            continue;
-        if(tripDst.pos.y < srcRect.y)
-            continue;
+            if(tripDst.pos.x < srcRect.x)
+                continue;
+            if(tripDst.pos.y < srcRect.y)
+                continue;
 
-        tripDst.pos.x -= srcRect.x;
-        tripDst.pos.y -= srcRect.y;
+            tripDst.pos.x -= srcRect.x;
+            tripDst.pos.y -= srcRect.y;
 
-        vidDrv.pushTextureRef(tex, tripSrc.SDLRect(), tripDst.SDLRect());
-    }
+            vidDrv.pushTextureRef(tex, tripSrc.SDLRect(), tripDst.SDLRect());
+        }
+    };
+
+    renderTexture();
 
     const Uint16 upperLeftW = srcRect.w;
     const Uint16 upperLeftH = srcRect.h;
@@ -153,22 +157,7 @@ void GsScrollSurface::blitScrollTextures()
         dstRect.x = (Gamerect.x + upperLeftW)*mScale;
         dstRect.w = srcRect.w*mScale;
 
-        for(auto &triple : scrollbufs)
-        {
-            GsTexture &tex = std::get<0>(triple);
-            auto tripSrc = std::get<1>(triple);
-            auto tripDst = std::get<2>(triple);
-
-            if(tripDst.pos.x < srcRect.x)
-                continue;
-            if(tripDst.pos.y < srcRect.y)
-                continue;
-
-            tripDst.pos.x -= srcRect.x;
-            tripDst.pos.y -= srcRect.y;
-
-            vidDrv.pushTextureRef(tex, tripSrc.SDLRect(), tripDst.SDLRect());
-        }
+        renderTexture();
     }
 
     // lower-right part
@@ -179,22 +168,7 @@ void GsScrollSurface::blitScrollTextures()
         dstRect.y = Gamerect.y + upperLeftH;
         dstRect.h = srcRect.h*mScale;
 
-        for(auto &triple : scrollbufs)
-        {
-            GsTexture &tex = std::get<0>(triple);
-            auto tripSrc = std::get<1>(triple);
-            auto tripDst = std::get<2>(triple);
-
-            if(tripDst.pos.x < srcRect.x)
-                continue;
-            if(tripDst.pos.y < srcRect.y)
-                continue;
-
-            tripDst.pos.x -= srcRect.x;
-            tripDst.pos.y -= srcRect.y;
-
-            vidDrv.pushTextureRef(tex, tripSrc.SDLRect(), tripDst.SDLRect());
-        }
+        renderTexture();
     }
 
     if(!wraphoz || !wrapvrt)
@@ -210,22 +184,7 @@ void GsScrollSurface::blitScrollTextures()
     dstRect.w = srcRect.w*mScale;
     dstRect.h = srcRect.h*mScale;
 
-    for(auto &triple : scrollbufs)
-    {
-        GsTexture &tex = std::get<0>(triple);
-        auto tripSrc = std::get<1>(triple);
-        auto tripDst = std::get<2>(triple);
-
-        if(tripDst.pos.x < srcRect.x)
-            continue;
-        if(tripDst.pos.y < srcRect.y)
-            continue;
-
-        tripDst.pos.x -= srcRect.x;
-        tripDst.pos.y -= srcRect.y;
-
-        vidDrv.pushTextureRef(tex, tripSrc.SDLRect(), tripDst.SDLRect());
-    }
+    renderTexture();
 }
 
 void GsScrollSurface::blitScrollSurface(GsWeakSurface &blitSfc) // This is only for tiles
