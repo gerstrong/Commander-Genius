@@ -292,7 +292,7 @@ bool ScrollingPlane::scrollDown(GsTilemap &tilemap, const bool force)
 
 void ScrollingPlane::drawHTexels(GsTilemap &tilemap, const unsigned int mpy, Uint32 num_v_tiles, const unsigned int y, const int drawMask)
 {
-    auto &scrollBuf = gVideoDriver.mpVideoEngine->mScrollbufferTextures;
+    auto &scrollBuf = gVideoDriver.mpVideoEngine->mScrollbufferTextures.at(mScrollSfcIdx);
 
     for(Uint32 x=0;x<num_v_tiles;x++)
     {
@@ -309,7 +309,7 @@ void ScrollingPlane::drawHTexels(GsTilemap &tilemap, const unsigned int mpy, Uin
                 const auto coordX = ((x<<mTileSizeBase)+m_mapxstripepos)&drawMask;
                 const auto coordY = y;
                 auto texelTile = tilemap.renderTile(coordX,coordY,tile);
-                /*
+/*
                 const auto texelPair = std::make_pair(coordX, texelTile);
                 scrollBuf[coordY].insert(texelPair);
 */
@@ -366,7 +366,7 @@ void ScrollingPlane::drawHstripe(GsTilemap &tilemap,
 
 void ScrollingPlane::drawVTexels(GsTilemap &tilemap, int num_h_tiles, const unsigned int x, const int drawMask, const unsigned int mpx)
 {
-    auto &scrollBuf = gVideoDriver.mpVideoEngine->mScrollbufferTextures;
+    auto &scrollBuf = gVideoDriver.mpVideoEngine->mScrollbufferTextures.at(mScrollSfcIdx);
 
     for(Uint32 y=0;y<num_h_tiles;y++)
     {
@@ -438,7 +438,7 @@ void ScrollingPlane::drawAllTexels(const int drawMask,
                                    GsTilemap &tilemap,
                                    const Uint32 num_h_tiles)
 {
-    auto &scrollBuf = gVideoDriver.mpVideoEngine->mScrollbufferTextures;
+    auto &scrollBuf = gVideoDriver.mpVideoEngine->mScrollbufferTextures.at(mScrollSfcIdx);
 
     for(Uint32 y=0;y<num_h_tiles;y++)
     {

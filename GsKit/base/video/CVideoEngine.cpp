@@ -178,6 +178,8 @@ bool CVideoEngine::allocateScrollSurfaces(const unsigned int numSfc)
 
     mScrollSurfaceVec.clear();
     mScrollSurfaceVec.resize(numSfc);
+    mScrollbufferTextures.clear();
+    mScrollbufferTextures.resize(numSfc);
 
     bool ok = true;
 

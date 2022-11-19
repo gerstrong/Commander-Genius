@@ -127,31 +127,13 @@ void GsScrollSurface::blitScrollTextures()
 
     auto renderTexture = [&]()
     {
-        for(auto &triple : scrollbufs)
+        for(auto &scrollbuf : scrollbufs)
         {
-            GsTexture &tex = std::get<0>(triple);
-            auto tripSrc = std::get<1>(triple);
-            auto tripDst = std::get<2>(triple);
-
-            if(tripDst.pos.x < srcRect.x)
-                continue;
-            if(tripDst.pos.y < srcRect.y)
-                continue;
-
-            tripDst.pos.x -= srcRect.x;
-            tripDst.pos.y -= srcRect.y;
-
-            vidDrv.pushTextureRef(tex, tripSrc.SDLRect(), tripDst.SDLRect());
-        }
-
-/*
-        for(auto &stripe : scrollbufs)
-        {
-            for(auto &texpair : stripe.second)
+            for(auto &triple : scrollbuf)
             {
-                GsTexture &tex = std::get<0>(texpair.second);
-                auto tripSrc = std::get<1>(texpair.second);
-                auto tripDst = std::get<2>(texpair.second);
+                GsTexture &tex = std::get<0>(triple);
+                auto tripSrc = std::get<1>(triple);
+                auto tripDst = std::get<2>(triple);
 
                 if(tripDst.pos.x < srcRect.x)
                     continue;
@@ -162,6 +144,30 @@ void GsScrollSurface::blitScrollTextures()
                 tripDst.pos.y -= srcRect.y;
 
                 vidDrv.pushTextureRef(tex, tripSrc.SDLRect(), tripDst.SDLRect());
+            }
+        }
+
+/*
+        for(auto &scrollbuf : scrollbufs)
+        {
+            for(auto &stripe : scrollbuf)
+            {
+                for(auto &texpair : stripe.second)
+                {
+                    GsTexture &tex = std::get<0>(texpair.second);
+                    auto tripSrc = std::get<1>(texpair.second);
+                    auto tripDst = std::get<2>(texpair.second);
+
+                    if(tripDst.pos.x < srcRect.x)
+                        continue;
+                    if(tripDst.pos.y < srcRect.y)
+                        continue;
+
+                    tripDst.pos.x -= srcRect.x;
+                    tripDst.pos.y -= srcRect.y;
+
+                    vidDrv.pushTextureRef(tex, tripSrc.SDLRect(), tripDst.SDLRect());
+                }
             }
         }
         */
