@@ -173,6 +173,20 @@ void CMap::lock()
     mLocked = true;
 }
 
+bool CMap::updateTextures()
+{
+    bool ok = true;
+
+    for(auto &plane : mScrollingPlanes)
+    {
+        auto &tilemap = m_Tilemaps.at(plane.getTilemapIdx());
+        ok &= plane.updateTextures(tilemap);
+    }
+
+    // TODO: Do we really need to return true here?
+    return ok;
+}
+
 void CMap::fetchNearestVertBlockers(const int x,
                                     int &leftCoord,
                                     int &rightCoord)

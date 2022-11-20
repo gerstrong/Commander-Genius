@@ -64,7 +64,7 @@ public:
     /**
      * @brief operator bool For testing the object itself, if the texture is loaded
      */
-    operator bool();
+    operator bool() const;
 
     /**
      * @brief unload Will unload the texture

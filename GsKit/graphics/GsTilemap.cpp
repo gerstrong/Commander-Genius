@@ -254,8 +254,8 @@ void GsTilemap::drawTile(GsScrollSurface &scrollSfc,
 }
 
 
-std::tuple< GsTexture&, const GsRect<Uint16>, const GsRect<Uint16> > GsTilemap::renderTile(
-                           const int x, const int y, const Uint16 t)
+std::tuple< GsTexture&, const GsRect<Uint16>, const GsRect<Uint16> >
+GsTilemap::renderTile(const int x, const int y, const Uint16 t)
 {   
     /*const auto dim = scrollSfc.getSquareSize();
     const int drawMask = dim-1;

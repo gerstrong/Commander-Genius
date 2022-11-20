@@ -44,6 +44,8 @@ public:
 
     void resetScrolling();
 
+    bool updateTextures(GsTilemap &tilemap);
+
     void drawTile(GsTilemap &tilemap,
                   const GsVec2D<Uint16> pos,
                   const Uint16 t);
@@ -117,15 +119,6 @@ public:
     word getTransparentTile();
 
     void setPaddingBottom(const int value);
-
-    void drawAllTexels(const int drawMask,
-                       const Uint32 num_v_tiles,
-                       GsTilemap &tilemap,
-                       const Uint32 num_h_tiles);
-
-    void drawHTexels(GsTilemap &tilemap, const unsigned int mpy, Uint32 num_v_tiles, const unsigned int y, const int drawMask);
-
-    void drawVTexels(GsTilemap &tilemap, int num_h_tiles, const unsigned int x, const int drawMask, const unsigned int mpx);
 
 private:
 

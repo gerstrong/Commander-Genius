@@ -161,7 +161,7 @@ public:
     typedef std::tuple< GsTexture&, const GsRect<Uint16>, const GsRect<Uint16> > targetedTexture;
 
     //std::vector< std::vector< targetedTexture > > mScrollbufferTextures;
-    std::vector< std::map< unsigned int, std::map< unsigned int, targetedTexture >  > > mScrollbufferTextures;
+    std::vector< std::vector<targetedTexture> > mScrollbufferTextures;
 
 
     void addVideoTask(const std::function<void()> &task);

@@ -58,6 +58,49 @@ void ScrollingPlane::resetScrolling()
     m_mapxstripepos = m_mapystripepos = 0;  // X pixel position of next stripe row
 }
 
+bool ScrollingPlane::updateTextures(GsTilemap &tilemap)
+{
+    if(!useScrollTexels)
+        return false;
+
+    if(!tilemap.hasTexture())
+        return false;
+
+    // TODO: Access mScrollBufferTextures that belongs to the CVideoEngine
+    // by finding out which tiles would be seen by the camera
+    auto &buffer = gVideoDriver.mpVideoEngine->mScrollbufferTextures.at(mScrollSfcIdx);
+    buffer.clear();
+
+    SDL_Surface *surface = gVideoDriver.getBlitSurface();
+    const unsigned int height = surface->h >> mTileSizeBase;
+    const unsigned int width = surface->w >> mTileSizeBase;
+
+    // TODO: Change dimensions vars (height, width) by a read value
+    for(auto y=m_mapy ; y<m_mapy+height ; y++)
+    {
+        for(auto x=m_mapx ; x<m_mapx+width ; x++)
+        {
+            Uint32 tile = getMapDataAt(x, y);
+
+            if(tile == mTransparentTile && mHasTransparentTile)
+                continue;
+
+            const auto coordX = x<<mTileSizeBase;
+            const auto coordY = y<<mTileSizeBase;
+
+            if(tilemap.hasTexture())
+            {
+                buffer.push_back( tilemap.renderTile(coordX,coordY,tile) );
+            }
+
+        }
+    }
+
+    // TODO: Do we really need to return true here?
+    return true;
+
+}
+
 void ScrollingPlane::drawTile(GsTilemap &tilemap,
                               const GsVec2D<Uint16> pos,
                               const Uint16 t)
@@ -101,6 +144,7 @@ bool ScrollingPlane::scrollLeft(GsTilemap &tilemap)
     if (m_scrollpix==0)
     {  // need to draw a new stripe
         if(m_mapx>0) m_mapx--;
+        updateTextures(tilemap);
 
         if (m_mapxstripepos == 0)
         {
@@ -157,7 +201,7 @@ bool ScrollingPlane::scrollRight(GsTilemap &tilemap)
 
     scrollSfc.UpdateScrollBufX(scroll.x);
 
-    m_scrollpix++;
+    m_scrollpix++;    
     if (m_scrollpix >= (1<<mTileSizeBase))
     {  // need to draw a new stripe
 
@@ -166,6 +210,7 @@ bool ScrollingPlane::scrollRight(GsTilemap &tilemap)
         const int totalNumTiles = squareSize>>mTileSizeBase;
         drawVstripe(tilemap, m_mapxstripepos, m_mapx + totalNumTiles);
 
+        updateTextures(tilemap);
         m_mapx++;
         m_mapxstripepos += (1<<mTileSizeBase);
         if (m_mapxstripepos >= squareSize) m_mapxstripepos = 0;
@@ -200,10 +245,10 @@ bool ScrollingPlane::scrollUp(GsTilemap &tilemap, [[maybe_unused]] const bool fo
 
     scroll.y--;
     scrollSfc.UpdateScrollBufY(scroll.y);
-
     if (m_scrollpixy==0)
     {  // need to draw a new stripe
         if(m_mapy>0) m_mapy--;
+        updateTextures(tilemap);
 
         if (m_mapystripepos == 0)
         {
@@ -281,6 +326,7 @@ bool ScrollingPlane::scrollDown(GsTilemap &tilemap, const bool force)
         }
 
         m_mapy++;
+        updateTextures(tilemap);
         m_mapystripepos += (1<<mTileSizeBase);
         if (m_mapystripepos >= squareSize) m_mapystripepos = 0;
         m_scrollpixy = 0;
@@ -289,39 +335,6 @@ bool ScrollingPlane::scrollDown(GsTilemap &tilemap, const bool force)
     return true;
 }
 
-
-void ScrollingPlane::drawHTexels(GsTilemap &tilemap, const unsigned int mpy, Uint32 num_v_tiles, const unsigned int y, const int drawMask)
-{
-    auto &scrollBuf = gVideoDriver.mpVideoEngine->mScrollbufferTextures.at(mScrollSfcIdx);
-
-    for(Uint32 x=0;x<num_v_tiles;x++)
-    {
-        Uint32 tile = getMapDataAt(x+m_mapx, mpy);
-
-        if(tile == mTransparentTile && mHasTransparentTile)
-        {
-            continue;
-        }
-        else
-        {
-            if(tilemap.hasTexture())
-            {
-                const auto coordX = ((x<<mTileSizeBase)+m_mapxstripepos)&drawMask;
-                const auto coordY = y;
-                auto texelTile = tilemap.renderTile(coordX,coordY,tile);
-
-                auto &scrollstripe = scrollBuf[coordY];
-                auto texIt = scrollstripe.find(coordX);
-                if(texIt != scrollstripe.end())
-                    scrollstripe.erase(texIt);
-
-                scrollstripe.insert(std::make_pair(coordX, texelTile));
-
-                //scrollBuf.push_back(texelTile);
-            }
-        }
-    }
-}
 
 void ScrollingPlane::drawHstripe(GsTilemap &tilemap,
                                  const unsigned int y,
@@ -343,7 +356,6 @@ void ScrollingPlane::drawHstripe(GsTilemap &tilemap,
 
     if(useScrollTexels)
     {
-        drawHTexels(tilemap, mpy, num_v_tiles, y, drawMask);
         return;
     }
 
@@ -368,39 +380,6 @@ void ScrollingPlane::drawHstripe(GsTilemap &tilemap,
     }
 }
 
-void ScrollingPlane::drawVTexels(GsTilemap &tilemap, int num_h_tiles, const unsigned int x, const int drawMask, const unsigned int mpx)
-{
-    auto &scrollBuf = gVideoDriver.mpVideoEngine->mScrollbufferTextures.at(mScrollSfcIdx);
-
-    for(int y=0;y<num_h_tiles;y++)
-    {
-        Uint32 tile = getMapDataAt(mpx, y+m_mapy);
-
-        if(tile == mTransparentTile && mHasTransparentTile)
-        {
-            continue;
-        }
-        else
-        {
-            if(tilemap.hasTexture())
-            {
-                const auto coordX = x;
-                const auto coordY = ((y<<mTileSizeBase)+m_mapystripepos)&drawMask;
-
-                auto texelTile = tilemap.renderTile(coordX,coordY,tile);
-
-                auto &scrollstripe = scrollBuf[coordY];
-                auto texIt = scrollstripe.find(coordX);
-                if(texIt != scrollstripe.end())
-                    scrollstripe.erase(texIt);
-
-                scrollstripe.insert(std::make_pair(coordX, texelTile));
-
-                //scrollBuf.push_back(texelTile);
-            }
-        }
-    }
-}
 
 void ScrollingPlane::drawVstripe(GsTilemap &tilemap,
                                  const unsigned int x,
@@ -418,7 +397,6 @@ void ScrollingPlane::drawVstripe(GsTilemap &tilemap,
 
     if(useScrollTexels)
     {
-        drawVTexels(tilemap, num_h_tiles, x, drawMask, mpx);
         return;
     }
 
@@ -441,45 +419,6 @@ void ScrollingPlane::drawVstripe(GsTilemap &tilemap,
     }
 }
 
-void ScrollingPlane::drawAllTexels(const int drawMask,
-                                   const Uint32 num_v_tiles,
-                                   GsTilemap &tilemap,
-                                   const Uint32 num_h_tiles)
-{
-    auto &scrollBuf = gVideoDriver.mpVideoEngine->mScrollbufferTextures.at(mScrollSfcIdx);
-
-    for(Uint32 y=0;y<num_h_tiles;y++)
-    {
-        for(Uint32 x=0;x<num_v_tiles;x++)
-        {
-            Uint32 tile = getMapDataAt(x+m_mapx, y+m_mapy);
-
-            if(tile == mTransparentTile && mHasTransparentTile)
-            {
-                continue;
-            }
-            else
-            {
-                if(tilemap.hasTexture())
-                {
-                    const auto coordX = ((x<<mTileSizeBase)+m_mapxstripepos)&drawMask;
-                    const auto coordY = ((y<<mTileSizeBase)+m_mapystripepos)&drawMask;
-
-                    auto texelTile = tilemap.renderTile(coordX,coordY,tile);
-
-                    auto &scrollstripe = scrollBuf[coordY];
-                    auto texIt = scrollstripe.find(coordX);
-                    if(texIt != scrollstripe.end())
-                        scrollstripe.erase(texIt);
-
-                    scrollstripe.insert(std::make_pair(coordX, texelTile));
-
-                    //scrollBuf.push_back(texelTile);
-                }
-            }
-        }
-    }
-}
 
 void ScrollingPlane::drawAll(GsTilemap &tilemap)
 {
@@ -501,7 +440,6 @@ void ScrollingPlane::drawAll(GsTilemap &tilemap)
 
     if(useScrollTexels)
     {
-        drawAllTexels(drawMask, num_v_tiles, tilemap, num_h_tiles);
         return;
     }
 

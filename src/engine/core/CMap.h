@@ -47,6 +47,8 @@ public:
 
     bool isEmpty() const;
 
+    bool updateTextures();
+
     /**
      * @brief setupEmptyDataPlanes  Allocates data for the the planes to be loaded
      * @param numScrollingPlanes    Number of scrolling planes to setup for the whole map

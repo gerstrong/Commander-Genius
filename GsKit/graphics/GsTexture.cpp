@@ -16,7 +16,7 @@ GsTexture::~GsTexture()
     }
 }
 
-GsTexture::operator bool()
+GsTexture::operator bool() const
 {
     return (mpTexture!=nullptr);
 }

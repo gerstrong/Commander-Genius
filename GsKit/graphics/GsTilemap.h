@@ -57,9 +57,8 @@ public:
 
     void saveTexture(const char *filename);
 
-    std::tuple<GsTexture &, const GsRect<Uint16>, const GsRect<Uint16> > renderTile(const int x,
-                    const int y,
-                    const Uint16 t);
+    std::tuple<GsTexture &, const GsRect<Uint16>, const GsRect<Uint16> >
+            renderTile(const int x, const int y, const Uint16 t);
 
     void drawTileBlended(SDL_Surface *dst,
                          const int x, const int y,
@@ -69,7 +68,7 @@ public:
 
     Uint16 getNumColumn() const;
 
-    bool hasTexture() { if(mTilemapTexture) return true; else return false; }
+    bool hasTexture() const { if(mTilemapTexture) return true; else return false; }
 
 private:
 

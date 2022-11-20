@@ -126,54 +126,27 @@ void GsScrollSurface::blitScrollTextures(const unsigned int scrollBufIdx)
 
     auto renderTexture = [&]()
     {
-/*
-        for(auto &scrollbuf : scrollbufs)
-        {
-            for(auto &triple : scrollbuf)
-            {
-                GsTexture &tex = std::get<0>(triple);
-                auto tripSrc = std::get<1>(triple);
-                auto tripDst = std::get<2>(triple);
-
-                if(tripDst.pos.x < srcRect.x)
-                    continue;
-                if(tripDst.pos.y < srcRect.y)
-                    continue;
-
-                tripDst.pos.x -= srcRect.x;
-                tripDst.pos.y -= srcRect.y;
-
-                vidDrv.pushTextureRef(tex, tripSrc.SDLRect(), tripDst.SDLRect());
-            }
-        }
-*/
-
         for(auto &stripe : scrollbuf)
         {
-            for(auto &texpair : stripe.second)
-            {
-                GsTexture &tex = std::get<0>(texpair.second);
-                auto tripSrc = std::get<1>(texpair.second);
-                auto tripDst = std::get<2>(texpair.second);
+            GsTexture &tex = std::get<0>(stripe);
+            auto tripSrc = std::get<1>(stripe);
+            auto tripDst = std::get<2>(stripe);
 
-                if(tripDst.pos.x < srcRect.x)
-                    continue;
-                if(tripDst.pos.y < srcRect.y)
-                    continue;
+            if(tripDst.pos.x < srcRect.x)
+                continue;
+            if(tripDst.pos.y < srcRect.y)
+                continue;
 
-                tripDst.pos.x -= srcRect.x;
-                tripDst.pos.y -= srcRect.y;
+            tripDst.pos.x -= srcRect.x;
+            tripDst.pos.y -= srcRect.y;
 
-                tripDst.pos.x += dstRect.x;
-                tripDst.pos.y += dstRect.y;
-
-                vidDrv.pushTextureRef(tex, tripSrc.SDLRect(), tripDst.SDLRect());
-            }
+            vidDrv.pushTextureRef(tex, tripSrc.SDLRect(), tripDst.SDLRect());
         }
-
     };
 
     renderTexture();
+
+    return;
 
     const Uint16 upperLeftW = srcRect.w;
     const Uint16 upperLeftH = srcRect.h;
