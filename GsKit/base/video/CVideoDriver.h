@@ -20,6 +20,8 @@
 #include <queue>
 #include <set>
 
+extern bool useScrollTexels;
+
 #ifdef USE_OPENGL
     #include <base/video/COpenGL.h>
 #endif

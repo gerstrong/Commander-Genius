@@ -3,7 +3,7 @@
 #include <base/video/CVideoDriver.h>
 #include <engine/core/CBehaviorEngine.h>
 
-const auto useScrollTexels = true;
+
 
 ScrollingPlane::ScrollingPlane(const int scrollSfcIdx,
                                const bool transparent) :

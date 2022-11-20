@@ -21,6 +21,8 @@
 #include <SDL_syswm.h>
 #include <SDL_image.h>
 
+bool useScrollTexels = false;
+
 
 CVideoDriver::~CVideoDriver()
 {

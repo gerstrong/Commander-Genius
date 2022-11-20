@@ -284,11 +284,7 @@ GsTilemap::renderTile(const int x, const int y, const Uint16 t)
 */
     return std::tuple< GsTexture&, const GsRect<Uint16>, const GsRect<Uint16> >
             ( mTilemapTexture, src_rect, dst_rect );
-    //gVideoDriver.pushTextureRef(mTilemapTexture, src_rect, dst_rect);        
 }
-
-
-
 
 void GsTilemap::drawTileBlended(SDL_Surface *dst,
                                 const int x, const int y,
