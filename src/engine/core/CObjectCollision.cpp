@@ -727,9 +727,9 @@ int CSpriteObject::checkSolidL( int x1, int x2, int y1, int y2)
 
         const auto pixel_tol_x = 1<<STC;
 
-        for(int c=y1 ; c<=y2 ; c += COLLISION_RES)
+        for(int y=y1 ; y<=y2 ; y += COLLISION_RES)
         {
-            auto mapTile = mpMap->at(x1>>CSF, c>>CSF);
+            auto mapTile = mpMap->at(x1>>CSF, y>>CSF);
 
             if( mapTile >= TileProperty.size())
                 continue;
@@ -737,9 +737,9 @@ int CSpriteObject::checkSolidL( int x1, int x2, int y1, int y2)
             blocker = TileProperty[mapTile].bright;
 
             // Start to really test if we blow up the local_block_tol
-            if(c-y1 <= local_block_tol) // Upper part
+            if(y-y1 <= local_block_tol) // Upper part
             {
-                mapTile = mpMap->at((x1+pixel_tol_x)>>CSF, c>>CSF);
+                mapTile = mpMap->at((x1+pixel_tol_x)>>CSF, y>>CSF);
 
                 if( mapTile >= TileProperty.size())
                     continue;
@@ -761,7 +761,7 @@ int CSpriteObject::checkSolidL( int x1, int x2, int y1, int y2)
 
                     const auto y_s = yb1 - (x_r*(yb1-yb2))/L;
 
-                    if(c < y_s)
+                    if(y < y_s)
                         return curSlopeLower;
                     else
                         continue;

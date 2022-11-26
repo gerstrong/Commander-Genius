@@ -219,9 +219,10 @@ void CScrub::walkRight(int mx, int my)
 			if(!TileProperties[mpMap->at(mx+1, my-1)].bdown &&
                !TileProperties[mpMap->at(mx+1, my)].bright)
 			{
-				// There is no gap the upper-side
+                // There is no gap to walk to the other side
+                // Try to stick the scrub at the right side of the tile
                 processMove(8<<STC,0);
-                processMove(0,-(8<<STC));
+                processMove(0,-(16<<STC));
                 processMove(-(8<<STC),0);
                 performCollisions();
 
