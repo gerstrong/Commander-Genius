@@ -102,7 +102,7 @@ int main(int argc,char **argv){
     BYTE* compressed_data;
     int  ver,rename_sw=0;
 
-	printf("UNLZEXE Ver. "VERSION"\n");             /* v0.6 */
+	printf("UNLZEXE Ver. " VERSION "\n");             /* v0.6 */
 
 	if(argc!=3 && argc!=2){
         printf("usage: UNLZEXE packedfile [unpackedfile]\n");
@@ -321,7 +321,7 @@ int reloc90(BYTE *p_data, std::vector<BYTE> &outdata, long fpos) {
             rel_count++;
         }
         rel_seg += 0x1000;
-    } while(rel_seg!=(0xf000+0x1000));
+    } while(rel_seg != (0xf000+0x1000));
     ohead[3]=rel_count;
     return(SUCCESS);
 }
