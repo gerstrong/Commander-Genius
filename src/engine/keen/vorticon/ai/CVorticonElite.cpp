@@ -2,8 +2,9 @@
 
 #include <base/audio/Audio.h>
 #include <base/video/CVideoDriver.h>
-#include "graphics/GsGraphics.h"
 #include "engine/core/spritedefines.h"
+//#include "graphics/GsGraphics.h"
+//#include "CPlayer.h"
 
 #include "CVorticonElite.h"
 #include "CRay.h"
@@ -125,7 +126,7 @@ bool CVorticonElite::isNearby(CSpriteObject &theObject)
 
             const auto diff = gBehaviorEngine.mDifficulty;
 
-            if(!mpMap->m_Dark || diff > EASY)
+            if(!mpMap->m_Dark || diff > NORMAL)
             {
                 if (getProbability(VORTELITE_JUMP_PROB) && !blockedu)
                 {  // let's jump.
