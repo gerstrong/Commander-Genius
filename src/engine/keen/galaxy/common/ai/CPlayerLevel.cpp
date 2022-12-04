@@ -784,6 +784,21 @@ bool CPlayerLevel::checkandtriggerforCliffHanging()
             Uint32 y = yUp<<CSF;
 
             x -= m_BBox.x1;
+
+            bool check_block_rhs = true;
+
+            do
+            {
+                // Additional check so player does move too much into the tile
+                const auto rightBlockIdx = mpMap->at(x>>CSF, y>>CSF);
+                bool check_block_rhs = TileProperty[rightBlockIdx].bright;
+
+                if(!check_block_rhs)
+                    break;
+
+                x += (1<<STC);
+            } while(check_block_rhs);
+
             x -= (4<<STC);
             y -= m_BBox.y1;
 

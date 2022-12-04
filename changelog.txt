@@ -1,3 +1,9 @@
+v3.2:
+-------
+- More collision fixes, especially relevant in Keen 2
+- Improved the Video engine a bit. Changing resolutions on the fly now work better
+-
+
 v3.1.2:
 -------
 - Added option for showing/hiding achievements
