@@ -1,8 +1,8 @@
-v3.2:
+v3.2.0:
 -------
 - More collision fixes, especially relevant in Keen 2
 - Improved the Video engine a bit. Changing resolutions on the fly now work better
--
+- Fixed some ledge grabbing issues
 
 v3.1.2:
 -------
