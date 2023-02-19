@@ -426,7 +426,6 @@ void ScrollingPlane::drawAll(GsTilemap &tilemap)
     auto &scrollSfc = gVideoDriver.getScrollSurfaceVec().at(mScrollSfcIdx);
 
     const auto dim = scrollSfc.getSquareSize();
-    const int drawMask = dim-1;
 
     scrollSfc.updateScrollBuf(scroll);
 

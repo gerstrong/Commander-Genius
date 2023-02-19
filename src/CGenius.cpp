@@ -149,7 +149,9 @@ int main(int argc, char *argv[])
     gLogging.textOut(FONTCOLORS::GREEN,"Created Log file...\n");
 
     printSearchPaths();
-
+    
+    
+    
     gLogging.textOut(FONTCOLORS::GREEN,"Initializing TTF driver...\n");
 
     if(!gTTFDriver.init())
@@ -159,7 +161,7 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    gLogging.textOut(FONTCOLORS::GREEN,"Initializing Video driver...\n");
+    gLogging.textOut(FONTCOLORS::GREEN,"Initializing Video driver...\n");    
 
     // Init Video Driver with SDL all together
     if( !gVideoDriver.init() )

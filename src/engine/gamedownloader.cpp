@@ -79,19 +79,6 @@ static int xferinfo(void *p,
     return 0;
 }
 
-/* for libcurl older than 7.32.0 (CURLOPT_PROGRESSFUNCTION) */
-static int older_progress(void *p,
-                          double dltotal, double dlnow,
-                          double ultotal, double ulnow)
-{
-  return xferinfo(p,
-                  curl_off_t(dltotal),
-                  curl_off_t(dlnow),
-                  curl_off_t(ultotal),
-                  curl_off_t(ulnow));
-}
-
-
 size_t write_data(void *ptr, size_t size, size_t nmemb, FILE *stream)
 {
     size_t written = fwrite(ptr, size, nmemb, stream);
@@ -140,6 +127,10 @@ int downloadFile(const std::string &filename, int &progress,
 
     CURL *curl = curl_easy_init();
 
+#if LIBCURL_VERSION_NUM < 0x072000
+#error Please use a curl version 7.32 or later
+#endif
+
     if(curl)
     {
       prog.lastruntime = 0;
@@ -153,8 +144,6 @@ int downloadFile(const std::string &filename, int &progress,
 
       curl_easy_setopt(curl, CURLOPT_USE_SSL, CURLUSESSL_NONE);
 
-      curl_easy_setopt(curl, CURLOPT_PROGRESSFUNCTION, older_progress);
-
       /* pass the struct pointer into the progress function */
       curl_easy_setopt(curl, CURLOPT_PROGRESSDATA, &prog);
 
@@ -164,22 +153,10 @@ int downloadFile(const std::string &filename, int &progress,
           curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_data);
           curl_easy_setopt(curl, CURLOPT_WRITEDATA, fp);
 
-      #if LIBCURL_VERSION_NUM >= 0x072000
-          /* xferinfo was introduced in 7.32.0, no earlier libcurl versions will
-             compile as they won't have the symbols around.
-
-             If built with a newer libcurl, but running with an older libcurl:
-             curl_easy_setopt() will fail in run-time trying to set the new
-             callback, making the older callback get used.
-
-             New libcurls will prefer the new callback and instead use that one even
-             if both callbacks are set. */
-
           curl_easy_setopt(curl, CURLOPT_XFERINFOFUNCTION, xferinfo);
           /* pass the struct pointer into the xferinfo function, note that this is
              an alias to CURLOPT_PROGRESSDATA */
           curl_easy_setopt(curl, CURLOPT_XFERINFODATA, &prog);
-      #endif
 
           curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 0L);
           res = curl_easy_perform(curl);
