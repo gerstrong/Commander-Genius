@@ -587,7 +587,7 @@ bool CGameLauncher::scanExecutables(const std::string& path)
         GameEntry newentry;
         newentry.crcpass = executable.getEXECrc();
         newentry.version = static_cast<short>(executable.getEXEVersion());
-        newentry.supported = executable.Supported();
+        newentry.supported = executable.isSupported();
         newentry.episode = static_cast<Uint16>(ep);
         newentry.demo = executable.isDemo();
         newentry.path    = path;

@@ -26,38 +26,38 @@ CExeFile::CExeFile()
 {
 
 	// Setup support map
-	m_supportmap[100274][1] = true;
-	m_supportmap[100484][1] = true;
-	m_supportmap[398][1] = false;
+    mSupportmap[100274][1] = true;
+    mSupportmap[100484][1] = true;
+    mSupportmap[49684][1] = false;
 
-	m_supportmap[118626][2] = true;
-	m_supportmap[118672][2] = true;
+    mSupportmap[118626][2] = true;
+    mSupportmap[118672][2] = true;
 
-	m_supportmap[127598][3] = true;
-	m_supportmap[127616][3] = true;
+    mSupportmap[127598][3] = true;
+    mSupportmap[127616][3] = true;
 
-	m_supportmap[263488][4] = true;
-	m_supportmap[259232][4] = false;
-	m_supportmap[258064][4] = false;
+    mSupportmap[263488][4] = true;
+    mSupportmap[259232][4] = false;
+    mSupportmap[258064][4] = false;
 
-	m_supportmap[266096][5] = true;
-	m_supportmap[262176][5] = false;
+    mSupportmap[266096][5] = true;
+    mSupportmap[262176][5] = false;
 
-	m_supportmap[236112][6] = false;
-	m_supportmap[271696][6] = false;
+    mSupportmap[236112][6] = false;
+    mSupportmap[271696][6] = false;
 
     // Dreams
-    m_supportmap[213536][7] = true;
+    mSupportmap[213536][7] = true;
 
 	// TODO: Setup CRC-Map
 
 }
 
 
-unsigned long CExeFile::fetchUncompressedHeaderSize(void *m_headerdata)
+unsigned long CExeFile::fetchUncompressedHeaderSize(const void *m_headerdata)
 {
-	gs_byte *hdata = reinterpret_cast<gs_byte*>(m_headerdata);
-	for( unsigned long c=0 ; c<m_datasize ; c++)
+    const gs_byte *hdata = reinterpret_cast<const gs_byte*>(m_headerdata);
+    for( unsigned long c=0 ; c<mDatasize ; c++)
 	{
 		if( hdata[c] == 0xBA && c % 0x200 == 0 )
 			return c;
@@ -71,14 +71,14 @@ unsigned long CExeFile::fetchUncompressedHeaderSize(void *m_headerdata)
 void CExeFile::dumpFile(const std::string& filename)
 {
 	std::ofstream ofile( filename.c_str() );
-	ofile.write( reinterpret_cast<char*>(m_headerdata), m_datasize );
+    ofile.write( reinterpret_cast<char*>(mHeaderdata), mDatasize );
 }
 
 void CExeFile::dumpDataFile(const std::string& filename)
 {
 	std::ofstream ofile( filename.c_str() );
-    mRawdataSize = m_datasize - m_headersize;
-    ofile.write( reinterpret_cast<char*>(m_rawdata), mRawdataSize);
+    mRawdataSize = mDatasize - mHeadersize;
+    ofile.write( reinterpret_cast<char*>(mRawdata), mRawdataSize);
 }
 
 
@@ -86,7 +86,7 @@ bool CExeFile::readGenericExeData(const std::string &name,
                                   const unsigned int episode,
                                   const std::string& datadirectory)
 {
-    std::string filename =  JoinPaths(datadirectory,
+    const std::string filename =  JoinPaths(datadirectory,
                                       name + itoa(episode) + ".exe" );
 
     std::ifstream File;
@@ -101,9 +101,9 @@ bool CExeFile::readGenericExeData(const std::string &name,
     }
 
     mBasename = name;
-    m_filename = filename;
-    m_episode = episode;
-    m_demo = false;
+    mFilename = filename;
+    mEpisode = episode;
+    mIsADemo = false;
 
     std::string localDataDir = datadirectory;
     if( localDataDir != "")
@@ -116,12 +116,12 @@ bool CExeFile::readGenericExeData(const std::string &name,
     keenFiles.gameDir = localDataDir;
 
     File.seekg(0,std::ios::end);
-    m_datasize = File.tellg();
+    mDatasize = File.tellg();
     File.seekg(0,std::ios::beg);
 
     // Read all the file into the memory
-    std::vector<unsigned char> dataTemp(m_datasize);
-    File.read((char*)dataTemp.data(), m_datasize);
+    std::vector<unsigned char> dataTemp(mDatasize);
+    File.read((char*)dataTemp.data(), mDatasize);
     File.close();
 
     Cunlzexe UnLZEXE;
@@ -129,28 +129,28 @@ bool CExeFile::readGenericExeData(const std::string &name,
     std::vector<unsigned char> decdata;
     if(UnLZEXE.decompress(dataTemp.data(), decdata))
     {
-        m_datasize = decdata.size();
-        mData.resize(m_datasize);
-        m_headersize = UnLZEXE.HeaderSize();
-        memcpy(mData.data(), &decdata[0], m_datasize);
+        mDatasize = decdata.size();
+        mData.resize(mDatasize);
+        mHeadersize = UnLZEXE.HeaderSize();
+        memcpy(mData.data(), &decdata[0], mDatasize);
     }
     else
     {
-        mData.resize(m_datasize);
-        memcpy(mData.data(), dataTemp.data(),m_datasize);
+        mData.resize(mDatasize);
+        memcpy(mData.data(), dataTemp.data(),mDatasize);
     }
 
-    m_headerdata = mData.data();
-    m_headersize = UnLZEXE.HeaderSize();
-    if(!m_headersize)
+    mHeaderdata = mData.data();
+    mHeadersize = UnLZEXE.HeaderSize();
+    if(!mHeadersize)
     {
-        m_headersize = fetchUncompressedHeaderSize(m_headerdata);
+        mHeadersize = fetchUncompressedHeaderSize(mHeaderdata);
     }
 
-    m_rawdata = mData.data() + m_headersize;
-    m_crc = getcrc32( mData.data(), m_datasize );
+    mRawdata = mData.data() + mHeadersize;
+    mCrc = getcrc32( mData.data(), mDatasize );
 
-    gLogging.ftextOut( "EXE processed with size of %d and crc of %X\n", m_datasize, m_crc );
+    gLogging.ftextOut( "EXE processed with size of %d and crc of %X\n", mDatasize, mCrc );
 
     return true;
 }
@@ -208,9 +208,9 @@ bool CExeFile::readKeenExeData(const unsigned int episode,
 		return false;	
     }
 
-	m_filename = filename;
-	m_episode = episode;
-	m_demo = demo;
+    mFilename = filename;
+    mEpisode = episode;
+    mIsADemo = demo;
 
     std::string localDataDir = datadirectory;
     if( localDataDir != "")
@@ -223,12 +223,12 @@ bool CExeFile::readKeenExeData(const unsigned int episode,
     keenFiles.gameDir = localDataDir;
 		
 	File.seekg(0,std::ios::end);
-	m_datasize = File.tellg();
+    mDatasize = File.tellg();
 	File.seekg(0,std::ios::beg);
 
     // Read all the file into the memory
-    std::vector<unsigned char> dataTemp(m_datasize);
-    File.read((char*)dataTemp.data(), m_datasize);
+    std::vector<unsigned char> dataTemp(mDatasize);
+    File.read((char*)dataTemp.data(), mDatasize);
 	File.close();
 
 	Cunlzexe UnLZEXE;
@@ -236,26 +236,26 @@ bool CExeFile::readKeenExeData(const unsigned int episode,
 	std::vector<unsigned char> decdata;
     if(UnLZEXE.decompress(dataTemp.data(), decdata))
 	{
-		m_datasize = decdata.size();
-		mData.resize(m_datasize);
-		m_headersize = UnLZEXE.HeaderSize();
-		memcpy(mData.data(), &decdata[0], m_datasize);
+        mDatasize = decdata.size();
+        mData.resize(mDatasize);
+        mHeadersize = UnLZEXE.HeaderSize();
+        memcpy(mData.data(), &decdata[0], mDatasize);
 	}
 	else
 	{
-		mData.resize(m_datasize);
-        memcpy(mData.data(), dataTemp.data(),m_datasize);
+        mData.resize(mDatasize);
+        memcpy(mData.data(), dataTemp.data(),mDatasize);
 	}
 
-	m_headerdata = mData.data();
-	m_headersize = UnLZEXE.HeaderSize();
-	if(!m_headersize)
+    mHeaderdata = mData.data();
+    mHeadersize = UnLZEXE.HeaderSize();
+    if(!mHeadersize)
     {
-		m_headersize = fetchUncompressedHeaderSize(m_headerdata);
+        mHeadersize = fetchUncompressedHeaderSize(mHeaderdata);
     }
 
-	m_rawdata = mData.data() + m_headersize;
-    mRawdataSize = mData.size() - m_headersize;
+    mRawdata = mData.data() + mHeadersize;
+    mRawdataSize = mData.size() - mHeadersize;
 
 	const size_t offset_map[] = {
 			/*Dummy:*/ 0x0,
@@ -269,20 +269,20 @@ bool CExeFile::readKeenExeData(const unsigned int episode,
 			/*Keen 6:*/ 0x2A4F0   // Demo
 	};
 
-    size_t offset_index = (demo && episode == 6) ? 8 : episode;
+    size_t offsetIdx = (demo && episode == 6) ? 8 : episode;
 
-    m_data_segment = m_rawdata + offset_map[offset_index];
+    mDataSegment = mRawdata + offset_map[offsetIdx];
 
-	m_crc = getcrc32( mData.data(), m_datasize );
+    mCrc = getcrc32( mData.data(), mDatasize );
 
-	gLogging.ftextOut( "EXE processed with size of %d and crc of %X\n", m_datasize, m_crc );
+    gLogging.ftextOut( "EXE processed with size of %d and crc of %X\n", mDatasize, mCrc );
 
 	return true;
 }
 
 
 bool CExeFile::readMainLuaScript(const unsigned int episode,
-                                    const std::string& datadirectory)
+                                 const std::string& datadirectory)
 {
     std::string filename = datadirectory + "/keen" + itoa(episode) + ".lua";
 
@@ -293,8 +293,8 @@ bool CExeFile::readMainLuaScript(const unsigned int episode,
     if(!File)
         return false;
 
-    m_filename = filename;
-    m_episode = episode;
+    mFilename = filename;
+    mEpisode = episode;
 
     std::string localDataDir = datadirectory;
     if( localDataDir != "")
@@ -313,113 +313,106 @@ bool CExeFile::readMainLuaScript(const unsigned int episode,
     return true;
 }
 
-bool CExeFile::Supported()
+bool CExeFile::isSupported()
 {
     if(mIsLuaScript) return true;
 
-    if( m_supportmap.find(m_datasize) ==
-            m_supportmap.end())
+    if( mSupportmap.find(mDatasize) ==
+            mSupportmap.end())
     {
         return false;
     }
 
-    if( m_supportmap[m_datasize].find(m_episode) ==
-            m_supportmap[m_datasize].end() )
+    if( mSupportmap[mDatasize].find(mEpisode) ==
+            mSupportmap[mDatasize].end() )
     {
 		return false;
     }
 
-	return  m_supportmap[m_datasize][m_episode];
+    return  mSupportmap[mDatasize][mEpisode];
 }
 
 int CExeFile::getEXEVersion() const
 {
-    switch (m_datasize)
+    printf("size=%zu\n", mDatasize);
+
+    switch (mDatasize)
     {
     case 100274:
-        if(m_episode != 1)
-            return -1;
-        else
-            return 110;
+        return (mEpisode == 1) ? 110 : -1;
     case 100484:
-        if(m_episode != 1)
-            return -1;
-        else
-            return 131;
-    case 398:
-        if(m_episode != 1)
-            return -1;
-        else
-            return 134;
+        return (mEpisode == 1) ? 131 : -1;
+    case 49684:
+        return (mEpisode == 1) ? 134 : -1;
 
     case 118626:
-        if(m_episode != 2)
+        if(mEpisode != 2)
             return -1;
         else
             return 100;
     case 118672:
-        if(m_episode != 2)
+        if(mEpisode != 2)
             return -1;
         else
             return 131;
 
     case 127598:
-        if(m_episode != 3)
+        if(mEpisode != 3)
             return -1;
         else
             return 100;
     case 127616:
-        if(m_episode != 3)
+        if(mEpisode != 3)
             return -1;
         else
             return 131;
 
         // For Keen 4
     case 263488:
-        if(m_episode != 4)
+        if(mEpisode != 4)
             return -1;
         else
             return 140;
     case 259232:
-        if(m_episode != 4)
+        if(mEpisode != 4)
             return -1;
         else
             return 110;
     case 258064:
-        if(m_episode != 4)
+        if(mEpisode != 4)
             return -1;
         else
             return 100;
 
         // For Keen 5
     case 266096:
-        if(m_episode != 5)
+        if(mEpisode != 5)
             return -1;
         else
             return 140;
 
     case 262176:
-        if(m_episode != 5)
+        if(mEpisode != 5)
             return -1;
         else
             return 100;
 
         // For Keen 6
     case 236112:
-        if(m_episode != 6)
+        if(mEpisode != 6)
             return -1;
         else
             return 100;
 
     case 271696:
-        if(m_episode != 6)
+        if(mEpisode != 6)
             return -1;
         else
             return 140;
 
         // Keen Dreams
     case 213536:
-        if(m_episode != 7)
+        if(mEpisode != 7)
             return -1;
         else
             return 100; // TODO: Not sure, if it really is version 1.00. Check!
@@ -432,23 +425,23 @@ int CExeFile::getEXECrc()
 {
     int version = getEXEVersion();
 
-    switch( m_episode )
+    switch( mEpisode )
     {
     case 1:
         switch( version )
         {
         case 110:
-            if(m_crc != 1)
+            if(mCrc != 1)
                 return -1;
             else
                 return 1;
         case 131:
-            if(m_crc != 0x195771AE)
+            if(mCrc != 0x195771AE)
                 return -1;
             else
                 return true;
         case 134:
-            if(m_crc != 1)
+            if(mCrc != 0x45F0BA61)
                 return -1;
             else
                 return 1;
@@ -458,12 +451,12 @@ int CExeFile::getEXECrc()
         switch( version )
         {
         case 100:
-            if(m_crc != 1)
+            if(mCrc != 1)
                 return -1;
             else
                 return 1;
         case 131:
-            if(m_crc != 0x94E464B4)
+            if(mCrc != 0x94E464B4)
                 return -1;
             else
                 return true;
@@ -472,12 +465,12 @@ int CExeFile::getEXECrc()
         switch( version )
         {
         case 100:
-            if(m_crc != 1)
+            if(mCrc != 1)
                 return -1;
             else
                 return 1;
         case 131:
-            if(m_crc != 0x70D3264D)
+            if(mCrc != 0x70D3264D)
                 return -1;
             else
                 return 1;

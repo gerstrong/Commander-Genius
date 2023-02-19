@@ -15,7 +15,6 @@
 #include "engine/core/menu/SelectionMenu.h"
 #include "engine/core/menu/ControlSettings.h"
 #include "engine/core/menu/CHelpMenu.h"
-#include "engine/CGameLauncher.h"
 #include "fileio/CPatcher.h"
 #include "fileio/CSaveGameController.h"
 #include "engine/core/CMessages.h"

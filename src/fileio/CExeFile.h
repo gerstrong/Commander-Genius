@@ -26,15 +26,15 @@ class CExeFile {
     CExeFile();
     
     char getEpisode() const
-    { return m_episode;	}
+    { return mEpisode;	}
     
     size_t getExeDataSize() const
-    { return m_datasize;	}
+    { return mDatasize;	}
     
     std::string getFileName()
-    { return m_filename; }
+    { return mFilename; }
     
-    unsigned long fetchUncompressedHeaderSize(void *m_headerdata);
+    unsigned long fetchUncompressedHeaderSize(const void *m_headerdata);
     
     // in case you just want to see the Exe-File which CG sustains in the memory
     void dumpFile(const std::string& filename);
@@ -67,25 +67,25 @@ class CExeFile {
      * @brief Tells whether The Exe-File is supported by CG or not.
      *        This Information is hard-coded in the CExefile constructor
      */
-    bool Supported();
+    bool isSupported();
     int getEXEVersion() const;
     int getEXECrc();
     bool readExeImageSize(unsigned char *p_data_start, unsigned long *imglen, unsigned long *headerlen) const;
     
     bool isDemo() const
-    {	return m_demo;	}
+    {	return mIsADemo;	}
 
     gs_byte* getRawData() const
-    {	return m_rawdata;	}
+    {	return mRawdata;	}
 
     size_t getRawDataSize() const
     {	return mRawdataSize;	}
 
     void* getHeaderData() const
-    {	return m_headerdata;	}
+    {	return mHeaderdata;	}
 
     gs_byte* getDSegPtr() const
-    {	return m_data_segment; }
+    {	return mDataSegment; }
 
     bool loadMusicTrack(RingBuffer<IMFChunkType> &imfData, const int track) const;
 
@@ -134,21 +134,21 @@ private:
 		unsigned short overlay_num;
 	};
 
-    size_t m_datasize = 0;
-    size_t m_headersize = 0;
+    size_t mDatasize = 0;
+    size_t mHeadersize = 0;
     size_t mRawdataSize = 0;
     std::string mBasename;
-    int m_episode = 0;
+    int mEpisode = 0;
     bool mIsLuaScript = false;
-	bool m_demo;
-    unsigned int m_crc = 0;
+    bool mIsADemo;
+    unsigned int mCrc = 0;
 	std::vector<gs_byte> mData;
-    void *m_headerdata = nullptr;
-    gs_byte *m_rawdata = nullptr;
-    gs_byte *m_data_segment = nullptr;
-	std::string m_filename;
+    void *mHeaderdata = nullptr;
+    gs_byte *mRawdata = nullptr;
+    gs_byte *mDataSegment = nullptr;
+    std::string mFilename;
 
-	std::map< size_t, std::map<int , bool> > m_supportmap;
+    std::map< size_t, std::map<int , bool> > mSupportmap;
 };
 
 bool imfMusicTrackloader(RingBuffer<IMFChunkType> &imfData, const int track);
