@@ -5,11 +5,13 @@
  *      Author: gerstrong
  */
 
+#include "fileio/ResourceMgmt.h"
 #include "fileio/crc.h"
 
 #include "CExeFile.h"
 #include "compression/Cunlzexe.h"
-#include "fileio/ResourceMgmt.h"
+#include "compression/Cunlzexe.h"
+#include "engine/depklite/depklite.h"
 #include "fileio/KeenFiles.h"
 #include "fileio/compression/CHuffman.h"
 
@@ -208,6 +210,7 @@ bool CExeFile::readKeenExeData(const unsigned int episode,
 		return false;	
     }
 
+    const auto fullfilePath = GetFullFileName(filename);
     mFilename = filename;
     mEpisode = episode;
     mIsADemo = demo;
@@ -241,14 +244,21 @@ bool CExeFile::readKeenExeData(const unsigned int episode,
         mHeadersize = UnLZEXE.HeaderSize();
         memcpy(mData.data(), &decdata[0], mDatasize);
 	}
-	else
-	{
+    else if(depklite_unpack(dataTemp, decdata))
+    {
+        mDatasize = decdata.size();
+        mData.resize(mDatasize);
+        memcpy(mData.data(), &decdata[0], mDatasize);
+	}
+    else
+    {
         mData.resize(mDatasize);
         memcpy(mData.data(), dataTemp.data(),mDatasize);
-	}
+    }
 
     mHeaderdata = mData.data();
     mHeadersize = UnLZEXE.HeaderSize();
+
     if(!mHeadersize)
     {
         mHeadersize = fetchUncompressedHeaderSize(mHeaderdata);
@@ -334,15 +344,13 @@ bool CExeFile::isSupported()
 
 int CExeFile::getEXEVersion() const
 {
-    printf("size=%zu\n", mDatasize);
-
     switch (mDatasize)
     {
     case 100274:
         return (mEpisode == 1) ? 110 : -1;
     case 100484:
         return (mEpisode == 1) ? 131 : -1;
-    case 49684:
+    case 100132:
         return (mEpisode == 1) ? 134 : -1;
 
     case 118626:
@@ -441,7 +449,7 @@ int CExeFile::getEXECrc()
             else
                 return true;
         case 134:
-            if(mCrc != 0x45F0BA61)
+            if(mCrc != 0xB6D35EB8)
                 return -1;
             else
                 return 1;

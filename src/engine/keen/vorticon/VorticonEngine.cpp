@@ -149,13 +149,13 @@ bool VorticonEngine::loadResources( const Uint8 flags )
             int version = ExeFile.getEXEVersion();
             unsigned char *p_exedata = ExeFile.getRawData();
             const auto pexedatasize = ExeFile.getRawDataSize();
-
+/*
             if( mEp == 1 && version == 134)
             {
                 gLogging.ftextOut("This version of the game is not supported!<br>");
                 return 0;
             }
-
+*/
             // Patch the EXE-File-Data directly in the memory.
             CPatcher Patcher(ExeFile, gBehaviorEngine.mPatchFname);
             Patcher.process();

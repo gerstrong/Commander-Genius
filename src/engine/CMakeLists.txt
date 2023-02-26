@@ -25,6 +25,7 @@ endif(BUILD_COSMOS)
 
 # Move this to somewhere else
 add_subdirectory(unzip)
+add_subdirectory(depklite)
 
 if(DOWNLOADER)
     add_definitions(-DDOWNLOADER)
@@ -98,6 +99,7 @@ endif(BUILD_COSMOS)
 
 target_link_libraries(engine
                       cg_dialog
-                      unzip)
+                      unzip
+                      depklite)
 
 TARGET_LINK_LIBRARIES(engine ${CURL_LIBRARIES})
