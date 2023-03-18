@@ -67,7 +67,7 @@ void CTileLoader::setupOffsetMap()
 {
 	m_offsetMap[1][110] = 0x131F8;
 	m_offsetMap[1][131] = 0x130F8;
-	m_offsetMap[1][134] = 0x130F8;
+    m_offsetMap[1][134] = 0x1340A;
 
 	m_offsetMap[2][100] = 0x17938;
 	m_offsetMap[2][131] = 0x17828;
@@ -102,6 +102,8 @@ bool CTileLoader::load(const size_t NumUnMaskedTiles,
 
     std::vector<gs_byte> tileData;
 
+    const auto offset = getOffset();
+
     if(gKeenFiles.exeFile.isLuaScript())
     {
         const auto &gameDir = gKeenFiles.gameDir;
@@ -121,10 +123,10 @@ bool CTileLoader::load(const size_t NumUnMaskedTiles,
             data = tileData.data();
         }
     }
-    else if(getOffset())
+    else if(offset)
     {
         isTiledataLoaded = true;
-        data = m_data + getOffset();
+        data = m_data + offset;
     }
 
     if(isTiledataLoaded)

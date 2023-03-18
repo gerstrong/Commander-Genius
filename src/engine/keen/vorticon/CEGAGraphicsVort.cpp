@@ -65,17 +65,35 @@ bool CEGAGraphicsVort::loadData( int version, unsigned char *p_exedata )
   memcpy(&BitmapTableStart,&data[0]+8,4);
   memcpy(&SpriteStart,&data[0]+12,4);
   
-  memcpy(&FontTiles,&data[0]+16,2);
-  memcpy(&FontLocation,&data[0]+18,4);
-  memcpy(&ScreenTiles,&data[0]+22,2);
-  memcpy(&ScreenLocation,&data[0]+24,4);
-  memcpy(&Num16Tiles,&data[0]+28,2);
-  memcpy(&Tiles16Location,&data[0]+30,4);
-  memcpy(&NumBitmaps,&data[0]+34,4);
-  memcpy(&BitmapLocation,&data[0]+36,4);
-  memcpy(&NumSprites,&data[0]+40,4);
-  memcpy(&SpriteLocation,&data[0]+42,4);
-  memcpy(&compressed,&data[0]+46,4);
+  // At this point there are differences to the 134 version
+  if(version == 134)
+  {
+      memcpy(&FontTiles,&data[0]+16+6,2);
+      memcpy(&FontLocation,&data[0]+18+6,4);
+      memcpy(&ScreenTiles,&data[0]+22+6,2);
+      memcpy(&ScreenLocation,&data[0]+24+6,4);
+      memcpy(&Num16Tiles,&data[0]+28+6,2);
+      memcpy(&Tiles16Location,&data[0]+30+6,4);
+      memcpy(&NumBitmaps,&data[0]+34+6,4);
+      memcpy(&BitmapLocation,&data[0]+36+6,4);
+      memcpy(&NumSprites,&data[0]+40+6,4);
+      memcpy(&SpriteLocation,&data[0]+42+6,4);
+      memcpy(&compressed,&data[0]+46+6,4);
+  }
+  else
+  {
+      memcpy(&FontTiles,&data[0]+16,2);
+      memcpy(&FontLocation,&data[0]+18,4);
+      memcpy(&ScreenTiles,&data[0]+22,2);
+      memcpy(&ScreenLocation,&data[0]+24,4);
+      memcpy(&Num16Tiles,&data[0]+28,2);
+      memcpy(&Tiles16Location,&data[0]+30,4);
+      memcpy(&NumBitmaps,&data[0]+34,4);
+      memcpy(&BitmapLocation,&data[0]+36,4);
+      memcpy(&NumSprites,&data[0]+40,4);
+      memcpy(&SpriteLocation,&data[0]+42,4);
+      memcpy(&compressed,&data[0]+46,4);
+  }
   
   // First, retrieve the Tile properties so the tilemap gets properly formatted
   // Important especially for masks, and later in the game for the behaviours
