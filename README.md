@@ -18,17 +18,17 @@ Of course you still have the option to use your old original DOS versions of the
 # Authors
 
 ### Main development:
-* (c) 2008-2022          Gerstrong
+* (c) 2008-2023          Gerstrong
 
 ### Testing
-* (c) 2020-2022          Gagster
+* (c) 2020-2023          Gagster
 
 ### Porting and Support
-* (c) 2010-2022          Pelya (Android-Distro)
-* (c) 2020-2022          Elias Oenal (Switch port)
+* (c) 2010-2023          Pelya (Android-Distro)
+* (c) 2020-2023          Elias Oenal (Switch port)
 
 ### Resources
-* (c) 2018-2022          Zilem
+* (c) 2018-2023          Zilem
 
 
 # About
