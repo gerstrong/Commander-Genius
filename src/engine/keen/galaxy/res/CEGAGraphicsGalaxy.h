@@ -95,7 +95,7 @@ public:
 
 private:
 
-    size_t getEpisodeInfoIndex();
+    size_t getExecutableInfoIndex();
 
 	std::vector<unsigned long> m_egahead;
 	std::vector<ChunkStruct> m_egagraph;

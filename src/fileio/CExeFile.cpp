@@ -354,69 +354,36 @@ int CExeFile::getEXEVersion() const
         return (mEpisode == 1) ? 134 : -1;
 
     case 118626:
-        if(mEpisode != 2)
-            return -1;
-        else
-            return 100;
+        return (mEpisode == 2) ? 100 : -1;
     case 118672:
-        if(mEpisode != 2)
-            return -1;
-        else
-            return 131;
+        return (mEpisode == 2) ? 131 : -1;
 
     case 127598:
-        if(mEpisode != 3)
-            return -1;
-        else
-            return 100;
+        return (mEpisode == 3) ? 100 : -1;
     case 127616:
-        if(mEpisode != 3)
-            return -1;
-        else
-            return 131;
+        return (mEpisode == 3) ? 131 : -1;
 
         // For Keen 4
     case 263488:
-        if(mEpisode != 4)
-            return -1;
-        else
-            return 140;
+        return (mEpisode == 4) ? 140 : -1;
     case 259232:
-        if(mEpisode != 4)
-            return -1;
-        else
-            return 110;
+        return (mEpisode == 4) ? 110 : -1;
     case 258064:
-        if(mEpisode != 4)
-            return -1;
-        else
-            return 100;
+        return (mEpisode == 4) ? 100 : -1;
 
         // For Keen 5
     case 266096:
-        if(mEpisode != 5)
-            return -1;
-        else
-            return 140;
-
+        return (mEpisode == 5) ? 140 : -1;
     case 262176:
-        if(mEpisode != 5)
-            return -1;
-        else
-            return 100;
+        return (mEpisode == 5) ? 100 : -1;
 
         // For Keen 6
     case 236112:
-        if(mEpisode != 6)
-            return -1;
-        else
-            return 100;
-
+        return (mEpisode == 6) ? 100 : -1;
     case 271696:
-        if(mEpisode != 6)
-            return -1;
-        else
-            return 140;
+        return (mEpisode == 6) ? 140 : -1;
+    case 270896:
+        return (mEpisode == 6) ? 150 : -1;
 
         // Keen Dreams
     case 213536:

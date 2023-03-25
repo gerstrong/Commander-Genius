@@ -150,6 +150,23 @@ static EpisodeInfoStruct EpisodeInfo[] =
         // Demos have size ~66-194 and small first two words.
         // NumChunks - 4 gives IndexDemos.
         4, 4361     /* NumDemos, IndexDemos */
+    },
+    {   /* Episode 6 */
+        0x3F950,    /* ExeImageSize */
+        0x259B0,    /* OffEgaHead */
+        0x372EE,    /* OffEgaDict */
+        5560,       /* NumChunks */
+        3, 3,       /* NumFonts, IndexFonts */
+        37, 6,      /* NumBitmaps, IndexBitmaps */
+        3, 43,      /* NumMaskedBitmaps, IndexMasked Bitmaps */
+        390, 46,    /* NumSprites, IndexSprites */
+        104, 436,   /* Num8Tiles, Index8Tiles */
+        12, 437,    /* Num8MaskedTiles, Index8MaskedTiles */
+        2376, 438,  /* Num16Tiles, Index16Tiles */
+        2736, 2814, /* Num16MaskedTiles, Index16MaskedTiles */
+        4, 5551,    /* NumMisc, IndexMisc */
+        1, 5550,    /* NumTexts, IndexTexts */
+        5, 5555     /* NumDemos, IndexDemos */
     }
 };
 
@@ -169,7 +186,7 @@ CEGAGraphicsGalaxy::CEGAGraphicsGalaxy()
 // 2 - keen6
 // 3 - keen dreams
 // 4 - keen6 demo
-size_t CEGAGraphicsGalaxy::getEpisodeInfoIndex()
+size_t CEGAGraphicsGalaxy::getExecutableInfoIndex()
 {
   const int  episode = gKeenFiles.exeFile.getEpisode();
   const bool isDemo  = gKeenFiles.exeFile.isDemo();
@@ -195,7 +212,7 @@ bool CEGAGraphicsGalaxy::loadData()
         return false;
     }
 
-    auto &curEpInfo = EpisodeInfo[getEpisodeInfoIndex()];
+    auto &curEpInfo = EpisodeInfo[getExecutableInfoIndex()];
 
     // First, retrieve the Tile properties so the tilemap gets properly formatted
     // Important especially for masks, and later in the game for the behaviours
@@ -514,14 +531,14 @@ bool CEGAGraphicsGalaxy::readEGAHead()
     
     if (episode <= 6) filename = JoinPaths(gamedir, "EGAHEAD.CK" + to_string(episode));
     else filename =  JoinPaths(gamedir, "KDREAMSHEAD.EGA"); // Not sure about that one
-    const int ep = getEpisodeInfoIndex();
+    const int exeIdx = getExecutableInfoIndex();
 
     std::ifstream File; OpenGameFileR(File, filename, std::ios::binary);
     gs_byte *headPtr = nullptr;
 
     std::vector<char> egaHeadData;
 
-    size_t numChunks = EpisodeInfo[ep].NumChunks;
+    size_t numChunks = EpisodeInfo[exeIdx].NumChunks;
 
     if(File) // File exists!
     {
@@ -559,7 +576,7 @@ bool CEGAGraphicsGalaxy::readEGAHead()
             return false;
 
         // Read the EGAHEAD
-        headPtr = p_data + exeheaderlen + EpisodeInfo[ep].OffEgaHead;
+        headPtr = p_data + exeheaderlen + EpisodeInfo[exeIdx].OffEgaHead;
     }
 
     unsigned long offset = 0;
@@ -567,7 +584,7 @@ bool CEGAGraphicsGalaxy::readEGAHead()
     // For some reason, MultiMania's KDR support uses a slightly different limit
     // in offset ops. We're not in DOS, so we don't have to worry about
     // memory here >:P
-    bool dreams = (ep == 3);
+    bool dreams = (exeIdx == 3);
     unsigned long offset_limit = dreams ? 0xFFFFFFFF : 0x00FFFFFF;
 
     size_t chunkSize = dreams ? 4 : 3;
@@ -661,7 +678,7 @@ bool CEGAGraphicsGalaxy::begin()
     unsigned long exeheaderlen = 0;
     unsigned long exeimglen = 0;
     assert(episode >= 4);
-    auto epIdx = int(getEpisodeInfoIndex());
+    auto epIdx = int(getExecutableInfoIndex());
     
     const std::string &gamedir = gKeenFiles.gameDir;
     
@@ -777,12 +794,10 @@ bool CEGAGraphicsGalaxy::begin()
 
     // Now lets decompress the graphics
     gLogging.ftextOut("Decompressing graphics ...\n<br>");
-    auto offPtr = m_egahead.begin();
-    for(size_t i = 0 ; offPtr != m_egahead.end() ; offPtr++, i++)
+    auto offIt = m_egahead.begin();
+    for(size_t i = 0 ; offIt != m_egahead.end() ; offIt++, i++)
     {
-        // Show that something is happening
-        offset = *offPtr;
-
+        offset = *offIt;
         outlen = outLenVec[i];
 
         // Make sure the chunk is valid
@@ -808,8 +823,8 @@ bool CEGAGraphicsGalaxy::begin()
                 offset += 4;
             }
 
-            // Set an arbitrary, but large, limit on outlen, to avoid blowouts
-            // on bad input data.
+            // Set an arbitrary but large, limit on outlen, to avoid blowouts
+            // because of bad input data.
             if(outlen > 100000)
             {
                 gLogging << "outlen too big at i=" << i
@@ -819,38 +834,38 @@ bool CEGAGraphicsGalaxy::begin()
             }
 
             inlen = 0;
-            // Find out the input length
-            size_t j;
 
-            auto secondOffPtr = offPtr;
-            secondOffPtr++;
-            for( j = i + 1; secondOffPtr != m_egahead.end() ; secondOffPtr++, j++ )
+            // Find out the input length
+            auto secondOffIt = offIt;
+            secondOffIt++;
+            for( size_t j = i + 1; secondOffIt != m_egahead.end() ; secondOffIt++, j++ )
             {
-                const unsigned long second = *secondOffPtr;
-                if(second < offset_limit)
+                const unsigned long secondOff = *secondOffIt;
+                if(secondOff < offset_limit)
                 {
                     // Check that the second offset is valid
-                    if(second > dataSize)
+                    if(secondOff > dataSize)
                     {
                         gLogging.textOut(FONTCOLORS::RED,"Error! The file \"" + filename + "\" contains a second offset that is too large!");
                     }
-                    else if(second < offset)
+                    else if(secondOff < offset)
                     {
-                        gLogging.textOut(FONTCOLORS::RED,"Error! The file \"" + filename + "\" contains a second offset that is less than the first offset!");
+                        gLogging.textOut(FONTCOLORS::RED,"Error! The file \"" + filename + "\" contains a second offset that is smaller than the first offset!");
                     }
                     else
                     {
-                        inlen = second - offset;
+                        inlen = secondOff - offset;
                     }
                     break;
                 }
             }
 
-            if( secondOffPtr == m_egahead.end() )
+            if( secondOffIt == m_egahead.end() )
             {
                 inlen = egagraphlen - offset;
             }
-            else if(inlen == 0) {
+            else if(inlen == 0)
+            {
                 m_egagraph[i].len = 0;
                 gLogging.ftextOut("Giving up due to bad chunk at offset=%x", offset);
                 ++numBadChunks;
@@ -905,7 +920,7 @@ Uint8 CEGAGraphicsGalaxy::getBit(unsigned char data, Uint8 leftshift)
  */
 bool CEGAGraphicsGalaxy::readTables()
 {
-    const auto epIdx = int(getEpisodeInfoIndex());
+    const auto epIdx = int(getExecutableInfoIndex());
     const std::vector<unsigned char> &bitmapTable = m_egagraph.at(0).data;
     
     auto &info = EpisodeInfo[epIdx];
@@ -968,7 +983,7 @@ bool CEGAGraphicsGalaxy::readfonts()
 {
     int bw, y, x;
 
-    const int ep = getEpisodeInfoIndex();
+    const int ep = getExecutableInfoIndex();
     SDL_Color *Palette = gGraphics.Palette.m_Palette;
 
     const auto flags = gVideoDriver.getScrollSurface(0).getFlags();
@@ -1139,7 +1154,7 @@ void filterList(std::set<std::string> &mySet,
  */
 bool CEGAGraphicsGalaxy::readBitmaps()
 {
-    const auto ep = getEpisodeInfoIndex();
+    const auto ep = getExecutableInfoIndex();
 
     const EpisodeInfoStruct &epInfo = EpisodeInfo[ep];
     
@@ -1296,7 +1311,7 @@ bool CEGAGraphicsGalaxy::readBitmaps()
 
 bool CEGAGraphicsGalaxy::readMaskedBitmaps()
 {
-    const int ep = getEpisodeInfoIndex();
+    const int ep = getExecutableInfoIndex();
 
     // ARM processor requires all ints and structs to be 4-byte aligned, so we're just using memcpy()
     BitmapHeadStruct BmpMaskedHead[EpisodeInfo[ep].NumMaskedBitmaps];
@@ -1548,7 +1563,7 @@ bool CEGAGraphicsGalaxy::readSprites( const size_t numSprites,
     // Create all the sprites
     gGraphics.createEmptySprites(4, numSprites);
 
-    const auto ep = static_cast<int>(getEpisodeInfoIndex());
+    const auto ep = static_cast<int>(getExecutableInfoIndex());
 
     // Check that source head data size is appropriate.
     const std::vector<unsigned char> &headData = m_egagraph.at(2).data;
@@ -1861,7 +1876,7 @@ bool CEGAGraphicsGalaxy::readSprites( const size_t numSprites,
 
 bool CEGAGraphicsGalaxy::readTexts()
 {
-    const auto ep = getEpisodeInfoIndex();
+    const auto ep = getExecutableInfoIndex();
 
     gGameText.clear();
 
@@ -1899,7 +1914,7 @@ bool CEGAGraphicsGalaxy::readMiscStuff()
     int width = 0; int height = 0;
     SDL_Color *Palette = gGraphics.Palette.m_Palette;
 
-    size_t indexMisc = EpisodeInfo[getEpisodeInfoIndex()].IndexMisc;
+    size_t indexMisc = EpisodeInfo[getExecutableInfoIndex()].IndexMisc;
     
     const auto &exefile = gKeenFiles.exeFile;
     const int  episode  = exefile.getEpisode();        
