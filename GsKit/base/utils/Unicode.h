@@ -11,6 +11,7 @@
 #ifndef __UNICODE_H__
 #define __UNICODE_H__
 
+#include <cstdint>
 #include <string>
 
 typedef uint32_t UnicodeChar;
