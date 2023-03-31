@@ -14,7 +14,6 @@
 #include "engine/core/CResourceLoader.h"
 #include "engine/core/CBehaviorEngine.h"
 #include "engine/core/menu/MainMenu.h"
-//#include "engine/CGameLauncher.h"
 #include "fileio/CPatcher.h"
 #include "fileio/CSaveGameController.h"
 #include "engine/core/CMessages.h"

@@ -25,7 +25,7 @@
 #include <base/video/CVideoDriver.h>
 #include <base/GsArguments.h>
 #include "fileio/CTileLoader.h"
-#include "engine/core/CSpriteObject.h"
+#include "engine/core/scrollingplane.h"
 #include "engine/core/CPlanes.h"
 #include <fstream>
 #include <cstring>
@@ -151,7 +151,7 @@ static EpisodeInfoStruct EpisodeInfo[] =
         // NumChunks - 4 gives IndexDemos.
         4, 4361     /* NumDemos, IndexDemos */
     },
-    {   /* Episode 6 */
+    {   /* Episode 6 ver 1.5*/
         0x3F950,    /* ExeImageSize */
         0x259B0,    /* OffEgaHead */
         0x372EE,    /* OffEgaDict */
@@ -186,15 +186,20 @@ CEGAGraphicsGalaxy::CEGAGraphicsGalaxy()
 // 2 - keen6
 // 3 - keen dreams
 // 4 - keen6 demo
+// 5 - Keen6 ver 1.5
 size_t CEGAGraphicsGalaxy::getExecutableInfoIndex()
 {
-  const int  episode = gKeenFiles.exeFile.getEpisode();
-  const bool isDemo  = gKeenFiles.exeFile.isDemo();
+  const auto episode = gKeenFiles.exeFile.getEpisode();
+  const auto isDemo  = gKeenFiles.exeFile.isDemo();
+  const auto version = gKeenFiles.exeFile.getEXEVersion();
   
-  if (episode == 6 && isDemo)
-    {
-      return 4;
-    }
+  if (episode == 6)
+  {
+      if(isDemo)
+          return 4;
+      if(version == 150)
+          return 5;
+  }
   
   return size_t(episode - 4);
 }
