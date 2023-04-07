@@ -1308,9 +1308,6 @@ bool CEGAGraphicsGalaxy::readBitmaps()
         numbitmapVar++;
     }
 
-
-
-
     return true;
 }
 
@@ -1568,7 +1565,7 @@ bool CEGAGraphicsGalaxy::readSprites( const size_t numSprites,
     // Create all the sprites
     gGraphics.createEmptySprites(4, numSprites);
 
-    const auto ep = static_cast<int>(getExecutableInfoIndex());
+    const auto exeInfo = static_cast<int>(getExecutableInfoIndex());
 
     // Check that source head data size is appropriate.
     const std::vector<unsigned char> &headData = m_egagraph.at(2).data;
@@ -1692,7 +1689,7 @@ bool CEGAGraphicsGalaxy::readSprites( const size_t numSprites,
         SDL_UnlockSurface(sfc);
 
         // Special case for k6demo
-        size_t spriteNameOffset = (ep == 4 ? 3 : ep);
+        const size_t spriteNameOffset = (exeInfo == 4 ? 3 : exeInfo);
         auto &sprNameRef = m_SpriteNameMap[spriteNameOffset];
         sprite.setName(sprNameRef[i]);
 

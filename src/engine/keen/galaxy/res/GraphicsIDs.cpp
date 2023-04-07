@@ -83,30 +83,53 @@ void CEGAGraphicsGalaxy::createBitmapsIDs()
 
 	/// Keen 6 Image IDs
 	// Bitmaps
-    auto &keen6bmpName = m_BitmapNameMap[2];
-    auto &keen6sprName = m_SpriteNameMap[2];
-    keen6bmpName[27] = "STARWARS";
-    keen6bmpName[28] = "TITLE";
-    keen6bmpName[20] = "KEENSWATCH";
-    keen6bmpName[29] = "KEENTALKING";
-    keen6bmpName[30] = "KEENTHUMBSUP";
-    keen6bmpName[31] = "KEENTHUMBSUPLOADING";
-    keen6bmpName[32] = "KEENTHUMBSUPLOADING1";
-    keen6bmpName[33] = "KEENTHUMBSUPLOADING2";
-    keen6bmpName[34] = "KEENTHUMBSUPLOADING3";
-    keen6bmpName[35] = "KEENTHUMBSUPLOADING4";
-    keen6bmpName[36] = "KEENTHUMBSUPLOADING5";
+    auto setBmpNames = [](std::unordered_map<int, std::string> &name)
+    {
+        name[0] = "HELPHAND";
 
-    keen6bmpName[0] = "HELPHAND";
+        // Menu Labels
+        name[5]  = "MAINMENULABEL";
+        name[6]  = "NEWGAMELABEL";
+        name[8]  = "SAVEMENULABEL";
+        name[9]  = "CONFIGMENULABEL";
+        name[10] = "SNDEFFMENULABEL";
+        name[11] = "MUSICMENULABEL";
+        name[12] = "KEYBMENULABEL";
+        name[7]  = "LOADMENULABEL";
+        name[13] = "MOVEMENULABEL";
+        name[14] = "BUTTONMENULABEL";
+        name[15] = "JOYMENULABEL";
+        name[16] = "OPTIONSMENULABEL";
+        name[17] = "PADDLELABEL";
+        name[18] = "QUITLABEL";
+
+        name[27] = "STARWARS";
+        name[28] = "TITLE";
+        name[20] = "KEENSWATCH";
+        name[29] = "KEENTALKING";
+        name[30] = "KEENTHUMBSUP";
+        name[31] = "KEENTHUMBSUPLOADING";
+        name[32] = "KEENTHUMBSUPLOADING1";
+        name[33] = "KEENTHUMBSUPLOADING2";
+        name[34] = "KEENTHUMBSUPLOADING3";
+        name[35] = "KEENTHUMBSUPLOADING4";
+        name[36] = "KEENTHUMBSUPLOADING5";
+    };
+    setBmpNames(m_BitmapNameMap[2]);
+    setBmpNames(m_BitmapNameMap[5]);
+
 	
 	// Sprites
-    keen6sprName[129] = "HUDBACKGROUND";
+    auto setSprNames = [](std::unordered_map<int, std::string> &name)
+    {
+        name[129] = "HUDBACKGROUND";
+    };
+    setSprNames(m_SpriteNameMap[2]);
+    setSprNames(m_SpriteNameMap[5]);
 
 	/// Keen 6 demo Image IDs
 	// Bitmaps
     auto &keen6DemobmpName = m_BitmapNameMap[3];
-    auto &keen6DemosprName = m_SpriteNameMap[3];
-
     keen6DemobmpName[22] = "STARWARS";
     keen6DemobmpName[23] = "TITLE";
     keen6DemobmpName[15] = "KEENSWATCH";
@@ -123,6 +146,7 @@ void CEGAGraphicsGalaxy::createBitmapsIDs()
     keen6DemobmpName[0] = "HELPHAND";
 	
 	// Sprites
+    auto &keen6DemosprName = m_SpriteNameMap[3];
     keen6DemosprName[129] = "HUDBACKGROUND";
 
 	// Menu Labels
@@ -141,21 +165,6 @@ void CEGAGraphicsGalaxy::createBitmapsIDs()
     keen5bmpName[73] = "PADDLELABEL";
     keen5bmpName[74] = "QUITLABEL";
 
-	// Menu Labels
-    keen6bmpName[5]  = "MAINMENULABEL";
-    keen6bmpName[6]  = "NEWGAMELABEL";
-    keen6bmpName[7]  = "LOADMENULABEL";
-    keen6bmpName[8]  = "SAVEMENULABEL";
-    keen6bmpName[9]  = "CONFIGMENULABEL";
-    keen6bmpName[10] = "SNDEFFMENULABEL";
-    keen6bmpName[11] = "MUSICMENULABEL";
-    keen6bmpName[12] = "KEYBMENULABEL";
-    keen6bmpName[13] = "MOVEMENULABEL";
-    keen6bmpName[14] = "BUTTONMENULABEL";
-    keen6bmpName[15] = "JOYMENULABEL";
-    keen6bmpName[16] = "OPTIONSMENULABEL";
-    keen6bmpName[17] = "PADDLELABEL";
-    keen6bmpName[18] = "QUITLABEL";
 
 	// Menu Labels (demo)
     keen6DemobmpName[0]  = "MAINMENULABEL";

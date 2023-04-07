@@ -80,7 +80,7 @@ void CTileLoader::setupOffsetMap()
 	m_offsetMap[5][140] = 0x25B22;
 
     m_offsetMap[6][140] = 0x25212;
-    m_offsetMap[6][150] = 0x25212;
+    m_offsetMap[6][150] = 0x29BB2;
 
 	m_offsetMap[7][100] = 0x11322;
 

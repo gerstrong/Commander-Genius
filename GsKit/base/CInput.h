@@ -15,10 +15,10 @@
 #include <base/Singleton.h>
 #include <base/GsVirtualinput.h>
 
-#include <SDL_mutex.h>
 #include <SDL_joystick.h>
 #include <SDL_keycode.h>
 #include <SDL_events.h>
+#include <SDL_thread.h>
 
 #include <string>
 #include <list>
@@ -30,7 +30,7 @@
 #define gInput	CInput::get()
 
 // key defines, locations in keytable[]
-enum keys{
+enum keys {
     // Ascii keys
     KSPACE = 32,
     KEXCLAIM,
@@ -130,10 +130,6 @@ enum keys{
 
     KBCKSPCE,
 };
-
-constexpr unsigned int KEYTABLE_SIZE = 256;
-
-#define NUM_INPUTS			4
 
 enum class EType
 {
@@ -370,22 +366,24 @@ private:
     SDL_Event Event;
     std::list<SDL_Joystick*> mp_Joysticks;
 
+    constexpr static int  NUM_INPUTS = 4;
     std::array< std::array<stInputCommand, MAX_COMMANDS>, NUM_INPUTS > mInputCommands;
 
     std::map<int, int> mJoyIdToInputIdx;
 
-    bool TwoButtonFiring[NUM_INPUTS];
-    bool mAnalogAxesMovement[NUM_INPUTS];
-    bool mSuperPogo[NUM_INPUTS];
-    bool mImpPogo[NUM_INPUTS];
-    bool mFullyAutomatic[NUM_INPUTS];
+    std::array<bool, NUM_INPUTS> TwoButtonFiring;
+    std::array<bool, NUM_INPUTS> mAnalogAxesMovement;
+    std::array<bool, NUM_INPUTS> mSuperPogo;
+    std::array<bool, NUM_INPUTS> mImpPogo;
+    std::array<bool, NUM_INPUTS> mFullyAutomatic;
 
-    bool m_exit;
-    int m_cmdpulse;
-    short m_joydeadzone;
+    bool m_exit = false;
+    int m_cmdpulse = 0 ;
+    short m_joydeadzone = 0;
 
     bool mVPadConfigState = false;
 
+    static constexpr unsigned int KEYTABLE_SIZE = 256;
     std::array<bool, KEYTABLE_SIZE> immediate_keytable;
     std::array<bool, KEYTABLE_SIZE> last_immediate_keytable;
     std::array<bool, KEYTABLE_SIZE> firsttime_immediate_keytable;

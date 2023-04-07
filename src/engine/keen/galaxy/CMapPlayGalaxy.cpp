@@ -6,7 +6,6 @@
  */
 
 #include "CMapPlayGalaxy.h"
-#include "common/ai/platform/CPlatform.h"
 #include "common/ai/CPlayerBase.h"
 #include "engine/core/CBehaviorEngine.h"
 #include "ep4/CMapLoaderGalaxyEp4.h"
@@ -16,6 +15,7 @@
 #include "ep4/ai/CFoot.h"
 #include "ep4/ai/CSmokePuff.h"
 #include "engine/core/VGamepads/vgamepadsimple.h"
+#include "fileio/CExeFile.h"
 #include <base/GsLogging.h>
 #include <base/video/CVideoDriver.h>
 

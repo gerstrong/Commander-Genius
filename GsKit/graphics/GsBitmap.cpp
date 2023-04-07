@@ -33,8 +33,7 @@ mName(bitmap.getName())*/
     mBitmapSurface.createCopy(bitmap.mBitmapSurface);
 }
 
-GsBitmap::GsBitmap(GsBitmap &bitmap)/* :
-mName(bitmap.getName())*/
+GsBitmap::GsBitmap(GsBitmap &bitmap)
 {
     if(bitmap.empty())
     {

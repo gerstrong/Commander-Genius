@@ -288,10 +288,10 @@ void drawRect( SDL_Surface *sfc,
  * \param FillColor Fill-color of the rect
  */
 void drawRect(SDL_Surface *sfc,
-               SDL_Rect *rect,
-               const int thickness,
-               const Uint32 &ContourColor,
-               const Uint32 &FillColor );
+              SDL_Rect *rect,
+              const int thickness,
+              const Uint32 &ContourColor,
+              const Uint32 &FillColor );
 
 
 

@@ -11,6 +11,7 @@
 #include "engine/core/CPassive.h"
 #include <graphics/GsBitmap.h>
 #include <string>
+#include <optional>
 
 namespace galaxy
 {
