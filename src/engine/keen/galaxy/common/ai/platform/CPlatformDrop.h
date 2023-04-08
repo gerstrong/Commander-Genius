@@ -28,7 +28,7 @@ public:
 	/**
 	 * \brief Processes the platforms AI. It's just simple moving around of course
 	 */
-	void process();
+    void process() override;
 
     void deserialize(GsKit::ptree &node) override;
 
