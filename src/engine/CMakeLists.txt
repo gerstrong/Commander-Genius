@@ -71,8 +71,9 @@ add_library(engine STATIC ${CXXSRC}
 
 
 
-add_executable(xxd xxd.c)
-
+if (NOT OSXCROSS)
+    add_executable(xxd xxd.c)
+endif()
 
 add_custom_target(
   createGameLauncherMenu
