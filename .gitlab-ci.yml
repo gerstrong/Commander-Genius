@@ -115,8 +115,12 @@ build:macos-64bit:
       - export PATH=$PATH:/tmp/osxcross/target/bin
       - export CG_SOURCES=${CI_PROJECT_DIR}
       - export OSXCROSSPATH=/tmp/osxcross
-      - export OSXOPT=${OSXCROSSPATH}/target/macports/pkgs/opt      
-      - x86_64-apple-darwin20.4-cmake -DAPPEND_SHA=1 -DUSE_SDL2=1 -DCMAKE_BUILD_TYPE="Release" -DBUILD_COSMOS=1 -DOSXCROSS=1 -DUSE_OPENGL=0 -DUSE_BOOST=0 -DSDL2_INCLUDE_DIR=${OSXOPT}/local/include/SDL2 -DSDL2_MIXER_INCLUDE_DIR=${OSXOPT}/local/include/SDL2 -DSDL2_INCLUDE_DIR=${OSXOPT}/local/include/SDL2 ${CG_SOURCES}
+      - export OSXOPT=${OSXCROSSPATH}/target/macports/pkgs/opt            
+      - export CC=o64-clang 
+      - export CXX=o64-clang++
+      - export AR=x86_64-apple-darwin20.4-ar
+      - export AS=x86_64-apple-darwin20.4-as
+      - x86_64-apple-darwin20.4-cmake -DAPPEND_SHA=1 -DUSE_SDL2=1 -DCMAKE_BUILD_TYPE="Release" -DOSXCROSS=1 -DUSE_OPENGL=0 -DUSE_BOOST=0 -DSDL2_LIBRARY=${OSXOPT}/local/lib -DSDL2_INCLUDE_DIR=${OSXOPT}/local/include/SDL2 -DSDL2_IMAGE_LIBRARY=${OSXOPT}/local/lib -DSDL2_IMAGE_LIBRARIES=${OSXOPT}/local/lib -DSDL2_MIXER_LIBRARY=${OSXOPT}/local/lib -DSDL2_MIXER_LIBRARIES=${OSXOPT}/local/lib -DSDL2_TTF_LIBRARY=${OSXOPT}/local/lib -DSDL2_TTF_LIBRARIES=${OSXOPT}/local/lib -DCURL_LIBRARY=${OSXOPT}/local/lib -DSDL2_MIXER_INCLUDE_DIR=${OSXOPT}/local/include/SDL2 -DSDL2_IMAGE_INCLUDE_DIR=${OSXOPT}/local/include/SDL2 -DZLIB_LIBRARY=${OSXOPT}/local/lib -DSDL2_TTF_INCLUDE_DIR=${OSXOPT}/local/include/SDL2 -DCURL_INCLUDE_DIR=${OSXOPT}/local/include/curl -DCURL_VERSION_STRING="7.32" ${CG_SOURCES}
     script:
       - cmake --build .
       - bash buildMacOsBundle.sh
