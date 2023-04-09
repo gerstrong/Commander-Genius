@@ -142,7 +142,7 @@ endif()
 set(CG_VERSION "3.2.0")
 
 MESSAGE(STATUS "Preparing the Build-System for Commander Genius" )
-execute_process(COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/get_version.sh OUTPUT_VARIABLE CG_VERSION)
+execute_process(COMMAND bash ${CMAKE_CURRENT_SOURCE_DIR}/get_version.sh OUTPUT_VARIABLE CG_VERSION)
 string(REGEX REPLACE "[\r\n]" "" CG_VERSION "${CG_VERSION}")
 
 # Generate the README file with the correct version string
@@ -171,12 +171,6 @@ if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/GsKit/CMakeLists.txt")
     MESSAGE(FATAL_ERROR "You need to have the sources of GsKit in order to build Commander Genius. ")
 
 endif()
-
-IF(APPLE)
-    # At least it works with Mac ports
-    # Otherwise SDL2 won't be found
-    link_directories(/opt/local/lib/)
-ENDIF(APPLE)
 
 # And build Commander Genius on top of that!
 add_subdirectory("src")
