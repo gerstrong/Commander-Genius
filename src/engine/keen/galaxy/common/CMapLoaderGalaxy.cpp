@@ -23,12 +23,6 @@
 #include <base/utils/FindFile.h>
 #include <base/audio/music/CMusic.h>
 
-
-/// AI Headers
-
-// General stuff
-//#include "../common/ai/CSpriteItem.h"
-
 #include <fstream>
 
 namespace galaxy
@@ -48,12 +42,21 @@ size_t CMapLoaderGalaxy::getMapheadOffset()
 {
 	size_t offset = 0;
 
+    const auto ep = gKeenFiles.exeFile.getEpisode();
+    const auto version = gKeenFiles.exeFile.getEXEVersion();
 
-    switch(gKeenFiles.exeFile.getEpisode())
+    switch(ep)
 	{
 	case 4:	offset = 0x24830; break;
 	case 5:	offset = 0x25990; break;
-	case 6:	offset = gKeenFiles.exeFile.isDemo() ? 0x1F560 : 0x25080; break;
+    case 6:
+    {
+        if(version == 150)
+            offset = 0x29AE0;
+        else
+            offset = gKeenFiles.exeFile.isDemo() ? 0x1F560 : 0x25080;
+        break;
+    }
 	default:	break;
 	}
 
@@ -409,6 +412,11 @@ void CMapLoaderGalaxy::spawnFoes(CMap &Map)
             // Skip unused 0 foe id, as an optimisation.
             if(foeID == 0)
                 continue;
+
+            if(x==39 && y==21)
+            {
+                printf("Test");
+            }
 
             // Check if it is the player, because in multiplayer we spawn multiple keens
             if(isKeenPlayer(foeID)) // World Map only

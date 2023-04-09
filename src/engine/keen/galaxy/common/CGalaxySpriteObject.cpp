@@ -42,7 +42,7 @@ void CGalaxySpriteObject::setupGalaxyObjectOnMap(const size_t ActionBaseOffset,
 	
 	if(!processActionRoutine())
     {
-			exists = false;
+        exists = false;
     }
 }
 
@@ -323,7 +323,7 @@ void CGalaxySpriteObject::setActionSprite()
 	
 	
 	// Check the lower box for better collisions and move the sprite whether needed
-    GsSprite &rSprite = gGraphics.getSprite(mSprVar,mSpriteIdx);
+    GsSprite &rSprite = gGraphics.getSprite(mSprVar, mSpriteIdx);
 	
     int newBoxY2 = rSprite.m_bboxY2;
     int newBoxY1 = rSprite.m_bboxY1;

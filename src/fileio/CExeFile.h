@@ -85,7 +85,7 @@ class CExeFile {
     {	return mHeaderdata;	}
 
     gs_byte* getDSegPtr() const
-    {	return mDataSegment; }
+    {	return mDataSegmentPtr; }
 
     bool loadMusicTrack(RingBuffer<IMFChunkType> &imfData, const int track) const;
 
@@ -145,7 +145,7 @@ private:
 	std::vector<gs_byte> mData;
     void *mHeaderdata = nullptr;
     gs_byte *mRawdata = nullptr;
-    gs_byte *mDataSegment = nullptr;
+    gs_byte *mDataSegmentPtr = nullptr;
     std::string mFilename;
 
     std::map< size_t, std::map<int , bool> > mSupportmap;

@@ -274,12 +274,19 @@ bool CExeFile::readKeenExeData(const unsigned int episode,
 			/*Keen 5:*/ 0x30340,
 			/*Keen 6:*/ 0x30D30,
             /*Keen 7:*/ 0x23A70,  // Keen Dreams
-			/*Keen 6:*/ 0x2A4F0   // Demo
+            /*Keen 6:*/ 0x2A4F0,  // Demo
+            /*Keen 6:*/ 0x30990   // Version 1.5
 	};
 
     size_t offsetIdx = (demo && episode == 6) ? 8 : episode;
 
-    mDataSegment = mRawdata + offset_map[offsetIdx];
+    const auto ver = getEXEVersion();
+    if(ver == 150)
+    {
+        offsetIdx = 9;
+    }
+
+    mDataSegmentPtr = mRawdata + offset_map[offsetIdx];
 
     mCrc = getcrc32( mData.data(), mDatasize );
 
