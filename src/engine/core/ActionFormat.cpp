@@ -81,16 +81,10 @@ void ActionFormatType::setActionFormat( const size_t sprite_offset )
 	memcpy( this, ptr, 15*sizeof(int16_t) );	
 }
 
-
-
-
-
 void ActionFormatType::setNextActionFormat()
 {
 	setActionFormat(Next_action);
 }
-
-
 
 bool ActionFormatType::getActionFormat( const size_t sprite_offset )
 {
@@ -99,13 +93,11 @@ bool ActionFormatType::getActionFormat( const size_t sprite_offset )
 	return (memcmp( this, ptr, 15*sizeof(int16_t) ) == 0);
 }
 
-
 bool dumpActionFormatToFile(const std::string &fileName,
                             const size_t numChunks)
 {
     gs_byte *ptr = getActionBasePtr();
 
-    //std::vector<byte> actionData(numChunks*30, 0);
     std::vector<gs_byte> actionData;
     actionData.resize(numChunks*30);
 
