@@ -80,12 +80,12 @@ void CTileLoader::setupOffsetMap()
 	m_offsetMap[5][140] = 0x25B22;
 
     m_offsetMap[6][140] = 0x25212;
-    m_offsetMap[6][150] = 0x29BB2;
+    m_offsetMap[6][150] = 0x29C72;
 
 	m_offsetMap[7][100] = 0x11322;
 
 	// k6demo
-	m_offsetMap[8][100] = 0x1f6f2;
+    m_offsetMap[8][100] = 0x1f6f2;
 }
 
 size_t CTileLoader::getOffset()
