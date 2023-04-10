@@ -34,7 +34,8 @@ const Uint32 GalaxySongAssignments[] =
     0x02F206,  // Keen 4
     0x03067A,  // Keen 5
     0x03103E,  // Keen 6
-    0x02A872   // Keen 6 Demo
+    0x02A872,  // Keen 6 Demo
+    0x030C9E   // Keen 6, version 1.50
 };
 
 
@@ -65,9 +66,16 @@ bool loadLevelMusic(const int level)
     const auto episode = ExeFile.getEpisode();
     int Idx = episode-4;
 
-    if(episode == 6 && ExeFile.isDemo())
+    if(episode == 6)
     {
-        Idx = 3;
+        if(ExeFile.isDemo())
+        {
+            Idx = 3;
+        }
+        if(ExeFile.getEXEVersion() == 150)
+        {
+            Idx = 4;
+        }
     }
 
     const std::string path = gKeenFiles.gameDir;
