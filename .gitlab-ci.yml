@@ -122,7 +122,7 @@ build:macos-64bit:
 
     script:
       - cmake --build .
-      - cp src/CGeniusExe ${$CI_PROJECT_DIR}/src
+      - cp src/CGeniusExe ${CI_PROJECT_DIR}/src
       - cd $CI_PROJECT_DIR
       - bash buildMacOsBundle.sh      
       - cp *.dmg $CI_PROJECT_DIR/output
