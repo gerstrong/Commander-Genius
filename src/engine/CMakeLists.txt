@@ -27,34 +27,6 @@ endif(BUILD_COSMOS)
 add_subdirectory(unzip)
 add_subdirectory(depklite)
 
-if(DOWNLOADER)
-    add_definitions(-DDOWNLOADER)
-
-    FIND_PACKAGE(CURL REQUIRED)
-
-    IF(CURL_FOUND)
-      if(WIN32)
-         ADD_DEFINITIONS(-DCURL_STATICLIB)
-      endif()
-        INCLUDE_DIRECTORIES(${CURL_INCLUDE_DIR})
-    ELSE()
-      MESSAGE(FATAL_ERROR "Could not find the CURL library and development files." )
-    ENDIF()
-
-    if(CURL_FOUND)
-      message(STATUS "Found curl version ${CURL_VERSION_STRING}")
-      if(${CURL_VERSION_STRING} VERSION_LESS "7.32")
-        message(FATAL_ERROR "curl version must be at least 7.32")
-      endif()
-      if(WIN32)
-         ADD_DEFINITIONS(-DCURL_STATICLIB)
-      endif()
-        INCLUDE_DIRECTORIES(${CURL_INCLUDE_DIR})
-    else()
-      message(FATAL_ERROR "curl library not found")
-    endif()
-
-endif()
 
 
 set(CXXSRC CGameLauncher.cpp
@@ -69,6 +41,26 @@ add_library(engine STATIC ${CXXSRC}
                           ${HSRC}
                           gamelauncher.menu)
 
+if(DOWNLOADER)
+    target_compile_definitions(engine PRIVATE -DDOWNLOADER)
+
+    FIND_PACKAGE(CURL REQUIRED)
+
+    if(CURL_FOUND)
+      message(STATUS "Found curl version ${CURL_VERSION_STRING}")
+      if(${CURL_VERSION_STRING} VERSION_LESS "7.32")
+        message(FATAL_ERROR "curl version must be at least 7.32")
+      endif()
+      if(WIN32)
+        message(STATIC "Enforcing the use of curl as static library")
+        target_compile_definitions(engine -DCURL_STATICLIB)
+      endif()
+        target_include_directories(engine PRIVATE ${CURL_INCLUDE_DIR})
+    else()
+      message(FATAL_ERROR "curl library not found")
+    endif()
+
+endif()
 
 
 if (NOT OSXCROSS)
