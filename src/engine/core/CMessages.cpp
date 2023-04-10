@@ -249,7 +249,7 @@ bool CMessages::extractEp6Strings(std::map<std::string, std::string>& StringMap)
     case 140:
     {
       // Level loading Texts
-      StringMap.insert( extractStringOff( "LEVEL0_LOAD_TEXT", 0x1F110 ) );
+      StringMap.insert( extractStringOff( "LEVEL0_LOAD_TEXT",  0x1F110 ) );
       StringMap.insert( extractStringOff( "LEVEL1_LOAD_TEXT",  0x1F130 ) );
       StringMap.insert( extractStringOff( "LEVEL2_LOAD_TEXT",  0x1F160 ) );
       StringMap.insert( extractStringOff( "LEVEL3_LOAD_TEXT",  0x1F190 ) );
@@ -286,6 +286,47 @@ bool CMessages::extractEp6Strings(std::map<std::string, std::string>& StringMap)
       StringMap.insert( extractNextString( "STORY_TEXT" ) );
 
       
+      return true;
+    } break;      
+    case 150:
+    {
+      // Level loading Texts
+      StringMap.insert( extractStringOff( "LEVEL0_LOAD_TEXT",  0x1ED70 ) );
+      StringMap.insert( extractStringOff( "LEVEL1_LOAD_TEXT",  0x1ED90 ) );
+      StringMap.insert( extractStringOff( "LEVEL2_LOAD_TEXT",  0x1EDC0 ) );
+      StringMap.insert( extractStringOff( "LEVEL3_LOAD_TEXT",  0x1EDF0 ) );
+      StringMap.insert( extractStringOff( "LEVEL4_LOAD_TEXT",  0x1EE20 ) );
+      StringMap.insert( extractStringOff( "LEVEL5_LOAD_TEXT",  0x1EE50 ) );
+      StringMap.insert( extractStringOff( "LEVEL6_LOAD_TEXT",  0x1EE80 ) );
+      StringMap.insert( extractStringOff( "LEVEL7_LOAD_TEXT",  0x1EEB0 ) );
+      StringMap.insert( extractStringOff( "LEVEL8_LOAD_TEXT",  0x1EED0 ) );
+      StringMap.insert( extractStringOff( "LEVEL9_LOAD_TEXT",  0x1EF00 ) );
+      StringMap.insert( extractStringOff( "LEVEL10_LOAD_TEXT", 0x1EF30) );
+      StringMap.insert( extractStringOff( "LEVEL11_LOAD_TEXT", 0x1EF60) );
+      StringMap.insert( extractStringOff( "LEVEL12_LOAD_TEXT", 0x1EFB0) );
+      StringMap.insert( extractStringOff( "LEVEL13_LOAD_TEXT", 0x1EFE0) );
+      StringMap.insert( extractStringOff( "LEVEL14_LOAD_TEXT", 0x1F020) );
+      StringMap.insert( extractStringOff( "LEVEL15_LOAD_TEXT", 0x1F060) );
+      StringMap.insert( extractStringOff( "LEVEL16_LOAD_TEXT", 0x1F0A0) );
+      StringMap.insert( extractStringOff( "LEVEL17_LOAD_TEXT", 0x1F0D0) );
+      StringMap.insert( extractStringOff( "LEVEL18_LOAD_TEXT", 0x1F100) );
+
+      // Got Item Text.
+      setDecodeOffset(0x32216);  // 0x325B6
+      StringMap.insert( extractNextString( "KEEN_GOT_SANDWICH" ) );
+      StringMap.insert( extractNextString( "KEEN_GOT_GRAPPLING_HOOK" ) );
+      StringMap.insert( extractNextString( "KEEN_GOT_SHIPCARD" ) );
+
+      // Grabbiter Text
+      setDecodeOffset(0x32C79);
+      StringMap.insert( extractNextString( "KEEN_GRABBITER_HUNGRY" ) );
+      StringMap.insert( extractNextString( "KEEN_GRABBITER_SLEEPY" ) );
+      StringMap.insert( extractNextString( "KEEN_KEYCARD_REQUIRED" ) );
+      StringMap.insert( extractNextString( "KEEN_ROPE_REQUIRED" ) );
+
+      setDecodeOffset(0x1E9B0);
+      StringMap.insert( extractNextString( "STORY_TEXT" ) );
+
       return true;
     } break;
   }
