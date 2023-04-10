@@ -8,7 +8,7 @@
 #include <base/video/CVideoDriver.h>
 #include "CameraSettings.h"
 #include "engine/core/CSettings.h"
-#include <base/utils/StringUtils.h>
+#include <base/interface/StringUtils.h>
 
 
 CCameraSettings::CCameraSettings(const GsControl::Style style):

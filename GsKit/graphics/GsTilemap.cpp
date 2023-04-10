@@ -8,7 +8,7 @@
 #include <fileio/ResourceMgmt.h>
 #include <base/video/CVideoDriver.h>
 #include <SDL_image.h>
-#include <base/utils/FindFile.h>
+#include <base/interface/FindFile.h>
 #include "GsTilemap.h"
 #include "GsPalette.h"
 #include <base/GsLogging.h>

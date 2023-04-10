@@ -16,7 +16,7 @@
 #include <graphics/GsSurface.h>
 #include <graphics/GsScrollsurface.h>
 #include <graphics/GsTexture.h>
-#include <base/utils/Color.h>
+#include <base/interface/Color.h>
 #include <memory>
 #include <queue>
 #include <vector>

@@ -13,7 +13,7 @@
 #include "fileio/KeenFiles.h"
 
 #include <base/GsLogging.h>
-#include <base/utils/FindFile.h>
+#include <base/interface/FindFile.h>
 
 #include <fstream>
 #include <vector>

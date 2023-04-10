@@ -18,8 +18,8 @@
 #include <widgets/GsText.h>
 
 #include <graphics/GsGraphics.h>
-#include <base/utils/FindFile.h>
-#include <base/utils/StringUtils.h>
+#include <base/interface/FindFile.h>
+#include <base/interface/StringUtils.h>
 #include <base/audio/Audio.h>
 #include <base/GsArguments.h>
 
@@ -48,7 +48,7 @@
 #include "cosmos/CosmoEngine.h"
 #endif // BUILD_COSMOS
 
-#include <base/utils/property_tree/xml_parser.h>
+#include <base/interface/property_tree/xml_parser.h>
 
 /// Main Class implementation
 CGameLauncher::CGameLauncher() :

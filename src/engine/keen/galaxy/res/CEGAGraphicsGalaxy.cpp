@@ -19,9 +19,9 @@
 #include "engine/core/CBehaviorEngine.h"
 #include "fileio/compression/CHuffman.h"
 #include "fileio/KeenFiles.h"
-#include <base/utils/FindFile.h>
+#include <base/interface/FindFile.h>
 #include <base/GsLogging.h>
-#include <base/utils/StringUtils.h>
+#include <base/interface/StringUtils.h>
 #include <base/video/CVideoDriver.h>
 #include <base/GsArguments.h>
 #include "fileio/CTileLoader.h"

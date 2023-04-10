@@ -7,7 +7,7 @@
 
 #include "gamedownloader.h"
 
-#include <base/utils/FindFile.h>
+#include <base/interface/FindFile.h>
 #include <base/GsLogging.h>
 #include <cstdio>
 
@@ -15,8 +15,8 @@
 #include <SDL_image.h>
 #include <fileio/KeenFiles.h>
 
-#include <base/utils/property_tree/property_tree.h>
-#include <base/utils/property_tree/xml_parser.h>
+#include <base/interface/property_tree/property_tree.h>
+#include <base/interface/property_tree/xml_parser.h>
 
 #include <fileio/CConfiguration.h>
 

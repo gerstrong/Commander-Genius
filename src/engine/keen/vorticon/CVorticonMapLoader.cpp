@@ -9,7 +9,7 @@
 #include <iostream>
 #include <fstream>
 #include <algorithm>
-#include <base/utils/FindFile.h>
+#include <base/interface/FindFile.h>
 #include <base/GsLogging.h>
 #include <base/video/CVideoDriver.h>
 #include <fileio/fileio.h>

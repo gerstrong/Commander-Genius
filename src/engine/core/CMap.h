@@ -14,7 +14,7 @@
 
 #include <base/Vector2D.h>
 #include <base/TypeDefinitions.h>
-#include <base/utils/Geometry.h>
+#include <base/interface/Geometry.h>
 #include <base/GsEvent.h>
 
 #include <map>

@@ -12,7 +12,7 @@
 #include "../../common/ai/CPlayerBase.h"
 #include "../../common/ai/CPlayerLevel.h"
 #include "../../common/ai/CBullet.h"
-#include <base/utils/misc.h>
+#include <base/interface/misc.h>
 
 #include <engine/core/CBehaviorEngine.h>
 

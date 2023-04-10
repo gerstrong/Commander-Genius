@@ -2,7 +2,7 @@
 #define GSTEXTUREELEM_H
 
 #include "GsTexture.h"
-#include "base/utils/Geometry.h"
+#include "base/interface/Geometry.h"
 
 
 

@@ -11,7 +11,7 @@
 #include <fstream>
 #include <iostream>
 
-#include <base/utils/FindFile.h>
+#include <base/interface/FindFile.h>
 #include <base/GsLogging.h>
 
 #include "fileio/KeenFiles.h"

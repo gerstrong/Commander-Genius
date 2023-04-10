@@ -2,7 +2,7 @@
 #include "../../common/ai/CPlayerBase.h"
 #include "../../common/dialog/CMessageBoxBitmapGalaxy.h"
 
-#include <base/utils/property_tree/property_tree.h>
+#include <base/interface/property_tree/property_tree.h>
 #include <engine/core/CBehaviorEngine.h>
 
 namespace galaxy

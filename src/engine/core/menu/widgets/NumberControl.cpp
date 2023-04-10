@@ -2,7 +2,7 @@
 #include "NumberControl.h"
 
 #include <base/video/CVideoDriver.h>
-#include <base/utils/StringUtils.h>
+#include <base/interface/StringUtils.h>
 #include <graphics/GsGraphics.h>
 
 #include "widgets/GsMenuController.h"

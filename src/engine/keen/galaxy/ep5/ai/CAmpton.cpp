@@ -11,7 +11,7 @@
 #include "../../common/ai/CEnemyShot.h"
 #include "../../common/ai/CBullet.h"
 
-#include <base/utils/misc.h>
+#include <base/interface/misc.h>
 #include <engine/core/CBehaviorEngine.h>
 #include <fileio/KeenFiles.h>
 

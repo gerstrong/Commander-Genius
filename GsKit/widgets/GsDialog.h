@@ -15,7 +15,7 @@
 #include "GsWidgetsManager.h"
 
 #include <graphics/GsSurface.h>
-#include <base/utils/property_tree/xml_parser.h>
+#include <base/interface/property_tree/xml_parser.h>
 
 #include <list>
 #include <memory>

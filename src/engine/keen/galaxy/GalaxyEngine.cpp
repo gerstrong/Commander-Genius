@@ -1,7 +1,7 @@
 #include <base/GsLogging.h>
 #include <base/GsTimer.h>
 #include <base/GsApp.h>
-#include <base/utils/StringUtils.h>
+#include <base/interface/StringUtils.h>
 #include <widgets/GsMenuController.h>
 #include <graphics/CColorMerge.h>
 #include <base/video/CVideoDriver.h>

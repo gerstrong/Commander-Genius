@@ -21,7 +21,7 @@
 
 #include <graphics/GsTrueTypeFont.h>
 
-#include <base/utils/property_tree/property_tree.h>
+#include <base/interface/property_tree/property_tree.h>
 
 class GsText : public GsWidget
 {

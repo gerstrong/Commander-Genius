@@ -11,7 +11,7 @@
 #include "fileio/ResourceMgmt.h"
 //#include "fileio/compression/CHuffman.h"
 //#include "fileio/KeenFiles.h"
-#include <base/utils/FindFile.h>
+#include <base/interface/FindFile.h>
 #include <base/GsLogging.h>
 #include <fstream>
 #include <string>

@@ -9,7 +9,7 @@
 #define CGALAXYSPRITEOBJECT_H_
 
 #include "engine/core/CSpriteObject.h"
-#include "base/utils/property_tree/property_tree.h"
+#include "base/interface/property_tree/property_tree.h"
 
 class CSaveGameController;
 

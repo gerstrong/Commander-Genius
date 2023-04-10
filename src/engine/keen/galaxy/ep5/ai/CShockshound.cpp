@@ -13,7 +13,7 @@
 #include "../../common/ai/CBullet.h"
 #include "../../common/dialog/CMessageBoxBitmapGalaxy.h"
 #include "engine/core/mode/CGameMode.h"
-#include <base/utils/misc.h>
+#include <base/interface/misc.h>
 
 /*
 $2E96W #Shocksund sit

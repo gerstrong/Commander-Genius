@@ -8,7 +8,7 @@
 #include "CPreviews.h"
 
 #include "engine/core/CBehaviorEngine.h"
-#include <base/utils/FindFile.h>
+#include <base/interface/FindFile.h>
 #include <base/CInput.h>
 #include "CVorticonMapLoader.h"
 

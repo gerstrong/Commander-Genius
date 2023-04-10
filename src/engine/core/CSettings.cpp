@@ -6,8 +6,8 @@
  */
 
 #include <base/GsLogging.h>
-#include <base/utils/FindFile.h>
-#include <base/utils/ConfigHandler.h>
+#include <base/interface/FindFile.h>
+#include <base/interface/ConfigHandler.h>
 #include <base/CInput.h>
 #include "CSettings.h"
 #include <base/GsTimer.h>

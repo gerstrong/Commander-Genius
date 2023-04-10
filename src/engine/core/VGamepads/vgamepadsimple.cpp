@@ -4,7 +4,7 @@
 #include "vgamepadsimple.h"
 
 #include <base/video/CVideoDriver.h>
-#include <base/utils/FindFile.h>
+#include <base/interface/FindFile.h>
 #include <base/CInput.h>
 #include <base/GsLogging.h>
 #include <fileio/ResourceMgmt.h>

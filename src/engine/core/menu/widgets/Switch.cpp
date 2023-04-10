@@ -3,7 +3,7 @@
 #include "base/video/CVideoDriver.h"
 #include "graphics/GsGraphics.h"
 
-#include <base/utils/StringUtils.h>
+#include <base/interface/StringUtils.h>
 
 
 Switch::Switch( const std::string& text, 

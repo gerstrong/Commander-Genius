@@ -3,7 +3,7 @@
 
 #include <base/GsEngine.h>
 #include <engine/core/GameEngine.h>
-#include <base/utils/ThreadPool.h>
+#include <base/interface/ThreadPool.h>
 #include <graphics/GsSurface.h>
 #include <memory>
 

@@ -1,7 +1,7 @@
 #include <base/GsLogging.h>
 #include <base/GsTimer.h>
 #include <base/GsApp.h>
-#include <base/utils/StringUtils.h>
+#include <base/interface/StringUtils.h>
 #include <base/CInput.h>
 #include <base/audio/Audio.h>
 

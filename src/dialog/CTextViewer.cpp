@@ -11,7 +11,7 @@
 #include "CTextViewer.h"
 #include "graphics/GsGraphics.h"
 #include <base/video/CVideoDriver.h>
-#include <base/utils/FindFile.h>
+#include <base/interface/FindFile.h>
 #include <base/GsLogging.h>
 
 CTextViewer::CTextViewer(int x, int y, int w, int h) :

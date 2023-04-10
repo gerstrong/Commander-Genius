@@ -11,9 +11,9 @@
 //#include "audio/Audio.h"
 #include "fileio.h"
 #include <base/GsLogging.h>
-#include <base/utils/StringUtils.h>
-#include <base/utils/Debug.h>
-#include <base/utils/FindFile.h>
+#include <base/interface/StringUtils.h>
+#include <base/interface/Debug.h>
+#include <base/interface/FindFile.h>
 
 #ifdef TARGET_WIN32
 #define uint unsigned int

@@ -23,8 +23,8 @@
 #include "engine/keen/KeenEngine.h"
 
 
-#include <base/utils/StringUtils.h>
-#include <base/utils/FindFile.h>
+#include <base/interface/StringUtils.h>
+#include <base/interface/FindFile.h>
 
 
 struct SelectionEvent : CEvent

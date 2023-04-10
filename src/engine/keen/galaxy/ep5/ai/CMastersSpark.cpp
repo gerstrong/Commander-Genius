@@ -9,7 +9,7 @@
 #include "CMastersSpark.h"
 #include "../../common/ai/CPlayerBase.h"
 #include "../../common/ai/CPlayerLevel.h"
-#include <base/utils/misc.h>
+#include <base/interface/misc.h>
 
 /*
 $2C98W #Master sparks

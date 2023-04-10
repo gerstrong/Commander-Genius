@@ -5,7 +5,6 @@ cmake_minimum_required(VERSION 3.7)
 
 Project(GsKit)
 
-
 OPTION(USE_BOOST "Use Boost for XML" No)
 
 option(DISABLE_HOVER "Disables the hover over effect in the menus, useful for touch based devices" OFF)
@@ -52,6 +51,12 @@ if(CMAKE_SYSTEM_NAME MATCHES "Emscripten")
   add_library(GsKit STATIC ${ALL_SRCS_GSKIT_BASE})
 
 else()
+
+    # Hack which on some systems helps linking this lib correctly
+    # (required for mac builds)
+    file(WRITE null.cpp "")
+    add_library(${PROJECT_NAME} LICENSE null.cpp LICENSE)
+
 
     if(SDL2)
         OPTION(USE_OPENGL "OpenGL support" No)
@@ -101,26 +106,6 @@ else()
             ADD_DEFINITIONS(-O2)
     ENDIF(CMAKE_BUILD_TYPE STREQUAL "Debug")
 
-    find_package(SDL2 REQUIRED)
-    find_package(SDL2_image REQUIRED)
-    find_package(SDL2_mixer REQUIRED)
-    find_package(SDL2_ttf REQUIRED)
-
-    if(SDL2_FOUND)
-        message(STATUS "Using shared SDL Version 2 for ${PROJECT_NAME}")
-        include_directories(${SDL2_INCLUDE_DIRS})
-
-        message(STATUS "Using shared SDL Version 2 for ${PROJECT_NAME}")
-
-        include_directories(${SDL2_INCLUDE_DIR})
-        include_directories(${SDL2_NET_INCLUDE_DIRS})
-        include_directories(${SDL2_MIXER_INCLUDE_DIRS})
-        include_directories(${SDL2_IMAGE_INCLUDE_DIRS})
-        include_directories(${SDL2_TTF_INCLUDE_DIRS})
-
-    endif(SDL2_FOUND)
-
-
     IF(USE_OPENGL)
         # OpenGL Parsing
         set(OpenGL_GL_PREFERENCE GLVND)
@@ -129,12 +114,6 @@ else()
         ADD_DEFINITIONS(-DGL)
         ADD_DEFINITIONS(-DUSE_OPENGL)
     ENDIF (USE_OPENGL)
-
-
-    # Hack which on some systems helps linking this lib correctly
-    # (required for mac builds)
-    file(WRITE null.cpp "")
-    add_library(${PROJECT_NAME} LICENSE null.cpp LICENSE)
 
     add_subdirectory(fileio)
     add_subdirectory(graphics)
@@ -145,6 +124,7 @@ else()
     Target_link_libraries(${PROJECT_NAME} GsKit_base)
     Target_link_libraries(${PROJECT_NAME} GsKit_fileio)
     Target_link_libraries(${PROJECT_NAME} GsKit_widgets)
+    Target_link_libraries(${PROJECT_NAME} GsKit_graphics)
 
     # The naming with the new Find cmake files related
     # to SDL is not always consistent. Some use the "2" as var name others not.

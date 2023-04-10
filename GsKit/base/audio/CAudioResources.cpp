@@ -8,7 +8,7 @@
 #include "CAudioResources.h"
 
 #include "fileio/ResourceMgmt.h"
-#include <base/utils/FindFile.h>
+#include <base/interface/FindFile.h>
 #include <base/GsLogging.h>
 #include "Audio.h"
 

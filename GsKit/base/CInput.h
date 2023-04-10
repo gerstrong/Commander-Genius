@@ -8,7 +8,7 @@
 #ifndef CINPUT_H_
 #define CINPUT_H_
 
-#include <base/utils/Geometry.h>
+#include <base/interface/Geometry.h>
 #include <base/GsEventContainer.h>
 #include <base/InputEvents.h>
 

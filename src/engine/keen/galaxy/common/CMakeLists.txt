@@ -64,3 +64,5 @@ dialog/CMessageBoxSelection.h
 )
 
 add_library(engine_keen_galaxy_common STATIC ${CXXSRC} ${HSRC} )
+
+target_link_libraries(engine_keen_galaxy_common GsKit_graphics)

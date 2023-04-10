@@ -1,7 +1,7 @@
 #include <base/audio/Audio.h>
 
 #include "CVortiKid.h"
-#include <base/utils/misc.h>
+#include <base/interface/misc.h>
 
 
 // Baby Vorticon (the superfast little blue creatures that knock you down)

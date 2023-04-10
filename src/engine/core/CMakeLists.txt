@@ -57,12 +57,4 @@ target_link_libraries(engine_core engine_core_menu)
 target_link_libraries(engine_core engine_core_mode)
 target_link_libraries(engine_core engine_core_vgamepad)
 
-# Link some of our SDL Extensions
-if(GP2X)
-    target_link_libraries(engine_core sdl_extensions_audio sdl_extensions_sys)
-else()
-    target_link_libraries(engine_core sdl_extensions_audio)
-endif()
-
-
 Target_link_libraries(engine_core GsKit)

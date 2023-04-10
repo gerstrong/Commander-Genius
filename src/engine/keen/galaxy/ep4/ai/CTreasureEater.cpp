@@ -10,7 +10,7 @@
 #include "../../common/ai/CBullet.h"
 #include "../../common/ai/CSpriteItem.h"
 #include "../../common/ai/CItemEffect.h"
-#include <base/utils/misc.h>
+#include <base/interface/misc.h>
 
 #include <engine/core/CBehaviorEngine.h>
 #include <graphics/GsGraphics.h>

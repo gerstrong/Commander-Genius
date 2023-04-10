@@ -9,7 +9,7 @@
 #include "../../common/ai/CPlayerLevel.h"
 #include "../../common/dialog/CMessageBoxBitmapGalaxy.h"
 #include "engine/core/mode/CGameMode.h"
-#include <base/utils/misc.h>
+#include <base/interface/misc.h>
 #include <base/audio/Audio.h>
 #include <base/audio/music/CMusic.h>
 #include "fileio/KeenFiles.h"

@@ -6,7 +6,7 @@
  */
 
 #include "CEndingEp1.h"
-#include <base/utils/StringUtils.h>
+#include <base/interface/StringUtils.h>
 #include <base/GsTimer.h>
 #include <base/CInput.h>
 #include "graphics/GsGraphics.h"

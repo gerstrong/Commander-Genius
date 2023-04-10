@@ -10,7 +10,7 @@
 
 #include <base/GsEngine.h>
 #include <base/GsVirtualinput.h>
-#include <base/utils/ThreadPool.h>
+#include <base/interface/ThreadPool.h>
 
 #include <engine/core/menu/SettingsMenu.h>
 

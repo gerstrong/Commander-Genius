@@ -9,13 +9,13 @@
 #include <base/CInput.h>
 #include <base/GsTimer.h>
 #include <base/video/CVideoDriver.h>
-#include <base/utils/StringUtils.h>
+#include <base/interface/StringUtils.h>
 #include <widgets/GsMenuController.h>
 #include <engine/core/GameEngine.h>
 
 #include "engine/core/CBehaviorEngine.h"
 #include "CVideoSettings.h"
-#include <base/utils/Utils.h>
+#include <base/interface/Utils.h>
 
 #include "widgets/NumberControl.h"
 #include "widgets/ComboSelection.h"

@@ -15,7 +15,7 @@
 #endif
 #include <fstream>
 #include <vector>
-#include <base/utils/FindFile.h>
+#include <base/interface/FindFile.h>
 
 #include <fileio/KeenFiles.h>
 

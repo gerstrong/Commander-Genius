@@ -17,7 +17,7 @@
 
 #include "widgets/InputText.h"
 
-#include <base/utils/misc.h>
+#include <base/interface/misc.h>
 #include <base/audio/music/CMusicPlayer.h>
 
 #include <string>

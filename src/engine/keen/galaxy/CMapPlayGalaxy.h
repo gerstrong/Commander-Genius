@@ -21,7 +21,7 @@
 
 #include <base/CInput.h>
 #include <base/audio/music/CMusic.h>
-#include <base/utils/StringUtils.h>
+#include <base/interface/StringUtils.h>
 
 #include <memory>
 #include <vector>

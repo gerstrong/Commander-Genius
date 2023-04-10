@@ -6,7 +6,7 @@
  */
 
 #include "CEndingEp3.h"
-#include <base/utils/StringUtils.h>
+#include <base/interface/StringUtils.h>
 #include <base/CInput.h>
 #include <graphics/CFlash.h>
 #include <graphics/GsGraphics.h>

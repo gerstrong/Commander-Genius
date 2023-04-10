@@ -14,7 +14,7 @@
 #include <base/TypeDefinitions.h>
 #include <base/audio/base/Sampling.h>
 #include <base/audio/Audio.h>
-#include <base/utils/FindFile.h>
+#include <base/interface/FindFile.h>
 
 #include "CSoundSlot.h"
 

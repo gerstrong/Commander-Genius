@@ -48,4 +48,6 @@ add_library(refkeen_kdreams STATIC
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/../)
 
+target_link_libraries(refkeen_kdreams GsKit)
+
 #set_property(GLOBAL APPEND PROPERTY CG_OBJ_LIBS $<TARGET_OBJECTS:refkeen_kdreams>)

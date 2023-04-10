@@ -1,5 +1,5 @@
 #include <base/video/CVideoDriver.h>
-#include <base/utils/misc.h>
+#include <base/interface/misc.h>
 
 #include "CCeilick.h"
 #include "../../common/ai/CPlayerLevel.h"

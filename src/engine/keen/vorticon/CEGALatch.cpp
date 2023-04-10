@@ -15,7 +15,7 @@
 #include "engine/core/CBehaviorEngine.h"
 #include <base/GsLogging.h>
 #include "engine/core/CPlanes.h"
-#include <base/utils/FindFile.h>
+#include <base/interface/FindFile.h>
 #include <SDL.h>
 #include <stdio.h>
 #include <string.h>

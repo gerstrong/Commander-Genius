@@ -10,7 +10,7 @@
 #include "../../common/ai/CPlayerBase.h"
 #include "../../common/ai/CPlayerLevel.h"
 #include "../../common/ai/CBullet.h"
-#include <base/utils/misc.h>
+#include <base/interface/misc.h>
 
 /*
 $1CCCW #Volte Face

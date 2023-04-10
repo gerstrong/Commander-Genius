@@ -34,7 +34,7 @@
 #include "../version.h"
 #include "engine/core/CSettings.h"
 #include <base/video/CVideoDriver.h>
-#include <base/utils/MathLib.h>
+#include <base/interface/MathLib.h>
 
 
 #ifdef ANDROID
@@ -48,8 +48,8 @@ void switch_exit();
 }
 #endif
 
-#include <base/utils/FindFile.h>
-#include <base/utils/CrashHandler.h>
+#include <base/interface/FindFile.h>
+#include <base/interface/CrashHandler.h>
 #include <base/GsApp.h>
 #include <base/GsLogging.h>
 #include <base/GsTTFSystem.h>

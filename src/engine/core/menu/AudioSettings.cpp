@@ -6,7 +6,7 @@
  */
 
 #include "AudioSettings.h"
-#include <base/utils/StringUtils.h>
+#include <base/interface/StringUtils.h>
 
 //#include "engine/core/CBehaviorEngine.h"
 #include "engine/core/CSettings.h"

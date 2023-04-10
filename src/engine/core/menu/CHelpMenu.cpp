@@ -16,7 +16,7 @@
 //#include "engine/keen/vorticon/CPreviews.h"
 #include "fileio/ResourceMgmt.h"
 #include "fileio/KeenFiles.h"
-#include <base/utils/StringUtils.h>
+#include <base/interface/StringUtils.h>
 
 //#include "dialog/CDlgFrame.h"
 #include "engine/core/CBehaviorEngine.h"

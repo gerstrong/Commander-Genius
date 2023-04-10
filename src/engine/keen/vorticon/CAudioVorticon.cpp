@@ -10,7 +10,7 @@
 #include "engine/keen/GameSound.h"
 
 #include <base/GsLogging.h>
-#include <base/utils/FindFile.h>
+#include <base/interface/FindFile.h>
 #include <fileio/KeenFiles.h>
 #include <fstream>
 #include <cmath>

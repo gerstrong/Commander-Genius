@@ -11,8 +11,8 @@
 
 
 #include "IniReader.h"
-#include <base/utils/FindFile.h>
-#include <base/utils/Debug.h>
+#include <base/interface/FindFile.h>
+#include <base/interface/Debug.h>
 
 
 IniReader::KeywordList IniReader::DefaultKeywords;

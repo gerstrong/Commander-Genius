@@ -1,7 +1,7 @@
 #include "CBobba.h"
 #include "../../common/ai/CPlayerLevel.h"
 #include "../../common/ai/CEnemyShot.h"
-#include <base/utils/misc.h>
+#include <base/interface/misc.h>
 
 /*
 $2D86W  #Bobba jumping 0

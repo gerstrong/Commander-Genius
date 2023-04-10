@@ -13,7 +13,7 @@
 
 #include <SDL.h>
 #include <base/video/scaler/CScaler.h>
-#include <base/utils/Color.h>
+#include <base/interface/Color.h>
 
 #include <string>
 
@@ -26,7 +26,7 @@ const unsigned int RES_BPP = 32;
 //#endif
 #endif
 
-#include <base/utils/Geometry.h>
+#include <base/interface/Geometry.h>
 
 struct st_camera_bounds
 {

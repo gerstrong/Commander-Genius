@@ -19,8 +19,8 @@
 #include <base/GsLogging.h>
 #include <base/video/CVideoDriver.h>
 
-#include <base/utils/property_tree/property_tree.h>
-#include <base/utils/Base64.h>
+#include <base/interface/property_tree/property_tree.h>
+#include <base/interface/Base64.h>
 
 #include "GalaxyEngine.h"
 

@@ -7,7 +7,7 @@
 
 #include "GsBitmap.h"
 #include "GsPalette.h"
-#include <base/utils/FindFile.h>
+#include <base/interface/FindFile.h>
 #include <base/video/CVideoDriver.h>
 
 #include <base/GsLogging.h>

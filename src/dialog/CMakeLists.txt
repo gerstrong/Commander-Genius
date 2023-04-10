@@ -15,4 +15,4 @@ set(HSRC
 
 add_library(cg_dialog STATIC ${CXXSRC} ${HSRC})
 
-
+target_link_libraries(cg_dialog GsKit_base_interface)

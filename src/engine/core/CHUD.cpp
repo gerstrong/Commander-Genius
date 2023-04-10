@@ -13,7 +13,7 @@
 #include "graphics/GsGraphics.h"
 
 #include <base/video/CVideoDriver.h>
-#include <base/utils/StringUtils.h>
+#include <base/interface/StringUtils.h>
 
 const int EFFECT_TIME = 10;
 const int EFFECT_SPEED = 10;

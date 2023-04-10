@@ -13,7 +13,7 @@
 #include "GsSelectionList.h"
 
 #include "GsText.h"
-#include <base/utils/Color.h>
+#include <base/interface/Color.h>
 #include <graphics/GsSurface.h>
 
 #include <vector>
@@ -21,7 +21,7 @@
 #include <map>
 #include <memory>
 
-#include <base/utils/property_tree/property_tree.h>
+#include <base/interface/property_tree/property_tree.h>
 
 class GsTextSelectionList : public GsSelectionList
 {

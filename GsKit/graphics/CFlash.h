@@ -17,7 +17,7 @@
 #include <graphics/GsSurface.h>
 
 #include <base/GsTimer.h>
-#include <base/utils/Color.h>
+#include <base/interface/Color.h>
 
 class CFlash : public CEffects
 {

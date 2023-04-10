@@ -8,9 +8,9 @@
 #include "CPlayGameVorticon.h"
 #include <graphics/CColorMerge.h>
 #include "../CVorticonMapLoader.h"
-#include <base/utils/Base64.h>
+#include <base/interface/Base64.h>
 
-#include <base/utils/property_tree/property_tree.h>
+#include <base/interface/property_tree/property_tree.h>
 
 ///////////////////////////
 // Game State Management //

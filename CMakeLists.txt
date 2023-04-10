@@ -110,7 +110,7 @@ if(DISABLE_HOVER)
 endif()
 
 # Modules path located at GsKit/CMake
-set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${CMAKE_CURRENT_SOURCE_DIR}/GsKit/CMake")
+#set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${CMAKE_CURRENT_SOURCE_DIR}/GsKit/CMake")
 
 if(${CMAKE_VERSION} VERSION_GREATER "3.8.0")
     set(CMAKE_CXX_STANDARD 17)
@@ -167,9 +167,7 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99")
 
 # Check that GsKit also has been loaded
 if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/GsKit/CMakeLists.txt")
-
     MESSAGE(FATAL_ERROR "You need to have the sources of GsKit in order to build Commander Genius. ")
-
 endif()
 
 # And build Commander Genius on top of that!

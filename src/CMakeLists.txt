@@ -66,23 +66,21 @@ ENDIF()
 # Make sure the linker can find the GsKit library once it is built.
 link_directories (${CMAKE_BINARY_DIR}/GsKit)
 
-find_package(SDL2 REQUIRED)
-find_package(SDL2_image REQUIRED)
-find_package(SDL2_ttf REQUIRED)
+#find_package(SDL2 REQUIRED)
+#find_package(SDL2_image REQUIRED)
+#find_package(SDL2_ttf REQUIRED)
 
-if(SDL2_FOUND)
-    message(STATUS "Using shared SDL Version 2 for Commander Genius")
-    include_directories(${SDL2_INCLUDE_DIR})
-    include_directories(${SDL2_IMAGE_INCLUDE_DIR})
-endif(SDL2_FOUND)
+#if(SDL2_FOUND)
+#    message(STATUS "Using shared SDL Version 2 for Commander Genius")
+#    include_directories(${SDL2_INCLUDE_DIR})
+#    include_directories(${SDL2_IMAGE_INCLUDE_DIR})
+#endif(SDL2_FOUND)
 
+#find_package(SDL2_mixer REQUIRED)
 
-
-find_package(SDL2_mixer REQUIRED)
-
-if(SDL2_MIXER_FOUND)
-   INCLUDE_DIRECTORIES(${SDL2_MIXER_INCLUDE_DIRS})
-endif()
+#if(SDL2_MIXER_FOUND)
+#   INCLUDE_DIRECTORIES(${SDL2_MIXER_INCLUDE_DIRS})
+#endif()
 
 MESSAGE( STATUS "Internal Downloader: ${DOWNLOADER}" )
 
@@ -104,9 +102,9 @@ if(OPT_PATH)
 endif(OPT_PATH)
 
 
-message(STATUS "SDL2_LIBRARY = ${SDL2_LIBRARY}")
-message(STATUS "SDL2IMAGE_LIBRARY = ${SDL2IMAGE_LIBRARY}")
-message(STATUS SDL2_LINK_DIR = ${SDL2_LINK_DIR})
+#message(STATUS "SDL2_LIBRARY = ${SDL2_LIBRARY}")
+#message(STATUS "SDL2IMAGE_LIBRARY = ${SDL2IMAGE_LIBRARY}")
+#message(STATUS SDL2_LINK_DIR = ${SDL2_LINK_DIR})
 
 set(CGENIUS_SRC CGenius.cpp
     misc.cpp
@@ -161,21 +159,15 @@ ENDIF(WIN32)
 
 
 
-# Only for SDL2 and Win32 since it is updated for that platform. SDL 1.2 must be tested in case someone wants to use it on windows
+# Only for SDL2 and Win32 since it is updated for that platform.
 if(WIN32)
         target_link_libraries(CGeniusExe mingw32)
         target_link_libraries(CGeniusExe user32)
         target_link_libraries(CGeniusExe gdi32)
-#        target_link_libraries(CGeniusExe SDL2Main)
         target_link_libraries(CGeniusExe winmm)
         target_link_libraries(CGeniusExe imm32)
         target_link_libraries(CGeniusExe version)
 endif(WIN32)
-
-
-
-
-#cotire(CGeniusExe)
 
 # Stuff definitions in case we want to install it
 INCLUDE(install.cmake)

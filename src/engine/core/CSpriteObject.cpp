@@ -12,7 +12,7 @@
 #include <base/GsEventContainer.h>
 #include <base/video/CVideoDriver.h>
 
-#include <base/utils/FindFile.h>
+#include <base/interface/FindFile.h>
 #include <graphics/GsSprite.h>
 #include <graphics/GsGraphics.h>
 

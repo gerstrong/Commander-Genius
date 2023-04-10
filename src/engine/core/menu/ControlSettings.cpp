@@ -6,7 +6,7 @@
  */
 
 #include "fileio/CConfiguration.h"
-#include <base/utils/StringUtils.h>
+#include <base/interface/StringUtils.h>
 
 
 #include "SelectionMenu.h"

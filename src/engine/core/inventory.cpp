@@ -1,6 +1,6 @@
 
 #include "inventory.h"
-#include <base/utils/property_tree/property_tree.h>
+#include <base/interface/property_tree/property_tree.h>
 
 void stInventory::serialize(GsKit::ptree &node)
 {

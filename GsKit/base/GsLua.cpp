@@ -5,7 +5,7 @@
 #include <climits>
 
 #include <base/GsLogging.h>
-#include <base/utils/FindFile.h>
+#include <base/interface/FindFile.h>
 
 
 GsLua::GsLua()

@@ -9,7 +9,7 @@
 #include "CShelly.h"
 #include "../../common/ai/CPlayerLevel.h"
 #include "../../common/ai/CBullet.h"
-#include <base/utils/misc.h>
+#include <base/interface/misc.h>
 
 /*
 $2416W #Shelly walk

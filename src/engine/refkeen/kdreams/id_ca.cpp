@@ -18,7 +18,7 @@
 
 #include <vector>
 #include <fstream>
-#include <base/utils/FindFile.h>
+#include <base/interface/FindFile.h>
 #include <base/GsLogging.h>
 
 #include "engine/keen/dreams/dreamsengine.h"

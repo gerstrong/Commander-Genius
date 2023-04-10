@@ -10,10 +10,10 @@
  */
 
 #include "CMessages.h"
-#include "base/utils/StringUtils.h"
+#include "base/interface/StringUtils.h"
 
 #include <base/GsLogging.h>
-#include <base/utils/FindFile.h>
+#include <base/interface/FindFile.h>
 
 #include "engine/core/CBehaviorEngine.h"
 #include <fileio/KeenFiles.h>

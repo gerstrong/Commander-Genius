@@ -24,7 +24,7 @@
 
 #include <base/GsLua.h>
 #include <base/GsEvent.h>
-#include <base/utils/FindFile.h>
+#include <base/interface/FindFile.h>
 #include <base/direction.h>
 #include <base/audio/sound/CSoundChannel.h>
 

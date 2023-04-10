@@ -7,7 +7,7 @@
 
 #include "CVarPlatform.h"
 #include <base/video/CVideoDriver.h>
-#include <base/utils/property_tree/property_tree.h>
+#include <base/interface/property_tree/property_tree.h>
 #include <graphics/GsGraphics.h>
 #include <engine/core/CBehaviorEngine.h>
 #include <fileio/KeenFiles.h>

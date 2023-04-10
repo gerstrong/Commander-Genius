@@ -3,7 +3,7 @@
 
 #include <string>
 #include <vector>
-#include <base/utils/Color.h>
+#include <base/interface/Color.h>
 #include <graphics/GsSurface.h>
 
 typedef struct _TTF_Font TTF_Font;

@@ -18,7 +18,7 @@
 #include "ai/CDoor.h"
 #include "ai/CRisingPoints.h"
 #include "ai/CAnkhShield.h"
-#include <base/utils/StringUtils.h>
+#include <base/interface/StringUtils.h>
 #include <base/GsEventContainer.h>
 
 #include <fileio/KeenFiles.h>

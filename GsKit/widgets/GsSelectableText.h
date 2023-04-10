@@ -1,6 +1,6 @@
 #include "GsFrame.h"
-#include <base/utils/Geometry.h>
-#include <base/utils/Color.h>
+#include <base/interface/Geometry.h>
+#include <base/interface/Color.h>
 #include <graphics/GsDynColor.h>
 #include <string>
 

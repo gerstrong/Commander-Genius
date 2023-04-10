@@ -22,9 +22,8 @@ endif()
 set(CMAKE_C_STANDARD 99)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
-
+add_subdirectory(interface)
 add_subdirectory(lua)
-add_subdirectory(utils)
 add_subdirectory(video)
 add_subdirectory(audio)
 
@@ -44,9 +43,10 @@ GsArguments.cpp  GsEvent.cpp           TypeDefinitions.cpp
 
 add_library(${PROJECT_NAME} ${HEADERS} ${SRCS})
 
+target_link_libraries(${PROJECT_NAME} GsKit_base_interface)
 target_link_libraries(${PROJECT_NAME} GsKit_base_lua)
-target_link_libraries(${PROJECT_NAME} GsKit_base_utils)
 target_link_libraries(${PROJECT_NAME} GsKit_base_video)
+target_link_libraries(${PROJECT_NAME} GsKit_base_audio)
 
 target_link_libraries(${PROJECT_NAME} GsKit_widgets)
 

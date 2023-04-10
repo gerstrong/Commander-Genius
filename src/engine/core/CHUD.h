@@ -17,7 +17,7 @@
 #include <memory>
 #include <graphics/GsSprite.h>
 #include <graphics/GsSurface.h>
-#include <base/utils/Geometry.h>
+#include <base/interface/Geometry.h>
 
 class CHUD
 {

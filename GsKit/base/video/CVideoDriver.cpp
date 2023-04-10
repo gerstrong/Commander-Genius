@@ -15,7 +15,7 @@
 //#include "graphics/GsGraphics.h"
 #include <base/GsLogging.h>
 #include <base/GsApp.h>
-#include <base/utils/FindFile.h>
+#include <base/interface/FindFile.h>
 #include <iostream>
 #include <fstream>
 #include <SDL_syswm.h>

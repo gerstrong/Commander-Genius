@@ -13,7 +13,7 @@
 #define CRESOURCELOADER_H_
 
 #include <base/Singleton.h>
-#include <base/utils/ThreadPool.h>
+#include <base/interface/ThreadPool.h>
 #include <graphics/GsSurface.h>
 
 #include <base/GsGear.h>

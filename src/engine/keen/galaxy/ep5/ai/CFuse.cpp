@@ -10,7 +10,7 @@
 #include "CShikadiMine.h"
 #include "../../common/ai/CPlayerLevel.h"
 #include "../../common/dialog/CMessageBoxBitmapGalaxy.h"
-#include <base/utils/misc.h>
+#include <base/interface/misc.h>
 #include <base/audio/music/CMusic.h>
 #include "../../common/ai/CEnemyShot.h"
 #include "../../menu/ComputerWrist.h"

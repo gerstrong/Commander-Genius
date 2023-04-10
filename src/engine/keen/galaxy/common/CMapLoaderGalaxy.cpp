@@ -19,8 +19,8 @@
 #include <fileio/compression/CRLE.h>
 #include <base/video/CVideoDriver.h>
 #include <base/GsLogging.h>
-#include <base/utils/StringUtils.h>
-#include <base/utils/FindFile.h>
+#include <base/interface/StringUtils.h>
+#include <base/interface/FindFile.h>
 #include <base/audio/music/CMusic.h>
 
 #include <fstream>

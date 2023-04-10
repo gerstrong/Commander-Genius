@@ -9,7 +9,7 @@
 #define CSCALER_H_
 
 //#include <SDL.h>
-#include <base/utils/Geometry.h>
+#include <base/interface/Geometry.h>
 
 enum class VidFilter
 {

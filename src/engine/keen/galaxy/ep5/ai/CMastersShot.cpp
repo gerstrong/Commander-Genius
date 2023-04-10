@@ -9,7 +9,7 @@
 #include "CMastersShot.h"
 #include "../../common/ai/CPlayerLevel.h"
 #include "../../common/ai/CBullet.h"
-#include <base/utils/misc.h>
+#include <base/interface/misc.h>
 
 /*
 $2C20W #Master's shot

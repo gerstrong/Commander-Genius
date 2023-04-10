@@ -10,8 +10,8 @@
 #include <string.h>
 #include <fstream>
 #include "GsLogging.h"
-#include "utils/FindFile.h"
-#include "utils/Debug.h"
+#include "base/interface/FindFile.h"
+#include "base/interface/Debug.h"
 
 #define xstr(s) str(s)
 #define str(s) #s

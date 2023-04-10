@@ -15,7 +15,7 @@
 #include "GsWidget.h"
 #include "graphics/GsBitmap.h"
 
-#include <base/utils/property_tree/property_tree.h>
+#include <base/interface/property_tree/property_tree.h>
 
 class GsBitmapBox : public GsWidget
 {

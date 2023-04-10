@@ -2,8 +2,8 @@
 #ifndef GS_SURFACE
 #define GS_SURFACE
 
-#include <base/utils/Color.h>
-#include <base/utils/Geometry.h>
+#include <base/interface/Color.h>
+#include <base/interface/Geometry.h>
 #include <base/video/scaler/CScaler.h>
 #include <memory>
 

@@ -10,7 +10,7 @@
 #ifndef ITEMSGALAXY_H_
 #define ITEMSGALAXY_H_
 
-#include <base/utils/property_tree/property_tree.h>
+#include <base/interface/property_tree/property_tree.h>
 #include <string>
 
 struct stItemGalaxy

@@ -15,13 +15,13 @@
 #include <memory>
 #include <map>
 #include <graphics/GsSurface.h>
-#include <base/utils/Color.h>
+#include <base/interface/Color.h>
 #include <graphics/GsDynColor.h>
 #include <widgets/GsText.h>
 
 #include <functional>
 
-#include <base/utils/property_tree/property_tree.h>
+#include <base/interface/property_tree/property_tree.h>
 
 
 class GsButton : public GsControl

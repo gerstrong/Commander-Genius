@@ -1,5 +1,5 @@
 
-#include <base/utils/Geometry.h>
+#include <base/interface/Geometry.h>
 #include <base/video/CVideoDriver.h>
 #include <base/GsLogging.h>
 

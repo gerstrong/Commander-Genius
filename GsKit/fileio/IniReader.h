@@ -10,7 +10,7 @@
 #ifndef __INI_READER_H__
 #define __INI_READER_H__
 
-#include <base/utils/StringUtils.h>
+#include <base/interface/StringUtils.h>
 #include <map>
 #include <set>
 

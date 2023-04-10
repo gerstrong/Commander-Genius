@@ -7,7 +7,7 @@
 
 #include "CFinale.h"
 #include <base/GsLogging.h>
-#include <base/utils/FindFile.h>
+#include <base/interface/FindFile.h>
 #include <fileio/ResourceMgmt.h>
 
 #include <fstream>

@@ -10,7 +10,7 @@
 #include <base/CInput.h>
 #include "graphics/GsGraphics.h"
 #include "engine/core/CBehaviorEngine.h"
-#include <base/utils/StringUtils.h>
+#include <base/interface/StringUtils.h>
 
 
 namespace galaxy

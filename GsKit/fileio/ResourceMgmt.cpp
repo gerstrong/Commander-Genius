@@ -1,7 +1,7 @@
 
 #include "ResourceMgmt.h"
-#include <base/utils/StringUtils.h>
-#include <base/utils/FindFile.h>
+#include <base/interface/StringUtils.h>
+#include <base/interface/FindFile.h>
 #include <base/GsLogging.h>
 
 /**

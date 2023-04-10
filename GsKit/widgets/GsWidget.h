@@ -1,7 +1,7 @@
 #ifndef GsWidget_H_
 #define GsWidget_H_
 
-#include <base/utils/Geometry.h>
+#include <base/interface/Geometry.h>
 #include <memory>
 
 class GsWidget

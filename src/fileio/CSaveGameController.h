@@ -16,7 +16,7 @@
 
 #include <base/GsLogging.h>
 #include <base/GsEvent.h>
-#include <base/utils/StringUtils.h>
+#include <base/interface/StringUtils.h>
 #include <base/TypeDefinitions.h>
 #include "Oldsavegamestructs.h"
 

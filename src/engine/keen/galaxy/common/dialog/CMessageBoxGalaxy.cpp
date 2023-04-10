@@ -12,13 +12,13 @@
 #include "CMessageBoxGalaxy.h"
 #include <base/video/CVideoDriver.h>
 #include <base/CInput.h>
-#include <base/utils/FindFile.h>
+#include <base/interface/FindFile.h>
 #include <base/GsLogging.h>
 #include "graphics/GsGraphics.h"
 #include "../../common/TrophyMsg.h"
 #include "engine/BgMsg.h"
 
-#include <base/utils/StringUtils.h>
+#include <base/interface/StringUtils.h>
 #include <memory>
 
 #include "dialog/CMessageBox.h"

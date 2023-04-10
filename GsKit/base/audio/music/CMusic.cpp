@@ -10,7 +10,7 @@
 #include <base/audio/music/CIMFPlayer.h>
 #include "CMusic.h"
 #include <base/GsLogging.h>
-#include <base/utils/FindFile.h>
+#include <base/interface/FindFile.h>
 #include "fileio/ResourceMgmt.h"
 #include <fstream>
 #include <limits>

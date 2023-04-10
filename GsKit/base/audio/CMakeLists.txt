@@ -1,24 +1,28 @@
 
 
-add_subdirectory(base)
-add_subdirectory(music)
-add_subdirectory(sound)
 
-include_directories(${SDL_INCLUDE_DIR})
+add_library(GsKit_base_audio STATIC
+    Audio.cpp
+    Audio.h
+    Mixer.cpp
+    CAudioResources.cpp
+    CAudioResources.h
+    base/COPLEmulator.cpp
+    base/COPLEmulator.h
+    base/dbopl.cpp
+    base/dbopl.h
+    base/Sampling.cpp
+    base/Sampling.h
+    music/CMusic.cpp
+    music/CMusic.h
+    music/CIMFPlayer.cpp
+    music/CIMFPlayer.h
+    music/CMusicPlayer.cpp
+    music/CMusicPlayer.h
+    sound/CSoundChannel.cpp
+    sound/CSoundChannel.h
+    sound/CSoundSlot.cpp
+    sound/CSoundSlot.h
+)
 
-
-add_library(sdl_extensions_audio STATIC Audio.cpp Audio.h
-                                 Mixer.cpp
-                                 CAudioResources.cpp CAudioResources.h)
-
-target_link_libraries(sdl_extensions_audio
-                      sdl_extensions_audio_music
-                      sdl_extensions_audio_sound
-                      sdl_extensions_audio_base)
-
-
-
-LINK_DIRECTORIES(${SDL2_MIXER_LIBRARY_DIRS})
-target_link_libraries(sdl_extensions_audio
-                      ${SDL2_MIXER_LIBRARY}
-                      ${SDL2MIXER_LIBRARIES})
+target_link_libraries(GsKit_base_audio GsKit_base_interface)

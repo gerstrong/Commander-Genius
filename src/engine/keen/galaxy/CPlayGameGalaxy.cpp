@@ -6,12 +6,12 @@
  */
 
 #include <base/CInput.h>
-#include <base/utils/StringUtils.h>
+#include <base/interface/StringUtils.h>
 #include <base/video/CVideoDriver.h>
 #include <widgets/GsMenuController.h>
 #include <iostream>
 
-#include <base/utils/property_tree/property_tree.h>
+#include <base/interface/property_tree/property_tree.h>
 
 #include "CPlayGameGalaxy.h"
 #include "common/CMapLoaderGalaxy.h"

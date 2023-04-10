@@ -3,7 +3,7 @@
 
 #include "GsControl.h"
 #include "GsWidgetsManager.h"
-#include <base/utils/Color.h>
+#include <base/interface/Color.h>
 #include <list>
 
 #include <functional>

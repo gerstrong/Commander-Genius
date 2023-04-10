@@ -3,8 +3,8 @@
 #include <widgets/GsButton.h>
 #include <base/GsApp.h>
 #include <base/GsEventContainer.h>
-#include <base/utils/FindFile.h>
-#include <base/utils/ThreadPool.h>
+#include <base/interface/FindFile.h>
+#include <base/interface/ThreadPool.h>
 
 #include <sstream>
 

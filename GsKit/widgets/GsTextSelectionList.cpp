@@ -13,7 +13,7 @@
 #include <base/GsTTFSystem.h>
 #include <base/CInput.h>
 #include <base/PointDevice.h>
-#include <base/utils/Color.h>
+#include <base/interface/Color.h>
 #include <base/GsLogging.h>
 
 #include <algorithm>

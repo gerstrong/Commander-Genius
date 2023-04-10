@@ -9,7 +9,7 @@
 #include <string>
 
 #include <base/GsLogging.h>
-#include <base/utils/FindFile.h>
+#include <base/interface/FindFile.h>
 #include <base/TypeDefinitions.h>
 
 #include "engine/core/CBehaviorEngine.h"

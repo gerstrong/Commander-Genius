@@ -10,7 +10,7 @@
 
 #include <string>
 #include <set>
-#include <base/utils/StringUtils.h>
+#include <base/interface/StringUtils.h>
 #include <base/Singleton.h>
 #include "CExeFile.h"
 

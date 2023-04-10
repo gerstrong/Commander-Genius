@@ -13,7 +13,7 @@
 #include "engine/core/menu/GameMenu.h"
 
 #include "SelectionMenu.h"
-#include <base/utils/StringUtils.h>
+#include <base/interface/StringUtils.h>
 #include <base/GsEvent.h>
 #include "widgets/Button.h"
 #include "widgets/Switch.h"

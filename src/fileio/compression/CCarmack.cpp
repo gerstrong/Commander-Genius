@@ -7,7 +7,7 @@
 
 #include "CCarmack.h"
 #include <base/GsLogging.h>
-#include <base/utils/StringUtils.h>
+#include <base/interface/StringUtils.h>
 #include <base/TypeDefinitions.h>
 
 #define WORDSIZE    2

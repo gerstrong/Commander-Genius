@@ -7,7 +7,7 @@
 
 #include "CConfiguration.h"
 
-#include <base/utils/FindFile.h>
+#include <base/interface/FindFile.h>
 #include <fstream>
 
 const std::string CConfiguration::CONFIGFILENAME = "cgenius.cfg";

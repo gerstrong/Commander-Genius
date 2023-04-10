@@ -7,14 +7,14 @@
  *  Routines for handling save&load of savegames
  */
 
-#include <base/utils/FindFile.h>
+#include <base/interface/FindFile.h>
 #include <base/GsEventContainer.h>
 #include "CSaveGameController.h"
 #include "engine/core/CBehaviorEngine.h"
 
 #include <ctime>
-#include <base/utils/property_tree/property_tree.h>
-#include <base/utils/property_tree/xml_parser.h>
+#include <base/interface/property_tree/property_tree.h>
+#include <base/interface/property_tree/xml_parser.h>
 
 #include "fileio/KeenFiles.h"
 

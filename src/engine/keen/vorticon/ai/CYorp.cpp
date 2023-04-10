@@ -9,7 +9,7 @@
 
 #include "CYorp.h"
 #include <base/audio/Audio.h>
-#include <base/utils/misc.h>
+#include <base/interface/misc.h>
 
 
 static signed char numlooks;

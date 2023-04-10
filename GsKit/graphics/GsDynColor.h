@@ -1,7 +1,7 @@
 #ifndef GSDYNCOLOR_H
 #define GSDYNCOLOR_H
 
-#include <base/utils/Color.h>
+#include <base/interface/Color.h>
 #include <graphics/GsSurface.h>
 
 /**

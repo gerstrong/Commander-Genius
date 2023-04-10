@@ -1,6 +1,6 @@
 #include <base/video/CVideoDriver.h>
 #include <base/CInput.h>
-#include <base/utils/StringUtils.h>
+#include <base/interface/StringUtils.h>
 #include <graphics/GsGraphics.h>
 #include <graphics/CColorMerge.h>
 #include <base/audio/music/CMusic.h>

@@ -10,7 +10,7 @@
  */
 
 #include <base/video/CVideoDriver.h>
-#include <base/utils/StringUtils.h>
+#include <base/interface/StringUtils.h>
 #include <base/video/GsEffectController.h>
 
 

@@ -22,7 +22,7 @@
 
 #include <graphics/CDimDark.h>
 #include <base/video/CVideoDriver.h>
-#include <base/utils/property_tree/property_tree.h>
+#include <base/interface/property_tree/property_tree.h>
 #include <base/audio/Audio.h>
 #include <base/CInput.h>
 #include <array>

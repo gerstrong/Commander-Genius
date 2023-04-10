@@ -1,7 +1,7 @@
 #include "Autogun.h"
 #include "CPlayerBase.h"
 
-#include <base/utils/property_tree/property_tree.h>
+#include <base/interface/property_tree/property_tree.h>
 #include <engine/core/CBehaviorEngine.h>
 
 namespace galaxy

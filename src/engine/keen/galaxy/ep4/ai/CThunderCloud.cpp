@@ -7,7 +7,7 @@
 
 #include "CThunderCloud.h"
 #include "../../common/ai/CPlayerLevel.h"
-#include <base/utils/misc.h>
+#include <base/interface/misc.h>
 
 
 namespace galaxy {

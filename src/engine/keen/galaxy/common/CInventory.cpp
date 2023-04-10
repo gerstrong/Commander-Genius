@@ -11,7 +11,7 @@
 #include "graphics/GsGraphics.h"
 #include <base/video/CVideoDriver.h>
 #include <base/CInput.h>
-#include <base/utils/FindFile.h>
+#include <base/interface/FindFile.h>
 #include <graphics/CScrollEffect.h>
 
 #include "fileio/KeenFiles.h"
