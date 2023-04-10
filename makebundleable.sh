@@ -2,8 +2,8 @@
 # Build script for MacOs Bundle
 # More setup hints here: https://www.steinzone.de/wordpress/cross-building-commander-genius-fuer-macos-using-a-linux-system/
 
-OTOOL=x86_64-apple-darwin14-otool
-INSTALL_NAME_TOOL=x86_64-apple-darwin14-install_name_tool
+OTOOL=x86_64-apple-darwin21.4-otool
+INSTALL_NAME_TOOL=x86_64-apple-darwin21.4-install_name_tool
 REPLACE=/opt/local/lib
 BY=@loader_path/../libs
 BUNDLEPATH=CGenius.app

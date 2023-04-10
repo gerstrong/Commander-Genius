@@ -63,7 +63,7 @@ endif(SDL2_FOUND)
 
 
 target_link_libraries(${PROJECT_NAME}
-    ${SDL2_LIBRARIES}
+    ${SDL2_LIBRARY}
     ${SDL2_IMAGE_LIBRARIES}
     ${SDL2_MIXER_LIBRARIES}
     ${SDL2_TTF_LIBRARIES})

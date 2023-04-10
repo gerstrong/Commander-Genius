@@ -23,6 +23,7 @@ ENDIF(WIN32)
 if (OSXCROSS)
 message(STATUS "OSXCross is enabled")
 set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
+include(${CMAKE_TOOLCHAIN_FILE})
 endif()
 
 

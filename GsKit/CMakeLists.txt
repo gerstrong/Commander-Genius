@@ -126,18 +126,6 @@ else()
     Target_link_libraries(${PROJECT_NAME} GsKit_widgets)
     Target_link_libraries(${PROJECT_NAME} GsKit_graphics)
 
-    # The naming with the new Find cmake files related
-    # to SDL is not always consistent. Some use the "2" as var name others not.
-    Target_link_libraries(${PROJECT_NAME} ${SDL2_LIBRARIES})
-    Target_link_libraries(${PROJECT_NAME} ${SDL2_LIBRARY})
-    Target_link_libraries(${PROJECT_NAME} ${SDL2IMAGE_LIBRARIES})
-    Target_link_libraries(${PROJECT_NAME} ${SDL2IMAGE_LIBRARY})
-    Target_link_libraries(${PROJECT_NAME} ${SDL2MIXER_LIBRARIES})
-    Target_link_libraries(${PROJECT_NAME} ${SDL2MIXER_LIBRARY})
-    Target_link_libraries(${PROJECT_NAME} ${SDLIMAGE_LIBRARY})
-    Target_link_libraries(${PROJECT_NAME} ${SDLMIXER_LIBRARY})
-    Target_link_libraries(${PROJECT_NAME} ${SDL2_TTF_LIBRARY})
-
 IF(USE_OPENGL)
     # OpenGL stuff to link
     target_link_libraries(${PROJECT_NAME} ${OPENGL_LIBRARIES})
