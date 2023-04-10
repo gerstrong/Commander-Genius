@@ -122,8 +122,11 @@ build:macos-64bit:
 
     script:
       - cmake --build .
-      - bash buildMacOsBundle.sh
+      - cp src/CGeniusExe ${$CI_PROJECT_DIR}/src
+      - cd $CI_PROJECT_DIR
+      - bash buildMacOsBundle.sh      
       - cp *.dmg $CI_PROJECT_DIR/output
+            
     artifacts:
       name: "$ARTIFACT_MACOS"
       expire_in: 1 week
