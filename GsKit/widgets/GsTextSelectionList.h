@@ -12,7 +12,6 @@
 
 #include "GsSelectionList.h"
 
-#include "GsText.h"
 #include <base/interface/Color.h>
 #include <graphics/GsSurface.h>
 

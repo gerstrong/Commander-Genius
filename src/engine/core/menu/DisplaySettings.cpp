@@ -14,10 +14,8 @@
 #include <engine/core/GameEngine.h>
 
 #include "engine/core/CBehaviorEngine.h"
-#include "CVideoSettings.h"
 #include <base/interface/Utils.h>
 
-#include "widgets/NumberControl.h"
 #include "widgets/ComboSelection.h"
 
 #include "engine/core/CSettings.h"

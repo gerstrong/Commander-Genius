@@ -45,6 +45,8 @@ set(SRCS
     OverlaySettings.h
     CameraSettings.h
     CameraSettings.cpp
+    GameSpecificSettings.h
+    GameSpecificSettings.cpp
     achievementmenu.cpp
     achievementmenu.h
 )

@@ -121,7 +121,7 @@ bool CVideoDriver::init()
     // take the first default resolution. It might be changed if there is a config file already created
     // If there are at least two possible resolutions choose the second one, as this is normally one basic small resolution
     GsRect<Uint16> myMode;
-    myMode.dim = *(mResolutionSet.begin());
+    myMode.dim = *(mResolutionSet.rbegin());
     setMode(myMode);
 
     return true;
@@ -136,11 +136,7 @@ bool CVideoDriver::initResolutionList()
     // On Handheld devices this means they will only take that resolution and that would it be.
     // On the PC, this is the current resolution but we add some more.
 
-#if SDL_VERSION_ATLEAST(2, 0, 0)
     GsVec2D<Uint16> resolution = {1920, 1080};
-#else
-    GsRect<Uint16> resolution(SDL_GetVideoInfo());
-#endif
 
 #if defined(ANDROID)
     resolution.x = 320;
@@ -150,7 +146,12 @@ bool CVideoDriver::initResolutionList()
     resolution.y = 720;
 #endif
 
-    GsVec2D<Uint16> desktopResolution(resolution);
+    SDL_DisplayMode dm;
+    SDL_GetCurrentDisplayMode(0, &dm);
+    resolution.x = dm.w;
+    resolution.y = dm.h;
+
+    GsVec2D<Uint16> curDispRes(resolution);
 
     // We have a resolution list, clear it and create a new one.
     if(!mResolutionSet.empty())
@@ -224,14 +225,14 @@ bool CVideoDriver::initResolutionList()
 
 #endif
 
-    /// The last resolution in the list is the desktop normally,
-    /// therefore the highest one is what we setup
-    mResolutionSet.insert(desktopResolution);
+    /// The last resolution in the list is the desktop one normally,
+    /// that is the default and user is encouraged to adjust it for own needs.
+    mResolutionSet.insert(curDispRes);
 
     mResolutionPos = mResolutionSet.begin();
 
-
-    /// Game resolution part: The resolution used internally by the games
+    /// Game resolution part: These are the resolutions used internally by the games we support
+    /// If these don't work on your system they get scaled or windowed.
 
     mGameReslist =
     {
@@ -338,8 +339,8 @@ void CVideoDriver::setMode(const GsRect<Uint16>& res)
 {
     mVidConfig.setResolution(res.dim);
 
-    // Cycle through the list until the matching resolution is matched. If it doesn't exist
-    // add it;
+    // Cycle through the list until there is a matching resolution.
+    // If it doesn't exist add it;
     for (mResolutionPos = mResolutionSet.begin();
          mResolutionPos != mResolutionSet.end();
          mResolutionPos++)

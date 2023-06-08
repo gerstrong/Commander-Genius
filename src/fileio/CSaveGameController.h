@@ -111,7 +111,7 @@ private:
     std::string m_statename;
     int m_Episode;
 	int m_Level;
-	Uint32 m_offset;	
+    Uint32 m_offset = 0;
 
 	std::vector<gs_byte> m_datablock;
 

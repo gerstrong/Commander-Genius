@@ -52,7 +52,7 @@ public:
 
     void setResolution(const GsVec2D<Uint16> &res);
 
-    GsRect<Uint16> mGameRect;	// Also called Screenspace.
+    GsRect<Uint16> mGameRect;	// Screenspace of the game. This one gets scaled to the DisplayRect
     GsRect<Uint16> mDisplayRect; // The Fullscreen-Resolution or the Window Size
 
     GsColor mBorderColors; // Colors of the border (Clear colors)
