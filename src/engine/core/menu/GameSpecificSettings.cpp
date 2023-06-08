@@ -1,7 +1,7 @@
 /*
- * Display.cpp
+ * GameSpecificSettings.cpp
  *
- *  Created on: 09.01.2018
+ *  Created on: 08.06.2023
  *      Author: gerstrong
  */
 
@@ -12,14 +12,13 @@
 #include <widgets/GsMenuController.h>
 #include <engine/core/GameEngine.h>
 
-#include "engine/core/CBehaviorEngine.h"
 #include <base/interface/Utils.h>
 
 #include "widgets/ComboSelection.h"
 
 #include "engine/core/CSettings.h"
 
-#include "DisplaySettings.h"
+#include "GameSpecificSettings.h"
 
 
 CGameSpecificSettings::CGameSpecificSettings(const Style style) :
@@ -45,58 +44,14 @@ CGameSpecificSettings::CGameSpecificSettings(const Style style) :
 
 void CGameSpecificSettings::refresh()
 {
-    // Copy current config to my new Config.
-    // The change are taken from the menu settings
-    mMyNewConf = gVideoDriver.getVidConfig();
-
-    const std::string oglFilter =
-        (mMyNewConf.mRenderScQuality == CVidConfig::RenderQuality::LINEAR) ?
-            "linear" : "nearest";
-
-    mpRenderScaleQualitySel->setSelection(oglFilter);
-
-
-
-
-#if defined(USE_OPENGL)
-    mpOpenGLSwitch->enable( mMyNewConf.mOpengl );
-#endif
-
-
-    const auto aspSet = gVideoDriver.getAspectStrSet();
-    mpAspectSelection->setList( aspSet );
-    std::string arcStr;
-    arcStr = itoa(mMyNewConf.mAspectCorrection.dim.x);
-    arcStr += ":";
-    arcStr += itoa(mMyNewConf.mAspectCorrection.dim.y);
-
-    if( arcStr == "0:0")
-        arcStr = "disabled";
-
-    mpAspectSelection->setSelection(arcStr);
-
-
-    mpFilterSelection->setSelection( mMyNewConf.m_ScaleXFilter==VidFilter::NONE ? "none" :
-                                        (mMyNewConf.m_normal_scale ? "normal" : "scale") +
-                                            itoa(int(mMyNewConf.m_ScaleXFilter)) + "x" );
-
-#if !defined(EMBEDDED)
-    mpFullScreenSwitch->enable(mMyNewConf.mFullscreen);
-#endif
-
-    mpIntegerScalingSwitch->enable(mMyNewConf.mIntegerScaling);
-
-
-    const auto resList = gVideoDriver.getResolutionStrSet();
-    mpResolutionSelection->setList( resList );
-
+/*
     std::string resStr;
 
     resStr = itoa(mMyNewConf.mDisplayRect.dim.x);
     resStr += "x";
     resStr += itoa(mMyNewConf.mDisplayRect.dim.y);
     mpGameResSelection->setSelection(resStr);
-
+*/
 }
 
 
