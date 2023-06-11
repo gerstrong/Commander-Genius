@@ -9,6 +9,7 @@
 #ifndef CSETTINGS_H
 #define CSETTINGS_H
 
+#include "base/video/CVidConfig.h"
 #include "options.h"
 #include "fileio/CConfiguration.h"
 
@@ -25,7 +26,10 @@ public:
     bool saveDispCfg();
     bool saveGameSpecSettings(const std::string_view &strView);
     bool saveDrvCfg();
-	bool loadDrvCfg();
+
+    bool loadGameSpecSettings(const std::string_view &engineName,
+                              CVidConfig &vidConf);
+	bool loadDrvCfg();    
     bool loadGenerals(bool &enableLogfile);
 	void loadDefaultGraphicsCfg();
 	bool loadGameOptions();

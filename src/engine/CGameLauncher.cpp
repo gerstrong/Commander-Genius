@@ -645,7 +645,7 @@ bool CGameLauncher::start()
     SDL_ShowCursor(gVideoDriver.getVidConfig().mShowCursor ? SDL_ENABLE : SDL_DISABLE);
 
     // Make sure we use the right video settings for the launcher
-    if(!setupNativeRes("Launcher"))
+    if(!setupNativeRes("Launcher", 2))
         return false;
 
     // In some cases especially when another game was running, the scene wasn't cleaned up.
@@ -1109,7 +1109,7 @@ void CGameLauncher::ponder(const float deltaT)
     // In case after display/video setting changes, we need to reset the native resolution
     if(gVideoDriver.getRefreshSignal())
     {
-        setupNativeRes("Launcher");
+        setupNativeRes("Launcher", 2);
 
         gVideoDriver.setRefreshSignal(false);
     }

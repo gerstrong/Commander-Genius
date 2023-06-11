@@ -122,7 +122,7 @@ GalaxyEngine::GalaxyEngine(const bool openedGamePlay,
 
 bool GalaxyEngine::start()
 {
-    if(!setupNativeRes("Galaxy"))
+    if(!setupNativeRes("Galaxy", 2))
       return false;
 
     return KeenEngine::start();

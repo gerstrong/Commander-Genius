@@ -29,9 +29,6 @@ GameMenu(GsRect<float>(0.15f, 0.20f, 0.65f, 0.55f), style ),
 #endif
 mEngineName(engine_name)
 {
-
-
-
     mpGameResSelection =
             mpMenuDialog->add( new ComboSelection( "GameRes",
                                                    filledStrList(1, "?x?"),
@@ -80,8 +77,15 @@ void GameSpecSettings::refresh()
     mpHorizBordersSelection->setSelection( mUsersConf.mHorizBorders );
 
 
-    const auto gamesResSet = gVideoDriver.getGameResStrSet();
+    // Game resolution vs launcher resolution. The Launcher may use your full resolution if you want that
+    const std::set<std::string> gamesResSet =
+        (mEngineName == "Launcher") ?
+            gVideoDriver.getResolutionStrSet() : gVideoDriver.getGameResStrSet() ;
+
     mpGameResSelection->setList( gamesResSet );
+
+    //gSettings.saveGameSpecSettings(std::string_view(mEngineName));
+    gSettings.loadGameSpecSettings(std::string_view(mEngineName), mUsersConf);
 
     std::string resStr;
     resStr = itoa(mUsersConf.mGameRect.dim.x);

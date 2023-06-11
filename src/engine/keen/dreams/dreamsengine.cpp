@@ -394,7 +394,7 @@ void DreamsEngine::applyScreenMode()
         break;
     }
 */
-    if(!setupNativeRes("Galaxy")) // TODO: Missing return false here. This engine really needs a rework...
+    if(!setupNativeRes("Galaxy", 2)) // TODO: Missing return false here. This engine really needs a rework...
         gLogging << "Problems reading Video resolution for Keen Dreams.";
 
 

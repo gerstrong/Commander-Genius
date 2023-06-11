@@ -16,7 +16,6 @@
 #include "options.h"
 #include "CBehaviorEngine.h"
 #include "fileio/CConfiguration.h"
-//#include "fileio/KeenFiles.h"
 #include "engine/core/VGamepads/vgamepadsimple.h"
 
 /**
@@ -189,22 +188,16 @@ bool CSettings::loadGenerals(bool &enableLogfile)
 }
 
 
-/**
- * \brief	It loads the whole configuration from the settings file.
- * 			NOTE: Also take a look at CConfiguration.
- *
- * \return		true if successful, false if not.
- */
-bool CSettings::loadDrvCfg()
+bool CSettings::loadGameSpecSettings(const std::string_view &engineName,
+                                     CVidConfig &vidConf)
 {
     CConfiguration config;
 
     if(!config.Parse())
     {
         return false;
-    }    
+    }
 
-    CVidConfig vidConf;
     GsRect<Uint16> &res = vidConf.mDisplayRect;
 
     int value = 0;
@@ -220,6 +213,26 @@ bool CSettings::loadDrvCfg()
                           "Window Size does not make sense!<br>");
         return false;
     }
+
+    return true;
+}
+
+/**
+ * \brief	It loads the whole configuration from the settings file.
+ * 			NOTE: Also take a look at CConfiguration.
+ *
+ * \return		true if successful, false if not.
+ */
+bool CSettings::loadDrvCfg()
+{
+    CConfiguration config;
+
+    if(!config.Parse())
+        return false;
+
+    CVidConfig vidConf;
+
+    int value = 0;
 
 #ifdef __SWITCH__
     config.ReadKeyword("Video", "fullscreen", &vidConf.mFullscreen, true);

@@ -13,6 +13,7 @@
 #ifndef GSENGINE_H
 #define GSENGINE_H
 
+#include "base/video/CVidConfig.h"
 #include <base/GsEvent.h>
 #include <vector>
 #include <memory>
@@ -23,13 +24,17 @@ class GsEngine
 
 public:
 
+
+    bool readNativeResolution(const std::string_view &strView,
+                                        CVidConfig &vidConf);
     /**
      * @brief setupNativeRes
      * @param strView View to the string describing the section
      *        of currently engine (aka name of the engine)
      * @return true is all went fine, otherwise false
      */
-    bool setupNativeRes(const std::string_view &strView);
+    bool setupNativeRes(const std::string_view &strView,
+                        const unsigned int numScrollSfcs);
 
     /**
      * @brief ~GsEngine virtual destructor for GsEngine

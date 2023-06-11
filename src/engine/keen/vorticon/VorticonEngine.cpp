@@ -219,7 +219,7 @@ void VorticonEngine::switchToPassiveMode()
 
     mpGameMode.reset( new vorticon::CPassiveVort() );
 
-    if(!setupNativeRes("Vorticon"))
+    if(!setupNativeRes("Vorticon", 2))
         gLogging << "Error loading video settings for Vorticon engine while trying to switch passive." << CLogFile::endl;
 
     mpGameMode->init();
@@ -282,7 +282,7 @@ void VorticonEngine::pumpEvent(const std::shared_ptr<CEvent> &evPtr)
         if(!gEventManager.empty())
             gEventManager.clear();
 
-        if(!setupNativeRes("Vorticon"))
+        if(!setupNativeRes("Vorticon", 2))
             gLogging << "Error loading video settings for Vorticon engine while opening gameplay." << CLogFile::endl;
 
         mpGameMode->init();
@@ -294,7 +294,7 @@ void VorticonEngine::pumpEvent(const std::shared_ptr<CEvent> &evPtr)
     {
         mpGameMode.reset( new vorticon::CPassiveVort() );
 
-        if(!setupNativeRes("Vorticon"))
+        if(!setupNativeRes("Vorticon", 2))
             gLogging << "Error loading video settings for Vorticon engine while going passive." << CLogFile::endl;
 
         mpGameMode->init();

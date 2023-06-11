@@ -4,14 +4,14 @@
 #include "base/video/CVideoDriver.h"
 #include "fileio/CConfiguration.h"
 
-bool GsEngine::setupNativeRes(const std::string_view &strView)
+bool GsEngine::readNativeResolution(const std::string_view &strView,
+                                    CVidConfig &vidConf)
 {
     CConfiguration config;
 
     if(!config.Parse())
         return false;
 
-    CVidConfig vidConf;
     GsRect<Uint16> &gameRes = vidConf.mGameRect;
 
     int value;
@@ -31,7 +31,19 @@ bool GsEngine::setupNativeRes(const std::string_view &strView)
         return false;
     }
 
-    gVideoDriver.setNativeResolution(gameRes, 2);
+    return true;
+}
+
+bool GsEngine::setupNativeRes(const std::string_view &strView,
+                              const unsigned int numScrollSfcs)
+{
+    CVidConfig vidConf;
+
+    if(!readNativeResolution(strView, vidConf))
+        return false;
+
+    GsRect<Uint16> &gameRes = vidConf.mGameRect;
+    gVideoDriver.setNativeResolution(gameRes, numScrollSfcs);
     return true;
 }
 
