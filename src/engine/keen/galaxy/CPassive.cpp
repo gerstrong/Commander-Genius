@@ -40,9 +40,6 @@ processRenderMode(&CPassiveGalaxy::renderIntro)
     mCommanderTextSfc = gGraphics.getMiscGsBitmap(0);
     mKeenTextSfc = gGraphics.getMiscGsBitmap(1);
 
-//    const GsRect<Uint16> gameRect = gVideoDriver.getVidConfig().mGameRect;
-//    gVideoDriver.setNativeResolution(gameRect, 2);
-
     const auto episode = gBehaviorEngine.getEpisode();
 
     if(episode == 4)

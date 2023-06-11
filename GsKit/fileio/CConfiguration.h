@@ -10,6 +10,7 @@
 
 #include "IniReader.h"
 #include <string>
+#include <string_view>
 
 class CConfiguration : public IniReader
 {
@@ -25,9 +26,11 @@ public:
     bool OnEntry (const std::string& section, const std::string& propname, const std::string& value) override;
     */
 
-	void WriteString(const std::string& section, const std::string& key, const std::string& string);
-	void SetKeyword(const std::string& section, const std::string& keyword, const bool value);
-	void WriteInt(const std::string &section, const std::string &keyword, const int value);        
+    void WriteStringStr(const std::string& section, const std::string& key, const std::string& string);
+    void WriteString(const std::string_view& section, const std::string& key, const std::string& string);
+    void SetKeyword(const std::string& section, const std::string& keyword, const bool value);
+    void WriteIntWithStr(const std::string &section, const std::string &keyword, const int value);
+    void WriteInt(const std::string_view &section, const std::string &keyword, const int value);
 
     static const std::string CONFIGFILENAME;
 };

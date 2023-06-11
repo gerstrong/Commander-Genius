@@ -7,9 +7,7 @@
 
 #include "CPassiveVort.h"
 
-#include "graphics/GsGraphics.h"
 #include "CVorticonMapLoader.h"
-#include "fileio/CTileProperties.h"
 #include "engine/CGameLauncher.h"
 
 #include <base/video/CVideoDriver.h>
@@ -23,9 +21,6 @@ namespace vorticon
 
 bool CPassiveVort::init()
 {
-    const GsRect<Uint16> gameRect(320, 200);
-    gVideoDriver.setNativeResolution(gameRect, 2);
-
     mTextSfc.createRGBSurface(gVideoDriver.getGameResolution().SDLRect());
     mTextSfc.makeBlitCompatible();
 

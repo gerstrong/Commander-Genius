@@ -112,7 +112,7 @@ void VorticonEngine::openMainMenu()
     gEventManager.add( new OpenMenuEvent(
                            new MainMenu(mOpenedGamePlay,
                                         Style::VORTICON,
-                                        singlePlayer) ) );
+                                        singlePlayer, "Vorticon") ) );
 }
 
 
@@ -218,6 +218,10 @@ void VorticonEngine::switchToPassiveMode()
     gSaveGameController.setEpisode(mEp);
 
     mpGameMode.reset( new vorticon::CPassiveVort() );
+
+    if(!setupNativeRes("Vorticon"))
+        gLogging << "Error loading video settings for Vorticon engine while trying to switch passive." << CLogFile::endl;
+
     mpGameMode->init();
 
     mOpenedGamePlay = false;
@@ -278,6 +282,9 @@ void VorticonEngine::pumpEvent(const std::shared_ptr<CEvent> &evPtr)
         if(!gEventManager.empty())
             gEventManager.clear();
 
+        if(!setupNativeRes("Vorticon"))
+            gLogging << "Error loading video settings for Vorticon engine while opening gameplay." << CLogFile::endl;
+
         mpGameMode->init();
         mOpenedGamePlay = true;
         gBehaviorEngine.setPause(false);
@@ -286,6 +293,10 @@ void VorticonEngine::pumpEvent(const std::shared_ptr<CEvent> &evPtr)
     else if( std::dynamic_pointer_cast<const GMSwitchToPassiveMode>(evPtr) )
     {
         mpGameMode.reset( new vorticon::CPassiveVort() );
+
+        if(!setupNativeRes("Vorticon"))
+            gLogging << "Error loading video settings for Vorticon engine while going passive." << CLogFile::endl;
+
         mpGameMode->init();
     }
     else if( std::dynamic_pointer_cast<const LoadGameEvent>(evPtr) ) // If GamePlayMode is not running but loading is requested...
@@ -309,7 +320,7 @@ void VorticonEngine::pumpEvent(const std::shared_ptr<CEvent> &evPtr)
 
         gEventManager.add( new OpenMenuEvent( new MainMenu(mOpenedGamePlay,
                                                            Style::VORTICON,
-                                                           singlePlayer) ) );
+                                                           singlePlayer, "Vorticon") ) );
     }
     else if( const auto scene =
              std::dynamic_pointer_cast<const StartInfoSceneEvent>(evPtr) )

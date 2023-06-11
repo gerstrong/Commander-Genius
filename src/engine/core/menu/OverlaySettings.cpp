@@ -10,7 +10,6 @@
 #include <base/CInput.h>
 #include <base/video/CVideoDriver.h>
 
-#include "engine/core/CBehaviorEngine.h"
 #include "engine/core/CSettings.h"
 #include "engine/core/VGamepads/vgamepadsimple.h"
 

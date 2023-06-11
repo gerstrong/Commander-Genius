@@ -21,7 +21,7 @@ public:
 
     virtual void openMainMenu() = 0;
 
-    bool start() override;
+    virtual bool start() override;
 
     virtual void pumpEvent(const std::shared_ptr<CEvent> &evPtr) override;
 

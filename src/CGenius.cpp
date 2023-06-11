@@ -179,6 +179,7 @@ int main(int argc, char *argv[])
         gLogging.textOut(FONTCOLORS::BLUE,"First time message: CG didn't find the driver config file. ");
         gLogging.textOut(FONTCOLORS::BLUE,"However, it generated some default values and will save them now.\n");
         gSettings.saveDrvCfg();
+        gSettings.saveGameSpecSettings("Launcher");
     }
 
     gLogging.textOut(FONTCOLORS::GREEN,"Loading game options...\n");

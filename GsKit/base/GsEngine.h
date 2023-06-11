@@ -16,11 +16,24 @@
 #include <base/GsEvent.h>
 #include <vector>
 #include <memory>
+#include <string_view>
 
 class GsEngine
 {
 
 public:
+
+    /**
+     * @brief setupNativeRes
+     * @param strView View to the string describing the section
+     *        of currently engine (aka name of the engine)
+     * @return true is all went fine, otherwise false
+     */
+    bool setupNativeRes(const std::string_view &strView);
+
+    /**
+     * @brief ~GsEngine virtual destructor for GsEngine
+     */
     virtual ~GsEngine();
 
     /**

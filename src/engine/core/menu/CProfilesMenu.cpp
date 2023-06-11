@@ -41,7 +41,7 @@ public:
         options[GameOption::MODERN].value = 1;
         options[GameOption::HUD].value = 0;
         options[GameOption::SPECIALFX].value = 0;
-        gSettings.saveDrvCfg();
+        //gSettings.saveDrvCfg();
 	}
 };
 
@@ -68,7 +68,7 @@ public:
         options[GameOption::MODERN].value = 1;
         options[GameOption::HUD].value = 1;
         options[GameOption::SPECIALFX].value = 1;
-        gSettings.saveDrvCfg();
+        //gSettings.saveDrvCfg();
 	}
 };
 

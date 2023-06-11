@@ -19,12 +19,12 @@
 #include "AudioSettings.h"
 #include "Options.h"
 #include "ControlSettings.h"
-#include "CProfilesMenu.h"
+//#include "CProfilesMenu.h"
 #include "SelectionMenu.h"
 #include "cheatsmenu.h"
 
 
-SettingsMenu::SettingsMenu(const Style &style) :
+SettingsMenu::SettingsMenu(const Style &style, const std::string_view &engineName) :
 GameMenu( GsRect<float>(0.25f, 0.24f, 0.5f, 0.40f),
           style )
 {
@@ -37,9 +37,9 @@ GameMenu( GsRect<float>(0.25f, 0.24f, 0.5f, 0.40f),
 
 
     mpMenuDialog->add(
-                new GameButton( "Video",
+                new GameButton( "Game",
                                 new OpenMenuEvent(
-                                    new CVideoSettings(style) ),
+                                    new GameSpecSettings(style, engineName) ),
                                 style ) );
 
     mpMenuDialog->add(

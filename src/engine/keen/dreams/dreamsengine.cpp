@@ -369,6 +369,7 @@ void DreamsEngine::GameLoop()
 
 void DreamsEngine::applyScreenMode()
 {
+    /*
     unsigned int sdlTexWidth, sdlTexHeight;
 
     // Chaning the resolution still breaks the system so we leave at GFX_TEX_WIDTHxGFX_TEX_HEIGHT for now...
@@ -392,9 +393,10 @@ void DreamsEngine::applyScreenMode()
         sdlTexHeight = GFX_TEX_HEIGHT;
         break;
     }
+*/
+    if(!setupNativeRes("Galaxy")) // TODO: Missing return false here. This engine really needs a rework...
+        gLogging << "Problems reading Video resolution for Keen Dreams.";
 
-    const GsRect<Uint16> gameRect(sdlTexWidth, sdlTexHeight);
-    gVideoDriver.setNativeResolution(gameRect, 2);
 
     // Mode changed, set it to zero
     mChangeMode = 0;

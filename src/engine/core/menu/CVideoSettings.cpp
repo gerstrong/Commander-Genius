@@ -13,7 +13,6 @@
 #include <base/interface/Utils.h>
 #include <engine/core/GameEngine.h>
 
-#include "engine/core/CBehaviorEngine.h"
 #include "CVideoSettings.h"
 
 #include "widgets/NumberControl.h"
@@ -22,12 +21,13 @@
 #include "engine/core/CSettings.h"
 
 
-CVideoSettings::CVideoSettings(const Style style) :
+GameSpecSettings::GameSpecSettings(const Style style, const std::string_view &engine_name) :
 #if defined(EMBEDDED)
-GameMenu(GsRect<float>(0.15f, 0.20f, 0.65f, 0.25f), style )
+GameMenu(GsRect<float>(0.15f, 0.20f, 0.65f, 0.25f), style ),
 #else
-GameMenu(GsRect<float>(0.15f, 0.20f, 0.65f, 0.55f), style )
+GameMenu(GsRect<float>(0.15f, 0.20f, 0.65f, 0.55f), style ),
 #endif
+mEngineName(engine_name)
 {
 
 
@@ -60,7 +60,7 @@ GameMenu(GsRect<float>(0.15f, 0.20f, 0.65f, 0.55f), style )
     select(1);
 }
 
-void CVideoSettings::refresh()
+void GameSpecSettings::refresh()
 {
     mUsersConf = gVideoDriver.getVidConfig();
 
@@ -91,7 +91,7 @@ void CVideoSettings::refresh()
 }
 
 
-void CVideoSettings::release()
+void GameSpecSettings::release()
 {
     // Save up the changed stuff
 
@@ -149,6 +149,7 @@ void CVideoSettings::release()
 
     gEventManager.add( new SetNativeResolutionEv() );
 
+    gSettings.saveGameSpecSettings(std::string_view(mEngineName));
     gSettings.saveDrvCfg();
     gMenuController.updateGraphics();
     gVideoDriver.setRefreshSignal(true);

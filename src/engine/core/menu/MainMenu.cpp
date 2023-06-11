@@ -26,7 +26,8 @@
 
 void MainMenu::createGameMenu( const bool openedGamePlay, 
                                const Style style,
-                               const bool singlePlayer )
+                               const bool singlePlayer,
+                               const std::string_view &engineName )
 {
     GsButton *button = nullptr;
 
@@ -61,7 +62,7 @@ void MainMenu::createGameMenu( const bool openedGamePlay,
     saveButton->enable(openedGamePlay);
 
     mpMenuDialog->add(new GameButton( "Configure",
-                                             new OpenMenuEvent( new SettingsMenu(style) ),
+                                             new OpenMenuEvent( new SettingsMenu(style, engineName) ),
                                              style) );
 
     if(style == Style::VORTICON || style == Style::NONE)
@@ -129,10 +130,11 @@ void MainMenu::ponder(const float dt)
 
 MainMenu::MainMenu( const bool openedGamePlay, 
                     const Style style,
-                    const bool singlePlayer) :
+                    const bool singlePlayer,
+                    const std::string_view &engineName ) :
 GameMenu( GsRect<float>(0.25f, 0.23f, 0.5f, 0.5f),
           style, true)
 {   
-    createGameMenu(openedGamePlay, style, singlePlayer);
+    createGameMenu(openedGamePlay, style, singlePlayer, engineName);
 }
 

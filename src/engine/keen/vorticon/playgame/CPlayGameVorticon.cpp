@@ -156,9 +156,6 @@ bool CPlayGameVorticon::init()
     // Required to get sprites correctly masked
     gGraphics.optimizeSprites();
 
-    const GsRect<Uint16> gameRect = gVideoDriver.getVidConfig().mGameRect;
-    gVideoDriver.setNativeResolution(gameRect, 2);
-
     // Create the special merge effect (Fadeout)
     CColorMerge *pColorMergeFX = new CColorMerge(8);
     gEffectController.setupEffect(pColorMergeFX);

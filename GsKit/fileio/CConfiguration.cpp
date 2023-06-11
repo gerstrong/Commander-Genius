@@ -43,23 +43,22 @@ bool CConfiguration::saveCfgFile()
 	return true;
 }
 
-/*
-bool CConfiguration::OnNewSection (const std::string& section)
-{	return true;	}
-bool CConfiguration::OnEntry (const std::string& section, const std::string& propname, const std::string& value)
-{	return true;	}
-*/
+void CConfiguration::WriteStringStr(const std::string& section, const std::string& key, const std::string& string)
+{
+    WriteString(std::string_view(section), key, string);
+}
 
-void CConfiguration::WriteString(const std::string& section, const std::string& key, const std::string& string)
+void CConfiguration::WriteString(const std::string_view& section, const std::string& key, const std::string& string)
 {
 	// Set the section
-	SectionMap::iterator sect = m_sections.find(section);
+    std::string lSection{section};
+    SectionMap::iterator sect = m_sections.find(lSection);
 	if (sect == m_sections.end())
 	{
 		// The section doesn't exist, create a new one.
 		Section newSection;
 		newSection[key] = string;
-		m_sections[section] = newSection;
+        m_sections[lSection] = newSection;
 		return;
 	}
 
@@ -81,10 +80,18 @@ void CConfiguration::SetKeyword(const std::string &section,
     WriteString(section, keyword, (value==true) ? "true" : "false");
 }
 
-void CConfiguration::WriteInt(const std::string &section,
+void CConfiguration::WriteInt(const std::string_view &section,
+              const std::string &keyword,
+              const int value)
+{
+    WriteString(section, keyword, to_string(value) );
+}
+
+
+void CConfiguration::WriteIntWithStr(const std::string &section,
                               const std::string &keyword,
                               const int value)
 {
-	WriteString(section, keyword, to_string(value) );
+    WriteInt(std::string_view(section), keyword, value);
 }
 

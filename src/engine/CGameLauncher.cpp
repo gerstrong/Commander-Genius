@@ -29,6 +29,7 @@
 #include "core/mode/CGameMode.h"
 #include "core/menu/SettingsMenu.h"
 
+#include "fileio/CConfiguration.h"
 #include "fileio/ResourceMgmt.h"
 #include "fileio/KeenFiles.h"
 #include "fileio/crc.h"
@@ -218,7 +219,7 @@ bool CGameLauncher::setupMenu()
     {
         mLauncherDialog.enable(false);
         gEventManager.add( new OpenMenuEvent(
-                               new SettingsMenu(Style::NONE) ) );
+                               new SettingsMenu(Style::NONE, "Launcher") ) );
     };
 
     REGISTER_EV_FUNC(openSettingsMenuEvent);
@@ -638,14 +639,14 @@ bool CGameLauncher::scanExecutables(const std::string& path)
 
 bool CGameLauncher::start()
 {
-
     // CRC init when Launcher starts.
     crc32_init();
 
     SDL_ShowCursor(gVideoDriver.getVidConfig().mShowCursor ? SDL_ENABLE : SDL_DISABLE);
 
-    // Set the native resolution
-    gVideoDriver.setNativeResolution(gVideoDriver.getVidConfig().mDisplayRect, 2);
+    // Make sure we use the right video settings for the launcher
+    if(!setupNativeRes("Launcher"))
+        return false;
 
     // In some cases especially when another game was running, the scene wasn't cleaned up.
     // We do this here
@@ -1108,8 +1109,7 @@ void CGameLauncher::ponder(const float deltaT)
     // In case after display/video setting changes, we need to reset the native resolution
     if(gVideoDriver.getRefreshSignal())
     {
-        // Set the native resolution
-        gVideoDriver.setNativeResolution(gVideoDriver.getVidConfig().mDisplayRect, 2);
+        setupNativeRes("Launcher");
 
         gVideoDriver.setRefreshSignal(false);
     }

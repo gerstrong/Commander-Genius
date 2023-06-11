@@ -32,20 +32,23 @@ public:
      * @brief ponder    Ponder cycle of the Galaxy Engine
      * @param deltaT    time to do logics
      */
-    void ponder(const float deltaT);
+    void ponder(const float deltaT) override;
 
     /**
      * @brief render    Render what ever happens in the engine
      */
-    void render();
+    void render() override;
 
     /**
      * @brief openMainMenu Open the famous swatch main menu
      */
-    void openMainMenu();
+    void openMainMenu() override;
 
-
-
+    /**
+     * @brief start Ingnition of the Keen galaxy engine
+     * @return if everything went fine true, otherwise false
+     */
+    virtual bool start() override;
 
     /**
      * @brief loadResources This is used for loading all the resources of the game the use has chosen.
@@ -53,7 +56,7 @@ public:
      * @param flags     Tells what type(s) of resources to load
      * @return  true if everything went fine, otherwise false.
      */
-    bool loadResources( const Uint8 flags );
+    bool loadResources( const Uint8 flags ) override;
 
     /**
      * @brief switchToPassive   Switch to passive mode meaning intro, title text will be cycling
@@ -68,7 +71,7 @@ public:
     void switchToGameplay(const int startLevel,
                           const std::vector<int> &spriteVars);
 
-    void pumpEvent(const std::shared_ptr<CEvent> &evPtr);
+    void pumpEvent(const std::shared_ptr<CEvent> &evPtr) override;
 
     std::unique_ptr<ComputerWrist> mpComputerWrist;
 

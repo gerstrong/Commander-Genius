@@ -16,7 +16,7 @@
 #include "options.h"
 #include "CBehaviorEngine.h"
 #include "fileio/CConfiguration.h"
-#include "fileio/KeenFiles.h"
+//#include "fileio/KeenFiles.h"
 #include "engine/core/VGamepads/vgamepadsimple.h"
 
 /**
@@ -36,6 +36,40 @@ bool CSettings::saveDispCfg()
     return Configuration.saveCfgFile();
 }
 
+
+bool CSettings::saveGameSpecSettings(const std::string_view &strView)
+{
+    CConfiguration config;
+
+    try
+    {
+        config.Parse();
+
+        CVidConfig &VidConf = gVideoDriver.getVidConfig();
+        config.WriteInt(strView, "gameWidth", VidConf.mGameRect.dim.x);
+        config.WriteInt(strView, "gameHeight", VidConf.mGameRect.dim.y);
+    }
+    catch(...)
+    {
+        gLogging.textOut(FONTCOLORS::RED,"General error writing the configuration file for game specific settings...\n");
+    }
+
+    bool ok = config.saveCfgFile();
+
+    gLogging.textOut(FONTCOLORS::GREEN,"Saving game specific options...");
+
+    if(ok)
+    {
+        gLogging.textOut(FONTCOLORS::GREEN,"ok.");
+    }
+    else
+    {
+        gLogging.textOut(FONTCOLORS::RED,"error.");
+    }
+
+    return ok;
+}
+
 /**
  * \brief	Write the whole configuration of the settings.
  * 			Note: See also CConfiguration to understand better the concept of saving...
@@ -44,79 +78,76 @@ bool CSettings::saveDispCfg()
  */
 bool CSettings::saveDrvCfg()
 {
-    CConfiguration Configuration;
+    CConfiguration config;
 
     try
     {
-        Configuration.Parse();
+        config.Parse();
 
         int i = 1;
 
         for(searchpathlist::const_iterator p = tSearchPaths.begin(); p != tSearchPaths.end(); p++, i++)
-            Configuration.WriteString("FileHandling", "SearchPath" + itoa(i), *p);
+            config.WriteString("FileHandling", "SearchPath" + itoa(i), *p);
 
         CVidConfig &VidConf = gVideoDriver.getVidConfig();
-        Configuration.SetKeyword("Video", "fullscreen", VidConf.mFullscreen);
-        Configuration.SetKeyword("Video", "integerScaling", VidConf.mIntegerScaling);
-        Configuration.SetKeyword("Video", "OpenGL", VidConf.mOpengl);
+        config.SetKeyword("Video", "fullscreen", VidConf.mFullscreen);
+        config.SetKeyword("Video", "integerScaling", VidConf.mIntegerScaling);
+        config.SetKeyword("Video", "OpenGL", VidConf.mOpengl);
 #ifdef USE_VIRTUALPAD
-        Configuration.SetKeyword("Video", "VirtPad", VidConf.mVPad);
-        Configuration.WriteInt("Video", "VirtPadWidth", VidConf.mVPadWidth);
-        Configuration.WriteInt("Video", "VirtPadHeight", VidConf.mVPadHeight);
+        config.SetKeyword("Video", "VirtPad", VidConf.mVPad);
+        config.WriteInt("Video", "VirtPadWidth", VidConf.mVPadWidth);
+        config.WriteInt("Video", "VirtPadHeight", VidConf.mVPadHeight);
 #endif
-        Configuration.SetKeyword("Video", "ShowCursor", VidConf.mShowCursor);
-        Configuration.SetKeyword("Video", "TiltedScreen", VidConf.mTiltedScreen);
+        config.SetKeyword("Video", "ShowCursor", VidConf.mShowCursor);
+        config.SetKeyword("Video", "TiltedScreen", VidConf.mTiltedScreen);
 
 
-        Configuration.WriteInt("Video", "width", VidConf.mDisplayRect.dim.x);
-        Configuration.WriteInt("Video", "height", VidConf.mDisplayRect.dim.y);
+        config.WriteInt("Video", "width", VidConf.mDisplayRect.dim.x);
+        config.WriteInt("Video", "height", VidConf.mDisplayRect.dim.y);
 
-        Configuration.WriteInt("Video", "gameWidth", VidConf.mGameRect.dim.x);
-        Configuration.WriteInt("Video", "gameHeight", VidConf.mGameRect.dim.y);
-
-        Configuration.WriteInt("Video", "scale", VidConf.Zoom);
+        config.WriteInt("Video", "scale", VidConf.Zoom);
 
 
         const std::string oglFilter =
                 (VidConf.mRenderScQuality == CVidConfig::RenderQuality::LINEAR) ?
                 "linear" : "nearest";
 
-        Configuration.WriteString("Video", "OGLfilter", oglFilter );
+        config.WriteString("Video", "OGLfilter", oglFilter );
 
 
-        Configuration.WriteInt("Video", "filter", int(VidConf.m_ScaleXFilter));
-        Configuration.WriteString("Video", "scaletype", VidConf.m_normal_scale ? "normal" : "scalex" );        
+        config.WriteInt("Video", "filter", int(VidConf.m_ScaleXFilter));
+        config.WriteString("Video", "scaletype", VidConf.m_normal_scale ? "normal" : "scalex" );
 
         const auto fpsi = int(gTimer.FPS());
-        Configuration.WriteInt("Video", "fps", fpsi);
+        config.WriteInt("Video", "fps", fpsi);
 
-        Configuration.SetKeyword("Video", "vsync", VidConf.mVSync);
+        config.SetKeyword("Video", "vsync", VidConf.mVSync);
 
         const std::string arc_str =
                 itoa(VidConf.mAspectCorrection.dim.x) + ":" +
                 itoa(VidConf.mAspectCorrection.dim.y);
-        Configuration.WriteString("Video", "aspect", arc_str);
+        config.WriteString("Video", "aspect", arc_str);
 
-        Configuration.SetKeyword("Video", "BorderColorsEnabled",
+        config.SetKeyword("Video", "BorderColorsEnabled",
                                VidConf.mBorderColorsEnabled);
-        Configuration.WriteInt("Video", "HorizBorders", VidConf.mHorizBorders);
+        config.WriteInt("Video", "HorizBorders", VidConf.mHorizBorders);
 
         st_camera_bounds &CameraBounds = VidConf.m_CameraBounds;
-        Configuration.WriteInt("Bound", "left", CameraBounds.left);
-        Configuration.WriteInt("Bound", "right", CameraBounds.right);
-        Configuration.WriteInt("Bound", "up", CameraBounds.up);
-        Configuration.WriteInt("Bound", "down", CameraBounds.down);
-        Configuration.WriteInt("Bound", "speed", CameraBounds.speed);
+        config.WriteInt("Bound", "left", CameraBounds.left);
+        config.WriteInt("Bound", "right", CameraBounds.right);
+        config.WriteInt("Bound", "up", CameraBounds.up);
+        config.WriteInt("Bound", "down", CameraBounds.down);
+        config.WriteInt("Bound", "speed", CameraBounds.speed);
 
-        Configuration.WriteInt("Audio", "channels", (gAudio.getAudioSpec()).channels);
-        Configuration.WriteInt("Audio", "format", (gAudio.getAudioSpec()).format);
-        Configuration.WriteInt("Audio", "rate", (gAudio.getAudioSpec()).freq);
-        Configuration.SetKeyword("Audio", "sndblaster", gAudio.getSoundBlasterMode());
-        Configuration.WriteInt("Audio", "soundvol", (gAudio.getSoundVolume()));
-        Configuration.WriteInt("Audio", "musicvol", (gAudio.getMusicVolume()));
-        Configuration.WriteInt("Audio", "oplamp", (gAudio.getOplAmp()));
-        Configuration.WriteInt("Audio", "pcspeakvol", (gAudio.getPCSpeakerVol()));
-        Configuration.WriteInt("Audio", "bufferamp", (gAudio.getBufferAmp()));
+        config.WriteInt("Audio", "channels", (gAudio.getAudioSpec()).channels);
+        config.WriteInt("Audio", "format", (gAudio.getAudioSpec()).format);
+        config.WriteInt("Audio", "rate", (gAudio.getAudioSpec()).freq);
+        config.SetKeyword("Audio", "sndblaster", gAudio.getSoundBlasterMode());
+        config.WriteInt("Audio", "soundvol", (gAudio.getSoundVolume()));
+        config.WriteInt("Audio", "musicvol", (gAudio.getMusicVolume()));
+        config.WriteInt("Audio", "oplamp", (gAudio.getOplAmp()));
+        config.WriteInt("Audio", "pcspeakvol", (gAudio.getPCSpeakerVol()));
+        config.WriteInt("Audio", "bufferamp", (gAudio.getBufferAmp()));
 
     }
     catch(...)
@@ -124,7 +155,7 @@ bool CSettings::saveDrvCfg()
         gLogging.textOut(FONTCOLORS::RED,"General error writing the configuration file...\n");
     }
 
-    bool ok = Configuration.saveCfgFile();
+    bool ok = config.saveCfgFile();
 
     gLogging.textOut(FONTCOLORS::GREEN,"Saving game options...");
 
@@ -174,19 +205,13 @@ bool CSettings::loadDrvCfg()
     }    
 
     CVidConfig vidConf;
-
     GsRect<Uint16> &res = vidConf.mDisplayRect;
-    GsRect<Uint16> &gamesRes = vidConf.mGameRect;
+
     int value = 0;
     config.ReadInteger("Video", "width", &value, 320);
     res.dim.x = static_cast<unsigned short>(value);
     config.ReadInteger("Video", "height", &value, 200);
     res.dim.y = static_cast<unsigned short>(value);
-
-    config.ReadInteger("Video", "gameWidth", &value, 320);
-    gamesRes.dim.x = static_cast<unsigned short>(value);
-    config.ReadInteger("Video", "gameHeight", &value, 200);
-    gamesRes.dim.y = static_cast<unsigned short>(value);
 
     if(res.dim.x*res.dim.y <= 0)
     {
@@ -266,17 +291,6 @@ bool CSettings::loadDrvCfg()
     config.ReadInteger("Bound", "up", &CameraBounds.up, 92);
     config.ReadInteger("Bound", "down", &CameraBounds.down, 108);
     config.ReadInteger("Bound", "speed", &CameraBounds.speed, 20);
-
-
-    if(gamesRes.dim.x*gamesRes.dim.y <= 0)
-    {
-        gLogging.ftextOut(FONTCOLORS::PURPLE,
-                          "Error reading the configuration file: "
-                          "Game Resolution does not make sense, resetting.<br>");
-
-        vidConf.reset();
-    }
-
 
     gVideoDriver.setVidConfig(vidConf);
 

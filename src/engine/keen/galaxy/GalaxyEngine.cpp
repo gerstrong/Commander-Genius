@@ -14,6 +14,7 @@
 #include "engine/core/CResourceLoader.h"
 #include "engine/core/CBehaviorEngine.h"
 #include "engine/core/menu/MainMenu.h"
+#include "fileio/CConfiguration.h"
 #include "fileio/CPatcher.h"
 #include "fileio/CSaveGameController.h"
 #include "engine/core/CMessages.h"
@@ -117,9 +118,14 @@ GalaxyEngine::GalaxyEngine(const bool openedGamePlay,
              const std::string &dataPath) :
     KeenEngine(openedGamePlay, ep, dataPath),
     mEp(ep)
+{}
+
+bool GalaxyEngine::start()
 {
-    const GsRect<Uint16> gameRect = gVideoDriver.getVidConfig().mGameRect;
-    gVideoDriver.setNativeResolution(gameRect, 2);
+    if(!setupNativeRes("Galaxy"))
+      return false;
+
+    return KeenEngine::start();
 }
 
 void GalaxyEngine::ponder(const float deltaT)
@@ -184,7 +190,7 @@ const bool singlePlayer = false;
 
     gEventManager.add( new OpenMenuEvent(
                            new MainMenu(mOpenedGamePlay,
-                                        Style::GALAXY, singlePlayer) ) );
+                                        Style::GALAXY, singlePlayer, "Galaxy") ) );
 
     gEffectController.setupEffect( new CColorMerge(16) );
 }

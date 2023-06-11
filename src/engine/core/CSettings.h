@@ -5,14 +5,16 @@
  *      Author: gerstrong and albert
  */
 
-#include <string>
+
+#ifndef CSETTINGS_H
+#define CSETTINGS_H
+
 #include "options.h"
 #include "fileio/CConfiguration.h"
 
 #include <base/Singleton.h>
-
-#ifndef CSETTINGS_H
-#define CSETTINGS_H
+#include <string_view>
+#include <string>
 
 #define gSettings	CSettings::get()
 
@@ -21,7 +23,8 @@ class CSettings : public GsSingleton<CSettings>
 public:
 
     bool saveDispCfg();
-	bool saveDrvCfg();
+    bool saveGameSpecSettings(const std::string_view &strView);
+    bool saveDrvCfg();
 	bool loadDrvCfg();
     bool loadGenerals(bool &enableLogfile);
 	void loadDefaultGraphicsCfg();

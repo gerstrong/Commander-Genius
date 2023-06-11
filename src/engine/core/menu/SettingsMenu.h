@@ -4,15 +4,12 @@
 
 #include "GameMenu.h"
 
-#include "engine/core/options.h"
-#include "fileio/CExeFile.h"
-#include "engine/core/CBehaviorEngine.h"
-
+#include <string_view>
 
 class SettingsMenu : public GameMenu
 {
 public:
-    SettingsMenu(const enum Style &style);
+    SettingsMenu(const enum Style &style, const std::string_view &engineName);
 };
 
 
