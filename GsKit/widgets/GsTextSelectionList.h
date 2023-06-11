@@ -36,7 +36,7 @@ public:
     void setBackButtonEvent(CEvent *ev);
 
     virtual bool sendEvent(const std::shared_ptr<CEvent> &evPtr) override;
-    bool sendEvent(const InpCmd command);
+    virtual bool sendEvent(const InpCmd command) override;
     void addText(const std::string &text);
 
 
