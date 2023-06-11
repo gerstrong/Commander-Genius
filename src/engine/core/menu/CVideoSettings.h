@@ -18,9 +18,9 @@
 #include <string>
 
 #include <widgets/GsBaseMenu.h>
-#include <widgets/ComboSelection.h>
-#include <widgets/Switch.h>
-#include <widgets/NumberControl.h>
+#include "widgets/ComboSelection.h"
+#include "widgets/Switch.h"
+#include "widgets/NumberControl.h"
 
 #include "GameMenu.h"
 
