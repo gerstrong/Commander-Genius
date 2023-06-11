@@ -1,5 +1,5 @@
 /*
- * GameSpecSetting.h
+ * GameSpecSettings.h
  *
  *  Created on: 2009-11-28
  *  Revised on: 2023-06-11

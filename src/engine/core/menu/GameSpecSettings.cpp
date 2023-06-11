@@ -13,7 +13,7 @@
 #include <base/interface/Utils.h>
 #include <engine/core/GameEngine.h>
 
-#include "CVideoSettings.h"
+#include "GameSpecSettings.h"
 
 #include "widgets/NumberControl.h"
 #include "widgets/ComboSelection.h"

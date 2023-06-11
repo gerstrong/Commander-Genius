@@ -19,8 +19,8 @@ set(SRCS
     ControlSettings.h
     CProfilesMenu.cpp
     CProfilesMenu.h
-    CVideoSettings.cpp
-    CVideoSettings.h
+    GameSpecSettings.cpp
+    GameSpecSettings.h
     CHelpMenu.cpp
     CHelpMenu.h
     DisplaySettings.cpp

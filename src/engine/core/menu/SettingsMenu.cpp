@@ -13,7 +13,7 @@
 
 #include "SettingsMenu.h"
 
-#include "CVideoSettings.h"
+#include "GameSpecSettings.h"
 #include "DisplaySettings.h"
 #include "OverlaySettings.h"
 #include "AudioSettings.h"
