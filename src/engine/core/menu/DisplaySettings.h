@@ -40,6 +40,7 @@ private:
     std::shared_ptr<Switch>			mpOpenGLSwitch;
 #endif
 
+    std::shared_ptr<Switch>         mpTiltScreenSwitch;
     std::shared_ptr<ComboSelection>	mpRenderScaleQualitySel;
     std::shared_ptr<ComboSelection>	mpFilterSelection;
     std::shared_ptr<ComboSelection>	mpAspectSelection;

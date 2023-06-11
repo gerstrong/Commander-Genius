@@ -101,7 +101,6 @@ public:
 
     bool mTiltedScreen = false;
 
-
     enum class RenderQuality
     { NEAREST, LINEAR }
 #ifdef __SWITCH__

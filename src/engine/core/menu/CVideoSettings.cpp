@@ -31,10 +31,6 @@ GameMenu(GsRect<float>(0.15f, 0.20f, 0.65f, 0.55f), style )
 {
 
 
-#if !defined(EMBEDDED)
-    mpTiltScreenSwitch =
-            mpMenuDialog->add( new Switch("TiltedScr", style) );
-#endif // !defined(EMBEDDED)
 
     mpGameResSelection =
             mpMenuDialog->add( new ComboSelection( "GameRes",
@@ -83,9 +79,6 @@ void CVideoSettings::refresh()
 
     mpHorizBordersSelection->setSelection( mUsersConf.mHorizBorders );
 
-#if !defined(EMBEDDED)
-    mpTiltScreenSwitch->enable( mUsersConf.mTiltedScreen );
-#endif // !defined(EMBEDDED)
 
     const auto gamesResSet = gVideoDriver.getGameResStrSet();
     mpGameResSelection->setList( gamesResSet );
@@ -108,10 +101,6 @@ void CVideoSettings::release()
     mUsersConf.mHorizBorders = mpHorizBordersSelection->getSelection();
 
     mUsersConf.mBorderColorsEnabled = mpBorderColorSwitch->isEnabled();
-
-#if !defined(EMBEDDED)
-    mUsersConf.mTiltedScreen = mpTiltScreenSwitch->isEnabled();
-#endif // !defined(EMBEDDED)
 
     const std::string GameResStr = mpGameResSelection->getSelection();
     sscanf( GameResStr.c_str(), "%hux%hux",

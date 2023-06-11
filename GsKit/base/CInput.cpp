@@ -939,9 +939,11 @@ void CInput::pollEvents()
 
     GsRect<Uint16> activeArea = gVideoDriver.mpVideoEngine->getActiveAreaRect();
 
-    auto &dispRect = gVideoDriver.getVidConfig().mDisplayRect;
+    auto &vidConfig = gVideoDriver.getVidConfig();
 
-    const bool tiltedScreen = gVideoDriver.getVidConfig().mTiltedScreen;
+    auto &dispRect = vidConfig.mDisplayRect;
+
+    const bool tiltedScreen = vidConfig.mTiltedScreen;
 
     SDL_Joystick *joystick = nullptr;
 

@@ -71,7 +71,7 @@ public:
      */
     void updateGraphics() override;
 
-    bool sendEvent(const InpCmd) override { return false; }
+    virtual bool sendEvent(const InpCmd) override { return false; }
 
     virtual void processPointingStateRel(const GsRect<float> &rect) override;
 

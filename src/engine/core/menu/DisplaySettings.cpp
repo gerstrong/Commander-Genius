@@ -13,7 +13,7 @@
 #include <widgets/GsMenuController.h>
 #include <engine/core/GameEngine.h>
 
-#include "engine/core/CBehaviorEngine.h"
+//#include "engine/core/CBehaviorEngine.h"
 #include <base/interface/Utils.h>
 
 #include "widgets/ComboSelection.h"
@@ -30,6 +30,11 @@ GameMenu(GsRect<float>(0.15f, 0.20f, 0.65f, 0.25f), style )
 GameMenu(GsRect<float>(0.15f, 0.20f, 0.65f, 0.55f), style )
 #endif
 {
+
+#if !defined(EMBEDDED)
+    mpTiltScreenSwitch =
+        mpMenuDialog->add( new Switch("TiltedScr", style) );
+#endif // !defined(EMBEDDED)
 
 
     mpAspectSelection =
@@ -100,6 +105,11 @@ void DisplaySettings::refresh()
     // The change are taken from the menu settings
     mMyNewConf = gVideoDriver.getVidConfig();
 
+#if !defined(EMBEDDED)
+    mpTiltScreenSwitch->enable( mMyNewConf.mTiltedScreen );
+#endif // !defined(EMBEDDED)
+
+
     const std::string oglFilter =
             (mMyNewConf.mRenderScQuality == CVidConfig::RenderQuality::LINEAR) ?
             "linear" : "nearest";
@@ -157,6 +167,10 @@ void DisplaySettings::refresh()
 
 void DisplaySettings::release()
 {
+
+#if !defined(EMBEDDED)
+    mMyNewConf.mTiltedScreen = mpTiltScreenSwitch->isEnabled();
+#endif // !defined(EMBEDDED)
 
     // Render Quality
     const std::string oglFilter = mpRenderScaleQualitySel->getSelection();

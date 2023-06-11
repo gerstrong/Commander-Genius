@@ -82,6 +82,10 @@ void GsTextSelectionList::setBackButtonEvent(CEvent *ev)
     mBackEvent.reset(ev);
 }
 
+bool GsTextSelectionList::sendEvent(const std::shared_ptr<CEvent> &evPtr)
+{
+    return GsSelectionList::sendEvent(evPtr);
+}
 
 bool GsTextSelectionList::sendEvent(const InpCmd command)
 {
