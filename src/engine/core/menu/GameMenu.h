@@ -30,6 +30,8 @@ public:
     void render() override;
 
     void setMenuLabel(const std::string &label) override;
+
+    virtual void refresh() override { CBaseMenu::refresh(); }
     
     Style getStyle()
     {   return mStyle;   }

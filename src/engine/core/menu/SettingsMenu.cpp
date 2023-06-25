@@ -36,11 +36,13 @@ GameMenu( GsRect<float>(0.25f, 0.24f, 0.5f, 0.40f),
                                 style ) );
 
 
+    const std::string engineButtonName =
+        (engineName == "Launcher") ? "Launcher" : "Game";
     mpMenuDialog->add(
-                new GameButton( "Game",
-                                new OpenMenuEvent(
-                                    new GameSpecSettings(style, engineName) ),
-                                style ) );
+        new GameButton( engineButtonName,
+                       new OpenMenuEvent(
+                           new GameSpecSettings(style, engineName) ),
+                       style ) );
 
     mpMenuDialog->add(
                 new GameButton( "Audio",

@@ -19,6 +19,11 @@ IniReader(CONFIGFILENAME)
 CConfiguration::~CConfiguration()
 {}
 
+bool CConfiguration::Parse()
+{
+    return IniReader::Parse();
+}
+
 bool CConfiguration::saveCfgFile()
 {
 	std::ofstream file;

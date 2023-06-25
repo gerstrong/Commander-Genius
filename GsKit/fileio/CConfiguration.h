@@ -19,6 +19,8 @@ public:
 
     virtual ~CConfiguration() override;
 
+    bool Parse() override;
+
 	bool saveCfgFile();
 
     /*

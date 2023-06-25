@@ -188,7 +188,7 @@ bool CSettings::loadGenerals(bool &enableLogfile)
 }
 
 
-bool CSettings::loadGameSpecSettings(const std::string_view &engineName,
+bool CSettings::loadGameSpecSettings(const std::string_view &engineNameView,
                                      CVidConfig &vidConf)
 {
     CConfiguration config;
@@ -198,12 +198,13 @@ bool CSettings::loadGameSpecSettings(const std::string_view &engineName,
         return false;
     }
 
-    GsRect<Uint16> &res = vidConf.mDisplayRect;
+    GsRect<Uint16> &res = vidConf.mGameRect;
 
     int value = 0;
-    config.ReadInteger("Video", "width", &value, 320);
+    const std::string engineName(engineNameView);
+    config.ReadInteger(engineName, "gameWidth", &value, 320);
     res.dim.x = static_cast<unsigned short>(value);
-    config.ReadInteger("Video", "height", &value, 200);
+    config.ReadInteger(engineName, "gameHeight", &value, 200);
     res.dim.y = static_cast<unsigned short>(value);
 
     if(res.dim.x*res.dim.y <= 0)

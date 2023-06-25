@@ -35,9 +35,9 @@ public:
     GameSpecSettings(const Style style,
                    const std::string_view &engine_name);
 
-    void refresh();
+    void refresh() override;
 
-	void release();
+    void release() override;
 
 	CVidConfig mUsersConf;
 

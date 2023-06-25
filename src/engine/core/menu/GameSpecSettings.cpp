@@ -30,24 +30,17 @@ GameMenu(GsRect<float>(0.15f, 0.20f, 0.65f, 0.55f), style ),
 mEngineName(engine_name)
 {
     mpGameResSelection =
-            mpMenuDialog->add( new ComboSelection( "GameRes",
-                                                   filledStrList(1, "?x?"),
-                                                   style ) );
+        mpMenuDialog->add( new ComboSelection( "GameRes", filledStrList(1, "?x?"), style) );
 
     mpFPSSelection =
-            mpMenuDialog->add(
-                new NumberControl( "FPS", 10, 120, 10, 60,
-                                   false, style) );
+        mpMenuDialog->add( new NumberControl( "FPS", 10, 120, 10, 60, false, style) );
 
 
     mpBorderColorSwitch =
-            mpMenuDialog->add( new Switch( "Brdr Color", style ) );
+        mpMenuDialog->add( new Switch( "Brdr Color", style ) );
 
     mpHorizBordersSelection =
-            mpMenuDialog->add( new NumberControl( "H-Brdr",
-                                            0, 80, 5, 0,
-                                            false,
-                                            style) );
+        mpMenuDialog->add( new NumberControl( "H-Brdr", 0, 80, 5, 0, false, style) );
 
     setMenuLabel("OPTIONSMENULABEL");
 
@@ -70,14 +63,13 @@ void GameSpecSettings::refresh()
 
     mpFPSSelection->setSelection( iFPS );
 
-
     // TODO: find a way to indicate a color
     mpBorderColorSwitch->enable( mUsersConf.mBorderColorsEnabled );
 
     mpHorizBordersSelection->setSelection( mUsersConf.mHorizBorders );
 
 
-    // Game resolution vs launcher resolution. The Launcher may use your full resolution if you want that
+    // Game resolution vs launcher resolution. The Launcher may use your full resolution
     const std::set<std::string> gamesResSet =
         (mEngineName == "Launcher") ?
             gVideoDriver.getResolutionStrSet() : gVideoDriver.getGameResStrSet() ;

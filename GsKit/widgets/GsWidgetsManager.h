@@ -173,8 +173,6 @@ std::shared_ptr<T> GsWidgetsManager::add( std::shared_ptr<T> &&ctrl )
 }
 
 
-
-
 template <class T>
 std::shared_ptr<T> GsWidgetsManager::add( T *newWidget )
 {

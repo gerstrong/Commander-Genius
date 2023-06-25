@@ -20,7 +20,6 @@
 #ifndef __CONFIGHANDLER_H__
 #define __CONFIGHANDLER_H__
 
-//#include "CVec.h"
 #include <base/interface/StringUtils.h>
 #include "MathLib.h"
 #include <string>
@@ -60,42 +59,9 @@ bool ReadArray(const std::string& filename, const std::string& section, const st
 	return num == arr.size();
 }
 
-/*template<typename T>
-bool ReadVectorD2(const std::string& filename, const std::string& section, const std::string& key, VectorD2<T>& v, VectorD2<T> defv = VectorD2<T>()) {
-	v = defv;
-
-	T _v[2] = {0,0};
-	if(!ReadArray(filename, section, key, _v, 2)) return false;
-
-	v.x = _v[0]; v.y = _v[1];
-	return true;
-}
-
-template<typename T>
-bool ReadMatrixD2(const std::string& filename, const std::string& section, const std::string& key, MatrixD2<T>& v, MatrixD2<T> defv = MatrixD2<T>()) {
-	v = defv;
-
-	T _v[4] = {0,0,0,0};
-	if(!ReadArray(filename, section, key, _v, 4)) return false;
-
-	v.v1.x = _v[0]; v.v1.y = _v[1]; v.v2.x = _v[2]; v.v2.y = _v[3];
-	return true;
-}*/
-
-
-
-
-
 bool	AddKeyword(const std::string& key, int value);
 bool	ReadKeyword(const std::string& filename, const std::string& section, const std::string& key, int *value, int defaultv);
 bool	ReadKeyword(const std::string& filename, const std::string& section, const std::string& key, bool *value, bool defaultv);
 bool	ReadKeywordList(const std::string& filename, const std::string& section, const std::string& key, int *value, int defaultv);
-
-
-
-
-
-
-
 
 #endif  //  __CONFIGHANDLER_H__
