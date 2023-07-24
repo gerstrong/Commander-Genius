@@ -26,8 +26,7 @@ class GsWeakSurface
 {
 public:
 
-    GsWeakSurface() :
-            mpSurface(nullptr) {}
+    GsWeakSurface() {}
 
     GsWeakSurface(SDL_Surface *sfc) :
         mpSurface(sfc) {}
