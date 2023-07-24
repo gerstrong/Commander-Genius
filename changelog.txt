@@ -1,3 +1,7 @@
+v3.4.0:
+-------
+- New Resolution system. You can configure a relative resolution for the launcher but also for every game.
+
 v3.3.0:
 -------
 - Added Support for Keen 1 version 1.34

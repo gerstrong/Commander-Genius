@@ -9,8 +9,6 @@
 
 #include "CIMFPlayer.h"
 #include "fileio/ResourceMgmt.h"
-//#include "fileio/compression/CHuffman.h"
-//#include "fileio/KeenFiles.h"
 #include <base/interface/FindFile.h>
 #include <base/GsLogging.h>
 #include <fstream>
@@ -121,9 +119,6 @@ void CIMFPlayer::close(const bool lock)
 void CIMFPlayer::OPLUpdate(gs_byte *buffer, const unsigned int length)
 {
     auto &audioSpec = gAudio.getAudioSpec();
-
-    const int vol = gAudio.getMusicVolume();
-
     const auto amp = gAudio.getOplAmp();
 
     if(mMixBuffer.empty())
@@ -133,6 +128,8 @@ void CIMFPlayer::OPLUpdate(gs_byte *buffer, const unsigned int length)
     }
 
     m_opl_emulator.Chip__GenerateBlock2( length, mMixBuffer.data() );
+
+    const int vol = gAudio.getMusicVolume();
 
     // Mix into the destination buffer, doubling up into stereo.
     if(audioSpec.format == AUDIO_S16)
