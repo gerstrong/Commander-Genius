@@ -66,7 +66,7 @@ IF(WIN32)
         INSTALL(FILES "${CMAKE_FIND_ROOT_PATH}/bin/libvorbisfile-3.dll" DESTINATION "${APPDIR}")
 
         INSTALL(FILES "${CMAKE_FIND_ROOT_PATH}/bin/SDL2_ttf.dll" DESTINATION "${APPDIR}")
-        INSTALL(FILES "${CMAKE_FIND_ROOT_PATH}/bin/libfreetype-6.dll" DESTINATION "${APPDIR}")
+        #INSTALL(FILES "${CMAKE_FIND_ROOT_PATH}/bin/libfreetype-6.dll" DESTINATION "${APPDIR}")
 
         INSTALL(FILES "${CMAKE_FIND_ROOT_PATH}/lib/libwinpthread-1.dll" DESTINATION "${APPDIR}")
 
