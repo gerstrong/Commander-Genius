@@ -51,13 +51,13 @@ IF(WIN32)
         INSTALL(FILES "${CMAKE_FIND_ROOT_PATH}/bin/libssl-1_1-x64.dll" DESTINATION "${APPDIR}")
 
         INSTALL(FILES "${CMAKE_FIND_ROOT_PATH}/bin/libcurl-4.dll" DESTINATION "${APPDIR}")
-        INSTALL(FILES "${CMAKE_FIND_ROOT_PATH}/bin/zlib1.dll" DESTINATION "${APPDIR}")
+        #INSTALL(FILES "${CMAKE_FIND_ROOT_PATH}/bin/zlib1.dll" DESTINATION "${APPDIR}")
 
         INSTALL(FILES "${CMAKE_FIND_ROOT_PATH}/bin/SDL2.dll" DESTINATION "${APPDIR}")
 
         INSTALL(FILES "${CMAKE_FIND_ROOT_PATH}/bin/SDL2_image.dll" DESTINATION "${APPDIR}")
-        INSTALL(FILES "${CMAKE_FIND_ROOT_PATH}/bin/libjpeg-9.dll" DESTINATION "${APPDIR}")
-        INSTALL(FILES "${CMAKE_FIND_ROOT_PATH}/bin/libpng16-16.dll" DESTINATION "${APPDIR}")
+        #INSTALL(FILES "${CMAKE_FIND_ROOT_PATH}/bin/libjpeg-9.dll" DESTINATION "${APPDIR}")
+        #INSTALL(FILES "${CMAKE_FIND_ROOT_PATH}/bin/libpng16-16.dll" DESTINATION "${APPDIR}")
 
         INSTALL(FILES "${CMAKE_FIND_ROOT_PATH}/bin/SDL2_mixer.dll" DESTINATION "${APPDIR}")
         INSTALL(FILES "${CMAKE_FIND_ROOT_PATH}/bin/libmpg123-0.dll" DESTINATION "${APPDIR}")
@@ -70,8 +70,8 @@ IF(WIN32)
 
         INSTALL(FILES "${CMAKE_FIND_ROOT_PATH}/lib/libwinpthread-1.dll" DESTINATION "${APPDIR}")
 
-        INSTALL(FILES "/usr/lib/gcc/x86_64-w64-mingw32/10-win32/libgcc_s_seh-1.dll" DESTINATION "${APPDIR}")
-        INSTALL(FILES "/usr/lib/gcc/x86_64-w64-mingw32/10-win32/libstdc++-6.dll" DESTINATION "${APPDIR}")
+        INSTALL(FILES "/usr/lib/gcc/x86_64-w64-mingw32/12-win32/libgcc_s_seh-1.dll" DESTINATION "${APPDIR}")
+        INSTALL(FILES "/usr/lib/gcc/x86_64-w64-mingw32/12-win32/libstdc++-6.dll" DESTINATION "${APPDIR}")
 
     else()
         INSTALL(DIRECTORY "${CMAKE_SOURCE_DIR}/dlls/" DESTINATION "${APPDIR}")
