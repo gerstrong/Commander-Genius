@@ -509,7 +509,7 @@ void InitBaseSearchPaths()
     AddToFileList(&basesearchpaths, "/storage/emulated/0/Android/data/net.sourceforge.clonekeenplus/files/SaveData");
 #else
   #ifdef FLATPAK_HOME
-    AddToFileList(&basesearchpaths, "${FLATPAK_HOME}/.CommanderGenius");
+    AddToFileList(&basesearchpaths, "${FLATPAK_HOME}/CommanderGenius");
   #else
     AddToFileList(&basesearchpaths, "${HOME}/.CommanderGenius");
   #endif
