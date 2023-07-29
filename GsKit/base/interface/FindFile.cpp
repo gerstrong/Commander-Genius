@@ -482,8 +482,6 @@ void InitBaseSearchPaths()
 {
     basesearchpaths.clear();
 
-
-
 #if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
     AddToFileList(&basesearchpaths, "${HOME}/Library/Application Support/Commander Genius");
     AddToFileList(&basesearchpaths, ".");
@@ -508,7 +506,11 @@ void InitBaseSearchPaths()
     AddToFileList(&basesearchpaths, SDL_AndroidGetInternalStoragePath());
     AddToFileList(&basesearchpaths, "/storage/emulated/0/Android/data/net.sourceforge.clonekeenplus/files/SaveData");
 #else
-    AddToFileList(&basesearchpaths, "${HOME}/.CommanderGenius");
+    #ifdef ALTERNATE_HOME
+      AddToFileList(&basesearchpaths, ALTERNATE_HOME"/CommanderGenius");
+    #else
+      AddToFileList(&basesearchpaths, "${HOME}/.CommanderGenius");
+    #endif
 #endif
     AddToFileList(&basesearchpaths, ".");
     AddToFileList(&basesearchpaths, SYSTEM_DATA_DIR"/commandergenius"); // no use of ${SYSTEM_DATA}, because it is uncommon and could cause confusion to the user
@@ -810,11 +812,7 @@ std::string GetHomeDir()
     const char* home = "";
     return home;
 #else
-  #ifdef FLATPAK_HOME
-    char* home = getenv("FLATPAK_HOME");
-  #else
     char* home = getenv("HOME");
-  #endif
 #endif
     if(home == nullptr || home[0] == '\0') {
         passwd* userinfo = getpwuid(getuid());
@@ -888,6 +886,11 @@ void ReplaceFileVariables(std::string& filename) {
     replace(filename, "${HOME}", GetHomeDir());
     replace(filename, "${SYSTEM_DATA}", GetSystemDataDir());
     replace(filename, "${BIN}", GetBinaryDir());
+
+#ifdef XDG_CONFIG_HOME
+    const std::string xdg_config_home(getenv("XDG_CONFIG_HOME"));
+    replace(filename, "${XDG_CONFIG_HOME}", xdg_config_home);
+#endif
 }
 
 // WARNING: not multithreading aware
