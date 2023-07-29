@@ -32,7 +32,8 @@ option(USE_VIRTUALPAD "Enable Onscreen Virtual Gamepad support " ON)
 option(EMBEDDED "Set this to yes, if you want a build for embedded systems" OFF)
 
 if(FLATPAK_HOME)
-    ADD_DEFINITIONS(-DFLATPAK_HOME="$ENV{FLATPAK_HOME}")
+    ADD_DEFINITIONS(-DFLATPAK_HOME="${FLATPAK_HOME}")
+    MESSAGE(STATUS "FLATPAK_HOME=${FLATPAK_HOME}")
 endif(FLATPAK_HOME)
 
 if(EMBEDDED)
