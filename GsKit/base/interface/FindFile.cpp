@@ -481,6 +481,9 @@ searchpathlist	basesearchpaths;
 void InitBaseSearchPaths()
 {
     basesearchpaths.clear();
+
+
+
 #if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
     AddToFileList(&basesearchpaths, "${HOME}/Library/Application Support/Commander Genius");
     AddToFileList(&basesearchpaths, ".");
@@ -505,7 +508,11 @@ void InitBaseSearchPaths()
     AddToFileList(&basesearchpaths, SDL_AndroidGetInternalStoragePath());
     AddToFileList(&basesearchpaths, "/storage/emulated/0/Android/data/net.sourceforge.clonekeenplus/files/SaveData");
 #else
+  #ifdef FLATPAK_HOME
+    AddToFileList(&basesearchpaths, "${FLATPAK_HOME}/.CommanderGenius");
+  #else
     AddToFileList(&basesearchpaths, "${HOME}/.CommanderGenius");
+  #endif
 #endif
     AddToFileList(&basesearchpaths, ".");
     AddToFileList(&basesearchpaths, SYSTEM_DATA_DIR"/commandergenius"); // no use of ${SYSTEM_DATA}, because it is uncommon and could cause confusion to the user
