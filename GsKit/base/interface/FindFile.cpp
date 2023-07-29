@@ -887,7 +887,7 @@ void ReplaceFileVariables(std::string& filename) {
     replace(filename, "${SYSTEM_DATA}", GetSystemDataDir());
     replace(filename, "${BIN}", GetBinaryDir());
 
-#ifdef XDG_CONFIG_HOME
+#ifdef ALTERNATE_HOME
     const std::string xdg_config_home(getenv("XDG_CONFIG_HOME"));
     replace(filename, "${XDG_CONFIG_HOME}", xdg_config_home);
 #endif
