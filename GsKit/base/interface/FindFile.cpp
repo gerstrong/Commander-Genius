@@ -508,11 +508,7 @@ void InitBaseSearchPaths()
     AddToFileList(&basesearchpaths, SDL_AndroidGetInternalStoragePath());
     AddToFileList(&basesearchpaths, "/storage/emulated/0/Android/data/net.sourceforge.clonekeenplus/files/SaveData");
 #else
-  #ifdef FLATPAK_HOME
-    AddToFileList(&basesearchpaths, FLATPAK_HOME"/CommanderGenius");
-  #else
     AddToFileList(&basesearchpaths, "${HOME}/.CommanderGenius");
-  #endif
 #endif
     AddToFileList(&basesearchpaths, ".");
     AddToFileList(&basesearchpaths, SYSTEM_DATA_DIR"/commandergenius"); // no use of ${SYSTEM_DATA}, because it is uncommon and could cause confusion to the user
@@ -814,7 +810,11 @@ std::string GetHomeDir()
     const char* home = "";
     return home;
 #else
+  #ifdef FLATPAK_HOME
+    char* home = getenv("FLATPAK_HOME");
+  #else
     char* home = getenv("HOME");
+  #endif
 #endif
     if(home == nullptr || home[0] == '\0') {
         passwd* userinfo = getpwuid(getuid());

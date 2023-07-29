@@ -309,9 +309,12 @@ bool CGameLauncher::setupMenu()
         const auto searchPathGames =
                 JoinPaths(GetFirstSearchPath(),"games");
 
+        auto solvedPath = searchPathGames;
+        ReplaceFileVariables(solvedPath);
+
         ss << "No games detected!\n";
         ss << "You can copy some into:\n";
-        ss << "\"" << searchPathGames << "\",\n";
+        ss << "\"" << solvedPath << "\",\n";
         ss << "or download using \"+ More\" button\n";
         ss << "on the next page.\n";
 
