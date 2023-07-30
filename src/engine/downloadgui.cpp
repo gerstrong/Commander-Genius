@@ -294,6 +294,8 @@ void DownloadGui::setupDownloadDialog() // Should this become start()
                                     if(mpGameStoreDialog)
                                         mpGameStoreDialog = nullptr;
 
+                                    mClosed = true;
+
                                   } ) ));
 
     mpDloadCancel = std::dynamic_pointer_cast<GsButton>(

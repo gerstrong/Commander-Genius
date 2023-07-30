@@ -989,8 +989,11 @@ void GameLauncher::ponderPatchDialog()
 // Process Routine
 ////
 void GameLauncher::ponder(const float deltaT)
-{
+{        
     mDownloadGui.ponder(deltaT);
+
+    if(mDownloadGui.isOpen())
+        return;
 
     if(mGameScanner.isRunning())
     {
