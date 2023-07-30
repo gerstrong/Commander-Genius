@@ -162,13 +162,12 @@ bool GameLauncher::setupMenu()
         return false;
     }
 
-    mpPlusMorebutton->enable(false);
-
-    // Get instance to Bitmap Control for game preview pictures
+    // Set the right references coming from the widgets system
     mLauncherDialog.passTagToRef("currentBitmapBox", mCurrentBmp);
-
-
     mLauncherDialog.passTagToRef("GSSelList", mpGSSelList);
+    mLauncherDialog.passTagToRef("plusMoreButton", mpPlusMorebutton);
+
+    mpPlusMorebutton->enable(false);
 
     mpGSSelList->setBackgroundColor( GsColor(0xFF, 0xFF, 0xFF) );
 

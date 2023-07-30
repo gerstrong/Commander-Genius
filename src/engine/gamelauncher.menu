@@ -31,7 +31,7 @@
   </GUITextSelectionList>
 
   <Button
-     tag="PlusMoreButton"
+     tag="plusMoreButton"
      name="+ More"
      dim="0.125f, 0.865f, 0.25f, 0.07f"
      event="GMDownloadDlgOpen"
