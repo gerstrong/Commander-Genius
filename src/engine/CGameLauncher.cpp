@@ -56,27 +56,7 @@ GameLauncher::GameLauncher() :
 mLauncherDialog(CGUIDialog(GsRect<float>(0.1f, 0.1f, 0.8f, 0.85f),
                            CGUIDialog::FXKind::EXPAND)),
 mGameScanner()
-{
-/*
-    gAudio.unloadSoundData();
-    // The last menu has been removed. Restore back the game status
-    gBehaviorEngine.setPause(false);
-
-    gMenuController.clearMenuStack();
-    letchooseagain();
-
-#ifdef USE_VIRTUALPAD
-    gInput.mpVirtPad.reset(new VirtualKeenControl);
-
-    if( !gInput.mpVirtPad->init() )
-    {
-        const std::string err = "Error loading the Virtual Gamepad!";
-
-        gLogging.textOut(err);
-    }
-#endif
-*/
-}
+{}
 
 GameLauncher::~GameLauncher()
 {}
@@ -133,11 +113,9 @@ bool buildWidgets(CGUIDialog &dlg)
 ////
 bool GameLauncher::setupMenu()
 {
-
-    m_mustquit      = false;
+    mMustquit      = false;
     mDonePatchSelection = false;
     mChosenGame    = -1;
-    mEp1slot       = -1;
     mLauncherDialog.initEmptyBackground();
     mSelection      = -1;
 
@@ -189,12 +167,12 @@ bool GameLauncher::setupMenu()
     // Get instance to Bitmap Control for game preview pictures
     mLauncherDialog.passTagToRef("currentBitmapBox", mCurrentBmp);
 
-    mPreviewBmpPtrVec.resize(mEntries.size());
 
     mLauncherDialog.passTagToRef("GSSelList", mpGSSelList);
 
     mpGSSelList->setBackgroundColor( GsColor(0xFF, 0xFF, 0xFF) );
 
+    mPreviewBmpPtrVec.resize(mEntries.size());
 
     std::vector<GameEntry>::iterator it = mEntries.begin();
     unsigned int i=0;
@@ -585,13 +563,6 @@ bool GameLauncher::scanExecutables(const std::string& path)
 
         gLogging.textOut(gamespecstring);
 
-        // The original episode 1 exe is needed to load gfx's for game launcher menu
-        if ( mEp1slot <= -1 && newentry.crcpass == true )
-        {
-            mEp1slot = mEntries.size()-1;
-            gLogging.ftextOut("   Using for in-game menu resources<br>" );
-        }
-
         result |= true;
     }
 
@@ -852,7 +823,7 @@ void GameLauncher::ponderGameSelDialog(const float deltaT)
     // Did the user press (X)?
     if( gInput.getExitEvent() )
     {
-        m_mustquit = true;
+        mMustquit = true;
         return;
     }
 

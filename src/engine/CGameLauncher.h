@@ -86,11 +86,10 @@ public:
         mExecFilename.clear();
     }
 
-    bool getQuit() const { return m_mustquit; }
+    bool getQuit() const { return mMustquit; }
     std::string getDirectory(Uint8 slot) const
     {   return mEntries.at(slot).path; }
     Uint8 getEpisode(Uint8 slot) const { return mEntries.at(slot).episode; }
-    std::string getEP1Directory() const { return mEntries.at(mEp1slot).path; }
 
     typedef std::vector<std::string> DirList;
 
@@ -102,7 +101,6 @@ private:
     int mChosenGame = -1;
 
     Uint8 mEpisode;
-    Sint8 mEp1slot;
     std::vector<GameEntry> mEntries;
     std::vector<std::string> mGamePaths;
     std::vector<std::string> mGameNames;
@@ -152,7 +150,7 @@ private:
     void putLabels();
 
 
-    bool m_mustquit = false;
+    bool mMustquit = false;
 
     bool mDonePatchSelection = false; // Tells if the Patch file has been selected if any
     bool mDoneExecSelection = false; // Tells if the Patch file has been selected if any
