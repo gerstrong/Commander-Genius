@@ -1,21 +1,52 @@
 #ifdef DOWNLOADER
+#include "CGameLauncher.h"
+#include "gamedownloader.h"
+#include "downloadgui.h"
+#include "core/mode/CGameMode.h"
+
 #include <widgets/GsProgressbar.h>
 #include <widgets/GsButton.h>
 #include <base/GsApp.h>
 #include <base/GsEventContainer.h>
 #include <base/interface/FindFile.h>
 #include <base/interface/ThreadPool.h>
+#include <base/CInput.h>
 
 #include <sstream>
 
-#include "CGameLauncher.h"
-#include "gamedownloader.h"
-#include "core/mode/CGameMode.h"
 
-// Here we take a look at the game the user still does not
-// have and decide if the "New Stuff" will become selectable.
-// If he has all the games, the button won't be shown.
-void CGameLauncher::verifyGameStore(const bool noCatalogDownloads)
+bool DownloadGui::start()
+{
+    return false;
+}
+
+void DownloadGui::pumpEvent(const std::shared_ptr<CEvent> &evPtr)
+{
+    if( std::dynamic_pointer_cast<const CancelDownloadEvent>(evPtr))
+    {
+        mCancelDownload = true;
+        mpDloadCancel->enable(false);
+        mpDloadProgressCtrl->setUserAbort(true);
+    }
+}
+
+void DownloadGui::tryDownloadCatalogueFile(std::shared_ptr<GsButton> &plusButton)
+{
+    // Try to download the catalogue file in the background
+    GameDownloader *pCatalogueDownloader =
+                new GameDownloader(m_DownloadProgress,
+                                   m_DownloadProgressError,
+                                   m_DownloadCancel);
+    pCatalogueDownloader->setupDownloadCatalogue(true);
+
+    plusButton->setText("Scanning...");
+
+    mpCatalogDownloadThread = threadPool->start(pCatalogueDownloader,
+                          "Loading catalogue file in the background");
+}
+
+void DownloadGui::verifyGameStore(std::vector<GameEntry> &entries,
+                                  std::shared_ptr<GsButton> &plusButton)
 {
     m_DownloadProgress = 0;
     m_DownloadCancel = false;
@@ -31,7 +62,6 @@ void CGameLauncher::verifyGameStore(const bool noCatalogDownloads)
 
     if(!gameDownloader.hasCatalog())
     {
-
         std::stringstream ss;
 
         const auto cataFile   = gameDownloader.catalogFName();
@@ -49,54 +79,32 @@ void CGameLauncher::verifyGameStore(const bool noCatalogDownloads)
         showMessageBox(msg);
     }
 
-
-    if(!mpPlusMorebutton)
-    {
-        mpPlusMorebutton =
-            mLauncherDialog.add(
-                    new GsButton( "+ More",
-                                  GsRect<float>(0.125f, 0.865f, 0.25f, 0.07f),
-                                  new GMDownloadDlgOpen() ) );
-        mpPlusMorebutton->setRounded(false);
-    }
-
-    mpPlusMorebutton->enable(false);
-
     // If no games in the store found and you don't yet have games, gray button out
     if(missingList.empty())
     {
-        if(!m_Entries.empty())
+        if(!entries.empty())
         {
-            mpPlusMorebutton->setText("Empty Store");
+            plusButton->setText("Empty Store");
         }
     }
     else
     {
-        mpPlusMorebutton->setText("+ More");
-        mpPlusMorebutton->enable(true);
+        plusButton->setText("+ More");
+        plusButton->enable(true);
     }
 
     mGameCatalogue = gameDownloader.getGameCatalogue();
+}
 
-    // Try to download the catalogue file in the background
-    if(!noCatalogDownloads)
-    {
-        GameDownloader *pCatalogueDownloader =
-                new GameDownloader(m_DownloadProgress,
-                                   m_DownloadProgressError,
-                                   m_DownloadCancel);
-        pCatalogueDownloader->setupDownloadCatalogue(true);
-
-        mpPlusMorebutton->setText("Scanning...");
-
-        mpCatalogDownloadThread = threadPool->start(pCatalogueDownloader,
-                          "Loading catalogue file in the background");
-    }
+void DownloadGui::render()
+{
+    if(mpGameStoreDialog)
+        mpGameStoreDialog->processRendering();
 }
 
 
 
-void CGameLauncher::pullGame(const int selection)
+void DownloadGui::pullGame(const int selection)
 {
     assert(selection >= 0);
 
@@ -123,8 +131,32 @@ void CGameLauncher::pullGame(const int selection)
 
 }
 
-void CGameLauncher::ponderDownloadDialog()
+void DownloadGui::ponder(const float deltaT)
 {
+    if(mpGameStoreDialog)
+    {
+        // Command (Keyboard/Joystick) events for the game center dialog
+        for( int cmd = IC_LEFT ; cmd < MAX_COMMANDS ; cmd++ )
+        {
+            if( gInput.getPressedCommand(cmd) )
+            {
+                const std::shared_ptr<CEvent> cmdEvent(
+                            new CommandEvent( static_cast<InpCmd>(cmd) ));
+                mpGameStoreDialog->sendEvent(cmdEvent);
+                break;
+            }
+        }
+
+        mpGameStoreDialog->processLogic();
+    }
+
+    int ret;
+    if(threadPool->finalizeIfReady(mpCatalogDownloadThread, &ret))
+    {
+        gEventManager.add("verifyGameStoreEvent");
+        mpCatalogDownloadThread = nullptr;
+    }
+
     // Update the description if selection changed
     int sel = mpGSSelList->getSelection();
 
@@ -169,7 +201,7 @@ void CGameLauncher::ponderDownloadDialog()
 }
 
 
-void CGameLauncher::setupDownloadDialog()
+void DownloadGui::setupDownloadDialog() // Should this become start()
 {
     mpGameStoreDialog.reset(  new CGUIDialog( GsRect<float>(0.1f, 0.1f, 0.8f, 0.85f),
                                               CGUIDialog::FXKind::EXPAND )  );

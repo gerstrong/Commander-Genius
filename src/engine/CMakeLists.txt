@@ -27,15 +27,16 @@ endif(BUILD_COSMOS)
 add_subdirectory(unzip)
 add_subdirectory(depklite)
 
-
-
 set(CXXSRC CGameLauncher.cpp
            downloadgui.cpp
-           gamedownloader.cpp)
+           gamedownloader.cpp
+           gameselector.cpp)
 
 
 set(HSRC CGameLauncher.h
-         gamedownloader.h)
+         downloadgui.h
+         gamedownloader.h
+         gameselector.h)
 
 add_library(engine STATIC ${CXXSRC}
                           ${HSRC}
@@ -71,6 +72,11 @@ add_custom_target(
   createGameLauncherMenu
   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
   COMMAND xxd -i gamelauncher.menu ${CMAKE_CURRENT_BINARY_DIR}/gamelauncher.menu.h
+)
+
+target_sources(createGameLauncherMenu
+  PRIVATE
+    gameselector.h gameselector.cpp
 )
 
 add_dependencies(engine createGameLauncherMenu)

@@ -52,7 +52,7 @@
 #include <base/interface/property_tree/xml_parser.h>
 
 /// Main Class implementation
-CGameLauncher::CGameLauncher() :
+GameLauncher::GameLauncher() :
 mLauncherDialog(CGUIDialog(GsRect<float>(0.1f, 0.1f, 0.8f, 0.85f),
                            CGUIDialog::FXKind::EXPAND)),
 mGameScanner()
@@ -78,7 +78,7 @@ mGameScanner()
 */
 }
 
-CGameLauncher::~CGameLauncher()
+GameLauncher::~GameLauncher()
 {}
 
 struct ExecutableListFiller
@@ -131,20 +131,20 @@ bool buildWidgets(CGUIDialog &dlg)
 ////
 // Initialization Routine
 ////
-bool CGameLauncher::setupMenu()
+bool GameLauncher::setupMenu()
 {
 
     m_mustquit      = false;
     mDonePatchSelection = false;
-    m_chosenGame    = -1;
-    m_ep1slot       = -1;
+    mChosenGame    = -1;
+    mEp1slot       = -1;
     mLauncherDialog.initEmptyBackground();
     mSelection      = -1;
 
 
     // TODO: Put that scanning into a separate section so we can show a loading menu
     // Scan for games...
-    m_Entries.clear();
+    mEntries.clear();
 
     gLogging.ftextOut("Game Autodetection Started<br>" );
 
@@ -165,56 +165,6 @@ bool CGameLauncher::setupMenu()
     // Save any custom labels
     putLabels();
 
-    try
-    {
-        /*
-        GameCatalogueEntry gce;
-
-        gce.mVersionCode = gameNode.second.get<int>("<xmlattr>.versioncode");
-        TRACE_NODE(gce.mVersionCode);
-
-        gce.mName = gameNode.second.get<std::string>("<xmlattr>.name");
-        TRACE_NODE(gce.mName);
-        gce.mLink = gameNode.second.get<std::string>("<xmlattr>.link");
-        TRACE_NODE(gce.mLink);
-
-
-        if(gce.mVersionCode > CGVERSIONCODE)
-        {
-            gLogging.ftextOut("Game %s not supported. Required Version code %d, got %d.",
-                              gce.mName.c_str(), CGVERSIONCODE, gce.mVersionCode );
-            gLogging << CLogFile::endl;
-            continue;
-        }
-
-
-        gce.mDescription = gameNode.second.get<std::string>("<xmlattr>.description");
-        TRACE_NODE(gce.mDescription);
-        gce.mPictureFile = gameNode.second.get<std::string>("<xmlattr>.picture");
-        TRACE_NODE(gce.mPictureFile);
-
-        const auto filePath = JoinPaths("cache", gce.mPictureFile);
-
-        const auto fullfname = GetFullFileName(filePath);
-
-        gce.mBmpPtr.reset(new GsBitmap);
-
-        gce.mBmpPtr->loadImg(fullfname);
-
-        mGameCatalogue.push_back(gce);
-*/
-    }
-    catch(std::exception const& ex)
-    {
-        gLogging << "Exception while reading menu node: " << ex.what() << "\n";
-        return false;
-    }
-    catch(...)
-    {
-        gLogging << "Unknown Exception while reading menu node\n.";
-        return false;
-    }
-
     const auto openSettingsMenuEvent = [&]()
     {
         mLauncherDialog.enable(false);
@@ -234,20 +184,21 @@ bool CGameLauncher::setupMenu()
         return false;
     }
 
+    mpPlusMorebutton->enable(false);
 
     // Get instance to Bitmap Control for game preview pictures
     mLauncherDialog.passTagToRef("currentBitmapBox", mCurrentBmp);
 
-    mPreviewBmpPtrVec.resize(m_Entries.size());
+    mPreviewBmpPtrVec.resize(mEntries.size());
 
     mLauncherDialog.passTagToRef("GSSelList", mpGSSelList);
 
     mpGSSelList->setBackgroundColor( GsColor(0xFF, 0xFF, 0xFF) );
 
 
-    std::vector<GameEntry>::iterator it = m_Entries.begin();
+    std::vector<GameEntry>::iterator it = mEntries.begin();
     unsigned int i=0;
-    for( ; it != m_Entries.end() ; it++	)
+    for( ; it != mEntries.end() ; it++	)
     {
         mpGSSelList->addText(it->name);
 
@@ -269,9 +220,17 @@ bool CGameLauncher::setupMenu()
     mpGSSelList->setConfirmButtonEvent(new GMStart());
     mpGSSelList->setBackButtonEvent(new GMQuit());
 
-
     #ifdef DOWNLOADER
-    verifyGameStore(false);
+
+    const auto verifyGameStoreEvent = [&]()
+    {
+        mDownloadGui.verifyGameStore(mEntries, mpPlusMorebutton);
+    };
+
+    REGISTER_EV_FUNC(verifyGameStoreEvent);
+
+    verifyGameStoreEvent();
+    mDownloadGui.tryDownloadCatalogueFile(mpPlusMorebutton);
     #endif
 
     REGISTER_EV_FACTORY(GMStart);
@@ -340,19 +299,19 @@ bool CGameLauncher::setupMenu()
         bool found = false;
 
         // Check if the given parameter makes one game start.
-        for( GameEntry &entry : m_Entries)
+        for( GameEntry &entry : mEntries)
         {
             if(entry.path == gameDir)
             {
                 // found!
-                m_chosenGame = chosenGame;
+                mChosenGame = chosenGame;
                 gLogging.textOut("Launching game from directory: \"" + gameDir + "\"\n");
                 gArgs.removeTag("dir");
 
                 setupModsDialog();
 
                 ExecutableListFiller exefileslist;
-                const std::string dataDir = getDirectory( m_chosenGame );
+                const std::string dataDir = getDirectory( mChosenGame );
                 FindFiles(exefileslist, dataDir, false, FM_REG);
 
                 if( !exefileslist.list.empty() )
@@ -383,7 +342,7 @@ bool CGameLauncher::setupMenu()
 }
 
 
-bool CGameLauncher::scanSubDirectories(const std::string& path,
+bool GameLauncher::scanSubDirectories(const std::string& path,
                                        const size_t maxdepth,
                                        const size_t startPermil,
                                        const size_t endPermil)
@@ -432,7 +391,7 @@ bool CGameLauncher::scanSubDirectories(const std::string& path,
     return gamesDetected;
 }
 
-std::string CGameLauncher::filterGameName(const std::string &path)
+std::string GameLauncher::filterGameName(const std::string &path)
 {
     size_t pos = 0;
 
@@ -533,7 +492,7 @@ bool detectKeenGame(const std::string &curFname,
 }
 
 
-bool CGameLauncher::scanExecutables(const std::string& path)
+bool GameLauncher::scanExecutables(const std::string& path)
 {
     bool result = false;
 
@@ -622,14 +581,14 @@ bool CGameLauncher::scanExecutables(const std::string& path)
         }
 
         // Save the type information about the exe
-        m_Entries.push_back(newentry);
+        mEntries.push_back(newentry);
 
         gLogging.textOut(gamespecstring);
 
         // The original episode 1 exe is needed to load gfx's for game launcher menu
-        if ( m_ep1slot <= -1 && newentry.crcpass == true )
+        if ( mEp1slot <= -1 && newentry.crcpass == true )
         {
-            m_ep1slot = m_Entries.size()-1;
+            mEp1slot = mEntries.size()-1;
             gLogging.ftextOut("   Using for in-game menu resources<br>" );
         }
 
@@ -640,7 +599,7 @@ bool CGameLauncher::scanExecutables(const std::string& path)
 }
 
 
-bool CGameLauncher::start()
+bool GameLauncher::start()
 {
     // CRC init when Launcher starts.
     crc32_init();
@@ -685,9 +644,9 @@ bool CGameLauncher::start()
 
     struct GamesScan : public Action
     {
-        CGameLauncher &mGameLauncher;
+        GameLauncher &mGameLauncher;
 
-        GamesScan(CGameLauncher &launcher) :
+        GamesScan(GameLauncher &launcher) :
             mGameLauncher(launcher) {}
 
         int handle()
@@ -727,51 +686,14 @@ struct PatchListFiller
 
 
 
-void CGameLauncher::showMessageBox(const std::string &text)
+
+
+void GameLauncher::setupModsDialog()
 {
-    std::vector<std::string> strVec = explode(text, "\n");
-
-    mpMsgDialog.reset(new CGUIDialog(GsRect<float>(0.1f, 0.1f, 0.8f, 0.85f),
-                                     CGUIDialog::FXKind::EXPAND));
-
-    mpMsgDialog->initEmptyBackground();
-
-    float yStart = 0.1f;
-    for( auto &txtItem : strVec)
-    {
-        mpMsgDialog->add(new GsText(txtItem,
-                                   GsRect<float>(0.1f, yStart, 0.8f, 0.05f)));
-        yStart += 0.05f;
-    }
-
-    auto pOkButton = mpMsgDialog->add(
-                        new GsButton("Ok",
-                                   GsRect<float>(0.4f, 0.80f,
-                                                 0.2f, 0.15f),
-                                   [&]()
-                                   {
-                                       if(mpMsgDialog)
-                                       {
-                                           mpMsgDialog = nullptr;
-                                       }
-                                       if(mpGameStoreDialog)
-                                       {
-                                           mpGameStoreDialog = nullptr;
-                                       }
-
-                                   }));
-
-    pOkButton->select(true);
-    mpMsgDialog->setCurrentControl(pOkButton);
-}
-
-
-void CGameLauncher::setupModsDialog()
-{
-    if(int(m_Entries.size()) <= m_chosenGame)
+    if(int(mEntries.size()) <= mChosenGame)
         return;
 
-    const std::string dataDir = getDirectory( m_chosenGame );
+    const std::string dataDir = getDirectory( mChosenGame );
 
     // TODO: fetch the List of available patch files
     // Get the list of ".pat" files
@@ -829,19 +751,19 @@ void CGameLauncher::setupModsDialog()
 
 
 
-bool CGameLauncher::setChosenGame(const int chosengame)
+bool GameLauncher::setChosenGame(const int chosengame)
 {
-    m_chosenGame = chosengame;
+    mChosenGame = chosengame;
     return waschosen();
 }
 
 
-void CGameLauncher::pumpEvent(const std::shared_ptr<CEvent> &evPtr)
+void GameLauncher::pumpEvent(const std::shared_ptr<CEvent> &evPtr)
 {
     #ifdef DOWNLOADER
     if( std::dynamic_pointer_cast<const GMDownloadDlgOpen>(evPtr) )
     {
-        setupDownloadDialog();
+        mDownloadGui.setupDownloadDialog();
     }
     #endif
 
@@ -854,7 +776,7 @@ void CGameLauncher::pumpEvent(const std::shared_ptr<CEvent> &evPtr)
         // TODO: fetch the List of available patch files
         // Get the list of ".pat" files
         ExecutableListFiller exefileslist;
-        const std::string dataDir = getDirectory( m_chosenGame );
+        const std::string dataDir = getDirectory( mChosenGame );
         FindFiles(exefileslist, dataDir, false, FM_REG);
 
         if( !exefileslist.list.empty() )
@@ -863,7 +785,7 @@ void CGameLauncher::pumpEvent(const std::shared_ptr<CEvent> &evPtr)
         }
 
 
-        if(m_chosenGame >= 0)
+        if(mChosenGame >= 0)
         {
             setupModsDialog();
         }
@@ -877,12 +799,6 @@ void CGameLauncher::pumpEvent(const std::shared_ptr<CEvent> &evPtr)
             mPatchFilename = mPatchStrVec[sel];
             mDonePatchSelection = true;
         }
-    }
-    else if( std::dynamic_pointer_cast<const CancelDownloadEvent>(evPtr))
-    {
-        mCancelDownload = true;
-        mpDloadCancel->enable(false);
-        mpDloadProgressCtrl->setUserAbort(true);
     }
 /*
 #ifdef USE_VIRTUALPAD
@@ -924,7 +840,7 @@ void CGameLauncher::pumpEvent(const std::shared_ptr<CEvent> &evPtr)
 
 
 
-void CGameLauncher::ponderGameSelDialog(const float deltaT)
+void GameLauncher::ponderGameSelDialog(const float deltaT)
 {
     // If GameScanner is running, don't do anything else
     if(mGameScanner.isRunning())
@@ -956,7 +872,7 @@ void CGameLauncher::ponderGameSelDialog(const float deltaT)
     {
         // Check if the selection changed. Update the right data panel
         if(mSelection != mpGSSelList->getSelection() &&
-           !m_Entries.empty() )
+           !mEntries.empty() )
         {
             mSelection = mpGSSelList->getSelection();
 
@@ -965,13 +881,13 @@ void CGameLauncher::ponderGameSelDialog(const float deltaT)
                 const auto sel = static_cast<unsigned int>(mSelection);
 
                 // In case another list loaded, but we have an old selection
-                if(sel >= m_Entries.size())
+                if(sel >= mEntries.size())
                 {
                     mSelection = 0;
                 }
                 else
                 {
-                    auto &entry = m_Entries[sel];
+                    auto &entry = mEntries[sel];
                     const std::string nameText = "Episode " + itoa(entry.episode);
                     mpEpisodeText->setText(nameText);
                     float fVer = entry.version;
@@ -998,8 +914,7 @@ void CGameLauncher::ponderGameSelDialog(const float deltaT)
 }
 
 
-
-void CGameLauncher::ponderPatchDialog()
+void GameLauncher::ponderPatchDialog()
 {
     if(mpPatchDialog)
         mpPatchDialog->processLogic();
@@ -1013,10 +928,10 @@ void CGameLauncher::ponderPatchDialog()
 
         //// Game has been chosen. Launch it!
         // Get the path were to Launch the game
-        const std::string DataDirectory = getDirectory( m_chosenGame );
+        const std::string DataDirectory = getDirectory( mChosenGame );
 
         // We have to check which Episode will be used
-        const int episode = getEpisode( m_chosenGame );
+        const int episode = getEpisode( mChosenGame );
 
         be.mPatchFname = mPatchFilename;
 
@@ -1101,7 +1016,7 @@ void CGameLauncher::ponderPatchDialog()
 ////
 // Process Routine
 ////
-void CGameLauncher::ponder(const float deltaT)
+void GameLauncher::ponder(const float deltaT)
 {
     if(mGameScanner.isRunning())
     {
@@ -1147,42 +1062,12 @@ void CGameLauncher::ponder(const float deltaT)
         mLauncherDialog.enable(true);
     }
 
-
-    #ifdef DOWNLOADER
-    if(mpGameStoreDialog)
-    {
-        // Command (Keyboard/Joystick) events for the game center dialog
-        for( int cmd = IC_LEFT ; cmd < MAX_COMMANDS ; cmd++ )
-        {
-            if( gInput.getPressedCommand(cmd) )
-            {
-                const std::shared_ptr<CEvent> cmdEvent(
-                            new CommandEvent( static_cast<InpCmd>(cmd) ));
-                mpGameStoreDialog->sendEvent(cmdEvent);
-                break;
-            }
-        }
-
-        mpGameStoreDialog->processLogic();
-        ponderDownloadDialog();
-        return;
-    }
-
-    int ret;
-    if(threadPool->finalizeIfReady(mpCatalogDownloadThread, &ret))
-    {
-        verifyGameStore(true);
-        mpCatalogDownloadThread = nullptr;
-    }
-
-    #endif
-
     // Button should disabled unless a game was selected
     if(mpStartButton && mpGSSelList)
     {
         const auto selection = mpGSSelList->getSelection();
 
-        if(selection >= 0 && selection < int(m_Entries.size()))
+        if(selection >= 0 && selection < int(mEntries.size()))
         {
             mpStartButton->enable(true);
         }
@@ -1193,11 +1078,11 @@ void CGameLauncher::ponder(const float deltaT)
     }
 
 
-    if(!mDonePatchSelection && m_chosenGame < 0)
+    if(!mDonePatchSelection && mChosenGame < 0)
     {
         ponderGameSelDialog(deltaT);
     }
-    else if(m_chosenGame >= 0 && m_chosenGame < int(m_Entries.size()))
+    else if(mChosenGame >= 0 && mChosenGame < int(mEntries.size()))
     {
         ponderPatchDialog();
     }
@@ -1208,7 +1093,7 @@ void CGameLauncher::ponder(const float deltaT)
     }
 }
 
-void CGameLauncher::renderMouseTouchState()
+void GameLauncher::renderMouseTouchState()
 {
     GsWeakSurface blit(gVideoDriver.getBlitSurface());
 
@@ -1236,11 +1121,9 @@ void CGameLauncher::renderMouseTouchState()
     mMouseTouchCurSfc.blitTo(blit);
 }
 
-void CGameLauncher::render()
+void GameLauncher::render()
 {
     GsWeakSurface blit(gVideoDriver.getBlitSurface());
-
-    //blit.fillRGB(0, 0, 0);
 
     if(mpMsgDialog)
     {
@@ -1252,7 +1135,7 @@ void CGameLauncher::render()
         return;
     }
 
-    if(!mDonePatchSelection && m_chosenGame < 0)
+    if(!mDonePatchSelection && mChosenGame < 0)
     {
         // If GameScanner is running, don't do anything else
         if(mGameScanner.isRunning())
@@ -1266,25 +1149,21 @@ void CGameLauncher::render()
     }
 
 
-    // Do the rendering of the dialog
+    // Do the rendering of external dialogs
     if(mpPatchDialog)
         mpPatchDialog->processRendering();
-
-    if(mpGameStoreDialog)
-        mpGameStoreDialog->processRendering();
-
 }
 
 
-void CGameLauncher::getLabels()
+void GameLauncher::getLabels()
 {
     bool found;
     Uint16 i;
     std::string line, dir;
     std::ifstream gamescfg;
 
-    m_Names.clear();
-    m_Paths.clear();
+    mGameNames.clear();
+    mGamePaths.clear();
 
     OpenGameFileR(gamescfg, GAMESCFG);
     if (gamescfg.is_open())
@@ -1299,9 +1178,9 @@ void CGameLauncher::getLabels()
 
                 // Check for duplicates
                 found = false;
-                for ( i=0; i<m_Paths.size(); i++ )
+                for ( i=0; i<mGamePaths.size(); i++ )
                 {
-                    if (strncmp(m_Paths.at(i).c_str(),dir.c_str(),dir.length()) == 0)
+                    if (strncmp(mGamePaths.at(i).c_str(),dir.c_str(),dir.length()) == 0)
                     {
                         found = true;
                         break;
@@ -1314,11 +1193,11 @@ void CGameLauncher::getLabels()
                     getline(gamescfg,line);
                     if (strncmp(line.c_str(),GAMESCFG_NAME,strlen(GAMESCFG_NAME)) == 0)
                     {
-                        m_Paths.push_back( dir );
+                        mGamePaths.push_back( dir );
 
                         std::string gamePath = line.substr(strlen(GAMESCFG_NAME));
 
-                        m_Names.push_back( filterGameName(gamePath) );
+                        mGameNames.push_back( filterGameName(gamePath) );
                     }
                 }
             }
@@ -1327,21 +1206,21 @@ void CGameLauncher::getLabels()
     }
 }
 
-std::string CGameLauncher::scanLabels(const std::string& path)
+std::string GameLauncher::scanLabels(const std::string& path)
 {
     Uint16 i;
 
-    for ( i=0; i<m_Paths.size(); i++ )
+    for ( i=0; i<mGamePaths.size(); i++ )
     {
-        if (strncmp(m_Paths.at(i).c_str(),path.c_str(),path.length()) == 0)
+        if (strncmp(mGamePaths.at(i).c_str(),path.c_str(),path.length()) == 0)
         {
-            return m_Names.at(i);
+            return mGameNames.at(i);
         }
     }
     return "";
 }
 
-void CGameLauncher::putLabels()
+void GameLauncher::putLabels()
 {
     Uint16 i;
     std::string line;
@@ -1350,11 +1229,11 @@ void CGameLauncher::putLabels()
     OpenGameFileW(gamescfg, GAMESCFG);
     if (gamescfg.is_open())
     {
-        for ( i=0; i<m_Entries.size(); i++ )
+        for ( i=0; i<mEntries.size(); i++ )
         {
-            line = GAMESCFG_DIR + m_Entries.at(i).exefilename;
+            line = GAMESCFG_DIR + mEntries.at(i).exefilename;
             gamescfg << line << std::endl;
-            line = GAMESCFG_NAME + m_Entries.at(i).name;
+            line = GAMESCFG_NAME + mEntries.at(i).name;
             gamescfg << line << std::endl << std::endl;
         }
         gamescfg.close();

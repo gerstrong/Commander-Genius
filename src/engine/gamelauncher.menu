@@ -31,6 +31,14 @@
   </GUITextSelectionList>
 
   <Button
+     tag="PlusMoreButton"
+     name="+ More"
+     dim="0.125f, 0.865f, 0.25f, 0.07f"
+     event="GMDownloadDlgOpen"
+     rounded="false">
+  </Button>
+
+  <Button
      tag="startButton"
      name="Start >"
      dim="0.60f, 0.865f, 0.25f, 0.07f"

@@ -213,7 +213,7 @@ int main(int argc, char *argv[])
     ////////////////////////////////
     // Set GameLauncher as Engine //
     ////////////////////////////////
-    gApp.setEngine(new CGameLauncher());
+    gApp.setEngine(new GameLauncher());
 
     //////////////////////////////
     // Run the Commander Genius //
