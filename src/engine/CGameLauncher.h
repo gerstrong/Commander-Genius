@@ -168,8 +168,4 @@ struct GMSwitchToGameLauncher : SwitchEngineEvent
         { }
 };
 
-struct CancelDownloadEvent : CEvent
-{};
-
-
 #endif /* CGAMELAUNCHER_H_ */

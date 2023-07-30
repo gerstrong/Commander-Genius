@@ -22,12 +22,6 @@ bool DownloadGui::start()
 
 void DownloadGui::pumpEvent(const std::shared_ptr<CEvent> &evPtr)
 {
-    if( std::dynamic_pointer_cast<const CancelDownloadEvent>(evPtr))
-    {
-        mCancelDownload = true;
-        mpDloadCancel->enable(false);
-        mpDloadProgressCtrl->setUserAbort(true);
-    }
 }
 
 void DownloadGui::tryDownloadCatalogueFile()
@@ -302,10 +296,14 @@ void DownloadGui::setupDownloadDialog() // Should this become start()
             mpGameStoreDialog->add(
                     new GsButton( "Cancel",
                                   GsRect<float>(0.375f, 0.865f, 0.25f, 0.07f),
-                                  new CancelDownloadEvent(),
+                                  [&]()
+                                  {
+                                    mCancelDownload = true;
+                                    mpDloadCancel->enable(false);
+                                    mpDloadProgressCtrl->setUserAbort(true);
+                                  },
                                   -1,
                                   1.0f, 0.675f, 0.675f)) );
-
 
     mpDloadCancel->enable(false);
 
