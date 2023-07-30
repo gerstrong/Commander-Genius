@@ -49,7 +49,7 @@ public:
      * @brief tryDownloadCatalogueFile Try to download
      *                                 catalogue file in the background
      */
-    void tryDownloadCatalogueFile(std::shared_ptr<GsButton> &plusButton);
+    void tryDownloadCatalogueFile();
 
     /**
      * @brief verifyGameStore Here we take a look at the game the user still does not
@@ -58,12 +58,17 @@ public:
 
      * @param noCatalogDownloads
      */
-    void verifyGameStore(std::vector<GameEntry> &entries,
-                         std::shared_ptr<GsButton> &plusButton);
+    void verifyGameStore(std::vector<GameEntry> &entries);
 
 
     void render() override;
 
+    /**
+     * @brief setPlusMoreButtonRef
+     * @param plusButton
+     */
+    void setPlusMoreButtonRef(std::shared_ptr<GsButton> &plusButton)
+    {   mpPlusMorebutton = plusButton;  }
 
 private:
 
@@ -81,6 +86,10 @@ private:
     std::vector<GameCatalogueEntry> mGameCatalogue;
     std::shared_ptr<GsTextSelectionList> mpGSSelList;
 
+    // This button is in the GameLauncher Window.
+    // It gets controlled from the Downloader for user feedback
+    std::shared_ptr<GsButton> mpPlusMorebutton;
+
     int mDownloadProgress = 0;
     int mDownloadErrorCode = 0;
     bool mCancelDownload = false;
@@ -94,6 +103,8 @@ private:
 
     bool mFinishedDownload = true;
     bool mDownloading = false;
+
+    bool mClosed = true;
 };
 
 #endif //DOWNLOADGUI_H

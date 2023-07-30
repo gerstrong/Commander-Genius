@@ -152,6 +152,7 @@ bool GameLauncher::setupMenu()
 
     REGISTER_EV_FUNC(openSettingsMenuEvent);
 
+    // Build widgets.
     try
     {
         if(!buildWidgets(mLauncherDialog))
@@ -162,10 +163,12 @@ bool GameLauncher::setupMenu()
         return false;
     }
 
-    // Set the right references coming from the widgets system
+    // Set the right references coming from the GsWidgets system
     mLauncherDialog.passTagToRef("currentBitmapBox", mCurrentBmp);
     mLauncherDialog.passTagToRef("GSSelList", mpGSSelList);
     mLauncherDialog.passTagToRef("plusMoreButton", mpPlusMorebutton);
+
+    mDownloadGui.setPlusMoreButtonRef(mpPlusMorebutton);
 
     mpPlusMorebutton->enable(false);
 
@@ -201,13 +204,13 @@ bool GameLauncher::setupMenu()
 
     const auto verifyGameStoreEvent = [&]()
     {
-        mDownloadGui.verifyGameStore(mEntries, mpPlusMorebutton);
+        mDownloadGui.verifyGameStore(mEntries);
     };
 
     REGISTER_EV_FUNC(verifyGameStoreEvent);
 
     verifyGameStoreEvent();
-    mDownloadGui.tryDownloadCatalogueFile(mpPlusMorebutton);
+    mDownloadGui.tryDownloadCatalogueFile();
     #endif
 
     REGISTER_EV_FACTORY(GMStart);
@@ -988,6 +991,8 @@ void GameLauncher::ponderPatchDialog()
 ////
 void GameLauncher::ponder(const float deltaT)
 {
+    mDownloadGui.ponder(deltaT);
+
     if(mGameScanner.isRunning())
     {
         mGameScanner.run(deltaT);

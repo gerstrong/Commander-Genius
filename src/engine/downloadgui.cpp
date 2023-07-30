@@ -30,7 +30,7 @@ void DownloadGui::pumpEvent(const std::shared_ptr<CEvent> &evPtr)
     }
 }
 
-void DownloadGui::tryDownloadCatalogueFile(std::shared_ptr<GsButton> &plusButton)
+void DownloadGui::tryDownloadCatalogueFile()
 {
     // Try to download the catalogue file in the background
     GameDownloader *pCatalogueDownloader =
@@ -39,14 +39,14 @@ void DownloadGui::tryDownloadCatalogueFile(std::shared_ptr<GsButton> &plusButton
                                    m_DownloadCancel);
     pCatalogueDownloader->setupDownloadCatalogue(true);
 
-    plusButton->setText("Scanning...");
+    mpPlusMorebutton->enable(false);
+    mpPlusMorebutton->setText("Scanning...");
 
     mpCatalogDownloadThread = threadPool->start(pCatalogueDownloader,
                           "Loading catalogue file in the background");
 }
 
-void DownloadGui::verifyGameStore(std::vector<GameEntry> &entries,
-                                  std::shared_ptr<GsButton> &plusButton)
+void DownloadGui::verifyGameStore(std::vector<GameEntry> &entries)
 {
     m_DownloadProgress = 0;
     m_DownloadCancel = false;
@@ -72,7 +72,6 @@ void DownloadGui::verifyGameStore(std::vector<GameEntry> &entries,
         ss << "I can try to download it or \n";
         ss << "you copy one into:\n";
         ss << "\"" << searchPath << "\".\n";
-        ss << "For now \"+ More\" button is disabled...\n";
 
         std::string msg(ss.str());
 
@@ -84,13 +83,9 @@ void DownloadGui::verifyGameStore(std::vector<GameEntry> &entries,
     {
         if(!entries.empty())
         {
-            plusButton->setText("Empty Store");
+            mpPlusMorebutton->setText("Empty Store");
+            mpPlusMorebutton->enable(false);
         }
-    }
-    else
-    {
-        plusButton->setText("+ More");
-        plusButton->enable(true);
     }
 
     mGameCatalogue = gameDownloader.getGameCatalogue();
@@ -133,6 +128,27 @@ void DownloadGui::pullGame(const int selection)
 
 void DownloadGui::ponder(const float deltaT)
 {
+    int ret;
+    if(threadPool->finalizeIfReady(mpCatalogDownloadThread, &ret))
+    {
+        mpPlusMorebutton->setText("+ More");
+
+        if(ret == 0) // if everything went fine
+        {
+            mpPlusMorebutton->enable(true);
+        }
+        else
+        {
+            mpPlusMorebutton->enable(false);
+        }
+
+        gEventManager.add("verifyGameStoreEvent");
+        mpCatalogDownloadThread = nullptr;
+    }
+
+    if(mClosed)
+        return;
+
     if(mpGameStoreDialog)
     {
         // Command (Keyboard/Joystick) events for the game center dialog
@@ -148,13 +164,6 @@ void DownloadGui::ponder(const float deltaT)
         }
 
         mpGameStoreDialog->processLogic();
-    }
-
-    int ret;
-    if(threadPool->finalizeIfReady(mpCatalogDownloadThread, &ret))
-    {
-        gEventManager.add("verifyGameStoreEvent");
-        mpCatalogDownloadThread = nullptr;
     }
 
     // Update the description if selection changed
