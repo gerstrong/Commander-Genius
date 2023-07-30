@@ -1,7 +1,7 @@
 #ifndef CG_VERSION_H
 #define CG_VERSION_H
 
-#define CGVERSION       "3.4.8-Release"
-#define CGVERSIONCODE	348000
+#define CGVERSION       "3.4.9-Release"
+#define CGVERSIONCODE	349000
 
 #endif

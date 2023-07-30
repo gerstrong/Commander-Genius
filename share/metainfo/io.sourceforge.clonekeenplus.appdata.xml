@@ -46,6 +46,12 @@
 </categories>
 
   <releases>
+    <release version="3.4.9" date="2022-06-25">
+      <description>
+        <p>More Keen versions supported</p>
+        <p>Improved resolution system</p>
+      </description>
+    </release>
     <release version="3.1.3" date="2022-06-25">
       <description>
         <p>Crash fixes</p>
