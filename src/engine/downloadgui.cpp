@@ -93,11 +93,12 @@ void DownloadGui::verifyGameStore(std::vector<GameEntry> &entries)
 
 void DownloadGui::render()
 {
+    if(mClosed)
+        return;
+
     if(mpGameStoreDialog)
         mpGameStoreDialog->processRendering();
 }
-
-
 
 void DownloadGui::pullGame(const int selection)
 {
@@ -320,6 +321,7 @@ void DownloadGui::setupDownloadDialog() // Should this become start()
 
     mGameCatalogue = gameDownloader.getGameCatalogue();
 
+    mClosed = false;
 }
 
 #endif //DOWNLOADER

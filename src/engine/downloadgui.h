@@ -68,7 +68,10 @@ public:
      * @param plusButton
      */
     void setPlusMoreButtonRef(std::shared_ptr<GsButton> &plusButton)
-    {   mpPlusMorebutton = plusButton;  }
+    {  mpPlusMorebutton = plusButton;  }
+
+    bool isOpen()
+    {  return !mClosed;  }
 
 private:
 

@@ -152,6 +152,13 @@ bool GameLauncher::setupMenu()
 
     REGISTER_EV_FUNC(openSettingsMenuEvent);
 
+    const auto GMDownloadDlgOpen = [&]()
+    {
+        mDownloadGui.setupDownloadDialog();
+    };
+
+    REGISTER_EV_FUNC(GMDownloadDlgOpen);
+
     // Build widgets.
     try
     {
@@ -170,7 +177,7 @@ bool GameLauncher::setupMenu()
 
     mDownloadGui.setPlusMoreButtonRef(mpPlusMorebutton);
 
-    mpPlusMorebutton->enable(false);
+    mpPlusMorebutton->enable(false); 
 
     mpGSSelList->setBackgroundColor( GsColor(0xFF, 0xFF, 0xFF) );
 
@@ -733,14 +740,6 @@ bool GameLauncher::setChosenGame(const int chosengame)
 
 void GameLauncher::pumpEvent(const std::shared_ptr<CEvent> &evPtr)
 {
-    #ifdef DOWNLOADER
-    if( std::dynamic_pointer_cast<const GMDownloadDlgOpen>(evPtr) )
-    {
-        mDownloadGui.setupDownloadDialog();
-    }
-    #endif
-
-
     if( std::dynamic_pointer_cast<const GMStart>(evPtr) )
     {
         const int chosengame = mpGSSelList->getSelection();
@@ -1098,6 +1097,12 @@ void GameLauncher::renderMouseTouchState()
 
 void GameLauncher::render()
 {
+    if(mDownloadGui.isOpen())
+    {
+        mDownloadGui.render();
+        return;
+    }
+
     GsWeakSurface blit(gVideoDriver.getBlitSurface());
 
     if(mpMsgDialog)
