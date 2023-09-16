@@ -15,10 +15,6 @@ CIntro::CIntro()
 {
     mp_bm.fill(nullptr);
 
-
-	m_introtime = 10;  // Total time (in seconds) to elapse until Main menu opens
-	m_scrolly = 200;
-	m_finished = false;
 	mp_bmp_surface = gVideoDriver.mpVideoEngine->getBlitSurface();
     SDL_FillRect(mp_bmp_surface, nullptr, 0);
 }

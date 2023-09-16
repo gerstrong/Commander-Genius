@@ -19,8 +19,6 @@ CMap::CMap():
 m_Tilemaps(gGraphics.getTileMaps())
 {
     resetScrolls();
-    m_Level = 0;
-    isSecret = false;
 }
 
 

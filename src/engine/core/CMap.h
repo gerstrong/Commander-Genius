@@ -233,7 +233,7 @@ public:
 
     bool m_animation_enabled = true;
     bool m_Dark = false;
-	bool isSecret;
+    bool isSecret = false;
     int mNumFuses = 0;
     bool mFuseInLevel = false;
 
@@ -256,7 +256,7 @@ private:
     CPlane mInfoPlane;
     std::vector<ScrollingPlane> mScrollingPlanes;
 
-	Uint16 m_Level;
+    Uint16 m_Level = 0;
 	std::string m_LevelName;
 
     bool mLocked = false;

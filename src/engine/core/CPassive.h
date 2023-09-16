@@ -56,14 +56,14 @@ public:
 
     void createOutlinedText(const int splash_x, const int splash_y, const std::string &text);
 
-    char m_mode;
+    char m_mode = INTRO;
 
 protected:
     char m_Episode;
     char m_Difficulty;
 
     // TODO: Bad variable name. Think about something better
-    bool mBackToGameLauncher;
+    bool mBackToGameLauncher = false;
     std::string m_DataDirectory;
     CSaveGameController m_SavedGame;
     GsSurface mTextSfc;

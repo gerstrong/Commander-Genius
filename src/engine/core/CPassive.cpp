@@ -23,11 +23,8 @@ CPassive::CPassive()
 {
     auto &keenFiles = gKeenFiles;
     CExeFile &ExeFile = keenFiles.exeFile;
-    mBackToGameLauncher = false;
-    m_mode = INTRO;
     m_Episode = ExeFile.getEpisode();
-    m_DataDirectory = gKeenFiles.gameDir;
-
+    m_DataDirectory = keenFiles.gameDir;
 }
 
 
