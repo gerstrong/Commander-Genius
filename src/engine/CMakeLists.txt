@@ -74,10 +74,7 @@ add_custom_target(
   COMMAND xxd -i gamelauncher.menu ${CMAKE_CURRENT_BINARY_DIR}/gamelauncher.menu.h
 )
 
-target_sources(createGameLauncherMenu
-  PRIVATE
-    gameselector.h gameselector.cpp
-)
+set_property(TARGET createGameLauncherMenu APPEND PROPERTY SOURCES gameselector.h gameselector.cpp)
 
 add_dependencies(engine createGameLauncherMenu)
 
