@@ -1,3 +1,7 @@
+v3.5.0:
+-------
+- Switch builds work again.
+
 v3.4.0:
 -------
 - New Resolution system. You can configure a relative resolution for the launcher but also for every game.
