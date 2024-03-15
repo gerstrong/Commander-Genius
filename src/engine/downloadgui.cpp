@@ -1,6 +1,9 @@
-#ifdef DOWNLOADER
+
+
 #include "CGameLauncher.h"
+#ifdef DOWNLOADER
 #include "gamedownloader.h"
+#endif
 #include "downloadgui.h"
 #include "core/mode/CGameMode.h"
 
@@ -14,7 +17,6 @@
 
 #include <sstream>
 
-
 bool DownloadGui::start()
 {
     return false;
@@ -26,6 +28,7 @@ void DownloadGui::pumpEvent(const std::shared_ptr<CEvent> &evPtr)
 
 void DownloadGui::tryDownloadCatalogueFile()
 {
+#ifdef DOWNLOADER
     // Try to download the catalogue file in the background
     GameDownloader *pCatalogueDownloader =
                 new GameDownloader(m_DownloadProgress,
@@ -38,12 +41,15 @@ void DownloadGui::tryDownloadCatalogueFile()
 
     mpCatalogDownloadThread = threadPool->start(pCatalogueDownloader,
                           "Loading catalogue file in the background");
+#endif // DOWNLOADER
 }
 
 void DownloadGui::verifyGameStore(std::vector<GameEntry> &entries)
 {
     m_DownloadProgress = 0;
     m_DownloadCancel = false;
+
+#ifdef DOWNLOADER
 
     GameDownloader gameDownloader(m_DownloadProgress,
                                   m_DownloadProgressError,
@@ -80,9 +86,11 @@ void DownloadGui::verifyGameStore(std::vector<GameEntry> &entries)
             mpPlusMorebutton->setText("Empty Store");
             mpPlusMorebutton->enable(false);
         }
-    }
+    }        
 
     mGameCatalogue = gameDownloader.getGameCatalogue();
+
+#endif // DOWNLOADER
 }
 
 void DownloadGui::render()
@@ -96,6 +104,7 @@ void DownloadGui::render()
 
 void DownloadGui::pullGame(const int selection)
 {
+#ifdef DOWNLOADER
     assert(selection >= 0);
 
     if(selection < 0)
@@ -118,7 +127,7 @@ void DownloadGui::pullGame(const int selection)
                                                             gameFileName,
                                                             gameName),
                                                             "Game Downloader started!");
-
+#endif // DOWNLOADER
 }
 
 void DownloadGui::ponder(const float deltaT)
@@ -205,8 +214,9 @@ void DownloadGui::ponder(const float deltaT)
 }
 
 
-void DownloadGui::setupDownloadDialog() // Should this become start()
+void DownloadGui::setupDownloadDialog()
 {
+#ifdef DOWNLOADER
     mpGameStoreDialog.reset(  new CGUIDialog( GsRect<float>(0.1f, 0.1f, 0.8f, 0.85f),
                                               CGUIDialog::FXKind::EXPAND )  );
     mpGameStoreDialog->initEmptyBackground();
@@ -306,22 +316,15 @@ void DownloadGui::setupDownloadDialog() // Should this become start()
                                   1.0f, 0.675f, 0.675f)) );
 
     mpDloadCancel->enable(false);
-
-
-#ifdef DOWNLOADER
     mpDloadDownload = std::dynamic_pointer_cast<GsButton>(
             mpGameStoreDialog->add(
                     new GsButton( "Download",
                                   GsRect<float>(0.650f, 0.865f, 0.25f, 0.07f),
                                   gamePuller)));
-#endif
-
-
 
 
     mGameCatalogue = gameDownloader.getGameCatalogue();
+#endif
 
     mClosed = false;
 }
-
-#endif //DOWNLOADER

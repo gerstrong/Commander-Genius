@@ -152,12 +152,14 @@ bool GameLauncher::setupMenu()
 
     REGISTER_EV_FUNC(openSettingsMenuEvent);
 
+    #ifdef DOWNLOADER
     const auto GMDownloadDlgOpen = [&]()
     {
         mDownloadGui.setupDownloadDialog();
     };
 
     REGISTER_EV_FUNC(GMDownloadDlgOpen);
+    #endif // DOWNLOADER
 
     // Build widgets.
     try
@@ -175,7 +177,9 @@ bool GameLauncher::setupMenu()
     mLauncherDialog.passTagToRef("GSSelList", mpGSSelList);
     mLauncherDialog.passTagToRef("plusMoreButton", mpPlusMorebutton);
 
+#ifdef DOWNLOADER
     mDownloadGui.setPlusMoreButtonRef(mpPlusMorebutton);
+#endif // DOWNLOADER
 
     mpPlusMorebutton->enable(false);
 
@@ -993,11 +997,13 @@ void GameLauncher::ponderPatchDialog()
 // Process Routine
 ////
 void GameLauncher::ponder(const float deltaT)
-{        
+{
+#ifdef DOWNLOADER
     mDownloadGui.ponder(deltaT);
 
     if(mDownloadGui.isOpen())
         return;
+#endif // DOWNLOADER
 
     if(mGameScanner.isRunning())
     {
@@ -1104,11 +1110,13 @@ void GameLauncher::renderMouseTouchState()
 
 void GameLauncher::render()
 {
+#ifdef DOWNLOADER
     if(mDownloadGui.isOpen())
     {
         mDownloadGui.render();
         return;
     }
+#endif // DOWNLOADER
 
     GsWeakSurface blit(gVideoDriver.getBlitSurface());
 

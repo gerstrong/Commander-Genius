@@ -1,6 +1,7 @@
 #ifndef DOWNLOADGUI_H
 #define DOWNLOADGUI_H
 
+
 /**
  * The DownloadGui reuses most of the GameLauncher Elements.
  * Even the Widgets placement is quite similar
