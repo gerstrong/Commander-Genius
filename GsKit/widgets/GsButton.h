@@ -165,6 +165,11 @@ public:
         mRounded = rounded;
     }
 
+    void hide(const bool val = true)
+    {
+        mHidden = val;
+    }
+
 
 protected:
 
@@ -195,6 +200,8 @@ private:
                                  // if hovered or selected
 
     bool mRounded = false;
+
+    bool mHidden = false;
 };
 
 std::shared_ptr<GsButton> createButtonFrom(const GsKit::ptree &node);

@@ -253,7 +253,7 @@ void GsButton::processLogic()
 }
 
 void GsButton::drawNoStyle(const SDL_Rect& lRect)
-{
+{   
     if(lRect.h == 0 || lRect.w == 0)
         return;
 
@@ -306,6 +306,9 @@ void GsButton::drawEnabledButton(GsWeakSurface &,
 
 void GsButton::processRender(const GsRect<float> &RectDispCoordFloat)
 {
+    if(mHidden)
+        return;
+
     // Transform to the display coordinates
     auto displayRect = getRect();
 
@@ -323,6 +326,9 @@ void GsButton::processRender(const GsRect<float> &RectDispCoordFloat)
 void GsButton::processRender(const GsRect<float> &backRect,
                              const GsRect<float> &frontRect)
 {
+    if(mHidden)
+        return;
+
     // Transform this object display coordinates
     auto objBackRect = backRect.transformed(getRect());
     auto objFrontRect = objBackRect.clipped(frontRect);
