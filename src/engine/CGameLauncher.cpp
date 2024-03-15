@@ -177,7 +177,11 @@ bool GameLauncher::setupMenu()
 
     mDownloadGui.setPlusMoreButtonRef(mpPlusMorebutton);
 
-    mpPlusMorebutton->enable(false); 
+    mpPlusMorebutton->enable(false);
+
+#ifndef DOWNLOADER
+    mpPlusMorebutton->hide();
+#endif // DOWNLOADER
 
     mpGSSelList->setBackgroundColor( GsColor(0xFF, 0xFF, 0xFF) );
 
