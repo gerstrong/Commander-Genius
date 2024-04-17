@@ -19,8 +19,8 @@
 CMessageBoxVort::CMessageBoxVort(const std::string& Text,
                                  const bool lower,
                                  const bool keymsg,
-                                 const bool leftbound) :
-CMessageBox(Text, lower, keymsg, leftbound, CGUIDialog::FXKind::EXPAND)
+                                 const bool vorticonBorders) :
+CMessageBox(Text, lower, keymsg, vorticonBorders, CGUIDialog::FXKind::EXPAND)
 {
    initVorticonBackground();   
    mpTextCtrl->setFontId(0);
@@ -41,9 +41,7 @@ void CMessageBoxVort::initVorticonBackground()
     SDL_Surface *backSfc = mBackgroundSfc.getSDLSurface();
     drawBorderRect(backSfc, sdlRect);
 
-    // Draw the character so the classical vorticon menu is drawn
-
-    // Start with the blank space (normally it's white. Might be different in some mods)
+    // Start with the blank spaces for background (normally it's white. Might be different in some mods)
     for( int x=8 ; x<sdlRect.w-8 ; x+=8 )
     {
         for( int y=8 ; y<sdlRect.h-8 ; y+=8 )

@@ -20,11 +20,18 @@
 class CMessageBox : public CGUIDialog
 {
 public:
-    // Init functions
+    /**
+     * @brief CMessageBox
+     * @param Text
+     * @param lower if lower is enabled, try to snap the Dlg to the bottom off the screen.
+     * @param keymsg
+     * @param vorticonBorders
+     * @param fx
+     */
     CMessageBox(const std::string& Text,
                 const bool lower,
                 const bool keymsg,
-                const bool leftbound,
+                const bool vorticonBorders,
                 const FXKind fx = FXKind::NONE);
     virtual ~CMessageBox() {}
 

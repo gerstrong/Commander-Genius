@@ -22,10 +22,23 @@ struct CloseDialog : public InvokeFunctorEvent
     bool &mMustClose;
 };
 
+GsRect<float> transformInversed(const GsRect<float> &r1, const GsRect<float> &r2)
+{
+    GsRect<float> res = r1;
+
+    res.dim.x = r1.dim.x / r2.dim.x;
+    res.dim.y = r1.dim.y / r2.dim.y;
+
+    res.pos.x = (r1.pos.x-r2.pos.x) / r2.dim.x;
+    res.pos.y = (r1.pos.y-r2.pos.y) / r2.dim.y;
+
+    return res;
+}
+
 CMessageBox::CMessageBox(const std::string& text,
                          const bool lower,
                          const bool keymsg,
-                         const bool leftbound,
+                         const bool vorticonBorders,
                          const FXKind fx) :
 CGUIDialog(GsRect<float>(0.1f, 0.1f, 0.8f, 0.8f), fx),
 m_mustclose(false)
@@ -41,8 +54,9 @@ m_mustclose(false)
 
     // Those formulas work well with our constellation but I don't think they are perfect.
     // They transform the Message Box the way the text fits perfectly in.
-    const float screenW = gVideoDriver.getGameResolution().dim.x;
-    const float screenH = gVideoDriver.getGameResolution().dim.y;
+    const auto gameRect = gVideoDriver.getGameResolution();
+    const float screenW = gameRect.dim.x;
+    const float screenH = gameRect.dim.y;
 
     auto rect = getRect();
 
@@ -55,19 +69,10 @@ m_mustclose(false)
         rect.dim.x = 1.0f;
     }
 
-    rect.dim.y = static_cast<float>( (mpTextCtrl->mTextDim.dim.y+2)*8 )/screenH;
-
     rect.pos.x = (1.0f - rect.dim.x)*0.5f;
-    rect.pos.y = (1.0f - rect.dim.y)*0.5f;
 
-    // now let's center that long text...
-    GsRect<float> textRect;
-    textRect.dim.x = ((mpTextCtrl->mTextDim.dim.x*8)/screenW) / rect.dim.x;
-    textRect.dim.y = ((mpTextCtrl->mTextDim.dim.y*8)/screenH) / rect.dim.y;
-    textRect.pos.x = (2.0f*textRect.dim.x)/
-                        (static_cast<float>(mpTextCtrl->mTextDim.dim.x));
-    textRect.pos.y = (1.0f*textRect.dim.y)/
-                         (static_cast<float>(mpTextCtrl->mTextDim.dim.y));
+    rect.dim.y = static_cast<float>( (mpTextCtrl->mTextDim.dim.y+2)*8 )/screenH;
+    rect.pos.y = (1.0f - rect.dim.y)*0.5f;
 
     if(lower) // if lower is enabled, try to snap the Dlg to the bottom off the screen.
     {
@@ -75,6 +80,21 @@ m_mustclose(false)
     }
 
     setRect(rect);
+
+    // Shrink the effective Text area so it fits into the frame
+    auto textRect = GsRect<float>(0.0f, 0.0f, 1.0f, 1.0f);
+
+    auto textRectOnDlg = rect.transformed(textRect);
+    auto gameRectF = gameRect.asFloat();
+    GsRect<float> textRectOnScreen = gameRectF.transformed(textRectOnDlg);
+
+    textRectOnScreen.dim.y = textRectOnScreen.dim.y - 8;
+    textRectOnScreen.pos.y = textRectOnScreen.pos.y + 8;
+
+    const auto backGameRectF = transformInversed(textRectOnScreen, gameRectF);
+    const auto backTextRectOnDlg = transformInversed(backGameRectF, rect);
+
+    mpTextCtrl->setRect(backTextRectOnDlg);
 
     initEmptyBackground();
 }

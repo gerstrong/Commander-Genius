@@ -68,6 +68,12 @@ struct GsRect
         ss >> dim.y;
     }
 
+    GsRect<float> asFloat() const
+    {
+        return GsRect<float>(float(pos.x), float(pos.y),
+                             float(dim.x), float(dim.y));
+    }
+
 
     template <typename T2>
     GsRect operator/(const T2 scale) const
@@ -128,6 +134,13 @@ struct GsRect
         pos.y -= scaleRect.pos.y;
         dim.x /= scaleRect.dim.x;
         dim.y /= scaleRect.dim.y;
+    }
+
+    GsRect transformInversed(const GsRect &scaleRect)
+    {
+        GsRect result = *this;
+        result.transformInverse(scaleRect);
+        return result;
     }
 
     void transform(const GsRect &scaleRect)
