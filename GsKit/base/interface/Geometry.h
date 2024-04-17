@@ -128,12 +128,12 @@ struct GsRect
 
     void transformInverse(const GsRect &scaleRect)
     {
-        pos.x /= scaleRect.dim.x;
-        pos.x -= scaleRect.pos.x;
-        pos.y /= scaleRect.dim.y;
-        pos.y -= scaleRect.pos.y;
         dim.x /= scaleRect.dim.x;
         dim.y /= scaleRect.dim.y;
+        pos.x -= scaleRect.pos.x;
+        pos.x /= scaleRect.dim.x;
+        pos.y -= scaleRect.pos.y;
+        pos.y /= scaleRect.dim.y;
     }
 
     GsRect transformInversed(const GsRect &scaleRect)
