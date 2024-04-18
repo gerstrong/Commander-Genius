@@ -62,8 +62,16 @@ public:
         return scaledDownRect;
     }
 
+    /**
+     * @brief setNativeResolution   Setup the native resolution.
+     *                              In the end it is the unscaled surface of
+     *                              using within the application
+     * @param dispRect              Resolution as Rect
+     * @param numScrollSfcs         Number of scroll buffered surfaces. Good for background scrolling.
+     * @return true if all went good, otherwise false
+     */
     bool setNativeResolution(const GsRect<Uint16> &dispRect,
-                             const unsigned int numScrollSfcs);
+                             const unsigned int numScrollSfcs = 2);
 
     void stop();
     bool start();

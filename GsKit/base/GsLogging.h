@@ -39,7 +39,7 @@ public:
      * @param logFName          Name of the log file
      * @param appName           Name of the application
      * @param version           Version of the application
-     * @param noFile            if true
+     * @param noFile            if true you don't want to save the log into a file.
      * @return                  true if everything went fine, otherwise false
      */
     bool initLogSystem	(const std::string &logFName,
