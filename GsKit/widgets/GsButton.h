@@ -132,6 +132,10 @@ public:
     }
 
 
+    /**
+     * @brief getText   Get button text
+     * @return text of button as std::string
+     */
     virtual std::string getText()
     {	return mText;	}
 

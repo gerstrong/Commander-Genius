@@ -36,6 +36,10 @@ public:
 
     virtual void setText(const std::string& text);
 
+    virtual std::string getText()
+    {	return mText;	}
+
+
     void setTextColor(const GsColor &color);
 
     virtual void processLogic();
