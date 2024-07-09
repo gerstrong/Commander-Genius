@@ -12,6 +12,8 @@
 #include "graphics/GsGraphics.h"
 #include "engine/core/CSpriteObject.h"
 
+#include <vector>
+
 namespace galaxy
 {
 
@@ -39,18 +41,24 @@ public:
 
 
 private:
-    const GsBitmap &mBitmap;
-	const direction_t mAlignment;        
+    const GsBitmap &mMainBitmap;
+    const direction_t mAlignment;
 
     /**
-     * @brief mMBAnimatedSurface Some boxes have animation,
-     *                           like Billys hand forming a fist
+     * @brief mHasAnimation Some message boxes have animation,
+     *                      like Billys hand forming a fist
      */
-    GsSurface mMBAnimatedSurface;
+    bool mHasAnimation = false;
     int mAnimtimer = 0;
     int mAnimFrame = 1;
 
     int mShowtime = -1;
+
+    /**
+     * @brief renderCurrentBitmap Draws the current Bitmap, this might change depending
+     *        on the animation settings.
+     */
+    void renderCurrentBitmap(const int frametoRender);
 };
 
 void showModalMsgWithBmp(const int sprVar, const std::string &text,

@@ -126,6 +126,14 @@ struct GsRect
         return Rect;
     }
 
+    void scale(const int value)
+    {
+        pos.x *= value;
+        pos.y *= value;
+        dim.x *= value;
+        dim.y *= value;
+    }
+
     void transformInverse(const GsRect &scaleRect)
     {
         dim.x /= scaleRect.dim.x;
@@ -270,7 +278,7 @@ struct GsRect
         auto result = *this;
         result.intersect(other);
         return result;
-    }
+    }        
 
     GsVec2D<T> pos, dim;
 };
