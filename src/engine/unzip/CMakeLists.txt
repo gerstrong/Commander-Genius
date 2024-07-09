@@ -6,8 +6,6 @@ find_package(PkgConfig)
 #    unset(ZLIB_FOUND)
 #endif ( PKGCONFIG_FOUND AND NOT WIN32 )
 
-add_definitions(-DIOAPI_NO_64)
-
 if ( ZLIB_FOUND )
     set(CXXSRC miniunz.c)
     unset(HSRC)
@@ -35,6 +33,8 @@ else ( ZLIB_FOUND )
 endif( ZLIB_FOUND )
 
 add_library(unzip STATIC ${CXXSRC} ${HSRC})
+
+target_compile_definitions(unzip PRIVATE -DIOAPI_NO_64)
 
 # Link zlib
 target_link_libraries( unzip ${ZLIB_LIBRARIES} )
