@@ -145,7 +145,7 @@ endif()
 
 # Since shell script get_version is not processed properly on windows, we have to define manually here.
 # TODO: Better system for defining the version
-set(CG_VERSION "3.5.0")
+set(CG_VERSION "3.5.1")
 
 MESSAGE(STATUS "Preparing the Build-System for Commander Genius" )
 execute_process(COMMAND bash ${CMAKE_CURRENT_SOURCE_DIR}/get_version.sh OUTPUT_VARIABLE CG_VERSION)
