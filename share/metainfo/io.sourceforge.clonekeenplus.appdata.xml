@@ -58,7 +58,7 @@
 
   </screenshots>  
   
-  <developer_name>Gerhard Stein, Elias Oenal, Pelya and Contributors</developer_name>
+  <developer>Gerhard Stein, Elias Oenal, Pelya and Contributors</developer>
 
   <url type="homepage">https://clonekeenplus.sourceforge.io</url>
   <categories>
@@ -148,6 +148,5 @@
     <content_attribute id="violence-fantasy">mild</content_attribute>
   </content_rating>
 
-    <updatecontact>gerstrong@gmail.com</updatecontact>
 </component>
 
