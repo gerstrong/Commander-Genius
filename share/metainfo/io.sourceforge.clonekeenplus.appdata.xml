@@ -4,10 +4,17 @@
   <id>io.sourceforge.clonekeenplus</id>
   <metadata_license>FSFAP</metadata_license>
   <project_license>GPL-2.0+</project_license>
+
   <name>Commander Genius</name>
     
-  <summary>An Engine used to play the "Commander Keen" and "Cosmos the Cosmic Adventure" game series</summary>
+  <summary>A Game Engine for "Commander Keen"</summary>
   
+  <supports>
+    <control>pointing</control>
+    <control>keyboard</control>
+    <control>gamepad</control>
+  </supports>
+
     <description>
   <p>
  Commander-Genius aka CloneKeenPlus is an engine which interprets
@@ -33,16 +40,29 @@
   <launchable type="desktop-id">io.sourceforge.clonekeenplus.desktop</launchable>
   
   <screenshots>
-    <screenshot>https://clonekeenplus.sourceforge.io/img/Keen4HQP2020.png</screenshot>
-    <screenshot>https://clonekeenplus.sourceforge.io/img/SecondplayerHelpsFirst.png</screenshot>
-    <screenshot>https://clonekeenplus.sourceforge.io/img/multiplayerVoritcon.png</screenshot>
+
+    <screenshot type="default">
+      <caption>Commander Keen 4 in Original (left) and quit High Quality Pack (right)</caption>
+      <image type="source">https://clonekeenplus.sourceforge.io/img/Keen4HQP2020.png</image>
+    </screenshot>
+
+    <screenshot>
+      <caption>Second PLayer helping first Player to jump onto the tree branch.</caption>
+      <image type="source">https://clonekeenplus.sourceforge.io/img/SecondplayerHelpsFirst.png</image>
+    </screenshot>
+
+    <screenshot>
+      <caption>Multiplayer madness in Keen 1</caption>
+      <image type="source">https://clonekeenplus.sourceforge.io/img/multiplayerVoritcon.png</image>
+    </screenshot>
+
   </screenshots>  
   
   <developer_name>Gerhard Stein, Elias Oenal, Pelya and Contributors</developer_name>
 
   <url type="homepage">https://clonekeenplus.sourceforge.io</url>
   <categories>
-    <category>Games</category>
+    <category>Game</category>
 </categories>
 
   <releases>
