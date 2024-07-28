@@ -58,7 +58,9 @@
 
   </screenshots>  
   
-  <developer>Gerhard Stein, Elias Oenal, Pelya and Contributors</developer>
+  <developer id="io.sourceforge.clonekeenplus">
+             <name>Gerhard Stein, Elias Oenal, Pelya and Contributors</name>
+  </developer>
 
   <url type="homepage">https://clonekeenplus.sourceforge.io</url>
   <categories>
