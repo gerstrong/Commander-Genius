@@ -18,7 +18,7 @@ Of course you still have the option to use your old original DOS versions of the
 # Authors
 
 ### Main development:
-* (c) 2008-2023          Gerstrong
+* (c) 2008-2025          Gerstrong
 
 ### Testing
 * (c) 2020-2023          Gagster
