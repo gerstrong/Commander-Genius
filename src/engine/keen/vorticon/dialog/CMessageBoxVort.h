@@ -24,7 +24,7 @@ public:
 	/**
 	 * \brief This will add an extra tile to the message box. Mostly used by the dialog "Ship missing" in Keen 1
 	 */
-	void addTileAt(Uint16 tile, Uint16 x, Uint16 y);
+    void addTileAt(const Uint16 tile, const Uint16 x, const Uint16 y);
 
 };
 
