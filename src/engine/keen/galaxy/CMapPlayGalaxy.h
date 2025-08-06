@@ -46,6 +46,9 @@ public:
      */
     std::string getLevelName() const
     {
+        if(!mpMap)
+            return "";
+
         return mpMap->getLevelName();
     }
 

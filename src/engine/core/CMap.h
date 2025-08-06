@@ -27,9 +27,7 @@ class CMap
 {
 
 public:
-	CMap();
-
-	void setTileMap( GsTilemap &Tilemap );
+	CMap();	
 
     void setLevel( const Uint16 level ) {   m_Level = level;    }
     Uint16 getLevel() const {    return m_Level;    }
