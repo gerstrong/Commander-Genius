@@ -140,11 +140,7 @@ void CPassiveGalaxy::ponder(const float deltaT)
 {
     (void) deltaT;
 
-    if(needInit())
-    {
-        init();
-        return;
-    }
+    CPassive::ponder(deltaT);
 
     if(gEffectController.runningEffect())
        return;

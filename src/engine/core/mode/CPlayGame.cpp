@@ -31,6 +31,11 @@ m_restartVideo(false)
     mCamLead = 0;
 }
 
+bool CPlayGame::init()
+{
+    return Scene::init();
+}
+
 void CPlayGame::ponder(const float deltaT)
 {
     Scene::ponder(deltaT);

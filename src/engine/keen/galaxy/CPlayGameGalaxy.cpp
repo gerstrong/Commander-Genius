@@ -572,6 +572,8 @@ void CPlayGameGalaxy::pumpEvent(const std::shared_ptr<CEvent> &evPtr)
  */
 void CPlayGameGalaxy::ponder(const float deltaT)
 {
+    CPlayGame::ponder(deltaT);
+
     if( gMenuController.active() )
     {
         return;

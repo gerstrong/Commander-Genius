@@ -36,7 +36,7 @@ public:
 
     bool loadXMLGameState();
     bool saveXMLGameState();
-    bool init();
+    bool init() override;
 
     void looseManagement(const int playerID,
                          const uint16_t levelObj,

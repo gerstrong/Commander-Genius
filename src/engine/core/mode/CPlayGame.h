@@ -27,6 +27,8 @@ class CPlayGame : public Scene
 public:
     CPlayGame(char level);
 
+    virtual bool init() override;
+
     void loadGame();
 
     virtual bool loadXMLGameState() = 0;
@@ -42,6 +44,7 @@ public:
     bool isFinished();
     bool getEndGame();
     bool getStartGame();
+
 
     bool getExitEvent()
     {	return m_exitgame;	}

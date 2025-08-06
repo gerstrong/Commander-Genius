@@ -97,7 +97,6 @@ void CWorldMap::ponder(const float deltaT)
     }
 #endif
 
-
     ponderBase(deltaT);
 }
 
