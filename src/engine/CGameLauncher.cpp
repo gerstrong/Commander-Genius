@@ -872,7 +872,12 @@ void GameLauncher::ponderGameSelDialog(const float deltaT)
                     mpEpisodeText->setText(nameText);
                     float fVer = entry.version;
                     fVer /= 100.0f;
-                    mpVersionText->setText("Version: " + ftoa(fVer));
+
+                    // Only show valid entries
+                    if (fVer > 0.0f)
+                        mpVersionText->setText("Version: " + ftoa(fVer));
+                    else
+                        mpVersionText->setText("Unknown Version");
 
                     if(mpDemoText)
                     {
