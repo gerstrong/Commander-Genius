@@ -19,7 +19,7 @@ build:windows-portable:
     image: cgenius/crossbuild:win
     stage: build    
     before_script:
-      - cd $CI_PROJECT_DIR && git clone https://gitlab.com/Dringgstein/cosmos.git src/engine/cosmos
+      - cd $CI_PROJECT_DIR && git submodule update --recursive --remote
       - mkdir -p /tmp && cd "$_"
       - mkdir -p $CI_PROJECT_DIR/output
       - cmake -DCMAKE_TOOLCHAIN_FILE="$OLDPWD/toolchains/toolchain-mingw.cmake" -DCMAKE_BUILD_TYPE=Release -DBUILD_COSMOS=1 -DUSE_BOOST=0 -DPULL_DLLS=1 -DAPPEND_SHA=1 -DSDL2_MIXER_INCLUDE_DIR=/usr/x86_64-w64-mingw32/include/SDL2 -DSDL2_INCLUDE_DIR=/usr/x86_64-w64-mingw32/include/SDL2 "$CI_PROJECT_DIR"
@@ -48,7 +48,7 @@ build:windows-installer:
     image: cgenius/crossbuild:winnsis
     stage: build
     before_script:
-      - cd $CI_PROJECT_DIR && git clone https://gitlab.com/Dringgstein/cosmos.git src/engine/cosmos
+      - cd $CI_PROJECT_DIR && git submodule update --recursive --remote
       - mkdir -p /tmp && cd "$_"
       - mkdir -p $CI_PROJECT_DIR/output
       - cmake -DCMAKE_TOOLCHAIN_FILE="$OLDPWD/toolchains/toolchain-mingw.cmake" -DCMAKE_BUILD_TYPE=Release -DBUILD_COSMOS=1 -DUSE_BOOST=0 -DPULL_DLLS=1 -DAPPEND_SHA=1 -DSDL2_MIXER_INCLUDE_DIR=/usr/x86_64-w64-mingw32/include/SDL2 -DSDL2_INCLUDE_DIR=/usr/x86_64-w64-mingw32/include/SDL2 "$CI_PROJECT_DIR"
@@ -77,7 +77,7 @@ build:linux-generic:
     image: cgenius/crossbuild:linux
     stage: build
     before_script:
-      - cd $CI_PROJECT_DIR && git clone https://gitlab.com/Dringgstein/cosmos.git src/engine/cosmos    
+      - cd $CI_PROJECT_DIR && git submodule update --recursive --remote
       - mkdir -p /tmp && cd "$_"
       - mkdir -p $CI_PROJECT_DIR/output
       - cmake -DUSE_BOOST=0 -DBUILD_COSMOS=1 -DAPPEND_SHA=1 $CI_PROJECT_DIR "$CI_PROJECT_DIR"
@@ -107,7 +107,7 @@ build:macos-64bit:
     image: cgenius/crossbuild:mac
     stage: build    
     before_script:
-      - cd $CI_PROJECT_DIR && git clone https://gitlab.com/Dringgstein/cosmos.git src/engine/cosmos    
+      - cd $CI_PROJECT_DIR && git submodule update --recursive --remote
       - mkdir -p /tmp && cd "$_"
       - mkdir -p $CI_PROJECT_DIR/output
       - mkdir CGBuildMac
