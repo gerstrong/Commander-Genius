@@ -14,7 +14,7 @@
 class CBridges : public CVorticonSpriteObject
 {
 public:
-	CBridges(CMap *pmap, Uint32 x, Uint32 y, Uint32 platx, Uint32 platy);
+	CBridges(std::shared_ptr<CMap> pMap, Uint32 x, Uint32 y, Uint32 platx, Uint32 platy);
 	void process();
 	void extend();
 	void retract();

@@ -24,8 +24,8 @@ const int DIST_TO_EAT_X = (8<<STC);
 const int DIST_TO_EAT_Y = 2<<CSF;
 const int LOOK_TIMER = 10;
 
-CWormmouth::CWormmouth(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
-  CStunnable(pmap, foeID, x, y),
+CWormmouth::CWormmouth(std::shared_ptr<CMap> pMap, const Uint16 foeID, Uint32 x, Uint32 y) :
+  CStunnable(pMap, foeID, x, y),
   mTurnAround(false),
   mTimer(0)
 {

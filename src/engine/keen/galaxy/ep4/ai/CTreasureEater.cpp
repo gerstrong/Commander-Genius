@@ -28,8 +28,8 @@ const int SMIRKY_HOP_TIMER = 10;
 const int SMIRKY_XSPEED = 40;
 
 
-CTreasureEater::CTreasureEater(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
-CStunnable(pmap, foeID, x, y),
+CTreasureEater::CTreasureEater(std::shared_ptr<CMap> pMap, const Uint16 foeID, Uint32 x, Uint32 y) :
+CStunnable(pMap, foeID, x, y),
 mTimer(0),
 mTeleported(false),
 mStolen(false)

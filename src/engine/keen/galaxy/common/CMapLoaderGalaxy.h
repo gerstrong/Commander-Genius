@@ -30,8 +30,8 @@ public:
 	
 	size_t getMapheadOffset();
 	bool gotoNextSignature(std::ifstream &MapFile);
-	bool loadMap(CMap &Map, Uint8 level);
-	void spawnFoes(CMap &Map);
+    bool loadMap(std::shared_ptr<CMap> &map, Uint8 level);
+    void spawnFoes(std::shared_ptr<CMap> &map);
 	
 	std::string getLevelName()
 	{ return mLevelName; }
@@ -39,7 +39,7 @@ public:
 	
     virtual bool isKeenPlayer(const int foeID) = 0;
 
-	virtual CGalaxySpriteObject* addFoe(CMap &Map, word foe, size_t x, size_t y) = 0;
+    virtual CGalaxySpriteObject* addFoe(std::shared_ptr<CMap> map, word foe, size_t x, size_t y) = 0;
 	virtual ~CMapLoaderGalaxy() {}
 
     int numLoadedPlayers()
@@ -57,7 +57,7 @@ protected:
     /**
      * @brief unpackPlaneData       Unpackes the plane data using carmack decompression routine
      * @param MapFile
-     * @param Map
+     * @param map
      * @param planeNumber
      * @param offset
      * @param length
@@ -65,9 +65,9 @@ protected:
      * @return  true, if everything went fine, otherwise false.
      */
     bool unpackPlaneData(std::ifstream &MapFile,
-            CMap &Map, const size_t planeNumber,
-            longword offset, longword length,
-            word magic_word);
+                         std::shared_ptr<CMap> &map, const size_t planeNumber,
+                         longword offset, longword length,
+                         word magic_word);
 
 	std::vector< std::shared_ptr<CGalaxySpriteObject> > &m_ObjectPtr;
     std::vector<CInventory> &mInventoryVec;

@@ -23,7 +23,7 @@ enum meep_actions{
 #define MEEP_DYING_FRAME        124
 #define MEEP_DEAD_FRAME         125
 
-CMeep::CMeep(CMap *p_map, Uint32 x, Uint32 y) :
+CMeep::CMeep(std::shared_ptr<CMap> p_map, Uint32 x, Uint32 y) :
 CVorticonSpriteObject(p_map,x,y, OBJ_MEEP)
 {
 	canbezapped = true;

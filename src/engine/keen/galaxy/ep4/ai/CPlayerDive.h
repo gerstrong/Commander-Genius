@@ -15,7 +15,7 @@ namespace galaxy {
 class CPlayerDive : public CPlayerBase
 {
 public:
-    CPlayerDive(CMap *pmap,
+    CPlayerDive(std::shared_ptr<CMap> pMap,
             const Uint16 foeID,
             Uint32 x,
             Uint32 y,

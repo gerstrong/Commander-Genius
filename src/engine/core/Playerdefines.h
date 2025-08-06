@@ -70,10 +70,10 @@ enum jumpstate
 #define PFIRE_LIMIT_SHOT_FREQ_FA 12     // fully automatic version
 
 // player frame indexes for world map
-#define PMAPRIGHTFRAME   32
-#define PMAPDOWNFRAME    36
-#define PMAPLEFTFRAME    40
-#define PMAPUPFRAME      44
+#define pMapRIGHTFRAME   32
+#define pMapDOWNFRAME    36
+#define pMapLEFTFRAME    40
+#define pMapUPFRAME      44
 
 // various tile indexes
 #define BG_GRAY            143

@@ -8,7 +8,7 @@ namespace galaxy {
 class CBlooguard : public CStunnable
 {
 public:
-	CBlooguard(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y);
+	CBlooguard(std::shared_ptr<CMap> pMap, const Uint16 foeID, const Uint32 x, const Uint32 y);
 
 	/**
 	 * When it is moving normally

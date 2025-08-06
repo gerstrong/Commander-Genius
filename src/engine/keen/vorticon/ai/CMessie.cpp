@@ -19,7 +19,7 @@ enum nessie_actions{
 
 void nessie_find_next_checkpoint(int o);
 
-CMessie::CMessie(CMap *p_map, Uint32 x, Uint32 y) :
+CMessie::CMessie(std::shared_ptr<CMap> p_map, Uint32 x, Uint32 y) :
 CVorticonSpriteObject(p_map, x, y, OBJ_MESSIE)
 {
     xDirection = LEFT, yDirection = DOWN;

@@ -13,8 +13,8 @@ namespace galaxy {
 
 const int BUBBLE_FLOAT_SPEED = 40;
 
-CBubbles::CBubbles(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y, const bool bigbubble) :
-CGalaxySpriteObject(pmap, foeID, x, y, 0)
+CBubbles::CBubbles(std::shared_ptr<CMap> pMap, const Uint16 foeID, Uint32 x, Uint32 y, const bool bigbubble) :
+CGalaxySpriteObject(pMap, foeID, x, y, 0)
 {
 
 	if(bigbubble)

@@ -12,7 +12,7 @@ class CSatelite : public CGalaxySpriteObject, public CMoveTarget
 {
     
 public:
-	CSatelite(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y);
+	CSatelite(std::shared_ptr<CMap> pMap, const Uint16 foeID, const Uint32 x, const Uint32 y);
 
 	/**
 	 * When it is moving normally

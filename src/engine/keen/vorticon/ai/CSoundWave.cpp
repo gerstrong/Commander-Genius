@@ -14,7 +14,7 @@
 
 #define SNDWAVE_OFFSCREEN_KILL_TIME     100
 
-CSoundWave::CSoundWave(CMap *p_map, Uint32 x, Uint32 y,
+CSoundWave::CSoundWave(std::shared_ptr<CMap> p_map, Uint32 x, Uint32 y,
 		direction_t dir, object_t byType, size_t byID) :
 CRay(p_map, x, y, dir, CENTER, 0,byType, byID),
 animframe(0),

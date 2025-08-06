@@ -61,8 +61,8 @@ constexpr int TIME_UNTIL_PAUSE = 50;
 constexpr int TIME_UNTIL_BACKUP = 100;
 
   
-CSpirogrip::CSpirogrip(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
-CStunnable(pmap, foeID, x, y),
+CSpirogrip::CSpirogrip(std::shared_ptr<CMap> pMap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
+CStunnable(pMap, foeID, x, y),
 mTimer(0)
 {
     mActionMap[A_GRIP_BACK_UP_DOWN] = (GASOFctr) &CSpirogrip::processBackup;

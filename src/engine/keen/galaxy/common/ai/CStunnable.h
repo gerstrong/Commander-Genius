@@ -16,7 +16,7 @@ namespace galaxy
 class CStunnable: public CGalaxyActionSpriteObject
 {
 public:
-	CStunnable(CMap *pmap,
+	CStunnable(std::shared_ptr<CMap> pMap,
                    const Uint16 foeID,
                    Uint32 x, Uint32 y );
 

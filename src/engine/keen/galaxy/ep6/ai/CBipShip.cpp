@@ -27,8 +27,8 @@ constexpr int CSF_DISTANCE_TO_SHOOT = 8<<CSF;
 
 
 
-CBipShip::CBipShip(CMap* pmap, const Uint16 foeID, const Uint32 x, const Uint32 y, const int sprVar) :
-CGalaxyActionSpriteObject(pmap, foeID, x, y, sprVar),
+CBipShip::CBipShip(std::shared_ptr<CMap> pMap, const Uint16 foeID, const Uint32 x, const Uint32 y, const int sprVar) :
+CGalaxyActionSpriteObject(pMap, foeID, x, y, sprVar),
 mTimer(0),
 mKeenIsNear(false)
 {

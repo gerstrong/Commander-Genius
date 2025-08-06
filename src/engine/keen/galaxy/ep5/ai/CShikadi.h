@@ -19,7 +19,7 @@ namespace galaxy {
 class CShikadi : public CStunnable
 {
 public:
-	CShikadi(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y);
+	CShikadi(std::shared_ptr<CMap> pMap, const Uint16 foeID, const Uint32 x, const Uint32 y);
 
 	/**
 	 * Action functions

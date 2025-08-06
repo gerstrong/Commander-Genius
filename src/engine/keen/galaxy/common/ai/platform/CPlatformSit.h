@@ -20,7 +20,7 @@ namespace galaxy
 class CPlatformSit : public CPlatform
 {
 public:
-    CPlatformSit(CMap *pmap, const Uint16 foeID,
+    CPlatformSit(std::shared_ptr<CMap> pMap, const Uint16 foeID,
               const Uint32 x, const Uint32 y, const int actionOff, const int sprVar);
 
 	/**

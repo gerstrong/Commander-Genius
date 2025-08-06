@@ -15,8 +15,8 @@ enum GRABBITERACTIONS
 };
 
 
-CGrabbiter::CGrabbiter(CMap* pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
-CStunnable(pmap, foeID, x, y)
+CGrabbiter::CGrabbiter(std::shared_ptr<CMap> pMap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
+CStunnable(pMap, foeID, x, y)
 {
 	mActionMap[A_GRABBITER_HUNGRY] = (GASOFctr) &CGrabbiter::processHungry;
 	mActionMap[A_GRABBITER_NAPPING] = (GASOFctr) &CGrabbiter::processNapping;

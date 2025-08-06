@@ -26,7 +26,7 @@ A_PLATFORM_RISE = 3	/* Dropping platform rising */
 class CPlatform : public virtual CGalaxySpriteObject
 {
 public:
-	CPlatform(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y);
+	CPlatform(std::shared_ptr<CMap> pMap, const Uint16 foeID, Uint32 x, Uint32 y);
 	virtual void process();
 	void getTouchedBy(CSpriteObject &theObject);
 

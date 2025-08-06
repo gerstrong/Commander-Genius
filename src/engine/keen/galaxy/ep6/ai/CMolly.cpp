@@ -1,7 +1,7 @@
 #include "CMolly.h"
 #include "../../common/ai/CPlayerBase.h"
 #include "../../common/dialog/CMessageBoxBitmapGalaxy.h"
-#include "engine/core/mode/CGameMode.h"
+#include "engine/core/mode/Scene.h"
 #include "../../menu/ComputerWrist.h"
 
 namespace galaxy 
@@ -16,8 +16,8 @@ $1DBAW  #Molly
 
 //const int MOLLY_MOVE_SPEED = 1;
 
-CMolly::CMolly(CMap* pmap, const Uint16 foeID, Uint32 x, Uint32 y) : 
-CGalaxySpriteObject(pmap, foeID, x, y, 0),
+CMolly::CMolly(std::shared_ptr<CMap> pMap, const Uint16 foeID, Uint32 x, Uint32 y) : 
+CGalaxySpriteObject(pMap, foeID, x, y, 0),
 rescued(false)
 {
     setupGalaxyObjectOnMap(0x1D60, 0);

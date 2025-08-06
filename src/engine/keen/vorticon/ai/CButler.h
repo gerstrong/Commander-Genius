@@ -35,7 +35,7 @@
 class CButler : public CVorticonSpriteObject
 {
 public:
-	CButler(CMap *pmap, Uint32 x, Uint32 y);
+	CButler(std::shared_ptr<CMap> pMap, Uint32 x, Uint32 y);
 	void process();
 	void getTouchedBy(CSpriteObject &theObject);
 

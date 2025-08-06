@@ -26,7 +26,7 @@
 #include <widgets/GsMenuController.h>
 
 #include "core/VGamepads/vgamepadsimple.h"
-#include "core/mode/CGameMode.h"
+#include "core/mode/Scene.h"
 #include "core/menu/SettingsMenu.h"
 
 #include "fileio/CConfiguration.h"

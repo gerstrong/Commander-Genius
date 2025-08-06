@@ -55,7 +55,7 @@ bool CLevelPlay::loadMap(const int level)
     }
 
 
-    if(!MapLoader->loadMap( mMap, level ))
+    if(!MapLoader->loadMap( mpMap, level ))
     {
         gLogging.ftextOut("Error: Map of level %d could not be loaded.", level);
         return false;
@@ -85,7 +85,7 @@ void CLevelPlay::reloadLevel()
     dimDark->getSnapshot();
     gEffectController.setupEffect(dimDark);
 
-	loadMap( mMap.getLevel() );
+    loadMap( mpMap->getLevel() );
 }
 
 bool CLevelPlay::loadLevel(const int sprVar, const Uint16 level)
@@ -102,7 +102,7 @@ bool CLevelPlay::loadLevel(const int sprVar, const Uint16 level)
     showModalMsgWithBmp( sprVar, loading_text, "KEENTHUMBSUPLOADING",
                     LEFT, true, nullptr );
 
-	mMap.drawAll();    
+    mpMap->drawAll();
 
 	return true;
 }

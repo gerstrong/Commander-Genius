@@ -21,8 +21,8 @@ bool CCamera::mCamLeadChange = false;
 std::array<bool, 4> CCamera::mDontUseThisLead;
 
 
-CCamera::CCamera(CMap *pmap, Uint32 x, Uint32 y, CSpriteObject *p_attacher) :
-CSpriteObject(pmap, x, y, 0)
+CCamera::CCamera(std::shared_ptr<CMap> pMap, Uint32 x, Uint32 y, CSpriteObject *p_attacher) :
+CSpriteObject(pMap, x, y, 0)
 {
     mRelcam.x = 0;
     mRelcam.y = 0;

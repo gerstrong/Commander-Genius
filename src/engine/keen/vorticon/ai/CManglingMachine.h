@@ -29,7 +29,7 @@ enum sector_effector_type{
 class CManglingMachine : public CVorticonSpriteObject
 {
 public:
-	CManglingMachine(CMap *p_map, Uint32 x, Uint32 y, unsigned int se_type);
+	CManglingMachine(std::shared_ptr<CMap> p_map, Uint32 x, Uint32 y, unsigned int se_type);
 	~CManglingMachine();
 	void getTouchedBy(CSpriteObject &theObject);	
 	bool isNearby(CSpriteObject &theObject);

@@ -55,7 +55,7 @@ unsigned int rnd(void);
 class CTank : public CVorticonSpriteObject
 {
 public:
-	CTank(CMap *p_map, Uint32 x, Uint32 y,object_t objtype=OBJ_TANK);
+	CTank(std::shared_ptr<CMap> p_map, Uint32 x, Uint32 y,object_t objtype=OBJ_TANK);
 	virtual void process();
 
 	void getTouchedBy(CSpriteObject &theObject);

@@ -19,7 +19,7 @@ namespace galaxy {
 class CShelly : public CStunnable
 {
 public:
-	CShelly(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y);
+	CShelly(std::shared_ptr<CMap> pMap, const Uint16 foeID, const Uint32 x, const Uint32 y);
 
 	/**
 	 * Action functions
@@ -62,7 +62,7 @@ class CShellyFrags : public CStunnable
 {
   
 public:  
-    CShellyFrags(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y, const int xSpeed);
+    CShellyFrags(std::shared_ptr<CMap> pMap, const Uint16 foeID, const Uint32 x, const Uint32 y, const int xSpeed);
     
     void process();
     

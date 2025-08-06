@@ -16,7 +16,7 @@ class CSaveGameController;
 class CGalaxySpriteObject: public CSpriteObject
 {
 public:
-    CGalaxySpriteObject(CMap *pmap, const Uint16 foeID,
+    CGalaxySpriteObject(std::shared_ptr<CMap> pMap, const Uint16 foeID,
                         const int x, const int y,
                         const int sprVar);
 

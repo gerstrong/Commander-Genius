@@ -38,7 +38,7 @@ const int FOOB_DEAD_FRAME    =     101;
 class CFoob : public CVorticonSpriteObject
 {
 public:
-    CFoob(CMap *p_map, const int x, const int y);
+    CFoob(std::shared_ptr<CMap> p_map, const int x, const int y);
     void process() override;
     bool isNearby(CSpriteObject &theObject) override;
     void getTouchedBy(CSpriteObject &theObject) override;

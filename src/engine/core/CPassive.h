@@ -16,14 +16,14 @@
 
 #include "engine/core/CMap.h"
 #include "engine/core/CSpriteObject.h"
-#include "engine/core/mode/CGameMode.h"
+#include "engine/core/mode/Scene.h"
 #include "fileio/CSaveGameController.h"
 #include <string>
 #include <vector>
 #include <memory>
 
 
-class CPassive : public CGameMode
+class CPassive : public Scene
 {
 public:
 
@@ -39,7 +39,7 @@ public:
 
     virtual bool init() = 0;
 
-    virtual void ponder(const float deltaT) = 0;
+    virtual void ponder(const float deltaT);
 
     virtual void render() = 0;
 

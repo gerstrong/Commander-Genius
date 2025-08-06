@@ -50,7 +50,7 @@ enum item_effect_type
 class CItemEffect : public CGalaxySpriteObject
 {
 public:
-    CItemEffect(CMap *pmap,
+    CItemEffect(std::shared_ptr<CMap> pMap,
                 const Uint16 foeID,
                 const int x,
                 const int y,

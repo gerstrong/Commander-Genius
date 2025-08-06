@@ -8,7 +8,7 @@
 #include "CCouncilMember.h"
 #include "../../common/ai/CPlayerLevel.h"
 #include "../../common/dialog/CMessageBoxBitmapGalaxy.h"
-#include "engine/core/mode/CGameMode.h"
+#include "engine/core/mode/Scene.h"
 #include <base/interface/misc.h>
 #include <base/audio/Audio.h>
 #include <base/audio/music/CMusic.h>
@@ -32,8 +32,8 @@ int NumberToRescue;
 
 
 
-CCouncilMember::CCouncilMember(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
-CGalaxySpriteObject(pmap, foeID, x, y, 0),
+CCouncilMember::CCouncilMember(std::shared_ptr<CMap> pMap, const Uint16 foeID, Uint32 x, Uint32 y) :
+CGalaxySpriteObject(pMap, foeID, x, y, 0),
 rescued(false),
 m_timer(0)
 {

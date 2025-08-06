@@ -8,9 +8,9 @@ namespace galaxy
 {  
 
 
-AutoShot::AutoShot(CMap *pmap, const Uint32 foeID, const Uint32 x, const Uint32 y,
+AutoShot::AutoShot(std::shared_ptr<CMap> pMap, const Uint32 foeID, const Uint32 x, const Uint32 y,
          direction_t horDir, direction_t vertDir, int basesprite, const int sprVar) :
-CGalaxySpriteObject(pmap, foeID, x, y, sprVar)
+CGalaxySpriteObject(pMap, foeID, x, y, sprVar)
 {
     // Coding for autogun. It covers Keen 4 Darts in Pyramids and the auto shooting guns in Keen 5
 

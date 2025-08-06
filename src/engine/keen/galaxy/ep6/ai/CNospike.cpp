@@ -5,7 +5,7 @@
 #include "../../common/dialog/CMessageBoxBitmapGalaxy.h"
 #include "../../menu/ComputerWrist.h"
 #include "../../common/ai/CBullet.h"
-#include "engine/core/mode/CGameMode.h"
+#include "engine/core/mode/Scene.h"
 #include "fileio/KeenFiles.h"
 
 
@@ -46,8 +46,8 @@ constexpr int TIME_UNTIL_SIT = 120;
 constexpr int CSF_DISTANCE_TO_CHARGE = 6<<CSF;
 
 
-CNospike::CNospike(CMap* pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) : 
-CStunnable(pmap, foeID, x, y),
+CNospike::CNospike(std::shared_ptr<CMap> pMap, const Uint16 foeID, const Uint32 x, const Uint32 y) : 
+CStunnable(pMap, foeID, x, y),
 mHealth(0),
 mTimer(0),
 mKeenAlignment(LEFT),

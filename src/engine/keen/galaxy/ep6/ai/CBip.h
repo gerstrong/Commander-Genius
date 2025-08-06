@@ -11,7 +11,7 @@ namespace galaxy
 class CBip : public CGalaxyActionSpriteObject
 {
 public:
-    	CBip(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y);
+    	CBip(std::shared_ptr<CMap> pMap, const Uint16 foeID, const Uint32 x, const Uint32 y);
 	
 	/**
 	 * When it is moving normally

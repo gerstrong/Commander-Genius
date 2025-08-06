@@ -9,7 +9,7 @@ class CCarrier : public CVorticonSpriteObject
 {
 
 public:
-    CCarrier(CMap* pmap, Uint32 x, Uint32 y, object_t type);
+    CCarrier(std::shared_ptr<CMap> pMap, Uint32 x, Uint32 y, object_t type);
     
     virtual void getTouchedBy(CSpriteObject& theObject);
     

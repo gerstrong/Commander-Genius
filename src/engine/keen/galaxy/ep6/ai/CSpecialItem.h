@@ -9,7 +9,7 @@ namespace galaxy
 class CSpecialItem : public CGalaxySpriteObject
 {
 public:
-	CSpecialItem(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y, const int actionoffset);
+	CSpecialItem(std::shared_ptr<CMap> pMap, const Uint16 foeID, Uint32 x, Uint32 y, const int actionoffset);
 
 	/** Normal process routine */
 	void process();

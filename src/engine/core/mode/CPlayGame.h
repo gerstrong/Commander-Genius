@@ -14,7 +14,7 @@
 #include "fileio/CExeFile.h"
 #include "engine/core/options.h"
 #include "engine/core/CBehaviorEngine.h"
-#include "engine/core/mode/CGameMode.h"
+#include "engine/core/mode/Scene.h"
 #include "fileio/CSaveGameController.h"
 #include <string>
 #include <SDL.h>
@@ -22,7 +22,7 @@
 const int WM_MAP_NUM = 80;
 
 
-class CPlayGame : public CGameMode
+class CPlayGame : public Scene
 {
 public:
     CPlayGame(char level);
@@ -37,12 +37,15 @@ public:
 
     virtual ~CPlayGame() {}
 
+    virtual void ponder(const float deltaT) override;
+
     bool isFinished();
     bool getEndGame();
     bool getStartGame();
 
     bool getExitEvent()
     {	return m_exitgame;	}
+
 
     char getEpisode();
     char getNumPlayers();

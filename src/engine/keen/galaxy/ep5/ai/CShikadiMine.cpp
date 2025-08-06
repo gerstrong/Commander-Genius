@@ -48,8 +48,8 @@ constexpr int TIME_MOVE = 150;
 //constexpr int TIME_CHANGE_DIR = 150;
 constexpr int MOVE_SPEED = 10;
 
-CShikadiMine::CShikadiMine(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
-CStunnable(pmap, foeID, x, y),
+CShikadiMine::CShikadiMine(std::shared_ptr<CMap> pMap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
+CStunnable(pMap, foeID, x, y),
 mTimer(0)
 {
     mActionMap[A_MINE_SIT] = (GASOFctr) &CShikadiMine::processSit;
@@ -415,8 +415,8 @@ void CShikadiMine::draw()
 /// Mine shards ///
 ///////////////////
 
-CMineShards::CMineShards(CMap* pmap, const Uint16 foeID, const Uint32 x, const Uint32 y, const int xSpeed) :
-CStunnable(pmap, foeID, x, y),
+CMineShards::CMineShards(std::shared_ptr<CMap> pMap, const Uint16 foeID, const Uint32 x, const Uint32 y, const int xSpeed) :
+CStunnable(pMap, foeID, x, y),
 mXSpeed(xSpeed)
 {
   xDirection = (xSpeed < 0) ? LEFT : RIGHT;

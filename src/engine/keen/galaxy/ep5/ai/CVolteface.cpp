@@ -31,8 +31,8 @@ A_VOLTFACE_STUNNED = 4
 
 constexpr int MOVE_SPEED = 50;
 
-CVolteface::CVolteface(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
-CStunnable(pmap, foeID, x, y),
+CVolteface::CVolteface(std::shared_ptr<CMap> pMap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
+CStunnable(pMap, foeID, x, y),
 CMoveTarget(m_Pos, xDirection, yDirection)
 {
 	mActionMap[A_VOLTFACE_MOVE] = (GASOFctr) &CVolteface::processMoving;

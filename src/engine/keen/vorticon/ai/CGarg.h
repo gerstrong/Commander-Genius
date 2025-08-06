@@ -43,7 +43,7 @@ unsigned int rnd(void);
 class CGarg : public CVorticonSpriteObject
 {
 public:
-	CGarg(CMap *p_map, Uint32 x, Uint32 y);
+	CGarg(std::shared_ptr<CMap> p_map, Uint32 x, Uint32 y);
 	void process();
 	bool isNearby(CSpriteObject &theObject);
 	void getTouchedBy(CSpriteObject &theObject);

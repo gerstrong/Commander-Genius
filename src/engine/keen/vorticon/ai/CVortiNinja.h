@@ -19,7 +19,7 @@ enum ninja_actions{
 class CVortiNinja : public CVorticonSpriteObject
 {
 public:
-	CVortiNinja(CMap *p_map, Uint32 x, Uint32 y);
+	CVortiNinja(std::shared_ptr<CMap> p_map, Uint32 x, Uint32 y);
 	void init();
 	bool isNearby(CSpriteObject &theObject);
 	void getTouchedBy(CSpriteObject &theObject);	

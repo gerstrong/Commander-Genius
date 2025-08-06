@@ -10,7 +10,7 @@ namespace galaxy {
 class CBlorb : public CStunnable
 {
 public:
-	CBlorb(CMap *pmap, const Uint16 foeID, 
+	CBlorb(std::shared_ptr<CMap> pMap, const Uint16 foeID, 
 		       const Uint32 x, const Uint32 y);
 
 	void processMoving();

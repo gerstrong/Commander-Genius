@@ -45,8 +45,8 @@ constexpr int WALK_SPEED = 25;
 constexpr int TIME_UNTIL_STAND = 150;
 //constexpr int TIME_TO_ZAP = 30;
   
-CShikadi::CShikadi(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
-CStunnable(pmap, foeID, x, y),
+CShikadi::CShikadi(std::shared_ptr<CMap> pMap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
+CStunnable(pMap, foeID, x, y),
 mHealth(4),
 mTimer(0)
 {

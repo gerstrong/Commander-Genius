@@ -10,7 +10,7 @@ class CFleex : public CStunnable
 {
   
 public:
-	CFleex(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y);
+	CFleex(std::shared_ptr<CMap> pMap, const Uint16 foeID, const Uint32 x, const Uint32 y);
 	
 	/**
 	 * When it is moving normally

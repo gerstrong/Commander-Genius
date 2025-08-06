@@ -42,7 +42,7 @@ MOTHER_HURT
 class CVortiMom : public CVorticonSpriteObject
 {
 public:
-	CVortiMom(CMap *p_map, Uint32 x, Uint32 y);	
+	CVortiMom(std::shared_ptr<CMap> p_map, Uint32 x, Uint32 y);	
 	bool isNearby(CSpriteObject &theObject);
 	void getTouchedBy(CSpriteObject &theObject);
 	void process();

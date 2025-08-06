@@ -6,19 +6,17 @@
  */
 
 #include "CVorticonSpriteObjectAI.h"
-//#include "sdl/CVideoDriver.h"
 #include <base/GsLogging.h>
 
 #include "CMeep.h"
 
-CVorticonSpriteObjectAI::CVorticonSpriteObjectAI(CMap *p_map,
+CVorticonSpriteObjectAI::CVorticonSpriteObjectAI(std::shared_ptr<CMap> p_map,
                      std::vector< std::unique_ptr<CVorticonSpriteObject> > &objvect,
                      std::vector<CPlayer> &Player,
                      int NumPlayers, int episode,
                      int level, bool &dark) :
 m_Objvect(objvect),
-m_Player(Player)/*,
-m_dark(dark)*/
+m_Player(Player)
 {
     mp_Map = p_map;
     m_Level = level;

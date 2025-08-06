@@ -28,6 +28,8 @@
 #include <base/direction.h>
 #include <base/audio/sound/CSoundChannel.h>
 
+#include <memory>
+
 constexpr int COLLISION_RES = (1<<STC);
 
 // The bouncing box used by the object which is used to determine the collisions
@@ -110,7 +112,7 @@ void spawnObj(const CSpriteObject *obj);
 class CSpriteObject
 {
   public:
-    CSpriteObject(CMap *pmap,
+    CSpriteObject(std::shared_ptr<CMap> pMap,
                   const int x,
                   const int y,
                   const int spriteVar);
@@ -346,7 +348,7 @@ class CSpriteObject
     virtual bool isNearby(CSpriteObject&) { return true; }
     virtual void getShotByRay(object_t &);
     void kill_intersecting_tile(int mpx, int mpy, CSpriteObject &theObject);
-    CMap *getMapPtr() { return mpMap; }
+    std::shared_ptr<CMap> getMapPtr() { return mpMap; }
 
     virtual void draw();
 
@@ -385,7 +387,7 @@ class CSpriteObject
 
     GsLua mLua;
 
-    CMap *mpMap;
+    std::shared_ptr<CMap> mpMap;
 
     Uint16 m_blinktime = 0;
     bool mInvincible = false;   /** Shot might hit the object but it has no effect at all */

@@ -14,7 +14,7 @@
 #include <base/audio/music/CMusic.h>
 #include "../../common/ai/CEnemyShot.h"
 #include "../../menu/ComputerWrist.h"
-#include "engine/core/mode/CGameMode.h"
+#include "engine/core/mode/Scene.h"
 #include <base/GsTimer.h>
 
 #include <engine/core/CBehaviorEngine.h>
@@ -29,8 +29,8 @@ const int secretLevel = 13;
 namespace galaxy {  
   
   
-CFuse::CFuse(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y, const int sprVar) :
-CGalaxySpriteObject(pmap, foeID, x, y, sprVar)
+CFuse::CFuse(std::shared_ptr<CMap> pMap, const Uint16 foeID, const Uint32 x, const Uint32 y, const int sprVar) :
+CGalaxySpriteObject(pMap, foeID, x, y, sprVar)
 {  
 	// Adapt this AI
 	m_ActionBaseOffset = 0x3186;

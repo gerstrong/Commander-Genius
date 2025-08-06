@@ -13,8 +13,8 @@
 class CFireBall : public CRay
 {
 public:
-	CFireBall(CMap *p_map, Uint32 x, Uint32 y,
-			direction_t dir, object_t byType, size_t byID);
+    CFireBall(std::shared_ptr<CMap> p_map, Uint32 x, Uint32 y,
+              direction_t dir, object_t byType, size_t byID);
 	void process();
 private:
 	int animframe, animtimer;

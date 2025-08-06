@@ -34,8 +34,8 @@ const int LICK_BREATHE_TIMER = 100;
 const int LICK_HOP_TIME = 20;
 const int LICK_LAND_TIME = 20;
 
-CLick::CLick(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
-CStunnable(pmap, foeID, x, y)
+CLick::CLick(std::shared_ptr<CMap> pMap, const Uint16 foeID, Uint32 x, Uint32 y) :
+CStunnable(pMap, foeID, x, y)
 {
     mActionMap[A_LICK_HOP]     = static_cast<GASOFctr>(&CLick::processHop);
     mActionMap[A_LICK_LAND]    = static_cast<GASOFctr>(&CLick::processLand);

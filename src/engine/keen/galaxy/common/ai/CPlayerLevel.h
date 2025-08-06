@@ -28,7 +28,7 @@ struct KeenState
 class CPlayerLevel : public CPlayerBase
 {
 public:
-    CPlayerLevel(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y,
+    CPlayerLevel(std::shared_ptr<CMap> pMap, const Uint16 foeID, Uint32 x, Uint32 y,
                  std::vector< std::shared_ptr<CGalaxySpriteObject> > &ObjectPtrs, direction_t facedir,
                  CInventory &l_Inventory,
                  const size_t offset,

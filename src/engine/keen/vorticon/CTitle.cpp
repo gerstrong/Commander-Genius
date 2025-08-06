@@ -26,8 +26,8 @@ namespace vorticon
 ////
 // Creation Routine
 ////
-Title::Title( CMap &map ) :
-mMap(map)
+Title::Title(std::shared_ptr<CMap> &map ) :
+mpMap(map)
 {}
 
 bool Title::init(int Episode)
@@ -46,7 +46,7 @@ bool Title::init(int Episode)
     if( (pBitmap = gGraphics.getBitmapFromStr(0, "TITLE")) != nullptr )
 	{
 		const int width = 160-(pBitmap->width()/2);
-		std::unique_ptr<CSpriteObject> obj(new CEGABitmap( &mMap, pSurface, pBitmap ));
+        std::unique_ptr<CSpriteObject> obj(new CEGABitmap( mpMap, pSurface, pBitmap ));
 		obj->setScrPos( width, 0 );		
         pBitmap->_draw( width, 0, pSurface );
 		obj->draw();
@@ -62,14 +62,14 @@ bool Title::init(int Episode)
         {
             const int width = (Episode == 3) ? 128 : 96;
             pBitmap = gGraphics.getBitmapFromStr(0, "F1HELP");
-            std::unique_ptr<CSpriteObject> obj(new CEGABitmap( &mMap, pSurface, pBitmap ));
+            std::unique_ptr<CSpriteObject> obj(new CEGABitmap( mpMap, pSurface, pBitmap ));
             obj->setScrPos( width, 182 );
             pBitmap->_draw( width, 182, pSurface);
             mObjects.push_back(move(obj));
         }
     }
 	
-	mMap.changeTileArrayY(2, 15, 2, gGraphics.getTileMap(1).EmptyBackgroundTile());
+    mpMap->changeTileArrayY(2, 15, 2, gGraphics.getTileMap(1).EmptyBackgroundTile());
 
 	mFinished = false;
 

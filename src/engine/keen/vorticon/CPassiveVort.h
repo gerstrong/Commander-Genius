@@ -26,10 +26,13 @@ public:
     void redrawMap();
 
     void pumpEvent(const std::shared_ptr<CEvent> &evPtr);
-    void ponder(const float);
+    void ponder(const float deltaT);
     void render();
 
 private:
+
+    void _ponder(const float);
+
     std::unique_ptr<CIntro> mpIntroScreen;
     std::unique_ptr<Title> mpTitleScreen;
     std::shared_ptr<CMap> mpMap;

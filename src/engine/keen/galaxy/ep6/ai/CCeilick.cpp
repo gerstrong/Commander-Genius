@@ -24,8 +24,8 @@ constexpr int X_DIST_TO_LICK = 2<<CSF;
 constexpr int Y_DIST_TO_LICK = 8<<CSF;
 
 
-CCeilick::CCeilick(CMap* pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
-CStunnable(pmap, foeID, x, y),
+CCeilick::CCeilick(std::shared_ptr<CMap> pMap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
+CStunnable(pMap, foeID, x, y),
 mChanceToLick(false),
 mCrawlPos(0),
 mLaughed(false)

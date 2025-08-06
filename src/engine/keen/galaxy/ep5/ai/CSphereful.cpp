@@ -37,8 +37,8 @@ constexpr int FLY_TIME = 150;
 
 // TODO: Floating diamonds around are still missing!
   
-CSphereful::CSphereful(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
-CStunnable(pmap, foeID, x, y),
+CSphereful::CSphereful(std::shared_ptr<CMap> pMap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
+CStunnable(pMap, foeID, x, y),
 mTimer(0)
 {
 	m_ActionBaseOffset = 0x303A;

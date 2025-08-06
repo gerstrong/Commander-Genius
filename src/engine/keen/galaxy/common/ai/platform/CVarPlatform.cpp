@@ -19,12 +19,12 @@ const int MOVE_SPEED = 20;
 
 const int GIK_SPRITE = 379;
 
-CVarPlatform::CVarPlatform(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y,
+CVarPlatform::CVarPlatform(std::shared_ptr<CMap> pMap, const Uint16 foeID, Uint32 x, Uint32 y,
                            const direction_t horidir,
                            const direction_t vertdir,
                            const int actionOffset, const int sprVar) :
-    CGalaxySpriteObject(pmap, foeID, x, y, sprVar),
-    CPlatform(pmap, foeID, x, y),    
+    CGalaxySpriteObject(pMap, foeID, x, y, sprVar),
+    CPlatform(pMap, foeID, x, y),    
     CMoveTarget(m_Pos, xDirection, yDirection),
     m_GikSprite(GIK_SPRITE)
 {

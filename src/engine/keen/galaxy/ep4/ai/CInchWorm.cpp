@@ -13,8 +13,8 @@
 
 namespace galaxy {
 
-CInchWorm::CInchWorm(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
-CGalaxySpriteObject(pmap, foeID, x, y, 0),
+CInchWorm::CInchWorm(std::shared_ptr<CMap> pMap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
+CGalaxySpriteObject(pMap, foeID, x, y, 0),
 mInchWormContacts(0)
 {
 	setupGalaxyObjectOnMap(0x2E9A, 0);

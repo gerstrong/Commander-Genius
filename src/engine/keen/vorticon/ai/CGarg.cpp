@@ -3,7 +3,7 @@
 
 #include <vector>
 
-CGarg::CGarg(CMap *p_map, Uint32 x, Uint32 y) :
+CGarg::CGarg(std::shared_ptr<CMap> p_map, Uint32 x, Uint32 y) :
 CVorticonSpriteObject(p_map, x,y,OBJ_GARG),
 state(GARG_LOOK),
 looktimes(GARG_NUM_LOOKS+1),

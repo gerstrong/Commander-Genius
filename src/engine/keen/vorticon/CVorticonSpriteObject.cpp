@@ -10,10 +10,10 @@
 
 #include <engine/core/CBehaviorEngine.h>
 
-CVorticonSpriteObject::CVorticonSpriteObject(CMap *pmap,
+CVorticonSpriteObject::CVorticonSpriteObject(std::shared_ptr<CMap> pMap,
                                              const int x, const int y,
                                              const object_t type, const int sprVar) :
-CSpriteObject(pmap, x, y, sprVar),
+CSpriteObject(pMap, x, y, sprVar),
 m_type(type),
 touchPlayer(0),
 touchedBy(0)

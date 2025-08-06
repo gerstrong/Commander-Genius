@@ -20,7 +20,7 @@
 #include "engine/core/CBehaviorEngine.h"
 
 #include "widgets/Button.h"
-#include "engine/core/mode/CGameMode.h"
+#include "engine/core/mode/Scene.h"
 #include "SelectionMenu.h"
 #include "CHelpMenu.h"
 

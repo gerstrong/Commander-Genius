@@ -25,11 +25,11 @@ constexpr int MOVE_Y_SPEED = 30;
 
 constexpr int TIME_UNTIL_SMASH = 20;
 
-CRedShot::CRedShot(CMap* pmap, 
+CRedShot::CRedShot(std::shared_ptr<CMap> pMap,
 		   const Uint16 foeID, 
 		   const Uint32 x, const Uint32 y, 
 		   const int xDir, const int yDir) : 
-CStunnable(pmap, foeID, x, y),
+CStunnable(pMap, foeID, x, y),
 mTimer(0)
 {
 	xDirection = xDir;

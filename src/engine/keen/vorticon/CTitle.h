@@ -32,7 +32,7 @@ class Title
 {
 public:
 
-    Title(CMap &map);
+    Title(std::shared_ptr<CMap> &map);
 
 	bool init(int Episode);
     void ponder();
@@ -45,7 +45,7 @@ private:
 	std::vector< std::unique_ptr<CSpriteObject> > mObjects;
 	bool mFinished;
     unsigned int mTime = 0;
-	CMap &mMap;
+    std::shared_ptr<CMap> mpMap;
 };
 
 }

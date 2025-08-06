@@ -1,5 +1,5 @@
 /*
- * CGameMode.h
+ * Scene.h
  *
  *  Created on: 26.03.2011
  *      Author: gerstrong
@@ -7,8 +7,8 @@
  *  Base class responsible for controlling the CG Modes which are Launcher Menu, Passive and Play Mode
  */
 
-#ifndef CGAMEMODE_H_
-#define CGAMEMODE_H_
+#ifndef SCENE_H_
+#define SCENE_H_
 
 #include <base/GsEvent.h>
 
@@ -57,18 +57,25 @@ struct EventHighScores : CEvent {};
 ///////
 // Base Class for game modes
 //////
-class CGameMode
+class Scene
 {
 public:
-    CGameMode() {}
-    virtual ~CGameMode() {}
+    Scene() {}
+    virtual ~Scene() {}
 
     virtual void pumpEvent(const std::shared_ptr<CEvent> &evPtr) = 0;
 
-    virtual bool init() = 0;
-    virtual void ponder(const float deltaT) = 0;
+    virtual void ponder(const float deltaT);
     virtual void render() = 0;
+
+    bool needInit();
+
+protected:
+    virtual bool init();
+
+private:
+    bool mInited = false;
 };
 
 
-#endif /* CGAMEMODE_H_ */
+#endif /* SCENE_H_ */

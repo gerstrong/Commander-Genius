@@ -41,7 +41,7 @@ bool CWorldMap::init()
                                                   gBehaviorEngine.isDemo() ) );
     }
 
-    const bool ok = MapLoader->loadMap( mMap, 0 );
+    const bool ok = MapLoader->loadMap( mpMap, 0 );
 
     if(!ok)
     {
@@ -63,7 +63,7 @@ bool CWorldMap::init()
                         LEFT, true, nullptr);
 	}
 
-	mMap.drawAll();
+    mpMap->drawAll();
 
     return true;
 }

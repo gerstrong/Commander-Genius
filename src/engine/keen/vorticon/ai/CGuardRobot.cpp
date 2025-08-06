@@ -30,7 +30,7 @@ const unsigned int LOOK_TOTALTIME = 25;
 
 const int FIRE_PAUSE_TIME = 25;
 
-CGuardRobot::CGuardRobot(CMap *p_map, Uint32 x, Uint32 y) :
+CGuardRobot::CGuardRobot(std::shared_ptr<CMap> p_map, Uint32 x, Uint32 y) :
 CVorticonSpriteObject(p_map, x, y, OBJ_GUARDROBOT, 0)
 {
 	// First time initialization

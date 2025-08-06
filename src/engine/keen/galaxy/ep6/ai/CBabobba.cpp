@@ -48,8 +48,8 @@ A_BABOBBA_NAPPING = 6
 
 constexpr int CSF_DISTANCE_TO_FIRE = 7<<CSF;
 
-CBabobba::CBabobba(CMap* pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) : 
-CStunnable(pmap, foeID, x, y),
+CBabobba::CBabobba(std::shared_ptr<CMap> pMap, const Uint16 foeID, const Uint32 x, const Uint32 y) : 
+CStunnable(pMap, foeID, x, y),
 mTimer(0),
 mGoodFireChance(false)
 {
@@ -239,9 +239,9 @@ const int CINDER_X_SPEED = 50;
 const int CINDER_DYING_TIME = 50;
 
 
-CCinder::CCinder(CMap* pmap, const Uint16 foeID, 
+CCinder::CCinder(std::shared_ptr<CMap> pMap, const Uint16 foeID, 
          const Uint32 x, const Uint32 y, const int horDir, const int sprVar) :
-CGalaxyActionSpriteObject(pmap, foeID, x, y, sprVar),
+CGalaxyActionSpriteObject(pMap, foeID, x, y, sprVar),
 mTimer(0)
 {
 	mActionMap[A_CINDER_TOSSED] = (void (CGalaxyActionSpriteObject::*)()) &CCinder::processTossed;

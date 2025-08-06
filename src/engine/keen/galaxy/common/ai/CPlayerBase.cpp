@@ -155,7 +155,7 @@ const int CPlayerBase::mEpisodeActionNumMap[3][NUM_KEEN_ACTIONS] =
 };
 
 CPlayerBase::
-CPlayerBase(CMap *pmap,
+CPlayerBase(std::shared_ptr<CMap> pMap,
             const Uint16 foeID,
             Uint32 x,
             Uint32 y,
@@ -163,9 +163,9 @@ CPlayerBase(CMap *pmap,
             CInventory &l_Inventory,
             const int playerIdx,
             const int spriteVar) :
-    CGalaxySpriteObject(pmap, foeID, x, y, spriteVar),
+    CGalaxySpriteObject(pMap, foeID, x, y, spriteVar),
     m_Inventory(l_Inventory),
-    m_camera(pmap,x,y,this),
+    m_camera(pMap,x,y,this),
     mPlayerNum(playerIdx),
     mPlayerCtrlNum(playerIdx)
 {

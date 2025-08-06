@@ -22,7 +22,7 @@ public:
 
     bool isKeenPlayer(const int foeID);
 
-	CGalaxySpriteObject* addFoe(CMap &Map, word foe, size_t x, size_t y);
+    CGalaxySpriteObject* addFoe(std::shared_ptr<CMap> map, word foe, size_t x, size_t y);
 private:
     bool m_demo;
 };

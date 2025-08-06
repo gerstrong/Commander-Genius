@@ -20,7 +20,7 @@ namespace galaxy {
 class CVolteface : public CStunnable, public CMoveTarget
 {
 public:
-	CVolteface(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y);
+	CVolteface(std::shared_ptr<CMap> pMap, const Uint16 foeID, const Uint32 x, const Uint32 y);
 
 	/**
 	 * Action functions

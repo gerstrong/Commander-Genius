@@ -18,7 +18,7 @@ namespace galaxy {
 class CBloog : public CStunnable
 {
 public:
-	CBloog(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y);
+	CBloog(std::shared_ptr<CMap> pMap, const Uint16 foeID, const Uint32 x, const Uint32 y);
 
     bool isNearby(CSpriteObject &theObject) override;
 

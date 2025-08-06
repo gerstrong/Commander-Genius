@@ -36,7 +36,7 @@ struct EventEraseAllMeeps : CEvent {};
 class CVorticonSpriteObjectAI
 {
 public:
-    CVorticonSpriteObjectAI(CMap *p_map,
+    CVorticonSpriteObjectAI(std::shared_ptr<CMap> p_map,
                 std::vector< std::unique_ptr<CVorticonSpriteObject> > &objvect,
                 std::vector<CPlayer> &Player,
                 int NumPlayers, int episode,
@@ -126,7 +126,7 @@ private:
     void kill_all_intersecting_tile(int mpx, int mpy, CVorticonSpriteObject &theObject);*/
 
     // Variables
-    CMap *mp_Map;
+    std::shared_ptr<CMap> mp_Map;
     std::vector< std::unique_ptr<CVorticonSpriteObject> > &m_Objvect;
     std::vector<CPlayer> &m_Player;
     int m_Level;

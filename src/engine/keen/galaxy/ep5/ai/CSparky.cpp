@@ -32,8 +32,8 @@ constexpr int CHARGE_TIME = 250;
 constexpr int CHARGE_SPEED = 75;
 constexpr int TURN_TIME = 10;
   
-CSparky::CSparky(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
-CStunnable(pmap, foeID, x, y),
+CSparky::CSparky(std::shared_ptr<CMap> pMap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
+CStunnable(pMap, foeID, x, y),
 mTimer(0),
 mLookTimer(0),
 mGoodChargeChance(false)

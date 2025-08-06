@@ -70,7 +70,7 @@ void CTantalusRay::shootray()
 		mpMap->drawAll();
 
         std::unique_ptr<CVorticonSpriteObject>
-                shootObject( new CRay(mpMap.get(),
+                shootObject( new CRay(mpMap,
                                       4<<CSF, 9<<CSF,
                                       RIGHT, CENTER, 0,
                                       OBJ_NONE, 0) );
@@ -114,7 +114,7 @@ void CTantalusRay::explodeEarth()
 	    
 		if (m_step<16)
 		{
-		    std::unique_ptr<CEarthExplosion> expl( new CEarthExplosion(mpMap.get(),shot_x+((rnd()%32)<<STC), shot_y+((rnd()%32)<<STC)-(8<<STC)) );
+		    std::unique_ptr<CEarthExplosion> expl( new CEarthExplosion(mpMap,shot_x+((rnd()%32)<<STC), shot_y+((rnd()%32)<<STC)-(8<<STC)) );
 		    expl->solid = false;
 		    m_Object.push_back( move(expl) );
 		}
@@ -124,7 +124,7 @@ void CTantalusRay::explodeEarth()
 		case 5:
 			for(int i=0;i<=9;i++)
 			{
-				chunk.reset( new CEarthChunk(mpMap.get(),shot_x+(14<<STC), shot_y) );
+				chunk.reset( new CEarthChunk(mpMap,shot_x+(14<<STC), shot_y) );
 				chunk->m_Direction = EC_UPLEFTLEFT;
 				chunk->mSpriteIdx = (i > 4) ? EARTHCHUNK_SMALL_DN : EARTHCHUNK_SMALL_UP;
 				
@@ -133,38 +133,38 @@ void CTantalusRay::explodeEarth()
 
 			break;
 		case 6:
-			chunk.reset( new CEarthChunk(mpMap.get(),shot_x+(16<<STC), shot_y+(16<<STC)) );
+			chunk.reset( new CEarthChunk(mpMap,shot_x+(16<<STC), shot_y+(16<<STC)) );
 			m_Object.push_back( move(chunk) );
 			break;
 		case 7:
-			chunk.reset( new CEarthChunk(mpMap.get(),shot_x+(24<<STC), shot_y-(8<<STC)) );
+			chunk.reset( new CEarthChunk(mpMap,shot_x+(24<<STC), shot_y-(8<<STC)) );
 			m_Object.push_back( move(chunk) );
 			break;
 		case 8:
-			chunk.reset( new CEarthChunk(mpMap.get(),shot_x+(16<<STC), shot_y+(4<<STC)) );
+			chunk.reset( new CEarthChunk(mpMap,shot_x+(16<<STC), shot_y+(4<<STC)) );
 			m_Object.push_back( move(chunk) );
 			break;
 		case 10:
 			// spawn four big fragments of the earth to go flying off
-			chunk.reset(  new CEarthChunk(mpMap.get(),shot_x+(8<<STC), shot_y) );
+			chunk.reset(  new CEarthChunk(mpMap,shot_x+(8<<STC), shot_y) );
 			chunk->m_Direction = EC_UPLEFT;
 			chunk->mSpriteIdx = EARTHCHUNK_BIG_UP;
 			chunk->solid = false;
 			m_Object.push_back( move(chunk) );
 
-			chunk.reset( new CEarthChunk(mpMap.get(),shot_x+(8<<STC), shot_y) );
+			chunk.reset( new CEarthChunk(mpMap,shot_x+(8<<STC), shot_y) );
 			chunk->m_Direction = EC_UPRIGHT;
 			chunk->mSpriteIdx = EARTHCHUNK_BIG_UP;
 			chunk->solid = false;
 			m_Object.push_back( move(chunk) );
 
-			chunk.reset( new CEarthChunk(mpMap.get(),shot_x+(8<<STC), shot_y) );
+			chunk.reset( new CEarthChunk(mpMap,shot_x+(8<<STC), shot_y) );
 			chunk->m_Direction = EC_DOWNRIGHT;
 			chunk->mSpriteIdx = EARTHCHUNK_BIG_DN;
 			chunk->solid = false;
 			m_Object.push_back( move(chunk) );
 
-			chunk.reset( new CEarthChunk(mpMap.get(),shot_x+(8<<STC), shot_y) );
+			chunk.reset( new CEarthChunk(mpMap,shot_x+(8<<STC), shot_y) );
 			chunk->m_Direction = EC_DOWNLEFT;
 			chunk->mSpriteIdx = EARTHCHUNK_BIG_DN;
 			chunk->solid = false;

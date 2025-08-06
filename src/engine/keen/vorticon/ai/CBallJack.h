@@ -15,7 +15,7 @@
 class CBallJack : public CVorticonSpriteObject
 {
 public:
-	CBallJack(CMap *pmap, Uint32 x, Uint32 y, object_t type);
+	CBallJack(std::shared_ptr<CMap> pMap, Uint32 x, Uint32 y, object_t type);
     void getTouchedBy(CSpriteObject &theObject);
 	void process();
 

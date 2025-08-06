@@ -15,7 +15,7 @@ namespace galaxy {
 class CWormmouth : public CStunnable
 {
 public:
-	CWormmouth(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y);
+	CWormmouth(std::shared_ptr<CMap> pMap, const Uint16 foeID, Uint32 x, Uint32 y);
 
 	bool isNearby(CSpriteObject &theObject);
 	void getTouchedBy(CSpriteObject &theObject);

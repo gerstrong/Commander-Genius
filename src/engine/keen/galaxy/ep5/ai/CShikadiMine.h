@@ -19,7 +19,7 @@ namespace galaxy {
 class CShikadiMine : public CStunnable
 {
 public:
-	CShikadiMine(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y);
+	CShikadiMine(std::shared_ptr<CMap> pMap, const Uint16 foeID, const Uint32 x, const Uint32 y);
 
 	/**
 	 * Action functions
@@ -62,7 +62,7 @@ class CMineShards : public CStunnable
 {
   
 public:  
-    CMineShards(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y, const int xSpeed);
+    CMineShards(std::shared_ptr<CMap> pMap, const Uint16 foeID, const Uint32 x, const Uint32 y, const int xSpeed);
     
     void process();
     

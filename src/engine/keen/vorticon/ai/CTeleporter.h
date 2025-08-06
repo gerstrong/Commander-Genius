@@ -20,7 +20,7 @@ TELEPORTING_IN
 class CTeleporter : public CVorticonSpriteObject
 {
 public:
-	CTeleporter(CMap *p_map, std::vector<CPlayer> &mp_vec_Player,
+	CTeleporter(std::shared_ptr<CMap> p_map, std::vector<CPlayer> &mp_vec_Player,
             const Uint32 x, const Uint32 y );
 
 	void reset();

@@ -20,11 +20,11 @@ A_SLICESTAR_MOVE = 0
 
 constexpr int MOVE_SPEED = 25;
   
-CSlicestar::CSlicestar(CMap *pmap, const Uint16 foeID, 
+CSlicestar::CSlicestar(std::shared_ptr<CMap> pMap, const Uint16 foeID, 
 		       const Uint32 x, const Uint32 y, 
 		       const bool useBlocker, direction_t horDir, 
 		       direction_t verDir) :
-CStunnable(pmap, foeID, x, y),
+CStunnable(pMap, foeID, x, y),
 mUseBlocker(useBlocker)
 {
 	m_ActionBaseOffset = 0x23BC;

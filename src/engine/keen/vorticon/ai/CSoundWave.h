@@ -13,7 +13,7 @@
 class CSoundWave : public CRay
 {
 public:
-	CSoundWave(CMap *p_map, Uint32 x, Uint32 y,
+	CSoundWave(std::shared_ptr<CMap> p_map, Uint32 x, Uint32 y,
 			direction_t dir, object_t byType=OBJ_NONE, size_t byID=0);
 	void process();
 

@@ -46,7 +46,7 @@ public:
      */
     std::string getLevelName() const
     {
-        return mMap.getLevelName();
+        return mpMap->getLevelName();
     }
 
     /**
@@ -55,7 +55,8 @@ public:
      */
     Uint16 getLevelIdx() const
     {
-        return mMap.getLevel();
+        assert(mpMap);
+        return mpMap->getLevel();
     }
 
     void pumpEvent(const std::shared_ptr<CEvent> &evPtr);
@@ -85,10 +86,6 @@ public:
     void operator<<(GsKit::ptree &levelNode);
 
 
-    CMap &getMapObj()
-    {	return mMap	;}
-
-
     void setMsgBoxOpen(const bool msgboxactive)
     { mMsgBoxOpen = msgboxactive; }
 
@@ -102,7 +99,7 @@ protected:
     std::vector< std::shared_ptr<CGalaxySpriteObject> > mObjectPtr;
     bool mActive = false;
 
-    CMap mMap;
+    std::shared_ptr<CMap> mpMap;
     std::vector<CInventory> &mInventoryVec;
 
     bool mMsgBoxOpen = false;

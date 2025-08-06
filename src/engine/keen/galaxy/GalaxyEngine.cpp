@@ -383,8 +383,8 @@ void GalaxyEngine::switchToPassive()
     savedgames.setGameDirectory(mDataPath);
     savedgames.setEpisode(mEp);
 
-    mpGameMode.reset( new galaxy::CPassiveGalaxy() );
-    mpGameMode->init();
+    mpScene.reset( new galaxy::CPassiveGalaxy() );
+    //mpGameMode->init();
 
     gMusicPlayer.stop();
 
@@ -394,8 +394,8 @@ void GalaxyEngine::switchToPassive()
 void GalaxyEngine::switchToGameplay(const int startLevel,
                                     const std::vector<int> &spriteVars)
 {
-    mpGameMode.reset( new CPlayGameGalaxy(startLevel, spriteVars) );
-    mpGameMode->init();
+    mpScene.reset( new CPlayGameGalaxy(startLevel, spriteVars) );
+    //mpGameMode->init();
     mOpenedGamePlay = true;
     gBehaviorEngine.setPause(false);
     gEventManager.add( new CloseAllMenusEvent() );
@@ -439,7 +439,7 @@ void GalaxyEngine::pumpEvent(const std::shared_ptr<CEvent> &evPtr)
     }
     else if( std::dynamic_pointer_cast<const EventEndGamePlay>(evPtr) )
     {
-        if( dynamic_cast<CPlayGameGalaxy*>(mpGameMode.get()) )
+        if( dynamic_cast<CPlayGameGalaxy*>(mpScene.get()) )
         {
             switchToPassive();
         }
@@ -508,7 +508,7 @@ void GalaxyEngine::pumpEvent(const std::shared_ptr<CEvent> &evPtr)
         std::unique_ptr<CPlayGameGalaxy> pgGalaxy(new CPlayGameGalaxy(0, mSpriteVars));
         pgGalaxy->init();
         pgGalaxy->loadGame();
-        mpGameMode = std::move(pgGalaxy);
+        mpScene = std::move(pgGalaxy);
         mOpenedGamePlay = true;
         gBehaviorEngine.setPause(false);
         gEventManager.add( new CloseAllMenusEvent() );

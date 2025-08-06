@@ -15,7 +15,7 @@ namespace galaxy {
 class CTreasureEater: public CStunnable
 {
 public:
-	CTreasureEater(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y);
+	CTreasureEater(std::shared_ptr<CMap> pMap, const Uint16 foeID, Uint32 x, Uint32 y);
 
 	bool isNearby(CSpriteObject &theObject);
 	void getTouchedBy(CSpriteObject &theObject);

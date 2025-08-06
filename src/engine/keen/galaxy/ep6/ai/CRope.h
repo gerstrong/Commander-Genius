@@ -11,7 +11,7 @@ class CRope : public CGalaxyActionSpriteObject
 public:
     static const unsigned int FOE_ID = 201;
     
-    CRope(CMap *pmap, Uint32 x, Uint32 y);
+    CRope(std::shared_ptr<CMap> pMap, Uint32 x, Uint32 y);
 
     void processActive();
     void processThrown();

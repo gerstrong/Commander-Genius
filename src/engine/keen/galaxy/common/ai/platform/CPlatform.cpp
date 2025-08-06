@@ -16,8 +16,8 @@
 
 namespace galaxy {
 
-CPlatform::CPlatform(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
-CGalaxySpriteObject(pmap, foeID, x, y, 0)
+CPlatform::CPlatform(std::shared_ptr<CMap> pMap, const Uint16 foeID, Uint32 x, Uint32 y) :
+CGalaxySpriteObject(pMap, foeID, x, y, 0)
 {
 	m_ActionBaseOffset = gBehaviorEngine.isDemo() ? 0x1A98 : 0x316A;
 }

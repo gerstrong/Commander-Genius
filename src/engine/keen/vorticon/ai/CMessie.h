@@ -30,7 +30,7 @@ class CMessie : public CVorticonSpriteObject
 public:
 
     // Constructor
-    CMessie(CMap *p_map, Uint32 x, Uint32 y);
+    CMessie(std::shared_ptr<CMap> p_map, Uint32 x, Uint32 y);
     void getTouchedBy(CSpriteObject &theObject) override;
     bool tryMounting(CPlayer &player);
     bool tryToUnmount();

@@ -14,9 +14,9 @@
 #include <graphics/GsGraphics.h>
 
 
-CGalaxySpriteObject::CGalaxySpriteObject(CMap *pmap, const Uint16 foeID,
+CGalaxySpriteObject::CGalaxySpriteObject(std::shared_ptr<CMap> pMap, const Uint16 foeID,
                                          const int x, const int y, const int sprVar) :
-CSpriteObject(pmap, x, y, sprVar),
+CSpriteObject(pMap, x, y, sprVar),
 mFoeID(foeID)
 {
     EpisodeInfoStruct* eiStructPtr = gBehaviorEngine.getEpisodeInfoStructRef();
@@ -151,7 +151,7 @@ int CGalaxySpriteObject::checkSolidU(int x1, int x2, int y1, const bool push_mod
 
 		for(int c=x1 ; c<=x2 ; c += COLLISION_RES)
 		{
-			blocked = TileProperty[mpMap->at(c>>CSF, y1>>CSF)].bdown;
+            blocked = TileProperty[mpMap->at(c>>CSF, y1>>CSF)].bdown;
 
 			if(blocked == 17 && mIsClimbing)
 				return 0;
@@ -160,7 +160,7 @@ int CGalaxySpriteObject::checkSolidU(int x1, int x2, int y1, const bool push_mod
 				return blocked;
 		}
 
-		blocked = TileProperty[mpMap->at(x2>>CSF, y1>>CSF)].bdown;
+        blocked = TileProperty[mpMap->at(x2>>CSF, y1>>CSF)].bdown;
 		if( blocked >= 2 && blocked <= 7 && checkslopedU(x2, y1, blocked ))
 			return 1;
 
@@ -191,7 +191,7 @@ int CGalaxySpriteObject::checkSolidD( int x1, int x2, int y2, const bool push_mo
 
 		for(int c=x1 ; c<=x2 ; c += COLLISION_RES)
 		{
-			blockedu = TileProperty[mpMap->at(c>>CSF, y2>>CSF)].bup;
+            blockedu = TileProperty[mpMap->at(c>>CSF, y2>>CSF)].bup;
 
 			if( blockedu == 17 && mIsClimbing)
 				return 0;
@@ -202,7 +202,7 @@ int CGalaxySpriteObject::checkSolidD( int x1, int x2, int y2, const bool push_mo
             }
 		}
 
-		blockedu = TileProperty[mpMap->at(x2>>CSF, y2>>CSF)].bup;
+        blockedu = TileProperty[mpMap->at(x2>>CSF, y2>>CSF)].bup;
 
 		if(blockedu == 17 && mIsClimbing)
 			return 0;
@@ -227,13 +227,13 @@ int CGalaxySpriteObject::checkSolidD( int x1, int x2, int y2, const bool push_mo
 		int8_t blocked;
 		for(int c=x1 ; c<=x2 ; c += COLLISION_RES)
 		{
-			blocked = TileProperty[mpMap->at(c>>CSF, y2>>CSF)].bup;
+            blocked = TileProperty[mpMap->at(c>>CSF, y2>>CSF)].bup;
 
 			if(blocked)
 			{
 				if( blocked < 2 || blocked > 7 )
 				{
-					int8_t blockedd = TileProperty[mpMap->at(c>>CSF, y2>>CSF)].bdown;
+                    int8_t blockedd = TileProperty[mpMap->at(c>>CSF, y2>>CSF)].bdown;
 
 					if(blockedd == 0 && m_jumpdown)
 						return 0;
@@ -243,7 +243,7 @@ int CGalaxySpriteObject::checkSolidD( int x1, int x2, int y2, const bool push_mo
 			}
 		}
 
-		blocked = TileProperty[mpMap->at((x2-(1<<STC))>>CSF, y2>>CSF)].bup;
+        blocked = TileProperty[mpMap->at((x2-(1<<STC))>>CSF, y2>>CSF)].bup;
 		if(blocked)
 		{
 			if( blocked < 2 || blocked > 7 )

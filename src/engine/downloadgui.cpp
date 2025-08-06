@@ -5,7 +5,7 @@
 #include "gamedownloader.h"
 #endif
 #include "downloadgui.h"
-#include "core/mode/CGameMode.h"
+#include "core/mode/Scene.h"
 
 #include <widgets/GsProgressbar.h>
 #include <widgets/GsButton.h>

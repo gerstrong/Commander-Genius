@@ -12,14 +12,14 @@ namespace galaxy {
 
 
 
-CEnemyShot::CEnemyShot(CMap *pmap,
+CEnemyShot::CEnemyShot(std::shared_ptr<CMap> pMap,
                        const int foeID,
                        const int x, const int y,
                        const int actionFormatOffset,
                        const int xDir, const int yDir,
                        const float speed, const int sprVar,
                        const bool climbOnPoles) :
-CGalaxySpriteObject(pmap, foeID, x, y, sprVar),
+CGalaxySpriteObject(pMap, foeID, x, y, sprVar),
 m_speedF(speed),
 mClimbOnPoles(climbOnPoles)
 {

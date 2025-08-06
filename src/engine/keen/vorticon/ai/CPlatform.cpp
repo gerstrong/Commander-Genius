@@ -12,7 +12,7 @@
 
 #define PLATFORMPUSHAMOUNT      40
 
-CPlatform::CPlatform(CMap *p_map, Uint32 x, Uint32 y) :
+CPlatform::CPlatform(std::shared_ptr<CMap> p_map, Uint32 x, Uint32 y) :
 CCarrier(p_map, x, y, OBJ_PLATFORM)
 {
 	animframe = 0;

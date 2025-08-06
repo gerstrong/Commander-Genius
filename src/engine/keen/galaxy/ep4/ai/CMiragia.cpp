@@ -20,8 +20,8 @@ const Uint16 WAIT_BETWEEN_FADE_TIME = 8;
 const Uint16 MIRAGIA_WIDTH = 6;
 const Uint16 MIRAGIA_HEIGHT = 4;
 
-CMiragia::CMiragia(CMap *pmap, const Uint16 foeID, const GsVec2D<Uint32> &Location) :
-CGalaxySpriteObject(pmap, foeID, Location.x, Location.y, 0),
+CMiragia::CMiragia(std::shared_ptr<CMap> pMap, const Uint16 foeID, const GsVec2D<Uint32> &Location) :
+CGalaxySpriteObject(pMap, foeID, Location.x, Location.y, 0),
 m_fade(FADE_IN),
 m_waittime(WAIT_BETWEEN_FADE_TIME)
 {

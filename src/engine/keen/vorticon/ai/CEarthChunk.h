@@ -31,7 +31,7 @@ EC_DOWNRIGHT
 class CEarthChunk : public CVorticonSpriteObject
 {
 public:
-	CEarthChunk(CMap *pmap, Uint32 x, Uint32 y);
+	CEarthChunk(std::shared_ptr<CMap> pMap, Uint32 x, Uint32 y);
 	void process();
 
 	st_ec_direction m_Direction;

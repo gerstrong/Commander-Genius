@@ -6,7 +6,7 @@
 #include "CVortiMom.h"
 #include "CFireBall.h"
 
-CVortiMom::CVortiMom(CMap *p_map, Uint32 x, Uint32 y) :
+CVortiMom::CVortiMom(std::shared_ptr<CMap> p_map, Uint32 x, Uint32 y) :
 CVorticonSpriteObject(p_map, x, y, OBJ_MOTHER)
 {
 	mHealthPoints = MOTHER_HP;

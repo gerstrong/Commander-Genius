@@ -9,7 +9,7 @@ namespace galaxy {
 class CBabobba : public CStunnable
 {
 public:
-	CBabobba(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y);
+	CBabobba(std::shared_ptr<CMap> pMap, const Uint16 foeID, const Uint32 x, const Uint32 y);
 
 	/**
 	 * When it is moving normally
@@ -42,7 +42,7 @@ private:
 class CCinder : public CGalaxyActionSpriteObject
 {
 public:
-    CCinder(CMap *pmap, const Uint16 foeID,
+    CCinder(std::shared_ptr<CMap> pMap, const Uint16 foeID,
         const Uint32 x, const Uint32 y, const int horDir, const int sprVar);
 	
 	void processTossed();	

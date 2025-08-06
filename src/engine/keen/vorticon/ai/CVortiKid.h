@@ -19,7 +19,7 @@ enum vort_baby_actions{
 class CVortikid : public CVorticonSpriteObject
 {
 public:
-	CVortikid( CMap *p_map, Uint32 x, Uint32 y );
+	CVortikid( std::shared_ptr<CMap> p_map, Uint32 x, Uint32 y );
 	void getTouchedBy(CSpriteObject &theObject);
 	void process();
 	void baby_jump(int big);

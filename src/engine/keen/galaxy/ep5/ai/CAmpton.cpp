@@ -48,8 +48,8 @@ constexpr int TIME_UNTIL_SHOOT = 500;
 
 // TODO: There is a pole sound for Amptoms, find its slot and implement it!
 
-CAmpton::CAmpton(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
-    CStunnable(pmap, foeID, x, y)
+CAmpton::CAmpton(std::shared_ptr<CMap> pMap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
+    CStunnable(pMap, foeID, x, y)
 {
     mActionMap[A_AMPTON_WALK] = (GASOFctr) &CAmpton::processWalking;
     mActionMap[A_AMPTON_TURN] = (GASOFctr) &CAmpton::processTurn;

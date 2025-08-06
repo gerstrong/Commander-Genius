@@ -39,8 +39,8 @@ constexpr int TIME_SHOOTING = 200;
 constexpr int CSF_DISTANCE_TO_SHOOT = 8<<CSF;
 
   
-CRoboRed::CRoboRed(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
-CStunnable(pmap, foeID, x, y)
+CRoboRed::CRoboRed(std::shared_ptr<CMap> pMap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
+CStunnable(pMap, foeID, x, y)
 {
 	mActionMap[A_RED_MOVE] = (GASOFctr) &CRoboRed::processMoving;
 	mActionMap[A_RED_PAUSE] = (GASOFctr) &CRoboRed::processPauseBeforeShoot;

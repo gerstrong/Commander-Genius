@@ -16,8 +16,8 @@ const int TILE_EXTENDING_PLATFORM = 270;
 
 const int PLAT_EXTEND_RATE = 3;
 
-CBridges::CBridges(CMap *pmap, Uint32 x, Uint32 y, Uint32 platx, Uint32 platy):
-CVorticonSpriteObject(pmap, x, y, OBJ_BRIDGE),
+CBridges::CBridges(std::shared_ptr<CMap> pMap, Uint32 x, Uint32 y, Uint32 platx, Uint32 platy):
+CVorticonSpriteObject(pMap, x, y, OBJ_BRIDGE),
 m_state(EXTEND),
 m_platx(platx),
 m_platy(platy),

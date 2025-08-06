@@ -17,7 +17,7 @@ unsigned int rnd(void);
 class CIceCannon : public CVorticonSpriteObject
 {
 public:
-	CIceCannon(CMap *p_map, Uint32 x, Uint32 y,
+	CIceCannon(std::shared_ptr<CMap> p_map, Uint32 x, Uint32 y,
 			int vector_x, int vector_y );
 	bool isNearby(CSpriteObject &theObject);
 	void process();
@@ -31,7 +31,7 @@ private:
 class CIceChunk : public CVorticonSpriteObject
 {
 public:
-	CIceChunk(CMap *p_map, Uint32 x, Uint32 y, Uint32 vx, Uint32 vy);
+	CIceChunk(std::shared_ptr<CMap> p_map, Uint32 x, Uint32 y, Uint32 vx, Uint32 vy);
 	void getTouchedBy(CSpriteObject &theObject);
 	void process();
 	bool isNearby(CSpriteObject &theObject);
@@ -45,7 +45,7 @@ private:
 class CIceBit : public CVorticonSpriteObject
 {
 public:
-	CIceBit(CMap *p_map, Uint32 x, Uint32 y, Uint32 vec_x, Uint32 vec_y);
+	CIceBit(std::shared_ptr<CMap> p_map, Uint32 x, Uint32 y, Uint32 vec_x, Uint32 vec_y);
 	void process();
 
 	int vector_x, vector_y;

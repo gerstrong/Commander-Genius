@@ -19,7 +19,7 @@ namespace galaxy {
 class CSpindred : public CStunnable
 {
 public:
-	CSpindred(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y);
+	CSpindred(std::shared_ptr<CMap> pMap, const Uint16 foeID, const Uint32 x, const Uint32 y);
 
 	void process();
 

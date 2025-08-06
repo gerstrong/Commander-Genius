@@ -148,7 +148,7 @@ namespace galaxy
          * \description Basic Constructor. An Object always need the pointer to the Map of the level,
          * 				Coordinates as also the type of the Object
          */
-    CPlayerBase(CMap *pmap,
+    CPlayerBase(std::shared_ptr<CMap> pMap,
                 const Uint16 foeID,
                 Uint32 x,
                 Uint32 y,

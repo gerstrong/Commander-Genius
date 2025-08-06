@@ -17,7 +17,7 @@ ROPE_IDLE, ROPE_DROPSTONE
 class CRope : public CVorticonSpriteObject
 {
 public:
-	CRope(CMap *p_map, Uint32 x, Uint32 y);
+	CRope(std::shared_ptr<CMap> p_map, Uint32 x, Uint32 y);
 	void process();
 	void getShotByRay(object_t &obj_type);
 	void rope_movestone();

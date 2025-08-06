@@ -30,7 +30,7 @@ namespace galaxy
 class CInchWorm: public CGalaxySpriteObject
 {
 public:
-	CInchWorm(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y);
+	CInchWorm(std::shared_ptr<CMap> pMap, const Uint16 foeID, const Uint32 x, const Uint32 y);
 
 	bool isNearby(CSpriteObject &theObject);
 

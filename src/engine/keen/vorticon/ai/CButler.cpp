@@ -3,8 +3,8 @@
 #include "graphics/GsGraphics.h"
 #include "engine/core/CBehaviorEngine.h"
 
-CButler::CButler(CMap *pmap, Uint32 x, Uint32 y) :
-CVorticonSpriteObject(pmap, x, y, OBJ_BUTLER),
+CButler::CButler(std::shared_ptr<CMap> pMap, Uint32 x, Uint32 y) :
+CVorticonSpriteObject(pMap, x, y, OBJ_BUTLER),
 timer(0),
 animtimer(0),
 frame(0)

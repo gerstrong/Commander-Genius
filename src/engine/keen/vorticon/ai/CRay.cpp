@@ -9,10 +9,10 @@
 
 #define Sprite gGraphics.Sprite
 
-CRay::CRay(CMap *p_map, Uint32 x, Uint32 y,
-        direction_t hdir, direction_t vdir, const int spriteVar,
-        object_t byType, size_t byID,
-        size_t speed) :
+CRay::CRay(std::shared_ptr<CMap> p_map, Uint32 x, Uint32 y,
+           direction_t hdir, direction_t vdir, const int spriteVar,
+           object_t byType, size_t byID,
+           size_t speed) :
 CVorticonSpriteObject(p_map, x, y, OBJ_RAY, spriteVar),
 m_HorDir(hdir),
 m_VertDir(vdir),

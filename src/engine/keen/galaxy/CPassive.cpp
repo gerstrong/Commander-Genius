@@ -129,6 +129,8 @@ bool CPassiveGalaxy::init()
     const auto &storyText = gBehaviorEngine.getString("STORY_TEXT");
     mStoryTextVector = explode(storyText, "\n");
 
+    Scene::init();
+
     return true;
 }
 
@@ -137,6 +139,12 @@ bool CPassiveGalaxy::init()
 void CPassiveGalaxy::ponder(const float deltaT)
 {
     (void) deltaT;
+
+    if(needInit())
+    {
+        init();
+        return;
+    }
 
     if(gEffectController.runningEffect())
        return;

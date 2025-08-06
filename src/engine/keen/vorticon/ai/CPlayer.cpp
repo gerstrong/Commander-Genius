@@ -24,8 +24,8 @@
 // Initialization Part
 ///
 CPlayer::CPlayer(bool *mpLevelCompleted,
-                 CMap &map, const int sprVar) :
-CVorticonSpriteObject(&map, 0, 0, OBJ_PLAYER, sprVar),
+                 std::shared_ptr<CMap> map, const int sprVar) :
+CVorticonSpriteObject(map, 0, 0, OBJ_PLAYER, sprVar),
 pjumpupspeed_decrease(gBehaviorEngine.getPhysicsSettings().player.defaultjumpupdecreasespeed),
 mp_levels_completed(mpLevelCompleted)
 {
@@ -113,7 +113,7 @@ void CPlayer::setupCameraObject()
 void CPlayer::setDatatoZero()
 {
     // When worldmap is set up, use that frame
-    mSpriteIdx = PMAPDOWNFRAME;
+    mSpriteIdx = pMapDOWNFRAME;
 
     performCollisions();
 

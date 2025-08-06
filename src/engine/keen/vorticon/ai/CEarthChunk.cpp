@@ -9,8 +9,8 @@
 #define HALFCHUNKSPD    (CHUNKSPD/2)
 #define BIGCHUNKSPD     16
 
-CEarthChunk::CEarthChunk(CMap *pmap, Uint32 x, Uint32 y):
-CVorticonSpriteObject(pmap,x,y,OBJ_EARTHCHUNK)
+CEarthChunk::CEarthChunk(std::shared_ptr<CMap> pMap, Uint32 x, Uint32 y):
+CVorticonSpriteObject(pMap,x,y,OBJ_EARTHCHUNK)
 {
 	inhibitfall = true;
 	onscreen = true;

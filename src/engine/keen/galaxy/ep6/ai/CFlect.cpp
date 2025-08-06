@@ -18,8 +18,8 @@ enum FLECTACTIONS
 constexpr int WALK_SPEED = 30;
   
   
-CFlect::CFlect(CMap* pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
-CStunnable(pmap, foeID, x, y)
+CFlect::CFlect(std::shared_ptr<CMap> pMap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
+CStunnable(pMap, foeID, x, y)
 {
 	mActionMap[A_FLECT_TURN] = (GASOFctr) &CFlect::processWalking;
 	mActionMap[A_FLECT_WALK] = (GASOFctr) &CFlect::processTurning;

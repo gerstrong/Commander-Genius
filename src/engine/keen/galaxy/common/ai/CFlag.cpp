@@ -27,10 +27,10 @@ enum FLAGACTIONS
 //const Uint16 ANIMATION_TIME = 8;
 
 
-CFlag::CFlag(CMap *pmap, const GsVec2D<Uint32> &Location,
+CFlag::CFlag(std::shared_ptr<CMap> pMap, const GsVec2D<Uint32> &Location,
             const GsVec2D<Uint32> &dest,
             const int sprVar, bool newAction, const bool canLock ) :
-CGalaxySpriteObject(pmap, FOE_ID, Location.x, Location.y, sprVar),
+CGalaxySpriteObject(pMap, FOE_ID, Location.x, Location.y, sprVar),
 m_destination(dest)
 {
 	solid = false;

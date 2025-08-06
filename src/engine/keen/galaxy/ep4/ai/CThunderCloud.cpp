@@ -26,8 +26,8 @@ constexpr int STRIKE_TIME = 120;
 constexpr int TIME_TO_STRIKE_1 = 30;
 constexpr int TIME_TO_STRIKE_2 = 90;
 
-CThunderCloud::CThunderCloud(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y, const int sprVar) :
-CGalaxySpriteObject(pmap, foeID, x, y, sprVar)
+CThunderCloud::CThunderCloud(std::shared_ptr<CMap> pMap, const Uint16 foeID, Uint32 x, Uint32 y, const int sprVar) :
+CGalaxySpriteObject(pMap, foeID, x, y, sprVar)
 {
 	mActionMap[A_CLOUD_ASLEEP] = &CThunderCloud::processAsleep;
 	mActionMap[A_CLOUD_WAKING] = &CThunderCloud::processWaking;
@@ -179,8 +179,8 @@ void CThunderCloud::process()
  */
 const int A_LIGHTNING_STRIKE = 0;
 
-CThunderBolt::CThunderBolt(CMap *pmap, Uint32 x, Uint32 y, const int sprVar) :
-CGalaxySpriteObject(pmap, 0, x, y, sprVar)
+CThunderBolt::CThunderBolt(std::shared_ptr<CMap> pMap, Uint32 x, Uint32 y, const int sprVar) :
+CGalaxySpriteObject(pMap, 0, x, y, sprVar)
 {
 	setupGalaxyObjectOnMap(0x2A44, A_LIGHTNING_STRIKE);
 	inhibitfall = false;

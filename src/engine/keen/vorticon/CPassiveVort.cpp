@@ -13,7 +13,7 @@
 #include <base/video/CVideoDriver.h>
 #include <base/CInput.h>
 #include <engine/core/GameEngine.h>
-#include <engine/core/mode/CGameMode.h>
+#include <engine/core/mode/Scene.h>
 #include <engine/core/VGamepads/vgamepadsimple.h>
 
 namespace vorticon
@@ -47,7 +47,7 @@ bool CPassiveVort::init()
         MapLoader.load( m_Episode, 90, m_DataDirectory);
         mpMap->gotoPos( 32, 32 ); // Coordinates of title screen
         mpMap->drawAll();
-        mpTitleScreen.reset( new Title( *mpMap.get() ) );
+        mpTitleScreen.reset( new Title( mpMap ) );
         mpTitleScreen->init(m_Episode);
     }
     else if( m_mode == DEMO )
@@ -92,8 +92,15 @@ void CPassiveVort::redrawMap()
     mpMap->drawAll();
 }
 
-void CPassiveVort::ponder(const float)
+void CPassiveVort::ponder(const float deltaT)
 {
+    CPassive::ponder(deltaT);
+    _ponder(deltaT);
+}
+
+void CPassiveVort::_ponder(const float)
+{
+
     if(!mBackToGameLauncher)
     {
         // Modes. We have three: Intro, Main-tile and Demos. We could add more.
@@ -133,6 +140,9 @@ void CPassiveVort::ponder(const float)
 
 void CPassiveVort::render()
 {
+    if(!mpMap)
+        return;
+
     // Process Drawing related stuff
     // Animate the tiles
     mpMap->animateAllTiles();

@@ -15,7 +15,7 @@ namespace galaxy {
 class CPlatformHorizontal : public CPlatform
 {
 public:
-	CPlatformHorizontal(CMap *pmap, const Uint16 foeID, 
+	CPlatformHorizontal(std::shared_ptr<CMap> pMap, const Uint16 foeID, 
 			    const direction_t xDir, Uint32 x, Uint32 y,
                 const int actionOffset, const int sprVar );
 

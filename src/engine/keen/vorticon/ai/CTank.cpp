@@ -6,7 +6,7 @@
 
 #include "fileio/KeenFiles.h"
 
-CTank::CTank(CMap *p_map, Uint32 x, Uint32 y, object_t objtype) :
+CTank::CTank(std::shared_ptr<CMap> p_map, Uint32 x, Uint32 y, object_t objtype) :
 CVorticonSpriteObject(p_map, x, y, objtype, 0)
 {
 	m_type = OBJ_TANK;

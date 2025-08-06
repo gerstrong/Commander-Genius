@@ -16,7 +16,7 @@ namespace galaxy {
 class CBerkeloid : public CGalaxySpriteObject
 {
 public:
-	CBerkeloid(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y);
+	CBerkeloid(std::shared_ptr<CMap> pMap, const Uint16 foeID, Uint32 x, Uint32 y);
 
 	// When something touches the firing guy
     void getTouchedBy(CSpriteObject &theObject) override;
@@ -52,7 +52,7 @@ private:
 class CBerkFlame : public CGalaxySpriteObject
 {
 public:
-	CBerkFlame(CMap *pmap, Uint32 x, Uint32 y, const int xDir);
+	CBerkFlame(std::shared_ptr<CMap> pMap, Uint32 x, Uint32 y, const int xDir);
 
 	void setActionForce(const size_t ActionNumber);
 

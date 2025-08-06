@@ -19,7 +19,7 @@ namespace galaxy {
 class CSlicestar : public CStunnable
 {
 public:
-	CSlicestar(CMap *pmap, const Uint16 foeID, 
+	CSlicestar(std::shared_ptr<CMap> pMap, const Uint16 foeID, 
 		       const Uint32 x, const Uint32 y, 
 		       const bool useBlocker, direction_t horDir, 
 		       direction_t verDir);

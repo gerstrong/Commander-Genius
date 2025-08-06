@@ -13,7 +13,7 @@
 #define GOTPOINTS_SPEED         16
 #define GOTPOINTS_LIFETIME      25
 
-CRisingPoints::CRisingPoints(CMap *p_map, Uint32 x, Uint32 y) :
+CRisingPoints::CRisingPoints(std::shared_ptr<CMap> p_map, Uint32 x, Uint32 y) :
 CVorticonSpriteObject(p_map, x, y, OBJ_GOTPOINTS)
 {
 	offscreentime = GOTPOINTS_LIFETIME;

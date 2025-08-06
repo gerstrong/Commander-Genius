@@ -27,8 +27,8 @@ A_ROPE_THROWN = 1
 constexpr int THROW_TIME = 10;
 
 
-CRope::CRope(CMap* pmap, Uint32 x, Uint32 y) :
-CGalaxyActionSpriteObject(pmap, FOE_ID, x, y, 0),
+CRope::CRope(std::shared_ptr<CMap> pMap, Uint32 x, Uint32 y) :
+CGalaxyActionSpriteObject(pMap, FOE_ID, x, y, 0),
 mTimer(0)
 {
     mActionMap[A_ROPE_ACTIVE] = (void (CGalaxyActionSpriteObject::*)()) &CRope::processActive;

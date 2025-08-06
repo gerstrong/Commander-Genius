@@ -2,7 +2,7 @@
 #include <base/audio/Audio.h>
 #include "graphics/GsGraphics.h"
 
-CFoob::CFoob(CMap *p_map, const int x, const int y):
+CFoob::CFoob(std::shared_ptr<CMap> p_map, const int x, const int y):
 CVorticonSpriteObject(p_map,x,y, OBJ_FOOB),
 onsamelevel(false)
 {

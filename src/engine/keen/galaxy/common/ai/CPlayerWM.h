@@ -41,7 +41,7 @@ namespace galaxy {
 class CPlayerWM : public CPlayerBase
 {
 public:
-    CPlayerWM(CMap *pmap,
+    CPlayerWM(std::shared_ptr<CMap> pMap,
             const Uint16 foeID,
             Uint32 x,
             Uint32 y,

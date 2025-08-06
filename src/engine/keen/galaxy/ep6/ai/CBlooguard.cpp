@@ -19,8 +19,8 @@ constexpr int WALK_SPEED = 30;
 constexpr int CSF_DISTANCE_TO_CLUB = 6<<CSF;
 constexpr int TIME_UNTIL_CLUB = 38;
 
-CBlooguard::CBlooguard(CMap* pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
-CStunnable(pmap, foeID, x, y),
+CBlooguard::CBlooguard(std::shared_ptr<CMap> pMap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
+CStunnable(pMap, foeID, x, y),
 mHealth(3),
 mTimer(0),
 mGoodClubChance(false),

@@ -35,7 +35,7 @@ void CMapPlayGalaxy::setActive(const bool value)
 
     if(mActive)
     {
-        mMap.drawAll();
+        mpMap->drawAll();
 
         /*const auto scroll = mMap.getMainScrollCoords();
         gVideoDriver.updateScrollBuffer( scroll.x, scroll.y );*/
@@ -74,12 +74,12 @@ void CMapPlayGalaxy::pumpEvent(const std::shared_ptr<CEvent> &evPtr)
         {
             for( int y=-1 ; y<2 ; y++ )
             {
-                std::shared_ptr<CGalaxySpriteObject> smoke(new galaxy::CSmokePuff( &mMap, posX+(x<<CSF), posY+(y<<CSF), 0 ));
+                std::shared_ptr<CGalaxySpriteObject> smoke(new galaxy::CSmokePuff( mpMap, posX+(x<<CSF), posY+(y<<CSF), 0 ));
                 mObjectPtr.push_back( smoke );
             }
         }
 
-        std::shared_ptr<CGalaxySpriteObject> foot(new galaxy::CFoot( &mMap, ev->foeID, 0x2EF4, posX, posY));
+        std::shared_ptr<CGalaxySpriteObject> foot(new galaxy::CFoot( mpMap, ev->foeID, 0x2EF4, posX, posY));
         mObjectPtr.push_back( foot );
     }
     else if( const auto moveBut = std::dynamic_pointer_cast<const EventMoveAllPlayersBut>(evPtr) )
@@ -216,14 +216,14 @@ void CMapPlayGalaxy::ponderBase(const float deltaT)
     }
 
     // Animate the tiles of the map
-    mMap.m_animation_enabled = !oneInvOpen;
+    mpMap->m_animation_enabled = !oneInvOpen;
 
     if(mMsgBoxOpen)
     {
-        mMap.m_animation_enabled = true;
+        mpMap->m_animation_enabled = true;
     }
 
-    mMap.animateAllTiles();
+    mpMap->animateAllTiles();
 
     if(!oneInvOpen && !mMsgBoxOpen)
     {
@@ -329,10 +329,10 @@ void CMapPlayGalaxy::render()
     }
 
     // RenderShake Effect
-    mMap.renderShaking();
+    mpMap->renderShaking();
 
     // Draw foregroundtiles here!
-    mMap._drawForegroundTiles();
+    mpMap->_drawForegroundTiles();
 
     for( auto obj=mObjectPtr.rbegin() ;
          obj!=mObjectPtr.rend() ; obj++ )
@@ -358,7 +358,7 @@ void CMapPlayGalaxy::render()
 
 void CMapPlayGalaxy::operator>>(CSaveGameController &savedGame)
 {
-    const Uint16 level = mMap.getLevel();
+    const Uint16 level = mpMap->getLevel();
     savedGame.encodeData( level );
 
     std::vector< std::shared_ptr<CGalaxySpriteObject> > filteredObjects;
@@ -407,14 +407,14 @@ void CMapPlayGalaxy::operator>>(CSaveGameController &savedGame)
     }
 
     // Save the map_data as it is left
-    savedGame.encodeData(mMap.m_width);
-    savedGame.encodeData(mMap.m_height);
+    savedGame.encodeData(mpMap->m_width);
+    savedGame.encodeData(mpMap->m_height);
 
-    const Uint32 mapSize = mMap.m_width*mMap.m_height*sizeof(word);
+    const Uint32 mapSize = mpMap->m_width*mpMap->m_height*sizeof(word);
 
-    savedGame.addData( reinterpret_cast<gs_byte*>(mMap.getBackgroundData()), mapSize );
-    savedGame.addData( reinterpret_cast<gs_byte*>(mMap.getForegroundData()), mapSize );
-    savedGame.addData( reinterpret_cast<gs_byte*>(mMap.getInfoData()), mapSize );
+    savedGame.addData( reinterpret_cast<gs_byte*>(mpMap->getBackgroundData()), mapSize );
+    savedGame.addData( reinterpret_cast<gs_byte*>(mpMap->getForegroundData()), mapSize );
+    savedGame.addData( reinterpret_cast<gs_byte*>(mpMap->getInfoData()), mapSize );
 }
 
 
@@ -447,7 +447,7 @@ bool CMapPlayGalaxy::operator<<(CSaveGameController &savedGame)
     }
 
     // Load the World map level.
-    mapLoader->loadMap( mMap, level );
+    mapLoader->loadMap( mpMap, level );
 
     // Load the Background Music
     gMusicPlayer.stop();
@@ -475,8 +475,8 @@ bool CMapPlayGalaxy::operator<<(CSaveGameController &savedGame)
     if(!mObjectPtr.empty())
         mObjectPtr.clear();
 
-    mMap.mNumFuses = 0;
-    mMap.mFuseInLevel = false;
+    mpMap->mNumFuses = 0;
+    mpMap->mFuseInLevel = false;
 
     for( Uint32 i=0 ; i<size ; i++ )
     {
@@ -484,12 +484,12 @@ bool CMapPlayGalaxy::operator<<(CSaveGameController &savedGame)
         savedGame.decodeData(x);
         savedGame.decodeData(y);
 
-        CGalaxySpriteObject *pNewfoe = mapLoader->addFoe(mMap, foeID, x, y);
+        CGalaxySpriteObject *pNewfoe = mapLoader->addFoe(mpMap, foeID, x, y);
 
         // TODO: Be careful here is a bad Null Pointer inside that structure
         if(pNewfoe == nullptr)
         {
-            pNewfoe = new CGalaxySpriteObject(&mMap, foeID, x, y, 0);
+            pNewfoe = new CGalaxySpriteObject(mpMap, foeID, x, y, 0);
         }
 
         savedGame.decodeData( pNewfoe->mIsDead );
@@ -520,16 +520,16 @@ bool CMapPlayGalaxy::operator<<(CSaveGameController &savedGame)
     }
 
     // Save the map_data as it is left
-    savedGame.decodeData(mMap.m_width);
-    savedGame.decodeData(mMap.m_height);
+    savedGame.decodeData(mpMap->m_width);
+    savedGame.decodeData(mpMap->m_height);
 
-    savedGame.readDataBlock( reinterpret_cast<gs_byte*>(mMap.getBackgroundData()) );
-    savedGame.readDataBlock( reinterpret_cast<gs_byte*>(mMap.getForegroundData()) );
-    savedGame.readDataBlock( reinterpret_cast<gs_byte*>(mMap.getInfoData()) );
+    savedGame.readDataBlock( reinterpret_cast<gs_byte*>(mpMap->getBackgroundData()) );
+    savedGame.readDataBlock( reinterpret_cast<gs_byte*>(mpMap->getForegroundData()) );
+    savedGame.readDataBlock( reinterpret_cast<gs_byte*>(mpMap->getInfoData()) );
 
-    if( mMap.m_width * mMap.m_height > 0 )
+    if( mpMap->m_width * mpMap->m_height > 0 )
     {
-        mMap.drawAll();
+        mpMap->drawAll();
     }
 
     return true;
@@ -540,7 +540,7 @@ bool CMapPlayGalaxy::operator<<(CSaveGameController &savedGame)
 void CMapPlayGalaxy::operator>>(GsKit::ptree &levelNode)
 {
     // Coding here
-    const Uint16 level = mMap.getLevel();
+    const Uint16 level = mpMap->getLevel();
     levelNode.put("level", level);
 
     std::vector< std::shared_ptr<CGalaxySpriteObject> > filteredObjects;
@@ -595,14 +595,14 @@ void CMapPlayGalaxy::operator>>(GsKit::ptree &levelNode)
     // Save the map_data as it is left
     {
         auto &mapNode = levelNode.put("Map", "");
-        mapNode.put("width", mMap.m_width);
-        mapNode.put("height", mMap.m_height);
+        mapNode.put("width", mpMap->m_width);
+        mapNode.put("height", mpMap->m_height);
 
-        const Uint32 mapSize = mMap.m_width*mMap.m_height*sizeof(word);
+        const Uint32 mapSize = mpMap->m_width*mpMap->m_height*sizeof(word);
 
-        const std::string b64textBG   = base64Encode( reinterpret_cast<gs_byte*>(mMap.getBackgroundData()), mapSize);
-        const std::string b64textFG   = base64Encode( reinterpret_cast<gs_byte*>(mMap.getForegroundData()), mapSize);
-        const std::string b64textInfo = base64Encode( reinterpret_cast<gs_byte*>(mMap.getInfoData()), mapSize);
+        const std::string b64textBG   = base64Encode( reinterpret_cast<gs_byte*>(mpMap->getBackgroundData()), mapSize);
+        const std::string b64textFG   = base64Encode( reinterpret_cast<gs_byte*>(mpMap->getForegroundData()), mapSize);
+        const std::string b64textInfo = base64Encode( reinterpret_cast<gs_byte*>(mpMap->getInfoData()), mapSize);
 
         mapNode.put("bgdata", b64textBG);
         mapNode.put("fgdata", b64textFG);
@@ -637,7 +637,7 @@ void CMapPlayGalaxy::operator<<(GsKit::ptree &levelNode)
     }
 
     // Load the World map level.
-    mapLoader->loadMap( mMap, level );
+    mapLoader->loadMap( mpMap, level );
 
     gMusicPlayer.stop();
 
@@ -662,8 +662,8 @@ void CMapPlayGalaxy::operator<<(GsKit::ptree &levelNode)
 
     mapLoader->resetNumLoadedPlayers();
 
-    mMap.mNumFuses = 0;
-    mMap.mFuseInLevel = false;
+    mpMap->mNumFuses = 0;
+    mpMap->mFuseInLevel = false;
 
     gLogging << "Restoring enemies status." << CLogFile::endl;
 
@@ -686,12 +686,12 @@ void CMapPlayGalaxy::operator<<(GsKit::ptree &levelNode)
                 continue;
             }
 
-            CGalaxySpriteObject *pNewfoe = mapLoader->addFoe(mMap, foeID, x, y);
+            CGalaxySpriteObject *pNewfoe = mapLoader->addFoe(mpMap, foeID, x, y);
 
             // TODO: Be careful here is a bad Null Pointer inside that structure
             if(pNewfoe == nullptr)
             {
-                pNewfoe = new CGalaxySpriteObject(&mMap, foeID, x, y, sprVarID);
+                pNewfoe = new CGalaxySpriteObject(mpMap, foeID, x, y, sprVarID);
             }
 
             pNewfoe->mIsDead = spriteNode.get<bool>("dead", false);
@@ -732,24 +732,24 @@ void CMapPlayGalaxy::operator<<(GsKit::ptree &levelNode)
     // Save the map_data as it is left
     {
         auto &mapNode = levelNode.get_child("Map");
-        mMap.m_width = mapNode.get<int>("width");
-        mMap.m_height = mapNode.get<int>("height");        
+        mpMap->m_width = mapNode.get<int>("width");
+        mpMap->m_height = mapNode.get<int>("height");
 
         const std::string b64textBG   = mapNode.get<std::string>("bgdata");
         const std::string b64textFG   = mapNode.get<std::string>("fgdata");
         const std::string b64textInfo = mapNode.get<std::string>("infodata");
 
         base64Decode(reinterpret_cast<gs_byte*>
-                     (mMap.getBackgroundData()), b64textBG);
+                     (mpMap->getBackgroundData()), b64textBG);
         base64Decode(reinterpret_cast<gs_byte*>
-                     (mMap.getForegroundData()), b64textFG);
+                     (mpMap->getForegroundData()), b64textFG);
         base64Decode(reinterpret_cast<gs_byte*>
-                     (mMap.getInfoData()), b64textInfo);
+                     (mpMap->getInfoData()), b64textInfo);
     }
 
-    if( mMap.m_width * mMap.m_height > 0 )
+    if( mpMap->m_width * mpMap->m_height > 0 )
     {
-        mMap.drawAll();
+        mpMap->drawAll();
     }
 }
 

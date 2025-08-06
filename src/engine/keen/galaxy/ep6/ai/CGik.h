@@ -10,7 +10,7 @@ namespace galaxy
 class CGik : public CGalaxyActionSpriteObject
 {
 public:
-    CGik(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y);
+    CGik(std::shared_ptr<CMap> pMap, const Uint16 foeID, Uint32 x, Uint32 y);
 
     bool isNearby(CSpriteObject &theObject) override;
 

@@ -21,9 +21,9 @@ size_t bulletActionMap[] =
 namespace galaxy
 {
 
-CBullet::CBullet(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y,
+CBullet::CBullet(std::shared_ptr<CMap> pMap, const Uint16 foeID, const Uint32 x, const Uint32 y,
                  const int xDir, const int yDir, const int sprVar) :
-CGalaxySpriteObject(pmap, foeID, x, y, sprVar),
+CGalaxySpriteObject(pMap, foeID, x, y, sprVar),
 mReversed(false)
 {
     mMustHandleSlope = true;

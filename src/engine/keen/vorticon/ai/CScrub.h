@@ -13,7 +13,7 @@
 class CScrub : public CCarrier
 {
 public:
-	CScrub(CMap *p_map, Uint32 x, Uint32 y);
+	CScrub(std::shared_ptr<CMap> p_map, Uint32 x, Uint32 y);
 	
 	void process();
 

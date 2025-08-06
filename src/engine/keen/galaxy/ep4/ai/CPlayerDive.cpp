@@ -19,7 +19,7 @@ static const bool allowKeenShootUnderWater = false;
 
 const int FIRE_RECHARGE_TIME = 5;
 
-CPlayerDive::CPlayerDive(CMap *pmap,
+CPlayerDive::CPlayerDive(std::shared_ptr<CMap> pMap,
 		const Uint16 foeID,
 		Uint32 x,
 		Uint32 y,
@@ -27,7 +27,7 @@ CPlayerDive::CPlayerDive(CMap *pmap,
         CInventory &l_Inventory,
         const int playerID,
         const int spriteVar) :
-CPlayerBase(pmap, foeID, x, y,
+CPlayerBase(pMap, foeID, x, y,
 		facedir,
 		l_Inventory,        
         playerID, spriteVar),

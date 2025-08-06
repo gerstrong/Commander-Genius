@@ -12,7 +12,7 @@ class CRocket : public CGalaxyActionSpriteObject, public CMoveTarget
 {
     
 public:
-	CRocket(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y);
+	CRocket(std::shared_ptr<CMap> pMap, const Uint16 foeID, const Uint32 x, const Uint32 y);
 
     void deserialize(CSaveGameController &savedGame);
 

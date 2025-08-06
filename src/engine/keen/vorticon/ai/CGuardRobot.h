@@ -17,7 +17,7 @@ unsigned int rnd(void);
 class CGuardRobot : public CVorticonSpriteObject
 {
 public:
-	CGuardRobot(CMap *p_map, Uint32 x, Uint32 y);
+	CGuardRobot(std::shared_ptr<CMap> p_map, Uint32 x, Uint32 y);
 	void process();
 	void guard_fire();
     void getTouchedBy(CSpriteObject &theObject);

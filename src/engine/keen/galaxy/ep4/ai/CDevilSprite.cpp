@@ -24,8 +24,8 @@ const int SPRITE_MOVE_SPEED = 20;
 const int CSF_MIN_DISTANCE_X_TO_LOOK = 10<<CSF;
 const int CSF_MIN_DISTANCE_Y_TO_LOOK = 1<<CSF;
 
-CDevilSprite::CDevilSprite(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
-CGalaxySpriteObject(pmap, foeID, x, y, 0),
+CDevilSprite::CDevilSprite(std::shared_ptr<CMap> pMap, const Uint16 foeID, Uint32 x, Uint32 y) :
+CGalaxySpriteObject(pMap, foeID, x, y, 0),
 m_timer(0)
 {
 	setupGalaxyObjectOnMap(0x37A0, A_SPRITE_MOVE);

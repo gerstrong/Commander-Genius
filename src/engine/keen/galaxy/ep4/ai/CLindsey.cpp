@@ -17,8 +17,8 @@ namespace galaxy {
 const int LINDSEY_MOVE_SPEED = 20;
 //const int LINDSEY_MOVE_TIME = 60;
 
-CLindsey::CLindsey(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
-CGalaxySpriteObject(pmap, foeID, x, y, 0),
+CLindsey::CLindsey(std::shared_ptr<CMap> pMap, const Uint16 foeID, Uint32 x, Uint32 y) :
+CGalaxySpriteObject(pMap, foeID, x, y, 0),
 m_timer(0),
 prepareToVanish(false)
 {

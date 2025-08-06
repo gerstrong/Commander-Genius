@@ -14,7 +14,7 @@
 
 static signed char numlooks;
 
-CYorp::CYorp( CMap *p_map,
+CYorp::CYorp( std::shared_ptr<CMap> p_map,
               const Uint32 x,
               const Uint32 y ) :
 CVorticonSpriteObject(p_map,x,y, OBJ_YORP),

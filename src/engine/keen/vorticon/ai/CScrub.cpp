@@ -26,7 +26,7 @@ enum scrub_actions{
 #define SCRUB_FRY_FRAME       110
 #define SCRUB_DEAD_FRAME      111
 
-CScrub::CScrub(CMap *p_map, Uint32 x, Uint32 y) :
+CScrub::CScrub(std::shared_ptr<CMap> p_map, Uint32 x, Uint32 y) :
 CCarrier(p_map, x, y, OBJ_SCRUB),
 scrubdie_inertia_y(0)
 {

@@ -19,7 +19,7 @@ namespace galaxy {
 class CAmpton : public CStunnable
 {
 public:
-	CAmpton(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y);
+	CAmpton(std::shared_ptr<CMap> pMap, const Uint16 foeID, const Uint32 x, const Uint32 y);
 
 
     bool loadLuaScript(const std::string &scriptBaseName) override;

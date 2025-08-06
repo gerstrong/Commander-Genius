@@ -13,7 +13,7 @@ namespace galaxy
 class CGalaxyActionSpriteObject : public CGalaxySpriteObject
 {
 public:
-    CGalaxyActionSpriteObject(CMap *pmap,
+    CGalaxyActionSpriteObject(std::shared_ptr<CMap> pMap,
                 const Uint16 foeID,
                 Uint32 x,
                 Uint32 y , const int sprVar);

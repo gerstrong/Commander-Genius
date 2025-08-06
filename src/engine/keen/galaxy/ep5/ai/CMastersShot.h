@@ -19,7 +19,7 @@ namespace galaxy {
 class CMastersShot : public CStunnable
 {
 public:
-	CMastersShot(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y);
+	CMastersShot(std::shared_ptr<CMap> pMap, const Uint16 foeID, const Uint32 x, const Uint32 y);
 
 	/**
 	 * Action functions

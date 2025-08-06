@@ -18,7 +18,7 @@ namespace galaxy {
 class CEnemyShot : public CGalaxySpriteObject
 {
 public:
-    CEnemyShot(CMap *pmap,
+    CEnemyShot(std::shared_ptr<CMap> pMap,
                const int foeID,
                const int x, const int y,
                const int actionFormatOffset,

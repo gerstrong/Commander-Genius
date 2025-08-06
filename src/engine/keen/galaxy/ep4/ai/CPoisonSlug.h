@@ -18,7 +18,7 @@ namespace galaxy {
 class CPoisonSlug : public CStunnable
 {
 public:
-	CPoisonSlug(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y);
+	CPoisonSlug(std::shared_ptr<CMap> pMap, const Uint16 foeID, Uint32 x, Uint32 y);
 
 	/**
 	 * When slug is moving normally

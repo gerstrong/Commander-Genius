@@ -18,10 +18,10 @@ const int FIRE_SPRITE_DEMO = 314;
 namespace galaxy
 {
 
-CPlatformVertical::CPlatformVertical(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y,
-                                const direction_t vertdir, const int actionOffset, const int sprVar) :
-CGalaxySpriteObject(pmap, foeID, x, y, sprVar),
-CPlatform(pmap, foeID, x, y),
+CPlatformVertical::CPlatformVertical(std::shared_ptr<CMap> pMap, Uint16 foeID, const Uint32 x, const Uint32 y,
+                                     const direction_t vertdir, const int actionOffset, const int sprVar) :
+CGalaxySpriteObject(pMap, foeID, x, y, sprVar),
+CPlatform(pMap, foeID, x, y),
 drawFire(false),
 dimFire(false),
 m_fireTimer(0)

@@ -61,7 +61,7 @@ public:
         NONE, WORLDMAP, LEVELPLAY
     };
 
-    CPlayer(bool *mpLevelCompleted, CMap &map, const int sprVar);
+    CPlayer(bool *mpLevelCompleted, std::shared_ptr<CMap> map, const int sprVar);
 
     // Copy player Data
     CPlayer(const CPlayer &player);
@@ -70,7 +70,7 @@ public:
     void setupCameraObject();
     void setDatatoZero();
     void setDefaultStartValues();
-    void setMapData(CMap *p_map){ mpMap=p_map; }
+    void setMapData(std::shared_ptr<CMap> pmap){ mpMap=pmap; }
     void setupforLevelPlay();
     bool getLevelTrigger();
 

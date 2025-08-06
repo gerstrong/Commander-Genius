@@ -18,7 +18,7 @@ namespace galaxy {
 class CKorath : public CStunnable
 {
 public:
-	CKorath(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y);
+	CKorath(std::shared_ptr<CMap> pMap, const Uint16 foeID, const Uint32 x, const Uint32 y);
 
 	/**
 	 * Action functions

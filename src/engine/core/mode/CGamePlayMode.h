@@ -8,13 +8,13 @@
 #ifndef CGAMEPLAYMODE_H_
 #define CGAMEPLAYMODE_H_
 
-#include "CGameMode.h"
+#include "Scene.h"
 #include "CPlayGame.h"
 #include "fileio/CSaveGameController.h"
 #include <memory>
 #include <string>
 
-class CGamePlayMode : public CGameMode
+class CGamePlayMode : public Scene
 {
 public:
     CGamePlayMode( const int Episode,

@@ -17,8 +17,8 @@ namespace galaxy {
 
 const int MAX_ANIMATION_TIMER = 20;
 
-CSpriteItem::CSpriteItem(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y, Uint32 sprite, const int sprVar, const bool gravity) :
-CGalaxySpriteObject(pmap, foeID, x, y, sprVar),
+CSpriteItem::CSpriteItem(std::shared_ptr<CMap> pMap, const Uint16 foeID, Uint32 x, Uint32 y, Uint32 sprite, const int sprVar, const bool gravity) :
+CGalaxySpriteObject(pMap, foeID, x, y, sprVar),
 mGravity(gravity)
 {
 	m_basesprite = sprite;
@@ -27,7 +27,7 @@ mGravity(gravity)
 	calcBoundingBoxes();
 	inhibitfall = true;
 	yinertia = -70;
-    pmap->setSpriteOrigin(foeID, GsVec2D<int>(x, y));
+    pMap->setSpriteOrigin(foeID, GsVec2D<int>(x, y));
 }
 
 void CSpriteItem::process()

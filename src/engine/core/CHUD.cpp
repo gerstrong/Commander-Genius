@@ -98,7 +98,7 @@ void CHUD::CreateVorticonBackground()
     headdstrect.y = 11;
 
 
-    mKeenHeadSprite.copy(gGraphics.getSprite(mId,PMAPDOWNFRAME));
+    mKeenHeadSprite.copy(gGraphics.getSprite(mId,pMapDOWNFRAME));
 
     if(mKeenHeadSprite.empty())
         return;

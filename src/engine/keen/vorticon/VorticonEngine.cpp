@@ -217,12 +217,12 @@ void VorticonEngine::switchToPassiveMode()
     gSaveGameController.setGameDirectory(mDataPath);
     gSaveGameController.setEpisode(mEp);
 
-    mpGameMode.reset( new vorticon::CPassiveVort() );
+    mpScene.reset( new vorticon::CPassiveVort() );
 
     if(!setupNativeRes("Vorticon", 2))
         gLogging << "Error loading video settings for Vorticon engine while trying to switch passive." << CLogFile::endl;
 
-    mpGameMode->init();
+    //mpGameMode->init();
 
     mOpenedGamePlay = false;
     gMusicPlayer.stop();
@@ -245,11 +245,11 @@ void VorticonEngine::pumpEvent(const std::shared_ptr<CEvent> &evPtr)
         const GsRect<Uint16> gameRect = gVideoDriver.getVidConfig().mGameRect;
         gVideoDriver.setNativeResolution(gameRect, 2);
 
-        if( auto *playgame = dynamic_cast<CPlayGameVorticon*>(mpGameMode.get()))
+        if( auto *playgame = dynamic_cast<CPlayGameVorticon*>(mpScene.get()))
         {
             playgame->redrawMap();
         }
-        else if( auto *passive = dynamic_cast<vorticon::CPassiveVort*>(mpGameMode.get()))
+        else if( auto *passive = dynamic_cast<vorticon::CPassiveVort*>(mpScene.get()))
         {
             passive->redrawMap();
         }
@@ -277,7 +277,7 @@ void VorticonEngine::pumpEvent(const std::shared_ptr<CEvent> &evPtr)
     else if( const auto pPlayGame = std::dynamic_pointer_cast<const GMSwitchToPlayGameMode>(evPtr) )
     {
         const GMSwitchToPlayGameMode &playGame = *pPlayGame;
-        mpGameMode.reset( new CPlayGameVorticon(playGame.m_startlevel) );
+        mpScene.reset( new CPlayGameVorticon(playGame.m_startlevel) );
 
         if(!gEventManager.empty())
             gEventManager.clear();
@@ -285,26 +285,26 @@ void VorticonEngine::pumpEvent(const std::shared_ptr<CEvent> &evPtr)
         if(!setupNativeRes("Vorticon", 2))
             gLogging << "Error loading video settings for Vorticon engine while opening gameplay." << CLogFile::endl;
 
-        mpGameMode->init();
+        //mpGameMode->init();
         mOpenedGamePlay = true;
         gBehaviorEngine.setPause(false);
         gEventManager.add( new CloseAllMenusEvent() );
     }
     else if( std::dynamic_pointer_cast<const GMSwitchToPassiveMode>(evPtr) )
     {
-        mpGameMode.reset( new vorticon::CPassiveVort() );
+        mpScene.reset( new vorticon::CPassiveVort() );
 
         if(!setupNativeRes("Vorticon", 2))
             gLogging << "Error loading video settings for Vorticon engine while going passive." << CLogFile::endl;
 
-        mpGameMode->init();
+        //mpGameMode->init();
     }
     else if( std::dynamic_pointer_cast<const LoadGameEvent>(evPtr) ) // If GamePlayMode is not running but loading is requested...
     {
         std::unique_ptr<CPlayGameVorticon> pgVort(new CPlayGameVorticon());
         pgVort->init();
         pgVort->loadGame();
-        mpGameMode = std::move(pgVort);
+        mpScene = std::move(pgVort);
         mOpenedGamePlay = true;
         gBehaviorEngine.setPause(false);
         gEventManager.add( new CloseAllMenusEvent() );

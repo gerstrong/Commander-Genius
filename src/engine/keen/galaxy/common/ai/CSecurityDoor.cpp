@@ -2,8 +2,8 @@
 
 constexpr int TIME_FOR_NEXT_FRAME = 25;
 
-CSecurityDoor::CSecurityDoor(CMap* pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
-CGalaxySpriteObject(pmap, foeID, x, y, 0),
+CSecurityDoor::CSecurityDoor(std::shared_ptr<CMap> pMap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
+CGalaxySpriteObject(pMap, foeID, x, y, 0),
 mTimer(0),
 mFrameCount(0)
 {

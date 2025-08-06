@@ -19,7 +19,7 @@ namespace galaxy {
 class CFuse : public CGalaxySpriteObject
 {
 public:
-    CFuse(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y, const int sprVar);
+    CFuse(std::shared_ptr<CMap> pMap, const Uint16 foeID, const Uint32 x, const Uint32 y, const int sprVar);
 
 	void process();
 

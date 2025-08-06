@@ -15,7 +15,7 @@
 
 #include "CPlayGameVorticon.h"
 #include <base/audio/Audio.h>
-#include "engine/core/mode/CGameMode.h"
+#include "engine/core/mode/Scene.h"
 #include "engine/core/menu/MainMenu.h"
 #include "engine/core/VGamepads/vgamepadsimple.h"
 #include "../CVorticonMapLoader.h"
@@ -60,7 +60,7 @@ CPlayGame(startlevel)
 
     const int numPlayers = gBehaviorEngine.numPlayers();
 
-    m_Player.assign( numPlayers, CPlayer(mpLevelCompleted, *mMap.get(), 0) );
+    m_Player.assign( numPlayers, CPlayer(mpLevelCompleted, mMap, 0) );
 
     for(int i=0 ; i<numPlayers ; i++ )
     {
@@ -137,7 +137,7 @@ void CPlayGameVorticon::setupPlayers()
         gGraphics.Palette.setdark(mMap->m_Dark);
 
         // Set the pointers to the map and object data
-        player.setMapData(mMap.get());
+        player.setMapData(mMap);
         player.exists = true;
         player.solid = true;
 
@@ -187,7 +187,7 @@ bool CPlayGameVorticon::init()
     gInput.flushAll();
 
     // Initialize the AI
-    mpObjectAI.reset( new CVorticonSpriteObjectAI(mMap.get(), mSpriteObjectContainer, m_Player,
+    mpObjectAI.reset( new CVorticonSpriteObjectAI(mMap, mSpriteObjectContainer, m_Player,
             numPlayers, m_Episode, m_Level,
             mMap->m_Dark) );
 
@@ -305,8 +305,15 @@ void CPlayGameVorticon::reloadBgMusic()
 ////
 // Process Routine
 ////
+
 void CPlayGameVorticon::ponder(const float deltaT)
 {
+    CPlayGame::ponder(deltaT);
+    _ponder(deltaT);
+}
+
+void CPlayGameVorticon::_ponder(const float deltaT)
+{   
 #ifdef USE_VIRTUALPAD
     VirtualKeenControl *vkc = dynamic_cast<VirtualKeenControl*>(gInput.mpVirtPad.get());
 
@@ -334,7 +341,8 @@ void CPlayGameVorticon::ponder(const float deltaT)
         if(mMessageBoxes.empty() && !StatusScreenOpen())
         {
             // Perform AIs
-            mpObjectAI->process();
+            if(mpObjectAI)
+                mpObjectAI->process();
 
             if( !gBehaviorEngine.paused() )
             {
@@ -347,8 +355,6 @@ void CPlayGameVorticon::ponder(const float deltaT)
               {
                 processInLevel(); // TODO: I think the main loop of that should be here!
               }
-
-
 
               if(m_Player.size() > static_cast<unsigned int>(mCamLead) )
               {
@@ -374,7 +380,7 @@ void CPlayGameVorticon::ponder(const float deltaT)
 
             for(auto &player : m_Player)
             {
-                // Process Players' Events
+                // Process Player Events
                 player.processEvents();
                 if(player.level_done == LEVEL_DONE_WALK)
                 {
@@ -452,7 +458,7 @@ void CPlayGameVorticon::ponder(const float deltaT)
         {
             GsBitmap *pBitmap = gGraphics.getBitmapFromStr(0, "GAMEOVER");
             gAudio.playSound(int(GameSound::GAME_OVER), SoundPlayMode::PLAY_NOW);
-            mpGameoverBmp.reset( new CEGABitmap( mMap.get() , gVideoDriver.getBlitSurface(), pBitmap) );
+            mpGameoverBmp.reset( new CEGABitmap( mMap , gVideoDriver.getBlitSurface(), pBitmap) );
 
             GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
 
@@ -717,11 +723,11 @@ void CPlayGameVorticon::teleportPlayerFromLevel(CPlayer &player, int origx, int 
     int destx, desty;
 
     std::unique_ptr<CTeleporter> teleporter(
-                new CTeleporter(mMap.get(),
+                new CTeleporter(mMap,
                                 m_Player,
                                 Uint32(origx),
-                                Uint32(origy))
-                );
+                                Uint32(origy)) );
+
     player.beingteleported = true;
     player.solid = false;
     destx = gBehaviorEngine.getTeleporterTableAt(5).x;

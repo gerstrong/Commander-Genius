@@ -35,6 +35,11 @@ CPassive::~CPassive()
 #endif
 }
 
+void CPassive::ponder(const float deltaT)
+{
+    Scene::ponder(deltaT);
+}
+
 void CPassive::pumpEvent(const std::shared_ptr<CEvent> &evPtr)
 {
     if( std::dynamic_pointer_cast<const GMSwitchToGameLauncher>(evPtr) )

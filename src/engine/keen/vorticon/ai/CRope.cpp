@@ -10,7 +10,7 @@
 
 #define STONE_DROP_RATE      6
 
-CRope::CRope(CMap *p_map, Uint32 x, Uint32 y) :
+CRope::CRope(std::shared_ptr<CMap> p_map, Uint32 x, Uint32 y) :
 CVorticonSpriteObject(p_map, x, y, OBJ_ROPE)
 {
 	state = ROPE_IDLE;

@@ -38,8 +38,8 @@ const int CSF_DISTANCE_TO_JUMP = 10<<CSF;
 const int GIK_JUMP_SPEED = 100;
 const int GIK_SILDE_TIME = 100;
 
-CGik::CGik(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
-CGalaxyActionSpriteObject(pmap, foeID, x, y, 0)
+CGik::CGik(std::shared_ptr<CMap> pMap, const Uint16 foeID, Uint32 x, Uint32 y) :
+CGalaxyActionSpriteObject(pMap, foeID, x, y, 0)
 {
     mActionMap[A_GIK_WALK]  = static_cast<GASOFctr>(&CGik::processWalk);
     mActionMap[A_GIK_JUMP]  = static_cast<GASOFctr>(&CGik::processJump);

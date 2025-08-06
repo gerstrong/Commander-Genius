@@ -3,8 +3,8 @@
 
 #include <graphics/GsGraphics.h>
 
-CCarrier::CCarrier(CMap* pmap, Uint32 x, Uint32 y, object_t type) : 
-CVorticonSpriteObject(pmap, x, y, type, 0)
+CCarrier::CCarrier(std::shared_ptr<CMap> pMap, Uint32 x, Uint32 y, object_t type) : 
+CVorticonSpriteObject(pMap, x, y, type, 0)
 {}
 
 void CCarrier::getTouchedBy(CSpriteObject& theObject)

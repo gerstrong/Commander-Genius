@@ -31,7 +31,7 @@ const int TIME_TO_WAVE = 400;
 
 namespace galaxy {
 
-CPlayerWM::CPlayerWM(CMap *pmap,
+CPlayerWM::CPlayerWM(std::shared_ptr<CMap> pMap,
         const Uint16 foeID,
         Uint32 x,
         Uint32 y,
@@ -39,7 +39,7 @@ CPlayerWM::CPlayerWM(CMap *pmap,
         const unsigned int actionoffset,
         const int playerIdx,
         const int spriteTableIdx):
-CPlayerBase(pmap, foeID, x, y,
+CPlayerBase(pMap, foeID, x, y,
             LEFT,
             l_Inventory,
             playerIdx,

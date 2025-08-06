@@ -13,7 +13,7 @@ PLATVERT_MOVE, PLATVERT_WAIT
 
 #define PLATVERTPUSHAMOUNT      10
 
-CPlatformVert::CPlatformVert(CMap *p_map, Uint32 x, Uint32 y) :
+CPlatformVert::CPlatformVert(std::shared_ptr<CMap> p_map, Uint32 x, Uint32 y) :
 CPlatform(p_map, x, y)
 {
 	animframe = 0;

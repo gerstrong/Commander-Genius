@@ -4,7 +4,7 @@
 #include <base/GsApp.h>
 #include <base/GsEventContainer.h>
 
-#include "engine/core/mode/CGameMode.h"
+#include "engine/core/mode/Scene.h"
 #include "engine/core/CBehaviorEngine.h"
 #include "engine/CGameLauncher.h"
 

@@ -29,9 +29,10 @@ public:
 	/**
 	 * @brief	Loads a foe given by the coordiantes
 	 */
-	CGalaxySpriteObject* addFoe(CMap &Map, word foe, size_t x, size_t y);
+    CGalaxySpriteObject* addFoe(std::shared_ptr<CMap> map,
+                                word foe, const size_t x, const size_t y);
 };
 
-};
+}
 
 #endif /* CMAPLOADERGALAXYEP4_H_ */

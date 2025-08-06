@@ -42,8 +42,8 @@ constexpr int TIME_UNTIL_TELEPORTED = 50;
 
 
   
-CShikadiMaster::CShikadiMaster(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
-CStunnable(pmap, foeID, x, y)
+CShikadiMaster::CShikadiMaster(std::shared_ptr<CMap> pMap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
+CStunnable(pMap, foeID, x, y)
 {  
     mActionMap[A_MASTER_STAND] = (GASOFctr) &CShikadiMaster::processStanding;
     mActionMap[A_MASTER_SHOOT] = (GASOFctr) &CShikadiMaster::processShooting;

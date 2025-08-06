@@ -16,9 +16,9 @@ A_BLOOGLET_STUNNED = 4
 constexpr int RUN_SPEED = 45;
 
 
-CBlooglet::CBlooglet(CMap *pmap, const Uint16 foeID, const int actionOff, const bool carriesGem,
+CBlooglet::CBlooglet(std::shared_ptr<CMap> pMap, const Uint16 foeID, const int actionOff, const bool carriesGem,
 		     const Uint32 x, const Uint32 y) :
-CStunnable(pmap, foeID, x, y),
+CStunnable(pMap, foeID, x, y),
 mCarriesGem(carriesGem)
 {
 	mActionMap[A_BLOOGLET_RUN] = (GASOFctr) &CBlooglet::processRunning;

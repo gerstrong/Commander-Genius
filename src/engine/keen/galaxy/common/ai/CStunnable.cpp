@@ -27,10 +27,10 @@ namespace galaxy
 
 const unsigned int STARRING_ANIMATION_TIME = 5;
 
-CStunnable::CStunnable(	CMap *pmap,
+CStunnable::CStunnable(	std::shared_ptr<CMap> pMap,
                         const Uint16 foeID,
                         Uint32 x, Uint32 y ) :
-    CGalaxyActionSpriteObject( pmap, foeID, x, y, 0 ),
+    CGalaxyActionSpriteObject( pMap, foeID, x, y, 0 ),
     m_stunned(false),
     m_animation_timer(0),
     starTimer(TIME_STAR_SHOWN)

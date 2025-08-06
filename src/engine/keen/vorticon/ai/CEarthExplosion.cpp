@@ -7,7 +7,7 @@
 
 #include "CEarthExplosion.h"
 
-CEarthExplosion::CEarthExplosion(CMap *p_map, Uint32 x, Uint32 y) :
+CEarthExplosion::CEarthExplosion(std::shared_ptr<CMap> p_map, Uint32 x, Uint32 y) :
 CRay(p_map, x, y, RIGHT, CENTER, 0),
 animframe(0),
 animtimer(0)

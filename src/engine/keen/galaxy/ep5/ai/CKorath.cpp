@@ -34,8 +34,8 @@ constexpr int TIME_TO_SIT = 50;
 constexpr int WALK_SPEED = 25;
 constexpr int STUN_TIME = 240;
   
-CKorath::CKorath(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
-CStunnable(pmap, foeID, x, y)
+CKorath::CKorath(std::shared_ptr<CMap> pMap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
+CStunnable(pMap, foeID, x, y)
 {  
   	mActionMap[A_KORATH_WALK] = (GASOFctr) &CKorath::processWalking;
   	mActionMap[A_KORATH_SIT] = (GASOFctr) &CKorath::processSitting;

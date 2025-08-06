@@ -18,7 +18,7 @@
 
 unsigned int rnd(void);
 
-CVortiNinja::CVortiNinja(CMap *p_map, Uint32 x, Uint32 y) :
+CVortiNinja::CVortiNinja(std::shared_ptr<CMap> p_map, Uint32 x, Uint32 y) :
 CVorticonSpriteObject(p_map, x, y, OBJ_NINJA),
 longjump(false)
 {

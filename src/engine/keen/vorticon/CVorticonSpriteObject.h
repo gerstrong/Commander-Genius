@@ -14,7 +14,7 @@
 class CVorticonSpriteObject : public CSpriteObject
 {
 public:
-    CVorticonSpriteObject(CMap *pmap, const int x, const int y,
+    CVorticonSpriteObject(std::shared_ptr<CMap> pMap, const int x, const int y,
                           const object_t type, const int sprVar=0);
 
     void setupObjectType(const int Episode);

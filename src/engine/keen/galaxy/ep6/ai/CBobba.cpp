@@ -30,8 +30,8 @@ constexpr int SIT_TIME = 60;
 constexpr int SHOOT_TIME = 120;
 constexpr int MAX_JUMP_INERTIA = -170;
 
-CBobba::CBobba(CMap* pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) : 
-CGalaxyActionSpriteObject(pmap, foeID, x, y, 0)
+CBobba::CBobba(std::shared_ptr<CMap> pMap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
+CGalaxyActionSpriteObject(pMap, foeID, x, y, 0)
 {
 	mActionMap[A_BOBBA_JUMP] = (void (CGalaxyActionSpriteObject::*)()) &CBobba::processJumping;
 	mActionMap[A_BOBBA_SIT] = (void (CGalaxyActionSpriteObject::*)()) &CBobba::processSitting;

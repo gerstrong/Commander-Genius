@@ -19,7 +19,7 @@ namespace galaxy {
 class CSphereful : public CStunnable
 {
 public:
-	CSphereful(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y);
+	CSphereful(std::shared_ptr<CMap> pMap, const Uint16 foeID, const Uint32 x, const Uint32 y);
 
 	/**
 	 * Action functions

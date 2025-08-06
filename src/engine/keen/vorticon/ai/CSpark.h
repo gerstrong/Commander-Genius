@@ -13,7 +13,7 @@
 
 class CSpark : public CVorticonSpriteObject {
 public:
-	CSpark(CMap *pmap, Uint32 x, Uint32 y);
+	CSpark(std::shared_ptr<CMap> pMap, Uint32 x, Uint32 y);
 	void process();
 
 private:

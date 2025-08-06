@@ -8,7 +8,7 @@ namespace galaxy {
 class CRedShot : public CStunnable
 {
 public:
-    CRedShot(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y, const int xDir, const int yDir);    
+    CRedShot(std::shared_ptr<CMap> pMap, const Uint16 foeID, const Uint32 x, const Uint32 y, const int xDir, const int yDir);    
     void processMove();
     void smash();
 

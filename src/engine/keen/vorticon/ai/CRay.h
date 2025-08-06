@@ -17,7 +17,7 @@ unsigned int rnd(void);
 class CRay : public CVorticonSpriteObject
 {
 public:
-    CRay(CMap *p_map, Uint32 x, Uint32 y,
+    CRay(std::shared_ptr<CMap> p_map, Uint32 x, Uint32 y,
         direction_t hdir, direction_t vdir,
          const int spriteVar,
          object_t byType=OBJ_RAY,

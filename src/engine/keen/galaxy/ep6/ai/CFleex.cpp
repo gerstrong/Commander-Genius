@@ -34,8 +34,8 @@ constexpr int TIME_UNTIL_LOOK = 200;
 constexpr int DISTANCE_UNTIL_TRACK = 8<<CSF;
 
 
-CFleex::CFleex(CMap* pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) : 
-    CStunnable(pmap, foeID, x, y),
+CFleex::CFleex(std::shared_ptr<CMap> pMap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
+    CStunnable(pMap, foeID, x, y),
     mHealth(4),
     mTimer(0),
     mKeenAlignment(LEFT),

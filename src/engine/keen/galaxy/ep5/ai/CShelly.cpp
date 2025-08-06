@@ -49,8 +49,8 @@ constexpr int SMOKE_TIME = 40;
 constexpr int MAX_JUMP_INERTIA = 150;
 constexpr int CSF_DISTANCE_TO_JUMP = 6<<CSF;
   
-CShelly::CShelly(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
-CStunnable(pmap, foeID, x, y),
+CShelly::CShelly(std::shared_ptr<CMap> pMap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
+CStunnable(pMap, foeID, x, y),
 mTimer(0)
 {
       	mActionMap[A_SHELLY_WALK] = (GASOFctr) &CShelly::processWalking;
@@ -247,8 +247,8 @@ void CShelly::process()
 /// Shelly fragments ///
 ////////////////////////
 
-CShellyFrags::CShellyFrags(CMap* pmap, const Uint16 foeID, const Uint32 x, const Uint32 y, const int xSpeed) :
-CStunnable(pmap, foeID, x, y),
+CShellyFrags::CShellyFrags(std::shared_ptr<CMap> pMap, const Uint16 foeID, const Uint32 x, const Uint32 y, const int xSpeed) :
+CStunnable(pMap, foeID, x, y),
 mXSpeed(xSpeed)
 {
   xDirection = (xSpeed < 0) ? LEFT : RIGHT;

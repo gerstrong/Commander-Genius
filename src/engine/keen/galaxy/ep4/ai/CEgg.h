@@ -18,7 +18,7 @@ namespace galaxy
 class CEgg : public CGalaxySpriteObject
 {
 public:
-	CEgg(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y);
+	CEgg(std::shared_ptr<CMap> pMap, const Uint16 foeID, Uint32 x, Uint32 y);
 
 	void hatch();
 

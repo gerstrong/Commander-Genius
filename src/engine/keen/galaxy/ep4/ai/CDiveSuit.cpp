@@ -13,8 +13,8 @@
 
 namespace galaxy {
 
-CDiveSuit::CDiveSuit(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y, const int sprVar) :
-CGalaxySpriteObject(pmap, foeID, x, y, sprVar),
+CDiveSuit::CDiveSuit(std::shared_ptr<CMap> pMap, const Uint16 foeID, Uint32 x, Uint32 y, const int sprVar) :
+CGalaxySpriteObject(pMap, foeID, x, y, sprVar),
 taken(false)
 {    
     mSpriteIdx = 306;

@@ -19,7 +19,7 @@ namespace galaxy {
 class CShockshound : public CStunnable
 {
 public:
-	CShockshound(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y);
+	CShockshound(std::shared_ptr<CMap> pMap, const Uint16 foeID, const Uint32 x, const Uint32 y);
 
 	/**
 	 * Action functions

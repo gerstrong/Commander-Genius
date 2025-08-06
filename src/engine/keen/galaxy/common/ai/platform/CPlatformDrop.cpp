@@ -17,10 +17,10 @@ const int START_DELAY_FOR_DROP = 12;
 
 namespace galaxy {
 
-CPlatformDrop::CPlatformDrop(CMap *pmap, const Uint16 foeID, 
+CPlatformDrop::CPlatformDrop(std::shared_ptr<CMap> pMap, const Uint16 foeID, 
                  const Uint32 x, const Uint32 y, const int actionOff, const int sprVar) :
-CGalaxySpriteObject(pmap, foeID, x, y, sprVar),
-CPlatform(pmap, foeID, x, y),
+CGalaxySpriteObject(pMap, foeID, x, y, sprVar),
+CPlatform(pMap, foeID, x, y),
 m_Origin(m_Pos)
 {    
     m_delay_for_drop = START_DELAY_FOR_DROP;

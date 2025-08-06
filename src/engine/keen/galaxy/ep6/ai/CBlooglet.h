@@ -9,7 +9,7 @@ class CBlooglet : public CStunnable
 {
     
 public:
-	CBlooglet(CMap *pmap, const Uint16 foeID,  const int actionOff, const bool carriesGem,
+	CBlooglet(std::shared_ptr<CMap> pMap, const Uint16 foeID,  const int actionOff, const bool carriesGem,
 		  const Uint32 x, const Uint32 y);
 
 	/**

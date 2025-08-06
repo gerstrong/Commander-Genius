@@ -2,7 +2,8 @@
 include_directories(${SDL_INCLUDE_DIR})
 
 set(SRCS
-    CGameMode.h
+    Scene.h
+    Scene.cpp
     CGamePlayMode.cpp
     CGamePlayMode.h
     CPlayGame.cpp

@@ -5,7 +5,7 @@
  *      Author: gerstrong
  */
 
-#include "mode/CGameMode.h"
+#include "mode/Scene.h"
 #include "CResourceLoader.h"
 #include "CEvent.h"
 
@@ -42,7 +42,7 @@ protected:
 
     CResourceLoaderBackground mEngineLoader;
 
-    std::unique_ptr<CGameMode> mpGameMode;
+    std::unique_ptr<Scene> mpScene;
 
     bool mOpenedGamePlay;
 

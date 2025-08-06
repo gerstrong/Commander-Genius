@@ -19,8 +19,8 @@ constexpr int MOVE_SPEED = 40;
 constexpr int TILES_UNTIL_UNMOUNT = 8;
 
 
-CSatelite::CSatelite(CMap* pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) : 
-CGalaxySpriteObject(pmap, foeID, x, y, 0),
+CSatelite::CSatelite(std::shared_ptr<CMap> pMap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
+CGalaxySpriteObject(pMap, foeID, x, y, 0),
 CMoveTarget(m_Pos, xDirection, yDirection),
 mpCarriedPlayer(nullptr),
 mTilesUntilumount(0)

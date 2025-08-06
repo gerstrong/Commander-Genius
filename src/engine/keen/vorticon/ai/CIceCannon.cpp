@@ -14,7 +14,7 @@ const int GUNFIRE_TIMER_EP1 = 64;
 const int SILENT_DIST = 20<<CSF;
 
 
-CIceCannon::CIceCannon(CMap *p_map, Uint32 x, Uint32 y,
+CIceCannon::CIceCannon(std::shared_ptr<CMap> p_map, Uint32 x, Uint32 y,
 	int vector_x, int vector_y ) :
 CVorticonSpriteObject(p_map,x,y, OBJ_ICECANNON),
 mTimer(0),
@@ -74,7 +74,7 @@ void CIceCannon::process()
 	}
 }
 
-CIceChunk::CIceChunk(CMap *p_map, Uint32 x, Uint32 y, Uint32 vx, Uint32 vy) :
+CIceChunk::CIceChunk(std::shared_ptr<CMap> p_map, Uint32 x, Uint32 y, Uint32 vx, Uint32 vy) :
 CVorticonSpriteObject(p_map, x, y, OBJ_ICECHUNK),
 vector_x(vx),
 vector_y(vy),
@@ -218,7 +218,7 @@ void CIceChunk::smash()
 const int ICEBIT_SPEED = 80;
 const int ICESHARD_TIME = 25;
 
-CIceBit::CIceBit(CMap *p_map, Uint32 x, Uint32 y, Uint32 vec_x, Uint32 vec_y ) :
+CIceBit::CIceBit(std::shared_ptr<CMap> p_map, Uint32 x, Uint32 y, Uint32 vec_x, Uint32 vec_y ) :
 CVorticonSpriteObject(p_map, x, y, OBJ_ICEBIT),
 vector_x(vec_x),
 vector_y(vec_y)

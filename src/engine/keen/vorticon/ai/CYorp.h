@@ -58,7 +58,7 @@
 class CYorp : public CVorticonSpriteObject
 {
 public:
-    CYorp(CMap *p_map, const Uint32 x, const Uint32 y );
+    CYorp(std::shared_ptr<CMap> p_map, const Uint32 x, const Uint32 y );
     void getTouchedBy(CSpriteObject &theObject)  override;
     bool isNearby(CSpriteObject &theObject) override;
     void process() override;

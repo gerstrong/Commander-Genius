@@ -53,11 +53,11 @@ void CSpriteObject::resetMainVars()
 ///
 // Initialization Routine
 ///
-CSpriteObject::CSpriteObject(CMap *pmap,
+CSpriteObject::CSpriteObject(std::shared_ptr<CMap> pMap,
                              const int x, const int y,
                              const int spriteVar) :
 m_index(m_number_of_objects),
-mpMap(pmap),
+mpMap(pMap),
 m_Pos(x,y),
 mSprVar(spriteVar)
 {
@@ -473,10 +473,13 @@ void CSpriteObject::draw()
 
     GsSprite &Sprite = gGraphics.getSprite(mSprVar, mSpriteIdx);
 
-    if(Sprite.empty())
-    {
-        return;
-    }
+    if(Sprite.empty()) return;
+
+    if(!mpMap) return;
+
+    const auto numScrollPlanes = mpMap->getNumScrollingPlanes();
+
+    if(numScrollPlanes <= 0) return;
 
     const auto scroll = mpMap->getMainScrollCoords();
 

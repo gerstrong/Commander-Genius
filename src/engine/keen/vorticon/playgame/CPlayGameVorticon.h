@@ -16,7 +16,6 @@
 #include "fileio/CTileProperties.h"
 #include "../CVorticonSpriteObject.h"
 #include "engine/core/CMap.h"
-//#include "engine/core/options.h"
 #include "engine/core/CHUD.h"
 #include "../ai/CVorticonSpriteObjectAI.h"
 #include "../ai/CEGABitmap.h"
@@ -31,7 +30,7 @@
 #include <list>
 #include <memory>
 
-//#include "engine/core/mode/CGameMode.h"
+//#include "engine/core/mode/Scene.h"
 
 const int WORLD_MAP_LEVEL_VORTICON = 80;
 
@@ -64,6 +63,7 @@ public:
     void pumpEvent(const std::shared_ptr<CEvent> &evPtr) override;
 
     void ponder(const float deltaT) override;
+    void _ponder(const float deltaT);
     void processOnWorldMap();
     void processInLevel();
 

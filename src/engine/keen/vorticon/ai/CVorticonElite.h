@@ -21,7 +21,7 @@ enum vortelite_actions{
 class CVorticonElite : public CVorticon
 {
 public:
-	CVorticonElite( CMap *p_map, Uint32 x, Uint32 y );
+	CVorticonElite( std::shared_ptr<CMap> p_map, Uint32 x, Uint32 y );
 	bool isNearby(CSpriteObject &theObject);
 	void process();
 	void initiatejump();

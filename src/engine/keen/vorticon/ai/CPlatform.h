@@ -15,7 +15,7 @@
 class CPlatform : public CCarrier
 {
 public:
-	CPlatform(CMap *p_map, Uint32 x, Uint32 y);
+	CPlatform(std::shared_ptr<CMap> p_map, Uint32 x, Uint32 y);
 
 	void process();
 
@@ -31,7 +31,7 @@ protected:
 class CPlatformVert : public CPlatform
 {
 public:
-	CPlatformVert(CMap *p_map, Uint32 x, Uint32 y);
+	CPlatformVert(std::shared_ptr<CMap> p_map, Uint32 x, Uint32 y);
 	void process();
 };
 

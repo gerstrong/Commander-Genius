@@ -2,8 +2,8 @@
 
 #include "graphics/GsGraphics.h"
 
-CDoor::CDoor(CMap *pmap, Uint32 x, Uint32 y, Uint32 doorspriteID):
-CVorticonSpriteObject(pmap, x, y, OBJ_DOOR, 0)
+CDoor::CDoor(std::shared_ptr<CMap> pMap, Uint32 x, Uint32 y, Uint32 doorspriteID):
+CVorticonSpriteObject(pMap, x, y, OBJ_DOOR, 0)
 {
 	mSpriteIdx=doorspriteID;
     GsSprite &Doorsprite = gGraphics.getSprite(mSprVar,mSpriteIdx);

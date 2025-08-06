@@ -9,7 +9,7 @@ namespace galaxy
 class CBobba : public CGalaxyActionSpriteObject
 {
 public:
-	CBobba(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y);
+	CBobba(std::shared_ptr<CMap> pMap, const Uint16 foeID, const Uint32 x, const Uint32 y);
 
 	/**
 	 * When it is moving normally

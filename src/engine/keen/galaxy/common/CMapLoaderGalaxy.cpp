@@ -116,7 +116,7 @@ bool CMapLoaderGalaxy::gotoNextSignature(std::ifstream &MapFile)
 const size_t fileSizeLimit = 100 * 1024 * 1024;
 
 bool CMapLoaderGalaxy::unpackPlaneData( std::ifstream &mapFile,
-                                        CMap &Map,
+                                        std::shared_ptr<CMap> &map,
                                         const size_t planeNumber,
                                         longword offset,
                                         longword length,
@@ -168,14 +168,14 @@ bool CMapLoaderGalaxy::unpackPlaneData( std::ifstream &mapFile,
         RLE.expand(plane, RLE_Plane, magic_word);
 
         word *mapPtr = (planeNumber == 2) ?
-                          Map.getInfoData() : Map.getData(planeNumber);
+                          map->getInfoData() : map->getData(planeNumber);
 
 
-        for(size_t y=0; y<Map.m_height ; ++y)
+        for(size_t y=0; y<map->m_height ; ++y)
     	{
-            const int stride = y*Map.m_width;
+            const int stride = y*map->m_width;
 
-            for(size_t x=0; x<Map.m_width ; ++x)
+            for(size_t x=0; x<map->m_width ; ++x)
     		{
                 const int offset = stride+x;
                 const word tile = plane.at(offset);
@@ -203,7 +203,7 @@ bool CMapLoaderGalaxy::unpackPlaneData( std::ifstream &mapFile,
 }
 
 
-bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
+bool CMapLoaderGalaxy::loadMap(std::shared_ptr<CMap> &map, Uint8 level)
 {
     bool ok = true;
 
@@ -212,9 +212,9 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
     const std::string &path = gKeenFiles.gameDir;
 
     // Set Map position and some flags for the freshly loaded level    
-    Map.setLevel(level);
-    Map.isSecret = false;
-    Map.mNumFuses = 0;
+    map->setLevel(level);
+    map->isSecret = false;
+    map->mNumFuses = 0;
 
     // In case no external file was read, let's use data from the embedded data
     gs_byte *Maphead = gKeenFiles.exeFile.getRawData() + getMapheadOffset();
@@ -331,7 +331,7 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
 
     // Get and check the signature
     gLogging.textOut("Loading the Level \"" + static_cast<std::string>(name) + "\" (Level No. "+ itoa(level) + ")<br>" );
-    Map.setLevelName(name);
+    map->setLevelName(name);
 
     mLevelName = name;
 
@@ -339,31 +339,31 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
     gLogging.textOut("Allocating memory for the level planes ...<br>" );
 
     // Start with the Background
-    Map.setupEmptyDataPlanes(2, 16, Width, Height);
+    map->setupEmptyDataPlanes(2, 16, Width, Height);
 
     // Start with the Background
     gLogging.textOut("Decompressing the Map... plane 0 (Background)<br>" );
-    ok &= unpackPlaneData(MapFile, Map, 0, Plane_Offset[0], Plane_Length[0], magic_word);
+    ok &= unpackPlaneData(MapFile, map, 0, Plane_Offset[0], Plane_Length[0], magic_word);
 
     // Continue with Foreground
     gLogging.textOut("Decompressing the Map... plane 1 (Foreground)<br>" );
-    ok &= unpackPlaneData(MapFile, Map, 1, Plane_Offset[1], Plane_Length[1], magic_word);
+    ok &= unpackPlaneData(MapFile, map, 1, Plane_Offset[1], Plane_Length[1], magic_word);
 
     // And finish up with the info layer
     gLogging.textOut("Decompressing the Map... plane 2 (Infolayer)<br>" );
-    ok &= unpackPlaneData(MapFile, Map, 2, Plane_Offset[2], Plane_Length[2], magic_word);
+    ok &= unpackPlaneData(MapFile, map, 2, Plane_Offset[2], Plane_Length[2], magic_word);
 
-    Map.gotoPos(0,0);
+    map->gotoPos(0,0);
 
-    Map.resetScrollBlocker();
-    Map.collectBlockersCoordiantes();
-    Map.setupAnimationTimer();
+    map->resetScrollBlocker();
+    map->collectBlockersCoordiantes();
+    map->setupAnimationTimer();
 
     // Now that we have all the 3 planes (Background, Foreground, Foes) unpacked...
     // We only will show the first two of them in the screen, because the Foes one
     // is the one which will be used for spawning the foes (Keen, platforms, enemies, etc.)
     gLogging.textOut("Loading the foes ...<br>" );
-    spawnFoes(Map);
+    spawnFoes(map);
 
     if(!ok)
     {
@@ -373,7 +373,7 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
 
 
     // Set Scrollbuffer
-    Map.drawAll();
+    map->drawAll();
     gLogging << "Map got loaded successfully!" << CLogFile::endl;
 
     return true;
@@ -384,12 +384,12 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
  * @brief	This will setup the enemies on the map. They are pushed in a objects vector,
  * 			so they can interact all the time
  */
-void CMapLoaderGalaxy::spawnFoes(CMap &Map)
+void CMapLoaderGalaxy::spawnFoes(std::shared_ptr<CMap> &map)
 {
-    word *start_data = Map.getInfoData();
+    word *start_data = map->getInfoData();
 	word *data_ptr;
-	word width = Map.m_width;
-	word height = Map.m_height;
+    word width = map->m_width;
+    word height = map->m_height;
 
 	// If objects are in the buffer clean them up
 
@@ -399,8 +399,8 @@ void CMapLoaderGalaxy::spawnFoes(CMap &Map)
     const int numPlayers = gBehaviorEngine.numPlayers();
 
     // Time to add the foe objects
-	Map.mNumFuses = 0;
-	Map.mFuseInLevel = false;		
+    map->mNumFuses = 0;
+    map->mFuseInLevel = false;
 	data_ptr = start_data;
 
 	for(size_t y=0 ; y<height ; y++)
@@ -423,7 +423,7 @@ void CMapLoaderGalaxy::spawnFoes(CMap &Map)
             {
                 for(int i = 0 ; i < numPlayers ; i++)
                 {
-                    std::shared_ptr<CGalaxySpriteObject> pNewfoe( addFoe(Map, foeID, x<<CSF, y<<CSF) );
+                    std::shared_ptr<CGalaxySpriteObject> pNewfoe( addFoe(map, foeID, x<<CSF, y<<CSF) );
 
                     if(pNewfoe)
                         m_ObjectPtr.push_back(pNewfoe);
@@ -431,7 +431,7 @@ void CMapLoaderGalaxy::spawnFoes(CMap &Map)
             }
             else
             {
-                std::shared_ptr<CGalaxySpriteObject> pNewfoe( addFoe(Map, foeID, x<<CSF, y<<CSF) );
+                std::shared_ptr<CGalaxySpriteObject> pNewfoe( addFoe(map, foeID, x<<CSF, y<<CSF) );
 
                 if(pNewfoe)
                 {
@@ -451,7 +451,7 @@ void CMapLoaderGalaxy::spawnFoes(CMap &Map)
         int forLevel = -1;
 
         ok = lua.runFunctionRetOneInt("spawnForLevel", forLevel);
-        if(ok && forLevel == Map.getLevel())
+        if(ok && forLevel == map->getLevel())
         {
             int numFoes = 0;
 
@@ -468,7 +468,7 @@ void CMapLoaderGalaxy::spawnFoes(CMap &Map)
                 lua.runFunctionRetOneInt("where_y", i, coordArray[1]);
 
                 std::shared_ptr<CGalaxySpriteObject> pNewfoe(
-                            addFoe(Map, foeIdx,
+                            addFoe(map, foeIdx,
                                    coordArray[0]<<CSF, coordArray[1]<<CSF) );
 
                 if(pNewfoe)

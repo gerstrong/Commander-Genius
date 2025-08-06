@@ -19,7 +19,7 @@ namespace galaxy
 class CPlatformDrop : public CPlatform
 {
 public:
-    CPlatformDrop(CMap *pmap, const Uint16 foeID,
+    CPlatformDrop(std::shared_ptr<CMap> pMap, const Uint16 foeID,
               const Uint32 x, const Uint32 y, const int actionOff, const int sprVar);
 
     // Most accurate platform drop movement, hopefully

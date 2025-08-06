@@ -16,7 +16,7 @@ namespace galaxy {
 class CSkypest : public CGalaxySpriteObject
 {
 public:
-	CSkypest(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y);
+	CSkypest(std::shared_ptr<CMap> pMap, const Uint16 foeID, Uint32 x, Uint32 y);
 
 	void process();
 	void getTouchedBy(CSpriteObject &theObject);

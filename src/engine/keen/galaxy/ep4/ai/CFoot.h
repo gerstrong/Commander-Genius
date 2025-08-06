@@ -15,7 +15,7 @@ namespace galaxy {
 class CFoot: public CGalaxySpriteObject
 {
 public:
-	CFoot(CMap *pmap, const Uint16 foeID, const int actionID, const Uint32 x, const Uint32 y);
+	CFoot(std::shared_ptr<CMap> pMap, const Uint16 foeID, const int actionID, const Uint32 x, const Uint32 y);
 
 	void getTouchedBy(CSpriteObject &theObject);
 

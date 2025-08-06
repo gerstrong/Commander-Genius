@@ -8,9 +8,9 @@ namespace galaxy {
 
 constexpr int MOVE_SPEED = 10;
   
-CBlorb::CBlorb(CMap *pmap, const Uint16 foeID, 
+CBlorb::CBlorb(std::shared_ptr<CMap> pMap, const Uint16 foeID, 
 		       const Uint32 x, const Uint32 y) :
-CStunnable(pmap, foeID, x, y)
+CStunnable(pMap, foeID, x, y)
 {
 	mActionMap[0] = (GASOFctr) &CBlorb::processMoving;
 	

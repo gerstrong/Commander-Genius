@@ -9,7 +9,7 @@ namespace galaxy
 class CCeilick : public CStunnable
 {
 public:
-	CCeilick(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y);
+	CCeilick(std::shared_ptr<CMap> pMap, const Uint16 foeID, const Uint32 x, const Uint32 y);
 
 	/**
 	 * When it is moving normally

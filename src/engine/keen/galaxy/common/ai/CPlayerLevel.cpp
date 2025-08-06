@@ -51,11 +51,11 @@ const int BELT_SPEED = 16;
 const int STUN_TIME = 30;
 
 
-CPlayerLevel::CPlayerLevel(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y,
+CPlayerLevel::CPlayerLevel(std::shared_ptr<CMap> pMap, const Uint16 foeID, Uint32 x, Uint32 y,
                         std::vector< std::shared_ptr<CGalaxySpriteObject> > &ObjectPtrs, direction_t facedir,
                         CInventory &l_Inventory,
                         const size_t offset, const int playerIdx, const int spriteTableIdx) :
-CPlayerBase(pmap, foeID, x, y, facedir, l_Inventory, playerIdx, spriteTableIdx),
+CPlayerBase(pMap, foeID, x, y, facedir, l_Inventory, playerIdx, spriteTableIdx),
 mObjectPtrs(ObjectPtrs)
 {
     mActionMap[A_KEEN_STAND] = static_cast<void (CPlayerBase::*)()> (&CPlayerLevel::processStanding);

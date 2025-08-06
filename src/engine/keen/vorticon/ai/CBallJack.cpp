@@ -12,8 +12,8 @@ char BJ_BlockedD(int o);
 
 unsigned int rnd(void);
 
-CBallJack::CBallJack(CMap *pmap, Uint32 x, Uint32 y, object_t type):
-CVorticonSpriteObject(pmap, x, y, type)
+CBallJack::CBallJack(std::shared_ptr<CMap> pMap, Uint32 x, Uint32 y, object_t type):
+CVorticonSpriteObject(pMap, x, y, type)
 {
 	m_Direction = DUPLEFT;
 

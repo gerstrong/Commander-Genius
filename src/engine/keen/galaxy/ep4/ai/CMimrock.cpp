@@ -36,8 +36,8 @@ const int JUMP_TIME = 500;
 const int BOUNCE_TIME = 50;
 const int TIME_UNTIL_LOOK = 100;
 
-CMimrock::CMimrock(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
-CStunnable(pmap, foeID, x, y),
+CMimrock::CMimrock(std::shared_ptr<CMap> pMap, const Uint16 foeID, Uint32 x, Uint32 y) :
+CStunnable(pMap, foeID, x, y),
 mTimer(0)
 {
     mActionMap[A_MIMROCK_SIT] = (GASOFctr) &CMimrock::processSit;

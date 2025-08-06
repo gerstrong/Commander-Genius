@@ -7,7 +7,7 @@
 
 // Vorticon (all Episodes, albeit the behavior changes slightly
 // depending on levelcontrol.Episode).
-CVorticon::CVorticon(CMap *p_map, Uint32 x, Uint32 y, char hp, object_t objtype) :
+CVorticon::CVorticon(std::shared_ptr<CMap> p_map, Uint32 x, Uint32 y, char hp, object_t objtype) :
     CVorticonSpriteObject(p_map, x, y, objtype, 0)
 {
     frame = 0;

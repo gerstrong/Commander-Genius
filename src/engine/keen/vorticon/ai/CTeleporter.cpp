@@ -24,7 +24,7 @@ const int TELEPORTATION_SPEED = 128;
 const int TELEPORTER_NUMFRAMES_EP3 = 16;
 const int TELEPORTER_NUMFRAMES_EP1 = 20;
 
-CTeleporter::CTeleporter(CMap *p_map, std::vector<CPlayer> &mp_vec_Player,
+CTeleporter::CTeleporter(std::shared_ptr<CMap> p_map, std::vector<CPlayer> &mp_vec_Player,
         const Uint32 x, const Uint32 y ) :
 CVorticonSpriteObject(p_map, x, y, OBJ_TELEPORTER, 0),
 m_Player(mp_vec_Player)

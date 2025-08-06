@@ -24,8 +24,8 @@ namespace galaxy {
 constexpr int MAX_BOUNCES = 2;
 constexpr int MAX_BOUNCE_INERTIA = 120;
 
-CSpindred::CSpindred(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
-CStunnable(pmap, foeID, x, y)
+CSpindred::CSpindred(std::shared_ptr<CMap> pMap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
+CStunnable(pMap, foeID, x, y)
 {
   
 	// Adapt this AI

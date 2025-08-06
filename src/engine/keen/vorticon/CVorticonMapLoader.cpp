@@ -113,8 +113,7 @@ bool CVorticonMapLoaderBase::loadBase(  Uint8 episode,
 					Uint8 level, 
 					const std::string& path, 
                     const bool loadNewMusic )
-{
-    
+{  
 	std::vector<Uint16> planeitems;
 
     // Taken from the original CloneKeen. If hard-mode chosen, swap levels 5 and 9 Episode 1
@@ -294,7 +293,7 @@ void CVorticonMapLoaderWithPlayer::addWorldMapObject(unsigned int t, Uint16 x, U
         {
             if (!m_NessieAlreadySpawned)
             {
-                std::unique_ptr<CMessie> messie(new CMessie(mpMap.get(), x<<CSF, y<<CSF));
+                std::unique_ptr<CMessie> messie(new CMessie(mpMap, x<<CSF, y<<CSF));
                 m_NessieAlreadySpawned = true;
                 mpSpriteObjectContainer.push_back(move(messie));
             }
@@ -379,21 +378,21 @@ void CVorticonMapLoaderWithPlayer::addSpriteObject(unsigned int t, Uint16 x, Uin
 			case 1:  // yorp (ep1) vort (ep2&3)
 				if (episode == 1)
 				{
-					enemyobject = new CYorp( mpMap.get(), x<<CSF, y<<CSF );
+                    enemyobject = new CYorp( mpMap, x<<CSF, y<<CSF );
 				}
 				else if(episode == 2 || episode == 3)
 				{
-					enemyobject = new CVorticon( mpMap.get(), x<<CSF, y<<CSF);
+                    enemyobject = new CVorticon( mpMap, x<<CSF, y<<CSF);
 				}
 				break;
 			case 2:    // garg (ep1) baby vorticon (ep2&3)
 				if (episode == 1)
 				{
-					enemyobject = new CGarg( mpMap.get(), x<<CSF, y<<CSF );
+                    enemyobject = new CGarg( mpMap, x<<CSF, y<<CSF );
 				}
 				else
 				{
-					enemyobject = new CVortikid( mpMap.get(), x<<CSF, y<<CSF );
+                    enemyobject = new CVortikid( mpMap, x<<CSF, y<<CSF );
 				}
 
 				break;
@@ -403,123 +402,123 @@ void CVorticonMapLoaderWithPlayer::addSpriteObject(unsigned int t, Uint16 x, Uin
 					CPhysicsSettings &Phy = gBehaviorEngine.getPhysicsSettings();
 
 					size_t health = (level==16) ? Phy.vorticon.commander_hp : Phy.vorticon.default_hp;
-					enemyobject = new CVorticon( mpMap.get(), x<<CSF, y<<CSF, health );
+                    enemyobject = new CVorticon( mpMap, x<<CSF, y<<CSF, health );
 				}
 				else if (episode==2)
 				{
-					enemyobject = new CVorticonElite( mpMap.get(), x<<CSF, y<<CSF);
+                    enemyobject = new CVorticonElite( mpMap, x<<CSF, y<<CSF);
 				}
 				else if (episode==3)
 				{
-					enemyobject = new CVortiMom( mpMap.get(), x<<CSF, y<<CSF);
+                    enemyobject = new CVortiMom( mpMap, x<<CSF, y<<CSF);
 				}
 				break;
 			case 4:    // butler (ep1) or scrub (ep2) or meep (ep3)
 				if (episode==1)
-					enemyobject = new CButler( mpMap.get(), x<<CSF, y<<CSF);
+                    enemyobject = new CButler( mpMap, x<<CSF, y<<CSF);
 				else if (episode==2)
-					enemyobject = new CScrub( mpMap.get(), x<<CSF, y<<CSF);
+                    enemyobject = new CScrub( mpMap, x<<CSF, y<<CSF);
 				else if (episode==3)
-					enemyobject = new CMeep( mpMap.get(), x<<CSF, y<<CSF);
+                    enemyobject = new CMeep( mpMap, x<<CSF, y<<CSF);
 				break;
 			case 5:    // tank robot (ep1&2) vorticon ninja (ep3)
 				if (episode==1)
-					enemyobject = new CTank( mpMap.get(), x<<CSF, y<<CSF);
+                    enemyobject = new CTank( mpMap, x<<CSF, y<<CSF);
 				else if (episode==2)
-					enemyobject = new CGuardRobot( mpMap.get(), x<<CSF, y<<CSF);
+                    enemyobject = new CGuardRobot( mpMap, x<<CSF, y<<CSF);
 				else if (episode==3)
-					enemyobject = new CVortiNinja( mpMap.get(), x<<CSF, y<<CSF);
+                    enemyobject = new CVortiNinja( mpMap, x<<CSF, y<<CSF);
 				break;
 			case 6:    // up-right-flying ice chunk (ep1) horiz platform (ep2)
 				// foob (ep3)
 				if (episode==1)
 				{
-					enemyobject = new CIceCannon( mpMap.get(), x<<CSF, y<<CSF, 1, -1 );
+                    enemyobject = new CIceCannon( mpMap, x<<CSF, y<<CSF, 1, -1 );
 				}
 				else if (episode==2)
 				{
-					enemyobject = new CPlatform( mpMap.get(),x<<CSF, (y<<CSF)-(4<<STC));
+                    enemyobject = new CPlatform( mpMap,x<<CSF, (y<<CSF)-(4<<STC));
 				}
 				else if (episode==3)
 				{
-					enemyobject = new CFoob( mpMap.get(), x<<CSF, y<<CSF);
+                    enemyobject = new CFoob( mpMap, x<<CSF, y<<CSF);
 				}
 				break;
 			case 7:   // spark (ep2) ball (ep3) ice cannon upwards (ep1)
 				if (episode==1)
 				{
-					enemyobject = new CIceCannon( mpMap.get(),x<<CSF, y<<CSF, 0, -1);
+                    enemyobject = new CIceCannon( mpMap,x<<CSF, y<<CSF, 0, -1);
 				}
 				else if (episode==2)
 				{
-					enemyobject = new CSpark( mpMap.get(), x<<CSF, y<<CSF);
+                    enemyobject = new CSpark( mpMap, x<<CSF, y<<CSF);
 				}
 				else if (episode==3)
 				{
-					enemyobject = new CBallJack( mpMap.get(), x<<CSF, y<<CSF, OBJ_BALL);
+                    enemyobject = new CBallJack( mpMap, x<<CSF, y<<CSF, OBJ_BALL);
 				}
 				break;
 			case 8:    // jack (ep3) and ice cannon down (ep1)
 				if (episode==1)
 				{
-					enemyobject = new CIceCannon( mpMap.get(), x<<CSF, y<<CSF,0,1);
+                    enemyobject = new CIceCannon( mpMap, x<<CSF, y<<CSF,0,1);
 				}
 				else if (episode==3)
 				{
-					enemyobject = new CBallJack( mpMap.get(), x<<CSF, y<<CSF, OBJ_JACK);
+                    enemyobject = new CBallJack( mpMap, x<<CSF, y<<CSF, OBJ_JACK);
 				}
 				break;
 			case 9:    // up-left-flying ice chunk (ep1) horiz platform (ep3)
 				if (episode==1)
 				{
-					enemyobject = new CIceCannon( mpMap.get(), x<<CSF, y<<CSF,-1,-1);
+                    enemyobject = new CIceCannon( mpMap, x<<CSF, y<<CSF,-1,-1);
 				}
 				else if (episode==3)
 				{
-					enemyobject = new CPlatform( mpMap.get(), x<<CSF, (y<<CSF)-(4<<STC));
+                    enemyobject = new CPlatform( mpMap, x<<CSF, (y<<CSF)-(4<<STC));
 				}
 				break;
 			case 10:   // rope holding the stone above the final vorticon (ep1)
 				// vert platform (ep3)
 				if (episode==1)
 				{
-					enemyobject = new CRope( mpMap.get(), x<<CSF, y<<CSF);
+                    enemyobject = new CRope( mpMap, x<<CSF, y<<CSF);
 				}
 				else if (episode==3)
 				{
-					enemyobject = new CPlatformVert( mpMap.get(), x<<CSF, y<<CSF);
+                    enemyobject = new CPlatformVert( mpMap, x<<CSF, y<<CSF);
 				}
 				break;
 			case 11:   // jumping vorticon (ep3)
 				if (episode==3)
 				{
-					enemyobject = new CVorticon( mpMap.get(), x<<CSF, y<<CSF );
+                    enemyobject = new CVorticon( mpMap, x<<CSF, y<<CSF );
 				}
 				break;
 			case 12:   // sparks in mortimer's machine
-				enemyobject = new CManglingMachine( mpMap.get(), x<<CSF, y<<CSF,SE_MORTIMER_SPARK);
+                enemyobject = new CManglingMachine( mpMap, x<<CSF, y<<CSF,SE_MORTIMER_SPARK);
 				enemyobject->solid = false;
 				break;
 			case 13:   // mortimer's heart
-				enemyobject = new CManglingMachine( mpMap.get(), x<<CSF, y<<CSF,SE_MORTIMER_HEART);
+                enemyobject = new CManglingMachine( mpMap, x<<CSF, y<<CSF,SE_MORTIMER_HEART);
 				enemyobject->solid = false;
 				break;
 			case 14:   // right-pointing raygun (ep3)
-				enemyobject = new CAutoRay(mpMap.get(), x<<CSF, y<<CSF, CAutoRay::HORIZONTAL);
+                enemyobject = new CAutoRay(mpMap, x<<CSF, y<<CSF, CAutoRay::HORIZONTAL);
 				break;
 			case 15:   // vertical raygun (ep3)
-				enemyobject = new CAutoRay(mpMap.get(), x<<CSF, y<<CSF, CAutoRay::VERTICAL);
+                enemyobject = new CAutoRay(mpMap, x<<CSF, y<<CSF, CAutoRay::VERTICAL);
 				break;
 			case 16:  // mortimer's arms
-				enemyobject = new CManglingMachine( mpMap.get(), x<<CSF, y<<CSF, SE_MORTIMER_ARM );
+                enemyobject = new CManglingMachine( mpMap, x<<CSF, y<<CSF, SE_MORTIMER_ARM );
 				enemyobject->solid = false;
 				break;
 			case 17:  // mortimer's left leg
-				enemyobject = new CManglingMachine( mpMap.get(), x<<CSF, y<<CSF, SE_MORTIMER_LEG_LEFT );
+                enemyobject = new CManglingMachine( mpMap, x<<CSF, y<<CSF, SE_MORTIMER_LEG_LEFT );
 				enemyobject->solid = false;
 				break;
 			case 18:  // mortimer's right leg
-				enemyobject = new CManglingMachine( mpMap.get(), x<<CSF, y<<CSF, SE_MORTIMER_LEG_RIGHT );
+                enemyobject = new CManglingMachine( mpMap, x<<CSF, y<<CSF, SE_MORTIMER_LEG_RIGHT );
 				enemyobject->solid = false;
 				break;
 			default:

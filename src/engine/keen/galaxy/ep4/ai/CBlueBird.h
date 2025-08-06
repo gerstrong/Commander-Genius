@@ -15,7 +15,7 @@ namespace galaxy {
 class CBlueBird: public CGalaxySpriteObject
 {
 public:
-	CBlueBird(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y);
+	CBlueBird(std::shared_ptr<CMap> pMap, const Uint16 foeID, Uint32 x, Uint32 y);
 
 	void setActionForce(const size_t ActionNumber);
 

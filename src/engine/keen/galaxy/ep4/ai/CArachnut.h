@@ -15,7 +15,7 @@ namespace galaxy {
 class CArachnut : public CGalaxySpriteObject
 {
 public:
-	CArachnut(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y);
+	CArachnut(std::shared_ptr<CMap> pMap, const Uint16 foeID, Uint32 x, Uint32 y);
 
 
     bool isNearby(CSpriteObject &theObject) override;

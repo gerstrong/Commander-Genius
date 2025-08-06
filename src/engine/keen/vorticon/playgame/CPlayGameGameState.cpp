@@ -86,7 +86,7 @@ bool CPlayGameVorticon::loadXMLGameState()
         const std::string tag = stateTree.first;
         if(tag == "Player")
         {
-            CPlayer loadedPlayer(mpLevelCompleted, *(mMap.get()), 0 );
+            CPlayer loadedPlayer(mpLevelCompleted, mMap, 0 );
 
             m_Player.push_back(loadedPlayer);
 
@@ -122,7 +122,7 @@ bool CPlayGameVorticon::loadXMLGameState()
 
             if(spriteId >= mSpriteObjectContainer.size())
             {
-              std::unique_ptr<CVorticonSpriteObject> object( new CVorticonSpriteObject( mMap.get(), 0, 0, OBJ_NONE, sprVarID) );
+              std::unique_ptr<CVorticonSpriteObject> object( new CVorticonSpriteObject( mMap, 0, 0, OBJ_NONE, sprVarID) );
               object->exists = false;
               mSpriteObjectContainer.push_back(move(object));
             }
@@ -207,9 +207,8 @@ bool CPlayGameVorticon::loadXMLGameState()
     gBehaviorEngine.setNumPlayers(m_Player.size());
 
 
-    mpObjectAI.reset( new CVorticonSpriteObjectAI(mMap.get(), mSpriteObjectContainer, m_Player,
-                              gBehaviorEngine.numPlayers(), m_Episode, m_Level,
-                           mMap->m_Dark) );
+    mpObjectAI.reset( new CVorticonSpriteObjectAI(mMap, mSpriteObjectContainer, m_Player,
+                              gBehaviorEngine.numPlayers(), m_Episode, m_Level,mMap->m_Dark) );
     setupPlayers();
 
     mMap->m_Dark = stateNode.get<bool>("dark", false);

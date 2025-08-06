@@ -252,7 +252,7 @@ void CPlayGameVorticon::showKeensLeft()
 			x = 12;
 			for( i=0 ; i<m_Player[p].inventory.lives && i<=10 ; i++ )
             {
-                GsSprite &livesSprite = gGraphics.getSprite(p,m_Player[p].playerbaseframe+PMAPDOWNFRAME);
+                GsSprite &livesSprite = gGraphics.getSprite(p,m_Player[p].playerbaseframe+pMapDOWNFRAME);
 
                 const int liveW = livesSprite.getWidth();
                 const int liveH = livesSprite.getHeight();
@@ -311,7 +311,7 @@ void CPlayGameVorticon::teleportPlayer(int objectID, CPlayer &player)
     int destx=0, desty=0;
     int origx=0, origy=0;
 	mMap->findObject(objectID, &origx, &origy);
-	std::unique_ptr<CTeleporter> teleporter( new CTeleporter( mMap.get(), m_Player,origx<<CSF, origy<<CSF) );
+    std::unique_ptr<CTeleporter> teleporter( new CTeleporter( mMap, m_Player,origx<<CSF, origy<<CSF) );
 	teleporter->solid = false;
 	teleporter->direction = TELEPORTING_IN;
 	if(m_Episode == 1)

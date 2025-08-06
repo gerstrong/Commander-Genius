@@ -15,7 +15,7 @@
 #include "GameEngine.h"
 #include "CBehaviorEngine.h"
 #include "mode/CGamePlayMode.h"
-#include "mode/CGameMode.h"
+#include "mode/Scene.h"
 
 
 GameEngine::~GameEngine()
@@ -25,9 +25,9 @@ GameEngine::~GameEngine()
 
 void GameEngine::pumpEvent(const std::shared_ptr<CEvent> &evPtr)
 {
-    if(mpGameMode) // Otherwise send to the existing created mGameMode Object
+    if(mpScene) // Otherwise send to the existing created mGameMode Object
     {
-        mpGameMode->pumpEvent(evPtr);
+        mpScene->pumpEvent(evPtr);
     }
 }
 
@@ -40,11 +40,11 @@ void GameEngine::ponder(const float deltaT)
         return;
     }
 
-    if(!mpGameMode)
+    if(!mpScene)
         return;
 
     // Process the game mode object
-    mpGameMode->ponder(deltaT);
+    mpScene->ponder(deltaT);
 }
 
 void GameEngine::render()
@@ -55,11 +55,11 @@ void GameEngine::render()
         return;
     }
 
-    if(!mpGameMode)
+    if(!mpScene)
         return;
 
     // Render the game mode object
-    mpGameMode->render();
+    mpScene->render();
 
     // FPS Display
     renderFPSDisplay();

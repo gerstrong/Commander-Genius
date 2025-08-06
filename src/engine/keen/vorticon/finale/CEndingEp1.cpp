@@ -70,7 +70,7 @@ void CEndingEp1::ReturnsToShip()
 		m_Player[0].hideplayer = false;
 		m_Player[0].solid = false;
 		m_Player[0].moveTo(GsVec2D<int>(6636, 19968));
-		m_Player[0].mSpriteIdx = PMAPLEFTFRAME;
+		m_Player[0].mSpriteIdx = pMapLEFTFRAME;
         m_Player[0].processEvents();
 
 		addMsgBoxString("EP1_ESEQ_PART1");

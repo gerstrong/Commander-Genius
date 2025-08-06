@@ -31,6 +31,11 @@ m_restartVideo(false)
     mCamLead = 0;
 }
 
+void CPlayGame::ponder(const float deltaT)
+{
+    Scene::ponder(deltaT);
+}
+
 void CPlayGame::pumpEvent(const std::shared_ptr<CEvent> &evPtr)
 {
     if( std::dynamic_pointer_cast<const std::shared_ptr<EventEndGamePlay>>(evPtr) )

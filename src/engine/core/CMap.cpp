@@ -820,6 +820,9 @@ void CMap::renderShaking()
  */
 void CMap::_drawForegroundTiles()
 {
+    if (mScrollingPlanes.size() < 2)
+        return;
+
     mScrollingPlanes.at(1)._drawForegroundTiles(m_Tilemaps[1]);
 }
 
@@ -928,6 +931,8 @@ GsVec2D<int> CMap::getSpriteOrigin(const int sprId)
 {
     return mSpriteOriginList[sprId];
 }
+
+
 
 GsVec2D<int> CMap::getScrollCoords(const unsigned int idx) const
 {

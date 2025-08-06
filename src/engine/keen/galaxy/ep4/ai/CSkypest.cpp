@@ -16,8 +16,8 @@ namespace galaxy {
 
 const int FLY_SPEED = 50;
 
-CSkypest::CSkypest(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
-CGalaxySpriteObject(pmap, foeID, x, y, 0)
+CSkypest::CSkypest(std::shared_ptr<CMap> pMap, const Uint16 foeID, Uint32 x, Uint32 y) :
+CGalaxySpriteObject(pMap, foeID, x, y, 0)
 {
 	setupGalaxyObjectOnMap(0x2486, A_SKYPEST_FLY);
 	mp_processState = &CSkypest::processFly;

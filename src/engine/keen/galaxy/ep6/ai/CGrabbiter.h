@@ -11,7 +11,7 @@ namespace galaxy
 class CGrabbiter : public CStunnable
 {
 public:
-    CGrabbiter(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y);
+    CGrabbiter(std::shared_ptr<CMap> pMap, const Uint16 foeID, const Uint32 x, const Uint32 y);
     
     void deserialize(CSaveGameController &savedGame) override;    
     void serialize(CSaveGameController &savedGame) override;

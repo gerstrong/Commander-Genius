@@ -12,7 +12,7 @@
 #include "../../common/ai/CEnemyShot.h"
 #include "../../common/ai/CBullet.h"
 #include "../../common/dialog/CMessageBoxBitmapGalaxy.h"
-#include "engine/core/mode/CGameMode.h"
+#include "engine/core/mode/Scene.h"
 #include <base/interface/misc.h>
 
 /*
@@ -52,8 +52,8 @@ constexpr int TIME_WALKING = 50;
 constexpr int JUMP_INERTIA = -120;
 
   
-CShockshound::CShockshound(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
-CStunnable(pmap, foeID, x, y),
+CShockshound::CShockshound(std::shared_ptr<CMap> pMap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
+CStunnable(pMap, foeID, x, y),
 mTimer(0)
 {
     mHealthPoints = 2;

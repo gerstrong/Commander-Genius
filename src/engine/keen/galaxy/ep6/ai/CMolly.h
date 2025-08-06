@@ -9,7 +9,7 @@ namespace galaxy
 class CMolly : public CGalaxySpriteObject
 {
 public:
-	CMolly(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y);
+	CMolly(std::shared_ptr<CMap> pMap, const Uint16 foeID, Uint32 x, Uint32 y);
 
 	/** Process walking of elder here */
 	void processMoving();
