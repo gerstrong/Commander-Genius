@@ -27,6 +27,8 @@ bool CWorldMap::init()
 	// Load the World map level.
 	std::unique_ptr<CMapLoaderGalaxy> MapLoader;
 
+    CMapPlayGalaxy::init();
+
 	if(gBehaviorEngine.getEpisode() == 4)
     {
         MapLoader.reset( new CMapLoaderGalaxyEp4( mObjectPtr, mInventoryVec) );

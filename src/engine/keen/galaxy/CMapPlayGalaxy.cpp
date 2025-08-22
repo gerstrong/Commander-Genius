@@ -28,8 +28,14 @@ CMapPlayGalaxy::CMapPlayGalaxy(std::vector<CInventory> &inventoryVec) :
 mInventoryVec(inventoryVec)
 {}
 
+bool CMapPlayGalaxy::init()
+{
+    mpMap.reset(new CMap());
+    return true;
+}
 
-void CMapPlayGalaxy::refreshLevelMap()
+
+void CMapPlayGalaxy::refreshGameplayMap()
 {
     assert(mpMap != nullptr);
 
@@ -422,6 +428,8 @@ bool CMapPlayGalaxy::operator<<(CSaveGameController &savedGame)
     std::unique_ptr<galaxy::CMapLoaderGalaxy> mapLoader;
     const auto episode = gBehaviorEngine.getEpisode();
 
+    mpMap.reset(new CMap());
+
     if(episode == 4)
     {
         mapLoader.reset( new galaxy::CMapLoaderGalaxyEp4( mObjectPtr, mInventoryVec) );
@@ -608,6 +616,8 @@ void CMapPlayGalaxy::operator>>(GsKit::ptree &levelNode)
 void CMapPlayGalaxy::operator<<(GsKit::ptree &levelNode)
 {
     int level = levelNode.get<int>("level", 0);
+
+    init();
 
     std::unique_ptr<galaxy::CMapLoaderGalaxy> mapLoader;
     const unsigned int episode = gBehaviorEngine.getEpisode();

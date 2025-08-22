@@ -33,7 +33,9 @@ class CMapPlayGalaxy
 public:
     CMapPlayGalaxy(std::vector<CInventory> &inventoryVec);
 
-    void refreshLevelMap();
+    void refreshGameplayMap();
+
+    virtual bool init();
 
     /*
      * \brief Just tells the name of the level. Every Galaxy Level with a name

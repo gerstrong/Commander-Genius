@@ -90,6 +90,8 @@ void CLevelPlay::reloadLevel()
 
 bool CLevelPlay::loadLevel(const int sprVar, const Uint16 level)
 {
+    mpMap.reset(new CMap());
+
     if(!loadMap( level ))
     {
         return false;

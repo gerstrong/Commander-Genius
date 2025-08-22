@@ -136,7 +136,7 @@ bool CPlayGameGalaxy::loadXMLGameState()
     if(active)
     {
         mWorldMapActive = true;
-        m_WorldMap.refreshLevelMap();
+        m_WorldMap.refreshGameplayMap();
     }
     m_WorldMap << wmNode;
 
@@ -146,8 +146,8 @@ bool CPlayGameGalaxy::loadXMLGameState()
     if( active )
     {
         mWorldMapActive = false;
-        m_LevelPlay.refreshLevelMap();
         m_LevelPlay << levelPlayNode;
+        m_LevelPlay.refreshGameplayMap();
     }
 
     return true;
@@ -225,10 +225,11 @@ bool CPlayGameGalaxy::init()
     mGameOverTriggered = false;
     gGraphics.optimizeSprites();
 
+
     if(m_Level == 0)
     {
         mWorldMapActive = true;
-        m_WorldMap.refreshLevelMap();
+        m_WorldMap.refreshGameplayMap();
         m_WorldMap.loadAndPlayMusic();
     }
     else
@@ -236,7 +237,7 @@ bool CPlayGameGalaxy::init()
         // manually a level has been loaded
         mWorldMapActive = false;
         m_LevelPlay.loadLevel(0, m_Level);
-        m_LevelPlay.refreshLevelMap();
+        m_LevelPlay.refreshGameplayMap();
     }
 
     const int numPlayers = gBehaviorEngine.numPlayers();
@@ -427,12 +428,12 @@ void CPlayGameGalaxy::pumpEvent(const std::shared_ptr<CEvent> &evPtr)
                 {
                     gAudio.playSound( int(GameSound::ENTER_LEVEL) );
                     mWorldMapActive = false;
-                    m_LevelPlay.refreshLevelMap();
+                    m_LevelPlay.refreshGameplayMap();
                 }
                 else
                 {
                     mWorldMapActive = true;
-                    m_WorldMap.refreshLevelMap();
+                    m_WorldMap.refreshGameplayMap();
                     showModalMsgWithBmp(0, "This Level seems to be broken",
                                    105, LEFT, false, nullptr);
                 }
@@ -478,7 +479,7 @@ void CPlayGameGalaxy::pumpEvent(const std::shared_ptr<CEvent> &evPtr)
         const std::string loading_text = gBehaviorEngine.getString(levelLoadText);
 
         mWorldMapActive = true;
-        m_WorldMap.refreshLevelMap();
+        m_WorldMap.refreshGameplayMap();
 
         if(newLevel == 0)
         {
@@ -499,7 +500,7 @@ void CPlayGameGalaxy::pumpEvent(const std::shared_ptr<CEvent> &evPtr)
             gMusicPlayer.stop();            
             m_LevelPlay.loadLevel(ev->who, newLevel);
             mWorldMapActive = false;
-            m_LevelPlay.refreshLevelMap();
+            m_LevelPlay.refreshGameplayMap();
         }
     }
     else if( const auto ev = std::dynamic_pointer_cast<const EventDieKeenPlayer>(evPtr) )
@@ -548,7 +549,7 @@ void CPlayGameGalaxy::pumpEvent(const std::shared_ptr<CEvent> &evPtr)
     {
         gMusicPlayer.stop();
         mWorldMapActive = true;
-        m_WorldMap.refreshLevelMap();
+        m_WorldMap.refreshGameplayMap();
         m_WorldMap.loadAndPlayMusic();
         gEventManager.add( new EventPlayerRideFoot(*ev) );
     }

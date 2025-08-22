@@ -19,7 +19,7 @@ class CWorldMap : public CMapPlayGalaxy
 public:
     CWorldMap(std::vector<CInventory> &inventoryVec);
 
-    bool init();
+    virtual bool init() override;
 	void loadAndPlayMusic();
 
     void ponder(const float deltaT);
