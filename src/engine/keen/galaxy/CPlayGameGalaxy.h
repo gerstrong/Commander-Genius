@@ -68,6 +68,8 @@ private:
     SDL_Rect mMenuButtonRect = {0, 0, 24, 16};
 
     bool mGameOverTriggered = false;
+
+    bool mWorldMapActive = true;
 };
 
 }

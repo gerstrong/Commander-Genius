@@ -29,22 +29,14 @@ mInventoryVec(inventoryVec)
 {}
 
 
-void CMapPlayGalaxy::setActive(const bool value)
+void CMapPlayGalaxy::refreshLevelMap()
 {
-    mActive = value;
+    assert(mpMap != nullptr);
 
-    if(mActive)
-    {
-        mpMap->drawAll();
-
-        /*const auto scroll = mMap.getMainScrollCoords();
+    /*const auto scroll = mMap.getMainScrollCoords();
         gVideoDriver.updateScrollBuffer( scroll.x, scroll.y );*/
-        gVideoDriver.setRefreshSignal(true);
-    }
+    gVideoDriver.setRefreshSignal(true);
 }
-
-
-
 
 void CMapPlayGalaxy::pumpEvent(const std::shared_ptr<CEvent> &evPtr)
 {
@@ -193,8 +185,13 @@ void CMapPlayGalaxy::playMusic(const int track)
 
 void CMapPlayGalaxy::reloadBgMusic()
 {
-    gMusicPlayer.setIMFLoadTrackCallback(imfMusicTrackloader);
-    gMusicPlayer.load(mCurMusicTrack);
+    try{
+        gMusicPlayer.setIMFLoadTrackCallback(imfMusicTrackloader);
+        gMusicPlayer.load(mCurMusicTrack);
+    }
+    catch(...) {
+        throw "reloadBgMusic: unknown exception.";
+    }
 }
 
 void CMapPlayGalaxy::ponderBase(const float deltaT)
@@ -203,23 +200,20 @@ void CMapPlayGalaxy::ponderBase(const float deltaT)
 
     auto &mplayer = gMusicPlayer;
     const auto curTrack = mplayer.getCurTrack();
-    if(mCurMusicTrack != curTrack)
-    {
+
+    if(mCurMusicTrack != curTrack){
         reloadBgMusic();
     }
 
-
     // Check if the engine need to be paused
-    for( auto &inv : mInventoryVec)
-    {
+    for( auto &inv : mInventoryVec) {
         oneInvOpen |= inv.showStatus();
     }
 
     // Animate the tiles of the map
     mpMap->m_animation_enabled = !oneInvOpen;
 
-    if(mMsgBoxOpen)
-    {
+    if(mMsgBoxOpen) {
         mpMap->m_animation_enabled = true;
     }
 

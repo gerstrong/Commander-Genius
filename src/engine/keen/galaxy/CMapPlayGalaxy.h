@@ -33,13 +33,7 @@ class CMapPlayGalaxy
 public:
     CMapPlayGalaxy(std::vector<CInventory> &inventoryVec);
 
-    bool isActive() const
-    {
-        return mActive;
-    }
-
-
-    void setActive(const bool value);
+    void refreshLevelMap();
 
     /*
      * \brief Just tells the name of the level. Every Galaxy Level with a name
@@ -100,7 +94,6 @@ public:
 
 protected:
     std::vector< std::shared_ptr<CGalaxySpriteObject> > mObjectPtr;
-    bool mActive = false;
 
     std::shared_ptr<CMap> mpMap;
     std::vector<CInventory> &mInventoryVec;

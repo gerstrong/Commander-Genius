@@ -133,14 +133,20 @@ bool CPlayGameGalaxy::loadXMLGameState()
     bool active;
     ptree &wmNode = stateNode.get_child("WorldMap");
     active = wmNode.get<bool>("<xmlattr>.active", false);
-    m_WorldMap.setActive(active);
+    if(active)
+    {
+        mWorldMapActive = true;
+        m_WorldMap.refreshLevelMap();
+    }
     m_WorldMap << wmNode;
 
     ptree &levelPlayNode = stateNode.get_child("LevelPlay");
     active = levelPlayNode.get<bool>("<xmlattr>.active");
-    m_LevelPlay.setActive(active);
+
     if( active )
     {
+        mWorldMapActive = false;
+        m_LevelPlay.refreshLevelMap();
         m_LevelPlay << levelPlayNode;
     }
 
@@ -187,12 +193,12 @@ bool CPlayGameGalaxy::saveXMLGameState()
         mInventoryVec[id] >> invNode;
     }
 
-    bool active = m_WorldMap.isActive();
+    bool active = mWorldMapActive;
     ptree &wmNode = stateNode.add("WorldMap", "");
     wmNode.put("<xmlattr>.active", active);
     m_WorldMap >> wmNode;
 
-    active = m_LevelPlay.isActive();
+    active = !mWorldMapActive;
     ptree &levelPlayNode = stateNode.add("LevelPlay", "");
     levelPlayNode.put("<xmlattr>.active", active);
 
@@ -221,14 +227,16 @@ bool CPlayGameGalaxy::init()
 
     if(m_Level == 0)
     {
-        m_WorldMap.setActive(true);
+        mWorldMapActive = true;
+        m_WorldMap.refreshLevelMap();
         m_WorldMap.loadAndPlayMusic();
     }
     else
     {
         // manually a level has been loaded
+        mWorldMapActive = false;
         m_LevelPlay.loadLevel(0, m_Level);
-        m_LevelPlay.setActive(true);
+        m_LevelPlay.refreshLevelMap();
     }
 
     const int numPlayers = gBehaviorEngine.numPlayers();
@@ -417,13 +425,14 @@ void CPlayGameGalaxy::pumpEvent(const std::shared_ptr<CEvent> &evPtr)
             {
                 if(m_LevelPlay.loadLevel(ev->mSprVar, newLevel))
                 {
-                    m_WorldMap.setActive(false);
                     gAudio.playSound( int(GameSound::ENTER_LEVEL) );
-                    m_LevelPlay.setActive(true);
+                    mWorldMapActive = false;
+                    m_LevelPlay.refreshLevelMap();
                 }
                 else
                 {
-                    m_WorldMap.setActive(true);
+                    mWorldMapActive = true;
+                    m_WorldMap.refreshLevelMap();
                     showModalMsgWithBmp(0, "This Level seems to be broken",
                                    105, LEFT, false, nullptr);
                 }
@@ -468,8 +477,8 @@ void CPlayGameGalaxy::pumpEvent(const std::shared_ptr<CEvent> &evPtr)
 
         const std::string loading_text = gBehaviorEngine.getString(levelLoadText);
 
-        m_LevelPlay.setActive(false);
-        m_WorldMap.setActive(true);
+        mWorldMapActive = true;
+        m_WorldMap.refreshLevelMap();
 
         if(newLevel == 0)
         {
@@ -487,10 +496,10 @@ void CPlayGameGalaxy::pumpEvent(const std::shared_ptr<CEvent> &evPtr)
 
         if(newLevel != 0)
         {
-            gMusicPlayer.stop();
-            m_WorldMap.setActive(false);
+            gMusicPlayer.stop();            
             m_LevelPlay.loadLevel(ev->who, newLevel);
-            m_LevelPlay.setActive(true);
+            mWorldMapActive = false;
+            m_LevelPlay.refreshLevelMap();
         }
     }
     else if( const auto ev = std::dynamic_pointer_cast<const EventDieKeenPlayer>(evPtr) )
@@ -501,8 +510,8 @@ void CPlayGameGalaxy::pumpEvent(const std::shared_ptr<CEvent> &evPtr)
 
     }
     else if( const auto ev = std::dynamic_pointer_cast<const RevivePlayer>(evPtr) )
-    {
-        if(m_LevelPlay.isActive())
+    {        
+        if(!mWorldMapActive)
         {
             // Check for an alive player and get his coordinates
             if(auto playerPtr =
@@ -538,28 +547,27 @@ void CPlayGameGalaxy::pumpEvent(const std::shared_ptr<CEvent> &evPtr)
     else if( const auto ev = std::dynamic_pointer_cast<const EventExitLevelWithFoot>(evPtr) )
     {
         gMusicPlayer.stop();
-        m_LevelPlay.setActive(false);
-        m_WorldMap.setActive(true);
+        mWorldMapActive = true;
+        m_WorldMap.refreshLevelMap();
         m_WorldMap.loadAndPlayMusic();
         gEventManager.add( new EventPlayerRideFoot(*ev) );
     }
     else if( const auto ev =  std::dynamic_pointer_cast<const EventPlayTrack>(evPtr) )
     {
-        if(m_LevelPlay.isActive())
+        if(!mWorldMapActive)
         {
             m_LevelPlay.playMusic(ev->track);
         }
-
-        if(m_WorldMap.isActive())
+        else
         {
             m_WorldMap.playMusic(ev->track);
         }
     }
-    else if(m_WorldMap.isActive())
+    else if(mWorldMapActive)
     {
         m_WorldMap.pumpEvent(evPtr);
     }
-    else if(m_LevelPlay.isActive())
+    else if(!mWorldMapActive)
     {
         m_LevelPlay.pumpEvent(evPtr);
     }
@@ -628,7 +636,7 @@ void CPlayGameGalaxy::ponder(const float deltaT)
             {
                 CMapPlayGalaxy *pMap = &m_WorldMap;
 
-                if(!pMap->isActive())
+                if(!mWorldMapActive)
                     pMap = &m_LevelPlay;
 
                 inv.Item.mLevelName = pMap->getLevelName();
@@ -652,16 +660,13 @@ void CPlayGameGalaxy::ponder(const float deltaT)
         return;
     }
 
-
-    // process World Map if active. At the start it's enabled
-    if(m_WorldMap.isActive())
+    // process inlevel play if active. At the start it's disabled, so m_WorldMap turns is active.
+    if(mWorldMapActive)
     {
         m_WorldMap.setMsgBoxOpen(blockGamePlay);
         m_WorldMap.ponder(deltaT);
     }
-
-    // process inlevel play if active. At the start it's disabled, m_WorldMap turns it on.
-    if(m_LevelPlay.isActive())
+    else
     {
         m_LevelPlay.setMsgBoxOpen(blockGamePlay);
         m_LevelPlay.ponder(deltaT);
@@ -749,13 +754,11 @@ void CPlayGameGalaxy::render()
     }
 
     // Render World Map
-    if(m_WorldMap.isActive())
+    if(mWorldMapActive)
     {
         m_WorldMap.render();
     }
-
-    // Render the Level Scene
-    if(m_LevelPlay.isActive())
+    else // Render the Level Scene
     {
         m_LevelPlay.render();
     }
