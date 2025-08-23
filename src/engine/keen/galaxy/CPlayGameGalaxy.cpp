@@ -130,12 +130,13 @@ bool CPlayGameGalaxy::loadXMLGameState()
 
 
 
-    bool active;
+    bool active = true;
     ptree &wmNode = stateNode.get_child("WorldMap");
     active = wmNode.get<bool>("<xmlattr>.active", false);
     if(active)
     {
         mWorldMapActive = true;
+        m_Level = 0;
         m_WorldMap.refreshGameplayMap();
     }
     m_WorldMap << wmNode;
@@ -146,7 +147,8 @@ bool CPlayGameGalaxy::loadXMLGameState()
     if( active )
     {
         mWorldMapActive = false;
-        m_LevelPlay << levelPlayNode;
+        m_Level = levelPlayNode.get<int>("level", 0);
+        m_LevelPlay << levelPlayNode;        
         m_LevelPlay.refreshGameplayMap();
     }
 
@@ -236,7 +238,7 @@ bool CPlayGameGalaxy::init()
     {
         // manually a level has been loaded
         mWorldMapActive = false;
-        m_LevelPlay.loadLevel(0, m_Level);
+        m_LevelPlay.loadLevel(0, m_Level);        
         m_LevelPlay.refreshGameplayMap();
     }
 
