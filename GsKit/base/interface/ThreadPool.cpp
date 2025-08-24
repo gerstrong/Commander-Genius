@@ -253,7 +253,7 @@ bool ThreadPool::waitAll() {
 }*/
 
 
-ThreadPool* threadPool = NULL;
+ThreadPool* threadPool = nullptr;
 
 void InitThreadPool(unsigned int size)
 {
@@ -267,12 +267,14 @@ void InitThreadPool(unsigned int size)
     }
 }
 
-void UnInitThreadPool() {
+void UnInitThreadPool()
+{
 	if(threadPool) {
 		delete threadPool;
-		threadPool = NULL;
-	} else
+        threadPool = nullptr;
+    } else {
 		errors << "ThreadPool already uninited" << endl;
+    }
 }
 
 
