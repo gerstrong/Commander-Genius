@@ -1,8 +1,3 @@
-# CMake file for development of Commander Genius (taken from OLX)
-# This CMake file is used under Linux normally.
-
-cmake_minimum_required(VERSION 3.7)
-
 Project(GsKit_base_interface)
 
 set(HEADERS Base64.h         Event.h       MathLib.h        Ref.h          Utils.h

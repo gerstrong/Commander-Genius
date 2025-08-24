@@ -1,7 +1,6 @@
 #ifndef DEPKLITE_H
 #define DEPKLITE_H
 
-#include <cstdbool>
 #include <cstdio>
 #include <vector>
 #include <string>
