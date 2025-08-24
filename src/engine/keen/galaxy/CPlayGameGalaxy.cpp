@@ -128,8 +128,6 @@ bool CPlayGameGalaxy::loadXMLGameState()
         }
     }
 
-
-
     bool active = true;
     ptree &wmNode = stateNode.get_child("WorldMap");
     active = wmNode.get<bool>("<xmlattr>.active", false);

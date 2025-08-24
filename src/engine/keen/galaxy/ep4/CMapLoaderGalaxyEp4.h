@@ -10,6 +10,8 @@
 
 #include "../common/CMapLoaderGalaxy.h"
 
+#include <memory>
+
 namespace galaxy
 {
 
@@ -29,7 +31,7 @@ public:
 	/**
 	 * @brief	Loads a foe given by the coordiantes
 	 */
-    CGalaxySpriteObject* addFoe(std::shared_ptr<CMap> map,
+    std::shared_ptr<CGalaxySpriteObject> addFoe(std::shared_ptr<CMap> map,
                                 word foe, const size_t x, const size_t y);
 };
 

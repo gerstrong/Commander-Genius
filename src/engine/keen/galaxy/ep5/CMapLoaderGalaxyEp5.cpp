@@ -67,7 +67,7 @@ bool CMapLoaderGalaxyEp5::isKeenPlayer(const int foeID)
 /**
  * @brief	Loads a foe given by the coordiantes
  */
-CGalaxySpriteObject* CMapLoaderGalaxyEp5::addFoe(std::shared_ptr<CMap> map, word foe, size_t x, size_t y)
+std::shared_ptr<CGalaxySpriteObject> CMapLoaderGalaxyEp5::addFoe(std::shared_ptr<CMap> map, word foe, size_t x, size_t y)
 {
 	CGalaxySpriteObject* p_newfoe = nullptr;
 	
@@ -120,7 +120,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp5::addFoe(std::shared_ptr<CMap> map, word
 	
 	// If a foe was found, just return.
 	if( p_newfoe )
-		return p_newfoe;
+        return std::shared_ptr<CGalaxySpriteObject>(p_newfoe);
 	
 	const Difficulty difficulty = gBehaviorEngine.mDifficulty;
 
@@ -410,8 +410,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp5::addFoe(std::shared_ptr<CMap> map, word
 		break;
 	}
 
-
-	return p_newfoe;
+    return std::shared_ptr<CGalaxySpriteObject>(p_newfoe);
 }
 
 }

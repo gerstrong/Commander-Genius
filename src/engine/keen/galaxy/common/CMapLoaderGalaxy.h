@@ -19,6 +19,8 @@
 #include "CInventory.h"
 #include "CGalaxySpriteObject.h"
 
+#include <memory>
+
 namespace galaxy
 {
 
@@ -39,7 +41,7 @@ public:
 	
     virtual bool isKeenPlayer(const int foeID) = 0;
 
-    virtual CGalaxySpriteObject* addFoe(std::shared_ptr<CMap> map, word foe, size_t x, size_t y) = 0;
+    virtual std::shared_ptr<CGalaxySpriteObject> addFoe(std::shared_ptr<CMap> map, word foe, size_t x, size_t y) = 0;
 	virtual ~CMapLoaderGalaxy() {}
 
     int numLoadedPlayers()

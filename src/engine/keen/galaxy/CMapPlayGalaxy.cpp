@@ -37,10 +37,8 @@ bool CMapPlayGalaxy::init()
 
 void CMapPlayGalaxy::refreshGameplayMap()
 {
-    assert(mpMap != nullptr);
-
-    /*const auto scroll = mMap.getMainScrollCoords();
-        gVideoDriver.updateScrollBuffer( scroll.x, scroll.y );*/
+    const auto scroll = mpMap->getMainScrollCoords();
+    gVideoDriver.updateScrollBuffer( scroll.x, scroll.y );
     gVideoDriver.setRefreshSignal(true);
 }
 
@@ -486,12 +484,11 @@ bool CMapPlayGalaxy::operator<<(CSaveGameController &savedGame)
         savedGame.decodeData(x);
         savedGame.decodeData(y);
 
-        CGalaxySpriteObject *pNewfoe = mapLoader->addFoe(mpMap, foeID, x, y);
+        auto pNewfoe = mapLoader->addFoe(mpMap, foeID, x, y);
 
-        // TODO: Be careful here is a bad Null Pointer inside that structure
-        if(pNewfoe == nullptr)
+        if(!pNewfoe)
         {
-            pNewfoe = new CGalaxySpriteObject(mpMap, foeID, x, y, 0);
+            pNewfoe.reset(new CGalaxySpriteObject(mpMap, foeID, x, y, 0));
         }
 
         savedGame.decodeData( pNewfoe->mIsDead );
@@ -669,65 +666,61 @@ void CMapPlayGalaxy::operator<<(GsKit::ptree &levelNode)
     mpMap->mNumFuses = 0;
     mpMap->mFuseInLevel = false;
 
-    gLogging << "Restoring enemies status." << CLogFile::endl;
+    gLogging << "Restoring sprite states." << CLogFile::endl;
 
     for( auto &levelItem : levelNode )
     {
-        if(levelItem.first == "Sprite")
+        if(levelItem.first != "Sprite")
+            continue;
+
+        auto &spriteNode = levelItem.second;
+
+        foeID = spriteNode.get<int>("<xmlattr>.id");
+        int sprVarID = spriteNode.get<int>("<xmlattr>.variant", 0);
+        const auto x = spriteNode.get<int>("<xmlattr>.x", 0);
+        const auto y = spriteNode.get<int>("<xmlattr>.y", 0);
+
+        if(x < 0 || y < 0)
         {
-            auto &spriteNode = levelItem.second;
+            gLogging << "Warning: Ignoring Position (" << x << ","
+                     << y << ") of foe " << foeID << "." << CLogFile::endl;
 
-            foeID = spriteNode.get<int>("<xmlattr>.id");
-            int sprVarID = spriteNode.get<int>("<xmlattr>.variant", 0);
-            const auto x = spriteNode.get<int>("<xmlattr>.x", 0);
-            const auto y = spriteNode.get<int>("<xmlattr>.y", 0);
+            continue;
+        }
 
-            if(x < 0 || y < 0)
-            {
-                gLogging << "Warning: Ignoring Position (" << x << ","
-                         << y << ") of foe " << foeID << "." << CLogFile::endl;
+        auto pNewfoe = mapLoader->addFoe(mpMap, foeID, x, y);
 
-                continue;
-            }
+        if(pNewfoe == nullptr)
+        {
+            gLogging << "Warning: Creating Dummy object of unknown type(" << x << ","
+                     << y << ") of foe " << foeID << ". For some reason your savestate has it." << CLogFile::endl;
 
-            CGalaxySpriteObject *pNewfoe = mapLoader->addFoe(mpMap, foeID, x, y);
+            pNewfoe.reset(new CGalaxySpriteObject(mpMap, foeID, x, y, sprVarID));
+        }
 
-            // TODO: Be careful here is a bad Null Pointer inside that structure
-            if(pNewfoe == nullptr)
-            {
-                pNewfoe = new CGalaxySpriteObject(mpMap, foeID, x, y, sprVarID);
-            }
+        pNewfoe->mIsDead = spriteNode.get<bool>("dead", false);
+        pNewfoe->onscreen = spriteNode.get<bool>("onscreen", false);
+        pNewfoe->hasbeenonscreen = spriteNode.get<bool>("hasbeenonscreen", false);
+        pNewfoe->exists = spriteNode.get<bool>("exists", false);
+        pNewfoe->blockedd = spriteNode.get<bool>("blockedd", false);
+        pNewfoe->blockedu = spriteNode.get<bool>("blockedu", false);
+        pNewfoe->blockedl = spriteNode.get<bool>("blockedl", false);
+        pNewfoe->blockedr = spriteNode.get<bool>("blockedr", false);
+        pNewfoe->xDirection = spriteNode.get<int>("xDirection", 0);
+        pNewfoe->yDirection = spriteNode.get<int>("yDirection", 0);
+        pNewfoe->mHealthPoints = spriteNode.get<int>("health", 1);
+        pNewfoe->canbezapped = spriteNode.get<bool>("canbezapped", false);
+        pNewfoe->cansupportplayer = spriteNode.get<bool>("cansupportplayer", false);
+        pNewfoe->inhibitfall = spriteNode.get<bool>("inhibitfall", false);
+        pNewfoe->honorPriority = spriteNode.get<bool>("honorPriority", false);
+        pNewfoe->mSpriteIdx = spriteNode.get<int>("spritePic", 1);
+        const Uint16 actionNumber = spriteNode.get<int>("Actionumber", 1);
+        pNewfoe->deserialize(spriteNode);
 
-            pNewfoe->mIsDead = spriteNode.get<bool>("dead", false);
-            pNewfoe->onscreen = spriteNode.get<bool>("onscreen", false);
-            pNewfoe->hasbeenonscreen = spriteNode.get<bool>("hasbeenonscreen", false);
-            pNewfoe->exists = spriteNode.get<bool>("exists", false);
-            pNewfoe->blockedd = spriteNode.get<bool>("blockedd", false);
-            pNewfoe->blockedu = spriteNode.get<bool>("blockedu", false);
-            pNewfoe->blockedl = spriteNode.get<bool>("blockedl", false);
-            pNewfoe->blockedr = spriteNode.get<bool>("blockedr", false);
-            pNewfoe->xDirection = spriteNode.get<int>("xDirection", 0);
-            pNewfoe->yDirection = spriteNode.get<int>("yDirection", 0);
-            pNewfoe->mHealthPoints = spriteNode.get<int>("health", 1);
-            pNewfoe->canbezapped = spriteNode.get<bool>("canbezapped", false);
-            pNewfoe->cansupportplayer = spriteNode.get<bool>("cansupportplayer", false);
-            pNewfoe->inhibitfall = spriteNode.get<bool>("inhibitfall", false);
-            pNewfoe->honorPriority = spriteNode.get<bool>("honorPriority", false);
-            pNewfoe->mSpriteIdx = spriteNode.get<int>("spritePic", 1);
-            const Uint16 actionNumber = spriteNode.get<int>("Actionumber", 1);
-            pNewfoe->deserialize(spriteNode);
-
-            if(pNewfoe->exists)
-            {
-                pNewfoe->setActionForce(actionNumber);
-                std::shared_ptr<CGalaxySpriteObject> newFoe(pNewfoe);
-                mObjectPtr.push_back(newFoe);
-            }
-            else
-            {
-                delete pNewfoe;
-                pNewfoe = nullptr;
-            }
+        if(pNewfoe->exists)
+        {
+            pNewfoe->setActionForce(actionNumber);
+            mObjectPtr.push_back(pNewfoe);
         }
     }
 

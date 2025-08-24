@@ -78,9 +78,8 @@ bool CMapLoaderGalaxyEp4::isKeenPlayer(const int foeID)
 /**
  * @brief	Loads a foe given by the coordiantes
  */
-CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(std::shared_ptr<CMap> map, word foe, const size_t x, const size_t y)
+std::shared_ptr<CGalaxySpriteObject> CMapLoaderGalaxyEp4::addFoe(std::shared_ptr<CMap> map, word foe, const size_t x, const size_t y)
 {
-
 	CGalaxySpriteObject* p_newfoe = nullptr;
 
     const int totalNumPlayer = mInventoryVec.size();
@@ -120,7 +119,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(std::shared_ptr<CMap> map, word
 
 	// If a foe was found just return.
 	if( p_newfoe )
-		return p_newfoe;
+        return std::shared_ptr<CGalaxySpriteObject>(p_newfoe);
 
 
 	// otherwise look for special foe.
@@ -443,7 +442,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(std::shared_ptr<CMap> map, word
 	}
 
 
-	return p_newfoe;
+    return std::shared_ptr<CGalaxySpriteObject>(p_newfoe);
 }
 
 }
