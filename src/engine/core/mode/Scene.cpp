@@ -2,7 +2,7 @@
 #include "base/GsLogging.h"
 
 // Implementation of Scene
-bool Scene::needInit() {
+bool Scene::needInit() const {
     return (mInited==false);
 }
 
@@ -11,14 +11,14 @@ void Scene::ponder(const float deltaT)
     try {
         if(needInit()) {
             if(!init())
-                throw "Cannnot init CPassive.";
+                throw "Cannnot init Scene.";
 
             Scene::init();
             return;
         }
     }
     catch(std::exception const& ex) {
-        gLogging << "Exception while pondering CPassive: "
+        gLogging << "Exception while pondering Scene: "
                  << ex.what() << CLogFile::endl;
     }
     catch (...) {

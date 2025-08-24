@@ -221,10 +221,13 @@ bool CPlayGameGalaxy::saveXMLGameState()
 // Setup for the ingame
 bool CPlayGameGalaxy::init()
 {
-    // Required to sprites are correctly masked
-    mGameOverTriggered = false;
-    gGraphics.optimizeSprites();
+    if(!CPlayGame::init())
+        return false;
 
+    mGameOverTriggered = false;
+
+    // Required so sprites are correctly masked
+    gGraphics.optimizeSprites();
 
     if(m_Level == 0)
     {

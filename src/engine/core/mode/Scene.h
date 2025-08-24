@@ -68,7 +68,7 @@ public:
     virtual void ponder(const float deltaT);
     virtual void render() = 0;
 
-    bool needInit();
+    bool needInit() const;
 
 protected:
     virtual bool init();
