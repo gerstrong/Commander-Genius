@@ -247,7 +247,7 @@ bool CPlayGameVorticon::saveXMLGameState()
 
     const unsigned int numPlayers = gBehaviorEngine.numPlayers();
 
-    // Now save the inventory of every player
+    // Now save every player, especially their inventories
     for( size_t i=0 ; i<numPlayers ; i++ )
     {
         auto &player = m_Player[i];

@@ -547,10 +547,8 @@ void CMapPlayGalaxy::operator>>(GsKit::ptree &levelNode)
     // let's filter the Foe out that won't do any good, by having an invalid foe id
     for( auto &it : mObjectPtr )
     {
-        if( it->mFoeID != 0 )
-        {
-            filteredObjects.push_back( it );
-        }
+        if( it->mFoeID == 0 ) continue;
+        filteredObjects.push_back( it );
     }
 
     const size_t size = filteredObjects.size();
