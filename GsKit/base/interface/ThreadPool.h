@@ -26,9 +26,7 @@ struct Action {
 	virtual int handle() = 0;
 };
 
-
 struct ThreadPoolItem {
-    ThreadPool* pool = nullptr;
     SDL_Thread* thread = nullptr;
 	std::string name;
     bool working = false;
@@ -48,27 +46,34 @@ private:
     Action* nextAction = nullptr;
     bool nextIsHeadless = false;
     std::string nextName;
-    ThreadPoolItem* nextData = nullptr;
+    std::shared_ptr<ThreadPoolItem> nextData;
     bool quitting = false;
-    std::set< ThreadPoolItem* > availableThreads;
-    std::set< ThreadPoolItem* > usedThreads;
+    std::set< std::shared_ptr<ThreadPoolItem> > availableThreads;
+    std::set< std::shared_ptr<ThreadPoolItem> > usedThreads;
+
 	void prepareNewThread();
 	static int threadWrapper(void* param);
     SDL_mutex* startMutex = nullptr;
 public:
-	ThreadPool(unsigned int size = 5);
+    ThreadPool();
 	~ThreadPool();
-	
-    ThreadPoolItem* start(ThreadFunc fct, void* param = NULL, const std::string& name = "unknown worker");
+
+    void prepareNewThreads(const unsigned int size);
+
+    std::shared_ptr<ThreadPoolItem>
+    start(ThreadFunc fct, void* param = nullptr, const std::string& name = "unknown worker");
+
 	// WARNING: if you set headless, you cannot use wait() and you should not save the returned ThreadPoolItem*
-	ThreadPoolItem* start(Action* act, const std::string& name = "unknown worker", bool headless = false); // ThreadPool will own and free the Action
-    bool finalizeIfReady(ThreadPoolItem* thread, int* status = nullptr);
+    std::shared_ptr<ThreadPoolItem>
+    start(Action* act, const std::string& name = "unknown worker", const bool headless = false); // ThreadPool will own and free the Action
+
+    bool finalizeIfReady(std::shared_ptr<ThreadPoolItem> &thread, int* status = nullptr);
     bool wait(ThreadPoolItem* thread, int* status = nullptr);
 	bool waitAll();
 	void dumpState(CmdLineIntf& cli) const;
 };
 
-extern std::unique_ptr<ThreadPool> gThreadPool;
+extern std::shared_ptr<ThreadPool> gThreadPool;
 
 void InitThreadPool(const unsigned int size = 5);
 void UnInitThreadPool();
@@ -84,7 +89,7 @@ struct _ThreadFuncWrapper {
 				return (((_T*)obj) ->* _func)();
 			}
 			
-			static ThreadPoolItem* startThread(_T* const obj, const std::string& name) {
+            static std::shared_ptr<ThreadPoolItem> startThread(_T* const obj, const std::string& name) {
                 return gThreadPool->start((ThreadFunc)&wrapper, (void*)obj, name);
 			}
 		};

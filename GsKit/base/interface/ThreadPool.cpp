@@ -16,18 +16,16 @@
 #include "ReadWriteLock.h" // for ScopedLock
 
 
-ThreadPool::ThreadPool(const unsigned int size) {
-    nextAction = nullptr; nextIsHeadless = false; nextData = NULL;
+ThreadPool::ThreadPool() {
+    nextAction = nullptr;
+    nextIsHeadless = false;
+    nextData = nullptr;
 	quitting = false;
 	mutex = SDL_CreateMutex();
 	awakeThread = SDL_CreateCond();
 	threadStartedWork = SDL_CreateCond();
 	threadStatusChanged = SDL_CreateCond();
 	startMutex = SDL_CreateMutex();
-
-	notes << "ThreadPool: creating " << size << " threads ..." << endl;
-	while(availableThreads.size() < size)
-		prepareNewThread();
 }
 
 
@@ -46,8 +44,8 @@ ThreadPool::~ThreadPool() {
 		SDL_mutexP(mutex);
         SDL_DestroyCond(threadItem->finishedSignal);
         SDL_DestroyCond(threadItem->readyForNewWork);
-        delete threadItem;
 	}
+
 	availableThreads.clear();
 	SDL_mutexV(mutex);
 
@@ -58,13 +56,20 @@ ThreadPool::~ThreadPool() {
 	SDL_DestroyMutex(mutex);
 }
 
+void ThreadPool::prepareNewThreads(const unsigned int size)
+{
+    notes << "ThreadPool: creating " << size << " threads ..." << endl;
+    while(availableThreads.size() < size)
+        prepareNewThread();
+}
+
 void ThreadPool::prepareNewThread() {
-	ThreadPoolItem* t = new ThreadPoolItem();
-	t->pool = this;
+
+    auto t = std::make_shared<ThreadPoolItem>();
 	t->finishedSignal = SDL_CreateCond();
 	t->readyForNewWork = SDL_CreateCond();
 	t->finished = false;
-	t->working = false;
+	t->working = false;    
 
     availableThreads.insert(t);
 
@@ -72,7 +77,9 @@ void ThreadPool::prepareNewThread() {
     const unsigned int numThreads = availableThreads.size();
     const std::string threadName = "threadItem" + to_string(numThreads);
 
-    SDL_Thread *sdlThread = SDL_CreateThread(threadWrapper, threadName.c_str(), t);
+    // Note: Be careful, the address of the shared ptr is passed. Needed later when we cast back through
+    // The thread wrapper
+    SDL_Thread *sdlThread = SDL_CreateThread(threadWrapper, threadName.c_str(), t.get());
 
     if(!sdlThread)
     {
@@ -84,55 +91,77 @@ void ThreadPool::prepareNewThread() {
 #else
     t->thread = SDL_CreateThread(threadWrapper, t);
 #endif
+
+
 }
 
 int ThreadPool::threadWrapper(void* param)
 {
-	ThreadPoolItem* data = (ThreadPoolItem*)param;
+    ThreadPoolItem *raw = reinterpret_cast<ThreadPoolItem*>(param);
 
-	SDL_mutexP(data->pool->mutex);
+    auto pool = gThreadPool;
+    assert(pool);
+
+    SDL_mutexP(pool->mutex);
+
+    // find the right shared pointer to it.
+    std::shared_ptr<ThreadPoolItem> item;
+    for(auto &t : pool->availableThreads)
+    {
+        if(t.get() == raw)
+        {
+            item = t;
+            break;
+        }
+    }
+
+    assert(item);
+
     while(true)
     {
-        while(data->pool->nextAction == nullptr && !data->pool->quitting)
-			SDL_CondWait(data->pool->awakeThread, data->pool->mutex);
-		if(data->pool->quitting) break;
-		data->pool->usedThreads.insert(data);
-		data->pool->availableThreads.erase(data);
+        while(pool->nextAction == nullptr && !pool->quitting)
+            SDL_CondWait(pool->awakeThread, pool->mutex);
+        if(pool->quitting) break;
+        pool->usedThreads.insert(item);
+        pool->availableThreads.erase(item);
 
-        Action* act = data->pool->nextAction; data->pool->nextAction = nullptr;
-		data->headless = data->pool->nextIsHeadless;
-		data->name = data->pool->nextName;
-		data->finished = false;
-		data->working = true;
-		data->pool->nextData = data;
-		SDL_mutexV(data->pool->mutex);
+        Action* act = pool->nextAction; pool->nextAction = nullptr;
+        item->headless = pool->nextIsHeadless;
+        item->name = pool->nextName;
+        item->finished = false;
+        item->working = true;
+        pool->nextData = item;
+        SDL_mutexV(pool->mutex);
 
-		SDL_CondSignal(data->pool->threadStartedWork);
-        gLogging << "Running Thread: " << data->name << CLogFile::endl;
-		data->ret = act->handle();
+        SDL_CondSignal(pool->threadStartedWork);
+        gLogging << "Running Thread: " << item->name << CLogFile::endl;
+        item->ret = act->handle();
 		delete act;
-        gLogging << data->name + " [finished]" << CLogFile::endl ;
-		SDL_mutexP(data->pool->mutex);
-		data->finished = true;
-		SDL_CondSignal(data->pool->threadStatusChanged);
+        gLogging << item->name + " [finished]" << CLogFile::endl ;
+        SDL_mutexP(pool->mutex);
+        item->finished = true;
+        SDL_CondSignal(pool->threadStatusChanged);
 
-		if(!data->headless) { // headless means that we just can clean it up right now without waiting
-			SDL_CondSignal(data->finishedSignal);
-			while(data->working) SDL_CondWait(data->readyForNewWork, data->pool->mutex);
-		} else
-			data->working = false;
-		data->pool->usedThreads.erase(data);
-		data->pool->availableThreads.insert(data);
-		SDL_CondSignal(data->pool->threadStatusChanged);
+        if(!item->headless) { // headless means that we just can clean it up right now without waiting
+            SDL_CondSignal(item->finishedSignal);
+            while(item->working) SDL_CondWait(item->readyForNewWork, pool->mutex);
+        } else {
+            item->working = false;
+        }
+
+        pool->usedThreads.erase(item);
+        pool->availableThreads.insert(item);
+        SDL_CondSignal(pool->threadStatusChanged);
 		//setCurThreadName("");
 	}
 
-	SDL_mutexV(data->pool->mutex);
+    SDL_mutexV(pool->mutex);
 
 	return 0;
 }
 
-ThreadPoolItem* ThreadPool::start(Action* act, const std::string& name, bool headless)
+std::shared_ptr<ThreadPoolItem>
+ThreadPool::start(Action* act, const std::string& name, const bool headless)
 {
 	SDL_mutexP(startMutex); // If start() method will be called from different threads without mutex, hard-to-find crashes will occur
 	SDL_mutexP(mutex);
@@ -140,22 +169,25 @@ ThreadPoolItem* ThreadPool::start(Action* act, const std::string& name, bool hea
 		warnings << "no available thread in ThreadPool for " << name << ", creating new one..." << endl;
 		prepareNewThread();
 	}
-	assert(nextAction == NULL);
-	assert(nextData == NULL);
+    assert(nextAction == nullptr);
+    assert(nextData == nullptr);
 	nextAction = act;
 	nextIsHeadless = headless;
 	nextName = name;
 
 	SDL_CondSignal(awakeThread);
-	while(nextData == NULL) SDL_CondWait(threadStartedWork, mutex);
-	ThreadPoolItem* data = nextData; nextData = NULL;
+    while(nextData == nullptr) SDL_CondWait(threadStartedWork, mutex);
+    std::shared_ptr<ThreadPoolItem> data = nextData;
+    nextData = nullptr;
 	SDL_mutexV(mutex);
 
 	SDL_mutexV(startMutex);
 	return data;
 }
 
-ThreadPoolItem* ThreadPool::start(ThreadFunc fct, void* param, const std::string& name) {
+std::shared_ptr<ThreadPoolItem>
+ThreadPool::start(ThreadFunc fct, void* param, const std::string& name)
+{
 	struct StaticAction : Action {
 		ThreadFunc fct; void* param;
 		int handle() { return (*fct) (param); }
@@ -163,10 +195,10 @@ ThreadPoolItem* ThreadPool::start(ThreadFunc fct, void* param, const std::string
 	StaticAction* act = new StaticAction();
 	act->fct = fct;
 	act->param = param;
-	ThreadPoolItem* item = start(act, name);
+    auto item = start(act, name);
 	if(item) return item;
 	delete act;
-	return NULL;
+    return nullptr;
 }
 
 bool ThreadPool::wait(ThreadPoolItem* thread, int* status) {
@@ -187,7 +219,7 @@ bool ThreadPool::wait(ThreadPoolItem* thread, int* status) {
 }
 
 
-bool ThreadPool::finalizeIfReady(ThreadPoolItem* thread, int* status) {
+bool ThreadPool::finalizeIfReady(std::shared_ptr<ThreadPoolItem> &thread, int* status) {
 	if(!thread) return false;
 	SDL_mutexP(mutex);
 
@@ -215,22 +247,23 @@ bool ThreadPool::waitAll() {
 	SDL_mutexP(mutex);
 	while(usedThreads.size() > 0) {
         warnings << "ThreadPool: waiting for " << usedThreads.size() << " thread(s) to finish:" << endl;
-		for(std::set<ThreadPoolItem*>::iterator i = usedThreads.begin(); i != usedThreads.end(); ++i) {
-			if((*i)->working && (*i)->finished) {
-				warnings << "  thread " << (*i)->name << " is ready but was not cleaned up" << endl;
-				(*i)->working = false;
-				SDL_CondSignal((*i)->readyForNewWork);
-			}
-			else if((*i)->working && !(*i)->finished) {
-				warnings << "  thread " << (*i)->name << " is still working" << endl;
-			}
-			else if(!(*i)->working && !(*i)->headless && (*i)->finished) {
-				warnings << "  thread " << (*i)->name << " is cleaning itself up right now" << endl;
-			}
-			else {
-				warnings << "  thread " << (*i)->name << " is in an invalid state" << endl;
-			}
-		}
+        for (auto &t : usedThreads)
+        {
+            if(t->working && t->finished) {
+                warnings << "  thread " << t->name << " is ready but was not cleaned up" << endl;
+                t->working = false;
+                SDL_CondSignal(t->readyForNewWork);
+            }
+            else if(t->working && !t->finished) {
+                warnings << "  thread " << t->name << " is still working" << endl;
+            }
+            else if(!t->working && !t->headless && t->finished) {
+                warnings << "  thread " << t->name << " is cleaning itself up right now" << endl;
+            }
+            else {
+                warnings << "  thread " << t->name << " is in an invalid state" << endl;
+            }
+        }
 		SDL_CondWait(threadStatusChanged, mutex);
 	}
 	SDL_mutexV(mutex);
@@ -253,13 +286,14 @@ bool ThreadPool::waitAll() {
 }*/
 
 
-std::unique_ptr<ThreadPool> gThreadPool;
+std::shared_ptr<ThreadPool> gThreadPool;
 
 void InitThreadPool(const unsigned int size)
 {
     if(!gThreadPool)
     {
-        gThreadPool.reset(new ThreadPool(size));
+        gThreadPool.reset(new ThreadPool());
+        gThreadPool->prepareNewThreads(size);
     }
 	else
     {

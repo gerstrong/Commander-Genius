@@ -65,7 +65,7 @@ private:
     bool mRunning;
 
     ProgressStyle m_style;
-    ThreadPoolItem *mpThread;
+    std::shared_ptr<ThreadPoolItem> mpThread;
     GsSurface mProgressSfc;
 };
 

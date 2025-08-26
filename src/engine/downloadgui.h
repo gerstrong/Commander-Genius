@@ -98,8 +98,8 @@ private:
     int mDownloadErrorCode = 0;
     bool mCancelDownload = false;
 
-    ThreadPoolItem* mpGameDownloadThread = nullptr;
-    ThreadPoolItem *mpCatalogDownloadThread = nullptr;
+    std::shared_ptr<ThreadPoolItem> mpGameDownloadThread;
+    std::shared_ptr<ThreadPoolItem> mpCatalogDownloadThread;
 
     int m_DownloadProgress = 0;
     int m_DownloadProgressError = 0;
