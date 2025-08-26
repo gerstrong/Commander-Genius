@@ -12,6 +12,7 @@
 
 #include <set>
 #include <string>
+#include <memory>
 
 struct SDL_mutex;
 struct SDL_cond;
@@ -25,32 +26,35 @@ struct Action {
 	virtual int handle() = 0;
 };
 
+
 struct ThreadPoolItem {
-	ThreadPool* pool;
-	SDL_Thread* thread;
+    ThreadPool* pool = nullptr;
+    SDL_Thread* thread = nullptr;
 	std::string name;
-	bool working;
-	bool finished;
-	bool headless;
-	SDL_cond* finishedSignal;
-	SDL_cond* readyForNewWork;
+    bool working = false;
+    bool finished = false;
+    bool headless = false;
+    SDL_cond* finishedSignal = nullptr;
+    SDL_cond* readyForNewWork = nullptr;
 	int ret;
 };
 
 class ThreadPool {
 private:
-	SDL_mutex* mutex;
-	SDL_cond* awakeThread;
-	SDL_cond* threadStartedWork;
-	SDL_cond* threadStatusChanged;
-	Action* nextAction; bool nextIsHeadless; std::string nextName;
-	ThreadPoolItem* nextData;
-	bool quitting;
+    SDL_mutex* mutex = nullptr;
+    SDL_cond* awakeThread = nullptr;
+    SDL_cond* threadStartedWork = nullptr;
+    SDL_cond* threadStatusChanged = nullptr;
+    Action* nextAction = nullptr;
+    bool nextIsHeadless = false;
+    std::string nextName;
+    ThreadPoolItem* nextData = nullptr;
+    bool quitting = false;
     std::set< ThreadPoolItem* > availableThreads;
     std::set< ThreadPoolItem* > usedThreads;
 	void prepareNewThread();
 	static int threadWrapper(void* param);
-	SDL_mutex* startMutex;
+    SDL_mutex* startMutex = nullptr;
 public:
 	ThreadPool(unsigned int size = 5);
 	~ThreadPool();
@@ -58,15 +62,15 @@ public:
     ThreadPoolItem* start(ThreadFunc fct, void* param = NULL, const std::string& name = "unknown worker");
 	// WARNING: if you set headless, you cannot use wait() and you should not save the returned ThreadPoolItem*
 	ThreadPoolItem* start(Action* act, const std::string& name = "unknown worker", bool headless = false); // ThreadPool will own and free the Action
-	bool finalizeIfReady(ThreadPoolItem* thread, int* status = NULL);
-	bool wait(ThreadPoolItem* thread, int* status = NULL);
+    bool finalizeIfReady(ThreadPoolItem* thread, int* status = nullptr);
+    bool wait(ThreadPoolItem* thread, int* status = nullptr);
 	bool waitAll();
 	void dumpState(CmdLineIntf& cli) const;
 };
 
-extern ThreadPool* threadPool;
+extern std::unique_ptr<ThreadPool> gThreadPool;
 
-void InitThreadPool(unsigned int size = 5);
+void InitThreadPool(const unsigned int size = 5);
 void UnInitThreadPool();
 
 
@@ -81,7 +85,7 @@ struct _ThreadFuncWrapper {
 			}
 			
 			static ThreadPoolItem* startThread(_T* const obj, const std::string& name) {
-				return threadPool->start((ThreadFunc)&wrapper, (void*)obj, name);
+                return gThreadPool->start((ThreadFunc)&wrapper, (void*)obj, name);
 			}
 		};
 };

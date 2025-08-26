@@ -46,7 +46,7 @@ void CResourceLoaderBackground::RunLoadActionBackground(Action* act,
 
 void CResourceLoaderBackground::start()
 {
-    mpThread = threadPool->start(mpAction, "Loading Resources");
+    mpThread = gThreadPool->start(mpAction, "Loading Resources");
 }
 
 
@@ -83,7 +83,7 @@ void CResourceLoaderBackground::setPermilage(const int permil)
 void CResourceLoaderBackground::run(const float)
 {
     int ret;
-    if(threadPool->finalizeIfReady(mpThread, &ret))
+    if(gThreadPool->finalizeIfReady(mpThread, &ret))
     {
         mRunning = false;
         mpThread = nullptr;

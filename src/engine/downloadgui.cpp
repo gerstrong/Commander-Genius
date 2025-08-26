@@ -39,7 +39,7 @@ void DownloadGui::tryDownloadCatalogueFile()
     mpPlusMorebutton->enable(false);
     mpPlusMorebutton->setText("Scanning...");
 
-    mpCatalogDownloadThread = threadPool->start(pCatalogueDownloader,
+    mpCatalogDownloadThread = gThreadPool->start(pCatalogueDownloader,
                           "Loading catalogue file in the background");
 #endif // DOWNLOADER
 }
@@ -121,7 +121,7 @@ void DownloadGui::pullGame(const int selection)
 
     mpDloadProgressCtrl->enableFancyAnimation(true);
 
-    mpGameDownloadThread = threadPool->start(new GameDownloader(mDownloadProgress,
+    mpGameDownloadThread = gThreadPool->start(new GameDownloader(mDownloadProgress,
                                                                 mDownloadErrorCode,
                                                             mCancelDownload,
                                                             gameFileName,
@@ -133,7 +133,7 @@ void DownloadGui::pullGame(const int selection)
 void DownloadGui::ponder(const float deltaT)
 {
     int ret;
-    if(threadPool->finalizeIfReady(mpCatalogDownloadThread, &ret))
+    if(gThreadPool->finalizeIfReady(mpCatalogDownloadThread, &ret))
     {
         mpPlusMorebutton->setText("+ More");
 

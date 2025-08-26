@@ -8,14 +8,16 @@
  */
 
 #include <SDL_thread.h>
+
+#include "base/GsLogging.h"
+
 #include "ThreadPool.h"
 #include "Debug.h"
-#include <base/GsLogging.h>
 #include "ReadWriteLock.h" // for ScopedLock
 
 
-ThreadPool::ThreadPool(unsigned int size) {
-	nextAction = NULL; nextIsHeadless = false; nextData = NULL;
+ThreadPool::ThreadPool(const unsigned int size) {
+    nextAction = nullptr; nextIsHeadless = false; nextData = NULL;
 	quitting = false;
 	mutex = SDL_CreateMutex();
 	awakeThread = SDL_CreateCond();
@@ -34,7 +36,7 @@ ThreadPool::~ThreadPool() {
 
 	// this is the hint for all available threads to break
 	SDL_mutexP(mutex); // lock to be sure that every thread is outside that region, we could get crashes otherwise
-	nextAction = NULL;
+    nextAction = nullptr;
 	quitting = true;
 	SDL_CondBroadcast(awakeThread);
     for(auto &threadItem : availableThreads)
@@ -68,8 +70,6 @@ void ThreadPool::prepareNewThread() {
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     const unsigned int numThreads = availableThreads.size();
-
-    // TODO: This is bad name, We should improve that, and be able to pass real thread names.
     const std::string threadName = "threadItem" + to_string(numThreads);
 
     SDL_Thread *sdlThread = SDL_CreateThread(threadWrapper, threadName.c_str(), t);
@@ -214,7 +214,7 @@ bool ThreadPool::finalizeIfReady(ThreadPoolItem* thread, int* status) {
 bool ThreadPool::waitAll() {
 	SDL_mutexP(mutex);
 	while(usedThreads.size() > 0) {
-		warnings << "ThreadPool: waiting for " << usedThreads.size() << " threads to finish:" << endl;
+        warnings << "ThreadPool: waiting for " << usedThreads.size() << " thread(s) to finish:" << endl;
 		for(std::set<ThreadPoolItem*>::iterator i = usedThreads.begin(); i != usedThreads.end(); ++i) {
 			if((*i)->working && (*i)->finished) {
 				warnings << "  thread " << (*i)->name << " is ready but was not cleaned up" << endl;
@@ -253,13 +253,13 @@ bool ThreadPool::waitAll() {
 }*/
 
 
-ThreadPool* threadPool = nullptr;
+std::unique_ptr<ThreadPool> gThreadPool;
 
-void InitThreadPool(unsigned int size)
+void InitThreadPool(const unsigned int size)
 {
-	if(!threadPool)
+    if(!gThreadPool)
     {
-		threadPool = new ThreadPool(size);
+        gThreadPool.reset(new ThreadPool(size));
     }
 	else
     {
@@ -269,9 +269,8 @@ void InitThreadPool(unsigned int size)
 
 void UnInitThreadPool()
 {
-	if(threadPool) {
-		delete threadPool;
-        threadPool = nullptr;
+    if(gThreadPool) {
+        gThreadPool = nullptr;
     } else {
 		errors << "ThreadPool already uninited" << endl;
     }
