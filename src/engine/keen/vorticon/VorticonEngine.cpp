@@ -233,6 +233,15 @@ void VorticonEngine::switchToPassiveMode()
     {
         gEventManager.add( new StartNewGameEvent(EASY) );
     }
+
+    const auto argLevel = gArgs.getValue("level");
+    // Level as parameter given?
+    if(!argLevel.empty())
+    {
+        const int startLevel = atoi(argLevel.c_str());
+        gEventManager.add(new StartNewGameEvent(EASY, startLevel));
+    }
+
 }
 
 

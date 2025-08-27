@@ -13,7 +13,7 @@
 
 // TODO: I think this should go into the keen directory, maybe, because many elements are keen related, not all though.
 
-CPlayGame::CPlayGame(char level) :
+CPlayGame::CPlayGame(const char level) :
 m_endgame(false),
 m_Episode(gKeenFiles.exeFile.getEpisode()),
 m_Level(level),

@@ -25,7 +25,7 @@ const int WM_MAP_NUM = 80;
 class CPlayGame : public Scene
 {
 public:
-    CPlayGame(char level);
+    CPlayGame(const char level);
 
     virtual bool init() override;
 
@@ -58,7 +58,7 @@ public:
 protected:
     bool m_endgame;
     char m_Episode;
-    short m_Level;
+    short m_Level = -1;
     int mCamLead;
     bool m_startgame;
     bool m_exitgame;
