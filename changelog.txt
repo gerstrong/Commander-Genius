@@ -1,3 +1,9 @@
+v3.6.0:
+-------
+- Modernised Thread Management -> there should be no more crahses on more modern systems
+- Reworked the grapical engine a bit -> Less situation where when resolution you end in black screen and active gameplay.
+- Parameter fix -> Vorticon execution with "level" flags did not work
+
 v3.5.2:
 -------
 - Minor bug fixes

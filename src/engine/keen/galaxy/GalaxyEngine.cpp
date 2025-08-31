@@ -116,8 +116,8 @@ bool loadLevelMusic(const int level)
 GalaxyEngine::GalaxyEngine(const bool openedGamePlay,
              const int ep,
              const std::string &dataPath) :
-    KeenEngine(openedGamePlay, ep, dataPath),
-    mEp(ep)
+KeenEngine(openedGamePlay, ep, dataPath),
+mEp(ep)
 {}
 
 bool GalaxyEngine::start()
