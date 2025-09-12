@@ -51,13 +51,15 @@ bool CPlayer::getGoodie(int px, int py)
 	
 	if (behaviour>0 && behaviour<31)
 	{
-		if ((TileProperty[tile].behaviour < 17 && TileProperty[tile].behaviour > 5) ||
-			(TileProperty[tile].behaviour > 17 && TileProperty[tile].behaviour < 22) ||
-			(TileProperty[tile].behaviour == 27 || TileProperty[tile].behaviour == 28)   ) // All pickupable items
+        const auto &behav = TileProperty[tile].behaviour;
+
+        if (( (behav < 17) && (behav > 5) ) ||
+            ( (behav > 17) && (behav < 22) ) ||
+            ( (behav == 27) || (behav == 28) ) ) // All pickupable items
 		{  // pick up the goodie, i.e. erase it from the map
 			mpMap->changeTile(px, py, TileProperty[tile].chgtile);
 		}
-		else if (TileProperty[tile].behaviour == 1) // Lethal (Deadly) Behavoir
+        else if (behav == 1) // Lethal (Deadly) Behavoir
 		{  // whoah, this "goodie" isn't so good...
 			kill();
 		}
@@ -68,11 +70,7 @@ bool CPlayer::getGoodie(int px, int py)
 	return false;
 }
 
-
-
-
-
-void CPlayer::procGoodie(int tile, int mpx, int mpy)
+void CPlayer::procGoodie(const int tile, const int mpx, const int mpy)
 {
 	std::vector<CTileProperties> &TileProperty = gBehaviorEngine.getTileProperties();
 	Uint8 behaviour = TileProperty[tile].behaviour;

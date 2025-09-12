@@ -222,7 +222,7 @@ public:
 private:
     // defined under CPlayerItems.cpp
     bool getGoodie(int px, int py);
-    void procGoodie(int tile, int mpx, int mpy);
+    void procGoodie(const int tile, const int mpx, const int mpy);
     void riseBonus(const int points, const int x, const int y);
     void getBonuspoints(int numpts, int mpx, int mpy);
     void incScore(int numpts);
