@@ -1,3 +1,7 @@
+v3.6.1:
+-------
+- Little code cleanups for more stability
+
 v3.6.0:
 -------
 - Modernised Thread Management -> there should be no more crahses on more modern systems
