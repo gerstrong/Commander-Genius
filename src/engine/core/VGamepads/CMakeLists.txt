@@ -1,7 +1,6 @@
 
 include_directories(${SDL_INCLUDE_DIR})
 
-
 set(SRCS 
 button1.h
 button2.h

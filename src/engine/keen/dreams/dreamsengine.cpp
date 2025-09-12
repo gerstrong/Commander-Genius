@@ -2,6 +2,7 @@
 
 #include "engine/core/CBehaviorEngine.h"
 #include "engine/core/VGamepads/vgamepadsimple.h"
+#include "../galaxy/res/CAudioGalaxy.h"
 #include "engine/keen/KeenEngine.h"
 #include <base/GsLogging.h>
 #include <base/GsTimer.h>
@@ -221,8 +222,6 @@ struct SwitchSceneEvent : CEvent
 // Mapping the strings of the filenames to the pointers where we store the embedded data
 std::map< std::string, unsigned int > gOffsetMap;
 
-
-
 bool extractEmbeddedFilesIntoMemory(const BE_GameVerDetails_T &gameVerDetails)
 {
 
@@ -403,6 +402,28 @@ void DreamsEngine::applyScreenMode()
 }
 
 
+
+// Mapping the strings of the filenames to the pointers where we store the embedded data
+extern std::map< std::string, unsigned int > gOffsetMap;
+
+
+
+bool setupAudio()
+{
+    CAudioGalaxy *audio = new CAudioGalaxy();
+
+    const auto audioOffset = gOffsetMap["AUDIODCT.KDR"];
+
+    if(audio->loadSoundData(audioOffset))
+    {
+        gAudio.setupSoundData(audio->sndSlotMapGalaxy[7], audio);
+        return true;
+    }
+
+    return false;
+}
+
+
 bool DreamsEngine::start()
 {
     CExeFile &ExeFile = gKeenFiles.exeFile;
@@ -427,19 +448,14 @@ bool DreamsEngine::start()
 #endif
 #endif
 
-    //mLoader.setPermilage(10);
-
     // Patch the EXE-File-Data directly in the memory.
     CPatcher Patcher(ExeFile, gBehaviorEngine.mPatchFname);
     Patcher.process();
-
-    //mLoader.setPermilage(50);
 
     extractEmbeddedFilesIntoMemory(g_be_gamever_kdreamse113);
 
     // Global for the legacy refkeen code.
     gDreamsEngine = this;
-    //gpRenderLock = SDL_CreateSemaphore(1);
 
     gKeenFiles.setupFilenames(7);
 
@@ -451,14 +467,14 @@ bool DreamsEngine::start()
     // Load the Resources
     loadResources();
 
-    //RefKeen_Patch_id_ca();
-    //RefKeen_Patch_id_us();
     RefKeen_Patch_id_rf();
     setupObjOffset();
 
     mpScene.reset( new DreamsDosIntro );
 
     gGameStateChange = GSS_INTRO_TEXT;
+
+    setupAudio();
 
     mpScene->start();
 
@@ -499,13 +515,6 @@ void DreamsEngine::pumpEvent(const std::shared_ptr<CEvent> &evPtr)
         gInput.flushAll();
         IN_ClearKeysDown();
     }
-    /*if( std::dynamic_pointer_cast<const NullifyScene>(evPtr) )
-    {
-        mpScene = nullptr;
-        gGameStateChange = GSS_NONE;
-        gInput.flushAll();
-        IN_ClearKeysDown();
-    }*/
 
     if(mpScene)
     {

@@ -1,12 +1,9 @@
 #include "dreamsdosintro.h"
-
-
-#include <base/CInput.h>
-
 #include "../../refkeen/be_cross.h"
-#include "../galaxy/res/CAudioGalaxy.h"
 
 #include "dreamsintro.h"
+
+#include <base/CInput.h>
 
 
 #define REFKEEN_VER_KDREAMS_ANYEGA_ALL
@@ -26,24 +23,6 @@ extern void RefKeen_FillObjStatesWithDOSPointers(void);
 namespace dreams
 {
 
-
-// Mapping the strings of the filenames to the pointers where we store the embedded data
-extern std::map< std::string, unsigned int > gOffsetMap;
-
-bool setupAudio()
-{
-    CAudioGalaxy *audio = new CAudioGalaxy();
-
-    const auto audioOffset = gOffsetMap["AUDIODCT.KDR"];
-
-    if(audio->loadSoundData(audioOffset))
-    {
-        gAudio.setupSoundData(audio->sndSlotMapGalaxy[7], audio);
-        return true;
-    }
-
-    return false;
-}
 
 void InitGame()
 {
@@ -122,7 +101,7 @@ void InitGame()
         MM_SetLock (&grsegs[j],true);
     }
 
-    setupAudio();
+
 
     fontcolor = WHITE;
 

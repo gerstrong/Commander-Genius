@@ -13,7 +13,7 @@ extern "C"
 #include "../../refkeen/kdreams/kd_def.h"
 
 extern void
-USL_XORICursor(id0_int_t x,id0_int_t y,const id0_char_t *s,id0_word_t cursor);
+USL_XORICursor(id0_int_t x, id0_int_t y, const id0_char_t *s, id0_word_t cursor);
 
 extern void (*USL_MeasureString)(const id0_char_t *,const id0_char_t *,id0_word_t *,id0_word_t *);
 

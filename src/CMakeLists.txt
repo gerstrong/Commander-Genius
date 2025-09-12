@@ -75,10 +75,6 @@ if(OPT_PATH)
 endif(OPT_PATH)
 
 
-#message(STATUS "SDL2_LIBRARY = ${SDL2_LIBRARY}")
-#message(STATUS "SDL2IMAGE_LIBRARY = ${SDL2IMAGE_LIBRARY}")
-#message(STATUS SDL2_LINK_DIR = ${SDL2_LINK_DIR})
-
 set(CGENIUS_SRC CGenius.cpp
     misc.cpp
     ${cg_obj_libs})
