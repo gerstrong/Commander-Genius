@@ -27,19 +27,8 @@ SET(USRDIR /usr)
 
 include(oldArch.cmake)
 
-if(${CMAKE_VERSION} VERSION_GREATER "3.8.0")
-    set(CMAKE_CXX_STANDARD 17)
-    set(CMAKE_CXX_STANDARD_REQUIRED ON)
-else()
-    if (NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS 8.0)
-      set(CMAKE_CXX17_STANDARD_COMPILE_OPTION "-std=c++17")
-      set(CMAKE_CXX17_EXTENSION_COMPILE_OPTION "-std=gnu++17")
-    elseif (NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS 5.1)
-      set(CMAKE_CXX17_STANDARD_COMPILE_OPTION "-std=c++1z")
-      set(CMAKE_CXX17_EXTENSION_COMPILE_OPTION "-std=gnu++1z")
-    endif()
-endif()
-
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 #Alignment error report is important for android builds
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror=cast-align")
@@ -65,22 +54,6 @@ ENDIF()
 
 # Make sure the linker can find the GsKit library once it is built.
 link_directories (${CMAKE_BINARY_DIR}/GsKit)
-
-#find_package(SDL2 REQUIRED)
-#find_package(SDL2_image REQUIRED)
-#find_package(SDL2_ttf REQUIRED)
-
-#if(SDL2_FOUND)
-#    message(STATUS "Using shared SDL Version 2 for Commander Genius")
-#    include_directories(${SDL2_INCLUDE_DIR})
-#    include_directories(${SDL2_IMAGE_INCLUDE_DIR})
-#endif(SDL2_FOUND)
-
-#find_package(SDL2_mixer REQUIRED)
-
-#if(SDL2_MIXER_FOUND)
-#   INCLUDE_DIRECTORIES(${SDL2_MIXER_INCLUDE_DIRS})
-#endif()
 
 MESSAGE( STATUS "Internal Downloader: ${DOWNLOADER}" )
 

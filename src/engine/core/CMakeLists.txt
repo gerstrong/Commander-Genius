@@ -25,7 +25,6 @@ set(SRCS ActionFormat.cpp
          textmode.cpp
          scrollingplane.cpp
 
-
          ActionFormat.h
          CBehaviorEngine.h
          CCamera.h

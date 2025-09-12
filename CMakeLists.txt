@@ -1,5 +1,4 @@
 # CMake file for development of Commander Genius
-
 cmake_minimum_required(VERSION 3.12)
 
 Project(CommanderGenius)

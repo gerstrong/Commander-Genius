@@ -23,20 +23,12 @@ extern void RefKeen_FillObjStatesWithDOSPointers(void);
 }
 
 
-
-
-
-
 namespace dreams
 {
 
 
-
-
-
 // Mapping the strings of the filenames to the pointers where we store the embedded data
 extern std::map< std::string, unsigned int > gOffsetMap;
-
 
 bool setupAudio()
 {
@@ -59,19 +51,9 @@ void InitGame()
 
     id0_int_t i;
 
-/*#if 0
-    // Handle piracy screen...
-    //
-    movedata(FP_SEG(PIRACY),(id0_unsigned_t)PIRACY,0xb800,displayofs,4000);
-    while (BE_ST_BiosScanCode(0) != sc_Return);
-    //while ((bioskey(0)>>8) != sc_Return);
-#endif*/
-
 #if GRMODE == EGAGR
     if (mminfo.mainmem < 335l*1024)
     {
-//#pragma warn    -pro
-//#pragma warn    -nod
 #ifdef REFKEEN_VER_KDREAMS_CGA_ALL
         BE_ST_textcolor(7);
 #endif
@@ -81,18 +63,14 @@ void InitGame()
         {
             BE_ST_textbackground(0);
         }
-//#pragma warn    +nod
-//#pragma warn    +pro
         BE_ST_clrscr();                       // we can't include CONIO because of a name conflict
-//#pragma warn    +nod
-//#pragma warn    +pro
+
         BE_ST_puts ("There is not enough memory available to play the game reliably.  You can");
         BE_ST_puts ("play anyway, but an out of memory condition will eventually pop up.  The");
         BE_ST_puts ("correct solution is to unload some TSRs or rename your CONFIG.SYS and");
         BE_ST_puts ("AUTOEXEC.BAT to free up more memory.\n");
         BE_ST_puts ("Do you want to (Q)uit, or (C)ontinue?");
-        //i = bioskey (0);
-        //if ( (i>>8) != sc_C)
+
         i = BE_ST_BiosScanCode (0);
         if (i != sc_C)
             Quit ("");
