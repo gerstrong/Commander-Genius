@@ -1191,12 +1191,12 @@ bool CEGAGraphicsGalaxy::readBitmaps()
     for(unsigned int i = 0; i < epInfo.NumBitmaps; i++)
     {
         // Use upper limit to protect against overflow.
-        if(BmpHead[i].Width < 1 || BmpHead[i].Width > 100)
+        if((BmpHead[i].Width < 1) || (BmpHead[i].Width > 100))
         {
             gLogging.ftextOut("bad bitmap i=%u BmpHead[i].Width=%u", i, BmpHead[i].Width);
             return false;
         }
-        if(BmpHead[i].Height < 1 || BmpHead[i].Height > 1000)
+        if((BmpHead[i].Height < 1) || (BmpHead[i].Height > 1000))
         {
             gLogging.ftextOut("bad bitmap i=%u BmpHead[i].Height=%u", i, BmpHead[i].Height);
             return false;
@@ -1231,9 +1231,7 @@ bool CEGAGraphicsGalaxy::readBitmaps()
 
     }
 
-
-
-    // For extra graphics loaded externally
+    // For extra graphics that can be loaded through external files
 
     // Looks for bitmap files lying around
     // If there are some load them as well
@@ -1333,12 +1331,12 @@ bool CEGAGraphicsGalaxy::readMaskedBitmaps()
     for(size_t i = 0; i < EpisodeInfo[ep].NumMaskedBitmaps; i++)
     {
         // Use upper limit to protect against overflow.
-        if(BmpMaskedHead[i].Width < 1 || BmpMaskedHead[i].Width > 100)
+        if((BmpMaskedHead[i].Width < 1) || (BmpMaskedHead[i].Width > 100))
         {
             gLogging.ftextOut("bad masked bitmap i=%u Width=%u", i, BmpMaskedHead[i].Width);
             return false;
         }
-        if(BmpMaskedHead[i].Height < 1 || BmpMaskedHead[i].Height > 1000)
+        if((BmpMaskedHead[i].Height < 1) || (BmpMaskedHead[i].Height > 1000))
         {
             gLogging.ftextOut("bad masked bitmap i=%u Height=%u", i, BmpMaskedHead[i].Height);
             return false;
@@ -1503,9 +1501,6 @@ bool CEGAGraphicsGalaxy::readMaskedTilemaps( size_t NumTiles, size_t pbasetilesi
                         std::to_string(0) + std::string(".bmp"));
     }
 
-
-    // std::string filename = std::string("/tmp/read_masked_tilemaps_") + std::to_string(NumTiles) + std::string("_") + std::to_string(IndexOfTiles) + std::string(".bmp");
-    // SDL_SaveBMP(sfc, filename.c_str());
 
     SDL_UnlockSurface(sfc);
 
@@ -1961,7 +1956,7 @@ bool CEGAGraphicsGalaxy::readMiscStuff()
 
         gLogging.ftextOut("misc width=%d height=%d index=%d misc=%d",
                           width, height, index, miscIdx);
-        if(miscIdx < 1 || miscIdx > 2)
+        if((miscIdx < 1) || (miscIdx > 2))
         {
             // Skip these other misc entries.
             // todo: What are these other misc entries for?
@@ -1970,13 +1965,13 @@ bool CEGAGraphicsGalaxy::readMiscStuff()
 
         // Limit the height and width to ensure 32-bit safety further below.
         // The minima are set to avoid crashes elsewhere in the code.
-        if(height < 4 || height > 10000)
+        if((height < 4) || (height > 10000))
         {
             gLogging.ftextOut("bad misc height=%d index=%d misc=%d",
                               height, index, miscIdx);
             return false;
         }
-        if(width < 2 || width > 10000)
+        if((width < 2) || (width > 10000))
         {
             gLogging.ftextOut("bad misc width=%d index=%d misc=%d",
                               width, index, miscIdx);
@@ -2029,15 +2024,6 @@ bool CEGAGraphicsGalaxy::readMiscStuff()
         bool bad = false;
         while(pixelNum < expectedNumPixels)
         {
-            /*
-            if(rlepointer == dataEndPtr)
-            {
-                gLogging.ftextOut("bad misc rle data size=%u for pixelNum=%d width=%d height=%d index=%d misc=%d",
-                                  dataSize, pixelNum, width, height, index, misc);
-                bad = true;
-                break;
-            }*/
-
             Uint16 pixelCount = *rlepointer;
             if(pixelCount != 0xFFFF)
             {
@@ -2073,9 +2059,7 @@ bool CEGAGraphicsGalaxy::readMiscStuff()
         SDL_UnlockSurface(bmp);
 
         if(bad)
-        {
             return false;
-        }
 
         for(const auto &bmpFile : bmpFileList)
         {
