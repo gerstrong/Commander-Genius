@@ -1,6 +1,7 @@
 # Commander Genius
 
 [![pipeline status](https://gitlab.com/Dringgstein/Commander-Genius/badges/master/pipeline.svg)](https://gitlab.com/Dringgstein/Commander-Genius/-/commits/master)
+[![Latest Release](https://gitlab.com/Dringgstein/Commander-Genius/-/badges/release.svg)](https://gitlab.com/Dringgstein/Commander-Genius/-/releases)
 
 Welcome to Commander Genius!
 
