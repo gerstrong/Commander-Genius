@@ -6,11 +6,22 @@ find_package(PkgConfig)
 #    unset(ZLIB_FOUND)
 #endif ( PKGCONFIG_FOUND AND NOT WIN32 )
 
+find_path(MINIZIP_INCLUDE_DIR unzip.h) 
+find_library(MINIZIP_LIBRARY minizip) 
+if(MINIZIP_INCLUDE_DIR AND MINIZIP_LIBRARY) 
+	set(ZLIB_FOUND TRUE) 
+else() 
+	set(ZLIB_FOUND FALSE) 
+endif()
+
+
 if ( ZLIB_FOUND )
     set(CXXSRC miniunz.c)
     unset(HSRC)
 
 else ( ZLIB_FOUND )
+
+	message(STATUS "$$$$$$$$$$ Will find zlib")
     find_package(ZLIB REQUIRED)
     include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
 

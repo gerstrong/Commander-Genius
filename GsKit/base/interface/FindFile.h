@@ -64,6 +64,11 @@ inline bool S_ISLNK(unsigned short d)  { return (d & S_IFLNK) != 0; }
 #	define	SYSTEM_DATA_DIR	"/usr/share"
 #endif
 
+#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
+extern std::string gIOSSandboxSharedFilesDir;
+#endif
+
+
 //extern	std::string		binary_dir;
 
 //

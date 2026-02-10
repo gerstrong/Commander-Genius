@@ -27,6 +27,7 @@
 const float DEFAULT_LPS_GALAXY = 70.0f;
 const float DEFAULT_LPS_VORTICON = 60.0f;
 
+
 #if defined(ANDROID)
 const float DEFAULT_FPS = 40.0f;
 #else

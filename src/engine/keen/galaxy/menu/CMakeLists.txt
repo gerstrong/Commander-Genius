@@ -11,4 +11,8 @@ GalaxyMenu.h
 
 add_library(engine_keen_galaxy_menu STATIC ${CXXSRC} ${HSRC} )
 
-target_link_libraries(engine_keen_galaxy_menu GsKit_base_interface)
+target_link_libraries(engine_keen_galaxy_menu
+    PUBLIC
+        engine_keen_galaxy
+        GsKit_base_audio
+)

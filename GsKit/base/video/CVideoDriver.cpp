@@ -20,6 +20,15 @@
 #include <fstream>
 #include <SDL_syswm.h>
 #include <SDL_image.h>
+#if defined(__APPLE__)
+    #include <TargetConditionals.h>
+#else
+    // Define Apple platform macros as 0 on non-Apple platforms
+    #define TARGET_OS_IOS 0
+    #define TARGET_OS_IPHONE 0
+    #define TARGET_IPHONE_SIMULATOR 0
+    #define TARGET_OS_MAC 0
+#endif
 
 bool useScrollTexels = false;
 
@@ -100,6 +109,13 @@ bool CVideoDriver::init()
 
     initResolutionList();
 
+#if TARGET_OS_IOS
+    // Rather than use a default hardcoded resolution, take a resolution from the set
+	GsVec2D<Uint16> resolution = *mResolutionSet.begin();
+	mVidConfig.setResolution(resolution);
+	// Initially set the game resolution as we want the game launcher to be in as high a resolution as possible
+	mVidConfig.setGameResolution(resolution);
+#endif
 
     if(!mSDLImageInUse)
     {
@@ -137,8 +153,7 @@ bool CVideoDriver::initResolutionList()
     // On the PC, this is the current resolution but we add some more.
 
     GsVec2D<Uint16> resolution = {1920, 1080};
-
-#if defined(ANDROID)
+#if defined(ANDROID) || TARGET_OS_IOS
     resolution.x = 320;
     resolution.y = 200;
 #elif defined(__SWITCH__)
@@ -177,17 +192,24 @@ bool CVideoDriver::initResolutionList()
             continue;
         }
 
+#if TARGET_OS_IOS
+        // TODO: should consider if we need this or not
+        // We only support landscape mode on IOS so only add the resolution where the width
+        // is greater than the height
+        if(mode.w > mode.h) 
+        {
+            mResolutionSet.insert(GsVec2D<Uint16>(mode.w, mode.h));
+        }
+#else
         mResolutionSet.insert(GsVec2D<Uint16>(mode.w, mode.h));
+#endif
     }
 
 
 #else
 
 // TODO: Not sure if those defines are really needed anymore.
-#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
-    resolution.x = 320; //  320;
-    resolution.y = 200;//  480;
-#elif defined(ANDROID)
+#if defined(ANDROID)
     resolution.x = 320;
     resolution.y = 200;
 #endif
@@ -225,11 +247,11 @@ bool CVideoDriver::initResolutionList()
 
 #endif
 
+
     /// The last resolution in the list is the desktop one normally,
     /// that is the default and user is encouraged to adjust it for own needs.
     mResolutionSet.insert(curDispRes);
 
-    mResolutionPos = mResolutionSet.begin();
 
     /// Game resolution part: These are the resolutions used internally by the games we support
     /// If these don't work on your system they get scaled or windowed.
@@ -242,15 +264,29 @@ bool CVideoDriver::initResolutionList()
         {640,480}
     };
 
-    /// Aspect Ratio section
-    mAspectSet =
-    {
-    "disabled",
-    "4:3",
-    "16:9",
-    "16:10",
-    "5:4"
-    };
+#if TARGET_OS_IOS
+		/// Aspect Ratio section
+		mAspectSet =
+		{
+			"disabled",
+			"16:9",
+			"16:10",
+		};
+#else
+
+		/// Aspect Ratio section
+		mAspectSet =
+		{
+			"disabled",
+			"4:3",
+			"16:9",
+			"16:10",
+			"5:4"
+		};
+#endif
+
+
+
 
     return true;
 }
@@ -320,7 +356,15 @@ std::set<std::string> CVideoDriver::getAspectStrSet()
 
 void CVideoDriver::setVidConfig(const CVidConfig& VidConf)
 {
-    mVidConfig = VidConf;
+#if TARGET_OS_IOS
+	// do not overwrite the displayRect for ios. This comes from SDL
+	// and should not be overwritten from Settings for example
+	GsRect<Uint16> currentDispRect = mVidConfig.mDisplayRect;
+	mVidConfig = VidConf;
+	mVidConfig.mDisplayRect = currentDispRect;
+#else
+	mVidConfig = VidConf;
+#endif
 
     SDL_ShowCursor(mVidConfig.mShowCursor ? SDL_ENABLE : SDL_DISABLE);
 

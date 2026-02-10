@@ -143,4 +143,8 @@ set(HSRC
 
 add_library(engine_keen_vorticon STATIC ${CXXSRC} ${HSRC})
 
+if(IOS)
+target_link_libraries(engine_keen_vorticon PUBLIC GsKit engine_keen SDL2 SDL2_MIXER)
+else()
 target_link_libraries(engine_keen_vorticon GsKit engine_keen)
+endif()

@@ -17,11 +17,10 @@ if(BUILD_REFKEEN)
 endif(BUILD_REFKEEN)
 
 if(BUILD_COSMOS)
-        add_definitions(-DBUILD_COSMOS)
-        add_subdirectory(cosmos)
-        MESSAGE(STATUS "Cosmos build enabled")
+    add_definitions(-DBUILD_COSMOS)
+    add_subdirectory(cosmos)
+    MESSAGE(STATUS "Cosmos build enabled")
 endif(BUILD_COSMOS)
-
 
 # Move this to somewhere else
 add_subdirectory(unzip)
@@ -32,7 +31,6 @@ set(CXXSRC CGameLauncher.cpp
            gamedownloader.cpp
            gameselector.cpp)
 
-
 set(HSRC CGameLauncher.h
          downloadgui.h
          gamedownloader.h
@@ -42,60 +40,78 @@ add_library(engine STATIC ${CXXSRC}
                           ${HSRC}
                           gamelauncher.menu)
 
+# Downloader feature - disabled for iOS
 if(DOWNLOADER)
     target_compile_definitions(engine PRIVATE -DDOWNLOADER)
-
     FIND_PACKAGE(CURL REQUIRED)
-
     if(CURL_FOUND)
-      message(STATUS "Found curl version ${CURL_VERSION_STRING}")
-      if(${CURL_VERSION_STRING} VERSION_LESS "7.32")
-        message(FATAL_ERROR "curl version must be at least 7.32")
-      endif()
-      if(WIN32)
-        message(STATUS "Enforcing the use of curl as static library")
-        target_compile_definitions(engine PRIVATE -DCURL_STATICLIB)
-      endif()
+        message(STATUS "Found curl version ${CURL_VERSION_STRING}")
+        if(${CURL_VERSION_STRING} VERSION_LESS "7.32")
+            message(FATAL_ERROR "curl version must be at least 7.32")
+        endif()
+        if(WIN32)
+            message(STATUS "Enforcing the use of curl as static library")
+            target_compile_definitions(engine PRIVATE -DCURL_STATICLIB)
+        endif()
         target_include_directories(engine PRIVATE ${CURL_INCLUDE_DIR})
     else()
-      message(FATAL_ERROR "curl library not found")
+        message(FATAL_ERROR "curl library not found")
     endif()
-
 endif()
 
-
-if (NOT OSXCROSS)
+# xxd tool for creating header from gamelauncher.menu
+if(IOS)
+    # For iOS, use system xxd (comes with macOS/Xcode)
+    find_program(XXD_EXECUTABLE xxd)
+    if(NOT XXD_EXECUTABLE)
+        message(FATAL_ERROR "xxd not found. Please install it (usually comes with vim/Xcode)")
+    endif()
+    set(XXD_COMMAND ${XXD_EXECUTABLE})
+elseif(NOT OSXCROSS)
+    # Build xxd from source for other platforms
     add_executable(xxd xxd.c)
+    set(XXD_COMMAND $<TARGET_FILE:xxd>)
+else()
+    # OSXCROSS case
+    find_program(XXD_EXECUTABLE xxd)
+    set(XXD_COMMAND ${XXD_EXECUTABLE})
 endif()
 
 add_custom_target(
-  createGameLauncherMenu
-  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-  COMMAND xxd -i gamelauncher.menu ${CMAKE_CURRENT_BINARY_DIR}/gamelauncher.menu.h
+    createGameLauncherMenu
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+	COMMAND xxd -i gamelauncher.menu ${CMAKE_CURRENT_BINARY_DIR}/gamelauncher.menu.h
 )
+# COMMAND ${XXD_COMMAND} -i gamelauncher.menu ${CMAKE_CURRENT_BINARY_DIR}/gamelauncher.menu.h
+
+# Add dependency on xxd if we built it
+if(NOT IOS AND NOT OSXCROSS)
+	set_property(TARGET createGameLauncherMenu APPEND PROPERTY SOURCES gameselector.h gameselector.cpp)
+    add_dependencies(createGameLauncherMenu xxd)
+endif()
 
 set_property(TARGET createGameLauncherMenu APPEND PROPERTY SOURCES gameselector.h gameselector.cpp)
-
 add_dependencies(engine createGameLauncherMenu)
 
 target_include_directories(engine PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
 
 if(BUILD_KEEN)
-  target_link_libraries(engine engine_keen_galaxy engine_keen_vorticon)
+    target_link_libraries(engine engine_keen_galaxy engine_keen_vorticon)
 endif(BUILD_KEEN)
 
 if(BUILD_REFKEEN)
-  target_link_libraries(engine refkeen engine_keen_dreams)
+    target_link_libraries(engine refkeen engine_keen_dreams)
 endif(BUILD_REFKEEN)
 
 if(BUILD_COSMOS)
-  target_link_libraries(engine cosmos_engine)
+    target_link_libraries(engine cosmos_engine)
 endif(BUILD_COSMOS)
-
 
 target_link_libraries(engine
                       cg_dialog
                       unzip
                       depklite)
 
-TARGET_LINK_LIBRARIES(engine ${CURL_LIBRARIES})
+if(DOWNLOADER)
+    TARGET_LINK_LIBRARIES(engine ${CURL_LIBRARIES})
+endif()
