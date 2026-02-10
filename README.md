@@ -412,6 +412,21 @@ together if you want to develop CG further
    ./CGeniusExe
 ```
   
+-> Build on Mac for IOS
+ * Install xcode
+ * Open a terminal
+ * cd into a directory where you want to clone the sources:
+``` 
+   git clone https://gitlab.com/Dringgstein/Commander-Genius.git
+```
+ * mkdir build-ios
+ * cd build-ios
+ * cmake -G Xcode -DCMAKE_TOOLCHAIN_FILE=../toolchains/ios.toolchain.cmake -DPLATFORM=OS -DDEPLOYMENT_TARGET=13.0 -DCMAKE_XCODE_GENERATE_SCHEME=ON ..
+ * The above, is successful, will generate all the libraries needed for the ios app and put them in the libs directory in the ios directory of Commander-Genius
+ * Open the xcode project in the ios/CommanderGenius
+ * Ensure that xcode is targetting your iphone
+ * Click build/run
+ * This should build the final app, linking in all the libraries needed and install the app to your iphone
 
 We also provide CMake for Wiz, if you want to compile it for embedded systems.
 We had support for Linux and Win32, but since there is a bug when built for a

@@ -29,6 +29,16 @@
 #include <base/interface/StringUtils.h>
 #include <base/interface/ConfigHandler.h>
 #include <base/GsLogging.h>
+#if defined(__APPLE__)
+    #include <TargetConditionals.h>
+#else
+    // Define Apple platform macros as 0 on non-Apple platforms
+    #define TARGET_OS_IOS 0
+    #define TARGET_OS_IPHONE 0
+    #define TARGET_IPHONE_SIMULATOR 0
+    #define TARGET_OS_MAC 0
+#endif
+#include <iostream>
 
 #ifdef WIN32
 #	ifndef _WIN32_IE
@@ -57,6 +67,10 @@
 
 #endif
 
+#if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
+std::string gIOSSandboxSharedFilesDir;
+#endif
+
 searchpathlist tSearchPaths;
 
 void printSearchPaths()
@@ -80,7 +94,7 @@ void InitSearchPaths(const std::string &cfgFname)
 
     int i = 1;
 
-#ifndef ANDROID
+#if !defined(ANDROID) && !TARGET_OS_IOS
     while(true)
     {
 
@@ -482,11 +496,9 @@ void InitBaseSearchPaths()
 {
     basesearchpaths.clear();
 
-#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
-    AddToFileList(&basesearchpaths, "${HOME}/Library/Application Support/Commander Genius");
-    AddToFileList(&basesearchpaths, ".");
-    AddToFileList(&basesearchpaths, "${BIN}");
-    AddToFileList(&basesearchpaths, SYSTEM_DATA_DIR"/commandergenius");
+#if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
+    // Use the ios container's shared dir passed in at runtime
+    AddToFileList(&basesearchpaths, gIOSSandboxSharedFilesDir);
 #elif defined(__APPLE__)
     AddToFileList(&basesearchpaths, "${HOME}/Library/Application Support/Commander Genius");
     AddToFileList(&basesearchpaths, ".");
@@ -840,6 +852,8 @@ std::string GetHomeDir()
 std::string GetSystemDataDir() {
 #ifndef WIN32
     return SYSTEM_DATA_DIR;
+#elif TARGET_OS_IOS
+    return gIOSSandboxSharedFilesDir;
 #else
     // windows don't have such dir, don't it?
     // or should we return windows/system32 (which is not exactly intended here)?

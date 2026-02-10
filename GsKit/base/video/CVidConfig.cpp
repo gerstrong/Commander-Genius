@@ -35,7 +35,7 @@ void CVidConfig::reset()
 
 #if defined(CAANOO) || defined(WIZ) || defined(GP2X) || defined(DINGOO) || defined(NANONOTE)
     mDisplayRect.dim.x=320;
-    mDisplayRect.h=240;
+    mDisplayRect.dim.y=240;
 #if defined(GP2X) || defined(NANONOTE)
     //m_Resolution.depth=32;
 #else
@@ -64,11 +64,14 @@ void CVidConfig::reset()
 
     mGameRect.pos.x = 0;
     mGameRect.pos.y = 0;
+
+#if !TARGET_OS_IOS
     mGameRect.dim.x = 1920;
     mGameRect.dim.y = 1080;
+#endif
 
-#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
-    mOpengl = true;
+#if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
+    mOpengl = false;
     mAspectCorrection.dim.x=0;
     mAspectCorrection.dim.y=0;
 #endif
@@ -83,4 +86,9 @@ void CVidConfig::reset()
 void CVidConfig::setResolution(const GsVec2D<Uint16>& res)
 {
     mDisplayRect.dim = res;
+}
+
+void CVidConfig::setGameResolution(const GsVec2D<Uint16>& res)
+{
+    mGameRect.dim = res;
 }
