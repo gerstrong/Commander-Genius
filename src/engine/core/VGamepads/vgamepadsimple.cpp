@@ -418,6 +418,15 @@ void VirtualKeenControl::render(GsWeakSurface &)
 void VirtualKeenControl::flush()
 {
 #if SDL_VERSION_ATLEAST(2, 0, 0)
+    mConfirmButton.isDown = false;
+    mStartButton.isDown = false;
+    mStatusButton.isDown = false;
+    mMenuButton.isDown = false;
+    mShootButton.isDown = false;
+    mJumpButton.isDown = false;
+    mPogoButton.isDown = false;
+    mDPad.isDown = false;
+
     mConfirmButton.clearFingers();
     mStartButton.clearFingers();
     mStatusButton.clearFingers();
@@ -587,7 +596,12 @@ bool VirtualKeenControl::mouseFingerState(const GsVec2D<float> &Pos,
     auto bindButtonCommand = [&](TouchButton &button,
                                  const InpCmd &cmd) -> bool
     {
-        if(button.invisible)
+        // In general if the button is invisible ignore the event EXCEPT where this is an "up"
+        // event and the button owns this FingerId, then we want to handle the up event to clear the
+        // fingerId from the buttons finger set
+        bool buttonsOwnsFingerId = button.hasFinger(touchFingerEvent.fingerId);
+        if(button.invisible &&
+                !(button.isDown && !down && buttonsOwnsFingerId))
             return false;
 
 
@@ -599,8 +613,13 @@ bool VirtualKeenControl::mouseFingerState(const GsVec2D<float> &Pos,
         }
         else if(!down && button.isDown)
         {
-            button.isDown = false;
-            stateChanged = true;
+            // only process the "up" event if the event is not a finger event (i.e. a mouse event)
+            // or it is a finger event and the button owns the finger Id
+            if (!isFinger || buttonsOwnsFingerId)
+            {
+                button.isDown = false;
+                stateChanged = true;
+            }
         }
 
         if(stateChanged)
