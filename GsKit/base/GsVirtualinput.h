@@ -84,6 +84,11 @@ public:
         return !mFingerSet.empty();
     }
 
+    bool hasFinger(const Sint64 fid) const
+    {
+        return mFingerSet.find(fid) != mFingerSet.end();
+    }
+
 
     int immediateIndex = 0;
 
