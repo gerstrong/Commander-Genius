@@ -18,12 +18,13 @@ Of course you still have the option to use your old original DOS versions of the
 # Authors
 
 ### Main development:
-* (c) 2008-2025          Gerstrong
+* (c) 2008-2026          Gerstrong
 
 ### Testing
 * (c) 2020-2023          Gagster
 
 ### Porting and Support
+* (c) 2026               Shanehaw (iOS port)
 * (c) 2010-2023          Pelya (Android-Distro)
 * (c) 2020-2023          Elias Oenal (Switch port)
 
