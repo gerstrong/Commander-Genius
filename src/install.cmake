@@ -67,8 +67,8 @@ IF(WIN32)
 
         INSTALL(FILES "${CMAKE_FIND_ROOT_PATH}/lib/libwinpthread-1.dll" DESTINATION "${APPDIR}")
 
-        INSTALL(FILES "/usr/lib/gcc/x86_64-w64-mingw32/12-win32/libgcc_s_seh-1.dll" DESTINATION "${APPDIR}")
-        INSTALL(FILES "/usr/lib/gcc/x86_64-w64-mingw32/12-win32/libstdc++-6.dll" DESTINATION "${APPDIR}")
+        INSTALL(FILES "/usr/lib/gcc/x86_64-w64-mingw32/14-win32/libgcc_s_seh-1.dll" DESTINATION "${APPDIR}")
+        INSTALL(FILES "/usr/lib/gcc/x86_64-w64-mingw32/14-win32/libstdc++-6.dll" DESTINATION "${APPDIR}")
 
     else()
         INSTALL(DIRECTORY "${CMAKE_SOURCE_DIR}/dlls/" DESTINATION "${APPDIR}")
