@@ -15,10 +15,13 @@
 
 #include <cstdint>
 
-typedef uint32_t UnicodeChar;
-typedef std::basic_string<UnicodeChar> UnicodeString;
-typedef uint16_t Utf16Char;
-typedef std::basic_string<Utf16Char> Utf16String;
+// Use char32_t for 32-bit Unicode
+using UnicodeChar   = char32_t;
+using UnicodeString = std::u32string;
+
+// Use char16_t for 16-bit UTF-16
+using Utf16Char     = char16_t;
+using Utf16String   = std::u16string;
 
 struct ConversionItem {
 	UnicodeChar Unicode;
