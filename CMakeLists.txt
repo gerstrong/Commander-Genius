@@ -290,7 +290,7 @@ else()
 endif()
 
 # Version handling
-set(CG_VERSION "3.6.0")
+set(CG_VERSION "3.6.2")
 
 MESSAGE(STATUS "Preparing the Build-System for Commander Genius" )
 
