@@ -17,7 +17,7 @@ variables:
     
 
 build:windows-portable:
-    image: cgenius/crossbuild:win
+    image: cgenius/crossbuild:winsdl
     stage: build    
     before_script:
       - cd $CI_PROJECT_DIR
