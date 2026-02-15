@@ -35,7 +35,7 @@ void CVorticonSpriteObjectAI::pumpEvent(const std::shared_ptr<CEvent> &evPtr)
     {
         CVorticonSpriteObject *ptr = (CVorticonSpriteObject*)(ev->pObject);
         std::unique_ptr<CVorticonSpriteObject> obj( ptr );
-        m_Objvect.push_back( move(obj) );
+        m_Objvect.push_back( std::move(obj) );
     }
 
     if( const auto ev = std::dynamic_pointer_cast<const AddPointsToAllPlayers>(evPtr) )

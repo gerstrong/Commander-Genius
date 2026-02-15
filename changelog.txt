@@ -1,5 +1,5 @@
-
------
+v3.6.1:
+-------
 - We have an iOS Port. Special thanks to Shane Haw for his contribution and also other bug fixes
 - No new features but many bug fixes and memory improvements. Special thanks to a bunch of people who has been contributing to this proejct lately: lamtung-monash, James Le Cuirotm, Manuel Frischknecht, Jirka Justra and Jan Engelhardt.
 
