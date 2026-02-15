@@ -356,7 +356,8 @@ void OlxWriteCoreDump(const char* fileName)
 static void GdbWriteCoreDump(const char* fname) {
 	// WARNING: this is terribly slow like this
 	char gdbparam[1000];
-	sprintf(gdbparam,
+    snprintf(gdbparam,
+            sizeof(gdbparam),
 			"attach %i \n"
 			"gcore %s \n"
 			"detach \n"

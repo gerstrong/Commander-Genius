@@ -481,8 +481,8 @@ public:
 			memset(Arg, 0, sizeof(Arg));
 			char SigName[16], PidName[16], Version[40];
 			
-			sprintf(SigName, "%i", Sig);
-			sprintf(PidName, "%i", MyPid);
+            snprintf(SigName, sizeof(SigName), "%i", Sig);
+            snprintf(PidName, sizeof(PidName), "%i", MyPid);
 			//			strcpy( Version, GetFullGameName() );
 			
 			Arg[Args++] = "bug-buddy";
