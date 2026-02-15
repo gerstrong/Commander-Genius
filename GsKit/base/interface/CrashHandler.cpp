@@ -427,8 +427,8 @@ public:
 			char SigName[16], PidName[16], Version[32];
 			
 			// TODO: sprintf allocates memory on the heap internally, is it safe to do it here?
-			sprintf(SigName, "%i", Sig);
-			sprintf(PidName, "%i", MyPid);
+            snprintf(SigName, sizeof(SigName), "%i", Sig);
+            snprintf(PidName, sizeof(PidName), "%i", MyPid);
 			//			strcpy( Version, GetFullGameName() );
 			
 			Arg[Args++] = "drkonqi";
