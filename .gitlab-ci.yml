@@ -118,7 +118,7 @@ build:macos-64bit:
       - export OSXCROSSPATH=/tmp/osxcross
       - export OSXOPT=${OSXCROSSPATH}/target/macports/pkgs/opt        
       - export SDKROOT=${OSXOPT}/local    
-      - export MACOSX_DEPLOYMENT_TARGET=12.0
+      - export MACOSX_DEPLOYMENT_TARGET=15.4
       - x86_64-apple-darwin21.4-cmake -DCMAKE_TOOLCHAIN_FILE=${CG_SOURCES}/toolchains/toolchain-osxcross.cmake -DSDL2_LIBRARY=${SDKROOT}/lib/libSDL2.dylib -DSDL2_IMAGE_LIBRARY=${SDKROOT}/lib/libSDL2_image.dylib -DSDL2_MIXER_LIBRARY=${SDKROOT}/lib/libSDL2_mixer.dylib -DSDL2_TTF_LIBRARY=${SDKROOT}/lib/libSDL2_ttf.dylib -DCURL_LIBRARY=${SDKROOT}/lib/libcurl.dylib -DCMAKE_SHARED_LIBRARY_SUFFIX=".dylib" -DCMAKE_SYSTEM_PREFIX_PATH=${SDKROOT} -DAPPEND_SHA=1 -DCMAKE_BUILD_TYPE="Release" -DOSXCROSS=1 -DUSE_OPENGL=0 -DUSE_BOOST=0 ${CG_SOURCES}
 
     script:

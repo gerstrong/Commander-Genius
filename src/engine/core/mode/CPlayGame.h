@@ -35,7 +35,7 @@ public:
     virtual bool saveXMLGameState() = 0;
     virtual void cleanup() = 0;
 
-    virtual void pumpEvent(const std::shared_ptr<CEvent> &evPtr);
+    virtual void pumpEvent(const std::shared_ptr<CEvent> &evPtr) override;
 
     virtual ~CPlayGame() {}
 
