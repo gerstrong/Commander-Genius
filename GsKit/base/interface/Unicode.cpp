@@ -900,7 +900,7 @@ std::string Utf16ToUtf8(const Utf16String& str)
 	std::string result;
     int bits, iters;
 	
-	for (Utf16String::const_iterator in = str.begin(); in != str.end();)  {
+    for (auto in = str.begin(); in != str.end();){
 		c = *in;
 		in++;
 		if ((c & 0xFC00) == 0xD800) { // surrogates
@@ -916,8 +916,7 @@ std::string Utf16ToUtf8(const Utf16String& str)
 			in++;
         }
 		
-		// assertion: c is a single UTF-4 value
-		
+        // assertion: c is a single UTF-4 value
 		if (c < 0x80)  {
 			result += (char)c;
 			bits= 0;
@@ -1002,8 +1001,8 @@ Utf16String Utf8ToUtf16(const std::string& str)
 std::string UnicodeToUtf8(const UnicodeString& str)
 {
 	std::string result;
-	for (UnicodeString::const_iterator i = str.begin(); i != str.end(); i++)  {
-		result += GetUtf8FromUnicode(*i);
+    for (const auto &c : str) {
+        result += GetUtf8FromUnicode(c);
 	}
 	
 	return result;
