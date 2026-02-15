@@ -17,6 +17,7 @@
 #include "MathLib.h" // for SIGN
 #include <base/interface/StringUtils.h>
 
+#define UNKNOWN_CHARACTER ' '  // Characters not in conversion table
 
 // Table used for removing diacritics and other backward incompatible characters
 ConversionItem tConversionTable[] = {
@@ -818,38 +819,6 @@ size_t Utf8StringCaseFind(const std::string& text, const std::string& search_for
 	}
 	
 	return std::string::npos; // Not found
-}
-
-/////////////////////////
-// Converts the Utf8 encoded string to format that will display correctly in old LX
-std::string OldLxCompatibleString(const std::string &Utf8String)
-{
-	std::string result = "";
-	std::string::const_iterator utf8_it = Utf8String.begin();
-	std::string::const_iterator last_it = Utf8String.begin();
-	
-	UnicodeChar current;
-	int index;
-	while (utf8_it != Utf8String.end())  {
-		current = GetNextUnicodeFromUtf8(utf8_it, Utf8String.end());
-		if (current <= 0x80)  {  // Normal ascii, don't convert in any way
-			result += (char)current;
-			last_it = utf8_it;
-			continue;
-		}
-		
-		// Unicode character
-		index = FindTableIndex(current);
-		result += std::string(last_it, utf8_it); // Keep the UTF8, old LX will ignore it
-		if (index == -1)
-			result += UNKNOWN_CHARACTER; // For characters that cannot be converted
-		else
-			result += tConversionTable[index].Ascii;
-		
-		last_it = utf8_it;
-	}
-	
-	return result;
 }
 
 /////////////////////////

@@ -11,8 +11,9 @@
 #ifndef __UNICODE_H__
 #define __UNICODE_H__
 
-#include <cstdint>
 #include <string>
+
+#include <cstdint>
 
 typedef uint32_t UnicodeChar;
 typedef std::basic_string<UnicodeChar> UnicodeString;
@@ -24,9 +25,6 @@ struct ConversionItem {
 	unsigned char Utf8[4];
 	char Ascii;
 };
-
-#define UNKNOWN_CHARACTER ' '  // Characters not in conversion table
-extern ConversionItem tConversionTable[];
 
 
 ///////////////////////
