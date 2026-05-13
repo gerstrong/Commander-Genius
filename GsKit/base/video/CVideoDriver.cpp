@@ -381,7 +381,7 @@ void CVideoDriver::setMode(const int width, const int height)
 
 void CVideoDriver::setMode(const GsRect<Uint16>& res)
 {
-    mVidConfig.setResolution(res.dim);
+    mVidConfig.setDisplayResolution(res.dim);
 
     // Cycle through the list until there is a matching resolution.
     // If it doesn't exist add it;
@@ -602,6 +602,7 @@ bool CVideoDriver::getFullscreen() {
     return mVidConfig.mFullscreen;
 }
 
+
 unsigned int CVideoDriver::getWidth() const {
     return mVidConfig.mDisplayRect.dim.x;
 }
@@ -609,6 +610,7 @@ unsigned int CVideoDriver::getWidth() const {
 unsigned int CVideoDriver::getHeight() const {
     return mVidConfig.mDisplayRect.dim.y;
 }
+
 
 unsigned short CVideoDriver::getDepth() const
 {

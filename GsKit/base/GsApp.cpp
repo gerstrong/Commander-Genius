@@ -262,7 +262,7 @@ void GsApp::render()
     gVideoDriver.collectSurfaces();
 
     // Now you really render the screen
-    // When enabled, it also applies Filters
+    // When enabled, it also applies filters
     gVideoDriver.updateDisplay();
 }
 

@@ -188,10 +188,13 @@ bool CSettings::loadGenerals(bool &enableLogfile)
 }
 
 
+
+
 bool CSettings::loadGameSpecSettings(const std::string_view &engineNameView,
                                      CVidConfig &vidConf)
 {
     CConfiguration config;
+    mEngineName = engineNameView;
 
     if(!config.Parse())
     {
@@ -217,6 +220,12 @@ bool CSettings::loadGameSpecSettings(const std::string_view &engineNameView,
 
     return true;
 }
+
+bool CSettings::loadCurGameSpecSettings(CVidConfig &vidConf)
+{
+    return loadGameSpecSettings(std::string_view(mEngineName), vidConf);
+}
+
 
 /**
  * \brief	It loads the whole configuration from the settings file.

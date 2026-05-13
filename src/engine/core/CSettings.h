@@ -29,6 +29,9 @@ public:
 
     bool loadGameSpecSettings(const std::string_view &engineName,
                               CVidConfig &vidConf);
+
+    bool loadCurGameSpecSettings(CVidConfig &vidConf);
+
 	bool loadDrvCfg();    
     bool loadGenerals(bool &enableLogfile);
 	void loadDefaultGraphicsCfg();
@@ -45,6 +48,8 @@ public:
     {
         return CConfiguration::CONFIGFILENAME;
     }
+
+    std::string mEngineName;
 };
 
 #endif /* CSETTINGS_H */

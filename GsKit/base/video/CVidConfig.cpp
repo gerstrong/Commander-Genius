@@ -83,7 +83,7 @@ void CVidConfig::reset()
 
 }
 
-void CVidConfig::setResolution(const GsVec2D<Uint16>& res)
+void CVidConfig::setDisplayResolution(const GsVec2D<Uint16>& res)
 {
     mDisplayRect.dim = res;
 }

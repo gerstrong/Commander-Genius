@@ -252,7 +252,7 @@ void DisplaySettings::release()
     // Integer Scaling
     mMyNewConf.mIntegerScaling = mpIntegerScalingSwitch->isEnabled();
 
-    // Read correct resolution
+    // Read correct Display resolution
     {
         const std::string resStr = mpResolutionSelection->getSelection();
         int w, h;
@@ -261,9 +261,12 @@ void DisplaySettings::release()
         if(numRead == 2)
         {
             GsVec2D<Uint16> res = {w, h};
-            mMyNewConf.setResolution(res);
+            mMyNewConf.setDisplayResolution(res);
         }
     }
+
+    // Load the right game resolution of chosen engine
+    gSettings.loadCurGameSpecSettings(mMyNewConf);
 
     // In case the user changed something in the camera settings, reload that.
     mMyNewConf.m_CameraBounds = gVideoDriver.getCameraBounds();

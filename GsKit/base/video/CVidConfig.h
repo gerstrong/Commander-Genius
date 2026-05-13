@@ -54,7 +54,7 @@ public:
   bool operator!=(const CVidConfig &target);
   void reset();
 
-  void setResolution(const GsVec2D<Uint16> &res);
+  void setDisplayResolution(const GsVec2D<Uint16> &res);
   void setGameResolution(const GsVec2D<Uint16> &res);
 
   GsRect<Uint16> mGameRect; // Screenspace of the game. This one gets scaled to

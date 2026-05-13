@@ -251,7 +251,9 @@ void VorticonEngine::pumpEvent(const std::shared_ptr<CEvent> &evPtr)
 
     if( std::dynamic_pointer_cast<const SetNativeResolutionEv>(evPtr) )
     {
-        const GsRect<Uint16> gameRect = gVideoDriver.getVidConfig().mGameRect;
+        const auto &vidConfig = gVideoDriver.getVidConfig();
+        const GsRect<Uint16> gameRect = vidConfig.mGameRect;
+
         gVideoDriver.setNativeResolution(gameRect, 2);
 
         if( auto *playgame = dynamic_cast<CPlayGameVorticon*>(mpScene.get()))

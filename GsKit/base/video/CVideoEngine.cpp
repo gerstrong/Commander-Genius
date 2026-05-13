@@ -236,7 +236,6 @@ bool CVideoEngine::createSurfaces(const GsRect<Uint16> &gamerect,
                             RES_BPP, 0, 0, 0, 0);
 
         mpScreenSfc = &mFilteredSfc;
-
         gLogging << "Given a Filter Screen pointer set to filtered surface" << CLogFile::endl;
     }
     else

@@ -184,7 +184,7 @@ protected:
 
     // Were the game is transformed to. This is used for internal transformations
     // before it is shown on the display.
-    // it is not required in case no transformations should performed.
+    // it is not required in case no transformations are performed.
     GsSurface mFilteredSfc;
 
     // So the transformation goes in two steps
