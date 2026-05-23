@@ -1338,10 +1338,9 @@ void Chip__GenerateBlock3(Chip *self, Bitu total, Bit32s* output  )
 	{
 		Bit32u samples = Chip__ForwardLFO( self, total );
 		memset(output, 0, sizeof(Bit32s) * samples *2);
-		int count = 0;
+        //int count = 0;
 		for ( Channel *ch = self->chan; ch < self->chan + 18; )
 		{
-			count++;
 			ch = (ch->synthHandler)( ch, self, samples, output );
 		}
 		total -= samples;

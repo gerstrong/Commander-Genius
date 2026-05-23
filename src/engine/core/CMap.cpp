@@ -864,10 +864,6 @@ void CMap::animateAllTiles()
         mAnimtileTimer = 0.0f;
     }
 
-    static int animtileTimerInt = 0;
-
-    animtileTimerInt++;
-
     for(auto &plane : mScrollingPlanes)
     {
         auto &tilemap = m_Tilemaps.at(plane.getTilemapIdx());

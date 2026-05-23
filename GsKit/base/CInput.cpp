@@ -12,6 +12,7 @@
 #include "video/CVideoDriver.h"
 #include "GsLogging.h"
 #include "base/interface/FindFile.h"
+#include "base/interface/StringUtils.h"
 #include "PointDevice.h"
 #include "GsTimer.h"
 

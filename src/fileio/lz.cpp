@@ -3,6 +3,7 @@
  data from Keen 1.
  */
 #include <base/GsLogging.h>
+#include <base/interface/StringUtils.h>
 #include <cstdio>
 
 #define LZ_STARTBITS        9
@@ -77,7 +78,6 @@ char lz_decompress(FILE *lzfile, unsigned char *outbuffer)
 {
 	unsigned int i;
 	unsigned int numbits;
-	unsigned int decsize;
 	unsigned short maxdictcodewords;
 	unsigned int maxdictsize;
 	unsigned int dictindex, maxdictindex;
@@ -85,10 +85,12 @@ char lz_decompress(FILE *lzfile, unsigned char *outbuffer)
 	char addtodict;
 	
 	// Get the decompressed file-size
-	decsize = fgetc(lzfile);
+    int decsize = 0;
+    decsize = fgetc(lzfile);
 	decsize += fgetc(lzfile) << 8;
 	decsize += fgetc(lzfile) << 16;
 	decsize += fgetc(lzfile) << 24;
+    gLogging.textOut("lz_decompress(): Expanding " + itoa(decsize) + " bytes...<br>");
 	
 	// Get the length of the maximum dictionary size
 	

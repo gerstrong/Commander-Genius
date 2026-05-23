@@ -153,9 +153,9 @@ void CWormmouth::processMoving()
       setAction( A_WORMMOUTH_LOOK );
     }
   
-  
+
   int lookTimer = LOOK_TIMER;
-  
+
   const Difficulty diff = gBehaviorEngine.mDifficulty;
   
   if(diff > HARD)
@@ -167,7 +167,7 @@ void CWormmouth::processMoving()
       lookTimer/=2;
     }
   
-  if( mTimer < LOOK_TIMER )
+  if( mTimer < lookTimer )
     {
       mTimer++;
       return;

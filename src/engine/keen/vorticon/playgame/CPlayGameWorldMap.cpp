@@ -334,8 +334,7 @@ void CPlayGameVorticon::readTeleportDestCoordinatesEP1(int objectID, int &destx,
 
 	std::vector<stTeleporterTable>::iterator TTable =
 			gBehaviorEngine.getTeleporterTable().begin();
-	size_t i = 0;
-	for( ; TTable != gBehaviorEngine.getTeleporterTable().end() ; TTable++, i++ )
+    for( ; TTable != gBehaviorEngine.getTeleporterTable().end() ; TTable++ )
 	{
 		if(TTable->objectnumber2 == objectID || TTable->objectnumber1 == objectID)
 		{

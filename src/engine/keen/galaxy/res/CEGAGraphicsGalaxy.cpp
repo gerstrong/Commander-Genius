@@ -843,7 +843,7 @@ bool CEGAGraphicsGalaxy::begin()
             // Find out the input length
             auto secondOffIt = offIt;
             secondOffIt++;
-            for( size_t j = i + 1; secondOffIt != m_egahead.end() ; secondOffIt++, j++ )
+            for( ; secondOffIt != m_egahead.end() ; secondOffIt++ )
             {
                 const unsigned long secondOff = *secondOffIt;
                 if(secondOff < offset_limit)
@@ -1750,22 +1750,17 @@ bool CEGAGraphicsGalaxy::readSprites( const size_t numSprites,
     // Second Player, could be kylie's own bitmaps
     {
         auto &SpriteVecPlayer2 = gGraphics.getSpriteVec(1);
-        int ctr = 0;
-
+        for( GsSprite &sprite : SpriteVecPlayer2)
         {
-            for( GsSprite &sprite : SpriteVecPlayer2)
-            {
-                // Red against Purple
-                sprite.exchangeSpriteColor( 5, 4, 0 );
-                sprite.exchangeSpriteColor( 13, 12, 0 );
+            // Red against Purple
+            sprite.exchangeSpriteColor( 5, 4, 0 );
+            sprite.exchangeSpriteColor( 13, 12, 0 );
 
-                // Yellow against Green
-                sprite.exchangeSpriteColor( 2, 6, 0 );
-                sprite.exchangeSpriteColor( 10, 14, 0 );
-                ctr++;
-            }
-
+            // Yellow against Green
+            sprite.exchangeSpriteColor( 2, 6, 0 );
+            sprite.exchangeSpriteColor( 10, 14, 0 );
         }
+
     }
 
     // Third Player
