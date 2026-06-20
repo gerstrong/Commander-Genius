@@ -228,6 +228,17 @@ else(GIT_FOUND)
     ADD_DEFINITIONS(-DGIT_BRANCH=none)
 endif(GIT_FOUND)
 
+# Look for cdxgen so we can generate SBOM (if enabled)
+option(USE_CDXGEN "Enable Cyclone Dx Generator for SBOM" OFF)
+if (USE_CDXGEN)
+    find_program(CDXGEN_FOUND cdxgen)
+    if(CDXGEN_FOUND)
+        message(STATUS "Found CycloneDX Generator. We will generate an SBOM while building process runs")
+    endif(CDXGEN_FOUND)
+else (USE_CDXGEN)
+    unset(CDXGEN_FOUND CACHE)
+endif(USE_CDXGEN)
+
 # Pass correct definition for SYSTEM_DATA_DIR so packager or distributors can decide where the app should land in
 if(UNIX AND NOT IOS)
     if(NOT IS_ABSOLUTE ${GAMES_SHAREDIR})

@@ -183,6 +183,10 @@ IF(WIN32)
     endif(WINDRES_FOUND)
 ENDIF(WIN32)
 
+if(CDXGEN_FOUND)
+    ADD_CUSTOM_COMMAND(TARGET CGeniusExe PRE_LINK COMMAND cdxgen -t cpp ${CMAKE_CURRENT_SOURCE_DIR} -o /var/mnt/bigDrive/gerstrong-big/workspace/Commander-Genius/build/Desktop_Debug/sbom.json)
+endif(CDXGEN_FOUND)
+
 # Only for SDL2 and Win32 since it is updated for that platform.
 if(WIN32)
 	target_link_libraries(CGeniusExe PUBLIC mingw32)

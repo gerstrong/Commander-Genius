@@ -434,6 +434,35 @@ We had support for Linux and Win32, but since there is a bug when built for a
 different Linux build (32-bit or 64-bit) we only use it for embedded systems.
 Also check out the CMakeLists.txt for more information.
 
+## GENERATING SBOM while building
+
+Because some countries like the European ones and to who they deliver, there is the requirement of complying to the cyber resilience act.
+Generating an SBOM is one of the mayor steps. Not sure if Commander Genius really will require this in future, but we are prepared for it.
+
+If you are on a Red Hat based system you might need to install npm for cdxgen:
+
+```
+sudo dnf install npm 
+```
+
+and now to get cdxgen
+
+```
+npm install -g @cyclonedx/cdxgen
+```
+
+More information about its installation process and other distros can be found under the following url: https://cdxgen.github.io/cdxgen/#/
+
+Now run Cmake again and you should get a message showing you the detected application:
+
+```
+ Found CycloneDX Generator
+```
+
+And that's it. Just build the application and you will also get an SBOM.
+
+Just keep in mind that for test you might want to disable this, as it addes additional build time. Enabling this feature is more useful for CI/CD pipelines.
+
 ## BUILDING THE COSMOS ENGINE
 
 If you also want to play Cosmos Cosmic Adventure, you can build the engine part for that now.
