@@ -112,7 +112,7 @@ bool CVideoDriver::init()
 #if TARGET_OS_IOS
     // Rather than use a default hardcoded resolution, take a resolution from the set
 	GsVec2D<Uint16> resolution = *mResolutionSet.begin();
-	mVidConfig.setResolution(resolution);
+	mVidConfig.setGameResolution(resolution);
 	// Initially set the game resolution as we want the game launcher to be in as high a resolution as possible
 	mVidConfig.setGameResolution(resolution);
 #endif

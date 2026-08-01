@@ -157,15 +157,31 @@ target_link_libraries (CGeniusExe PUBLIC GsKit)
 
 # iOS-specific linking
 if(IOS)
+
+    # Add SDLMain.mm to sources
+    list(APPEND SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/../iOS/CommanderGenius/CommanderGenius/SDLMain.mm")
+
+    # Tell CMake to create an iOS App Bundle (.app) instead of a dylib
+    add_executable(CGeniusExeIos MACOSX_BUNDLE ${SOURCES})
+
     # Link SDL2 libraries that were fetched in the root CMakeLists.txt
-	target_link_libraries(CGeniusExe PUBLIC SDL2 SDL2_image)
-    
-    # Set library properties for iOS
+	target_link_libraries(CGeniusExeIos PUBLIC CGeniusExe)
+
     set_target_properties(CGeniusExe PROPERTIES
-        FRAMEWORK FALSE
-        MACOSX_BUNDLE FALSE
+        MACOSX_BUNDLE TRUE
         OUTPUT_NAME "CommanderGenius"
+        # Enable Automatic ARC for Objective-C if needed
+        XCODE_ATTRIBUTE_CLANG_ENABLE_OBJC_ARC "YES" 
     )
+
+    message(STATUS "Configured CommanderGenius as a runnable iOS App Bundle with SDLMain.mm")
+
+#    # Set library properties for iOS
+#    set_target_properties(CGeniusExe PROPERTIES
+#        FRAMEWORK FALSE
+#        MACOSX_BUNDLE FALSE
+#        OUTPUT_NAME "CommanderGenius"
+#    )
     
     message(STATUS "iOS build configured. Library will be libCommanderGenius.dylib")
 endif(IOS)

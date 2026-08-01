@@ -63,6 +63,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		35024AB8301C8A1E00DB90BF /* SDL.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SDL.xcodeproj; path = ../../../SDL2/Xcode/SDL/SDL.xcodeproj; sourceTree = "<group>"; };
 		8A15E1EA2F3A16E0007C6A0F /* libSDL2_ttf.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSDL2_ttf.a; path = ../libs/libSDL2_ttf.a; sourceTree = "<group>"; };
 		8A15E1EB2F3A16E1007C6A0F /* libGsKit.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libGsKit.a; path = ../libs/libGsKit.a; sourceTree = "<group>"; };
 		8A15E1EC2F3A16E1007C6A0F /* libengine_keen_vorticon.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libengine_keen_vorticon.a; path = ../libs/libengine_keen_vorticon.a; sourceTree = "<group>"; };
@@ -206,6 +207,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		35024AB9301C8A1E00DB90BF /* Products */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		8A5BC3F52F0E6EC000733764 = {
 			isa = PBXGroup;
 			children = (
@@ -226,6 +234,7 @@
 		8A5BC41C2F0E704900733764 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				35024AB8301C8A1E00DB90BF /* SDL.xcodeproj */,
 				8A15E1F32F3A16E1007C6A0F /* libcg_dialog.a */,
 				8A15E1F62F3A16E1007C6A0F /* libCommanderGenius.a */,
 				8A15E20C2F3A16E2007C6A0F /* libcurl-d.a */,
@@ -338,6 +347,12 @@
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 8A5BC3FF2F0E6EC000733764 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 35024AB9301C8A1E00DB90BF /* Products */;
+					ProjectRef = 35024AB8301C8A1E00DB90BF /* SDL.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				8A5BC3FD2F0E6EC000733764 /* CommanderGenius */,

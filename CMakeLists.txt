@@ -1,6 +1,6 @@
 # CMake file for development of Commander Genius
 
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 3.29)
 
 Project(CommanderGenius)
 
@@ -21,12 +21,17 @@ ENDIF(WIN32)
 
 # iOS-specific configuration
 if (IOS)
+
+    set(USE_LIBIDN2 OFF CACHE BOOL "Disable IDN2" FORCE)
+    set(CURL_USE_LIBIDN2 OFF CACHE BOOL "Disable IDN2 in cURL" FORCE)
+
     # Make sure all configurations output libraries in the same directory instead of in sub-directories per config
     # This allows easier linking from the Xcode iOS project
-	set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_DEBUG ${CMAKE_SOURCE_DIR}/ios/libs)
-    set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELEASE ${CMAKE_SOURCE_DIR}/ios/libs)
-    set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELWITHDEBINFO ${CMAKE_SOURCE_DIR}/ios/libs)
-    set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_MINSIZEREL ${CMAKE_SOURCE_DIR}/ios/libs)
+    set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/ios/libs)
+	set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_DEBUG ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY})
+    set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELEASE ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY})
+    set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELWITHDEBINFO ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY})
+    set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_MINSIZEREL ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY})
 
     # Disable ImageIO for SDL2_image as it's not available for iOS, just OS X, and will fail at link time
     set(SDL2IMAGE_BACKEND_IMAGEIO 0)
@@ -153,8 +158,6 @@ if (IOS)
     set(CURL_INCLUDE_DIR ${CURL_INCLUDE_DIR} CACHE STRING "CURL include directory")
     set(CURL_LIBRARY ${CURL_LIBRARY} CACHE STRING "CURL library")
     set(CURL_LIBRARIES ${CURL_LIBRARIES} CACHE STRING "CURL libraries")
-
-
 
 endif()
 

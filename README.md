@@ -422,7 +422,17 @@ together if you want to develop CG further
 ```
  * mkdir build-ios
  * cd build-ios
- * cmake -G Xcode -DCMAKE_TOOLCHAIN_FILE=../toolchains/ios.toolchain.cmake -DPLATFORM=OS -DDEPLOYMENT_TARGET=13.0 -DCMAKE_XCODE_GENERATE_SCHEME=ON ..
+ * cmake -G Xcode -DCMAKE_TOOLCHAIN_FILE=../toolchains/ios.toolchain.cmake -DPLATFORM=OS -DDEPLOYMENT_TARGET=13.0  \ -DCMAKE_XCODE_GENERATE_SCHEME=ON  \
+     -DCMAKE_INSTALL_NAME_TOOL="$(xcrun -find install_name_tool)" \
+     -DCMAKE_C_COMPILER="$(xcrun -find clang)" \
+     -DCMAKE_CXX_COMPILER="$(xcrun -find clang++)" \
+     -DCMAKE_XCODE_GENERATE_SCHEME=ON \ 
+     ..
+ * Somtimes an error related to install_name_tool appears. Most likely it did not detect the SDK correctly. You might be able to fix this with 
+ ```
+ sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
+ ```
+After that rerun cmake with the same parameters again. 
  * The above, is successful, will generate all the libraries needed for the ios app and put them in the libs directory in the ios directory of Commander-Genius
  * Open the xcode project in the ios/CommanderGenius
  * Ensure that xcode is targetting your iphone

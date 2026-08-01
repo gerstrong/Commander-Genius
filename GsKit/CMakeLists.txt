@@ -127,8 +127,8 @@ else()
 				GsKit_fileio
 				GsKit_widgets
 				GsKit_graphics
-				SDL2
-				SDL2_mixer
+				#SDL2
+				#SDL2_mixer
 		)
 	else()
 		Target_link_libraries(${PROJECT_NAME} GsKit_base)
