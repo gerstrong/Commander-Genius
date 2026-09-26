@@ -1,3 +1,7 @@
+v3.6.4:
+-------
+- Bug fix with save game loading in vorticon engine.
+
 v3.6.3:
 -------
 - Finally some bug fixes with resolution changes while a game is open. It is not perfect, but way better than before

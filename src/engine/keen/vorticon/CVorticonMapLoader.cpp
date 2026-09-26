@@ -369,7 +369,7 @@ void CVorticonMapLoaderWithPlayer::addSpriteObject(unsigned int t, Uint16 x, Uin
 		}
 		else
 		{
-			CVorticonSpriteObject *enemyobject = NULL;
+            CVorticonSpriteObject *enemyobject = nullptr;
 
 			switch(t)
 			{

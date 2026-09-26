@@ -153,6 +153,9 @@ void CPlayGameVorticon::setupPlayers()
 
 bool CPlayGameVorticon::init()
 {
+    // Call super class init method.
+    CPlayGame::init();
+
     // Required to get sprites correctly masked
     gGraphics.optimizeSprites();
 

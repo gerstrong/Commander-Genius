@@ -310,7 +310,7 @@ void VorticonEngine::pumpEvent(const std::shared_ptr<CEvent> &evPtr)
 
         //mpGameMode->init();
     }
-    else if( std::dynamic_pointer_cast<const LoadGameEvent>(evPtr) ) // If GamePlayMode is not running but loading is requested...
+    else if( std::dynamic_pointer_cast<const LoadGameEvent>(evPtr) )
     {
         std::unique_ptr<CPlayGameVorticon> pgVort(new CPlayGameVorticon());
         pgVort->init();

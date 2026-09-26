@@ -45,19 +45,13 @@ bool CPlayGameVorticon::loadXMLGameState()
         const std::string tag = stateTree.first;
         if(tag == "checkpoint")
         {
-            // Also the last checkpoint is stored. This is the level entered from map
-            // in Commander Keen games
+            // Also the last checkpoint is stored. This is the level entry from world map
             auto &chkpnt = stateTree.second;
             m_checkpointset = chkpnt.get<bool>("<xmlattr>.set", false);
             m_checkpoint_x = chkpnt.get<int>("<xmlattr>.x", 0);
             m_checkpoint_y = chkpnt.get<int>("<xmlattr>.y", 0);
         }
     }
-
-
-    // Create the special merge effect (Fadeout)
-    CColorMerge *pColorMergeFX = new CColorMerge(8);
-
 
     CVorticonMapLoaderWithPlayer Maploader(mMap, m_Player, mSpriteObjectContainer);
 
@@ -124,7 +118,7 @@ bool CPlayGameVorticon::loadXMLGameState()
             {
               std::unique_ptr<CVorticonSpriteObject> object( new CVorticonSpriteObject( mMap, 0, 0, OBJ_NONE, sprVarID) );
               object->exists = false;
-              mSpriteObjectContainer.push_back(move(object));
+              mSpriteObjectContainer.push_back(std::move(object));
             }
 
             CVorticonSpriteObject &spriteObj = *(mSpriteObjectContainer.at(spriteId));
@@ -202,6 +196,7 @@ bool CPlayGameVorticon::loadXMLGameState()
     mMap->drawAll();
 
     // Create the special merge effect (Fadeout)
+    auto *pColorMergeFX = new CColorMerge(8);
     gEffectController.setupEffect(pColorMergeFX);
 
     gBehaviorEngine.setNumPlayers(m_Player.size());
