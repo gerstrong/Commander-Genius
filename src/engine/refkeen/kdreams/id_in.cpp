@@ -267,11 +267,12 @@ INL_GetMouseButtons(void)
 //	IN_GetJoyAbs() - Reads the absolute position of the specified joystick
 //
 ///////////////////////////////////////////////////////////////////////////
-void
+/*void
 IN_GetJoyAbs(id0_word_t joy,id0_word_t *xp,id0_word_t *yp)
 {
 	BE_ST_GetJoyAbs(joy, xp, yp);
 }
+*/
 
 ///////////////////////////////////////////////////////////////////////////
 //

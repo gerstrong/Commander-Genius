@@ -1088,7 +1088,7 @@ uint16_t BE_ST_GetMouseButtons(void)
 	return results[SDL_GetMouseState(NULL, NULL) & 7];
 }
 
-void BE_ST_GetJoyAbs(uint16_t joy, uint16_t *xp, uint16_t *yp)
+/*void BE_ST_GetJoyAbs(uint16_t joy, uint16_t *xp, uint16_t *yp)
 {
 	int emuAxisStart = (joy != 0) ? 2 : 0;
 	int minX = BE_ST_EMU_JOYSTICK_RANGEMAX, minY = BE_ST_EMU_JOYSTICK_RANGEMAX, maxX = 0, maxY = 0;
@@ -1128,6 +1128,7 @@ void BE_ST_GetJoyAbs(uint16_t joy, uint16_t *xp, uint16_t *yp)
 	*xp = minX < (BE_ST_EMU_JOYSTICK_RANGEMAX-maxX) ? minX : maxX;
 	*yp = minY < (BE_ST_EMU_JOYSTICK_RANGEMAX-maxY) ? minY : maxY;
 }
+*/
 
 uint16_t BE_ST_GetJoyButtons(uint16_t joy)
 {

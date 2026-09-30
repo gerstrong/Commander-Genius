@@ -16,7 +16,7 @@ void BE_ST_StartKeyboardService(void (*funcPtr)(uint8_t));
 void BE_ST_StopKeyboardService(void);
 void BE_ST_GetMouseDelta(int16_t *x, int16_t *y);
 uint16_t BE_ST_GetMouseButtons(void);
-void BE_ST_GetJoyAbs(uint16_t joy, uint16_t *xp, uint16_t *yp);
+//void BE_ST_GetJoyAbs(uint16_t joy, uint16_t *xp, uint16_t *yp);
 uint16_t BE_ST_GetJoyButtons(uint16_t joy);
 
 int16_t BE_ST_KbHit(void);

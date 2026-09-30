@@ -63,12 +63,21 @@ else()
                 ${SDL2_MIXER_INCLUDE_DIRS}
                 ${SDL2_TTF_INCLUDE_DIRS}
             )
-            target_link_libraries(${PROJECT_NAME} PUBLIC
-                ${SDL2_LIBRARIES}
-                ${SDL2_IMAGE_LIBRARIES}
-                ${SDL2_MIXER_LIBRARIES}
-                ${SDL2_TTF_LIBRARIES}
+
+            #target_link_libraries(${PROJECT_NAME}
+            #    ${SDL2_LIBRARIES}
+            #    ${SDL2_IMAGE_LIBRARIES}
+            #    ${SDL2_MIXER_LIBRARIES}
+            #    ${SDL2_TTF_LIBRARIES}
+            #)
+
+            target_link_libraries(${PROJECT_NAME}
+                SDL2
+                SDL2_image
+                SDL2_mixer
+                SDL2_ttf
             )
+
         endif()
 
         message(STATUS "Configured with SDL2")
