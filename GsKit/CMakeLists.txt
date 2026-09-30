@@ -71,16 +71,35 @@ else()
 
     set (CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${CMAKE_CURRENT_SOURCE_DIR}/CMake")
 
-    if(${CMAKE_VERSION} VERSION_GREATER "3.8.0")
+    if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.20.0")
+        set(CMAKE_CXX_STANDARD 23)
+        set(CMAKE_CXX_STANDARD_REQUIRED ON)
+    elseif(CMAKE_VERSION VERSION_GREATER_EQUAL "3.12.0")
+        set(CMAKE_CXX_STANDARD 20)
+        set(CMAKE_CXX_STANDARD_REQUIRED ON)
+    elseif(CMAKE_VERSION VERSION_GREATER_EQUAL "3.8.0")
         set(CMAKE_CXX_STANDARD 17)
         set(CMAKE_CXX_STANDARD_REQUIRED ON)
     else()
-        if (NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS 8.0)
-          set(CMAKE_CXX17_STANDARD_COMPILE_OPTION "-std=c++17")
-          set(CMAKE_CXX17_EXTENSION_COMPILE_OPTION "-std=gnu++17")
-        elseif (NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS 5.1)
-          set(CMAKE_CXX17_STANDARD_COMPILE_OPTION "-std=c++1z")
-          set(CMAKE_CXX17_EXTENSION_COMPILE_OPTION "-std=gnu++1z")
+        # Fallback for very old CMake versions (< 3.8) using compiler flags directly
+        if(NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS 11.0)
+            # GCC 11+ / Clang 13+ support C++23 flag (-std=c++23)
+            set(CMAKE_CXX23_STANDARD_COMPILE_OPTION "-std=c++23")
+            set(CMAKE_CXX23_EXTENSION_COMPILE_OPTION "-std=gnu++23")
+        elseif(NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS 10.0)
+            # GCC 10+ / Clang 10+ support C++20 flag (-std=c++20)
+            set(CMAKE_CXX20_STANDARD_COMPILE_OPTION "-std=c++20")
+            set(CMAKE_CXX20_EXTENSION_COMPILE_OPTION "-std=gnu++20")
+        elseif(NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS 8.0)
+            # GCC 8+ supports C++20 draft flag (-std=c++2a)
+            set(CMAKE_CXX20_STANDARD_COMPILE_OPTION "-std=c++2a")
+            set(CMAKE_CXX20_EXTENSION_COMPILE_OPTION "-std=gnu++2a")
+            # Legacy fallback to C++17
+            set(CMAKE_CXX17_STANDARD_COMPILE_OPTION "-std=c++17")
+            set(CMAKE_CXX17_EXTENSION_COMPILE_OPTION "-std=gnu++17")
+        elseif(NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS 5.1)
+            set(CMAKE_CXX17_STANDARD_COMPILE_OPTION "-std=c++1z")
+            set(CMAKE_CXX17_EXTENSION_COMPILE_OPTION "-std=gnu++1z")
         endif()
     endif()
 
@@ -127,8 +146,6 @@ else()
 				GsKit_fileio
 				GsKit_widgets
 				GsKit_graphics
-				#SDL2
-				#SDL2_mixer
 		)
 	else()
 		Target_link_libraries(${PROJECT_NAME} GsKit_base)
