@@ -25,42 +25,55 @@ endif(NOT Boost_FOUND OR USE_BOOST)
 
 add_library(${PROJECT_NAME} ${HEADERS} ${SRCS})
 
-find_package(SDL2 REQUIRED)
-find_package(SDL2_image REQUIRED)
-find_package(SDL2_mixer REQUIRED)
-find_package(SDL2_ttf REQUIRED)
+option(USE_SDL3 "Build using SDL3 instead of SDL2" OFF)
 
-if(SDL2_FOUND)
-    message(STATUS "Using shared SDL Version 2 for ${PROJECT_NAME}")
+if(USE_SDL3)
+    find_package(SDL3 REQUIRED)
+    find_package(SDL3_image REQUIRED)
+    find_package(SDL3_mixer REQUIRED)
+    find_package(SDL3_ttf REQUIRED)
 
-    #target_include_directories(${PROJECT_NAME} PUBLIC ${SDL2_INCLUDE_DIRS})
-
-    target_include_directories(${PROJECT_NAME} PUBLIC
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR};${SDL2_INCLUDE_DIRS}>
-        $<INSTALL_INTERFACE:${SDL2_INCLUDE_DIRS}>
+    target_link_libraries(${PROJECT_NAME} PUBLIC
+        SDL3::SDL3
+        SDL3_image::SDL3_image
+        SDL3_mixer::SDL3_mixer
+        SDL3_ttf::SDL3_ttf
     )
-
-
-    target_include_directories(${PROJECT_NAME} PUBLIC
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR};${SDL2_INCLUDE_DIR}>
-        $<INSTALL_INTERFACE:${SDL2_INCLUDE_DIR}>
-    )
-
-    message(STATUS "SDL2_INCLUDE_DIRS =  ${SDL2_INCLUDE_DIRS}")
-    message(STATUS "SDL2_INCLUDE_DIR =  ${SDL2_INCLUDE_DIR}")
-    message(STATUS "SDL2_MIXER_INCLUDE_DIRS =  ${SDL2_MIXER_INCLUDE_DIRS}")
-    message(STATUS "SDL2_IMAGE_INCLUDE_DIRS =  ${SDL2_IMAGE_INCLUDE_DIRS}")
-    message(STATUS "SDL2_TTF_INCLUDE_DIRS =  ${SDL2_TTF_INCLUDE_DIRS}")
-
+    message(STATUS "Configured with SDL3")
 else()
-    message(FATAL_ERROR "SDL2 was not detected!")
-endif(SDL2_FOUND)
+    find_package(SDL2 REQUIRED)
+    find_package(SDL2_image REQUIRED)
+    find_package(SDL2_mixer REQUIRED)
+    find_package(SDL2_ttf REQUIRED)
 
+    if(SDL2_FOUND)
+        # Prefer SDL2 modern targets if available, otherwise fallback to variables
+        if(TARGET SDL2::SDL2)
+            target_link_libraries(${PROJECT_NAME} PUBLIC
+                SDL2::SDL2
+                SDL2_image::SDL2_image
+                SDL2_mixer::SDL2_mixer
+                SDL2_ttf::SDL2_ttf
+            )
+        else()
+            target_include_directories(${PROJECT_NAME} PUBLIC
+                ${CMAKE_CURRENT_SOURCE_DIR}
+                ${SDL2_INCLUDE_DIRS}
+                ${SDL2_IMAGE_INCLUDE_DIRS}
+                ${SDL2_MIXER_INCLUDE_DIRS}
+                ${SDL2_TTF_INCLUDE_DIRS}
+            )
+            target_link_libraries(${PROJECT_NAME} PUBLIC
+                ${SDL2_LIBRARIES}
+                ${SDL2_IMAGE_LIBRARIES}
+                ${SDL2_MIXER_LIBRARIES}
+                ${SDL2_TTF_LIBRARIES}
+            )
+        endif()
 
-target_link_libraries(${PROJECT_NAME}
-    ${SDL2_LIBRARY}
-    ${SDL2_IMAGE_LIBRARIES}
-    ${SDL2_MIXER_LIBRARIES}
-    ${SDL2_TTF_LIBRARIES})
-
+        message(STATUS "Configured with SDL2")
+    else()
+        message(FATAL_ERROR "SDL2 was not detected!")
+    endif()
+endif()
 
