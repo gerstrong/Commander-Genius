@@ -69,23 +69,23 @@ ENDIF()
 # Make sure the linker can find the GsKit library once it is built.
 link_directories (${CMAKE_BINARY_DIR}/GsKit)
 
-if(NOT IOS)
-	find_package(SDL2 REQUIRED)
-	find_package(SDL2_image REQUIRED)
-	find_package(SDL2_ttf REQUIRED)
+#if(NOT IOS)
+#	find_package(SDL2 REQUIRED)
+#	find_package(SDL2_image REQUIRED)
+#	find_package(SDL2_ttf REQUIRED)
 
-	if(SDL2_FOUND)
-		message(STATUS "Using shared SDL Version 2 for Commander Genius")
-		include_directories(${SDL2_INCLUDE_DIR})
-		include_directories(${SDL2_IMAGE_INCLUDE_DIR})
-	endif(SDL2_FOUND)
-
-	find_package(SDL2_mixer MODULE REQUIRED)
-
-	if(SDL2_MIXER_FOUND)
-	   INCLUDE_DIRECTORIES(${SDL2_MIXER_INCLUDE_DIRS})
-	endif()
-endif()
+#	if(SDL2_FOUND)
+#		message(STATUS "Using shared SDL Version 2 for Commander Genius")
+#		include_directories(${SDL2_INCLUDE_DIR})
+#		include_directories(${SDL2_IMAGE_INCLUDE_DIR})
+#	endif(SDL2_FOUND)
+#
+#	find_package(SDL2_mixer MODULE REQUIRED)
+#
+#	if(SDL2_MIXER_FOUND)
+#	   INCLUDE_DIRECTORIES(${SDL2_MIXER_INCLUDE_DIRS})
+#	endif()
+#endif()
 
 MESSAGE( STATUS "Internal Downloader: ${DOWNLOADER}" )
 
