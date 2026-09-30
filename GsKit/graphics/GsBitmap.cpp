@@ -22,25 +22,28 @@ GsBitmap::GsBitmap(const GsWeakSurface &sfc)
 }
 
 
-GsBitmap::GsBitmap(const GsBitmap &bitmap)/* :
-mName(bitmap.getName())*/
-{    
-    if(bitmap.empty())
-    {
+GsBitmap::GsBitmap(GsBitmap &&other) noexcept
+{
+    if(other.empty())
         return;
-    }
 
-    mBitmapSurface.createCopy(bitmap.mBitmapSurface);
+    mBitmapSurface.createCopy(other.mBitmapSurface);
 }
 
-GsBitmap::GsBitmap(GsBitmap &bitmap)
+GsBitmap::GsBitmap(const GsBitmap &other)
 {
-    if(bitmap.empty())
-    {
+    if(other.empty())
         return;
-    }
 
-    mBitmapSurface.createCopy(bitmap.mBitmapSurface);
+    mBitmapSurface.createCopy(other.mBitmapSurface);
+}
+
+GsBitmap::GsBitmap(GsBitmap &other)
+{
+    if(other.empty())
+        return;
+
+    mBitmapSurface.createCopy(other.mBitmapSurface);
 }
 
 
@@ -50,13 +53,22 @@ GsBitmap::GsBitmap(GsBitmap &bitmap)
  */
 GsBitmap & GsBitmap::operator=(const GsBitmap &bmp)
 {
-    //mName = bmp.getName();
-
     if(!bmp.empty())
     {
         mBitmapSurface.createCopy(bmp.mBitmapSurface);
     }
 
+    return *this;
+}
+
+
+GsBitmap& GsBitmap::operator=(GsBitmap &&other) noexcept {
+    if (this != &other) {
+        if(!other.empty())
+        {
+            mBitmapSurface.createCopy(other.mBitmapSurface);
+        }
+    }
     return *this;
 }
 

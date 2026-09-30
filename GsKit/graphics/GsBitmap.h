@@ -25,9 +25,13 @@ public:
     // Will create a copy of the bitmap
     GsBitmap(const GsWeakSurface &sfc);
 
-    GsBitmap(GsBitmap &bitmap);
+    GsBitmap(GsBitmap &other);
 
-    explicit GsBitmap(const GsBitmap &bitmap);
+    GsBitmap(const GsBitmap &other);
+
+    GsBitmap(GsBitmap &&other) noexcept;
+
+    GsBitmap& operator=(GsBitmap &&other) noexcept;
 
     /**
      * @brief Copy bitmap using the assignment operator
