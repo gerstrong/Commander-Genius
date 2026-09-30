@@ -9,9 +9,7 @@
 #define GsBitmap_H_
 
 #include <SDL.h>
-#include <vector>
 #include <string>
-#include <memory>
 
 #include <base/interface/Geometry.h>
 #include <graphics/GsSurface.h>
